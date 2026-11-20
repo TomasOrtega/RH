@@ -26,6 +26,9 @@ open Matrix GlobalTheory.PRep Formalism.UG GlobalTheory.BCT GlobalTheory.SplitPt
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[AdelicGLn.mem_integralFiniteGL_iff, ← map_inv]`. Simplify using `only [mem_KGL_iff_val, ← map_inv, GroundTheory.Global.mem_integralFiniteAdeles]`. Conclude with `⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩, fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩`.
+-/
 theorem integral_iff (x : UA E a) :
     GeneralLinearGroup.map (pFin E) (x : GA E a) ∈ AdelicGLn.integralFiniteGL E a ↔
       ∀ u, cLoc u x ∈ GlobalTheory.LFun.KGL u a := by
@@ -34,6 +37,11 @@ theorem integral_iff (x : UA E a) :
   exact ⟨fun h u => ⟨fun i j => h.1 i j u, fun i j => h.2 i j u⟩,
     fun h => ⟨fun i j u => (h u).1 i j, fun i j u => (h u).2 i j⟩⟩
 
+/- English proof (translation)
+Set `Kf : Subgroup (finU E a)` to `(AdelicGLn.integralFiniteGL E a).comap (finPart E a)`. Establish `hO : IsOpen (Kf : Set (finU E a))` using `(AdelicGLn.isOpen_integralFiniteGL E a).preimage continuous_finPart`. Establish `hc : IsCompact (Kf : Set (finU E a))`. Use `IsCompact.of_isClosed_subset (isClosedEmbedding_finU.isCompact_preimage ((AdelicGLn.isCompact_integralFiniteGL E a).image continuous_finGL_ad)) (Subgroup.isClosed_of_isOpen _ hO) fun x hx => ⟨finPart E a x, hx, ?_⟩` and prove the remaining obligations. Establish `h1 : GeneralLinearGroup.map (pInf E) ((x : UA E a) : GA E a) = 1` using `x.2`.
+
+Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL]; rfl)`. Use `⟨Subtype.val '' (Kf : Set (finU E a)), hc.image continuous_subtype_val, fun x hx hi => ⟨⟨x, hx⟩, ?_, rfl⟩⟩` and prove the remaining obligations. Conclude with `(integral_iff x).2 hi`.
+-/
 theorem exists_compact_integral : ∃ C : Set (UA E a), IsCompact C ∧
     ∀ x ∈ finU E a, (∀ u, cLoc u x ∈ GlobalTheory.LFun.KGL u a) → x ∈ C := by
   let Kf : Subgroup (finU E a) := (AdelicGLn.integralFiniteGL E a).comap (finPart E a)
@@ -47,6 +55,19 @@ theorem exists_compact_integral : ∃ C : Set (UA E a), IsCompact C ∧
   refine ⟨Subtype.val '' (Kf : Set (finU E a)), hc.image continuous_subtype_val, fun x hx hi => ⟨⟨x, hx⟩, ?_, rfl⟩⟩
   exact (integral_iff x).2 hi
 
+/- English proof (translation)
+Distinguish the cases in `hw : IsSplitAt w`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E a w hw`. Use `⟨fun x => (e.symm (cLoc w x)).1, continuous_subtype_val.comp (e.symm.continuous.comp (continuous_cLoc w)), fun x => ⟨(e.symm _).2, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← he]`. Conclude with `e.apply_symm_apply _`.
+
+Establish `hc : conjSrc (conjE E) w = w` using `conjSrc_eq_of_not_split hw`. Establish `key : ∀ x : UA E a, finGL E a (locGL E a w (cLoc w x)) ∈ UA E a`. Introduce `x`. Use `finGL_mem_UA _ fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = w`.
+
+Substitute `hu` using the available equality. Establish `e1 : ∀ v, v = u → GeneralLinearGroup.map (pLoc E v) (locGL E a u (cLoc u x)) = cLoc v x`. Introduce and unpack `v rfl`. Conclude with `pLoc_locGL _ _`. Rewrite using `[e1 _ hc, e1 u rfl]`.
+
+Conclude with `comp_eq x u`. Establish `h3 : conjSrc (conjE E) u ≠ w` using `fun e => hu (by rw [← conjSrc_conjSrc_cm u, e, hc])`. Rewrite using `[pLoc_locGL_of_ne hu, pLoc_locGL_of_ne h3]`. Simplify using the standard rewrite rules. Use `⟨fun x => ⟨finGL E a (locGL E a w (cLoc w x)), key x⟩, ?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `Continuous.subtype_mk (continuous_finGL_ad.comp ((CuspSub.continuous_locGL w).comp (continuous_cLoc w))) _`. Use `Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 (pInf_finGL _), Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Rewrite using `[cLoc_finGL]`. Conclude with `pLoc_locGL_of_ne (fun e => hu (by rw [e])) _`. Rewrite using `[cLoc_finGL]`.
+
+Conclude with `pLoc_locGL _ _`.
+-/
 theorem exists_loc (w : HeightOneSpectrum (𝓞 E)) : ∃ f : UA E a → UA E a, Continuous f ∧
     ∀ x, f x ∈ locU a w ∧ cLoc w (f x) = cLoc w x := by
   by_cases hw : IsSplitAt w
@@ -75,15 +96,26 @@ theorem exists_loc (w : HeightOneSpectrum (𝓞 E)) : ∃ f : UA E a → UA E a,
       exact pLoc_locGL_of_ne (fun e => hu (by rw [e])) _
     · rw [cLoc_finGL]; exact pLoc_locGL _ _
 
+/- English proof (translation)
+Use `haveI : T2Space (GL (Fin a) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hc : Continuous (cInf (E` using `E) (n := a)) := (Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_ad)).comp continuous_subtype_val`. Conclude with `isClosed_eq hc continuous_const`.
+-/
 theorem isClosed_finU : IsClosed ((finU E a : Subgroup (UA E a)) : Set (UA E a)) := by
   haveI : T2Space (GL (Fin a) (Cinf E)) := Units.isEmbedding_embedProduct.t2Space
   have hc : Continuous (cInf (E := E) (n := a)) :=
     (Continuous.units_map _ (continuous_id.matrix_map continuous_pInf_ad)).comp continuous_subtype_val
   exact isClosed_eq hc continuous_const
 
+/- English proof (translation)
+The claim follows from `Units.isEmbedding_embedProduct.t2Space`.
+-/
 theorem t2GL (w : HeightOneSpectrum (𝓞 E)) : T2Space (GL (Fin a) (w.adicCompletion E)) :=
   Units.isEmbedding_embedProduct.t2Space
 
+/- English proof (translation)
+Establish `e : (levelOf a w₀ H : Set (UA E a)) = (finU E a : Set (UA E a)) ∩ ((⋂ u, ⋂ (_ : ¬ Apart u w₀), {x | cLoc u x = 1}) ∩ ⋂ w, ⋂ (_ : Apart w w₀), cLoc w ⁻¹' (cLoc w '' (H w : Set (UA E a))))`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_levelOf, Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_image]`. Rewrite using `[e]`. Use `isClosed_finU.inter (IsClosed.inter (isClosed_iInter fun u => isClosed_iInter fun _ => ?_) (isClosed_iInter fun w => isClosed_iInter fun _ => ?_))` and prove the remaining obligations.
+
+Use `haveI := t2GL (E := E) (a := a) u`. Conclude with `isClosed_eq (continuous_cLoc u) continuous_const`. Use `haveI := t2GL (E := E) (a := a) w`. Conclude with `((hc w).image (continuous_cLoc w)).isClosed.preimage (continuous_cLoc w)`.
+-/
 theorem isClosed_levelOf (w₀ : HeightOneSpectrum (𝓞 E)) (H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a))
     (hc : ∀ w, IsCompact (H w : Set (UA E a))) : IsClosed (levelOf a w₀ H : Set (UA E a)) := by
   have e : (levelOf a w₀ H : Set (UA E a)) = (finU E a : Set (UA E a)) ∩
@@ -100,6 +132,23 @@ theorem isClosed_levelOf (w₀ : HeightOneSpectrum (𝓞 E)) (H : HeightOneSpect
   · haveI := t2GL (E := E) (a := a) w
     exact ((hc w).image (continuous_cLoc w)).isClosed.preimage (continuous_cLoc w)
 
+/- English proof (translation)
+Proceed by induction on `R using Finset.induction_on with`. Consider the case `empty`. Take `⟨C, hC, hsub⟩` from `exists_compact_integral (E := E) (a := a)`. Conclude with `⟨C, hC, fun x hx hi _ => hsub x hx fun u => hi u (by simp)⟩`. Consider the case `insert r R hr ih`.
+
+Take `⟨C, hC, hsub⟩` from `ih`. Use `⟨C * (H r : Set (UA E a)), hC.mul (hc r), fun x hx hi hH => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `hH r (Finset.mem_insert_self r R)`. Distinguish the cases in `hap : ∀ r' ∈ R, Apart r' r`. Establish `hyl` using `hle r hy`.
+
+Establish `hy1 : ∀ u, Apart u r → cLoc u y = 1` using `fun u hu => ((GlobalTheory.Cong.LevelExt.mem_locU_iff y).1 hyl).2 u hu`. Establish `hyf : y ∈ finU E a` using `(Subgroup.mem_inf.1 hyl).1`. Use `⟨x * y⁻¹, hsub _ (mul_mem hx (inv_mem hyf)) ?_ ?_, y, hy, inv_mul_cancel_right x y⟩` and prove the remaining obligations. Introduce `u hu`. Distinguish the cases in `hur : Apart u r`.
+
+Rewrite using `[map_mul, map_inv, hy1 u hur, inv_one, mul_one]`. Use `hi u fun r' hr' => ?_` and prove the remaining obligations. Break down `Finset.mem_insert.1 hr' with rfl | h` into its components or cases. Conclude with `hur`. Conclude with `hu r' h`.
+
+Establish `hz : cLoc r (x * y⁻¹) ∈ GlobalTheory.LFun.KGL r a`. Rewrite using `[map_mul, map_inv, hyx, mul_inv_cancel]`. Conclude with `one_mem _`. Break down `eq_or_eq_conjSrc (not_not.1 hur) with rfl | rfl` into its components or cases. Conclude with `hz`.
+
+Conclude with `integral_conjSrc _ r hz`. Introduce `r' h`. Take `⟨y', hy', e'⟩` from `hH r' (Finset.mem_insert_of_mem h)`. Conclude with `⟨y', hy', by rw [map_mul, map_inv, hy1 r' (hap r' h), inv_one, mul_one]; exact e'⟩`. Use `push_neg at hap`.
+
+Take `⟨r', hr', hnr⟩` from `hap`. Establish `hxC : x ∈ C`. Use `hsub x hx (fun u hu => hi u fun r'' hr'' => ?_) (fun r'' h => hH r'' (Finset.mem_insert_of_mem h))` and prove the remaining obligations. Break down `Finset.mem_insert.1 hr'' with rfl | h` into its components or cases. Introduce `hh`.
+
+Conclude with `not_apart_trans (not_not.2 hh) (not_apart_symm hnr) (hu r' hr')`. Conclude with `hu r'' h`. Conclude with `⟨x, hxC, 1, one_mem _, mul_one x⟩`.
+-/
 theorem exists_compact_of_finset (H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)) (hle : ∀ w, H w ≤ locU a w)
     (hc : ∀ w, IsCompact (H w : Set (UA E a))) (R : Finset (HeightOneSpectrum (𝓞 E))) :
     ∃ C : Set (UA E a), IsCompact C ∧ ∀ x ∈ finU E a, (∀ u, (∀ r ∈ R, Apart u r) → cLoc u x ∈ GlobalTheory.LFun.KGL u a) →
@@ -143,6 +192,23 @@ theorem exists_compact_of_finset (H : HeightOneSpectrum (𝓞 E) → Subgroup (U
         · exact hu r'' h
       exact ⟨x, hxC, 1, one_mem _, mul_one x⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ a w₀ H hle _ hc ho hcof`. Establish `hT` using `Filter.eventually_cofinite.1 hcof`. Use `⟨levelOf_le_finU w₀ H, fun x hx => (mem_levelOf.1 hx).2.1, ?_, ?_⟩` and prove the remaining obligations. Take `⟨C, hC, hsub⟩` from `exists_compact_of_finset H hle hc hT.toFinset`. Use `hC.of_isClosed_subset (isClosed_levelOf w₀ H hc) fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨hf, h1, hw⟩` from `mem_levelOf.1 hx`. Use `hsub x hf (fun u hu => ?_) (fun r _ => ?_)` and prove the remaining obligations. Establish `hHu : H u = intU a u`. Assume the negation of the conclusion as `h`. Conclude with `hu u (hT.mem_toFinset.2 h) rfl`.
+
+Distinguish the cases in `h0 : Apart u w₀`. Take `⟨y, hy, e⟩` from `hw u h0`. Rewrite `hy` using `[hHu]`. Rewrite using `[← e]`. Conclude with `(mem_intU.1 hy).2 u (fun h => h rfl)`.
+
+Rewrite using `[h1 u h0]`. Conclude with `one_mem _`. Distinguish the cases in `h0 : Apart r w₀`. Conclude with `hw r h0`. Conclude with `⟨1, one_mem _, by rw [map_one, h1 r h0]⟩`.
+
+Use `choose f hfc hf using fun w => exists_loc (E := E) (a := a) w`. Set `g : ∀ w, UA E a → locU a w` to `fun w x => ⟨f w x, (hf w x).1⟩`. Establish `hg : ∀ w, Continuous (g w)` using `fun w => (hfc w).subtype_mk _`. Establish `hpf : Continuous fun x : UA E a => GeneralLinearGroup.map (pFin E) (x : GA E a)` using `(Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous (pFin E)))).comp continuous_subtype_val`. Use `⟨{x | GeneralLinearGroup.map (pFin E) (x : GA E a) ∈ AdelicGLn.integralFiniteGL E a} ∩ ⋂ w ∈ hT.toFinset, g w ⁻¹' ((H w).subgroupOf (locU a w) : Set (locU a w)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((AdelicGLn.isOpen_integralFiniteGL E a).preimage hpf).inter (isOpen_biInter_finset fun w _ => (ho w).preimage (hg w))`. Use `⟨(integral_iff 1).2 fun u => by rw [map_one]; exact one_mem _, Set.mem_iInter₂.2 fun w _ => ?_⟩` and prove the remaining obligations. Establish `h1 : f w 1 = 1` using `eq_one_of_cLoc_eq_one (hf w 1).1 (by rw [(hf w 1).2, map_one])`. Use `show (g w 1).1 ∈ H w`. Use `show f w 1 ∈ H w`.
+
+Rewrite using `[h1]`. Conclude with `one_mem _`. Introduce `x hxN hxf hx1`. Take `⟨hxi, hxH⟩` from `hxN`. Establish `hxi'` using `(integral_iff x).1 hxi`.
+
+Use `mem_levelOf.2 ⟨hxf, hx1, fun w _ => ⟨f w x, ?_, (hf w x).2⟩⟩` and prove the remaining obligations. Distinguish the cases in `hwT : H w = intU a w`. Rewrite using `[hwT]; exact mem_intU_of (hf w x).1 (by rw [(hf w x).2]; exact hxi' w)`. Conclude with `Set.mem_iInter₂.1 hxH w (hT.mem_toFinset.2 hwT)`.
+-/
 theorem isLevelAway_levelOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (w₀ : HeightOneSpectrum (𝓞 E)) (H : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)), (∀ w, H w ≤ locU a w) → (∀ w u, ¬ Apart w u → H w = H u) → (∀ w, IsCompact (H w : Set (UA E a))) → (∀ w, IsOpen (((H w).subgroupOf (locU a w)) : Set (locU a w))) → (∀ᶠ w in Filter.cofinite, H w = GlobalTheory.Cong.AdaptLev.intU a w) → IsLevelAway w₀ (GlobalTheory.Cong.AdaptLev.levelOf a w₀ H) := by
   intro E _ _ _ a w₀ H hle _ hc ho hcof
   have hT := Filter.eventually_cofinite.1 hcof

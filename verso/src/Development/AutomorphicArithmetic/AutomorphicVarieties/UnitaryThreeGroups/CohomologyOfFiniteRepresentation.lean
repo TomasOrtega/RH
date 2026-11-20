@@ -3,6 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Matrix IsLocalRing
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
+/- English proof (translation)
+Use `IsLocallyConstant.continuous ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Use `⟨{y | x⁻¹ * y ∈ V}, hV.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← ha x _ hy, mul_inv_cancel_left]`.
+-/
 private theorem continuous_of_coset_constant {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [TopologicalSpace M]
     (V : Subgroup Γ) (hV : IsOpen (V : Set Γ)) (a : Γ → M) (ha : ∀ s, ∀ v ∈ V, a (s * v) = a s) : Continuous a := by
   refine IsLocallyConstant.continuous ?_
@@ -11,6 +14,17 @@ private theorem continuous_of_coset_constant {Γ M : Type} [Group Γ] [Topologic
   refine ⟨{y | x⁻¹ * y ∈ V}, hV.preimage (by fun_prop), by simp, fun y hy => ?_⟩
   rw [← ha x _ hy, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `hfi : N.FiniteIndex` using `⟨fun h => hN (by rw [h, Nat.cast_zero])⟩`. Use `letI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Establish `hout : ∀ g : G, f (QuotientGroup.mk g : G ⧸ N).out = f g` using `fun g => by`. Establish `h1 : ((QuotientGroup.mk g : G ⧸ N).out)⁻¹ * g ∈ N` using `QuotientGroup.eq.1 (Quotient.out_eq _)`. Establish `h2` using `hf (QuotientGroup.mk g : G ⧸ N).out (((QuotientGroup.mk g : G ⧸ N).out)⁻¹ * g)`.
+
+Rewrite `h2` using `[mul_inv_cancel_left, h0 _ h1, map_zero, add_zero]`. Conclude with `h2.symm`. Set `A : M` to `∑ x : G ⧸ N, f x.out`. Establish `hA : ∀ t, A = (N.index : k) • f t + ρ t A`. Introduce `t`.
+
+Establish `e1 : A = ∑ x : G ⧸ N, f (t * x.out)`. Simplify using `only [A]`. Rewrite using `[← Equiv.sum_comp (MulAction.toPerm t)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← hout (t * x.out)]`.
+
+Establish `: (QuotientGroup.mk (t * x.out) : G ⧸ N) = t • x` using `MulAction.Quotient.mk_smul_out N t x`. Simplify using `only [this, MulAction.toPerm_apply]`. Use `conv_lhs => rw [e1]`. Simplify using `only [hf, A, map_sum]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Subgroup.index, Nat.card_eq_fintype_card, Nat.cast_smul_eq_nsmul]`.
+
+Use `⟨-((N.index : k)⁻¹ • A), fun g => ?_⟩` and prove the remaining obligations. Establish `e : ρ g A = A - (N.index : k) • f g` using `by rw [eq_sub_iff_add_eq, add_comm]; exact (hA g).symm`. Rewrite using `[map_neg, map_smul, e, smul_sub, smul_smul, inv_mul_cancel₀ hN, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cocycle_coboundary_averaging {k G M : Type} [Field k] [Group G] [AddCommGroup M] [Module k M]
     (ρ : Representation k G M) (N : Subgroup G) (hN : (N.index : k) ≠ 0) (f : G → M)
     (hf : ∀ g h, f (g * h) = f g + ρ g (f h)) (h0 : ∀ n ∈ N, f n = 0) :
@@ -47,6 +61,11 @@ private def powerCocycleSum {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M
   | 0 => 0
   | n + 1 => m + ρ x (powerCocycleSum ρ x m n)
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [powerCocycleSum]`. Consider the case `succ i ih`. Rewrite using `[show i + 1 + j = (i + j) + 1 by ring]`. Simplify using `only [powerCocycleSum, ih, map_add, pow_succ', map_mul, Module.End.mul_apply, pow_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem unipotent_cochain_add {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M] [Module k M]
     (ρ : Representation k Γ M) (x : Γ) (m : M) (i j : ℕ) :
     powerCocycleSum ρ x m (i + j) = powerCocycleSum ρ x m i + ρ (x ^ i) (powerCocycleSum ρ x m j) := by
@@ -57,6 +76,13 @@ private theorem unipotent_cochain_add {k Γ M : Type} [Field k] [Group Γ] [AddC
     simp only [powerCocycleSum, ih, map_add, pow_succ', map_mul, Module.End.mul_apply, pow_add]
     abel
 
+/- English proof (translation)
+Establish `e2 : ∀ n j, powerCocycleSum ρ x m (r * n + j) = n • powerCocycleSum ρ x m r + powerCocycleSum ρ x m j`. Introduce `n j`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+
+Rewrite using `[show r * (n + 1) + j = r + (r * n + j) by ring, unipotent_cochain_add, hρ, ih, succ_nsmul]`. Normalize the expressions using the abelian group laws. Establish `e3 : ∀ j, powerCocycleSum ρ x m j = powerCocycleSum ρ x m (j % (r * l))`. Introduce `j`. Use `conv_lhs => rw [← Nat.div_add_mod j (r * l), mul_assoc, e2]`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul k, Nat.cast_mul, CharP.cast_eq_zero, zero_mul, zero_smul, zero_add]`. Rewrite using `[e3 i, e3 j, hij]`.
+-/
 private theorem unipotent_cochain_periodic {l : ℕ} {k Γ M : Type} [Field k] [CharP k l] [Group Γ] [AddCommGroup M] [Module k M]
     (ρ : Representation k Γ M) (x : Γ) (m : M) (r : ℕ)
     (hρ : ∀ n, ρ (x ^ r) (powerCocycleSum ρ x m n) = powerCocycleSum ρ x m n) (i j : ℕ) (hij : i ≡ j [MOD r * l]) :
@@ -74,6 +100,11 @@ private theorem unipotent_cochain_periodic {l : ℕ} {k Γ M : Type} [Field k] [
     rw [← Nat.cast_smul_eq_nsmul k, Nat.cast_mul, CharP.cast_eq_zero, zero_mul, zero_smul, zero_add]
   rw [e3 i, e3 j, hij]
 
+/- English proof (translation)
+Introduce `i hi`. Establish `h1 : g⁻¹ * i * g ∈ I` using `by simpa using hI.conj_mem i hi g⁻¹`. Use `conv_rhs => rw [← hy _ h1]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`.
+
+Use `group`.
+-/
 private theorem invariants_of_normal_stable {k Γ M : Type} [Field k] [Group Γ] [AddCommGroup M] [Module k M]
     (ρ : Representation k Γ M) (I : Subgroup Γ) [hI : I.Normal] (y : M) (hy : ∀ i ∈ I, ρ i y = y) (g : Γ) :
     ∀ i ∈ I, ρ i (ρ g y) = ρ g y := by
@@ -84,6 +115,43 @@ private theorem invariants_of_normal_stable {k Γ M : Type} [Field k] [Group Γ]
   congr 2
   group
 
+/- English proof (translation)
+Establish `core : ∀ W : Subgroup Γ, IsOpen (W : Set Γ) → IsOpen (W.normalCore : Set Γ)`. Introduce `W hW`. Use `haveI : Finite (Γ ⧸ W) := W.quotient_finite_of_isOpen hW`. Use `haveI : W.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Conclude with `Subgroup.isOpen_of_isClosed_of_finiteIndex _ (W.normalCore_isClosed (W.isClosed_of_isOpen hW))`.
+
+Establish `gen : ∀ W : Subgroup Γ, IsOpen (W : Set Γ) → I ≤ W → fr ∈ W → W = ⊤`. Introduce `W hW h1 h2`. Rewrite using `[eq_top_iff, ← hfr]`. Conclude with `Subgroup.topologicalClosure_minimal _ (sup_le h1 ((Subgroup.zpowers_le).2 h2)) (W.isClosed_of_isOpen hW)`. Establish `cyc : ∀ (W : Subgroup Γ) [W.Normal], IsOpen (W : Set Γ) → I ≤ W → Subgroup.zpowers (fr : Γ ⧸ W) = ⊤`.
+
+Introduce `W _ hW hIW`. Establish `ht : (Subgroup.zpowers (fr : Γ ⧸ W)).comap (QuotientGroup.mk' W) = ⊤`. Establish `hle : W ≤ (Subgroup.zpowers (fr : Γ ⧸ W)).comap (QuotientGroup.mk' W)` using `fun u hu => by`. Establish `: (QuotientGroup.mk' W) u = 1` using `(QuotientGroup.eq_one_iff u).2 hu`. Rewrite using `[Subgroup.mem_comap, this]`.
+
+Conclude with `Subgroup.one_mem _`. Conclude with `gen _ (Subgroup.isOpen_mono hle hW) (hIW.trans hle) (Subgroup.mem_zpowers _)`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective y`.
+
+Establish `: y ∈ (Subgroup.zpowers (fr : Γ ⧸ W)).comap (QuotientGroup.mk' W)` using `by rw [ht]; trivial`. Conclude with `this`. Establish `hb : ∀ n, ∀ i ∈ I, ρ i (powerCocycleSum ρ fr m n) = powerCocycleSum ρ fr m n`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro i _`. Simplify using `[powerCocycleSum]`. Consider the case `succ n ih => intro i hi`. Simplify using `only [powerCocycleSum, map_add, hm i hi, invariants_of_normal_stable ρ I _ ih fr i hi]`. Set `V1 : Subgroup Γ` to `I ⊔ ρ.ker`.
+
+Establish `hV1 : IsOpen (V1 : Set Γ)` using `Subgroup.isOpen_mono le_sup_right hker`. Establish `hV1b : ∀ v ∈ V1, ∀ n, ρ v (powerCocycleSum ρ fr m n) = powerCocycleSum ρ fr m n`. Introduce `v hv n`. Establish `hv' : v ∈ ((I ⊔ ρ.ker : Subgroup Γ) : Set Γ)` using `hv`. Rewrite `hv'` using `[Subgroup.normal_mul]`.
+
+Take `⟨i, hi, h, hh, rfl⟩` from `hv'`. Establish `hρ : ρ h = 1` using `hh`. Simplify using `only [map_mul, hρ, mul_one, hb n i hi]`. Use `haveI : Finite (Γ ⧸ V1) := V1.quotient_finite_of_isOpen hV1`. Set `r` to `orderOf (fr : Γ ⧸ V1)`.
+
+Establish `hr0 : r ≠ 0` using `(orderOf_pos _).ne'`. Establish `hfrr : fr ^ r ∈ V1`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow]`. Conclude with `pow_orderOf_eq_one _`. Take `⟨e, c, hc, hrm⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hr0 l hl.out.ne_one`.
+
+Take `⟨U, hUo, hIU, hUi⟩` from `hU (e + 1)`. Set `U1` to `U.normalCore`. Establish `hU1 : IsOpen (U1 : Set Γ)` using `core _ hUo`. Establish `hIU1 : I ≤ U1` using `Subgroup.normal_le_normalCore.2 hIU`. Establish `hord : l ^ (e + 1) ∣ orderOf (fr : Γ ⧸ U1)`.
+
+Rewrite using `[← Nat.card_zpowers, cyc U1 hU1 hIU1, Subgroup.card_top, ← hUi]`. Conclude with `Subgroup.index_dvd_of_le (Subgroup.normalCore_le U)`. Set `V : Subgroup Γ` to `V1 ⊓ U1`. Establish `hV : IsOpen (V : Set Γ)` using `hV1.inter hU1`. Establish `hIV : I ≤ V` using `le_inf le_sup_left hIU1`.
+
+Use `haveI : Finite (Γ ⧸ V) := V.quotient_finite_of_isOpen hV`. Establish `wd : ∀ i j : ℕ, ((fr ^ i : Γ) : Γ ⧸ V) = (fr ^ j : Γ) → powerCocycleSum ρ fr m i = powerCocycleSum ρ fr m j`. Introduce `i j hij`. Establish `hij'` using `QuotientGroup.eq.1 hij`. Establish `m1 : i ≡ j [MOD r]`.
+
+Rewrite using `[← pow_eq_pow_iff_modEq, ← QuotientGroup.mk_pow, ← QuotientGroup.mk_pow]`. Conclude with `QuotientGroup.eq.2 hij'.1`. Establish `m2 : i ≡ j [MOD l ^ (e + 1)]`. Use `Nat.ModEq.of_dvd hord ?_` and prove the remaining obligations. Rewrite using `[← pow_eq_pow_iff_modEq, ← QuotientGroup.mk_pow, ← QuotientGroup.mk_pow]`.
+
+Conclude with `QuotientGroup.eq.2 hij'.2`. Use `unipotent_cochain_periodic (l := l) ρ fr m r (hV1b _ hfrr) i j ?_` and prove the remaining obligations. Establish `cop : Nat.Coprime (l ^ (e + 1)) c` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd hl.out).2 hc)`. Rewrite using `[show r * l = l ^ (e + 1) * c by rw [hrm]; ring]`. Conclude with `(Nat.modEq_and_modEq_iff_modEq_mul cop).1 ⟨m2, m1.of_dvd (by rw [hrm]; exact Dvd.intro_left _ rfl)⟩`.
+
+Establish `hH : ∀ g : Γ, ∃ n : ℕ, ((fr ^ n : Γ) : Γ ⧸ V) = g`. Introduce `g`. Establish `hg' : (g : Γ ⧸ V) ∈ Subgroup.zpowers (fr : Γ ⧸ V)` using `by rw [cyc V hV hIV]; trivial`. Take `⟨n, hn⟩` from `mem_powers_iff_mem_zpowers.2 hg'`. Conclude with `⟨n, by rw [QuotientGroup.mk_pow]; exact hn⟩`.
+
+Set `a0 : Γ → M` to `fun g => powerCocycleSum ρ fr m (hH g).choose`. Establish `ha0 : ∀ (g : Γ) (n : ℕ), ((fr ^ n : Γ) : Γ ⧸ V) = g → a0 g = powerCocycleSum ρ fr m n` using `fun g n hn => wd _ _ ((hH g).choose_spec.trans hn.symm)`. Use `⟨a0, continuous_of_coset_constant V hV a0 fun s v hv => ?_, fun g h => ?_, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hH s`. Rewrite using `[ha0 s n hn, ha0 _ n (by rw [hn, QuotientGroup.mk_mul_of_mem s hv])]`.
+
+Take `⟨i, hi⟩` from `hH g`. Take `⟨j, hj⟩` from `hH h`. Establish `hv : (fr ^ i)⁻¹ * g ∈ V` using `QuotientGroup.eq.1 hi`. Rewrite using `[ha0 g i hi, ha0 h j hj, ha0 (g * h) (i + j) (by rw [pow_add, QuotientGroup.mk_mul, QuotientGroup.mk_mul, hi, hj]), unipotent_cochain_add]`. Use `conv_rhs => rw [← mul_inv_cancel_left (fr ^ i) g, map_mul, Module.End.mul_apply, hV1b _ hv.1]`.
+
+Conclude with `ha0 i 0 (by rw [pow_zero, eq_comm, QuotientGroup.mk_one, QuotientGroup.eq_one_iff]; exact hIV hi)`. Rewrite using `[ha0 fr 1 (by rw [pow_one])]`. Simplify using `[powerCocycleSum]`.
+-/
 private theorem unipotent_restriction_surjective (l : ℕ) [hl : Fact l.Prime] {k Γ M : Type} [Field k] [CharP k l] [Group Γ]
     [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [AddCommGroup M] [Module k M] [TopologicalSpace M]
     (ρ : Representation k Γ M) (hker : IsOpen (ρ.ker : Set Γ)) (I : Subgroup Γ) [I.Normal] (fr : Γ)
@@ -179,6 +247,47 @@ private theorem unipotent_restriction_surjective (l : ℕ) [hl : Fact l.Prime] {
   · rw [ha0 fr 1 (by rw [pow_one])]
     simp [powerCocycleSum]
 
+/- English proof (translation)
+Introduce `l hl k M _ _ _ _ _ _ _ _ _ _ Γ _ _ _ _ _ _ ρ hker I N _ _ _ _ hNI hNρ hidx ⟨fr, hfr⟩ hU`. Establish `hd : ∀ m, ReciprocityTheory.Gal.d0 ρ m ∈ ReciprocityTheory.Gal.Z1 ρ` using `fun m => ⟨continuous_of_coset_constant ρ.ker hker _ fun s v hv => by`. Establish `hρ : ρ v = 1` using `hv`. Simplify using `only [ReciprocityTheory.Gal.amitsur_d0_apply, map_mul, hρ, mul_one], fun g h => by`. Simplify using `only [ReciprocityTheory.Gal.amitsur_d0_apply, map_mul, map_sub, Module.End.mul_apply]`.
+
+Use the proof step `abel⟩`. Set `P : Submodule k M` to `{ carrier := {m | ∀ i ∈ I, ρ i m = m} add_mem' := fun {a b} ha hb i hi => by rw [map_add, ha i hi, hb i hi] zero_mem' := fun i _ => map_zero _ smul_mem' := fun c a ha i hi => by rw [map_smul, ha i hi] }`. Set `Z : Submodule k (ReciprocityTheory.Gal.Z1 ρ)` to `{ carrier := {f | ∀ i ∈ I, f.1 i = 0} add_mem' := fun {a b} ha hb i hi => by show a.1 i + b.1 i = 0`. Rewrite using `[ha i hi, hb i hi, add_zero]`. Use the proof step `zero_mem' := fun i _ => rfl`.
+
+Use the proof step `smul_mem' := fun c a ha i hi => by show c • a.1 i = 0`. Rewrite using `[ha i hi, smul_zero] }`. Set `ev : Z →ₗ[k] P` to `{ toFun := fun f => ⟨f.1.1 fr, fun i hi => by`. Establish `h1` using `f.1.2.2 i fr`. Establish `h2` using `f.1.2.2 fr (fr⁻¹ * i * fr)`.
+
+Rewrite `h2` using `[f.2 (fr⁻¹ * i * fr) (by simpa using ‹I.Normal›.conj_mem i hi fr⁻¹), map_zero, add_zero, show fr * (fr⁻¹ * i * fr) = i * fr by group]`. Rewrite `h1` using `[f.2 i hi, zero_add, h2]`. Conclude with `h1.symm⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl }`.
+
+Establish `hev : Function.Bijective ev`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Establish `hf' : f.1.1 fr = 0` using `congrArg Subtype.val hf`.
+
+Establish `hc` using `f.1.2.2`. Establish `h1 : f.1.1 1 = 0` using `f.2 1 I.one_mem`. Set `S : Subgroup Γ` to `{ carrier := {g | f.1.1 g = 0} mul_mem' := fun {a b} ha hb => by show f.1.1 (a * b) = 0`. Rewrite using `[hc, ha, hb, map_zero, add_zero]`. Use the proof step `one_mem' := h1`.
+
+Use the proof step `inv_mem' := fun {a} ha => by`. Use `hc a⁻¹ a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, ha, map_zero, add_zero]`. Conclude with `this.symm }`. Establish `hS : ⊤ ≤ S`.
+
+Rewrite using `[← hfr]`. Conclude with `Subgroup.topologicalClosure_minimal _ (sup_le (fun i hi => f.2 i hi) (Subgroup.zpowers_le.2 hf')) (isClosed_eq f.1.2.1 continuous_const)`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => hS (Subgroup.mem_top g)))`. Introduce `m`. Take `⟨f, h1, h2, h3, h4⟩` from `unipotent_restriction_surjective l ρ hker I fr hfr hU m.1 m.2`.
+
+Conclude with `⟨⟨⟨f, h1, h2⟩, h3⟩, Subtype.ext h4⟩`. Set `E` to `LinearEquiv.ofBijective ev hev`. Use `haveI : Module.Finite k Z := Module.Finite.equiv E.symm`. Set `π : Z →ₗ[k] ReciprocityTheory.Gal.H1 ρ` to `(Submodule.mkQ _).comp Z.subtype`. Set `δ : P →ₗ[k] Z` to `{ toFun := fun m => ⟨⟨ReciprocityTheory.Gal.d0 ρ m.1, hd m.1⟩, fun i hi => by show ρ i m.1 - m.1 = 0`.
+
+Rewrite using `[m.2 i hi, sub_self]⟩`. Use the proof step `map_add' := fun a b => Subtype.ext (Subtype.ext (map_add (ReciprocityTheory.Gal.d0 ρ) a.1 b.1))`. Use the proof step `map_smul' := fun c a => Subtype.ext (Subtype.ext (map_smul (ReciprocityTheory.Gal.d0 ρ) c a.1)) }`. Establish `hπr : LinearMap.range π = H1ur ρ N`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨f, rfl⟩ show Submodule.Quotient.mk (restrictCocycles1 ρ N.subtype continuous_subtype_val f.1) = (0 : ReciprocityTheory.Gal.H1 (ρ.comp N.subtype))`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).2 ⟨0, fun j => ?_⟩` and prove the remaining obligations. Use `show f.1.1 j = _`. Rewrite using `[f.2 j (hNI j.2), map_zero, sub_zero]`.
+
+Introduce `x hx`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : Submodule.Quotient.mk (restrictCocycles1 ρ N.subtype continuous_subtype_val f) = (0 : ReciprocityTheory.Gal.H1 (ρ.comp N.subtype))` using `hx`. Rewrite `hx'` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m0, hm0⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hx'`.
+
+Establish `hN0 : ∀ n ∈ N, f.1 n = 0` using `fun n hn => by`. Establish `e : f.1 n = ρ n m0 - m0` using `hm0 ⟨n, hn⟩`. Establish `hρ : ρ n = 1` using `hNρ hn`. Rewrite using `[e, hρ, Module.End.one_apply, sub_self]`. Take `⟨m, hm⟩` from `cocycle_coboundary_averaging (ρ.comp I.subtype) (N.subgroupOf I) (by rw [Ne, CharP.cast_eq_zero_iff k l]; exact hidx) (fun g => f.1 g) (fun g h => f.2.2 g h) (fun n hn => hN0 n hn)`.
+
+Set `b : ReciprocityTheory.Gal.Z1 ρ` to `⟨ReciprocityTheory.Gal.d0 ρ m, hd m⟩`. Use `⟨⟨f - b, fun j hj => ?_⟩, (Submodule.Quotient.eq _).2 ?_⟩` and prove the remaining obligations. Establish `e : f.1 j = ρ j m - m` using `hm ⟨j, hj⟩ show f.1 j - ReciprocityTheory.Gal.d0 ρ m j = 0`. Rewrite using `[ReciprocityTheory.Gal.amitsur_d0_apply, e, sub_self]`. Use `show ((f - b) - f).1 ∈ ReciprocityTheory.Gal.B1 ρ`.
+
+Rewrite using `[sub_sub_cancel_left]`. Conclude with `(ReciprocityTheory.Gal.B1 ρ).neg_mem ⟨m, rfl⟩`. Establish `hπk : LinearMap.ker π = LinearMap.range δ`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hf`. Establish `hf' : (Submodule.Quotient.mk f.1 : ReciprocityTheory.Gal.H1 ρ) = 0` using `hf`. Rewrite `hf'` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `(ReciprocityTheory.Gal.mem_coboundaries1 _ _).1 hf'`. Use `⟨⟨m, fun i hi => ?_⟩, Subtype.ext (Subtype.ext (funext fun g => (hm g).symm))⟩` and prove the remaining obligations.
+
+Establish `e : f.1.1 i = ρ i m - m` using `hm i`. Rewrite `e` using `[f.2 i hi]`. Conclude with `sub_eq_zero.1 e.symm`. Introduce and unpack `⟨m, rfl⟩ show (Submodule.Quotient.mk (δ m).1 : ReciprocityTheory.Gal.H1 ρ) = 0`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `⟨m.1, rfl⟩`. Establish `hle : H0 ρ ≤ P` using `fun m hm i _ => hm i`. Establish `hδk : LinearMap.ker δ = (H0 ρ).comap P.subtype`. Use extensionality with `m`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hm g`. Establish `e : ρ g m.1 - m.1 = 0` using `congrFun (congrArg (fun z : Z => z.1.1) hm) g`. Conclude with `sub_eq_zero.1 e`. Introduce `hm`. Conclude with `Subtype.ext (Subtype.ext (funext fun g => sub_eq_zero.2 (hm g)))`.
+
+Establish `e1` using `LinearMap.finrank_range_add_finrank_ker π`. Establish `e2` using `LinearMap.finrank_range_add_finrank_ker δ`. Rewrite `e1` using `[hπr, hπk, E.finrank_eq]`. Rewrite `e2` using `[hδk, (Submodule.comapSubtypeEquivOfLe hle).finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.cohomology_of_finite_representation :
     ∀ (l : ℕ) [Fact l.Prime] (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Module.Finite k M] [TopologicalSpace M] [DiscreteTopology M] [IsTopologicalAddGroup M] [ContinuousConstSMul k M] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] [T2Space Γ]
           (ρ : Representation k Γ M), IsOpen (ρ.ker : Set Γ) → ∀ (I N : Subgroup Γ) [I.Normal] [N.Normal], IsClosed (I : Set Γ) → IsClosed (N : Set Γ) → N ≤ I → N ≤ ρ.ker → ¬ l ∣ N.relIndex I →

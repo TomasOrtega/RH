@@ -13,5 +13,8 @@ open ReciprocityTheory.PGsh ReciprocityTheory.PGsh.Up ReciprocityTheory.PGsh.Be2
 open ReciprocityTheory.ChartRestriction.G.Chart (sp spMap)
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChF.fh_gmF | exact GlobalTheory.ChF.fh_gmF | (intros; apply GlobalTheory.ChF.fh_gmF <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.multiplicativeFormalGroupLawPower_pTorsion_finiteFree : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (r : ℕ), FH p (gmF O r) := by
   first | exact @GlobalTheory.ChF.fh_gmF | exact GlobalTheory.ChF.fh_gmF | (intros; apply GlobalTheory.ChF.fh_gmF <;> assumption)

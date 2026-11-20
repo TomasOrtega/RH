@@ -21,6 +21,9 @@ def chowHtAt (h : HermNorm n) (k δ : ℕ) (f : MvPolynomial (Fin k × Fin n) �
   (∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ), Real.log (gaussNorm v f)) +
     (mahler h k (f.map (Rat.castHom ℂ)) + k * δ * (harmonic (n - 1) : ℝ) / 2)
 
+/- English proof (translation)
+Establish `h1` using `sum_log_norm_embeddings (K := ℚ) hc`. Rewrite `h1` using `[Fintype.sum_subsingleton _ (Rat.castHom ℂ)]`. Unfold `chowHtAt`. Rewrite using `[map_C, mahler_C]`. Simplify using `only [gaussNorm_C, Nat.cast_zero, mul_zero, zero_mul, zero_div, add_zero, finsum_log_adicAbv hc, h1, neg_add_cancel]`.
+-/
 theorem chowHtAt_C (h : HermNorm n) (k : ℕ) {c : ℚ} (hc : c ≠ 0) :
     chowHtAt h k 0 (C c : MvPolynomial (Fin k × Fin n) ℚ) = 0 := by
   have h1 := sum_log_norm_embeddings (K := ℚ) hc
@@ -30,6 +33,9 @@ theorem chowHtAt_C (h : HermNorm n) (k : ℕ) {c : ℚ} (hc : c ≠ 0) :
   simp only [gaussNorm_C, Nat.cast_zero, mul_zero, zero_mul, zero_div, add_zero,
     finsum_log_adicAbv hc, h1, neg_add_cancel]
 
+/- English proof (translation)
+Establish `h0 : chowHtAt h 0 δ g = chowHtAt h 0 0 g` using `by simp [chowHtAt]`. Rewrite using `[h0, eq_C_of_isEmpty g]`. Rewrite `hg` using `[eq_C_of_isEmpty g]`. Conclude with `chowHtAt_C h 0 fun hc => hg (by rw [hc, map_zero])`.
+-/
 theorem chowHtAt_zero_groups (h : HermNorm n) (δ : ℕ) {g : MvPolynomial (Fin 0 × Fin n) ℚ} (hg : g ≠ 0) :
     chowHtAt h 0 δ g = 0 := by
   have h0 : chowHtAt h 0 δ g = chowHtAt h 0 0 g := by simp [chowHtAt]
@@ -37,6 +43,9 @@ theorem chowHtAt_zero_groups (h : HermNorm n) (δ : ℕ) {g : MvPolynomial (Fin 
   rw [eq_C_of_isEmpty g] at hg
   exact chowHtAt_C h 0 fun hc => hg (by rw [hc, map_zero])
 
+/- English proof (translation)
+Unfold `chowHtAt`. Rewrite using `[finsum_log_gaussNorm_mul h₁ h₂, map_mul, mahlerMul n k h _ _ (fun h0 => h₁ (map_injective _ (Rat.castHom ℂ).injective (by rw [h0, map_zero]))) (fun h0 => h₂ (map_injective _ (Rat.castHom ℂ).injective (by rw [h0, map_zero])))]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHtAt_mul (h : HermNorm n) (k δ₁ δ₂ : ℕ) {f₁ f₂ : MvPolynomial (Fin k × Fin n) ℚ}
     (h₁ : f₁ ≠ 0) (h₂ : f₂ ≠ 0) :
     chowHtAt h k (δ₁ + δ₂) (f₁ * f₂) = chowHtAt h k δ₁ f₁ + chowHtAt h k δ₂ f₂ := by
@@ -47,6 +56,11 @@ theorem chowHtAt_mul (h : HermNorm n) (k δ₁ δ₂ : ℕ) {f₁ f₂ : MvPolyn
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[zero_mul, pow_zero, Nat.cast_zero, zero_mul, ← C_1]`. Conclude with `chowHtAt_C h k one_ne_zero`. Consider the case `succ m ih`.
+
+Rewrite using `[pow_succ, Nat.succ_mul, chowHtAt_mul h k _ _ (pow_ne_zero _ hg) hg, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHtAt_pow (h : HermNorm n) {k : ℕ} (d : ℕ) {g : MvPolynomial (Fin k × Fin n) ℚ} (hg : g ≠ 0)
     (m : ℕ) : chowHtAt h k (m * d) (g ^ m) = m * chowHtAt h k d g := by
   induction m with
@@ -58,6 +72,13 @@ theorem chowHtAt_pow (h : HermNorm n) {k : ℕ} (d : ℕ) {g : MvPolynomial (Fin
     push_cast
     ring
 
+/- English proof (translation)
+Establish `hP : ∀ t ⊆ s, ∏ i ∈ t, g i ^ m i ≠ 0` using `fun t ht => Finset.prod_ne_zero_iff.mpr fun i hi => pow_ne_zero _ (hg i (ht hi))`. Establish `hprod : ∀ t ⊆ s, chowHtAt h k (∑ i ∈ t, m i * d i) (∏ i ∈ t, g i ^ m i) = ∑ i ∈ t, (m i : ℝ) * chowHtAt h k (d i) (g i)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `_`. Rewrite using `[Finset.sum_empty, Finset.prod_empty, Finset.sum_empty, ← C_1]`. Conclude with `chowHtAt_C h k one_ne_zero`. Consider the case `insert a t ha ih`. Introduce `hts`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Finset.sum_insert ha, chowHtAt_mul h k _ _ (pow_ne_zero _ (hg a (hts (Finset.mem_insert_self a t)))) (hP t (fun x hx => hts (Finset.mem_insert_of_mem hx))), chowHtAt_pow h _ (hg a (hts (Finset.mem_insert_self a t))), ih (fun x hx => h …`. Use `chowHtAt_mul h k 0 (∑ i ∈ s, m i * d i) (C_ne_zero.mpr hc) (hP s le_rfl)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[this, chowHtAt_C h k hc, zero_add, hprod s le_rfl]`.
+-/
 theorem chowHtAt_C_mul_prod (h : HermNorm n) {k : ℕ} {ι : Type*} (s : Finset ι) (m d : ι → ℕ)
     (g : ι → MvPolynomial (Fin k × Fin n) ℚ) (hg : ∀ i ∈ s, g i ≠ 0) {c : ℚ} (hc : c ≠ 0) :
     chowHtAt h k (∑ i ∈ s, m i * d i) (C c * ∏ i ∈ s, g i ^ m i) =
@@ -84,6 +105,13 @@ theorem chowHtAt_C_mul_prod (h : HermNorm n) {k : ℕ} {ι : Type*} (s : Finset 
   rw [zero_add] at this
   rw [this, chowHtAt_C h k hc, zero_add, hprod s le_rfl]
 
+/- English proof (translation)
+Establish `hw : Height.totalWeight ℚ = 1`. Rewrite using `[NumberField.totalWeight_eq_finrank, Module.finrank_self]`. Establish `hmult : (default : InfinitePlace ℚ).mult = 1`. Use `NumberField.totalWeight_eq_sum_mult (K := ℚ)` as an intermediate fact. Rewrite `this` using `[hw, Fintype.sum_unique]`.
+
+Conclude with `this.symm`. Establish `hσ : (default : InfinitePlace ℚ).embedding = Rat.castHom ℂ` using `Subsingleton.elim _ _`. Unfold `chowHtAt IndefiniteRowSideFullHecke.ArithBezout.chowHeight ReciprocityTheory.ChartRestriction.G.Geo.chowHt ReciprocityTheory.ChartRestriction.G.Geo.chowHeightOfForm`. Rewrite using `[ObjectsHeight.finsum_log_gaussNorm, Fintype.sum_unique, hmult, hw, hσ, ObjectsHeight.mahler_eq_chowMean S hS _ (ObjectsHeight.ofPointMatrix_norm S hS)]`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.logMean, IndefiniteRowSideFullHecke.ArithBezout.chowMean]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHtAt_eq_chowHeight (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) {e δ : ℕ}
     (f : MvPolynomial (Fin (e + 1) × Fin n) ℚ) :
     chowHtAt (ObjectsHeight.ofPointMatrix S hS) (e + 1) δ f = IndefiniteRowSideFullHecke.ArithBezout.chowHeight S f δ := by
@@ -101,6 +129,21 @@ theorem chowHtAt_eq_chowHeight (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S) 
   push_cast
   ring
 
+/- English proof (translation)
+Use `set u' : Fin n → ℚ := fun j => (u j : ℚ) with hu'`. Use `set g := specFirst f u' with hg`. Establish `hfin_f` using `log_gaussNorm_support_finite (K := ℚ) hf.1`. Establish `hfin_g : (Function.support fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ) => Real.log (gaussNorm v g)).Finite`. Distinguish the cases in `hg0 : g = 0`.
+
+Establish `: (fun v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ) => Real.log (gaussNorm v g)) = 0`. Use function extensionality and compare the values at `v`. Rewrite using `[hg0]`. Simplify using `[gaussNorm]`. Conclude with `Or.inl rfl`.
+
+Rewrite using `[this, Function.support_zero]`. Conclude with `Set.finite_empty`. Conclude with `log_gaussNorm_support_finite hg0`. Establish `hfinsum : ∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ), Real.log (gaussNorm v f) = (∑ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ), Real.log (gaussNorm v g)) + vertTerm I (e + 1) u`. Unfold `vertTerm`.
+
+Rewrite using `[← finsum_add_distrib hfin_g]`. Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[← hV ℚ n e I f u hI hf hu v]`. Expand and normalize the polynomial expressions, which then agree. Use `Set.Finite.subset (hfin_f.union hfin_g) fun v hv => ?_` and prove the remaining obligations.
+
+Rewrite `hv` using `[Function.mem_support, ← hV ℚ n e I f u hI hf hu v]`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at hcon`. Conclude with `hv (by rw [hcon.1, hcon.2, sub_zero])`. Establish `harch : mahler h (e + 1) (f.map (Rat.castHom ℂ)) = mahler h e (g.map (Rat.castHom ℂ)) - δ * (harmonic (n - 1) : ℝ) / 2 - cycleIntegral h (fundCycle (I.map (MvPolynomial.map (Rat.castHom ℂ)))) e (fsLog h fun j => Rat.castHom ℂ (u j))`.
+
+Take `⟨hprime, hcyc⟩` from `hB ℚ n (e + 1) I f (Rat.castHom ℂ) hI hf`. Establish `hδσ : IsMultiHomog δ (MvPolynomial.map (Rat.castHom ℂ) f)` using `(isMultiHomog_iff _ _).mpr fun i => IsWeightedHomogeneous.map' ((isMultiHomog_iff _ _).mp hδ i) (Rat.castHom ℂ)`. Establish `h'` using `hA n e δ h _ _ (fun j => Rat.castHom ℂ (u j)) hprime hcyc hδσ (fun W hW => hAv ℚ n I u' (Rat.castHom ℂ) hI hu W hW)`. Rewrite using `[hg, map_specFirst, h']`. Expand and normalize the polynomial expressions, which then agree.
+
+Unfold `chowHtAt`. Rewrite using `[hfinsum, harch]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chowHtAt_rec (hV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Statement)
     (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement) (h : HermNorm n) {e δ : ℕ}
     {I : Ideal (MvPolynomial (Fin n) ℚ)} {f : MvPolynomial (Fin (e + 1) × Fin n) ℚ} {u : Fin n → 𝓞 ℚ}
@@ -154,6 +197,11 @@ theorem chowHtAt_rec (hV : ChowFormSectionVertical.Statement) (hA : MahlerSectio
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hu : (fun j => (Rat.castHom ℂ) (u j : ℚ)) = fun j => (u j : ℂ)` using `funext fun j => by simp`. Rewrite using `[hu, RecQOfRecursion.map_genericIdeal]`. Establish `hW : ∀ W ∈ (fundCycle (complexFibreIdeal P)).support, linForm (fun j => (u j : ℂ)) ∉ W`. Use `((hC n e δ P _ hP hf).2.2 _).mp ?_` and prove the remaining obligations. Establish `h : IndefiniteRowSideFullHecke.ArithBezout.specFirst (fun j => (u j : ℂ)) (map (Rat.castHom ℂ) f) = map (Rat.castHom ℂ) (specFirst f fun j => (u j : ℚ))`.
+
+Rewrite using `[ObjectsChow.specFirst_eq, ObjectsChow.map_specFirst, ← hu]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `fun h0 => hsf (map_injective _ (Rat.castHom ℂ).injective (by rw [h0, map_zero]))`. Conclude with `(hI n e S hS P _ hP hW).trans (by rw [RecQOfRecursion.logFormNorm_eq]; rfl)`.
+-/
 theorem integralAt_eq (hC : ComplexFibreCycle.Statement) (hI : ConeIntegralPts.Statement)
     (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
     {e δ : ℕ} {P : Ideal (MRing (PBlk n))} {f : MvPolynomial (Fin (e + 1) × Fin n) ℚ} {u : Fin n → ℤ}
@@ -178,6 +226,11 @@ theorem integralAt_eq (hC : ComplexFibreCycle.Statement) (hI : ConeIntegralPts.S
     exact fun h0 => hsf (map_injective _ (Rat.castHom ℂ).injective (by rw [h0, map_zero]))
   exact (hI n e S hS P _ hP hW).trans (by rw [RecQOfRecursion.logFormNorm_eq]; rfl)
 
+/- English proof (translation)
+Establish `hprime` using `VerticalPartGauss.isProjPrime_genericIdeal hP`. Establish `hfA` using `VerticalPartGauss.isChowForm_genericIdeal hP hf`. Establish `huA` using `VerticalPartGauss.linForm_not_mem_genericIdeal hP hu`. Establish `hcyc` using `hSec ℚ n e (ObjectsChow.genericIdeal P) f _ hprime hfA huA`. Establish `hcast : ∀ j, (((u j : ℤ) : 𝓞 ℚ) : ℚ) = (u j : ℚ)` using `fun j => by simp`.
+
+Establish `key` using `chowHtAt_rec hSV hA hB hAv (ObjectsHeight.ofPointMatrix S hS) (u := fun j => ((u j : ℤ) : 𝓞 ℚ)) hprime hfA (ObjectsChow.isMultiHomog_of_isChowForm hf) (by simp only [hcast]; exact huA)`. Simplify using `only [hcast] at key`. Use `⟨?_, hcyc⟩` and prove the remaining obligations. Rewrite using `[← chowHtAt_eq_chowHeight S hS f, key, hV n e P u hP hu, integralAt_eq hC hI S hS hP hf (RecQOfRecursion.ne_zero_of_isChowFormCycle hcyc)]`.
+-/
 theorem stepAt (hSV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Statement)
     (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement) (hSec : ChowFormSection.Statement)
     (hV : ObjectsChow.VertPartEq.Statement) (hC : ComplexFibreCycle.Statement)
@@ -208,6 +261,27 @@ theorem stepAt (hSV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Sta
 
 open Classical in
 
+/- English proof (translation)
+Use `set s := IndefiniteRowSideFullHecke.ArithBezout.linForm u`. Use `set Zh := (ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s).filter IsHorizontal with hZh`. Establish `hmem : ∀ W ∈ Zh.support, W ∈ divSupp P s ∧ IsHorizontal W`. Introduce `W hW`. Rewrite `hW` using `[hZh, Finsupp.support_filter, Finset.mem_filter, Finsupp.mem_support_iff, RecQOfRecursion.divCycle_apply]`.
+
+Conclude with `⟨by_contra fun h => hW.1 (if_neg h), hW.2⟩`. Establish `hgA : ∀ W ∈ Zh.support, IsChowForm (ObjectsChow.genericIdeal W) (e + 1) (g W)` using `fun W hW => VerticalPartGauss.isChowForm_genericIdeal (ObjectsChow.DivSuppHorizontalArithVar.proof n (e + 1) P u W hP hu (hmem W hW).1 (hmem W hW).2) (hg W (hmem W hW).1 (hmem W hW).2)`. Establish `hsfne` using `RecQOfRecursion.ne_zero_of_isChowFormCycle hcyc`. Take `⟨c, hc, g', hg', hsf⟩` from `hcyc`. Establish `hD` using `ObjectsChow.DivCycleGeneric.proof n (e + 1) P u hP hu`.
+
+Rewrite `hsf`, `hg'` using `[hD]`. Establish `hpos : ∀ W ∈ Zh.support, ObjectsChow.genericIdeal W ∈ (Zh.mapDomain ObjectsChow.genericIdeal).support`. Introduce `W hW`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.mapDomain, Finsupp.sum_apply]`. Establish `h1` using `Finset.single_le_sum (f := fun a => Finsupp.single (ObjectsChow.genericIdeal a) (Zh a) (ObjectsChow.genericIdeal W)) (fun _ _ => Nat.zero_le _) hW`.
+
+Simplify using `only [Finsupp.single_eq_same] at h1`. Conclude with `(lt_of_lt_of_le (Nat.pos_of_ne_zero (Finsupp.mem_support_iff.mp hW)) h1).ne'`. Establish `hr : ∀ W ∈ Zh.support, ∃ r : ℚ, r ≠ 0 ∧ g' (ObjectsChow.genericIdeal W) = C r * g W` using `fun W hW => RecQOfRecursion.exists_C_mul_of_isChowForm (hgA W hW) (hg' _ (hpos W hW))`. Use `choose! r hr0 hr using hr`. Establish `hsf' : specFirst f (fun j => (u j : ℚ)) = C (c * ∏ W ∈ Zh.support, r W ^ Zh W) * ∏ W ∈ Zh.support, g W ^ Zh W`.
+
+Establish `hprod : ∏ W ∈ (Zh.mapDomain ObjectsChow.genericIdeal).support, g' W ^ (Zh.mapDomain ObjectsChow.genericIdeal) W = Zh.prod fun W m => g' (ObjectsChow.genericIdeal W) ^ m` using `Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)`. Rewrite using `[hsf, hprod, Finsupp.prod, Finset.prod_congr rfl (fun W hW => show g' (ObjectsChow.genericIdeal W) ^ Zh W = C (r W ^ Zh W) * g W ^ Zh W by`. Rewrite using `[hr W hW, mul_pow, map_pow]), Finset.prod_mul_distrib, ← map_prod, map_mul, mul_assoc]`. Establish `hgne : ∀ W ∈ Zh.support, g W ≠ 0` using `fun W hW => (hgA W hW).1`. Establish `hgm : ∀ W ∈ Zh.support, IsMultiHomog (d W) (g W)` using `fun W hW => ObjectsChow.isMultiHomog_of_isChowForm (hg W (hmem W hW).1 (hmem W hW).2)`.
+
+Establish `hc' : c * ∏ W ∈ Zh.support, r W ^ Zh W ≠ 0` using `mul_ne_zero hc (Finset.prod_ne_zero_iff.mpr fun W hW => pow_ne_zero _ (hr0 W hW))`. Establish `hδ : δ = ∑ W ∈ Zh.support, Zh W * d W`. Establish `h1 : IsMultiHomog δ (specFirst f fun j => (u j : ℚ))` using `(ObjectsChow.isMultiHomog_of_isChowForm hf).specFirst _`. Establish `h2 : IsMultiHomog (∑ W ∈ Zh.support, Zh W * d W) (specFirst f fun j => (u j : ℚ))`. Rewrite using `[hsf']`.
+
+Unfold `IsMultiHomog`. Use `(isWeightedHomogeneous_C (groupWeight (e + 1) n) (c * ∏ W ∈ Zh.support, r W ^ Zh W)).mul (IsWeightedHomogeneous.prod Zh.support (fun W => g W ^ Zh W) (fun W => Zh W • fun _ : Fin (e + 1) => d W) fun W hW => (hgm W hW).pow (Zh W))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Finset.sum_apply]`.
+
+Conclude with `congrFun (IsWeightedHomogeneous.inj_right hsfne h1 h2) 0`. Rewrite using `[hsf', hδ, chowHtAt_C_mul_prod _ Zh.support (⇑Zh) d g hgne hc']`. Repeatedly rewrite using `[chowHtAt_eq_chowHeight S hS]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s)]`. Use `(Finset.sum_subset (fun W hW => (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s).mem_toFinset.mpr (hmem W hW).1) ?_).trans (Finset.sum_congr rfl fun W hW => ?_)` and prove the remaining obligations.
+
+Introduce `W _ hW`. Rewrite `hW` using `[Finsupp.mem_support_iff, not_not]`. Rewrite using `[hW, Nat.cast_zero, zero_mul]`. Establish `hWd : W ∈ divSupp P s` using `(ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite P s).mem_toFinset.mp hW`. Rewrite using `[hZh, Finsupp.filter_apply, RecQOfRecursion.divCycle_apply, if_pos hWd]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem horizontalAt (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
     {e δ : ℕ} {P : Ideal (MRing (PBlk n))} {f : MvPolynomial (Fin (e + 1 + 1) × Fin n) ℚ} {u : Fin n → ℤ}
     {g : Ideal (MRing (PBlk n)) → MvPolynomial (Fin (e + 1) × Fin n) ℚ} {d : Ideal (MRing (PBlk n)) → ℕ}
@@ -289,6 +363,11 @@ theorem horizontalAt (S : Matrix (Fin n) (Fin n) ℂ) (hS : IsUnit S)
     rw [hZh, Finsupp.filter_apply, RecQOfRecursion.divCycle_apply, if_pos hWd]
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `n S hS`. Use `⟨fun δ P f u hP hf hu => ?_, fun e δ P f u g d hP hf hu hg => ?_⟩` and prove the remaining obligations. Take `⟨h, hcyc⟩` from `stepAt hSV hA hB hAv hSec hV hC hI S hS hP hf hu`. Rewrite using `[h, chowHtAt_zero_groups _ _ (RecQOfRecursion.ne_zero_of_isChowFormCycle hcyc), zero_add]`. Take `⟨h, hcyc⟩` from `stepAt hSV hA hB hAv hSec hV hC hI S hS hP hf hu`.
+
+Rewrite using `[h, horizontalAt S hS hP hf hu hg hcyc, IndefiniteRowSideFullHecke.ArithBezout.vertPart, ← add_sub_assoc, ← finsum_mem_add_distrib (ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite _ _)]`. Use `congr 1`. Use `finsum_mem_congr rfl fun W _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem of_local (hSV : ChowFormSectionVertical.Statement) (hA : MahlerSection.Statement)
     (hB : ChowFormBaseChange.Statement) (hAv : BaseChangeAvoid.Statement) (hSec : ChowFormSection.Statement)
     (hV : ObjectsChow.VertPartEq.Statement) (hC : ComplexFibreCycle.Statement)
@@ -306,6 +385,9 @@ theorem of_local (hSV : ChowFormSectionVertical.Statement) (hA : MahlerSection.S
 
 end ChowHeightRecQ
 
+/- English proof (translation)
+The claim follows from `ChowHeightRecQ.of_local Vertical.ChowFormSectionVertical.full hA hB BaseChangeAvoid.proof hSec hV hC hI`.
+-/
 theorem ChowHeightRecQ.proof (hA : MahlerSection.Statement) (hB : ChowFormBaseChange.Statement)
     (hSec : ChowFormSection.Statement) (hV : ObjectsChow.VertPartEq.Statement)
     (hC : ComplexFibreCycle.Statement) (hI : ConeIntegralPts.Statement) : ChowHeightRecQ.Statement :=

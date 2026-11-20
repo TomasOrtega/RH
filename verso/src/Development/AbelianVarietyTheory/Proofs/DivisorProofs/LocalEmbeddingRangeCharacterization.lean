@@ -17,6 +17,9 @@ section Helpers
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `tmul a e => simp [TensorProduct.smul_tmul', Algebra.TensorProduct.tmul_mul_tmul, map_mul]`.
+-/
 theorem map_smul_tens {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (f : R →ₐ[F] R') (u : R) (x : R ⊗[F] E) :
     Algebra.TensorProduct.map f (AlgHom.id F E) (u • x) =
@@ -26,6 +29,17 @@ theorem map_smul_tens {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Al
   | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]
   | tmul a e => simp [TensorProduct.smul_tmul', Algebra.TensorProduct.tmul_mul_tmul, map_mul]
 
+/- English proof (translation)
+Establish `hs : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) x = 0`. Use `GlobalTheory.LatticeLocalGlobal.ext_components _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_zero, ← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Conclude with `h2 w`. Set `P` to `TensorProduct.prodLeft F F (Ainf F) (Af F) E`.
+
+Establish `e1 : ∀ y : (Ainf F × Af F) ⊗[F] E, (P y).1 = Algebra.TensorProduct.map (AlgHom.fst F (Ainf F) (Af F)) (AlgHom.id F E) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Prod.fst_add, ha, hb]`.
+
+Consider the case `tmul a e => obtain ⟨a1, a2⟩ := a`. Simplify using `[P]`. Establish `e2 : ∀ y : (Ainf F × Af F) ⊗[F] E, (P y).2 = Algebra.TensorProduct.map (AlgHom.snd F (Ainf F) (Af F)) (AlgHom.id F E) y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, Prod.snd_add, ha, hb]`. Consider the case `tmul a e => obtain ⟨a1, a2⟩ := a`. Simplify using `[P]`. Establish `: P x = P 0`.
+
+Rewrite using `[map_zero]`. Conclude with `Prod.ext ((e1 x).trans h1) ((e2 x).trans hs)`. Conclude with `P.injective this`.
+-/
 theorem tens_eq_zero (x : AF F ⊗[F] E)
     (h1 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x = 0)
     (h2 : ∀ w : HeightOneSpectrum (𝓞 F), Algebra.TensorProduct.map (evFin F w) (AlgHom.id F E) x = 0) :
@@ -56,6 +70,15 @@ theorem tens_eq_zero (x : AF F ⊗[F] E)
 
 variable (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
+/- English proof (translation)
+Establish `key : ((HA.mat R' σ J (mapH σ J φ h)) : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) = (HA.mat R σ J h : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map (Algebra.TensorProduct.map φ (AlgHom.id F E))` using `Matrix.ext fun r s => GlobalTheory.AutFunCompare.mat_mapH σ J φ h r s`. Establish `ent : ∀ r s, Algebra.TensorProduct.map φ (AlgHom.id F E) (((HA.mat R σ J h : Matrix (Fin n) (Fin n) (R ⊗[F] E)) - 1) r s) = (((HA.mat R' σ J (mapH σ J φ h)) : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) - 1) r s`. Introduce `r s`. Rewrite using `[key]`. Simplify using `only [Matrix.sub_apply, Matrix.map_apply, map_sub, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[ent]`. Prove the components needed by the constructor for the conclusion. Introduce `e r s`. Rewrite using `[e]`.
+
+Express the relevant statement in the definitionally equal form `((GlobalTheory.AdelicU.matHom R' σ J 1 : GL (Fin n) (R' ⊗[F] E)) : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) r s - _ = 0`. Rewrite using `[map_one]`. Simplify using the standard rewrite rules. Introduce `e`. Establish `e' : ((HA.mat R' σ J (mapH σ J φ h)) : Matrix (Fin n) (Fin n) (R' ⊗[F] E)) = 1` using `sub_eq_zero.1 (Matrix.ext e)`.
+
+Conclude with `GlobalTheory.AdelicU.matHom_injective R' σ J (Units.ext (by rw [map_one]; exact e'))`.
+-/
 theorem mapH_eq_one_iff {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (φ : R →ₐ[F] R') (h : HA R σ J) :
     mapH σ J φ h = 1 ↔ ∀ r s, Algebra.TensorProduct.map φ (AlgHom.id F E)
@@ -84,6 +107,19 @@ theorem mapH_eq_one_iff {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [
 
 variable {σ J}
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.AdelicU.range_emb, GlobalTheory.AdelicU.mem_atPts, GlobalTheory.AdelicU.mem_finPts]`. Establish `hI : GlobalTheory.AdelicU.projInf σ J g = mapH σ J (fstA F) g` using `rfl`. Establish `hP : ∀ w, GlobalTheory.AdelicU.proj σ J w g = mapH σ J (evFin F w) g` using `fun _ => rfl`. Simplify using `only [hI, hP, mapH_eq_one_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hinf, hfin⟩ u hu`. Use extensionality with `r s`. Simplify using `only [Matrix.smul_apply, Matrix.zero_apply]`. Use `tens_eq_zero _ ?_ fun w => ?_` and prove the remaining obligations. Rewrite using `[map_smul_tens, hinf r s, mul_zero]`.
+
+Rewrite using `[map_smul_tens]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[hu, TensorProduct.zero_tmul, zero_mul]`. Rewrite using `[hfin w (by simpa using hw) r s, mul_zero]`.
+
+Introduce `H`. Use `⟨fun r s => ?_, fun w hw r s => ?_⟩` and prove the remaining obligations. Take `⟨u, hu0⟩ : ∃ u : AF F, u = LinearMap.inl F (Ainf F) (Af F) 1` from `⟨_, rfl⟩`. Establish `hu : evFin F v u = 0` using `by subst hu0; exact map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v)`. Use `congrArg (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (congrFun (congrFun (H _ hu) r) s)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.smul_apply, map_smul_tens, Matrix.zero_apply, map_zero]`. Establish `h1 : fstA F u = 1` using `by subst hu0; rfl`. Rewrite `this` using `[h1, Algebra.TensorProduct.one_def.symm, one_mul]`. Then use the resulting hypothesis. Establish `hwv : w ≠ v` using `by simpa using hw`. Take `⟨u, hu0⟩ : ∃ u : AF F, u = LinearMap.inr F (Ainf F) (Af F) (GlobalTheory.AdelicU.singleFin w 1)` from `⟨_, rfl⟩`.
+
+Establish `hu : evFin F v u = 0` using `by subst hu0; exact GlobalTheory.AdelicU.evalV_singleFin_ne (Ne.symm hwv) 1`. Use `congrArg (Algebra.TensorProduct.map (evFin F w) (AlgHom.id F E)) (congrFun (congrFun (H _ hu) r) s)` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, map_smul_tens, Matrix.zero_apply, map_zero]`. Establish `h1 : evFin F w u = 1` using `by subst hu0; exact GlobalTheory.AdelicU.evalV_singleFin_self w 1`. Rewrite `this` using `[h1, Algebra.TensorProduct.one_def.symm, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_range_emb_iff (v : HeightOneSpectrum (𝓞 F)) (g : GlobalTheory.AdelicU.GAd σ J) :
     g ∈ (GlobalTheory.AdelicU.emb σ J v).range ↔
       ∀ u : AF F, evFin F v u = 0 → u • ((HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) - 1) = 0 := by
@@ -123,6 +159,9 @@ end Helpers
 
 end GlobalTheory.AdelicPointsAt
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ v g` and use `GlobalTheory.AdelicPointsAt.mem_range_emb_iff v g`.
+-/
 theorem GlobalTheory.AdelicPointsAt.range_emb_iff_smul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (v : Pl F) (g : GAd σ J), g ∈ (emb σ J v).range ↔
       ∀ u : AF F, evFin F v u = 0 → u • ((HA.mat (AF F) σ J g : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) - 1) = 0 :=

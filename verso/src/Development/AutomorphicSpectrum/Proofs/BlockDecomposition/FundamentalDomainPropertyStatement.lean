@@ -12,5 +12,8 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.ColumnSplitting
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.dom | exact GlobalTheory.CompanionTheory.ColumnSplitting.dom | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.dom <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fundamental_domain_property : Dom := by
   first | exact @GlobalTheory.CompanionTheory.ColumnSplitting.dom | exact GlobalTheory.CompanionTheory.ColumnSplitting.dom | (intros; apply GlobalTheory.CompanionTheory.ColumnSplitting.dom <;> assumption)

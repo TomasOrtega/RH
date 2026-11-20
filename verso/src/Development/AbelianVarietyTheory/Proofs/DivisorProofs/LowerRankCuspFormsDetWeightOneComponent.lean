@@ -7,6 +7,25 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LoweredWeightInterp
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LeadingMonomialProductsLinearIndependentStatement
 open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds GlobalTheory.ShareOn
 
+/- English proof (translation)
+Introduce `E _ _ _ r X Xa Fl hM hp0 hp0r hg1 hp1 hg2 hp2 s hs hsT u hu hune`. Establish `hF` using `GlobalTheory.T.loweredWeight_interpolation_at_points E r X Xa Fl hM hp0 hp0r hg1 hp1 hg2 hp2 s hs hsT u hu hune`. Use `choose F hFd hFval hFss using hF`. Use `set M := ReciprocityTheory.ChartRestriction.G.AR.multiLt (nd X.toData) (Xa.T + 1) with hM'`. Establish `hMcard : M.card = (Xa.T + nd X.toData).choose (nd X.toData)`.
+
+Establish `e : M = ReciprocityTheory.L2DbarEstimates.Y.multiLe (nd X.toData) Xa.T`. Use extensionality with `α`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.mem_multiLt_iff, ReciprocityTheory.L2DbarEstimates.Y.mem_multiLe_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+
+Conclude with `ReciprocityTheory.L2DbarEstimates.Y.ind_count (nd X.toData) Xa.T`. Use `set PM := (Finset.univ : Finset (Fin Fl.δ)) ×ˢ M with hPM`. Establish `hcard : PM.card = Fl.δ * (Xa.T + nd X.toData).choose (nd X.toData)`. Rewrite using `[Finset.card_product, Finset.card_univ, Fintype.card_fin, hMcard]`. Set `e` to `(Finset.equivFinOfCardEq hcard).symm`.
+
+Set `f : Fin Fl.δ → (Fin (nd X.toData) → ℕ) → Frame X.Ψ r → ℂ` to `fun j α x => F j x * monoM X.toData Fl.s α x * Fl.w0 x ^ (Xa.T - ∑ q, α q)`. Establish `hαT : ∀ α ∈ M, ∑ q, α q ≤ Xa.T` using `fun α hα => by`. Rewrite `hα` using `[hM', ReciprocityTheory.ChartRestriction.G.AR.mem_multiLt_iff]`. Use linear arithmetic over natural numbers and integers. Use `⟨fun q => f (e q).1.1 (e q).1.2, fun q => ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hFss _ _ (hαT _ (Finset.mem_product.mp (e q).2).2)`. Set `cc : (Fin (nd X.toData) → ℕ) → Fin Fl.δ → ℂ` to `fun α j => if h : (j, α) ∈ PM then a (e.symm ⟨(j, α), h⟩) else 0`. Establish `hc : ∀ q, cc (e q).1.2 (e q).1.1 = a q`. Introduce `q`. Establish `h : ((e q).1.1, (e q).1.2) ∈ PM` using `(e q).2`.
+
+Simplify using `only [cc, dif_pos h]`. Conclude with `congrArg a (e.symm_apply_apply q)`. Establish `hlead : ∀ x ∈ X.dom, leadM X.toData Fl.s Fl.w0 F Xa.T (Xa.T + 1) cc x = 0`. Introduce `x hx`. Establish `h1 : leadM X.toData Fl.s Fl.w0 F Xa.T (Xa.T + 1) cc x = ∑ p ∈ PM, cc p.2 p.1 * f p.1 p.2 x`.
+
+Unfold `leadM`. Rewrite using `[hPM, Finset.sum_product, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Simplify using `only [f]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, ← Finset.sum_coe_sort PM, ← e.sum_comp]`. Rewrite using `[← ha x hx]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hc q]`. Establish `h7` using `GlobalTheory.T.leadingMonomialProducts_linearIndependent E r X.toData Xa Fl F hFd hFval Xa.T cc hlead`.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[← hc q]`. Conclude with `h7 _ (Finset.mem_product.mp (e q).2).2 _`.
+-/
 theorem GlobalTheory.ShareOn.lowerRank_oneComponent : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r) (Xa : ArchInM X.toData) (Fl : FlatM X.toData Xa), GlobalTheory.Shares.Margins X.toData Xa → 0 < X.p0 → X.p0 < r → GapsGe X.p0 Xa.L 1 → PairGe Xa.L (1.9 * Xa.T) → GapsGe X.p0 (Xa.Fp - kLog X.Ψ r - (nd X.toData + 2) • Xa.L) 0 → PairGe (Xa.Fp - kLog X.Ψ r - (nd X.toData + 2) • Xa.L) 1 → ∀ s : ℕ, Even s → s ≤ Xa.T → ∀ u : Frame X.Ψ r → ℂ, u ∈ X.SS (deMul X.Ψ r X.p0 s) → (∃ x ∈ X.dom, u x ≠ 0) → ∃ g : Fin (Fl.δ * (Xa.T + nd X.toData).choose (nd X.toData)) → Frame X.Ψ r → ℂ, (∀ q, g q ∈ X.SS (Xa.Fp + Xa.T • Xa.L - deMul X.Ψ r X.p0 s)) ∧ ∀ a : _ → ℂ, (∀ x ∈ X.dom, ∑ q, a q * g q x = 0) → a = 0 := by
   intro E _ _ _ r X Xa Fl hM hp0 hp0r hg1 hp1 hg2 hp2 s hs hsT u hu hune
   classical

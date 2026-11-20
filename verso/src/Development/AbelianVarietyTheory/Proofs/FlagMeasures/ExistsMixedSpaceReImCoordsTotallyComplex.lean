@@ -27,6 +27,11 @@ def mixedCoords (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] :
     · apply Complex.ext <;> rfl
   right_inv y := rfl
 
+/- English proof (translation)
+Establish `: IsEmpty {w : InfinitePlace E // IsReal w}` using `⟨fun w => not_isReal_iff_isComplex.mpr (IsTotallyComplex.isComplex w.1) w.2⟩`. Establish `h : (volume : Measure ({w : InfinitePlace E // IsReal w} → ℝ)) = Measure.dirac 0`. Rewrite using `[MeasureTheory.volume_pi, Measure.pi_of_empty]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Use `⟨measurable_snd, ?_⟩` and prove the remaining obligations. Use `show Measure.map Prod.snd ((volume : Measure ({w : InfinitePlace E // IsReal w} → ℝ)).prod volume) = volume`. Rewrite using `[h, Measure.map_snd_prod]`. Simplify using the standard rewrite rules.
+-/
 private theorem measurePreserving_mixedSpace_snd (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] :
     MeasurePreserving (Prod.snd : mixedEmbedding.mixedSpace E → ({w : InfinitePlace E // IsComplex w} → ℂ))
       volume volume := by
@@ -41,6 +46,11 @@ private theorem measurePreserving_mixedSpace_snd (E : Type) [Field E] [NumberFie
   rw [h, Measure.map_snd_prod]
   simp
 
+/- English proof (translation)
+Establish `h2` using `measurePreserving_piCongrLeft (fun _ : InfinitePlace E => (volume : Measure ℂ)) (cxPlaceEquiv E)`. Establish `h3` using `measurePreserving_pi (fun _ : InfinitePlace E => (volume : Measure ℂ)) (fun _ => (volume : Measure (ℝ × ℝ))) (fun _ => Complex.volume_preserving_equiv_real_prod)`. Establish `h4` using `measurePreserving_arrowProdEquivProdArrow ℝ ℝ (InfinitePlace E) (fun _ => (volume : Measure ℝ)) (fun _ => (volume : Measure ℝ))`. Establish `key` using `h4.comp (h3.comp (h2.comp (measurePreserving_mixedSpace_snd E)))`. Establish `e : (⇑(mixedCoords E)) = ⇑(MeasurableEquiv.arrowProdEquivProdArrow ℝ ℝ (InfinitePlace E)) ∘ (fun a i => Complex.measurableEquivRealProd (a i)) ∘ ⇑(MeasurableEquiv.piCongrLeft (fun _ => ℂ) (cxPlaceEquiv E)) ∘ Prod.snd`.
+
+Use function extensionality and compare the values at `x`. Apply the tactic sequence `ext w <;> rfl`. Rewrite using `[e]`. Conclude with `key`.
+-/
 theorem measurePreserving_mixedCoords (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] :
     MeasurePreserving (mixedCoords E) volume volume := by
   have h2 := measurePreserving_piCongrLeft (fun _ : InfinitePlace E => (volume : Measure ℂ))
@@ -58,10 +68,16 @@ theorem measurePreserving_mixedCoords (E : Type) [Field E] [NumberField E] [IsTo
   rw [e]
   exact key
 
+/- English proof (translation)
+Apply the tactic sequence `ext w <;> simp [mixedCoords, reV, imV, mixedEmbedding.mixedEmbedding_apply_isComplex]`.
+-/
 theorem mixedCoords_mixedEmbedding (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (x : E) : mixedCoords E (mixedEmbedding E x) = (reV x, imV x) := by
   ext w <;> simp [mixedCoords, reV, imV, mixedEmbedding.mixedEmbedding_apply_isComplex]
 
+/- English proof (translation)
+Introduce `E _ _ hE`. Use `hE` as an intermediate fact. Conclude with `⟨(mixedCoords E).toContinuousLinearEquiv, by`. Simplify using `using measurePreserving_mixedCoords E, fun x => by`. Simplify using `using mixedCoords_mixedEmbedding E x⟩`.
+-/
 theorem mixedSpace_reIm_coords : ∀ (E : Type) [Field E] [NumberField E], IsTotallyComplex E →
     ∃ e : mixedEmbedding.mixedSpace E ≃L[ℝ] ((InfinitePlace E → ℝ) × (InfinitePlace E → ℝ)),
       MeasurePreserving e volume volume ∧ ∀ x : E, e (mixedEmbedding E x) = (reV x, imV x) := by

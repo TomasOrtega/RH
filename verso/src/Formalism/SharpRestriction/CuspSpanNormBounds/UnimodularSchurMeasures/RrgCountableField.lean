@@ -9,17 +9,31 @@ open MeasureTheory NumberField Matrix
 open scoped TensorProduct
 open Formalism.MainNotions.S
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`.
+-/
 theorem rrg_P_mul_inv (I : AutInst) (v : InfinitePlace I.F) : I.P v * (I.P v)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`.
+-/
 theorem rrg_P_inv_mul (I : AutInst) (v : InfinitePlace I.F) : (I.P v)⁻¹ * I.P v = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))
 
+/- English proof (translation)
+Use `⟨1, Subgroup.one_mem _, fun v => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[rrg_P_inv_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem rrg_one_mem (I : AutInst) : (1 : I.GA) ∈ I.GFset := by
   refine ⟨1, Subgroup.one_mem _, fun v => ?_, ?_⟩
   · simp [rrg_P_inv_mul]
   · simp
 
+/- English proof (translation)
+Take `⟨γ, hγ, hx1, hx2⟩` from `hx`. Take `⟨δ, hδ, hy1, hy2⟩` from `hy`. Use `⟨γ * δ, Subgroup.mul_mem _ hγ hδ, fun v => ?_, ?_⟩` and prove the remaining obligations. Use `show uMat (x.1 v) * uMat (y.1 v) = _`. Rewrite using `[hx1 v, hy1 v, Units.val_mul, Matrix.map_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (I.P v) (I.P v)⁻¹, rrg_P_mul_inv, Matrix.one_mul]`. Use `show I.fmat x.2 * I.fmat y.2 = _`. Rewrite using `[hx2, hy2, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem rrg_mul_mem (I : AutInst) {x y : I.GA} (hx : x ∈ I.GFset) (hy : y ∈ I.GFset) : x * y ∈ I.GFset := by
   obtain ⟨γ, hγ, hx1, hx2⟩ := hx
   obtain ⟨δ, hδ, hy1, hy2⟩ := hy
@@ -31,6 +45,11 @@ theorem rrg_mul_mem (I : AutInst) {x y : I.GA} (hx : x ∈ I.GFset) (hy : y ∈ 
   · show I.fmat x.2 * I.fmat y.2 = _
     rw [hx2, hy2, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Take `⟨γ, hγ, hx1, hx2⟩` from `hx`. Use `⟨γ⁻¹, Subgroup.inv_mem _ hγ, fun v => ?_, ?_⟩` and prove the remaining obligations. Use `Units.inv_eq_of_mul_eq_one_right ?_ show uMat (x.1 v) * _ = 1` and prove the remaining obligations. Rewrite using `[hx1 v]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (I.P v) (I.P v)⁻¹, rrg_P_mul_inv, Matrix.one_mul, ← Matrix.mul_assoc (Matrix.map _ _) (Matrix.map _ _), ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, rrg_P_inv_mul]`. Use `Units.inv_eq_of_mul_eq_one_right ?_ show I.fmat x.2 * _ = 1` and prove the remaining obligations. Rewrite using `[hx2, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem rrg_inv_mem (I : AutInst) {x : I.GA} (hx : x ∈ I.GFset) : x⁻¹ ∈ I.GFset := by
   obtain ⟨γ, hγ, hx1, hx2⟩ := hx
   refine ⟨γ⁻¹, Subgroup.inv_mem _ hγ, fun v => ?_, ?_⟩
@@ -51,13 +70,25 @@ def rr_GF (I : AutInst) : Subgroup I.GA where
   one_mem' := rrg_one_mem I
   inv_mem' := fun hx => rrg_inv_mem I hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rr_GF_coe (I : AutInst) : ((rr_GF I : Subgroup I.GA) : Set I.GA) = I.GFset := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem rr_mem_GF (I : AutInst) (x : I.GA) : x ∈ rr_GF I ↔ x ∈ I.GFset := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(Module.Free.chooseBasis ℚ E).equivFun.injective.countable`.
+-/
 theorem rrg_countable_field (E : Type) [Field E] [NumberField E] : Countable E :=
   (Module.Free.chooseBasis ℚ E).equivFun.injective.countable
 
+/- English proof (translation)
+Use `haveI := rrg_countable_field E`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Conclude with `Function.Injective.countable (f := fun u : GL (Fin n) E => (u : Matrix (Fin n) (Fin n) E)) (fun a b h => Units.ext h)`.
+-/
 theorem rrg_countable_GL (E : Type) [Field E] [NumberField E] (n : ℕ) : Countable (GL (Fin n) E) := by
   haveI := rrg_countable_field E
   haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))

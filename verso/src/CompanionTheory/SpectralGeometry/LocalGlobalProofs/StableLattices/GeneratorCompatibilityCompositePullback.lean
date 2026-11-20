@@ -10,6 +10,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CompanionTheory.RigGlue
 
+/- English proof (translation)
+Establish `m₁ : (𝟙 Y : Y ⟶ Y) x ∈ (L.pull F).U (fun _ => i)` using `mem_pull.2 hi`. Establish `m₂ : (𝟙 Y : Y ⟶ Y) x ∈ (L.pull F).U (fun _ => i')` using `mem_pull.2 hi'`. Establish `hm : (𝟙 Y : Y ⟶ Y) x ∈ (L.pull F).U (fun _ => i) ⊓ (L.pull F).U (fun _ => i')` using `⟨m₁, m₂⟩`. Establish `e` using `congrArg (gm (𝟙 Y) x _) (ht (fun _ => i) (fun _ => i'))`. Rewrite `e` using `[map_mul, gm_res (𝟙 Y) x _ hm, gm_res (𝟙 Y) x _ hm, gm_pull_g L F (𝟙 Y) x _ _ m₁ m₂]`.
+
+Conclude with `e`.
+-/
 theorem gm_gen_pull {Y X : Scheme.{0}} {L : LB X} {F : Y ⟶ X} {t : LB.Gen (L.pull F)} (ht : t.IsGen) (x : Y)
     (i i' : L.ι) (hi : F x ∈ L.U i) (hi' : F x ∈ L.U i') :
     gm (𝟙 Y) x ((L.pull F).U fun _ => i) (t.s fun _ => i) =
@@ -21,6 +26,9 @@ theorem gm_gen_pull {Y X : Scheme.{0}} {L : LB X} {F : Y ⟶ X} {t : LB.Gen (L.p
   rw [map_mul, gm_res (𝟙 Y) x _ hm, gm_res (𝟙 Y) x _ hm, gm_pull_g L F (𝟙 Y) x _ _ m₁ m₂] at e
   exact e
 
+/- English proof (translation)
+Establish `m₁ : (𝟙 Z : Z ⟶ Z) x ∈ ((LB.div (N.pull f) M).pull g).U (fun _ => (fun _ => i, k))` using `mem_pull.2 ⟨mem_pull.2 hi, hk⟩`. Establish `m₂ : (𝟙 Z : Z ⟶ Z) x ∈ ((LB.div (N.pull f) M).pull g).U (fun _ => (fun _ => i', k'))` using `mem_pull.2 ⟨mem_pull.2 hi', hk'⟩`. Use `(gm_pull_g (LB.div (N.pull f) M) g (𝟙 Z) x _ _ m₁ m₂).trans ?_` and prove the remaining obligations. Use `(gm_div_g (L := N) (F := f) (L' := M) (𝟙 Z ≫ g) x i i' k k' hi hi' hk hk').trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`.
+-/
 theorem gm_pull_div_g {Z P Q : Scheme.{0}} (g : Z ⟶ P) (f : P ⟶ Q) (M : LB P) (N : LB Q) (x : Z) (i i' : N.ι) (k k' : M.ι)
     (hi : f (g x) ∈ N.U i) (hi' : f (g x) ∈ N.U i') (hk : g x ∈ M.U k) (hk' : g x ∈ M.U k') :
     gm (𝟙 Z) x (((LB.div (N.pull f) M).pull g).U (fun _ => (fun _ => i, k)) ⊓
@@ -35,6 +43,23 @@ theorem gm_pull_div_g {Z P Q : Scheme.{0}} (g : Z ⟶ P) (f : P ⟶ Q) (M : LB P
   refine (gm_div_g (L := N) (F := f) (L' := M) (𝟙 Z ≫ g) x i i' k k' hi hi' hk hk').trans ?_
   rw [Category.assoc]
 
+/- English proof (translation)
+Introduce `Z P Q g f hfl hlf hsu M hM N hN τ hτ T hT hinv`. Establish `hD : (LB.div (N.pull f) M).IsLB` using `LB.isLB_div (pull_isLB hN f) hM`. Establish `mem₁ : ∀ (J : PUnit → (LB.div (N.pull f) M).ι) (x : Z), x ∈ ((LB.div (N.pull f) M).pull g).U J → f (g x) ∈ N.U ((J PUnit.unit).1 PUnit.unit)` using `fun J x hx => mem_pull.1 (mem_pull.1 hx).1`. Establish `mem₂ : ∀ (J : PUnit → (LB.div (N.pull f) M).ι) (x : Z), x ∈ ((LB.div (N.pull f) M).pull g).U J → g x ∈ M.U (J PUnit.unit).2` using `fun J x hx => (mem_pull.1 hx).2`. Establish `le₁ : ∀ J : PUnit → (LB.div (N.pull f) M).ι, ((LB.div (N.pull f) M).pull g).U J ≤ (N.pull (g ≫ f)).U (fun _ => (J PUnit.unit).1 PUnit.unit)` using `fun J x hx => mem_pull.2 (mem₁ J x hx)`.
+
+Establish `le₂ : ∀ J : PUnit → (LB.div (N.pull f) M).ι, ((LB.div (N.pull f) M).pull g).U J ≤ (M.pull g).U (fun _ => (J PUnit.unit).2)` using `fun J x hx => mem_pull.2 (mem₂ J x hx)`. Set `ω : LB.Gen ((LB.div (N.pull f) M).pull g)` to `⟨fun J => res (le₁ J) (T.s _) * (res (le₂ J) (τ.s _))⁻¹⟩`. Establish `germ : ∀ (W : Scheme.{0}) (a : W ⟶ Z) (w : W) (J : PUnit → (LB.div (N.pull f) M).ι) (h : a w ∈ ((LB.div (N.pull f) M).pull g).U J), gm a w _ (ω.s J) = gm a w ((N.pull (g ≫ f)).U fun _ => (J PUnit.unit).1 PUnit.unit) (T.s _) * (gm a w ((M.pull g).U fun _ => (J PUnit.unit).2) (τ.s …`. Introduce `W a w J h`. Use `show gm a w _ (res (le₁ J) (T.s _) * (res (le₂ J) (τ.s _))⁻¹) = _`.
+
+Rewrite using `[map_mul, map_inv, gm_res a w _ h, gm_res a w _ h]`. Establish `hω : ω.IsGen`. Establish `split : ∀ J : PUnit → (LB.div (N.pull f) M).ι, ∃ (i : N.ι) (k : M.ι), J = fun _ => (fun _ => i, k)` using `fun J => ⟨(J PUnit.unit).1 PUnit.unit, (J PUnit.unit).2, rfl⟩`. Introduce `J J'`. Take `⟨i, k, rfl⟩` from `split J`.
+
+Take `⟨i', k', rfl⟩` from `split J'`. Apply `unit_ext` to reduce the goal to its premises. Introduce `x hx`. Establish `h₁` using `hx.1`. Establish `h₂` using `hx.2`.
+
+Establish `i₁ : f (g x) ∈ N.U i` using `mem₁ _ x h₁`. Establish `i₂ : f (g x) ∈ N.U i'` using `mem₁ _ x h₂`. Establish `k₁ : g x ∈ M.U k` using `mem₂ _ x h₁`. Establish `k₂ : g x ∈ M.U k'` using `mem₂ _ x h₂`. Establish `eT` using `gm_gen_pull hT x i i' i₁ i₂`.
+
+Establish `eτ` using `gm_gen_pull hτ x k k' k₁ k₂`. Use `(gm_res (𝟙 Z) x _ hx _).trans (Eq.trans ?_ (map_mul _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (gm_pull_div_g g f M N x i i' k k' i₁ i₂ k₁ k₂).symm (gm_res (𝟙 Z) x _ hx _).symm)` and prove the remaining obligations. Use `(germ _ (𝟙 Z) x _ h₁).trans (Eq.trans ?_ (congrArg (_ * ·) (germ _ (𝟙 Z) x _ h₂).symm))` and prove the remaining obligations. Use `show gm (𝟙 Z) x _ (T.s fun _ => i) * (gm (𝟙 Z) x _ (τ.s fun _ => k))⁻¹ = _ * (gm (𝟙 Z) x _ (T.s fun _ => i') * (gm (𝟙 Z) x _ (τ.s fun _ => k'))⁻¹)`.
+
+Rewrite using `[eT, eτ, mul_inv, _root_.mul_mul_mul_comm]`. Use `GlobalTheory.T.line_bundle_trivial_of_descended_generator g hfl hlf hsu _ hD ω hω ?_` and prove the remaining obligations. Introduce `W a b hab w i hi`. Establish `hpt : g (a w) = g (b w)`. Use `congrArg (fun q : W ⟶ P => q w) hab` as an intermediate fact.
+
+Simplify using `using this`. Establish `ha : a w ∈ ((LB.div (N.pull f) M).pull g).U (fun _ => i)` using `mem_pull.2 hi`. Establish `hb : b w ∈ ((LB.div (N.pull f) M).pull g).U (fun _ => i)` using `mem_pull.2 (hpt ▸ hi)`. Rewrite using `[germ W a w _ ha, germ W b w _ hb]`. Conclude with `hinv W a b hab w _ _ (mem₁ _ _ ha) (mem₂ _ _ ha)`.
+-/
 theorem lbIso_of_same_descent : ∀ {Z P Q : Scheme.{0}} (g : Z ⟶ P) (f : P ⟶ Q), Flat g → LocallyOfFinitePresentation g → Surjective g →
     ∀ (M : LB P), M.IsLB → ∀ (N : LB Q), N.IsLB → ∀ (τ : LB.Gen (M.pull g)), τ.IsGen →
     ∀ (T : LB.Gen (N.pull (g ≫ f))), T.IsGen →

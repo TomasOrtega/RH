@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.GoodStageOrigin
 
+/- English proof (translation)
+Use `haveI : IsIntegrallyClosed (Polynomial A') := by haveI := GlobalTheory.isIntegrallyClosed_mvPolynomial_fin A' 1`. Conclude with `IsIntegrallyClosed.of_equiv ((MvPolynomial.renameEquiv A' (Equiv.equivPUnit.{1, 1} (Fin 1))).trans (MvPolynomial.pUnitAlgEquiv.{0, 0} A')).toRingEquiv`. Take `⟨h1, h2⟩` from `GlobalTheory.etale_localization_atPrime_isDomain_isIntegrallyClosed (Polynomial A') E Q`. Use `haveI : IsNoetherianRing E := Algebra.FiniteType.isNoetherianRing (Polynomial A') E`. Use `⟨h1, IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance, h2, ?_⟩` and prove the remaining obligations.
+
+Use `letI : Algebra A' (Localization.AtPrime Q) := ((algebraMap (Polynomial A') (Localization.AtPrime Q)).comp Polynomial.C).toAlgebra`. Use `haveI : IsScalarTower A' (Polynomial A') (Localization.AtPrime Q) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Module.Flat (Polynomial A') E := inferInstance`. Use `haveI : Module.Flat E (Localization.AtPrime Q) := IsLocalization.flat _ Q.primeCompl`. Use `haveI : Module.Flat (Polynomial A') (Localization.AtPrime Q) := Module.Flat.trans (Polynomial A') E _`.
+
+Conclude with `Module.Flat.trans A' (Polynomial A') _`.
+-/
 theorem local_props (A' : Type) [CommRing A'] [IsDomain A'] [IsNoetherianRing A'] [IsIntegrallyClosed A']
     (E : Type) [CommRing E] [Algebra (Polynomial A') E] [Algebra.Etale (Polynomial A') E]
     (Q : Ideal E) [Q.IsPrime] :
@@ -35,6 +42,17 @@ theorem local_props (A' : Type) [CommRing A'] [IsDomain A'] [IsNoetherianRing A'
   haveI : Module.Flat (Polynomial A') (Localization.AtPrime Q) := Module.Flat.trans (Polynomial A') E _
   exact Module.Flat.trans A' (Polynomial A') _
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ _ _ _ hT P _ φ hφ hsh hP A _ _ _ _ _ _ i hi hil EA _ _ _ _ _ QA _ hQA jA hjA sA hsA`. Establish `hO : (maximalIdeal O).comap (algebraMap (Polynomial T) O) = GlobalTheory.KeyOriginCut.originIdeal T` using `by haveI : IsLocalHom φ := hsh.2.2.1`. Rewrite using `[← hφ, ← Ideal.comap_comap, GlobalTheory.comap_maximalIdeal_of_localHom_strictHens φ, ← hP]`. Use `first`. Consider the case `exact Localization.AtPrime.comap_maximalIdeal (Localization.AtPrime P) P`.
+
+Consider the case `exact Localization.AtPrime.comap_maximalIdeal`. Consider the case `simpa [Ideal.under] using Localization.AtPrime.comap_maximalIdeal (Localization.AtPrime P) P`. Take `⟨A', _, _, _, _, _, _, ι, α, hια, hα⟩` from `GlobalTheory.T.exists_local_hom_to_strictly_henselian_normal T hT A i hil`. Take `⟨E', _, _, _, Q', _, hQ', β, γ, h1, h2, h3⟩` from `GlobalTheory.T.exists_localStage_tensor_polynomial_origin T O hO A i hil EA QA hQA jA hjA A' ι α hια hα`. Take `⟨hd, hn, hic, hfl⟩` from `local_props A' E' Q'`.
+
+Use `letI alg : Algebra A' (Localization.AtPrime Q') := ((algebraMap (Polynomial A') (Localization.AtPrime Q')).comp Polynomial.C).toAlgebra`. Use `⟨A', inferInstance, inferInstance, inferInstance, inferInstance, Localization.AtPrime Q', inferInstance, hd, inferInstance, hn, hic, alg, hfl, ι, α, β, γ, ?_, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap A (Localization.AtPrime QA) = (algebraMap (Polynomial A) (Localization.AtPrime QA)).comp Polynomial.C`. Rewrite using `[IsScalarTower.algebraMap_eq A EA (Localization.AtPrime QA), IsScalarTower.algebraMap_eq A (Polynomial A) EA, Polynomial.algebraMap_eq, IsScalarTower.algebraMap_eq (Polynomial A) EA (Localization.AtPrime QA)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `h1`. Introduce `h`. Apply `hsA` to reduce the goal to its premises. Apply `hi` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← hια, RingHom.comp_apply, h, map_zero]`. Introduce `𝔭 _ _ _`. Conclude with `GlobalTheory.T.origin_ideal_extension_prime A' 𝔭 E' Q' hQ'`.
+-/
 theorem good_stage : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], GlobalTheory.LocAcyc.AbsIntClosed T →
     ∀ (P : Ideal (Polynomial T)) [P.IsPrime] (φ : Localization.AtPrime P →+* O),

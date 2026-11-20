@@ -8,6 +8,11 @@ namespace LateralTheory.EtaleFoundations.StepPf
 open LateralTheory.EtaleFoundations.stairPf
 variable {R : Type} [CommRing R] {C J T : Cx R}
 
+/- English proof (translation)
+Use extensionality with `p`. Rewrite using `[res_apply, res_apply, res_apply]`. Generalize the expression as in `x p = v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul a b => simp [TensorProduct.map_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem tens_res_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (w : ℤ) (x : Tens C J U w) :
     Tens.res (k ≫ g) w x = Tens.res k w (Tens.res g w x) := by
   ext p
@@ -18,16 +23,34 @@ theorem tens_res_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (w : ℤ)
   | tmul a b => simp [TensorProduct.map_tmul]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Prod.ext (show p.1.1 = a by have := p.2; omega) h)`.
+-/
 theorem ix_eq {w : ℤ} (p : Ix w) (a b : ℤ) (h : p.1.2 = b) (ha : a + b = w) : p = ⟨(a, b), ha⟩ :=
   Subtype.ext (Prod.ext (show p.1.1 = a by have := p.2; omega) h)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[lof_same]`.
+-/
 theorem lof_back {U : Scheme.{0}} {w : ℤ} (i j : Ix w) (h : i = j) (v : Cmp C J U w i) :
     DirectSum.lof (ULift.{1} R) (Ix w) (Cmp C J U w) j ((DirectSum.lof (ULift.{1} R) (Ix w) (Cmp C J U w) i v) j) =
       DirectSum.lof (ULift.{1} R) (Ix w) (Cmp C J U w) i v := by
   subst h; rw [lof_same]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_zsmul {U : Scheme.{0}} {w : ℤ} (c : ℤ) (f : Tens C J U w) (q : Ix w) : (c • f) q = c • f q := rfl
 
+/- English proof (translation)
+Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [map_add, DirectSum.add_apply] at ha hb ⊢`. Rewrite using `[ha, hb]`.
+
+Normalize the expressions using the abelian group laws. Consider the case `of p v`. Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R)]`. Distinguish the cases in `h0 : p.1.2 = t0`. Take `⟨⟨a, b⟩, hab⟩` from `p`.
+
+Simplify using `only at h0`. Substitute `h0` using the available equality. Take `rfl : a = n - b` from `by omega`. Rewrite using `[Dm_lof, DirectSum.add_apply, ev_zsmul]`. Simplify using `only`.
+
+Rewrite using `[lof_same, lof_ne _ _ _ _ (by simp), smul_zero, add_zero, lof_same, lof_ne _ _ _ _ (by simp; omega), map_zero, map_zero, DirectSum.zero_apply, add_zero]`. Distinguish the cases in `h1 : p.1.2 = t0 - 1`. Rewrite using `[lof_back p _ (ix_eq p (n - t0 + 1) (t0 - 1) h1 (by omega)), lof_ne _ _ _ _ h0, map_zero, zero_add]`. Rewrite using `[Dm_lof, DirectSum.add_apply, ev_zsmul, lof_ne _ _ _ _ h0, lof_ne _ _ _ _ (by simp; omega), smul_zero, add_zero, lof_ne _ _ _ _ h0, lof_ne _ _ _ _ h1, map_zero, map_zero, map_zero, DirectSum.zero_apply, add_zero]`.
+-/
 theorem Dm_comp (U : Scheme.{0}) (n t0 : ℤ) (y : Tens C J U n) :
     (Dm U n (n + 1) rfl y) ⟨(n - t0 + 1, t0), by omega⟩ =
       TensorProduct.map ((C.d (n - t0) (n - t0 + 1)).hom.app (op U)).hom LinearMap.id (y ⟨(n - t0, t0), by omega⟩) +
@@ -55,6 +78,17 @@ theorem Dm_comp (U : Scheme.{0}) (n t0 : ℤ) (y : Tens C J U n) :
         smul_zero, add_zero, lof_ne _ _ _ _ h0, lof_ne _ _ _ _ h1, map_zero, map_zero, map_zero,
         DirectSum.zero_apply, add_zero]
 
+/- English proof (translation)
+Introduce `R _ C J T τ hτ hc n t0 V x hx hd`. Establish `hD : τ.lift V (n + 1) (Dm V n (n + 1) rfl x) = 0` using `by rw [lift_Dm, hd]`. Use `loc_bind (hτ.2 V (n + 1) _ hD) fun W g hW => ?_` and prove the remaining obligations. Establish `hc0 : TensorProduct.map ((C.d (n - t0) (n - t0 + 1)).hom.app (op W)).hom LinearMap.id (Tens.res g n x ⟨(n - t0, t0), by omega⟩) = 0`. Rewrite using `[res_apply, nat_tens]`.
+
+Establish `h1` using `congrArg (fun z => z ⟨(n - t0 + 1, t0), by omega⟩) hW`. Simplify using `only at h1`. Rewrite `h1` using `[res_apply, Dm_comp, hx ⟨(n - t0 + 1, t0 - 1), by omega⟩ (by simp)]`. Simplify using `only [map_zero, DirectSum.zero_apply, add_zero] at h1`. Conclude with `h1`.
+
+Use `loc_mono (hc W (n - t0) t0 _ hc0) fun W' k hk => ?_` and prove the remaining obligations. Take `⟨y0, hy0⟩` from `hk`. Use `⟨Tens.res (k ≫ g) n x - Dm W' (n - 1) n (by ring) (DirectSum.lof (ULift.{1} R) (Ix (n - 1)) (Cmp C J W' (n - 1)) ⟨(n - t0 - 1, t0), by omega⟩ y0), DirectSum.lof (ULift.{1} R) (Ix (n - 1)) (Cmp C J W' (n - 1)) ⟨(n - t0 - 1, t0), by omega⟩ y0, ?_, (sub_add_cancel _ _).symm⟩` and prove the remaining obligations. Introduce `p hp`. Rewrite using `[DirectSum.sub_apply, Dm_lof, DirectSum.add_apply, ev_zsmul]`.
+
+Break down `lt_or_eq_of_le (show p.1.2 ≤ t0 by omega) with h | h` into its components or cases. Rewrite using `[res_apply, hx p h, map_zero, lof_ne _ _ _ _ (by simp; omega), lof_ne _ _ _ _ (by simp; omega), smul_zero, add_zero, sub_zero]`. Take `⟨⟨a, b⟩, hab⟩` from `p`. Simplify using `only at h`. Substitute `h` using the available equality.
+
+Take `rfl : a = n - b` from `by omega`. Simplify using `only`. Rewrite using `[lof_shift W' n (n - b - 1) (n - b) b (by ring) (by omega) (by omega), lof_same, lof_ne _ _ _ _ (by simp), smul_zero, add_zero, hy0, tens_res_comp, res_apply k, sub_self]`.
+-/
 theorem Step_of : LateralTheory.EtaleFoundations.stairPf.Step := by
   intro R _ C J T τ hτ hc n t0 V x hx hd
   have hD : τ.lift V (n + 1) (Dm V n (n + 1) rfl x) = 0 := by rw [lift_Dm, hd]

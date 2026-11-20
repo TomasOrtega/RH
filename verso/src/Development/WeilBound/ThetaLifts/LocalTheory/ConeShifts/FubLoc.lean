@@ -16,6 +16,9 @@ open GlobalTheory.Doubling hiding npow norm_npow npow_ne_zero
 
 attribute [local instance] ae_ring ae_smul ae_t2 ae_lc ae_sc id_lc id_sc id_borel
 
+/- English proof (translation)
+Use `⟨fun h => ⟨inf_of_part ha h0 h, fun w hw => by rw [← show PI a l = l from h.2]; exact cw_PI_zero ha hw l⟩, fun h => ⟨trivial, Units.ext (ae_ext (show infTens F E (PI a l : AE F E) = infTens F E l by rw [hom_PI _ ha, h0, h.1]; simp) fun w => ?_)⟩⟩` and prove the remaining obligations. Break down `cw_cases ha w with e | e` into its components or cases. Conclude with `(cw_PI_zero ha e l).trans (h.2 w e).symm`. Conclude with `cw_PI_one ha e l`.
+-/
 theorem mem_part_iff {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) (l : (AE F E)ˣ) :
     l ∈ part PI ⊤ a ↔ infTens F E l = 1 ∧ ∀ w, cw w a = 0 → cw w (l : AE F E) = 1 := by
   refine ⟨fun h => ⟨inf_of_part ha h0 h, fun w hw => by rw [← show PI a l = l from h.2]; exact cw_PI_zero ha hw l⟩,
@@ -24,9 +27,17 @@ theorem mem_part_iff {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) (l :
   · exact (cw_PI_zero ha e l).trans (h.2 w e).symm
   · exact cw_PI_one ha e l
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨trivial, by show PI a (PI a l) = PI a l; rw [unitInvariant_comp ha ha, ha]⟩`.
+-/
 theorem PI_mem {a : AE F E} (ha : a * a = a) (l : (AE F E)ˣ) : PI a l ∈ part PI ⊤ a :=
   ⟨trivial, by show PI a (PI a l) = PI a l; rw [unitInvariant_comp ha ha, ha]⟩
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i T hi ih`. Establish `hT' : ∀ j ∈ T, e j * c = 0` using `fun j hj => hT j (Finset.mem_insert_of_mem hj)`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi, add_assoc, mul_assoc, ← ih hT']`.
+
+Use `unitInvariant_add (he i) (sysI.good_sum e he ho c hc T hT') ?_ x` and prove the remaining obligations. Rewrite using `[mul_add, Finset.mul_sum, Finset.sum_eq_zero fun j hj => ho i j (fun e => hi (e ▸ hj)), hT i (Finset.mem_insert_self _ _), add_zero]`.
+-/
 theorem PI_sum {ι : Type} [DecidableEq ι] (e : ι → AE F E) (he : ∀ i, e i * e i = e i) (ho : ∀ i j, i ≠ j → e i * e j = 0)
     (c : AE F E) (hc : c * c = c) (T : Finset ι) (hT : ∀ i ∈ T, e i * c = 0) (x : (AE F E)ˣ) :
     PI (∑ i ∈ T, e i + c) x = (∏ i ∈ T, PI (e i) x) * PI c x := by
@@ -44,19 +55,38 @@ def wtH (ν : Chr F E) (z : ℕ) : (AE F E)ˣ →* ℂ where
   map_one' := by simp [wt]
   map_mul' a b := by simp only [wt, map_mul, Circle.coe_mul, NNReal.coe_mul, Complex.ofReal_mul]; ring
 
+/- English proof (translation)
+The claim follows from `one_of_compact (absE F E) continuous_absE (cpt_I ha h0) fun n => ⟨Subgroup.zpow_mem _ h n, Subgroup.zpow_mem _ hu n⟩`.
+-/
 theorem abs_UI {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) {l} (h : l ∈ part PI ⊤ a) (hu : l ∈ UI F E) : absE F E l = 1 :=
   one_of_compact (absE F E) continuous_absE (cpt_I ha h0) fun n => ⟨Subgroup.zpow_mem _ h n, Subgroup.zpow_mem _ hu n⟩
 
+/- English proof (translation)
+Rewrite using `[cw_def, finTens_locIdele]`. Both sides reduce to the same expression.
+-/
 theorem cw_loc (u w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) :
     cw u (locIdele F w y : AE F E) = Neutral.B1.finiteSingle E w y u := by
   rw [cw_def, finTens_locIdele]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `rw [cw_ew]; split_ifs with h <;> simp [h]`.
+-/
 theorem ew_zero {u w : HeightOneSpectrum (𝓞 E)} : cw u (ew F w) = 0 ↔ u ≠ w := by
   rw [cw_ew]; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `(mem_part_iff (ew_idem w) (inf_ew w) _).2 ⟨infTens_locIdele w y, fun u hu => by rw [cw_loc, finSingle_ne (ew_zero.1 hu)]⟩`.
+-/
 theorem loc_mem (w : HeightOneSpectrum (𝓞 E)) (y : (w.adicCompletion E)ˣ) : locIdele F w y ∈ part PI ⊤ (ew F w) :=
   (mem_part_iff (ew_idem w) (inf_ew w) _).2 ⟨infTens_locIdele w y, fun u hu => by rw [cw_loc, finSingle_ne (ew_zero.1 hu)]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_part_iff (ew_idem w) (inf_ew w) _).1 h`. Establish `e : l = locIdele F w (Units.map (cw w).toMonoidHom l)` using `Units.ext (ae_ext (h1.trans (infTens_locIdele _ _).symm) fun u => by`. Rewrite using `[cw_loc]`. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality.
+
+Rewrite using `[finSingle_self]`. Both sides reduce to the same expression. Rewrite using `[finSingle_ne hu, h2 u (ew_zero.2 hu)])`. Use `hν (Units.map (cw w).toMonoidHom l) (hu w)` as an intermediate fact. Rewrite using `[e]`.
+
+Conclude with `Circle.coe_eq_one.1 (congrArg Units.val this)`.
+-/
 theorem nu_ew {ν : Chr F E} {w} (hν : UnrAt ν w) {l} (h : l ∈ part PI ⊤ (ew F w)) (hu : l ∈ UI F E) : ν l = 1 := by
   obtain ⟨h1, h2⟩ := (mem_part_iff (ew_idem w) (inf_ew w) _).1 h
   have e : l = locIdele F w (Units.map (cw w).toMonoidHom l) := Units.ext (ae_ext (h1.trans (infTens_locIdele _ _).symm) fun u => by
@@ -72,9 +102,25 @@ variable (F) in
 
 def pw (w : HeightOneSpectrum (𝓞 E)) : (AE F E)ˣ := locIdele F w (Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w))
 
+/- English proof (translation)
+Rewrite using `[vw, pw, cw_loc, finSingle_self]`. Conclude with `Formalism.L2.Host.unif_spec w`.
+-/
 theorem vw_pw (w : HeightOneSpectrum (𝓞 E)) : vw w (pw F w) = WithZero.exp (-1 : ℤ) := by
   rw [vw, pw, cw_loc, finSingle_self]; exact Formalism.L2.Host.unif_spec w
 
+/- English proof (translation)
+Establish `hne : ∀ u, u ≠ w → cw u (pw F w : AE F E) = 1` using `fun u hu => by rw [pw, cw_loc, finSingle_ne hu]`. Establish `e : pw F w = ideleAt F E (w.under (𝓞 F)) (unitFin F E (w.under (𝓞 F)) (pw F w))`. Use `Units.ext (ae_ext ((infTens_locIdele _ _).trans (map_extUnit_zero (fstA F) _ _ (fun a => rfl) _).symm) fun u => ?_)` and prove the remaining obligations. Distinguish the cases in `hu : u.under (𝓞 F) = w.under (𝓞 F)`. Rewrite using `[cw_eq hu, cw_eq hu]`.
+
+Conclude with `congrArg _ (congrArg Units.val (unitFin_ideleAt_self _ (unitFin F E (w.under (𝓞 F)) (pw F w)))).symm`. Rewrite using `[hne u fun e => hu (e ▸ rfl), cw_eq rfl]`. Rewrite using `[show compFin F E _ _ = 1 from congrArg Units.val (unitFin_ideleAt_ne hu _), map_one]`. Establish `o1 : Formalism.UG.ordL (toCompl (rfl : w.under (𝓞 F) = _) (unitFin F E (w.under (𝓞 F)) (pw F w)).1) = 1`. Establish `h : Valued.v (toCompl (rfl : w.under (𝓞 F) = _) (unitFin F E (w.under (𝓞 F)) (pw F w)).1) = WithZero.exp (-1 : ℤ)`.
+
+Rewrite using `[← vw_pw (F := F) w, vw, cw_eq rfl]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.AbsInert.ordL_eq_neg_log (h ▸ WithZero.exp_ne_zero), h]`. Simplify using the standard rewrite rules. Establish `hUn` using `hB.unram`.
+
+Establish `hU : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) (w.under (𝓞 F)) := GlobalTheory.LFun.isUnram_iff.2 fun w _ => Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Rewrite using `[e, absE_ideleAt]`. Break down `GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hU with hs | ⟨u, hi⟩` into its components or cases. Take `⟨w₁, w₂, hn, h1, h2⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`. Choose the witnesses or unpack the hypotheses as in `⟨w', hw', h'⟩ : ∃ w', w ≠ w' ∧ w'.under (𝓞 F) = w.under (𝓞 F) := by`.
+
+Distinguish the cases in `h : w = w₁`. Use `exacts [⟨w₂, h ▸ hn, h2⟩, ⟨w₁, h, h1⟩]`. Establish `o2 : Formalism.UG.ordL (toCompl h' (unitFin F E (w.under (𝓞 F)) (pw F w)).1) = 0`. Establish `h : toCompl h' (unitFin F E (w.under (𝓞 F)) (pw F w)).1 = 1` using `(cw_eq h' _).symm.trans (hne w' hw'.symm)`. Rewrite using `[h, GlobalTheory.AbsInert.ordL_eq_neg_log (by simp)]; simp`.
+
+Rewrite using `[GlobalTheory.Doubling.AbsSplit.absEv_split F E σ hB.cm _ w rfl w' h' hw', o1, o2]`. Simplify using `[Formalism.UG.qV]`. Take `rfl` from `(GlobalTheory.LFun.InertChart.under_eq_iff hi w).1 rfl`. Rewrite using `[GlobalTheory.AbsInert.absEv_inert F E σ hB.cm _ w rfl hi, o1, GlobalTheory.LFun.InertChart.absNorm_eq hB.cm.2.2.1 hi]`. Simplify using `[Formalism.UG.qV]`.
+-/
 theorem abs_pw {B : Base F E} (hB : B.IsGood σ) (w : HeightOneSpectrum (𝓞 E)) :
     (absE F E (pw F w) : ℝ) = ((Ideal.absNorm w.asIdeal : ℕ) : ℝ)⁻¹ := by
   have hne : ∀ u, u ≠ w → cw u (pw F w : AE F E) = 1 := fun u hu => by rw [pw, cw_loc, finSingle_ne hu]
@@ -107,6 +153,9 @@ theorem abs_pw {B : Base F E} (hB : B.IsGood σ) (w : HeightOneSpectrum (𝓞 E)
     rw [GlobalTheory.AbsInert.absEv_inert F E σ hB.cm _ w rfl hi, o1, GlobalTheory.LFun.InertChart.absNorm_eq hB.cm.2.2.1 hi]
     simp [Formalism.UG.qV]
 
+/- English proof (translation)
+Rewrite using `[wt, abs_pw hB, npow, Complex.cpow_neg, Complex.cpow_natCast]`. Use `push_cast`. Rewrite using `[inv_pow]`. Both sides reduce to the same expression.
+-/
 theorem wt_pw {B : Base F E} (hB : B.IsGood σ) (ν : Chr F E) (z : ℕ) (w : HeightOneSpectrum (𝓞 E)) :
     wt ν z (pw F w) = (val ν w : ℂ) * npow w (-(z : ℂ)) := by
   rw [wt, abs_pw hB, npow, Complex.cpow_neg, Complex.cpow_natCast]
@@ -116,16 +165,33 @@ theorem wt_pw {B : Base F E} (hB : B.IsGood σ) (ν : Chr F E) (z : ℕ) (w : He
 def tw (ν : Chr F E) (z : ℕ) (m : ℤ) (w : HeightOneSpectrum (𝓞 E)) : ℂ :=
   ((val ν w : ℂ) * npow w (-(z : ℂ))) ^ m * (1 - (val ν w : ℂ) * npow w (-(z : ℂ)))⁻¹
 
+/- English proof (translation)
+Rewrite using `[norm_mul, norm_val, one_mul, norm_npow]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by simp; omega)`.
+-/
 theorem norm_t_lt (ν : Chr F E) {z : ℕ} (hz : 1 ≤ z) (w : HeightOneSpectrum (𝓞 E)) : ‖(val ν w : ℂ) * npow w (-(z : ℂ))‖ < 1 := by
   rw [norm_mul, norm_val, one_mul, norm_npow]
   exact Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast one_lt_absNorm w) (by simp; omega)
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (zpow_ne_zero _ (mul_ne_zero (Units.ne_zero _) (npow_ne_zero _ _))) (inv_ne_zero fun h => by have := norm_t_lt ν hz w rw [← sub_eq_zero.1 h] at this; simp at this)`.
+-/
 theorem tw_ne (ν : Chr F E) {z : ℕ} (hz : 1 ≤ z) (m : ℤ) (w : HeightOneSpectrum (𝓞 E)) : tw ν z m w ≠ 0 :=
   mul_ne_zero (zpow_ne_zero _ (mul_ne_zero (Units.ne_zero _) (npow_ne_zero _ _))) (inv_ne_zero fun h => by
     have := norm_t_lt ν hz w
     rw [← sub_eq_zero.1 h] at this; simp at this)
 
 open Classical in
+/- English proof (translation)
+Use `haveI := hγ.1`. Establish `hs : ∀ x : part (PI (F` using `F)) ⊤ (ew F w), -WithZero.log (vw w x.1) = 0 ↔ x.1 ∈ UI F E := fun x => by`. Use `⟨fun h u => ?_, fun h => by rw [h w]; simp⟩` and prove the remaining obligations. Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality.
+
+Rewrite using `[← WithZero.exp_log (vw_ne u x.1), neg_eq_zero.1 h]`. Both sides reduce to the same expression. Rewrite using `[vw, ((mem_part_iff (ew_idem w) (inf_ew w) _).1 x.2).2 u (ew_zero.2 hu), map_one]`. Establish `hs' : {x : part (PI (F` using `F)) ⊤ (ew F w) | -WithZero.log (vw w x.1) = 0} = {x | x.1 ∈ (UI F E : Set (AE F E)ˣ)} := Set.ext hs`. Use `tate γ (fun x => -WithZero.log (vw w x.1)) (fun x y => by` as an intermediate fact.
+
+Rewrite using `[Subgroup.coe_mul, vw_mul, WithZero.log_mul (vw_ne _ _) (vw_ne _ _)]`. Use the proof step `ring)`. Use the proof step `(by rw [hs']; exact isOpen_UI.preimage continuous_subtype_val) (by rw [hs']; exact hγ.2) ⟨pw F w, loc_mem w _⟩`. Use the proof step `(by show -WithZero.log (vw w (pw F w)) = 1; rw [vw_pw]; simp) ((wtH ν z).comp (Subgroup.subtype _))`. Use the proof step `(fun x hx => by show wt ν z x.1 = 1`.
+
+Rewrite using `[wt, nu_ew hν x.2 ((hs x).1 hx), abs_UI (ew_idem w) (inf_ew w) x.2 ((hs x).1 hx)]`. Use the proof step `simp)`. Use the proof step `(by show ‖wt ν z (pw F w)‖ < 1; rw [wt_pw hB]; exact norm_t_lt ν hz w) m`. Establish `e : ∀ x : part (PI (F` using `F)) ⊤ (ew F w), m ≤ -WithZero.log (vw w x.1) ↔ vw w x.1 ≤ WithZero.exp (-m) := fun x => by`. Rewrite using `[← WithZero.log_le_iff_le_exp (vw_ne _ _)]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [e] at this`. Use `⟨this.1, this.2.trans ?_⟩` and prove the remaining obligations. Use `show wt ν z (pw F w) ^ m * (1 - wt ν z (pw F w))⁻¹ = _`. Rewrite using `[wt_pw hB, tw]`.
+-/
 theorem locW {B : Base F E} (hB : B.IsGood σ) {ν : Chr F E} {z : ℕ} (hz : 1 ≤ z) {w} (hν : UnrAt ν w) (m : ℤ)
     (γ : Measure (part (PI (F := F)) ⊤ (ew F w))) (hγ : γ.IsHaarMeasure ∧ γ {x | x.1 ∈ (UI F E : Set (AE F E)ˣ)} = 1) :
     Integrable (fun x : part PI ⊤ (ew F w) => (if vw w x.1 ≤ WithZero.exp (-m) then (1 : ℂ) else 0) * wt ν z x.1) γ ∧
@@ -152,11 +218,25 @@ theorem locW {B : Base F E} (hB : B.IsGood σ) {ν : Chr F E} {z : ℕ} (hz : 1 
   show wt ν z (pw F w) ^ m * (1 - wt ν z (pw F w))⁻¹ = _
   rw [wt_pw hB, tw]
 
+/- English proof (translation)
+Rewrite using `[map_add, h0, add_zero, map_sum, Finset.sum_eq_zero fun w _ => inf_ew w]`.
+-/
 theorem inf_sum (W : Finset (HeightOneSpectrum (𝓞 E))) {c : AE F E} (h0 : infTens F E c = 0) :
     infTens F E (∑ w ∈ W, ew F w + c) = 0 := by
   rw [map_add, h0, add_zero, map_sum, Finset.sum_eq_zero fun w _ => inf_ew w]
 
 open Classical in
+/- English proof (translation)
+Establish `hex` using `fun {a : AE F E} (ha : a * a = a) (h0 : infTens F E a = 0) => exists_haar _ (sysI.closed ha) _ (UI F E).one_mem (co_I ha h0).1 (co_I ha h0).2`. Use `choose γ hγ using fun w => hex (ew_idem w) (inf_ew (F := F) w)`. Take `⟨β, hβ⟩` from `hex hc h0`. Establish `mU : MeasurableSet {x : part (PI (F` using `F)) ⊤ c | x.1 ∈ (UI F E : Set (AE F E)ˣ)} := (isOpen_UI.preimage continuous_subtype_val).measurableSet`. Establish `eg : (fun x : part (PI (F` using `F)) ⊤ c => (if x.1 ∈ UI F E then (1 : ℂ) else 0)) = Set.indicator {x | x.1 ∈ (UI F E : Set (AE F E)ˣ)} fun _ => 1 := funext fun x => by simp [Set.indicator_apply]`.
+
+Take `⟨p1, p2⟩` from `sysI.prod (ew F) ew_idem (fun _ _ => ew_orth) c hc γ hγ β hβ W hW (fun T' h => co_I (sysI.good_sum _ ew_idem (fun _ _ => ew_orth) c hc T' fun w hw => hW w (h hw)) (inf_sum T' h0)) b hb μ hμ (fun w x => (if vw w x ≤ WithZero.exp (-m w) then (1 : ℂ) else 0) * wt ν z x) (fun x => if …`. Rewrite `p2` using `[Finset.prod_congr rfl fun w hw => (locW hB hz (hν w hw) (m w) _ (hγ w)).2, eg, integral_indicator mU, setIntegral_const, Measure.real, hβ.2]`. Establish `e : (fun x : part (PI (F` using `F)) ⊤ b => (if (∀ w ∈ W, vw w x.1 ≤ WithZero.exp (-m w)) ∧ PI c x.1 ∈ UI F E then (1 : ℂ) else 0) * wt ν z x.1) = fun x : part PI ⊤ b => (∏ w ∈ W, (if vw w (PI (ew F w) x.1) ≤ WithZero.exp (-m w) then (1 : ℂ) else 0) * wt ν z (PI (ew F w) x.1)) * (if PI c x.1 ∈ UI F E then 1 else …`. Establish `hv : ∀ w, vw w (PI (ew F w) x.1) = vw w x.1` using `fun w => by`. Rewrite using `[vw, cw_PI_one (ew_idem w) (by rw [cw_ew, if_pos rfl])]; rfl`.
+
+Distinguish the cases in `hu : PI c x.1 ∈ UI F E`. Establish `hx : x.1 = (∏ w ∈ W, PI (ew F w) x.1) * PI c x.1`. Rewrite using `[← PI_sum _ ew_idem (fun _ _ => ew_orth) c hc W hW, ← hb]`. Conclude with `x.2.2.symm`. Establish `hw : wt ν z x.1 = ∏ w ∈ W, wt ν z (PI (ew F w) x.1)`.
+
+Use `congrArg (wtH ν z) hx` as an intermediate fact. Rewrite `this` using `[map_mul, map_prod]`. Use `this.trans ?_` and prove the remaining obligations. Use `show _ * wt ν z _ = _`. Rewrite using `[wt, hνc _ (PI_mem hc _) hu, abs_UI hc h0 (PI_mem hc _) hu]`.
+
+Simplify using `[wtH]`. Simplify using `only [hv, hu, and_true, if_true, mul_one, Finset.prod_mul_distrib, Finset.prod_boole, hw]`. Simplify using `[hu]`. Rewrite using `[e]`. Conclude with `⟨p1, p2.trans (by simp)⟩`.
+-/
 theorem prodW {B : Base F E} (hB : B.IsGood σ) {ν : Chr F E} {z : ℕ} (hz : 1 ≤ z) (W : Finset (HeightOneSpectrum (𝓞 E)))
     (hν : ∀ w ∈ W, UnrAt ν w) (m : HeightOneSpectrum (𝓞 E) → ℤ) {c : AE F E} (hc : c * c = c) (h0 : infTens F E c = 0)
     (hW : ∀ w ∈ W, ew F w * c = 0) (hνc : ∀ l ∈ part PI ⊤ c, l ∈ UI F E → ν l = 1) (b : AE F E) (hb : b = ∑ w ∈ W, ew F w + c)
@@ -204,10 +284,18 @@ open Classical in
 
 def ab (T : Finset (Pl F)) : Finset (HeightOneSpectrum (𝓞 E)) := T.biUnion (Formalism.L2.Host.aboveF (L := E) F)
 
+/- English proof (translation)
+Simplify using `[ab, mem_aboveF]`.
+-/
 theorem mem_ab {T : Finset (Pl F)} {w : HeightOneSpectrum (𝓞 E)} : w ∈ ab T ↔ w.under (𝓞 F) ∈ T := by
   simp [ab, mem_aboveF]
 
 open Classical in
+/- English proof (translation)
+Use `ae_ext (by rw [inf_io (rest_fst _), inf_sum _ (inf_io (rest_fst _))]) fun u => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_sum, cw_rest, cw_rest]`. Simplify using `only [cw_ew, Finset.sum_ite_eq, mem_ab, Finset.mem_sdiff]`. Distinguish the cases in `h1 : u.under (𝓞 F) ∈ T`. Simplify using `[h1, h h1]`.
+
+Apply the tactic sequence `by_cases h2 : u.under (𝓞 F) ∈ T' <;> simp [h1, h2]`.
+-/
 theorem rest_split {T T' : Finset (Pl F)} (h : T ⊆ T') :
     (io (rest T) : AE F E) = ∑ w ∈ ab (T' \ T), ew F w + io (rest T') := by
   refine ae_ext (by rw [inf_io (rest_fst _), inf_sum _ (inf_io (rest_fst _))]) fun u => ?_
@@ -217,6 +305,9 @@ theorem rest_split {T T' : Finset (Pl F)} (h : T ⊆ T') :
   · simp [h1, h h1]
   · by_cases h2 : u.under (𝓞 F) ∈ T' <;> simp [h1, h2]
 
+/- English proof (translation)
+The claim follows from `ae_ext (by rw [map_mul, inf_ew, zero_mul, map_zero]) fun u => by rw [map_mul, cw_ew, cw_rest, map_zero] split_ifs with h1 h2 · simp · exact absurd (h1 ▸ h) h2 all_goals simp`.
+-/
 theorem ew_rest {T : Finset (Pl F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) ∈ T) : ew F w * io (rest T) = 0 :=
   ae_ext (by rw [map_mul, inf_ew, zero_mul, map_zero]) fun u => by
     rw [map_mul, cw_ew, cw_rest, map_zero]
@@ -225,9 +316,21 @@ theorem ew_rest {T : Finset (Pl F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.unde
     · exact absurd (h1 ▸ h) h2
     all_goals simp
 
+/- English proof (translation)
+Apply the tactic sequence `rw [cw_rest]; split_ifs with h <;> simp [h]`.
+-/
 theorem rest_zero {T : Finset (Pl F)} {w : HeightOneSpectrum (𝓞 E)} : cw w (io (rest T) : AE F E) = 0 ↔ w.under (𝓞 F) ∈ T := by
   rw [cw_rest]; split_ifs with h <;> simp [h]
 
+/- English proof (translation)
+Establish `hi` using `fun T : Finset (Pl F) => io_idem (E := E) (rest_idem T)`. Establish `h0` using `fun T : Finset (Pl F) => inf_io (E := E) (rest_fst T)`. Establish `mono : ∀ {A A' : Finset (Pl F)}, A ⊆ A' → ((part PI ⊤ (io (rest A')) : Subgroup (AE F E)ˣ) : Set (AE F E)ˣ) ∩ UI F E ⊆ ((part PI ⊤ (io (rest A)) : Subgroup (AE F E)ˣ) : Set (AE F E)ˣ) ∩ UI F E`. Introduce `A A' hA x hx`. Establish `h1` using `(mem_part_iff (hi A') (h0 A') x).1 hx.1`.
+
+Conclude with `⟨(mem_part_iff (hi A) (h0 A) x).2 ⟨h1.1, fun w hw => h1.2 w (rest_zero.2 (hA (rest_zero.1 hw)))⟩, hx.2⟩`. Take `⟨T₀, hT₀⟩` from `exists_subset_nhds_of_isCompact' (V := fun A : Finset (Pl F) => ((part PI ⊤ (io (rest A)) : Subgroup (AE F E)ˣ) : Set (AE F E)ˣ) ∩ UI F E) (fun A A' => ⟨A ∪ A', mono Finset.subset_union_left, mono Finset.subset_union_right⟩) (fun A => cpt_I (hi A) (h0 A)) (fun A => (cpt_I (hi A) …`. Establish `hx'` using `Set.mem_iInter.1 hx`. Take `rfl : x = 1` from `Units.ext (ae_ext (by rw [((mem_part_iff (hi ∅) (h0 ∅) x).1 (hx' ∅).1).1, Units.val_one, map_one]) fun w => by`. Rewrite using `[((mem_part_iff (hi _) (h0 _) x).1 (hx' {w.under (𝓞 F)}).1).2 w (rest_zero.2 (Finset.mem_singleton_self _)), Units.val_one, map_one])`.
+
+Conclude with `(isOpen_lt ((continuous_subtype_val.comp hc).sub continuous_const).norm continuous_const).mem_nhds (show ‖((ν 1 : Circle) : ℂ) - 1‖ < 1 by rw [map_one]; simp)`. Establish `hx : l = (∏ w ∈ ab ((T ∪ T₀) \ T), PI (ew F w) l) * PI (io (rest (T ∪ T₀))) l`. Rewrite using `[← PI_sum _ ew_idem (fun _ _ => ew_orth) _ (hi _) _ fun w hw => ew_rest (Finset.mem_sdiff.1 (mem_ab.1 hw)).1, ← rest_split Finset.subset_union_left]`. Conclude with `h.2.symm`. Rewrite using `[hx, map_mul, map_prod, Finset.prod_eq_one fun w hw => nu_ew (hν w (Finset.mem_sdiff.1 (mem_ab.1 hw)).2) (PI_mem (ew_idem w) _) (sysI.pU _ (ew_idem w) _ hu), one_mul]`.
+
+Use `circle_one fun n => ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `hT₀ (mono Finset.subset_union_right ⟨Subgroup.pow_mem _ (PI_mem (hi _) _) n, Subgroup.pow_mem _ (sysI.pU _ (hi _) _ hu) n⟩)`.
+-/
 theorem nu_rest {ν : Chr F E} (hc : Continuous ν) {T : Finset (Pl F)} (hν : UnrOff ν (T : Set (Pl F))) {l}
     (h : l ∈ part PI ⊤ (io (rest T))) (hu : l ∈ UI F E) : ν l = 1 := by
   classical

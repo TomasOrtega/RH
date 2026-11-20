@@ -6,6 +6,27 @@ open MeasureTheory intervalIntegral
 
 namespace PositivityTheory.Rg.Sw.Glob.DerOneAbsH
 
+/- English proof (translation)
+Use `set μ : Measure ℝ := volume.restrict (Set.Ioc (0 : ℝ) 1) with hμ`. Establish `hae : ∀ ξ, AEMeasurable (fun p : X × ℝ => ‖F' p.1 p.2 ξ‖ₑ) (m.prod μ)` using `fun ξ => (hmeas ξ).enorm`. Establish `hle : ∀ ξ, ∫⁻ p, ‖F' p.1 p.2 ξ‖ₑ ∂(m.prod μ) ≤ ∫⁻ p, ∑' ξ, ‖F' p.1 p.2 ξ‖ₑ ∂(m.prod μ)` using `fun ξ => lintegral_mono fun p => ENNReal.le_tsum ξ`. Establish `hI : ∀ ξ, Integrable (fun p : X × ℝ => F' p.1 p.2 ξ) (m.prod μ)` using `fun ξ => ⟨hmeas ξ, lt_of_le_of_lt (hle ξ) hfin.lt_top⟩`. Establish `htsum : ∑' ξ, ∫⁻ p, ‖F' p.1 p.2 ξ‖ₑ ∂(m.prod μ) ≠ ⊤`.
+
+Rewrite using `[← lintegral_tsum hae]`. Conclude with `hfin`. Establish `hftc : ∀ x ξ, ∫ t, F' x t ξ ∂μ = F x 1 ξ - F x 0 ξ`. Introduce `x ξ`. Rewrite using `[hμ, ← intervalIntegral.integral_of_le zero_le_one]`.
+
+Conclude with `intervalIntegral.integral_eq_sub_of_hasDerivAt (hd x ξ) ((hcont x ξ).intervalIntegrable 0 1)`. Establish `hswap : ∀ ξ, ∫ x, (∫ t, F' x t ξ ∂μ) ∂m = ∫ t, (∫ x, F' x t ξ ∂m) ∂μ` using `fun ξ => integral_integral_swap (f := fun x t => F' x t ξ) (hI ξ)`. Establish `hbx : ∑' ξ, ∫⁻ x, ‖∫ t, F' x t ξ ∂μ‖ₑ ∂m ≠ ⊤`. Use `ne_top_of_le_ne_top htsum (ENNReal.tsum_le_tsum fun ξ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hbt : ∑' ξ, ∫⁻ t, ‖∫ x, F' x t ξ ∂m‖ₑ ∂μ ≠ ⊤`. Use `ne_top_of_le_ne_top htsum (ENNReal.tsum_le_tsum fun ξ => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `S1 : ∫ x, ∑' ξ, ∫ t, F' x t ξ ∂μ ∂m = ∑' ξ, ∫ x, ∫ t, F' x t ξ ∂μ ∂m` using `integral_tsum (fun ξ => (hI ξ).integral_prod_left.aestronglyMeasurable) hbx`. Establish `S2 : ∫ t, ∑' ξ, ∫ x, F' x t ξ ∂m ∂μ = ∑' ξ, ∫ t, ∫ x, F' x t ξ ∂m ∂μ` using `integral_tsum (fun ξ => (hI ξ).integral_prod_right.aestronglyMeasurable) hbt`.
+
+Establish `hslice : ∀ᵐ t ∂μ, ∀ ξ, AEStronglyMeasurable (fun x => F' x t ξ) m`. Rewrite using `[ae_all_iff]`. Introduce `ξ`. Conclude with `((hmeas ξ).prod_swap).prodMk_left`. Establish `hfinT : ∀ᵐ t ∂μ, ∑' ξ, ∫⁻ x, ‖F' x t ξ‖ₑ ∂m ≠ ⊤`.
+
+Establish `hmξ : ∀ ξ, AEMeasurable (fun t => ∫⁻ x, ‖F' x t ξ‖ₑ ∂m) μ` using `fun ξ => by`. Simplify using `using ((hae ξ).prod_swap).lintegral_prod_right'`. Establish `hm' : AEMeasurable (fun t => ∑' ξ, ∫⁻ x, ‖F' x t ξ‖ₑ ∂m) μ` using `AEMeasurable.tsum hmξ`. Establish `: ∫⁻ t, ∑' ξ, ∫⁻ x, ‖F' x t ξ‖ₑ ∂m ∂μ ≠ ⊤`. Rewrite using `[lintegral_tsum hmξ]`.
+
+Use `ne_top_of_le_ne_top htsum (le_of_eq (tsum_congr fun ξ => ?_))` and prove the remaining obligations. Conclude with `(lintegral_prod_symm _ (hae ξ)).symm`. Use `filter_upwards [ae_lt_top' hm' this] with t ht using ht.ne`. Establish `S3 : ∀ᵐ t ∂μ, ∫ x, ∑' ξ, F' x t ξ ∂m = ∑' ξ, ∫ x, F' x t ξ ∂m` using `by filter_upwards [hslice, hfinT] with t h1 h2 using integral_tsum h1 h2`. Establish `hIoc : ∀ᵐ t ∂μ, t ∈ Set.Ioc (0 : ℝ) 1` using `ae_restrict_mem measurableSet_Ioc`.
+
+Use `set c := ∫ x, ∑' ξ, F' x 0 ξ ∂m with hc`. Establish `hμ1 : μ Set.univ = 1`. Rewrite using `[hμ, Measure.restrict_apply_univ, Real.volume_Ioc]`. Simplify using the standard rewrite rules. Establish `key : c = ∫ t, ∑' ξ, ∫ x, F' x t ξ ∂m ∂μ`.
+
+Establish `: ∫ t, ∑' ξ, ∫ x, F' x t ξ ∂m ∂μ = ∫ _t, c ∂μ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [S3, hIoc] with t h1 h2`. Rewrite using `[← h1, hconst t h2]`. Rewrite using `[this, MeasureTheory.integral_const, Measure.real, hμ1, ENNReal.toReal_one, one_smul]`.
+
+Establish `hsub : ∀ᵐ x ∂m, ∑' ξ, ∫ t, F' x t ξ ∂μ = ∑' ξ, F x 1 ξ - ∑' ξ, F x 0 ξ` using `by filter_upwards [hsum0, hsum1] with x h0 h1`. Simplify using `only [hftc]`. Conclude with `(h1.of_norm).tsum_sub h0.of_norm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integral_deriv_zero {X Ξ : Type*} [MeasurableSpace X] [Countable Ξ] [MeasurableSpace Ξ]
     [MeasurableSingletonClass Ξ] (m : Measure X) [SFinite m] (F F' : X → ℝ → Ξ → ℂ)
     (hd : ∀ x ξ, ∀ t ∈ Set.uIcc (0 : ℝ) 1, HasDerivAt (fun s => F x s ξ) (F' x t ξ) t)

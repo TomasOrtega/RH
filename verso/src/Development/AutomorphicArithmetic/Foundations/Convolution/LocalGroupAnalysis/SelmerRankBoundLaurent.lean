@@ -25,6 +25,9 @@ def pF (v : Pl K) : GA K n →* GL (Fin n) (v.adicCompletion K) where
   map_one' := Units.ext (by ext a b; simp only [finAt_apply, Units.val_one, Matrix.one_apply]; split_ifs <;> rfl)
   map_mul' := finAt_mul v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pF_apply (v : Pl K) (g : GA K n) : pF K n v g = finAt v g := rfl
 
 abbrev KF (v : Pl K) : Subgroup (GL (Fin n) (v.adicCompletion K)) := GLnLocal.integralGL (v.adicCompletion K) n

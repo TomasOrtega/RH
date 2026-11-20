@@ -11,8 +11,14 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Desc.SLF PositivityTheory.R
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `inf_le_left`.
+-/
 theorem lc_le {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) : Lc Z m ≤ GzS Z := inf_le_left
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage, Lc, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩`.
+-/
 theorem coe_lc_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) =
       Subtype.val ⁻¹' (GLnLocal.congruenceSubgroup k n m : Set (GL (Fin n) k)) := by
@@ -20,11 +26,19 @@ theorem coe_lc_subgroupOf {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)
   simp only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage, Lc, Subgroup.mem_inf]
   exact ⟨fun h => h.2, fun h => ⟨x.2, h⟩⟩
 
+/- English proof (translation)
+Rewrite using `[coe_lc_subgroupOf]`. Conclude with `(GLnLocal.isOpen_congruenceSubgroup k n m).preimage continuous_subtype_val`.
+-/
 theorem isOpen_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     IsOpen (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) := by
   rw [coe_lc_subgroupOf]
   exact (GLnLocal.isOpen_congruenceSubgroup k n m).preimage continuous_subtype_val
 
+/- English proof (translation)
+Rewrite using `[Subtype.isCompact_iff]`. Establish `e : Subtype.val '' (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) = (GzS Z : Set (GL (Fin n) k)) ∩ (GLnLocal.congruenceSubgroup k n m : Set (GL (Fin n) k))`. Use extensionality with `x`. Simplify using `only [Set.mem_image, SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_inter_iff, Lc, Subgroup.mem_inf]`. Conclude with `⟨fun ⟨y, hy, hyx⟩ => hyx ▸ hy, fun hx => ⟨⟨x, hx.1⟩, hx, rfl⟩⟩`.
+
+Rewrite using `[e]`. Conclude with `(GLnLocal.isCompact_congruenceSubgroup k n m).inter_left (isClosed_GzS Z)`.
+-/
 theorem isCompact_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     IsCompact (((Lc Z m).subgroupOf (GzS Z) : Subgroup (GzS Z)) : Set (GzS Z)) := by
   rw [Subtype.isCompact_iff]
@@ -36,6 +50,17 @@ theorem isCompact_lc {n : ℕ} (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m 
   rw [e]
   exact (GLnLocal.isCompact_congruenceSubgroup k n m).inter_left (isClosed_GzS Z)
 
+/- English proof (translation)
+Introduce `n Z hZ g`. Express the relevant statement in the definitionally equal form `modularCharacterFun g = 1`. Take `⟨c, hc⟩` from `hI n Z hZ g.1 g.2`. Take `⟨hle, heq, hne⟩` from `hc c le_rfl (c + c) le_rfl`. Establish `hmap : (Lc Z c).map (MulAut.conj g.1).toMonoidHom ≤ GzS Z`.
+
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Subgroup.mem_map.1 hx`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Conclude with `(GzS Z).mul_mem ((GzS Z).mul_mem g.2 (lc_le Z c hy)) ((GzS Z).inv_mem g.2)`. Use `modularCharacterFun_eq_one g ((Lc Z c).subgroupOf (GzS Z)) (((Lc Z c).map (MulAut.conj g.1).toMonoidHom).subgroupOf (GzS Z)) ((Lc Z (c + c)).subgroupOf (GzS Z)) (isCompact_lc Z c) (isOpen_lc Z c) (isOpen_lc Z (c + c)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_map_equiv, MulAut.conj_symm_apply, Subgroup.coe_mul, Subgroup.coe_inv]`. Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `(hle hx).1`.
+
+Introduce `x hx`. Rewrite `hx`, the goal using `[Subgroup.mem_subgroupOf]`. Conclude with `(hle hx).2`. Rewrite using `[Subgroup.relIndex_subgroupOf hmap, Subgroup.relIndex_subgroupOf (lc_le Z c)]`. Conclude with `heq`.
+
+Rewrite using `[Subgroup.relIndex_subgroupOf (lc_le Z c)]`. Conclude with `hne`.
+-/
 theorem unimod_of_indexSym (hI : IndexSym (k := k)) : Unimod (k := k) := by
   intro n Z hZ g
   change modularCharacterFun g = 1

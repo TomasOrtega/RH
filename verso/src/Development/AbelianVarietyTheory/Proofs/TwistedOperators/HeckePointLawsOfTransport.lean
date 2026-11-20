@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Establish `h₀` using `(HeckeKerModel.heckeKer_zero Xo.univ Ω x _ (Spec.map_preimage (x ≫ Xo.s)).symm P (p ^ 2) (pow_pos hp 2)).2.2.2.2.1`. Establish `hf : (Xo.univ.t.tors (Over.mk x) (Ideal.span {((p ^ 2 : ℕ) : 𝓞 E)})).Finite` using `Nat.finite_of_card_ne_zero (h₀.trans_ne (pow_ne_zero _ (pow_pos hp 2).ne'))`. Use `hf.finite_subsets.to_subtype` as an intermediate fact. Use `Finite.of_injective (β := {b | b ⊆ Xo.univ.t.tors (Over.mk x) (Ideal.span {((p ^ 2 : ℕ) : 𝓞 E)})}) (fun C => ⟨C.1, fun z hz a ha => C.2.2.2.1 hz a ?_⟩) fun C C' e => Subtype.ext (SetLike.coe_injective (congrArg Subtype.val e))` and prove the remaining obligations. Use `(Ideal.span_singleton_le_iff_mem _).2 ?_ ha` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_pow, pow_two]`. Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem finite_heckeKer {P : Ideal (𝓞 E)} {p : ℕ} (hp : 0 < p) (hP : (p : 𝓞 E) ∈ P) (i : ℕ) {Ω : Type} [Field Ω]
     [IsAlgClosed Ω] (x : Sp Ω ⟶ Xo.X) :
     Finite {C : Subgroup (Over.mk x ⟶ Xo.univ.t.G) // Xo.univ.t.HeckeKer (Over.mk x) Dw P p i C} := by
@@ -42,23 +47,38 @@ abbrev epsBase (Ω : Type) [Field Ω] : Sp (DualNumber Ω) ⟶ Sp Ω := spMap (a
 
 abbrev epsZero (Ω : Type) [Field Ω] : Sp Ω ⟶ Sp (DualNumber Ω) := spMap (TrivSqZeroExt.fstHom Ω Ω Ω).toRingHom
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm`.
+-/
 theorem spMap_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom g)).symm
 
+/- English proof (translation)
+Rewrite using `[spMap_spMap]`. Conclude with `(congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id _)`.
+-/
 theorem epsZero_base : epsZero Ω ≫ epsBase Ω = 𝟙 _ := by
   rw [spMap_spMap]
   exact (congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id _)
 
+/- English proof (translation)
+Rewrite using `[spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem eps_base (a : Ω) : spMap (epsMul a) ≫ epsBase Ω = epsBase Ω := by
   rw [spMap_spMap]
   refine congrArg spMap (RingHom.ext fun r => ?_)
   ext <;> simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Rewrite using `[spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Simplify using `[epsMul]`.
+-/
 theorem epsZero_eps (a : Ω) : epsZero Ω ≫ spMap (epsMul a) = epsZero Ω := by
   rw [spMap_spMap]
   refine congrArg spMap (RingHom.ext fun r => ?_)
   simp [epsMul]
 
+/- English proof (translation)
+Rewrite using `[spMap_spMap, spMap_spMap]`. Use `congrArg spMap (RingHom.ext fun r => ?_)` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, mul_left_comm]`.
+-/
 theorem eps_comm (a b : Ω) : spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul b) ≫ spMap (epsMul a) := by
   rw [spMap_spMap, spMap_spMap]
   refine congrArg spMap (RingHom.ext fun r => ?_)
@@ -68,19 +88,36 @@ abbrev zeroAt (x : Sp Ω ⟶ Xo.X) : (Over.mk x : Over Xo.X) ⟶ tEps x := sec' 
 
 abbrev scaleAt (x : Sp Ω ⟶ Xo.X) (a : Ω) : tEps x ⟶ tEps x := res x (spMap (epsMul a)) (eps_base a)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (epsZero_eps a)`.
+-/
 theorem zeroAt_scaleAt (x : Sp Ω ⟶ Xo.X) (a : Ω) : zeroAt x ≫ scaleAt x a = zeroAt x :=
   Over.OverMorphism.ext (epsZero_eps a)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (eps_comm a b)`.
+-/
 theorem scaleAt_comm (x : Sp Ω ⟶ Xo.X) (a b : Ω) : scaleAt x a ≫ scaleAt x b = scaleAt x b ≫ scaleAt x a :=
   Over.OverMorphism.ext (eps_comm a b)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Over.OverMorphism.ext h.2, fun h => ⟨Over.w a, congrArg (·.left) h⟩⟩`.
+-/
 theorem isTanAt_iff {x : Sp Ω ⟶ Xo.X} (a : tEps x ⟶ Xo.univ.t.G) : IsTanAt x a.left ↔ zeroAt x ≫ a = 1 :=
   ⟨fun h => Over.OverMorphism.ext h.2, fun h => ⟨Over.w a, congrArg (·.left) h⟩⟩
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (·.left) h⟩`.
+-/
 theorem isEigAt_iff {c : Coeff l} [Algebra c.F Ω] {x : Sp Ω ⟶ Xo.X} (τ : E →+* ℂ) (a : tEps x ⟶ Xo.univ.t.G) :
     IsEigAt c τ a.left ↔ ∀ r : 𝓞 E, a ≫ Xo.univ.t.act.act r = scaleAt x (algebraMap c.F Ω (embK c τ r)) ≫ a :=
   forall_congr' fun _ => ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (·.left) h⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`. Take `rfl : u = fun i => scaleAt x (cf i) ≫ a i` from `funext fun i => Over.OverMorphism.ext (hu i)`. Conclude with `Over.OverMorphism.ext h`. Introduce `h`.
+
+Conclude with `⟨_, fun _ => rfl, congrArg (·.left) h⟩`.
+-/
 theorem isCombAt_iff {x : Sp Ω ⟶ Xo.X} {m : ℕ} (a : Fin m → (tEps x ⟶ Xo.univ.t.G)) (cf : Fin m → Ω)
     (b : tEps x ⟶ Xo.univ.t.G) :
     IsCombAt x (fun i => (a i).left) cf b.left ↔ (List.ofFn fun i => scaleAt x (cf i) ≫ a i).prod = b := by
@@ -97,12 +134,21 @@ def tanMap (h : IsLinHom Ψ) : (tEps x ⟶ Xo.univ.t.G) →* (tEps x' ⟶ Xo.uni
   MonoidHom.mk' (fun a => Over.homMk (push Ψ (epsBase Ω) a) (push_hom h.1 _ a)) fun a b =>
     Over.OverMorphism.ext (h.2.1 _ _ a b _ _ rfl rfl).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tanMap_left (h : IsLinHom Ψ) (a : tEps x ⟶ Xo.univ.t.G) : (tanMap h a).left = push Ψ (epsBase Ω) a := rfl
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (push_res Ψ _ _ a)`.
+-/
 theorem tanMap_scale (h : IsLinHom Ψ) (s : Ω) (a : tEps x ⟶ Xo.univ.t.G) :
     tanMap h (scaleAt x s ≫ a) = scaleAt x' s ≫ tanMap h a :=
   Over.OverMorphism.ext (push_res Ψ _ _ a)
 
+/- English proof (translation)
+Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `e : toFib x (epsBase Ω) (a ≫ Xo.univ.t.act.act r) = toFib x (epsBase Ω) a ≫ (Over.mk x ◁ Xo.univ.t.act.act r).left`. Rewrite using `[toFib, toFib, ← Over.comp_left, lift_whiskerLeft]`. Rewrite using `[Over.comp_left, tanMap_left, tanMap_left, push, push, e, Category.assoc, reassoc_of% (h.2.2 r), ← Over.comp_left, whiskerLeft_snd, Over.comp_left]`. Simplify using `only [Category.assoc]`.
+-/
 theorem tanMap_act (h : IsLinHom Ψ) (r : 𝓞 E) (a : tEps x ⟶ Xo.univ.t.G) :
     tanMap h (a ≫ Xo.univ.t.act.act r) = tanMap h a ≫ Xo.univ.t.act.act r := by
   refine Over.OverMorphism.ext ?_
@@ -113,14 +159,29 @@ theorem tanMap_act (h : IsLinHom Ψ) (r : 𝓞 E) (a : tEps x ⟶ Xo.univ.t.G) :
     ← Over.comp_left, whiskerLeft_snd, Over.comp_left]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Take `⟨f, hf, -⟩` from `exists_pointHom h`. Simplify using `using hf 1`.
+-/
 theorem sends_one (h : IsLinHom Ψ) : Sends Ψ 1 1 := by
   obtain ⟨f, hf, -⟩ := exists_pointHom h
   simpa using hf 1
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext ((sends_sec'_iff h.1 (epsZero Ω) epsZero_base a 1).1 (by rw [ha]; exact sends_one h))`.
+-/
 theorem tanMap_zero (h : IsLinHom Ψ) {a : tEps x ⟶ Xo.univ.t.G} (ha : zeroAt x ≫ a = 1) :
     zeroAt x' ≫ tanMap h a = 1 :=
   Over.OverMorphism.ext ((sends_sec'_iff h.1 (epsZero Ω) epsZero_base a 1).1 (by rw [ha]; exact sends_one h))
 
+/- English proof (translation)
+Establish `e₀ : ∀ (y : Sp Ω ⟶ Xo.X) (a : tEps y ⟶ Xo.univ.t.G), zeroAt y ≫ a = 1 ↔ epsZero Ω ≫ toFib y (epsBase Ω) a = (lift (𝟙 (Over.mk y)) (1 : Over.mk y ⟶ Xo.univ.t.G)).left` using `fun y a => by`. Rewrite using `[← lift_sec' y _ epsZero_base]`. Use `⟨fun e => by rw [← e], fun e => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← lift_l_snd (𝟙 (Over.mk y)) (_ ≫ a), e, lift_l_snd]`. Establish `e₁ : ∀ a : tEps x ⟶ Xo.univ.t.G, tanMap h a = w ↔ toFib x (epsBase Ω) a ≫ Ψ = toFib x' (epsBase Ω) w` using `fun a => by`.
+
+Use `⟨fun e => gx_ext ?_ ?_, fun e => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.1, toFib_fst, toFib_fst]`. Rewrite using `[toFib_snd, ← e, tanMap_left, push, Category.assoc]`. Rewrite using `[tanMap_left, push, reassoc_of% e, toFib_snd]`. Take `⟨v, ⟨h₁, h₂⟩, hu⟩` from `LieEtale.existsUnique_dual_lift Ψ (toFib x' (epsBase Ω) w) (lift (𝟙 (Over.mk x)) (1 : Over.mk x ⟶ Xo.univ.t.G)).left ((sends_one h).trans ((e₀ x' w).1 hw).symm)`.
+
+Establish `hv : v ≫ (fst (Over.mk x) Xo.univ.t.G).left = epsBase Ω` using `by rw [← h.1, reassoc_of% h₂, toFib_fst]`. Set `a : tEps x ⟶ Xo.univ.t.G` to `Over.homMk (v ≫ (snd (Over.mk x) Xo.univ.t.G).left) (by`. Rewrite using `[Category.assoc, snd_hom, reassoc_of% hv]`. Use the proof step `rfl)`. Establish `ha : toFib x (epsBase Ω) a = v` using `gx_ext (by rw [toFib_fst, hv]) (by rw [toFib_snd]; rfl)`.
+
+Use `⟨a, ⟨(e₀ x a).2 (by rw [ha, h₁]), (e₁ a).2 (by rw [ha, h₂])⟩, fun b hb => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← toFib_snd x _ b, hu _ ⟨(e₀ x b).1 hb.1, (e₁ b).1 hb.2⟩]`. Both sides reduce to the same expression.
+-/
 theorem existsUnique_tanMap (h : IsLinHom Ψ) [Etale Ψ] {w : tEps x' ⟶ Xo.univ.t.G} (hw : zeroAt x' ≫ w = 1) :
     ∃! a : tEps x ⟶ Xo.univ.t.G, zeroAt x ≫ a = 1 ∧ tanMap h a = w := by
   have e₀ : ∀ (y : Sp Ω ⟶ Xo.X) (a : tEps y ⟶ Xo.univ.t.G), zeroAt y ≫ a = 1 ↔
@@ -144,6 +205,21 @@ theorem existsUnique_tanMap (h : IsLinHom Ψ) [Etale Ψ] {w : tEps x' ⟶ Xo.uni
   rw [← toFib_snd x _ b, hu _ ⟨(e₀ x b).1 hb.1, (e₁ b).1 hb.2⟩]
   rfl
 
+/- English proof (translation)
+Take `⟨a, rfl⟩ : ∃ a : Fin m → (tEps x ⟶ Xo.univ.t.G), u = fun i => (a i).left` from `⟨fun i => Over.homMk (u i) (tan i).1, rfl⟩`. Set `q : Ω` to `(p : Ω)⁻¹`. Establish `c₁ : ∀ y : Sp Ω ⟶ Xo.X, scaleAt y q ≫ scaleAt y p = 𝟙 _` using `fun y => Over.OverMorphism.ext (eps_cancel (inv_mul_cancel₀ hp))`. Establish `c₂ : ∀ y : Sp Ω ⟶ Xo.X, scaleAt y p ≫ scaleAt y q = 𝟙 _` using `fun y => Over.OverMorphism.ext (eps_cancel (mul_inv_cancel₀ hp))`. Set `L : (tEps x ⟶ Xo.univ.t.G) →* (tEps x' ⟶ Xo.univ.t.G)` to `MonoidHom.mk' (fun b => scaleAt x' q ≫ tanMap h b) fun b b' => by rw [map_mul, MonObj.comp_mul]`.
+
+Establish `hL : ∀ b, L b = scaleAt x' q ≫ tanMap h b` using `fun _ => rfl`. Establish `zs : ∀ (y : Sp Ω ⟶ Xo.X) (s : Ω) (b : tEps y ⟶ Xo.univ.t.G), zeroAt y ≫ b = 1 → zeroAt y ≫ scaleAt y s ≫ b = 1` using `fun y s b hb => by rw [← Category.assoc, zeroAt_scaleAt, hb]`. Establish `Lz : ∀ b, zeroAt x ≫ b = 1 → zeroAt x' ≫ L b = 1` using `fun b hb => zs _ _ _ (tanMap_zero h hb)`. Establish `Ls : ∀ s b, L (scaleAt x s ≫ b) = scaleAt x' s ≫ L b` using `fun s b => by`. Rewrite using `[hL, hL, tanMap_scale, ← Category.assoc, scaleAt_comm, Category.assoc]`.
+
+Establish `La : ∀ r b, L (b ≫ Xo.univ.t.act.act r) = L b ≫ Xo.univ.t.act.act r` using `fun r b => by`. Rewrite using `[hL, hL, tanMap_act, Category.assoc]`. Establish `Li : ∀ b b', zeroAt x ≫ b = 1 → zeroAt x ≫ b' = 1 → L b = L b' → b = b'` using `fun b b' hb hb' e => by`. Establish `e'` using `congrArg (scaleAt x' p ≫ ·) e`. Simplify using `only [hL, reassoc_of% (c₂ x')] at e'`.
+
+Conclude with `(existsUnique_tanMap h (tanMap_zero h hb')).unique ⟨hb, e'⟩ ⟨hb', rfl⟩`. Establish `ta : ∀ i, zeroAt x ≫ a i = 1` using `fun i => (isTanAt_iff _).1 (tan i)`. Use `⟨fun i => (L (a i)).left, fun i => ⟨tan i, (isTanAt_iff _).2 (Lz _ (ta i)), a i, rfl, ?_⟩, fun i => (isEigAt_iff τ _).2 fun r => ?_, fun w hw hw' => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (·.left) (show scaleAt x' p ≫ L (a i) = tanMap h (a i) by rw [hL, reassoc_of% (c₂ x')])`. Rewrite using `[← La, (isEigAt_iff τ _).1 (eig i), Ls]`.
+
+Take `⟨w, rfl⟩ : ∃ b : tEps x' ⟶ Xo.univ.t.G, w = b.left` from `⟨Over.homMk w hw.1, rfl⟩`. Take `⟨v, ⟨hv, e⟩, -⟩` from `existsUnique_tanMap h (zs x' p w ((isTanAt_iff _).1 hw))`. Take `rfl : L v = w` from `by rw [hL, e, reassoc_of% (c₁ x')]`. Establish `ev : IsEigAt c τ v.left` using `(isEigAt_iff τ _).2 fun r => Li _ _ (by have := Xo.univ.t.act.hom r; rw [← Category.assoc, hv, MonObj.one_comp]) (zs _ _ _ hv) (by rw [La, Ls, (isEigAt_iff τ _).1 hw'])`. Use `(existsUnique_congr fun cf => ?_).1 (basis _ ((isTanAt_iff _).2 hv) ev)` and prove the remaining obligations.
+
+Establish `e : L (List.ofFn fun i => scaleAt x (cf i) ≫ a i).prod = (List.ofFn fun i => scaleAt x' (cf i) ≫ L (a i)).prod`. Rewrite using `[map_list_prod, List.map_ofFn]`. Conclude with `congrArg (fun f => (List.ofFn f).prod) (funext fun i => Ls _ _)`. Rewrite using `[isCombAt_iff, isCombAt_iff, ← e]`. Use `⟨congrArg L, Li _ _ (LieEtale.comp_listProd _ _ fun b hb => ?_) hv⟩` and prove the remaining obligations.
+
+Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hb`. Conclude with `zs _ _ _ (ta i)`.
+-/
 theorem exists_basis_image {c : Coeff l} [Algebra c.F Ω] (h : IsLinHom Ψ) [Etale Ψ] {p : ℕ} (hp : (p : Ω) ≠ 0)
     (τ : E →+* ℂ) {m : ℕ} (u : Fin m → (Sp (DualNumber Ω) ⟶ Xo.univ.t.G.left)) (tan : ∀ i, IsTanAt x (u i))
     (eig : ∀ i, IsEigAt c τ (u i))
@@ -198,6 +274,11 @@ section Points
 
 variable {c : Coeff l} {P : Ideal (𝓞 E)} {p i : ℕ}
 
+/- English proof (translation)
+Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap c.F Ω).injective`. Take `⟨x', ψ, f, hψ, -, het, -⟩` from `exists_etale_isHkIsog Xo h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 y.x C.1 C.2`. Establish `hΨ` using `(isog_iff ((Nat.Prime.coprime_iff_not_dvd h.2.2.1).2 h.2.2.2.2) _ _ _ _).1 ⟨f, hψ⟩`. Establish `: Etale (conj y.x x' ψ)` using `by rw [conj_apply]; infer_instance`. Take `⟨s', hs', htr⟩` from `ht Ω y.x x' C.1 _ y.s y.x_over C.2 hΨ y.gen`.
+
+Use `choose u' h₁ h₂ h₃ using fun τ => exists_basis_image (c := c) hΨ.2.1 (Nat.cast_ne_zero.2 h.2.2.1.ne_zero) τ (y.u τ) (y.tan τ) (y.eig τ) (y.basis τ)`. Conclude with `⟨⟨x', hψ.1.trans y.x_over, u', fun τ j => (h₁ τ j).2.1, h₂, h₃, s', hs'⟩, (hkRelFr_ofTransport_iff h i tr Ω y C _).2 ⟨_, hΨ, h₁, htr⟩⟩`.
+-/
 theorem exists_hkRelFr (h : IsSplitOff l P p) {tr : Transport Xo c} (ht : TrTotal Xo c tr P p i) (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) (C : hkKer (Xo := Xo) P p i Ω y) :
     ∃ z, hkRelFr P p i (ofTransport tr) Ω y C z := by
@@ -211,6 +292,13 @@ theorem exists_hkRelFr (h : IsSplitOff l P p) {tr : Transport Xo c} (ht : TrTota
   exact ⟨⟨x', hψ.1.trans y.x_over, u', fun τ j => (h₁ τ j).2.1, h₂, h₃, s', hs'⟩,
     (hkRelFr_ofTransport_iff h i tr Ω y C _).2 ⟨_, hΨ, h₁, htr⟩⟩
 
+/- English proof (translation)
+Take `⟨ψ, f, hψ, hu, hs⟩` from `hz`. Take `⟨ψ', f', hψ', hu', hs'⟩` from `hz'`. Take `⟨-, k₁, k₂⟩` from `isHkIsog_etale_unique Xo h.1 h.2.1 h.2.2.1 h.2.2.2.1 h.2.2.2.2 C.2 hψ`. Take `⟨x, xo, u, ta, ei, ba, s, ge⟩` from `z`. Take `⟨x', xo', u', ta', ei', ba', s', ge'⟩` from `z'`.
+
+Take `rfl : x' = x` from `k₁ _ _ _ hψ'`. Take `rfl : ψ' = ψ` from `k₂ _ _ hψ'`. Take `rfl : u = u'` from `funext fun τ => funext fun j => by`. Take `⟨w₁, a₁, b₁, e₁⟩` from `hu τ j`. Take `⟨w₂, a₂, b₂, e₂⟩` from `hu' τ j`.
+
+Take `rfl : w₁ = w₂` from `pullback.hom_ext (a₁.trans a₂.symm) (b₁.trans b₂.symm)`. Conclude with `e₁.trans e₂.symm`. Take `rfl : s = s'` from `ht Ω y.x x' C.1 _ y.s s s' y.x_over C.2 ((isog_iff ((Nat.Prime.coprime_iff_not_dvd h.2.2.1).2 h.2.2.2.2) _ _ _ _).1 ⟨f, hψ⟩) y.gen ge ge' hs hs'`. Both sides reduce to the same expression.
+-/
 theorem hkRelFr_unique (h : IsSplitOff l P p) {tr : Transport Xo c} (ht : TrUnique Xo c tr P p i) (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) (C : hkKer (Xo := Xo) P p i Ω y) (z z' : FrPt Xo c Ω)
     (hz : hkRelFr P p i (ofTransport tr) Ω y C z) (hz' : hkRelFr P p i (ofTransport tr) Ω y C z') : z = z' := by
@@ -237,11 +325,20 @@ def ThetaTransportLaw : Prop :=
     (Xo : Moduli Dw l) (c : Coeff l) (P : Ideal (𝓞 E)) (p i : ℕ), IsSplitOff l P p →
     TrTotal Xo c (thetaTransport Xo c p) P p i ∧ TrUnique Xo c (thetaTransport Xo c p) P p i
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ i h _ _ _ _ y` and use `finite_heckeKer h.2.2.2.1.pos h.2.2.2.2 i y.x`.
+-/
 theorem heckeFinite : HeckeFinite := fun _ _ _ _ _ _ _ _ _ _ _ i h _ _ _ _ y =>
   finite_heckeKer h.2.2.2.1.pos h.2.2.2.2 i y.x
 
+/- English proof (translation)
+The claim follows from `Frames.ptsDetect_framed`.
+-/
 theorem pointsDetect : PointsDetect := Frames.ptsDetect_framed
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨heckeFinite, fun E _ _ _ H Dw l Xo c P p i h => exists_hkRelFr (isHeckePrime_iff.1 h) (hT E H Dw l Xo c P p i (isHeckePrime_iff.1 h)).1, fun E _ _ _ H Dw l Xo c P p i h Ω _ _ _ y C z z' hz hz' => by obtain rfl := hkRelFr_unique (isHeckePrime_iff.1 h) (hT E H Dw l Xo c P p i (isH …`.
+-/
 theorem heckePointLaws_of_transport (hT : ThetaTransportLaw) : HeckePointLaws :=
   ⟨heckeFinite,
     fun E _ _ _ H Dw l Xo c P p i h => exists_hkRelFr (isHeckePrime_iff.1 h)

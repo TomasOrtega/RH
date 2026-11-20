@@ -16,6 +16,9 @@ namespace PositivityTheory.Rg.BcB.F.SelfK
 
 open GlobalTheory.CompanionTheory.WaveMult.KerAdj
 
+/- English proof (translation)
+The claim follows from `FiniteDimensional.complete ℂ E.V ∀ y ∈ GLs n, ContinuousLinearMap.adjoint (k y⁻¹) = k y := by haveI := FiniteDimensional.complete ℂ E.V obtain ⟨c, hc⟩ : ∃ c : Fin 1 → ℂ, c = fun _ => 1 := ⟨_, rfl⟩ obtain ⟨K, hKk⟩ : ∃ K : Fin 1 → Mat n → (E.V →L[ℂ] E.V), K = fun _ => k := ⟨_, rfl⟩ …`.
+-/
 theorem self_adj (hL : LgFacts) (hU : Unimod) (hR : RCalc) (hS : WaveSpeed) (hE : WaveEx) (hQ : KerUniq) (n : ℕ)
     [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (E : KMod n) (g : ℝ → ℝ) (T : ℝ)
     (k : Mat n → (E.V →L[ℂ] E.V)) (hb : IsBump g T) (hk : IsKer μ E [] g k) :
@@ -96,6 +99,13 @@ namespace PositivityTheory.Rg.BcB.F
 
 attribute [local instance] borelG
 
+/- English proof (translation)
+Introduce `n μ hμ M g T k hb hk`. Use `haveI : BorelSpace (G n) := ⟨rfl⟩`. Use `haveI := FiniteDimensional.complete ℂ M.V`. Establish `h` using `SelfK.self_adj GlobalTheory.T.length_function_facts_hold GlobalTheory.T.general_linear_group_unimodular GlobalTheory.T.right_derivative_calculus_holds wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.1 GlobalTheory.T.wave_kernel_uniqueness n μ M g T k hb hk`. Use `⟨hk.1.congr h, ?_, fun y hy k₁ k₂ => ?_, fun u hu x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨R, hR⟩` from `hk.2.1`. Conclude with `⟨R, fun y hy hl => (h y hy).trans (hR y hy hl)⟩`. Establish `hm` using `GlobalTheory.CompanionTheory.WaveKer.mul_mem_GLs (GlobalTheory.CompanionTheory.WaveKer.mul_mem_GLs (GlobalTheory.CompanionTheory.WaveKer.unitary_mem_GLs k₁) hy) (GlobalTheory.CompanionTheory.WaveKer.unitary_mem_GLs k₂) show ContinuousLinearMap.adjoint (k _⁻¹) = _ * ContinuousLine …`. Rewrite using `[h _ hm, h y hy]`. Conclude with `hk.2.2.1 y hy k₁ k₂`.
+
+Rewrite using `[← hk.2.2.2 u hu x hx]`. Simplify using `only [act]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[h _ (PairAdj.val_mem_GLs z)]`.
+-/
 theorem adjKer₀ : AdjKer0 := by
   intro n μ hμ M g T k hb hk
   haveI : BorelSpace (G n) := ⟨rfl⟩

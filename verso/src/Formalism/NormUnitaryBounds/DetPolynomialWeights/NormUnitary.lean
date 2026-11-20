@@ -14,14 +14,23 @@ def fct (e : σ →₀ ℕ) : ℕ := ∏ i, (e i).factorial
 
 def P {d : ℕ} (S : (Fin d → σ) → ℂ) : MvPolynomial σ ℂ := ∑ t, monomial (cnt t) (S t)
 
+/- English proof (translation)
+Simplify using `only [P, coeff_sum, coeff_monomial]`.
+-/
 lemma coeff_P {d : ℕ} (S : (Fin d → σ) → ℂ) (e : σ →₀ ℕ) :
     coeff e (P S) = ∑ t, if cnt t = e then S t else 0 := by
   simp only [P, coeff_sum, coeff_monomial]
 
+/- English proof (translation)
+Rewrite using `[cnt, monomial_sum_one]`. Both sides reduce to the same expression.
+-/
 lemma prod_X_eq {R : Type*} [CommSemiring R] {d : ℕ} (t : Fin d → σ) :
     (∏ m, (X (t m) : MvPolynomial σ R)) = monomial (cnt t) 1 := by
   rw [cnt, monomial_sum_one]; rfl
 
+/- English proof (translation)
+Establish `: (∑ i, (X i : MvPolynomial σ ℕ)) ^ d = ∏ _m : Fin d, ∑ i, (X i : MvPolynomial σ ℕ)`. Simplify using `[Finset.prod_const]`. Rewrite using `[this, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Repeatedly rewrite using `[prod_X_eq]`.
+-/
 lemma pow_sum_X (d : ℕ) :
     (∑ i, (X i : MvPolynomial σ ℕ)) ^ d = ∑ t : Fin d → σ, monomial (cnt t) 1 := by
   have : (∑ i, (X i : MvPolynomial σ ℕ)) ^ d = ∏ _m : Fin d, ∑ i, (X i : MvPolynomial σ ℕ) := by
@@ -29,6 +38,17 @@ lemma pow_sum_X (d : ℕ) :
   rw [this, Finset.prod_univ_sum, Fintype.piFinset_univ]
   simp_rw [prod_X_eq]
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff e) (pow_sum_X (σ := σ) d)`. Rewrite `h` using `[Finset.sum_pow_eq_sum_piAntidiag]`. Establish `hk : ∀ k : σ → ℕ, (∏ i, (X i : MvPolynomial σ ℕ) ^ k i) = monomial (Finsupp.equivFunOnFinite.symm k) 1`. Introduce `k`. Rewrite using `[Finsupp.equivFunOnFinite_symm_eq_sum, monomial_sum_one]`.
+
+Simplify using `[X_pow_eq_monomial]`. Simplify using `only [hk, coeff_sum, coeff_monomial] at h`. Establish `hc : ∀ k : σ → ℕ, coeff e ((Nat.multinomial univ k : MvPolynomial σ ℕ) * monomial (Finsupp.equivFunOnFinite.symm k) 1) = if k = ⇑e then Nat.multinomial univ k else 0`. Introduce `k`. Rewrite using `[← map_natCast (C : ℕ →+* MvPolynomial σ ℕ), C_mul_monomial, mul_one, coeff_monomial]`.
+
+Distinguish the cases in `hke : k = ⇑e`. Substitute `hke` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hke, if_neg]`. Introduce `h'`.
+
+Apply `hke` to reduce the goal to its premises. Rewrite using `[← h']`. Simplify using the standard rewrite rules. Simplify using `only [hc, Finset.sum_ite_eq', Finset.sum_boole] at h`. Rewrite `h` using `[if_pos (by simp [he])]`.
+
+Rewrite `h` using `[Nat.cast_id]`. Rewrite using `[← h, mul_comm, fct, ← he]`. Conclude with `Nat.multinomial_spec _ _`.
+-/
 lemma card_fib {d : ℕ} (e : σ →₀ ℕ) (he : ∑ i, e i = d) :
     (univ.filter fun t : Fin d → σ => cnt t = e).card * fct e = d.factorial := by
   have h := congrArg (coeff e) (pow_sum_X (σ := σ) d)
@@ -57,6 +77,15 @@ lemma card_fib {d : ℕ} (e : σ →₀ ℕ) (he : ∑ i, e i = d) :
 def T (d : ℕ) (F : MvPolynomial σ ℂ) (t : Fin d → σ) : ℂ :=
   coeff (cnt t) F * (fct (cnt t) : ℂ) / (d.factorial : ℂ)
 
+/- English proof (translation)
+Use extensionality with `e`. Rewrite using `[coeff_P]`. Establish `hsum : (∑ t : Fin d → σ, if cnt t = e then T d F t else 0) = ((univ.filter fun t : Fin d → σ => cnt t = e).card : ℂ) * (coeff e F * fct e / d.factorial)`. Rewrite using `[← Finset.sum_filter]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => coeff e F * fct e / d.factorial)]`.
+
+Simplify using the standard rewrite rules. Introduce `t ht`. Simplify using `only [T, (Finset.mem_filter.1 ht).2]`. Rewrite using `[hsum]`. Distinguish the cases in `he : ∑ i, e i = d`.
+
+Establish `hc` using `card_fib e he`. Establish `hc' : ((univ.filter fun t : Fin d → σ => cnt t = e).card : ℂ) * (fct e : ℂ) = d.factorial` using `by exact_mod_cast hc`. Establish `hd : (d.factorial : ℂ) ≠ 0` using `by exact_mod_cast d.factorial_ne_zero`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : coeff e F = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `he (hF e (mem_support_iff.2 h))`. Simplify using `[hz]`.
+-/
 lemma rep {d : ℕ} (F : MvPolynomial σ ℂ) (hF : ∀ e ∈ F.support, ∑ i, e i = d) :
     P (T d F) = F := by
   ext e
@@ -94,6 +123,13 @@ def sub (V : Matrix σ σ ℂ) : MvPolynomial σ ℂ →ₐ[ℂ] MvPolynomial σ
 def act {d : ℕ} (V : Matrix σ σ ℂ) (S : (Fin d → σ) → ℂ) (t : Fin d → σ) : ℂ :=
   ∑ s, S s * ∏ m, V (s m) (t m)
 
+/- English proof (translation)
+Establish `key : (sub (star V)).comp (sub V) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [AlgHom.comp_apply, sub, aeval_X, map_sum, map_mul, aeval_C, algebraMap_eq, AlgHom.id_apply]`. Repeatedly rewrite using `[Finset.mul_sum, ← mul_assoc, ← map_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_mul, ← map_sum]`. Establish `h2 : ∀ k, ∑ l, V i l * star V l k = (1 : Matrix σ σ ℂ) i k` using `fun k => by`. Rewrite using `[← hV, Matrix.mul_apply]`. Repeatedly rewrite using `[h2, Matrix.one_apply]`.
+
+Simplify using the standard rewrite rules. Simplify using `using AlgHom.congr_fun key F`.
+-/
 lemma sub_sub (V : Matrix σ σ ℂ) (hV : V * star V = 1) (F : MvPolynomial σ ℂ) :
     sub (star V) (sub V F) = F := by
   have key : (sub (star V)).comp (sub V) = AlgHom.id ℂ _ := by
@@ -112,6 +148,9 @@ lemma sub_sub (V : Matrix σ σ ℂ) (hV : V * star V = 1) (F : MvPolynomial σ 
 
 def FR (F : MvPolynomial σ ℂ) : ℝ := ∑ e ∈ F.support, ‖coeff e F‖ ^ 2 * (fct e : ℝ)
 
+/- English proof (translation)
+Simplify using `only [ip, FR, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_pow, Complex.ofReal_natCast]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ip_self (F : MvPolynomial σ ℂ) : ip F F = (FR F : ℂ) := by
   simp only [ip, FR, Complex.ofReal_sum, Complex.ofReal_mul, Complex.ofReal_pow,
     Complex.ofReal_natCast]

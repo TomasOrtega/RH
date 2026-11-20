@@ -19,6 +19,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.GalN.V
 
+/- English proof (translation)
+Take `⟨N, hN, hu⟩` from `GlobalTheory.Corev.UnrPow.exists_pow_unrAt F χ`. Establish `e` using `(χ ^ N).val_principal ∅ (fun v _ => hu v) k`. Establish `h1 : ‖((∏ᶠ (v : HeightOneSpectrum (𝓞 F)) (_ : v ∉ (∅ : Finset _)), (χ ^ N).val v ^ ordF v k : ℂˣ) : ℂ)‖ = 1`. Use `finprod_induction (fun z : ℂˣ => ‖(z : ℂ)‖ = 1) (by simp) (fun x y hx hy => by simp [hx, hy]) fun v => ?_` and prove the remaining obligations. Establish `e2 : (χ ^ N).val v = χ.val v ^ N` using `rfl`.
+
+Break down `h v with h | h` into its components or cases. Simplify using `[e2, h]`. Simplify using `[h]`. Establish `e2 : (χ ^ N).inf k = χ.inf k ^ N` using `rfl`. Rewrite `h1` using `[e, Finset.prod_empty, mul_one, e2]`.
+
+Simplify using `only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, norm_inv, norm_pow, inv_eq_one] at h1`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 h1`.
+-/
 private theorem norm_inf {F : Type} [Field F] [NumberField F] (χ : HChar F) (k : Fˣ)
     (h : ∀ v : HeightOneSpectrum (𝓞 F), ‖((χ.val v : ℂˣ) : ℂ)‖ = 1 ∨ ordF v k = 0) : ‖((χ.inf k : ℂˣ) : ℂ)‖ = 1 := by
   obtain ⟨N, hN, hu⟩ := GlobalTheory.Corev.UnrPow.exists_pow_unrAt F χ
@@ -34,6 +41,19 @@ private theorem norm_inf {F : Type} [Field F] [NumberField F] (χ : HChar F) (k 
   simp only [Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, norm_inv, norm_pow, inv_eq_one] at h1
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 h1
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.HeckeNormPow.norm_val_eq_rpow F χ`. Take `⟨φ₀⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `hpar : ∀ φ, a φ = a φ₀` using `fun φ => UpperTheory.heckeChar_parallel_weight _ _ _ ha φ φ₀`. Take `⟨-, n2, n3⟩` from `Model.absPow_isAbsPow F s`. Establish `hq : ∀ u : HeightOneSpectrum (𝓞 F), (1 : ℝ) < (Ideal.absNorm u.asIdeal : ℝ)` using `fun u => by`.
+
+Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm u` after adjusting the coercions. Establish `k` using `norm_inf (χ * Model.absPow F s) (Units.mk0 (2 : F) two_ne_zero) fun u => Or.inl (by`. Rewrite using `[HChar.val_mul, Units.val_mul, norm_mul, hs, n2, Complex.norm_natCast_cpow_of_pos (by exact_mod_cast (zero_lt_one.trans (hq u))), ← Real.rpow_add (zero_lt_one.trans (hq u))]`. Use the proof step `simp)`. Establish `e0 : (χ * Model.absPow F s).inf (Units.mk0 (2 : F) two_ne_zero) = χ.inf (Units.mk0 (2 : F) two_ne_zero) * (Model.absPow F s).inf (Units.mk0 (2 : F) two_ne_zero)` using `rfl`.
+
+Rewrite `k` using `[e0, Units.val_mul, ha _ (fun φ => by simp [map_ofNat]), n3, ← Finset.prod_mul_distrib, norm_prod]`. Establish `e1 : ∀ φ : F →+* ℂ, ‖φ ((Units.mk0 (2 : F) two_ne_zero : Fˣ) : F) ^ a φ * ((‖φ ((Units.mk0 (2 : F) two_ne_zero : Fˣ) : F)‖ : ℝ) : ℂ) ^ (s : ℂ)‖ = (2 : ℝ) ^ ((a φ₀ : ℝ) + s)` using `fun φ => by`. Rewrite using `[Units.val_mk0, map_ofNat, norm_mul, norm_zpow, hpar φ, Complex.norm_cpow_eq_rpow_re_of_pos (by simp), Real.rpow_add two_pos, Real.rpow_intCast]`. Simplify using the standard rewrite rules. Rewrite `k` using `[Finset.prod_congr rfl fun φ _ => e1 φ, Finset.prod_const, pow_eq_one_iff_of_nonneg (by positivity) (Finset.card_pos.2 ⟨φ₀, Finset.mem_univ _⟩).ne']`.
+
+Establish `e2 : (a φ₀ : ℝ) + s = 0`. Use `congrArg Real.log k` as an intermediate fact. Rewrite `this` using `[Real.log_rpow two_pos, Real.log_one]`. Conclude with `(mul_eq_zero.1 this).resolve_right (Real.log_pos one_lt_two).ne'`. Establish `hv : (normV v : ℝ) = (Ideal.absNorm v.asIdeal : ℝ)`.
+
+Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `h1`, `h2` using `[hs, hv]`. Establish `a1 : s < 1` using `(Real.rpow_lt_rpow_left_iff (hq v)).1 (by rwa [Real.rpow_one])`. Establish `a2 : 0 < 1 + s` using `(Real.rpow_lt_rpow_left_iff (hq v)).1 (by`. Rewrite using `[Real.rpow_zero, Real.rpow_add (zero_lt_one.trans (hq v)), Real.rpow_one])` and apply the resulting hypothesis.
+
+Establish `b1 : (-1 : ℤ) < a φ₀` using `by exact_mod_cast (show (-1 : ℝ) < a φ₀ by linarith)`. Establish `b2 : a φ₀ < (1 : ℤ)` using `by exact_mod_cast (show (a φ₀ : ℝ) < 1 by linarith)`. Use function extensionality and compare the values at `φ`. Rewrite using `[hpar φ, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem type_zero_window {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (χ : HChar F) (a : (F →+* ℂ) → ℤ)
     (ha : IsAlgPos χ a) (v : HeightOneSpectrum (𝓞 F)) (h1 : ‖((χ.val v : ℂˣ) : ℂ)‖ < (normV v : ℝ))
     (h2 : 1 < (normV v : ℝ) * ‖((χ.val v : ℂˣ) : ℂ)‖) : a = 0 := by
@@ -75,6 +95,13 @@ theorem type_zero_window {F : Type} [Field F] [NumberField F] [IsTotallyReal F] 
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Take `⟨n, a, rfl⟩` from `WD.exists_rep x`. Rewrite `hb` using `[WD.charPol_mk, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Take `⟨v, hv⟩` from `hb.exists_hasEigenvector`. Establish `h1 : v = b • a.ρ φ v`. Rewrite using `[← map_smul, ← hv.apply_eq_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`.
+
+Both sides reduce to the same expression. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Conclude with `hv.2 (by simpa using h1)`. Use `⟨hb0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WD.eig_mk, mem_roots (LinearMap.charpoly_monic _).ne_zero, ← Module.End.hasEigenvalue_iff_isRoot_charpoly]`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := v) ⟨Module.End.mem_eigenspace_iff.2 ?_, hv.2⟩` and prove the remaining obligations. Use `conv_rhs => rw [h1]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hb0, one_smul]`.
+-/
 private theorem inv_mem_eig {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} {h : IsPlaceOver A w} (x : WD h) (φ : Weil h) {b : ℂ}
     (hb : (x.charPol φ⁻¹).IsRoot b) : b ≠ 0 ∧ b⁻¹ ∈ x.eig φ := by
   obtain ⟨n, a, rfl⟩ := WD.exists_rep x
@@ -92,6 +119,11 @@ private theorem inv_mem_eig {A : ValuationSubring Ω} {w : HeightOneSpectrum (�
   conv_rhs => rw [h1]
   rw [smul_smul, inv_mul_cancel₀ hb0, one_smul]
 
+/- English proof (translation)
+Take `⟨t, ht', φ, hφ, N, a, hN, -, -⟩` from `isWDOf_wdOf (h := h) hl ι (Units.continuous_val.comp hr)`. Establish `e` using `hN.charPol_wdOf (h := h) hl ht' ι (frob h)⁻¹`. Take `⟨b0, mb⟩` from `inv_mem_eig (wdOf h hl ι r) (frob h) (b := b) (by rw [e]; exact hb)`. Take `⟨c0, mc⟩` from `inv_mem_eig (wdOf h hl ι r) (frob h) (b := c) (by rw [e]; exact hc)`. Establish `k` using `H (frob h) (deg_frob) _ mc _ mb`.
+
+Rewrite `k` using `[norm_inv, norm_inv]`. Establish `pb` using `norm_pos_iff.2 b0`. Establish `pc` using `norm_pos_iff.2 c0`. Rewrite `k` using `[← div_eq_mul_inv, inv_eq_one_div, div_lt_div_iff₀ pc pb, one_mul]`. Conclude with `k`.
+-/
 theorem ratio_roots {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)} (hr : Continuous r)
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} {h : IsPlaceOver A w} (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal)
     (H : RatioW (wdOf h hl ι r)) {b c : ℂ}
@@ -109,6 +141,9 @@ theorem ratio_roots {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n
   rw [← div_eq_mul_inv, inv_eq_one_div, div_lt_div_iff₀ pc pb, one_mul] at k
   exact k
 
+/- English proof (translation)
+Take `⟨⟨σ, hσ⟩, hiso⟩` from `locCompR P F n π w`. Take `⟨rc, hrc⟩` from `P.exists_rec h`. Conclude with `H.ratio w hl A h rc hrc σ hσ (WD.unr_mono0 _ (unr_algNorm hrc σ B (((satLoc P F n w σ).2 _ π.finPart (hiso σ hσ) B).1 hB)))`.
+-/
 theorem ratioW_of_hasSat [IsTotallyReal F] (P : Hypotheses₂) {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}
     (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {A : ValuationSubring Ω} (h : IsPlaceOver A w) {B : Multiset ℂˣ} (hB : π.HasSat w B) :
@@ -118,6 +153,9 @@ theorem ratioW_of_hasSat [IsTotallyReal F] (P : Hypotheses₂) {n : ℕ} {π : T
   exact H.ratio w hl A h rc hrc σ hσ
     (WD.unr_mono0 _ (unr_algNorm hrc σ B (((satLoc P F n w σ).2 _ π.finPart (hiso σ hσ) B).1 hB)))
 
+/- English proof (translation)
+Rewrite using `[← (H.away w hl A h rc hrc σ hσ).eq_unr (unr_algNorm hrc σ S hS)]`. Conclude with `isWDOf_wdOf (h := h) hl ι (Units.continuous_val.comp H.cont)`.
+-/
 theorem isWDOf_satR [IsTotallyReal F] {n : ℕ} {π : TR.CuspSub F n} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     {wt : ℤ} {HT : (F →+* Qbar l) → Multiset ℤ} (H : IsGalRU π ι r wt HT) {w : HeightOneSpectrum (𝓞 F)}
     (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal) {A : ValuationSubring Ω} {h : IsPlaceOver A w}

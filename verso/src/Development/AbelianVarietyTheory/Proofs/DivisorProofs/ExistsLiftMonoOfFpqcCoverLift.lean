@@ -9,6 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.DualOpen
 
+/- English proof (translation)
+Introduce `G T T' Y π _ y t _ _ _ z hz`. Set `s` to `pullback.snd π y`. Set `σ : T' ⟶ pullback s t` to `pullback.lift (pullback.lift z t hz) (𝟙 T') (by rw [Category.id_comp]; exact pullback.lift_snd _ _ _)`. Establish `hσ : σ ≫ pullback.snd s t = 𝟙 T'` using `pullback.lift_snd _ _ _`. Use `haveI : IsSplitEpi (pullback.snd s t) := ⟨⟨⟨σ, hσ⟩⟩⟩`.
+
+Use `haveI : IsIso (pullback.snd s t) := isIso_of_mono_of_isSplitEpi _`. Establish `hq : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) t` using `⟨⟨‹_›, ‹_›⟩, ‹_›⟩`. Establish `hs : IsIso s` using `MorphismProperty.of_pullback_snd_of_descendsAlong (P := MorphismProperty.isomorphisms Scheme.{0}) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) hq (MorphismProperty.isomorphisms.infer_property _)`. Use `⟨inv s ≫ pullback.fst π y, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, IsIso.inv_hom_id_assoc]`.
+-/
 theorem exists_lift_of_fpqc_cover : ∀ (G T T' Y : Scheme.{0}) (π : G ⟶ Y) [Mono π] (y : T ⟶ Y) (t : T' ⟶ T)
     [Flat t] [Surjective t] [QuasiCompact t] (z : T' ⟶ G), z ≫ π = t ≫ y → ∃ w : T ⟶ G, w ≫ π = y := by
   intro G T T' Y π _ y t _ _ _ z hz

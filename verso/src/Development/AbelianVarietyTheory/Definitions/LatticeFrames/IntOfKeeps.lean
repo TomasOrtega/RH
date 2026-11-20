@@ -20,9 +20,19 @@ namespace GlobalTheory.MiTop.Scale
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.mul_mem_left _ _ hb.1, by rw [← nsmul_eq_mul, map_nsmul]; exact nsmul_mem hb.2 m⟩`.
+-/
 theorem nat_mul_int {x : Pl D} (m : ℕ) {b : AE D} (hb : b ∈ intAt D (· = x)) : (m : AE D) * b ∈ intAt D (· = x) :=
   ⟨Ideal.mul_mem_left _ _ hb.1, by rw [← nsmul_eq_mul, map_nsmul]; exact nsmul_mem hb.2 m⟩
 
+/- English proof (translation)
+Establish `hsd` using `LocSD.isSDAt_latV D S L x hL`. Establish `he` using `idem_mem_intAt (D := D) (· = x)`. Take `⟨N, hN, hup⟩` from `GlobalTheory.IwaPlace.SDBound.exists_mul_mem_intAt D S x _ hsd`. Take `⟨m, hm, hlow⟩` from `hsd.2.1`. Set `I : AddSubgroup (AE D)` to `(latV S L (· = x)).map (Pi.evalAddMonoidHom (fun _ => AE D) ⟨0, hr⟩)`.
+
+Take `⟨α, β, h1, -, h3, h4⟩` from `GlobalTheory.IwaIdeals.principal_at he (mem_idAt_iff _) I (m * N) (Nat.mul_pos hm hN) (by rintro _ ⟨y, hy, rfl⟩; exact hsd.1 y hy _) (by rintro o ho _ ⟨y, hy, rfl⟩; exact ⟨o • y, GlobalTheory.IwaPlace.SDStable.smul_mem D S x _ hsd o ho y hy, rfl⟩) ⟨_, hlow (fun _ => (N : AE D) * …`. Rewrite using `[Nat.cast_mul, mul_assoc]`. Use the proof step `rfl⟩`. Use the proof step `(by rintro _ ⟨y, hy, rfl⟩; rw [Nat.cast_mul, mul_assoc]; exact nat_mul_int m (hup y hy _))`. Take `⟨y, hy, e⟩` from `(h4 α h1).2 (by rw [h3]; exact he)`.
+
+Use `(h4 (t * α) (Ideal.mul_mem_left _ _ h1)).1 ⟨t • y, h y hy, by rw [← e]; rfl⟩` as an intermediate fact. Rewrite `this` using `[mul_assoc, h3]`. Then use the resulting hypothesis.
+-/
 theorem int_of_keeps {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (hr : 0 < S.rank) {x : Pl D} {t : AE D}
     (h : ∀ y ∈ latV S L (· = x), t • y ∈ latV S L (· = x)) : t * idem D (· = x) ∈ intAt D (· = x) := by
   have hsd := LocSD.isSDAt_latV D S L x hL
@@ -40,6 +50,11 @@ theorem int_of_keeps {S : HSp D} {L : Lat S} (hL : IsSelfDualC S L) (hr : 0 < S.
   have := (h4 (t * α) (Ideal.mul_mem_left _ _ h1)).1 ⟨t • y, h y hy, by rw [← e]; rfl⟩
   rwa [mul_assoc, h3] at this
 
+/- English proof (translation)
+Introduce `a ha`. Establish `e` using `(mem_idAt_iff _ a).1 ha`. Use `⟨fun h => ?_, fun h => (hn a ha).2 ?_⟩` and prove the remaining obligations. Use `int_mul ht h` as an intermediate fact. Rewrite `this` using `[mul_assoc, e]`. Then use the resulting hypothesis.
+
+Use `int_mul (int_conj.2 ht) h` as an intermediate fact. Rewrite `this` using `[RingHom.map_mul, cA_idem]`. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(t * cA D t)) * e`.
+-/
 theorem isU_of_norm {x : Pl D} {t : AE D} (ht : t * idem D (· = x) ∈ intAt D (· = x)) (hn : IsU x (t * cA D t)) : IsU x t := by
   intro a ha
   have e := (mem_idAt_iff _ a).1 ha
@@ -51,6 +66,9 @@ theorem isU_of_norm {x : Pl D} {t : AE D} (ht : t * idem D (· = x) ∈ intAt D 
     convert this using 1
     linear_combination (-(t * cA D t)) * e
 
+/- English proof (translation)
+Use `congrArg (fun M => star ζ₀ ⬝ᵥ M *ᵥ ζ₀) h` as an intermediate fact. Rewrite `this` using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, hτ, smul_mulVec, dotProduct_smul, smul_eq_mul, mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul]`. Rewrite using `[← this, mul_assoc]`.
+-/
 theorem norm_tau {E : Type} [Field E] [StarRing E] {m n : ℕ} {G : Matrix (Fin m) (Fin m) E} {G' : Matrix (Fin n) (Fin n) E}
     {τ : Matrix (Fin m) (Fin n) E} {t lam : E} {ζ : Fin m → E} {ζ₀ : Fin n → E} (h : τᴴ * (G * τ) = t • G')
     (hτ : τ *ᵥ ζ₀ = lam • ζ) : lam * star lam * (star ζ ⬝ᵥ G *ᵥ ζ) = t * (star ζ₀ ⬝ᵥ G' *ᵥ ζ₀) := by
@@ -59,17 +77,30 @@ theorem norm_tau {E : Type} [Field E] [StarRing E] {m n : ℕ} {G : Matrix (Fin 
     mulVec_smul, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul, smul_eq_mul] at this
   rw [← this, mul_assoc]
 
+/- English proof (translation)
+Take the linear combination `(-(A * A' * B * B' * X' * X' * e * ec * h)) * hN - (B * B' * X * X * X' * X' * e * ec * h * k) * g1 - (X * X * X' * X' * e * ec * h * k) * g2 - ((X * X' + 1) * e * ec * h * k) * g3`.
+-/
 theorem alg_norm {R : Type} [CommRing R] {A A' B B' X X' e ec l l' h k : R} (hN : l * l' * h = -(X * -X) * k) (g1 : A * A' = 1)
     (g2 : B * B' = 1) (g3 : X * X' = 1) :
     A' * -X' * e * B * l' * h * (B' * - -X' * ec * A * l * h) = -(e * ec * h * k) := by
   linear_combination (-(A * A' * B * B' * X' * X' * e * ec * h)) * hN -
     (B * B' * X * X * X' * X' * e * ec * h * k) * g1 - (X * X * X' * X' * e * ec * h * k) * g2 - ((X * X' + 1) * e * ec * h * k) * g3
 
+/- English proof (translation)
+Take the linear combination `(A' * X' * B * l' * h * a) * ee - (A' * X' * B * l' * h * a) * g4 + (A' * X' * B * li * a) * hN + (A' * B * li * a * X * k) * g3`.
+-/
 theorem alg_gen {R : Type} [CommRing R] {A' B X X' e e' l li l' h k a : R} (hN : l * l' * h = -(X * -X) * k) (ee : e' * e = 1)
     (g3 : X * X' = 1) (g4 : l * li = 1) : -(A' * -X' * e * B * l' * h * (e' * a)) = k * (A' * (X * B) * li * a) := by
   linear_combination (A' * X' * B * l' * h * a) * ee - (A' * X' * B * l' * h * a) * g4 + (A' * X' * B * li * a) * hN +
     (A' * B * li * a * X * k) * g3
 
+/- English proof (translation)
+Establish `hsd` using `LocSD.isSDAt_latV D S LS x hLS`. Establish `hw : ∀ y, vecMulVec ((α : AE D) • ratV ζ₀) ((fun k => cA D (s' k)) ᵥ* gA S) *ᵥ y = ((α : AE D) * hermAt S y s') • ratV ζ₀` using `fun y => by`. Rewrite using `[herm_eq, dotProduct_mulVec]`. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `⟨vecMulVec ((α : AE D) • ratV ζ₀) ((fun k => cA D (s' k)) ᵥ* gA S), (LatMem.mem_latO_iff D S Z LS LZ hLS hLZ _ _).2 ⟨fun i j => ?_, fun y hy => ?_⟩, hw⟩` and prove the remaining obligations. Rewrite using `[vecMulVec_apply]`. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Simplify using `only [vecMul, dotProduct]`.
+
+Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (id_conj (hsd.1 s' hs' k))`. Establish `hi` using `(hsd.2.2 y (hsd.1 y hy)).1 hy s' hs'`. Use `(hα _).2 ((congrArg (fun t => ((α⁻¹ : (AE D)ˣ) : AE D) • t) (hw y)).symm ▸ ?_)` and prove the remaining obligations. Rewrite using `[smul_smul, Units.inv_mul_cancel_left]`. Conclude with `(hμ _ hi.1).2 hi`.
+-/
 theorem rank_one {Z S : HSp D} {ζ₀ : Fin Z.rank → D.host.E} {LZ : Lat Z} {LS : Lat S} (hLZ : IsSelfDualC Z LZ)
     (hLS : IsSelfDualC S LS) {x : Pl D} {α : (AE D)ˣ}
     (hα : ∀ y, y ∈ latA Z LZ (· = x) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV Z LZ (· = x))
@@ -94,6 +125,9 @@ theorem rank_one {Z S : HSp D} {ζ₀ : Fin Z.rank → D.host.E} {LZ : Lat Z} {L
     rw [smul_smul, Units.inv_mul_cancel_left]
     exact (hμ _ hi.1).2 hi
 
+/- English proof (translation)
+Introduce `s' hs'` and use `by have hsd := LocSD.isSDAt_latV D S LS x hLS generalize ht : ((α⁻¹ : (AE D)ˣ) : AE D) * incA D (-D.host.xi0⁻¹) * e * cA D α * cA D (incA D lam) * incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ) = t refine (hsd.2.2 (t • s') fun i => Ideal.mul_mem_left _ _ (hsd.1 s' hs' i)).2 fun s hs => ?_ obtain …`.
+-/
 theorem top_keeps {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) {ζ : Fin L.rank → D.host.E}
     {ζ₀ : Fin L''.rank → D.host.E} {lam : D.host.E} (hτ : τ *ᵥ ζ₀ = lam • ζ)
     {LL : Lat L} {LZ : Lat L''} {LS : Lat S} (hLL : IsSelfDualC L LL) (hLZ : IsSelfDualC L'' LZ)
@@ -124,6 +158,15 @@ theorem top_keeps {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.h
   linear_combination (((α⁻¹ : (AE D)ˣ) : AE D) * incA D (-D.host.xi0⁻¹) * e * cA D α * cA D (incA D lam) *
     incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)) * e3
 
+/- English proof (translation)
+Take `⟨e, he0, hg⟩` from `line_gen hζ hLL.1 x`. Establish `hn` using `line_norm (μ := inU e he0) hζ hLL hg`. Establish `h0` using `line_norm (μ := 1) hζ₀ hLZ (x := x) fun a ha => by rw [inv_one, Units.val_one, one_mul]; exact hμ a ha`. Rewrite `h0` using `[Units.val_one, map_one, one_mul, one_mul]`. Establish `hε` using `idem_mem_intAt (D := D) (· = x)`.
+
+Establish `ee : incA D e⁻¹ * incA D e = 1` using `(inU e he0).inv_mul`. Establish `hti` using `int_of_keeps hLS hr (top_keeps τ hτ hLL hLZ hLS hα hμ hk (e := incA D e) ((hg _ (Ideal.mul_mem_left _ _ hε.1)).2 (by rwa [← mul_assoc, ee, one_mul])))`. Establish `hc : cA D (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)) = incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ)` using `by rw [← herm_rat, herm_conj]`. Establish `hN` using `congrArg (incA D) (norm_tau hsim hτ)`. Rewrite `hN` using `[RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_neg, RingHom.map_mul, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, RingHom.map_neg, ← FrameLat.cA_incA lam]`.
+
+Establish `g2 : cA D (α : AE D) * cA D ((α⁻¹ : (AE D)ˣ) : AE D) = 1` using `(cU α).mul_inv`. Establish `g3 : incA D D.host.xi0 * incA D D.host.xi0⁻¹ = 1` using `(xiU D).mul_inv`. Establish `g4 : incA D lam * incA D lam⁻¹ = 1` using `(inU lam hlam).mul_inv`. Rewrite `hti` using `[RingHom.map_neg]`. Establish `hu` using `isU_of_norm hti (by`.
+
+Rewrite using `[RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_mul, RingHom.map_neg, cA_cA, cA_cA, cA_xi_inv, hc, alg_norm hN α.mul_inv g2 g3]`. Conclude with `(hn.mul h0).neg)`. Introduce `a ha`. Rewrite using `[hg a ha, hu _ (Ideal.mul_mem_left _ _ ha), h0 _ (Ideal.mul_mem_left _ _ ha), ← int_neg, alg_gen hN ee g3 g4, mul_inv, mul_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem top_line {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) {ζ : Fin L.rank → D.host.E}
     {ζ₀ : Fin L''.rank → D.host.E} (hζ : IsLineVec L ζ) (hζ₀ : IsLineVec L'' ζ₀) {lam : D.host.E} (hlam : lam ≠ 0)
     (hτ : τ *ᵥ ζ₀ = lam • ζ) (hsim : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram)
@@ -159,6 +202,13 @@ theorem top_line {L L'' S : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.ho
     inv_inv]
   rfl
 
+/- English proof (translation)
+Establish `hsd` using `LocSD.isSDAt_latV D V₀ M x hM`. Establish `hmx : MxAt (· = x) (d.incAdj V₀ (a • yZero V₀ ρ z))` using `mxAt_mul _ (mxAt_smul _ (mxAt_mul' _ (mxAt_adj fun i j => Ideal.mul_mem_right _ _ ha)))`. Rewrite using `[LatMem.mem_latO_iff D V₀ W M LW hM hLW, and_iff_right hmx, hsd.2.2 (((m : AE D) * a) • ratV z) fun i => Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ ha)]`. Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Rewrite using `[incAdj_yZero_mulVec d _ hr, hα, smul_colMul, hW _ (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ (LocSD.hermAt_mem_idAt (hsd.1 y hy) _))), ← int_neg, ← herm_conj V₀ y, int_conj, mul_smul]`.
+
+Establish `e1` using `herm_smul V₀ 1 m y (a • ratV z)`. Rewrite `e1` using `[one_smul]`. Rewrite using `[e1, Units.val_mul, Units.val_mul, RingHom.map_mul, RingHom.map_mul, cU_val, cA_cA, xiU, inU_val, cA_xi]`. Establish `e2` using `α.mul_inv`. Establish `e3 : incA D D.host.xi0 * incA D D.host.xi0⁻¹ = 1` using `(xiU D).mul_inv`.
+
+Use `iff_of_eq (congrArg (· ∈ _) ?_)` and prove the remaining obligations. Take the linear combination `(incA D D.host.xi0 * incA D D.host.xi0⁻¹ * cA D m * hermAt V₀ y (a • ratV z)) * e2 + (cA D m * hermAt V₀ y (a • ratV z)) * e3`.
+-/
 theorem last_iff {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z : Fin V₀.rank → D.host.E) {M : Lat V₀} {LW : Lat W}
     (hM : IsSelfDualC V₀ M) {x : Pl D} (hLW : IsSelfDualC W LW) {α m : (AE D)ˣ} (r : Fin ρ) (hr : r.1 + 1 = ρ)
     (hα : ∀ y, y ∈ latA W LW (· = x) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV W LW (· = x))
@@ -184,6 +234,9 @@ theorem last_iff {V₀ W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ) (z : Fi
   linear_combination (incA D D.host.xi0 * incA D D.host.xi0⁻¹ * cA D m * hermAt V₀ y (a • ratV z)) * e2 +
     (cA D m * hermAt V₀ y (a • ratV z)) * e3
 
+/- English proof (translation)
+Introduce `a ha` and use `by obtain ⟨p, q, h1, -, h3, h4, h5⟩ := GlobalTheory.IwaIdeals.ideals_at_place D S S₀ ρ d L L₀ x (idem D (· = x)) (idem_mul_self _) (cA_idem _) (idem_mem_intAt _) (mem_idAt_iff _) (LocSD.isSDAt_latV D S L x hL) hm have hb : (b : AE D) * (cA D a * p i) ∈ idAt D (· = x) := Ideal.mul …`.
+-/
 theorem dual_line {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀} (hL : IsSelfDualC S L) {x : Pl D}
     (hm : MonoAt d L L₀ x) (i : Fin ρ) {b : (AE D)ˣ}
     (hX : ∀ a ∈ idAt D (· = x), colMul d.jX i a ∈ latV S L (· = x) ↔ ((b⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x)) :
@@ -195,6 +248,9 @@ theorem dual_line {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S}
   rw [Units.inv_mul_cancel_left, mul_assoc, mul_assoc, h3, mul_comm (cA D a), (mem_idAt_iff _ _).1 (id_conj ha)] at this
   rw [h5 i a ha, ← int_conj, RingHom.map_mul, cA_cA, ← this, ← int_conj, RingHom.map_mul, cA_cA]
 
+/- English proof (translation)
+Introduce `a ha` and use `by have hX : ∀ a ∈ idAt D (· = x), colMul J.d.jX (Fin.last σ) a ∈ latV J.W LW (· = x) ↔ (((α * m)⁻¹ : (AE D)ˣ) : AE D) * a ∈ intAt D (· = x) := fun a ha => by have e : ∀ t : AE D, colMul (xLast B'.d (vecB B'.o B'.ζ)) (Fin.last σ) t = B'.d.j0 *ᵥ (t • ratV (vecB B'.o B'.ζ)) := fun …`.
+-/
 theorem step_line {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ + 1)} {J : JacLev D (σ + 1)} {B' : BesLev D σ}
     {LV : Lat B.V} {LV₀ : Lat B.V₀} {LW : Lat J.W} {LW₀ : Lat J.W₀} {LV' : Lat B'.V} {LV₀' : Lat B'.V₀} {x : Pl D} {α m : (AE D)ˣ}
     (hα : ∀ (S : HSp D) (L : Lat S) y, y ∈ latA S L (· = x) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV S L (· = x))
@@ -222,6 +278,11 @@ theorem step_line {ψ : AddChar (AF D.host.F) ℂ} {σ : ℕ} {B : BesLev D (σ 
 variable {c : Comm D} {v : VCom c} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {ι : Type} {o : TDat c k ι}
 
+/- English proof (translation)
+Proceed by induction on `ρ with`. Consider the case `zero`. Introduce `j h a ha`. Take `⟨LL, LZ, h1, h2, h3, h4, h5⟩` from `(hs.split x hx).top j h`. Rewrite using `[← orth_line _ h3, zero_add, pow_one]`.
+
+Conclude with `top_line _ (c.bes j 0 h).line hs.pre.line hlam (hτ j h) (hs.pre.tau j h) h1 h2 (hc.x (j + 1) (by omega)).sd (hr j h) hα (fun a ha => hp.line h hx h4 ha) h5 a ha`. Consider the case `succ σ ih`. Introduce `j h a ha`. Rewrite using `[pow_succ', mul_assoc]`. Conclude with `step_line hα ((hs.good x).bf j (σ + 1) h) ((hs.good x).fb j σ h) (ih _ (idx_step h)) a ha`.
+-/
 theorem core_line (hc : c.Is) (hs : ShapeOff v o) (hp : TopPrim v o) (hr : ∀ j, j + 2 * 0 + 2 = D.R.m → 0 < (c.X (j + 1)).rank)
     {lam : D.host.E} (hlam : lam ≠ 0) (hτ : ∀ j h, v.τ j h *ᵥ o.ζ₀ = lam • (c.bes j 0 h).ζ) {x : Pl D} (hx : x ∉ v.tP) {α : (AE D)ˣ}
     (hα : ∀ (S : HSp D) (L : Lat S) y, y ∈ latA S L (· = x) ↔ ((α⁻¹ : (AE D)ˣ) : AE D) • y ∈ latV S L (· = x)) (ρ : ℕ) :

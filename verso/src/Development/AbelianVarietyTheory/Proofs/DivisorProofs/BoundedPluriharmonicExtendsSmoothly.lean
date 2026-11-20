@@ -15,6 +15,11 @@ namespace GlobalTheory.BdExtend
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Introduce `x hx`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Take `⟨j, hj⟩` from `A.cover x`. Establish `h2 : ContinuousAt (u ∘ (A.chart j).symm) (A.chart j x)` using `((hu j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm hU).mem_nhds ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩)).continuousAt`. Establish `h3 : ContinuousAt ((u ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `h2.comp ((A.chart j).continuousAt hj)`.
+
+Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem smoothOn_cont {U : Set X} (hU : IsOpen U) {u : X → ℝ} (hu : A.SmoothOn U u) : ContinuousOn u U := by
   intro x hx
   apply ContinuousAt.continuousWithinAt
@@ -28,6 +33,11 @@ theorem smoothOn_cont {U : Set X} (hU : IsOpen U) {u : X → ℝ} (hu : A.Smooth
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Take `⟨j, hj⟩` from `A.cover x`. Assume the negation of the conclusion as `h0`. Establish `hsub : U ⊆ Z` using `fun y hy => by`.
+
+Assume the negation of the conclusion as `hyZ`. Conclude with `h0 ⟨y, hy, hyZ⟩`. Establish `hpos` using `((A.chart j).isOpen_inter_preimage_symm hU).measure_pos volume ⟨A.chart j x, (A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩`. Conclude with `hpos.ne' (measure_mono_null (inter_subset_inter_right _ (preimage_mono hsub)) (hZ j))`.
+-/
 theorem dense_compl {Z : Set X} (hZ : ∀ j, volume ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Z) = 0) : Dense Zᶜ := by
   rw [dense_iff_inter_open]
   rintro U hU ⟨x, hx⟩
@@ -40,6 +50,13 @@ theorem dense_compl {Z : Set X} (hZ : ∀ j, volume ((A.chart j).target ∩ (A.c
     ⟨A.chart j x, (A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩
   exact hpos.ne' (measure_mono_null (inter_subset_inter_right _ (preimage_mono hsub)) (hZ j))
 
+/- English proof (translation)
+Use `choose V hVo hxV g hg hgu using h`. Use `⟨fun y => g y y, fun j z hz => ?_, fun x hx => hgu x x (hxV x) hx⟩` and prove the remaining obligations. Establish `key : ∀ x, ∀ y ∈ V x, g y y = g x y`. Introduce `x y hy`. Establish `hO` using `(hVo x).inter (hVo y)`.
+
+Establish `h1 : EqOn (g y) (g x) ((V x ∩ V y) ∩ Zᶜ)` using `fun p hp => by`. Rewrite using `[hgu y p hp.1.2 hp.2, hgu x p hp.1.1 hp.2]`. Conclude with `h1.of_subset_closure ((smoothOn_cont (hVo y) (hg y)).mono inter_subset_right) ((smoothOn_cont (hVo x) (hg x)).mono inter_subset_left) inter_subset_left (hZ.open_subset_closure_inter hO) ⟨hy, hxV y⟩`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hN` using `((A.chart j).isOpen_inter_preimage_symm (hVo ((A.chart j).symm z))).mem_nhds ⟨hz.1, hxV _⟩`.
+
+Use `((hg _ j).contDiffAt hN).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hN] with p hp`. Conclude with `key _ _ hp.2`.
+-/
 theorem glue {Z : Set X} (hZ : Dense Zᶜ) {u : X → ℝ}
     (h : ∀ x, ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ ∃ g : X → ℝ, A.SmoothOn V g ∧ ∀ y ∈ V, y ∉ Z → g y = u y) :
     ∃ g : X → ℝ, A.Smooth g ∧ ∀ x, x ∉ Z → g x = u x := by
@@ -59,6 +76,15 @@ theorem glue {Z : Set X} (hZ : Dense Zᶜ) {u : X → ℝ}
   filter_upwards [hN] with p hp
   exact key _ _ hp.2
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover (ψ.symm z)`. Establish `hT : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `hl : (A.chart j).symm (A.chart j (ψ.symm z)) = ψ.symm z` using `(A.chart j).left_inv hj`. Establish `hm` using `(A.chart j).map_source hj`. Establish `hc` using `GlobalTheory.ChernCompare.compat_self A j`.
+
+Establish `h1 : ContDiffAt ℝ 2 (Θ.φ x ∘ (A.chart j).symm) (A.chart j (ψ.symm z))` using `GlobalTheory.ChernCompare.pot_contDiffAt hΘ hc x hm (by rw [hl]; exact hx)`. Establish `h1' : ContDiffAt ℝ 2 (Θ.φ ((A.chart j).symm (A.chart j (ψ.symm z))) ∘ (A.chart j).symm) (A.chart j (ψ.symm z))` using `GlobalTheory.ChernCompare.pot_contDiffAt hΘ hc _ hm (Θ.mem_U _)`. Establish `h2 : ContDiffAt ℝ 2 (u ∘ (A.chart j).symm) (A.chart j (ψ.symm z))` using `((hu j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl).mem_nhds ⟨hm, by simpa [hl] using hzZ⟩)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hev : ((fun y => Θ.φ x y + u y) ∘ ψ.symm) =ᶠ[𝓝 z] ((fun p => (Θ.φ x ∘ (A.chart j).symm) p + 1 * (u ∘ (A.chart j).symm) p) ∘ (A.chart j ∘ ψ.symm))` using `by filter_upwards [(ψ.isOpen_inter_preimage_symm (A.chart j).open_source).mem_nhds ⟨hz, hj⟩] with p hp`. Simplify using `[(A.chart j).left_inv hp.2]`.
+
+Rewrite using `[levi_congr hev, levi_comp w hT (h1.add (contDiffAt_const.mul h2))]`. Establish `h3` using `hL j _ hm (by rw [hl]; exact hzZ) (fderiv ℂ (A.chart j ∘ ψ.symm) z w)`. Establish `h4 : ((Θ + LocPot.ofFun u).φ ((A.chart j).symm (A.chart j (ψ.symm z))) ∘ (A.chart j).symm) = fun p => (Θ.φ ((A.chart j).symm (A.chart j (ψ.symm z))) ∘ (A.chart j).symm) p + 1 * (u ∘ (A.chart j).symm) p`. Use function extensionality and compare the values at `p`. Rewrite using `[one_mul]`.
+
+Both sides reduce to the same expression. Unfold `leviAt at h3`. Rewrite `h3` using `[h4, levi_add_smul 1 h1' h2, GlobalTheory.ChernCompare.levi_base_compat hΘ hc x hm (by rw [hl]; exact hx)]`. Rewrite using `[Function.comp_apply, levi_add_smul 1 h1 h2]`. Conclude with `h3`.
+-/
 theorem levi_zero_compat {Z : Set X} (hZ : IsClosed Z) {Θ : LocPot X} {u : X → ℝ} (hΘ : IsPotential A Θ)
     (hu : A.SmoothOn Zᶜ u)
     (hL : ∀ j, ∀ y ∈ (A.chart j).target, (A.chart j).symm y ∉ Z → ∀ w, leviAt A (Θ + LocPot.ofFun u) j y w = 0)
@@ -96,6 +122,15 @@ theorem levi_zero_compat {Z : Set X} (hZ : IsClosed Z) {Θ : LocPot X} {u : X �
   rw [Function.comp_apply, levi_add_smul 1 h1 h2]
   exact h3
 
+/- English proof (translation)
+Establish `hC : 0 < |C| + 1` using `by positivity`. Use `set t := ε / (2 * (|C| + 1)) with ht`. Establish `ht0 : 0 < t` using `by positivity`. Establish `ht1 : (|C| + 1) * t = ε / 2` using `by rw [ht]; field_simp`. Use `⟨ε / 2 * B - (|C| + 1) * (1 + Real.log t), fun r a l hr ha hl => ?_⟩` and prove the remaining obligations.
+
+Establish `hr1 : 1 ≤ r` using `le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) hr`. Establish `hlog : 0 ≤ Real.log r` using `Real.log_nonneg hr1`. Establish `h1 : Real.log (r * t) ≤ r * t - 1` using `Real.log_le_sub_one_of_pos (by positivity)`. Rewrite `h1` using `[Real.log_mul (by positivity) ht0.ne']`. Establish `h2 : C * Real.log r ≤ (|C| + 1) * Real.log r` using `mul_le_mul_of_nonneg_right (by linarith [le_abs_self C]) hlog`.
+
+Establish `h3 : (|C| + 1) * Real.log r ≤ (|C| + 1) * (r * t - 1 - Real.log t)` using `mul_le_mul_of_nonneg_left (by linarith) hC.le`. Establish `h4 : (|C| + 1) * (r * t - 1 - Real.log t) = ε / 2 * r - (|C| + 1) * (1 + Real.log t)`. Rewrite using `[← ht1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5 : ε / 2 * r ≤ ε / 2 * (B - 2 * l)` using `mul_le_mul_of_nonneg_left hl (by positivity)`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem log_growth (C B ε : ℝ) (hε : 0 < ε) : ∃ K : ℝ, ∀ r a l : ℝ, Real.exp 1 ≤ r → |a| ≤ C * Real.log r →
     r ≤ B - 2 * l → |a| ≤ K - ε * l := by
   have hC : 0 < |C| + 1 := by positivity
@@ -116,6 +151,15 @@ theorem log_growth (C B ε : ℝ) (hε : 0 < ε) : ∃ K : ℝ, ∀ r a l : ℝ,
   have h5 : ε / 2 * r ≤ ε / 2 * (B - 2 * l) := mul_le_mul_of_nonneg_left hl (by positivity)
   nlinarith
 
+/- English proof (translation)
+Establish `h1 : ∀ k, (σ k).elim 1 f = ∏ i, if σ k = some i then f i else 1`. Introduce `k`. Consider the cases of `h : σ k with`. Consider the case `none => simp`. Consider the case `some a => simp`.
+
+Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.prod_comm, ← Finset.prod_subset (Finset.subset_univ T)]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `(hT i).1 hi`. Rewrite using `[Finset.prod_eq_single k]`.
+
+Simplify using `[hk]`. Introduce `k' _ hk'`. Rewrite using `[if_neg fun h => hk' (hσ k' k i h hk)]`. Simplify using the standard rewrite rules. Introduce `i _ hi`.
+
+Use `Finset.prod_eq_one fun k _ => if_neg fun h => hi ((hT i).2 ⟨k, h⟩)` and prove the remaining obligations.
+-/
 theorem prod_match {n : ℕ} (σ : Fin n → Option (Fin e)) (hσ : ∀ k k' i, σ k = some i → σ k' = some i → k = k')
     (f : Fin e → ℂ) (T : Finset (Fin e)) (hT : ∀ i, i ∈ T ↔ ∃ k, σ k = some i) :
     ∏ k, (σ k).elim 1 f = ∏ i ∈ T, f i := by
@@ -137,6 +181,21 @@ theorem prod_match {n : ℕ} (σ : Fin n → Option (Fin e)) (hσ : ∀ k k' i, 
   · intro i _ hi
     refine Finset.prod_eq_one fun k _ => if_neg fun h => hi ((hT i).2 ⟨k, h⟩)
 
+/- English proof (translation)
+Take `⟨hL, hsec, -, hZ, -, hr⟩` from `hs`. Take `⟨ψ, hψ, hx, hU, σ, hσ, -, v, hv, hv0, hsv⟩` from `hW x`. Use `set T : Finset (Fin e) := Finset.univ.filter fun i => ∃ k, σ k = some i with hT`. Use `set S : Finset (Fin e) := T.filter fun i => ψ x i = 0 with hS`. Use `set S' : Finset (Fin e) := T.filter fun i => ¬ ψ x i = 0 with hS'`.
+
+Use `set h : (Fin e → ℂ) → ℂ := fun z => (v ∘ ψ.symm) z * ∏ i ∈ S', z i with hh`. Establish `hm` using `ψ.map_source hx`. Establish `hl` using `ψ.left_inv hx`. Establish `hhc : ContinuousAt h (ψ x)` using `(PLAux.analyticAt_compat_fun hψ hv hm (by rw [hl]; exact hx)).continuousAt.mul (continuous_finset_prod _ fun i _ => continuous_apply i).continuousAt`. Establish `hh0 : h (ψ x) ≠ 0`.
+
+Use `mul_ne_zero ?_ (Finset.prod_ne_zero_iff.2 fun i hi => (Finset.mem_filter.1 hi).2)` and prove the remaining obligations. Simplify `hv0 x hx` using `[hl]`. Establish `hfac : ∀ z ∈ ψ.target, s x (ψ.symm z) = h z * ∏ i ∈ S, z i`. Introduce `z hz`. Rewrite using `[hsv _ (ψ.map_target hz), hh, mul_assoc, mul_comm (∏ i ∈ S', z i), hS, hS', Finset.prod_filter_mul_prod_filter_not, ← prod_match σ hσ z T (by simp [hT])]`.
+
+Use `congrArg _ (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Consider the cases of `σ k with`. Consider the case `none => rfl`. Consider the case `some a => simp [ψ.right_inv hz]`. Establish `hφc : ContinuousAt (L.φ x ∘ ψ.symm) (ψ x)` using `(GlobalTheory.ChernCompare.pot_contDiffAt hL hψ x hm (by rw [hl]; exact L.mem_U x)).continuousAt`.
+
+Use `set H : (Fin e → ℂ) → ℝ := fun z => Real.exp 1 - 2 * Real.log ‖h z‖ + 2 * (L.φ x ∘ ψ.symm) z with hH`. Establish `hHc : ContinuousAt H (ψ x)` using `(continuousAt_const.sub (continuousAt_const.mul (hhc.norm.log (norm_ne_zero_iff.2 hh0)))).add (continuousAt_const.mul hφc)`. Use `⟨ψ, hψ, hx, S, fun i hi => (Finset.mem_filter.1 hi).2, H (ψ x) + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [ψ.open_target.mem_nhds hm, hhc.eventually_ne hh0, hHc.eventually (gt_mem_nhds (lt_add_one (H (ψ x))))] with z hz hz0 hzH`. Establish `hnorm` using `hsec.2 (ψ.symm z) x (ψ.symm z) ⟨L.mem_U _, hU (ψ.map_target hz)⟩`.
+
+Establish `hiff : ψ.symm z ∉ Z ↔ ∀ i ∈ S, z i ≠ 0`. Rewrite using `[← Finset.prod_ne_zero_iff, hZ, P.bdry, mem_setOf_eq, ← norm_eq_zero, ← mul_eq_zero_iff_right (Real.exp_pos (-L.φ (ψ.symm z) (ψ.symm z))).ne', hnorm, mul_eq_zero_iff_right (Real.exp_pos _).ne', norm_eq_zero, hfac z hz, mul_eq_zero_iff_left hz0]`. Use `⟨hz, hiff, fun hzZ => ?_⟩` and prove the remaining obligations. Establish `hS0` using `hiff.1 hzZ`. Rewrite using `[hr _ hzZ, P.rW, logNormSec, hnorm, hfac z hz, norm_mul, norm_prod, Real.log_mul (mul_ne_zero (norm_ne_zero_iff.2 hz0) (Finset.prod_ne_zero_iff.2 fun i hi => norm_ne_zero_iff.2 (hS0 i hi))) (Real.exp_pos _).ne', Real.log_mul (norm_ne_zero_iff.2 hz0) (Finset.prod_ne_zero_iff.2 fun …`.
+
+Simplify using `only [hH, Function.comp_apply] at hzH ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem local_shape {Z : Set X} {r : X → ℝ} {L : LocPot X} {s : X → X → ℂ} (hs : IsBdSec A Z r L s) {n : ℕ}
     {W : Fin n → Set X} (hW : IsSNC A L s (fun _ => 1) W) (x : X) :
     ∃ ψ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ ∧ x ∈ ψ.source ∧ ∃ S : Finset (Fin e),
@@ -189,6 +248,23 @@ theorem local_shape {Z : Set X} {r : X → ℝ} {L : LocPot X} {s : X → X → 
   simp only [hH, Function.comp_apply] at hzH ⊢
   linarith
 
+/- English proof (translation)
+Take `⟨ψ, hψ, hx, S, hS, B, hB⟩` from `local_shape hs hW x`. Establish `hm` using `ψ.map_source hx`. Establish `hl` using `ψ.left_inv hx`. Establish `hφc : ContinuousAt (Θ.φ x ∘ ψ.symm) (ψ x)` using `(GlobalTheory.ChernCompare.pot_contDiffAt hΘ hψ x hm (by rw [hl]; exact Θ.mem_U x)).continuousAt`. Establish `h1 : ∀ᶠ z in 𝓝 (ψ x), ψ.symm z ∈ Θ.U x` using `mem_of_superset ((ψ.isOpen_inter_preimage_symm (Θ.isOpen_U x)).mem_nhds ⟨hm, by simpa [hl] using Θ.mem_U x⟩) inter_subset_right`.
+
+Establish `h2 : ∀ᶠ z in 𝓝 (ψ x), |(Θ.φ x ∘ ψ.symm) z| < |(Θ.φ x ∘ ψ.symm) (ψ x)| + 1` using `hφc.abs.eventually (gt_mem_nhds (lt_add_one _))`. Take `⟨R₀, hR₀, hb⟩` from `Metric.eventually_nhds_iff_ball.1 (hB.and (h1.and h2))`. Establish `hb' : ∀ z ∈ ball (ψ x) (min R₀ 1), _` using `fun z hz => hb z (ball_subset_ball (min_le_left _ _) hz)`. Take `⟨ρ, hρ, hρR, g, hg, hgf⟩` from `GlobalTheory.T.pluriharmonic_log_singular_extend e S (ψ x) (min R₀ 1) ((fun y => Θ.φ x y + u y) ∘ ψ.symm) (lt_min hR₀ one_pos) (min_le_right _ _) hS (by`. Use `ContDiffOn.add (f := Θ.φ x ∘ ψ.symm) (g := u ∘ ψ.symm) ?_ ?_` and prove the remaining obligations.
+
+Conclude with `(PLAux.contDiffOn_compat hψ (Θ.isOpen_U x) (hΘ.1 x)).mono fun z hz => ⟨(hb' z hz.1).1.1, (hb' z hz.1).2.1⟩`. Conclude with `(PLAux.contDiffOn_compat hψ hZ.isOpen_compl hu).mono fun z hz => ⟨(hb' z hz.1).1.1, (hb' z hz.1).1.2.1.2 hz.2⟩)`. Use the proof step `(fun z hz hz0 w => levi_zero_compat hZ hΘ hu hL hψ x (hb' z hz).1.1 (hb' z hz).2.1 ((hb' z hz).1.2.1.2 hz0) w)`. Use the proof step `(fun ε hε => by`. Take `⟨K, hK⟩` from `log_growth C B ε hε`.
+
+Use `⟨|(Θ.φ x ∘ ψ.symm) (ψ x)| + 1 + K, fun z hz hz0 => ?_⟩` and prove the remaining obligations. Establish `hzZ` using `(hb' z hz).1.2.1.2 hz0`. Establish `h3` using `hK _ _ _ (hs.exp_le _ _ _ _ hzZ) (hC _ hzZ) ((hb' z hz).1.2.2 hzZ)`. Establish `h4` using `(hb' z hz).2.2`. Establish `h5` using `abs_add_le (Θ.φ x (ψ.symm z)) (u (ψ.symm z))`.
+
+Simplify using `only [Function.comp_apply] at h4 ⊢`. Use the proof step `linarith)`. Establish `hV : ∀ y ∈ ψ.source ∩ ψ ⁻¹' ball (ψ x) ρ, ψ y ∈ ball (ψ x) (min R₀ 1)` using `fun y hy => ball_subset_ball hρR hy.2`. Use `⟨ψ.source ∩ ψ ⁻¹' ball (ψ x) ρ, ψ.isOpen_inter_preimage isOpen_ball, ⟨hx, mem_ball_self hρ⟩, fun y => g (ψ y) - Θ.φ x y, fun j => ?_, fun y hy hyZ => ?_⟩` and prove the remaining obligations. Use `ContDiffOn.sub (f := g ∘ (ψ ∘ (A.chart j).symm)) (g := Θ.φ x ∘ (A.chart j).symm) ?_ ?_` and prove the remaining obligations.
+
+Use `hg.comp (fun z hz => ?_) fun z hz => hz.2.2` and prove the remaining obligations. Conclude with `(((hψ j).1 z ⟨hz.1, hz.2.1⟩).contDiffAt.restrict_scalars ℝ).contDiffWithinAt`. Use `(hΘ.1 x j).mono fun z hz => ⟨hz.1, ?_⟩` and prove the remaining obligations. Use `(hb' _ (hV _ hz.2)).2.1` as an intermediate fact. Rewrite `this` using `[ψ.left_inv hz.2.1]`. Then use the resulting hypothesis.
+
+Establish `h3` using `(hb' _ (hV y hy)).1.2.1`. Rewrite `h3` using `[ψ.left_inv hy.1]`. Establish `h4` using `hgf _ hy.2 (h3.1 hyZ)`. Simplify using `only [Function.comp_apply, ψ.left_inv hy.1] at h4`. Simplify using `only [h4]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem local_ext {Z : Set X} (hZ : IsClosed Z) {r : X → ℝ} {L : LocPot X} {s : X → X → ℂ} (hs : IsBdSec A Z r L s)
     {n : ℕ} {W : Fin n → Set X} (hW : IsSNC A L s (fun _ => 1) W) {Θ : LocPot X} {u : X → ℝ} {C : ℝ}
     (hΘ : IsPotential A Θ) (hu : A.SmoothOn Zᶜ u)
@@ -242,6 +318,9 @@ theorem local_ext {Z : Set X} (hZ : IsClosed Z) {r : X → ℝ} {L : LocPot X} {
     simp only [h4]
     ring
 
+/- English proof (translation)
+Introduce `e M hM σ Θ u C hΘ hu hL hC`. Take `⟨-, L, s, hs, n, W, hW⟩` from `hM σ`. Conclude with `glue (dense_compl (M.bd σ).2.1) (local_ext (M.bd σ).1 hs hW hΘ hu hL hC)`.
+-/
 theorem smooth_extension : ∀ (e : ℕ) (M : Man e), M.FromSec → ∀ (σ : Fin (M.n + 1)) (Θ : LocPot (M.X σ))
     (u : M.X σ → ℝ) (C : ℝ), IsPotential (M.A σ) Θ → (M.A σ).SmoothOn (M.Z σ)ᶜ u →
     (∀ j, ∀ y ∈ ((M.A σ).chart j).target, ((M.A σ).chart j).symm y ∉ M.Z σ → ∀ w,

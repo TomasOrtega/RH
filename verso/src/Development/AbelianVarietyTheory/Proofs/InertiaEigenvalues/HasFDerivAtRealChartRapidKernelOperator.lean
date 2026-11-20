@@ -23,6 +23,11 @@ namespace GlobalTheory.MSpanDecay.KernelDeriv
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `h` using `chart_lieD hG (toL ((u⁻¹).val * Matrix.of V)) g (val_mem_invSet u)`. Rewrite `h` using `[chart_val]`. Rewrite using `[h]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `V = toL (u.val * ((u⁻¹).val * Matrix.of V))`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem fderiv_chart_apply {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a) (u : GL (Fin a) (Cinf E)) (V : Lie E a) :
     fderiv ℝ (chart G g) (toL u.val) V = lieD (toL ((u⁻¹).val * Matrix.of V)) G (g * infGL E a u) := by
   have h := chart_lieD hG (toL ((u⁻¹).val * Matrix.of V)) g (val_mem_invSet u)
@@ -33,6 +38,9 @@ theorem fderiv_chart_apply {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a)
   rw [← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
   rfl
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun V => ?_` and prove the remaining obligations. Establish `h` using `ColConvGrowth.norm_toL_mul_le (Matrix.of V) (Matrix.of M)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_rmul_le (M : Lie E a) : ‖rmul M‖ ≤ (a : ℝ) * ‖M‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun V => ?_
   have h := ColConvGrowth.norm_toL_mul_le (Matrix.of V) (Matrix.of M)
@@ -40,12 +48,21 @@ theorem norm_rmul_le (M : Lie E a) : ‖rmul M‖ ≤ (a : ℝ) * ‖M‖ := by
     _ ≤ (a : ℝ) * ‖V‖ * ‖M‖ := h
     _ = (a : ℝ) * ‖M‖ * ‖V‖ := by ring
 
+/- English proof (translation)
+Use `norm_nonneg (toL (z⁻¹).val)` as an intermediate fact. Unfold `height`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_toL_le_height (z : GL (Fin a) (Cinf E)) : ‖toL z.val‖ ≤ height z := by
   have := norm_nonneg (toL (z⁻¹).val); unfold height; linarith
 
+/- English proof (translation)
+Use `norm_nonneg (toL z.val)` as an intermediate fact. Unfold `height`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_toL_inv_le_height (z : GL (Fin a) (Cinf E)) : ‖toL (z⁻¹).val‖ ≤ height z := by
   have := norm_nonneg (toL z.val); unfold height; linarith
 
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun V => ?_` and prove the remaining obligations. Rewrite using `[fderiv_chart_apply hG g v V]`. Establish `h` using `ColConvGrowth.norm_toL_mul_le (v⁻¹).val (Matrix.of V)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_fderiv_chart_le {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a) (v : GL (Fin a) (Cinf E)) :
     ‖fderiv ℝ (chart G g) (toL v.val)‖ ≤
       (a : ℝ) * ‖toL (v⁻¹).val‖ * ‖fderiv ℝ (chart G (g * infGL E a v)) (oneL E a)‖ := by
@@ -59,6 +76,11 @@ theorem norm_fderiv_chart_le {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E 
         mul_le_mul_of_nonneg_left h (norm_nonneg _)
     _ = _ := by ring
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ (Lie E a)`. Take `⟨Cb, hCb, hb⟩` from `b.exists_opNorm_le (F := ℂ)`. Establish `hgr : ∀ i, ∃ (C : ℝ) (N : ℕ), ∀ y : GL (Fin a) (Cinf E), ‖lieD (b i) G (g * infGL E a y)‖ ≤ C * height y ^ N` using `fun i => (hG.derivative (b i)).growth g`. Use `choose C N hCN using hgr`. Use `⟨Cb * ∑ i, |C i|, ∑ i, N i, by positivity, fun z => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `one_le_height z`. Establish `hterm : ∀ i, ‖lieD (b i) G (g * infGL E a z)‖ ≤ |C i| * height z ^ (∑ j, N j)` using `fun i => (hCN i z).trans ((mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity)).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ h1 (Finset.single_le_sum (fun j _ => Nat.zero_le (N j)) (Finset.mem_univ i))) (abs_nonneg _)))`. Establish `hM : 0 ≤ ∑ i, ‖lieD (b i) G (g * infGL E a z)‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_norm_D_le {G : GA E a → ℂ} (hG : Good G) (g : GA E a) :
     ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ z : GL (Fin a) (Cinf E),
       ‖fderiv ℝ (chart G (g * infGL E a z)) (oneL E a)‖ ≤ C * height z ^ N := by
@@ -82,6 +104,13 @@ theorem exists_norm_D_le {G : GA E a → ℂ} (hG : Good G) (g : GA E a) :
         mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => hterm i) hCb.le
     _ = Cb * (∑ i, |C i|) * height z ^ (∑ i, N i) := by rw [← Finset.sum_mul]; ring
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ w in nhds (toL y.val), w ∈ invSet E a` using `isOpen_invSet.mem_nhds (val_mem_invSet y)`. Establish `hc : ContinuousAt (fun w : Lie E a => ‖toL (Matrix.of w)⁻¹‖) (toL y.val)`. Use `continuous_norm.continuousAt.comp ?_` and prove the remaining obligations. Establish `hd : ContinuousAt Ring.inverse (Matrix.of (toL y.val)).det`. Establish `: (Matrix.of (toL y.val)).det = ((Matrix.GeneralLinearGroup.det y : (Cinf E)ˣ) : Cinf E)` using `rfl`.
+
+Rewrite using `[this]`. Conclude with `NormedRing.inverse_continuousAt _`. Conclude with `continuousAt_matrix_inv (Matrix.of (toL y.val)) hd`. Establish `hv : ‖toL (Matrix.of (toL y.val))⁻¹‖ = ‖toL (y⁻¹).val‖`. Use `congr 1`.
+
+Conclude with `(Matrix.coe_units_inv y).symm`. Establish `h2 : ∀ᶠ w in nhds (toL y.val), ‖toL (Matrix.of w)⁻¹‖ < ‖toL (y⁻¹).val‖ + 1` using `hc.eventually_lt continuousAt_const (by rw [hv]; linarith)`. Establish `h3 : ∀ᶠ w in nhds (toL y.val), ‖w‖ < ‖toL y.val‖ + 1` using `continuous_norm.continuousAt.eventually_lt continuousAt_const (by linarith)`. Use `filter_upwards [h1, h2, h3] with w hw1 hw2 hw3`. Conclude with `⟨hw1, hw2.le, hw3.le⟩`.
+-/
 theorem eventually_inv_bound (y : GL (Fin a) (Cinf E)) :
     ∀ᶠ w in nhds (toL y.val), w ∈ invSet E a ∧ ‖toL (Matrix.of w)⁻¹‖ ≤ ‖toL (y⁻¹).val‖ + 1 ∧
       ‖w‖ ≤ ‖toL y.val‖ + 1 := by
@@ -103,6 +132,11 @@ theorem eventually_inv_bound (y : GL (Fin a) (Cinf E)) :
   filter_upwards [h1, h2, h3] with w hw1 hw2 hw3
   exact ⟨hw1, hw2.le, hw3.le⟩
 
+/- English proof (translation)
+Establish `e : chart G g = (invSet E a).piecewise (chart G g) 0`. Use function extensionality and compare the values at `x`. Distinguish the cases in `h : x ∈ invSet E a`. Simplify using `[Set.piecewise, h]`. Establish `h' : ¬ IsUnit (Matrix.of x)` using `h`.
+
+Simplify using `[Set.piecewise, h, chart, h']`. Rewrite using `[e]`. Conclude with `ContinuousOn.measurable_piecewise (hG g).continuousOn continuousOn_const isOpen_invSet.measurableSet`.
+-/
 theorem measurable_chart {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a) : Measurable (chart G g) := by
   classical
   have e : chart G g = (invSet E a).piecewise (chart G g) 0 := by
@@ -124,6 +158,19 @@ def rmulL : Lie E a →L[ℝ] (Lie E a →L[ℝ] Lie E a) :=
         change Matrix.of V * (c • Matrix.of M) = c • (Matrix.of V * Matrix.of M)
         exact Matrix.mul_smul _ _ _ }
 
+/- English proof (translation)
+Establish `hz` using `one_le_height z`. Establish `hu1` using `one_le_height u`. Establish `ha : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `hv : height (u * z) ≤ ((a : ℝ) + 1) * H * height z`. Use `ColConvGrowth.height_mul_le u z` as an intermediate fact.
+
+Establish `h2 : ((a : ℝ) + 1) * height u * height z ≤ ((a : ℝ) + 1) * H * height z` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hu (by linarith)) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv1` using `one_le_height (u * z)`. Establish `hD` using `hC (u * z)`. Establish `hI` using `norm_toL_inv_le_height (u * z)`.
+
+Establish `hF` using `norm_fderiv_chart_le hG g (u * z)`. Establish `hR : ‖rmul (toL z.val)‖ ≤ (a : ℝ) * height z` using `(norm_rmul_le _).trans (mul_le_mul_of_nonneg_left (norm_toL_le_height z) ha)`. Establish `hcomp` using `ContinuousLinearMap.opNorm_comp_le (fderiv ℝ (chart G g) (toL (u * z).val)) (rmul (toL z.val))`. Establish `hd0` using `norm_nonneg (fderiv ℝ (chart G (g * infGL E a (u * z))) (oneL E a))`. Establish `hr0` using `norm_nonneg (rmul (toL z.val))`.
+
+Generalize the expression as in `height (u * z) = t at hv hv1 hD hI`. Generalize the expression as in `‖fderiv ℝ (chart G (g * infGL E a (u * z))) (oneL E a)‖ = d at hD hF hd0`. Generalize the expression as in `‖toL ((u * z)⁻¹).val‖ = i at hI hF`. Generalize the expression as in `‖fderiv ℝ (chart G g) (toL (u * z).val)‖ = f at hF hcomp`. Generalize the expression as in `‖rmul (toL z.val)‖ = r at hR hcomp hr0`.
+
+Generalize the expression as in `‖(fderiv ℝ (chart G g) (toL (u * z).val)).comp (rmul (toL z.val))‖ = c at hcomp ⊢`. Generalize the expression as in `height z = h at hz hv hR ⊢`. Establish `hH : 0 ≤ ((a : ℝ) + 1) * H` using `by nlinarith`. Establish `s1 : f ≤ (a : ℝ) * C * t ^ (N + 1)`. Establish `: (a : ℝ) * i * d ≤ (a : ℝ) * t * (C * t ^ N)` using `mul_le_mul (mul_le_mul_of_nonneg_left hI ha) hD hd0 (by positivity)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `s2 : t ^ (N + 1) ≤ (((a : ℝ) + 1) * H * h) ^ (N + 1)` using `pow_le_pow_left₀ (by linarith) hv _`. Establish `s3 : f ≤ (a : ℝ) * C * (((a : ℝ) + 1) * H * h) ^ (N + 1)` using `s1.trans (mul_le_mul_of_nonneg_left s2 (by positivity))`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_fderiv_comp_le {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a) {C : ℝ} {N : ℕ} (hC0 : 0 ≤ C)
     (hC : ∀ z, ‖fderiv ℝ (chart G (g * infGL E a z)) (oneL E a)‖ ≤ C * height z ^ N) {H : ℝ}
     (u z : GL (Fin a) (Cinf E)) (hu : height u ≤ H) :
@@ -168,6 +215,49 @@ theorem norm_fderiv_comp_le {G : GA E a → ℂ} (hG : G ∈ Sm E a) (g : GA E a
         mul_le_mul s3 hR hr0 (by positivity)
     _ = _ := by rw [mul_pow, pow_succ h (N + 1)]; ring
 
+/- English proof (translation)
+Introduce `E _ _ _ a G X _ ν _ k γ hR hG g y`. Take `⟨hk, hγ, hint⟩` from `hR`. Establish `hsm` using `hG.mem_Sm`. Use `set cG := chart G g with hcG`. Set `Γ : X → Lie E a` to `fun x => toL (γ x).val`.
+
+Set `F : Lie E a → X → ℂ` to `fun w x => k x * cG (rmul (Γ x) w)`. Set `F' : Lie E a → X → (Lie E a →L[ℝ] ℂ)` to `fun w x => k x • ((fderiv ℝ cG (rmul (Γ x) w)).comp (rmul (Γ x)))`. Take `⟨C, N, hC0, hC⟩` from `exists_norm_D_le hG g`. Use `set H : ℝ := 1 + (‖toL y.val‖ + 1) + (‖toL (y⁻¹).val‖ + 1) with hH`. Set `s` to `{w : Lie E a | w ∈ invSet E a ∧ ‖toL (Matrix.of w)⁻¹‖ ≤ ‖toL (y⁻¹).val‖ + 1 ∧ ‖w‖ ≤ ‖toL y.val‖ + 1}`.
+
+Establish `hs : s ∈ nhds (toL y.val)` using `eventually_inv_bound y`. Establish `hunit : ∀ w ∈ invSet E a, ∃ u : GL (Fin a) (Cinf E), toL u.val = w` using `fun w hw => ⟨hw.unit, rfl⟩`. Establish `hHu : ∀ w ∈ s, ∀ u : GL (Fin a) (Cinf E), toL u.val = w → height u ≤ H`. Introduce and unpack `w ⟨_, h2, h3⟩ u rfl`. Establish `e : toL (u⁻¹).val = toL (Matrix.of (toL u.val))⁻¹` using `congrArg toL (Matrix.coe_units_inv u)`.
+
+Unfold `height`. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrm : ∀ (u : GL (Fin a) (Cinf E)) x, rmul (Γ x) (toL u.val) = toL (u * γ x).val` using `fun _ _ => rfl`. Establish `hE1 : ∀ u : GL (Fin a) (Cinf E), chart (fun g : GA E a => ∫ x, k x * G (g * infGL E a (γ x)) ∂ν) g (toL u.val) = ∫ x, F (toL u.val) x ∂ν`.
+
+Introduce `u`. Rewrite using `[chart_val]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [F]`.
+
+Rewrite using `[hrm, hcG, chart_val, map_mul, mul_assoc]`. Establish `heq : chart (fun g : GA E a => ∫ x, k x * G (g * infGL E a (γ x)) ∂ν) g =ᶠ[nhds (toL y.val)] fun w => ∫ x, F w x ∂ν` using `by filter_upwards [isOpen_invSet.mem_nhds (val_mem_invSet y)] with w hw`. Take `⟨u, rfl⟩` from `hunit w hw`. Conclude with `hE1 u`. Establish `hdiff : ∀ x, ∀ w ∈ invSet E a, HasFDerivAt (fun w => F w x) (F' w x) w`.
+
+Introduce `x w hw`. Take `⟨u, rfl⟩` from `hunit w hw`. Establish `h1 : HasFDerivAt cG (fderiv ℝ cG (rmul (Γ x) (toL u.val))) (rmul (Γ x) (toL u.val))`. Rewrite using `[hrm]`. Conclude with `((contDiffAt_chart hsm g (val_mem_invSet _)).differentiableAt (by simp)).hasFDerivAt`.
+
+Conclude with `(h1.comp (toL u.val) (rmul (Γ x)).hasFDerivAt).const_smul (k x)`. Establish `hΓm : Measurable Γ` using `hγ`. Establish `t1 : ∀ w, Measurable (fun x => rmul (Γ x) w)` using `fun w => by`. Establish `e : (fun x => rmul (Γ x) w) = ((rmulL (E` using `E) (a := a)).flip w) ∘ Γ := rfl`. Rewrite using `[e]`.
+
+Conclude with `(ContinuousLinearMap.continuous _).measurable.comp hΓm`. Establish `t2 : Measurable cG` using `measurable_chart hsm g`. Establish `hFm : ∀ w, AEStronglyMeasurable (F w) ν` using `fun w => (hk.mul (t2.comp (t1 w))).aestronglyMeasurable`. Set `Ψ : Lie E a → (Lie E a →L[ℝ] ℂ)` to `fun M => (fderiv ℝ cG (rmul M (toL y.val))).comp (rmul M)`. Establish `hΨc : ContinuousOn Ψ (invSet E a)`.
+
+Establish `hfd : ContinuousOn (fderiv ℝ cG) (invSet E a)` using `(hsm g).continuousOn_fderiv_of_isOpen isOpen_invSet (by simp)`. Establish `hmaps : Set.MapsTo (fun M : Lie E a => rmul M (toL y.val)) (invSet E a) (invSet E a)` using `fun M hM => IsUnit.mul y.isUnit hM`. Establish `e1 : (fun M : Lie E a => rmul M (toL y.val)) = ((rmulL (E` using `E) (a := a)).flip (toL y.val)) := rfl`. Establish `e2 : (fun M : Lie E a => rmul M) = ⇑(rmulL (E` using `E) (a := a)) := rfl`. Establish `h1 : ContinuousOn (fun M : Lie E a => fderiv ℝ cG (rmul M (toL y.val))) (invSet E a)`.
+
+Use `hfd.comp ?_ hmaps` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `(ContinuousLinearMap.continuous _).continuousOn`. Establish `h2 : ContinuousOn (fun M : Lie E a => rmul M) (invSet E a)`. Rewrite using `[e2]`.
+
+Conclude with `(ContinuousLinearMap.continuous _).continuousOn`. Conclude with `h1.clm_comp h2`. Establish `hF'm : AEStronglyMeasurable (F' (toL y.val)) ν` using `by classical borelize (Lie E a →L[ℝ] ℂ)`. Establish `hm : Measurable ((invSet E a).piecewise Ψ 0)` using `ContinuousOn.measurable_piecewise hΨc continuousOn_const isOpen_invSet.measurableSet`. Establish `e : (fun x => Ψ (Γ x)) = (invSet E a).piecewise Ψ 0 ∘ Γ`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[Set.piecewise, Γ, val_mem_invSet (γ x)]`. Establish `h3 : AEStronglyMeasurable (fun x => Ψ (Γ x)) ν`. Rewrite using `[e]`. Conclude with `(hm.comp hΓm).aestronglyMeasurable`.
+
+Conclude with `hk.aestronglyMeasurable.smul h3`. Establish `hFint : Integrable (F (toL y.val)) ν`. Take `⟨Cg, Ng, hg⟩` from `hG.growth g`. Establish `hy1` using `one_le_height y`. Use `Integrable.mono' ((hint Ng).const_mul (|Cg| * (((a : ℝ) + 1) * height y) ^ Ng)) (hFm _) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+
+Establish `hz` using `one_le_height (γ x)`. Establish `hv` using `ColConvGrowth.height_mul_le y (γ x)`. Establish `h1 : ‖G (g * infGL E a (y * γ x))‖ ≤ |Cg| * height (y * γ x) ^ Ng` using `(hg (y * γ x)).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (pow_nonneg (by linarith [one_le_height (y * γ x)]) _))`. Establish `h2 : height (y * γ x) ^ Ng ≤ (((a : ℝ) + 1) * height y) ^ Ng * height (γ x) ^ Ng`. Rewrite using `[← mul_pow]; exact pow_le_pow_left₀ (by linarith [one_le_height (y * γ x)]) hv _`.
+
+Establish `e : F (toL y.val) x = k x * G (g * infGL E a (y * γ x))`. Simplify using `only [F]`. Rewrite using `[hrm, hcG, chart_val]`. Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `set K : ℝ := (a : ℝ) * (a : ℝ) * C * (((a : ℝ) + 1) * H) ^ (N + 1) with hK`. Establish `hbound : ∀ x, ∀ w ∈ s, ‖F' w x‖ ≤ K * (‖k x‖ * height (γ x) ^ (N + 2))`. Introduce `x w hw`. Take `⟨u, rfl⟩` from `hunit w hw.1`. Establish `hu` using `hHu _ hw u rfl`.
+
+Establish `h` using `norm_fderiv_comp_le hsm g hC0 hC u (γ x) hu`. Simplify using `only [F']`. Rewrite using `[norm_smul, hrm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbint : Integrable (fun x => K * (‖k x‖ * height (γ x) ^ (N + 2))) ν` using `(hint (N + 2)).const_mul K`.
+
+Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le hs (Filter.Eventually.of_forall hFm) hFint hF'm (Filter.Eventually.of_forall hbound) hbint (Filter.Eventually.of_forall fun x w hw => hdiff x w hw.1)`. Establish `hF'int : Integrable (F' (toL y.val)) ν` using `Integrable.mono' hbint hF'm (Filter.Eventually.of_forall fun x => hbound x _ (mem_of_mem_nhds hs))`. Use `⟨∫ x, F' (toL y.val) x ∂ν, key.congr_of_eventuallyEq heq, fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.integral_apply hF'int]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [F']`. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, hrm, hcG, fderiv_chart_apply hsm g, smul_eq_mul]`. Use `congr 3`. Express the relevant statement in the definitionally equal form `((y * γ x)⁻¹).val * (Matrix.of Z * (γ x).val) = ((γ x)⁻¹).val * ((y⁻¹).val * Matrix.of Z) * (γ x).val`.
+
+Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`.
+-/
 theorem hasFDerivAt_chart_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (G : GA E a → ℂ)
     (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)),
     GlobalTheory.JSW.IsRapidInf ν k γ → GlobalTheory.MSpanDecay.Good G → ∀ (g : GA E a) (y : GL (Fin a) (Cinf E)),

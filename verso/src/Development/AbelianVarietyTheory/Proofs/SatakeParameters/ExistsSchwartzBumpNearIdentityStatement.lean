@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsSchwartzBu
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.LeviRep
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.GodementJacquet MeasureTheory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GodementJacquet.TestNearE.exists_test | exact GlobalTheory.GodementJacquet.TestNearE.exists_test | (intros; apply GlobalTheory.GodementJacquet.TestNearE.exists_test <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_schwartz_bump_near_identity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (r t : ℕ) (S : Set (GL (Fin r) k)), IsOpen S → (1 : GL (Fin r) k) ∈ S →
     ∃ Φ : Matrix (Fin (r + t)) (Fin r) k → ℂ, Φ ∈ SB (Matrix (Fin (r + t)) (Fin r) k) ∧

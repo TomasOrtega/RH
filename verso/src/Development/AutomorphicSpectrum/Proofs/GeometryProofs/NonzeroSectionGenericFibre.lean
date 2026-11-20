@@ -15,6 +15,17 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl GlobalTh
 
 namespace GlobalTheory.CompanionTheory.Ar.Sl.KeyDeg.Gen
 
+/- English proof (translation)
+Introduce `R _ _ _ G _ _ _ M hM t ht b hb`. Use `haveI hI : IsIntegral (Sp R) := by unfold Sp; infer_instance`. Use `haveI hN : IsLocallyNoetherian (Sp R) := by unfold Sp; infer_instance`. Use `haveI hGI : GeometricallyIntegral G.hom := GlobalTheory.geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres G.hom`. Use `haveI hGR : GeometricallyReduced G.hom := inferInstance`.
+
+Use `haveI hRed : AlgebraicGeometry.IsReduced G.left := GeometricallyReduced.isReduced_of_flat_of_isLocallyNoetherian G.hom`. Establish `hgen : GeneralizingMap G.hom.base` using `Flat.generalizingMap G.hom`. Establish `hne : ∃ y, y ∈ Out.nonzeroLocus (M` using `M) t := by`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists] at hcon`.
+
+Apply `ht` to reduce the goal to its premises. Apply `SecMod.ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[zero_f, ← basicOpen_eq_bot_iff, eq_bot_iff]`. Introduce `y hy`.
+
+Conclude with `absurd (by unfold Out.nonzeroLocus; exact TopologicalSpace.Opens.mem_iSup.mpr ⟨k, hy⟩) (hcon y)`. Take `⟨y, hy⟩` from `hne`. Establish `hle : b.asIdeal ≤ (G.hom.base y).asIdeal` using `by rw [hb]; exact bot_le`. Establish `hsp : b ⤳ G.hom.base y` using `(PrimeSpectrum.le_iff_specializes _ _).mp hle`. Take `⟨y', hy'sp, hy'eq⟩` from `hgen hsp`.
+
+Conclude with `⟨y', hy'eq, hy'sp.mem_open (Out.nonzeroLocus (M := M) t).isOpen hy⟩`.
+-/
 theorem exists_generic_mem_nonzeroLocus : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [Smooth G.hom] [GeometricallyConnected G.hom] (M : LB G.left), M.IsLB → ∀ t : SecMod G.hom M, t ≠ 0 → ∀ b : Sp R, b.asIdeal = ⊥ → ∃ y : G.left, G.hom y = b ∧ y ∈ Out.nonzeroLocus (M := M) t := by
   intro R _ _ _ G _ _ _ M hM t ht b hb
   haveI hI : IsIntegral (Sp R) := by unfold Sp; infer_instance

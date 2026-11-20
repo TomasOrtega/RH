@@ -18,6 +18,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 end GlobalTheory.LagrThetaInv
 open scoped Pointwise in
 open GlobalTheory.LagrThetaInv in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JT JB ξ κ _ co hco ν 𝓕 _ h𝓕 u φ hφ`. Express the relevant statement in the definitionally equal form `GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (co.rho B.ψ (dC (AF F ⊗[F] E) nT * u) φ)) = GlobalTheory.LagrTheta.lagrInt ν 𝓕 (dC (AF F ⊗[F] E) nT) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ)`. Use `set g : WOF F E nS nT → ℂ := fun v => GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ (dC (AF F ⊗[F] E) nT * v) with hg`. Establish `h1 : ∀ v : WOF F E nS nT, GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (co.rho B.ψ (dC (AF F ⊗[F] E) nT * u) φ) (dC (AF F ⊗[F] E) nT * v) = g (v + u)`. Introduce `v`.
+
+Simplify using `only [hg, GlobalTheory.WeilSchrodinger.thetaTr, Darboux.rho]`. Rewrite using `[schr_dC]`. Establish `h2 : ∀ (r : ratLF F E nS nT) (v : WOF F E nS nT), g (r +ᵥ v) = g v`. Introduce and unpack `⟨r, γ, rfl⟩ v`. Take `⟨y, z, hyz⟩` from `hco (dC E nT * γ)`.
+
+Establish `hr : ((incAF F E).toAddMonoidHom.mapMatrix γ : WOF F E nS nT) = γ.map (incAF F E)` using `rfl`. Use `show GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ (dC (AF F ⊗[F] E) nT * (_ + v)) = _`. Simplify using `only [hg, GlobalTheory.WeilSchrodinger.thetaTr, Darboux.rho]`. Rewrite using `[← schr_dC, hr, dC_mul_rat, hyz, GlobalTheory.ThetaQuasiRat.thetaSum_schr_rat F B.ψ hB.std.2.1 y z]`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`.
+
+Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `haveI : ContinuousAdd (WOF F E nS nT) := inferInstanceAs (ContinuousAdd (Fin nT → Fin nS → AF F ⊗[F] E))`. Use `haveI : MeasurableAdd (WOF F E nS nT) := ⟨fun c => (continuous_const_add c).measurable, fun c => (continuous_add_const c).measurable⟩`. Use `haveI : MeasurableConstVAdd (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun r => (continuous_const_add (r : WOF F E nS nT)).measurable⟩`. Use `haveI : VAddInvariantMeasure (ratLF F E nS nT) (WOF F E nS nT) ν := ⟨fun r s _ => measure_preimage_add ν (r : WOF F E nS nT) s⟩`.
+
+Use `haveI : VAddCommClass (WOF F E nS nT) (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun a r x => add_left_comm a (r : WOF F E nS nT) x⟩`. Use `haveI : Countable (ratLF F E nS nT) := by haveI : Countable E := by haveI : FiniteDimensional ℚ E := inferInstance`. Conclude with `((Module.finBasis ℚ E).equivFun).injective.countable`. Establish `: Countable (Matrix (Fin nT) (Fin nS) E)` using `inferInstanceAs (Countable (Fin nT → Fin nS → E))`. Conclude with `(Set.countable_range ((incAF F E).toAddMonoidHom.mapMatrix (m := Fin nT) (n := Fin nS))).to_subtype`.
+
+Unfold `GlobalTheory.LagrTheta.lagrInt`. Repeatedly rewrite using `[h1]`. Rewrite using `[← (measurePreserving_add_right ν u).setIntegral_image_emb (measurableEmbedding_addRight u) g 𝓕]`. Establish `hF' : IsAddFundamentalDomain (ratLF F E nS nT) ((· + u) '' 𝓕) ν`. Establish `hs : (· + u) '' 𝓕 = ((u : WOF F E nS nT) +ᵥ 𝓕 : Set (WOF F E nS nT))`.
+
+Rewrite using `[← Set.image_vadd]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `add_comm v u`. Rewrite using `[hs]`.
+
+Conclude with `h𝓕.vadd_of_comm (G' := WOF F E nS nT) (u : WOF F E nS nT)`. Conclude with `hF'.setIntegral_eq h𝓕 h2`.
+-/
 theorem GlobalTheory.LagrThetaInv.lagrInt_rho_inv_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JT : Matrix (Fin nT) (Fin nT) E) (JB : Matrix (Fin nS) (Fin nS) E) (ξ : AF F ⊗[F] E)
       (κ : Type) [Fintype κ]

@@ -10,6 +10,15 @@ namespace GlobalTheory.CompanionTheory.LeibOrd
 section twEquiv
 variable {G M V W : Type} [Group G] [Group M] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `he : ∀ v, e.toLinearEquiv v = e v` using `fun v => rfl`. Establish `hl : ∀ v, e.toIntertwiningMap.toLinearMap v = e v` using `fun v => rfl`. Establish `hmap : (GlobalTheory.PRep.twKer ρ N θ).map (e.toLinearEquiv : V →ₗ[ℂ] W) = GlobalTheory.PRep.twKer σ N θ`. Unfold `GlobalTheory.PRep.twKer`. Rewrite using `[Submodule.map_span]`.
+
+Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨n, v, rfl⟩, rfl⟩`. Use `⟨n, e v, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint]`. Introduce and unpack `⟨n, w', rfl⟩`. Use `⟨ρ n (e.toLinearEquiv.symm w') - ((θ n : ℂˣ) : ℂ) • e.toLinearEquiv.symm w', ⟨n, _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hw : e (e.toLinearEquiv.symm w') = w'` using `e.toLinearEquiv.apply_symm_apply w'`. Simplify using `only [LinearEquiv.coe_coe, map_sub, map_smul, he, hl, eint, hw]`.
+
+Use `⟨Representation.Equiv.mk (Submodule.Quotient.equiv _ _ e.toLinearEquiv hmap) fun m => ?_⟩` and prove the remaining obligations. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `v`. Conclude with `congrArg (Submodule.Quotient.mk (p := GlobalTheory.PRep.twKer σ N θ)) (eint e (s m) v)`.
+-/
 theorem nonempty_twAct_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ)
     (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
     (hs : ∀ (m : M) (n : N), ∃ h : s m * (n : G) * (s m)⁻¹ ∈ N, θ ⟨_, h⟩ = θ n) :
@@ -34,6 +43,9 @@ theorem nonempty_twAct_equiv {ρ : Representation ℂ G V} {σ : Representation 
   ext v
   exact congrArg (Submodule.Quotient.mk (p := GlobalTheory.PRep.twKer σ N θ)) (eint e (s m) v)
 
+/- English proof (translation)
+Establish `he : ∀ v, e.toLinearEquiv v = e v` using `fun v => rfl`. Use `⟨Representation.Equiv.mk e.toLinearEquiv fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `show e.toLinearEquiv (((χ g : ℂˣ) : ℂ) • ρ g v) = ((χ g : ℂˣ) : ℂ) • σ g (e.toLinearEquiv v)`. Rewrite using `[map_smul, he, he, eint]`.
+-/
 theorem nonempty_twist_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (χ : G →* ℂˣ) :
     Nonempty ((twist ρ χ).Equiv (twist σ χ)) := by
   have he : ∀ v, e.toLinearEquiv v = e v := fun v => rfl
@@ -43,6 +55,11 @@ theorem nonempty_twist_equiv {ρ : Representation ℂ G V} {σ : Representation 
 
 end twEquiv
 
+/- English proof (translation)
+Establish `h1 : MIso (GlobalTheory.BZMir.MRep.phiM k ψ A) (GlobalTheory.BZMir.MRep.phiM k ψ B)`. Take `⟨e⟩` from `h`. Unfold `GlobalTheory.BZMir.MRep.phiM GlobalTheory.BZMir.phiMinus`. Use `generalize_proofs hh`. Conclude with `nonempty_twAct_equiv e _ _ _ hh`.
+
+Take `⟨e'⟩` from `h1`. Conclude with `nonempty_twist_equiv e' _`.
+-/
 theorem miso_phiN (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (n : ℕ) (A B : MRep k (n + 1)) (h : MIso A B) : MIso (phiN ψ A) (phiN ψ B) := by
   have h1 : MIso (GlobalTheory.BZMir.MRep.phiM k ψ A) (GlobalTheory.BZMir.MRep.phiM k ψ B) := by

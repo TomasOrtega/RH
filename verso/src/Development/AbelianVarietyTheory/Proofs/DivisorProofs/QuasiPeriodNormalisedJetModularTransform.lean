@@ -16,6 +16,9 @@ namespace GlobalTheory.HilbFam
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.word`. Simplify using `[List.length_flatMap, Finset.sum_toList]`.
+-/
 private lemma length_word_eq_sum {I : Type} [Fintype I] (κ : I → ℕ) :
     (_root_.GlobalTheory.HilbFam.word κ).length = ∑ i, κ i := by
   unfold _root_.GlobalTheory.HilbFam.word
@@ -23,6 +26,11 @@ private lemma length_word_eq_sum {I : Type} [Fintype I] (κ : I → ℕ) :
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Simplify using `only [lineDeriv]`. Establish `h : (fun t : ℂ => a * f (c • (z + t • v))) = fun t => a * (fun s : ℂ => f (c • z + s • v)) (c * t)`. Use function extensionality and compare the values at `t`. Simplify using `only [smul_add, smul_smul, mul_comm c t]`. Rewrite using `[h]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[deriv_const_mul_field']`. Use `_ = a * (c • deriv (fun s : ℂ => f (c • z + s • v)) (c * 0)) := congrArg (a * ·) (deriv_comp_mul_left c (fun s : ℂ => f (c • z + s • v)) 0)`. Use `_ = a * c * deriv (fun t : ℂ => f (c • z + t • v)) 0 := by`. Rewrite using `[mul_zero, smul_eq_mul, mul_assoc]`.
+-/
 private lemma lineDeriv_const_mul_comp_smul {I : Type} (f : (I → ℂ) → ℂ) (a c : ℂ)
     (z v : I → ℂ) :
     lineDeriv ℂ (fun z => a * f (c • z)) z v = a * c * lineDeriv ℂ f (c • z) v := by
@@ -42,6 +50,11 @@ private lemma lineDeriv_const_mul_comp_smul {I : Type} (f : (I → ℂ) → ℂ)
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Proceed by induction on `u generalizing z with`. Consider the case `nil => simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD]`. Consider the case `cons i u ih`. Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD, List.foldr_cons] at ih ⊢`. Rewrite using `[show List.foldr _root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.partialD (fun z => f (c • z)) u = fun z => c ^ u.length * List.foldr _root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.partialD f u (c • z) from funext ih]`.
+
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.partialD`. Rewrite using `[lineDeriv_const_mul_comp_smul, List.length_cons, pow_succ]`.
+-/
 private lemma iterD_comp_smul {I : Type} [DecidableEq I] (c : ℂ)
     (u : List I) (f : (I → ℂ) → ℂ) (z : I → ℂ) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.iterD u (fun z => f (c • z)) z =
@@ -57,6 +70,11 @@ private lemma iterD_comp_smul {I : Type} [DecidableEq I] (c : ℂ)
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.jet`. Rewrite using `[← length_word_eq_sum κ, ← smul_zero lam, ← iterD_comp_smul]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+
+Apply the tactic sequence `congr 2 <;> funext i <;> ring`. Conclude with `smul_zero lam`.
+-/
 private lemma jet_mul_eq_pow_sum_mul {F : Type} [Field F] [NumberField F] (k : ℕ)
     (L : _root_.GlobalTheory.HilbFam.Lat F) (κ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) (τ c t lam : ℂ) :
     _root_.GlobalTheory.HilbFam.jet k L κ τ (lam * c) (lam * t) =
@@ -73,6 +91,13 @@ private lemma jet_mul_eq_pow_sum_mul {F : Type} [Field F] [NumberField F] (k : �
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `_ F _ _ _ _ s N L _ _ _ κ γ Ch Ch' τ _ hCh`. Establish `hP : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Simplify using `only [_root_.GlobalTheory.HilbFam.hfun]`. Rewrite using `[_root_.GlobalTheory.HilbFam.JetModular.jet_smul F (2 * s) L κ γ τ _ _ (even_two_mul s)]`.
+
+Use `set j : ℂ := ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) with hj`. Use `set P : ℂ := 2 * Real.pi * Complex.I with hPdef`. Establish `hc : P ^ 2 * Ch (γ • τ) - -P * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℂ) * j = j ^ 2 * (P ^ 2 * Ch' τ)`. Rewrite using `[hCh]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, show -P * j ^ 2 = j ^ 2 * -P by ring, jet_mul_eq_pow_sum_mul, _root_.GlobalTheory.HilbFam.wt, ← pow_mul, pow_add j]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.HilbFam.hfun_slash : _root_.GlobalTheory.LatJet.EisExp → ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], 2 ≤ Module.finrank ℚ F → ∀ (s N : ℕ) (L : _root_.GlobalTheory.HilbFam.Lat F), 1 ≤ s → 0 < N → _root_.GlobalTheory.HilbFam.HasLevel N L → ∀ (κ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) (γ : SL(2, ℤ)) (Ch Ch' : ℍ → ℂ) (τ : ℍ), (∃ L', _root_.GlobalTheory.HilbFam.HasLevel N L' ∧ L' = _root_.GlobalTheory.HilbFam.mulMat L (γ : Matrix (Fin 2) (Fin 2) ℤ)) → Ch (γ • τ) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) : ℂ) ^ 2 * Ch' τ - ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ℂ) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) / (2 * Real.pi * Complex.I) → _root_.GlobalTheory.HilbFam.hfun (2 * s) L κ Ch (γ • τ) = (((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 * (τ : ℂ) + (γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1) : ℂ) ^ _root_.GlobalTheory.HilbFam.wt (2 * s) κ * _root_.GlobalTheory.HilbFam.hfun (2 * s) (_root_.GlobalTheory.HilbFam.mulMat L (γ : Matrix (Fin 2) (Fin 2) ℤ)) κ Ch' τ := by
   intro _ F _ _ _ _ s N L _ _ _ κ γ Ch Ch' τ _ hCh
   have hP : (2 * Real.pi * Complex.I : ℂ) ≠ 0 := by

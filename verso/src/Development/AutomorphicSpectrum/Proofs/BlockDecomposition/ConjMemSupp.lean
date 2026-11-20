@@ -16,16 +16,33 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 abbrev mt (g : HA (AF F) σ J) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E) :=
   ((HA.mat (AF F) σ J g).1 : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul (g h : HA (AF F) σ J) : mt (g * h) = mt g * mt h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one : mt (1 : HA (AF F) σ J) = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[← mt_mul, inv_mul_cancel, mt_one]`.
+-/
 theorem mt_inv_mul (g : HA (AF F) σ J) : mt g⁻¹ * mt g = 1 := by
   rw [← mt_mul, inv_mul_cancel, mt_one]
 
+/- English proof (translation)
+Rewrite using `[← mt_mul, mul_inv_cancel, mt_one]`.
+-/
 theorem mt_mul_inv (g : HA (AF F) σ J) : mt g * mt g⁻¹ = 1 := by
   rw [← mt_mul, mul_inv_cancel, mt_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Simplify using `using h i j`. Introduce `h i j`.
+
+Simplify using `using congrFun (congrFun h i) j`.
+-/
 theorem smul_eq_iff (c : AF F ⊗[F] E) (X : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) :
     (∀ i j, c * X i j = X i j) ↔ c • X = X := by
   constructor
@@ -35,6 +52,9 @@ theorem smul_eq_iff (c : AF F ⊗[F] E) (X : Matrix (Fin M) (Fin M) (AF F ⊗[F]
   · intro h i j
     simpa using congrFun (congrFun h i) j
 
+/- English proof (translation)
+The claim follows from `and_congr_right fun _ => smul_eq_iff _ _`.
+-/
 theorem mem_SUSupp {ε : AF F} {g : HA (AF F) σ J} :
     g ∈ SUSupp σ J ε ↔
       g ∈ SUAdelic σ J ∧ algebraMap (AF F) (AF F ⊗[F] E) ε • (mt g - 1) = mt g - 1 :=
@@ -60,6 +80,9 @@ def suppGroup (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (ε : AF F) :
       rw [Matrix.mul_sub, mt_inv_mul, Matrix.mul_one]; abel
     rw [e, smul_neg, ← Matrix.mul_smul, hg2]
 
+/- English proof (translation)
+Take `⟨hh1, hh2⟩` from `mem_SUSupp.1 hh`. Use `mem_SUSupp.2 ⟨mul_mem (mul_mem hγ hh1) (inv_mem hγ), ?_⟩` and prove the remaining obligations. Establish `e : mt (γ * h * γ⁻¹) - 1 = mt γ * (mt h - 1) * mt γ⁻¹`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, mt_mul_inv]`. Rewrite using `[e, ← Matrix.smul_mul, ← Matrix.mul_smul, hh2]`.
+-/
 theorem conj_mem_supp {ε : AF F} {γ h : HA (AF F) σ J} (hγ : γ ∈ SUAdelic σ J)
     (hh : h ∈ SUSupp σ J ε) : γ * h * γ⁻¹ ∈ SUSupp σ J ε := by
   obtain ⟨hh1, hh2⟩ := mem_SUSupp.1 hh
@@ -87,12 +110,18 @@ def ratSupp (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (ε : AF F) :
 
 end Group
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Conclude with `inferInstanceAs (IsTopologicalGroup (HR (AF F) σ J))`.
+-/
 theorem topGroup {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : IsTopologicalGroup (HA (AF F) σ J) := by
   haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩
   haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _
   exact inferInstanceAs (IsTopologicalGroup (HR (AF F) σ J))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ M J ε`. Use `haveI := topGroup σ J`. Conclude with `⟨(ratSupp σ J ε).topologicalClosure, rfl⟩`.
+-/
 theorem propSub : Sa2.PropSub := by
   intro F E _ _ _ _ _ σ M J ε
   haveI := topGroup σ J

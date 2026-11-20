@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.MatDeriv
 
+/- English proof (translation)
+Establish `h1 : ∀ i, (A.adjugate * D) i i = (A.updateCol i (fun k => D k i)).det`. Introduce `i`. Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [Matrix.trace, Matrix.diag, h1, det_apply']`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Simplify using `only [updateCol_apply, smul_eq_mul]`. Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+
+Rewrite using `[if_neg (Finset.ne_of_mem_erase hj)]`.
+-/
 theorem trace_adjugate_mul_eq_sum_perm' {r : ℕ} (A D : Matrix (Fin r) (Fin r) ℂ) :
     (A.adjugate * D).trace = ∑ σ : Equiv.Perm (Fin r), (Equiv.Perm.sign σ : ℂ) *
       ∑ i, (∏ j ∈ Finset.univ.erase i, A (σ j) j) • D (σ i) i := by
@@ -29,6 +38,9 @@ theorem trace_adjugate_mul_eq_sum_perm' {r : ℕ} (A D : Matrix (Fin r) (Fin r) 
   refine Finset.prod_congr rfl (fun j hj => ?_)
   rw [if_neg (Finset.ne_of_mem_erase hj)]
 
+/- English proof (translation)
+Establish `h2` using `HasFDerivAt.sum (u := Finset.univ) (fun σ _ => ((HasFDerivAt.finset_prod (u := Finset.univ) (g := fun i w' => B w' (σ i) i) (fun i _ => (hB (σ i) i).hasFDerivAt)).const_smul (Equiv.Perm.sign σ : ℂ)))`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w' => ?_)` and prove the remaining obligations. Simplify using `only [det_apply', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Units.smul_def, Int.cast_smul_eq_zsmul]`. Simplify using `[zsmul_eq_mul]`.
+-/
 theorem hasFDerivAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ}
     (B : E → Matrix (Fin n) (Fin n) ℂ) (w : E)
     (hB : ∀ a b, DifferentiableAt ℝ (fun w' => B w' a b) w) :
@@ -42,6 +54,9 @@ theorem hasFDerivAt_det {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n
   simp only [det_apply', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Units.smul_def, Int.cast_smul_eq_zsmul]
   simp [zsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `E _ _ n B w hB`. Establish `h` using `hasFDerivAt_det B w hB`. Use `⟨h.differentiableAt, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[h.fderiv, trace_adjugate_mul_eq_sum_perm']`. Simplify using `[dMat, ContinuousLinearMap.sum_apply, Finset.smul_sum, smul_eq_mul, Finset.mul_sum]`.
+-/
 theorem jacobi_fderiv_det : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {n : ℕ}
     (B : E → Matrix (Fin n) (Fin n) ℂ) (w : E), (∀ a b, DifferentiableAt ℝ (fun w' => B w' a b) w) →
     DifferentiableAt ℝ (fun w' => (B w').det) w ∧

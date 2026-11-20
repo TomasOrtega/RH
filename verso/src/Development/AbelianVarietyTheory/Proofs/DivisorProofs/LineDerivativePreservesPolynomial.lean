@@ -10,6 +10,19 @@ noncomputable section
 
 namespace GlobalTheory.ThK.ZFinDerPolL
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hK hT Φ hΦ γ hγ`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV hT`. Take `⟨D, hDm, hDa⟩` from `(GlobalTheory.T.polynomial_datum_action_of_pair hK.base F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ hp).1 γ hγ`. Establish `key : ∃ Ψ ∈ GlobalTheory.ThK.PolData B G.M, ∀ y, HasDerivAt (fun t => om (γ (Multiplicative.ofAdd t), 1) Φ y) (Ψ y) 0`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+
+Consider the case `mem Φ h`. Take `⟨f, hf, φ, hSB, hev, rfl⟩` from `h`. Use `⟨pure (D f) φ, Submodule.subset_span ⟨D f, hDm f hf, φ, hSB, hev, rfl⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hR` using `GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd`.
+
+Conclude with `(hDa f hf (D f)).2 rfl _ hR y`. Consider the case `zero => exact ⟨0, zero_mem _, fun y => by simpa using hasDerivAt_const (0:ℝ) (0:ℂ)⟩`. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Take `⟨Ψ₁, m₁, d₁⟩` from `h₁`. Take `⟨Ψ₂, m₂, d₂⟩` from `h₂`.
+
+Use `⟨Ψ₁ + Ψ₂, add_mem m₁ m₂, fun y => ?_⟩` and prove the remaining obligations. Establish `h` using `(d₁ y).add (d₂ y)`. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `h`. Consider the case `smul r Φ₁ _ h₁`.
+
+Take `⟨Ψ₁, m₁, d₁⟩` from `h₁`. Use `⟨r • Ψ₁, Submodule.smul_mem _ r m₁, fun y => ?_⟩` and prove the remaining obligations. Simplify `(d₁ y).const_mul r` using `[map_smul]`. Take `⟨Ψ, hΨ, hd⟩` from `key`. Establish `: derL om (fun t => γ (Multiplicative.ofAdd t)) Φ = Ψ` using `funext fun y => (hd y).deriv`.
+
+Rewrite using `[this]`. Conclude with `hΨ`.
+-/
 theorem derL_mem_polData : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

@@ -19,6 +19,13 @@ open GlobalTheory.MixModel.HypDec
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hz`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+
+Use `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, c • x, hc x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z z' _ _ hz hz' => rw [smul_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [smul_neg]`. Conclude with `neg_mem hz`.
+-/
 theorem smul_mem_latV {S : HSp D} {L L' : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop} {c : D.host.E}
     (hc : ∀ x ∈ L, c • x ∈ L') {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) :
     ((1 : AF D.host.F) ⊗ₜ[D.host.F] c : AE D) • y ∈ latV S L' P := by
@@ -34,10 +41,28 @@ theorem smul_mem_latV {S : HSp D} {L L' : Lat S} {P : GlobalTheory.FinPl.Pl D �
   | add z z' _ _ hz hz' => rw [smul_add]; exact add_mem hz hz'
   | neg z _ hz => rw [smul_neg]; exact neg_mem hz
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨s, hs, x, hx, rfl⟩`.
+-/
 theorem mem_idLat_of {n : ℕ} {I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {s : D.host.E} (hs : s ∈ I) {x : Fin n → D.host.E} (hx : x ∈ Λ) : s • x ∈ idLat I Λ :=
   Submodule.subset_span ⟨s, hs, x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `gsmul : ∀ (c : D.host.E) (x : Fin S.rank → D.host.E), (fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * (c • x) i) : AE D)) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] c : AE D) • fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) : AE D)`. Introduce `c x`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Set `N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)` to `{ carrier := {x | M *ᵥ (fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) : AE D)) ∈ latV S (idLat I L) P} add_mem' := by`.
+
+Introduce `x x' hx hx'`. Establish `e : (fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * (x + x') i) : AE D)) = (fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) : AE D)) + fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x' i) : AE D)`. Use function extensionality and compare the values at `i`. Simplify using `[TensorProduct.tmul_add]`. Express the relevant statement in the definitionally equal form `M *ᵥ _ ∈ latV S (idLat I L) P`.
+
+Rewrite using `[e, Matrix.mulVec_add]`. Conclude with `add_mem hx hx'`. Use the proof step `zero_mem' := by`. Establish `e : (fun i => (pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * (0 : Fin S.rank → D.host.E) i) : AE D)) = 0`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `M *ᵥ _ ∈ latV S (idLat I L) P`. Rewrite using `[e, Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := by`.
+
+Introduce `c x hx`. Establish `e : c • x = (algebraMap (𝓞 D.host.E) D.host.E c) • x` using `(algebraMap_smul D.host.E c x).symm`. Express the relevant statement in the definitionally equal form `M *ᵥ _ ∈ latV S (idLat I L) P`. Rewrite using `[e, gsmul, Matrix.mulVec_smul]`. Conclude with `smul_mem_latV (fun z hz => by rw [algebraMap_smul]; exact (idLat I L).smul_mem c hz) hx }`.
+
+Establish `key : idLat I L ≤ N`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, x₀, hx₀, rfl⟩`. Express the relevant statement in the definitionally equal form `M *ᵥ _ ∈ latV S (idLat I L) P`. Rewrite using `[gsmul, Matrix.mulVec_smul]`.
+
+Conclude with `smul_mem_latV (fun x hx => mem_idLat_of hs hx) (h _ (AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x₀, hx₀, rfl⟩))`. Conclude with `key hx`.
+-/
 theorem gen_mem {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop}
     (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (M : Mx D S.rank S.rank)
     (h : ∀ y ∈ latV S L P, M *ᵥ y ∈ latV S L P) {β : Af D.host.F} (hβi : β ∈ intAf D.host.F)
@@ -78,6 +103,13 @@ theorem gen_mem {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop}
     exact smul_mem_latV (fun x hx => mem_idLat_of hs hx)
       (h _ (AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x₀, hx₀, rfl⟩))
   exact key hx
+/- English proof (translation)
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hz`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+
+Conclude with `gen_mem I M h hβi hβ hx`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`.
+
+Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem hz`.
+-/
 theorem mulVec_latV_idLat {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D → Prop}
     (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (M : Mx D S.rank S.rank)
     (h : ∀ y ∈ latV S L P, M *ᵥ y ∈ latV S L P) {y : Fin S.rank → AE D} (hy : y ∈ latV S (idLat I L) P) :
@@ -92,6 +124,9 @@ theorem mulVec_latV_idLat {S : HSp D} {L : Lat S} {P : GlobalTheory.FinPl.Pl D �
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, GlobalTheory.FinPl.colMul, Finset.sum_apply, mul_comm]`.
+-/
 theorem mulVec_eq_sum_colMul {m n : ℕ} (j : Mx D m n) (z : Fin n → AE D) : j *ᵥ z = ∑ i, GlobalTheory.FinPl.colMul j i (z i) := by
   funext k
   simp [Matrix.mulVec, dotProduct, GlobalTheory.FinPl.colMul, Finset.sum_apply, mul_comm]
@@ -100,16 +135,25 @@ section Mono
 
 variable {S S₀ : HSp D} {ρ : ℕ} {d : HypDec S S₀ ρ} {L : Lat S} {L₀ : Lat S₀} {v : GlobalTheory.FinPl.Pl D}
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, mulVec_eq_sum_colMul]`. Conclude with `sum_mem fun i _ => ((h y).1 hy).1 i`.
+-/
 theorem projX_mem (h : MonoAt d L L₀ v) {y : Fin S.rank → AE D} (hy : y ∈ latV S L (· = v)) :
     (d.jX * d.pX) *ᵥ y ∈ latV S L (· = v) := by
   rw [← Matrix.mulVec_mulVec, mulVec_eq_sum_colMul]
   exact sum_mem fun i _ => ((h y).1 hy).1 i
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec, mulVec_eq_sum_colMul]`. Conclude with `sum_mem fun i _ => ((h y).1 hy).2.1 i`.
+-/
 theorem projY_mem (h : MonoAt d L L₀ v) {y : Fin S.rank → AE D} (hy : y ∈ latV S L (· = v)) :
     (d.jY * d.pY) *ᵥ y ∈ latV S L (· = v) := by
   rw [← Matrix.mulVec_mulVec, mulVec_eq_sum_colMul]
   exact sum_mem fun i _ => ((h y).1 hy).2.1 i
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `GlobalTheory.FinPl.FlatVacuum.wittCoreInclusion_mulVec_mem_latticeCompletionAtPlace h (GlobalTheory.FinPl.FlatVacuum.p0_mem h hy)`.
+-/
 theorem witt_projCore_mem_split_lattice_completion (h : MonoAt d L L₀ v) {y : Fin S.rank → AE D} (hy : y ∈ latV S L (· = v)) :
     (d.j0 * d.p0) *ᵥ y ∈ latV S L (· = v) := by
   rw [← Matrix.mulVec_mulVec]
@@ -117,12 +161,18 @@ theorem witt_projCore_mem_split_lattice_completion (h : MonoAt d L L₀ v) {y : 
 
 end Mono
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l k))`.
+-/
 theorem mxAt_mul {P : GlobalTheory.FinPl.Pl D → Prop} {k l m n : ℕ} (A : Mx D k l) (B : Mx D m n) {x : Mx D l m}
     (hx : MxAt P x) : MxAt P (A * x * B) := by
   intro i j
   simp only [Matrix.mul_apply]
   exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l k))
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hS hT P u).1 hu`. Use `(GlobalTheory.FinPl.LatMem.mem_latO_iff D S T LS LT hS hT P _).2 ⟨mxAt_mul A B h1, fun y hy => ?_⟩` and prove the remaining obligations. Use `show (A * u * B) *ᵥ y ∈ latA T LT P`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Conclude with `GlobalTheory.FinPl.FlatVacuum.mulVec_latA A hA (h2 _ (hB y hy))`.
+-/
 theorem mul_mem_latO {S T : HSp D} {LS : Lat S} {LT : Lat T} (hS : IsSelfDualC S LS) (hT : IsSelfDualC T LT)
     {P : GlobalTheory.FinPl.Pl D → Prop} (A : Mx D T.rank T.rank) (B : Mx D S.rank S.rank)
     (hA : ∀ y ∈ latV T LT P, A *ᵥ y ∈ latV T LT P) (hB : ∀ y ∈ latV S LS P, B *ᵥ y ∈ latV S LS P)
@@ -138,17 +188,31 @@ section Pair
 
 variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ)
 
+/- English proof (translation)
+Simplify using `[pairS]`.
+-/
 theorem pairS_zero_left (T : HSp D) {k : ℕ} (y : Mx D T.rank k) : pairS T 0 y = 0 := by
   simp [pairS]
 
+/- English proof (translation)
+Rewrite using `[hO_eq_trace, pairT, pY_eq, adj_mul, adj_mul, adj_adj, adj_gA, incX_apply]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hO_incX_eq (ξ : Mx D σ V₀.rank) (w : WO V₀ W) : hO V₀ W (dW.incX V₀ ξ) w = pairT V₀ ξ (dW.pY * w) := by
   rw [hO_eq_trace, pairT, pY_eq, adj_mul, adj_mul, adj_adj, adj_gA, incX_apply]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[hO_eq_trace, pairT, pX_eq, adj_mul, adj_mul, adj_adj, adj_gA, incY_apply]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem hO_incY_eq (η : Mx D σ V₀.rank) (w : WO V₀ W) : hO V₀ W (dW.incY V₀ η) w = pairT V₀ η (dW.pX * w) := by
   rw [hO_eq_trace, pairT, pX_eq, adj_mul, adj_mul, adj_adj, adj_gA, incY_apply]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : dV.ext0 W (dW.incX V₀ ξ) * dV.jX = 0`. Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_jX, Matrix.mul_zero]`. Establish `e2 : dV.ext0 W (dW.incX V₀ ξ) * dV.jY = 0`. Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_jY, Matrix.mul_zero]`. Establish `e3 : dV.ext0 W (dW.incX V₀ ξ) * dV.j0 = dW.incX V₀ ξ`.
+
+Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_j0, Matrix.mul_one]`. Establish `f3 : dW.pY * dW.incY V₀ (dW.pY * (u * dV.j0)) = dW.pY * (u * dV.j0)`. Rewrite using `[incY_apply, ← Matrix.mul_assoc, pY_jY, Matrix.one_mul]`. Rewrite using `[dV.hO_coordS, e1, e2, e3, pairS_zero_left, pairS_zero_left, zero_add, add_zero, hO_incX_eq, hO_incX_eq, f3]`.
+-/
 theorem hermitian_form_extension_first_inclusion (ξ : Mx D σ V₀.rank) (u : WO V W) :
     hO V W (dV.ext0 W (dW.incX V₀ ξ)) u = hO V₀ W (dW.incX V₀ ξ) (dW.incY V₀ (dW.pY * (u * dV.j0))) := by
   have e1 : dV.ext0 W (dW.incX V₀ ξ) * dV.jX = 0 := by
@@ -161,6 +225,11 @@ theorem hermitian_form_extension_first_inclusion (ξ : Mx D σ V₀.rank) (u : W
     rw [incY_apply, ← Matrix.mul_assoc, pY_jY, Matrix.one_mul]
   rw [dV.hO_coordS, e1, e2, e3, pairS_zero_left, pairS_zero_left, zero_add, add_zero, hO_incX_eq, hO_incX_eq, f3]
 
+/- English proof (translation)
+Establish `e1 : dV.ext0 W (dW.incY V₀ η) * dV.jX = 0`. Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_jX, Matrix.mul_zero]`. Establish `e2 : dV.ext0 W (dW.incY V₀ η) * dV.jY = 0`. Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_jY, Matrix.mul_zero]`. Establish `e3 : dV.ext0 W (dW.incY V₀ η) * dV.j0 = dW.incY V₀ η`.
+
+Rewrite using `[matrixExtendByZero_apply, Matrix.mul_assoc, p0_j0, Matrix.mul_one]`. Establish `f3 : dW.pX * dW.incX V₀ (dW.pX * (u * dV.j0)) = dW.pX * (u * dV.j0)`. Rewrite using `[incX_apply, ← Matrix.mul_assoc, pX_jX, Matrix.one_mul]`. Rewrite using `[dV.hO_coordS, e1, e2, e3, pairS_zero_left, pairS_zero_left, zero_add, add_zero, hO_incY_eq, hO_incY_eq, f3]`.
+-/
 theorem hermitian_form_extension_second_inclusion (η : Mx D σ V₀.rank) (u : WO V W) :
     hO V W (dV.ext0 W (dW.incY V₀ η)) u = hO V₀ W (dW.incY V₀ η) (dW.incX V₀ (dW.pX * (u * dV.j0))) := by
   have e1 : dV.ext0 W (dW.incY V₀ η) * dV.jX = 0 := by
@@ -173,31 +242,69 @@ theorem hermitian_form_extension_second_inclusion (η : Mx D σ V₀.rank) (u : 
     rw [incX_apply, ← Matrix.mul_assoc, pX_jX, Matrix.one_mul]
   rw [dV.hO_coordS, e1, e2, e3, pairS_zero_left, pairS_zero_left, zero_add, add_zero, hO_incY_eq, hO_incY_eq, f3]
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[hermitian_form_extension_first_inclusion]`.
+-/
 theorem symplectic_form_extension_first_inclusion (ξ : Mx D σ V₀.rank) (u : WO V W) :
     symplO V W (dV.ext0 W (dW.incX V₀ ξ)) u = symplO V₀ W (dW.incX V₀ ξ) (dW.incY V₀ (dW.pY * (u * dV.j0))) := by
   unfold symplO; rw [hermitian_form_extension_first_inclusion]
 
+/- English proof (translation)
+Unfold `symplO`. Rewrite using `[hermitian_form_extension_second_inclusion]`.
+-/
 theorem symplectic_form_extension_second_inclusion (η : Mx D σ V₀.rank) (u : WO V W) :
     symplO V W (dV.ext0 W (dW.incY V₀ η)) u = symplO V₀ W (dW.incY V₀ η) (dW.incX V₀ (dW.pX * (u * dV.j0))) := by
   unfold symplO; rw [hermitian_form_extension_second_inclusion]
 
+/- English proof (translation)
+Rewrite using `[matrixExtendByZero_apply, incX_apply]`.
+-/
 theorem extension_of_first_inclusion_eq (ξ : Mx D σ V₀.rank) : dV.ext0 W (dW.incX V₀ ξ) = dW.jX * ξ * dV.p0 := by
   rw [matrixExtendByZero_apply, incX_apply]
 
+/- English proof (translation)
+Rewrite using `[matrixExtendByZero_apply, incY_apply]`.
+-/
 theorem extension_of_second_inclusion_eq (η : Mx D σ V₀.rank) : dV.ext0 W (dW.incY V₀ η) = dW.jY * η * dV.p0 := by
   rw [matrixExtendByZero_apply, incY_apply]
 
+/- English proof (translation)
+Rewrite using `[extension_of_second_inclusion_eq, Matrix.mul_assoc, p0_j0, Matrix.mul_one, ← Matrix.mul_assoc, pY_jY, Matrix.one_mul]`.
+-/
 theorem second_projection_extension_inclusion (η : Mx D σ V₀.rank) : dW.pY * (dV.ext0 W (dW.incY V₀ η) * dV.j0) = η := by
   rw [extension_of_second_inclusion_eq, Matrix.mul_assoc, p0_j0, Matrix.mul_one, ← Matrix.mul_assoc, pY_jY, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[extension_of_first_inclusion_eq, Matrix.mul_assoc, p0_j0, Matrix.mul_one, ← Matrix.mul_assoc, pX_jX, Matrix.one_mul]`.
+-/
 theorem first_projection_extension_inclusion (ξ : Mx D σ V₀.rank) : dW.pX * (dV.ext0 W (dW.incX V₀ ξ) * dV.j0) = ξ := by
   rw [extension_of_first_inclusion_eq, Matrix.mul_assoc, p0_j0, Matrix.mul_one, ← Matrix.mul_assoc, pX_jX, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e` using `ψ.map_add_eq_mul (-x) x`. Rewrite `e` using `[neg_add_cancel, AddChar.map_zero_eq_one, h, mul_one]`. Conclude with `e.symm`.
+-/
 theorem psi_neg_eq_one (ψ : AddChar (AF D.host.F) ℂ) {x : AF D.host.F} (h : ψ x = 1) : ψ (-x) = 1 := by
   have e := ψ.map_add_eq_mul (-x) x
   rw [neg_add_cancel, AddChar.map_zero_eq_one, h, mul_one] at e
   exact e.symm
 
+/- English proof (translation)
+Establish `ann` using `fun u (hu : MxAt (fun _ => True) u) => GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ V W LV LW hV hW (fun _ => True) u hu`. Establish `compY : ∀ u ∈ latO V W (LV : Set _) (LW : Set _) (fun _ => True), dV.ext0 W (dW.incY V₀ (dW.pY * (u * dV.j0))) ∈ latO V W (LV : Set _) (LW : Set _) (fun _ => True)`. Introduce `u hu`. Establish `e : dV.ext0 W (dW.incY V₀ (dW.pY * (u * dV.j0))) = dW.jY * dW.pY * u * (dV.j0 * dV.p0)`. Rewrite using `[extension_of_second_inclusion_eq]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `mul_mem_latO hV hW _ _ hY h0 hu`. Establish `compX : ∀ u ∈ latO V W (LV : Set _) (LW : Set _) (fun _ => True), dV.ext0 W (dW.incX V₀ (dW.pX * (u * dV.j0))) ∈ latO V W (LV : Set _) (LW : Set _) (fun _ => True)`. Introduce `u hu`.
+
+Establish `e : dV.ext0 W (dW.incX V₀ (dW.pX * (u * dV.j0))) = dW.jX * dW.pX * u * (dV.j0 * dV.p0)`. Rewrite using `[extension_of_first_inclusion_eq]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `mul_mem_latO hV hW _ _ hX h0 hu`.
+
+Use `⟨fun ξ hξ => ?_, fun η hη => ?_⟩` and prove the remaining obligations. Establish `hM : MxAt (fun _ => True) (dV.ext0 W (dW.incX V₀ ξ))`. Rewrite using `[extension_of_first_inclusion_eq]`. Conclude with `mxAt_mul _ _ hξ`. Rewrite using `[ann _ hM]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H η hη'`. Use `H _ hη'` as an intermediate fact. Rewrite `this` using `[symplectic_form_extension_first_inclusion, second_projection_extension_inclusion]`. Then use the resulting hypothesis. Introduce `H u hu`.
+
+Rewrite using `[symplectic_form_extension_first_inclusion]`. Conclude with `H _ (compY u hu)`. Establish `hM : MxAt (fun _ => True) (dV.ext0 W (dW.incY V₀ η))`. Rewrite using `[extension_of_second_inclusion_eq]`. Conclude with `mxAt_mul _ _ hη`.
+
+Rewrite using `[ann _ hM]`. Prove the components needed by the constructor for the conclusion. Introduce `H ξ hξ'`. Use `H _ hξ'` as an intermediate fact. Rewrite `this` using `[symplectic_form_extension_second_inclusion, first_projection_extension_inclusion, Formalism.IndefR.Fin.symplO_swap]`.
+
+Simplify using `using psi_neg_eq_one ψ this`. Introduce `H u hu`. Rewrite using `[symplectic_form_extension_second_inclusion, Formalism.IndefR.Fin.symplO_swap]`. Conclude with `psi_neg_eq_one ψ (H _ (compX u hu))`.
+-/
 theorem dual_parts (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) {LV : Lat V} {LW : Lat W}
     (hV : IsSelfDualC V LV) (hW : IsSelfDualC W LW)
     (hX : ∀ y ∈ latV W LW (fun _ => True), (dW.jX * dW.pX) *ᵥ y ∈ latV W LW (fun _ => True))
@@ -252,6 +359,13 @@ theorem dual_parts (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) 
 
 end Pair
 
+/- English proof (translation)
+Introduce `D hD T L μ0 hL sc G W M hM F hF σ h h'`. Establish `HI` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W M hM F hF`. Establish `hWsd : IsSelfDualC (G.V (.grid (2 * σ + 2) 0)) (idLat (shiftId G) (G.Λ (.grid (2 * σ + 2) 0)))` using `(HI.1 (2 * σ + 2) (by omega)).2.2.2`. Establish `hVsd : IsSelfDualC (G.V (.grid (2 * σ + 2 + 1) 0)) (G.Λ (.grid (2 * σ + 2 + 1) 0))` using `(G.isV (X := .grid (2 * σ + 2 + 1) 0) ⟨by omega, by omega⟩ (fun j hj => by have := (Node.grid.inj hj).1; omega)).sd`. Establish `hΛ : Submodule.IsLattice D.host.E (G.Λ (.grid (2 * σ + 2) 0))` using `(G.isV (X := .grid (2 * σ + 2) 0) ⟨by omega, by omega⟩ (fun j hj => by have := (Node.grid.inj hj).1; omega)).sd.1`.
+
+Establish `monoV` using `fun v => ((HI.2.1 (σ + 1) h).2.1 v).2`. Establish `monoW` using `fun v => ((HI.2.1 σ h').2.1 v).1`. Establish `h0 : ∀ y ∈ latV _ (G.Λ (.grid (2 * σ + 2 + 1) 0)) (fun _ => True), ((F.dJ (σ + 1) h).j0 * (F.dJ (σ + 1) h).p0) *ᵥ y ∈ latV _ (G.Λ (.grid (2 * σ + 2 + 1) 0)) (fun _ => True)` using `fun y hy => GlobalTheory.FinPl.FlatVacuum.mulVec_latV_of_local hVsd.1 hVsd.1 _ (fun v _ z hz => witt_projCore_mem_split_lattice_completion (monoV v) hz) hy`. Establish `hX : ∀ y ∈ latV _ (idLat (shiftId G) (G.Λ (.grid (2 * σ + 2) 0))) (fun _ => True), ((F.dB σ h').jX * (F.dB σ h').pX) *ᵥ y ∈ latV _ (idLat (shiftId G) (G.Λ (.grid (2 * σ + 2) 0))) (fun _ => True)` using `fun y hy => mulVec_latV_idLat (shiftId G) _ (fun z hz => GlobalTheory.FinPl.FlatVacuum.mulVec_latV_of_local hΛ hΛ _ (fun v _ z hz => projX_mem (monoW v) hz) hz) hy`. Establish `hY : ∀ y ∈ latV _ (idLat (shiftId G) (G.Λ (.grid (2 * σ + 2) 0))) (fun _ => True), ((F.dB σ h').jY * (F.dB σ h').pY) *ᵥ y ∈ latV _ (idLat (shiftId G) (G.Λ (.grid (2 * σ + 2) 0))) (fun _ => True)` using `fun y hy => mulVec_latV_idLat (shiftId G) _ (fun z hz => GlobalTheory.FinPl.FlatVacuum.mulVec_latV_of_local hΛ hΛ _ (fun v _ z hz => projY_mem (monoW v) hz) hz) hy`.
+
+Take `⟨H1, H2⟩` from `dual_parts (F.dJ (σ + 1) h) (F.dB σ h') W.ψ W.ψ_std hVsd hWsd hX hY h0`. Conclude with `⟨fun ξ hξ => H1 ξ hξ, fun η hη => H2 η hη⟩`.
+-/
 theorem pcFB_dual : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m),
     (∀ ξ, MxAt (fun _ => True) ξ → (ξ ∈ (pcFB W F σ h h').B₁ ↔ ∀ η ∈ (pcFB W F σ h h').B₂,
       W.ψ (symplO _ _ ((F.dB σ h').incX _ ξ) ((F.dB σ h').incY _ η)) = 1)) ∧

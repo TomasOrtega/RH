@@ -18,10 +18,18 @@ namespace GlobalTheory.MBLow.JetBC
 
 open ReciprocityTheory.ChartRestriction.G.H1 GlobalTheory.CommPairing GlobalTheory.ConstFam GlobalTheory.GlobalLift GlobalTheory.ThetaPtMove
 
+/- English proof (translation)
+The claim follows from `(gs_res r z h hz _).trans (gs_pull r F z U (h hz) a)`.
+-/
 theorem gs_appLE' {X Y Z : Scheme.{0}} (F : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (h : V ≤ F ⁻¹ᵁ U) (r : Z ⟶ Y) (z : Z)
     (hz : r z ∈ V) (a : Γ(X, U)) : gs r z V ((F.appLE U V h).hom a) = gs (r ≫ F) z U a :=
   (gs_res r z h hz _).trans (gs_pull r F z U (h hz) a)
 
+/- English proof (translation)
+Distinguish the cases in `h' : ⊤ ≤ x' ⁻¹ᵁ U'`. Establish `h₀ : ⊤ ≤ x ⁻¹ᵁ U` using `fun z hz => (hU z).1 (h' hz)`. Rewrite using `[valR, valR, dif_pos h', dif_pos h₀]`. Use `congrArg _ (fn_ext fun z hz => ?_)` and prove the remaining obligations. Rewrite using `[gs_appLE' _ _ _ _ _ _ hz, gs_appLE' _ _ _ _ _ _ hz, Category.id_comp, Category.id_comp]`.
+
+Conclude with `h z (h' hz)`. Establish `h₀ : ¬ ⊤ ≤ x ⁻¹ᵁ U` using `fun e => h' fun z hz => (hU z).2 (e hz)`. Rewrite using `[valR, valR, dif_neg h', dif_neg h₀]`.
+-/
 theorem valR_congr {B : Type} [CommRing B] {X X' : Scheme.{0}} {x : Sp B ⟶ X} {x' : Sp B ⟶ X'} {U : X.Opens}
     {U' : X'.Opens} {a : Γ(X, U)} {a' : Γ(X', U')} (hU : ∀ z, x' z ∈ U' ↔ x z ∈ U)
     (h : ∀ z, x' z ∈ U' → gs x z U a = gs x' z U' a') : valR x U a = valR x' U' a' := by
@@ -34,6 +42,11 @@ theorem valR_congr {B : Type} [CommRing B] {X X' : Scheme.{0}} {x : Sp B ⟶ X} 
   · have h₀ : ¬ ⊤ ≤ x ⁻¹ᵁ U := fun e => h' fun z hz => (hU z).2 (e hz)
     rw [valR, valR, dif_neg h', dif_neg h₀]
 
+/- English proof (translation)
+Establish `hm2 : T.hom (r z) ∈ LB.wchart L (fun _ : PUnit => eSec A) (fun _ => J (r ≫ T.hom ≫ eSec A))` using `Set.mem_iInter.2 fun _ => hJ (r ≫ T.hom ≫ eSec A)`. Establish `key` using `gm_pull r T.hom z (LB.wchart L (fun _ : PUnit => eSec A) fun _ => J (r ≫ T.hom ≫ eSec A)) hm2 (rig.s fun _ => J (r ≫ T.hom ≫ eSec A))`. Establish `hm' : r z ∈ LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec A) (fun k => J (r ≫ T.hom ≫ eSec A))` using `hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec A) r`. Rewrite using `[val_of rig (r ≫ T.hom) z J (fun _ => J (r ≫ T.hom ≫ eSec A)) (fun _ => by rw [Category.assoc])]`. Unfold `val rigT`.
+
+Rewrite using `[map_zpow]`. Use `congr 1`. Rewrite using `[gm_res r z _ hm']`. Conclude with `key`.
+-/
 theorem val_rigT' {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (rig : LB.Gen (L.pull (eSec A)))
     (T : Over S) (k : ℤ) {Z : Scheme.{0}} (r : Z ⟶ T.left) (z : Z) (J : (Z ⟶ A.left) → L.ι) (hJ : Good L z J) :
     val (rigT A L rig T k) r z J = val rig (r ≫ T.hom) z J ^ k := by
@@ -55,6 +68,9 @@ def Chartwise {X X' : Scheme.{0}} {L₀ : LB X} {L₁ : LB X'} {φ : X' ⟶ X} (
   (∀ (x : X') i, x ∈ L₁.U i ↔ φ x ∈ L₀.U (c i)) ∧
     ∀ (Z : Scheme.{0}) (ψ : Z ⟶ X') (z : Z) i, ψ z ∈ L₁.U i → gw w ψ z (c i) i = 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => mem_pull, fun _ ψ z _ hi => gm_self (pull_isLB hL φ) ψ z hi⟩`.
+-/
 theorem chartwise_id {X X' : Scheme.{0}} {L : LB X} (hL : L.IsLB) (φ : X' ⟶ X) :
     Chartwise (Geo.Tor.idIso (L.pull φ)) (fun i => i PUnit.unit) :=
   ⟨fun _ _ => mem_pull, fun _ ψ z _ hi => gm_self (pull_isLB hL φ) ψ z hi⟩
@@ -68,6 +84,9 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
 
 include hp in
 
+/- English proof (translation)
+Take `⟨J, hJ, e⟩` from `exists_good L₀ hL₀ z (K := {ψ : Z ⟶ A.left // ψ ≫ A.hom = b}) (fun k => k.1 ≫ φ) (fun k => c (J' k.1)) (fun a a' h => by rw [hp.1.hom_ext h (a.2.trans a'.2.symm)]) (fun k => (hc.1 _ _).1 (hJ' k.1))`. Use `⟨J, hJ, fun ψ h => ⟨e ⟨ψ, h⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[wVal, e ⟨ψ, h⟩]`. Conclude with `hc.2 _ _ _ _ (hJ' ψ)`.
+-/
 theorem exists_gauge (hL₀ : L₀.IsLB) (hc : Chartwise w c) {Z : Scheme.{0}} (b : Z ⟶ S') {z : Z} {J'}
     (hJ' : Good L₁ z J') : ∃ J, Good L₀ z J ∧ ∀ ψ : Z ⟶ A.left, ψ ≫ A.hom = b →
       J (ψ ≫ φ) = c (J' ψ) ∧ wVal w z J J' ψ = 1 := by
@@ -78,6 +97,23 @@ theorem exists_gauge (hL₀ : L₀.IsLB) (hc : Chartwise w c) {Z : Scheme.{0}} (
   rw [wVal, e ⟨ψ, h⟩]
   exact hc.2 _ _ _ _ (hJ' ψ)
 
+/- English proof (translation)
+Take `⟨rfl, hpow, ν₀, hν₀, hs⟩` from `H₀`. Take `⟨a, ha, v⟩` from `exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (psi_tr' hp τ hτ x _ hx) θ₀.φ θ₀.isGen`. Take `⟨ν, hν, u⟩` from `exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (psi_neg hp τ hτ) ν₀ hν₀`. Set `θ : ThetaGrp A L₁ k T` to `⟨x, a, ha⟩`. Establish `t : ∀ {y : T ⟶ A} {y₀ : T₀ ⟶ G}, τ ≫ y₀.left = y.left ≫ φ → (𝟙 _ ≫ psi hp τ hτ) ≫ (translT G y₀).left = (𝟙 _ ≫ (translT A y).left) ≫ psi hp τ hτ` using `fun h => by`.
+
+Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ (psi_transl hp τ hτ _ _ h).symm`. Establish `o₁ : ∀ q : T ⊗ A ⟶ A, (𝟙 _ ≫ q.left) ≫ A.hom = (T ⊗ A).hom` using `fun q => by rw [Category.id_comp, Over.w]`. Establish `o₂ : ∀ (p : T ⊗ A ⟶ T ⊗ A) (q : T ⊗ A ⟶ A), ((𝟙 _ ≫ p.left) ≫ q.left) ≫ A.hom = (T ⊗ A).hom` using `fun p q => by`. Rewrite using `[Category.id_comp, Category.assoc, Over.w, Over.w]`.
+
+Use `⟨θ, ⟨rfl, corr_of_val hL₁ fun y J' hJ' => ?_, ν, hν, corr_of_val hL₁ fun y J' hJ' => ?_⟩, fun s₀ s₀' s s' h h' H => isTwistPull_move hp τ hτ hL₀ hL₁ (psi_tr' hp τ hτ x _ hx) ha v h h' H⟩` and prove the remaining obligations. Take `⟨J, hJ, g⟩` from `exists_gauge hp hL₀ hc (T ⊗ A).hom hJ'`. Establish `q` using `val_corr hJ hpow (𝟙 _ ≫ psi hp τ hτ)`. Rewrite `q` using `[val_powGen _ _ _ hJ, val_one]`. Rewrite using `[val_powGen _ _ _ hJ', val_one]`.
+
+Establish `e : ∀ i : ℕ, tval θ₀ ((𝟙 _ ≫ psi hp τ hτ) ≫ (translT G (θ₀.pt ^ i)).left) y J = tval θ (𝟙 _ ≫ (translT A (x ^ i)).left) y J'` using `fun i => by`. Rewrite using `[t (over_pow hp τ hτ hx i)]`. Use `(v _ _ _ _ _ hJ hJ').trans ?_` and prove the remaining obligations. Rewrite using `[(g _ (o₂ _ _)).2, (g _ (o₂ _ _)).2, one_zpow, one_zpow, _root_.one_mul, _root_.one_mul]`. Both sides reduce to the same expression.
+
+Simplify using `only [e] at q`. Conclude with `q`. Take `⟨J, hJ, g⟩` from `exists_gauge hp hL₀ hc (T ⊗ A).hom hJ'`. Establish `q` using `val_corr hJ hs (𝟙 _ ≫ psi hp τ hτ)`. Rewrite `q` using `[val_symGen _ _ _ hJ, val_one]`.
+
+Use `(val_symGen θ ν _ hJ').trans (Eq.trans ?_ (val_one _).symm)` and prove the remaining obligations. Establish `n₀ : (𝟙 _ ≫ psi hp τ hτ) ≫ (negT G T₀).left = (𝟙 _ ≫ (negT A T).left) ≫ psi hp τ hτ`. Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg _ (psi_lift hp τ hτ (psi_neg hp τ hτ)).symm`. Rewrite `q` using `[t (over_inv hp τ hτ hx), n₀]`.
+
+Establish `a₁` using `v _ (𝟙 _ ≫ (translT A x⁻¹).left) y J J' hJ hJ'`. Establish `a₂` using `u _ (𝟙 _) y J J' hJ hJ'`. Establish `a₃` using `v _ (𝟙 _ ≫ (negT A T).left) y J J' hJ hJ'`. Establish `a₄` using `u _ (𝟙 _ ≫ (translT A x⁻¹).left) y J J' hJ hJ'`. Rewrite `a₁`, `a₃`, `a₄` using `[(g _ (o₂ _ _)).2, (g _ (o₂ _ _)).2, one_zpow, one_zpow, _root_.one_mul, _root_.one_mul]`.
+
+Rewrite `a₂` using `[(g _ (o₁ _)).2, (g _ (o₁ _)).2, one_zpow, one_zpow, _root_.one_mul, _root_.one_mul]`. Conclude with `(congrArg₂ (· * ·) (congrArg₂ (· * ·) a₁ a₂) (congrArg₂ (fun p q => p * q⁻¹) a₃ a₄)).symm.trans q`.
+-/
 theorem symLift_chartwise [IsCommMonObj A] (hw : w.IsGen) (hc : Chartwise w c) (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {k : ℤ}
     {n : ℕ} {x : T ⟶ A} {x₀ : T₀ ⟶ G} (hx : τ ≫ x₀.left = x.left ≫ φ) {θ₀ : ThetaGrp G L₀ k T₀}
     (H₀ : SymLift G L₀ k n x₀ θ₀) : ∃ θ : ThetaGrp A L₁ k T, SymLift A L₁ k n x θ ∧
@@ -134,6 +170,15 @@ variable {S S' : Scheme.{0}} {P₀ : PolAV S} {P : PolAV S'} {f : S' ⟶ S} {φ 
   {w : LB.Iso P.L (P₀.L.pull φ)} {c : P.L.ι → P₀.L.ι}
   {ρ₀ : LB.Gen (P₀.L.pull (eSec P₀.A))} {ρ : LB.Gen (P.L.pull (eSec P.A))}
 
+/- English proof (translation)
+Introduce `i hi`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J', hJ', e⟩` from `exists_good P.L P.isLB y (fun _ : Unit => 𝟙 _ ≫ (snd T P.A).left) (fun _ => i) (fun _ _ _ => rfl) (fun _ => hi hy)`. Take `⟨J, hJ⟩` from `exists_good' P₀.isLB y`. Establish `q` using `h _ (𝟙 _) y J J' hJ hJ'`.
+
+Establish `e₀ : (𝟙 _ ≫ psi hp τ hτ) ≫ (snd T₀ P₀.A).left = (𝟙 _ ≫ (snd T P.A).left) ≫ φ`. Rewrite using `[Category.assoc, Category.assoc, psi_snd']`. Establish `m₀` using `hJ.mem (fun _ : Fin 1 => (snd T₀ P₀.A).left) (𝟙 _ ≫ psi hp τ hτ)`. Rewrite `m₀` using `[e₀]`. Establish `q₁` using `(sval_of (φ := fun _ : Fin 1 => (snd T₀ P₀.A).left) (ε := fun _ => ((1 : ℕ) : ℤ)) th₀ _ y J (fun _ => J ((𝟙 _ ≫ (snd T P.A).left) ≫ φ)) (fun _ => congrArg J e₀)).symm.trans q`.
+
+Establish `q₂` using `(congrArg (gs _ y _) (H _ (LB.wchart_le _ _ _ 0))).symm.trans q₁`. Establish `q₃` using `(gs_appLE' _ _ _ _ _ _ m₀ _).symm.trans q₂`. Rewrite `q₃` using `[e₀, hθ _ _ y _ (J' (𝟙 _ ≫ (snd T P.A).left)) (hJ _) (hJ' _)]`. Establish `q₄` using `(Units.mul_right_inj _).1 (q₃.trans (congrArg (fun u => Units.val u * _) (zpow_one _)))`. Use `(sval_of (φ := fun _ : Fin 1 => (snd T P.A).left) (ε := fun _ => ((1 : ℕ) : ℤ)) th _ y J' (fun _ => i) (fun _ => e ())).symm.trans (q₄.symm.trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[e ()]`. Conclude with `(gs_appLE' _ _ _ _ _ _ hy _).symm`.
+-/
 theorem polAVSectionInverseImage_chartwisePullback {θ₀ : P₀.L.Sec} {θ : P.L.Sec}
     (hθ : ∀ (Z : Scheme.{0}) (r : Z ⟶ P.A.left) (z : Z) j k, φ (r z) ∈ P₀.L.U j → r z ∈ P.L.U k →
       gs (r ≫ φ) z _ (θ₀.f j) = (gw w r z j k).val * gs r z _ (θ.f k))
@@ -159,6 +204,15 @@ theorem polAVSectionInverseImage_chartwisePullback {θ₀ : P₀.L.Sec} {θ : P.
   rw [e ()]
   exact (gs_appLE' _ _ _ _ _ _ hy _).symm
 
+/- English proof (translation)
+Take `⟨α₀, s₀, hα₀, hn, h₁, h₂⟩` from `H`. Take `⟨α, hα, v⟩` from `exists_genThrough₂ hp τ hτ hw P₀.isLB P.isLB (psi_pow hp τ hτ m) α₀ hα₀`. Take `⟨s, hs⟩` from `exists_secRel hp τ hτ hw P₀.isLB P.isLB s₀`. Use `⟨α, s, hα, corr_of_val P.isLB fun y J' hJ' => ?_, isTwistPull_move hp τ hτ P₀.isLB P.isLB (psi_pow hp τ hτ m) hα v h hs h₁, hU _ _ _ _ hs ht h₂⟩` and prove the remaining obligations. Take `⟨J, hJ, g⟩` from `exists_gauge hp P₀.isLB hc T.hom hJ'`.
+
+Establish `o : ∀ q : T ⊗ P.A ⟶ P.A, ((𝟙 _ ≫ (ptSecT P.A (1 : T ⟶ P.A)).left) ≫ q.left) ≫ P.A.hom = T.hom` using `fun q => by`. Rewrite using `[Category.id_comp, Category.assoc, Over.w, Over.w]`. Establish `q` using `val_corr hJ hn (𝟙 _ ≫ τ)`. Establish `q₁` using `v _ (𝟙 _ ≫ (ptSecT P.A (1 : T ⟶ P.A)).left) y J J' hJ hJ'`. Rewrite `q₁` using `[(g _ (o _)).2, (g _ (o _)).2, one_zpow, one_zpow, _root_.one_mul, _root_.one_mul, Category.assoc, psi_ptSec hp τ hτ (over_one hp τ hτ), ← Category.assoc]`.
+
+Establish `q₂` using `pmaps_val (fun _ => he) hρ (𝟙 _ ≫ T.hom) hJ hJ'`. Rewrite using `[Fintype.prod_unique, (g _ (by`. Rewrite using `[Category.id_comp, Category.assoc]`. Conclude with `(congrArg _ (Over.w η[P.A])).trans (Category.comp_id _))).2, one_zpow, _root_.one_mul] at q₂`. Rewrite `q` using `[val_pull hJ, val_rigT' _ _ _ _ _ _ _ _ hJ, Category.assoc _ τ T₀.hom, hτ, ← Category.assoc, q₁]`.
+
+Rewrite using `[val_pull hJ', val_rigT' _ _ _ _ _ _ _ _ hJ']`. Conclude with `q.trans (congrArg (· ^ _) q₂)`.
+-/
 theorem tr_move (hw : w.IsGen) (hc : Chartwise w c) (he : eSec P.A ≫ φ = f ≫ eSec P₀.A)
     (hρ : PMaps w (fun _ : PUnit => eSec P.A) (fun _ => eSec P₀.A) (fun _ => 1) ρ ρ₀ f) {m : ℕ}
     {th₀ th t₀ t} (h : SecRel hp τ hτ w th th₀) (ht : SecRel hp τ hτ w t t₀) {U₀ U}
@@ -185,6 +239,13 @@ theorem tr_move (hw : w.IsGen) (hc : Chartwise w c) (he : eSec P.A ≫ φ = f �
   rw [val_pull hJ', val_rigT' _ _ _ _ _ _ _ _ hJ']
   exact q.trans (congrArg (· ^ _) q₂)
 
+/- English proof (translation)
+Establish `e₀ : (y ≫ psi hp τ hτ) ≫ (snd T₀ P₀.A).left = (y ≫ (snd T P.A).left) ≫ φ`. Rewrite using `[Category.assoc, Category.assoc, psi_snd']`. Establish `hU : ∀ z, (y ≫ (snd T P.A).left) z ∈ P.L.U i ↔ ((y ≫ psi hp τ hτ) ≫ (snd T₀ P₀.A).left) z ∈ P₀.L.U (c i)` using `fun z => by`. Rewrite using `[e₀]`. Conclude with `hc.1 _ _`.
+
+Use `valR_congr (fun z => ⟨fun h => Set.mem_iInter.2 fun _ => (hU z).1 (Set.mem_iInter.1 h 0), fun h => Set.mem_iInter.2 fun _ => (hU z).2 (Set.mem_iInter.1 h 0)⟩) fun z hz => ?_` and prove the remaining obligations. Take `⟨J', hJ', e⟩` from `exists_good P.L P.isLB z (fun _ : Unit => y ≫ (snd T P.A).left) (fun _ => i) (fun _ _ _ => rfl) (fun _ => Set.mem_iInter.1 hz 0)`. Take `⟨J, hJ, g⟩` from `exists_gauge hp P₀.isLB hc ((y ≫ (snd T P.A).left) ≫ P.A.hom) hJ'`. Establish `q` using `ht _ y z J J' hJ hJ'`. Rewrite `q` using `[(g _ rfl).2, one_zpow, Units.val_one, _root_.one_mul]`.
+
+Conclude with `(sval_of (φ := fun _ : Fin 1 => (snd T₀ P₀.A).left) (ε := fun _ => k) t₀ _ z J (fun _ => c i) (fun _ => by rw [e₀, (g _ rfl).1, e ()])).symm.trans (q.trans (sval_of (φ := fun _ : Fin 1 => (snd T P.A).left) (ε := fun _ => k) t _ z J' (fun _ => i) (fun _ => e ())))`.
+-/
 theorem valR_sec_move (hc : Chartwise w c) {k : ℤ} {t₀ : LB.Sec (LPow P₀.A P₀.L k T₀)} {t : LB.Sec (LPow P.A P.L k T)}
     (ht : SecRel hp τ hτ w t t₀) {B : Type} [CommRing B] (y : Sp B ⟶ (T ⊗ P.A).left) (i : P.L.ι) :
     valR (y ≫ psi hp τ hτ) ((LPow P₀.A P₀.L k T₀).U fun _ => c i) (t₀.f fun _ => c i) =
@@ -205,6 +266,11 @@ theorem valR_sec_move (hc : Chartwise w c) {k : ℤ} {t₀ : LB.Sec (LPow P₀.A
     (fun _ => by rw [e₀, (g _ rfl).1, e ()])).symm.trans (q.trans
     (sval_of (φ := fun _ : Fin 1 => (snd T P.A).left) (ε := fun _ => k) t _ z J' (fun _ => i) (fun _ => e ())))
 
+/- English proof (translation)
+Establish `hU : ∀ z, (s ≫ eSec P.A) z ∈ P.L.U i ↔ ((s ≫ f) ≫ eSec P₀.A) z ∈ P₀.L.U (c i)` using `fun z => by`. Rewrite using `[Category.assoc, ← he]`. Conclude with `hc.1 _ _`. Establish `hU' : ∀ z, s z ∈ (P.L.pull (eSec P.A)).U (fun _ => i) ↔ (s ≫ f) z ∈ (P₀.L.pull (eSec P₀.A)).U (fun _ => c i)` using `fun z => ⟨fun h => mem_pull.2 ((hU z).1 (mem_pull.1 h)), fun h => mem_pull.2 ((hU z).2 (mem_pull.1 h))⟩`. Use `valR_congr hU' fun z hz => ?_` and prove the remaining obligations.
+
+Establish `hz' : (s ≫ eSec P.A) z ∈ P.L.U i` using `mem_pull.1 hz`. Establish `q` using `hρ _ s z (fun _ => c i) (fun _ => i) (fun _ => (hc.1 _ _).1 hz') (fun _ => hz')`. Rewrite `q` using `[Fintype.prod_unique, hc.2 _ _ _ _ hz', one_zpow, _root_.one_mul]`. Conclude with `(gs_unit _ z _ ((hU' z).1 hz) _).trans ((congrArg Units.val q).trans (gs_unit _ z _ hz _).symm)`.
+-/
 theorem valR_rig_move (hc : Chartwise w c) (he : eSec P.A ≫ φ = f ≫ eSec P₀.A)
     (hρ : PMaps w (fun _ : PUnit => eSec P.A) (fun _ => eSec P₀.A) (fun _ => 1) ρ ρ₀ f)
     {B : Type} [CommRing B] (s : Sp B ⟶ S') (i : P.L.ι) :
@@ -223,6 +289,15 @@ theorem valR_rig_move (hc : Chartwise w c) (he : eSec P.A ≫ φ = f ≫ eSec P�
 
 include hp in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `P.isAb.comm` as an intermediate fact. Set `τ : (Over.mk s).left ⟶ (Over.mk (s ≫ f)).left` to `𝟙 (Sp B)`. Establish `hτ : τ ≫ (Over.mk (s ≫ f)).hom = (Over.mk s).hom ≫ f` using `Category.id_comp _`. Take `⟨U₀, t₀, i₀, d, h₁, h₂, h₃⟩` from `H`.
+
+Take `⟨i, rfl⟩` from `hs i₀`. Take `⟨th, hth⟩` from `exists_secRel hp τ hτ hw P₀.isLB P.isLB th₀`. Use `choose t ht using fun a => exists_secRel hp τ hτ hw P₀.isLB P.isLB (t₀ a)`. Use `choose U hU hU' using fun a => symLift_chartwise hp τ hτ hw hc P₀.isLB P.isLB ((Category.id_comp _).trans (hpt a)) (h₁ a).1`. Establish `ey : ∀ j, y₀ j = y j ≫ psi hp τ hτ` using `fun j => psi_ext (by rw [Category.assoc, psi_fst', hy₁]; exact congrArg _ (Category.comp_id _).symm) (by rw [Category.assoc, psi_snd', hy₂])`.
+
+Use `⟨th, polAVSectionInverseImage_chartwisePullback hp τ hτ hθ hth H₁, U, t, i, d, fun a => ⟨hU a, tr_move hp τ hτ hw hc he hρ hth (ht a) (hU' a) (h₁ a).2⟩, fun z hz => ?_, fun a j => ?_⟩` and prove the remaining obligations. Establish `q : ((s ≫ f) ≫ eSec P₀.A) z ∈ P₀.L.U (c i)` using `h₂ hz`. Rewrite `q` using `[Category.assoc, ← he]`. Conclude with `(hc.1 _ _).2 q`. Establish `q` using `h₃ a j`.
+
+Rewrite `q` using `[ey, valR_sec_move hp τ hτ hc (ht a), valR_rig_move hc he hρ]`. Conclude with `q`.
+-/
 theorem thJetT_move (hw : w.IsGen) (hc : Chartwise w c) (hs : Function.Surjective c)
     (he : eSec P.A ≫ φ = f ≫ eSec P₀.A)
     (hρ : PMaps w (fun _ : PUnit => eSec P.A) (fun _ => eSec P₀.A) (fun _ => 1) ρ ρ₀ f) {θ₀ : P₀.L.Sec} {θ : P.L.Sec}
@@ -259,6 +334,9 @@ theorem thJetT_move (hw : w.IsGen) (hc : Chartwise w c) (hs : Function.Surjectiv
     exact q
 
 include hp in
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hb : Function.Bijective (pushHom hp (Over.mk s))` using `⟨fun a b h => Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun q => q.left) h) ((Over.w a).trans (Over.w b).symm)), fun a => ⟨Over.homMk (hp.1.lift a.left s (Over.w a)) (hp.1.lift_snd _ _ _), Over.OverMorphism.ext (hp.1.lift_fst _ _ _)⟩⟩`. Conclude with `⟨(MulEquiv.ofBijective _ hb).symm, fun a => (congrArg (fun q => q.left) ((MulEquiv.ofBijective _ hb).apply_symm_apply a)).symm⟩`.
+-/
 theorem exists_ptEquiv {Z : Scheme.{0}} {s : Z ⟶ S'} {s₀ : Z ⟶ S} (e : s₀ = s ≫ f) :
     ∃ io : (Over.mk s₀ ⟶ P₀.A) ≃* (Over.mk s ⟶ P.A), ∀ a, a.left = (io a).left ≫ φ := by
   subst e
@@ -271,6 +349,9 @@ theorem exists_ptEquiv {Z : Scheme.{0}} {s : Z ⟶ S'} {s₀ : Z ⟶ S} (e : s�
     (congrArg (fun q => q.left) ((MulEquiv.ofBijective _ hb).apply_symm_apply a)).symm⟩
 
 include hp in
+/- English proof (translation)
+Substitute `e` using the available equality. Use `P.isAb.comm` as an intermediate fact. Conclude with `(weilIs_grpPullback_of_comm' _ _ P₀.A P.A f φ P₀.L P.L P₀.isLB P.isLB hp ⟨w, hw⟩ (Over.mk s) k a b a₀ b₀ z ha hb).1 H`.
+-/
 theorem weilIs_move (hw : w.IsGen) {Z : Scheme.{0}} {s : Z ⟶ S'} {s₀ : Z ⟶ S} (e : s₀ = s ≫ f) (k : ℤ)
     {a₀ b₀ : Over.mk s₀ ⟶ P₀.A} {a b : Over.mk s ⟶ P.A} (ha : a₀.left = a.left ≫ φ) (hb : b₀.left = b.left ≫ φ)
     (z : Γ(Z, ⊤)ˣ) (H : WeilIs P.A P.L k a b z) : WeilIs P₀.A P₀.L k a₀ b₀ z := by
@@ -281,6 +362,17 @@ theorem weilIs_move (hw : w.IsGen) {Z : Scheme.{0}} {s : Z ⟶ S'} {s₀ : Z ⟶
 
 end Pol
 
+/- English proof (translation)
+Establish `h` using `isGrpPullback_pullback x.P.A (spMap f)`. Set `φ : ((Over.pullback (spMap f)).obj x.P.A).left ⟶ x.P.A.left` to `pullback.fst x.P.A.hom (spMap f)`. Express the relevant statement in the definitionally equal form `IsGrpPullback _ _ _ φ at h`. Establish `hL'` using `pull_isLB x.P.isLB φ`. Establish `hw` using `(isGen_iff _).1 (idIso_isGen hL')`.
+
+Set `P' : Out.PolAV (Sp R')` to `{ A := (Over.pullback (spMap f)).obj x.P.A isAb := Out.TLinPf.isAb_pullback (spMap f) x.P.A x.P.isAb g := x.P.g smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h.1 x.P.smoothDim L := x.P.L.pull φ isLB := hL' rigid := PolBaseChange.rigidified_pull …`. Establish `he : eSec P'.A ≫ φ = spMap f ≫ eSec x.P.A` using `PolBaseChange.eSec_comm h`. Establish `hr : (rigPullOf φ (spMap f) he x.P.L x.rig).IsGen` using `Out.LBxP.isGen_pullAlong x.P.L φ (spMap f) (fun _ : PUnit => eSec x.P.A) (fun _ => 1) (fun _ => eSec P'.A) (fun _ => he) x.rig x.rig_gen`. Take `⟨th', hth'⟩` from `sec_pull_down hw x.P.isLB hL' x.th`. Establish `c₁ : IsCommMonObj x.P.A` using `x.P.isAb.comm`.
+
+Establish `c₂ : IsCommMonObj P'.A` using `P'.isAb.comm`. Take `⟨v', hb', hv'⟩` from `exists_isLieBasis_baseChange R R' f x.P.A P'.A φ h x.P.isAb.smooth x.P.g x.v x.basis`. Establish `hm : LB.Gen.Maps (LB.linCombIso (Geo.Tor.idIso (x.P.L.pull φ)) (K` using `PUnit) (fun _ => eSec P'.A) (fun _ => 1)) (rigPullOf φ (spMap f) he x.P.L x.rig) (rigPullOf φ (spMap f) he x.P.L x.rig) := fun p => hr p.1 p.2`. Use `⟨⟨P', x.g_pos, _, hr, th', fun s => ?_, v', hb'⟩, rfl, φ, Geo.Tor.idIso _, fun i => i PUnit.unit, ⟨φ, he, Geo.Tor.idIso _, rfl, Chart.dualMapR f, h, idIso_isGen hL', hm, KeyPow.appLE_eq_of_stalk _ x.th th' (hth' _ (𝟙 _)), fun a => ?_, ?_, hv'⟩, h, idIso_isGen hL', chartwise_id x. …` and prove the remaining obligations. Take `⟨z, hz, hz'⟩` from `x.th_ne (spMap f s)`.
+
+Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback h.1 z s hz`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨fun _ => k, mem_pull.2 hk, ?_⟩⟩` and prove the remaining obligations. Establish `u₁ : IsUnit (gs φ y _ (x.th.f k))` using `by rw [gs_stalkMap φ y _ hk]; exact u.map _`. Establish `e` using `hth' _ (𝟙 _) y k (fun _ => k) hk (mem_pull.2 hk)`.
+
+Rewrite `e` using `[Category.id_comp]`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ u₁)`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`. Apply the tactic sequence `ext <;> simp [Chart.dualMapR]`.
+-/
 theorem exists_keyPB_chartwise {R R' : Type} [CommRing R] [CommRing R'] (x : KeyIn R) (f : R →+* R') :
     ∃ (x' : KeyIn R') (hg : x'.P.g = x.P.g) (φ : x'.P.A.left ⟶ x.P.A.left) (w : LB.Iso x'.P.L (x.P.L.pull φ))
       (c : x'.P.L.ι → x.P.L.ι), KeyPB x' x f ∧ IsGrpPullback x'.P.A x.P.A (spMap f) φ ∧ w.IsGen ∧ Chartwise w c ∧
@@ -335,6 +427,11 @@ end GlobalTheory.MBLow.JetBC
 
 open GlobalTheory.MBLow.JetBC in
 
+/- English proof (translation)
+Introduce `K C _ _ f x`. Take `⟨xC, hg, φ, w, c, hK, hp, hw, hc, hs, he, hρ, hθ, hv⟩` from `exists_keyPB_chartwise x f`. Establish `e : spMap f = 𝟙 (Sp C) ≫ spMap f` using `(Category.id_comp _).symm`. Take `⟨io, hio⟩` from `exists_ptEquiv hp e`. Use `⟨xC, hg, io, hK, fun k a b z H => weilIs_move hp hw e k (hio a) (hio b) z H, fun m th I pt y ϑ J H₁ hy H => thJetT_move hp hw hc hs he hρ hθ e (fun i => hio (pt i)) (fun j => ?_) (fun j => ?_) H₁ H⟩` and prove the remaining obligations.
+
+Rewrite using `[(hy j).1, epsLift, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Rewrite using `[(hy j).2, epsLift, ← Category.assoc, ← Over.comp_left, lift_snd, hv]`.
+-/
 theorem GlobalTheory.MBLow.exists_keyPB_thJet : ∀ (K C : Type) [Field K] [Field C] (f : K →+* C) (x : KeyIn K), ∃ (xC : KeyIn C) (hg : xC.P.g = x.P.g) (io : (Over.mk (spMap f) ⟶ x.P.A) ≃* (baseOver (Sp C) ⟶ xC.P.A)), KeyPB xC x f ∧ (∀ (k : ℕ) a b (z : Γ(Sp C, ⊤)ˣ), WeilIs xC.P.A xC.P.L k (io a) (io b) z → WeilIs x.P.A x.P.L k a b z) ∧ ∀ (m : ℕ) (th : LB.Sec (LPow x.P.A x.P.L ((1 : ℕ) : ℤ) (Over.mk (spMap f)))) (I : Type) (pt : I → (Over.mk (spMap f) ⟶ x.P.A)) (y : Fin x.P.g → (Sp (DualNumber C) ⟶ (Over.mk (spMap f) ⊗ x.P.A).left)) (ϑ : I → C) (J : I → Fin x.P.g → C), IsPolAVSectionInverseImage x.P (Over.mk (spMap f)) x.th th → (∀ j, y j ≫ (fst (Over.mk (spMap f)) x.P.A).left = spMap (algebraMap C (DualNumber C)) ∧ y j ≫ (snd (Over.mk (spMap f)) x.P.A).left = spMap (dualMap f) ≫ (x.v j).left) → ThJetT x.P x.rig m (spMap f) th pt y ϑ J → ThJet xC hg m (fun i => io (pt i)) ϑ J := by
   intro K C _ _ f x
   obtain ⟨xC, hg, φ, w, c, hK, hp, hw, hc, hs, he, hρ, hθ, hv⟩ := exists_keyPB_chartwise x f

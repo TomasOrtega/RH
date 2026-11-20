@@ -13,6 +13,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtaCard
 
+/- English proof (translation)
+Establish `: Module.FinitePresentation O M` using `Module.finitePresentation_of_projective O M`. Establish `key : ∀ (K : Type) [Field K] [Algebra O K], Module.finrank K (K ⊗[O] M) = Module.rankAtStalk M (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum O)` using `fun K _ _ => by`. Establish `h` using `Module.rankAtStalk_baseChange (R := O) (M := M) (S := K) ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Conclude with `h.trans ((Module.isLocallyConstant_rankAtStalk (R := O) (M := M)).apply_eq_of_preconnectedSpace _ _)`.
+
+Rewrite using `[key k, ← key (FractionRing O), (TensorProduct.isBaseChange O M (FractionRing O)).finrank_eq]`.
+-/
 theorem finrank_fibre (O M k : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] [Module.Projective O M] [Field k] [Algebra O k] :
     Module.finrank k (k ⊗[O] M) = Module.finrank O M := by
@@ -24,6 +29,11 @@ theorem finrank_fibre (O M k : Type) [CommRing O] [IsDomain O] [AddCommGroup M] 
     exact h.trans ((Module.isLocallyConstant_rankAtStalk (R := O) (M := M)).apply_eq_of_preconnectedSpace _ _)
   rw [key k, ← key (FractionRing O), (TensorProduct.isBaseChange O M (FractionRing O)).finrank_eq]
 
+/- English proof (translation)
+Establish `: Finite (Ideal (O ⧸ I))` using `Finite.of_injective _ SetLike.coe_injective`. Establish `: Finite (MaximalSpectrum (O ⧸ I))` using `Finite.of_injective (fun P => P.asIdeal) fun _ _ h => MaximalSpectrum.ext h`. Take `⟨B⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (O ⧸ I) ((O ⧸ I) ⊗[O] M) r fun P => by`. Set `` to `P.isMaximal`. Set `` to `Ideal.Quotient.field P.asIdeal`.
+
+Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange O (O ⧸ I) ((O ⧸ I) ⧸ P.1) ((O ⧸ I) ⧸ P.1) M).finrank_eq, finrank_fibre, hr]`. Conclude with `⟨(TensorProduct.quotTensorEquivQuotSMul M I).symm ≪≫ₗ B.equivFun.restrictScalars O⟩`.
+-/
 theorem nonempty_equiv_mod (O M : Type) [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] [Module.Projective O M] (I : Ideal O) [Finite (O ⧸ I)] (r : ℕ)
     (hr : Module.finrank O M = r) :
@@ -38,6 +48,9 @@ theorem nonempty_equiv_mod (O M : Type) [CommRing O] [IsDomain O] [AddCommGroup 
       finrank_fibre, hr]
   exact ⟨(TensorProduct.quotTensorEquivQuotSMul M I).symm ≪≫ₗ B.equivFun.restrictScalars O⟩
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (algebraMap O (O ⧸ I))` using `Ideal.Quotient.mk_surjective`. Set `e1 : (N ≃ₗ[O] N) ≃ ((Fin r → O ⧸ I) ≃ₗ[O ⧸ I] (Fin r → O ⧸ I))` to `{ toFun := fun g => (e.symm ≪≫ₗ g ≪≫ₗ e).extendScalarsOfSurjective hs invFun := fun g => e ≪≫ₗ g.restrictScalars O ≪≫ₗ e.symm left_inv := fun g => by ext x; simp right_inv := fun g => by ext x; simp }`. Conclude with `⟨e1.trans ((LinearMap.GeneralLinearGroup.generalLinearEquiv _ _).symm.toEquiv.trans Matrix.GeneralLinearGroup.toLin.symm.toEquiv)⟩`.
+-/
 theorem nonempty_aut_equiv (O N : Type) [CommRing O] [AddCommGroup N] [Module O N] (I : Ideal O) (r : ℕ)
     (e : N ≃ₗ[O] (Fin r → O ⧸ I)) : Nonempty ((N ≃ₗ[O] N) ≃ GL (Fin r) (O ⧸ I)) := by
   have hs : Function.Surjective (algebraMap O (O ⧸ I)) := Ideal.Quotient.mk_surjective
@@ -49,6 +62,11 @@ theorem nonempty_aut_equiv (O N : Type) [CommRing O] [AddCommGroup N] [Module O 
   exact ⟨e1.trans ((LinearMap.GeneralLinearGroup.generalLinearEquiv _ _).symm.toEquiv.trans
     Matrix.GeneralLinearGroup.toLin.symm.toEquiv)⟩
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `eq_top_iff.2 (ih.ge.trans (sup_le le_sup_left ?_))` and prove the remaining obligations. Establish `h2` using `congrArg (fun T : Submodule O M => Ideal.span {a ^ k} • T) h`.
+
+Simplify using `only [Submodule.smul_sup, ← Submodule.mul_smul, Ideal.span_singleton_mul_span_singleton, ← pow_succ] at h2`. Conclude with `h2.ge.trans (sup_le_sup_right Submodule.smul_le_right _)`.
+-/
 theorem span_sup_pow (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (a : O) (S : Submodule O M)
     (h : S ⊔ Ideal.span {a} • ⊤ = ⊤) (k : ℕ) : S ⊔ Ideal.span {a ^ k} • ⊤ = ⊤ := by
   induction k with
@@ -62,12 +80,23 @@ theorem span_sup_pow (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (a 
 
 variable (E : Type) [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hk)`.
+-/
 theorem finite_quot (k : ℕ) (hk : k ≠ 0) : Finite (𝓞 E ⧸ Ideal.span {(k : 𝓞 E)}) :=
   Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hk)
 
+/- English proof (translation)
+Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`.
+-/
 theorem card_quot (k : ℕ) : Nat.card (𝓞 E ⧸ Ideal.span {(k : 𝓞 E)}) = k ^ Module.finrank ℚ E := by
   rw [← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ideal.absNorm_span_natCast, RingOfIntegers.rank]
 
+/- English proof (translation)
+Use `⟨fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Use `⟨fun h => ?_, fun h => Nat.cast_dvd_cast h⟩` and prove the remaining obligations. Establish `h2` using `map_dvd (Algebra.norm ℤ) h`. Rewrite `h2` using `[← map_natCast (algebraMap ℤ (𝓞 E)), ← map_natCast (algebraMap ℤ (𝓞 E)), Algebra.norm_algebraMap, Algebra.norm_algebraMap, Int.pow_dvd_pow_iff Module.finrank_pos.ne']`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 theorem charP_quot (k : ℕ) : CharP (𝓞 E ⧸ Ideal.span {(k : 𝓞 E)}) k := by
   refine ⟨fun n => ?_⟩
   rw [← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]
@@ -77,10 +106,32 @@ theorem charP_quot (k : ℕ) : CharP (𝓞 E ⧸ Ideal.span {(k : 𝓞 E)}) k :=
     Algebra.norm_algebraMap, Int.pow_dvd_pow_iff Module.finrank_pos.ne'] at h2
   exact_mod_cast h2
 
+/- English proof (translation)
+Rewrite using `[FD.fdeg, IsTotallyComplex.finrank E]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_eq [IsCMField E] : Module.finrank ℚ E = 2 * FD.fdeg E := by
   rw [FD.fdeg, IsTotallyComplex.finrank E]
   omega
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw R hR`. Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Establish `hR0 : R ≠ 0` using `by omega`. Use `finite_quot E R hR0` as an intermediate fact.
+
+Use `finite_quot E (R ^ 4) (pow_ne_zero _ hR0)` as an intermediate fact. Take `⟨e1⟩` from `nonempty_equiv_mod (𝓞 E) Dw.La (Ideal.span {(R : 𝓞 E)}) _ Dw.rank`. Take `⟨e4⟩` from `nonempty_equiv_mod (𝓞 E) Dw.La (Ideal.span {((R ^ 4 : ℕ) : 𝓞 E)}) _ Dw.rank`. Take `⟨g4⟩` from `nonempty_aut_equiv _ _ _ _ e4`. Use `⟨Finite.of_equiv _ g4.symm, Finite.of_equiv _ e1.symm.toEquiv, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Nat.card_congr e1.toEquiv, Nat.card_fun, Nat.card_fin, card_quot, finrank_eq, ← pow_mul]`. Rewrite using `[Nat.card_congr g4]`. Use `(Nat.card_le_card_of_injective _ Units.val_injective).trans (le_of_eq ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Nat.card (Fin (Dw.p + Dw.q) → Fin (Dw.p + Dw.q) → _) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_fin, card_quot, finrank_eq, ← pow_mul, ← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `ho h2`. Rewrite using `[Nat.card_congr g4]`. Conclude with `two_mul_pow_four_dvd_card_generalLinearGroup _ R ho (charP_quot E _) hR _ h2`.
+
+Use `choose x₀ hx using fun i => Submodule.Quotient.mk_surjective _ (e1.symm (Pi.single i 1))`. Use `⟨x₀, ?_⟩` and prove the remaining obligations. Rewrite using `[sup_comm, ← Submodule.map_mkQ_eq_top, eq_top_iff]`. Introduce `z _`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (e1 z i)`.
+
+Use `⟨∑ i, c i • x₀ i, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩), e1.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, Submodule.mkQ_apply, hx, LinearEquiv.apply_symm_apply]`. Use extensionality with `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j (fun i _ hi => by simp [hi.symm]) (by simp), ← hc]`. Simplify using `[Algebra.smul_def]`.
+
+Introduce `n x₀ hx y g`. Establish `h1 : Submodule.span (𝓞 E) (Set.range fun b => x₀ b + R • qRep (y b)) ⊔ Ideal.span {(R : 𝓞 E)} • ⊤ = ⊤`. Use `eq_top_iff.2 (hx.ge.trans (sup_le (Submodule.span_le.2 ?_) le_sup_right))` and prove the remaining obligations. Introduce and unpack `_ ⟨b, rfl⟩`. Establish `: x₀ b = (x₀ b + R • qRep (y b)) - (R : 𝓞 E) • qRep (y b)`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, add_sub_cancel_right]`. Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.subset_span ⟨b, rfl⟩)) (Submodule.mem_sup_right (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial))`. Establish `h2` using `span_sup_pow _ _ _ _ h1 4`. Rewrite `h2` using `[← Nat.cast_pow, sup_comm, ← Submodule.map_mkQ_eq_top, Submodule.map_span, ← Set.range_comp]`.
+
+Establish `h3` using `congrArg (Submodule.map g.toLinearMap) h2`. Rewrite `h3` using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, LinearEquiv.range]`. Conclude with `h3`.
+-/
 theorem card_levGrp_and_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (R : ℕ), 1 < R → Finite (LevGrp Dw (R ^ 4)) ∧ Finite (LatMod Dw R) ∧ Nat.card (LatMod Dw R) = R ^ (2 * FD.fdeg E * (Dw.p + Dw.q)) ∧ Nat.card (LevGrp Dw (R ^ 4)) ≤ R ^ (8 * FD.fdeg E * (Dw.p + Dw.q) ^ 2) ∧ (Odd R → 2 ≤ Dw.p + Dw.q → 2 * R ^ 4 ∣ Nat.card (LevGrp Dw (R ^ 4))) ∧ (∃ x₀ : Fin (Dw.p + Dw.q) → Dw.La, Submodule.span (𝓞 E) (Set.range x₀) ⊔ (Ideal.span {(R : 𝓞 E)} • ⊤) = ⊤) ∧ ∀ (n : ℕ) (x₀ : Fin n → Dw.La), Submodule.span (𝓞 E) (Set.range x₀) ⊔ (Ideal.span {(R : 𝓞 E)} • ⊤) = ⊤ → ∀ (y : Fin n → LatMod Dw R) (g : LevGrp Dw (R ^ 4)), Submodule.span (𝓞 E) (Set.range fun b => g (shiftFam R x₀ y b)) = ⊤ := by
   intro E _ _ _ H Dw R hR
   have := Dw.fin

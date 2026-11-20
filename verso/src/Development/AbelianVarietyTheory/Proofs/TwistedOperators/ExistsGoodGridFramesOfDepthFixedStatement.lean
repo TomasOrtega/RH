@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.towerEx_of_depFixed | exact GlobalTheory.AscFin.towerEx_of_depFixed | (intros; apply GlobalTheory.AscFin.towerEx_of_depFixed <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.existsGoodGridFrames_of_depthFixed : GlobalTheory.SepRows.DepFixed → GlobalTheory.Asc.TowerEx := by
   first | exact @GlobalTheory.AscFin.towerEx_of_depFixed | exact GlobalTheory.AscFin.towerEx_of_depFixed | (intros; apply GlobalTheory.AscFin.towerEx_of_depFixed <;> assumption)

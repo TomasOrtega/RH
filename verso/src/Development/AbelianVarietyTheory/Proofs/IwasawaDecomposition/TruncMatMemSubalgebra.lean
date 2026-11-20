@@ -13,6 +13,9 @@ def truncMat {R : Type} [CommRing R] {d : ℕ} (m : ℕ) (M : Matrix (Fin d) (Fi
     Matrix (Fin d) (Fin d) R :=
   fun c e => if (c : ℕ) < m ∧ (e : ℕ) < m then M c e else if c = e then 1 else 0
 
+/- English proof (translation)
+Use extensionality with `c e`. Simplify using `only [truncMat, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem truncMat_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ} (m : ℕ)
     (M : Matrix (Fin d) (Fin d) R) : (truncMat m M).map f = truncMat m (M.map f) := by
   ext c e
@@ -45,6 +48,11 @@ def chartInv (j : ℕ) (b : Frames k V) (F : Flags k V) : LocIdx k V j → k := 
 def cellDisc [Fintype ι] (b g : Frames k V) : k :=
   ∏ i, ∏ m : Fin (finrank k (V i) + 1), (truncMat (m : ℕ) (frameMat b g i)).det
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply]`. Establish `: (fun x => ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ c, M x (σ c) c) = ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ c, (fun x => M x (σ c) c)`. Use extensionality with `x`. Simplify using `[Finset.sum_apply, Finset.prod_apply]`. Rewrite using `[this]`.
+
+Conclude with `Subalgebra.sum_mem _ fun σ _ => Subalgebra.zsmul_mem _ (Subalgebra.prod_mem _ fun c _ => h _ _) _`.
+-/
 theorem det_mem_subalgebra {X : Type} {n : Type} [Fintype n] [DecidableEq n]
     (A : Subalgebra k (X → k)) (M : X → Matrix n n k) (h : ∀ c e, (fun x => M x c e) ∈ A) :
     (fun x => (M x).det) ∈ A := by
@@ -56,10 +64,16 @@ theorem det_mem_subalgebra {X : Type} {n : Type} [Fintype n] [DecidableEq n]
   rw [this]
   exact Subalgebra.sum_mem _ fun σ _ => Subalgebra.zsmul_mem _ (Subalgebra.prod_mem _ fun c _ => h _ _) _
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin (.inl ⟨i, (b i).coord c, e, rfl⟩)`.
+-/
 theorem frameMat_mem_regFns (b : Frames k V) (i : ι) (c e : Fin (finrank k (V i))) :
     (fun g : Frames k V => frameMat b g i c e) ∈ regFns k V :=
   Algebra.subset_adjoin (.inl ⟨i, (b i).coord c, e, rfl⟩)
 
+/- English proof (translation)
+Simplify using `only [truncMat]`. Use `split_ifs`. Conclude with `h c e`. Conclude with `(show (fun _ : X => (1 : k)) = 1 from rfl) ▸ one_mem A`. Conclude with `(show (fun _ : X => (0 : k)) = 0 from rfl) ▸ zero_mem A`.
+-/
 theorem truncMat_mem_subalgebra {X : Type} {d : ℕ} (A : Subalgebra k (X → k)) (m : ℕ)
     (M : X → Matrix (Fin d) (Fin d) k) (h : ∀ c e, (fun x => M x c e) ∈ A) (c e : Fin d) :
     (fun x => truncMat m (M x) c e) ∈ A := by
@@ -69,6 +83,9 @@ theorem truncMat_mem_subalgebra {X : Type} {d : ℕ} (A : Subalgebra k (X → k)
   · exact (show (fun _ : X => (1 : k)) = 1 from rfl) ▸ one_mem A
   · exact (show (fun _ : X => (0 : k)) = 0 from rfl) ▸ zero_mem A
 
+/- English proof (translation)
+Establish `: (fun g => cellDisc b g) = ∏ i, ∏ m : Fin (finrank k (V i) + 1), (fun g : Frames k V => (truncMat (m : ℕ) (frameMat b g i)).det)`. Use extensionality with `g`. Simplify using `[cellDisc, Finset.prod_apply]`. Rewrite using `[this]`. Conclude with `Subalgebra.prod_mem _ fun i _ => Subalgebra.prod_mem _ fun m _ => det_mem_subalgebra _ _ (truncMat_mem_subalgebra _ _ _ (frameMat_mem_regFns b i))`.
+-/
 theorem cellDisc_mem_regFns [Fintype ι] (b : Frames k V) : (fun g => cellDisc b g) ∈ regFns k V := by
   have : (fun g => cellDisc b g) = ∏ i, ∏ m : Fin (finrank k (V i) + 1),
       (fun g : Frames k V => (truncMat (m : ℕ) (frameMat b g i)).det) := by
@@ -95,9 +112,17 @@ def fracAlg [Fintype ι] (b : Frames k V) : Subalgebra k (Frames k V → k) wher
   algebraMap_mem' := fun r =>
     ⟨algebraMap k _ r, Subalgebra.algebraMap_mem _ r, 0, fun g _ => by simp⟩
 
+/- English proof (translation)
+Introduce `f hf` and use `⟨f, hf, 0, fun g _ => by simp⟩`.
+-/
 theorem regFns_le_fracAlg [Fintype ι] (b : Frames k V) : regFns k V ≤ fracAlg b :=
   fun f hf => ⟨f, hf, 0, fun g _ => by simp⟩
 
+/- English proof (translation)
+Use `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun m _ => ?_` and prove the remaining obligations. Establish `: truncMat (m : ℕ) (frameMat b b i) = 1`. Use extensionality with `c e`. Simplify using `only [truncMat, frameMat, Basis.repr_self, Matrix.one_apply]`. Distinguish the cases in `h : e = c`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Finsupp.single_apply, h, Ne.symm h]`. Rewrite using `[this, Matrix.det_one]`.
+-/
 example [Fintype ι] (b : Frames k V) : cellDisc b b = 1 := by
   refine Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun m _ => ?_
   have : truncMat (m : ℕ) (frameMat b b i) = 1 := by

@@ -4,6 +4,25 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 
 namespace GlobalTheory.LowFilt
 
+/- English proof (translation)
+Introduce `E _ _ _ H D X _ _ y n hn Z Z' h hsurj t ht hiso hdiv a`. Establish `hW : IsOpp D (LinearMap.range t) Z'` using `(h.symm.shear t ht hiso).symm`. Establish `hdivZ : ∀ b ∈ Z', (∀ z : Z, (n : ℤ) ∣ D.EF (t z) b) → ∃ b'', b = n • b''`. Introduce `b hb hbd`. Establish `hx : ∀ x : LinearMap.range t, (n : ℤ) ∣ D.EF x b`.
+
+Introduce and unpack `⟨_, z, rfl⟩`. Conclude with `hbd z`. Set `φ : LinearMap.range t →+ ℤ` to `AddMonoidHom.mk' (fun x => D.EF x b / n) fun x x' => by`. Simplify using `only [Submodule.coe_add, map_add, LinearMap.add_apply]`. Conclude with `Int.add_ediv_of_dvd_left (hx x)`.
+
+Take `⟨b'', hb'', -⟩` from `hW.2.2.1 φ`. Use `⟨b'', ?_⟩` and prove the remaining obligations. Establish `h0 : (n • (b'' : D.La)) - b = 0`. Use `hW.eq_zero (sub_mem (Z'.nsmul_mem b''.2 n) hb) fun w hw => ?_` and prove the remaining obligations. Establish `e1` using `hb'' ⟨w, hw⟩`.
+
+Simplify using `only [φ, AddMonoidHom.mk'_apply] at e1`. Establish `e2 : (n : ℤ) ∣ D.EF w b` using `hx ⟨w, hw⟩`. Rewrite using `[ef_swap, map_sub, map_nsmul, e1, nsmul_eq_mul, Int.mul_ediv_cancel' e2]`. Simplify using the standard rewrite rules. Conclude with `(sub_eq_zero.1 h0).symm`.
+
+Establish `hperp0 : ∀ (k : D.La), k ∈ perp D (LinearMap.range t) → ∀ z : Z, D.EF (t z) k = 0`. Introduce `k hk z`. Rewrite using `[ef_swap, hk _ ⟨z, rfl⟩, neg_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`.
+
+Take `⟨b, hb, hk⟩` from `hW.exists_sub_mem_perp a`. Take `⟨b'', hb''⟩` from `hdivZ b hb fun z => by`. Establish `h1` using `hdiv z a ⟨e, he⟩`. Establish `h2 : D.EF (t z) b = D.EF (t z) a - D.EF (t z) (a - b)`. Rewrite using `[map_sub]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, hperp0 _ hk z, sub_zero]`. Conclude with `h1`. Use `⟨a - b, hk, b'', ?_⟩` and prove the remaining obligations. Rewrite using `[← hb'', sub_add_cancel]`.
+
+Introduce and unpack `⟨k, hk, e, rfl⟩`. Take `⟨b, hb, e₁, hb1⟩` from `hsurj (y k)`. Take `⟨b'', rfl⟩` from `hdivZ b hb fun z => by`. Establish `h1` using `hdiv z (k - b) ⟨-e₁, by rw [map_sub, hb1, smul_neg]; abel⟩`. Rewrite `h1` using `[map_sub, hperp0 _ hk z, zero_sub, Int.dvd_neg]`.
+
+Conclude with `h1`. Use `⟨y b'' - e₁ + y e, ?_⟩` and prove the remaining obligations. Rewrite `hb1` using `[map_nsmul]`. Rewrite using `[map_add, map_nsmul, smul_add, smul_sub, hb1]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ker_mod_eq_perp_range_add : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X]
     (y : D.La →ₗ[𝓞 E] X) (n : ℕ), 0 < n → ∀ Z Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' →
     (∀ x, ∃ b ∈ Z', ∃ e, y b = x + n • e) → ∀ t : Z →ₗ[𝓞 E] D.La, (∀ z : Z, t z - z ∈ perp D Z') →

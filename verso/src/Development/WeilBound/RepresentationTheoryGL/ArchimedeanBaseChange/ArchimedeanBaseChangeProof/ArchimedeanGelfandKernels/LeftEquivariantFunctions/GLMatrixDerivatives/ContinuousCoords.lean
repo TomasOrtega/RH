@@ -14,11 +14,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hA`.
+-/
 theorem inv_contAt (A : Mat n) (hA : A.det ≠ 0) : ContinuousAt (fun B : Mat n => B⁻¹) A := by
   apply continuousAt_matrix_inv
   rw [Ring.inverse_eq_inv']
   exact continuousAt_inv₀ hA
 
+/- English proof (translation)
+Establish `hi` using `inv_contAt A hA`. Unfold `lg`. Use `ContinuousAt.log ?_ ?_` and prove the remaining obligations. Use `continuousAt_const.add ?_` and prove the remaining obligations. Use `tendsto_finsetSum _ fun a _ => tendsto_finsetSum _ fun b _ => ?_` and prove the remaining obligations.
+
+Use `ContinuousAt.add (f := fun y : Mat n => ‖y a b‖ ^ 2) (g := fun y : Mat n => ‖y⁻¹ a b‖ ^ 2) ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_norm.comp ((continuous_apply b).comp (continuous_apply a))).continuousAt).pow 2`. Conclude with `(continuous_norm.continuousAt.comp (((continuous_apply b).comp (continuous_apply a)).continuousAt.comp hi)).pow 2`. Establish `: 0 ≤ ∑ a, ∑ b, (‖A a b‖ ^ 2 + ‖A⁻¹ a b‖ ^ 2)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`. Check the signs of the components of the expression.
+-/
 theorem lg_contAt (A : Mat n) (hA : A.det ≠ 0) : ContinuousAt lg A := by
   have hi := inv_contAt A hA
   unfold lg
@@ -33,18 +41,30 @@ theorem lg_contAt (A : Mat n) (hA : A.det ≠ 0) : ContinuousAt lg A := by
       Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity
     positivity
 
+/- English proof (translation)
+Introduce `h0`. Establish `hu` using `(Matrix.isUnit_iff_isUnit_det _).1 h.isUnit`. Rewrite `hu` using `[Matrix.det_mul, h0, zero_mul]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem det_ne_of_posDef (x : Mat n) (h : (x * xᴴ).PosDef) : x.det ≠ 0 := by
   intro h0
   have hu := (Matrix.isUnit_iff_isUnit_det _).1 h.isUnit
   rw [Matrix.det_mul, h0, zero_mul] at hu
   exact not_isUnit_zero hu
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `inv_ne_zero h`.
+-/
 theorem det_inv_ne (A : Mat n) (h : A.det ≠ 0) : (A⁻¹).det ≠ 0 := by
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero h
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 h`.
+-/
 theorem det_ct_ne (A : Mat n) (h : A.det ≠ 0) : (Aᴴ).det ≠ 0 := by
   rw [Matrix.det_conjTranspose]; exact star_ne_zero.2 h
 
+/- English proof (translation)
+Establish `h1 : hOf (oPt n) = 1` using `(hb n).2.2.1 1 Matrix.isHermitian_one`. Rewrite using `[← h1]`. Unfold `hOf`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Complex.ofReal_add, Complex.ofReal_mul, add_smul, mul_smul, Finset.sum_add_distrib, Finset.smul_sum]`.
+-/
 theorem hOf_comb (hb : HbFacts) (s : ℝ) (v : Fin n × Fin n → ℝ) :
     hOf (s • v + (1 - s) • oPt n) = (s : ℂ) • hOf v + (((1 - s : ℝ)) : ℂ) • (1 : Mat n) := by
   have h1 : hOf (oPt n) = 1 := (hb n).2.2.1 1 Matrix.isHermitian_one
@@ -56,6 +76,17 @@ theorem hOf_comb (hb : HbFacts) (s : ℝ) (v : Fin n × Fin n → ℝ) :
 def Kset (n : ℕ) (B : ℝ) : Set (Mat n × Mat n) :=
   {p | p.1 * p.2 = 1} ∩ {p | ∑ a, ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2) ≤ B}
 
+/- English proof (translation)
+Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Apply `IsClosed.inter` to reduce the goal to its premises. Conclude with `isClosed_eq (continuous_fst.matrix_mul continuous_snd) continuous_const`. Use `isClosed_le (continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => ?_) continuous_const` and prove the remaining obligations. Conclude with `((continuous_norm.comp ((continuous_apply b).comp ((continuous_apply a).comp continuous_fst))).pow 2).add ((continuous_norm.comp ((continuous_apply b).comp ((continuous_apply a).comp continuous_snd))).pow 2)`.
+
+Rewrite using `[Metric.isBounded_iff_subset_closedBall 0]`. Use `⟨|B| + 1, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Establish `hent : ∀ a b, ‖p.1 a b‖ ≤ |B| + 1 ∧ ‖p.2 a b‖ ≤ |B| + 1`. Introduce `a b`.
+
+Establish `hle : ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2 ≤ B`. Use `le_trans ?_ hp.2` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun a => ∑ b, (‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2)) (fun a _ => Finset.sum_nonneg fun b _ => by positivity) (Finset.mem_univ a))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun b => ‖p.1 a b‖ ^ 2 + ‖p.2 a b‖ ^ 2) (fun b _ => by positivity) (Finset.mem_univ b)`. Establish `h1 : ‖p.1 a b‖ ^ 2 ≤ |B|` using `le_trans (by nlinarith [sq_nonneg ‖p.2 a b‖]) (le_abs_self B)`.
+
+Establish `h2 : ‖p.2 a b‖ ^ 2 ≤ |B|` using `le_trans (by nlinarith [sq_nonneg ‖p.1 a b‖]) (le_abs_self B)`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[norm_nonneg (p.1 a b), abs_nonneg B, sq_nonneg (‖p.1 a b‖ - 1)]`. Use polynomial arithmetic with `[norm_nonneg (p.2 a b), abs_nonneg B, sq_nonneg (‖p.2 a b‖ - 1)]`. Establish `hB : 0 ≤ |B| + 1` using `by positivity`.
+
+Rewrite using `[Prod.norm_def, max_le_iff]`. Conclude with `⟨(Matrix.norm_le_iff hB).2 fun a b => (hent a b).1, (Matrix.norm_le_iff hB).2 fun a b => (hent a b).2⟩`.
+-/
 theorem isCompact_Kset (B : ℝ) : IsCompact (Kset n B) := by
   apply Metric.isCompact_of_isClosed_isBounded
   · apply IsClosed.inter
@@ -83,12 +114,38 @@ theorem isCompact_Kset (B : ℝ) : IsCompact (Kset n B) := by
     rw [Prod.norm_def, max_le_iff]
     exact ⟨(Matrix.norm_le_iff hB).2 fun a b => (hent a b).1, (Matrix.norm_le_iff hB).2 fun a b => (hent a b).2⟩
 
+/- English proof (translation)
+Apply `continuous_pi` to reduce the goal to its premises. Introduce `p`. Unfold `coords`. Conclude with `Complex.continuous_re.comp ((continuous_id.matrix_mul continuous_const).matrix_trace)`.
+-/
 theorem continuous_coords : Continuous (coords : Mat n → Fin n × Fin n → ℝ) := by
   apply continuous_pi
   intro p
   unfold coords
   exact Complex.continuous_re.comp ((continuous_id.matrix_mul continuous_const).matrix_trace)
 
+/- English proof (translation)
+Introduce `hS n V _ _ σ hσ hσ2 Fr k Γ T R hk z hz hinj c`. Take `⟨hopen, hconv, -⟩` from `hc n`. Take `⟨R', hR'⟩` from `hS n z hz hinj R`. Use `set C : Set (Fin n × Fin n → ℝ) := (fun p : Mat n × Mat n => coords (p.1 * p.1ᴴ)) '' Kset n (Real.exp R') with hCdef`. Establish `hdet : ∀ v ∈ cone n, (σ v).det ≠ 0` using `fun v hv => det_ne_of_posDef _ (by rw [hσ2 v hv]; exact hv)`.
+
+Establish `hdz : (diagonal z).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => fun h0 => by have := hz a; rw [h0, norm_zero] at this; exact zero_ne_one this`. Use `⟨C, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`.
+
+Establish `hd1 : p.1.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det hp.1` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one this`.
+
+Establish `hu : IsUnit p.1` using `(Matrix.isUnit_iff_isUnit_det _).2 (Ne.isUnit hd1)`. Use `show (hOf (coords (p.1 * p.1ᴴ))).PosDef`. Rewrite using `[(hb n).2.2.1 _ (Matrix.isHermitian_mul_conjTranspose_self _)]`. Use `(Matrix.IsUnit.posDef_star_right_conjugate_iff (x := (1 : Mat n)) hu).2 Matrix.PosDef.one` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+
+Conclude with `(isCompact_Kset _).image (continuous_coords.comp (continuous_fst.matrix_mul continuous_fst.matrix_conjTranspose))`. Introduce `s hs v hv hvC`. Establish `ho : oPt n ∈ cone n` using `(hb n).2.2.2.2.2.2.2`. Establish `hP1 : s • v + (1 - s) • oPt n ∈ cone n` using `hconv hv ho hs.1 (by linarith [hs.2]) (by ring)`. Establish `hgt : R < lg ((σ (s • v + (1 - s) • oPt n))⁻¹ * diagonal z * (σ v)ᴴ⁻¹)`.
+
+Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Establish `hyR` using `hR' s hs (σ (s • v + (1 - s) • oPt n)) (hdet _ hP1) (σ v) (hdet v hv) (by rw [hσ2 _ hP1, hσ2 v hv, hOf_comb hb]) hle`. Apply `hvC` to reduce the goal to its premises. Use `⟨(σ v, (σ v)⁻¹), ⟨Matrix.mul_nonsing_inv _ (Ne.isUnit (hdet v hv)), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : 0 ≤ ∑ a, ∑ b, (‖σ v a b‖ ^ 2 + ‖(σ v)⁻¹ a b‖ ^ 2)` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun b _ => by positivity`. Establish `h2 : Real.log (1 + ∑ a, ∑ b, (‖σ v a b‖ ^ 2 + ‖(σ v)⁻¹ a b‖ ^ 2)) ≤ R'` using `hyR`. Establish `h3` using `(Real.log_le_iff_le_exp (by positivity)).1 h2`. Use `show ∑ a, ∑ b, (‖σ v a b‖ ^ 2 + ‖(σ v)⁻¹ a b‖ ^ 2) ≤ Real.exp R'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `show coords (σ v * (σ v)ᴴ) = v`. Rewrite using `[hσ2 v hv]`. Conclude with `(hb n).2.2.2.1 v`. Establish `hσc : ∀ w ∈ cone n, ContinuousAt σ w` using `fun w hw => (hσ.continuousOn).continuousAt (hopen.mem_nhds hw)`. Establish `hA : ((σ (s • v + (1 - s) • oPt n))⁻¹ * diagonal z * (σ v)ᴴ⁻¹).det ≠ 0`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (det_inv_ne _ (hdet _ hP1)) hdz) (det_inv_ne _ (det_ct_ne _ (hdet v hv)))`. Establish `hf1 : ContinuousAt (fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => (σ w.1)⁻¹) (s • v + (1 - s) • oPt n, v)` using `ContinuousAt.comp (g := fun B : Mat n => B⁻¹) (f := fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => σ w.1) (inv_contAt _ (hdet _ hP1)) (ContinuousAt.comp (g := σ) (f := Prod.fst) (x := (s • v + (1 - s) • oPt n, v)) (hσc _ hP1) continuousAt_fst)`. Establish `hf2 : ContinuousAt (fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => (σ w.2)ᴴ⁻¹) (s • v + (1 - s) • oPt n, v)` using `ContinuousAt.comp (g := fun B : Mat n => B⁻¹) (f := fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => (σ w.2)ᴴ) (inv_contAt _ (det_ct_ne _ (hdet v hv))) (ContinuousAt.comp (g := fun B : Mat n => Bᴴ) (f := fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => σ w.2) (continuous_ …`. Establish `hΦ : ContinuousAt (fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => lg ((σ w.1)⁻¹ * diagonal z * (σ w.2)ᴴ⁻¹)) (s • v + (1 - s) • oPt n, v)` using `ContinuousAt.comp (g := lg) (f := fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => (σ w.1)⁻¹ * diagonal z * (σ w.2)ᴴ⁻¹) (lg_contAt _ hA) (by`.
+
+Establish `h3 : ContinuousAt (fun w : (Fin n × Fin n → ℝ) × (Fin n × Fin n → ℝ) => (σ w.1)⁻¹ * diagonal z) (s • v + (1 - s) • oPt n, v)` using `hf1.mul continuousAt_const`. Conclude with `h3.mul hf2)`. Establish `e1` using `hΦ.eventually (Ioi_mem_nhds hgt)`. Establish `e2 : ∀ᶠ w in nhds (s • v + (1 - s) • oPt n, v), w ∈ cone n ×ˢ cone n` using `(hopen.prod hopen).mem_nhds ⟨hP1, hv⟩`. Use `filter_upwards [e1, e2] with w hw1 hw2`.
+
+Establish `hGL : ((σ w.1)⁻¹ * diagonal z * (σ w.2)ᴴ⁻¹) ∈ GLs n` using `by show ((σ w.1)⁻¹ * diagonal z * (σ w.2)ᴴ⁻¹).det ≠ 0`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (det_inv_ne _ (hdet _ hw2.1)) hdz) (det_inv_ne _ (det_ct_ne _ (hdet _ hw2.2)))`. Establish `hk0` using `hk _ hGL hw1`. Simplify using `only [Kc, Kf, hk0, mul_zero, zero_mul, smul_zero]`.
+-/
 theorem ksupp_of (hb : HbFacts) (hc : ConeSt) : KSupp := by
   intro hS n V _ _ σ hσ hσ2 Fr k Γ T R hk z hz hinj c
   obtain ⟨hopen, hconv, -⟩ := hc n

@@ -18,6 +18,17 @@ open GlobalTheory.AbDual
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `H` using `GlobalTheory.abelianDeRham`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k A hA`. Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `gAB` using `smooth_prod hg hg`. Take `⟨ψ, hψ, e⟩` from `hφ.isPolForm`.
+
+Take `⟨iso, -⟩` from `H.2.2.2.2 k _ _ hAB gAB P hP ψ hψ`. Introduce `x hx y hy`. Establish `a₁ : push (dp0 k) (𝟙 _) (fst A A) (push (dp0 k) (𝟙 _) (inl A A) x) = x`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_id]`. Both sides reduce to the same expression.
+
+Establish `a₂ : push (dp0 k) (𝟙 _) (snd A A) (push (dp0 k) (𝟙 _) (inl A A) x) = 0`. Rewrite using `[push_push _ _ _ (lift_snd _ _), push_one]`. Both sides reduce to the same expression. Establish `b₁ : push (dp0 k) (𝟙 _) (fst A A) (push (dp0 k) (𝟙 _) (inr A A) y) = 0`. Rewrite using `[push_push _ _ _ (lift_fst _ _), push_one]`.
+
+Both sides reduce to the same expression. Establish `b₂ : push (dp0 k) (𝟙 _) (snd A A) (push (dp0 k) (𝟙 _) (inr A A) y) = y`. Rewrite using `[push_push _ _ _ (lift_snd _ _), push_id]`. Both sides reduce to the same expression. Establish `key : φ x y = ψ (push (dp0 k) (𝟙 _) (inl A A) x) (push (dp0 k) (𝟙 _) (inr A A) y)`.
+
+Rewrite using `[e, a₁, a₂, b₁, b₂]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `iso _ (push_mem_Fil _ hx) _ (push_mem_Fil _ hy)`.
+-/
 theorem fil_isotropic_of_isCorrForm (A : Over (Sp k)) [GrpObj A] (hA : IsAbelianScheme A) (P : LB (A ⊗ A).left)
     (hP : P.IsLB) (φ : HdR A →ₗ[k] HdR A →ₗ[k] k) (hφ : IsCorrForm (dp0 k) (𝟙 _) A A P φ) :
     ∀ x ∈ Fil A, ∀ y ∈ Fil A, φ x y = 0 := by
@@ -46,12 +57,21 @@ variable {d : ℕ}
 def proj (j : Fin d) : TrivSqZeroExt k (Fin d → k) →+* TrivSqZeroExt k k :=
   (TrivSqZeroExt.map (LinearMap.proj (R := k) (φ := fun _ : Fin d => k) j)).toRingHom
 
+/- English proof (translation)
+Simplify using `[proj]`.
+-/
 @[simp] theorem fst_proj (j : Fin d) (a : TrivSqZeroExt k (Fin d → k)) : (proj j a).fst = a.fst := by
   simp [proj]
 
+/- English proof (translation)
+Simplify using `[proj]`.
+-/
 @[simp] theorem snd_proj (j : Fin d) (a : TrivSqZeroExt k (Fin d → k)) : (proj j a).snd = a.snd j := by
   simp [proj]
 
+/- English proof (translation)
+The claim follows from `GrpMor.of_hom (isDPMorphism_sqDP _ _ _ fun a ha => by rw [RingHom.mem_ker] at ha ⊢ change (proj j a).fst = 0 rw [fst_proj]; exact ha) (by rw [← GlobalTheory.Cris.spMap_comp] congr 1 ext a <;> simp) (𝟙 A₀)`.
+-/
 theorem projMor (A₀ : Over (Sp k)) [GrpObj A₀] (j : Fin d) :
     GrpMor (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀
       (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀ (proj j) (𝟙 _)
@@ -65,6 +85,11 @@ theorem projMor (A₀ : Over (Sp k)) [GrpObj A₀] (j : Fin d) :
       congr 1
       ext a <;> simp) (𝟙 A₀)
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hP c`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, map_add, map_add, map_add, map_add, hu, hv]`. Consider the case `tmul r c`.
+
+Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, map_smul, map_smul, hQ, h, smul_eq_mul, smul_eq_mul, map_mul]`.
+-/
 theorem eq_of_liftSemi_surj' {K C C' : Type} [Field K] [CommRing C] [CommRing C'] [Algebra K C] {M M' M'' : Type*}
     [AddCommGroup M] [Module K M] [AddCommGroup M'] [Module C M'] [AddCommGroup M''] [Module C' M'']
     (P : M →ₛₗ[algebraMap K C] M') (hP : Function.Surjective (liftSemi P)) (σ : C →+* C')
@@ -77,6 +102,9 @@ theorem eq_of_liftSemi_surj' {K C C' : Type} [Field K] [CommRing C] [CommRing C'
   | tmul r c =>
     rw [liftSemi_tmul, LinearMap.map_smulₛₗ, map_smul, map_smul, hQ, h, smul_eq_mul, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+The claim follows from `eq_of_liftSemi_surj' _ (GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k (Fin d → k) A₀ hA (GlobalTheory.FODef.sqZero k (Fin d → k)) (GlobalTheory.FODef.constMorV k (Fin d → k) A₀)).2 (proj j) (projMor A₀ j).pull _ (fun c => GrpMor.pull_pull (GlobalTheory.FODef.constMorV k (Fin d → k …`.
+-/
 theorem projMor_corr (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀) (j : Fin d)
     (x : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀)
     (x' : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀)
@@ -87,6 +115,9 @@ theorem projMor_corr (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A�
     (fun c => GrpMor.pull_pull (GlobalTheory.FODef.constMorV k (Fin d → k) A₀) (projMor A₀ j) (GlobalTheory.FODef.constMorV k k A₀)
       (fun r => by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]) (by simp) c) x x' h
 
+/- English proof (translation)
+The claim follows from `hφ.pull hP (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) rfl A₀) (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) rfl A₀) (h := 𝟙 _) ((Category.id_comp _).tran …`.
+-/
 theorem exists_red_form (A₀ : Over (Sp k)) [GrpObj A₀] (P : LB (A₀ ⊗ A₀).left) (hP : P.IsLB)
     (φ : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀ →ₗ[TrivSqZeroExt k (Fin d → k)]
       Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀ →ₗ[TrivSqZeroExt k (Fin d → k)]
@@ -102,6 +133,9 @@ theorem exists_red_form (A₀ : Over (Sp k)) [GrpObj A₀] (P : LB (A₀ ⊗ A�
     (h := 𝟙 _) ((Category.id_comp _).trans (Category.comp_id _).symm)
     ((Category.id_comp _).trans (Category.comp_id _).symm) hP (GlobalTheory.lbIso_pull_id hP)
 
+/- English proof (translation)
+The claim follows from `hφ.pull hP (projMor A₀ j) (projMor A₀ j) (h := 𝟙 _) ((Category.id_comp _).trans (Category.comp_id _).symm) ((Category.id_comp _).trans (Category.comp_id _).symm) hP (GlobalTheory.lbIso_pull_id hP)`.
+-/
 theorem exists_proj_form (A₀ : Over (Sp k)) [GrpObj A₀] (P : LB (A₀ ⊗ A₀).left) (hP : P.IsLB) (j : Fin d)
     (φ : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀ →ₗ[TrivSqZeroExt k (Fin d → k)]
       Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) A₀ →ₗ[TrivSqZeroExt k (Fin d → k)]
@@ -116,6 +150,9 @@ theorem exists_proj_form (A₀ : Over (Sp k)) [GrpObj A₀] (P : LB (A₀ ⊗ A�
   hφ.pull hP (projMor A₀ j) (projMor A₀ j) (h := 𝟙 _) ((Category.id_comp _).trans (Category.comp_id _).symm)
     ((Category.id_comp _).trans (Category.comp_id _).symm) hP (GlobalTheory.lbIso_pull_id hP)
 
+/- English proof (translation)
+Take `⟨e₁, h₁, he₁⟩` from `hE x hx`. Take `⟨e₂, h₂, he₂⟩` from `hE z hz`. Use `⟨e₁ + (TrivSqZeroExt.inr (1 : k) : TrivSqZeroExt k k) • e₂, add_mem h₁ (E.smul_mem _ h₂), fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, he₁, he₂, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem exists_mem_of_fil (A₀ : Over (Sp k)) [GrpObj A₀] (g : HdR A₀ →ₗ[k] HdR A₀)
     (E : Submodule (TrivSqZeroExt k k)
       (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀))
@@ -130,6 +167,19 @@ theorem exists_mem_of_fil (A₀ : Over (Sp k)) [GrpObj A₀] (g : HdR A₀ →�
   rw [LinearMap.add_apply, LinearMap.smul_apply, he₁, he₂, smul_eq_mul]
   ext <;> simp
 
+/- English proof (translation)
+Introduce `p _ D R _ b N k _ _ tk s o₀ _ d f E' _ _ h3 _ h5 φ hφ x hx y hy`. Take `⟨x₀, hx₀, zx, hzx, hxc⟩` from `hx`. Take `⟨y₀, hy₀, zy, hzy, hyc⟩` from `hy`. Establish `t₀` using `exists_red_form (k := k) (d := d) o₀.A o₀.P o₀.isLB φ hφ`. Take `⟨φ₀, hφ₀, e₀⟩` from `t₀`.
+
+Establish `hfst : (φ x y).fst = 0`. Establish `cx` using `GlobalTheory.HTGlue.corr_of_fst o₀.A o₀.ab x x₀ fun c => by rw [hxc c]; simp`. Establish `cy` using `GlobalTheory.HTGlue.corr_of_fst o₀.A o₀.ab y y₀ fun c => by rw [hyc c]; simp`. Rewrite using `[← e₀ x x₀ y y₀ cx cy]`. Conclude with `fil_isotropic_of_isCorrForm o₀.A o₀.ab o₀.P o₀.isLB φ₀ hφ₀ x₀ hx₀ y₀ hy₀`.
+
+Establish `hsnd : ∀ j, (φ x y).snd j = 0`. Introduce `j`. Establish `t₁` using `exists_proj_form (k := k) (d := d) o₀.A o₀.P o₀.isLB j φ hφ`. Take `⟨φ', hφ', e'⟩` from `t₁`. Establish `t₂` using `exists_mem_of_fil o₀.A (f j) (E' j) (h3 j) hx₀ (hzx j)`.
+
+Take `⟨x', hx', hx'c⟩` from `t₂`. Establish `t₃` using `exists_mem_of_fil o₀.A (f j) (E' j) (h3 j) hy₀ (hzy j)`. Take `⟨y', hy', hy'c⟩` from `t₃`. Establish `cx` using `projMor_corr o₀.A o₀.ab j x x' fun c => by`. Apply the tactic sequence `rw [hx'c c, hxc c]; ext <;> simp`.
+
+Establish `cy` using `projMor_corr o₀.A o₀.ab j y y' fun c => by`. Apply the tactic sequence `rw [hy'c c, hyc c]; ext <;> simp`. Establish `e` using `e' x x' y y' cx cy`. Establish `h0 : φ' x' y' = 0` using `h5 j φ' hφ' x' hx' y' hy'`. Establish `e2 : proj j (φ x y) = 0` using `e.symm.trans h0`.
+
+Establish `e3 : (proj j (φ x y)).snd = (0 : TrivSqZeroExt k k).snd` using `congrArg TrivSqZeroExt.snd e2`. Rewrite `e3` using `[snd_proj]`. Conclude with `e3`. Conclude with `TrivSqZeroExt.ext hfst (funext hsnd)`.
+-/
 theorem glueFil_isotropic : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] [IsAlgClosed k] (tk : R →+* k) (s : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N s), s = spMap tk → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), ∀ (E' : Fin d → Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A)), (∀ j, ∃ M : Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A), IsCompl (E' j) M) → (∀ j, ∀ y : HdR o₀.A, y ∈ Fil o₀.A ↔ ∃ e ∈ E' j, (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k k)) rfl o₀.A).Corr e y) → (∀ j, ∀ x ∈ Fil o₀.A, ∃ e ∈ E' j, ∀ c, e ((GlobalTheory.FODef.constMorV k k o₀.A).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (f j x c)) → (∀ j (c : D.O), ∀ e ∈ E' j, (haveI := o₀.act.hom (c); push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (c)) (e)) ∈ E' j) → (∀ j, ∀ φ : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A →ₗ[TrivSqZeroExt k k] Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A →ₗ[TrivSqZeroExt k k] TrivSqZeroExt k k, GlobalTheory.AbDual.IsCorrForm (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A o₀.A o₀.P φ → ∀ x ∈ E' j, ∀ y ∈ E' j, φ x y = 0) → ∀ φ : Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A →ₗ[TrivSqZeroExt k (Fin d → k)] Crys (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A →ₗ[TrivSqZeroExt k (Fin d → k)] TrivSqZeroExt k (Fin d → k), GlobalTheory.AbDual.IsCorrForm (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) o₀.A o₀.A o₀.P φ → ∀ x ∈ GlobalTheory.HTGlue.glueFil o₀.A f, ∀ y ∈ GlobalTheory.HTGlue.glueFil o₀.A f, φ x y = 0 := by
   intro p _ D R _ b N k _ _ tk s o₀ _ d f E' _ _ h3 _ h5 φ hφ x hx y hy
   obtain ⟨x₀, hx₀, zx, hzx, hxc⟩ := hx

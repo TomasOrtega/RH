@@ -8,33 +8,54 @@ namespace GlobalTheory.CompanionTheory.UnrDens.GramDiff
 
 variable {E : Type} [CommRing E] (τ : E →+* E)
 
+/- English proof (translation)
+Simplify using `only [cT, Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul {a b c : ℕ} (A : Matrix (Fin a) (Fin b) E) (B : Matrix (Fin b) (Fin c) E) :
     cT τ (A * B) = cT τ B * cT τ A := by
   simp only [cT, Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_add {a b : ℕ} (A B : Matrix (Fin a) (Fin b) E) :
     cT τ (A + B) = cT τ A + cT τ B := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_zero {a b : ℕ} : cT τ (0 : Matrix (Fin a) (Fin b) E) = 0 := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_neg {a b : ℕ} (A : Matrix (Fin a) (Fin b) E) : cT τ (-A) = -cT τ A := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT]`.
+-/
 theorem cT_smul {a b : ℕ} (c : E) (A : Matrix (Fin a) (Fin b) E) :
     cT τ (c • A) = τ c • cT τ A := by
   ext i j
   simp [cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT, hτ]`.
+-/
 theorem cT_cT (hτ : ∀ a, τ (τ a) = a) {a b : ℕ} (A : Matrix (Fin a) (Fin b) E) :
     cT τ (cT τ A) = A := by
   ext i j
   simp [cT, hτ]
 
+/- English proof (translation)
+Rewrite using `[cT_mul, cT_mul, cT_cT τ hτ, hS, Matrix.mul_assoc]`.
+-/
 theorem cT_cross (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} {S : Matrix (Fin m) (Fin m) E} (hS : cT τ S = S)
     (x y : Matrix (Fin m) (Fin n) E) : cT τ (cT τ x * S * y) = cT τ y * S * x := by
   rw [cT_mul, cT_mul, cT_cT τ hτ, hS, Matrix.mul_assoc]
@@ -65,6 +86,13 @@ def diffMap (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} (S : Matrix (Fin m) (Fin m)
       rw [cT_add, Matrix.add_mul, Matrix.add_mul, Matrix.mul_add]
       abel)
 
+/- English proof (translation)
+Take `⟨u, hu, -⟩` from `h.basis`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h1 : (u - τ u) * τ v = -1`. Use `congrArg τ hv` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, h.inv, map_one]`.
+
+Take the linear combination `-this`. Establish `h2 : τ v = -v`. Take the linear combination `(-(τ v)) * hv + v * h1`. Use `⟨u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, h2]`.
+
+Take the linear combination `hv`.
+-/
 theorem exists_trace_one {q : ℕ} {ε : ℤ} (h : ResAlg E τ q ε) : ∃ θ : E, θ + τ θ = 1 := by
   obtain ⟨u, hu, -⟩ := h.basis
   obtain ⟨v, hv⟩ := hu.exists_right_inv
@@ -78,6 +106,13 @@ theorem exists_trace_one {q : ℕ} {ε : ℤ} (h : ResAlg E τ q ε) : ∃ θ : 
   rw [map_mul, h2]
   linear_combination hv
 
+/- English proof (translation)
+Introduce and unpack `⟨H, hH⟩`. Establish `hH' : cT τ H = H` using `hH`. Take `⟨θ, hθ⟩` from `exists_trace_one τ h`. Establish `hW : cT τ x * S * (x * T⁻¹ * (θ • H)) = θ • H`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = θ • H := by rw [hx, Matrix.mul_nonsing_inv T hT, Matrix.one_mul]`. Use `⟨x * T⁻¹ * (θ • H), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `cT τ (x * T⁻¹ * (θ • H)) * S * x + cT τ x * S * (x * T⁻¹ * (θ • H)) = H`.
+
+Rewrite using `[← cT_cross τ h.inv hS x (x * T⁻¹ * (θ • H)), hW, cT_smul, hH', ← add_smul, add_comm, hθ, one_smul]`.
+-/
 theorem diffMap_surjective {q : ℕ} {ε : ℤ} (h : ResAlg E τ q ε) {m n : ℕ}
     (S : Matrix (Fin m) (Fin m) E) (hS : cT τ S = S) (T : Matrix (Fin n) (Fin n) E)
     (x : Matrix (Fin m) (Fin n) E) (hT : IsUnit T.det) (hx : cT τ x * S * x = T) :
@@ -94,6 +129,13 @@ theorem diffMap_surjective {q : ℕ} {ε : ℤ} (h : ResAlg E τ q ε) {m n : �
   change cT τ (x * T⁻¹ * (θ • H)) * S * x + cT τ x * S * (x * T⁻¹ * (θ • H)) = H
   rw [← cT_cross τ h.inv hS x (x * T⁻¹ * (θ • H)), hW, cT_smul, hH', ← add_smul, add_comm, hθ, one_smul]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hf b`. Establish `e : {a // f a = f y} ≃ f.ker` using `{ toFun := fun a => ⟨a.1 - y, by simp [AddMonoidHom.mem_ker, a.2]⟩ invFun := fun k => ⟨k.1 + y, by`. Establish `: f k.1 = 0` using `k.2`. Simplify using `[this]⟩`. Use `left_inv := fun a => by simp`.
+
+Use `right_inv := fun k => by simp }`. Establish `hi : f.ker.index = Nat.card B`. Rewrite using `[AddSubgroup.index_ker, AddMonoidHom.range_eq_top.2 hf]`. Conclude with `Nat.card_congr AddSubgroup.topEquiv.toEquiv`. Rewrite using `[Nat.card_congr e, ← hi]`.
+
+Conclude with `AddSubgroup.card_mul_index f.ker`.
+-/
 theorem card_fibre_mul {A B : Type} [AddCommGroup A] [AddCommGroup B] [Finite A] (f : A →+ B)
     (hf : Function.Surjective f) (b : B) : Nat.card {a // f a = b} * Nat.card B = Nat.card A := by
   obtain ⟨y, rfl⟩ := hf b
@@ -110,6 +152,15 @@ theorem card_fibre_mul {A B : Type} [AddCommGroup A] [AddCommGroup B] [Finite A]
   rw [Nat.card_congr e, ← hi]
   exact AddSubgroup.card_mul_index f.ker
 
+/- English proof (translation)
+Introduce `E _ τ q ε h m n hnm S T x H hS _ hT hx hH`. Establish `hq : 0 < q` using `lt_trans Nat.zero_lt_one h.one_lt`. Establish `hfin : Finite E` using `Nat.finite_of_card_ne_zero (by rw [h.card]; positivity)`. Establish `hM : Nat.card (Matrix (Fin m) (Fin n) E) = ((q ^ 2) ^ n) ^ m`. Express the relevant statement in the definitionally equal form `Nat.card (Fin m → Fin n → E) = _`.
+
+Rewrite using `[Nat.card_fun, Nat.card_fun, h.card]`. Simplify using the standard rewrite rules. Establish `hHerm : Nat.card (hermSub τ n) = q ^ (n ^ 2)` using `GlobalTheory.T.hermitian_matrices_card E τ q ε h n`. Establish `hfib` using `card_fibre_mul (diffMap τ h.inv S hS x) (diffMap_surjective τ h S hS T x hT hx) ⟨H, hH⟩`. Establish `hc : Nat.card {y : Matrix (Fin m) (Fin n) E // cT τ y * S * x + cT τ x * S * y = H} = Nat.card {y // diffMap τ h.inv S hS x y = ⟨H, hH⟩}` using `Nat.card_congr (Equiv.subtypeEquivRight fun y => by`.
+
+Rewrite using `[Subtype.ext_iff]`. Use the proof step `rfl)`. Establish `hle : n ^ 2 ≤ 2 * m * n` using `by nlinarith`. Establish `hpow : ((q ^ 2) ^ n) ^ m = q ^ (n ^ 2) * q ^ (2 * m * n - n ^ 2)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' hle, ← pow_mul, ← pow_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc]`. Rewrite `hfib` using `[hHerm, hM, hpow, mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left (pow_pos hq _) hfib`.
+-/
 theorem card_fibre_gram_differential : ∀ (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ), ResAlg E τ q ε → ∀ (m n : ℕ), n ≤ m → ∀ (S : Matrix (Fin m) (Fin m) E) (T : Matrix (Fin n) (Fin n) E) (x : Matrix (Fin m) (Fin n) E) (H : Matrix (Fin n) (Fin n) E), cT τ S = S → cT τ T = T → IsUnit T.det → cT τ x * S * x = T → cT τ H = H → Nat.card {y : Matrix (Fin m) (Fin n) E // cT τ y * S * x + cT τ x * S * y = H} = q ^ (2 * m * n - n ^ 2) := by
   intro E _ τ q ε h m n hnm S T x H hS _ hT hx hH
   have hq : 0 < q := lt_trans Nat.zero_lt_one h.one_lt

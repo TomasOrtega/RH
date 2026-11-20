@@ -13,6 +13,11 @@ open scoped ENNReal Classical
 
 namespace GlobalTheory.NefAtObj
 
+/- English proof (translation)
+Introduce `hX hP hH D O hc hf A T H h B hB u s hu hs hdom hnef hsemi c`. Take `⟨M, L, k, cf, hI⟩` from `GlobalTheory.ApproxModel.mb_isModel hP hH D O hc A T H h B hB u s hu hs hdom hsemi c`. Use `⟨M, L, k, cf, hI, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ArInt.nefFib_of_primeField _ _ _ L fun Z i _ _ q _ _ hZ => ?_` and prove the remaining obligations. Distinguish the cases in `hq : q ∈ FlagAr.setB O.Y B`.
+
+Conclude with `GlobalTheory.T.induced_model_dominant_curve_restriction hP hH D O hc hf A T H h B hB u s hu hs hdom c M L k cf hI Z i q hq hZ`. Conclude with `GlobalTheory.T.nef_induced_bundle_restriction_to_curves hX hP hH D O hc A T H h B hB u s hu hs hdom hnef c M L k cf hI Z i q hq hZ`.
+-/
 theorem nefAt_onObj : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → OnObj fun _ _ A _ _ _ => NefAt A := by
   intro hX hP hH D O hc hf A T H h B hB u s hu hs hdom hnef hsemi c
   obtain ⟨M, L, k, cf, hI⟩ := GlobalTheory.ApproxModel.mb_isModel hP hH D O hc A T H h B hB u s hu hs hdom hsemi c

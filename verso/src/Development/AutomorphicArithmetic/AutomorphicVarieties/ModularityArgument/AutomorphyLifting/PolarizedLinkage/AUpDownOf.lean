@@ -22,22 +22,37 @@ variable {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Algeb
 
 private def overUnder (w : HeightOneSpectrum (𝓞 K)) : PlacesOver K (w.under (𝓞 F)) := ⟨w, ⟨rfl⟩⟩
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Conclude with `w.2.over.symm`.
+-/
 private theorem under_of_over {v : HeightOneSpectrum (𝓞 F)} (w : PlacesOver K v) : w.1.under (𝓞 F) = v := by
   refine HeightOneSpectrum.ext ?_
   rw [HeightOneSpectrum.under_asIdeal]
   exact w.2.over.symm
 
+/- English proof (translation)
+The claim follows from `(Ideal.nonempty_primesOver (S := 𝓞 K) v.asIdeal).map (placesOverEquiv K v).symm`.
+-/
 private theorem nonempty_over (v : HeightOneSpectrum (𝓞 F)) : Nonempty (PlacesOver K v) :=
   (Ideal.nonempty_primesOver (S := 𝓞 K) v.asIdeal).map (placesOverEquiv K v).symm
 
+/- English proof (translation)
+The claim follows from `let ⟨w⟩ := nonempty_over (K := K) v ⟨w.1, under_of_over w⟩`.
+-/
 private theorem exists_above (v : HeightOneSpectrum (𝓞 F)) : ∃ w : HeightOneSpectrum (𝓞 K), w.under (𝓞 F) = v :=
   let ⟨w⟩ := nonempty_over (K := K) v
   ⟨w.1, under_of_over w⟩
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.mem_comap, map_natCast]`.
+-/
 private theorem l_mem_under (l : ℕ) (w : HeightOneSpectrum (𝓞 K)) :
     ((l : ℕ) : 𝓞 F) ∈ (w.under (𝓞 F)).asIdeal ↔ ((l : ℕ) : 𝓞 K) ∈ w.asIdeal := by
   rw [HeightOneSpectrum.under_asIdeal, Ideal.mem_comap, map_natCast]
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.under_asIdeal]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap]`. Both sides reduce to the same expression.
+-/
 private theorem under_self (v : HeightOneSpectrum (𝓞 F)) : v.under (𝓞 F) = v := by
   refine HeightOneSpectrum.ext ?_
   rw [HeightOneSpectrum.under_asIdeal]
@@ -45,6 +60,9 @@ private theorem under_self (v : HeightOneSpectrum (𝓞 F)) : v.under (𝓞 F) =
   rw [Ideal.mem_comap]
   rfl
 
+/- English proof (translation)
+Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Simplify using `only [HeightOneSpectrum.under_asIdeal]`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+-/
 private theorem under_under {E : Type} [Field E] [NumberField E] [Algebra F E] [Algebra E K] [IsScalarTower F E K]
     (w : HeightOneSpectrum (𝓞 K)) : (w.under (𝓞 E)).under (𝓞 F) = w.under (𝓞 F) := by
   refine HeightOneSpectrum.ext ?_
@@ -59,6 +77,17 @@ section One
 
 variable {K : Type} [Field K] [NumberField K] [IsTotallyComplex K]
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hO K 1 le_rfl π`. Use `⟨t, fun v => ?_⟩` and prove the remaining obligations. Take `⟨⟨s₀, hs₀⟩, huniq, hf, -, -⟩` from `suppFacts K 1 le_rfl π v`. Establish `hle : ∀ s, SuppAt π v s → ∀ y ∈ s, y.1 = 1` using `fun s hs y hy => by`. Take `⟨-, hsum, hpos⟩` from `hf s hs`.
+
+Establish `h1 : y.1 ≤ (s.map Sigma.fst).sum` using `Multiset.single_le_sum (fun _ _ => Nat.zero_le _) _ (Multiset.mem_map_of_mem _ hy)`. Establish `h2` using `hpos y hy`. Use linear arithmetic over natural numbers and integers. Establish `hcard : ∀ s, SuppAt π v s → s.card ≤ 1` using `fun s hs => by`. Take `⟨-, hsum, -⟩` from `hf s hs`.
+
+Establish `e : s.map Sigma.fst = s.map fun _ => 1` using `Multiset.map_congr rfl (hle s hs)`. Rewrite `hsum` using `[e, Multiset.map_const', Multiset.sum_replicate]`. Simplify using `using hsum.le`. Use `ht v ((hf s₀ hs₀).1.2 (hle s₀ hs₀)) fun s hs ξ hξ ξ' hξ' _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hξ`.
+
+Take `⟨b, hb⟩` from `hξ'`. Establish `h1 : s.card = 1` using `le_antisymm (hcard s hs) (Multiset.card_pos_iff_exists_mem.2 ⟨_, ha⟩)`. Take `⟨y, rfl⟩` from `Multiset.card_eq_one.1 h1`. Establish `e` using `(polFacts (v.adicCompletion K)).2.2.1 ξ ξ' a b ((Multiset.mem_singleton.1 ha).trans (Multiset.mem_singleton.1 hb).symm)`. Substitute `e` using the available equality.
+
+Rewrite using `[mul_inv_cancel]`. Simplify using `only [MonoidHom.one_apply, Units.val_one]`. Introduce `h`. Establish `h2 : Ideal.absNorm v.asIdeal = 1` using `by exact_mod_cast h.symm`. Conclude with `v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h2)`.
+-/
 private theorem win_one (hO : ImaginaryQuadraticEtaCharacter.WinOf) (π : CuspSub K 1) : ∃ t : ℝ, ∀ v, WinAt π t v := by
   obtain ⟨t, ht⟩ := hO K 1 le_rfl π
   refine ⟨t, fun v => ?_⟩
@@ -92,6 +121,15 @@ section Pol
 
 variable {K Ω : Type} [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`. Take `⟨μ, χ, c, P, hμ, hs, hc, hP⟩` from `UpperTheory.cyclotomicCharacter_plusPart (algOfCyc H) UpperTheory.cyclotomic_char_conj_invariant K Ω l ι n r hp`. Establish `hd` using `selfDualC H K Ω l ι n hn r π ha χ μ hμ c P hc hP`. Establish `hsign` using `UpperTheory.sign_at_infinity_of_parallel_weight UpperTheory.adelicSolution_parallel _ Ω l ι χ μ hμ hs`. Take `⟨v₀⟩ : Nonempty (InfinitePlace (maximalRealSubfield K))` from `inferInstance`.
+
+Establish `h2 : χ.locInf v₀ (-1) ^ 2 = 1` using `by rw [← map_pow, neg_one_sq, map_one]`. Establish `h3 : ((χ.locInf v₀ (-1) : ℂˣ) : ℂ) ^ 2 = 1` using `by rw [← Units.val_pow_eq_pow_val, h2, Units.val_one]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, ∀ v, χ.locInf v (-1) = (-1) ^ m := by`. Break down `sq_eq_one_iff.1 h3 with e | e` into its components or cases. Conclude with `⟨0, fun u => (hsign u v₀).trans (Units.ext (by simpa using e))⟩`.
+
+Conclude with `⟨1, fun u => (hsign u v₀).trans (Units.ext (by simpa using e))⟩`. Establish `hN : compNorm K (χ * quadChar K ^ (m + n)) = compNorm K χ`. Rewrite using `[map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]`. Use `⟨χ * quadChar K ^ (m + n), fun v => ?_, hN ▸ hd⟩` and prove the remaining obligations. Rewrite using `[HChar.locInf_mul, locInf_pow, hm, quadChar_locInf, ← pow_add, ← add_assoc, pow_add, ← two_mul, pow_mul]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem polarized_of_att (H : HypothesesH) {ι : Qbar l ≃+* ℂ} (hn : 1 ≤ n) {r : G K Ω →* GL (Fin n) (Qbar l)} {π : CuspSub K n}
     (hp : Sol.Pol ι r) (ha : AttC ι r π) : ∃ χ, GlobalTheory.ContraPair.PolarizedPair π χ := by
   haveI : IsAlgClosure (maximalRealSubfield K) Ω :=
@@ -135,6 +173,9 @@ private def W2 [IsCMField F] (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin n)
   ∀ π : CuspSub F n, (CG.mk π).IsRegAlg → AttC ι r π → ∃ t : ℝ, ∀ v : HeightOneSpectrum (𝓞 F),
     (((l : ℕ) : 𝓞 F) ∉ v.asIdeal ∨ PotUnl r v) → WinAt π t v
 
+/- English proof (translation)
+Introduce `π _ _` and use `let ⟨t, ht⟩ := win_one h.wo π ⟨t, fun v _ => ht v⟩`.
+-/
 private theorem second_condition_trivial_extension [IsCMField F] (h : Hyp) (ι : Qbar l ≃+* ℂ) (r : G F Ω →* GL (Fin 1) (Qbar l)) : W2 ι r := fun π _ _ =>
   let ⟨t, ht⟩ := win_one h.wo π
   ⟨t, fun v _ => ht v⟩
@@ -147,6 +188,9 @@ variable {F K Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field K] [Numb
   [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
   {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
+/- English proof (translation)
+Distinguish the cases in `e : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal`. Conclude with `Or.inr ((((h.flag F Ω l n r).2.2.2 K).2.2 w e).2 hf |>.1 (hw.resolve_left fun k => k e))`. Conclude with `Or.inl fun k => e ((l_mem_under l w).1 k)`.
+-/
 private theorem cond_down (h : Hyp) (hf : Flagged r) {w : HeightOneSpectrum (𝓞 K)}
     (hw : ((l : ℕ) : 𝓞 K) ∉ w.asIdeal ∨ PotUnl (r.comp (resG F K Ω)) w) :
     ((l : ℕ) : 𝓞 F) ∉ (w.under (𝓞 F)).asIdeal ∨ PotUnl r (w.under (𝓞 F)) := by
@@ -154,6 +198,9 @@ private theorem cond_down (h : Hyp) (hf : Flagged r) {w : HeightOneSpectrum (�
   · exact Or.inr ((((h.flag F Ω l n r).2.2.2 K).2.2 w e).2 hf |>.1 (hw.resolve_left fun k => k e))
   · exact Or.inl fun k => e ((l_mem_under l w).1 k)
 
+/- English proof (translation)
+Distinguish the cases in `e : ((l : ℕ) : 𝓞 K) ∈ w.asIdeal`. Conclude with `Or.inr ((((h.flag F Ω l n r).2.2.2 K).2.2 w e).1 (hv.resolve_left fun k => k ((l_mem_under l w).2 e)))`. Conclude with `Or.inl e`.
+-/
 private theorem cond_up (h : Hyp) {w : HeightOneSpectrum (𝓞 K)}
     (hv : ((l : ℕ) : 𝓞 F) ∉ (w.under (𝓞 F)).asIdeal ∨ PotUnl r (w.under (𝓞 F))) :
     ((l : ℕ) : 𝓞 K) ∉ w.asIdeal ∨ PotUnl (r.comp (resG F K Ω)) w := by
@@ -161,16 +208,25 @@ private theorem cond_up (h : Hyp) {w : HeightOneSpectrum (𝓞 K)}
   · exact Or.inr ((((h.flag F Ω l n r).2.2.2 K).2.2 w e).1 (hv.resolve_left fun k => k ((l_mem_under l w).2 e)))
   · exact Or.inl e
 
+/- English proof (translation)
+Introduce `w e hu` and use `(((h.flag F Ω l n r).2.2.2 K).2.2 w e).1 (hW _ ((l_mem_under l w).2 e) (((((h.flag F Ω l n r).2.2.2 K).2.2 w e).2 hf).2 hu))`.
+-/
 private theorem first_condition_up (h : Hyp) (hf : Flagged r) (hW : W1 r) : W1 (r.comp (resG F K Ω)) := fun w e hu =>
   (((h.flag F Ω l n r).2.2.2 K).2.2 w e).1
     (hW _ ((l_mem_under l w).2 e) (((((h.flag F Ω l n r).2.2.2 K).2.2 w e).2 hf).2 hu))
 
+/- English proof (translation)
+Introduce `v e hu`. Take `⟨w, rfl⟩` from `exists_above (K := K) v`. Establish `e'` using `(l_mem_under l w).1 e`. Conclude with `((((h.flag F Ω l n r).2.2.2 K).2.2 w e').2 hf).1 (hW w e' (hK w e' hu))`.
+-/
 private theorem first_condition_down (h : Hyp) (hf : Flagged r) (hK : Keeps r K) (hW : W1 (r.comp (resG F K Ω))) : W1 r := by
   intro v e hu
   obtain ⟨w, rfl⟩ := exists_above (K := K) v
   have e' := (l_mem_under l w).1 e
   exact ((((h.flag F Ω l n r).2.2.2 K).2.2 w e').2 hf).1 (hW w e' (hK w e' hu))
 
+/- English proof (translation)
+Introduce `P _ hP`. Take `⟨π, hreg, hπ⟩` from `ha`. Take `⟨t, ht⟩` from `hW π hreg hπ`. Use `⟨t, fun w hw => ?_⟩` and prove the remaining obligations. Conclude with `((h.ud F K hp n hn π P (h.weak F K Ω l ι n r π P hπ hP) t (w.under (𝓞 F))).1 (ht _ (cond_down h hf hw)) (overUnder w)).1`.
+-/
 private theorem second_condition_up (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).Prime) (hn : 2 ≤ n) (hf : Flagged r)
     (ha : IsRegAlgAutomorphicAttached ι r) (hW : W2 ι r) : W2 ι (r.comp (resG F K Ω)) := by
   intro P _ hP
@@ -179,6 +235,9 @@ private theorem second_condition_up (h : Hyp) [IsGalois F K] (hp : (Module.finra
   refine ⟨t, fun w hw => ?_⟩
   exact ((h.ud F K hp n hn π P (h.weak F K Ω l ι n r π P hπ hP) t (w.under (𝓞 F))).1 (ht _ (cond_down h hf hw)) (overUnder w)).1
 
+/- English proof (translation)
+Use `(h.ud F K hp n hn π Q (h.weak F K Ω l ι n r π Q hπ hQ) t v).2 fun w => ⟨hwin w, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`. Conclude with `h.thru1 h.row F K Ω l ι n hn r hr hI Q hreg hpol hQ v (by simp [e]) (fun _ => hc.resolve_left fun k => k e) w t (hwin w)`. Conclude with `h.thru0 h.row F K Ω l ι n hn r hr hI Q hreg hpol hQ v (by simp [e]) (by simp) w t (hwin w)`.
+-/
 private theorem win_down (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).Prime) (hn : 2 ≤ n) (hr : Continuous r) (hI : IneAb r)
     {π : CuspSub F n} (hπ : AttC ι r π) {Q : CuspSub K n} (hreg : (CG.mk Q).IsRegAlg) (hpol : ∃ χ, GlobalTheory.ContraPair.PolarizedPair Q χ)
     (hQ : AttC ι (r.comp (resG F K Ω)) Q) {t : ℝ} {v : HeightOneSpectrum (𝓞 F)}
@@ -188,6 +247,11 @@ private theorem win_down (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).Pri
   · exact h.thru1 h.row F K Ω l ι n hn r hr hI Q hreg hpol hQ v (by simp [e]) (fun _ => hc.resolve_left fun k => k e) w t (hwin w)
   · exact h.thru0 h.row F K Ω l ι n hn r hr hI Q hreg hpol hQ v (by simp [e]) (by simp) w t (hwin w)
 
+/- English proof (translation)
+Introduce `π _ hπ`. Take `⟨Q, hreg, hQ⟩` from `ha`. Take `⟨t, ht⟩` from `hW Q hreg hQ`. Use `⟨t, fun v hv => win_down h hp hn hr hI hπ hreg (polarized_of_att h.pr (by omega) hpol hQ) hQ hv fun w => ht w.1 ?_⟩` and prove the remaining obligations. Use `cond_up h ?_` and prove the remaining obligations.
+
+Rewrite using `[under_of_over w]` and apply the resulting hypothesis.
+-/
 private theorem second_condition_down (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).Prime) (hn : 2 ≤ n) (hr : Continuous r) (hI : IneAb r)
     (hpol : Sol.Pol ι (r.comp (resG F K Ω))) (ha : IsRegAlgAutomorphicAttached ι (r.comp (resG F K Ω))) (hW : W2 ι (r.comp (resG F K Ω))) : W2 ι r := by
   intro π _ hπ
@@ -197,6 +261,9 @@ private theorem second_condition_down (h : Hyp) [IsGalois F K] (hp : (Module.fin
   refine cond_up h ?_
   rwa [under_of_over w]
 
+/- English proof (translation)
+The claim follows from `((autBridge H K Ω l ι n _).2.1).1 ((hE l ι n hn r hr hirr hpol).1 (((autBridge H F Ω l ι n r).2.1).2 ha))`.
+-/
 private theorem aut_up (hE : Sol.Equi F Ω K) (H : HypothesesH) (hn : 1 ≤ n) (hr : Continuous r) (hirr : IsIrr (r.comp (resG F K Ω)))
     (hpol : Sol.Pol ι r) (ha : IsRegAlgAutomorphicAttached ι r) : IsRegAlgAutomorphicAttached ι (r.comp (resG F K Ω)) :=
   ((autBridge H K Ω l ι n _).2.1).1 ((hE l ι n hn r hr hirr hpol).1 (((autBridge H F Ω l ι n r).2.1).2 ha))
@@ -205,6 +272,17 @@ end Step
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Take `⟨L, _, _, _, hL, hp, hlt⟩` from `UpperTheory.solvable_cyclic_subextension_over_rat (max N (Module.finrank ℚ K))`. Take `⟨M, _, _, _, _, _, f, _, hd, hadj⟩` from `UpperTheory.solvable_auxiliary_galois_extension K Ω L hp (lt_of_le_of_lt (le_max_right _ _) hlt)`. Establish `hM : IsCMField M` using `(UpperTheory.solvable_cm_compositum_maximalRealSubfield L K M f hL hadj (Or.inr inferInstance)).resolve_left fun hR => by`. Take `⟨v⟩ : Nonempty (InfinitePlace M)` from `inferInstance`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 ((isTotallyComplex_of_algebra K M).isComplex v)) (hR.isReal v)`.
+
+Use `letI : Algebra F M := ((algebraMap K M).comp (algebraMap F K)).toAlgebra`. Use `haveI : IsScalarTower F K M := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower F M Ω := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω, IsScalarTower.algebraMap_apply K M Ω]`. Both sides reduce to the same expression.
+
+Use `haveI : IsAlgClosure M Ω := { isAlgClosed := IsAlgClosure.isAlgClosed K isAlgebraic := Algebra.IsAlgebraic.tower_top (K := K) M }`. Establish `hbij : Function.Bijective (algebraMap F K)`. Use `⟨(algebraMap F K).injective, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (⊥ : Subalgebra F K) = ⊤` using `Subalgebra.bot_eq_top_iff_finrank_eq_one.2 h1`. Conclude with `Algebra.mem_bot.1 (e ▸ Algebra.mem_top : x ∈ (⊥ : Subalgebra F K))`.
+
+Use `haveI : IsGalois F M := IsGalois.of_equiv_equiv (F := K) (E := M) (f := (RingEquiv.ofBijective (algebraMap F K) hbij).symm) (g := RingEquiv.refl M) (by`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hbij.2 x`. Establish `: (RingEquiv.ofBijective (algebraMap F K) hbij).symm (algebraMap F K y) = y` using `(RingEquiv.ofBijective (algebraMap F K) hbij).symm_apply_apply y`. Simplify using `[this, IsScalarTower.algebraMap_apply F K M])`.
+
+Establish `hd' : Module.finrank F M = Module.finrank ℚ L`. Rewrite using `[← Module.finrank_mul_finrank F K M, h1, one_mul, hd]`. Conclude with `⟨M, ‹Field M›, ‹NumberField M›, hM, ‹Algebra K M›, ‹Algebra F M›, ‹Algebra M Ω›, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, hd ▸ hp, hd' ▸ hp, hd ▸ lt_of_le_of_lt (le_max_left _ _) hlt, hd' ▸ lt_of_le_of_lt (le_max_left _ _) hlt⟩`.
+-/
 private theorem exists_cm_field_tower (F K Ω : Type) [Field F] [NumberField F] [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra F K] [Algebra F Ω]
     [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] (h1 : Module.finrank F K = 1) (N : ℕ) :
     ∃ (M : Type) (_ : Field M) (_ : NumberField M) (_ : IsCMField M) (_ : Algebra K M) (_ : Algebra F M) (_ : Algebra M Ω)
@@ -246,6 +324,9 @@ variable {F K Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field K] [Numb
   [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
   {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {n : ℕ} {r : G F Ω →* GL (Fin n) (Qbar l)}
 
+/- English proof (translation)
+Establish `: ∀ v' : HeightOneSpectrum (𝓞 F), v' = v → ∃ i : v'.adicCompletion F ≃+* v.adicCompletion F, IsCompl i`. Introduce and unpack `_ rfl`. Conclude with `⟨RingEquiv.refl _, continuous_id, fun _ => rfl⟩`. Conclude with `this _ (under_self v)`.
+-/
 private theorem compl_self (v : HeightOneSpectrum (𝓞 F)) :
     ∃ i : (v.under (𝓞 F)).adicCompletion F ≃+* v.adicCompletion F, IsCompl i := by
   have : ∀ v' : HeightOneSpectrum (𝓞 F), v' = v → ∃ i : v'.adicCompletion F ≃+* v.adicCompletion F, IsCompl i := by
@@ -253,6 +334,15 @@ private theorem compl_self (v : HeightOneSpectrum (𝓞 F)) :
     exact ⟨RingEquiv.refl _, continuous_id, fun _ => rfl⟩
   exact this _ (under_self v)
 
+/- English proof (translation)
+Take `⟨M, _, _, _, _, _, _, _, _, _, _, _, _, pK, pF, lK, lF⟩` from `exists_cm_field_tower F K Ω h1 n`. Take `⟨hN, hidx⟩` from `UpperTheory.galois_representation_image_spec K M Ω`. Establish `hirr' : IsIrr ((r.comp (resG F K Ω)).comp (resG K M Ω))` using `UpperTheory.galois_representation_irreducible_prime_dimension _ _ _ n _ _ hN (by rw [hidx]; exact pK) (by rw [hidx]; exact lK) hirr`. Establish `e : (r.comp (resG F K Ω)).comp (resG K M Ω) = r.comp (resG F M Ω)` using `rfl`. Rewrite `hirr'` using `[e]`.
+
+Take `⟨Q, -, hQ⟩` from `aut_up (UpperTheory.V.Z.Bc.stepC h.pr h.pr.cyc F M Ω pF inferInstance inferInstance) h.pr (by omega) hr hirr' hpol ha`. Establish `hQ' : AttC ι ((r.comp (resG F K Ω)).comp (resG K M Ω)) Q` using `by rw [e]; exact hQ`. Introduce `P _ hP`. Take `⟨π, hreg, hπ⟩` from `ha`. Take `⟨t, ht⟩` from `hW π hreg hπ`.
+
+Use `⟨t, fun w hw => ?_⟩` and prove the remaining obligations. Establish `bF` using `h.weak F M Ω l ι n r π Q hπ hQ`. Establish `bK` using `h.weak K M Ω l ι n _ P Q hP hQ'`. Use `(h.ud K M pK n hn P Q bK t w).2 fun u => ?_` and prove the remaining obligations. Use `haveI hv : u.1.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := haveI : w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal := ⟨rfl⟩ Ideal.LiesOver.trans u.1.asIdeal w.asIdeal (w.under (𝓞 F)).asIdeal`.
+
+Take `⟨a, b⟩` from `(h.ud F M pF n hn π Q bF t (w.under (𝓞 F))).1 (ht _ (cond_down h hf hw)) ⟨u.1, hv⟩`. Take `⟨i, hi⟩` from `compl_self (w.under (𝓞 F))`. Conclude with `⟨a, thruTr F K F M n Q w (w.under (𝓞 F)) u ⟨u.1, hv⟩ rfl i hi b⟩`.
+-/
 private theorem second_condition_up_trivial (h : Hyp) (h1 : Module.finrank F K = 1) (hn : 2 ≤ n) (hr : Continuous r)
     (hirr : IsIrr (r.comp (resG F K Ω))) (hpol : Sol.Pol ι r) (ha : IsRegAlgAutomorphicAttached ι r) (hf : Flagged r) (hW : W2 ι r) :
     W2 ι (r.comp (resG F K Ω)) := by
@@ -278,6 +368,11 @@ private theorem second_condition_up_trivial (h : Hyp) (h1 : Module.finrank F K =
   obtain ⟨i, hi⟩ := compl_self (w.under (𝓞 F))
   exact ⟨a, thruTr F K F M n Q w (w.under (𝓞 F)) u ⟨u.1, hv⟩ rfl i hi b⟩
 
+/- English proof (translation)
+Take `⟨M, _, _, _, _, _, _, _, _, _, _, _, _, pK, pF, lK, lF⟩` from `exists_cm_field_tower F K Ω h1 n`. Take `⟨hN, hidx⟩` from `UpperTheory.galois_representation_image_spec K M Ω`. Establish `hirr' : IsIrr ((r.comp (resG F K Ω)).comp (resG K M Ω))` using `UpperTheory.galois_representation_irreducible_prime_dimension _ _ _ n _ _ hN (by rw [hidx]; exact pK) (by rw [hidx]; exact lK) hirr`. Establish `e : (r.comp (resG F K Ω)).comp (resG K M Ω) = r.comp (resG F M Ω)` using `rfl`. Rewrite `hirr'` using `[e]`.
+
+Establish `aM` using `aut_up (UpperTheory.V.Z.Bc.stepC h.pr h.pr.cyc F M Ω pF inferInstance inferInstance) h.pr (by omega) hr hirr' hpol ha`. Establish `hW'` using `second_condition_up (F := K) (K := M) h pK hn hf haK hW`. Rewrite `hW'` using `[e]`. Conclude with `second_condition_down (K := M) h pF hn hr hI (UpperTheory.solvable_polarized_restriction F M Ω l ι n r hpol) aM hW'`.
+-/
 private theorem second_condition_down_trivial (h : Hyp) (h1 : Module.finrank F K = 1) (hn : 2 ≤ n) (hr : Continuous r)
     (hirr : IsIrr (r.comp (resG F K Ω))) (hpol : Sol.Pol ι r) (ha : IsRegAlgAutomorphicAttached ι r) (hf : Flagged (r.comp (resG F K Ω)))
     (haK : IsRegAlgAutomorphicAttached ι (r.comp (resG F K Ω))) (hI : IneAb r) (hW : W2 ι (r.comp (resG F K Ω))) : W2 ι r := by
@@ -305,6 +400,11 @@ private def Good (F K Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field 
 variable {F K Ω : Type} [Field F] [NumberField F] [IsCMField F] [Field K] [NumberField K] [IsCMField K] [Field Ω]
   [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω]
 
+/- English proof (translation)
+Introduce `l _ ι n hn r hr hirr hpol ha hf`. Establish `haK` using `aut_up hE h.pr hn hr hirr hpol ha`. Establish `hpK` using `UpperTheory.solvable_polarized_restriction F K Ω l ι n r hpol`. Use `⟨fun hW => ⟨first_condition_up h hf hW.1, ?_⟩, fun hI hK hW => ⟨first_condition_down h hf hK hW.1, ?_⟩⟩` and prove the remaining obligations. Take `rfl | h2 : n = 1 ∨ 2 ≤ n` from `by omega`.
+
+Conclude with `second_condition_trivial_extension h ι _`. Conclude with `second_condition_up h hp h2 hf ha hW.2`. Take `rfl | h2 : n = 1 ∨ 2 ≤ n` from `by omega`. Conclude with `second_condition_trivial_extension h ι _`. Conclude with `second_condition_down h hp h2 hr hI hpK haK hW.2`.
+-/
 private theorem good_prime (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).Prime) (hE : Sol.Equi F Ω K) : Good F K Ω := by
   intro l _ ι n hn r hr hirr hpol ha hf
   have haK := aut_up hE h.pr hn hr hirr hpol ha
@@ -317,6 +417,11 @@ private theorem good_prime (h : Hyp) [IsGalois F K] (hp : (Module.finrank F K).P
     · exact second_condition_trivial_extension h ι _
     · exact second_condition_down h hp h2 hr hI hpK haK hW.2
 
+/- English proof (translation)
+Introduce `l _ ι n hn r hr hirr hpol ha hf`. Establish `haK` using `aut_up hE h.pr hn hr hirr hpol ha`. Establish `hfK` using `((h.flag F Ω l n r).2.2.2 K).2.1 hf`. Use `⟨fun hW => ⟨first_condition_up h hf hW.1, ?_⟩, fun hI hK hW => ⟨first_condition_down h hf hK hW.1, ?_⟩⟩` and prove the remaining obligations. Take `rfl | h2 : n = 1 ∨ 2 ≤ n` from `by omega`.
+
+Conclude with `second_condition_trivial_extension h ι _`. Conclude with `second_condition_up_trivial h h1 h2 hr hirr hpol ha hf hW.2`. Take `rfl | h2 : n = 1 ∨ 2 ≤ n` from `by omega`. Conclude with `second_condition_trivial_extension h ι _`. Conclude with `second_condition_down_trivial h h1 h2 hr hirr hpol ha hfK haK hI hW.2`.
+-/
 private theorem good_one (h : Hyp) (h1 : Module.finrank F K = 1) (hE : Sol.Equi F Ω K) : Good F K Ω := by
   intro l _ ι n hn r hr hirr hpol ha hf
   have haK := aut_up hE h.pr hn hr hirr hpol ha
@@ -331,6 +436,19 @@ private theorem good_one (h : Hyp) (h1 : Module.finrank F K = 1) (hE : Sol.Equi 
 
 end Tower
 
+/- English proof (translation)
+Use `letI : Algebra E Ω := ((algebraMap K Ω).comp (algebraMap E K)).toAlgebra`. Use `haveI : IsScalarTower E K Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower F E Ω := IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply F K Ω, IsScalarTower.algebraMap_apply F E K]`. Both sides reduce to the same expression.
+
+Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) E⟩`. Take `⟨g1, g2, hE⟩` from `H`. Introduce `l _ ι n hn r hr hirr hpol ha hf`. Establish `hc : (r.comp (resG F E Ω)).comp (resG E K Ω) = r.comp (resG F K Ω)` using `rfl`.
+
+Establish `i2 : IsIrr ((r.comp (resG F E Ω)).comp (resG E K Ω))` using `hc ▸ hirr`. Establish `i1 : IsIrr (r.comp (resG F E Ω))` using `(UpperTheory.galoisRep_irreducibility_criterion.1 _ _ _ n _).1 _ i2`. Establish `fl` using `(h.flag F Ω l n r).2.2.2 E`. Establish `hfE` using `fl.2.1 hf`. Establish `d1` using `g1 l ι n hn r hr i1 hpol ha hf`.
+
+Establish `d2 : (WitA ι (r.comp (resG F E Ω)) → WitA ι (r.comp (resG F K Ω))) ∧ (IneAb (r.comp (resG F E Ω)) → Keeps (r.comp (resG F E Ω)) K → WitA ι (r.comp (resG F K Ω)) → WitA ι (r.comp (resG F E Ω)))` using `g2 l ι n hn _ (hr.comp (continuous_restrictScalarsHom F E Ω)) i2 (UpperTheory.solvable_polarized_restriction F E Ω l ι n r hpol) (aut_up hE h.pr hn hr i1 hpol ha) hfE`. Use `⟨fun hW => d2.1 (d1.1 hW), fun hI hK hW => d1.2 hI ?_ (d2.2 (fl.1 hI) ?_ hW)⟩` and prove the remaining obligations. Introduce `w e hu`. Take `⟨u, rfl⟩` from `exists_above (K := K) w`. Establish `e'` using `(l_mem_under l u).1 e`.
+
+Rewrite `hu` using `[under_under]`. Conclude with `((((h.flag E Ω l n (r.comp (resG F E Ω))).2.2.2 K).2.2 u e').2 hfE).2 (hK u e' hu)`. Introduce `u e hu`. Establish `e'` using `(l_mem_under (F := E) l u).2 e`. Establish `k` using `((fl.2.2 (u.under (𝓞 E)) e').2 hf).2 hu`.
+
+Rewrite `k` using `[under_under]`. Conclude with `hK u e k`.
+-/
 private theorem good_trans (h : Hyp) (F E K Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field E] [NumberField E] [IsCMField E]
     [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra F E] [Algebra E K] [Algebra F K] [IsScalarTower F E K]
     [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω]
@@ -366,6 +484,19 @@ private theorem good_trans (h : Hyp) (F E K Ω : Type) [Field F] [NumberField F]
     rw [under_under] at k
     exact hK u e k
 
+/- English proof (translation)
+Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ hd hsol`. Distinguish the cases in `h1 : Module.finrank F K = 1`. Conclude with `good_one h h1 (UpperTheory.V.Z.Bc.solC h.pr h.pr.cyc F K Ω hsol inferInstance inferInstance)`.
+
+Distinguish the cases in `hp : (Module.finrank F K).Prime`. Conclude with `good_prime h hp (UpperTheory.V.Z.Bc.solC h.pr h.pr.cyc F K Ω hsol inferInstance inferInstance)`. Take `⟨E, hb, ht, hg, hE0⟩` from `UpperTheory.solvable_cm_extension_tower F K hsol (Or.inr inferInstance) (Or.inr inferInstance) h1 hp`. Use `haveI hE : IsCMField E := hE0.resolve_left fun hR => by`. Take `⟨v⟩ : Nonempty (InfinitePlace E)` from `inferInstance`.
+
+Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 ((isTotallyComplex_of_algebra F E).isComplex v)) (hR.isReal v)`. Establish `hmul : Module.finrank F E * Module.finrank E K = d` using `by rw [Module.finrank_mul_finrank, hd]`. Establish `p1 : 0 < Module.finrank F E` using `Module.finrank_pos`. Establish `p2 : 0 < Module.finrank E K` using `Module.finrank_pos`. Establish `n1 : Module.finrank F E ≠ 1` using `fun e => hb (IntermediateField.finrank_eq_one_iff.1 e)`.
+
+Establish `n2 : Module.finrank E K ≠ 1` using `fun e => ht (IntermediateField.finrank_eq_one_iff_eq_top.1 e)`. Establish `l1 : Module.finrank F E < d`. Rewrite using `[← hmul]; exact lt_mul_of_one_lt_right p1 (by omega)`. Establish `l2 : Module.finrank E K < d`. Rewrite using `[← hmul]; exact lt_mul_of_one_lt_left p2 (by omega)`.
+
+Use `haveI : Group.IsSolvable (K ≃ₐ[F] K) := hsol`. Establish `s1 : IsSolvable (E ≃ₐ[F] E)` using `Group.isSolvable_of_surjective (AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := E) K)`. Establish `s2 : IsSolvable (K ≃ₐ[E] K)` using `Group.isSolvable_of_isSolvable_injective (f := (AlgEquiv.restrictScalarsHom F : (K ≃ₐ[E] K) →* (K ≃ₐ[F] K))) (AlgEquiv.restrictScalars_injective F)`. Use `good_trans h F E K Ω ?_` and prove the remaining obligations. Introduce `iA i1 i2 i3`.
+
+Conclude with `⟨ih _ l1 F E Ω rfl s1, ih _ l2 E K Ω rfl s2, UpperTheory.V.Z.Bc.solC h.pr h.pr.cyc F E Ω s1 inferInstance hE⟩`.
+-/
 private theorem good_all (h : Hyp) (d : ℕ) :
     ∀ (F K Ω : Type) [Field F] [NumberField F] [IsCMField F] [Field K] [NumberField K] [IsCMField K] [Field Ω] [Algebra F K] [Algebra F Ω]
       [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] [IsGalois F K],
@@ -403,6 +534,9 @@ private theorem good_all (h : Hyp) (d : ℕ) :
 end UpperTheory.V.Z.Win
 
 open UpperTheory.V.Z.Win in
+/- English proof (translation)
+Introduce `hW hF hT0 hT1 hU hO H R F K Ω _ _ _ _ _ _ _ _ _ _ _ _ _ hsol l _ ι n hn r hr hirr hpol ha hf`. Use `haveI : Algebra.IsAlgebraic F Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure K Ω := ⟨IsAlgClosure.isAlgClosed F, Algebra.IsAlgebraic.tower_top (K := F) K⟩`. Conclude with `good_all ⟨H, R, hW, hF, hT0, hT1, hU, hO⟩ _ F K Ω rfl hsol l ι n hn r hr hirr hpol ha hf`.
+-/
 theorem UpperTheory.V.Z.Win.aUpDownOf :
     UpperTheory.V.Z.Win.AUpDownOf := by
   intro hW hF hT0 hT1 hU hO H R F K Ω _ _ _ _ _ _ _ _ _ _ _ _ _ hsol l _ ι n hn r hr hirr hpol ha hf

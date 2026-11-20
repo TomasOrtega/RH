@@ -42,6 +42,23 @@ open GlobalTheory.CovTop GlobalTheory.BigTop
 
 namespace GlobalTheory.CovTop.AllSteps
 
+/- English proof (translation)
+Establish `hX : HypothesesX` using `hXH.toClassicalTheoremsX`. Establish `hKS : GlobalTheory.Published.ToroidalForFanKS` using `hX.ks`. Establish `hN : GlobalTheory.Published.SemiAbelianLieSeminegative` using `hX.lie`. Establish `hGC : GlobalTheory.Published.GreenCuspidal` using `hX.green`. Establish `hSep : GlobalTheory.Published.PointSeparationPair` using `hX.sep`.
+
+Establish `hMB : GlobalTheory.Published.MoretBaillyModel` using `hXH.mb`. Establish `hY : GlobalTheory.CovHt.HypothesesY` using `hXH.y`. Establish `hP : Hypotheses2` using `h3.base`. Establish `hG : GlobalTheory.Published.GrothendieckDeformation` using `h3.g1`. Establish `hS : GlobalTheory.Published.SiegelToroidalIntegral` using `hH.sieg`.
+
+Establish `hQd : GlobalTheory.HSCore.Quoted` using `h3.quoted`. Apply the tactic sequence `have gram : Gram := by apply GlobalTheory.CovTop.gram_of_hypotheses <;> assumption`. Apply the tactic sequence `have recB : Rec := by apply GlobalTheory.CovTop.rec_of_gram <;> assumption`. Apply the tactic sequence `have cut : Cut := by apply GlobalTheory.CovTop.cut_of_hypotheses <;> assumption`. Establish `size : Size` using `GlobalTheory.CovTop.SizeRows.size`.
+
+Apply the tactic sequence `have meas : Meas := by apply GlobalTheory.CovTop.MeasRd.meas <;> assumption`. Apply the tactic sequence `have rat : GlobalTheory.CovTop.Rat := by apply GlobalTheory.CovTop.rat_of_hypotheses <;> assumption`. Apply the tactic sequence `have core : CoreLe := by apply GlobalTheory.CoreSlope.coreLe_of_gram_meas_rat <;> assumption`. Establish `anchor : Anchor` using `by apply GlobalTheory.CovTop.anchor_holds`. Apply the tactic sequence `have lowDef : LowDef := by apply GlobalTheory.T.low_definition_from_anchor <;> assumption`.
+
+Apply the tactic sequence `have deepEx : DeepEx := by apply GlobalTheory.CovTop.DeepExist.deepEx <;> assumption`. Apply the tactic sequence `have deepGood : DeepGood := by apply GlobalTheory.T.deep_good_reduction_statement <;> assumption`. Apply the tactic sequence `have ring : GlobalTheory.CovTop.Ring := by apply GlobalTheory.CovTop.RingStep.ring_of <;> assumption`. Apply the tactic sequence `have gmin : Gmin := by apply GlobalTheory.CovGminTop.gmin <;> assumption`. Apply the tactic sequence `have flatDeg : FlatDeg := by apply GlobalTheory.CovTop.FlatDegProof.flatDeg <;> assumption`.
+
+Apply the tactic sequence `have flat : Flat := by apply GlobalTheory.FlatSplit.flat <;> assumption`. Apply the tactic sequence `have deg : Deg := by apply GlobalTheory.T.degree_bound_of_deep_good <;> assumption`. Apply the tactic sequence `have share : Share := by apply GlobalTheory.T.share_of_toroidal <;> assumption`. Apply the tactic sequence `have hs : HS := by apply GlobalTheory.T.height_theorem_of_hypotheses <;> assumption`. Apply the tactic sequence `have sum : SumC := by apply GlobalTheory.CovTop.sumC_of_deepGood <;> assumption`.
+
+Apply the tactic sequence `have bad : Bad := by apply GlobalTheory.T.bad_set_bound_of_degeneration <;> assumption`. Apply the tactic sequence `have lam : abelian₂ := by apply GlobalTheory.CovTop.LamAll.lam <;> assumption`. Apply the tactic sequence `have maps : Maps := by apply GlobalTheory.T.maps_bound_of_deep_good <;> assumption`. Apply the tactic sequence `have rk : Rk := by apply GlobalTheory.T.rank_bound_of_deep_good <;> assumption`. Apply the tactic sequence `have height : Height := by apply GlobalTheory.T.height_bound_of_deep_good <;> assumption`.
+
+Apply the tactic sequence `have uLow : ULow := by apply GlobalTheory.CovTop.FromComp.uLow_of <;> assumption`. Apply the tactic sequence `have low : Low := by apply GlobalTheory.CovTop.LowCover.low <;> assumption`. Conclude with `GlobalTheory.CovTop.Assembly.covolX_of_steps gram recB cut bad lam size core low`.
+-/
 theorem covolX_of_scholzeWeinstein (hXH : HypothesesXH) (hSW : GlobalTheory.Published.ScholzeWeinsteinB) (h3 : Hypotheses3)
     (hH : GlobalTheory.CovHt.HypothesesH) (hQ : GlobalTheory.CovHt.Known₂) : CovolX := by
   have hX : HypothesesX := hXH.toClassicalTheoremsX

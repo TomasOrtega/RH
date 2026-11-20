@@ -16,18 +16,30 @@ section Sm
 
 variable {G V : Type} [Group G] [TopologicalSpace G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
 
+/- English proof (translation)
+Take `⟨U, hU, hxU⟩` from `hx`. Take `⟨U', hU', hyU⟩` from `hy`. Use `⟨U ⊓ U', hU.inter hU', mem_fixed_iff'.2 fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, mem_fixed_iff'.1 hxU g (Subgroup.mem_inf.1 hg).1, mem_fixed_iff'.1 hyU g (Subgroup.mem_inf.1 hg).2]`.
+-/
 theorem smVec_add {x y : V} (hx : SmVec ρ x) (hy : SmVec ρ y) : SmVec ρ (x + y) := by
   obtain ⟨U, hU, hxU⟩ := hx
   obtain ⟨U', hU', hyU⟩ := hy
   refine ⟨U ⊓ U', hU.inter hU', mem_fixed_iff'.2 fun g hg => ?_⟩
   rw [map_add, mem_fixed_iff'.1 hxU g (Subgroup.mem_inf.1 hg).1, mem_fixed_iff'.1 hyU g (Subgroup.mem_inf.1 hg).2]
 
+/- English proof (translation)
+Take `⟨U, hU, hxU⟩` from `hx`. Conclude with `⟨U, hU, (fixed ρ U).smul_mem c hxU⟩`.
+-/
 theorem smVec_smul (c : ℂ) {x : V} (hx : SmVec ρ x) : SmVec ρ (c • x) := by
   obtain ⟨U, hU, hxU⟩ := hx
   exact ⟨U, hU, (fixed ρ U).smul_mem c hxU⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, by simp, (fixed ρ ⊤).zero_mem⟩`.
+-/
 theorem smVec_zero : SmVec ρ (0 : V) := ⟨⊤, by simp, (fixed ρ ⊤).zero_mem⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (smVec_zero (ρ := ρ))`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `smVec_add (hf i (Finset.mem_insert_self _ _)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem smVec_sum {ι : Type} (s : Finset ι) (f : ι → V) (hf : ∀ i ∈ s, SmVec ρ (f i)) :
     SmVec ρ (∑ i ∈ s, f i) := by
   classical
@@ -39,6 +51,9 @@ theorem smVec_sum {ι : Type} (s : Finset ι) (f : ι → V) (hf : ∀ i ∈ s, 
 
 end Sm
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ (v - v')).1 fun φ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, h φ, sub_self]`.
+-/
 theorem eq_of_dual {W : Type} [AddCommGroup W] [Module ℂ W] {v v' : W} (h : ∀ lw : W →ₗ[ℂ] ℂ, lw v = lw v') :
     v = v' := by
   rw [← sub_eq_zero]
@@ -51,11 +66,17 @@ def chiMu (μ : HChar E) (w : Pl E) (a b : ℕ) : GLw a w × GLw b w →* ℂˣ 
   (((μ ^ b).loc w).comp GeneralLinearGroup.det).comp (MonoidHom.fst _ _) *
     (((μ ^ a).loc w).comp GeneralLinearGroup.det).comp (MonoidHom.snd _ _)
 
+/- English proof (translation)
+Simplify using `[chiMu]`.
+-/
 theorem chiMu_apply (μ : HChar E) (w : Pl E) (a b : ℕ) (g : GLw a w × GLw b w) :
     ((chiMu μ w a b g : ℂˣ) : ℂ) = ((((μ ^ b).loc w).comp GeneralLinearGroup.det) g.1 : ℂ) *
       ((((μ ^ a).loc w).comp GeneralLinearGroup.det) g.2 : ℂ) := by
   simp [chiMu]
 
+/- English proof (translation)
+Establish `h1 : GlobalTheory.SmGL.IsSmoothChar ((((μ ^ b).loc w).comp GeneralLinearGroup.det).comp (MonoidHom.fst (GLw a w) (GLw b w)))` using `((ParLaws.isSmoothChar_loc (μ ^ b) w).comp _ GlobalTheory.SmGL.continuous_glDet).comp _ continuous_fst`. Establish `h2 : GlobalTheory.SmGL.IsSmoothChar ((((μ ^ a).loc w).comp GeneralLinearGroup.det).comp (MonoidHom.snd (GLw a w) (GLw b w)))` using `((ParLaws.isSmoothChar_loc (μ ^ a) w).comp _ GlobalTheory.SmGL.continuous_glDet).comp _ continuous_snd`. Conclude with `GlobalTheory.SmGL.IsSmoothChar.mul h1 h2`.
+-/
 theorem isOpen_chiMu (μ : HChar E) (w : Pl E) (a b : ℕ) :
     IsOpen ((chiMu μ w a b).ker : Set (GLw a w × GLw b w)) := by
   have h1 : GlobalTheory.SmGL.IsSmoothChar
@@ -66,11 +87,17 @@ theorem isOpen_chiMu (μ : HChar E) (w : Pl E) (a b : ℕ) :
     ((ParLaws.isSmoothChar_loc (μ ^ a) w).comp _ GlobalTheory.SmGL.continuous_glDet).comp _ continuous_snd
   exact GlobalTheory.SmGL.IsSmoothChar.mul h1 h2
 
+/- English proof (translation)
+Rewrite using `[phiMu, mu_fac, chiMu_apply, mul_assoc]`.
+-/
 theorem phiMu_eq {n a b : ℕ} (h : a + b = n) (w : Pl E) (μ : HChar E) (e : GLw n w → ℂ) (x y : GLw n w)
     (g : GLw a w × GLw b w) : phiMu h w (μ.loc w) e x y g =
       ((μ.loc w ((-1) ^ (a * b)) : ℂˣ) : ℂ) * ((chiMu μ w a b g : ℂˣ) : ℂ) * phi3 h w e x y g := by
   rw [phiMu, mu_fac, chiMu_apply, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[extTensor_twRep, chiMu_apply]`.
+-/
 theorem tw_eq {a b : ℕ} {w : Pl E} {V₁ V₂ : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
     (ρ₁ : Representation ℂ (GLw a w) V₁) (ρ₂ : Representation ℂ (GLw b w) V₂) (μ : HChar E) (g : GLw a w × GLw b w)
     (v : V₁ ⊗[ℂ] V₂) :
@@ -79,6 +106,17 @@ theorem tw_eq {a b : ℕ} {w : Pl E} {V₁ V₂ : Type} [AddCommGroup V₁] [Mod
       ((chiMu μ w a b g : ℂˣ) : ℂ) • GlobalTheory.SmGL.extTensor ρ₁ ρ₂ g v := by
   rw [extTensor_twRep, chiMu_apply]
 
+/- English proof (translation)
+Establish `hΨ : ∀ g v, Ψ (π₁ g v) = π₂ g (Ψ v)` using `fun g v => by`. Simplify using `using LinearMap.congr_fun (Ψ.isIntertwining' g) v`. Establish `hT : ∀ v, Ψ (hk π₁ K e v) = hk π₂ K e (Ψ v)`. Introduce `v`. Unfold `hk`.
+
+Rewrite using `[map_finsum Ψ (hk_supp π₁ K e he v)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hΨ q.out v]`. Establish `hTi : ∀ i v, Ψ ((hk π₁ K e)^[i] v) = (hk π₂ K e)^[i] (Ψ v)`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => intro v`. Both sides reduce to the same expression. Consider the case `succ i ih`. Introduce `v`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', hT, ih]`. Use `⟨mem_fixed_iff'.2 fun g hg => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hΨ, mem_fixed_iff'.1 hu g hg]`. Rewrite using `[← hTi]`. Introduce `h0`.
+
+Conclude with `hne (Ψ.injective (h0.trans (map_zero Ψ).symm))`.
+-/
 theorem transport {n : ℕ} {w : Pl E} {V₁ V₂ : Type} [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
     (π₁ : Representation ℂ (GLw n w) V₁) (π₂ : Representation ℂ (GLw n w) V₂) (Ψ : π₁.Equiv π₂)
     (K : Subgroup (GLw n w)) (e : GLw n w → ℂ) (he : IsHk K e) (u : V₁) (hu : u ∈ fixed π₁ K) (k : ℕ)
@@ -104,6 +142,49 @@ theorem transport {n : ℕ} {w : Pl E} {V₁ V₂ : Type} [AddCommGroup V₁] [M
     intro h0
     exact hne (Ψ.injective (h0.trans (map_zero Ψ).symm))
 
+/- English proof (translation)
+Set `Lv : Subgroup (GLw a w × GLw b w)` to `K'.comap (CtLevel.dgM h w)`. Establish `hLvo : IsOpen (Lv : Set (GLw a w × GLw b w))` using `hK'o.preimage (GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.continuous_dgM h w)`. Establish `hLv : ∀ k ∈ Lv, k ∈ leviOf h w K'` using `fun k hk => by show blk h w k 0 ∈ K'`. Rewrite using `[GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.blk_zero_eq]`. Conclude with `hk`.
+
+Establish `h1Lv : (1 : GLw a w × GLw b w) ∈ leviOf h w K'` using `by show blk h w 1 0 ∈ K'`. Rewrite using `[GlobalTheory.LeviFubini.blk_one_zero]`. Conclude with `K'.one_mem`. Establish `hR : ∀ x ∈ X, ∀ y ∈ X, ∀ g, ∀ k ∈ Lv ⊓ χμ.ker, phiMu h w μ e x y (g * k) = phiMu h w μ e x y g`. Introduce `x hx y hy g k hk`.
+
+Establish `e1 : phi3 h w e x y (g * k) = phi3 h w e x y g`. Use `GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_bi_invariant h w K' hK'le hnorm e hHk.2.2.2 x y (hXK x hx) (hXK y hy) 1 k h1Lv (hLv k (Subgroup.mem_inf.1 hk).1) g` as an intermediate fact. Simplify using `using this`. Establish `e2 : ((χμ (g * k) : ℂˣ) : ℂ) = ((χμ g : ℂˣ) : ℂ)`. Rewrite using `[map_mul, MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hk).2, mul_one]`.
+
+Rewrite using `[hphiMu, hphiMu, e1, e2]`. Establish `hcs : ∀ x y, HasCompactSupport (phiMu h w μ e x y)`. Introduce `x y`. Establish `e3 : phiMu h w μ e x y = fun g => (c₀ * ((χμ g : ℂˣ) : ℂ)) * phi3 h w e x y g` using `funext (hphiMu x y)`. Rewrite using `[e3]`.
+
+Conclude with `(GlobalTheory.CompanionTheory.GL3BlockMatrixLocal.constant_term_compact_support h w e hHk.2.2.1 x y).mul_left`. Establish `hGdAct : ∀ x ∈ X, ∀ y ∈ X, ∀ F, F ∈ S → SmVec (pairRt a b w) F → actP w (phiMu h w μ e x y) F ∈ S ∧ SmVec (pairRt a b w) (actP w (phiMu h w μ e x y) F)`. Introduce `x hx y hy F hFS hFs`. Take `⟨U₁, hU₁o, hFU₁⟩` from `hFs`. Establish `hFU : F ∈ fixed (pairRt a b w) (U₁ ⊓ (Lv ⊓ χμ.ker))` using `mem_fixed_iff'.2 fun g hg => mem_fixed_iff'.1 hFU₁ g (Subgroup.mem_inf.1 hg).1`.
+
+Take `⟨S', s, -, -, -, -, hEq⟩` from `actP_eq_sum w (U₁ ⊓ (Lv ⊓ χμ.ker)) (hU₁o.inter (hLvo.inter hχμo)) F hFU (phiMu h w μ e x y) (hcs x y) (fun g k hk => hR x hx y hy g k (Subgroup.mem_inf.1 hk).2)`. Rewrite using `[hEq]`. Conclude with `⟨Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (hinv _ F hFS)), smVec_smul _ (smVec_sum _ _ fun q _ => smVec_smul _ (GlobalTheory.CompanionTheory.NodeSep.smVec_translate _ ⟨U₁, hU₁o, hFU₁⟩ _))⟩`. Establish `hGd : ∀ i (x : X), (matS h w μ e X)^[i] G x ∈ S ∧ SmVec (pairRt a b w) ((matS h w μ e X)^[i] G x)`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => intro x`. Conclude with `⟨(hG x).1, L, hLo, (hG x).2⟩`. Consider the case `succ i ih`. Introduce `x`.
+
+Rewrite using `[Function.iterate_succ_apply']`. Use `show (∑ y : X, actP w (phiMu h w μ e x y) ((matS h w μ e X)^[i] G y)) ∈ S ∧ SmVec (pairRt a b w) (∑ y : X, actP w (phiMu h w μ e x y) ((matS h w μ e X)^[i] G y))`. Conclude with `⟨Submodule.sum_mem _ fun y _ => (hGdAct x x.2 y y.2 _ (ih y).1 (ih y).2).1, smVec_sum _ _ fun y _ => (hGdAct x x.2 y y.2 _ (ih y).1 (ih y).2).2⟩`. Establish `hrel : ∀ j, ∀ F : X → H E a b → ℂ, (∀ y, F y ∈ S ∧ SmVec (pairRt a b w) (F y)) → ∀ x : X, ∀ lw : Y →ₗ[ℂ] ℂ, lw (Λ j (matS h w μ e X F x)) = c₀ * ∑ y : X, hint (K2 a b w) (fun g => phi3 h w e x y g * lw (ρ g (Λ j (F y))))`. Introduce `j F hF x lw`.
+
+Use `show lw (Λ j (∑ y : X, actP w (phiMu h w μ e x y) (F y))) = _`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Take `⟨U₁, hU₁o, hFU₁⟩` from `(hF y).2`. Establish `hFU : F y ∈ fixed (pairRt a b w) (U₁ ⊓ (Lv ⊓ χμ.ker))` using `mem_fixed_iff'.2 fun g hg => mem_fixed_iff'.1 hFU₁ g (Subgroup.mem_inf.1 hg).1`.
+
+Rewrite using `[lw_actP w (U₁ ⊓ (Lv ⊓ χμ.ker)) (hU₁o.inter (hLvo.inter hχμo)) (F y) hFU (phiMu h w μ e x y) (hcs x y) (fun g k hk => hR x x.2 y y.2 g k (Subgroup.mem_inf.1 hk).2) τ (Λ j) (fun g => heq j g (F y) (hF y).1 (hF y).2) lw]`. Rewrite using `[mul_comm, ← GlobalTheory.CompanionTheory.HeckeAct.hint_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[hphiMu, hρτ, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x : X, (matS h w μ e X)^[k + 1] G x ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne (funext hcon)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, Λ j ((matS h w μ e X)^[k + 1] G x₀) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hx₀ (hsep _ (hGd _ x₀).1 (hGd _ x₀).2 hcon)`. Set `v : GLw n w → Y` to `fun y => if hy : y ∈ X then Λ j (G ⟨y, hy⟩) else 0`.
+
+Establish `hv : ∀ y ∈ X, v y ∈ fixed ρ (L ⊓ χμ.ker)`. Introduce `y hy`. Use `mem_fixed_iff'.2 fun g hg => ?_` and prove the remaining obligations. Establish `hGy : G ⟨y, hy⟩ ∈ fixed (pairRt a b w) L` using `(hG ⟨y, hy⟩).2`. Simplify using `only [v, dif_pos hy]`.
+
+Rewrite using `[hρτ, ← heq j g _ (hG ⟨y, hy⟩).1 ⟨L, hLo, hGy⟩, mem_fixed_iff'.1 hGy g (Subgroup.mem_inf.1 hg).1, MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hg).2, Units.val_one, one_smul]`. Take `⟨u₁, hu₁, hu₁x⟩` from `key_ind h w K' hK'o hK'le hnorm X hXK hX ρ e hHk (L ⊓ χμ.ker) (hLo.inter hχμo) v hv`. Establish `hTfix : ∀ i, (hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[i] u₁ ∈ fixed (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K'`. Introduce `i`. Proceed by induction on `i with`.
+
+Consider the case `zero => exact hu₁`. Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `(((PositivityTheory.Rg.BcN.F2.Final.hkAlg _ _) K' e e hHk hHk).2.2 _ _ _ ih).1`. Establish `hrun : ∀ i (x : X), Λ j ((matS h w μ e X)^[i + 1] G x) = c₀ ^ (i + 1) • ((hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[i] u₁).1.1 x`.
+
+Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `x`. Use `eq_of_dual fun lw => ?_` and prove the remaining obligations.
+
+Rewrite using `[Function.iterate_one, hrel j G (fun y => hGd 0 y) x lw, map_smul, smul_eq_mul, pow_one, Function.iterate_zero_apply, hu₁x x x.2 lw, ← Finset.sum_coe_sort X]`. Use `congr 1`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `only [v, dif_pos y.2]`. Consider the case `succ i ih`.
+
+Introduce `x`. Use `eq_of_dual fun lw => ?_` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply', hrel j _ (fun y => hGd (i + 1) y) x lw, map_smul, smul_eq_mul, show (hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[i + 1] u₁ = hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e ((hk (GlobalTheory.SmGL.ind₂ (GlobalTh …`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[ih y]`.
+
+Establish `e4 : (fun g => phi3 h w e x y g * lw (ρ g (c₀ ^ (i + 1) • ((hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[i] u₁).1.1 y))) = fun g => (phi3 h w e x y g * lw (ρ g (((hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[i] u₁).1.1 y))) * c₀ ^ (i + 1)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e4, GlobalTheory.CompanionTheory.HeckeAct.hint_mul_const, pow_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne₁ : (hk (GlobalTheory.SmGL.ind₂ (GlobalTheory.SmGL.stdSum h) ρ) K' e)^[k] u₁ ≠ 0`. Introduce `h0`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hrun k x₀, h0]`.
+
+Simplify using the standard rewrite rules. Take `⟨hu₂, hne₂⟩` from `transport _ π₂ Ψ K' e hHk u₁ hu₁ k hne₁`. Conclude with `⟨Ψ u₁, hu₂, hne₂⟩`.
+-/
 theorem core {n a b : ℕ} (h : a + b = n) (w : Pl E) (μ : (w.adicCompletion E)ˣ →* ℂˣ)
     (S : Submodule ℂ (H E a b → ℂ)) (hinv : ∀ g, ∀ x ∈ S, pairRt a b w g x ∈ S)
     {Y : Type} [AddCommGroup Y] [Module ℂ Y] (τ ρ : Representation ℂ (GLw a w × GLw b w) Y)
@@ -261,6 +342,11 @@ namespace PositivityTheory.Rg.BcB.F.Tail
 
 open PSc in
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hRM hJM hLoc E _ _ _ n a b h μ s₁ s₂ Pa Pb D hC w K' X L e P m G hK'o hK'le hnorm hXK hX hLo hHk hkill hdim hG hne`. Take `⟨hinv, J, Λ, heq, hsep⟩` from `hRM E a b s₁ s₂ Pa Pb w hC.g₁ hC.g₂ hC.u₁ hC.u₂ hC.t₁ hC.t₂`. Take `⟨Φ⟩` from `hJM E n a b h (μ ^ b) (μ ^ a) Pa Pb D w hC.join`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `Nat.not_lt_zero _ hdim`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `Nat.exists_eq_succ_of_ne_zero hm0`. Take `⟨u, hu, hne'⟩` from `core h w (μ.loc w) (pairSpace s₁.space s₂.space) hinv (GlobalTheory.SmGL.extTensor (lp Pa w) (lp Pb w)) (GlobalTheory.SmGL.extTensor (twRep (lp Pa w) (((μ ^ b).loc w).comp GeneralLinearGroup.det)) (twRep (lp Pb w) (((μ ^ a).loc w).comp GeneralLinearGroup.det))) Λ heq hsep (chiMu …`. Conclude with `sub_of_pow D w K' e hHk P hkill (k + 1) hdim u hu hne'`.
+-/
 theorem rReadS_c : RReadS := by
   intro hRM hJM hLoc E _ _ _ n a b h μ s₁ s₂ Pa Pb D hC w K' X L e P m G hK'o hK'le hnorm hXK hX hLo hHk hkill hdim
     hG hne

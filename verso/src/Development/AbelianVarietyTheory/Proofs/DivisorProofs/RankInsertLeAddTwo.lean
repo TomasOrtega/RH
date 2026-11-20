@@ -8,6 +8,21 @@ attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
 
 namespace GlobalTheory.StdPairLoc
 
+/- English proof (translation)
+Set `e : Fin (a + (b + 2)) → R` to `fun j => if j.1 = a + b + 1 then 1 else 0`. Set `gf : (Fin (a + b) → R) → (Fin (a + (b + 2)) → R)` to `fun v j => if h₁ : j.1 < a then v ⟨j.1, by omega⟩ else if h₂ : j.1 = a then 0 else if h₃ : j.1 = a + b + 1 then 0 else v ⟨j.1 - 1, by have := j.2; omega⟩`. Set `g : (Fin (a + b) → R) →ₗ[R] (Fin (a + (b + 2)) → R)` to `{ toFun := gf map_add' := by`. Apply the tactic sequence `intro v w; funext j; simp only [gf, Pi.add_apply]; split_ifs <;> simp`. Use the proof step `map_smul' := by`.
+
+Apply the tactic sequence `intro s v; funext j; simp only [gf, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; split_ifs <;> simp }`. Establish `hsub : Submodule.span R (Set.range (insS Y r c x).row) ≤ (Submodule.span R (Set.range Y.row)).map g ⊔ R ∙ e ⊔ R ∙ r`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Express the relevant statement in the definitionally equal form `insS Y r c x i ∈ _`.
+
+Distinguish the cases in `i0 : i.1 = 0`. Use `Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.mem_span_singleton.2 ⟨x, ?_⟩))` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [insS, e, i0, Pi.smul_apply, smul_eq_mul, dite_true]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Distinguish the cases in `i1 : i.1 = b + 1`. Use `Submodule.mem_sup_right (Submodule.mem_span_singleton.2 ⟨1, ?_⟩)` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `[insS, i0, i1]`. Establish `hk : i.1 - 1 < b` using `by have := i.2; omega`.
+
+Establish `hrow : insS Y r c x i = g (Y ⟨i.1 - 1, hk⟩) + c ⟨i.1 - 1, hk⟩ • e`. Use function extensionality and compare the values at `j`. Simplify using `only [insS, i0, i1, dite_false, g, gf, e, LinearMap.coe_mk, AddHom.coe_mk, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | simp`. Rewrite using `[hrow]`.
+
+Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_map_of_mem (Submodule.subset_span ⟨_, rfl⟩)))) (Submodule.mem_sup_left (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self e))))`. Rewrite using `[Matrix.rank_eq_finrank_span_row, Matrix.rank_eq_finrank_span_row]`. Establish `h1 : Module.finrank R (R ∙ e) ≤ 1` using `(finrank_span_le_card ({e} : Set _)).trans (by simp)`. Establish `h2 : Module.finrank R (R ∙ r) ≤ 1` using `(finrank_span_le_card ({r} : Set _)).trans (by simp)`. Establish `h3` using `Submodule.finrank_map_le g (Submodule.span R (Set.range Y.row))`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem insS_rank_le {R : Type} [Field R] {a b : ℕ} (Y : Matrix (Fin b) (Fin (a + b)) R)
     (r : Fin (a + (b + 2)) → R) (c : Fin b → R) (x : R) :
     (insS Y r c x).rank ≤ Y.rank + 2 := by

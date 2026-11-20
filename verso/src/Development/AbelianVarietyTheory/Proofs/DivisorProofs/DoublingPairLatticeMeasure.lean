@@ -26,6 +26,17 @@ open GlobalTheory.WeilSchrodinger.DblTarget
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Establish `hinv : ∀ S : ((κ ⊕ κ → AF F) → ℂ) →ₗ[ℂ] ((κ₂ → AF F) → ℂ), (∀ u, ∀ Ψ ∈ schA F (κ ⊕ κ), S (schr ψ (a u) Ψ) = schr ψ (b u) (S Ψ)) → ∀ x y : κ → AF F, ∀ Φ ∈ schA F (κ ⊕ κ), (LinearMap.proj (R` using `ℂ) (φ := fun _ : (κ₂ → AF F) => ℂ) 0 ∘ₗ S) (schr ψ (Sum.elim x x, Sum.elim y (-y)) Φ) = (LinearMap.proj (R := ℂ) (φ := fun _ : (κ₂ → AF F) => ℂ) 0 ∘ₗ S) Φ := by`. Introduce `S hS x y Φ hΦ`. Take `⟨u, hu, hu0⟩` from `hdiag x y`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[← hu, hS u Φ hΦ]`.
+
+Simplify using `[schr, hu0]`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Take `⟨c, hc⟩` from `GlobalTheory.DiagUniq.eq_mul_diagInt F ψ hψ κ _ hT (hinv T hi) Measure.addHaar inferInstance`. Take `⟨c', hc'⟩` from `GlobalTheory.DiagUniq.eq_mul_diagInt F ψ hψ κ _ hT' (hinv T' hi') Measure.addHaar inferInstance`.
+
+Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply] at hc hc'`. Establish `hc0 : c' ≠ 0` using `fun h => h0 (by rw [hc' _ hΨ₀, h, zero_mul])`. Use `⟨c / c', fun Ψ hΨ => funext fun x => ?_⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `hb x`. Establish `hm` using `GlobalTheory.HeisSchA.schr_mem_schA ψ hψ (a u) Ψ hΨ`.
+
+Establish `e1` using `hc _ hm`. Establish `e2` using `hc' _ hm`. Rewrite `e1` using `[hi u Ψ hΨ, hu]`. Rewrite `e2` using `[hi' u Ψ hΨ, hu]`. Simplify using `only [schr, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul, zero_add] at e1 e2`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, e1, e2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_smul_of_intertwine (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ κ₂ V : Type} [Fintype κ] [Fintype κ₂]
     (a : V → (κ ⊕ κ → AF F) × (κ ⊕ κ → AF F)) (b : V → (κ₂ → AF F) × (κ₂ → AF F))
     (hdiag : ∀ x y, ∃ u, a u = (Sum.elim x x, Sum.elim y (-y)) ∧ (b u).1 = 0) (hb : ∀ x, ∃ u, b u = (x, 0))
@@ -63,6 +74,9 @@ theorem exists_smul_of_intertwine (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ
 
 variable {E : Type} [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hP : (Matrix.reindex f f P).submatrix f f = P` using `by simp`. Rewrite `h` using `[← Matrix.fromBlocks_toBlocks P, diagCols, Matrix.fromBlocks_mul_fromRows, Matrix.fromRows_mul, Matrix.fromRows_inj.eq_iff]`. Simplify using `only [Matrix.mul_one, Matrix.one_mul] at h`. Rewrite using `[KeepsDiag, leviMat, hP, h.1, h.2]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem keepsDiag_reindex {A β ι : Type} [CommRing A] [Fintype β] [DecidableEq β] (f : β ⊕ β ≃ ι)
     {P : Matrix (β ⊕ β) (β ⊕ β) A} {t : Matrix β β A}
     (h : P * (diagCols β : Matrix (β ⊕ β) β A) = (diagCols β : Matrix (β ⊕ β) β A) * t) :
@@ -74,10 +88,48 @@ theorem keepsDiag_reindex {A β ι : Type} [CommRing A] [Fintype β] [DecidableE
   rw [KeepsDiag, leviMat, hP, h.1, h.2]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]`.
+-/
 theorem mul_diagCols_transpose {A α β : Type} [CommRing A] [Fintype β] [DecidableEq β] (z : Matrix α β A) :
     z * (diagCols β : Matrix (β ⊕ β) β A)ᵀ = Matrix.fromCols z z := by
   rw [diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨hS₂, dd₂, omd₂, hdd₂, ⟨-, hus₂, hSR₂⟩, hbox₂⟩` from `h₂`. Set `ρ` to `om₂.comp (ugReindex f hJ₂)`. Establish `hρ : ∀ p, ρ p = om₂ (ugReindex f hJ₂ p)` using `fun _ => rfl`. Establish `hev` using `GlobalTheory.DblEvalLaw.proj_mem_adm F κ₂ 0`. Establish `inv_mul : ∀ p φ, omd p (omd p⁻¹ φ) = φ` using `fun p φ => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `ρinv : ∀ p φ, ρ p (ρ p⁻¹ φ) = φ` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `ρinv' : ∀ p φ, ρ p⁻¹ (ρ p φ) = φ` using `fun p φ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+
+Establish `hsp : ∀ p, ∀ φ ∈ schA F (κ ⊕ κ), omd p φ ∈ schA F (κ ⊕ κ)` using `fun p φ hφ => hS.pres p φ hφ`. Establish `hi2 : ∀ w : Matrix (Fin a) (Fin b ⊕ Fin b) (AE F E), ∀ Ψ ∈ schA F (κ ⊕ κ), e (dd.rho ψ w Ψ) = co.rho ψ (w.submatrix id f.symm) (e Ψ)` using `fun w Ψ hΨ => by`. Rewrite using `[← hi _ Ψ hΨ]`. Simplify using the standard rewrite rules. Establish `hrow : ∀ (z : Matrix (Fin a) (Fin b) (AE F E)) (i : Fin a), ((Matrix.fromCols z z).submatrix id f.symm) i ∈ diagSub (AE F E) f`.
+
+Introduce `z i`. Rewrite using `[diagSub, LinearMap.mem_eqLocus]`. Use function extensionality and compare the values at `j`. Simplify using `[LinearMap.funLeft_apply]`. Establish `key : ∀ p, ∃ c : ℂ, ∀ φ ∈ schA F (κ ⊕ κ), e (omd p φ) = c • ρ p (e φ)` using `fun p => by`.
+
+Take `⟨c, hc⟩` from `exists_smul_of_intertwine ψ hψ (V := Matrix (Fin a) (Fin b ⊕ Fin b) (AE F E)) dd.e (fun w => co.e (w.submatrix id f.symm)) (fun x y => ⟨Matrix.fromCols (d.e.symm (x, y)) (d.e.symm (x, y)), by rw [hdd]; simp, hΔ _ (hrow _)⟩) (fun x => ⟨(co.e.symm (x, 0)).submatrix id f, by simp⟩) …`. Rewrite using `[hS.impl p w φ hφ, hi2 _ _ (hsp p φ hφ), hρ, hS₂.impl _ _ _ (he _ (hsp p φ hφ)), actB_reindex, GlobalTheory.WeilSchUnique.actB_inv_actB])`. Use `hi2 hΨ₀ h0`. Use `⟨c, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `congrArg (ρ p) (hc φ hφ)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.comp_apply, ρinv, map_smul]`. Then use the resulting hypothesis. Use `choose cf hcf using key`. Establish `huniq : ∀ p (c : ℂ), (∀ φ ∈ schA F (κ ⊕ κ), e (omd p φ) = c • ρ p (e φ)) → c = cf p` using `fun p c hc => by`. Establish `h1` using `hc _ hΨ₀`. Rewrite `h1` using `[hcf p _ hΨ₀]`.
+
+Establish `h2` using `congrFun (congrArg (ρ p⁻¹) h1) 0`. Simplify using `only [map_smul, ρinv', Pi.smul_apply, smul_eq_mul] at h2`. Conclude with `(mul_right_cancel₀ h0 h2).symm`. Establish `hmul : ∀ p q, cf (p * q) = cf p * cf q` using `fun p q => (huniq (p * q) _ fun φ hφ => by`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hcf p _ (hsp q φ hφ), hcf q φ hφ, map_smul, smul_smul]).symm`.
+
+Establish `hone : cf 1 = 1` using `(huniq 1 1 fun φ _ => by simp).symm`. Set `cM : UG (cA σ) (WeilM.dbl (incM F JB)) →* ℂ` to `{ toFun := cf, map_one' := hone, map_mul' := hmul }`. Set `c` to `cM.toHomUnits`. Establish `hcv : ∀ p, ((c p : ℂˣ) : ℂ) = cf p` using `fun p => rfl`. Establish `hcont_cf : Continuous cf`.
+
+Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations. Establish `hφ` using `hsp p₀⁻¹ Ψ₀ hΨ₀`. Establish `hf` using `(hS₂.cont.comp (continuous_ugReindex f hJ₂)) _ hev _ (he _ hφ)`. Establish `hf₁` using `hS.cont _ (hadm _ hev) _ hφ`. Simplify using `only [LinearMap.proj_apply, LinearMap.comp_apply] at hf hf₁`.
+
+Establish `h1 : ρ p₀ (e (omd p₀⁻¹ Ψ₀)) 0 ≠ 0` using `fun h => h0 (by`. Use `congrFun (hcf p₀ _ hφ) 0` as an intermediate fact. Rewrite using `[inv_mul, Pi.smul_apply, h, smul_zero] at this)` and apply the resulting hypothesis. Use `(hf₁.continuousAt.div hf.continuousAt h1).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.continuousAt.eventually_ne h1] with p hp`.
+
+Use `show e (omd p _) 0 / ρ p _ 0 = cf p`. Rewrite using `[hcf p _ hφ]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_div_cancel_right₀ _ hp`. Establish `hcont : Continuous c`.
+
+Use `Units.continuous_iff.2 ⟨hcont_cf, ?_⟩` and prove the remaining obligations. Establish `: (fun p => ((c p)⁻¹ : ℂˣ).val) = fun p => (cf p)⁻¹` using `funext fun p => by`. Rewrite using `[Units.val_inv_eq_inv_val, hcv]`. Rewrite using `[this]`. Conclude with `hcont_cf.inv₀ fun p => by rw [← hcv]; exact (c p).ne_zero`.
+
+Establish `hP : ∀ (p : UG (cA σ) (WeilM.dbl (incM F JB))) (t : GL (Fin b) (AE F E)), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix _ _ (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * t.1 → c p = 1` using `fun p t hpt => by`. Establish `hφ` using `hsp p⁻¹ Ψ₀ hΨ₀`. Establish `e1` using `hR _ (hadm _ hev) (fun z φ hφ => by`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[mul_diagCols_transpose, hi2 _ φ hφ]`.
+
+Simplify using `[Darboux.rho, schr, hΔ _ (hrow z)]) p t hpt _ hφ`. Take `⟨hk, hl⟩` from `keepsDiag_reindex f hpt`. Establish `hg : ((ugReindex f hJ₂ p : UG (cA σ) J₂) : GL ι (AE F E)) ∈ Formalism.UG.stabGL (diagSub (AE F E) f)` using `mem_stabGL_diagSub.2 hk`. Establish `hlev : leviGL f ⟨_, hg⟩ = t` using `Units.ext hl`. Establish `e2` using `GlobalTheory.DblEvalLaw.apply_zero_of_keepsDiag f (J := incM F JB) hJ₂.symm hdd₂ hus₂.toIsSplitting hSR₂ hbox₂ hΔ (GlobalTheory.DblEvalLaw.proj_mem_adm F _ 0) (fun φ₁ h₁ φ₂ h₂ => GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ h₁ φ₂ h₂) (GlobalTheory.SchANonzero.exists_mem_schA …`.
+
+Establish `e3` using `congrFun (hcf p _ hφ) 0`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply] at e1`. Rewrite `e2` using `[hlev, ← e1, inv_mul]`. Rewrite `e3` using `[inv_mul, Pi.smul_apply, smul_eq_mul, hρ, e2]`. Use `Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[hcv, Units.val_one]`. Conclude with `mul_right_cancel₀ h0 (by rw [one_mul]; exact e3.symm)`. Establish `hc1` using `GlobalTheory.SiegelChar.eq_one_of_siegel F E σ hσ b JB ε hJ hdet c hcont hP`. Introduce `p Ψ hΨ`. Establish `hcf1 : cf p = 1` using `by rw [← hcv, hc1]; rfl`.
+
+Rewrite using `[hcf p Ψ hΨ, hcf1, one_smul, hρ]`.
+-/
 theorem intertwine (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (JA : Matrix (Fin a) (Fin a) E)
     (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ) (hJ : ∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) (hdet : JB.det ≠ 0)
     (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ κ₂ ι : Type} [Fintype κ] [Fintype κ₂] [Fintype ι] [DecidableEq ι]
@@ -194,6 +246,15 @@ theorem intertwine (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) {a b : ℕ} (JA :
   have hcf1 : cf p = 1 := by rw [← hcv, hc1]; rfl
   rw [hcf p Ψ hΨ, hcf1, one_smul, hρ]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP W₂ hW₂ _ _ i hi co _ hΔ _ om₂ hom₂ e hbij hadm hint h Φ₁ hΦ₁ Φ₂ hΦ₂`. Take `⟨-, dd, omd, hdd, ⟨-, hS, hR⟩, hbox⟩` from `hP.weil.1`. Establish `hJ₂ : Matrix.reindex finSumFinEquiv finSumFinEquiv (WeilM.dbl (incM F W.J)) = incM F W₂.J`. Rewrite using `[hW₂, dblGram, incM, incM, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Both sides reduce to the same expression.
+
+Take `⟨φ, hφ, hφ0⟩` from `GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F (Fin n × Fin (d + d))`. Take `⟨Ψ₀, hΨ₀, rfl⟩` from `hbij.surjOn hφ`. Establish `key` using `intertwine σ hP.base.cm Xs.J W.J (-1) (fun i j => by simp [hP.skew.skew i j]) (GlobalTheory.SkewGram.det_ne_zero F E σ B d W r₁ s₁ hP.skew) B.ψ hP.base.std hdd hS hR finSumFinEquiv hJ₂ hΔ hom₂.1 e (fun Ψ hΨ => hbij.mapsTo hΨ) hΨ₀ hφ0 hadm (fun u Ψ hΨ => by`. Rewrite using `[← hint u Ψ hΨ, Darboux.rho, ← Matrix.fromCols_toCols (u.submatrix id finSumFinEquiv), hdd]`. Use the proof step `rfl)`.
+
+Establish `hs` using `GlobalTheory.SchAConj.star_mem_schA F _ Φ₂ hΦ₂`. Establish `hk` using `key (GlobalTheory.DblEvalLaw.leftU h) _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Φ₁ hΦ₁ _ hs)`. Rewrite `hk` using `[hbox h _ (GlobalTheory.DblEvalLaw.val_leftU h) Φ₁ hΦ₁ _ hs]`. Establish `hih : i (h, 1) = ugReindex finSumFinEquiv hJ₂ (GlobalTheory.DblEvalLaw.leftU h)` using `Subtype.ext (Units.ext (hi h 1))`. Rewrite using `[hih]`.
+
+Conclude with `hk`.
+-/
 theorem om₂_left_boxC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →

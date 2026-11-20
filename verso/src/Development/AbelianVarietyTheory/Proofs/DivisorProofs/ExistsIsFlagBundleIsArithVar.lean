@@ -29,6 +29,9 @@ def flag (τ : ι) : Vert.Flag ((Scheme.Modules.pullback (flStr ι N)).obj (free
   step_ι := step_incl ι N τ
   isIso_last := GlobalTheory.T.isIso_incl_last' ι N τ
 
+/- English proof (translation)
+Introduce `T g fl'` and use `have ⟨g', h⟩ := GlobalTheory.T.flag_variety_lift_exists ι N T g fl' ⟨g', h, fun _ h' => GlobalTheory.T.flag_variety_lift_unique ι N T g fl' _ _ h' h⟩`.
+-/
 theorem isFlagBundle_flag :
     IsFlagBundle (flStr ι N) (fun _ : ι => freeModule (Sp ℤ) (Fin N)) (fun _ => N) (flag ι N) :=
   fun T g fl' =>

@@ -5,6 +5,19 @@ import Development.AutomorphicSpectrum.Definitions.MetricPeriods.IsPeriodOn
 open MvPolynomial MeasureTheory Filter Topology Matrix ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 open scoped ComplexOrder Classical
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M τ a b hab hcase`. Establish `hjN` using `M.j_le`. Establish `hbN` using `b.isLt`. Establish `ha1 : (a : ℕ) + 1 ≠ j` using `by omega`. Establish `ha2 : (a : ℕ) + 1 ≠ N` using `by omega`.
+
+Establish `hprop : IsProperStep N j a` using `⟨ha1, ha2⟩`. Choose the witnesses or unpack the hypotheses as in `⟨k₀, hk₀⟩ : ∃ k₀, M.blk (τ, a) = some k₀ := by`. Consider the cases of `h : M.blk (τ, a) with`. Consider the case `none => exact ((M.blk_none (τ, a)).1 h hprop).elim`. Consider the case `some k => exact ⟨k, rfl⟩`.
+
+Establish `hdy : ∀ p, M.dy p k₀ = if p = (τ, a) then 1 else 0`. Introduce `p`. Unfold `FlagModel.dy`. Establish `hnot : ¬ ∀ p' : Ψ × Fin N, M.blk p' ≠ some k₀` using `fun h => h (τ, a) hk₀`. Rewrite using `[dif_neg hnot]`.
+
+Distinguish the cases in `hp : p = (τ, a)`. Substitute `hp` using the available equality. Simplify using `[hk₀]`. Rewrite using `[if_neg hp, if_neg]`. Introduce `h`.
+
+Conclude with `hp (M.blk_inj p (τ, a) k₀ h hk₀)`. Establish `hlast : lastCol N j a < N ∧ lastCol N j a + 1 < N ∧ (lastCol N j a < N - j ↔ lastCol N j a + 1 < N - j)`. Unfold `lastCol`. Apply the tactic sequence `split_ifs with h <;> omega`. Use `⟨k₀, ⟨lastCol N j a, hlast.1⟩, ⟨lastCol N j a + 1, hlast.2.1⟩, hk₀, rfl, rfl, hlast.2.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hdy, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `[xiCoef]`. Introduce `p hp`. Rewrite using `[hdy p, if_neg hp]`.
+-/
 theorem PositivityTheory.Xgp.t_c_swap : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (τ : Ψ) (a b : Fin N), (b : ℕ) = a + 1 → ((b : ℕ) < j ∨ j ≤ (a : ℕ)) → ∃ (k₀ : K) (ca cb : Fin N), M.blk (τ, a) = some k₀ ∧ (ca : ℕ) = lastCol N j a ∧ (cb : ℕ) = ca + 1 ∧ ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j) ∧ (∑ p, xiCoef τ a p * M.dy p k₀) = -2 ∧ ∀ p, p ≠ (τ, a) → M.dy p k₀ = 0 := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M τ a b hab hcase
   have hjN := M.j_le

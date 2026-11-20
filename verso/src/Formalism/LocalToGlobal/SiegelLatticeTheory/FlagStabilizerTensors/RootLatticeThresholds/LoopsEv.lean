@@ -15,6 +15,27 @@ section One
 
 variable {D : D7} {large₂ : SizeData₂ D} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Establish `hP` using `params_at hH.1 X u hCl4 hCT hC hK₀`. Take `⟨hn1, hn2, hn3⟩` from `hyp_nums hH.1`. Establish `hL` using `Formalism.MainNotions.BridgeLemma.d_one_le_L D large₂`. Establish `hM` using `unitM_nonneg D large₂`. Establish `hCG` using `large₂.CGam_pos`.
+
+Take `⟨ρ, hρ⟩ : ∃ ρ : ℝ, ρ = GamS D large₂ / gamCap D large₂ C` from `⟨_, rfl⟩`. Establish `hρe : ρ = Real.exp ((large₂.CGam - min large₂.CGam C) * unitM D large₂)` using `by rw [hρ, gam_ratio]`. Establish `hmin0 : 0 ≤ min large₂.CGam C` using `le_min hCG.le (by linarith)`. Establish `hlogρ : Real.log ρ ≤ (D.R.k : ℝ) / 8`. Rewrite using `[hρe, Real.log_exp]`.
+
+Establish `e1 : (large₂.CGam - min large₂.CGam C) * unitM D large₂ ≤ large₂.CGam * unitM D large₂` using `mul_le_mul_of_nonneg_right (by linarith) hM`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hρ1 : 1 ≤ ρ`. Rewrite using `[hρe]; exact Real.one_le_exp (mul_nonneg (by linarith [min_le_left large₂.CGam C]) hM)`. Establish `hρ0 : 0 ≤ ρ` using `by linarith`.
+
+Establish `hGr : GamS D large₂ = ρ * gamCap D large₂ C`. Rewrite using `[hρ]`. Clear denominators, using `[(gamCap_pos D large₂ C).ne']` for the nonvanishing conditions. Establish `hdd` using `dd_nonneg hT u u'`. Establish `hk1 : (1 : ℝ) ≤ D.R.k`.
+
+Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hb` using `Formalism.MainNotions.BridgeLemma.d_two_le_b D large₂`. Establish `hb0 : (0 : ℝ) < large₂.sc.b` using `by linarith`. Establish `hg : 0 < (X.B.g : ℝ)`.
+
+Establish `h5 : ((D.R.k : ℝ) * large₂.sc.b) ^ 8 ≤ (X.B.g : ℝ)` using `hP.2.2.2.2.1`. Establish `h8 : 0 < ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : 0 ≤ D.host.v` using `by linarith [hP.2.2.2.2.2.2.1]`. Establish `hC0 : (0 : ℝ) ≤ C` using `by linarith`.
+
+Establish `hGc0 : 0 ≤ gamCap D large₂ C` using `(gamCap_pos D large₂ C).le`. Use `⟨A₀ * ρ ^ 3, NT D u, gamCap D large₂ C, Formalism.MainNotions.BridgeLemma.XiB D large₂ u C, one_le_mul_of_one_le_of_one_le hA₀1 (one_le_pow₀ hρ1), hP, hXiH, log_size hk1 hL hn3 hn2 hClA hA₀1 hρ1 hlogρ, ?_⟩` and prove the remaining obligations. Use `loopsAmp_of_classes (Y.tO u u') (A₀ * ρ ^ 3) C D.R.k D.R.rS D.R.f large₂.sc.b (X.B.g : ℝ) D.host.v (gamCap D large₂ C) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C) (ddC X Y u u') hA.2.2.le hA.2.1 (corank_le_k Y u u') ?_ ?_` and prove the remaining obligations. Introduce `s hs2 hsk`. Establish `hB` using `HS s hs2 hsk`.
+
+Rewrite `hB` using `[hGr]`. Establish `hX0` using `xi_nonneg hXiH s hs2 hsk`. Establish `hnd : 0 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.ndRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (gamCap D large₂ C) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C)` using `ndRow_nonneg hC0 hb0 hg hv hGc0 hX0`. Establish `hdg : 0 ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.degRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (gamCap D large₂ C) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C)` using `degRow_nonneg hC0 hb0 hg hv hGc0 hX0`. Establish `hsc` using `rowS_scale C D.R.k D.R.rS D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (gamCap D large₂ C) ρ (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C) hρ1 hnd`.
+
+Establish `hrow0 : 0 ≤ rowS C D.R.k D.R.rS D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (gamCap D large₂ C) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C)`. Unfold `rowS`. Conclude with `add_nonneg hnd (mul_nonneg (sq_nonneg _) hdg)`. Conclude with `le_trans hB (scale_le hA₀1 le_rfl hdd hsc hrow0 hρ0)`. Establish `hB` using `H1`.
+
+Rewrite `hB` using `[hGr]`. Establish `h0 : 0 ≤ oneT C D.R.k D.R.rS D.R.f large₂.sc.b (X.B.g : ℝ) (gamCap D large₂ C)` using `oneT_nonneg hC0 hb0 hGc0`. Establish `hsc` using `oneT_scale C D.R.k D.R.rS D.R.f large₂.sc.b (X.B.g : ℝ) (gamCap D large₂ C) ρ hρ1 h0`. Conclude with `le_trans hB (scale_le hA₀1 le_rfl hdd hsc h0 hρ0)`.
+-/
 theorem loopsAmp_at {C' Cl Cg cb Cw cT CT C0 A C K₀ A₀ : ℝ}
     (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cw cT CT C0 A) (hT : ConcTie X Y) (hA : (Y.tO u u').AbsConv)
     (hC : 1 ≤ C) (hCT : CT ≤ C) (hK₀ : K₀ ≤ C') (hA₀1 : 1 ≤ A₀) (hCl4 : 4 ≤ Cl)
@@ -90,6 +111,25 @@ theorem loopsAmp_at {C' Cl Cg cb Cw cT CT C0 A C K₀ A₀ : ℝ}
 
 end One
 
+/- English proof (translation)
+Take `⟨C₃, _, HX⟩` from `xiSizesC_of hS Cg cb Cw cT CT C0 A`. Take `⟨C, hCdef⟩ : ∃ C : ℝ, C = max (max C₀ C₃) (max CT 1)` from `⟨_, rfl⟩`. Establish `hCC₀ : C₀ ≤ C` using `by rw [hCdef]; exact le_max_of_le_left (le_max_left _ _)`. Establish `hCC₃ : C₃ ≤ C` using `by rw [hCdef]; exact le_max_of_le_left (le_max_right _ _)`. Establish `hCT : CT ≤ C` using `by rw [hCdef]; exact le_max_of_le_right (le_max_left _ _)`.
+
+Establish `hC : 1 ≤ C` using `by rw [hCdef]; exact le_max_of_le_right (le_max_right _ _)`. Take `⟨K₀, hJ⟩` from `Formalism.L2.SG.RowsOther.rowLoops_of_input hLC hSub C hC`. Take `⟨a3, b3, HX'⟩` from `HX C hCC₃`. Take `⟨A₀, hA₀⟩ : ∃ A₀ : ℝ, A₀ = max 1 C0` from `⟨_, rfl⟩`. Establish `hA₀1 : 1 ≤ A₀` using `by rw [hA₀]; exact le_max_left _ _`.
+
+Use `⟨max a3 K₀, max b3 (max 4 (3 + 6 * Real.log (3 * A₀))), ?_⟩` and prove the remaining obligations. Introduce `eps Fm C1 At Yt Cc HR hFo`. Use `(OwnEv.and (HR C hCC₀) hFo).mono ?_` and prove the remaining obligations. Introduce and unpack `C' Cl x i ⟨H1, H2⟩ hC' hCl hx u u' hH hT hA`. Establish `ha3 : a3 ≤ C'` using `le_trans (le_max_left _ _) hC'`.
+
+Establish `hK₀ : K₀ ≤ C'` using `le_trans (le_max_right _ _) hC'`. Establish `hb3 : b3 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCl4 : 4 ≤ Cl` using `le_trans (le_max_of_le_right (le_max_left _ _)) hCl`. Establish `hClA : 3 + 6 * Real.log (3 * A₀) ≤ Cl` using `le_trans (le_max_of_le_right (le_max_right _ _)) hCl`. Take `⟨hn, hd, h1⟩` from `H1 hx u u' hH`.
+
+Establish `hFo'` using `H2 hH.1 u`. Establish `hXiH` using `HX' C' Cl ha3 hb3 (Fm.D x i) (Fm.L x i) u u' hH`. Establish `hP` using `params_at hH.1 (Cc x hx i).X u hCl4 hCT hC hK₀`. Establish `hb` using `Formalism.MainNotions.BridgeLemma.d_two_le_b (Fm.D x i) (Fm.L x i)`. Establish `hb0 : (0 : ℝ) < (Fm.L x i).sc.b` using `by linarith`.
+
+Establish `hk0 : (0 : ℝ) < (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 0 < (Fm.D x i).R.k)` after adjusting the coercions. Establish `hg : 0 < ((Cc x hx i).X.B.g : ℝ)`. Establish `h5 : (((Fm.D x i).R.k : ℝ) * (Fm.L x i).sc.b) ^ 8 ≤ ((Cc x hx i).X.B.g : ℝ)` using `hP.2.2.2.2.1`.
+
+Establish `h8 : 0 < (((Fm.D x i).R.k : ℝ) * (Fm.L x i).sc.b) ^ 8` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : 0 ≤ (Fm.D x i).host.v` using `by linarith [hP.2.2.2.2.2.2.1]`. Establish `hC0' : (0 : ℝ) ≤ C` using `by linarith`. Establish `hGam : 0 ≤ GamS (Fm.D x i) (Fm.L x i)` using `by unfold GamS; exact (Real.exp_pos _).le`.
+
+Establish `HS : ∀ s, 2 ≤ s → s ≤ (Fm.D x i).R.k → ClassLe ((Cc x hx i).Y.tO u u') (bigS ((Cc x hx i).Y.tO u u') s) (A₀ * rowS C (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f s (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (Fm.D x i).host.v (GamS (Fm.D x i) (Fm.L x i)) (Formalism.MainNotions.Bridg …`. Introduce `s h2 hk`. Establish `hX0` using `xi_nonneg hXiH s h2 hk`. Rewrite using `[hA₀]`. Conclude with `rowsSC_at (At x hx i) (Cc x hx i).jt (Cc x hx i).wr (Cc x hx i).fc (Cc x hx i).gam (Yt x hx i u u') hFo' hT hH C hn hd s h2 hk (ndRow_nonneg hC0' hb0 hg hv hGam hX0) (degRow_nonneg hC0' hb0 hg hv hGam hX0)`.
+
+Establish `H1' : ClassLe ((Cc x hx i).Y.tO u u') (((Cc x hx i).Y.tO u u').nsc ((Cc x hx i).Y.tO u u').genSet) (A₀ * oneT C (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (GamS (Fm.D x i) (Fm.L x i)) * ddC (Cc x hx i).X (Cc x hx i).Y u u')`. Rewrite using `[hA₀]`. Conclude with `oneSC_at (At x hx i) (Cc x hx i).jt (Cc x hx i).wr (Cc x hx i).fc (Cc x hx i).gam (Yt x hx i u u') hFo' hT C0 C hC0' h1`. Take `⟨Al, NT', Gam, Xi, hAl, hP', hX', h6, hAmp⟩` from `loopsAmp_at hH hT hA hC hCT hK₀ hA₀1 hCl4 hClA hXiH HS H1'`. Conclude with `hJ _ _ _ _ _ ((Cc x hx i).Y.tO u u') (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f Al (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (Fm.D x i).host.v NT' Gam Xi (ddC (Cc x hx i).X (Cc x hx i).Y u u') hAl hP' hX' h6 (dd_nonneg hT u u') hA (Formalism.L2.SG.RowsOther.loopsInput_of_amp _ h …`.
+-/
 theorem rowLoopsEv_thr (hLC : PN.LoopCores) (hSub : PB.SubFamily) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio)
     (Cg cb Cw cT CT C0 A C₀ : ℝ) :
     ∃ C'₀ Cl₀ : ℝ, ∀ {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
@@ -181,6 +221,27 @@ def RowLoopsEv : Prop :=
       ((Cc x hx i).Y.tO u u').RowBig (epsL (Fm.D x i)) (ddC (Cc x hx i).X (Cc x hx i).Y u u') ∧
       ((Cc x hx i).Y.tO u u').RowNotScalar (epsL (Fm.D x i)) (ddC (Cc x hx i).X (Cc x hx i).Y u u')
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C₀, HR⟩` from `hR Cg cb Cw cT CT C0 A`. Take `⟨C₃, _, HX⟩` from `xiSizesC_of hS Cg cb Cw cT CT C0 A`. Take `⟨C, hCdef⟩ : ∃ C : ℝ, C = max (max C₀ C₃) (max CT 1)` from `⟨_, rfl⟩`. Establish `hCC₀ : C₀ ≤ C` using `by rw [hCdef]; exact le_max_of_le_left (le_max_left _ _)`.
+
+Establish `hCC₃ : C₃ ≤ C` using `by rw [hCdef]; exact le_max_of_le_left (le_max_right _ _)`. Establish `hCT : CT ≤ C` using `by rw [hCdef]; exact le_max_of_le_right (le_max_left _ _)`. Establish `hC : 1 ≤ C` using `by rw [hCdef]; exact le_max_of_le_right (le_max_right _ _)`. Take `⟨K₀, hJ⟩` from `Formalism.L2.SG.RowsOther.rowLoops_of_input hLC hSub C hC`. Take `⟨a3, b3, HX'⟩` from `HX C hCC₃`.
+
+Take `⟨A₀, hA₀⟩ : ∃ A₀ : ℝ, A₀ = max 1 C0` from `⟨_, rfl⟩`. Establish `hA₀1 : 1 ≤ A₀` using `by rw [hA₀]; exact le_max_left _ _`. Use `⟨max a3 K₀, max b3 (max 4 (3 + 6 * Real.log (3 * A₀))), ?_⟩` and prove the remaining obligations. Use `(OwnEv.and (HR C hCC₀) (hFo Cg cb Cw cT CT C0)).mono ?_` and prove the remaining obligations. Introduce and unpack `C' Cl x i ⟨H1, H2⟩ hC' hCl hx u u' hH hT hA`.
+
+Establish `ha3 : a3 ≤ C'` using `le_trans (le_max_left _ _) hC'`. Establish `hK₀ : K₀ ≤ C'` using `le_trans (le_max_right _ _) hC'`. Establish `hb3 : b3 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCl4 : 4 ≤ Cl` using `le_trans (le_max_of_le_right (le_max_left _ _)) hCl`. Establish `hClA : 3 + 6 * Real.log (3 * A₀) ≤ Cl` using `le_trans (le_max_of_le_right (le_max_right _ _)) hCl`.
+
+Take `⟨hn, hd, h1⟩` from `H1 hx u u' hH`. Establish `hFo'` using `H2 hH.1 u`. Establish `hXiH` using `HX' C' Cl ha3 hb3 (Fm.D x i) (Fm.L x i) u u' hH`. Establish `hP` using `params_at hH.1 (Cc x hx i).X u hCl4 hCT hC hK₀`. Establish `hb` using `Formalism.MainNotions.BridgeLemma.d_two_le_b (Fm.D x i) (Fm.L x i)`.
+
+Establish `hb0 : (0 : ℝ) < (Fm.L x i).sc.b` using `by linarith`. Establish `hk0 : (0 : ℝ) < (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 0 < (Fm.D x i).R.k)` after adjusting the coercions. Establish `hg : 0 < ((Cc x hx i).X.B.g : ℝ)`.
+
+Establish `h5 : (((Fm.D x i).R.k : ℝ) * (Fm.L x i).sc.b) ^ 8 ≤ ((Cc x hx i).X.B.g : ℝ)` using `hP.2.2.2.2.1`. Establish `h8 : 0 < (((Fm.D x i).R.k : ℝ) * (Fm.L x i).sc.b) ^ 8` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hv : 0 ≤ (Fm.D x i).host.v` using `by linarith [hP.2.2.2.2.2.2.1]`. Establish `hC0' : (0 : ℝ) ≤ C` using `by linarith`.
+
+Establish `hGam : 0 ≤ GamS (Fm.D x i) (Fm.L x i)` using `by unfold GamS; exact (Real.exp_pos _).le`. Establish `HS : ∀ s, 2 ≤ s → s ≤ (Fm.D x i).R.k → ClassLe ((Cc x hx i).Y.tO u u') (bigS ((Cc x hx i).Y.tO u u') s) (A₀ * rowS C (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f s (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (Fm.D x i).host.v (GamS (Fm.D x i) (Fm.L x i)) (Formalism.MainNotions.Bridg …`. Introduce `s h2 hk`. Establish `hX0` using `xi_nonneg hXiH s h2 hk`. Rewrite using `[hA₀]`.
+
+Conclude with `rowsSC_at (At x hx i) (Cc x hx i).jt (Cc x hx i).wr (Cc x hx i).fc (Cc x hx i).gam (Yt x hx i u u') hFo' hT hH C hn hd s h2 hk (ndRow_nonneg hC0' hb0 hg hv hGam hX0) (degRow_nonneg hC0' hb0 hg hv hGam hX0)`. Establish `H1' : ClassLe ((Cc x hx i).Y.tO u u') (((Cc x hx i).Y.tO u u').nsc ((Cc x hx i).Y.tO u u').genSet) (A₀ * oneT C (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (GamS (Fm.D x i) (Fm.L x i)) * ddC (Cc x hx i).X (Cc x hx i).Y u u')`. Rewrite using `[hA₀]`. Conclude with `oneSC_at (At x hx i) (Cc x hx i).jt (Cc x hx i).wr (Cc x hx i).fc (Cc x hx i).gam (Yt x hx i u u') hFo' hT C0 C hC0' h1`. Take `⟨Al, NT', Gam, Xi, hAl, hP', hX', h6, hAmp⟩` from `loopsAmp_at hH hT hA hC hCT hK₀ hA₀1 hCl4 hClA hXiH HS H1'`.
+
+Conclude with `hJ _ _ _ _ _ ((Cc x hx i).Y.tO u u') (Fm.D x i).R.k (Fm.D x i).R.rS (Fm.D x i).R.f Al (Fm.L x i).sc.b ((Cc x hx i).X.B.g : ℝ) (Fm.D x i).host.v NT' Gam Xi (ddC (Cc x hx i).X (Cc x hx i).Y u u') hAl hP' hX' h6 (dd_nonneg hT u u') hA (Formalism.L2.SG.RowsOther.loopsInput_of_amp _ h …`.
+-/
 theorem rowLoopsEv_of (hLC : PN.LoopCores) (hSub : PB.SubFamily) (hS : Formalism.HermitianLatticesTheory.SiegelMassRatio)
     (hFo : ∀ Cg cb Cu cT CT C0 : ℝ, OwnEv Fm fun C' Cl x i =>
       Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 → ∀ u, UnitaryVolumeMass.FormAt (Fm.D x i) u)

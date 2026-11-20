@@ -17,6 +17,9 @@ abbrev ev (p m : ℕ) : PowerSeries R →+* lev R p m := Ideal.Quotient.mk _
 
 variable {R}
 
+/- English proof (translation)
+Apply `PowerSeries.HasSubst.of_constantCoeff_zero` to reduce the goal to its premises. Simplify using `only [map_sub, map_pow, map_add, map_one]`. Use `erw [PowerSeries.constantCoeff_X]`. Simplify using the standard rewrite rules.
+-/
 theorem hasSubst_om (p : ℕ) (hp : 0 < p) : PowerSeries.HasSubst (((1 + PowerSeries.X : PowerSeries R) ^ p) - 1) := by
   apply PowerSeries.HasSubst.of_constantCoeff_zero
   simp only [map_sub, map_pow, map_add, map_one]
@@ -35,12 +38,23 @@ end GlobalTheory.Col
 namespace GlobalTheory.Col
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[PowerSeries.substAlgHom_X]`.
+-/
 theorem phi_X (p : ℕ) (hp : 0 < p) : phi (R := R) p hp PowerSeries.X = ((1 + PowerSeries.X : PowerSeries R) ^ p) - 1 := by
   unfold phi; rw [PowerSeries.substAlgHom_X]
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, phi_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_one_add_X (p : ℕ) (hp : 0 < p) : phi (R := R) p hp (1 + PowerSeries.X) = (1 + PowerSeries.X) ^ p := by
   rw [map_add, map_one, phi_X]; ring
 
+/- English proof (translation)
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add f g hf hg => simp [Polynomial.eval₂_add, map_add, hf, hg]`. Consider the case `monomial n a`. Simplify using `only [Polynomial.eval₂_monomial, Polynomial.expand_monomial, map_mul, map_pow, phi_one_add_X, ← pow_mul]`. Use `congr 1`.
+
+Conclude with `(phi (R := R) p hp).commutes a`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_eval₂ (p : ℕ) (hp : 0 < p) (P : R[X]) :
     phi (R := R) p hp (P.eval₂ PowerSeries.C (1 + PowerSeries.X)) = (Polynomial.expand R p P).eval₂ PowerSeries.C (1 + PowerSeries.X) := by
   induction P using Polynomial.induction_on' with
@@ -51,6 +65,9 @@ theorem phi_eval₂ (p : ℕ) (hp : 0 < p) (P : R[X]) :
     · exact (phi (R := R) p hp).commutes a
     · ring
 
+/- English proof (translation)
+Unfold `cyc`. Rewrite using `[phi_eval₂, Polynomial.cyclotomic_expand_eq_cyclotomic hp.out (dvd_pow_self p (by omega)), pow_succ]`.
+-/
 theorem phi_cyc (p m : ℕ) [hp : Fact p.Prime] (hm : 1 ≤ m) :
     phi (R := R) p hp.out.pos (cyc R p m) = cyc R p (m + 1) := by
   unfold cyc
@@ -89,6 +106,9 @@ structure FrobLift (R : Type) [CommRing R] (p : ℕ) (σ : R ≃+* R) : Prop whe
 
 abbrev smap (σ : R ≃+* R) : PowerSeries R →+* PowerSeries R := PowerSeries.map (σ : R →+* R)
 
+/- English proof (translation)
+Apply `PowerSeries.HasSubst.of_constantCoeff_zero` to reduce the goal to its premises. Simplify using `only [map_sub, map_pow, map_add, map_one]`. Use `erw [PowerSeries.constantCoeff_X]`. Simplify using the standard rewrite rules.
+-/
 theorem hasSubst_pow (b : ℕ) : PowerSeries.HasSubst (((1 + PowerSeries.X : PowerSeries R) ^ b) - 1) := by
   apply PowerSeries.HasSubst.of_constantCoeff_zero
   simp only [map_sub, map_pow, map_add, map_one]
@@ -102,6 +122,9 @@ end GlobalTheory.Col
 namespace GlobalTheory.Col
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `inferInstance prime := (WittVector.irreducible p).prime complete := WittVector.isAdicCompleteIdealSpanP frob := by intro x rw [WittVector.mem_span_p_iff_coeff_zero_eq_zero] have : WittVector.constantCoeff (WittVector.frobeniusEquiv p k x - x ^ p) = 0 := by rw [map_sub, map_pow] s …`.
+-/
 theorem FrobLift.witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] :
     FrobLift (WittVector p k) p (WittVector.frobeniusEquiv p k) where
   dom := inferInstance
@@ -124,12 +147,20 @@ theorem FrobLift.witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP 
       simp [WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP]
     exact this
 
+/- English proof (translation)
+The claim follows from `FrobLift.witt p _`.
+-/
 example (p : ℕ) [Fact p.Prime] : FrobLift (WittVector p (AlgebraicClosure (ZMod p))) p
     (WittVector.frobeniusEquiv p (AlgebraicClosure (ZMod p))) := FrobLift.witt p _
 
 def padicToWitt (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] [CharP k p] : ℤ_[p] →+* WittVector p k :=
   (WittVector.map (ZMod.castHom (dvd_refl p) k)).comp (WittVector.equiv p).symm.toRingHom
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := Ideal.span {(p : R)}) inferInstance _ fun n => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n x)`. Establish `hx : x = (x.appr n : ℤ_[p]) + e * (p : ℤ_[p]) ^ n` using `by rw [he]; ring`.
+
+Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Use `⟨f e - g e, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem padicHom_ext (p : ℕ) [Fact p.Prime] [IsHausdorff (Ideal.span {(p : R)}) R] (f g : ℤ_[p] →+* R) : f = g := by
   ext x
   rw [← sub_eq_zero]
@@ -148,8 +179,16 @@ def trLev (p m : ℕ) [Fact p.Prime] (hm : 1 ≤ m) : lev R p (m + 1) →+ lev R
 
 def levZeta (R : Type) [CommRing R] (p m : ℕ) : lev R p m := ev R p m (1 + PowerSeries.X)
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)`.
+-/
 theorem ev_cyc_self (p m : ℕ) : ev R p m (cyc R p m) = 0 := Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span rfl)
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one (p ^ m) R`. Use `⟨s.eval₂ PowerSeries.C (1 + PowerSeries.X), ?_⟩` and prove the remaining obligations. Use `congrArg (Polynomial.eval₂ (PowerSeries.C (R := R)) (1 + PowerSeries.X)) hs` as an intermediate fact. Rewrite `this` using `[Polynomial.eval₂_mul]`. Rewrite using `[cyc, ← this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cyc_dvd_level (p m : ℕ) : cyc R p m ∣ (1 + PowerSeries.X : PowerSeries R) ^ (p ^ m) - 1 := by
   obtain ⟨s, hs⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one (p ^ m) R
   refine ⟨s.eval₂ PowerSeries.C (1 + PowerSeries.X), ?_⟩
@@ -158,6 +197,11 @@ theorem cyc_dvd_level (p m : ℕ) : cyc R p m ∣ (1 + PowerSeries.X : PowerSeri
   rw [cyc, ← this]
   simp
 
+/- English proof (translation)
+Unfold `cyc`. Rewrite using `[Polynomial.hom_eval₂, ← Polynomial.map_cyclotomic (p ^ m) τ, Polynomial.eval₂_map]`. Use `congr 1`. Use extensionality with `a : 1`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coeffMap_cyc {S : Type} [CommRing S] (τ : R →+* S) (p m : ℕ) : PowerSeries.map τ (cyc R p m) = cyc S p m := by
   unfold cyc
   rw [Polynomial.hom_eval₂, ← Polynomial.map_cyclotomic (p ^ m) τ, Polynomial.eval₂_map]
@@ -171,13 +215,22 @@ def levMap {S : Type} [CommRing S] (τ : R →+* S) (p m : ℕ) : lev R p m →+
     obtain ⟨c, rfl⟩ := Ideal.mem_span_singleton'.1 ha
     rw [RingHom.comp_apply, map_mul, coeffMap_cyc, map_mul, ev_cyc_self, mul_zero])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levMap_ev {S : Type} [CommRing S] (τ : R →+* S) (p m : ℕ) (h : PowerSeries R) :
     levMap τ p m (ev R p m h) = ev S p m (PowerSeries.map τ h) := rfl
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[levMap_ev, PowerSeries.map_id]`. Both sides reduce to the same expression.
+-/
 theorem levMap_id (p m : ℕ) (x : lev R p m) : levMap (RingHom.id R) p m x = x := by
   obtain ⟨h, rfl⟩ := Ideal.Quotient.mk_surjective x
   rw [levMap_ev, PowerSeries.map_id]; rfl
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[levMap_ev, levMap_ev, levMap_ev, PowerSeries.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem levMap_comp {S U : Type} [CommRing S] [CommRing U] (τ : R →+* S) (υ : S →+* U) (p m : ℕ) (x : lev R p m) :
     levMap (υ.comp τ) p m x = levMap υ p m (levMap τ p m x) := by
   obtain ⟨h, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -190,6 +243,9 @@ def levF (σ : R ≃+* R) (p m : ℕ) : lev R p m ≃+* lev R p m :=
     (RingHom.ext fun x => by
       rw [RingHom.comp_apply, ← levMap_comp, RingEquiv.symm_comp, levMap_id]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levF_ev (σ : R ≃+* R) (p m : ℕ) (h : PowerSeries R) : levF σ p m (ev R p m h) = ev R p m (smap σ h) := rfl
 
 section Act
@@ -199,24 +255,44 @@ variable (p : ℕ) [hp : Fact p.Prime] [Algebra ℤ_[p] R]
 
 def sbp (b : ℤ_[p]) : PowerSeries R →ₐ[R] PowerSeries R := PowerSeries.substAlgHom (hasSubst_br_padic p R b)
 
+/- English proof (translation)
+Rewrite using `[sbp, PowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression.
+-/
 theorem sbp_apply (b : ℤ_[p]) (h : PowerSeries R) : sbp p b h = act p R b h := by
   rw [sbp, PowerSeries.coe_substAlgHom]; rfl
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, sbp, PowerSeries.substAlgHom_X, br]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sbp_one_add_X (b : ℤ_[p]) :
     sbp p b (1 + PowerSeries.X : PowerSeries R) = PowerSeries.binomialSeries R b := by
   rw [map_add, map_one, sbp, PowerSeries.substAlgHom_X, br]; ring
 
+/- English proof (translation)
+Unfold `sbp sb`. Use `congr 1`. Conclude with `binomialSeriesSubOne_natCast p R b`.
+-/
 theorem sbp_nat (b : ℕ) : sbp (R := R) p (b : ℤ_[p]) = sb b := by
   unfold sbp sb
   congr 1
   exact binomialSeriesSubOne_natCast p R b
 
+/- English proof (translation)
+Rewrite using `[sbp_apply]`. Conclude with `(Formalism.CohomologicalDescent.HeightDescentMinors.action_laws_holds p R).2.2.1 h`.
+-/
 theorem sbp_one (h : PowerSeries R) : sbp p 1 h = h := by
   rw [sbp_apply]; exact (Formalism.CohomologicalDescent.HeightDescentMinors.action_laws_holds p R).2.2.1 h
 
+/- English proof (translation)
+Rewrite using `[sbp_apply, sbp_apply, sbp_apply, binomialAction_comp_eq_mul, mul_comm]`.
+-/
 theorem sbp_mul (b c : ℤ_[p]) (h : PowerSeries R) : sbp p (b * c) h = sbp p b (sbp p c h) := by
   rw [sbp_apply, sbp_apply, sbp_apply, binomialAction_comp_eq_mul, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[sbp_apply, sbp_apply, act, act]`. Use `PowerSeries.map_subst (hasSubst_br_padic p R b) (h := τ) h` as an intermediate fact. Use `Eq.trans this ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `PowerSeries.map τ _ = _`.
+
+Rewrite using `[br, br, map_sub, map_one]`. Use `congr 1`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_map, PowerSeries.binomialSeries_coeff, PowerSeries.binomialSeries_coeff, Algebra.smul_def, Algebra.smul_def, mul_one, mul_one, ← hτ]`. Both sides reduce to the same expression.
+-/
 theorem coeffMap_sbp {S : Type} [CommRing S] [Algebra ℤ_[p] S] (τ : R →+* S)
     (hτ : τ.comp (algebraMap ℤ_[p] R) = algebraMap ℤ_[p] S) (b : ℤ_[p]) (h : PowerSeries R) :
     PowerSeries.map τ (sbp p b h) = sbp p b (PowerSeries.map τ h) := by
@@ -232,10 +308,20 @@ theorem coeffMap_sbp {S : Type} [CommRing S] [Algebra ℤ_[p] S] (τ : R →+* S
     Algebra.smul_def, Algebra.smul_def, mul_one, mul_one, ← hτ]
   rfl
 
+/- English proof (translation)
+The claim follows from `coeffMap_sbp p _ (padicHom_ext p _ _) b h`.
+-/
 theorem smap_sbp [IsHausdorff (Ideal.span {(p : R)}) R] (σ : R ≃+* R) (b : ℤ_[p]) (h : PowerSeries R) :
     smap σ (sbp p b h) = sbp p b (smap σ h) :=
   coeffMap_sbp p _ (padicHom_ext p _ _) b h
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 hn`. Establish `hb : b = (n : ℤ_[p]) + e * ((p ^ m : ℕ) : ℤ_[p])` using `by push_cast; rw [he]; ring`. Establish `h1 : br p R ((p ^ m : ℕ) : ℤ_[p]) ∣ br p R (e * ((p ^ m : ℕ) : ℤ_[p]))`. Rewrite using `[← binomialAction_binomialSeriesSubOne]`. Conclude with `dvd_subst_self (hasSubst_br_padic p R _) (constantCoeff_binomialSeriesSubOne p R e)`.
+
+Rewrite `h1` using `[binomialSeriesSubOne_natCast]`. Take `⟨s, hs⟩` from `(cyc_dvd_level (R := R) p m).trans h1`. Establish `h2 : PowerSeries.binomialSeries R (e * ((p ^ m : ℕ) : ℤ_[p])) = 1 + cyc R p m * s`. Rewrite using `[← hs, br]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hb, PowerSeries.binomialSeries_add, PowerSeries.binomialSeries_nat, h2, map_mul, map_add, map_mul, ev_cyc_self, map_pow, levZeta]`. Simplify using the standard rewrite rules.
+-/
 theorem ev_binomialSeries (m : ℕ) (b : ℤ_[p]) (n : ℕ) (hn : b - n ∈ Ideal.span {(p : ℤ_[p]) ^ m}) :
     ev R p m (PowerSeries.binomialSeries R b) = levZeta R p m ^ n := by
   obtain ⟨e, he⟩ := Ideal.mem_span_singleton'.1 hn
@@ -253,6 +339,13 @@ theorem ev_binomialSeries (m : ℕ) (b : ℤ_[p]) (n : ℕ) (hn : b - n ∈ Idea
 
 omit hp [Algebra ℤ_[p] R] in
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _ _`.
+
+Simplify using the standard rewrite rules. Consider the case `prime q hq`. Introduce `_ hc`. Rewrite using `[Polynomial.cyclotomic_expand_eq_cyclotomic_mul hq ((Nat.Prime.coprime_iff_not_dvd hq).1 hc)]`. Conclude with `dvd_mul_left _ _`.
+
+Consider the case `mul a b iha ihb`. Introduce `h0 hc`. Rewrite using `[Polynomial.expand_mul]`. Conclude with `(iha (left_ne_zero_of_mul h0) (Nat.Coprime.coprime_mul_right hc)).trans (_root_.map_dvd (Polynomial.expand R a) (ihb (right_ne_zero_of_mul h0) (Nat.Coprime.coprime_mul_left hc)))`.
+-/
 theorem cyclotomic_dvd_expand_of_coprime (N : ℕ) : ∀ n : ℕ, n ≠ 0 → n.Coprime N →
     Polynomial.cyclotomic N R ∣ Polynomial.expand R n (Polynomial.cyclotomic N R) := by
   intro n
@@ -269,6 +362,17 @@ theorem cyclotomic_dvd_expand_of_coprime (N : ℕ) : ∀ n : ℕ, n ≠ 0 → n.
     exact (iha (left_ne_zero_of_mul h0) (Nat.Coprime.coprime_mul_right hc)).trans
       (_root_.map_dvd (Polynomial.expand R a) (ihb (right_ne_zero_of_mul h0) (Nat.Coprime.coprime_mul_left hc)))
 
+/- English proof (translation)
+Use `set n := (b : ℤ_[p]).appr (m + 1) with hn`. Establish `h1` using `PadicInt.appr_spec (m + 1) (b : ℤ_[p])`. Rewrite `h1` using `[← hn]`. Establish `hnd : ¬ p ∣ n`. Introduce and unpack `⟨c, hc⟩`.
+
+Take `⟨e, he⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `: (p : ℤ_[p]) ∣ (b : ℤ_[p])` using `⟨c + e * (p : ℤ_[p]) ^ m, by`. Rewrite `he` using `[hc]`. Move the coercions through the operations in `at he`. Take the linear combination `-he⟩`.
+
+Conclude with `PadicInt.prime_p.not_isUnit (isUnit_of_dvd_unit this b.isUnit)`. Establish `h2 : (b : ℤ_[p]) - n ∈ Ideal.span {(p : ℤ_[p]) ^ m}` using `Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow _ (Nat.le_succ m)) h1`. Take `⟨s, hs⟩` from `cyclotomic_dvd_expand_of_coprime (R := R) (p ^ m) n (by rintro h; exact hnd (h ▸ dvd_zero p)) (Nat.Coprime.pow_right m ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hnd).symm)`. Establish `h3 : ∀ P : R[X], ev R p m (sbp p (b : ℤ_[p]) (P.eval₂ PowerSeries.C (1 + PowerSeries.X))) = ev R p m ((Polynomial.expand R n P).eval₂ PowerSeries.C (1 + PowerSeries.X))`. Introduce `P`.
+
+Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add f g hf hg => simp only [Polynomial.eval₂_add, map_add, hf, hg]`. Consider the case `monomial k a`. Establish `hC : sbp p (b : ℤ_[p]) (PowerSeries.C a : PowerSeries R) = PowerSeries.C a` using `(sbp p (b : ℤ_[p])).commutes a`. Rewrite using `[Polynomial.expand_monomial, Polynomial.eval₂_monomial, Polynomial.eval₂_monomial, map_mul, map_pow, sbp_one_add_X, hC, map_mul, map_mul, map_pow, map_pow, ev_binomialSeries p m _ n h2, ← pow_mul, mul_comm n k]`.
+
+Both sides reduce to the same expression. Establish `h4` using `h3 (Polynomial.cyclotomic (p ^ m) R)`. Rewrite `h4` using `[hs, Polynomial.eval₂_mul, map_mul]`. Conclude with `h4.trans (by rw [show Polynomial.eval₂ PowerSeries.C (1 + PowerSeries.X) (Polynomial.cyclotomic (p ^ m) R) = cyc R p m from rfl, ev_cyc_self, zero_mul])`.
+-/
 theorem ev_sbp_cyc (m : ℕ) (b : ℤ_[p]ˣ) : ev R p m (sbp p (b : ℤ_[p]) (cyc R p m)) = 0 := by
   set n := (b : ℤ_[p]).appr (m + 1) with hn
   have h1 := PadicInt.appr_spec (m + 1) (b : ℤ_[p])
@@ -316,14 +420,23 @@ def levAct (m : ℕ) : ℤ_[p]ˣ →* (lev R p m ≃ₐ[R] lev R p m) :=
         change ev R p m (sbp p ((b * c : ℤ_[p]ˣ) : ℤ_[p]) h) = ev R p m (sbp p (b : ℤ_[p]) (sbp p (c : ℤ_[p]) h))
         rw [Units.val_mul, sbp_mul] })
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levAct_ev (m : ℕ) (b : ℤ_[p]ˣ) (h : PowerSeries R) :
     levAct p m b (ev R p m h) = ev R p m (sbp p (b : ℤ_[p]) h) := rfl
 
+/- English proof (translation)
+Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[levAct_ev, levF_ev, levF_ev, levAct_ev, smap_sbp]`.
+-/
 theorem levF_levAct [IsHausdorff (Ideal.span {(p : R)}) R] (σ : R ≃+* R) (m : ℕ) (b : ℤ_[p]ˣ) (x : lev R p m) :
     levF σ p m (levAct p m b x) = levAct p m b (levF σ p m x) := by
   obtain ⟨h, rfl⟩ := Ideal.Quotient.mk_surjective x
   rw [levAct_ev, levF_ev, levF_ev, levAct_ev, smap_sbp]
 
+/- English proof (translation)
+Establish `h : (1 + PowerSeries.X : PowerSeries R) = PowerSeries.binomialSeries R ((1 : ℕ) : ℤ_[p])`. Rewrite using `[PowerSeries.binomialSeries_nat, pow_one]`. Rewrite using `[sbp_one_add_X, h, ← PowerSeries.binomialSeries_add]`. Simplify using `using (PowerSeries.binomialSeries_nat (R := ℤ_[p]) (A := R) 0)`.
+-/
 example : sbp p (-1) (1 + PowerSeries.X : PowerSeries R) * (1 + PowerSeries.X) = 1 := by
   have h : (1 + PowerSeries.X : PowerSeries R) = PowerSeries.binomialSeries R ((1 : ℕ) : ℤ_[p]) := by
     rw [PowerSeries.binomialSeries_nat, pow_one]
@@ -332,6 +445,9 @@ example : sbp p (-1) (1 + PowerSeries.X : PowerSeries R) * (1 + PowerSeries.X) =
 
 end Act
 
+/- English proof (translation)
+The claim follows from `letI := (padicToWitt p k).toAlgebra haveI := (FrobLift.witt p k).complete levF_levAct p _ m b x`.
+-/
 example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (m : ℕ) (b : ℤ_[p]ˣ)
     (x : lev (WittVector p k) p m) :
     letI := (padicToWitt p k).toAlgebra
@@ -340,8 +456,14 @@ example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k
   haveI := (FrobLift.witt p k).complete
   levF_levAct p _ m b x
 
+/- English proof (translation)
+Simplify using `[dd]`.
+-/
 example : dd (1 + PowerSeries.X : PowerSeries R) = 1 + PowerSeries.X := by simp [dd]
 
+/- English proof (translation)
+Simplify using `[cyc, Polynomial.cyclotomic_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example : cyc R 2 1 = PowerSeries.X + 2 := by
   simp [cyc, Polynomial.cyclotomic_two]; ring
 

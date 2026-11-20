@@ -10,6 +10,25 @@ namespace PartialSpanProjection
 
 variable {O : Type} [CommRing O] {σ : Type}
 
+/- English proof (translation)
+Set `e : (s → O) →ₗ[O] MvPolynomial σ O` to `Fintype.linearCombination O (fun m : s => monomial m.1 (1 : O))`. Set `r : MvPolynomial σ O →ₗ[O] (s → O)` to `LinearMap.pi (fun m => lcoeff O m.1)`. Establish `her : ∀ x : MvPolynomial σ O, x.support ⊆ s → e (r x) = x`. Introduce `x hx`. Simplify using `only [e, r, Fintype.linearCombination_apply, LinearMap.pi_apply, lcoeff_apply]`.
+
+Rewrite using `[Finset.sum_coe_sort s (fun m => coeff m x • monomial m (1 : O))]`. Use `conv_rhs => rw [← support_sum_monomial_coeff x]`. Use `symm`. Use `(Finset.sum_subset hx ?_).trans ?_` and prove the remaining obligations. Introduce `m _ hm`.
+
+Rewrite using `[notMem_support_iff.1 hm, monomial_zero]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Set `X' : Submodule O (s → O)` to `X.comap e`. Establish `htf : Module.IsTorsionFree O ((s → O) ⧸ X')`.
+
+Rewrite using `[Module.isTorsionFree_iff_smul_eq_zero]`. Introduce `c m h`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Distinguish the cases in `hc : c = 0`. Conclude with `Or.inl hc`.
+
+Use `right`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `show e f ∈ X`. Apply `hsat c _ hc` to reduce the goal to its premises.
+
+Establish `h' : e (c • f) ∈ X` using `h`. Rewrite `h'` using `[map_smul]`. Then use the resulting hypothesis. Take `⟨g, hg⟩` from `X'.mkQ.exists_rightInverse_of_surjective (Submodule.range_mkQ X')`. Set `ρ : (s → O) →ₗ[O] (s → O)` to `LinearMap.id - g ∘ₗ X'.mkQ`. Establish `hρ1 : ∀ f, ρ f ∈ X'`.
+
+Introduce `f`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply]`. Establish `h` using `LinearMap.congr_fun hg (X'.mkQ f)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Simplify using `only [ρ, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, h, sub_self]`.
+
+Establish `hρ2 : ∀ f ∈ X', ρ f = f`. Introduce `f hf`. Establish `h : X'.mkQ f = 0` using `by rw [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]; exact hf`. Simplify using `only [ρ, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h, map_zero, sub_zero]`. Use `⟨e ∘ₗ ρ ∘ₗ r, fun A => hρ1 _, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `her x (hs x hx)`. Establish `h2 : r x ∈ X'` using `by show e (r x) ∈ X`. Rewrite using `[h1]` and apply the resulting hypothesis. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hρ2 _ h2, h1]`.
+-/
 theorem exists_retraction [IsDomain O] [IsPrincipalIdealRing O] (X : Submodule O (MvPolynomial σ O))
     (s : Finset (σ →₀ ℕ)) (hs : ∀ x ∈ X, x.support ⊆ s)
     (hsat : ∀ (c : O) (x : MvPolynomial σ O), c ≠ 0 → c • x ∈ X → x ∈ X) :
@@ -61,11 +80,19 @@ theorem exists_retraction [IsDomain O] [IsPrincipalIdealRing O] (X : Submodule O
   simp only [LinearMap.comp_apply]
   rw [hρ2 _ h2, h1]
 
+/- English proof (translation)
+Introduce `v hv`. Conclude with `(MvPolynomial.mem_supported.1 hA) ((MvPolynomial.mem_vars v).2 ⟨a, ha, hv⟩)`.
+-/
 theorem supp_of_mem {S : Set σ} {A : MvPolynomial σ O} (hA : A ∈ supported O S) {a : σ →₀ ℕ}
     (ha : a ∈ A.support) : ∀ v ∈ a.support, v ∈ S := by
   intro v hv
   exact (MvPolynomial.mem_supported.1 hA) ((MvPolynomial.mem_vars v).2 ⟨a, ha, hv⟩)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.mem_supported]`. Introduce `v hv`. Take `⟨m, hm, hvm⟩` from `(MvPolynomial.mem_vars v).1 hv`. Establish `hma : m = a` using `Finset.mem_singleton.1 (MvPolynomial.support_monomial_subset hm)`. Substitute `hma` using the available equality.
+
+Conclude with `ha v hvm`.
+-/
 theorem monomial_mem {S : Set σ} {a : σ →₀ ℕ} (c : O) (ha : ∀ v ∈ a.support, v ∈ S) :
     monomial a c ∈ supported O S := by
   rw [MvPolynomial.mem_supported]
@@ -81,6 +108,9 @@ def pj (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) : MvPolynomi
   (basisMonomials σ O).constr O
     (fun m => q (monomial (m.filter (fun v => π v = j)) 1) * monomial (m.filter (fun v => π v ≠ j)) 1)
 
+/- English proof (translation)
+Establish `e : monomial m c = c • (basisMonomials σ O m)`. Rewrite using `[MvPolynomial.coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, pj, Module.Basis.constr_basis]`.
+-/
 theorem pj_monomial (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) (m : σ →₀ ℕ) (c : O) :
     pj π j q (monomial m c) =
       c • (q (monomial (m.filter (fun v => π v = j)) 1) * monomial (m.filter (fun v => π v ≠ j)) 1) := by
@@ -88,6 +118,19 @@ theorem pj_monomial (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O)
     rw [MvPolynomial.coe_basisMonomials, smul_monomial, smul_eq_mul, mul_one]
   rw [e, map_smul, pj, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Establish `h1 : (a + b).filter (fun v => π v = j) = a`. Use extensionality with `v`. Simplify using `only [Finsupp.filter_apply, Finsupp.add_apply]`. Distinguish the cases in `hv : π v = j`. Rewrite using `[if_pos hv]`.
+
+Establish `: b v = 0`. Assume the negation of the conclusion as `h`. Conclude with `hb v (Finsupp.mem_support_iff.2 h) hv`. Rewrite using `[this, add_zero]`. Rewrite using `[if_neg hv]`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hv (ha v (Finsupp.mem_support_iff.2 (Ne.symm h)))`. Establish `h2 : (a + b).filter (fun v => π v ≠ j) = b`. Use extensionality with `v`. Simplify using `only [Finsupp.filter_apply, Finsupp.add_apply]`.
+
+Distinguish the cases in `hv : π v = j`. Rewrite using `[if_neg (not_not.2 hv)]`. Establish `: b v = 0`. Assume the negation of the conclusion as `h`. Conclude with `hb v (Finsupp.mem_support_iff.2 h) hv`.
+
+Conclude with `this.symm`. Rewrite using `[if_pos hv]`. Establish `: a v = 0`. Assume the negation of the conclusion as `h`. Conclude with `hv (ha v (Finsupp.mem_support_iff.2 h))`.
+
+Rewrite using `[this, zero_add]`. Rewrite using `[monomial_mul, pj_monomial, h1, h2]`. Establish `e : monomial a ca = ca • monomial a (1 : O)` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Establish `e' : monomial b cb = cb • monomial b (1 : O)` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, e', map_smul, smul_mul_smul_comm, mul_comm ca cb, mul_smul]`.
+-/
 theorem pj_mono_mul (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) {a b : σ →₀ ℕ}
     (ha : ∀ v ∈ a.support, π v = j) (hb : ∀ v ∈ b.support, π v ≠ j) (ca cb : O) :
     pj π j q (monomial a ca * monomial b cb) = q (monomial a ca) * monomial b cb := by
@@ -122,6 +165,11 @@ theorem pj_mono_mul (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O)
   have e' : monomial b cb = cb • monomial b (1 : O) := by rw [smul_monomial, smul_eq_mul, mul_one]
   rw [e, e', map_smul, smul_mul_smul_comm, mul_comm ca cb, mul_smul]
 
+/- English proof (translation)
+Establish `eA` using `A.as_sum`. Establish `eM` using `M.as_sum`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← eA, ← eM]`. Use `_ = ∑ a ∈ A.support, ∑ b ∈ M.support, pj π j q (monomial a (coeff a A) * monomial b (coeff b M)) := by`.
+
+Rewrite using `[Finset.sum_mul_sum, map_sum]`. Simplify using `only [map_sum]`. Use `_ = ∑ a ∈ A.support, ∑ b ∈ M.support, q (monomial a (coeff a A)) * monomial b (coeff b M) := Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => pj_mono_mul π j q (supp_of_mem hA ha) (supp_of_mem hM hb) _ _`. Use `_ = q A * M := by`. Rewrite using `[← Finset.sum_mul_sum, ← map_sum, ← eA, ← eM]`.
+-/
 theorem pj_mul (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) {A M : MvPolynomial σ O}
     (hA : A ∈ supported O {v | π v = j}) (hM : M ∈ supported O {v | π v ≠ j}) :
     pj π j q (A * M) = q A * M := by
@@ -139,6 +187,11 @@ theorem pj_mul (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) {A M
     _ = q A * M := by
         rw [← Finset.sum_mul_sum, ← map_sum, ← eA, ← eM]
 
+/- English proof (translation)
+Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, M, hM, rfl⟩` from `hy`. Rewrite using `[pj_mul π j q (hX x hx) hM, hq x hx]`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add, hy, hz]`. Consider the case `smul c y _ hy => rw [map_smul, hy]`.
+-/
 theorem pj_fix (j : ι) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) (Xj : Submodule O (MvPolynomial σ O))
     (hX : ∀ x ∈ Xj, x ∈ supported O {v | π v = j}) (hq : ∀ x ∈ Xj, q x = x) {F : MvPolynomial σ O}
     (hF : F ∈ Submodule.span O {y | ∃ x ∈ Xj, ∃ M ∈ supported O {v | π v ≠ j}, y = x * M}) :
@@ -155,6 +208,27 @@ def W (X : ι → Submodule O (MvPolynomial σ O)) (S : Finset ι) : Submodule O
   Submodule.span O {y | ∃ x : ι → MvPolynomial σ O, (∀ j, x j ∈ X j) ∧
     ∃ M ∈ supported O {v | π v ∉ S}, y = (∏ j ∈ S, x j) * M}
 
+/- English proof (translation)
+Establish `hle : W π X S ≤ (W π X (insert j S)).comap (pj π j q)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx, M, hM, rfl⟩`. Use `show pj π j q ((∏ i ∈ S, x i) * M) ∈ W π X (insert j S)`. Establish `hP : (∏ i ∈ S, x i) ∈ supported O {v | π v ≠ j}`.
+
+Use `Subalgebra.prod_mem _ fun i hi => ?_` and prove the remaining obligations. Use `supported_mono ?_ (hX i _ (hx i))` and prove the remaining obligations. Introduce `v hv`. Establish `hv' : π v = i` using `hv`. Use `show π v ≠ j`.
+
+Rewrite using `[hv']`. Introduce and unpack `rfl`. Conclude with `hj hi`. Establish `hsum : (∏ i ∈ S, x i) * M = ∑ b ∈ M.support, monomial (b.filter (fun v => π v = j)) (coeff b M) * ((∏ i ∈ S, x i) * monomial (b.filter (fun v => π v ≠ j)) 1)` using `by conv_lhs => rw [← support_sum_monomial_coeff M]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, monomial_mul, mul_one, Finsupp.filter_add_filter_not]`. Rewrite using `[hsum, map_sum]`. Use `Submodule.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Establish `hb1 : monomial (b.filter (fun v => π v = j)) (coeff b M) ∈ supported O {v | π v = j}`.
+
+Use `monomial_mem _ fun v hv => ?_` and prove the remaining obligations. Rewrite `hv` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `hv.2`. Establish `hb2 : ∀ v ∈ (b.filter (fun v => π v ≠ j)).support, π v ≠ j ∧ v ∈ b.support`. Introduce `v hv`.
+
+Rewrite `hv` using `[Finsupp.support_filter, Finset.mem_filter]`. Conclude with `⟨hv.2, hv.1⟩`. Establish `hb3 : monomial (b.filter (fun v => π v ≠ j)) (1 : O) ∈ supported O {v | π v ≠ j}` using `monomial_mem _ fun v hv => (hb2 v hv).1`. Rewrite using `[pj_mul π j q hb1 (Subalgebra.mul_mem _ hP hb3)]`. Use `Submodule.subset_span ⟨Function.update x j (q (monomial (b.filter (fun v => π v = j)) (coeff b M))), ?_, monomial (b.filter (fun v => π v ≠ j)) 1, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hq _`.
+
+Rewrite using `[Function.update_of_ne hi]`. Conclude with `hx i`. Use `monomial_mem _ fun v hv => ?_ show π v ∉ insert j S` and prove the remaining obligations. Rewrite using `[Finset.mem_insert, not_or]`. Conclude with `⟨(hb2 v hv).1, supp_of_mem hM hb v (hb2 v hv).2⟩`.
+
+Rewrite using `[Finset.prod_insert hj, Function.update_self, mul_assoc]`. Use `congr 2`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne]`. Introduce and unpack `rfl`.
+
+Conclude with `hj hi`. Conclude with `hle hG`.
+-/
 theorem projection_mem_partial_span (X : ι → Submodule O (MvPolynomial σ O)) (hX : ∀ j, ∀ x ∈ X j, x ∈ supported O {v | π v = j})
     (S : Finset ι) (j : ι) (hj : j ∉ S) (q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O) (hq : ∀ A, q A ∈ X j)
     {G : MvPolynomial σ O} (hG : G ∈ W π X S) : pj π j q G ∈ W π X (insert j S) := by
@@ -217,6 +291,21 @@ end PartialSpanProjection
 
 open PartialSpanProjection in
 
+/- English proof (translation)
+Introduce `O _ _ _ ι σ _ _ π X hX hfin hsat F hF`. Establish `hq : ∀ j, ∃ q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O, (∀ A, q A ∈ X j) ∧ ∀ x ∈ X j, q x = x`. Introduce `j`. Take `⟨s, hs⟩` from `hfin j`. Conclude with `exists_retraction (X j) s hs (hsat j)`.
+
+Use `choose q hq1 hq2 using hq`. Establish `hW : ∀ S : Finset ι, F ∈ W π X S`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+
+Use `Submodule.subset_span ⟨fun _ => 0, fun j => (X j).zero_mem, F, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_supported]`. Introduce `v _`. Conclude with `Finset.notMem_empty _`. Rewrite using `[Finset.prod_empty, one_mul]`.
+
+Consider the case `insert j S hj ih`. Establish `h` using `projection_mem_partial_span π X hX S j hj (q j) (hq1 j) ih`. Rewrite `h` using `[pj_fix π j (q j) (X j) (hX j) (hq2 j) (hF j)]`. Then use the resulting hypothesis. Establish `hle : W π X Finset.univ ≤ Submodule.span O {y | ∃ x : ι → MvPolynomial σ O, (∀ j, x j ∈ X j) ∧ y = ∏ j, x j}`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `y ⟨x, hx, M, hM, rfl⟩`. Establish `hemp : {v | π v ∉ (Finset.univ : Finset ι)} = (∅ : Set σ)`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite `hM` using `[hemp, supported_empty]`.
+
+Take `⟨c, rfl⟩` from `Algebra.mem_bot.1 hM`. Establish `: (∏ j, x j) * algebraMap O (MvPolynomial σ O) c = c • ∏ j, x j`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, hx, rfl⟩)`.
+
+Conclude with `hle (hW Finset.univ)`.
+-/
 theorem atl : ATL := by
   intro O _ _ _ ι σ _ _ π X hX hfin hsat F hF
   have hq : ∀ j, ∃ q : MvPolynomial σ O →ₗ[O] MvPolynomial σ O, (∀ A, q A ∈ X j) ∧ ∀ x ∈ X j, q x = x := by

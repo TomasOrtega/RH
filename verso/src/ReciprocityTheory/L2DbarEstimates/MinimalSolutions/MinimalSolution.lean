@@ -4,6 +4,25 @@ namespace ReciprocityTheory.L2DbarEstimates
 
 open scoped InnerProductSpace
 
+/- English proof (translation)
+Introduce `θ ℓ A hA hbd`. Establish `hker : LinearMap.ker θ ≤ LinearMap.ker ℓ`. Introduce `e he`. Rewrite `he`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hbd e`.
+
+Rewrite `h` using `[he, norm_zero]`. Establish `: ‖ℓ e‖ ^ 2 ≤ 0` using `by simpa using h`. Establish `h0 : ‖ℓ e‖ = 0` using `by nlinarith [norm_nonneg (ℓ e)]`. Conclude with `norm_eq_zero.mp h0`. Use `set R := LinearMap.range θ with hR`.
+
+Set `φ : R →ₗ[ℂ] ℂ` to `(LinearMap.ker θ).liftQ ℓ hker ∘ₗ θ.quotKerEquivRange.symm.toLinearMap`. Establish `hφ : ∀ e : E, φ ⟨θ e, LinearMap.mem_range_self θ e⟩ = ℓ e`. Introduce `e`. Establish `hmk : (⟨θ e, LinearMap.mem_range_self θ e⟩ : R) = θ.quotKerEquivRange (Submodule.Quotient.mk e)` using `rfl`. Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[hmk, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply]`. Establish `hsq : ∀ e : E, ‖ℓ e‖ ≤ Real.sqrt A * ‖θ e‖`. Introduce `e`. Establish `h1` using `Real.sqrt_le_sqrt (hbd e)`. Rewrite `h1` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hA, Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+
+Establish `hφb : ∀ y : R, ‖φ y‖ ≤ Real.sqrt A * ‖y‖`. Introduce and unpack `⟨y, e, rfl⟩`. Rewrite using `[hφ e]`. Conclude with `hsq e`. Set `φc : R →L[ℂ] ℂ` to `φ.mkContinuous (Real.sqrt A) hφb`.
+
+Take `⟨f, hf, hfn⟩` from `exists_extension_norm_eq R φc`. Use `set v := (InnerProductSpace.toDual ℂ H).symm f with hv`. Establish `hvnorm : ‖v‖ ≤ Real.sqrt A`. Rewrite using `[hv, LinearIsometryEquiv.norm_map, hfn]`. Conclude with `LinearMap.mkContinuous_norm_le _ (Real.sqrt_nonneg A) _`.
+
+Establish `hvin : ∀ e : E, ⟪v, θ e⟫_ℂ = ℓ e`. Introduce `e`. Rewrite using `[hv, InnerProductSpace.toDual_symm_apply]`. Use `hf ⟨θ e, LinearMap.mem_range_self θ e⟩` as an intermediate fact. Simplify `this` using `[φc, hφ e]`.
+
+Use `set K := R.topologicalClosure with hK`. Use `haveI : CompleteSpace K := R.isClosed_topologicalClosure.completeSpace_coe`. Use `⟨K.starProjection v, K.starProjection_apply_mem v, ?_, ?_⟩` and prove the remaining obligations. Establish `h3 : ‖K.starProjection v‖ ≤ Real.sqrt A` using `(K.norm_starProjection_apply_le v).trans hvnorm`. Combine the equalities or inequalities in the displayed calculation.
+
+Introduce `e`. Establish `hmem : θ e ∈ K` using `R.le_topologicalClosure (LinearMap.mem_range_self θ e)`. Rewrite using `[K.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.mpr hmem]`. Conclude with `hvin e`.
+-/
 theorem rieszOnRange (E H : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :
     RieszOnRangeStatement E H := by
@@ -55,6 +74,19 @@ theorem rieszOnRange (E H : Type*) [AddCommGroup E] [Module ℂ E]
     rw [K.inner_starProjection_left_eq_right, Submodule.starProjection_eq_self_iff.mpr hmem]
     exact hvin e
 
+/- English proof (translation)
+Introduce `θ ℓ u u' hu h h'`. Use `set R := LinearMap.range θ with hR`. Establish `hw : u' - u ∈ Rᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `y ⟨e, rfl⟩`.
+
+Rewrite using `[inner_sub_right, ← inner_conj_symm, h', ← inner_conj_symm, h, sub_self]`. Establish `hcl : R.topologicalClosure ≤ Rᗮᗮ` using `R.topologicalClosure_minimal R.le_orthogonal_orthogonal Rᗮ.isClosed_orthogonal`. Establish `hperp : ∀ z ∈ R.topologicalClosure, ⟪u' - u, z⟫_ℂ = 0`. Introduce `z hz`. Conclude with `(Submodule.mem_orthogonal _ _).mp (hcl hz) _ hw`.
+
+Use `⟨hw, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : ⟪u, u' - u⟫_ℂ = 0`. Rewrite using `[← inner_conj_symm, hperp u hu, map_zero]`. Establish `hsq : ‖u'‖ ^ 2 = ‖u‖ ^ 2 + ‖u' - u‖ ^ 2`. Use `@norm_add_sq ℂ H _ _ _ u (u' - u)` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this, h0]`. Simplify using the standard rewrite rules. Establish `: ‖u‖ ^ 2 ≤ ‖u'‖ ^ 2`. Rewrite using `[hsq]`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖u' - u‖]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp this`. Introduce `hu'`. Establish `hz : u' - u ∈ R.topologicalClosure` using `Submodule.sub_mem _ hu' hu`. Use `hperp _ hz` as an intermediate fact.
+
+Rewrite `this` using `[inner_self_eq_zero, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem minimalSolution (E H : Type*) [AddCommGroup E] [Module ℂ E]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] : MinimalSolutionStatement E H := by
   intro θ ℓ u u' hu h h'

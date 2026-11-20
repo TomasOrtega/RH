@@ -11,12 +11,18 @@ variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] {P : Type} [Fintyp
 def cLam (lam : TV n M P →ₗ[ℂ] ℂ) (I : P → Fin n) : M →ₗ[ℂ] ℂ :=
   lam ∘ₗ LinearMap.single ℂ (fun _ : P → Fin n => M) I
 
+/- English proof (translation)
+Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Rewrite using `[map_sum]`. Both sides reduce to the same expression.
+-/
 theorem cLam_sum (lam : TV n M P →ₗ[ℂ] ℂ) (v : TV n M P) : lam v = ∑ I, cLam lam I (v I) := by
   conv_lhs => rw [← Finset.univ_sum_single v]
   rw [map_sum]
   rfl
 
 omit [DecidableEq P] in
+/- English proof (translation)
+Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Take `⟨p, hp⟩` from `Function.ne_iff.mp h`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ p) (Matrix.one_apply_ne hp)`.
+-/
 theorem cprod_one (I J : P → Fin n) :
     ∏ p, (1 : Matrix (Fin n) (Fin n) ℂ) (I p) (J p) = if I = J then 1 else 0 := by
   split_ifs with h
@@ -24,6 +30,19 @@ theorem cprod_one (I J : P → Fin n) :
   · obtain ⟨p, hp⟩ := Function.ne_iff.mp h
     exact Finset.prod_eq_zero (Finset.mem_univ p) (Matrix.one_apply_ne hp)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∀ q, q ≠ p → I q = J q`. Rewrite using `[Finset.prod_eq_one, one_mul, Finset.sum_eq_single (J p)]`. Rewrite using `[if_pos]`. Use function extensionality and compare the values at `q`. Distinguish the cases in `hq : q = p`.
+
+Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hq, h q hq]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+
+Introduce `hJ`. Apply `hb` to reduce the goal to its premises. Rewrite using `[hJ]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Introduce `q hq`. Rewrite using `[h q (Finset.ne_of_mem_erase hq)]`. Simplify using the standard rewrite rules. Use `push Not at h`. Take `⟨q, hqp, hq⟩` from `h`.
+
+Establish `h0 : ∏ q ∈ Finset.univ.erase p, (1 : Matrix (Fin n) (Fin n) ℂ) (I q) (J q) = 0` using `Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hqp, Finset.mem_univ q⟩) (Matrix.one_apply_ne hq)`. Rewrite using `[h0, zero_mul]`. Use `(Finset.sum_eq_zero fun b _ => if_neg ?_).symm` and prove the remaining obligations. Introduce `hJ`. Apply `hq` to reduce the goal to its premises.
+
+Rewrite using `[hJ, Function.update_of_ne hqp]`.
+-/
 theorem cprod_erase (I J : P → Fin n) (p : P) (x : ℂ) :
     (∏ q ∈ Finset.univ.erase p, (1 : Matrix (Fin n) (Fin n) ℂ) (I q) (J q)) * x =
       ∑ b, if J = Function.update I p b then x else 0 := by
@@ -43,6 +62,9 @@ theorem cprod_erase (I J : P → Fin n) (p : P) (x : ℂ) :
     refine (Finset.sum_eq_zero fun b _ => if_neg ?_).symm
     intro hJ; apply hq; rw [hJ, Function.update_of_ne hqp]
 
+/- English proof (translation)
+Repeatedly rewrite using `[cprod_erase]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem csum_erase (I : P → Fin n) (p : P) (φ : (P → Fin n) → ℂ) :
     ∑ J, (∏ q ∈ Finset.univ.erase p, (1 : Matrix (Fin n) (Fin n) ℂ) (I q) (J q)) * φ J =
       ∑ b, φ (Function.update I p b) := by
@@ -52,6 +74,11 @@ theorem csum_erase (I : P → Fin n) (p : P) (φ : (P → Fin n) → ℂ) :
   simp
 
 omit [Fintype P] [DecidableEq P] in
+/- English proof (translation)
+Repeatedly rewrite using `[Finset.mul_sum, mul_ite, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem ckey (I : P → Fin n) (S : Finset P) (F : Fin n → Fin n → ℂ) (h : Fin n → P → ℂ) :
     ∑ a, ∑ b, F a b * ∑ p ∈ S, (if I p = a then h b p else 0) = ∑ p ∈ S, ∑ b, F (I p) b * h b p := by
   simp_rw [Finset.mul_sum, mul_ite, mul_zero]
@@ -65,6 +92,13 @@ theorem ckey (I : P → Fin n) (S : Finset P) (F : Fin n → Fin n → ℂ) (h :
 def cD {ι : Type} [DecidableEq ι] (bar : ι → ι) (τ : ι) (X : Matrix (Fin n) (Fin n) ℂ) (σ : ι) (i j : Fin n) : ℂ :=
   (if σ = τ then X i j else 0) + (if σ = bar τ then star (X i j) else 0)
 
+/- English proof (translation)
+Unfold `cD`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Rewrite using `[if_pos rfl, if_neg (fun h => hne h.symm), add_zero]`. Conclude with `hd i j`.
+
+Distinguish the cases in `h2 : σ = bar τ`. Substitute `h2` using the available equality. Rewrite using `[if_neg h1, if_pos rfl, zero_add]`. Repeatedly rewrite using `[hconj τ]`. Conclude with `(hd i j).star`.
+
+Rewrite using `[if_neg h1, if_neg h2, add_zero]`. Rewrite using `[show (fun t => κ σ (c t) i j) = fun _ => (1 : Matrix (Fin n) (Fin n) ℂ) i j from`. Use function extensionality and compare the values at `fun t => by rw [hoth σ h1 h2 t]]`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem cderiv_entry {ι Γ : Type} [DecidableEq ι] (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ) (bar : ι → ι) (τ : ι)
     (hne : bar τ ≠ τ) (hconj : ∀ σ γ i j, κ (bar σ) γ i j = star (κ σ γ i j))
     (X : Matrix (Fin n) (Fin n) ℂ) (c : ℝ → Γ)
@@ -87,6 +121,9 @@ theorem cderiv_entry {ι Γ : Type} [DecidableEq ι] (κ : ι → Γ → Matrix 
       exact hasDerivAt_const _ _
 
 omit [DecidableEq P] in
+/- English proof (translation)
+Unfold `fib`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Unfold `cD`. Apply the tactic sequence `split_ifs <;> simp [add_mul, Finset.sum_add_distrib]`.
+-/
 theorem cpart {ι : Type} [DecidableEq ι] (lab : P → ι) (bar : ι → ι) (τ : ι) (X : Matrix (Fin n) (Fin n) ℂ)
     (I : P → Fin n) (h : Fin n → P → ℂ) :
     ∑ p, ∑ b, cD bar τ X (lab p) (I p) b * h b p =
@@ -97,6 +134,19 @@ theorem cpart {ι : Type} [DecidableEq ι] (lab : P → ι) (bar : ι → ι) (�
   unfold cD
   split_ifs <;> simp [add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `hf : (fun t => lam (actT lab κ ρ (c t) y)) = fun t => ∑ I, ∑ J, (∏ p, κ (lab p) (c t) (I p) (J p)) * cLam lam I (ρ (c t) (y J))`. Use function extensionality and compare the values at `t`. Rewrite using `[cLam_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[actT_apply, map_sum]`.
+
+Simplify using `only [map_smul, smul_eq_mul]`. Rewrite using `[hf]`. Establish `hg : ∀ I J : P → Fin n, HasDerivAt (fun t => ∏ p, κ (lab p) (c t) (I p) (J p)) (∑ p, (∏ q ∈ Finset.univ.erase p, (1 : Matrix (Fin n) (Fin n) ℂ) (I q) (J q)) • cD bar τ X (lab p) (I p) (J p)) 0`. Introduce `I J`. Apply the tactic sequence `have := HasDerivAt.fun_finsetProd (u := Finset.univ) (f := fun p t => κ (lab p) (c t) (I p) (J p)) (x := 0) (fun p _ => cderiv_entry κ bar τ hne hconj X c hd hoth (lab p) (I p) (J p))`.
+
+Simplify using `only [hc0, hκ1] at this`. Conclude with `this`. Establish `hall : HasDerivAt (fun t => ∑ I, ∑ J, (∏ p, κ (lab p) (c t) (I p) (J p)) * cLam lam I (ρ (c t) (y J))) _ 0` using `HasDerivAt.fun_sum fun I _ => HasDerivAt.fun_sum fun J _ => (hg I J).fun_mul (hρ (y J) (cLam lam I))`. Use `hall.congr_deriv ?_` and prove the remaining obligations. Simplify using `only [hc0, hκ1, hρ1, Module.End.one_apply]`.
+
+Rewrite using `[cLam_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Repeatedly rewrite using `[cprod_one, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Repeatedly rewrite using `[Finset.sum_mul, smul_eq_mul, mul_assoc]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[csum_erase, Function.update_self]`. Rewrite using `[cpart lab bar τ X I (fun b p => cLam lam I (y (Function.update I p b)))]`. Simplify using `only [LinearMap.sum_apply, LinearMap.add_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, tE_apply, map_sum, map_add, map_smul, smul_eq_mul, apply_ite (cLam lam I), map_zero, mul_add, Finset.sum_add_distrib]`. Rewrite using `[ckey I (fib lab τ) (fun a b => X a b) (fun b p => cLam lam I (y (Function.update I p b))), ckey I (fib lab (bar τ)) (fun a b => star (X a b)) (fun b p => cLam lam I (y (Function.update I p b)))]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem actT_der {ι Γ : Type} [DecidableEq ι] [Group Γ] (lab : P → ι) (κ : ι → Γ → Matrix (Fin n) (Fin n) ℂ)
     (E : ι → Fin n → Fin n → Module.End ℂ M) (ρ : Γ → Module.End ℂ M) (bar : ι → ι) (τ : ι) (hne : bar τ ≠ τ)
     (hρ1 : ρ 1 = 1) (hκ1 : ∀ σ, κ σ 1 = 1) (hconj : ∀ σ γ i j, κ (bar σ) γ i j = star (κ σ γ i j))

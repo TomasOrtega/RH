@@ -5,6 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.E.LeafTw0LocGenPfA
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Use `congrArg (Polynomial.aeval x) hp` as an intermediate fact. Simplify using `only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, hx, zero_mul] at this`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem pow_q_eq_one {q : ℕ} {B : Type} [CommRing B] (x : B)
     (hx : Polynomial.aeval x (Polynomial.cyclotomic q ℤ) = 0) : x ^ q = 1 := by
   obtain ⟨p, hp⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -12,6 +15,15 @@ theorem pow_q_eq_one {q : ℕ} {B : Type} [CommRing B] (x : B)
   simp only [map_sub, map_pow, Polynomial.aeval_X, map_one, map_mul, hx, zero_mul] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Establish `hg` using `geom_sum₂_mul x y q`. Rewrite `hg` using `[hx, hy, sub_self]`. Establish `hyu : IsUnit y` using `IsUnit.of_pow_eq_one hy (NeZero.ne q)`. Establish `hres : IsLocalRing.residue B (∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i)) = IsLocalRing.residue B ((q : B) * y ^ (q - 1))`. Rewrite using `[map_sum, map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun _ => IsLocalRing.residue B y ^ (q - 1))]`. Simplify using the standard rewrite rules. Introduce `i hi`. Rewrite using `[map_mul, map_pow, map_pow, hr, ← pow_add]`. Use `congr 1`.
+
+Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hu' : IsUnit (∑ i ∈ Finset.range q, x ^ i * y ^ (q - 1 - i))`. Establish `h1 : IsUnit (IsLocalRing.residue B ((q : B) * y ^ (q - 1)))` using `(hq.mul (hyu.pow _)).map _`. Rewrite `h1` using `[← hres]`.
+
+Conclude with `(isUnit_map_iff (IsLocalRing.residue B) _).1 h1`. Conclude with `sub_eq_zero.1 ((IsUnit.mul_right_eq_zero hu').1 hg)`.
+-/
 theorem local_eq {q : ℕ} [NeZero q] {B : Type} [CommRing B] [IsLocalRing B] (hq : IsUnit (q : B)) {x y : B}
     (hx : x ^ q = 1) (hy : y ^ q = 1) (hr : IsLocalRing.residue B x = IsLocalRing.residue B y) : x = y := by
   have hg := geom_sum₂_mul x y q
@@ -31,6 +43,9 @@ theorem local_eq {q : ℕ} [NeZero q] {B : Type} [CommRing B] [IsLocalRing B] (h
     exact (isUnit_map_iff (IsLocalRing.residue B) _).1 h1
   exact sub_eq_zero.1 ((IsUnit.mul_right_eq_zero hu').1 hg)
 
+/- English proof (translation)
+Establish `h` using `Polynomial.aeval_algHom_apply (IsLocalRing.residue B).toIntAlgHom z (Polynomial.cyclotomic q ℤ)`. Rewrite `h` using `[hz, map_zero]`. Rewrite using `[← Polynomial.map_cyclotomic_int, Polynomial.IsRoot.def, Polynomial.eval_map]`. Rewrite `h` using `[Polynomial.aeval_def, algebraMap_int_eq]`. Conclude with `h`.
+-/
 theorem res_root {q : ℕ} {B : Type} [CommRing B] [IsLocalRing B] (z : B)
     (hz : Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0) :
     Polynomial.IsRoot (Polynomial.cyclotomic q (IsLocalRing.ResidueField B)) (IsLocalRing.residue B z) := by
@@ -40,6 +55,13 @@ theorem res_root {q : ℕ} {B : Type} [CommRing B] [IsLocalRing B] (z : B)
   rw [Polynomial.aeval_def, algebraMap_int_eq] at h
   exact h
 
+/- English proof (translation)
+Establish `: NeZero ((q : ℕ) : IsLocalRing.ResidueField B)` using `⟨by simpa [map_natCast] using (hq.map (IsLocalRing.residue B)).ne_zero⟩`. Establish `root : ∀ z : B, Polynomial.aeval z (Polynomial.cyclotomic q ℤ) = 0 → IsPrimitiveRoot (IsLocalRing.residue B z) q` using `fun z hz => Polynomial.isRoot_cyclotomic_iff.1 (res_root z hz)`. Take `⟨i, hi, hpow⟩` from `(root ζ hζ).eq_pow_of_pow_eq_one ((root ξ hξ).pow_eq_one)`. Establish `hc : i.Coprime q` using `((root ζ hζ).pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (hpow ▸ root ξ hξ)`. Use `⟨ZMod.unitOfCoprime i hc, ?_⟩` and prove the remaining obligations.
+
+Establish `hval : ((ZMod.unitOfCoprime i hc : (ZMod q)ˣ) : ZMod q).val = i`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`. Rewrite using `[hval]`. Use `local_eq hq (pow_q_eq_one ξ hξ) ?_ ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, pow_q_eq_one ζ hζ, one_pow]`.
+
+Rewrite using `[map_pow]`. Conclude with `hpow.symm`.
+-/
 theorem local_pow {q : ℕ} [NeZero q] {B : Type} [CommRing B] [IsLocalRing B] (hq : IsUnit (q : B)) {ζ ξ : B}
     (hζ : Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0) (hξ : Polynomial.aeval ξ (Polynomial.cyclotomic q ℤ) = 0) :
     ∃ a : (ZMod q)ˣ, ξ = ζ ^ (a : ZMod q).val := by

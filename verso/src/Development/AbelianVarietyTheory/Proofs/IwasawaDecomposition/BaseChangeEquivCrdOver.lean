@@ -11,12 +11,18 @@ variable {LL LL' Ks : Type} [Field LL] [Field LL'] [Field Ks] [Algebra Ks LL] [A
 
 def crdMap (ι : LL →+* LL') {n n' : ℕ} (hn : n = n') (x : Fin n → LL) : Fin n' → LL' := fun k' => ι (x (Fin.cast hn.symm k'))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hn, fun k k' hk => by unfold crdMap congr 2 exact Fin.ext (by simp [hk])⟩`.
+-/
 theorem crdOver_crdMap (ι : LL →+* LL') {n n' : ℕ} (hn : n = n') (x : Fin n → LL) : CrdOver ι x (crdMap ι hn x) :=
   ⟨hn, fun k k' hk => by
     unfold crdMap
     congr 2
     exact Fin.ext (by simp [hk])⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k'`. Conclude with `(h.2 (Fin.cast hn.symm k') k' rfl).symm`.
+-/
 theorem crdMap_eq_of_crdOver (ι : LL →+* LL') {n n' : ℕ} (hn : n = n') {x : Fin n → LL} {x' : Fin n' → LL'}
     (h : CrdOver ι x x') : crdMap ι hn x = x' := by
   funext k'
@@ -28,6 +34,9 @@ def crdLin (ι : LL →+* LL') (hι : ∀ y, ι (algebraMap Ks LL y) = algebraMa
   map_add' x y := by funext k; simp [crdMap]
   map_smul' c x := by funext k; simp [crdMap, Algebra.smul_def, hι]
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `k`. Use `congrFun h (Fin.cast hn k)` as an intermediate fact. Simplify using `only [crdMap, Fin.cast_cast, Fin.cast_eq_self] at this`. Conclude with `ι.injective this`.
+-/
 theorem crdMap_injective (ι : LL →+* LL') {n n' : ℕ} (hn : n = n') : Function.Injective (crdMap ι hn) := by
   intro x y h
   funext k
@@ -44,6 +53,9 @@ def baseChangeEquiv (ι : LL →+* LL') (hι : ∀ y, ι (algebraMap Ks LL y) = 
       obtain ⟨x, hx⟩ := honto x'.1 x'.2
       exact ⟨⟨x, (hmem _ _ hx).1 x'.2⟩, Subtype.ext (crdMap_eq_of_crdOver ι hn hx)⟩⟩
 
+/- English proof (translation)
+The claim follows from `crdOver_crdMap ι hn x.1`.
+-/
 theorem baseChangeEquiv_crdOver (ι : LL →+* LL') (hι : ∀ y, ι (algebraMap Ks LL y) = algebraMap Ks LL' y) {n n' : ℕ}
     (hn : n = n') (WK : Submodule Ks (Fin n → LL)) (WK' : Submodule Ks (Fin n' → LL'))
     (hmem : ∀ x x', CrdOver ι x x' → (x' ∈ WK' ↔ x ∈ WK)) (honto : ∀ x' ∈ WK', ∃ x : Fin n → LL, CrdOver ι x x') (x : WK) :

@@ -25,6 +25,9 @@ section Finite
 
 variable {v : HeightOneSpectrum (𝓞 K.1)} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
 
+/- English proof (translation)
+Establish `h` using `eq_placeOfEmbedding ι F j hj`. Substitute `h` using the available equality. Rewrite using `[algHom_ext_adicCompletion F (f := j) (g := completionEmbedding ι F) fun x => by rw [hj, completionEmbedding_algebraMap]]`.
+-/
 theorem completionEmbedding_eq_of_algebraMap (F : FiniteSubfield) [Fact (K ≤ F)] (u : PlacesOver F.1 v)
     (j : u.1.adicCompletion F.1 →ₐ[v.adicCompletion K.1] AlgebraicClosure (v.adicCompletion K.1))
     (hj : ∀ x : F.1, j (algebraMap F.1 _ x) = ι x) (a : 𝔸[F.1]) :
@@ -36,6 +39,13 @@ theorem completionEmbedding_eq_of_algebraMap (F : FiniteSubfield) [Fact (K ≤ F
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `exists_of z`. Take `⟨p, hp⟩` from `GLevel.exists_le (K := K) F`. Rewrite using `[← of_ideleMap hp x]`. Generalize the expression as in `ideleMap hp x = y`. Rewrite using `[smul_of_restrictHom]`.
+
+Use `set r : p.1.1 ≃ₐ[K.1] p.1.1 := restrictHom (E := p.1) g with hr`. Use `set w := placeOfEmbedding ι p.1 with hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_idelesProj_of, coe_idelesProj_of, coe_smul_idele, smul_snd_eq_galHom r (y : 𝔸[p.1.1]) (r⁻¹ • w).1 w.1 (eq_smul_inv_smul v r w)]`. Set `j : (r⁻¹ • w).1.adicCompletion p.1.1 →ₐ[v.adicCompletion K.1] AlgebraicClosure (v.adicCompletion K.1)` to `(completionEmbedding ι p.1).comp (galEquiv v r (r⁻¹ • w).1 w.1 (eq_smul_inv_smul v r w)).toAlgHom`.
+
+Establish `hj : ∀ x : p.1.1, j (algebraMap p.1.1 _ x) = (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) x`. Introduce `x`. Express the relevant statement in the definitionally equal form `completionEmbedding ι p.1 (galEquiv v r (r⁻¹ • w).1 w.1 (eq_smul_inv_smul v r w) (algebraMap p.1.1 _ x)) = ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (x : ℚ̄))`. Rewrite using `[galEquiv_algebraMap, completionEmbedding_algebraMap, hr, coe_restrictHom_apply]`. Conclude with `(completionEmbedding_eq_of_algebraMap _ p.1 (r⁻¹ • w) j hj (y : 𝔸[p.1.1])).symm`.
+-/
 theorem idelesProj_comp (g : K.1.fixingSubgroup) (z : IdeleLimit) :
     idelesProj (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) z = idelesProj ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) • z) := by
   obtain ⟨F, x, rfl⟩ := exists_of z
@@ -59,6 +69,13 @@ theorem idelesProj_comp (g : K.1.fixingSubgroup) (z : IdeleLimit) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `set ι' := ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)`. Establish `hconj` using `cohomologyMapAlong_conj (limitRep K) (continuous_globalDecomp (v.adicCompletion K.1) ι) (continuous_globalDecomp (v.adicCompletion K.1) ι') g (globalDecomp_comp (v.adicCompletion K.1) ι g) n`. Establish `e1 : idelesLocalRes ι' n = cohomologyMapAlong (globalDecomp (v.adicCompletion K.1) ι') (continuous_globalDecomp (v.adicCompletion K.1) ι') (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (idelesLocalMor ι') n`. Rewrite using `[idelesLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression.
+
+Establish `e2 : idelesLocalRes ι n = cohomologyMapAlong (globalDecomp (v.adicCompletion K.1) ι) (continuous_globalDecomp (v.adicCompletion K.1) ι) (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (idelesLocalMor ι) n`. Rewrite using `[idelesLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, hconj, Category.assoc, ← cohomologyMapAlong_comp, e2]`. Use `congr 1`.
+
+Use `cohomologyMapAlong_congr _ _ _ _ rfl (fun (a : Additive IdeleLimit) => ?_) n` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `idelesProj ι' (((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) • a.toMul) = idelesProj ι a.toMul`. Rewrite using `[idelesProj_comp, smul_smul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, one_smul]`.
+-/
 theorem idelesLocalRes_comp (g : K.1.fixingSubgroup) (n : ℕ) :
     idelesLocalRes (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) n = idelesLocalRes ι n := by
   set ι' := ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)
@@ -81,6 +98,9 @@ theorem idelesLocalRes_comp (g : K.1.fixingSubgroup) (n : ℕ) :
   change idelesProj ι' (((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) • a.toMul) = idelesProj ι a.toMul
   rw [idelesProj_comp, smul_smul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, one_smul]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_eq_comp_of_normal ι ι'`. Establish `: ι' = ι.comp (fixingSubgroupEquiv K.1 ((fixingSubgroupEquiv K.1).symm g) : ℚ̄ →ₐ[K.1] ℚ̄)`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hg`. Rewrite using `[this, idelesLocalRes_comp]`.
+-/
 theorem idelesLocalRes_eq_of_algHom (ι ι' : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1)) (n : ℕ) :
     idelesLocalRes ι' n = idelesLocalRes ι n := by
   obtain ⟨g, hg⟩ := exists_eq_comp_of_normal ι ι'
@@ -95,6 +115,9 @@ section Infinite
 
 variable {v : InfinitePlace K.1} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)
 
+/- English proof (translation)
+Establish `h` using `eq_infPlaceOfEmbedding ι F j hj`. Substitute `h` using the available equality. Rewrite using `[algHom_ext_infCompletion F (f := j) (g := infCompletionEmbedding ι F) fun x => by rw [hj, infCompletionEmbedding_algebraMap]]`.
+-/
 theorem infCompletionEmbedding_eq_of_algebraMap (F : FiniteSubfield) [Fact (K ≤ F)] (u : v.placesOver F.1)
     (j : (u : InfinitePlace F.1).Completion →ₐ[v.Completion] AlgebraicClosure v.Completion)
     (hj : ∀ x : F.1, j (algebraMap F.1 _ x) = ι x) (a : 𝔸[F.1]) :
@@ -106,6 +129,15 @@ theorem infCompletionEmbedding_eq_of_algebraMap (F : FiniteSubfield) [Fact (K �
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨F, x, rfl⟩` from `exists_of z`. Take `⟨p, hp⟩` from `GLevel.exists_le (K := K) F`. Rewrite using `[← of_ideleMap hp x]`. Generalize the expression as in `ideleMap hp x = y`. Rewrite using `[smul_of_restrictHom]`.
+
+Use `set r : p.1.1 ≃ₐ[K.1] p.1.1 := restrictHom (E := p.1) g with hr`. Use `set w := infPlaceOfEmbedding ι p.1 with hw`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_infIdelesProj_of, coe_infIdelesProj_of, coe_smul_idele, smul_fst r (y : 𝔸[p.1.1])]`. Establish `hcomap : (w : InfinitePlace p.1.1).comap ((r : p.1.1 ≃+* p.1.1) : p.1.1 →+* p.1.1) = r⁻¹ • (w : InfinitePlace p.1.1)` using `AdeleBaseChange.comap_eq_inv_smul r w`.
+
+Establish `hu : ((w : InfinitePlace p.1.1).comap ((r : p.1.1 ≃+* p.1.1) : p.1.1 →+* p.1.1)).LiesOver v`. Rewrite using `[GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq, hcomap, GroundTheory.Global.InfinitePlace.comap_smul_algebraMap, ← GroundTheory.Global.InfinitePlace.liesOver_iff_comap_eq]`. Conclude with `w.2`. Set `u : v.placesOver p.1.1` to `⟨_, hu⟩`. Set `j : (u : InfinitePlace p.1.1).Completion →ₐ[v.Completion] AlgebraicClosure v.Completion` to `(infCompletionEmbedding ι p.1).comp { AdeleBaseChange.infiniteCompletionMap (r : p.1.1 ≃+* p.1.1) w with commutes' := infiniteCompletionMap_algebraMap_completion p.1 r w }`.
+
+Establish `hj : ∀ x : p.1.1, j (algebraMap p.1.1 _ x) = (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) x`. Introduce `x`. Express the relevant statement in the definitionally equal form `infCompletionEmbedding ι p.1 (AdeleBaseChange.infiniteCompletionMap (r : p.1.1 ≃+* p.1.1) w (algebraMap p.1.1 _ x)) = ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) (x : ℚ̄))`. Rewrite using `[AdeleBaseChange.infiniteCompletionMap_algebraMap, infCompletionEmbedding_algebraMap, AlgEquiv.coe_ringEquiv, hr, coe_restrictHom_apply]`. Conclude with `(infCompletionEmbedding_eq_of_algebraMap _ p.1 u j hj (y : 𝔸[p.1.1])).symm`.
+-/
 theorem infIdelesProj_comp (g : K.1.fixingSubgroup) (z : IdeleLimit) :
     infIdelesProj (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) z =
       infIdelesProj ι ((g : ℚ̄ ≃ₐ[ℚ] ℚ̄) • z) := by
@@ -141,6 +173,13 @@ theorem infIdelesProj_comp (g : K.1.fixingSubgroup) (z : IdeleLimit) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `set ι' := ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)`. Establish `hconj` using `cohomologyMapAlong_conj (limitRep K) (continuous_globalDecomp v.Completion ι) (continuous_globalDecomp v.Completion ι') g (globalDecomp_comp v.Completion ι g) n`. Establish `e1 : infIdelesLocalRes ι' n = cohomologyMapAlong (globalDecomp v.Completion ι') (continuous_globalDecomp v.Completion ι') (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (infIdelesLocalMor ι') n`. Rewrite using `[infIdelesLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression.
+
+Establish `e2 : infIdelesLocalRes ι n = cohomologyMapAlong (globalDecomp v.Completion ι) (continuous_globalDecomp v.Completion ι) (𝟙 _) n ≫ cohomologyMapAlong (MonoidHom.id _) continuous_id (infIdelesLocalMor ι) n`. Rewrite using `[infIdelesLocalRes, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, hconj, Category.assoc, ← cohomologyMapAlong_comp, e2]`. Use `congr 1`.
+
+Use `cohomologyMapAlong_congr _ _ _ _ rfl (fun (a : Additive IdeleLimit) => ?_) n` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `infIdelesProj ι' (((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) • a.toMul) = infIdelesProj ι a.toMul`. Rewrite using `[infIdelesProj_comp, smul_smul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, one_smul]`.
+-/
 theorem infIdelesLocalRes_comp (g : K.1.fixingSubgroup) (n : ℕ) :
     infIdelesLocalRes (ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)) n = infIdelesLocalRes ι n := by
   set ι' := ι.comp (fixingSubgroupEquiv K.1 g : ℚ̄ →ₐ[K.1] ℚ̄)
@@ -163,6 +202,9 @@ theorem infIdelesLocalRes_comp (g : K.1.fixingSubgroup) (n : ℕ) :
   change infIdelesProj ι' (((g⁻¹ : K.1.fixingSubgroup) : ℚ̄ ≃ₐ[ℚ] ℚ̄) • a.toMul) = infIdelesProj ι a.toMul
   rw [infIdelesProj_comp, smul_smul, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, one_smul]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_eq_comp_of_normal ι ι'`. Establish `: ι' = ι.comp (fixingSubgroupEquiv K.1 ((fixingSubgroupEquiv K.1).symm g) : ℚ̄ →ₐ[K.1] ℚ̄)`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `hg`. Rewrite using `[this, infIdelesLocalRes_comp]`.
+-/
 theorem infIdelesLocalRes_eq_of_algHom (ι ι' : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion) (n : ℕ) :
     infIdelesLocalRes ι' n = infIdelesLocalRes ι n := by
   obtain ⟨g, hg⟩ := exists_eq_comp_of_normal ι ι'

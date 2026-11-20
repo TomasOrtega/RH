@@ -16,6 +16,9 @@ def LeafSmoothOfNormal : Prop := ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] {C 
   IsIntegral C → LocallyOfFiniteType c → (∀ y : C, IsIntegrallyClosed (C.presheaf.stalk y)) →
     topologicalKrullDim C = 1 → SmoothOfRelativeDimension 1 c
 
+/- English proof (translation)
+Introduce `Ω L _ _ _ _ u hu hfin`. Take `⟨C0, c0, x, ψ, hint, hprop, hnorm, hdim, hx, hψ⟩` from `hN Ω L u hu hfin`. Use `⟨C0, c0, x, ψ, ⟨hint, hprop, ?_⟩, hx, hψ⟩` and prove the remaining obligations. Use `hprop` as an intermediate fact. Conclude with `hS Ω c0 hint inferInstance hnorm hdim`.
+-/
 theorem goal_of (hN : ExistsNormalProperCurveModel) (hS : LeafSmoothOfNormal) : LateralTheory.E.LeafCurveVCut.LeafModelCurve := by
   intro Ω L _ _ _ _ u hu hfin
   obtain ⟨C0, c0, x, ψ, hint, hprop, hnorm, hdim, hx, hψ⟩ := hN Ω L u hu hfin

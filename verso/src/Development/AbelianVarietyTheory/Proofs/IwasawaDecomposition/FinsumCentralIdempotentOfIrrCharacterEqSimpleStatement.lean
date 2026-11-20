@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Gr
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.CanonListLength
 open CategoryTheory Polynomial
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem | exact GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem | (intros; apply GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finsum_centralIdempotentOfIrrCharacter_eq_simple : ∀ {G : Type} [Group G] [Fintype G] (Q : (G → ℂ) → Prop), ∑ᶠ χ ∈ {χ : G → ℂ | GlobalTheory.GLq.IsIrr χ ∧ Q χ}, GlobalTheory.GLq.zOf χ = ∑ᶠ (z : MonoidAlgebra ℂ G) (_ : ∃ τ : FDRep ℂ G, CategoryTheory.Simple τ ∧ Formalism.IrreducibleCountingLemmas.TYPES.zIdem τ = z ∧ Q τ.character), z := by
   first | exact @GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem | exact GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem | (intros; apply GlobalTheory.SerCmp.finsum_zOf_eq_finsum_zIdem <;> assumption)

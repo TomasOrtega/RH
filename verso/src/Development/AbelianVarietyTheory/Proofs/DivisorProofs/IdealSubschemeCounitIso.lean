@@ -13,6 +13,13 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.QCoh.ClosedCounit
 
+/- English proof (translation)
+Use `(QCoh.isIso_iff_forall_affine (M := (Scheme.Modules.pushforward I.subschemeι).obj G) (N := (Scheme.Modules.pushforward I.subschemeι).obj ((Scheme.Modules.pullback I.subschemeι).obj ((Scheme.Modules.pushforward I.subschemeι).obj G))) _).2 fun U hU => ?_` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `surjective_and_ker_unit_subschemeι I ((Scheme.Modules.pushforward I.subschemeι).obj G) ⟨U, hU⟩`. Use `⟨(LinearMap.ker_eq_bot (f := QCoh.appLinear _ U)).1 (h₂.trans ?_), h₁⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff, Submodule.smul_le]`. Introduce `a ha m _`.
+
+Establish `h0 : (I.subschemeι.app U).hom a = 0`. Rewrite using `[← RingHom.mem_ker, I.ker_subschemeι_app ⟨U, hU⟩]`. Conclude with `ha`. Rewrite using `[Submodule.mem_bot]`. Establish `key : ∀ m' : Γ(G, I.subschemeι ⁻¹ᵁ U), (I.subschemeι.app U).hom a • m' = 0` using `fun m' => by`.
+
+Rewrite using `[h0, zero_smul]`. Conclude with `key m`.
+-/
 theorem isIso_unit_pushforward_subschemeι {X : Scheme.{0}} (I : X.IdealSheafData)
     (G : I.subscheme.Modules) [G.IsQuasicoherent] :
     IsIso ((Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι).unit.app
@@ -31,11 +38,21 @@ theorem isIso_unit_pushforward_subschemeι {X : Scheme.{0}} (I : X.IdealSheafDat
     rw [h0, zero_smul]
   exact key m
 
+/- English proof (translation)
+Take `⟨t, ht, e⟩` from `I.subschemeι.isClosedEmbedding.isInducing.isOpen_iff.1 V.2`. Conclude with `⟨⟨t, ht⟩, TopologicalSpace.Opens.ext e⟩`.
+-/
 theorem exists_preimage_eq_subschemeι {X : Scheme.{0}} (I : X.IdealSheafData) (V : I.subscheme.Opens) :
     ∃ U : X.Opens, I.subschemeι ⁻¹ᵁ U = V := by
   obtain ⟨t, ht, e⟩ := I.subschemeι.isClosedEmbedding.isInducing.isOpen_iff.1 V.2
   exact ⟨⟨t, ht⟩, TopologicalSpace.Opens.ext e⟩
 
+/- English proof (translation)
+Introduce `X I G _`. Use `set adj := Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι`. Use `isIso_unit_pushforward_subschemeι I G` as an intermediate fact. Establish `h3 : IsIso ((Scheme.Modules.pushforward I.subschemeι).map (adj.counit.app G))`. Establish `e` using `adj.right_triangle_components G`.
+
+Establish `: IsIso (adj.unit.app ((Scheme.Modules.pushforward I.subschemeι).obj G) ≫ (Scheme.Modules.pushforward I.subschemeι).map (adj.counit.app G))`. Rewrite using `[e]`. Use `infer_instance`. Conclude with `IsIso.of_isIso_comp_left (adj.unit.app _) _`. Rewrite using `[Scheme.Modules.Hom.isIso_iff_isIso_app]`.
+
+Introduce `V`. Take `⟨U, rfl⟩` from `exists_preimage_eq_subschemeι I V`. Use `(Scheme.Modules.Hom.isIso_iff_isIso_app.1 h3) U` as an intermediate fact. Rewrite `this` using `[Scheme.Modules.pushforward_map_app]`. Then use the resulting hypothesis.
+-/
 theorem isIso_counit_subschemeι : ∀ {X : Scheme.{0}} (I : X.IdealSheafData) (G : I.subscheme.Modules)
     [G.IsQuasicoherent],
     IsIso ((Scheme.Modules.pullbackPushforwardAdjunction I.subschemeι).counit.app G) := by

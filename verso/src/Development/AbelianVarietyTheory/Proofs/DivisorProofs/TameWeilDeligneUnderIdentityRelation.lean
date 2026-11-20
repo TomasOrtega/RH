@@ -20,6 +20,13 @@ open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.Conju
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 open GlobalTheory.TameTransport in
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ A w w' h h' j i hP y y' hrel hy`. Take `⟨n, b, b', hb, hb', -, hρ⟩` from `hrel`. Take `⟨m, a, ha, hwild⟩` from `hy`. Take `⟨e, he, -⟩` from `GlobalTheory.WeilDeligne.WD.mk_eq_mk.mp (ha.trans hb.symm)`. Take `⟨c, hc, -⟩` from `GlobalTheory.T.place_over_transport_ring_iso E Ω A w h E' Ω A w' h' (RingEquiv.refl Ω) j i hP`.
+
+Use `⟨n, b', hb', fun σ' hσ' => ?_⟩` and prove the remaining obligations. Establish `hr : WeilRel (RingEquiv.refl Ω) (c.symm σ') σ'` using `(hc (c.symm σ') σ').mpr (by simp)`. Establish `hσ : Formalism.MainNotions.BlochKatoReduction.IsWild A ((c.symm σ' : Weil h) : G E Ω)` using `isWild_of_rel (φ := RingEquiv.refl Ω) (fun _ => Iff.rfl) (fun z => ?_) hσ'`. Rewrite using `[← hρ _ σ' hr]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Take `⟨u, rfl⟩` from `e.surjective v`. Rewrite using `[← he, hwild _ hσ]`. Both sides reduce to the same expression. Use `hr z` as an intermediate fact. Simplify using `using this.symm`.
+-/
 theorem GlobalTheory.LocLanglands.isTameWD_of_wdRel_refl : ∀ (E E' Ω : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E Ω] [Algebra E' Ω] [IsAlgClosure E Ω] [IsAlgClosure E' Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (w' : HeightOneSpectrum (𝓞 E')) (h : IsPlaceOver A w) (h' : IsPlaceOver A w') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), GlobalTheory.LocLanglands.PlaceIso A w A w' (RingEquiv.refl Ω) j i → ∀ (y : WD h) (y' : WD h'), WDRel (RingEquiv.refl Ω) y y' → IsTameWD y → IsTameWD y' := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ A w w' h h' j i hP y y' hrel hy
   obtain ⟨n, b, b', hb, hb', -, hρ⟩ := hrel

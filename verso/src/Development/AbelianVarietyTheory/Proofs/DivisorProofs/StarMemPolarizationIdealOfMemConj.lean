@@ -24,19 +24,31 @@ open scoped Pointwise
 
 namespace StarAAbar
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   letI := D.host.isCMField_hostE
   show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
+/- English proof (translation)
+The claim follows from `D.host.φ₀.injective (by rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])`.
+-/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x :=
   D.host.φ₀.injective (by
     rw [Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul {L : Type} [Field L] [NumberField L] (σ : Gal(L/ℚ)) (X : 𝓞 L) :
     ((σ • X : 𝓞 L) : L) = σ (X : L) := rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h]`. Simplify using `only [Submodule.bot_mul] at h1`. Conclude with `differentIdeal_ne_bot h1`.
+-/
 theorem bb_ne_bot {D : D7} : D.host.𝔟 ≠ ⊥ := by
   intro h
   have h1 := D.host.𝔟_spec.1
@@ -44,12 +56,18 @@ theorem bb_ne_bot {D : D7} : D.host.𝔟 ≠ ⊥ := by
   simp only [Submodule.bot_mul] at h1
   exact differentIdeal_ne_bot h1
 
+/- English proof (translation)
+Introduce `h`. Apply `bb_ne_bot (D := D)` to reduce the goal to its premises. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem conj_bb_ne_bot {D : D7} : D.host.conj • D.host.𝔟 ≠ ⊥ := by
   intro h
   apply bb_ne_bot (D := D)
   have := congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h
   simpa using this
 
+/- English proof (translation)
+Establish `h : D.host.conj⁻¹ = D.host.conj`. Rewrite using `[inv_eq_iff_mul_eq_one]`. Conclude with `AlgEquiv.ext fun y => conj_conj D y`. Rewrite using `[h]`.
+-/
 theorem conj_inv_smul {D : D7} (x : 𝓞 D.host.E) : D.host.conj⁻¹ • x = D.host.conj • x := by
   have h : D.host.conj⁻¹ = D.host.conj := by
     rw [inv_eq_iff_mul_eq_one]
@@ -61,6 +79,19 @@ end StarAAbar
 set_option synthInstance.maxHeartbeats 160000 in
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D c hc`. Establish `hJ : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 StarAAbar.bb_ne_bot`. Establish `hJc : ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 StarAAbar.conj_bb_ne_bot`. Establish `h1 : ∀ y ∈ D.host.conj • D.host.𝔟, c * (y : D.host.E) ∈ ((D.host.conj • D.host.ccE : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Introduce `y hy`.
+
+Establish `hyJ : (y : D.host.E) ∈ ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨y, hy, rfl⟩`. Use `FractionalIdeal.mul_mem_mul hc hyJ` as an intermediate fact. Unfold `Host.AAbar at this`. Rewrite `this` using `[mul_assoc, inv_mul_cancel₀ hJc, mul_one]`. Then use the resulting hypothesis. Establish `h2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (star c) * ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤ ((D.host.ccE : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+
+Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨z, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Take `⟨j', hj', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hj`. Establish `hy : D.host.conj • j' ∈ D.host.conj • D.host.𝔟` using `Ideal.smul_mem_pointwise_smul _ _ _ hj'`.
+
+Take `⟨x, hx, hxe⟩` from `(FractionalIdeal.mem_coeIdeal _).1 (h1 _ hy)`. Establish `hxs : D.host.conj • x ∈ D.host.ccE`. Use `(Ideal.mem_pointwise_smul_iff_inv_smul_mem).1 hx` as an intermediate fact. Rewrite `this` using `[StarAAbar.conj_inv_smul]`. Then use the resulting hypothesis. Establish `key : star c * algebraMap (𝓞 D.host.E) D.host.E j' = algebraMap (𝓞 D.host.E) D.host.E (D.host.conj • x)` using `by show star c * (j' : D.host.E) = ((D.host.conj • x : 𝓞 D.host.E) : D.host.E)`.
+
+Rewrite using `[StarAAbar.coe_smul, show ((x : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E x from rfl, hxe, map_mul, StarAAbar.coe_smul, StarAAbar.conj_conj, StarAAbar.star_eq_conj]`. Rewrite using `[smul_mul_assoc, key]`. Conclude with `Submodule.smul_mem _ _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨_, hxs, rfl⟩)`. Establish `h3 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (star c) ≤ D.host.AA`. Unfold `Host.AA Host.AA0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, mul_inv_cancel₀ hJ, mul_one]`. Use `_ ≤ _ := by gcongr`. Conclude with `h3 (FractionalIdeal.mem_spanSingleton_self _ _)`.
+-/
 theorem star_mem_AA_of_mem_AAbar : ∀ {D : D7} {c : D.host.E}, c ∈ D.host.AAbar → star c ∈ D.host.AA := by
   intro D c hc
   have hJ : ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=

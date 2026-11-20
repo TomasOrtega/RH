@@ -25,10 +25,24 @@ def CechHOneVanishesOnOpen (M : LB X) (V : X.Opens) : Prop :=
 
 variable {M : LB X}
 
+/- English proof (translation)
+Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl h`.
+-/
 theorem le_iSup_inf {J : Type} {P : J → X.Opens} {W : X.Opens} (h : W ≤ ⨆ k, P k) :
     W ≤ ⨆ k, W ⊓ P k := by
   rw [← inf_iSup_eq]; exact le_inf le_rfl h
 
+/- English proof (translation)
+Establish `hglue : ∀ a, ∃ ψ : SecOn M (O a), ∀ k, restrict M (inf_le_left : O a ⊓ P k ≤ O a) ψ = restrict M (inf_le_inf le_rfl (hP k)) (φ a (τ k)) + restrict M inf_le_right (ψ' k)`. Introduce `a`. Use `(existsUnique_glue (fun k => O a ⊓ P k) (fun k => inf_le_left) (le_iSup_inf (hc a)) _ fun k l => ?_).exists` and prove the remaining obligations. Establish `hk : O a ⊓ P k ⊓ (O a ⊓ P l) ≤ P k` using `inf_le_left.trans inf_le_right`. Establish `hl : O a ⊓ P k ⊓ (O a ⊓ P l) ≤ P l` using `inf_le_right.trans inf_le_right`.
+
+Establish `ha : O a ⊓ P k ⊓ (O a ⊓ P l) ≤ O a` using `inf_le_left.trans inf_le_left`. Establish `h1` using `congrArg (restrict M (le_inf hk hl)) (h k l)`. Establish `h2` using `hφ a (τ k) (τ l) _ ha (hk.trans (hP k)) (hl.trans (hP l))`. Simplify using `only [map_add, map_sub, restrict_restrict] at h1 h2 ⊢`. Rewrite using `[← h2, h1]`.
+
+Normalize the expressions using the abelian group laws. Use `choose ψ hψ using hglue`. Use `⟨ψ, fun a b => ext_of_cover (fun k => O a ⊓ O b ⊓ P k) (fun k => inf_le_left) (le_iSup_inf (inf_le_left.trans (hc a))) fun k => ?_⟩` and prove the remaining obligations. Establish `ha : O a ⊓ O b ⊓ P k ≤ O a` using `inf_le_left.trans inf_le_left`. Establish `hb : O a ⊓ O b ⊓ P k ≤ O b` using `inf_le_left.trans inf_le_right`.
+
+Establish `hk : O a ⊓ O b ⊓ P k ≤ P k` using `inf_le_right`. Establish `h1` using `congrArg (restrict M (le_inf ha hk)) (hψ a k)`. Establish `h2` using `congrArg (restrict M (le_inf hb hk)) (hψ b k)`. Establish `h3` using `hφ a b (τ k) _ ha hb (hk.trans (hP k))`. Simplify using `only [map_add, map_sub, restrict_restrict] at h1 h2 h3 ⊢`.
+
+Rewrite using `[h1, h2, ← h3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isCoboundary_of_refine {I J : Type} {O : I → X.Opens} {φ : ∀ a b, SecOn M (O a ⊓ O b)}
     (hφ : IsCocycle M O φ) (P : J → X.Opens) (τ : J → I) (hP : ∀ k, P k ≤ O (τ k))
     (hc : ∀ a, O a ≤ ⨆ k, P k) (ψ' : ∀ k, SecOn M (P k))
@@ -61,6 +75,17 @@ theorem isCoboundary_of_refine {I J : Type} {O : I → X.Opens} {φ : ∀ a b, S
   rw [h1, h2, ← h3]
   abel
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `H I O _ hc φ hφ`. Establish `hc' : ⨆ p : I × M.ι, O p.1 ⊓ M.U p.2 = ⊤`. Use `top_unique (hc.trans (iSup_le fun a => (le_iSup_inf (hM.cover.ge.trans' le_top)).trans (iSup_le fun i => le_iSup (fun p : I × M.ι => O p.1 ⊓ M.U p.2) (a, i))))` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `H (I × M.ι) (fun p => O p.1 ⊓ M.U p.2) Prod.snd (fun _ => inf_le_right) hc' (fun p q => chart hM p.2 (inf_le_left.trans inf_le_right) (restrict M (inf_le_inf inf_le_left inf_le_left) (φ p.1 q.1))) (by`.
+
+Introduce `p q r`. Rewrite using `[← chart_restrict, ← chart_restrict, ← chart_restrict, ← chart_change hM p.2 q.2 ((inf_le_left.trans inf_le_left).trans inf_le_right), ← map_add]`. Simplify using `only [restrict_restrict]`. Conclude with `congrArg _ (hφ p.1 q.1 r.1 _ ((inf_le_left.trans inf_le_left).trans inf_le_left) ((inf_le_left.trans inf_le_right).trans inf_le_left) (inf_le_right.trans inf_le_left)))`. Use `isCoboundary_of_refine hφ (fun p : I × M.ι => O p.1 ⊓ M.U p.2) Prod.fst (fun _ => inf_le_left) (fun _ => le_top.trans hc'.ge) (fun p => (chart hM p.2 inf_le_right).symm (ψ p)) fun p q => ?_` and prove the remaining obligations.
+
+Apply `(chart hM p.2 (inf_le_left.trans inf_le_right)).injective` to reduce the goal to its premises. Rewrite using `[map_sub, chart_restrict hM p.2 inf_le_right, LinearEquiv.apply_symm_apply, chart_change hM p.2 q.2 _ (inf_le_right.trans inf_le_right) (restrict M inf_le_right _), chart_restrict hM q.2 inf_le_right, LinearEquiv.apply_symm_apply]`. Conclude with `hψ p q`. Introduce `H I V c hV hc φ hφ`. Take `⟨ψ, hψ⟩` from `H I V (fun _ => le_top) hc.ge (fun a b => (chart hM (c a) (inf_le_left.trans (hV a))).symm (φ a b)) (by`.
+
+Introduce `a b d W ha hb hd`. Apply `(chart hM (c a) (ha.trans (hV a))).injective` to reduce the goal to its premises. Establish `h` using `congrArg (rs X (le_inf (le_inf ha hb) hd)) (hφ a b d)`. Simplify using `only [map_add, map_mul, rs_rs] at h`. Rewrite using `[map_add, chart_restrict hM (c a) (inf_le_left.trans (hV a)), chart_change hM (c a) (c b) _ (hb.trans (hV b)), chart_restrict hM (c b) (inf_le_left.trans (hV b)), chart_restrict hM (c a) (inf_le_left.trans (hV a))]`.
+
+Simplify `h)` using `only [LinearEquiv.apply_symm_apply]`. Use `⟨fun a => chart hM (c a) (hV a) (ψ a), fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `(LinearEquiv.symm_apply_eq _).1 (hψ a b)`. Rewrite using `[h, map_sub, chart_restrict hM (c a) (hV a), chart_change hM (c a) (c b) _ (inf_le_right.trans (hV b)), chart_restrict hM (c b) (hV b)]`.
+-/
 theorem h1Zero_iff (hM : M.IsLB) : FirstCohomologyVanishes M ↔ CechHOneVanishesOnOpen M ⊤ := by
   constructor
   · intro H I O _ hc φ hφ
@@ -102,6 +127,23 @@ theorem h1Zero_iff (hM : M.IsLB) : FirstCohomologyVanishes M ↔ CechHOneVanishe
     rw [h, map_sub, chart_restrict hM (c a) (hV a),
       chart_change hM (c a) (c b) _ (inf_le_right.trans (hV b)), chart_restrict hM (c b) (hV b)]
 
+/- English proof (translation)
+Introduce `I O hO hcO φ hφ`. Use `choose σ hσ using fun i => h1 i I (fun a => D i ⊓ O a) (fun _ => inf_le_left) (le_iSup_inf ((hD i).trans hcO)) (fun a b => restrict M (inf_le_inf inf_le_right inf_le_right) (φ a b)) (by`. Introduce `a b d W ha hb hd`. Simplify using `only [restrict_restrict]`. Conclude with `hφ a b d W (ha.trans inf_le_right) (hb.trans inf_le_right) (hd.trans inf_le_right))`.
+
+Establish `hσ' : ∀ i a b (W : X.Opens) (hi : W ≤ D i) (ha : W ≤ O a) (hb : W ≤ O b), restrict M (le_inf ha hb) (φ a b) = restrict M (le_inf hi ha) (σ i a) - restrict M (le_inf hi hb) (σ i b)`. Introduce `i a b W hi ha hb`. Establish `h` using `congrArg (restrict M (le_inf (le_inf hi ha) (le_inf hi hb))) (hσ i a b)`. Simplify `h` using `only [map_sub, restrict_restrict]`. Establish `hglue : ∀ i j, ∃ θ : SecOn M (D i ⊓ D j), ∀ a, restrict M (inf_le_left : D i ⊓ D j ⊓ O a ≤ D i ⊓ D j) θ = restrict M (inf_le_inf_right _ inf_le_left) (σ i a) - restrict M (inf_le_inf_right _ inf_le_right) (σ j a)`.
+
+Introduce `i j`. Use `(existsUnique_glue (fun a => D i ⊓ D j ⊓ O a) (fun a => inf_le_left) (le_iSup_inf ((inf_le_left.trans (hD i)).trans hcO)) _ fun a b => ?_).exists` and prove the remaining obligations. Establish `ha : D i ⊓ D j ⊓ O a ⊓ (D i ⊓ D j ⊓ O b) ≤ O a` using `inf_le_left.trans inf_le_right`. Establish `hb : D i ⊓ D j ⊓ O a ⊓ (D i ⊓ D j ⊓ O b) ≤ O b` using `inf_le_right.trans inf_le_right`. Establish `e1` using `hσ' i a b _ (inf_le_left.trans (inf_le_left.trans inf_le_left)) ha hb`.
+
+Establish `e2` using `hσ' j a b _ (inf_le_left.trans (inf_le_left.trans inf_le_right)) ha hb`. Simplify using `only [map_sub, restrict_restrict]`. Rewrite using `[sub_eq_sub_iff_sub_eq_sub, ← e1, ← e2]`. Use `choose θ hθ using hglue`. Establish `hθ' : ∀ i j a (W : X.Opens) (hi : W ≤ D i) (hj : W ≤ D j) (ha : W ≤ O a), restrict M (le_inf hi hj) (θ i j) = restrict M (le_inf hi ha) (σ i a) - restrict M (le_inf hj ha) (σ j a)`.
+
+Introduce `i j a W hi hj ha`. Establish `h` using `congrArg (restrict M (le_inf (le_inf hi hj) ha)) (hθ i j a)`. Simplify `h` using `only [map_sub, restrict_restrict]`. Take `⟨ξ, hξ⟩` from `h2 θ (by`. Introduce `i j k W hi hj hk`.
+
+Use `ext_of_cover (fun a => W ⊓ O a) (fun a => inf_le_left) (le_iSup_inf ((hi.trans (hD i)).trans hcO)) fun a => ?_` and prove the remaining obligations. Simplify using `only [map_add, restrict_restrict]`. Rewrite using `[hθ' i j a _ (inf_le_left.trans hi) (inf_le_left.trans hj) inf_le_right, hθ' j k a _ (inf_le_left.trans hj) (inf_le_left.trans hk) inf_le_right, hθ' i k a _ (inf_le_left.trans hi) (inf_le_left.trans hk) inf_le_right]`. Use the proof step `abel)`. Use `isCoboundary_of_refine hφ (fun p : κ × I => D p.1 ⊓ O p.2) Prod.snd (fun _ => inf_le_right) (fun a => (le_iSup_inf ((hO a).trans hc)).trans (iSup_le fun i => (le_inf inf_le_right inf_le_left).trans (le_iSup (fun p : κ × I => D p.1 ⊓ O p.2) (i, a)))) (fun p => σ p.1 p.2 - restrict …` and prove the remaining obligations.
+
+Establish `hi : D p.1 ⊓ O p.2 ⊓ (D q.1 ⊓ O q.2) ≤ D p.1` using `inf_le_left.trans inf_le_left`. Establish `hj : D p.1 ⊓ O p.2 ⊓ (D q.1 ⊓ O q.2) ≤ D q.1` using `inf_le_right.trans inf_le_left`. Establish `ha : D p.1 ⊓ O p.2 ⊓ (D q.1 ⊓ O q.2) ≤ O p.2` using `inf_le_left.trans inf_le_right`. Establish `hb : D p.1 ⊓ O p.2 ⊓ (D q.1 ⊓ O q.2) ≤ O q.2` using `inf_le_right.trans inf_le_right`. Establish `e1` using `hσ' p.1 p.2 q.2 _ hi ha hb`.
+
+Establish `e2` using `hθ' p.1 q.1 q.2 _ hi hj hb`. Establish `e3` using `congrArg (restrict M (le_inf hi hj)) (hξ p.1 q.1)`. Simplify using `only [map_sub, restrict_restrict] at e3 ⊢`. Rewrite using `[e1, sub_sub_sub_comm, ← e3, e2]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cechHOneVanishesOnOpen_of_cover {κ : Type} {D : κ → X.Opens} {V : X.Opens} (hD : ∀ i, D i ≤ V)
     (hc : V ≤ ⨆ i, D i) (h1 : ∀ i, CechHOneVanishesOnOpen M (D i))
     (h2 : ∀ θ : ∀ i j, SecOn M (D i ⊓ D j), IsCocycle M D θ → IsCoboundary M D θ) :
@@ -163,6 +205,11 @@ theorem cechHOneVanishesOnOpen_of_cover {κ : Type} {D : κ → X.Opens} {V : X.
   rw [e1, sub_sub_sub_comm, ← e3, e2]
   abel
 
+/- English proof (translation)
+Establish `e : W = X.basicOpen (rs X hUV t)` using `by rw [hW]; exact (X.basicOpen_res t _).symm`. Substitute `e` using the available equality. Use `hU.isLocalization_basicOpen (rs X hUV t)` as an intermediate fact. Take `⟨⟨ρ, _, n₀, rfl⟩, h⟩` from `IsLocalization.surj (Submonoid.powers (rs X hUV t)) (chart hM i ((X.basicOpen_le _).trans hi) φ)`. Use `⟨n₀, fun n hn => ⟨(chart hM i hi).symm (rs X hUV t ^ (n - n₀) * ρ), ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h' : chart hM i ((X.basicOpen_le _).trans hi) φ * rs X (X.basicOpen_le _) (rs X hUV t ^ n₀) = rs X (X.basicOpen_le _) ρ` using `h`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Apply `(chart hM i ((X.basicOpen_le _).trans hi)).injective` to reduce the goal to its premises. Rewrite using `[chart_restrict hM i hi, LinearEquiv.apply_symm_apply, map_smul, smul_eq_mul, map_mul, ← h', map_pow, map_pow, rs_rs, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_extend (hM : M.IsLB) {V U W : X.Opens} (hU : IsAffineOpen U) (hUV : U ≤ V) (i : M.ι)
     (hi : U ≤ M.U i) (t : Γ(X, V)) (hW : W = U ⊓ X.basicOpen t) (φ : SecOn M W) :
     ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → ∃ ρ : SecOn M U, restrict M (hW.le.trans inf_le_left) ρ =
@@ -181,6 +228,13 @@ theorem exists_extend (hM : M.IsLB) {V U W : X.Opens} (hU : IsAffineOpen U) (hUV
     map_mul, ← h', map_pow, map_pow, rs_rs, Nat.add_sub_cancel_left]
   ring
 
+/- English proof (translation)
+Establish `e : W = X.basicOpen (rs X hUV t)` using `by rw [hW]; exact (X.basicOpen_res t _).symm`. Substitute `e` using the available equality. Use `hU.isLocalization_basicOpen (rs X hUV t)` as an intermediate fact. Establish `h₁` using `congrArg (chart hM i ((X.basicOpen_le _).trans hi)) h`. Rewrite `h₁` using `[chart_restrict hM i hi, map_zero]`.
+
+Take `⟨⟨_, n₀, rfl⟩, h'⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers (rs X hUV t)) Γ(X, X.basicOpen (rs X hUV t)) _).1 h₁`. Use `⟨n₀, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Apply `(chart hM i hi).injective` to reduce the goal to its premises. Simplify using `only at h'`.
+
+Rewrite using `[map_smul, smul_eq_mul, map_zero]`. Take the linear combination `rs X hUV t ^ d * h'`.
+-/
 theorem exists_kill (hM : M.IsLB) {V U W : X.Opens} (hU : IsAffineOpen U) (hUV : U ≤ V) (i : M.ι)
     (hi : U ≤ M.U i) (t : Γ(X, V)) (hW : W = U ⊓ X.basicOpen t) (φ : SecOn M U)
     (h : restrict M (hW.le.trans inf_le_left) φ = 0) :
@@ -199,6 +253,29 @@ theorem exists_kill (hM : M.IsLB) {V U W : X.Opens} (hU : IsAffineOpen U) (hUV :
   rw [map_smul, smul_eq_mul, map_zero]
   linear_combination rs X hUV t ^ d * h'
 
+/- English proof (translation)
+Introduce `I O hO hc φ hφ`. Establish `hex : ∀ x : V, ∃ (t : Γ(X, V)) (a : I) (i : M.ι), X.basicOpen t ≤ O a ⊓ M.U i ∧ x.1 ∈ X.basicOpen t`. Introduce `x`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc x.2)`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (Set.mem_univ x.1))`.
+
+Take `⟨t, h1, h2⟩` from `hT.exists_basicOpen_le (V := O a ⊓ M.U i) ⟨x, ha, hi⟩ x.2`. Conclude with `⟨t, a, i, h1, h2⟩`. Use `choose t₀ τ₀ c₀ ht₀ hx₀ using hex`. Take `⟨S, hS⟩` from `hT.isCompact.elim_finite_subcover (fun x : V => (X.basicOpen (t₀ x) : Set X)) (fun x => (X.basicOpen (t₀ x)).isOpen) (fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hx₀ ⟨x, hx⟩⟩)`. Set `t : S → Γ(X, V)` to `fun k => t₀ k`.
+
+Set `τ : S → I` to `fun k => τ₀ k`. Set `D : S → X.Opens` to `fun k => X.basicOpen (t k)`. Establish `hD : ∀ k, D k ≤ O (τ k)` using `fun k => (ht₀ k).trans inf_le_left`. Establish `hDU : ∀ k : S, D k ≤ M.U (c₀ k)` using `fun k => (ht₀ k).trans inf_le_right`. Establish `hDV : ∀ k, D k ≤ V` using `fun k => X.basicOpen_le _`.
+
+Establish `hDc : V ≤ ⨆ k, D k` using `fun x hx => by`. Take `⟨k, hk, hx⟩` from `Set.mem_iUnion₂.1 (hS hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨k, hk⟩, hx⟩`. Establish `hspan : Ideal.span (Set.range t) = ⊤`. Rewrite using `[← hT.iSup_basicOpen_eq_self_iff]`.
+
+Use `le_antisymm (iSup_le fun f => X.basicOpen_le _) (hDc.trans (iSup_le fun k => ?_))` and prove the remaining obligations. Conclude with `le_iSup (fun f : Set.range t => X.basicOpen (f : Γ(X, V))) ⟨t k, k, rfl⟩`. Establish `hA : ∀ k, IsAffineOpen (D k)` using `fun k => hT.basicOpen _`. Establish `hA₂ : ∀ k l, IsAffineOpen (D k ⊓ D l)` using `fun k l => by`. Rewrite using `[← X.basicOpen_mul]`.
+
+Conclude with `hT.basicOpen _`. Use `choose n₁ hn₁ using fun k l => exists_extend hM (hA k) (hDV k) _ (hDU k) (t l) rfl (restrict M (inf_le_inf (hD k) (hD l)) (φ (τ k) (τ l)))`. Take `⟨a₁, ha₁⟩` from `(Set.finite_range fun p : S × S => n₁ p.1 p.2).bddAbove`. Use `choose ρ hρ using fun k l => hn₁ k l a₁ (ha₁ ⟨(k, l), rfl⟩)`. Establish `hk : ∀ k l m, ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → rs X (inf_le_left.trans (hDV k) : D k ⊓ D l ≤ V) (t m) ^ n • (restrict M inf_le_left (ρ k m) - restrict M (inf_le_right : D k ⊓ D l ≤ D l) (ρ l m) - rs X (inf_le_left.trans (hDV k) : D k ⊓ D l ≤ V) (t m) ^ a₁ • restrict M (inf_le_inf (hD k) ( …`.
+
+Introduce `k l m`. Use `exists_kill hM (hA₂ k l) _ _ (inf_le_left.trans (hDU k)) (t m) rfl _ ?_` and prove the remaining obligations. Establish `h1` using `congrArg (restrict M (le_inf (inf_le_left.trans inf_le_left) inf_le_right : D k ⊓ D l ⊓ D m ≤ D k ⊓ D m)) (hρ k m)`. Establish `h2` using `congrArg (restrict M (le_inf (inf_le_left.trans inf_le_right) inf_le_right : D k ⊓ D l ⊓ D m ≤ D l ⊓ D m)) (hρ l m)`. Establish `h3` using `hφ (τ k) (τ l) (τ m) (D k ⊓ D l ⊓ D m) ((inf_le_left.trans inf_le_left).trans (hD k)) ((inf_le_left.trans inf_le_right).trans (hD l)) (inf_le_right.trans (hD m))`.
+
+Simplify using `only [map_smulₛₗ, map_sub, map_pow, rs_rs, restrict_restrict] at h1 h2 h3 ⊢`. Rewrite using `[h1, h2, ← h3, smul_add]`. Normalize the expressions using the abelian group laws. Use `choose n₂ hn₂ using hk`. Take `⟨a₂, ha₂⟩` from `(Set.finite_range fun p : S × S × S => n₂ p.1 p.2.1 p.2.2).bddAbove`.
+
+Establish `hspan' : (1 : Γ(X, V)) ∈ Ideal.span (Set.range fun k => t k ^ (a₂ + a₁))`. Use `Ideal.span_pow_eq_top _ hspan (a₂ + a₁)` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Conclude with `this.ge trivial`. Take `⟨h, hh⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hspan'`.
+
+Use `isCoboundary_of_refine hφ D τ hD (fun a => (hO a).trans hDc) (fun k => ∑ m, rs X (hDV k) (h m * t m ^ a₂) • ρ k m) fun k l => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (rs X (inf_le_left.trans (hDV k) : D k ⊓ D l ≤ V)) hh`. Simplify using `only [map_sum, map_smulₛₗ, map_mul, map_pow, map_one, rs_rs] at h1 ⊢`. Rewrite using `[← Finset.sum_sub_distrib, ← one_smul Γ(X, D k ⊓ D l) (restrict M _ (φ (τ k) (τ l))), ← h1, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Establish `h2` using `hn₂ k l m a₂ (ha₂ ⟨(k, l, m), rfl⟩)`. Rewrite `h2` using `[smul_sub, sub_eq_zero, smul_smul, ← pow_add]`. Rewrite using `[← smul_sub, mul_smul, mul_smul, h2]`.
+-/
 theorem cechHOneVanishesOnOpen_of_isAffineOpen (hM : M.IsLB) {V : X.Opens} (hT : IsAffineOpen V) :
     CechHOneVanishesOnOpen M V := by
   classical
@@ -267,6 +344,15 @@ theorem cechHOneVanishesOnOpen_of_isAffineOpen (hM : M.IsLB) {V : X.Opens} (hT :
   rw [smul_sub, sub_eq_zero, smul_smul, ← pow_add] at h2
   rw [← smul_sub, mul_smul, mul_smul, h2]
 
+/- English proof (translation)
+Establish `key : ∀ a b c, a < b → F a b + F b c = F a c`. Introduce `a b c hab`. Break down `lt_trichotomy b c with hbc | rfl | hbc` into its components or cases. Conclude with `h a b c hab hbc`. Rewrite using `[h0, add_zero]`.
+
+Break down `lt_trichotomy a c with hac | rfl | hac` into its components or cases. Rewrite using `[← h a c b hac hbc, hs c b]`. Normalize the expressions using the abelian group laws. Rewrite using `[h0, hs a b]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[hs c b, hs c a, ← h c a b hac hab]`. Normalize the expressions using the abelian group laws. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `key a b c hab`. Rewrite using `[h0, zero_add]`.
+
+Rewrite using `[← key b a c hab, hs b a]`. Normalize the expressions using the abelian group laws.
+-/
 theorem add_eq_of_ordered {κ G : Type} [LinearOrder κ] [AddCommGroup G] (F : κ → κ → G)
     (h0 : ∀ a, F a a = 0) (hs : ∀ a b, F b a = -F a b)
     (h : ∀ a b c, a < b → b < c → F a b + F b c = F a c) (a b c : κ) : F a b + F b c = F a c := by
@@ -284,6 +370,11 @@ theorem add_eq_of_ordered {κ G : Type} [LinearOrder κ] [AddCommGroup G] (F : �
   · rw [h0, zero_add]
   · rw [← key b a c hab, hs b a]; abel
 
+/- English proof (translation)
+Use `⟨t.orderEmbOfFin ht 0, t.orderEmbOfFin ht 1, t.orderEmbOfFin ht 2, (t.orderEmbOfFin ht).strictMono (by decide), (t.orderEmbOfFin ht).strictMono (by decide), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `⟨fun hx => ?_, fun hx => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `obtain ⟨n, rfl⟩ := (Finset.range_orderEmbOfFin t ht).ge (Finset.mem_coe.2 hx) fin_cases n <;> simp`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hx`.
+
+Apply the tactic sequence `rcases hx with rfl | rfl | rfl <;> exact Finset.orderEmbOfFin_mem _ _ _`.
+-/
 theorem exists_triple {κ : Type} [LinearOrder κ] {t : Finset κ} (ht : t.card = 3) :
     ∃ i j k, i < j ∧ j < k ∧ t = {i, j, k} := by
   refine ⟨t.orderEmbOfFin ht 0, t.orderEmbOfFin ht 1, t.orderEmbOfFin ht 2,
@@ -295,6 +386,9 @@ theorem exists_triple {κ : Type} [LinearOrder κ] {t : Finset κ} (ht : t.card 
   · simp only [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl | rfl <;> exact Finset.orderEmbOfFin_mem _ _ _
 
+/- English proof (translation)
+Take `⟨i, j, hij, rfl⟩` from `Finset.card_eq_two.1 ht`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `⟨i, j, h, rfl⟩`. Conclude with `⟨j, i, h, Finset.pair_comm _ _⟩`.
+-/
 theorem exists_pair {κ : Type} [LinearOrder κ] {t : Finset κ} (ht : t.card = 2) :
     ∃ i j, i < j ∧ t = {i, j} := by
   obtain ⟨i, j, hij, rfl⟩ := Finset.card_eq_two.1 ht
@@ -302,6 +396,17 @@ theorem exists_pair {κ : Type} [LinearOrder κ] {t : Finset κ} (ht : t.card = 
   · exact ⟨i, j, h, rfl⟩
   · exact ⟨j, i, h, Finset.pair_comm _ _⟩
 
+/- English proof (translation)
+Establish `h''` using `h.trans h'`. Rewrite using `[GlobalTheory.Cube.d_apply_extend, Finset.sum_insert (by simp [h.ne, h''.ne]), Finset.sum_pair h'.ne, ← GlobalTheory.Cube.extend_apply_of_eq A x (Finset.card_pair h'.ne), ← GlobalTheory.Cube.extend_apply_of_eq A x (Finset.card_pair h''.ne), ← GlobalTheory.Cube.extend_apply_of_eq …`. Establish `e1 : ({i, j, k} : Finset κ).erase i = {j, k}` using `Finset.erase_insert (by simp [h.ne, h''.ne])`. Establish `e2 : ({i, j, k} : Finset κ).erase j = {i, k}`. Rewrite using `[Finset.erase_insert_of_ne h.ne, Finset.erase_insert (by simp [h'.ne])]`.
+
+Establish `e3 : ({i, j, k} : Finset κ).erase k = {i, j}`. Rewrite using `[Finset.erase_insert_of_ne h''.ne, Finset.erase_insert_of_ne h'.ne, Finset.erase_singleton]`. Both sides reduce to the same expression. Establish `s1 : cubeSign ({i, j, k} : Finset κ) i = 1` using `cubeSign_eq_one_of_forall_le (by simp [h.le, h''.le])`. Establish `s2 : cubeSign ({i, j, k} : Finset κ) j = -1`.
+
+Use `cubeSign_erase_of_lt (t := {i, j, k}) (by simp) h` as an intermediate fact. Rewrite `this` using `[e1, cubeSign_eq_one_of_forall_le (by simp [h'.le])]`. Use linear arithmetic over natural numbers and integers. Establish `s3 : cubeSign ({i, j, k} : Finset κ) k = 1`. Establish `h1` using `cubeSign_erase_of_lt (t := {i, j, k}) (by simp) h''`.
+
+Establish `h2` using `cubeSign_erase_of_lt (t := {j, k}) (by simp) h'`. Rewrite `h2` using `[Finset.erase_insert (by simp [h'.ne]), cubeSign_singleton]`. Rewrite `h1` using `[e1]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.Cube.res_congr A _ e1 _ (by simp), GlobalTheory.Cube.res_congr A _ e2 _ (by simp), GlobalTheory.Cube.res_congr A _ e3 _ (by simp [Finset.insert_subset_iff])]`.
+
+Simplify using `only [s1, s2, s3, one_smul, neg_smul, sub_eq_add_neg, add_assoc]`.
+-/
 theorem d_two_apply_triple {κ : Type} [LinearOrder κ] (A : GlobalTheory.Cube.{0} κ R) (x : GlobalTheory.Cube.Term A 2)
     {i j k : κ} (h : i < j) (h' : j < k) (hc : ({i, j, k} : Finset κ).card = 2 + 1) :
     GlobalTheory.Cube.d A 2 x ⟨{i, j, k}, hc⟩ =
@@ -339,13 +444,22 @@ section Cube
 
 variable {κ : Type} (D : κ → X.Opens)
 
+/- English proof (translation)
+Simplify using `using hi`.
+-/
 theorem le_single {W : X.Opens} {i : κ} (hi : W ≤ D i) : W ≤ ⨅ l ∈ ({i} : Finset κ), D l := by
   simpa using hi
 
+/- English proof (translation)
+The claim follows from `biInf_le _ hi`.
+-/
 theorem le_of_mem {s : Finset κ} {i : κ} (hi : i ∈ s) : ⨅ l ∈ s, D l ≤ D i := biInf_le _ hi
 
 variable [LinearOrder κ]
 
+/- English proof (translation)
+Simplify using `[hi, hj]`.
+-/
 theorem le_pair {W : X.Opens} {i j : κ} (hi : W ≤ D i) (hj : W ≤ D j) :
     W ≤ ⨅ l ∈ ({i, j} : Finset κ), D l := by
   simp [hi, hj]
@@ -357,6 +471,9 @@ def comp {p : ℕ} (x : GlobalTheory.Cube.Term (secCube f M D) p) (s : Finset κ
 
 variable {D f M}
 
+/- English proof (translation)
+Establish `e : comp M D f (GlobalTheory.Cube.d _ 1 x) {i, j} (Finset.card_pair h.ne) = restrict M (iInf_le_iInf_of_subset D (by simp)) (comp M D f x {j} (Finset.card_singleton j)) - restrict M (iInf_le_iInf_of_subset D (by simp)) (comp M D f x {i} (Finset.card_singleton i))` using `GlobalTheory.Cube.d_one_apply_pair _ x h`. Rewrite using `[e, map_sub, restrict_restrict, restrict_restrict]`.
+-/
 theorem restrict_d_one (x : GlobalTheory.Cube.Term (secCube f M D) 1) {i j : κ} (h : i < j) {W : X.Opens}
     (hi : W ≤ D i) (hj : W ≤ D j) :
     restrict M (le_pair D hi hj) (comp M D f (GlobalTheory.Cube.d _ 1 x) {i, j} (Finset.card_pair h.ne)) =
@@ -368,6 +485,9 @@ theorem restrict_d_one (x : GlobalTheory.Cube.Term (secCube f M D) 1) {i j : κ}
     GlobalTheory.Cube.d_one_apply_pair _ x h
   rw [e, map_sub, restrict_restrict, restrict_restrict]
 
+/- English proof (translation)
+Establish `e : comp M D f (GlobalTheory.Cube.d _ 2 x) {i, j, k} hc = restrict M (iInf_le_iInf_of_subset D (by simp)) (comp M D f x {j, k} (Finset.card_pair h'.ne)) - restrict M (iInf_le_iInf_of_subset D (by simp)) (comp M D f x {i, k} (Finset.card_pair (h.trans h').ne)) + restrict M (iInf_l …` using `d_two_apply_triple _ x h h' hc`. Rewrite using `[e, map_add, map_sub, restrict_restrict, restrict_restrict, restrict_restrict]`.
+-/
 theorem restrict_d_two (x : GlobalTheory.Cube.Term (secCube f M D) 2) {i j k : κ} (h : i < j) (h' : j < k)
     (hc : ({i, j, k} : Finset κ).card = 2 + 1) {W : X.Opens}
     (hi : W ≤ D i) (hj : W ≤ D j) (hk : W ≤ D k) :
@@ -384,12 +504,18 @@ theorem restrict_d_two (x : GlobalTheory.Cube.Term (secCube f M D) 2) {i j k : �
     d_two_apply_triple _ x h h' hc
   rw [e, map_add, map_sub, restrict_restrict, restrict_restrict, restrict_restrict]
 
+/- English proof (translation)
+Establish `h` using `hφ a a a (O a ⊓ O a) inf_le_left inf_le_left inf_le_left`. Rewrite `h` using `[restrict_self]`. Conclude with `add_eq_left.1 h`.
+-/
 theorem IsCocycle.diag {I : Type} {O : I → X.Opens} {φ : ∀ a b, SecOn M (O a ⊓ O b)}
     (hφ : IsCocycle M O φ) (a : I) : φ a a = 0 := by
   have h := hφ a a a (O a ⊓ O a) inf_le_left inf_le_left inf_le_left
   rw [restrict_self] at h
   exact add_eq_left.1 h
 
+/- English proof (translation)
+Establish `h` using `hφ a b a (O a ⊓ O b) inf_le_left inf_le_right inf_le_left`. Rewrite `h` using `[restrict_self, hφ.diag, map_zero]`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+-/
 theorem IsCocycle.swap {I : Type} {O : I → X.Opens} {φ : ∀ a b, SecOn M (O a ⊓ O b)}
     (hφ : IsCocycle M O φ) (a b : I) :
     φ a b = -restrict M (le_inf inf_le_right inf_le_left) (φ b a) := by
@@ -397,6 +523,19 @@ theorem IsCocycle.swap {I : Type} {O : I → X.Opens} {φ : ∀ a b, SecOn M (O 
   rw [restrict_self, hφ.diag, map_zero] at h
   exact eq_neg_of_add_eq_zero_left h
 
+/- English proof (translation)
+Establish `hex` using `(cechComplex_exactAt_succ_iff (secCube f M D) 0).1 h`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : GlobalTheory.Cube.Term (secCube f M D) 2, ∀ i j (h : i < j), comp M D f x {i, j} (Finset.card_pair h.ne) = restrict M (le_inf (le_of_mem D (by simp)) (le_of_mem D (by simp))) (φ i j) := by`. Establish `hne : ∀ s : {s : Finset κ // s.card = 2}, s.1.Nonempty` using `fun s => Finset.card_pos.1 (by rw [s.2]; decide)`. Establish `hcongr : ∀ {i j i' j' : κ} (_ : i = i') (_ : j = j') {W : X.Opens} (e : W ≤ D i ⊓ D j) (e' : W ≤ D i' ⊓ D j'), restrict M e (φ i j) = restrict M e' (φ i' j')`. Introduce and unpack `_ _ _ _ rfl rfl _ _ _`.
+
+Both sides reduce to the same expression. Use `⟨fun s => SecOnR.of f M _ (restrict M (le_inf (le_of_mem D (s.1.min'_mem (hne s))) (le_of_mem D (s.1.max'_mem (hne s)))) (φ _ _)), fun i j h => ?_⟩` and prove the remaining obligations. Conclude with `hcongr (by simp [h.le]) (by simp [h.le]) (le_inf (le_of_mem D (Finset.min'_mem _ (by simp))) (le_of_mem D (Finset.max'_mem _ (by simp)))) _`. Establish `hd : GlobalTheory.Cube.d _ 2 x = 0`. Use function extensionality and compare the values at `⟨t, ht⟩`.
+
+Take `⟨i, j, k, hij, hjk, rfl⟩` from `exists_triple ht`. Establish `e` using `restrict_d_two x hij hjk ht (W := ⨅ l ∈ ({i, j, k} : Finset κ), D l) (le_of_mem D (by simp)) (le_of_mem D (by simp)) (le_of_mem D (by simp))`. Rewrite `e` using `[restrict_self, hx i j hij, hx j k hjk, hx i k (hij.trans hjk), restrict_restrict, restrict_restrict, restrict_restrict, ← hφ i j k _ (le_of_mem D (by simp)) (le_of_mem D (by simp)) (le_of_mem D (by simp))]`. Conclude with `e.trans (Eq.trans (b := 0) (by abel) rfl)`. Take `⟨y, hy⟩` from `(hex x).1 hd`.
+
+Set `ψ : ∀ a, SecOn M (D a)` to `fun a => -restrict M (le_single D le_rfl) (comp M D f y {a} (Finset.card_singleton a))`. Establish `hlt : ∀ a b, a < b → φ a b = restrict M inf_le_left (ψ a) - restrict M inf_le_right (ψ b)`. Introduce `a b hab`. Establish `e` using `restrict_d_one y hab (W := D a ⊓ D b) inf_le_left inf_le_right`. Rewrite `e` using `[show GlobalTheory.Cube.d _ 1 y = x from hy, hx a b hab, restrict_restrict, restrict_self]`.
+
+Simplify using `only [ψ, map_neg, restrict_restrict, e]`. Normalize the expressions using the abelian group laws. Use `⟨ψ, fun a b => ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `hlt a b hab`.
+
+Rewrite using `[hφ.diag, sub_self]`. Rewrite using `[hφ.swap a b, hlt b a hab, map_sub, restrict_restrict, restrict_restrict, neg_sub]`.
+-/
 theorem isCoboundary_of_exactAt (h : (cechLB f M D).ExactAt 1)
     (φ : ∀ a b, SecOn M (D a ⊓ D b)) (hφ : IsCocycle M D φ) : IsCoboundary M D φ := by
   have hex := (cechComplex_exactAt_succ_iff (secCube f M D) 0).1 h
@@ -437,6 +576,23 @@ theorem isCoboundary_of_exactAt (h : (cechLB f M D).ExactAt 1)
   · rw [hφ.diag, sub_self]
   · rw [hφ.swap a b, hlt b a hab, map_sub, restrict_restrict, restrict_restrict, neg_sub]
 
+/- English proof (translation)
+Use `(cechComplex_exactAt_succ_iff (secCube f M D) 0).2 fun x => ⟨fun hx => ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `GlobalTheory.Cube.d_d _ _ y`. Establish `hx' : GlobalTheory.Cube.d _ 2 x = 0` using `hx`.
+
+Set `φ : ∀ a b, SecOn M (D a ⊓ D b)` to `fun a b => if h : a < b then restrict M (le_pair D inf_le_left inf_le_right) (comp M D f x {a, b} (Finset.card_pair h.ne)) else if h : b < a then -restrict M (le_pair D inf_le_right inf_le_left) (comp M D f x {b, a} (Finset.card_pair h.ne)) else 0`. Establish `hlt : ∀ a b (h : a < b), φ a b = restrict M (le_pair D inf_le_left inf_le_right) (comp M D f x {a, b} (Finset.card_pair h.ne))` using `fun a b h => dif_pos h`. Establish `hgt : ∀ a b (h : b < a), φ a b = -restrict M (le_pair D inf_le_right inf_le_left) (comp M D f x {b, a} (Finset.card_pair h.ne))` using `fun a b h => (dif_neg h.not_gt).trans (dif_pos h)`. Establish `h0 : ∀ a, φ a a = 0` using `fun a => (dif_neg (lt_irrefl a)).trans (dif_neg (lt_irrefl a))`. Take `⟨ψ, hψ⟩` from `h φ (by`.
+
+Introduce `a b d W ha hb hd`. Use `add_eq_of_ordered (κ := {i // W ≤ D i}) (fun i j => restrict M (le_inf i.2 j.2) (φ i.1 j.1)) (fun i => ?_) (fun i j => ?_) (fun i j k hij hjk => ?_) ⟨a, ha⟩ ⟨b, hb⟩ ⟨d, hd⟩` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[hlt i j hij, hgt j i hij, map_neg, restrict_restrict, restrict_restrict]`.
+
+Rewrite using `[h0, map_zero, neg_zero]`. Rewrite using `[hlt j i hij, hgt i j hij, map_neg, restrict_restrict, restrict_restrict, neg_neg]`. Establish `hij' : i.1 < j.1` using `hij`. Establish `hjk' : j.1 < k.1` using `hjk`. Establish `e` using `restrict_d_two x hij' hjk' (Finset.card_eq_three.2 ⟨_, _, _, hij'.ne, (hij'.trans hjk').ne, hjk'.ne, rfl⟩) i.2 j.2 k.2`.
+
+Rewrite `e` using `[hx']`. Establish `e'` using `(map_zero (restrict M _)).symm.trans e`. Rewrite using `[hlt i j hij, hlt j k hjk, hlt i k (hij.trans hjk), restrict_restrict, restrict_restrict, restrict_restrict, ← sub_eq_zero]`. Conclude with `Eq.trans (by abel) e'.symm)`. Set `y` to `GlobalTheory.Cube.termOneEquiv (secCube f M D) fun a => SecOnR.of f M _ (-restrict M (le_of_mem D (Finset.mem_singleton_self a)) (ψ a))`.
+
+Establish `hy : ∀ a, comp M D f y {a} (Finset.card_singleton a) = -restrict M (le_of_mem D (Finset.mem_singleton_self a)) (ψ a)` using `fun a => GlobalTheory.Cube.termOneEquiv_apply _ _ a`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨t, ht⟩`. Take `⟨i, j, hij, rfl⟩` from `exists_pair ht`. Establish `hi : ⨅ l ∈ ({i, j} : Finset κ), D l ≤ D i` using `le_of_mem D (by simp)`.
+
+Establish `hj : ⨅ l ∈ ({i, j} : Finset κ), D l ≤ D j` using `le_of_mem D (by simp)`. Establish `e` using `restrict_d_one y hij hi hj`. Establish `e₂` using `congrArg (restrict M (le_inf hi hj)) ((hlt i j hij).symm.trans (hψ i j))`. Rewrite `e` using `[restrict_self, hy, hy]`. Simplify using `only [map_neg, map_sub, restrict_restrict, restrict_self] at e e₂`.
+
+Conclude with `e.trans (Eq.trans (by abel) e₂.symm)`.
+-/
 theorem exactAt_of_isCoboundary
     (h : ∀ φ : ∀ a b, SecOn M (D a ⊓ D b), IsCocycle M D φ → IsCoboundary M D φ) :
     (cechLB f M D).ExactAt 1 := by
@@ -503,12 +659,18 @@ def toCech {V : X.Opens} (hD : ∀ i, D i ≤ V) : SecOnR f M V →ₗ[R] (cechL
     obtain ⟨i, hi⟩ := Finset.card_pos.1 (s.2.symm ▸ Nat.succ_pos 0 : 0 < s.1.card)
     exact (le_of_mem D hi).trans (hD i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toCech_apply {V : X.Opens} (hD : ∀ i, D i ≤ V) (x : SecOnR f M V)
     (s : {s : Finset κ // s.card = 0 + 1}) (h : ⨅ i ∈ s.1, D i ≤ V) :
     toCech M f D hD x s = SecOnR.restrict f M h x := rfl
 
 variable {D}
 
+/- English proof (translation)
+Introduce `x y h`. Use `SecOnR.ext_of_cover f D hD hc fun i => ?_` and prove the remaining obligations. Establish `e` using `congrArg (SecOnR.restrict f M (le_single D (le_rfl : D i ≤ D i))) (congrFun h ⟨{i}, Finset.card_singleton i⟩)`. Establish `hi` using `(le_of_mem D (Finset.mem_singleton_self i)).trans (hD i)`. Conclude with `(SecOnR.restrict_restrict f hi _ x).symm.trans (e.trans (SecOnR.restrict_restrict f hi _ y))`.
+-/
 theorem toCech_injective {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i, D i) :
     Function.Injective (toCech M f D hD) := by
   intro x y h
@@ -518,6 +680,19 @@ theorem toCech_injective {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i
   have hi := (le_of_mem D (Finset.mem_singleton_self i)).trans (hD i)
   exact (SecOnR.restrict_restrict f hi _ x).symm.trans (e.trans (SecOnR.restrict_restrict f hi _ y))
 
+/- English proof (translation)
+Establish `hd : ∀ x, ((cechLB f M D).d 0 1).hom x = GlobalTheory.Cube.d (secCube f M D) 1 x` using `fun x => congrArg (fun q => q.hom x) (cechLB_d f M D 0)`. Introduce `x`. Rewrite using `[hd]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Establish `hlt : ∀ i j, i < j → ∀ (W : X.Opens) (hi : W ≤ D i) (hj : W ≤ D j), restrict M (le_single D hj) (comp M D f x {j} (Finset.card_singleton j)) = restrict M (le_single D hi) (comp M D f x {i} (Finset.card_singleton i))`. Introduce `i j hij W hi hj`. Establish `e` using `restrict_d_one x hij hi hj`. Rewrite `e` using `[hx]`. Conclude with `sub_eq_zero.1 ((map_zero (restrict M _)).symm.trans e).symm`.
+
+Take `⟨t, ht, -⟩` from `existsUnique_glue D hD hc (fun i => restrict M (le_single D le_rfl) (comp M D f x {i} (Finset.card_singleton i))) fun i j => by`. Rewrite using `[restrict_restrict, restrict_restrict]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Conclude with `(hlt i j hij _ inf_le_left inf_le_right).symm`. Both sides reduce to the same expression.
+
+Conclude with `hlt j i hij _ inf_le_right inf_le_left`. Use `⟨SecOnR.of f M V t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨s, hs⟩`. Take `⟨i, rfl⟩` from `Finset.card_eq_one.1 hs`. Establish `e` using `congrArg (restrict M (le_of_mem D (Finset.mem_singleton_self i))) (ht i)`.
+
+Rewrite `e` using `[restrict_restrict, restrict_restrict, restrict_self]`. Conclude with `e`. Introduce and unpack `⟨t, rfl⟩`. Use function extensionality and compare the values at `⟨s, hs⟩`. Take `⟨i, j, hij, rfl⟩` from `exists_pair hs`.
+
+Establish `e` using `restrict_d_one (toCech M f D hD t) hij (W := ⨅ l ∈ ({i, j} : Finset κ), D l) (le_of_mem D (by simp)) (le_of_mem D (by simp))`. Rewrite `e` using `[restrict_self]`. Conclude with `e.trans (sub_eq_zero.2 ((restrict_restrict ((le_of_mem D (Finset.mem_singleton_self j)).trans (hD j)) _ _).trans (restrict_restrict ((le_of_mem D (Finset.mem_singleton_self i)).trans (hD i)) _ _).symm))`.
+-/
 theorem exact_toCech {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i, D i) :
     Function.Exact (toCech M f D hD) ((cechLB f M D).d 0 1).hom := by
   have hd : ∀ x, ((cechLB f M D).d 0 1).hom x = GlobalTheory.Cube.d (secCube f M D) 1 x := fun x =>
@@ -562,6 +737,9 @@ def kerEquiv {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i, D i) :
   LinearEquiv.ofInjective _ (toCech_injective M f hD hc) ≪≫ₗ
     LinearEquiv.ofEq _ _ (exact_toCech M f hD hc).linearMap_ker_eq.symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem kerEquiv_val {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i, D i)
     (x : SecOnR f M V) : (kerEquiv M f hD hc x).1 = toCech M f D hD x := rfl
 
@@ -569,10 +747,16 @@ def secKerEquiv (hc : ⨆ i, D i = ⊤) :
     LB.Sec M ≃+ LinearMap.ker ((cechLB f M D).d 0 1).hom :=
   (SecOnR.topEquiv f M).symm.toAddEquiv.trans (kerEquiv M f (fun _ => le_top) hc.ge).toAddEquiv
 
+/- English proof (translation)
+The claim follows from `restrict_ofSec σ le_top`.
+-/
 theorem secKerEquiv_val (hc : ⨆ i, D i = ⊤) (σ : LB.Sec M) (s : {s : Finset κ // s.card = 0 + 1}) :
     (secKerEquiv M f hc σ).1 s = SecOnR.of f M _ (GlobalTheory.LB.ofSec σ (⨅ i ∈ s.1, D i)) :=
   restrict_ofSec σ le_top
 
+/- English proof (translation)
+The claim follows from `(congrArg (kerEquiv M f (fun _ => le_top) hc.ge) ((SecOnR.topEquiv f M).symm.map_smul (cst f ⊤ r) σ)).trans ((kerEquiv M f (fun _ => le_top) hc.ge).map_smul r _)`.
+-/
 theorem secKerEquiv_smul (hc : ⨆ i, D i = ⊤) (r : R) (σ : LB.Sec M) :
     secKerEquiv M f hc (cst f ⊤ r • σ) = r • secKerEquiv M f hc σ :=
   (congrArg (kerEquiv M f (fun _ => le_top) hc.ge)
@@ -581,19 +765,31 @@ theorem secKerEquiv_smul (hc : ⨆ i, D i = ⊤) (r : R) (σ : LB.Sec M) :
 
 variable {M}
 
+/- English proof (translation)
+The claim follows from `exactAt_of_isCoboundary (h κ D hD hc)`.
+-/
 theorem exactAt_one_of_h1ZeroOn {V : X.Opens} (hD : ∀ i, D i ≤ V) (hc : V ≤ ⨆ i, D i)
     (h : CechHOneVanishesOnOpen M V) : (cechLB f M D).ExactAt 1 :=
   exactAt_of_isCoboundary (h κ D hD hc)
 
+/- English proof (translation)
+The claim follows from `exactAt_one_of_h1ZeroOn f (fun _ => le_top) hc.ge ((h1Zero_iff hM).1 h)`.
+-/
 theorem exactAt_one_of_h1Zero (hM : M.IsLB) (hc : ⨆ i, D i = ⊤) (h : FirstCohomologyVanishes M) :
     (cechLB f M D).ExactAt 1 :=
   exactAt_one_of_h1ZeroOn f (fun _ => le_top) hc.ge ((h1Zero_iff hM).1 h)
 
+/- English proof (translation)
+The claim follows from `cechHOneVanishesOnOpen_of_cover hD hc (fun i => cechHOneVanishesOnOpen_of_isAffineOpen hM (hA i)) (isCoboundary_of_exactAt h)`.
+-/
 theorem h1ZeroOn_of_exactAt_one (hM : M.IsLB) {V : X.Opens} (hD : ∀ i, D i ≤ V)
     (hc : V ≤ ⨆ i, D i) (hA : ∀ i, IsAffineOpen (D i)) (h : (cechLB f M D).ExactAt 1) :
     CechHOneVanishesOnOpen M V :=
   cechHOneVanishesOnOpen_of_cover hD hc (fun i => cechHOneVanishesOnOpen_of_isAffineOpen hM (hA i)) (isCoboundary_of_exactAt h)
 
+/- English proof (translation)
+The claim follows from `(h1Zero_iff hM).2 (h1ZeroOn_of_exactAt_one f hM (fun _ => le_top) hc.ge hA h)`.
+-/
 theorem h1Zero_of_exactAt_one (hM : M.IsLB) (hc : ⨆ i, D i = ⊤) (hA : ∀ i, IsAffineOpen (D i))
     (h : (cechLB f M D).ExactAt 1) : FirstCohomologyVanishes M :=
   (h1Zero_iff hM).2 (h1ZeroOn_of_exactAt_one f hM (fun _ => le_top) hc.ge hA h)

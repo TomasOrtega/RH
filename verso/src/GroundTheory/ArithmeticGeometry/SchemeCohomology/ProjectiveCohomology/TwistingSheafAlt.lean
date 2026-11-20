@@ -19,6 +19,9 @@ namespace ProjTwist
 variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable {𝒜 : ℕ → σ} [GradedRing 𝒜]
 
+/- English proof (translation)
+The claim follows from `ratio_mul_ratio' hu hv hw`.
+-/
 theorem ratio_mul_ratio {u v w : A} (hu : u ∈ 𝒜 1) (hv : v ∈ 𝒜 1) (hw : w ∈ 𝒜 1) :
     resO (inf_le_right : Proj.basicOpen 𝒜 u ⊓ Proj.basicOpen 𝒜 v ≤ Proj.basicOpen 𝒜 v)
         (ratio 𝒜 hv hw) *
@@ -34,6 +37,11 @@ section Iso
 
 variable {X : Scheme.{u}}
 
+/- English proof (translation)
+Use `⟨isQuasicoherent_unit X, fun U _ => ?_⟩` and prove the remaining obligations. Set `one : Γ(𝟙_ X.Modules, U)` to `(1 : Γ(X, U))`. Use `⟨⟨{one}, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `m _`.
+
+Establish `hm : m = (show Γ(X, U) from m) • one` using `(mul_one (show Γ(X, U) from m)).symm`. Rewrite using `[hm]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_singleton_self _)))`.
+-/
 private theorem isCoherent_unit' : IsCoherent (𝟙_ X.Modules) := by
   refine ⟨isQuasicoherent_unit X, fun U _ => ?_⟩
   let one : Γ(𝟙_ X.Modules, U) := (1 : Γ(X, U))
@@ -44,6 +52,11 @@ private theorem isCoherent_unit' : IsCoherent (𝟙_ X.Modules) := by
   rw [hm]
   exact Submodule.smul_mem _ _ (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_singleton_self _)))
 
+/- English proof (translation)
+Take `⟨hq, hf⟩` from `hM`. Use `⟨(SheafOfModules.isQuasicoherent X.ringCatSheaf).prop_of_iso e hq, fun U hU => ?_⟩` and prove the remaining obligations. Use `hf U hU` as an intermediate fact. Set `φ : Γ(M, U) →ₗ[Γ(X, U)] Γ(N, U)` to `{ toFun := e.hom.app U map_add' := map_add _ map_smul' := fun r m => Scheme.Modules.Hom.app_smul e.hom r m }`. Use `Module.Finite.of_surjective φ fun n => ⟨e.inv.app U n, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(e.inv ≫ e.hom).app U n = n`. Rewrite using `[e.inv_hom_id]`. Both sides reduce to the same expression.
+-/
 private theorem isCoherent_of_iso' {M N : X.Modules} (e : M ≅ N) (hM : IsCoherent M) :
     IsCoherent N := by
   obtain ⟨hq, hf⟩ := hM
@@ -66,6 +79,9 @@ variable {A : Type u} [CommRing A] {n : ℕ}
 
 open ProjTwist
 
+/- English proof (translation)
+The claim follows from `isCoherent_of_iso' (λ_ _) (isCoherent_tensor_of_invertible isCoherent_unit' (isInvertibleSheaf_twistingSheaf k))`.
+-/
 theorem isCoherent_twistingSheaf (k : ℤ) : IsCoherent (twistingSheaf (grading A n) k) :=
   isCoherent_of_iso' (λ_ _)
     (isCoherent_tensor_of_invertible isCoherent_unit' (isInvertibleSheaf_twistingSheaf k))
@@ -85,6 +101,9 @@ instance isQuasicoherent_twist (G : (projectiveSpace A n).Modules) [G.IsQuasicoh
     (twist G k).IsQuasicoherent :=
   isQuasicoherent_tensor_of_invertible G (isInvertibleSheaf_twistingSheaf k)
 
+/- English proof (translation)
+The claim follows from `isCoherent_tensor_of_invertible hG (isInvertibleSheaf_twistingSheaf k)`.
+-/
 theorem isCoherent_twist {G : (projectiveSpace A n).Modules} (hG : IsCoherent G) (k : ℤ) :
     IsCoherent (twist G k) :=
   isCoherent_tensor_of_invertible hG (isInvertibleSheaf_twistingSheaf k)

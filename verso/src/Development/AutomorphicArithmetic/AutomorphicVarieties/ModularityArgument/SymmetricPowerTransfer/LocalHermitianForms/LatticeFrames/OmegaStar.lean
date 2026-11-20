@@ -16,13 +16,22 @@ def mkL (σ : K) : (K × Etau K τ) × (K × Etau K τ) →ₗ[K] Sp Δ τ where
   map_add' a b := by ext <;> simp <;> ring
   map_smul' a b := by ext <;> simp <;> ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mkL_apply (σ : K) (v w : K × Etau K τ) :
     mkL Δ σ (v, w) = (⟨v.1, σ * w.1⟩, ⟨⟨v.2.re, σ * w.2.re⟩, ⟨v.2.im, σ * w.2.im⟩⟩) := rfl
 
+/- English proof (translation)
+Use `⟨(x.1.re, ⟨x.2.re.re, x.2.im.re⟩), (σ⁻¹ * x.1.im, ⟨σ⁻¹ * x.2.re.im, σ⁻¹ * x.2.im.im⟩), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [mkL_apply, hσ]`.
+-/
 theorem mkL_surj {σ : K} (hσ : σ ≠ 0) (x : Sp Δ τ) : ∃ v w, x = mkL Δ σ (v, w) := by
   refine ⟨(x.1.re, ⟨x.2.re.re, x.2.im.re⟩), (σ⁻¹ * x.1.im, ⟨σ⁻¹ * x.2.re.im, σ⁻¹ * x.2.im.im⟩), ?_⟩
   ext <;> simp [mkL_apply, hσ]
 
+/- English proof (translation)
+Simplify using `only [mkL_apply, Prod.mk.injEq, QuadraticAlgebra.mk.injEq, mul_right_inj' hσ] at h`. Take `⟨⟨a, b⟩, ⟨c, d⟩, e, f⟩` from `h`. Conclude with `⟨Prod.ext a (QuadraticAlgebra.ext c e), Prod.ext b (QuadraticAlgebra.ext d f)⟩`.
+-/
 theorem mkL_inj {σ : K} (hσ : σ ≠ 0) {v w v' w' : K × Etau K τ} (h : mkL Δ σ (v, w) = mkL Δ σ (v', w')) : v = v' ∧ w = w' := by
   simp only [mkL_apply, Prod.mk.injEq, QuadraticAlgebra.mk.injEq, mul_right_inj' hσ] at h
   obtain ⟨⟨a, b⟩, ⟨c, d⟩, e, f⟩ := h
@@ -30,13 +39,22 @@ theorem mkL_inj {σ : K} (hσ : σ ≠ 0) {v w v' w' : K × Etau K τ} (h : mkL 
 
 def Mu (u : Etau K τ) (v : K × Etau K τ) : K × Etau K τ := (v.1, u * v.2)
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [herm, mkL_apply, Bf_apply, sigL, trace] <;> ring`.
+-/
 theorem herm_mkL (c t σ : K) (v w v' w' : K × Etau K τ) : herm c (t • (1 : EL Δ τ)) (mkL Δ σ (v, w)) (mkL Δ σ (v', w')) =
     ⟨Bf τ c t v v' - Δ * σ ^ 2 * Bf τ c t w w', σ * (Bf τ c t w v' - Bf τ c t v w')⟩ := by
   ext <;> simp [herm, mkL_apply, Bf_apply, sigL, trace] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [semi, mkL_apply, Mu, sigL, ofE] <;> ring`.
+-/
 theorem semi_mkL (σ : K) (u : Etau K τ) (v w : K × Etau K τ) : semi (ofE Δ u) (mkL Δ σ (v, w)) = mkL Δ σ (Mu u v, -Mu u w) := by
   ext <;> simp [semi, mkL_apply, Mu, sigL, ofE] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [mkL_apply, Mu, ofE] <;> ring`.
+-/
 theorem mul_mkL (σ : K) (u : Etau K τ) (v w : K × Etau K τ) :
     (((mkL Δ σ (v, w)).1, ofE Δ u * (mkL Δ σ (v, w)).2) : Sp Δ τ) = mkL Δ σ (Mu u v, Mu u w) := by
   ext <;> simp [mkL_apply, Mu, ofE] <;> ring
@@ -45,6 +63,11 @@ variable (Δ) in
 
 def up (σ : K) (S : Set (K × Etau K τ)) : Set (Sp Δ τ) := {x | ∃ v ∈ S, ∃ w ∈ S, x = mkL Δ σ (v, w)}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v', hv', w', hw', h⟩`. Take `⟨rfl, rfl⟩` from `mkL_inj hσ h`. Conclude with `⟨hv', hw'⟩`. Introduce and unpack `⟨hv, hw⟩`.
+
+Conclude with `⟨v, hv, w, hw, rfl⟩`.
+-/
 theorem mem_up {σ : K} (hσ : σ ≠ 0) {S : Set (K × Etau K τ)} {v w : K × Etau K τ} : mkL Δ σ (v, w) ∈ up Δ σ S ↔ v ∈ S ∧ w ∈ S := by
   constructor
   · rintro ⟨v', hv', w', hw', h⟩
@@ -53,11 +76,19 @@ theorem mem_up {σ : K} (hσ : σ ≠ 0) {S : Set (K × Etau K τ)} {v w : K × 
   · rintro ⟨hv, hw⟩
     exact ⟨v, hv, w, hw, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `p`. Establish `key` using `congrArg (fun T => mkL Δ σ (p, p) ∈ T) h`. Simplify `key` using `[mem_up hσ]`.
+-/
 theorem up_inj {σ : K} (hσ : σ ≠ 0) {S S' : Set (K × Etau K τ)} (h : up Δ σ S = up Δ σ S') : S = S' := by
   ext p
   have key := congrArg (fun T => mkL Δ σ (p, p) ∈ T) h
   simpa [mem_up hσ] using key
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨v, hv, w, hw, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨v, hv, rfl⟩, _, ⟨w, hw, rfl⟩, mul_mkL σ _ v w⟩`. Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, _, ⟨w, hw, rfl⟩, rfl⟩`.
+
+Conclude with `⟨_, ⟨v, hv, w, hw, rfl⟩, mul_mkL σ _ v w⟩`.
+-/
 theorem tor_up (σ : K) (z : (Etau K τ)ˣ) (S : Set (K × Etau K τ)) : tor Δ z '' up Δ σ S = up Δ σ (Mu (quo z) '' S) := by
   ext x
   constructor
@@ -66,6 +97,11 @@ theorem tor_up (σ : K) (z : (Etau K τ)ˣ) (S : Set (K × Etau K τ)) : tor Δ 
   · rintro ⟨_, ⟨v, hv, rfl⟩, _, ⟨w, hw, rfl⟩, rfl⟩
     exact ⟨_, ⟨v, hv, w, hw, rfl⟩, mul_mkL σ _ v w⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h1`. Take `⟨u2, hu2⟩` from `h2`. Establish `e1 : (algebraMap O K ↑u)⁻¹ = algebraMap O K ↑u⁻¹` using `(map_units_inv (algebraMap O K) u).symm`. Establish `e2 : (algebraMap O K ↑u * (2 + algebraMap O K ↑u))⁻¹ = algebraMap O K ↑(u * u2)⁻¹`. Rewrite using `[map_units_inv, Units.val_mul, map_mul, hu2, map_add, map_ofNat]`.
+
+Establish `e3 : algebraMap O K ↑u ^ 2 - 2 = algebraMap O K (↑u ^ 2 - 2)`. Rewrite using `[map_sub, map_pow, map_ofNat]`. Rewrite using `[e1, e2, e3, algebraMap_smul, algebraMap_smul, algebraMap_smul]`. Conclude with `M.sub_mem (M.smul_mem _ (M.add_mem hx (hN x hx))) (M.smul_mem _ (M.add_mem (M.sub_mem (hN _ (hN x hx)) (M.smul_mem _ (hN x hx))) hx))`.
+-/
 theorem poly_mem {W : Type} [AddCommGroup W] [Module K W] [Module O W] [IsScalarTower O K W] (M : Submodule O W) (N : W → W)
     (hN : ∀ x ∈ M, N x ∈ M) {r : O} (h1 : IsUnit r) (h2 : IsUnit (2 + r)) {x : W} (hx : x ∈ M) :
     (algebraMap O K r)⁻¹ • (x + N x) - (algebraMap O K r * (2 + algebraMap O K r))⁻¹ • (N (N x) - (algebraMap O K r ^ 2 - 2) • N x + x) ∈ M := by
@@ -80,23 +116,45 @@ theorem poly_mem {W : Type} [AddCommGroup W] [Module K W] [Module O W] [IsScalar
   exact M.sub_mem (M.smul_mem _ (M.add_mem hx (hN x hx)))
     (M.smul_mem _ (M.add_mem (M.sub_mem (hN _ (hN x hx)) (M.smul_mem _ (hN x hx))) hx))
 
+/- English proof (translation)
+Establish `hτ : τ = r ^ 2 - 2` using `by linear_combination -hr`. Substitute `hτ` using the available equality. Apply the tactic sequence `rcases ha with rfl | rfl <;> ext <;> simp [Mu] <;> field_simp <;> ring`.
+-/
 theorem poly_Mu {r : K} (h1 : r ≠ 0) (h2 : 2 + r ≠ 0) (hr : r ^ 2 = 2 + τ) {a : Etau K τ} (ha : a = ω ∨ a = star ω) (x : K × Etau K τ) :
     Mu (r⁻¹ • (1 + a)) x = r⁻¹ • (x + Mu a x) - (r * (2 + r))⁻¹ • (Mu a (Mu a x) - (r ^ 2 - 2) • Mu a x + x) := by
   have hτ : τ = r ^ 2 - 2 := by linear_combination -hr
   subst hτ
   rcases ha with rfl | rfl <;> ext <;> simp [Mu] <;> field_simp <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp <;> field_simp <;> first | ring1 | linear_combination -hr | linear_combination -2 * hr`.
+-/
 theorem u_norm {r : K} (h1 : r ≠ 0) (hr : r ^ 2 = 2 + τ) : (r⁻¹ • (1 + ω) : Etau K τ) * (r⁻¹ • (1 + star ω)) = 1 := by
   ext <;> simp <;> field_simp <;> first | ring1 | linear_combination -hr | linear_combination -2 * hr
 
+/- English proof (translation)
+Simplify using `[Mu, mul_assoc]`.
+-/
 theorem Mu_Mu (a b : Etau K τ) (v : K × Etau K τ) : Mu a (Mu b v) = Mu (a * b) v := by simp [Mu, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[Mu]`.
+-/
 theorem Mu_one (v : K × Etau K τ) : Mu 1 v = v := by simp [Mu]
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]`.
+-/
 theorem omega_star : (ω : Etau K τ) * star ω = 1 := by ext <;> simp [QuadraticAlgebra.re_one, QuadraticAlgebra.im_one]
 
 variable [IsDomain O] [IsDiscreteValuationRing O] {c t σ : K} {ε : Oˣ} {r : O}
 
+/- English proof (translation)
+Use `set M := Submodule.span O (s : Set (K × Etau K τ))`. Establish `hM : M.FG` using `⟨s, rfl⟩`. Take `⟨t, ht⟩` from `(hM.prod hM).map ((mkL Δ σ).restrictScalars O)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[ht]`.
+
+Use extensionality with `x`. Simplify using `only [up, Set.mem_setOf_eq, SetLike.mem_coe, Submodule.mem_map, Submodule.mem_prod, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, w, hw, rfl⟩`. Conclude with `⟨(v, w), ⟨hv, hw⟩, rfl⟩`.
+
+Introduce and unpack `⟨⟨v, w⟩, ⟨hv, hw⟩, rfl⟩`. Conclude with `⟨v, hv, w, hw, rfl⟩`.
+-/
 private theorem exists_finset_up_span_eq_span (σ : K) (s : Finset (K × Etau K τ)) :
     ∃ t : Finset (Sp Δ τ), up Δ σ (Submodule.span O (s : Set (K × Etau K τ)) : Set (K × Etau K τ)) =
       ↑(Submodule.span O (t : Set (Sp Δ τ))) := by
@@ -114,6 +172,19 @@ private theorem exists_finset_up_span_eq_span (σ : K) (s : Finset (K × Etau K 
   · rintro ⟨⟨v, w⟩, ⟨hv, hw⟩, rfl⟩
     exact ⟨v, hv, w, hw, rfl⟩
 
+/- English proof (translation)
+Establish `hq1 : algebraMap O K q ≠ 0` using `(h1.map (algebraMap O K)).ne_zero`. Establish `hq2 : 2 + algebraMap O K q ≠ 0`. Use `(h2.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_add, map_ofNat]`. Then use the resulting hypothesis. Establish `hω : ∀ x ∈ M, Mu ω x ∈ M`.
+
+Introduce `x hx`. Establish `: Mu ω x ∈ Mu ω '' (M : Set (K × Etau K τ))` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hN]`. Then use the resulting hypothesis. Establish `hω' : ∀ x ∈ M, Mu (star ω) x ∈ M`. Introduce `x hx`.
+
+Establish `: x ∈ (M : Set (K × Etau K τ))` using `hx`. Rewrite `this` using `[← hN]`. Take `⟨y, hy, rfl⟩` from `this`. Rewrite using `[Mu_Mu, mul_comm, omega_star, Mu_one]`. Conclude with `hy`.
+
+Establish `key : ∀ a : Etau K τ, (a = ω ∨ a = star ω) → (∀ x ∈ M, Mu a x ∈ M) → ∀ x ∈ M, Mu ((algebraMap O K q)⁻¹ • (1 + a)) x ∈ M`. Introduce `a ha hM x hx`. Rewrite using `[poly_Mu hq1 hq2 hq ha x]`. Conclude with `poly_mem M (Mu a) hM h1 h2 hx`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `key ω (Or.inl rfl) hω y hy`. Introduce `hx`. Use `⟨Mu ((algebraMap O K q)⁻¹ • (1 + star ω)) x, key (star ω) (Or.inr rfl) hω' x hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Mu_Mu, u_norm hq1 hq, Mu_one]`.
+-/
 private theorem mu_image_eq_of_mu_omega_image_eq {M : Submodule O (K × Etau K τ)} {q : O} (h1 : IsUnit q) (h2 : IsUnit (2 + q))
     (hq : algebraMap O K q ^ 2 = 2 + τ) (hN : Mu ω '' (M : Set (K × Etau K τ)) = M) :
     Mu ((algebraMap O K q)⁻¹ • (1 + ω)) '' (M : Set (K × Etau K τ)) = M := by
@@ -145,6 +216,31 @@ private theorem mu_image_eq_of_mu_omega_image_eq {M : Submodule O (K × Etau K �
     refine ⟨Mu ((algebraMap O K q)⁻¹ • (1 + star ω)) x, key (star ω) (Or.inr rfl) hω' x hx, ?_⟩
     rw [Mu_Mu, u_norm hq1 hq, Mu_one]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hS.fg`. Substitute `hs` using the available equality. Use `set M := Submodule.span O (s : Set (K × Etau K τ))`. Establish `hε : algebraMap O K ε ≠ 0` using `(ε.isUnit.map (algebraMap O K)).ne_zero`. Establish `hσ0 : σ ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hε (by rw [← hσ]; ring)`. Establish `hst` using `mu_image_eq_of_mu_omega_image_eq h1 h2 hr hN`. Use `⟨exists_finset_up_span_eq_span σ s, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨v, w, rfl⟩` from `mkL_surj hσ0 y`. Rewrite using `[mem_up hσ0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hw⟩ x ⟨v', hv', w', hw', rfl⟩`. Rewrite using `[herm_mkL, (descent O K Δ L σ ε hσ _).1]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `(hS.dual v).1 hv v' hv'`. Take `⟨b, hb⟩` from `(hS.dual w).1 hw w' hw'`. Conclude with `⟨a - ε * b, by rw [map_sub, map_mul, ha, hb, hσ]⟩`. Take `⟨a, ha⟩` from `(hS.dual v).1 hv w' hw'`.
+
+Take `⟨b, hb⟩` from `(hS.dual w).1 hw v' hv'`. Conclude with `⟨a - b, by rw [map_sub, ha, hb]⟩`. Introduce `h`. Establish `h0 : (0 : K × Etau K τ) ∈ (M : Set (K × Etau K τ))` using `M.zero_mem`. Use `⟨(hS.dual v).2 fun v' hv' => ?_, (hS.dual w).2 fun w' hw' => ?_⟩` and prove the remaining obligations.
+
+Establish `key` using `h _ ⟨v', hv', 0, h0, rfl⟩`. Rewrite `key` using `[herm_mkL, (descent O K Δ L σ ε hσ _).1]`. Simplify using `using key.1`. Establish `key` using `h _ ⟨0, h0, w', hw', rfl⟩`. Rewrite `key` using `[herm_mkL, (descent O K Δ L σ ε hσ _).1]`.
+
+Take `⟨a, ha⟩` from `key.1`. Simplify using `only [map_zero, LinearMap.zero_apply, zero_sub] at ha`. Rewrite `ha` using `[hσ]`. Use `⟨-(↑ε⁻¹ * a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_mul, map_units_inv, ha]`.
+
+Clear the denominators using the available nonvanishing facts. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨v, hv, w, hw, rfl⟩, rfl⟩`. Rewrite using `[semi_mkL]`.
+
+Use `⟨_, ?_, _, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hst]`. Conclude with `⟨v, hv, rfl⟩`. Establish `: Mu ((algebraMap O K r)⁻¹ • (1 + ω)) w ∈ (M : Set (K × Etau K τ))`. Rewrite using `[← hst]`.
+
+Conclude with `⟨w, hw, rfl⟩`. Conclude with `M.neg_mem this`. Introduce and unpack `⟨v, hv, w, hw, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨v', hv', rfl⟩ : v ∈ Mu ((algebraMap O K r)⁻¹ • (1 + ω)) '' (M : Set (K × Etau K τ)) := by`. Rewrite using `[hst]`.
+
+Conclude with `hv`. Choose the witnesses or unpack the hypotheses as in `⟨w', hw', rfl⟩ : w ∈ Mu ((algebraMap O K r)⁻¹ • (1 + ω)) '' (M : Set (K × Etau K τ)) := by`. Rewrite using `[hst]`. Conclude with `hw`. Use `⟨mkL Δ σ (v', -w'), ⟨v', hv', -w', M.neg_mem hw', rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[semi_mkL]`. Use `congr 2`. Apply the tactic sequence `ext <;> simp [Mu]`.
+-/
 theorem fix_up (L : IsLoc O Δ) (hσ : Δ * σ ^ 2 = algebraMap O K ε) (h1 : IsUnit r) (h2 : IsUnit (2 + r)) (hr : algebraMap O K r ^ 2 = 2 + τ)
     {S : Set (K × Etau K τ)} (hS : Uni O c t S) (hN : Mu ω '' S = S) :
     IsFix O c (ofE Δ ((algebraMap O K r)⁻¹ • (1 + ω))) (t • (1 : EL Δ τ)) (up Δ σ S) := by
@@ -207,6 +303,9 @@ theorem fix_up (L : IsLoc O Δ) (hσ : Δ * σ ^ 2 = algebraMap O K ε) (h1 : Is
       congr 2
       ext <;> simp [Mu]
 
+/- English proof (translation)
+Rewrite using `[poly_Mu h1 h2 hr (Or.inl rfl) v, poly_Mu h1 h2 hr (Or.inl rfl) w]`. Apply the tactic sequence `ext <;> simp [mkL_apply] <;> ring`.
+-/
 private theorem mkL_mu_half_one_add_omega_eq {R : K} (h1 : R ≠ 0) (h2 : 2 + R ≠ 0) (hr : R ^ 2 = 2 + τ) (v w : K × Etau K τ) :
     mkL Δ σ (Mu (R⁻¹ • (1 + ω)) v, Mu (R⁻¹ • (1 + ω)) w) =
       R⁻¹ • (mkL Δ σ (v, w) + mkL Δ σ (Mu ω v, Mu ω w)) -
@@ -215,11 +314,17 @@ private theorem mkL_mu_half_one_add_omega_eq {R : K} (h1 : R ≠ 0) (h2 : 2 + R 
   rw [poly_Mu h1 h2 hr (Or.inl rfl) v, poly_Mu h1 h2 hr (Or.inl rfl) w]
   ext <;> simp [mkL_apply] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp <;> field_simp <;> first | ring1 | linear_combination hr | linear_combination -hr | linear_combination 2 * hr | linear_combination -2 * hr`.
+-/
 private theorem sq_inv_smul_one_add_omega_eq_omega {R : K} (h1 : R ≠ 0) (hr : R ^ 2 = 2 + τ) :
     (R⁻¹ • (1 + ω) : Etau K τ) * (R⁻¹ • (1 + ω)) = ω := by
   ext <;> simp <;> field_simp <;>
     first | ring1 | linear_combination hr | linear_combination -hr | linear_combination 2 * hr | linear_combination -2 * hr
 
+/- English proof (translation)
+Rewrite using `[herm_mkL, (descent O K Δ L σ ε hσ _).1, hσ]`. Conclude with `and_congr Iff.rfl ⟨fun ⟨b, hb⟩ => ⟨b, ((mul_right_inj' hσ0).1 hb).symm⟩, fun ⟨b, hb⟩ => ⟨b, by rw [← hb]⟩⟩`.
+-/
 private theorem isInt_herm_mkL_iff_bf_integral (L : IsLoc O Δ) (hσ : Δ * σ ^ 2 = algebraMap O K ε) (hσ0 : σ ≠ 0)
     (v w v' w' : K × Etau K τ) :
     IsInt O (herm c (t • (1 : EL Δ τ)) (mkL Δ σ (v', w')) (mkL Δ σ (v, w))) ↔
@@ -229,6 +334,69 @@ private theorem isInt_herm_mkL_iff_bf_integral (L : IsLoc O Δ) (hσ : Δ * σ ^
   exact and_congr Iff.rfl
     ⟨fun ⟨b, hb⟩ => ⟨b, ((mul_right_inj' hσ0).1 hb).symm⟩, fun ⟨b, hb⟩ => ⟨b, by rw [← hb]⟩⟩
 
+/- English proof (translation)
+Take `⟨t0, ht0⟩` from `hT.fg`. Substitute `ht0` using the available equality. Take `⟨U, hU⟩ : ∃ U : Etau K τ, U = (algebraMap O K r)⁻¹ • (1 + ω)` from `⟨_, rfl⟩`. Rewrite `hT` using `[← hU]`. Use `set M := Submodule.span O (t0 : Set (Sp Δ τ)) with hMdef`.
+
+Establish `hε : algebraMap O K ε ≠ 0` using `(ε.isUnit.map (algebraMap O K)).ne_zero`. Establish `hσ0 : σ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hε (by rw [← hσ]; ring)`. Establish `hR1 : algebraMap O K r ≠ 0` using `(h1.map (algebraMap O K)).ne_zero`.
+
+Establish `hR2 : 2 + algebraMap O K r ≠ 0`. Use `(h2.map (algebraMap O K)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_add, map_ofNat]`. Then use the resulting hypothesis. Establish `hUU : U * U = ω`. Rewrite using `[hU]`.
+
+Conclude with `sq_inv_smul_one_add_omega_eq_omega hR1 hr`. Establish `hneg : ∀ (a : Etau K τ) (x : K × Etau K τ), Mu a (-x) = -Mu a x`. Introduce `a x`. Apply the tactic sequence `ext <;> simp [Mu]`. Establish `hMu0 : ∀ a : Etau K τ, Mu a 0 = 0`.
+
+Introduce `a`. Apply the tactic sequence `ext <;> simp [Mu]`. Establish `hstab` using `hT.stab`. Establish `hφ : ∀ x ∈ M, semi (ofE Δ U) x ∈ M`. Introduce `x hx`.
+
+Establish `: semi (ofE Δ U) x ∈ semi (ofE Δ U) '' (M : Set (Sp Δ τ))` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[hstab]`. Then use the resulting hypothesis. Establish `hφ' : ∀ y ∈ M, ∃ x ∈ M, semi (ofE Δ U) x = y`. Introduce `y hy`. Establish `: y ∈ (M : Set (Sp Δ τ))` using `hy`.
+
+Rewrite `this` using `[← hstab]`. Take `⟨x, hx, e⟩` from `this`. Conclude with `⟨x, hx, e⟩`. Establish `hss : ∀ a b, semi (ofE Δ U) (semi (ofE Δ U) (mkL Δ σ (a, b))) = mkL Δ σ (Mu ω a, Mu ω b)`. Introduce `a b`.
+
+Rewrite using `[semi_mkL, semi_mkL, hneg, neg_neg, Mu_Mu, Mu_Mu, hUU]`. Establish `hA : ∀ v w, mkL Δ σ (v, w) ∈ M → mkL Δ σ (Mu U v, Mu U w) ∈ M`. Introduce `v w h`. Establish `key` using `poly_mem (K := K) M (fun x => semi (ofE Δ U) (semi (ofE Δ U) x)) (fun x hx => hφ _ (hφ x hx)) h1 h2 h`. Simplify using `only [hss] at key`.
+
+Rewrite using `[hU, mkL_mu_half_one_add_omega_eq hR1 hR2 hr]`. Conclude with `key`. Take `⟨h2u, hh⟩` from `L.two`. Establish `hK : algebraMap O K ↑h2u⁻¹ * 2 = 1`. Establish `: algebraMap O K (↑h2u⁻¹ * ↑h2u) = 1` using `by simp`.
+
+Rewrite `this` using `[map_mul, hh, map_ofNat]`. Then use the resulting hypothesis. Establish `hsplit : ∀ v w, mkL Δ σ (v, w) ∈ M → mkL Δ σ (v, 0) ∈ M ∧ mkL Δ σ (0, w) ∈ M`. Introduce `v w h`. Take `⟨x, hx, hxe⟩` from `hφ' _ h`. Take `⟨a, b, rfl⟩` from `mkL_surj hσ0 x`.
+
+Rewrite `hxe` using `[semi_mkL]`. Take `⟨rfl, rfl⟩` from `mkL_inj hσ0 hxe`. Establish `hAx` using `hA a b hx`. Establish `hφx` using `hφ _ hx`. Rewrite `hφx` using `[semi_mkL]`.
+
+Prove the components needed by the constructor for the conclusion. Establish `e : ((Mu U a, 0) : (K × Etau K τ) × (K × Etau K τ)) = algebraMap O K ↑h2u⁻¹ • ((Mu U a, Mu U b) + (Mu U a, -Mu U b))`. Rewrite using `[Prod.mk_add_mk, add_neg_cancel, ← two_smul K (Mu U a), Prod.smul_mk, smul_smul, hK, one_smul, smul_zero]`. Rewrite using `[e, map_smul, map_add, algebraMap_smul]`. Conclude with `M.smul_mem _ (M.add_mem hAx hφx)`.
+
+Establish `e : ((0, -Mu U b) : (K × Etau K τ) × (K × Etau K τ)) = algebraMap O K ↑h2u⁻¹ • ((Mu U a, -Mu U b) - (Mu U a, Mu U b))`. Rewrite using `[Prod.mk_sub_mk, sub_self, ← neg_add', ← two_smul K (Mu U b), Prod.smul_mk, smul_zero, smul_neg, smul_smul, hK, one_smul]`. Rewrite using `[e, map_smul, map_sub, algebraMap_smul]`. Conclude with `M.smul_mem _ (M.sub_mem hφx hAx)`. Establish `hswap1 : ∀ w, mkL Δ σ (0, w) ∈ M → mkL Δ σ (w, 0) ∈ M`.
+
+Introduce `w hw`. Use `show mkL Δ σ (w, 0) ∈ (M : Set (Sp Δ τ))`. Use `(hT.dual _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v', w', rfl⟩` from `mkL_surj hσ0 x`. Take `⟨hv'0, h0w'⟩` from `hsplit v' w' hx`.
+
+Establish `k1` using `(hT.dual (mkL Δ σ (0, w))).1 hw (mkL Δ σ (v', 0)) hv'0`. Establish `k2` using `(hT.dual (mkL Δ σ (0, w))).1 hw (mkL Δ σ (0, w')) h0w'`. Rewrite `k1`, `k2`, the goal using `[isInt_herm_mkL_iff_bf_integral L hσ hσ0]`. Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, sub_zero, zero_sub] at k1 k2 ⊢`. Use `⟨by simpa using (algebraMap O K).range.neg_mem k1.2, ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, ha⟩` from `k2.1`. Use `⟨-(↑ε⁻¹ * a), ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, map_mul, map_units_inv, ha]`. Clear the denominators using the available nonvanishing facts. Establish `hswap2 : ∀ v, mkL Δ σ (v, 0) ∈ M → mkL Δ σ (0, v) ∈ M`.
+
+Introduce `v hv`. Use `show mkL Δ σ (0, v) ∈ (M : Set (Sp Δ τ))`. Use `(hT.dual _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v', w', rfl⟩` from `mkL_surj hσ0 x`. Take `⟨hv'0, h0w'⟩` from `hsplit v' w' hx`.
+
+Establish `k1` using `(hT.dual (mkL Δ σ (v, 0))).1 hv (mkL Δ σ (v', 0)) hv'0`. Establish `k2` using `(hT.dual (mkL Δ σ (v, 0))).1 hv (mkL Δ σ (w', 0)) (hswap1 w' h0w')`. Rewrite `k1`, `k2`, the goal using `[isInt_herm_mkL_iff_bf_integral L hσ hσ0]`. Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, sub_zero, zero_sub] at k1 k2 ⊢`. Conclude with `⟨(algebraMap O K).range.neg_mem ((algebraMap O K).range.mul_mem ⟨↑ε, rfl⟩ k2.1), (algebraMap O K).range.neg_mem k1.1⟩`.
+
+Use `⟨{v | mkL Δ σ (v, 0) ∈ M}, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `inj : Function.Injective (mkL (τ` using `τ) Δ σ) := fun p q h => Prod.ext_iff.2 (mkL_inj hσ0 h)`. Establish `surj : Function.Surjective (mkL (τ` using `τ) Δ σ) := fun x => by`. Take `⟨v, w, h⟩` from `mkL_surj hσ0 x`. Conclude with `⟨(v, w), h.symm⟩`.
+
+Set `e` to `LinearEquiv.ofBijective (mkL (τ := τ) Δ σ) ⟨inj, surj⟩`. Establish `he : ∀ a b, e.symm (mkL Δ σ (a, b)) = (a, b)` using `fun a b => e.symm_apply_apply (a, b)`. Set `p` to `((LinearMap.fst K (K × Etau K τ) (K × Etau K τ)).comp e.symm.toLinearMap).restrictScalars O`. Establish `hp : ∀ a b, p (mkL Δ σ (a, b)) = a`. Introduce `a b`.
+
+Simplify using `[p, he]`. Take `⟨s, hs⟩` from `Submodule.FG.map p (⟨t0, rfl⟩ : M.FG)`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Use extensionality with `v`.
+
+Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨_, hv, hp v 0⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Take `⟨a, b, rfl⟩` from `mkL_surj hσ0 x`. Rewrite using `[hp]`. Conclude with `(hsplit a b hx).1`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy x hx`. Establish `k` using `(hT.dual (mkL Δ σ (y, 0))).1 hy (mkL Δ σ (x, 0)) hx`. Rewrite `k` using `[isInt_herm_mkL_iff_bf_integral L hσ hσ0]`. Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, sub_zero] at k`. Conclude with `k.1`.
+
+Introduce `h show mkL Δ σ (y, 0) ∈ (M : Set (Sp Δ τ))`. Use `(hT.dual _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨v', w', rfl⟩` from `mkL_surj hσ0 x`. Take `⟨hv'0, h0w'⟩` from `hsplit v' w' hx`. Rewrite using `[isInt_herm_mkL_iff_bf_integral L hσ hσ0]`.
+
+Simplify using `only [map_zero, LinearMap.zero_apply, mul_zero, sub_zero]`. Conclude with `⟨h v' hv'0, h w' (hswap1 w' h0w')⟩`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Establish `key` using `hφ _ (hφ (mkL Δ σ (a, 0)) ha)`. Rewrite `key` using `[hss, hMu0]`. Conclude with `key`. Introduce `hv`. Take `⟨x1, hx1, e1⟩` from `hφ' (mkL Δ σ (v, 0)) hv`.
+
+Take `⟨x0, hx0, e0⟩` from `hφ' _ hx1`. Take `⟨a, b, rfl⟩` from `mkL_surj hσ0 x0`. Rewrite `e1` using `[← e0, hss]`. Conclude with `⟨a, (hsplit a b hx0).1, (mkL_inj hσ0 e1).1⟩`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨v, w, rfl⟩` from `mkL_surj hσ0 x`. Take `⟨h1', h2'⟩` from `hsplit v w hx`. Conclude with `⟨v, h1', w, hswap1 w h2', rfl⟩`.
+
+Introduce and unpack `⟨v, hv, w, hw, rfl⟩`. Establish `hv' : mkL Δ σ (v, 0) ∈ M` using `hv`. Establish `hw' : mkL Δ σ (w, 0) ∈ M` using `hw`. Establish `key` using `M.add_mem hv' (hswap2 w hw')`. Rewrite `key` using `[← map_add, Prod.mk_add_mk, add_zero, zero_add]`.
+
+Conclude with `key`.
+-/
 theorem fix_down (L : IsLoc O Δ) (hσ : Δ * σ ^ 2 = algebraMap O K ε) (h1 : IsUnit r) (h2 : IsUnit (2 + r)) (hr : algebraMap O K r ^ 2 = 2 + τ)
     {T : Set (Sp Δ τ)} (hT : IsFix O c (ofE Δ ((algebraMap O K r)⁻¹ • (1 + ω))) (t • (1 : EL Δ τ)) T) :
     ∃ S, Uni O c t S ∧ Mu ω '' S = S ∧ T = up Δ σ S := by

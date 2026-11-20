@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.UnivCharCopy
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Consider the cases of `hH`. Substitute `hΩ` using the available equality. Consider the cases of `hi`. Consider the cases of `ha`.
+
+Consider the cases of `hcc`. Substitute `hT` using the available equality. Consider the cases of `hl`. Consider the cases of `hd`. Conclude with `h`.
+-/
 theorem ring_relation_transfer_identity {R R' : Formalism.BasicNotions.Ranks} {H : Formalism.BasicNotions.Host R} {H' : Formalism.BasicNotions.Host R'} {Ω Ω' : Type}
     [iΩ : Field Ω] [iΩ' : Field Ω'] [aΩ : Algebra H.E Ω] [aΩ' : Algebra H'.E Ω'] {T T' : Type}
     {cc : Ω ≃+* Ω} {cc' : Ω' ≃+* Ω'} {l : T → ℕ} {l' : T' → ℕ}
@@ -26,6 +31,9 @@ theorem ring_relation_transfer_identity {R R' : Formalism.BasicNotions.Ranks} {H
   subst hR; cases hH; subst hΩ; cases hi; cases ha; cases hcc; subst hT; cases hl; cases hd
   exact h
 
+/- English proof (translation)
+Introduce `D D' ι e h hU`. Conclude with `ring_relation_transfer_identity h.gal.R h.gal.host (eq_of_heq h.gal.Om) h.gal.instOm h.gal.algOm h.set.cc (eq_of_heq h.set.Tw) h.set.l h.delU hU`.
+-/
 theorem isUnivChar_copy : ∀ {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyTw D D' ι e), GlobalTheory.UnivChar.IsUnivChar D.nexp → GlobalTheory.UnivChar.IsUnivChar D'.nexp := by
   intro D D' ι e h hU
   exact ring_relation_transfer_identity h.gal.R h.gal.host (eq_of_heq h.gal.Om) h.gal.instOm h.gal.algOm h.set.cc

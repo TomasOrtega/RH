@@ -9,6 +9,13 @@ namespace PositivityTheory.Rg.Sw.LC
 
 open PositivityTheory.Rg.Sw
 
+/- English proof (translation)
+Introduce `m n c hc P Q r`. Establish `hP` using `NullS.integrable_pg c hc P`. Establish `hQ` using `NullS.integrable_pg c hc Q`. Prove the components needed by the constructor for the conclusion. Unfold `mom`.
+
+Rewrite using `[← integral_add hP hQ]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [evX, map_add, add_mul]`. Unfold `mom`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [evX, MvPolynomial.smul_eval, mul_assoc]`.
+-/
 theorem momLin : MomLin := by
   intro m n c hc P Q r
   have hP := NullS.integrable_pg c hc P

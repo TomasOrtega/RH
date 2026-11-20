@@ -21,6 +21,11 @@ open GlobalTheory.SquareComm
 
 namespace GlobalTheory.TripleRead
 
+/- English proof (translation)
+Introduce `hH hP _ hLM D ψ θ hψ hθ W W₁ X A A₁ B α β hT`. Take `⟨ωA, ωB, hA, hB⟩` from `GlobalTheory.T.weil_representations_for_triple hP D ψ hψ W W₁ X α β hT`. Take `⟨e, Bs, Γ, Xc, om, om', h, hTr, htA, htB⟩` from `GlobalTheory.T.triple_frame_base_exists hP D ψ hψ W W₁ X A A₁ B α β hT ωA ωB hA hB`. Take `⟨R, Rf, hM⟩` from `hLM D.host.F D.host.E D.sp.cm.sig Bs W.rank W₁.rank Γ Xc om om' hTr`. Take `⟨Pi, rf, rl, p, p', hm⟩` from `GlobalTheory.T.triple_frame_compatibility hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT ωA ωB hA hB e Bs Γ Xc om om' h htA htB R Rf hM`.
+
+Conclude with `⟨ωA, ωB, Pi, rf, rl, p, p', hm⟩`.
+-/
 theorem exists_isMatch : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →

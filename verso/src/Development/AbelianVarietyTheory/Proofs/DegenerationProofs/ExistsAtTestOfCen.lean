@@ -7,6 +7,11 @@ open Classical
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S M U₀ hT hO z p _ y hy`. Set `w : Sp (PadicAlgCl p)` to `IsLocalRing.closedPoint (PadicAlgCl p)`. Establish `hw : (gPt p ≫ y) w ∈ (U₀ : Set M.Z)` using `hy.2 ⟨w, rfl⟩`. Establish `hle : S.R ≤ M.O ((gPt p ≫ y) w)` using `hO.le.trans (RatModel.ringOn_le_O hw)`. Set `y₀ : S.R →+* PadicAlgCl p` to `(RatModel.valHom (gPt p ≫ y) _ (RatModel.range_eq_singleton _ w)).comp (Subalgebra.inclusion hle).toRingHom`.
+
+Establish `hn : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1` using `fun a => hy.norm_val_le_one (x := algebraMap o Ω a) ((M.O z).algebraMap_mem a)`. Conclude with `⟨y₀, fun _ => rfl, hn, hT p y₀ hn⟩`.
+-/
 theorem exists_at_test_of_cen :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (M : RatModel o Ω) (U₀ : M.Z.Opens), S.HasTests → S.Over₀ M U₀ → (∀ (z : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z), M.Cen U₀ z y → ∃ y₀ : S.R →+* PadicAlgCl p, S.At M y y₀ ∧ (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) ∧ Nonempty (S.Test p y₀)) := by
   intro o Ω _ _ _ _ S M U₀ hT hO z p _ y hy

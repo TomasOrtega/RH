@@ -15,10 +15,20 @@ section
 
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Simplify using `[perp, Submodule.mem_iInf]`.
+-/
 theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (v : V) :
     v ∈ perp h U ↔ ∀ x ∈ U, h x v = 0 := by
   simp [perp, Submodule.mem_iInf]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Use `hp τ x h0` as an intermediate fact.
+
+Rewrite `this` using `[hx x]`. Simplify using `at this`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Use `hp τ x h0` as an intermediate fact.
+
+Rewrite `this` using `[hx x]`. Simplify using `at this`.
+-/
 theorem nondeg_of_pd [NumberField K] (h : V →ₗ⋆[K] V →ₗ[K] K) (hp : PD h) : h.Nondegenerate := by
   obtain ⟨τ⟩ : Nonempty (K →+* ℂ) := inferInstance
   constructor
@@ -39,6 +49,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.PD at hpd`. Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Introduce `h0`. Use `hpd τ x hx` as an intermediate fact. Simplify using `[h0] at this`.
+-/
 private lemma apply_self_ne_zero_of_PD {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hpd : _root_.GlobalTheory.Mass.PD h) {x : V} (hx : x ≠ 0) : h x x ≠ 0 := by
   unfold _root_.GlobalTheory.Mass.PD at hpd
@@ -51,6 +64,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => by_contra fun h0 => apply_self_ne_zero_of_PD hpd h0 (hx x), fun y hy => by_contra fun h0 => apply_self_ne_zero_of_PD hpd h0 (hy y)⟩`.
+-/
 private lemma nondegenerate_of_PD {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hpd : _root_.GlobalTheory.Mass.PD h) : h.Nondegenerate :=
   ⟨fun x hx => by_contra fun h0 => apply_self_ne_zero_of_PD hpd h0 (hx x),
@@ -60,6 +76,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Establish `hw` using `(_root_.GlobalTheory.Mass.Witt.witt_definite K V h hK hs hpd).2 W`. Use `(_root_.GlobalTheory.Mass.DiscOrder.main K W _ hK hw.2.1 (nondegenerate_of_PD hw.2.2.1) A hA).1` as an intermediate fact. Unfold `_root_.GlobalTheory.Mass.discN at this`. Conclude with `this`.
+-/
 private lemma idxN_dual_hRes_ne_zero_of_isIntLat [FiniteDimensional K V] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hK : _root_.Formalism.HermitianLatticesTheory.IsCMUnram K) (hs : h.IsSymm) (hpd : _root_.GlobalTheory.Mass.PD h)
     (W : Submodule K V) {A : Submodule (𝓞 K) W}
@@ -75,6 +94,21 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Mass.DiscOrder.idxN_eq_card] at hn ⊢`. Rewrite `hn`, the goal using `[← Nat.card_prod]`. Set `ι₁` to `W₁.subtype.restrictScalars (𝓞 K)`. Set `ι₂` to `W₂.subtype.restrictScalars (𝓞 K)`. Set `Y` to `A₁'.map ι₁ ⊔ A₂'.map ι₂`.
+
+Set `X` to `A₁.map ι₁ ⊔ A₂.map ι₂`. Set `Z` to `Submodule.comap Y.subtype X`. Set `φ₁ : A₁' →ₗ[𝓞 K] Y ⧸ Z` to `Z.mkQ ∘ₗ LinearMap.codRestrict Y (ι₁ ∘ₗ A₁'.subtype) (fun x => Submodule.mem_sup_left (Submodule.mem_map_of_mem x.2))`. Set `φ₂ : A₂' →ₗ[𝓞 K] Y ⧸ Z` to `Z.mkQ ∘ₗ LinearMap.codRestrict Y (ι₂ ∘ₗ A₂'.subtype) (fun x => Submodule.mem_sup_right (Submodule.mem_map_of_mem x.2))`. Set `g₁` to `(Submodule.comap A₁'.subtype A₁).liftQ φ₁ (fun x hx => by`.
+
+Rewrite using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_left (Submodule.mem_map_of_mem hx)))`. Set `g₂` to `(Submodule.comap A₂'.subtype A₂).liftQ φ₂ (fun x hx => by`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_sup_right (Submodule.mem_map_of_mem hx)))`.
+
+Set `G : (A₁' ⧸ Submodule.comap A₁'.subtype A₁) × (A₂' ⧸ Submodule.comap A₂'.subtype A₂) → Y ⧸ Z` to `fun p => g₁ p.1 + g₂ p.2`. Establish `hG : Function.Surjective G`. Introduce `z`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective Z z`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 y.2`.
+
+Take `⟨a₀, ha₀, rfl⟩` from `Submodule.mem_map.1 ha`. Take `⟨b₀, hb₀, rfl⟩` from `Submodule.mem_map.1 hb`. Use `⟨(Submodule.Quotient.mk ⟨a₀, ha₀⟩, Submodule.Quotient.mk ⟨b₀, hb₀⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [G, g₁, g₂, Submodule.liftQ_apply, φ₁, φ₂, LinearMap.comp_apply, Submodule.mkQ_apply]`. Rewrite using `[← Submodule.Quotient.mk_add]`.
+
+Use `congr 1`. Conclude with `Subtype.ext hab`. Use `haveI : Finite ((A₁' ⧸ Submodule.comap A₁'.subtype A₁) × (A₂' ⧸ Submodule.comap A₂'.subtype A₂)) := Nat.finite_of_card_ne_zero hn`. Use `haveI : Finite (Y ⧸ Z) := Finite.of_surjective G hG`. Use `haveI : Nonempty (Y ⧸ Z) := ⟨0⟩`.
+
+Conclude with `⟨Nat.card_le_card_of_surjective G hG, Nat.card_ne_zero.2 ⟨inferInstance, inferInstance⟩⟩`.
+-/
 private lemma index_sup_map_le_lemma_2 {W₁ W₂ : Submodule K V} {A₁ A₁' : Submodule (𝓞 K) W₁}
     {A₂ A₂' : Submodule (𝓞 K) W₂}
     (hn : _root_.GlobalTheory.Mass.idxN A₁' A₁ * _root_.GlobalTheory.Mass.idxN A₂' A₂ ≠ 0) :
@@ -128,6 +162,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Introduce `y hy`. Rewrite using `[_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `x hx`. Conclude with `hL x hx y hy`.
+-/
 private lemma le_dual_of_apply_mem_one (h : V →ₗ⋆[K] V →ₗ[K] K) {L : Submodule (𝓞 K) V}
     (hL : ∀ x ∈ L, ∀ y ∈ L, h x y ∈ (1 : Submodule (𝓞 K) K)) : L ≤ _root_.Formalism.HermitianLatticesTheory.dual h L := by
   intro y hy
@@ -139,6 +176,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.IsIntLat at hL`. Use `hL.2` as an intermediate fact. Unfold `_root_.Formalism.HermitianLatticesTheory.IsIntegralLat at this`. Conclude with `this`.
+-/
 private lemma apply_mem_one_of_isIntLat {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V}
     (hL : _root_.GlobalTheory.Mass.IsIntLat h L) :
     ∀ x ∈ L, ∀ y ∈ L, h x y ∈ (1 : Submodule (𝓞 K) K) := by
@@ -151,6 +191,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.latIn`. Conclude with `Iff.rfl`.
+-/
 private lemma mem_latIn_iff {W : Submodule K V} {L : Submodule (𝓞 K) V}
     {x : W} : x ∈ _root_.GlobalTheory.Mass.latIn W L ↔ (x : V) ∈ L := by
   unfold _root_.GlobalTheory.Mass.latIn; exact Iff.rfl
@@ -159,6 +202,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.Mass.hRes`. Both sides reduce to the same expression.
+-/
 private lemma hRes_apply (h : V →ₗ⋆[K] V →ₗ[K] K) (W : Submodule K V)
     (x y : W) : _root_.GlobalTheory.Mass.hRes h W x y = h x y := by
   unfold _root_.GlobalTheory.Mass.hRes; rfl
@@ -167,6 +213,9 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Rewrite using `[← hs.eq x w, (_root_.GlobalTheory.Mass.Witt.mem_perp h W w).1 hw x hx, map_zero]`.
+-/
 private lemma apply_eq_zero_of_mem_perp {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     {W : Submodule K V} {x w : V} (hx : x ∈ W) (hw : w ∈ _root_.GlobalTheory.Mass.perp h W) :
     h w x = 0 := by
@@ -176,6 +225,15 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Introduce `x hx`. Establish `hxs : x ∈ W ⊔ _root_.GlobalTheory.Mass.perp h W`. Rewrite using `[hc.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨u, hu, w, hw, rfl⟩` from `Submodule.mem_sup.1 hxs`.
+
+Use `Submodule.add_mem_sup (Submodule.mem_map.2 ⟨⟨u, hu⟩, ?_, rfl⟩) (Submodule.mem_map.2 ⟨⟨w, hw⟩, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`. Establish `hyL` using `hL _ (mem_latIn_iff.1 hy) _ hx`. Rewrite `hyL` using `[map_add, (_root_.GlobalTheory.Mass.Witt.mem_perp h W w).1 hw _ y.2, add_zero]`.
+
+Rewrite using `[hRes_apply]`. Conclude with `hyL`. Rewrite using `[_root_.Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Introduce `y hy`. Establish `hyL` using `hL _ (mem_latIn_iff.1 hy) _ hx`.
+
+Rewrite `hyL` using `[map_add, apply_eq_zero_of_mem_perp hs hu y.2, zero_add]`. Rewrite using `[hRes_apply]`. Conclude with `hyL`.
+-/
 private lemma le_sup_map_dual_latIn_perp {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {W : Submodule K V}
     (hc : IsCompl W (_root_.GlobalTheory.Mass.perp h W)) {L : Submodule (𝓞 K) V}
     (hL : ∀ x ∈ L, ∀ y ∈ L, h x y ∈ (1 : Submodule (𝓞 K) K)) :
@@ -207,6 +265,19 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ h hK hs hpd U A B e e' hA hB ⟨t, ht, htA⟩ ⟨t', ht', htB⟩`. Establish `hc` using `((_root_.GlobalTheory.Mass.Witt.witt_definite K V h hK hs hpd).2 U).1`. Establish `hdA` using `idxN_dual_hRes_ne_zero_of_isIntLat hK hs hpd U hA`. Establish `hdB` using `idxN_dual_hRes_ne_zero_of_isIntLat hK hs hpd _ hB`. Unfold `_root_.GlobalTheory.Mass.discN`.
+
+Take `⟨hle, hne⟩` from `index_sup_map_le_lemma_2 (A₁ := A) (A₁' := _root_.Formalism.HermitianLatticesTheory.dual _ A) (A₂ := B) (A₂' := _root_.Formalism.HermitianLatticesTheory.dual _ B) (mul_ne_zero hdA hdB)`. Establish `hXY : A.map (U.subtype.restrictScalars (𝓞 K)) ⊔ B.map ((_root_.GlobalTheory.Mass.perp h U).subtype.restrictScalars (𝓞 K)) ≤ (_root_.Formalism.HermitianLatticesTheory.dual (_root_.GlobalTheory.Mass.hRes h U) A).map (U.subtype.restrictScalars (𝓞 K)) ⊔ (_root_.Formalism.HermitianLat …` using `sup_le_sup (Submodule.map_mono (le_dual_of_apply_mem_one _ (apply_mem_one_of_isIntLat hA))) (Submodule.map_mono (le_dual_of_apply_mem_one _ (apply_mem_one_of_isIntLat hB)))`. Establish `hT : (t.image Subtype.val ∪ t'.image Subtype.val).card ≤ e + e'` using `(Finset.card_union_le _ _).trans (add_le_add (Finset.card_image_le.trans ht) (Finset.card_image_le.trans ht'))`. Establish `hY : (_root_.Formalism.HermitianLatticesTheory.dual (_root_.GlobalTheory.Mass.hRes h U) A).map (U.subtype.restrictScalars (𝓞 K)) ⊔ (_root_.Formalism.HermitianLatticesTheory.dual (_root_.GlobalTheory.Mass.hRes h (_root_.GlobalTheory.Mass.perp h U)) B).map ((_root_.GlobalTheory.Mas …`. Rewrite using `[Finset.coe_union, Finset.coe_image, Finset.coe_image, Submodule.span_union, htA, htB, Submodule.map_sup, Submodule.map_sup, Submodule.map_span, Submodule.map_span]`.
+
+Conclude with `sup_sup_sup_comm _ _ _ _`. Establish `hcount` using `((_root_.GlobalTheory.Mass.LatticeGens.gens_and_count K V _ _ hXY hne).2 (e + e') _ hT hY).1`. Establish `hpow : ((_root_.GlobalTheory.Mass.idxN ((_root_.Formalism.HermitianLatticesTheory.dual (_root_.GlobalTheory.Mass.hRes h U) A).map (U.subtype.restrictScalars (𝓞 K)) ⊔ (_root_.Formalism.HermitianLatticesTheory.dual (_root_.GlobalTheory.Mass.hRes h (_root_.GlobalTheory.Mass.perp h U …`. Conclude with `Nat.pow_le_pow_left hle (e + e')` after adjusting the coercions. Use `le_trans (Set.encard_le_encard ?_) (hcount.trans hpow)` and prove the remaining obligations.
+
+Introduce and unpack `L ⟨hL, hLU, hLP⟩`. Use `⟨sup_le ?_ ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap, ← hLU]`. Unfold `_root_.GlobalTheory.Mass.latIn`. Conclude with `le_rfl`.
+
+Rewrite using `[Submodule.map_le_iff_le_comap, ← hLP]`. Unfold `_root_.GlobalTheory.Mass.latIn`. Conclude with `le_rfl`. Use `le_sup_map_dual_latIn_perp hs hc (apply_mem_one_of_isIntLat hL)` as an intermediate fact. Rewrite `this` using `[hLU, hLP]`.
+
+Conclude with `this`.
+-/
 theorem _root_.GlobalTheory.Mass.Glue.main : ∀ (K V : Type) [Field K] [NumberField K]
     [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), _root_.Formalism.HermitianLatticesTheory.IsCMUnram K → h.IsSymm →

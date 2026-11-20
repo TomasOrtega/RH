@@ -12,6 +12,9 @@ namespace GlobalTheory.CechKS
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 
+/- English proof (translation)
+The claim follows from `V.2.fromSpec_preimage_self.ge`.
+-/
 theorem Pt.aff_in (s : X ⟶ Sp R) (V : X.affineOpens) : (Pt.aff s V).In V.1 :=
   V.2.fromSpec_preimage_self.ge
 
@@ -23,10 +26,40 @@ def Pt.homAff (V : X.affineOpens) (Q : Pt s) (h : Q.In V.1) : (Pt.aff s V).Hom Q
         exact e },
     GlobalTheory.Points.specMap_valMap_fromSpec V.2 Q.x h⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Points.valR_eq Q.x V.1 h a).symm`.
+-/
 theorem Pt.homAff_apply (V : X.affineOpens) (Q : Pt s) (h : Q.In V.1) (a : CechDR.Sec s V.1) :
     (Pt.homAff V Q h).ρ a = valR Q.x V.1 a :=
   (GlobalTheory.Points.valR_eq Q.x V.1 h a).symm
 
+/- English proof (translation)
+Set `Ix` to `{V : X.affineOpens // ∃ j, V.1 ≤ W j}`. Set `Vs : Ix → X.Opens` to `fun i ↦ i.1.1`. Establish `hVU : ∀ i : Ix, Vs i ≤ U` using `fun i ↦ i.2.choose_spec.trans (hWU _)`. Set `iUV : ∀ i : Ix, Vs i ⟶ U` to `fun i ↦ homOfLE (hVU i)`. Establish `hcov : U ≤ iSup Vs`.
+
+Introduce `x hx`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hU hx)`. Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := W j) (x := x) hj`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, j, hVW⟩, hxV⟩`. Establish `hres : ∀ (i : Ix) (V : X.affineOpens) (h : V.1 ≤ i.1.1), F (Pt.aff s V) = CechDR.Sec.res s h (F (Pt.aff s i.1))` using `fun i V h ↦ hF i.2.choose (Pt.aff s i.1) (Pt.aff s V) (Pt.affHom s h) ((Pt.aff_in s i.1).mono i.2.choose_spec)`.
+
+Set `sf : ∀ i : Ix, Γ(X, Vs i)` to `fun i ↦ F (Pt.aff s i.1)`. Establish `hcomp : TopCat.Presheaf.IsCompatible X.sheaf.1 Vs sf`. Introduce `i i'`. Use `X.sheaf.eq_of_locally_eq' (fun V : {V : X.affineOpens // V.1 ≤ Vs i ⊓ Vs i'} ↦ V.1.1) _ (fun V ↦ homOfLE V.2) ?_ _ _ ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨V, hV, hxV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := Vs i ⊓ Vs i') (x := x) hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, hVW⟩, hxV⟩`. Introduce `V`. Establish `k : ∀ (T : Ix) (h2 : Vs i ⊓ Vs i' ≤ Vs T) (g : Vs i ⊓ Vs i' ⟶ Vs T), X.sheaf.1.map (homOfLE V.2).op (X.sheaf.1.map g.op (sf T)) = F (Pt.aff s V.1)` using `fun T h2 g ↦ by`. Rewrite using `[Subsingleton.elim g (homOfLE h2)]`.
+
+Express the relevant statement in the definitionally equal form `CechDR.Sec.res s V.2 (CechDR.Sec.res s h2 (sf T)) = _`. Rewrite using `[← CechDR.Sec.res_res]`. Conclude with `(hres T V.1 _).symm`. Conclude with `(k i inf_le_left _).trans (k i' inf_le_right _).symm`. Take `⟨f, hf, -⟩` from `X.sheaf.existsUnique_gluing' Vs U iUV hcov sf hcomp`.
+
+Use `⟨f, fun j P hP ↦ ?_⟩` and prove the remaining obligations. Establish `hPU : P.In U` using `hP.mono (hWU j)`. Establish `key : ∀ (V' : (Sp P.B).affineOpens) (i : Ix), V'.1 ≤ P.x ⁻¹ᵁ i.1.1 → CechDR.toSec R P.B V' (F P) = CechDR.toSec R P.B V' (valR P.x U f)`. Introduce `V' i hV'`. Set `P' : Pt s` to `⟨CechDR.Sec (CechDR.algStr R P.B) V'.1, CechDR.affPt (CechDR.algStr R P.B) V' ≫ P.x, by`.
+
+Rewrite using `[Category.assoc, P.w]`. Conclude with `CechDR.affPt_w _ V'⟩`. Establish `hpt : spMap ((CechDR.toSec R P.B V' : P.B →ₐ[R] P'.B) : P.B →+* P'.B) ≫ P.x = P'.x`. Express the relevant statement in the definitionally equal form `_ = CechDR.affPt _ V' ≫ P.x`. Rewrite using `[CechDR.affPt_eq]`.
+
+Both sides reduce to the same expression. Set `φ : P.Hom P'` to `⟨CechDR.toSec R P.B V', hpt⟩`. Establish `hP'V : P'.In i.1.1` using `fun q _ ↦ hV' (V'.2.fromSpec_preimage_self.ge (Set.mem_univ q))`. Establish `e1 : F P' = φ.ρ (F P)` using `hF j P P' φ hP`. Establish `e2 : F P' = (Pt.homAff i.1 P' hP'V).ρ (F (Pt.aff s i.1))` using `hF i.2.choose _ _ _ ((Pt.aff_in s i.1).mono i.2.choose_spec)`.
+
+Rewrite `e2` using `[Pt.homAff_apply]`. Establish `e3 : valR P'.x i.1.1 (F (Pt.aff s i.1)) = valR P'.x U f`. Establish `h0` using `hf i`. Establish `h1` using `GlobalTheory.Points.valR_res P'.x (hVU i) hP'V f`. Express the relevant statement in the definitionally equal form `valR P'.x i.1.1 (sf i) = _`.
+
+Rewrite using `[← h0]`. Conclude with `h1`. Establish `e4 : valR P'.x U f = φ.ρ (valR P.x U f)`. Establish `h2` using `GlobalTheory.Points.valR_spMap_comp (φ.ρ : P.B →+* P'.B) P.x U hPU f`. Rewrite `h2` using `[hpt]`.
+
+Conclude with `h2`. Conclude with `e1.symm.trans (e2.trans (e3.trans e4))`. Establish `hex : ∀ y : Sp P.B, ∃ V' : (Sp P.B).affineOpens, y ∈ V'.1 ∧ ∃ i : Ix, V'.1 ≤ P.x ⁻¹ᵁ i.1.1`. Introduce `y`. Take `⟨V, hV, hyV, hVW⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := W j) (x := P.x y) (hP (Set.mem_univ y))`.
+
+Take `⟨V', hV', hyV', hV'V⟩` from `exists_isAffineOpen_mem_and_subset (X := Sp P.B) (U := P.x ⁻¹ᵁ V) (x := y) hyV`. Conclude with `⟨⟨V', hV'⟩, hyV', ⟨⟨V, hV⟩, j, hVW⟩, hV'V⟩`. Use `choose V' hyV' i hi using hex`. Establish `key2 : (Scheme.ΓSpecIso (CommRingCat.of P.B)).inv (F P) = (Scheme.ΓSpecIso (CommRingCat.of P.B)).inv (valR P.x U f)`. Use `(Sp P.B).sheaf.eq_of_locally_eq' (fun y ↦ (V' y).1) ⊤ (fun _ ↦ homOfLE le_top) (fun y _ ↦ TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyV' y⟩) _ _ (fun y ↦ ?_)` and prove the remaining obligations.
+
+Use `key (V' y) (i y) (hi y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `(CechDR.secMap (𝟙 (Sp P.B)) (V' y).1).hom (F P) = (CechDR.secMap (𝟙 (Sp P.B)) (V' y).1).hom (valR P.x U f) at this`. Simplify using `only [CechDR.secMap, Scheme.Hom.appLE, Scheme.Hom.id_app, CommRingCat.hom_comp, RingHom.comp_apply] at this`. Conclude with `this`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of P.B)).symm.commRingCatIsoToRingEquiv.injective key2`.
+-/
 theorem exists_sec_of_isNat (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Type) (W : J → X.Opens)
     (U : X.Opens) (hWU : ∀ j, W j ≤ U) (hU : U ≤ ⨆ j, W j) (F : PtFn s) (hF : ∀ j, IsNat (W j) F) :
     ∃ f : Γ(X, U), ∀ (j : J) (P : Pt s), P.In (W j) → F P = valR P.x U f := by

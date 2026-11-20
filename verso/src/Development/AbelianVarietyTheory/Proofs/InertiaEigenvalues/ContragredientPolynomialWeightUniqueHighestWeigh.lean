@@ -30,11 +30,25 @@ section Irr
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+The claim follows from `(pairBK_apply lam _ _).trans ((pairingBInvariantK_holds ℂ ι n lam (mtwEmb emb (mtwRat γ)) (x : VV ℂ lam).1 (y : VV ℂ lam).1).trans (pairBK_apply lam x y).symm)`.
+-/
 theorem pair_inv (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (γ : ReciprocityTheory.Aut.GQ L n) (x y : VV ℂ lam) :
     pairBK lam (mtRep emb lam γ x) (tenRep emb lam γ y) = pairBK lam x y :=
   (pairBK_apply lam _ _).trans ((pairingBInvariantK_holds ℂ ι n lam (mtwEmb emb (mtwRat γ)) (x : VV ℂ lam).1
     (y : VV ℂ lam).1).trans (pairBK_apply lam x y).symm)
 
+/- English proof (translation)
+Unfold `TenIrr`. Rewrite using `[mtRep_eq_tenRep, mtwConj_conj]`. Use `haveI : FiniteDimensional ℂ (VV ℂ lam) := Module.Finite.of_basis (bVV ℂ lam)`. Establish `hd` using `GlobalTheory.WtDual.dual_isIrreducible (mtRep emb lam) h`. Set `Φ : VV ℂ lam →ₗ[ℂ] Module.Dual ℂ (VV ℂ lam)` to `(pairBK lam).flip`.
+
+Establish `hΦ : ∀ x y, Φ y x = pairBK lam x y` using `fun x y => rfl`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Conclude with `(pairingBNondegenerate_holds ℂ ι n lam).2 y fun x => by`.
+
+Rewrite using `[← hΦ, hy]`. Both sides reduce to the same expression. Establish `hdim : Module.finrank ℂ (VV ℂ lam) = Module.finrank ℂ (Module.Dual ℂ (VV ℂ lam))` using `(Subspace.dual_finrank_eq).symm`. Set `E` to `LinearMap.linearEquivOfInjective Φ hinj hdim`. Establish `hE : ∀ y, E y = Φ y` using `fun y => rfl`.
+
+Use `GlobalTheory.PiIsotypic.isIrreducible_of_linearEquiv (mtRep emb lam).dual (tenRep emb lam) E.symm (fun g f => ?_) hd` and prove the remaining obligations. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, hE]`. Take `⟨y, rfl⟩` from `E.surjective f`. Rewrite using `[LinearEquiv.symm_apply_apply, hE]`.
+
+Use extensionality with `x`. Rewrite using `[hΦ, Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, hΦ]`. Use `pair_inv emb lam g ((mtRep emb lam g⁻¹) x) y` as an intermediate fact. Rewrite `this` using `[Representation.self_inv_apply]`. Conclude with `this`.
+-/
 theorem tenIrr_conj (emb : ι → L →+* ℂ) (lam : ι → DomWeight n) (h : TenIrr emb lam) :
     TenIrr (mtwConj emb) lam := by
   unfold TenIrr
@@ -79,6 +93,9 @@ variable {ι : Type} [Fintype ι] {n : ℕ} {K : Type} [Field K] (e : K →+* �
 def bC : Module.Basis (VVIdx lam) ℂ (VV ℂ lam) :=
   Module.Basis.mk (linearIndependent_mapVV e lam) (span_mapVV e lam).ge
 
+/- English proof (translation)
+Simplify using `[bC]`.
+-/
 theorem bC_apply (i : VVIdx lam) : bC e lam i = mapVV e lam (bVV K lam i) := by
   simp [bC]
 
@@ -97,10 +114,16 @@ def omegaV : Module.Dual K W →ₛₗ[e] Module.Dual ℂ (VV ℂ lam) where
     funext i
     simp
 
+/- English proof (translation)
+Simplify using `[omegaV, Module.Basis.constr_basis]`.
+-/
 theorem omegaV_bC (f : Module.Dual K W) (i : VVIdx lam) :
     omegaV e lam T f (bC e lam i) = e (f (T.symm (bVV K lam i))) := by
   simp [omegaV, Module.Basis.constr_basis]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← (bVV K lam).sum_repr x]`. Use `conv_rhs => rw [← (bVV K lam).sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, ← bC_apply, LinearMap.map_smul, omegaV_bC, smul_eq_mul, map_mul, RingHom.id_apply, LinearEquiv.map_smul, LinearMap.map_smul]`.
+-/
 theorem omegaV_mapVV (f : Module.Dual K W) (x : VV K lam) :
     omegaV e lam T f (mapVV e lam x) = e (f (T.symm x)) := by
   conv_lhs => rw [← (bVV K lam).sum_repr x]
@@ -125,6 +148,13 @@ def coordK : Module.Dual K W →ₗ[K] VV K lam :=
 def coordC : Module.Dual ℂ (VV ℂ lam) →ₗ[ℂ] VV ℂ lam :=
   (bC e lam).equivFun.symm.toLinearMap ∘ₗ LinearMap.pi fun i => Module.Dual.eval ℂ (VV ℂ lam) (bC e lam i)
 
+/- English proof (translation)
+Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `h1 : ∀ i, f (T.symm (bVV K lam i)) = 0`. Introduce `i`. Establish `h0` using `congrArg (bVV K lam).equivFun hf`.
+
+Simplify using `only [coordK, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_zero] at h0`. Simplify using `using congrFun h0 i`. Establish `h2 : f ∘ₗ T.symm.toLinearMap = 0` using `(bVV K lam).ext fun i => by simpa using h1 i`. Use extensionality with `w`. Use `LinearMap.congr_fun h2 (T w)` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem coordK_ker : LinearMap.ker (coordK lam T) = ⊥ := by
   rw [LinearMap.ker_eq_bot']
   intro f hf
@@ -138,10 +168,18 @@ theorem coordK_ker : LinearMap.ker (coordK lam T) = ⊥ := by
   have := LinearMap.congr_fun h2 (T w)
   simpa using this
 
+/- English proof (translation)
+Simplify using `only [coordC, coordK, LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.equivFun_symm_apply, LinearMap.pi_apply, Module.Dual.eval_apply, map_sum, LinearMap.map_smulₛₗ, omegaV_bC, bC_apply, omegaV_mapVV]`.
+-/
 theorem coordC_omegaV (f : Module.Dual K W) : coordC e lam (omegaV e lam T f) = mapVV e lam (coordK lam T f) := by
   simp only [coordC, coordK, LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.equivFun_symm_apply,
     LinearMap.pi_apply, Module.Dual.eval_apply, map_sum, LinearMap.map_smulₛₗ, omegaV_bC, bC_apply, omegaV_mapVV]
 
+/- English proof (translation)
+Use `LinearIndependent.of_comp (coordC e lam) ?_` and prove the remaining obligations. Use `LinearIndependent.of_comp (VV ℂ lam).subtype ?_` and prove the remaining obligations. Establish `h1 : LinearIndependent K fun x => ((coordK lam T (v x) : VV K lam) : Pol K ι n)` using `(hv.map' (coordK lam T) (coordK_ker lam T)).map' (VV K lam).subtype (Submodule.ker_subtype _)`. Use `Formalism.L2.Col.linearIndependent_map e _ h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Simplify using `[coordC_omegaV, mapVV_coe]`.
+-/
 theorem omegaV_li (κ : Type) (v : κ → Module.Dual K W) (hv : LinearIndependent K v) :
     LinearIndependent ℂ fun x => omegaV e lam T (v x) := by
   refine LinearIndependent.of_comp (coordC e lam) ?_
@@ -152,12 +190,18 @@ theorem omegaV_li (κ : Type) (v : κ → Module.Dual K W) (hv : LinearIndepende
   funext x
   simp [coordC_omegaV, mapVV_coe]
 
+/- English proof (translation)
+Use `(bC e lam).ext fun j => ?_` and prove the remaining obligations. Rewrite using `[omegaV_bC]`. Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply]`.
+-/
 theorem omegaV_coord (i : VVIdx lam) :
     omegaV e lam T ((bVV K lam).coord i ∘ₗ T.toLinearMap) = (bC e lam).coord i := by
   refine (bC e lam).ext fun j => ?_
   rw [omegaV_bC]
   simp [Module.Basis.coord_apply, Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← (bC e lam).dualBasis.span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, by rw [omegaV_coord, Module.Basis.coe_dualBasis]⟩`.
+-/
 theorem omegaV_span : Submodule.span ℂ (Set.range (omegaV e lam T)) = ⊤ := by
   classical
   rw [eq_top_iff, ← (bC e lam).dualBasis.span_eq]
@@ -172,6 +216,11 @@ namespace GlobalTheory.MtContraHw
 
 open GlobalTheory.CoefModel Formalism.L2.Col
 
+/- English proof (translation)
+Use `(bC e lam).ext fun j => ?_` and prove the remaining obligations. Establish `h1 : (mtRep (fun t => e.comp (emb t)) lam).dual γ (omegaV e lam T f) (bC e lam j) = omegaV e lam T f (mapVV e lam (rhoVr emb lam (mtwRat γ⁻¹) (bVV K lam j)))`. Rewrite using `[GlobalTheory.ConjTwist.mapVV_rhoVr, bC_apply]`. Both sides reduce to the same expression. Rewrite using `[h1, bC_apply, omegaV_mapVV, omegaV_mapVV]`.
+
+Use `show e (f (ρ γ⁻¹ (T.symm (bVV K lam j)))) = _`. Use `congr 2`. Apply `T.injective` to reduce the goal to its premises. Rewrite using `[hT, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`.
+-/
 theorem omegaV_comm {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι] {K : Type}
     [Field K] (e : K →+* ℂ) (emb : ι → L →+* K) (lam : ι → DomWeight n) {W : Type} [AddCommGroup W] [Module K W]
     (ρ : Representation K (ReciprocityTheory.Aut.GQ L n) W) (T : W ≃ₗ[K] VV K lam)
@@ -192,6 +241,9 @@ end GlobalTheory.MtContraHw
 
 open GlobalTheory.CoefModel Formalism.L2.Col in
 
+/- English proof (translation)
+Introduce `L _ _ _ n ι _ K _ e emb hinj hcm c hc lam hten W _ _ _ ρ T hT t lam0 hw`. Establish `h'` using `GlobalTheory.MtContraHw.tenIrr_conj (fun t => e.comp (emb t)) lam hten`. Establish `hwa` using `GlobalTheory.hwAt_of_hwAtF L n K e c hc (Module.Dual K W) ρ.dual (GlobalTheory.WtDual.dualWt (mtWt (fun t => e.comp (emb t)) lam hten)) (GlobalTheory.MtContraHw.omegaV e lam T) (GlobalTheory.MtContraHw.omegaV_li e lam T) (GlobalTheory.MtContraHw.omegaV_span e lam T) (GlobalTheory …`. Conclude with `mtWt_hw_dual (fun t => e.comp (emb t)) hinj hcm lam hten h' t _ lam0 (GlobalTheory.WtDual.isDual_dualWt _) hwa`.
+-/
 theorem GlobalTheory.mtRatDual_hw : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K] (e : K →+* ℂ) (emb : ι → L →+* K), Function.Injective (fun t => e.comp (emb t)) → (∀ t t', e.comp (emb t) ≠ ComplexEmbedding.conjugate (e.comp (emb t'))) → ∀ (c : L →+* L), (∀ x, c x = IsCMField.complexConj L x) → ∀ (lam : ι → DomWeight n), Formalism.L2.Col.TenIrr (fun t => e.comp (emb t)) lam → ∀ (W : Type) [AddCommGroup W] [Module K W] [FiniteDimensional K W] (ρ : Representation K (ReciprocityTheory.Aut.GQ L n) W) (T : W ≃ₗ[K] VV K lam), (∀ γ x, T (ρ γ x) = rhoVr emb lam (Formalism.L2.Col.mtwRat γ) (T x)) → ∀ (t : ι) (lam0 : Fin n → ℤ), NX.HWAtF c ρ.dual (emb t) lam0 → lam0 = (lam t).w := by
   intro L _ _ _ n ι _ K _ e emb hinj hcm c hc lam hten W _ _ _ ρ T hT t lam0 hw
   have h' := GlobalTheory.MtContraHw.tenIrr_conj (fun t => e.comp (emb t)) lam hten

@@ -3,6 +3,13 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ArakelovVolumes.Diff
 namespace ReciprocityTheory.ChartRestriction.G.AR
 
 open MvPolynomial in
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `[Derivation.map_algebraMap]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq, add_smul, Finset.sum_add_distrib]`.
+
+Use `next p j hp =>`. Establish `h1 : ∀ i, aeval x (pderiv i (p * X j)) = x j * aeval x (pderiv i p) + (if j = i then aeval x p else 0)`. Introduce `i`. Rewrite using `[Derivation.leibniz, pderiv_X, Pi.single_apply, smul_eq_mul, smul_eq_mul, map_add, map_mul, map_mul, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp only [map_one, map_zero, mul_one, mul_zero, zero_add, add_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, aeval_X, Derivation.leibniz, hp]`. Simplify using `only [h1, add_smul, Finset.sum_add_distrib, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true, mul_smul, ← Finset.smul_sum]`. Conclude with `add_comm _ _`.
+-/
 theorem kaehlerD_aeval_eq_sum {K : Type*} {Ω : Type*} [Field K] [Field Ω] [Algebra K Ω] {D : ℕ}
     (x : Fin D → Ω) (P : MvPolynomial (Fin D) K) :
     KaehlerDifferential.D K Ω (aeval x P) =
@@ -26,6 +33,29 @@ theorem kaehlerD_aeval_eq_sum {K : Type*} {Ω : Type*} [Field K] [Field Ω] [Alg
     exact add_comm _ _
 
 open MvPolynomial in
+/- English proof (translation)
+Establish `coeff_pderiv_eq_coeff_add_single_lemma {K : Type _} [Field K] {D : ℕ} (i : Fin D) (n : Fin D →₀ ℕ) (P : MvPolynomial (Fin D) K) : MvPolynomial.coeff n (MvPolynomial.pderiv i P) = MvPolynomial.coeff (n + Finsupp.single i 1) P * ((n i : K) + 1)`. Use `MvPolynomial.induction_on' P ?_ ?_` and prove the remaining obligations. Introduce `s a`. Rewrite using `[MvPolynomial.pderiv_monomial, MvPolynomial.coeff_monomial, MvPolynomial.coeff_monomial]`. Distinguish the cases in `h : s = n + Finsupp.single i 1`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, zero_mul] split_ifs with h'`. Establish `hs : s i = 0`. Assume the negation of the conclusion as `hs`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[← h', tsub_add_cancel_of_le (Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hs))]`. Simplify using `[hs]`. Both sides reduce to the same expression. Introduce `p q hp hq`.
+
+Simplify using `only [map_add, MvPolynomial.coeff_add, hp, hq, add_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hmdeg⟩ : ∃ m ∈ P.support, 0 < m.sum (fun _ e => e) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h2 : P.totalDegree ≤ 0`.
+
+Unfold `MvPolynomial.totalDegree`. Conclude with `Finset.sup_le h`. Use linear arithmetic over natural numbers and integers. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hmdeg`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.mp hm0`. Establish `hi' : m i ≠ 0` using `by simpa using hi`. Establish `hle : Finsupp.single i 1 ≤ m` using `Finsupp.single_le_iff.mpr (Nat.one_le_iff_ne_zero.mpr hi')`. Establish `hnm : m - Finsupp.single i 1 + Finsupp.single i 1 = m` using `tsub_add_cancel_of_le hle`.
+
+Use `⟨i, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h3` using `congrArg (MvPolynomial.coeff (m - Finsupp.single i 1)) h0`. Rewrite `h3` using `[coeff_pderiv_eq_coeff_add_single_lemma, hnm, MvPolynomial.coeff_zero]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
+
+Conclude with `(MvPolynomial.mem_support_iff.mp hm) h`. Conclude with `(Nat.cast_add_one_ne_zero _) h`. Establish `key : ∀ n ∈ (pderiv i P).support, (n.sum fun _ e => e) + 1 ≤ P.totalDegree`. Introduce `n hn`. Establish `hc : MvPolynomial.coeff (n + Finsupp.single i 1) P ≠ 0`.
+
+Introduce `h`. Apply `MvPolynomial.mem_support_iff.mp hn` to reduce the goal to its premises. Rewrite using `[coeff_pderiv_eq_coeff_add_single_lemma, h, zero_mul]`. Establish `hdeg : ((n + Finsupp.single i 1).sum fun _ e => e) = (n.sum fun _ e => e) + 1`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`.
+
+Establish `h4` using `MvPolynomial.le_totalDegree (MvPolynomial.mem_support_iff.mpr hc)`. Rewrite `h4` using `[hdeg]`. Conclude with `h4`. Take `⟨N, hN⟩ : ∃ N, P.totalDegree = N` from `⟨_, rfl⟩`. Rewrite `key`, `hP`, the goal using `[hN]`.
+
+Establish `hb : (pderiv i P).totalDegree ≤ N - 1`. Unfold `MvPolynomial.totalDegree`. Conclude with `Finset.sup_le fun n hn => by have := key n hn; omega`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_pderiv_ne_zero_lt {K : Type*} [Field K] [CharZero K] {D : ℕ}
     (P : MvPolynomial (Fin D) K) (hP : 0 < P.totalDegree) :
     ∃ i, pderiv i P ≠ 0 ∧ (pderiv i P).totalDegree < P.totalDegree := by
@@ -89,6 +119,15 @@ theorem exists_pderiv_ne_zero_lt {K : Type*} [Field K] [CharZero K] {D : ℕ}
       exact Finset.sup_le fun n hn => by have := key n hn; omega
     omega
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ D x hli`. Rewrite using `[algebraicIndependent_iff]`. Establish `hsum` using `Fintype.linearIndependent_iff.mp hli`. It suffices to establish `h : ∀ N (P : MvPolynomial (Fin D) K), P.totalDegree = N → MvPolynomial.aeval x P = 0 → P = 0 from fun P hP => h _ P rfl hP`. Introduce `N`.
+
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `P hN hP`. Break down `Nat.eq_zero_or_pos N with h0 | hpos` into its components or cases. Rewrite `hN` using `[h0, MvPolynomial.totalDegree_eq_zero_iff_eq_C]`.
+
+Rewrite `hP` using `[hN, MvPolynomial.aeval_C]`. Establish `hc : MvPolynomial.coeff 0 P = 0` using `(algebraMap K Ω).injective (by rw [hP, map_zero])`. Rewrite using `[hN, hc, map_zero]`. Take `⟨i, hi, hlt⟩` from `exists_pderiv_ne_zero_lt P (by omega)`. Establish `hD` using `kaehlerD_aeval_eq_sum x P`.
+
+Rewrite `hD` using `[hP, map_zero]`. Conclude with `absurd (ih (MvPolynomial.pderiv i P).totalDegree (by omega) _ rfl (hsum _ hD.symm i)) hi`.
+-/
 theorem differentialIndependence.{u, v} : DiffIndepStatement.{u, v} := by
   intro K Ω _ _ _ _ D x hli
   rw [algebraicIndependent_iff]

@@ -23,6 +23,15 @@ namespace GlobalTheory.GalLoc.EigLoc
 end GlobalTheory.GalLoc.EigLoc
 namespace GlobalTheory.GalLoc.EigLoc
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Introduce `hN hS hL`. Establish `h2 : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c => ∀ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i …` using `_root_.GlobalTheory.T.exists_superset_low_heckeRd_of_subset_S0`. Establish `h3 : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c => ∃ θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) …` using `_root_.GlobalTheory.T.exists_theta_heq_lvlPsi_at_members`. Use `_root_.GlobalTheory.GalLoc.atMem_mono (_root_.GlobalTheory.GalLoc.atMem_and' (h2 hN hS hL) (h3 hN hS hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hE H`.
+
+Take `⟨H2, H3⟩` from `H`. Take `⟨e⟩` from `hE`. Establish `e' : _root_.GlobalTheory.HeightCounting.RealExpansionExtraData (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Take `⟨Sb, eg, hSb, heq, hAd⟩` from `e'.eig`. Take `⟨Sb', hsub, hS0, hlow, hrd⟩` from `H2 Sb hSb`.
+
+Take `⟨θ, hθ, hψ⟩` from `H3`. Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `_root_.GlobalTheory.GalLoc.EigLoc.parIn_loc_alt c.a.nt _ c.row.rep_eq`. Establish `hT` using `_root_.GlobalTheory.TwInputs.Eig.eigTrue_of_read hL t.r.Y t.r.z.pins.char.base.lev hpar.T Rw0 hpar.row hAd hsub hlow`. Establish `hO` using `GlobalTheory.TwInputs.Eig.eigOcc t.r.Y t.r.z.pins.char.base.lev t.r.intersectionNumber_baseChange.prim.unif t.r.z.pins.char.base.models.HW t.r.z.good.2 hψ hAd hsub hlow hrd`. Rewrite `hT` using `[t.r.z.lev.C]`.
+
+Conclude with `_root_.GlobalTheory.GalLoc.EigLoc.transport_alt c.a.nt Sb' hS0 eg heq _ c.row.S_eq _ c.row.hL_eq θ hθ.symm Rw0 hRw0 hT hO`.
+-/
 theorem frobenius_eigenvalues_at_place_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ Sb : Finset (PlE c.a.nt.D.host), (∀ i, Sb ⊆ (withLoc c.a.nt.L).ntw.S0 i) ∧ (∀ Rw : RowSide (withLoc c.a.nt.L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (withLoc c.a.nt.L) (cfL c.a.nt.L c.a.nt.cf) Rw Sb c.a.nt.eig) ∧ GlobalTheory.TwInputs.EigOcc (withLoc c.a.nt.L) ({ c.a.nt.S with } : RatDat (withLoc c.a.nt.L).ntw) c.a.nt.θ c.a.nt.hL Sb c.a.nt.eig := by
   intro hN hS hL
@@ -53,6 +62,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt | exact _root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eigTrue_and_eigOcc_withLoc : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c =>
     ∃ Sb : Finset (PlE c.a.nt.D.host), (∀ i, Sb ⊆ (withLoc c.a.nt.L).ntw.S0 i) ∧ (∀ Rw : RowSide (withLoc c.a.nt.L), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (withLoc c.a.nt.L) (cfL c.a.nt.L c.a.nt.cf) Rw Sb c.a.nt.eig) ∧ GlobalTheory.TwInputs.EigOcc (withLoc c.a.nt.L) ({ c.a.nt.S with } : RatDat (withLoc c.a.nt.L).ntw) c.a.nt.θ c.a.nt.hL Sb c.a.nt.eig := by
   first | exact @_root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt | exact _root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt | (intros; apply _root_.GlobalTheory.GalLoc.EigLoc.frobenius_eigenvalues_at_place_alt <;> assumption)

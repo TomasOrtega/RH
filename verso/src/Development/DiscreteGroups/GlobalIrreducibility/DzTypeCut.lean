@@ -33,6 +33,9 @@ def Narrow : Prop :=
         (rc (cls σ)).inePol (AlgEquiv.restrictScalars E (t : G E' Ω)) =
           ∏ j ∈ Finset.range n, (X - C ((θ (z ^ g ^ j) : ℂˣ) : ℂ))
 
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs` and use `(H E E' Ω g A w h w' h' rc hrc i hi n hn hg hN a' ha' K red hr hk θ hθ τ hτ hf σ hs).2`.
+-/
 theorem narrow_of_field (H : GlobalTheory.Published.DepthZeroTypeInertia) : Narrow :=
   fun E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs =>
     (H E E' Ω g A w h w' h' rc hrc i hi n hn hg hN a' ha' K red hr hk θ hθ τ hτ hf σ hs).2
@@ -93,6 +96,13 @@ def LMatch : Prop :=
           ∏ j ∈ Finset.range n, (X - C ((ξ (z ^ g ^ j) : ℂˣ) : ℂ))) →
       ∃ k : ℕ, ∀ z : Kˣ, ξ z = θ (z ^ g ^ k)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[← ih]`. Establish `h1` using `Finset.prod_range_succ' (fun j => (X - C (f (j + k)) : ℂ[X])) n`.
+
+Establish `h2` using `Finset.prod_range_succ (fun j => (X - C (f (j + k)) : ℂ[X])) n`. Establish `hper : f (n + k) = f (0 + k)` using `by rw [Nat.add_comm n k, hf, Nat.zero_add]`. Rewrite `h1` using `[h2, hper]`. Establish `hne : (X - C (f (0 + k)) : ℂ[X]) ≠ 0` using `X_sub_C_ne_zero _`. Establish `h3` using `mul_right_cancel₀ hne h1`.
+
+Rewrite using `[h3]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.add_right_comm, Nat.add_assoc]`.
+-/
 theorem prod_shift (f : ℕ → ℂ) (n : ℕ) (hf : ∀ j, f (j + n) = f j) (k : ℕ) :
     ∏ j ∈ Finset.range n, (X - C (f (j + k))) = ∏ j ∈ Finset.range n, (X - C (f j)) := by
   induction k with
@@ -109,6 +119,11 @@ theorem prod_shift (f : ℕ → ℂ) (n : ℕ) (hf : ∀ j, f (j + n) = f j) (k 
     refine Finset.prod_congr rfl fun j _ => ?_
     rw [Nat.add_right_comm, Nat.add_assoc]
 
+/- English proof (translation)
+Establish `e : (𝓞 E' ⧸ w'.asIdeal) ≃+* K` using `(Ideal.quotEquivOfEq hk.symm).trans (RingHom.quotientKerEquivOfSurjective hr)`. Establish `hc : Nat.card K = g ^ n` using `by rw [← hN, normV, Nat.card_congr e.toEquiv]`. Use `haveI : Finite K := Nat.finite_of_card_ne_zero (by rw [hc]; exact hpos.ne')`. Use `letI := Fintype.ofFinite K`. Establish `hcard : Fintype.card K = g ^ n` using `by rw [← Nat.card_eq_fintype_card, hc]`.
+
+Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, ← hcard, FiniteField.pow_card]`.
+-/
 theorem pow_card_units {E' : Type} [Field E'] [NumberField E'] (w' : HeightOneSpectrum (𝓞 E')) (g n : ℕ)
     (hN : normV w' = g ^ n) (K : Type) [Field K] (red : 𝓞 E' →+* K) (hr : Function.Surjective red)
     (hk : RingHom.ker red = w'.asIdeal) (hpos : 0 < g ^ n) (z : Kˣ) : z ^ g ^ n = z := by
@@ -121,6 +136,15 @@ theorem pow_card_units {E' : Type} [Field E'] [NumberField E'] (w' : HeightOneSp
   ext
   rw [Units.val_pow_eq_pow_val, ← hcard, FiniteField.pow_card]
 
+/- English proof (translation)
+Introduce `E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs t x z hxz hv`. Take `⟨a, ha, ε, hε, hL⟩` from `hrc`. Establish `hrc' : IsRec h rc` using `⟨a, ha, ε, hε, hL⟩`. Establish `hc : IsIrrWD (rc (cls σ))` using `(hL.cusp _).1 (H1 E w g i hi n hn τ hτ σ hs)`. Establish `ht : IsTameWD (rc (cls σ))` using `(hL.depth _).1 (H2 E w g i hi n τ σ hs)`.
+
+Establish `hd : (rc (cls σ)).lpDim = n` using `hL.dim _`. Take `⟨ξ, hξ, hξf⟩` from `H3 E E' Ω g A w h w' h' i hi n hn hg hN a' ha' K red hr hk (rc (cls σ)) hc ht hd`. Take `⟨k, hk'⟩` from `H4 E E' Ω g A w h w' h' rc hrc' i hi n hn hg hN a' ha' K red hr hk θ hθ τ hτ hf σ hs ξ hξ hξf`. Rewrite using `[hξf t x z hxz hv]`. Establish `hpos : 0 < g ^ n` using `pow_pos (Fact.out : g.Prime).pos n`.
+
+Establish `hz` using `pow_card_units w' g n hN K red hr hk hpos z`. Establish `e1 : ∀ j, ((ξ (z ^ g ^ j) : ℂˣ) : ℂ) = ((θ (z ^ g ^ (j + k)) : ℂˣ) : ℂ)` using `fun j => by`. Rewrite using `[hk', ← pow_mul, ← pow_add]`. Repeatedly rewrite using `[e1]`. Use `prod_shift (fun j => ((θ (z ^ g ^ j) : ℂˣ) : ℂ)) n (fun j => ?_) k` and prove the remaining obligations.
+
+Use `show ((θ (z ^ g ^ (j + n)) : ℂˣ) : ℂ) = ((θ (z ^ g ^ j) : ℂˣ) : ℂ)`. Rewrite using `[pow_add, mul_comm, pow_mul, hz]`.
+-/
 theorem narrow_of_leaves (H1 : LCusp) (H2 : LDepth) (H3 : LTame) (H4 : LMatch) : Narrow := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ _ _ g _ A w h w' h' rc hrc i hi n hn hg hN a' ha' K _ _ red hr hk θ hθ τ hτ hf σ hs
     t x z hxz hv

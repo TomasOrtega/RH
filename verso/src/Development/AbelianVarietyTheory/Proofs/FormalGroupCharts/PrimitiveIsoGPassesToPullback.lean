@@ -17,6 +17,15 @@ noncomputable section
 
 namespace GlobalTheory.PrimDown
 
+/- English proof (translation)
+Use `choose u hu using fun p q => exists_pw w φ' ε p q`. Establish `glue : ∀ q : K → L'.ι, ∃ s : Γ(Y, LB.wchart L' φ' q)ˣ, ∀ (y : Y) p, y ∈ LB.wchart L (fun k => φ' k ≫ F) p → y ∈ LB.wchart L' φ' q → gm (𝟙 Y) y _ s = (pw w φ' ε (𝟙 Y) y p q)⁻¹ * gm (𝟙 Y) y (LB.wchart L (fun k => φ' k ≫ F) p) (t.s p)`. Introduce `q`. Establish `hv : ∀ (y : Y) p, y ∈ LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q → gm (𝟙 Y) y _ ((u p q)⁻¹ * res inf_le_left (t.s p)) = (pw w φ' ε (𝟙 Y) y p q)⁻¹ * gm (𝟙 Y) y (LB.wchart L (fun k => φ' k ≫ F) p) (t.s p)` using `fun y p hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) (hu p q _ _ y hz))) (gm_res _ y _ hz _))`. Take `⟨s, hs⟩` from `glue_unit _ (fun p => LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q) (fun _ => inf_le_right) (fun y hy => by choose p hp using fun k => exists_chart hL (F (φ' k y))`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, Set.mem_iInter.2 hp, hy⟩) (fun p => (u p q)⁻¹ * res inf_le_left (t.s p))`. Use the proof step `(fun p p' y hy => by`. Rewrite using `[hv y p hy.1, hv y p' hy.2, pw_trans hw φ' ε (𝟙 Y) y hy.1.1 hy.2.1 hy.1.2 hy.1.2, trF_self hL' _ ε (𝟙 Y) y hy.1.2, gen_trans ht (𝟙 Y) y hy.1.1 hy.2.1, inv_one, _root_.mul_one, mul_inv, _root_.mul_mul_mul_comm, inv_mul_cancel, _root_.one_mul])`. Use `⟨s, fun y p h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hz : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun k => φ' k ≫ F) p ⊓ LB.wchart L' φ' q` using `⟨h₁, h₂⟩`.
+
+Conclude with `(gm_res _ y inf_le_right hz s).symm.trans ((congrArg (gm _ y _) (hs p)).trans (hv y p hz))`. Use `choose s hs using glue`. Use `⟨⟨s⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, fun y p q h₁ h₂ => hs q y p h₁ h₂⟩` and prove the remaining obligations. Use `choose p hp using fun k => exists_chart hL (F (φ' k y))`. Establish `m : y ∈ LB.wchart L (fun k => φ' k ≫ F) p` using `Set.mem_iInter.2 hp`.
+
+Use `(hs j y p m hj).trans (Eq.trans ?_ (congrArg _ (hs j' y p m hj')).symm)` and prove the remaining obligations. Rewrite using `[pw_trans hw φ' ε (𝟙 Y) y m m hj hj', trF_self hL _ ε (𝟙 Y) y m, _root_.one_mul, mul_inv, inv_inv, _root_.mul_assoc]`.
+-/
 theorem exists_down_id {X₀ X' Y : Scheme.{0}} {L : LB X₀} {L' : LB X'} {F : X' ⟶ X₀} {K : Type} [Fintype K]
     {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB) {φ' : K → (Y ⟶ X')} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε)) (ht : t.IsGen) : ∃ a : LB.Gen (LB.LinComb L' φ' ε), a.IsGen ∧
@@ -50,6 +59,11 @@ theorem exists_down_id {X₀ X' Y : Scheme.{0}} {L : LB X₀} {L' : LB X'} {F : 
   refine (hs j y p m hj).trans (Eq.trans ?_ (congrArg _ (hs j' y p m hj')).symm)
   rw [pw_trans hw φ' ε (𝟙 Y) y m m hj hj', trF_self hL _ ε (𝟙 Y) y m, _root_.one_mul, mul_inv, inv_inv, _root_.mul_assoc]
 
+/- English proof (translation)
+Take `⟨a, ha, hv⟩` from `exists_down_id hw hL hL' t ht`. Take `⟨t₁, -, hu⟩` from `exists_up hw hL hL' a ha`. Establish `e : ∀ p, t.s p = t₁.s p` using `fun p => unit_ext fun y hy => by choose q hq using fun k => exists_chart hL' (φ' k y)`. Establish `m : y ∈ LB.wchart L' φ' q` using `Set.mem_iInter.2 hq`. Use `Eq.trans ?_ (hu _ (𝟙 Y) y p q hy m).symm` and prove the remaining obligations.
+
+Conclude with `(mul_inv_cancel_left _ _).symm.trans (congrArg _ (hv y p q hy m).symm)`. Conclude with `⟨a, ha, fun Z r z p q hp hq => (congrArg (gm r z _) (e p)).trans (hu Z r z p q hp hq)⟩`.
+-/
 theorem exists_down_all {X₀ X' Y : Scheme.{0}} {L : LB X₀} {L' : LB X'} {F : X' ⟶ X₀} {K : Type} [Fintype K]
     {w : LB.Iso L' (L.pull F)} (hw : PGen w) (hL : L.IsLB) (hL' : L'.IsLB) {φ' : K → (Y ⟶ X')} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L (fun k => φ' k ≫ F) ε)) (ht : t.IsGen) :
@@ -69,6 +83,13 @@ theorem exists_down_all {X₀ X' Y : Scheme.{0}} {L : LB X₀} {L' : LB X'} {F :
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hpt : ∀ I : ULift.{0} (Finset (Fin 2)), eSec t.G ≫ cφG t ![𝟙 t.G, t.act.act H.w0] I = (psum t.G ![1, η[t.G] ≫ t.act.act H.w0] I.down).left`. Introduce `I`. Simplify using `only [cφG, eSec, ← Over.comp_left]`. Use `congrArg Over.Hom.left ((psum_hom (preHom _) _ I.down).trans ?_)` and prove the remaining obligations. Use `congrArg (fun f => psum t.G f I.down) (funext fun i => ?_)` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `(Category.comp_id _).trans (GermB.eta_one t.G)`. Both sides reduce to the same expression. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [primφ, primε, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, zpow_neg, Finset.prod_inv_distrib, zpow_one]`.
+
+Establish `z` using `(Finset.prod_congr rfl fun I _ => congrArg (fun q => h q ^ cε 2 I) (hpt I)).trans (GermB.cube_one_left t (fun p => h p.left) (η[t.G] ≫ t.act.act H.w0))`. Conclude with `(congrArg (fun u => h (eSec t.G) * u⁻¹) z).trans (by rw [inv_one, _root_.mul_one])`.
+-/
 theorem prod_eSec {X0 : Scheme.{0}} (t : SAB H X0) {U : Type} [CommGroup U]
     (h : ((𝟙_ (Over X0)).left ⟶ t.G.left) → U) :
     ∏ k, h (eSec t.G ≫ primφ t k) ^ primε k = h (eSec t.G) := by
@@ -92,6 +113,19 @@ end GlobalTheory.PrimDown
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 X1 t t' f mp w hw wP hP`. Establish `hL` using `t.PP.isLB`. Establish `hL'` using `t'.PP.isLB`. Take `⟨c₁, hc₁, hcc⟩` from `ChartPrimTrPf.exists_reindex t.PP.L (φ := fun k => mp.φ ≫ primφ t k) (φ' := fun k => primφ t' k ≫ mp.φ) (funext fun k => ChartPrimTrPf.primφ_comm mp k) primε (LB.pullGen t.PP.L (primφ t) primε wP mp.φ) (ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ hP.1 _)`. Take `⟨a, ha, R⟩` from `PrimDown.exists_down_all ((isGen_iff w).1 hw.1) hL hL' c₁ hc₁`.
+
+Use `⟨a, ⟨ha, corr_of_val hL' fun y J' hJ' => ?_⟩, c₁, hcc, ChartPrimTrPf.maps_flat w _ _ a c₁ R⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : (𝟙_ (Over X1)).left ⟶ t.G.left => exists_chart hL (χ y)`. Establish `hJ : Good t.PP.L y J` using `hJ`. Establish `pm` using `(maps_iff w _ (fun _ => eSec t.G) _ t'.PP.rig t.PP.rig mp.cm.e _ (rigPull_le mp.cm.F mp.cm.e mp.cm.e_comm t.PP.L) (fun _ => rfl)).1 hw.2`. Establish `e₁` using `pm _ (𝟙 _) y (fun _ => J (eSec t'.G ≫ mp.φ)) (fun _ => J' (eSec t'.G)) (fun _ => hJ _) (fun _ => hJ' _)`.
+
+Rewrite `e₁` using `[Fintype.prod_unique, zpow_one, Category.id_comp, Category.id_comp]`. Establish `e₂ : val c₁ (eSec t'.G) y J = gw w (eSec t'.G) y (J (eSec t'.G ≫ mp.φ)) (J' (eSec t'.G)) * val a (eSec t'.G) y J'`. Use `(R _ (eSec t'.G) y _ _ (hJ.mem _ _) (hJ'.mem _ _)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Use `Eq.trans ?_ (PrimDown.prod_eSec t' (fun q => gw w q y (J (q ≫ mp.φ)) (J' q)))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc]`. Establish `e₃ : val c₁ (eSec t'.G) y J = val (L` using `t.PP.L) (φ := fun _ : PUnit => eSec t.G) (ε := fun _ => 1) t.PP.rig mp.cm.e y J := by`. Use `(val_corr hJ hcc _).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (val_corr hJ hP.2 _)` and prove the remaining obligations. Use `Eq.trans ?_ (val_pull hJ _ _ _).symm` and prove the remaining obligations.
+
+Conclude with `congrArg (fun r => val (L := t.PP.L) (φ := primφ t) (ε := primε) wP r y J) mp.cm.e_comm`. Establish `e₄` using `(val_of (L := t.PP.L) (φ := fun _ : PUnit => eSec t.G) (ε := fun _ => 1) t.PP.rig mp.cm.e y J (fun _ => J (eSec t'.G ≫ mp.φ)) (fun _ => congrArg J mp.cm.e_comm.symm)).trans e₁`. Establish `e₅` using `mul_left_cancel (e₂.symm.trans (e₃.trans e₄))`. Use `(val_pull hJ' _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+
+Use `e₅.trans ?_` and prove the remaining obligations. Conclude with `(val_of (L := t'.PP.L) (φ := fun _ : PUnit => eSec t'.G) (ε := fun _ => 1) t'.PP.rig (𝟙 _) y J' _ (fun _ => by rw [Category.id_comp])).symm`.
+-/
 theorem primG_pullback : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 X1 : Scheme.{0}) (t : SAB H X0) (t' : SAB H X1) (f : X1 ⟶ X0) (mp : SABMap t' t f) (w : LB.Iso t'.PP.L (t.PP.L.pull mp.φ)), RigIso mp w → ∀ wP : PrimTyG t, IsPrimG t wP → ∃ wP' : PrimTyG t', IsPrimG t' wP' ∧ (∃ c₁ : LB.Gen (LB.LinComb t.PP.L (fun k => primφ t' k ≫ mp.φ) primε), LB.Gen.Corr t.PP.L _ _ _ _ c₁ (LB.pullGen t.PP.L _ _ wP mp.φ) ∧ LB.Gen.Maps (LB.linCombIso w (primφ t') primε) wP' (flatGen t.PP.L mp.φ _ _ c₁)) := by
   intro E _ _ _ H X0 X1 t t' f mp w hw wP hP
   have hL := t.PP.isLB

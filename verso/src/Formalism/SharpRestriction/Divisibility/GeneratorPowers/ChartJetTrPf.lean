@@ -15,6 +15,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `T io y I d FT actT tgT uvecT xT hbas hch hdir`. Use `letI := io.toAlgebra`. Use `⟨xU I xT, xP I xT, ⟨fun m => ?_, fun m => ?_, fun m => ?_, fun m a => ?_, hTan T io y I d FT actT tgT uvecT xT hbas hch hdir, hBas T io y I d FT actT tgT uvecT xT hbas hch hdir⟩, fun m => xL_fst I xT m, fun m => rfl⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ xL I xT m ≫ I.m1.φ = (spMap (algebraMap T.Fr T.Fr) ≫ y.1.x) ≫ η[Xo.univ.t.G].left`.
+
+Rewrite using `[← Category.assoc, xL_zero I xT hch.zero m, unit_push I.m1.cart, spMap_alg_self, Category.id_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ xL I xT (m + 1) ≫ I.m1.φ = xL I xT m ≫ I.m1.φ`. Rewrite using `[← Category.assoc, xL_trunc I xT hch.trunc m]`. Simplify using `only [psTrunc_map]`.
+
+Set `W : (jO y.1 d m 2) ⟶ Over.mk ((jOG (𝟙 (Sp T.Fr)) d m 2).hom ≫ y.1.x)` to `Over.homMk (𝟙 _) (by show 𝟙 _ ≫ (spMap _ ≫ 𝟙 _) ≫ y.1.x = spMap _ ≫ y.1.x simp)`. Establish `hj : ∀ i : Fin 2, jpt y.1 d (xU I xT) m i = W ≫ pushHom I.m1.cart _ (jptG I.t' (𝟙 (Sp T.Fr)) d (xP I xT) m i)` using `fun i => Over.OverMorphism.ext (by show spMap _ ≫ xL I xT m ≫ I.m1.φ = 𝟙 _ ≫ (spMap _ ≫ xL I xT m) ≫ I.m1.φ simp)`. Rewrite using `[hj 0, hj 1, ← MonObj.comp_mul, ← map_mul, ← xP_law I xT FT m (hch.law m)]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ xL I xT m ≫ I.m1.φ = 𝟙 _ ≫ (spMap _ ≫ xL I xT m) ≫ I.m1.φ`.
+
+Simplify using the standard rewrite rules. Simplify using `only [psTrunc_map]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (xL I xT m ≫ I.m1.φ) ≫ (Xo.univ.t.act.act a).left = spMap _ ≫ xL I xT m ≫ I.m1.φ`. Rewrite using `[Category.assoc, ← I.m1.act a, ← Category.assoc, xL_act I xT (actT a) a m (hch.act m a), Category.assoc]`.
+-/
 theorem chartJetTr_of (hTan : ChartJetTanSt Xo c) (hBas : ChartJetBasisSt Xo c) : ChartJetTrSt Xo c := by
   intro T io y I d FT actT tgT uvecT xT hbas hch hdir
   letI := io.toAlgebra

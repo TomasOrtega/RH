@@ -44,6 +44,9 @@ section Lat
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X} {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.ShFam.Pad.HTBound.eps_one]`. Conclude with `(congrArg (· ≫ v) (Spec.map_id _)).trans (Category.id_comp v)`.
+-/
 theorem epsMul_one_comp {R : Type} [CommRing R] {T : Scheme.{0}} (v : Sp (DualNumber R) ⟶ T) :
     spMap (epsMul (1 : R)) ≫ v = v := by
   rw [GlobalTheory.ShFam.Pad.HTBound.eps_one]
@@ -51,6 +54,11 @@ theorem epsMul_one_comp {R : Type} [CommRing R] {T : Scheme.{0}} (v : Sp (DualNu
 
 open MonObj in
 
+/- English proof (translation)
+Establish `k : IsCombAtG t x (fun _ : Fin 1 => v ≫ (t.act.act c).left) (fun _ => 1) (v ≫ (t.act.act c).left)` using `⟨fun _ => ovT hv ≫ t.act.act c, fun _ => (epsMul_one_comp _).symm, by`. Rewrite using `[List.ofFn_succ, List.ofFn_zero, List.prod_cons, List.prod_nil, _root_.mul_one]`. Use the proof step `rfl⟩`. Consider the cases of `b`. Conclude with `latDR_comb_act E H X t C x v hv h 1 (fun _ => c) (fun _ => 1) (fun _ => norm_one.le) _ k`.
+
+Conclude with `GlobalTheory.HTStable.latHT_comb_act E H X t C p x v hv h 1 (fun _ => c) (fun _ => 1) (fun _ => norm_one.le) _ k`.
+-/
 theorem lat_act (p : ℕ) (x : Sp C ⟶ X) (b : Bool) {v : Sp (DualNumber C) ⟶ t.G.left} (hv : IsTanAtG t x v)
     (h : v ∈ lat t p x b) (c : 𝓞 E) : v ≫ (t.act.act c).left ∈ lat t p x b := by
   have k : IsCombAtG t x (fun _ : Fin 1 => v ≫ (t.act.act c).left) (fun _ => 1) (v ≫ (t.act.act c).left) :=
@@ -60,6 +68,13 @@ theorem lat_act (p : ℕ) (x : Sp C ⟶ X) (b : Bool) {v : Sp (DualNumber C) ⟶
   · exact latDR_comb_act E H X t C x v hv h 1 (fun _ => c) (fun _ => 1) (fun _ => norm_one.le) _ k
   · exact GlobalTheory.HTStable.latHT_comb_act E H X t C p x v hv h 1 (fun _ => c) (fun _ => 1) (fun _ => norm_one.le) _ k
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Take `⟨u, hu⟩` from `hπ`. Establish `hu1 : ‖valF (spMap (intO C).subtype ≫ w) ⊤ (u : Γ(B.X, ⊤))‖ ≤ 1` using `GlobalTheory.GenBd.norm_valF_le_one w ⊤ le_top _`. Establish `e : valF (spMap (intO C).subtype ≫ w) ⊤ π ^ (p - 1) = valF (spMap (intO C).subtype ≫ w) ⊤ (u : Γ(B.X, ⊤)) * p`. Establish `h : ⊤ ≤ (spMap (intO C).subtype ≫ w) ⁻¹ᵁ ⊤` using `le_top`.
+
+Rewrite using `[valF, valF, dif_pos h, dif_pos h, ← map_pow, ← map_pow, hu, map_mul, map_mul, map_natCast, map_natCast]`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp.one_lt`. Establish `hn : p - 1 ≠ 0` using `Nat.sub_ne_zero_of_lt hp.one_lt`. Use `le_of_pow_le_pow_left₀ hn (Real.rpow_nonneg (by linarith) _) ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, e, norm_mul, hC, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith), Nat.cast_sub hp.one_lt.le, Nat.cast_one, neg_mul, one_div, inv_mul_cancel₀ (by linarith), Real.rpow_neg_one]`.
+
+Conclude with `mul_le_of_le_one_left (by positivity) hu1`.
+-/
 theorem norm_root_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} {p : ℕ}
     [Fact p.Prime] (hC : ‖(p : C)‖ = (p : ℝ)⁻¹) {π : Γ(B.X, ⊤)} (hπ : IsRootOfP p π (p - 1)) (w : Sp ↥(intO C) ⟶ B.X) :
     ‖valF (spMap (intO C).subtype ≫ w) ⊤ π‖ ≤ (p : ℝ) ^ (-(1 / ((p : ℝ) - 1))) := by
@@ -79,6 +94,13 @@ theorem norm_root_le {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
 
 end Lat
 
+/- English proof (translation)
+Use `choose φ hφ using hex`. Use `⟨⟨⟨φ, ?_⟩, fun c d => ?_⟩, fun c d => ?_, hφ⟩` and prove the remaining obligations. Use `h6 X F F r r _ (s a₀) _ _ hη (hs a₀) hF fun i => ?_` and prove the remaining obligations. Rewrite using `[hφ, map_one, one_smul]`. Both sides reduce to the same expression.
+
+Use `h6 X F F r r _ (s a₀) _ _ hη (hs a₀) hF fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (φ c).app _ ((φ d).app _ (s a₀ i))`. Rewrite using `[hφ, hφ, (φ c).app_smul, hφ, smul_smul, map_mul, mul_comm]`. Use `h6 X F F r r _ (s a₀) _ _ hη (hs a₀) hF fun i => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(φ (c + d)).app _ (s a₀ i) = (φ c).app _ (s a₀ i) + (φ d).app _ (s a₀ i)`.
+
+Rewrite using `[hφ, hφ, hφ, map_add, add_smul]`.
+-/
 theorem exists_action (h6 : ExtSt) {X : Scheme.{0}} [IsIntegral X] {F : X.Modules} {r : ℕ} (hF : GlobalTheory.VB.IsVB F r) {J : Type}
     {A : J → X.Opens} {s : ∀ a, Fin r → Γ(F, A a)} (hs : ∀ a, GlobalTheory.VB.IsFrame (s a)) {a₀ : J} (hη : genericPoint X ∈ A a₀)
     {Λ : Type} [CommRing Λ] (lam : ∀ a, Fin r → Λ →+* Γ(X, A a))
@@ -99,6 +121,27 @@ theorem exists_action (h6 : ExtSt) {X : Scheme.{0}} [IsIntegral X] {F : X.Module
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw Xo p W Y i₀ Z _ hW _ B hB h ho r x hx F F' s s' hF hF' k k' π hπ`. Establish `hp : p.Prime` using `Fact.out`. Take `⟨a₀, hη⟩` from `GlobalTheory.TestPts.exists_chart_of_maximal h ho (η := genericPoint B.X) fun y hy => (hy.antisymm (genericPoint_specializes y)).eq`. Set `lam : ∀ a : Fin Z.m, Fin r → 𝓞 E →+* Γ(B.X, h ⁻¹ᵁ (Z.U a).1)` to `fun a i => ((h.app (Z.U a).1).hom.comp ((Z.alg a).comp (embK Z.i.c (x i).1))).comp (H.bar : 𝓞 E →+* 𝓞 E)`. Establish `one : ∀ (y : Z.Pt) (w : Sp ↥(intO ↥y.C.S) ⟶ B.X), valF (spMap (intO ↥y.C.S).subtype ≫ w) ⊤ (1 : Γ(B.X, ⊤)) = 1` using `fun y w => GenId.valF_one le_top`.
+
+Establish `act : ∀ (b : Bool) (G : B.X.Modules) (σ : ∀ a : Fin Z.m, Fin r → Γ(G, h ⁻¹ᵁ (Z.U a).1)), GlobalTheory.VB.IsVB G r → IsLat Z h x true b G σ → ∀ c, ∃ φ : G ⟶ G, ∀ a i, φ.app _ (σ a i) = lam a i c • σ a i` using `fun b G σ hG kG c => by`. Take `⟨φ, hφ⟩` from `h5 E H Dw Xo p W Y i₀ Z hp hW B hB h ho r x hx b b G G σ σ hG hG kG kG 1 (H.bar c) fun y w _ v hv hl => by rw [one, epsMul_one_comp]; exact lat_act p _ b hv hl _`. Conclude with `⟨φ, fun a i => by rw [hφ, map_one, one_mul]; rfl⟩`. Take `⟨ρ, ρa, hρ⟩` from `exists_action h6 hF k.frame hη lam (act _ F s hF k)`. Take `⟨ρ', ρa', hρ'⟩` from `exists_action h6 hF' k'.frame hη lam (act _ F' s' hF' k')`.
+
+Take `⟨ψ, hψ⟩` from `h5 E H Dw Xo p W Y i₀ Z hp hW B hB h ho r x hx true false F' F s' s hF' hF k' k 1 1 fun y w _ v hv hl => by`. Rewrite using `[one, epsMul_one_comp]`. Conclude with `latDR_subset_latHT E H _ _ _ p _ (lat_act p _ false hv hl _)`. Take `⟨u, hu⟩` from `h5 E H Dw Xo p W Y i₀ Z hp hW B hB h ho r x hx false true F F' s s' hF hF' k k' π 1 fun y w _ v hv hl => by`. Establish `g : y.gen ≫ Z.π = spMap (intO ↥y.C.S).subtype ≫ y.z ≫ Z.π` using `Category.assoc _ _ _`.
+
+Establish `hl'` using `lat_act p _ true hv hl 1`. Rewrite `hl'`, the goal using `[g]`. Conclude with `HTBound.htBound E H _ _ p _ y.C.norm_p _ (GlobalTheory.ShFam.Pad.Pull.ext_unique _ _) _ hl' _ (norm_root_le y.C.norm_p hπ w)`. Use `replace hψ : ∀ a i, ψ.app _ (s' a i) = s a i := fun a i => by`. Rewrite using `[hψ, map_one, map_one, map_one, map_one, one_mul, one_smul]`.
+
+Use `replace hu : ∀ a i, u.app _ (s a i) = resG B.X le_top π • s' a i := fun a i => by`. Use `(hu a i).trans ?_` and prove the remaining obligations. Simplify using `only [map_one, mul_one]`. Apply the tactic sequence `first | rfl | done`. Establish `uψ : u ≫ ψ = smulHom F π` using `h6 _ F F r r _ (s a₀) _ _ hη (k.frame a₀) hF fun i => by`.
+
+Express the relevant statement in the definitionally equal form `ψ.app _ (u.app _ (s a₀ i)) = _`. Rewrite using `[hu, ψ.app_smul, hψ]`. Both sides reduce to the same expression. Establish `ψu : ψ ≫ u = smulHom F' π` using `h6 _ F' F' r r _ (s' a₀) _ _ hη (k'.frame a₀) hF' fun i => by`. Express the relevant statement in the definitionally equal form `u.app _ (ψ.app _ (s' a₀ i)) = _`.
+
+Rewrite using `[hψ, hu]`. Both sides reduce to the same expression. Establish `cψ : ∀ c, (ρ' c : F' ⟶ F') ≫ ψ = ψ ≫ (ρ c : F ⟶ F)` using `fun c => h6 _ F' F r r _ (s' a₀) _ _ hη (k'.frame a₀) hF fun i => by`. Express the relevant statement in the definitionally equal form `ψ.app _ ((ρ' c : F' ⟶ F').app _ (s' a₀ i)) = (ρ c : F ⟶ F).app _ (ψ.app _ (s' a₀ i))`. Rewrite using `[hρ', ψ.app_smul, hψ, hρ]`.
+
+Establish `cu : ∀ c, (ρ c : F ⟶ F) ≫ u = u ≫ (ρ' c : F' ⟶ F')` using `fun c => h6 _ F F' r r _ (s a₀) _ _ hη (k.frame a₀) hF' fun i => by`. Express the relevant statement in the definitionally equal form `u.app _ ((ρ c : F ⟶ F).app _ (s a₀ i)) = (ρ' c : F' ⟶ F').app _ (u.app _ (s a₀ i))`. Rewrite using `[hρ, u.app_smul, hu, (ρ' c : F' ⟶ F').app_smul, hρ', smul_comm]`. Establish `i1` using `GlobalTheory.ChainPeriod.isIso_genRes_smulHom_of_root F hπ`. Establish `i2` using `GlobalTheory.ChainPeriod.isIso_genRes_smulHom_of_root F' hπ`.
+
+Rewrite `i1` using `[← uψ, Functor.map_comp]`. Rewrite `i2` using `[← ψu, Functor.map_comp]`. Establish `iψ : IsIso (B.genRes.map ψ)` using `by haveI : Mono (B.genRes.map ψ) := mono_of_mono _ (B.genRes.map u) haveI : IsSplitEpi (B.genRes.map ψ) := ⟨⟨⟨inv (B.genRes.map u ≫ B.genRes.map ψ) ≫ B.genRes.map u, by rw [Category.assoc, IsIso.inv_hom_id]⟩⟩⟩`. Conclude with `isIso_of_mono_of_isSplitEpi _`. Use `⟨⟨r, ⟨F, ρ⟩, ⟨F', ρ'⟩, ρa, ρa', hF, hF', ⟨ψ, cψ⟩, iψ⟩, ⟨u, cu⟩, Action.Hom.ext uψ, rfl, s', k', ?_, fun a i c => hρ' c a i⟩` and prove the remaining obligations.
+
+Establish `e : (fun a i => ψ.app _ (s' a i)) = s` using `funext fun a => funext (hψ a)`. Conclude with `e ▸ k`.
+-/
 theorem exists_pres (h5 : MapSt) (h6 : ExtSt) : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p)
     (Z : LocM.Mdl Y i₀), ∀ [Fact p.Prime], (p : ℂ) ∈ W.nonunits → ∀ [IsDiscreteValuationRing (Z.i.c.V W)]
@@ -169,6 +212,9 @@ theorem exists_pres (h5 : MapSt) (h6 : ExtSt) : ∀ (E : Type) [Field E] [Number
   have e : (fun a i => ψ.app _ (s' a i)) = s := funext fun a => funext (hψ a)
   exact e ▸ k
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `h`. Use `⟨Units.map g.appTop.hom.toMonoidHom u, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map, ← map_pow, hu, map_mul, map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem isRootOfP_appTop {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B B' : Vert.Model O} {p n : ℕ}
     (g : B'.X ⟶ B.X) {π : Γ(B.X, ⊤)} (h : IsRootOfP p π n) : IsRootOfP p (g.appTop π) n := by
   obtain ⟨u, hu⟩ := h
@@ -176,6 +222,17 @@ theorem isRootOfP_appTop {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   rw [Units.coe_map, ← map_pow, hu, map_mul, map_natCast]
   rfl
 
+/- English proof (translation)
+Establish `hp : p.Prime` using `Fact.out`. Use `haveI := projProper _ _ _ (Y Z.i).proj`. Use `haveI : IsLocallyNoetherian (Y Z.i).X := LocallyOfFiniteType.isLocallyNoetherian (Y Z.i).s`. Take `⟨B₀, f₀, n₀, d₀⟩` from `GlobalTheory.Vert.Model.exists_normal_hom _ ((nmodel Z).comp c)`. Take `⟨B₁, f₁, π, n₁, d₁, hπ⟩` from `GlobalTheory.T.OmegaRootStatement _ B₀ n₀ p (p - 1) (Nat.sub_pos_of_lt hp.one_lt)`.
+
+Take `⟨B₂, f₂, n₂, d₂, k₂⟩` from `GlobalTheory.T.omega_generated_of_ring GlobalTheory.T.OmegaRingStatement E H _ (Y Z.i).t (GlobalTheory.ShFam.Pad.Pull.isSeparated_base Z.i) p _ B₁ n₁ ((f₁.f ≫ f₀.f ≫ (nmodel Z).compι c) ≫ Z.π)`. Take `⟨B₃, f₃, n₃, d₃, k₃⟩` from `GlobalTheory.T.OmegaBasisStatement E H _ (Y Z.i).t p _ B₂ n₂ _ k₂`. Set `f` to `f₃.comp (f₂.comp (f₁.comp f₀))`. Establish `hf : f₃.f ≫ f₂.f ≫ (f₁.f ≫ f₀.f ≫ (nmodel Z).compι c) ≫ Z.π = (f.f ≫ (nmodel Z).compι c) ≫ Z.π`. Express the relevant statement in the definitionally equal form `_ = ((f₃.f ≫ f₂.f ≫ f₁.f ≫ f₀.f) ≫ _) ≫ _`.
+
+Simplify using `only [Category.assoc]`. Rewrite `k₃` using `[hf]`. Establish `ho : ToOpen Z (f.f ≫ (nmodel Z).compι c)` using `GlobalTheory.TestPts.mem_opn_comp hp hW f`. Establish `hπ' : IsRootOfP p (f₃.f.appTop (f₂.f.appTop π)) (p - 1)` using `isRootOfP_appTop _ (isRootOfP_appTop _ hπ)`. Take `⟨F', s', hF', k'⟩` from `GlobalTheory.T.omega_bundle_of_link_span_glue GlobalTheory.T.OmegaLink GlobalTheory.T.OmegaSpanStatement GlobalTheory.T.OmegaGlueStatement E H Dw Xo p W Y i₀ Z hp hW B₃ n₃ _ ho r x hx k₃`.
+
+Take `⟨F, s, k, hF, -⟩` from `GlobalTheory.T.OmegaLink E H Dw Xo p W Y i₀ Z B₃.X (f.f ≫ (nmodel Z).compι c) r x hx`. Take `⟨oo, u, hu, hoo⟩` from `exists_pres GlobalTheory.T.OmegaMapStatement GlobalTheory.T.OmegaExtensionStatement E H Dw Xo p W Y i₀ Z hW B₃ n₃ _ ho r x hx F F' s s' hF hF' k k' _ hπ'`. Use `⟨B₃, f, n₃, ?_, oo, _, u, hπ', hu, hoo⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f₃.comp (f₂.comp (f₁.comp f₀))).relDim = 0`. Unfold `Vert.Model.Hom.relDim at *`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_cover_pres {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} [Fact p.Prime] {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
     (Z : LocM.Mdl Y i₀) (hW : (p : ℂ) ∈ W.nonunits) [IsDiscreteValuationRing (Z.i.c.V W)] (c : (nmodel Z).Comp) {r : ℕ}
@@ -208,6 +265,9 @@ theorem exists_cover_pres {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   unfold Vert.Model.Hom.relDim at *
   omega
 
+/- English proof (translation)
+The claim follows from `isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW ∀ c : (nmodel z.Z).Comp, ∃ (B₁ : Vert.Model (z.Z.i.c.V W)) (f₁ : Vert.Model.Hom B₁ ((nmodel z.Z).comp c)), GlobalTheory.IsNormalScheme B₁.X ∧ f₁.relDim = 0 ∧ ∃ (oo : EPres B₁ (𝓞 D.host.E)) (π : Γ(B₁.X, ⊤)) (u : oo.E ⟶ oo.E …`.
+-/
 theorem omega_half : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd → GlobalTheory.GroupBplus.GroupAllSt →
   GlobalTheory.BundleChernComparison.AtAll fun D O p _ W hW _ z =>
     haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW

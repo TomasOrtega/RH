@@ -10,6 +10,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
+/- English proof (translation)
+Apply the tactic sequence `have hi : Isometry U := AddMonoidHomClass.isometry_of_norm U hU`. Establish `e : (A.map U.toLinearMap).topologicalClosure = A.topologicalClosure.map U.toLinearMap` using `SetLike.coe_injective (by`. Rewrite using `[Submodule.topologicalClosure_coe, Submodule.map_coe, Submodule.map_coe, Submodule.topologicalClosure_coe]`. Conclude with `hi.isClosedEmbedding.closure_image_eq _)`. Rewrite using `[e]`.
+
+Conclude with `(Submodule.map_injective_of_injective (f := U.toLinearMap) hi.injective).eq_iff.symm`.
+-/
 private theorem map_closure {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H] [CompleteSpace H] (U : H →L[ℂ] H)
     (hU : ∀ v, ‖U v‖ = ‖v‖) (A V : Submodule ℂ H) :
     V = A.topologicalClosure ↔ V.map U.toLinearMap = (A.map U.toLinearMap).topologicalClosure := by
@@ -20,6 +25,27 @@ private theorem map_closure {H : Type} [NormedAddCommGroup H] [NormedSpace ℂ H
   rw [e]
   exact (Submodule.map_injective_of_injective (f := U.toLinearMap) hi.injective).eq_iff.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ n μ _ θ σ s hs hθ π π' V' hsp`. Use `set m : GA E n →* GA E n := Matrix.GeneralLinearGroup.map s.toRingHom with hm`. Establish `hsurj : Function.Surjective m` using `fun g => ⟨Matrix.GeneralLinearGroup.map s.symm.toRingHom g, by`. Use extensionality with `i j : 2`. Conclude with `s.apply_symm_apply _⟩`.
+
+Establish `hcen : ∀ t, m (centralSection E n t) = centralSection E n t` using `(galCentral E n σ s hs).2`. Establish `hmem : ∀ (ρ : CuspSub E n) (f : GA E n → ℂ), f ∈ (UpperTheory.CBC.Cusp.cx ρ).space ↔ ∃ φ ∈ Cm.carrier ρ, f = φ.1` using `fun ρ f => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, hφ, rfl⟩`. Rewrite `hφ` using `[← Cm.map_carrier]`.
+
+Take `⟨ψ, hψ, rfl⟩` from `hφ`. Conclude with `⟨ψ, hψ, rfl⟩`. Introduce and unpack `⟨φ, hφ, rfl⟩`. Conclude with `⟨_, hφ, rfl⟩`. Establish `h1 : ∀ ψ ∈ Cm.carrier π', ∃ φ ∈ Cm.carrier π, ∀ g, ψ.1 g = φ.1 (m g)` using `fun ψ hψ => by`.
+
+Establish `h` using `(hmem π' _).2 ⟨ψ, hψ, rfl⟩`. Rewrite `h` using `[hsp]`. Take `⟨f, hf, e⟩` from `h`. Take `⟨φ, hφ, rfl⟩` from `(hmem π f).1 hf`. Conclude with `⟨φ, hφ, fun g => (congrFun e g).symm⟩`.
+
+Establish `h2 : ∀ φ ∈ Cm.carrier π, ∃ ψ ∈ Cm.carrier π', ∀ g, ψ.1 g = φ.1 (m g)` using `fun φ hφ => by`. Establish `h : (fun g => φ.1 (m g)) ∈ (UpperTheory.CBC.Cusp.cx π').space`. Rewrite using `[hsp]`. Conclude with `⟨φ.1, (hmem π _).2 ⟨φ, hφ, rfl⟩, rfl⟩`. Take `⟨ψ, hψ, e⟩` from `(hmem π' _).1 h`.
+
+Conclude with `⟨ψ, hψ, fun g => (congrFun e g).symm⟩`. Establish `hc : Cm.carrier π' ≤ centralCuspForms E n ↔ Cm.carrier π ≤ centralCuspForms E n`. Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ t x`. Take `⟨ψ, hψ, e⟩` from `h2 φ hφ`.
+
+Take `⟨y, rfl⟩` from `hsurj x`. Establish `h3` using `h hψ t y`. Rewrite `h3` using `[e, e, map_mul, hcen]`. Then use the resulting hypothesis. Introduce `h ψ hψ t x`. Take `⟨φ, hφ, e⟩` from `h1 ψ hψ`.
+
+Establish `h3` using `h hφ t (m x)`. Use `show ψ.1 (centralSection E n t * x) = ψ.1 x`. Rewrite using `[e, e, map_mul, hcen]`. Conclude with `h3`. Rewrite using `[exSummand E n μ π' V', exSummand E n μ π, hc]`.
+
+Use `and_congr_right fun h => ?_` and prove the remaining obligations. Establish `hU : ∀ φ ∈ Cm.carrier π, ∀ ψ ∈ Cm.carrier π', (∀ g, ψ.1 g = φ.1 (m g)) → θ.U (clsL μ ψ) = clsL μ φ` using `fun φ hφ ψ hψ e => (twCls E n μ θ φ (h hφ) ψ (hc.2 h hψ)).2 fun x => (e x).trans (congrArg φ.1 (hθ x).symm)`. Establish `e : (Cm.carrier π).map (clsL μ) = ((Cm.carrier π').map (clsL μ)).map θ.U.toLinearMap`. Use `le_antisymm (Submodule.map_le_iff_le_comap.2 fun φ hφ => ?_) (Submodule.map_le_iff_le_comap.2 (Submodule.map_le_iff_le_comap.2 fun ψ hψ => ?_))` and prove the remaining obligations. Take `⟨ψ, hψ, e⟩` from `h2 φ hφ`.
+
+Conclude with `Submodule.mem_map.2 ⟨_, Submodule.mem_map_of_mem hψ, hU φ hφ ψ hψ e⟩`. Take `⟨φ, hφ, e⟩` from `h1 ψ hψ`. Conclude with `Submodule.mem_map.2 ⟨φ, hφ, (hU φ hφ ψ hψ e).symm⟩`. Rewrite using `[e]`. Conclude with `map_closure θ.U (twUnitary E n μ θ).1 _ _`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.conjCarries :
     UpperTheory.ConvolutionTheory.Dp.ConjCarries := by
   intro E _ _ _ n μ _ θ σ s hs hθ π π' V' hsp

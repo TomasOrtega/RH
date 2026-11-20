@@ -18,6 +18,9 @@ namespace PowSections
 
 variable {Y : Scheme.{0}}
 
+/- English proof (translation)
+Consider the cases of `s`. Consider the cases of `t`. Use `congr 1`. Conclude with `funext h`.
+-/
 theorem sec_ext {M : LB Y} {s t : LB.Sec M} (h : ∀ i, s.f i = t.f i) : s = t := by
   cases s; cases t
   congr 1
@@ -35,6 +38,9 @@ def refine {M M' : LB Y} (σ : M'.ι → M.ι) (hU : ∀ i, M'.U i ≤ M.U (σ i
       gs_res _ y (hU j) hy.2, hg i j y hy.1 hy.2]
     exact e
 
+/- English proof (translation)
+The claim follows from `gs_res (𝟙 Y) y (hU i) hy _`.
+-/
 theorem gs_refine {M M' : LB Y} (σ : M'.ι → M.ι) (hU : ∀ i, M'.U i ≤ M.U (σ i))
     (hg : ∀ i j y, y ∈ M'.U i → y ∈ M'.U j →
       gm (𝟙 Y) y _ (M'.g i j) = gm (𝟙 Y) y _ (M.g (σ i) (σ j))) (s : LB.Sec M) (i : M'.ι) (y : Y)
@@ -59,6 +65,9 @@ def secEquiv {M M' : LB Y} (σ : M'.ι ≃ M.ι) (hU : ∀ i, M'.U i = M.U (σ i
     right_inv := fun s => sec_ext fun i => fn_ext fun y hy => by
       rw [gs_refine _ _ _ _ _ y hy, gs_refine _ _ _ _ _ y ((hU i).le hy), σ.symm_apply_apply] }
 
+/- English proof (translation)
+The claim follows from `gs_res (𝟙 Y) y (hU i).le hy _`.
+-/
 theorem gs_secEquiv {M M' : LB Y} (σ : M'.ι ≃ M.ι) (hU : ∀ i, M'.U i = M.U (σ i))
     (hg : ∀ i j y, y ∈ M'.U i → y ∈ M'.U j →
       gm (𝟙 Y) y _ (M'.g i j) = gm (𝟙 Y) y _ (M.g (σ i) (σ j))) (s : LB.Sec M) (i : M'.ι) (y : Y)
@@ -66,6 +75,11 @@ theorem gs_secEquiv {M M' : LB Y} (σ : M'.ι ≃ M.ι) (hU : ∀ i, M'.U i = M.
     gs (𝟙 Y) y _ ((secEquiv σ hU hg s).f i) = gs (𝟙 Y) y _ (s.f (σ i)) :=
   gs_res (𝟙 Y) y (hU i).le hy _
 
+/- English proof (translation)
+Establish `m₁ : ∀ (j : M.ι) (y : Y), y ∈ M.U j → y ∈ LB.wchart M (fun _ : Fin 1 => 𝟙 Y) (fun _ => j)` using `fun j y hy => Set.mem_iInter.2 fun _ => hy`. Set `σ : M.ι ≃ (Fin 1 → M.ι)` to `⟨fun j _ => j, fun J => J 0, fun _ => rfl, fun J => funext fun k => by rw [Subsingleton.elim k 0]⟩`. Establish `hU : ∀ j : M.ι, M.U j = LB.wchart M (fun _ : Fin 1 => 𝟙 Y) (fun _ => j)` using `fun j => le_antisymm (fun y hy => m₁ j y hy) (fun y hy => Set.mem_iInter.1 hy 0)`. Establish `hg' : ∀ i j y, y ∈ M.U i → y ∈ M.U j → gm (𝟙 Y) y _ (g i j) = gm (𝟙 Y) y _ ((LB.LinComb M (K` using `Fin 1) (fun _ => 𝟙 Y) (fun _ => (n : ℤ))).g (fun _ => i) (fun _ => j)) := by`. Introduce `i j y hi hj`.
+
+Establish `e` using `gm_linComb M (fun _ : Fin 1 => 𝟙 Y) (fun _ => (n : ℤ)) (𝟙 Y) y (fun _ => i) (fun _ => j) (m₁ i y hi) (m₁ j y hj)`. Rewrite `e` using `[Fin.prod_univ_one, Category.id_comp]`. Rewrite using `[hg i j y hi hj]`. Conclude with `e.symm`. Conclude with `⟨secEquiv (M := LB.LinComb M (K := Fin 1) (fun _ => 𝟙 Y) (fun _ => (n : ℤ))) (M' := ⟨M.ι, M.U, g⟩) σ hU hg', fun a j y hy => gs_secEquiv (M := LB.LinComb M (K := Fin 1) (fun _ => 𝟙 Y) (fun _ => (n : ℤ))) (M' := ⟨M.ι, M.U, g⟩) σ hU hg' a j y hy⟩`.
+-/
 theorem exists_equiv_pow (M : LB Y) (n : ℕ) (g : ∀ i j, Γ(Y, M.U i ⊓ M.U j)ˣ)
     (hg : ∀ i j y, y ∈ M.U i → y ∈ M.U j →
       gm (𝟙 Y) y _ (g i j) = gm (𝟙 Y) y _ (M.g i j) ^ (n : ℤ)) :
@@ -91,6 +105,11 @@ theorem exists_equiv_pow (M : LB Y) (n : ℕ) (g : ∀ i j, Γ(Y, M.U i ⊓ M.U 
     fun a j y hy => gs_secEquiv (M := LB.LinComb M (K := Fin 1) (fun _ => 𝟙 Y) (fun _ => (n : ℤ)))
       (M' := ⟨M.ι, M.U, g⟩) σ hU hg' a j y hy⟩
 
+/- English proof (translation)
+Take `⟨E, hE⟩` from `exists_equiv_pow (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => (N : ℤ))) n (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => ((N * n : ℕ) : ℤ))).g (fun i j y hi hj => by`. Establish `e` using `gm_linComb L (fun _ : Fin 1 => p) (fun _ => (N : ℤ)) (𝟙 Y) y i j hi hj`. Establish `e'` using `gm_linComb L (fun _ : Fin 1 => p) (fun _ => ((N * n : ℕ) : ℤ)) (𝟙 Y) y i j hi hj`. Rewrite `e`, `e'` using `[Fin.prod_univ_one]`. Use `e'.trans (Eq.trans ?_ (congrArg (· ^ (n : ℤ)) e.symm))` and prove the remaining obligations.
+
+Rewrite using `[Nat.cast_mul, zpow_mul])`. Use `⟨E, fun a j y hy => hE a j y (Set.mem_iInter.2 fun k => ?_)⟩` and prove the remaining obligations. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Conclude with `hy`.
+-/
 theorem exists_equiv {X : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N n : ℕ) :
     ∃ E : H0 (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => (N : ℤ))) n ≃
         LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => ((N * n : ℕ) : ℤ))),

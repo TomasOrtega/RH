@@ -18,6 +18,11 @@ open GlobalTheory.SplitCut
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ idAt D P) => x.1 i j) (show _ = (1 : GL _ _) from hg)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (idAt D P) (mt V g i j) = _ at h`. Establish `h2 : Ideal.Quotient.mk (idAt D P) (mt V g i j) = Ideal.Quotient.mk (idAt D P) ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)`. Apply the tactic sequence `rw [h, Units.val_one]; by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Rewrite using `[Matrix.sub_apply]`.
+
+Conclude with `Ideal.Quotient.eq.mp h2`.
+-/
 theorem entry_idAt (V : HSp D) (P : Pl D → Prop) (g : GA D V) (hg : g ∈ grpAt V P) (i j : Fin V.rank) :
     (mt V g - 1) i j ∈ idAt D P := by
   have h := congrArg (fun x : GL (Fin V.rank) (AE D ⧸ idAt D P) => x.1 i j) (show _ = (1 : GL _ _) from hg)
@@ -29,6 +34,13 @@ theorem entry_idAt (V : HSp D) (P : Pl D → Prop) (g : GA D V) (hg : g ∈ grpA
 
 open GlobalTheory.LocWeil.PlaceIdem in
 
+/- English proof (translation)
+Unfold `idAt at hy`. Take `⟨h1, h2⟩` from `hy`. Establish `h1' : infPart D y = 0` using `h1`. Establish `h2' : ∀ u, u ∉ Set.range v → compAt D u y = 0` using `fun u hu => by`. Use `(Ideal.mem_iInf.1 h2) ⟨u, hu⟩` as an intermediate fact.
+
+Conclude with `(RingHom.mem_ker).mp this`. Establish `h3` using `key v hv y h2'`. Establish `h0 : finPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0)) = 0`. Rewrite using `[finPart_algebraMap]`. Conclude with `TensorProduct.zero_tmul _ _`.
+
+Establish `h4 : algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0) * y = 0` using `GlobalTheory.SplitScalar.adele_ext (by rw [RingHom.map_mul, h1', mul_zero, RingHom.map_zero]) (by rw [RingHom.map_mul, h0, zero_mul, RingHom.map_zero])`. Rewrite `h3` using `[map_sub, map_sub, map_one, map_sum]`. Take the linear combination `h3 + h4`.
+-/
 theorem sum_act {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective v)
     (y : AE D) (hy : y ∈ idAt D (fun u => u ∈ Set.range v)) :
     (1 - ∑ w, algebraMap (AF D.host.F) (AE D) (eFin D.host.F (v w))) * y = 0 := by
@@ -48,6 +60,9 @@ theorem sum_act {W : Type} [Fintype W] (v : W → Pl D) (hv : Function.Injective
   rw [map_sub, map_sub, map_one, map_sum] at h3
   linear_combination h3 + h4
 
+/- English proof (translation)
+Establish `h2` using `q.split.2.1`. Establish `ho : q.sec 1 = q.e` using `by rw [← q.pr.map_one, q.sec_pr, mul_one]`. Establish `p1 : q.pr q.e = 1` using `by rw [← ho, q.pr_sec]`. Establish `p2 : q.pr (cA D q.e) = 0` using `by rw [← one_mul (q.pr _), ← p1, ← RingHom.map_mul, h2, RingHom.map_zero]`. Rewrite using `[RingHom.map_add, p1, p2, add_zero]`.
+-/
 theorem pr_sum {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : SplitPt D k) :
     q.pr (q.e + cA D q.e) = 1 := by
   have h2 := q.split.2.1
@@ -56,6 +71,9 @@ theorem pr_sum {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNon
   have p2 : q.pr (cA D q.e) = 0 := by rw [← one_mul (q.pr _), ← p1, ← RingHom.map_mul, h2, RingHom.map_zero]
   rw [RingHom.map_add, p1, p2, add_zero]
 
+/- English proof (translation)
+Establish `key : ∀ A B : Matrix (Fin N) (Fin N) k, A * B = 1 → (F.γ * A * F.β) * (F.γ * B * F.β) = 1` using `fun A B h => by`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨F.γ * A * F.β, F.γ * B * F.β, key A B h1, key B A h2⟩, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_coord {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [DecidableEq Y] (F : GlobalTheory.LocMod.Frame k N Y)
     (A B : Matrix (Fin N) (Fin N) k) (h1 : A * B = 1) (h2 : B * A = 1) : ∃ x : GL Y k, A = F.β * x.val * F.γ := by
   have key : ∀ A B : Matrix (Fin N) (Fin N) k, A * B = 1 → (F.γ * A * F.β) * (F.γ * B * F.β) = 1 := fun A B h => by
@@ -67,6 +85,15 @@ theorem exists_coord {k : Type} [Field k] {N : ℕ} {Y : Type} [Fintype Y] [Deci
 
 open GlobalTheory.LocWeil.PlaceIdem in
 
+/- English proof (translation)
+Use `set E : Fin n → AE D := fun w => algebraMap (AF D.host.F) (AE D) (eFin D.host.F (v w)) with hEdef`. Establish `hE : ∀ w, e w + cA D (e w) = E w` using `fun w => by`. Take `⟨ε, hε, h⟩` from `he w`. Rewrite using `[h, eFin_of_placeIdem hε]`. Establish `hEE : ∀ w, E w * E w = E w` using `fun w => by`.
+
+Simplify using `only [hEdef, ← map_mul, eFin_idem]`. Establish `hEc : ∀ w, cA D (E w) = E w` using `fun w => cA_algebraMap _`. Establish `hEo : ∀ w w', w ≠ w' → E w * E w' = 0` using `fun w w' hww => by`. Simplify using `only [hEdef, ← map_mul]`. Rewrite using `[eFin_mul_eFin _ (fun h => hww (hv h)), map_zero]`.
+
+Use `choose h hh using fun w => cut_exists V g (E w) (hEE w) (hEc w)`. Use `⟨h, fun w i j => ?_, fun w => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE w, hh w]`. Apply the tactic sequence `exact idempotent_mul_cut_sub_one_entry _ (hEE w) _ i j`. Rewrite using `[hE w, hh w]`.
+
+Apply `GlobalTheory.SplitCut.mt_injective` to reduce the goal to its premises. Rewrite using `[mt_list_prod V h E _ hh hEo _ (List.nodup_finRange n), ← Fin.sum_univ_def]`. Conclude with `exists_widePullback_of_iteratedLine _ _ fun i j => sum_act v hv _ (entry_idAt V _ g hg i j)`.
+-/
 theorem exists_parts (V : HSp D) {n : ℕ} (v : Fin n → Pl D) (e : Fin n → AE D) (hv : Function.Injective v)
     (he : ∀ w, ∃ ε, IsPlaceIdem D (v w) ε ∧ e w + cA D (e w) = algebraMap (AF D.host.F) (AE D) ε)
     (g : GA D V) (hg : g ∈ grpAt V (fun u => u ∈ Set.range v)) :
@@ -92,6 +119,13 @@ theorem exists_parts (V : HSp D) {n : ℕ} (v : Fin n → Pl D) (e : Fin n → A
     rw [mt_list_prod V h E _ hh hEo _ (List.nodup_finRange n), ← Fin.sum_univ_def]
     exact exists_widePullback_of_iteratedLine _ _ fun i j => sum_act v hv _ (entry_idAt V _ g hg i j)
 
+/- English proof (translation)
+Introduce `D c v n G hG j g hg`. Establish `hP : (fun u => u ∈ v.gP) = fun u => u ∈ Set.range (fun i => (G i).q.v)`. Use function extensionality and compare the values at `u`. Rewrite using `[hG.places u]`. Conclude with `propext ⟨fun ⟨i, h⟩ => ⟨i, h.symm⟩, fun ⟨i, h⟩ => ⟨i, h.symm⟩⟩`.
+
+Rewrite `hg` using `[hP]`. Take `⟨h, h1, h2, h3⟩` from `exists_parts (c.V j) (fun i => (G i).q.v) (fun i => (G i).q.e) hG.inj (fun i => (G i).q.above) g hg`. Use `⟨h, fun i b hb => ?_, h3⟩` and prove the remaining obligations. Establish `hm : ∀ a a' : GA D (c.V j), a * a' = 1 → (mt (c.V j) a).map (G i).q.pr * (mt (c.V j) a').map (G i).q.pr = 1` using `fun a a' ha => by`. Rewrite using `[← Matrix.map_mul, ← GlobalTheory.SplitCut.mt_mul, ha, GlobalTheory.SplitCut.mt_one, Matrix.map_one _ (RingHom.map_zero _) (RingHom.map_one _)]`.
+
+Take `⟨x, hx⟩` from `exists_coord ((G i).FY j b hb) _ _ (hm g g⁻¹ (mul_inv_cancel g)) (hm g⁻¹ g (inv_mul_cancel g))`. Use `⟨x, hx, h1 i, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mt (c.V j) (h i)).map (G i).q.pr = _`. Rewrite using `[h2 i, GlobalTheory.GfCut.map_idem, pr_sum, one_smul, sub_self, zero_smul, add_zero]`. Conclude with `hx`.
+-/
 theorem prod_local_parts : ∀ (D : D7) (c : Comm D) (v : VCom c) (n : ℕ) (G : Fin n → GLoc v), GPin G →
     ∀ (j : ℕ) (k : GA D (c.V j)), k ∈ grpAt (c.V j) (· ∈ v.gP) → ∃ h : Fin n → GA D (c.V j),
       (∀ i b hb, ∃ x, (G i).Mat j b hb k x ∧ (ofSplit (G i).q).IsLoc ((G i).FY j b hb) (h i) x) ∧

@@ -8,6 +8,9 @@ import Development.WeilBound.CoreStatements.PadicHodgeComparison.EtaleCohomology
 namespace UpperTheory.Gal.KunnethLefschetz
 open GlobalTheory.EtC CrystallineSemistableComparison
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.sum ⟨GlobalTheory.T.quasiIso_hypercohomology_bijective, GlobalTheory.T.cup_chern_kummer_pullback_naturality, GlobalTheory.T.cupProduct_gradedCommRingAxioms_hold, GlobalTheory.T.etaleCohomology_coefficient_longExactSequence, GlobalTheory.T.etaleCoho …`.
+-/
 theorem inSum_holds : InSum :=
   CrystallineSemistableComparison.sum ⟨GlobalTheory.T.quasiIso_hypercohomology_bijective, GlobalTheory.T.cup_chern_kummer_pullback_naturality, GlobalTheory.T.cupProduct_gradedCommRingAxioms_hold, GlobalTheory.T.etaleCohomology_coefficient_longExactSequence, GlobalTheory.T.etaleCohomology_coefficientRing_invariance, GlobalTheory.T.etaleCohomology_negative_vanishing_degree_zero, GlobalTheory.T.etaleCohomology_bijective_of_support_bijective, CrystallineSemistableComparison.E.etIn⟩
 

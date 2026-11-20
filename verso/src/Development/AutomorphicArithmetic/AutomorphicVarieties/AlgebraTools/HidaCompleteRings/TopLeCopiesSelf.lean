@@ -22,6 +22,9 @@ abbrev Into (ρ : Representation k G V) (Y : Submodule k V) (σ : Representation
 def copies (ρ : Representation k G V) (Y : Submodule k V) (σ : Representation k G N) : Submodule k V :=
   ⨆ f : Into ρ Y σ, LinearMap.range f.1
 
+/- English proof (translation)
+Introduce `x` and use `h (j x)`.
+-/
 theorem Stab.comp {ρ : Representation k G V} {W : Submodule k V} (h : Stab ρ W) {H : Type} [Group H] (j : H →* G) :
     Stab (ρ.comp j) W := fun x => h (j x)
 
@@ -30,6 +33,9 @@ def piRep (ρ : Representation k G V) (ι : Type) : Representation k G (ι → V
   map_one' := by ext1 F; simp; rfl
   map_mul' a b := by ext1 F; simp; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem piRep_apply (ρ : Representation k G V) (ι : Type) (g : G) (F : ι → V) (i : ι) :
     piRep ρ ι g F i = ρ g (F i) := rfl
 
@@ -42,6 +48,9 @@ structure LocFac {G H : Type} [Group G] [Group H] (j : H →* G) (p : G →* H) 
   left : ∀ h, p (j h) = h
   comm : ∀ g, p g = 1 → ∀ h, Commute (j h) g
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_inv, h.left, inv_mul_cancel]`.
+-/
 theorem LocFac.dec {G H : Type} [Group G] [Group H] {j : H →* G} {p : G →* H} (h : LocFac j p) (g : G) :
     p ((j (p g))⁻¹ * g) = 1 := by rw [map_mul, map_inv, h.left, inv_mul_cancel]
 

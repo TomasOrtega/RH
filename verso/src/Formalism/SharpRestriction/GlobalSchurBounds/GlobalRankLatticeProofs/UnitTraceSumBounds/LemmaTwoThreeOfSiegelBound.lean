@@ -14,6 +14,11 @@ open Polynomial Formalism.BasicNotions Formalism.FrobeniusOrbits Formalism.MainN
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `hb2 : H.sqd ^ 2 = ((-(H.d : ℤ) : ℤ) : H.E)`. Use `push_cast`. Conclude with `H.sqd_sq`. Take `⟨x, hxdef⟩ : ∃ x : H.K, (x : H.E) = H.sqd` from `⟨⟨H.sqd, IntermediateField.mem_adjoin_simple_self ℚ _⟩, rfl⟩`. Use `⟨x, ?_, gen_top H x hxdef⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[hxdef, hb2]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_gen_K : ∃ x : H.K, x ^ 2 = ((-(H.d : ℤ) : ℤ) : H.K) ∧ IntermediateField.adjoin ℚ {x} = ⊤ := by
   have hb2 : H.sqd ^ 2 = ((-(H.d : ℤ) : ℤ) : H.E) := by
     push_cast
@@ -27,6 +32,13 @@ theorem exists_gen_K : ∃ x : H.K, x ^ 2 = ((-(H.d : ℤ) : ℤ) : H.K) ∧ Int
   push_cast
   rfl
 
+/- English proof (translation)
+Take `⟨x, hx, hadj⟩` from `exists_gen_K H`. Establish `hd` using `H.hyp.2.1`. Establish `hsf : Squarefree (-(H.d : ℤ))`. Rewrite using `[← Int.squarefree_natAbs, Int.natAbs_neg, Int.natAbs_natCast]`. Conclude with `hd.squarefree`.
+
+Establish `h1 : (-(H.d : ℤ)) ≠ 1` using `by omega`. Establish `hirr : Irreducible (X ^ 2 - C ((-(H.d : ℤ) : ℤ) : ℚ))` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two (Formalism.HF.P.quad_not_sq_rat _ hsf h1)`. Establish `hmon : (X ^ 2 - C ((-(H.d : ℤ) : ℤ) : ℚ)).Monic` using `monic_X_pow_sub_C _ two_ne_zero`. Establish `hev : aeval x (X ^ 2 - C ((-(H.d : ℤ) : ℤ) : ℚ)) = 0` using `by simp [hx]`. Establish `hmin : minpoly ℚ x = X ^ 2 - C ((-(H.d : ℤ) : ℤ) : ℚ)` using `(minpoly.eq_of_irreducible_of_monic hirr hev hmon).symm`.
+
+Use `IntermediateField.adjoin.finrank (K := ℚ) (x := x) (.of_finite ℚ x)` as an intermediate fact. Rewrite `this` using `[hmin, natDegree_X_pow_sub_C, hadj, IntermediateField.finrank_top']`. Conclude with `this`.
+-/
 theorem finrank_K : Module.finrank ℚ H.K = 2 := by
   obtain ⟨x, hx, hadj⟩ := exists_gen_K H
   have hd := H.hyp.2.1
@@ -44,6 +56,11 @@ theorem finrank_K : Module.finrank ℚ H.K = 2 := by
   rw [hmin, natDegree_X_pow_sub_C, hadj, IntermediateField.finrank_top'] at this
   exact this
 
+/- English proof (translation)
+Use `⟨fun σ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, -⟩` from `exists_gen_K H`. Establish `h` using `congrArg σ hx`. Rewrite `h` using `[map_pow, map_intCast]`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`.
+
+Establish `h2` using `sq_nonneg (σ x)`. Rewrite `h2` using `[h]`. Move the coercions through the operations in `at h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem no_real_K : IsEmpty (H.K →+* ℝ) := by
   refine ⟨fun σ => ?_⟩
   obtain ⟨x, hx, -⟩ := exists_gen_K H

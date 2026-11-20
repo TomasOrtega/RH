@@ -13,20 +13,32 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace RootFieldNumerics.RF
 
+/- English proof (translation)
+Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp' {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map (CommRingCat.ofHom (g.comp f)) = _
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+-/
 theorem spMap_inj {R S : Type} [CommRing R] [CommRing S] {f g : R →+* S} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
+/- English proof (translation)
+Substitute `e e' e₂` using the available equality. Rewrite using `[← Category.assoc (Spec.map _), ← Spec.map_comp, IsIso.hom_inv_id_assoc, Spec.map_comp, Category.assoc]`.
+-/
 theorem spec_map_factorisation {X : Scheme.{0}} {A A' B B' : CommRingCat.{0}} (u : A ⟶ B) [IsIso u] (r : A ⟶ A') (v : A' ⟶ B')
     (a : Spec A ⟶ X) (a' : Spec A' ⟶ X) (x : Spec B ⟶ X) (x' : Spec B' ⟶ X) (e : Spec.map u ≫ a = x)
     (e' : Spec.map v ≫ a' = x') (e₂ : Spec.map r ≫ a = a') : Spec.map (inv u ≫ r ≫ v) ≫ x = x' := by
   subst e e' e₂
   rw [← Category.assoc (Spec.map _), ← Spec.map_comp, IsIso.hom_inv_id_assoc, Spec.map_comp, Category.assoc]
 
+/- English proof (translation)
+Use `haveI : IsIso (Scheme.stalkClosedPointTo ξ₀) := (ConcreteCategory.isIso_iff_bijective _).2 h₀.bij`. Use `⟨(inv (Scheme.stalkClosedPointTo ξ₀) ≫ X.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo ξ₁).hom, ?_⟩` and prove the remaining obligations. Conclude with `spec_map_factorisation (Scheme.stalkClosedPointTo ξ₀) (X.presheaf.stalkSpecializes h) (Scheme.stalkClosedPointTo ξ₁) _ _ ξ₀ ξ₁ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₀) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₁) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (X := …`.
+-/
 theorem exists_factor {X : Scheme.{0}} {Ω₀ Ω₁ : Type} [Field Ω₀] [Field Ω₁] {ξ₀ : Sp Ω₀ ⟶ X} (ξ₁ : Sp Ω₁ ⟶ X)
     (h₀ : IsCptGen ξ₀) (h : genPt ξ₁ ⤳ genPt ξ₀) : ∃ i : Ω₀ →+* Ω₁, spMap i ≫ ξ₀ = ξ₁ := by
   haveI : IsIso (Scheme.stalkClosedPointTo ξ₀) := (ConcreteCategory.isIso_iff_bijective _).2 h₀.bij
@@ -35,10 +47,16 @@ theorem exists_factor {X : Scheme.{0}} {Ω₀ Ω₁ : Type} [Field Ω₀] [Field
     (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₀) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₁)
     (Scheme.SpecMap_stalkSpecializes_fromSpecStalk (X := X) h)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun x => ξ x) (Subsingleton.elim (α := PrimeSpectrum Ω₀) _ _)`.
+-/
 theorem genPt_spMap {X : Scheme.{0}} {Ω₀ Ω₁ : Type} [Field Ω₀] [Field Ω₁] (i : Ω₀ →+* Ω₁) (ξ : Sp Ω₀ ⟶ X) :
     genPt (spMap i ≫ ξ) = genPt ξ :=
   congrArg (fun x => ξ x) (Subsingleton.elim (α := PrimeSpectrum Ω₀) _ _)
 
+/- English proof (translation)
+Use `⟨IsFractionRing.injective _ _, inferInstance, fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 F) x`. Establish `: algebraMap (𝓞 F) F b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Conclude with `⟨a, b, this, div_mul_cancel₀ _ this⟩`.
+-/
 theorem int_frac (F : Type) [Field F] [NumberField F] : Function.Injective (algebraMap (𝓞 F) F) ∧ IsNoetherianRing (𝓞 F) ∧
     ∀ x : F, ∃ a b : 𝓞 F, algebraMap (𝓞 F) F b ≠ 0 ∧ x * algebraMap (𝓞 F) F b = algebraMap (𝓞 F) F a := by
   refine ⟨IsFractionRing.injective _ _, inferInstance, fun x => ?_⟩
@@ -48,6 +66,15 @@ theorem int_frac (F : Type) [Field F] [NumberField F] : Function.Injective (alge
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
 
+/- English proof (translation)
+Establish `e1 : genPt Fx.ξf = genPt (Z.ξ₀ ≫ Y.j)`. Rewrite using `[← h, ← genPt_spMap o.g Fx.ξf, ← o.g_over, ← genPt_spMap o.𝔐.fn o.𝔐.ξ₀]`. Conclude with `congrArg genPt o.𝔐.fn_over`. Take `⟨i, hi⟩` from `exists_factor Fx.ξf Z.gen (e1 ▸ specializes_rfl)`. Establish `hb : (o.g.comp i).comp Z.inc = o.𝔐.cst`.
+
+Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) (spMap_inj ?_)` and prove the remaining obligations. Rewrite using `[← o.𝔐.cst_over, ← Category.assoc, o.g_over, ← hi, spMap_comp', spMap_comp', spMap_comp', ← Z.over_inc, ← Y.jQ_over]`. Simplify using `only [Model.j, Category.assoc, pullback.condition]`. Introduce and unpack `x ⟨f, hf, hx⟩`. Use `letI : Algebra c.F Z.Ω := Z.inc.toAlgebra`.
+
+Use `haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective`. Use `haveI : Algebra.IsAlgebraic ℤ c.F := (IsFractionRing.comap_isAlgebraic_iff (A := ℤ) (K := ℚ)).2 inferInstance`. Establish `h0 : IsAlgebraic c.F x` using `⟨f, hf, hx⟩`. Establish `h1 : IsAlgebraic ℤ x` using `h0.restrictScalars ℤ`. Take `⟨b, hb'⟩` from `o.g_const (i x) (h1.algHom i.toIntAlgHom)`.
+
+Use `⟨b, (o.g.comp i).injective ?_⟩` and prove the remaining obligations. Rewrite `hb'` using `[← hb]`. Conclude with `hb'`.
+-/
 theorem isGeom_of {l : Level H} {Xo : Moduli D l} {c : Coeff l} [NumberField c.F]
     {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {M : Top.RootModel (CMType H) (D.p + D.q)}
     {Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))} {Fx : FixedData Y Sys}
@@ -73,6 +100,19 @@ theorem isGeom_of {l : Level H} {Xo : Moduli D l} {c : Coeff l} [NumberField c.F
   rw [← hb] at hb'
   exact hb'
 
+/- English proof (translation)
+Take `⟨g, ty, FU, i, hty, hper⟩` from `hP hG E H D l (Xo l) c Y U Z hp hq hU hUi hZ`. Take `⟨⟨hI, -⟩, -, -, -, hRes, -, -, hGa, -⟩` from `hG`. Establish `hpq : 1 ≤ D.p + D.q` using `by omega`. Take `⟨φ, hl, hf, -⟩` from `GlobalTheory.T.flat_zero_from_resolution_and_gaga hRes hGa E H D l (Xo l) c _ _ Y U Z τ.1 (int_frac c.F) hpq τ.2 hZ`. Take `⟨hinf, hfg⟩` from `GlobalTheory.T.flat_first_from_resolution_and_gaga hRes hGa E H D l (Xo l) c _ _ Y U Z τ.1 φ (int_frac c.F) hpq τ.2 hZ hl hf`.
+
+Establish `hφ : IsFlatGen U τ.1 φ FU i` using `hfg g ty FU i hty fun P y hPer hu hy => (hper y hy).2 ⟨P, hPer, hu⟩`. Take `⟨φ', N', hφ', hN', -⟩` from `GlobalTheory.T.flat_theorem_of_resolution_gaga hRes hGa hI E H D Xo l c U τ.1 g ty FU i hpq τ.2 hg hty hU hUi hper`. Take `⟨a, ha, he⟩` from `GlobalTheory.T.flat_gen_frame_complex_compat E H D l (Xo l) c U τ.1 φ' φ g ty FU i hty hφ' hφ fun y hy hr => (hper y hy).1 hr`. Establish `hfin : ∀ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), ∃ t, HasFinNorm U τ.1 φ p κ t` using `fun p κ => ⟨_, TopA.hasFinNorm_of_eq hl ha he (hN'.2 p κ)⟩`. Use `choose t ht ht' using hinf`.
+
+Use `choose tf htf using hfin`. Set `N : LogNorms c.F` to `⟨fun s => t (InfinitePlace.mk s).embedding, tf⟩`. Establish `hN : ∀ s, HasInfNorm U τ.1 φ s (N.inf s)` using `fun s => by show HasInfNorm U τ.1 φ s (t (InfinitePlace.mk s).embedding)`. Break down `InfinitePlace.embedding_mk_eq s with h | h` into its components or cases. Rewrite using `[h]`.
+
+Conclude with `ht s`. Rewrite using `[h]`. Establish `e : (starRingEnd ℂ).comp (ComplexEmbedding.conjugate s) = s`. Use extensionality with `x`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Use `ht' (ComplexEmbedding.conjugate s)` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `haveI : NeZero H.d := ⟨H.d_prime.ne_zero⟩`. Take `⟨χ, hχ1, hχ2⟩` from `hχ E H`. Take `⟨h1, h2⟩` from `GlobalTheory.T.kronecker_character_period_formula hFD E H D l (Xo l) c g ty FU i U τ.1 φ N χ hχ1 hty τ.2 hφ hN htf`.
+
+Use `⟨φ, N, hf, hN, fun s => ?_, htf, h1, by rw [h2, hχ2]⟩` and prove the remaining obligations. Use `show t _ = t _`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`.
+-/
 theorem exists_norms (hG : Top.Given) (hFD : FlatDegree) (hP : PeriodOf) (hχ : ChiEx) (Xo : ∀ l : Level H, Moduli D l)
     (l : Level H) (c : Coeff l) [NumberField c.F] (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F))
     (U : Set ((Xo l).XF c)) (Z : CptOver Y U) (τ : CMType H) (hg : ∀ p : ℕ, p.Prime → l.GoodAt p) (hp : 1 ≤ D.p)

@@ -9,6 +9,15 @@ namespace GlobalTheory.CompanionTheory.InnerIntegralLongWeyl
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Use `(eq_comm.1 (eq_inv_of_mul_eq_one_right ?_))` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Establish `hk : h.val * (h⁻¹ : GL (Fin 2) F).val = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite using `[Units.val_mul, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.em_val, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.em_val, Units.val_one]`.
+
+Generalize the expression as in `(h⁻¹ : GL (Fin 2) F).val = K at hk ⊢`. Generalize the expression as in `h.val = H at hk ⊢`. Establish `e00 : H 0 0 * K 0 0 + H 0 1 * K 1 0 = 1`. Simplify `congrFun (congrFun hk 0) 0` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : H 0 0 * K 0 1 + H 0 1 * K 1 1 = 0`.
+
+Simplify `congrFun (congrFun hk 0) 1` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : H 1 0 * K 0 0 + H 1 1 * K 1 0 = 0`. Simplify `congrFun (congrFun hk 1) 0` using `[Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : H 1 0 * K 0 1 + H 1 1 * K 1 1 = 1`. Simplify `congrFun (congrFun hk 1) 1` using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, e00, e01, e10, e11]`.
+-/
 theorem em_inv_eq (h : GL (Fin 2) F) : (em h)⁻¹ = em h⁻¹ := by
   refine (eq_comm.1 (eq_inv_of_mul_eq_one_right ?_))
   apply Units.ext
@@ -29,6 +38,11 @@ theorem em_inv_eq (h : GL (Fin 2) F) : (em h)⁻¹ = em h⁻¹ := by
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, Fin.sum_univ_three, e00, e01, e10, e11]
 
+/- English proof (translation)
+Establish `ht : (tinv (em h)).val = ((em h⁻¹).val)ᵀ`. Express the relevant statement in the definitionally equal form `(((em h)⁻¹ : GL (Fin 3) F).val)ᵀ = _`. Rewrite using `[em_inv_eq]`. Establish `ht2 : (tinv h).val = ((h⁻¹ : GL (Fin 2) F).val)ᵀ` using `rfl`. Rewrite using `[Units.val_mul, ht, ht2, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.em_val]`.
+
+Generalize the expression as in `(h⁻¹ : GL (Fin 2) F).val = K`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [LFS.blk, w3, cat3, col2, e1, Matrix.mul_apply, Matrix.vecMul, dotProduct, Fin.sum_univ_three, Fin.sum_univ_two] <;> ring`.
+-/
 theorem block_long_weyl3_diag_concatenation (x : Fin 2 → F) (h : GL (Fin 2) F) :
     LFS.blk x * (w3 * tinv (em h) : GL (Fin 3) F).val = cat3 (col2 x * (tinv h).val) e1 := by
   have ht : (tinv (em h)).val = ((em h⁻¹).val)ᵀ := by
@@ -42,6 +56,9 @@ theorem block_long_weyl3_diag_concatenation (x : Fin 2 → F) (h : GL (Fin 2) F)
     simp [LFS.blk, w3, cat3, col2, e1, Matrix.mul_apply, Matrix.vecMul, dotProduct,
       Fin.sum_univ_three, Fin.sum_univ_two] <;> ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ Φ y h`. Unfold `LFS.inn Lpart Pf`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.mul_assoc, block_long_weyl3_diag_concatenation, GlobalTheory.CompanionTheory.KTwoWhittakerSubgroup.mul_concat_column, Matrix.mul_assoc]`.
+-/
 theorem inner_integral_long_weyl_transpose_inv : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), ∀ (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (y h : GL (Fin 2) F), LFS.inn ψ Φ y⁻¹ (w3 * tinv (em h)) = Lpart ψ (Pf Φ h y) := by
   intro F _ _ _ _ _ _ ψ Φ y h
   unfold LFS.inn Lpart Pf

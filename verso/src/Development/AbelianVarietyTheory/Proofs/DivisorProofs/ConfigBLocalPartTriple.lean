@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.ConeBoundB
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `choose φ y hφ using fun n : ℕ => hcon (Finset.range n ×ˢ Finset.range n) n`. Establish `hpos : ∀ n, 0 < Q (y n) (φ n)` using `fun n => lt_of_le_of_lt (by positivity) (hφ n)`. Set `f : ℕ → SchwartzMap V ℂ` to `fun n => (((n : ℝ) / Q (y n) (φ n) : ℝ) : ℂ) • φ n`.
+
+Establish `hn : ∀ n : ℕ, ‖(((n : ℝ) / Q (y n) (φ n) : ℝ) : ℂ)‖ = (n : ℝ) / Q (y n) (φ n)` using `fun n => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (div_nonneg (Nat.cast_nonneg n) (hpos n).le)]`. Establish `h1 : ∀ n, ((Finset.range n ×ˢ Finset.range n).sup (schwartzSeminormFamily ℂ V ℂ)) (f n) ≤ 1` using `fun n => by`. Rewrite using `[map_smul_eq_mul, hn, div_mul_eq_mul_div, div_le_one (hpos n)]`. Conclude with `(hφ n).le`.
+
+Take `⟨C, hC⟩` from `hb f fun p hp => by`. Take `⟨s, C', -, hle⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) p hp`. Use `set m := s.sup (fun i => max i.1 i.2) + 1 with hm`. Use `⟨C' + ∑ t ∈ Finset.range m, p (f t), fun t => ?_⟩` and prove the remaining obligations. Establish `hs0 : 0 ≤ ∑ t ∈ Finset.range m, p (f t)` using `Finset.sum_nonneg fun t _ => apply_nonneg p _`.
+
+Break down `lt_or_ge t m with ht | ht` into its components or cases. Use `Finset.single_le_sum (f := fun t => p (f t)) (fun t _ => apply_nonneg p _) (Finset.mem_range.2 ht)` as an intermediate fact. Combine the linear relations using `[C'.coe_nonneg]`. Establish `hsub : s ⊆ Finset.range t ×ˢ Finset.range t` using `fun i hi => by`. Use `Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi` as an intermediate fact.
+
+Simplify using `only [Finset.mem_product, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (s.sup (schwartzSeminormFamily ℂ V ℂ)) (f t) ≤ 1` using `le_trans (Finset.sup_mono (f := schwartzSeminormFamily ℂ V ℂ) hsub (f t)) (h1 t)`. Establish `h3 : p (f t) ≤ C' * (s.sup (schwartzSeminormFamily ℂ V ℂ)) (f t)` using `hle (f t)`. Use polynomial arithmetic with `[C'.coe_nonneg]`.
+
+Take `⟨n, hn'⟩` from `exists_nat_gt C`. Use `hC n (y n)` as an intermediate fact. Rewrite `this` using `[hQ, hn, div_mul_cancel₀ _ (hpos n).ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_seminorm_bound {V Y : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (Q : Y → SchwartzMap V ℂ → ℝ)
     (hQ : ∀ y (c : ℂ) f, Q y (c • f) = ‖c‖ * Q y f)
     (hb : ∀ f : ℕ → SchwartzMap V ℂ, (∀ p : Seminorm ℂ (SchwartzMap V ℂ), Continuous p → ∃ C : ℝ, ∀ t, p (f t) ≤ C) →
@@ -51,6 +64,19 @@ theorem exists_seminorm_bound {V Y : Type} [NormedAddCommGroup V] [NormedSpace �
 
 open GlobalTheory.ConeArchB GlobalTheory.XTermDecay in
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he ei ev hL X om om' om₁ om₁' hT hT₁ μ hμ l`. Take `⟨-, hev, hloc⟩` from `hL`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hM` using `hT.geo.hM'`.
+
+Establish `hψ` using `hT.base.std`. Establish `hSB : ∀ v, G.M'.vac v ∈ SB _` using `fun v => (hM.vac v).1`. Establish `hei : ∀ f, e' (pure f G.M'.vac) = pure (ei f) G₁.M'.vac` using `fun f => by`. Rewrite using `[hloc f _ hSB (Eventually.of_forall fun _ => rfl)]`. Conclude with `congrArg _ (funext fun v => (hev v).1)`.
+
+Use `set z := (a - (b + 2)) / 2 + 1 with hz`. Take `⟨N, hN⟩` from `GlobalTheory.ArchIdeleDecay.integrable_absE_pow_div F E σ B hT.base μ hμ z (by omega)`. Establish `hP : ∀ y : (AE F E)ˣ, 0 < (1 + ∑ w, ‖piInf (B.emb w) (y : AE F E)‖) ^ N` using `fun y => by positivity`. Take `⟨s, C, hsC⟩` from `exists_seminorm_bound (fun (y : (AE F E)ˣ) (φ : SInf F (Fin (b + 2) × Fin (a + (b + 2)))) => ‖l (ei (locOpInf (G.M'.co.rho B.ψ (partInf F (shiftB σ H H' y))) φ))‖ * (1 + ∑ w, ‖piInf (B.emb w) (y : AE F E)‖) ^ N) (fun y c f => by`. Simplify using `only [(locOpInf_rho_eq hψ hM _ _).2, map_smul, norm_smul, mul_assoc])`.
+
+Use the proof step `(fun f hf => by`. Take `⟨C, hCb⟩` from `shift_decay hT.base hT.geo.hV' hC.hH hC.hH' hM hT₁.geo.hM' he hei f hf ((normSeminorm ℂ ℂ).comp l.toLinearMap) (continuous_norm.comp l.continuous) N`. Conclude with `⟨C, fun t y => (le_div_iff₀ (hP y)).1 (hCb t y)⟩)`. Use `⟨s, C, _, hN, fun φ => Continuous.aestronglyMeasurable ?_, fun φ y => ?_⟩` and prove the remaining obligations. Establish `hl : Continuous fun q : idelesAt E (evI F) => q.1` using `continuous_subtype_val`.
+
+Establish `hν : Continuous X.ν` using `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Simplify using `only [(locOpInf_rho_eq hψ hM _ _).2]`. Use `l.continuous.comp ((((continuous_subtype_val.comp hν).comp hl).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp hl))).pow z)).smul (ei.continuous.comp (continuous_archOp continuous_const ?_)))` and prove the remaining obligations. Set `L` to `G.M'.co.e.toLinearMap ∘ₗ (realAd F 1 • ((LinearMap.toSpanSingleton (AE F E) _ (Matrix.vecMulVec (incV F H.y) (incV F H'.x))).restrictScalars (AF F) ∘ₗ (cA σ).toLinearMap))`. Establish `hL : Continuous fun q : idelesAt E (evI F) => G.M'.co.e (partInf F (shiftB σ H H' q.1))` using `(IsModuleTopology.continuous_of_linearMap L).comp (Units.continuous_val.comp hl)`.
+
+Conclude with `(continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => continuous_qA.comp ((continuous_apply i).comp hL.snd))`. Establish `h1` using `(le_div_iff₀ (hP y.1)).2 (hsC φ y.1)`. Rewrite using `[map_smul, norm_smul, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, NNReal.abs_eq, mul_div_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+-/
 theorem cone_integrand_bound : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ ei' ev', IsLocPart G.M' G₁.M' e' ei' ev' →

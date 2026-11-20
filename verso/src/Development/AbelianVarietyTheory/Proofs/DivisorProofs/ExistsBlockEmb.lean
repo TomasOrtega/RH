@@ -25,9 +25,15 @@ namespace GlobalTheory.BlockFormsEmb
 section Alg
 variable {R : Type} [CommRing R] {n d : ℕ}
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by simp [cT]`.
+-/
 theorem cT_add' (s : R →+* R) {m p : Type} (A B : Matrix m p R) : cT s (A + B) = cT s A + cT s B :=
   Matrix.ext fun i j => by simp [cT]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by simp [cT]`.
+-/
 theorem cT_sub' (s : R →+* R) {m p : Type} (A B : Matrix m p R) : cT s (A - B) = cT s A - cT s B :=
   Matrix.ext fun i j => by simp [cT]
 
@@ -36,8 +42,16 @@ def blk (a b : Matrix (Fin n) (Fin d) R) (α β : Matrix (Fin d) (Fin n) R) (H K
 
 variable {a b : Matrix (Fin n) (Fin d) R} {α β : Matrix (Fin d) (Fin n) R}
 
+/- English proof (translation)
+Simplify using `[blk]`.
+-/
 theorem blk_one : blk a b α β 1 1 = 1 := by simp [blk]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SquareDistanceExpansion.main`. Consider the case `exact _root_.GlobalTheory.SquareDistanceExpansion.main`. Consider the case `(apply _root_.GlobalTheory.SquareDistanceExpansion.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SquareDistanceExpansion.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SquareDistanceExpansion.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SquareDistanceExpansion.main ..)`.
+-/
 theorem blk_mul (hαa : α * a = 1) (hβb : β * b = 1) (hαb : α * b = 0) (hβa : β * a = 0)
     (H K H' K' : Matrix (Fin d) (Fin d) R) :
     blk a b α β H K * blk a b α β H' K' = blk a b α β (H * H') (K * K') := by
@@ -49,6 +63,11 @@ theorem blk_mul (hαa : α * a = 1) (hβb : β * b = 1) (hαb : α * b = 0) (hβ
   | (intros; apply @_root_.GlobalTheory.SquareDistanceExpansion.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SquareDistanceExpansion.main ..)
 
+/- English proof (translation)
+Establish `key : cT s (blk a b α β H K) * Jm = Jm * blk a b α β (cT s K) (cT s H)`. Unfold `blk`. Rewrite using `[cT_add', cT_add', Formalism.UG.cT_one, Formalism.UG.cT_mul, Formalism.UG.cT_mul, Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_sub', cT_sub', Formalism.UG.cT_one, hα, hβ]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, ha, hb]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[key, Matrix.mul_assoc, blk_mul hαa hβb hαb hβa, h1, h2, blk_one, Matrix.mul_one]`.
+-/
 theorem blk_unitary (s : R →+* R) (Jm : Matrix (Fin n) (Fin n) R)
     (hαa : α * a = 1) (hβb : β * b = 1) (hαb : α * b = 0) (hβa : β * a = 0)
     (hα : cT s α = Jm * b) (hβ : cT s β = Jm * a) (ha : cT s a * Jm = β) (hb : cT s b * Jm = α)
@@ -70,22 +89,40 @@ section Main
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (σ : E →ₐ[F] E) (x : E) :
     sigR (AF F) σ (inclR (F := F) (AF F) x) = inclR (F := F) (AF F) (σ x) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => by simp only [cT, adMat, Matrix.transpose_apply, Matrix.map_apply, sigR_inclR]; rfl`.
+-/
 theorem cT_adMat (σ : E →ₐ[F] E) {m p : Type} (Z : Matrix m p E) :
     cT (sigR (AF F) σ) (adMat F Z) = adMat F (cT (σ : E →+* E) Z) :=
   Matrix.ext fun i j => by simp only [cT, adMat, Matrix.transpose_apply, Matrix.map_apply, sigR_inclR]; rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul`.
+-/
 theorem adMat_mul' {m p q : Type} [Fintype p] (A : Matrix m p E) (B : Matrix p q E) :
     adMat F (A * B) = adMat F A * adMat F B := Matrix.map_mul
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem adMat_one' {m : Type} [Fintype m] [DecidableEq m] : adMat F (1 : Matrix m m E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_zero _ (map_zero _)`.
+-/
 theorem adMat_zero' {m p : Type} : adMat F (0 : Matrix m p E) = 0 := Matrix.map_zero _ (map_zero _)
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR' (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (z : AF F ⊗[F] E) :
     sigR (AF F) σ (sigR (AF F) σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -93,6 +130,9 @@ theorem sigR_sigR' (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (z : AF F �
   | tmul a x => simp [sigR, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext i j; simp [Matrix.mul_apply, blkCols, cT])`.
+-/
 theorem blkCols_gram {n r l d : ℕ} (h : l + d ≤ r) (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)
     (Z W : Matrix (Fin n) (Fin r) E) :
     cT (σ : E →+* E) (blkCols h Z) * J * blkCols h W =
@@ -110,20 +150,37 @@ def embMat (σ : E →ₐ[F] E) (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) 
 variable (σ : E →ₐ[F] E) (Φ : AF F ⊗[F] E ≃+* AdeleRing (𝓞 E) E) {n d : ℕ}
   {a b : Matrix (Fin n) (Fin d) (AF F ⊗[F] E)} {α β : Matrix (Fin d) (Fin n) (AF F ⊗[F] E)}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := Φ.symm.toRingHom)`.
+-/
 theorem map_symm_mul (A B : Matrix (Fin d) (Fin d) (AdeleRing (𝓞 E) E)) :
     (A * B).map Φ.symm = A.map Φ.symm * B.map Φ.symm := Matrix.map_mul (f := Φ.symm.toRingHom)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem map_symm_one : (1 : Matrix (Fin d) (Fin d) (AdeleRing (𝓞 E) E)).map Φ.symm = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Simplify using `only [embMat, inv_one, Units.val_one, map_symm_one, Formalism.UG.cT_one, blk_one]`.
+-/
 theorem embMat_one : embMat σ Φ a b α β 1 = 1 := by
   simp only [embMat, inv_one, Units.val_one, map_symm_one, Formalism.UG.cT_one, blk_one]
 
+/- English proof (translation)
+Unfold `embMat`. Rewrite using `[blk_mul hαa hβb hαb hβa, Units.val_mul, _root_.mul_inv_rev, Units.val_mul, map_symm_mul, map_symm_mul, Formalism.UG.cT_mul]`.
+-/
 theorem embMat_mul (hαa : α * a = 1) (hβb : β * b = 1) (hαb : α * b = 0) (hβa : β * a = 0)
     (g g' : GlobalTheory.CuspRep.GA E d) : embMat σ Φ a b α β (g * g') = embMat σ Φ a b α β g * embMat σ Φ a b α β g' := by
   unfold embMat
   rw [blk_mul hαa hβb hαb hβa, Units.val_mul, _root_.mul_inv_rev, Units.val_mul, map_symm_mul, map_symm_mul, Formalism.UG.cT_mul]
 
+/- English proof (translation)
+Establish `hcc : ∀ A : Matrix (Fin d) (Fin d) (AF F ⊗[F] E), cT (sigR (AF F) σ) (cT (sigR (AF F) σ) A) = A` using `fun A => Matrix.ext fun i j => by simp only [cT, Matrix.transpose_apply, Matrix.map_apply]; exact sigR_sigR' σ hσ _`. Establish `hgg : (g⁻¹).1.map Φ.symm * g.1.map Φ.symm = 1`. Rewrite using `[← map_symm_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_symm_one]`. Unfold `embMat`. Use `blk_unitary _ Jm hαa hβb hαb hβa hα hβ ha hb _ _ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hcc, hgg]`. Rewrite using `[← Formalism.UG.cT_mul, hgg, Formalism.UG.cT_one]`.
+-/
 theorem embMat_unitary (hσ : ∀ x, σ (σ x) = x) (Jm : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))
     (hαa : α * a = 1) (hβb : β * b = 1) (hαb : α * b = 0) (hβa : β * a = 0)
     (hα : cT (sigR (AF F) σ) α = Jm * b) (hβ : cT (sigR (AF F) σ) β = Jm * a)
@@ -140,6 +197,25 @@ theorem embMat_unitary (hσ : ∀ x, σ (σ x) = x) (Jm : Matrix (Fin n) (Fin n)
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hcm n J hJ r Xf Yf hW l d h`. Take `⟨Φ, j, hc1, hc2, hj, hΦ⟩` from `GlobalTheory.HeckeBridge.exists_tensor_adele_equiv F E σ hcm`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`.
+
+Establish `hJT : cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 i j`. Establish `hcc : ∀ {m p : Type} (Z : Matrix m p E), cT (σ : E →+* E) (cT (σ : E →+* E) Z) = Z` using `fun Z => Matrix.ext fun _ _ => hσ _`. Establish `hyx : cT (σ : E →+* E) Yf * J * Xf = 1`. Use `congrArg (cT (σ : E →+* E)) hW.xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hcc, hJT, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+
+Establish `he : Function.Injective (fun j : Fin d => (⟨l + j.val, by omega⟩ : Fin r))` using `fun i k e => Fin.ext (by have := congrArg Fin.val e; simp only at this; omega)`. Establish `q1 : cT (σ : E →+* E) (blkCols h Yf) * J * blkCols h Xf = 1`. Rewrite using `[blkCols_gram, hyx, Matrix.submatrix_one _ he]`. Establish `q2 : cT (σ : E →+* E) (blkCols h Xf) * J * blkCols h Yf = 1`. Rewrite using `[blkCols_gram, hW.xy, Matrix.submatrix_one _ he]`.
+
+Establish `q3 : cT (σ : E →+* E) (blkCols h Yf) * J * blkCols h Yf = 0`. Rewrite using `[blkCols_gram, hW.yy, Matrix.submatrix_zero]`. Both sides reduce to the same expression. Establish `q4 : cT (σ : E →+* E) (blkCols h Xf) * J * blkCols h Xf = 0`. Rewrite using `[blkCols_gram, hW.xx, Matrix.submatrix_zero]`.
+
+Both sides reduce to the same expression. Establish `hαa : adMat F (cT (σ : E →+* E) (blkCols h Yf) * J) * adMat F (blkCols h Xf) = 1`. Rewrite using `[← adMat_mul', q1, adMat_one']`. Establish `hβb : adMat F (cT (σ : E →+* E) (blkCols h Xf) * J) * adMat F (blkCols h Yf) = 1`. Rewrite using `[← adMat_mul', q2, adMat_one']`.
+
+Establish `hαb : adMat F (cT (σ : E →+* E) (blkCols h Yf) * J) * adMat F (blkCols h Yf) = 0`. Rewrite using `[← adMat_mul', q3, adMat_zero']`. Establish `hβa : adMat F (cT (σ : E →+* E) (blkCols h Xf) * J) * adMat F (blkCols h Xf) = 0`. Rewrite using `[← adMat_mul', q4, adMat_zero']`. Establish `hα : cT (sigR (AF F) σ) (adMat F (cT (σ : E →+* E) (blkCols h Yf) * J)) = adMat F J * adMat F (blkCols h Yf)`.
+
+Rewrite using `[cT_adMat, Formalism.UG.cT_mul, hcc, hJT, adMat_mul']`. Establish `hβ : cT (sigR (AF F) σ) (adMat F (cT (σ : E →+* E) (blkCols h Xf) * J)) = adMat F J * adMat F (blkCols h Xf)`. Rewrite using `[cT_adMat, Formalism.UG.cT_mul, hcc, hJT, adMat_mul']`. Establish `ha : cT (sigR (AF F) σ) (adMat F (blkCols h Xf)) * adMat F J = adMat F (cT (σ : E →+* E) (blkCols h Xf) * J)`. Rewrite using `[cT_adMat, ← adMat_mul']`.
+
+Establish `hb : cT (sigR (AF F) σ) (adMat F (blkCols h Yf)) * adMat F J = adMat F (cT (σ : E →+* E) (blkCols h Yf) * J)`. Rewrite using `[cT_adMat, ← adMat_mul']`. Set `M` to `embMat σ Φ (adMat F (blkCols h Xf)) (adMat F (blkCols h Yf)) (adMat F (cT (σ : E →+* E) (blkCols h Yf) * J)) (adMat F (cT (σ : E →+* E) (blkCols h Xf) * J))`. Establish `hMmul : ∀ g g', M (g * g') = M g * M g'` using `embMat_mul σ Φ hαa hβb hαb hβa`. Establish `hMone : M 1 = 1` using `embMat_one σ Φ`.
+
+Establish `hMu : ∀ g, cT (sigR (AF F) σ) (M g) * JR (AF F) J * M g = JR (AF F) J` using `embMat_unitary σ Φ hσ (adMat F J) hαa hβb hαb hβa hα hβ ha hb`. Set `U : GlobalTheory.CuspRep.GA E d → GL (Fin n) (AF F ⊗[F] E)` to `fun g => ⟨M g, M g⁻¹, by rw [← hMmul, mul_inv_cancel, hMone], by rw [← hMmul, inv_mul_cancel, hMone]⟩`. Set `ι : GlobalTheory.CuspRep.GA E d →* GAd σ J` to `{ toFun := fun g => (⟨U g, hMu g⟩ : HR (AF F) σ J) map_one' := Subtype.ext (Units.ext hMone) map_mul' := fun g g' => Subtype.ext (Units.ext (hMmul g g')) }`. Conclude with `⟨ι, Φ, j, hc1, hc2, hj, hΦ, fun g => rfl⟩`.
+-/
 theorem exists_blockEmb : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → ∀ (l d : ℕ) (h : l + d ≤ r), ∃ ι : GlobalTheory.CuspRep.GA E d →* GAd σ J, GlobalTheory.BlockForms.IsBlockEmb σ J Xf Yf h ι := by

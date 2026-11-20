@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.ChernNullField
 
+/- English proof (translation)
+Introduce `k _ X _ p σ D _ U hU B φ ε`. Establish `hcX : (ptsIn p σ U)ᶜ = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((U : X.Opens) : Set X)ᶜ}`. Use extensionality with `y`. Simplify using `[mem_ptsIn]`. Establish `hA : MeasurableSet (ptsIn p σ U)ᶜ` using `(isOpen_ptsIn U).measurableSet.compl`.
+
+Use `GlueCoverNull.glueMeas_null _ _ hA fun c => ?_` and prove the remaining obligations. Rewrite using `[hcX]`. Conclude with `GlobalTheory.T.volume_complexPoints_properClosed_chart_field k X p σ D _ U.isOpen.isClosed_compl (by simpa using hU) c`.
+-/
 theorem chernPart_compl_null : ∀ (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ), IsProjOver p → ∀ U : X.Opens, genericPoint X ∈ U → ∀ (B : LB X) (φ : Weight p σ B) (ε : ℤˣ), φ.chernPart D ε (ptsIn p σ U)ᶜ = 0 := by
   intro k _ X _ p σ D _ U hU B φ ε
   have hcX : (ptsIn p σ U)ᶜ =

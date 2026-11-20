@@ -19,6 +19,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.MapSingleAtE
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.UnitaryAdmissibleMatrixCoefficient
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.AssocFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _`. Conclude with `⟨⟨⟩⟩`.
+-/
 theorem _root_.GlobalTheory.T.column_twisted_args_second : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.Published.AutomorphicFormsFiniteGL → GlobalTheory.Published.JacquetShalikaRigidity → GlobalTheory.Published.CuspidalSpectrumGL → GlobalTheory.HeightCounting.CgCmp hL := by
   intro _ _ _ _ _ _ _
   exact ⟨⟨⟩⟩

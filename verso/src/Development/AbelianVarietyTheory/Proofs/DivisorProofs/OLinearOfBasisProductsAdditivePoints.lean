@@ -7,6 +7,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ D H Y AH _ _ actH u hu ιO ιL bO bL hb`. Establish `hcomp : ∀ (f : Y ⟶ AH) (b c : D.O), f ≫ actH.act (b + c) = (f ≫ actH.act b) * (f ≫ actH.act c)`. Introduce `f b c`. Rewrite using `[actH.add, MonObj.comp_mul]`. Establish `u0 : u 0 = 1`.
+
+Establish `h` using `hu 0 0`. Simplify using `only [add_zero] at h`. Use `congrArg (fun t => t * (u 0)⁻¹) h` as an intermediate fact. Simplify using `using this.symm`. Set `U : D.La →+ Additive (Y ⟶ AH)` to `{ toFun := fun x => Additive.ofMul (u x) map_zero' := by simp [u0] map_add' := fun x y => by simp [hu] }`.
+
+Establish `step1 : ∀ i (c : D.O), u (c • bL i) = u (bL i) ≫ actH.act c`. Introduce `i`. Set `F : D.O →+ Additive (Y ⟶ AH)` to `U.comp ((LinearMap.toSpanSingleton D.O D.La (bL i)).toAddMonoidHom)`. Set `G : D.O →+ Additive (Y ⟶ AH)` to `{ toFun := fun c => Additive.ofMul (u (bL i) ≫ actH.act c) map_zero' := by`. Establish `h` using `hcomp (u (bL i)) 0 0`.
+
+Simplify using `only [add_zero] at h`. Establish `: u (bL i) ≫ actH.act 0 = 1`. Use `congrArg (fun t => t * (u (bL i) ≫ actH.act 0)⁻¹) h` as an intermediate fact. Simplify using `using this.symm`. Simplify using `[this]`.
+
+Use the proof step `map_add' := fun b c => by simp [hcomp] }`. Establish `hFG : F.toIntLinearMap = G.toIntLinearMap` using `bO.ext fun j => by`. Simplify using `[F, G, U, hb]`. Introduce `c`. Use `congrArg (fun L => L c) hFG` as an intermediate fact.
+
+Simplify `this` using `[F, G, U]`. Introduce `c`. Set `F : D.La →+ Additive (Y ⟶ AH)` to `U.comp (DistribMulAction.toAddMonoidHom D.La c)`. Set `G : D.La →+ Additive (Y ⟶ AH)` to `{ toFun := fun x => Additive.ofMul (u x ≫ actH.act c) map_zero' := by haveI := actH.hom c`. Simplify using `[u0, MonObj.one_comp]`.
+
+Use the proof step `map_add' := fun x y => by haveI := actH.hom c`. Simplify using `[hu, MonObj.mul_comp] }`. Establish `hFG : F.toIntLinearMap = G.toIntLinearMap` using `bL.ext fun i => by`. Simplify using `[F, G, U, step1]`. Introduce `x`.
+
+Use `congrArg (fun L => L x) hFG` as an intermediate fact. Simplify `this` using `[F, G, U]`.
+-/
 theorem basisLin_oLinear : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (H : Scheme.{0}) (Y AH : Over H) [GrpObj AH] [IsCommMonObj AH] (actH : OActN D.O AH) (u : D.La → (Y ⟶ AH)), (∀ x y, u (x + y) = u x * u y) → ∀ (ιO ιL : Type) (bO : Module.Basis ιO ℤ D.O) (bL : Module.Basis ιL ℤ D.La), (∀ j i, u (bO j • bL i) = u (bL i) ≫ actH.act (bO j)) → ∀ (c : D.O) x, u (c • x) = u x ≫ actH.act c := by
   intro p _ D H Y AH _ _ actH u hu ιO ιL bO bL hb
 

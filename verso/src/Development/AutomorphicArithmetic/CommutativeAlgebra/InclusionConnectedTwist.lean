@@ -20,13 +20,26 @@ private def forget (N : ℕ) : (Vec D N).Hom (Rg D) where
   app _ _ x := x.1.1
   nat _ _ := rfl
 
+/- English proof (translation)
+Introduce `h` and use `h.1`.
+-/
 private theorem forget_rel (N : ℕ) : (forget D N).Rel := fun h => h.1
 
 variable {D}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem rel_iff {N : ℕ} {A : Type} [CommRing A] {x y : (Vec D N).obj A} :
     (Vec D N).rel x y ↔ x.1.1 = y.1.1 ∧ ∃ u : Aˣ, x.1.2 = fun j => (u : A) * y.1.2 j := Iff.rfl
 
+/- English proof (translation)
+Establish `key : ∀ a ∈ Ideal.span (Set.range w), u * a = u' * a`. Introduce `a ha`. Use `Submodule.span_induction ?_ ?_ ?_ ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `h j`.
+
+Simplify using the standard rewrite rules. Introduce `a b _ _ h1 h2`. Rewrite using `[mul_add, mul_add, h1, h2]`. Introduce `c a _ h1`. Simplify using `only [smul_eq_mul]`.
+
+Rewrite using `[mul_left_comm, h1, mul_left_comm]`. Simplify using `using key 1 (by rw [hw]; trivial)`.
+-/
 private theorem unit_unique {A : Type} [CommRing A] {N : ℕ} {w : Fin N → A} (hw : Ideal.span (Set.range w) = ⊤)
     {u u' : A} (h : ∀ j, u * w j = u' * w j) : u = u' := by
   have key : ∀ a ∈ Ideal.span (Set.range w), u * a = u' * a := by
@@ -42,6 +55,11 @@ private theorem unit_unique {A : Type} [CommRing A] {N : ℕ} {w : Fin N → A} 
       rw [mul_left_comm, h1, mul_left_comm]
   simpa using key 1 (by rw [hw]; trivial)
 
+/- English proof (translation)
+Use `Subtype.ext (Prod.ext h (Units.ext ?_))` and prove the remaining obligations. Use `unit_unique w.2 fun j => ?_` and prove the remaining obligations. Establish `h1` using `congrFun p.2 j`. Establish `h2` using `congrFun q.2 j`. Rewrite `h1` using `[h]`.
+
+Simplify using `using h1.symm.trans h2`.
+-/
 private theorem um_hom_ext {A : Type} [CommRing A] {N : ℕ} {v w : Um N A} (p q : v ⟶ w) (h : p.1.1 = q.1.1) : p = q := by
   refine Subtype.ext (Prod.ext h (Units.ext ?_))
   refine unit_unique w.2 fun j => ?_
@@ -66,11 +84,17 @@ private def tFun {n N : ℕ} {A : Type} [CommRing A] (x : Fin (n + 1) → (Vec D
   map_id i := um_hom_ext _ _ rfl
   map_comp _ _ := um_hom_ext _ _ (mul_one _).symm
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq (um_hom_ext _ _ (map_one (Matrix.GeneralLinearGroup.map f)).symm)`.
+-/
 private theorem tFun_base {n N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (x : Fin (n + 1) → (Vec D N).obj A) (hx : ∀ i j, (Vec D N).rel (x i) (x j)) :
     tFun (fun i => (Vec D N).map f (x i)) (fun i j => (Vec D N).map_rel f (hx i j)) = tFun x hx ⋙ Um.map N f :=
   CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq (um_hom_ext _ _ (map_one (Matrix.GeneralLinearGroup.map f)).symm)
 
+/- English proof (translation)
+The claim follows from `CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq (um_hom_ext _ _ rfl)`.
+-/
 private theorem tFun_pre {m n N : ℕ} {A : Type} [CommRing A] (g : Fin (m + 1) →o Fin (n + 1))
     (x : Fin (n + 1) → (Vec D N).obj A) (hx : ∀ i j, (Vec D N).rel (x i) (x j)) :
     tFun (fun i => x (g i)) (fun i j => hx _ _) = g.monotone.functor ⋙ tFun x hx :=
@@ -102,6 +126,9 @@ private def triv (E : Spc) (N : ℕ) : E ⟶ ofCat (glCat N) where
     ext U x
     rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem singleObj_map_eq {C : Type} [Category C] {M : Type} [Monoid M] {F G : C ⥤ SingleObj M} (h : F = G)
     {i j : C} (p : i ⟶ j) : (show M from F.map p) = (show M from G.map p) := by
   subst h
@@ -109,6 +136,21 @@ private theorem singleObj_map_eq {C : Type} [Category C] {M : Type} [Monoid M] {
 
 variable (D) in
 
+/- English proof (translation)
+Use `IsPullback.of_forall_isPullback_app fun n => IsPullback.of_forall_isPullback_app fun U => (Types.isPullback_iff _ _ _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `(CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq rfl : (trivF _ N _ : Fin (n.unop.len + 1) ⥤ SingleObj (GL (Fin N) Γ(U.unop, ⊤))) = tFun x.1 x.2 ⋙ Um.toGL N _)` and prove the remaining obligations. Introduce and unpack `x y ⟨h1, h2⟩`. Use `Subtype.ext (funext fun i => Subtype.ext (Prod.ext ?_ ?_))` and prove the remaining obligations.
+
+Conclude with `congrFun (congrArg Subtype.val h1) i`. Establish `h3 : tFun x.1 x.2 = tFun y.1 y.2` using `h2`. Conclude with `congrArg Subtype.val (congrArg (fun F => F.obj i) h3)`. Introduce `r F h`. Establish `h' : (trivF _ N _ : Fin (n.unop.len + 1) ⥤ SingleObj (GL (Fin N) Γ(U.unop, ⊤))) = (show Fin (n.unop.len + 1) ⥤ Um N Γ(U.unop, ⊤) from F) ⋙ Um.toGL N _` using `h`.
+
+Take `⟨F', rfl⟩ : ∃ F' : Fin (n.unop.len + 1) ⥤ Um N Γ(U.unop, ⊤), F' = F` from `⟨F, rfl⟩`. Establish `ha : ∀ {i j : Fin (n.unop.len + 1)} (p : i ⟶ j), (F'.map p).1.1 = 1` using `fun p => (singleObj_map_eq h' p).symm`. Establish `hle : ∀ {i j : Fin (n.unop.len + 1)}, i ≤ j → ∃ u : Γ(U.unop, ⊤)ˣ, (F'.obj i).1 = fun k => (u : Γ(U.unop, ⊤)) * (F'.obj j).1 k`. Introduce `i j hij`. Use `⟨(F'.map (homOfLE hij)).1.2, funext fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrFun (F'.map (homOfLE hij)).2 k`. Rewrite `h2` using `[ha]`. Simplify using `using h2`. Set `x : Fin (n.unop.len + 1) → (Vec D N).obj Γ(U.unop, ⊤)` to `fun i => ⟨((r.1 i : D →+* Γ(U.unop, ⊤)), (F'.obj i).1), (F'.obj i).2⟩`. Establish `hx : ∀ i j, (Vec D N).rel (x i) (x j)`.
+
+Introduce `i j`. Use `rel_iff.2 ⟨r.2 i j, ?_⟩` and prove the remaining obligations. Break down `le_total i j with hij | hij` into its components or cases. Conclude with `hle hij`. Take `⟨u, hu⟩` from `hle hij`.
+
+Use `⟨u⁻¹, funext fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F'.obj i).1 k = ((u⁻¹ : Γ(U.unop, ⊤)ˣ) : Γ(U.unop, ⊤)) * (F'.obj j).1 k`. Rewrite using `[hu]`. Simplify using the standard rewrite rules. Use `⟨⟨x, hx⟩, rfl, ?_⟩` and prove the remaining obligations.
+
+Conclude with `CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq (um_hom_ext _ _ (ha p).symm)`.
+-/
 private theorem sq (N : ℕ) :
     IsPullback (CN.map (forget D N) (forget_rel D N)) (tMap D N) (triv (CN (Rg D)) N) (PGL.pr N) := by
   refine IsPullback.of_forall_isPullback_app fun n => IsPullback.of_forall_isPullback_app fun U =>
@@ -147,20 +189,34 @@ private theorem sq (N : ℕ) :
     refine ⟨⟨x, hx⟩, rfl, ?_⟩
     exact CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq (um_hom_ext _ _ (ha p).symm)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pr_incl (d : ℕ) : CN.map (incl D d) (incl_rel D d) ≫ CN.map (forget D (d + 1)) (forget_rel D (d + 1)) =
     CN.map (forget D d) (forget_rel D d) := rfl
 
+/- English proof (translation)
+The claim follows from `eqv_section F e.hom e.inv e.hom_inv_id fun n => by refine (Function.bijective_iff_has_inverse).2 ⟨pull R e.hom F n, fun x => ?_, fun x => ?_⟩ · rw [← pull_comp, e.hom_inv_id, pull_id] · rw [← pull_comp, e.inv_hom_id, pull_id]`.
+-/
 private theorem eqv_iso {R : Type} [CommRing R] (F : Shv R) {E E' : Spc} (e : E ≅ E') : Eqv R e.hom F :=
   eqv_section F e.hom e.inv e.hom_inv_id fun n => by
     refine (Function.bijective_iff_has_inverse).2 ⟨pull R e.hom F n, fun x => ?_, fun x => ?_⟩
     · rw [← pull_comp, e.hom_inv_id, pull_id]
     · rw [← pull_comp, e.inv_hom_id, pull_id]
 
+/- English proof (translation)
+Introduce and unpack `U ⟨x⟩`. Establish `h1` using `hq.map (show D →+* Γ(U, ⊤) from x.1 0)`. Rewrite `h1` using `[map_natCast]`. Then use the resulting hypothesis.
+-/
 private theorem invertible_nerve (q : ℕ) (hq : IsUnit (q : D)) : Inv q (CN (Rg D)) := by
   rintro U ⟨x⟩
   have h1 := hq.map (show D →+* Γ(U, ⊤) from x.1 0)
   rwa [map_natCast] at h1
 
+/- English proof (translation)
+Use extensionality with `n U x`. Use `(CategoryTheory.Functor.hext (fun _ => rfl) fun i j p => heq_of_eq ?_ : (tFun (fun i => (incl D d).app _ (x.1 i)) (fun i j => incl_rel D d (x.2 i j)) ⋙ Um.toLine (d + 1) _ : Fin (n.unop.len + 1) ⥤ SingleObj (GL (Fin 1) Γ(U.unop, ⊤))) = tFun x.1 x.2 ⋙ Um.toLine d _)` and prove the remaining obligations. Use `congrArg (Matrix.GeneralLinearGroup.scalar (Fin 1)) (Units.ext (unit_unique (x.1 j).2 fun k => ?_))` and prove the remaining obligations. Establish `h1` using `congrFun (rel_iff.1 (incl_rel D d (x.2 i j))).2.choose_spec k.castSucc`. Establish `h2` using `congrFun (rel_iff.1 (x.2 i j)).2.choose_spec k`.
+
+Establish `e : ∀ y : (Vec D d).obj Γ(U.unop, ⊤), ((incl D d).app _ y).1.2 k.castSucc = y.1.2 k` using `fun y => by`. Express the relevant statement in the definitionally equal form `Fin.snoc (α := fun _ => Γ(U.unop, ⊤)) y.1.2 0 k.castSucc = _`. Simplify using the standard rewrite rules. Simplify using `only [e] at h1`. Conclude with `h1.symm.trans h2`.
+-/
 private theorem line_incl (d : ℕ) : CN.map (incl D d) (incl_rel D d) ≫ tMap D (d + 1) ≫ PGL.line (d + 1) =
     tMap D d ≫ PGL.line d := by
   ext n U x
@@ -179,6 +235,13 @@ private theorem line_incl (d : ℕ) : CN.map (incl D d) (incl_rel D d) ≫ tMap 
 end UpperTheory.SimplicialRelationHom
 
 open UpperTheory.SimplicialRelationHom in
+/- English proof (translation)
+Introduce `hP a1 a5 a7 a9 a10 d1 q _ i d D _ hq`. Set `e0` to `(sq D d).isoPullback`. Set `e1` to `(sq D (d + 1)).isoPullback`. Establish `hs` using `hP a1 a5 a7 a9 a10 d1 q i (E := CN (Rg D)) (N := d) (triv _ d) (triv _ (d + 1)) (invertible_nerve q hq) (e0.inv ≫ CN.map (incl D d) (incl_rel D d) ≫ e1.hom) ?_ ?_`. Use `(conn_sq _ _ _ _ e0.hom e1.hom ?_ (eqv_iso _ e0) (eqv_iso _ e1)).2 hs` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Simplify using `only [Category.assoc]`. Rewrite using `[(sq D (d + 1)).isoPullback_hom_fst, pr_incl]`. Conclude with `(sq D d).isoPullback_inv_fst`. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[IsPullback.isoPullback_hom_snd_assoc, line_incl]`. Rewrite using `[← Category.assoc, (sq D d).isoPullback_inv_snd]`.
+-/
 theorem UpperTheory.inclusion_connected_twist :
     LeafProj → A1 → A5 → A7 → A9 → A10 → D1 → ∀ (q : ℕ) [NeZero q] (i : ℤ) (d : ℕ) (D : Type) [CommRing D], IsUnit (q : D) → Conn _ (tw q i) (2 * d) (CN.map (incl D d) (incl_rel D d)) := by
   intro hP a1 a5 a7 a9 a10 d1 q _ i d D _ hq

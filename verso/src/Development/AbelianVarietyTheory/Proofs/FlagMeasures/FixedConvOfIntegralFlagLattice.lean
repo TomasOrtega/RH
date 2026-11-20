@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.FixConvRow
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalGenerators.main`. Consider the case `exact _root_.GlobalTheory.LocalGenerators.main`. Consider the case `(apply _root_.GlobalTheory.LocalGenerators.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalGenerators.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LocalGenerators.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalGenerators.main ..)`.
+-/
 theorem loc_gen {E : Type} [Field E] [NumberField E] (P : IsDedekindDomain.HeightOneSpectrum (𝓞 E))
     (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) :
     ∃ d ∈ J, d ≠ 0 ∧ ∃ s, s ∉ P.asIdeal ∧ ∀ y ∈ J, ∃ o : 𝓞 E, s * y = o * d := by
@@ -32,12 +37,24 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Introduce and unpack `x ⟨s, hs, hx⟩`. Take `⟨t, ht, htx⟩` from `h hx`. Conclude with `⟨t * s, M.mul_mem ht hs, by rw [mul_smul]; exact htx⟩`.
+-/
 theorem locS_le_of_le {V : Type} [AddCommGroup V] [Module (𝓞 E) V] (M : Submonoid (𝓞 E)) {A B : Submodule (𝓞 E) V}
     (h : A ≤ Formalism.HermitianLatticesTheory.locS M B) : Formalism.HermitianLatticesTheory.locS M A ≤ Formalism.HermitianLatticesTheory.locS M B := by
   rintro x ⟨s, hs, hx⟩
   obtain ⟨t, ht, htx⟩ := h hx
   exact ⟨t * s, M.mul_mem ht hs, by rw [mul_smul]; exact htx⟩
 
+/- English proof (translation)
+Establish `key : ∀ (s : 𝓞 E) (x : E) (v : V), s • (x • v) = (algebraMap (𝓞 E) E s * x) • v`. Introduce `s x v`. Rewrite using `[← smul_assoc, Algebra.smul_def]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `locS_le_of_le` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`. Take `⟨s, hs, o, ho⟩` from `h2 a x hx`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ho, ← key]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Apply `locS_le_of_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨s, hs, hsc⟩` from `h1 a`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `Submodule.subset_span ⟨a, _, hsc, rfl⟩`.
+-/
 theorem locS_span_eq {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V]
     (M : Submonoid (𝓞 E)) {r : ℕ} (e : Fin r → V) (I : Fin r → Set E) (c : Fin r → E)
     (h1 : ∀ a, ∃ s ∈ M, algebraMap (𝓞 E) E s * c a ∈ I a)
@@ -63,6 +80,15 @@ theorem locS_span_eq {V : Type} [AddCommGroup V] [Module E V] [Module (𝓞 E) V
     rw [key]
     exact Submodule.subset_span ⟨a, _, hsc, rfl⟩
 
+/- English proof (translation)
+Take `⟨d, hdJ, hd0, s, hsP, hs⟩` from `loc_gen P J hJ`. Establish `hJ0 : (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hJ`. Establish `hd0' : algebraMap (𝓞 E) E d ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)]` and apply the resulting hypothesis. Use `⟨(algebraMap (𝓞 E) E d)⁻¹, inv_ne_zero hd0', ⟨s, hsP, ?_⟩, fun x hx => ⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[FractionalIdeal.mem_inv_iff hJ0]`. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`. Take `⟨o, ho⟩` from `hs y' hy'`. Rewrite using `[FractionalIdeal.mem_one_iff _]`.
+
+Use `⟨o, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E y' = algebraMap (𝓞 E) E o * algebraMap (𝓞 E) E d`. Rewrite using `[← map_mul, ← map_mul, ho]`. Clear the denominators using the available nonvanishing facts. Conclude with `e.symm`.
+
+Rewrite `hx` using `[FractionalIdeal.mem_inv_iff hJ0]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 (hx _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨d, hdJ, rfl⟩))`. Use `⟨o, ?_⟩` and prove the remaining obligations. Rewrite using `[ho, map_one, one_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem inv_gen (P : HeightOneSpectrum (𝓞 E)) (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) :
     ∃ c : E, c ≠ 0 ∧ (∃ s ∈ P.asIdeal.primeCompl,
       algebraMap (𝓞 E) E s * c ∈ ((J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)⁻¹)) ∧
@@ -89,6 +115,11 @@ theorem inv_gen (P : HeightOneSpectrum (𝓞 E)) (J : Ideal (𝓞 E)) (hJ : J �
     rw [ho, map_one, one_mul]
     field_simp
 
+/- English proof (translation)
+Establish `hJ0 : (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 hJ`. Use `⟨⟨1, P.asIdeal.primeCompl.one_mem, ?_⟩, fun x hx => ⟨t, htP, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_inv_iff hJ0]`. Introduce `y hy`. Take `⟨y', -, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hy`.
+
+Rewrite using `[FractionalIdeal.mem_one_iff _]`. Conclude with `⟨y', by simp⟩`. Rewrite `hx` using `[FractionalIdeal.mem_inv_iff hJ0]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 (hx _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨t, htJ, rfl⟩))`. Conclude with `⟨o, by rw [ho, mul_one, mul_comm]⟩`.
+-/
 theorem inv_one (P : HeightOneSpectrum (𝓞 E)) (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) (t : 𝓞 E) (htJ : t ∈ J)
     (htP : t ∉ P.asIdeal) :
     (∃ s ∈ P.asIdeal.primeCompl,
@@ -114,6 +145,9 @@ namespace GlobalTheory.FixConvRow
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Rewrite using `[FractionalIdeal.coeIdeal_pow, ← Nat.cast_sub a.2.le, zpow_neg, zpow_natCast]`. Both sides reduce to the same expression.
+-/
 theorem ddS_zpow_eq (D : D7) (a : Fin D.R.rS) :
     (ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) =
       ((↑((Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))) ^
@@ -121,6 +155,13 @@ theorem ddS_zpow_eq (D : D7) (a : Fin D.R.rS) :
   rw [FractionalIdeal.coeIdeal_pow, ← Nat.cast_sub a.2.le, zpow_neg, zpow_natCast]
   rfl
 
+/- English proof (translation)
+Introduce `hNP`. Rewrite `hg` using `[gS, Nat.cast_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal := by`. Break down `P.isPrime.mem_or_mem hg with h | h` into its components or cases. Conclude with `⟨0, h⟩`.
+
+Conclude with `⟨1, h⟩`. Establish `hc` using `Nat.isCoprime_iff_coprime.2 (GlobalTheory.FrameIntegral.coprime_gi (D := D) i)`. Take `⟨u, v, huv⟩` from `hc.map (Int.castRingHom (𝓞 D.host.E))`. Apply `P.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← huv]`.
+
+Simplify using `only [eq_intCast, Int.cast_natCast]`. Conclude with `P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hNP) (P.asIdeal.mul_mem_left _ hi)`.
+-/
 theorem absNorm_different_not_mem (D : D7) (P : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E))
     (hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) :
     ((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal := by
@@ -137,6 +178,19 @@ theorem absNorm_different_not_mem (D : D7) (P : IsDedekindDomain.HeightOneSpectr
   simp only [eq_intCast, Int.cast_natCast]
   exact P.asIdeal.add_mem (P.asIdeal.mul_mem_left _ hNP) (P.asIdeal.mul_mem_left _ hi)
 
+/- English proof (translation)
+Introduce `D T F Λ hX hprim`. Use `⟨fun P => ?_, hprim⟩` and prove the remaining obligations. Establish `hJd0 : Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ≠ ⊥` using `Ideal.map_ne_bot_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 D.host.F))`. Establish `hJm : ∀ m : ℕ, Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F)) ^ m ≠ ⊥` using `fun m => pow_ne_zero m hJd0`. Establish `goal : ∀ c : Fin D.R.rS → D.host.E, (∀ a : Fin D.R.rS, ∃ s ∈ P.asIdeal.primeCompl, algebraMap (𝓞 D.host.E) D.host.E s * c a ∈ (ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) → (∀ a : Fin D.R.rS, ∀ x ∈ (ddS D ^ (-((D.R.rS : ℤ) - (a …` using `P.isPrime; Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (XLam Λ (lf D F)) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range fun a => c a • (lf D F).fl.e a))) := by`.
+
+Introduce `c h1 h2`. Rewrite using `[hX]`. Conclude with `locS_span_eq _ F.e (fun a => ((ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ))) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Set D.host.E)) c h1 h2`. Distinguish the cases in `hg : ((gS D : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Establish `hN : ((Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) : ℕ) : 𝓞 D.host.E) ∈ Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))`.
+
+Establish `h` using `Ideal.mem_map_of_mem (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (Ideal.absNorm_mem (differentIdeal ℤ (𝓞 D.host.F)))`. Simplify using `using h`. Establish `hNP` using `absNorm_different_not_mem D P hg`. Establish `hone` using `fun a : Fin D.R.rS => inv_one P _ (hJm (D.R.rS - (a : ℕ))) _ (Ideal.pow_mem_pow hN _) (fun h => hNP (P.isPrime.mem_of_pow_mem _ h))`. Use `⟨fun _ => 1, fun _ => one_ne_zero, fun _ _ => rfl, goal _ ?_ ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Rewrite using `[ddS_zpow_eq]`. Conclude with `(hone a).1`. Introduce `a`. Rewrite using `[ddS_zpow_eq]`.
+
+Conclude with `(hone a).2`. Use `choose c hc0 hc1 hc2 using fun a : Fin D.R.rS => inv_gen P _ (hJm (D.R.rS - (a : ℕ)))`. Use `⟨c, hc0, fun h => absurd h hg, goal c ?_ ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[ddS_zpow_eq]`.
+
+Conclude with `hc1 a`. Introduce `a`. Rewrite using `[ddS_zpow_eq]`. Conclude with `hc2 a`.
+-/
 theorem isFixedConv_of_XLam_eq : ∀ (D : D7) (T : D.host.E) (F : FlagG (VS D) D.R.rS T) (Λ : LV D),
     XLam Λ (lf D F) = XS D F → (∀ c : D.host.E, c • F.z ∈ Lsub Λ (lf D F) → ∃ o : 𝓞 D.host.E, (o : D.host.E) = c) →
     IsFixedConv Λ (gS D) (lf D F) := by

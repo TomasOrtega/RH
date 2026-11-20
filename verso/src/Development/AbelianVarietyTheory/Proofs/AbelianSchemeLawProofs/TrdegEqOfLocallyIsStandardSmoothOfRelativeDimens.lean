@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨s, hs, hP⟩` from `h`. Take `⟨t, hts, ht⟩ : ∃ t ∈ s, t ≠ 0` from `by by_contra! hz`. Establish `hbot : Ideal.span s = ⊥` using `Ideal.span_eq_bot.mpr hz`. Conclude with `top_ne_bot (hs.symm.trans hbot)`. Establish `hPt` using `hP t hts`.
+
+Rewrite `hPt` using `[← IsScalarTower.algebraMap_eq, RingHom.isStandardSmoothOfRelativeDimension_algebraMap]`. Establish `hle : Submonoid.powers t ≤ nonZeroDivisors B` using `powers_le_nonZeroDivisors_of_noZeroDivisors ht`. Establish `: IsDomain (Localization.Away t)` using `IsLocalization.isDomain_localization hle`. Establish `: Algebra.IsStandardSmooth K (Localization.Away t)` using `hPt.isStandardSmooth`. Establish `hdim : ringKrullDim (Localization.Away t) = g` using `AffinePoints.ringKrullDim_eq_of_isStandardSmooth (K := K)`.
+
+Take `⟨d, hd1, hd2⟩` from `exists_ringKrullDim_eq_and_trdeg_eq K (Localization.Away t)`. Establish `hdg : d = g`. Rewrite `hd1` using `[hdim]`. Conclude with `hd1.symm` after adjusting the coercions. Establish `: FaithfulSMul B (Localization.Away t)` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (IsLocalization.injective _ hle)`.
+
+Establish `: Algebra.IsAlgebraic B (Localization.Away t)` using `IsLocalization.isAlgebraic _ (Submonoid.powers t)`. Establish `: FaithfulSMul K B` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap K B).injective`. Rewrite using `[← trdeg_eq_of_isAlgebraic_top K B (Localization.Away t), hd2, hdg]`.
+-/
 theorem trdeg_eq_of_locally_isStandardSmoothOfRelativeDimension {K B : Type} [Field K]
     [CommRing B] [IsDomain B] [Algebra K B] {g : ℕ}
     (h : RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension g) (algebraMap K B)) :
@@ -37,6 +46,11 @@ theorem trdeg_eq_of_locally_isStandardSmoothOfRelativeDimension {K B : Type} [Fi
     (faithfulSMul_iff_algebraMap_injective _ _).mpr (algebraMap K B).injective
   rw [← trdeg_eq_of_isAlgebraic_top K B (Localization.Away t), hd2, hdg]
 
+/- English proof (translation)
+Introduce `K _ X _ f g hf B _ _ _ j hj hjf`. Establish `: IsIntegral (Spec (CommRingCat.of B))` using `isIntegral_of_isOpenImmersion j`. Establish `: IsDomain B` using `(affine_isIntegral_iff (CommRingCat.of B)).mp this`. Establish `h0 : SmoothOfRelativeDimension (0 + g) (j ≫ f)` using `inferInstance`. Rewrite `h0` using `[Nat.zero_add, hjf]`.
+
+Establish `hloc` using `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension g)).mp h0`. Conclude with `trdeg_eq_of_locally_isStandardSmoothOfRelativeDimension hloc`.
+-/
 theorem trdeg_eq_of_smoothOfRelativeDimension :
     ∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) (g : ℕ), SmoothOfRelativeDimension g f → ∀ (B : Type) [CommRing B] [Nontrivial B] [Algebra K B] (j : Spec (CommRingCat.of B) ⟶ X), IsOpenImmersion j → j ≫ f = Spec.map (CommRingCat.ofHom (algebraMap K B)) → Algebra.trdeg K B = g := by
   intro K _ X _ f g hf B _ _ _ j hj hjf

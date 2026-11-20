@@ -14,6 +14,21 @@ noncomputable section
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `C cD ch p R H a b M c u0 _ hV hF hC hW`. Establish `hcl : p.D.host.cls = H.cls` using `hF.cls_eq`. Take `⟨hR, hTT, -, hq, hd, -, -, -, -, -, hh, -, -⟩` from `hF`. Substitute `hR` using the available equality. Establish `hTT' : p.D.host.TT = H.TT` using `Finset.image_injective (Formalism.HC.Frame.A.val_injective _) hTT`.
+
+Establish `hh' : ∀ l, G.hP p.D l = hPH H l` using `fun l => Formalism.HC.Frame.A.val_injective _ (hh l)`. Take `⟨a', ha, b', hb, hW⟩` from `hW`. Establish `ha'` using `Fintype.mem_piFinset.1 ha`. Establish `hb'` using `Fintype.mem_piFinset.1 hb`. Establish `hS : p.L.Sc = (p.D.R.k : ℝ) * (4 * (Delv p.L.sc cD : ℝ))`.
+
+Rewrite using `[p.L.Sc_eq, hV.Del_eq]`. Use `push_cast`. Both sides reduce to the same expression. Use `⟨a', b', fun t ht => ?_, fun t ht => ?_, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[← hTT']`.
+
+Establish `h1` using `ha' t`. Establish `h2` using `hb' t`. Simplify using `only [ht, if_false, Finset.mem_singleton] at h1 h2`. Conclude with `⟨h1, h2⟩`. Rewrite `ht` using `[← hTT']`.
+
+Establish `h1` using `ha' t`. Establish `h2` using `hb' t`. Simplify using `only [ht, if_true, G.winA, G.winB, Finset.mem_Icc, Int.ceil_le, Int.le_floor, G.Nstar] at h1 h2`. Conclude with `⟨h1, h2⟩`. Establish `key : ∀ (q d : ℕ) (cl : ℕ → PrimeClass) (TT : Finset (p.D.R.A)) (Sc eta : ℝ) (hf : ℕ → p.D.R.A), p.D.host.q = q → p.D.host.d = d → p.D.host.cls = cl → p.D.host.TT = TT → p.L.Sc = Sc → p.L.etaSz = eta → (∀ l, G.hP p.D l = hf l) → (let B : Arith.Base` using `{ R := p.D.R, sc := p.L.sc, q := q, d := d, cls := cl, TT := TT, Sc := Sc, eta := eta } open Classical in ∑ l ∈ (Finset.range ⌈p.L.sc.X'⌉₊).filter (fun l => Arith.Loc.Cand B C.GK (hf l) l), Real.log l / l * (2 * (if p.L.sc.x ^ (-p.L.sc.eps) < Arith.Loc.Sig B (Arith.ins B C.GK 1) …`.
+
+Introduce `q d cl TT Sc eta hf e1 e2 e0 e3 e4 e5 e6`. Take `rfl : G.hP p.D = hf` from `funext e6`. Substitute `e1 e2 e0 e3 e4 e5` using the available equality. Unfold `Formalism.MainNotions.AuxBlock8.WReq Formalism.MainNotions.AuxBlock8.cands at hW`. Simplify using `only [sig_eq_loc p.ta.Gx C.GK p.xa.ex.kapI_def hC.1] at hW`.
+
+Conclude with `hW`. Conclude with `key _ _ _ _ _ _ _ hq hd hcl hTT' hS hV.eta_eq hh'`.
+-/
 theorem weightWindowRequirement_host_of_point : ∀ (C : FC) (cD ch : ℝ) (p : Pt C) (R : Ranks) (H : Host R) (a b : R.A → ℤ) (M : ℕ) (c : Fin M → Fin (R.k - 2) → Bool) (u0 : ℕ), Std C → Val C cD ch p.L → p.From H a b c u0 → CanonInst p.ta.Gx → Formalism.MainNotions.AuxBlock8.WeightVectorExists p.D p.L p.ta.Gx C.GK → ∃ a' b' : R.A → ℤ, (∀ t, t ∉ H.TT → a' t = 0 ∧ b' t = 0) ∧ WinOK p.L.sc C.GK H a' b' ∧ WOK p.L.sc cD ch C.GK H a' b' := by
   intro C cD ch p R H a b M c u0 _ hV hF hC hW
   have hcl : p.D.host.cls = H.cls := hF.cls_eq

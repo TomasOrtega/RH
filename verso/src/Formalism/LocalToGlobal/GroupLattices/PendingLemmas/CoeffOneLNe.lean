@@ -9,8 +9,20 @@ open MvPowerSeries Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.G
 
 variable {p : ℕ} [Fact p.Prime] (g : G1 p)
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (witt_fraction_to_Cp_algebraMap p)`.
+-/
 theorem wToC_eq : (k0ToC p).comp (algebraMap (WW p) (K0 p)) = wToC p := RingHom.ext (witt_fraction_to_Cp_algebraMap p)
 
+/- English proof (translation)
+Introduce `h`. Establish `hE : PowerSeries.HasSubst g.ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `hd : (PowerSeries.X : PowerSeries ℂ_[p]) ^ 2 ∣ g.l`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`.
+
+Use `interval_cases m`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `cc_l g`. Conclude with `h`. Take `⟨m, hm⟩` from `hd`.
+
+Take `⟨e', he'⟩` from `PowerSeries.X_dvd_iff.2 hex`. Establish `h1 : PowerSeries.subst g.ex g.l = (PowerSeries.X : PowerSeries ℂ_[p]) ^ 2 * (e' ^ 2 * PowerSeries.subst g.ex m)`. Rewrite using `[hm, PowerSeries.subst_mul hE, PowerSeries.subst_pow hE, PowerSeries.subst_X hE]`. Use `nth_rewrite 1 [he']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[hinv]`. Establish `h2` using `congrArg (PowerSeries.coeff 1) h1`. Rewrite `h2` using `[PowerSeries.coeff_one_X, PowerSeries.coeff_X_pow_mul']`. Simplify using `at h2`.
+-/
 theorem coeff_one_l_ne (hex : PowerSeries.constantCoeff g.ex = 0)
     (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X) : PowerSeries.coeff 1 g.l ≠ 0 := by
   intro h
@@ -33,6 +45,11 @@ theorem coeff_one_l_ne (hex : PowerSeries.constantCoeff g.ex = 0)
   rw [PowerSeries.coeff_one_X, PowerSeries.coeff_X_pow_mul'] at h2
   simp at h2
 
+/- English proof (translation)
+Establish `hE : PowerSeries.HasSubst g.ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `hL : PowerSeries.HasSubst g.l` using `PowerSeries.HasSubst.of_constantCoeff_zero' (cc_l g)`. Establish `hu : IsUnit (PowerSeries.coeff 1 g.l)` using `(coeff_one_l_ne g hex hinv).isUnit`. Establish `hQ : PowerSeries.subst g.l (g.l.substInvOfIsUnit hu) = PowerSeries.X` using `PowerSeries.subst_substInvOfIsUnit_left g.l (cc_l g) hu`. Establish `h1 : g.ex = g.l.substInvOfIsUnit hu`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Conclude with `hQ`.
+-/
 theorem ex_l (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X) :
     PowerSeries.subst g.l g.ex = PowerSeries.X := by
   have hE : PowerSeries.HasSubst g.ex := PowerSeries.HasSubst.of_constantCoeff_zero' hex
@@ -50,6 +67,9 @@ theorem ex_l (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subs
   rw [h1]
   exact hQ
 
+/- English proof (translation)
+Unfold `G1.lg G1.pt`. Rewrite using `[← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' (cc_l g)) (PowerSeries.HasSubst.of_constantCoeff_zero ha), ex_l g hex hinv, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero ha)]`.
+-/
 theorem pt_lg (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X)
     {σ : Type} {a : MvPowerSeries σ ℂ_[p]} (ha : constantCoeff a = 0) : g.pt (g.lg a) = a := by
   unfold G1.lg G1.pt
@@ -68,14 +88,26 @@ def epOf (h : LTIso g) : (WW p)ˣ := h.choose
 
 def thOf (h : LTIso g) : PowerSeries (WW p) := h.choose_spec.choose
 
+/- English proof (translation)
+The claim follows from `h.choose_spec.choose_spec.1`.
+-/
 theorem thOf_zero (h : LTIso g) : PowerSeries.constantCoeff (thOf h) = 0 := h.choose_spec.choose_spec.1
 
+/- English proof (translation)
+The claim follows from `h.choose_spec.choose_spec.2.1`.
+-/
 theorem thOf_unit (h : LTIso g) : IsUnit (PowerSeries.coeff 1 (thOf h)) := h.choose_spec.choose_spec.2.1
 
+/- English proof (translation)
+The claim follows from `h.choose_spec.choose_spec.2.2`.
+-/
 theorem thOf_log (h : LTIso g) :
     PowerSeries.subst (PowerSeries.map (wToC p) (thOf h)) (PowerSeries.map (k0ToC p) (Formalism.MainNotions.FormalGroupSystem.logF p)) =
       PowerSeries.C (wToC p (epOf h : WW p)) * g.l := h.choose_spec.choose_spec.2.2
 
+/- English proof (translation)
+The claim follows from `(u.isUnit.map (wToC p)).ne_zero`.
+-/
 theorem wToC_unit_ne (u : (WW p)ˣ) : wToC p (u : WW p) ≠ 0 := (u.isUnit.map (wToC p)).ne_zero
 
 variable (g)
@@ -83,6 +115,13 @@ variable (g)
 def beC (ep : ℂ_[p]) : MvPowerSeries (Fin 2) ℂ_[p] :=
   g.be (g.pt (C ep⁻¹ * X (0 : Fin 2))) (g.pt (C ep⁻¹ * X (1 : Fin 2)))
 
+/- English proof (translation)
+Establish `hT : HasSubst (![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] : Fin 2 → MvPowerSeries (Fin 2) ℂ_[p])` using `hs2 (by rw [map_mul, cc_lg g (by simp), mul_zero]) (by rw [map_mul, cc_lg g (by simp), mul_zero])`. Establish `h0 : ∀ i : Fin 2, constantCoeff (C ep⁻¹ * X i : MvPowerSeries (Fin 2) ℂ_[p]) = 0`. Introduce `i`. Rewrite using `[map_mul, constantCoeff_X, mul_zero]`. Establish `hc : ∀ a : MvPowerSeries (Fin 2) ℂ_[p], C ep⁻¹ * (C ep * a) = a`.
+
+Introduce `a`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hep, map_one, one_mul]`. Unfold `beC`. Rewrite using `[be_subst g hex hT (cc_pt g hex (h0 0)) (cc_pt g hex (h0 1)), pt_subst g hT (h0 0), pt_subst g hT (h0 1), subst_mul hT, subst_mul hT, subst_C, subst_X hT, subst_X hT]`. Use `show g.be (g.pt (C ep⁻¹ * (C ep * g.lg (X (0 : Fin 2))))) (g.pt (C ep⁻¹ * (C ep * g.lg (X (1 : Fin 2))))) = _`.
+
+Rewrite using `[hc, hc, pt_lg g hex hinv (by simp), pt_lg g hex hinv (by simp)]`.
+-/
 theorem beC_tie (hex : PowerSeries.constantCoeff g.ex = 0) (hinv : PowerSeries.subst g.ex g.l = PowerSeries.X)
     {ep : ℂ_[p]} (hep : ep ≠ 0) :
     subst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] (beC g ep) =
@@ -109,11 +148,17 @@ def beOf (ep : ℂ_[p]) : MvPowerSeries (Fin 2) (K0 p) :=
 
 variable {g}
 
+/- English proof (translation)
+Unfold `beOf`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem map_beOf {ep : ℂ_[p]} (h : BeRat g ep) : map (k0ToC p) (beOf g ep) = beC g ep := by
   unfold beOf
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Rewrite using `[map_beOf h]`. Conclude with `beC_tie g hOk.2.2.1 hOk.2.2.2 hep`.
+-/
 theorem be_tie (hOk : g.Ok) {ep : ℂ_[p]} (hep : ep ≠ 0) (h : BeRat g ep) :
     subst ![C ep * g.lg (X (0 : Fin 2)), C ep * g.lg (X (1 : Fin 2))] (map (k0ToC p) (beOf g ep)) =
       g.be (X (0 : Fin 2)) (X (1 : Fin 2)) := by

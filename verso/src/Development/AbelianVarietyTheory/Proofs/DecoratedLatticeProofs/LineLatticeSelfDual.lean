@@ -15,6 +15,35 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw.LiftModel
 
+/- English proof (translation)
+Introduce `D S ζ hζ 𝔄 h𝔄`. Take `⟨h1, hH⟩` from `hζ`. Use `haveI : Subsingleton (Fin S.rank) := by rw [h1]; infer_instance`. Set `i₀ : Fin S.rank` to `⟨0, by omega⟩`. Establish `all : ∀ i : Fin S.rank, i = i₀` using `fun i => Subsingleton.elim _ _`.
+
+Use `set z := ζ i₀ with hz`. Use `set g := S.gram i₀ i₀ with hg`. Establish `eH : star ζ ⬝ᵥ S.gram *ᵥ ζ = star z * (g * z)`. Simplify using `only [dotProduct, mulVec, Fintype.sum_subsingleton _ i₀, Pi.star_apply]`. Both sides reduce to the same expression.
+
+Establish `z0 : z ≠ 0`. Introduce `h0`. Apply `hH` to reduce the goal to its premises. Rewrite using `[eH, h0]`. Simplify using the standard rewrite rules.
+
+Establish `repr : ∀ y : Fin S.rank → D.host.E, y = (y i₀ / z) • ζ`. Introduce `y`. Use function extensionality and compare the values at `i`. Rewrite using `[all i]`. Simplify using `[div_mul_cancel₀ _ z0, ← hz]`.
+
+Establish `memΛ : ∀ y, y ∈ lineLat S ζ 𝔄 ↔ ∃ c ∈ 𝔄, c • ζ = y`. Introduce `y`. Simplify using `[lineLat, Submodule.mem_map, LinearMap.toSpanSingleton_apply]`. Establish `memΛ' : ∀ y, y ∈ lineLat S ζ 𝔄 ↔ y i₀ / z ∈ 𝔄`. Introduce `y`.
+
+Rewrite using `[memΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Simplify `hc` using `[← hz, mul_div_cancel_right₀ _ z0]`. Introduce `h`.
+
+Conclude with `⟨_, h, (repr y).symm⟩`. Establish `sum_eq : ∀ c d : D.host.E, ∑ i, ∑ j, star ((c • ζ) i) * S.gram i j * (d • ζ) j = star c * d * (star ζ ⬝ᵥ S.gram *ᵥ ζ)`. Introduce `c d`. Rewrite using `[eH]`. Simplify using `only [Fintype.sum_subsingleton _ i₀, Pi.smul_apply, smul_eq_mul, star_mul', ← hz, ← hg]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `dual : ∀ y : Fin S.rank → D.host.E, y ∈ lineLat S ζ 𝔄 ↔ ∀ x ∈ lineLat S ζ 𝔄, ∃ b : 𝓞 D.host.E, (b : D.host.E) = ∑ i, ∑ j, star (x i) * S.gram i j * y j`. Introduce `y`. Rewrite using `[memΛ', h𝔄]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h x hx`. Take `⟨c, hc, rfl⟩` from `(memΛ x).1 hx`. Take `⟨b, hb⟩` from `h c hc`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [repr y]`.
+
+Rewrite using `[sum_eq, hb]`. Introduce `h c hc`. Take `⟨b, hb⟩` from `h (c • ζ) ((memΛ _).2 ⟨c, hc, rfl⟩)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`.
+
+Use `conv_lhs => rw [repr y]`. Rewrite using `[sum_eq]`. Use `⟨⟨?_, ?_⟩, dual⟩` and prove the remaining obligations. Conclude with `(FractionalIdeal.fg_of_isNoetherianRing le_rfl 𝔄).map _`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hc0⟩ : ∃ c ∈ 𝔄, c ≠ 0 := by`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1m : (1 : D.host.E) ∈ 𝔄`. Rewrite using `[h𝔄]`. Introduce `c hc`.
+
+Conclude with `⟨0, by simp [hcon c hc]⟩`. Conclude with `one_ne_zero (hcon 1 h1m)`. Establish `hcζ : c • ζ ∈ lineLat S ζ 𝔄` using `(memΛ _).2 ⟨c, hc, rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce `y _`.
+
+Establish `hζs : ζ ∈ Submodule.span D.host.E (lineLat S ζ 𝔄 : Set (Fin S.rank → D.host.E))`. Use `Submodule.smul_mem (Submodule.span D.host.E (lineLat S ζ 𝔄 : Set (Fin S.rank → D.host.E))) c⁻¹ (Submodule.subset_span hcζ)` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Rewrite using `[repr y]`. Conclude with `Submodule.smul_mem _ _ hζs`.
+-/
 theorem isSelfDualC_lineLat : ∀ (D : D7) (S : HSp D) (ζ : Fin S.rank → D.host.E), IsLineVec S ζ → ∀ (𝔄 : FI D), (∀ d : D.host.E, d ∈ 𝔄 ↔ ∀ c ∈ 𝔄, ∃ b : 𝓞 D.host.E, (b : D.host.E) = star c * d * (star ζ ⬝ᵥ S.gram *ᵥ ζ)) → IsSelfDualC S (GlobalTheory.SeeSaw.LiftModel.lineLat S ζ 𝔄) := by
   intro D S ζ hζ 𝔄 h𝔄
   classical

@@ -28,13 +28,24 @@ def rowM (r : Fin k → R) : Matrix (Fin k) (Fin k) R :=
 def rowI (r : Fin k → R) : Fin k → R :=
   fun c => if (c : ℕ) + 1 = k then Ring.inverse (lastEnt r) else -(r c * Ring.inverse (lastEnt r))
 
+/- English proof (translation)
+Simplify using `[rowM, h]`.
+-/
 theorem rowM_apply_last (r : Fin k → R) (i c : Fin k) (h : (i : ℕ) + 1 = k) : rowM r i c = r c := by
   simp [rowM, h]
 
+/- English proof (translation)
+Simplify using `[rowM, h]`.
+-/
 theorem rowM_apply_ne (r : Fin k → R) (i c : Fin k) (h : (i : ℕ) + 1 ≠ k) :
     rowM r i c = (1 : Matrix (Fin k) (Fin k) R) i c := by
   simp [rowM, h]
 
+/- English proof (translation)
+Rewrite using `[lastEnt, Finset.sum_eq_single l]`. Simplify using `[hl]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hb (Fin.ext (by omega))`. Simplify using the standard rewrite rules.
+-/
 theorem lastEnt_eq (r : Fin k → R) (l : Fin k) (hl : (l : ℕ) + 1 = k) : lastEnt r = r l := by
   rw [lastEnt, Finset.sum_eq_single l]
   · simp [hl]
@@ -44,6 +55,17 @@ theorem lastEnt_eq (r : Fin k → R) (l : Fin k) (hl : (l : ℕ) + 1 = k) : last
     exact hb (Fin.ext (by omega))
   · simp
 
+/- English proof (translation)
+Establish `hlast : ∀ j : Fin k, (j : ℕ) + 1 = k → j = l` using `fun j hj => Fin.ext (by omega)`. Distinguish the cases in `hi : (i : ℕ) + 1 = k`. Rewrite using `[if_pos hi, Matrix.mul_apply]`. Establish `e : ∀ j, rowM r i j * rowM t j c = r j * (if j = l then t c else (1 : Matrix (Fin k) (Fin k) R) j c)` using `fun j => by`. Rewrite using `[rowM_apply_last r i j hi]`.
+
+Distinguish the cases in `hj : j = l`. Substitute `hj` using the available equality. Rewrite using `[rowM_apply_last t _ c hl, if_pos rfl]`. Rewrite using `[rowM_apply_ne t j c (fun h => hj (hlast j h)), if_neg hj]`. Simplify using `only [e]`.
+
+Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ l)]`. Establish `e2 : ∀ j ∈ Finset.univ.erase l, r j * (if j = l then t c else (1 : Matrix (Fin k) (Fin k) R) j c) = if j = c then r j else 0` using `fun j hj => by`. Rewrite using `[if_neg (Finset.ne_of_mem_erase hj), Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl e2, if_pos rfl, Finset.sum_ite_eq' ]`.
+
+Distinguish the cases in `hc : (c : ℕ) + 1 = k`. Establish `: c = l` using `hlast c hc`. Substitute `this` using the available equality. Simplify using `[hc]`. Establish `: c ≠ l` using `fun h => hc (h ▸ hl)`.
+
+Simplify using `[hc, this, add_comm]`. Rewrite using `[if_neg hi, Matrix.mul_apply]`. Simplify using `only [rowM_apply_ne r i _ hi, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+-/
 theorem rowM_mul_rowM (r t : Fin k → R) (l : Fin k) (hl : (l : ℕ) + 1 = k) (i c : Fin k) :
     (rowM r * rowM t) i c = if (i : ℕ) + 1 = k then
       (if (c : ℕ) + 1 = k then r l * t c else r c + r l * t c) else rowM t i c := by
@@ -75,6 +97,17 @@ theorem rowM_mul_rowM (r t : Fin k → R) (l : Fin k) (hl : (l : ℕ) + 1 = k) (
 
 variable {r : Fin k → R}
 
+/- English proof (translation)
+Use extensionality with `i c`. Distinguish the cases in `hk : ∃ l : Fin k, (l : ℕ) + 1 = k`. Take `⟨l, hl⟩` from `hk`. Establish `hu : r l * Ring.inverse (r l) = 1`. Rewrite `*` using `[← lastEnt_eq r l hl]`.
+
+Conclude with `Ring.mul_inverse_cancel _ h`. Rewrite using `[rowM_mul_rowM _ _ l hl]`. Establish `e : Ring.inverse (lastEnt r) = Ring.inverse (r l)` using `by rw [lastEnt_eq r l hl]`. Distinguish the cases in `hi : (i : ℕ) + 1 = k`. Establish `hil : i = l` using `Fin.ext (by omega)`.
+
+Substitute `hil` using the available equality. Distinguish the cases in `hc : (c : ℕ) + 1 = k`. Establish `hcl : c = i` using `Fin.ext (by omega)`. Substitute `hcl` using the available equality. Simplify using `only [if_pos hl, rowI, e, Matrix.one_apply, if_true]`.
+
+Conclude with `hu`. Establish `hcl : i ≠ c` using `fun h => hc (h ▸ hl)`. Simplify using `only [if_pos hl, if_neg hc, rowI, e, Matrix.one_apply, if_neg hcl]`. Take the linear combination `(- r c) * hu`. Rewrite using `[if_neg hi, rowM_apply_ne _ _ _ hi]`.
+
+Conclude with `absurd ⟨⟨k - 1, by have := i.2; omega⟩, by have := i.2; simp; omega⟩ hk`.
+-/
 theorem rowM_mul_rowI (h : IsUnit (lastEnt r)) : rowM r * rowM (rowI r) = 1 := by
   ext i c
   by_cases hk : ∃ l : Fin k, (l : ℕ) + 1 = k
@@ -98,6 +131,17 @@ theorem rowM_mul_rowI (h : IsUnit (lastEnt r)) : rowM r * rowM (rowI r) = 1 := b
     · rw [if_neg hi, rowM_apply_ne _ _ _ hi]
   · exact absurd ⟨⟨k - 1, by have := i.2; omega⟩, by have := i.2; simp; omega⟩ hk
 
+/- English proof (translation)
+Use extensionality with `i c`. Distinguish the cases in `hk : ∃ l : Fin k, (l : ℕ) + 1 = k`. Take `⟨l, hl⟩` from `hk`. Establish `hu : r l * Ring.inverse (r l) = 1`. Rewrite `*` using `[← lastEnt_eq r l hl]`.
+
+Conclude with `Ring.mul_inverse_cancel _ h`. Rewrite using `[rowM_mul_rowM _ _ l hl]`. Establish `e : Ring.inverse (lastEnt r) = Ring.inverse (r l)` using `by rw [lastEnt_eq r l hl]`. Establish `el : rowI r l = Ring.inverse (r l)` using `by simp [rowI, hl, e]`. Distinguish the cases in `hi : (i : ℕ) + 1 = k`.
+
+Establish `hil : i = l` using `Fin.ext (by omega)`. Substitute `hil` using the available equality. Distinguish the cases in `hc : (c : ℕ) + 1 = k`. Establish `hcl : c = i` using `Fin.ext (by omega)`. Substitute `hcl` using the available equality.
+
+Simplify using `only [if_pos hl, el, Matrix.one_apply, if_true]`. Take the linear combination `hu`. Establish `hcl : i ≠ c` using `fun h => hc (h ▸ hl)`. Simplify using `only [if_pos hl, if_neg hc, el, Matrix.one_apply, if_neg hcl]`. Simplify using `only [rowI, if_neg hc, e]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hi, rowM_apply_ne _ _ _ hi]`. Conclude with `absurd ⟨⟨k - 1, by have := i.2; omega⟩, by have := i.2; simp; omega⟩ hk`.
+-/
 theorem rowI_mul_rowM (h : IsUnit (lastEnt r)) : rowM (rowI r) * rowM r = 1 := by
   ext i c
   by_cases hk : ∃ l : Fin k, (l : ℕ) + 1 = k
@@ -128,16 +172,30 @@ open Classical in
 def rowGL (r : Fin k → R) : GL (Fin k) R :=
   if h : IsUnit (lastEnt r) then ⟨rowM r, rowM (rowI r), rowM_mul_rowI h, rowI_mul_rowM h⟩ else 1
 
+/- English proof (translation)
+Simplify using `[rowGL, h]`.
+-/
 theorem rowGL_val (h : IsUnit (lastEnt r)) : (rowGL r).val = rowM r := by
   simp [rowGL, h]
 
+/- English proof (translation)
+Simplify using `[rowGL, h]`.
+-/
 theorem rowGL_inv_val (h : IsUnit (lastEnt r)) : ((rowGL r)⁻¹).val = rowM (rowI r) := by
   simp [rowGL, h]
 
+/- English proof (translation)
+Rewrite using `[lastEnt_eq _ ⟨k - 1, by omega⟩ (by simp; omega)]`. Simplify using `[eRow]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem lastEnt_eRow (hk : 1 ≤ k) : lastEnt (eRow R k) = 1 := by
   rw [lastEnt_eq _ ⟨k - 1, by omega⟩ (by simp; omega)]
   simp [eRow]; omega
 
+/- English proof (translation)
+Use extensionality with `i c`. Distinguish the cases in `hi : (i : ℕ) + 1 = k`. Rewrite using `[rowM_apply_last _ _ _ hi, eRow, Matrix.one_apply]`. Distinguish the cases in `hc : (c : ℕ) + 1 = k`. Rewrite using `[if_pos hc, if_pos (Fin.ext (by omega))]`.
+
+Rewrite using `[if_neg hc, if_neg (fun h : i = c => hc (h ▸ hi))]`. Rewrite using `[rowM_apply_ne _ _ _ hi]`.
+-/
 theorem rowM_eRow : rowM (eRow R k) = 1 := by
   ext i c
   by_cases hi : (i : ℕ) + 1 = k
@@ -147,11 +205,21 @@ theorem rowM_eRow : rowM (eRow R k) = 1 := by
     · rw [if_neg hc, if_neg (fun h : i = c => hc (h ▸ hi))]
   · rw [rowM_apply_ne _ _ _ hi]
 
+/- English proof (translation)
+Distinguish the cases in `h : IsUnit (lastEnt (eRow R k))`. Conclude with `Units.ext ((rowGL_val h).trans rowM_eRow)`. Simplify using `[rowGL, h]`.
+-/
 theorem rowGL_eRow (hk : 1 ≤ k) : rowGL (eRow R k) = 1 := by
   by_cases h : IsUnit (lastEnt (eRow R k))
   · exact Units.ext ((rowGL_val h).trans rowM_eRow)
   · simp [rowGL, h]
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hi : (i : ℕ) + 1 = k` using `by have := i.2; have := j.2; omega`. Establish `e1 : ∀ m, A.val i m = rowM r i m` using `fun m => by`. Rewrite using `[rowM_apply_last _ _ _ hi, ← hA, lastRowM, Finset.sum_eq_single i]`. Rewrite using `[if_pos hi]`.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Fin.ext (by omega))`. Simplify using the standard rewrite rules.
+
+Establish `e2 : (A * (rowGL r)⁻¹).val i j = (rowM r * rowM (rowI r)) i j`. Rewrite using `[Units.val_mul, rowGL_inv_val h, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [e1]`. Rewrite using `[e2, rowM_mul_rowI h]`.
+-/
 theorem lastRow_mul_rowGL_inv (A : GL (Fin k) R) (h : IsUnit (lastEnt r)) (hA : lastRowM A.val = r) :
     Mir (k - 1) (A * (rowGL r)⁻¹) := by
   intro i j hij

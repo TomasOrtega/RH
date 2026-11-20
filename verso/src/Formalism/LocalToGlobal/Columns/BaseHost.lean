@@ -32,17 +32,31 @@ def realQb (τ : Qb →+* ℂ) : Fld where
     show starRingEnd ℂ (τ (algebraMap ℚ Qb r)) = τ (algebraMap ℚ Qb r)
     simp
 
+/- English proof (translation)
+Introduce `_ hy` and use `H.FQ_real τ hy`.
+-/
 theorem FQ_le_realQb {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (τ : Qb →+* ℂ) : H.FQ ≤ realQb τ :=
   fun _ hy => H.FQ_real τ hy
 
+/- English proof (translation)
+The claim follows from `H.EQ_le_cycQ.trans (cycLeCm ι _ (Nat.pos_of_ne_zero H.condN_ne_zero))`.
+-/
 theorem hostLeCmH (ι : Qb →+* ℂ) {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) : H.EQ ≤ cmQb ι :=
   H.EQ_le_cycQ.trans (cycLeCm ι _ (Nat.pos_of_ne_zero H.condN_ne_zero))
 
+/- English proof (translation)
+Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec]`. Conclude with `FQ_le_realQb H ι hx`.
+-/
 theorem conj_FQ {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (ι : Qb →+* ℂ) {x : Qb} (hx : x ∈ H.FQ) : conjQb ι x = x := by
   apply ι.injective
   rw [conjQb_spec]
   exact FQ_le_realQb H ι hx
 
+/- English proof (translation)
+Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Take `⟨ι⟩ : Nonempty (Qb →+* ℂ)` from `⟨(IsAlgClosed.lift : Qb →ₐ[ℚ] ℂ).toRingHom⟩`. Take `⟨τ, hτ⟩` from `exists_ext ι H.FQ v.embedding`. Use extensionality with `x`.
+
+Establish `h` using `FQ_le_realQb H τ x.2`. Establish `h1 : τ (x : Qb) = v.embedding x` using `hτ x`. Use `show starRingEnd ℂ (v.embedding x) = v.embedding x`. Rewrite using `[← h1]`. Conclude with `h`.
+-/
 theorem totReal_FQ {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) : IsTotallyReal H.FQ := by
   refine ⟨fun v => ?_⟩
   rw [InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]
@@ -59,18 +73,29 @@ section Host
 
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R} (T : Frame H)
 
+/- English proof (translation)
+Establish `hex : ∃ s : H.EQ →ₐ[ℚ] Qb, H.ActsAs s g` using `⟨T.sQ g, T.sQ_acts g⟩`. Establish `h1 : embQ H.toHostRaw g = hex.choose` using `dif_pos hex`. Rewrite using `[h1]`. Conclude with `hex.choose_spec.unique (T.sQ_acts g)`.
+-/
 theorem embQ_eq (g : R.GG) : embQ H.toHostRaw g = T.sQ g := by
   have hex : ∃ s : H.EQ →ₐ[ℚ] Qb, H.ActsAs s g := ⟨T.sQ g, T.sQ_acts g⟩
   have h1 : embQ H.toHostRaw g = hex.choose := dif_pos hex
   rw [h1]
   exact hex.choose_spec.unique (T.sQ_acts g)
 
+/- English proof (translation)
+Establish `hmem : T.j x ∈ H.EQ` using `(T.iso x).2`. Rewrite using `[← (cmQbIndep T.ι ι).2 (T.j x) (hostLeCmH T.ι _ hmem)]`. Apply `T.ι.injective` to reduce the goal to its premises. Rewrite using `[conjQb_spec, T.conj]`.
+-/
 theorem j_conj (ι : Qb →+* ℂ) (x : H.E) : T.j (H.conj x) = conjQb ι (T.j x) := by
   have hmem : T.j x ∈ H.EQ := (T.iso x).2
   rw [← (cmQbIndep T.ι ι).2 (T.j x) (hostLeCmH T.ι _ hmem)]
   apply T.ι.injective
   rw [conjQb_spec, T.conj]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `T.iso.surjective y`. Establish `h1 : cLL ι H.EQ (T.iso x) = T.iso (H.conj x)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cLL_coe, T.iso_coe, T.iso_coe, j_conj T ι]`. Establish `h2 : H.sigmaOf (g * R.cc) = H.sigmaOf g * H.conj` using `map_mul (H.gal).symm g (R.cc)`.
+
+Rewrite using `[h1, Frame.sQ, Frame.sQ, T.carry_iso, T.carry_iso, h2]`. Both sides reduce to the same expression.
+-/
 theorem sQ_mul_cc (ι : Qb →+* ℂ) (g : R.GG) (y : H.EQ) :
     T.sQ (g * R.cc) y = T.sQ g (cLL ι H.EQ y) := by
   obtain ⟨x, rfl⟩ := T.iso.surjective y
@@ -82,6 +107,9 @@ theorem sQ_mul_cc (ι : Qb →+* ℂ) (g : R.GG) (y : H.EQ) :
   rfl
 
 include T in
+/- English proof (translation)
+Rewrite using `[← T.iso.toLinearEquiv.finrank_eq]`. Conclude with `H.finrank_cmField`.
+-/
 theorem finrank_EQ : Module.finrank ℚ H.EQ = 4 * R.ord := by
   rw [← T.iso.toLinearEquiv.finrank_eq]
   exact H.finrank_cmField
@@ -93,6 +121,11 @@ section Host2
 variable {R : Ranks} {H : Formalism.BasicNotions.Host R} (T : Frame H)
 
 include T in
+/- English proof (translation)
+Set `f : H.F →+* H.FQ` to `(T.j.toRingHom.comp H.F.subtype).codRestrict H.FQ (fun x => (T.mem_F x).1 x.2)`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Establish `hy : T.j (T.iso.symm ⟨y, H.FQ_le_EQ y.2⟩) = y`. Rewrite using `[← T.iso_coe, AlgEquiv.apply_symm_apply]`.
+
+Use `⟨⟨T.iso.symm ⟨y, H.FQ_le_EQ y.2⟩, (T.mem_F _).2 (by rw [hy]; exact y.2)⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext hy`. Set `a : H.F ≃ₐ[ℚ] H.FQ` to `AlgEquiv.ofBijective (RingHom.toRatAlgHom f) ⟨f.injective, hsurj⟩`. Rewrite using `[← a.toLinearEquiv.finrank_eq]`. Conclude with `H.finrank_hostF`.
+-/
 theorem finrank_FQ : Module.finrank ℚ H.FQ = 2 * R.ord := by
   let f : H.F →+* H.FQ :=
     (T.j.toRingHom.comp H.F.subtype).codRestrict H.FQ (fun x => (T.mem_F x).1 x.2)
@@ -107,6 +140,9 @@ theorem finrank_FQ : Module.finrank ℚ H.FQ = 2 * R.ord := by
   exact H.finrank_hostF
 
 include T in
+/- English proof (translation)
+Set `_ : Algebra H.FQ H.EQ` to `(inclusion H.FQ_le_EQ).toRingHom.toAlgebra`. Establish `h` using `Module.finrank_mul_finrank ℚ H.FQ H.EQ`. Rewrite `h` using `[finrank_FQ T, finrank_EQ T, show 4 * R.ord = 2 * R.ord * 2 by ring]`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.mul_pos two_pos R.ord_pos) h`.
+-/
 theorem host_rankE :
     letI : Algebra H.FQ H.EQ := (inclusion H.FQ_le_EQ).toRingHom.toAlgebra
     Module.finrank H.FQ H.EQ = 2 := by
@@ -115,6 +151,9 @@ theorem host_rankE :
   rw [finrank_FQ T, finrank_EQ T, show 4 * R.ord = 2 * R.ord * 2 by ring] at h
   exact Nat.eq_of_mul_eq_mul_left (Nat.mul_pos two_pos R.ord_pos) h
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `exists_ext ι H.EQ φ`. Establish `h1 : τ ((cLL ι H.EQ x : H.EQ) : Qb) = φ (cLL ι H.EQ x)` using `hτ _`. Establish `h2 : τ (x : Qb) = φ x` using `hτ x`. Rewrite using `[← h1, ← h2, cLL_coe]`. Conclude with `hostLeCmH ι _ x.2 τ`.
+-/
 theorem host_conjE {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (ι : Qb →+* ℂ) (φ : H.EQ →+* ℂ) (x : H.EQ) :
     φ (cLL ι H.EQ x) = starRingEnd ℂ (φ x) := by
   obtain ⟨τ, hτ⟩ := exists_ext ι H.EQ φ
@@ -125,11 +164,17 @@ theorem host_conjE {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁)
 
 variable (ι : Qb →+* ℂ) (LL : Fld) [Normal ℚ LL] (hE : H.EQ ≤ LL)
 
+/- English proof (translation)
+Rewrite using `[val_tauCo, embQ_eq T]`.
+-/
 theorem hemb_val (g : R.GG) (x : H.EQ) :
     CoF.val ι LL (tauCo ι hE (embQ H.toHostRaw g) x) = T.sQ g x := by
   rw [val_tauCo, embQ_eq T]
 
 include T in
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `T.sQ_injective` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[← hemb_val T ι LL hE g x, ← hemb_val T ι LL hE g' x, h]`.
+-/
 theorem host_emb_inj (g g' : R.Psi)
     (h : ∀ x, tauCo ι hE (embQ H.toHostRaw g) x = tauCo ι hE (embQ H.toHostRaw g') x) : g = g' := by
   apply Subtype.ext
@@ -138,6 +183,13 @@ theorem host_emb_inj (g g' : R.Psi)
   rw [← hemb_val T ι LL hE g x, ← hemb_val T ι LL hE g' x, h]
 
 include T in
+/- English proof (translation)
+Introduce `h`. Establish `hg : (g : R.GG) = (g' : R.GG) * R.cc`. Apply `T.sQ_injective` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[sQ_mul_cc T ι, ← hemb_val T ι LL hE g x, ← hemb_val T ι LL hE g', h]`.
+
+Establish `h1` using `(Formalism.HC.Frame.mem_Psi_iff _).1 g.2`. Establish `h2` using `(Formalism.HC.Frame.mem_Psi_iff _).1 g'.2`. Rewrite `h1` using `[hg]`. Establish `h3 : (g' : R.GG).1.2 * (-1) = 1` using `h1`. Rewrite `h3` using `[h2]`.
+
+Conclude with `absurd h3 (by decide)`.
+-/
 theorem host_emb_ne (g g' : R.Psi) :
     ¬ ∀ x, tauCo ι hE (embQ H.toHostRaw g) x = tauCo ι hE (embQ H.toHostRaw g') (cLL ι H.EQ x) := by
   intro h
@@ -153,6 +205,13 @@ theorem host_emb_ne (g g' : R.Psi) :
   exact absurd h3 (by decide)
 
 include T in
+/- English proof (translation)
+Set `s : H.EQ →ₐ[ℚ] Qb` to `RingHom.toRatAlgHom ((CoF.val ι LL).comp φ)`. Take `⟨g, hg, -⟩` from `T.label s`. Establish `hs : s = T.sQ g` using `hg.unique (T.sQ_acts g)`. Establish `hs' : ∀ x, CoF.val ι LL (φ x) = T.sQ g x` using `fun x => DFunLike.congr_fun hs x`. Distinguish the cases in `hgP : g ∈ R.Psi`.
+
+Use `⟨⟨g, hgP⟩, Or.inl fun x => ?_⟩` and prove the remaining obligations. Apply `CoF.val_injective ι LL` to reduce the goal to its premises. Rewrite using `[hemb_val T, hs']`. Use `⟨⟨g * R.cc, mul_cc_mem_Psi hgP⟩, Or.inr fun x => ?_⟩` and prove the remaining obligations. Apply `CoF.val_injective ι LL` to reduce the goal to its premises.
+
+Rewrite using `[hemb_val T, hs', sQ_mul_cc T ι, cLL_cLL]`.
+-/
 theorem host_emb_all (φ : H.EQ →+* CoF ι LL) : ∃ g : R.Psi,
     (∀ x, φ x = tauCo ι hE (embQ H.toHostRaw g) x) ∨
       ∀ x, φ x = tauCo ι hE (embQ H.toHostRaw g) (cLL ι H.EQ x) := by
@@ -176,6 +235,21 @@ variable {R : Ranks} {H : Formalism.BasicNotions.Host R} (T : Frame H)
 variable (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL] (hE : H.EQ ≤ LL)
 
 include T in
+/- English proof (translation)
+Set `φ : R.GG ≃* (H.EQ ≃ₐ[ℚ] H.EQ)` to `(H.gal).symm.trans (AlgEquiv.autCongr T.iso)`. Establish `hφ : ∀ (g : R.GG) (y : H.EQ), ((φ g y : H.EQ) : Qb) = T.sQ g y` using `fun g y => rfl`. Set `P : Subgroup (H.EQ ≃ₐ[ℚ] H.EQ)` to `(R.Psi).map φ.toMonoidHom`. Establish `hcard : Nat.card P = 2 * R.ord`. Rewrite using `[Subgroup.card_map_of_injective φ.injective, (factCardPsi R H).1]`.
+
+Both sides reduce to the same expression. Establish `hfix : ∀ y : H.EQ, y ∈ fixedField P ↔ y ∈ (hostFields H.toHostRaw ι LL hE).Kq`. Introduce `y`. Rewrite using `[mem_fixedField_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Establish `key : ∀ g : R.Psi, T.sQ (g : R.GG) y = y` using `fun g => by`. Rewrite using `[← hφ, h (φ g) ⟨g, g.2, rfl⟩]`. Introduce `(g : R.Psi) (g' : R.Psi)`. Apply `CoF.val_injective ι LL` to reduce the goal to its premises.
+
+Conclude with `(hemb_val T ι LL hE g y).trans ((key g).trans ((key g').symm.trans (hemb_val T ι LL hE g' y).symm))`. Introduce and unpack `h _ ⟨g, hg, rfl⟩`. Establish `h1` using `congrArg (CoF.val ι LL) (h (⟨g, hg⟩ : R.Psi) (1 : R.Psi))`. Establish `h2 : T.sQ g y = T.sQ 1 y` using `(hemb_val T ι LL hE g y).symm.trans (h1.trans (hemb_val T ι LL hE 1 y))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show ((φ g y : H.EQ) : Qb) = y`. Rewrite using `[hφ, h2, ← hφ, map_one]`. Both sides reduce to the same expression. Establish `h1 : Module.finrank (fixedField P) H.EQ = Nat.card P` using `finrank_fixedField_eq_card P`. Establish `h2` using `Module.finrank_mul_finrank ℚ (fixedField P) H.EQ`.
+
+Rewrite `h2` using `[h1, hcard, finrank_EQ T, show 4 * R.ord = 2 * R.ord * 2 by ring, mul_comm]`. Establish `h3 : Module.finrank ℚ (fixedField P) = 2` using `Nat.eq_of_mul_eq_mul_left (Nat.mul_pos two_pos R.ord_pos) h2`. Set `f : fixedField P →+* (hostFields H.toHostRaw ι LL hE).Kq` to `((fixedField P).val.toRingHom).codRestrict (hostFields H.toHostRaw ι LL hE).Kq (fun x => (hfix x).1 x.2)`. Establish `hsurj : Function.Surjective f` using `fun y => ⟨⟨y.1, (hfix y.1).2 y.2⟩, rfl⟩`. Set `a : fixedField P ≃ₐ[ℚ] (hostFields H.toHostRaw ι LL hE).Kq` to `AlgEquiv.ofBijective (RingHom.toRatAlgHom f) ⟨f.injective, hsurj⟩`.
+
+Rewrite using `[← a.toLinearEquiv.finrank_eq]`. Conclude with `h3`.
+-/
 theorem host_quad : Module.finrank ℚ (hostFields H.toHostRaw ι LL hE).Kq = 2 := by
   classical
   let φ : R.GG ≃* (H.EQ ≃ₐ[ℚ] H.EQ) :=
@@ -216,16 +290,32 @@ theorem host_quad : Module.finrank ℚ (hostFields H.toHostRaw ι LL hE).Kq = 2 
 
 end Host3
 
+/- English proof (translation)
+The claim follows from `coe_inclusion H.FQ_le_EQ x`.
+-/
 theorem coe_incl {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (x : H.FQ) : ((inclusion H.FQ_le_EQ x : H.EQ) : Qb) = (x : Qb) :=
   coe_inclusion H.FQ_le_EQ x
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((cLL_coe ι _ y).trans (conj_FQ H ι hy))`.
+-/
 theorem cLL_of_mem_FQ {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (ι : Qb →+* ℂ) (y : H.EQ) (hy : (y : Qb) ∈ H.FQ) : cLL ι H.EQ y = y :=
   Subtype.ext ((cLL_coe ι _ y).trans (conj_FQ H ι hy))
 
+/- English proof (translation)
+The claim follows from `cLL_of_mem_FQ H ι _ (by rw [coe_incl]; exact x.2)`.
+-/
 theorem host_star_F {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (ι : Qb →+* ℂ) (x : H.FQ) :
     cLL ι H.EQ (inclusion H.FQ_le_EQ x) = inclusion H.FQ_le_EQ x :=
   cLL_of_mem_FQ H ι _ (by rw [coe_incl]; exact x.2)
 
+/- English proof (translation)
+Take `⟨T⟩` from `Frame.exists H`. Establish `hd : 0 < H.d` using `H.hyp.2.1.pos`. Establish `hK : KQ H.d ≤ H.EQ` using `H.KQ_le_EQ`. Conclude with `{ realF := totReal_FQ _ rankE := host_rankE T star_F := fun x => host_star_F _ ι x conjE := host_conjE _ ι cplxE := totComplex ι H.EQ H.d hd hK emb_star := fun τ x => (tauStar ι _ LL hE (hostLeCmH ι _) (embQ H.toHostRaw _) x (cLL ι H.EQ x) (cLL_coe ι _ x)).symm card_Tau := by sho …`. Rewrite using `[finrank_FQ T, ← Nat.card_eq_fintype_card, (factCardPsi R H).1]`.
+
+Both sides reduce to the same expression. Use `emb_inj := fun g g' h => host_emb_inj T ι LL hE g g' (fun x => DFunLike.congr_fun h x)`. Use `emb_ne := fun g g' h => host_emb_ne T ι LL hE g g' (fun x => DFunLike.congr_fun h x)`. Use `emb_all := fun φ => by`. Take `⟨g, h⟩` from `host_emb_all T ι LL hE φ`.
+
+Conclude with `⟨g, h.imp (fun h => RingHom.ext h) (fun h => RingHom.ext h)⟩`. Use `cplxK := totComplex ι LL H.d hd (hK.trans hE)`. Use `normalK := (inferInstance : Normal ℚ LL)`. Use `conjK := ⟨sig0 ι LL, sig0Conj ι LL⟩`. Use `quad := host_quad T ι LL hE }`.
+-/
 theorem hostFields_ok {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : (hostFields H.toHostRaw ι LL hE).Ok := by
   obtain ⟨T⟩ := Frame.exists H
@@ -253,6 +343,11 @@ theorem hostFields_ok {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb �
       conjK := ⟨sig0 ι LL, sig0Conj ι LL⟩
       quad := host_quad T ι LL hE }
 
+/- English proof (translation)
+Introduce `(j : H.EQ →ₐ[ℚ] Qb)`. Establish `hn` using `(normal_iff_forall_map_le' (K := H.EQ)).mpr (map_le_of_normal H.EQ)`. Establish `h : j.fieldRange = H.EQ` using `AlgHom.fieldRange_of_normal j`. Use `show Formalism.L2.Host.IsCond j.fieldRange _`. Rewrite using `[h]`.
+
+Conclude with `condEQ H`.
+-/
 theorem hostFields_isCond {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : (hostFields H.toHostRaw ι LL hE).IsCond H.condN := by
   intro (j : H.EQ →ₐ[ℚ] Qb)
@@ -262,22 +357,34 @@ theorem hostFields_isCond {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : 
   rw [h]
   exact condEQ H
 
+/- English proof (translation)
+Use `show Fintype.card (R.Psi) = R.f`. Rewrite using `[← Nat.card_eq_fintype_card, (factCardPsi R H).1]`.
+-/
 theorem hostFields_f {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : (hostFields H.toHostRaw ι LL hE).f = R.f := by
   show Fintype.card (R.Psi) = R.f
   rw [← Nat.card_eq_fintype_card, (factCardPsi R H).1]
 
+/- English proof (translation)
+Rewrite using `[hostFields_f]`. Conclude with `Nat.mul_dvd_mul_left 2 ((pow_dvd_pow 2 H.two_le_e).trans R.two_pow_dvd_ord)`.
+-/
 theorem hostFields_eight_dvd {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : 8 ∣ (hostFields H.toHostRaw ι LL hE).f := by
   rw [hostFields_f]
   exact Nat.mul_dvd_mul_left 2 ((pow_dvd_pow 2 H.two_le_e).trans R.two_pow_dvd_ord)
 
+/- English proof (translation)
+Establish `h1 : Normal ℚ H.EQ` using `H.normal_EQ`. Establish `h2 : IsGalois ℚ H.EQ` using `isGalois_iff.2 ⟨inferInstance, h1⟩`. Conclude with `h2`.
+-/
 theorem hostFields_galE {φ₁ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ₁) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : IsGalois ℚ (hostFields H ι LL hE).E := by
   have h1 : Normal ℚ H.EQ := H.normal_EQ
   have h2 : IsGalois ℚ H.EQ := isGalois_iff.2 ⟨inferInstance, h1⟩
   exact h2
 
+/- English proof (translation)
+Take `⟨T⟩` from `Frame.exists H`. Set `φ : (H.EQ ≃ₐ[ℚ] H.EQ) ≃* R.GG` to `(AlgEquiv.autCongr T.iso).symm.trans (H.gal)`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, mul_comm]`.
+-/
 theorem abel_EQ {R : Ranks} (H : Formalism.BasicNotions.Host R) (s t : H.EQ ≃ₐ[ℚ] H.EQ) : s * t = t * s := by
   obtain ⟨T⟩ := Frame.exists H
   let φ : (H.EQ ≃ₐ[ℚ] H.EQ) ≃* R.GG :=
@@ -285,11 +392,17 @@ theorem abel_EQ {R : Ranks} (H : Formalism.BasicNotions.Host R) (s t : H.EQ ≃�
   apply φ.injective
   rw [map_mul, map_mul, mul_comm]
 
+/- English proof (translation)
+The claim follows from `abel_EQ H s t`.
+-/
 theorem hostFields_abelE {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) (s t : (hostFields H.toHostRaw ι LL hE).E ≃ₐ[ℚ] (hostFields H.toHostRaw ι LL hE).E) :
     s * t = t * s :=
   abel_EQ H s t
 
+/- English proof (translation)
+The claim follows from `hostFields_ok H ι LL hE eight_dvd := hostFields_eight_dvd H ι LL hE galE := hostFields_galE _ ι LL hE abelE := hostFields_abelE H ι LL hE unram := hun`.
+-/
 theorem base_fields_conditions_of_unram {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL)
     (hun : ∀ P : HeightOneSpectrum (𝓞 (hostFields H.toHostRaw ι LL hE).E),
@@ -302,6 +415,33 @@ theorem base_fields_conditions_of_unram {R : Ranks} (H : Formalism.BasicNotions.
   abelE := hostFields_abelE H ι LL hE
   unram := hun
 
+/- English proof (translation)
+Use `set p : Ideal (𝓞 F) := P.asIdeal.under (𝓞 F) with hp`. Establish `hPmax : P.asIdeal.IsMaximal` using `P.isMaximal`. Establish `hPprime : P.asIdeal.IsPrime` using `P.isPrime`. Establish `hpmax : p.IsMaximal` using `Ideal.IsMaximal.under (𝓞 F) P.asIdeal`. Establish `hp0 : p ≠ ⊥` using `Ideal.under_ne_bot (𝓞 F) P.ne_bot`.
+
+Establish `hlies : P.asIdeal.LiesOver p` using `⟨rfl⟩`. Establish `hmap0 : p.map (algebraMap (𝓞 F) (𝓞 E)) ≠ ⊥` using `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))).not.2 hp0`. Set `Q : Ideal (𝓞 E)` to `P.asIdeal.comap c`. Establish `hQprime : Q.IsPrime` using `Ideal.comap_isPrime c P.asIdeal`. Establish `hQlies : Q.LiesOver p`.
+
+Use `⟨?_⟩` and prove the remaining obligations. Use extensionality with `a`. Use `show a ∈ p ↔ c (algebraMap (𝓞 F) (𝓞 E) a) ∈ P.asIdeal`. Rewrite using `[hcF]`. Both sides reduce to the same expression.
+
+Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank p (𝓞 E)`. Establish `hfr : Module.finrank (𝓞 F) (𝓞 E) = 2`. Rewrite using `[← hrank]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`. Rewrite `hsum` using `[hfr]`.
+
+Establish `he : 2 ≤ P.asIdeal.ramificationIdx (𝓞 F)`. Rewrite using `[Ideal.IsDedekindDomain.ramificationIdx_eq_multiplicity p P.asIdeal hmap0]`. Establish `hfin : FiniteMultiplicity P.asIdeal (p.map (algebraMap (𝓞 F) (𝓞 E)))` using `FiniteMultiplicity.of_not_isUnit (fun h => hPprime.ne_top (Ideal.isUnit_iff.1 h)) hmap0`. Conclude with `hfin.le_multiplicity_of_pow_dvd (Ideal.dvd_iff_le.2 hP)`. Establish `hfP : 0 < P.asIdeal.inertiaDeg (𝓞 F)` using `Ideal.inertiaDeg_pos P.asIdeal (𝓞 F)`.
+
+Establish `hfQ : 0 < Q.inertiaDeg (𝓞 F)` using `Ideal.inertiaDeg_pos Q (𝓞 F)`. Establish `heQ : 0 < Q.ramificationIdx (𝓞 F)` using `Ideal.ramificationIdx_pos Q (𝓞 F)`. Set `P' : p.primesOver (𝓞 E)` to `⟨P.asIdeal, hPprime, hlies⟩`. Set `Q' : p.primesOver (𝓞 E)` to `⟨Q, hQprime, hQlies⟩`. Establish `hQP : Q = P.asIdeal`.
+
+Assume the negation of the conclusion as `hne`. Establish `hne' : Q' ≠ P'` using `fun h => hne (congrArg Subtype.val h)`. Establish `h2 : ∑ q ∈ ({P', Q'} : Finset (p.primesOver (𝓞 E))), q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F) ≤ ∑ q : p.primesOver (𝓞 E), q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F)` using `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`. Rewrite `h2` using `[Finset.sum_pair hne'.symm, hsum]`. Establish `h3 : 2 ≤ P.asIdeal.ramificationIdx (𝓞 F) * P.asIdeal.inertiaDeg (𝓞 F)` using `by nlinarith`.
+
+Establish `h4 : 1 ≤ Q.ramificationIdx (𝓞 F) * Q.inertiaDeg (𝓞 F)` using `Nat.mul_pos heQ hfQ`. Establish `h5 : P'.1 = P.asIdeal` using `rfl`. Establish `h6 : Q'.1 = Q` using `rfl`. Rewrite `h2` using `[h5, h6]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hf1 : P.asIdeal.inertiaDeg (𝓞 F) = 1`. Establish `h2 : P'.1.ramificationIdx (𝓞 F) * P'.1.inertiaDeg (𝓞 F) ≤ ∑ q : p.primesOver (𝓞 E), q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F)` using `Finset.single_le_sum (f := fun q : p.primesOver (𝓞 E) => q.1.ramificationIdx (𝓞 F) * q.1.inertiaDeg (𝓞 F)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ P')`. Rewrite `h2` using `[hsum]`. Establish `h5 : P'.1 = P.asIdeal` using `rfl`. Rewrite `h2` using `[h5]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Rewrite `hf1` using `[Ideal.inertiaDeg_eq_of_isMaximal p P.asIdeal]`. Set `: Field (𝓞 F ⧸ p)` to `Ideal.Quotient.field p`. Set `: Field (𝓞 E ⧸ P.asIdeal)` to `Ideal.Quotient.field P.asIdeal`. Take `⟨a', ha'⟩` from `(finrank_eq_one_iff_of_nonzero' (1 : 𝓞 E ⧸ P.asIdeal) one_ne_zero).1 hf1 (Ideal.Quotient.mk P.asIdeal x)`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a'`. Establish `hxa : x - algebraMap (𝓞 F) (𝓞 E) a ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq, ← ha', Algebra.smul_def, mul_one]`. Both sides reduce to the same expression. Establish `hc : c (x - algebraMap (𝓞 F) (𝓞 E) a) ∈ P.asIdeal`.
+
+Rewrite using `[← hQP]`. Use `show c (c (x - algebraMap (𝓞 F) (𝓞 E) a)) ∈ P.asIdeal`. Rewrite using `[hcc]`. Conclude with `hxa`. Rewrite `hc` using `[map_sub, hcF]`.
+
+Use `P.asIdeal.sub_mem hc hxa` as an intermediate fact. Establish `e : c x - algebraMap (𝓞 F) (𝓞 E) a - (x - algebraMap (𝓞 F) (𝓞 E) a) = c x - x` using `by ring`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem ram_conj_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (hrank : Module.finrank F E = 2) (c : 𝓞 E →+* 𝓞 E) (hcc : ∀ x, c (c x) = x)
     (hcF : ∀ a : 𝓞 F, c (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap (𝓞 F) (𝓞 E) a)
@@ -383,6 +523,11 @@ theorem ram_conj_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   have e : c x - algebraMap (𝓞 F) (𝓞 E) a - (x - algebraMap (𝓞 F) (𝓞 E) a) = c x - x := by ring
   rwa [e] at this
 
+/- English proof (translation)
+Use `ram_conj_mem h.rankE X.conjO ?_ ?_ P hP x` and prove the remaining obligations. Introduce `y`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (star (y : X.E)) = y`. Conclude with `star_star _`.
+
+Introduce `a`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `h.star_F (a : X.F)`.
+-/
 theorem Fields.Ok.ram_conj {X : Fields} (h : X.Ok) (P : HeightOneSpectrum (𝓞 X.E))
     (hP : (P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))).map (algebraMap (𝓞 X.F) (𝓞 X.E)) ≤ P.asIdeal ^ 2) (x : 𝓞 X.E) :
     X.conjO x - x ∈ P.asIdeal := by
@@ -395,11 +540,27 @@ theorem Fields.Ok.ram_conj {X : Fields} (h : X.Ok) (P : HeightOneSpectrum (𝓞 
     apply RingOfIntegers.ext
     exact h.star_F (a : X.F)
 
+/- English proof (translation)
+Introduce `hP` and use `hin P (h.ram_conj P hP)`.
+-/
 theorem Fields.Ok.unram_of_inertia {X : Fields} (h : X.Ok)
     (hin : ∀ P : HeightOneSpectrum (𝓞 X.E), ¬ ∀ x : 𝓞 X.E, X.conjO x - x ∈ P.asIdeal) (P : HeightOneSpectrum (𝓞 X.E)) :
     ¬ (P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))).map (algebraMap (𝓞 X.F) (𝓞 X.E)) ≤ P.asIdeal ^ 2 :=
   fun hP => hin P (h.ram_conj P hP)
 
+/- English proof (translation)
+Take `⟨T⟩` from `Frame.exists H`. Introduce `hall`. Set `φ : 𝓞 H.E ≃+* 𝓞 H.EQ` to `RingOfIntegers.mapRingEquiv (T.iso : H.E ≃+* H.EQ)`. Set `P0 : Ideal (𝓞 H.E)` to `P1.comap (φ : 𝓞 H.E →+* 𝓞 H.EQ)`. Establish `hprime : P0.IsPrime` using `Ideal.comap_isPrime _ _`.
+
+Establish `hne : P0 ≠ ⊥`. Introduce `h0`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `y hy`.
+
+Establish `h1 : φ.symm y ∈ P0` using `by show φ (φ.symm y) ∈ P1`. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `hy`. Rewrite `h1` using `[h0, Ideal.mem_bot]`. Establish `h2 : y = φ (φ.symm y)` using `(RingEquiv.apply_symm_apply φ y).symm`.
+
+Rewrite using `[h2, h1, map_zero]`. Conclude with `Ideal.zero_mem _`. Use `H.der.unramEF P0 hprime hne ?_` and prove the remaining obligations. Introduce `x`. Use `show φ (H.conj • x - x) ∈ P1`.
+
+Establish `h1 : φ (H.conj • x) = c (φ x)`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hc]`. Use `show T.iso (H.conj (x : H.E)) = cLL ι H.EQ (T.iso (x : H.E))`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[cLL_coe, T.iso_coe, T.iso_coe, j_conj T ι]`. Rewrite using `[map_sub, h1]`. Conclude with `hall (φ x)`.
+-/
 theorem host_inertia {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (c : 𝓞 H.EQ → 𝓞 H.EQ)
     (hc : ∀ x, ((c x : 𝓞 H.EQ) : H.EQ) = cLL ι H.EQ (x : H.EQ))
     (P1 : Ideal (𝓞 H.EQ)) (hP1 : P1.IsPrime) (hP0 : P1 ≠ ⊥) : ¬ ∀ x, c x - x ∈ P1 := by
@@ -433,17 +594,26 @@ theorem host_inertia {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb �
   rw [map_sub, h1]
   exact hall (φ x)
 
+/- English proof (translation)
+The claim follows from `host_inertia H ι (hostFields H.toHostRaw ι LL hE).conjO (fun _ => rfl) P.asIdeal P.isPrime P.ne_bot`.
+-/
 theorem hostFields_inertia {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) (P : HeightOneSpectrum (𝓞 (hostFields H.toHostRaw ι LL hE).E)) :
     ¬ ∀ x : 𝓞 (hostFields H.toHostRaw ι LL hE).E, (hostFields H.toHostRaw ι LL hE).conjO x - x ∈ P.asIdeal :=
   host_inertia H ι (hostFields H.toHostRaw ι LL hE).conjO (fun _ => rfl) P.asIdeal P.isPrime P.ne_bot
 
+/- English proof (translation)
+The claim follows from `(hostFields_ok H ι LL hE).unram_of_inertia (hostFields_inertia H ι LL hE) P`.
+-/
 theorem hostFields_unram {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) (P : HeightOneSpectrum (𝓞 (hostFields H.toHostRaw ι LL hE).E)) :
     ¬ (P.asIdeal.comap (algebraMap (𝓞 (hostFields H.toHostRaw ι LL hE).F) (𝓞 (hostFields H.toHostRaw ι LL hE).E))).map
       (algebraMap (𝓞 (hostFields H.toHostRaw ι LL hE).F) (𝓞 (hostFields H.toHostRaw ι LL hE).E)) ≤ P.asIdeal ^ 2 :=
   (hostFields_ok H ι LL hE).unram_of_inertia (hostFields_inertia H ι LL hE) P
 
+/- English proof (translation)
+The claim follows from `base_fields_conditions_of_unram H ι LL hE (hostFields_unram H ι LL hE)`.
+-/
 theorem base_fields_conditions {R : Ranks} (H : Formalism.BasicNotions.Host R) (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL]
     (hE : H.EQ ≤ LL) : (hostFields H.toHostRaw ι LL hE).AbelianUnramifiedExtensionConditions :=
   base_fields_conditions_of_unram H ι LL hE (hostFields_unram H ι LL hE)

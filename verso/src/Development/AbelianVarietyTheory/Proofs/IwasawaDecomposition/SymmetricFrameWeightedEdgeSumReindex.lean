@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.SymChar.EdgeReindex
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_eq_single ⟨t, ht⟩]`. Rewrite using `[if_pos ((hP _).2 rfl)]`. Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hb (Fin.ext ((hP b).1 h))`. Simplify using the standard rewrite rules.
+-/
 theorem sum_edge {Q : Type} [AddCommMonoid Q] {r t : ℕ} (ht : t < r) (P : Fin r → Prop) [DecidablePred P]
     (hP : ∀ j, P j ↔ j.val = t) (f : Fin r → Q) : (∑ j, if P j then f j else 0) = f ⟨t, ht⟩ := by
   rw [Finset.sum_eq_single ⟨t, ht⟩]
@@ -25,6 +30,17 @@ def termAt {Q : Type} [AddCommGroup Q] (ρ k : ℕ) (s : Bool) {r : ℕ} (F : Fi
   if n < ρ then extF F n (if n + 1 < ρ then n + 1 else ρ + k)
   else if n + 1 < ρ + k then (if s then extF F n (n + 1) else 0) else 0
 
+/- English proof (translation)
+Establish `hi` using `i.2`. Unfold `termAt`. Distinguish the cases in `h1 : i.1 < ρ`. Distinguish the cases in `h2 : i.1 + 1 < ρ`. Rewrite using `[sum_edge (t := i.1 + 1) (by omega) _ (fun j => by`.
+
+Apply the tactic sequence `simp only [symEdge]; constructor <;> intro h <;> omega)]`. Rewrite using `[if_pos h1, if_pos h2, extF, dif_pos ⟨i.2, by omega⟩]`. Simplify using `only [GlobalTheory.Mem.SymChar.wtA, if_pos h1, one_smul]`. Rewrite using `[sum_edge (t := ρ + k) (by omega) _ (fun j => by`. Apply the tactic sequence `simp only [symEdge]; constructor <;> intro h <;> omega)]`.
+
+Rewrite using `[if_pos h1, if_neg h2, extF, dif_pos ⟨i.2, by omega⟩]`. Simplify using `only [GlobalTheory.Mem.SymChar.wtA, if_pos h1, one_smul]`. Distinguish the cases in `h2 : i.1 + 1 < ρ + k`. Rewrite using `[sum_edge (t := i.1 + 1) (by omega) _ (fun j => by`. Apply the tactic sequence `simp only [symEdge]; constructor <;> intro h <;> omega)]`.
+
+Rewrite using `[if_neg h1, if_pos h2]`. Simplify using `only [GlobalTheory.Mem.SymChar.wtA, if_neg h1, if_pos h2]`. Consider the cases of `s`. Simplify using the standard rewrite rules. Rewrite using `[extF, dif_pos ⟨i.2, by omega⟩]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, if_neg h2]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.Mem.SymChar.wtA, if_neg h1, if_neg h2, zero_smul, ite_self]`.
+-/
 theorem inner_eq {Q : Type} [AddCommGroup Q] (ρ k r : ℕ) (hr : r = k + 2 * ρ + 1) (s : Bool)
     (F : Fin r → Fin r → Q) (i : Fin r) :
     (∑ j : Fin r, if symEdge ρ k i j then GlobalTheory.Mem.SymChar.wtA ρ k s i j • F i j else 0) =
@@ -54,6 +70,21 @@ theorem inner_eq {Q : Type} [AddCommGroup Q] (ρ k r : ℕ) (hr : r = k + 2 * ρ
       refine Finset.sum_eq_zero fun j _ => ?_
       simp only [GlobalTheory.Mem.SymChar.wtA, if_neg h1, if_neg h2, zero_smul, ite_self]
 
+/- English proof (translation)
+Introduce `Q _ ρ k r hr s F`. Rewrite using `[Finset.sum_congr rfl (fun i _ => inner_eq ρ k r hr s F i)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun n => termAt ρ k s F n) r]`. Establish `e : Finset.range r = Finset.range (ρ + (k + (ρ + 1)))` using `congrArg Finset.range (by omega)`. Rewrite using `[e, Finset.sum_range_add, Finset.sum_range_add]`.
+
+Establish `h3 : (∑ x ∈ Finset.range (ρ + 1), termAt ρ k s F (ρ + (k + x))) = 0`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Unfold `termAt`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Rewrite using `[h3, add_zero]`.
+
+Use `congr 1`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun n => termAt ρ k s F n) ρ]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha` using `a.2`. Unfold `termAt extF`.
+
+Apply the tactic sequence `rw [if_pos ha, dif_pos ⟨by omega, by split_ifs <;> omega⟩]`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun n => termAt ρ k s F (ρ + n)) k]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi` using `i.2`. Distinguish the cases in `h : i.1 + 1 < k`.
+
+Rewrite using `[dif_pos h]`. Unfold `termAt`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`. Consider the cases of `s`. Both sides reduce to the same expression.
+
+Simplify using `only [if_true]`. Unfold `extF`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Rewrite using `[dif_neg h]`. Unfold `termAt`.
+
+Rewrite using `[if_neg (by omega), if_neg (by omega)]`.
+-/
 theorem sum_symEdge_wtA : ∀ (Q : Type) [AddCommGroup Q] (ρ k r : ℕ) (hr : r = k + 2 * ρ + 1) (s : Bool) (F : Fin r → Fin r → Q), (∑ i : Fin r, ∑ j : Fin r, if symEdge ρ k i j then GlobalTheory.Mem.SymChar.wtA ρ k s i j • F i j else 0) = (∑ a : Fin ρ, F ⟨a.1, by have := a.2; omega⟩ ⟨if a.1 + 1 < ρ then a.1 + 1 else ρ + k, by have := a.2; split_ifs <;> omega⟩) + ∑ i : Fin k, if h : i.1 + 1 < k then (if s then F ⟨ρ + i.1, by omega⟩ ⟨ρ + i.1 + 1, by omega⟩ else 0) else 0 := by
   intro Q _ ρ k r hr s F
   rw [Finset.sum_congr rfl (fun i _ => inner_eq ρ k r hr s F i)]

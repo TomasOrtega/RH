@@ -11,6 +11,23 @@ namespace GlobalTheory
 
 open Complex
 
+/- English proof (translation)
+Establish `hua : ∀ a ∈ U, ContDiffAt ℝ 2 u a` using `fun a ha => (hu.contDiffAt (hU.mem_nhds ha)).of_le (WithTop.coe_le_coe.2 le_top)`. Use `set e : StrongDual ℝ (Pt E g) ≃L[ℝ] StrongDual ℂ (Pt E g) := StrongDual.extendRCLikeL with he`. Establish `he' : ∀ (l : StrongDual ℝ (Pt E g)) (v : Pt E g), e l v = l v - I * l (I • v)` using `fun l v => rfl`. Use `set R : (Pt E g →L[ℂ] ℂ) →L[ℝ] (Pt E g →L[ℝ] ℂ) := ContinuousLinearMap.restrictScalarsL ℂ (Pt E g) ℂ ℝ ℝ with hR`. Use `set L : StrongDual ℝ (Pt E g) →L[ℝ] (Pt E g →L[ℝ] ℂ) := R.comp (e : StrongDual ℝ (Pt E g) →L[ℝ] StrongDual ℂ (Pt E g)) with hL`.
+
+Establish `hLv : ∀ (l : StrongDual ℝ (Pt E g)) (v : Pt E g), L l v = l v - I * l (I • v)` using `fun l v => rfl`. Establish `hD : ∀ a ∈ U, HasFDerivAt (fderiv ℝ u) (fderiv ℝ (fderiv ℝ u) a) a` using `fun a ha => (((hua a ha).fderiv_right (m := 1) (by norm_num)).differentiableAt (by simp)).hasFDerivAt`. Establish `hω : ∀ a ∈ U, HasFDerivAt (fun x => L (fderiv ℝ u x)) (L.comp (fderiv ℝ (fderiv ℝ u) a)) a` using `fun a ha => L.hasFDerivAt.comp a (hD a ha)`. Establish `hωc : ContDiffOn ℝ 1 (fun x => L (fderiv ℝ u x)) U` using `L.contDiff.comp_contDiffOn (hu.fderiv_of_isOpen hU (WithTop.coe_le_coe.2 le_top))`. Take `⟨F, hF⟩` from `GlobalTheory.T.exists_primitive_closed_one_form (fun x => L (fderiv ℝ u x)) hU hsc hωc fun a ha x y => by`.
+
+Rewrite using `[(hω a ha).fderiv]`. Use `set B := fderiv ℝ (fderiv ℝ u) a with hB`. Establish `hsym : ∀ x y, B x y = B y x` using `(hua a ha).isSymmSndFDerivAt (by simp)`. Establish `hdir : ∀ v c, fderiv ℝ (fun Q => fderiv ℝ u Q c) a v = B v c` using `fun v c => by`. Rewrite using `[((hD a ha).clm_apply (hasFDerivAt_const c a)).fderiv]`.
+
+Simplify using `[hB]`. Establish `h4 : B x (I • y) = B y (I • x)`. Use `hddc a ha y x` as an intermediate fact. Simplify using `only [ddc, hdir] at this`. Establish `hπ : (1 / (4 * π) : ℝ) ≠ 0` using `by positivity`.
+
+Use `(mul_eq_zero.1 this).resolve_left hπ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [ContinuousLinearMap.comp_apply, hLv]`. Rewrite using `[h4, hsym x y]`. Establish `hFc : ∀ a ∈ U, HasFDerivAt F (e (fderiv ℝ u a)) a` using `fun a ha => hasFDerivAt_of_restrictScalars ℝ (hF a ha) rfl`.
+
+Establish `hG : ∀ a ∈ U, HasFDerivAt (fun x => (F x).re - u x) (0 : Pt E g →L[ℝ] ℝ) a` using `fun a ha => by`. Establish `h1` using `(reCLM.hasFDerivAt.comp a (hF a ha)).sub ((hua a ha).differentiableAt (by simp)).hasFDerivAt`. Use `h1.congr_fderiv (ContinuousLinearMap.ext fun v => ?_)` and prove the remaining obligations. Simplify using `[hLv]`. Establish `hpc : IsPreconnected U` using `by haveI : ConnectedSpace U := inferInstance`.
+
+Conclude with `isPreconnected_iff_preconnectedSpace.2 inferInstance`. Take `⟨c, hc⟩` from `hU.exists_is_const_of_fderiv_eq_zero (𝕜 := ℝ) hpc (fun a ha => (hG a ha).differentiableAt.differentiableWithinAt) fun a ha => (hG a ha).fderiv`. Use `⟨fun x => F x - c, fun a ha => ((hFc a ha).differentiableAt.sub_const _).differentiableWithinAt, fun x hx => ?_⟩` and prove the remaining obligations. Use `hc x hx` as an intermediate fact. Simplify using `only [sub_re, ofReal_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_differentiableOn_re_eq_of_ddc_eq_zero {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] {U : Set (Pt E g)} (u : Pt E g → ℝ)
     (hU : IsOpen U) (hsc : SimplyConnectedSpace U) (hu : ContDiffOn ℝ ∞ u U)

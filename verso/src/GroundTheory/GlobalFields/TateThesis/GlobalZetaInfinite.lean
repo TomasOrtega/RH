@@ -15,22 +15,41 @@ section Completion
 
 variable {K : Type*} [Field K]
 
+/- English proof (translation)
+The claim follows from `(isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) z`.
+-/
 theorem norm_isometryEquivRealOfIsReal {w : InfinitePlace K} (hw : w.IsReal) (z : w.Completion) :
     ‖isometryEquivRealOfIsReal hw z‖ = ‖z‖ :=
   (isometry_extensionEmbeddingOfIsReal hw).norm_map_of_map_zero (map_zero _) z
 
+/- English proof (translation)
+The claim follows from `(isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) z`.
+-/
 theorem norm_isometryEquivComplexOfIsComplex {w : InfinitePlace K} (hw : w.IsComplex)
     (z : w.Completion) : ‖isometryEquivComplexOfIsComplex hw z‖ = ‖z‖ :=
   (isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) z
 
+/- English proof (translation)
+Unfold `InfinitePlace.mult`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem one_le_mult (w : InfinitePlace K) : (1 : ℝ) ≤ w.mult := by
   unfold InfinitePlace.mult
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Unfold `InfinitePlace.mult`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 theorem mult_le_two (w : InfinitePlace K) : (w.mult : ℝ) ≤ 2 := by
   unfold InfinitePlace.mult
   split_ifs <;> norm_num
 
+/- English proof (translation)
+Establish `hm : Measurable fun z : w.Completion ↦ ENNReal.ofReal ((1 + ‖z‖) ^ (-r))` using `ENNReal.measurable_ofReal.comp ((continuous_const.add continuous_norm).rpow_const fun z ↦ Or.inl (add_pos_of_pos_of_nonneg one_pos (norm_nonneg z)).ne').measurable`. Distinguish the cases in `hw : w.IsReal`. Rewrite using `[infinitePlaceMeasure_of_isReal hw, lintegral_map hm (isometryEquivRealOfIsReal hw).symm.continuous.measurable]`. Establish `h : ∀ y : ℝ, ‖(isometryEquivRealOfIsReal hw).symm y‖ = ‖y‖` using `fun y ↦ by`. Rewrite using `[← norm_isometryEquivRealOfIsReal hw, IsometryEquiv.apply_symm_apply]`.
+
+Repeatedly rewrite using `[h]`. Conclude with `finite_integral_one_add_norm (by simp; linarith)`. Establish `hc` using `not_isReal_iff_isComplex.1 hw`. Rewrite using `[infinitePlaceMeasure_of_isComplex hc, lintegral_map hm (isometryEquivComplexOfIsComplex hc).symm.continuous.measurable]`. Establish `h : ∀ y : ℂ, ‖(isometryEquivComplexOfIsComplex hc).symm y‖ = ‖y‖` using `fun y ↦ by`.
+
+Rewrite using `[← norm_isometryEquivComplexOfIsComplex hc, IsometryEquiv.apply_symm_apply]`. Repeatedly rewrite using `[h]`. Establish `: ((2 : ℝ≥0∞) • (volume : Measure ℂ)).IsAddHaarMeasure` using `Measure.IsAddHaarMeasure.smul _ (by norm_num) (by simp)`. Conclude with `finite_integral_one_add_norm (by simp [Complex.finrank_real_complex]; linarith)`.
+-/
 theorem lintegral_one_add_norm_rpow_neg_lt_top (w : InfinitePlace K) {r : ℝ} (hr : 2 < r) :
     ∫⁻ z, ENNReal.ofReal ((1 + ‖z‖) ^ (-r)) ∂infinitePlaceMeasure w < ∞ := by
   have hm : Measurable fun z : w.Completion ↦ ENNReal.ofReal ((1 + ‖z‖) ^ (-r)) :=
@@ -54,6 +73,11 @@ theorem lintegral_one_add_norm_rpow_neg_lt_top (w : InfinitePlace K) {r : ℝ} (
       Measure.IsAddHaarMeasure.smul _ (by norm_num) (by simp)
     exact finite_integral_one_add_norm (by simp [Complex.finrank_real_complex]; linarith)
 
+/- English proof (translation)
+Establish `he` using `measurableEmbedding_units_val (F := F)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[unitsMeasure, he.map_comap]`. Use `_ ≤ ∫⁻ z, g z ∂(μ.withDensity fun x ↦ ENNReal.ofReal (‖x‖ ^ m)⁻¹) := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ z, ENNReal.ofReal (‖z‖ ^ m)⁻¹ * g z ∂μ := by`.
+
+Rewrite using `[lintegral_withDensity_eq_lintegral_mul _ (measurable_density_unitsMeasure m) hg]`. Both sides reduce to the same expression.
+-/
 theorem lintegral_unitsMeasure_le {F : Type*} [NormedField F] [LocallyCompactSpace F]
     [SecondCountableTopology F] [MeasurableSpace F] [BorelSpace F] (μ : Measure F) (m : ℕ)
     {g : F → ℝ≥0∞} (hg : Measurable g) :
@@ -73,11 +97,27 @@ theorem lintegral_unitsMeasure_le {F : Type*} [NormedField F] [LocallyCompactSpa
 def placeZetaBound (w : InfinitePlace K) (σ : ℝ) (k : ℕ) (z : (w.Completion)ˣ) : ℝ :=
   ‖(z : w.Completion)‖ ^ ((w.mult : ℝ) * σ) / (1 + ‖(z : w.Completion)‖) ^ k
 
+/- English proof (translation)
+The claim follows from `(continuous_norm.rpow_const fun _ ↦ Or.inr (mul_nonneg (Nat.cast_nonneg _) hσ)).div ((continuous_const.add continuous_norm).pow k) fun _ ↦ by positivity`.
+-/
 theorem continuous_placeZetaBound (w : InfinitePlace K) {σ : ℝ} (hσ : 0 ≤ σ) (k : ℕ) :
     Continuous fun z : w.Completion ↦ ‖z‖ ^ ((w.mult : ℝ) * σ) / (1 + ‖z‖) ^ k :=
   (continuous_norm.rpow_const fun _ ↦ Or.inr (mul_nonneg (Nat.cast_nonneg _) hσ)).div
     ((continuous_const.add continuous_norm).pow k) fun _ ↦ by positivity
 
+/- English proof (translation)
+Establish `hG` using `continuous_placeZetaBound w (by linarith : (0 : ℝ) ≤ σ) k`. Use `⟨(hG.comp Units.continuous_val).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall fun z ↦ by`. Unfold `placeZetaBound`. Use the proof step `positivity)]`.
+
+Use `(lintegral_unitsMeasure_le (infinitePlaceMeasure w) w.mult (g := fun z ↦ ENNReal.ofReal (‖z‖ ^ ((w.mult : ℝ) * σ) / (1 + ‖z‖) ^ k)) (ENNReal.measurable_ofReal.comp hG.measurable)).trans_lt ?_` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun z ↦ ?_) (lintegral_one_add_norm_rpow_neg_lt_top w (r := k - 2 * σ) (by linarith))` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hm1` using `one_le_mult w`.
+
+Establish `hm2` using `mult_le_two w`. Use `set t := ‖z‖`. Establish `ht : 0 ≤ t` using `norm_nonneg _`. Establish `ha : 1 ≤ 1 + t` using `by linarith`. Establish `hapos : 0 < 1 + t` using `by linarith`.
+
+Break down `ht.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0, Real.zero_rpow (by positivity), zero_div, mul_zero]`. Check the signs of the components of the expression. Establish `e1 : (t ^ w.mult)⁻¹ * (t ^ ((w.mult : ℝ) * σ) / (1 + t) ^ k) = t ^ ((w.mult : ℝ) * σ - w.mult) * ((1 + t) ^ (k : ℝ))⁻¹`. Rewrite using `[← Real.rpow_natCast t w.mult, ← Real.rpow_natCast (1 + t) k, Real.rpow_sub hpos, div_eq_mul_inv, div_eq_mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (1 + t) ^ (-((k : ℝ) - 2 * σ)) = (1 + t) ^ (2 * σ) * ((1 + t) ^ (k : ℝ))⁻¹`. Rewrite using `[← Real.rpow_neg hapos.le, ← Real.rpow_add hapos]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, e2]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem integrable_placeZetaBound (w : InfinitePlace K) {σ : ℝ} (hσ : 1 ≤ σ) {k : ℕ}
     (hk : 2 * σ + 2 < k) : Integrable (placeZetaBound w σ k) (infinitePlaceUnitsMeasure w) := by
   have hG := continuous_placeZetaBound w (by linarith : (0 : ℝ) ≤ σ) k
@@ -123,6 +163,9 @@ def infiniteZetaBound (σ : ℝ) (k : ℕ) (a : (InfiniteAdeleRing K)ˣ) : ℝ :
   ∏ w : InfinitePlace K, ‖(a : InfiniteAdeleRing K) w‖ ^ ((w.mult : ℝ) * σ) /
     (1 + ‖(a : InfiniteAdeleRing K) w‖) ^ k
 
+/- English proof (translation)
+Establish `h` using `Integrable.fintype_prod_dep (𝕜 := ℝ) (f := fun w : InfinitePlace K ↦ placeZetaBound w σ k) (μ := fun w ↦ infinitePlaceUnitsMeasure w) fun w ↦ integrable_placeZetaBound w hσ hk`. Rewrite using `[infiniteIdeleMeasure]`. Use `(integrable_map_equiv (infiniteUnitsEquiv K).symm.toHomeomorph.toMeasurableEquiv _).2 ?_` and prove the remaining obligations. Conclude with `h`.
+-/
 theorem integrable_infiniteZetaBound {σ : ℝ} (hσ : 1 ≤ σ) {k : ℕ} (hk : 2 * σ + 2 < k) :
     Integrable (infiniteZetaBound (K := K) σ k) (infiniteIdeleMeasure K) := by
   have h := Integrable.fintype_prod_dep (𝕜 := ℝ) (f := fun w : InfinitePlace K ↦ placeZetaBound w σ k)
@@ -131,6 +174,13 @@ theorem integrable_infiniteZetaBound {σ : ℝ} (hσ : 1 ≤ σ) {k : ℕ} (hk :
   refine (integrable_map_equiv (infiniteUnitsEquiv K).symm.toHomeomorph.toMeasurableEquiv _).2 ?_
   exact h
 
+/- English proof (translation)
+Distinguish the cases in `hw : w.IsReal`. Establish `h1 : (homeomorphMixedSpace K x).1 ⟨w, hw⟩ = isometryEquivRealOfIsReal hw (x w)` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, norm_isometryEquivRealOfIsReal]`. Use `_ ≤ ‖(homeomorphMixedSpace K x).1‖ := norm_le_pi_norm _ _`.
+
+Use `_ ≤ ‖homeomorphMixedSpace K x‖ := norm_fst_le _`. Establish `hc` using `not_isReal_iff_isComplex.1 hw`. Establish `h1 : (homeomorphMixedSpace K x).2 ⟨w, hc⟩ = isometryEquivComplexOfIsComplex hc (x w)` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, norm_isometryEquivComplexOfIsComplex]`.
+
+Use `_ ≤ ‖(homeomorphMixedSpace K x).2‖ := norm_le_pi_norm _ _`. Use `_ ≤ ‖homeomorphMixedSpace K x‖ := norm_snd_le _`.
+-/
 theorem norm_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : InfinitePlace K) :
     ‖x w‖ ≤ ‖homeomorphMixedSpace K x‖ := by
   by_cases hw : w.IsReal
@@ -147,6 +197,13 @@ theorem norm_le_norm_homeomorphMixedSpace (x : InfiniteAdeleRing K) (w : Infinit
       _ ≤ ‖(homeomorphMixedSpace K x).2‖ := norm_le_pi_norm _ _
       _ ≤ ‖homeomorphMixedSpace K x‖ := norm_snd_le _
 
+/- English proof (translation)
+Use `set d := Fintype.card (InfinitePlace K)`. Use `set C := 2 ^ (k * d) * (Finset.Iic (k * d, 0)).sup (fun m ↦ SchwartzMap.seminorm ℝ m.1 m.2) φ`. Use `⟨C, by positivity, fun x ↦ ?_⟩` and prove the remaining obligations. Use `set y := homeomorphMixedSpace K x`. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k * d, 0)) le_rfl le_rfl φ y`.
+
+Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Establish `hprod : ∏ w, (1 + ‖x w‖) ^ k ≤ (1 + ‖y‖) ^ (k * d)`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ∏ w, (1 + ‖x w‖) ^ k` using `Finset.prod_pos fun w _ ↦ by positivity`. Rewrite using `[Finset.prod_inv_distrib, ← div_eq_mul_inv, le_div_iff₀ hpos]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_norm_schwartz_le_prod (φ : 𝓢(mixedSpace K, ℂ)) (k : ℕ) :
     ∃ C, 0 ≤ C ∧ ∀ x : InfiniteAdeleRing K,
       ‖φ (homeomorphMixedSpace K x)‖ ≤ C * ∏ w, ((1 + ‖x w‖) ^ k)⁻¹ := by

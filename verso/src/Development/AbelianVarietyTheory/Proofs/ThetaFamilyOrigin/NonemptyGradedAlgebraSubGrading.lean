@@ -9,6 +9,11 @@ section Forms
 
 variable {K σ : Type} [Field K]
 
+/- English proof (translation)
+Use `conv_lhs => rw [G.as_sum]`. Use `conv_rhs => rw [G.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmn : m.degree = n`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hm) (hG.coeff_eq_zero hne)`. Rewrite using `[aeval_monomial, aeval_monomial, ← hmn]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, mul_assoc, Finsupp.degree_apply]`.
+-/
 theorem aeval_mul_of_isHomogeneous {S : Type} [CommRing S] [Algebra K S] (a : σ → S) (w : S)
     {G : MvPolynomial σ K} {n : ℕ} (hG : G.IsHomogeneous n) :
     aeval (fun j => a j * w) G = aeval a G * w ^ n := by
@@ -23,6 +28,11 @@ theorem aeval_mul_of_isHomogeneous {S : Type} [CommRing S] [Algebra K S] (a : σ
   simp only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum,
     mul_assoc, Finsupp.degree_apply]
 
+/- English proof (translation)
+Use `⟨F.totalDegree, ∑ n ∈ Finset.range (F.totalDegree + 1), homogeneousComponent n F * X i ^ (F.totalDegree - n), ?_, fun S _ _ a ha => ?_⟩` and prove the remaining obligations. Use `IsHomogeneous.sum _ _ _ fun n hn => ?_` and prove the remaining obligations. Establish `hn'` using `Finset.mem_range.mp hn`. Establish `h1` using `(homogeneousComponent_isHomogeneous n F).mul ((isHomogeneous_X K i).pow (F.totalDegree - n))`. Establish `h2 : n + 1 * (F.totalDegree - n) = F.totalDegree` using `by omega`.
+
+Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `conv_rhs => rw [← sum_homogeneousComponent F]`. Simplify using `[map_sum, ha]`.
+-/
 theorem exists_homogenisation (F : MvPolynomial σ K) (i : σ) :
     ∃ (n : ℕ) (G : MvPolynomial σ K), G.IsHomogeneous n ∧
       ∀ (S : Type) [CommRing S] [Algebra K S] (a : σ → S), a i = 1 → aeval a G = aeval a F := by
@@ -37,6 +47,11 @@ theorem exists_homogenisation (F : MvPolynomial σ K) (i : σ) :
   · conv_rhs => rw [← sum_homogeneousComponent F]
     simp [map_sum, ha]
 
+/- English proof (translation)
+Rewrite using `[G.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Establish `hmn : m.degree = n`. Assume the negation of the conclusion as `hne`. Conclude with `(mem_support_iff.mp hm) (hG.coeff_eq_zero hne)`.
+
+Rewrite using `[aeval_monomial, ← Algebra.smul_def]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h` using `SetLike.prod_pow_mem_graded 𝒜 (F := m.support) (fun _ => N) x m (fun j _ => hx j)`. Rewrite using `[← hmn, Finsupp.degree_apply, Finset.mul_sum]`. Simplify `h` using `[Finsupp.prod, mul_comm]`.
+-/
 theorem aeval_mem_of_isHomogeneous {R : Type} [CommRing R] [Algebra K R] (𝒜 : ℕ → Submodule K R)
     [SetLike.GradedMonoid 𝒜] {N : ℕ} {x : σ → R} (hx : ∀ j, x j ∈ 𝒜 N)
     {G : MvPolynomial σ K} {n : ℕ} (hG : G.IsHomogeneous n) : aeval x G ∈ 𝒜 (N * n) := by
@@ -51,6 +66,15 @@ theorem aeval_mem_of_isHomogeneous {R : Type} [CommRing R] [Algebra K R] (𝒜 :
   rw [← hmn, Finsupp.degree_apply, Finset.mul_sum]
   simpa [Finsupp.prod, mul_comm] using h
 
+/- English proof (translation)
+Establish `hm : ∀ n, aeval x (homogeneousComponent n G) ∈ 𝒜 n` using `fun n => by`. Simplify using `using aeval_mem_of_isHomogeneous 𝒜 hx (homogeneousComponent_isHomogeneous n G)`. Prove the components needed by the constructor for the conclusion. Introduce `h n`. Distinguish the cases in `hn : n ∈ Finset.range (G.totalDegree + 1)`.
+
+Rewrite `h` using `[← sum_homogeneousComponent G, map_sum]`. Establish `h2` using `congrArg (GradedRing.proj 𝒜 n) h`. Rewrite `h2` using `[map_sum, map_zero, Finset.sum_eq_single n]`. Rewrite `h2` using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_same 𝒜 (hm n)]`. Then use the resulting hypothesis. Introduce `b _ hb`.
+
+Rewrite using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 (hm b) hb]`. Conclude with `fun h' => absurd hn h'`. Rewrite using `[homogeneousComponent_eq_zero _ _ (by simpa using hn), map_zero]`. Introduce `h`. Rewrite using `[← sum_homogeneousComponent G, map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun n _ => h n`.
+-/
 theorem aeval_eq_zero_iff_components {R : Type} [CommRing R] [Algebra K R] (𝒜 : ℕ → Submodule K R)
     [GradedAlgebra 𝒜] {x : σ → R} (hx : ∀ j, x j ∈ 𝒜 1) (G : MvPolynomial σ K) :
     aeval x G = 0 ↔ ∀ n, aeval x (homogeneousComponent n G) = 0 := by
@@ -71,6 +95,15 @@ theorem aeval_eq_zero_iff_components {R : Type} [CommRing R] [Algebra K R] (𝒜
     rw [← sum_homogeneousComponent G, map_sum]
     exact Finset.sum_eq_zero fun n _ => h n
 
+/- English proof (translation)
+Establish `hm : ∀ n, aeval (fun j => Polynomial.C (r j) * Polynomial.X) (homogeneousComponent n G) = Polynomial.C (aeval r (homogeneousComponent n G)) * Polynomial.X ^ n` using `fun n => by`. Rewrite using `[aeval_mul_of_isHomogeneous _ _ (homogeneousComponent_isHomogeneous n G)]`. Use `congr 1`. Conclude with `(comp_aeval_apply r (Polynomial.CAlgHom (R := K) (A := C)) _).symm`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h n`. Distinguish the cases in `hn : n ∈ Finset.range (G.totalDegree + 1)`. Rewrite `h` using `[← sum_homogeneousComponent G, map_sum]`. Establish `h2` using `congrArg (fun p => Polynomial.coeff p n) h`. Simplify using `only [Polynomial.finset_sum_coeff, hm, Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h2`.
+
+Rewrite `h2` using `[Finset.sum_eq_single n]`. Simplify using `using h2`. Introduce `b _ hb`. Rewrite using `[if_neg (Ne.symm hb)]`. Conclude with `fun h' => absurd hn h'`.
+
+Rewrite using `[homogeneousComponent_eq_zero _ _ (by simpa using hn), map_zero]`. Introduce `h`. Rewrite using `[← sum_homogeneousComponent G, map_sum]`. Conclude with `Finset.sum_eq_zero fun n _ => by rw [hm, h, map_zero, zero_mul]`.
+-/
 theorem aeval_cone_eq_zero_iff {C : Type} [CommRing C] [Algebra K C] (r : σ → C)
     (G : MvPolynomial σ K) :
     aeval (fun j => Polynomial.C (r j) * Polynomial.X) G = 0 ↔
@@ -96,11 +129,33 @@ theorem aeval_cone_eq_zero_iff {C : Type} [CommRing C] [Algebra K C] (r : σ →
     rw [← sum_homogeneousComponent G, map_sum]
     exact Finset.sum_eq_zero fun n _ => by rw [hm, h, map_zero, zero_mul]
 
+/- English proof (translation)
+Use `haveI : FaithfulSMul K B := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap K B).injective`. Rewrite using `[← trdeg_add_eq K B (A := A), trdeg_eq_zero (R := B) (A := A), add_zero]`.
+-/
 theorem trdeg_eq_of_isAlgebraic {A : Type} [CommRing A] [IsDomain A] [Algebra K A]
     (B : Subalgebra K A) [Algebra.IsAlgebraic B A] : Algebra.trdeg K A = Algebra.trdeg K B := by
   haveI : FaithfulSMul K B := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap K B).injective
   rw [← trdeg_add_eq K B (A := A), trdeg_eq_zero (R := B) (A := A), add_zero]
 
+/- English proof (translation)
+Use `haveI : Algebra.FiniteType K C := Algebra.FiniteType.of_surjective _ hr`. Take `⟨s, hs, hs'⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := K) (A := C)`. Choose the witnesses or unpack the hypotheses as in `rfl : s = g := by`. Rewrite `hg` using `[hs]`. Conclude with `hg` after adjusting the coercions.
+
+Use `ReciprocityTheory.CA.ringKrullDim_eq_of_trdeg_eq_field (K := K) _ ?_` and prove the remaining obligations. Use `set cone : MvPolynomial σ K →ₐ[K] Polynomial C := aeval (fun j => Polynomial.C (r j) * Polynomial.X) with hcone`. Establish `hker : RingHom.ker (aeval x : MvPolynomial σ K →ₐ[K] T) = RingHom.ker cone`. Use extensionality with `G`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker, aeval_eq_zero_iff_components 𝒜 hx, hcone, aeval_cone_eq_zero_iff]`.
+
+Conclude with `forall_congr' fun n => hrel n _ (homogeneousComponent_isHomogeneous n G)`. Establish `e : (aeval x : MvPolynomial σ K →ₐ[K] T).range ≃ₐ[K] cone.range` using `(Ideal.quotientKerEquivRange _).symm.trans ((Ideal.quotientEquivAlgOfEq K hker).trans (Ideal.quotientKerEquivRange _))`. Establish `hX : Polynomial.X ∈ cone.range` using `⟨X i, by simp [hcone, hi]⟩`. Establish `key : ∀ p : Polynomial C, ∃ n : ℕ, Polynomial.X ^ n * p ∈ cone.range`. Introduce `p`.
+
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`. Use `⟨a + b, ?_⟩` and prove the remaining obligations.
+
+Establish `: Polynomial.X ^ (a + b) * (p + q) = Polynomial.X ^ b * (Polynomial.X ^ a * p) + Polynomial.X ^ a * (Polynomial.X ^ b * q)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `add_mem (mul_mem (pow_mem hX _) ha) (mul_mem (pow_mem hX _) hb)`. Consider the case `monomial d c`.
+
+Take `⟨F, rfl⟩` from `hr c`. Take `⟨n, G, hG, hF⟩` from `exists_homogenisation F i`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h1 : cone G = Polynomial.C (aeval r F) * Polynomial.X ^ n`. Rewrite using `[hcone, aeval_mul_of_isHomogeneous _ _ hG, ← hF C r hi]`.
+
+Use `congr 1`. Conclude with `(comp_aeval_apply r (Polynomial.CAlgHom (R := K) (A := C)) _).symm`. Establish `: Polynomial.X ^ n * Polynomial.monomial d (aeval r F) = cone G * Polynomial.X ^ d`. Rewrite using `[h1, ← Polynomial.C_mul_X_pow_eq_monomial]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `mul_mem ⟨G, rfl⟩ (pow_mem hX _)`. Use `haveI : Algebra.IsAlgebraic cone.range (Polynomial C) := ⟨fun p => by`. Take `⟨n, hn⟩` from `key p`. Use `IsAlgebraic.of_smul (y := (⟨Polynomial.X ^ n, pow_mem hX n⟩ : cone.range)) (mem_nonZeroDivisors_of_ne_zero fun h => ?_) ?_` and prove the remaining obligations.
+
+Conclude with `pow_ne_zero n Polynomial.X_ne_zero (congrArg Subtype.val h)`. Conclude with `isAlgebraic_algebraMap (⟨_, hn⟩ : cone.range)⟩`. Rewrite using `[trdeg_eq_of_isAlgebraic (Algebra.adjoin K (Set.range x)), Algebra.adjoin_range_eq_range_aeval, e.trdeg_eq, ← trdeg_eq_of_isAlgebraic cone.range, ← trdeg_add_eq K C (A := Polynomial C), hs', Polynomial.trdeg_of_isDomain]`. Simplify using the standard rewrite rules.
+-/
 theorem ringKrullDim_cone {T C : Type} [CommRing T] [IsDomain T] [Algebra K T]
     [Algebra.FiniteType K T] (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] [Finite σ] {x : σ → T}
     (hx : ∀ j, x j ∈ 𝒜 1) [Algebra.IsIntegral (Algebra.adjoin K (Set.range x)) T]
@@ -169,9 +224,31 @@ variable {K R : Type} [Field K] [CommRing R] [Algebra K R]
 def subGrading (𝒜 : ℕ → Submodule K R) (N : ℕ) (T : Subalgebra K R) (e : ℕ) : Submodule K T :=
   (𝒜 (N * e)).comap T.val.toLinearMap
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_subGrading {𝒜 : ℕ → Submodule K R} {N : ℕ} {T : Subalgebra K R} {e : ℕ} {y : T} :
     y ∈ subGrading 𝒜 N T e ↔ (y : R) ∈ 𝒜 (N * e) := Iff.rfl
 
+/- English proof (translation)
+Use `set T := Algebra.adjoin K S with hT`. Use `haveI gm : SetLike.GradedMonoid (subGrading 𝒜 N T) := { one_mem := by`. Rewrite using `[mem_subGrading]`. Simplify using `using SetLike.one_mem_graded 𝒜`. Use `mul_mem := fun i j a b ha hb => by`.
+
+Rewrite `ha`, `hb`, the goal using `[mem_subGrading]`. Simplify `SetLike.mul_mem_graded ha hb }` using `[mul_add]`. Establish `hind : iSupIndep (subGrading 𝒜 N T)`. Establish `h0 : iSupIndep 𝒜` using `(DirectSum.Decomposition.isInternal 𝒜).submodule_iSupIndep`. Establish `h1 : iSupIndep (fun e => 𝒜 (N * e))` using `h0.comp (f := fun e => N * e) fun a b h => Nat.eq_of_mul_eq_mul_left hN h`.
+
+Introduce `e`. Rewrite using `[Submodule.disjoint_def]`. Introduce `y hy hy'`. Use `Subtype.ext ((Submodule.disjoint_def.1 (h1 e)) _ hy ?_)` and prove the remaining obligations. Establish `: (⨆ j, ⨆ (_ : j ≠ e), subGrading 𝒜 N T j) ≤ (⨆ j, ⨆ (_ : j ≠ e), 𝒜 (N * j)).comap T.val.toLinearMap` using `iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂ (f := fun j (_ : j ≠ e) => 𝒜 (N * j)) j hj)`.
+
+Conclude with `this hy'`. Establish `htop : ⨆ e, subGrading 𝒜 N T e = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨y, hy⟩ -`. Proceed by induction on `hy using Algebra.adjoin_induction with`.
+
+Consider the case `mem y hy`. Take `⟨e, he⟩` from `hS y hy`. Conclude with `Submodule.mem_iSup_of_mem e he`. Consider the case `algebraMap r`. Use `Submodule.mem_iSup_of_mem 0 ?_` and prove the remaining obligations.
+
+Rewrite using `[mem_subGrading]`. Simplify using `using SetLike.algebraMap_mem_graded 𝒜 r`. Consider the case `add a b ha hb h1 h2 => exact add_mem h1 h2`. Consider the case `mul a b ha hb h1 h2`. Express the relevant statement in the definitionally equal form `(⟨a, ha⟩ : T) * ⟨b, hb⟩ ∈ _`.
+
+Generalize the expression as in `(⟨a, ha⟩ : T) = u at h1`. Generalize the expression as in `(⟨b, hb⟩ : T) = v at h2`. Proceed by induction on `h1 using Submodule.iSup_induction' with`. Consider the case `mem i u hu`. Proceed by induction on `h2 using Submodule.iSup_induction' with`.
+
+Consider the case `mem j v hv => exact Submodule.mem_iSup_of_mem (i + j) (SetLike.mul_mem_graded hu hv)`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [mul_add]`. Conclude with `add_mem hv hw`. Consider the case `zero => simp`.
+
+Consider the case `add v w _ _ hv hw => rw [add_mul]`. Conclude with `add_mem hv hw`. Conclude with `⟨{ gm, ((DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2 ⟨hind, htop⟩).chooseDecomposition with }⟩`.
+-/
 theorem nonempty_gradedAlgebra_subGrading (𝒜 : ℕ → Submodule K R) [GradedAlgebra 𝒜] {N : ℕ}
     (hN : 1 ≤ N) (S : Set R) (hS : ∀ y ∈ S, ∃ e, y ∈ 𝒜 (N * e)) :
     Nonempty (GradedAlgebra (subGrading 𝒜 N (Algebra.adjoin K S))) := by
@@ -223,6 +300,11 @@ theorem nonempty_gradedAlgebra_subGrading (𝒜 : ℕ → Submodule K R) [Graded
   exact ⟨{ gm, ((DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top _).2
     ⟨hind, htop⟩).chooseDecomposition with }⟩
 
+/- English proof (translation)
+Establish `h1` using `congrArg φ hy`. Establish `h2` using `congrArg ψ hy`. Rewrite `h1`, `h2` using `[map_mul, map_pow, comp_aeval_apply]`. Rewrite `h1` using `[show (fun j => φ (x j)) = fun j => ψ (x j) * c from funext h, aeval_mul_of_isHomogeneous _ _ hG, ← h2]`. Use `mul_right_cancel₀ (pow_ne_zero n hi) ?_` and prove the remaining obligations.
+
+Rewrite using `[h1, h i]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_eq_pow_mul {σ : Type} {x : σ → R} {φ ψ : R →ₐ[K] K} {c : K}
     (h : ∀ j, φ (x j) = ψ (x j) * c) {i : σ} (hi : φ (x i) ≠ 0) {y : R} {e n : ℕ}
     {G : MvPolynomial σ K} (hG : G.IsHomogeneous (n + e)) (hy : y * x i ^ n = aeval x G) :
@@ -236,6 +318,33 @@ theorem map_eq_pow_mul {σ : Type} {x : σ → R} {φ ψ : R →ₐ[K] K} {c : K
   rw [h1, h i]
   ring
 
+/- English proof (translation)
+Set `S : Set R` to `Set.range x ∪ ({s} ∪ Set.range f)`. Establish `hS : ∀ y ∈ S, ∃ e, y ∈ 𝒜 (N * e)`. Introduce and unpack `y (⟨j, rfl⟩ | rfl | ⟨j, rfl⟩)`. Conclude with `⟨1, by simpa using hx j⟩`. Conclude with `⟨d, hs⟩`.
+
+Conclude with `⟨a, hf j⟩`. Establish `hSfin : S.Finite` using `(Set.finite_range x).union ((Set.finite_singleton s).union (Set.finite_range f))`. Take `⟨inst⟩` from `nonempty_gradedAlgebra_subGrading 𝒜 hN S hS`. Use `set T := Algebra.adjoin K S with hT`. Use `set ℬ := subGrading 𝒜 N T with hℬ`.
+
+Set `x' : Fin m → T` to `fun j => ⟨x j, Algebra.subset_adjoin (Or.inl ⟨j, rfl⟩)⟩`. Set `s' : T` to `⟨s, Algebra.subset_adjoin (Or.inr (Or.inl rfl))⟩`. Set `f' : ι → T` to `fun j => ⟨f j, Algebra.subset_adjoin (Or.inr (Or.inr ⟨j, rfl⟩))⟩`. Establish `hx' : ∀ j, x' j ∈ ℬ 1` using `fun j => by`. Rewrite using `[hℬ, mem_subGrading]`.
+
+Simplify using `using hx j`. Establish `hval : ∀ G : MvPolynomial (Fin m) K, ((aeval x' G : T) : R) = aeval x G` using `fun G => comp_aeval_apply x' T.val G`. Establish `hform' : ∀ e, ∀ y ∈ ℬ e, ∀ i, ∃ (n : ℕ) (G : MvPolynomial (Fin m) K), G.IsHomogeneous (n + e) ∧ y * x' i ^ n = aeval x' G` using `fun e y hy i => by`. Take `⟨n, G, hG, h⟩` from `hform e y hy i`. Conclude with `⟨n, G, hG, Subtype.ext (by rw [hval, ← h]; rfl)⟩`.
+
+Use `haveI : Algebra.FiniteType K T := Algebra.FiniteType.adjoin_of_finite hSfin`. Use `haveI : Algebra.IsIntegral (Algebra.adjoin K (Set.range x')) T := ⟨fun y => by`. Proceed by induction on `y using DirectSum.Decomposition.inductionOn ℬ with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `@homogeneous e y`.
+
+Use `hInt T ℬ m x' hx' ⟨i₀, fun h => hx₀ (congrArg Subtype.val h)⟩ e y y.2 fun i => ?_` and prove the remaining obligations. Take `⟨n, G, -, h⟩` from `hform' e y y.2 i`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[h, Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨G, rfl⟩`.
+
+Consider the case `add a b ha hb => exact ha.add hb⟩`. Use `haveI : Algebra.FiniteType (Algebra.adjoin K (Set.range x')) T := Algebra.FiniteType.of_restrictScalars_finiteType K _ _`. Establish `hdim : ringKrullDim T = (g + 1 : ℕ)` using `ringKrullDim_cone ℬ hx' r i₀ hi₀ hr (fun n G hG => by`. Rewrite using `[← hrel n G hG, ← hval]`. Conclude with `⟨fun h => by rw [h]; rfl, fun h => Subtype.ext h⟩) g hC`.
+
+Use `haveI : Finite {p : Pt // p ∈ Z ∧ ev p s = 0} := (hZ.subset (fun p hp => hp.1 : {p | p ∈ Z ∧ ev p s = 0} ⊆ Z)).to_subtype`. Set `E` to `(Finite.equivFin {p : Pt // p ∈ Z ∧ ev p s = 0}).symm`. Use `hBez T ℬ m g N d a x' s' (Set.range f') hg hx' Algebra.IsIntegral.finite hdim (fun e he => ?_) hs (fun h => hs0 (congrArg Subtype.val h)) ?_ ⟨(fun p => (ev p).comp T.val) '' Z, hZ.image _, fun φ hφ hφf => ?_⟩ _ (fun j => (ev (E j).1).comp T.val) (fun j => hcov _) (fun j => ⟨(E j) …` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hfin e he`. Use `le_trans ?_ h2` and prove the remaining obligations.
+
+Use `LinearMap.finrank_le_finrank_of_injective (f := T.val.toLinearMap.restrict (p := ℬ e) (q := 𝒜 (N * e)) fun y hy => hy) fun y z h => ?_` and prove the remaining obligations. Establish `h3` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h3)`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hf j`.
+
+Take `⟨i, hi⟩` from `hφ`. Take `⟨p, hp, hp'⟩` from `hpt (fun j => φ (x' j) * (φ (x' i))⁻¹) i (mul_inv_cancel₀ hi) fun n G hG h => by`. Establish `h0 : aeval x' G = 0` using `Subtype.ext (by rw [hval, h]; rfl)`. Rewrite using `[aeval_mul_of_isHomogeneous _ _ hG, ← comp_aeval_apply, h0, map_zero, zero_mul]`. Establish `hc : ∀ e, ∀ y ∈ ℬ e, φ y = (φ (x' i) * (ev p (x i))⁻¹) ^ e * (ev p).comp T.val y` using `fun e y hy => by`.
+
+Take `⟨n, G, hG, h⟩` from `hform' e y hy i`. Use `map_eq_pow_mul (fun j => ?_) hi hG h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ev p (x j) * _`. Rewrite using `[hp' j]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨_, ⟨p, (hZf p).2 fun j => ?_, rfl⟩, _, hc⟩` and prove the remaining obligations. Establish `h1` using `hc a (f' j) (hf j)`. Rewrite `h1` using `[hφf _ ⟨j, rfl⟩]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ (mul_ne_zero hi (inv_ne_zero hp)))`. Introduce and unpack `_ ⟨l, rfl⟩`.
+
+Conclude with `(hZf _).1 (E j).2.1 l`. Introduce and unpack `j j' ⟨c, hc⟩`. Use `E.injective (Subtype.ext (hsep _ _ c fun l => ?_).symm)` and prove the remaining obligations. Simplify using `using hc 1 _ (hx' l)`.
+-/
 theorem card_zeros_le [IsAlgClosed K] [IsDomain R] (𝒜 : ℕ → Submodule K R) [GradedAlgebra 𝒜]
     (hInt : ∀ (T : Type) [CommRing T] [IsDomain T] [Algebra K T] (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] (m : ℕ) (x : Fin m → T), (∀ i, x i ∈ 𝒜 1) → (∃ i, x i ≠ 0) → ∀ (d : ℕ), ∀ s ∈ 𝒜 d, (∀ i, ∃ n : ℕ, s * x i ^ n ∈ Algebra.adjoin K (Set.range x)) → IsIntegral (Algebra.adjoin K (Set.range x)) s)
     (hBez : ∀ (T : Type) [CommRing T] [IsDomain T] [Algebra K T] (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] (m g N d a : ℕ) (x : Fin m → T) (s : T) (F : Set T), 1 ≤ g → (∀ i, x i ∈ 𝒜 1) → Module.Finite (Algebra.adjoin K (Set.range x)) T → ringKrullDim T = (g + 1 : ℕ) → (∀ e, 1 ≤ e → Module.finrank K (𝒜 e) ≤ (N * e) ^ g) → s ∈ 𝒜 d → s ≠ 0 → (∀ f ∈ F, f ∈ 𝒜 a) → (∃ Φ : Set (T →ₐ[K] K), Φ.Finite ∧ ∀ φ : T →ₐ[K] K, (∃ i, φ (x i) ≠ 0) → (∀ f ∈ F, φ f = 0) → ∃ ψ ∈ Φ, (∃ c : K, ∀ (e : ℕ), ∀ y ∈ 𝒜 e, φ y = c ^ e * ψ y)) → ∀ (n : ℕ) (φ : Fin n → (T →ₐ[K] K)), (∀ j, ∃ i, φ j (x i) ≠ 0) → (∀ j, φ j s = 0 ∧ ∀ f ∈ F, φ j f = 0) → (∀ j j', (∃ c : K, ∀ (e : ℕ), ∀ y ∈ 𝒜 e, φ j' y = c ^ e * φ j y) → j = j') → n ≤ N ^ g * g.factorial * d * a ^ (g - 1))

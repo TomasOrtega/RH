@@ -18,6 +18,17 @@ variable {R : Type} [CommRing R]
 
 open Formalism.FG.SolveVAux in
 
+/- English proof (translation)
+Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Establish `hlow : ∀ s, Low 1 (a s)` using `fun s => (low_one_iff _).2 (ha s)`. Rewrite using `[coeff_subst hs, finsum_eq_sum_of_support_subset _ (s := Finset.univ.image (fun s : σ => Finsupp.single s 1))]`. Rewrite using `[Finset.sum_image (fun p _ q _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.prod_single_index (h := fun (s : σ) (e : ℕ) => a s ^ e) (pow_zero _), pow_one, smul_eq_mul]`. Introduce `e he`. Rewrite `he` using `[Function.mem_support]`. Assume the negation of the conclusion as `hne`. Apply `he` to reduce the goal to its premises.
+
+Establish `hz : coeff (Finsupp.single t 1) (e.prod fun s n => a s ^ n) = 0`. Break down `Nat.lt_or_ge e.degree 2 with hd | hd` into its components or cases. Break down `Nat.lt_or_ge e.degree 1 with hd1 | hd1` into its components or cases. Establish `he0 : e = 0`. Establish `: e.degree = 0` using `by omega`.
+
+Conclude with `(Finsupp.degree_eq_zero_iff e).1 this`. Rewrite using `[he0, Finsupp.prod_zero_index, coeff_one, if_neg]`. Conclude with `Finsupp.single_ne_zero.2 one_ne_zero`. Take `⟨p, rfl⟩` from `degree_eq_one e (by omega)`. Conclude with `absurd (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ p))) hne`.
+
+Establish `hl` using `low_P hlow e`. Conclude with `hl _ (by rw [Finsupp.degree_single]; omega)`. Rewrite using `[hz, smul_zero]`.
+-/
 theorem coeff_single_subst {σ τ : Type} [Fintype σ] [DecidableEq σ] [DecidableEq τ]
     (a : σ → MvPowerSeries τ R) (ha : ∀ s, constantCoeff (a s) = 0) (f : MvPowerSeries σ R) (t : τ) :
     coeff (Finsupp.single t 1) (subst a f) =
@@ -65,10 +76,16 @@ def linPt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {d : ℕ}
 
+/- English proof (translation)
+Simplify using `[linPt]`.
+-/
 theorem cc_linPt {n : ℕ} (uvec : Lt1 Dw → Fin d → S) (b : Fin n) (i : Fin d) :
     constantCoeff (linPt uvec b i) = 0 := by
   simp [linPt]
 
+/- English proof (translation)
+Rewrite using `[linPt, ← coe_substAlgHom ha, map_sum]`. Use `Finset.sum_congr rfl fun ℓ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, coe_substAlgHom, subst_X ha]`. Use `congr 1`. Rewrite using `[MvPowerSeries.subst_C]`.
+-/
 theorem subst_linPt {n m : ℕ} (uvec : Lt1 Dw → Fin d → S) (b : Fin n)
     (a : Fin n × Fin (dL Dw) → MvPowerSeries (Fin m × Fin (dL Dw)) S) (ha : HasSubst a) (i : Fin d) :
     subst a (linPt uvec b i) = ∑ ℓ : Lt1 Dw, MvPowerSeries.C (uvec ℓ i) * a (b, ltIdx Dw ℓ) := by
@@ -81,10 +98,20 @@ theorem subst_linPt {n m : ℕ} (uvec : Lt1 Dw → Fin d → S) (b : Fin n)
 def expPhi (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (j : Fin d) : MvPowerSeries (Fin 1 × Fin (dL Dw)) S :=
   subst (fun p : Fin 1 × Fin d => linPt uvec (0 : Fin 1) p.2) (ε j)
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun p => cc_linPt uvec b p.2`.
+-/
 theorem hasSubst_linPt {n : ℕ} (uvec : Lt1 Dw → Fin d → S) (b : Fin n) :
     HasSubst (fun p : Fin 1 × Fin d => linPt uvec b p.2) :=
   hasSubst_of_constantCoeff_zero fun p => cc_linPt uvec b p.2
 
+/- English proof (translation)
+Rewrite using `[linPt, map_sum]`. Simplify using `only [coeff_C_mul, coeff_X]`. Rewrite using `[Finset.sum_eq_single ℓ]`. Simplify using the standard rewrite rules. Introduce `ℓ' _ h`.
+
+Rewrite using `[if_neg, mul_zero]`. Introduce `e`. Apply `h` to reduce the goal to its premises. Use `Finsupp.single_left_injective one_ne_zero e` as an intermediate fact. Conclude with `((ltIdx Dw).injective (congrArg Prod.snd this)).symm`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coeff_linPt (uvec : Lt1 Dw → Fin d → S) (ℓ : Lt1 Dw) (i : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), ltIdx Dw ℓ) 1) (linPt uvec (0 : Fin 1) i) = uvec ℓ i := by
   classical
@@ -107,15 +134,26 @@ namespace ExpOf
 variable {S : Type} [CommRing S] [Algebra ℚ S]
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {d : ℕ}
 
+/- English proof (translation)
+Establish `h` using `dLin_comp1 ℓ ε hinv.1`. Rewrite `h` using `[hinv.2.2.2, dLin_pt, hℓ1, one_mul]`. Conclude with `h.symm`.
+-/
 theorem dLin_inv (ℓ ε : Pt S 1 d) (hℓ1 : dLin ℓ = 1) (hinv : IsInvPair ε ℓ) : dLin ε = 1 := by
   have h := dLin_comp1 ℓ ε hinv.1
   rw [hinv.2.2.2, dLin_pt, hℓ1, one_mul] at h
   exact h.symm
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_linPt uvec 0) (fun p => cc_linPt uvec 0 p.2) (hε j)`.
+-/
 theorem expPhi_const (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (hε : ∀ i, constantCoeff (ε i) = 0) (j : Fin d) :
     constantCoeff (expPhi uvec ε j) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_linPt uvec 0) (fun p => cc_linPt uvec 0 p.2) (hε j)
 
+/- English proof (translation)
+Rewrite using `[expPhi, coeff_single_subst (fun p : Fin 1 × Fin d => linPt uvec (0 : Fin 1) p.2) (fun p => cc_linPt uvec (0 : Fin 1) p.2)]`. Simplify using `only [coeff_linPt]`. Rewrite using `[Fintype.sum_prod_type, Fin.sum_univ_one]`. Establish `hd : ∀ i, coeff (Finsupp.single ((0 : Fin 1), i) 1) (ε j) = if j = i then 1 else 0` using `fun i => by`. Use `congrFun (congrFun hdε j) i` as an intermediate fact.
+
+Simplify `this` using `only [dLin, Matrix.one_apply]`. Simplify using `only [hd, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem expPhi_lin (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (hdε : dLin ε = 1) (ℓ : Lt1 Dw) (j : Fin d) :
     coeff (Finsupp.single ((0 : Fin 1), ltIdx Dw ℓ) 1) (expPhi uvec ε j) = uvec ℓ j := by
   classical
@@ -135,14 +173,27 @@ namespace ExpOf
 variable {S : Type} [CommRing S] [Algebra ℚ S]
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {d : ℕ}
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun q => by simp`.
+-/
 theorem hasSubst_XX : HasSubst (fun q : Fin 1 × Fin (dL Dw) =>
     (X ((0 : Fin 2), q.2) + X ((1 : Fin 2), q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S)) :=
   hasSubst_of_constantCoeff_zero fun q => by simp
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero fun p => cc_linPt uvec p.1 p.2`.
+-/
 theorem hasSubst_Λ (uvec : Lt1 Dw → Fin d → S) :
     HasSubst (fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => cc_linPt uvec p.1 p.2
 
+/- English proof (translation)
+Establish `ha : HasSubst (fun q : Fin 1 × Fin d => (![pt S (n` using `2) d b] : Fin 1 → Pt S 2 d) q.1 q.2) := hasSubst_of_constantCoeff_zero fun q => by`. Take `⟨k, i⟩` from `q`. Use `fin_cases k`. Simplify using `[pt]`. Rewrite using `[comp1, ev, subst_comp_subst_apply ha (hasSubst_Λ uvec)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `q`. Take `⟨k, i'⟩` from `q`. Use `fin_cases k`. Use `show subst (fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (X (b, i')) = _`.
+
+Rewrite using `[subst_X (hasSubst_Λ uvec)]`.
+-/
 theorem subst_Λ_comp1 (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (b : Fin 2) (i : Fin d) :
     subst (fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (comp1 ε (pt S (n := 2) d b) i) =
       subst (fun q : Fin 1 × Fin d => linPt uvec b q.2) (ε i) := by
@@ -159,6 +210,9 @@ theorem subst_Λ_comp1 (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (b : Fin 
   show subst (fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (X (b, i')) = _
   rw [subst_X (hasSubst_Λ uvec)]
 
+/- English proof (translation)
+Establish `hb : HasSubst (fun q : Fin 1 × Fin (dL Dw) => (X (b, q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S))` using `hasSubst_of_constantCoeff_zero fun q => by simp`. Rewrite using `[atPt, expPhi, subst_comp_subst_apply (hasSubst_linPt uvec 0) hb]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[subst_linPt uvec 0 _ hb, linPt]`.
+-/
 theorem atPt_expPhi (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (b : Fin 2) (i : Fin d) :
     atPt b (expPhi uvec ε i) = subst (fun q : Fin 1 × Fin d => linPt uvec b q.2) (ε i) := by
   have hb : HasSubst (fun q : Fin 1 × Fin (dL Dw) => (X (b, q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S)) :=
@@ -168,6 +222,23 @@ theorem atPt_expPhi (uvec : Lt1 Dw → Fin d → S) (ε : Pt S 1 d) (b : Fin 2) 
   funext q
   rw [subst_linPt uvec 0 _ hb, linPt]
 
+/- English proof (translation)
+Establish `hε0` using `hinv.1`. Establish `hℓ0` using `hinv.2.1`. Establish `hcc : ∀ (b : Fin 2) i, constantCoeff (comp1 ε (pt S (n` using `2) d b) i) = 0 := fun b i => cc_comp1 _ _ hε0 (cc_pt b) i`. Apply the tactic sequence `have hccA : ∀ i, constantCoeff (addOf G.F (comp1 ε (pt S (n := 2) d 0)) (comp1 ε (pt S (n := 2) d 1)) i) = 0 := fun i => cc_ev _ (fun k i => by fin_cases k <;> exact hcc _ i) (G.const i)`. Establish `hΦ : addOf G.F (comp1 ε (pt S (n` using `2) d 0)) (comp1 ε (pt S (n := 2) d 1)) = comp1 ε (pt S (n := 2) d 0 + pt S (n := 2) d 1) := by`.
+
+Establish `h1 : comp1 ℓ (addOf G.F (comp1 ε (pt S (n` using `2) d 0)) (comp1 ε (pt S (n := 2) d 1))) = pt S (n := 2) d 0 + pt S (n := 2) d 1 := htr`. Establish `h2` using `congrArg (comp1 ε) h1`. Rewrite `h2` using `[germComp1_germComp1_eq_substitute ε ℓ _ hℓ0 hccA, hinv.2.2.1, germCompOne_identityPoint_left _ hccA]`. Conclude with `h2`. Establish `ha : HasSubst (fun p : Fin 2 × Fin d => (![comp1 ε (pt S (n` using `2) d 0), comp1 ε (pt S (n := 2) d 1)] : Fin 2 → Pt S 2 d) p.1 p.2) := hasSubst_of_constantCoeff_zero fun p => by`.
+
+Take `⟨b, i⟩` from `p`. Apply the tactic sequence `fin_cases b <;> exact hcc _ i`. Establish `hL : subst (fun p : Fin 2 × Fin d => atPt p.1 (expPhi uvec ε p.2)) (G.F j) =`. Substitute `(fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (addOf G.F (comp1 ε (pt S (n := 2) d 0)) (comp1 ε (pt S (n := 2) d 1)) j) := by` using the available equality. Rewrite using `[addOf, ev, subst_comp_subst_apply ha (hasSubst_Λ uvec)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨b, i⟩` from `p`. Rewrite using `[atPt_expPhi]`. Use `fin_cases b`.
+
+Conclude with `(subst_Λ_comp1 uvec ε 0 i).symm`. Conclude with `(subst_Λ_comp1 uvec ε 1 i).symm`. Establish `hR : subst (fun q : Fin 1 × Fin (dL Dw) => (X ((0 : Fin 2), q.2) + X ((1 : Fin 2), q.2) : MvPowerSeries (Fin 2 × Fin (dL Dw)) S)) (expPhi uvec ε j) =`. Substitute `(fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (comp1 ε (pt S (n := 2) d 0 + pt S (n := 2) d 1) j) := by` using the available equality. Establish `hs : HasSubst (fun q : Fin 1 × Fin d => (![pt S (n` using `2) d 0 + pt S (n := 2) d 1] : Fin 1 → Pt S 2 d) q.1 q.2) := hasSubst_of_constantCoeff_zero fun q => by`.
+
+Take `⟨k, i⟩` from `q`. Use `fin_cases k`. Simplify using `[pt]`. Rewrite using `[expPhi, subst_comp_subst_apply (hasSubst_linPt uvec 0) hasSubst_XX, comp1, ev, subst_comp_subst_apply hs (hasSubst_Λ uvec)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `q`. Take `⟨k, i⟩` from `q`. Use `fin_cases k`. Use `show _ = subst (fun p : Fin 2 × Fin d => linPt uvec p.1 p.2) (X ((0 : Fin 2), i) + X ((1 : Fin 2), i) : MvPowerSeries (Fin 2 × Fin d) S)`. Rewrite using `[subst_linPt uvec 0 _ hasSubst_XX, ← coe_substAlgHom (hasSubst_Λ uvec), map_add, coe_substAlgHom, subst_X (hasSubst_Λ uvec), subst_X (hasSubst_Λ uvec), linPt, linPt, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun ℓ' _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add]`. Rewrite using `[hL, hR, hΦ]`.
+-/
 theorem expPhi_hom (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ℓ ε : Pt S 1 d) (hinv : IsInvPair ε ℓ)
     (htr : transF G.F ε ℓ = pt S (n := 2) d 0 + pt S (n := 2) d 1) (j : Fin d) :
     subst (fun p : Fin 2 × Fin d => atPt p.1 (expPhi uvec ε p.2)) (G.F j) =
@@ -235,6 +306,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 end ExpOf
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ExpOf.expPhi_const uvec ε hinv.1, fun ℓ' j => ExpOf.expPhi_lin uvec ε (ExpOf.dLin_inv ℓ ε hℓ1 hinv) ℓ' j, fun j => ExpOf.expPhi_hom G uvec ℓ ε hinv htr j⟩`.
+-/
 theorem isExpOf_expPhi {S : Type} [CommRing S] [Algebra ℚ S] {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : Host E} {Dw : Datum H} {d : ℕ} (G : FGLaw S d) (uvec : Lt1 Dw → Fin d → S) (ℓ ε : Pt S 1 d)
     (hℓ1 : dLin ℓ = 1) (hinv : IsInvPair ε ℓ)
@@ -243,6 +317,9 @@ theorem isExpOf_expPhi {S : Type} [CommRing S] [Algebra ℚ S] {E : Type} [Field
   ⟨ExpOf.expPhi_const uvec ε hinv.1, fun ℓ' j => ExpOf.expPhi_lin uvec ε (ExpOf.dLin_inv ℓ ε hℓ1 hinv) ℓ' j,
     fun j => ExpOf.expPhi_hom G uvec ℓ ε hinv htr j⟩
 
+/- English proof (translation)
+Take `⟨ℓ, hℓ0, hℓ1, hadd⟩` from `ReciprocityTheory.ChartRestriction.G.TB.LogPf.logSt S C.d C.B.G`. Take `⟨ε, hinv, htr⟩` from `formal_exp_law S C.d C.B.G ℓ hℓ0 hℓ1 hadd`. Conclude with `⟨ExpOf.expPhi C.uvec ε, isExpOf_expPhi C.B.G C.uvec ℓ ε hℓ1 hinv htr⟩`.
+-/
 theorem isExpOf_exists {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)] {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S]
     {y : FrPt Xo c S} (C : ChartAt Xo c y) :

@@ -10,13 +10,29 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `heightGL_mul_le F g.1 h.1`.
+-/
 theorem ht_mul_le {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) : ht (g * h) ≤ ht g * ht h :=
   heightGL_mul_le F g.1 h.1
 
+/- English proof (translation)
+The claim follows from `heightGL_inv F g.1`.
+-/
 theorem ht_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : ht g⁻¹ = ht g := heightGL_inv F g.1
 
+/- English proof (translation)
+The claim follows from `one_le_heightGL F g.1`.
+-/
 theorem one_le_ht {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : 1 ≤ ht g := one_le_heightGL F g.1
 
+/- English proof (translation)
+Take `⟨C, k, hC⟩` from `h2`. Take `⟨B, hB⟩` from `(hT F E σ hc d J hJ).2.2.2.2.2.2.2 Ω hΩ`. Use `⟨max C 0 * (B : ℝ) ^ k, k, by positivity, fun h δ hδ t ht' κ hκ e => ?_⟩` and prove the remaining obligations. Establish `e2 : δ⁻¹ * fr.a t = h * κ⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, e, mul_inv_cancel_right]`.
+
+Establish `h3` using `(hC t ht').2 δ⁻¹ (inv_mem hδ)`. Rewrite `h3` using `[e2]`. Establish `h4 : (ht (h * κ⁻¹) : ℝ) ≤ B * ht h`. Establish `hb : ht κ⁻¹ ≤ B` using `by rw [ht_inv]; exact hB κ hκ`. Use `(ht_mul_le h κ⁻¹).trans (mul_le_mul_right hb _)` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm]`. Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exp_le_ht (hT : GrpTop) (hc : IsCMExt F E σ) {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (hJ : EpsHerm σ J)
     {fr : Frame σ J} (h2 : TorHt fr) {Ω : Set (UA σ J)} (hΩ : IsCompact Ω) :
     ∃ (A : ℝ) (k : ℕ), 0 ≤ A ∧ ∀ h : UA σ J, ∀ δ ∈ ratU σ J, ∀ t ∈ Cone fr.r, ∀ κ ∈ Ω, δ * h = fr.a t * κ →
@@ -37,6 +53,17 @@ theorem exp_le_ht (hT : GrpTop) (hc : IsCMExt F E σ) {d : ℕ} {J : Matrix (Fin
     _ ≤ max C 0 * ((B : ℝ) * ht h) ^ k := by gcongr; exact le_max_left _ _
     _ = _ := by rw [mul_pow, mul_assoc]
 
+/- English proof (translation)
+Take `⟨fr, hg, -, ⟨Ω, hΩ, hcov⟩, -, hht⟩` from `hS F E σ hc d J' hJ'`. Take `⟨A, k, hA0, hAk⟩` from `exp_le_ht hT hc hJ' hht hΩ`. Use `⟨k * N, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨C₁, K₁, hC₁, h₁⟩` from `hK F E σ hc τ n d J J' hJ hJ' {1} Ω isCompact_singleton hΩ C N hC`. Take `⟨C₂, K₂, hC₂, h₂⟩` from `hA F E σ hc τ n d J J' hJ hJ' fr hg C₁ N hC₁`.
+
+Use `⟨C₂, K₁ * K₂ * A ^ N + 1, hC₂, by positivity, fun g h => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, t, ht', κ, hκ, e⟩` from `hcov h`. Establish `e1` using `hI F E σ hc τ n d J J' hJ hJ' C N Set.univ (by simp) 1 (one_mem _) δ hδ g h`. Rewrite using `[← e1, e, one_mul]`. Establish `e2` using `h₁ Set.univ g (fr.a t) 1 rfl κ hκ`.
+
+Rewrite `e2` using `[mul_one]`. Use `e2.trans ((mul_le_mul_right (h₂ Set.univ g t ht') _).trans ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `mul_le_mul_left ?_ _` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (ht h : ℝ) ^ (k * N)` using `one_le_pow₀ (by exact_mod_cast one_le_ht h)`. Establish `h3 : Real.exp (N * ∑ j, t j) ≤ A ^ N * (ht h : ℝ) ^ (k * N)`. Rewrite using `[Real.exp_nat_mul, pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (Real.exp_pos _).le (hAk h δ hδ t ht' κ hκ e) _`.
+
+Establish `h4 : (0 : ℝ) ≤ K₁ * K₂ * A ^ N` using `by positivity`. Establish `h5 : (1 : ℝ) ≤ (K₁ * K₂ * A ^ N + 1) * (ht h : ℝ) ^ (k * N)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem latSum_redH (hT : GrpTop) (hS : SiegelAll) (hI : LatInv) (hK : LatCpt) (hA : LatArch) (hc : IsCMExt F E σ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) {n d : ℕ} {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin d) (Fin d) E}
     (hJ : EpsHerm σ J) (hJ' : EpsHerm σ J') (N : ℕ) :

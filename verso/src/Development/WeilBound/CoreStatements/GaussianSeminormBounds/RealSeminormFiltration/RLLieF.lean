@@ -11,6 +11,11 @@ namespace PositivityTheory.RL.Up
 
 open GlobalTheory.RealWeil
 
+/- English proof (translation)
+Establish `hE` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Z 0`. Establish `hP` using `(hE.star.mul (hasDerivAt_const (0 : ℝ) K)).mul hE`. Establish `hf : ((fun u : ℝ => star (NormedSpace.exp (u • Z))) * (fun _ : ℝ => K)) * (fun u : ℝ => NormedSpace.exp (u • Z)) = fun _ => K`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.mul_apply]`.
+
+Conclude with `h u`. Rewrite `hP` using `[hf]`. Establish `e` using `hP.unique (hasDerivAt_const (0 : ℝ) K)`. Simplify `e` using `[NormedSpace.exp_zero]`.
+-/
 theorem lie_of_exp_banach {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [StarRing 𝔸] [ContinuousStar 𝔸]
     [StarModule ℝ 𝔸] (Z K : 𝔸) (h : ∀ t : ℝ, star (NormedSpace.exp (t • Z)) * K * NormedSpace.exp (t • Z) = K) :
     star Z * K + K * Z = 0 := by
@@ -26,18 +31,29 @@ theorem lie_of_exp_banach {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ �
   simpa [NormedSpace.exp_zero] using e
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
+/- English proof (translation)
+Conclude with `@lie_of_exp_banach (Matrix ι ι 𝕜) _ _ _ _ ⟨continuous_id.matrix_conjTranspose⟩ _ Z K h`.
+-/
 theorem lie_of_exp {𝕜 ι : Type} [RCLike 𝕜] [Fintype ι] [DecidableEq ι] (Z K : Matrix ι ι 𝕜)
     (h : ∀ t : ℝ, (NormedSpace.exp (t • Z))ᴴ * K * NormedSpace.exp (t • Z) = K) : Zᴴ * K + K * Z = 0 := by
   exact @lie_of_exp_banach (Matrix ι ι 𝕜) _ _ _ _ ⟨continuous_id.matrix_conjTranspose⟩ _ Z K h
 
 variable {l : Type} [Fintype l] [DecidableEq l]
 
+/- English proof (translation)
+Simplify using `[sympl, pPart, qPart, dotProduct, Fintype.sum_sum_type, Matrix.J, Matrix.fromBlocks_mulVec, PiLp.inner_apply, Finset.sum_sub_distrib, Matrix.neg_mulVec, Matrix.one_mulVec, Finset.sum_neg_distrib]`. Simplify using `only [mul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sympl_eq (w w' : l ⊕ l → ℝ) : sympl w w' = -(w ⬝ᵥ Matrix.J l ℝ *ᵥ w') := by
   simp [sympl, pPart, qPart, dotProduct, Fintype.sum_sum_type, Matrix.J, Matrix.fromBlocks_mulVec,
     PiLp.inner_apply, Finset.sum_sub_distrib, Matrix.neg_mulVec, Matrix.one_mulVec, Finset.sum_neg_distrib]
   simp only [mul_comm]
   ring
 
+/- English proof (translation)
+Establish `key : ∀ v u : l ⊕ l → ℝ, (A *ᵥ v) ⬝ᵥ Matrix.J l ℝ *ᵥ (A *ᵥ u) = v ⬝ᵥ (Aᵀ * Matrix.J l ℝ * A) *ᵥ u`. Introduce `v u`. Rewrite using `[← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Rewrite using `[SymplecticGroup.mem_iff']`. Use extensionality with `i j`.
+
+Establish `e` using `h (Pi.single i 1) (Pi.single j 1)`. Rewrite `e` using `[sympl_eq, sympl_eq, neg_inj, key]`. Simplify `e` using `[Matrix.mulVec_single_one, Pi.single_apply, dotProduct, Matrix.mulVec]`.
+-/
 theorem mem_sp_of (A : Matrix (l ⊕ l) (l ⊕ l) ℝ) (h : ∀ w w', sympl (A *ᵥ w) (A *ᵥ w') = sympl w w') :
     A ∈ Matrix.symplecticGroup l ℝ := by
   have key : ∀ v u : l ⊕ l → ℝ, (A *ᵥ v) ⬝ᵥ Matrix.J l ℝ *ᵥ (A *ᵥ u) = v ⬝ᵥ (Aᵀ * Matrix.J l ℝ * A) *ᵥ u := by
@@ -50,6 +66,11 @@ theorem mem_sp_of (A : Matrix (l ⊕ l) (l ⊕ l) ℝ) (h : ∀ w w', sympl (A *
   rw [sympl_eq, sympl_eq, neg_inj, key] at e
   simpa [Matrix.mulVec_single_one, Pi.single_apply, dotProduct, Matrix.mulVec] using e
 
+/- English proof (translation)
+Use `lie_of_exp X (Matrix.J l ℝ) fun t => by` as an intermediate fact. Rewrite using `[conjTranspose_eq_transpose_of_trivial]`. Conclude with `SymplecticGroup.mem_iff'.1 (h t)`. Rewrite `this` using `[conjTranspose_eq_transpose_of_trivial]`. Use `(mem_skewAdjointMatricesLieSubalgebra _ _).2 ((mem_skewAdjointMatricesSubmodule _ _).2 ?_)` and prove the remaining obligations.
+
+Use `show Xᵀ * Matrix.J l ℝ = Matrix.J l ℝ * -X`. Rewrite using `[Matrix.mul_neg, eq_neg_iff_add_eq_zero, this]`.
+-/
 theorem mem_lie_of (X : Matrix (l ⊕ l) (l ⊕ l) ℝ) (h : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Matrix.symplecticGroup l ℝ) :
     X ∈ LieAlgebra.Symplectic.sp l ℝ := by
   have := lie_of_exp X (Matrix.J l ℝ) fun t => by
@@ -91,6 +112,39 @@ def LG (K : W → Matrix β β ℂ) : Submodule ℝ (W → Matrix β β ℂ) whe
     show star (r • a) * K + K * (r • a) = 0
     rw [star_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, ha', smul_zero]
 
+/- English proof (translation)
+Establish `hρc : Continuous ρ` using `ρ.toLinearMap.continuous_of_finiteDimensional`. Set `s : SG K →* Matrix.symplecticGroup l ℝ` to `{ toFun := fun g => ⟨ρ g.1.1, hρ g⟩ map_one' := Subtype.ext (map_one ρ) map_mul' := fun a b => Subtype.ext (map_mul ρ _ _) }`. Establish `hs : Continuous s` using `(hρc.comp (Units.continuous_val.comp continuous_subtype_val)).subtype_mk _`. Take `⟨χ, hχ, hcore⟩` from `core M s hs A (fun g g' h => hA g g' (congrArg Subtype.val h)) hw`. Use `letI : NormedRing (Matrix β β ℂ) := Matrix.linftyOpNormedRing`.
+
+Use `letI : NormedAlgebra ℝ (Matrix β β ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedRing (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix β β ℂ) := FiniteDimensional.complete ℝ _`. Use `letI : NormedAlgebra ℚ (Matrix β β ℂ) := NormedAlgebra.restrictScalars ℚ ℝ _`.
+
+Use `letI : NormedAlgebra ℚ (Matrix (l ⊕ l) (l ⊕ l) ℝ) := NormedAlgebra.restrictScalars ℚ ℝ _`. Establish `hpi : ∀ (Z : W → Matrix β β ℂ) w, NormedSpace.exp Z w = NormedSpace.exp (Z w)` using `fun Z w => Pi.coe_exp Z w`. Establish `hS : ∀ Z ∈ LG K, expU Z ∈ SG K` using `fun Z hZ => funext fun w => by`. Use `exp_preserves (Y := Z w) (J := K w) (congrFun hZ w)` as an intermediate fact. Rewrite `this` using `[← hpi]`.
+
+Conclude with `this`. Establish `hexp : ∀ (Z : W → Matrix β β ℂ) (t : ℝ), ρ (NormedSpace.exp (t • Z)) = NormedSpace.exp (t • ρ Z)` using `fun Z t => by`. Rewrite using `[← map_smul]`. Conclude with `NormedSpace.map_exp ρ hρc _`. Establish `key : ∀ Z (h : Z ∈ LG K), ∃ z : ℂ, (∀ t : ℝ, χ ⟨expU (t • Z), hS _ ((LG K).smul_mem t h)⟩ = cexp (2 * z * t)) ∧ ∀ (T : Sch l →L[ℂ] ℂ) f, HasDerivAt (fun t : ℝ => T (A ⟨expU (t • Z), hS _ ((LG K).smul_mem t h)⟩ f)) (T (quad (ρ Z) f + z • f)) 0` using `fun Z h => hcore (fun t => ⟨expU (t • Z), hS _ ((LG K).smul_mem t h)⟩) ((continuous_expU Z).subtype_mk _) (Subtype.ext (by simp only [zero_smul]; exact expU_zero)) (fun a b => Subtype.ext (expU_add Z a b)) (ρ Z) (mem_lie_of _ fun t => by`.
+
+Rewrite using `[← hexp]`. Conclude with `hρ ⟨expU (t • Z), hS _ ((LG K).smul_mem t h)⟩) (hexp Z)`. Take `⟨ζ, hζ, hbr⟩` from `char_lie (SG K) (LG K) hS (fun Z hZ Y hY => by`. Establish `h1 : star (expU Z)⁻¹.1 * K * (expU Z)⁻¹.1 = K` using `(SG K).inv_mem (hS Z hZ)`. Establish `h2 : star Y * K + K * Y = 0` using `hY`.
+
+Use `show star ((expU Z).1 * Y * (expU Z)⁻¹.1) * K + K * ((expU Z).1 * Y * (expU Z)⁻¹.1) = 0`. Generalize the expression as in `expU Z = g at h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Use `_ = star g⁻¹.1 * (star Y * star (g⁻¹.1 * g.1) * K + K * (g⁻¹.1 * g.1) * Y) * g⁻¹.1 := by`.
+
+Simplify using `only [star_mul, mul_assoc, mul_add, add_mul]`. Use `_ = 0 := by rw [Units.inv_mul, star_one, mul_one, mul_one, h2, mul_zero, zero_mul]) χ hχ`. Use `fun Z h => (key Z h).imp' (fun z => 2 * z) fun _ h => h.1`. Establish `tr : ∀ w, ∃ c : ℂ, ∀ Z : Matrix β β ℂ, Zᴴ * K w + K w * Z = 0 → ζ (Pi.single w Z) = c * Z.trace` using `fun w => by`. Set `τ : Matrix β β ℂ →ₗ[ℝ] Matrix β β ℂ` to `{ toFun := fun A => -((K w)⁻¹ * Aᴴ * K w) map_add' := fun A B => by simp [Matrix.mul_add, Matrix.add_mul, add_comm] map_smul' := fun r A => by simp }`.
+
+Establish `h1 : (K w)⁻¹ * K w = 1` using `Matrix.nonsing_inv_mul _ (hu w)`. Establish `h2 : K w * (K w)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (hu w)`. Establish `hτ : ∀ Z, τ Z = Z ↔ Zᴴ * K w + K w * Z = 0` using `fun Z => by show -((K w)⁻¹ * Zᴴ * K w) = Z ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h conv_lhs => rw [← congrArg (K w * ·) h]`.
+
+Simplify using `[← Matrix.mul_assoc, h2]`. Introduce `h`. Rewrite using `[Matrix.mul_assoc, eq_neg_of_add_eq_zero_left h]`. Simplify using `[← Matrix.mul_assoc, h1]`. Establish `hm : ∀ Z, τ Z = Z → Pi.single w Z ∈ LG K` using `fun Z hZ => funext fun v => by`.
+
+Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify `(hτ Z).1 hZ` using `[star_eq_conjTranspose]`. Simplify using `[h]`. Take `⟨c, hc⟩` from `real_form_trace τ (fun A => by simp [τ]) (fun A => by show -((K w)⁻¹ * (-((K w)⁻¹ * Aᴴ * K w))ᴴ * K w) = A`.
+
+Simplify using `only [conjTranspose_neg, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hK, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, h1, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]) (ζ ∘ₗ LinearMap.single ℝ (fun _ : W => Matrix β β ℂ) w) fun X Y hX hY => by`. Use `⟨(hτ _).2 ?_, ?_⟩` and prove the remaining obligations. Establish `a1` using `eq_neg_of_add_eq_zero_left ((hτ _).1 hX)`. Establish `a2` using `eq_neg_of_add_eq_zero_left ((hτ _).1 hY)`.
+
+Simplify using `only [conjTranspose_sub, conjTranspose_mul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, a1, a2, Matrix.mul_neg]`. Simplify using `only [← Matrix.mul_assoc, a1, a2, Matrix.neg_mul]`. Normalize the expressions using the abelian group laws. Use `hbr _ (hm X hX) _ (hm Y hY)` as an intermediate fact. Rewrite `this` using `[← Pi.single_mul, ← Pi.single_mul, ← Pi.single_sub]`.
+
+Conclude with `this`. Conclude with `⟨c, fun Z hZ => hc Z ((hτ Z).2 hZ)⟩`. Use `choose c hc using tr`. Use `⟨fun w => c w / 2, fun Z γ hγ => ?_⟩` and prove the remaining obligations. Establish `hZw : ∀ w, (Z w)ᴴ * K w + K w * Z w = 0` using `fun w => lie_of_exp _ _ fun t => by`.
+
+Rewrite using `[← hγ]`. Conclude with `congrFun (show star (γ t).1.1 * K * (γ t).1.1 = K from (γ t).2) w`. Establish `hZ : Z ∈ LG K` using `funext hZw`. Take `⟨z, h1, h2⟩` from `key Z hZ`. Establish `e : ∀ t, γ t = ⟨expU (t • Z), hS _ ((LG K).smul_mem t hZ)⟩` using `fun t => Subtype.ext (Units.ext (funext fun w => (hγ t w).trans (hpi (t • Z) w).symm))`.
+
+Establish `e2 : z = ∑ w, c w / 2 * (Z w).trace`. Establish `a : 2 * z = ζ Z` using `exp_mul_inj fun t => by rw [← h1, hζ Z hZ]`. Establish `b : ζ Z = ∑ w, c w * (Z w).trace` using `by conv_lhs => rw [← Finset.univ_sum_single Z, map_sum]`. Conclude with `Finset.sum_congr rfl fun w _ => hc w _ (hZw w)`. Rewrite `a` using `[b]`.
+
+Simplify using `only [div_mul_eq_mul_div, ← Finset.sum_div, ← a]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ← e2]`. Conclude with `h2`.
+-/
 theorem mid (M : Meta l) (K : W → Matrix β β ℂ) (hK : ∀ w, (K w)ᴴ = K w) (hu : ∀ w, IsUnit (K w).det)
     (ρ : (W → Matrix β β ℂ) →ₐ[ℝ] Matrix (l ⊕ l) (l ⊕ l) ℝ) (hρ : ∀ g : SG K, ρ g.1.1 ∈ Matrix.symplecticGroup l ℝ)
     (A : SG K →* (Sch l →L[ℂ] Sch l))

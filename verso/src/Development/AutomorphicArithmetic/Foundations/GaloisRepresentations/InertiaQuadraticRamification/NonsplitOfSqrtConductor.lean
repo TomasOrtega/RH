@@ -11,13 +11,22 @@ open UpperTheory.Gal.UnramifiedFromSplittingCriterion
 
 namespace UpperTheory.Gal.UnramifiedFromSplittingCriterion.WeylLatticeInDetCoeffSpan
 
+/- English proof (translation)
+The claim follows from `Ideal.absNorm_mem v.asIdeal`.
+-/
 private theorem normV_mem' {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) :
     ((normV v : ℕ) : 𝓞 K) ∈ v.asIdeal := Ideal.absNorm_mem v.asIdeal
 
+/- English proof (translation)
+Establish `h : Ideal.absNorm v.asIdeal ≠ 0` using `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `Nat.pos_of_ne_zero h`.
+-/
 private theorem normV_pos' {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) : 0 < normV v := by
   have h : Ideal.absNorm v.asIdeal ≠ 0 := fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)
   exact Nat.pos_of_ne_zero h
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `h`. Use `GlobalTheory.TameCoupledEx.val_g_lt A v hA ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ (normV_mem' v)`.
+-/
 private theorem val_lt_of_dvd {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (A : ValuationSubring Ω)
     (v : HeightOneSpectrum (𝓞 K)) (hA : IsPlaceOver A v) {c : ℕ} (h : normV v ∣ c) : A.valuation (c : Ω) < 1 := by
   obtain ⟨k, rfl⟩ := h
@@ -25,10 +34,16 @@ private theorem val_lt_of_dvd {K Ω : Type} [Field K] [NumberField K] [Field Ω]
   rw [Nat.cast_mul]
   exact v.asIdeal.mul_mem_right _ (normV_mem' v)
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qi55.val_prime_of_lt A n`.
+-/
 private theorem val_prime_of_lt {Ω : Type} [Field Ω] (A : ValuationSubring Ω) (n : ℕ) :
     n ≠ 0 → A.valuation (n : Ω) < 1 → ∃ t : ℕ, t.Prime ∧ t ∣ n ∧ A.valuation (t : Ω) < 1 :=
   _root_.UpperTheory.Reformulated.B.Qi55.val_prime_of_lt A n
 
+/- English proof (translation)
+Take `⟨t, ht, htc, htv⟩` from `val_prime_of_lt A c hc hv`. Use `(hS F Ω A x a hx).1 t ht htv (dvd_trans ?_ hd) g hg` and prove the remaining obligations. Rewrite using `[Int.natCast_dvd_natCast]`. Conclude with `Nat.mul_dvd_mul_left 8 htc`.
+-/
 private theorem fix_of_val {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (hS : SqrtFix)
     (A : ValuationSubring Ω) (x : Ω) (a : ℤ) (hx : x ^ 2 = (a : Ω)) (c : ℕ) (hc : c ≠ 0)
     (hd : ((8 * c : ℕ) : ℤ) ∣ a - 1) (hv : A.valuation (c : Ω) < 1) (g : G F Ω) (hg : g ∈ Dec (F := F) A) : g x = x := by
@@ -37,6 +52,31 @@ private theorem fix_of_val {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   rw [Int.natCast_dvd_natCast]
   exact Nat.mul_dvd_mul_left 8 htc
 
+/- English proof (translation)
+Use `haveI : Fact p₁.Prime := ⟨h1⟩`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap Y Ω).injective`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed Y`. Take `⟨Y0, hY0⟩` from `IsAlgClosed.exists_pow_nat_eq ((p₁ : ℕ) : Ω) two_pos`. Establish `hnd : ¬ p₁ ∣ 2` using `fun h => by have := Nat.le_of_dvd two_pos h; omega`.
+
+Take `⟨τ, hτ, hτY⟩` from `GlobalTheory.TameKummerInertia.tame_kummer_surj Y Ω A u hA p₁ hu hu2 2 two_pos hnd Y0 (-1) hY0 (by norm_num)`. Establish `hp10 : ((p₁ : ℕ) : Ω) ≠ 0` using `Nat.cast_ne_zero.2 h1.ne_zero`. Establish `hY00 : Y0 ≠ 0`. Introduce and unpack `rfl`. Rewrite `hY0` using `[zero_pow two_ne_zero]`.
+
+Conclude with `hp10 hY0.symm`. Establish `hv1 : A.valuation ((p₁ : ℕ) : Ω) < 1` using `GlobalTheory.TameCoupledEx.val_g_lt A u hA hu`. Use `set z : Ω := x / Y0 with hz`. Establish `hz2 : z ^ 2 = ((-(p₂ : ℤ) : ℤ) : Ω)`. Rewrite using `[hz, div_pow, hx, hY0]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hcop : IsCoprime (p₁ : ℤ) (2 * (-(p₂ : ℤ)))`. Establish `ha : IsCoprime (p₁ : ℤ) 2`. Establish `: Nat.Coprime p₁ 2` using `(Nat.Prime.coprime_iff_not_dvd h1).2 (by`.
+
+Introduce `h`. Use `Nat.le_of_dvd two_pos h` as an intermediate fact. Use the proof step `omega)`. Conclude with `Nat.isCoprime_iff_coprime.2 this` after adjusting the coercions. Establish `hb : IsCoprime (p₁ : ℤ) (p₂ : ℤ)`.
+
+Establish `: Nat.Coprime p₁ p₂` using `(Nat.coprime_primes h1 h2).2 hlt.ne`. Conclude with `Nat.isCoprime_iff_coprime.2 this`. Conclude with `ha.mul_right hb.neg_right`. Establish `hv2 : A.valuation ((2 * (-(p₂ : ℤ)) : ℤ) : Ω) = 1`. Take `⟨s, t, hst⟩` from `hcop`.
+
+Use `le_antisymm ((A.valuation_le_one_iff _).2 (intCast_mem A _)) (not_lt.1 fun hlt1 => ?_)` and prove the remaining obligations. Establish `h3 : ((s * (p₁ : ℤ) + t * (2 * (-(p₂ : ℤ))) : ℤ) : Ω) = 1` using `by rw [hst]; simp`. Establish `hs1 : A.valuation ((s : ℤ) : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A _)`. Establish `ht1 : A.valuation ((t : ℤ) : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A _)`. Establish `h4 : A.valuation (((s * (p₁ : ℤ) + t * (2 * (-(p₂ : ℤ))) : ℤ)) : Ω) < 1`.
+
+Rewrite using `[Int.cast_add, Int.cast_mul, Int.cast_mul t]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hs1) (by simpa using hv1)`. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ht1) hlt1`. Rewrite `h4` using `[h3, map_one]`. Conclude with `lt_irrefl _ h4`. Establish `hτz : τ z = z` using `(hS Y Ω A z (-(p₂ : ℤ)) hz2).2 hv2 τ hτ`. Establish `hxz : x = z * Y0` using `by rw [hz]; field_simp`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow two_ne_zero]`. Establish `: ((p₁ * p₂ : ℕ) : Ω) = 0`. Establish `h5` using `hx.symm`.
+
+Move the coercions through the operations in `at h5 ⊢`. Simplify using `using h5`. Conclude with `(Nat.cast_ne_zero.2 (Nat.mul_ne_zero h1.ne_zero h2.ne_zero)) this`. Use `⟨τ, hτ, fun hfix => ?_⟩` and prove the remaining obligations. Establish `h6 : τ x = -x`.
+
+Rewrite using `[hxz, map_mul, hτz, hτY]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h6` using `[hfix]`. Establish `h7 : (2 : Ω) * x = 0` using `by linear_combination h6`. Conclude with `hx0 ((mul_eq_zero.1 h7).resolve_left two_ne_zero)`.
+-/
 private theorem moved_at_ram {Y Ω : Type} [Field Y] [NumberField Y] [Field Ω] [Algebra Y Ω] [IsAlgClosure Y Ω]
     (hS : SqrtFix) (A : ValuationSubring Ω) (u : HeightOneSpectrum (𝓞 Y)) (hA : IsPlaceOver A u) (p₁ p₂ : ℕ)
     (h1 : p₁.Prime) (h2 : p₂.Prime) (hodd : 2 < p₁) (hlt : p₁ < p₂) (hu : ((p₁ : ℕ) : 𝓞 Y) ∈ u.asIdeal)
@@ -101,6 +141,21 @@ private theorem moved_at_ram {Y Ω : Type} [Field Y] [NumberField Y] [Field Ω] 
   have h7 : (2 : Ω) * x = 0 := by linear_combination h6
   exact hx0 ((mul_eq_zero.1 h7).resolve_left two_ne_zero)
 
+/- English proof (translation)
+Establish `hd0 : (d : Z) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Establish `hX0 : X ≠ 0`. Introduce and unpack `rfl`. Rewrite `hX` using `[zero_pow two_ne_zero]`. Conclude with `hd0 (neg_eq_zero.1 hX.symm)`.
+
+Establish `hnr : X ∉ maximalRealSubfield Z`. Introduce `hr`. Take `⟨φ⟩ : Nonempty (Z →+* ℂ)` from `inferInstance`. Establish `h1` using `(mem_maximalRealSubfield_iff X).1 hr φ`. Establish `h2 : (φ X) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hX, map_neg, map_natCast]`.
+
+Establish `h3 : (φ X).im = 0` using `Complex.conj_eq_iff_im.1 h1`. Establish `h4` using `congrArg Complex.re h2`. Simplify using `[pow_two, h3] at h4`. Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[mul_self_nonneg (φ X).re]`.
+
+Use `set c := IsCMField.complexConj Z with hc`. Establish `hcX : c X = -X`. Establish `h1 : (c X) ^ 2 = X ^ 2` using `by rw [← map_pow, hX, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 h1 with h | h` into its components or cases. Conclude with `absurd ((IsCMField.complexConj_eq_self_iff Z X).1 h) hnr`.
+
+Conclude with `h`. Introduce `y`. Establish `ha : (y + c y) / 2 ∈ maximalRealSubfield Z`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_div₀, map_add, IsCMField.complexConj_apply_apply, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hb : (y - c y) / (2 * X) ∈ maximalRealSubfield Z`. Rewrite using `[← IsCMField.complexConj_eq_self_iff, map_div₀, map_sub, map_mul, IsCMField.complexConj_apply_apply, map_ofNat, ← hc, hcX]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hy : y = (y + c y) / 2 + X * ((y - c y) / (2 * X))`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : g (algebraMap Z Ω ((y + c y) / 2)) = algebraMap Z Ω ((y + c y) / 2)` using `hreal ⟨_, ha⟩`. Establish `h2 : g (algebraMap Z Ω ((y - c y) / (2 * X))) = algebraMap Z Ω ((y - c y) / (2 * X))` using `hreal ⟨_, hb⟩`. Rewrite using `[hy, map_add, map_mul, map_add, map_mul, h1, h2, hgx]`.
+-/
 private theorem fix_of_real {Z Ω F' : Type} [Field Z] [NumberField Z] [IsCMField Z] [Field Ω] [Algebra Z Ω] [Field F']
     [Algebra F' Ω] (g : G F' Ω) (X : Z) (d : ℕ) (hd : 0 < d) (hX : X ^ 2 = -(d : Z))
     (hreal : Fixes (maximalRealSubfield Z) g) (hgx : g (algebraMap Z Ω X) = algebraMap Z Ω X) : Fixes Z g := by
@@ -140,6 +195,13 @@ private theorem fix_of_real {Z Ω F' : Type} [Field Z] [NumberField Z] [IsCMFiel
   have h2 : g (algebraMap Z Ω ((y - c y) / (2 * X))) = algebraMap Z Ω ((y - c y) / (2 * X)) := hreal ⟨_, hb⟩
   rw [hy, map_add, map_mul, map_add, map_mul, h1, h2, hgx]
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re h`. Establish `h2` using `congrArg Complex.im h`. Simplify using `[pow_two] at h1 h2`. Establish `hq' : (0 : ℝ) < q` using `by exact_mod_cast hq`. Establish `him : u.im = 0`.
+
+Establish `h3 : u.re * u.im = 0` using `by linarith`. Break down `mul_eq_zero.1 h3 with h | h` into its components or cases. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg u.im]`. Conclude with `h`.
+
+Conclude with `Complex.conj_eq_iff_im.2 him`.
+-/
 private theorem conj_of_sq {u : ℂ} {q : ℕ} (hq : 0 < q) (h : u ^ 2 = (q : ℂ)) : star u = u := by
   have h1 := congrArg Complex.re h
   have h2 := congrArg Complex.im h
@@ -157,10 +219,18 @@ section
 
 variable {Y Ω : Type} [Field Y] [NumberField Y] [IsCMField Y] [Field Ω] [Algebra Y Ω] [IsAlgClosure Y Ω]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans _ L Ω⟩`.
+-/
 private theorem algClosure_real (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] : IsAlgClosure (maximalRealSubfield L) Ω :=
   ⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans _ L Ω⟩
 
+/- English proof (translation)
+Use `haveI : IsAlgClosure (maximalRealSubfield L) Ω := algClosure_real L Ω`. Establish `hAv : IsPlaceOver A (w.under (𝓞 (maximalRealSubfield L)))` using `fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply (maximalRealSubfield L) L Ω]`. Conclude with `hA (algebraMap (𝓞 (maximalRealSubfield L)) (𝓞 L) x)`. Take `⟨-, he⟩` from `GlobalTheory.InertFixVal.ramificationIdx_eq_one A (w.under (𝓞 (maximalRealSubfield L))) w hAv hA hfix`.
+
+Conclude with `Ideal.ramificationIdx_eq_one_iff.1 he`.
+-/
 private theorem unram_of_fix (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (w : HeightOneSpectrum (𝓞 L)) (A : ValuationSubring Ω) (hA : IsPlaceOver A w)
     (hfix : ∀ σ ∈ Ine (F := maximalRealSubfield L) A, ∀ z : L, σ (algebraMap L Ω z) = algebraMap L Ω z) :
@@ -172,11 +242,17 @@ private theorem unram_of_fix (L Ω : Type) [Field L] [NumberField L] [IsCMField 
   obtain ⟨-, he⟩ := GlobalTheory.InertFixVal.ramificationIdx_eq_one A (w.under (𝓞 (maximalRealSubfield L))) w hAv hA hfix
   exact Ideal.ramificationIdx_eq_one_iff.1 he
 
+/- English proof (translation)
+Use `(mem_maximalRealSubfield_iff _).2 fun φ => ?_` and prove the remaining obligations. Conclude with `(mem_maximalRealSubfield_iff _).1 y.2 (φ.comp (algebraMap Y ↥Q.K))`.
+-/
 private theorem real_of_real (Q : QCM Y Ω) (y : maximalRealSubfield Y) :
     algebraMap Y ↥Q.K (y : Y) ∈ maximalRealSubfield ↥Q.K := by
   refine (mem_maximalRealSubfield_iff _).2 fun φ => ?_
   exact (mem_maximalRealSubfield_iff _).1 y.2 (φ.comp (algebraMap Y ↥Q.K))
 
+/- English proof (translation)
+Establish `h : g (algebraMap (maximalRealSubfield ↥Q.K) Ω ⟨_, real_of_real Q y⟩) = algebraMap (maximalRealSubfield ↥Q.K) Ω ⟨_, real_of_real Q y⟩` using `g.commutes _`. Conclude with `h`.
+-/
 private theorem fixes_F (Q : QCM Y Ω) (g : G (maximalRealSubfield ↥Q.K) Ω) (y : maximalRealSubfield Y) :
     g.toRingEquiv (algebraMap (maximalRealSubfield Y) Ω y) = algebraMap (maximalRealSubfield Y) Ω y := by
   have h : g (algebraMap (maximalRealSubfield ↥Q.K) Ω ⟨_, real_of_real Q y⟩) =
@@ -186,6 +262,17 @@ private theorem fixes_F (Q : QCM Y Ω) (g : G (maximalRealSubfield ↥Q.K) Ω) (
 private def down (Q : QCM Y Ω) (g : G (maximalRealSubfield ↥Q.K) Ω) : G (maximalRealSubfield Y) Ω :=
   AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fixes_F Q g)
 
+/- English proof (translation)
+Establish `hnot : ¬ ∀ g ∈ Dec (F` using `maximalRealSubfield ↥Q.K) A, Fixes ↥Q.K g := fun h => hw ((hSI ↥Q.K Ω A w hA).2 h)`. Use `push_neg at hnot`. Take `⟨g, hg, hng⟩` from `hnot`. Establish `hZr : Fixes (maximalRealSubfield ↥Q.K) g` using `fun y => g.commutes y`. Establish `hgY : ¬ Fixes Y g` using `fun h => hng (hRS Y ↥Q.K Ω (maximalRealSubfield ↥Q.K) g h hZr)`.
+
+Establish `hX2 : (⟨x, hx⟩ : ↥Q.K) ^ 2 = -(p : ↥Q.K)` using `Subtype.ext (by simpa using hx2)`. Establish `hgx : g x ≠ x` using `fun h => hng (fix_of_real g ⟨x, hx⟩ p hp hX2 hZr h)`. Establish `hvc : ¬ A.valuation (c : Ω) < 1` using `fun h => hgx (fix_of_val hS A x _ hx2 c hc0 hd h g hg)`. Establish `hδZ : algebraMap Y ↥Q.K δ ∈ maximalRealSubfield ↥Q.K`. Use `(mem_maximalRealSubfield_iff _).2 fun φ => conj_of_sq hq ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_pow, ← map_pow, hδ, map_natCast, map_natCast]`. Establish `hgδ : g (algebraMap Y Ω δ) = algebraMap Y Ω δ`. Establish `h` using `hZr ⟨_, hδZ⟩`. Conclude with `h`. Establish `hvp : ¬ A.valuation ((p : ℕ) : Ω) < 1` using `fun h => hgY (fun y => hTP A h g.toRingEquiv (fun z => apply_mem_iff_of_mem_Dec hg z) hgδ y)`.
+
+Establish `hvp1 : A.valuation ((p : ℕ) : Ω) = 1` using `le_antisymm (valuation_natCast_le_one A p) (not_lt.1 hvp)`. Establish `hv2 : A.valuation ((2 : ℕ) : Ω) = 1`. Use `le_antisymm (valuation_natCast_le_one A 2) (not_lt.1 fun h => hvc ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hc2`. Rewrite using `[Nat.cast_mul, map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (valuation_natCast_le_one A k)) h`. Use `⟨hvc, ?_, down Q g, (GlobalTheory.AboveL.mem_dec_congr A (down Q g) g (fun _ => rfl)).2 hg, fun h => hgY h⟩` and prove the remaining obligations. Establish `: ((2 * (-(p : ℤ)) : ℤ) : Ω) = -(((2 : ℕ) : Ω) * ((p : ℕ) : Ω))` using `by push_cast; ring`. Rewrite using `[this, Valuation.map_neg, map_mul, hv2, hvp1, one_mul]`.
+-/
 private theorem nonsplit_of_sqrt_conductor (hSI : SplitIff) (hRS : RealSpan) (hS : SqrtFix) (Q : QCM Y Ω) (x : Ω) (hx : x ∈ Q.K)
     (p : ℕ) (hp : 0 < p) (hx2 : x ^ 2 = ((-(p : ℤ) : ℤ) : Ω)) (δ : Y) (q : ℕ) (hq : 0 < q) (hδ : δ ^ 2 = (q : Y))
     (c : ℕ) (hc0 : c ≠ 0) (hc2 : 2 ∣ c) (hd : ((8 * c : ℕ) : ℤ) ∣ (-(p : ℤ)) - 1)

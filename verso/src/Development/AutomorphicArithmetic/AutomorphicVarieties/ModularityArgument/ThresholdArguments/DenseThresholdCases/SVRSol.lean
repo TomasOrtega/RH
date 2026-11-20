@@ -13,6 +13,25 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Af.Bc UpperTheory.V.Af.Sol
 namespace UpperTheory.V.Z.Bc
+/- English proof (translation)
+Establish `hA0` using `_root_.UpperTheory.V.Af.algOfCyc_s H`. Establish `hTo` using `UpperTheory.cyclotomicCharacter_plusPart hA0 UpperTheory.cyclotomic_char_conj_invariant`. Establish `hDual` using `UpperTheory.dualBaseChange_of_frobeniusDuality_of_conjUnder UpperTheory.frobeniusDuality_complexConj UpperTheory.complexConj_place_under_eq`. Establish `hNorm` using `_root_.UpperTheory.norm_character_of_printed_char_frobenius H.toClassicalTheorems UpperTheory.galois_character_frobenius_compatibility`. Establish `hFin` using `UpperTheory.finiteCharacter_of_algebraic_cyclotomic hA0`.
+
+Establish `hExt` using `UpperTheory.character_extends_to_galois_group`. Establish `hEig` using `UpperTheory.hecke_eigenvalue_basic_properties`. Establish `hSign` using `UpperTheory.sign_at_infinity_of_parallel_weight UpperTheory.adelicSolution_parallel`. Introduce `K M Ω _ _ _ _ _ _ _ _ _ _ _ _ _ _ hp l _ ι n hn r π sat' inf' hpol hreg hc' hbc hatt`. Use `haveI : IsAlgClosure (maximalRealSubfield K) Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.trans (maximalRealSubfield K) K Ω⟩`.
+
+Take `⟨μ, χ, c, P, hμ, hs, hc, hP⟩` from `hTo K Ω l ι n r hpol`. Establish `huniq : ∀ w B B', sat' w B → sat' w B' → B = B'`. Break down `hc' with ⟨_, Q, rfl, -⟩ | ⟨_, Q, rfl, -⟩` into its components or cases. Conclude with `fun _ _ _ h h' => h.unique h'`. Conclude with `fun _ _ _ h h' => TR.CuspSub.HasSat.unique h h'`.
+
+Establish `hbc'` using `hDual K M Ω l ι n r π sat' huniq hbc hatt μ χ c P hμ hc hP`. Take `⟨η, hη, hev⟩` from `(cyc K M hp inferInstance n hn).2.2 _ _ sat' inf' (Or.inl ⟨inferInstance, π, rfl, rfl⟩) hc' hbc _ _ (Or.inl ⟨inferInstance, _, rfl, rfl⟩) hbc'`. Take `⟨δ, hδ, hδe⟩` from `hNorm K M Ω l ι η hη`. Take `⟨δ', hδ', hδc, hδo⟩` from `hExt K M Ω l δ hδ`. Establish `hA` using `(_root_.UpperTheory.V.Af.algOfCyc_s H (maximalRealSubfield K) Ω l ι).2.1`.
+
+Establish `h1 : IsAlgChar ι μ` using `⟨χ, hμ⟩`. Establish `h2` using `hFin.1 _ Ω l ι δ' hδo`. Take `⟨χ', hχ'⟩` from `(hA _ _ h1 (hA _ _ h2 h2).2).1`. Establish `hs' : SameSign (μ * δ'⁻¹)` using `fun a b ha hb => by`. Rewrite using `[MonoidHom.mul_apply, MonoidHom.mul_apply, MonoidHom.inv_apply, MonoidHom.inv_apply, hδc a ha, hδc b hb, hs a b ha hb]`.
+
+Establish `hd : GlobalTheory.ContraPair.DualIsConjBy π (compNorm K χ')`. Use `UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse H.litN.aut.js.1 H.litN.aut.gk K n hn π _ ?_` and prove the remaining obligations. Establish `h3` using `(conjSrc_injective (IsCMField.complexConj K).toRingEquiv).tendsto_cofinite.eventually hev`. Use `filter_upwards [Bc.normGal K Ω l ι χ μ hμ, Bc.normGal K Ω l ι χ' _ hχ', hev, h3, hδe] with w ⟨hu, he⟩ ⟨hu', he'⟩ ⟨_, B, hB, hB₁⟩ ⟨_, B', hB', _⟩ hw`. Use `⟨hu', B, B', hB, hB', ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (μ * δ'⁻¹).comp (res (maximalRealSubfield K) Ω K) = μ.comp (res (maximalRealSubfield K) Ω K) * δ⁻¹`. Rewrite using `[← hδ']`. Both sides reduce to the same expression. Rewrite `he'` using `[e1]`. Establish `e2` using `(hEig K Ω l ι w).2.1 _ _ _ he' ((hEig K Ω l ι w).1 _ _ _ _ he hw)`.
+
+Establish `e3` using `hB₁.unique (GlobalTheory.SphGal.hasSatGL_twist K n _ (compNorm K χ) w _ hu (UpperTheory.theta_satake_parameters_inverse K n π w B' hB'))`. Establish `e4` using `congrArg (Multiset.map (· * ((compNorm K χ).val w)⁻¹)) e3`. Simplify using `only [Multiset.map_map, Function.comp_def, mul_inv_cancel_right] at e4`. Rewrite using `[← e4, e2]`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_inv_rev, inv_inv, mul_assoc]`. Take `⟨_, R, _, _, _, hR, hatt', -⟩` from `_root_.UpperTheory.Gal.SV.exCS_of_prints H.toClassicalTheorems K Ω l ι n hn π χ' hreg (hSign _ Ω l ι χ' _ hχ' hs') hd`. Conclude with `⟨R, hR.cont, hatt'⟩`.
+-/
 theorem exDownC_sv_alt (H : _root_.UpperTheory.V.Af.HypothesesH') (cyc : CycC) : ExDownC := by
   have hA0 := _root_.UpperTheory.V.Af.algOfCyc_s H
   have hTo := UpperTheory.cyclotomicCharacter_plusPart hA0 UpperTheory.cyclotomic_char_conj_invariant

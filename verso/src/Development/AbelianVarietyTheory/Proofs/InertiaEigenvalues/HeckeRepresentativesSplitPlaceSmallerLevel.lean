@@ -11,6 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SmallerLevelHecke
 open Formalism.IndefR.Lev Formalism.L2.NTheta GlobalTheory.SplitHeckeAdj
 
+/- English proof (translation)
+Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Establish `h01` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ hP`. Establish `hff` using `h01.1`. Establish `hcf` using `h01.2.1`. Establish `h02` using `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hff hcf).1`.
+
+Use `h02.elim fun L₀ hL₀ => ?_` and prove the remaining obligations. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 P.isPrime.ne_top`. Establish `h03` using `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ 1 (flag1L L) hβ).2 P e _ hP h1 hoff`.
+
+Establish `hK'` using `((GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ 1 (flag1L L') hβ).2 P e _ hP h1 hoff').1`. Establish `hK` using `h03.1`. Establish `hχ` using `h03.2.1`. Establish `hsp` using `h03.2.2`. Establish `hL : ∀ g, g ∈ L₀ ↔ SuppAt e V g` using `hL₀`.
+
+Establish `h04` using `(GlobalTheory.T.involution_spherical_hecke_anti V P e he).1`. Establish `h05` using `transport_local (fin V) (GfC V) (levG V β (flag1L L)) L₀ (levEnv V β L).J (SuppAt e V) (SuppF V (1 - (e + cA D e))) (KsphC V ∅) (fun k => ((levEnv V β L).χ k : ℂ)) (levChi V β (flag1L L)) (fin_lift V) (fun g g' => fin_inj V) (fun g => mem_J V β L) (fun g hg => hg.1) hL (fun g => …`. Use `⟨L₀.map (fin V), fun g hg => ⟨g, (hL g).2 hg, rfl⟩, fun g hg => ⟨g⁻¹, L₀.inv_mem ((hL g).2 hg), rfl⟩, h05.1, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨hj, g, hg, rfl⟩`. Establish `a` using `(hL g).1 hg`.
+
+Establish `b` using `supp_fin V he a`. Conclude with `(mem_J V β L' b).2 ((hK' g a).2 ((hK g a).1 ((mem_J V β L b).1 hj)))`.
+-/
 theorem local_group_two {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L L' : LevDat D.host.E ℂ V.rank) (hβ : IsBaseFrame V β Λ 1)
     (P : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D) (he : IsIdemAt e P)
@@ -47,6 +58,13 @@ theorem local_group_two {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
   have b := supp_fin V he a
   exact (mem_J V β L' b).2 ((hK' g a).2 ((hK g a).1 ((mem_J V β L b).1 hj)))
 
+/- English proof (translation)
+Introduce `D V β Λ hSD L Q' xq hQ Pl0 pl ok i hoff hi x A hx hA hDC`. Establish `hle` using `(GlobalTheory.T.parahoricSublevel_finiteIndex_more_places D V β Λ hSD L Q' xq hQ).1`. Take `⟨cc, hβ⟩` from `hSD`. Rewrite `hβ` using `[one_pow]`. Take `⟨α, ⟨e, ϖ, he, -, -, hα⟩, hxα⟩` from `hx hi`.
+
+Take `⟨Lc, l1, l2, l3, l4⟩` from `local_group_two V β Λ L { L with Q := Q', xq := xq } hβ (pl i.1) e he (fun PP h => hoff PP (h.imp_right fun h' => hQ h')) hoff`. Establish `e1 : x = fin V α⁻¹` using `Subtype.ext hxα`. Use `GlobalTheory.T.isDoubleCoset_of_smaller_level_same_local _ _ Lc x A hle l4 l3 ?_ (fun a ha => ?_) hDC` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `l2 α hα.2.1`.
+
+Take `⟨g, hg, rfl⟩` from `loc_supp V (hA a ha) he`. Conclude with `l1 g hg`.
+-/
 theorem isDC_smaller_level : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsSDFrame V β Λ 1 → ∀ (L : LevDat D.host.E ℂ V.rank) (Q' : Finset (Pl D.host.E)) (xq : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ), L.Q ⊆ Q' → ∀ (Pl0 : Type) (pl : Pl0 → Pl D.host.E) (ok : Set Pl0) (i : ok × ℕ), (∀ PP, PP ∈ L.Pg ∨ PP ∈ Q' → PP ≠ pl i.1 ∧ ¬ Formalism.IndefR.Lev.IsConjPl PP (pl i.1)) → i.2 ≤ V.rank → ∀ (x : Bridge.Gf V) (A : Finset (Bridge.Gf V)), isTEnv V pl ok i x → (∀ a ∈ A, isLocEnv V pl ok i a) → Bridge.IsDC (levEnv V β L).J x A → Bridge.IsDC (levEnv V β { L with Q := Q', xq := xq }).J x A := by
   intro D V β Λ hSD L Q' xq hQ Pl0 pl ok i hoff hi x A hx hA hDC
   have hle := (GlobalTheory.T.parahoricSublevel_finiteIndex_more_places D V β Λ hSD L Q' xq hQ).1

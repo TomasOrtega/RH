@@ -8,6 +8,15 @@ namespace GlobalTheory.CompanionTheory.RgHe.Frame
 
 open Polynomial
 
+/- English proof (translation)
+Rewrite using `[degree_lt_iff_coeff_zero]`. Introduce `k hk`. Rewrite using `[coeff_sub]`. Break down `hk.eq_or_lt with rfl | hk'` into its components or cases. Establish `h1 : p.nextCoeff = p.coeff m`.
+
+Rewrite using `[nextCoeff_of_natDegree_pos (by omega), hpd]; rfl`. Establish `h2 : q.nextCoeff = q.coeff m`. Rewrite using `[nextCoeff_of_natDegree_pos (by omega), hqd]; rfl`. Rewrite using `[← h1, ← h2, hn, sub_self]`. Break down `(Nat.succ_le_of_lt hk').eq_or_lt with rfl | hk''` into its components or cases.
+
+Establish `h1` using `hp.coeff_natDegree`. Establish `h2` using `hq.coeff_natDegree`. Rewrite `h1` using `[hpd]`. Rewrite `h2` using `[hqd]`. Rewrite using `[h1, h2, sub_self]`.
+
+Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega), sub_zero]`.
+-/
 theorem degree_sub_lt_of_nextCoeff_eq {p q : ℝ[X]} {m : ℕ} (hp : p.Monic) (hq : q.Monic)
     (hpd : p.natDegree = m + 1) (hqd : q.natDegree = m + 1) (hn : p.nextCoeff = q.nextCoeff) :
     (p - q).degree < (m : WithBot ℕ) := by
@@ -29,6 +38,27 @@ theorem degree_sub_lt_of_nextCoeff_eq {p q : ℝ[X]} {m : ℕ} (hp : p.Monic) (h
     · rw [coeff_eq_zero_of_natDegree_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega),
         sub_zero]
 
+/- English proof (translation)
+Establish `hPm : (∏ i, (X - C (d i)) : ℝ[X]).Monic` using `monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _`. Establish `hQm : (∏ j, (X - C (d' j)) : ℝ[X]).Monic` using `monic_prod_of_monic _ _ fun i _ => monic_X_sub_C _`. Establish `hPd : (∏ i, (X - C (d i)) : ℝ[X]).natDegree = m + 1`. Rewrite using `[natDegree_prod_of_monic _ _ fun i _ => monic_X_sub_C _]`. Simplify using the standard rewrite rules.
+
+Establish `hQd : (∏ j, (X - C (d' j)) : ℝ[X]).natDegree = m`. Rewrite using `[natDegree_prod_of_monic _ _ fun i _ => monic_X_sub_C _]`. Simplify using the standard rewrite rules. Establish `hRm : ((X - C (pfX d d')) * ∏ j, (X - C (d' j)) : ℝ[X]).Monic` using `(monic_X_sub_C _).mul hQm`. Establish `hRd : ((X - C (pfX d d')) * ∏ j, (X - C (d' j)) : ℝ[X]).natDegree = m + 1`.
+
+Rewrite using `[(monic_X_sub_C _).natDegree_mul hQm, hQd, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Establish `hn : (∏ i, (X - C (d i)) : ℝ[X]).nextCoeff = ((X - C (pfX d d')) * ∏ j, (X - C (d' j)) : ℝ[X]).nextCoeff`. Rewrite using `[(monic_X_sub_C _).nextCoeff_mul hQm, prod_X_sub_C_nextCoeff, prod_X_sub_C_nextCoeff, nextCoeff_X_sub_C, pfX]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hD` using `degree_sub_lt_of_nextCoeff_eq hPm hRm hPd hRd hn`. Establish `hS : (∑ j, C (pfR d d' j) * ∏ k ∈ univ.erase j, (X - C (d' k)) : ℝ[X]).degree < (m : WithBot ℕ)`. Rewrite using `[degree_lt_iff_coeff_zero]`. Introduce `n hn`. Rewrite using `[finset_sum_coeff]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul]`. Establish `hL : (∏ k ∈ univ.erase j, (X - C (d' k)) : ℝ[X]).natDegree < n`. Rewrite using `[natDegree_prod_of_monic _ _ fun i _ => monic_X_sub_C _]`. Establish `hj : (univ.erase j).card + 1 = m`.
+
+Rewrite using `[Finset.card_erase_of_mem (mem_univ j)]`. Establish `: 0 < m` using `j.pos`. Simplify using `only [card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [natDegree_X_sub_C, sum_const, smul_eq_mul, mul_one]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_eq_zero_of_natDegree_lt hL, mul_zero]`. Establish `hcard : (#(univ : Finset (Fin m)) : ℕ) = m` using `by simp`. Establish `key` using `Polynomial.eq_of_degrees_lt_of_eval_index_eq (s := (univ : Finset (Fin m))) (v := d') (f := (∏ i, (X - C (d i))) - (X - C (pfX d d')) * ∏ j, (X - C (d' j))) (g := ∑ j, C (pfR d d' j) * ∏ k ∈ univ.erase j, (X - C (d' k))) hd'.injOn (by rw [hcard]; exact hD) (by rw [hcard]; exact h …`. Introduce `j _`.
+
+Establish `hne : ∏ k ∈ univ.erase j, (d' j - d' k) ≠ 0`. Use `Finset.prod_ne_zero_iff.mpr fun k hk => sub_ne_zero.mpr fun h => ?_` and prove the remaining obligations. Conclude with `(Finset.mem_erase.mp hk).1 (hd' h).symm`. Establish `hQ0 : (∏ l, (d' j - d' l)) = 0` using `Finset.prod_eq_zero (mem_univ j) (sub_self _)`. Establish `hterm : ∀ l ∈ (univ : Finset (Fin m)), l ≠ j → pfR d d' l * ∏ k ∈ univ.erase l, (d' j - d' k) = 0`.
+
+Introduce `l _ hl`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_erase.mpr ⟨hl.symm, mem_univ j⟩) (sub_self _), mul_zero]`. Simplify using `only [eval_sub, eval_mul, eval_prod, eval_X, eval_C, eval_finset_sum]`. Rewrite using `[hQ0, mul_zero, sub_zero, Finset.sum_eq_single_of_mem j (mem_univ j) hterm, pfR, div_mul_cancel₀ _ hne])`. Rewrite using `[← key]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_eq_partial_fraction {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ)
     (hd' : Function.Injective d') :
     (∏ i, (X - C (d i))) = (X - C (pfX d d')) * (∏ j, (X - C (d' j))) +
@@ -86,6 +116,13 @@ theorem prod_eq_partial_fraction {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m
   rw [← key]
   ring
 
+/- English proof (translation)
+Establish `hd' : Function.Injective d'` using `fun a b h => Sum.inr_injective (hinj (by simpa using h))`. Establish `hne : ∀ j, d i - d' j ≠ 0` using `fun j => sub_ne_zero.mpr fun h => by`. Simplify `h)` using `using hinj (a₁ := Sum.inl i) (a₂ := Sum.inr j) (by simpa`. Establish `hQ : ∏ j, (d i - d' j) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => hne j`. Establish `h` using `congrArg (eval (d i)) (prod_eq_partial_fraction d d' hd')`.
+
+Simplify using `only [eval_add, eval_sub, eval_mul, eval_prod, eval_X, eval_C, eval_finset_sum] at h`. Rewrite `h` using `[Finset.prod_eq_zero (mem_univ i) (sub_self _)]`. Establish `hsum : ∀ j, pfR d d' j * ∏ k ∈ univ.erase j, (d i - d' k) = (pfR d d' j / (d i - d' j)) * ∏ k, (d i - d' k)`. Introduce `j`. Rewrite using `[← Finset.mul_prod_erase univ _ (mem_univ j)]`.
+
+Clear denominators, using `[hne j]` for the nonvanishing conditions. Simplify using `only [hsum, ← Finset.sum_mul] at h`. Rewrite `h` using `[← add_mul]`. Conclude with `(mul_eq_zero.mp h.symm).resolve_right hQ`.
+-/
 theorem pfZero {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ)
     (hinj : Function.Injective (Sum.elim d d')) (i : Fin (m + 1)) :
     d i - pfX d d' + ∑ j, pfR d d' j / (d i - d' j) = 0 := by

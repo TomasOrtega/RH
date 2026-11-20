@@ -7,6 +7,15 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing G
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S2
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero⟩`. Use `show cyclotomicCharacter Ω l σ.toRingEquiv = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.mp fun n => ?_)` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+
+Establish `hN0 : l ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `: NeZero (l ^ n)` using `⟨hN0⟩`. Establish `hspec` using `cyclotomicCharacter.spec (L := Ω) l σ.toRingEquiv ζ hζ.pow_eq_one`. Establish `hv : ¬ A.valuation ((l ^ n : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, map_pow, not_lt]`.
+
+Conclude with `one_le_pow₀ (not_lt.1 hA)`. Establish `h1 : Chr.cls ℚ Ω (l ^ n) σ = 1` using `(Chr.clsFacts ℚ Ω (l ^ n)).2.2.2.2 A hv hσ`. Establish `h2` using `Chr.cls_spec (l ^ n) σ ζ hζ.pow_eq_one`. Rewrite `h2` using `[h1]`. Establish `h3` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (hspec.symm.trans h2)`.
+
+Rewrite using `[ZMod.val_injective _ h3]`. Simplify using the standard rewrite rules.
+-/
 private theorem cyc_ine (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime]
     (A : ValuationSubring Ω) (hA : ¬ A.valuation (l : Ω) < 1) {σ : G ℚ Ω} (hσ : σ ∈ Ine (F := ℚ) A) :
     cycZ ℚ Ω l σ = 1 := by
@@ -28,14 +37,25 @@ private theorem cyc_ine (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ �
   rw [ZMod.val_injective _ h3]
   simp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem ine_iff {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F]
     (A : ValuationSubring Ω) (g : G F Ω) : g ∈ Ine (F := F) A ↔ resQ F g ∈ Ine (F := ℚ) A := Iff.rfl
 
+/- English proof (translation)
+Establish `e : (2 : k)⁻¹ * (1 + 1) = 1` using `by rw [one_add_one_eq_two, inv_mul_cancel₀ h]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mix, e]`.
+-/
 private theorem mix_one {k : Type} [Field k] (h : (2 : k) ≠ 0) (γ : kˣ) : mix γ 1 1 = (1 : M4 k) := by
   have e : (2 : k)⁻¹ * (1 + 1) = 1 := by rw [one_add_one_eq_two, inv_mul_cancel₀ h]
   ext i j
   fin_cases i <;> fin_cases j <;> simp [mix, e]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Establish `h1 : g * r s * g⁻¹ = 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hg s hs]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hx]`. Simplify `h1` using `[mul_inv_eq_one]`.
+-/
 private theorem diag_one {Γ k : Type} [Group Γ] [Field k] {r : Γ →* GL (Fin 2) k} {H : Subgroup Γ} {x : Γ →* kˣ}
     (h : IsDiagOn r H ![1, x]) {s : Γ} (hs : s ∈ H) (hx : x s = 1) : r s = 1 := by
   obtain ⟨g, hg⟩ := h
@@ -46,6 +66,13 @@ private theorem diag_one {Γ k : Type} [Group Γ] [Field k] {r : Γ →* GL (Fin
     fin_cases i <;> fin_cases j <;> simp [hx]
   simpa [mul_inv_eq_one] using h1
 
+/- English proof (translation)
+Establish `h1 : (d : Qbar l) ^ 2 = 1` using `by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]`. Break down `sq_eq_one_iff.1 h1 with h2 | h2` into its components or cases. Conclude with `Units.ext h2`. It suffices to derive a contradiction. Establish `h3 : ‖(2 : Qbar l)‖ < 1`.
+
+Establish `h4 : ‖(d : Qbar l) - 1‖ < 1` using `hc`. Rewrite `h4` using `[h2, show (-1 - 1 : Qbar l) = -2 by ring, norm_neg]`. Conclude with `h4`. Establish `h5 : ‖((2 : ℕ) : ℚ_[l])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`.
+
+Conclude with `(Nat.coprime_primes Fact.out Nat.prime_two).2 hl`. Establish `h6 : (2 : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((2 : ℕ) : ℚ_[l])` using `by rw [map_natCast, Nat.cast_ofNat]`. Rewrite `h3` using `[h6, norm_algebraMap', h5]`. Conclude with `lt_irrefl _ h3`.
+-/
 private theorem sqrt_one {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {d : (Qbar l)ˣ} (h : d ^ 2 = 1) (hc : Cong d 1) : d = 1 := by
   have h1 : (d : Qbar l) ^ 2 = 1 := by rw [← Units.val_pow_eq_pow_val, h, Units.val_one]
   rcases sq_eq_one_iff.1 h1 with h2 | h2
@@ -62,6 +89,27 @@ private theorem sqrt_one {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {d : (Qbar l)ˣ
     rw [h6, norm_algebraMap', h5] at h3
     exact lt_irrefl _ h3
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H g hg`. Take `⟨A, hA, hgI, hrb⟩` from `hg`. Establish `hAl : ¬ A.valuation (l : Ω) < 1` using `hA l (Finset.mem_insert_self _ _)`. Establish `hsI : resQ T.F g ∈ Ine (F` using `ℚ) A := (ine_iff _ _ _).1 hgI`. Establish `hψ : D.ψ (resQ T.F g) = 1` using `H.hyp.ok.kb A (fun p hp => by rw [Finset.mem_singleton.1 hp]; exact hAl) g hgI hrb`.
+
+Establish `hk : resQ T.F g ∈ k₀.fixingSubgroup` using `(H.hyp.ps g).1 (H.hyp.two.unr A g hgI)`. Establish `hδ2` using `H.δ_sq g`. Establish `hδ1` using `H.δ_one g`. Use `show (tw (R.comp (resQ T.F)) δ g).val = 1`. Rewrite using `[tw_val, MonoidHom.comp_apply]`.
+
+Generalize the expression as in `resQ T.F g = s at *`. Establish `hz : cycZ ℚ Ω l s = 1` using `cyc_ine Ω l A hAl hsI`. Establish `hbar : cycBar ℚ Ω l s = 1` using `by simp [cycBar, hz]`. Establish `hchi : chiO ℚ Ω l c.O s = 1` using `by simp [chiO, hz]`. Establish `hom : D.om s = 1` using `(H.chars.om s).2 (by rw [hbar]; simp [Cong])`.
+
+Establish `hal : D.al s = D.ξ s` using `by simp [Raw.al, hchi, hom]`. Establish `hξ : D.ξ s = 1`. Use `H.chars.xi s ?_` and prove the remaining obligations. Establish `h1 : residue c.O (D.ξ s : c.O) = 1`. Establish `h2` using `congrFun (congrFun hrb 2) 2`.
+
+Rewrite using `[← hal]`. Simplify `h2` using `[Raw.rbar, Raw.r0, mapRep, GradeZeroInterpolatingElement.diagRep, Raw.ps]`. Establish `h3 : (D.ξ s : c.O) - 1 ∈ maximalIdeal c.O`. Rewrite using `[← residue_eq_zero_iff, map_sub, h1, map_one, sub_self]`. Establish `h4` using `(UpperTheory.V.Fr.sc_norm l c _).2.1 h3`.
+
+Rewrite `h4` using `[Subalgebra.coe_sub, Subalgebra.coe_one]`. Unfold `Cong`. Rewrite using `[Units.val_one]`. Conclude with `h4`. Establish `hth : D.th s = 1` using `by simp [Raw.th, Raw.Psi, Chr.Psi, hal, hξ, hchi, hψ]`.
+
+Establish `hup : up D.ξ s = 1` using `by simp [up, hξ]`. Establish `hδ : δ g = 1`. Use `sqrt_one H.hyp.good.l_odd ?_ hδ1` and prove the remaining obligations. Simplify `hδ2` using `[hbar, hup, H.hyp.φ_in s hk, up, hth, hξ]`. Take `⟨h, rfl⟩ : s ∈ (resQ k₀).range` from `⟨AlgEquiv.ofRingEquiv (f := s.toRingEquiv) fun x => hk ⟨x.1, x.2⟩, rfl⟩`.
+
+Establish `hN : (resQ k₀).range.Normal` using `Subgroup.normal_of_index_eq_two H.mix.index`. Use `set t₀ := resQ T.F T.g0 with ht₀`. Take `⟨h', hh'⟩ : t₀⁻¹ * resQ k₀ h * t₀ ∈ (resQ k₀).range` from `hN.conj_mem' _ ⟨h, rfl⟩ t₀`. Establish `r1 : r h = 1` using `diag_one (H.dat.away A hAl) ((ine_iff _ _ _).2 hsI) hup`. Take `⟨c1, c2, -⟩` from `UpperTheory.V.Two.ineConj ℚ Ω t₀`.
+
+Establish `hAA : t₀ • (t₀⁻¹ • A) = A` using `smul_inv_smul _ _`. Establish `r2 : r h' = 1`. Use `diag_one (H.dat.away (t₀⁻¹ • A) fun h0 => hAl ?_) ((ine_iff _ _ _).2 ?_) ?_` and prove the remaining obligations. Rewrite using `[← hAA]`. Conclude with `(c2 _ l).2 h0`.
+
+Rewrite using `[hh']`. Conclude with `c1 _ _ (hAA.symm ▸ hsI)`. Rewrite using `[MonoidHom.comp_apply, hh', map_mul, map_mul, hup, mul_one, ← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[H.mix.on h h' hh', r1, r2, hδ, Units.val_one, Units.val_one, one_smul]`. Conclude with `mix_one H.mix.two _`.
+-/
 theorem UpperTheory.induced_representation_constituent_vanishing :
     UpperTheory.V.Sd.S2.IndKill := by
   intro Ω _ _ _ l _ c D T k₀ _ _ φ ι k t r α β R δ H g hg

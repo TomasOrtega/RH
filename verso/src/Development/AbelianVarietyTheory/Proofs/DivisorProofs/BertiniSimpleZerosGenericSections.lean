@@ -23,6 +23,19 @@ namespace GlobalTheory.BertiniTop
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Introduce `hq F _ _ T hG hB δ f hf`. Take `⟨-, hdeg, hdim⟩` from `GlobalTheory.ImageDegree.degree_image_eq_topSelf hq F T.toLinSys hG.alg.variety hG.alg.bpf hB`. Establish `hprime : T.imageIdeal.IsPrime` using `HeightExists.isPrime_imageIdeal (S := T.toLinSys) hG.alg.variety`. Establish `hhom : ∀ a ∈ T.imageIdeal, ∀ n : ℕ, homogeneousComponent n a ∈ T.imageIdeal`. Introduce `a ha n`.
+
+Establish `h` using `T.toLinSys.isHomogeneous_imageIdeal n ha`. Rewrite `h` using `[show (DirectSum.decompose (homogeneousSubmodule (Fin T.N) F) a n : MvPolynomial (Fin T.N) F) = homogeneousComponent n a from MvPolynomial.decomposition.decompose'_apply a n]`. Then use the resulting hypothesis. Establish `hδ : (δ : ℤ) = T.del`. Rewrite using `[GlobalTheory.ChowDegree.degree_eq_hilbertDegree_of_isChowForm F T.D T.N δ T.imageIdeal f hf hprime hhom]`. Conclude with `hdeg`.
+
+Use `⟨hδ, ?_⟩` and prove the remaining obligations. Take `⟨d₁, g₁, hg₁, hg₁I, hg₁v⟩` from `GlobalTheory.T.exists_form_outside_imageIdeal_vanishing_on_boundary F T hG hB`. Take `⟨d₂, g₂, hg₂, hg₂I, hg₂f⟩` from `GlobalTheory.T.exists_form_finite_fibres_birational_linearSystem F T.toLinSys hG.alg.variety hG.alg.bpf hB`. Take `⟨Q₁, hQ₁, hQ₁v⟩` from `GlobalTheory.T.exists_eliminationForm_generalLinearForms_cone F T.D T.N (d₁ + d₂) T.imageIdeal (g₁ * g₂) hG.alg.variety.one_le hprime hhom hdim (hg₁.mul hg₂) fun h => (hprime.mem_or_mem h).elim hg₁I hg₂I`. Take `⟨Q₂, hQ₂, -, hQ₂n⟩` from `GlobalTheory.PencilDisc.exists_poly_noSquare F T.D T.N δ f hf.isChowFormInt.pos hf.homog hf.irred`.
+
+Use `⟨Q₁ * Q₂, mul_ne_zero hQ₁ hQ₂, fun E _ _ s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : aeval (fun p : Fin T.D × Fin T.N => algebraMap E (AlgebraicClosure E) (s p.1 p.2)) (Q₁ * Q₂) ≠ 0`. Establish `h` using `MvPolynomial.aeval_algebraMap_apply (AlgebraicClosure E) (fun p : Fin T.D × Fin T.N => s p.1 p.2) (Q₁ * Q₂)`. Conclude with `fun h0 => hs ((map_eq_zero (algebraMap E (AlgebraicClosure E))).1 (h.symm.trans h0))`. Rewrite `hs'` using `[map_mul]`.
+
+Establish `hns : NoSquare (spec (fun i j => algebraMap E (AlgebraicClosure E) (s i j)) f)` using `hQ₂n _ _ (right_ne_zero_of_mul hs')`. Take `⟨hfin, hopen⟩` from `GlobalTheory.T.linearSection_finite_inOpen_off_badForm F T hG δ f hf (g₁ * g₂) (fun K _ _ x hx => by rw [map_mul, hg₁v K x hx, zero_mul]) (fun K _ _ y => (hg₂f K y).subset fun x hx => ⟨right_ne_zero_of_mul (by simpa only [map_mul] using hx.1), hx.2⟩) E s hns.1 fun x hx h0 => by`. Use `left_ne_zero_of_mul hs' (hQ₁v (AlgebraicClosure E) (fun i j => algebraMap E _ (s i j)) _ (hG.alg.bpf.coords_ne_zero _) (fun a ha => ?_) h0 ((T.toLinSys.mem_subPts_cut_baseChange_iff E s x).1 hx))` and prove the remaining obligations. Use `T.toLinSys.eval₂_coords_eq_zero (LinSys.toBase x : T.Pt (AlgebraicClosure E)).1 ha` as an intermediate fact. Rewrite `this` using `[LinSys.baseHom_ptOver]`. Then use the resulting hypothesis.
+
+Conclude with `GlobalTheory.T.linearSection_etale_of_squarefree_chowForm F T hG δ f hf hδ E s hfin hopen hns`.
+-/
 theorem bertini : Quoted → Bertini := by
   intro hq F _ _ T hG hB δ f hf
   obtain ⟨-, hdeg, hdim⟩ :=

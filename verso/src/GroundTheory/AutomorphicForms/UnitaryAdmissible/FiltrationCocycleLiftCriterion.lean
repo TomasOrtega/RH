@@ -16,6 +16,9 @@ section KHom
 variable {K : Type*} [Monoid K] {W : Type*} [AddCommGroup W] [Module ℂ W]
   {V : Type*} [AddCommGroup V] [Module ℂ V] {τ : Representation ℂ K W} {ρ : Representation ℂ K V}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun f : W →ₗ[ℂ] V => f w) (hT k)`.
+-/
 theorem kHom_apply {T : W →ₗ[ℂ] V} (hT : T ∈ kHom τ ρ) (k : K) (w : W) :
     T (τ k w) = ρ k (T w) :=
   congrArg (fun f : W →ₗ[ℂ] V => f w) (hT k)
@@ -26,6 +29,11 @@ def kerSubrep {T : W →ₗ[ℂ] V} (hT : T ∈ kHom τ ρ) : Subrepresentation 
     simp only [LinearMap.mem_ker] at hw ⊢
     rw [kHom_apply hT, hw, map_zero]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Establish `hne : (⊥ : Subrepresentation τ) ≠ ⊤` using `bot_ne_top`. Apply `hne` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+
+Use extensionality with `w`. Simplify using `[Subsingleton.elim w 0]`.
+-/
 theorem nontrivial_of_isIrreducible [τ.IsIrreducible] : Nontrivial W := by
   by_contra h
   rw [not_nontrivial_iff_subsingleton] at h

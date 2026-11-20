@@ -12,5 +12,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ProjEmbed.isProjective_finAtlas | exact GlobalTheory.ProjEmbed.isProjective_finAtlas | (intros; apply GlobalTheory.ProjEmbed.isProjective_finAtlas <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_projective_analytic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) (R : AnRead p σ d) [CompactSpace (CxPts p σ)], IsProjOver p → IsProjective R.finAtlas := by
   first | exact @GlobalTheory.ProjEmbed.isProjective_finAtlas | exact GlobalTheory.ProjEmbed.isProjective_finAtlas | (intros; apply GlobalTheory.ProjEmbed.isProjective_finAtlas <;> assumption)

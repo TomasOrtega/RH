@@ -37,6 +37,9 @@ variable (At : ∀ x, Fm.x1 < x → ∀ i : Fm.Ix x, TermTie (Fm.D x i))
   (Yt : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),
     LoopTie (Fm.D x i) (Fm.L x i) (At x hx i) u u' C1)
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩` from `h`. Use `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, fun Cg cb Cu cT CT C0 A => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19⟩` from `h Cg cb Cu cT CT C0 A`. Conclude with `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, hV Cg cb Cu cT CT C0 A⟩`.
+-/
 theorem family_admitted_of_parts (h : AdmRec Fm C1) (hV : ∀ Cg cb Cu cT CT C0 A : ℝ, VanishingOnXAndXPlus.FamilyTermVolumeSmallCellBound Fm C1 At Yt Cg cb Cu cT CT C0 A) :
     VanishingOnXAndXPlus.AdmF Fm C1 At Yt := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩ := h
@@ -44,6 +47,9 @@ theorem family_admitted_of_parts (h : AdmRec Fm C1) (hV : ∀ Cg cb Cu cT CT C0 
   obtain ⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19⟩ := h Cg cb Cu cT CT C0 A
   exact ⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, hV Cg cb Cu cT CT C0 A⟩
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩` from `h`. Use `⟨⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, fun Cg cb Cu cT CT C0 A => ?_⟩, fun Cg cb Cu cT CT C0 A => (h Cg cb Cu cT CT C0 A).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2⟩` and prove the remaining obligations. Take `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19, -⟩` from `h Cg cb Cu cT CT C0 A`. Conclude with `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b16, b17, b18, b19⟩`.
+-/
 theorem admissible_split_volumes (h : VanishingOnXAndXPlus.AdmF Fm C1 At Yt) : AdmRec Fm C1 ∧
     ∀ Cg cb Cu cT CT C0 A : ℝ, VanishingOnXAndXPlus.FamilyTermVolumeSmallCellBound Fm C1 At Yt Cg cb Cu cT CT C0 A := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, h⟩ := h
@@ -59,6 +65,11 @@ section AtOne
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} (W : WittDat X) (hI : SIso D.s (sOf hF))
   (H : TieHyp W hI) (A : AmpDat X) (hV : PvalForm W hI A)
 
+/- English proof (translation)
+Introduce `u u' t s hs`. Establish `h : ∃ s' : TT Y u u', s'.toTerm = tc hI t` using `⟨s, hs⟩`. Use `show hsNormSq (JtOf hI t) = ampL s ^ 2`. Unfold `JtOf`. Rewrite using `[dif_pos h, ← Formalism.L2.SG.PackageTie.norm_hsEmb_sq]`.
+
+Establish `e` using `hA u u' (tc hI t) ⟨h.choose, h.choose_spec⟩ ⟨s, hs⟩`. Unfold `ampL at e ⊢`. Rewrite using `[e]`.
+-/
 theorem jtPin_of (hA : AmpFibreConst Y) : JtPin hF hI (termTieOf W hI H A hV) := by
   intro u u' t s hs
   have h : ∃ s' : TT Y u u', s'.toTerm = tc hI t := ⟨s, hs⟩
@@ -74,6 +85,11 @@ def FrameChangeAt : Prop :=
     (∀ a b, b < a → ξ a b = 0) → (∀ a, ξ a a = 1) →
       ∃ m ∈ NLam (lamOf W hI t) (fl'Of W hI t), ∀ b, m (frame (fl'Of W hI t) b) = frameAct (frame (fl'Of W hI t)) ξ b
 
+/- English proof (translation)
+Introduce `t t' hL hE`. Take `⟨n, hn, ξ, hl, hd, hfr⟩` from `hE`. Take `⟨m, hm, hmf⟩` from `hFC u u' t ξ hl hd`. Use `term_injC W hI t t' hL ⟨n, hn, m, hm, fun b => ?_⟩` and prove the remaining obligations. Establish `e1 : frame (fl'Of W hI t') b = frameAct (fun a => n (frame (fl'Of W hI t) a)) ξ b` using `congrFun hfr b`.
+
+Rewrite using `[e1, hmf b]`. Simplify using `only [frameAct, map_sum, map_smul]`.
+-/
 theorem frameEqvInj_of (hFC : FrameChangeAt W hI) (u u' : D.what₂.Word) :
     FrameEqvInj (termTieOf W hI H A hV) (u' := u') (FlagOfWord W u) := by
   intro t t' hL hE
@@ -93,6 +109,13 @@ variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) (At : ∀ x, Fm.x1 < x → ∀ i
     LoopTie (Fm.D x i) (Fm.L x i) (At x hx i) u u' C1)
   (Cc : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ConcAt (Fm.D x i) (At x hx i))
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨C₀, H⟩` from `hR Cg cb Cu cT CT C0 A`. Use `⟨C₀, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨a, Ha⟩` from `H C hC`. Take `⟨b, Hb⟩` from `hFo Cg cb Cu cT CT C0`.
+
+Use `⟨max a b, fun x hx i => ?_⟩` and prove the remaining obligations. Introduce `hx1 u u' hH`. Take `⟨hn, hd, h1⟩` from `Ha x (le_trans (le_max_left _ _) hx) i hx1 u u' hH`. Establish `hF` using `Hb x (le_trans (le_max_right _ _) hx) i hH.1 u`. Set `K` to `Cc x hx1 i`.
+
+Use `⟨fun s h2 hk => ?_, ?_⟩` and prove the remaining obligations. Conclude with `gam_mul_le K.gam (Yt x hx1 i u u') hF (classS_le (hI := K.hI) (At x hx1 i) K.jt K.wr K.fc (Yt x hx1 i u u') C hn hd s h2 hk)`. Conclude with `gam_mul_le K.gam (Yt x hx1 i u u') hF (classOne_le (hI := K.hI) (At x hx1 i) K.jt K.wr K.fc (Yt x hx1 i u u') C h1)`.
+-/
 theorem rowLoopsF_of_ev
     (hFo : ∀ Cg cb Cu cT CT C0 : ℝ, OwnEv Fm fun C' Cl x i =>
       Hyp0 (Fm.D x i) (Fm.L x i) C' Cl Cg cb Cu cT CT C0 → ∀ u, UnitaryVolumeMass.FormAt (Fm.D x i) u)
@@ -121,6 +144,11 @@ variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} {hI : SIso D.s 
 
 open Formalism.MainNotions.BridgeLemma in
 
+/- English proof (translation)
+Use `summable_of_sum_le (c := massRows D L.F0 L.what₂ * dimPi (hc := D.hcW) u * B) (fun p => Set.indicator_nonneg (fun q _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)) p) fun S => ?_` and prove the remaining obligations. Simplify using `only [Set.indicator_apply]`. Rewrite using `[← Finset.sum_filter]`. Establish `hS : ∀ x ∈ S.filter (· ∈ Q'), rowL x.1 = rowL x.2` using `fun x hx => (hQ x (Finset.mem_filter.1 hx).2).1`. Use `(finSum_le T hJ hW hC _ hS).trans (hB _ ?_)` and prove the remaining obligations.
+
+Introduce `p hp`. Rewrite `hp` using `[Finset.mem_image]`. Take `⟨x, _, rfl⟩` from `hp`. Conclude with `(hQ x.1 (Finset.mem_filter.1 x.2).2).2`.
+-/
 theorem summable_of_rows (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (Q : D.s.Pair u u' → Prop) (B : ℝ)
     (hB : RowBound T L Q B) (Q' : Set (TT Y u u' × TT Y u u'))
@@ -177,10 +205,16 @@ def CcF : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), ConcAt (Fm.D x i) (AtF Fm X Y hF
     Formalism.L2.SG.Pf.WittFlags.WRowPin_holds (hF x hx i) (hI x hx i) (W x hx i) (H x hx i) (A x hx i) (hV x hx i),
     Formalism.L2.SG.Pf.FibreCounting.fibreCount_of (hRF x hx i), gam x hx i⟩
 
+/- English proof (translation)
+Introduce `t t' hL hE` and use `frameEqvInj_of (W x hx i) (hI x hx i) (H x hx i) (A x hx i) (hV x hx i) (hFC x hx i) u u' t t' hL hE`.
+-/
 theorem termInjF (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word) :
     BridgeLemma₂.wordPairTermInjective (AtF Fm X Y hF hI W H A hV x hx i) (YtF Fm C1 X Y hF hI W H A hV hFC B M x hx i u u') :=
   fun t t' hL hE => frameEqvInj_of (W x hx i) (hI x hx i) (H x hx i) (A x hx i) (hV x hx i) (hFC x hx i) u u' t t' hL hE
 
+/- English proof (translation)
+The claim follows from `rowLoopsF_of_ev Fm C1 (AtF Fm X Y hF hI W H A hV) (YtF Fm C1 X Y hF hI W H A hV hFC B M) (CcF Fm X Y hF hI W H A hV hAF hRF gam) (fun Cg cb Cu cT CT C0 => Formalism.MainNotions.BridgeLemma.formAt_family Fm Cg cb Cu cT CT C0 (hRk Cg cb Cu cT CT C0) hL3 (hAdm.2.2.2.2.2.2.2.2.2.2.2. …`.
+-/
 theorem loop_bound_families
     (hRk : ∀ Cg cb Cu cT CT C0 : ℝ, PX.RanksF Fm C0 Cg cb Cu cT CT) (hL3 : VanishingOnXAndXPlusMass.Conclusion3Family Fm)
     (hAdm : AdmRec Fm C1)
@@ -239,6 +273,9 @@ variable {eps : ℝ} (Fm : FamP eps) (C1 : ℝ)
 def hFCOf (hFC : FrameChangeC) : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), FrameChangeAt (W x hx i) (hI x hx i) :=
   fun x hx i => hFC _ _ _ (hF x hx i) (hI x hx i) (W x hx i)
 
+/- English proof (translation)
+The claim follows from `loop_bound_families Fm C1 X Y hF hI W H A hV (hFCOf Fm X Y hF hI W hFC) B M hAF hRF gam hRk hL3 hAdm hVol hAmp (fun x hx i u u' => hNC _ _ _ (hF x hx i) (hI x hx i) (W x hx i) (H x hx i) (A x hx i) (hV x hx i) u u') (fun x hx i u u' => hGC _ _ _ (hF x hx i) (hI x hx i) (W x hx i) …`.
+-/
 theorem loop_bound_concrete_families (hFC : FrameChangeC) (hNC : NormTieC) (hGC : GramDeterminantCount) (hEC : EntryLatC)
     (B : ∀ x (_ : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word), LoopLocDat (Fm.D x i) (Fm.L x i) u u' C1)
     (M : ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x) (u u' : (Fm.D x i).what₂.Word),

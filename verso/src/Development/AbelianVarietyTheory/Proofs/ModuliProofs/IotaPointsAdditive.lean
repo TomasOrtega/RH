@@ -14,6 +14,11 @@ namespace GlobalTheory.IotaAdditive
 
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Take `⟨u, hu, hv⟩` from `exists_gen hL hF t ht`. Establish `e : ∀ j, u.s j = t'.s j` using `fun j => Units.ext (hinj _ (fn_ext fun y hy => by choose I hI using fun χ : Y' ⟶ X => exists_chart hL (χ y)`. Establish `hI' : Good L y I` using `hI`. Establish `hy' : h y ∈ LB.wchart L φ' j` using `hy`. Use `(gs_pull (𝟙 _) h y (LB.wchart L φ' j) hy' _).trans (Eq.trans ?_ (gs_pull (𝟙 _) h y (LB.wchart L φ' j) hy' _).symm)` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp]`. Use `(gs_unit h y _ hy' _).trans (Eq.trans (congrArg Units.val ?_) (gs_unit h y _ hy' _).symm)` and prove the remaining obligations. Conclude with `(gen_trans hu h y hy' (hI'.mem φ' h)).trans ((congrArg _ ((hv _ h y I hI').trans (H y I hI'))).trans (gen_trans ht' h y hy' (hI'.mem φ' h)).symm)))`. Rewrite using `[← hv Z r z J hJ]`. Conclude with `congrArg (gm r z _) (e _)`.
+-/
 theorem val_eq_of_app_injective {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (h : Y' ⟶ Y)
     (hinj : ∀ U, Function.Injective (h.app U).hom) (t : LB.Gen (LB.LinComb L φ ε))
@@ -36,6 +41,11 @@ theorem val_eq_of_app_injective {X Y Y' : Scheme.{0}} {L : LB X} (hL : L.IsLB) {
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Spec (CommRingCat.of R)).Opens}
 
+/- English proof (translation)
+Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by show RingHom.ker (algebraMap R (FractionRing R)) ≤ _`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R _)]`. Conclude with `bot_le)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant (jK R)` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (jK R ∣_ W)` using `IsSchemeTheoreticallyDominant.of_isPullback (isPullback_morphismRestrict (jK R) W).flip`.
+
+Conclude with `(jK R ∣_ W).app_injective U`.
+-/
 theorem restrict_app_injective (W : (Spec (CommRingCat.of R)).Opens) (U : W.toScheme.Opens) :
     Function.Injective ((jK R ∣_ W).app U).hom := by
   have : IsDominant (jK R) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by
@@ -46,11 +56,17 @@ theorem restrict_app_injective (W : (Spec (CommRingCat.of R)).Opens) (U : W.toSc
     IsSchemeTheoreticallyDominant.of_isPullback (isPullback_morphismRestrict (jK R) W).flip
   exact (jK R ∣_ W).app_injective U
 
+/- English proof (translation)
+The claim follows from `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (ψW.psi_gen _) (invGen_isGen _ _ _ _ (ψW.psi_gen _))) (invGen_isGen _ _ _ _ (ψW.psi_gen _))) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _))`.
+-/
 theorem tau_isGen (ψW : PsiOn D W) (a b : D.X) : (ψW.tau a b).IsGen :=
   mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (ψW.psi_gen _)
     (invGen_isGen _ _ _ _ (ψW.psi_gen _))) (invGen_isGen _ _ _ _ (ψW.psi_gen _)))
     (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.rig_gen _))
 
+/- English proof (translation)
+Establish `p : ∀ χ, val (ψW.psi χ) (jK R ∣_ W) z J = val (D.psi χ) (jK R ⁻¹ᵁ W).ι z J` using `fun χ => by`. Use `((val_pull hJ _ _ _).symm.trans (val_corr hJ (ψW.psi_eq χ) (𝟙 _))).trans (val_pull hJ _ _ _)` as an intermediate fact. Rewrite `this` using `[Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis. Establish `q : val (D.rigW W) (jK R ∣_ W) z J = val D.rigK (jK R ⁻¹ᵁ W).ι z J` using `(val_pull hJ _ _ _).trans ((congrArg (fun r => val (L := D.P.L) D.rig r z J) (morphismRestrict_ι (jK R) W)).trans (val_pull hJ _ _ _).symm)`. Conclude with `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (p _) ((val_inv _ _).trans (congrArg (·⁻¹) (p _))))) ((val_inv _ _).trans (congrArg (·⁻¹) (p _))))) ((val_inv _ _).trans (congrArg (·⁻¹) q)))).tr …`.
+-/
 theorem val_tau_generic (ψW : PsiOn D W) (a b : D.X) {z : (jK R ⁻¹ᵁ W).toScheme} {J} (hJ : Good D.P.L z J) :
     val (ψW.tau a b) (jK R ∣_ W) z J = val (D.tau a b) (jK R ⁻¹ᵁ W).ι z J := by
   have p : ∀ χ, val (ψW.psi χ) (jK R ∣_ W) z J = val (D.psi χ) (jK R ⁻¹ᵁ W).ι z J := fun χ => by
@@ -65,6 +81,15 @@ theorem val_tau_generic (ψW : PsiOn D W) (a b : D.X) {z : (jK R ⁻¹ᵁ W).toS
     ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans
       (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))).symm
 
+/- English proof (translation)
+Establish `key` using `val_eq_of_app_injective D.P.isLB (jK R ∣_ W) (restrict_app_injective W) (LB.mulGen D.P.L _ _ _ _ (ψW.tau (a + a') b) (DegPre.cubAtT D (TW W) (cP D _ a) (cP D _ a') (cP D _ b))) (LB.mulGen D.P.L _ _ _ _ (ψW.tau a b) (ψW.tau a' b)) (fun U _ h => ?_) (mulGen_isGen _ _ _ _ _ _ _ (tau …`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (key.trans (val_mul hJ _ _ _))`. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) e` and prove the remaining obligations. Use `Eq.trans ?_ (val_cub D.cub ρ hJ (cP D _ a) (cP D _ a') (cP D _ b)).symm` and prove the remaining obligations. Rewrite using `[comp_cP, comp_cP, comp_cP]`.
+
+Establish `p : ∀ x y w v : (TW W).left ⟶ D.P.A.left, ∏ i : ((PUnit ⊕ PUnit) ⊕ PUnit) ⊕ PUnit.{1}, h (Sum.elim (Sum.elim (Sum.elim (fun _ => x) (fun _ => y)) (fun _ => w)) (fun _ => v) i) ^ Sum.elim (Sum.elim (Sum.elim (fun _ => (-1 : ℤ)) (fun _ => - -1)) (fun _ => - -1)) (fun _ => -1) i = ( …` using `fun x y w v => by`. Simplify using `[Fintype.prod_sum_type]`. Use `(prod_sum₂ (K' := thK) (U := U) _ (p (cP D _ (a + a' + b)).left (cP D _ (a + a')).left (cP D _ b).left (1 : TW W ⟶ D.P.A).left) (prod_cub (T := TW W) (U := U) (cP D _ a) (cP D _ a') (cP D _ b) h)).trans (Eq.trans ?_ (prod_sum₂ (U := U) _ (p (cP D _ (a + b)).left (cP D _ a).left ( …` and prove the remaining obligations. Simplify using `only [cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Set `T' : Over (Spec (CommRingCat.of R))` to `Over.mk ((jK R ⁻¹ᵁ W).ι ≫ jK R)`. Set `κ : T' ⟶ TK R` to `Over.homMk (jK R ⁻¹ᵁ W).ι rfl`. Set `σ : T' ⟶ TW W` to `Over.homMk (jK R ∣_ W) (morphismRestrict_ι (jK R) W)`.
+
+Establish `e` using `(val_mul hI _ _ _).symm.trans ((val_corr hI (hB a a' b) κ.left).trans (val_mul hI _ _ _))`. Use `(val_mul hI _ _ _).trans (Eq.trans (congrArg₂ (· * ·) (val_tau_generic ψW _ _ hI) ?_) (e.trans ((val_mul hI _ _ _).trans (congrArg₂ (· * ·) (val_tau_generic ψW _ _ hI) (val_tau_generic ψW _ _ hI))).symm))` and prove the remaining obligations. Use `(val_cub D.cub σ hI (cP D _ a) (cP D _ a') (cP D _ b)).trans (Eq.trans ?_ (val_cub D.cub κ hI (cP D _ a) (cP D _ a') (cP D _ b)).symm)` and prove the remaining obligations. Simplify using `only [comp_cP]`.
+-/
 theorem tau_mul (hB : D.TauBimult) (ψW : PsiOn D W) (a a' b : D.X) {T : Over (Spec (CommRingCat.of R))}
     (ρ : T ⟶ TW W) {z : T.left} {J} (hJ : Good D.P.L z J) :
     val (ψW.tau (a + a') b) ρ.left z J * th D z J (cP D T a) (cP D T a') (cP D T b) =

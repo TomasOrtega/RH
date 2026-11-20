@@ -18,6 +18,29 @@ namespace GlobalTheory.ConeMeas
 
 set_option maxHeartbeats 800000
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ μY _`. Use `set mY : MeasurableSpace (Fin b × Fin (b + a') → AF F) := borel _ with hmY`. Use `haveI : BorelSpace (Fin b × Fin (b + a') → AF F) := ⟨rfl⟩`. Establish `hk : ∀ (l : (AE F E)ˣ) (y : Fin b × Fin (b + a') → AF F), Continuous fun g : UA σ G.V.J => e (G.M.co.rho B.ψ (shiftA H H' l) (om (g, 1) Ψ)) y` using `fun l y => GlobalTheory.T.config_A_schwartz_eval_compare F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Ψ hΨ l y`. Establish `hl : ∀ Φ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a')), ∀ y : Fin b × Fin (b + a') → AF F, Measurable fun l : (AE F E)ˣ => e (G.M.co.rho B.ψ (shiftA H H' l) Φ) y` using `fun Φ hΦ y => GlobalTheory.T.config_A_schwartz_eval_equal F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ Φ hΦ y`.
+
+Establish `hmem : ∀ g : UA σ G.V.J, om (g, 1) Ψ ∈ schA F (Fin (b + 2) × Fin (b + 2 + a'))` using `fun g => (IsUWeilPair.isUSplitting hT.weil).pres (g, 1) Ψ hΨ`. Establish `hy : ∀ (g : UA σ G.V.J) (l : (AE F E)ˣ), Continuous fun y => e (G.M.co.rho B.ψ (shiftA H H' l) (om (g, 1) Ψ)) y` using `fun g l => GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F (he.maps _ (GlobalTheory.HeisSchA.rho_mem_schA G.M B.ψ hT.base.std _ _ (hmem g)))`. Take `⟨hTG, -, hSCU, hT2U⟩` from `GlobalTheory.LeviModulus.topUA σ G.V.J`. Use `haveI := hTG`. Use `haveI := hSCU`.
+
+Use `haveI := hT2U`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : SecondCountableTopology K := inferInstance`. Use `haveI : IsTopologicalGroup K := inferInstance`. Use `haveI : T2Space K := inferInstance`.
+
+Use `haveI : RegularSpace K := IsTopologicalGroup.regularSpace _`. Use `haveI : T1Space K := T2Space.t1Space`. Use `haveI : T0Space K := T1Space.t0Space`. Use `haveI : T3Space K := T3Space.mk`. Use `haveI : TopologicalSpace.MetrizableSpace K := TopologicalSpace.metrizableSpace_of_t3_secondCountable _`.
+
+Use `haveI : OpensMeasurableSpace K := inferInstance`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : RegularSpace (AF F) := IsTopologicalAddGroup.regularSpace _`. Use `haveI : T1Space (AF F) := T2Space.t1Space`.
+
+Use `haveI : T0Space (AF F) := T1Space.t0Space`. Use `haveI : T3Space (AF F) := T3Space.mk`. Use `haveI : TopologicalSpace.MetrizableSpace (AF F) := TopologicalSpace.metrizableSpace_of_t3_secondCountable _`. Use `haveI : TopologicalSpace.MetrizableSpace (Fin b × Fin (b + a') → AF F) := inferInstance`. Use `haveI : SecondCountableTopology (Fin b × Fin (b + a') → AF F) := inferInstance`.
+
+Establish `hin : ∀ k : K, Measurable fun p : (AE F E)ˣ × (Fin b × Fin (b + a') → AF F) => e (G.M.co.rho B.ψ (shiftA H H' p.1) (om (k.1, 1) Ψ)) p.2`. Introduce `k`. Set `u : (Fin b × Fin (b + a') → AF F) → (AE F E)ˣ → ℂ` to `fun y l => e (G.M.co.rho B.ψ (shiftA H H' l) (om (k.1, 1) Ψ)) y`. Establish `h1 : ∀ l, Continuous fun y => u y l` using `fun l => hy k.1 l`. Establish `h2 : ∀ y, Measurable (u y)` using `fun y => hl _ (hmem k.1) y`.
+
+Establish `h : Measurable (Function.uncurry u)` using `@measurable_uncurry_of_continuous_of_measurable _ ℂ (Fin b × Fin (b + a') → AF F) _ _ mY _ _ _ _ _ _ _ u h1 h2`. Establish `h3` using `h.comp (measurable_swap (α := (AE F E)ˣ) (β := Fin b × Fin (b + a') → AF F))`. Conclude with `h3`. Establish `hout : StronglyMeasurable fun p : K × ((AE F E)ˣ × (Fin b × Fin (b + a') → AF F)) => e (G.M.co.rho B.ψ (shiftA H H' p.2.1) (om (p.1.1, 1) Ψ)) p.2.2` using `stronglyMeasurable_uncurry_of_continuous_of_stronglyMeasurable (u := fun (k : K) (p : (AE F E)ˣ × (Fin b × Fin (b + a') → AF F)) => e (G.M.co.rho B.ψ (shiftA H H' p.1) (om (k.1, 1) Ψ)) p.2) (fun p => (hk p.1 p.2).comp continuous_subtype_val) (fun k => (hin k).stronglyMeasurable)`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`.
+
+Establish `hν : Continuous fun l : (AE F E)ˣ => (X.ν l : ℂ)`. Establish `h1` using `hT.chars.heckeα.1`. Establish `h2` using `hT.chars.heckeβ.1`. Establish `: (fun l : (AE F E)ˣ => (X.ν l : ℂ)) = fun l => ((X.α l : ℂ) / (X.β l : ℂ))`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[Chars.ν]`. Rewrite using `[this]`. Conclude with `(continuous_subtype_val.comp h1).div (continuous_subtype_val.comp h2) (fun l => by simp)`. Establish `hm : Continuous fun l : (AE F E)ˣ => (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ ((b + 2 - a') / 2)` using `hν.mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE (F := F) (E := E)))).pow _)`. Establish `hm' : StronglyMeasurable fun p : K × ((AE F E)ˣ × (Fin b × Fin (b + a') → AF F)) => (X.ν p.2.1 : ℂ) * ((absE F E p.2.1 : ℝ) : ℂ) ^ ((b + 2 - a') / 2)` using `(hm.measurable.comp (measurable_fst.comp measurable_snd)).stronglyMeasurable`.
+
+Use `hout.mul hm'` as an intermediate fact. Use `this.aestronglyMeasurable.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coneIntegrand_aestronglyMeasurable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →
     ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e → ∀ (K : Subgroup (UA σ G.V.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ), IsStab B K → μK.IsHaarMeasure → μ.IsHaarMeasure →

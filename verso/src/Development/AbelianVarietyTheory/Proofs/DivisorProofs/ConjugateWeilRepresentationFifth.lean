@@ -23,6 +23,11 @@ namespace GlobalTheory.GalOne.IoExtConj
 open GlobalTheory.AdTh.IoExtPf
 open scoped Classical
 
+/- English proof (translation)
+Use `delta_ne _ _ _ _ (fun τ => ?_) ((rank_Wc i).le.trans (r_le_V i))` and prove the remaining obligations. Use `show ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 ≤ _`. Rewrite using `[D.sp.W_sigval _ (Nat.le_add_left _ _) i.2, rank_Wc]`. Use `i.2` as an intermediate fact. Simplify using `only [Ranks.sigW, Ranks.r]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem deltaConj_ne {D : D7} (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : deltaConj (D := D) i σ ≠ 0 := by
   refine delta_ne _ _ _ _ (fun τ => ?_) ((rank_Wc i).le.trans (r_le_V i))
   show ((Wc D i).sig (tauE D τ)).1 + ((Wc D i).sig (tauE D τ)).2 ≤ _
@@ -31,6 +36,17 @@ theorem deltaConj_ne {D : D7} (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) : de
   simp only [Ranks.sigW, Ranks.r]
   omega
 
+/- English proof (translation)
+Take `⟨-, hK, v, w, hv1, hw1, hio⟩` from `h`. Set `f : LowT M →ₗ[ℂ] (WO V W → ℂ)` to `pt ∘ₗ io.flip w`. Establish `hf : ∀ x, f x = pt (io x w)` using `fun x => rfl`. Establish `hv0 : f (PiTensorProduct.tprod ℂ v) ≠ 0`. Rewrite using `[hf, hio]`.
+
+Conclude with `hΔ`. Establish `hv : IsExtVec M (fun ρ => v ρ)`. Use `fun τ => ⟨hv1 τ, (v τ).2, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hm` using `GlobalTheory.LowKProj.lowKSub_stable _ _ _ _ ha _ (v τ).2`. Set `u : lowT M τ` to `⟨⟨_, hs τ hm⟩, hm⟩`.
+
+Establish `h1` using `hK τ _ ha v u rfl w`. Rewrite `h1` using `[hio, hwt τ a, ← hio, ← hf, ← hf]`. Establish `h2` using `inj_factor M hs hl τ f (fun k => ω (1, atTau θ W τ ((M.fr τ)⁻¹ * k * M.fr τ))) (fun k hk v u hu => hK τ k hk v u hu w) v hv0 (u - Complex.exp (((∑ j, extWt M τ j * a j : ℝ) : ℂ) * Complex.I) • v τ) (by`. Rewrite using `[MultilinearMap.map_update_sub, MultilinearMap.map_update_smul, Function.update_eq_self, map_sub, map_smul, ← h1, sub_self])`. Conclude with `congrArg (fun y : lowT M τ => ((y : M.sm τ) : M.H τ)) (sub_eq_zero.1 h2)`.
+
+Use `choose a ha1 ha using hl _ _ hv hv'`. Establish `e : v' = fun ρ => a ρ • v ρ` using `funext fun ρ => Subtype.ext (ha ρ)`. Establish `hn : ‖∏ ρ, a ρ‖ = 1` using `by simp [norm_prod, ha1]`. Establish `h0 : ∏ ρ, a ρ ≠ 0` using `fun h => by simp [h] at hn`. Use `⟨(∏ ρ, a ρ)⁻¹ • w, by rw [norm_smul, norm_inv, hn, hw1]; simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, MultilinearMap.map_smul_univ, map_smul, map_smul, LinearMap.smul_apply, smul_smul, inv_mul_cancel₀ h0, one_smul, hio]`.
+-/
 theorem exists_unit_of_isIoW {D : D7} {V W : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel W S) (hs : LowSm M)
     (hl : ExtLine M) (c : CoefA V) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ))
     (pt : PolF D W.rank V.rank →ₗ[ℂ] (WO V W → ℂ)) (Δ : PolF D W.rank V.rank) (hΔ : pt Δ ≠ 0)

@@ -15,6 +15,13 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.Ux10.cdm_iff.2 fun i j => ?_` and prove the remaining obligations. Simplify using `only [gq, bigCell]`. Use `split_ifs with h1 h2 h3 h4 h5`. Conclude with `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin r => ℂ) (⟨j.val, h1⟩ : Fin r)).comp (ContinuousLinearMap.fst ℝ (Fin r → ℂ) ℂ)).contDiff.contDiffOn`. Conclude with `contDiffOn_const`.
+
+Conclude with `(D.sec.1 _ _).comp contDiff_snd.contDiffOn (fun q hq => hq.2)`. Conclude with `contDiffOn_const`. Use `ContDiffOn.inv ?_ ?_` and prove the remaining obligations. Conclude with `(Complex.conjCLE.contDiff.comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin r => ℂ) (⟨2 * r + k - j.val, by omega⟩ : Fin r)).comp (ContinuousLinearMap.fst ℝ (Fin r → ℂ) ℂ)).contDiff).contDiffOn`. Introduce `q hq`.
+
+Simplify using `using hq.1 _`. Conclude with `contDiffOn_const`.
+-/
 lemma contDiffOn_gq (D : RealPlaceData k r Wp Wq) : ContDiffOn ℝ ∞ (fun q => gq D q) (QDom k r D.z D.z') := by
   refine Formalism.FourierDecayAlt.P.Ux10.cdm_iff.2 fun i j => ?_
   simp only [gq, bigCell]
@@ -31,8 +38,18 @@ lemma contDiffOn_gq (D : RealPlaceData k r Wp Wq) : ContDiffOn ℝ ∞ (fun q =>
       simpa using hq.1 _
   · exact contDiffOn_const
 
+/- English proof (translation)
+Simplify `hg` using `[Formalism.FourierDecayAlt.Q.Glev]`.
+-/
 lemma glev0 {g : Mat k r} (hg : g ∈ GV k r) : g ∈ Formalism.FourierDecayAlt.Q.Glev k r 0 := by simpa [Formalism.FourierDecayAlt.Q.Glev] using hg
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC`. Establish `hck` using `(hW k r Wp Wq D A m F hThr hCC).1`. Establish `hg` using `contDiffOn_gq D`. Establish `hQo : IsOpen (QDom k r D.z D.z')` using `Formalism.FourierDecayAlt.P.B7.isOpen_good_set D`. Use `contDiffOn_of_locally_contDiffOn fun q hq => ?_` and prove the remaining obligations.
+
+Establish `hqOm : gq D q ∈ GV k r ∩ Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z'` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hq`. Take `⟨U, F', hU, hgU, hF', hUF⟩` from `hck _ ⟨glev0 hqOm.1, hqOm.2⟩`. Establish `hVo : IsOpen (QDom k r D.z D.z' ∩ (fun x => gq D x) ⁻¹' U)` using `hg.continuousOn.isOpen_inter_preimage hQo hU`. Use `⟨QDom k r D.z D.z' ∩ (fun x => gq D x) ⁻¹' U, hVo, ⟨hq, hgU⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ (m : WithTop ℕ∞) (fun x => F' (gq D x)) (QDom k r D.z D.z' ∩ (QDom k r D.z D.z' ∩ (fun x => gq D x) ⁻¹' U))` using `hF'.comp ((hg.of_le (by exact_mod_cast le_top)).mono Set.inter_subset_left) (fun x hx => hx.2.2)`.
+
+Use `h1.congr fun x hx => ?_` and prove the remaining obligations. Establish `hxOm : gq D x ∈ GV k r ∩ Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z'` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hx.1`. Conclude with `hUF _ hx.2.2 (glev0 hxOm.1)`.
+-/
 theorem jqSmooth_of_words (hW : JWords) : JqSmooth := by
   intro k r Wp Wq _ _ _ _ _ _ D A m F hThr hCC
   have hck := (hW k r Wp Wq D A m F hThr hCC).1
@@ -51,6 +68,9 @@ theorem jqSmooth_of_words (hW : JWords) : JqSmooth := by
   have hxOm : gq D x ∈ GV k r ∩ Formalism.FourierDecayAlt.Q.OmPlus k r D.z D.z' := Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D hx.1
   exact hUF _ hx.2.2 (glev0 hxOm.1)
 
+/- English proof (translation)
+The claim follows from `jqSmooth_of_words (bessel_words_of_domain hD)`.
+-/
 theorem jqSmooth_of_jDom (hD : JDom) : JqSmooth := jqSmooth_of_words (bessel_words_of_domain hD)
 
 end Formalism.FourierDecayAlt.P.CellSmoothness

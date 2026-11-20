@@ -2,6 +2,23 @@ import Mathlib
 
 open NumberField
 
+/- English proof (translation)
+Introduce `K _ _ _ h`. Use `choose c hc using h`. Set `φ₀ : K →+* ℂ` to `Classical.choice inferInstance`. Establish `hfix : ∀ x : K, c x = x ↔ x ∈ maximalRealSubfield K`. Introduce `x`.
+
+Rewrite using `[mem_maximalRealSubfield_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx φ`. Use `hc x φ` as an intermediate fact. Rewrite `this` using `[hx]`.
+
+Conclude with `this.symm`. Introduce `hx`. Apply `φ₀.injective` to reduce the goal to its premises. Rewrite using `[hc]`. Conclude with `hx φ₀`.
+
+Establish `hinv : ∀ x : K, c (c x) = x`. Introduce `x`. Apply `φ₀.injective` to reduce the goal to its premises. Simplify using `[hc]`. Set `σ : K ≃ₐ[maximalRealSubfield K] K` to `{ toFun := c invFun := c left_inv := hinv right_inv := hinv map_mul' := fun x y => φ₀.injective (by simp [hc]) map_add' := fun x y => φ₀.injective (by simp [hc]) commutes' := fun x => (hfix _).mpr x.2 }`.
+
+Establish `hσ : ∀ x, σ x = c x` using `fun _ => rfl`. Establish `hne : σ ≠ 1`. Introduce `h1`. Apply `IsTotallyComplex.complexEmbedding_not_isReal φ₀` to reduce the goal to its premises. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Establish `hx : c x = x` using `by rw [← hσ, h1]; rfl`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hc, hx]`. Establish `hord : orderOf σ = 2` using `orderOf_eq_prime (by ext x; simp [pow_two, hσ, hinv]) hne`. Establish `hbot : IntermediateField.fixedField (Subgroup.zpowers σ) = ⊥`.
+
+Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Conclude with `IntermediateField.mem_bot.mpr ⟨⟨x, (hfix x).mp (hx σ (Subgroup.mem_zpowers σ))⟩, rfl⟩`. Establish `hrank` using `IntermediateField.finrank_fixedField_eq_card (Subgroup.zpowers σ)`. Rewrite `hrank` using `[hbot, IntermediateField.finrank_bot', Nat.card_zpowers, hord]`.
+
+Establish `: Algebra.IsQuadraticExtension (maximalRealSubfield K) K` using `⟨hrank⟩`. Conclude with `⟨⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qh9.isCM_of_conj :
     ∀ (K : Type) [inst : Field K] [inst_1 : NumberField K]
     [NumberField.IsTotallyComplex K],

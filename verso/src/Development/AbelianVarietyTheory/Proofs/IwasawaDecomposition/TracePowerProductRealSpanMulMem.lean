@@ -5,6 +5,19 @@ open scoped Matrix
 
 namespace GlobalTheory.GoodMetric.ChernSpan
 
+/- English proof (translation)
+Introduce `ι m S _ _ w w' f g hf hg`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨l, hl1, hlw, rfl⟩` from `hx`. Take `⟨l', hl1', hlw', rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨l ++ l', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Break down `List.mem_append.1 hx with h | h` into its components or cases. Conclude with `hl1 x h`. Conclude with `hl1' x h`. Simplify using `[List.map_append, List.sum_append, hlw, hlw']`. Use function extensionality and compare the values at `A`.
+
+Simplify using `[trProd, List.map_append, List.prod_append]`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [mul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul a y _ hy => rw [mul_smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ a hy`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [add_mul]`. Conclude with `add_mem hx hz`. Consider the case `smul a x _ hx => rw [smul_mul_assoc]`.
+
+Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem trSpan_mul : ∀ {ι : Type} (m : ι → ℕ) (S : Type) [CommRing S] [Algebra ℝ S] (w w' : ℕ)
     (f g : Mat m S → S), f ∈ TrSpan m w S → g ∈ TrSpan m w' S → f * g ∈ TrSpan m (w + w') S := by
   intro ι m S _ _ w w' f g hf hg

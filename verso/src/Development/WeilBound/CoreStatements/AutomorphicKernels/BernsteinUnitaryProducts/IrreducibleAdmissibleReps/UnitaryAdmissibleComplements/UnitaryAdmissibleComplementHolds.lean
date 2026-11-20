@@ -13,6 +13,11 @@ section General
 
 variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X]
 
+/- English proof (translation)
+Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Use `IsLocallyConstant.range_finite ?_` and prove the remaining obligations. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `hc : Continuous fun y : K => (x : G)⁻¹ * (y : G)` using `continuous_const.mul continuous_subtype_val`. Establish `hU : IsOpen ((fun y : K => (x : G)⁻¹ * (y : G)) ⁻¹' {g : G | ρ g w = w})` using `(hρ w).preimage hc`.
+
+Use `filter_upwards [hU.mem_nhds (by simp)] with y hy`. Establish `hy' : ρ ((x : G)⁻¹ * (y : G)) w = w` using `hy`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `_ = ρ (x : G) w := by rw [hy']`.
+-/
 theorem finite_orbit_of_isSmooth {ρ : Representation ℂ G X} (hρ : IsSmooth ρ) (K : Subgroup G)
     (hK : IsCompact (K : Set G)) (w : X) : (Set.range fun k : K => ρ k w).Finite := by
   have : CompactSpace K := isCompact_iff_compactSpace.1 hK
@@ -30,6 +35,9 @@ end General
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hU : {g : GL (Fin N) k | π g v = v} ∈ nhds (1 : GL (Fin N) k)` using `(hπ.1 v).mem_nhds (by simp)`. Take `⟨K, hKo, hKc, hKU⟩` from `GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k N _ hU`. Conclude with `⟨K, fun g hg => hKU hg, hπ.2 K hKo hKc, finite_orbit_of_isSmooth hπ.1 K hKc⟩`.
+-/
 theorem unitSemisimple_hyp {N : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X]
     {π : Representation ℂ (GL (Fin N) k) X} (hπ : IsAdmissible π) (v : X) :
     ∃ K : Subgroup (GL (Fin N) k), (∀ g ∈ K, π g v = v) ∧ FiniteDimensional ℂ (fixed π K) ∧
@@ -39,6 +47,15 @@ theorem unitSemisimple_hyp {N : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X]
   obtain ⟨K, hKo, hKc, hKU⟩ := GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k N _ hU
   exact ⟨K, fun g hg => hKU hg, hπ.2 K hKo hKc, finite_orbit_of_isSmooth hπ.1 K hKc⟩
 
+/- English proof (translation)
+Take `⟨B, hs, hp, hi⟩` from `hu`. Establish `hdef : ∀ v, B.flip v v = 0 → v = 0` using `fun v h => by`. Assume the negation of the conclusion as `hv`. Use `hp v hv` as an intermediate fact. Rewrite `h` using `[LinearMap.flip_apply]`.
+
+Rewrite `this` using `[h, Complex.zero_re]`. Conclude with `lt_irrefl _ this`. Establish `hinv : ∀ g u v, B.flip (π g u) (π g v) = B.flip u v` using `fun g u v => by`. Simplify using `only [LinearMap.flip_apply, hi]`. Set `T : Subrepresentation π` to `{ toSubmodule := { carrier := {w | ∀ z ∈ S.toSubmodule, B.flip z w = 0} add_mem' := fun {a b} ha hb z hz => by rw [map_add, ha z hz, hb z hz, add_zero] zero_mem' := fun z _ => by rw [map_zero] smul_mem' := fun c w hw z hz => by rw [map_smul, hw z hz, smul_zero] } apply_mem_toSubm …`.
+
+Use `⟨T, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxS hxT`. Conclude with `hdef x (hxT x hxS)`. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+
+Introduce `v _`. Take `⟨t, htS, ht⟩` from `GlobalTheory.UnitarySemisimple.exists_compl_proj π B.flip hdef hinv (unitSemisimple_hyp hπ) S v`. Establish `hvT : v - t ∈ T.toSubmodule` using `ht`. Use `Submodule.add_mem_sup htS hvT` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem unitaryAdmissibleComplement_at (N : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X]
     (π : Representation ℂ (GL (Fin N) k) X) (hπ : IsAdmissible π) (hu : IsUnitarisable π)
     (S : Subrepresentation π) : ∃ T : Subrepresentation π, IsCompl S.toSubmodule T.toSubmodule := by

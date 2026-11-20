@@ -14,6 +14,9 @@ def TruncatedKernelConvergence : Prop :=
   ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : _) (a : _), Φ.IsGood D.sp.cm L a →
     ∀ (μ : Measure (GA D V)) [μ.IsHaarMeasure], KernelConvergence Φ (levelAll D.sp.cm.sig V.gram L a) μ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨wittIndex_plane D, exists_isGood _⟩`.
+-/
 example (D : D7) : wittIndex (CuspDecay.Model.plane D) = 1 ∧
     ∃ (Φ : WittFrame (CuspDecay.Model.plane D)) (L : _) (a : _), Φ.IsGood D.sp.cm L a :=
   ⟨wittIndex_plane D, exists_isGood _⟩

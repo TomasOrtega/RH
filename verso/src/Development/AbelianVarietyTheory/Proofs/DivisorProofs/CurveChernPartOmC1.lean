@@ -13,6 +13,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.Points Glo
 
 namespace GlobalTheory.CurveChernPart
 
+/- English proof (translation)
+Establish `e : (ofValues α : Ev 1) = (2 * (-Complex.I * α (EuclideanSpace.single 0 1) (EuclideanSpace.single 0 1))) • vol 1`. Simplify using `only [ofValues, vol, Fin.sum_univ_one, Fin.prod_univ_one, smul_smul]`. Use `congr 1`. Take the linear combination `(α (EuclideanSpace.single 0 1) (EuclideanSpace.single 0 1)) * Complex.I_mul_I`. Establish `e' (c : ℂ) : dens ((c • vol 1 : Ev 1) : Alt 1) = c * dens (vol 1 : Alt 1)`.
+
+Simplify using `[dens, mul_div_assoc]`. Rewrite using `[e, e', dens_vol, mul_one, diagVal]`. Simplify using the standard rewrite rules.
+-/
 theorem dens_ofValues (α : ReciprocityTheory.L2DbarEstimates.V 1 → ReciprocityTheory.L2DbarEstimates.V 1 → ℂ) :
     (dens ((ofValues α : Ev 1) : Alt 1)).re = 2 * diagVal α (EuclideanSpace.single 0 1) := by
   have e : (ofValues α : Ev 1) =
@@ -25,6 +30,9 @@ theorem dens_ofValues (α : ReciprocityTheory.L2DbarEstimates.V 1 → Reciprocit
   rw [e, e', dens_vol, mul_one, diagVal]
   simp
 
+/- English proof (translation)
+Use `iSup_congr fun i => congrArg (Measure.map _) (withDensity_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem (e i).open_target.measurableSet] with v hv`. Conclude with `H i _ ((e i).map_target hv)`.
+-/
 theorem glue_congr {M ι : Type} [TopologicalSpace M] [MeasurableSpace M] {n : ℕ}
     (e : ι → OpenPartialHomeomorph M (ReciprocityTheory.L2DbarEstimates.V n)) {ρ ρ' : ι → M → ENNReal}
     (H : ∀ i, ∀ y ∈ (e i).source, ρ i y = ρ' i y) :
@@ -33,6 +41,13 @@ theorem glue_congr {M ι : Type} [TopologicalSpace M] [MeasurableSpace M] {n : �
   filter_upwards [ae_restrict_mem (e i).open_target.measurableSet] with v hv
   exact H i _ ((e i).map_target hv)
 
+/- English proof (translation)
+Introduce `B k _ X p h R L σ ε`. Establish `key (c : AlgChart p σ 1) (y) (hy : y ∈ c.e.source) : (dens ((h.atlas σ).loc (h.coeFld (R.om (R.c1 L)) σ) c (c.e y))).re = c.chernDens (L.φ σ) y`. Establish `h₁` using `R.chernForm_firstChernClass L σ ⟨(c, y), hy⟩ _ (mem_pick (L.φ σ).isLB y)`. Use `(congrArg (fun t => (dens t).re) ((h.atlas σ).loc_crd _ ⟨(c, y), hy⟩)).trans ?_` and prove the remaining obligations. Use `(congrArg (fun t : Ev 1 => (dens (t : Alt 1)).re) h₁).trans ((dens_ofValues _).trans ?_)` and prove the remaining obligations.
+
+Establish `hd` using `(L.cInf σ).contDiffAt c hy (mem_pick (L.φ σ).isLB y)`. Establish `e : -Complex.I * kappa = ((1 / (2 * Real.pi) : ℝ) : ℂ)`. Rewrite using `[kappa, ← mul_div_assoc, neg_mul, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Rewrite using `[AlgChart.chernDens, AlgChart.hess, Matrix.det_unique, CurveDens.cHess_apply_eq_ddbar (contDiffAt_ofReal_comp hd), diagVal, ddc, ← mul_assoc (-Complex.I), e, Complex.re_ofReal_mul, ← mul_assoc]`.
+
+Use `congr 1`. Simplify using `only [Nat.factorial_one, Nat.cast_one, pow_one]`. Use `Real.pi_pos` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `glue_congr _ fun c y hy => congrArg (fun t => ENNReal.ofReal (_ * t)) (key c y hy)`.
+-/
 theorem part_om_c1 : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     (h : IsRegVar p 1) (R : ArRing B h) (N : HermLB p) (σ : k →+* ℂ) (ε : ℤˣ),
     (h.atlas σ).part (h.coeFld (R.om (R.c1 N)) σ) ε = (N.φ σ).chernPart 1 ε := by

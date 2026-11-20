@@ -4,6 +4,11 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory.IdealAt2
 
+/- English proof (translation)
+Introduce `R _ d τ I t u v hu hv ht α`. Apply the tactic sequence `have hs : HasSubst (Sum.elim u v) := hasSubst_of_constantCoeff_zero fun s => by cases s <;> simp [hu, hv]`. Rewrite using `[at2, coeff_subst hs]`. Use `finsum_induction (fun x => x ∈ I) I.zero_mem (fun x y hx hy => I.add_mem hx hy) ?_` and prove the remaining obligations. Introduce `e`.
+
+Rewrite using `[smul_eq_mul]`. Conclude with `I.mul_mem_right _ (ht e)`.
+-/
 theorem coeff_powerSeriesEvalTwoGroups_mem_ideal : ∀ (R : Type) [CommRing R] (d : ℕ) (τ : Type) (I : Ideal R)
     (t : MvPowerSeries (Fin d ⊕ Fin d) R) (u v : Fin d → MvPowerSeries τ R),
     (∀ i, constantCoeff (u i) = 0) → (∀ i, constantCoeff (v i) = 0) →

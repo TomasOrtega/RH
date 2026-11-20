@@ -25,6 +25,29 @@ def IsProjMat {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (ξ : Sp R 
 
 open GlobalTheory.FlatModel.Proj in
 
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis E`. Take `⟨c, hc1, hc2⟩` from `exists_dual b (discr_ne_zero E)`. Establish `hbas : ∀ w, IsTanAtG t ξ w → ∃ a, IsCombAtG t ξ e a w` using `fun w hw => by`. Establish `h0 : spMap (RingHom.id R) = 𝟙 (Sp R)` using `Spec.map_id _`. Establish `h1 : spMap (dualMap (RingHom.id R)) = 𝟙 _`.
+
+Apply the tactic sequence `have : dualMap (RingHom.id R) = RingHom.id _ := by ext s <;> simp [dualMap]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`. Use `he.2 R (RingHom.id R) w (by rwa [h0, Category.id_comp])` as an intermediate fact. Simplify using `only [h0, h1, Category.id_comp] at this`.
+
+Conclude with `this.exists`. Use `choose ρ hρ using fun (a : 𝓞 E) (k : Fin g) => hbas _ (GlobalTheory.LieMet.isTan_tv (actR t.act a (GlobalTheory.LieMet.tanOf (he.1 k))))`. Use `⟨Matrix.of fun k j => ∑ i, σ (c i) * ρ (b i) k j, fun S _ φ => ?_⟩` and prove the remaining obligations. Establish `he'` using `isTanBasis_bc he φ`. Set `T : Fin g → TanM (spMap φ ≫ ξ) t.G` to `fun j => GlobalTheory.LieMet.tanOf (he'.1 j)`.
+
+Establish `hT : bcV t φ e = fun j => (tv (T j)).left` using `rfl`. Establish `hA : ∀ a k, actR t.act a (T k) = ∑ j, φ (ρ a k j) • T j` using `fun a k => by`. Use `(GlobalTheory.LieMet.isComb_iff T _ _).1 ?_` and prove the remaining obligations. Use `GlobalTheory.GradedPieces.comb_map φ rfl (hρ a k)` as an intermediate fact. Establish `e1 : spMap (dualMap φ) ≫ (tv (actR t.act a (GlobalTheory.LieMet.tanOf (he.1 k)))).left = (tv (actR t.act a (T k))).left` using `(Category.assoc _ _ _).symm`.
+
+Rewrite `this` using `[e1]`. Conclude with `this`. Establish `hU : ∀ k, ∑ j, φ (∑ i, σ (c i) * ρ (b i) k j) • T j = ∑ i, (φ.comp σ) (c i) • actR t.act (b i) (T k)` using `fun k => by`. Simplify using `only [hA, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, smul_smul, RingHom.comp_apply]`. Conclude with `Finset.sum_comm`.
+
+Use `⟨fun k u hu a => ?_, fun w v hw hv => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[hT]`. Rewrite using `[eq_of_comb T hu, GlobalTheory.ShFam.Pad.Pull.eig_iff]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[hU]`.
+
+Conclude with `eig_proj _ _ b c hc1 a _`. Rewrite `hw` using `[hT]`. Establish `hv0` using `eq_of_comb T hw`. Establish `hv1 : ∀ a, actR t.act a (∑ i, w i • T i) = (φ.comp σ) a • ∑ i, w i • T i` using `fun a => by`. Rewrite using `[← GlobalTheory.ShFam.Pad.Pull.eig_iff, ← hv0]`.
+
+Conclude with `hv a`. Establish `h2` using `proj_eig _ _ b c hc2 _ hv1`. Establish `h3 : ∑ j, (∑ k, w k • fun j => φ (∑ i, σ (c i) * ρ (b i) k j)) j • T j = ∑ j, (((discr E : ℤ) : S) • w) j • T j`. Establish `h4 : ∑ j, (((discr E : ℤ) : S) • w) j • T j = ((discr E : ℤ) : S) • ∑ j, w j • T j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[h4]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.smul_sum, hU]`.
+
+Simplify using `only [map_sum, map_smul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => smul_comm _ _ _`. Establish `hu` using `he.2 S φ _ (GlobalTheory.LieMet.isTan_tv (∑ j, (((discr E : ℤ) : S) • w) j • T j))`. Establish `h5` using `hu.unique ((GlobalTheory.LieMet.isComb_iff T _ _).2 rfl) ((GlobalTheory.LieMet.isComb_iff T _ _).2 h3.symm)`.
+
+Rewrite using `[h5]`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+-/
 theorem exists_isProjMat {X : Scheme.{0}} {t : SAB H X} {R : Type} [CommRing R] {ξ : Sp R ⟶ X} {g : ℕ}
     {e : Fin g → (Sp (DualNumber R) ⟶ t.G.left)} (he : IsTanBasis t ξ e) (σ : 𝓞 E →+* R) :
     ∃ U : Matrix (Fin g) (Fin g) R, IsProjMat t ξ σ e U := by
@@ -104,12 +127,18 @@ def DetLaw (Z : Comp Xo c) (f : Rul Xo c) (σ₁ σ₂ : E →+* ℂ) : Prop :=
       (∀ i, IsCombAt y.x (y.u σ₁) (g₁ i) (z.u σ₁ i)) → (∀ i, IsCombAt y.x (y.u σ₂) (g₂ i) (z.u σ₂ i)) →
       evR Xo c f z * g₁.det = g₂.det * evR Xo c f y
 
+/- English proof (translation)
+Establish `: IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))`. Use `infer_instance`.
+-/
 theorem isPreimmersion_fst (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) :
     IsPreimmersion (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))) := by
   have : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) :=
     IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))
   infer_instance
 
+/- English proof (translation)
+Use `isPreimmersion_fst Y` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Unfold `Model.j`. Use `infer_instance`.
+-/
 theorem isPreimmersion_j (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) : IsPreimmersion Y.j := by
   have := isPreimmersion_fst Y
   have := Y.jQ_open

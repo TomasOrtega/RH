@@ -9,10 +9,18 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+The claim follows from `x.2.2`.
+-/
 private theorem aeInt {K : Type} [Field K] [NumberField K] (x : A K) :
     ∀ᶠ v : P K in cofinite, cp v x ∈ v.adicCompletionIntegers K :=
   x.2.2
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ v : P K in cofinite, ∀ i j, cp v (g.val i j) ∈ v.adicCompletionIntegers K` using `eventually_all.2 fun i => eventually_all.2 fun j => aeInt _`. Establish `h2 : ∀ᶠ v : P K in cofinite, ∀ i j, cp v ((g⁻¹).val i j) ∈ v.adicCompletionIntegers K` using `eventually_all.2 fun i => eventually_all.2 fun j => aeInt _`. Use `filter_upwards [h1, h2] with v a b`. Rewrite using `[KAt, GlobalTheory.LFun.KGL, GlobalTheory.AdelicU.mem_GLint_iff]`. Use `⟨a, fun i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `b i j`.
+-/
 private theorem aeKAt {K : Type} [Field K] [NumberField K] (g : GL (Fin 2) (A K)) :
     ∀ᶠ v in cofinite, KAt v g := by
   have h1 : ∀ᶠ v : P K in cofinite, ∀ i j, cp v (g.val i j) ∈ v.adicCompletionIntegers K :=
@@ -25,6 +33,11 @@ private theorem aeKAt {K : Type} [Field K] [NumberField K] (g : GL (Fin 2) (A K)
   rw [← map_inv]
   exact b i j
 
+/- English proof (translation)
+Take `⟨S, hU⟩` from `GlobalFixedVectors.exists_KAway_subset (M := 1) (hf.mem_nhds (show (1 : GL (Fin 2) (Af K)) ∈ _ from fun g => by simp))`. Use `filter_upwards [S.eventually_cofinite_notMem] with w hw g k hk`. Establish `h0 : ((1 : ℕ) : 𝓞 K) ∉ w.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 w.isPrime.ne_top`.
+
+Conclude with `hU (GlobalFixedVectors.mem_KAway.2 ⟨locGL_mem_KLev 2 w h0 hk, fun x hx => pLoc_locGL_of_ne (show x ≠ w from fun e => hw (e ▸ hx)) _⟩) g`.
+-/
 private theorem aeFix {K : Type} [Field K] [NumberField K] (f : GL (Fin 2) (A K) → ℂ)
     (hf : IsOpen {k : GL (Fin 2) (Af K) | ∀ g, f (g * finGL K 2 k) = f g}) :
     ∀ᶠ v in cofinite, Fix v f := by
@@ -36,6 +49,9 @@ private theorem aeFix {K : Type} [Field K] [NumberField K] (f : GL (Fin 2) (A K)
   exact hU (GlobalFixedVectors.mem_KAway.2 ⟨locGL_mem_KLev 2 w h0 hk, fun x hx =>
     pLoc_locGL_of_ne (show x ≠ w from fun e => hw (e ▸ hx)) _⟩) g
 
+/- English proof (translation)
+Introduce `K _ _`. Conclude with `⟨aeKAt, fun a => aeKAt _, aeFix⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.aeK :
     ∀ (K : Type) [Field K] [NumberField K], (∀ g : GL (Fin 2) (A K), ∀ᶠ v in cofinite, KAt v g) ∧ (∀ a : (A K)ˣ, ∀ᶠ v in cofinite, KAt v (dM a)) ∧
       ∀ f : GL (Fin 2) (A K) → ℂ, IsOpen {k : GL (Fin 2) (Af K) | ∀ g, f (g * finGL K 2 k) = f g} → ∀ᶠ v in cofinite, Fix v f := by

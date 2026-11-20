@@ -8,9 +8,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secmap_comp {R : Type} [CommRing R] {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map ψ (Sec.map φ x) = Sec.map (φ ≫ ψ) x := rfl
 
+/- English proof (translation)
+Use `congrArg (fun k => k.hom x) (φ.hom.naturality g.op)` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem secmap_res {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
   have := congrArg (fun k => k.hom x) (φ.hom.naturality g.op)
@@ -41,11 +47,19 @@ def twpair_tens_univ_ex : Prop :=
 def twpair_tens_univ_ge : Prop :=
   ∀ (R : Type) [CommRing R] {I J K : Cx R} (τ : Pair I J K), τ.IsTensor → I.IsStrictlyGE 0 → J.IsStrictlyGE 0 → K.IsStrictlyGE 0
 
+/- English proof (translation)
+Introduce `U s t w h a b`. Both sides reduce to the same expression.
+-/
 theorem pairPost_compat {R : Type} [CommRing R] {I J K K' : Cx R} (μ : Pair I J K) (u : K ⟶ K') :
     μ.Compat (pairPost μ u) (𝟙 I) (𝟙 J) u := by
   intro U s t w h a b
   rfl
 
+/- English proof (translation)
+Establish `key : ((u.f w).hom.app (op V)).hom ∘ₗ τ.lift V w = ((u'.f w).hom.app (op V)).hom ∘ₗ τ.lift V w`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`.
+
+Simplify using `only [LinearMap.comp_apply, Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Conclude with `(hu V _ _ _ p.2 a b).trans (hu' V _ _ _ p.2 a b).symm`. Conclude with `congrArg (fun k => k x) key`.
+-/
 theorem lift_comp_eq {R : Type} [CommRing R] {I J K I' J' K' : Cx R} (τ : Pair I J K) (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J') (u u' : K ⟶ K')
     (hu : τ.Compat ν f g u) (hu' : τ.Compat ν f g u') (V : Scheme.{0}) (w : ℤ) (x : Tens I J V w) :
     Sec.map (u.f w) (τ.lift V w x) = Sec.map (u'.f w) (τ.lift V w x) := by
@@ -59,6 +73,11 @@ theorem lift_comp_eq {R : Type} [CommRing R] {I J K I' J' K' : Cx R} (τ : Pair 
     exact (hu V _ _ _ p.2 a b).trans (hu' V _ _ _ p.2 a b).symm
   exact congrArg (fun k => k x) key
 
+/- English proof (translation)
+Introduce `R _ I J K τ hτ I' J' K' ν f g u u' hu hu'`. Use extensionality with `w U y`. Apply `hsep R (K'.X w) U.unop` to reduce the goal to its premises. Use `TensLocbij.loc_mono (hτ.1 U.unop w y) ?_` and prove the remaining obligations. Introduce and unpack `V r ⟨x, hx⟩`.
+
+Rewrite using `[secmap_res, secmap_res, ← hx]`. Conclude with `lift_comp_eq τ ν f g u u' hu hu' V w x`.
+-/
 theorem tens_univ_uniq_of (hsep : LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated.SecSep) : twpair_tens_univ_uniq := by
   intro R _ I J K τ hτ I' J' K' ν f g u u' hu hu'
   ext w U y
@@ -68,16 +87,33 @@ theorem tens_univ_uniq_of (hsep : LateralTheory.EtaleFoundations.EtaleTensorTrip
   rw [secmap_res, secmap_res, ← hx]
   exact lift_comp_eq τ ν f g u u' hu hu' V w x
 
+/- English proof (translation)
+Establish `h` using `hF.eq_of_src (𝟙 F) 0`. Establish `: Sec.map (𝟙 F) x = Sec.map (0 : F ⟶ F) x` using `by rw [h]`. Conclude with `this`.
+-/
 theorem sec_zero_of_isZero {R : Type} [CommRing R] {F : Shv R} (hF : IsZero F) {U : Scheme.{0}} (x : Sec F U) : x = 0 := by
   have h := hF.eq_of_src (𝟙 F) 0
   have : Sec.map (𝟙 F) x = Sec.map (0 : F ⟶ F) x := by rw [h]
   exact this
 
+/- English proof (translation)
+Rewrite using `[IsZero.iff_id_eq_zero]`. Use extensionality with `U y`. Conclude with `(h U.unop y).trans (h U.unop _).symm`.
+-/
 theorem isZero_of_sec {R : Type} [CommRing R] {F : Shv R} (h : ∀ (U : Scheme.{0}) (x : Sec F U), x = 0) : IsZero F := by
   rw [IsZero.iff_id_eq_zero]
   ext U y
   exact (h U.unop y).trans (h U.unop _).symm
 
+/- English proof (translation)
+Introduce `R _ I J K τ hτ hI hJ`. Establish `hK : ∀ w : ℤ, w < 0 → IsZero (K.X w)`. Introduce `w hw`. Apply `isZero_of_sec` to reduce the goal to its premises. Introduce `U y`.
+
+Apply `hsep R (K.X w) U` to reduce the goal to its premises. Use `TensLocbij.loc_mono (hτ.1 U w y) ?_` and prove the remaining obligations. Introduce and unpack `V r ⟨x, hx⟩`. Rewrite using `[← hx]`. Establish `hl : τ.lift V w = 0`.
+
+Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul, LinearMap.zero_apply]`.
+
+Break down `lt_or_ge p.1.1 0 with hs | hs` into its components or cases. Rewrite using `[sec_zero_of_isZero (CochainComplex.isZero_of_isStrictlyGE I 0 p.1.1 hs) a, map_zero, LinearMap.zero_apply]`. Establish `ht : p.1.2 < 0` using `by have := p.2; omega`. Rewrite using `[sec_zero_of_isZero (CochainComplex.isZero_of_isStrictlyGE J 0 p.1.2 ht) b, map_zero]`. Rewrite using `[hl, LinearMap.zero_apply]`.
+
+Conclude with `(map_zero _).symm`. Conclude with `⟨fun i hi => hK i ((ComplexShape.notMem_range_embeddingUpIntGE_iff (p := 0) i).1 hi)⟩`.
+-/
 theorem tens_univ_ge_of (hsep : LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated.SecSep) : twpair_tens_univ_ge := by
   intro R _ I J K τ hτ hI hJ
   have hK : ∀ w : ℤ, w < 0 → IsZero (K.X w) := by
@@ -103,6 +139,9 @@ theorem tens_univ_ge_of (hsep : LateralTheory.EtaleFoundations.EtaleTensorTriple
     exact (map_zero _).symm
   exact ⟨fun i hi => hK i ((ComplexShape.notMem_range_embeddingUpIntGE_iff (p := 0) i).1 hi)⟩
 
+/- English proof (translation)
+Introduce `R _ F U a b hab`. Take `⟨S, hS, hP⟩` from `hab`. Establish `h1 : Presheaf.IsSheaf Scheme.etaleTopology.{0} (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R)))` using `Presheaf.isSheaf_comp_of_isSheaf _ _ _ F.property`. Establish `h2` using `(isSheaf_iff_isSheaf_of_type _ _).1 h1`. Conclude with `(h2 S hS).isSeparatedFor.ext fun V g hg => hP V g hg`.
+-/
 theorem etale_sheaf_sections_separated_holds : LateralTheory.EtaleFoundations.EtaleTensorTripleProductLeibnizSeparated.SecSep := by
   intro R _ F U a b hab
   obtain ⟨S, hS, hP⟩ := hab
@@ -115,6 +154,21 @@ def twpair_tens_univ_exdeg : Prop :=
   ∀ (R : Type) [CommRing R] {I J K : Cx R} (τ : Pair I J K), τ.IsTensor → ∀ {I' J' K' : Cx R} (ν : Pair I' J' K') (f : I ⟶ I') (g : J ⟶ J') (w : ℤ), ∃ φ : K.X w ⟶ K'.X w, ∀ (U : Scheme.{0}) (s t : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U),
     Sec.map φ (τ.mul U s t w h a b) = ν.mul U s t w h (Sec.map (f.f s) a) (Sec.map (g.f t) b)
 
+/- English proof (translation)
+Introduce `R _ I J K τ hτ I' J' K' ν f g`. Use `choose φ hφ using hdeg R τ hτ ν f g`. Establish `hsep` using `etale_sheaf_sections_separated_holds`. Use `⟨⟨φ, ?_⟩, fun U s t w h a b => hφ w U s t h a b⟩` and prove the remaining obligations. Introduce and unpack `i j (hij : i + 1 = j)`.
+
+Substitute `hij` using the available equality. Use extensionality with `U y`. Apply `hsep R (K'.X (i + 1)) U.unop` to reduce the goal to its premises. Use `TensLocbij.loc_mono (hτ.1 U.unop i y) ?_` and prove the remaining obligations. Introduce and unpack `V r ⟨x, hx⟩`.
+
+Use `show Sec.res r (Sec.map (φ i ≫ K'.d i (i + 1)) y) = Sec.res r (Sec.map (K.d i (i + 1) ≫ φ (i + 1)) y)`. Rewrite using `[secmap_res, secmap_res, ← hx]`. Establish `key : ((K.d i (i + 1) ≫ φ (i + 1)).hom.app (op V)).hom ∘ₗ τ.lift V i = ((φ i ≫ K'.d i (i + 1)).hom.app (op V)).hom ∘ₗ τ.lift V i`. Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce `p`.
+
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, Pair.lift, DirectSum.toModule_lof, TensorProduct.lift.tmul]`. Establish `e1 : Sec.map (K.d i (i + 1) ≫ φ (i + 1)) (τ.mul V p.1.1 p.1.2 i p.2 a b) = Sec.map (φ (i + 1)) (Sec.map (K.d i (i + 1)) (τ.mul V p.1.1 p.1.2 i p.2 a b))` using `rfl`. Establish `e2 : Sec.map (φ i ≫ K'.d i (i + 1)) (τ.mul V p.1.1 p.1.2 i p.2 a b) = Sec.map (K'.d i (i + 1)) (Sec.map (φ i) (τ.mul V p.1.1 p.1.2 i p.2 a b))` using `rfl`.
+
+Express the relevant statement in the definitionally equal form `Sec.map (K.d i (i + 1) ≫ φ (i + 1)) (τ.mul V p.1.1 p.1.2 i p.2 a b) = Sec.map (φ i ≫ K'.d i (i + 1)) (τ.mul V p.1.1 p.1.2 i p.2 a b)`. Establish `h1` using `hφ (i + 1) V (p.1.1 + 1) p.1.2 (by have := p.2; omega) (Sec.map (I.d p.1.1 (p.1.1 + 1)) a) b`. Establish `h2` using `hφ (i + 1) V p.1.1 (p.1.2 + 1) (by have := p.2; omega) a (Sec.map (J.d p.1.2 (p.1.2 + 1)) b)`. Establish `hf : Sec.map (I'.d p.1.1 (p.1.1 + 1)) (Sec.map (f.f p.1.1) a) = Sec.map (f.f (p.1.1 + 1)) (Sec.map (I.d p.1.1 (p.1.1 + 1)) a)`. Rewrite using `[secmap_comp, secmap_comp, f.comm]`.
+
+Establish `hg : Sec.map (J'.d p.1.2 (p.1.2 + 1)) (Sec.map (g.f p.1.2) b) = Sec.map (g.f (p.1.2 + 1)) (Sec.map (J.d p.1.2 (p.1.2 + 1)) b)`. Rewrite using `[secmap_comp, secmap_comp, g.comm]`. Rewrite using `[e1, e2, τ.leibniz, hφ i, ν.leibniz, hf, hg]`. Simplify using `only [Sec.map, map_add, map_zsmul_unit] at h1 h2 ⊢`. Rewrite using `[h1, h2]`.
+
+Conclude with `(congrArg (fun k => k x) key).symm`.
+-/
 theorem tens_univ_ex_of (hdeg : twpair_tens_univ_exdeg) : twpair_tens_univ_ex := by
   intro R _ I J K τ hτ I' J' K' ν f g
   choose φ hφ using hdeg R τ hτ ν f g
@@ -152,6 +206,11 @@ theorem tens_univ_ex_of (hdeg : twpair_tens_univ_exdeg) : twpair_tens_univ_ex :=
     rw [h1, h2]
   exact (congrArg (fun k => k x) key).symm
 
+/- English proof (translation)
+Establish `hsep` using `etale_sheaf_sections_separated_holds`. Establish `hex` using `tens_univ_ex_of hdeg`. Introduce `R _ I J K τ hτ`. Use `⟨?_, tens_univ_ge_of hsep R τ hτ, fun u => ⟨pairPost τ u, pairPost_compat τ u⟩⟩` and prove the remaining obligations. Introduce `I' J' K' ν f g`.
+
+Take `⟨u, hu⟩` from `hex R τ hτ ν f g`. Conclude with `⟨u, hu, fun u' hu' => tens_univ_uniq_of hsep R τ hτ ν f g u' u hu' hu⟩`.
+-/
 theorem twpair_tens_univ_of (hdeg : twpair_tens_univ_exdeg) :
     LateralTheory.EtaleFoundations.twpair_tens_univ := by
   have hsep := etale_sheaf_sections_separated_holds

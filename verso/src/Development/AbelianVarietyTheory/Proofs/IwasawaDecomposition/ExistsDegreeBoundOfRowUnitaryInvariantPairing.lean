@@ -7,6 +7,13 @@ open GlobalTheory.DefLift
 
 namespace GlobalTheory.RowSupport
 
+/- English proof (translation)
+Introduce `a b h`. Simplify using `only [← Complex.exp_nat_mul] at h`. Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Establish `h2 : (a : ℝ) = b + k * (2 * Real.pi)`. Use `congrArg Complex.im hk` as an intermediate fact.
+
+Simplify using `using this`. Distinguish the cases in `h0 : k = 0`. Substitute `h0` using the available equality. Conclude with `(by simpa using h2 : (a : ℝ) = b)` after adjusting the coercions. It suffices to derive a contradiction.
+
+Establish `h3 : (2 * k : ℤ) ≠ 0` using `mul_ne_zero two_ne_zero h0`. Use `(irrational_pi.intCast_mul h3).ne_int ((a : ℤ) - b) ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exp_I_pow_injective : Function.Injective fun e : ℕ => Complex.exp Complex.I ^ e := by
   intro a b h
   simp only [← Complex.exp_nat_mul] at h
@@ -32,6 +39,13 @@ def scal (m : ℕ) : Matrix.unitaryGroup (Fin m) ℂ :=
     rw [this, one_smul]⟩
 
 open Classical in
+/- English proof (translation)
+Establish `hv : ∀ v : ι × Fin m × Fin n, (∑ i, ∑ c, ((if v.1 = τ then (scal m : Matrix (Fin m) (Fin m) ℂ) else 1) i v.2.1 * (1 : Matrix (Fin n) (Fin n) ℂ) v.2.2 c) • (MvPolynomial.X (v.1, i, c) : Pol ι m n)) = (if v.1 = τ then Complex.exp Complex.I else 1) • MvPolynomial.X v`. Introduce and unpack `⟨ρ, j, d⟩`. Distinguish the cases in `h : ρ = τ`. Simplify using `[h, scal, Matrix.one_apply, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Simplify using `[h, Matrix.one_apply, ite_smul, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+
+Unfold `rowSub subst`. Rewrite using `[AlgHom.toLinearMap_apply, MvPolynomial.aeval_monomial, map_one, one_mul, MvPolynomial.monomial_eq, map_one, one_mul, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `only [hv, smul_pow]`. Rewrite using `[Finset.prod_smul, ← Finset.prod_pow_eq_pow_sum]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rowSub_scal {ι : Type} [Fintype ι] {m n : ℕ} (τ : ι) (α : ι × Fin m × Fin n →₀ ℕ) :
     rowSub n τ (scal m) (MvPolynomial.monomial α 1) =
       Complex.exp Complex.I ^ (∑ v, if v.1 = τ then α v else 0) • MvPolynomial.monomial α 1 := by
@@ -52,6 +66,17 @@ theorem rowSub_scal {ι : Type} [Fintype ι] {m n : ℕ} (τ : ι) (α : ι × F
   refine Finset.prod_congr rfl fun v _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hfin : ∀ τ, ∃ d : ℕ, ∀ e : ℕ, Module.End.HasEigenvalue (LinearMap.dualMap (π τ (scal m)) : Module.End ℂ (Module.Dual ℂ X)) (Complex.exp Complex.I ^ e)⁻¹ → e ≤ d`. Introduce `τ`. Establish `h1` using `Module.End.finite_hasEigenvalue (LinearMap.dualMap (π τ (scal m)) : Module.End ℂ (Module.Dual ℂ X))`. Establish `h2` using `h1.preimage (f := fun e : ℕ => (Complex.exp Complex.I ^ e)⁻¹) (inv_injective.comp exp_I_pow_injective).injOn`. Take `⟨d, hd⟩` from `h2.bddAbove`.
+
+Conclude with `⟨d, fun e he => hd he⟩`. Use `choose d hd using hfin`. Use `⟨∑ τ, d τ, fun α hα => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hdeg : α.degree = ∑ τ, ∑ v, if v.1 = τ then α v else 0`.
+
+Rewrite using `[Finset.sum_comm, Finsupp.degree_eq_sum]`. Simplify using the standard rewrite rules. Use `absurd hα (not_lt.2 ?_)` and prove the remaining obligations. Rewrite using `[hdeg]`. Use `Finset.sum_le_sum fun τ _ => hd τ _ ?_` and prove the remaining obligations.
+
+Use `Module.End.hasEigenvalue_of_hasEigenvector (x := β (MvPolynomial.monomial α 1)) ⟨?_, hne⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Use extensionality with `x`. Use `h τ (scal m) (MvPolynomial.monomial α 1) x` as an intermediate fact. Rewrite `this` using `[rowSub_scal, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[LinearMap.dualMap_apply, LinearMap.smul_apply, smul_eq_mul, eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ (Complex.exp_ne_zero _))]`. Use `this` and compare the differences between its conclusion and the goal.
+-/
 theorem exists_degree_bound (ι : Type) [Fintype ι] (m n : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X]
     (π : ι → Matrix.unitaryGroup (Fin m) ℂ → Module.End ℂ X) (β : Pol ι m n →ₗ[ℂ] X →ₗ[ℂ] ℂ)
     (h : ∀ τ u P x, β (rowSub n τ u P) (π τ u x) = β P x) :

@@ -10,6 +10,19 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW
 
+/- English proof (translation)
+Take `⟨L₀, hL₀c, hL₀a, hL₀⟩` from `GlobalTheory.GaugeEx.SdInf.exists_log_char (fun u => χ (a.symm u)) (hc.comp ha') (fun u => h1 _) (fun u v => by`. Rewrite using `[map_add, hadd])`. Set `L : R → ℝ` to `fun x => L₀ (a x)`. Establish `hLc : Continuous L` using `hL₀c.comp ha`. Establish `hLa : ∀ x y, L (x + y) = L x + L y` using `fun x y => by simp only [L, map_add, hL₀a]`.
+
+Establish `hL : ∀ x, χ x = Complex.exp (2 * Real.pi * Complex.I * ((L x : ℝ) : ℂ))` using `fun x => by simpa using hL₀ (a x)`. Set `e : (ι → R) ≃+ (ι → P → ℝ)` to `AddEquiv.piCongrRight fun _ => a`. Establish `hec : Continuous e` using `by show Continuous fun (x : ι → R) i => a (x i) fun_prop`. Establish `hec' : Continuous e.symm` using `by show Continuous fun (x : ι → P → ℝ) i => a.symm (x i) fun_prop`. Establish `key` using `GlobalTheory.GaugeEx.SdInf.existsUnique_of_equiv e hec hec' (fun x y => L (x ⬝ᵥ (AR *ᵥ y))) (fun x x' y => by rw [add_dotProduct, hLa]) (fun x y => by`.
+
+Establish `: x ⬝ᵥ (AR *ᵥ y) = y ⬝ᵥ (AR *ᵥ x)`. Rewrite using `[Matrix.dotProduct_mulVec, dotProduct_comm, ← Matrix.mulVec_transpose, hAR]`. Rewrite using `[this])`. Use the proof step `(fun y => hLc.comp (by`. Establish `: Continuous fun x : ι → R => ∑ i, x i * (AR *ᵥ y) i` using `continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const`.
+
+Conclude with `this))`. Use the proof step `(fun x h => by`. Use function extensionality and compare the values at `i`. Use `hnd _ fun t => ?_` and prove the remaining obligations. Establish `h0` using `h (AR⁻¹ *ᵥ Pi.single i t)`.
+
+Rewrite `h0` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec, dotProduct_single]`. Rewrite using `[hL, h0]`. Use the proof step `simp)`. Establish `hfun : (fun x y : ι → R => χ (x ⬝ᵥ (AR *ᵥ y))) = fun x y => Complex.exp (2 * Real.pi * Complex.I * ((L (x ⬝ᵥ (AR *ᵥ y)) : ℝ) : ℂ))`. Use function extensionality and compare the values at `x y`.
+
+Conclude with `hL _`. Rewrite `hμ`, `hν` using `[hfun]`. Conclude with `key.unique hμ hν`.
+-/
 theorem selfDual_matrix_unique_of_equiv {R P ι : Type} [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [SecondCountableTopology R] [MeasurableSpace R] [BorelSpace R]
     [Fintype P] [Fintype ι] [DecidableEq ι] (a : R ≃+ (P → ℝ)) (ha : Continuous a)
@@ -59,6 +72,15 @@ theorem selfDual_matrix_unique_of_equiv {R P ι : Type} [CommRing R] [Topologica
   rw [hfun] at hμ hν
   exact key.unique hμ hν
 
+/- English proof (translation)
+Introduce `F _ _ hF ψ hψ _ _ ι _ _ A hA hdet μ ν hμ hν`. Use `haveI : IsTotallyReal F := hF`. Take `⟨h1, h2, h3, h4, -⟩` from `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hF`. Use `haveI := h1`. Use `haveI := h3`.
+
+Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hnd : ∀ x : Ainf F, (∀ y, psiInf F ψ (x * y) = 1) → x = 0` using `(GlobalTheory.T.localComponents_nontrivial_adelic_character F ψ hψ).2.2`. Take `⟨a, ha, ha'⟩` from `GlobalTheory.GaugeEx.SdInf.exists_equiv_Ainf F`. Establish `hpc : Continuous (psiInf F ψ)` using `hψ.1.comp (continuous_id.prodMk continuous_const)`. Establish `hadd : ∀ x y, psiInf F ψ (x + y) = psiInf F ψ x * psiInf F ψ y` using `fun x y => by`.
+
+Simplify using `only [psiInf, map_add, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Conclude with `Prod.ext rfl (add_zero _).symm`. Establish `hAR : (A.map (algebraMap F (Ainf F)))ᵀ = A.map (algebraMap F (Ainf F))`. Rewrite using `[← Matrix.transpose_map, hA.eq]`.
+
+Establish `hu : IsUnit (A.map (algebraMap F (Ainf F))).det`. Establish `: (A.map (algebraMap F (Ainf F))).det = algebraMap F (Ainf F) A.det` using `((algebraMap F (Ainf F)).map_det A).symm`. Rewrite using `[this]`. Conclude with `(Ne.isUnit hdet).map _`. Conclude with `selfDual_matrix_unique_of_equiv a ha ha' (psiInf F ψ) hpc (fun u => hψ.2.1 _) hadd hnd _ hAR hu hμ hν`.
+-/
 theorem selfDual_rationalForm_Ainf_unique : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ k : Measure (Ainf F), SelfDual k (fun s t => psiInf F ψ (s * t)) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A : Matrix ι ι F), A.IsSymm → A.det ≠ 0 → ∀ μ ν : Measure (ι → Ainf F), SelfDual μ (fun x y => psiInf F ψ (x ⬝ᵥ (A.map (algebraMap F (Ainf F)) *ᵥ y))) → SelfDual ν (fun x y => psiInf F ψ (x ⬝ᵥ (A.map (algebraMap F (Ainf F)) *ᵥ y))) → μ = ν := by
   intro F _ _ hF ψ hψ _ _ ι _ _ A hA hdet μ ν hμ hν
   haveI : IsTotallyReal F := hF

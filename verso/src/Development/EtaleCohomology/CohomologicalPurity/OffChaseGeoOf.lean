@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity
 
+/- English proof (translation)
+Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, y, hy⟩` from `hS.1 (Hs.pull q e0 n i x)`. Take `⟨z, rfl⟩` from `(hE j n i).2 y`. Use `⟨j, z, (hE0 n i).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ← Hs.pull_comp', ← Hs.pull_comp', he]`.
+
+Establish `h0 : Hs.pull q (cA j) n i (Hs.pull q (e.app (op j)) n i y) = 0`. Rewrite using `[← Hs.pull_comp', he, Hs.pull_comp', hy, map_zero]`. Take `⟨k, f, hk⟩` from `hS.2 j _ h0`. Use `⟨k, f, (hE k n i).1 ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← Hs.pull_comp', ← e.naturality, Hs.pull_comp', hk]`.
+-/
 theorem contS_exc (q : ℕ) {J : Type} [SmallCategory J] (FA FB : Jᵒᵖ ⥤ Arrow Spc) (PA PB : Arrow Spc)
     (cA : ∀ j, PA ⟶ FA.obj (op j)) (cB : ∀ j, PB ⟶ FB.obj (op j)) (e : FA ⟶ FB) (e0 : PA ⟶ PB)
     (he : ∀ j, cA j ≫ e.app (op j) = e0 ≫ cB j) (hE : ∀ j, Exc q (e.app (op j))) (hE0 : Exc q e0) (n i : ℤ)
@@ -20,6 +25,9 @@ theorem contS_exc (q : ℕ) {J : Type} [SmallCategory J] (FA FB : Jᵒᵖ ⥤ Ar
     refine ⟨k, f, (hE k n i).1 ?_⟩
     rw [map_zero, ← Hs.pull_comp', ← e.naturality, Hs.pull_comp', hk]
 
+/- English proof (translation)
+The claim follows from `hR5 bd q FB PB cB hcB hmB hPB i hBL (fun m => contS_exc q FA FB PA PB cA cB e e0 he hE hE0 m i (hS5 bd q FA PA cA hcA hmA hPA i hAL hAR m))`.
+-/
 theorem chase_abs (hS5 : PairFiveS) (hR5 : PairFiveR) (bd : LeafBd) (q : ℕ) {J : Type} [SmallCategory J] [IsFiltered J]
     (FA FB : Jᵒᵖ ⥤ Arrow Spc) (PA PB : Arrow Spc)
     (cA : ∀ j, PA ⟶ FA.obj (op j)) (cB : ∀ j, PB ⟶ FB.obj (op j))
@@ -32,15 +40,24 @@ theorem chase_abs (hS5 : PairFiveS) (hR5 : PairFiveR) (bd : LeafBd) (q : ℕ) {J
   hR5 bd q FB PB cB hcB hmB hPB i hBL
     (fun m => contS_exc q FA FB PA PB cA cB e e0 he hE hE0 m i (hS5 bd q FA PA cA hcA hmA hPA i hAL hAR m))
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono U.ι, Scheme.Hom.resLE_comp_ι, Category.comp_id, Category.id_comp]`.
+-/
 theorem resLE_id' {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹ᵁ U) : Scheme.Hom.resLE (𝟙 X) U U h = 𝟙 _ := by
   rw [← cancel_mono U.ι, Scheme.Hom.resLE_comp_ι, Category.comp_id, Category.id_comp]
 
+/- English proof (translation)
+Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map _ = 𝟙 _`. Rewrite using `[resLE_id']`. Conclude with `sch.map_id _`. Conclude with `sch.map_id X`.
+-/
 theorem opnMap_id {X : Scheme.{0}} (U : X.Opens) (h : U ≤ (𝟙 X) ⁻¹ᵁ U) : opnMap (𝟙 X) U U h = 𝟙 _ := by
   apply Arrow.hom_ext
   · change sch.map _ = 𝟙 _
     rw [resLE_id']; exact sch.map_id _
   · exact sch.map_id X
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `V.ι ((f.resLE V V' hV) x) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_apply]`. Conclude with `hU hx`.
+-/
 theorem mapA_le {X' X : Scheme.{0}} (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Opens) (hU : U' ≤ f ⁻¹ᵁ U)
     (hV : V' ≤ f ⁻¹ᵁ V) : V'.ι ⁻¹ᵁ U' ≤ (f.resLE V V' hV) ⁻¹ᵁ (V.ι ⁻¹ᵁ U) := by
   intro x hx
@@ -52,17 +69,28 @@ def mapA {X' X : Scheme.{0}} (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Opens) (
     (hV : V' ≤ f ⁻¹ᵁ V) : opn (V'.ι ⁻¹ᵁ U') ⟶ opn (V.ι ⁻¹ᵁ U) :=
   opnMap (f.resLE V V' hV) _ _ (mapA_le f U V U' V' hU hV)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem mapA_congr {X' X : Scheme.{0}} {f g : X' ⟶ X} (e : f = g) (U V : X.Opens) (U' V' : X'.Opens)
     (hU : U' ≤ f ⁻¹ᵁ U) (hV : V' ≤ f ⁻¹ᵁ V) (hU' : U' ≤ g ⁻¹ᵁ U) (hV' : V' ≤ g ⁻¹ᵁ V) :
     mapA f U V U' V' hU hV = mapA g U V U' V' hU' hV' := by
   subst e; rfl
 
+/- English proof (translation)
+Unfold `mapA`. Rewrite using `[opnMap_congr (resLE_id' V hV), ← opnMap_id]`. Both sides reduce to the same expression.
+-/
 theorem mapA_id {X : Scheme.{0}} (U V : X.Opens) (hU : U ≤ (𝟙 X) ⁻¹ᵁ U) (hV : V ≤ (𝟙 X) ⁻¹ᵁ V) :
     mapA (𝟙 X) U V U V hU hV = 𝟙 _ := by
   unfold mapA
   rw [opnMap_congr (resLE_id' V hV), ← opnMap_id]
   · rfl
 
+/- English proof (translation)
+Establish `e : g.resLE V' V'' hV' ≫ f.resLE V V' hV = (g ≫ f).resLE V V'' hV2`. Rewrite using `[Scheme.Hom.resLE_comp_resLE]`. Establish `h : V''.ι ⁻¹ᵁ U'' ≤ (g.resLE V' V'' hV' ≫ f.resLE V V' hV) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)`. Rewrite using `[e]`. Conclude with `mapA_le (g ≫ f) U V U'' V'' hU2 hV2`.
+
+Unfold `mapA`. Rewrite using `[← opnMap_comp _ _ _ _ _ _ _ h]`. Conclude with `opnMap_congr e _ _ _ _`.
+-/
 theorem mapA_comp {X'' X' X : Scheme.{0}} (g : X'' ⟶ X') (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Opens)
     (U'' V'' : X''.Opens) (hU : U' ≤ f ⁻¹ᵁ U) (hV : V' ≤ f ⁻¹ᵁ V) (hU' : U'' ≤ g ⁻¹ᵁ U') (hV' : V'' ≤ g ⁻¹ᵁ V')
     (hU2 : U'' ≤ (g ≫ f) ⁻¹ᵁ U) (hV2 : V'' ≤ (g ≫ f) ⁻¹ᵁ V) :
@@ -81,16 +109,25 @@ variable {A : Type} [CommRing A] {J : Type} [SmallCategory J] (D : J ⥤ CommRin
 
 def oj (I : Ideal A) (j : J) : (Spec (D.obj j)).Opens := off (D.obj j) (I.map (s.app j).hom)
 
+/- English proof (translation)
+Use `s.naturality f` as an intermediate fact. Simplify using `only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this`. Conclude with `this`.
+-/
 theorem s_nat {j k : J} (f : j ⟶ k) : s.app k = s.app j ≫ D.map f := by
   have := s.naturality f
   simp only [Functor.const_obj_obj, Functor.const_obj_map, Category.id_comp] at this
   exact this
 
+/- English proof (translation)
+Unfold `oj`. Rewrite using `[s_nat D s f, CommRingCat.hom_comp]`. Conclude with `off_map_comp I (s.app j).hom (D.map f).hom`.
+-/
 theorem oj_pre (I : Ideal A) {j k : J} (f : j ⟶ k) : oj D s I k = Spec.map (D.map f) ⁻¹ᵁ oj D s I j := by
   unfold oj
   rw [s_nat D s f, CommRingCat.hom_comp]
   exact off_map_comp I (s.app j).hom (D.map f).hom
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[oj_pre D s I1 f, oj_pre D s I2 f]`. Conclude with `hx`.
+-/
 theorem ojsup_pre (I1 I2 : Ideal A) {j k : J} (f : j ⟶ k) :
     oj D s I1 k ⊔ oj D s I2 k ≤ Spec.map (D.map f) ⁻¹ᵁ (oj D s I1 j ⊔ oj D s I2 j) := by
   intro x hx
@@ -112,6 +149,13 @@ def sysU (U V : ∀ j, (Spec (D.obj j)).Opens) (hU : ∀ j k (f : j ⟶ k), U k 
 
 end Sys
 
+/- English proof (translation)
+Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map _ ≫ sch.map _ = sch.map _ ≫ sch.map _`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← cancel_mono (Scheme.Opens.ι _), ← cancel_mono (Scheme.Opens.ι _)]`.
+
+Simplify using `only [Category.assoc, Scheme.Hom.resLE_comp_ι, Scheme.homOfLE_ι, Scheme.Hom.resLE_comp_ι_assoc, Scheme.homOfLE_ι_assoc]`. Express the relevant statement in the definitionally equal form `sch.map _ ≫ sch.map _ = sch.map _ ≫ sch.map _`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp]`. Use `congr 1`. Rewrite using `[← cancel_mono (Scheme.Opens.ι _)]`.
+
+Simplify using `only [Category.assoc, Scheme.Hom.resLE_comp_ι, Scheme.homOfLE_ι, Scheme.homOfLE_ι_assoc]`.
+-/
 theorem exc_nat {X' X : Scheme.{0}} (f : X' ⟶ X) (U V : X.Opens) (U' V' : X'.Opens) (hU : U' ≤ f ⁻¹ᵁ U)
     (hV : V' ≤ f ⁻¹ᵁ V) (hW : U' ⊔ V' ≤ f ⁻¹ᵁ (U ⊔ V)) :
     mapA f U V U' V' hU hV ≫ excMap U V = excMap U' V' ≫ mapA f U (U ⊔ V) U' (U' ⊔ V') hU hW := by
@@ -133,6 +177,9 @@ variable {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I1 I2 : Ideal 
   (D : J ⥤ CommRingCat.{0}) (s : (Functor.const J).obj (CommRingCat.of A) ⟶ D)
   (t : D ⟶ (Functor.const J).obj (CommRingCat.of B))
 
+/- English proof (translation)
+Establish `h : φ = (t.app j).hom.comp (s.app j).hom` using `by rw [← CommRingCat.hom_comp, he]; rfl`. Unfold `oj`. Rewrite using `[h]`. Conclude with `off_map_comp I (s.app j).hom (t.app j).hom`.
+-/
 theorem oinf_pre (I : Ideal A) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j : J) :
     off B (I.map φ) = Spec.map (t.app j) ⁻¹ᵁ oj D s I j := by
   have h : φ = (t.app j).hom.comp (s.app j).hom := by rw [← CommRingCat.hom_comp, he]; rfl
@@ -153,6 +200,9 @@ def limB : Arrow Spc := opn ((off B (I1.map φ) ⊔ off B (I2.map φ)).ι ⁻¹�
 def conA (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j : J) : limA φ I1 I2 ⟶ (sysA I1 I2 D s).obj (op j) :=
   mapA (Spec.map (t.app j)) _ _ _ _ (oinf_pre φ D s t I1 he j).le (oinf_pre φ D s t I2 he j).le
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[oinf_pre φ D s t I1 he j, oinf_pre φ D s t I2 he j]`. Conclude with `hx`.
+-/
 theorem oinfsup_pre (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j : J) :
     off B (I1.map φ) ⊔ off B (I2.map φ) ≤ Spec.map (t.app j) ⁻¹ᵁ (oj D s I1 j ⊔ oj D s I2 j) := by
   intro x hx
@@ -166,10 +216,16 @@ def excAB : sysA I1 I2 D s ⟶ sysB I1 I2 D s where
   app j := excMap (oj D s I1 j.unop) (oj D s I2 j.unop)
   naturality a b f := exc_nat _ _ _ _ _ (oj_pre D s I1 f.unop).le (oj_pre D s I2 f.unop).le _
 
+/- English proof (translation)
+Use `t.naturality f` as an intermediate fact. Simplify using `using this`.
+-/
 theorem t_nat {j k : J} (f : j ⟶ k) : D.map f ≫ t.app k = t.app j := by
   have := t.naturality f
   simpa using this
 
+/- English proof (translation)
+Establish `e : Spec.map (t.app k) ≫ Spec.map (D.map f) = Spec.map (t.app j)`. Rewrite using `[← Spec.map_comp, t_nat D t f]`. Conclude with `(mapA_comp (Spec.map (t.app k)) (Spec.map (D.map f)) (oj D s I1 j) (oj D s I2 j) (oj D s I1 k) (oj D s I2 k) (off B (I1.map φ)) (off B (I2.map φ)) (oj_pre D s I1 f).le ((oj_pre D s I2 f).le) (oinf_pre φ D s t I1 he k).le ((oinf_pre φ D s t I2 he k).le) (by rw [e]; exact (oinf_pre …`.
+-/
 theorem conA_comp (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j k : J) (f : j ⟶ k) :
     conA φ I1 I2 D s t he k ≫ (sysA I1 I2 D s).map f.op = conA φ I1 I2 D s t he j := by
   have e : Spec.map (t.app k) ≫ Spec.map (D.map f) = Spec.map (t.app j) := by
@@ -178,6 +234,9 @@ theorem conA_comp (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j k 
     (off B (I1.map φ)) (off B (I2.map φ)) (oj_pre D s I1 f).le ((oj_pre D s I2 f).le) (oinf_pre φ D s t I1 he k).le ((oinf_pre φ D s t I2 he k).le)
     (by rw [e]; exact (oinf_pre φ D s t I1 he j).le) (by rw [e]; exact (oinf_pre φ D s t I2 he j).le)).trans (mapA_congr e _ _ _ _ _ _ _ _)
 
+/- English proof (translation)
+Establish `e : Spec.map (t.app k) ≫ Spec.map (D.map f) = Spec.map (t.app j)`. Rewrite using `[← Spec.map_comp, t_nat D t f]`. Conclude with `(mapA_comp (Spec.map (t.app k)) (Spec.map (D.map f)) (oj D s I1 j) (oj D s I1 j ⊔ oj D s I2 j) (oj D s I1 k) (oj D s I1 k ⊔ oj D s I2 k) (off B (I1.map φ)) (off B (I1.map φ) ⊔ off B (I2.map φ)) (oj_pre D s I1 f).le (ojsup_pre D s I1 I2 f) (oinf_pre φ D s t I1 he k).le (oinfsup_pr …`.
+-/
 theorem conB_comp (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j k : J) (f : j ⟶ k) :
     conB φ I1 I2 D s t he k ≫ (sysB I1 I2 D s).map f.op = conB φ I1 I2 D s t he j := by
   have e : Spec.map (t.app k) ≫ Spec.map (D.map f) = Spec.map (t.app j) := by
@@ -186,6 +245,9 @@ theorem conB_comp (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j k 
     (off B (I1.map φ)) (off B (I1.map φ) ⊔ off B (I2.map φ)) (oj_pre D s I1 f).le (ojsup_pre D s I1 I2 f) (oinf_pre φ D s t I1 he k).le (oinfsup_pre φ I1 I2 D s t he k)
     (by rw [e]; exact (oinf_pre φ D s t I1 he j).le) (by rw [e]; exact oinfsup_pre φ I1 I2 D s t he j)).trans (mapA_congr e _ _ _ _ _ _ _ _)
 
+/- English proof (translation)
+The claim follows from `exc_nat _ _ _ _ _ _ _ _`.
+-/
 theorem conAB (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ) (j : J) :
     conA φ I1 I2 D s t he j ≫ (excAB I1 I2 D s).app (op j) =
       excMap (off B (I1.map φ)) (off B (I2.map φ)) ≫ conB φ I1 I2 D s t he j :=
@@ -195,6 +257,9 @@ end Glue
 
 section Leaves
 
+/- English proof (translation)
+Use `⟨fun x => ?_, fun j y hy => ?_⟩` and prove the remaining obligations. Take `⟨j, _h, y, hy⟩` from `H.1 x`. Conclude with `⟨j, y, hy⟩`. Take `⟨k, f, _h, hk⟩` from `H.2 j (oinf_pre φ D s t I2 he j).le y hy`. Conclude with `⟨k, f, hk⟩`.
+-/
 theorem contR_A (q : ℕ) {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I1 I2 : Ideal A) {J : Type}
     [SmallCategory J] (D : J ⥤ CommRingCat.{0}) (s : (Functor.const J).obj (CommRingCat.of A) ⟶ D)
     (t : D ⟶ (Functor.const J).obj (CommRingCat.of B)) (he : ∀ j, s.app j ≫ t.app j = CommRingCat.ofHom φ)
@@ -226,6 +291,9 @@ def OCG_BR : Prop := ∀ (q : ℕ) {A B : Type} [CommRing A] [CommRing B] (φ : 
 
 end Leaves
 
+/- English proof (translation)
+Introduce `hS5 hR5 bd exc q A B _ _ φ I1 I2 _ J _ _ D s t hc he i h1 h2 h12 n`. Conclude with `hBR q φ I1 I2 J D s t hc he n i (chase_abs hS5 hR5 bd q (sysA I1 I2 D s) (sysB I1 I2 D s) (limA φ I1 I2) (limB φ I1 I2) (conA φ I1 I2 D s t he) (conB φ I1 I2 D s t he) (conA_comp φ I1 I2 D s t he) (conB_comp φ I1 I2 D s t he) (fun _ => opn_mono _) (fun _ => opn_mono _) (opn_mono …`.
+-/
 theorem OffChaseGeo_of (hAL : OCG_AL) (hBL : OCG_BL) (hBR : OCG_BR) : OffChaseGeo := by
   intro hS5 hR5 bd exc q A B _ _ φ I1 I2 _ J _ _ D s t hc he i h1 h2 h12 n
   exact hBR q φ I1 I2 J D s t hc he n i

@@ -52,6 +52,9 @@ def LevelKH (X : HidaSetting D) (u : D.what₂.Word) (F : Formalism.L2.Forms.For
         F.cls0.lev.U),
       ((psiK X u hK ⟨h, hk⟩ : ℂˣ) : ℂ) = ((F.cls0.lev.chi ⟨_, hy⟩ : ℂˣ) : ℂ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem levelMatch_iff (X : HidaSetting D) {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u} (Tr : Transport X u F)
     (hK : X.LevelSubgroupCharacter) :
     LevelMatch X Tr hK ↔ LatMatchH X u F Tr.wt Tr.ιA Tr.h0 ∧ LevelKH X u F Tr.wt Tr.ιA Tr.h0 hK := Iff.rfl

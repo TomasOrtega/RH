@@ -21,6 +21,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open scoped ContDiff
 
+/- English proof (translation)
+Establish `hθ : ContDiffAt ℂ ω (fun v : Fin N → ℂ => v k) 0` using `(contDiff_apply ℂ ℂ k).contDiffAt`. Use `TCPf.eq_of_cc _ _ fun l => ?_` and prove the remaining obligations. Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil`. Simplify using `only [List.foldr_nil]`.
+
+Rewrite using `[constantCoeff_tay, TM.mD_zero]`. Simplify using the standard rewrite rules. Consider the case `append_singleton l q _`. Take `⟨a, j⟩` from `q`. Establish `ha : a = 0` using `Subsingleton.elim _ _`.
+
+Substitute `ha` using the available equality. Rewrite using `[List.foldr_append, List.foldr_append]`. Simplify using `only [List.foldr_cons, List.foldr_nil]`. Rewrite using `[TM.pderiv_tay hθ]`. Establish `hd : (fun y : Fin N → ℂ => fderiv ℂ (fun v : Fin N → ℂ => v k) y (Pi.single j 1)) = fun _ => (Pi.single j 1 : Fin N → ℂ) k`.
+
+Use function extensionality and compare the values at `y`. Use `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).fderiv (x := y)` as an intermediate fact. Conclude with `congrArg (fun L : (Fin N → ℂ) →L[ℂ] ℂ => L (Pi.single j 1)) this`. Rewrite using `[hd, TM.tay_const, MvPowerSeries.pderiv_X]`. Use `congr 2`.
+
+Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h, Prod.ext_iff]`.
+-/
 theorem tay_coord {N : ℕ} (k : Fin N) :
     tay (fun v : Fin N → ℂ => v k) 0 = MvPowerSeries.X ((0 : Fin 1), k) := by
   classical
@@ -49,10 +60,18 @@ theorem tay_coord {N : ℕ} (k : Fin N) :
     · subst h; simp
     · simp [Pi.single_apply, h, Prod.ext_iff]
 
+/- English proof (translation)
+Rewrite using `[← MvPolynomial.coe_X, psJet, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]`.
+-/
 theorem psJet_X' {κ : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (p : κ) :
     psJet m (MvPowerSeries.X p : MvPowerSeries κ ℂ) = Ideal.Quotient.mk _ (MvPolynomial.X p) := by
   rw [← MvPolynomial.coe_X, psJet, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]
 
+/- English proof (translation)
+Establish `h : jetOf m (fun v : Fin (n * g) → ℂ => v (finProdFinEquiv (i, j))) = Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), finProdFinEquiv (i, j)))`. Rewrite using `[jetOf, tay_coord, psJet_X']`. Use `show renN n g m (jetOf m (fun v : Fin (n * g) → ℂ => v (finProdFinEquiv (i, j)))) = _`. Rewrite using `[h]`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _`.
+
+Simplify using `only [MvPolynomial.aeval_X, Equiv.symm_apply_apply]`.
+-/
 theorem jetN_coord {n g : ℕ} (m : ℕ) (i : Fin n) (j : Fin g) :
     jetN m (fun w : Fin n → Fin g → ℂ => w i j) = Ideal.Quotient.mk _ (MvPolynomial.X (i, j)) := by
   have h : jetOf m (fun v : Fin (n * g) → ℂ => v (finProdFinEquiv (i, j))) =
@@ -63,6 +82,9 @@ theorem jetN_coord {n g : ℕ} (m : ℕ) (i : Fin n) (j : Fin g) :
   show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _
   simp only [MvPolynomial.aeval_X, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[map_add, ← jetN_coord, ← jetN_coord, jetN, jetN, jetN, ← map_add]`. Conclude with `congrArg _ (jetOf_add m (contDiff_apply ℂ ℂ (finProdFinEquiv (i, j))).contDiffAt (contDiff_apply ℂ ℂ (finProdFinEquiv (i', j))).contDiffAt)`.
+-/
 theorem jetN_coord_add {n g : ℕ} (m : ℕ) (i i' : Fin n) (j : Fin g) :
     jetN m (fun w : Fin n → Fin g → ℂ => w i j + w i' j) =
       Ideal.Quotient.mk _ (MvPolynomial.X (i, j) + MvPolynomial.X (i', j)) := by
@@ -70,6 +92,9 @@ theorem jetN_coord_add {n g : ℕ} (m : ℕ) (i i' : Fin n) (j : Fin g) :
   exact congrArg _ (jetOf_add m (contDiff_apply ℂ ℂ (finProdFinEquiv (i, j))).contDiffAt
       (contDiff_apply ℂ ℂ (finProdFinEquiv (i', j))).contDiffAt)
 
+/- English proof (translation)
+Rewrite using `[psJet_X']`. Use `show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _`. Simplify using the standard rewrite rules.
+-/
 theorem subst_X {κ κ' : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (sb : κ → MvPolynomial κ' ℂ) (p : κ) :
     (jetSubstP m sb : Jet ℂ κ m →ₐ[ℂ] Jet ℂ κ' m) (psJet m (MvPowerSeries.X p)) =
       Ideal.Quotient.mk _ (sb p - MvPolynomial.C (MvPolynomial.constantCoeff (sb p))) := by
@@ -77,6 +102,13 @@ theorem subst_X {κ κ' : Type} [Fintype κ] [DecidableEq κ] (m : ℕ) (sb : κ
   show Ideal.Quotient.mk _ (MvPolynomial.aeval _ _) = _
   simp
 
+/- English proof (translation)
+Establish `hc : MvPolynomial.constantCoeff (psTrunc m (addF ℂ g j)) = 0`. Rewrite using `[FBIdJet.psTrunc_eq, MvPolynomial.constantCoeff_eq, MvPowerSeries.coeff_truncTotal _ (by simp), MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[addF]`. Establish `ha : (addF ℂ g j : MvPowerSeries (Fin 2 × Fin g) ℂ) = ((MvPolynomial.X ((0 : Fin 2), j) + MvPolynomial.X ((1 : Fin 2), j) : MvPolynomial (Fin 2 × Fin g) ℂ) : MvPowerSeries (Fin 2 × Fin g) ℂ)` using `by simp [addF]`. Rewrite using `[psIn, MvPolynomial.constantCoeff_rename, hc, map_zero, sub_zero]`.
+
+Establish `key : ∀ P : MvPolynomial (Fin 2 × Fin g) ℂ, (Ideal.Quotient.mk _ (MvPolynomial.rename (fun p : Fin 2 × Fin g => (r p.1, p.2)) P) : Jet ℂ (Fin n' × Fin g) m) = jetMap (m` using `m) (fun p : Fin 2 × Fin g => MvPolynomial.X (r p.1, p.2)) (fun _ => X_mem_orig _) (Ideal.Quotient.mk _ P) := by`. Introduce `P`. Use `show _ = Ideal.Quotient.mk _ (MvPolynomial.aeval _ _)`. Rewrite using `[MvPolynomial.rename_eq_aeval]`. Both sides reduce to the same expression.
+
+Rewrite using `[key, ha, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe, ← key]`. Simplify using the standard rewrite rules.
+-/
 theorem psIn_add {g n' : ℕ} (m : ℕ) (r : Fin 2 → Fin n') (j : Fin g) :
     (Ideal.Quotient.mk _ (psIn g m r (addF ℂ g j) - MvPolynomial.C (MvPolynomial.constantCoeff (psIn g m r (addF ℂ g j)))) :
       Jet ℂ (Fin n' × Fin g) m) =
@@ -100,6 +132,11 @@ theorem psIn_add {g n' : ℕ} (m : ℕ) (r : Fin 2 → Fin n') (j : Fin g) :
   rw [key, ha, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe, ← key]
   simp
 
+/- English proof (translation)
+Introduce `ψ`. Establish `key : ∀ (χ : Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left) M, Φ.JetMap m χ M → (χ = ψ ↔ Φ.JetMap m ψ M)`. Introduce and unpack `χ M ⟨h1, h2⟩`. Conclude with `⟨fun e => ⟨h1, e ▸ h2⟩, fun ⟨_, h4⟩ => h2.trans h4.symm⟩`. Use `hs fun M => if Φ.JetMap m ψ M then 1 else 0` as an intermediate fact.
+
+Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) (this.trans (Finset.sum_congr rfl fun k _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `rw [key _ _ (h k)] split_ifs <;> simp`. Apply the tactic sequence `rw [key _ _ (h' k)] split_ifs <;> simp`.
+-/
 theorem sameSum_of_jetMap {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {x0 : Sp ℂ ⟶ S} {g : ℕ}
     (Φ : AnFr A L x0 g) {n m : ℕ} {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Sp (Jet ℂ (Fin n × Fin g) m) ⟶ A.left)} {ε : K → ℤ}
@@ -121,6 +158,9 @@ theorem sameSum_of_jetMap {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A}
   · rw [key _ _ (h' k)]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← Equiv.ulift.symm.sum_comp, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_singleton]`. Simplify using `only [add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem sum_two {M : Type} [AddCommMonoid M] (F : ULift.{0} (Finset (Fin 2)) → M) :
     ∑ I, F I = F ⟨∅⟩ + F ⟨{0}⟩ + F ⟨{1}⟩ + F ⟨{0, 1}⟩ := by
   rw [← Equiv.ulift.symm.sum_comp, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide,
@@ -128,6 +168,9 @@ theorem sum_two {M : Type} [AddCommMonoid M] (F : ULift.{0} (Finset (Fin 2)) →
   simp only [add_assoc]
   rfl
 
+/- English proof (translation)
+Establish `h` using `Equiv.sum_comp (Equiv.ulift.symm : Finset (Fin 3) ≃ thK.{0}) F`. Use `h.symm.trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide, Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_insert (by decide), Finset.sum_i …`. Simplify using `only [add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem sum_three {M : Type} [AddCommMonoid M] (F : thK.{0} → M) :
     ∑ I, F I = F ⟨∅⟩ + F ⟨{0}⟩ + F ⟨{1}⟩ + F ⟨{2}⟩ + F ⟨{0, 1}⟩ + F ⟨{0, 2}⟩ + F ⟨{1, 2}⟩ + F ⟨{0, 1, 2}⟩ := by
   have h := Equiv.sum_comp (Equiv.ulift.symm : Finset (Fin 3) ≃ thK.{0}) F
@@ -139,11 +182,17 @@ theorem sum_three {M : Type} [AddCommMonoid M] (F : thK.{0} → M) :
   simp only [add_assoc]
   rfl
 
+/- English proof (translation)
+Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `[psumL, LinearMap.sum_apply]`.
+-/
 theorem psumL_pi {n n' g : ℕ} (I : ULift.{0} (Finset (Fin n))) (B : Fin n → (Fin n' → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) :
     psumL n g I ∘ₗ LinearMap.pi B = ∑ i ∈ I.down, B i := by
   refine LinearMap.ext fun w => ?_
   simp [psumL, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite using `[sum_three, Fintype.sum_sum_type, Fintype.sum_sum_type, sum_two, sum_two, sum_two]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, psumL_pi]`. Simplify using `[thε, cε, Finset.sum_insert, add_comm P, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem count {g : ℕ} (P Q R : (Fin 3 → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
     (f : ((Fin 3 → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) → ℤ) :
     ∑ I : thK.{0}, thε I * f (psumL 3 g I ∘ₗ LinearMap.pi ![Q, R, P]) =
@@ -162,12 +211,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F ℂ] {y : FrPt Xo c ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
   {el : Fin g ≃ Lt1 Dw} (Φ : AnPt y g ty el)
 
+/- English proof (translation)
+Simplify using `only [scaleGen, unitΓ, map_one, _root_.one_mul]`.
+-/
 theorem jetRd_scale_one {n m : ℕ} {K : Type} [Fintype K]
     {φ : K → (Sp (Jet ℂ (Fin n × Fin g) m) ⟶ Xo.univ.t.G.left)} {ε : K → ℤ}
     (τ : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) :
     scaleGen φ ε (unitΓ (1 : (Jet ℂ (Fin n × Fin g) m)ˣ)) τ = τ := by
   simp only [scaleGen, unitΓ, map_one, _root_.one_mul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.JetLinSub.jetRd_linSubst _ _ _ _ g Φ.toAnFr 2 n' m (LinearMap.pi B) (fun p => φ p.1 p.2) (fun p => (subst_X m _ p).trans (h p.1 p.2)) _ _ _ _ _ (he m).2`.
+-/
 theorem jetRd_pe (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) {n' : ℕ}
     (φ : Fin 2 → Fin g → MvPolynomial (Fin n' × Fin g) ℂ)
     (B : Fin 2 → (Fin n' → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
@@ -177,6 +232,9 @@ theorem jetRd_pe (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) {n' :
   GlobalTheory.JetLinSub.jetRd_linSubst _ _ _ _ g Φ.toAnFr 2 n' m (LinearMap.pi B) (fun p => φ p.1 p.2)
     (fun p => (subst_X m _ p).trans (h p.1 p.2)) _ _ _ _ _ (he m).2
 
+/- English proof (translation)
+The claim follows from `jetRd_pe Φ e he m ![φ, φ'] ![B, B'] (Fin.forall_fin_two.2 ⟨h, h'⟩)`.
+-/
 theorem jetRd_pe_two (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) {n' : ℕ}
     (φ φ' : Fin g → MvPolynomial (Fin n' × Fin g) ℂ)
     (B B' : (Fin n' → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))
@@ -188,6 +246,15 @@ theorem jetRd_pe_two (e : ∀ m, FrTy y g Φ.jx m) (he : Φ.IsAnE e) (m : ℕ) {
   jetRd_pe Φ e he m ![φ, φ'] ![B, B'] (Fin.forall_fin_two.2 ⟨h, h'⟩)
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Take `⟨-, hq2, e2⟩` from `(GlobalTheory.AnVal.jetPts_jetMap E H Dw l Xo c y g ty el Φ n m).2.2.1 b d Q R hb hd`. Take `⟨hq1, e1⟩` from `ha`. Establish `hq : IsHolFam (fun v : Fin (n * g) → ℂ => (lift (Φ.e (P (colsOf n g v))) (lift (Φ.e (Q (colsOf n g v))) (Φ.e (R (colsOf n g v))))).left)` using `isHolFam_pullback_lift _ _ _ Xo.univ.t.G.hom (Xo.univ.t.G ⊗ Xo.univ.t.G).hom _ _ _ y.x (fun v => Over.w (Φ.e (P (colsOf n g v)))) (fun v => Over.w (lift (Φ.e (Q (colsOf n g v))) (Φ.e (R (colsOf n g v))))) hq1 hq2`. Establish `e3 : (lift a (lift b d)).left = spMap (renN n g m : Jet ℂ (Fin 1 × Fin (n * g)) m →+* Jet ℂ (Fin n × Fin g) m) ≫ jetPt _ hq m`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, jetPt_comp _ hq (pullback.fst _ _) _ hq1 (fun v => congrArg Over.Hom.left (lift_fst _ _)), ← e1]`. Conclude with `congrArg Over.Hom.left (lift_fst a (lift b d))`. Rewrite using `[Category.assoc, jetPt_comp _ hq (pullback.snd _ _) _ hq2 (fun v => congrArg Over.Hom.left (lift_snd _ _)), ← e2]`. Conclude with `congrArg Over.Hom.left (lift_snd a (lift b d))`. Rewrite using `[e3]`.
+
+Use `GlobalTheory.AnValJetGlob.jetRd_pullGen _ _ _ _ g Φ.toAnFr n m _ _ _ _ _ _ _ hq fun v => ?_` and prove the remaining obligations. Use `GlobalTheory.cubical_reading_one E H Dw l Xo c y g ty el Φ (P (colsOf n g v)) (Q (colsOf n g v)) (R (colsOf n g v))` as an intermediate fact. Establish `hv : LinearMap.pi ![P, Q, R] (colsOf n g v) = ![P (colsOf n g v), Q (colsOf n g v), R (colsOf n g v)]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+
+Simplify `this` using `only [LinearMap.comp_apply, hv]`.
+-/
 theorem jetRd_cube {n : ℕ} (m : ℕ) (a b d : jO y g m n ⟶ Xo.univ.t.G)
     (P Q R : (Fin n → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (ha : Φ.toAnFr.JetMap m a.left P)
     (hb : Φ.toAnFr.JetMap m b.left Q) (hd : Φ.toAnFr.JetMap m d.left R) :
@@ -217,6 +284,17 @@ theorem jetRd_cube {n : ℕ} (m : ℕ) (a b d : jO y g m n ⟶ Xo.univ.t.G)
 
 end Main
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ _ y g ty el Φ himm e he m`. Use `⟨1, by rw [show (anFB ty).ph2 = 1 from rfl, FBIdJet.psJet_one, Units.val_one], ?_⟩` and prove the remaining obligations. Rewrite using `[jetRd_scale_one]`. Establish `hp` using `(GlobalTheory.AnVal.jetPts_jetMap E H Dw l Xo c y g ty el Φ 3 m).1`. Establish `hL` using `jetRd_cube Φ m _ _ _ _ _ _ (hp 1) (hp 2) (hp 0)`.
+
+Establish `hX : ∀ (i : Fin 3) (j : Fin g), (Ideal.Quotient.mk _ (MvPolynomial.X (i, j) - MvPolynomial.C (MvPolynomial.constantCoeff (MvPolynomial.X (i, j) : MvPolynomial (Fin 3 × Fin g) ℂ))) : Jet ℂ (Fin 3 × Fin g) m) = jetN m (fun w => (LinearMap.proj i : (Fin 3 → Fin g → ℂ) →ₗ[ℂ] (Fin g → …`. Introduce `i j`. Simplify using `only [LinearMap.proj_apply]`. Rewrite using `[jetN_coord]`. Simplify using the standard rewrite rules.
+
+Establish `hF : ∀ j, (Ideal.Quotient.mk _ (psIn g m ![(1 : Fin 3), 2] ((anFB ty).G.F j) - MvPolynomial.C (MvPolynomial.constantCoeff (psIn g m ![(1 : Fin 3), 2] ((anFB ty).G.F j)))) : Jet ℂ (Fin 3 × Fin g) m) = jetN m (fun w => ((LinearMap.proj 1 : (Fin 3 → Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) + ( …`. Introduce `j`. Simplify using `only [LinearMap.proj_apply, LinearMap.add_apply, Pi.add_apply]`. Rewrite using `[show (anFB ty).G.F j = addF ℂ g j from rfl, psIn_add, jetN_coord_add]`. Both sides reduce to the same expression.
+
+Establish `h1` using `jetRd_pe_two Φ e he m (fun j => MvPolynomial.X ((0 : Fin 3), j)) (fun j => psIn g m ![1, 2] ((anFB ty).G.F j)) (LinearMap.proj 0) (LinearMap.proj 1 + LinearMap.proj 2) (hX 0) hF`. Establish `h2` using `jetRd_pe_two Φ e he m (fun j => MvPolynomial.X ((0 : Fin 3), j)) (fun j => MvPolynomial.X ((1 : Fin 3), j)) (LinearMap.proj 0) (LinearMap.proj 1) (hX 0) (hX 1)`. Establish `h3` using `jetRd_pe_two Φ e he m (fun j => MvPolynomial.X ((0 : Fin 3), j)) (fun j => MvPolynomial.X ((2 : Fin 3), j)) (LinearMap.proj 0) (LinearMap.proj 2) (hX 0) (hX 2)`. Establish `h2'` using `(jetRd_mul_inv_pow _ _ _ _ g Φ.toAnFr 3 m _ _ _ _ _ _ _ _ _ _ h2 h2).2.1`. Establish `h3'` using `(jetRd_mul_inv_pow _ _ _ _ g Φ.toAnFr 3 m _ _ _ _ _ _ _ _ _ _ h3 h3).2.1`.
+
+Establish `h23` using `(jetRd_mul_inv_pow _ _ _ _ g Φ.toAnFr 3 m _ _ _ _ _ _ _ _ _ _ h2' h3').1`. Establish `hR` using `(jetRd_mul_inv_pow _ _ _ _ g Φ.toAnFr 3 m _ _ _ _ _ _ _ _ _ _ h1 h23).1`. Establish `hS` using `sameSum_of_jetMap Φ.toAnFr hL.1 hR.1 (count (LinearMap.proj 0) (LinearMap.proj 1) (LinearMap.proj 2))`. Establish `hC` using `GlobalTheory.AnVal.JetCorr.corr_of_jetRd _ _ _ _ g Φ.toAnFr himm 3 m _ _ _ _ _ _ _ _ _ _ hL hR hS`. Conclude with `hC`.
+-/
 theorem second_law : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] [StarRing (𝓞 E)] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), Φ.toAnFr.Imm → ∀ e : ∀ m, FrTy y g Φ.jx m, Φ.IsAnE e → ∀ m, ∃ u : (Jet ℂ (Fin 3 × Fin g) m)ˣ, (u : Jet ℂ (Fin 3 × Fin g) m) = psJet m (anFB ty).ph2 ∧ LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (LB.pullGen Xo.univ.t.PP.L (thφ Xo.univ.t.G (x3 Xo.univ.t.G)) thε Xo.univ.t.cub.t (lift (jpt y g Φ.jx m (1 : Fin 3)) (lift (jpt y g Φ.jx m (2 : Fin 3)) (jpt y g Φ.jx m (0 : Fin 3)))).left) (scaleGen _ _ (unitΓ u) (LB.mulGen Xo.univ.t.PP.L _ _ _ _ (pe y g Φ.jx e m ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => psIn g m ![1, 2] ((anFB ty).G.F j)]) (LB.mulGen Xo.univ.t.PP.L _ _ _ _ (LB.invGen Xo.univ.t.PP.L _ _ (pe y g Φ.jx e m ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((1 : Fin 3), j)])) (LB.invGen Xo.univ.t.PP.L _ _ (pe y g Φ.jx e m ![fun j => MvPolynomial.X ((0 : Fin 3), j), fun j => MvPolynomial.X ((2 : Fin 3), j)]))))) := by
   intro E _ _ _ H Dw l Xo c _ _ y g ty el Φ himm e he m
   refine ⟨1, by rw [show (anFB ty).ph2 = 1 from rfl, FBIdJet.psJet_one, Units.val_one], ?_⟩

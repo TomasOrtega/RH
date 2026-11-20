@@ -8,6 +8,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff UpperTheory.ConvolutionTheory.RankTwoDescent
 open scoped Classical
 
+/- English proof (translation)
+Establish `h` using `TR.infGL_mul_finGL (dM t)`. Establish `h1 : Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (dM t) = 1`. Establish `ht' : TR.pInf ℚ (t : A ℚ) = 1`. Express the relevant statement in the definitionally equal form `(TR.infEq ℚ).symm (t : A ℚ).1 = 1`. Rewrite using `[ht]`.
+
+Conclude with `map_one _`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ht']`. Rewrite `h` using `[h1, map_one, one_mul]`.
+
+Conclude with `h`.
+-/
 private theorem dM_fin (t : (A ℚ)ˣ) (ht : (t : A ℚ).1 = 1) :
     finGL ℚ 2 (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t)) = dM t := by
   have h := TR.infGL_mul_finGL (dM t)
@@ -22,6 +29,15 @@ private theorem dM_fin (t : (A ℚ)ˣ) (ht : (t : A ℚ).1 = 1) :
   exact h
 
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Introduce `π hπ f hf`. Establish `hL` using `(UpperTheory.ConvolutionTheory.R2.Pp.cuspZero ℚ π f hf).1`. Use `⟨⟨hL.1, hL.2, ?_, fun s x => hπ f hf s x⟩, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Fb.mem_range_ofCusp.2 (π.cusp f hf)`. Take `⟨B₀, hB₀⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms φ.2`.
+
+Substitute `hφ` using the available equality. Use `⟨B₀, fun x => ?_⟩` and prove the remaining obligations. Establish `h2 : (centralSection ℚ 2 (detModule ℚ 2 x))⁻¹ * x ∈ normOneGL ℚ 2`. Rewrite using `[mem_normOneGL_iff_detModule, map_mul, map_inv, detModule_centralSection two_pos, inv_mul_cancel]`. Establish `h3` using `hπ _ hf (detModule ℚ 2 x) ((centralSection ℚ 2 (detModule ℚ 2 x))⁻¹ * x)`.
+
+Rewrite `h3` using `[mul_inv_cancel_left]`. Rewrite using `[h3]`. Conclude with `hB₀ _ h2`. Establish `h` using `π.stable (.fin (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t))) f hf`. Use `⟨_, h, fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `f.1 (x * finGL ℚ 2 (Matrix.GeneralLinearGroup.map (pFin ℚ) (dM t))) = _`. Rewrite using `[dM_fin t ht.1]`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.formBd :
     UpperTheory.ConvolutionTheory.RankTwoDescent.Cp.FormBd := by
   intro π hπ f hf

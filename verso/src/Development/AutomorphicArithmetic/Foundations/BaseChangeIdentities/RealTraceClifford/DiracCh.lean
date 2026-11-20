@@ -16,6 +16,19 @@ open PositivityTheory.RgTw (Mat)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
+/- English proof (translation)
+Introduce `n lam V _ _ E1 E2 hP hL h1 h2 ν x hν hx hc`. Establish `hGl : GlRel (kF E1 E2)`. Introduce `a b c d`. Establish `e : kF E1 E2 a b * kF E1 E2 c d - kF E1 E2 c d * kF E1 E2 a b = (E1 a b * E1 c d - E1 c d * E1 a b) + (E2 a b * E2 c d - E2 c d * E2 a b)`. Simplify using `only [kF, add_mul, mul_add]`.
+
+Rewrite using `[hP.comm a b c d, hP.comm c d a b]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, hP.gl1 a b c d, hP.gl2 a b c d]`. Apply the tactic sequence `split_ifs <;> simp [kF] <;> abel`. Establish `hU : UF (kF E1 E2)` using `⟨hGl, hP.unitK⟩`.
+
+Rewrite `hν` using `[hwSp_eq]`. Take `⟨-, S, c₀, d, hfd, hS, hch, hd, hal⟩` from `irrCh n V (kF E1 E2) hU hL ν hν`. Take `⟨J, _, _, c, η, hcl⟩` from `clifEx n`. Take `⟨S', hfd', hS', hch'⟩` from `tenCh n V (kF E1 E2) hU S hfd hS J c η hcl c₀ hch`. Establish `hU' : UF (dg (kF E1 E2) c)` using `(tenF n V J).2.2.2.2 (kF E1 E2) c η hU hcl`.
+
+Establish `hm` using `mult n (Ten J V) (dg (kF E1 E2) c) hU' S' hfd' hS' 1 _ ⟨fun a b => by simp, fun y hy => by simpa using hy⟩ hch' (x - rhoV n) (by simpa using hx)`. Establish `key : alt (rhoV n) * (c₀ * ∑ j, ex (η j)) = ((2 : ℂ) ^ n * d) • (chR n * alt (ν + rhoV n))`. Rewrite using `[hcl.chr, mul_smul_comm, mul_smul_comm, ← mul_assoc, hal, smul_mul_assoc, smul_smul, mul_comm (alt (ν + rhoV n)) (chR n)]`. Establish `hne : hw (dg (kF E1 E2) c) (x - rhoV n) ≠ ⊥`. Introduce `hb`.
+
+Rewrite `hm` using `[hb, bot_inf_eq, trOn_bot, sub_add_cancel, key, ((cfBasic n).2.2.2.1 (chR n * alt (ν + rhoV n)) 0 _ x).2]`. Break down `mul_eq_zero.1 hm with h | h` into its components or cases. Conclude with `mul_ne_zero (pow_ne_zero n two_ne_zero) hd h`. Conclude with `hc h`. Establish `hfin` using `diracHW n lam V E1 E2 hP hL h1 h2 J c η hcl (x - rhoV n) hne`.
+
+Rewrite `hfin` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.RealTr.diracCh :
     ∀ (n : ℕ) (lam : Fin n → ℤ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (E1 E2 : Fin n → Fin n → Module.End ℂ V),
       IsPair E1 E2 → LocF (kF E1 E2) → (∀ m (x : V), gelA E1 m x = GlobalTheory.Dec.gelfVal (infOf lam true) m • x) →

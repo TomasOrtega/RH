@@ -11,6 +11,9 @@ open CochainComplex CochainComplex.HomComplex
 
 namespace GlobalTheory.CompanionTheory.EdgeRep
 
+/- English proof (translation)
+Take `rfl : s = n` from `by simpa using hs.symm`. Take `rfl : t = m` from `by simpa using ht.symm`. Both sides reduce to the same expression.
+-/
 theorem mul_ev_congr {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ : Pair I J K) {X : Scheme.{0}} {n m k s t : ℤ}
     (h : n + m = k) (hst : s + t = k) (hs : -((0 : ℕ) : ℤ) + n = s) (ht : -((0 : ℕ) : ℤ) + m = t)
     (α : Cochain ((chains R).obj (sch.obj X)) I n) (β : Cochain ((chains R).obj (sch.obj X)) J m) :
@@ -20,6 +23,11 @@ theorem mul_ev_congr {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ
   obtain rfl : t = m := by simpa using ht.symm
   rfl
 
+/- English proof (translation)
+Establish `h0` using `hγ 0 k (by simp) X (𝟙 X)`. Rewrite `h0` using `[Fin.sum_univ_one]`. Rewrite using `[h0]`. Establish `hu : (m * ((0 : Fin 1) : ℕ)).negOnePow = 1` using `by simp`. Rewrite using `[hu, one_smul]`.
+
+Conclude with `mul_ev_congr μ h _ _ _ α β`.
+-/
 theorem aw_value {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ : Pair I J K) {X : Scheme.{0}} {n m k : ℤ}
     (h : n + m = k) (α : Cochain ((chains R).obj (sch.obj X)) I n) (β : Cochain ((chains R).obj (sch.obj X)) J m)
     (γ : Cochain ((chains R).obj (sch.obj X)) K k) (hγ : μ.IsAW h α β γ) :
@@ -31,6 +39,9 @@ theorem aw_value {R : Type} [CommRing R] {I J K : GlobalTheory.EtC.Cx R} (μ : P
   rw [hu, one_smul]
   exact mul_ev_congr μ h _ _ _ α β
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ R _ I J K μ X n m k h x y a b hx hy`. Take `⟨α, rfl, rfl⟩` from `hx`. Take `⟨β, rfl, rfl⟩` from `hy`. Take `⟨γ, hγ⟩` from `μ.aw_exists (sch.obj X) h α β`. Conclude with `⟨γ, (μ.cup_spec (sch.obj X) h α β γ hγ).symm, aw_value μ h α.1 β.1 γ.1 hγ⟩`.
+-/
 theorem repCup : CrystallineSemistableComparison.E.EvExt → CrystallineSemistableComparison.E.EvNat → CrystallineSemistableComparison.E.RepBasic → CrystallineSemistableComparison.E.RepConc → CrystallineSemistableComparison.E.InSch → CrystallineSemistableComparison.E.RepCup := by
   intro _ _ _ _ _ R _ I J K μ X n m k h x y a b hx hy
   obtain ⟨α, rfl, rfl⟩ := hx

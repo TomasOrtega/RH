@@ -16,6 +16,9 @@ def iotaFHom : X.B.I.F →+* D.host.F :=
   (X.ιE.toRingHom.comp (algebraMap X.B.I.F X.B.I.E)).codRestrict D.host.F
     (fun a => (X.ιE_F _).2 ⟨a, rfl⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(iotaFHom X).injective, fun y => by obtain ⟨a, ha⟩ := (X.ιE_F y).1 y.2 exact ⟨a, Subtype.ext ha⟩⟩`.
+-/
 theorem iotaFHom_bijective : Function.Bijective (iotaFHom X) :=
   ⟨(iotaFHom X).injective, fun y => by
     obtain ⟨a, ha⟩ := (X.ιE_F y).1 y.2
@@ -23,11 +26,17 @@ theorem iotaFHom_bijective : Function.Bijective (iotaFHom X) :=
 
 def iotaF : X.B.I.F ≃+* D.host.F := RingEquiv.ofBijective (iotaFHom X) (iotaFHom_bijective X)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem iotaF_coe (a : X.B.I.F) : ((iotaF X a : D.host.F) : D.host.E) = X.ιE (algebraMap X.B.I.F X.B.I.E a) := rfl
 
 def trA : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F →ₗ[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F :=
   TensorProduct.lift ((LinearMap.lsmul X.B.I.F (Formalism.MainNotions.S.Af X.B.I.F)).comp (Algebra.trace X.B.I.F X.B.I.E))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trA_tmul (x : X.B.I.E) (c : Formalism.MainNotions.S.Af X.B.I.F) :
     trA X (x ⊗ₜ[X.B.I.F] c) = Algebra.trace X.B.I.F X.B.I.E x • c := rfl
 

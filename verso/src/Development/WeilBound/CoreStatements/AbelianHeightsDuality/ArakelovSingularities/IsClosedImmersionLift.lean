@@ -15,6 +15,9 @@ namespace GlobalTheory.Amb
 
 variable (k : Type) [CommRing k]
 
+/- English proof (translation)
+The claim follows from `| 0, n => by rw [Fin.sum_univ_one] exact polyCovered_pSpace (n 0) | m + 1, n => by have h := polyCovered_pullback (toSpecBase k (n 0)) (mpStr k m (Fin.tail n)) (n 0) (∑ i, Fin.tail n i) (polyCovered_pSpace (n 0)) (polyCovered_mp m (Fin.tail n)) rw [Fin.sum_univ_succ] exact h`.
+-/
 theorem polyCovered_mp [IsDomain k] : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ), PolyCovered (mpStr k m n) (∑ i, n i)
   | 0, n => by
     rw [Fin.sum_univ_one]
@@ -25,9 +28,15 @@ theorem polyCovered_mp [IsDomain k] : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ), P
     rw [Fin.sum_univ_succ]
     exact h
 
+/- English proof (translation)
+The claim follows from `isIntegral_of_polyCovered _ _ (polyCovered_mp k m n)`.
+-/
 theorem isIntegral_mp [IsDomain k] (m : ℕ) (n : Fin (m + 1) → ℕ) : IsIntegral (MP k m n) :=
   isIntegral_of_polyCovered _ _ (polyCovered_mp k m n)
 
+/- English proof (translation)
+The claim follows from `| 0, n => by rw [Fin.sum_univ_one] exact (inferInstance : SmoothOfRelativeDimension (n 0) (PSpace.str k (n 0))) | m + 1, n => by have ih := smooth_mp m (Fin.tail n) have h1 : SmoothOfRelativeDimension (∑ i, Fin.tail n i) (pullback.fst (toSpecBase k (n 0)) (mpStr k m (Fin.tail n)) …`.
+-/
 theorem smooth_mp : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ), SmoothOfRelativeDimension (∑ i, n i) (mpStr k m n)
   | 0, n => by
     rw [Fin.sum_univ_one]
@@ -45,10 +54,20 @@ theorem smooth_mp : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ), SmoothOfRelativeDim
     rw [e]
     exact smoothOfRelativeDimension_comp (n := ∑ i, Fin.tail n i) (m := n 0) (hf := h1) (hg := h2) _ _
 
+/- English proof (translation)
+Use `haveI := smooth_mp k m n`. Conclude with `genSmooth_of_smooth _ _`.
+-/
 theorem genSmooth_mp (m : ℕ) (n : Fin (m + 1) → ℕ) : GenSmooth (mpStr k m n) (∑ i, n i) := by
   haveI := smooth_mp k m n
   exact genSmooth_of_smooth _ _
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ k := hf`. Use `haveI : IsNoetherian ℤ k := isNoetherian_of_isNoetherianRing_of_finite ℤ k`. Use `haveI : IsNoetherianRing k := isNoetherian_of_tower ℤ inferInstance`. Establish `hdim : ringKrullDim k = 1` using `ringKrullDim_eq_one hf`. Establish `hbase` using `(GlobalTheory.ArithBase.isArithVar_id (k := k) hdim).flat`.
+
+Rewrite `hbase` using `[Category.id_comp]`. Use `haveI := hbase`. Use `haveI : SmoothOfRelativeDimension (∑ i, n i) (mpStr k m n) := smooth_mp k m n`. Use `haveI : Smooth (mpStr k m n) := SmoothOfRelativeDimension.smooth (∑ i, n i) (mpStr k m n)`. Use `⟨inferInstance, hf, isIntegral_mp k m n, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← multiProjEmb_toSpecBase]`. Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion _ (GlobalTheory.ProjSpace.isProjOver_pspace_str k _)`. Conclude with `Flat.comp _ _`. Conclude with `topologicalKrullDim_of_polyCovered hdim (mpStr k m n) _ (polyCovered_mp k m n)`.
+-/
 theorem isArithVar_mp [IsDomain k] [CharZero k] (hf : Module.Finite ℤ k) (m : ℕ) (n : Fin (m + 1) → ℕ) :
     IsArithVar (mpStr k m n) (∑ i, n i) := by
   haveI : Module.Finite ℤ k := hf
@@ -66,6 +85,11 @@ theorem isArithVar_mp [IsDomain k] [CharZero k] (hf : Module.Finite ℤ k) (m : 
   · exact Flat.comp _ _
   · exact topologicalKrullDim_of_polyCovered hdim (mpStr k m n) _ (polyCovered_mp k m n)
 
+/- English proof (translation)
+Use `haveI : IsProper (mpStr k m n) := isProper_mpStr k m n`. Use `haveI : IsSeparated (mpStr k m n) := inferInstance`. Use `haveI : IsSeparated (pullback.fst (toSpecBase k n') (mpStr k m n)) := inferInstance`. Use `haveI : IsClosedImmersion (pullback.lift a b h ≫ pullback.fst (toSpecBase k n') (mpStr k m n)) := by`. Rewrite using `[pullback.lift_fst]`.
+
+Use `infer_instance`. Conclude with `IsClosedImmersion.of_comp (pullback.lift a b h) (pullback.fst (toSpecBase k n') (mpStr k m n))`.
+-/
 theorem isClosedImmersion_lift {T : Scheme.{0}} (m : ℕ) (n' : ℕ) (n : Fin (m + 1) → ℕ) (a : T ⟶ PSpace k n')
     [IsClosedImmersion a] (b : T ⟶ MP k m n) (h : a ≫ toSpecBase k n' = b ≫ mpStr k m n) :
     IsClosedImmersion (pullback.lift a b h : T ⟶ pullback (toSpecBase k n') (mpStr k m n)) := by

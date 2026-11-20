@@ -28,6 +28,9 @@ section one
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Take `⟨S, hS, hvS, hst⟩` from `hv`. Use `⟨S.map U.toLinearEquiv.toLinearMap, inferInstance, Submodule.mem_map_of_mem hvS, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ g x, hst g hg x hx, hU g hg.1 x⟩`.
+-/
 theorem kfin_map {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H']
     [InnerProductSpace ℂ H'] {σ : B.Mat k r → (H →L[ℂ] H)} {σ' : B.Mat k r → (H' →L[ℂ] H')} (U : H ≃ₗᵢ[ℂ] H')
     (hU : ∀ g ∈ UH (Hpk k r), ∀ x, U (σ g x) = σ' g (U x)) {v : H} (hv : PI.UpqRep.IsKFinHpk (k := k) (r := r) σ v) :
@@ -37,6 +40,19 @@ theorem kfin_map {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] 
   rintro g hg _ ⟨x, hx, rfl⟩
   exact ⟨σ g x, hst g hg x hx, hU g hg.1 x⟩
 
+/- English proof (translation)
+Establish `key : ∃ (ι : Type) (_ : Fintype ι) (x y : ι → R.H) (X : ι → (Wq →L[ℂ] Wp)), (∀ i, x i ∈ R.TK ∧ y i ∈ R.TK) ∧ ∀ g ∈ B.GV k r, F g = ∑ i, ⟪x i, R.σ g (y i)⟫_ℂ • X i`. Establish `hTK` using `(GlobalTheory.rep_basic_of_isDS hK k r ε μ R hR).2.2.2.2.2.2.1`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h'`. Take `⟨φ, T, ⟨H, i1, i2, i3, σ, v, w, -, hσ, hv, hw, hφ⟩, rfl⟩` from `h'`.
+
+Take `⟨U, hUσ⟩` from `hU k r ε μ hR.1 h hg hh H σ hσ R.H R.σ hR.2`. Use `⟨Unit, inferInstance, fun _ => U w, fun _ => U v, fun _ => T, fun _ => ⟨hTK _ (kfin_map U hUσ hw), hTK _ (kfin_map U hUσ hv)⟩, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[hφ g hg, ← hUσ g hg, U.inner_map_map]`. Consider the case `zero => exact ⟨Empty, inferInstance, Empty.elim, Empty.elim, Empty.elim, fun i => i.elim, fun g _ => by simp⟩`.
+
+Consider the case `add F F' _ _ h h'`. Take `⟨ι, _, x, y, X, h1, h2⟩` from `h`. Take `⟨ι', _, x', y', X', h1', h2'⟩` from `h'`. Use `⟨ι ⊕ ι', inferInstance, Sum.elim x x', Sum.elim y y', Sum.elim X X', ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i) exacts [h1 i, h1' i]`.
+
+Rewrite using `[Fintype.sum_sum_type, Pi.add_apply, h2 g hg, h2' g hg]`. Both sides reduce to the same expression. Consider the case `smul c F _ h`. Take `⟨ι, _, x, y, X, h1, h2⟩` from `h`. Use `⟨ι, inferInstance, x, y, fun i => c • X i, h1, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Pi.smul_apply, h2 g hg, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_comm _ _ _`. Take `⟨ι, _, x, y, X, h1, h2⟩` from `key`. Introduce `l l'`. Set `e` to `(Fintype.equivFin ι).symm`.
+
+Use `⟨_, Fintype.card ι, fun i => x (e i), fun i => y (e i), fun i => X (e i), fun i => h1 _, fun g hg => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[h2 g hg]`. Conclude with `(Equiv.sum_comp e fun i => ⟪x i, R.σ g (y i)⟫_ℂ • X i).symm`.
+-/
 theorem coefOf_of_wsp (hU : UniqG) (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1) → Bool} {μ : Fin (2 * r + k + 1) → ℝ}
     {h : ℝ} (hg : GapAtLeast ε μ h) (hh : ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 + 1 < h) (R : BranchingSupport.Rep k r) (hR : R.IsDS ε μ)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : F ∈ Wsp k r Wp Wq ε μ) : BallW.CoefOf R F := by
@@ -72,6 +88,11 @@ theorem coefOf_of_wsp (hU : UniqG) (hK : PI.KFinSmooth) {ε : Fin (2 * r + k + 1
   rw [h2 g hg]
   exact (Equiv.sum_comp e fun i => ⟪x i, R.σ g (y i)⟫_ℂ • X i).symm
 
+/- English proof (translation)
+Take `⟨c, hc1, hc2⟩` from `h`. Use `⟨GlobalTheory.CoefZero.continuousOn_of_ckOn hc1, max c 0, le_max_right _ _, fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : B.gN g ^ A * ‖F g‖ ≤ c` using `hc2 [] [] (by simp) (by simp) (by simp) g hg`. Establish `hp` using `BetaSesquilinearity.gN_pos hg`. Rewrite using `[Real.rpow_neg hp.le, ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos hp _), mul_comm]`.
+
+Conclude with `h1.trans (le_max_left _ _)`.
+-/
 theorem bound_of_inCC {A : ℝ} {m : ℕ} {F : B.Mat k r → (Wq →L[ℂ] Wp)} (h : B.InCC A m F) :
     ContinuousOn F (B.GV k r) ∧ ∃ c, 0 ≤ c ∧ ∀ g ∈ B.GV k r, ‖F g‖ ≤ c * B.gN g ^ (-A) := by
   obtain ⟨c, hc1, hc2⟩ := h
@@ -83,6 +104,23 @@ theorem bound_of_inCC {A : ℝ} {m : ℕ} {F : B.Mat k r → (Wq →L[ℂ] Wp)} 
 
 variable [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Take `⟨-, -, -, ⟨C, hC⟩, -⟩` from `b_any_of_xi k r Wp Wq D A hA`. Take `⟨c, hc⟩` from `JCx2.sq_inCC_mono le_rfl (by norm_num : 4 ≤ 5) hF`. Establish `hfin` using `(hC F F c c hF hF hc hc).1`. Use `set g : (Fin r → ℂ) × ℂ → ℝ := fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B.hsVec (B.JF D F (B.gq D q))‖ ^ 2 with hg`. Establish `hg0 : ∀ q, 0 ≤ g q` using `fun q => mul_nonneg (bcWeight_nonneg0 _ _ _ _ _) (sq_nonneg _)`.
+
+Establish `hJ : StronglyMeasurable fun q : (Fin r → ℂ) × ℂ => B7.JM D F (1, 1) q` using `(B7.sm_JM D (bound_of_inCC hF).1).comp_measurable measurable_prodMk_left`. Establish `hN : Measurable fun q : (Fin r → ℂ) × ℂ => ‖B7.hsL (B7.JM D F (1, 1) q)‖` using `((B7.hsL (Wp := Wp) (Wq := Wq)).continuous.comp_stronglyMeasurable hJ).norm.measurable`. Establish `hgm : Measurable g`. Establish `e : g = fun q => bcWeight k r (Tz k r D.z) (Tz k r D.z') q * ‖B7.hsL (B7.JM D F (1, 1) q)‖ ^ 2`. Use function extensionality and compare the values at `q`.
+
+Distinguish the cases in `hw : bcWeight k r (Tz k r D.z) (Tz k r D.z') q = 0`. Simplify using `only [hg, hw, zero_mul]`. Establish `hw'` using `hw`. Unfold `bcWeight at hw'`. Use `split_ifs at hw' with hle`.
+
+Establish `hq : q ∈ B7.Q0 D`. Use `⟨fun a ha => left_ne_zero_of_mul hw' (Finset.prod_eq_zero (Finset.mem_univ a) ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[ha, norm_zero, zero_pow]`. Unfold `Mdim`. Use `a.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `hle.lt_or_eq.resolve_right fun h => right_ne_zero_of_mul hw' ?_` and prove the remaining obligations. Rewrite using `[← h, sub_self, zero_pow (by omega)]`. Rewrite using `[B7.JM_eq D F (1, 1) hq, bessel_function_trivial_index k r Wp Wq D F, B7.hsL_apply]`. Conclude with `absurd rfl hw'`.
+
+Rewrite using `[e]`. Conclude with `(B7.measurable_bcWeight _ _).mul (hN.pow_const 2)`. Establish `hβ : B.beta D F F = ((∫ q, g q : ℝ) : ℂ)`. Unfold `B.beta betaBig`. Rewrite using `[← integral_complex_ofReal]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Move the coercions through the operations in `[hg]`. Both sides reduce to the same expression.
+
+Rewrite using `[hβ, Complex.ofReal_re, integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hg0) hgm.aestronglyMeasurable]`. Conclude with `(ENNReal.ofReal_toReal hfin).symm`.
+-/
 theorem normSq_eq (hk : 2 ≤ k) (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A)
     {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : B.InCC A 5 F) : B.normSq D F = ENNReal.ofReal (B.beta D F F).re := by
   obtain ⟨-, -, -, ⟨C, hC⟩, -⟩ := b_any_of_xi k r Wp Wq D A hA
@@ -127,6 +165,15 @@ theorem normSq_eq (hk : 2 ≤ k) (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA :
     hgm.aestronglyMeasurable]
   exact (ENNReal.ofReal_toReal hfin).symm
 
+/- English proof (translation)
+Establish `e : (∑ j ∈ S, F j) = fun g => ∑ j : S, F j g`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, Finset.sum_coe_sort S (fun j => F j g)]`. Establish `hS : B.InCC A 5 fun g => ∑ j : S, F j g` using `JCx2.sq_inCC_sum _ _ fun j _ => hF j j.2`. Establish `h1 : ∀ j : S, B.beta D (fun g => ∑ l : S, F l g) (F j) = B.beta D (F j) (F j)` using `fun j => by`.
+
+Establish `h` using `CutBP.beta_sum_left D hA (fun _ : S => (1 : ℂ)) (fun l : S => F l) (fun l => hF l l.2) (hF j j.2) Finset.univ`. Simplify using `only [one_smul, one_mul] at h`. Conclude with `h.trans (Finset.sum_eq_single j (fun l _ hl => ho l l.2 j j.2 fun e => hl (Subtype.ext e)) fun h => absurd (Finset.mem_univ j) h)`. Establish `h2` using `(CutBP.beta_sum_right D hA (fun j : S => F j) (fun j => hF j j.2) hS Finset.univ).trans (Finset.sum_congr rfl fun j _ => h1 j)`. Establish `h3 : ∀ j : S, 0 ≤ (B.beta D (F j) (F j)).re` using `fun j => by`.
+
+Take `⟨t, ht, e⟩` from `CutBP.beta_self_real D (F j)`. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `ht`. Establish `h4` using `normSq_eq hk D hA hS`. Rewrite `h4` using `[h2, Complex.re_sum]`.
+
+Rewrite using `[e, h4, normSq_eq hk D hA (hF i hi)]`. Establish `h5` using `Finset.single_le_sum (f := fun j : S => (B.beta D (F j) (F j)).re) (fun j _ => h3 j) (Finset.mem_univ (⟨i, hi⟩ : S))`. Conclude with `ENNReal.ofReal_le_ofReal h5`.
+-/
 theorem normSq_le_sum (hk : 2 ≤ k) (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A) {ι : Type} (S : Finset ι)
     (F : ι → B.Mat k r → (Wq →L[ℂ] Wp)) (hF : ∀ i ∈ S, B.InCC A 5 (F i))
     (ho : ∀ i ∈ S, ∀ j ∈ S, i ≠ j → B.beta D (F i) (F j) = 0) {i : ι} (hi : i ∈ S) :
@@ -162,6 +209,13 @@ section place
 variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
+/- English proof (translation)
+Unfold `KB.Pl.V D.vecV`. Use `split_ifs with h1 h2`. Apply `TBBx4.orbJ_smul_ae _ _ _ _ _ _ h0 filter_upwards [TBBx2.ae_inSS p.T.base] with q hq` to reduce the goal to its premises. Establish `hGq : Dmin P.k P.r p.T.base.z p.T.base.z' (B.sgs q h2.choose) ⟨j + 1, by omega⟩ = mnr hj γ`. Rewrite using `[BigCellZetaMinors.dmin_sgs _ hq]`.
+
+Unfold `Dmin mnr`. Rewrite using `[h2.choose_spec.2.1]`. Unfold `D.orbIntegrand B.rho`. Simplify using `only [hGq, he _ (B7.sgs_mem p.T.base hq h2.choose_spec.1), ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Rewrite using `[smul_comm]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem V_dmin (p : KB.Pl P Wp Wq) {f F₀ : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (he : ∀ g ∈ B.GV P.k P.r, F₀ g = f g) {j : ℕ}
     (hj : j ≤ P.r) (a : ℕ) (γ : C.LPt) (h0 : mnr hj γ ^ a ≠ 0) :
     p.V (fun g => Dmin P.k P.r p.T.base.z p.T.base.z' g ⟨j + 1, by omega⟩ ^ a • F₀ g) γ = mnr hj γ ^ a • p.V f γ := by
@@ -180,6 +234,9 @@ theorem V_dmin (p : KB.Pl P Wp Wq) {f F₀ : B.Mat P.k P.r → (Wq →L[ℂ] Wp)
   · simp
   · simp
 
+/- English proof (translation)
+Unfold `mnr`. Rewrite using `[show D.ptMatN (TBB.bigPt r c) (r + 1) = _ from PBJ.Dens.ptMatN_bigPt c, PBM.hMat_one, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => (hc.1 (1, c _) (by unfold TBB.bigPt; exact (List.mem_ofFn' _ _).2 ⟨_, rfl⟩)).2`.
+-/
 theorem mnr_bigPt_ne {r j : ℕ} (hj : j ≤ r) (c : Fin (r + 1) → ℂ) (hc : D.IsLocPt (TBB.bigPt r c) (r + 1)) :
     mnr hj (TBB.bigPt r c) ≠ 0 := by
   unfold mnr
@@ -190,6 +247,17 @@ theorem mnr_bigPt_ne {r j : ℕ} (hj : j ≤ r) (c : Fin (r + 1) → ℂ) (hc : 
 
 end place
 
+/- English proof (translation)
+Take `⟨c₃, H⟩` from `PolTop.vector_valued_orbital_linear`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p A hA ι S F hF γ`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+
+Use `V_csmul p (fun _ => 0) 0 γ` as an intermediate fact. Simplify using `only [zero_smul] at this`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `this`. Consider the case `insert i S hi ih`.
+
+Establish `hS : B.InCC A 5 (∑ j ∈ S, F j)`. Use `JCx2.sq_inCC_sum S F fun j hj => hF j (Finset.mem_insert_of_mem hj)` as an intermediate fact. Use `this using 2 with g` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_apply]`. Take `⟨h1, c1, hc1, b1⟩` from `bound_of_inCC (hF i (Finset.mem_insert_self _ _))`.
+
+Take `⟨h2, c2, hc2, b2⟩` from `bound_of_inCC hS`. Establish `hpos : ∀ g ∈ B.GPos p.T.base, 0 ≤ B.gN g ^ (-A)` using `fun g hg => Real.rpow_nonneg (BetaSesquilinearity.gN_pos hg.1).le _`. Establish `key` using `H P.k P.r Wp Wq p.T.base p.ν' p.m₀ γ A hA (F i) (∑ j ∈ S, F j) (c1 + c2) (by linarith) (h1.mono fun g hg => hg.1) (h2.mono fun g hg => hg.1) (fun g hg => (b1 g hg.1).trans (mul_le_mul_of_nonneg_right (by linarith) (hpos g hg))) (fun g hg => (b2 g hg.1).trans (mul_le_mul_of_nonneg …`. Simplify using `only [one_smul] at key`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih fun j hj => hF j (Finset.mem_insert_of_mem hj)]`.
+
+Conclude with `key`.
+-/
 theorem V_sum : ∃ c₃ : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
     (p : KB.Pl P Wp Wq) (A : ℝ), c₃ * ((P.r : ℝ) + 1) ^ 2 * ((P.r : ℝ) * ((2 * P.r + P.k + 1 : ℕ) : ℝ) + 1) ≤ A →
@@ -221,6 +289,27 @@ theorem V_sum : ∃ c₃ : ℝ, ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGro
     rw [Finset.sum_insert hi, Finset.sum_insert hi, ← ih fun j hj => hF j (Finset.mem_insert_of_mem hj)]
     exact key
 
+/- English proof (translation)
+Take `⟨c₃, HV⟩` from `V_sum`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `t hZ hZd hK h4 h5 h6 h7 P Wp Wq _ _ _ _ _ _ _ p f ε lam j hj a A h K hf hg ht hD hA hA3 γ hγ hG hB`. Distinguish the cases in `h0 : mnr hj γ ^ a = 0`. Rewrite using `[two_mul, pow_add, ← norm_pow, h0]`.
+
+Simplify using the standard rewrite rules. Take `⟨F₀, hF₀, he⟩` from `Coef.kfin_wsp hf`. Use `set q : B.Mat P.k P.r → ℂ := fun g => Dmin P.k P.r p.T.base.z p.T.base.z' g ⟨j + 1, by omega⟩ ^ a with hq`. Establish `hqL : q ∈ Letters P.k P.r ^ ((P.r + 1) * a)`. Establish `h1 : (fun g : B.Mat P.k P.r => Dmin P.k P.r p.T.base.z p.T.base.z' g ⟨j + 1, by omega⟩) ∈ Letters P.k P.r ^ (P.r + 1)` using `CompanionTheory.LimBd.Main.letters_pow_mono (show j + 1 ≤ P.r + 1 by omega) (CompanionTheory.LimBd.Main.det_mem_pow _ fun a b => CompanionTheory.LimBd.Main.herm_letter _ _)`.
+
+Rewrite using `[pow_mul]`. Conclude with `Submodule.pow_mem_pow _ h1 a`. Take `⟨F, hF, hsum⟩` from `mul_mem_sumOn hZ hZd hqL hg ht hF₀`. Use `set S := ball (2 * P.r + P.k + 1) ((P.r + 1) * a) with hS`. Establish `hgν : ∀ ν ∈ S, PI.ZuckTensor.GapAtLeast ε (fun s => lam s + (ν s : ℝ)) (h - 2 * (((P.r + 1) * a : ℕ) : ℝ))` using `fun ν hν => gap_of_box (lam := lam) (μ := fun s => lam s + (ν s : ℝ)) (c := (((P.r + 1) * a : ℕ) : ℝ)) (fun s => by simpa using abs_ball hν s) hg (by linarith)`.
+
+Establish `hcc : ∀ ν ∈ S, B.InCC A 5 (F ν)` using `fun ν hν => w_inCC hK h4 hD (hgν ν hν) (hF ν) 5`. Establish `hVd : ∀ γ', mnr hj γ' ^ a ≠ 0 → p.V (∑ ν ∈ S, F ν) γ' = mnr hj γ' ^ a • p.V f γ'` using `fun γ' h' => by`. Rewrite using `[← hsum]`. Conclude with `V_dmin p he hj a γ' h'`. Establish `hE : ∀ ν ∈ S, TBB.jN2 p (F ν) ≤ momL p f hj a`.
+
+Introduce `ν hν`. Establish `h1` using `normSq_le_sum p.hl.2.2 p.T.base hA S F hcc (fun ν₁ h₁ ν₂ h₂ hne => wsp_orth hK h4 h5 h6 h7 _ hA hD (hgν _ h₁) (hgν _ h₂) (fun e => hne (funext fun s => by`. Use `congrFun e s` as an intermediate fact. Simplify using `only [add_right_inj, Int.cast_inj] at this`. Conclude with `this)) (hF _) (hF _)) hν`.
+
+Rewrite `h1` using `[← GlobalTheory.T.jN2_eq_normSq_base, ← GlobalTheory.T.jN2_eq_normSq_base]`. Use `h1.trans (lintegral_mono fun c => ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Distinguish the cases in `hc : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`. Establish `hne : mnr hj (TBB.bigPt P.r c) ^ a ≠ 0` using `pow_ne_zero _ (mnr_bigPt_ne hj c hc.1)`. Rewrite using `[TBBx2.Tri.Ew_top p _ hc.1, TBBx2.Tri.Ew_top p _ hc.1, hVd _ hne, TBBx2.Tri.hsVec_smul, norm_smul, norm_pow]`.
+
+Use `le_of_eq ?_` and prove the remaining obligations. Rewrite using `[mul_comm 2 a, pow_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[TBBx4.ew_zero_of p _ hc, TBBx4.ew_zero_of p _ hc, mul_zero]`. Establish `hpt` using `ew_sum_le p f S F (fun _ => 1) (mnr hj γ ^ a) γ fun _ _ => by`.
+
+Rewrite using `[← hVd γ h0, HV P Wp Wq p A hA3 _ S F hcc γ]`. Simplify using the standard rewrite rules. Simplify using `only [norm_one, one_mul, Finset.sum_const, nsmul_eq_mul, mul_one] at hpt`. Rewrite `hpt` using `[norm_pow, ← pow_mul, mul_comm a 2]`. Establish `hcard : (S.card : ℝ) ≤ ((2 * (2 * P.r + P.k + 1) + 1 : ℕ) : ℝ) ^ ((P.r + 1) * a)`.
+
+Conclude with `card_ball _ _` after adjusting the coercions. Use `(ENNReal.ofReal_le_ofReal hpt).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_sum_of_nonneg fun ν _ => TBBx4.ew_nonneg p _ _]`. Establish `h2 : ∑ ν ∈ S, ENNReal.ofReal (TBB.Ew p (fun _ => 1) (F ν) (P.r + 1) [] γ) ≤ ENNReal.ofReal (S.card : ℝ) * (K γ * momL p f hj a)`. Use `(Finset.sum_le_card_nsmul _ _ _ fun ν hν => (hB ν hν _ (hF ν)).trans (mul_le_mul' le_rfl (hE ν hν))).trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[nsmul_eq_mul, ENNReal.ofReal_natCast]`. Use `(mul_le_mul' le_rfl h2).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), two_mul ((P.r + 1) * a), pow_add]`. Conclude with `mul_le_mul' (mul_le_mul' (ENNReal.ofReal_le_ofReal (mul_le_mul hcard hcard (Nat.cast_nonneg _) (by positivity))) le_rfl) le_rfl`.
+-/
 theorem weighted : ∃ c₃ : ℝ, ∀ {t : ∀ n : ℕ, (Fin n → Bool) → ℝ}, ZuckT t → ZuckDualT t → PI.KFinSmooth → CoefCC →
     CoefEig → PhZero → BetaInfZero → ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

@@ -7,6 +7,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RgHeA
 
+/- English proof (translation)
+Use `haveI : IsFiniteMeasureOnCompacts μ.inv := ⟨fun K hK => by rw [Measure.inv_apply]; exact hK.inv.measure_lt_top⟩`. Take `⟨c, hc⟩ : ∃ c : NNReal, μ.inv = c • μ` from `⟨_, Measure.isMulLeftInvariant_eq_smul μ.inv μ⟩`. Establish `hsq : μ = (c * c) • μ`. Combine the equalities or inequalities in the displayed calculation. Set `K` to `Classical.arbitrary (TopologicalSpace.PositiveCompacts G)`.
+
+Establish `hpos : μ K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'`. Establish `hfin : μ K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `hK : μ K = ((c * c) • μ) K` using `by rw [← hsq]`. Rewrite `hK` using `[Measure.smul_apply, Measure.nnreal_smul_coe_apply]`. Establish `h1 : ((c * c : NNReal) : ENNReal) = 1` using `((ENNReal.mul_left_inj hpos hfin).1 (by rw [one_mul]; exact hK.symm))`.
+
+Establish `hcc : (c : ℝ) * c = 1` using `by exact_mod_cast ENNReal.coe_eq_one.1 h1`. Establish `hc1 : c = 1`. Establish `: (c : ℝ) = 1` using `by nlinarith [c.coe_nonneg]`. Conclude with `this` after adjusting the coercions. Conclude with `⟨by rw [hc, hc1, one_smul]⟩`.
+-/
 theorem isInvInvariant_of_right_haar {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
@@ -32,6 +39,15 @@ theorem isInvInvariant_of_right_haar {G : Type} [Group G] [TopologicalSpace G]
     exact_mod_cast this
   exact ⟨by rw [hc, hc1, one_smul]⟩
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ _ _ ν _ _ A B _ _ _ _ _ _ σ ρ hσ hρ v hm`. Use `haveI := GlobalTheory.CompanionTheory.RgHeA.isInvInvariant_of_right_haar ν`. Take `⟨_, hadj, _, _⟩` from `PositivityTheory.UnitaryDecomposition.X4.uRep_of hσ`. Take `⟨_, hρadj, _, _⟩` from `PositivityTheory.UnitaryDecomposition.X4.uRep_of hρ`. Rewrite using `[ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric]`.
+
+Introduce `a b`. Apply the tactic sequence `try simp only [ContinuousLinearMap.coe_coe]`. Rewrite using `[← inner_conj_symm, GlobalTheory.CompanionTheory.RgHeA.inner_coefOp, GlobalTheory.CompanionTheory.RgHeA.inner_coefOp, ← integral_conj]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Establish `e1 : star ⟪v, ρ g⁻¹ v⟫_ℂ = ⟪v, ρ g v⟫_ℂ`. Rewrite using `[← hρadj]`. Conclude with `inner_conj_symm _ _`. Establish `e2 : (starRingEnd ℂ) ⟪b, σ g a⟫_ℂ = ⟪a, σ g⁻¹ b⟫_ℂ`. Rewrite using `[inner_conj_symm, hadj]`.
+
+Use `show (starRingEnd ℂ) (star ⟪v, ρ g v⟫_ℂ * ⟪b, σ g a⟫_ℂ) = star ⟪v, ρ g⁻¹ v⟫_ℂ * ⟪a, σ g⁻¹ b⟫_ℂ`. Rewrite using `[map_mul, e1, e2, starRingEnd_apply, star_star]`. Use `_ = ∫ g, star ⟪v, ρ g v⟫_ℂ * ⟪a, σ g b⟫_ℂ ∂ν := integral_inv_eq_self (fun g => star ⟪v, ρ g v⟫_ℂ * ⟪a, σ g b⟫_ℂ) ν`.
+-/
 theorem isSelfAdjoint_coefOp : ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [LocallyCompactSpace Γ]
     [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] (ν : Measure Γ) [ν.IsHaarMeasure] [ν.IsMulRightInvariant] {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A] [NormedAddCommGroup B]
     [InnerProductSpace ℂ B] [CompleteSpace B] (σ : Γ → (A →L[ℂ] A)) (ρ : Γ → (B →L[ℂ] B)) (hσ : IsU σ), IsU ρ → ∀ (v : B) (hm : Integrable (fun g => star ⟪v, ρ g v⟫_ℂ) ν),

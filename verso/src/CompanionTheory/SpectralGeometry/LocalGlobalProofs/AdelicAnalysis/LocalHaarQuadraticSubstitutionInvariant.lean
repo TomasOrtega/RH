@@ -11,6 +11,13 @@ variable {K : Type} [Field K] [Valued K ℤᵐ⁰]
 
 def vball (x : K) (γ : ℤᵐ⁰) : Set K := {y | Valued.v (y - x) < γ}
 
+/- English proof (translation)
+Use extensionality with `z`. Simplify using `only [vball, Set.mem_setOf_eq] at h ⊢`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `: z - x = (z - y) + (y - x)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `Valuation.map_add_lt _ hz h`. Introduce `hz`. Establish `: z - y = (z - x) + (-(y - x))` using `by ring`. Rewrite using `[this]`.
+
+Conclude with `Valuation.map_add_lt _ hz (by rwa [Valuation.map_neg])`.
+-/
 lemma vball_eq_of_mem {x y : K} {γ : ℤᵐ⁰} (h : y ∈ vball x γ) : vball y γ = vball x γ := by
   ext z
   simp only [vball, Set.mem_setOf_eq] at h ⊢
@@ -28,18 +35,34 @@ def IsRadius (K : Type) [Field K] [Valued K ℤᵐ⁰] (γ : ℤᵐ⁰) : Prop :
   ∃ u : (MonoidWithZeroHom.ValueGroup₀ (.ofClass (Valued.v : Valuation K ℤᵐ⁰)))ˣ,
     MonoidWithZeroHom.ValueGroup₀.embedding u.1 = γ
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Conclude with `map_ne_zero _ |>.2 u.ne_zero`.
+-/
 lemma IsRadius.ne_zero {γ : ℤᵐ⁰} (h : IsRadius K γ) : γ ≠ 0 := by
   obtain ⟨u, rfl⟩ := h
   exact map_ne_zero _ |>.2 u.ne_zero
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h`. Use `Valued.isOpen_ball K u.1` as an intermediate fact. Simplify `this` using `only [Valuation.restrict_lt_iff_lt_embedding]`.
+-/
 lemma isOpen_ball_of_isRadius {γ : ℤᵐ⁰} (h : IsRadius K γ) : IsOpen {y : K | Valued.v y < γ} := by
   obtain ⟨u, rfl⟩ := h
   have := Valued.isOpen_ball K u.1
   simpa only [Valuation.restrict_lt_iff_lt_embedding] using this
 
+/- English proof (translation)
+The claim follows from `(isOpen_ball_of_isRadius h).preimage (continuous_sub_right x)`.
+-/
 lemma isOpen_vball (x : K) {γ : ℤᵐ⁰} (h : IsRadius K γ) : IsOpen (vball x γ) :=
   (isOpen_ball_of_isRadius h).preimage (continuous_sub_right x)
 
+/- English proof (translation)
+Use `TopologicalSpace.isTopologicalBasis_of_isOpen_of_nhds ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, γ, rfl, hγ⟩`. Conclude with `isOpen_vball x hγ`. Introduce `a u ha hu`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds.1 (hu.mem_nhds ha)`.
+
+Establish `hr : IsRadius K (MonoidWithZeroHom.ValueGroup₀.embedding γ.1)` using `⟨γ, rfl⟩`. Use `⟨vball a _, ⟨a, _, rfl, hr⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify `zero_lt_iff.2 hr.ne_zero` using `[vball]`. Introduce `y hy`. Apply `hγ` to reduce the goal to its premises.
+
+Simplify `hy` using `only [vball, Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding]`.
+-/
 lemma isTopologicalBasis_vball :
     TopologicalSpace.IsTopologicalBasis {s : Set K | ∃ (x : K) (γ : ℤᵐ⁰), s = vball x γ ∧ IsRadius K γ} := by
   refine TopologicalSpace.isTopologicalBasis_of_isOpen_of_nhds ?_ ?_
@@ -54,6 +77,11 @@ lemma isTopologicalBasis_vball :
       apply hγ
       simpa only [vball, Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding] using hy
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, γ, rfl, hγ⟩ _ ⟨y, δ, rfl, hδ⟩ ⟨z, hzx, hzy⟩`. Break down `le_total γ δ with h | h` into its components or cases. Use `⟨x, γ, ?_, hγ⟩` and prove the remaining obligations. Rewrite using `[← vball_eq_of_mem hzx, ← vball_eq_of_mem hzy]`. Use `Set.inter_eq_left.2 fun w hw => lt_of_lt_of_le hw h` and prove the remaining obligations.
+
+Use `⟨y, δ, ?_, hδ⟩` and prove the remaining obligations. Rewrite using `[← vball_eq_of_mem hzx, ← vball_eq_of_mem hzy]`. Use `Set.inter_eq_right.2 fun w hw => lt_of_lt_of_le hw h` and prove the remaining obligations.
+-/
 lemma isPiSystem_vball :
     IsPiSystem {s : Set K | ∃ (x : K) (γ : ℤᵐ⁰), s = vball x γ ∧ IsRadius K γ} := by
   rintro _ ⟨x, γ, rfl, hγ⟩ _ ⟨y, δ, rfl, hδ⟩ ⟨z, hzx, hzy⟩
@@ -65,6 +93,11 @@ lemma isPiSystem_vball :
     rw [← vball_eq_of_mem hzx, ← vball_eq_of_mem hzy]
     refine Set.inter_eq_right.2 fun w hw => lt_of_lt_of_le hw h
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | h0` into its components or cases. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma le_exp_neg_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne x 0 with rfl | h0
   · exact zero_le'
@@ -73,9 +106,15 @@ lemma le_exp_neg_one {x : ℤᵐ⁰} (h : x < 1) : x ≤ WithZero.exp (-1 : ℤ)
     rw [WithZero.exp_le_exp]
     omega
 
+/- English proof (translation)
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma quad_sub (a c t t' : K) :
     (a * t + c * t ^ 2) - (a * t' + c * t' ^ 2) = (t - t') * (a + c * (t + t')) := by ring
 
+/- English proof (translation)
+Establish `: Valued.v (c * s) < Valued.v a`. Rewrite using `[ha, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hc) hs`. Rewrite using `[Valuation.map_add_eq_of_lt_left _ this, ha]`.
+-/
 lemma v_lin_eq_one {a c s : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     (hs : Valued.v s < 1) : Valued.v (a + c * s) = 1 := by
   have : Valued.v (c * s) < Valued.v a := by
@@ -83,17 +122,36 @@ lemma v_lin_eq_one {a c s : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     exact lt_of_le_of_lt (mul_le_of_le_one_left' hc) hs
   rw [Valuation.map_add_eq_of_lt_left _ this, ha]
 
+/- English proof (translation)
+Rewrite using `[quad_sub, map_mul, v_lin_eq_one ha hc (Valuation.map_add_lt _ ht ht'), mul_one]`.
+-/
 lemma v_quad_sub {a c t t' : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     (ht : Valued.v t < 1) (ht' : Valued.v t' < 1) :
     Valued.v ((a * t + c * t ^ 2) - (a * t' + c * t' ^ 2)) = Valued.v (t - t') := by
   rw [quad_sub, map_mul, v_lin_eq_one ha hc (Valuation.map_add_lt _ ht ht'), mul_one]
 
+/- English proof (translation)
+Use `v_quad_sub ha hc ht (t' := 0) (by simp)` as an intermediate fact. Simplify using `only [mul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero, sub_zero] at this`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 lemma v_quad_lt {a c t : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     (ht : Valued.v t < 1) : Valued.v (a * t + c * t ^ 2) < 1 := by
   have := v_quad_sub ha hc ht (t' := 0) (by simp)
   simp only [mul_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, add_zero, sub_zero] at this
   rwa [this]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Simplify using `using le_exp_neg_one hx`. Consider the case `succ n ih`.
+
+Take `⟨t, ht, he⟩` from `ih`. Establish `ha0 : a ≠ 0`. Introduce `h`. Rewrite `ha` using `[h, map_zero]`. Conclude with `zero_ne_one ha`.
+
+Use `set e := (a * t + c * t ^ 2) - x with he_def`. Establish `hlt : Valued.v e < 1` using `Valuation.map_sub_lt _ (v_quad_lt ha hc ht) hx`. Establish `hae : Valued.v (a⁻¹ * e) = Valued.v e`. Rewrite using `[map_mul, map_inv₀, ha]`. Simplify using the standard rewrite rules.
+
+Establish `ht' : Valued.v (t - a⁻¹ * e) < 1` using `Valuation.map_sub_lt _ ht (by rwa [hae])`. Use `⟨t - a⁻¹ * e, ht', ?_⟩` and prove the remaining obligations. Establish `key : (a * (t - a⁻¹ * e) + c * (t - a⁻¹ * e) ^ 2) - x = -(a⁻¹ * e * c * (t + (t - a⁻¹ * e)))`. Establish `h1 : a * (a⁻¹ * e) = e` using `by field_simp`. Establish `h2 : x = (a * t + c * t ^ 2) - e` using `by rw [he_def]; ring`.
+
+Rewrite using `[h2]`. Take the linear combination `(-1 : K) * h1`. Rewrite using `[key, Valuation.map_neg, map_mul, map_mul, hae]`. Establish `hs : Valued.v (t + (t - a⁻¹ * e)) ≤ WithZero.exp (-1 : ℤ)` using `le_exp_neg_one (Valuation.map_add_lt _ ht ht')`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_one, ← WithZero.exp_add]`. Use `congr 1`.
+-/
 lemma exists_approx {a c x : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     (hx : Valued.v x < 1) (n : ℕ) :
     ∃ t : K, Valued.v t < 1 ∧
@@ -129,6 +187,11 @@ lemma exists_approx {a c x : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
         rw [mul_one, ← WithZero.exp_add]
         congr 1
 
+/- English proof (translation)
+Take `⟨t, ht, h⟩` from `exists_approx ha hc hx (WithZero.log γ).natAbs.succ`. Use `⟨t, ht, lt_of_le_of_lt h ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← WithZero.exp_log hγ]`. Rewrite using `[WithZero.exp_lt_exp]`. Use `neg_abs_le (WithZero.log γ)` as an intermediate fact.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma exists_near {a c x : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
     (hx : Valued.v x < 1) {γ : ℤᵐ⁰} (hγ : γ ≠ 0) :
     ∃ t : K, Valued.v t < 1 ∧ Valued.v ((a * t + c * t ^ 2) - x) < γ := by
@@ -142,6 +205,23 @@ lemma exists_near {a c x : K} (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1)
 
 variable [MeasurableSpace K] [BorelSpace K]
 
+/- English proof (translation)
+Distinguish the cases in `hne : (vball x γ ∩ {s : K | Valued.v s < 1}).Nonempty`. Take `⟨y, hyB, hyM⟩` from `hne`. Rewrite using `[← vball_eq_of_mem hyB]`. Break down `le_or_gt 1 γ with h1 | h1` into its components or cases. Establish `hsub : ∀ s : K, Valued.v s < 1 → s ∈ vball y γ` using `fun s hs => lt_of_lt_of_le (Valuation.map_sub_lt _ hs hyM) h1`.
+
+Use `congr 1`. Use extensionality with `t`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq]`. Conclude with `⟨fun h => ⟨hsub _ h.2, h.2⟩, fun h => ⟨hsub _ (v_quad_lt ha hc h.2), h.2⟩⟩`. Take `⟨t₀, ht₀, hnear⟩` from `exists_near ha hc hyM hγ`.
+
+Establish `hB : vball y γ = vball (a * t₀ + c * t₀ ^ 2) γ` using `(vball_eq_of_mem hnear).symm`. Establish `hsubM : ∀ (z : K), Valued.v z < 1 → vball z γ ⊆ {s : K | Valued.v s < 1}`. Introduce `z hz s hs`. Establish `: s = (s - z) + z` using `by ring`. Rewrite using `[Set.mem_setOf_eq, this]`.
+
+Conclude with `Valuation.map_add_lt _ (lt_trans hs h1) hz`. Establish `e1 : (fun t => a * t + c * t ^ 2) ⁻¹' vball y γ ∩ {s | Valued.v s < 1} = vball t₀ γ`. Rewrite using `[hB]`. Use extensionality with `t`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hM⟩`. Simplify `h` using `only [vball, Set.mem_setOf_eq, v_quad_sub ha hc hM ht₀]`. Introduce `h`. Establish `hM` using `hsubM t₀ ht₀ h`.
+
+Use `⟨?_, hM⟩` and prove the remaining obligations. Simplify `h` using `only [vball, Set.mem_setOf_eq, v_quad_sub ha hc hM ht₀]`. Establish `e2 : vball y γ ∩ {s | Valued.v s < 1} = vball y γ` using `Set.inter_eq_left.2 (hsubM y hyM)`. Rewrite using `[e1, e2]`. Establish `e3 : vball t₀ γ = (fun h => (y - t₀) + h) ⁻¹' vball y γ`.
+
+Use extensionality with `h`. Simplify using `only [vball, Set.mem_preimage, Set.mem_setOf_eq]`. Establish `: y - t₀ + h - y = h - t₀` using `by ring`. Rewrite using `[this]`. Rewrite using `[e3, measure_preimage_add]`.
+
+Establish `hem : (fun t => a * t + c * t ^ 2) ⁻¹' vball x γ ∩ {s | Valued.v s < 1} = ∅`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `t ⟨h, hM⟩`. Conclude with `hne ⟨_, h, v_quad_lt ha hc hM⟩`. Rewrite using `[hem, Set.not_nonempty_iff_eq_empty.1 hne]`.
+-/
 lemma measure_ball (lam : Measure K) [lam.IsAddLeftInvariant] {a c : K}
     (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1) (x : K) {γ : ℤᵐ⁰} (hγ : γ ≠ 0) :
     lam ((fun t => a * t + c * t ^ 2) ⁻¹' vball x γ ∩ {s | Valued.v s < 1}) =
@@ -189,6 +269,17 @@ lemma measure_ball (lam : Measure K) [lam.IsAddLeftInvariant] {a c : K}
       exact hne ⟨_, h, v_quad_lt ha hc hM⟩
     rw [hem, Set.not_nonempty_iff_eq_empty.1 hne]
 
+/- English proof (translation)
+Establish `hMo : IsOpen {s : K | Valued.v s < 1}` using `isOpen_ball_of_isRadius ⟨1, by simp⟩`. Establish `hM : MeasurableSet {s : K | Valued.v s < 1}` using `hMo.measurableSet`. Establish `hf : Measurable (fun t : K => a * t + c * t ^ 2)`. Apply `Continuous.measurable` to reduce the goal to its premises. Use `fun_prop`.
+
+Use `haveI : IsFiniteMeasure (lam.restrict {s | Valued.v s < 1}) := ⟨by simpa using hfin.lt_top⟩`. Use `haveI : IsFiniteMeasure ((lam.restrict {s | Valued.v s < 1}).map fun t : K => a * t + c * t ^ 2) := Measure.isFiniteMeasure_map _ _`. Establish `hmeas : (lam.restrict {s | Valued.v s < 1}).map (fun t : K => a * t + c * t ^ 2) = lam.restrict {s | Valued.v s < 1}`. Use `ext_of_generate_finite _ (BorelSpace.measurable_eq.trans isTopologicalBasis_vball.borel_eq_generateFrom) isPiSystem_vball ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, γ, rfl, hγ⟩`.
+
+Establish `hB` using `(isOpen_vball x hγ).measurableSet`. Rewrite using `[Measure.map_apply hf hB, Measure.restrict_apply (hf hB), Measure.restrict_apply hB]`. Conclude with `measure_ball lam ha hc x hγ.ne_zero`. Rewrite using `[Measure.map_apply hf MeasurableSet.univ]`. Simplify using the standard rewrite rules.
+
+Establish `key : ((lam.restrict {s | Valued.v s < 1}).map fun t : K => a * t + c * t ^ 2) A = lam.restrict {s | Valued.v s < 1} A` using `by rw [hmeas]`. Rewrite `key` using `[Measure.map_apply hf hA, Measure.restrict_apply (hf hA), Measure.restrict_apply hA]`. Rewrite using `[← key]`. Use `congr 1`. Use extensionality with `t`.
+
+Simplify using `[and_comm]`.
+-/
 theorem measure_quad [SecondCountableTopology K] [IsTopologicalRing K] (lam : Measure K) [lam.IsAddLeftInvariant]
     (hfin : lam {s | Valued.v s < 1} ≠ ⊤) {a c : K}
     (ha : Valued.v a = 1) (hc : Valued.v c ≤ 1) {A : Set K} (hA : MeasurableSet A) :
@@ -223,6 +314,13 @@ theorem measure_quad [SecondCountableTopology K] [IsTopologicalRing K] (lam : Me
 
 end GlobalTheory.CompanionTheory.SW.QuadIso
 
+/- English proof (translation)
+Introduce `F _ _ v lam hlam _ a c ha hc A hA`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨hH, h1⟩` from `hlam`. Use `haveI := hH`. Take `⟨_, _, hsc, _⟩` from `GlobalTheory.T.completion_is_local_ring F v`.
+
+Use `haveI := hsc`. Establish `hfin : lam {s : Fv F v | Valued.v s < 1} ≠ ⊤`. Use `ne_top_of_le_ne_top (b := 1) ENNReal.one_ne_top ?_` and prove the remaining obligations. Rewrite using `[← h1]`. Use `measure_mono fun s hs => ?_` and prove the remaining obligations.
+
+Conclude with `(Valuation.mem_integer_iff _ _).2 (le_of_lt hs)`. Conclude with `GlobalTheory.CompanionTheory.SW.QuadIso.measure_quad lam hfin ha hc hA`.
+-/
 theorem GlobalTheory.CompanionTheory.SW.QuadIso.measure_quad_Fv : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (lam : Measure (Fv F v)), IsStdV v lam → Valued.v (2 : Fv F v) = 1 → ∀ a c : Fv F v, Valued.v a = 1 → c ∈ v.adicCompletionIntegers F → ∀ A : Set (Fv F v), MeasurableSet A → lam {t | Valued.v t < 1 ∧ a * t + c * t ^ 2 ∈ A} = lam (A ∩ {s | Valued.v s < 1}) := by
   intro F _ _ v lam hlam _ a c ha hc A hA
   haveI : BorelSpace (Fv F v) := ⟨rfl⟩

@@ -13,6 +13,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Fc
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `haveI : SecondCountableTopology (Mat n) := inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Use `haveI : SecondCountableTopology (Mat n)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Conclude with `(Units.isEmbedding_embedProduct (M := Mat n)).secondCountableTopology`.
+-/
 theorem secondCountable_G (n : ℕ) : SecondCountableTopology (G n) := by
   haveI : SecondCountableTopology (Mat n) :=
     inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))
@@ -20,14 +23,23 @@ theorem secondCountable_G (n : ℕ) : SecondCountableTopology (G n) := by
     MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology
   exact (Units.isEmbedding_embedProduct (M := Mat n)).secondCountableTopology
 
+/- English proof (translation)
+Establish `: IsUnit y.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 y.isUnit`. Conclude with `this.ne_zero`.
+-/
 theorem val_mem_GLs {n : ℕ} (y : G n) : y.val ∈ GLs n := by
   have : IsUnit y.val.det := (Matrix.isUnit_iff_isUnit_det _).1 y.isUnit
   exact this.ne_zero
 
+/- English proof (translation)
+Establish `h1 : ContinuousOn (lg (n` using `n)) (GLs n) := ((hL n).2.2.2.1).continuousOn`. Conclude with `h1.comp_continuous Units.continuous_val val_mem_GLs`.
+-/
 theorem continuous_lg (hL : LgFacts) {n : ℕ} : Continuous (fun y : G n => lg y.val) := by
   have h1 : ContinuousOn (lg (n := n)) (GLs n) := ((hL n).2.2.2.1).continuousOn
   exact h1.comp_continuous Units.continuous_val val_mem_GLs
 
+/- English proof (translation)
+Use `haveI : WeaklyLocallyCompactSpace (G n) := ⟨fun x => ⟨{y : G n | lg y.val ≤ lg x.val + 1}, (hL n).2.2.2.2.1 _, by`. Establish `: {y : G n | lg y.val < lg x.val + 1} ∈ 𝓝 x` using `(isOpen_lt (continuous_lg hL) continuous_const).mem_nhds (by simp)`. Conclude with `Filter.mem_of_superset this (fun y (hy : lg y.val < _) => show lg y.val ≤ _ from le_of_lt hy)⟩⟩`. Use `infer_instance`.
+-/
 theorem locallyCompact_G (hL : LgFacts) (n : ℕ) : LocallyCompactSpace (G n) := by
   haveI : WeaklyLocallyCompactSpace (G n) := ⟨fun x => ⟨{y : G n | lg y.val ≤ lg x.val + 1},
     (hL n).2.2.2.2.1 _, by
@@ -36,6 +48,9 @@ theorem locallyCompact_G (hL : LgFacts) (n : ℕ) : LocallyCompactSpace (G n) :=
       exact Filter.mem_of_superset this (fun y (hy : lg y.val < _) => show lg y.val ≤ _ from le_of_lt hy)⟩⟩
   infer_instance
 
+/- English proof (translation)
+Use `⟨⟨fun k : ℕ => {y : G n | lg y.val ≤ k}, fun k => (hL n).2.2.2.2.1 _, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Take `⟨k, hk⟩` from `exists_nat_ge (lg y.val)`. Conclude with `⟨k, hk⟩`.
+-/
 theorem sigmaCompact_G (hL : LgFacts) (n : ℕ) : SigmaCompactSpace (G n) := by
   refine ⟨⟨fun k : ℕ => {y : G n | lg y.val ≤ k}, fun k => (hL n).2.2.2.2.1 _, ?_⟩⟩
   ext y
@@ -43,6 +58,11 @@ theorem sigmaCompact_G (hL : LgFacts) (n : ℕ) : SigmaCompactSpace (G n) := by
   obtain ⟨k, hk⟩ := exists_nat_ge (lg y.val)
   exact ⟨k, hk⟩
 
+/- English proof (translation)
+Establish `e1 : cls μ f = hf.toLp _`. Unfold `cls`. Conclude with `dif_pos hf`. Establish `e2 : cls μ f' = hf'.toLp _`. Unfold `cls`.
+
+Conclude with `dif_pos hf'`. Rewrite using `[e1, e2, L2.inner_def]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hf.coeFn_toLp, hf'.coeFn_toLp] with y h1 h2`. Rewrite using `[h1, h2]`.
+-/
 theorem cls_inner {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] {f f' : Mat n → V} (hf : MemLp (fun y : G n => f y.val) 2 μ)
     (hf' : MemLp (fun y : G n => f' y.val) 2 μ) :
@@ -56,6 +76,11 @@ theorem cls_inner {n : ℕ} [MeasurableSpace (G n)] (μ : Measure (G n)) {V : Ty
   filter_upwards [hf.coeFn_toLp, hf'.coeFn_toLp] with y h1 h2
   rw [h1, h2]
 
+/- English proof (translation)
+Use `⟨Complex.continuous_ofReal.comp hg.1.continuous, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro (isCompact_Icc (a := -|T₀|) (b := |T₀|)) (fun t ht => ?_)` and prove the remaining obligations. Establish `h1 : |T₀| < |t|`. Assume the negation of the conclusion as `h`. Conclude with `ht (abs_le.1 (not_lt.1 h))`.
+
+Establish `h2 : g t = 0` using `hg.2.2 t (lt_of_le_of_lt (le_abs_self _) h1)`. Simplify using `[h2]`.
+-/
 theorem bump_complex {g : ℝ → ℝ} {T₀ : ℝ} (hg : IsBump g T₀) :
     Continuous (fun t => (g t : ℂ)) ∧ HasCompactSupport (fun t => (g t : ℂ)) := by
   refine ⟨Complex.continuous_ofReal.comp hg.1.continuous, ?_⟩
@@ -66,6 +91,15 @@ theorem bump_complex {g : ℝ → ℝ} {T₀ : ℝ} (hg : IsBump g T₀) :
   have h2 : g t = 0 := hg.2.2 t (lt_of_le_of_lt (le_abs_self _) h1)
   simp [h2]
 
+/- English proof (translation)
+Establish `hcurve : Continuous (fun t => toC0 (wv c N 0 t))` using `continuous_iff_continuousAt.2 fun t => (hFc c N 0 (by omega) t).2.continuousAt`. Establish `hi : Integrable (fun t => (g t : ℂ) • toC0 (wv c N 0 t))` using `((bump_complex hg).1.smul hcurve).integrable_of_hasCompactSupport ((bump_complex hg).2.smul_right)`. Set `L : C₀(ℝ, ℂ) →L[ℂ] H` to `(ContinuousLinearMap.apply ℂ H b).comp Φ`. Establish `hL : ∀ t, L ((g t : ℂ) • toC0 (wv c N 0 t)) = (g t : ℂ) • Φ (toC0 (wv c N 0 t)) b`. Introduce `t`.
+
+Simplify using `[L]`. Establish `hi' : Integrable (fun t => (g t : ℂ) • Φ (toC0 (wv c N 0 t)) b)`. Simplify `L.integrable_comp hi` using `only [hL]`. Establish `e : Φ (∫ t, (g t : ℂ) • toC0 (wv c N 0 t)) b = ∫ t, (g t : ℂ) • Φ (toC0 (wv c N 0 t)) b`. Use `L.integral_comp_comm hi` as an intermediate fact.
+
+Simplify using `only [hL] at this`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `v`. Rewrite using `[e, ← integral_inner hi' v]`.
+
+Simplify using `only [inner_smul_right]`.
+-/
 theorem phi_integral {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (Φ : C₀(ℝ, ℂ) →L[ℂ] (H →L[ℂ] H)) (b : H) (hFc : Fcurve) {g : ℝ → ℝ} {T₀ : ℝ} (hg : IsBump g T₀)
     (c : ℝ) {N : ℕ} (hN : 1 ≤ N) :
@@ -92,6 +126,17 @@ theorem phi_integral {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   rw [e, ← integral_inner hi' v]
   simp only [inner_smul_right]
 
+/- English proof (translation)
+Use `haveI := secondCountable_G n`. Use `haveI := sigmaCompact_G hLg n`. Use `haveI : SigmaFinite μ := Measure.IsHaarMeasure.sigmaFinite μ`. Establish `h1 : ∀ y, ⟪Ψ y, ∫ t, γ t • W t y⟫_ℂ = ∫ t, γ t * ⟪Ψ y, W t y⟫_ℂ`. Introduce `y`.
+
+Establish `hc : Continuous (fun t => W t y)` using `hW.comp (by fun_prop : Continuous fun t : ℝ => (t, y))`. Establish `hi : Integrable (fun t => γ t • W t y)` using `(hγ.smul hc).integrable_of_hasCompactSupport hγc.smul_right`. Rewrite using `[← integral_inner hi]`. Simplify using `only [inner_smul_right]`. Simplify using `only [h1]`.
+
+Establish `hcont : Continuous (Function.uncurry fun (y : G n) (t : ℝ) => γ t * ⟪Ψ y, W t y⟫_ℂ)`. Establish `h2 : Continuous (fun p : G n × ℝ => W p.2 p.1)` using `hW.comp (by fun_prop : Continuous fun p : G n × ℝ => (p.2, p.1))`. Establish `h3 : Continuous (fun p : G n × ℝ => Ψ p.1)` using `hΨ.comp continuous_fst`. Conclude with `(hγ.comp continuous_snd).mul (h3.inner h2)`. Establish `hint : Integrable (Function.uncurry fun (y : G n) (t : ℝ) => γ t * ⟪Ψ y, W t y⟫_ℂ) (μ.prod volume)`.
+
+Use `hcont.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (hΨc.isCompact.prod hγc.isCompact) (fun p hp => ?_)` and prove the remaining obligations. Break down `p with ⟨y, t⟩` into its components or cases. Distinguish the cases in `hy : y ∈ tsupport Ψ`. Establish `ht : t ∉ tsupport γ` using `fun ht => hp ⟨hy, ht⟩`.
+
+Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport ht]`. Simplify using `[Function.uncurry, image_eq_zero_of_notMem_tsupport hy]`. Rewrite using `[integral_integral_swap hint]`. Simplify using `only [integral_const_mul]`.
+-/
 theorem test_fubini {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure]
     (hLg : LgFacts) {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V]
     {W : ℝ → G n → V} (hW : Continuous (Function.uncurry W)) {Ψ : G n → V} (hΨ : Continuous Ψ)
@@ -124,6 +169,43 @@ theorem test_fubini {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : M
   rw [integral_integral_swap hint]
   simp only [integral_const_mul]
 
+/- English proof (translation)
+Introduce `n _ _ μ _ E _ Ω T F c hS g T₀ hg N b U hN hW hU f' hf' hcls x hx`. Take `⟨hLg, -, -, -, -, -, -, hCS, -, hPW, -⟩` from `hS`. Establish `hFc : Fcurve` using `hCS.2.2.1`. Use `haveI := secondCountable_G n`. Use `haveI := locallyCompact_G hLg n`.
+
+Take `⟨hγ, hγc⟩` from `bump_complex hg`. Use `set γ : ℝ → ℂ := fun t => (g t : ℂ) with hγdef`. Establish `hUc : Continuous (Function.uncurry fun (t : ℝ) (y : G n) => U t y.val)`. Establish `h1 : ContinuousOn (Function.uncurry U) (Set.univ ×ˢ GLs n)` using `hW.1.continuousOn`. Conclude with `h1.comp_continuous (f := fun p : ℝ × G n => (p.1, p.2.val)) (continuous_fst.prodMk (Units.continuous_val.comp continuous_snd)) (fun p => ⟨trivial, val_mem_GLs _⟩)`.
+
+Establish `hfc : Continuous (fun y : G n => f' y.val)` using `hf'.1.continuousOn.comp_continuous Units.continuous_val val_mem_GLs`. Establish `hF₁ : Continuous (fun y : G n => ∫ t, γ t • U t y.val)`. Establish `hc : Continuous (Function.uncurry fun (y : G n) (t : ℝ) => γ t • U t y.val)`. Establish `h2 : Continuous (fun p : G n × ℝ => U p.2 p.1.val)` using `hUc.comp (by fun_prop : Continuous fun p : G n × ℝ => (p.2, p.1))`. Conclude with `(hγ.comp continuous_snd).smul h2`.
+
+Establish `h3` using `continuous_parametric_integral_of_continuous (μ := (volume : Measure ℝ)) hc hγc.isCompact`. Use `h3.congr (fun y => ?_)` and prove the remaining obligations. Use `setIntegral_eq_integral_of_forall_compl_eq_zero (fun t ht => ?_)` and prove the remaining obligations. Simplify using `[image_eq_zero_of_notMem_tsupport ht]`. Establish `hMemU : ∀ t, MemLp (fun y : G n => U t y.val) 2 μ` using `fun t => (hU t).1.2 []`.
+
+Establish `hMemf : MemLp (fun y : G n => f' y.val) 2 μ` using `hf'.2 []`. Establish `hcalc` using `phi_integral F.Φ b hFc hg c hN`. Establish `hpw` using `(hPW c g T₀ hg).2 N hN`. Establish `test : ∀ ψ : Mat n → E.V, Continuous (fun y : G n => ψ y.val) → HasCompactSupport (fun y : G n => ψ y.val) → ∫ y : G n, ⟪ψ y.val, ∫ t, γ t • U t y.val⟫_ℂ ∂μ = ∫ y : G n, ⟪ψ y.val, f' y.val⟫_ℂ ∂μ`. Introduce `ψ hψ hψc`.
+
+Establish `hMemψ : MemLp (fun y : G n => ψ y.val) 2 μ` using `hψ.memLp_of_hasCompactSupport hψc`. Rewrite using `[test_fubini μ hLg hUc hψ hψc hγ hγc, ← cls_inner μ hMemψ hMemf, hcls, ← hpw, hcalc (cls μ ψ)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [← (hU t).2, cls_inner μ hMemψ (hMemU t), hγdef]`. Establish `hxu : IsUnit x` using `(Matrix.isUnit_iff_isUnit_det x).2 (isUnit_iff_ne_zero.2 hx)`.
+
+Take `⟨xg, rfl⟩` from `hxu`. Use `set Dm : Mat n → E.V := fun y => (∫ t, γ t • U t y) - f' y with hDm`. Establish `hD : Continuous (fun y : G n => Dm y.val)` using `hF₁.sub hfc`. Use `set bc : G n → ℝ := fun y => max 0 (lg (1 : Mat n) + 1 - lg (xg⁻¹ * y).val) with hbc`. Establish `hbcc : Continuous bc`.
+
+Establish `h1 : Continuous (fun y : G n => lg (xg⁻¹ * y).val)` using `(continuous_lg hLg).comp (continuous_const.mul continuous_id)`. Conclude with `continuous_const.max (continuous_const.sub h1)`. Establish `hK : IsCompact ((fun y : G n => xg * y) '' {y : G n | lg y.val ≤ lg (1 : Mat n) + 1})` using `((hLg n).2.2.2.2.1 _).image (continuous_const.mul continuous_id)`. Establish `hbz : ∀ y, y ∉ ((fun y : G n => xg * y) '' {y : G n | lg y.val ≤ lg (1 : Mat n) + 1}) → bc y = 0`. Introduce `y hy`.
+
+Establish `h1 : ¬ lg (xg⁻¹ * y).val ≤ lg (1 : Mat n) + 1` using `fun h => hy ⟨xg⁻¹ * y, h, by simp⟩`. Simplify using `only [hbc]`. Conclude with `max_eq_left (by linarith [not_le.1 h1])`. Use `set ψ : Mat n → E.V := fun y => ((max 0 (lg (1 : Mat n) + 1 - lg ((xg⁻¹ : G n).val * y)) : ℝ) : ℂ) • Dm y with hψdef`. Establish `hψv : ∀ y : G n, ψ y.val = ((bc y : ℝ) : ℂ) • Dm y.val`.
+
+Introduce `y`. Simplify using `only [hψdef, hbc, Units.val_mul]`. Establish `hψ : Continuous (fun y : G n => ψ y.val)`. Simplify using `only [hψv]`. Conclude with `(Complex.continuous_ofReal.comp hbcc).smul hD`.
+
+Establish `hψc : HasCompactSupport (fun y : G n => ψ y.val)`. Use `HasCompactSupport.intro hK (fun y hy => ?_)` and prove the remaining obligations. Simplify using `[hψv, hbz y hy]`. Establish `hcomp : ∀ {f₁ : G n → E.V}, Continuous f₁ → Integrable (fun y : G n => ⟪ψ y.val, f₁ y⟫_ℂ) μ`. Introduce `f₁ h₁`.
+
+Use `(hψ.inner h₁).integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hK (fun y hy => ?_)` and prove the remaining obligations. Simplify using `[hψv, hbz y hy]`. Establish `hzero : ∫ y : G n, ⟪ψ y.val, Dm y.val⟫_ℂ ∂μ = 0`. Establish `h1 : ∀ y : G n, ⟪ψ y.val, Dm y.val⟫_ℂ = ⟪ψ y.val, ∫ t, γ t • U t y.val⟫_ℂ - ⟪ψ y.val, f' y.val⟫_ℂ` using `fun y => inner_sub_right _ _ _`.
+
+Simplify using `only [h1]`. Rewrite using `[integral_sub (hcomp hF₁) (hcomp hfc), test ψ hψ hψc, sub_self]`. Use `set hh : G n → ℝ := fun y => bc y * ‖Dm y.val‖ ^ 2 with hhdef`. Establish `hhc : Continuous hh` using `hbcc.mul (hD.norm.pow 2)`. Establish `hinn : ∀ y : G n, ⟪ψ y.val, Dm y.val⟫_ℂ = ((hh y : ℝ) : ℂ)`.
+
+Introduce `y`. Rewrite using `[hψv, inner_smul_left, inner_self_eq_norm_sq_to_K]`. Simplify using `[hhdef]`. Establish `hhz : ∫ y, hh y ∂μ = 0`. Simplify using `only [hinn] at hzero`.
+
+Rewrite `hzero` using `[integral_complex_ofReal]`. Conclude with `hzero` after adjusting the coercions. Establish `hhi : Integrable hh μ`. Use `hhc.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro hK (fun y hy => ?_)` and prove the remaining obligations.
+
+Simplify using `[hhdef, hbz y hy]`. Establish `hh0 : 0 ≤ hh` using `fun y => mul_nonneg (le_max_left _ _) (by positivity)`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg hh0 hhi).1 hhz`. Establish `hfun : hh = 0` using `(Continuous.ae_eq_iff_eq μ hhc continuous_zero).1 hae`. Establish `hat : hh xg = 0` using `congrFun hfun xg`.
+
+Establish `hb1 : bc xg = 1`. Simplify using `[hbc]`. Establish `hnorm : ‖Dm xg.val‖ = 0`. Establish `: ‖Dm xg.val‖ ^ 2 = 0` using `by simpa [hhdef, hb1] using hat`. Conclude with `pow_eq_zero_iff (two_ne_zero) |>.1 this`.
+
+Conclude with `sub_eq_zero.1 (norm_eq_zero.1 hnorm)`.
+-/
 theorem waveInt : WaveInt := by
   intro n _ _ μ _ E _ Ω T F c hS g T₀ hg N b U hN hW hU f' hf' hcls x hx
   obtain ⟨hLg, -, -, -, -, -, -, hCS, -, hPW, -⟩ := hS

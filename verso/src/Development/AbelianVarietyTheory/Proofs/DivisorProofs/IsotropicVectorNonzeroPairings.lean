@@ -16,6 +16,11 @@ variable {E : Type} [Field E] {n : ℕ}
 def hp (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a b : Matrix (Fin n) (Fin 1) E) : E :=
   (Formalism.UG.cT σ a * J * b) 0 0
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `[hp, h]`. Introduce `h`. Use extensionality with `i j`.
+
+Take `rfl : i = 0` from `Subsingleton.elim _ _`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify `h` using `[hp]`.
+-/
 theorem hp_iff (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a b : Matrix (Fin n) (Fin 1) E) :
     Formalism.UG.cT σ a * J * b = 0 ↔ hp σ J a b = 0 := by
   constructor
@@ -25,34 +30,58 @@ theorem hp_iff (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a b : Matrix (Fi
     obtain rfl : j = 0 := Subsingleton.elim _ _
     simpa [hp] using h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+-/
 theorem cT_add' (σ : E →+* E) (a a' : Matrix (Fin n) (Fin 1) E) :
     Formalism.UG.cT σ (a + a') = Formalism.UG.cT σ a + Formalism.UG.cT σ a' := by
   ext i j; simp [Formalism.UG.cT]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+-/
 theorem cT_smul' (σ : E →+* E) (c : E) (a : Matrix (Fin n) (Fin 1) E) :
     Formalism.UG.cT σ (c • a) = σ c • Formalism.UG.cT σ a := by
   ext i j; simp [Formalism.UG.cT]
 
+/- English proof (translation)
+Simplify using `[hp, cT_add', Matrix.add_mul]`.
+-/
 theorem hp_add_left (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a a' b : Matrix (Fin n) (Fin 1) E) :
     hp σ J (a + a') b = hp σ J a b + hp σ J a' b := by
   simp [hp, cT_add', Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `[hp, Matrix.mul_add]`.
+-/
 theorem hp_add_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a b b' : Matrix (Fin n) (Fin 1) E) :
     hp σ J a (b + b') = hp σ J a b + hp σ J a b' := by
   simp [hp, Matrix.mul_add]
 
+/- English proof (translation)
+Simplify using `[hp, cT_smul', Matrix.smul_mul]`.
+-/
 theorem hp_smul_left (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Matrix (Fin n) (Fin 1) E) :
     hp σ J (c • a) b = σ c * hp σ J a b := by
   simp [hp, cT_smul', Matrix.smul_mul]
 
+/- English proof (translation)
+Simplify using `[hp, Matrix.mul_smul]`.
+-/
 theorem hp_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (c : E) (a b : Matrix (Fin n) (Fin 1) E) :
     hp σ J a (c • b) = c * hp σ J a b := by
   simp [hp, Matrix.mul_smul]
 
+/- English proof (translation)
+Simplify using `[hp, Formalism.UG.cT, Matrix.mul_apply, Finset.sum_mul]`.
+-/
 theorem hp_eq (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (a b : Matrix (Fin n) (Fin 1) E) :
     hp σ J a b = ∑ j, ∑ i, σ (a i 0) * J i j * b j 0 := by
   simp [hp, Formalism.UG.cT, Matrix.mul_apply, Finset.sum_mul]
 
+/- English proof (translation)
+Rewrite using `[hp_eq, hp_eq]`. Simplify using `only [map_sum, map_mul, hσ, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hp_symm (σ : E →+* E) (hσ : ∀ c, σ (σ c) = c) (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (a b : Matrix (Fin n) (Fin 1) E) :
     σ (hp σ J a b) = hp σ J b a := by
@@ -62,6 +91,15 @@ theorem hp_symm (σ : E →+* E) (hσ : ∀ c, σ (σ c) = c) (J : Matrix (Fin n
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hR : Formalism.UG.cT σ x * J = 0`. Use extensionality with `i j`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+
+Use `hall (Matrix.of fun k _ => if k = j then 1 else 0)` as an intermediate fact. Simplify `this` using `[hp, Matrix.mul_apply]`. Establish `hc : Formalism.UG.cT σ x = 0`. Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `congrArg (· * J⁻¹) hR` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu]`. Apply `hx` to reduce the goal to its premises. Use extensionality with `i j`. Take `rfl : j = 0` from `Subsingleton.elim _ _`. Use `congrFun (congrFun hc 0) i` as an intermediate fact.
+
+Simplify `this` using `[Formalism.UG.cT]`.
+-/
 theorem exists_hp_ne (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (hdet : J.det ≠ 0)
     (x : Matrix (Fin n) (Fin 1) E) (hx : x ≠ 0) : ∃ y, hp σ J x y ≠ 0 := by
   by_contra hall
@@ -84,6 +122,23 @@ theorem exists_hp_ne (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (hdet : J.d
 end GlobalTheory.WittHyperbolicPairing
 
 open GlobalTheory.WittHyperbolicPairing in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hcm n J hJ x₀ x hx₀ hx h00 h0x`. Establish `hσ : ∀ c, (σ : E →+* E) ((σ : E →+* E) c) = c`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Introduce `c`. Apply `τ.injective` to reduce the goal to its premises.
+
+Establish `h1` using `hcm.2.2.2 τ (σ c)`. Establish `h2` using `hcm.2.2.2 τ c`. Simplify using `only [AlgHom.coe_toRingHom] at *`. Rewrite using `[h1, h2, star_star]`. Use `set s : E →+* E := (σ : E →+* E) with hs`.
+
+Establish `hJ' : ∀ i j, s (J j i) = J i j` using `hJ.1`. Rewrite `h00`, `h0x` using `[hp_iff]`. Take `⟨y₀, hy₀⟩` from `exists_hp_ne s J hJ.2 x₀ hx₀`. Take `⟨y, hy⟩` from `exists_hp_ne s J hJ.2 x hx`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv0, hv⟩ : ∃ v, hp s J x₀ v ≠ 0 ∧ hp s J x v ≠ 0 := by`.
+
+Distinguish the cases in `h1 : hp s J x₀ y ≠ 0`. Conclude with `⟨y, h1, hy⟩`. Distinguish the cases in `h2 : hp s J x y₀ ≠ 0`. Conclude with `⟨y₀, hy₀, h2⟩`. Use `push_neg at h1 h2`.
+
+Conclude with `⟨y₀ + y, by rw [hp_add_right, h1, add_zero]; exact hy₀, by rw [hp_add_right, h2, zero_add]; exact hy⟩`. Use `set b := hp s J x₀ v with hb`. Use `set c := hp s J v v with hc`. Use `set r : E := -c / (2 * b) with hr`. Establish `hcs : s c = c` using `hp_symm s hσ J hJ' v v`.
+
+Establish `hvx0 : hp s J v x₀ = s b` using `(hp_symm s hσ J hJ' x₀ v).symm`. Establish `hx0x0 : hp s J x₀ x₀ = 0` using `h00`. Establish `hrb : r * b = -c / 2` using `by rw [hr]; field_simp`. Establish `e1 : s r * s b = -c / 2` using `by rw [← map_mul, hrb, map_div₀, map_neg, hcs, map_ofNat]`. Use `clear_value r c b`.
+
+Use `⟨v + s r • x₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp_iff, hp_add_left, hp_add_right, hp_add_right, hp_smul_left, hp_smul_left, hp_smul_right, hp_smul_right, hσ, hx0x0, hvx0, ← hb, ← hc]`. Take the linear combination `e1 + hrb`. Rewrite using `[ne_eq, hp_iff, hp_add_right, hp_smul_right, hx0x0, mul_zero, add_zero, ← hb]`. Conclude with `hv0`.
+
+Rewrite using `[ne_eq, hp_iff, hp_add_left, hp_smul_left, hσ, h0x, mul_zero, add_zero, ← hp_symm s hσ J hJ' x v]`. Conclude with `(map_ne_zero s).mpr hv`.
+-/
 theorem GlobalTheory.exists_isotropic_vector_pairing_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
       ∀ x₀ x : Matrix (Fin n) (Fin 1) E, x₀ ≠ 0 → x ≠ 0 → Formalism.UG.cT (σ : E →+* E) x₀ * J * x₀ = 0 →

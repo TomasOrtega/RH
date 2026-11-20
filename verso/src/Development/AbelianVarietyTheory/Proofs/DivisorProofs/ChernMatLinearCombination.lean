@@ -20,6 +20,11 @@ namespace GlobalTheory.MixDens
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
 
+/- English proof (translation)
+Establish `ha` using `mem_pick (L.φ σ).isLB y`. Establish `hb` using `mem_pick (M.φ σ).isLB y`. Unfold `chernMat`. Rewrite using `[c.hess_eq ((L.tens M).cInf σ) hy (i := (pick (L.φ σ).isLB y, pick (M.φ σ).isLB y)) (mem_ptsIn_inf.2 ⟨ha, hb⟩) (mem_pick _ y)]`. Express the relevant statement in the definitionally equal form `c.hess ((L.φ σ).tens (M.φ σ)) _ y = _`.
+
+Conclude with `FlatMass.hess_tens (L.cInf σ) (M.cInf σ) hy ha hb`.
+-/
 theorem chernMat_tens (L M : HermLB p) (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) :
     chernMat ((L.tens M).φ σ) c y = chernMat (L.φ σ) c y + chernMat (M.φ σ) c y := by
   have ha := mem_pick (L.φ σ).isLB y
@@ -35,9 +40,15 @@ def chernHom (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) :
   AddMonoidHom.mk' (Quotient.lift (s := HermLB.isometrySetoid p) (fun L => chernMat (L.φ σ) c y)
     fun _ _ h => chernMat_congr h c hy) (by rintro ⟨L⟩ ⟨M⟩; exact chernMat_tens L M c hy)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chernHom_icls (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) (L : HermLB p) :
     chernHom c hy L.icls = chernMat (L.φ σ) c y := rfl
 
+/- English proof (translation)
+Introduce `k _ X p σ D κ _ L n c y hy`. Rewrite using `[← chernHom_icls c hy, icls_comb, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, chernHom_icls, Int.cast_smul_eq_zsmul]`.
+-/
 theorem chernMat_comb : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (κ : Type)
     [Fintype κ] (L : κ → HermLB p) (n : κ → ℤ) (c : AlgChart p σ D), ∀ y ∈ c.e.source,
     chernMat ((comb L n).φ σ) c y = ∑ j, (n j : ℂ) • chernMat ((L j).φ σ) c y := by

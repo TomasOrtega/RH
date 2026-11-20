@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling GlobalTheory.ThK.DblKer
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SkewDblIwasawa.exists_isStab_iwasawaOf | exact GlobalTheory.SkewDblIwasawa.exists_isStab_iwasawaOf | (intros; apply GlobalTheory.SkewDblIwasawa.exists_isStab_iwasawaOf <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.self_dual_lattice_cartan_involution : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → Algebra.Unramified (𝓞 F) (𝓞 E) → ∀ (B : Base F E) (n : ℕ) (W : Spc F E n),
     (∀ i j, σ (W.J j i) = -W.J i j) → W.L.IsLattice E →

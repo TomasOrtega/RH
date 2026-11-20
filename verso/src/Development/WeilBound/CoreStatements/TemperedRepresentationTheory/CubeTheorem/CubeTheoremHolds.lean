@@ -11,6 +11,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.SpreadingModels
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cube_theorem_of_perfect (GlobalTheory.T.perfect_of_models (GlobalTheory.T.has_model_of_spreading GlobalTheory.T.scheme_models_spread GlobalTheory.T.smooth_spreads_out GlobalTheory.T.isProper_spreads_out GlobalTheory.T.line_bundle_spreads_out'))`.
+-/
 theorem cubeTheorem_holds : GlobalTheory.Published.CubeTheorem :=
   GlobalTheory.T.cube_theorem_of_perfect (GlobalTheory.T.perfect_of_models (GlobalTheory.T.has_model_of_spreading GlobalTheory.T.scheme_models_spread GlobalTheory.T.smooth_spreads_out GlobalTheory.T.isProper_spreads_out GlobalTheory.T.line_bundle_spreads_out'))
 

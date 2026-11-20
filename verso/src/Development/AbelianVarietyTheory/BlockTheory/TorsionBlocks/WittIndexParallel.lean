@@ -33,6 +33,13 @@ def ChainWitt (D : D7) : Prop :=
 def WittIndexStatement : Prop :=
   ∀ D : D7, OddRankWitt D ∧ RowSpaceWitt D ∧ ChainWitt D
 
+/- English proof (translation)
+Unfold `nu`. Use `split_ifs with h`. Take `⟨c, rfl⟩ : ∃ c, m = j + c + 1` from `⟨m - j - 1, by omega⟩`. Establish `e : (((j + c + 1 : ℕ) : ℚ) - 1 - j) / 2 = (c : ℚ) / 2` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Nat.ceil_le, div_le_iff₀ (by norm_num)]`. Establish `: c ≤ (j + c + 1 - j) / 2 * 2` using `by omega`. Conclude with `this` after adjusting the coercions. Assume the negation of the conclusion as `hlt`.
+
+Establish `h1 : (c : ℚ) / 2 ≤ (⌈(c : ℚ) / 2⌉₊ : ℚ)` using `Nat.le_ceil _`. Rewrite `h1` using `[div_le_iff₀ (by norm_num)]`. Establish `h2 : c ≤ ⌈(c : ℚ) / 2⌉₊ * 2` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nu_eq (m j : ℕ) : nu m j = (m - j) / 2 := by
   unfold nu
   split_ifs with h
@@ -50,11 +57,19 @@ theorem nu_eq (m j : ℕ) : nu m j = (m - j) / 2 := by
       omega
   · omega
 
+/- English proof (translation)
+Introduce `τ` and use `by have := h τ rwa [hs τ] at this`.
+-/
 theorem parallelSig_of_sigOK {D : D7} {V : HSp D} {p q : ℕ} (h : V.SigOK) (hs : ∀ τ, V.sig τ = (p, q)) :
     ParallelSig V p q := fun τ => by
   have := h τ
   rwa [hs τ] at this
 
+/- English proof (translation)
+Establish `hr` using `D.sp.W_rank j h1 h2`. Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Unfold `Ranks.r at hr`.
+
+Use `⟨⟨a + b - 1, by omega⟩, by omega, by omega, parallelSig_of_sigOK (D.sp.W_sig j) (D.sp.W_sigval j h1 h2)⟩` and prove the remaining obligations.
+-/
 example (D : D7) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     Odd (D.sp.W j).rank ∧ (D.R.k + j - 1) + (D.R.m - j) = (D.sp.W j).rank ∧ D.R.m - j < D.R.k + j - 1 ∧
       ParallelSig (D.sp.W j : HSp D) (D.R.k + j - 1) (D.R.m - j) := by

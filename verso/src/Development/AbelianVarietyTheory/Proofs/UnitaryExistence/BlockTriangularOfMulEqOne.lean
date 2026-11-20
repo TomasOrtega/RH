@@ -22,12 +22,20 @@ open scoped Matrix nonZeroDivisors
 
 namespace GlobalTheory.FibreFlag
 
+/- English proof (translation)
+Use `haveI : Invertible C := C.invertibleOfIsUnitDet (Matrix.isUnit_det_of_left_inverse h)`. Rewrite using `[← Matrix.inv_eq_left_inv h]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hC`.
+-/
 theorem blockTriangular_of_mul_eq_one {n : Type} [Fintype n] [DecidableEq n] (f : n → ℕ) (A C : Matrix n n ℂ)
     (h : A * C = 1) (hC : C.BlockTriangular f) : A.BlockTriangular f := by
   haveI : Invertible C := C.invertibleOfIsUnitDet (Matrix.isUnit_det_of_left_inverse h)
   rw [← Matrix.inv_eq_left_inv h]
   exact Matrix.blockTriangular_inv_of_blockTriangular hC
 
+/- English proof (translation)
+Establish `hu : IsUnit B.det` using `isUnit_iff_ne_zero.2 hB`. Establish `t1 : B.BlockTriangular (fun a => min (a : ℕ) q)` using `fun a c h => h1 a c (by simp only at h; omega) (by simp only at h; rw [Fin.lt_def]; omega)`. Establish `t2` using `blockTriangular_of_mul_eq_one _ _ _ (Matrix.nonsing_inv_mul B hu) t1`. Establish `t3 : B⁻¹.BlockTriangular (fun a => (a : ℕ))` using `fun a c h => by`. Distinguish the cases in `hc : (c : ℕ) < q`.
+
+Conclude with `t2 (by simp only at h ⊢; omega)`. Conclude with `h2 a c (not_lt.1 hc) h`. Conclude with `blockTriangular_of_mul_eq_one _ _ _ (Matrix.mul_nonsing_inv B hu) t3 hca`.
+-/
 theorem upper_of_blocks {r : ℕ} (q : ℕ) (B : Matrix (Fin r) (Fin r) ℂ) (hB : B.det ≠ 0)
     (h1 : ∀ a c : Fin r, (c : ℕ) < q → c < a → B a c = 0)
     (h2 : ∀ a c : Fin r, q ≤ (c : ℕ) → c < a → B⁻¹ a c = 0) (a c : Fin r) (hca : c < a) : B a c = 0 := by
@@ -43,6 +51,47 @@ theorem upper_of_blocks {r : ℕ} (q : ℕ) (B : Matrix (Fin r) (Fin r) ℂ) (hB
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ g e F r M hσ hM hneg k k' x x' Pm Pm' v v' hP hP' hu hv hv' hcf`. Establish `hper : ∀ (k) (x : (M.X k).dom) (Pm : (F.Di k).La →+ (Fin g → ℂ)), (∀ a j, Pm a j = perFr (M.X k) x.1 (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2) → IsPeriod (F.Di k) (fun j => relab c σ (e j).1) Pm`. Introduce `k x Pm hP`. Take `⟨⟨idx, hty, -, hfr⟩, hp0, hr, hξ, hpos, hφ⟩` from `GlobalTheory.FrameUnif.letter_column_dictionary E H Dw l Xo c σ g e F r M hσ hM hneg k`. Establish `hlat` using `(hφ ((M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap) (fun _ => rfl)).2`.
+
+Conclude with `((FramePeriod.isPeriod_frame E H (F.Di k) r _ _ _ _ (hM.type k).2 g idx _ hty hξ hpos hlat hr).2 x.1 (hp0 ▸ x.2)).2 Pm fun a j => (hP a j).trans (hfr _ _ _)`. Establish `p` using `hper k x Pm hP`. Establish `p'` using `hper k' x' Pm' hP'`. Take `rfl` from `F.disj k k' _ _ p p' hu`. Take `⟨⟨idx, hty, hix, hfr⟩, hp0, hr, hξ, hpos, hφ⟩` from `GlobalTheory.FrameUnif.letter_column_dictionary E H Dw l Xo c σ g e F r M hσ hM hneg k`.
+
+Take `⟨φ, hφe⟩ : ∃ φ : (F.Di k).La →ₗ[𝓞 E] (Fin r → E), ∀ a, φ a = (M.φ k a : Fin r → E)` from `⟨(M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap, fun _ => rfl⟩`. Take `⟨hΛ, hlat⟩` from `hφ φ hφe`. Establish `hΨ` using `(hM.type k).2`. Establish `hx : x.1 ∈ GG (M.X k).Ψ (M.X k).Gm (F.Di k).q` using `hp0 ▸ x.2`. Establish `hx' : x'.1 ∈ GG (M.X k).Ψ (M.X k).Gm (F.Di k).q` using `hp0 ▸ x'.2`.
+
+Take `⟨gam, h, hiso, hhalf, hA, hh⟩` from `(F.fibre k _ _ p p').1 hu`. Take `⟨γ, hγ⟩` from `FrameFibre.exists_gl φ hlat.1 hlat.2.1 gam`. Establish `hun` using `FrameFibre.herm_of_trace φ hlat.2.1 (M.X k).Gm γ _ (neg_ne_zero.2 (M.X k).ξ0_ne) fun v w => by`. Rewrite using `[hγ, hγ, ← hlat.2.2.2.2, ← hlat.2.2.2.2, hiso]`. Establish `hγΓ : γ ∈ (M.X k).Γ`.
+
+Rewrite using `[hM.gam]`. Use `⟨⟨hun, fun y => hΛ ▸ (?_ : y ∈ LinearMap.range φ ↔ _ ∈ LinearMap.range φ)⟩, fun a ha => ?_, fun a => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨gam v, (hγ v).symm⟩`.
+
+Introduce and unpack `⟨v, hv⟩`. Use `⟨gam.symm v, ?_⟩` and prove the remaining obligations. Apply `(Matrix.mulVec_injective_of_isUnit γ.isUnit)` to reduce the goal to its premises. Rewrite using `[hγ, LinearEquiv.apply_symm_apply, hv]`. Take `⟨b, hb⟩` from `hhalf a ha`.
+
+Conclude with `⟨b, by rw [← hφe, ← hφe, hγ, hb, map_add, map_nsmul]⟩`. Take `⟨b, hb⟩` from `hA a`. Conclude with `⟨b, by rw [← hφe, ← hφe, hγ, hb, map_add, map_nsmul]⟩`. Establish `hγx` using `FrameFibre.lact_mem_GG hun hx`. Take `⟨Pg, hPg⟩` from `((FramePeriod.isPeriod_frame E H (F.Di k) r _ _ _ _ hΨ g idx _ hty hξ hpos hlat hr).2 _ hγx).1`.
+
+Establish `hP1` using `fun a j => (hP a j).trans (hfr x.1 _ j)`. Establish `hP2` using `fun a j => (hP' a j).trans (hfr x'.1 _ j)`. Simplify using `only [← hφe] at hP1 hP2`. Establish `hmove` using `(per_move E H (F.Di k) r _ _ φ _ hΨ g idx _ hty hξ hpos hlat).2.1 x.1 γ Pm Pg hun hP1 hPg`. Use `set A := LinearMap.toMatrix' h.toLinearMap with hAdef`.
+
+Establish `hAv : ∀ z, A *ᵥ z = h z` using `fun z => by rw [hAdef, LinearMap.toMatrix'_mulVec]; rfl`. Take `⟨b, hb, hb0, hb1, hb2, -⟩` from `FramePeriod.frame_of_period_linear E H (F.Di k) r _ _ φ _ hΨ g idx _ hty hξ hpos hlat Pg _ hγx x'.1 hx' hPg Pm' hP2 A fun v => by`. Take `⟨a, rfl⟩` from `gam.surjective v`. Rewrite using `[hAv, hh, hmove a (gam a) (hγ a).symm]`. Establish `hrig` using `(FamRigid.ex_eq_of_level_group latMinkowski E H Dw l Xo _ g _ F k Pm Pm' gam A p p' hiso hhalf hA fun a => by rw [hAv, hh]).2.2`.
+
+Use `choose cf hcf1 hcf2 hcf3 using hcf`. Establish `hcol : ∀ τ i, A *ᵥ (∑ j, (show ℂ from cf τ i j) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ)) = Pi.single (e.symm ⟨τ, i⟩) 1`. Introduce `τ i`. Establish `d1` using `(DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F k Pm p _ (v τ) _ (hv τ) (cf τ i) (v' τ i)).1 (hcf3 τ i)`. Establish `d2` using `(ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ g _ F k Pm p k Pm' h.toLinearMap p' (fun z => by rw [← hrig z, hAv]; rfl) _ _).1 d1`.
+
+Establish `tn` using `isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F k Pm' p'`. Rewrite using `[hAv]`. Conclude with `(tn.2.2 _ (tn.1 _ _ d2)).unique d2 (hv' τ i)`. Set `C : Matrix (Fin g) (Fin g) ℂ` to `Matrix.of fun j j' => (∑ i, (show ℂ from cf (e j').1 (e j').2 i) • (Pi.single (e.symm ⟨(e j').1, i⟩) 1 : Fin g → ℂ)) j`. Establish `hAC : A * C = 1`.
+
+Use extensionality with `j j'`. Use `congrFun (hcol (e j').1 (e j').2) j` as an intermediate fact. Rewrite `this` using `[Sigma.eta, Equiv.symm_apply_apply, Pi.single_apply]`. Rewrite using `[Matrix.one_apply, ← this]`. Both sides reduce to the same expression.
+
+Establish `hC : C.BlockTriangular (fun j => ((e j).2 : ℕ))`. Introduce `j j' hj`. Simplify using `only [C, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : j = e.symm ⟨(e j').1, i⟩`.
+
+Establish `h3 : (((e j).2 : ℕ)) = i` using `by rw [hi, Equiv.apply_symm_apply]`. Establish `h4 : cf (e j').1 (e j').2 i = 0` using `hcf2 _ _ i (by rw [Fin.lt_def, ← h3]; exact hj)`. Rewrite using `[h4]`. Conclude with `zero_mul _`. Establish `h5 : (Pi.single (e.symm ⟨(e j').1, i⟩) 1 : Fin g → ℂ) j = 0` using `Pi.single_eq_of_ne hi _`.
+
+Conclude with `mul_eq_zero_of_right (M₀ := ℂ) _ h5`. Establish `hT` using `blockTriangular_of_mul_eq_one _ _ _ hAC hC`. Establish `hdet : ∀ τ, (mat b τ).det ≠ 0` using `fun τ h0 => (hx' τ).1 (by`. Establish `e1 : mat x'.1 τ = mat (lact γ x.1) τ * mat b τ` using `by rw [hb]; rfl`. Rewrite using `[e1, Matrix.det_mul, h0, mul_zero])`.
+
+Use `⟨γ, hγΓ, b, fun τ => ⟨hdet τ, upper_of_blocks (F.Di k).q (mat b τ) (hdet τ) ?_ ?_⟩, by rw [← hb]⟩` and prove the remaining obligations. Introduce `a c' hc hca`. Distinguish the cases in `ha : (a : ℕ) < (F.Di k).q`. Establish `h1` using `hb1 (idx.symm (τ, c')) (idx.symm (τ, a))`. Establish `i1` using `hix (idx.symm (τ, c'))`.
+
+Establish `i2` using `hix (idx.symm (τ, a))`. Rewrite `h1` using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Rewrite `i1`, `i2` using `[Equiv.apply_symm_apply]`. Simplify using `only [hc, ha, if_true] at i1 i2`. Rewrite `hca` using `[Fin.lt_def]`.
+
+Conclude with `(h1 rfl hc ha).symm.trans (hT (by simp only; omega))`. Conclude with `hb0 τ a c' hc (not_lt.1 ha)`. Introduce `a c' hc hca`. Rewrite `hca` using `[Fin.lt_def]`. Establish `ha : (F.Di k).q ≤ (a : ℕ)` using `by omega`.
+
+Establish `h1` using `hb2 (idx.symm (τ, a)) (idx.symm (τ, c'))`. Establish `i1` using `hix (idx.symm (τ, c'))`. Establish `i2` using `hix (idx.symm (τ, a))`. Rewrite `h1` using `[Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Rewrite `i1`, `i2` using `[Equiv.apply_symm_apply]`.
+
+Simplify using `only [not_lt.2 hc, not_lt.2 ha, if_false] at i1 i2`. Conclude with `(h1 rfl ha hc).symm.trans (hT (by simp only; omega))`.
+-/
 theorem fibTri : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r), GoodEmb c σ → ModelBase M → NegXi M → FibTri e F M := by
   classical
   intro E _ _ _ H Dw l Xo c σ g e F r M hσ hM hneg k k' x x' Pm Pm' v v' hP hP' hu hv hv' hcf

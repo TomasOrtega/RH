@@ -14,6 +14,9 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ProjCurveZero.projection_degree_zero | exact GlobalTheory.ProjCurveZero.projection_degree_zero | (intros; apply GlobalTheory.ProjCurveZero.projection_degree_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arith_self_intersection_base_change : GlobalTheory.Published.ArCalc → GlobalTheory.Published.ArDegree → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k')
     (hρ : ρ ≫ spMap (algebraMap k k') = p) (M : HermLB (spMap (algebraMap k k'))),

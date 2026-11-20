@@ -10,6 +10,11 @@ open scoped NumberField.AdeleRing TensorProduct
 section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ`. Use `adeleRingHom_ext (K := F) (fun l => ?_) (fun a => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (algebraMap E 𝔸[E] l))) = σ • algebraMap E 𝔸[E] l`. Rewrite using `[adeleTensorEquiv_symm_algebraMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, AdeleBaseChange.smul_algebraMap, map_one, map_one, mul_one]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `adeleTensorEquiv F E (Algebra.TensorProduct.map (σ : E →ₐ[F] E) (AlgHom.id F 𝔸[F]) ((adeleTensorEquiv F E).symm (adeleMap F E a))) = σ • adeleMap F E a`. Rewrite using `[adeleTensorEquiv_symm_adeleMap, Algebra.TensorProduct.map_tmul, adeleTensorEquiv_tmul, smul_adeleMap, map_one, map_one, one_mul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ • y := by
   have h : galAd σ = MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ := by
     refine adeleRingHom_ext (K := F) (fun l => ?_) (fun a => ?_)
@@ -26,18 +31,27 @@ private theorem galAd_apply (σ : E ≃ₐ[F] E) (y : 𝔸[E]) : galAd σ y = σ
   rw [h]
   rfl
 
+/- English proof (translation)
+Set `_ : Algebra M M'` to `(τ : M →+* M').toAlgebra`. Conclude with `NumberField.LiesOver.continuous_completionMap`.
+-/
 private theorem continuous_infMap {M M' : Type} [Field M] [NumberField M] [Field M']
     [NumberField M'] (τ : M ≃+* M') (w' : InfinitePlace M') :
     Continuous (infiniteCompletionMap τ w') := by
   let _ : Algebra M M' := (τ : M →+* M').toAlgebra
   exact NumberField.LiesOver.continuous_completionMap
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `norm_algebraMap_smul σ u l`.
+-/
 private theorem norm_algebraMap_of_smul_eq (σ : E ≃ₐ[F] E) (u w : HeightOneSpectrum (𝓞 E))
     (h : σ • u = w) (l : E) :
     ‖algebraMap E (w.adicCompletion E) (σ l)‖ = ‖algebraMap E (u.adicCompletion E) l‖ := by
   subst h
   exact norm_algebraMap_smul σ u l
 
+/- English proof (translation)
+Use `(HeightOneSpectrum.denseRange_algebraMap E (comapPrime (σ : E ≃+* E) w)).induction_on (p := fun y => ‖finiteCompletionMap (σ : E ≃+* E) w y‖ = ‖y‖) y (isClosed_eq (continuous_norm.comp (continuous_finiteCompletionMap _ w)) continuous_norm) fun l => ?_` and prove the remaining obligations. Rewrite using `[finiteCompletionMap_algebraMap]`. Conclude with `norm_algebraMap_of_smul_eq σ _ w (by rw [comapPrime_eq_inv_smul, smul_inv_smul]) l`.
+-/
 private theorem norm_finMap (σ : E ≃ₐ[F] E) (w : HeightOneSpectrum (𝓞 E))
     (y : (comapPrime (σ : E ≃+* E) w).adicCompletion E) :
     ‖finiteCompletionMap (σ : E ≃+* E) w y‖ = ‖y‖ := by
@@ -48,10 +62,16 @@ private theorem norm_finMap (σ : E ≃ₐ[F] E) (w : HeightOneSpectrum (𝓞 E)
   rw [finiteCompletionMap_algebraMap]
   exact norm_algebraMap_of_smul_eq σ _ w (by rw [comapPrime_eq_inv_smul, smul_inv_smul]) l
 
+/- English proof (translation)
+The claim follows from `InfinitePlace.Completion.norm_coe w (WithAbs.toAbs _ x)`.
+-/
 private theorem norm_algebraMap_completion (w : InfinitePlace E) (x : E) :
     ‖algebraMap E w.Completion x‖ = w x :=
   InfinitePlace.Completion.norm_coe w (WithAbs.toAbs _ x)
 
+/- English proof (translation)
+Use `InfinitePlace.Completion.induction_on _ y (isClosed_eq (continuous_norm.comp (continuous_infMap _ w)) continuous_norm) fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖infiniteCompletionMap (σ : E ≃+* E) w (algebraMap E _ a.ofAbs)‖ = ‖algebraMap E (w.comap ((σ : E ≃+* E) : E →+* E)).Completion a.ofAbs‖`. Rewrite using `[infiniteCompletionMap_algebraMap, norm_algebraMap_completion, norm_algebraMap_completion, InfinitePlace.comap_apply]`. Both sides reduce to the same expression.
+-/
 private theorem norm_infMap (σ : E ≃ₐ[F] E) (w : InfinitePlace E)
     (y : (w.comap ((σ : E ≃+* E) : E →+* E)).Completion) :
     ‖infiniteCompletionMap (σ : E ≃+* E) w y‖ = ‖y‖ := by
@@ -63,11 +83,17 @@ private theorem norm_infMap (σ : E ≃ₐ[F] E) (w : InfinitePlace E)
     InfinitePlace.comap_apply]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem norm_snd_congr (a : 𝔸[E]) {w₁ w₂ : HeightOneSpectrum (𝓞 E)} (h : w₁ = w₂) :
     ‖a.2 w₁‖ = ‖a.2 w₂‖ := by
   subst h
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem norm_fst_congr (a : 𝔸[E]) {w₁ w₂ : InfinitePlace E} (h : w₁ = w₂) :
     ‖a.1 w₁‖ = ‖a.1 w₂‖ := by
   subst h
@@ -75,6 +101,11 @@ private theorem norm_fst_congr (a : 𝔸[E]) {w₁ w₂ : InfinitePlace E} (h : 
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a`. Rewrite using `[galAd_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `w`. Rewrite using `[smul_snd, norm_finMap]`.
+
+Conclude with `norm_snd_congr a (by rw [comapPrime_eq_inv_smul, inv_smul_smul])`. Introduce `w`. Rewrite using `[smul_fst, norm_infMap]`. Conclude with `norm_fst_congr a (by rw [comap_eq_inv_smul, inv_smul_smul])`.
+-/
 theorem UpperTheory.norm_galois_smul_adele_component_at_smul_place :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E ≃ₐ[F] E) (a : 𝔸[E]),
         (∀ w : HeightOneSpectrum (𝓞 E), ‖(galAd σ a).2 (σ • w)‖ = ‖a.2 w‖) ∧

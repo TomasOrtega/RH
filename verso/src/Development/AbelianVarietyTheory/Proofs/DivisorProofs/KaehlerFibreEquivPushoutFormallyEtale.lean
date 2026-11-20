@@ -6,6 +6,11 @@ namespace GlobalTheory
 
 open KaehlerDifferential TensorProduct in
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.AuxiliaryLemmaFirst.main`. Consider the case `exact _root_.GlobalTheory.AuxiliaryLemmaFirst.main`. Consider the case `(apply _root_.GlobalTheory.AuxiliaryLemmaFirst.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AuxiliaryLemmaFirst.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.AuxiliaryLemmaFirst.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AuxiliaryLemmaFirst.main ..)`.
+-/
 theorem kaehler_fibre_equiv_pushout_formallyEtale :
     ∀ (R R' B C B' K : Type) [CommRing R] [CommRing R'] [CommRing B] [CommRing C] [CommRing B'] [Field K] [Algebra R R'] [Algebra R B] [Algebra R C] [Algebra R' C] [Algebra B C] [IsScalarTower R R' C] [IsScalarTower R B C] [Algebra.IsPushout R R' B C] [Algebra C B'] [Algebra R' B'] [IsScalarTower R' C B'] [Algebra.FormallyEtale C B'] [Algebra B' K] [Algebra B K], (∀ x : B, algebraMap B K x = algebraMap B' K (algebraMap C B' (algebraMap B C x))) → ∃ e : (K ⊗[B] Ω[B⁄R]) ≃ₗ[K] (K ⊗[B'] Ω[B'⁄R']), ∀ x : B, e ((1 : K) ⊗ₜ[B] KaehlerDifferential.D R B x) = (1 : K) ⊗ₜ[B'] KaehlerDifferential.D R' B' (algebraMap C B' (algebraMap B C x)) := by
   first

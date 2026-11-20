@@ -19,6 +19,15 @@ noncomputable section
 
 namespace GlobalTheory.CellDec.TlComm
 
+/- English proof (translation)
+Introduce `E _ _ n S ϖ l p hp`. Establish `key : ∀ {R : Type} [CommRing R] (c : Ad E →+* R), (Matrix.GeneralLinearGroup.map c p = 1 ∨ Matrix.GeneralLinearGroup.map c (GlobalTheory.CellDec.tl n ϖ l.1) = 1) → Matrix.GeneralLinearGroup.map c (p * GlobalTheory.CellDec.tl n ϖ l.1) = Matrix.GeneralLinearGroup.map c (GlobalTheor …`. Introduce `R _ c h`. Rewrite using `[map_mul, map_mul]`. Apply the tactic sequence `rcases h with h | h <;> rw [h] <;> simp`.
+
+Use `GlobalTheory.JSW.GA_ext (key _ (Or.inr ?_)) fun v => key _ ?_` and prove the remaining obligations. Conclude with `map_cornerGL_of_zero _ _ (fun x => rfl) _`. Distinguish the cases in `hv : v ∈ S`. Use `Or.inr ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CellDec.tl, finGL, map_cornerGL_of_hom (sFin E) ((pLoc E v).comp (pFin E)) (pLoc E v) (fun x => rfl)]`.
+
+Use `Matrix.GeneralLinearGroup.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, GlobalTheory.SmGL.val_diagT]`. Establish `hl : l.1 v = 0` using `l.2 v hv`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Matrix.diagonal_apply_eq, Units.val_one, Matrix.one_apply_eq]`. Use `show ((ϖ v ^ ((Finsupp.mapRange (fun x : Fin n → ℤ => x i) rfl l.1) v) : (v.adicCompletion E)ˣ) : v.adicCompletion E) = 1`. Rewrite using `[Finsupp.mapRange_apply, hl, Pi.zero_apply, zpow_zero, Units.val_one]`. Simplify using `[Matrix.diagonal_apply, hij, Matrix.one_apply]`. Conclude with `Or.inl (hp v hv)`.
+-/
 theorem tl_commute_of_one_off : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (S : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ v : HeightOneSpectrum (𝓞 E), (v.adicCompletion E)ˣ) (l : GlobalTheory.CellDec.abelian₂ E n S) (p : GA E n),
     (∀ w ∉ S, Matrix.GeneralLinearGroup.map ((pLoc E w).comp (pFin E)) p = 1) →

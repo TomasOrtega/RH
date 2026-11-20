@@ -16,35 +16,63 @@ section Points
 
 variable {X : Scheme.{0}} {A R : Type} [CommRing A] [CommRing R]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `Spec.map_surjective (IsOpenImmersion.lift x z h)`. Conclude with `⟨m.hom, (IsOpenImmersion.lift_fac x z h).symm.trans (congrArg (· ≫ x) hm.symm)⟩`.
+-/
 theorem exists_lift (x : Sp A ⟶ X) [IsOpenImmersion x] (z : Sp R ⟶ X) (h : Set.range z ⊆ Set.range x) :
     ∃ m : A →+* R, z = spMap m ≫ x := by
   obtain ⟨m, hm⟩ := Spec.map_surjective (IsOpenImmersion.lift x z h)
   exact ⟨m.hom, (IsOpenImmersion.lift_fac x z h).symm.trans (congrArg (· ≫ x) hm.symm)⟩
 
+/- English proof (translation)
+The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono x).1 h))`.
+-/
 theorem lift_unique (x : Sp A ⟶ X) [Mono x] {m m' : A →+* R} (h : spMap m ≫ x = spMap m' ≫ x) : m = m' :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono x).1 h))
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `((IsLocalRing.specializes_closedPoint a).map z.continuous).mem_open hU h`.
+-/
 theorem range_subset [IsLocalRing R] (z : Sp R ⟶ X) {U : Set X} (hU : IsOpen U)
     (h : z (IsLocalRing.closedPoint R) ∈ U) : Set.range z ⊆ U := by
   rintro _ ⟨a, rfl⟩
   exact ((IsLocalRing.specializes_closedPoint a).map z.continuous).mem_open hU h
 
+/- English proof (translation)
+The claim follows from `Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem locPt_closedPoint (y : X) : locPt X y (IsLocalRing.closedPoint (X.presheaf.stalk y)) = y :=
   Scheme.fromSpecStalk_closedPoint
 
+/- English proof (translation)
+The claim follows from `(Scheme.Hom.comp_apply _ _ _).trans (congrArg f (locPt_closedPoint y))`.
+-/
 theorem locPt_comp_closedPoint {Z : Scheme.{0}} (f : X ⟶ Z) (y : X) :
     (locPt X y ≫ f) (IsLocalRing.closedPoint (X.presheaf.stalk y)) = f y :=
   (Scheme.Hom.comp_apply _ _ _).trans (congrArg f (locPt_closedPoint y))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Scheme.stalkClosedPointTo (R := CommRingCat.of R) z).hom, (Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R) z).symm⟩`.
+-/
 theorem exists_locPt [IsLocalRing R] (z : Sp R ⟶ X) :
     ∃ m : X.presheaf.stalk (z (IsLocalRing.closedPoint R)) →+* R, z = spMap m ≫ locPt X _ :=
   ⟨(Scheme.stalkClosedPointTo (R := CommRingCat.of R) z).hom,
     (Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := CommRingCat.of R) z).symm⟩
 
+/- English proof (translation)
+The claim follows from `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec X).specializes trivial)).symm`.
+-/
 theorem genPt_eq [IsIntegral X] (y : X) :
     genPt X = spMap (algebraMap (X.presheaf.stalk y) X.functionField) ≫ locPt X y :=
   (Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec X).specializes trivial)).symm
 
+/- English proof (translation)
+Take `⟨W, hW, a, rfl⟩` from `X.presheaf.exists_germ_eq β`. Establish `hb : y ∈ X.basicOpen a` using `(X.mem_basicOpen a y hW).2 hβ`. Take `⟨_, ⟨W', hW' : IsAffineOpen W', rfl⟩, hyW', hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ U ∩ X.basicOpen a from ⟨hy, hb⟩) (hU.inter (X.basicOpen a).isOpen)`. Establish `h1 : W' ≤ X.basicOpen a` using `fun z hz => (hle hz).2`. Use `⟨Γ(X, W'), inferInstance, hW'.fromSpec, (X.presheaf.germ W' y hyW').hom, X.presheaf.map (homOfLE (h1.trans (X.basicOpen_le a))).op a, inferInstanceAs (IsOpenImmersion hW'.fromSpec), ?_, (hW'.fromSpecStalk_eq_fromSpecStalk hyW').symm, ?_, X.presheaf.germ_res_apply _ _ _ _⟩` and prove the remaining obligations.
+
+Introduce `z hz`. Rewrite `hz` using `[show Set.range _ = _ from hW'.range_fromSpec]`. Conclude with `(hle hz).1`. Use `(X.toRingedSpace.isUnit_res_basicOpen a).map (X.presheaf.map (homOfLE h1).op).hom` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Conclude with `ConcreteCategory.congr_hom (X.presheaf.map_comp (homOfLE (X.basicOpen_le a)).op (homOfLE h1).op) a`.
+-/
 theorem exists_spread (y : X) {U : Set X} (hU : IsOpen U) (hy : y ∈ U) {β : X.presheaf.stalk y} (hβ : IsUnit β) :
     ∃ (A : Type) (_ : CommRing A) (x : Sp A ⟶ X) (m : A →+* X.presheaf.stalk y) (α : A),
       IsOpenImmersion x ∧ Set.range x ⊆ U ∧ locPt X y = spMap m ≫ x ∧ IsUnit α ∧ m α = β := by
@@ -82,6 +110,9 @@ def IsVal {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') (a : Fr R) (
 
 variable {pt d a₀ δ}
 
+/- English proof (translation)
+Introduce `L _ _ g'' e A _ b α k hb h1 h2` and use `h L (g''.comp g') e A b α k hb h1 h2`.
+-/
 theorem IsVal.map {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {g : R →+* R'} {a : Fr R} {r : R'}
     (h : IsVal pt d a₀ δ g a r) (g' : R' →+* R'') : IsVal pt d a₀ δ (g'.comp g) a (g' r) :=
   fun L _ _ g'' e A _ b α k hb h1 h2 => h L (g''.comp g') e A b α k hb h1 h2
@@ -101,6 +132,17 @@ variable [IsOpenImmersion io]
 
 include hpull hunit hcoc h₀ hcov hδ in
 
+/- English proof (translation)
+Take `⟨B, _, bW, hW, hyW⟩` from `hcov (io y) ⟨y, rfl⟩`. Take `⟨e, u, hu, he, hd⟩` from `hδ y`. Establish `hop : IsOpen (Set.range (pt _ bW))` using `(pt _ bW).isOpenEmbedding.isOpen_range`. Take `⟨m, hm⟩` from `exists_lift (pt _ bW) (pt _ e) (range_subset _ hop (by`. Rewrite using `[he, locPt_comp_closedPoint]`.
+
+Conclude with `hyW))`. Take `⟨β, hβ⟩` from `hunit _ _ m bW e hm`. Take `⟨A, _, x, m', α, hx, hxU, hm', hα, hαβ⟩` from `exists_spread y (hop.preimage io.continuous) hyW ((β⁻¹).isUnit.mul hu)`. Take `⟨n, hn⟩` from `exists_lift (pt _ bW) (x ≫ io) (by`. Introduce and unpack `_ ⟨z, rfl⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hxU ⟨z, rfl⟩)`. Take `⟨b, hb⟩` from `hpull _ _ n bW`. Establish `hb' : pt _ b = x ≫ io` using `hb.trans hn.symm`. Establish `heb : pt _ e = spMap m' ≫ pt _ b` using `by rw [he, hb', hm', Category.assoc]`.
+
+Establish `h0e : pt _ a₀ = spMap (algebraMap _ Y.functionField) ≫ pt _ e` using `by rw [h₀, he, genPt_eq y, Category.assoc]`. Take `rfl : m = m'.comp n` from `lift_unique (pt _ bW) (by rw [← hm, heb, hb, DetExtendZero.spMap_comp, Category.assoc])`. Use `⟨A, inferInstance, b, d _ _ n bW b * α, ⟨by rw [hb']; infer_instance, (hunit _ _ _ _ _ hb).mul hα, (algebraMap _ Y.functionField).comp m', by rw [h0e, heb, DetExtendZero.spMap_comp, Category.assoc], ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hcoc _ _ _ _ _ _ _ _ heb h0e, RingHom.comp_apply, _root_.mul_assoc, ← map_mul, map_mul m', ← _root_.mul_assoc, ← hcoc _ _ _ _ _ _ _ _ hb heb, ← hβ, hαβ, Units.mul_inv_cancel_left, hd]`. Use `⟨spMap m' (IsLocalRing.closedPoint _), ?_⟩` and prove the remaining obligations.
+
+Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← heb, he]`. Conclude with `locPt_comp_closedPoint io y`.
+-/
 theorem exists_test (y : Y) :
     ∃ (A : Type) (_ : CommRing A) (b : Fr A) (α : A), IsTest pt d a₀ δ b α ∧ io y ∈ Set.range (pt _ b) := by
   obtain ⟨B, _, bW, hW, hyW⟩ := hcov (io y) ⟨y, rfl⟩
@@ -131,6 +173,17 @@ theorem exists_test (y : Y) :
 
 include hrange hpull hunit hcoc h₀ in
 
+/- English proof (translation)
+Set `z : Sp L ⟶ Y` to `IsOpenImmersion.lift io (pt _ e) (hrange _ e)`. Establish `hz : z ≫ io = pt _ e` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨n, hn⟩` from `exists_locPt z`. Generalize the expression as in `hy : z (IsLocalRing.closedPoint L) = y at n hn`. Establish `hlift : ∀ {B : Type} [CommRing B] (f : Fr B) (k : B →+* L), IsOpenImmersion (pt _ f) → pt _ e = spMap k ≫ pt _ f → ∃ m : B →+* Y.presheaf.stalk y, locPt Y y ≫ io = spMap m ≫ pt _ f ∧ k = n.comp m`.
+
+Introduce `B _ f k hf hk`. Take `⟨m, hm⟩` from `exists_lift (pt _ f) (locPt Y y ≫ io) (range_subset _ (pt _ f).isOpenEmbedding.isOpen_range (by`. Establish `h1 : (z ≫ io) (IsLocalRing.closedPoint L) = io y` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg io hy)`. Rewrite using `[locPt_comp_closedPoint, ← h1, hz, hk]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩))`.
+
+Conclude with `⟨m, hm, lift_unique (pt _ f) (by rw [← hk, ← hz, hn, DetExtendZero.spMap_comp, Category.assoc, Category.assoc, hm])⟩`. Take `⟨m, hm, rfl⟩` from `hlift b h hb.1 he`. Take `⟨m', hm', rfl⟩` from `hlift b' h' hb'.1 he'`. Take `⟨f, hf⟩` from `hpull _ _ m b`. Establish `hf' : pt _ f = spMap m' ≫ pt _ b'` using `by rw [hf, ← hm, hm']`.
+
+Establish `hef : pt _ e = spMap n ≫ pt _ f` using `by rw [hf, ← hm, ← hz, hn, Category.assoc]`. Establish `h0f : pt _ a₀ = spMap (algebraMap _ Y.functionField) ≫ pt _ f` using `by rw [h₀, hf, ← hm, genPt_eq y, Category.assoc]`. Establish `key : ∀ {B : Type} [CommRing B] (c : Fr B) (ω : B) (k : B →+* Y.presheaf.stalk y), IsTest pt d a₀ δ c ω → pt _ f = spMap k ≫ pt _ c → d _ _ (algebraMap _ Y.functionField) f a₀ * algebraMap _ Y.functionField (d _ _ k c f * k ω) = δ`. Introduce `B _ c ω k hc hk`. Take `⟨hc1, -, k', hk', hd⟩` from `hc`.
+
+Take `rfl : k' = (algebraMap _ Y.functionField).comp k` from `lift_unique (pt _ c) (by rw [← hk', h0f, hk, DetExtendZero.spMap_comp, Category.assoc])`. Rewrite using `[map_mul, ← _root_.mul_assoc, ← hcoc _ _ _ _ _ _ _ _ hk h0f]`. Conclude with `hd`. Establish `e1` using `IsFractionRing.injective (Y.presheaf.stalk y) Y.functionField ((hunit _ _ _ _ _ h0f).mul_left_cancel ((key b α m hb hf).trans (key b' α' m' hb' hf').symm))`. Rewrite using `[hcoc _ _ _ _ _ _ _ _ hf hef, hcoc _ _ _ _ _ _ _ _ hf' hef, RingHom.comp_apply, RingHom.comp_apply, _root_.mul_assoc, _root_.mul_assoc, ← map_mul, ← map_mul, e1]`.
+-/
 theorem test_compat {L : Type} [CommRing L] [IsLocalRing L] (e : Fr L) {A A' : Type} [CommRing A] [CommRing A']
     {b : Fr A} {b' : Fr A'} {α : A} {α' : A'} (hb : IsTest pt d a₀ δ b α) (hb' : IsTest pt d a₀ δ b' α')
     {h : A →+* L} {h' : A' →+* L} (he : pt _ e = spMap h ≫ pt _ b) (he' : pt _ e = spMap h' ≫ pt _ b') :
@@ -169,6 +222,11 @@ theorem test_compat {L : Type} [CommRing L] [IsLocalRing L] (e : Fr L) {A A' : T
 
 include hrange hpull hunit hcoc h₀ in
 
+/- English proof (translation)
+Take `⟨a', ha'⟩` from `hpull _ _ g a`. Take `⟨β, hβ⟩` from `hunit _ _ g a a' ha'`. Use `⟨β⁻¹ * (d _ _ h b a' * h α), fun L _ _ g' e A' _ b' α' h' hb' h1 h2 => ?_⟩` and prove the remaining obligations. Establish `h3 : pt _ e = spMap g' ≫ pt _ a'` using `by rw [h1, ha', DetExtendZero.spMap_comp, Category.assoc]`. Establish `h4` using `ha'.trans hh`.
+
+Rewrite using `[hcoc _ _ _ _ _ _ _ _ ha' h3, _root_.mul_assoc, ← map_mul, ← hβ, Units.mul_inv_cancel_left, map_mul, ← _root_.mul_assoc, ← hcoc _ _ _ _ _ _ _ _ h4 h3]`. Conclude with `test_compat hrange hpull hunit hcoc h₀ e hb hb' (by rw [h3, h4, DetExtendZero.spMap_comp, Category.assoc]) h2`.
+-/
 theorem exists_val_of_test {R R' A : Type} [CommRing R] [CommRing R'] [CommRing A] (g : R →+* R') (a : Fr R)
     {b : Fr A} {α : A} (hb : IsTest pt d a₀ δ b α) {h : A →+* R'} (hh : spMap g ≫ pt _ a = spMap h ≫ pt _ b) :
     ∃ r, IsVal pt d a₀ δ g a r := by
@@ -183,6 +241,11 @@ theorem exists_val_of_test {R R' A : Type} [CommRing R] [CommRing R'] [CommRing 
 
 include hrange hpull hunit hcoc h₀ hcov hδ in
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `hpull _ _ g a`. Take `⟨y, hy⟩` from `hrange _ e ⟨IsLocalRing.closedPoint L, rfl⟩`. Take `⟨A, _, b, α, hb, hyb⟩` from `exists_test hpull hunit hcoc h₀ hcov hδ y`. Use `hb.1` as an intermediate fact. Take `⟨h, hh⟩` from `exists_lift (pt _ b) (pt _ e) (range_subset _ (pt _ b).isOpenEmbedding.isOpen_range (hy ▸ hyb))`.
+
+Conclude with `⟨e, A, _, b, α, h, hb, he, hh⟩`.
+-/
 theorem exists_local {R L : Type} [CommRing R] [CommRing L] [IsLocalRing L] (g : R →+* L) (a : Fr R) :
     ∃ (e : Fr L) (A : Type) (_ : CommRing A) (b : Fr A) (α : A) (h : A →+* L),
       IsTest pt d a₀ δ b α ∧ pt _ e = spMap g ≫ pt _ a ∧ pt _ e = spMap h ≫ pt _ b := by
@@ -194,6 +257,9 @@ theorem exists_local {R L : Type} [CommRing R] [CommRing L] [IsLocalRing L] (g :
   exact ⟨e, A, _, b, α, h, hb, he, hh⟩
 
 include hrange hpull hunit hcoc h₀ hcov hδ in
+/- English proof (translation)
+Use `sub_eq_zero.1 (eq_zero_of_localization _ fun P _ => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Take `⟨e, A, _, b, α, k, hb, h1, h2⟩` from `exists_local hrange hpull hunit hcoc h₀ hcov hδ ((algebraMap R' (Localization.AtPrime P)).comp g) a`. Conclude with `(hunit _ _ _ _ _ h1).mul_left_cancel ((h _ _ e A b α k hb h1 h2).trans (h' _ _ e A b α k hb h1 h2).symm)`.
+-/
 theorem IsVal.unique {R R' : Type} [CommRing R] [CommRing R'] {g : R →+* R'} {a : Fr R} {r r' : R'}
     (h : IsVal pt d a₀ δ g a r) (h' : IsVal pt d a₀ δ g a r') : r = r' := by
   refine sub_eq_zero.1 (eq_zero_of_localization _ fun P _ => ?_)
@@ -203,6 +269,9 @@ theorem IsVal.unique {R R' : Type} [CommRing R] [CommRing R'] {g : R →+* R'} {
   exact (hunit _ _ _ _ _ h1).mul_left_cancel ((h _ _ e A b α k hb h1 h2).trans (h' _ _ e A b α k hb h1 h2).symm)
 
 include hrange hpull hunit hcoc h₀ hcov hδ in
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Take `⟨P, hP, hr⟩` from `exists_max_ideal_of_mem_nonunits hn`. Take `⟨e, A, _, b, α, k, hb, h1, h2⟩` from `exists_local hrange hpull hunit hcoc h₀ hcov hδ ((algebraMap R' (Localization.AtPrime P)).comp g) a`. Establish `h3 : IsUnit (d _ _ _ a e * algebraMap R' (Localization.AtPrime P) r)` using `h _ _ e A b α k hb h1 h2 ▸ (hunit _ _ _ _ _ h2).mul (hb.2.1.map k)`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime P) P r).1 (isUnit_of_mul_isUnit_right h3) hr`.
+-/
 theorem IsVal.isUnit {R R' : Type} [CommRing R] [CommRing R'] {g : R →+* R'} {a : Fr R} {r : R'}
     (h : IsVal pt d a₀ δ g a r) : IsUnit r := by
   by_contra hn
@@ -215,6 +284,21 @@ theorem IsVal.isUnit {R R' : Type} [CommRing R] [CommRing R'] {g : R →+* R'} {
 
 include hrange hpull hunit hcoc h₀ hcov hδ in
 
+/- English proof (translation)
+Set `s : Set R` to `{f | ∃ r, IsVal pt d a₀ δ (algebraMap R (Localization.Away f)) a r}`. Establish `hs : ∀ P : Ideal R, P.IsPrime → ∃ f ∈ s, f ∉ P`. Introduce `P hP`. Set `z : Sp R` to `(⟨P, hP⟩ : PrimeSpectrum R)`. Take `⟨y, hy⟩` from `hrange _ a ⟨z, rfl⟩`.
+
+Take `⟨A, _, b, α, hb, hyb⟩` from `exists_test hpull hunit hcoc h₀ hcov hδ y`. Use `hb.1` as an intermediate fact. Take `⟨_, ⟨f, rfl⟩, hf, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (show z ∈ pt _ a ⁻¹' Set.range (pt _ b) by rw [Set.mem_preimage, ← hy]; exact hyb) ((pt _ b).isOpenEmbedding.isOpen_range.preimage (pt _ a).continuous)`. Take `⟨h, hh⟩` from `exists_lift (pt _ b) (spMap (algebraMap R (Localization.Away f)) ≫ pt _ a) (by`. Introduce and unpack `_ ⟨w, rfl⟩`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Use `hle fun hw => ?_` and prove the remaining obligations. Conclude with `(PrimeSpectrum.isPrime (R := Localization.Away f) w).ne_top (Ideal.eq_top_of_isUnit_mem _ hw (IsLocalization.Away.algebraMap_isUnit f)))`. Conclude with `⟨f, exists_val_of_test hrange hpull hunit hcoc h₀ _ a hb hh, hf⟩`. Establish `hspan : Ideal.span s = ⊤`.
+
+Assume the negation of the conclusion as `hn`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hn`. Take `⟨f, hf, hfP⟩` from `hs P hP.isPrime`. Conclude with `hfP (hle (Ideal.subset_span hf))`. Use `choose ρ hρ using fun f : s => f.2`.
+
+Take `⟨r, hr, -⟩` from `Localization.existsUnique_algebraMap_eq_of_span_eq_top s hspan ρ fun f f' => by`. Establish `e1` using `(hρ f).map (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f.1 * f'.1)) f.1 f'.1)`. Establish `e2` using `(hρ f').map (IsLocalization.Away.awayToAwayLeft (P := Localization.Away (f.1 * f'.1)) f'.1 f.1)`. Use `IsVal.unique hrange hpull hunit hcoc h₀ hcov hδ e1 ?_` and prove the remaining obligations. Use `e2 using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, IsLocalization.Away.awayToAwayRight_eq, IsLocalization.Away.awayToAwayLeft_eq]`. Use `⟨r, fun L _ _ g e A _ b α h hb h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hfP⟩` from `hs ((IsLocalRing.maximalIdeal L).comap g) inferInstance`. Establish `hu : IsUnit (g f)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hfP hn`. Establish `hg : (IsLocalization.Away.lift (S` using `Localization.Away f) f hu).comp (algebraMap R _) = g.comp (RingHom.id R) := IsLocalization.Away.lift_comp f hu`. Use `hρ ⟨f, hf⟩ L (IsLocalization.Away.lift f hu) e A b α h hb (by rw [hg]; exact h1) h2` as an intermediate fact. Rewrite `this` using `[hg, ← hr ⟨f, hf⟩, IsLocalization.Away.lift_eq]`. Then use the resulting hypothesis.
+-/
 theorem exists_val {R : Type} [CommRing R] (a : Fr R) : ∃ r, IsVal pt d a₀ δ (RingHom.id R) a r := by
   let s : Set R := {f | ∃ r, IsVal pt d a₀ δ (algebraMap R (Localization.Away f)) a r}
   have hs : ∀ P : Ideal R, P.IsPrime → ∃ f ∈ s, f ∉ P := by
@@ -258,6 +342,13 @@ theorem exists_val {R : Type} [CommRing R] (a : Fr R) : ∃ r, IsVal pt d a₀ �
 
 include hrange hpull hunit hcoc h₀ hcov hδ in
 
+/- English proof (translation)
+Use `choose f hf using fun (R : Type) [CommRing R] (a : Fr R) => exists_val hrange hpull hunit hcoc h₀ hcov hδ a`. Use `⟨f, fun R R' _ _ g a a' ha => IsVal.unique hrange hpull hunit hcoc h₀ hcov hδ (hf R' a') ?_, fun R _ a => IsVal.isUnit hrange hpull hunit hcoc h₀ hcov hδ (hf R a), ?_⟩` and prove the remaining obligations. Introduce `L _ _ g' e A _ b α h hb h1 h2`. Rewrite `h1`, the goal using `[RingHom.comp_id]`. Rewrite using `[map_mul, ← _root_.mul_assoc, ← hcoc _ _ _ _ _ _ _ _ ha h1]`.
+
+Conclude with `hf R a L (g'.comp g) e A b α h hb (by rw [RingHom.comp_id, h1, ha, DetExtendZero.spMap_comp, Category.assoc]) h2`. Take `⟨A, _, b, α, hb, -⟩` from `exists_test hpull hunit hcoc h₀ hcov hδ (genericPoint Y)`. Take `⟨k, hk, hd⟩` from `hb.2.2`. Establish `hid : pt _ a₀ = spMap (RingHom.id _) ≫ pt _ a₀` using `by rw [DetExtendZero.spMap_id, Category.id_comp]`. Establish `h1 : d _ _ (RingHom.id _) a₀ a₀ = 1`.
+
+Use `hcoc _ _ _ _ _ _ _ _ hid hid` as an intermediate fact. Conclude with `((hunit _ _ _ _ _ hid).mul_left_cancel ((_root_.mul_one _).trans this)).symm`. Use `hf _ a₀ _ (RingHom.id _) a₀ A b α k hb hid hk` as an intermediate fact. Rewrite `this` using `[RingHom.comp_id, h1, _root_.one_mul, hd]`. Then use the resulting hypothesis.
+-/
 theorem exists_coord : ∃ f : ∀ (R : Type) [CommRing R], Fr R → R,
     (∀ (R R' : Type) [CommRing R] [CommRing R'] (g : R →+* R') (a : Fr R) (a' : Fr R'), pt _ a' = spMap g ≫ pt _ a →
       f R' a' = d _ _ g a a' * g (f R a)) ∧ (∀ (R : Type) [CommRing R] (a : Fr R), IsUnit (f R a)) ∧ f _ a₀ = δ := by
@@ -285,6 +376,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E}
   {S X : Scheme.{0}} {c : Coeff l} {t : SAB H S} {π : X ⟶ S} {s : X ⟶ Sp c.F} {V : Set X} {τ : E →+* ℂ}
   {p q : ℕ} {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
 
+/- English proof (translation)
+Establish `e : ∀ {k : ℕ} (a : Fin k → R) (u : Fin k → (Sp (DualNumber R) ⟶ t.G.left)) (z : epsAt x ⟶ t.G), FramedFlatCoordinates.IsCombination x a u z ↔ Formalism.L2.Pj.IsCombAtG t x u a z.left` using `fun a u z => exists_congr fun u' => and_congr Iff.rfl ⟨fun h => congrArg CommaMorphism.left h.symm, fun h => Over.OverMorphism.ext h.symm⟩`. Rewrite using `[e, ← Matrix.mulVec_transpose]`. Conclude with `Formalism.L2.Pj.tanLinG _ (fun j => ⟨Over.w (v j), hv j⟩) (fun k => (w k).left) A.transpose N _ (fun i => (e _ _ _).1 (hA i)) ((e _ _ _).1 h)`.
+-/
 theorem comb_vecMul {x : Sp R ⟶ S} {n m : ℕ} {v : Fin n → (epsAt x ⟶ t.G)}
     (hv : ∀ i, spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (v i).left = (1 : Over.mk x ⟶ t.G).left)
     {w : Fin m → (epsAt x ⟶ t.G)} {A : Matrix (Fin m) (Fin n) R}
@@ -299,6 +393,9 @@ theorem comb_vecMul {x : Sp R ⟶ S} {n m : ℕ} {v : Fin n → (epsAt x ⟶ t.G
   exact Formalism.L2.Pj.tanLinG _ (fun j => ⟨Over.w (v j), hv j⟩) (fun k => (w k).left) A.transpose N _
     (fun i => (e _ _ _).1 (hA i)) ((e _ _ _).1 h)
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Use `comb_vecMul hv (w := fun k => DetExtendZero.epsMap g' x' ≫ v' k) (A := g'.mapMatrix M) (fun k => ?_) (h' i)` and prove the remaining obligations. Simplify using `only [h₂]`. Conclude with `DetExtendZero.comb_map g' rfl (h k) rfl`.
+-/
 theorem comb_comp (g' : R' →+* R'') {x' : Sp R' ⟶ S} {x'' : Sp R'' ⟶ S} (hx : x'' = spMap g' ≫ x') {n : ℕ}
     {v : Fin n → (Sp (DualNumber R') ⟶ t.G.left)} {v' : Fin n → (epsAt x' ⟶ t.G)} {v₂ v'' : Fin n → (epsAt x'' ⟶ t.G)}
     (hv : ∀ i, spMap (TrivSqZeroExt.fstHom R'' R'' R'').toRingHom ≫ (v₂ i).left = (1 : Over.mk x'' ⟶ t.G).left)
@@ -317,6 +414,11 @@ variable {j : c.F →+* R} {j' : c.F →+* R'} {x : Sp R ⟶ X}
   {v' : Fin p → (epsAt (x' ≫ π) ⟶ t.G)} {w' : Fin q → (epsAt (x' ≫ π) ⟶ t.G)} {x'' : Sp R'' ⟶ X}
   {v'' : Fin p → (epsAt (x'' ≫ π) ⟶ t.G)} {w'' : Fin q → (epsAt (x'' ≫ π) ⟶ t.G)}
 
+/- English proof (translation)
+Establish `hx : x'' = spMap (g'.comp g) ≫ x` using `by rw [hc'.1, hc.1, DetExtendZero.spMap_comp, Category.assoc]`. Establish `hx' : x'' ≫ π = spMap g' ≫ x' ≫ π` using `by rw [hc'.1, Category.assoc]`. Take `⟨v₂, w₂, h₂, a, b⟩` from `exists_pull (g'.comp g) h hx`. Use `⟨hx, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [← a]`.
+
+Conclude with `comb_comp g' hx' (fun k => (h₂.2.2.1.1 k).1) (fun k => by rw [a, DetExtendZero.dual_comp]; exact Category.assoc _ _ _) hc.2.1 hc'.2.1 i`. Simplify using `only [← b]`. Conclude with `comb_comp g' hx' (fun k => (h₂.2.2.2.1 k).1) (fun k => by rw [b, DetExtendZero.dual_comp]; exact Category.assoc _ _ _) hc.2.2 hc'.2.2 i`.
+-/
 theorem chg_comp {g : R →+* R'} {g' : R' →+* R''} (h : IsFrame t π s V (HermitianCompactForm.chi c τ) j x v w) {M N M' N'}
     (hc : IsChg t π g x v w x' v' w' M N) (hc' : IsChg t π g' x' v' w' x'' v'' w'' M' N') :
     IsChg t π (g'.comp g) x v w x'' v'' w'' (M' * g'.mapMatrix M) (N' * g'.mapMatrix N) := by
@@ -331,6 +433,11 @@ theorem chg_comp {g : R →+* R'} {g' : R' →+* R''} (h : IsFrame t π s V (Her
     exact comb_comp g' hx' (fun k => (h₂.2.2.2.1 k).1)
       (fun k => by rw [b, DetExtendZero.dual_comp]; exact Category.assoc _ _ _) hc.2.2 hc'.2.2 i
 
+/- English proof (translation)
+Take `⟨v₁, w₁, h₁, a, b⟩` from `exists_pull g h hc.1`. Take `rfl` from `(exists_chg g h h' hc.1).1`. Take `⟨-, h1, h2⟩` from `hc`. Take `⟨-, h1', h2'⟩` from `hc'`. Simplify using `only [← a] at h1 h1'`.
+
+Simplify using `only [← b] at h2 h2'`. Conclude with `⟨funext fun i => (h₁.2.2.1.2 _ (h'.2.2.1.1 i)).unique (h1 i) (h1' i),`. Use function extensionality and compare the values at `fun i => (h₁.2.2.2.2 _ (h'.2.2.2.1 i)).unique (h2 i) (h2' i)⟩`.
+-/
 theorem chg_unique {g : R →+* R'} (h : IsFrame t π s V (HermitianCompactForm.chi c τ) j x v w)
     (h' : IsFrame t π s V (HermitianCompactForm.chi c τ) j' x' v' w') {M N M' N'}
     (hc : IsChg t π g x v w x' v' w' M N) (hc' : IsChg t π g x v w x' v' w' M' N') : M = M' ∧ N = N' := by
@@ -343,6 +450,11 @@ theorem chg_unique {g : R →+* R'} (h : IsFrame t π s V (HermitianCompactForm.
   exact ⟨funext fun i => (h₁.2.2.1.2 _ (h'.2.2.1.1 i)).unique (h1 i) (h1' i),
     funext fun i => (h₁.2.2.2.2 _ (h'.2.2.2.1 i)).unique (h2 i) (h2' i)⟩
 
+/- English proof (translation)
+Take `⟨v₁, w₁, h₁, a, b⟩` from `exists_pull g h hc.1`. Take `⟨-, M', N', hc'⟩` from `exists_chg (RingHom.id R') h' h₁ (by rw [DetExtendZero.spMap_id, Category.id_comp])`. Establish `h1 : IsChg t π g x v w x' v₁ w₁ 1 1`. Use `⟨hc.1, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [← a]`.
+
+Conclude with `DetExtendZero.comb_one (fun k => (h₁.2.2.1.1 k).1) i`. Simplify using `only [← b]`. Conclude with `DetExtendZero.comb_one (fun k => (h₁.2.2.2.1 k).1) i`. Take `⟨e1, e2⟩` from `chg_unique h h₁ (chg_comp h hc hc') h1`. Conclude with `⟨Matrix.isUnit_det_of_left_inverse e1, Matrix.isUnit_det_of_left_inverse e2⟩`.
+-/
 theorem chg_isUnit {g : R →+* R'} (h : IsFrame t π s V (HermitianCompactForm.chi c τ) j x v w)
     (h' : IsFrame t π s V (HermitianCompactForm.chi c τ) j' x' v' w') {M N}
     (hc : IsChg t π g x v w x' v' w' M N) : IsUnit M.det ∧ IsUnit N.det := by
@@ -365,6 +477,11 @@ def factor (g : R →+* R') (a : Framed c t π s V τ p q R) (a' : Framed c t π
   @Classical.epsilon R' ⟨0⟩ fun e => IsUnit e ∧
     ∀ M N, IsChg t π g a.1 a.2.1 a.2.2.1 a'.1 a'.2.1 a'.2.2.1 M N → N.det = e * M.det
 
+/- English proof (translation)
+Use `Classical.epsilon_spec_aux ⟨0⟩ (fun e => IsUnit e ∧ ∀ M N, IsChg t π g a.1 a.2.1 a.2.2.1 a'.1 a'.2.1 a'.2.2.1 M N → N.det = e * M.det) ?_` and prove the remaining obligations. Take `⟨j, h⟩` from `a.2.2.2`. Take `⟨j', h'⟩` from `a'.2.2.2`. Take `⟨-, M, N, hc⟩` from `exists_chg g h h' hx`. Take `⟨⟨u, hu⟩, hN⟩` from `chg_isUnit h h' hc`.
+
+Use `⟨N.det * u⁻¹, hN.mul (Units.isUnit _), fun M' N' hc' => ?_⟩` and prove the remaining obligations. Take `⟨rfl, rfl⟩` from `chg_unique h h' hc hc'`. Rewrite using `[← hu, Units.inv_mul_cancel_right]`.
+-/
 theorem factor_spec (g : R →+* R') (a : Framed c t π s V τ p q R) (a' : Framed c t π s V τ p q R')
     (hx : a'.1 = spMap g ≫ a.1) : IsUnit (factor g a a') ∧
     ∀ M N, IsChg t π g a.1 a.2.1 a.2.2.1 a'.1 a'.2.1 a'.2.2.1 M N → N.det = factor g a a' * M.det := by
@@ -378,6 +495,11 @@ theorem factor_spec (g : R →+* R') (a : Framed c t π s V τ p q R) (a' : Fram
   obtain ⟨rfl, rfl⟩ := chg_unique h h' hc hc'
   rw [← hu, Units.inv_mul_cancel_right]
 
+/- English proof (translation)
+Take `⟨j, h⟩` from `a.2.2.2`. Take `⟨j', h'⟩` from `a'.2.2.2`. Take `⟨j'', h''⟩` from `a''.2.2.2`. Take `⟨-, M, N, hc⟩` from `exists_chg g h h' hx`. Take `⟨-, M', N', hc'⟩` from `exists_chg g' h' h'' hx'`.
+
+Establish `hc''` using `chg_comp h hc hc'`. Establish `e` using `(factor_spec _ a a'' hc''.1).2 _ _ hc''`. Use `(chg_isUnit h h'' hc'').1.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[← e, Matrix.det_mul, Matrix.det_mul, ← RingHom.map_det, ← RingHom.map_det, (factor_spec _ a a' hx).2 _ _ hc, (factor_spec _ a' a'' hx').2 _ _ hc', map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem factor_comp (g : R →+* R') (g' : R' →+* R'') (a : Framed c t π s V τ p q R) (a' : Framed c t π s V τ p q R')
     (a'' : Framed c t π s V τ p q R'') (hx : a'.1 = spMap g ≫ a.1) (hx' : a''.1 = spMap g' ≫ a'.1) :
     factor (g'.comp g) a a'' = factor g' a' a'' * g' (factor g a a') := by
@@ -395,6 +517,19 @@ theorem factor_comp (g : R →+* R') (g' : R' →+* R'') (a : Framed c t π s V 
 
 end Change
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c S X t π s τ p q Y _ io V hio hV hcov j₀ v₀ w₀ δ h₀ hδ`. Substitute `hV` using the available equality. Take `⟨f, hf, hu, h0⟩` from `exists_coord (io := io) (Fr := Framed c t π s (Set.range io) τ p q) (pt := fun _ _ a => a.1) (d := fun _ _ _ _ => factor) (a₀ := ⟨_, v₀, w₀, j₀, h₀⟩) (δ := δ) (fun R _ a => a.2.2.2.choose_spec.2.1) (fun R R' _ _ g a => by`. Take `⟨j, h⟩` from `a.2.2.2`. Take `⟨v, w, h', -⟩` from `exists_pull g h rfl`.
+
+Conclude with `⟨⟨_, v, w, _, h'⟩, rfl⟩)`. Use the proof step `(fun R R' _ _ g a a' h => (factor_spec g a a' h).1) (fun _ _ _ _ _ _ => factor_comp) rfl`. Use the proof step `(fun z hz => by`. Take `⟨W, hW, j, v, w, hzW, h⟩` from `hcov z hz`. Use `⟨Γ(X, W), inferInstance, ⟨_, v, w, j, h⟩, inferInstanceAs (IsOpenImmersion hW.fromSpec), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show Set.range _ = _ from hW.range_fromSpec]`. Conclude with `hzW)`. Use the proof step `(fun y => by`. Take `⟨j, v, w, M, N, u, h, hc, e⟩` from `hδ y`. Use `⟨⟨_, v, w, j, h⟩, u, u.isUnit, rfl, (chg_isUnit h h₀ hc).1.mul_left_cancel ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, (factor_spec _ ⟨_, v, w, j, h⟩ ⟨_, v₀, w₀, j₀, h₀⟩ hc.1).2 M N hc]`. Use the proof step `ring)`. Set `σ : Rule t π p q` to `fun R _ x v w => if h : ∃ j, IsFrame t π s (Set.range io) (HermitianCompactForm.chi c τ) j x v w then f R ⟨x, v, w, h⟩ else 0`. Establish `hσ : ∀ (R : Type) [CommRing R] j x v w (h : IsFrame t π s (Set.range io) (HermitianCompactForm.chi c τ) j x v w), σ R x v w = f R ⟨x, v, w, j, h⟩` using `fun R _ j x v w h => dif_pos ⟨j, h⟩`. Use `⟨σ, isSection_of_chg fun R R' _ _ g j j' x v w x' v' w' M N h h' hc => ?_, fun R _ j x v w h => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hσ R j x v w h, hσ R' j' x' v' w' h', hf R R' g ⟨x, v, w, j, h⟩ ⟨x', v', w', j', h'⟩ hc.1, (factor_spec g ⟨x, v, w, j, h⟩ ⟨x', v', w', j', h'⟩ hc.1).2 M N hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hσ R j x v w h]`. Conclude with `hu _ _`. Rewrite using `[hσ _ j₀ _ v₀ w₀ h₀]`.
+
+Conclude with `h0`.
+-/
 theorem exists_section : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : Level H) (c : Coeff l) (S X : Scheme.{0}) (t : SAB H S) (π : X ⟶ S) (s : X ⟶ Sp c.F) (τ : E →+* ℂ) (p q : ℕ) (Y : Scheme.{0}) [IsIntegral Y] (io : Y ⟶ X) (V : Set X), IsOpenImmersion io → Set.range io = V → FrameCover t π s V (HermitianCompactForm.chi c τ) p q → ∀ (j₀ : c.F →+* Y.functionField) v₀ w₀ (δ : Y.functionField), IsFrame t π s V (HermitianCompactForm.chi c τ) j₀ (genPt Y ≫ io) v₀ w₀ → (∀ y : Y, UnitAtPt t π s V (HermitianCompactForm.chi c τ) io v₀ w₀ δ y) → ∃ σ : Rule t π p q, IsSection t π s V (HermitianCompactForm.chi c τ) σ ∧ NowhereZero t π s V (HermitianCompactForm.chi c τ) σ ∧ σ Y.functionField (genPt Y ≫ io) v₀ w₀ = δ := by
   intro E _ _ _ H l c S X t π s τ p q Y _ io V hio hV hcov j₀ v₀ w₀ δ h₀ hδ
   subst hV

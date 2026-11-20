@@ -14,6 +14,15 @@ open Formalism.HN
 
 namespace GradedDegree
 
+/- English proof (translation)
+Establish `hcl` using `Complex.subfield_eq_of_closed (Subfield.isClosed_topologicalClosure (v.embedding.fieldRange))`. Break down `hcl with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hreal : ComplexEmbedding.IsReal v.embedding`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+
+Use extensionality with `x`. Establish `hx : v.embedding x ∈ (v.embedding.fieldRange).topologicalClosure` using `Subfield.le_topologicalClosure _ ⟨x, rfl⟩`. Rewrite `hx` using `[h]`. Take `⟨r, hr⟩` from `hx`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`.
+
+Rewrite using `[← hr]`. Conclude with `Complex.conj_ofReal r`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 hv) ((InfinitePlace.isReal_iff).2 hreal)`. Introduce `z`. Establish `hz : z ∈ (v.embedding.fieldRange).topologicalClosure` using `by rw [h]; trivial`.
+
+Establish `hz' : z ∈ _root_.closure ((v.embedding.fieldRange : Subfield ℂ) : Set ℂ)` using `hz`. Rewrite `hz'` using `[RingHom.coe_fieldRange]`. Then use the resulting hypothesis.
+-/
 theorem denseRange_embedding {K : Type} [Field K] [NumberField K] (v : InfinitePlace K)
     (hv : v.IsComplex) : DenseRange (v.embedding : K → ℂ) := by
   have hcl := Complex.subfield_eq_of_closed

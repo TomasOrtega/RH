@@ -9,6 +9,9 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Establish `hsub : (G.submatrix (Subtype.val : {a : Fin s // (a : ℕ) < j} → Fin s) Subtype.val).PosDef` using `hG.submatrix Subtype.val_injective`. Establish `h` using `hsub.det_pos`. Unfold `leadMinor`. Conclude with `(Complex.pos_iff.mp h).1`.
+-/
 theorem leadMinor_re_pos_of_posDef {s : ℕ} {G : Matrix (Fin s) (Fin s) ℂ} (hG : G.PosDef) (j : ℕ) :
     0 < (leadMinor G j).re := by
   have hsub : (G.submatrix (Subtype.val : {a : Fin s // (a : ℕ) < j} → Fin s) Subtype.val).PosDef :=
@@ -17,10 +20,20 @@ theorem leadMinor_re_pos_of_posDef {s : ℕ} {G : Matrix (Fin s) (Fin s) ℂ} (h
   unfold leadMinor
   exact (Complex.pos_iff.mp h).1
 
+/- English proof (translation)
+The claim follows from `(h.submatrix _ _).det`.
+-/
 theorem contDiffAt_leadMinor {n s : ℕ} {G : V n → Matrix (Fin s) (Fin s) ℂ} {v : V n}
     (h : MContDiffAt ∞ G v) (j : ℕ) : ContDiffAt ℝ ∞ (fun x => leadMinor (G x) j) v :=
   (h.submatrix _ _).det
 
+/- English proof (translation)
+Introduce `n s G v hG hp`. Use `⟨fun i j => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hnum : ContDiffAt ℝ ∞ (fun x => ((G x).submatrix (fun a : {a : Fin s // (a : ℕ) < j + 1} => if a.1 = j then i else a.1) Subtype.val).det) v` using `(hG.submatrix _ _).det`. Establish `hden` using `contDiffAt_leadMinor hG (j : ℕ)`. Establish `hne : leadMinor (G v) j ≠ 0` using `fun h0 => by`.
+
+Use `leadMinor_re_pos_of_posDef hp j` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `at this`. Simplify using `only [ldPart, Matrix.of_apply]`. Conclude with `hnum.mul (hden.inv hne)`.
+
+Establish `hnum : ContDiffAt ℝ ∞ (fun x => (leadMinor (G x) (i + 1)).re) v` using `Complex.reCLM.contDiff.contDiffAt.comp v (contDiffAt_leadMinor hG _)`. Establish `hden : ContDiffAt ℝ ∞ (fun x => (leadMinor (G x) i).re) v` using `Complex.reCLM.contDiff.contDiffAt.comp v (contDiffAt_leadMinor hG _)`. Conclude with `hnum.div hden (leadMinor_re_pos_of_posDef hp i).ne'`.
+-/
 theorem ldPart_grD_smooth : ∀ (n s : ℕ) (G : V n → Matrix (Fin s) (Fin s) ℂ) (v : V n), MContDiffAt ∞ G v → (G v).PosDef →
     MContDiffAt ∞ (fun x => ldPart (G x)) v ∧ ∀ i, ContDiffAt ℝ ∞ (fun x => grD (G x) i) v := by
   intro n s G v hG hp

@@ -19,6 +19,11 @@ open scoped ComplexOrder
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Unfold `hO`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `symm`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem hO_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace ((S.gram⁻¹).map (incA D) * (Formalism.UG.cT (cA D) (y : Matrix (Fin T.rank) (Fin S.rank) (AE D))) *
       T.gram.map (incA D) * (x : Matrix (Fin T.rank) (Fin S.rank) (AE D))) := by
@@ -32,6 +37,13 @@ theorem hO_trace (S T : HSp D) (x y : WO S T) :
   refine Finset.sum_congr rfl fun c _ => ?_
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Establish `h2 : G * G' = 1` using `mul_eq_one_comm.1 h1`. Establish `h3 : (G' * Formalism.UG.cT σ k * G) * k = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : k * (G' * Formalism.UG.cT σ k * G) = 1` using `mul_eq_one_comm.1 h3`. Establish `h5 : k * G' * Formalism.UG.cT σ k = G'`.
+
+Use `congrArg (· * G') h4` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, h2, Matrix.mul_one, Matrix.one_mul] at this`. Simplify `this` using `only [Matrix.mul_assoc]`. Rewrite using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, ← Matrix.mul_assoc _ _ k, Matrix.trace_mul_comm _ k]`. Use `congr 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h5, hm]`.
+-/
 theorem trace_inv {A : Type} [CommRing A] (σ : A →+* A) {a b : ℕ} (G G' k : Matrix (Fin a) (Fin a) A)
     (H m : Matrix (Fin b) (Fin b) A) (x y : Matrix (Fin b) (Fin a) A) (h1 : G' * G = 1)
     (hk : Formalism.UG.cT σ k * G * k = G) (hm : Formalism.UG.cT σ m * H * m = H) :
@@ -51,6 +63,11 @@ theorem trace_inv {A : Type} [CommRing A] (σ : A →+* A) {a b : ℕ} (G G' k :
         simp only [Matrix.mul_assoc]
     _ = _ := by rw [h5, hm]
 
+/- English proof (translation)
+Unfold `symplO`. Distinguish the cases in `hS : IsUnit S.gram.det`. Use `congr 2`. Rewrite using `[hO_trace, hO_trace]`. Establish `hk : Formalism.UG.cT (cA D) (mt S g⁻¹) * S.gram.map (incA D) * mt S g⁻¹ = S.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig S.gram from g⁻¹).2`.
+
+Establish `hm : Formalism.UG.cT (cA D) (mt T h) * T.gram.map (incA D) * mt T h = T.gram.map (incA D)` using `(show HR (AF D.host.F) D.sp.cm.sig T.gram from h).2`. Establish `h1 : (S.gram⁻¹).map (incA D) * S.gram.map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hS, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `trace_inv (cA D) _ _ _ _ _ x y h1 hk hm`. Simplify using `only [hO, Matrix.nonsing_inv_apply_not_isUnit _ hS, Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero]`.
+-/
 theorem symplO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
     symplO S T (actO S T g h x) (actO S T g h y) = symplO S T x y := by
   unfold symplO
@@ -70,16 +87,39 @@ theorem symplO_actO (S T : HSp D) (g : GA D S) (h : GA D T) (x y : WO S T) :
 def actAdd (S T : HSp D) (g : GA D S) (h : GA D T) : WO S T →+ WO S T :=
   AddMonoidHom.mk' (actO S T g h) fun x y => by simp only [actO, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Rewrite `*` using `[isHalf_iff]`. Unfold `actO`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hu]`.
+-/
 theorem isHalf_actO {e : AE D} (g : GA D S) (h : GA D T) {u : WO S T} (hu : IsHalf e u) :
     IsHalf e (actO S T g h u) := by
   rw [isHalf_iff] at *
   unfold actO
   rw [← Matrix.smul_mul, ← Matrix.mul_smul, hu]
 
+/- English proof (translation)
+Use `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u` as an intermediate fact. Rewrite `this` using `[inv_inv, inv_inv]`. Then use the resulting hypothesis.
+-/
 theorem actO_inv_actO (g : GA D S) (h : GA D T) (u : WO S T) : actO S T g⁻¹ h⁻¹ (actO S T g h u) = u := by
   have := GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ u
   rwa [inv_inv, inv_inv] at this
 
+/- English proof (translation)
+Establish `he'` using `isSplitIdem_conj he`. Establish `h : f ∉ Submodule.span ℂ {x | ∃ y, IsHalf e y ∧ y ∉ Λ ∧ x = heisO ψ S T y f}`. Use `notMem_span_of_commute {g | ∃ l ∈ Λ, ∃ z : ℂ, IsHalf (cA D e) l ∧ z ≠ 1 ∧ g = heisL ψ S T l - z • 1} ?_ _ ?_ f ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, -, z, hl, -, rfl⟩ _ ⟨l', -, z', hl', -, rfl⟩`. Conclude with `((heisL_commute_half he' hl hl').sub_right ((Commute.one_right _).smul_right _)).sub_left ((Commute.one_left _).smul_left _)`.
+
+Introduce and unpack `_ ⟨y, hy, hyΛ, rfl⟩`. Take `⟨l, hl, hl', hne⟩` from `hd y hy hyΛ`. Use `⟨_, ⟨l, hl, _, hl', hne, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, heisL_apply, heisO_comm, hf2 l hl hl']`. Conclude with `sub_self _`.
+
+Establish `: ∀ B ∈ Submonoid.closure {g | ∃ l ∈ Λ, ∃ z : ℂ, IsHalf (cA D e) l ∧ z ≠ 1 ∧ g = heisL ψ S T l - z • 1}, ∃ c : ℂ, c ≠ 0 ∧ B f = c • f`. Introduce `B hB`. Proceed by induction on `hB using Submonoid.closure_induction with`. Consider the case `mem b hb`. Take `⟨l, hl, z, hl', hz, rfl⟩` from `hb`.
+
+Use `⟨1 - z, sub_ne_zero.2 hz.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, heisL_apply, hf2 l hl hl', sub_smul, one_smul]`. Both sides reduce to the same expression. Consider the case `one => exact ⟨1, one_ne_zero, (one_smul _ _).symm⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨c, hc, hx⟩` from `hx`. Take `⟨d, hd, hy⟩` from `hy`. Conclude with `⟨d * c, mul_ne_zero hd hc, by rw [Module.End.mul_apply, hy, map_smul, hx, smul_smul]⟩`. Introduce `B hB`. Take `⟨c, hc, h⟩` from `this B hB`.
+
+Rewrite using `[h]`. Conclude with `smul_ne_zero hc hf0`. Take `⟨κ, hκ, hκ'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem h inferInstance`. Use `⟨(κ f)⁻¹ • κ, by rw [LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hκ], fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hyΛ : y ∈ Λ`.
+
+Rewrite using `[hf1 y hyΛ hy, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hκ]`. Conclude with `zero_le_one`. Establish `: κ (heisO ψ S T y f) = 0`. Rewrite using `[← Submodule.mem_bot ℂ, ← hκ']`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, hy, hyΛ, rfl⟩)`.
+
+Rewrite using `[LinearMap.smul_apply, this, smul_zero]`.
+-/
 theorem exists_count_form' {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1)
     {f : WO S T → ℂ} (hf0 : f ≠ 0) (hf1 : ∀ u ∈ Λ, IsHalf e u → heisO ψ S T u f = f)
@@ -126,6 +166,23 @@ theorem exists_count_form' {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitI
       exact Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, hy, hyΛ, rfl⟩)
     rw [LinearMap.smul_apply, this, smul_zero]
 
+/- English proof (translation)
+Take `⟨κ, hκ1, hκ⟩` from `exists_count_form' he hd hf0 hf1 hf2`. Establish `h : f ∉ Submodule.span ℂ {x | ∃ y φ, IsHalf e y ∧ IsThetaFunO ψ S T φ ∧ x = heisO ψ S T y φ - φ}`. Use `notMem_span_of_commute {g | ∃ (y : WO S T) (N : ℕ), IsHalf e y ∧ g = ∑ k ∈ Finset.range (N + 1), heisL ψ S T (k • y)} ?_ _ ?_ f ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, N, hy, rfl⟩ _ ⟨y', N', hy', rfl⟩`. Conclude with `Commute.sum_left _ _ _ fun k _ => Commute.sum_right _ _ _ fun k' _ => heisL_commute_half he (isHalf_nsmul hy k) (isHalf_nsmul hy' k')`.
+
+Introduce and unpack `_ ⟨y, φ, hy, hφ, rfl⟩`. Take `⟨U, hU, hUφ⟩` from `hφ.level`. Take `⟨N, hN, hNU⟩` from `exists_nsmul_mem U hU (half_fin he hy)`. Take `⟨N, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hN.ne'`. Use `⟨_, ⟨y, N, hy, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : ∀ k : ℕ, heisL ψ S T (k • y) (heisO ψ S T y φ - φ) = heisO ψ S T ((k + 1) • y) φ - heisO ψ S T (k • y) φ`. Introduce `k`. Rewrite using `[map_sub, succ_nsmul, heisO_add_of_orth ψ S T (half_orth he (isHalf_nsmul hy k) hy)]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.sum_apply, Finset.sum_congr rfl fun k _ => e1 k, Finset.sum_range_sub (fun k => heisO ψ S T (k • y) φ), zero_smul, heisO_zero, hUφ _ hNU (half_fin he (isHalf_nsmul hy _)), sub_self]`.
+
+Establish `: ∀ B ∈ Submonoid.closure {g | ∃ (y : WO S T) (N : ℕ), IsHalf e y ∧ g = ∑ k ∈ Finset.range (N + 1), heisL ψ S T (k • y)}, (∀ y, IsHalf e y → 0 ≤ κ (B (heisO ψ S T y f))) ∧ 0 < κ (B f)`. Introduce `B hB`. Proceed by induction on `hB using Submonoid.closure_induction_right with`. Consider the case `one => exact ⟨hκ, by rw [Module.End.one_apply, hκ1]; exact zero_lt_one⟩`. Consider the case `mul_right B _ g hg ih`.
+
+Take `⟨y', N, hy', rfl⟩` from `hg`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply, map_sum, map_sum]`. Use `Finset.sum_nonneg fun k _ => ?_` and prove the remaining obligations. Rewrite using `[heisL_apply, ← heisO_add_of_orth ψ S T (half_orth he (isHalf_nsmul hy' k) hy)]`.
+
+Conclude with `ih.1 _ (isHalf_add (isHalf_nsmul hy' k) hy)`. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply, map_sum, map_sum]`. Use `Finset.sum_pos' (fun k _ => ih.1 _ (isHalf_nsmul hy' k)) ⟨0, Finset.mem_range.2 N.succ_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[heisL_apply, zero_smul, heisO_zero]`. Conclude with `ih.2`.
+
+Introduce `B hB h0`. Use `(this B hB).2` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `lt_irrefl _ this`. Take `⟨ℓ, hℓ, hℓ'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem h inferInstance`.
+
+Use `⟨ℓ, hℓ, fun y hy φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub, ← Submodule.mem_bot ℂ, ← hℓ']`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, φ, hy, hφ, rfl⟩)`.
+-/
 theorem exists_invariant_form' {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSplitIdem D e)
     (hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1)
     {f : WO S T → ℂ} (hf0 : f ≠ 0) (hf1 : ∀ u ∈ Λ, IsHalf e u → heisO ψ S T u f = f)
@@ -179,6 +236,31 @@ theorem exists_invariant_form' {Λ : AddSubgroup (WO S T)} {e : AE D} (he : IsSp
   rw [← sub_eq_zero, ← map_sub, ← Submodule.mem_bot ℂ, ← hℓ']
   exact Submodule.mem_map_of_mem (Submodule.subset_span ⟨y, φ, hy, hφ, rfl⟩)
 
+/- English proof (translation)
+Establish `he'` using `isSplitIdem_conj he`. Establish `hψ` using `hW.std.1`. Take `⟨r, hr, hrℓ⟩` from `hW.om_split e he g h hg hh x y hx hy`. Use `⟨r, hr, fun f hf hf1 hf2 => ?_⟩` and prove the remaining obligations. Take `⟨Λ', hΛ'⟩ : ∃ Λ' : AddSubgroup (WO S T), ∀ w, w ∈ Λ' ↔ actO S T g⁻¹ h⁻¹ w ∈ Λ` from `⟨Λ.comap (actAdd S T g⁻¹ h⁻¹), fun _ => Iff.rfl⟩`.
+
+Establish `hdd' : ∀ u ∈ Λ', ∀ u' ∈ Λ', ψ (symplO S T u u') = 1` using `fun u hu u' hu' => by`. Rewrite using `[← symplO_actO S T g⁻¹ h⁻¹]`. Conclude with `hdd _ ((hΛ' _).1 hu) _ ((hΛ' _).1 hu')`. Establish `hG : ∀ w ∈ Λ', IsHalf e w ∨ IsHalf (cA D e) w → heisO ψ S T w (om (g, h) f) = om (g, h) f`. Introduce `w hw hwh`.
+
+Establish `h1` using `hW.om_heis g h (actO S T g⁻¹ h⁻¹ w) f hf`. Rewrite `h1` using `[GlobalTheory.AdelicLatMove.actO_actO_inv]`. Rewrite using `[← h1]`. Break down `hwh with hwh | hwh` into its components or cases. Rewrite using `[hf1 _ ((hΛ' _).1 hw) (isHalf_actO _ _ hwh)]`.
+
+Rewrite using `[hf2 _ ((hΛ' _).1 hw) (isHalf_actO _ _ hwh)]`. Establish `hF1 : ∀ w ∈ Λ', IsHalf e w → heisO ψ S T w (∑ u ∈ R, heisO ψ S T u f) = ∑ u ∈ R, heisO ψ S T u f` using `fun w hw hwh => sum_reps_invariant (Λ := Λ) (Λ' := Λ') he (fun u hu => ⟨(hΛ' _).2 (hR u hu).1, (hR u hu).2⟩) (fun u hu => hRu u ((hΛ' _).1 hu)) (fun d hd _ => hf1 d hd) hw hwh`. Establish `hF2 : ∀ w ∈ Λ', IsHalf (cA D e) w → heisO ψ S T w (∑ u ∈ R, heisO ψ S T u f) = ∑ u ∈ R, heisO ψ S T u f`. Introduce `w hw hwh`. Establish `hwΛ : w ∈ Λ`.
+
+Assume the negation of the conclusion as `hn`. Take `⟨l, hl, hlh, hne⟩` from `hd' w hwh hn`. Conclude with `hne (hdd' _ ((hΛ' _).2 (hle l hl hlh)) _ hw)`. Rewrite using `[heisO_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
+
+Rewrite using `[heisO_comm, hdd' w hw u ((hΛ' _).2 (hR u hu).1), one_smul, hf2 w hwΛ hwh]`. Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hne`. Take `⟨ℓ, hℓ0, hℓ⟩` from `exists_invariant_form' (Λ := Λ') (ψ := ψ) he' (fun w hwh hw => by`. Take `⟨l, hl, hlh, hne⟩` from `hd' _ (isHalf_actO g⁻¹ h⁻¹ hwh) fun hh => hw ((hΛ' _).2 hh)`.
+
+Use `⟨actO S T g h l, (hΛ' _).2 (by rwa [actO_inv_actO]), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `isHalf_actO _ _ hlh`. Rewrite using `[← symplO_actO S T g⁻¹ h⁻¹, actO_inv_actO]) hne` and apply the resulting hypothesis. Use the proof step `(fun w hw hwh => by`.
+
+Rewrite using `[← heisL_apply, map_sub, map_smul, heisL_apply, heisL_apply, hG w hw (Or.inr hwh), hF2 w hw hwh])`. Use the proof step `(fun w hw hwh => by`. Rewrite `hwh` using `[GlobalTheory.DualPairCheck.cA_cA]`. Rewrite using `[← heisL_apply, map_sub, map_smul, heisL_apply, heisL_apply, hG w hw (Or.inl hwh), hF1 w hw hwh])`. Apply `hℓ0` to reduce the goal to its premises.
+
+Establish `hval` using `hrℓ ℓ (fun u hu φ hφ => hℓ u hu φ hφ) f hf`. Establish `h0 : actO S T g⁻¹ h⁻¹ 0 ∈ Λ` using `(hΛ' _).1 (zero_mem _)`. Take `⟨v₀, ⟨hv₀, hv₀Λ⟩, hv₀u⟩` from `hRu 0 h0 (isHalf_zero e)`. Establish `hv₀' : v₀ ∈ Λ` using `by rwa [zero_sub, neg_mem_iff] at hv₀Λ`. Establish `hsum : ℓ (∑ u ∈ R, heisO ψ S T u f) = ℓ f`.
+
+Rewrite using `[map_sum, Finset.sum_eq_single_of_mem v₀ hv₀, hf1 v₀ hv₀' (hR _ hv₀).2]`. Introduce `u hu hne`. Establish `huΛ : u ∉ Λ` using `fun huΛ => hne (hv₀u u ⟨hu, by rwa [zero_sub, neg_mem_iff]⟩)`. Take `⟨l, hl, hlh, hlne⟩` from `hd u (hR u hu).2 huΛ`. Establish `hth : IsThetaFunO ψ S T (heisO ψ S T u f)`.
+
+Use `GlobalTheory.FinTranslate.isTheta_sum_heisO_fin D ψ S T hψ f hf Unit {()} (fun _ => u) (fun _ => 1) fun _ _ => half_fin he (hR u hu).2` as an intermediate fact. Rewrite `this` using `[Finset.sum_singleton, one_smul]`. Then use the resulting hypothesis. Establish `h2` using `hℓ l hlh _ hth`. Rewrite `h2` using `[heisO_comm, hf2 l hl hlh, map_smul, smul_eq_mul]`. Establish `h3 : (ψ (symplO S T l u) - 1) * ℓ (heisO ψ S T u f) = 0` using `by rw [sub_mul, h2, one_mul, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hlne)`. Rewrite using `[map_sub, map_smul, hval, hsum, smul_eq_mul, sub_self]`.
+-/
 theorem om_eq_smul_sum {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : IsWeilDatumO ψ S T χS χT om) {e : AE D} (he : IsSplitIdem D e) {Λ : AddSubgroup (WO S T)}
     (hdd : ∀ u ∈ Λ, ∀ u' ∈ Λ, ψ (symplO S T u u') = 1)
@@ -254,6 +336,9 @@ theorem om_eq_smul_sum {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T �
     exact (mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hlne)
   rw [map_sub, map_smul, hval, hsum, smul_eq_mul, sub_self]
 
+/- English proof (translation)
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun w => by positivity) (hf.norm.pow_const 2).aestronglyMeasurable]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+-/
 theorem integral_normSq_eq {X : Type} [MeasurableSpace X] (ν : Measure X) {f : X → ℂ} (hf : Measurable f) :
     ∫ w, ‖f w‖ ^ 2 ∂ν = (∫⁻ w, ‖f w‖ₑ ^ 2 ∂ν).toReal := by
   rw [integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun w => by positivity)
@@ -262,6 +347,23 @@ theorem integral_normSq_eq {X : Type} [MeasurableSpace X] (ν : Measure X) {f : 
   funext w
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]
 
+/- English proof (translation)
+Distinguish the cases in `hf0 : f = 0`. Substitute `hf0` using the available equality. Establish `: ∀ u, heisO ψ S T u 0 = 0` using `fun u => (heisL ψ S T u).map_zero`. Simplify using `only [map_zero, this, Finset.sum_const_zero, smul_zero]`. Establish `he'` using `isSplitIdem_conj he`.
+
+Establish `hψ` using `hW.std.1`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T)).1`. Rewrite `hdual` using `[GlobalTheory.PlaceModel.coe_latFrame, GlobalTheory.PlaceModel.coe_latFrame]`. Establish `hst` using `@idem_smul_mem D S T (L0c D S) (L0c D T) _ he.1`. Establish `hstc` using `@idem_smul_mem D S T (L0c D S) (L0c D T) _ he'.1`.
+
+Establish `hfin` using `@latO_fin D S T (L0c D S) (L0c D T)`. Generalize the expression as in `latO S T (L0c D S) (L0c D T) (fun _ => True) = Λ at *`. Establish `hd : ∀ y, IsHalf e y → y ∉ Λ → ∃ l ∈ Λ, IsHalf (cA D e) l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => exists_dual_half he hdual hstc hy hn`. Establish `hd' : ∀ y, IsHalf (cA D e) y → y ∉ Λ → ∃ l ∈ Λ, IsHalf e l ∧ ψ (symplO S T l y) ≠ 1` using `fun y hy hn => by`. Use `exists_dual_half he' hdual (by rw [GlobalTheory.DualPairCheck.cA_cA]; exact hst) hy hn` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.DualPairCheck.cA_cA]`. Then use the resulting hypothesis. Take `⟨r, hr, hom⟩` from `om_eq_smul_sum hW he (fun u hu => (hdual u (hfin hu)).1 hu) hd hd' hg hh hx hy hR hRu hle`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨⟨μ, 𝓕, hμ⟩, c, hc⟩` from `GlobalTheory.exists_normalise_meanSquare_of_cocompact (WO S T) (ratL T S) K hK hKc f hf.cont hf0 (by`.
+
+Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm (hf.quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul]))`. Establish `hn : nrm2 μ 𝓕 (c • f) = 1` using `hc μ 𝓕 hμ.1 hμ.2.1 hμ.2.2`. Establish `hcf` using `GlobalTheory.WeilVacMove.isTheta_smul c hf`. Establish `hfix' : ∀ u ∈ Λ, IsHalf e u ∨ IsHalf (cA D e) u → heisO ψ S T u (c • f) = c • f` using `fun u hu hh => by`.
+
+Rewrite using `[heisO_smul, hfix u hu hh]`. Establish `h1` using `hom _ hcf (fun u hu hh => hfix' u hu (Or.inl hh)) fun u hu hh => hfix' u hu (Or.inr hh)`. Establish `h2 : nrm2 μ 𝓕 (om (g, h) (c • f)) = 1`. Rewrite using `[← hn, nrm2, nrm2, integral_normSq_eq _ (hW.om_pres _ _ hcf).cont.measurable, integral_normSq_eq _ hcf.cont.measurable, hW.om_unit μ 𝓕 hμ.1 hμ.2.1 _ _ hcf]`. Establish `h3` using `GlobalTheory.HeisOrtho.thetaNormSq_sum_heisenbergTranslates_distinctChars D ψ S T hψ μ 𝓕 hμ _ hcf hn _ R (fun u => u) (fun _ => (splitFacO χS χT x y : ℂ)) (fun _ _ => Circle.norm_coe _) (fun u hu u' hu' hne => by`.
+
+Establish `hn : u - u' ∉ Λ` using `fun hm => hne ((hRu u (hR u hu).1 (hR u hu).2).unique ⟨hu, by rw [sub_self]; exact zero_mem _⟩ ⟨hu', hm⟩)`. Take `⟨l, hl, hlh, hlne⟩` from `hd _ (isHalf_sub (hR u hu).2 (hR u' hu').2) hn`. Conclude with `⟨l, 1, norm_one, by rw [hfix' l hl (Or.inr hlh), one_smul], psi_skew_ne hlne⟩)`. Rewrite `h2` using `[h1, mul_smul, pairNorm_smul, Finset.smul_sum, h3]`. Establish `h4 : r = (Real.sqrt (R.card : ℝ))⁻¹`.
+
+Rewrite using `[← Real.sqrt_inv, ← eq_inv_of_mul_eq_one_left h2, Real.sqrt_sq hr.le]`. Rewrite using `[hom f hf (fun u hu hh => hfix u hu (Or.inl hh)) (fun u hu hh => hfix u hu (Or.inr hh)), h4, mul_comm, Complex.ofReal_inv]`.
+-/
 theorem om_eq_sum {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (hW : IsWeilDatumO ψ S T χS χT om) {e : AE D} (he : IsSplitIdem D e) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
     (hfix : ∀ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True), IsHalf e u ∨ IsHalf (cA D e) u → heisO ψ S T u f = f)

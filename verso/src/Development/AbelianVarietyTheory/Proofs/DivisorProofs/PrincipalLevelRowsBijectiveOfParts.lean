@@ -10,6 +10,9 @@ open GlobalTheory.PrimIn
 
 namespace GlobalTheory.PrimIn
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hOk hW hUp hRow hIn`. Establish `hinj` using `GlobalTheory.T.injective_complexCoords_principalLevel R F hOk hW hIn`. Establish `htop` using `GlobalTheory.T.complexCoords_principalLevel_range_eq_top R F hOk hW hUp hRow hIn`. Use `⟨hinj _, fun t => ⟨hinj t, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[htop t, htop _]`.
+-/
 theorem principalLevel_rows_bijective_of_parts : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), A3.fam3.Ok3 1 → R.WeakCharacterisation F → GlobalTheory.LiftRows.UpInj R.toRealDat → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → (R.toCx3 F).zs.InBlock → R.PrincipalLevelBijective F := by
   intro D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hOk hW hUp hRow hIn
   have hinj := GlobalTheory.T.injective_complexCoords_principalLevel R F hOk hW hIn

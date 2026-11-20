@@ -44,6 +44,9 @@ def opPoly {X : Type} (A : (X → ℂ) → (X → ℂ)) (P : Polynomial ℂ) (φ
 def AtTauExists (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D) : Prop :=
   ∀ τ (g : Matrix (Fin V.rank) (Fin V.rank) ℂ), g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) → ∃ x, IsAtTau θ V τ g x
 
+/- English proof (translation)
+Introduce `τ g hg`. Take `⟨x, hx, -⟩` from `Formalism.IndefR.Eqv.atTauExUnique_holds (D := D) θ hθ V τ g hg`. Conclude with `⟨x, hx⟩`.
+-/
 theorem atTauExists_of {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ) (V : HSp D) :
     AtTauExists θ V := by
   intro τ g hg

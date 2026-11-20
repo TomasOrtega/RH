@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ChainOnto
 
+/- English proof (translation)
+Introduce `hH D ψ S T χS χT om hW t ht v _`. Distinguish the cases in `hv : IsSplit (E := D.host.E) v`. Conclude with `GlobalTheory.T.sphericalParameterTransfer_splitPlace D ψ S T χS χT om hW t ht v hv`. Conclude with `GlobalTheory.T.sphericalTransfer_weilPairing_inertPlaces hH D ψ S T χS χT om hW t ht v hv`.
+-/
 theorem transferOn_all : GlobalTheory.Hk3.HoweUnram → ∀ D : D7, TransferOn D fun _ => True := by
   intro hH D ψ S T χS χT om hW t ht v _
   by_cases hv : IsSplit (E := D.host.E) v

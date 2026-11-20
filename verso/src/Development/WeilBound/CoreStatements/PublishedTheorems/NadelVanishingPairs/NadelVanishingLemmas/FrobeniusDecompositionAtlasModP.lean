@@ -19,6 +19,11 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.LogDR G
 
 namespace GlobalTheory.LogAtlas
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : t j = 0` using `fnOf_injective U h (h0.trans (map_zero _).symm)`. Use `letI := (MvPolynomial.eval₂Hom (cstOn f U) t).toAlgebra`. Establish `: Algebra.Etale (MvPolynomial (Fin n) R) Γ(X, U)` using `ht`. Establish `: Nonempty U` using `⟨⟨_, h⟩⟩`.
+
+Establish `h2` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Γ(X, U)) (mem_nonZeroDivisors_of_ne_zero (MvPolynomial.X_ne_zero (R := R) j))`. Establish `h3 : (MvPolynomial.X j : MvPolynomial (Fin n) R) • (1 : Γ(X, U)) = (MvPolynomial.X j : MvPolynomial (Fin n) R) • (0 : Γ(X, U))`. Rewrite using `[smul_zero, Algebra.smul_def, mul_one]`. Conclude with `(MvPolynomial.eval₂Hom_X' _ _ j).trans h1`. Conclude with `one_ne_zero (h2 h3)`.
+-/
 theorem fnOf_coord_ne_zero {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} [IsIntegral X]
     {f : X ⟶ Sp R} {U : X.Opens} (h : genericPoint X ∈ U) {n : ℕ} {t : Fin n → Γ(X, U)}
     (ht : IsEtCoord f U t) (j : Fin n) : fnOf U h (t j) ≠ 0 := by
@@ -35,6 +40,11 @@ theorem fnOf_coord_ne_zero {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}}
     exact (MvPolynomial.eval₂Hom_X' _ _ j).trans h1
   exact one_ne_zero (h2 h3)
 
+/- English proof (translation)
+Establish `P` using `presents_ofLB hM c₀ h₀`. Establish `hr : P.rat τ ≠ 0` using `fun e => hτ (by rw [← P.rat_mul τ c₀ h₀, e, zero_mul])`. Establish `Q` using `P.add_principal (Units.mk0 _ hr)`. Use `⟨_, Q.toPic_eq, fun c y hy g hg => ?_⟩` and prove the remaining obligations. Establish `e : g = frameRat M c₀ h₀ c * Units.mk0 _ hr` using `Units.ext (by`.
+
+Rewrite using `[hg, ← P.rat_mul τ c (gen_mem hy), Units.val_mul, Units.val_mk0, mul_comm])`. Conclude with `e ▸ Q.isEqn c y hy`.
+-/
 theorem exists_div_of_sec {X : Scheme.{0}} [IsIntegral X] {M : LB X} (hM : M.IsLB) (τ : M.Sec) (c₀ : M.ι)
     (h₀ : genericPoint X ∈ M.U c₀) (hτ : fnOf _ h₀ (τ.f c₀) ≠ 0) :
     ∃ E : CartierDiv X, toPic E = cls M hM ∧ ∀ (c : M.ι) (y : X) (hy : y ∈ M.U c)
@@ -47,6 +57,15 @@ theorem exists_div_of_sec {X : Scheme.{0}} [IsIntegral X] {M : LB X} (hM : M.IsL
     rw [hg, ← P.rat_mul τ c (gen_mem hy), Units.val_mul, Units.val_mk0, mul_comm])
   exact e ▸ Q.isEqn c y hy
 
+/- English proof (translation)
+Establish `key (C : SncChart f d M τ) (h : genericPoint X ∈ C.U) (i : Fin s) : fnOf _ (C.le i h) ((τ i).f (C.c i)) = fnOf C.U h (C.u i) * fnOf C.U h ((C.e i).elim 1 C.t)`. Rewrite using `[← fnOf_resG (C.le i) h, C.eq i, map_mul]`. Establish `H (i : Fin s)` using `exists_div_of_sec (hM i) (τ i) (C₀.c i) (C₀.le i h₀) (by`. Rewrite using `[key C₀ h₀ i]`. Use `mul_ne_zero (unitAt_fnOf h₀ h₀ _).ne_zero ?_` and prove the remaining obligations.
+
+Break down `C₀.e i with _ | a` into its components or cases. Simplify using the standard rewrite rules. Conclude with `fnOf_coord_ne_zero h₀ C₀.etale a)`. Use `choose E hE hE' using H`. Use `⟨E, hE, fun C h x hx i y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `hu` using `unitAt_fnOf hy h (C.u i)`. Establish `e : (((C.e i).elim 1 x : X.functionFieldˣ) : X.functionField) = fnOf C.U h ((C.e i).elim 1 C.t)`. Break down `C.e i with _ | a` into its components or cases. Simplify using the standard rewrite rules. Conclude with `hx a`.
+
+Establish `h1` using `hE' i (C.c i) y (C.le i hy) (Units.mk0 _ hu.ne_zero * (C.e i).elim 1 x) (by`. Rewrite using `[Units.val_mul, Units.val_mk0, e]`. Conclude with `(key C h i).symm)`. Rewrite using `[h1.iff_unitAt, Units.val_mul, Units.val_mk0, div_mul_eq_div_div_swap, div_self (Units.ne_zero _), one_div]`. Conclude with `hu.inv`.
+-/
 theorem exists_div_of_chart {R : Type} [CommRing R] [IsDomain R] {X : Scheme.{0}} [IsIntegral X]
     {f : X ⟶ Sp R} {d s : ℕ} {M : Fin s → LB X} (hM : ∀ i, (M i).IsLB) {τ : ∀ i, (M i).Sec}
     (C₀ : SncChart f d M τ) (h₀ : genericPoint X ∈ C₀.U) :
@@ -97,6 +116,25 @@ noncomputable def pullChart {R R' : Type} [CommRing R] [CommRing R'] {φ : R →
     · simp
     · simp
 
+/- English proof (translation)
+Introduce `p _ Y X _ g f π d _ hP hf hd s L σ h`. Use `choose D hD using fun x : X => h.chart (π x)`. Establish `hpr` using `(isProper_and_exists_isAmpleLB_of_isProjOver hf).1`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover (fun x : X => ((π ⁻¹ᵁ (D x).U : X.Opens) : Set X)) (fun x => (π ⁻¹ᵁ (D x).U).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hD x⟩)`.
+
+Set `ε` to `T.equivFin.symm`. Set `C : Fin T.card → SncChart g d L σ` to `fun k => D (ε k)`. Establish `hgen (k) : genericPoint X ∈ (pullChart hP (C k)).U` using `gen_mem (x := ε k) (hD _)`. Establish `hcov (y : X) : ∃ k, y ∈ (pullChart hP (C k)).U`. Take `⟨z, hz, hy⟩` from `Set.mem_iUnion₂.1 (hT (Set.mem_univ y))`.
+
+Take `⟨k, hk⟩` from `ε.surjective ⟨z, hz⟩`. Take `rfl : (ε k : X) = z` from `congrArg Subtype.val hk`. Conclude with `⟨k, hy⟩`. Take `⟨k₀, -⟩` from `hcov (genericPoint X)`. Establish `: Nonempty (Fin T.card)` using `⟨k₀⟩`.
+
+Take `⟨E, hE, hE'⟩` from `exists_div_of_chart (fun i => pull_isLB (h.isLB i) π) (pullChart hP (C k₀)) (hgen k₀)`. Set `x : Fin T.card → Fin d → X.functionFieldˣ` to `fun k j => Units.mk0 _ (fnOf_coord_ne_zero (hgen k) (pullChart hP (C k)).etale j)`. Set `J : Fin T.card → Finset (Fin d)` to `fun k => Finset.univ.filter fun j => ∃ c, (C k).e c = some j`. Establish `hJ (k j) : j ∈ J k ↔ ∃ c, (C k).e c = some j` using `by simp [J]`. Establish `heq (k)` using `hE' (pullChart hP (C k)) (hgen k) (x k) (fun _ => rfl)`.
+
+Establish `hlog (k) : IsLogChart (suppAll E) (pullChart hP (C k)).U (x k) (J k)`. Use `GlobalTheory.T.etale_coordinates_log_chart p X f _ (hgen k) (pullChart hP (C k)).t (x k) (J k) _ (pullChart hP (C k)).affine (pullChart hP (C k)).etale (fun _ => rfl) fun y hy => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hy'`. Take `⟨c, hc⟩` from `Set.mem_iUnion.1 hy'`.
+
+Establish `h1` using `(heq k c y hy).mem_supp_iff.1 hc`. Express the relevant statement in the definitionally equal form `¬ UnitAt y ((((C k).e c).elim 1 (x k) : X.functionFieldˣ) : X.functionField) at h1`. Break down `he : (C k).e c with _ | a` into its components or cases. Rewrite `h1` using `[he]`. Conclude with `(h1 (unitAt_one y)).elim`.
+
+Rewrite `h1` using `[he]`. Conclude with `⟨a, (hJ k a).2 ⟨c, he⟩, h1⟩`. Introduce and unpack `⟨j, hj, hu⟩`. Take `⟨c, hc⟩` from `(hJ k j).1 hj`. Use `Set.mem_iUnion.2 ⟨c, (heq k c y hy).mem_supp_iff.2 ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `¬ UnitAt y ((((C k).e c).elim 1 (x k) : X.functionFieldˣ) : X.functionField)`. Rewrite using `[hc]`. Conclude with `hu`. Set `𝒜 : SncAtlas E d (Fin T.card)` to `{ U := fun k => (pullChart hP (C k)).U x := x J := J affine := fun k => (pullChart hP (C k)).affine gen := hgen cover := eq_top_iff.2 fun y _ => Opens.mem_iSup.2 (hcov y) chart := hlog snc := fun k => ⟨(C k).e, (C k).inj, hJ k, heq k⟩ }`. Establish `: CharP X.functionField p` using `charP_of_injective_ringHom (Cartier.constFn f).injective p`.
+
+Use `⟨T.card, E, 𝒜, GlobalTheory.T.frobenius_decomposition_of_lift p 𝒜 hd ?_, fun i => (hE i).trans (CechPic.cls_pull (h.isLB i) π _)⟩` and prove the remaining obligations. Use `DI.isLifted_of_sncCharts p Y X g f π hP L σ h.isLB C _ _ (fun _ => le_rfl) hgen x J (fun k l => ?_) (fun k l => (hJ k l).1) hlog` and prove the remaining obligations. Conclude with `congrArg (fun ψ : Γ(Y, (C k).U) ⟶ Γ(X, π ⁻¹ᵁ (C k).U) => fnOf _ (hgen k) (ψ.hom ((C k).t l))) (π.app_eq_appLE)`.
+-/
 theorem exists_atlas_decomp : ∀ (p : ℕ) [Fact p.Prime] (Y X : Scheme.{0}) [IsIntegral X] (g : Y ⟶ Sp (ZMod (p ^ 2))) (f : X ⟶ Sp (ZMod p)) (π : X ⟶ Y) (d : ℕ) [SmoothOfRelativeDimension d f], IsPullback π f g (spMap (ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p))) → IsProjOver f → d < p → ∀ (s : ℕ) (L : Fin s → LB Y) (σ : ∀ i, (L i).Sec) (h : RelSnc g d L σ), ∃ (m : ℕ) (E : Fin s → CartierDiv X) (𝒜 : SncAtlas E d (Fin m)), Decomp p 𝒜 ∧ ∀ i, toPic (E i) = CechPic.pull π (cls (L i) (h.isLB i)) := by
   classical
   intro p _ Y X _ g f π d _ hP hf hd s L σ h

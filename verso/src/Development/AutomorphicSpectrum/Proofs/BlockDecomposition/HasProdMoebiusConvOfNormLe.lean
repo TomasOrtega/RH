@@ -5,6 +5,9 @@ open LSeries
 
 namespace GlobalTheory.CompanionTheory.SquareEuler
 
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[pow_succ, Nat.cast_mul, Complex.natCast_mul_natCast_cpow, ih, pow_succ]`.
+-/
 lemma natCast_pow_cpow (p e : ℕ) (s : ℂ) :
     (((p ^ e : ℕ) : ℂ)) ^ s = ((p : ℂ) ^ s) ^ e := by
   induction e with
@@ -14,6 +17,9 @@ lemma natCast_pow_cpow (p e : ℕ) (s : ℂ) :
 
 variable {M : ℕ} (c : DirichletCharacter ℂ M) {N : ℕ → ℂ} {s : ℂ}
 
+/- English proof (translation)
+Establish `hne : p ^ e ≠ 0` using `pow_ne_zero _ hp.ne_zero`. Rewrite using `[LSeries.term_of_ne_zero hne, natCast_pow_cpow, Complex.cpow_neg]`. Simplify using `only [Pi.mul_apply, Nat.cast_pow, map_pow, mul_pow, inv_pow]`. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma term_prime_pow {p : ℕ} (hp : p.Prime) (e : ℕ) :
     LSeries.term (↗c * N) s (p ^ e) = N (p ^ e) * (c p * (p : ℂ) ^ (-s)) ^ e := by
   have hne : p ^ e ≠ 0 := pow_ne_zero _ hp.ne_zero
@@ -22,6 +28,9 @@ lemma term_prime_pow {p : ℕ} (hp : p.Prime) (e : ℕ) :
   rw [div_eq_mul_inv]
   ring
 
+/- English proof (translation)
+Establish `h1 : ‖(p : ℂ) ^ (-s)‖ < 1`. Rewrite using `[Complex.norm_natCast_cpow_of_pos hp.pos]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hp.one_lt) (by simpa using hs)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma norm_X_lt_one (hs : 0 < s.re) {p : ℕ} (hp : p.Prime) :
     ‖c p * (p : ℂ) ^ (-s)‖ < 1 := by
   have h1 : ‖(p : ℂ) ^ (-s)‖ < 1 := by
@@ -31,6 +40,11 @@ lemma norm_X_lt_one (hs : 0 < s.re) {p : ℕ} (hp : p.Prime) :
     _ ≤ 1 * ‖(p : ℂ) ^ (-s)‖ := by gcongr; exact c.norm_le_one _
     _ < 1 := by simpa using h1
 
+/- English proof (translation)
+Break down `eq_or_ne m 0 with rfl | hm` into its components or cases. Simplify using the standard rewrite rules. Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[LSeries.term_of_ne_zero (mul_ne_zero hm hn), LSeries.term_of_ne_zero hm, LSeries.term_of_ne_zero hn, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`.
+
+Simplify using `only [Pi.mul_apply, hNmul h, Nat.cast_mul, map_mul]`. Rewrite using `[div_mul_div_comm]`. Put the polynomial expressions in normal form.
+-/
 lemma term_mul (hNmul : ∀ {m n : ℕ}, m.Coprime n → N (m * n) = N m * N n)
     {m n : ℕ} (h : m.Coprime n) :
     LSeries.term (↗c * N) s (m * n) =
@@ -45,6 +59,11 @@ lemma term_mul (hNmul : ∀ {m n : ℕ}, m.Coprime n → N (m * n) = N m * N n)
   rw [div_mul_div_comm]
   ring_nf
 
+/- English proof (translation)
+Establish `hT : LSeriesSummable (↗c * N) s` using `DirichletCharacter.LSeriesSummable_mul c hsum`. Use `EulerProduct.eulerProduct_hasProd (f := LSeries.term (↗c * N) s) ?_ ?_ hT.norm ?_` as an intermediate fact. Establish `h2 : L (↗c * N) s = ∑' n, LSeries.term (↗c * N) s n` using `rfl`. Rewrite using `[h2]`. Use `this using 2 with p` and compare the differences between its conclusion and the goal.
+
+Conclude with `tsum_congr fun j => (term_prime_pow c p.prop j).symm`. Simplify using `[LSeries.term_of_ne_zero, hN1]`. Introduce `m n hmn`. Conclude with `term_mul c hNmul hmn`. Simplify using the standard rewrite rules.
+-/
 lemma hasProd_twist (hN1 : N 1 = 1)
     (hNmul : ∀ {m n : ℕ}, m.Coprime n → N (m * n) = N m * N n)
     (hsum : LSeriesSummable N s) :
@@ -61,6 +80,9 @@ lemma hasProd_twist (hN1 : N 1 = 1)
     exact term_mul c hNmul hmn
   · simp
 
+/- English proof (translation)
+Establish `hμ : LSeriesSummable (↗c * (↗μ : ℕ → ℂ)) s` using `DirichletCharacter.LSeriesSummable_mul c (ArithmeticFunction.LSeriesSummable_moebius_iff.mpr hs)`. Establish `hT : LSeriesSummable (↗c * N) s` using `DirichletCharacter.LSeriesSummable_mul c hsum`. Rewrite using `[← DirichletCharacter.mul_convolution_distrib, LSeries_convolution' hμ hT]`. Establish `h1` using `DirichletCharacter.LSeries.mul_mu_eq_one c hs`. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`.
+-/
 lemma LSeries_twist_moebius_conv (hs : 1 < s.re) (hsum : LSeriesSummable N s) :
     L (↗c * ((↗μ : ℕ → ℂ) ⍟ N)) s = (L ↗c s)⁻¹ * L (↗c * N) s := by
   have hμ : LSeriesSummable (↗c * (↗μ : ℕ → ℂ)) s :=
@@ -70,6 +92,13 @@ lemma LSeries_twist_moebius_conv (hs : 1 < s.re) (hsum : LSeriesSummable N s) :
   have h1 := DirichletCharacter.LSeries.mul_mu_eq_one c hs
   rw [eq_inv_of_mul_eq_one_right h1]
 
+/- English proof (translation)
+Establish `h1 : 1 - X ≠ 0`. Introduce `h`. Establish `: X = 1` using `by linear_combination -h`. Simplify using `[this] at hX`. Establish `h2 : 1 + X ≠ 0`.
+
+Introduce `h`. Establish `: X = -1` using `by linear_combination h`. Simplify using `[this] at hX`. Establish `h3 : 1 - X ^ 2 = (1 - X) * (1 + X)` using `by ring`. Rewrite using `[h3]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 lemma local_factor {A X : ℂ} (hX : ‖X‖ < 1) :
     A * (1 - X) * (1 - X ^ 2)⁻¹ = A / (1 + X) := by
   have h1 : 1 - X ≠ 0 := by
@@ -84,6 +113,17 @@ lemma local_factor {A X : ℂ} (hX : ‖X‖ < 1) :
   rw [h3]
   field_simp
 
+/- English proof (translation)
+Establish `h2s : 1 < (2 * s).re`. Simplify using `only [Complex.mul_re, Complex.re_ofNat, Complex.im_ofNat, zero_mul, sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA` using `hasProd_twist c hN1 hNmul hsum`. Establish `hB` using `DirichletCharacter.LSeries_eulerProduct_hasProd (c ^ 2) h2s`.
+
+Establish `hC` using `DirichletCharacter.LSeries_eulerProduct_hasProd c hs`. Establish `hCne : L ↗c s ≠ 0` using `DirichletCharacter.LSeries_ne_zero_of_one_lt_re c hs`. Establish `hCi` using `hC.inv₀ hCne`. Establish `hP` using `(hA.mul hCi).mul hB`. Rewrite using `[LSeries_twist_moebius_conv c hs hsum]`.
+
+Use `hP using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Establish `hX` using `norm_X_lt_one c (s := s) (by linarith) p.prop`. Rewrite using `[← local_factor hX, inv_inv]`. Establish `hsq : (c ^ 2) ((p : ℕ) : ZMod M) * ((p : ℕ) : ℂ) ^ (-(2 * s)) = (c p * ((p : ℕ) : ℂ) ^ (-s)) ^ 2`.
+
+Establish `h3 : -(2 * s) = ((2 : ℕ) : ℂ) * (-s)` using `by push_cast; ring`. Rewrite using `[h3, Complex.cpow_nat_mul, mul_pow]`. Use `congr 1`. Conclude with `MulChar.pow_apply' c (by norm_num) _`. Rewrite using `[hsq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasProd_moebius_conv (hN1 : N 1 = 1)
     (hNmul : ∀ {m n : ℕ}, m.Coprime n → N (m * n) = N m * N n)
     (hs : 1 < s.re) (hsum : LSeriesSummable N s) :
@@ -114,6 +154,9 @@ theorem hasProd_moebius_conv (hN1 : N 1 = 1)
     rw [hsq]
   · ring
 
+/- English proof (translation)
+Use `hasProd_moebius_conv c hN1 hNmul (by linarith) ?_` and prove the remaining obligations. Use `LSeriesSummable_of_le_const_mul_rpow (x := 2) hs ⟨1, fun n hn => ?_⟩` and prove the remaining obligations. Establish `: (n : ℝ) ^ ((2 : ℝ) - 1) = n` using `by norm_num`. Rewrite using `[this, one_mul]`. Conclude with `hNle n hn`.
+-/
 theorem hasProd_moebius_conv_of_norm_le (hN1 : N 1 = 1)
     (hNmul : ∀ {m n : ℕ}, m.Coprime n → N (m * n) = N m * N n)
     (hNle : ∀ d : ℕ, d ≠ 0 → ‖N d‖ ≤ d) (hs : 2 < s.re) :

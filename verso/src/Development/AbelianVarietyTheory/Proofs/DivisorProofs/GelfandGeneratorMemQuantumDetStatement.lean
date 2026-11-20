@@ -8,6 +8,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet | exact GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet | (intros; apply GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gelfand_generator_mem_quantum_det : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n : ℕ) (X : Fin n → Fin n → A), Formalism.REAL.GlRel X →
     ∀ k : ℕ, GlobalTheory.SmoothForms.gelfA X k ∈ Algebra.adjoin ℂ (Set.range (Formalism.REAL.qdet X)) := by
   first | exact @GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet | exact GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet | (intros; apply GlobalTheory.CapelliGelfand.gelfA_mem_adjoin_qdet <;> assumption)

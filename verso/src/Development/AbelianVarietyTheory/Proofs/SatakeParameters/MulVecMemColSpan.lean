@@ -28,12 +28,18 @@ def IntB (A : LocAt F E n G) (v : Fin G.P.nV) (t : Fin n → G.P.Qq v) : Prop :=
   ∀ a, ((((bc (A.phE v) A.B)⁻¹ : GL (Fin n) ((A.pl v).1.adicCompletion F)) :
     Matrix (Fin n) (Fin n) ((A.pl v).1.adicCompletion F)) *ᵥ (fun k => A.eQ v (t k))) a ∈ (A.pl v).1.adicCompletionIntegers F
 
+/- English proof (translation)
+Introduce `a`. Establish `: (fun k => A.eQ v ((0 : Fin n → G.P.Qq v) k)) = 0` using `by funext k; simp`. Rewrite using `[this, Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+-/
 theorem intB_zero (A : LocAt F E n G) (v : Fin G.P.nV) : IntB A v 0 := by
   intro a
   have : (fun k => A.eQ v ((0 : Fin n → G.P.Qq v) k)) = 0 := by funext k; simp
   rw [this, Matrix.mulVec_zero]
   exact zero_mem _
 
+/- English proof (translation)
+Introduce `a`. Establish `: (fun k => A.eQ v ((t + t') k)) = (fun k => A.eQ v (t k)) + (fun k => A.eQ v (t' k))` using `by funext k; simp`. Rewrite using `[this, Matrix.mulVec_add]`. Conclude with `add_mem (h a) (h' a)`.
+-/
 theorem intB_add (A : LocAt F E n G) (v : Fin G.P.nV) (t t' : Fin n → G.P.Qq v) (h : IntB A v t) (h' : IntB A v t') :
     IntB A v (t + t') := by
   intro a
@@ -41,6 +47,11 @@ theorem intB_add (A : LocAt F E n G) (v : Fin G.P.nV) (t t' : Fin n → G.P.Qq v
   rw [this, Matrix.mulVec_add]
   exact add_mem (h a) (h' a)
 
+/- English proof (translation)
+Introduce `a`. Establish `: (fun k => A.eQ v ((c • t) k)) = A.eQ v (algebraMap (G.P.W v) (G.P.Qq v) c) • (fun k => A.eQ v (t k))`. Use function extensionality and compare the values at `k`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[this, Matrix.mulVec_smul]`. Conclude with `mul_mem ((hW v _).1 ⟨c, rfl⟩) (h a)`.
+-/
 theorem intB_smul (A : LocAt F E n G) (hW : LocInt A) (v : Fin G.P.nV) (c : G.P.W v) (t : Fin n → G.P.Qq v) (h : IntB A v t) :
     IntB A v (c • t) := by
   intro a
@@ -51,10 +62,18 @@ theorem intB_smul (A : LocAt F E n G) (hW : LocInt A) (v : Fin G.P.nV) (c : G.P.
   rw [this, Matrix.mulVec_smul]
   exact mul_mem ((hW v _).1 ⟨c, rfl⟩) (h a)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv_mulVec {R : Type} [CommRing R] (y : GL (Fin n) R) (u : Fin n → R) :
     (y : Matrix (Fin n) (Fin n) R) *ᵥ (((y⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ u) = u := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `: M *ᵥ (fun c => algebraMap W Qq (r c)) = ∑ c, r c • (fun i => M i c)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem mulVec_mem_colSpan {Qq W : Type} [CommRing W] [Field Qq] [Algebra W Qq] (M : Matrix (Fin n) (Fin n) Qq) (r : Fin n → W) :
     M *ᵥ (fun c => algebraMap W Qq (r c)) ∈ colSpan W M := by
   have : M *ᵥ (fun c => algebraMap W Qq (r c)) = ∑ c, r c • (fun i => M i c) := by
@@ -66,6 +85,17 @@ theorem mulVec_mem_colSpan {Qq W : Type} [CommRing W] [Field Qq] [Algebra W Qq] 
   rw [this]
   exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
+/- English proof (translation)
+Unfold `Formalism.L2.Herm.locL latS at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+
+Consider the case `zero`. Establish `: (fun a => (A.eQ v).symm ((A.spl v ((0 : Fin n → E ⊗[F] (A.pl v).1.adicCompletion F) a)).1)) = 0`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun a => (A.eQ v).symm ((A.spl v ((x + y) a)).1)) = (fun a => (A.eQ v).symm ((A.spl v (x a)).1)) + (fun a => (A.eQ v).symm ((A.spl v (y a)).1))`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul s x _ hx`. Establish `hs` using `(split_integral_completion F E (A.pl v).1 (A.spl v) (hAlg v) s).1 s.2`. Take `⟨c, hc⟩` from `(hW v ((A.eQ v).symm ((A.spl v s).1))).2 (by rw [RingEquiv.apply_symm_apply]; exact hs.1)`.
+
+Establish `: (fun a => (A.eQ v).symm ((A.spl v ((s • x) a)).1)) = c • (fun a => (A.eQ v).symm ((A.spl v (x a)).1))`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul, Prod.fst_mul, map_mul, Pi.smul_apply, Algebra.smul_def, hc]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem fst_mem_span (A : LocAt F E n G) (hW : LocInt A)
     (hAlg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a)) (v : Fin G.P.nV)
     (Lb : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E ⊗[F] (A.pl v).1.adicCompletion F)
@@ -99,6 +129,33 @@ theorem fst_mem_span (A : LocAt F E n G) (hW : LocInt A)
 
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Use `set fr : GL (Fin n) ((A.pl v).1.adicCompletion F) := bc (A.phE v) A.B with hfrdef`. Establish `hM : ((bc (A.iw v) A.B : GL (Fin n) (G.P.Qq v)) : Matrix (Fin n) (Fin n) (G.P.Qq v)) = (fr : Matrix (Fin n) (Fin n) _).map ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v)`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `h1 : ∀ t ∈ Submodule.span (G.P.W v) ((fun x : Fin n → E => fun k => A.iw v (x k)) '' (Lb : Set (Fin n → E))), IntB A v t`.
+
+Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Establish `hloc : (fun k => inclE (F` using `F) ((A.pl v).1.adicCompletion F) (y k)) ∈ Formalism.L2.Herm.locL (A.pl v).1 Lb := Submodule.subset_span ⟨y, hy, rfl⟩`.
+
+Use `(hfr v (fun k => A.eQ v (A.iw v (y k)))).1 ⟨_, hloc, fun a => by show (A.ph v) (inclE (F := F) ((A.pl v).1.adicCompletion F) (y a)) = A.eQ v ((A.eQ v).symm (A.phE v (y a)))` as an intermediate fact. Rewrite using `[RingEquiv.apply_symm_apply]`. Use the proof step `rfl⟩`. Conclude with `this`. Consider the case `zero => exact intB_zero A v`.
+
+Consider the case `add x y _ _ hx hy => exact intB_add A v x y hx hy`. Consider the case `smul c x _ hx => exact intB_smul A hW v c x hx`. Establish `h2 : ∀ t, IntB A v t → ∃ r : Fin n → G.P.W v, t = ((fr : Matrix (Fin n) (Fin n) _).map ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v)) *ᵥ (fun c => algebraMap (G.P.W v) (G.P.Qq v) (r c))`. Introduce `t ht`. Use `choose r hr using fun c => (hW v ((A.eQ v).symm ((((fr⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun k => A.eQ v (t k))) c))).2 (by rw [RingEquiv.apply_symm_apply]; exact ht c)`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `e1 : (fun c => algebraMap (G.P.W v) (G.P.Qq v) (r c)) = fun c => (A.eQ v).symm ((((fr⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun k => A.eQ v (t k))) c)`. Use function extensionality and compare the values at `c`. Conclude with `hr c`. Rewrite using `[e1]`.
+
+Use function extensionality and compare the values at `i`. Establish `e2` using `RingHom.map_mulVec ((A.eQ v).symm : (A.pl v).1.adicCompletion F →+* G.P.Qq v) (fr : Matrix (Fin n) (Fin n) _) (((fr⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) *ᵥ (fun k => A.eQ v (t k))) i`. Rewrite `e2` using `[mulVec_inv_mulVec]`. Conclude with `(RingEquiv.symm_apply_apply (A.eQ v) (t i)).symm.trans e2`. Establish `h3 : ∀ t, IntB A v t → t ∈ Submodule.span (G.P.W v) ((fun x : Fin n → E => fun k => A.iw v (x k)) '' (Lb : Set (Fin n → E)))`.
+
+Introduce `t ht`. Take `⟨x, hx, hxa⟩` from `(hfr v (fun k => A.eQ v (t k))).2 ht`. Establish `h4` using `fst_mem_span A hW hAlg v Lb x hx`. Establish `e3 : (fun a => (A.eQ v).symm ((A.spl v (x a)).1)) = t`. Use function extensionality and compare the values at `a`.
+
+Rewrite using `[hxa a]`. Conclude with `RingEquiv.symm_apply_apply _ _`. Rewrite `h4` using `[e3]`. Conclude with `h4`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `t ht`. Take `⟨r, rfl⟩` from `h2 t (h1 t ht)`. Rewrite using `[hM]`. Conclude with `mulVec_mem_colSpan _ r`. Unfold `colSpan`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Apply `h3` to reduce the goal to its premises. Introduce `a`. Establish `hcol : (fun k => A.eQ v ((((bc (A.iw v) A.B : GL (Fin n) (G.P.Qq v)) : Matrix (Fin n) (Fin n) (G.P.Qq v))) k c)) = fun k => (fr : Matrix (Fin n) (Fin n) _) k c`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[hM, Matrix.map_apply]`. Conclude with `RingEquiv.apply_symm_apply _ _`. Use `show ((((fr⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _)) *ᵥ (fun k => A.eQ v ((((bc (A.iw v) A.B : GL (Fin n) (G.P.Qq v)) : Matrix (Fin n) (Fin n) (G.P.Qq v))) k c))) a ∈ _`. Rewrite using `[hcol]`.
+
+Establish `e4 : (((fr⁻¹ : GL (Fin n) ((A.pl v).1.adicCompletion F)) : Matrix (Fin n) (Fin n) ((A.pl v).1.adicCompletion F)) *ᵥ fun k => (fr : Matrix (Fin n) (Fin n) ((A.pl v).1.adicCompletion F)) k c) a = ((((fr⁻¹ : GL (Fin n) ((A.pl v).1.adicCompletion F)) : Matrix (Fin n) (Fin n) ((A.pl v …`. Simplify using `only [Matrix.mulVec, Matrix.mul_apply, dotProduct]`. Rewrite using `[e4, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`.
+
+Conclude with `zero_mem _`.
+-/
 theorem lbAt_gen (A : LocAt F E n G) (hW : LocInt A)
     (hAlg : ∀ v (a : (A.pl v).1.adicCompletion F), A.spl v ((1 : E) ⊗ₜ[F] a) = (a, a))
     (Lb : Submodule (𝓞 E) (Fin n → E)) (hfr : FrAtB A Lb) (v : Fin G.P.nV) :
@@ -177,6 +234,11 @@ theorem lbAt_gen (A : LocAt F E n G) (hW : LocInt A)
     · exact one_mem _
     · exact zero_mem _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[Formalism.MainNotions.G.KAat.map_reE_rfl]`. Establish `hre : Formalism.L2.Forms.reGL (rfl : r = r) E B0 = B0` using `by apply Units.ext; ext a b; rfl`. Rewrite `hB` using `[hre]`. Introduce `v t`.
+
+Rewrite using `[hB, ← hrat v]`. Conclude with `hfr0 v t`.
+-/
 theorem frAtB_re [StarRing E] {r N : ℕ} (h : r = N) (A : LocAt F E N G) (Lb : Submodule (𝓞 E) (Fin r → E)) (B0 : GL (Fin r) E)
     (hB : A.B = Formalism.L2.Forms.reGL h E B0) (fr : ∀ v, GL (Fin r) ((A.pl v).1.adicCompletion F))
     (hfr0 : ∀ v (t : Fin r → (A.pl v).1.adicCompletion F),
@@ -199,6 +261,9 @@ section Of
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {p n : ℕ} {G : GAtP p}
 
+/- English proof (translation)
+Introduce `v`. Unfold `GlobalTheory.TwV.locSp`. Conclude with `lbAt_gen A hW hAlg Lb hfr v`.
+-/
 theorem lbAtB_of (A : LocAt F E n G) (hW : LocInt A) (hAlg : SplAlg A)
     (Lb : Submodule (𝓞 E) (Fin n → E)) (hfr : FrAtB A Lb) : GlobalTheory.TwV.LbAtB A Lb := by
   intro v

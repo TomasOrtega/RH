@@ -14,6 +14,9 @@ noncomputable section
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.projHom, GroundTheory.Heights₂.Heights.ComplexSets.pullback]`. Introduce `i`. Simplify using `[GroundTheory.Heights₂.Heights.ComplexSets.projHom, GroundTheory.Heights₂.Heights.ComplexSets.pullback, GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]`.
+-/
 theorem lift_eval_comp_projHom (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     {x : Fin n → ℂ} (hx : x ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet J) :
     (Ideal.Quotient.lift J (MvPolynomial.eval x) fun q hq => hx q hq).comp
@@ -26,6 +29,11 @@ theorem lift_eval_comp_projHom (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matri
     simp [GroundTheory.Heights₂.Heights.ComplexSets.projHom, GroundTheory.Heights₂.Heights.ComplexSets.pullback,
       GroundTheory.Heights₂.Heights.ComplexSets.linPoly, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `hint : ∀ j : Fin n, (GroundTheory.Heights₂.Heights.ComplexSets.projHom J A).toRingHom.IsIntegralElem (Ideal.Quotient.mk J (X j))` using `fun j => hA.finite.to_isIntegral _`. Use `choose p hpm hp using hint`. Use `(Set.Finite.pi (t := fun j => {z : ℂ | ((p j).map (MvPolynomial.eval y)).IsRoot z}) fun j => Polynomial.finite_setOfPred_isRoot ((hpm j).map _).ne_zero).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxy⟩ j -`. Establish `h` using `congrArg (Ideal.Quotient.lift J (MvPolynomial.eval x) fun q hq => hx q hq) (hp j)`.
+
+Rewrite `h` using `[Polynomial.hom_eval₂, lift_eval_comp_projHom J A hx, hxy, map_zero]`. Simplify `h` using `[Polynomial.IsRoot, Polynomial.eval_map]`.
+-/
 theorem fibre_finite {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     (hA : GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A) (y : Fin d → ℂ) :
     (GroundTheory.Heights₂.Heights.ComplexSets.fibre J A y).Finite := by
@@ -40,6 +48,13 @@ theorem fibre_finite {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) 
   rw [Polynomial.hom_eval₂, lift_eval_comp_projHom J A hx, hxy, map_zero] at h
   simpa [Polynomial.IsRoot, Polynomial.eval_map] using h
 
+/- English proof (translation)
+Unfold `GroundTheory.Heights₂.Heights.chartAbsDens GroundTheory.Heights₂.Heights.sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (fibre_finite hA y), finsum_mem_eq_finite_toFinset_sum _ (fibre_finite hA y)]`. Use `⟨Finset.sum_nonneg fun x _ => ?_, Finset.sum_le_sum fun x _ => ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `abs_nonneg _`.
+
+Conclude with `le_rfl`. Use `split_ifs`. Simplify using `only`. Rewrite using `[abs_mul, abs_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)` and prove the remaining obligations.
+
+Distinguish the cases in `hx : x ∈ B`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (hBC hx)]`. Rewrite using `[Set.indicator_of_notMem hx, abs_zero]`. Conclude with `abs_nonneg _`. Conclude with `le_rfl`.
+-/
 theorem chartAbsDens_indicator_le {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hA : GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection J A)
     (φ : Fin d → (Fin n → ℂ) → ℝ) (l : (Fin n → ℂ) → ℝ) {B C : Set (Fin n → ℂ)} (hBC : B ⊆ C)
@@ -64,6 +79,9 @@ theorem chartAbsDens_indicator_le {J : Ideal (MvPolynomial (Fin n) ℂ)}
         exact abs_nonneg _
     · exact le_rfl
 
+/- English proof (translation)
+Introduce `n d J A u φ R hJ hdim hA hu hφ`. Establish `hJ' : IsAffVariety J d` using `⟨hJ, hdim⟩`. Conclude with `(projIntegrable_iff _ _ _ _).mp (h n d J A φ u (Metric.closedBall 0 R) hJ' ((isFiniteProj_iff hJ').mpr hA) hφ hu measurableSet_closedBall Metric.isBounded_closedBall)`.
+-/
 theorem LogIntegrableOn.to_current (h : LogIntegrableOn.Statement) :
     GroundTheory.Heights₂.Heights.LogIntegrable.Statement := by
   intro n d J A u φ R hJ hdim hA hu hφ
@@ -72,6 +90,13 @@ theorem LogIntegrableOn.to_current (h : LogIntegrableOn.Statement) :
     (h n d J A φ u (Metric.closedBall 0 R) hJ' ((isFiniteProj_iff hJ').mpr hA) hφ hu
       measurableSet_closedBall Metric.isBounded_closedBall)
 
+/- English proof (translation)
+Introduce `n d J A φ u B hJ hA hφ hu hB hBb`. Establish `hA'` using `(isFiniteProj_iff hJ).mp hA`. Take `⟨R, hR⟩` from `hBb.subset_closedBall 0`. Establish `hI` using `h n d J A u φ R hJ.isPrime hJ.dim hA' hu hφ`. Establish `hcont : Continuous fun x : Fin n → ℂ => GroundTheory.Heights₂.Heights.linEval u x`.
+
+Unfold `GroundTheory.Heights₂.Heights.linEval`. Use `fun_prop`. Establish `hmeas : Measurable (B.indicator fun x => Real.log ‖GroundTheory.Heights₂.Heights.linEval u x‖)` using `(Real.measurable_log.comp (continuous_norm.comp hcont).measurable).indicator hB`. Rewrite using `[projIntegrable_iff]`. Use `hI.mono' (hM n d J A _ φ hJ.isPrime hJ.dim hA' hmeas hφ).2.aestronglyMeasurable (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Take `⟨h0, h1⟩` from `chartAbsDens_indicator_le hA' φ (fun x => Real.log ‖GroundTheory.Heights₂.Heights.linEval u x‖) hR y`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `(abs_of_nonneg h0).le.trans h1`.
+-/
 theorem LogIntegrable.logIntegrableOn_of_logIntegrable (hM : GroundTheory.Heights₂.Heights.SheetSumMeasurable.Statement)
     (h : GroundTheory.Heights₂.Heights.LogIntegrable.Statement) : LogIntegrableOn.Statement := by
   intro n d J A φ u B hJ hA hφ hu hB hBb
@@ -91,6 +116,9 @@ theorem LogIntegrable.logIntegrableOn_of_logIntegrable (hM : GroundTheory.Height
   rw [Real.norm_eq_abs]
   exact (abs_of_nonneg h0).le.trans h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LogIntegrable.logIntegrableOn_of_logIntegrable hM, LogIntegrableOn.to_current⟩`.
+-/
 theorem LogIntegrable.equiv (hM : GroundTheory.Heights₂.Heights.SheetSumMeasurable.Statement) :
     GroundTheory.Heights₂.Heights.LogIntegrable.Statement ↔ LogIntegrableOn.Statement :=
   ⟨LogIntegrable.logIntegrableOn_of_logIntegrable hM, LogIntegrableOn.to_current⟩

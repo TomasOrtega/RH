@@ -21,6 +21,9 @@ section Coord
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mcIdeal_eq_pointIdeal (R : Type*) [CommRing R] {Ω : Type*} [Field Ω] [Algebra R Ω]
     (y : (Σ k, ι k) → Ω) : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal R y = pointIdeal R y := rfl
 
@@ -31,6 +34,11 @@ section Model
 variable (O : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Establish `hI` using `VocabMultiHomogIdeal.proof VocabMultiHomog.proof O K ι P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hp, hh, hr⟩`. Conclude with `⟨hp, hI.1 hh, hr⟩`. Introduce and unpack `⟨hp, hh, hr⟩`.
+
+Conclude with `⟨hp, hI.2 hh, hr⟩`.
+-/
 theorem isMultiProjPrime_iff (P : Ideal (MRing ι O)) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime P ↔ IsMultiProjPrime P := by
   have hI := VocabMultiHomogIdeal.proof VocabMultiHomog.proof O K ι P
@@ -40,6 +48,11 @@ theorem isMultiProjPrime_iff (P : Ideal (MRing ι O)) :
   · rintro ⟨hp, hh, hr⟩
     exact ⟨hp, hI.2 hh, hr⟩
 
+/- English proof (translation)
+Rewrite using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver, isMultiProjPrime_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hP, ht, hd⟩`. Conclude with `⟨hK, hP, ht, hd⟩`. Introduce and unpack `⟨hK, hP, ht, hd⟩`.
+
+Conclude with `⟨hK, hP, ht, hd⟩`.
+-/
 theorem isModelOver_iff (P : Ideal (MRing ι O)) (d : ℕ) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O P d ↔ Nonempty K ∧ IsModelOver P d := by
   rw [IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver, isMultiProjPrime_iff]
@@ -58,6 +71,11 @@ variable {Ω : Type*} [Field Ω] [Algebra O Ω]
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {N : ℕ} {V : Type*} [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, hv⟩`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h` using `B.stable s (algebraMap O Ω ↑u⁻¹) (Subalgebra.algebraMap_mem _ _) _ hv`.
+
+Rewrite `h` using `[smul_smul, ← map_mul, ← mul_assoc, Units.inv_mul, one_mul, map_pow]`. Then use the resulting hypothesis. Introduce and unpack `⟨n, hn⟩`. Conclude with `⟨ϖ ^ n, pow_ne_zero _ hϖ.ne_zero, by rwa [map_pow]⟩`.
+-/
 theorem exists_const_iff {ϖ : O} (hϖ : Irreducible ϖ) {x : (Σ k, ι k) → Ω}
     (B : ChartBundle O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mseg x) N V) (s : ∀ k, ι k) (v : V) :
     (∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ B.lat s) ↔
@@ -71,6 +89,9 @@ theorem exists_const_iff {ϖ : O} (hϖ : Irreducible ϖ) {x : (Σ k, ι k) → �
   · rintro ⟨n, hn⟩
     exact ⟨ϖ ^ n, pow_ne_zero _ hϖ.ne_zero, by rwa [map_pow]⟩
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.SameGeneric SameGenericFibre`. Use `forall_congr' fun s => imp_congr_right fun _ => and_congr ?_ ?_` and prove the remaining obligations. Conclude with `forall₂_congr fun v _ => exists_const_iff hϖ E' s v`. Conclude with `forall₂_congr fun v _ => exists_const_iff hϖ E s v`.
+-/
 theorem sameGeneric_iff {ϖ : O} (hϖ : Irreducible ϖ) (x : (Σ k, ι k) → Ω)
     (E E' : ChartBundle O (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mseg x) N V) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.SameGeneric O x E E' ↔ SameGenericFibre ϖ E E' := by
@@ -86,14 +107,23 @@ section Cycles
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `W`. Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc, ratDiv, FlagTypings.divCycle_eq]`.
+-/
 theorem ratCyc_eq (P : Ideal (MRing ι O)) (f g : MRing ι O) :
     ⇑(IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc O P f g) = ratDiv P f g := by
   funext W
   simp [IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc, ratDiv, FlagTypings.divCycle_eq]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redIdeal_eq (W : Ideal (MRing ι O)) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.redIdeal O W = specialIdeal W := rfl
 
+/- English proof (translation)
+Rewrite using `[FlagTypings.cycEval_finsupp]`. Both sides reduce to the same expression.
+-/
 theorem vEval_eq (J : Ideal (MRing ι (IsLocalRing.ResidueField O)) → ℤ)
     (Z : Ideal (MRing ι O) →₀ ℤ) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval O J Z = cycEval (fun W => J (specialIdeal W)) ⇑Z := by
@@ -106,21 +136,37 @@ section PairNumbers
 
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList, IndefiniteRowSideFullHecke.NumbersDVR.monoList, List.map_flatMap, List.map_replicate]`.
+-/
 theorem monoList_eq {r : ℕ} {A : Type*} (deg : Fin r → A) (μ : Fin r →₀ ℕ) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList deg μ = (IndefiniteRowSideFullHecke.NumbersDVR.monoList μ).map deg := by
   simp [IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList, IndefiniteRowSideFullHecke.NumbersDVR.monoList, List.map_flatMap,
     List.map_replicate]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem intNum_get_cast (F : Type*) [Field F] (V : Ideal (MRing ι F)) (L : List (K → ℤ)) (n : ℕ)
     (h : L.length = n) : intNum F V (fun j => L.get (Fin.cast h.symm j)) = intNumL F V L := by
   subst h
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Multiset.coe_eq_coe, classList, classList, Multiset.coe_toList, Multiset.coe_toList, ← Finsupp.toMultiset_map, Multiset.map_map]`.
+-/
 theorem classList_mapDomain_perm {σ τ : Type*} (e : σ → τ) (cls : τ → K → ℤ) (μ : σ →₀ ℕ) :
     (classList cls (μ.mapDomain e)).Perm (classList (cls ∘ e) μ) := by
   rw [← Multiset.coe_eq_coe, classList, classList, Multiset.coe_toList, Multiset.coe_toList,
     ← Finsupp.toMultiset_map, Multiset.map_map]
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum classNum`. Rewrite using `[support_rename_of_injective e.injective, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective e.injective h]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain _ e.injective]`. Use `congr 1`.
+
+Establish `hlen : (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList deg μ).length = d`. Rewrite using `[monoList_eq, List.length_map, FlagTypings.length_monoList hH hμ]`. Rewrite using `[dif_pos hlen]`. Use `(intNum_get_cast _ _ _ _ hlen).trans ?_` and prove the remaining obligations. Rewrite using `[List.append_nil]`.
+
+Use `FlagTypings.intNumL_perm _ _ ?_` and prove the remaining obligations. Rewrite using `[monoList_eq]`. Use `((FlagTypings.monoList_perm deg μ).trans ?_)` and prove the remaining obligations. Rewrite using `[← hcls]`. Conclude with `(classList_mapDomain_perm e cls μ).symm`.
+-/
 theorem polyNum_eq_classNum {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {m : ℕ} (deg : Fin m → K → ℤ) {τ : Type*} [DecidableEq τ] (e : Fin m ≃ τ) (cls : τ → K → ℤ)
     (hcls : cls ∘ e = deg) {H : MvPolynomial (Fin m) ℤ} {d : ℕ} (hH : H.IsHomogeneous d)
@@ -144,6 +190,15 @@ theorem polyNum_eq_classNum {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteVal
   rw [← hcls]
   exact (classList_mapDomain_perm e cls μ).symm
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun j => j < l), ← Finset.sum_filter_add_sum_filter_not (Finset.univ.filter fun j => ¬ j < l) (fun j => j = l), Finset.filter_filter, Finset.filter_filter, add_assoc]`. Use `congr 2`. Rewrite using `[Finset.sum_eq_single l]`. Introduce `b hb hbl`. Simplify using `only [Finset.mem_filter] at hb`.
+
+Conclude with `absurd hb.2.2 hbl`. Introduce `h`. Conclude with `absurd (by simp) h`. Use `congr 1`. Use extensionality with `j`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `lt_of_le_of_ne (not_lt.mp h1) (Ne.symm h2)`. Introduce `h`.
+
+Conclude with `⟨not_lt.mpr h.le, ne_of_gt h⟩`.
+-/
 theorem sum_split {r : ℕ} (l : Fin r) (f : Fin r → ℕ) :
     ∑ j, f j = (∑ j ∈ Finset.univ.filter (fun j => j < l), f j) + f l +
       ∑ j ∈ Finset.univ.filter (fun j => l < j), f j := by
@@ -166,6 +221,17 @@ theorem sum_split {r : ℕ} (l : Fin r) (f : Fin r → ℕ) :
     · intro h
       exact ⟨not_lt.mpr h.le, ne_of_gt h⟩
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hdeg : ∑ j, μ j = d + 1`. Establish `h` using `hG (mem_support_iff.mp hμ)`.
+
+Rewrite `h` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `using h`. Distinguish the cases in `h0 : μ l = 0`. Simplify using `only [h0, Finset.range_zero, Finset.sum_empty, mul_zero, zero_mul]`. Conclude with `isHomogeneous_zero _ _ _`.
+
+Establish `hA` using `IsHomogeneous.prod (Finset.univ.filter fun j => j < l) (fun j => (X (Fin.natAdd r j) : MvPolynomial (Fin (r + r)) ℤ) ^ μ j) (fun j => μ j) fun j _ => isHomogeneous_X_pow _ _`. Establish `hB` using `IsHomogeneous.prod (Finset.univ.filter fun j => l < j) (fun j => (X (Fin.castAdd r j) : MvPolynomial (Fin (r + r)) ℤ) ^ μ j) (fun j => μ j) fun j _ => isHomogeneous_X_pow _ _`. Establish `hM : (∑ a ∈ Finset.range (μ l), (X (Fin.castAdd r l) : MvPolynomial (Fin (r + r)) ℤ) ^ a * X (Fin.natAdd r l) ^ (μ l - 1 - a)).IsHomogeneous (μ l - 1)`. Apply `IsHomogeneous.sum` to reduce the goal to its premises. Introduce `a ha`.
+
+Establish `h` using `(isHomogeneous_X_pow (R := ℤ) (Fin.castAdd r l) a).mul (isHomogeneous_X_pow (R := ℤ) (Fin.natAdd r l) (μ l - 1 - a))`. Establish `ha'` using `Finset.mem_range.mp ha`. Rewrite `h` using `[show a + (μ l - 1 - a) = μ l - 1 by omega]`. Then use the resulting hypothesis. Establish `h` using `(((isHomogeneous_C _ (G.coeff μ)).mul hA).mul hM).mul hB`. Establish `hs` using `sum_split l μ`.
+
+Rewrite `hs` using `[hdeg]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use linear arithmetic over natural numbers and integers.
+-/
 theorem isHomogeneous_divDiff {r : ℕ} (l : Fin r) {G : MvPolynomial (Fin r) ℤ} {d : ℕ}
     (hG : G.IsHomogeneous (d + 1)) : (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff l G).IsHomogeneous d := by
   unfold IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff
@@ -198,6 +264,11 @@ theorem isHomogeneous_divDiff {r : ℕ} (l : Fin r) {G : MvPolynomial (Fin r) �
     convert h using 1
     omega
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pairNum pairNum`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[vEval_eq, ratCyc_eq]`. Use `congr 1`. Use function extensionality and compare the values at `W`.
+
+Use `polyNum_eq_classNum (Fin.append y y') finSumFinEquiv.symm (Sum.elim y y') ?_ (isHomogeneous_divDiff l hG) W` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `only [Function.comp_apply, finSumFinEquiv_symm_apply_castAdd, Sum.elim_inl, Fin.append_left]`. Simplify using `only [Function.comp_apply, finSumFinEquiv_symm_apply_natAdd, Sum.elim_inr, Fin.append_right]`.
+-/
 theorem pairNum_eq {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (P : Ideal (MRing ι O)) (d : ℕ) {r : ℕ} (y y' : Fin r → K → ℤ) (f g : Fin r → MRing ι O)
     {G : MvPolynomial (Fin r) ℤ} (hG : G.IsHomogeneous (d + 1)) :
@@ -241,11 +312,17 @@ section Joins
 variable {K K' : Type} [Fintype K] [Fintype K'] {ι : K → Type} {ι' : K' → Type}
 variable [∀ k, Fintype (ι k)] [∀ k, Fintype (ι' k)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+-/
 theorem joinCoords_eq {Ω : Type*} [Field Ω] (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω) :
     joinCoords y y' = IndefiniteRowSideFullHecke.NumbersDVR.Bundles.joinCoord y y' := by
   funext p
   obtain ⟨k | k, i⟩ := p <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem joinForm_eq {R : Type*} [CommRing R] (f : MRing ι R) :
     joinForm (ι' := ι') f = rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar ι') f := rfl
 

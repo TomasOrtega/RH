@@ -21,6 +21,9 @@ namespace UpperTheory.ConvolutionTheory.RankTwoDescent.SH
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `h : iy y = TR.infId ℚ ⟨fun _ => y, fun _ => y⁻¹, funext fun _ => mul_inv_cancel₀ hy, funext fun _ => inv_mul_cancel₀ hy⟩` using `dif_neg hy`. Establish `h2 : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x` using `fun x => (TR.infEq ℚ).symm_apply_apply x`. Rewrite using `[h, re]`. Express the relevant statement in the definitionally equal form `TR.pInf ℚ (1 - TR.sInf ℚ 1 + TR.sInf ℚ (fun _ => y)) _ = y`. Simplify using `[h2]`.
+-/
 private theorem re_iy (y : ℝ) (hy : y ≠ 0) : re ((iy y : (A ℚ)ˣ) : A ℚ) = y := by
   have h : iy y = TR.infId ℚ ⟨fun _ => y, fun _ => y⁻¹, funext fun _ => mul_inv_cancel₀ hy, funext fun _ => inv_mul_cancel₀ hy⟩ := dif_neg hy
   have h2 : ∀ x, TR.pInf ℚ (TR.sInf ℚ x) = x := fun x => (TR.infEq ℚ).symm_apply_apply x
@@ -33,6 +36,9 @@ private def Q (D : Dat ℚ E) (L N : ℕ) (f : Sm E 2) (X : Lie E 2) : Prop :=
   ∀ t ∈ UU, (∀ v, Dv L v ((t : A ℚ) - 1)) → ∀ (y : (A ℚ)ˣ) x,
     Wo D (lie E 2 X f).1 (em E (aE (y * t)) * infGL E 2 x) = Wo D (lie E 2 X f).1 (em E (aE y) * infGL E 2 x)
 
+/- English proof (translation)
+Introduce `g` and use `by have h0 := h g refine ⟨h0.card, fun g' k hk => ?_, fun ϖ hϖ j hj g' => ?_⟩ · simpa using congrArg (c * ·) (h0.inv g' k hk) · have h1 := h0.eig ϖ hϖ j hj g' simp only [Pi.smul_apply, smul_eq_mul] at h1 ⊢ rw [mul_left_comm, ← h1, ← smul_eq_mul, smul_finsum] exact finsum_congr fu …`.
+-/
 private theorem eig_smul {w : H.P E} {B : Multiset ℂˣ} {f : GL (Fin 2) (A E) → ℂ} (c : ℂ)
     (h : UpperTheory.V.Af.Smo.EigAt w B f) : UpperTheory.V.Af.Smo.EigAt w B (c • f) := fun g => by
   have h0 := h g
@@ -43,6 +49,11 @@ private theorem eig_smul {w : H.P E} {B : Multiset ℂˣ} {f : GL (Fin 2) (A E) 
     rw [mul_left_comm, ← h1, ← smul_eq_mul, smul_finsum]
     exact finsum_congr fun x => by rw [smul_eq_mul, mul_left_comm]
 
+/- English proof (translation)
+Establish `hs : ∀ h, Wo D (c • (lie E 2 X f).1) h = c * Wo D (lie E 2 X f).1 h` using `fun h => (UpperTheory.whittakerPeriod_add_smul_and_norm_le E D).2.1 c _ h`. Use `⟨hG.pos, hG.dvd, hG.same, (Tr P).smul_mem c hm, hG.pl, fun w hw => ?_, fun k hk g => ?_, fun y x hne => ?_, fun t ht hL y x => ?_⟩` and prove the remaining obligations. Take `⟨h1, B, h2, h3⟩` from `hG.fix w hw`. Use `⟨fun g k hk => ?_, B, h2, eig_smul c (UpperTheory.lie_action_preserves_satake_eigen_at_place E w B f X h3)⟩` and prove the remaining obligations. Simplify using `using congrArg (c * ·) (UpperTheory.lie_action_preserves_fixed_at_place E w f X h1 g k hk)`.
+
+Use `UpperTheory.lie_action_preserves_right_invariance_finite_adelic E k hk.1 f X (hG.lev k hk) g` as an intermediate fact. Simplify using `using congrArg (c * ·) this`. Rewrite `hne` using `[hs]`. Conclude with `hQ.1 y x (right_ne_zero_of_mul hne)`. Rewrite using `[hs, hs, hQ.2 t ht hL y x]`.
+-/
 private theorem gd_smul {D : Dat ℚ E} {P : CuspSub E 2} {L N : ℕ} {f : Sm E 2} {X : Lie E 2} {c : ℂ}
     (hG : Gd D P L N f.1) (hm : (lie E 2 X f).1 ∈ Tr P) (hQ : Q D L N f X) :
     Gd D P L N (c • (lie E 2 X f).1) := by
@@ -57,6 +68,15 @@ private theorem gd_smul {D : Dat ℚ E} {P : CuspSub E 2} {L N : ℕ} {f : Sm E 
     exact hQ.1 y x (right_ne_zero_of_mul hne)
   · rw [hs, hs, hQ.2 t ht hL y x]
 
+/- English proof (translation)
+Take `⟨h0, hadd, hd, -⟩` from `UpperTheory.archimedeanConjugateCurve_oneParameterSubgroup E D k`. Establish `key : ∀ g, HasDerivAt (fun t : ℝ => Wo D f.1 (g * infGL E 2 (cv D k t))) (Wo D (lie E 2 (toL (XB D k)) f).1 g) 0` using `fun g => UpperTheory.hasDerivAt_whittakerPeriod_oneParameter E D f (cv D k) _ g h0 hadd hd hc hX hB`. Use `⟨fun y x hne v hv => ?_, fun t ht hL y x => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Establish `hz : (fun s : ℝ => Wo D f.1 (em E (aE y) * infGL E 2 x * infGL E 2 (cv D k s))) = fun _ => 0` using `funext fun s => by`.
+
+Assume the negation of the conclusion as `h1`. Rewrite `h1` using `[mul_assoc, ← map_mul]`. Conclude with `hcon (hG.supp y _ h1 v hv)`. Establish `h2` using `key (em E (aE y) * infGL E 2 x)`. Rewrite `h2` using `[hz]`.
+
+Conclude with `hne (h2.unique (hasDerivAt_const _ _))`. Establish `h1` using `key (em E (aE (y * t)) * infGL E 2 x)`. Establish `h2` using `key (em E (aE y) * infGL E 2 x)`. Establish `e : (fun s : ℝ => Wo D f.1 (em E (aE (y * t)) * infGL E 2 x * infGL E 2 (cv D k s))) = fun s : ℝ => Wo D f.1 (em E (aE y) * infGL E 2 x * infGL E 2 (cv D k s))` using `funext fun s => by`. Rewrite using `[mul_assoc, mul_assoc, ← map_mul, hG.tor t ht hL y]`.
+
+Rewrite `h1` using `[e]`. Conclude with `h1.unique h2`.
+-/
 private theorem q_cv {D : Dat ℚ E} {P : CuspSub E 2} {L N : ℕ} {f : Sm E 2} (k : GL (Fin 2) (A E))
     (hG : Gd D P L N f.1) (hc : Continuous f.1) (hX : Continuous (lie E 2 (toL (XB D k)) f).1)
     (hB : ∃ B : ℝ, ∀ g, ‖(lie E 2 (toL (XB D k)) f).1 g‖ ≤ B) : Q D L N f (toL (XB D k)) := by
@@ -81,12 +101,18 @@ private theorem q_cv {D : Dat ℚ E} {P : CuspSub E 2} {L N : ℕ} {f : Sm E 2} 
     rw [e] at h1
     exact h1.unique h2
 
+/- English proof (translation)
+Rewrite using `[map_add, map_add, map_smul, map_smul, map_smul]`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 private theorem lieDerivative_linear (f : Sm E 2) (a b c : ℝ) (X Y Z : Lie E 2) :
     (lie E 2 (a • X + b • Y + c • Z) f).1 = (a : ℂ) • (lie E 2 X f).1 + (b : ℂ) • (lie E 2 Y f).1 + (c : ℂ) • (lie E 2 Z f).1 := by
   rw [map_add, map_add, map_smul, map_smul, map_smul]
   funext g
   simp
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `UpperTheory.whittakerPeriod_add_smul_and_norm_le E D`. Rewrite using `[lieDerivative_linear, h1 _ _ (((hc X).const_smul _).add ((hc Y).const_smul _)) ((hc Z).const_smul _), h1 _ _ ((hc X).const_smul _) ((hc Y).const_smul _), h2, h2, h2]`.
+-/
 private theorem whittaker_lieDerivative_linear {D : Dat ℚ E} {f : Sm E 2} (hc : ∀ X, Continuous (lie E 2 X f).1) (a b c : ℝ) (X Y Z : Lie E 2)
     (h : GL (Fin 2) (A E)) :
     Wo D (lie E 2 (a • X + b • Y + c • Z) f).1 h = a * Wo D (lie E 2 X f).1 h + b * Wo D (lie E 2 Y f).1 h + c * Wo D (lie E 2 Z f).1 h := by
@@ -94,6 +120,13 @@ private theorem whittaker_lieDerivative_linear {D : Dat ℚ E} {f : Sm E 2} (hc 
   rw [lieDerivative_linear, h1 _ _ (((hc X).const_smul _).add ((hc Y).const_smul _)) ((hc Z).const_smul _),
     h1 _ _ ((hc X).const_smul _) ((hc Y).const_smul _), h2, h2, h2]
 
+/- English proof (translation)
+Use `⟨fun y x hne v hv => ?_, fun t ht hL y x => ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[whittaker_lieDerivative_linear hc]`. Assume the negation of the conclusion as `hcon`. Establish `h1 : Wo D (lie E 2 X f).1 (em E (aE y) * infGL E 2 x) = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hcon (hX.1 y x h v hv)`. Establish `h2 : Wo D (lie E 2 Y f).1 (em E (aE y) * infGL E 2 x) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hcon (hY.1 y x h v hv)`. Establish `h3 : Wo D (lie E 2 Z f).1 (em E (aE y) * infGL E 2 x) = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hcon (hZ.1 y x h v hv)`. Conclude with `hne (by rw [h1, h2, h3]; ring)`. Rewrite using `[whittaker_lieDerivative_linear hc, whittaker_lieDerivative_linear hc, hX.2 t ht hL y x, hY.2 t ht hL y x, hZ.2 t ht hL y x]`.
+-/
 private theorem quadraticCondition_linear {D : Dat ℚ E} {L N : ℕ} {f : Sm E 2} (hc : ∀ X, Continuous (lie E 2 X f).1) (a b c : ℝ) {X Y Z : Lie E 2}
     (hX : Q D L N f X) (hY : Q D L N f Y) (hZ : Q D L N f Z) : Q D L N f (a • X + b • Y + c • Z) := by
   refine ⟨fun y x hne v hv => ?_, fun t ht hL y x => ?_⟩
@@ -108,6 +141,11 @@ private theorem quadraticCondition_linear {D : Dat ℚ E} {L N : ℕ} {f : Sm E 
     exact hne (by rw [h1, h2, h3]; ring)
   · rw [whittaker_lieDerivative_linear hc, whittaker_lieDerivative_linear hc, hX.2 t ht hL y x, hY.2 t ht hL y x, hZ.2 t ht hL y x]
 
+/- English proof (translation)
+Establish `c4 : Real.cos (Real.pi / 4) ^ 2 = 1 / 2`. Rewrite using `[Real.cos_pi_div_four, div_pow, Real.sq_sqrt (by norm_num)]; norm_num`. Establish `s4 : Real.sin (Real.pi / 4) ^ 2 = 1 / 2`. Rewrite using `[Real.sin_pi_div_four, div_pow, Real.sq_sqrt (by norm_num)]; norm_num`. Establish `m4 : Real.cos (Real.pi / 4) * Real.sin (Real.pi / 4) = 1 / 2`.
+
+Rewrite using `[Real.sin_pi_div_four, Real.cos_pi_div_four, ← pow_two, div_pow, Real.sq_sqrt (by norm_num)]; norm_num`. Rewrite using `[UpperTheory.conj_lie_element_embed_rotation_eq_trig_matrix E D t, UpperTheory.conj_lie_element_embed_rotation_eq_trig_matrix E D 0, UpperTheory.conj_lie_element_embed_rotation_eq_trig_matrix E D (Real.pi / 2), UpperTheory.conj_lie_element_embed_rotation_eq_trig_matrix E D (Real. …`. Simplify using `only [Real.cos_zero, Real.sin_zero, Real.cos_pi_div_two, Real.sin_pi_div_two]`. Use function extensionality and compare the values at `i j w`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> ring`.
+-/
 private theorem xb_dec (D : Dat ℚ E) (t : ℝ) :
     toL (XB D (em E (rot t))) = (Real.cos t ^ 2) • toL (XB D (em E (rot 0))) + (Real.sin t ^ 2) • toL (XB D (em E (rot (Real.pi / 2)))) +
       (Real.cos t * Real.sin t) • ((2 : ℝ) • toL (XB D (em E (rot (Real.pi / 4)))) + (-1 : ℝ) • toL (XB D (em E (rot 0))) +
@@ -126,6 +164,19 @@ private theorem xb_dec (D : Dat ℚ E) (t : ℝ) :
 end UpperTheory.ConvolutionTheory.RankTwoDescent.SH
 
 open UpperTheory.ConvolutionTheory.RankTwoDescent.SH in
+/- English proof (translation)
+Introduce `hT E _ _ _ D P ω χ hC hU hχ L N φ hG`. Establish `adm` using `hT E D P ω χ hC hU hχ`. Take `⟨f, rfl, -⟩` from `UpperTheory.exists_smooth_lie_action_mem_cuspidal_translates E P 0 φ hG.mem`. Establish `hmem : ∀ X, (lie E 2 X f).1 ∈ Tr P` using `fun X => by`. Take `⟨f', hf', hm⟩` from `UpperTheory.exists_smooth_lie_action_mem_cuspidal_translates E P X f.1 hG.mem`.
+
+Rewrite `hm` using `[show f' = f from Subtype.ext hf']`. Then use the resulting hypothesis. Establish `hc : ∀ X, Continuous (lie E 2 X f).1` using `fun X => (adm _ (hmem X)).cont`. Establish `hb : ∀ X, ∃ B : ℝ, ∀ g, ‖(lie E 2 X f).1 g‖ ≤ B` using `fun X => (adm _ (hmem X)).bdd`. Establish `hf0` using `adm _ hG.mem`. Establish `hq : ∀ k, Q D L N f (toL (XB D k))` using `fun k => q_cv k hG hf0.cont (hc _) (hb _)`.
+
+Use `set b0 : Lie E 2 := toL (XB D (em E (rot 0))) with hb0`. Use `set b1 : Lie E 2 := toL (XB D (em E (rot (Real.pi / 2)))) with hb1`. Use `set b2 : Lie E 2 := toL (XB D (em E (rot (Real.pi / 4)))) with hb2`. Use `set b3 : Lie E 2 := (2 : ℝ) • b2 + (-1 : ℝ) • b0 + (-1 : ℝ) • b1 with hb3`. Establish `hq3 : Q D L N f b3` using `quadraticCondition_linear hc _ _ _ (hq _) (hq _) (hq _)`.
+
+Use `set κ : ℂ := (2 * Real.pi * Complex.I)⁻¹ with hκ`. Establish `hκ0 : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Use `⟨κ • (lie E 2 b1 f).1, κ • (lie E 2 b3 f).1, κ • (lie E 2 b0 f).1, gd_smul hG (hmem _) (hq _), gd_smul hG (hmem _) hq3, gd_smul hG (hmem _) (hq _), fun y t hy => ?_⟩` and prove the remaining obligations. Take `⟨-, h2, -⟩` from `UpperTheory.whittakerPeriod_add_smul_and_norm_le E D`.
+
+Establish `e` using `UpperTheory.whittakerCoeff_lieDeriv_unipotent_eq_mul E D f ⟨hf0.cont, hf0.left⟩ (fun X => ⟨hc X, hb X⟩) (iy y) (em E (rot t))`. Rewrite `e` using `[xb_dec D t, whittaker_lieDerivative_linear hc, re_iy y hy, ← map_mul]`. Rewrite using `[h2, h2, h2]`. Establish `e' : (y : ℂ) * Wo D f.1 (em E (aE (iy y) * rot t)) = κ * ((2 * Real.pi * Complex.I * (y : ℂ)) * Wo D f.1 (em E (aE (iy y) * rot t)))`. Rewrite using `[hκ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e', ← e, hκ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.shift_of :
     TrAdm → Shift := by
   intro hT E _ _ _ D P ω χ hC hU hχ L N φ hG

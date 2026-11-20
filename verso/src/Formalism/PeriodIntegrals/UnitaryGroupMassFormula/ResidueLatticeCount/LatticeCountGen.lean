@@ -8,6 +8,23 @@ noncomputable section
 
 namespace PI.Residue
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hF` using `ZLattice.isAddFundamentalDomain b μ`. Use `set F := ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ) with hFdef`. Establish `hfin : μ F ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded _).measure_lt_top.ne`. Establish `hcov : ENNReal.ofReal (ZLattice.covolume L μ) = μ F`.
+
+Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L μ hF, measureReal_def, ENNReal.ofReal_toReal hfin]`. Use `haveI : VAddInvariantMeasure L E μ := ⟨fun c s _ => measure_preimage_add μ (c : E) s⟩`. Establish `hm : ∀ g : L, MeasurableSet (g +ᵥ B)` using `fun g => hB.const_vadd g`. Establish `h2 : ∀ g : L, μ ((g +ᵥ B) ∩ F) = ∫⁻ t in F, (g +ᵥ B).indicator (fun _ => (1 : ℝ≥0∞)) t ∂μ`. Introduce `g`.
+
+Rewrite using `[lintegral_indicator_const (hm g), one_mul, Measure.restrict_apply (hm g)]`. Establish `hpt : ∀ t : E, ∑' g : L, (g +ᵥ B).indicator (fun _ => (1 : ℝ≥0∞)) t ≤ ∑' x : L, (B - B).indicator (fun _ => (1 : ℝ≥0∞)) (x : E)`. Introduce `t`. Distinguish the cases in `h : ∃ g0 : L, t ∈ g0 +ᵥ B`. Take `⟨g0, hg0⟩` from `h`.
+
+Rewrite using `[← (Equiv.addRight g0).tsum_eq]`. Use `ENNReal.tsum_le_tsum fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : t ∈ ((Equiv.addRight g0) g) +ᵥ B`. Establish `: (g : E) ∈ B - B`. Take `⟨b0, hb0, e0⟩` from `hg0`.
+
+Take `⟨b1, hb1, e1⟩` from `hg`. Use `⟨b0, hb0, b1, hb1, ?_⟩` and prove the remaining obligations. Establish `e0' : (g0 : E) + b0 = t` using `e0`. Establish `e1' : ((g : E) + (g0 : E)) + b1 = t` using `e1`. Establish `: (g0 : E) + b0 = ((g : E) + (g0 : E)) + b1` using `e0'.trans e1'.symm`.
+
+Rewrite using `[sub_eq_iff_eq_add]`. Apply `add_left_cancel (a := (g0 : E))` to reduce the goal to its premises. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem this]`.
+
+Rewrite using `[Set.indicator_of_notMem hg]`. Conclude with `zero_le`. Use `push Not at h`. Establish `: ∀ g : L, (g +ᵥ B).indicator (fun _ => (1 : ℝ≥0∞)) t = 0` using `fun g => Set.indicator_of_notMem (h g) _`. Simplify using `[this]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_tsum fun g => (measurable_const.indicator (hm g)).aemeasurable]`. Conclude with `tsum_congr h2`. Use `_ ≤ ∫⁻ _ in F, ∑' x : L, (B - B).indicator (fun _ => (1 : ℝ≥0∞)) (x : E) ∂μ := lintegral_mono hpt`. Use `_ = _ := by rw [setLIntegral_const, hcov]`.
+-/
 theorem latticeCount_gen {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure]
     (L : Submodule ℤ E) [DiscreteTopology L] [IsZLattice ℝ L] (B : Set E) (hB : MeasurableSet B) :
@@ -60,6 +77,9 @@ theorem latticeCount_gen {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
         lintegral_mono hpt
     _ = _ := by rw [setLIntegral_const, hcov]
 
+/- English proof (translation)
+Introduce `_ _ _ L _ _ B hB` and use `latticeCount_gen volume L B hB`.
+-/
 theorem latticeCount : LatticeCount := fun _ _ _ L _ _ B hB => latticeCount_gen volume L B hB
 
 end PI.Residue

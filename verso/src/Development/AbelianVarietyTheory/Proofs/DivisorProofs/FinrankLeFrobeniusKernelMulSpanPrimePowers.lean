@@ -39,6 +39,9 @@ variable (p : ℕ) [hp : Fact p.Prime] (K H : Type) [Field K] [CharP K p] [CommR
   [HopfAlgebra K H] (r : ℕ)
 
 omit hp in
+/- English proof (translation)
+Rewrite using `[← map_natCast (algebraMap K A), CharP.cast_eq_zero, map_zero]`.
+-/
 theorem natCast_eq_zero_of_charP_algebra (A : Type) [CommRing A] [Algebra K A] : (p : A) = 0 := by
   rw [← map_natCast (algebraMap K A), CharP.cast_eq_zero, map_zero]
 
@@ -78,6 +81,9 @@ def iterFrobSemi : SemiBialgHom (algebraMap (IterFrobBase K p r) K) H H where
 
 def iterRelFrob : K ⊗[IterFrobBase K p r] H →ₐc[K] H := (iterFrobSemi p K H r).liftBC
 
+/- English proof (translation)
+The claim follows from `SemiBialgHom.liftBC_tmul _ c a`.
+-/
 theorem iterRelFrob_tmul (c : K) (a : H) : iterRelFrob p K H r (c ⊗ₜ a) = c • a ^ p ^ r :=
   SemiBialgHom.liftBC_tmul _ c a
 
@@ -85,6 +91,19 @@ end GlobalTheory.PDiv
 
 namespace GlobalTheory.PDiv
 
+/- English proof (translation)
+Use `set f := iterRelFrob p K H r`. Rewrite using `[finrank_eq_ker_mul_range K H _ f]`. Use `Nat.mul_le_mul ?_ ?_` and prove the remaining obligations. Establish `hle : frobKerIdeal (p ^ r) K H ≤ kerIdeal f`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `ha' : counit (R` using `K) a = 0 := ha`. Establish `hb : (1 : K) ⊗ₜ[IterFrobBase K p r] a ∈ augIdeal K (K ⊗[IterFrobBase K p r] H)`. Express the relevant statement in the definitionally equal form `counit (R := K) ((1 : K) ⊗ₜ[IterFrobBase K p r] a) = 0`. Rewrite using `[← toBaseChange_apply (IterFrobBase K p r) K H a, SemiBialgHom.counit_map]`.
+
+Establish `ha'' : counit (R` using `IterFrobBase K p r) a = 0 := ha'`. Rewrite using `[ha'', map_zero]`. Establish `e : f ((1 : K) ⊗ₜ a) = a ^ p ^ r`. Rewrite using `[iterRelFrob_tmul, one_smul]`. Use `show a ^ p ^ r ∈ _`.
+
+Rewrite using `[← e]`. Conclude with `Ideal.mem_map_of_mem _ hb`. Conclude with `LinearMap.finrank_le_finrank_of_surjective (f := (Ideal.Quotient.factorₐ K hle).toLinearMap) (Ideal.Quotient.factor_surjective hle)`. Use `Submodule.finrank_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `tmul c a`. Express the relevant statement in the definitionally equal form `f (c ⊗ₜ a) ∈ _`. Rewrite using `[iterRelFrob_tmul]`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem finrank_le_frobKer_mul_span_pow (p : ℕ) [Fact p.Prime] (K H : Type) [Field K] [CharP K p]
     [CommRing H] [HopfAlgebra K H] [Module.Finite K H] (r : ℕ) :
     Module.finrank K H ≤ Module.finrank K (H ⧸ frobKerIdeal (p ^ r) K H) *

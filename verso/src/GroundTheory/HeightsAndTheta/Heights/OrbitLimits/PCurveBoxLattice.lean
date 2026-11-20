@@ -17,6 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Unfold `chartRadius`. Rewrite using `[A.smul d z hd]`. Establish `hX : (∏ k, ‖d k‖ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hd k))`. Simplify using `only [norm_mul, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[mul_div_mul_left _ _ hX]`.
+-/
 theorem chartRadius_smul (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (c : ∀ k, ι k) (d : K → ℂ) (hd : ∀ k, d k ≠ 0)
     (z : (Σ k, ι k) → ℂ) : chartRadius A c (fun p => d p.1 * z p) = chartRadius A c z := by
   unfold chartRadius
@@ -28,6 +31,9 @@ theorem chartRadius_smul (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine 
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Unfold `chartRadius`. Rewrite using `[hA z]`. Simplify using `only [Complex.norm_conj]`.
+-/
 theorem chartRadius_conj (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (hA : IsConjInvariantH A) (c : ∀ k, ι k)
     (z : (Σ k, ι k) → ℂ) : chartRadius A c (fun p => (starRingEnd ℂ) (z p)) = chartRadius A c z := by
   unfold chartRadius
@@ -36,6 +42,9 @@ theorem chartRadius_conj (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine 
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+The claim follows from `div_pos (A.pos z fun k => ⟨c k, hz k⟩) (Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.mpr (hz k)) _)`.
+-/
 theorem chartRadius_pos (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) (c : ∀ k, ι k) (z : (Σ k, ι k) → ℂ)
     (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) : 0 < chartRadius A c z :=
   div_pos (A.pos z fun k => ⟨c k, hz k⟩)
@@ -43,18 +52,45 @@ theorem chartRadius_pos (A : ReciprocityTheory.ChartRestriction.G.Geo.HermLine �
 
 end Lemmas
 
+/- English proof (translation)
+Unfold `genIndex`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ m.injective, AddSubgroup.relIndex_map_map_of_injective _ _ m.injective]`.
+-/
 theorem genIndex_map_addEquiv {G : Type*} [AddCommGroup G] (m : G ≃+ G) (A B : AddSubgroup G) :
     genIndex (A.map m.toAddMonoidHom) (B.map m.toAddMonoidHom) = genIndex A B := by
   unfold genIndex
   rw [AddSubgroup.relIndex_map_map_of_injective _ _ m.injective,
     AddSubgroup.relIndex_map_map_of_injective _ _ m.injective]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hA`. Conclude with `⟨S.image f, by rw [Finset.coe_image, ← AddMonoidHom.map_closure, hS]⟩`.
+-/
 theorem addSubgroup_fg_map {G H : Type*} [AddCommGroup G] [AddCommGroup H] {A : AddSubgroup G} (hA : A.FG)
     (f : G →+ H) : (A.map f).FG := by
   classical
   obtain ⟨S, hS⟩ := hA
   exact ⟨S.image f, by rw [Finset.coe_image, ← AddMonoidHom.map_closure, hS]⟩
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y A c R hP hB hA hc hR hRu`. Establish `: NumberField Ω` using `hF K ι Ω y hP hB`. Take `⟨e, he⟩` from `hE K ι Ω y R hP hB hR hRu`. Establish `hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0` using `fun k => ⟨c k, hc k⟩`. Establish `hBeq : (curveRing y).toAddSubgroup = chartLat y 0 0`.
+
+Use extensionality with `s`. Simplify using `[mem_curveRing, chartLat]`. Establish `hBfg : (curveRing y).toAddSubgroup.FG` using `hBeq ▸ hG K ι Ω y 0 0 hy`. Establish `hBfull : ∀ x : Ω, ∃ n : ℕ, 0 < n ∧ (n : Ω) * x ∈ (curveRing y).toAddSubgroup` using `hBeq ▸ hL K ι Ω y hB 0 0`. Take `⟨C, hC⟩` from `hN Ω _ hBfg hBfull`.
+
+Use `⟨C, fun τ _ => ?_⟩` and prove the remaining obligations. Establish `hu : chartUnit y c A.a τ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`. Use `set u := chartUnit y c A.a τ with hu_def`. Set `m : Ω ≃+ Ω` to `{ toFun := fun x => x / u invFun := fun x => x * u left_inv := fun x => div_mul_cancel₀ x hu right_inv := fun x => mul_div_cancel_right₀ x hu map_add' := fun x z => add_div x z u }`. Use `set Λ := (chartLat y A.a τ).map m.toAddMonoidHom with hΛ`.
+
+Establish `hΛfg : Λ.FG` using `addSubgroup_fg_map (hG K ι Ω y A.a τ hy) _`. Establish `hΛfull : ∀ x : Ω, ∃ n : ℕ, 0 < n ∧ (n : Ω) * x ∈ Λ`. Introduce `x`. Take `⟨n, hn, hmem⟩` from `hL K ι Ω y hB A.a τ (x * u)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations.
+
+Establish `: (n : Ω) * x = m ((n : Ω) * (x * u))` using `by show (n : Ω) * x = (n : Ω) * (x * u) / u`. Rewrite using `[mul_div_assoc, mul_div_cancel_right₀ x hu]`. Rewrite using `[this]`. Conclude with `AddSubgroup.mem_map_of_mem _ hmem`. Establish `hBmap : (curveMul y u).map m.toAddMonoidHom = (curveRing y).toAddSubgroup`.
+
+Rewrite using `[curveMul, AddSubgroup.map_map]`. Use `AddSubgroup.map_id _ using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Use `show u * x / u = x`. Rewrite using `[mul_div_cancel_left₀ x hu]`.
+
+Establish `hidx : genIndex Λ (curveRing y).toAddSubgroup = genIndex (chartLat y A.a τ) (curveMul y u)`. Rewrite using `[← hBmap, hΛ, genIndex_map_addEquiv]`. Set `ρ : (Ω →+* ℂ) → ℝ` to `fun σ => chartRadius A c (fun p => σ (y p)) ^ τ`. Establish `hρpos : ∀ σ, 0 < ρ σ` using `fun σ => pow_pos (chartRadius_pos A c _ fun k => (map_ne_zero σ).mpr (hc k)) τ`. Establish `hρconj : ∀ σ, ρ (NumberField.ComplexEmbedding.conjugate σ) = ρ σ`.
+
+Introduce `σ`. Simplify using `only [ρ, NumberField.ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[chartRadius_conj A hA c]`. Establish `hcount` using `hC Λ hΛfg hΛfull ρ hρpos hρconj`. Establish `hsum : ∑ t ∈ R, Real.log (chartRadius A c t) = ∑ σ : Ω →+* ℂ, Real.log (chartRadius A c (fun p => σ (y p)))`.
+
+Rewrite using `[← Finset.sum_coe_sort R, ← Equiv.sum_comp e]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Take `⟨d, hd, ht⟩` from `he t`. Rewrite using `[ht, chartRadius_smul A c d hd]`. Establish `hρsum : ∑ σ : Ω →+* ℂ, Real.log (ρ σ) = (τ : ℝ) * ∑ σ : Ω →+* ℂ, Real.log (chartRadius A c (fun p => σ (y p)))`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun σ _ => Real.log_pow _ _`. Establish `hcard : Nat.card {s : chartLat y A.a τ // ∀ σ : Ω →+* ℂ, ‖σ ((s : Ω) / u)‖ ≤ chartRadius A c (fun p => σ (y p)) ^ τ} = Nat.card {x : Λ // ∀ σ : Ω →+* ℂ, ‖σ (x : Ω)‖ ≤ ρ σ}` using `Nat.card_congr ((AddSubgroup.equivMapOfInjective _ m.toAddMonoidHom m.injective).toEquiv.subtypeEquiv fun s => Iff.rfl)`. Rewrite using `[hcard, hsum, ← hρsum, chartIndexLog, ← hu_def, ← hidx]`. Conclude with `hcount`.
+-/
 theorem CurveBoxLattice.proof (hF : CurveFieldNumber.Statement) (hE : CurveEmbedOrbit.Statement)
     (hL : ChartLatFull.Statement) (hN : NumberFieldBoxCount.Statement)
     (hG : HilbertSamuel.SectionLatticeFinite.Statement) : CurveBoxLattice.Statement := by

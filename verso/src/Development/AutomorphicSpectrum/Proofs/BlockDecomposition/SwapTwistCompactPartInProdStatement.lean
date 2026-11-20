@@ -9,6 +9,9 @@ open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.Comp
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SplitUnit.main | exact GlobalTheory.CompanionTheory.SplitUnit.main | (intros; apply GlobalTheory.CompanionTheory.SplitUnit.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.swap_twist_compact_part_in_prod : ∀ {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [T2Space H] (σ : H →* H) (K : Subgroup H) (d d' : H),
   Continuous σ → (∀ g, σ (σ g) = g) → (∀ k ∈ K, σ k ∈ K) → d ∈ K → d' ∈ K →
   cptPart (twCent (MonoidHom.id H) (d * σ d')) ≤ K →

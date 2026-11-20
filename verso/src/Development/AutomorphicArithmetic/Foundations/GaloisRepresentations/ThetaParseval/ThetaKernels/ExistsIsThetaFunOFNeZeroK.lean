@@ -12,6 +12,25 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 noncomputable section
 namespace GlobalTheory.ThetaNonzeroF
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ`. Establish `hstd` using `_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => by`. Apply `((B.emb w).1 : E →+* ℂ).injective` to reduce the goal to its premises.
+
+Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Establish `h2 : Module.finrank F E = 2` using `hB.cm.2.2.1`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [h2]; norm_num)`. Set `JA : Matrix (Fin nT) (Fin nT) E` to `JTᵀ`. Set `JB : Matrix (Fin nS) (Fin nS) E` to `-(ξ₀ • JS⁻¹)`.
+
+Apply the tactic sequence `have hSinv := herm_inv_entry σ JS hS.1 (Ne.isUnit hS.2)`. Establish `hA : ∀ i j, σ (JA j i) = JA i j` using `fun i j => hT.1 j i`. Establish `hBs : ∀ i j, σ (JB j i) = -JB i j` using `fun i j => by`. Simplify using `only [JB, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, map_neg, map_mul, hσξ, hSinv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hA' : JA.det ≠ 0` using `by simp only [JA, Matrix.det_transpose]; exact hT.2`. Establish `hB' : JB.det ≠ 0`. Simplify using `only [JB, Matrix.det_neg, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num : (-1 : E) ≠ 0)) (mul_ne_zero (pow_ne_zero _ hξ0) (Matrix.isUnit_nonsing_inv_det JS (Ne.isUnit hS.2)).ne_zero)`. Take `⟨co, hco⟩` from `GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ hA hBs hA' hB'`.
+
+Set `co' : Darboux (symp (cA σ) (-1 : AF F ⊗[F] E) (incM F JA) (incM F JB)) (Fin nT × Fin nS)` to `co`. Establish `hrat : ∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : Fin nT × Fin nS → F, co'.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `hco`. Establish `hJA : JA = JTᵀ` using `rfl`. Establish `hJB : (-1 : AF F ⊗[F] E) • incM F JB = incM F (ξ₀ • JS⁻¹)`. Use extensionality with `i j`.
+
+Simplify using `[JB, incM]`. Set `τ` to `Fintype.equivFin (Fin nT × Fin nS)`. Establish `he : ∀ w w', Formalism.IndefR.DatumF.symplOF σ JS JT ξ₀ w w' = GlobalTheory.ThetaTransform.symV (GlobalTheory.TransportF.numCoordF co' τ w) (GlobalTheory.TransportF.numCoordF co' τ w')` using `fun w w' => by`. Rewrite using `[GlobalTheory.TransportF.symplOF_eq_symp hJA hJB, co'.form]`. Simplify using `only [GlobalTheory.ThetaTransform.symV, GlobalTheory.TransportF.numCoordF_apply, comp_equiv_dotProduct_comp_equiv]`.
+
+Establish `hr : ∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : Fin (Fintype.card (Fin nT × Fin nS)) → F, GlobalTheory.TransportF.numCoordF co' τ (Formalism.IndefR.DatumF.ratWF x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)` using `fun x => by`. Take `⟨y, z, h⟩` from `hrat x`. Conclude with `⟨y ∘ τ.symm, z ∘ τ.symm, by rw [GlobalTheory.TransportF.numCoordF_apply]; erw [h]; rfl⟩`. Take `⟨Φ, hΦ, hne⟩` from `GlobalTheory.ThetaSumNe.exists_mem_schA_thetaSum_ne_zero F (Fin nT × Fin nS)`. Use `⟨GlobalTheory.WeilSchrodinger.thetaTr F co' B.ψ Φ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.TransportF.thetaTr_eqF co' τ]`. Conclude with `_root_.GlobalTheory.T.schrodinger_model_isomorphism F E σ B hB nS nT JS JT hS hT ξ₀ hξ0 hσξ hstd _ (GlobalTheory.TransportF.numCoordF co' τ) he hr _ (GlobalTheory.TransportF.comp_mem_schA τ hΦ)`. Introduce `h`. Establish `h0` using `congrFun h 0`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hs : GlobalTheory.WeilM.schr B.ψ (0 : (Fin nT × Fin nS → AF F) × (Fin nT × Fin nS → AF F)) Φ = Φ`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.schr]`. Simplify `h0` using `[GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, hs]`.
+-/
 theorem exists_isThetaFunOF_ne_zero_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

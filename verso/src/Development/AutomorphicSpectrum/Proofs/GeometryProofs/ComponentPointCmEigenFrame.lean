@@ -20,6 +20,11 @@ section Linear
 variable {Ω F V ER : Type} [Field Ω] [Field F] [AddCommGroup V] [Module Ω V] [AddCommGroup ER] [Module F ER]
   {A : Subring Ω} {L : Submodule A V}
 
+/- English proof (translation)
+Establish `h1 : Submodule.span A (Subtype.val '' Q) = (Submodule.span A Q).map L.subtype`. Rewrite using `[Submodule.map_span]`. Both sides reduce to the same expression. Rewrite `h` using `[h1]`. Take `⟨e', he', h2⟩` from `h`.
+
+Establish `: e' = e` using `Subtype.ext h2`. Conclude with `this ▸ he'`.
+-/
 theorem mem_span_of_val (Q : Set L) (e : L) (h : (e : V) ∈ Submodule.span A (Subtype.val '' Q)) :
     e ∈ Submodule.span A Q := by
   have h1 : Submodule.span A (Subtype.val '' Q) = (Submodule.span A Q).map L.subtype := by
@@ -29,6 +34,11 @@ theorem mem_span_of_val (Q : Set L) (e : L) (h : (e : V) ∈ Submodule.span A (S
   have : e' = e := Subtype.ext h2
   exact this ▸ he'
 
+/- English proof (translation)
+Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem e he => exact Submodule.subset_span ⟨e, he, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul a e _ he`. Take `⟨r, hr⟩` from `hev a`. Rewrite using `[hr]`. Conclude with `Submodule.smul_mem _ _ he`.
+-/
 theorem ev_mem_span (ev : L →+ ER) (hev : ∀ a : A, ∃ r : F, ∀ e : L, ev (a • e) = r • ev e) (Q : Set L) (e : L)
     (h : e ∈ Submodule.span A Q) : ev e ∈ Submodule.span F (ev '' Q) := by
   induction h using Submodule.span_induction with
@@ -40,6 +50,9 @@ theorem ev_mem_span (ev : L →+ ER) (hev : ∀ a : A, ∃ r : F, ∀ e : L, ev 
     rw [hr]
     exact Submodule.smul_mem _ _ he
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, he, rfl⟩`. Conclude with `ev_mem_span ev hev Q' e (mem_span_of_val Q' e (h (Submodule.subset_span ⟨e, he, rfl⟩)))`.
+-/
 theorem span_ev_le (ev : L →+ ER) (hev : ∀ a : A, ∃ r : F, ∀ e : L, ev (a • e) = r • ev e) (Q Q' : Set L)
     (h : Submodule.span A (Subtype.val '' Q) ≤ Submodule.span A (Subtype.val '' Q')) :
     Submodule.span F (ev '' Q) ≤ Submodule.span F (ev '' Q') := by
@@ -47,6 +60,43 @@ theorem span_ev_le (ev : L →+ ER) (hev : ∀ a : A, ∃ r : F, ∀ e : L, ev (
   rintro _ ⟨e, he, rfl⟩
   exact ev_mem_span ev hev Q' e (mem_span_of_val Q' e (h (Submodule.subset_span ⟨e, he, rfl⟩)))
 
+/- English proof (translation)
+Set `f : Fin g → ER` to `fun i => ev (c i)`. Establish `hfspan : ⊤ ≤ Submodule.span F (Set.range f)`. Rewrite using `[← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨e, rfl⟩`.
+
+Use `ev_mem_span ev hev _ e (hcL e)` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Then use the resulting hypothesis. Establish `hcard : Fintype.card (Fin g) = Module.finrank F ER` using `by simp [hER]`. Use `haveI : Module.Finite F ER := ⟨⟨Finset.univ.image f, by`. Rewrite using `[eq_top_iff]`.
+
+Simplify using `using hfspan⟩⟩`. Establish `hfli : LinearIndependent F f` using `linearIndependent_of_top_le_span_of_card_eq_finrank hfspan hcard`. Establish `himg : (fun i => (c i : V)) '' (S s₀ : Set (Fin g)) = Subtype.val '' (c '' (S s₀ : Set (Fin g)))`. Rewrite using `[Set.image_image]`. Establish `hrng : (Set.range fun i => (b i : V)) = Subtype.val '' Set.range b`.
+
+Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Establish `hF : Submodule.span F (Set.range fun i => ev (b i)) = Submodule.span F (f '' (S s₀ : Set (Fin g)))`. Establish `e1 : (Set.range fun i => ev (b i)) = ev '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Establish `e2 : f '' (S s₀ : Set (Fin g)) = ev '' (c '' (S s₀ : Set (Fin g)))`. Rewrite using `[Set.image_image]`. Rewrite using `[e1, e2]`. Use `le_antisymm (span_ev_le ev hev _ _ ?_) (span_ev_le ev hev _ _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[← himg, ← hrng, hbs]`. Rewrite using `[← himg, ← hrng, hbs]`. Establish `hΩ : Submodule.span Ω (Set.range fun i => (b i : V)) = Submodule.span Ω ((fun i => (c i : V)) '' (S s₀ : Set (Fin g)))`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `v hv`.
+
+Establish `h1 : v ∈ Submodule.span A ((fun i => (c i : V)) '' (S s₀ : Set (Fin g)))`. Rewrite using `[← hbs]`. Conclude with `Submodule.subset_span hv`. Conclude with `Submodule.span_le_restrictScalars A Ω _ h1`. Introduce `v hv`.
+
+Establish `h1 : v ∈ Submodule.span A (Set.range fun i => (b i : V))`. Rewrite using `[hbs]`. Conclude with `Submodule.subset_span hv`. Conclude with `Submodule.span_le_restrictScalars A Ω _ h1`. Establish `hsub : ∀ {K W : Type} [Field K] [AddCommGroup W] [Module K W] (u : Fin g → W), LinearIndependent K u → Module.finrank K (Submodule.span K (u '' (S s₀ : Set (Fin g)))) = (S s₀).card`.
+
+Introduce `K W _ _ _ u hu`. Establish `h1 : LinearIndependent K (fun i : (S s₀ : Set (Fin g)) => u i)` using `hu.comp _ Subtype.val_injective`. Establish `h2` using `finrank_span_eq_card h1`. Rewrite `h2` using `[← Set.image_eq_range]`. Simplify using `using h2`.
+
+Establish `hcardn : n = (S s₀).card`. Establish `h1` using `finrank_span_eq_card hbli`. Rewrite `h1` using `[hΩ, hsub _ hcli]`. Simplify using `using h1.symm`. Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[linearIndependent_iff_card_eq_finrank_span] show _ = Module.finrank F (Submodule.span F (Set.range fun i => ev (b i)))`. Rewrite using `[hF, hsub f hfli]`. Simplify using `[hcardn]`. Rewrite using `[hF]`. Set `B : Module.Basis (Fin g) F ER` to `Module.Basis.mk hfli hfspan`.
+
+Establish `hB : ∀ i, B i = f i` using `fun i => by simp [B]`. Use `choose t ht using hcov`. Set `d : Fin g → F` to `fun i => B.repr w i`. Establish `hw' : w = ∑ i, d i • f i` using `by conv_lhs => rw [← B.sum_repr w]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hB]`.
+
+Establish `hz : ∀ i, d i ≠ 0 → i ∈ S s₀`. Introduce `i hi`. Assume the negation of the conclusion as `hn`. Establish `hne : t i ≠ s₀` using `fun h => hn (h ▸ ht i)`. Take `⟨a, ha⟩` from `hχ _ _ hne`.
+
+Establish `e1 : T a w = ∑ j, (d j * χ (t j) a) • B j` using `by conv_lhs => rw [hw', map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hB]`. Use `show d j • T a (ev (c j)) = _`. Rewrite using `[hT _ j (ht j), smul_smul]`.
+
+Establish `e2 : T a w = ∑ j, (χ s₀ a * d j) • B j`. Rewrite using `[hw a]`. Use `conv_lhs => rw [hw', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hB]`.
+
+Establish `e3` using `congrArg (fun q => B.repr q i) (e1.symm.trans e2)`. Simplify using `only [Module.Basis.repr_sum_self] at e3`. Establish `e4 : d i * (χ (t i) a - χ s₀ a) = 0`. Rewrite using `[mul_sub, e3, mul_comm]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(mul_eq_zero.1 e4).elim hi (fun h => ha (sub_eq_zero.1 h))`. Rewrite using `[hw']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : d i = 0`. Rewrite using `[hi, zero_smul]`.
+
+Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hz i hi, rfl⟩)`.
+-/
 theorem frame_values {O I : Type} (ev : L →+ ER) (hev : ∀ a : A, ∃ r : F, ∀ e : L, ev (a • e) = r • ev e)
     (hspan : Submodule.span F (Set.range ev) = ⊤) {g : ℕ} (hER : Module.finrank F ER = g)
     (c : Fin g → L) (hcli : LinearIndependent Ω fun i => (c i : V))
@@ -154,6 +204,11 @@ section Geo
 
 open GlobalTheory.CompanionTheory.Ar.LieTangent GlobalTheory.CompanionTheory.Ar.Flat.EigVb
 
+/- English proof (translation)
+Take `⟨R, _, x, hx, F', _, _, MC, n, bas, hp⟩` from `LieVB.exists_chart G (centre z)`. Take `⟨a, ha⟩` from `LieVB.exists_lift x z hp`. Establish `hgen : genPt ξ ∈ x.opensRange` using `h.mem_open x.opensRange.isOpen hp`. Take `⟨φ, hφ⟩` from `LieVB.exists_lift x ξ hgen`. Take `⟨_, B, -, -⟩` from `LieVB.basis_tr a x z ha MC MR bas`.
+
+Take `⟨_, B', -, -⟩` from `LieVB.basis_tr φ x ξ hφ MC M bas`. Rewrite using `[Module.finrank_eq_card_basis B, Module.finrank_eq_card_basis B']`.
+-/
 theorem finrank_lie_eq {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] {Ω F : Type} [Field Ω]
     [Field F] (ξ : Sp Ω ⟶ X) (z : Sp F ⟶ X) (h : genPt ξ ⤳ centre z) {V ER : Type} [AddCommGroup V] [Module Ω V]
     [AddCommGroup ER] [Module F ER] (M : LieModel G ξ V) (MR : LieModel G z ER) :
@@ -166,6 +221,9 @@ theorem finrank_lie_eq {X : Scheme.{0}} (G : Over X) [GrpObj G] [IsCommMonObj G]
   obtain ⟨_, B', -, -⟩ := LieVB.basis_tr φ x ξ hφ MC M bas
   rw [Module.finrank_eq_card_basis B, Module.finrank_eq_card_basis B']
 
+/- English proof (translation)
+Rewrite `*` using `[LieModel.valAt_iff]`. Take `⟨h1, v, hv, rfl⟩` from `h`. Conclude with `⟨h1, v ≫ f, extends_act M f A hA _ hv, Category.assoc _ _ _⟩`.
+-/
 theorem valAt_act {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {V : Type}
     [AddCommGroup V] [Module Ω V] (M : LieModel G ξ V) (f : G ⟶ G) [IsMonHom f] (A : V →ₗ[Ω] V)
     (hA : M.IsDiffOf f A) {R : Type} [CommRing R] [IsLocalRing R] {z : Sp R ⟶ X} {e : V} {w : epsAt z ⟶ G}
@@ -177,11 +235,17 @@ theorem valAt_act {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω : Type} [Field Ω
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {U : Set (Xo.XF c)}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Y.jQ (y (IsLocalRing.closedPoint F)), ((Scheme.Hom.comp_apply y (Y.jQ ≫ pullback.fst _ _) _).trans (Scheme.Hom.comp_apply Y.jQ (pullback.fst _ _) _)).symm⟩`.
+-/
 theorem mem_genFib (Z : CptOver Y U) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
     (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) : (⟨_, h⟩ : Cpt (Z.ξ₀ ≫ Y.j)) ∈ Z.genFib :=
   ⟨Y.jQ (y (IsLocalRing.closedPoint F)), ((Scheme.Hom.comp_apply y (Y.jQ ≫ pullback.fst _ _) _).trans
       (Scheme.Hom.comp_apply Y.jQ (pullback.fst _ _) _)).symm⟩
 
+/- English proof (translation)
+Establish `h1 : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β` using `by show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Rewrite using `[Category.assoc, h1, ← Category.assoc, hy]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem pt_over {F : Type} [Field F] (βF : c.F →+* F) (y : Sp F ⟶ Xo.XF c)
     (hy : y ≫ pullback.snd _ _ = spMap βF) : (y ≫ Y.j) ≫ Y.s = spMap (βF.comp β) := by
   have h1 : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β := by
@@ -190,6 +254,19 @@ theorem pt_over {F : Type} [Field F] (βF : c.F →+* F) (y : Sp F ⟶ Xo.XF c)
   rw [Category.assoc, h1, ← Category.assoc, hy]
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Set `p : Cpt (Z.ξ₀ ≫ Y.j)` to `⟨_, h⟩`. Take `⟨s, hs⟩` from `inc_mem_regAt Z hβ hfr p (mem_genFib Z y h) t`. Use `⟨h, s, hs, ?_⟩` and prove the remaining obligations. Set `tt : Spec (Y.X.presheaf.stalk p.1) ⟶ Spec (CommRingCat.of O)` to `Y.X.fromSpecStalk p.1 ≫ Y.s`. Set `θ : O →+* Y.X.presheaf.stalk p.1` to `(Spec.preimage tt).hom`.
+
+Establish `ht : Spec.map (CommRingCat.ofHom θ) = tt`. Simplify using `only [θ, CommRingCat.ofHom_hom, Spec.map_preimage]`. Establish `hg : (genMap (Z.ξ₀ ≫ Y.j) p).comp θ = Z.inc.comp β`. Use `LieVB.spec_cancel (𝟙 _) ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, Category.comp_id, ← LieVB.spec_comp', ht]`.
+
+Use `Eq.trans ?_ (gen_over Z)` and prove the remaining obligations. Use `show _ ≫ Y.X.fromSpecStalk p.1 ≫ Y.s = _`. Rewrite using `[← Category.assoc, LieCarrier.genMap_fromSpecStalk p]`. Set `vz : Y.X.presheaf.stalk p.1 →+* F` to `(Scheme.stalkClosedPointTo (y ≫ Y.j)).hom`. Establish `hv : vz.comp θ = βF.comp β`.
+
+Use `LieVB.spec_cancel (𝟙 _) ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id, Category.comp_id, ← LieVB.spec_comp', ht]`. Use `Eq.trans ?_ (pt_over (Y := Y) βF y hy)` and prove the remaining obligations. Establish `e : Spec.map (CommRingCat.ofHom vz) ≫ Y.X.fromSpecStalk p.1 = y ≫ Y.j` using `spec_centre (y ≫ Y.j)`. Use `show _ ≫ Y.X.fromSpecStalk p.1 ≫ Y.s = _`.
+
+Rewrite using `[← Category.assoc, e]`. Take `⟨a, b, hb, hx⟩` from `hfr t`. Establish `h1 : genMap (Z.ξ₀ ≫ Y.j) p (θ b) = Z.inc (β b)` using `congrArg (fun f : O →+* Z.Ω => f b) hg`. Establish `h2 : genMap (Z.ξ₀ ≫ Y.j) p (θ a) = Z.inc (β a)` using `congrArg (fun f : O →+* Z.Ω => f a) hg`. Establish `h3 : s * θ b = θ a` using `Z.gen.inj p (by rw [map_mul, hs, h1, h2, ← map_mul, hx])`.
+
+Establish `v1 : vz (θ b) = βF (β b)` using `congrArg (fun f : O →+* F => f b) hv`. Establish `v2 : vz (θ a) = βF (β a)` using `congrArg (fun f : O →+* F => f a) hv`. Establish `h4` using `congrArg vz h3`. Rewrite `h4` using `[map_mul, v1, v2, ← hx, map_mul]`. Conclude with `mul_right_cancel₀ ((map_ne_zero βF).2 hb) h4`.
+-/
 theorem val_inc (Z : CptOver Y U) (hβ : Function.Injective β)
     (hfr : ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) {F : Type} [Field F] (βF : c.F →+* F)
     (y : Sp F ⟶ Xo.XF c) (hy : y ≫ pullback.snd _ _ = spMap βF)
@@ -226,6 +303,19 @@ theorem val_inc (Z : CptOver Y U) (hβ : Function.Injective β)
   rw [map_mul, v1, v2, ← hx, map_mul] at h4
   exact mul_right_cancel₀ ((map_ne_zero βF).2 hb) h4
 
+/- English proof (translation)
+Use `haveI : CharZero Z.Ω := charZero_of_injective_ringHom Z.inc.injective`. Set `σ : (E →+* ℂ) → (𝓞 E →+* Z.Ω)` to `fun s => Z.inc.comp (tauIn c s)`. Set `φ : (E →+* ℂ) → (E →+* Z.Ω)` to `fun s => Z.inc.comp (Formalism.L2.Pj.embF c s)`. Establish `hφ : Function.Injective φ`. Introduce `s t h`.
+
+Use extensionality with `x`. Establish `h1` using `congrArg (fun m : E →+* Z.Ω => m x) h`. Establish `h2` using `Z.inc.injective h1`. Conclude with `congrArg (fun z : c.F => (z : ℂ)) h2`. Establish `hσ : Function.Injective σ`.
+
+Introduce `s t h`. Use `hφ (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_)` and prove the remaining obligations. Conclude with `h`. Establish `hcard : Fintype.card (E →+* ℂ) = Module.finrank ℚ E` using `Embeddings.card E ℂ`. Establish `hVB : Z.M.lat.IsVBOn Z.genFib (Module.finrank Z.Ω Z.V) ⊤` using `fun p _ => by`.
+
+Take `⟨W, h, b, hb, hf⟩` from `lat_isVB_of_smooth Y.t.semi.smooth Z.M p (Set.mem_univ _)`. Conclude with `⟨W, h, b, hb, fun q _ hq => hf q (Set.mem_univ _) hq⟩`. Establish `hst : ∀ p ∈ Z.genFib, ∀ a, ∀ e ∈ Z.M.lat p, Z.ρ a e ∈ Z.M.lat p` using `fun p _ a e he => by haveI := Y.t.act.hom a`. Conclude with `lat_stable Z.M _ (Z.ρ a) (Z.act a) p he`. Establish `hreg : ∀ p ∈ Z.genFib, ∀ s a, σ s a ∈ regAt (Z.ξ₀ ≫ Y.j) p` using `fun p hp s a => inc_mem_regAt Z hβ hfr p hp (tauIn c s a)`.
+
+Establish `hdisc : ∀ p ∈ Z.genFib, unitAt (Z.ξ₀ ≫ Y.j) p ((discr E : ℤ) : Z.Ω)`. Introduce `p hp`. Establish `hmem` using `inc_mem_regAt Z hβ hfr p hp`. Establish `e : ((discr E : ℤ) : Z.Ω) = Z.inc ((discr E : ℤ) : c.F)` using `by simp`. Establish `h0 : ((discr E : ℤ) : c.F) ≠ 0` using `Int.cast_ne_zero.2 (discr_ne_zero E)`.
+
+Use `⟨by rw [e]; exact (map_ne_zero _).2 h0, by rw [e]; exact hmem _, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← map_inv₀]`. Conclude with `hmem _`. Conclude with `(EigSplit.isVBOn_eigSp Y.X Z.Ω (Z.ξ₀ ≫ Y.j) Z.V E Z.ρ Z.M.lat Z.genFib _ (E →+* ℂ) σ Z.gen hσ hcard hVB hst hreg hdisc).2 x hx`.
+-/
 theorem lat_eq_iSup (Z : CptOver Y U) (hβ : Function.Injective β)
     (hfr : ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) (x : Cpt (Z.ξ₀ ≫ Y.j)) (hx : x ∈ Z.genFib) :
     Z.M.lat x = ⨆ s : E →+* ℂ, Z.eig s x := by
@@ -263,6 +353,9 @@ theorem lat_eq_iSup (Z : CptOver Y U) (hβ : Function.Injective β)
   exact (EigSplit.isVBOn_eigSp Y.X Z.Ω (Z.ξ₀ ≫ Y.j) Z.V E Z.ρ Z.M.lat Z.genFib _ (E →+* ℂ) σ Z.gen hσ
     hcard hVB hst hreg hdisc).2 x hx
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Use `h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_)` and prove the remaining obligations. Use extensionality with `a`. Conclude with `congrArg (fun z : c.F => (z : ℂ)) (βF.injective (hn a))`.
+-/
 theorem exists_ne_tauIn {F : Type} [Field F] (βF : c.F →+* F) (s t : E →+* ℂ) (h : s ≠ t) :
     ∃ a : 𝓞 E, βF (tauIn c s a) ≠ βF (tauIn c t a) := by
   by_contra hn
@@ -278,6 +371,45 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.Rep
 
 open GlobalTheory.CompanionTheory.Ar.Flat.Rep.ValExists GlobalTheory.CompanionTheory.Ar.Flat.EigVb
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U Z τ hβ hτ F _ βF y hy _ h σ n b hb`. Take `⟨hinj, -, hfr⟩` from `id hβ`. Use `haveI : Smooth Y.t.G.hom := Y.t.semi.smooth`. Set `ξ` to `Z.ξ₀ ≫ Y.j`. Set `z` to `y ≫ Y.j`.
+
+Set `x : Cpt ξ` to `⟨_, h⟩`. Establish `hx : x ∈ Z.genFib` using `mem_genFib Z y h`. Take `⟨-, -, h3, -⟩` from `GlobalTheory.T.eigen_lattice_vector_bundle E H D l Xo c O β Y U Z τ hβ hτ`. Take `⟨g, cc, ⟨hcli, hcL⟩, hS⟩` from `h3 x hx`. Use `choose S hS using hS`.
+
+Take `⟨ER, _, _, ⟨MR⟩⟩` from `lieModel_exists Y.X Y.t.G F z`. Take `⟨ρF, hρF, -⟩` from `lieModel_exists_unique_act _ Y.t.G F z ER MR (𝓞 E) Y.t.act.act Y.t.act.hom Y.t.act.one Y.t.act.mul Y.t.act.add`. Take `⟨ev, hev1, hev2, hev3⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring Y.X Y.t.G Z.Ω ξ Z.V Z.M F z h ER MR Z.gen inferInstance`. Establish `hval : ∀ e : Z.M.lat x, Z.M.ValAt z e (MR.pt (ev e))` using `fun e => (hev1 e _).2 ⟨e.2, rfl⟩`. Establish `hEig : ∀ (s : E →+* ℂ) (e : Z.M.lat x), (e : Z.V) ∈ Z.eig s x → ∀ a : 𝓞 E, ρF a (ev e) = βF (tauIn c s a) • ev e`.
+
+Introduce `s e he a`. Use `haveI := Y.t.act.hom a`. Establish `hmem : (e : Z.V) ∈ eigSp Z.ρ (Z.inc.comp (tauIn c s))` using `he.2`. Establish `hρ : Z.ρ a e = Z.inc (tauIn c s a) • (e : Z.V)`. Simplify `(Submodule.mem_iInf _).1 hmem a` using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+
+Establish `v2` using `valAt_act Z.M (Y.t.act.act a) (Z.ρ a) (Z.act a) (hval e)`. Rewrite `v2` using `[← hρF a (ev e)]`. Take `⟨he', h2⟩` from `(hev1 _ _).1 v2`. Establish `hreg : Z.inc (tauIn c s a) ∈ regAt ξ x` using `inc_mem_regAt Z hinj hfr x hx _`. Establish `h4 : (⟨Z.ρ a e, he'⟩ : Z.M.lat x) = (⟨_, hreg⟩ : regAt ξ x) • e` using `Subtype.ext hρ`.
+
+Rewrite using `[← h2, h4]`. Conclude with `hev2 ⟨_, hreg⟩ _ e (val_inc Z hinj hfr βF y hy h _)`. Establish `hmemL : ∀ i, cc i ∈ Z.M.lat x` using `fun i => by`. Rewrite using `[hcL]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Set `cL : Fin g → Z.M.lat x` to `fun i => ⟨cc i, hmemL i⟩`. Establish `hcov : ∀ i, ∃ s, i ∈ S s`. Introduce `i`. Establish `h1 : cc i ∈ ⨆ s : E →+* ℂ, Z.eig s x`. Rewrite using `[← lat_eq_iSup Z hinj hfr x hx]`.
+
+Conclude with `hmemL i`. Rewrite `h1` using `[hS]`. Rewrite `h1` using `[Submodule.iSup_span, ← Set.image_iUnion]`. Establish `h2` using `Submodule.span_le_restrictScalars (regAt ξ x) Z.Ω _ h1`. Assume the negation of the conclusion as `hn`.
+
+Use `push_neg at hn`. Use `hcli.notMem_span_image (s := ⋃ s, (S s : Set (Fin g))) (x := i) ?_ h2` and prove the remaining obligations. Simplify using `using hn`. Establish `hfin : Module.finrank F ER = g`. Rewrite using `[finrank_lie_eq Y.t.G ξ z h Z.M MR]`.
+
+Take `⟨W, hW, b₀, hb₀, hf⟩` from `lat_isVB_of_smooth Y.t.semi.smooth Z.M x (Set.mem_univ _)`. Establish `hL` using `(hf x (Set.mem_univ _) hW).2`. Establish `htop : Submodule.span Z.Ω (Set.range cc) = ⊤`. Rewrite using `[eq_top_iff, ← hb₀, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Establish `h1 : b₀ j ∈ Z.M.lat x`. Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Rewrite `h1` using `[hcL]`. Conclude with `Submodule.span_le_restrictScalars (regAt ξ x) Z.Ω _ h1`.
+
+Establish `h2` using `finrank_span_eq_card hcli`. Rewrite `h2` using `[htop, finrank_top]`. Simplify using `using h2`. Establish `hbmem : ∀ i, b i ∈ Z.eig σ x` using `fun i => by`. Rewrite using `[hb.2]`.
+
+Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Set `bL : Fin n → Z.M.lat x` to `fun i => ⟨b i, (hbmem i).1⟩`. Establish `hcE : ∀ s, ∀ i ∈ S s, cc i ∈ Z.eig s x` using `fun s i hi => by`. Rewrite using `[hS s]`. Conclude with `Submodule.subset_span ⟨i, hi, rfl⟩`.
+
+Establish `hcLs : ∀ e : Z.M.lat x, e ∈ Submodule.span (regAt ξ x) (Set.range cL)`. Introduce `e`. Use `mem_span_of_val _ e ?_` and prove the remaining obligations. Establish `h1 : Subtype.val '' Set.range cL = Set.range cc`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, ← hcL]`. Conclude with `e.2`. Take `⟨li, sp⟩` from `frame_values (A := regAt ξ x) (L := Z.M.lat x) ev (fun a => by`. Take `⟨s, hs⟩` from `a.2`.
+
+Conclude with `⟨_, fun e => hev2 a _ e ⟨h, s, hs, rfl⟩⟩) hev3 hfin cL hcli hcLs S hcov`. Use the proof step `(fun a => (ρF a : ER →ₗ[F] ER)) (fun s a => βF (tauIn c s a))`. Use the proof step `(fun s i hi a => hEig s (cL i) (hcE s i hi) a)`. Use the proof step `(fun s t hst => exists_ne_tauIn βF s t hst) σ bL hb.1 (hb.2.symm.trans (hS σ))`. Establish `hmemE : ∀ u, u ∈ eigSp ρF (βF.comp (tauIn c σ)) ↔ ∀ a, ρF a u = βF (tauIn c σ a) • u`.
+
+Introduce `u`. Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`. Establish `final : IsEigFrame Y.t.act z (βF.comp (tauIn c σ)) (fun k => MR.pt (ev (bL k)))`. Use `(((GlobalTheory.T.lie_model_eigenvectors_action Y.X F Y.t.G z ER MR).2 (𝓞 E) Y.t.act ρF _ hρF).2 n _).2 ⟨li, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(hmemE _).2 (hEig σ (bL k) (hbmem k))`. Introduce `w hw`. Conclude with `sp w ((hmemE w).1 hw)`. Use `choose v hv using fun k => exists_sameVec_left Y y (MR.pt (ev (bL k)))`.
+
+Conclude with `⟨v, fun k => ⟨_, hval (bL k), hv k⟩, isEigFrame_of_sameVec Y y _ v _ hv final⟩`.
+-/
 theorem valFam_eigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U) (τ : E →+* ℂ), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → τ (H.rt : E) = H.rt0 → ∀ (F : Type) [Field F] (βF : c.F →+* F) (y : Sp F ⟶ Xo.XF c), y ≫ pullback.snd _ _ = spMap βF → Set.range y ⊆ U → ∀ (h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)) (σ : E →+* ℂ) (n : ℕ) (b : Fin n → Z.V), (Z.eig σ).IsFrameAt b ⟨_, h⟩ → ∃ v : Vecs y n, IsValFam Z y b v ∧ IsEigFrame Xo.univ.t.act (under y) (βF.comp (tauIn c σ)) v := by
   intro E _ _ _ H D l Xo c O _ β Y U Z τ hβ hτ F _ βF y hy _ h σ n b hb
   classical

@@ -8,6 +8,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatticeModL
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul a h`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℤ_[l], a - (a.zmodRepr : ℤ_[l]) = (l : ℤ_[l]) * c := by`. Use `PadicInt.sub_zmodRepr_mem a` as an intermediate fact.
+
+Rewrite `this` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `this`. Use `⟨(a.zmodRepr : ℤ) • h, c ⊗ₜ h, ?_⟩` and prove the remaining obligations. Establish `ha : a = ((a.zmodRepr : ℤ) : ℤ_[l]) + (l : ℤ_[l]) * c`. Rewrite using `[← hc]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, zsmul_eq_mul, _root_.mul_one, ← TensorProduct.add_tmul, ← ha]`. Consider the case `add x y hx hy`. Take `⟨h₁, y₁, rfl⟩` from `hx`.
+
+Take `⟨h₂, y₂, rfl⟩` from `hy`. Conclude with `⟨h₁ + h₂, y₁ + y₂, by rw [TensorProduct.tmul_add, smul_add]; abel⟩`.
+-/
 theorem exists_one_tmul_add_smul (l : ℕ) [Fact l.Prime] (H : Type) [AddCommGroup H]
     (x : ℤ_[l] ⊗[ℤ] H) :
     ∃ (h : H) (y : ℤ_[l] ⊗[ℤ] H), x = (1 : ℤ_[l]) ⊗ₜ h + (l : ℤ_[l]) • y := by
@@ -32,6 +41,19 @@ end GlobalTheory.LatticeModL
 
 open GlobalTheory.LatticeModL in
 
+/- English proof (translation)
+Introduce `l _ H T _ _ _ _ _ htor φ hsat`. Use `set F := φ.toIntLinearMap.liftBaseChange ℤ_[l] with hFdef`. Establish `hF : ∀ h, F ((1 : ℤ_[l]) ⊗ₜ h) = φ h`. Introduce `h`. Simplify using `[F]`.
+
+Establish `key : ∀ (x : ℤ_[l] ⊗[ℤ] H) (t : T), F x = (l : ℤ_[l]) • t → ∃ x', x = (l : ℤ_[l]) • x'`. Introduce `x t hx`. Take `⟨h, y, rfl⟩` from `exists_one_tmul_add_smul l H x`. Rewrite `hx` using `[map_add, map_smul, hF]`. Establish `h1 : φ h = (l : ℤ_[l]) • (t - F y)` using `by rw [smul_sub, ← hx]; abel`.
+
+Take `⟨h', rfl⟩` from `hsat h _ h1`. Use `⟨(1 : ℤ_[l]) ⊗ₜ h' + y, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, TensorProduct.tmul_smul]`. Simplify using `only [Nat.cast_smul_eq_nsmul]`. Establish `hl : (l : ℤ_[l]) ∈ IsLocalRing.maximalIdeal ℤ_[l]`.
+
+Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot]`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal ℤ_[l]) _ (IsNoetherian.noetherian _) ?_ (IsLocalRing.maximalIdeal_le_jacobson _)` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Take `⟨x', rfl⟩` from `key x 0 (by rw [hx, smul_zero])`. Establish `: F x' = 0` using `htor _ (by rw [← map_smul, hx])`. Conclude with `Submodule.smul_mem_smul hl this`.
+
+Introduce and unpack `t ⟨x, hx⟩`. Take `⟨x', rfl⟩` from `key x t hx`. Use `⟨x', ?_⟩` and prove the remaining obligations. Establish `: (l : ℤ_[l]) • (F x' - t) = 0` using `by rw [smul_sub, ← map_smul, hx, sub_self]`. Conclude with `sub_eq_zero.mp (htor _ this)`.
+-/
 theorem GlobalTheory.latticeMap_liftBaseChange_injective_saturated :
     ∀ (l : ℕ) [Fact l.Prime] (H T : Type) [AddCommGroup H] [Module.Finite ℤ H] [Module.Free ℤ H]
       [AddCommGroup T] [Module ℤ_[l] T], (∀ t : T, (l : ℤ_[l]) • t = 0 → t = 0) →

@@ -19,16 +19,25 @@ namespace GlobalTheory.AffinePairingGlue
 
 variable {T : Scheme.{0}} {H : T.Modules}
 
+/- English proof (translation)
+Take `⟨W, hW, hxW, hWV⟩` from `Opens.isBasis_iff_nbhd.1 T.isBasis_affineOpens hx`. Conclude with `⟨W, hW, hxW, hWV⟩`.
+-/
 theorem exists_affine_le {V : T.Opens} {x : T} (hx : x ∈ V) :
     ∃ W : T.Opens, IsAffineOpen W ∧ x ∈ W ∧ W ≤ V := by
   obtain ⟨W, hW, hxW, hWV⟩ := Opens.isBasis_iff_nbhd.1 T.isBasis_affineOpens hx
   exact ⟨W, hW, hxW, hWV⟩
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨W, hW, hxW, hWV⟩ := exists_affine_le hx exact Opens.mem_iSup.2 ⟨⟨W, hW, hWV⟩, hxW⟩`.
+-/
 theorem le_iSup_affine (V : T.Opens) :
     V ≤ ⨆ W : {W : T.Opens // IsAffineOpen W ∧ W ≤ V}, W.1 := fun x hx => by
   obtain ⟨W, hW, hxW, hWV⟩ := exists_affine_le hx
   exact Opens.mem_iSup.2 ⟨⟨W, hW, hWV⟩, hxW⟩
 
+/- English proof (translation)
+The claim follows from `fun_ext_of_cover (fun W : {W : T.Opens // IsAffineOpen W ∧ W ≤ V} => W.1) (fun W => W.2.2) (le_iSup_affine V) fun W => e W.1 W.2.1 W.2.2`.
+-/
 theorem fun_ext_affine {V : T.Opens} {a a' : Γ(T, V)}
     (e : ∀ (W : T.Opens) (_ : IsAffineOpen W) (h : W ≤ V), resG T h a = resG T h a') : a = a' :=
   fun_ext_of_cover (fun W : {W : T.Opens // IsAffineOpen W ∧ W ≤ V} => W.1) (fun W => W.2.2)
@@ -40,6 +49,9 @@ variable (b : ∀ (V : T.Opens), IsAffineOpen V → (Γ(H, V) →ₗ[Γ(T, V)] �
 
 include hb in
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `exists_fun_of_cover (fun W : {W : T.Opens // IsAffineOpen W ∧ W ≤ V} => W.1) (fun W => W.2.2) (le_iSup_affine V) (fun W => b W.1 W.2.1 (resM H W.2.2 s) (resM H W.2.2 t)) fun k l => fun_ext_affine fun W hW h => by`. Rewrite using `[resG_resG, resG_resG, ← hb _ _ k.2.1 hW, ← hb _ _ l.2.1 hW]`. Simplify using `only [resM_resM]`. Conclude with `⟨a, fun W hW h => ha ⟨W, hW, h⟩⟩`.
+-/
 theorem exists_glued (V : T.Opens) (s t : Γ(H, V)) : ∃ a : Γ(T, V),
     ∀ (W : T.Opens) (hW : IsAffineOpen W) (h : W ≤ V),
       resG T h a = b W hW (resM H h s) (resM H h t) := by
@@ -53,15 +65,24 @@ theorem exists_glued (V : T.Opens) (s t : Γ(H, V)) : ∃ a : Γ(T, V),
 
 def glued (V : T.Opens) (s t : Γ(H, V)) : Γ(T, V) := (exists_glued b hb V s t).choose
 
+/- English proof (translation)
+The claim follows from `(exists_glued b hb V s t).choose_spec W hW h`.
+-/
 theorem resG_glued {V W : T.Opens} (hW : IsAffineOpen W) (h : W ≤ V) (s t : Γ(H, V)) :
     resG T h (glued b hb V s t) = b W hW (resM H h s) (resM H h t) :=
   (exists_glued b hb V s t).choose_spec W hW h
 
+/- English proof (translation)
+Use `resG_glued b hb hV le_rfl s t` as an intermediate fact. Rewrite `this` using `[resG_self, resM_self, resM_self]`. Then use the resulting hypothesis.
+-/
 theorem glued_affine {V : T.Opens} (hV : IsAffineOpen V) (s t : Γ(H, V)) :
     glued b hb V s t = b V hV s t := by
   have := resG_glued b hb hV le_rfl s t
   rwa [resG_self, resM_self, resM_self] at this
 
+/- English proof (translation)
+The claim follows from `fun_ext_affine fun U hU h' => by rw [resG_resG, resG_glued b hb hU, resG_glued b hb hU, resM_resM, resM_resM]`.
+-/
 theorem glued_res {V W : T.Opens} (h : W ≤ V) (s t : Γ(H, V)) :
     glued b hb W (resM H h s) (resM H h t) = resG T h (glued b hb V s t) :=
   fun_ext_affine fun U hU h' => by
@@ -94,13 +115,22 @@ def toDual : H ⟶ dual H :=
     fun h s => dual_ext fun W h' u =>
       congrArg (fun z => glued b hb W z u) (resM_resM h h' s)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualApp_toDual {V W : T.Opens} (h : W ≤ V) (s : Γ(H, V)) (t : Γ(H, W)) :
     dualApp ((toDual b hb).app V s) h t = glued b hb W (resM H h s) t := rfl
 
+/- English proof (translation)
+Rewrite using `[dualApp_toDual, resM_self, glued_affine]`.
+-/
 theorem dualApp_toDual_affine {V : T.Opens} (hV : IsAffineOpen V) (s t : Γ(H, V)) :
     dualApp ((toDual b hb).app V s) le_rfl t = b V hV s t := by
   rw [dualApp_toDual, resM_self, glued_affine]
 
+/- English proof (translation)
+Use `⟨fun s s' hs => hp.bijective_left.1 (LinearMap.ext fun t => ?_), fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← dualApp_toDual_affine b hb hV, ← dualApp_toDual_affine b hb hV, hs]`. Take `⟨s, hs⟩` from `hp.bijective_left.2 (dualApp l le_rfl)`. Conclude with `⟨s, he.dual_ext h fun i => by rw [dualApp_toDual_affine b hb hV, hs]⟩`.
+-/
 theorem bijective_toDual_app {r : ℕ} {U V : T.Opens} {e : Fin r → Γ(H, U)} (he : IsFrame e)
     (h : V ≤ U) (hV : IsAffineOpen V) (hp : (b V hV).IsPerfPair) :
     Function.Bijective ((toDual b hb).app V) := by
@@ -109,6 +139,13 @@ theorem bijective_toDual_app {r : ℕ} {U V : T.Opens} {e : Fin r → Γ(H, U)} 
   · obtain ⟨s, hs⟩ := hp.bijective_left.2 (dualApp l le_rfl)
     exact ⟨s, he.dual_ext h fun i => by rw [dualApp_toDual_affine b hb hV, hs]⟩
 
+/- English proof (translation)
+Establish `key (W : T.Opens) (x : T) (hx : x ∈ W) : ∃ V : T.Opens, x ∈ V ∧ V ≤ W ∧ Function.Bijective ((toDual b hb).app V)`. Take `⟨U, e, hxU, he⟩` from `hH x`. Take `⟨V, hV, hxV, hle⟩` from `exists_affine_le (V := W ⊓ U) ⟨hx, hxU⟩`. Conclude with `⟨V, hxV, hle.trans inf_le_left, bijective_toDual_app b hb he (hle.trans inf_le_right) hV (hp V hV)⟩`. Establish `: Mono (toDual b hb)` using `QCoh.mono_of_locally_app_injective _ fun W x hx =>`.
+
+Establish `⟨V, h₁, h₂, h₃⟩` using `key W x hx`. Use the proof step `⟨V, h₁, h₂, h₃.1⟩`. Establish `: Epi (toDual b hb)` using `QCoh.epi_of_locally_app_surjective _ fun W x hx =>`. Establish `⟨V, h₁, h₂, h₃⟩` using `key W x hx`. Use the proof step `⟨V, h₁, h₂, h₃.2⟩`.
+
+Conclude with `isIso_of_mono_of_epi _`.
+-/
 theorem isIso_toDual {r : ℕ} (hH : IsVB H r)
     (hp : ∀ (V : T.Opens) (hV : IsAffineOpen V), (b V hV).IsPerfPair) : IsIso (toDual b hb) := by
   have key (W : T.Opens) (x : T) (hx : x ∈ W) : ∃ V : T.Opens, x ∈ V ∧ V ≤ W ∧
@@ -125,6 +162,9 @@ theorem isIso_toDual {r : ℕ} (hH : IsVB H r)
     ⟨V, h₁, h₂, h₃.2⟩
   exact isIso_of_mono_of_epi _
 
+/- English proof (translation)
+Use extensionality with `V x : 3`. Use `dual_ext fun W h y => fun_ext_affine fun U hU h' => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG T h' (glued b hb W (resM H h (i.app V x)) (i.app W y)) = resG T h' 0`. Rewrite using `[resG_glued b hb hU, resM_resM, ← app_resM, ← app_resM, hi, map_zero]`.
+-/
 theorem comp_toDual_comp_dualMap {F : T.Modules} (i : F ⟶ H)
     (hi : ∀ (V : T.Opens) (hV : IsAffineOpen V) (x y : Γ(F, V)),
       b V hV (i.app V x) (i.app V y) = 0) : i ≫ toDual b hb ≫ dualMap i = 0 := by
@@ -133,6 +173,9 @@ theorem comp_toDual_comp_dualMap {F : T.Modules} (i : F ⟶ H)
   change resG T h' (glued b hb W (resM H h (i.app V x)) (i.app W y)) = resG T h' 0
   rw [resG_glued b hb hU, resM_resM, ← app_resM, ← app_resM, hi, map_zero]
 
+/- English proof (translation)
+Introduce `_ _ _ hH b hb hp _ i hi` and use `⟨toDual b hb, isIso_toDual b hb hH hp, comp_toDual_comp_dualMap b hb i hi, fun _ hV s t => dualApp_toDual_affine b hb hV s t⟩`.
+-/
 theorem exists_iso_dual_of_affine_pairing :
     ∀ (T : Scheme.{0}) (H : T.Modules) (r : ℕ), GlobalTheory.VB.IsVB H r →
     ∀ (b : ∀ (V : T.Opens), IsAffineOpen V → (Γ(H, V) →ₗ[Γ(T, V)] Γ(H, V) →ₗ[Γ(T, V)] Γ(T, V))),

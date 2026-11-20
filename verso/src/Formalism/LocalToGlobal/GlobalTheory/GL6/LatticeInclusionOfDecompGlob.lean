@@ -8,6 +8,15 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 
 variable (D : D7) (u : D.what₂.Word)
 
+/- English proof (translation)
+Use `first`. Consider the case `exact lam.natW_anti`. Consider the case `exact lam.anti`. Consider the case `exact lam.antitone`. Consider the case `(intro a b hab`.
+
+Simplify using `only [DomWeight.natW]`. Use `first`. Consider the case `(have := lam.anti hab; omega)`. Consider the case `(have := lam.dom hab; omega)`. Consider the case `(have := lam.antitone hab; omega)`.
+
+Consider the case `(have := lam.mono hab; omega)`. Consider the case `(have := lam.2 hab; omega)`. Consider the case `(have := lam.dom a b hab; omega)`. Consider the case `(have := lam.2 a b hab; omega)`. Consider the case `(have := lam.w_anti hab; omega)`.
+
+Consider the case `(have := lam.anti a b hab; omega))`.
+-/
 theorem bwA_natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   first
     | exact lam.natW_anti
@@ -26,6 +35,9 @@ theorem bwA_natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
          | (have := lam.w_anti hab; omega)
          | (have := lam.anti a b hab; omega))
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `hy`. Establish `hint : IsIntegral ℤ (D.embE (σ (algebraMap (NumberField.RingOfIntegers D.host.E) D.host.E a)))` using `(NumberField.RingOfIntegers.isIntegral_coe a).map ((D.embE.comp σ).toIntAlgHom)`. Establish `h0` using `bwA_val_integral_nonneg D.what₂.places w _ hint`. Rewrite `h0` using `[ha, map_mul, map_mul, map_natCast, map_natCast, AddValuation.map_mul, bwA_val_nat_eq_zero D.what₂.places w s hs, zero_add]`. Conclude with `h0`.
+-/
 theorem bwA_val_locInt (w : D.what₂.places.Pl) (σ : D.host.E →+* D.host.E) (y : D.host.E) (s : ℕ)
     (hs : ¬ D.what₂.places.resChar w ∣ s) (hy : (s : D.host.E) * y ∈ (algebraMap (NumberField.RingOfIntegers D.host.E) D.host.E).range) :
     (0 : WithTop ℤ) ≤ D.what₂.places.val w (D.embE (σ y)) := by
@@ -50,6 +62,15 @@ def BwBlock (Tt : FormsTied D u) : Prop :=
             (MvPolynomial.map (Int.castRingHom ℂ) g) ∈
         bwA_span (bwA_Ow D w) le_rfl ((D.fm u).lam i ((D.fm u).tauOf w v)).natW
 
+/- English proof (translation)
+Unfold `BwSubInt`. Introduce `w hw hs v hv i hi c B B' hB hB' P hP`. Establish `hN : ∀ τ, τ ≠ (D.fm u).tauOf w v → bwA_N D ((D.fm u).tauOf w v) B B' τ = 1`. Introduce `τ hτ`. Simplify using `[bwA_N, hτ]`.
+
+Establish `hprod : (∏ τ, (bwA_N D ((D.fm u).tauOf w v) B B' τ).det ^ shiftOf (lamT u i) τ) = (bwA_N D ((D.fm u).tauOf w v) B B' ((D.fm u).tauOf w v)).det ^ shiftOf (lamT u i) ((D.fm u).tauOf w v)`. Rewrite using `[Finset.prod_eq_single ((D.fm u).tauOf w v)]`. Introduce `τ _ hτ`. Rewrite using `[hN τ hτ, Matrix.det_one]`. Use `first`.
+
+Consider the case `exact one_pow _`. Consider the case `exact one_zpow _`. Introduce `hm`. Conclude with `absurd (Finset.mem_univ _) hm`. Rewrite using `[hprod, ← MvPolynomial.smul_eq_C_mul, smul_smul]`.
+
+Conclude with `bwA_intSpan_subP D w ((D.fm u).lam i) ((D.fm u).tauOf w v) _ hN _ (h w hw hs v hv i hi c B B' hB hB') P hP`.
+-/
 theorem bwA_subInt_of_block (Tt : FormsTied D u) (h : BwBlock D u Tt) : BwSubInt D u Tt := by
   unfold BwSubInt
   intro w hw hs v hv i hi c B B' hB hB' P hP
@@ -88,6 +109,11 @@ def BwDecomp (Tt : FormsTied D u) : Prop :=
               shiftOf (lamT u i) ((D.fm u).tauOf w v) =
           x * p ^ ((D.fm u).lam i ((D.fm u).tauOf w v)).natW ⟨0, D.R.N_pos i⟩
 
+/- English proof (translation)
+Introduce `w hw hs v hv i hi c B B' hB hB' g hg`. Take `⟨K₁, K₂, j, p, x, h₁, h₂, hpO, hp, hxO, hN, hc⟩` from `h w hw hs v hv i hi c B B' hB hB'`. Rewrite using `[hc, hN, mul_smul]`. Establish `hg' : MvPolynomial.map (Int.castRingHom ℂ) g ∈ bwA_span (bwA_Ow D w) le_rfl ((D.fm u).lam i ((D.fm u).tauOf w v)).natW` using `Submodule.subset_span ⟨g, hg, rfl⟩`. Use `bwA_span_sandwich (bwA_Ow D w) le_rfl _ (bwA_natW_anti _) (D.R.N_pos i) j p hpO hp K₁ K₂ h₁ h₂ _ hg'` as an intermediate fact.
+
+Establish `e : x • (p ^ ((D.fm u).lam i ((D.fm u).tauOf w v)).natW ⟨0, D.R.N_pos i⟩ • Formalism.GradedWeylDivisibility.rowAct ℂ (K₁ * Matrix.diagonal (Function.update 1 j p⁻¹) * K₂) (MvPolynomial.map (Int.castRingHom ℂ) g)) = (⟨x, hxO⟩ : bwA_Ow D w) • (p ^ ((D.fm u).lam i ((D.fm u).tauOf w …` using `rfl`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ this`.
+-/
 theorem bwA_block_of_decomp (Tt : FormsTied D u) (h : BwDecomp D u Tt) : BwBlock D u Tt := by
   intro w hw hs v hv i hi c B B' hB hB' g hg
   obtain ⟨K₁, K₂, j, p, x, h₁, h₂, hpO, hp, hxO, hN, hc⟩ := h w hw hs v hv i hi c B B' hB hB'
@@ -103,6 +129,9 @@ theorem bwA_block_of_decomp (Tt : FormsTied D u) (h : BwDecomp D u Tt) : BwBlock
   rw [e]
   exact Submodule.smul_mem _ _ this
 
+/- English proof (translation)
+The claim follows from `lattice_inclusion_of_sub_integral h1 (fun D u Tt => bwA_subInt_of_block D u Tt (bwA_block_of_decomp D u Tt (h2 D u Tt))) h3`.
+-/
 theorem lattice_inclusion_of_decomp_glob
     (h1 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwLocBases D u Tt)
     (h2 : ∀ (D : D7) (u : D.what₂.Word) (Tt : FormsTied D u), BwDecomp D u Tt)

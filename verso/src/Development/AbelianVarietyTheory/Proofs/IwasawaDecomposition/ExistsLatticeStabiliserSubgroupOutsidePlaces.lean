@@ -10,6 +10,9 @@ namespace GlobalTheory.Mem.Ksph
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `_ V S` and use `⟨_, (GlobalTheory.AutFunCompare.KsphC_eq V S).symm, fun _ hS _ hg => ⟨hg.1, hg.2.1, fun v hv => hg.2.2 v (hS hv)⟩⟩`.
+-/
 theorem exists_subgroup_ksph : ∀ (D : D7) (V : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))),
     ∃ K : Subgroup (GA D V), (K : Set (GA D V)) = KsphC V S ∧ ∀ S', S ⊆ S' → KsphC V S' ⊆ KsphC V S :=
   fun _ V S => ⟨_, (GlobalTheory.AutFunCompare.KsphC_eq V S).symm,

@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.RealLift Formalism.BasicNotions.TH
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KFixIrr.lowest_irr | exact GlobalTheory.KFixIrr.lowest_irr | (intros; apply GlobalTheory.KFixIrr.lowest_irr <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.k_fixed_irreducible_lowest_degree : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (P Q R S : ℕ) (x : ι → ℚ), P ≤ R → Q ≤ S →
     (∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ x w - Formalism.BasicNotions.TH.cPair R S = k ∧ x w + Formalism.BasicNotions.TH.cPair R S = k') →
     ∀ m : ℕ, (∀ m' < m, GlobalTheory.KFixIrr.chiPart ι P Q R S x ⊓ GlobalTheory.KFixIrr.degLE ι P Q R S m' = ⊥) →

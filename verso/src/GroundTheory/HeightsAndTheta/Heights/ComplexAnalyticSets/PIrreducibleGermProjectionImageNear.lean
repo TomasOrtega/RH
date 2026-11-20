@@ -11,6 +11,15 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 open Topology Filter Metric Set
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨y0, hy0⟩` from `hne`. Take `⟨ρ, hρ, hρO⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hO.mem_nhds hy0)`. Take `⟨y, hy⟩` from `hfi e d (ball y0 ρ) φ hlt isOpen_ball ⟨y0, mem_ball_self hρ⟩ (hφ.mono (ball_subset_closedBall.trans hρO))`.
+
+Take `⟨p, hpK, hpacc⟩` from `hy.exists_accPt_of_subset_isCompact (isCompact_closedBall y0 ρ) (fun t ht => ball_subset_closedBall ht.1)`. Establish `hpO : p ∈ O` using `hρO hpK`. Establish `hcl : p ∈ closure {t | t ∈ ball y0 ρ ∧ φ t = y}` using `mem_closure_iff_nhds.2 fun U hU => by`. Take `⟨q, hq, -⟩` from `accPt_iff_nhds.1 hpacc U hU`. Conclude with `⟨q, hq⟩`.
+
+Establish `hφp : φ p = y`. Establish `h1` using `mem_closure_image ((hφ p hpO).differentiableAt (hO.mem_nhds hpO)).continuousAt hcl`. Establish `h2 : φ '' {t | t ∈ ball y0 ρ ∧ φ t = y} ⊆ {y}`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `ht.2`.
+
+Simplify using `using closure_mono h2 h1`. Take `⟨W, hW, hWiso⟩` from `hiso p hpO`. Take `⟨q, ⟨hqW, hqB, hqy⟩, hqp⟩` from `accPt_iff_nhds.1 hpacc W hW`. Conclude with `hqp (hWiso q hqW (hρO (ball_subset_closedBall hqB)) (hqy.trans hφp.symm))`.
+-/
 theorem le_of_isolated_fibres (hfi : HolomorphicFibreInfinite.Statement) {e d : ℕ} {O : Set (Fin e → ℂ)}
     {φ : (Fin e → ℂ) → Fin d → ℂ} (hO : IsOpen O) (hne : O.Nonempty) (hφ : DifferentiableOn ℂ φ O)
     (hiso : ∀ t ∈ O, ∃ W ∈ 𝓝 t, ∀ v ∈ W, v ∈ O → φ v = φ t → v = t) : e ≤ d := by
@@ -36,6 +45,25 @@ theorem le_of_isolated_fibres (hfi : HolomorphicFibreInfinite.Statement) {e d : 
   obtain ⟨q, ⟨hqW, hqB, hqy⟩, hqp⟩ := accPt_iff_nhds.1 hpacc W hW
   exact hqp (hWiso q hqW (hρO (ball_subset_closedBall hqB)) (hqy.trans hφp.symm))
 
+/- English proof (translation)
+Introduce `σ _ X w d A hX hirr hfin hnd`. Take `⟨N1, hN1, hdimN⟩` from `hdim σ X w d A hX hirr hfin hnd`. Take `⟨N2, hN2, hisoX⟩` from `hisoN σ X w d A hX hfin`. Take `⟨N3, hN3o, hwN3, hdense⟩` from `hreg σ X w hX`. Use `⟨interior (N1 ∩ N2) ∩ N3, inter_mem (interior_mem_nhds.2 (inter_mem hN1 hN2)) (hN3o.mem_nhds hwN3), ?_⟩` and prove the remaining obligations.
+
+Establish `hBo : IsOpen (interior (N1 ∩ N2) ∩ N3)` using `isOpen_interior.inter hN3o`. Introduce and unpack `x ⟨hxX, hxB⟩ h hh hvan`. Take `⟨ε, hε, hhb⟩` from `hh.exists_ball_analyticOnNhd`. Take `⟨V, hV, hVo, hxV⟩` from `_root_.mem_nhds_iff.1 hvan`. Use `set V1 := V ∩ (interior (N1 ∩ N2) ∩ N3) ∩ A ⁻¹' ball (A x) ε with hV1`.
+
+Establish `hV1o : IsOpen V1` using `(hVo.inter hBo).inter (isOpen_ball.preimage A.continuous)`. Establish `hxV1 : x ∈ V1` using `⟨⟨hxV, hxB⟩, mem_ball_self hε⟩`. Establish `hcl` using `hdense V1 hV1o (fun z hz => hz.1.2.2) ⟨hxX, hxV1⟩`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : (regLocus (X ∩ V1)).Nonempty := by`. Assume the negation of the conclusion as `hemp`.
+
+Rewrite `hemp` using `[not_nonempty_iff_eq_empty]`. Rewrite `hcl` using `[hemp, closure_empty]`. Conclude with `hcl`. Take `⟨hrX, e, A', O, V', g, hO, hV', hrV', hg, hA'g, hXV'⟩` from `hr`. Establish `hgX : ∀ t ∈ O, g t ∈ X ∩ V1` using `fun t ht => by`.
+
+Establish `: g t ∈ X ∩ V1 ∩ V'` using `hXV' ▸ mem_image_of_mem g ht`. Conclude with `this.1`. Establish `hN12 : ∀ z ∈ V1, z ∈ N1 ∩ N2` using `fun z hz => interior_subset hz.1.2.1`. Establish `hchart : X ∩ (V1 ∩ V') = g '' O` using `by rw [← hXV']; exact (inter_assoc X V1 V').symm`. Establish `hde : d ≤ e` using `hdimN r ⟨hrX.1, (hN12 r hrX.2).1⟩ e A' O (V1 ∩ V') g hO (hV1o.inter hV') ⟨hrX.2, hrV'⟩ hg hA'g hchart`.
+
+Establish `hφ : DifferentiableOn ℂ (fun y => A (g y)) O` using `A.differentiable.comp_differentiableOn hg.differentiableOn`. Establish `hisoC : ∀ t ∈ O, ∃ W ∈ 𝓝 t, ∀ v ∈ W, v ∈ O → A (g v) = A (g t) → v = t`. Introduce `t ht`. Take `⟨W, hW, hiW⟩` from `hisoX (g t) ⟨(hgX t ht).1, (hN12 _ (hgX t ht).2).2⟩`. Use `⟨g ⁻¹' W, (hg t ht).continuousAt.preimage_mem_nhds hW, fun v hvW hvO hv => ?_⟩` and prove the remaining obligations.
+
+Establish `hgv` using `hiW (g v) ⟨(hgX v hvO).1, hvW⟩ hv`. Rewrite using `[← hA'g v hvO, ← hA'g t ht, hgv]`. Take `⟨y0, hy0O, hy0r⟩ : r ∈ g '' O` from `hXV' ▸ ⟨hrX, hrV'⟩`. Establish `hed : e ≤ d` using `le_of_isolated_fibres hfi hO ⟨y0, hy0O⟩ hφ hisoC`. Take `rfl : e = d` from `le_antisymm hed hde`.
+
+Establish `hop` using `hopen e O (fun y => A (g y)) y0 hO hy0O hφ (hisoC y0 hy0O) O (hO.mem_nhds hy0O)`. Establish `hzero : ∀ y ∈ (fun y => A (g y)) '' O, h y = 0`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hV (hgX t ht).2.1.1 (hgX t ht).1`. Establish `hAr : A (g y0) ∈ ball (A x) ε` using `(hgX y0 hy0O).2.2`.
+
+Establish `hEq : EqOn h 0 (ball (A x) ε)` using `hhb.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball _ _).isPreconnected hAr (Filter.mem_of_superset hop fun y hy => hzero y hy)`. Use `filter_upwards [ball_mem_nhds (A x) hε] with y hy using hEq hy`.
+-/
 theorem IrreducibleGermProjectionImageNear.proof (hdim : IrreducibleGermRegularDimGe.Statement)
     (hisoN : IsolatedFibreNear.Statement) (hreg : RegularLocusDense.Statement)
     (hopen : HolomorphicIsolatedFibreOpen.Statement) (hfi : HolomorphicFibreInfinite.Statement) :

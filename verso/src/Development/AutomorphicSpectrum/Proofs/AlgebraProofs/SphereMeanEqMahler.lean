@@ -25,10 +25,16 @@ def radial (p : sphere (0 : E) 1) (z : E) : sphere (0 : E) 1 :=
     · exact p.2
     · simp [norm_smul, h]⟩
 
+/- English proof (translation)
+Simplify using `[radial, h]`.
+-/
 lemma radial_coe_of_ne (p : sphere (0 : E) 1) {z : E} (h : z ≠ 0) :
     (radial p z : E) = ‖z‖⁻¹ • z := by
   simp [radial, h]
 
+/- English proof (translation)
+Unfold `radial`. Apply `Measurable.subtype_mk` to reduce the goal to its premises. Conclude with `Measurable.ite (measurableSet_singleton 0) measurable_const ((measurable_norm.inv).smul measurable_id)`.
+-/
 lemma measurable_radial (p : sphere (0 : E) 1) : Measurable (radial p) := by
   unfold radial
   apply Measurable.subtype_mk
@@ -43,6 +49,17 @@ instance (μ : Measure E) [μ.IsAddHaarMeasure] : IsProbabilityMeasure (ballP μ
   have h1 : μ (ball (0 : E) 1) ≠ ⊤ := measure_ball_lt_top.ne
   simp [ballP, ENNReal.inv_mul_cancel h0 h1]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Set.mem_sdiff, Set.mem_inter_iff, Set.mem_preimage, Metric.mem_ball, dist_zero_right, Set.mem_singleton_iff, Set.mem_smul, Set.mem_Ioo, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hs, hb⟩, h0⟩`. Use `⟨‖x‖, ⟨norm_pos_iff.2 h0, hb⟩, ‖x‖⁻¹ • x, ⟨radial p x, hs, radial_coe_of_ne p h0⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_smul, mul_inv_cancel₀ (norm_ne_zero_iff.2 h0), one_smul]`. Introduce and unpack `⟨r, ⟨hr0, hr1⟩, y, ⟨q, hq, rfl⟩, rfl⟩`. Establish `hq1 : ‖(q : E)‖ = 1` using `norm_eq_of_mem_sphere q`. Establish `hne : r • (q : E) ≠ 0`. Use `smul_ne_zero hr0.ne' ?_` and prove the remaining obligations.
+
+Introduce `h`. Rewrite `hq1` using `[h, norm_zero]`. Conclude with `zero_ne_one hq1`. Use `⟨⟨?_, ?_⟩, hne⟩` and prove the remaining obligations. Establish `hrad : radial p (r • (q : E)) = q`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[radial_coe_of_ne p hne, norm_smul, hq1, mul_one, Real.norm_eq_abs, abs_of_pos hr0, smul_smul, inv_mul_cancel₀ hr0.ne', one_smul]`. Rewrite using `[hrad]`. Conclude with `hq`. Rewrite using `[norm_smul, hq1, mul_one, Real.norm_eq_abs, abs_of_pos hr0]`.
+
+Conclude with `hr1`.
+-/
 lemma radial_preimage (p : sphere (0 : E) 1) (s : Set (sphere (0 : E) 1)) :
     (radial p ⁻¹' s ∩ ball 0 1) \ {0} = Ioo (0 : ℝ) 1 • ((↑) '' s : Set E) := by
   ext x
@@ -69,6 +86,11 @@ lemma radial_preimage (p : sphere (0 : E) 1) (s : Set (sphere (0 : E) 1)) :
     · rw [norm_smul, hq1, mul_one, Real.norm_eq_abs, abs_of_pos hr0]
       exact hr1
 
+/- English proof (translation)
+Use extensionality with `s hs`. Establish `hd0 : ((Module.finrank ℝ E : ℕ) : ℝ≥0∞) ≠ 0`. Conclude with `Module.finrank_pos.ne'` after adjusting the coercions. Establish `hdt : ((Module.finrank ℝ E : ℕ) : ℝ≥0∞) ≠ ⊤` using `ENNReal.natCast_ne_top _`. Establish `hnull : μ (radial p ⁻¹' s ∩ ball 0 1) = μ (Ioo (0 : ℝ) 1 • ((↑) '' s : Set E))`.
+
+Rewrite using `[← radial_preimage, measure_sdiff_null (measure_singleton 0)]`. Rewrite using `[Measure.map_apply (measurable_radial p) hs, ballP, Measure.smul_apply, smul_eq_mul, Measure.restrict_apply (measurable_radial p hs), hnull, Measure.smul_apply, smul_eq_mul, Measure.toSphere_apply' μ hs, Measure.toSphere_apply_univ, ENNReal.mul_inv (Or.inl hd0) (Or.inl hdt), mul_ …`.
+-/
 lemma map_radial (μ : Measure E) [μ.IsAddHaarMeasure] (p : sphere (0 : E) 1) :
     (ballP μ).map (radial p) = (μ.toSphere univ)⁻¹ • μ.toSphere := by
   ext s hs
@@ -83,6 +105,9 @@ lemma map_radial (μ : Measure E) [μ.IsAddHaarMeasure] (p : sphere (0 : E) 1) :
     ENNReal.mul_inv (Or.inl hd0) (Or.inl hdt), mul_comm (((Module.finrank ℝ E : ℕ) : ℝ≥0∞)⁻¹) _,
     mul_assoc, ← mul_assoc (((Module.finrank ℝ E : ℕ) : ℝ≥0∞)⁻¹), ENNReal.inv_mul_cancel hd0 hdt, one_mul]
 
+/- English proof (translation)
+Use `Measure.pi_eq (fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, Measure.restrict_apply' (MeasurableSet.univ_pi (fun _ => measurableSet_ball)), ← Set.pi_inter_distrib, Measure.pi_pi, Measure.pi_pi]`. Simplify using `only [ballP, Measure.smul_apply, smul_eq_mul, Measure.restrict_apply' measurableSet_ball]`. Rewrite using `[Finset.prod_mul_distrib]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ENNReal.inv_pow]`.
+-/
 lemma pi_ballP (μ : Measure E) [μ.IsAddHaarMeasure] (k : ℕ) :
     Measure.pi (fun _ : Fin k => ballP μ) =
       ((Measure.pi fun _ : Fin k => μ) (Set.pi univ fun _ => ball (0 : E) 1))⁻¹ •
@@ -101,6 +126,9 @@ section Avg
 
 variable {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y]
 
+/- English proof (translation)
+Rewrite using `[Measure.map_smul, ← hf.restrict_map, ← hf.map_apply μ s, hmap, Measure.restrict_smul, Measure.smul_apply, smul_eq_mul, smul_smul]`. Use `congr 1`. Rewrite using `[ENNReal.mul_inv (Or.inl ha0) (Or.inl ha1), mul_comm a⁻¹, mul_assoc, ENNReal.inv_mul_cancel ha0 ha1, mul_one]`.
+-/
 lemma map_normalised {f : X → Y} (hf : MeasurableEmbedding f) {μ : Measure X} {ν : Measure Y}
     {a : ℝ≥0∞} (ha0 : a ≠ 0) (ha1 : a ≠ ⊤) (hmap : μ.map f = a • ν) (s : Set Y) :
     ((μ (f ⁻¹' s))⁻¹ • μ.restrict (f ⁻¹' s)).map f = (ν s)⁻¹ • ν.restrict s := by
@@ -116,6 +144,11 @@ section Lin
 
 variable {N k : ℕ}
 
+/- English proof (translation)
+Establish `key : star (U *ᵥ x) ⬝ᵥ (U *ᵥ x) = star x ⬝ᵥ x`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hU, Matrix.one_mulVec]`. Establish `hsq : ∀ y : Fin N → ℂ, ((∑ i, ‖y i‖ ^ 2 : ℝ) : ℂ) = star y ⬝ᵥ y`. Introduce `y`. Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_pow]`.
+
+Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Conclude with `(hsq (U *ᵥ x)).trans (key.trans (hsq x).symm)` after adjusting the coercions.
+-/
 lemma sum_norm_sq_mulVec {U : Matrix (Fin N) (Fin N) ℂ} (hU : Uᴴ * U = 1) (x : Fin N → ℂ) :
     ∑ i, ‖(U *ᵥ x) i‖ ^ 2 = ∑ i, ‖x i‖ ^ 2 := by
   have key : star (U *ᵥ x) ⬝ᵥ (U *ᵥ x) = star x ⬝ᵥ x := by
@@ -144,6 +177,9 @@ def phi (B C : Matrix (Fin N) (Fin N) ℂ) (h1 : C * B = 1) (h2 : B * C = 1) :
     ext p
     simp [mulVec_mulVec, h2]
 
+/- English proof (translation)
+Establish `e : (fun j => phi B C h1 h2 z (i, j)) = B *ᵥ (fun a => z i a)`. Use function extensionality and compare the values at `j`. Both sides reduce to the same expression. Rewrite using `[HermNorm.norm, e, Matrix.mulVec_mulVec, sum_norm_sq_mulVec hU, EuclideanSpace.norm_eq]`.
+-/
 lemma norm_phi (h : HermNorm N) {B C : Matrix (Fin N) (Fin N) ℂ} (h1 : C * B = 1) (h2 : B * C = 1)
     (hU : (h.mat * B)ᴴ * (h.mat * B) = 1) (z : Fin k → EuclideanSpace ℂ (Fin N)) (i : Fin k) :
     h.norm (fun j => phi B C h1 h2 z (i, j)) = ‖z i‖ := by
@@ -152,6 +188,11 @@ lemma norm_phi (h : HermNorm N) {B C : Matrix (Fin N) (Fin N) ℂ} (h1 : C * B =
     rfl
   rw [HermNorm.norm, e, Matrix.mulVec_mulVec, sum_norm_sq_mulVec hU, EuclideanSpace.norm_eq]
 
+/- English proof (translation)
+Use `haveI : (μ.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map μ`. Use `⟨((μ.map e).addHaarScalarFactor ν : ℝ≥0∞), ?_, ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure (μ.map e) ν).ne'`. Use `conv_lhs => rw [Measure.isAddLeftInvariant_eq_smul (μ.map e) ν]`. Use extensionality with `s hs`.
+
+Rewrite using `[Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def]`.
+-/
 lemma exists_map_eq_smul {X Y : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X] [FiniteDimensional ℂ X]
     [MeasurableSpace X] [BorelSpace X] [NormedAddCommGroup Y] [NormedSpace ℂ Y]
     [FiniteDimensional ℂ Y] [MeasurableSpace Y] [BorelSpace Y]
@@ -166,6 +207,31 @@ lemma exists_map_eq_smul {X Y : Type*} [NormedAddCommGroup X] [NormedSpace ℂ X
 
 end Lin
 
+/- English proof (translation)
+Introduce `N k h B f hN hf hU`. Establish `hdet : (h.mat * B).det ≠ 0`. Introduce `h0`. Establish `h3` using `congrArg Matrix.det hU`. Rewrite `h3` using `[Matrix.det_mul, Matrix.det_conjTranspose, h0, mul_zero, Matrix.det_one]`.
+
+Conclude with `zero_ne_one h3`. Establish `hB : IsUnit B.det`. Rewrite `hdet` using `[Matrix.det_mul]`. Conclude with `isUnit_iff_ne_zero.2 (right_ne_zero_of_mul hdet)`. Establish `h1 : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`.
+
+Establish `h2 : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Use `haveI : Nontrivial (EuclideanSpace ℂ (Fin N)) := Module.nontrivial_of_finrank_pos (R := ℂ) (by rw [finrank_euclideanSpace_fin]; omega)`. Take `⟨p0, hp0⟩` from `(NormedSpace.sphere_nonempty (x := (0 : EuclideanSpace ℂ (Fin N))) (r := 1)).2 zero_le_one`. Set `p : sphere (0 : EuclideanSpace ℂ (Fin N)) 1` to `⟨p0, hp0⟩`. Establish `hsph : Tuple.sphP N = (ballP (volume : Measure (EuclideanSpace ℂ (Fin N)))).map (radial p)`.
+
+Rewrite using `[map_radial]`. Both sides reduce to the same expression. Establish `hmeas : Measurable (fun (z : Fin k → EuclideanSpace ℂ (Fin N)) (i : Fin k) => radial p (z i))` using `measurable_pi_lambda _ (fun i => (measurable_radial p).comp (measurable_pi_apply i))`. Establish `hΦ : Continuous (fun t : Fin k → Metric.sphere (0 : EuclideanSpace ℂ (Fin N)) 1 => fun q : Fin k × Fin N => (B *ᵥ fun a => (t q.1 : EuclideanSpace ℂ (Fin N)) a) q.2)`. Use `continuous_pi (fun q => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Use `continuous_finsetSum _ (fun a _ => continuous_const.mul ?_)` and prove the remaining obligations. Use `fun_prop`. Establish `hF : Measurable (fun t : Fin k → Metric.sphere (0 : EuclideanSpace ℂ (Fin N)) 1 => Real.log ‖MvPolynomial.eval (fun q : Fin k × Fin N => (B *ᵥ fun a => (t q.1 : EuclideanSpace ℂ (Fin N)) a) q.2) f‖)` using `Real.measurable_log.comp (continuous_norm.comp ((MvPolynomial.continuous_eval f).comp hΦ)).measurable`. Rewrite using `[show (Measure.pi fun _ : Fin k => Tuple.sphP N) = (Measure.pi fun _ : Fin k => ballP (volume : Measure (EuclideanSpace ℂ (Fin N)))).map (fun z i => radial p (z i)) by`.
+
+Rewrite using `[Measure.pi_map_pi (fun _ => (measurable_radial p).aemeasurable), hsph]]`. Rewrite using `[integral_map hmeas.aemeasurable hF.aestronglyMeasurable, pi_ballP]`. Unfold `GroundTheory.Heights₂.Heights.mahler GroundTheory.Heights₂.Heights.sphereMean`. Rewrite using `[average_eq', Measure.restrict_apply_univ]`. Set `L` to `(phi (k := k) B B⁻¹ h1 h2).toContinuousLinearEquiv`.
+
+Establish `hemb : MeasurableEmbedding (phi (k` using `k) B B⁻¹ h1 h2) := L.toHomeomorph.measurableEmbedding`. Use `haveI := Measure.pi.isAddHaarMeasure (fun _ : Fin k => (volume : Measure (EuclideanSpace ℂ (Fin N))))`. Take `⟨a, ha0, ha1, hmap⟩` from `exists_map_eq_smul L (Measure.pi fun _ : Fin k => (volume : Measure (EuclideanSpace ℂ (Fin N)))) (volume : Measure (Fin k × Fin N → ℂ))`. Establish `hmap' : (Measure.pi fun _ : Fin k => (volume : Measure (EuclideanSpace ℂ (Fin N)))).map (phi (k` using `k) B B⁻¹ h1 h2) = a • (volume : Measure (Fin k × Fin N → ℂ)) := hmap`. Rewrite using `[← map_normalised hemb ha0 ha1 hmap', hemb.integral_map]`.
+
+Establish `hpre : (phi (k` using `k) B B⁻¹ h1 h2) ⁻¹' {u | ∀ i, (h.norm fun j => u (i, j)) < 1} = Set.pi univ (fun _ => ball (0 : EuclideanSpace ℂ (Fin N)) 1) := by`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies, mem_ball_zero_iff]`. Conclude with `forall_congr' (fun i => by rw [norm_phi h h1 h2 hU z i])`. Rewrite using `[hpre]`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ z ∂(Measure.pi fun _ : Fin k => (volume : Measure (EuclideanSpace ℂ (Fin N)))), ∀ i, z i ≠ 0`. Rewrite using `[ae_all_iff]`. Introduce `i`. Conclude with `measure_eq_zero_iff_ae_notMem.1 (Measure.pi_eval_preimage_null (fun _ => (volume : Measure (EuclideanSpace ℂ (Fin N)))) (i := i) (measure_singleton 0))`.
+
+Use `filter_upwards [Measure.ae_smul_measure (ae_restrict_of_ae hae) _] with z hz`. Establish `harg : (fun q : Fin k × Fin N => (B *ᵥ fun a => ((radial p (z q.1) : EuclideanSpace ℂ (Fin N)) a)) q.2) = (fun ij => ((h.norm fun j => phi (k` using `k) B B⁻¹ h1 h2 z (ij.1, j) : ℝ) : ℂ)⁻¹ * phi (k := k) B B⁻¹ h1 h2 z ij) := by`. Use function extensionality and compare the values at `q`. Rewrite using `[norm_phi h h1 h2 hU z q.1, radial_coe_of_ne p (hz q.1)]`. Use `show (B *ᵥ fun a => ((‖z q.1‖⁻¹ • z q.1 : EuclideanSpace ℂ (Fin N)) a)) q.2 = ((‖z q.1‖ : ℝ) : ℂ)⁻¹ * (B *ᵥ fun a => z q.1 a) q.2`.
+
+Establish `e : (fun a => ((‖z q.1‖⁻¹ • z q.1 : EuclideanSpace ℂ (Fin N)) a)) = (((‖z q.1‖ : ℝ) : ℂ)⁻¹) • (fun a => z q.1 a)`. Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← Complex.ofReal_inv, ← Complex.real_smul]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `congrArg (fun u => Real.log ‖MvPolynomial.eval u f‖) harg`.
+-/
 theorem sphere_mean_eq_mahler : ∀ (N k : ℕ) (h : HermNorm N) (B : Matrix (Fin N) (Fin N) ℂ)
     (f : MvPolynomial (Fin k × Fin N) ℂ), 1 ≤ N → f ≠ 0 → (h.mat * B)ᴴ * (h.mat * B) = 1 →
     ∫ t : Fin k → Metric.sphere (0 : EuclideanSpace ℂ (Fin N)) 1,

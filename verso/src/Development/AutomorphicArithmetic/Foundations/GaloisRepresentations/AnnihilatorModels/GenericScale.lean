@@ -20,6 +20,9 @@ def σCr (K : FinExt l) : ↥(GK K) → End ℚ_[l] P.R.B := fun g => (P.actQ (g
 
 def ψCr (f : ℕ) : End ℚ_[l] P.R.B := P.φB.toLinearMap ^ f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dinv_σSt {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V]
     [IsScalarTower ℚ_[l] LL V] (ρ : Representation LL ↥(GK K) V) : Dinv (σSt P K) ρ = Dst P ρ := rfl
 

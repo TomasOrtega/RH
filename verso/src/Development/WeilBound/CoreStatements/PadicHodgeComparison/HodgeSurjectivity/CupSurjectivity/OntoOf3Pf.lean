@@ -15,6 +15,9 @@ open Pb HT
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+Introduce `hC hS hK hSq hD hF l _ K _ P M d hd hM hs hI n`. Take `⟨S, hEt⟩` from `hSq l K M d hd hM hs`. Take `⟨Dt⟩` from `mkDat hC hK hD P hd hM hs S hEt`. Conclude with `surj_of_core hC P M n fun a' x => ⟨Dt.N, Dt.hN, core hC hS P hM Dt (hF l K M hM _) hI x⟩`.
+-/
 theorem ontoOf3_pf : OntoOf3 := by
   intro hC hS hK hSq hD hF l _ K _ P M d hd hM hs hI n
   obtain ⟨S, hEt⟩ := hSq l K M d hd hM hs

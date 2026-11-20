@@ -12,6 +12,9 @@ open GlobalTheory.PairTerm
 open Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairTerm.exists_ratSec_orders_le_ratNorms | exact GlobalTheory.PairTerm.exists_ratSec_orders_le_ratNorms | (intros; apply GlobalTheory.PairTerm.exists_ratSec_orders_le_ratNorms <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.height_bounded_by_bad_primes : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) [IsLocallyNoetherian V.X] (M : HermLB V.p)
     (lg : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → AlgPt Y → ℝ), Norms V M (fun _ => 1) (fun _ _ => 0) lg →
     ∀ (S : Finset ℕ) (a : ℕ → ℝ), (∀ l ∈ S, l.Prime ∧ 0 ≤ a l) →

@@ -11,12 +11,20 @@ variable {K : Type} [Field K] {n : Type} [Fintype n] [DecidableEq n] {m : ℕ}
 def FlagC (M : Matrix n n K) (v : Fin m → n → K) : Prop :=
   ∀ b, M *ᵥ v b - v b ∈ Submodule.span K (v '' {a | a < b})
 
+/- English proof (translation)
+Establish `e : (fun u => M *ᵥ u) = ⇑(Matrix.mulVecLin M)` using `rfl`. Rewrite using `[e, Submodule.span_image]`. Conclude with `Submodule.mem_map_of_mem h`.
+-/
 theorem span_mulVec (M : Matrix n n K) {w : n → K} {S : Set (n → K)} (h : w ∈ Submodule.span K S) :
     M *ᵥ w ∈ Submodule.span K ((fun u => M *ᵥ u) '' S) := by
   have e : (fun u => M *ᵥ u) = ⇑(Matrix.mulVecLin M) := rfl
   rw [e, Submodule.span_image]
   exact Submodule.mem_map_of_mem h
 
+/- English proof (translation)
+Introduce `b`. Establish `h1 : (P * M * Pi) *ᵥ (P *ᵥ v b) - P *ᵥ v b = P *ᵥ (M *ᵥ v b - v b)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, hP, Matrix.mul_one, Matrix.mulVec_sub, Matrix.mulVec_mulVec]`. Rewrite using `[h1]`. Establish `h2` using `span_mulVec P (h b)`.
+
+Rewrite `h2` using `[Set.image_image]`. Then use the resulting hypothesis.
+-/
 theorem flagC_conj_imp (P Pi M : Matrix n n K) (hP : Pi * P = 1) (v : Fin m → n → K) (h : FlagC M v) :
     FlagC (P * M * Pi) (fun b => P *ᵥ v b) := by
   intro b
@@ -27,6 +35,11 @@ theorem flagC_conj_imp (P Pi M : Matrix n n K) (hP : Pi * P = 1) (v : Fin m → 
   have h2 := span_mulVec P (h b)
   rwa [Set.image_image] at h2
 
+/- English proof (translation)
+Use `⟨fun h => ?_, flagC_conj_imp P Pi M hP v⟩` and prove the remaining obligations. Establish `h2` using `flagC_conj_imp Pi P (P * M * Pi) hP' (fun b => P *ᵥ v b) h`. Establish `e1 : Pi * (P * M * Pi) * P = M`. Simplify using `only [← Matrix.mul_assoc, hP, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hP, Matrix.mul_one]`.
+
+Establish `e2 : (fun b => Pi *ᵥ (P *ᵥ v b)) = v`. Use function extensionality and compare the values at `b`. Rewrite using `[Matrix.mulVec_mulVec, hP, Matrix.one_mulVec]`. Rewrite `h2` using `[e1, e2]`. Conclude with `h2`.
+-/
 theorem flagC_conj (P Pi M : Matrix n n K) (hP : Pi * P = 1) (hP' : P * Pi = 1) (v : Fin m → n → K) :
     FlagC (P * M * Pi) (fun b => P *ᵥ v b) ↔ FlagC M v := by
   refine ⟨fun h => ?_, flagC_conj_imp P Pi M hP v⟩
@@ -40,6 +53,11 @@ theorem flagC_conj (P Pi M : Matrix n n K) (hP : Pi * P = 1) (hP' : P * Pi = 1) 
   rw [e1, e2] at h2
   exact h2
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `e : v b = (c b)⁻¹ • (c b • v b)` using `by rw [smul_smul, inv_mul_cancel₀ (hc b), one_smul]`. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)`.
+-/
 theorem span_smul_eq (c : Fin m → K) (hc : ∀ b, c b ≠ 0) (v : Fin m → n → K) (s : Set (Fin m)) :
     Submodule.span K ((fun b => c b • v b) '' s) = Submodule.span K (v '' s) := by
   apply le_antisymm
@@ -52,6 +70,9 @@ theorem span_smul_eq (c : Fin m → K) (hc : ∀ b, c b ≠ 0) (v : Fin m → n 
     rw [SetLike.mem_coe, e]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, hb, rfl⟩)
 
+/- English proof (translation)
+Unfold `FlagC`. Simplify using `only [span_smul_eq c hc v, Matrix.mulVec_smul, ← smul_sub]`. Use `forall_congr' (fun b => ⟨fun h => ?_, fun h => Submodule.smul_mem _ _ h⟩)` and prove the remaining obligations. Establish `h3` using `Submodule.smul_mem _ (c b)⁻¹ h`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ (hc b), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem flagC_smul (M : Matrix n n K) (c : Fin m → K) (hc : ∀ b, c b ≠ 0) (v : Fin m → n → K) :
     FlagC M (fun b => c b • v b) ↔ FlagC M v := by
   unfold FlagC
@@ -62,12 +83,21 @@ theorem flagC_smul (M : Matrix n n K) (c : Fin m → K) (hc : ∀ b, c b ≠ 0) 
 
 variable {r k : ℕ}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem colFlag_eq (M : Matrix (Idx r k) (Idx r k) K) :
     ColFlag M ↔ FlagC M (fun b => Pi.single (pe (k := k) b) (1 : K)) := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem rowFlag_eq (M : Matrix (Idx r k) (Idx r k) K) :
     RowFlag M ↔ FlagC Mᵀ (fun b => Pi.single (pf (k := k) b) (1 : K)) := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_sG_iff_flags, ← colFlag_eq, ← rowFlag_eq, colFlag_iff, rowFlag_iff]`.
+-/
 theorem mem_sG_iff_flagC (g : GL (Idx r k) K) :
     g ∈ sG K r k ↔ FlagC (g : Matrix (Idx r k) (Idx r k) K) (fun b => Pi.single (pe (k := k) b) (1 : K)) ∧
       FlagC ((g⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K)ᵀ (fun b => Pi.single (pf (k := k) b) (1 : K)) := by

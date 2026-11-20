@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.PtSel
 
+/- English proof (translation)
+Establish `h1` using `h (Finsupp.single g 1 + Finsupp.single 1 (-1))`. Rewrite `h1` using `[Finsupp.sum_add_index' (by simp) (by intros; simp [add_mul]), Finsupp.sum_add_index' (by simp) (by intros; simp [add_mul])]`. Simplify using `only [Finsupp.sum_single_index, map_zero, zero_mul, map_one, one_mul, map_neg, hg, Units.val_one, mul_one, add_neg_cancel, true_iff] at h1`. Use `ext`. Rewrite using `[Units.val_one]`.
+
+Conclude with `add_neg_eq_zero.1 h1`.
+-/
 theorem sameChar_eq_one {O₀ O₁ O₂ Γ : Type} [CommRing O₀] [CommRing O₁] [CommRing O₂] [Group Γ]
     {f₁ : O₀ →+* O₁} {f₂ : O₀ →+* O₂} {ψ₁ : Γ →* O₁ˣ} {ψ₂ : Γ →* O₂ˣ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.SameChar f₁ f₂ ψ₁ ψ₂) (g : Γ) (hg : ψ₁ g = 1) : ψ₂ g = 1 := by
@@ -24,6 +29,19 @@ theorem sameChar_eq_one {O₀ O₁ O₂ Γ : Type} [CommRing O₀] [CommRing O�
   rw [Units.val_one]
   exact add_neg_eq_zero.1 h1
 
+/- English proof (translation)
+Substitute `hj` using the available equality. Take `rfl` from `eq_of_heq hf`. Take `⟨σ, Sg, hrow, hW, hX⟩` from `hG a π hπ`. Take `⟨s, htr, hgood⟩` from `hT a σ Sg hrow hW`. Take `⟨U, hU⟩` from `GlobalTheory.PtCore.twistedRho_conj_latTpsi hC D a π ρ s Sg hρ hX htr (hR a π hπ _ hρ)`.
+
+Establish `e1` using `GlobalTheory.ConjLatticeSelmer.sPiTop_eq_sTLoc D a π ρ s U hU`. Establish `e2` using `GlobalTheory.SelmerSameChar.sTLoc_eq D a s k ψ hS`. Establish `hψ : ∀ v ∈ placesOver D.host.E (D.ntw.l (D.ntw.twOf a)), ∀ g ∈ Dec (F` using `D.host.E) (D.nd.plOm.1 v), ψ g = 1 := by`. Introduce `v hv g hg`. Rewrite `hv` using `[D.ntw.twOf_l]`.
+
+Conclude with `sameChar_eq_one hS g (D.ntw.psiL_l a v hv _ (D.nd.plOm.2 v) g hg)`. Take `⟨h1, h2⟩` from `GlobalTheory.SelTwistLe.sT_le_sLen D _ s k (D.nd.Q a) ψ hψ`. Rewrite `h1`, `h2` using `[← e2, ← e1]`. Use `⟨s, hgood, htr.2.1, ?_, ?_, ⟨rfl, σ, Sg, hrow, hW, hX, htr⟩⟩` and prove the remaining obligations. Introduce `hne`.
+
+Establish `h3` using `h1 hne`. Unfold `Br.sFin`. Rewrite using `[lt_top_iff_ne_top]`. Introduce `h4`. Conclude with `h3 (by simp only [GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sPiTop, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.nlen, h4, if_true])`.
+
+Distinguish the cases in `h4 : Module.length (D.nd.O a) ↥(Br.selPi D.loc D.nbr a ρ π) = ⊤`. Establish `h5 : BlochKatoReduction.Gen.sLen (BlochKatoReduction.bk0 D) _ s k (D.nd.Q a) ψ = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `h1 hne (by simp only [GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sPiTop, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.nlen, h4, if_true])`. Rewrite using `[h5]`.
+
+Conclude with `le_top`. Conclude with `h2 _ (by simp only [GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sPiTop, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.nlen, h4, if_false, Br.sPi])`.
+-/
 theorem sel_at (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hT : TriplesGood D) (hG : GoodPtRow D) (hR : ResAbsIrr D)
     (a : D.nd.Loc) (ρ : D.nd.X a → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O a))) (π : D.nd.X a)
     (hπ : π ∈ D.nd.Zgood a) (hρ : GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.IsRhoPt D a π (ρ π))
@@ -63,6 +81,9 @@ theorem sel_at (hC : GlobalTheory.TwSys.Cheb) (D : D7) (hT : TriplesGood D) (hG 
       exact le_top
     · exact h2 _ (by simp only [GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.sPiTop, GlobalTheory.IndefiniteRowSideFullHecke.LatticeConditions.nlen, h4, if_false, Br.sPi])
 
+/- English proof (translation)
+Introduce `hC D C hTie hT hG hR hS ρ hρ i π hπ`. Take `⟨f, hf, hs⟩` from `hS.exists_heq i`. Take `⟨s, h1, h2, h3⟩` from `sel_at hC D hT hG hR i (ρ i) π hπ (hρ i π hπ) _ (hTie.twOf_eq i) _ _ f hf hs`. Rewrite `h3` using `[hTie.Q_eq i]`. Conclude with `⟨s, h1, h2.trans (hTie.twSide_eq i), h3⟩`.
+-/
 theorem selCore : GlobalTheory.TwSys.Cheb → ∀ (D : D7) (C : NChoice D), NChTie D C → TriplesGood D → GoodPtRow D →
     ResAbsIrr D → SameTwist D C →
     ∀ ρ : ∀ i : D.nd.Loc, D.nd.X i → (Formalism.MainNotions.N.GE D.nd →* GL (Fin D.R.r) (D.nd.O i)),

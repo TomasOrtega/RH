@@ -4,6 +4,9 @@ import Development.WeilBound.RepresentationTheoryGL.UnitaryDualProof.GenericIrre
 
 namespace PositivityTheory.RgUd
 
+/- English proof (translation)
+The claim follows from `Exp.Final.expBound_of k (Cell.expLow k (Form.Final.besselSum k) (Cell.openCell k))`.
+-/
 theorem expBound (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] : ExpBound k :=
   Exp.Final.expBound_of k (Cell.expLow k (Form.Final.besselSum k) (Cell.openCell k))
 

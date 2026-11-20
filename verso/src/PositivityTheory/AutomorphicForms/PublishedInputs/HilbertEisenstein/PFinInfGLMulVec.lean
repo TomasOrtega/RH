@@ -15,35 +15,59 @@ set_option linter.unusedSectionVars false
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
+/- English proof (translation)
+Rewrite using `[archS_apply]`. Both sides reduce to the same expression.
+-/
 theorem Phi_eq (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : Fin 2 → Ad F) :
     Phi c v = archS F (vInf v) * finRow c v := by
   rw [archS_apply]; rfl
 
+/- English proof (translation)
+Rewrite using `[archS_apply]`. Both sides reduce to the same expression.
+-/
 theorem PhiH_eq (c : HeightOneSpectrum (𝓞 F) → ℕ) (v : Fin 2 → Ad F) :
     PhiH c v = archS F (vInf v) * finCol c v := by
   rw [archS_apply]; rfl
 
+/- English proof (translation)
+Unfold `finRow`. Rewrite using `[h 0, h 1]`.
+-/
 theorem finRow_congr {c : HeightOneSpectrum (𝓞 F) → ℕ} {v v' : Fin 2 → Ad F}
     (h : ∀ i, pFin F (v i) = pFin F (v' i)) : finRow c v = finRow c v' := by
   unfold finRow; rw [h 0, h 1]
 
+/- English proof (translation)
+Unfold `finCol`. Rewrite using `[h 0, h 1]`.
+-/
 theorem finCol_congr {c : HeightOneSpectrum (𝓞 F) → ℕ} {v v' : Fin 2 → Ad F}
     (h : ∀ i, pFin F (v i) = pFin F (v' i)) : finCol c v = finCol c v' := by
   unfold finCol; rw [h 0, h 1]
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val (UpperTheory.V.TR.pFin_infGL y)`.
+-/
 theorem map_pFin_infGL (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (pFin F) = 1 :=
   congrArg Units.val (UpperTheory.V.TR.pFin_infGL y)
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val (UpperTheory.V.TR.pInf_infGL y)`.
+-/
 theorem map_pInf_infGL (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)).map (UpperTheory.V.TR.pInf F) =
       (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) :=
   congrArg Units.val (UpperTheory.V.TR.pInf_infGL y)
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_vecMul, map_pFin_infGL, Matrix.vecMul_one]`. Both sides reduce to the same expression.
+-/
 theorem pFin_vecMul_infGL (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (i : Fin 2) :
     pFin F ((v ᵥ* ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) i) = pFin F (v i) := by
   rw [RingHom.map_vecMul, map_pFin_infGL, Matrix.vecMul_one]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [vInf]`. Rewrite using `[RingHom.map_vecMul, map_pInf_infGL]`. Both sides reduce to the same expression.
+-/
 theorem vInf_vecMul_infGL (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     vInf (v ᵥ* ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))) =
       vInf v ᵥ* (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) := by
@@ -51,10 +75,16 @@ theorem vInf_vecMul_infGL (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR
   simp only [vInf]
   rw [RingHom.map_vecMul, map_pInf_infGL]; rfl
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_mulVec, map_pFin_infGL, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem pFin_infGL_mulVec (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (i : Fin 2) :
     pFin F ((((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ v) i) = pFin F (v i) := by
   rw [RingHom.map_mulVec, map_pFin_infGL, Matrix.one_mulVec]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [vInf]`. Rewrite using `[RingHom.map_mulVec, map_pInf_infGL]`. Both sides reduce to the same expression.
+-/
 theorem vInf_infGL_mulVec (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     vInf (((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ v) =
       (y : Matrix (Fin 2) (Fin 2) (UpperTheory.V.TR.Rinf F)) *ᵥ vInf v := by
@@ -62,9 +92,15 @@ theorem vInf_infGL_mulVec (v : Fin 2 → Ad F) (y : GL (Fin 2) (UpperTheory.V.TR
   simp only [vInf]
   rw [RingHom.map_mulVec, map_pInf_infGL]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tsum_Xi (f : {ξ : Fin 2 → F // ξ ≠ 0} → ℂ) :
     (∑' ξ : Xi F, f ξ) = ∑' ξ : {ξ : Fin 2 → F // ξ ≠ 0}, f ξ := rfl
 
+/- English proof (translation)
+Establish `hv : rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * (g * UpperTheory.V.TR.infGL F 2 y) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) = rowv g a ξ ᵥ* ((UpperTheory.V.TR.infGL F 2 y : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F))`. Simplify using `only [rowv, Mrow, Units.val_mul, Matrix.vecMul_vecMul, mul_assoc]`. Rewrite using `[hv, Phi_eq, finRow_congr (pFin_vecMul_infGL _ _), vInf_vecMul_infGL, left_bilinear_apply]`. Both sides reduce to the same expression.
+-/
 theorem row_term (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) (ξ : Fin 2 → F)
     (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     Phi c (rowA ξ ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) a * (g * UpperTheory.V.TR.infGL F 2 y) : GA F 2) :
@@ -77,6 +113,11 @@ theorem row_term (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Idel
   rw [hv, Phi_eq, finRow_congr (pFin_vecMul_infGL _ _), vInf_vecMul_infGL, left_bilinear_apply]
   rfl
 
+/- English proof (translation)
+Establish `hinv : (Matrix.GeneralLinearGroup.scalar (Fin 2) a * (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ = UpperTheory.V.TR.infGL F 2 y⁻¹ * Mcol g a`. Simplify using `only [Mcol, mul_inv_rev, map_inv, mul_assoc]`. Establish `hv : (((Matrix.GeneralLinearGroup.scalar (Fin 2) a * (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ rowA ξ = ((UpperTheory.V.TR.infGL F 2 y⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ colv g a ξ`. Rewrite using `[hinv, Units.val_mul, ← Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+
+Rewrite using `[hv, PhiH_eq, finCol_congr (pFin_infGL_mulVec _ _), vInf_infGL_mulVec, right_bilinear_apply]`. Both sides reduce to the same expression.
+-/
 theorem col_term (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Ideles F) (ξ : Fin 2 → F)
     (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) :
     PhiH c ((((Matrix.GeneralLinearGroup.scalar (Fin 2) a * (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ : GA F 2) :
@@ -92,6 +133,11 @@ theorem col_term (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) (a : Idel
   rw [hv, PhiH_eq, finCol_congr (pFin_infGL_mulVec _ _), vInf_infGL_mulVec, right_bilinear_apply]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ ξ : Xi F, kap1 χ c g ((t, u), ξ) * archS F (B1 (w1 g ((t, u), ξ)) (UpperTheory.V.TR.toL y.val)) = Phi c (rowA ξ.1 ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (g * UpperTheory.V.TR.infGL F 2 y) : GA F 2) : Matrix (Fin 2) (Fin 2) …`. Introduce `ξ`. Rewrite using `[row_term]`. Simplify using `only [kap1, w1, av]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e : (∑' ξ : Xi F, Phi c (rowA ξ.1 ᵥ* ((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (g * UpperTheory.V.TR.infGL F 2 y) : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)))) = thetaS (Phi c) (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w …` using `rfl`. Rewrite using `[tsum_congr h, tsum_mul_right, e]`. Simplify using `only [eisInt]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eisInt_row (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2)
     (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :
     eisInt χ (Phi c) (g * UpperTheory.V.TR.infGL F 2 y) t u =
@@ -114,6 +160,13 @@ theorem eisInt_row (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : 
   simp only [eisInt]
   ring
 
+/- English proof (translation)
+Establish `h : ∀ ξ : Xi F, kap2 χ c g ((t, u), ξ) * archS F (B2 (w2 g ((t, u), ξ)) (UpperTheory.V.TR.toL (y⁻¹).val)) = PhiH c ((((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad …`. Introduce `ξ`. Rewrite using `[col_term]`. Simplify using `only [kap2, w2, av]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e : (∑' ξ : Xi F, PhiH c ((((Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSection (w0 F) t * (u : Ideles F)) * (g * UpperTheory.V.TR.infGL F 2 y))⁻¹ : GA F 2) : Matrix (Fin 2) (Fin 2) (Ad F)) *ᵥ rowA ξ.1)) = thetaT (PhiH c) (Matrix.GeneralLinearGroup.scalar (Fin 2) (moduleSect …` using `rfl`. Rewrite using `[tsum_congr h, tsum_mul_right, e]`. Simplify using `only [eisInt]`. Rewrite using `[hC, absD_scalar_mul]`. Establish `ht : ((t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr t.2.ne'`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem eisInt_col (χ : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (g : GA F 2) {C : ℂ}
     (hC : ∀ h : GA F 2, thetaS (Phi c) h = C * ((absD h)⁻¹ : ℝ) * thetaT (PhiH c) h)
     (y : GL (Fin 2) (UpperTheory.V.TR.Rinf F)) (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) :

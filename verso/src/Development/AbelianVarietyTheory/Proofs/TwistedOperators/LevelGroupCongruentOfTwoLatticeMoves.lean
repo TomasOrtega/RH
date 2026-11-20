@@ -35,6 +35,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨f * a, fun v => ?_, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `mul_mem (hf v) (ha v)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(f ⊗ₜ[F] (1 : E)) * a ⊗ₜ x i = (f * a) ⊗ₜ x i`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) {f : FiniteAdeleRing (𝓞 F) F} (hf : f ∈ intAf F)
     {z : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hz : z ∈ latHat F E (L : Set (Fin n → E))) :
     (f ⊗ₜ[F] (1 : E)) • z ∈ latHat F E (L : Set (Fin n → E)) := by
@@ -52,6 +59,13 @@ theorem int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) {f : FiniteAdeleRing
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, c • x, Submodule.smul_mem_smul hc hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c : E)) * a ⊗ₜ x i = a ⊗ₜ ((c : E) * x i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem ideal_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) {c : 𝓞 E} (hc : c ∈ 𝔪)
     {z : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hz : z ∈ latHat F E (L : Set (Fin n → E))) :
     ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (c : E)) • z ∈ latHat F E ((𝔪 • L : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) := by
@@ -66,6 +80,11 @@ theorem ideal_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (�
   | add x y _ _ hx hy => rw [smul_add]; exact add_mem hx hy
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : v.valuation F (algebraMap (𝓞 F) F c) = 1` using `(v.valuation_eq_one_iff_notMem (K := F)).2 hv`. Establish `h2 : Valued.v (algebraMap F (v.adicCompletion F) (c : F)) = v.valuation F (c : F)` using `v.valuedAdicCompletion_eq_valuation' (K := F) (c : F)`. Establish `h3 : algebraMap F (Fv F v) ((c : F)⁻¹) = (algebraMap F (v.adicCompletion F) (c : F))⁻¹` using `map_inv₀ _ _`. Rewrite using `[h3, map_inv₀, h2]`.
+
+Express the relevant statement in the definitionally equal form `(v.valuation F (algebraMap (𝓞 F) F c))⁻¹ ≤ 1`. Rewrite using `[h1, inv_one]`.
+-/
 theorem inv_int_at {c : 𝓞 F} (v : HeightOneSpectrum (𝓞 F)) (hv : c ∉ v.asIdeal) :
     evalV F v (algebraMap F (FiniteAdeleRing (𝓞 F) F) ((c : F)⁻¹)) ∈ v.adicCompletionIntegers F := by
   rw [AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]
@@ -77,6 +96,13 @@ theorem inv_int_at {c : 𝓞 F} (v : HeightOneSpectrum (𝓞 F)) (hv : c ∉ v.a
   change (v.valuation F (algebraMap (𝓞 F) F c))⁻¹ ≤ 1
   rw [h1, inv_one]
 
+/- English proof (translation)
+Use `set b : FiniteAdeleRing (𝓞 F) F := algebraMap F (FiniteAdeleRing (𝓞 F) F) ((c : F)⁻¹) * f with hbdef`. Establish `hb : b ∈ intAf F` using `fun v => by`. Distinguish the cases in `hv : c ∈ v.asIdeal`. Rewrite using `[hbdef, map_mul, hfc v hv, mul_zero]`. Conclude with `zero_mem _`.
+
+Rewrite using `[hbdef, map_mul]`. Conclude with `mul_mem (inv_int_at v hv) (hf v)`. Establish `hcF : (c : F) ≠ 0` using `fun h => hc0 (RingOfIntegers.coe_injective (by simpa using h))`. Establish `hfb : (f ⊗ₜ[F] (1 : E) : FiniteAdeleRing (𝓞 F) F ⊗[F] E) = ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] ((algebraMap (𝓞 F) (𝓞 E) c : 𝓞 E) : E)) * (b ⊗ₜ[F] (1 : E))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+
+Express the relevant statement in the definitionally equal form `f ⊗ₜ[F] (1 : E) = b ⊗ₜ[F] (algebraMap F E (c : F))`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', hbdef, Algebra.smul_def, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hcF, map_one, one_mul]`. Rewrite using `[hfb, mul_smul]`. Conclude with `ideal_smul_mem L 𝔪 hc (int_smul_mem L hb hz)`.
+-/
 theorem vanish_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) {c : 𝓞 F} (hc0 : c ≠ 0)
     (hc : algebraMap (𝓞 F) (𝓞 E) c ∈ 𝔪) {f : FiniteAdeleRing (𝓞 F) F} (hf : f ∈ intAf F)
     (hfc : ∀ v : HeightOneSpectrum (𝓞 F), c ∈ v.asIdeal → evalV F v f = 0)
@@ -109,17 +135,40 @@ open Formalism.MainNotions.StandardLattice (latHat intAf)
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨e, h1, h0⟩` from `GlobalTheory.UnRep.SmallMat.exists_indicator ({v} : Finset (HeightOneSpectrum (𝓞 F)))`. Conclude with `⟨e, h1 v (Finset.mem_singleton_self v), fun w hw => h0 w (by simpa using hw)⟩`.
+-/
 theorem exists_ind (v : HeightOneSpectrum (𝓞 F)) : ∃ α : FiniteAdeleRing (𝓞 F) F,
     evalV F v α = 1 ∧ ∀ w, w ≠ v → evalV F w α = 0 := by
   obtain ⟨e, h1, h0⟩ := GlobalTheory.UnRep.SmallMat.exists_indicator ({v} : Finset (HeightOneSpectrum (𝓞 F)))
   exact ⟨e, h1 v (Finset.mem_singleton_self v), fun w hw => h0 w (by simpa using hw)⟩
 
+/- English proof (translation)
+Introduce `w` and use `by by_cases hw : w = v · subst hw; rw [h1]; exact one_mem _ · rw [h0 w hw]; exact zero_mem _`.
+-/
 theorem ind_int {v : HeightOneSpectrum (𝓞 F)} {α : FiniteAdeleRing (𝓞 F) F} (h1 : evalV F v α = 1)
     (h0 : ∀ w, w ≠ v → evalV F w α = 0) : α ∈ intAf F := fun w => by
   by_cases hw : w = v
   · subst hw; rw [h1]; exact one_mem _
   · rw [h0 w hw]; exact zero_mem _
 
+/- English proof (translation)
+Use `set N := Ideal.absNorm 𝔪 with hNdef`. Establish `hN0 : N ≠ 0` using `fun h => h𝔪 (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hNE : ((N : 𝓞 E)) ∈ 𝔪` using `Ideal.absNorm_mem 𝔪`. Use `set c₁ : 𝓞 F := (N : 𝓞 F) with hc₁`. Establish `hc₁0 : c₁ ≠ 0` using `Nat.cast_ne_zero.2 hN0`.
+
+Establish `hc₁m : algebraMap (𝓞 F) (𝓞 E) c₁ ∈ 𝔪` using `by rw [hc₁, map_natCast]; exact hNE`. Establish `hfin : {v : HeightOneSpectrum (𝓞 F) | v.asIdeal ∣ Ideal.span {c₁}}.Finite` using `Ideal.finite_factors (by rwa [Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot])`. Use `set P := hfin.toFinset with hP`. Establish `hmemP : ∀ v, v ∈ P ↔ c₁ ∈ v.asIdeal` using `fun v => by`. Rewrite using `[hP, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
+
+Use `choose ind hind1 hind0 using (exists_ind (F := F))`. Use `set e₁ : FiniteAdeleRing (𝓞 F) F := ∑ v ∈ P, ind v with he₁`. Establish `hev : ∀ w, evalV F w e₁ = if w ∈ P then 1 else 0` using `fun w => by`. Rewrite using `[he₁, map_sum]`. Use `split_ifs with hw`.
+
+Rewrite using `[Finset.sum_eq_single w (fun b _ hb => hind0 b w (Ne.symm hb)) (fun h => absurd hw h), hind1]`. Conclude with `Finset.sum_eq_zero fun b hb => hind0 b w (fun h => hw (h ▸ hb))`. Establish `hsplit : x = ((1 - e₁) ⊗ₜ[F] (1 : E)) • x + ∑ v ∈ P, (ind v ⊗ₜ[F] (1 : E)) • x`. Rewrite using `[← Finset.sum_smul, ← TensorProduct.sum_tmul, ← he₁, ← add_smul, ← TensorProduct.add_tmul, sub_add_cancel, Algebra.TensorProduct.one_def.symm, one_smul]`. Rewrite using `[hsplit]`.
+
+Use `add_mem ?_ (sum_mem fun v hv => ?_)` and prove the remaining obligations. Use `vanish_smul_mem L 𝔪 hc₁0 hc₁m (fun w => ?_) (fun w hw => ?_) hx` and prove the remaining obligations. Rewrite using `[map_sub, map_one, hev]`. Use `split_ifs`. Rewrite using `[sub_self]`.
+
+Conclude with `zero_mem _`. Rewrite using `[sub_zero]`. Conclude with `one_mem _`. Rewrite using `[map_sub, map_one, hev, if_pos ((hmemP w).2 hw), sub_self]`. Distinguish the cases in `hI : 𝔪.comap (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal`.
+
+Rewrite using `[hloc v hI (ind v) (hind1 v) (hind0 v)]`. Conclude with `zero_mem _`. Take `⟨c, hc, hcv⟩` from `SetLike.not_le_iff_exists.1 hI`. Establish `hc0 : c ≠ 0` using `fun h => hcv (h ▸ zero_mem _)`. Use `vanish_smul_mem L 𝔪 hc0 hc (ind_int (hind1 v) (hind0 v)) (fun w hw => hind0 v w ?_) hx` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Conclude with `hcv hw`.
+-/
 theorem mem_of_vanish (L : Submodule (𝓞 E) (Fin n → E)) (𝔪 : Ideal (𝓞 E)) (h𝔪 : 𝔪 ≠ ⊥)
     {x : Fin n → FiniteAdeleRing (𝓞 F) F ⊗[F] E} (hx : x ∈ latHat F E (L : Set (Fin n → E)))
     (hloc : ∀ v : HeightOneSpectrum (𝓞 F), 𝔪.comap (algebraMap (𝓞 F) (𝓞 E)) ≤ v.asIdeal →
@@ -170,13 +219,26 @@ namespace GlobalTheory.Ker.LevMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [fmt, Formalism.L2.Theta.mt, map_mul, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem fmt_mul' (V : HSp D) (g g' : GA D V) : fmt V (g * g') = fmt V g * fmt V g' := by
   simp only [fmt, Formalism.L2.Theta.mt, map_mul, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Simplify using `only [fmt, Formalism.L2.Theta.mt, map_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem fmt_one' (V : HSp D) : fmt V 1 = 1 := by
   simp only [fmt, Formalism.L2.Theta.mt, map_one, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrArg (finPart D) (h v hv (pairA D.host.F 0 α) ⟨α, rfl, h1, h0⟩ i j)` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Establish `e1 : finPart D (algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 α)) = α ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Establish `e2 : finPart D ((mt T g - 1) i j) = (fmt T g - 1) i j`.
+
+Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub]`. Use `congr 1`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.one_apply_ne hij]`. Rewrite `this` using `[e1, e2]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]`. Conclude with `this`.
+-/
 theorem smul_fmt_sub_one {T : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D T} (h : TrivAt T I g)
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : I ≤ v.asIdeal) {α : Af D.host.F} (h1 : evalV D.host.F v α = 1)
     (h0 : ∀ w, w ≠ v → evalV D.host.F w α = 0) :
@@ -196,6 +258,9 @@ theorem smul_fmt_sub_one {T : HSp D} {I : Ideal (𝓞 D.host.F)} {g : GA D T} (h
   rw [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply]
   exact this
 
+/- English proof (translation)
+Establish `h' : P • A' = P • 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_sub, ← Matrix.smul_mul, h', Matrix.smul_mul, one_mul, hB, sub_self]`.
+-/
 theorem smul_algebra {R : Type} [CommRing R] {k : ℕ} (P : R) (A A' B : Matrix (Fin k) (Fin k) R)
     (hA : P • A = P • 1) (hB : P • B = P • 1) (e : A * A' = 1) : P • (A' * B - 1) = 0 := by
   have h' : P • A' = P • 1 := by
@@ -204,6 +269,9 @@ theorem smul_algebra {R : Type} [CommRing R] {k : ℕ} (P : R) (A A' B : Matrix 
       _ = P • 1 := by rw [Matrix.smul_mul, e]
   rw [smul_sub, ← Matrix.smul_mul, h', Matrix.smul_mul, one_mul, hB, sub_self]
 
+/- English proof (translation)
+Establish `: M *ᵥ u - u = (M - 1) *ᵥ u` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[this, ← Matrix.smul_mulVec, h, Matrix.zero_mulVec]`.
+-/
 theorem smul_vec {R : Type} [CommRing R] {k : ℕ} (P : R) (M : Matrix (Fin k) (Fin k) R) (u : Fin k → R)
     (h : P • (M - 1) = 0) : P • (M *ᵥ u - u) = 0 := by
   have : M *ᵥ u - u = (M - 1) *ᵥ u := by rw [Matrix.sub_mulVec, Matrix.one_mulVec]
@@ -211,6 +279,19 @@ theorem smul_vec {R : Type} [CommRing R] {k : ℕ} (P : R) (M : Matrix (Fin k) (
 
 end GlobalTheory.Ker.LevMove
 
+/- English proof (translation)
+Introduce `D S T C Lv g₁ g₂ L h1 h2 t1 t2 hL m1 m2`. Establish `hfull : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤` using `⟨C.X.Λ_fg, C.X.Λ_span⟩`. Establish `e1 : fmt T g₁ * fmt T g₁⁻¹ = 1`. Rewrite using `[← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']`. Establish `e2 : fmt T g₂ * fmt T g₂⁻¹ = 1`.
+
+Rewrite using `[← GlobalTheory.Ker.LevMove.fmt_mul', mul_inv_cancel, GlobalTheory.Ker.LevMove.fmt_one']`. Take `⟨-, -, -, laws⟩` from `GlobalTheory.Ker.isMov_laws D T.rank C.X.Λ hfull`. Take `⟨-, hb1, -, -, -⟩` from `(laws _ _ e1).2 L hL m1`. Take `⟨-, -, -, hcomp, -⟩` from `(laws _ _ e2).2 L hL m2`. Establish `hk : IsMov (fmt T (g₁⁻¹ * g₂)) C.X.Λ C.X.Λ`.
+
+Rewrite using `[GlobalTheory.Ker.LevMove.fmt_mul']`. Conclude with `hcomp _ _ hb1`. Use `⟨mul_mem (inv_mem h1) h2, hk, 1, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[OneMemClass.coe_one, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+
+Establish `hs : ∑ j, (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E)) j i • Lv.β j = Lv.β i`. Simplify using `[Matrix.one_apply]`. Rewrite using `[hs]`. Establish `hb : toAf (Lv.β i) ∈ hatV C.X.Λ` using `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, Lv.β i, Lv.β_mem i, rfl⟩`. Use `GlobalTheory.Ker.LevMove.mem_of_vanish (F := D.host.F) C.X.Λ Lv.𝔪 Lv.ne_bot (sub_mem ((hk _).2 ⟨_, hb, rfl⟩) hb) ?_` and prove the remaining obligations.
+
+Introduce `v hv α a1 a0`. Establish `P1` using `GlobalTheory.Ker.LevMove.smul_fmt_sub_one t1 hv a1 a0`. Establish `P2` using `GlobalTheory.Ker.LevMove.smul_fmt_sub_one t2 hv a1 a0`. Use `set P : AfE D := α ⊗ₜ[D.host.F] (1 : D.host.E) with hPdef`. Establish `q1 : P • fmt T g₁ = P • 1` using `by rw [smul_sub] at P1; exact sub_eq_zero.1 P1`.
+
+Establish `q2 : P • fmt T g₂ = P • 1` using `by rw [smul_sub] at P2; exact sub_eq_zero.1 P2`. Establish `q : P • (fmt T (g₁⁻¹ * g₂) - 1) = 0`. Rewrite using `[GlobalTheory.Ker.LevMove.fmt_mul']`. Conclude with `GlobalTheory.Ker.LevMove.smul_algebra P _ _ _ q1 q2 e1`. Conclude with `GlobalTheory.Ker.LevMove.smul_vec P _ _ q`.
+-/
 theorem GlobalTheory.Ker.LevMove.levK_of_two_moves : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : SW.Level C.X) (g₁ g₂ : GA D T) (L : Lt D.host.E T.rank), g₁ ∈ GfC T → g₂ ∈ GfC T → TrivAt T (C.under Lv) g₁ → TrivAt T (C.under Lv) g₂ → L.FG → IsMov (fmt T g₁) C.X.Λ L → IsMov (fmt T g₂) C.X.Λ L → C.LevK Lv (g₁⁻¹ * g₂) 1 := by
   intro D S T C Lv g₁ g₂ L h1 h2 t1 t2 hL m1 m2
   have hfull : C.X.Λ.FG ∧ Submodule.span D.host.E (C.X.Λ : Set (Fin T.rank → D.host.E)) = ⊤ :=

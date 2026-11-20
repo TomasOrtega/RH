@@ -24,6 +24,9 @@ open GlobalTheory.Models
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `⟨fun hy => ?_, fun hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← w, ← Category.assoc, hy]`. Use `pullback.lift y (𝟙 _) (Category.id_comp _).symm ≫= h hy` as an intermediate fact. Rewrite `this` using `[pullback.lift_fst_assoc, pullback.lift_fst]`. Then use the resulting hypothesis.
+-/
 theorem fixes_iff_fixes_image {X Y T : Scheme.{0}} (p : Y ⟶ X) (r : X ⟶ X) (q : Y ⟶ Y) (y : T ⟶ Y)
     (w : q ≫ p = p ≫ r)
     (h : (y ≫ p) ≫ r = y ≫ p → pullback.fst p (y ≫ p) ≫ q = pullback.fst p (y ≫ p)) :
@@ -33,6 +36,21 @@ theorem fixes_iff_fixes_image {X Y T : Scheme.{0}} (p : Y ⟶ X) (r : X ⟶ X) (
   · have := pullback.lift y (𝟙 _) (Category.id_comp _).symm ≫= h hy
     rwa [pullback.lift_fst_assoc, pullback.lift_fst] at this
 
+/- English proof (translation)
+Introduce `E _ _ _ H Γ _ _ R _ X X' _ ρ π t s τ mu hQ hfin hqp hga hmu htame hfib`. Establish `hsemi` using `t.semi`. Establish `hcart (g : Γ) : IsGrpPullback t.G t.G (ρ g).hom (τ g).hom` using `hmu g ▸ (mu g).cart`. Establish `hw (g : Γ) : (τ g).hom ≫ t.G.hom = t.G.hom ≫ (ρ g).hom` using `(hcart g).1.w`. Establish `hact (g : Γ) (c) : (t.act.act c).left ≫ (τ g).hom = (τ g).hom ≫ (t.act.act c).left` using `hmu g ▸ (mu g).act c`.
+
+Establish `he (g : Γ) : eSec t.G ≫ (τ g).hom = (ρ g).hom ≫ eSec t.G`. Use `(mu g).cm.e_comm` as an intermediate fact. Rewrite `this` using `[(mu g).base]`. Rewrite using `[← hmu g]`. Conclude with `this`.
+
+Establish `hL (g : Γ) : LBIso t.PP.L (t.PP.L.pull (τ g).hom)`. Take `⟨w, hw, -⟩` from `(mu g).lin`. Rewrite using `[← hmu g]`. Conclude with `⟨w, hw⟩`. Establish `hsec : eSec t.G ≫ t.G.hom = 𝟙 X` using `Over.w (η[t.G])`.
+
+Establish `hgi : GeometricallyIntegral t.G.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hsemi.smooth hsemi.geomConnected`. Take `⟨-, hsurj, -⟩` from `quotient_isIntegral_surjective_orbits Γ X X' ρ π hQ`. Take `⟨G', φ, hpb, hsm, hinv⟩` from `exists_smooth_descent_of_tame_quotient Γ R X X' ρ π t.G s τ hQ hfin hqp hsemi.smooth hw htame hfib`. Take `⟨_, _, a', hgp, ha⟩` from `quotient_descend_grpObj Γ (𝓞 E) X X' ρ π t.G G' φ τ t.act hQ hpb inferInstance fun g => ⟨hinv g, hcart g, hact g⟩`. Establish `hsemi'` using `(SemiAbelianDescent.main X X' π t.G G' φ inferInstance hsurj hgp hsm hsemi).1`.
+
+Take `⟨u, hu₁, hu₂, hu₃⟩` from `RigidLinearisation.exists_linearisation Γ X t.G (eSec t.G) ρ τ t.PP.L hsec hgi (eq_one_of_appLE_section_eq_one X t.G (eSec t.G) hsec hsemi.smooth hgi hga) (fun g => ⟨hw g, he g⟩) hfib t.PP.isLB ⟨t.PP.rig, t.PP.rigGen⟩ hL`. Establish `hQ'` using `(quotient_flat_baseChange Γ X X' _ _ ρ π φ t.G.hom G'.hom hQ hpb inferInstance).2 τ fun g => ⟨hinv g, hw g⟩`. Take `⟨L', hL', hiso⟩` from `LinDescent.exists_descent_of_tame Γ _ _ τ φ t.PP.L hQ' (fun k _ _ y => by`. Use `htame k (y ≫ t.G.hom) using 2` and compare the differences between its conclusion and the goal. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun g => fixes_iff_fixes_image t.G.hom _ _ y (hw g) (hfib k _ g))) t.PP.isLB u hu₁ hu₂ hu₃`.
+
+Take `⟨t', ν, e, hν⟩` from `T.exists_semiAbelianTriple_of_finiteQuotient E H Γ X X' ρ π t G' a' φ L' hQ hga hsemi' hgp ha hL' hiso`. Establish `hinv' (g : Γ) : (τ g).hom ≫ ν.φ = ν.φ`. Rewrite using `[← cancel_mono e.hom.left, Category.assoc, hν, hinv]`. Use `⟨t', ν, hinv', fun ⟨h₁, h₂, _⟩ hP => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(SemiAbelianDescent.main X X' π t.G t'.G ν.φ inferInstance hsurj ν.cart t'.semi.smooth hsemi).2 h₁`.
+
+Conclude with `splitFibres_descend_of_tame_quotient Γ X X' ρ π t.G t'.G ν.φ hQ htame ν.cart h₂`. Take `⟨w, hw', -⟩` from `ν.lin`. Use `t'.semi.smooth` as an intermediate fact. Conclude with `exists_secOn_nonvanishing_of_tame_quotient Γ X X' ρ π t.G t'.G ν.φ τ t.PP.L t'.PP.L hQ ν.cart.1 inferInstance (fun g => ⟨hinv' g, hw g⟩) htame hfib t.PP.isLB t'.PP.isLB ⟨w, hw'⟩ hP`.
+-/
 theorem exists_sab_descent_of_tame_quotient :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Γ : Type) [Group Γ] [Finite Γ] (R : Type) [CommRing R] (X X' : Scheme.{0}) [IsLocallyNoetherian X'] (ρ : Γ →* Aut X) (π : X ⟶ X') (t : SAB H X) (s : X ⟶ Sp R) (τ : Γ →* Aut t.G.left) (mu : ∀ g, SABMap t t (ρ g).hom), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → IsFinite π → IsQProjOver (t.G.hom ≫ s) → (IsReduced X ∧ genericPoints X ⊆ abLocus t.G) → (∀ g, (mu g).φ = (τ g).hom) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X), (Nat.card {g // x ≫ (ρ g).hom = x} : k) ≠ 0) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X) g, x ≫ (ρ g).hom = x → pullback.fst t.G.hom x ≫ (τ g).hom = pullback.fst t.G.hom x) → ∃ (t' : SAB H X') (ν : SABMap t t' π), (∀ g, (τ g).hom ≫ ν.φ = ν.φ) ∧ (Good t → PushInvertible t.G t.PP.L → Good t') := by
   intro E _ _ _ H Γ _ _ R _ X X' _ ρ π t s τ mu hQ hfin hqp hga hmu htame hfib

@@ -13,8 +13,16 @@ variable {l : ℕ} [hl : Fact l.Prime]
 noncomputable def red (l : ℕ) [Fact l.Prime] : ℤ_[l]ˣ →* (ZMod l)ˣ :=
   Units.map (PadicInt.toZMod (p := l) : ℤ_[l] →+* ZMod l).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem red_val (x : ℤ_[l]ˣ) : (red l x : ZMod l) = PadicInt.toZMod (x : ℤ_[l]) := rfl
 
+/- English proof (translation)
+Establish `hpos : 0 < orderOf x` using `hx.orderOf_pos`. Establish `hpow : ((x : ℤ_[l])) ^ orderOf x = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one]`. Establish `hred : PadicInt.toZMod (x : ℤ_[l]) = 1`. Rewrite using `[← red_val, h1, Units.val_one]`.
+
+Conclude with `Units.ext (GlobalTheory.padicInt_eq_one_of_pow_eq_one_of_toZMod_eq_one h2 _ hpos.ne' hpow hred)`.
+-/
 theorem eq_one_of_red (h2 : l ≠ 2) (x : ℤ_[l]ˣ) (hx : IsOfFinOrder x) (h1 : red l x = 1) :
     x = 1 := by
   have hpos : 0 < orderOf x := hx.orderOf_pos
@@ -24,6 +32,25 @@ theorem eq_one_of_red (h2 : l ≠ 2) (x : ℤ_[l]ˣ) (hx : IsOfFinOrder x) (h1 :
     rw [← red_val, h1, Units.val_one]
   exact Units.ext (GlobalTheory.padicInt_eq_one_of_pow_eq_one_of_toZMod_eq_one h2 _ hpos.ne' hpow hred)
 
+/- English proof (translation)
+Establish `hl3 : 2 < l` using `lt_of_le_of_ne hl.out.two_le (Ne.symm h2)`. Use `set a : ℤ_[l] := ((u : ZMod l).val : ℤ_[l]) with ha`. Establish `hred_a : PadicInt.toZMod a = (u : ZMod l)`. Rewrite using `[ha, map_natCast, ZMod.natCast_zmod_val]`. Establish `norm_of : ∀ y : ℤ_[l], PadicInt.toZMod y ≠ 0 → ‖y‖ = 1`.
+
+Introduce `y hy`. Assume the negation of the conclusion as `hne`. Establish `hlt : ‖y‖ < 1` using `lt_of_le_of_ne (PadicInt.norm_le_one y) hne`. Apply `hy` to reduce the goal to its premises. Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton, ← PadicInt.norm_lt_one_iff_dvd]`.
+
+Conclude with `hlt`. Establish `lt_of : ∀ y : ℤ_[l], PadicInt.toZMod y = 0 → ‖y‖ < 1`. Introduce `y hy`. Rewrite using `[PadicInt.norm_lt_one_iff_dvd, ← Ideal.mem_span_singleton, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker]`. Conclude with `hy`.
+
+Set `F : Polynomial ℤ_[l]` to `Polynomial.X ^ (l - 1) - 1`. Establish `hF : PadicInt.toZMod (F.aeval a) = 0`. Simplify using `only [F, map_sub, map_pow, Polynomial.aeval_X, map_one, hred_a]`. Rewrite using `[sub_eq_zero, ← Units.val_pow_eq_pow_val, ZMod.units_pow_card_sub_one_eq_one, Units.val_one]`. Establish `hF' : PadicInt.toZMod (F.derivative.aeval a) ≠ 0`.
+
+Simplify using `[F, hred_a, Polynomial.derivative_X_pow]`. Rewrite using `[ZMod.natCast_eq_zero_iff]`. Introduce `hd`. Use `Nat.le_of_dvd (by omega) hd` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hnorm : ‖F.aeval a‖ < ‖F.derivative.aeval a‖ ^ 2`. Rewrite using `[norm_of _ hF', one_pow]`. Conclude with `lt_of _ hF`. Take `⟨z, hz, hza, -, -⟩` from `hensels_lemma hnorm`. Establish `hz1 : z ^ (l - 1) = 1`.
+
+Simplify using `only [F, map_sub, map_pow, Polynomial.aeval_X, map_one] at hz`. Conclude with `sub_eq_zero.mp hz`. Establish `e : l - 1 = (l - 2) + 1` using `by omega`. Set `x : ℤ_[l]ˣ` to `⟨z, z ^ (l - 2), by rw [← pow_succ', ← e, hz1], by rw [← pow_succ, ← e, hz1]⟩`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨l - 1, by omega, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `hz1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[red_val, ← hred_a, ← sub_eq_zero, ← map_sub]`.
+
+Assume the negation of the conclusion as `hne`. Establish `h1` using `norm_of _ hne`. Rewrite `hza` using `[norm_of _ hF']`. Express the relevant statement in the definitionally equal form `‖z - a‖ < 1 at hza`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_lift (h2 : l ≠ 2) (u : (ZMod l)ˣ) :
     ∃ x : ℤ_[l]ˣ, IsOfFinOrder x ∧ red l x = u := by
   classical
@@ -74,6 +101,17 @@ theorem exists_lift (h2 : l ≠ 2) (u : (ZMod l)ˣ) :
     change ‖z - a‖ < 1 at hza
     linarith
 
+/- English proof (translation)
+Establish `hcomm : ∀ a b : Γ, a * b = b * a` using `fun a b => hχ (by rw [map_mul, map_mul, mul_comm])`. Establish `hfin : ∀ g : Γ, IsOfFinOrder (χ g) ↔ IsOfFinOrder g` using `fun g => by`. Rewrite using `[← orderOf_pos_iff, ← orderOf_pos_iff, orderOf_injective χ hχ g]`. Set `f : {g : Γ // IsOfFinOrder g} → ((red l).comp χ).range` to `fun g => ⟨red l (χ g.1), g.1, rfl⟩`. Use `Nat.card_congr (Equiv.ofBijective f ⟨?_, ?_⟩)` and prove the remaining obligations.
+
+Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Establish `hab' : red l (χ a) = red l (χ b)` using `congrArg Subtype.val hab`. Establish `hc : Commute a b⁻¹` using `hcomm a b⁻¹`. Establish `ht : IsOfFinOrder (χ (a * b⁻¹))` using `(hfin _).mpr (hc.isOfFinOrder_mul ha hb.inv)`. Establish `h1 : red l (χ (a * b⁻¹)) = 1`.
+
+Rewrite using `[map_mul, map_inv, map_mul, map_inv, hab', mul_inv_cancel]`. Establish `h3` using `eq_one_of_red h2 _ ht h1`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `Subtype.ext (hχ h3)`. Introduce and unpack `⟨u, g, rfl⟩`.
+
+Take `⟨x, hx, hxu⟩` from `exists_lift h2 (red l (χ g))`. Establish `hr : red l (x⁻¹ * χ g) = 1` using `by rw [map_mul, map_inv, hxu, inv_mul_cancel]`. Take `⟨k, hk'⟩` from `hk _ hr`. Establish `hgk : χ (g * k⁻¹) = x`. Rewrite using `[map_mul, map_inv, hk', mul_inv_rev, inv_inv, mul_inv_cancel_left]`.
+
+Use `⟨⟨g * k⁻¹, (hfin _).mp (hgk ▸ hx)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `red l (χ (g * k⁻¹)) = red l (χ g)`. Rewrite using `[hgk, hxu]`.
+-/
 theorem card_torsion (h2 : l ≠ 2) {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]ˣ)
     (hχ : Function.Injective χ) (hk : ∀ x, red l x = 1 → x ∈ χ.range) :
     Nat.card {g : Γ // IsOfFinOrder g} = Nat.card ((red l).comp χ).range := by
@@ -102,6 +140,11 @@ theorem card_torsion (h2 : l ≠ 2) {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]
     change red l (χ (g * k⁻¹)) = red l (χ g)
     rw [hgk, hxu]
 
+/- English proof (translation)
+Establish `hn` using `GlobalTheory.Cyc.IsCyc.norm_eq_one P.χQ_cyc`. Use `⟨{ toFun := fun g => PadicInt.mkUnits (hn g), map_one' := ?_, map_mul' := ?_ }, fun g => PadicInt.mkUnits_eq (hn g)⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `PadicInt.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Introduce `a b`. Apply `Units.ext` to reduce the goal to its premises. Apply `PadicInt.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, PadicInt.coe_mul, PadicInt.mkUnits_eq, map_mul]`.
+-/
 theorem exists_chi (P : LocPrime l) :
     ∃ χ : GQ l →* ℤ_[l]ˣ, ∀ g, ((χ g : ℤ_[l]) : ℚ_[l]) = (P.χQ g : ℚ_[l]) := by
   have hn := GlobalTheory.Cyc.IsCyc.norm_eq_one P.χQ_cyc
@@ -112,6 +155,13 @@ theorem exists_chi (P : LocPrime l) :
   · intro a b; apply Units.ext; apply PadicInt.ext
     simp only [Units.val_mul, PadicInt.coe_mul, PadicInt.mkUnits_eq, map_mul]
 
+/- English proof (translation)
+Establish `hle : K0 K ≤ K.1` using `inf_le_left`. Establish `: FiniteDimensional ℚ_[l] K.1` using `K.2`. Establish `: FiniteDimensional ℚ_[l] (K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`. Establish `h1` using `IntermediateField.finrank_eq_fixingSubgroup_index (E' := Om l) K.1`. Establish `h2` using `IntermediateField.finrank_eq_fixingSubgroup_index (E' := Om l) (K0 K)`.
+
+Establish `h3` using `Subgroup.relIndex_mul_index (IntermediateField.fixingSubgroup_le hle)`. Establish `h4` using `Module.finrank_mul_finrank ℚ_[l] (K0 K) K.1`. Establish `hpos : 0 < Module.finrank ℚ_[l] (K0 K)` using `Module.finrank_pos`. Unfold `GK`. Rewrite `h3` using `[← h1, ← h2]`.
+
+Rewrite `h3` using `[← h4, mul_comm]`. Conclude with `(Nat.eq_of_mul_eq_mul_left hpos h3).symm`.
+-/
 theorem finrank_eq_relIndex (K : FinExt l) :
     Module.finrank ↥(K0 K) ↥K.1 = (GK K).relIndex (K0 K).fixingSubgroup := by
   have hle : K0 K ≤ K.1 := inf_le_left
@@ -129,6 +179,49 @@ theorem finrank_eq_relIndex (K : FinExt l) :
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `l _ P K LL n W h2 hK`. Take `⟨χ, hχ⟩` from `exists_chi P`. Establish `hle : K0 K ≤ K.1` using `inf_le_left`. Set `χK : ↥(GK K) →* ℤ_[l]ˣ` to `χ.comp (GK K).subtype`. Establish `hval : ∀ g : ↥(GK K), ((χK g : ℤ_[l]) : ℚ_[l]) = ((P.PD K).χ g : ℚ_[l])`.
+
+Introduce `g`. Rewrite using `[P.PD_χ K g]`. Conclude with `hχ g`. Establish `hO : Function.Injective (algebraMap (OL LL) LL.1)` using `Subtype.val_injective`. Establish `hkey : ∀ g : ↥(GK K), W.resΓ g = 1 ↔ χK g = 1`.
+
+Introduce `g`. Establish `hr` using `W.χΓ_res g`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `hr` using `[h, map_one, Units.val_one, map_one]`.
+
+Establish `h1 : (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = 1` using `(algebraMap ℚ_[l] LL.1).injective (by rw [← hr, map_one])`. Apply `Units.ext` to reduce the goal to its premises. Apply `PadicInt.ext` to reduce the goal to its premises. Rewrite using `[hval, h1]`. Simplify using the standard rewrite rules.
+
+Introduce `h`. Establish `h1 : (((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l]) = 1`. Rewrite using `[← hval, h]`. Simplify using the standard rewrite rules. Rewrite `hr` using `[h1, map_one]`.
+
+Establish `h3 : ((W.χΓ (W.resΓ g) : (OL LL)ˣ) : OL LL) = 1` using `hO (by rw [hr, map_one])`. Apply `W.χΓ_inj` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `Units.ext h3`. Set `ψ : W.Gam →* ℤ_[l]ˣ` to `W.resΓ.liftOfRightInverse (Function.surjInv W.resΓ_onto) (Function.rightInverse_surjInv W.resΓ_onto) ⟨χK, fun g hg => MonoidHom.mem_ker.mpr ((hkey g).mp (MonoidHom.mem_ker.mp hg))⟩`.
+
+Establish `hψ : ∀ g : ↥(GK K), ψ (W.resΓ g) = χK g` using `fun g => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ g`. Establish `hψinj : Function.Injective ψ`. Use `(injective_iff_map_eq_one ψ).mpr fun γ hγ => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `W.resΓ_onto γ`. Rewrite `hγ` using `[hψ]`.
+
+Conclude with `(hkey g).mpr hγ`. Establish `hfix : ∀ g : GQ l, g ∈ (K0 K).fixingSubgroup → red l (χ g) = 1 → g ∈ GK K`. Introduce `g hg hr`. Establish `hz : PadicInt.toZMod ((χ g : ℤ_[l]) - 1) = 0`. Rewrite using `[map_sub, ← red_val, hr, Units.val_one, map_one, sub_self]`.
+
+Establish `hd : (l : ℤ_[l]) ^ 1 ∣ (χ g : ℤ_[l]) - 1`. Rewrite using `[pow_one, ← Ideal.mem_span_singleton, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker]`. Conclude with `hz`. Establish `hnorm : ‖(P.χQ g : ℚ_[l]) - 1‖ ≤ (l : ℝ) ^ (-((1 : ℕ) : ℤ))`. Rewrite using `[← hχ g]`.
+
+Use `(PadicInt.norm_le_pow_iff_mem_span_pow _ 1).mpr (Ideal.mem_span_singleton.mpr hd)` as an intermediate fact. Simplify `this` using `[PadicInt.norm_def]`. Establish `hζ` using `(GlobalTheory.Cyc.IsCyc.fix_iff P.χQ_cyc g 1).mpr hnorm`. Establish `hadj : g ∈ (IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ l ^ 1 = 1}).fixingSubgroup` using `(GlobalTheory.Cyc.mem_fixingSubgroup_adjoin_iff _ g).mpr fun x hx => hζ x hx`. Establish `hKs : g ∈ (Ks K 1).fixingSubgroup`.
+
+Unfold `Ks`. Rewrite using `[IntermediateField.fixingSubgroup_sup]`. Conclude with `⟨hg, hadj⟩`. Conclude with `IntermediateField.fixingSubgroup_le hK hKs`. Establish `hfd0 : FiniteDimensional ℚ_[l] (K0 K)`.
+
+Establish `: FiniteDimensional ℚ_[l] K.1` using `K.2`. Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`. Set `K0' : FinExt l` to `⟨K0 K, hfd0⟩`. Establish `honto : ∀ c : ℤ_[l]ˣ, ∃ g ∈ (K0 K).fixingSubgroup, χ g = c`. Introduce `c`.
+
+Take `⟨g, hg, hgc⟩` from `GlobalTheory.UnramCyc.chi_onto_of_unramified P K0' inf_le_right c`. Conclude with `⟨g, hg, Units.ext (PadicInt.ext (by rw [hχ g, hgc]))⟩`. Establish `hk : ∀ x : ℤ_[l]ˣ, red l x = 1 → x ∈ ψ.range`. Introduce `x hx`. Take `⟨g, hg, rfl⟩` from `honto x`.
+
+Conclude with `⟨W.resΓ ⟨g, hfix g hg hx⟩, by rw [hψ]; rfl⟩`. Establish `hct` using `card_torsion h2 ψ hψinj hk`. Establish `hdel : W.DelF.card = Nat.card {γ : W.Gam // IsOfFinOrder γ}`. Rewrite using `[← Fintype.card_coe, ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight fun γ => by`.
+
+Rewrite using `[W.DelF_def, isOfFinOrder_iff_pow_eq_one])`. Set `G0` to `(K0 K).fixingSubgroup`. Set `F : ↥G0 →* (ZMod l)ˣ` to `(red l).comp (χ.comp G0.subtype)`. Establish `hF : Function.Surjective F`. Introduce `u`.
+
+Take `⟨x, -, hxu⟩` from `exists_lift h2 u`. Take `⟨g, hg, hgx⟩` from `honto x`. Conclude with `⟨⟨g, hg⟩, by simp [F, hgx, hxu]⟩`. Set `H0` to `(GK K).subgroupOf G0`. Establish `hkerF : F.ker ≤ H0`.
+
+Introduce `g hg`. Rewrite `hg` using `[MonoidHom.mem_ker]`. Conclude with `Subgroup.mem_subgroupOf.mpr (hfix g g.2 hg)`. Establish `hidx : H0.index = (H0.map F).index`. Rewrite using `[← Subgroup.index_comap_of_surjective _ hF, Subgroup.comap_map_eq_self hkerF]`.
+
+Establish `hmap : H0.map F = ((red l).comp ψ).range`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g0, hg0, rfl⟩`. Use `⟨W.resΓ ⟨g0, Subgroup.mem_subgroupOf.mp hg0⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.comp_apply, hψ]`. Both sides reduce to the same expression. Introduce and unpack `⟨γ, rfl⟩`. Take `⟨g, rfl⟩` from `W.resΓ_onto γ`. Use `⟨⟨g, IntermediateField.fixingSubgroup_le hle g.2⟩, Subgroup.mem_subgroupOf.mpr g.2, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.comp_apply, hψ]`. Both sides reduce to the same expression. Establish `hcard` using `Subgroup.card_mul_index (H0.map F)`. Rewrite `hcard` using `[Nat.card_eq_fintype_card (α := (ZMod l)ˣ), ZMod.card_units]`. Rewrite using `[finrank_eq_relIndex, hdel, hct, ← hmap]`.
+
+Express the relevant statement in the definitionally equal form `_ * H0.index = _`. Rewrite using `[hidx]`. Conclude with `hcard`.
+-/
 theorem card_torsion_mul_finrank : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) {n : ℕ} (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) n), l ≠ 2 → K.1 ≤ Ks K 1 → W.DelF.card * Module.finrank ↥(K0 K) ↥K.1 = l - 1 := by
   intro l _ P K LL n W h2 hK
   classical

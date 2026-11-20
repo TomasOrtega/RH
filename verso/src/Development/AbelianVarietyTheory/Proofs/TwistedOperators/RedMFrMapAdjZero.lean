@@ -17,13 +17,22 @@ variable {D : D7}
 def liftI (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) : Ideal (𝓞 D.host.E) :=
   ∏ PP ∈ Pg ∪ Q, conjI PP.asIdeal
 
+/- English proof (translation)
+Unfold `frMapAdj`. Simplify using the standard rewrite rules.
+-/
 theorem frMapAdj_zero (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) :
     frMapAdj S T βS βT 0 = 0 := by
   unfold frMapAdj
   simp
 
+/- English proof (translation)
+Introduce `_ _` and use `zero_mem _`.
+-/
 theorem isIntM_zero {b a : ℕ} : IsIntM (0 : Matrix (Fin b) (Fin a) (EAf D)) := fun _ _ => zero_mem _
 
+/- English proof (translation)
+Establish `h0 : IsIntM (frMapAdj S T βS βT 0)` using `by rw [frMapAdj_zero]; exact isIntM_zero`. Establish `h` using `(GlobalTheory.FrameAdjAdd.frMapAdj_add_isIntM_redM S T βS βT 0 0 h0 h0).2 PP`. Rewrite `h` using `[add_zero]`. Conclude with `(left_eq_add.mp h)`.
+-/
 theorem redM_frMapAdj_zero (S T : HSp D) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     (PP : Formalism.L2.DIV.Pl D.host.E) : redM PP (frMapAdj S T βS βT 0) = 0 := by
   have h0 : IsIntM (frMapAdj S T βS βT 0) := by rw [frMapAdj_zero]; exact isIntM_zero

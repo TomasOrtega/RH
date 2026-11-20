@@ -7,6 +7,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.PMon
 
+/- English proof (translation)
+Introduce `l _ P AI T h hh c hc hF`. Take `⟨E, ω, hEle, hEdim, hEfix, -⟩` from `GlobalTheory.T.unramifiedExt_fixedField_frobeniusPow_degree l h hh`. Establish `hK0 : K0 E = E.1` using `inf_eq_left.2 hEle`. Establish `hdim : Module.finrank ℚ_[l] ↥(K0 E) = h` using `by rw [hK0]; exact hEdim`. Establish `hper : Function.IsPeriodicPt (⇑P.φB) h c` using `hc`.
+
+Establish `hall : ∀ j : ℕ, P.ιB ((⇑P.φB)^[j] c) ∈ (P.PD E).Fil 0`. Introduce `j`. Establish `hj : (⇑P.φB)^[j] c = (⇑P.φB)^[j % h] c` using `by conv_lhs => rw [← Nat.mod_add_div j h]`. Rewrite using `[Function.iterate_add_apply, (hper.mul_const (j / h)).eq]`. Establish `h1` using `hF (j % h) (Nat.mod_lt _ hh)`.
+
+Rewrite using `[← SetLike.mem_coe, ← P.PD_Fil _ E 0, hj]`. Conclude with `h1`. Take `⟨a, ha⟩` from `GlobalTheory.CrisPerFix.mem_unramified_of_frobenius_iterate_fixed_fil_alt l P AI T E c (by rw [hdim]; exact hc) hall`. Use `⟨⟨(a : Om l), a.2.2⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hEfix ⟨(a : Om l), a.2.2⟩).2 a.2.1`.
+
+Rewrite using `[ha]`. Both sides reduce to the same expression.
+-/
 theorem unr_of_iterate_fixed :
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (h : ℕ), 0 < h →
       ∀ c : P.R.B, P.φB^[h] c = c → (∀ j < h, ev P j c ∈ Fil P 0) →

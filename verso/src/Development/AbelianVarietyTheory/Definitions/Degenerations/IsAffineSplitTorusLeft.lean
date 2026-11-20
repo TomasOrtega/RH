@@ -90,6 +90,9 @@ def Core.HasCharts (C : Core) : Prop :=
 def SplitAll {Z : Scheme.{0}} (G : Over Z) [GrpObj G] : Prop :=
   ∀ z : Z, ∃ E : SplitExt (Sp (Z.residueField z)), E.IsGt ((Over.pullback (Z.fromSpecResidueField z)).obj G)
 
+/- English proof (translation)
+Conclude with `X.toRingedSpace.isUnit_res_basicOpen s`.
+-/
 theorem isUnit_resG_basicOpen (X : Scheme.{0}) (s : Γ(X, ⊤)) :
     IsUnit (resG X (le_top : X.basicOpen s ≤ ⊤) s) := by
   exact X.toRingedSpace.isUnit_res_basicOpen s
@@ -148,37 +151,63 @@ def Charts.single (X : Scheme.{0}) [IsAffine X] {J : Type} [Finite J] (f : J →
     change _ = resG X _ 1 * _
     rw [map_one, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `Y t g _`. Conclude with `(Scheme.Hom.preimage_top _).ge`.
+-/
 theorem stable_top (i : splitTorus S X ⟶ H) : Stable i ⊤ := by
   intro Y t g _
   exact (Scheme.Hom.preimage_top _).ge
 
+/- English proof (translation)
+Rewrite using `[charUnit_val_eq_appTop, ← AddMonoidAlgebra.one_def, map_one]`. Conclude with `map_one _`.
+-/
 theorem charUnit_zero_val (S : Scheme.{0}) (X : Type) [AddCommGroup X] : (charUnit S X 0).val = 1 := by
   rw [charUnit_val_eq_appTop, ← AddMonoidAlgebra.one_def, map_one]
   exact map_one _
 
+/- English proof (translation)
+Introduce `Y t g h h'`. Simplify using `only [charUnit_zero_val, map_one, _root_.one_mul]`.
+-/
 theorem hasWt_one (i : splitTorus S X ⟶ H) (V : H.left.Opens) : HasWt i V 1 0 := by
   intro Y t g h h'
   simp only [charUnit_zero_val, map_one, _root_.one_mul]
 
+/- English proof (translation)
+Use `show _ = (f.app ⊤).hom u`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 private theorem appLE_univ_univ_apply_eq_appTop {A B : Scheme.{0}} (f : A ⟶ B) (u : Γ(B, ⊤)) (h : ⊤ ≤ f ⁻¹ᵁ ⊤) :
     (f.appLE ⊤ ⊤ h).hom u = f.appTop.hom u := by
   show _ = (f.app ⊤).hom u
   rw [Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem scheme_appTop_comp_apply {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (u : Γ(C, ⊤)) :
     (f ≫ g).appTop.hom u = f.appTop.hom (g.appTop.hom u) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[Over.comp_left, scheme_appTop_comp_apply]`.
+-/
 private theorem over_left_appTop_comp_apply {A B C : Over S} (f : A ⟶ B) (g : B ⟶ C) (u : Γ(C.left, ⊤)) :
     (f ≫ g).left.appTop.hom u = f.left.appTop.hom (g.left.appTop.hom u) := by
   rw [Over.comp_left, scheme_appTop_comp_apply]
 
+/- English proof (translation)
+Introduce `Y t g h h'`. Rewrite using `[appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop, Category.comp_id, ← SplitTorusPoints.coord_single, ← SplitTorusPoints.coord_single, ← SplitTorusPoints.coord_single, SplitTorusPoints.coord_mul_single]`.
+-/
 theorem hasWt_charUnit (χ : X) : HasWt (𝟙 (splitTorus S X)) ⊤ (charUnit S X χ).val χ := by
   intro Y t g h h'
   rw [appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop, Category.comp_id, ← SplitTorusPoints.coord_single,
     ← SplitTorusPoints.coord_single, ← SplitTorusPoints.coord_single, SplitTorusPoints.coord_mul_single]
 
+/- English proof (translation)
+Establish `key` using `hu (splitTorus S X) (𝟙 _) 1 (Scheme.Hom.preimage_top _).ge (Scheme.Hom.preimage_top _).ge`. Rewrite `key` using `[appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop, charUnit_zero_val, map_one, _root_.one_mul, Category.comp_id, _root_.mul_one]`. Use `⟨(η : 𝟙_ (Over S) ⟶ splitTorus S X).left.appTop.hom u, ?_⟩` and prove the remaining obligations. Establish `e1 : (1 : splitTorus S X ⟶ splitTorus S X).left = (splitTorus S X).hom ≫ (η : 𝟙_ (Over S) ⟶ splitTorus S X).left` using `rfl`. Rewrite `key` using `[e1, scheme_appTop_comp_apply]`.
+
+Use `(appLE_univ_univ_apply_eq_appTop _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← key]`. Both sides reduce to the same expression.
+-/
 theorem HasWt.mem_range_of_id {u : Γ((splitTorus S X).left, ⊤)} (hu : HasWt (𝟙 (splitTorus S X)) ⊤ u 0) :
     u ∈ Set.range ((splitTorus S X).hom.appLE ⊤ ⊤ le_top).hom := by
   have key := hu (splitTorus S X) (𝟙 _) 1 (Scheme.Hom.preimage_top _).ge (Scheme.Hom.preimage_top _).ge
@@ -199,6 +228,9 @@ instance isAffine_splitTorus_left (S : Scheme.{0}) [IsAffine S] (d : ℕ) :
 def Charts.ofTorus (S : Scheme.{0}) [IsAffine S] (d : ℕ) : Charts (splitTorus S (Fin d → ℤ)).left :=
   Charts.single _ fun k : Fin d => (charUnit S (Fin d → ℤ) (Pi.single k 1)).val
 
+/- English proof (translation)
+The claim follows from `inferInstance stable := fun _ => stable_top _ inv := by rintro a j hj obtain rfl : j = none := hj exact hasWt_one _ _ wt := by rintro a j k hj obtain rfl : j = some k := hj exact hasWt_charUnit _ bpf := by intro k x refine ⟨⟨none, rfl⟩, some k, rfl, ?_⟩ change x ∈ (splitTorus S ( …`.
+-/
 theorem Charts.ofTorus_torus (S : Scheme.{0}) [IsAffine S] (d : ℕ) :
     (Charts.ofTorus S d).Torus (d := d) some (𝟙 _) where
   hom := inferInstance
@@ -221,8 +253,16 @@ theorem Charts.ofTorus_torus (S : Scheme.{0}) [IsAffine S] (d : ℕ) :
     intro a u hu
     exact Subring.subset_closure (Or.inl (HasWt.mem_range_of_id hu))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨((splitTorus_properties S).1 (Fin d → ℤ)).2.2.2.2.2.2.2.1, 𝟙 _, Charts.ofTorus_torus S d⟩`.
+-/
 theorem Charts.ofTorus_split (S : Scheme.{0}) [IsAffine S] (d : ℕ) : (Charts.ofTorus S d).Split (d := d) some := ⟨((splitTorus_properties S).1 (Fin d → ℤ)).2.2.2.2.2.2.2.1, 𝟙 _, Charts.ofTorus_torus S d⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hw Y t g`. Establish `key` using `hw Y t g (Scheme.Hom.preimage_top _).ge (Scheme.Hom.preimage_top _).ge`. Rewrite `key` using `[appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop]`. Then use the resulting hypothesis. Introduce `hw Y t g h h'`.
+
+Rewrite using `[appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop]`. Conclude with `hw Y t g`.
+-/
 theorem hasWt_top_iff (i : splitTorus S X ⟶ H) (u : Γ(H.left, ⊤)) (χ : X) :
     HasWt i ⊤ u χ ↔ ∀ (Y : Over S) (t : Y ⟶ splitTorus S X) (g : Y ⟶ H),
       ((t ≫ i) * g).left.appTop.hom u = t.left.appTop.hom (charUnit S X χ).val * g.left.appTop.hom u := by
@@ -234,6 +274,11 @@ theorem hasWt_top_iff (i : splitTorus S X ⟶ H) (u : Γ(H.left, ⊤)) (χ : X) 
     rw [appLE_univ_univ_apply_eq_appTop, appLE_univ_univ_apply_eq_appTop]
     exact hw Y t g
 
+/- English proof (translation)
+Rewrite using `[hasWt_top_iff, hasWt_top_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hw Y t g`. Rewrite using `[Category.comp_id, ← over_left_appTop_comp_apply (t * g) e.hom u, ← over_left_appTop_comp_apply g e.hom u, MonObj.mul_comp]`. Conclude with `hw Y t (g ≫ e.hom)`.
+
+Introduce `hw Y t g`. Establish `key` using `hw Y t (g ≫ e.inv)`. Rewrite `key` using `[Category.comp_id, ← over_left_appTop_comp_apply (t * (g ≫ e.inv)) e.hom u, ← over_left_appTop_comp_apply (g ≫ e.inv) e.hom u, MonObj.mul_comp, Category.assoc, e.inv_hom_id, Category.comp_id]`. Conclude with `key`.
+-/
 theorem hasWt_iso_iff (e : splitTorus S X ≅ H) [IsMonHom e.hom] (u : Γ(H.left, ⊤)) (χ : X) :
     HasWt e.hom ⊤ u χ ↔ HasWt (𝟙 (splitTorus S X)) ⊤ (e.hom.left.appTop.hom u) χ := by
   rw [hasWt_top_iff, hasWt_top_iff]
@@ -247,6 +292,21 @@ theorem hasWt_iso_iff (e : splitTorus S X ≅ H) [IsMonHom e.hom] (u : Γ(H.left
       MonObj.mul_comp, Category.assoc, e.inv_hom_id, Category.comp_id] at key
     exact key
 
+/- English proof (translation)
+Take `⟨e, he, hχ⟩` from `splitTorus_baseChange S S' t (Fin d → ℤ)`. Use `he` as an intermediate fact. Establish `: GeometricallyConnected (splitTorus S (Fin d → ℤ)).hom` using `((splitTorus_properties S).1 (Fin d → ℤ)).2.2.2.2.2.2.2.1`. Use `⟨?_, e.hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.snd (splitTorus S (Fin d → ℤ)).hom t) infer_instance`.
+
+Establish `hr : ∀ k : Fin d, e.hom.left.appTop.hom ((pullback.fst (splitTorus S (Fin d → ℤ)).hom t).appTop.hom (charUnit S (Fin d → ℤ) (Pi.single k 1)).val) = (charUnit S' (Fin d → ℤ) (Pi.single k 1)).val`. Introduce `k`. Rewrite using `[← hχ]`. Both sides reduce to the same expression. Conclude with `{ hom := he stable := fun _ => stable_top _ inv := by`.
+
+Introduce and unpack `a j hj`. Take `rfl : j = none` from `hj`. Express the relevant statement in the definitionally equal form `HasWt e.hom ⊤ ((pullback.fst (splitTorus S (Fin d → ℤ)).hom t).appTop.hom 1) 0`. Rewrite using `[map_one]`. Conclude with `hasWt_one _ _`.
+
+Use `wt := by`. Introduce and unpack `a j k hj`. Take `rfl : j = some k` from `hj`. Express the relevant statement in the definitionally equal form `HasWt e.hom ⊤ ((pullback.fst (splitTorus S (Fin d → ℤ)).hom t).appTop.hom (charUnit S (Fin d → ℤ) (Pi.single k 1)).val) (Pi.single k 1)`. Use `(hasWt_iso_iff e _ _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hr]`. Conclude with `hasWt_charUnit _`. Use `bpf := by`. Introduce `k x`. Use `⟨⟨none, rfl⟩, some k, rfl, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `x ∈ ((Over.pullback t).obj (splitTorus S (Fin d → ℤ))).left.basicOpen ((pullback.fst (splitTorus S (Fin d → ℤ)).hom t).appTop.hom (charUnit S (Fin d → ℤ) (Pi.single k 1)).val)`. Rewrite using `[Scheme.basicOpen_of_isUnit _ ((Units.isUnit _).map _)]`. Discharge the goal by the elementary cases of `trivial`. Use `gen := by`. Introduce `a u hu`.
+
+Take `⟨v, hv⟩` from `HasWt.mem_range_of_id ((hasWt_iso_iff e u 0).1 hu)`. Establish `hv'` using `(appLE_univ_univ_apply_eq_appTop _ _ _).symm.trans hv`. Use `Subring.subset_closure (Or.inl ⟨v, (appLE_univ_univ_apply_eq_appTop _ _ _).trans ?_⟩)` and prove the remaining obligations. Establish `h1 : u = e.inv.left.appTop.hom (e.hom.left.appTop.hom u)` using `(congrArg (fun φ : (Over.pullback t).obj (splitTorus S (Fin d → ℤ)) ⟶ (Over.pullback t).obj (splitTorus S (Fin d → ℤ)) => (Scheme.Hom.appTop φ.left).hom u) e.inv_hom_id).symm.trans (over_left_appTop_comp_apply e.inv e.hom u)`. Rewrite using `[h1, ← hv', ← scheme_appTop_comp_apply, Over.w e.inv] }`.
+-/
 theorem Charts.ofTorus_pull_split (S : Scheme.{0}) [IsAffine S] (d : ℕ) {S' : Scheme.{0}} (t : S' ⟶ S)
     [IsAffineHom (pullback.fst (splitTorus S (Fin d → ℤ)).hom t)] :
     Charts.Split (H := (Over.pullback t).obj (splitTorus S (Fin d → ℤ))) (d := d)
@@ -299,12 +359,18 @@ theorem Charts.ofTorus_pull_split (S : Scheme.{0}) [IsAffine S] (d : ℕ) {S' : 
               (over_left_appTop_comp_apply e.inv e.hom u)
           rw [h1, ← hv', ← scheme_appTop_comp_apply, Over.w e.inv] }
 
+/- English proof (translation)
+Introduce `x _`. Conclude with `⟨(Sp R).residueField x, inferInstance, (Sp R).fromSpecResidueField x, inferInstance, Scheme.range_fromSpecResidueField x, Charts.ofTorus_pull_split (Sp R) d _⟩`.
+-/
 theorem Charts.ofTorus_splitOn (R : Type) [CommRing R] (d : ℕ) (Sg : Set (Sp R)) :
     (Charts.ofTorus (Sp R) d).SplitOn (d := d) some Sg := by
   intro x _
   exact ⟨(Sp R).residueField x, inferInstance, (Sp R).fromSpecResidueField x, inferInstance,
     Scheme.range_fromSpecResidueField x, Charts.ofTorus_pull_split (Sp R) d _⟩
 
+/- English proof (translation)
+Use `⟨Charts.ofSections X (fun _ : Bool => ()) () (fun b => if b then f else 1 - f) ?_, ⟨true, rfl⟩, ⟨false, rfl⟩, rfl, rfl⟩` and prove the remaining obligations. Establish `h` using `X.basicOpen_add_le f (1 - f)`. Rewrite `h` using `[add_sub_cancel, X.basicOpen_of_isUnit isUnit_one]`. Conclude with `top_unique (h.trans (sup_le (le_iSup_of_le ⟨true, rfl⟩ le_rfl) (le_iSup_of_le ⟨false, rfl⟩ le_rfl)))`.
+-/
 example (X : Scheme.{0}) [IsAffine X] (f : Γ(X, ⊤)) :
     ∃ (C : Charts X) (i i' : {i // C.wt i = C.c₀}), C.W i = X.basicOpen f ∧ C.W i' = X.basicOpen (1 - f) := by
   refine ⟨Charts.ofSections X (fun _ : Bool => ()) () (fun b => if b then f else 1 - f) ?_,
@@ -313,6 +379,9 @@ example (X : Scheme.{0}) [IsAffine X] (f : Γ(X, ⊤)) :
   rw [add_sub_cancel, X.basicOpen_of_isUnit isUnit_one] at h
   exact top_unique (h.trans (sup_le (le_iSup_of_le ⟨true, rfl⟩ le_rfl) (le_iSup_of_le ⟨false, rfl⟩ le_rfl)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (S : Scheme.{0}) [IsAffine S] (a) :
     (Charts.ofTorus S 1).r a (some 0) = (charUnit S (Fin 1 → ℤ) (Pi.single 0 1)).val := rfl
 

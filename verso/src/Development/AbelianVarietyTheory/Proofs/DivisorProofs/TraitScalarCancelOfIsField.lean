@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.Mum.CancelField
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (algebraMap R (FractionRing R))` using `⟨IsFractionRing.injective R (FractionRing R), IsFractionRing.surjective_iff_isField.2 hR⟩`. Establish `: IsIso (CommRingCat.ofHom (algebraMap R (FractionRing R)))` using `(ConcreteCategory.isIso_iff_bijective _).2 hb`. Use `infer_instance`.
+-/
 theorem isIso_jK {R : Type} [CommRing R] [IsDomain R] (hR : IsField R) : IsIso (jK R) := by
   have hb : Function.Bijective (algebraMap R (FractionRing R)) :=
     ⟨IsFractionRing.injective R (FractionRing R), IsFractionRing.surjective_iff_isField.2 hR⟩
@@ -20,6 +23,11 @@ theorem isIso_jK {R : Type} [CommRing R] [IsDomain R] (hR : IsField R) : IsIso (
     (ConcreteCategory.isIso_iff_bijective _).2 hb
   infer_instance
 
+/- English proof (translation)
+Use `haveI := isIso_jK hR`. Use `haveI := M.integral`. Use `haveI := M.proper`. Use `haveI := M.dominant`. Use `haveI : IsClosedImmersion M.gp := isClosedImmersion_of_comp_eq_id (M.π ≫ inv (jK R)) M.gp (by rw [← Category.assoc, M.gp_π, IsIso.hom_inv_id])`.
+
+Use `haveI : Surjective M.gp := ⟨by`. Establish `h1` using `M.gp.isClosedEmbedding.isClosed_range`. Establish `h2` using `M.gp.denseRange`. Conclude with `Set.range_eq_univ.1 (h1.closure_eq ▸ h2.closure_range)⟩`. Conclude with `isIso_of_isClosedImmersion_of_surjective M.gp`.
+-/
 theorem isIso_gp {R : Type} [CommRing R] [IsDomain R] (M : Modif R) (hR : IsField R) : IsIso M.gp := by
   haveI := isIso_jK hR
   haveI := M.integral
@@ -33,6 +41,9 @@ theorem isIso_gp {R : Type} [CommRing R] [IsDomain R] (M : Modif R) (hR : IsFiel
     exact Set.range_eq_univ.1 (h1.closure_eq ▸ h2.closure_range)⟩
   exact isIso_of_isClosedImmersion_of_surjective M.gp
 
+/- English proof (translation)
+Establish `hJ' : Good L (p z) (fun ψ => J (p ≫ ψ))` using `fun ψ => hJ (p ≫ ψ)`. Rewrite using `[sval_of s (p ≫ r) z J (fun k => J (p ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]`. Conclude with `gs_comp p r z _ (hJ'.mem φ r) _`.
+-/
 theorem sval_comp {X Y₀ Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y₀ ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (p : Z ⟶ Y) (r : Y ⟶ Y₀) (z : Z) (J : (Z ⟶ X) → L.ι) (hJ : Good L z J) :
     sval s (p ≫ r) z J = (p.stalkMap z).hom (sval s r (p z) (fun ψ => J (p ≫ ψ))) := by
@@ -40,6 +51,19 @@ theorem sval_comp {X Y₀ Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {�
   rw [sval_of s (p ≫ r) z J (fun k => J (p ≫ r ≫ φ k)) (fun k => by rw [Category.assoc])]
   exact gs_comp p r z _ (hJ'.mem φ r) _
 
+/- English proof (translation)
+Use `set c : Γ(Sp W, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom b with hc`. Establish `e1 : gs (𝟙 Y) y ⊤ (scal f b) = (f.stalkMap y).hom (gs (𝟙 (Sp W)) (f y) ⊤ c)`. Use `gs_pull (𝟙 Y) f y ⊤ trivial c` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Use `this.trans ?_` and prove the remaining obligations.
+
+Use `gs_comp f (𝟙 (Sp W)) y ⊤ trivial c` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `hc0 : c ≠ 0`. Introduce `h0`. Apply `hb` to reduce the goal to its premises.
+
+Establish `hi : Function.Injective (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of W)).inv).1`. Conclude with `hi (h0.trans (map_zero _).symm)`. Establish `he0 : gs (𝟙 (Sp W)) (f y) ⊤ c ≠ 0`. Rewrite using `[gs_eq (𝟙 (Sp W)) (f y) ⊤ trivial]`. Introduce `h0`.
+
+Apply `hc0` to reduce the goal to its premises. Establish `hi` using `germ_injective_of_isIntegral (Sp W) (U := (𝟙 (Sp W)) ⁻¹ᵁ ⊤) (f y) trivial`. Use `hi (h0.trans (map_zero _).symm)` as an intermediate fact. Conclude with `this`. Use `letI := (f.stalkMap y).hom.toAlgebra`.
+
+Use `haveI : Module.Flat _ (Y.presheaf.stalk y) := Flat.stalkMap f y`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Y.presheaf.stalk y) (mem_nonZeroDivisors_of_ne_zero he0)`. Apply `hreg` to reduce the goal to its premises. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Rewrite using `[← e1]`.
+
+Conclude with `h`.
+-/
 theorem scal_cancel {W : Type} [CommRing W] [IsDomain W] {Y : Scheme.{0}} (f : Y ⟶ Sp W) [Flat f] (y : Y) {b : W}
     (hb : b ≠ 0) {u v : Y.presheaf.stalk y}
     (h : gs (𝟙 Y) y ⊤ (scal f b) * u = gs (𝟙 Y) y ⊤ (scal f b) * v) : u = v := by
@@ -77,6 +101,13 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.Mum.CancelField in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D C W _ _ _ T k σ s b c hR hb H Z p p' hp z J hJ`. Use `haveI : IsIso C.α := C.α_cart.1.isIso_fst_of_isIso (isIso_gp C.toModif hR)`. Use `haveI : Smooth C.G.hom := C.semi.smooth`. Use `haveI : Flat C.G.hom := inferInstance`. Use `haveI : Flat T.G.hom := MorphismProperty.of_isPullback (P := @Flat) T.cart.1 inferInstance`.
+
+Take `⟨q, hq⟩ : ∃ q : T.G.left ⟶ C.A.A.left, q ≫ C.α = T.β` from `⟨T.β ≫ inv C.α, by simp⟩`. Establish `key : ∀ y J', Good C.P.L.L y J' → sval σ (𝟙 _) y J' = gs q y ⊤ (scal C.A.A.hom c) * sval s q y J'`. Introduce `y J' hJ'`. Conclude with `scal_cancel T.G.hom y hb (H _ (𝟙 _) q (by rw [hq, Category.id_comp]) y J' hJ')`. Take `rfl : p' = p ≫ q` from `(cancel_mono C.α).1 (by rw [Category.assoc, hq]; exact hp.symm)`.
+
+Establish `hJ' : Good C.P.L.L (p z) (fun ψ => J (p ≫ ψ))` using `fun ψ => hJ (p ≫ ψ)`. Establish `e1` using `sval_comp σ p (𝟙 _) z J hJ`. Rewrite `e1` using `[Category.comp_id]`. Rewrite using `[e1, sval_comp s p q z J hJ, gs_comp p q z ⊤ trivial, ← map_mul, key (p z) _ hJ']`.
+-/
 theorem cancel_field : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W) (k : ℕ) (σ : SecK C.P.L.L T.β k) (s : SecK C.P.L.L C.α k) (b : W) (c : FractionRing R), IsField R → b ≠ 0 → (∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ∀ z J, Good C.P.L.L z J → gs p z ⊤ (scal T.G.hom b) * sval σ p z J = gs p z ⊤ (scal T.G.hom b) * (gs p' z ⊤ (scal C.A.A.hom c) * sval s p' z J)) → ∀ (Z : Scheme.{0}) (p : Z ⟶ T.G.left) (p' : Z ⟶ C.A.A.left), p ≫ T.β = p' ≫ C.α → ∀ z J, Good C.P.L.L z J → sval σ p z J = gs p' z ⊤ (scal C.A.A.hom c) * sval s p' z J := by
   intro R _ _ _ _ D C W _ _ _ T k σ s b c hR hb H Z p p' hp z J hJ
   haveI : IsIso C.α := C.α_cart.1.isIso_fst_of_isIso (isIso_gp C.toModif hR)

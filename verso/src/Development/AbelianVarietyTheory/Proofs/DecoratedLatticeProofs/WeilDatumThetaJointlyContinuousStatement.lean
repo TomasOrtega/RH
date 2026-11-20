@@ -10,5 +10,8 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Unf.jointCont_all | exact GlobalTheory.Unf.jointCont_all | (intros; apply GlobalTheory.Unf.jointCont_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weilDatum_theta_jointlyContinuous : ∀ D : D7, JointCont D := by
   first | exact @GlobalTheory.Unf.jointCont_all | exact GlobalTheory.Unf.jointCont_all | (intros; apply GlobalTheory.Unf.jointCont_all <;> assumption)

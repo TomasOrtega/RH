@@ -14,12 +14,18 @@ variable {n : ℕ}
 def szcMk (τ : Fin n → Fin n) (d o : Fin n → ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   fun i j => (if j = i then d i else 0) + (if j = τ i then o i else 0)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Simplify using `only [szcMk, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem szcMk_mul_apply (τ : Fin n → Fin n) (d o : Fin n → ℂ) (M : Matrix (Fin n) (Fin n) ℂ)
     (i j : Fin n) : (szcMk τ d o * M) i j = d i * M i j + o i * M (τ i) j := by
   rw [Matrix.mul_apply]
   simp only [szcMk, add_mul, Finset.sum_add_distrib, ite_mul, zero_mul, Finset.sum_ite_eq',
     Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[szcMk_mul_apply]`. Simplify using `only [szcMk, hτ]`. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem szcMk_mul (τ : Fin n → Fin n) (hτ : ∀ i, τ (τ i) = i) (d o d' o' : Fin n → ℂ) :
     szcMk τ d o * szcMk τ d' o' =
       szcMk τ (fun i => d i * d' i + o i * o' (τ i)) (fun i => d i * o' i + o i * d' (τ i)) := by
@@ -28,6 +34,13 @@ theorem szcMk_mul (τ : Fin n → Fin n) (hτ : ∀ i, τ (τ i) = i) (d o d' o'
   simp only [szcMk, hτ]
   split_ifs <;> ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply]`. Simplify using `only [szcMk]`. Establish `key : (i = τ j) ↔ (j = τ i)` using `⟨fun h => by rw [h, hτ], fun h => by rw [h, hτ]⟩`. Distinguish the cases in `h1 : j = i`.
+
+Substitute `h1` using the available equality. Distinguish the cases in `h : j = τ j`. Simplify using `[← h]`. Simplify using `[h]`. Distinguish the cases in `h2 : j = τ i`.
+
+Substitute `h2` using the available equality. Simplify using `[hτ, h1, Ne.symm h1]`. Establish `h3 : ¬ i = τ j` using `fun h => h2 (key.mp h)`. Simplify using `[h1, Ne.symm h1, h2, h3]`.
+-/
 theorem szcMk_conjTranspose (τ : Fin n → Fin n) (hτ : ∀ i, τ (τ i) = i) (d o : Fin n → ℂ) :
     (szcMk τ d o)ᴴ = szcMk τ (fun i => star (d i)) (fun i => star (o (τ i))) := by
   ext i j
@@ -45,6 +58,11 @@ theorem szcMk_conjTranspose (τ : Fin n → Fin n) (hτ : ∀ i, τ (τ i) = i) 
     · have h3 : ¬ i = τ j := fun h => h2 (key.mp h)
       simp [h1, Ne.symm h1, h2, h3]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [szcMk, Matrix.diagonal_apply, Pi.zero_apply, ite_self, add_zero]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem szcMk_zero (τ : Fin n → Fin n) (d : Fin n → ℂ) : szcMk τ d 0 = Matrix.diagonal d := by
   ext i j
   simp only [szcMk, Matrix.diagonal_apply, Pi.zero_apply, ite_self, add_zero]
@@ -59,18 +77,32 @@ section Cayley48
 def szcTau (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
   if i.val < r ∨ r + k < i.val then ⟨2 * r + k - i.val, by omega⟩ else i
 
+/- English proof (translation)
+Apply the tactic sequence `unfold szcTau; split_ifs <;> rfl`.
+-/
 theorem szcTau_val (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (szcTau k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
   unfold szcTau; split_ifs <;> rfl
 
+/- English proof (translation)
+Rewrite using `[szcTau_val, if_pos h]`.
+-/
 theorem szc_tau_pos {k r : ℕ} {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) :
     (szcTau k r i).val = 2 * r + k - i.val := by
   rw [szcTau_val, if_pos h]
 
+/- English proof (translation)
+Unfold `szcTau`. Rewrite using `[if_neg h]`.
+-/
 theorem szc_tau_neg {k r : ℕ} {i : Fin (2 * r + k + 1)} (h : ¬ (i.val < r ∨ r + k < i.val)) :
     szcTau k r i = i := by
   unfold szcTau; rw [if_neg h]
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h' : (szcTau k r i).val < r ∨ r + k < (szcTau k r i).val` using `by rw [szc_tau_pos h]; omega`. Rewrite using `[szc_tau_pos h', szc_tau_pos h]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[szc_tau_neg h, szc_tau_neg h]`.
+-/
 theorem szcTau_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : szcTau k r (szcTau k r i) = i := by
   have := i.isLt
   by_cases h : i.val < r ∨ r + k < i.val
@@ -82,6 +114,11 @@ theorem szcTau_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : szcTau k r (szcTau k 
 
 def szcS : ℂ := ((Real.sqrt 2 / 2 : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `h : Real.sqrt 2 * Real.sqrt 2 = 2` using `Real.mul_self_sqrt (by norm_num)`. Establish `h2 : (Real.sqrt 2 / 2) * (Real.sqrt 2 / 2) = (1 / 2 : ℝ)` using `by nlinarith [h]`. Unfold `szcS`. Rewrite using `[← Complex.ofReal_mul, h2]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem szcS_sq : szcS * szcS = 1 / 2 := by
   have h : Real.sqrt 2 * Real.sqrt 2 = 2 := Real.mul_self_sqrt (by norm_num)
   have h2 : (Real.sqrt 2 / 2) * (Real.sqrt 2 / 2) = (1 / 2 : ℝ) := by nlinarith [h]
@@ -90,6 +127,9 @@ theorem szcS_sq : szcS * szcS = 1 / 2 := by
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `szcS`. Rewrite using `[Complex.star_def]`. Conclude with `Complex.conj_ofReal _`.
+-/
 theorem szcS_star : star szcS = szcS := by
   unfold szcS
   rw [Complex.star_def]
@@ -110,24 +150,36 @@ def szcHO (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
 def szcD (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ :=
   if i.val < r + k then 1 else -1
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Apply the tactic sequence `unfold szcO; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega`. Rewrite using `[szc_tau_neg h]`.
+-/
 theorem szcO_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : szcO k r (szcTau k r i) = szcO k r i := by
   have := i.isLt
   by_cases h : i.val < r ∨ r + k < i.val
   · unfold szcO; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega
   · rw [szc_tau_neg h]
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Apply the tactic sequence `unfold szcHO; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega`. Rewrite using `[szc_tau_neg h]`.
+-/
 theorem szcHO_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : szcHO k r (szcTau k r i) = szcHO k r i := by
   have := i.isLt
   by_cases h : i.val < r ∨ r + k < i.val
   · unfold szcHO; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega
   · rw [szc_tau_neg h]
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Apply the tactic sequence `unfold szcHD; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega`. Rewrite using `[szc_tau_neg h]`.
+-/
 theorem szcHD_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : szcHD k r (szcTau k r i) = szcHD k r i := by
   have := i.isLt
   by_cases h : i.val < r ∨ r + k < i.val
   · unfold szcHD; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega
   · rw [szc_tau_neg h]
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Apply the tactic sequence `unfold szcC; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega`. Apply the tactic sequence `rw [szc_tau_neg h]; unfold szcC; split_ifs <;> first | rfl | omega`.
+-/
 theorem szcC_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     szcC k r (szcTau k r i) = if i.val < r then -szcS else if r + k < i.val then szcS else 1 := by
   have := i.isLt
@@ -135,6 +187,11 @@ theorem szcC_tau (k r : ℕ) (i : Fin (2 * r + k + 1)) :
   · unfold szcC; rw [szc_tau_pos h]; split_ifs <;> first | rfl | omega
   · rw [szc_tau_neg h]; unfold szcC; split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Establish `ht` using `szc_tau_pos h`.
+
+Simplify using `only [Formalism.QuantumDeterminants.Hpk, szcMk, szcHD, szcHO, Fin.ext_iff, ht]`. Apply the tactic sequence `split_ifs <;> first | omega | norm_num`. Establish `ht` using `szc_tau_neg h`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, szcMk, szcHD, szcHO, ht, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | omega | norm_num`.
+-/
 theorem szc_Hpk (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r = szcMk (szcTau k r) (szcHD k r) (szcHO k r) := by
   ext i j
   have hi := i.isLt
@@ -147,6 +204,13 @@ theorem szc_Hpk (k r : ℕ) : Formalism.QuantumDeterminants.Hpk k r = szcMk (szc
     simp only [Formalism.QuantumDeterminants.Hpk, szcMk, szcHD, szcHO, ht, Fin.ext_iff]
     split_ifs <;> first | omega | norm_num
 
+/- English proof (translation)
+Rewrite using `[szcMk_mul _ (szcTau_tau k r), ← Matrix.diagonal_one, ← szcMk_zero (szcTau k r)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `i.isLt` as an intermediate fact. Simplify using `only [szcO_tau]`.
+
+Unfold `szcC szcO`. Apply the tactic sequence `split_ifs <;> first | omega | ring1 | linear_combination 2 * szcS_sq`. Use function extensionality and compare the values at `i`. Use `i.isLt` as an intermediate fact. Simplify using `only [szcC_tau, Pi.zero_apply]`.
+
+Unfold `szcC szcO`. Apply the tactic sequence `split_ifs <;> first | omega | ring1`.
+-/
 theorem szc_CC (k r : ℕ) :
     szcMk (szcTau k r) (szcC k r) (szcO k r) * szcMk (szcTau k r) (szcC k r) (szcO k r) = 1 := by
   rw [szcMk_mul _ (szcTau_tau k r), ← Matrix.diagonal_one, ← szcMk_zero (szcTau k r)]
@@ -162,6 +226,9 @@ theorem szc_CC (k r : ℕ) :
     unfold szcC szcO
     split_ifs <;> first | omega | ring1
 
+/- English proof (translation)
+Rewrite using `[szcMk_conjTranspose _ (szcTau_tau k r)]`. Use `congr 1`. Apply the tactic sequence `funext i; unfold szcC; split_ifs <;> simp [szcS_star]`. Apply the tactic sequence `funext i; simp only [szcO_tau]; unfold szcO; split_ifs <;> simp [szcS_star]`.
+-/
 theorem szc_Cstar (k r : ℕ) :
     (szcMk (szcTau k r) (szcC k r) (szcO k r))ᴴ = szcMk (szcTau k r) (szcC k r) (szcO k r) := by
   rw [szcMk_conjTranspose _ (szcTau_tau k r)]
@@ -169,6 +236,13 @@ theorem szc_Cstar (k r : ℕ) :
   · funext i; unfold szcC; split_ifs <;> simp [szcS_star]
   · funext i; simp only [szcO_tau]; unfold szcO; split_ifs <;> simp [szcS_star]
 
+/- English proof (translation)
+Rewrite using `[szc_Hpk, szcMk_mul _ (szcTau_tau k r), szcMk_mul _ (szcTau_tau k r), ← szcMk_zero (szcTau k r)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `i.isLt` as an intermediate fact. Simplify using `only [szcO_tau, szcHO_tau, szcHD_tau]`.
+
+Unfold `szcC szcO szcHD szcHO szcD`. Apply the tactic sequence `split_ifs <;> first | omega | ring1 | linear_combination 2 * szcS_sq |`. Take the linear combination `(-2) * szcS_sq`. Use function extensionality and compare the values at `i`. Use `i.isLt` as an intermediate fact.
+
+Simplify using `only [szcHO_tau, szcHD_tau, szcC_tau, Pi.zero_apply]`. Unfold `szcC szcO szcHD szcHO`. Apply the tactic sequence `split_ifs <;> first | omega | ring1`.
+-/
 theorem szc_CHC (k r : ℕ) :
     szcMk (szcTau k r) (szcC k r) (szcO k r) * Formalism.QuantumDeterminants.Hpk k r *
       szcMk (szcTau k r) (szcC k r) (szcO k r) = Matrix.diagonal (szcD k r) := by
@@ -223,6 +297,13 @@ def szcEqvT (k r : ℕ) : {j : Fin (2 * r + k + 1) // r + k ≤ j.val} ≃ Fin (
     show r + k + b.val - (r + k) = b.val
     omega
 
+/- English proof (translation)
+Set `e : {i : Fin (2 * r + k + 1) // Formalism.MainNotions.CayleySignature.eps48 k r i = false} ≃ {j : Fin (2 * r + k + 1) // r + k ≤ j.val}` to `(szcEqvF k r hk).trans (szcEqvT k r).symm`. Establish `hc : Fintype.card {i : Fin (2 * r + k + 1) // ¬ Formalism.MainNotions.CayleySignature.eps48 k r i = false} = Fintype.card {j : Fin (2 * r + k + 1) // ¬ r + k ≤ j.val}`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype_compl, Fintype.card_congr e]`. Take `⟨f⟩` from `Fintype.card_eq.mp hc`. Use `⟨Equiv.subtypeCongr e f, fun i => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : Formalism.MainNotions.CayleySignature.eps48 k r i = false`. Establish `hx : Equiv.subtypeCongr e f i = (e ⟨i, h⟩ : Fin (2 * r + k + 1))`. Simplify using `[Equiv.subtypeCongr, h]`. Rewrite using `[hx]`. Conclude with `⟨fun _ => (e ⟨i, h⟩).2, fun _ => h⟩`.
+
+Establish `hx : Equiv.subtypeCongr e f i = (f ⟨i, h⟩ : Fin (2 * r + k + 1))`. Simplify using `[Equiv.subtypeCongr, h]`. Rewrite using `[hx]`. Conclude with `⟨fun h' => absurd h' h, fun h' => absurd h' (f ⟨i, h⟩).2⟩`.
+-/
 theorem szc_exists_perm (k r : ℕ) (hk : 1 ≤ k) :
     ∃ π : Fin (2 * r + k + 1) ≃ Fin (2 * r + k + 1),
       ∀ i, (Formalism.MainNotions.CayleySignature.eps48 k r i = false ↔ r + k ≤ (π i).val) := by

@@ -15,11 +15,19 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+The claim follows from `(hF.pow n).le_of_mul_le_mul h`.
+-/
 theorem _root_.FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor.le_of_pow_mul_le_pow_mul {Y : Scheme.{u}}
     {F B B' : Y.IdealSheafData} (hF : FunctorialResolution.Blowup.IsLocallyGeneratedByNonZeroDivisor F) (n : ℕ)
     (h : F ^ n * B ≤ F ^ n * B') : B ≤ B' :=
   (hF.pow n).le_of_mul_le_mul h
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, List.map_append, List.prod_append, AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem comap_prod_map_range {X Y : Scheme.{u}} (π : Y ⟶ X) (f : ℕ → X.IdealSheafData) (m : ℕ) :
     (((List.range m).map f).prod).comap π =
       ((List.range m).map (fun j => (f j).comap π)).prod := by
@@ -31,16 +39,27 @@ theorem comap_prod_map_range {X Y : Scheme.{u}} (π : Y ⟶ X) (f : ℕ → X.Id
       AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]
     simp
 
+/- English proof (translation)
+Introduce `_ h` and use `List.prod_le_prod' fun j hj => h j (List.mem_range.mp hj)`.
+-/
 private theorem prod_map_range_le {X : Scheme.{u}} (f g : ℕ → X.IdealSheafData) :
     ∀ m : ℕ, (∀ j, j < m → f j ≤ g j) →
       ((List.range m).map f).prod ≤ ((List.range m).map g).prod := fun _ h =>
   List.prod_le_prod' fun j hj => h j (List.mem_range.mp hj)
 
+/- English proof (translation)
+Introduce `_ h` and use `congrArg List.prod (List.map_congr_left fun j hj => h j (List.mem_range.mp hj))`.
+-/
 private theorem prod_map_range_congr {X : Scheme.{u}} (f g : ℕ → X.IdealSheafData) :
     ∀ m : ℕ, (∀ j, j < m → f j = g j) →
       ((List.range m).map f).prod = ((List.range m).map g).prod := fun _ h =>
   congrArg List.prod (List.map_congr_left fun j hj => h j (List.mem_range.mp hj))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, List.map_append, List.prod_append, ih, Finset.sum_range_succ, pow_add]`. Simplify using `only [List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one, mul_pow, ← pow_mul]`.
+
+Rewrite using `[mul_mul_mul_comm]`.
+-/
 private theorem prod_map_pow_mul_pow_eq {X : Scheme.{u}} (F : X.IdealSheafData)
     (G : ℕ → X.IdealSheafData) (w c : ℕ → ℕ) (n : ℕ) :
     ((List.range n).map (fun j => (F ^ (w j) * G j) ^ (c j))).prod =
@@ -55,6 +74,13 @@ private theorem prod_map_pow_mul_pow_eq {X : Scheme.{u}} (F : X.IdealSheafData)
       ← pow_mul]
     rw [mul_mul_mul_comm]
 
+/- English proof (translation)
+Substitute `hp₁` using the available equality. Use `le_trans (Scheme.IdealSheafData.comap_iSup π (fun c : {c : ℕ → ℕ // u ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j A ^ (c.1 j))).prod)).le (iSup_le ?_)` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Use `le_trans (le_of_eq (comap_prod_map_range π (fun j => derivIdealSheafIterate k p j A ^ c j) m)) ?_` and prove the remaining obligations. Use `le_trans (prod_map_range_le _ (fun j => (Blowup.exceptionalIdeal π Z ^ (m - j) * derivIdealSheafIterate k (π ≫ p) j (controlledTransform π Z A m hπ hA)) ^ c j) m ?_) ?_` and prove the remaining obligations.
+
+Introduce `j hj`. Use `le_trans (le_of_eq (AlgebraicGeometry.Scheme.IdealSheafData.comap_pow (derivIdealSheafIterate k p j A) π (c j))) ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left' (comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul k p π Z E hZ hπ A m hA j (Nat.le_of_lt hj)) (c j)`. Use `le_trans (le_of_eq (prod_map_pow_mul_pow_eq (Blowup.exceptionalIdeal π Z) (fun j => derivIdealSheafIterate k (π ≫ p) j (controlledTransform π Z A m hπ hA)) (fun j => m - j) c m)) ?_` and prove the remaining obligations. Use `mul_le_mul' (pow_le_pow_right_of_le_one' le_top hc) ?_` and prove the remaining obligations.
+
+Conclude with `le_iSup (fun d : {c : ℕ → ℕ // u ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k (π ≫ p) j (controlledTransform π Z A m hπ hA) ^ (d.1 j))).prod) ⟨c, hc⟩`.
+-/
 theorem comap_tunedSheaf_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p] [IsLocallyNoetherian P₁]
@@ -90,6 +116,15 @@ theorem comap_tunedSheaf_le_exceptionalIdeal_pow_mul (k : Type u) [Field k] [Cha
       ((List.range m).map (fun j => derivIdealSheafIterate k (π ≫ p) j
         (controlledTransform π Z A m hπ hA) ^ (d.1 j))).prod) ⟨c, hc⟩
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Use `le_trans (Scheme.IdealSheafData.comap_iSup h (fun c : {c : ℕ → ℕ // u ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j A ^ (c.1 j))).prod)).le (iSup_le ?_)` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Use `le_trans (le_of_eq (comap_prod_map_range h (fun j => derivIdealSheafIterate k p j A ^ c j) m)) ?_` and prove the remaining obligations.
+
+Use `le_trans (prod_map_range_le _ (fun j => derivIdealSheafIterate k (h ≫ p) j (A.comap h) ^ c j) m ?_) ?_` and prove the remaining obligations. Introduce `j _`. Use `le_of_eq ?_` and prove the remaining obligations. Use `show (derivIdealSheafIterate k p j A ^ c j).comap h = derivIdealSheafIterate k (h ≫ p) j (A.comap h) ^ c j`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_pow, derivIdealSheafIterate_comap k p h j A]`.
+
+Conclude with `le_iSup (fun d : {c : ℕ → ℕ // u ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k (h ≫ p) j (A.comap h) ^ (d.1 j))).prod) ⟨c, hc⟩`. Use `le_trans (le_of_eq (tunedSheaf_eq_iSup k (h ≫ p) (A.comap h) m u)) (iSup_le ?_)` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Use `le_trans (le_of_eq ?_) (AlgebraicGeometry.Scheme.IdealSheafData.comap_mono h (le_iSup (fun d : {c : ℕ → ℕ // u ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j A ^ (d.1 j))).prod) ⟨c, hc⟩))` and prove the remaining obligations. Use `Eq.trans (prod_map_range_congr _ (fun j => (derivIdealSheafIterate k p j A ^ c j).comap h) m ?_) (comap_prod_map_range h (fun j => derivIdealSheafIterate k p j A ^ c j) m).symm` and prove the remaining obligations.
+
+Introduce `j _`. Use `show derivIdealSheafIterate k (h ≫ p) j (A.comap h) ^ c j = (derivIdealSheafIterate k p j A ^ c j).comap h`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_pow, derivIdealSheafIterate_comap k p h j A]`.
+-/
 theorem comap_tunedSheaf_of_smooth (k : Type u) [Field k] [CharZero k] [IsNoetherianRing k]
     {P Y : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     [LocallyOfFiniteType p] (h : Y ⟶ P) [AlgebraicGeometry.Smooth h]

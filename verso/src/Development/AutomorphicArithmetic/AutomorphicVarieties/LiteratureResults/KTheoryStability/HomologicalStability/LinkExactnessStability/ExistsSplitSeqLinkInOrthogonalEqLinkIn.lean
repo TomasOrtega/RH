@@ -9,6 +9,13 @@ variable {R : Type} [CommRing R] {N : ℕ}
 
 def Orth (y z : (Fin N → R) × (Fin N → R)) : Prop := y.2 ⬝ᵥ z.1 = 0 ∧ z.2 ⬝ᵥ y.1 = 0
 
+/- English proof (translation)
+Simplify using `only [splitSeq, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun y hy => ?_, List.pairwise_iff_get.mpr fun i j hij => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_iff_get.mp hy`.
+
+Simplify using `using h i i`. Simplify `h i j` using `[Fin.ne_of_lt hij]`. Simplify `h j i` using `[(Fin.ne_of_lt hij).symm]`. Introduce and unpack `⟨h1, h2⟩ i j`. Establish `hp` using `List.pairwise_iff_get.mp h2`.
+
+Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify `(hp i j hij).1` using `[Fin.ne_of_lt hij]`. Simplify using `using h1 _ (List.get_mem l i)`. Simplify `(hp j i hij).2` using `[(Fin.ne_of_lt hij).symm]`.
+-/
 theorem mem_splitSeq_iff (l : List ((Fin N → R) × (Fin N → R))) :
     l ∈ splitSeq R N ↔ (∀ y ∈ l, y.2 ⬝ᵥ y.1 = 1) ∧ l.Pairwise Orth := by
   simp only [splitSeq, Set.mem_setOf_eq]
@@ -26,6 +33,11 @@ theorem mem_splitSeq_iff (l : List ((Fin N → R) × (Fin N → R))) :
     · simpa using h1 _ (List.get_mem l i)
     · simpa [(Fin.ne_of_lt hij).symm] using (hp j i hij).2
 
+/- English proof (translation)
+Rewrite using `[mem_splitSeq_iff, mem_splitSeq_iff, mem_splitSeq_iff, List.pairwise_append]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, p1, p2, p3⟩`. Conclude with `⟨⟨fun y hy => h1 y (List.mem_append.mpr (Or.inl hy)), p1⟩, ⟨fun y hy => h1 y (List.mem_append.mpr (Or.inr hy)), p2⟩, p3⟩`. Introduce and unpack `⟨⟨h1, p1⟩, ⟨h2, p2⟩, p3⟩`.
+
+Conclude with `⟨fun y hy => (List.mem_append.mp hy).elim (h1 y) (h2 y), p1, p2, p3⟩`.
+-/
 theorem append_mem_splitSeq_iff (l₁ l₂ : List ((Fin N → R) × (Fin N → R))) :
     l₁ ++ l₂ ∈ splitSeq R N ↔
       l₁ ∈ splitSeq R N ∧ l₂ ∈ splitSeq R N ∧ ∀ a ∈ l₁, ∀ b ∈ l₂, Orth a b := by
@@ -40,6 +52,9 @@ theorem append_mem_splitSeq_iff (l₁ l₂ : List ((Fin N → R) × (Fin N → R
 def corr (γ : List ((Fin N → R) × (Fin N → R))) (v : Fin N → R) : Fin N → R :=
   v - ∑ i : Fin γ.length, ((γ.get i).2 ⬝ᵥ v) • (γ.get i).1
 
+/- English proof (translation)
+Unfold `corr`. Rewrite using `[dotProduct_sub, dotProduct_sum, Finset.sum_eq_zero, sub_zero]`. Introduce `i _`. Rewrite using `[dotProduct_smul, hu _ (List.get_mem γ i), smul_zero]`.
+-/
 theorem dot_corr_of_orth (γ : List ((Fin N → R) × (Fin N → R))) (u v : Fin N → R)
     (hu : ∀ z ∈ γ, u ⬝ᵥ z.1 = 0) : u ⬝ᵥ corr γ v = u ⬝ᵥ v := by
   unfold corr
@@ -47,6 +62,11 @@ theorem dot_corr_of_orth (γ : List ((Fin N → R) × (Fin N → R))) (u v : Fin
   intro i _
   rw [dotProduct_smul, hu _ (List.get_mem γ i), smul_zero]
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `List.mem_iff_get.mp hz`. Establish `h : ∀ i j : Fin γ.length, (γ.get i).2 ⬝ᵥ (γ.get j).1 = if i = j then 1 else 0` using `hγ`. Unfold `corr`. Rewrite using `[dotProduct_sub, dotProduct_sum]`. Establish `hs : ∀ i ∈ (Finset.univ : Finset (Fin γ.length)), (γ.get k).2 ⬝ᵥ (((γ.get i).2 ⬝ᵥ v) • (γ.get i).1) = if k = i then (γ.get i).2 ⬝ᵥ v else 0`.
+
+Introduce `i _`. Rewrite using `[dotProduct_smul, h k i, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl hs, Finset.sum_ite_eq Finset.univ k, if_pos (Finset.mem_univ _), sub_self]`.
+-/
 theorem form_dot_corr (γ : List ((Fin N → R) × (Fin N → R))) (hγ : γ ∈ splitSeq R N)
     (z : (Fin N → R) × (Fin N → R)) (hz : z ∈ γ) (v : Fin N → R) : z.2 ⬝ᵥ corr γ v = 0 := by
   obtain ⟨k, rfl⟩ := List.mem_iff_get.mp hz
@@ -66,6 +86,29 @@ end GlobalTheory.SeqCx.RowLink
 
 section
 open GlobalTheory.SeqCx Matrix
+/- English proof (translation)
+Introduce `R _ N γ σ hγ hσ hσγ`. Take `⟨σ', hσ'eq⟩ : ∃ s, s = σ.map (fun y => (GlobalTheory.SeqCx.RowLink.corr γ y.1, y.2))` from `⟨_, rfl⟩`. Establish `hc : ∀ y ∈ σ, ∀ v, y.2 ⬝ᵥ GlobalTheory.SeqCx.RowLink.corr γ v = y.2 ⬝ᵥ v` using `fun y hy v => GlobalTheory.SeqCx.RowLink.dot_corr_of_orth γ y.2 v (hσγ y hy)`. Establish `hσ's : σ' ∈ splitSeq R N`. Rewrite `hσ`, the goal using `[GlobalTheory.SeqCx.RowLink.mem_splitSeq_iff]`.
+
+Rewrite using `[hσ'eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `y' hy'`. Take `⟨y, hy, rfl⟩` from `List.mem_map.mp hy'`. Use `show y.2 ⬝ᵥ GlobalTheory.SeqCx.RowLink.corr γ y.1 = 1`.
+
+Rewrite using `[hc y hy]`. Conclude with `hσ.1 y hy`. Rewrite using `[List.pairwise_map]`. Use `hσ.2.imp_of_mem ?_` and prove the remaining obligations. Introduce `a b ha hb hab`.
+
+Simplify using `only [GlobalTheory.SeqCx.RowLink.Orth] at hab ⊢`. Conclude with `⟨(hc a ha b.1).trans hab.1, (hc b hb a.1).trans hab.2⟩`. Establish `horth : ∀ a ∈ γ, ∀ b ∈ σ', GlobalTheory.SeqCx.RowLink.Orth a b`. Introduce `a ha b hb`. Rewrite `hb` using `[hσ'eq]`.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.mp hb`. Simplify using `only [GlobalTheory.SeqCx.RowLink.Orth]`. Conclude with `⟨GlobalTheory.SeqCx.RowLink.form_dot_corr γ hγ a ha y.1, hσγ y hy a ha⟩`. Establish `hρ : γ ++ σ' ∈ splitSeq R N` using `(GlobalTheory.SeqCx.RowLink.append_mem_splitSeq_iff γ σ').mpr ⟨hγ, hσ's, horth⟩`. Use `⟨γ ++ σ', hρ, by rw [List.length_append, hσ'eq, List.length_map], ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `w`. Simplify using `only [linkIn, Set.mem_setOf_eq, Set.mem_univ, implies_true, true_and, List.append_assoc, GlobalTheory.SeqCx.RowLink.append_mem_splitSeq_iff, List.mem_append]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hS, ⟨-, hw, hσw⟩, hz⟩`. Use `⟨hγ, ⟨hσ's, hw, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha b hb`. Rewrite `ha` using `[hσ'eq]`. Take `⟨y, hy, rfl⟩` from `List.mem_map.mp ha`. Establish `h1` using `hσw y hy b hb`. Simplify using `only [GlobalTheory.SeqCx.RowLink.Orth] at h1 ⊢`.
+
+Conclude with `⟨h1.1, (GlobalTheory.SeqCx.RowLink.dot_corr_of_orth γ b.2 y.1 (hz b (Or.inr hb))).trans h1.2⟩`. Introduce `a ha b hb`. Break down `hb with hb | hb` into its components or cases. Conclude with `horth a ha b hb`. Simplify using `only [GlobalTheory.SeqCx.RowLink.Orth]`.
+
+Conclude with `⟨hS b hb a ha, hz b (Or.inr hb) a ha⟩`. Introduce and unpack `⟨-, ⟨-, hw, hσ'w⟩, hγx⟩`. Use `⟨fun x hx z hz => And.left (hγx z hz x (Or.inr hx)), ⟨hσ, hw, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Establish `hbγ : ∀ z ∈ γ, b.2 ⬝ᵥ z.1 = 0` using `fun z hz => And.right (hγx z hz b (Or.inr hb))`.
+
+Establish `h1` using `hσ'w (GlobalTheory.SeqCx.RowLink.corr γ a.1, a.2) (by rw [hσ'eq]; exact List.mem_map.mpr ⟨a, ha, rfl⟩) b hb`. Simplify using `only [GlobalTheory.SeqCx.RowLink.Orth] at h1 ⊢`. Conclude with `⟨h1.1, (GlobalTheory.SeqCx.RowLink.dot_corr_of_orth γ b.2 a.1 hbγ).symm.trans h1.2⟩`. Introduce `y hy z hz`. Break down `hy with hy | hy` into its components or cases.
+
+Conclude with `hσγ y hy z hz`. Conclude with `And.right (hγx z hz y (Or.inr hy))`.
+-/
 theorem _root_.GlobalTheory.T.exists_splitSeq_linkIn_orthogonal_eq_linkIn : ∀ (R : Type) [CommRing R] (N : ℕ) (γ σ : List ((Fin N → R) × (Fin N → R))), γ ∈ splitSeq R N → σ ∈ splitSeq R N → (∀ y ∈ σ, ∀ z ∈ γ, y.2 ⬝ᵥ z.1 = 0) → ∃ ρ ∈ splitSeq R N, ρ.length = γ.length + σ.length ∧ linkIn {x | x ∈ splitSeq R N ∧ ∀ y ∈ x, ∀ z ∈ γ, y.2 ⬝ᵥ z.1 = 0} {y | ∀ z ∈ γ, z.2 ⬝ᵥ y.1 = 0} σ = linkIn (splitSeq R N) Set.univ ρ := by
   intro R _ N γ σ hγ hσ hσγ
   obtain ⟨σ', hσ'eq⟩ : ∃ s, s = σ.map (fun y => (GlobalTheory.SeqCx.RowLink.corr γ y.1, y.2)) := ⟨_, rfl⟩

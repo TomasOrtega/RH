@@ -22,6 +22,13 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hker : Scheme.Hom.ker (I.comap f).subschemeι = Scheme.Hom.ker (pullback.fst f I.subschemeι)` using `(Scheme.IdealSheafData.ker_subschemeι _).trans rfl`. Take `⟨u, hufac⟩ : ∃ u : (I.comap f).subscheme ⟶ pullback f I.subschemeι, u ≫ pullback.fst f I.subschemeι = (I.comap f).subschemeι` from `⟨IsClosedImmersion.lift _ _ hker.ge, IsClosedImmersion.lift_fac _ _ hker.ge⟩`. Take `⟨v, hvfac⟩ : ∃ v : pullback f I.subschemeι ⟶ (I.comap f).subscheme, v ≫ (I.comap f).subschemeι = pullback.fst f I.subschemeι` from `⟨IsClosedImmersion.lift _ _ hker.le, IsClosedImmersion.lift_fac _ _ hker.le⟩`. Establish `huv : u ≫ v = 𝟙 _`. Apply `(cancel_mono (I.comap f).subschemeι).1` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hvfac, hufac, Category.id_comp]`. Establish `hvu : v ≫ u = 𝟙 _`. Apply `(cancel_mono (pullback.fst f I.subschemeι)).1` to reduce the goal to its premises. Rewrite using `[Category.assoc, hufac, hvfac, Category.id_comp]`. Establish `hw : (I.comap f).subschemeι ≫ f = (u ≫ pullback.snd f I.subschemeι) ≫ I.subschemeι`.
+
+Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc, hufac]`. Use `⟨u ≫ pullback.snd f I.subschemeι, hw.symm, ?_⟩` and prove the remaining obligations. Conclude with `(IsPullback.of_iso_pullback ⟨hw⟩ (⟨u, v, huv, hvu⟩ : (I.comap f).subscheme ≅ pullback f I.subschemeι) hufac rfl).flip`.
+-/
 private theorem exists_isPullback_subschemeι_comap {X X' : Scheme.{u}} (f : X' ⟶ X)
     (I : X.IdealSheafData) :
     ∃ g : (I.comap f).subscheme ⟶ I.subscheme,
@@ -56,11 +63,17 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
 
 namespace EmbeddedBlowupSequence
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsNoetherian (S.schemeAt i)` using `S.isNoetherian_schemeAt i hi`. Conclude with `S.noetherianSpace_strictTransform_of_noetherianSpace_schemeAt i inferInstance`.
+-/
 theorem noetherianSpace_strictTransform (S : EmbeddedBlowupSequence k Y pY) (i : ℕ) (hi : i ≤ S.length) :
     TopologicalSpace.NoetherianSpace ↥(S.strictTransform i) := by
   have : AlgebraicGeometry.IsNoetherian (S.schemeAt i) := S.isNoetherian_schemeAt i hi
   exact S.noetherianSpace_strictTransform_of_noetherianSpace_schemeAt i inferInstance
 
+/- English proof (translation)
+The claim follows from `S.isReduced_strictTransform_of_isNoetherian (fun j hj => S.isNoetherian_schemeAt j hj) i hi`.
+-/
 theorem isReduced_strictTransform (S : EmbeddedBlowupSequence k Y pY) [AlgebraicGeometry.IsReduced Y]
     (i : ℕ) (hi : i ≤ S.length) : AlgebraicGeometry.IsReduced (S.strictTransform i) :=
   S.isReduced_strictTransform_of_isNoetherian (fun j hj => S.isNoetherian_schemeAt j hj) i hi
@@ -71,6 +84,9 @@ namespace ChartFlatBaseChange
 
 variable {S : EmbeddedBlowupSequence k Y pY} {S' : EmbeddedBlowupSequence k' Y' pY'}
 
+/- English proof (translation)
+Establish `hcomp : (S.strictTransformι (F.reindex j)) ((F.strictTransformComparison j hj.le) y) = (F.levelMap j hj.le) ((S'.strictTransformι j) y)` using `congrArg (fun f : S'.strictTransform j ⟶ S.schemeAt (F.reindex j) => f y) (F.strictTransformComparison_comp_strictTransformι j hj.le)`. Rewrite using `[F.center_eq j hj, FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hcomp]`.
+-/
 theorem mem_support_ambientCenter_iff (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length)
     (y : ↥(S'.strictTransform j)) :
     (S'.strictTransformι j) y ∈ (↑(S'.ambientCenter j).support : Set ↥(S'.schemeAt j)) ↔
@@ -82,6 +98,21 @@ theorem mem_support_ambientCenter_iff (F : ChartFlatBaseChange S S') (j : ℕ) (
       (F.strictTransformComparison_comp_strictTransformι j hj.le)
   rw [F.center_eq j hj, FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hcomp]
 
+/- English proof (translation)
+Use `F.flat_strictTransformComparison j hj.le` as an intermediate fact. Establish `himg` using `F.mem_support_ambientCenter_iff j hj`. Establish `hclosed : IsClosed ((fun z : ↥(S.strictTransform (F.reindex j)) => (S.strictTransformι (F.reindex j)) z) ⁻¹' (↑(S.ambientCenter (F.reindex j)).support : Set ↥(S.schemeAt (F.reindex j))))`. Rewrite using `[← FunctorialResolution.EmbeddedResolution.support_comap]`. Conclude with `((S.ambientCenter (F.reindex j)).comap (S.strictTransformι (F.reindex j))).support.2`.
+
+Use `Set.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, S'.detachedLocus_eq_sUnion j, S.detachedLocus_eq_sUnion (F.reindex j), Set.mem_sUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C', hC', hxC'⟩`. Rewrite `hC'` using `[S'.mem_detachedComponents]`.
+
+Take `⟨hirr, hsub⟩` from `hC'`. Use `⟨closure ((fun z : ↥(S'.strictTransform j) => (F.strictTransformComparison j hj.le) z) '' C'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[S.mem_detachedComponents]`. Use `⟨FunctorialResolution.EmbeddedResolution.closure_image_mem_irreducibleComponents_of_flat _ hirr, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.image_subset_iff]`.
+
+Use `closure_minimal ?_ hclosed` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(himg y).1 (hsub ⟨y, hy, rfl⟩)`. Conclude with `subset_closure ⟨x, hxC', rfl⟩`. Introduce and unpack `⟨C, hC, hxC⟩`.
+
+Rewrite `hC` using `[S.mem_detachedComponents]`. Take `⟨hirr, hsub⟩` from `hC`. Take `⟨C', hC'irr, hxC', hcl⟩` from `(FunctorialResolution.EmbeddedResolution.apply_mem_irreducibleComponent_iff_of_flat (F.strictTransformComparison j hj.le) hirr x).1 hxC`. Use `⟨C', ?_, hxC'⟩` and prove the remaining obligations. Rewrite using `[S'.mem_detachedComponents]`.
+
+Use `⟨hC'irr, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `(himg y).2 ?_` and prove the remaining obligations. Establish `hgy : (F.strictTransformComparison j hj.le) y ∈ C`. Rewrite using `[← hcl]`.
+
+Conclude with `subset_closure ⟨y, hy, rfl⟩`. Conclude with `hsub ⟨_, hgy, rfl⟩`.
+-/
 theorem detachedLocus_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.detachedLocus j =
       (fun x : ↥(S'.strictTransform j) => (F.strictTransformComparison j hj.le) x) ⁻¹'
@@ -122,6 +153,9 @@ theorem detachedLocus_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj :
       exact subset_closure ⟨y, hy, rfl⟩
     exact hsub ⟨_, hgy, rfl⟩
 
+/- English proof (translation)
+Establish `: TopologicalSpace.NoetherianSpace ↥(S'.strictTransform j)` using `S'.noetherianSpace_strictTransform j hj.le`. Establish `: TopologicalSpace.NoetherianSpace ↥(S.strictTransform (F.reindex j))` using `S.noetherianSpace_strictTransform (F.reindex j) (F.reindex_le_length hj.le)`. Rewrite using `[S'.detachedClosure_coe j, S.detachedClosure_coe (F.reindex j), F.detachedLocus_eq_preimage j hj]`.
+-/
 theorem coe_detachedClosure_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     (↑(S'.detachedClosure j) : Set ↥(S'.strictTransform j)) =
       (fun x : ↥(S'.strictTransform j) => (F.strictTransformComparison j hj.le) x) ⁻¹'
@@ -132,6 +166,13 @@ theorem coe_detachedClosure_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ)
     S.noetherianSpace_strictTransform (F.reindex j) (F.reindex_le_length hj.le)
   rw [S'.detachedClosure_coe j, S.detachedClosure_coe (F.reindex j), F.detachedLocus_eq_preimage j hj]
 
+/- English proof (translation)
+Establish `: TopologicalSpace.NoetherianSpace ↥(S'.strictTransform j)` using `S'.noetherianSpace_strictTransform j hj.le`. Establish `: TopologicalSpace.NoetherianSpace ↥(S.strictTransform (F.reindex j))` using `S.noetherianSpace_strictTransform (F.reindex j) (F.reindex_le_length hj.le)`. Use `S'.isReduced_strictTransform j hj.le` as an intermediate fact. Use `S.isReduced_strictTransform (F.reindex j) (F.reindex_le_length hj.le)` as an intermediate fact. Use `F.flat_strictTransformComparison j hj.le` as an intermediate fact.
+
+Establish `hS : S.detachedComponents (F.reindex j) ⊆ irreducibleComponents ↥(S.strictTransform (F.reindex j))` using `fun C hC => ((S.mem_detachedComponents (F.reindex j) C).1 hC).1`. Establish `hZ : (↑(S.detachedClosure (F.reindex j)) : Set ↥(S.strictTransform (F.reindex j))) = ⋃₀ S.detachedComponents (F.reindex j)`. Rewrite using `[S.detachedClosure_coe (F.reindex j)]`. Conclude with `S.detachedLocus_eq_sUnion (F.reindex j)`. Establish `hZ' : (↑(S'.detachedClosure j) : Set ↥(S'.strictTransform j)) = ⇑(F.strictTransformComparison j hj.le).base ⁻¹' (⋃₀ S.detachedComponents (F.reindex j))`.
+
+Establish `h` using `F.coe_detachedClosure_eq_preimage j hj`. Rewrite `h` using `[S.detachedClosure_coe (F.reindex j), S.detachedLocus_eq_sUnion (F.reindex j)]`. Conclude with `h`. Rewrite using `[S'.detachedIdeal_eq j, S.detachedIdeal_eq (F.reindex j)]`. Conclude with `(comap_vanishingIdeal_sUnion (F.strictTransformComparison j hj.le) (S := S.detachedComponents (F.reindex j)) (Z := S.detachedClosure (F.reindex j)) (Z' := S'.detachedClosure j) hS hZ hZ').symm`.
+-/
 theorem detachedIdeal_eq_comap (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
     S'.detachedIdeal j = (S.detachedIdeal (F.reindex j)).comap (F.strictTransformComparison j hj.le) := by
@@ -159,6 +200,9 @@ theorem detachedIdeal_eq_comap (F : ChartFlatBaseChange S S') [AlgebraicGeometry
     (S := S.detachedComponents (F.reindex j)) (Z := S.detachedClosure (F.reindex j))
     (Z' := S'.detachedClosure j) hS hZ hZ').symm
 
+/- English proof (translation)
+Establish `key : ∀ J : (S'.strictTransform j).IdealSheafData, J = (S.detachedIdeal (F.reindex j)).comap (F.strictTransformComparison j hj.le) → ∃ g : J.subscheme ⟶ (S.detachedIdeal (F.reindex j)).subscheme, g ≫ (S.detachedIdeal (F.reindex j)).subschemeι = J.subschemeι ≫ F.strictTransformCom …`. Introduce and unpack `J rfl`. Conclude with `exists_isPullback_subschemeι_comap _ _`. Conclude with `key (S'.detachedIdeal j) (F.detachedIdeal_eq_comap j hj)`.
+-/
 theorem exists_isPullback_detachedScheme (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
     ∃ g : S'.detachedScheme j ⟶ S.detachedScheme (F.reindex j),
@@ -180,12 +224,18 @@ def detachedSchemeComparison (F : ChartFlatBaseChange S S') [AlgebraicGeometry.I
     S'.detachedScheme j ⟶ S.detachedScheme (F.reindex j) :=
   (F.exists_isPullback_detachedScheme j hj).choose
 
+/- English proof (translation)
+The claim follows from `(F.exists_isPullback_detachedScheme j hj).choose_spec.1`.
+-/
 theorem detachedSchemeComparison_comp_detachedι (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
     F.detachedSchemeComparison j hj ≫ S.detachedι (F.reindex j) =
       S'.detachedι j ≫ F.strictTransformComparison j hj.le :=
   (F.exists_isPullback_detachedScheme j hj).choose_spec.1
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, F.detachedSchemeComparison_comp_detachedι j hj, Category.assoc]`.
+-/
 theorem detachedSchemeComparison_comp_detachedι_assoc (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) {Z : Scheme.{u}}
     (h : S.strictTransform (F.reindex j) ⟶ Z) :
@@ -193,12 +243,18 @@ theorem detachedSchemeComparison_comp_detachedι_assoc (F : ChartFlatBaseChange 
       S'.detachedι j ≫ F.strictTransformComparison j hj.le ≫ h := by
   rw [← Category.assoc, F.detachedSchemeComparison_comp_detachedι j hj, Category.assoc]
 
+/- English proof (translation)
+The claim follows from `(F.exists_isPullback_detachedScheme j hj).choose_spec.2`.
+-/
 theorem isPullback_detachedSchemeComparison (F : ChartFlatBaseChange S S') [AlgebraicGeometry.IsReduced Y]
     [AlgebraicGeometry.IsReduced Y'] (j : ℕ) (hj : j < S'.length) :
     IsPullback (F.detachedSchemeComparison j hj) (S'.detachedι j) (S.detachedι (F.reindex j))
       (F.strictTransformComparison j hj.le) :=
   (F.exists_isPullback_detachedScheme j hj).choose_spec.2
 
+/- English proof (translation)
+Use `TopologicalSpace.Opens.ext ?_` and prove the remaining obligations. Establish `h1 : (↑(S'.detachedClosureCompl j) : Set ↥(S'.strictTransform j)) = (↑(S'.detachedClosure j) : Set ↥(S'.strictTransform j))ᶜ` using `S'.detachedClosureCompl_coe j`. Establish `h2 : (↑((F.strictTransformComparison j hj.le) ⁻¹ᵁ (S.detachedClosureCompl (F.reindex j))) : Set ↥(S'.strictTransform j)) = (fun x : ↥(S'.strictTransform j) => (F.strictTransformComparison j hj.le) x) ⁻¹' (↑(S.detachedClosureCompl (F.reindex j)) : Set ↥(S.strictTransform (F.reinde …` using `rfl`. Rewrite using `[h1, h2, S.detachedClosureCompl_coe (F.reindex j), Set.preimage_compl, F.coe_detachedClosure_eq_preimage j hj]`.
+-/
 theorem detachedClosureCompl_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ) (hj : j < S'.length) :
     S'.detachedClosureCompl j = (F.strictTransformComparison j hj.le) ⁻¹ᵁ (S.detachedClosureCompl (F.reindex j)) := by
   refine TopologicalSpace.Opens.ext ?_
@@ -211,6 +267,17 @@ theorem detachedClosureCompl_eq_preimage (F : ChartFlatBaseChange S S') (j : ℕ
   rw [h1, h2, S.detachedClosureCompl_coe (F.reindex j), Set.preimage_compl,
     F.coe_detachedClosure_eq_preimage j hj]
 
+/- English proof (translation)
+Establish `: TopologicalSpace.NoetherianSpace ↥(S.strictTransform s)` using `S.noetherianSpace_strictTransform s hs.le`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `hcsq : (q ≫ S.detachedι s ≫ S.strictTransformι s) ≫ S.ambientSeq.projectionToBase s = p ≫ F.ambientMap`. Simplify using `only [Category.assoc]`.
+
+Conclude with `hcomm`. Establish `hpb` using `IsPullback.of_hasPullback (S.ambientSeq.projectionToBase s) F.ambientMap`. Establish `hcomap` using `F.comap_center_skipped s hs hskip (pullback (S.ambientSeq.projectionToBase s) F.ambientMap) (pullback.fst (S.ambientSeq.projectionToBase s) F.ambientMap) (pullback.snd (S.ambientSeq.projectionToBase s) F.ambientMap) hpb`. Establish `hwf : hpb.lift _ _ hcsq ≫ pullback.fst (S.ambientSeq.projectionToBase s) F.ambientMap = q ≫ S.detachedι s ≫ S.strictTransformι s` using `hpb.lift_fst _ _ hcsq`. Establish `hpt : (pullback.fst (S.ambientSeq.projectionToBase s) F.ambientMap) ((hpb.lift _ _ hcsq) x) = (S.strictTransformι s) ((S.detachedι s) (q x))` using `congrArg (fun f : P ⟶ S.schemeAt s => f x) hwf`.
+
+Establish `hfl : (S.detachedι s) (q x) ∈ S.detachedLocus s`. Establish `h1 : (S.detachedι s) (q x) ∈ (↑(S.detachedIdeal s).support : Set ↥(S.strictTransform s))`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `⟨q x, rfl⟩`. Rewrite `h1` using `[S.detachedIdeal_eq s]`.
+
+Establish `h2` using `(Scheme.IdealSheafData.coe_support_vanishingIdeal (S.detachedClosure s)).le h1`. Rewrite `h2` using `[S.detachedClosure_coe s]`. Conclude with `h2`. Establish `hmem : (S.strictTransformι s) ((S.detachedι s) (q x)) ∈ (↑(S.ambientCenter s).support : Set ↥(S.schemeAt s))` using `S.image_detachedLocus_subset_ambientCenter_support s ⟨_, hfl, rfl⟩`. Establish `hmem2 : (hpb.lift _ _ hcsq) x ∈ (↑((S.ambientCenter s).comap (pullback.fst (S.ambientSeq.projectionToBase s) F.ambientMap)).support : Set ↥(pullback (S.ambientSeq.projectionToBase s) F.ambientMap))`.
+
+Rewrite using `[FunctorialResolution.EmbeddedResolution.support_comap, Set.mem_preimage, hpt]`. Conclude with `hmem`. Rewrite `hmem2` using `[hcomap]`. Simplify using `at hmem2`.
+-/
 theorem isEmpty_of_forall_reindex_ne (F : ChartFlatBaseChange S S') (s : ℕ) (hs : s < S.length)
     (hskip : ∀ j, j < S'.length → F.reindex j ≠ s) (P : Scheme.{u})
     (q : P ⟶ S.detachedScheme s) (p : P ⟶ S'.ambient)

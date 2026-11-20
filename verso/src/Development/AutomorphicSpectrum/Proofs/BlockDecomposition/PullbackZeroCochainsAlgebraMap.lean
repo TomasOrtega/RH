@@ -10,6 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 namespace GlobalTheory.CompanionTheory.HodgeLow
 
+/- English proof (translation)
+Use `⟨fun x' hx' ⟨y', hy'⟩ ↦ ?_, fun z' hz' ↦ ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `ea₁.surjective x'`. Take `⟨y, rfl⟩` from `eb₀.surjective y'`. Establish `h1 : a₁ x = 0` using `ea₂.injective (by rw [ha₁, hx', map_zero])`. Establish `h2 : b₀ y = f x` using `eb₁.injective (by rw [hb₀, hy', hf])`.
+
+Take `⟨w, rfl⟩` from `h.1 x h1 ⟨y, h2⟩`. Conclude with `⟨ea₀ w, (ha₀ w).symm⟩`. Take `⟨z, rfl⟩` from `eb₁.surjective z'`. Establish `h1 : b₁ z = 0` using `eb₂.injective (by rw [hb₁, hz', map_zero])`. Take `⟨x, y, hx, hy⟩` from `h.2 z h1`.
+
+Use `⟨ea₁ x, eb₀ y, by rw [← ha₁, hx, map_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← map_sub, hy, hb₀]`.
+-/
 theorem qIsoAt_transport {R A₀ A₁ A₂ B₀ B₁ B₂ A₀' A₁' A₂' B₀' B₁' B₂' : Type} [CommRing R]
     [AddCommGroup A₀] [AddCommGroup A₁] [AddCommGroup A₂]
     [AddCommGroup B₀] [AddCommGroup B₁] [AddCommGroup B₂]
@@ -44,10 +51,18 @@ section
 variable {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [Category.{0} C']
   {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem d2_apply (z : C2 F) {T T' T'' T''' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') (χ : T'' ⟶ T''') :
     d2 F z T T' T'' T''' φ ψ χ = z T' T'' T''' ψ χ - z T T'' T''' (φ ≫ ψ) χ +
       z T T' T''' φ (ψ ≫ χ) - mp F χ (z T T' T'' φ ψ) := rfl
 
+/- English proof (translation)
+Use `⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `T T' T'' T''' φ ψ χ`. Rewrite using `[d2_apply]`. Use `h φ ψ χ` as an intermediate fact. Simplify using `only [Pi.zero_apply]`.
+
+Take the linear combination `-this`. Establish `: d2 F z T T' T'' T''' φ ψ χ = 0` using `by rw [h]; rfl`. Rewrite `this` using `[d2_apply]`. Take the linear combination `-this`.
+-/
 theorem mem_Z2_iff (z : C2 F) : z ∈ Z2 F ↔ d2 F z = 0 := by
   refine ⟨fun h ↦ ?_, fun h T T' T'' T''' φ ψ χ ↦ ?_⟩
   · funext T T' T'' T''' φ ψ χ
@@ -74,19 +89,31 @@ def pullbackTwoCochains (m : CoefMap (RingHom.id R) F F') : C2 F →ₗ[R] C2 F'
   map_add' _ _ := by funext T T' T'' φ ψ; exact map_add _ _ _
   map_smul' _ _ := by funext T T' T'' φ ψ; exact m.smul _ _ _
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cn_heq {n : ℕ} (f : Cn F n) {c c' : Fin (n + 1) ⥤ C} (h : c = c') : HEq (f c) (f c') := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `ComposableArrows.ext (fun i ↦ by fin_cases i; rfl) (fun i hi ↦ by omega)`.
+-/
 theorem mk₀_comp (G : C' ⥤ C) (T : C') :
     ComposableArrows.mk₀ T ⋙ G = ComposableArrows.mk₀ (G.obj T) :=
   ComposableArrows.ext (fun i ↦ by fin_cases i; rfl) (fun i hi ↦ by omega)
 
+/- English proof (translation)
+The claim follows from `ComposableArrows.ext₁ rfl rfl (by change G.map φ = 𝟙 _ ≫ G.map φ ≫ 𝟙 _ simp)`.
+-/
 theorem mk₁_comp (G : C' ⥤ C) {T T' : C'} (φ : T ⟶ T') :
     ComposableArrows.mk₁ φ ⋙ G = ComposableArrows.mk₁ (G.map φ) :=
   ComposableArrows.ext₁ rfl rfl (by
     change G.map φ = 𝟙 _ ≫ G.map φ ≫ 𝟙 _
     simp)
 
+/- English proof (translation)
+The claim follows from `ComposableArrows.ext (fun i ↦ by fin_cases i <;> rfl) (fun i hi ↦ by obtain rfl | rfl : i = 0 ∨ i = 1 := by omega · change G.map φ = 𝟙 _ ≫ G.map φ ≫ 𝟙 _ simp · change G.map ψ = 𝟙 _ ≫ G.map ψ ≫ 𝟙 _ simp)`.
+-/
 theorem mk₂_comp (G : C' ⥤ C) {T T' T'' : C'} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     ComposableArrows.mk₂ φ ψ ⋙ G = ComposableArrows.mk₂ (G.map φ) (G.map ψ) :=
   ComposableArrows.ext (fun i ↦ by fin_cases i <;> rfl) (fun i hi ↦ by
@@ -96,6 +123,13 @@ theorem mk₂_comp (G : C' ⥤ C) {T T' T'' : C'} (φ : T ⟶ T') (ψ : T' ⟶ T
     · change G.map ψ = 𝟙 _ ≫ G.map ψ ≫ 𝟙 _
       simp)
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero m.pull1).2 fun c hc ↦ ?_, fun c' ↦ ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite `hc` using `[CoefMap.pullCohomologyOne_class]`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 hc`. Establish `hf : d1 F f.1 = 0` using `LinearMap.mem_ker.1 (commAlgFunctorCocyclesOne_eq_ker F ▸ f.2)`.
+
+Take `⟨y, hy⟩` from `h.1 f.1 hf ⟨g, hg⟩`. Conclude with `H1.mk_eq_zero.2 ⟨y, hy⟩`. Take `⟨f', rfl⟩` from `H1.mk_surjective F' c'`. Establish `hf : d1 F' f'.1 = 0` using `LinearMap.mem_ker.1 (commAlgFunctorCocyclesOne_eq_ker F' ▸ f'.2)`. Take `⟨x, y, hx, hy⟩` from `h.2 f'.1 hf`.
+
+Establish `hxm : x ∈ Z1 F` using `by rw [commAlgFunctorCocyclesOne_eq_ker]; exact hx`. Use `⟨H1.mk F ⟨x, hxm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Conclude with `⟨y, hy.symm⟩`.
+-/
 theorem pull1_bijective (m : CoefMap (RingHom.id R) F F')
     (h : QIsoAt (d0 F) (d1 F) (d0 F') (d1 F') (pullbackOneCochains m)) : Function.Bijective m.pull1 := by
   refine ⟨(injective_iff_map_eq_zero m.pull1).2 fun c hc ↦ ?_, fun c' ↦ ?_⟩
@@ -113,6 +147,13 @@ theorem pull1_bijective (m : CoefMap (RingHom.id R) F F')
     rw [CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]
     exact ⟨y, hy.symm⟩
 
+/- English proof (translation)
+Use `⟨(injective_iff_map_eq_zero m.pull2).2 fun c hc ↦ ?_, fun c' ↦ ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `H2.mk_surjective F c`. Rewrite `hc` using `[CoefMap.pullCohomologyTwo_class]`. Take `⟨g, hg⟩` from `H2.mk_eq_zero.1 hc`. Take `⟨y, hy⟩` from `h.1 f.1 ((mem_Z2_iff _).1 f.2) ⟨g, hg⟩`.
+
+Conclude with `H2.mk_eq_zero.2 ⟨y, hy⟩`. Take `⟨f', rfl⟩` from `H2.mk_surjective F' c'`. Take `⟨x, y, hx, hy⟩` from `h.2 f'.1 ((mem_Z2_iff _).1 f'.2)`. Use `⟨H2.mk F ⟨x, (mem_Z2_iff _).2 hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]`.
+
+Conclude with `⟨y, hy.symm⟩`.
+-/
 theorem pull2_bijective (m : CoefMap (RingHom.id R) F F')
     (h : QIsoAt (d1 F) (d2 F) (d1 F') (d2 F') (pullbackTwoCochains m)) : Function.Bijective m.pull2 := by
   refine ⟨(injective_iff_map_eq_zero m.pull2).2 fun c hc ↦ ?_, fun c' ↦ ?_⟩
@@ -127,6 +168,9 @@ theorem pull2_bijective (m : CoefMap (RingHom.id R) F F')
     rw [CoefMap.pullCohomologyTwo_class, H2.mk_eq_mk]
     exact ⟨y, hy.symm⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T`. Express the relevant statement in the definitionally equal form `m.α T (algebraMap R _ r) = algebraMap R _ r`. Rewrite using `[Algebra.algebraMap_eq_smul_one, m.smul, map_one, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+-/
 theorem pullbackZeroCochains_algebraMap (m : CoefMap (RingHom.id R) F F') (r : R) :
     pullbackZeroCochains m (algebraMap R (C0 F) r) = algebraMap R (C0 F') r := by
   funext T
@@ -134,18 +178,37 @@ theorem pullbackZeroCochains_algebraMap (m : CoefMap (RingHom.id R) F F') (r : R
   rw [Algebra.algebraMap_eq_smul_one, m.smul, map_one, Algebra.algebraMap_eq_smul_one]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T T' φ`. Rewrite using `[amitsur_d0_apply]`. Express the relevant statement in the definitionally equal form `algebraMap R _ r - mp F φ (algebraMap R _ r) = 0`. Rewrite using `[AlgHom.commutes, sub_self]`.
+-/
 theorem d0_algebraMap (r : R) : d0 F (algebraMap R (C0 F) r) = 0 := by
   funext T T' φ
   rw [amitsur_d0_apply]
   change algebraMap R _ r - mp F φ (algebraMap R _ r) = 0
   rw [AlgHom.commutes, sub_self]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `T T' φ`. Express the relevant statement in the definitionally equal form `m.α T' (g _) - mp F' φ (m.α T (g _)) = m.α T' (g _ - mp F (m.G.map φ) (g _))`. Rewrite using `[map_sub, m.naturality]`.
+-/
 theorem d0_pullbackZeroCochains (m : CoefMap (RingHom.id R) F F') (g : C0 F) :
     d0 F' (pullbackZeroCochains m g) = pullbackOneCochains m (d0 F g) := by
   funext T T' φ
   change m.α T' (g _) - mp F' φ (m.α T (g _)) = m.α T' (g _ - mp F (m.G.map φ) (g _))
   rw [map_sub, m.naturality]
 
+/- English proof (translation)
+Establish `hk : ∀ x, d0 F x = 0 → pullbackZeroCochains m x = 0 → x = 0` using `fun x hx hp ↦ by`. Take `⟨y, hy⟩` from `h.1 x hx ⟨0, by rw [hp]; rfl⟩`. Conclude with `hy.symm`. Establish `hs : ∀ z, d0 F' z = 0 → ∃ x, d0 F x = 0 ∧ pullbackZeroCochains m x = z` using `fun z hz ↦ by`. Take `⟨x, y, hx, hy⟩` from `h.2 z hz`.
+
+Conclude with `⟨x, hx, sub_eq_zero.1 hy⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨he, hi⟩`. Use `⟨fun y ↦ ⟨fun hy ↦ ?_, ?_⟩, fun r r' hr ↦ hi ?_⟩` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hs y hy`.
+
+Take `⟨r, rfl⟩` from `(he x).1 hx`. Conclude with `⟨r, (pullbackZeroCochains_algebraMap m r).symm⟩`. Introduce and unpack `⟨r, rfl⟩`. Conclude with `d0_algebraMap r`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+
+Use `hk _ (d0_algebraMap _) ?_` and prove the remaining obligations. Rewrite using `[pullbackZeroCochains_algebraMap, map_sub, hr, sub_self]`. Introduce and unpack `⟨he, hi⟩`. Use `⟨fun y ↦ ⟨fun hy ↦ ?_, ?_⟩, fun r r' hr ↦ hi ?_⟩` and prove the remaining obligations. Establish `h0 : d0 F' (pullbackZeroCochains m y) = 0` using `by rw [d0_pullbackZeroCochains, hy, map_zero]`.
+
+Take `⟨r, hr⟩` from `(he _).1 h0`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `hr' : algebraMap R (C0 F') r = pullbackZeroCochains m y` using `hr`. Establish `e : y - algebraMap R (C0 F) r = 0` using `hk _ (by rw [map_sub, hy, d0_algebraMap, sub_self]) (by rw [map_sub, pullbackZeroCochains_algebraMap, hr', sub_self])`. Conclude with `(sub_eq_zero.1 e).symm`.
+
+Introduce and unpack `⟨r, rfl⟩`. Conclude with `d0_algebraMap r`. Rewrite using `[← pullbackZeroCochains_algebraMap m, ← pullbackZeroCochains_algebraMap m, hr]`.
+-/
 theorem stein_iff (m : CoefMap (RingHom.id R) F F')
     (h : QIsoAt (0 : R →ₗ[R] C0 F) (d0 F) (0 : R →ₗ[R] C0 F') (d0 F') (pullbackZeroCochains m)) :
     Stein F ↔ Stein F' := by
@@ -181,6 +244,17 @@ theorem stein_iff (m : CoefMap (RingHom.id R) F F')
 
 end
 
+/- English proof (translation)
+Introduce `hD R _ C C' _ _ F F' m hQ`. Take `⟨e₀, e₁, e₂, e₃, v₀, v₁, v₂, v₃, c₀, c₁, c₂⟩` from `hD R C F`. Take `⟨e₀', e₁', e₂', e₃', v₀', v₁', v₂', v₃', c₀', c₁', c₂'⟩` from `hD R C' F'`. Establish `p0 : ∀ f, e₀' (pulln m 0 f) = pullbackZeroCochains m (e₀ f)` using `fun f ↦ by`. Use function extensionality and compare the values at `T`.
+
+Rewrite using `[v₀']`. Express the relevant statement in the definitionally equal form `m.α T (f (ComposableArrows.mk₀ T ⋙ m.G)) = m.α T (e₀ f (m.G.obj T))`. Rewrite using `[v₀]`. Conclude with `congrArg (m.α T) (eq_of_heq (cn_heq f (mk₀_comp m.G T)))`. Establish `p1 : ∀ f, e₁' (pulln m 1 f) = pullbackOneCochains m (e₁ f)` using `fun f ↦ by`.
+
+Use function extensionality and compare the values at `T T' φ`. Rewrite using `[v₁']`. Express the relevant statement in the definitionally equal form `m.α T' (f (ComposableArrows.mk₁ φ ⋙ m.G)) = m.α T' (e₁ f _ _ (m.G.map φ))`. Rewrite using `[v₁]`. Conclude with `congrArg (m.α T') (eq_of_heq (cn_heq f (mk₁_comp m.G φ)))`.
+
+Establish `p2 : ∀ f, e₂' (pulln m 2 f) = pullbackTwoCochains m (e₂ f)` using `fun f ↦ by`. Use function extensionality and compare the values at `T T' T'' φ ψ`. Rewrite using `[v₂']`. Express the relevant statement in the definitionally equal form `m.α T'' (f (ComposableArrows.mk₂ φ ψ ⋙ m.G)) = m.α T'' (e₂ f _ _ _ (m.G.map φ) (m.G.map ψ))`. Rewrite using `[v₂]`.
+
+Conclude with `congrArg (m.α T'') (eq_of_heq (cn_heq f (mk₂_comp m.G φ ψ)))`. Use `⟨pull1_bijective m ?_, pull2_bijective m ?_, stein_iff m ?_⟩` and prove the remaining obligations. Conclude with `qIsoAt_transport e₀ e₁ e₂ e₀' e₁' e₂' c₀ c₁ c₀' c₁' p1 (hQ.2 0)`. Conclude with `qIsoAt_transport e₁ e₂ e₃ e₁' e₂' e₃' c₁ c₂ c₁' c₂' p2 (hQ.2 1)`. Conclude with `qIsoAt_transport (LinearEquiv.refl R R) e₀ e₁ (LinearEquiv.refl R R) e₀' e₁' (fun _ ↦ map_zero _) c₀ (fun _ ↦ map_zero _) c₀' p0 hQ.1`.
+-/
 theorem lowSt_of_dictSt : DictSt → LowSt := by
   intro hD R _ C C' _ _ F F' m hQ
   obtain ⟨e₀, e₁, e₂, e₃, v₀, v₁, v₂, v₃, c₀, c₁, c₂⟩ := hD R C F

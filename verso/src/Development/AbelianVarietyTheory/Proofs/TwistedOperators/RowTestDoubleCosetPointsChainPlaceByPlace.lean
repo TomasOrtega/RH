@@ -25,22 +25,36 @@ open GlobalTheory.ExpansionInvariance
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[mt_cutPart h.1 h.2, smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mt_cut {a : AE D} (h : a * a = a ∧ cA D a = a) (V : HSp D) (g : GA D V) :
     Formalism.L2.Theta.mt V (cutPart a V g) - 1 = a • (Formalism.L2.Theta.mt V g - 1) := by
   rw [mt_cutPart h.1 h.2, smul_sub, sub_smul, one_smul]
   abel
 
+/- English proof (translation)
+Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Establish `h1` using `mt_cut h V 1`. Rewrite `h1` using `[GlobalTheory.IdemSupport.mt_one, sub_self, smul_zero, sub_eq_zero]`. Rewrite using `[h1, GlobalTheory.IdemSupport.mt_one]`.
+-/
 theorem cut_one {a : AE D} (h : a * a = a ∧ cA D a = a) (V : HSp D) : cutPart a V 1 = 1 := by
   apply GlobalTheory.IdemSupport.mt_inj V
   have h1 := mt_cut h V 1
   rw [GlobalTheory.IdemSupport.mt_one, sub_self, smul_zero, sub_eq_zero] at h1
   rw [h1, GlobalTheory.IdemSupport.mt_one]
 
+/- English proof (translation)
+Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Rewrite using `[mt_cutPart (mul_zero (0 : AE D)) (map_zero (cA D)), GlobalTheory.IdemSupport.mt_one, zero_smul, sub_zero, one_smul, zero_add]`.
+-/
 theorem cut_zero (V : HSp D) (g : GA D V) : cutPart 0 V g = 1 := by
   apply GlobalTheory.IdemSupport.mt_inj V
   rw [mt_cutPart (mul_zero (0 : AE D)) (map_zero (cA D)), GlobalTheory.IdemSupport.mt_one, zero_smul, sub_zero, one_smul,
     zero_add]
 
+/- English proof (translation)
+Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Rewrite using `[mt_cutPart h.1 h.2]`. Use extensionality with `i j`. Establish `hij` using `hg i j`. Simplify using `only [Matrix.sub_apply] at hij`.
+
+Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Take the linear combination `hij`.
+-/
 theorem cut_self {e : AE D} (h : (e + cA D e) * (e + cA D e) = e + cA D e ∧ cA D (e + cA D e) = e + cA D e) (V : HSp D)
     {g : GA D V} (hg : SuppAt e V g) : cutPart (e + cA D e) V g = g := by
   apply GlobalTheory.IdemSupport.mt_inj V
@@ -51,6 +65,11 @@ theorem cut_self {e : AE D} (h : (e + cA D e) * (e + cA D e) = e + cA D e ∧ cA
   simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]
   linear_combination hij
 
+/- English proof (translation)
+Establish `hab' : b * a = 0` using `by rw [mul_comm]; exact hab`. Establish `hba : (b + a) * (b + a) = b + a ∧ cA D (b + a) = b + a`. Use `⟨?_, by rw [map_add, ha.2, hb.2]⟩` and prove the remaining obligations. Rewrite using `[add_mul, mul_add, mul_add, hb.1, ha.1, hab, hab', add_zero, zero_add]`. Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises.
+
+Rewrite using `[GlobalTheory.IdemSupport.mt_mul, eq_add_of_sub_eq (mt_cut ha V g), eq_add_of_sub_eq (mt_cut hb V g), eq_add_of_sub_eq (mt_cut hba V g)]`. Simplify using `only [add_mul, mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, hab', zero_smul, one_mul, mul_one, zero_add, add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cut_add {a b : AE D} (ha : a * a = a ∧ cA D a = a) (hb : b * b = b ∧ cA D b = b) (hab : a * b = 0) (V : HSp D)
     (g : GA D V) : cutPart a V g * cutPart b V g = cutPart (b + a) V g := by
   have hab' : b * a = 0 := by rw [mul_comm]; exact hab
@@ -64,11 +83,21 @@ theorem cut_add {a b : AE D} (ha : a * a = a ∧ cA D a = a) (hb : b * b = b ∧
     zero_add, add_smul]
   abel
 
+/- English proof (translation)
+Take `⟨⟨h1, h2, -⟩, -⟩` from `h`. Conclude with `⟨h1, h2⟩`.
+-/
 private lemma mul_self_and_mul_cA_eq_zero_of_isIdemAt {e : AE D} {w : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt e w) :
     e * e = e ∧ e * cA D e = 0 := by
   obtain ⟨⟨h1, h2, -⟩, -⟩ := h
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `mul_self_and_mul_cA_eq_zero_of_isIdemAt he`. Establish `hf` using `idem_conj_sum h1 h2`. Establish `c1 : GlobalTheory.StdFrames.cpt w (GlobalTheory.LevSplit.finSw D e) = 1` using `(GlobalTheory.StdFrames.cpt_of_isIdemAt he).1`. Establish `c2 : GlobalTheory.StdFrames.cpt w (GlobalTheory.LevSplit.finSw D (cA D e)) = 0`. Establish `h3` using `congrArg (fun x => GlobalTheory.StdFrames.cpt w (GlobalTheory.LevSplit.finSw D x)) h2`.
+
+Simplify using `only [map_mul, map_zero, c1, one_mul] at h3`. Conclude with `h3`. Apply `Matrix.GeneralLinearGroup.ext` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [GlobalTheory.StdFrames.loc, Matrix.GeneralLinearGroup.map_apply]`.
+
+Rewrite using `[GlobalTheory.LevSplit.finE_val, GlobalTheory.LevSplit.finE_val, Matrix.map_apply, Matrix.map_apply, mt_cutPart hf.1 hf.2]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, c1, c2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem loc_cut {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e w) (V : HSp D) (g : GA D V) :
     loc w (Lev.finE V (cutPart (e + cA D e) V g)) = loc w (Lev.finE V g) := by
   obtain ⟨h1, h2⟩ := mul_self_and_mul_cA_eq_zero_of_isIdemAt he
@@ -85,12 +114,24 @@ theorem loc_cut {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt 
   simp only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, c1, c2]
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.FunObj.inBasis, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, loc_cut he V g]`.
+-/
 theorem inBasis_cut {e : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e w) (V : HSp D) {n : ℕ} (h : n = V.rank)
     (β : GL (Fin V.rank) (Lev.EAf D)) (g : GA D V) :
     GlobalTheory.FunObj.inBasis h β w (Lev.finE V (cutPart (e + cA D e) V g)) = GlobalTheory.FunObj.inBasis h β w (Lev.finE V g) := by
   simp only [GlobalTheory.FunObj.inBasis, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom,
     MulAut.conj_apply, map_mul, loc_cut he V g]
 
+/- English proof (translation)
+Take `⟨⟨-, -, v', ε, hε, hse⟩, -⟩` from `id he`. Establish `hv` using `GlobalTheory.RowVal.placeIdem_eq_under_of_idemAt he hε hse`. Substitute `hv` using the available equality. Take `⟨α, rfl, hα, -⟩` from `hε`. Establish `hc : GlobalTheory.FinPl.compAt D (w.under (𝓞 D.host.F)) (e + cA D e) = 1`.
+
+Rewrite using `[hse, (GlobalTheory.FinPl.SetCut.parts_pairA α).2, hα, Algebra.TensorProduct.one_def]`. Establish `ha0 : GlobalTheory.FinPl.compAt D (w.under (𝓞 D.host.F)) a = 0`. Establish `h3` using `congrArg (GlobalTheory.FinPl.compAt D (w.under (𝓞 D.host.F))) h0`. Rewrite `h3` using `[map_mul, hc, mul_one, map_zero]`. Then use the resulting hypothesis. Use `show cutPart a V g ∈ GlobalTheory.FinPl.congGrp V (GlobalTheory.FinPl.idOff D _)`.
+
+Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `i j`. Rewrite using `[← Matrix.sub_apply, mt_cut ha V g, Matrix.smul_apply, smul_eq_mul]`. Simplify using `only [GlobalTheory.FinPl.idOff, Submodule.mem_iInf, RingHom.mem_ker, map_mul]`. Introduce and unpack `⟨u, rfl⟩`.
+
+Rewrite using `[ha0, zero_mul]`.
+-/
 theorem cut_mem_grpOff {e a : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.IsIdemAt e w) (ha : a * a = a ∧ cA D a = a)
     (h0 : a * (e + cA D e) = 0) (V : HSp D) (g : GA D V) :
     cutPart a V g ∈ GlobalTheory.FinPl.grpOff V (· = w.under (𝓞 D.host.F)) := by
@@ -111,6 +152,13 @@ theorem cut_mem_grpOff {e a : AE D} {w : Pl D.host.E} (he : Formalism.L2.NTheta.
   rintro ⟨u, rfl⟩
   rw [ha0, zero_mul]
 
+/- English proof (translation)
+Establish `hf : finHom V a = 1` using `ha`. Use `show a ∈ GlobalTheory.FinPl.congGrp V (GlobalTheory.FinPl.idOff D P)`. Rewrite using `[GlobalTheory.FinPlLoc.mem_congGrp]`. Introduce `i j`. Establish `key : finPart D (Formalism.L2.Theta.mt V a i j) = (finHom V a : Matrix (Fin V.rank) (Fin V.rank) _) i j`.
+
+Rewrite using `[finHom, MonoidHom.comp_apply, Formalism.UG.P.bc_coe, Matrix.map_apply]`. Both sides reduce to the same expression. Establish `key2 : finPart D (Formalism.L2.Theta.mt V a i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = 0`. Rewrite using `[map_sub, key, hf, Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [GlobalTheory.FinPl.idOff, Submodule.mem_iInf, RingHom.mem_ker, GlobalTheory.FinPl.compAt, RingHom.comp_apply, key2, map_zero, implies_true]`.
+-/
 theorem real_mem_grpOff (V : HSp D) (P : GlobalTheory.FinPl.Pl D → Prop) {a : GA D V} (ha : a ∈ GinfC V) :
     a ∈ GlobalTheory.FinPl.grpOff V P := by
   have hf : finHom V a = 1 := ha
@@ -126,6 +174,13 @@ theorem real_mem_grpOff (V : HSp D) (P : GlobalTheory.FinPl.Pl D → Prop) {a : 
   simp only [GlobalTheory.FinPl.idOff, Submodule.mem_iInf, RingHom.mem_ker, GlobalTheory.FinPl.compAt, RingHom.comp_apply, key2,
     map_zero, implies_true]
 
+/- English proof (translation)
+Take `⟨hb, a, ha, hab⟩` from `h`. Take `⟨hb₀, a₀, ha₀, hab₀⟩` from `h₀`. Establish `e1 : a = a₀ * (b₀ * r) * b⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, hab, ← hab₀, mul_assoc]`. Establish `e3 : a₀⁻¹ * a = b₀ * r * b⁻¹`.
+
+Rewrite using `[e1]`. Use `group`. Establish `e2 : a₀⁻¹ * a = 1` using `GlobalTheory.PointAtPlace.eq_one_of_mem V _ (by rw [e3]; exact mul_mem (mul_mem hb₀ hr) (inv_mem hb)) (mul_mem (inv_mem ha₀) ha)`. Rewrite `e2` using `[inv_mul_eq_one]`. Rewrite `hab` using `[← e2, ← hab₀, mul_assoc]`.
+
+Conclude with `mul_left_cancel hab`.
+-/
 theorem isFinOf_mul {V : HSp D} {δ r b b₀ : GA D V} (h : IsFinOf (δ * r) b) (h₀ : IsFinOf δ b₀) (hr : r ∈ GfC V) :
     b = b₀ * r := by
   obtain ⟨hb, a, ha, hab⟩ := h
@@ -146,17 +201,28 @@ section Fam
 
 variable {P : Finset (Pl D.host.E)} {e : AE D} {eL : P → AE D}
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Rewrite using `[Finset.sum_singleton]`. Conclude with `hes w (Finset.mem_singleton_self w)`.
+-/
 theorem idemAt_of_single {x : AE D} {w : Pl D.host.E} (h : IsIdemSum x {w}) : Formalism.L2.NTheta.IsIdemAt x w := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := h
   rw [Finset.sum_singleton]
   exact hes w (Finset.mem_singleton_self w)
 
+/- English proof (translation)
+Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[← Finset.sum_coe_sort P es]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ _ _ (hes w.1 w.2) (h w)).1 rfl`.
+-/
 theorem eq_sum (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) : e = ∑ w, eL w := by
   obtain ⟨⟨es, hes, rfl⟩, -⟩ := he
   rw [← Finset.sum_coe_sort P es]
   refine Finset.sum_congr rfl fun w _ => ?_
   exact (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ _ _ (hes w.1 w.2) (h w)).1 rfl
 
+/- English proof (translation)
+Rewrite using `[eq_sum he h, Finset.sum_mul, Finset.sum_eq_single u]`. Conclude with `(mul_self_and_mul_cA_eq_zero_of_isIdemAt (h u)).1`. Introduce `v _ hv`. Conclude with `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ _ _ (h v) (h u)).2 (fun heq => hv (Subtype.ext heq))`. Introduce `hu`.
+
+Conclude with `absurd (Finset.mem_univ u) hu`.
+-/
 private lemma mul_eL_eq_eL_of_isIdemSum (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) (u : P) :
     e * eL u = eL u := by
   rw [eq_sum he h, Finset.sum_mul, Finset.sum_eq_single u]
@@ -166,6 +232,9 @@ private lemma mul_eL_eq_eL_of_isIdemSum (he : IsIdemSum e P) (h : ∀ w, Formali
   · intro hu
     exact absurd (Finset.mem_univ u) hu
 
+/- English proof (translation)
+Take `⟨-, hec⟩` from `id he`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma eL_mul_cA_eL_eq_zero (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) (u u' : P) :
     eL u * cA D (eL u') = 0 := by
   obtain ⟨-, hec⟩ := id he
@@ -173,6 +242,9 @@ private lemma eL_mul_cA_eL_eq_zero (he : IsIdemSum e P) (h : ∀ w, Formalism.L2
     _ = (e * cA D e) * (eL u * cA D (eL u')) := by rw [map_mul]; ring
     _ = 0 := by rw [hec, zero_mul]
 
+/- English proof (translation)
+Establish `e0 : eL w * eL w' = 0` using `(GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ _ _ (h w) (h w')).2 (fun heq => hw (Subtype.ext heq))`. Rewrite using `[add_mul, mul_add, mul_add, ← map_mul (cA D) (eL w) (eL w'), e0, map_zero, eL_mul_cA_eL_eq_zero he h w w', mul_comm (cA D (eL w)) (eL w'), eL_mul_cA_eL_eq_zero he h w' w]`. Simplify using the standard rewrite rules.
+-/
 theorem orth (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) {w w' : P} (hw : w ≠ w') :
     (eL w + cA D (eL w)) * (eL w' + cA D (eL w')) = 0 := by
   have e0 : eL w * eL w' = 0 :=
@@ -181,6 +253,11 @@ theorem orth (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w
     mul_comm (cA D (eL w)) (eL w'), eL_mul_cA_eL_eq_zero he h w' w]
   simp
 
+/- English proof (translation)
+Establish `hi : ∀ u, (eL u + cA D (eL u)) * (eL u + cA D (eL u)) = eL u + cA D (eL u) ∧ cA D (eL u + cA D (eL u)) = eL u + cA D (eL u)` using `fun u => idem_conj_sum (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h u)).1 (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h u)).2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single u (fun v _ hv => orth he h (Ne.symm hv)) (fun hu' => absurd hu hu'), (hi u).1]`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun u _ => (hi u).2`.
+-/
 theorem idem_sum (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) (S : Finset P) :
     (∑ w ∈ S, (eL w + cA D (eL w))) * (∑ w ∈ S, (eL w + cA D (eL w))) = (∑ w ∈ S, (eL w + cA D (eL w))) ∧
       cA D (∑ w ∈ S, (eL w + cA D (eL w))) = ∑ w ∈ S, (eL w + cA D (eL w)) := by
@@ -194,6 +271,9 @@ theorem idem_sum (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (
   · rw [map_sum]
     exact Finset.sum_congr rfl fun u _ => (hi u).2
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun u hu => orth he h (fun huw => hw (huw ▸ hu))`.
+-/
 theorem sum_orth (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) {S : Finset P} {w : P} (hw : w ∉ S) :
     (∑ w ∈ S, (eL w + cA D (eL w))) * (eL w + cA D (eL w)) = 0 := by
   rw [Finset.sum_mul]
@@ -203,16 +283,27 @@ variable (eL) in
 
 def cutS (S : Finset P) {V : HSp D} (g : GA D V) : GA D V := cutPart (∑ w ∈ S, (eL w + cA D (eL w))) V g
 
+/- English proof (translation)
+Unfold `cutS`. Rewrite using `[Finset.sum_empty]`. Conclude with `cut_zero _ g`.
+-/
 theorem cutS_empty {V : HSp D} (g : GA D V) : cutS eL ∅ g = 1 := by
   unfold cutS
   rw [Finset.sum_empty]
   exact cut_zero _ g
 
+/- English proof (translation)
+Unfold `cutS`. Conclude with `cut_one (idem_sum he h S) V`.
+-/
 theorem cutS_one (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) (S : Finset P) (V : HSp D) :
     cutS eL S (1 : GA D V) = 1 := by
   unfold cutS
   exact cut_one (idem_sum he h S) V
 
+/- English proof (translation)
+Establish `hs : ∑ w ∈ (Finset.univ : Finset P), (eL w + cA D (eL w)) = e + cA D e`. Rewrite using `[Finset.sum_add_distrib, ← map_sum, ← eq_sum he h]`. Establish `hi` using `idem_sum he h Finset.univ`. Unfold `cutS`. Rewrite `hi`, the goal using `[hs]`.
+
+Conclude with `cut_self hi _ hg`.
+-/
 theorem cutS_univ (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) {V : HSp D} {g : GA D V}
     (hg : SuppAt e V g) : cutS eL Finset.univ g = g := by
   have hs : ∑ w ∈ (Finset.univ : Finset P), (eL w + cA D (eL w)) = e + cA D e := by
@@ -222,6 +313,9 @@ theorem cutS_univ (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt 
   rw [hs] at hi ⊢
   exact cut_self hi _ hg
 
+/- English proof (translation)
+Unfold `cutS`. Rewrite using `[Finset.sum_insert hw]`. Conclude with `cut_add (idem_sum he h S) (idem_conj_sum (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h w)).1 (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h w)).2) (sum_orth he h hw) _ g`.
+-/
 theorem cutS_insert (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) {S : Finset P} {w : P} (hw : w ∉ S)
     {V : HSp D} (g : GA D V) : cutS eL S g * cutPart (eL w + cA D (eL w)) V g = cutS eL (insert w S) g := by
   unfold cutS
@@ -229,6 +323,9 @@ theorem cutS_insert (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemA
   exact cut_add (idem_sum he h S) (idem_conj_sum (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h w)).1 (mul_self_and_mul_cA_eq_zero_of_isIdemAt (h w)).2)
     (sum_orth he h hw) _ g
 
+/- English proof (translation)
+Unfold `cutS`. Conclude with `cut_mem_grpOff (h w) (idem_sum he h S) (sum_orth he h hw) _ g`.
+-/
 theorem cutS_mem (he : IsIdemSum e P) (h : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1) {S : Finset P} {w : P} (hw : w ∉ S)
     {V : HSp D} (g : GA D V) : cutS eL S g ∈ GlobalTheory.FinPl.grpOff V (· = w.1.under (𝓞 D.host.F)) := by
   unfold cutS
@@ -242,6 +339,13 @@ namespace GlobalTheory.PlaceChain
 
 open GlobalTheory.ExpansionInvariance
 
+/- English proof (translation)
+Unfold `IsTilt`. Use `⟨one_mem _, fun _ => rfl, fun σ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `hj' : j = D.R.m - 1`. Assume the negation of the conclusion as `hne`. Apply `hj` to reduce the goal to its premises.
+
+Simplify using `only [idx, List.mem_range'_1]`. Take `⟨k, hk⟩` from `D.R.m_even`. Use linear arithmetic over natural numbers and integers. Substitute `hj'` using the available equality. Establish `hσ : σ = 0` using `by omega`.
+
+Substitute `hσ` using the available equality. Apply the tactic sequence `refine ⟨by rw [GlobalTheory.IdemSupport.mt_one, Matrix.one_mul], ?_, ?_⟩ <;> (ext a b; exact b.elim0)`.
+-/
 theorem isTilt_one {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {j : ℕ} (hj : j ∉ idx D) :
     IsTilt G j 1 := by
   unfold IsTilt
@@ -257,15 +361,60 @@ theorem isTilt_one {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridDa
   subst hσ
   refine ⟨by rw [GlobalTheory.IdemSupport.mt_one, Matrix.one_mul], ?_, ?_⟩ <;> (ext a b; exact b.elim0)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[GlobalTheory.IdemSupport.mt_one, sub_self, Matrix.zero_apply, mul_zero]`.
+-/
 private lemma suppAt_one_twisted_operators {D : D7} {e : AE D} {V : HSp D} : SuppAt e V 1 := by
   intro i j
   rw [GlobalTheory.IdemSupport.mt_one, sub_self, Matrix.zero_apply, mul_zero]
 
+/- English proof (translation)
+Simplify using `[idx]`.
+-/
 private lemma zero_not_mem_idx' {D : D7} : 0 ∉ idx D := by
   simp [idx]
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `Exists.intro 0 (fun ε CF _ => Exists.intro 0 ?_)` and prove the remaining obligations. Introduce `D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ s t β b b₀ hrep hbase eL heL p hp`. Establish `hL : ∀ w, Formalism.L2.NTheta.IsIdemAt (eL w) w.1` using `fun w => idemAt_of_single (heL w)`. Take `⟨hH₀, hbI, hb1⟩` from `hbase`. Take `⟨e₀, he₀, hs₀, hl₀⟩` from `id hH₀`.
+
+Take `⟨hr1, hr2⟩` from `hrep`. Establish `h0i : 0 ∉ idx D` using `zero_not_mem_idx'`. Establish `hX : ∀ j, ∃ x : GA D (ch.G.V (.grid D.R.m j)), (j ∈ idx D → x ∈ GfC _ ∧ b j = b₀ j * x ∧ ∃ e, IsIdemSum e (locPl ch.G t) ∧ SuppAt e _ x ∧ ∀ (hj : j ≤ D.R.m) (w : locPl ch.G t), inBasis (rank_vertex ch.G t w.1 (X` using `(D.R.m, j)) ⟨le_rfl, hj⟩) (ch.S.B.β D.R.m j) w.1 (Lev.finE (ch.G.V (.grid D.R.m j)) x) = sgnAt ch.G t s w.1 j * (repsAt ch.G t w.1).elt (β w) (D.R.m, j)) ∧ (j ∉ idx D → x = 1) := by`. Introduce `j`. Distinguish the cases in `hj : j ∈ idx D`.
+
+Establish `hjm : j < D.R.m`. Establish `h'` using `hj`. Simplify using `only [idx, List.mem_range'_1] at h'`. Use linear arithmetic over natural numbers and integers. Take `⟨δ, r, hδ, hHr, hfin⟩` from `hr2 j hj hjm.le`.
+
+Take `⟨δ', hδ', hfin'⟩` from `hbI j hj`. Establish `hdd : δ = δ'` using `GlobalTheory.TiltUnique.tilt_unique ch.G hjm δ δ' hδ hδ'`. Substitute `hdd` using the available equality. Establish `hrf : r ∈ GfC _` using `GlobalTheory.RowCover.mem_GfC_of_hasLoc t ch.S.B hjm.le r _ hHr`. Take `⟨e, he, hse, hloc⟩` from `id hHr`.
+
+Conclude with `⟨r, fun _ => ⟨hrf, isFinOf_mul hfin hfin' hrf, e, he, hse, fun _ w => hloc w⟩, fun h' => absurd hj h'⟩`. Conclude with `⟨1, fun h' => absurd h' hj, fun _ => rfl⟩`. Use `choose X hX using hX`. Use `⟨fun S j => if j = 0 then p j * cutS eL Sᶜ (b₀ j) else p j * b₀ j * cutS eL S (X j), ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j dsimp only`.
+
+Rewrite using `[Pi.mul_apply]`. Use `split_ifs with hj0`. Substitute `hj0` using the available equality. Rewrite using `[Finset.compl_empty, cutS_univ he₀ hL hs₀]`. Rewrite using `[cutS_empty, mul_one]`.
+
+Use function extensionality and compare the values at `j dsimp only`. Rewrite using `[Pi.mul_apply]`. Use `split_ifs with hj0`. Substitute `hj0` using the available equality. Rewrite using `[Finset.compl_univ, cutS_empty, mul_one, hr1 0 h0i, mul_one]`.
+
+Distinguish the cases in `hji : j ∈ idx D`. Take `⟨-, hbX, e, he, hse, -⟩` from `(hX j).1 hji`. Rewrite using `[cutS_univ he hL hse, hbX, mul_assoc]`. Rewrite using `[(hX j).2 hji, cutS_one he₀ hL, hr1 j hji, hb1 j hj0 hji, mul_one]`. Introduce `S w hw`.
+
+Establish `hwc : w ∈ Sᶜ` using `Finset.mem_compl.2 hw`. Take `⟨hw1, hw2⟩` from `mul_self_and_mul_cA_eq_zero_of_isIdemAt (hL w)`. Establish `hfw` using `idem_conj_sum hw1 hw2`. Use `⟨fun j => if j = 0 then 1 else cutPart (eL w + cA D (eL w)) _ (X j), fun j => if j = 0 then cutPart (eL w + cA D (eL w)) _ (b₀ j) else 1, fun j => if j = 0 then p j * cutS eL (Sᶜ.erase w) (b₀ j) else p j * b₀ j * cutS eL S (X j), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj dsimp only`.
+
+Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Rewrite using `[if_pos rfl, if_neg h0i, map_one, map_one]`. Conclude with `⟨suppAt_one_twisted_operators, rfl⟩`. Rewrite using `[if_neg hj0]`.
+
+Distinguish the cases in `hji : j ∈ idx D`. Take `⟨-, -, e, -, -, hloc⟩` from `(hX j).1 hji`. Rewrite using `[if_pos hji, inBasis_cut (hL w), hloc hj w]`. Conclude with `⟨suppAt_cutPart hw1 hw2 _ _, rfl⟩`. Rewrite using `[if_neg hji, (hX j).2 hji, cut_one hfw, map_one, map_one]`.
+
+Conclude with `⟨suppAt_one_twisted_operators, rfl⟩`. Introduce `j hj dsimp only`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, inBasis_cut (hL w), hl₀ w]`.
+
+Conclude with `⟨suppAt_cutPart hw1 hw2 _ _, rfl⟩`. Rewrite using `[if_neg hj0, if_neg hj0, map_one, map_one]`. Conclude with `⟨suppAt_one_twisted_operators, rfl⟩`. Introduce `j _ dsimp only`. Distinguish the cases in `hj0 : j = 0`.
+
+Substitute `hj0` using the available equality. Use `⟨1, isTilt_one ch.G h0i, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos rfl, inv_one, one_mul]`. Conclude with `mul_mem (real_mem_grpOff _ _ (hp.1 0)) (cutS_mem he₀ hL (Finset.notMem_erase w Sᶜ) _)`. Rewrite using `[if_neg hj0]`.
+
+Distinguish the cases in `hji : j ∈ idx D`. Take `⟨δ, hδ, hb₀f, a, ha, rfl⟩` from `hbI j hji`. Use `⟨a * b₀ j, hδ, ?_⟩` and prove the remaining obligations. Establish `hc : a⁻¹ * p j * b₀ j = b₀ j * (a⁻¹ * p j)` using `GlobalTheory.AdelicSplit.commute_GinfC_GfC _ (mul_mem (inv_mem ha) (hp.1 j)) hb₀f`. Establish `e4 : (a * b₀ j)⁻¹ * (p j * b₀ j * cutS eL S (X j)) = a⁻¹ * p j * cutS eL S (X j)`.
+
+Rewrite using `[_root_.mul_inv_rev, show p j * b₀ j * cutS eL S (X j) = a * (a⁻¹ * p j * b₀ j) * cutS eL S (X j) by group, hc]`. Use `group`. Rewrite using `[e4]`. Conclude with `mul_mem (mul_mem (real_mem_grpOff _ _ (inv_mem ha)) (real_mem_grpOff _ _ (hp.1 j))) (cutS_mem he₀ hL hw _)`. Use `⟨1, isTilt_one ch.G hji, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_one, one_mul, hb1 j hj0 hji, mul_one]`. Conclude with `mul_mem (real_mem_grpOff _ _ (hp.1 j)) (cutS_mem he₀ hL hw _)`. Use function extensionality and compare the values at `j dsimp only`. Rewrite using `[Pi.mul_apply]`. Use `split_ifs with hj0`.
+
+Rewrite using `[mul_one, Finset.compl_insert]`. Rewrite using `[mul_assoc, cutS_insert he₀ hL hw]`. Use function extensionality and compare the values at `j dsimp only`. Rewrite using `[Pi.mul_apply]`. Use `split_ifs with hj0`.
+
+Rewrite using `[mul_assoc, cutS_insert he₀ hL (Finset.notMem_erase w Sᶜ), Finset.insert_erase hwc]`. Rewrite using `[mul_one]`.
+-/
 theorem points : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (s : ℤˣ) (t : T) (β : CosFam ch.G t) (b b₀ : Pts ch.G), IsRep t ch.S.B s β b → IsBase t ch.S.B b₀ → ∀ (eL : locPl ch.G t → AE D), (∀ w, IsIdemSum (eL w) {w.1}) → ∀ p : Pts ch.G, IsRealPt p → ∃ q : Finset (locPl ch.G t) → Pts ch.G, q ∅ = p * b₀ ∧ q Finset.univ = p * b ∧ ∀ (S : Finset (locPl ch.G t)) (w : locPl ch.G t), w ∉ S → ∃ r r₀ h : Pts ch.G, OneLoc t w.1 (eL w) r (fun j => if j ∈ idx D then sgnAt ch.G t s w.1 j * (repsAt ch.G t w.1).elt (β w) (D.R.m, j) else 1) ∧ OneLoc t w.1 (eL w) r₀ (fun j => if j = 0 then (stair (locGrid ch.G t w.1) (unifAt w.1) (cosExp ch.G w.1) j)⁻¹ else 1) ∧ (∀ j, j ≤ D.R.m → ∃ δ, IsTilt ch.G j δ ∧ δ⁻¹ * h j ∈ GlobalTheory.FinPl.grpOff _ (· = w.1.under (𝓞 D.host.F))) ∧ h * r = q (insert w S) ∧ h * r₀ = q S := by
   refine Exists.intro 0 (fun ε CF _ => Exists.intro 0 ?_)
   intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ s t β b b₀ hrep hbase eL heL p hp

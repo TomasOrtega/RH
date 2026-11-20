@@ -26,12 +26,18 @@ section Level
 
 variable {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Establish `h2 : ext1 (flagL L).P.H (flagL L).P.chi (rTup β (flagL L) (finE V κ)) = 1` using `subgroupCharExtension_one_apply _ _`. Unfold `levChi levFn`. Rewrite using `[h2]`. Simplify using `[flagL, withP, hs, hQ]`.
+-/
 theorem levChi_flag' (hs : L.s = 0) (hQ : L.Q = ∅) (κ : GA D V) : levChi V β (flagL L) κ = 1 := by
   have h2 : ext1 (flagL L).P.H (flagL L).P.chi (rTup β (flagL L) (finE V κ)) = 1 := subgroupCharExtension_one_apply _ _
   unfold levChi levFn
   rw [h2]
   simp [flagL, withP, hs, hQ]
 
+/- English proof (translation)
+Establish `h` using `levChi_flag' (β := β) hs hQ κ`. Unfold `levChi at h ⊢`. Rewrite using `[levFn_withP, Units.val_mul, h, mul_one]`.
+-/
 theorem levChi_withP' (hs : L.s = 0) (hQ : L.Q = ∅) (P : LevelP L.Pg L.r ℂ) (κ : GA D V) :
     levChi V β (withP L P) κ = ((ext1 P.H P.chi (rTup β L (finE V κ)) : ℂˣ) : ℂ) := by
   have h := levChi_flag' (β := β) hs hQ κ
@@ -40,6 +46,9 @@ theorem levChi_withP' (hs : L.s = 0) (hQ : L.Q = ∅) (P : LevelP L.Pg L.r ℂ) 
 
 end Level
 
+/- English proof (translation)
+Unfold `ext1`. Rewrite using `[dif_neg h]`.
+-/
 theorem ext_by_one_apply_of_not_mem_subgroup {G N : Type} [Group G] [One N] [Mul N] {P : Subgroup G} (f : P → N) {x : G} (h : x ∉ P) :
     ext1 P f x = 1 := by
   unfold ext1; rw [dif_neg h]
@@ -47,6 +56,15 @@ theorem ext_by_one_apply_of_not_mem_subgroup {G N : Type} [Group G] [One N] [Mul
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hsg : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Rewrite using `[hsg]`. Establish `h1` using `levChi_withP' (β := R.βY 0) (L := R.dat0 R.triv) rfl rfl (R.levL F b D.what₂.embLL) g`. Establish `h2` using `levChi_withP' (β := R.βY 0) (L := R.dat0 R.triv) rfl rfl (R.levR F b) g`. Establish `hH : (R.levL F b D.what₂.embLL).H = (R.levR F b).H` using `rfl`.
+
+Distinguish the cases in `hm : rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) g) ∈ (R.levR F b).H`. Use `replace h2 := h2.trans (congrArg Units.val (extendOne_of_mem (P := (R.levR F b).H) (R.levR F b).chi hm)) replace h1 := h1.trans (congrArg Units.val (extendOne_of_mem (P := (R.levL F b D.what₂.embLL).H) (R.levL F b D.what₂.embLL).chi hm))`. Use `Eq.trans (congrArg star h2) (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Establish `h3 : (R.levL F b D.what₂.embLL).chi ⟨_, hm⟩ = ((R.levR F b).chi ⟨_, hm⟩)⁻¹`. Conclude with `map_inv (Units.map D.what₂.embLL.toMonoidHom) _`.
+
+Establish `h4 : IsOfFinOrder ((R.levR F b).chi ⟨_, hm⟩)`. Establish `: Finite (G0 R.Pg D.R.r)` using `Finite.of_equiv _ R.eG.toEquiv`. Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`. Establish `h5 : ‖(((R.levR F b).chi ⟨_, hm⟩ : ℂˣ) : ℂ)‖ = 1` using `((Units.coeHom ℂ).isOfFinOrder h4).norm_eq_one`. Rewrite using `[h3, Units.val_inv_eq_inv_val, Complex.inv_eq_conj h5]`.
+
+Both sides reduce to the same expression. Establish `hm' : rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) g) ∉ (R.levL F b D.what₂.embLL).H` using `hm replace h2 := h2.trans (congrArg Units.val (ext_by_one_apply_of_not_mem_subgroup (P := (R.levR F b).H) (R.levR F b).chi hm)) replace h1 := h1.trans (congrArg Units.val (ext_by_one_apply_of_not_mem_subgroup (P := (R.levL F b D.what₂.embLL).H) (R.levL F b D.what₂.embLL).chi hm') …`. Use `Eq.trans (congrArg star h2) (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem star_levChi_levR (R : RealDat D A Ks) (F : Face D A) (b : Bool) (g : GA D (Yc D 0)) :
     star (levChi _ (R.βY 0) (R.dat0 (R.levR F b)) g) = levChi _ (R.βY 0) (R.dat0 (R.levL F b (sg0 D A))) g := by
   have hsg : sg0 D A = D.what₂.embLL := sgAt_mk _ R.hv0

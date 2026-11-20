@@ -13,21 +13,42 @@ section Int
 
 variable {k : Type} [Field k] [ValuativeRel k]
 
+/- English proof (translation)
+Introduce `_ _` and use `zero_mem _`.
+-/
 theorem intM_zero {m p : Type} : IntM (0 : Matrix m p k) := fun _ _ => zero_mem _
 
+/- English proof (translation)
+Introduce `i j` and use `add_mem (h i j) (h' i j)`.
+-/
 theorem IntM.add {m p : Type} {Z Z' : Matrix m p k} (h : IntM Z) (h' : IntM Z') : IntM (Z + Z') :=
   fun i j => add_mem (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `sub_mem (h i j) (h' i j)`.
+-/
 theorem IntM.sub {m p : Type} {Z Z' : Matrix m p k} (h : IntM Z) (h' : IntM Z') : IntM (Z - Z') :=
   fun i j => sub_mem (h i j) (h' i j)
 
+/- English proof (translation)
+Introduce `i j` and use `neg_mem (h i j)`.
+-/
 theorem IntM.neg {m p : Type} {Z : Matrix m p k} (h : IntM Z) : IntM (-Z) := fun i j => neg_mem (h i j)
 
+/- English proof (translation)
+Introduce `i j` and use `mul_mem hc (h i j)`.
+-/
 theorem IntM.smul {m p : Type} {c : k} (hc : c ∈ 𝒪[k]) {Z : Matrix m p k} (h : IntM Z) : IntM (c • Z) :=
   fun i j => mul_mem hc (h i j)
 
+/- English proof (translation)
+Introduce `i j` and use `(A i j).2`.
+-/
 theorem intM_map {m p : Type} (A : Matrix m p 𝒪[k]) : IntM (A.map (algebraMap 𝒪[k] k)) := fun i j => (A i j).2
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact sum_mem fun l _ => mul_mem (hP i l) (hQ l j)`.
+-/
 theorem IntM.mul {m p q : Type} [Fintype p] {P : Matrix m p k} {Q : Matrix p q k} (hP : IntM P) (hQ : IntM Q) :
     IntM (P * Q) := fun i j => by
   rw [Matrix.mul_apply]
@@ -35,9 +56,15 @@ theorem IntM.mul {m p q : Type} [Fintype p] {P : Matrix m p k} {Q : Matrix p q k
 
 variable {n d : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, 0, intM_zero, by simp [Matrix.map_one]⟩`.
+-/
 theorem below_refl (t : k) (Y : Matrix (Fin n) (Fin d) k) : Below t Y Y :=
   ⟨1, 0, intM_zero, by simp [Matrix.map_one]⟩
 
+/- English proof (translation)
+Take `⟨A, Z, hZ, rfl⟩` from `h₁`. Take `⟨B, Z', hZ', rfl⟩` from `h₂`. Use `⟨A * B, A.map (algebraMap 𝒪[k] k) * Z' + Z, (intM_map A).mul hZ' |>.add hZ, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_assoc, smul_add, add_assoc]`.
+-/
 theorem below_trans {t : k} {Y₁ Y₂ Y₃ : Matrix (Fin n) (Fin d) k} (h₁ : Below t Y₁ Y₂) (h₂ : Below t Y₂ Y₃) :
     Below t Y₁ Y₃ := by
   obtain ⟨A, Z, hZ, rfl⟩ := h₁
@@ -45,6 +72,9 @@ theorem below_trans {t : k} {Y₁ Y₂ Y₃ : Matrix (Fin n) (Fin d) k} (h₁ : 
   refine ⟨A * B, A.map (algebraMap 𝒪[k] k) * Z' + Z, (intM_map A).mul hZ' |>.add hZ, ?_⟩
   rw [Matrix.map_mul, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_assoc, smul_add, add_assoc]
 
+/- English proof (translation)
+Take `⟨A, Z, hZ, rfl⟩` from `h`. Establish `: t • (A.map (algebraMap 𝒪[k] k) * Y₀ + t • Z) = A.map (algebraMap 𝒪[k] k) * (t • Y₀) + t • (t • Z)`. Rewrite using `[smul_add, Matrix.mul_smul]`. Rewrite using `[this]`. Conclude with `((intM_map A).mul h₀).add ((hZ.smul ht).smul ht)`.
+-/
 theorem below_int {t : k} (ht : t ∈ 𝒪[k]) {Y Y₀ : Matrix (Fin n) (Fin d) k} (h : Below t Y Y₀) (h₀ : IntM (t • Y₀)) :
     IntM (t • Y) := by
   obtain ⟨A, Z, hZ, rfl⟩ := h
@@ -53,6 +83,19 @@ theorem below_int {t : k} (ht : t ∈ 𝒪[k]) {Y Y₀ : Matrix (Fin n) (Fin d) 
   rw [this]
   exact ((intM_map A).mul h₀).add ((hZ.smul ht).smul ht)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, Z, hZ, rfl⟩ i`. Establish `e : (A.map (algebraMap 𝒪[k] k) * Y₀ + t • Z) i = ∑ l, A i l • Y₀ l + ∑ j, (⟨Z i j, hZ i j⟩ : 𝒪[k]) • (t • (Pi.single j 1 : Fin d → k))`. Use function extensionality and compare the values at `j'`. Simplify using `[Matrix.mul_apply, Finset.sum_apply, Pi.single_apply, Subring.smul_def, mul_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => rfl`. Rewrite using `[e]`. Use `add_mem (sum_mem fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inl ⟨l, rfl⟩))) (sum_mem fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨j, rfl⟩)))` and prove the remaining obligations. Introduce `h`. Establish `hr : Set.range Y₀ ∪ Set.range (fun j : Fin d => t • (Pi.single j 1 : Fin d → k)) = Set.range (Sum.elim Y₀ fun j : Fin d => t • (Pi.single j 1 : Fin d → k))` using `(Set.Sum.elim_range _ _).symm`.
+
+Establish `h' : ∀ i, ∃ c : Fin n ⊕ Fin d → 𝒪[k], ∑ x, c x • Sum.elim Y₀ (fun j : Fin d => t • (Pi.single j 1 : Fin d → k)) x = Y i`. Introduce `i`. Use `h i` as an intermediate fact. Rewrite `this` using `[latt, hr]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 this`.
+
+Use `choose c hc using h'`. Use `⟨Matrix.of fun i l => c i (Sum.inl l), Matrix.of fun i j => (c i (Sum.inr j) : k), fun i j => (c i (Sum.inr j)).2, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hc i) j` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sum_type]`.
+
+Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul] at this`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← this]`. Use `congr 1`. Use `show ∑ x, (c i (Sum.inr x) : k) * (t • (Pi.single x 1 : Fin d → k)) j = _`.
+
+Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_apply, Ne.symm hb]) (by simp)]`. Simplify using `[mul_comm]`.
+-/
 theorem below_iff_rows (t : k) (Y Y₀ : Matrix (Fin n) (Fin d) k) : Below t Y Y₀ ↔ ∀ i, Y i ∈ latt t Y₀ := by
   constructor
   · rintro ⟨A, Z, hZ, rfl⟩ i
@@ -91,6 +134,11 @@ end Int
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ}
 
+/- English proof (translation)
+Take `⟨h, hh⟩` from `latt_eq ht Y₀`. Use `⟨h, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[below_iff_rows]`. Simplify using `only [hh, IntM]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations.
+
+Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`.
+-/
 theorem below_iff {t : k} (ht : t ≠ 0) (Y₀ : Matrix (Fin n) (Fin d) k) :
     ∃ h : GL (Fin d) k, ∀ Y, Below t Y Y₀ ↔ IntM (Y * h.1) := by
   obtain ⟨h, hh⟩ := latt_eq ht Y₀
@@ -105,10 +153,16 @@ def bsetoid (t : k) : Setoid (Matrix (Fin n) (Fin d) k) where
   iseqv := ⟨fun Y => ⟨below_refl t Y, below_refl t Y⟩, fun h => ⟨h.2, h.1⟩,
     fun h h' => ⟨below_trans h.1 h'.1, below_trans h'.2 h.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Quotient.exact h, fun h => Quotient.sound h⟩`.
+-/
 theorem mk_eq_iff {t : k} {Y Y' : Matrix (Fin n) (Fin d) k} :
     Quotient.mk (bsetoid t) Y = Quotient.mk (bsetoid t) Y' ↔ Below t Y Y' ∧ Below t Y' Y :=
   ⟨fun h => Quotient.exact h, fun h => Quotient.sound h⟩
 
+/- English proof (translation)
+The claim follows from `mk_eq_iff.1 (Quotient.out_eq _)`.
+-/
 theorem out_rel {t : k} (Y : Matrix (Fin n) (Fin d) k) :
     Below t (Quotient.mk (bsetoid t) Y).out Y ∧ Below t Y (Quotient.mk (bsetoid t) Y).out :=
   mk_eq_iff.1 (Quotient.out_eq _)
@@ -117,6 +171,55 @@ def gens (k : Type) [Field k] [ValuativeRel k] (n d : ℕ) : Set (Matrix (Fin n)
   {f | ∃ h : GL (Fin d) k, f = fun Y => Set.indicator {Z : Matrix (Fin n) (Fin d) k | ∀ i j, Z i j ∈ 𝒪[k]}
     (fun _ => (1 : ℂ)) (Y * h.1)}
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d Φ hΦ hK`. Take `⟨h1, h2⟩` from `hΦ`. Take `⟨t, ht0, htO, hsupp, hinv⟩` from `sb_bound h1 h2`. Take `⟨S, hS⟩` from `finite_cover (m := Fin n) (p := Fin d) t ht0`. Establish `key : ∀ Y Y', Below t Y Y' → Below t Y' Y → Φ Y = Φ Y'`.
+
+Introduce `Y Y' a b`. Take `⟨U, hU, Z, hZ, rfl⟩` from `orbit a b`. Rewrite using `[hinv _ _ hZ]`. Establish `hu : IsUnit U` using `(Matrix.isUnit_iff_isUnit_det U).2 hU`. Use `hK (Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) hu.unit) ⟨hu.unit, rfl⟩ Y'` as an intermediate fact.
+
+Establish `e : ((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) hu.unit : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = U.map (algebraMap 𝒪[k] k)` using `rfl`. Rewrite using `[← e]`. Conclude with `this`. Use `set s := bsetoid (n := n) (d := d) t with hs`. Use `set T : Finset (Quotient s) := (S.filter fun y => IntM (t • y)).image (Quotient.mk s) with hT`.
+
+Establish `memT : ∀ Y, IntM (t • Y) → Quotient.mk s Y ∈ T`. Introduce `Y hY`. Take `⟨y, hy, Z, hZ, rfl⟩` from `hS Y hY`. Establish `hy' : IntM (t • y)`. Establish `e : t • y = t • (y + t • Z) - t • (t • Z)` using `by rw [smul_add]; abel`.
+
+Rewrite using `[e]`. Conclude with `hY.sub ((hZ.smul htO).smul htO)`. Use `Finset.mem_image.2 ⟨y, Finset.mem_filter.2 ⟨hy, hy'⟩, mk_eq_iff.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨1, -Z, hZ.neg, by simp [Matrix.map_one]⟩`. Conclude with `⟨1, Z, hZ, by simp [Matrix.map_one]⟩`.
+
+Establish `outT : ∀ c ∈ T, IntM (t • c.out)`. Introduce `c hc`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hc`. Conclude with `below_int htO (out_rel y).1 (Finset.mem_filter.1 hy).2`. Set `e : Quotient s → Matrix (Fin n) (Fin d) k → ℂ` to `fun c Y => if Quotient.mk s Y = c then 1 else 0`.
+
+Set `F : Quotient s → Finset (Quotient s)` to `fun c => T.filter fun c' => Below t c'.out c.out ∧ c' ≠ c`. Establish `hi : ∀ c ∈ T, (fun Y => if Below t Y c.out then (1 : ℂ) else 0) ∈ Submodule.span ℂ (gens k n d)`. Introduce `c _`. Take `⟨h, hh⟩` from `below_iff ht0 c.out`. Use `Submodule.subset_span ⟨h, funext fun Y => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hY : Below t Y c.out`. Rewrite using `[if_pos hY, Set.indicator_of_mem ((hh Y).1 hY)]`. Rewrite using `[if_neg hY, Set.indicator_of_notMem (fun h' => hY ((hh Y).2 h'))]`. Establish `hdec : ∀ c ∈ T, (fun Y => if Below t Y c.out then (1 : ℂ) else 0) = e c + ∑ c' ∈ F c, e c'`. Introduce `c hc`.
+
+Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.add_apply, Finset.sum_apply]`. Distinguish the cases in `hB : Below t Y c.out`. Rewrite using `[if_pos hB]`. Establish `hq : Quotient.mk s Y ∈ T` using `memT Y (below_int htO hB (outT c hc))`.
+
+Distinguish the cases in `hqc : Quotient.mk s Y = c`. Establish `h0 : ∑ c' ∈ F c, e c' Y = 0` using `Finset.sum_eq_zero fun c' hc' => by`. Simplify using `only [e]`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `(Finset.mem_filter.1 hc').2.2 (h.symm.trans hqc)`. Rewrite using `[h0, add_zero]`. Simplify using `only [e]`. Rewrite using `[if_pos hqc]`. Establish `h0 : ∑ c' ∈ F c, e c' Y = 1`.
+
+Simplify using `only [e]`. Rewrite using `[Finset.sum_ite_eq, if_pos]`. Conclude with `Finset.mem_filter.2 ⟨hq, below_trans (out_rel Y).1 hB, hqc⟩`. Rewrite using `[h0]`. Simplify using `only [e]`.
+
+Rewrite using `[if_neg hqc, zero_add]`. Rewrite using `[if_neg hB]`. Establish `h1 : e c Y = 0`. Simplify using `only [e]`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Apply `hB` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `(out_rel Y).2`. Establish `h2 : ∑ c' ∈ F c, e c' Y = 0` using `Finset.sum_eq_zero fun c' hc' => by`.
+
+Simplify using `only [e]`. Rewrite using `[if_neg]`. Introduce `h`. Apply `hB` to reduce the goal to its premises. Establish `h3` using `(Finset.mem_filter.1 hc').2.1`.
+
+Rewrite `h3` using `[← h]`. Conclude with `below_trans (out_rel Y).2 h3`. Rewrite using `[h1, h2, add_zero]`. Establish `he : ∀ m, ∀ c ∈ T, (F c).card = m → e c ∈ Submodule.span ℂ (gens k n d)`. Introduce `m`.
+
+Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `c hc hm`. Establish `hsum : ∑ c' ∈ F c, e c' ∈ Submodule.span ℂ (gens k n d)`. Use `Submodule.sum_mem _ fun c' hc' => ?_` and prove the remaining obligations.
+
+Establish `hc'T` using `(Finset.mem_filter.1 hc').1`. Use `ih (F c').card ?_ c' hc'T rfl` and prove the remaining obligations. Rewrite using `[← hm]`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Rewrite using `[Finset.ssubset_iff_of_subset]`.
+
+Conclude with `⟨c', hc', fun h => (Finset.mem_filter.1 h).2.2 rfl⟩`. Introduce `c'' hc''`. Take `⟨h1, h2, h3⟩` from `Finset.mem_filter.1 hc''`. Take `⟨-, h4, h5⟩` from `Finset.mem_filter.1 hc'`. Use `Finset.mem_filter.2 ⟨h1, below_trans h2 h4, fun h => h5 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Quotient.out_eq c', ← Quotient.out_eq c]`. Use `mk_eq_iff.2 ⟨h4, ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `h2`. Use `Submodule.sub_mem _ (hi c hc) hsum` as an intermediate fact.
+
+Rewrite `this` using `[hdec c hc, add_sub_cancel_right]`. Conclude with `this`. Establish `hΦ : Φ = ∑ c ∈ T, Φ c.out • e c`. Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, e, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Distinguish the cases in `hY : IntM (t • Y)`. Rewrite using `[if_pos (memT Y hY)]`. Conclude with `key _ _ (out_rel Y).2 (out_rel Y).1`.
+
+Rewrite using `[if_neg]`. Assume the negation of the conclusion as `h`. Conclude with `hY (hsupp Y h)`. Introduce `hq`. Conclude with `hY (below_int htO (out_rel Y).2 (outT _ hq))`.
+
+Rewrite using `[hΦ]`. Conclude with `Submodule.sum_mem _ fun c hc => Submodule.smul_mem _ _ (he _ c hc rfl)`.
+-/
 theorem latSt : LatSt := by
   intro k _ _ _ _ n d Φ hΦ hK
   classical

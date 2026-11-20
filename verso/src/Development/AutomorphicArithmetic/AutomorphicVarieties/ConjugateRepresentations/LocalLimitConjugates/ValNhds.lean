@@ -4,17 +4,26 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `(GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const`. Conclude with `Continuous.units_map _ ((continuous_const.sub continuous_const).add (continuous_id.matrix_map hs))`.
+-/
 private theorem inf_cont (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) :
     Continuous (infGL E a) := by
   have hs : Continuous (sInf E : Cinf E → Ad E) := (GlobalTheory.CuspRep.continuous_infEq E).prodMk continuous_const
   exact Continuous.units_map _ ((continuous_const.sub continuous_const).add (continuous_id.matrix_map hs))
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+The claim follows from `(Units.isOpenEmbedding_val (R := Matrix (Fin a) (Fin a) (Cinf E))).isOpenMap.image_mem_nhds hN`.
+-/
 private theorem val_nhds (E : Type) [Field E] [NumberField E] (a : ℕ) (y : GL (Fin a) (Cinf E))
     {N : Set (GL (Fin a) (Cinf E))} (hN : N ∈ 𝓝 y) : (fun z : GL (Fin a) (Cinf E) => toL z.val) '' N ∈ 𝓝 (toL y.val) :=
   (Units.isOpenEmbedding_val (R := Matrix (Fin a) (Fin a) (Cinf E))).isOpenMap.image_mem_nhds hN
 
 open scoped Pointwise in
+/- English proof (translation)
+Take `⟨K, hK, hx⟩` from `exists_compact_mem_nhds x`. Establish `hS : {γ : Γ | (γ : G) ∈ tsupport f * K⁻¹}.Finite` using `GlobalTheory.AutomorphicL2Unitary.finite_mem_compact (hf.isCompact.mul hK.inv)`. Use `⟨hS.toFinset, Filter.mem_of_superset hx fun z hz => tsum_eq_sum fun γ hγ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hγ (hS.mem_toFinset.2 ⟨_, subset_tsupport f h, z⁻¹, Set.inv_mem_inv.2 hz, by simp⟩)`.
+-/
 private theorem loc_fin {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] (Γ : Subgroup G) [DiscreteTopology Γ] {f : G → ℂ} (hf : HasCompactSupport f) (x : G) :
     ∃ s : Finset Γ, ∀ᶠ z in 𝓝 x, GlobalTheory.AutomorphicL2Unitary.orbitSum Γ f z = ∑ γ ∈ s, f (γ * z) := by
@@ -24,6 +33,19 @@ private theorem loc_fin {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   by_contra h
   exact hγ (hS.mem_toFinset.2 ⟨_, subset_tsupport f h, z⁻¹, Set.inv_mem_inv.2 hz, by simp⟩)
 
+/- English proof (translation)
+Introduce `E _ _ _ a u hu`. Establish `hm : GlobalTheory.AutomorphicL2Unitary.orbitSum (latticeGL E a) u.1 ∈ Sm E a`. Introduce `g x hx`. Take `⟨y, hy⟩` from `hx`. Take `rfl : x = toL y.val` from `hy.symm`.
+
+Take `⟨s, hs⟩` from `loc_fin (latticeGL E a) hu.1 (g * infGL E a y)`. Establish `hc : Continuous fun z => g * infGL E a z` using `continuous_const.mul (inf_cont E a)`. Establish `h1` using `val_nhds E a y (hc.continuousAt.preimage_mem_nhds hs)`. Use `((ContDiffAt.sum (s := s) fun γ _ => contDiffAt_chart u.2 (γ.1 * g) (val_mem_invSet y)).congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Use `filter_upwards [h1]`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [chart_val, mul_assoc]`. Conclude with `hz`. Use `⟨⟨_, hm⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `key : ∀ k, act (.fin k) u = u → act (.fin k) (⟨_, hm⟩ : Sm E a) = ⟨_, hm⟩` using `fun k hk => Subtype.ext (funext fun g => tsum_congr fun γ => by`.
+
+Establish `h : u.1 (γ.1 * g * finGL E a k) = u.1 (γ.1 * g)` using `congrFun (congrArg Subtype.val hk) _`. Rewrite using `[← h, mul_assoc])`. Set `S : ∀ φ : Sm E a, Subgroup (GL (Fin a) (Af E))` to `fun φ => { carrier := {k | act (.fin k) φ = φ} one_mem' := Subtype.ext (funext fun g => by`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E a 1) = φ.1 g`. Rewrite using `[map_one, mul_one])`.
+
+Use the proof step `mul_mem' := fun {k l} hk hl => Subtype.ext (funext fun g => by`. Establish `h1 : φ.1 (g * finGL E a k) = φ.1 g` using `congrFun (congrArg Subtype.val hk) _`. Establish `h2 : φ.1 (g * finGL E a k * finGL E a l) = φ.1 (g * finGL E a k)` using `congrFun (congrArg Subtype.val hl) _`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E a (k * l)) = φ.1 g`. Rewrite using `[map_mul, ← mul_assoc, h2, h1])`.
+
+Use the proof step `inv_mem' := fun {k} hk => Subtype.ext (funext fun g => by`. Establish `h1 : φ.1 (g * finGL E a k⁻¹ * finGL E a k) = φ.1 (g * finGL E a k⁻¹)` using `congrFun (congrArg Subtype.val hk) _`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E a k⁻¹) = φ.1 g`. Rewrite using `[← h1, mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]) }`. Conclude with `Subgroup.isOpen_mono (H₁ := S u) (H₂ := S ⟨_, hm⟩) key hu.2`.
+-/
 theorem UpperTheory.V.Cj.H.orbSm :
     UpperTheory.V.Cj.H.OrbSm := by
   intro E _ _ _ a u hu

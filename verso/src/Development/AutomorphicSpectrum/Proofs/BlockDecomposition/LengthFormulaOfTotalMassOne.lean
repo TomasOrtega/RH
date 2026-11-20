@@ -17,6 +17,13 @@ namespace GlobalTheory.CompanionTheory.Mass.Rank
 
 open PositivityTheory.Rg.Base1 PositivityTheory.SiegelWeilFormula.Densx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hJ0 : J 0 0 ≠ 0` using `by simpa [Matrix.det_unique] using hJ.2`. Establish `h1 : σ (x 0) * J 0 0 * x 0 = 0`. Simplify `hx` using `[hE, hform, Matrix.mul_apply, dotProduct, Matrix.mulVec]`. Establish `hx0 : x 0 = 0`.
+
+Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `(map_eq_zero σ).1 h`. Conclude with `absurd h hJ0`. Conclude with `h`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0, hx0]`. Both sides reduce to the same expression.
+-/
 theorem aniso_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E)
     (J : Matrix (Fin 1) (Fin 1) E) (hJ : IsHermND σ J) : PositivityTheory.Rg.Mass.Aniso σ J := by
   intro x hx
@@ -32,6 +39,11 @@ theorem aniso_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   funext i
   rw [Subsingleton.elim i 0, hx0]; rfl
 
+/- English proof (translation)
+Establish `hA` using `aniso_one σ J hJ`. Establish `hW : GlobalTheory.SiegelSet.IsWittFrame σ J (0 : Matrix (Fin 1) (Fin 0) E) 0` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, fun z _ _ hz => hA z hz⟩`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.SiegelSet.Model.compact_quotient GlobalTheory.CompanionTheory.SiegelRed.siegelSetUnitary hCM hJ hW`. Use `⟨⟨C, hC, fun h => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, c, hc, e⟩` from `hcov h`.
+
+Conclude with `⟨⟨γ, hγ⟩, c, hc, e⟩`. Conclude with `(GlobalTheory.SiegelWeilConvCompare.measure_fundamentalDomain_pos F E σ 1 J μ hμ 𝓕 h𝓕).ne'`. Conclude with `(((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM 1 J hJ).2 μ hμ).2 𝓕 h𝓕).ne`.
+-/
 theorem coCpt_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (J : Matrix (Fin 1) (Fin 1) E) (hJ : IsHermND σ J)
     (μ : Measure (HA (AF F) σ J)) (𝓕 : Set (HA (AF F) σ J)) (hμ : IsHaarH F E σ 1 J μ) (h𝓕 : IsFDH F E σ 1 J μ 𝓕) :
@@ -46,6 +58,15 @@ theorem coCpt_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   · exact (GlobalTheory.SiegelWeilConvCompare.measure_fundamentalDomain_pos F E σ 1 J μ hμ 𝓕 h𝓕).ne'
   · exact (((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hCM 1 J hJ).2 μ hμ).2 𝓕 h𝓕).ne
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Conclude with `(by omega : 1 < Ideal.absNorm v.asIdeal)` after adjusting the coercions. Establish `he : eR E v ≤ 1`. Unfold `eR PositivityTheory.SiegelWeilFormula.Gen.eSp`.
+
+Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hpos : 0 < 1 - eR E v / (Ideal.absNorm v.asIdeal : ℝ)`. Establish `: eR E v / (Ideal.absNorm v.asIdeal : ℝ) < 1`. Rewrite using `[div_lt_one (by linarith)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Unfold `cfac`. Simplify using `only [ne_eq, Real.toNNReal_eq_zero, not_le]`. Conclude with `inv_pos.2 hpos`.
+-/
 theorem cfac_ne_zero {F : Type} (E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) : cfac E v ≠ 0 := by
   have hq : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ) := by
@@ -65,6 +86,29 @@ theorem cfac_ne_zero {F : Type} (E : Type) [Field F] [NumberField F] [Field E] [
   simp only [ne_eq, Real.toNNReal_eq_zero, not_le]
   exact inv_pos.2 hpos
 
+/- English proof (translation)
+Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F`. Use `choose c hc using hc`. Take `⟨A, hAm, hA0, hAt⟩` from `@GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ minf hsi hinf0`. Use `choose B hBm hB0 hBt using fun v => @GlobalTheory.CompanionTheory.SW.Fact.exists_test_set _ _ (mm v) (hsv v) (hv0 v)`. Establish `hstep : ∀ S : Finset (HeightOneSpectrum (𝓞 F)), ∅ ⊆ S → ∀ v, v ∉ S → (c S : ℝ) = c (insert v S) * (mm v (latV b v)).toReal`.
+
+Introduce `S _ v hv`. Establish `hlatm : MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `by haveI := GlobalTheory.CompanionTheory.SW.Fact.borel_tup σ hCM (Fv F v) (hLv v) n M`. Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hCM d b n M).2.2.2.1 v).2.measurableSet`. Set `φ0 : ∀ w : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F w ⊗[F] E) → ℝ≥0∞` to `fun w => (B w).indicator 1`. Set `φ1` to `Function.update φ0 v ((latV b v).indicator 1)`.
+
+Establish `hφ0 : ∀ w, Measurable (φ0 w)` using `fun w => measurable_one.indicator (hBm w)`. Establish `hφ1 : ∀ w, Measurable (φ1 w)`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Simplify `measurable_one.indicator hlatm` using `[φ1]`. Simplify `hφ0 w` using `[φ1, Function.update_of_ne hw]`. Establish `hAφ : Measurable (A.indicator (1 : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞))` using `measurable_one.indicator hAm`. Establish `e1` using `hc S _ φ0 hAφ hφ0`. Establish `e2` using `hc (insert v S) _ φ1 hAφ hφ1`.
+
+Establish `e3 : ∫⁻ X, pureL b (insert v S) (A.indicator 1) φ1 X ∂I = ∫⁻ X, pureL b S (A.indicator 1) φ0 X ∂I` using `lintegral_congr fun X => GlobalTheory.CompanionTheory.SW.Fact.pureL_insert b S v hv _ φ0 X`. Rewrite `e2` using `[e3, e1, Finset.prod_insert hv]`. Establish `hp : ∏ w ∈ S, ∫⁻ X, φ1 w X ∂(mm w) = ∏ w ∈ S, ∫⁻ X, φ0 w X ∂(mm w)` using `Finset.prod_congr rfl fun w hw => by`. Establish `hne : w ≠ v` using `fun h => hv (h ▸ hw)`. Simplify using `only [φ1, Function.update_of_ne hne]`.
+
+Establish `hL : ∫⁻ X, φ1 v X ∂(mm v) = mm v (latV b v)`. Simplify using `only [φ1, Function.update_self]`. Conclude with `lintegral_indicator_one hlatm`. Establish `hB : ∀ w, ∫⁻ X, φ0 w X ∂(mm w) = mm w (B w)` using `fun w => lintegral_indicator_one (hBm w)`. Establish `hA : ∫⁻ X, A.indicator (1 : (Fin n → Fin M → Ainf F ⊗[F] E) → ℝ≥0∞) X ∂minf = minf A` using `lintegral_indicator_one hAm`.
+
+Rewrite `e2` using `[hp, hL, hA]`. Simplify using `only [hB] at e2`. Use `set Q := ∏ w ∈ S, mm w (B w) with hQ`. Use `set a := minf A with ha`. Use `set L := mm v (latV b v) with hLdef`.
+
+Establish `hQ0 : Q ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun w _ => hB0 w`. Establish `hQt : Q ≠ ⊤` using `ENNReal.prod_ne_top fun w _ => hBt w`. Establish `hP0 : a * Q ≠ 0` using `mul_ne_zero hA0 hQ0`. Establish `hPt : a * Q ≠ ⊤` using `ENNReal.mul_ne_top hAt hQt`. Establish `e4 : (c S : ℝ≥0∞) * (a * Q) = ((c (insert v S) : ℝ≥0∞) * L) * (a * Q)`.
+
+Rewrite using `[e2]`. Expand and normalize the polynomial expressions, which then agree. Establish `e5` using `(ENNReal.mul_left_inj hP0 hPt).mp e4`. Establish `e6` using `congrArg ENNReal.toReal e5`. Simplify `e6` using `[ENNReal.toReal_mul]`.
+
+Take `⟨c₀, S₀, -, hS₀⟩` from `GlobalTheory.T.infinite_product_renormalization _ (fun v => (mm v (latV b v)).toReal) c ∅ (fun _ => ENNReal.toReal_nonneg) hsum hstep`. Use `⟨c₀, hfin, hsum, S₀, fun S hS φinf φ hφi hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc S φinf φ hφi hφ]`. Establish `hcS : (c S : ℝ≥0∞) = (c₀ : ℝ≥0∞) * ENNReal.ofReal (∏' v : {v // v ∉ S}, (mm v.1 (latV b v.1)).toReal)`. Rewrite using `[← ENNReal.ofReal_coe_nnreal (p := c S), (hS₀ S hS).2, ENNReal.ofReal_mul (NNReal.coe_nonneg _), ENNReal.ofReal_coe_nnreal]`.
+
+Rewrite using `[hcS]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem euler_of_factor {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (n M d : ℕ) (b : Module.Basis (Fin d) F E)
     (minf : Measure (Fin n → Fin M → Ainf F ⊗[F] E))
@@ -140,6 +184,23 @@ theorem euler_of_factor {F E : Type} [Field F] [NumberField F] [Field E] [Number
   rw [hcS]
   ring
 
+/- English proof (translation)
+Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F`. Use `haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hFi` using `GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Ainf F) hLi T hT hdet b laminf hinf.1 minf hminf`. Establish `hFv : ∀ v, SigmaFinite (m v (hermOf (Fv F v) σ T hT)) ∧ (m v (hermOf (Fv F v) σ T hT) = 0 → ∀ X, gramR (Fv F v) σ J X ≠ T.map (inclR (Fv F v)))` using `fun v => by haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+
+Conclude with `GlobalTheory.CompanionTheory.SW.Fact.fib_facts σ hCM J hJ (Fv F v) (hLv v) T hT hdet b (lam v) (hlam v).1 (m v) (hm v)`. Establish `hzero : ∀ v, κ v • m v (hermOf (Fv F v) σ T hT) = 0 → m v (hermOf (Fv F v) σ T hT) = 0` using `fun v h => (smul_eq_zero.1 h).resolve_left (hκ v)`. Distinguish the cases in `h0 : minf (hermOf (Ainf F) σ T hT) = 0 ∨ ∃ v, κ v • m v (hermOf (Fv F v) σ T hT) = 0`. Establish `hempty : {X | gramR (AF F) σ J X = T.map (inclR (AF F))} = ∅`. Use extensionality with `X`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hX`. Establish `hloc` using `(GlobalTheory.T.gram_matrix_local_global F E σ hCM M J hJ n X T).1.1 hX`. Break down `h0 with h | ⟨v, h⟩` into its components or cases. Conclude with `hFi.2 h _ hloc.1`.
+
+Conclude with `(hFv v).2 (hzero v h) _ (hloc.2 v)`. Rewrite `hIsupp` using `[hempty, Set.compl_empty]`. Rewrite using `[Measure.measure_univ_eq_zero.mp hIsupp]`. Conclude with `⟨0, (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b n M 0 0 _ _).2.2 hfin hsum h0⟩`. Use `push Not at h0`.
+
+Take `⟨hinf0, hv0⟩` from `h0`. Establish `hsv : ∀ v, SigmaFinite (κ v • m v (hermOf (Fv F v) σ T hT))` using `fun v => by haveI := (hFv v).1 infer_instance`. Use `euler_of_factor σ hCM n M d b _ _ hFi.1 hsv hinf0 hv0 hfin hsum I fun S => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.T.siegel_weil_orbital_measure F E σ hCM M J hJ n T hT hdet d b laminf lam hinf hlam minf hminf m hm I hIf hIinv hIsupp S`. Use `⟨c / ∏ v ∈ S, κ v, fun φinf φ hφi hφ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hc φinf φ hφi hφ]`. Establish `hprod : ∏ v ∈ S, ∫⁻ X, φ v X ∂(κ v • m v (hermOf (Fv F v) σ T hT)) = ((∏ v ∈ S, κ v : ℝ≥0) : ℝ≥0∞) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ T hT))`. Rewrite using `[ENNReal.coe_finset_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`.
+
+Establish `hne : (∏ v ∈ S, κ v : ℝ≥0) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hκ v`. Rewrite using `[hprod]`. Establish `hcc : (c : ℝ≥0∞) = ((c / ∏ v ∈ S, κ v : ℝ≥0) : ℝ≥0∞) * ((∏ v ∈ S, κ v : ℝ≥0) : ℝ≥0∞)`. Rewrite using `[← ENNReal.coe_mul, div_mul_cancel₀ _ hne]`. Rewrite using `[hcc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem euler_scaled {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ)
     (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b) (hdet : T.det ≠ 0) (d : ℕ)
@@ -202,6 +263,23 @@ theorem euler_scaled {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     rw [hcc]
     ring
 
+/- English proof (translation)
+Introduce `hMass F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm β hβ`. Take `⟨⟨C, hC, hcov⟩, hμ0, hμt⟩` from `coCpt_one σ hcm J hJ μ 𝓕 hμ h𝓕`. Establish `hE0 : algebraMap F E β ≠ 0` using `fun h => hβ ((map_eq_zero _).1 h)`. Set `T : Matrix (Fin 1) (Fin 1) E` to `fun _ _ => algebraMap F E β`. Establish `hT : ∀ a b, σ (T b a) = T a b` using `fun _ _ => σ.commutes β`.
+
+Establish `hd : T.det ≠ 0`. Rewrite using `[Matrix.det_unique]`. Conclude with `hE0`. Take `⟨β', e, -, hh⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT`. Establish `hββ : β' = β` using `(algebraMap F E).injective (congrFun (congrFun e 0) 0).symm`.
+
+Rewrite `hh` using `[hββ]`. Take `⟨t1, t2⟩` from `PositivityTheory.PlacePermOperatorBicommutantSpan.theta_inv F E σ hcm 1 J hJ μ 𝓕 hμ h𝓕 1 T`. Establish `hlf : IsLocallyFiniteMeasure (thetaMeas σ J μ 𝓕 {X : Fin 1 → Fin 1 → E | gramE σ J X = T})` using `GlobalTheory.CompanionTheory.Mass.One.theta_locFin σ hcm 1 J hJ μ 𝓕 hμ h𝓕 C hC hcov hμ0 hμt 1 _`. Establish `hfin0 : ∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤` using `fun v => by`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`.
+
+Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hh'` using `GlobalTheory.T.coordinate_haar_measure F E σ hcm (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh'.2.1 1 1`. Use `haveI hH := hh'.2.2 1`. Establish `hl` using `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hcm 1 J hJ (Fv F v) hloc 1 _ _ (m v) hW hH (hm v) (hermOf (Fv F v) σ T hT)).1`.
+
+Conclude with `((GlobalTheory.T.adelic_tuple_projections F E σ hcm d b 1 1).2.2.2.1 v).1.measure_lt_top`. Establish `hfin : ∀ v, (cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v) < ⊤` using `fun v => by`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (hfin0 v)`. Establish `hsum : Summable fun v => |((cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v)).toReal - 1|`.
+
+Establish `hev : ∀ᶠ v in Filter.cofinite, |((cfac E v • m v (hermOf (Fv F v) σ T hT)) (latV b v)).toReal - 1| = 0` using `by filter_upwards [hMass F E σ hcm J hJ d b, (GlobalTheory.T.integral_almost_all_places F E σ hcm d b).2 β hβ] with v h1 h2`. Establish `h3` using `h1 (lam v) (hlam v) (m v) (hm v) _ h2`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, hh, h3]`. Simplify using the standard rewrite rules. Conclude with `summable_of_finite_support (Filter.eventually_cofinite.1 hev)`.
+
+Take `⟨c, hc⟩` from `euler_scaled σ hcm 1 J hJ 1 T hT hd d b li lam hli hlam mi hmi m hm (cfac E) (cfac_ne_zero E) hfin hsum _ hlf t1 t2`. Simplify using `only [hh] at hc`. Conclude with `⟨c, hc⟩`.
+-/
 theorem mass_formula_of_total_mass_one : MassOne → Prop1 := by
   intro hMass F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ hli hlam hμ h𝓕 hmi hm β hβ
   obtain ⟨⟨C, hC, hcov⟩, hμ0, hμt⟩ := coCpt_one σ hcm J hJ μ 𝓕 hμ h𝓕

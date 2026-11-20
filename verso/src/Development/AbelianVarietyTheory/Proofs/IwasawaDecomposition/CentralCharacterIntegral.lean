@@ -25,6 +25,13 @@ namespace GlobalTheory.CenIntAtLoc
 
 open Formalism.L2.DIV
 
+/- English proof (translation)
+Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m`. Establish `e : MonoidAlgebra.of S G m = MonoidAlgebra.mapRingHom G f (MonoidAlgebra.of R G m)`.
+
+Simplify using `only [MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]`. Rewrite using `[e]`. Use `show MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _ = MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _`. Rewrite using `[← map_mul, ← map_mul, hz]`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+
+Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+-/
 theorem mapCoef_mem_center {R S G : Type} [CommRing R] [CommRing S] [Group G] (f : R →+* S) (z : MonoidAlgebra R G)
     (hz : ∀ a, z * a = a * z) :
     Formalism.MainNotions.PairedCharacterCondition.mapCoef f z ∈ Subalgebra.center S (MonoidAlgebra S G) := by
@@ -41,10 +48,36 @@ theorem mapCoef_mem_center {R S G : Type} [CommRing R] [CommRing S] [Group G] (f
   | add x y hx hy => rw [add_mul, mul_add, hx, hy]
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
+/- English proof (translation)
+Simplify using `[Formalism.MainNotions.PairedCharacterCondition.mapCoef]`.
+-/
 theorem coeff_mapCoef {R S M : Type} [CommRing R] [CommRing S] (f : R →+* S) (z : MonoidAlgebra R M) (m : M) :
     (Formalism.MainNotions.PairedCharacterCondition.mapCoef f z).coeff m = f (z.coeff m) := by
   simp [Formalism.MainNotions.PairedCharacterCondition.mapCoef]
 
+/- English proof (translation)
+Introduce `i z hz x hx`. Establish `hc` using `mapCoef_mem_center (Int.castRingHom ℂ) z hz`. Establish `key : ∀ (μ : D.what₂.Tup) (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ x ∈ GlobalTheory.EtaJoin.genSet D μ j, ∃ y ∈ GlobalTheory.EtaJoin.lat D μ j, D.what₂.jMt μ j y = D.ntypes.cenMt μ j ⟨_, hc⟩ (D.what₂.jMt μ j x)`. Introduce `μ j h1 h2 x hx`. Take `⟨k, rfl⟩ : ∃ k : Fin D.R.m, j = (k : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`.
+
+Set `a : MonoidAlgebra D.what₂.LL G` to `MonoidAlgebra.mapDomainRingEquiv D.what₂.LL eG.symm (Formalism.MainNotions.PairedCharacterCondition.mapCoef (Int.castRingHom D.what₂.LL) z)`. Establish `hcoef : ∀ g : G, a.coeff g = ((z.coeff (eG g) : ℤ) : D.what₂.LL)`. Introduce `g`. Simplify using `[a, coeff_mapCoef]`. Establish `ha : ∀ g : G, D.what₂.embLL (a.coeff g) = ((⟨_, hc⟩ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)).coeff (eG g)`.
+
+Introduce `g`. Rewrite using `[hcoef g]`. Simplify using `[coeff_mapCoef]`. Establish `hcL` using `mapCoef_mem_center (Int.castRingHom D.what₂.LL) z hz`. Establish `hac : ∀ b, a * b = b * a`.
+
+Introduce `b`. Take `⟨b', rfl⟩` from `(MonoidAlgebra.mapDomainRingEquiv D.what₂.LL eG.symm).surjective b`. Simplify using `only [a, ← map_mul]`. Rewrite using `[Subalgebra.mem_center_iff.mp hcL b']`. Establish `hint : ∀ t : G, ∃ n : ℤ, a.coeff t = n` using `fun t => ⟨_, hcoef t⟩`.
+
+Take `⟨-, -, h3⟩` from `h.cen μ ⟨_, hc⟩ a ha`. Establish `h3'` using `h3 k ((h.eMt k μ).symm x)`. Rewrite `h3'` using `[LinearEquiv.apply_symm_apply]`. Take `⟨hgen, hlat⟩` from `h.latL k μ`. Establish `hx' : (h.eMt k μ).symm x ∈ lNab D A P0 ψ0 k (tp μ)`.
+
+Rewrite using `[hlat]`. Use `⟨fun v => if v = D.what₂.jMt μ ((k : ℕ) + 1) x then 1 else 0, ?_⟩` and prove the remaining obligations. Establish `hxg : D.what₂.jMt μ ((k : ℕ) + 1) x ∈ (D.what₂.MtLat μ ((k : ℕ) + 1)).gen` using `hx`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.apply_symm_apply]`. Rewrite using `[Finset.sum_eq_single_of_mem _ hxg]`.
+
+Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Establish `hy'` using `GlobalTheory.T.centralGroupAlgebraOp_preserves_integralLevelForms D.what₂.LL v hv (A.fam.L k (tp μ)).S (hpos k (tp μ)) G (A.fam.L k (tp μ)).r (hact k (tp μ)) (A.fam.lvlA P0 ψ0).P (A.fam.lvlA P0 ψ0).ψ a hac hint _ hx'`. Take `⟨c, hc'⟩` from `(hlat _).mp hy'`.
+
+Establish `hsrc : ∀ u : (D.what₂.MtLat μ ((k : ℕ) + 1)).gen, ∃ w, D.what₂.jMt μ ((k : ℕ) + 1) (h.eMt k μ w) = u.1`. Introduce `u`. Take `⟨w, hw⟩` from `hgen u.1 u.2`. Conclude with `⟨w, hw⟩`. Use `choose ws hws using hsrc`.
+
+Use `⟨∑ u ∈ (D.what₂.MtLat μ ((k : ℕ) + 1)).gen.attach, c u.1 • h.eMt k μ (ws u), ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_) show D.what₂.jMt μ ((k : ℕ) + 1) (h.eMt k μ (ws u)) ∈ (D.what₂.MtLat μ ((k : ℕ) + 1)).gen` and prove the remaining obligations. Rewrite using `[hws u]`. Conclude with `u.2`. Rewrite using `[h3']`.
+
+Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply] at hc'`. Rewrite using `[hc', map_sum, ← Finset.sum_attach (D.what₂.MtLat μ ((k : ℕ) + 1)).gen]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Establish `e1 : c u.1 • h.eMt k μ (ws u) = ((c u.1 : 𝓞 D.what₂.LL) : D.what₂.LL) • h.eMt k μ (ws u)` using `rfl`. Rewrite using `[e1, LinearMap.map_smulₛₗ, hws u]`.
+
+Take `⟨y, hy, hyx⟩` from `key (D.nd.mu i) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2 x hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[hyx]`. Unfold `NTypes.onMt`. Rewrite using `[dif_pos hc]`.
+-/
 theorem cenInt_of_allT {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T D.R.m} {P0 : Subgroup G} {ψ0 : P0 →* D.what₂.LLˣ} {P1 : Subgroup G}
     {ψ1 : P1 →* D.what₂.LLˣ} {X0 : BaseLevelRowSide D} {tp : D.what₂.Tup → T} {eG : G ≃* G0g D.nd}
@@ -117,6 +150,9 @@ end GlobalTheory.CenIntAtLoc
 
 namespace GlobalTheory.CenIntAtLoc
 
+/- English proof (translation)
+Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ w Z _ _ t _ _ _ _ _ hR _ => ?_` and prove the remaining obligations. Take `⟨r⟩` from `hR`. Use `cenInt_of_allT r.all (InfinitePlace.mk (w.st Z).B.embLL) (GlobalTheory.Mem.R3.OkVals.isConjAt_embLL _) (fun k τ => ?_) (fun k τ => ?_)` and prove the remaining obligations. Conclude with `(Formalism.L2.Col.mtK_rat _ _ _ τ.1 t.hX ((k : ℕ) + 1)).posH _ _`. Conclude with `Formalism.L2.Col.unipotentActionClassSum_good _ _ _ τ.1 t.hX ((k : ℕ) + 1) _`.
+-/
 theorem cenInt_at (hL : GlobalTheory.Published.LocalLanglandsGL) :
     AtMem hL fun _ _ _ _ w Z _ _ _ _ _ _ => GlobalTheory.PendOf.CenInt (w.D Z) := by
   refine GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun _ _ _ _ _ w Z _ _ t _ _ _ _ _ hR _ => ?_

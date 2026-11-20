@@ -13,20 +13,35 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] {H : HermSp M V} {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]`.
+-/
 theorem hR_add (x y z : V) : H.h x (y + z) = H.h x y + H.h x z := by
   rw [H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm, ← H.h_herm]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+-/
 theorem hR_smul (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
+/- English proof (translation)
+Use `H.h_add_left x (-x) y` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, H.h_zero_left]`. Take the linear combination `-this`.
+-/
 theorem hL_neg (x y : V) : H.h (-x) y = - H.h x y := by
   have := H.h_add_left x (-x) y
   rw [add_neg_cancel, H.h_zero_left] at this
   linear_combination -this
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, H.h_add_left, hL_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hL_sub (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := by
   rw [sub_eq_add_neg, H.h_add_left, hL_neg]; ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.h_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]`.
+-/
 theorem hL_sum {ι : Type} (s : Finset ι) (c : ι → E) (v : ι → V) (y : V) :
     H.h (∑ i ∈ s, c i • v i) y = ∑ i ∈ s, c i * H.h (v i) y := by
   classical
@@ -34,11 +49,19 @@ theorem hL_sum {ι : Type} (s : Finset ι) (c : ι → E) (v : ι → V) (y : V)
   | empty => simp [H.h_zero_left]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, H.h_add_left, H.h_smul_left, ih]
 
+/- English proof (translation)
+Rewrite using `[H.h_herm y x, h, map_zero]`.
+-/
 theorem h_symm_zero {x y : V} (h : H.h y x = 0) : H.h x y = 0 := by
   rw [H.h_herm y x, h, map_zero]
 
 variable (A B : FrameD H r)
 
+/- English proof (translation)
+Introduce `x hx`. Unfold `HermSp.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `h a`.
+
+Consider the case `zero => exact h_symm_zero (H.h_zero_left k)`. Consider the case `add x y _ _ hx hy => rw [hR_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [hR_smul, hx, mul_zero]`.
+-/
 theorem perp_of {k : V} (h : ∀ a : Fin r, H.h k (A.e a) = 0) : k ∈ H.perp (H.X A.f) := by
   intro x hx
   unfold HermSp.X at hx
@@ -48,8 +71,16 @@ theorem perp_of {k : V} (h : ∀ a : Fin r, H.h k (A.e a) = 0) : k ∈ H.perp (H
   | add x y _ _ hx hy => rw [hR_add, hx, hy, add_zero]
   | smul c x _ hx => rw [hR_smul, hx, mul_zero]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨a, rfl⟩`.
+-/
 theorem e_mem_X (a : Fin r) : A.e a ∈ H.X A.f := Submodule.subset_span ⟨a, rfl⟩
 
+/- English proof (translation)
+Unfold `HermSp.X at hξ`. Proceed by induction on `hξ using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨a, rfl⟩ := hx`. Conclude with `A.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Consider the case `zero => exact H.h_zero_left _`.
+
+Consider the case `add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]`.
+-/
 theorem h_X_e {ξ : V} (hξ : ξ ∈ H.X A.f) (b : Fin r) : H.h ξ (A.e b) = 0 := by
   unfold HermSp.X at hξ
   induction hξ using Submodule.span_induction with
@@ -58,22 +89,40 @@ theorem h_X_e {ξ : V} (hξ : ξ ∈ H.X A.f) (b : Fin r) : H.h ξ (A.e b) = 0 :
   | add x y _ _ hx hy => rw [H.h_add_left, hx, hy, add_zero]
   | smul c x _ hx => rw [H.h_smul_left, hx, mul_zero]
 
+/- English proof (translation)
+The claim follows from `perp_of A (h_X_e A hξ)`.
+-/
 theorem X_le_perp {ξ : V} (hξ : ξ ∈ H.X A.f) : ξ ∈ H.perp (H.X A.f) := perp_of A (h_X_e A hξ)
 
+/- English proof (translation)
+The claim follows from `h_symm_zero (hw ξ hξ)`.
+-/
 theorem hX_perp {ξ w : V} (hξ : ξ ∈ H.X A.f) (hw : w ∈ H.perp (H.X A.f)) : H.h ξ w = 0 :=
   h_symm_zero (hw ξ hξ)
 
+/- English proof (translation)
+The claim follows from `perp_of A (fun a => ng_prF_e (Fr := A) y a)`.
+-/
 theorem prF_mem_perp' (y : V) : A.prF y ∈ H.perp (H.X A.f) :=
   perp_of A (fun a => ng_prF_e (Fr := A) y a)
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Simplify using `only [H.h_add_left, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prF_add (x y : V) : A.prF (x + y) = A.prF x + A.prF y := by
   unfold FrameD.prF
   simp only [H.h_add_left, add_smul, Finset.sum_add_distrib]; abel
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Simplify using `only [H.h_smul_left, mul_smul, ← Finset.smul_sum, smul_sub]`.
+-/
 theorem prF_smul (c : E) (x : V) : A.prF (c • x) = c • A.prF x := by
   unfold FrameD.prF
   simp only [H.h_smul_left, mul_smul, ← Finset.smul_sum, smul_sub]
 
+/- English proof (translation)
+Unfold `FrameD.prF`. Simplify using `only [hL_sub, sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem prF_sub (x y : V) : A.prF (x - y) = A.prF x - A.prF y := by
   unfold FrameD.prF
   simp only [hL_sub, sub_smul, Finset.sum_sub_distrib]; abel
@@ -91,6 +140,9 @@ def swapMap : V →ₗ[E] V where
     unfold swapFun
     simp only [H.h_smul_left, prF_smul, mul_smul, ← Finset.smul_sum, smul_sub, smul_add, RingHom.id_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapMap_apply (x : V) : swapMap A B x = swapFun A B x := rfl
 
 section Pair
@@ -98,15 +150,27 @@ section Pair
 variable (hf : B.f = A.f)
 include hf
 
+/- English proof (translation)
+Use `show B.f a.castSucc = A.f a.castSucc`. Rewrite using `[hf]`.
+-/
 theorem e_eq (a : Fin r) : B.e a = A.e a := by
   show B.f a.castSucc = A.f a.castSucc; rw [hf]
 
+/- English proof (translation)
+Rewrite using `[← e_eq A B hf]`. Conclude with `B.h_es a b`.
+-/
 theorem h_e_esB (a b : Fin r) : H.h (A.e a) (B.es b) = if a = b then 1 else 0 := by
   rw [← e_eq A B hf]; exact B.h_es a b
 
+/- English proof (translation)
+Rewrite using `[← e_eq A B hf]`. Conclude with `ng_h_es_e (Fr := B) a b`.
+-/
 theorem h_esB_e (a b : Fin r) : H.h (B.es a) (A.e b) = if b = a then 1 else 0 := by
   rw [← e_eq A B hf]; exact ng_h_es_e (Fr := B) a b
 
+/- English proof (translation)
+Rewrite using `[swapMap_apply]`. Unfold `swapFun`. Rewrite using `[hL_sub, H.h_add_left, H.h_add_left, hL_sum, hL_sum, hL_sum]`. Simplify using `only [h_e_esB A B hf, B.h_ss, mul_zero, Finset.sum_const_zero, add_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem swap_es (x : V) (b : Fin r) : H.h (swapMap A B x) (B.es b) = H.h x (A.es b) := by
   rw [swapMap_apply]
   unfold swapFun
@@ -115,6 +179,9 @@ theorem swap_es (x : V) (b : Fin r) : H.h (swapMap A B x) (B.es b) = H.h x (A.es
     Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]
   ring
 
+/- English proof (translation)
+Rewrite using `[swapMap_apply]`. Unfold `swapFun`. Rewrite using `[hL_sub, H.h_add_left, H.h_add_left, hL_sum, hL_sum, hL_sum]`. Establish `hee : ∀ a, H.h (A.e a) (A.e b) = 0` using `fun a => A.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne)`. Simplify using `only [hee, ng_prF_e, h_esB_e A B hf, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_zero]`.
+-/
 theorem swap_e (x : V) (b : Fin r) : H.h (swapMap A B x) (A.e b) = H.h x (A.e b) := by
   rw [swapMap_apply]
   unfold swapFun
@@ -123,6 +190,11 @@ theorem swap_e (x : V) (b : Fin r) : H.h (swapMap A B x) (A.e b) = H.h x (A.e b)
   simp only [hee, ng_prF_e, h_esB_e A B hf, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one,
     Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_zero]
 
+/- English proof (translation)
+Establish `e1 : B.prF (swapMap A B x) = swapMap A B x - ∑ a, H.h x (A.es a) • A.e a - ∑ a, H.h x (A.e a) • B.es a`. Unfold `FrameD.prF`. Simplify using `only [swap_es A B hf, e_eq A B hf, swap_e A B hf]`. Rewrite using `[e1, swapMap_apply]`. Unfold `swapFun`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem swap_prF (x : V) : B.prF (swapMap A B x) - A.prF x = - ∑ a, H.h (A.prF x) (B.es a) • A.e a := by
   have e1 : B.prF (swapMap A B x) = swapMap A B x - ∑ a, H.h x (A.es a) • A.e a -
       ∑ a, H.h x (A.e a) • B.es a := by
@@ -132,10 +204,20 @@ theorem swap_prF (x : V) : B.prF (swapMap A B x) - A.prF x = - ∑ a, H.h (A.prF
   unfold swapFun
   abel
 
+/- English proof (translation)
+Rewrite using `[swap_prF A B hf]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X A a)))`.
+-/
 theorem swap_prF_mem (x : V) : B.prF (swapMap A B x) - A.prF x ∈ H.X A.f := by
   rw [swap_prF A B hf]
   exact Submodule.neg_mem _ (Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X A a)))
 
+/- English proof (translation)
+Establish `k1 : ∀ a, H.h (A.e a) (swapMap A B y) = H.h (A.e a) y` using `fun a => by`. Rewrite using `[H.h_herm (swapMap A B y) (A.e a), swap_e A B hf, ← H.h_herm]`. Establish `k2 : ∀ a, H.h (B.es a) (swapMap A B y) = H.h (A.es a) y` using `fun a => by`. Rewrite using `[H.h_herm (swapMap A B y) (B.es a), swap_es A B hf, ← H.h_herm]`. Establish `k3 : H.h (B.prF (swapMap A B x)) (B.prF (swapMap A B y)) = H.h (A.prF x) (A.prF y)`.
+
+Establish `hx` using `swap_prF_mem A B hf x`. Establish `hy` using `swap_prF_mem A B hf y`. Use `set ξ := B.prF (swapMap A B x) - A.prF x`. Use `set η := B.prF (swapMap A B y) - A.prF y`. Rewrite using `[show B.prF (swapMap A B x) = A.prF x + ξ by simp [ξ], show B.prF (swapMap A B y) = A.prF y + η by simp [η], H.h_add_left, hR_add, hR_add, hX_perp A hx (prF_mem_perp' A y), hX_perp A hx (X_le_perp A hy), h_symm_zero (hX_perp A hy (prF_mem_perp' A x))]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ng_expand (Fr := B) (swapMap A B x) (swapMap A B y), ng_prF_prF (Fr := B) (swapMap A B x) (swapMap A B y), ng_expand (Fr := A) x y, ng_prF_prF (Fr := A) x y, k3]`. Simplify using `only [e_eq A B hf, swap_es A B hf, swap_e A B hf, k1, k2]`.
+-/
 theorem swap_unit (x y : V) : H.h (swapMap A B x) (swapMap A B y) = H.h x y := by
   have k1 : ∀ a, H.h (A.e a) (swapMap A B y) = H.h (A.e a) y := fun a => by
     rw [H.h_herm (swapMap A B y) (A.e a), swap_e A B hf, ← H.h_herm]
@@ -155,6 +237,19 @@ theorem swap_unit (x y : V) : H.h (swapMap A B x) (swapMap A B y) = H.h x y := b
     ng_expand (Fr := A) x y, ng_prF_prF (Fr := A) x y, k3]
   simp only [e_eq A B hf, swap_es A B hf, swap_e A B hf, k1, k2]
 
+/- English proof (translation)
+Rewrite using `[swapMap_apply]`. Unfold `swapFun`. Break down `Fin.eq_castSucc_or_eq_last b with ⟨a, rfl⟩ | rfl` into its components or cases. Establish `hpr : A.prF (A.f a.castSucc) = 0`. Use `ng_prF_e (Fr := A) (A.f a.castSucc)` as an intermediate fact.
+
+Unfold `FrameD.prF`. Establish `hs : ∑ c, H.h (A.f a.castSucc) (A.es c) • A.e c = A.e a`. Simplify using `only [A.h_es, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hz : ∑ c, H.h (A.f a.castSucc) (A.e c) • A.es c = 0` using `Finset.sum_eq_zero (fun c _ => by`. Rewrite using `[show H.h (A.f a.castSucc) (A.e c) = 0 from A.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])`.
+
+Rewrite using `[hs, hz]`. Use `show A.f a.castSucc - A.f a.castSucc - 0 = 0`. Simplify using the standard rewrite rules. Establish `hs : ∑ c, H.h (A.f a.castSucc) (A.es c) • A.e c = A.f a.castSucc`. Simplify using `only [A.h_es, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Both sides reduce to the same expression. Establish `hz : ∑ c, H.h (A.f a.castSucc) (A.e c) • B.es c = 0` using `Finset.sum_eq_zero (fun c _ => by`. Rewrite using `[show H.h (A.f a.castSucc) (A.e c) = 0 from A.h_iso _ _ (Or.inl (Fin.castSucc_lt_last a).ne), zero_smul])`. Rewrite using `[hs, hz, hpr]`. Simplify using `[H.h_zero_left]`.
+
+Establish `hzes : ∀ c, H.h (A.f (Fin.last r)) (A.es c) = 0` using `fun c => h_symm_zero (A.h_sz c)`. Establish `hze : ∀ c, H.h (A.f (Fin.last r)) (A.e c) = 0` using `fun c => A.h_iso _ _ (Or.inr (Fin.castSucc_lt_last c).ne)`. Establish `hpr : A.prF (A.f (Fin.last r)) = A.f (Fin.last r)`. Unfold `FrameD.prF`. Simplify using `[hzes, hze]`.
+
+Establish `hzB : ∀ c, H.h (A.f (Fin.last r)) (B.es c) = 0` using `fun c => by`. Rewrite using `[← hf]`. Conclude with `h_symm_zero (B.h_sz c)`. Simplify using `[hzes, hze, hpr, hzB]`.
+-/
 theorem swap_fix (b : Fin (r + 1)) : swapMap A B (A.f b) = A.f b := by
   rw [swapMap_apply]
   unfold swapFun
@@ -187,6 +282,9 @@ theorem swap_fix (b : Fin (r + 1)) : swapMap A B (A.f b) = A.f b := by
 
 end Pair
 
+/- English proof (translation)
+Apply `H.nondeg v` to reduce the goal to its premises. Introduce `y`. Rewrite using `[ng_expand (Fr := A) v y, ng_prF_prF (Fr := A) v y]`. Simplify using `only [h1, h2, zero_mul, Finset.sum_const_zero, zero_add, add_zero]`. Conclude with `hX_perp A h3 (prF_mem_perp' A y)`.
+-/
 theorem eq_zero_of (v : V) (h1 : ∀ a, H.h v (A.es a) = 0) (h2 : ∀ a, H.h v (A.e a) = 0)
     (h3 : A.prF v ∈ H.X A.f) : v = 0 := by
   apply H.nondeg v
@@ -195,6 +293,13 @@ theorem eq_zero_of (v : V) (h1 : ∀ a, H.h v (A.es a) = 0) (h2 : ∀ a, H.h v (
   simp only [h1, h2, zero_mul, Finset.sum_const_zero, zero_add, add_zero]
   exact hX_perp A h3 (prF_mem_perp' A y)
 
+/- English proof (translation)
+Establish `hf' : A.f = B.f` using `hf.symm`. Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of A` to reduce the goal to its premises. Introduce `b`. Rewrite using `[hL_sub, swap_es B A hf', swap_es A B hf, sub_self]`.
+
+Introduce `b`. Establish `h1` using `swap_e B A hf' (swapMap A B x) b`. Rewrite `h1` using `[← e_eq B A hf']`. Rewrite using `[hL_sub, h1, swap_e A B hf, sub_self]`. Establish `h1` using `swap_prF_mem B A hf' (swapMap A B x)`.
+
+Establish `h2` using `swap_prF_mem A B hf x`. Rewrite `h2` using `[hf']`. Rewrite using `[prF_sub, show A.prF (swapMap B A (swapMap A B x)) - A.prF x = (A.prF (swapMap B A (swapMap A B x)) - B.prF (swapMap A B x)) + (B.prF (swapMap A B x) - A.prF x) by abel]`. Rewrite using `[hf']`. Conclude with `Submodule.add_mem _ h1 h2`.
+-/
 theorem swap_inv (hf : B.f = A.f) (x : V) : swapMap B A (swapMap A B x) = x := by
   have hf' : A.f = B.f := hf.symm
   rw [← sub_eq_zero]
@@ -217,8 +322,24 @@ def swapEquiv (hf : B.f = A.f) : V ≃ₗ[E] V :=
   LinearEquiv.ofLinear (swapMap A B) (swapMap B A)
     (LinearMap.ext fun x => swap_inv B A hf.symm x) (LinearMap.ext fun x => swap_inv A B hf x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swapEquiv_apply (hf : B.f = A.f) (x : V) : swapEquiv A B hf x = swapMap A B x := rfl
 
+/- English proof (translation)
+Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨fun x y => swap_unit A B hf x y, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _ v hv`. Establish `hfix : swapEquiv A B hf v = v`. Unfold `FrameD.Fj at hv`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, -, rfl⟩` from `hx`. Conclude with `swap_fix A B hf a.castSucc`. Consider the case `zero => exact map_zero _`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, hx]`. Rewrite using `[hfix, sub_self]`. Conclude with `Submodule.zero_mem _`. Introduce `v hv`.
+
+Establish `h0 : ∀ a, H.h v (A.e a) = 0` using `fun a => hv _ (e_mem_X A a)`. Establish `e : swapEquiv A B hf v - v = - ∑ a, H.h (A.prF v) (B.es a) • A.e a`. Rewrite using `[swapEquiv_apply, swapMap_apply]`. Unfold `swapFun`. Establish `hv' : v = ∑ a, H.h v (A.es a) • A.e a + A.prF v`.
+
+Unfold `FrameD.prF`. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, sub_zero]`. Normalize the expressions using the abelian group laws. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, add_zero]`. Rewrite using `[show ∀ u : V, u - v = u - (∑ a, H.h v (A.es a) • A.e a + A.prF v) from fun u => by rw [← hv']]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ (Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X A a)))`.
+-/
 theorem swap_mem_N (hf : B.f = A.f) : swapEquiv A B hf ∈ A.N := by
   apply Subgroup.subset_closure
   refine ⟨fun x y => swap_unit A B hf x y, ?_, ?_⟩
@@ -247,6 +368,23 @@ theorem swap_mem_N (hf : B.f = A.f) : swapEquiv A B hf ∈ A.N := by
     rw [e]
     exact Submodule.neg_mem _ (Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (e_mem_X A a)))
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M _ V _ _ H r Fr es₂ h1 h2 h3 _ L _`. Use `set B : FrameD H r := ⟨Fr.f, es₂, Fr.T, Fr.h_iso, Fr.h_zz, h1, h2, h3⟩ with hB`. Establish `hf : B.f = Fr.f` using `rfl`. Use `⟨swapEquiv Fr B hf, swap_mem_N Fr B hf, fun b => swap_fix Fr B hf b, ?_⟩` and prove the remaining obligations. Establish `key : ∀ x : V, ((∀ a, H.h x (Fr.es a) ∈ M.L.O) ∧ (∀ a, H.h x (Fr.e a) ∈ M.L.O) ∧ ∃ w : ↥(H.perp (H.X Fr.f)), (w : V) = Fr.prF x ∧ H.mkW Fr.f w ∈ L) ↔ ((∀ a, H.h (swapMap Fr B x) (B.es a) ∈ M.L.O) ∧ (∀ a, H.h (swapMap Fr B x) (B.e a) ∈ M.L.O) ∧ ∃ w : ↥(H.perp (H.X B.f)), (w : V) = …`.
+
+Introduce `x`. Establish `hmem` using `swap_prF_mem Fr B hf x`. Establish `hcls : ∀ (w w' : ↥(H.perp (H.X Fr.f))), (w : V) = Fr.prF x → (w' : V) = B.prF (swapMap Fr B x) → H.mkW Fr.f w = H.mkW Fr.f w'`. Introduce `w w' hw hw'`. Unfold `HermSp.mkW`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `show (w : V) - w' ∈ H.X Fr.f`. Rewrite using `[hw, hw', ← neg_sub]`. Conclude with `Submodule.neg_mem _ hmem`. Simplify using `only [swap_es Fr B hf, e_eq Fr B hf, swap_e Fr B hf]`.
+
+Use `and_congr Iff.rfl (and_congr Iff.rfl ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨w, hw, hwL⟩`. Use `⟨⟨B.prF (swapMap Fr B x), prF_mem_perp' B _⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcls w _ hw rfl]`. Conclude with `hwL`.
+
+Introduce and unpack `⟨w', hw', hwL⟩`. Use `⟨⟨Fr.prF x, prF_mem_perp' Fr _⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hcls _ w' rfl hw']`. Conclude with `hwL`. Unfold `FrameD.LamStd img`.
+
+Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+
+Use `⟨swapMap B Fr v, (key _).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[swap_inv B Fr hf.symm v]`. Conclude with `hv`. Conclude with `swap_inv B Fr hf.symm v`. Introduce and unpack `⟨x, hx, rfl⟩`.
+
+Conclude with `(key x).1 hx`.
+-/
 theorem lamStd_swap : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) (r : ℕ) (Fr : LocNG.FrameD H r) (es₂ : Fin r → V) (h1 : ∀ i j, H.h (es₂ i) (es₂ j) = 0) (h2 : ∀ i j : Fin r, H.h (Fr.f i.castSucc) (es₂ j) = if i = j then 1 else 0) (h3 : ∀ i, H.h (es₂ i) (Fr.f (Fin.last r)) = 0), Fr.T ≠ 0 → ∀ L : Submodule M.L.O (H.Wb Fr.f), Fr.IsInner L → ∃ m ∈ Fr.N, (∀ b, m (Fr.f b) = Fr.f b) ∧ (⟨Fr.f, es₂, Fr.T, Fr.h_iso, Fr.h_zz, h1, h2, h3⟩ : LocNG.FrameD H r).LamStd L = LocNG.img m (Fr.LamStd L) := by
   intro F _ _ _ E _ _ _ _ M _ V _ _ H r Fr es₂ h1 h2 h3 _ L _
   set B : FrameD H r := ⟨Fr.f, es₂, Fr.T, Fr.h_iso, Fr.h_zz, h1, h2, h3⟩ with hB

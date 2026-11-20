@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.t_
 
 namespace LateralTheory.E.AICAcycPf
 
+/- English proof (translation)
+Introduce `n i hn`. Use `h n i hn` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Establish `key : ∀ a : Ht q (sch.obj X) n i, a = pull _ (sch.map e.hom) _ n (pull _ (sch.map e.inv) _ n a)`.
+
+Introduce `a`. Rewrite using `[← pull_comp, ← CategoryTheory.Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]`. Rewrite using `[key a, key b, Subsingleton.elim (pull _ (sch.map e.inv) _ n a) (pull _ (sch.map e.inv) _ n b)]`.
+-/
 theorem acyc_of_iso (q : ℕ) {X Y : Scheme.{0}} (e : X ≅ Y) (h : Acyc q (sch.obj Y)) : Acyc q (sch.obj X) := by
   intro n i hn
   have := h n i hn
@@ -16,6 +21,9 @@ theorem acyc_of_iso (q : ℕ) {X Y : Scheme.{0}} (e : X ≅ Y) (h : Acyc q (sch.
     rw [← pull_comp, ← CategoryTheory.Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id, pull_id]
   rw [key a, key b, Subsingleton.elim (pull _ (sch.map e.inv) _ n a) (pull _ (sch.map e.inv) _ n b)]
 
+/- English proof (translation)
+Establish `: IsIntegral Z` using `hZ.1`. Establish `hA : AIC Γ(Z, ⊤)` using `hZ.2 ⊤ (isAffineOpen_top Z) ⟨Nonempty.some inferInstance, by simp⟩`. Establish `h5` using `hB5 q Γ(Z, ⊤) hA hq`. Conclude with `acyc_of_iso q Z.isoSpec h5`.
+-/
 theorem aff (hB5 : B5) (q : ℕ) (Z : Scheme.{0}) [IsAffine Z] (hZ : AICSch Z) (hq : IsUnit (q : Γ(Z, ⊤))) :
     Acyc q (sch.obj Z) := by
   have : IsIntegral Z := hZ.1
@@ -34,6 +42,11 @@ def Cov : Prop := ∀ (q : ℕ) (P : Scheme.{0} → Prop), (∀ {X Y : Scheme.{0
     P U → P V → (Nonempty ↥(pullback f g : Scheme.{0}) → P (pullback f g)) → P X) →
   ∀ (Z : Scheme.{0}) [CompactSpace Z] [QuasiSeparatedSpace Z], AICSch Z → IsUnit (q : Γ(Z, ⊤)) → P Z
 
+/- English proof (translation)
+Introduce `hyp q Z _ _ hZs hq`. Use `hCov q (fun W => Acyc q (sch.obj W)) ?_ ?_ ?_ Z hZs hq` and prove the remaining obligations. Introduce `X Y e h`. Conclude with `acyc_of_iso q e h`. Introduce `W hA hW hWq`.
+
+Conclude with `aff hyp.b5 q W hW hWq`. Introduce `U V X f g _ _ hc hX hU hV hq' hPU hPV hPW`. Conclude with `hStep hyp hMV hZ q f g hc hX hU hV hq' hPU hPV hPW`.
+-/
 theorem AICAcyc_of (hZ : HZero) (hMV : MV) (hStep : Step) (hCov : Cov) : AICAcyc := by
   intro hyp q Z _ _ hZs hq
   refine hCov q (fun W => Acyc q (sch.obj W)) ?_ ?_ ?_ Z hZs hq

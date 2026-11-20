@@ -17,6 +17,19 @@ open GlobalTheory.RecDict
 
 namespace GlobalTheory.RecDict
 
+/- English proof (translation)
+Introduce and unpack `D Q ⟨⟨-, hrt, hrt0, -⟩, ⟨hM, hA⟩, -, -⟩`. Use `⟨fun p hp => ?_, hA, fun τ hτ => ?_⟩` and prove the remaining obligations. Establish `hodd` using `Q.l.odd`. Rewrite `hodd` using `[hM]`. Establish `h3 : ∀ a : ℕ, a.Prime → Odd a → 3 ≤ a` using `fun a ha ho => by`.
+
+Establish `h2` using `ha.two_le`. Take `⟨k, hk⟩` from `ho`. Use linear arithmetic over natural numbers and integers. Establish `ha` using `h3 _ (D.host.g_prime 0) (Nat.Odd.of_mul_left hodd)`. Establish `hb` using `h3 _ (D.host.g_prime 1) (Nat.Odd.of_mul_right hodd)`.
+
+Establish `hab : (D.host.g 0).Coprime (D.host.g 1)` using `(Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level.GoodAt`. Establish `hM0 : Q.l.M ≠ 0` using `by have := Q.l.three_le; omega`. Establish `key : ∀ c, 3 ≤ c → c ∣ Q.l.M → ¬ p ∣ c → 3 ≤ Q.l.M / p ^ Q.l.M.factorization p` using `fun c hc hd hn => hc.trans (Nat.le_of_dvd (Nat.ordCompl_pos p hM0) (Nat.dvd_ordCompl_of_dvd_not_dvd hd hn))`. Distinguish the cases in `h : p ∣ D.host.g 0`.
+
+Use `key _ hb (hM ▸ dvd_mul_left _ _) fun h' => hp.one_lt.ne' ?_` and prove the remaining obligations. Conclude with `Nat.eq_one_of_dvd_coprimes hab h h'`. Conclude with `key _ ha (hM ▸ dvd_mul_right _ _) h`. Rewrite `hτ` using `[hrt, hrt0]`. Establish `h1` using `xi0_embedding_im_pos D τ ((mem_cm_type_iff D τ).2 hτ)`.
+
+Establish `hφ : D.host.φ₀ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `D.host.φ₀_mem`. Establish `hpos : 0 < (D.host.φ₀ D.host.sqrtMinusD).im`. Rewrite using `[hφ]`. Establish `hd : (0 : ℝ) < D.host.d` using `by exact_mod_cast d_pos D`. Simplify using `using hd`.
+
+Rewrite `h1` using `[if_pos hpos, Int.cast_one, _root_.one_mul]`. Rewrite using `[map_neg, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem level_good_and_sign : ∀ (D : D7) (Q : Par D), Q.Pins → (∀ p : ℕ, p.Prime → Q.l.GoodAt p) ∧ Q.l.A = 1 ∧ ∀ τ : D.host.E →+* ℂ, τ (Q.H.rt : D.host.E) = Q.H.rt0 → (τ (-D.host.xi0)).im < 0 := by
   rintro D Q ⟨⟨-, hrt, hrt0, -⟩, ⟨hM, hA⟩, -, -⟩
   refine ⟨fun p hp => ?_, hA, fun τ hτ => ?_⟩

@@ -11,19 +11,39 @@ namespace UpperTheory.N
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lam_eq (L : SizeData₂ D) (l : ℕ) : RowSmall.abelian₂ L l = Num.lam l (sN l D.host.condN) (RowSmall.hB L) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sl_eq (D : D7) (l : ℕ) : RowSmall.sl D l = sN l D.host.condN := rfl
 
+/- English proof (translation)
+The claim follows from `(Num.one_le_b L).trans (Num.hB_bounds L P).1`.
+-/
 theorem one_le_hB (L : SizeData₂ D) (P : ParameterChoice' D L) : 1 ≤ RowSmall.hB L :=
   (Num.one_le_b L).trans (Num.hB_bounds L P).1
 
+/- English proof (translation)
+The claim follows from `(Num.condN_le L P).trans (Num.hB_bounds L P).1`.
+-/
 theorem condN_le_hB (L : SizeData₂ D) (P : ParameterChoice' D L) : (D.host.condN : ℝ) ≤ RowSmall.hB L :=
   (Num.condN_le L P).trans (Num.hB_bounds L P).1
 
+/- English proof (translation)
+The claim follows from `(Num.sizes_le_b L P).2.2.trans (Num.hB_bounds L P).1`.
+-/
 theorem t_le_hB (L : SizeData₂ D) (P : ParameterChoice' D L) : (D.R.t : ℝ) ≤ RowSmall.hB L :=
   (Num.sizes_le_b L P).2.2.trans (Num.hB_bounds L P).1
 
+/- English proof (translation)
+Distinguish the cases in `h2 : D.nd.l i = 2`. Establish `h1 : 1 ≤ D.host.QS.factorization (D.nd.l i)`. Establish `h` using `Nat.mem_primeFactors.1 hs`. Conclude with `h.1.factorization_pos_of_dvd h.2.2 h.2.1`. Unfold `RowSmall.sl`.
+
+Rewrite using `[Num.factorization_condN D hs, max_eq_right h1, D.nd.restNLevelExponent_of_two i h2, h2]`. Conclude with `Num.s0_eq i hs h2`.
+-/
 theorem localLevel_eq_smallPrimeLevel (i : D.nd.Loc) (hs : D.nd.l i ∈ D.host.small) : D.nd.s0 i = RowSmall.sl D (D.nd.l i) := by
   by_cases h2 : D.nd.l i = 2
   · have h1 : 1 ≤ D.host.QS.factorization (D.nd.l i) := by
@@ -33,6 +53,17 @@ theorem localLevel_eq_smallPrimeLevel (i : D.nd.Loc) (hs : D.nd.l i ∈ D.host.s
     rw [Num.factorization_condN D hs, max_eq_right h1, D.nd.restNLevelExponent_of_two i h2, h2]
   · exact Num.s0_eq i hs h2
 
+/- English proof (translation)
+Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Take `⟨hK1, hK2⟩` from `hK i hTw`. Take `⟨hFin, -⟩` from `hK1 π hπ`. Establish `hShaT : ∀ e ∈ Finset.Ioo 0 D.R.t, GaloisCohomology.shaLen (D.nd.ldat (D.nd.l i)) (e : ℤ) < ⊤`. Introduce `e he`.
+
+Rewrite `he` using `[Finset.mem_Ioo]`. Conclude with `lt_top_iff_ne_top.2 (@hSha (D.nd.l i) (D.nd.lPrime i) e he.1 he.2)`. Establish `hIco : Finset.Ico 1 D.R.t = Finset.Ioo 0 D.R.t`. Use extensionality with `e`. Simplify using `only [Finset.mem_Ico, Finset.mem_Ioo]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hVV : TwistedPlaces.VVr D (D.nd.l i) = ((∑ e ∈ Finset.Ioo 0 D.R.t, D.what₂.shaLen (D.nd.l i) e : ℚ) : ℝ)`. Unfold `TwistedPlaces.VVr`. Simplify using `only [Rows.Data.VV, hIco]`. Establish `hT` using `(Rat.cast_le (K := ℝ)).2 (hconds hFin hShaT hz)`.
+
+Establish `hs0 : (D.nd.s0 i : ℝ) + 1 ≤ RowSmall.abelian₂ L (D.nd.l i)`. Rewrite using `[hs]`. Conclude with `Num.s_le_lam hl.two_le (one_le_hB L P)`. Establish `hb` using `Num.boundSplit_le i (ρ i) π dc e' c0 cB (y := RowSmall.hB L * (RowSmall.sl D (D.nd.l i) : ℝ)) hc hs0 (by rw [← mul_assoc]; exact he) hc0 hW hB hh`. Unfold `Bd costC TwistedPlaces.vhE`.
+
+Rewrite using `[hVV]`. Establish `e : 6 * c * D.R.f * D.R.m * (RowSmall.hB L * (RowSmall.sl D (D.nd.l i) : ℝ)) = 6 * c * D.R.f * D.R.m * RowSmall.hB L * (RowSmall.sl D (D.nd.l i) : ℝ)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bound_smallPrime_of_splitBound (L : SizeData₂ D) (P : ParameterChoice' D L) (ρ : FamilyRepresentationConstants.RhoFam D) (hK : KillingConditions.KillAt ρ) (hSha : TwistedPlaces.ShaFinOdd D)
     (i : D.nd.Loc) (hTw : TwistedPlaces.TwLoc D i) (hs : D.nd.s0 i = RowSmall.sl D (D.nd.l i)) (π : D.nd.X i)
     (hπ : π ∈ D.nd.Zgood i) (dc : TruncatedSeriesCountingIdentities.Decl D i) (e' : ℕ) (c0 : HeightOneSpectrum (𝓞 D.host.E) → ℕ) (cB : ℕ) {c : ℝ}
@@ -67,6 +98,17 @@ theorem bound_smallPrime_of_splitBound (L : SizeData₂ D) (P : ParameterChoice'
       6 * c * D.R.f * D.R.m * RowSmall.hB L * (RowSmall.sl D (D.nd.l i) : ℝ) := by ring
   linarith
 
+/- English proof (translation)
+Establish `hl : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hy` using `one_le_hB L P`. Establish `hN : (D.host.condN : ℝ) ≤ 8 * RowSmall.hB L` using `by linarith [condN_le_hB L P]`. Take `⟨r1, r2, r3, r4, r5, r6, -⟩` from `Num.ranks D`. Establish `ha : (1 : ℝ) ≤ D.R.f * D.R.nV` using `one_le_mul_of_one_le_of_one_le (by linarith) (by linarith)`.
+
+Establish `hn : ((4 * D.R.n * D.R.nV : ℕ) : ℝ) = 2 * (D.R.f * D.R.nV)`. Establish `e : D.R.f = 2 * D.R.n` using `rfl`. Rewrite using `[e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `k0` using `Num.cyclotomicWeightExponent_le hl.two_le hy hh₂ hN (n := 4 * D.R.n * D.R.nV) ha (by rw [hn]; linarith)`. Establish `kB` using `Num.cBL_le hl.two_le hy hh₃ hN (n := 4 * D.R.n * D.R.nV) (t := D.R.t) ha hn.le (by have : (1 : ℝ) ≤ D.R.t := by linarith`. Conclude with `this)` after adjusting the coercions. Establish `kE` using `Num.eL_le hl.two_le hy hh₁ hN`. Establish `kl` using `Num.natLog_le_lam hl.two_le (Num.one_le_sN (D.nd.l i) D.host.condN) hy (n := D.R.t) (by linarith [t_le_hB L P])`.
+
+Establish `ks` using `Num.s_le_lam (s := sN (D.nd.l i) D.host.condN) hl.two_le hy`. Establish `hΛ` using `Num.one_le_lam (s := sN (D.nd.l i) D.host.condN) hl.two_le hy`. Rewrite `k0`, `kB`, `kl`, `ks`, `hΛ` using `[← lam_eq]`. Establish `h` using `bound_smallPrime_of_splitBound L P ρ hK hSha i hTw hs π hπ dc _ _ _ (c := 1000) (by norm_num) kE (fun u _ => by rw [mul_assoc 1000]; exact k0) (fun u hu => (hW u hu).trans (by`. Use `mul_le_mul_of_nonneg_left k0 (Nat.cast_nonneg (α := ℝ) D.R.r)` as an intermediate fact.
+
+Use the proof step `linarith))`. Use the proof step `(by linarith) (by rw [hs, sl_eq] at hh; linarith) hz hconds`. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+-/
 theorem bound_smallPrime_of_splitBound_cyclotomic_of_level_eq (L : SizeData₂ D) (P : ParameterChoice' D L) (ρ : FamilyRepresentationConstants.RhoFam D) (hK : KillingConditions.KillAt ρ)
     (hSha : TwistedPlaces.ShaFinOdd D) (i : D.nd.Loc) (hTw : TwistedPlaces.TwLoc D i) (hs : D.nd.s0 i = RowSmall.sl D (D.nd.l i)) (π : D.nd.X i)
     (hπ : π ∈ D.nd.Zgood i) (dc : TruncatedSeriesCountingIdentities.Decl D i) (h₁ h₂ h₃ : ℕ) (hh₁ : (h₁ : ℝ) ≤ 4 * RowSmall.hB L)
@@ -106,6 +148,9 @@ theorem bound_smallPrime_of_splitBound_cyclotomic_of_level_eq (L : SizeData₂ D
   norm_num at h
   exact h
 
+/- English proof (translation)
+The claim follows from `bound_smallPrime_of_splitBound_cyclotomic_of_level_eq L P ρ hK hSha i hTw (localLevel_eq_smallPrimeLevel i hs) π hπ dc h₁ h₂ h₃ hh₁ hh₂ hh₃ hW hh hz hconds`.
+-/
 theorem bound_smallPrime_of_splitBound_cyclotomic (L : SizeData₂ D) (P : ParameterChoice' D L) (ρ : FamilyRepresentationConstants.RhoFam D) (hK : KillingConditions.KillAt ρ)
     (hSha : TwistedPlaces.ShaFinOdd D) (i : D.nd.Loc) (hTw : TwistedPlaces.TwLoc D i) (hs : D.nd.l i ∈ D.host.small) (π : D.nd.X i)
     (hπ : π ∈ D.nd.Zgood i) (dc : TruncatedSeriesCountingIdentities.Decl D i) (h₁ h₂ h₃ : ℕ) (hh₁ : (h₁ : ℝ) ≤ 4 * RowSmall.hB L)

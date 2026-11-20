@@ -30,6 +30,9 @@ def IsTrZ (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (j M X �
       ((PD.p : ℕ) : LetA O n) ^ eY PD.p y * s y = ((PD.p : ℕ) : LetA O n) ^ σ * r y) ∧
     t = ∑ y ∈ Finset.range (max M X + 1), s y • ((W.φD T) ^ j) (c y)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, r, s, hc, hr, rfl⟩`. Conclude with `⟨_, ⟨c, r, s, hc, hr, rfl⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨c, r, s, hc, hr, rfl⟩, rfl⟩`. Conclude with `⟨c, r, s, hc, hr, rfl⟩`.
+-/
 theorem isTrunc_iff (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (j M X σ : ℕ)
     (w z : W.DD T) :
     IsTrunc W T i j M X σ w z ↔ ∃ t, IsTrZ W T i j M X σ (W.γ T w - w) t ∧

@@ -15,6 +15,9 @@ noncomputable section
 
 namespace PolydiscLelongLimit
 
+/- English proof (translation)
+Break down `le_or_gt r 0 with hr | hr` into its components or cases. Simplify using `[Metric.ball_eq_empty.2 hr]`. Simplify using `only [mem_ball_zero_iff, pi_norm_lt_iff hr, Fin.forall_fin_succ, hypIncl, Fin.cons_zero, Fin.cons_succ, norm_zero, hr, true_and]`.
+-/
 theorem hypIncl_mem_ball {d : ℕ} {r : ℝ} (w : Fin d → ℂ) :
     hypIncl w ∈ Metric.ball (0 : Fin (d + 1) → ℂ) r ↔ w ∈ Metric.ball 0 r := by
   rcases le_or_gt r 0 with hr | hr
@@ -22,6 +25,11 @@ theorem hypIncl_mem_ball {d : ℕ} {r : ℝ} (w : Fin d → ℂ) :
   · simp only [mem_ball_zero_iff, pi_norm_lt_iff hr, Fin.forall_fin_succ, hypIncl, Fin.cons_zero,
       Fin.cons_succ, norm_zero, hr, true_and]
 
+/- English proof (translation)
+Establish `h0 : ∀ τ ∉ Metric.closedBall (0 : Fin D → ℂ) ρ, (Metric.ball (0 : Fin D → ℂ) r).indicator χ τ = 0`. Introduce `τ hτ`. Distinguish the cases in `hU : τ ∈ Metric.ball (0 : Fin D → ℂ) r`. Rewrite using `[Set.indicator_of_mem hU]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hτ (Metric.ball_subset_closedBall (hsupp τ hU h))`. Conclude with `Set.indicator_of_notMem hU _`. Establish `heq : Set.EqOn ((Metric.ball (0 : Fin D → ℂ) r).indicator χ) χ (Metric.ball 0 r)` using `fun τ hτ => Set.indicator_of_mem hτ _`. Conclude with `⟨contDiff_of_contDiffOn_zero_off Metric.isOpen_ball Metric.isClosed_closedBall (Metric.closedBall_subset_ball hρ) (hχ.congr heq) h0, HasCompactSupport.intro (isCompact_closedBall 0 ρ) h0, closure_minimal (fun τ hτ => by_contra fun h => (Function.mem_support.1 hτ) (h0 τ h)) Metric …`.
+-/
 theorem extend_by_zero {D : ℕ} {r ρ : ℝ} {χ : (Fin D → ℂ) → ℝ} (hρ : ρ < r)
     (hχ : ContDiffOn ℝ ∞ χ (Metric.ball 0 r))
     (hsupp : ∀ τ ∈ Metric.ball (0 : Fin D → ℂ) r, χ τ ≠ 0 → τ ∈ Metric.ball 0 ρ) :
@@ -45,6 +53,9 @@ theorem extend_by_zero {D : ℕ} {r ρ : ℝ} {χ : (Fin D → ℂ) → ℝ} (h�
     closure_minimal (fun τ hτ => by_contra fun h => (Function.mem_support.1 hτ) (h0 τ h))
       Metric.isClosed_closedBall, heq⟩
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h1 : ContDiffAt ℝ ∞ F z` using `((ReciprocityTheory.AnForm.Osgood.osgood D U F hU hF z hz).contDiffAt (n := ∞)).restrict_scalars ℝ`. Establish `h2 : ContDiffAt ℝ ∞ (fun τ => ‖F τ‖ ^ 2 + ε) z` using `(h1.norm_sq ℝ).add contDiffAt_const`. Conclude with `((h2.log (by positivity)).div_const 2).contDiffWithinAt`.
+-/
 theorem logReg_contDiffOn {D : ℕ} {U : Set (Fin D → ℂ)} (hU : IsOpen U) {F : (Fin D → ℂ) → ℂ}
     (hF : DifferentiableOn ℂ F U) {ε : ℝ} (hε : 0 < ε) :
     ContDiffOn ℝ ∞ (fun τ => Real.log (‖F τ‖ ^ 2 + ε) / 2) U := by
@@ -58,6 +69,35 @@ end PolydiscLelongLimit
 
 open PolydiscLelongLimit in
 
+/- English proof (translation)
+Introduce `d m r ρ F χ ψ hρ hF hχ hsupp hψ`. Take `⟨H, hHd, hH0, hFH⟩` from `hF`. Establish `h3 : (3 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.2 le_top`. Take `⟨hv, hvc, hvt, hvχ⟩` from `extend_by_zero hρ hχ hsupp`. Use `set U : Set (Fin (d + 1) → ℂ) := Metric.ball 0 r with hUdef`.
+
+Use `set v := U.indicator χ with hvdef`. Establish `hU : IsOpen U` using `Metric.isOpen_ball`. Establish `hvU : tsupport v ⊆ U` using `hvt.trans (Metric.closedBall_subset_ball hρ)`. Establish `hFd : DifferentiableOn ℂ F U` using `(((differentiable_apply 0).pow m).differentiableOn.mul hHd).congr fun t ht => hFH t ht`. Establish `hFne : ∀ τ ∈ U, τ 0 ≠ 0 → F τ ≠ 0` using `fun τ hτ h0 => by`.
+
+Rewrite using `[hFH τ hτ]`. Conclude with `mul_ne_zero (pow_ne_zero _ h0) (hH0 τ hτ)`. Establish `hdens0 : ∀ τ, τ ∉ tsupport v → densV v ψ τ = 0` using `fun τ hτ => maDens_cons_eq_zero ψ hτ`. Establish `hIon : ∀ f : (Fin (d + 1) → ℂ) → ℝ, IntegrableOn (fun z => f z * densV v ψ z) U → Integrable (fun z => f z * densV v ψ z)` using `fun f h => (integrableOn_iff_integrable_of_support_subset fun z hz => by_contra fun h' => (Function.mem_support.1 hz) (mul_eq_zero_of_right _ (hdens0 z fun h'' => h' (hvU h'')))).1 h`. Establish `hgood : ∀ ε : ℝ, 0 < ε → Integrable (fun τ => Real.log (‖F τ‖ ^ 2 + ε) / 2 * densV v ψ τ) ∧ maInt (Matrix.vecCons (fun τ => Real.log (‖F τ‖ ^ 2 + ε) / 2) ψ) χ U = ∫ τ, Real.log (‖F τ‖ ^ 2 + ε) / 2 * densV v ψ τ`.
+
+Introduce `ε hε`. Establish `hP` using `parts_thm d ψ v (fun τ => Real.log (‖F τ‖ ^ 2 + ε) / 2) U ⟨hU, (hv.of_le h3).contDiffOn, hvc, hvU, (logReg_contDiffOn hU hFd hε).of_le h3, fun k => (hψ k).of_le h3⟩`. Use `⟨hIon _ hP.2.1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Unfold `maInt`.
+
+Conclude with `setIntegral_congr_fun hU.measurableSet fun τ hτ => by`. Simplify using `only [hvχ hτ]`. Apply the tactic sequence `try rfl`. Use `_ = maInt (Fin.cons v ψ) (fun τ => Real.log (‖F τ‖ ^ 2 + ε) / 2) U := hP.2.2.2.2.symm`. Use `_ = ∫ τ, Real.log (‖F τ‖ ^ 2 + ε) / 2 * densV v ψ τ := by`.
+
+Unfold `maInt`. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun τ hτ => mul_eq_zero_of_right _ (hdens0 τ fun h => hτ (hvU h))`. Establish `hL0` using `log_norm_integral_formula_unit d (m : ℤ) U v ψ H ⟨hU, hv.of_le h3, hvc, hvU, hψ⟩ hHd hH0`. Establish `hlogF : (fun z => Real.log ‖F z‖ * densV v ψ z) = fun z => Real.log ‖z 0 ^ (m : ℤ) * H z‖ * densV v ψ z`. Use function extensionality and compare the values at `z`.
+
+Distinguish the cases in `hz : z ∈ U`. Rewrite using `[hFH z hz, zpow_natCast]`. Rewrite using `[hdens0 z fun h => hz (hvU h), mul_zero, mul_zero]`. Establish `hint : Integrable (fun τ => Real.log ‖F τ‖ * densV v ψ τ)` using `by rw [hlogF]; exact hL0.1`. Establish `hdensI : Integrable (densV v ψ)`.
+
+Establish `hP1` using `parts_thm d ψ v (fun _ => (1 : ℝ)) U ⟨hU, (hv.of_le h3).contDiffOn, hvc, hvU, contDiffOn_const, fun k => (hψ k).of_le h3⟩`. Conclude with `(hIon (fun _ => 1) hP1.2.1).congr (Eventually.of_forall fun z => one_mul _)`. Take `⟨C, hC⟩ : ∃ C, ∀ τ ∈ tsupport v, ‖(1 / 2 : ℝ) * Real.log (‖F τ‖ ^ 2 + 1)‖ ≤ C` from `hvc.isCompact.exists_bound_of_continuousOn fun τ hτ => (continuousAt_const.mul ((((hFd.continuousOn.continuousAt (hU.mem_nhds (hvU hτ))).norm.pow 2).add continuousAt_const).log (by positivity : ‖F τ‖ ^ 2 + 1 ≠ 0))).continuousWithinAt`. Establish `hlim : Tendsto (fun ε : ℝ => ∫ τ, Real.log (‖F τ‖ ^ 2 + ε) / 2 * densV v ψ τ) (𝓝[>] 0) (𝓝 (∫ τ, Real.log ‖F τ‖ * densV v ψ τ))`. Use `tendsto_integral_filter_of_dominated_convergence (fun τ => |Real.log ‖F τ‖ * densV v ψ τ| + C * |densV v ψ τ|) (eventually_mem_nhdsWithin.mono fun ε hε => (hgood ε hε).1.aestronglyMeasurable) ?_ (hint.abs.add (hdensI.abs.const_mul C)) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [Ioc_mem_nhdsGT (one_pos : (0 : ℝ) < 1)] with ε hε filter_upwards [ae_coord_ne_zero (0 : Fin (d + 1))] with τ hτ0`. Distinguish the cases in `hτ : τ ∈ tsupport v`. Establish `h1` using `gReg_abs_le hε.1 hε.2 (hFne τ (hvU hτ) hτ0)`. Establish `h2` using `hC τ hτ`. Rewrite `h2` using `[Real.norm_eq_abs]`.
+
+Establish `e : Real.log (‖F τ‖ ^ 2 + ε) / 2 = gReg ε (F τ)` using `by unfold gReg; ring`. Establish `h4 : |gReg ε (F τ)| ≤ |Real.log ‖F τ‖| + C` using `h1.trans (by linarith [le_abs_self ((1 / 2 : ℝ) * Real.log (‖F τ‖ ^ 2 + 1))])`. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_mul, e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdens0 τ hτ]`.
+
+Simplify using the standard rewrite rules. Use `filter_upwards [ae_coord_ne_zero (0 : Fin (d + 1))] with τ hτ0`. Distinguish the cases in `hτ : τ ∈ U`. Establish `hpos : 0 < ‖F τ‖ ^ 2` using `pow_pos (norm_pos_iff.2 (hFne τ hτ hτ0)) 2`. Establish `hc : Tendsto (fun ε : ℝ => ‖F τ‖ ^ 2 + ε) (𝓝[>] 0) (𝓝 (‖F τ‖ ^ 2 + 0))` using `(tendsto_const_nhds.add tendsto_id).mono_left nhdsWithin_le_nhds`.
+
+Rewrite `hc` using `[add_zero]`. Establish `e : Real.log ‖F τ‖ = Real.log (‖F τ‖ ^ 2) / 2` using `by rw [Real.log_pow]; push_cast; ring`. Rewrite using `[e]`. Conclude with `(((Real.continuousAt_log hpos.ne').tendsto.comp hc).div_const 2).mul_const _`. Rewrite using `[hdens0 τ fun h => hτ (hvU h)]`.
+
+Simplify using `only [mul_zero]`. Conclude with `tendsto_const_nhds`. Establish `hR : ∫ w in Metric.ball (0 : Fin d → ℂ) r, χ (hypIncl w) * densHyp ψ w = ∫ w, v (hypIncl w) * densHyp ψ w`. Rewrite using `[setIntegral_congr_fun (g := fun w => v (hypIncl w) * densHyp ψ w) Metric.isOpen_ball.measurableSet fun w hw => by`. Simplify using `only [hvχ ((hypIncl_mem_ball w).2 hw)]]`.
+
+Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun w hw => mul_eq_zero_of_left (Set.indicator_of_notMem (mt (hypIncl_mem_ball w).1 hw) _) _`. Establish `hlimF : ∫ τ, Real.log ‖F τ‖ * densV v ψ τ = (m : ℝ) * ∫ w, v (hypIncl w) * densHyp ψ w`. Rewrite using `[hlogF, hL0.2, Int.cast_natCast]`. Rewrite using `[hR, ← hlimF]`. Conclude with `hlim.congr' (eventually_mem_nhdsWithin.mono fun ε hε => (hgood ε hε).2.symm)`.
+-/
 theorem PolydiscLelongLimit.proof : PolydiscLelongLimit.Statement := by
   intro d m r ρ F χ ψ hρ hF hχ hsupp hψ
   obtain ⟨H, hHd, hH0, hFH⟩ := hF

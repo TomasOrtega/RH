@@ -29,11 +29,17 @@ variable (A : Type) [CommRing A] [IsLocalRing A] (T : Type) [AddCommGroup T] [Mo
 
 abbrev lev (n : ℕ) : Submodule A T := (maximalIdeal A ^ n) • ⊤
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mono_left (Ideal.pow_le_pow_right n.le_succ)`.
+-/
 theorem lev_succ_le (n : ℕ) : lev A T (n + 1) ≤ lev A T n :=
   Submodule.smul_mono_left (Ideal.pow_le_pow_right n.le_succ)
 
 def redn (n : ℕ) : (T ⧸ lev A T (n + 1)) →ₗ[A] T ⧸ lev A T n := Submodule.factor (lev_succ_le A T n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redn_mk (n : ℕ) (x : T) : redn A T n ((lev A T (n + 1)).mkQ x) = (lev A T n).mkQ x := rfl
 
 variable {A T} {Γ : Type} [Group Γ] (ρ : Representation A Γ T)
@@ -43,6 +49,9 @@ def modRep (n : ℕ) : Representation A Γ (T ⧸ lev A T n) :=
     rw [← Submodule.map_le_iff_le_comap, Submodule.map_smul'']
     exact Submodule.smul_mono le_rfl le_top
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem modRep_mk (n : ℕ) (g : Γ) (x : T) : modRep ρ n g ((lev A T n).mkQ x) = (lev A T n).mkQ (ρ g x) := rfl
 
 variable [TopologicalSpace Γ] (c : Γ) (N : Set Γ) (H : Subgroup Γ) (P : Submodule A T)
@@ -98,6 +107,11 @@ def uPlus (u : M4 R) : Submodule R (uM R) where
 
 def eAB (R : Type) [CommRing R] : M4 R := Matrix.diagonal ![-1, 1, -1, 1]
 
+/- English proof (translation)
+Introduce `i j h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : lamW b = lamW j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_zero fun a _ => ?_, zero_mul]`.
+
+Distinguish the cases in `e' : lamW i = lamW a`. Rewrite using `[hY a b (by rw [← e', e]; exact h), mul_zero]`. Rewrite using `[hX i a e', zero_mul]`. Rewrite using `[hZ b j e, mul_zero]`.
+-/
 theorem hAB_mul_mul {X Y Z : M4 R} (hX : IsBlock X) (hY : Y ∈ hAB R) (hZ : IsBlock Z) : X * Y * Z ∈ hAB R := by
   intro i j h
   rw [Matrix.mul_apply]
@@ -109,6 +123,11 @@ theorem hAB_mul_mul {X Y Z : M4 R} (hX : IsBlock X) (hY : Y ∈ hAB R) (hZ : IsB
     · rw [hX i a e', zero_mul]
   · rw [hZ b j e, mul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `e : lamW i < lamW b`. Establish `h : ∀ i b j : Fin 4, lamW i < lamW b → ¬ lamW b < lamW j` using `by decide`.
+
+Rewrite using `[hZ b j (h i b j e), mul_zero]`. Rewrite using `[hY i b e, zero_mul]`.
+-/
 theorem hAB_mul_hAB {Y Z : M4 R} (hY : Y ∈ hAB R) (hZ : Z ∈ hAB R) : Y * Z = 0 := by
   ext i j
   rw [Matrix.mul_apply]
@@ -124,6 +143,13 @@ structure BG (r : Γ →* M4 R) : Prop where
   gsp : ∀ g, ∃ ν, IsGSp ν (r g)
   blk : ∀ g, IsBlock (r g)
 
+/- English proof (translation)
+Use `⟨hAB_mul_mul (h.blk g) hY.1 (h.blk _), ?_⟩` and prove the remaining obligations. Take `⟨m, -, -, -, o, -, a, p, -⟩` from `grp R`. Take `⟨ν, hν⟩` from `h.gsp g`. Take `⟨ν', hν'⟩` from `h.gsp g⁻¹`. Establish `e1 : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+
+Establish `e2 : r g⁻¹ * r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Establish `e3 : ν * ν' = 1`. Use `p _ _ _ _ hν hν'` as an intermediate fact. Rewrite `this` using `[e1, IsGSp, o, one_mul]`. Simplify using `using (congrFun (congrFun this 0) 0).symm`.
+
+Establish `e4 : adj Y = -Y` using `hY.2`. Use `show adj _ = -_`. Rewrite using `[m, m, a _ _ _ hν e1, a _ _ _ hν' e2, e4, smul_mul_assoc, mul_smul_comm, mul_smul_comm, smul_smul, mul_comm ν', e3, one_smul, neg_mul, mul_neg, mul_assoc]`.
+-/
 theorem BG.mem {r : Γ →* M4 R} (h : BG r) (g : Γ) {Y : M4 R} (hY : Y ∈ uM R) : r g * Y * r g⁻¹ ∈ uM R := by
   refine ⟨hAB_mul_mul (h.blk g) hY.1 (h.blk _), ?_⟩
   obtain ⟨m, -, -, -, o, -, a, p, -⟩ := grp R
@@ -148,6 +174,9 @@ def adU {r : Γ →* M4 R} (h : BG r) : Representation R Γ (uM R) where
   map_one' := LinearMap.ext fun Y => Subtype.ext (by simp)
   map_mul' s t := LinearMap.ext fun Y => Subtype.ext (by simp [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adU_val {r : Γ →* M4 R} (h : BG r) (g : Γ) (Y : uM R) : (adU h g Y).1 = r g * Y.1 * r g⁻¹ := rfl
 
 structure Sep [IsLocalRing R] (X : M4 R) : Prop where
@@ -185,10 +214,16 @@ structure BlockDiagonalOrdinaryGSpRep (S : Finset ℕ) (c s : G ℚ Ω) (B : Val
 
 end Gal
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, IsLocallyConstant.const 0, by simp, rfl, by simp, by simp⟩`.
+-/
 example {Γ M : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup M] (ρ : Γ → M →+ M) (c : Γ) (N : Set Γ) (H : Subgroup Γ) :
     (0 : Γ → M) ∈ Zc (fun g x => ρ g x) c N H {0} :=
   ⟨0, IsLocallyConstant.const 0, by simp, rfl, by simp, by simp⟩
 
+/- English proof (translation)
+Use `⟨fun i j h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [lamW]`. Use `show adj _ = -_`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Fin.rev, Matrix.single_apply]`.
+-/
 example {R : Type} [CommRing R] : Matrix.single 1 2 (1 : R) ∈ uM R := by
   refine ⟨fun i j h => ?_, ?_⟩
   · fin_cases i <;> fin_cases j <;> simp_all [lamW]

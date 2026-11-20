@@ -9,6 +9,13 @@ open Classical
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw _ l Xo c C X₁ η A hη hA`. Use `haveI := X₁.fin`. Establish `hc : IsClosedMap X₁.π.base` using `X₁.π.isClosedMap`. Set `w₀ : Sp X₁.Ω₁` to `IsLocalRing.closedPoint X₁.Ω₁`. Establish `hgen : X₁.M.pt w₀ = genericPoint X₁.M.Z` using `X₁.M.pt_apply w₀`.
+
+Establish `hpt : X₁.π (X₁.M.pt w₀) = C.i η`. Establish `h` using `congrArg (fun f => f.base w₀) X₁.comp`. Simplify using `only [Scheme.Hom.comp_base, TopCat.comp_app] at h`. Rewrite using `[← hη w₀]`. Simplify using `using h`.
+
+Establish `huniv : closure ({genericPoint X₁.M.Z} : Set X₁.M.Z) = Set.univ` using `genericPoint_spec X₁.M.Z`. Rewrite using `[← hA, ← hpt, hgen, ← Set.image_singleton, ← Set.image_univ, ← huniv]`. Conclude with `(hc.closure_image_eq_of_continuous X₁.π.continuous _).symm`.
+-/
 theorem USetup.range_π_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (η : Xo.XF c) (A : Set C.Z), (∀ w, X₁.uΩ w = η) → closure {C.i η} = A → Set.range X₁.π = A := by
   intro E _ _ _ H Dw _ l Xo c C X₁ η A hη hA
   haveI := X₁.fin

@@ -22,8 +22,14 @@ variable {X X' : Scheme.{0}}
 
 def pre (π : X' ⟶ X) (Z : Closeds X) : Closeds X' := Z.preimage π.continuous
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 @[simp] theorem mem_pre {π : X' ⟶ X} {Z : Closeds X} {x : X'} : x ∈ pre π Z ↔ π x ∈ Z := Iff.rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(ext x; simp [mem_pre])`.
+-/
 theorem pre_comp {X'' : Scheme.{0}} (π' : X'' ⟶ X') (π : X' ⟶ X) (Z : Closeds X) :
     pre (π' ≫ π) Z = pre π' (pre π Z) := by
   first
@@ -36,6 +42,9 @@ abbrev van (Z : Closeds X) (x : X) : Ideal (X.presheaf.stalk x) :=
 def tr {x y : X} (h : x = y) : X.presheaf.stalk x →+* X.presheaf.stalk y :=
   (X.presheaf.stalkCongr (Inseparable.of_eq h)).hom.hom
 
+/- English proof (translation)
+Simplify using `[tr, TopCat.Presheaf.stalkCongr]`.
+-/
 @[simp] theorem tr_rfl (x : X) (a : X.presheaf.stalk x) : tr (rfl : x = x) a = a := by
   simp [tr, TopCat.Presheaf.stalkCongr]
 
@@ -126,6 +135,9 @@ def IsMod (k : K →+* F) (sK : XK ⟶ Sp K) (s : X ⟶ Sp F) (e : X ⟶ XK) (BK
     (e' : X' ⟶ X'K) : Prop :=
   IsPair k (πK ≫ sK) (π ≫ s) e' (pre πK BK) ∧ e' ≫ πK = π ≫ e ∧ IsIso (πK ∣_ BK.compl) ∧ IsModif π (pre e BK)
 
+/- English proof (translation)
+Rewrite using `[← pre_comp, h.2.1, pre_comp]`.
+-/
 theorem IsMod.pre_eq {k : K →+* F} {sK : XK ⟶ Sp K} {s : X ⟶ Sp F} {e : X ⟶ XK} {BK : Closeds XK} {πK : X'K ⟶ XK}
     {π : X' ⟶ X} {e' : X' ⟶ X'K} (h : IsMod k sK s e BK πK π e') (Z : Closeds XK) :
     pre e' (pre πK Z) = pre π (pre e Z) := by
@@ -502,6 +514,9 @@ def FreeSt : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (N : ℕ), IsCN R → 1 ≤ N → FineData P.D.toPre N → FreeSec t N
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P N hR hN hF`. Take `⟨n, b, hb, hi⟩` from `h₁ E H R t P N hR hN hF`. Use `⟨n, b, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ hW φ hφ`. Conclude with `h₃ E H R t P N n b hb (fun k _ ψ => h₂ E H R t N n b hi k ψ) W hW φ hφ`.
+-/
 theorem freeSt_of (h₁ : FreeClosedSt) (h₂ : IndepSpreadSt) (h₃ : FreeTraitSt) : FreeSt := by
   intro E _ _ _ H R _ _ _ t P N hR hN hF
   obtain ⟨n, b, hb, hi⟩ := h₁ E H R t P N hR hN hF

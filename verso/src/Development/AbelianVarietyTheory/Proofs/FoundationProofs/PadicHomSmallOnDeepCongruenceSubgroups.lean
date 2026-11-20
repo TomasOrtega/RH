@@ -3,6 +3,29 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 
+/- English proof (translation)
+Introduce `l _ Γ _ _ _ r lam hr hlam hker ε hε`. Establish `hl : ‖((l:ℕ) : Qbar l)‖ = (l:ℝ)⁻¹`. Establish `: ((l:ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap']`. Simplify using `[Padic.norm_p]`.
+
+Establish `hl1 : ‖((l:ℕ) : Qbar l)‖ < 1`. Rewrite using `[hl]; exact inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `set F : ℕ → Set Γ := fun N => {g | ∀ i j, ‖((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j‖ ≤ ‖((l : ℕ) : Qbar l) ^ N‖} ∩ {g | ε ≤ ‖(lam g).toAdd‖} with hF`.
+
+Establish `hcm : Continuous fun g => ((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1)` using `(Units.continuous_val.comp hr).sub continuous_const`. Establish `hclosed : ∀ N, IsClosed (F N)`. Introduce `N`. Use `IsClosed.inter ?_ ?_` and prove the remaining obligations. Establish `: {g | ∀ i j, ‖((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j‖ ≤ ‖((l : ℕ) : Qbar l) ^ N‖} = ⋂ i, ⋂ j, {g | ‖((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j‖ ≤ ‖((l : ℕ) : Qbar l) ^ N‖}`.
+
+Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => ?_` and prove the remaining obligations. Conclude with `isClosed_le (continuous_norm.comp ((continuous_apply j).comp ((continuous_apply i).comp hcm))) continuous_const`.
+
+Conclude with `isClosed_le continuous_const (continuous_norm.comp (continuous_toAdd.comp hlam))`. Establish `hmono : ∀ N, F (N+1) ⊆ F N`. Introduce `N g hg`. Use `⟨fun i j => (hg.1 i j).trans ?_, hg.2⟩` and prove the remaining obligations. Rewrite using `[norm_pow, norm_pow]`.
+
+Conclude with `pow_le_pow_of_le_one (norm_nonneg _) hl1.le (Nat.le_succ N)`. Establish `hne : ∀ N, (F N).Nonempty`. Introduce `N`. Take `⟨g, hg1, hg2⟩` from `hcon N`. Conclude with `⟨g, hg1, hg2.le⟩`.
+
+Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed F hmono hne (hclosed 0).isCompact hclosed`. Rewrite `hg` using `[Set.mem_iInter]`. Establish `hzero : ∀ i j, ((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j = 0`. Introduce `i j`. Assume the negation of the conclusion as `hx`.
+
+Establish `hpos : 0 < ‖((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j‖` using `norm_pos_iff.mpr hx`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hpos hl1`. Use `(hg N).1 i j` as an intermediate fact. Rewrite `this` using `[norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hrg : r g = 1`. Apply `Units.ext` to reduce the goal to its premises. Establish `: (r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1 = 0`. Use extensionality with `i j`. Conclude with `hzero i j`.
+
+Simplify `this` using `[sub_eq_zero]`. Establish `hlg : lam g = 1` using `hker (MonoidHom.mem_ker.mpr hrg)`. Establish `h2 : ε ≤ ‖(lam g).toAdd‖` using `(hg 0).2`. Rewrite `h2` using `[hlg]`. Simplify using `at h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.lam_small_of_deep_congruence : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] (r : Γ →* GL (Fin 2) (Qbar l)) (lam : Γ →* Multiplicative ℤ_[l]), Continuous r → Continuous lam → r.ker ≤ lam.ker → ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ g : Γ, (∀ i j, ‖((r g : Matrix (Fin 2) (Fin 2) (Qbar l)) - 1) i j‖ ≤ ‖((l : ℕ) : Qbar l) ^ N‖) → ‖(lam g).toAdd‖ ≤ ε := by
   intro l _ Γ _ _ _ r lam hr hlam hker ε hε
   have hl : ‖((l:ℕ) : Qbar l)‖ = (l:ℝ)⁻¹ := by

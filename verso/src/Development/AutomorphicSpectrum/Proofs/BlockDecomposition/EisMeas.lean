@@ -18,6 +18,81 @@ namespace GlobalTheory.CompanionTheory.EisE
 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hIdem hBump hMaj hFixW hFixTh hThProd hMu hFib hR hTop hAlg hSig hOrb`. Unfold `EisMeas`. Introduce `D n t B W d hn ψ χ θ μB μW ωB ωW hStg mu hmu M m b₀ hb₀ hrho`. Establish `hStg'` using `hStg`. Take `⟨big, hlt, hpos, hψ, hχ, hηW, hθ, hμB, hμW, hB, hW⟩` from `hStg`.
+
+Establish `hrk : B.rank = W.rank + 2 * t` using `d.rank_add.symm`. Establish `hdet` using `hb₀.2`. Set `nb : hermA D t → G D t` to `fun b => GlobalTheory.CompanionTheory.JacobiMaps.nAt b.1 b.2`. Establish `hnb : IsNMap nb` using `fun b => GlobalTheory.CompanionTheory.JacobiMaps.mat_nAt b.1 b.2`. Take `⟨w, hw⟩` from `GlobalTheory.CompanionTheory.EisE.exists_isW D t`.
+
+Take `⟨S₁, hS₁⟩` from `hMu D t mu hmu nb hnb w hw`. Take `⟨S₂, hS₂⟩` from `hFixW D n B ψ hψ χ hχ (resEta_parity hηW (by omega)) θ hθ μB hμB ωB hB`. Take `⟨S₃, hS₃⟩` from `hFixTh D W.rank t m ψ hψ χ hχ θ hθ b₀ hdet`. Take `⟨S₄, hS₄⟩` from `GlobalTheory.CompanionTheory.ColumnSplitting.YvInt.intOff_yv D W.rank t B b₀`. Use `⟨S₁ ∪ S₂ ∪ S₃ ∪ S₄, fun S hS e he => ?_⟩` and prove the remaining obligations.
+
+Establish `h1S : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `h2S : S₂ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `h3S : S₃ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `h4S : S₄ ⊆ S` using `fun x hx => hS (by simp [hx])`. Take `⟨he2, hcA⟩` from `(hIdem D S).2 e he`.
+
+Establish `hyS` using `hS₄ S h4S`. Take `⟨hLC, hT2, hSC, hBor, hTG⟩` from `GlobalTheory.CompanionTheory.MuC.hermS_facts D t e`. Establish `hlam : (Measure.addHaar : Measure (hermS D t e)).IsAddHaarMeasure` using `inferInstance`. Establish `kinv : ∀ (Φ : schwartzA θ B.rank n), Good S e (Φ : Mx D B.rank n → ℂ) → ∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → Good S e (Ω 1) → ∀ u ∈ KOff D t S, ∀ g : G D t, Rsec M m ψ b₀ (fun g => ((ωB g) Φ).1 0) 1 Ω (g * u) = Rsec M m ψ b₀ (fun g => ((ωB g) Φ).1 0) 1 Ω g` using `fun Φ hΦ Ω hΩ hΩg u hu g => GlobalTheory.CompanionTheory.EisE.rsec_inv M m ψ b₀ ωB Φ u (hS₂ S h2S e he Φ hΦ (M.emb u) (GlobalTheory.CompanionTheory.EmbK.emb_mem_KOff M S u hu)) (hS₃ S h3S e he Ω hΩ hΩg u hu) g`. Break down `hS₁ S h1S e he Measure.addHaar hlam with hzero | ⟨c, hc, hcell⟩` into its components or cases.
+
+Use `⟨0, GlobalTheory.CompanionTheory.EisE.isOrb_zero, fun Φ hΦ Ω hΩ hΩg _ => ?_⟩` and prove the remaining obligations. Rewrite using `[integral_zero_measure]`. Conclude with `hzero _ (hrho Ω hΩ Φ) (kinv Φ hΦ Ω hΩ hΩg)`. Take `⟨μr, hμr'⟩ : ∃ μ : Measure (Mx D B.rank W.rank), ∃ 𝓕, IsCovolOne (ratMx D B.rank W.rank) μ 𝓕` from `GlobalTheory.Size.exists_isCovolOne W B`. Take `⟨μt, hμt'⟩ : ∃ μ : Measure (Mx D B.rank t), ∃ 𝓕, IsCovolOne (ratMx D B.rank t) μ 𝓕` from `GlobalTheory.Size.exists_isCovolOne (GlobalTheory.Size.posSp D t) B`.
+
+Establish `hμtH : μt.IsAddHaarMeasure`. Take `⟨_, h, -⟩` from `hμt'`. Conclude with `h`. Take `⟨fib, hfib⟩` from `hFib D W.rank B (by omega) ψ hψ θ hθ μr hμr' m.lz ⟨m.𝓖, m.hz⟩ b₀ hdet`. Take `⟨hsfin, -, hsL, -⟩` from `hSig D W.rank t B b₀ S e he he2 fib μt hfib.fin hfib.supp hfib.inv hμtH`.
+
+Take `⟨hXT2, hXLC, hXSC, hXBor, hPBor, hemb, -⟩` from `hTop D B.rank W.rank t e`. Establish `hRich` using `(hAlg D θ hθ B.rank W.rank t n hn S e he).1`. Use `hsfin` as an intermediate fact. Use `hXBor` as an intermediate fact. Use `hPBor` as an intermediate fact.
+
+Establish `key : ∀ (Φ : schwartzA θ B.rank n), Good S e (Φ : Mx D B.rank n → ℂ) → ∀ Ω, IsTh ψ χ θ b₀ m.μ Ω → Good S e (Ω 1) → ∀ Bd : ℝ, (∀ y, ‖Ω 1 y‖ ≤ Bd) → Integrable (fun z : XS D B.rank W.rank t e => GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn (Φ : Mx D B.rank n → ℂ) (Ω 1) z.1) (sig S …`. Introduce `Φ hΦ Ω hΩ hΩg Bd hBd`. Take `⟨hIΦ, hRx⟩` from `hR D n t B W d hn ψ χ θ μB μW ωB ωW hStg' M m b₀ hdet μr μt hμr' hμt' fib hfib Ω hΩ Φ nb hnb w hw`. Establish `hΦc : Continuous (Φ : Mx D B.rank n → ℂ)` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ B.rank n Φ Φ.2).1`. Establish `hΩc : Continuous (Ω 1)` using `hΩ.cont.comp (continuous_const.prodMk continuous_id)`.
+
+Take `⟨hintX, hxid⟩` from `GlobalTheory.CompanionTheory.EisE.cell_id he2 hcA hψ hsL hyS hΦc hΩc hΦ hΩg hBd hIΦ`. Take `⟨hA1, hA2⟩` from `hcell _ (hrho Ω hΩ Φ) (kinv Φ hΦ Ω hΩ hΩg)`. Establish `hfun : (fun x : hermS D t e => Rsec M m ψ b₀ (fun g => ((ωB g) Φ).1 0) 1 Ω (w * nb x.1)) = fun x => ∫ z : XS D B.rank W.rank t e, GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn (Φ : Mx D B.rank n → ℂ) (Ω 1) z.1 * pch ψ x.1.1 (qv B b₀ z.1) ∂(sig S he2 (fib.prod μt))`. Use function extensionality and compare the values at `x`. Conclude with `(hRx x.1).trans (hxid x)`.
+
+Use `⟨hintX, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfun]`. Conclude with `hA1`. Rewrite using `[hA2, hfun]`. Establish `hpchc : ∀ x : hermS D t e, Continuous fun z : XS D B.rank W.rank t e => pch ψ x.1.1 (qv B b₀ z.1)` using `fun x => (GlobalTheory.CompanionTheory.RCellCont.continuity_characters_projection hψ B b₀ x.1).2.2.2.1.comp continuous_subtype_val`.
+
+Establish `hyvc : Continuous fun z : Mx D B.rank W.rank × Mx D B.rank t => yv B b₀ z` using `(GlobalTheory.CompanionTheory.RCellCont.continuity_characters_projection hψ B b₀ (0 : hermA D t)).2.1`. Establish `hI1 : ∀ f ∈ algA (a` using `B.rank) θ hn S e, ∀ x : hermS D t e, Integrable (fun z : XS D B.rank W.rank t e => f z * pch ψ x.1.1 (qv B b₀ z.1)) (sig S he2 (fib.prod μt)) := by`. Introduce `f hf x`. Take `⟨hfc, hfcs⟩` from `hRich.cc f hf`. Establish `h2 : HasCompactSupport (f * fun z : XS D B.rank W.rank t e => pch ψ x.1.1 (qv B b₀ z.1))` using `hfcs.mul_right`.
+
+Conclude with `(hfc.mul (hpchc x)).integrable_of_hasCompactSupport h2`. Establish `bump : ∀ C : Set (Mx D W.rank t), IsCompact C → (∀ x ∈ C, IntOff S x) → ∃ Ω, IsTh ψ χ θ b₀ m.μ Ω ∧ Good S e (Ω 1) ∧ (∀ y, 0 ≤ (Ω 1 y).re ∧ (Ω 1 y).im = 0 ∧ ‖Ω 1 y‖ ≤ 1) ∧ ∀ y ∈ C, Ω 1 y = 1`. Introduce `C hC hCi`. Take `⟨η, hη⟩` from `hBump D θ hθ W.rank t S e he C hC hCi`. Take `⟨Ω, hΩ, hΩ1⟩` from `hThProd D W.rank t m ψ hψ b₀ hb₀ χ hχ hηW hpos θ hθ η (fun i => (hη i).1)`.
+
+Establish `hΩ1' : Ω 1 = fun y => ∏ i, η i (y.submatrix (fun _ => i) id)` using `funext hΩ1`. Use `⟨Ω, hΩ, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΩ1']`. Conclude with `GlobalTheory.CompanionTheory.EisE.good_rows fun i => (hη i).2.2.1`. Introduce `y`.
+
+Rewrite using `[hΩ1 y]`. Establish `hre : ∀ i, 0 ≤ (η i (y.submatrix (fun _ => i) id)).re ∧ (η i (y.submatrix (fun _ => i) id)).im = 0` using `fun i => ⟨((hη i).2.2.2.1 _).1, ((hη i).2.2.2.1 _).2.2⟩`. Establish `hnn` using `GlobalTheory.CompanionTheory.EisE.prod_nonneg_real Finset.univ _ hre`. Use `⟨hnn.1, hnn.2, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_prod]`.
+
+Use `Finset.prod_le_one (fun i _ => norm_nonneg _) (fun i _ => ?_)` and prove the remaining obligations. Take `⟨h0, h1, h2⟩` from `(hη i).2.2.2.1 (y.submatrix (fun _ => i) id)`. Establish `h3 : η i (y.submatrix (fun _ => i) id) = ((η i (y.submatrix (fun _ => i) id)).re : ℂ)` using `Complex.ext (by simp) (by simp [h2])`. Rewrite using `[h3, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg h0]`. Conclude with `h1`.
+
+Introduce `y hy`. Rewrite using `[hΩ1 y]`. Conclude with `Finset.prod_eq_one fun i _ => (hη i).2.2.2.2 y hy`. Establish `hint : ∀ f ∈ algA (a` using `B.rank) θ hn S e, Integrable (fun x : hermS D t e => ∫ z : XS D B.rank W.rank t e, f z * pch ψ x.1.1 (qv B b₀ z.1) ∂(sig S he2 (fib.prod μt))) Measure.addHaar := by`. Introduce `f hf`.
+
+Unfold `PositivityTheory.Rg.Rsw.Em.algA at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨Φ, hΦm, hΦg, hΦcs, rfl⟩` from `hg`. Establish `hC : IsCompact ((fun X => e • yv B b₀ (GlobalTheory.CompanionTheory.EisE.cutc hn X)) '' tsupport Φ)` using `hΦcs.isCompact.image ((continuous_const_smul e).comp (hyvc.comp (GlobalTheory.CompanionTheory.EisE.continuous_cutc hn)))`.
+
+Establish `hCi : ∀ x ∈ (fun X => e • yv B b₀ (GlobalTheory.CompanionTheory.EisE.cutc hn X)) '' tsupport Φ, IntOff S x`. Introduce and unpack `_ ⟨X, -, rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.EisE.intOff_smul he _`. Take `⟨Ω, hΩ, hΩg, hΩnn, hΩC⟩` from `bump _ hC hCi`. Establish `hpt : ∀ z : XS D B.rank W.rank t e, Φ (jn hn z.1.1 z.1.2) = GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ (Ω 1) z.1`.
+
+Introduce `z`. Distinguish the cases in `h0 : Φ (jn hn z.1.1 z.1.2) = 0`. Simplify using `[GlobalTheory.CompanionTheory.EisE.xiP, h0]`. Establish `hio : IntOff S (jn hn z.1.1 z.1.2)`. Assume the negation of the conclusion as `hn'`.
+
+Conclude with `h0 (by rw [hΦg (jn hn z.1.1 z.1.2), if_neg hn'])`. Take `⟨hi1, hi2⟩` from `(GlobalTheory.CompanionTheory.EisE.intOff_jn hn z.1.1 z.1.2).1 hio`. Establish `hiy` using `hyS z.1 hi1 hi2`. Establish `hmem : e • yv B b₀ z.1 ∈ (fun X => e • yv B b₀ (GlobalTheory.CompanionTheory.EisE.cutc hn X)) '' tsupport Φ` using `⟨jn hn z.1.1 z.1.2, subset_tsupport _ h0, by simp only [GlobalTheory.CompanionTheory.EisE.cutc_jn]⟩`. Establish `h1 : Ω 1 (yv B b₀ z.1) = 1`.
+
+Rewrite using `[hΩg (yv B b₀ z.1), if_pos hiy]`. Conclude with `hΩC _ hmem`. Simplify using `[GlobalTheory.CompanionTheory.EisE.xiP, h1]`. Use `(key ⟨Φ, hΦm⟩ hΦg Ω hΩ hΩg 1 (fun y => (hΩnn y).2.2)).2.1.congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hpt z]`. Consider the case `zero => simp`. Consider the case `add g g' hg hg' ih ih'`. Use `(ih.add ih').congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, add_mul]`.
+
+Rewrite using `[integral_add (hI1 g hg x) (hI1 g' hg' x)]`. Consider the case `smul a g hg ih`. Use `(ih.const_mul a).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[integral_const_mul]`.
+
+Take `⟨ν₀, hν₀, hν₀eq⟩` from `hOrb D n W.rank t hn B hrk ψ hψ θ hθ b₀ hdet S e he he2 fib μt hfib.fin hfib.supp hfib.inv hμtH Measure.addHaar hlam hint`. Use `⟨c.toNNReal • Measure.map Subtype.val ν₀, GlobalTheory.CompanionTheory.EisE.isOrb_smul hν₀ _, ?_⟩` and prove the remaining obligations. Introduce `Φ hΦ Ω hΩ hΩg hΩcs`. Establish `hΩc : Continuous (Ω 1)` using `hΩ.cont.comp (continuous_const.prodMk continuous_id)`. Take `⟨Bd, hBd⟩` from `hΩc.bounded_above_of_compact_support hΩcs`.
+
+Establish `hBd0 : 0 ≤ Bd` using `(norm_nonneg _).trans (hBd 0)`. Take `⟨k1, k2, k3⟩` from `key Φ hΦ Ω hΩ hΩg Bd hBd`. Take `⟨Φ₀, hΦ₀m, hΦ₀g, hΦ₀nn, happ⟩` from `hMaj D θ hθ B.rank n S e he (Φ : Mx D B.rank n → ℂ) Φ.2 hΦ`. Establish `hC₀ : IsCompact ((fun y : Mx D W.rank t => e • y) '' tsupport (Ω 1))` using `hΩcs.isCompact.image (continuous_const_smul e)`. Take `⟨Ω₀, hΩ₀, hΩ₀g, hΩ₀nn, hΩ₀C⟩` from `bump _ hC₀ (by`.
+
+Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `GlobalTheory.CompanionTheory.EisE.intOff_smul he y)`. Establish `hdom : ∀ y, ‖Ω 1 y‖ ≤ Bd * (Ω₀ 1 y).re`. Introduce `y`. Distinguish the cases in `h0 : Ω 1 y = 0`.
+
+Rewrite using `[h0, norm_zero]`. Conclude with `mul_nonneg hBd0 (hΩ₀nn y).1`. Establish `hio : IntOff S y`. Assume the negation of the conclusion as `hn'`. Conclude with `h0 (by rw [hΩg y, if_neg hn'])`.
+
+Establish `h1 : Ω₀ 1 y = 1`. Rewrite using `[hΩ₀g y, if_pos hio]`. Conclude with `hΩ₀C _ ⟨y, subset_tsupport _ h0, rfl⟩`. Rewrite using `[h1, Complex.one_re, mul_one]`. Conclude with `hBd y`.
+
+Take `⟨j1, j2, -⟩` from `key ⟨Φ₀, hΦ₀m⟩ hΦ₀g Ω₀ hΩ₀ hΩ₀g 1 (fun y => (hΩ₀nn y).2.2)`. Establish `hΦc : Continuous (Φ : Mx D B.rank n → ℂ)` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ B.rank n Φ Φ.2).1`. Establish `hΦ₀c : Continuous Φ₀` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ B.rank n Φ₀ hΦ₀m).1`. Establish `hΩ₀c : Continuous (Ω₀ 1)` using `hΩ₀.cont.comp (continuous_const.prodMk continuous_id)`. Establish `hf₀nn : ∀ z : XS D B.rank W.rank t e, 0 ≤ (GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₀ (Ω₀ 1) z.1).re ∧ (GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₀ (Ω₀ 1) z.1).im = 0`.
+
+Introduce `z`. Take `⟨a1, a2⟩` from `hΦ₀nn (jn hn z.1.1 z.1.2)`. Take `⟨b1, b2, -⟩` from `hΩ₀nn (yv B b₀ z.1)`. Prove the components needed by the constructor for the conclusion. Simplify using `only [GlobalTheory.CompanionTheory.EisE.xiP, Complex.mul_re, Complex.conj_re, Complex.conj_im, a2, zero_mul, sub_zero]`.
+
+Conclude with `mul_nonneg a1 b1`. Simplify using `[GlobalTheory.CompanionTheory.EisE.xiP, Complex.mul_im, a2, b2]`. Establish `happrox : ∀ ε : ℝ, 0 < ε → ∃ f₁ : XS D B.rank W.rank t e → ℂ, Continuous f₁ ∧ HasCompactSupport f₁ ∧ ∀ z, ‖GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn (Φ : Mx D B.rank n → ℂ) (Ω 1) z.1 - f₁ z‖ ≤ ε * (GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₀ (Ω₀ 1) z.1).re`. Introduce `ε hε`. Take `⟨Φ₁, hΦ₁m, hΦ₁g, hΦ₁cs, hΦ₁⟩` from `happ (ε / (Bd + 1)) (div_pos hε (by linarith))`.
+
+Establish `hΦ₁c : Continuous Φ₁` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ B.rank n Φ₁ hΦ₁m).1`. Establish `hgen : (fun z : XS D B.rank W.rank t e => Φ₁ (jn hn z.1.1 z.1.2)) ∈ algA (a` using `B.rank) θ hn S e := Submodule.subset_span ⟨Φ₁, hΦ₁m, hΦ₁g, hΦ₁cs, rfl⟩`. Use `⟨fun z => GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₁ (Ω 1) z.1, (GlobalTheory.CompanionTheory.EisE.continuous_xiP hψ hΦ₁c hΩc).comp continuous_subtype_val, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : HasCompactSupport ((fun z : XS D B.rank W.rank t e => Φ₁ (jn hn z.1.1 z.1.2)) * fun z => (starRingEnd ℂ) (Ω 1 (yv B b₀ z.1)))` using `(hRich.cc _ hgen).2.mul_right`. Conclude with `h2`.
+
+Introduce `z`. Establish `hxr : (GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₀ (Ω₀ 1) z.1).re = (Φ₀ (jn hn z.1.1 z.1.2)).re * (Ω₀ 1 (yv B b₀ z.1)).re`. Simplify using `only [GlobalTheory.CompanionTheory.EisE.xiP, Complex.mul_re, Complex.conj_re, Complex.conj_im, (hΦ₀nn (jn hn z.1.1 z.1.2)).2, zero_mul, sub_zero]`. Establish `hdiff : GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn (Φ : Mx D B.rank n → ℂ) (Ω 1) z.1 - GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₁ (Ω 1) z.1 = ((Φ : Mx D B.rank n → ℂ) (jn hn z.1.1 z.1.2) - Φ₁ (jn hn z.1.1 z.1.2)) * (starRingEnd ℂ) (Ω 1 (yv B b₀ z.1))`. Simplify using `only [GlobalTheory.CompanionTheory.EisE.xiP]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hxr, hdiff, norm_mul, Complex.norm_conj]`. Establish `e1` using `hΦ₁ (jn hn z.1.1 z.1.2)`. Establish `e2` using `hdom (yv B b₀ z.1)`. Establish `a0` using `(hΦ₀nn (jn hn z.1.1 z.1.2)).1`.
+
+Establish `b0` using `(hΩ₀nn (yv B b₀ z.1)).1`. Establish `hk : ε / (Bd + 1) * Bd ≤ ε`. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmain` using `hν₀eq (fun z => GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn (Φ : Mx D B.rank n → ℂ) (Ω 1) z.1) (fun z => GlobalTheory.CompanionTheory.EisE.xiP B b₀ hn Φ₀ (Ω₀ 1) z.1) ((GlobalTheory.CompanionTheory.EisE.continuous_xiP hψ hΦc hΩc).comp continuous_subtype_val) ((GlobalTheory.Compa …`. Rewrite using `[k3, hmain, integral_smul_nnreal_measure, hemb.integral_map]`. Simplify using `only [NNReal.smul_def, Real.coe_toNNReal c hc.le, Complex.real_smul]`. Both sides reduce to the same expression.
+-/
 theorem eisMeas : IdemEx → BumpEx → Major → FixW → FixTh → ThProd → MuCell → FibEx → RCell → TopX → AlgRich → SigLaw → OrbEx →
     EisMeas := by
   classical

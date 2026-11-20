@@ -80,6 +80,23 @@ end GlobalTheory.UT.MixedConv
 
 namespace GlobalTheory.UT
 
+/- English proof (translation)
+Introduce `hL R _ _ I _ D A G _ _ _ U F _ _ _ k hk p p' x x' hx hx' ζ`. Establish `hG` using `hL.1.globalFns`. Take `⟨w₀, hw₀⟩` from `U.ext`. Take `⟨θ, rfl, -⟩` from `TorsionTheta.exists_theta_acts hL.1.kerPow _ A F _ k hk x (hx w₀ hw₀).1`. Take `⟨θ', rfl, -⟩` from `TorsionTheta.exists_theta_acts hL.1.kerPow _ A F _ k hk x' (hx' w₀ hw₀).1`.
+
+Take `⟨w, hw, h⟩` from `(hx w₀ hw₀).2 θ rfl`. Take `⟨w', hw', h'⟩` from `(hx' w₀ hw₀).2 θ' rfl`. Take `⟨e, he⟩` from `exists_linearEquiv_expandsF hG U F hk w₀ hw₀`. Take `⟨ρ, hρ, hcomm, -⟩` from `thetaGrp_acts_linearly hG _ A (k : ℤ) (TFK (R := R) F)`. Take `⟨c, hc⟩` from `CommutatorPairing.exists_commIsOf hG A.isAb A.isLB θ θ'`.
+
+Take `⟨z, rfl⟩ : ∃ z : Fˣ, unitOn z = c` from `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.toMonoidHom c, Units.ext (by simp [unitOn])⟩`. Set `E : SecM A.A A.L (k : ℤ) (TFK (R` to `R) F) → Fam D.toPre F k := fun v => e (SecM.toSec A.A v)`. Establish `hE : ∀ s, ∃ v, E v = s` using `fun s => ⟨SecM.ofSec A.A (e.symm s), e.apply_symm_apply s⟩`. Establish `a : ∀ v, PhiRel D.toPre F k p w (E v) (E (ρ θ v))` using `fun v => h _ _ _ _ ((he _ _).2 rfl) ((he _ _).2 rfl) ((hρ _ _ _).2 rfl)`. Establish `a' : ∀ v, PhiRel D.toPre F k p' w' (E v) (E (ρ θ' v))` using `fun v => h' _ _ _ _ ((he _ _).2 rfl) ((he _ _).2 rfl) ((hρ _ _ _).2 rfl)`.
+
+Establish `b : ∀ v t, PhiRel D.toPre F k p w (E v) t → t = E (ρ θ v)` using `fun v t H => phi_unique p w ((phiRel_iff hG p w hw _ _).1 H) ((phiRel_iff hG p w hw _ _).1 (a v))`. Establish `b' : ∀ v t, PhiRel D.toPre F k p' w' (E v) t → t = E (ρ θ' v)` using `fun v t H => phi_unique p' w' ((phiRel_iff hG p' w' hw' _ _).1 H) ((phiRel_iff hG p' w' hw' _ _).1 (a' v))`. Establish `key` using `weilQkIs_iff_of_comm hG D p p' w w' hw hw' (z : F) (fun s s₁ s₂ s₃ s₄ h₁ h₂ h₃ h₄ => by`. Take `⟨v, rfl⟩` from `hE s`. Take `rfl` from `b' _ _ h₁`.
+
+Take `rfl` from `b _ _ h₂`. Take `rfl` from `b _ _ h₃`. Take `rfl` from `b' _ _ h₄`. Rewrite using `[hcomm θ θ' _ hc v]`. Conclude with `e.map_smul (z : F) (SecM.toSec A.A (ρ θ' (ρ θ v)))) (by`.
+
+Take `⟨B, hB, -⟩` from `BoxSpan.exists_basis hL.1.secBaseChange A k hk F (jFK (R := R) F)`. Establish `: Nontrivial Γ((TFK (R` using `R) F).left, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Establish `hne` using `hB.ne_zero ⟨0, pow_pos hk _⟩`. Use `⟨_, _, _, a (B ⟨0, pow_pos hk _⟩), a' _, fun h0 => hne ?_⟩` and prove the remaining obligations. Establish `h1 : SecM.toSec A.A (ρ θ' (ρ θ (B ⟨0, pow_pos hk _⟩))) = _` using `e.map_eq_zero_iff.1 h0`.
+
+Establish `h2 : ρ θ' (ρ θ (B ⟨0, pow_pos hk _⟩)) = 0` using `congrArg (SecM.ofSec A.A) h1`. Conclude with `(ρ θ).map_eq_zero_iff.1 ((ρ θ').map_eq_zero_iff.1 h2)) hk (ζ : F)`. Establish `hz` using `GlobalLift.weilIs_of_commIsOf hG A.isAb A.isLB hc`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H`. Take `rfl : ζ = z` from `Units.ext H`. Conclude with `hz`. Introduce `H`. Conclude with `congrArg Units.val (H1.unitOn_injective (CommutatorPairing.weilIs_unique hG A.isAb A.isLB H hz))`.
+-/
 theorem _root_.GlobalTheory.PeriodsAnyChar.weilQkIs_iff_weilIs : LL → AnyUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∀ (p p' : QkPt D.toPre F k) x x', QkToAkU U.toUnifPre F k p x → QkToAkU U.toUnifPre F k p' x' → ∀ ζ : Fˣ, WeilQkIs D.toPre F k p p' ζ ↔ WeilIs A.A A.L k x x' (unitOn ζ) := by
   intro hL R _ _ I _ D A G _ _ _ U F _ _ _ k hk p p' x x' hx hx' ζ
   have hG := hL.1.globalFns
@@ -132,6 +149,17 @@ end GlobalTheory.UT
 
 namespace GlobalTheory.TorsionIso
 
+/- English proof (translation)
+Introduce `hL R _ _ I hI D A G _ _ hG U F _ _ _ k hk`. Establish `hqk` using `indAtTransl_any hL R I hI D A G hG U F k hk`. Establish `hcomp` using `indAtComp_any hL R I hI D A G hG U F k hk`. Establish `huniq` using `GlobalTheory.TorsionImage.qkToAkU_unique hL.1 hL.2.1 R I hI D A G hG U F k hk`. Establish `hinj` using `GlobalTheory.TorsionMapInj.qkToAk_injective hL.1 hL.2.1 R I hI D A G hG U F k hk`.
+
+Establish `hex : ∀ p : QkPt D.toPre F k, ∃ x, QkToAkU U.toUnifPre F k p x` using `fun p => by`. Take `⟨x, hx⟩` from `existsTransl_any hL R I hI D A G hG U F k hk p`. Conclude with `⟨x, (hqk p x).1 (hx 1 k le_rfl (mul_one k).symm p (one_smul _ _).symm rfl)⟩`. Use `choose f hf using hex`. Establish `hwd : ∀ p p', QkPt.Equiv D.toPre F p p' → f p = f p'` using `fun p p' h => huniq p' _ _ ((hqk _ _).1 ((hcomp p p' p' _ (𝟙 _) ((hqk _ _).2 (hf p))).2.1 h)) (hf p')`.
+
+Establish `hpow : ∀ p, f p ^ k = 1` using `fun p => by`. Take `⟨w, hw⟩` from `U.ext`. Conclude with `(hf p w hw).1`. Use `⟨f, fun p x => ⟨fun h => huniq p _ _ h (hf p), fun h => h ▸ hf p⟩, ?_, fun p p' => ⟨fun h => hinj p p' (f p) (hf p) (h ▸ hf p'), hwd p p'⟩, ?_, fun p p' z => GlobalTheory.PeriodsAnyChar.weilQkIs_iff_weilIs hL R I hI D A G hG U F k hk p p' _ _ (hf p) (hf p') z⟩` and prove the remaining obligations. Introduce `hkF x hx`.
+
+Take `⟨p, hp⟩` from `exists_qkToAkU R I hI D A G hG U F k hkF x hx`. Conclude with `⟨p, huniq p _ _ (hf p) hp⟩`. Introduce `p p' p'' h`. Use `(hcomp p p' p'' _ _ ((hqk _ _).2 (hf p))).1 ((hqk _ _).2 (hf p')) h` as an intermediate fact. Rewrite `this` using `[translT_comp]`.
+
+Conclude with `huniq p'' _ _ (hf p'') ((hqk _ _).1 this)`.
+-/
 theorem _root_.GlobalTheory.PeriodsAnyChar.torsion_map : LL → AnyUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∃ f : QkPt D.toPre F k → (TFK (R := R) F ⟶ A.A), (∀ p x, QkToAkU U.toUnifPre F k p x ↔ x = f p) ∧ ((k : F) ≠ 0 → ∀ x, x ^ k = 1 → ∃ p, f p = x) ∧ (∀ p p', f p = f p' ↔ QkPt.Equiv D.toPre F p p') ∧ (∀ p p' p'', QkAdd p p' p'' → f p'' = f p * f p') ∧ ∀ p p' (z : Fˣ), WeilQkIs D.toPre F k p p' z ↔ WeilIs A.A A.L k (f p) (f p') (unitOn z) := by
   intro hL R _ _ I hI D A G _ _ hG U F _ _ _ k hk
   have hqk := indAtTransl_any hL R I hI D A G hG U F k hk
@@ -164,6 +192,17 @@ namespace GlobalTheory.LevelCompat
 open GlobalTheory.TorusExt
 attribute [local instance] gtGroup
 
+/- English proof (translation)
+Introduce `hL R _ _ I hI D A G _ _ hG U F _ _ _ k n N hk hn hN`. Establish `hN1 : 1 ≤ N` using `hN ▸ Nat.mul_pos hk hn`. Take `⟨f, hf, -⟩` from `GlobalTheory.PeriodsAnyChar.torsion_map hL R I hI D A G hG U F k hk`. Take `⟨f', hf', -, -, hadd, -⟩` from `GlobalTheory.PeriodsAnyChar.torsion_map hL R I hI D A G hG U F N hN1`. Establish `key : ∀ (p : QkPt D.toPre F k) (q : QkPt D.toPre F N), q.y = n • p.y → q.g = p.g → f p = f' q`.
+
+Introduce `p q hy hg`. Take `⟨x₀, h₀⟩` from `existsTransl_any hL R I hI D A G hG U F k hk p`. Establish `a` using `(indAtTransl_any hL R I hI D A G hG U F k hk p x₀).1 (h₀ 1 k le_rfl (Nat.mul_one k).symm p (one_nsmul _).symm rfl)`. Establish `b` using `(indAtTransl_any hL R I hI D A G hG U F N hN1 q x₀).1 (h₀ n N hn hN q hy hg)`. Conclude with `((hf p x₀).1 a).symm.trans ((hf' q x₀).1 b)`.
+
+Introduce `p q x`. Use `⟨fun hy hg => by rw [hf, hf', key p q hy hg], fun hy hg hx => ?_⟩` and prove the remaining obligations. Establish `hx' : x = f' q` using `(hf' q x).1 hx`. Establish `hp : ∀ j : ℕ, f' (qkNsmul D.tau_bimult (j + 1) q) = x ^ (j + 1)`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => rw [Nat.zero_add, qkNsmul_one, pow_one, hx']`. Consider the case `succ j ih => rw [hadd _ _ _ (qkAdd_qkNsmul D.tau_bimult (j + 1) q), ih, ← hx', ← pow_succ]`. Take `⟨j, rfl⟩ : ∃ j, n = j + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[hf, ← hp j]`.
+
+Conclude with `(key p _ (by rw [hy]; rfl) ((isNsmul_iff_eq _ _ _).1 hg).symm).symm`.
+-/
 theorem _root_.GlobalTheory.PeriodsAnyChar.qkToAkU_level : LL → AnyUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k n N : ℕ), 1 ≤ k → 1 ≤ n → N = k * n → ∀ (p : QkPt D.toPre F k) (q : QkPt D.toPre F N) x, (q.y = n • p.y → q.g = p.g → (QkToAkU U.toUnifPre F k p x ↔ QkToAkU U.toUnifPre F N q x)) ∧ (p.y = q.y → GtPtF.IsNsmul n q.g p.g → QkToAkU U.toUnifPre F N q x → QkToAkU U.toUnifPre F k p (x ^ n)) := by
   intro hL R _ _ I hI D A G _ _ hG U F _ _ _ k n N hk hn hN
   have hN1 : 1 ≤ N := hN ▸ Nat.mul_pos hk hn

@@ -18,6 +18,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     {W : LocWach PD LL O v n} {T : LocLat G Qp LL O}
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e ℓ => rw [framepf_smulLA_tmul, TensorProduct.smul_tmul', smul_eq_mul]`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+-/
 theorem framepf_smulLA_eq (π' : LetA O n) (c : ZMod n) (a : LetA O n) (z : W.EE ⊗[O] LcQ W T π' c) :
     smulLA W T π' c a z = algebraMap (LetA O n) W.EE a • z := by
   induction z using TensorProduct.induction_on with
@@ -34,10 +37,16 @@ variable (Bs : FramepfBas W T) (π' : LetA O n) (c : ZMod n)
     (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
 
 include hπ0 hΔπ γ0 in
+/- English proof (translation)
+Introduce `δ hδ`. Rewrite using `[← LocWach.φA_γA, framepf_ι_Δ π' hπ0 hΔπ γ0 _ g δ hδ]`.
+-/
 theorem framepf_φA_ι_mem (g : PowerSeries O) : W.φA (framepf_ι π' (c - 1) g) ∈ W.AΔ := by
   intro δ hδ
   rw [← LocWach.φA_γA, framepf_ι_Δ π' hπ0 hΔπ γ0 _ g δ hδ]
 
+/- English proof (translation)
+Unfold `framepf_vec`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => framepf_φD_smul _ _`.
+-/
 theorem framepf_φD_vec (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : Fin Bs.r) :
     W.φD T (framepf_vec Bs π' (c - 1) H k) =
       ∑ m, W.φA (framepf_ι π' (c - 1) (H m k)) • W.φD T (Bs.b m) := by
@@ -48,6 +57,9 @@ theorem framepf_φD_vec (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (k : 
 def framepf_ebar (j : Fin Bs.r) : LcQ W T π' c :=
   (framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu).symm (Pi.single j 1)
 
+/- English proof (translation)
+Unfold `framepf_hh framepf_ebar`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, Fintype.linearCombination_apply_single, one_smul]`.
+-/
 theorem framepf_hh_ebar (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (j : Fin Bs.r) :
     framepf_hh Bs π' c hπ0 hΔπ hR2 γ0 hu H (framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu j) =
       framepf_vec Bs π' (c - 1) H j := by
@@ -55,6 +67,11 @@ theorem framepf_hh_ebar (H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (j : 
   rw [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply,
     Fintype.linearCombination_apply_single, one_smul]
 
+/- English proof (translation)
+Unfold `framepf_ebar`. Repeatedly rewrite using `[← LinearEquiv.map_smul, ← map_sum]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `conv_rhs => rw [← Finset.univ_sum_single (framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu ℓ)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Use extensionality with `m`. Distinguish the cases in `h : m = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem framepf_sum_ebar (ℓ : LcQ W T π' c) :
     ∑ k, framepf_Lbas Bs π' c hπ0 hΔπ hR2 γ0 hu ℓ k • framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu k = ℓ := by
   unfold framepf_ebar
@@ -75,6 +92,11 @@ def framepf_Ψβ (βφ : Module.Basis (Fin Bs.r) W.EE (W.DD T)) (F : Matrix (Fin
 variable (βφ : Module.Basis (Fin Bs.r) W.EE (W.DD T)) (hβφ : ∀ k, βφ k = W.φD T (Bs.b k))
 
 include hβφ in
+/- English proof (translation)
+Establish `e1 : ∀ k, framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ F (a k • W.φD T (Bs.b k)) = ∑ j, algebraMap (LetA O n) W.EE (a k * W.φA (framepf_ι π' (c - 1) (F j k))) ⊗ₜ framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu j`. Introduce `k`. Rewrite using `[← algebraMap_smul W.EE (a k), LinearMap.map_smul, ← hβφ k]`. Unfold `framepf_Ψβ`. Rewrite using `[Module.Basis.constr_basis, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, ← map_mul]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun k _ => e1 k, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← TensorProduct.sum_tmul, ← map_sum]`.
+-/
 theorem framepf_Ψβ_sum (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (a : Fin Bs.r → LetA O n) :
     framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ F (∑ k, a k • W.φD T (Bs.b k)) =
       ∑ j, algebraMap (LetA O n) W.EE (∑ k, a k * W.φA (framepf_ι π' (c - 1) (F j k))) ⊗ₜ
@@ -94,6 +116,11 @@ theorem framepf_Ψβ_sum (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (a :
 
 include hπ0 hΔπ γ0 hβφ in
 
+/- English proof (translation)
+Take `⟨a, haΔ, hac, hap⟩` from `framepf_Pc_coord Bs hT c p hp`. Establish `hmem : ∀ j, ∑ k, a k * W.φA (framepf_ι π' (c - 1) (F j k)) ∈ W.AΔ` using `fun j => Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ (haΔ k) (framepf_φA_ι_mem π' c hπ0 hΔπ γ0 _)`. Use `⟨∑ j, (⟨_, hmem j⟩ : ↥W.AΔ) ⊗ₜ (⟨framepf_ebar Bs π' c hπ0 hΔπ hR2 γ0 hu j, trivial⟩ : ↥(⊤ : Submodule O (LcQ W T π' c))), ?_⟩` and prove the remaining obligations. Rewrite using `[hap, framepf_Ψβ_sum Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[framepf_toLA_tmul]`. Use `congr 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hac k]`.
+-/
 theorem framepf_Ψβ_Pc (hT : IsCrys PD T.ρ) (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (p : W.DD T) (hp : p ∈ PcS W T c) :
     ∃ t, framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ F p = toLA W T π' c ⊤ t := by
@@ -115,6 +142,13 @@ variable (Eπ : LetA O n) (hEu : IsUnit (algebraMap (LetA O n) W.EE Eπ))
 
 include hπ0 hΔπ γ0 hβφ hEΔ in
 
+/- English proof (translation)
+Rewrite `hy` using `[mem_LamPS]`. Take `⟨h1, hΔ, hl⟩` from `hy`. Establish `hP : Eπ ^ h' • y ∈ PcS W T c`. Unfold `PcS`. Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨(Submodule.restrictScalars_mem _ _ _).2 h1, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_DelS]`. Introduce `δ hδ`. Rewrite using `[gradNPf_γD_smul, map_pow, hEΔ δ hδ, hΔ δ hδ]`. Rewrite using `[mem_letS, smul_smul, mul_comm, ← smul_smul, hl]`. Take `⟨t, ht⟩` from `framepf_Ψβ_Pc Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ hT F _ hP`.
+
+Use `Submodule.mem_comap.2 ⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht, framepf_smulLA_eq, ← LinearMap.map_smul, algebraMap_smul]`.
+-/
 theorem framepf_Ψβ_Lam (hT : IsCrys PD T.ρ) (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (y : W.DD T) (hy : y ∈ LamPS W T Eπ h' c) :
     framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ F y ∈ LamLA W T π' Eπ h' c ⊤ := by
@@ -133,6 +167,9 @@ theorem framepf_Ψβ_Lam (hT : IsCrys PD T.ρ) (F : Matrix (Fin Bs.r) (Fin Bs.r)
 
 include hπ0 hΔπ γ0 hβφ in
 
+/- English proof (translation)
+Take `⟨p, hp, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨t, ht⟩` from `framepf_Ψβ_Pc Bs π' c hπ0 hΔπ hR2 γ0 hu βφ hβφ hT F p hp`. Use `Submodule.mem_map.2 ⟨_, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[framepf_smulLA_eq, ← ht, ← LinearMap.map_smul, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem framepf_Ψβ_J (hT : IsCrys PD T.ρ) (F : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (y : W.DD T) (hy : y ∈ JP W T π' Eπ h' M c) :
     framepf_Ψβ Bs π' c hπ0 hΔπ hR2 γ0 hu βφ F y ∈ JLA W T π' Eπ h' M c := by
@@ -143,6 +180,11 @@ theorem framepf_Ψβ_J (hT : IsCrys PD T.ρ) (F : Matrix (Fin Bs.r) (Fin Bs.r) (
   rfl
 
 include hπ0 in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, one_mul, pow_zero, one_mul]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc, framepf_ι_mul π' (c - 1) (hπ0 _), ih, framepf_ι_X π' (c - 1) (hπ0 _), pow_succ']`. Use `framepf_letE_ι π' (c - 1) hπ0 g` as an intermediate fact.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem framepf_ι_X_pow_mul (k : ℕ) (g : PowerSeries O) :
     framepf_ι π' (c - 1) (PowerSeries.X ^ k * g) = π' ^ k * framepf_ι π' (c - 1) g := by
   induction k with
@@ -157,6 +199,11 @@ theorem framepf_ι_X_pow_mul (k : ℕ) (g : PowerSeries O) :
 
 include hπ0 in
 
+/- English proof (translation)
+Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, framepf_ι_add π' (c - 1) (hπ0 _), map_add, framepf_ι_X_pow_mul π' c hπ0, map_mul, map_pow]`. Use `congr 1`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq, mul_one, framepf_ι_C π' (c - 1) (hπ0 _), map_mul, Formalism.MainNotions.LiftingTheory.wmap_φA_letE, AlgHom.commutes, if_pos rfl, mul_comm]`.
+
+Rewrite using `[Matrix.one_apply_ne h, mul_zero, framepf_ι_zero π' (c - 1) hπ0, map_zero, if_neg h]`.
+-/
 theorem framepf_φA_ι_entry (M : ℕ) (lam : O) (K : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O))
     (j k : Fin Bs.r) :
     W.φA (framepf_ι π' (c - 1) ((PowerSeries.C lam • (1 : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) +
@@ -173,6 +220,9 @@ theorem framepf_φA_ι_entry (M : ℕ) (lam : O) (K : Matrix (Fin Bs.r) (Fin Bs.
   · rw [Matrix.one_apply_ne h, mul_zero, framepf_ι_zero π' (c - 1) hπ0, map_zero, if_neg h]
 
 include hπ0 in
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, framepf_ι_sum π' (c - 1) hπ0, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[framepf_ι_mul π' (c - 1) (hπ0 _), map_mul]`.
+-/
 theorem framepf_φA_ι_matmul (F H : Matrix (Fin Bs.r) (Fin Bs.r) (PowerSeries O)) (j k : Fin Bs.r) :
     ∑ m, W.φA (framepf_ι π' (c - 1) (F j m)) * W.φA (framepf_ι π' (c - 1) (H m k)) =
       W.φA (framepf_ι π' (c - 1) ((F * H) j k)) := by

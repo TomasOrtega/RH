@@ -31,6 +31,15 @@ namespace GlobalTheory.BadWOn
 
 open Module GlobalTheory.BadCount GlobalTheory.TwistedRepresentationEmbedding GlobalTheory.CovTop ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheory.ChartRestriction.G.AR.Up GlobalTheory.IndefiniteRowSideFullHecke.FrameWeightGapBounds
 
+/- English proof (translation)
+Break down `hc with hdef | ⟨h0, hr, hA, hs, hbot⟩` into its components or cases. Take `⟨-, hrest⟩` from `GlobalTheory.T.definite_cuspForms_finite_regularRepresentation E r U C M hdef ka ρ hρ`. Take `⟨⟨n, hn, hnc⟩, -⟩` from `hrest H hH`. Establish `hP2` using `(hrest P hP).2 lam`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations.
+
+Establish `e : (n : ℝ) * Nat.card H = Nat.card P * finrank ℂ (eig ρ P lam)` using `by exact_mod_cast (hnc.trans hP2.symm)`. Rewrite using `[e]`. Establish `: (0 : ℝ) ≤ Nat.card P * finrank ℂ (eig ρ P lam)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hR` using `GlobalTheory.T.twoLevelFlagDomain_cuspForm_ranks_shifted_weights E r U C M hbot h0 hr ka T hA hs`.
+
+Take `⟨n, hn, hb⟩` from `GlobalTheory.T.twoLevelCuspForms_embed_regularRepresentation_copies E r U C M ka ρ hρ _ _ hR H hH`. Establish `hS` using `(GlobalTheory.T.twoLevelFlagDomain_eigenspace_share E r U C M ka ρ hρ _ _ hR P hP lam).1`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `h4` using `hR.2.2.2.1`. Establish `hb' : (n : ℝ) * Nat.card H ≤ finrank ℂ (M.cusp (ka + 2 • deMul M.Ψ r M.p0 (GlobalTheory.ShareOn.sOf M)))`.
+
+Conclude with `hb` after adjusting the coercions. Establish `hS' : (finrank ℂ (M.cusp (ka - deMul M.Ψ r M.p0 (GlobalTheory.ShareOn.sOf M))) : ℝ) ≤ Nat.card P * finrank ℂ (eig ρ P lam)` using `by exact_mod_cast hS`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem model_bound {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [Finite U]
     [Finite C] [MulAction U C] (M : TwoLevels E r U C) (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)) (T : ℕ)
     (hρ : IsPullRep M ka ρ)
@@ -68,6 +77,71 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨C, hCf, hact, M, ka, ρ, σ, f, hpull, hequiv, hli, hspan, hlev, hcard, hcase⟩` from `hmod`. Take `⟨lam, ψ, hW, hlam, hhalf⟩` from `GlobalTheory.T.exists_whittaker_character_pair D L hT Gi Gl Kc Y cX ex Csz p hRows`. Take `⟨-, hHex⟩` from `GlobalTheory.T.exists_whittakerDatum_and_halfLevels D ψ hW.1`. Use `choose Hh hHh using hHex`. Set `e : p.P.Gp ≃* G0g D.nd` to `p.R.eG.trans p.cG`.
+
+Set `π : p.P.Gp →* G0g D.nd` to `e.toMonoidHom`. Set `ιs : G0g D.nd →* p.P.Gp` to `e.symm.toMonoidHom`. Set `P : Subgroup (G0g D.nd)` to `p.P.P0.map π`. Set `P' : Subgroup p.P.Gp` to `P.comap π`. Establish `hle : P' ≤ p.P.P0` using `fun g hg => (Subgroup.mem_map_iff_mem e.injective).1 hg`.
+
+Establish `hge : p.P.P0 ≤ P'` using `fun g hg => (Subgroup.mem_map_iff_mem e.injective).2 hg`. Establish `hbot : LevelHyp (GlobalTheory.ShareOn.sub M ⊥)` using `hlev ⊥ ⟨0, fun g hg v => by`. Rewrite `hg` using `[Subgroup.mem_bot]`. Substitute `hg` using the available equality. Introduce `a b`.
+
+Simplify using `only [map_one]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (ne_of_gt h)`. Substitute `h` using the available equality. Conclude with `Matrix.one_apply_eq a⟩`.
+
+Establish `hP'lev : LevelHyp (GlobalTheory.ShareOn.sub M P')`. Take `⟨k, hk⟩` from `hhalf`. Conclude with `hlev P' ⟨k, fun g hg v => hk g (hle hg) v⟩`. Establish `hHlev : ∀ k, LevelHyp (GlobalTheory.ShareOn.sub M ((Hh k).comap π))` using `fun k => hlev _ ⟨k + 1, fun g hg v => ((hHh k (π g)).1 hg) ⟨k + 1, v⟩ (by simp)⟩`. Establish `hsOf : GlobalTheory.ShareOn.sOf M ≤ T`.
+
+Establish `key : ∀ a b : ℕ, a * (b - a) * 4 ≤ b * b`. Introduce `a b`. Break down `le_total a b with h | h` into its components or cases. Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[Nat.add_sub_cancel_left]`.
+
+Use polynomial arithmetic with `[sq_nonneg ((a : ℤ) - q)]`. Rewrite using `[Nat.sub_eq_zero_of_le h]`. Simplify using the standard rewrite rules. Establish `hq : M.p0 * (D.R.r - M.p0) ≤ D.R.r * D.R.r / 4` using `(Nat.le_div_iff_mul_le (by norm_num)).2 (key _ _)`. Establish `hX : M.dimX ≤ D.R.f * (D.R.r * D.R.r / 4)`.
+
+Unfold `TwoLevels.dimX`. Rewrite using `[hcard]`. Conclude with `Nat.mul_le_mul_left _ hq`. Unfold `GlobalTheory.ShareOn.sOf`. Use `Nat.mul_le_mul_left (50 * D.R.r ^ 2) hX` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hc : (M.p0 = 0 ∨ M.p0 = D.R.r) ∨ (0 < M.p0 ∧ M.p0 < D.R.r ∧ GlobalTheory.ShareOn.ArchOn M ka T ∧ GlobalTheory.ShareOn.sOf M ≤ T ∧ LevelHyp (GlobalTheory.ShareOn.sub M ⊥))`. Break down `hcase with h | ⟨h1, h2, h3⟩` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h1, h2, h3, hsOf, hbot⟩`.
+
+Set `A` to `p.R.toRealDat.FW i`. Set `N` to `p.R.toRealDat.nW i`. Set `ρK : Representation D.what₂.LL p.P.Gp (Fin N → D.what₂.LL)` to `GlobalTheory.TwistedRepresentationEmbedding.twist A.ρ A.chi⁻¹`. Set `χM : p.P.Gp →* ℂˣ` to `(Units.map σ.toMonoidHom).comp A.chi⁻¹`. Set `ρM : Representation ℂ p.P.Gp (M.cusp ka)` to `GlobalTheory.TwistedRepresentationEmbedding.twist ρ χM`.
+
+Set `ρE : Representation ℂ p.P.Gp (Fin N → ℂ)` to `GlobalTheory.TwistedRepresentationEmbedding.repE D.what₂.embLL ρK`. Establish `hequivM : ∀ g v, ρM g (f v) = f (ρK g v)`. Introduce `g v`. Rewrite using `[GlobalTheory.TwistedRepresentationEmbedding.twist_apply, GlobalTheory.TwistedRepresentationEmbedding.twist_apply, hequiv, map_smulₛₗ]`. Both sides reduce to the same expression.
+
+Establish `hequivE : ∀ g v, ρE g (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N v) = GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N (ρK g v)` using `fun g v => GlobalTheory.TwistedRepresentationEmbedding.repE_embV _ _ _ _`. Set `ψ0' : P' →* D.what₂.LLˣ` to `p.P.ψ0⁻¹.comp (Subgroup.inclusion hle)`. Set `lamM : P' →* ℂˣ` to `(Units.map σ.toMonoidHom).comp ψ0'`. Set `lamb : P' →* ℂˣ` to `lam.comp (π.subgroupComap P)`. Establish `hemb : ∀ k, ∃ n : ℕ, EmbReg ρE ((Hh k).comap π) n ∧ (n : ℝ) * Nat.card ((Hh k).comap π) ≤ 2 * Nat.card P' * finrank ℂ (eig ρM P' lamM)`.
+
+Introduce `k`. Take `⟨n, hn, hb⟩` from `model_bound M ka ρM T (GlobalTheory.TwistedRepresentationEmbedding.isPullRep_twist hpull χM) hc _ P' (hHlev k) hP'lev lamM`. Conclude with `⟨n, GlobalTheory.T.embedsInRegularRepresentationCopies_complexEmbedding_indep D.what₂.LL _ _ p.P.Gp N ρK σ D.what₂.embLL ρM ρE f (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N) hli hspan (GlobalTheory.TwistedRepresentationEmbedding.embV_li _ _) (GlobalTheory.Tw …`. Use `choose n hnE hnb using hemb`. Establish `alg : ∀ (u w : D.what₂.LLˣ) (x y : Fin N → D.what₂.LL), y = ((u * w : D.what₂.LLˣ) : D.what₂.LL) • x ↔ ((u⁻¹ : D.what₂.LLˣ) : D.what₂.LL) • y - ((w : D.what₂.LLˣ) : D.what₂.LL) • x = 0`.
+
+Introduce `u w x y`. Rewrite using `[sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel_left]`.
+
+Introduce `h`. Rewrite using `[Units.val_mul, mul_smul, ← h, smul_smul, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_smul]`. Set `aK : P' → (Fin N → D.what₂.LL) →ₗ[D.what₂.LL] (Fin N → D.what₂.LL)` to `fun γ => ρK γ - ((ψ0' γ : D.what₂.LLˣ) : D.what₂.LL) • LinearMap.id`. Establish `haK : ∀ γ F, aK γ F = (((A.chi γ)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) • A.ρ γ F - ((p.P.ψ0⁻¹ ⟨γ, hle γ.2⟩ : D.what₂.LLˣ) : D.what₂.LL) • F` using `fun γ F => rfl`. Establish `hsp : spType p.R.toRealDat p.F.lv2 i = ⨅ γ : P', LinearMap.ker (aK γ)`.
+
+Use extensionality with `F`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `F ∈ A.typeP p.P.P0 p.P.ψ0⁻¹ ↔ _`. Rewrite using `[Formalism.IndefR.Arith.FormsL.mem_typeP]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h γ`. Rewrite using `[haK]`. Conclude with `(alg _ _ _ _).1 (h ⟨γ, hle γ.2⟩)`. Introduce `h q`. Use `h ⟨q, hge q.2⟩` as an intermediate fact.
+
+Rewrite `this` using `[haK]`. Conclude with `(alg _ _ _ _).2 this`. Establish `dM : finrank ℂ (eig ρM P' lamM) = finrank D.what₂.LL (spType p.R.toRealDat p.F.lv2 i)`. Rewrite using `[hsp]`. Use `GlobalTheory.T.finrank_iInf_ker_semilinear_standardBasis D.what₂.LL (M.cusp ka) P' σ N f hli hspan aK (fun γ => ρM γ - ((lamM γ : ℂˣ) : ℂ) • LinearMap.id) ?_` and prove the remaining obligations.
+
+Introduce `γ v`. Use `show _ = f (ρK γ v - ((ψ0' γ : D.what₂.LLˣ) : D.what₂.LL) • v)`. Rewrite using `[map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hequivM]`. Both sides reduce to the same expression. Establish `hlamb : ∀ γ : P', ((lamb γ : ℂˣ) : ℂ) = D.what₂.embLL ((ψ0' γ : D.what₂.LLˣ) : D.what₂.LL)` using `fun γ => hlam ⟨γ, hle γ.2⟩ γ.2`.
+
+Establish `haE : ∀ (γ : P') v, (ρE γ - ((lamb γ : ℂˣ) : ℂ) • LinearMap.id : (Fin N → ℂ) →ₗ[ℂ] (Fin N → ℂ)) (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N v) = GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N (aK γ v)`. Introduce `γ v`. Use `show _ = GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N (ρK γ v - ((ψ0' γ : D.what₂.LLˣ) : D.what₂.LL) • v)`. Rewrite using `[map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hequivE, hlamb]`. Establish `dE : finrank ℂ (eig ρE P' lamb) = finrank D.what₂.LL (spType p.R.toRealDat p.F.lv2 i)`.
+
+Rewrite using `[hsp]`. Conclude with `GlobalTheory.T.finrank_iInf_ker_semilinear_standardBasis D.what₂.LL (Fin N → ℂ) P' D.what₂.embLL N (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N) (GlobalTheory.TwistedRepresentationEmbedding.embV_li _ _) (GlobalTheory.TwistedRepresentationEmbedding.embV_span _ …`. Use `haveI : Fintype (G0g D.nd) := Fintype.ofEquiv p.P.Gp e.toEquiv`. Establish `hsumE : Representation.asAlgebraHom (ρE.comp ιs) D.ntypes.e0 = ∑ g : p.P.Gp, D.ntypes.e0.coeff (e g) • ρE g`. Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply, Finsupp.sum_fintype D.ntypes.e0.coeff (fun a b => b • (ρE.comp ιs) a) (fun a => zero_smul ℂ _)]`.
+
+Conclude with `(Fintype.sum_equiv e.toEquiv (fun g => D.ntypes.e0.coeff (e g) • ρE g) (fun h => D.ntypes.e0.coeff h • (ρE.comp ιs) h) (fun g => by simp [ιs])).symm`. Take `⟨-, -, -, hid, -, -⟩` from `p.grpRecPin`. Establish `hE0 : ∀ v, Representation.asAlgebraHom (ρE.comp ιs) D.ntypes.e0 (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N v) = GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N (eGood p.R.toRealDat i v)`. Introduce `v`. Establish `hG : eGood p.R.toRealDat i v = ∑ g : p.P.Gp, (idemOf p.P.A3.A.X).coeff g • ρK g v` using `by show ((∑ g, ((idemOf p.P.A3.A.X).coeff g * ((A.chi g)⁻¹ : D.what₂.LLˣ)) • A.ρ g : (Fin N → D.what₂.LL) →ₗ[D.what₂.LL] (Fin N → D.what₂.LL)) v) = _`.
+
+Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, mul_smul]`. Both sides reduce to the same expression. Rewrite using `[hsumE, LinearMap.sum_apply, hG, map_sum]`.
+
+Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hequivE, map_smulₛₗ, hid]`. Set `aO : Option P' → (Fin N → D.what₂.LL) →ₗ[D.what₂.LL] (Fin N → D.what₂.LL)` to `fun o => o.elim (eGood p.R.toRealDat i) aK`. Set `aO' : Option P' → (Fin N → ℂ) →ₗ[ℂ] (Fin N → ℂ)` to `fun o => o.elim (Representation.asAlgebraHom (ρE.comp ιs) D.ntypes.e0) (fun γ => ρE γ - ((lamb γ : ℂˣ) : ℂ) • LinearMap.id)`. Establish `dBad : finrank ℂ (eig ρE P' lamb ⊓ LinearMap.ker (Representation.asAlgebraHom (ρE.comp ιs) D.ntypes.e0) : Submodule ℂ (Fin N → ℂ)) = finrank D.what₂.LL (spType p.R.toRealDat p.F.lv2 i ⊓ LinearMap.ker (eGood p.R.toRealDat i) : Submodule D.what₂.LL (Fin N → D.what₂.LL))`.
+
+Establish `h1 : (eig ρE P' lamb ⊓ LinearMap.ker (Representation.asAlgebraHom (ρE.comp ιs) D.ntypes.e0) : Submodule ℂ (Fin N → ℂ)) = ⨅ o, LinearMap.ker (aO' o)`. Rewrite using `[iInf_option, inf_comm]`. Both sides reduce to the same expression. Establish `h2 : (spType p.R.toRealDat p.F.lv2 i ⊓ LinearMap.ker (eGood p.R.toRealDat i) : Submodule D.what₂.LL (Fin N → D.what₂.LL)) = ⨅ o, LinearMap.ker (aO o)`. Rewrite using `[iInf_option, inf_comm, hsp]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Use `GlobalTheory.T.finrank_iInf_ker_semilinear_standardBasis D.what₂.LL (Fin N → ℂ) (Option P') D.what₂.embLL N (GlobalTheory.TwistedRepresentationEmbedding.embV D.what₂.embLL N) (GlobalTheory.TwistedRepresentationEmbedding.embV_li _ _) (GlobalTheory.TwistedRepresentationEmbedding.em …` and prove the remaining obligations. Introduce and unpack `(_ | γ) v`. Conclude with `hE0 v`.
+
+Conclude with `haE γ v`. Establish `hsplit : IsSplit π ιs` using `⟨fun g => e.apply_symm_apply g, fun g γ h => by`. Establish `hγ : γ = 1` using `e.injective (h.trans e.map_one.symm)`. Substitute `hγ` using the available equality. Use the proof step `simp⟩`.
+
+Set `ψ₀ : ∀ k : Fin 2, AddChar (ZMod (D.host.g k)) ℂ` to `fun k => haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩ ZMod.stdAddChar`. Establish `hψ₀ : ∀ k, ψ₀ k ≠ 1`. Introduce `k h`. Use `haveI : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩`. Use `haveI : Fact (1 < D.host.g k) := ⟨(D.host.g_prime k).one_lt⟩`.
+
+Use `ZMod.isPrimitive_stdAddChar (D.host.g k) (one_ne_zero)` as an intermediate fact. Rewrite `this` using `[AddChar.mulShift_one]`. Conclude with `this h`. Establish `hbd : ∀ k, (n k : ℝ) * Nat.card ((Hh k).comap π) ≤ 2 * Nat.card (P.comap π) * finrank ℂ (eig ρE (P.comap π) lamb)`. Introduce `k`.
+
+Rewrite using `[dE, ← dM]`. Conclude with `hnb k`. Take `⟨S, hSbad, hineq⟩` from `GlobalTheory.T.bad_part_dim_le_sum_local_shares_whittaker D p.P.Gp (Fin N → ℂ) π ιs hsplit ρE P lam ψ hW lamb (fun γ => rfl) Hh hHh n 2 hnE hbd ψ₀ hψ₀`. Establish `hadm` using `GlobalTheory.T.admLq_of_green_of_eSerTie hGr D hRec.eSer`. Establish `hloc : ∀ k, 4 * locShare D (fun k _ => eUk D k (ψ₀ k)) k (S k) ≤ del` using `fun k => le_trans (by linarith [GlobalTheory.T.weightedIdempotent_localShare_bad_tuples_le D ψ₀ hψ₀ hadm hA hr (fun k => (hg k).1) k (S k) (hSbad k)]) (hg k).2`.
+
+Rewrite `hineq` using `[dBad, dE]`. Unfold `GlobalTheory.ShareOn.BadW`. Establish `h0` using `hloc 0`. Establish `h1` using `hloc 1`. Establish `hd : (0 : ℝ) ≤ finrank D.what₂.LL (spType p.R.toRealDat p.F.lv2 i)` using `Nat.cast_nonneg _`.
+
+Use `hineq.trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem point (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (del : ℝ) (hGr : GlobalTheory.GLq.Green) (hRows : p.Rows)
     (hRec : RecTies p) (hmod : ModelAt p i T) (hr : 100 ≤ D.R.r) (hA : TieAdmG D)
     (hg : ∀ k : Fin 2, 2 ^ 12 ≤ D.host.g k ∧ 4 * (3 * (D.R.f : ℝ) / (D.host.g k : ℝ) + 23 * (D.R.f : ℝ) *
@@ -262,6 +336,11 @@ theorem point (p : PtAt ex Csz) (i : Fin D.R.m) (T : ℕ) (del : ℝ) (hGr : Glo
 
 end Point
 
+/- English proof (translation)
+Establish `hGr` using `hG.green`. Use `Closed.imp ((hM.and GlobalTheory.T.badShareSize_bounds_along_family).and GlobalTheory.T.hodgeLineMultiple_le_familyThreshold) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨x1, hx1⟩, ⟨x2, hx2⟩⟩, ⟨x3, hx3⟩⟩`. Use `⟨max x1 (max x2 x3), fun x hx hle ι p hp hMore r hr hown i => ?_⟩` and prove the remaining obligations. Establish `h1 : x1 ≤ x` using `(le_max_left _ _).trans hle`.
+
+Establish `h2 : x2 ≤ x` using `((le_max_left _ _).trans (le_max_right _ _)).trans hle`. Establish `h3 : x3 ≤ x` using `((le_max_right _ _).trans (le_max_right _ _)).trans hle`. Take `⟨hr100, hA, -, hg⟩` from `hx2 x hx h2 ι`. Conclude with `point p i _ _ hGr hp hMore.2.2 (hx1 x hx h1 ι p hp hMore r hr hown i) hr100 hA hg (hx3 x hx h3 ι)`.
+-/
 theorem badWSt_of (hG : GlobalTheory.Published.GreenCuspidal) (hM : ModelSt) : BadWSt := by
   have hGr := hG.green
   refine Closed.imp ((hM.and GlobalTheory.T.badShareSize_bounds_along_family).and GlobalTheory.T.hodgeLineMultiple_le_familyThreshold) ?_
@@ -273,6 +352,9 @@ theorem badWSt_of (hG : GlobalTheory.Published.GreenCuspidal) (hM : ModelSt) : B
   obtain ⟨hr100, hA, -, hg⟩ := hx2 x hx h2 ι
   exact point p i _ _ hGr hp hMore.2.2 (hx1 x hx h1 ι p hp hMore r hr hown i) hr100 hA hg (hx3 x hx h3 ι)
 
+/- English proof (translation)
+The claim follows from `badWSt_of (GlobalTheory.GreenBridge.green_of_regular hR) hM`.
+-/
 theorem badWSt_of_regular (hR : GlobalTheory.Published.GreenRegularCharacters) (hM : ModelSt) : BadWSt :=
   badWSt_of (GlobalTheory.GreenBridge.green_of_regular hR) hM
 

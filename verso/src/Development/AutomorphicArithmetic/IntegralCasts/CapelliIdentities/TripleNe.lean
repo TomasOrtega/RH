@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `R ι _ _ A Y B a b h`. Rewrite `h` using `[Matrix.mul_apply]`. Take `⟨d, -, hd⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Establish `h1` using `left_ne_zero_of_mul hd`. Rewrite `h1` using `[Matrix.mul_apply]`.
+
+Take `⟨c, -, hc⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Conclude with `⟨c, d, left_ne_zero_of_mul hc, right_ne_zero_of_mul hc, right_ne_zero_of_mul hd⟩`.
+-/
 theorem UpperTheory.Reformulated.B.Qk1.triple_ne :
     ∀ {R ι : Type} [inst : CommRing R] [inst_1 : Fintype ι]
     {A Y B : Matrix ι ι R} {a b : ι},

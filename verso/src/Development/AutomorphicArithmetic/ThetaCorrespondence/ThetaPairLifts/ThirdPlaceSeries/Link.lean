@@ -17,6 +17,11 @@ section
 noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT Formalism.L2.Top3 Formalism.L2.Top4
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `𝒜 sel selS selP selDH selC selB hPA hLamP hDivG zL`. Establish `hDivR : ∀ {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) (x : ℝ) (hx : Fm.x1 < x) (h : (sel Fm hc).1 ≤ x) (i : Fm.Ix x), Formalism.L2.DIV.DivRows3 (Fm.D x i) (selP Fm hc x hx h i).1.A3 (selP Fm hc x hx h i).1.P0 (selP Fm hc x hx h i).1.ψ0 (selP Fm hc x hx h i).1.Ps (selP Fm hc x hx h i).1 …` using `fun Fm hc x hx h i => (hDivG Fm hc x hx h i).toRows (_root_.Formalism.IndefR.LevelRealisationRankEquality.tup_all_used_of_realisation (selB Fm hc x hx h i).Q)`. Establish `hZ : Closed (D3 3 𝒜) fun Fm _ => SmallLevelRankEq Fm` using `closed_of_mem (zL.imp fun Fm _ _ h hc => by`. Take `⟨xr, h⟩` from `h hc`. Conclude with `_root_.Formalism.L2.N.RankZeroOfLevelThree.rank_zero_of_row_conditions_alt Fm (max (sel Fm (d3_a hc)).1 xr) (fun x hx h0 i => ((sel Fm (d3_a hc)).2 x hx (le_trans (le_max_left _ _) h0) i).T) (fun x hx h0 i => (selP Fm (d3_a hc) x hx (le_trans (le_max_left _ _) h0) i).1) (fun x hx …`.
+
+Conclude with `hZ`.
+-/
 theorem GlobalTheory.Top.link_alt_alt_alt : ∀ (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)
     (selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel)

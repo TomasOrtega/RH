@@ -9,6 +9,19 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 noncomputable section
 
+/- English proof (translation)
+Unfold `TypicalCurveRebasing`. Introduce `C _ _ _ v p hp hv d m G γ x hc hx`. Simplify using `only`. Establish `hcr : ∀ u, IsCurve v (rescaleCurve (x u) (γ u))` using `fun u => isCurve_rescale (hx u) (hc u)`. Establish `hγ' : IsCurve v (G.sumF fun u => rescaleCurve (x u) (γ u))` using `isCurve_sumF G _ hcr`.
+
+Establish `hlc : ∀ (k : ℕ) (a : Fin d), PowerSeries.coeff k (G.lgCurve (G.sumF fun u => rescaleCurve (x u) (γ u)) a) = ∑ u, x u ^ k * PowerSeries.coeff k (G.lgCurve (γ u) a)`. Introduce `k a`. Rewrite using `[lgCurve_sumF G _ hcr a, map_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[lgCurve_rescale G (x u) (fun b => (hc u b).1) a, PowerSeries.coeff_rescale]`.
+
+Establish `hL : ∀ n : ℕ, G.lc p (G.sumF fun u => rescaleCurve (x u) (γ u)) n = ∑ u, x u ^ p ^ n • G.lc p (γ u) n`. Introduce `n`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, LogFGL.lc]`.
+
+Conclude with `hlc (p ^ n) a`. Use `⟨hγ', ?_, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[tangent_eq_lc_zero G p (fun b => (hγ' b).1), hL 0]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[tangent_eq_lc_zero G p (fun b => (hc u b).1), pow_zero, pow_one]`.
+
+Introduce `hT`. Unfold `LogFGL.IsPTypical at hT ⊢`. Introduce `a k hk`. Rewrite using `[hlc k a]`. Use `Finset.sum_eq_zero fun u _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hT u a k hk, mul_zero]`.
+-/
 theorem pt6' : TypicalCurveRebasing := by
   unfold TypicalCurveRebasing
   intro C _ _ _ v p hp hv d m G γ x hc hx
@@ -40,6 +53,21 @@ theorem pt6' : TypicalCurveRebasing := by
     refine Finset.sum_eq_zero fun u _ => ?_
     rw [hT u a k hk, mul_zero]
 
+/- English proof (translation)
+Introduce `C _ _ _ v p hp hv d h ty G γ hB`. Take `⟨hγ, hγty, hdet⟩` from `hB`. Establish `hdet' : v (tmat γ).det = 0` using `hdet`. Establish `: NeZero (p : C)` using `⟨Nat.cast_ne_zero.2 hp.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C p`.
+
+Use `choose δ hδc hδlg using fun a => exists_average G hp hζ (hγ a)`. Establish `hlcδ : ∀ a n, G.lc p (δ a) n = (p : C) • G.lc p (γ a) (n + 1)`. Introduce `a n`. Use function extensionality and compare the values at `c`. Simplify using `only [LogFGL.lc, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[hδlg, pow_succ']`. Establish `hδt : ∀ a, G.IsOfType p ty (ty a + 1) (δ a)`. Introduce `a`. Use `⟨fun c j hj => ?_, fun n c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hδlg, (hγty a).1 c (p * j) (fun k hk => ?_), mul_zero]`.
+
+Break down `k with _ | k` into its components or cases. Rewrite `hk` using `[pow_zero]`. Conclude with `hp.one_lt.ne' (Nat.eq_one_of_mul_eq_one_right hk)`. Conclude with `hj k (by rw [pow_succ'] at hk; exact Nat.eq_of_mul_eq_mul_left hp.pos hk)`. Rewrite using `[hlcδ]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[(hγty a).2 (n + 1) c (by intro e; apply hc; rw [e]; push_cast; ring), mul_zero]`. Use `⟨fun s b a => ptx G p γ (δ a) s b, fun s b a => ptx_int G hp hγ (fun b => (hγty b).1) hdet' (δ a) (hδc a) (hδt a).1 s b, fun s b a hne => ?_, fun a n => ?_⟩` and prove the remaining obligations. Rewrite using `[ptx_type ty G hp hγ hdet' hγty (δ a) _ (hδt a) s b hne]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[← hlcδ a n, ptx_rel G p hγ hdet' (δ a) n]`. Use `(Finset.sum_range_reflect _ (n + 1)).symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hmn : m ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hm)`. Simplify using `only`.
+
+Rewrite using `[show n + 1 - 1 - m = n - m by omega, Nat.sub_sub_self hmn]`.
+-/
 theorem pt5' : TypicalCurveStructureConstants := by
   intro C _ _ _ v p hp hv d h ty G γ hB
   obtain ⟨hγ, hγty, hdet⟩ := hB
@@ -75,6 +103,11 @@ theorem pt5' : TypicalCurveStructureConstants := by
     dsimp only
     rw [show n + 1 - 1 - m = n - m by omega, Nat.sub_sub_self hmn]
 
+/- English proof (translation)
+Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe a`. Establish `h1 : ((1 : WithTop ℝ) + (a : WithTop ℝ)) = ((1 + a : ℝ) : WithTop ℝ)`. Use `norm_cast`.
+
+Rewrite `h` using `[h1, WithTop.coe_le_coe]`. Conclude with `WithTop.coe_le_coe.mpr (by linarith)`.
+-/
 theorem wt_sub_one_le {r : ℝ} {y : WithTop ℝ} (h : (r : WithTop ℝ) ≤ 1 + y) :
     ((r - 1 : ℝ) : WithTop ℝ) ≤ y := by
   induction y using WithTop.recTopCoe with
@@ -85,6 +118,9 @@ theorem wt_sub_one_le {r : ℝ} {y : WithTop ℝ} (h : (r : WithTop ℝ) ≤ 1 +
     rw [h1, WithTop.coe_le_coe] at h
     exact WithTop.coe_le_coe.mpr (by linarith)
 
+/- English proof (translation)
+Use `revert h`. Use `Finset.induction_on s (fun _ => by simp) ?_` and prove the remaining obligations. Introduce `i s hi ih h`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `le_trans (le_min (h i (Finset.mem_insert_self i s)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))) (AddValuation.map_add v _ _)`.
+-/
 private theorem le_valuation_finset_sum {C : Type} [Field C] (v : AddValuation C (WithTop ℝ))
     {ι : Type} (s : Finset ι) (f : ι → C) (g : WithTop ℝ) (h : ∀ i ∈ s, g ≤ v (f i)) :
     g ≤ v (∑ i ∈ s, f i) := by
@@ -96,6 +132,43 @@ private theorem le_valuation_finset_sum {C : Type} [Field C] (v : AddValuation C
   exact le_trans (le_min (h i (Finset.mem_insert_self i s))
     (ih fun j hj => h j (Finset.mem_insert_of_mem hj))) (AddValuation.map_add v _ _)
 
+/- English proof (translation)
+Unfold `TypicalCurveValuationBounds`. Introduce `C _ _ _ v p hp hv d h ty G γ hB a`. Take `⟨sc, hsc, -, hrec⟩` from `pt5' C v p hp hv d h ty G γ hB`. Take `⟨hcur, -, hdet⟩` from `hB`. Establish `H1 : ∀ (n : ℕ) (b c : Fin d), (((-(n : ℝ)) : ℝ) : WithTop ℝ) ≤ v (G.lc p (γ b) n c)`.
+
+Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih b c`. Break down `n with _ | n` into its components or cases. Rewrite using `[← tangent_eq_lc_zero G p (fun e => (hcur b e).1)]`.
+
+Establish `h0 : (0 : WithTop ℝ) ≤ v (tangent (γ b) c)` using `(hcur b c).2 1`. Establish `e0 : (((-((0 : ℕ) : ℝ)) : ℝ) : WithTop ℝ) = 0` using `by simp`. Rewrite using `[e0]`. Conclude with `h0`. Establish `hr` using `congrFun (hrec b n) c`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at hr`. Establish `hge : (((-(n : ℝ)) : ℝ) : WithTop ℝ) ≤ v ((p : C) * G.lc p (γ b) (n + 1) c)`. Rewrite using `[hr]`. Apply `le_valuation_finset_sum` to reduce the goal to its premises. Introduce `m hm`.
+
+Apply `le_valuation_finset_sum` to reduce the goal to its premises. Introduce `e _`. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow]`. Establish `hm' : m < n + 1` using `Finset.mem_range.mp hm`. Establish `h1 : (0 : WithTop ℝ) ≤ (p ^ m) • v (sc (n - m) e b)` using `nsmul_nonneg (hsc _ _ _) _`.
+
+Establish `h2` using `ih m hm' e c`. Establish `h3 : (((-(n : ℝ)) : ℝ) : WithTop ℝ) ≤ (((-(m : ℝ)) : ℝ) : WithTop ℝ)`. Apply `WithTop.coe_le_coe.mpr` to reduce the goal to its premises. Establish `: (m : ℝ) ≤ n` using `by exact_mod_cast Nat.lt_succ_iff.mp hm'`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hge` using `[AddValuation.map_mul, hv]`. Use `wt_sub_one_le hge` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨fun n c => H1 n a c, ?_⟩` and prove the remaining obligations. Introduce `h1 n c hn`. Establish `hne : Matrix.det (Matrix.of fun a b => tangent (γ a) b) ≠ 0`. Introduce `h0`.
+
+Rewrite `hdet` using `[h0, AddValuation.map_zero]`. Simplify using `at hdet`. Establish `hs0 : ∀ e, sc 0 e a = 0`. Establish `hr` using `hrec a 0`. Simplify using `only [zero_add] at hr`.
+
+Rewrite `hr` using `[h1, smul_zero, Finset.sum_range_one]`. Simplify using `only [tsub_zero, pow_zero, pow_one] at hr`. Establish `hM : Matrix.vecMul (fun e => sc 0 e a) (Matrix.of fun e b => tangent (γ e) b) = 0`. Use function extensionality and compare the values at `b`. Establish `hb` using `congrFun hr b`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hb`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, Pi.zero_apply]`. Use `Eq.trans ?_ hb.symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[tangent_eq_lc_zero G p (fun f => (hcur e f).1)]`.
+
+Introduce `e`. Conclude with `congrFun (Matrix.eq_zero_of_vecMul_eq_zero hne hM) e`. Take `_ | _ | k` from `n`. Use linear arithmetic over natural numbers and integers. Establish `h10 : G.lc p (γ a) (0 + 1) c = 0` using `by simp [h1]`.
+
+Rewrite using `[h10, AddValuation.map_zero]`. Conclude with `le_top`. Establish `hr` using `congrFun (hrec a (k + 1)) c`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.sum_apply] at hr`. Establish `hge : (((-(k : ℝ)) : ℝ) : WithTop ℝ) ≤ v ((p : C) * G.lc p (γ a) (k + 1 + 1) c)`.
+
+Rewrite using `[hr]`. Apply `le_valuation_finset_sum` to reduce the goal to its premises. Introduce `m hm`. Apply `le_valuation_finset_sum` to reduce the goal to its premises. Introduce `e _`.
+
+Establish `hm' : m < k + 1 + 1` using `Finset.mem_range.mp hm`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hm' with hlt | heq` into its components or cases. Rewrite using `[AddValuation.map_mul, AddValuation.map_pow]`. Establish `h1' : (0 : WithTop ℝ) ≤ (p ^ m) • v (sc (k + 1 - m) e a)` using `nsmul_nonneg (hsc _ _ _) _`. Establish `h2` using `H1 m e c`.
+
+Establish `h3 : (((-(k : ℝ)) : ℝ) : WithTop ℝ) ≤ (((-(m : ℝ)) : ℝ) : WithTop ℝ)`. Apply `WithTop.coe_le_coe.mpr` to reduce the goal to its premises. Establish `: (m : ℝ) ≤ k` using `by exact_mod_cast Nat.lt_succ_iff.mp hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Substitute `heq` using the available equality. Rewrite using `[Nat.sub_self, hs0 e, zero_pow (pow_ne_zero _ hp.ne_zero), zero_mul, AddValuation.map_zero]`. Conclude with `le_top`. Rewrite `hge` using `[AddValuation.map_mul, hv]`. Use `wt_sub_one_le hge` as an intermediate fact.
+
+Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pt5v' : TypicalCurveValuationBounds := by
   unfold TypicalCurveValuationBounds
   intro C _ _ _ v p hp hv d h ty G γ hB a

@@ -19,6 +19,37 @@ namespace GlobalTheory.SquareAgree
 
 open GlobalTheory.SmallThetaModules in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' B G X om om' R Rf h`. Set `s : ∀ v, Rf.Pi v` to `fun v => Rf.p' v (G.M'.vac v)`. Establish `hsph : ∀ v ∉ X.T, Rf.p v (G.M.vac v) = s v` using `fun v hv => (h.fin.sph v hv).1`. Establish `hs0 : ∀ v ∉ X.T, s v ≠ 0` using `fun v hv => by`. Rewrite using `[← hsph v hv]`.
+
+Conclude with `(h.fin.sph v hv).2`. Establish `hXT : (X.T : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)).Finite` using `X.T.finite_toSet`. Take `⟨q, hq⟩` from `GlobalTheory.T.weil_model_projection_factorisation σ G.V G.W G.M B.ψ h.triple.geo.hM R.Pi R.p Rf.Pi Rf.p s (Filter.eventually_cofinite.2 (hXT.subset fun v hv => by by_contra hn; exact hv (hsph v hn)))`. Take `⟨q', hq'⟩` from `GlobalTheory.T.weil_model_projection_factorisation σ G.V' G.W G.M' B.ψ h.triple.geo.hM' R.Pi R.p' Rf.Pi Rf.p' s (Filter.Eventually.of_forall fun v => rfl)`. Use `haveI := h.real.nontriv`.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : R.Pi)`. Establish `hx' : x ∈ (G.M'.Pol B.ψ B.emb).map R.p'` using `by rw [h.real.quot'.onto]; trivial`. Take `⟨f, hf, hfx⟩` from `hx'`. Establish `hloc : ∀ v, ∃ φv, φv ∈ GlobalTheory.WeilM.SB _ ∧ Rf.p' v φv ≠ 0 ∧ (v ∉ X.T → φv = G.M'.vac v)`. Introduce `v`.
+
+Distinguish the cases in `hv : v ∈ X.T`. Use `haveI := h.fin.nontriv v`. Take `⟨y, hy⟩` from `exists_ne (0 : Rf.Pi v)`. Establish `hy' : y ∈ (GlobalTheory.WeilM.SB _).map (Rf.p' v)` using `by rw [h.fin.onto' v]; trivial`. Take `⟨φv, h1, h2⟩` from `hy'`.
+
+Conclude with `⟨φv, h1, h2 ▸ hy, fun hn => absurd hv hn⟩`. Conclude with `⟨G.M'.vac v, (h.triple.geo.hM'.vac v).1, hs0 v hv, fun _ => rfl⟩`. Use `choose φ hφSB hφ0 hφvac using hloc`. Establish `hφev : ∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v` using `Filter.eventually_cofinite.2 (hXT.subset fun v hv => by by_contra hn; exact hv (hφvac v hn))`. Establish `hΦ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ algD G.M' B.ψ B.emb` using `Submodule.subset_span ⟨f, φ, hf, hφSB, hφev, rfl⟩`.
+
+Take `⟨l₀, hl₀⟩` from `Module.Projective.exists_dual_eq_one ℂ hx`. Use `choose l hl using fun v => Module.Projective.exists_dual_eq_one ℂ (hφ0 v)`. Establish `hls : ∀ v ∉ X.T, l v (s v) = 1` using `fun v hv => by`. Use `hl v` as an intermediate fact. Rewrite `this` using `[hφvac v hv]`. Then use the resulting hypothesis.
+
+Establish `hadm : {v | l v (s v) ≠ 1}.Finite` using `hXT.subset fun v hv => by by_contra hn; exact hv (hls v hn)`. Take `⟨Λ, hΛ⟩` from `pureT_sep s (fun v => l v) hadm`. Set `LL : R.Pi ⊗[ℂ] RTens s →ₗ[ℂ] ℂ` to `TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₁₂ l₀ Λ)`. Establish `hLL : ∀ x y, LL (x ⊗ₜ y) = l₀ x * Λ y` using `fun x y => by simp [LL]`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ, hΦ, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨T, hT, m, m', fs, φs, fs', φs', hfam, hfam', h0, hΦe, htens⟩`. Set `LT : (⨂[ℂ] v : T, Rf.Pi v) →ₗ[ℂ] ℂ` to `PiTensorProduct.dualDistrib (⨂ₜ[ℂ] v : T, l v)`. Set `Ltot : R.Pi ⊗[ℂ] (⨂[ℂ] v : T, Rf.Pi v) →ₗ[ℂ] ℂ` to `TensorProduct.lift ((LinearMap.mul ℂ ℂ).compl₁₂ l₀ LT)`. Establish `hLtot : ∀ x y, Ltot (x ⊗ₜ y) = l₀ x * LT y` using `fun x y => by simp [Ltot]`. Establish `key : ∀ g : ∀ v, Rf.Pi v, (∀ v ∉ T, g v = s v) → Λ (pureT s g) = LT (PiTensorProduct.tprod ℂ fun v : T => g v)`.
+
+Introduce `g hg`. Establish `hr : Formalism.MainNotions.KudlaSiegelWeil.Restr s g` using `T.finite_toSet.subset fun v hv => by by_contra hn; exact hv (hg v hn)`. Rewrite using `[hΛ g hr]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := T) (fun v hv => by`. Assume the negation of the conclusion as `hn`.
+
+Conclude with `hv (by show l v (g v) = 1; rw [hg v hn]; exact hls v fun h' => hn (hT h')))]`. Simplify using `only [LT, PiTensorProduct.dualDistrib_apply]`. Conclude with `(Finset.prod_coe_sort T fun v => l v (g v)).symm`. Establish `hP : ∀ i, LL (q (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (fs i) (φs i))) = Ltot (R.p (fs i) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => Rf.p v (φs i v))`. Introduce `i`.
+
+Establish `ev : ∀ᶠ v in Filter.cofinite, φs i v = G.M.vac v` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by by_contra hn; exact hv ((hfam i).2.2 v hn))`. Rewrite using `[hq _ _ (hfam i).2.1 ev, hLL, hLtot]`. Use `congr 1`. Conclude with `key _ fun v hv => by rw [(hfam i).2.2 v hv]; exact hsph v fun h' => hv (hT h')`. Establish `hP' : ∀ j, LL (q' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (fs' j) (φs' j))) = Ltot (R.p' (fs' j) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => Rf.p' v (φs' j v))`.
+
+Introduce `j`. Establish `ev : ∀ᶠ v in Filter.cofinite, φs' j v = G.M'.vac v` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by by_contra hn; exact hv ((hfam' j).2.2 v hn))`. Rewrite using `[hq' _ _ (hfam' j).2.1 ev, hLL, hLtot]`. Use `congr 1`. Conclude with `key _ fun v hv => by rw [(hfam' j).2.2 v hv]`.
+
+Establish `h1 : LL (q' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)) = 1`. Rewrite using `[hq' _ _ hφSB hφev, hLL, hfx, hl₀, one_mul]`. Establish `hr : Formalism.MainNotions.KudlaSiegelWeil.Restr s (fun v => Rf.p' v (φ v))` using `hXT.subset fun v hv => by by_contra hn; exact hv (congrArg (Rf.p' v) (hφvac v hn))`. Rewrite using `[hΛ _ hr]`. Conclude with `finprod_eq_one_of_forall_eq_one fun v => hl v`.
+
+Establish `h2 : LL (q' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)) = Ltot (∑ j, R.p' (fs' j) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => Rf.p' v (φs' j v))`. Rewrite using `[hΦe, map_sum, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hP' j`. Establish `h3 : Ltot (∑ i, R.p (fs i) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => Rf.p v (φs i v)) = 0`. Rewrite using `[map_sum, ← Finset.sum_congr rfl fun i _ => hP i, ← map_sum, ← map_sum, ← h0, map_zero, map_zero]`.
+
+Rewrite `h3` using `[htens, ← h2, h1]`. Conclude with `one_ne_zero h3`.
+-/
 theorem exists_algD_not_polMatch_zero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

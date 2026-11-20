@@ -6,6 +6,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 open GlobalTheory.DepthZeroJac GlobalTheory.IwahoriInj GlobalTheory.StepData
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[mem_unipB, mem_unipRad, mem_parab]`. Simplify using `only [blk, Equiv.sigmaUnique_symm_apply, Equiv.sigmaUnique_apply]`. Use `and_congr Iff.rfl ⟨fun h i => (h i 0 0).trans (by simp), fun h a i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h a, Subsingleton.elim i j]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem unipRad_points_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) :
     unipRad k (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) = unipB k (Fin n) := by
   ext g
@@ -15,6 +20,11 @@ theorem unipRad_points_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpac
   rw [h a, Subsingleton.elim i j]
   simp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n V _ _ π hπ v h1 hfix`. Rewrite `h1` using `[← unipRad_points_eq]`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_deep (k := k) 1`. Take `⟨M, hM⟩` from `(eventually_mem_twKer (hc := hc0) hc1 hc2 h1).exists`. Use `claim_of_antitone hc1 hc2 hπ _ _ rfl (antitone_expo M) v ?_ hM` and prove the remaining obligations.
+
+Conclude with `mem_fixed.2 fun g hg => hfix g ((sup_le KOne_le_KO inf_le_right) hg)`.
+-/
 theorem eq_zero_of_fixed_KO_twKer_unipB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V), IsSmooth π → ∀ v ∈ twKer π (unipB k (Fin n)) 1, (∀ g ∈ KO k (Fin n), π g v = v) → v = 0 := by
   intro k _ _ _ _ n V _ _ π hπ v h1 hfix
   rw [← unipRad_points_eq] at h1

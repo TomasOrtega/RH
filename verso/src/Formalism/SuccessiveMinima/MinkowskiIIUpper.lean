@@ -11,6 +11,9 @@ import Formalism.SuccessiveMinima.SuccessiveMinimaProofs.NPUnit
 
 namespace Formalism.FN
 
+/- English proof (translation)
+The claim follows from `minkowskiIIUpper_of (minkCore_of partialBoxVolumeMonotoneStep partialBoxVolumeScaling) existsSuccessiveMinimaVectors existsAdaptedBasis`.
+-/
 theorem minkowskiIIUpper : MinkowskiIIUpper :=
   minkowskiIIUpper_of (minkCore_of partialBoxVolumeMonotoneStep partialBoxVolumeScaling) existsSuccessiveMinimaVectors
     existsAdaptedBasis

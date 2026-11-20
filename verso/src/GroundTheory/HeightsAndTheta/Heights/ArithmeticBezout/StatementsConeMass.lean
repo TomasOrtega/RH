@@ -17,6 +17,21 @@ def ConeMassOfFibre.Statement : Prop :=
         (δ : ENNReal) * Measure.hausdorffMeasure ((2 * m : ℕ) : ℝ)
           {y : EuclideanSpace ℂ (Fin n) | ‖y‖ < 1 ∧ ∀ j : Fin n, m ≤ (j : ℕ) → y j = 0}
 
+/- English proof (translation)
+Use `⟨isProjPrime_point ℂ, ?_⟩` and prove the remaining obligations. Establish `hnull : ∀ᵐ π : Fin 1 → Fin 1 → ℂ, π 0 0 ≠ 0`. Establish `hp : MeasurePreserving (fun π : Fin 1 → Fin 1 → ℂ => π 0 0)` using `(volume_preserving_funUnique (Fin 1) ℂ).comp (volume_preserving_funUnique (Fin 1) (Fin 1 → ℂ))`. Rewrite using `[ae_iff]`. Establish `hset : {π : Fin 1 → Fin 1 → ℂ | ¬ π 0 0 ≠ 0} = (fun π => π 0 0) ⁻¹' {0}`.
+
+Use extensionality with `π`. Simplify using the standard rewrite rules. Rewrite using `[hset, hp.measure_preimage (measurableSet_singleton 0).nullMeasurableSet]`. Simplify using the standard rewrite rules. Use `filter_upwards [hnull] with π hπ`.
+
+Use `Filter.Eventually.of_forall fun w => ?_` and prove the remaining obligations. Establish `hfib : {y | y ∈ coneSet (HermNorm.std 1) ⊥ ∧ linProj π y = w} = {WithLp.toLp 2 fun _ => w 0 / π 0 0}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_singleton_iff, coneSet, Ideal.mem_bot]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨-, hy⟩`. Establish `h0` using `congrArg (fun v : EuclideanSpace ℂ (Fin 1) => v 0) hy`. Simplify using `only [linProj, Fin.sum_univ_one] at h0`. Use extensionality with `i`. Use `fin_cases i`.
+
+Simplify using `only [Fin.zero_eta, Fin.isValue]`. Rewrite using `[← h0]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `rfl`. Use `⟨fun q hq => by simp [hq], ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i`. Use `fin_cases i`. Simplify using `[linProj]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[fibreCount, hfib, Set.encard_singleton]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ConeMassOfFibre.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
       ∀ᵐ π : Fin 1 → Fin 1 → ℂ, ∀ᵐ w : EuclideanSpace ℂ (Fin 1),

@@ -11,5 +11,8 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotions.ModuliIntegralCharts.H1.BidegreeTwoJet GlobalTheory GlobalTheory.PowGerm
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowGerm.eigDirSt | exact GlobalTheory.PowGerm.eigDirSt | (intros; apply GlobalTheory.PowGerm.eigDirSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_chart_directions_are_eigenvectors : EigDirSt := by
   first | exact @GlobalTheory.PowGerm.eigDirSt | exact GlobalTheory.PowGerm.eigDirSt | (intros; apply GlobalTheory.PowGerm.eigDirSt <;> assumption)

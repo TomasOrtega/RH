@@ -11,6 +11,13 @@ open Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.UG
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `key : ∀ (J' : Matrix (Fin n) (Fin n) R) (a b : Fin n → R), hform σ J' a b = (fun i => σ (a i)) ⬝ᵥ (J' *ᵥ b)`. Introduce `J' a b`. Unfold `hform dotProduct mulVec dotProduct`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => mul_assoc _ _ _`. Establish `hs : (fun i => σ ((g *ᵥ x) i)) = (g.map σ) *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`. Unfold `mulVec dotProduct`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => map_mul _ _ _`. Rewrite using `[key, key, hs, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `show _ ⬝ᵥ ((cT σ g * J * g) *ᵥ y) = _`. Rewrite using `[h]`.
+-/
 theorem hxm_hform_mulVec {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R) (J g : Matrix (Fin n) (Fin n) R)
     (h : cT σ g * J * g = J) (x y : Fin n → R) : hform σ J (g *ᵥ x) (g *ᵥ y) = hform σ J x y := by
   have key : ∀ (J' : Matrix (Fin n) (Fin n) R) (a b : Fin n → R), hform σ J' a b = (fun i => σ (a i)) ⬝ᵥ (J' *ᵥ b) := by
@@ -39,6 +46,9 @@ def hxG (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E →+* D.host
     rw [LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
     exact hxm_hform_mulVec _ _ _ γ.2 _ _⟩
 
+/- English proof (translation)
+The claim follows from `(CF.crdN D i hi).apply_symm_apply _`.
+-/
 theorem hxG_crd (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) (x : (D.sp.X i).V) :
     CF.crdN D i hi ((hxG i hi γ).1 x) = γ.1.1 *ᵥ CF.crdN D i hi x :=
   (CF.crdN D i hi).apply_symm_apply _
@@ -47,6 +57,9 @@ abbrev hxMap (i : ℕ) (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.host.E) (D.sp.X
     Submodule (𝓞 D.host.E) (Fin (D.R.N i) → D.host.E) :=
   M.map ((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E))
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[← hx_mem_map hi M x, ← hx_mem_map hi M' x]`. Use `show _ ∈ hxMap i hi M ↔ _ ∈ hxMap i hi M'`. Rewrite using `[h]`.
+-/
 theorem hxm_map_inj {i : ℕ} (hi : i ≤ D.R.m) {M M' : Submodule (𝓞 D.host.E) (D.sp.X i).V} (h : hxMap i hi M = hxMap i hi M') :
     M = M' := by
   ext x
@@ -54,6 +67,11 @@ theorem hxm_map_inj {i : ℕ} (hi : i ≤ D.R.m) {M M' : Submodule (𝓞 D.host.
   show _ ∈ hxMap i hi M ↔ _ ∈ hxMap i hi M'
   rw [h]
 
+/- English proof (translation)
+Unfold `hxMap gmap Formalism.L2.Forms.mulLat`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Conclude with `hxG_crd i hi γ x`.
+-/
 theorem hxm_map_gmap (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi))
     (M : Submodule (𝓞 D.host.E) (D.sp.X i).V) :
     hxMap i hi (gmap (hxG i hi γ).1 M) = Formalism.L2.Forms.mulLat γ.1.1 (hxMap i hi M) := by
@@ -64,6 +82,15 @@ theorem hxm_map_gmap (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E
   intro x
   exact hxG_crd i hi γ x
 
+/- English proof (translation)
+Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨s, hs, hx⟩, rfl⟩`. Use `⟨s, hs, ⟨s • x, hx, ?_⟩⟩` and prove the remaining obligations. Conclude with `((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)).map_smul s x`.
+
+Introduce and unpack `⟨s, hs, ⟨x, hx, e⟩⟩`. Use `⟨(CF.crdN D i hi).symm t, ⟨s, hs, ?_⟩, (CF.crdN D i hi).apply_symm_apply t⟩` and prove the remaining obligations. Establish `e2 : s • (CF.crdN D i hi).symm t = x`. Apply `(CF.crdN D i hi).injective` to reduce the goal to its premises. Establish `e3` using `((CF.crdN D i hi : (D.sp.X i).V →ₗ[D.host.E] (Fin (D.R.N i) → D.host.E)).restrictScalars (𝓞 D.host.E)).map_smul s ((CF.crdN D i hi).symm t)`.
+
+Use `Eq.trans e3 ?_` and prove the remaining obligations. Use `show s • CF.crdN D i hi ((CF.crdN D i hi).symm t) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `e.symm`. Rewrite using `[e2]`.
+
+Conclude with `hx`.
+-/
 theorem hxm_map_locP (i : ℕ) (hi : i ≤ D.R.m) (p : Ideal (𝓞 D.host.E)) [p.IsPrime] (M : Submodule (𝓞 D.host.E) (D.sp.X i).V) :
     hxMap i hi (localization₂ p M) = localization₂ p (hxMap i hi M) := by
   ext t
@@ -84,6 +111,9 @@ theorem hxm_map_locP (i : ℕ) (hi : i ≤ D.R.m) (p : Ideal (𝓞 D.host.E)) [p
     rw [e2]
     exact hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show (D.sp.X i).frame.equivFun ((D.sp.X i).frame b) ((finCongr (CF.rankN D i hi)).symm j) = _`. Rewrite using `[Basis.equivFun_self, Pi.single_apply]`. Use `congr 1`. Conclude with `propext ⟨fun h => by rw [h, Equiv.apply_symm_apply], fun h => by rw [h, Equiv.symm_apply_apply]⟩`.
+-/
 theorem hxm_crd_frame (i : ℕ) (hi : i ≤ D.R.m) (b : Fin (D.sp.X i).rank) :
     CF.crdN D i hi ((D.sp.X i).frame b) = Pi.single (finCongr (CF.rankN D i hi) b) (1 : D.host.E) := by
   funext j
@@ -92,6 +122,11 @@ theorem hxm_crd_frame (i : ℕ) (hi : i ≤ D.R.m) (b : Fin (D.sp.X i).rank) :
   congr 1
   exact propext ⟨fun h => by rw [h, Equiv.apply_symm_apply], fun h => by rw [h, Equiv.symm_apply_apply]⟩
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show LinearMap.toMatrixAlgEquiv (D.sp.X i).frame (((hxG i hi γ).1 : (D.sp.X i).V ≃ₗ[D.host.E] (D.sp.X i).V) : (D.sp.X i).V →ₗ[D.host.E] (D.sp.X i).V) a b = γ.1.1 (finCongr (CF.rankN D i hi) a) (finCongr (CF.rankN D i hi) b)`. Rewrite using `[LinearMap.toMatrixAlgEquiv_apply]`. Establish `h1 : (D.sp.X i).frame.repr ((hxG i hi γ).1 ((D.sp.X i).frame b)) a = CF.crdN D i hi ((hxG i hi γ).1 ((D.sp.X i).frame b)) (finCongr (CF.rankN D i hi) a)` using `by show _ = (D.sp.X i).frame.equivFun _ ((finCongr (CF.rankN D i hi)).symm (finCongr (CF.rankN D i hi) a))`.
+
+Rewrite using `[Equiv.symm_apply_apply]`. Both sides reduce to the same expression. Use `Eq.trans h1 ?_` and prove the remaining obligations. Rewrite using `[hxG_crd, hxm_crd_frame, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem hxG_toGLb (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) :
     Formalism.L2.Herm.toGLb (D.sp.X i).frame (hxG i hi γ).1 = Formalism.L2.Forms.reGL (CF.rankN D i hi).symm _ γ.1 := by
   apply Units.ext
@@ -108,6 +143,11 @@ theorem hxG_toGLb (i : ℕ) (hi : i ≤ D.R.m) (γ : UJ (CF.sigD D : D.host.E �
   rw [hxG_crd, hxm_crd_frame, Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `show LinearMap.toMatrixAlgEquiv ((D.sp.X 0).frame.reindex (finCongr D.sp.rank0)) (((hxG 0 (Nat.zero_le _) γ).1 : (D.sp.X 0).V ≃ₗ[D.host.E] (D.sp.X 0).V) : (D.sp.X 0).V →ₗ[D.host.E] (D.sp.X 0).V) a b = γ.1.1 (finCongr (Formalism.L2.Forms.rank_eq_first_level D.R) a) (finCongr (Form …`. Rewrite using `[LinearMap.toMatrixAlgEquiv_apply, Basis.reindex_apply, Basis.repr_reindex_apply]`. Establish `h1 : ∀ x : (D.sp.X 0).V, (D.sp.X 0).frame.repr x ((finCongr D.sp.rank0).symm a) = CF.crdN D 0 (Nat.zero_le _) x (finCongr (Formalism.L2.Forms.rank_eq_first_level D.R) a)` using `fun x => rfl`.
+
+Use `Eq.trans (h1 _) (Eq.trans (congrFun (hxG_crd 0 (Nat.zero_le _) γ ((D.sp.X 0).frame ((finCongr D.sp.rank0).symm b))) (finCongr (Formalism.L2.Forms.rank_eq_first_level D.R) a)) ?_)` and prove the remaining obligations. Rewrite using `[hxm_crd_frame, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem hxG_toGLb0 (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D 0 (Nat.zero_le _))) :
     Formalism.L2.Herm.toGLb ((D.sp.X 0).frame.reindex (finCongr D.sp.rank0)) (hxG 0 (Nat.zero_le _) γ).1 =
       Formalism.L2.Forms.reGL (Formalism.L2.Forms.rank_eq_first_level D.R).symm _ γ.1 := by
@@ -124,6 +164,9 @@ theorem hxG_toGLb0 (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D 0 
   rw [hxm_crd_frame, Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Apply `hxm_map_inj hi` to reduce the goal to its premises. Rewrite using `[hxm_map_locP, hxm_map_locP, hxm_map_gmap]`. Conclude with `h`.
+-/
 theorem localization_map_eq_of_transport {i : ℕ} (hi : i ≤ D.R.m) (p : Ideal (𝓞 D.host.E)) [p.IsPrime]
     (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) {M M' : Submodule (𝓞 D.host.E) (D.sp.X i).V}
     (h : localization₂ p (Formalism.L2.Forms.mulLat γ.1.1 (hxMap i hi M)) = localization₂ p (hxMap i hi M')) :
@@ -132,6 +175,9 @@ theorem localization_map_eq_of_transport {i : ℕ} (hi : i ≤ D.R.m) (p : Ideal
   rw [hxm_map_locP, hxm_map_locP, hxm_map_gmap]
   exact h
 
+/- English proof (translation)
+Introduce `q hq h1 h2` and use `by have := hq.isPrime exact localization_map_eq_of_transport hi q γ (h q hq h1 h2)`.
+-/
 theorem hxm_sameOff {i : ℕ} (hi : i ≤ D.R.m) (p : Ideal (𝓞 D.host.E))
     (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) {M M' : Submodule (𝓞 D.host.E) (D.sp.X i).V}
     (h : SameOffC p (Formalism.L2.Forms.mulLat γ.1.1 (hxMap i hi M)) (hxMap i hi M')) :
@@ -139,6 +185,9 @@ theorem hxm_sameOff {i : ℕ} (hi : i ≤ D.R.m) (p : Ideal (𝓞 D.host.E))
   have := hq.isPrime
   exact localization_map_eq_of_transport hi q γ (h q hq h1 h2)
 
+/- English proof (translation)
+Unfold `hxMap`. Rewrite using `[Submodule.map_sup, Submodule.map_span, Set.image_singleton]`. Use `congr 3`. Conclude with `map_smul (CF.crdN D i hi) t y`.
+-/
 theorem hxm_map_sup_span {i : ℕ} (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.host.E) (D.sp.X i).V) (t : D.host.E) (y : (D.sp.X i).V) :
     hxMap i hi (M ⊔ Submodule.span (𝓞 D.host.E) {t • y}) =
       hxMap i hi M ⊔ Submodule.span (𝓞 D.host.E) {t • CF.crdN D i hi y} := by
@@ -147,11 +196,17 @@ theorem hxm_map_sup_span {i : ℕ} (hi : i ≤ D.R.m) (M : Submodule (𝓞 D.hos
   congr 3
   exact map_smul (CF.crdN D i hi) t y
 
+/- English proof (translation)
+Rewrite using `[map_smul, Algebra.smul_def', map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem hxm_nat_smul {i : ℕ} (hi : i ≤ D.R.m) (T : ℕ) (x : (D.sp.X i).V) :
     CF.crdN D i hi ((T : D.host.E) • x) = ((T : ℕ) : 𝓞 D.host.E) • CF.crdN D i hi x := by
   rw [map_smul, Algebra.smul_def', map_natCast]
   rfl
 
+/- English proof (translation)
+The claim follows from `(hx_Ld_eq u i hi c).symm`.
+-/
 theorem hxm_Ld (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) (c : (D.mem u).C.cls i) :
     hxMap i hi (CH.Ld D u i c) = CF.Ld D u i hi c := (hx_Ld_eq u i hi c).symm
 
@@ -159,6 +214,9 @@ variable {u : D.what₂.Word} (A : CF.AtTTied u) (P : ∀ i hi, CF.LvTied u A i 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(hx_Pv_max A v).isPrime Formalism.L2.Herm.SameOff (A.Pv v) (Formalism.HermitianLatticesTheory.gmap (hxG i hi γ).1 (D.clsLat u i ((D.fm u).up i v c p))) (D.clsLat u i c) ∧ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.HermitianLatticesTheory.gmap (hxG i hi γ) …`.
+-/
 theorem hxm_up (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (y : ↥(CH.Ld D u i c))
     (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi)) (p : (D.fm u).lv i v c)
     (h : SameOffC (A.Pv v) (Formalism.L2.Forms.mulLat γ.1.1 (CF.clsCrd D u i hi ((D.fm u).up i v c p))) (CF.clsCrd D u i hi c) ∧
@@ -206,6 +264,9 @@ theorem hxm_up (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `(hx_Pv_max A v).isPrime Formalism.L2.Herm.SameOff (A.Pv v) (Formalism.HermitianLatticesTheory.gmap (hxG i hi γ).1 (D.clsLat u i ((D.fm u).dn i v c g))) (D.clsLat u i c) ∧ Formalism.HermitianLatticesTheory.localization₂ (A.Pv v) (Formalism.HermitianLatticesTheory.gmap (hxG i hi γ) …`.
+-/
 theorem hxm_dn (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk i v c))
     (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi))
@@ -242,6 +303,15 @@ theorem hxm_dn (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨hxm_map_inj hi ?_, fun z hz => ?_, fun v' hv' z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hxm_map_gmap]`. Conclude with `h1`. Establish `e : CF.crdN D i hi ((hxG i hi γ).1 z.1) = γ.1.1 *ᵥ (hxLd i hi _ z).1` using `hxG_crd i hi γ z.1`.
+
+Establish `hz' : γ.1.1 *ᵥ (hxLd i hi _ z).1 ∈ CF.Ld D u i hi c`. Rewrite using `[← e]`. Conclude with `(hx_mem_Ld u i hi c _).2 hz`. Rewrite using `[hxPr_eq A P i hi, hxPr_eq A P i hi, h2 (hxLd i hi _ z) hz']`. Use `congr 3`.
+
+Conclude with `Subtype.ext e.symm`. Establish `e : CF.crdN D i hi ((hxG i hi γ).1 z.1) = γ.1.1 *ᵥ (hxLd i hi _ z).1` using `hxG_crd i hi γ z.1`. Establish `hz' : γ.1.1 *ᵥ (hxLd i hi _ z).1 ∈ CF.Ld D u i hi c`. Rewrite using `[← e]`. Conclude with `(hx_mem_Ld u i hi c _).2 hz`.
+
+Rewrite using `[hxPr_eq A P i hi, hxPr_eq A P i hi, h3 v' hv' (hxLd i hi _ z) hz']`. Use `congr 2`. Conclude with `Subtype.ext e.symm`.
+-/
 theorem hxm_dil (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i)
     (γ : UJ (CF.sigD D : D.host.E →+* D.host.E) (CF.gramN D i hi))
     (h : Formalism.L2.Forms.mulLat γ.1.1 (CF.clsCrd D u i hi ((D.fm u).dil i v a c)) = CF.clsCrd D u i hi c ∧
@@ -288,12 +358,21 @@ open Classical in
 def AtTMovesC.dilS (i : ℕ) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i) : CH.GX D i :=
   if hi : i ≤ D.R.m then hxG i hi (M.dilG i hi v a c) else 1
 
+/- English proof (translation)
+The claim follows from `dif_pos hi`.
+-/
 theorem AtTMovesC.upS_eq (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i) (y : ↥(CH.Ld D u i c)) :
     M.upS i v c y = hxG i hi (M.upG i hi v c (hxLd i hi c y)) := dif_pos hi
 
+/- English proof (translation)
+The claim follows from `dif_pos hi`.
+-/
 theorem AtTMovesC.dnS_eq (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls i)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk i v c)) : M.dnS i v c g = hxG i hi (M.dnG i hi v c g) := dif_pos hi
 
+/- English proof (translation)
+The claim follows from `dif_pos hi`.
+-/
 theorem AtTMovesC.dilS_eq (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (c : (D.mem u).C.cls i) :
     M.dilS i v a c = hxG i hi (M.dilG i hi v a c) := dif_pos hi
 

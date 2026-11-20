@@ -22,6 +22,29 @@ namespace GlobalTheory
 
 open HeckePoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l 𝔓 p i S _ s o t' ψ K _ ⟨h𝔓, hco, hp, hp𝔓, hpM⟩ hpr ham hkt hI hker hHk`. Take `⟨hhom, hfin, het, hsur, hlin, hiso⟩` from `hI`. Establish `hG : Out.GlobalFnsSt` using `(show Out.Laws from GlobalTheory.firstFiveLaws.1).globalFns`. Establish `hab` using `isAbelianScheme_of_proper o.t o.proper`. Establish `hab'` using `isAbelianScheme_of_proper t' hpr`.
+
+Establish `hW` using `fun (n : ℤ) (T : Over S) (x y : T ⟶ o.t.G) c c' => weilIs_along_hom hG _ o.t.G t'.G ψ o.t.PP.L t'.PP.L (p ^ 2) n T x y c c' hab hab' o.t.PP.isLB t'.PP.isLB hhom hiso`. Take `⟨p₀, hp₀⟩` from `exists_inv_mod hp hpM`. Establish `hMM : l.M ∣ l.M'` using `Nat.dvd_lcm_left _ _`. Establish `hAM : l.A ∣ l.M'` using `Nat.dvd_lcm_right _ _`. Establish `etaM : ∀ a, o.eta (l.M • a) = 1` using `fun a => o.eta_ker _ (by`.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (natCast_M_mem l) Submodule.mem_top)`. Set `o' : Ob D l s` to `{ t := t', proper := hpr, ample := ham, ktriv := hkt eta := fun a => o.eta (p₀ • a) ≫ ψ eta_add := fun a c => by rw [smul_add, o.eta_add, MonObj.mul_comp] eta_ker := fun a ha => by rw [o.eta_ker _ (nsmul_mem ha _), MonObj.one_comp] etaA := fun a => o.etaA (p₀ • a) ≫ ψ etaA_add := …`. Introduce `k _ _ x β hx`. Take `⟨hdet, I, hζ, hA, hM⟩` from `o.geom k x β hx`.
+
+Use `⟨fun τ => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← LieEtale.lieMult_iff_of_etale _ _ _ _ ψ o.t.act t'.act hhom het hlin k x τ]`. Conclude with `hdet τ`. Take `⟨C, hC, -, c₂, c₃, c₄, c₅, -⟩` from `hHk k x`. Establish `mem : ∀ z : Over.mk x ⟶ o.t.G, z ≫ ψ = 1 ↔ z ∈ C` using `fun z => (hker k x z).trans (hC z).symm`.
+
+Set `ψx : (Over.mk x ⟶ o.t.G) →* (Over.mk x ⟶ t'.G)` to `MonoidHom.mk' (fun z => z ≫ ψ) fun a c => MonObj.mul_comp a c ψ`. Establish `uniq : ∀ (n : ℤ) (z w : Over.mk x ⟶ o.t.G) (c c' : kˣ), Out.WeilIs o.t.G o.t.PP.L n z w (unitOn c) → Out.WeilIs o.t.G o.t.PP.L n z w (unitOn c') → c = c'` using `fun n z w c c' h h' => (unitOn_bijective k).1 (CommutatorPairing.weilIs_unique hG hab o.t.PP.isLB h h')`. Take `⟨I', hζ', hev⟩` from `exists_tateIso_heckeQuotient SimAlg.sim_group E H D 𝔓 p k _ _ _ (fun a g => g ≫ t'.act.act a) _ (fun n g g' c => Out.WeilIs t'.G t'.PP.L n g g' (unitOn c)) I ψx h𝔓 hco hp hp𝔓 (fun y => exists_lift_pt ψ x y) (fun a z => by show (z ≫ _) ≫ ψ = (z ≫ ψ) ≫ _`. Rewrite using `[Category.assoc, hlin, Category.assoc])`. Use the proof step `(fun J hJ z _ hz' => (mem z).2 (c₂ J hJ hz'))`.
+
+Use the proof step `(fun z hz => ⟨by`. Rewrite using `[← comp_act_natCast o.t.act]`. Use `c₃ ((mem z).1 hz) _ ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, pow_two]`. Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations.
+
+Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hp𝔓` as an intermediate fact. Rewrite using `[map_natCast] at this, c₃ ((mem z).1 hz)⟩)` and apply the resulting hypothesis. Use the proof step `(fun z w hz hw => by`. Establish `h` using `c₄ z ((mem z).1 hz) w ((mem w).1 hw)`. Rewrite `h` using `[← Nat.cast_pow]`.
+
+Conclude with `(congrArg (Out.WeilIs o.t.G o.t.PP.L ((p ^ 2 : ℕ) : ℤ) z w) unitOn_one).mpr h)`. Use the proof step `(by rw [← c₅, show ψx.ker = C from Subgroup.ext mem])`. Use the proof step `(fun n z w c c' _ _ _ h h' => uniq n z w c c' h h')`. Use the proof step `(fun n z w c hn hz hw h => by`. Take `⟨c', hc⟩` from `exists_weil t'.cub hz hw`.
+
+Establish `hc'` using `(weilIs_iff t'.cub hG hab' hz hw hc c').2 rfl`. Take `⟨c', rfl⟩` from `(unitOn_bijective k).2 c'`. Establish `h₂` using `(hW n _ z w 1 _ hc').1`. Rewrite `h₂` using `[← Nat.cast_mul]`. Rewrite using `[uniq _ z w c c' h h₂]`.
+
+Conclude with `hc')`. Use `⟨I', by rw [hζ']; exact hζ, fun a => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[hev l.A p₀ l.A_pos (hp₀.of_dvd hAM), ← hA, ← Category.assoc]`. Both sides reduce to the same expression. Rewrite using `[hev l.M p₀ (by have := l.three_le; omega) (hp₀.of_dvd hMM), ← hM _ (nsmul_mem ha _), ← Category.assoc]; rfl }`.
+
+Use `⟨o', ψ, ⟨⟨hhom, hfin, het, hsur, hlin, hiso⟩, fun p' hp' a => ?_⟩, hker⟩` and prove the remaining obligations. Establish `e` using `modEq_of_inv hp' hp₀`. Conclude with `⟨congrArg (· ≫ ψ) (eq_of_modEq o.eta o.eta_add etaM (e.of_dvd hMM) a), congrArg (· ≫ ψ) (eq_of_modEq o.etaA o.etaA_add o.etaA_ker (e.of_dvd hAM) a)⟩`.
+-/
 theorem hasQuot_of_isIsogT : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) (S : Scheme.{0}) [IsReduced S] (s : S ⟶ Sp (KA l)) (o : Ob D l s) (t' : SAB H S) (ψ : o.t.G ⟶ t'.G) (K : Set o.t.G.left), 1 ≤ D.p + D.q → admitted l 𝔓 p → IsProper t'.G.hom → Out.RelAmple t'.G t'.PP.L → Out.KTriv t'.G t'.PP.L → IsIsogT o.t t' p ψ → KerSet ψ K → HeckeSet D o.t 𝔓 p i K → HasQuot o p K := by
   intro E _ _ _ H D l 𝔓 p i S _ s o t' ψ K _ ⟨h𝔓, hco, hp, hp𝔓, hpM⟩ hpr ham hkt hI hker hHk
   obtain ⟨hhom, hfin, het, hsur, hlin, hiso⟩ := hI

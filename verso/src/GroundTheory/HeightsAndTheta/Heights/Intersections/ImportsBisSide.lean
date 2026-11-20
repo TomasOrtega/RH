@@ -12,6 +12,13 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `K _ ι _ P b hP hb hbW`. Take `⟨hF, hNF⟩` from `hN K ι P hP`. Set `_` to `hF.toField`. Use `hNF` as an intermediate fact. Take `⟨hfree, hfin, hrank⟩` from `hO K ι P hP`.
+
+Set `b' : regRing P` to `⟨b, hbW⟩`. Establish `hb' : b' ≠ 0` using `fun h => hb (congrArg Subtype.val h)`. Take `⟨hfs, hsum⟩` from `hL K ι P b' hP hb'`. Use `⟨hfs, hsum.trans ?_⟩` and prove the remaining obligations. Establish `hI` using `(ReciprocityTheory.ChartRestriction.G.AI.index_thm (funField P) (regRing P) hfree hfin (hrank hF) b' hb').2`.
+
+Conclude with `hI.trans (finsum_eq_sum_of_fintype _).symm`.
+-/
 theorem RegularityFormula.proof (hN : RegularityFunctionFieldNumber.Statement) (hO : RegularityOrder.Statement)
     (hL : RegularityLocal.Statement) : RegularityFormula.Statement := by
   classical

@@ -5,6 +5,19 @@ open GlobalTheory.UnitLemma Polynomial Matrix
 
 namespace GlobalTheory.InertUnitOrb
 
+/- English proof (translation)
+Take `⟨-, hg, hh⟩` from `h`. Take `⟨-, hg', hh'⟩` from `h'`. Use `set f : (Fin n → K.E) →ₗ[K.E] (Fin n → K.E) := ψ.toLinearMap ∘ₗ LinearMap.mulLeft K.E (v : B.A) ∘ₗ ψ'.symm.toLinearMap with hf`. Establish `key : ∀ a b, stdH K n (f a) (f b) = stdH K n a b`. Introduce `a b`.
+
+Take `⟨y, rfl⟩` from `ψ'.surjective a`. Take `⟨z, rfl⟩` from `ψ'.surjective b`. Simplify using `only [hf, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.mulLeft_apply]`. Rewrite using `[hh, hh', hx]`. Unfold `InvAlg.herm`.
+
+Use `congr 1`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨LinearMap.toMatrix' f, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Establish `k` using `key (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [stdH] at k`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, LinearMap.toMatrix'_apply, Matrix.one_apply]`. Rewrite using `[show (∑ x, K.c (f (Pi.single i 1) x) * f (Pi.single j 1) x) = ∑ x, f (Pi.single j 1) x * K.c (f (Pi.single i 1) x) from Finset.sum_congr rfl fun _ _ => mul_comm _ _, k]`. Simplify using `[Pi.single_apply, eq_comm]`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `ψ'.surjective a`. Simplify using `only [hf, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, LinearMap.mulLeft_apply, Matrix.toLin'_apply]`.
+
+Rewrite using `[← hg, ← hg', LinearEquiv.symm_apply_apply, ← mul_assoc, ← mul_assoc, mul_comm B.g]`.
+-/
 theorem conj_of_norm_class (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (n : ℕ)
     (γ γ' : Matrix (Fin n) (Fin n) K.E) (x x' v : B.Aˣ) (ψ ψ' : B.A ≃ₗ[K.E] (Fin n → K.E))
     (h : GlobalTheory.InertUnitOrb.IsModel B γ x ψ) (h' : GlobalTheory.InertUnitOrb.IsModel B γ' x' ψ')

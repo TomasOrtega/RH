@@ -20,6 +20,19 @@ section abstract
 variable {𝔤 E : Type*} [NormedAddCommGroup 𝔤] [NormedSpace ℝ 𝔤] [NormedAddCommGroup E] [NormedSpace ℝ E]
   {ι : Type*} [Fintype ι]
 
+/- English proof (translation)
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `set B' := max B 1 with hB'def`. Establish `hB' : 0 < B'` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Use `set N : ℝ := (Fintype.card ι : ℝ) + 1 with hNdef`.
+
+Establish `hN : 0 < N` using `by positivity`. Establish `hη : 0 < ε / (B' * N)` using `by positivity`. Establish `hev : ∀ᶠ n in atTop, ∀ i, ∀ Y ∈ Ω, dist (L i Y) (Ψ i n Y) < ε / (B' * N)`. Rewrite using `[Filter.eventually_all]`. Introduce `i`.
+
+Conclude with `(Metric.tendstoUniformlyOn_iff.1 (h i)) _ hη`. Use `filter_upwards [hev] with n hn Y hY`. Rewrite using `[dist_eq_norm, ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+
+Introduce `i _`. Establish `e : (a i Y).smulRight (L i Y) - (a i Y).smulRight (Ψ i n Y) = (a i Y).smulRight (L i Y - Ψ i n Y)`. Use extensionality with `v`. Simplify using `[smul_sub]`. Rewrite using `[e, ContinuousLinearMap.norm_smulRight_apply]`.
+
+Establish `h1` using `hn i Y hY`. Rewrite `h1` using `[dist_eq_norm]`. Conclude with `mul_le_mul (le_trans (hB i Y hY) (le_max_left _ _)) h1.le (norm_nonneg _) hB'.le`. Use `_ = (Fintype.card ι : ℝ) * (ε / N) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ < ε := by`. Rewrite using `[mul_div_assoc', div_lt_iff₀ hN, hNdef]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma tuo_smulRight_sum {Ω : Set 𝔤} (a : ι → 𝔤 → (𝔤 →L[ℝ] ℝ)) (B : ℝ) (hB : ∀ i, ∀ Y ∈ Ω, ‖a i Y‖ ≤ B)
     (Ψ : ι → ℕ → 𝔤 → E) (L : ι → 𝔤 → E) (h : ∀ i, TendstoUniformlyOn (Ψ i) (L i) atTop Ω) :
     TendstoUniformlyOn (fun n Y => ∑ i, (a i Y).smulRight (Ψ i n Y))
@@ -54,6 +67,15 @@ lemma tuo_smulRight_sum {Ω : Set 𝔤} (a : ι → 𝔤 → (𝔤 →L[ℝ] ℝ
     _ < ε := by
         rw [mul_div_assoc', div_lt_iff₀ hN, hNdef]; nlinarith
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `Ψ L hc _ hu`. Rewrite using `[Nat.cast_zero, contDiffOn_zero]`.
+
+Conclude with `(hu [] le_rfl).continuousOn (Filter.Frequently.of_forall fun n => hc [] le_rfl n)`. Consider the case `succ m ih`. Introduce `Ψ L hc hd hu`. Establish `hL : ∀ j : ι, ContDiffOn ℝ (m : WithTop ℕ∞) (L [j]) Ω`. Introduce `j`.
+
+Use `ih (fun w => Ψ (w ++ [j])) (fun w => L (w ++ [j])) (fun w hw n => hc _ (by simp; omega) n) (fun w hw n Y hY => by simpa using hd (w ++ [j]) (by simp; omega) n Y hY) (fun w hw => hu _ (by simp; omega))` as an intermediate fact. Simplify using `using this`. Establish `hder : ∀ Y ∈ Ω, HasFDerivAt (L []) (∑ i, (a i Y).smulRight (L [i] Y)) Y`. Introduce `Y hY`. Conclude with `hasFDerivAt_of_tendstoUniformlyOn hΩ (tuo_smulRight_sum a B hB (fun i => Ψ [i]) (fun i => L [i]) (fun i => hu [i] (by simp))) (fun n Y hY => hd [] (by simp) n Y hY) (fun Y hY => (hu [] (by simp)).tendsto_at hY) hY`.
+
+Rewrite using `[show ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1 by push_cast; rfl, contDiffOn_succ_iff_fderiv_of_isOpen hΩ]`. Use `⟨fun Y hY => (hder Y hY).differentiableAt.differentiableWithinAt, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `absurd h (by simp)`. Establish `hcd : ContDiffOn ℝ (m : WithTop ℕ∞) (fun Y => ∑ i, (a i Y).smulRight (L [i] Y)) Ω` using `ContDiffOn.sum fun i _ => ((ha i).of_le (by exact_mod_cast le_top)).smulRight (hL i)`. Conclude with `hcd.congr fun Y hY => (hder Y hY).fderiv`.
+-/
 theorem AL {Ω : Set 𝔤} (hΩ : IsOpen Ω) (a : ι → 𝔤 → (𝔤 →L[ℝ] ℝ))
     (ha : ∀ i, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (a i) Ω) (B : ℝ) (hB : ∀ i, ∀ Y ∈ Ω, ‖a i Y‖ ≤ B) :
     ∀ (m : ℕ) (Ψ : List ι → ℕ → 𝔤 → E) (L : List ι → 𝔤 → E),
@@ -96,11 +118,17 @@ section smooth
 
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop ℕ∞} {s : Set X}
 
+/- English proof (translation)
+Use `@contDiffOn_pi ℝ _ X _ _ s n (Fin (2 * r + k + 1)) _ (fun _ => Fin (2 * r + k + 1) → ℂ) _ _ F` as an intermediate fact. Conclude with `this.trans (forall_congr' fun i => contDiffOn_pi)`.
+-/
 lemma cdm_iff {F : X → Mat k r} :
     ContDiffOn ℝ n F s ↔ ∀ i j, ContDiffOn ℝ n (fun x => F x i j) s := by
   have := @contDiffOn_pi ℝ _ X _ _ s n (Fin (2 * r + k + 1)) _ (fun _ => Fin (2 * r + k + 1) → ℂ) _ _ F
   exact this.trans (forall_congr' fun i => contDiffOn_pi)
 
+/- English proof (translation)
+Rewrite `hF`, `hG`, the goal using `[cdm_iff]`. Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun l _ => (hF i l).mul (hG l j)`.
+-/
 lemma cdm_mul {F G : X → Mat k r} (hF : ContDiffOn ℝ n F s) (hG : ContDiffOn ℝ n G s) :
     ContDiffOn ℝ n (fun x => F x * G x) s := by
   rw [cdm_iff] at hF hG ⊢
@@ -108,11 +136,19 @@ lemma cdm_mul {F G : X → Mat k r} (hF : ContDiffOn ℝ n F s) (hG : ContDiffOn
   simp only [Matrix.mul_apply]
   exact ContDiffOn.sum fun l _ => (hF i l).mul (hG l j)
 
+/- English proof (translation)
+Rewrite `hF` using `[cdm_iff]`. Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hF _ _)`.
+-/
 lemma cd_det {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) : ContDiffOn ℝ n (fun x => (F x).det) s := by
   rw [cdm_iff] at hF
   simp only [Matrix.det_apply']
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => hF _ _)
 
+/- English proof (translation)
+Rewrite `hF`, the goal using `[cdm_iff]`. Introduce `a l`. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Simplify using `only [updateRow_self]`.
+
+Conclude with `contDiffOn_const`. Simplify using `only [updateRow_ne ha]`. Conclude with `hF a l`.
+-/
 lemma cdm_updateRow {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) (j : Fin (2 * r + k + 1))
     (b : Fin (2 * r + k + 1) → ℂ) : ContDiffOn ℝ n (fun x => (F x).updateRow j b) s := by
   rw [cdm_iff] at hF ⊢
@@ -121,6 +157,11 @@ lemma cdm_updateRow {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) (j : Fin (2 
   · subst ha; simp only [updateRow_self]; exact contDiffOn_const
   · simp only [updateRow_ne ha]; exact hF a l
 
+/- English proof (translation)
+Rewrite using `[cdm_iff]`. Introduce `i j`. Establish `e : (fun x => (F x)⁻¹ i j) = fun x => ((F x).det)⁻¹ * ((F x).updateRow j (Pi.single i 1)).det`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, Matrix.smul_apply, adjugate_apply, Ring.inverse_eq_inv', smul_eq_mul]`.
+
+Rewrite using `[e]`. Conclude with `((cd_det hF).inv fun x hx => (hu x hx).ne_zero).mul (cd_det (cdm_updateRow hF j _))`.
+-/
 lemma cdm_inv {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) (hu : ∀ x ∈ s, IsUnit (F x).det) :
     ContDiffOn ℝ n (fun x => (F x)⁻¹) s := by
   rw [cdm_iff]
@@ -134,12 +175,25 @@ lemma cdm_inv {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) (hu : ∀ x ∈ s,
 
 end smooth
 
+/- English proof (translation)
+The claim follows from `(hpkFacts k r).1`.
+-/
 lemma hpk_herm : (Hpk k r)ᴴ = Hpk k r := (hpkFacts k r).1
 
+/- English proof (translation)
+The claim follows from `(hpkFacts k r).2.1`.
+-/
 lemma hpk_sq' : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
 
 def prj (Z : Mat k r) : Mat k r := (1 / 2 : ℂ) • (Z - Hpk k r * Zᴴ * Hpk k r)
 
+/- English proof (translation)
+Unfold `inLie prj`. Establish `hH` using `(hpk_herm (k := k) (r := r))`. Establish `hHH` using `(hpk_sq' (k := k) (r := r))`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, hH, conjTranspose_conjTranspose]`. Establish `h1 : Hpk k r * (Z * Hpk k r) * Hpk k r = Hpk k r * Z`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hHH, Matrix.mul_one]`. Establish `h2 : Hpk k r * (Hpk k r * Zᴴ * Hpk k r) = Zᴴ * Hpk k r`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hHH, Matrix.one_mul]`. Establish `hs : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2, ← smul_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma prj_lie (Z : Mat k r) : inLie k r (prj Z) := by
   unfold inLie prj
   have hH := (hpk_herm (k := k) (r := r))
@@ -154,6 +208,11 @@ lemma prj_lie (Z : Mat k r) : inLie k r (prj Z) := by
   rw [hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2, ← smul_add]
   simp
 
+/- English proof (translation)
+Unfold `prj`. Establish `h0 : Zᴴ * Hpk k r = -(Hpk k r * Z)` using `eq_neg_of_add_eq_zero_left hZ`. Establish `h1 : Hpk k r * Zᴴ * Hpk k r = -Z`. Rewrite using `[Matrix.mul_assoc, h0, Matrix.mul_neg, ← Matrix.mul_assoc, hpk_sq', Matrix.one_mul]`. Rewrite using `[h1, sub_neg_eq_add, ← two_smul ℂ Z, smul_smul]`.
+
+Evaluate the numerical expressions.
+-/
 lemma prj_of_lie {Z : Mat k r} (hZ : inLie k r Z) : prj Z = Z := by
   unfold prj
   have h0 : Zᴴ * Hpk k r = -(Hpk k r * Z) := eq_neg_of_add_eq_zero_left hZ
@@ -162,11 +221,19 @@ lemma prj_of_lie {Z : Mat k r} (hZ : inLie k r Z) : prj Z = Z := by
   rw [h1, sub_neg_eq_add, ← two_smul ℂ Z, smul_smul]
   norm_num
 
+/- English proof (translation)
+Unfold `prj`. Rewrite using `[conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 lemma prj_add (Z Z' : Mat k r) : prj (Z + Z') = prj Z + prj Z' := by
   unfold prj
   rw [conjTranspose_add, Matrix.mul_add, Matrix.add_mul, ← smul_add]
   congr 1; abel
 
+/- English proof (translation)
+Unfold `prj`. Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ) c Z, RCLike.real_smul_eq_coe_smul (K := ℂ) c, conjTranspose_smul]`. Simplify using `only [RCLike.star_def, RCLike.conj_ofReal]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← smul_sub, smul_smul, smul_smul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma prj_rsmul (c : ℝ) (Z : Mat k r) : prj (c • Z) = c • prj Z := by
   unfold prj
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ) c Z, RCLike.real_smul_eq_coe_smul (K := ℂ) c,
@@ -175,8 +242,14 @@ lemma prj_rsmul (c : ℝ) (Z : Mat k r) : prj (c • Z) = c • prj Z := by
   rw [Matrix.mul_smul, Matrix.smul_mul, ← smul_sub, smul_smul, smul_smul]
   congr 1; ring
 
+/- English proof (translation)
+Simplify using `[prj]`.
+-/
 lemma prj_zero : prj (0 : Mat k r) = 0 := by simp [prj]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [prj_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, prj_add, prj_rsmul, ih]`.
+-/
 lemma prj_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (Z : ι → Mat k r) :
     prj (∑ i ∈ s, c i • Z i) = ∑ i ∈ s, c i • prj (Z i) := by
   classical
@@ -188,9 +261,31 @@ def kap (Y : Mat k r) : Mat k r := (1 + Y) * (1 - Y)⁻¹
 
 def iot (Z : Mat k r) : Mat k r := (Z - 1) * (Z + 1)⁻¹
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qj14.kap_mem .. | (apply UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (intros; apply @U …`.
+-/
 lemma kap_mem {Y : Mat k r} (hY : inLie k r Y) (hu : IsUnit (1 - Y).det) : kap Y ∈ GV k r := by
   first | exact UpperTheory.Reformulated.B.Qj14.kap_mem .. | (apply UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qj14.kap_mem <;> assumption) | (apply @UpperTheory.Reformulated.B.Qj14.kap_mem <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qj14.kap_mem k r Y hY hu | exact @UpperTheory.Reformulated.B.Qj14.kap_mem k r Y hY | exact @UpperTheory.Reformulated.B.Qj14.kap_mem k r Y | exact @UpperTheory.Reformulated.B.Qj14.kap_mem k r | exact @UpperTheory.Reformulated.B.Qj14.kap_mem k
 
+/- English proof (translation)
+Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `set D := h + 1 with hD`. Use `set C := h - 1 with hC`. Establish `hDD : D⁻¹ * D = 1` using `Matrix.nonsing_inv_mul _ hu`. Establish `hDD' : D * D⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`.
+
+Establish `hZD : iot h * D = C`. Unfold `iot`. Rewrite using `[Matrix.mul_assoc, hDD, Matrix.mul_one]`. Establish `h1Z : 1 - iot h = (2 : ℂ) • D⁻¹`. Establish `: (1 - iot h) * D = (2 : ℂ) • (1 : Mat k r)`.
+
+Rewrite using `[Matrix.sub_mul, Matrix.one_mul, hZD, hD, hC]`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Establish `hu1 : IsUnit (1 - iot h).det`.
+
+Rewrite using `[h1Z, Matrix.det_smul]`. Conclude with `(IsUnit.pow _ (isUnit_iff_ne_zero.2 two_ne_zero)).mul (Matrix.isUnit_nonsing_inv_det _ hu)`. Use `⟨?_, hu1, ?_⟩` and prove the remaining obligations. Establish `hDu : IsUnit (Dᴴ).det` using `by rw [det_conjTranspose]; exact hu.star`. Establish `e1 : Cᴴ * Hpk k r * D = hᴴ * Hpk k r - Hpk k r * h`.
+
+Rewrite using `[hC, hD, conjTranspose_sub, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : Dᴴ * Hpk k r * C = -(hᴴ * Hpk k r - Hpk k r * h)`. Rewrite using `[hC, hD, conjTranspose_add, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e3 : Dᴴ * ((iot h)ᴴ * Hpk k r + Hpk k r * iot h) * D = 0`. Establish `: Dᴴ * ((iot h)ᴴ * Hpk k r + Hpk k r * iot h) * D = (iot h * D)ᴴ * Hpk k r * D + Dᴴ * Hpk k r * (iot h * D)`. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Rewrite using `[this, hZD, e1, e2, add_neg_cancel]`.
+
+Establish `hDH : (Dᴴ)⁻¹ * Dᴴ = 1` using `Matrix.nonsing_inv_mul _ hDu`. Use `show (iot h)ᴴ * Hpk k r + Hpk k r * iot h = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, hDH, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hDD', Matrix.mul_one]`.
+
+Use `_ = 0 := by rw [e3, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hp : (1 + iot h) * D = h * ((1 - iot h) * D)`. Rewrite using `[Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, hZD, hD, hC]`. Use `noncomm_ring`. Establish `hq : 1 + iot h = h * (1 - iot h)`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `kap`. Rewrite using `[hq, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu1, Matrix.mul_one]`.
+-/
 lemma iot_facts {h : Mat k r} (hh : h ∈ GV k r) (hu : IsUnit (h + 1).det) :
     inLie k r (iot h) ∧ IsUnit (1 - iot h).det ∧ kap (iot h) = h := by
   have hh' : hᴴ * Hpk k r * h = Hpk k r := hh
@@ -248,12 +343,18 @@ section smooth2
 
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop ℕ∞} {s : Set X}
 
+/- English proof (translation)
+Rewrite `hF`, the goal using `[cdm_iff]`. Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `((Complex.conjCLE : ℂ ≃L[ℝ] ℂ) : ℂ →L[ℝ] ℂ).contDiff.comp_contDiffOn (hF j i)`.
+-/
 lemma cdm_conjT {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) : ContDiffOn ℝ n (fun x => (F x)ᴴ) s := by
   rw [cdm_iff] at hF ⊢
   intro i j
   simp only [Matrix.conjTranspose_apply]
   exact ((Complex.conjCLE : ℂ ≃L[ℝ] ℂ) : ℂ →L[ℝ] ℂ).contDiff.comp_contDiffOn (hF j i)
 
+/- English proof (translation)
+Unfold `prj`. Conclude with `(hF.sub (cdm_mul (cdm_mul contDiffOn_const (cdm_conjT hF)) contDiffOn_const)).const_smul _`.
+-/
 lemma cdm_prj {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) : ContDiffOn ℝ n (fun x => prj (F x)) s := by
   unfold prj
   exact (hF.sub (cdm_mul (cdm_mul contDiffOn_const (cdm_conjT hF)) contDiffOn_const)).const_smul _
@@ -270,10 +371,18 @@ def Mv (Y : J k r → ℝ) : Mat k r :=
 
 def co (Z : Mat k r) : J k r → ℝ := fun i => if i.2.2 then (Z i.1 i.2.1).im else (Z i.1 i.2.1).re
 
+/- English proof (translation)
+Use extensionality with `p q`. Simplify using `[Mv, co, Complex.re_add_im]`.
+-/
 lemma Mv_co (Z : Mat k r) : Mv (co Z) = Z := by
   ext p q
   simp [Mv, co, Complex.re_add_im]
 
+/- English proof (translation)
+Use extensionality with `p q`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, Eb, Matrix.of_apply, Mv, smul_ite, smul_zero, ite_and]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool]`.
+
+Simplify using `only [Complex.real_smul, mul_one, if_true, if_false, Bool.false_eq_true]`. Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_eq_single p, Finset.sum_eq_single q, Finset.sum_eq_single p, Finset.sum_eq_single q]`. Simplify using `[add_comm]`. Apply the tactic sequence `all_goals first | (intro b _ hb; simp [Ne.symm hb]) | simp`.
+-/
 lemma Mv_sum (Y : J k r → ℝ) : Mv Y = ∑ i, Y i • Eb i := by
   ext p q
   rw [Matrix.sum_apply]
@@ -286,15 +395,27 @@ lemma Mv_sum (Y : J k r → ℝ) : Mv Y = ∑ i, Y i • Eb i := by
   · simp [add_comm]
   all_goals first | (intro b _ hb; simp [Ne.symm hb]) | simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold co; split_ifs <;> simp`.
+-/
 lemma co_add (Z Z' : Mat k r) (i : J k r) : co (Z + Z') i = co Z i + co Z' i := by
   unfold co; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold co; split_ifs <;> simp [Complex.real_smul]`.
+-/
 lemma co_smul (c : ℝ) (Z : Mat k r) (i : J k r) : co (c • Z) i = c * co Z i := by
   unfold co; split_ifs <;> simp [Complex.real_smul]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold co; split_ifs <;> simp`.
+-/
 lemma co_zero (i : J k r) : co (0 : Mat k r) i = 0 := by
   unfold co; split_ifs <;> simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [co_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, co_add, co_smul, ih]`.
+-/
 lemma co_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (Z : ι → Mat k r) (i : J k r) :
     co (∑ b ∈ s, c b • Z b) i = ∑ b ∈ s, c b * co (Z b) i := by
   classical
@@ -302,6 +423,11 @@ lemma co_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (Z : ι → Mat k r) 
   | empty => simp [co_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, co_add, co_smul, ih]
 
+/- English proof (translation)
+Rewrite `hF` using `[cdm_iff]`. Unfold `co`. Distinguish the cases in `h : i.2.2 = true`. Simplify using `only [h, if_true]`. Conclude with `Complex.imCLM.contDiff.comp_contDiffOn (hF _ _)`.
+
+Simplify using `only [h]`. Conclude with `Complex.reCLM.contDiff.comp_contDiffOn (hF _ _)`.
+-/
 lemma cd_co {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop ℕ∞} {s : Set X}
     {F : X → Mat k r} (hF : ContDiffOn ℝ n F s) (i : J k r) : ContDiffOn ℝ n (fun x => co (F x) i) s := by
   rw [cdm_iff] at hF
@@ -310,6 +436,9 @@ lemma cd_co {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : WithTop 
   · simp only [h, if_true]; exact Complex.imCLM.contDiff.comp_contDiffOn (hF _ _)
   · simp only [h]; exact Complex.reCLM.contDiff.comp_contDiffOn (hF _ _)
 
+/- English proof (translation)
+Rewrite using `[← contDiffOn_univ, cdm_iff]`. Introduce `p q`. Simplify using `only [Mv, Matrix.of_apply]`. Conclude with `((Complex.ofRealCLM.contDiff.comp (contDiff_apply ℝ ℝ (p, q, false))).add ((Complex.ofRealCLM.contDiff.comp (contDiff_apply ℝ ℝ (p, q, true))).mul contDiff_const)).contDiffOn`.
+-/
 lemma cd_Mv : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Mv : (J k r → ℝ) → Mat k r) := by
   rw [← contDiffOn_univ, cdm_iff]
   intro p q
@@ -319,20 +448,32 @@ lemma cd_Mv : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (Mv : (J k r → �
 
 def Lt (i : J k r) : Mat k r := (nrm (true, prj (Eb i))).2
 
+/- English proof (translation)
+The claim follows from `nrm_unit (prj_lie _)`.
+-/
 lemma Lt_unit (i : J k r) : unitLie k r (Lt i) := nrm_unit (prj_lie _)
 
+/- English proof (translation)
+Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ)]`. Conclude with `nrm_smul _`.
+-/
 lemma prj_Eb (i : J k r) : prj (Eb i) = ‖prj (Eb i)‖ • Lt i := by
   rw [RCLike.real_smul_eq_coe_smul (K := ℂ)]
   exact nrm_smul _
 
 def kc (i : J k r) (Z : Mat k r) : ℝ := co Z i * ‖prj (Eb i)‖
 
+/- English proof (translation)
+Use `conv_lhs => rw [← prj_of_lie hZ, ← Mv_co Z, Mv_sum, prj_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[prj_Eb, smul_smul]`. Both sides reduce to the same expression.
+-/
 lemma expandL {Z : Mat k r} (hZ : inLie k r Z) : Z = ∑ i, kc i Z • Lt i := by
   conv_lhs => rw [← prj_of_lie hZ, ← Mv_co Z, Mv_sum, prj_sum]
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [prj_Eb, smul_smul]
   rfl
 
+/- English proof (translation)
+Unfold `kc`. Rewrite using `[co_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+-/
 lemma kc_sum {ι : Type*} (s : Finset ι) (c : ι → ℝ) (Z : ι → Mat k r) (i : J k r) :
     kc i (∑ b ∈ s, c b • Z b) = ∑ b ∈ s, c b * kc i (Z b) := by
   unfold kc; rw [co_sum, Finset.sum_mul]
@@ -342,9 +483,17 @@ def chart (g0 : Mat k r) (Y : J k r → ℝ) : Mat k r := kap (prj (Mv Y)) * g0
 
 def Dom (k r : ℕ) : Set (J k r → ℝ) := {Y | IsUnit (1 - prj (Mv Y)).det}
 
+/- English proof (translation)
+The claim follows from `cdm_prj cd_Mv.contDiffOn`.
+-/
 lemma cd_prjMv : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Y : J k r → ℝ => prj (Mv Y)) Set.univ :=
   cdm_prj cd_Mv.contDiffOn
 
+/- English proof (translation)
+Establish `hc : Continuous (fun Y : J k r → ℝ => (1 - prj (Mv Y)).det)`. Rewrite using `[← continuousOn_univ]`. Conclude with `(cd_det (contDiffOn_const.sub cd_prjMv)).continuousOn`. Establish `: Dom k r = {Y : J k r → ℝ | (1 - prj (Mv Y)).det ≠ (fun _ => (0 : ℂ)) Y}`. Use extensionality with `Y`.
+
+Simplify using `[Dom, isUnit_iff_ne_zero]`. Rewrite using `[this]`. Conclude with `isOpen_ne_fun hc continuous_const`.
+-/
 lemma dom_open : IsOpen (Dom k r) := by
   have hc : Continuous (fun Y : J k r → ℝ => (1 - prj (Mv Y)).det) := by
     rw [← continuousOn_univ]
@@ -354,20 +503,32 @@ lemma dom_open : IsOpen (Dom k r) := by
   rw [this]
   exact isOpen_ne_fun hc continuous_const
 
+/- English proof (translation)
+Establish `h0 : Mv (0 : J k r → ℝ) = 0` using `by ext p q; simp [Mv]`. Simplify using `[Dom, h0, prj_zero]`.
+-/
 lemma zero_mem_dom : (0 : J k r → ℝ) ∈ Dom k r := by
   have h0 : Mv (0 : J k r → ℝ) = 0 := by ext p q; simp [Mv]
   simp [Dom, h0, prj_zero]
 
+/- English proof (translation)
+Establish `hP` using `cd_prjMv (k := k) (r := r)`. Unfold `chart kap`. Conclude with `cdm_mul (cdm_mul (contDiffOn_const.add (hP.mono (Set.subset_univ _))) (cdm_inv (contDiffOn_const.sub (hP.mono (Set.subset_univ _))) fun Y hY => hY)) contDiffOn_const`.
+-/
 lemma chart_cd (g0 : Mat k r) : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (chart g0) (Dom k r) := by
   have hP := cd_prjMv (k := k) (r := r)
   unfold chart kap
   exact cdm_mul (cdm_mul (contDiffOn_const.add (hP.mono (Set.subset_univ _)))
     (cdm_inv (contDiffOn_const.sub (hP.mono (Set.subset_univ _))) fun Y hY => hY)) contDiffOn_const
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (kap_mem (prj_lie _) hY) hg0`.
+-/
 lemma chart_mem {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {Y : J k r → ℝ} (hY : Y ∈ Dom k r) :
     chart g0 Y ∈ GV k r :=
   Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (kap_mem (prj_lie _) hY) hg0
 
+/- English proof (translation)
+The claim follows from `((chart_cd g0).differentiableOn (by simp)).differentiableAt (dom_open.mem_nhds hY)`.
+-/
 lemma chart_diff (g0 : Mat k r) {Y : J k r → ℝ} (hY : Y ∈ Dom k r) : DifferentiableAt ℝ (chart g0) Y :=
   ((chart_cd g0).differentiableOn (by simp)).differentiableAt (dom_open.mem_nhds hY)
 
@@ -377,6 +538,9 @@ def mulB (k r : ℕ) : Mat k r →L[ℝ] Mat k r →L[ℝ] Mat k r :=
       map_add' := fun A B => by ext g : 1; simp [mulL_apply, Matrix.add_mul]
       map_smul' := fun c A => by ext g : 1; simp [mulL_apply] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mulB_apply (A B : Mat k r) : mulB k r A B = A * B := rfl
 
 def cT (k r : ℕ) : Mat k r →L[ℝ] Mat k r :=
@@ -389,8 +553,26 @@ def cT (k r : ℕ) : Mat k r →L[ℝ] Mat k r :=
           conjTranspose_smul]
         simp only [RCLike.star_def, RCLike.conj_ofReal] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma cT_apply (A : Mat k r) : cT k r A = Aᴴ := rfl
 
+/- English proof (translation)
+Use `set c := chart g0 Y with hc`. Use `set T := fderiv ℝ (chart g0) Y W with hT`. Establish `hcG : c ∈ GV k r` using `chart_mem hg0 hY`. Establish `hcu : IsUnit c.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hcG`. Use `set γ : ℝ → Mat k r := fun t => chart g0 (Y + t • W) with hγ`.
+
+Establish `hline : HasDerivAt (fun t : ℝ => Y + t • W) W 0`. Establish `h` using `((hasDerivAt_id (0:ℝ)).smul_const W).const_add Y`. Rewrite `h` using `[one_smul]`. Conclude with `h`. Establish `hγd : HasDerivAt γ T 0` using `(chart_diff g0 hY).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hline (by simp)`.
+
+Establish `hγ0 : γ 0 = c` using `by simp [hγ, hc]`. Establish `h1 : HasDerivAt (fun t => cT k r (γ t)) (cT k r T) 0` using `(cT k r).hasFDerivAt.comp_hasDerivAt 0 hγd`. Establish `h2 : HasDerivAt (fun t => mulB k r (cT k r (γ t)) (Hpk k r)) (mulB k r (cT k r (γ 0)) 0 + mulB k r (cT k r T) (Hpk k r)) 0` using `ContinuousLinearMap.hasDerivAt_of_bilinear (fun _ => h1) (fun _ => hasDerivAt_const _ _)`. Establish `h3 : HasDerivAt (fun t => mulB k r (mulB k r (cT k r (γ t)) (Hpk k r)) (γ t)) (mulB k r (mulB k r (cT k r (γ 0)) (Hpk k r)) T + mulB k r (mulB k r (cT k r (γ 0)) 0 + mulB k r (cT k r T) (Hpk k r)) (γ 0)) 0` using `ContinuousLinearMap.hasDerivAt_of_bilinear (fun _ => h2) (fun _ => hγd)`. Establish `hev : ∀ᶠ t in 𝓝 (0:ℝ), Y + t • W ∈ Dom k r` using `((continuous_const.add (continuous_id.smul continuous_const)).continuousAt (x := (0:ℝ))).preimage_mem_nhds (dom_open.mem_nhds (by simpa using hY))`.
+
+Establish `h4 : HasDerivAt (fun t => mulB k r (mulB k r (cT k r (γ t)) (Hpk k r)) (γ t)) 0 0`. Use `(hasDerivAt_const (0:ℝ) (Hpk k r)).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with t ht`. Establish `hm : γ t ∈ GV k r` using `chart_mem hg0 ht`. Conclude with `hm`.
+
+Establish `hz` using `h3.unique h4`. Simplify using `only [mulB_apply, cT_apply, hγ0, Matrix.mul_zero, zero_add] at hz`. Establish `hci : c * c⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hcu`. Establish `hci' : (c⁻¹)ᴴ * cᴴ = 1` using `by rw [← conjTranspose_mul, hci, conjTranspose_one]`. Use `show (-T * c⁻¹)ᴴ * Hpk k r + Hpk k r * (-T * c⁻¹) = 0`.
+
+Establish `: (-T * c⁻¹)ᴴ * Hpk k r + Hpk k r * (-T * c⁻¹) = -((c⁻¹)ᴴ * (cᴴ * Hpk k r * T + Tᴴ * Hpk k r * c) * c⁻¹)`. Rewrite using `[conjTranspose_mul, conjTranspose_neg]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.neg_mul, Matrix.mul_neg, ← Matrix.mul_assoc, hci']`. Simplify using `only [Matrix.mul_assoc, hci, Matrix.mul_one, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, hz, Matrix.mul_zero, Matrix.zero_mul, neg_zero]`.
+-/
 lemma tangent {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {Y : J k r → ℝ} (hY : Y ∈ Dom k r) (W : J k r → ℝ) :
     inLie k r (-(fderiv ℝ (chart g0) Y W) * (chart g0 Y)⁻¹) := by
   set c := chart g0 Y with hc
@@ -444,6 +626,11 @@ def sC (g0 : Mat k r) (i b : J k r) (Y : J k r → ℝ) : ℝ :=
 def aC (g0 : Mat k r) (i : J k r) (Y : J k r → ℝ) : (J k r → ℝ) →L[ℝ] ℝ :=
   ∑ b, sC g0 i b Y • ContinuousLinearMap.proj b
 
+/- English proof (translation)
+Establish `hW : W = ∑ b, W b • ebv b` using `pi_eq_sum_univ W`. Establish `e1 : -(fderiv ℝ (chart g0) Y W) * (chart g0 Y)⁻¹ = ∑ b, W b • (-(fderiv ℝ (chart g0) Y (ebv b)) * (chart g0 Y)⁻¹)` using `by conv_lhs => rw [hW]`. Rewrite using `[map_sum, ← Finset.sum_neg_distrib, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← smul_neg, Matrix.smul_mul]`.
+
+Rewrite using `[e1, kc_sum]`. Simplify using `only [aC, FunLike.coe_sum, Finset.sum_apply, FunLike.coe_smul, Pi.smul_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, sC]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+-/
 lemma aC_apply (g0 : Mat k r) (i : J k r) (Y W : J k r → ℝ) :
     aC g0 i Y W = kc i (-(fderiv ℝ (chart g0) Y W) * (chart g0 Y)⁻¹) := by
   have hW : W = ∑ b, W b • ebv b := pi_eq_sum_univ W
@@ -458,6 +645,11 @@ lemma aC_apply (g0 : Mat k r) (i : J k r) (Y W : J k r → ℝ) :
     Pi.smul_apply, ContinuousLinearMap.proj_apply, smul_eq_mul, sC]
   exact Finset.sum_congr rfl fun b _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `h1 : ∀ b, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Y => fderiv ℝ (chart g0) Y (ebv b)) (Dom k r)` using `fun b => ((chart_cd g0).fderiv_of_isOpen dom_open (by simp)).clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Y => (chart g0 Y)⁻¹) (Dom k r)` using `cdm_inv (chart_cd g0) fun Y hY => Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh (chart_mem hg0 hY)`. Establish `h3 : ∀ b, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (sC g0 i b) (Dom k r)`. Introduce `b`. Unfold `sC kc`.
+
+Conclude with `(cd_co (cdm_mul (h1 b).neg h2) i).mul contDiffOn_const`. Unfold `aC`. Conclude with `ContDiffOn.sum fun b _ => (h3 b).smul contDiffOn_const`.
+-/
 lemma aC_cd {g0 : Mat k r} (hg0 : g0 ∈ GV k r) (i : J k r) :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (aC g0 i) (Dom k r) := by
   have h1 : ∀ b, ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun Y => fderiv ℝ (chart g0) Y (ebv b)) (Dom k r) :=
@@ -473,6 +665,17 @@ lemma aC_cd {g0 : Mat k r} (hg0 : g0 ∈ GV k r) (i : J k r) :
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use `set c := chart g0 Y with hc`. Establish `hcG : c ∈ GV k r` using `chart_mem hg0 hY`. Establish `hcu : IsUnit c.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hcG`. Take `⟨U, h', hU, hcU, hcd, hff⟩` from `hH c hcG`. Establish `hdiff : DifferentiableAt ℝ h' c` using `(hcd.differentiableOn (cast_ne_zero 0)).differentiableAt (hU.mem_nhds hcU)`.
+
+Establish `hchd` using `chart_diff g0 hY`. Establish `hcomp : HasFDerivAt (fun Y' => h' (chart g0 Y')) ((fderiv ℝ h' c).comp (fderiv ℝ (chart g0) Y)) Y` using `hdiff.hasFDerivAt.comp Y hchd.hasFDerivAt`. Establish `heq : (fun Y' => H (chart g0 Y')) =ᶠ[𝓝 Y] (fun Y' => h' (chart g0 Y'))` using `by filter_upwards [hchd.continuousAt.preimage_mem_nhds (hU.mem_nhds hcU), dom_open.mem_nhds hY] with Y' h1 h2`. Conclude with `hff _ h1 (chart_mem hg0 h2)`. Use `(hcomp.congr_of_eventuallyEq heq).congr_fderiv ?_` and prove the remaining obligations.
+
+Use `ext1 W`. Rewrite using `[ContinuousLinearMap.comp_apply, _root_.sum_apply]`. Simplify using `only [ContinuousLinearMap.smulRight_apply]`. Establish `hop : ∀ i, op true (Lt i) H c = fderiv ℝ h' c (-(Lt i * c))` using `fun i => op_eq_op' 0 true hU hcd hff (Lt_unit i).1 c hcU hcG`. Repeatedly rewrite using `[hop, ← map_smul, ← map_sum]`.
+
+Use `congr 1`. Use `set Xv := -(fderiv ℝ (chart g0) Y W) * c⁻¹ with hXv`. Establish `hXl : inLie k r Xv` using `tangent hg0 hY W`. Establish `hA : ∀ i, aC g0 i Y W = kc i Xv` using `fun i => aC_apply g0 i Y W`. Establish `hXc : Xv * c = -(fderiv ℝ (chart g0) Y W)`.
+
+Rewrite using `[hXv, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hcu, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hA, Finset.sum_mul, Matrix.smul_mul, smul_neg, Finset.sum_neg_distrib]`.
+-/
 lemma hasFDeriv_chart {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {H : Mat k r → E}
     (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) {Y : J k r → ℝ} (hY : Y ∈ Dom k r) :
     HasFDerivAt (fun Y' => H (chart g0 Y'))
@@ -509,6 +712,11 @@ lemma hasFDeriv_chart {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {H : Mat k r → E}
     _ = ∑ i, aC g0 i Y W • -(Lt i * c) := by
         simp only [hA, Finset.sum_mul, Matrix.smul_mul, smul_neg, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Rewrite using `[Metric.tendstoUniformlyOn_iff]`. Introduce `δ hδ`. Establish `hB : 0 < |B| + 1` using `by positivity`. Establish `hev` using `Metric.tendsto_nhds.1 hε (δ / (|B| + 1)) (by positivity)`. Use `filter_upwards [hev] with n hn x hx`.
+
+Rewrite `hn` using `[Real.dist_eq, sub_zero]`. Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_div_assoc', div_lt_iff₀ hB]`. Use polynomial arithmetic with `[abs_nonneg B]`.
+-/
 lemma tuo_of_bound {α F : Type*} [NormedAddCommGroup F] {G : ℕ → α → F} {f : α → F} {s : Set α} {B : ℝ}
     {ε : ℕ → ℝ} (hε : Tendsto ε atTop (𝓝 0)) (h : ∀ n, ∀ x ∈ s, ‖G n x - f x‖ ≤ B * ε n) :
     TendstoUniformlyOn G f atTop s := by
@@ -526,11 +734,21 @@ lemma tuo_of_bound {α F : Type*} [NormedAddCommGroup F] {G : ℕ → α → F} 
     _ < δ := by
         rw [mul_div_assoc', div_lt_iff₀ hB]; nlinarith [abs_nonneg B]
 
+/- English proof (translation)
+Unfold `gN`. Conclude with `Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))`.
+-/
 lemma continuous_gN : Continuous (gN : Mat k r → ℝ) := by
   unfold gN
   exact Real.continuous_sqrt.comp (continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>
     Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i)))
 
+/- English proof (translation)
+Establish `hu : IsUnit g.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg`. Establish `hne : g ≠ 0`. Introduce and unpack `rfl`. Establish `: Nonempty (Fin (2 * r + k + 1))` using `⟨⟨0, by omega⟩⟩`. Rewrite `hu` using `[Matrix.det_zero]`.
+
+Conclude with `not_isUnit_zero hu`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, g i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (Matrix.ext h)`.
+
+Unfold `gN`. Apply `Real.sqrt_pos.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
   have hu : IsUnit g.det := Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg
   have hne : g ≠ 0 := by
@@ -550,6 +768,11 @@ lemma gN_pos {g : Mat k r} (hg : g ∈ GV k r) : 0 < gN g := by
         Finset.single_le_sum (f := fun i' => ∑ j', Complex.normSq (g i' j'))
           (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i)
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `t0`. Establish `h` using `(cv_hasDerivAt b X (cv b X t0 g)).continuousAt`. Establish `e : (fun t : ℝ => cv b X t g) = fun t => cv b X (t - t0) (cv b X t0 g)`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[← cv_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `ContinuousAt.comp_of_eq (g := fun s => cv b X s (cv b X t0 g)) (f := fun t : ℝ => t - t0) h ((continuous_sub_right t0).continuousAt) (by ring)`.
+-/
 lemma cv_continuous (b : Bool) (X g : Mat k r) : Continuous (fun t : ℝ => cv b X t g) := by
   rw [continuous_iff_continuousAt]
   intro t0
@@ -560,6 +783,21 @@ lemma cv_continuous (b : Bool) (X g : Mat k r) : Continuous (fun t : ℝ => cv b
   exact ContinuousAt.comp_of_eq (g := fun s => cv b X s (cv b X t0 g)) (f := fun t : ℝ => t - t0) h
     ((continuous_sub_right t0).continuousAt) (by ring)
 
+/- English proof (translation)
+Use `set γ : ℝ → Mat k r := fun t => cv b X t g with hγ`. Establish `hγc : Continuous γ` using `cv_continuous b X g`. Establish `hγG : ∀ t, γ t ∈ GV k r` using `fun t => cv_mem hX hg t`. Establish `hwc : ContinuousOn (fun t => gN (γ t) ^ (-a)) (Metric.closedBall (0:ℝ) 1)`. Introduce `t _`.
+
+Conclude with `(ContinuousAt.comp_of_eq (g := fun x : ℝ => x ^ (-a)) (f := fun t => gN (γ t)) (Real.continuousAt_rpow_const _ _ (Or.inl (gN_pos (hγG t)).ne')) ((continuous_gN.comp hγc).continuousAt) rfl).continuousWithinAt`. Take `⟨Bw, hBw⟩` from `(isCompact_closedBall (0:ℝ) 1).exists_bound_of_continuousOn hwc`. Establish `hεa : Tendsto (fun n => |ε n|) atTop (𝓝 0)` using `by simpa using hε.abs`. Establish `hbd : ∀ t ∈ Metric.ball (0:ℝ) 1, ∀ n, gN (γ t) ^ (-a) * ε n ≤ Bw * |ε n|`. Introduce `t ht n`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `tu0 : TendstoUniformlyOn (fun n t => Hn n (γ t)) (fun t => H0 (γ t)) atTop (Metric.ball (0:ℝ) 1)` using `tuo_of_bound hεa fun n t ht => le_trans (h0 n _ (hγG t)) (hbd t ht n)`. Establish `tu1 : TendstoUniformlyOn (fun n t => op b X (Hn n) (γ t)) (fun t => H1 (γ t)) atTop (Metric.ball (0:ℝ) 1)` using `tuo_of_bound hεa fun n t ht => le_trans (h1 n _ (hγG t)) (hbd t ht n)`. Establish `hder : ∀ n, ∀ t ∈ Metric.ball (0:ℝ) 1, HasDerivAt (fun t => Hn n (γ t)) (op b X (Hn n) (γ t)) t`. Introduce `n t _`.
+
+Establish `hd` using `ckOn_diff 0 b (hC n) hX (hγG t)`. Establish `e : (fun t' => Hn n (γ t')) = fun t' => Hn n (cv b X (t' - t) (γ t))`. Use function extensionality and compare the values at `t'`. Simplify using `only [hγ]`. Rewrite using `[← cv_add]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h2 : HasDerivAt (fun s => Hn n (cv b X s (γ t))) (op b X (Hn n) (γ t)) (t - t)`. Rewrite using `[sub_self]`.
+
+Conclude with `hd.hasDerivAt`. Conclude with `h2.comp_sub_const t t`. Establish `key` using `hasDerivAt_of_tendstoUniformlyOn (l := atTop) (f := fun n t => Hn n (γ t)) (g := fun t => H0 (γ t)) (f' := fun n t => op b X (Hn n) (γ t)) (g' := fun t => H1 (γ t)) Metric.isOpen_ball tu1 (Eventually.of_forall hder) (fun t ht => tu0.tendsto_at ht) (Metric.mem_ball_self one_pos)`. Establish `e0 : γ 0 = g` using `cv_zero b X g`. Use `show deriv (fun t => H0 (cv b X t g)) 0 = H1 g`.
+
+Rewrite using `[key.deriv]`. Simplify using `only [e0]`.
+-/
 lemma stepD {b : Bool} {X g : Mat k r} (hX : inLie k r X) (hg : g ∈ GV k r) (a : ℝ)
     (Hn : ℕ → Mat k r → E) (H0 H1 : Mat k r → E) (ε : ℕ → ℝ) (hε : Tendsto ε atTop (𝓝 0))
     (hC : ∀ n, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (Hn n))
@@ -606,6 +844,19 @@ lemma stepD {b : Bool} {X g : Mat k r} (hX : inLie k r X) (hg : g ∈ GV k r) (a
   rw [key.deriv]
   simp only [e0]
 
+/- English proof (translation)
+Establish `hck : ∀ n (u w : List (Mat k r)), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ w, unitLie k r X) → u.length + w.length + 1 ≤ mm → CkOn ((1 : ℕ) : ℕ∞) (GV k r) (dLR u w (Fs n))`. Introduce `n u w hu hw hl`. Rewrite using `[dLR_eq]`. Conclude with `smooth_on_of_word_derivatives _ (allLie_lr hu hw) 1 (ckOn_mono (by rw [length_lr]; omega) (hC n))`. Establish `base : ∀ w : List (Mat k r), (∀ X ∈ w, unitLie k r X) → w.length ≤ mm → ∀ g ∈ GV k r, dLR [] w (K [] []) g = K [] w g`.
+
+Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ _ g _`. Both sides reduce to the same expression. Consider the case `cons X w ih`.
+
+Introduce `hw hl g hg`. Establish `hw' : ∀ Y ∈ w, unitLie k r Y` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`. Establish `hX` using `hw X List.mem_cons_self`. Establish `hl' : w.length + 1 ≤ mm` using `by simpa using hl`. Use `show op false X (dLR [] w (K [] [])) g = K [] (X :: w) g`.
+
+Rewrite using `[op_congr false hX.1 (ih hw' (by omega)) g hg]`. Conclude with `stepD hX.1 hg a (fun n => dLR [] w (Fs n)) (K [] w) (K [] (X :: w)) ε hε (fun n => hck n [] w (by simp) hw' (by simpa using hl')) (fun n h hh => hb n [] w (by simp) hw' (by simp; omega) h hh) (fun n h hh => hb n [] (X :: w) (by simp) hw (by simpa using hl) h hh)`. Introduce `u`. Proceed by induction on `u with`. Consider the case `nil => intro w _ hw hl; exact base w hw (by simpa using hl)`.
+
+Consider the case `cons X u ih`. Introduce `w hu hw hl g hg`. Establish `hu' : ∀ Y ∈ u, unitLie k r Y` using `fun Y hY => hu Y (List.mem_cons_of_mem _ hY)`. Establish `hX` using `hu X List.mem_cons_self`. Establish `hl' : u.length + w.length + 1 ≤ mm` using `by simp at hl; omega`.
+
+Use `show op true X (dLR u w (K [] [])) g = K (X :: u) w g`. Rewrite using `[op_congr true hX.1 (ih w hu' hw (by omega)) g hg]`. Conclude with `stepD hX.1 hg a (fun n => dLR u w (Fs n)) (K u w) (K (X :: u) w) ε hε (fun n => hck n u w hu' hw hl') (fun n h hh => hb n u w hu' hw (by omega) h hh) (fun n h hh => hb n (X :: u) w hu hw hl h hh)`.
+-/
 lemma limit_ident {a : ℝ} {mm : ℕ} (Fs : ℕ → Mat k r → E)
     (hC : ∀ n, CkOn ((mm : ℕ) : ℕ∞) (GV k r) (Fs n))
     (K : List (Mat k r) → List (Mat k r) → Mat k r → E) (ε : ℕ → ℝ) (hε : Tendsto ε atTop (𝓝 0))
@@ -649,6 +900,11 @@ lemma limit_ident {a : ℝ} {mm : ℕ} (Fs : ℕ → Mat k r → E)
       (fun n h hh => hb n u w hu' hw (by omega) h hh)
       (fun n h hh => hb n (X :: u) w hu hw hl h hh)
 
+/- English proof (translation)
+Introduce `Y hY`. Apply `ContinuousAt.continuousWithinAt` to reduce the goal to its premises. Take `⟨U, h', hU, hcU, hcd, hff⟩` from `hH _ (chart_mem hg0 hY)`. Establish `hchc : ContinuousAt (chart g0) Y` using `(chart_diff g0 hY).continuousAt`. Establish `h1 : ContinuousAt (fun Y' => h' (chart g0 Y')) Y` using `ContinuousAt.comp (g := h') (hcd.continuousOn.continuousAt (hU.mem_nhds hcU)) hchc`.
+
+Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [hchc.preimage_mem_nhds (hU.mem_nhds hcU), dom_open.mem_nhds hY] with Y' h1 h2`. Conclude with `(hff _ h1 (chart_mem hg0 h2)).symm`.
+-/
 lemma cont_chart {g0 : Mat k r} (hg0 : g0 ∈ GV k r) {H : Mat k r → E}
     (hH : CkOn ((0 : ℕ) : ℕ∞) (GV k r) H) : ContinuousOn (fun Y => H (chart g0 Y)) (Dom k r) := by
   intro Y hY
@@ -665,6 +921,11 @@ def rho (g0 : Mat k r) (x : Mat k r) : J k r → ℝ := co (iot (x * g0⁻¹))
 
 def Sr (g0 : Mat k r) : Set (Mat k r) := {x | IsUnit (x * g0⁻¹ + 1).det}
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Mat k r => (x * g0⁻¹ + 1).det)` using `((continuous_id.matrix_mul continuous_const).add continuous_const).matrix_det`. Establish `: Sr g0 = {x : Mat k r | (x * g0⁻¹ + 1).det ≠ (fun _ => (0 : ℂ)) x}`. Use extensionality with `x`. Simplify using `[Sr, isUnit_iff_ne_zero]`. Rewrite using `[this]`.
+
+Conclude with `isOpen_ne_fun hc continuous_const`.
+-/
 lemma sr_open (g0 : Mat k r) : IsOpen (Sr g0) := by
   have hc : Continuous (fun x : Mat k r => (x * g0⁻¹ + 1).det) :=
     ((continuous_id.matrix_mul continuous_const).add continuous_const).matrix_det
@@ -673,6 +934,9 @@ lemma sr_open (g0 : Mat k r) : IsOpen (Sr g0) := by
   rw [this]
   exact isOpen_ne_fun hc continuous_const
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : Mat k r => x * g0⁻¹) (Sr g0)` using `cdm_mul contDiffOn_id contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x => iot (x * g0⁻¹)) (Sr g0)`. Unfold `iot`. Conclude with `cdm_mul (h1.sub contDiffOn_const) (cdm_inv (h1.add contDiffOn_const) fun x hx => hx)`. Conclude with `contDiffOn_pi.2 fun i => cd_co h2 i`.
+-/
 lemma rho_cd (g0 : Mat k r) : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (rho g0) (Sr g0) := by
   have h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun x : Mat k r => x * g0⁻¹) (Sr g0) :=
     cdm_mul contDiffOn_id contDiffOn_const
@@ -681,6 +945,29 @@ lemma rho_cd (g0 : Mat k r) : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (
     exact cdm_mul (h1.sub contDiffOn_const) (cdm_inv (h1.add contDiffOn_const) fun x hx => hx)
   exact contDiffOn_pi.2 fun i => cd_co h2 i
 
+/- English proof (translation)
+Introduce `g0 hg0`. Take `⟨δ0, hδ0, hball⟩` from `Metric.mem_nhds_iff.1 (dom_open.mem_nhds (zero_mem_dom (k := k) (r := r)))`. Use `set δ := δ0 / 2 with hδ`. Establish `hcl : Metric.closedBall (0 : J k r → ℝ) δ ⊆ Dom k r` using `(Metric.closedBall_subset_ball (by rw [hδ]; linarith)).trans hball`. Establish `hΩ : Metric.ball (0 : J k r → ℝ) δ ⊆ Dom k r` using `Metric.ball_subset_closedBall.trans hcl`.
+
+Establish `hcomp : IsCompact (Metric.closedBall (0 : J k r → ℝ) δ)` using `isCompact_closedBall _ _`. Establish `hwc : ContinuousOn (fun Y => gN (chart g0 Y) ^ (-a)) (Metric.closedBall (0 : J k r → ℝ) δ)` using `(continuous_gN.comp_continuousOn ((chart_cd g0).continuousOn.mono hcl)).rpow_const fun Y hY => Or.inl (gN_pos (chart_mem hg0 (hcl hY))).ne'`. Take `⟨Bw, hBw⟩` from `hcomp.exists_bound_of_continuousOn hwc`. Establish `hac : ContinuousOn (fun Y => ∑ i, ‖aC g0 i Y‖) (Metric.closedBall (0 : J k r → ℝ) δ)` using `continuousOn_finsetSum _ fun i _ => ((aC_cd hg0 i).continuousOn.mono hcl).norm`. Take `⟨Ba, hBa⟩` from `hcomp.exists_bound_of_continuousOn hac`.
+
+Establish `hBa' : ∀ i, ∀ Y ∈ Metric.ball (0 : J k r → ℝ) δ, ‖aC g0 i Y‖ ≤ Ba`. Introduce `i Y hY`. Establish `h1` using `hBa Y (Metric.ball_subset_closedBall hY)`. Rewrite `h1` using `[Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _)]`. Conclude with `(Finset.single_le_sum (f := fun i => ‖aC g0 i Y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ i)).trans h1`.
+
+Establish `hunit : ∀ w : List (J k r), ∀ X ∈ w.map Lt, unitLie k r X`. Introduce `w X hX`. Take `⟨i, _, rfl⟩` from `List.mem_map.1 hX`. Conclude with `Lt_unit i`. Establish `hckw : ∀ n (w : List (J k r)) (m : ℕ), m + w.length ≤ mm → CkOn ((m : ℕ) : ℕ∞) (GV k r) (dLR (w.map Lt) [] (Fs n))`.
+
+Introduce `n w m hm`. Rewrite using `[dLR_eq]`. Conclude with `smooth_on_of_word_derivatives _ (allLie_lr (hunit w) (by simp)) m (ckOn_mono (by rw [length_lr]; simp; omega) (hC n))`. Establish `hAL` using `AL (𝔤 := J k r → ℝ) (E := E) Metric.isOpen_ball (aC g0) (fun i => (aC_cd hg0 i).mono hΩ) Ba hBa' mm (fun w n Y => dLR (w.map Lt) [] (Fs n) (chart g0 Y)) (fun w Y => K (w.map Lt) [] (chart g0 Y)) (fun w hw n => (cont_chart hg0 (hckw n w 0 (by omega))).mono hΩ) (fun w hw n Y hY => …`. Use `(hb n (w.map Lt) [] (hunit w) (by simp) (by simpa using hw) _ (chart_mem hg0 (hΩ hY))).trans ?_` and prove the remaining obligations.
+
+Establish `h1` using `hBw Y (Metric.ball_subset_closedBall hY)`. Rewrite `h1` using `[Real.norm_eq_abs]`. Conclude with `mul_le_mul_of_nonneg_right ((le_abs_self _).trans h1) (hε0 n))`. Establish `hgu : IsUnit g0.det` using `Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg0`. Establish `hg1 : g0 * g0⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hgu`.
+
+Use `set U := Sr g0 ∩ rho g0 ⁻¹' Metric.ball (0 : J k r → ℝ) δ with hUdef`. Establish `hUo : IsOpen U` using `(rho_cd g0).continuousOn.isOpen_inter_preimage (sr_open g0) Metric.isOpen_ball`. Establish `hg0U : g0 ∈ U`. Establish `h2 : (1 + 1 : Mat k r) = (2 : ℂ) • (1 : Mat k r)` using `by rw [two_smul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show IsUnit (g0 * g0⁻¹ + 1).det`. Rewrite using `[hg1, h2, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `(isUnit_iff_ne_zero.2 two_ne_zero).pow _`. Use `show rho g0 g0 ∈ Metric.ball (0 : J k r → ℝ) δ`. Establish `h3 : rho g0 g0 = 0`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [rho, hg1, iot, sub_self, Matrix.zero_mul]`. Conclude with `co_zero i`. Rewrite using `[h3]; exact Metric.mem_ball_self (by rw [hδ]; linarith)`. Use `⟨U, fun x => K [] [] (chart g0 (rho g0 x)), hUo, hg0U, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `h4 : ContDiffOn ℝ ((mm : ℕ) : WithTop ℕ∞) (rho g0) U` using `((rho_cd g0).mono Set.inter_subset_left).of_le (by exact_mod_cast le_top)`. Conclude with `hAL.comp h4 (by intro x hx; exact hx.2)`. Introduce `x hx hxG`. Establish `hh : x * g0⁻¹ ∈ GV k r` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hxG (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_inv hg0)`. Take `⟨hl, -, hk⟩` from `iot_facts hh hx.1`.
+
+Use `show K [] [] x = K [] [] (kap (prj (Mv (co (iot (x * g0⁻¹))))) * g0)`. Rewrite using `[Mv_co, prj_of_lie hl, hk, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hgu, Matrix.mul_one]`.
+-/
 lemma limit_ck {a : ℝ} {mm : ℕ} (Fs : ℕ → Mat k r → E)
     (hC : ∀ n, CkOn ((mm : ℕ) : ℕ∞) (GV k r) (Fs n))
     (K : List (Mat k r) → List (Mat k r) → Mat k r → E) (ε : ℕ → ℝ) (hε : Tendsto ε atTop (𝓝 0))
@@ -773,56 +1060,91 @@ open Classical in
 def Kf (a : ℝ) {mm : ℕ} (x : Idx k r mm → E) (u w : List (Mat k r)) (g : Mat k r) : E :=
   if h : Vd mm u w g then ((gN g ^ (-a) : ℝ) : ℂ) • x ⟨((u, w), g), h⟩ else 0
 
+/- English proof (translation)
+Unfold `Kf`. Use `split_ifs`. Rewrite using `[Pi.add_apply, smul_add]`. Simplify using the standard rewrite rules.
+-/
 lemma Kf_add (a : ℝ) {mm : ℕ} (f f' : Idx k r mm → E) (u w : List (Mat k r)) (g : Mat k r) :
     Kf a (f + f') u w g = Kf a f u w g + Kf a f' u w g := by
   unfold Kf; split_ifs
   · rw [Pi.add_apply, smul_add]
   · simp
 
+/- English proof (translation)
+Unfold `Kf`. Use `split_ifs`. Rewrite using `[Pi.smul_apply, smul_comm]`. Simplify using the standard rewrite rules.
+-/
 lemma Kf_smul (a : ℝ) {mm : ℕ} (s : ℂ) (f : Idx k r mm → E) (u w : List (Mat k r)) (g : Mat k r) :
     Kf a (s • f) u w g = s • Kf a f u w g := by
   unfold Kf; split_ifs
   · rw [Pi.smul_apply, smul_comm]
   · simp
 
+/- English proof (translation)
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hx]`.
+-/
 lemma norm_rsmul (x : ℝ) (hx : 0 ≤ x) (e : E) : ‖((x : ℝ) : ℂ) • e‖ = x * ‖e‖ := by
   rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hx]
 
+/- English proof (translation)
+Rewrite using `[smul_smul, ← Complex.ofReal_mul, ← Real.rpow_add (gN_pos hg), neg_add_cancel, Real.rpow_zero, Complex.ofReal_one, one_smul]`.
+-/
 lemma rsmul_cancel {g : Mat k r} (hg : g ∈ GV k r) (a : ℝ) (e : E) :
     ((gN g ^ (-a) : ℝ) : ℂ) • ((gN g ^ a : ℝ) : ℂ) • e = e := by
   rw [smul_smul, ← Complex.ofReal_mul, ← Real.rpow_add (gN_pos hg), neg_add_cancel, Real.rpow_zero,
     Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[smul_smul, ← Complex.ofReal_mul, ← Real.rpow_add (gN_pos hg), add_neg_cancel, Real.rpow_zero, Complex.ofReal_one, one_smul]`.
+-/
 lemma rsmul_cancel' {g : Mat k r} (hg : g ∈ GV k r) (a : ℝ) (e : E) :
     ((gN g ^ a : ℝ) : ℂ) • ((gN g ^ (-a) : ℝ) : ℂ) • e = e := by
   rw [smul_smul, ← Complex.ofReal_mul, ← Real.rpow_add (gN_pos hg), add_neg_cancel, Real.rpow_zero,
     Complex.ofReal_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[hx]`. Conclude with `(rsmul_cancel h.2.2.2 a _).symm`.
+-/
 lemma Tf_inv {a : ℝ} {mm : ℕ} {x : Idx k r mm → E} {F : Mat k r → E} (hx : x = Tf a mm F)
     {u w : List (Mat k r)} {g : Mat k r} (h : Vd mm u w g) :
     dLR u w F g = ((gN g ^ (-a) : ℝ) : ℂ) • x ⟨((u, w), g), h⟩ := by
   rw [hx]; exact (rsmul_cancel h.2.2.2 a _).symm
 
+/- English proof (translation)
+Establish `h : Vd mm [] [] g` using `⟨by simp, by simp, by simp, hg⟩`. Rewrite using `[Kf, dif_pos h, ← Tf_inv hx h]`. Both sides reduce to the same expression.
+-/
 lemma Kf_eq {a : ℝ} {mm : ℕ} {x : Idx k r mm → E} {F : Mat k r → E} (hx : x = Tf a mm F)
     {g : Mat k r} (hg : g ∈ GV k r) : Kf a x [] [] g = F g := by
   have h : Vd mm [] [] g := ⟨by simp, by simp, by simp, hg⟩
   rw [Kf, dif_pos h, ← Tf_inv hx h]; rfl
 
+/- English proof (translation)
+Rewrite using `[dLR_eq]`. Use `W_smul (lr u v) (0 : ℂ) (0 : Mat k r → E)` as an intermediate fact. Simplify using `using this`.
+-/
 lemma dLR_zero (u v : List (Mat k r)) : dLR u v (0 : Mat k r → E) = 0 := by
   rw [dLR_eq]
   have := W_smul (lr u v) (0 : ℂ) (0 : Mat k r → E)
   simpa using this
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, fun u v _ _ _ g _ => by simp [dLR_zero]⟩`.
+-/
 lemma cc_zero (A : ℝ) (m : ℕ) : CCle A m (0 : Mat k r → E) 0 :=
   ⟨fun _ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩,
     fun u v _ _ _ g _ => by simp [dLR_zero]⟩
 
+/- English proof (translation)
+Introduce `g0 hg0`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hF g0 hg0`. Conclude with `⟨U, f', hU, hgU, hc, fun g hg hgG => (h g hgG).symm.trans (hff g hg hgG)⟩`.
+-/
 lemma ckOn_congr {F F' : Mat k r → E} {m : ℕ∞} (h : ∀ g ∈ GV k r, F g = F' g)
     (hF : CkOn m (GV k r) F) : CkOn m (GV k r) F' := by
   intro g0 hg0
   obtain ⟨U, f', hU, hgU, hc, hff⟩ := hF g0 hg0
   exact ⟨U, f', hU, hgU, hc, fun g hg hgG => (h g hgG).symm.trans (hff g hg hgG)⟩
 
+/- English proof (translation)
+Use `⟨ckOn_congr h hF.1, fun u v hu hv hl g hg => ?_⟩` and prove the remaining obligations. Establish `e : dLR u v F g = dLR u v F' g`. Rewrite using `[dLR_eq, dLR_eq]`. Conclude with `W_congr _ (allLie_lr hu hv) h g hg`. Rewrite using `[← e]`.
+
+Conclude with `hF.2 u v hu hv hl g hg`.
+-/
 lemma cc_congr {F F' : Mat k r → E} {A c : ℝ} {m : ℕ} (h : ∀ g ∈ GV k r, F g = F' g)
     (hF : CCle A m F c) : CCle A m F' c := by
   refine ⟨ckOn_congr h hF.1, fun u v hu hv hl g hg => ?_⟩
@@ -830,6 +1152,9 @@ lemma cc_congr {F F' : Mat k r → E} {A c : ℝ} {m : ℕ} (h : ∀ g ∈ GV k 
     rw [dLR_eq, dLR_eq]; exact W_congr _ (allLie_lr hu hv) h g hg
   rw [← e]; exact hF.2 u v hu hv hl g hg
 
+/- English proof (translation)
+Establish `hl' : (lr u v).length ≤ m` using `by rw [length_lr]; exact h.2.2.1`. Rewrite using `[dLR_eq, dLR_eq, dLR_eq]`. Conclude with `W_add _ (allLie_lr h.1 h.2.1) (ckOn_mono hl' hF.1) (ckOn_mono hl' hF'.1) g h.2.2.2`.
+-/
 lemma dLR_add' {F F' : Mat k r → E} {A c c' : ℝ} {m : ℕ} (hF : CCle A m F c) (hF' : CCle A m F' c')
     {u v : List (Mat k r)} {g : Mat k r} (h : Vd m u v g) :
     dLR u v (F + F') g = dLR u v F g + dLR u v F' g := by
@@ -859,6 +1184,25 @@ def Vs (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (a : ℝ) (mm : ℕ
       rw [dLR_eq, dLR_eq, W_smul]; rfl
     rw [e, smul_comm]
 
+/- English proof (translation)
+Use `IsSeqClosed.isClosed ?_` and prove the remaining obligations. Introduce `xs v hxs hlim`. Establish `hxs' : ∀ n, ∃ F : Mat k r → E, InCC a mm F ∧ (∀ g ∈ GV k r, g ∉ S → F g = 0) ∧ ⇑(xs n) = Tf a mm F` using `hxs`. Use `choose Fs hFs using hxs'`. Use `set ε : ℕ → ℝ := fun n => ‖xs n - v‖ with hεdef`.
+
+Establish `hε : Tendsto ε atTop (𝓝 0)` using `(tendsto_iff_norm_sub_tendsto_zero).1 hlim`. Establish `hε0 : ∀ n, 0 ≤ ε n` using `fun n => norm_nonneg _`. Establish `hC : ∀ n, CkOn ((mm : ℕ) : ℕ∞) (GV k r) (Fs n)` using `fun n => (hFs n).1.choose_spec.1`. Use `set K := Kf a (⇑v) with hK`. Establish `hb : ∀ n (u w : List (Mat k r)), (∀ X ∈ u, unitLie k r X) → (∀ X ∈ w, unitLie k r X) → u.length + w.length ≤ mm → ∀ g ∈ GV k r, ‖dLR u w (Fs n) g - K u w g‖ ≤ gN g ^ (-a) * ε n`.
+
+Introduce `n u w hu hw hl g hg`. Establish `h : Vd mm u w g` using `⟨hu, hw, hl, hg⟩`. Rewrite using `[Tf_inv (hFs n).2.2 h, hK, Kf, dif_pos h, ← smul_sub, norm_rsmul _ (Real.rpow_nonneg (gN_pos hg).le _)]`. Use `mul_le_mul_of_nonneg_left ?_ (Real.rpow_nonneg (gN_pos hg).le _)` and prove the remaining obligations. Use `lp.norm_apply_le_norm (p := ⊤) (by simp) (xs n - v) ⟨((u, w), g), h⟩` as an intermediate fact.
+
+Simplify using `only [lp.coeFn_sub, Pi.sub_apply] at this`. Conclude with `this`. Establish `hid` using `limit_ident Fs hC K ε hε hb`. Establish `hck` using `limit_ck Fs hC K ε hε hε0 hb`. Use `⟨K [] [], ⟨‖v‖, hck, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `u w hu hw hl g hg`. Establish `h : Vd mm u w g` using `⟨hu, hw, hl, hg⟩`. Rewrite using `[hid u w hu hw hl g hg, hK, Kf, dif_pos h, norm_rsmul _ (Real.rpow_nonneg (gN_pos hg).le _), ← mul_assoc, ← Real.rpow_add (gN_pos hg), add_neg_cancel, Real.rpow_zero, one_mul]`. Conclude with `lp.norm_apply_le_norm (by simp) _ _`. Introduce `g hg hgS`.
+
+Establish `h : Vd mm [] [] g` using `⟨by simp, by simp, by simp, hg⟩`. Establish `hz : ∀ n, xs n ⟨(([], []), g), h⟩ = 0`. Introduce `n`. Rewrite using `[(hFs n).2.2]`. Use `show ((gN g ^ a : ℝ) : ℂ) • Fs n g = 0`.
+
+Rewrite using `[(hFs n).2.1 g hg hgS, smul_zero]`. Establish `hv : ‖v ⟨(([], []), g), h⟩‖ ≤ 0`. Use `ge_of_tendsto' hε fun n => ?_` and prove the remaining obligations. Use `lp.norm_apply_le_norm (p := ⊤) (by simp) (xs n - v) ⟨(([], []), g), h⟩` as an intermediate fact. Simplify using `only [lp.coeFn_sub, Pi.sub_apply, hz n, zero_sub, norm_neg] at this`.
+
+Conclude with `this`. Rewrite using `[hK, Kf, dif_pos h, norm_le_zero_iff.1 hv, smul_zero]`. Use function extensionality and compare the values at `i`. Take `⟨⟨⟨u, w⟩, g⟩, h⟩` from `i`. Use `show v ⟨((u, w), g), h⟩ = ((gN g ^ a : ℝ) : ℂ) • dLR u w (K [] []) g`.
+
+Rewrite using `[hid u w h.1 h.2.1 h.2.2.1 g h.2.2.2, hK, Kf, dif_pos h, rsmul_cancel' h.2.2.2]`.
+-/
 lemma vs_closed {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (a : ℝ) (mm : ℕ) (S : Set (Mat k r)) :
     IsClosed (Vs E a mm S : Set (Lp k r mm E)) := by
   refine IsSeqClosed.isClosed ?_
@@ -920,6 +1264,9 @@ def evL {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (a : ℝ) (mm : �
     show Kf a (⇑((s • x : Vs E a mm S) : Lp k r mm E)) [] [] g = s • Kf a (⇑(x : Lp k r mm E)) [] [] g
     rw [Submodule.coe_smul, lp.coeFn_smul, Kf_smul]
 
+/- English proof (translation)
+The claim follows from `x.2`.
+-/
 lemma mem_vs {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {a : ℝ} {mm : ℕ} {S : Set (Mat k r)}
     (x : Vs E a mm S) : ∃ F : Mat k r → E, InCC a mm F ∧ (∀ g ∈ GV k r, g ∉ S → F g = 0) ∧
       ⇑(x : Lp k r mm E) = Tf a mm F := x.2
@@ -962,6 +1309,9 @@ end Formalism.FourierDecayAlt.P.Ux1
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Introduce `k ρ E _ _ _ a mm S`. Establish `: IsClosed (Ux1.Vs E a mm S : Set (Ux1.Lp k ρ mm E))` using `Ux1.vs_closed a mm S`. Conclude with `⟨Ux1.Vs E a mm S, inferInstance, inferInstance, IsClosed.completeSpace_coe, ⟨Ux1.model a mm S⟩⟩`.
+-/
 theorem compactly_supported_banach_model : Formalism.FourierDecayAlt.U.CCModelExists := by
   intro k ρ E _ _ _ a mm S
   have : IsClosed (Ux1.Vs E a mm S : Set (Ux1.Lp k ρ mm E)) := Ux1.vs_closed a mm S

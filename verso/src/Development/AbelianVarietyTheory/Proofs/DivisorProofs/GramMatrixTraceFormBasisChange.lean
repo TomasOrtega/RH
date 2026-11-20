@@ -12,6 +12,11 @@ namespace GlobalTheory.GramChange
 
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Establish `hσ : ∀ (r : K.E) (y : B.A), B.σ (r • y) = K.c r • B.σ y`. Introduce `r y`. Rewrite using `[Algebra.smul_def, map_mul, B.σ_alg, ← Algebra.smul_def]`. Unfold `InvAlg.herm`. Simplify using `only [map_sum, hσ, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, LinearMap.map_smul, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_sum_sum (K : UQ) (B : InvAlg K) (β : B.A) {a : ℕ} (b : Fin a → B.A)
     (M : Matrix (Fin a) (Fin a) K.E) (i j : Fin a) :
     B.herm β (∑ k, M k i • b k) (∑ l, M l j • b l) =
@@ -26,6 +31,9 @@ theorem herm_sum_sum (K : UQ) (B : InvAlg K) (β : B.A) {a : ℕ} (b : Fin a →
   refine Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hv, herm_sum_sum, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, he, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem gram_of_sum (K : UQ) (B : InvAlg K) (L : Type) [Field L] (e : K.E ≃+* L) (c : L →+* L)
     (he : ∀ x, e (K.c x) = c (e x)) {a : ℕ} (β : B.A) (b v : Fin a → B.A)
     (M : Matrix (Fin a) (Fin a) K.E) (hv : ∀ j, v j = ∑ i, M i j • b i) :
@@ -36,6 +44,19 @@ theorem gram_of_sum (K : UQ) (B : InvAlg K) (L : Type) [Field L] (e : K.E ≃+* 
     Matrix.map_apply, map_sum, map_mul, he, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Introduce `K B L _ e c he a β b`. Use `⟨fun P => ?_, fun b' => ?_⟩` and prove the remaining obligations. Use `set M : Matrix (Fin a) (Fin a) K.E := P.val.map e.symm with hM`. Establish `hMe : M.map e = P.val`. Use extensionality with `i j`.
+
+Simplify using `[hM]`. Establish `hdet : IsUnit M.det`. Establish `h1 : e M.det = P.val.det`. Rewrite using `[← hMe]`. Conclude with `RingHom.map_det (e : K.E →+* L) M`.
+
+Establish `h2 : IsUnit P.val.det` using `(Matrix.isUnit_iff_isUnit_det _).mp P.isUnit`. Rewrite `h2` using `[← h1]`. Conclude with `(isUnit_map_iff e _).mp h2`. Use `⟨b.map (Matrix.toLinearEquiv b M hdet), ?_⟩` and prove the remaining obligations. Rewrite using `[gram_of_sum K B L e c he β b _ M, hMe]`.
+
+Introduce `j`. Simplify using `[Matrix.toLinearEquiv_apply, Matrix.toLin_self]`. Establish `hdet : IsUnit ((b.toMatrix b').map e).det`. Establish `h1 : e (b.toMatrix b').det = ((b.toMatrix b').map e).det` using `RingHom.map_det (e : K.E →+* L) _`. Rewrite using `[← h1]`.
+
+Conclude with `(isUnit_map_iff e _).mpr (b.isUnit_det b')`. Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet.ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[gram_of_sum K B L e c he β b b' (b.toMatrix b')]`. Both sides reduce to the same expression. Introduce `j`.
+
+Rewrite using `[b.sum_toMatrix_smul_self]`.
+-/
 theorem gram_basis_change : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (L : Type) [Field L] (e : K.E ≃+* L) (c : L →+* L), (∀ x, e (K.c x) = c (e x)) → ∀ (a : ℕ) (β : B.A) (b : Module.Basis (Fin a) K.E B.A), (∀ P : GL (Fin a) L, ∃ b' : Module.Basis (Fin a) K.E B.A, (Matrix.of fun i j => e (B.herm β (b' i) (b' j))) = P.valᵀ * (Matrix.of fun i j => e (B.herm β (b i) (b j))) * P.val.map c) ∧ ∀ b' : Module.Basis (Fin a) K.E B.A, ∃ P : GL (Fin a) L, (Matrix.of fun i j => e (B.herm β (b' i) (b' j))) = P.valᵀ * (Matrix.of fun i j => e (B.herm β (b i) (b j))) * P.val.map c := by
   intro K B L _ e c he a β b
   refine ⟨fun P => ?_, fun b' => ?_⟩

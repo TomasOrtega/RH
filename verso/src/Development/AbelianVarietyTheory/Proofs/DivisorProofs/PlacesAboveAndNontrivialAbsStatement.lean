@@ -8,5 +8,8 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PlaceAbove.places | exact GlobalTheory.PlaceAbove.places | (intros; apply GlobalTheory.PlaceAbove.places <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.places_above_and_nontrivial_abs : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], (∀ v : HeightOneSpectrum (𝓞 F), ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v) ∧ ∀ w : HeightOneSpectrum (𝓞 E), ∃ x : (w.adicCompletion E)ˣ, absE F E (locIdele F w x) ≠ 1 := by
   first | exact @GlobalTheory.PlaceAbove.places | exact GlobalTheory.PlaceAbove.places | (intros; apply GlobalTheory.PlaceAbove.places <;> assumption)

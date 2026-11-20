@@ -27,6 +27,27 @@ namespace GlobalTheory.ThK.ZonePolynomials
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Set `D : ∀ γ, IsRealLine σ J γ → Module.End ℂ A` to `fun γ hγ => { toFun := fun u => ⟨fun i => lineDer γ (u.1 i), hder γ hγ _ u.2⟩ map_add' := fun u v => Subtype.ext (funext fun i => lineDer_add (hsm _ u.2 i) (hsm _ v.2 i) hγ) map_smul' := fun c u => Subtype.ext (funext fun i => lineDer_smul c (u.1 i) γ) }`. Set `R : ∀ k ∈ K, Module.End ℂ A` to `fun k hk => { toFun := fun u => ⟨fun i x => u.1 i (x * k), hKA k hk _ u.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `S : Set (Module.End ℂ A)` to `{s | ∃ γ hγ, s = D γ hγ} ∪ {s | ∃ k hk, s = R k hk}`. Establish `hfold : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → ∀ Ψ ∈ A, (fun i => l.foldr lineDer (Ψ i)) ∈ A` using `fun l hl Ψ hΨ => by`. Proceed by induction on `l with`.
+
+Consider the case `nil => exact hΨ`. Consider the case `cons γ l ih => exact hder γ (hl γ List.mem_cons_self) _ (ih fun γ' h => hl γ' (List.mem_cons_of_mem _ h))`. Establish `hTmem : ∀ Ψ ∈ A, (fun i => dop z (Ψ i)) ∈ A` using `fun Ψ hΨ => by`. Establish `e : (fun i => dop z (Ψ i)) = ∑ l ∈ z.support, z l • fun i => l.foldr lineDer (Ψ i)`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[dop_eq_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `A.sum_mem fun l hl => A.smul_mem _ (hfold l (hz.1 l hl) Ψ hΨ)`. Set `T : Module.End ℂ A` to `{ toFun := fun u => ⟨fun i => dop z (u.1 i), hTmem _ u.2⟩ map_add' := fun u v => Subtype.ext (funext fun i => dop_add hz.1 (hsm _ u.2 i) (hsm _ v.2 i)) map_smul' := fun c u => Subtype.ext (funext fun i => dop_smul z c (u.1 i)) }`.
+
+Establish `hL' : ∃ L : ℕ, ∀ (m : ℕ) (N : Fin m → Submodule ℂ A), StrictMono N → (∀ i, ∀ s ∈ S, ∀ x ∈ N i, s x ∈ N i) → m ≤ L`. Take `⟨L, hL⟩` from `hL`. Use `⟨L, fun m N hN hS => hL m (fun i => (N i).map A.subtype) ((Submodule.map_strictMono_of_injective A.injective_subtype).comp hN) fun i => ⟨Submodule.map_subtype_le _ _, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `γ hγ _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, hS i _ (Or.inl ⟨γ, hγ, rfl⟩) u hu, rfl⟩`.
+
+Introduce and unpack `k hk _ ⟨u, hu, rfl⟩`. Conclude with `⟨_, hS i _ (Or.inr ⟨k, hk, rfl⟩) u hu, rfl⟩`. Use `haveI := GlobalTheory.FiniteLengthCommutant.finiteDimensional_centralizer A S hr hL'`. Establish `hTc : T ∈ Subalgebra.centralizer ℂ S`. Rewrite using `[Subalgebra.mem_centralizer_iff]`.
+
+Introduce and unpack `_ (⟨γ, hγ, rfl⟩ | ⟨k, hk, rfl⟩)`. Conclude with `LinearMap.ext fun u => Subtype.ext (funext fun i => GlobalTheory.T.central_operator_commutes_line_derivative F E σ n J z hz (u.1 i) (hsm _ u.2 i) γ hγ)`. Conclude with `LinearMap.ext fun u => Subtype.ext (funext fun i => funext fun g => (hz.2 (u.1 i) (hsm _ u.2 i) k (hK k hk) g).symm)`. Set `T' : Subalgebra.centralizer ℂ S` to `⟨T, hTc⟩`. Establish `hint : IsIntegral ℂ T'` using `Algebra.IsIntegral.isIntegral T'`.
+
+Use `⟨minpoly ℂ T', minpoly.monic hint, fun Ψ hΨ i => ?_⟩` and prove the remaining obligations. Establish `h0 : Polynomial.aeval T (minpoly ℂ T') = 0`. Use `minpoly.aeval ℂ T'` as an intermediate fact. Establish `e` using `Polynomial.aeval_subalgebra_coe (minpoly ℂ T') (Subalgebra.centralizer ℂ S) T'`. Rewrite `e` using `[this]`.
+
+Simplify using `using e.symm`. Establish `hpow : ∀ j (u : A), ((T ^ j) u).1 i = (dop z)^[j] (u.1 i)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro u`.
+
+Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `u`. Rewrite using `[pow_succ, Module.End.mul_apply, ih, Function.iterate_succ_apply]`. Both sides reduce to the same expression.
+
+Establish `h1` using `congrArg (fun Q : Module.End ℂ A => (Q ⟨Ψ, hΨ⟩).1 i) h0`. Simplify using `only [Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, LinearMap.zero_apply, ZeroMemClass.coe_zero, Pi.zero_apply, Finset.sum_apply, Pi.smul_apply] at h1`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hpow]`.
+-/
 theorem unifPoly {ι : Type} (A : Submodule ℂ (ι → GAd σ J → ℂ)) (hsm : ∀ Ψ ∈ A, ∀ i, IsSm σ J (Ψ i))
     (hder : ∀ γ, IsRealLine σ J γ → ∀ Ψ ∈ A, (fun i => lineDer γ (Ψ i)) ∈ A) (K : Set (GAd σ J))
     (hK : ∀ k ∈ K, k ∈ infPts σ J) (hKA : ∀ k ∈ K, ∀ Ψ ∈ A, (fun i x => Ψ i (x * k)) ∈ A)
@@ -111,14 +132,23 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def FinD (G : Geo σ a a') : Set (∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ) :=
   {φ | (∀ v, φ v ∈ SB _) ∧ ∀ᶠ v in Filter.cofinite, φ v = G.M.vac v}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+-/
 theorem pure_add' {κ : Type} [Fintype κ] (f g : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f + g) φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+-/
 theorem pure_smul' {κ : Type} [Fintype κ] (r : ℂ) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (r • f) φ = r • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ := by
   funext x; simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
+/- English proof (translation)
+Unfold `Model.I theta`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show thetaSum F (om (g, h) (om (1, k) Φ)) = thetaSum F (om (g, h * k) Φ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+-/
 theorem I_om_one' {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (om : Rep σ Y W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (k h : UA σ W.J) : M.I om (om (1, k) Φ) h = M.I om Φ (h * k) := by
   unfold Model.I theta
@@ -126,6 +156,11 @@ theorem I_om_one' {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W)
   show thetaSum F (om (g, h) (om (1, k) Φ)) = thetaSum F (om (g, h * k) Φ)
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨y, hy, hMy⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `hy' : star y ≠ 0` using `by simpa using hy`. Use `h.2.2 (star y) hy'` as an intermediate fact. Rewrite `this` using `[star_star, hMy, dotProduct_zero]`.
+
+Simplify using `at this`.
+-/
 theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : IsCartan M θ) : M.det ≠ 0 := by
   intro h0
   obtain ⟨y, hy, hMy⟩ := Matrix.exists_mulVec_eq_zero_iff.mpr h0
@@ -134,6 +169,57 @@ theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h :
   rw [star_star, hMy, dotProduct_zero] at this
   simp at this
 
+/- English proof (translation)
+Use `set P := G.M.Pol B.ψ B.emb with hPdef`. Use `set e := toGAd hσ G.W.J hc with he`. Establish `hstd : ∀ φ ∈ FinD G, ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin a × Fin (a + a') → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `fun φ hφ => (hφ.2.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2`. Establish `hmem : ∀ f ∈ P, ∀ φ ∈ FinD G, pure f φ ∈ PolData B G.M` using `fun f hf φ hφ => Submodule.subset_span ⟨f, hf, φ, hφ.1, hφ.2, rfl⟩`. Establish `hrest : ∀ φ ∈ FinD G, ∀ f : SInf F (Fin a × Fin (a + a')), Rest (evI F) (⇑f) (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i))` using `fun φ hφ f => GlobalTheory.ThK.EvUniqInf.rest_pure f φ hφ.1 (hstd φ hφ)`.
+
+Establish `hlin` using `GlobalTheory.ThetaProjectionLie.linT hKP hT`. Take `⟨hP1, hP2, hP3, hP4⟩` from `GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hT`. Establish `hW1 : ∀ γ ∈ Lines σ G.W, ∀ f ∈ P, ∀ f₁ ∈ P, ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f₁ → ∀ φ ∈ FinD G, ∀ h, HasDerivAt (fun t : ℝ => G.M.I om (pure f φ) (h * γ (Multiplicative.ofAdd t))) (G.M.I om (pure f₁ φ) h) 0` using `fun γ hγ f hf f₁ hf₁ hd φ hφ => GlobalTheory.ThetaProjectionLie.lieWT hKP hT γ hγ _ (hmem f hf φ hφ) _ (hmem f₁ hf₁ φ hφ) (fun x => hd _ (hrest φ hφ f) x)`. Establish `hW2 : ∀ k ∈ KInf σ G.W B.emb, ∀ f : SInf F (Fin a × Fin (a + a')), ∀ f₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (1, k)) f f₁ → ∀ φ ∈ FinD G, ∀ h, G.M.I om (pure f₁ φ) h = G.M.I om (pure f φ) (h * k)`. Introduce `k _ f f₁ hd φ hφ h`.
+
+Establish `e1 : pure f₁ φ = om (1, k) (pure f φ)` using `(hd _ (hrest φ hφ f)).symm`. Rewrite using `[e1, I_om_one']`. Establish `hX1 : ∀ γ ∈ Lines σ G.V, ∀ f ∈ P, ∀ f₁ ∈ P, ActsD (evI F) (fun t => om (γ (Multiplicative.ofAdd t), 1)) f f₁ → ∀ φ ∈ FinD G, G.M.I om (pure f₁ φ) = 0` using `fun γ hγ f hf f₁ hf₁ hd φ hφ => GlobalTheory.ThetaProjectionLie.lieVT hKP hT γ hγ _ (hmem f hf φ hφ) _ (hmem f₁ hf₁ φ hφ) (fun x => hd _ (hrest φ hφ f) x)`. Establish `hX2 : ∀ k ∈ KInf σ G.V B.emb, ∀ f ∈ P, ∀ f₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (k, 1)) f f₁ → ∀ φ ∈ FinD G, G.M.I om (pure f₁ φ) = G.M.I om (pure f φ)`. Introduce `k hk f hf f₁ hd φ hφ`.
+
+Establish `e1 : pure f₁ φ = om (k, 1) (pure f φ)` using `(hd _ (hrest φ hφ f)).symm`. Rewrite using `[e1]`. Conclude with `(GlobalTheory.ThetaProjectionLie.invVT hKP hT _ (hmem f hf φ hφ)).2 k hk`. Set `TL : P →ₗ[ℂ] (FinD G → GAd σ (c • G.W.J.map σ) → ℂ)` to `{ toFun := fun f φ x => G.M.I om (pure f.1 φ.1) (e.symm x) map_add' := fun f g => by`. Use function extensionality and compare the values at `φ x`.
+
+Establish `h` using `(hlin _ (hmem f.1 f.2 φ.1 φ.2) _ (hmem g.1 g.2 φ.1 φ.2) 0).1`. Simplify using `only [Submodule.coe_add, Pi.add_apply]`. Rewrite using `[pure_add', h]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun r f => by`.
+
+Use function extensionality and compare the values at `φ x`. Establish `h` using `(hlin _ (hmem f.1 f.2 φ.1 φ.2) _ (hmem f.1 f.2 φ.1 φ.2) r).2`. Simplify using `only [SetLike.val_smul, RingHom.id_apply, Pi.smul_apply]`. Rewrite using `[pure_smul', h]`. Use `rfl }`.
+
+Establish `hsm : ∀ f : P, ∀ φ : FinD G, IsSm σ (c • G.W.J.map σ) (TL f φ)` using `fun f φ k γ hγ g => GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT c hc hcσ _ (hmem f.1 f.2 φ.1 φ.2) k γ hγ g`. Establish `hp` using `GlobalTheory.ThKConst.isPair_big hT`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hdV : G.V.J.det ≠ 0`. Establish `h1` using `det_ne_zero_of_cartan (hT.geo.hV.cartan w)`.
+
+Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Establish `hdW : G.W.J.det ≠ 0`. Establish `h1` using `det_ne_zero_of_cartan (hT.geo.hW.cartan w)`.
+
+Introduce `h0`. Apply `h1` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero, mul_zero]`. Take `⟨L, hHowe⟩` from `(hKP.howeDualityReal F E σ hT.base.cm a (a + a') G.V G.W G.M B.ψ X.β (X.β / X.α) om hT.base.std hT.geo.hV.herm hdV hT.geo.hW.skew hdW hp.resX hp.resW hp.hX hp.hW hT.weil B.emb hT.geo.hV.cartan hT.geo.hW.cartan).1`. Take `⟨p, hpm, hp0⟩` from `unifPoly (LinearMap.range TL) (by rintro _ ⟨f, rfl⟩ φ; exact hsm f φ) (by`.
+
+Introduce and unpack `γ hγ _ ⟨f, rfl⟩`. Take `⟨γL, hγL, eγ⟩` from `GlobalTheory.T.real_line_corresponds_to_line F E σ hσ hT.base.cm G.W c hc γ hγ`. Establish `eγ' : ∀ t, e.symm (γ t) = γL (Multiplicative.ofAdd t)` using `eγ`. Take `⟨f₁, hf₁, hd, -⟩` from `hP3 γL hγL f.1 f.2`. Use `⟨⟨f₁, hf₁⟩, funext fun φ => funext fun x => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `(hW1 γL hγL f.1 f.2 f₁ hf₁ hd φ.1 φ.2 (e.symm x)).deriv`. Use `show G.M.I om (pure f₁ φ.1) (e.symm x) = deriv (fun t => G.M.I om (pure f.1 φ.1) (e.symm (x * γ t))) 0`. Simplify using `only [map_mul, eγ']`. Conclude with `h1.symm)`. Use the proof step `(e '' KInf σ G.W B.emb)`.
+
+Use the proof step `(by rintro _ ⟨k, hk, rfl⟩; exact GlobalTheory.ThK.FiniteLevelDerivatives.toGAd_mem_infPts hσ G.W hc hk.1)`. Use the proof step `(by`. Introduce and unpack `_ ⟨k, hk, rfl⟩ _ ⟨f, rfl⟩`. Take `⟨f₁, hf₁, hd, -⟩` from `hP4 k hk f.1 f.2`. Use `⟨⟨f₁, hf₁⟩, funext fun φ => funext fun x => ?_⟩` and prove the remaining obligations.
+
+Use `show G.M.I om (pure f₁ φ.1) (e.symm x) = G.M.I om (pure f.1 φ.1) (e.symm (x * e k))`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply]`. Conclude with `hW2 k hk f.1 f₁ hd φ.1 φ.2 _)`. Use the proof step `((rank_range_le TL).trans (GlobalTheory.T.polynomial_data_countable_rank hKP.base F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hp))`. Use the proof step `(by`.
+
+Use `⟨L, fun m N hN hS => hHowe m (fun i => ((N i).comap TL).map P.subtype) (fun i j hij => ?_) fun i => ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_ne (Submodule.map_mono (Submodule.comap_mono (hN hij).le)) fun heq => (hN hij).not_ge ?_` and prove the remaining obligations. Introduce `u hu`. Take `⟨f, rfl⟩` from `(hS j).1 hu`. Establish `heq' : ((N i).comap TL).map P.subtype = ((N j).comap TL).map P.subtype` using `heq`.
+
+Establish `h1 : f.1 ∈ ((N j).comap TL).map P.subtype` using `⟨f, hu, rfl⟩`. Rewrite `h1` using `[← heq']`. Take `⟨g, hg, hgf⟩` from `h1`. Establish `: g = f` using `Subtype.ext hgf`. Substitute `this` using the available equality.
+
+Conclude with `hg`. Use `⟨Submodule.map_subtype_le _ _, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ f hf f₁ hd`. Establish `hf₁` using `hP1 γ hγ f hf f₁ hd`. Use `⟨⟨f₁, hf₁⟩, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h0 : TL ⟨f₁, hf₁⟩ = 0` using `funext fun φ => funext fun x => by show G.M.I om (pure f₁ φ.1) (e.symm x) = 0`. Rewrite using `[hX1 γ hγ f hf f₁ hf₁ hd φ.1 φ.2]`. Both sides reduce to the same expression. Use `show TL ⟨f₁, hf₁⟩ ∈ N i`. Rewrite using `[h0]`.
+
+Conclude with `zero_mem _`. Introduce `k hk f hf f₁ hd`. Establish `hf₁` using `hP2 k hk f hf f₁ hd`. Use `⟨⟨f₁, hf₁⟩ - ⟨f, hf⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h0 : TL (⟨f₁, hf₁⟩ - ⟨f, hf⟩) = 0`.
+
+Rewrite using `[map_sub, sub_eq_zero]`. Use function extensionality and compare the values at `φ x`. Use `show G.M.I om (pure f₁ φ.1) (e.symm x) = G.M.I om (pure f φ.1) (e.symm x)`. Rewrite using `[hX2 k hk f hf f₁ hd φ.1 φ.2]`. Use `show TL (⟨f₁, hf₁⟩ - ⟨f, hf⟩) ∈ N i`.
+
+Rewrite using `[h0]`. Conclude with `zero_mem _`. Introduce and unpack `γ hγ _ ⟨⟨f, hf⟩, hfN, rfl⟩ f₁ hd`. Take `⟨g₂, hg₂, -, hu⟩` from `hP3 γ hγ f hf`. Take `rfl` from `hu f₁ hd`.
+
+Use `⟨⟨f₁, hg₂⟩, ?_, rfl⟩` and prove the remaining obligations. Take `⟨k, δ, hδ, eδ⟩` from `GlobalTheory.T.real_line_factor_as_product_lines F E σ hσ hT.base.cm G.W c hc γ hγ`. Establish `e2 : TL ⟨f₁, hg₂⟩ = ∑ j, fun φ => lineDer (δ j) (TL ⟨f, hf⟩ φ)` using `funext fun φ => funext fun x => by`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Establish `h1` using `hW1 γ hγ f hf f₁ hg₂ hd φ.1 φ.2 (e.symm x)`.
+
+Establish `h2` using `GlobalTheory.T.has_deriv_at_product_of_real_lines F E σ hT.base.cm _ _ k δ hδ (TL ⟨f, hf⟩ φ) (hsm _ φ) x`. Establish `e3 : (fun t : ℝ => G.M.I om (pure f φ.1) (e.symm x * γ (Multiplicative.ofAdd t))) = fun t => TL ⟨f, hf⟩ φ (x * (List.ofFn fun i => δ i t).prod)` using `funext fun t => by show _ = G.M.I om (pure f φ.1) (e.symm (x * _))`. Rewrite using `[← eδ, map_mul, MulEquiv.symm_apply_apply]`. Rewrite `h1` using `[e3]`. Conclude with `h1.unique h2`.
+
+Use `show TL ⟨f₁, hg₂⟩ ∈ N i`. Rewrite using `[e2]`. Conclude with `Submodule.sum_mem _ fun j _ => (hS i).2.1 _ (hδ j) _ hfN`. Introduce and unpack `k hk _ ⟨⟨f, hf⟩, hfN, rfl⟩ f₁ hd`. Take `⟨g₂, hg₂, -, hu⟩` from `hP4 k hk f hf`.
+
+Take `rfl` from `hu f₁ hd`. Use `⟨⟨f₁, hg₂⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `e2 : TL ⟨f₁, hg₂⟩ = fun φ x => TL ⟨f, hf⟩ φ (x * e k)` using `funext fun φ => funext fun x => by show G.M.I om (pure f₁ φ.1) (e.symm x) = G.M.I om (pure f φ.1) (e.symm (x * e k))`. Rewrite using `[map_mul, MulEquiv.symm_apply_apply]`. Conclude with `hW2 k hk f f₁ hd φ.1 φ.2 _`.
+
+Use `show TL ⟨f₁, hg₂⟩ ∈ N i`. Rewrite using `[e2]`. Conclude with `(hS i).2.2 _ ⟨k, hk, rfl⟩ _ hfN)`. Use `z hz`. Conclude with `⟨p, hpm, fun f hf φ hφ => hp0 (TL ⟨f, hf⟩) ⟨_, rfl⟩ ⟨φ, hφ⟩⟩`.
+-/
 theorem pure_poly (hσ : ∀ x, σ (σ x) = x) {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hKP : KP) (hT : IsTriple B G X om om') {c : E} (hc : c ≠ 0) (hcσ : σ c = -c)
     (z : List (ℝ → GAd σ (c • G.W.J.map σ)) →₀ ℂ) (hz : IsCentral σ (c • G.W.J.map σ) z) :
@@ -300,6 +386,43 @@ open GlobalTheory.ThK.ZonePolynomials GlobalTheory.ThK.FiniteLevelDerivatives
 
 namespace GlobalTheory.ThK.ZoneV
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ hσ B a a' G X om om' hT c hc hcσ z hz`. Take `⟨p, hpm, hp⟩` from `pure_poly hσ hKP hT hc hcσ z hz`. Use `set e := toGAd hσ G.W.J hc with he`. Set `TΦ : Fn F a (a + a') → GAd σ (c • G.W.J.map σ) → ℂ` to `fun Φ x => G.M.I om Φ (e.symm x)`. Establish `hlin` using `GlobalTheory.ThetaProjectionLie.linT hKP hT`.
+
+Establish `Tadd : ∀ Φ ∈ PolData B G.M, ∀ Ψ ∈ PolData B G.M, TΦ (Φ + Ψ) = TΦ Φ + TΦ Ψ` using `fun Φ hΦ Ψ hΨ => by`. Use function extensionality and compare the values at `x`. Use `show G.M.I om (Φ + Ψ) _ = _`. Rewrite using `[(hlin Φ hΦ Ψ hΨ 0).1]`. Both sides reduce to the same expression.
+
+Establish `Tsmul : ∀ Φ ∈ PolData B G.M, ∀ r : ℂ, TΦ (r • Φ) = r • TΦ Φ` using `fun Φ hΦ r => by`. Use function extensionality and compare the values at `x`. Use `show G.M.I om (r • Φ) _ = _`. Rewrite using `[(hlin Φ hΦ Φ hΦ r).2]`. Both sides reduce to the same expression.
+
+Establish `T0 : TΦ 0 = 0`. Establish `h` using `Tsmul 0 (zero_mem _) 0`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Establish `Tsum : ∀ (s : Finset (List (ℝ → GAd σ (c • G.W.J.map σ)))) (Ψ : List (ℝ → GAd σ (c • G.W.J.map σ)) → Fn F a (a + a')), (∀ l ∈ s, Ψ l ∈ PolData B G.M) → TΦ (∑ l ∈ s, Ψ l) = ∑ l ∈ s, TΦ (Ψ l)`. Introduce `s Ψ hΨ`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using T0`. Consider the case `insert l s hl ih`. Rewrite using `[Finset.sum_insert hl, Finset.sum_insert hl, Tadd _ (hΨ l (Finset.mem_insert_self _ _)) _ (Submodule.sum_mem _ fun k hk => hΨ k (Finset.mem_insert_of_mem hk)), ih fun k hk => hΨ k (Finset.mem_insert_of_mem hk)]`. Establish `hsmT : ∀ Φ ∈ PolData B G.M, IsSm σ (c • G.W.J.map σ) (TΦ Φ)` using `fun Φ hΦ k γ hγ g => GlobalTheory.T.theta_lift_real_line_derivative F E σ hσ B a a' G X om om' hKP hT c hc hcσ Φ hΦ k γ hγ g`.
+
+Establish `hstep : ∀ Φ ∈ PolData B G.M, ∃ Φ' ∈ PolData B G.M, dop z (TΦ Φ) = TΦ Φ'`. Introduce `Φ hΦ`. Establish `hw` using `fun l (hl : l ∈ z.support) => GlobalTheory.T.theta_integral_iterated_real_derivatives F E σ hσ B a a' G X om om' hKP hT c hc hcσ Φ hΦ l (hz.1 l hl)`. Use `⟨∑ l ∈ z.support, z l • (l.map (back hσ G.W.J hc)).foldr (derR om) Φ, Submodule.sum_mem _ fun l hl => Submodule.smul_mem _ _ (hw l hl).1, ?_⟩` and prove the remaining obligations. Rewrite using `[dop_eq_sum, Tsum _ _ (fun l hl => Submodule.smul_mem _ _ (hw l hl).1)]`.
+
+Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Tsmul _ (hw l hl).1]`. Use `congr 1`. Conclude with `(hw l hl).2`. Establish `hiter : ∀ j, ∀ Φ ∈ PolData B G.M, ∃ Φ' ∈ PolData B G.M, (dop z)^[j] (TΦ Φ) = TΦ Φ'`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact fun Φ hΦ => ⟨Φ, hΦ, rfl⟩`. Consider the case `succ j ih`. Introduce `Φ hΦ`.
+
+Take `⟨Φ₁, h1, e1⟩` from `ih Φ hΦ`. Take `⟨Φ₂, h2, e2⟩` from `hstep Φ₁ h1`. Conclude with `⟨Φ₂, h2, by rw [Function.iterate_succ_apply', e1, e2]⟩`. Establish `hadd : ∀ j, ∀ Φ ∈ PolData B G.M, ∀ Ψ ∈ PolData B G.M, (dop z)^[j] (TΦ (Φ + Ψ)) = (dop z)^[j] (TΦ Φ) + (dop z)^[j] (TΦ Ψ)`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => exact fun Φ hΦ Ψ hΨ => Tadd Φ hΦ Ψ hΨ`. Consider the case `succ j ih`. Introduce `Φ hΦ Ψ hΨ`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih Φ hΦ Ψ hΨ]`.
+
+Take `⟨Φ₁, h1, e1⟩` from `hiter j Φ hΦ`. Take `⟨Ψ₁, h2, e2⟩` from `hiter j Ψ hΨ`. Rewrite using `[e1, e2]`. Conclude with `dop_add hz.1 (hsmT _ h1) (hsmT _ h2)`. Establish `hsmul : ∀ j (r : ℂ) (u : GAd σ (c • G.W.J.map σ) → ℂ), (dop z)^[j] (r • u) = r • (dop z)^[j] u`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact fun r u => rfl`. Consider the case `succ j ih`. Introduce `r u`.
+
+Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, dop_smul]`. Establish `hzero : ∀ j, (dop z)^[j] (0 : GAd σ (c • G.W.J.map σ) → ℂ) = 0` using `fun j => by`. Establish `h` using `hsmul j 0 0`. Rewrite `h` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Establish `hEv : ∀ Φ ∈ PolData B G.M, ∑ j ∈ Finset.range (p.natDegree + 1), p.coeff j • (dop z)^[j] (TΦ Φ) = 0`.
+
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, hf, φ, h1, h2, rfl⟩` from `h`. Conclude with `hp f hf φ ⟨h1, h2⟩`.
+
+Consider the case `zero => simp [T0, hzero]`. Consider the case `add Φ Ψ hΦ hΨ h1 h2`. Simplify using `only [hadd _ Φ hΦ Ψ hΨ, smul_add, Finset.sum_add_distrib]`. Rewrite using `[h1, h2, add_zero]`. Consider the case `smul r Φ hΦ h1`.
+
+Simplify using `only [Tsmul Φ hΦ r, hsmul, smul_comm _ r]`. Rewrite using `[← Finset.smul_sum, h1, smul_zero]`. Use `⟨p.natDegree, fun i => -p.coeff i, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `h0` using `hEv Φ hΦ`. Rewrite `h0` using `[Finset.sum_range_succ, hpm.coeff_natDegree, one_smul]`.
+
+Establish `h1 : (dop z)^[p.natDegree] (TΦ Φ) = -∑ j ∈ Finset.range p.natDegree, p.coeff j • (dop z)^[j] (TΦ Φ)`. Rewrite using `[← sub_eq_zero, sub_neg_eq_add]`. Conclude with `(add_comm _ _).trans h0`. Use `show (dop z)^[p.natDegree] (TΦ Φ) = ∑ i : Fin p.natDegree, -p.coeff i • (dop z)^[i.val] (TΦ Φ)`. Rewrite using `[h1, Finset.sum_range (fun j => p.coeff j • (dop z)^[j] (TΦ Φ)), ← Finset.sum_neg_distrib]`.
+
+Simplify using `only [neg_smul]`.
+-/
 theorem zone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), IsTriple B G X om om' →

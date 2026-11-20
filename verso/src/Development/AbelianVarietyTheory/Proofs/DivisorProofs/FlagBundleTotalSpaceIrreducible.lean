@@ -17,6 +17,9 @@ open CategoryTheory.Limits
 
 namespace GlobalTheory.CovTest
 
+/- English proof (translation)
+Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Take `⟨fl', h'⟩` from `GlobalTheory.T.flag_bundle_exists_after_base_change B Y _ π x ι E r fl hF`. Conclude with `GlobalTheory.T.flag_bundle_over_field_irreducible K _ (pullback.snd π x) ι _ r fl' (fun a => (hE a).pullback x) h'`.
+-/
 theorem IsFlagBundle.geometricallyIrreducible {B Y : Scheme.{0}} {π : Y ⟶ B} {ι : Type} [Fintype ι] {E : ι → B.Modules}
     {r : ι → ℕ} {fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)} (hE : ∀ a, GlobalTheory.VB.IsVB (E a) (r a))
     (hF : IsFlagBundle π E r fl) : GeometricallyIrreducible π := by
@@ -24,6 +27,9 @@ theorem IsFlagBundle.geometricallyIrreducible {B Y : Scheme.{0}} {π : Y ⟶ B} 
   obtain ⟨fl', h'⟩ := GlobalTheory.T.flag_bundle_exists_after_base_change B Y _ π x ι E r fl hF
   exact GlobalTheory.T.flag_bundle_over_field_irreducible K _ (pullback.snd π x) ι _ r fl' (fun a => (hE a).pullback x) h'
 
+/- English proof (translation)
+Introduce `B Y _ _ π ι _ E r fl hE hF`. Use `hF.geometricallyIrreducible hE` as an intermediate fact. Use `GlobalTheory.T.flag_bundle_universally_open B Y π ι E r fl hE hF` as an intermediate fact. Conclude with `GeometricallyIrreducible.irreducibleSpace π π.isOpenMap`.
+-/
 theorem IsFlagBundle.irreducibleSpace : ∀ (B Y : Scheme.{0}) [IsIntegral B] [IsLocallyNoetherian B] (π : Y ⟶ B) (ι : Type)
     [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)),
     (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → IrreducibleSpace Y := by

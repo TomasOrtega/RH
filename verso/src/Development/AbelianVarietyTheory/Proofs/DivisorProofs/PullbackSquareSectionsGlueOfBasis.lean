@@ -6,12 +6,18 @@ set_option autoImplicit false
 
 namespace GlobalTheory.PinchLift
 
+/- English proof (translation)
+Rewrite using `[← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, Scheme.Hom.naturality]`. Both sides reduce to the same expression.
+-/
 theorem app_res {X Y : Scheme.{0}} (f : Y ⟶ X) {W W' : X.Opens} (h : W' ≤ W) (s : Γ(X, W)) :
     (f.app W').hom ((X.presheaf.map (homOfLE h).op).hom s) =
       (Y.presheaf.map ((Opens.map f.base).map (homOfLE h)).op).hom ((f.app W).hom s) := by
   rw [← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, Scheme.Hom.naturality]
   rfl
 
+/- English proof (translation)
+Establish `hV : i' ⁻¹ᵁ (p ⁻¹ᵁ W') ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ W') ≤ i' ⁻¹ᵁ (p ⁻¹ᵁ W) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ W)` using `fun x hx => ⟨h hx.1, h hx.2⟩`. Use `congrArg (Z'.presheaf.map (homOfLE hV).op).hom hab` as an intermediate fact. Simplify using `only [← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE] at this ⊢`. Conclude with `this`.
+-/
 theorem compat_res {X X' Z Z' : Scheme.{0}} (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z)
     {W W' : X.Opens} (h : W' ≤ W) (a : Γ(X', p ⁻¹ᵁ W)) (b : Γ(Z, i ⁻¹ᵁ W))
     (hab : (i'.appLE (p ⁻¹ᵁ W) (i' ⁻¹ᵁ (p ⁻¹ᵁ W) ⊓ p' ⁻¹ᵁ (i ⁻¹ᵁ W)) inf_le_left).hom a =
@@ -26,6 +32,13 @@ theorem compat_res {X X' Z Z' : Scheme.{0}} (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z
   simp only [← ConcreteCategory.comp_apply, Scheme.Hom.appLE_map, Scheme.Hom.map_appLE] at this ⊢
   exact this
 
+/- English proof (translation)
+Establish `hcover : W ≤ ⨆ j : {W' : X.Opens // W' ∈ B ∧ W' ≤ W}, j.1`. Introduce `x hx`. Take `⟨W', hW'B, hxW', hle⟩` from `hbasis W x hx`. Conclude with `Opens.mem_iSup.2 ⟨⟨W', hW'B, hle⟩, hxW'⟩`. Use `X.sheaf.eq_of_locally_eq' (fun j : {W' : X.Opens // W' ∈ B ∧ W' ≤ W} => j.1) W (fun j => homOfLE j.2.2) hcover s s' fun j => ?_` and prove the remaining obligations.
+
+Establish `hc` using `compat_res p i i' p' j.2.2 a b hab`. Use `(hB j.1 j.2.1 _ _ hc).unique ⟨?_, ?_⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(app_res p j.2.2 s).trans (congrArg _ hs.1)`. Conclude with `(app_res i j.2.2 s).trans (congrArg _ hs.2)`. Conclude with `(app_res p j.2.2 s').trans (congrArg _ hs'.1)`.
+
+Conclude with `(app_res i j.2.2 s').trans (congrArg _ hs'.2)`.
+-/
 theorem unique_of_basis {X X' Z Z' : Scheme.{0}} (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z)
     (B : Set X.Opens) (hbasis : ∀ (W : X.Opens) (x : X), x ∈ W → ∃ W' ∈ B, x ∈ W' ∧ W' ≤ W)
     (hB : ∀ W ∈ B, ∀ (a : Γ(X', p ⁻¹ᵁ W)) (b : Γ(Z, i ⁻¹ᵁ W)),
@@ -50,6 +63,25 @@ theorem unique_of_basis {X X' Z Z' : Scheme.{0}} (p : X' ⟶ X) (i : Z ⟶ X) (i
   · exact (app_res p j.2.2 s').trans (congrArg _ hs'.1)
   · exact (app_res i j.2.2 s').trans (congrArg _ hs'.2)
 
+/- English proof (translation)
+Introduce `X X' Z Z' p i i' p' B hbasis hB W a b hab`. Set `I` to `{W' : X.Opens // W' ∈ B ∧ W' ≤ W}`. Establish `hcover : W ≤ ⨆ j : I, j.1`. Introduce `x hx`. Take `⟨W', hW'B, hxW', hle⟩` from `hbasis W x hx`.
+
+Conclude with `Opens.mem_iSup.2 ⟨⟨W', hW'B, hle⟩, hxW'⟩`. Use `choose t ht using fun j : I => (hB j.1 j.2.1 _ _ (compat_res p i i' p' j.2.2 a b hab)).exists`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 (fun j : I => j.1) t`. Introduce `j k`. Establish `hjk : j.1 ⊓ k.1 ≤ W` using `inf_le_left.trans j.2.2`.
+
+Use `unique_of_basis p i i' p' B hbasis hB (j.1 ⊓ k.1) _ _ (compat_res p i i' p' hjk a b hab) _ _ ⟨?_, ?_⟩ ⟨?_, ?_⟩` and prove the remaining obligations. Use `(app_res p inf_le_left (t j)).trans ?_` and prove the remaining obligations. Rewrite using `[(ht j).1, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Use `(app_res i inf_le_left (t j)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[(ht j).2, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Use `(app_res p inf_le_right (t k)).trans ?_` and prove the remaining obligations. Rewrite using `[(ht k).1, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Use `(app_res i inf_le_right (t k)).trans ?_` and prove the remaining obligations. Rewrite using `[(ht k).2, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' (fun j : I => j.1) W (fun j => homOfLE j.2.2) hcover t hcompat`. Establish `key : (p.app W).hom s = a ∧ (i.app W).hom s = b`.
+
+Prove the components needed by the constructor for the conclusion. Establish `hcov' : p ⁻¹ᵁ W ≤ ⨆ j : I, p ⁻¹ᵁ j.1`. Introduce `x hx`. Take `⟨W', hW'B, hxW', hle⟩` from `hbasis W (p.base x) hx`. Conclude with `Opens.mem_iSup.2 ⟨⟨W', hW'B, hle⟩, hxW'⟩`.
+
+Use `X'.sheaf.eq_of_locally_eq' (fun j : I => p ⁻¹ᵁ j.1) (p ⁻¹ᵁ W) (fun j => (Opens.map p.base).map (homOfLE j.2.2)) hcov' _ _ fun j => ?_` and prove the remaining obligations. Use `(app_res p j.2.2 s).symm.trans ?_` and prove the remaining obligations. Rewrite using `[show (X.presheaf.map (homOfLE j.2.2).op).hom s = t j from hs j]`. Conclude with `(ht j).1`. Establish `hcov' : i ⁻¹ᵁ W ≤ ⨆ j : I, i ⁻¹ᵁ j.1`.
+
+Introduce `x hx`. Take `⟨W', hW'B, hxW', hle⟩` from `hbasis W (i.base x) hx`. Conclude with `Opens.mem_iSup.2 ⟨⟨W', hW'B, hle⟩, hxW'⟩`. Use `Z.sheaf.eq_of_locally_eq' (fun j : I => i ⁻¹ᵁ j.1) (i ⁻¹ᵁ W) (fun j => (Opens.map i.base).map (homOfLE j.2.2)) hcov' _ _ fun j => ?_` and prove the remaining obligations. Use `(app_res i j.2.2 s).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[show (X.presheaf.map (homOfLE j.2.2).op).hom s = t j from hs j]`. Conclude with `(ht j).2`. Conclude with `⟨s, key, fun s' hs' => unique_of_basis p i i' p' B hbasis hB W a b hab s' s hs' key⟩`.
+-/
 theorem glues_of_basis : ∀ {X X' Z Z' : Scheme.{0}} (p : X' ⟶ X) (i : Z ⟶ X) (i' : Z' ⟶ X') (p' : Z' ⟶ Z)
     (B : Set X.Opens), (∀ (W : X.Opens) (x : X), x ∈ W → ∃ W' ∈ B, x ∈ W' ∧ W' ≤ W) →
     (∀ W ∈ B, ∀ (a : Γ(X', p ⁻¹ᵁ W)) (b : Γ(Z, i ⁻¹ᵁ W)),

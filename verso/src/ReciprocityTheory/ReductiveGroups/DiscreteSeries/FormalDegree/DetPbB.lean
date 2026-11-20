@@ -14,6 +14,9 @@ def dpbH (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ → ℝ) 
 
 def dpbD (x : Fin n → ℝ) : Matrix (Fin n) (Fin n) ℂ := Matrix.diagonal fun i => (x i : ℂ)
 
+/- English proof (translation)
+Establish `key : Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * (W + W') * U) i j) = Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j) + Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W' * U) i j)`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, mul_add, add_mul]`. Simplify using `only [dpbH]`. Rewrite using `[key, mul_add, add_mul]`.
+-/
 theorem dpbH_add (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ → ℝ) (W W' : Matrix (Fin n) (Fin n) ℂ) :
     dpbH U x h (W + W') = dpbH U x h W + dpbH U x h W' := by
   have key : Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * (W + W') * U) i j) =
@@ -24,6 +27,11 @@ theorem dpbH_add (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ �
   simp only [dpbH]
   rw [key, mul_add, add_mul]
 
+/- English proof (translation)
+Establish `key : Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * (c • W) * U) i j) = c • Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j)`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, Matrix.mul_smul, Matrix.smul_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dpbH]`.
+
+Rewrite using `[key, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem dpbH_smul (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ → ℝ) (c : ℂ)
     (W : Matrix (Fin n) (Fin n) ℂ) : dpbH U x h (c • W) = c • dpbH U x h W := by
   have key : Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * (c • W) * U) i j) =
@@ -42,6 +50,13 @@ def dpbL (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ → ℝ) 
     have := dpbH_smul U x h (c : ℂ) W
     simpa only [Complex.coe_smul, RingHom.id_apply] using this
 
+/- English proof (translation)
+Establish `key : (Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j))ᴴ = Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * Wᴴ * U) i j)`. Use extensionality with `i j`. Establish `h1 : (Uᴴ * Wᴴ * U) i j = star ((Uᴴ * W * U) j i)`. Rewrite using `[← Matrix.conjTranspose_apply]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+
+Establish `h2 : h (x j - x i) = h (x i - x j)` using `by rw [← neg_sub, he]`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply]`. Rewrite using `[h1, h2, star_mul']`. Simplify using `[Complex.conj_ofReal]`. Rewrite using `[dpbH, dpbH, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, key]`.
+
+Conclude with `(Matrix.mul_assoc _ _ _).symm`.
+-/
 theorem dpbH_conjTranspose (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) (h : ℝ → ℝ) (he : ∀ u, h (-u) = h u)
     (W : Matrix (Fin n) (Fin n) ℂ) : (dpbH U x h W)ᴴ = dpbH U x h Wᴴ := by
   have key : (Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j))ᴴ =
@@ -58,6 +73,11 @@ theorem dpbH_conjTranspose (U : Matrix (Fin n) (Fin n) ℂ) (x : Fin n → ℝ) 
     Matrix.conjTranspose_conjTranspose, key]
   exact (Matrix.mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Use extensionality with `i l`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h1 : Q i j = 0`.
+
+Simplify using `[h1]`. Distinguish the cases in `h2 : Q l k = 0`. Simplify using `[h2]`. Rewrite using `[hFG i j k l h1 h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dpb_had_conj (Q M : Matrix (Fin n) (Fin n) ℂ) (F G : Fin n → Fin n → ℂ)
     (hFG : ∀ i j k l, Q i j ≠ 0 → Q l k ≠ 0 → F i l = G j k) :
     Matrix.of (fun i l => F i l * (Q * M * Qᴴ) i l) = Q * Matrix.of (fun j k => G j k * M j k) * Qᴴ := by
@@ -72,6 +92,21 @@ theorem dpb_had_conj (Q M : Matrix (Fin n) (Fin n) ℂ) (F G : Fin n → Fin n �
   rw [hFG i j k l h1 h2]
   ring
 
+/- English proof (translation)
+Establish `hQ : dpbD x * (Uᴴ * V) = (Uᴴ * V) * dpbD x'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← mul_assoc Uᴴ U, hU, one_mul]`. Use `_ = Uᴴ * (V * dpbD x' * Vᴴ) * V := by rw [hY]`.
+
+Use `_ = (Uᴴ * V) * dpbD x' := by`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hV, mul_one]`. Establish `hx : ∀ i j, (Uᴴ * V) i j ≠ 0 → x i = x' j`. Introduce `i j hne`.
+
+Establish `h1` using `congrArg (fun M : Matrix (Fin n) (Fin n) ℂ => M i j) hQ`. Simplify using `only [dpbD, Matrix.diagonal_mul, Matrix.mul_diagonal] at h1`. Establish `h2 : ((x i : ℂ) - x' j) * (Uᴴ * V) i j = 0`. Rewrite using `[sub_mul, h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `sub_eq_zero.mp h3` after adjusting the coercions. Conclude with `absurd h3 hne`. Establish `hQM : (Uᴴ * V) * (Vᴴ * W * V) * (Uᴴ * V)ᴴ = Uᴴ * W * U`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Uᴴ * W * U := by rw [hV', mul_one, mul_one]`. Establish `key` using `dpb_had_conj (Uᴴ * V) (Vᴴ * W * V) (fun i l => ((h (x i - x l) : ℝ) : ℂ)) (fun j k => ((h (x' j - x' k) : ℝ) : ℂ)) (by`. Introduce `i j k l h1 h2`.
+
+Use `show ((h (x i - x l) : ℝ) : ℂ) = ((h (x' j - x' k) : ℝ) : ℂ)`. Rewrite using `[hx i j h1, hx l k h2])`. Apply the tactic sequence `try simp only at key`. Rewrite `key` using `[hQM]`. Simplify using `only [dpbH]`.
+
+Rewrite using `[key, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hU', mul_one, ← mul_assoc U Uᴴ, hU', one_mul]`.
+-/
 theorem dpbH_indep {U V : Matrix (Fin n) (Fin n) ℂ} {x x' : Fin n → ℝ} (hU : Uᴴ * U = 1) (hU' : U * Uᴴ = 1)
     (hV : Vᴴ * V = 1) (hV' : V * Vᴴ = 1) (hY : U * dpbD x * Uᴴ = V * dpbD x' * Vᴴ) (h : ℝ → ℝ)
     (W : Matrix (Fin n) (Fin n) ℂ) : dpbH U x h W = dpbH V x' h W := by
@@ -110,6 +145,19 @@ theorem dpbH_indep {U V : Matrix (Fin n) (Fin n) ℂ} {x x' : Fin n → ℝ} (hU
   simp only [Matrix.mul_assoc]
   rw [hU', mul_one, ← mul_assoc U Uᴴ, hU', one_mul]
 
+/- English proof (translation)
+Establish `hV : (J * U)ᴴ * (J * U) = 1`. Rewrite using `[Matrix.conjTranspose_mul, hJ']`. Combine the equalities or inequalities in the displayed calculation. Establish `hV' : (J * U) * (J * U)ᴴ = 1`. Rewrite using `[Matrix.conjTranspose_mul, hJ']`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hD : dpbD (-x) = -dpbD x`. Use extensionality with `i j`. Simplify using `only [dpbD, Matrix.neg_apply, Matrix.diagonal_apply, Pi.neg_apply, Complex.ofReal_neg]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hY' : U * dpbD x * Uᴴ = (J * U) * dpbD (-x) * (J * U)ᴴ`. Rewrite using `[hD, Matrix.conjTranspose_mul, hJ']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hM : (J * U)ᴴ * (J * W * J) * (J * U) = Uᴴ * W * U`.
+
+Rewrite using `[Matrix.conjTranspose_mul, hJ']`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Uᴴ * W * U := by rw [hJ, mul_one, mul_one]`. Establish `hA : Matrix.of (fun i j => ((h ((-x) i - (-x) j) : ℝ) : ℂ) * (Uᴴ * W * U) i j) = Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j)`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Pi.neg_apply]`. Rewrite using `[neg_sub_neg, ← neg_sub, he]`. Rewrite using `[dpbH_indep hU hU' hV hV' hY' h (J * W * J)]`. Simplify using `only [dpbH]`.
+
+Rewrite using `[hM, hA, Matrix.conjTranspose_mul, hJ']`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem dpbH_theta {U J : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → ℝ} (hU : Uᴴ * U = 1) (hU' : U * Uᴴ = 1)
     (hJ : J * J = 1) (hJ' : Jᴴ = J) (hY : J * (U * dpbD x * Uᴴ) * J = -(U * dpbD x * Uᴴ)) (h : ℝ → ℝ)
     (he : ∀ u, h (-u) = h u) (W : Matrix (Fin n) (Fin n) ℂ) :
@@ -146,11 +194,19 @@ theorem dpbH_theta {U J : Matrix (Fin n) (Fin n) ℂ} {x : Fin n → ℝ} (hU : 
   rw [hM, hA, Matrix.conjTranspose_mul, hJ']
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [dpbD, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Complex.ofReal_sub]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dpb_comm_D (x : Fin n → ℝ) (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     (dpbD x * X - X * dpbD x) i j = ((x i - x j : ℝ) : ℂ) * X i j := by
   simp only [dpbD, Matrix.sub_apply, Matrix.diagonal_mul, Matrix.mul_diagonal, Complex.ofReal_sub]
   ring
 
+/- English proof (translation)
+Establish `key : Matrix.of (fun i j => ((h (x i - x j) - 1 : ℝ) : ℂ) * (Uᴴ * W * U) i j) = Matrix.of (fun i j => ((h (x i - x j) : ℝ) : ℂ) * (Uᴴ * W * U) i j) - Uᴴ * W * U`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.sub_apply, Complex.ofReal_sub, Complex.ofReal_one]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dpbH]`.
+
+Rewrite using `[key, mul_sub, sub_mul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem dpbH_sub_one {U : Matrix (Fin n) (Fin n) ℂ} (x : Fin n → ℝ) (hU' : U * Uᴴ = 1) (h : ℝ → ℝ)
     (W : Matrix (Fin n) (Fin n) ℂ) : dpbH U x (fun u => h u - 1) W = dpbH U x h W - W := by
   have key : Matrix.of (fun i j => ((h (x i - x j) - 1 : ℝ) : ℂ) * (Uᴴ * W * U) i j) =
@@ -164,6 +220,9 @@ theorem dpbH_sub_one {U : Matrix (Fin n) (Fin n) ℂ} (x : Fin n → ℝ) (hU' :
   calc U * (Uᴴ * W * U) * Uᴴ = (U * Uᴴ) * W * (U * Uᴴ) := by simp only [Matrix.mul_assoc]
     _ = W := by rw [hU', one_mul, mul_one]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hU, mul_one]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 private theorem unitary_conj_mul_unitary_conj_of_conjTranspose_mul_self {U : Matrix (Fin n) (Fin n) ℂ} (hU : Uᴴ * U = 1)
     (A B : Matrix (Fin n) (Fin n) ℂ) : U * A * Uᴴ * (U * B * Uᴴ) = U * (A * B) * Uᴴ := by
   calc U * A * Uᴴ * (U * B * Uᴴ) = U * A * (Uᴴ * U) * B * Uᴴ := by simp only [Matrix.mul_assoc]
@@ -171,6 +230,11 @@ private theorem unitary_conj_mul_unitary_conj_of_conjTranspose_mul_self {U : Mat
         rw [hU, mul_one]
         simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [dpbH]`. Rewrite using `[unitary_conj_mul_unitary_conj_of_conjTranspose_mul_self hU, unitary_conj_mul_unitary_conj_of_conjTranspose_mul_self hU, ← sub_mul, ← mul_sub]`. Use `congr 2`. Use extensionality with `i j`. Rewrite using `[dpb_comm_D]`.
+
+Simplify using `only [Matrix.of_apply, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dpbH_ad_left {U : Matrix (Fin n) (Fin n) ℂ} (x : Fin n → ℝ) (hU : Uᴴ * U = 1) (h : ℝ → ℝ)
     (W : Matrix (Fin n) (Fin n) ℂ) :
     (U * dpbD x * Uᴴ) * dpbH U x h W - dpbH U x h W * (U * dpbD x * Uᴴ) = dpbH U x (fun u => u * h u) W := by
@@ -182,6 +246,13 @@ theorem dpbH_ad_left {U : Matrix (Fin n) (Fin n) ℂ} (x : Fin n → ℝ) (hU : 
   simp only [Matrix.of_apply, Complex.ofReal_mul]
   ring
 
+/- English proof (translation)
+Establish `e1 : Uᴴ * (U * dpbD x * Uᴴ * W) * U = dpbD x * (Uᴴ * W * U)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = dpbD x * (Uᴴ * W * U) := by rw [hU, one_mul]`. Establish `e2 : Uᴴ * (W * (U * dpbD x * Uᴴ)) * U = (Uᴴ * W * U) * dpbD x * (Uᴴ * U)`.
+
+Simplify using `only [Matrix.mul_assoc]`. Establish `key : Uᴴ * ((U * dpbD x * Uᴴ) * W - W * (U * dpbD x * Uᴴ)) * U = dpbD x * (Uᴴ * W * U) - (Uᴴ * W * U) * dpbD x`. Rewrite using `[mul_sub, sub_mul, e1, e2, hU, mul_one]`. Simplify using `only [dpbH]`. Rewrite using `[key]`.
+
+Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[dpb_comm_D, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dpbH_ad_right {U : Matrix (Fin n) (Fin n) ℂ} (x : Fin n → ℝ) (hU : Uᴴ * U = 1) (h : ℝ → ℝ)
     (W : Matrix (Fin n) (Fin n) ℂ) :
     dpbH U x h ((U * dpbD x * Uᴴ) * W - W * (U * dpbD x * Uᴴ)) = dpbH U x (fun u => u * h u) W := by

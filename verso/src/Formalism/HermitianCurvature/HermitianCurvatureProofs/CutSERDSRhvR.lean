@@ -14,6 +14,9 @@ namespace RhvRPf
 
 open RhRPf
 
+/- English proof (translation)
+Establish `hev : f₁ =ᶠ[nhds c] f₂` using `by filter_upwards [(Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc] with c' hc' using h c' hc'`. Simplify using `only [pbOp, wirtBar, if_pos hc, hev.fderiv_eq]`.
+-/
 theorem pbOp_loc {r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (l : Fin r)
     {f₁ f₂ : (Fin r → ℂ) → E} (h : ∀ c ∈ OmX r, f₁ c = f₂ c) {c : Fin r → ℂ} (hc : c ∈ OmX r) :
     pbOp l f₁ c = pbOp l f₂ c := by
@@ -21,6 +24,9 @@ theorem pbOp_loc {r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E
     filter_upwards [(Formalism.FourierDecayAlt.P.Qx3.isOpen_OmX r).mem_nhds hc] with c' hc' using h c' hc'
   simp only [pbOp, wirtBar, if_pos hc, hev.fderiv_eq]
 
+/- English proof (translation)
+The claim follows from `| 0, f₁, f₂, h, c, hc => ⟨h c hc, rfl⟩ | i + 1, f₁, f₂, h, c, hc => by by_cases hi : i < r · simp only [vABs, dif_pos hi] have hsub : ∀ c' ∈ OmX r, (Y • f₁ - pbOp ⟨i, hi⟩ f₁) c' = (Y • f₂ - pbOp ⟨i, hi⟩ f₂) c' := by intro c' hc' simp only [Pi.sub_apply, Pi.smul_apply] rw [h c' hc …`.
+-/
 theorem vABs_loc {r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (Y : ℂ) :
     ∀ (i : ℕ) (f₁ f₂ : (Fin r → ℂ) → E), (∀ c ∈ OmX r, f₁ c = f₂ c) →
       ∀ c ∈ OmX r, (vABs r Y i).1 f₁ c = (vABs r Y i).1 f₂ c ∧ (vABs r Y i).2 f₁ c = (vABs r Y i).2 f₂ c
@@ -51,6 +57,9 @@ def rowP {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ} (L : R.LevelData A r) (Y 
     Matrix (Fin 2) (Fin 2) A :=
   ((List.ofFn fun l => (L.Tvl Y l)ᵀ).take n).prod
 
+/- English proof (translation)
+Unfold `rowP`. Rewrite using `[List.take_add_one, List.prod_append]`. Establish `e : (List.ofFn fun l => (L.Tvl Y l)ᵀ)[n]? = some ((L.Tvl Y ⟨n, h⟩)ᵀ)` using `by simp [h]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem partialProduct_succ {A : Type} [Ring A] [Algebra ℂ A] {r : ℕ} (L : R.LevelData A r) (Y : ℂ) (n : ℕ) (h : n < r) :
     rowP L Y (n + 1) = rowP L Y n * (L.Tvl Y ⟨n, h⟩)ᵀ := by
   unfold rowP
@@ -63,6 +72,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+The claim follows from `| 0, _, Ψ, x, _ => by have e : rowP L Y 0 = 1 := by simp [rowP] rw [e] refine ⟨rfl, ?_⟩ simp [vABs, crd, fst_zero_apply] | n + 1, hn, Ψ, x, hx => by have h : n < r := by omega have ih := rowSide_chain X L hL Y n (by omega) have ev : vABs (E := Wq →L[ℂ] Wp) r Y (n + 1) = (fun f => …`.
+-/
 theorem rowSide_chain (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadSp k r z z' π π')) r)
     (hL : IsActualLevel X L) (Y : ℂ) :
     ∀ n, n ≤ r → ∀ (Ψ : RadSp k r z z' π π'), ∀ x ∈ DomR k r z z',
@@ -113,6 +125,19 @@ theorem rowSide_chain (X : ActualOps k r z z' π π') (L : R.LevelData (Pr (RadS
 end RhvRPf
 
 open RhRPf RhvRPf in
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD hl1 hl2 hr Y hY`. Take `⟨_, _, hL, hQQ, -⟩` from `hD`. Use `⟨M.sgn P l0, ?_⟩` and prove the remaining obligations. Introduce `J hJ Φ hΦ x hx`. Establish `hT : (L.Tvprod Y)ᵀ = rowP L Y P.r`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.MAx3.Q.Tvprod_transpose L Y, rowP, List.take_of_length_le (by simp)]`. Establish `eA : L.Avr Y = rowP L Y P.r 0 0` using `by rw [← hT]; rfl`. Establish `eB : L.Bvr Y = rowP L Y P.r 0 1` using `by rw [← hT]; rfl`. Establish `hch` using `rowSide_chain X L hL Y P.r le_rfl`. Establish `hA : ∀ y ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx8.Dp P.k P.r z z', (((L.Avr Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 y = crd (Q.cmp (vABs P.r Y P.r) 0) (resG P.k P.r (Fin.last P.r) J) x.1 y`.
+
+Introduce `y hy`. Establish `hxy : (x.1, y) ∈ DomR P.k P.r z z'` using `⟨hx.1, hy.1, hy.2⟩`. Rewrite using `[eA, (hch Φ (x.1, y) hxy).1]`. Simplify using `only [crd, Q.cmp, if_true]`. Conclude with `(vABs_loc Y P.r _ _ (fun c' hc' => hΦ (c', y) ⟨hc', hy.1, hy.2⟩) x.1 hx.1).1`.
+
+Establish `hB : ∀ y ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx8.Dp P.k P.r z z', (((L.Bvr Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 y = crd (Q.cmp (vABs P.r Y P.r) 1) (resG P.k P.r (Fin.last P.r) J) x.1 y`. Introduce `y hy`. Establish `hxy : (x.1, y) ∈ DomR P.k P.r z z'` using `⟨hx.1, hy.1, hy.2⟩`. Rewrite using `[eB, (hch Φ (x.1, y) hxy).2]`. Simplify using `only [crd, Q.cmp, if_neg (show (1 : Fin 2) ≠ 0 by decide)]`.
+
+Conclude with `(vABs_loc Y P.r _ _ (fun c' hc' => hΦ (c', y) ⟨hc', hy.1, hy.2⟩) x.1 hx.1).2`. Establish `e1 : (((RhvR L st Y).1 Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (((L.Dr).1 ((st.QQ Y 0 1).1 ((L.Avr Y).1 Φ) + (st.QQ Y 1 1).1 ((L.Bvr Y).1 Φ)) : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2` using `rfl`. Rewrite using `[e1, dr_apply X L hL, st_fst X st l0 hQQ, st_fst X st l0 hQQ]`. Simplify using `only [CutMP.dMul, CutMP.rhvGrp, Submodule.coe_add, Pi.add_apply, LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, QL, grp]`. Rewrite using `[X.t_apply Y 0 1 _ x hx, X.t_apply Y 1 1 _ x hx, t_slice_congr X Y 0 1 _ _ x hx hA, t_slice_congr X Y 1 1 _ _ x hx hB]`.
+
+Simplify using `only [smul_add, smul_comm (CutMP.drF P.r x.1) (M.sgn P l0)]`.
+-/
 theorem spectral_adjoint_rho_action : RDSRhvR := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' X μ L st l0 hD hl1 hl2 hr Y hY
   obtain ⟨_, _, hL, hQQ, -⟩ := hD

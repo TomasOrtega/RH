@@ -8,6 +8,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CptInputs
 
+/- English proof (translation)
+Take `⟨m, k, hm, hk, hO⟩` from `h`. Take `⟨m', k', hm', hk', hO'⟩` from `h'`. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`.
+
+Conclude with `absurd hπ.symm WithZero.exp_ne_zero`. Establish `h0 : ψ π ≠ 0` using `(map_ne_zero ψ).2 hπ0`. Establish `hle : v.valuation F' π ≤ 1`. Rewrite using `[hπ]`. Conclude with `oneLePart_eq_one.mp rfl`.
+
+Establish `hreg : ψ π ∈ regAt ξ p` using `hp π hle`. Establish `hr` using `OrderAt.ratio_unique h0 hreg hf (hO p hp) (hO' p hp)`. Establish `hq : (k : ℚ) * (m' : ℚ) = (k' : ℚ) * (m : ℚ)` using `by exact_mod_cast hr`. Rewrite `hq` using `[hk, hk']`. Establish `hm0 : (m : ℚ) * (m' : ℚ) ≠ 0` using `mul_ne_zero (by exact_mod_cast hm.ne') (by exact_mod_cast hm'.ne')`.
+
+Apply `mul_left_cancel₀ hm0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem order_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {F' : Type} [Field F']
     [NumberField F'] (ψ : F' →+* Ω) (L : Lat ξ Ω) (s : Ω) (v : HeightOneSpectrum (𝓞 F')) (π : F')
     (hπ : v.valuation F' π = WithZero.exp (-1 : ℤ)) (p : Cpt ξ)
@@ -36,12 +45,18 @@ theorem order_unique {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRin
     _ = (m' * ρ') * m := hq
     _ = m * m' * ρ' := by ring
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨β / α, ⟨α, β, hα, hβ, hA, hB, div_mul_cancel₀ _ hα⟩, (inv_div _ _).symm⟩`.
+-/
 theorem div_mem_lineLat {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     {V : Type} [AddCommGroup V] [Module Ω V] (A B : Lat ξ V) (p q : ℕ) (a : ⋀[Ω]^p V) (b : ⋀[Ω]^q V) (x : Cpt ξ)
     {α β : Ω} (hα : α ≠ 0) (hβ : β ≠ 0) (hA : A.wedge p x = Submodule.span (regAt ξ x) {α • a})
     (hB : B.wedge q x = Submodule.span (regAt ξ x) {β • b}) : α / β ∈ lineLat A B p q a b x :=
   Submodule.subset_span ⟨β / α, ⟨α, β, hα, hβ, hA, hB, div_mul_cancel₀ _ hα⟩, (inv_div _ _).symm⟩
 
+/- English proof (translation)
+Introduce `hgeo hflat hnorm hgen halg hbir harith hroot hhodge hsm hconj ha hh hex hnum`. Take `⟨c₀, r, cinf, hc₀, hcinf, -, -, -, hfin⟩` from `hI E H D l Xo c Y U Z φ τ t S Ω K J y 𝔐 Fl xdeg e hx A n c.F (RingHom.id c.F) 𝔐.cst hgeo hflat hnorm hgen (RingHom.comp_id _) halg hbir harith hroot hhodge hsm hconj ha hh hex hnum`. Use `⟨c₀, hc₀, fun σ z g h dg dh hz hg hh' hd hgh => ?_⟩` and prove the remaining obligations. Rewrite using `[hfin σ z g h dg dh hz hg hh' hd hgh, hcinf σ, RingHom.comp_id]`.
+-/
 theorem const_case (hI : CptFlatInputs) (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) [NumberField c.F] (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (U : Set (Xo.XF c))
@@ -71,6 +86,9 @@ theorem const_case (hI : CptFlatInputs) (E : Type) [Field E] [NumberField E] [Is
   refine ⟨c₀, hc₀, fun σ z g h dg dh hz hg hh' hd hgh => ?_⟩
   rw [hfin σ z g h dg dh hz hg hh' hd hgh, hcinf σ, RingHom.comp_id]
 
+/- English proof (translation)
+Use extensionality with `a`. Use `show τ.1 ((H.bar a : 𝓞 E) : E) = ComplexEmbedding.conjugate τ.1 (a : E)`. Rewrite using `[H.bar_eq]`. Conclude with `IsCMField.complexEmbedding_complexConj (K := E) τ.1 (a : E)`.
+-/
 theorem labelEmb_inr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (τ : CMType H) : labelEmb c (.inr τ) = tauIn c (ComplexEmbedding.conjugate τ.1) := by
   ext a
@@ -78,6 +96,9 @@ theorem labelEmb_inr {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   rw [H.bar_eq]
   exact IsCMField.complexEmbedding_complexConj (K := E) τ.1 (a : E)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem labelEmb_inl {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {l : Level H} (c : Coeff l)
     (τ : CMType H) : labelEmb c (.inl τ) = tauIn c τ.1 := rfl
 

@@ -15,6 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.Top.Bl
 
+/- English proof (translation)
+Introduce `hA hW hR hL p K q hLT hZe hE`. Take `⟨S, hS⟩` from `GlobalTheory.T.exists_tied_data_reciprocity hA hW hL p K q hLT hZe`. Take `⟨t, hK, hstd, hrd⟩` from `GlobalTheory.Mem.Top.Bl.WPt.exists_kerTie p.s K q hE`. Take `⟨T, hTS, hTk, hcrd, hpin, hj, ⟨⟨hw⟩⟩⟩` from `GlobalTheory.Mem.Top.Bl.tiedSK_at_witnesses hL p K q S t hS hK`. Establish `hp` using `GlobalTheory.Mem.Top.Bl.hostPins_wpt hR p.s K q`.
+
+Substitute `hTS hTk` using the available equality. Take `⟨hd, -⟩` from `GlobalTheory.HostDatumExists.exists_hostDatum hA _ _ _ _ _ _ _ _ q.O.ex T.toTiedDataS hp q.x.pin.d3b`. Conclude with `⟨⟨T, hpin, hj, ⟨hd⟩, hw⟩, ⟨⟨hS, hK, hcrd⟩, hE, hstd, hrd⟩⟩`.
+-/
 theorem WPt.exists_recPinE : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.NT.RayField →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Prm hL) (K : Ctx) (q : WPt p.s K), Formalism.L2.Host.LevelTied (q.w.D q.Z) →
       Formalism.L2.Rows.ZetaCompatible (q.w.D q.Z) → EntC q.x.ker → ∃ R : Formalism.L2.RecT q.O.ex, RecPinE q R := by

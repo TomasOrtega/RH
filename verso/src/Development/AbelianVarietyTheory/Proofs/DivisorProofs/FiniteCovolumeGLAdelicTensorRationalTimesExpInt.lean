@@ -15,6 +15,9 @@ namespace GlobalTheory.GLOneVol
 
 open GroundTheory.Global GroundTheory.Global.AdeleBaseChange GlobalTheory.CuspRep.CuspidalL2GL
 
+/- English proof (translation)
+Take `⟨γ, n, rfl⟩` from `mem_latticeGL_iff.1 hg`. Rewrite using `[map_mul, map_zpow]`. Use `mul_mem (Subgroup.mem_sup_left ⟨γ, ?_⟩) (zpow_mem (Subgroup.mem_sup_right (Subgroup.mem_zpowers _)) n)` and prove the remaining obligations. Apply `(glTens F E k).injective` to reduce the goal to its premises. Rewrite using `[glTens_bc, ContinuousMulEquiv.apply_symm_apply]`.
+-/
 theorem symm_mem_latR {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyComplex E] {k : ℕ} {g : GlobalTheory.CuspRep.GA E k} (hg : g ∈ GlobalTheory.UnitaryBC.latticeGL E k) :
     (glTens F E k).symm g ∈ latR F E k := by
@@ -31,6 +34,13 @@ def latEquiv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [A
   left_inv g := Subtype.ext ((glTens F E k).apply_symm_apply _)
   right_inv x := Subtype.ext ((glTens F E k).symm_apply_apply _)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ k _ _ ν D hν hD`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Set `f` to `(glTens F E k).toHomeomorph.toMeasurableEquiv`. Set `μ : Measure (GlobalTheory.CuspRep.GA E k)` to `ν.map f`. Use `haveI : μ.IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map ν (glTens F E k)`.
+
+Establish `hq : Measure.QuasiMeasurePreserving f.symm μ ν` using `(MeasurePreserving.mk f.symm.measurable (f.map_symm_map)).quasiMeasurePreserving`. Establish `hD' : IsFundamentalDomain (GlobalTheory.UnitaryBC.latticeGL E k) (f '' D) μ` using `hD.image_of_equiv f.toEquiv hq (latEquiv F E k) fun g x => by`. Express the relevant statement in the definitionally equal form `glTens F E k ((glTens F E k).symm g * x) = g * glTens F E k x`. Rewrite using `[map_mul, ContinuousMulEquiv.apply_symm_apply]`. Establish `h1 : ν D = μ (f '' D)`.
+
+Rewrite using `[f.map_apply, f.preimage_image]`. Rewrite using `[h1, ← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ hD']`. Use `haveI := (GlobalTheory.CovolGL.finvol E k μ).1`. Conclude with `measure_ne_top _ _`.
+-/
 theorem finvol_tens : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [IsTotallyComplex E] (k : ℕ) [MeasurableSpace (GL (Fin k) (AF F ⊗[F] E))]
     [BorelSpace (GL (Fin k) (AF F ⊗[F] E))] (ν : Measure (GL (Fin k) (AF F ⊗[F] E)))

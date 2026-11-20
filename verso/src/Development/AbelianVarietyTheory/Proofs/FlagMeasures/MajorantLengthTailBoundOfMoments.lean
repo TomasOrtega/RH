@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.Amp.TailTwo
 
+/- English proof (translation)
+Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_trans (setLIntegral_mono' hE fun x hx => ?_) (setLIntegral_le_lintegral E _)` and prove the remaining obligations. Establish `hTn : 0 < T ^ n` using `pow_pos hT n`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (inv_nonneg.2 hTn.le)]`. Use `le_mul_of_one_le_left' ?_` and prove the remaining obligations.
+
+Rewrite using `[ENNReal.one_le_ofReal, inv_mul_eq_div, one_le_div hTn]`. Conclude with `pow_le_pow_left₀ hT.le (hl x hx) n`.
+-/
 theorem cheb_le {X : Type*} [MeasurableSpace X] (ν : Measure X) (l : X → ℝ) (f : X → ℝ≥0∞) (E : Set X)
     (hE : MeasurableSet E) (T : ℝ) (hT : 0 < T) (hl : ∀ x ∈ E, T ≤ l x) (n : ℕ) :
     ∫⁻ x in E, f x ∂ν ≤ ENNReal.ofReal ((T ^ n)⁻¹) * ∫⁻ x, ENNReal.ofReal (l x ^ n) * f x ∂ν := by
@@ -27,6 +32,11 @@ theorem cheb_le {X : Type*} [MeasurableSpace X] (ν : Measure X) (l : X → ℝ)
   rw [ENNReal.one_le_ofReal, inv_mul_eq_div, one_le_div hTn]
   exact pow_le_pow_left₀ hT.le (hl x hx) n
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `(continuousOn_iff_isClosed.1 hg) t ht`. Establish `h1 : MeasurableSet (α` using `Mt k r) u := IsClosed.measurableSet (α := Mt k r) hu`. Establish `h2 : MeasurableSet (α` using `Mt k r) (GG k r) := IsClosed.measurableSet (α := Mt k r) (Cheb.isClosed_GG k r)`. Establish `h3 : {x : Mt k r | Matrix.of x ∈ GG k r ∧ g (Matrix.of x) ∈ t} = u ∩ GG k r`. Rewrite using `[← h]`.
+
+Use extensionality with `x`. Conclude with `⟨fun hx => ⟨hx.2, hx.1⟩, fun hx => ⟨hx.2, hx.1⟩⟩`. Rewrite using `[h3]`. Conclude with `h1.inter h2`.
+-/
 theorem meas_closed (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℝ) (hg : ContinuousOn g (GG k r)) (t : Set ℝ) (ht : IsClosed t) :
     MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r ∧ g (Matrix.of x) ∈ t} := by
   obtain ⟨u, hu, h⟩ := (continuousOn_iff_isClosed.1 hg) t ht
@@ -39,6 +49,11 @@ theorem meas_closed (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + 
   rw [h3]
   exact h1.inter h2
 
+/- English proof (translation)
+Take `⟨u, hu, h⟩` from `continuousOn_iff'.1 hg t ht`. Establish `h1 : MeasurableSet (α` using `Mt k r) u := IsOpen.measurableSet (α := Mt k r) hu`. Establish `h2 : MeasurableSet (α` using `Mt k r) (GG k r) := IsClosed.measurableSet (α := Mt k r) (Cheb.isClosed_GG k r)`. Establish `h3 : {x : Mt k r | Matrix.of x ∈ GG k r ∧ g (Matrix.of x) ∈ t} = u ∩ GG k r`. Rewrite using `[← h]`.
+
+Use extensionality with `x`. Conclude with `⟨fun hx => ⟨hx.2, hx.1⟩, fun hx => ⟨hx.2, hx.1⟩⟩`. Rewrite using `[h3]`. Conclude with `h1.inter h2`.
+-/
 theorem meas_open (k r : ℕ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℝ) (hg : ContinuousOn g (GG k r)) (t : Set ℝ) (ht : IsOpen t) :
     MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r ∧ g (Matrix.of x) ∈ t} := by
   obtain ⟨u, hu, h⟩ := continuousOn_iff'.1 hg t ht
@@ -55,6 +70,33 @@ end GlobalTheory.Amp.TailTwo
 
 namespace GlobalTheory.Amp.TailTwo
 
+/- English proof (translation)
+Introduce `k r Wp _ _ _ z νS Φ q H₁ _ hH hG _ hM hI la hla`. Use `set T : ℝ := la * H₁ with hTdef`. Establish `hT : 0 < T` using `mul_pos hla hH`. Use `set f : Mt k r → ℝ≥0∞ := fun x => (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 with hf`. Use `set A : Fin (r + 1) → Set (Mt k r) := fun a => {x : Mt k r | Matrix.of x ∈ GG k r ∧ (fun g => lA k r z g a) (Matrix.of x) ∈ Set.Ici T} with hA`.
+
+Use `set B : Fin (r + 1) → Set (Mt k r) := fun a => {x : Mt k r | Matrix.of x ∈ GG k r ∧ (fun g => lA k r z g a) (Matrix.of x) ∈ Set.Ioi 0} ∩ {x : Mt k r | Matrix.of x ∈ GG k r ∧ (fun g => lA k r z g a) (Matrix.of x) ∈ Set.Iic T⁻¹} with hB`. Use `set N : Set (Mt k r) := {x | Matrix.of x ∉ GG k r} with hN`. Establish `hGc : MeasurableSet (α` using `Mt k r) (GG k r) := IsClosed.measurableSet (α := Mt k r) (Cheb.isClosed_GG k r)`. Establish `hNm : MeasurableSet N` using `hGc.compl`. Establish `hAm : ∀ a, MeasurableSet (A a)` using `fun a => meas_closed k r _ ((LenCont.lA_Sg_continuousOn k r z).1 a) _ isClosed_Ici`.
+
+Establish `hBm : ∀ a, MeasurableSet (B a)` using `fun a => (meas_open k r _ ((LenCont.lA_Sg_continuousOn k r z).1 a) _ isOpen_Ioi).inter (meas_closed k r _ ((LenCont.lA_Sg_continuousOn k r z).1 a) _ isClosed_Iic)`. Use `set U : Set (Mt k r) := N ∪ ⋃ a, (A a ∪ B a) with hU`. Establish `hUm : MeasurableSet U` using `hNm.union (MeasurableSet.iUnion fun a => (hAm a).union (hBm a))`. Establish `hsub : {x : Mt k r | ∃ a : Fin (r + 1), la * H₁ ≤ max (lA k r z (Matrix.of x) a) (lA k r z (Matrix.of x) a)⁻¹} ⊆ U`. Introduce and unpack `x ⟨a, ha⟩`.
+
+Distinguish the cases in `hx : Matrix.of x ∈ GG k r`. Use `Or.inr (Set.mem_iUnion.2 ⟨a, ?_⟩)` and prove the remaining obligations. Break down `le_max_iff.1 ha with h | h` into its components or cases. Conclude with `Or.inl ⟨hx, h⟩`. Establish `hpos : 0 < lA k r z (Matrix.of x) a` using `inv_pos.1 (lt_of_lt_of_le hT h)`.
+
+Use `Or.inr ⟨⟨hx, hpos⟩, hx, ?_⟩` and prove the remaining obligations. Use `show lA k r z (Matrix.of x) a ≤ T⁻¹`. Conclude with `(le_inv_comm₀ hT hpos).1 h`. Conclude with `Or.inl hx`. Establish `hc : ∀ a, ∫⁻ x in A a ∪ B a, f x ∂νS ≤ 2 * (ENNReal.ofReal (la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ)`.
+
+Introduce `a`. Establish `key : ENNReal.ofReal ((T ^ (2 * q))⁻¹) * (ENNReal.ofReal (H₁ ^ (2 * q)) * l2SG νS Φ) = ENNReal.ofReal (la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`. Rewrite using `[Real.rpow_neg hla.le, hTdef, mul_pow]`.
+
+Establish `: la ^ (2 * (q : ℝ)) = la ^ (2 * q)`. Rewrite using `[← Real.rpow_natCast]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[this]`.
+
+Establish `h1 : H₁ ^ (2 * q) ≠ 0` using `pow_ne_zero _ hH.ne'`. Clear the denominators using the available nonvanishing facts. Establish `hA' : ∫⁻ x in A a, f x ∂νS ≤ ENNReal.ofReal (la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ`. Use `(cheb_le νS (fun x => lA k r z (Matrix.of x) a) f (A a) (hAm a) T hT (fun x hx => hx.2) (2 * q)).trans ?_` and prove the remaining obligations. Rewrite using `[← key]`.
+
+Use `gcongr`. Conclude with `hM a`. Establish `hB' : ∫⁻ x in B a, f x ∂νS ≤ ENNReal.ofReal (la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ`. Use `(cheb_le νS (fun x => (lA k r z (Matrix.of x) a)⁻¹) f (B a) (hBm a) T hT (fun x hx => ?_) (2 * q)).trans ?_` and prove the remaining obligations. Establish `hpos : 0 < lA k r z (Matrix.of x) a` using `hx.1.2`.
+
+Conclude with `(le_inv_comm₀ hT hpos).2 hx.2.2`. Rewrite using `[← key] gcongr`. Conclude with `hI a`. Use `(lintegral_union_le _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(add_le_add hA' hB').trans (le_of_eq (two_mul _).symm)`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `(setLIntegral_measure_zero _ _ hG).le`. Conclude with `(lintegral_iUnion_le _ _).trans (le_of_eq (tsum_fintype _))`. Use `_ ≤ ∑ _a : Fin (r + 1), 2 * (ENNReal.ofReal (la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ) := by`. Rewrite using `[zero_add]`.
+
+Conclude with `Finset.sum_le_sum fun a _ => hc a`. Use `_ ≤ ENNReal.ofReal (2 * (2 * r + 2 : ℝ) * la ^ (-(2 * (q : ℝ)))) * l2SG νS Φ := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← mul_assoc, ← mul_assoc, ENNReal.ofReal_mul (by positivity)]`. Use `gcongr ?_ * _ * _`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_ofNat 2, ← ENNReal.ofReal_mul (by positivity)]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `push_cast`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem tailBd_of_moments : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (νS : Measure (Mt k r)) (Φ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Wp) (q : ℕ) (H₁ : ℝ), inWb k r z → 0 < H₁ → νS {x | Matrix.of x ∉ GG k r} = 0 → ContinuousOn Φ (GG k r) → MomBd z νS Φ q H₁ → (∀ a : Fin (r + 1), ∫⁻ x, ENNReal.ofReal ((lA k r z (Matrix.of x) a)⁻¹ ^ (2 * q)) * (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂νS ≤ ENNReal.ofReal (H₁ ^ (2 * q)) * l2SG νS Φ) → TailBd z νS Φ q H₁ := by
   intro k r Wp _ _ _ z νS Φ q H₁ _ hH hG _ hM hI la hla
   set T : ℝ := la * H₁ with hTdef

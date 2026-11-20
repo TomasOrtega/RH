@@ -16,6 +16,9 @@ namespace GlobalTheory.ConeLamCont
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (y i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (y i).1)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `[pureA, mul_comm]`.
+-/
 theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (y : κ → AF F) :
     (LinearMap.proj y : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -24,6 +27,11 @@ theorem proj_mem_adm {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
     (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩
   simp [pureA, mul_comm]
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B b a' G G₁ H H' _ e hE X om om' om₁ om₁' hT hT₁ Ψ hΨ y`. Establish `hadm` using `GlobalTheory.ConeMeasV.comp_ev_mem_adm hT.geo.hM hT₁.geo.hM hE (proj_mem_adm y)`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (b + 2)) (Fin (b + 2 + a')) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (b + 2) → Fin (b + 2 + a') → AE F E))`.
+
+Establish `hco : Continuous G.M.co.e` using `IsModuleTopology.continuous_of_linearMap G.M.co.e.toLinearMap`. Establish `hsh : Continuous (shiftA (F` using `F) H H') := by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.mul continuous_const`. Conclude with `(GlobalTheory.ConeMeasSmall.continuous_schr hT.base.std hadm hΨ).comp (hco.comp hsh)`.
+-/
 theorem continuous_ev_rho_shiftA : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

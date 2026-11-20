@@ -14,6 +14,11 @@ variable {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : T
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at e`. Substitute `e` using the available equality.
+
+Use `⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩` and prove the remaining obligations.
+-/
 theorem ExtModel.same_carriers (h : Enl B B') : HEq (w'.st Z').toD7.host (w.st Z).toD7.host ∧ HEq (w'.st Z').toD7.sp (w.st Z).toD7.sp ∧
     HEq (tauE (w'.st Z').toD7) (tauE (w.st Z).toD7) ∧ HEq (fun V => GA (w'.st Z').toD7 V) (fun V => GA (w.st Z).toD7 V) ∧
     HEq (PolF (w'.st Z').toD7) (PolF (w.st Z).toD7) ∧ HEq (@Formalism.IndefR.Datum.WO (w'.st Z').toD7) (@Formalism.IndefR.Datum.WO (w.st Z).toD7) ∧
@@ -29,6 +34,11 @@ theorem ExtModel.same_carriers (h : Enl B B') : HEq (w'.st Z').toD7.host (w.st Z
   subst e
   refine ⟨HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Unfold `Formalism.L2.Col.QE`. Use `split`. Name the introduced variables `h`. Establish `: Qprime (1 : Chr B.fields.F B.fields.E B.fields.K) = ∅`. Use extensionality with `v`.
+
+Simplify using `[Qprime]`. Simplify using `[this]`. Both sides reduce to the same expression.
+-/
 theorem ExtModel.QE_one (sel) : Formalism.L2.Col.QE (X := B.fields) sel 1 = ∅ := by
   unfold Formalism.L2.Col.QE
   split
@@ -38,6 +48,9 @@ theorem ExtModel.QE_one (sel) : Formalism.L2.Col.QE (X := B.fields) sel 1 = ∅ 
     simp [this]
   · rfl
 
+/- English proof (translation)
+Use `show Formalism.L2.Col.uSG _ (Formalism.L2.Col.QE (X := B.fields) w.I.sel 1) = _`. Rewrite using `[ExtModel.QE_one]`. Simplify using `[Formalism.L2.Col.uSG]`.
+-/
 theorem ExtModel.rowSG_ref (U : Set w.I.ι) :
     Formalism.L2.Col.rowSG (B.primes w.px) w.I.sel (mu0F (X := B.fields) (tuOf w.I U)).1 = (B.primes w.px).vGs := by
   show Formalism.L2.Col.uSG _ (Formalism.L2.Col.QE (X := B.fields) w.I.sel 1) = _
@@ -46,6 +59,13 @@ theorem ExtModel.rowSG_ref (U : Set w.I.ι) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `a` using `ExtModel.rowSG_ref (w := w) U`. Establish `a'` using `ExtModel.rowSG_ref (w := w') U'`. Use `show (letI := B'.fields.starE; Formalism.L2.Col.DecoSet B'.fields.E B'.R.nV ∅ (Formalism.L2.Col.rowSG (B'.primes w'.px) w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I U')).1)) = (letI := B.fields.starE; Formalism.L2.Col.DecoSet B.fields.E B.R.nV ∅ (Formalism.L2.Col.rowSG (B.primes w. …`. Rewrite using `[a, a']`. Use `clear a a'`.
+
+Generalize the expression as in `w'.px = p' at hp ⊢`. Generalize the expression as in `w.px = p at hp ⊢`. Take `⟨e, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`.
+
+Simplify using `only at e`. Substitute `e` using the available equality. Consider the cases of `hp`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem ExtModel.deco_eq (h : Enl B B') (hp : HEq w'.px w.px) (U : Set w.I.ι) (U' : Set w'.I.ι) (j : ℕ) :
     (Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I U')).1 j).D =
       (Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I U)).1 j).D ∧
@@ -68,6 +88,13 @@ theorem ExtModel.deco_eq (h : Enl B B') (hp : HEq w'.px w.px) (U : Set w.I.ι) (
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `a : labE (D` using `(w.st Z).toD7) (w.st Z).toD7.what₂.embLL = tauE (w.st Z).toD7 := funext fun τ => B.fields_embC τ`. Establish `a' : labE (D` using `(w'.st Z').toD7) (w'.st Z').toD7.what₂.embLL = tauE (w'.st Z').toD7 := funext fun τ => B'.fields_embC τ`. Unfold `parAt kapAt lab`. Rewrite using `[a, a']`. Use `clear a a'`.
+
+Take `⟨e, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at e`. Substitute `e` using the available equality.
+
+Conclude with `HEq.rfl`.
+-/
 theorem ExtModel.par_eq (h : Enl B B') :
     HEq (fun W : HSp (w'.st Z').toD7 => parAt W (w'.st Z').toD7.what₂.embLL) (fun W : HSp (w.st Z).toD7 => parAt W (w.st Z).toD7.what₂.embLL) := by
   have a : labE (D := (w.st Z).toD7) (w.st Z).toD7.what₂.embLL = tauE (w.st Z).toD7 := funext fun τ => B.fields_embC τ
@@ -84,16 +111,31 @@ theorem ExtModel.par_eq (h : Enl B B') :
 
 variable {hX : B.fields.Ok} {Wt W₁ : Set B.places.Pl}
 
+/- English proof (translation)
+Introduce `e` and use `h.elim (fun q => q (eq_of_heq e.ψ)) fun q => q (eq_of_heq e.nW)`.
+-/
 theorem ExtModel.not_ext {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w.st Z) w.I hX T W₁}
     (h : z'.R.ψ ≠ z.R.ψ ∨ z'.R.nW ≠ z.R.nW) : ¬ Ext z z' :=
   fun e => h.elim (fun q => q (eq_of_heq e.ψ)) fun q => q (eq_of_heq e.nW)
 
+/- English proof (translation)
+The claim follows from `Set.ext fun v => e.W1 v v fun x x' q => by have : x = x' := RingOfIntegers.ext ((w.D Z).what₂.embLL.injective q) rw [this]`.
+-/
 theorem ExtModel.nonzeroIndexPlaces_adelicDataResized_eq {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w.st Z) w.I hX T W₁} (e : Ext z z') :
     z.W1 (fun _ _ => 0) = z'.W1 fun _ _ => 0 :=
   Set.ext fun v => e.W1 v v fun x x' q => by
     have : x = x' := RingOfIntegers.ext ((w.D Z).what₂.embLL.injective q)
     rw [this]
 
+/- English proof (translation)
+Use `choose g hg using fun x => h ⟨x, rfl⟩`. Establish `inj` using `D'.what₂.embLL.injective`. Set `ι : D.what₂.LL →+* D'.what₂.LL` to `{ toFun := g map_one' := inj (by rw [hg, map_one, map_one]) map_mul' := fun a b => inj (by rw [hg, map_mul, map_mul, hg, hg]) map_zero' := inj (by rw [hg, map_zero, map_zero]) map_add' := fun a b => inj (by rw [hg, map_add, map_add, hg, hg]) }`. Use `letI : Algebra D.what₂.LL D'.what₂.LL := ι.toAlgebra`. Establish `key : ∀ (x : 𝓞 D.what₂.LL) (x' : 𝓞 D'.what₂.LL), D.what₂.embLL (x : D.what₂.LL) = D'.what₂.embLL (x' : D'.what₂.LL) ↔ algebraMap (𝓞 D.what₂.LL) (𝓞 D'.what₂.LL) x = x'` using `fun x x' => by`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `q`. Conclude with `RingOfIntegers.ext (inj ((hg _).trans q))`. Introduce and unpack `rfl`. Conclude with `(hg _).symm`.
+
+Use `⟨D.plEq.symm ((D'.plEq v').under (𝓞 D.what₂.LL)), fun x x' q => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply, ← (key x x').1 q]`. Both sides reduce to the same expression. Rewrite using `[Equiv.eq_symm_apply]`. Use extensionality with `x`.
+
+Conclude with `hv x _ ((key x _).2 rfl)`.
+-/
 theorem ExtModel.below_exists (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set.range D'.what₂.embLL) (v' : D'.what₂.places.Pl) :
     ∃! v, Below D D' v v' := by
   choose g hg using fun x => h ⟨x, rfl⟩
@@ -121,6 +163,15 @@ theorem ExtModel.below_exists (D D' : D7) (h : Set.range D.what₂.embLL ⊆ Set
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨q, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality.
+
+Establish `e0 : i = i'` using `Fin.ext hi`. Substitute `e0` using the available equality. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d l e g`.
+
+Consider the cases of `a`. Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `l`.
+
+Consider the cases of `e`. Consider the cases of `g`. Conclude with `⟨rfl, rfl, rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem ExtModel.mmap_eq (h : Enl B B') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
     {S : (w.st Z).toD7.what₂.Tau → SPar} {S' : (w'.st Z').toD7.what₂.Tau → SPar}
     (M : Formalism.IndefR.Mult.DSModel (Wc (w.st Z).toD7 i) S) (M' : Formalism.IndefR.Mult.DSModel (Wc (w'.st Z').toD7 i') S')
@@ -142,12 +193,20 @@ theorem ExtModel.mmap_eq (h : Enl B B') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w
   cases a; cases b; cases c; cases d; cases l; cases e; cases g
   exact ⟨rfl, rfl, rfl, HEq.rfl, HEq.rfl⟩
 
+/- English proof (translation)
+The claim follows from `if_pos z.R.hv0`.
+-/
 theorem ExtModel.sign_at_base_place_eq_embedding (z : Dat (w.st Z) w.I hX T Wt) :
     sg0 (w.st Z).toD7 (famR (w.st Z) w.I hX (usedOf w.I T Wt) z.Xg z.tr).A = (w.st Z).toD7.what₂.embLL :=
   if_pos z.R.hv0
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨q, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality.
+
+Establish `e0 : i = i'` using `Fin.ext hi`. Substitute `e0` using the available equality. Conclude with `⟨⟨{ k with }, HEq.rfl, HEq.rfl, rfl⟩, rfl, rfl⟩`.
+-/
 theorem ExtModel.more_carriers (h : Enl B B') (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
     (k : WeightFamilies.Wt (w.st Z).toD7 ((i : ℕ) + 1)) :
     (∃ k' : WeightFamilies.Wt (w'.st Z').toD7 ((i' : ℕ) + 1), HEq k'.aP k.aP ∧ HEq k'.aM k.aM ∧ k'.n = k.n) ∧
@@ -164,6 +223,11 @@ theorem ExtModel.more_carriers (h : Enl B B') (i : Fin (w.st Z).toD7.R.m) (i' : 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨q, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality.
+
+Conclude with `⟨rfl, HEq.rfl⟩`.
+-/
 theorem ExtModel.pol_eq (h : Enl B B') (n : ℕ) :
     Formalism.L2.DIV.Pol ℂ B'.fields.Tau n = Formalism.L2.DIV.Pol ℂ B.fields.Tau n ∧ HEq B'.wts.lamV B.wts.lamV := by
   obtain ⟨q, -⟩ := h
@@ -173,12 +237,20 @@ theorem ExtModel.pol_eq (h : Enl B B') (n : ℕ) :
   subst q
   exact ⟨rfl, HEq.rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨eq_of_heq (e.ref i i rfl).2.2.2.2.2.2.1, eq_of_heq (e.ref i i rfl).2.2.2.2.2.2.2, eq_of_heq e.ΛY⟩`.
+-/
 theorem ExtModel.meas_eq {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w.st Z) w.I hX T W₁} (e : Ext z z') (i : Fin (w.st Z).toD7.R.m) :
     z'.R.νW i = z.R.νW i ∧ z'.R.fdW i = z.R.fdW i ∧ z'.R.ΛY = z.R.ΛY :=
   ⟨eq_of_heq (e.ref i i rfl).2.2.2.2.2.2.1, eq_of_heq (e.ref i i rfl).2.2.2.2.2.2.2, eq_of_heq e.ΛY⟩
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `HEq.trans (heq_of_eq (map_zero _)) (HEq.trans ?_ (heq_of_eq (map_zero _)).symm)` and prove the remaining obligations. Use `clear d d'`. Take `⟨q, -⟩` from `h`. Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`.
+
+Simplify using `only at q`. Substitute `q` using the available equality. Conclude with `HEq.rfl`.
+-/
 theorem ExtModel.premise_zero (h : Enl B B') (U : Set w.I.ι) (U' : Set w'.I.ι) (j : ℕ) (d d') :
     HEq (MvPolynomial.map (B'.embLL : B'.fields.K →+* ℂ)
       ((0 : (Formalism.L2.Col.mtKGSD (Pr := B'.primes w'.px) B'.wts w'.I.Ch w'.I.sel (mu0F (X := B'.fields) (tuOf w'.I U')).1 j).EqFun).1 d').1)

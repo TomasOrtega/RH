@@ -29,15 +29,30 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 namespace GlobalTheory.LocWeilAct
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_mul])`.
+-/
 theorem conjU_mul' {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E)
     (hc : J = c • V.gram) (a b : GA D V) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c hc (a * b) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c hc a * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c hc b :=
   Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_mul])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_one])`.
+-/
 theorem conjU_one' {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E)
     (hc : J = c • V.gram) : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c hc 1 = 1 :=
   Subtype.ext (by simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU, map_one])
 
+/- English proof (translation)
+Introduce `φ hφ φ' hφ' c`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.RestWitness.exists_rest (F := F) κ v`. Establish `hs` using `Submodule.add_mem _ (Submodule.smul_mem _ c hφ) hφ'`. Establish `tl : ∀ f f' : (κ → Fv F v) → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) (c • f + f') R = c • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) f R + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) …`. Introduce `f f'`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) (S (c • φ + φ')) R = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) (c • S φ + S φ') R`. Rewrite using `[← (hS _ hs).2 R (hR _ hs), tl, tl, map_add, map_smul, (hS φ hφ).2 R (hR φ hφ), (hS φ' hφ').2 R (hR φ' hφ')]`.
+
+Use function extensionality and compare the values at `y`. Establish `hx` using `congrFun e (fun k => GlobalTheory.LatVac.liftV v (y k))`. Establish `hRx : R (fun k => GlobalTheory.LatVac.liftV v (y k)) = R 0`. Use `(hR φ hφ).1 0 (fun k => GlobalTheory.LatVac.liftV v (y k)) (fun u hu => funext fun k => GlobalTheory.LatVac.at_liftV v (y k) u hu)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, GlobalTheory.LatVac.evFin_liftV, hRx] at hx`. Conclude with `mul_right_cancel₀ hR0 hx`.
+-/
 theorem linear_of_acts {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (T : Module.End ℂ ((κ → AF F) → ℂ)) (S : ((κ → Fv F v) → ℂ) → (κ → Fv F v) → ℂ)
     (hS : ∀ φ ∈ GlobalTheory.WeilM.SB (κ → Fv F v), S φ ∈ GlobalTheory.WeilM.SB _ ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (evFin F v) T φ (S φ)) :
@@ -60,6 +75,21 @@ theorem linear_of_acts {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, GlobalTheory.LatVac.evFin_liftV, hRx] at hx
   exact mul_right_cancel₀ hR0 hx
 
+/- English proof (translation)
+Introduce `D T L sc G W t i j M e Bs Γ X om om' h hTr`. Take `⟨K, hK⟩` from `GlobalTheory.SplitGLLift.exists_hom_supp_split W t i j M e Bs Γ X om om' h hTr`. Set `K' : GL (Fin (G.V (.grid i j)).rank) (Fv D.host.F Bs.v₁) →* GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.V'.J` to `{ toFun := fun g => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU _ (-1) h.JW₁ (K g) map_one' := by simp only [map_one]; exact conjU_one' _ _ _ map_mul' := fun g g' => by simp only [map_mul]; exact conjU_mul' _ _ _ _ _ }`. Establish `hK' : ∀ g, K' g = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU _ (-1) h.JW₁ (K g)` using `fun _ => rfl`. Establish `hB` using `fun g => GlobalTheory.T.weilRepresentationLocality_unitaryGroupV' Bs Γ X om om' hTr Bs.v₁ (K' g) (hK g).1`.
+
+Use `choose S hS using hB`. Establish `hSplit` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hTr.weil'`. Establish `pres : ∀ p Φ, Φ ∈ GlobalTheory.WeilM.schA D.host.F _ → om' p Φ ∈ GlobalTheory.WeilM.schA D.host.F _` using `fun p Φ hΦ => hSplit.pres p Φ hΦ`. Establish `restS : ∀ g φ r, φ ∈ GlobalTheory.WeilM.SB _ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin D.host.F Bs.v₁) φ r → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin D.host.F Bs.v₁) (S g φ) r` using `fun g φ r hφ hr => ⟨hr.1, by rw [← (hS g φ hφ).2 r hr]; exact pres _ _ hr.2⟩`. Establish `h1 : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB _, S g φ ∈ GlobalTheory.WeilM.SB _` using `fun g φ hφ => (hS g φ hφ).1`.
+
+Establish `h2 : ∀ g g', ∀ φ ∈ GlobalTheory.WeilM.SB _, S (g * g') φ = S g (S g' φ)`. Introduce `g g' φ hφ`. Use `GlobalTheory.TensUniq.eq_of_tens_eq Bs.v₁ φ _ _ hφ fun r hr => ?_` and prove the remaining obligations. Establish `e1 : ((K' (g * g'), (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J))) = (K' g, 1) * (K' g', 1)` using `by rw [map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[← (hS (g * g') φ hφ).2 r hr, e1, map_mul, Module.End.mul_apply, (hS g' φ hφ).2 r hr, (hS g (S g' φ) (h1 g' φ hφ)).2 r (restS g' φ r hφ hr)]`.
+
+Establish `h3 : ∀ φ ∈ GlobalTheory.WeilM.SB _, S 1 φ = φ`. Introduce `φ hφ`. Use `GlobalTheory.TensUniq.eq_of_tens_eq Bs.v₁ φ _ _ hφ fun r hr => ?_` and prove the remaining obligations. Establish `e1 : ((K' 1, (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J))) = 1` using `by rw [map_one]; rfl`. Rewrite using `[← (hS 1 φ hφ).2 r hr, e1, map_one, Module.End.one_apply]`.
+
+Establish `hψ : Continuous Bs.ψ` using `hTr.base.std.1`. Establish `atAct : ∀ g (γ : Matrix _ _ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) γ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) …`. Introduce `g γ hγ u hu`. Simplify using `only [GlobalTheory.WeilM.actAB]`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hγ u hu, Matrix.mul_zero, Matrix.zero_mul]`.
+
+Establish `h4 : ∀ g (γ : Matrix _ _ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE D.host.F D.host.E)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) γ → ∀ φ ∈ GlobalTheory.WeilM.SB _, S g (GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt …`. Introduce `g γ hγ φ hφ`. Establish `hw` using `GlobalTheory.SchrSB.schr_mem_SB Bs.ψ hψ Bs.v₁ (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) φ hφ`. Use `GlobalTheory.TensUniq.eq_of_tens_eq Bs.v₁ φ _ _ hφ fun r hr => ?_` and prove the remaining obligations. Establish `hb1` using `GlobalTheory.VacBridge.rho_acts_locCo Γ.M'.co Bs.ψ Bs.v₁ γ hγ φ r hr`.
+
+Establish `hRw : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rest (evFin D.host.F Bs.v₁) (GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt Bs.ψ Bs.v₁) (GlobalTheory.LatVac.locCo Γ.M'.co Bs.v₁ γ) φ) r` using `⟨hr.1, by rw [← hb1]; exact GlobalTheory.HeisSchA.rho_mem_schA Γ.M' Bs.ψ hTr.base.std γ _ hr.2⟩`. Rewrite using `[← (hS g _ hw).2 r hRw, ← hb1, hSplit.impl _ _ _ hr.2, (hS g φ hφ).2 r hr, GlobalTheory.VacBridge.rho_acts_locCo Γ.M'.co Bs.ψ Bs.v₁ _ (atAct g γ hγ) (S g φ) r (restS g φ r hφ hr)]`. Establish `h5 : ∀ g, ∀ φ ∈ GlobalTheory.WeilM.SB _, ∀ μ : @Measure (Fin (G.V (.grid i j)).rank × Fin ((G.V (.grid (i + 1) (j + 1))).rank + (G.V (.grid i j)).rank) → Fv D.host.F Bs.v₁) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∫⁻ y, ‖S g φ y‖ₑ ^ 2 ∂μ = ∫⁻ y, ‖φ y‖ₑ ^ 2 ∂μ` using `fun g φ hφ μ hμ => GlobalTheory.T.localWeilOperator_isometry_schwartzBruhat Bs Γ X om om' hTr Bs.v₁ (K' g) (hK g).1 φ (S g φ) hφ (h1 g φ hφ) (hS g φ hφ).2 μ hμ`. Take `⟨ν, α, hν, hC⟩` from `GlobalTheory.T.heisenbergIntertwiner_eq_twisted_weilOperator Bs Γ X om om' hTr K' (fun g => hK g) S h1 (fun g => linear_of_acts Bs.v₁ (om' (K' g, 1)) (S g) (hS g)) h2 h3 h4 h5`. Conclude with `⟨ν, α, hν, fun ι hι g => ⟨K g, fun φ hφ r hr => ⟨S g φ, h1 g φ hφ, (hS g φ hφ).2 r hr, hC ι hι g φ hφ⟩⟩⟩`.
+-/
 theorem act_omB : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (e : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Num G i j) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j)
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep D.sp.cm.sig Γ.V Γ.W)

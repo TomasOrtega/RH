@@ -45,6 +45,9 @@ def heightSubstitutionCondition (h : d.S1) (x : Fin (d.N + 1) → K) (c : ι) (F
     algebraMap (KTp K d.D d.N) (KTf K d.D d.N) (d.translatedForm x F) *
       Algebra.norm (KTf K d.D d.N) (d.rationalBaseRow c)
 
+/- English proof (translation)
+Establish `h : ∃ b : Ω', f = b • g` using `⟨a, hf⟩`. Unfold `ratio`. Rewrite using `[dif_pos h]`. Conclude with `smul_left_injective Ω' hg (h.choose_spec.symm.trans hf)`.
+-/
 theorem ratio_eq_of_eq_smul_field {Ω' V : Type*} [Field Ω'] [AddCommGroup V] [Module Ω' V] {f g : V}
     (hg : g ≠ 0) {a : Ω'} (hf : f = a • g) : ratio (Ω := Ω') f g = a := by
   classical
@@ -53,6 +56,11 @@ theorem ratio_eq_of_eq_smul_field {Ω' V : Type*} [Field Ω'] [AddCommGroup V] [
   rw [dif_pos h]
   exact smul_left_injective Ω' hg (h.choose_spec.symm.trans hf)
 
+/- English proof (translation)
+Establish `hw` using `hd.w_mem (d.jc c) c`. Establish `hw0` using `hd.w_base c`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨_, hw⟩ : 𝒜 c d.wL) (by simpa using hw0)).1 (hd.finrank_one c d.wL) ⟨f, hf⟩`. Establish `hfa : f = a • d.w (d.jc c) c`. Establish `h1` using `congrArg Subtype.val ha`.
+
+Simplify using `only [SetLike.val_smul] at h1`. Conclude with `h1.symm`. Rewrite using `[ratio_eq_of_eq_smul_field hw0 hfa]`. Conclude with `hfa`.
+-/
 theorem eq_ratio_base_smul (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.wL) :
     f = ratio (Ω := Ω c) f (d.w (d.jc c) c) • d.w (d.jc c) c := by
   have hw := hd.w_mem (d.jc c) c
@@ -66,12 +74,20 @@ theorem eq_ratio_base_smul (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜
   rw [ratio_eq_of_eq_smul_field hw0 hfa]
   exact hfa
 
+/- English proof (translation)
+Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[d.eq_ratio_base_smul hd c hf, h0, zero_smul]`.
+-/
 theorem ratio_base_ne_zero (hd : d.AxH 𝒜) (c : ι) {f : A c} (hf : f ∈ 𝒜 c d.wL) (hf0 : f ≠ 0) :
     ratio (Ω := Ω c) f (d.w (d.jc c) c) ≠ 0 := by
   intro h0
   apply hf0
   rw [d.eq_ratio_base_smul hd c hf, h0, zero_smul]
 
+/- English proof (translation)
+Use `haveI := hd.tower c`. Unfold `wx`. Rewrite using `[Finset.sum_apply]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ← algebraMap_smul (Ω c) (x j)]`.
+
+Conclude with `Submodule.smul_mem _ _ (hd.w_mem j c)`.
+-/
 theorem linearCombination_mem_section (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K) (c : ι) : d.wx x c ∈ 𝒜 c d.wL := by
   haveI := hd.tower c
   unfold wx
@@ -80,6 +96,9 @@ theorem linearCombination_mem_section (hd : d.AxH 𝒜) (x : Fin (d.N + 1) → K
   rw [Pi.smul_apply, ← algebraMap_smul (Ω c) (x j)]
   exact Submodule.smul_mem _ _ (hd.w_mem j c)
 
+/- English proof (translation)
+Establish `hfa` using `d.eq_ratio_base_smul hd c hf`. Establish `ha` using `d.ratio_base_ne_zero hd c hf hf0`. Use `conv_lhs => rw [hfa]`. Conclude with `hd.ord_smul c v hv _ (hd.w_mem _ c) (hd.w_base c) ha`.
+-/
 theorem ord_eq_valuation_ratio_base_add (hd : d.AxH 𝒜) (c : ι) (v : AddValuation (Ω c) (WithTop ℤ)) (hv : d.admitted c v)
     {f : A c} (hf : f ∈ 𝒜 c d.wL) (hf0 : f ≠ 0) :
     ((d.ord c v d.wL f : ℤ) : WithTop ℤ) =
@@ -89,6 +108,11 @@ theorem ord_eq_valuation_ratio_base_add (hd : d.AxH 𝒜) (c : ι) (v : AddValua
   conv_lhs => rw [hfa]
   exact hd.ord_smul c v hv _ (hd.w_mem _ c) (hd.w_base c) ha
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨_, hg⟩ : 𝒜 c d.wL) (by simpa using hg0)).1 (hd.finrank_one c d.wL) ⟨f, hf⟩`. Establish `hfa : f = a • g`. Establish `h1` using `congrArg Subtype.val ha`. Simplify using `only [SetLike.val_smul] at h1`. Conclude with `h1.symm`.
+
+Rewrite using `[ratio_eq_of_eq_smul_field hg0 hfa]`. Conclude with `hfa`.
+-/
 theorem eq_ratio_smul_of_mem (hd : d.AxH 𝒜) (c : ι) {f g : A c} (hf : f ∈ 𝒜 c d.wL) (hg : g ∈ 𝒜 c d.wL)
     (hg0 : g ≠ 0) : f = ratio (Ω := Ω c) f g • g := by
   obtain ⟨a, ha⟩ := (finrank_eq_one_iff_of_nonzero' (⟨_, hg⟩ : 𝒜 c d.wL)
@@ -100,12 +124,18 @@ theorem eq_ratio_smul_of_mem (hd : d.AxH 𝒜) (c : ι) {f g : A c} (hf : f ∈ 
   rw [ratio_eq_of_eq_smul_field hg0 hfa]
   exact hfa
 
+/- English proof (translation)
+Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[d.eq_ratio_smul_of_mem hd c hf hg hg0, h0, zero_smul]`.
+-/
 theorem ratio_ne_zero_of_ne_zero (hd : d.AxH 𝒜) (c : ι) {f g : A c} (hf : f ∈ 𝒜 c d.wL) (hg : g ∈ 𝒜 c d.wL)
     (hg0 : g ≠ 0) (hf0 : f ≠ 0) : ratio (Ω := Ω c) f g ≠ 0 := by
   intro h0
   apply hf0
   rw [d.eq_ratio_smul_of_mem hd c hf hg hg0, h0, zero_smul]
 
+/- English proof (translation)
+Establish `hfa` using `d.eq_ratio_smul_of_mem hd c hf hg hg0`. Establish `ha` using `d.ratio_ne_zero_of_ne_zero hd c hf hg hg0 hf0`. Use `conv_lhs => rw [hfa]`. Conclude with `hd.ord_smul c v hv _ hg hg0 ha`.
+-/
 theorem ord_eq_valuation_ratio_add (hd : d.AxH 𝒜) (c : ι) (v : AddValuation (Ω c) (WithTop ℤ)) (hv : d.admitted c v)
     {f g : A c} (hf : f ∈ 𝒜 c d.wL) (hg : g ∈ 𝒜 c d.wL) (hg0 : g ≠ 0) (hf0 : f ≠ 0) :
     ((d.ord c v d.wL f : ℤ) : WithTop ℤ) =
@@ -115,6 +145,9 @@ theorem ord_eq_valuation_ratio_add (hd : d.AxH 𝒜) (c : ι) (v : AddValuation 
   conv_lhs => rw [hfa]
   exact hd.ord_smul c v hv _ hg hg0 ha
 
+/- English proof (translation)
+Establish `h1` using `d.eq_ratio_smul_of_mem hd c hf hg hg0`. Establish `h2` using `d.eq_ratio_smul_of_mem hd c hg he he0`. Apply `ratio_eq_of_eq_smul_field he0` to reduce the goal to its premises. Rewrite using `[mul_smul, ← h2, ← h1]`.
+-/
 theorem ratio_mul_ratio_height (hd : d.AxH 𝒜) (c : ι) {f g e : A c} (hf : f ∈ 𝒜 c d.wL)
     (hg : g ∈ 𝒜 c d.wL) (he : e ∈ 𝒜 c d.wL) (hg0 : g ≠ 0) (he0 : e ≠ 0) :
     ratio (Ω := Ω c) f e = ratio (Ω := Ω c) f g * ratio (Ω := Ω c) g e := by
@@ -123,10 +156,26 @@ theorem ratio_mul_ratio_height (hd : d.AxH 𝒜) (c : ι) {f g e : A c} (hf : f 
   apply ratio_eq_of_eq_smul_field he0
   rw [mul_smul, ← h2, ← h1]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `WithTop.ne_top_iff_exists.1 hv`. Rewrite using `[WithTop.untopD_coe]`.
+-/
 theorem coe_untopD_of_ne_top {v : WithTop ℤ} (hv : v ≠ ⊤) : ((v.untopD 0 : ℤ) : WithTop ℤ) = v := by
   obtain ⟨x, rfl⟩ := WithTop.ne_top_iff_exists.1 hv
   rw [WithTop.untopD_coe]
 
+/- English proof (translation)
+Establish `key : ∀ {g : A c}, g ∈ 𝒜 c d.wL → g ≠ 0 → d.ord c v d.wL g = (v (ratio (Ω` using `Ω c) g (d.w (d.jc c) c))).untopD 0 + d.ord c v d.wL (d.w (d.jc c) c) := by`. Introduce `g hg hg0`. Establish `h` using `d.ord_eq_valuation_ratio_base_add hd c v hv hg hg0`. Establish `hne : v (ratio (Ω` using `Ω c) g (d.w (d.jc c) c)) ≠ ⊤ := by`. Rewrite using `[Ne, AddValuation.top_iff]`.
+
+Conclude with `d.ratio_base_ne_zero hd c hg hg0`. Rewrite `h` using `[← coe_untopD_of_ne_top hne, ← WithTop.coe_add]`. Conclude with `WithTop.coe_inj.1 h`. Establish `hinf : (⨅ j : {j // d.w j c ≠ 0}, d.ord c v d.wL (d.w j c)) = d.ord c v d.wL (d.w j0 c)`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Conclude with `ciInf_le (Set.finite_range _).bddBelow (⟨j0, hj0⟩ : {j // d.w j c ≠ 0})`. Use `haveI : Nonempty {j // d.w j c ≠ 0} := ⟨⟨j0, hj0⟩⟩`. Use `le_ciInf fun j => ?_` and prove the remaining obligations. Establish `h` using `d.ord_eq_valuation_ratio_add hd c v hv (hd.w_mem j.1 c) (hd.w_mem j0 c) hj0 j.2`. Establish `hnn` using `hint j.1`.
+
+Establish `hne : v (ratio (Ω` using `Ω c) (d.w j.1 c) (d.w j0 c)) ≠ ⊤ := by`. Rewrite using `[Ne, AddValuation.top_iff]`. Conclude with `d.ratio_ne_zero_of_ne_zero hd c (hd.w_mem j.1 c) (hd.w_mem j0 c) hj0 j.2`. Rewrite `h` using `[← coe_untopD_of_ne_top hne, ← WithTop.coe_add]`. Establish `h'` using `WithTop.coe_inj.1 h`.
+
+Rewrite `hnn` using `[← coe_untopD_of_ne_top hne]`. Establish `h0 : 0 ≤ (v (ratio (Ω` using `Ω c) (d.w j.1 c) (d.w j0 c))).untopD 0 := by exact_mod_cast hnn`. Use linear arithmetic over natural numbers and integers. Unfold `ordMM`. Rewrite using `[hinf, key hf hf0, key (hd.w_mem j0 c) hj0]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordMinMax_eq_ratio_untop_sub (hd : d.AxH 𝒜) (c : ι) (v : AddValuation (Ω c) (WithTop ℤ)) (hv : d.admitted c v)
     (j0 : Fin (d.N + 1)) (hj0 : d.w j0 c ≠ 0)
     (hint : ∀ j, 0 ≤ v (ratio (Ω := Ω c) (d.w j c) (d.w j0 c)))

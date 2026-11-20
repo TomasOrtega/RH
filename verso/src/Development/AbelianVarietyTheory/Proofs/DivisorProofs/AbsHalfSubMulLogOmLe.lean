@@ -9,6 +9,19 @@ open NumberField
 
 namespace GlobalTheory.FrameDegSize
 
+/- English proof (translation)
+Use `set n := Module.finrank ℚ E with hn`. Establish `hπ` using `Real.pi_gt_three`. Establish `h1` using `abs_discr_ge h`. Rewrite `h1` using `[← hn]`. Establish `hn2 : 2 ≤ n` using `h`.
+
+Establish `hpow : (9 / 4 : ℝ) ≤ (Real.pi / 2) ^ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hsplit : (4 / 9 : ℝ) * (3 * Real.pi / 4) ^ n = (4 / 9 * (Real.pi / 2) ^ n) * (3 / 2) ^ n`. Rewrite using `[mul_assoc, ← mul_pow]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((3 : ℝ) / 2) ^ n ≤ ((|discr E| : ℤ) : ℝ)`. Use `le_trans ?_ (hsplit ▸ h1)` and prove the remaining obligations. Establish `h0 : (0 : ℝ) ≤ (3 / 2) ^ n` using `by positivity`. Establish `: (1 : ℝ) ≤ 4 / 9 * (Real.pi / 2) ^ n` using `by linarith`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hd : (0 : ℝ) < ((|discr E| : ℤ) : ℝ)` using `lt_of_lt_of_le (by positivity) h2`. Unfold `rootDiscr`. Rewrite using `[← hn, Real.log_rpow hd]`. Establish `h3 : (n : ℝ) * Real.log (3 / 2) ≤ Real.log ((|discr E| : ℤ) : ℝ)`.
+
+Rewrite using `[← Real.log_pow]; exact Real.log_le_log (by positivity) h2`. Establish `h4 : (1 : ℝ) / 3 ≤ Real.log (3 / 2)`. Use `Real.one_sub_inv_le_log_of_pos (x := 3 / 2) (by norm_num)` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast (by omega : 0 < n)`. Rewrite using `[inv_mul_eq_div, le_div_iff₀ hnpos]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem third_le_log_rootDiscr {E : Type} [Field E] [NumberField E] (h : 1 < Module.finrank ℚ E) :
     (1 : ℝ) / 3 ≤ Real.log (rootDiscr E) := by
   set n := Module.finrank ℚ E with hn
@@ -38,6 +51,11 @@ theorem third_le_log_rootDiscr {E : Type} [Field E] [NumberField E] (h : 1 < Mod
   rw [inv_mul_eq_div, le_div_iff₀ hnpos]
   nlinarith
 
+/- English proof (translation)
+Establish `hγ` using `Real.eulerMascheroniConstant_lt_two_thirds`. Establish `hπ` using `Real.pi_lt_d2`. Establish `hπ0` using `Real.pi_pos`. Rewrite using `[Real.log_mul (by norm_num) hπ0.ne']`. Establish `h2 : Real.log 2 ≤ 2 - 1` using `Real.log_le_sub_one_of_pos (by norm_num)`.
+
+Establish `h3 : Real.log Real.pi ≤ Real.pi - 1` using `Real.log_le_sub_one_of_pos hπ0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gamma_add_log_two_pi_le : Real.eulerMascheroniConstant + Real.log (2 * Real.pi) ≤ 4 := by
   have hγ := Real.eulerMascheroniConstant_lt_two_thirds
   have hπ := Real.pi_lt_d2
@@ -47,6 +65,9 @@ theorem gamma_add_log_two_pi_le : Real.eulerMascheroniConstant + Real.log (2 * R
   have h3 : Real.log Real.pi ≤ Real.pi - 1 := Real.log_le_sub_one_of_pos hπ0
   linarith
 
+/- English proof (translation)
+The claim follows from `|(GlobalTheory.CM.logOm E χ).re| ≤ 13 * Real.log (rootDiscr E) + |(deriv χ.LFunction 1 / χ.LFunction 1).re| := by have hl := third_le_log_rootDiscr h have hg := gamma_add_log_two_pi_le have hγ : 0 < Real.eulerMascheroniConstant := lt_trans (by norm_num) Real.one_half_lt_eulerMasc …`.
+-/
 theorem abs_re_logOm_le {E : Type} [Field E] [NumberField E] (h : 1 < Module.finrank ℚ E) {d : ℕ} [NeZero d]
     (χ : DirichletCharacter ℂ d) :
     |(GlobalTheory.CM.logOm E χ).re| ≤ 13 * Real.log (rootDiscr E) + |(deriv χ.LFunction 1 / χ.LFunction 1).re| := by
@@ -70,15 +91,24 @@ theorem abs_re_logOm_le {E : Type} [Field E] [NumberField E] (h : 1 < Module.fin
   have h2 := neg_abs_le (deriv χ.LFunction 1 / χ.LFunction 1).re
   rw [abs_le]; constructor <;> nlinarith
 
+/- English proof (translation)
+Unfold `rootDiscr Formalism.BasicNotions.Host.rdE`. Rewrite using `[Int.cast_abs, one_div]`.
+-/
 theorem rootDiscr_host (D : Formalism.BasicNotions.D7) : rootDiscr D.host.E = D.host.rdE := by
   unfold rootDiscr Formalism.BasicNotions.Host.rdE
   rw [Int.cast_abs, one_div]
 
+/- English proof (translation)
+Rewrite using `[D.host.finrank_cmField]`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_finrank_host (D : Formalism.BasicNotions.D7) : 1 < Module.finrank ℚ D.host.E := by
   rw [D.host.finrank_cmField]
   have := D.R.ord_pos
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.hyp.2.1.ne_zero⟩ |((p : ℝ) - q) / 2 * (GlobalTheory.CM.logOm D.host.E (Formalism.BasicNotions.chiK D)).re| ≤ 7 * ((p : ℝ) + q) * (Real.log D.host.rdE + |Formalism.BasicNotions.dlogL D 1|) := by haveI : NeZero D.host.d := ⟨D.host.hyp.2.1.ne_zero⟩ have h := abs_re_logOm_le …`.
+-/
 theorem abs_half_sub_mul_logOm_le (D : Formalism.BasicNotions.D7) (p q : ℕ) :
     haveI : NeZero D.host.d := ⟨D.host.hyp.2.1.ne_zero⟩
     |((p : ℝ) - q) / 2 * (GlobalTheory.CM.logOm D.host.E (Formalism.BasicNotions.chiK D)).re| ≤

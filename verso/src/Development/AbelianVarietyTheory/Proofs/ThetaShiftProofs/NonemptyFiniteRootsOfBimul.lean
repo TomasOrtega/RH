@@ -9,6 +9,11 @@ section Projective
 
 variable (O : Type*) [CommRing O] (X : Type*) [AddCommGroup X] [Module O X]
 
+/- English proof (translation)
+Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Take `⟨n, hn, c, hc⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) a).exists_nonzero_dvd ha`. Establish `h : n • x = 0`. Establish `hx' : a • x = 0` using `hx`.
+
+Rewrite using `[← Int.cast_smul_eq_zsmul O, ← eq_intCast (algebraMap ℤ O), hc, mul_comm, mul_smul, hx', smul_zero]`. Conclude with `(smul_eq_zero.1 h).resolve_left hn`.
+-/
 theorem torsion_eq_bot_of_int [IsDomain O] [Module.Finite ℤ O]
     [Module.IsTorsionFree ℤ X] : Submodule.torsion O X = ⊥ := by
   rw [eq_bot_iff]
@@ -21,6 +26,9 @@ theorem torsion_eq_bot_of_int [IsDomain O] [Module.Finite ℤ O]
       smul_zero]
   exact (smul_eq_zero.1 h).resolve_left hn
 
+/- English proof (translation)
+Establish `: Module.Finite O X` using `Module.Finite.of_restrictScalars_finite ℤ O X`. Establish `: Module.Flat O X` using `IsDedekindDomain.flat_iff_torsion_eq_bot.2 (torsion_eq_bot_of_int O X)`. Establish `: Module.FinitePresentation O X` using `Module.finitePresentation_of_finite O X`. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem projective_of_int [IsDedekindDomain O] [Module.Finite ℤ O] [Module.Finite ℤ X]
     [Module.IsTorsionFree ℤ X] : Module.Projective O X := by
   have : Module.Finite O X := Module.Finite.of_restrictScalars_finite ℤ O X
@@ -31,6 +39,9 @@ theorem projective_of_int [IsDedekindDomain O] [Module.Finite ℤ O] [Module.Fin
 
 variable {O X} in
 
+/- English proof (translation)
+Use `projective_of_int O X` as an intermediate fact. Take `⟨g, hg⟩` from `Module.projective_lifting_property p f hp`. Conclude with `⟨g, fun x => congr($hg x)⟩`.
+-/
 theorem exists_linearMap_lift_of_int [IsDedekindDomain O] [Module.Finite ℤ O] [Module.Finite ℤ X]
     [Module.IsTorsionFree ℤ X] {N N' : Type*} [AddCommGroup N] [Module O N] [AddCommGroup N']
     [Module O N'] (p : N →ₗ[O] N') (hp : Function.Surjective p) (f : X →ₗ[O] N') :
@@ -52,13 +63,30 @@ def pairForm (f g : X →ₗ[O] O) : Bil X O :=
     (fun _ _ _ => by simp only [map_add, star_add]; ring)
     (fun n _ _ => by simp only [map_zsmul, zsmul_eq_mul, star_mul, star_intCast]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pairForm_apply (f g : X →ₗ[O] O) (y x : X) :
     pairForm f g y x = f y * star (g x) + f x * star (g y) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y x => by simp only [pairForm_apply]; ring, fun a y x => by simp only [pairForm_apply, map_smul, smul_eq_mul, star_mul, star_star]; ring⟩`.
+-/
 theorem pairForm_mem_balForms (f g : X →ₗ[O] O) : pairForm f g ∈ balForms ℤ O X O :=
   ⟨fun y x => by simp only [pairForm_apply]; ring, fun a y x => by
     simp only [pairForm_apply, map_smul, smul_eq_mul, star_mul, star_star]; ring⟩
 
+/- English proof (translation)
+Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective O X`. Set `c : Fin n → X →ₗ[O] O` to `fun i => LinearMap.proj i ∘ₗ g`. Set `e : Fin n → X` to `fun i => f (Pi.single i 1)`. Establish `he (x : X) : ∑ i, c i x • e i = x`. Establish `h1 : f (g x) = x` using `congr($hfg x)`.
+
+Use `conv_rhs => rw [← h1, pi_eq_sum_univ' (g x), map_sum]`. Simplify using `[c, e]`. Set `Φ : Bil X (Fin n × Fin n → O)` to `LinearMap.mk₂ ℤ (fun y x ij => pairForm (c ij.1) (c ij.2) y x) (fun _ _ _ => by ext; simp only [map_add, LinearMap.add_apply, Pi.add_apply]) (fun _ _ _ => by ext; simp only [map_zsmul, LinearMap.smul_apply, Pi.smul_apply]) (fun _ _ _ => by ext; simp only [map_add, Pi.add_apply]) …`. Use `⟨n, Φ, ⟨fun y x => funext fun ij => (pairForm_mem_balForms _ _).1 y x, fun a y x => funext fun ij => (pairForm_mem_balForms _ _).2 a y x⟩, e, ?_⟩` and prove the remaining obligations. Introduce `B _ τ hτ`.
+
+Establish `key (y x : X) : ∑ ij : Fin n × Fin n, τ ((w * (c ij.1 y * star (c ij.2 x))) • e ij.1) (e ij.2) = τ (w • y) x` using `by conv_rhs => rw [← he y, ← he x]`. Rewrite using `[Fintype.sum_prod_type, Finset.smul_sum, map_sum τ, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hτ.2.right, smul_smul, smul_smul]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Introduce `y x`. Establish `h (ij : Fin n × Fin n) : τ ((w * Φ y x ij) • e ij.1) (e ij.2) = τ ((w * (c ij.1 y * star (c ij.2 x))) • e ij.1) (e ij.2) + τ ((w * (c ij.1 x * star (c ij.2 y))) • e ij.1) (e ij.2)`.
+
+Rewrite using `[← LinearMap.add_apply, ← map_add, ← add_smul, ← mul_add]`. Both sides reduce to the same expression. Simplify using `only [h, Finset.sum_add_distrib, key]`. Rewrite using `[hτ.1 (w • x) y, add_comm, hτ.2.add_of_add_star hw]`.
+-/
 theorem exists_universal_pi {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] :
     ∃ (n : ℕ) (Φ : Bil X (Fin n × Fin n → O)), Φ ∈ balForms ℤ O X (Fin n × Fin n → O) ∧
@@ -99,6 +127,11 @@ theorem exists_universal_pi {w : O} (hw : w + star w = 1) [Module.Finite O X]
   simp only [h, Finset.sum_add_distrib, key]
   rw [hτ.1 (w • x) y, add_comm, hτ.2.add_of_add_star hw]
 
+/- English proof (translation)
+Take `⟨n, Φ, hΦ, e, h⟩` from `exists_universal_pi (X := X) hw`. Set `r : (Fin n × Fin n → O) →ₗ[ℤ] B` to `∑ ij : Fin n × Fin n, τ.flip (e ij.2) ∘ₗ ((LinearMap.toSpanSingleton O X (e ij.1)) ∘ₗ LinearMap.mulLeft O w ∘ₗ LinearMap.proj ij).restrictScalars ℤ`. Take `⟨s, hs⟩` from `Module.projective_lifting_property p.toIntLinearMap r hp`. Use `⟨Φ.compr₂ s, ⟨fun y x => congrArg s (hΦ.1 y x), fun a y x => congrArg s (hΦ.2 a y x)⟩, fun y x => ?_⟩` and prove the remaining obligations. Establish `h1 : p (s (Φ y x)) = r (Φ y x)` using `congr($hs (Φ y x))`.
+
+Rewrite using `[h τ hτ, LinearMap.compr₂_apply, h1, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+-/
 theorem exists_balForms_lift {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.Free ℤ O] {A B : Type*} [AddCommGroup A]
     [AddCommGroup B] (p : A →+ B) (hp : Function.Surjective p) {τ : Bil X B}
@@ -116,6 +149,13 @@ theorem exists_balForms_lift {w : O} (hw : w + star w = 1) [Module.Finite O X]
   rw [h τ hτ, LinearMap.compr₂_apply, h1, LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Use `le_antisymm (fun z hz => ?_) fun z hz => mem_balRel.2 ⟨1, one_ne_zero, by rwa [one_smul]⟩` and prove the remaining obligations. Use `set R := Submodule.span ℤ {z : SymSq X | ∃ (a : O) (y x : X), z = SymSq.mk (a • y) x - SymSq.mk y (star a • x)}`. Take `⟨n, Φ, hΦ, e, h⟩` from `exists_universal_pi (X := X) hw`. Set `τ : Bil X (SymSq X ⧸ R)` to `SymSq.mk.compr₂ R.mkQ`. Establish `hτ : τ ∈ balForms ℤ O X (SymSq X ⧸ R)` using `⟨fun y x => congrArg R.mkQ (SymSq.mk_comm y x), fun a y x => (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨a, y, x, rfl⟩)⟩`.
+
+Set `r : (Fin n × Fin n → O) →ₗ[ℤ] SymSq X ⧸ R` to `∑ ij : Fin n × Fin n, τ.flip (e ij.2) ∘ₗ ((LinearMap.toSpanSingleton O X (e ij.1)) ∘ₗ LinearMap.mulLeft O w ∘ₗ LinearMap.proj ij).restrictScalars ℤ`. Establish `h1 : R.mkQ = r ∘ₗ BalSq.lift ℤ O X _ ⟨Φ, hΦ⟩ ∘ₗ (balRel O X).mkQ`. Use `SymSq.hom_ext fun y x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ y x = r (Φ y x)`. Rewrite using `[h τ hτ, LinearMap.sum_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← Submodule.mkQ_apply, h1, LinearMap.comp_apply, LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hz, map_zero, map_zero]`.
+-/
 theorem balRel_eq_span {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] :
     balRel O X = Submodule.span ℤ
@@ -141,6 +181,9 @@ theorem balRel_eq_span {w : O} (hw : w + star w = 1) [Module.Finite O X]
     LinearMap.comp_apply, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hz, map_zero,
     map_zero]
 
+/- English proof (translation)
+Use `⟨(balRel O X).liftQ (SymSq.lift ℤ X B ⟨τ, hτ.1⟩) ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Rewrite using `[balRel_eq_span hw, Submodule.span_le]`. Introduce and unpack `_ ⟨a, y, x, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub]`. Conclude with `sub_eq_zero.2 (hτ.2 a y x)`.
+-/
 theorem BalSq.exists_lift {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] {B : Type*} [AddCommGroup B] {τ : Bil X B}
     (hτ : τ ∈ balForms ℤ O X B) :
@@ -168,6 +211,9 @@ def balTensorMk : Bil X ((X ⊗[ℤ] X) ⧸ balTensorRel O X) :=
     (fun n y y' => by rw [← map_zsmul, ← smul_tmul]; rfl)
 
 variable (O X) in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y x => QuotientAddGroup.eq_iff_sub_mem.2 (AddSubgroup.subset_closure (Or.inr ⟨y, x, rfl⟩)), fun a y x => QuotientAddGroup.eq_iff_sub_mem.2 (AddSubgroup.subset_closure (Or.inl ⟨a, y, x, rfl⟩))⟩`.
+-/
 theorem balTensorMk_mem_balForms :
     balTensorMk O ∈ balForms ℤ O X ((X ⊗[ℤ] X) ⧸ balTensorRel O X) :=
   ⟨fun y x => QuotientAddGroup.eq_iff_sub_mem.2 (AddSubgroup.subset_closure (Or.inr ⟨y, x, rfl⟩)),
@@ -183,9 +229,17 @@ def balTensorLift {B : Type*} [AddCommGroup B] (τ : balForms ℤ O X B) :
       · exact sub_eq_zero.2 (τ.2.2 a y x)
       · exact sub_eq_zero.2 (τ.2.1 y x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem balTensorLift_mk {B : Type*} [AddCommGroup B] (τ : balForms ℤ O X B) (y x : X) :
     balTensorLift τ (balTensorMk O y x) = (τ : Bil X B) y x := rfl
 
+/- English proof (translation)
+Use `AddMonoidHom.ext fun z => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `QuotientAddGroup.mk'_surjective _ z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul y x => exact h y x`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem balTensor_hom_ext {B : Type*} [AddCommGroup B]
     {f g : (X ⊗[ℤ] X) ⧸ balTensorRel O X →+ B}
     (h : ∀ y x, f (balTensorMk O y x) = g (balTensorMk O y x)) : f = g := by
@@ -196,6 +250,11 @@ theorem balTensor_hom_ext {B : Type*} [AddCommGroup B]
   | tmul y x => exact h y x
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `BalSq.exists_lift hw (balTensorMk_mem_balForms O X)`. Use `set F := balTensorLift ⟨BalSq.mk O, BalSq.mk_mem_balForms O X⟩`. Establish `h1 : l.toAddMonoidHom.comp F = AddMonoidHom.id _` using `balTensor_hom_ext hl`. Establish `h2 : F.toIntLinearMap ∘ₗ l = LinearMap.id` using `BalSq.hom_ext fun y x => by`. Express the relevant statement in the definitionally equal form `F (l (BalSq.mk O y x)) = _`.
+
+Rewrite using `[hl]`. Both sides reduce to the same expression. Conclude with `Function.bijective_iff_has_inverse.2 ⟨l, fun z => congr($h1 z), fun z => congr($h2 z)⟩`.
+-/
 theorem balTensorLift_bijective {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] :
     Function.Bijective (balTensorLift ⟨BalSq.mk O, BalSq.mk_mem_balForms O X⟩) := by
@@ -213,16 +272,25 @@ noncomputable def balTensorEquiv {w : O} (hw : w + star w = 1) [Module.Finite O 
     ((X ⊗[ℤ] X) ⧸ balTensorRel O X) ≃+ BalSq O X :=
   AddEquiv.ofBijective _ (balTensorLift_bijective hw)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem balTensorEquiv_mk {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] (y x : X) :
     balTensorEquiv hw (balTensorMk O y x) = BalSq.mk O y x := rfl
 
+/- English proof (translation)
+The claim follows from `(balTensorEquiv hw).toIntLinearEquiv.injective.moduleIsTorsionFree _ (balTensorEquiv hw).toIntLinearEquiv.map_smul`.
+-/
 theorem isTorsionFree_balTensor {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] :
     Module.IsTorsionFree ℤ ((X ⊗[ℤ] X) ⧸ balTensorRel O X) :=
   (balTensorEquiv hw).toIntLinearEquiv.injective.moduleIsTorsionFree _
     (balTensorEquiv hw).toIntLinearEquiv.map_smul
 
+/- English proof (translation)
+Establish `h : Module.Finite ℤ (X ⊗[ℤ] X)`. Use `Module.Finite.tensorProduct ℤ X X using 0` and compare the differences between its conclusion and the goal. Use `congr!`. Conclude with `Module.Finite.of_surjective (QuotientAddGroup.mk' (balTensorRel O X)).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`.
+-/
 theorem finite_balTensor [Module.Finite ℤ X] :
     Module.Finite ℤ ((X ⊗[ℤ] X) ⧸ balTensorRel O X) := by
   have h : Module.Finite ℤ (X ⊗[ℤ] X) := by
@@ -231,6 +299,9 @@ theorem finite_balTensor [Module.Finite ℤ X] :
   exact Module.Finite.of_surjective (QuotientAddGroup.mk' (balTensorRel O X)).toIntLinearMap
     (QuotientAddGroup.mk'_surjective _)
 
+/- English proof (translation)
+Establish `: Module.Finite O X` using `Module.Finite.of_restrictScalars_finite ℤ O X`. Use `isTorsionFree_balTensor (X := X) hw` as an intermediate fact. Use `finite_balTensor (O := O) (X := X)` as an intermediate fact. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem free_balTensor {w : O} (hw : w + star w = 1) [Module.Finite ℤ X]
     [Module.Projective O X] [Module.IsTorsionFree ℤ O] :
     Module.Free ℤ ((X ⊗[ℤ] X) ⧸ balTensorRel O X) := by
@@ -245,6 +316,9 @@ def bilOfMul {X G : Type*} [AddCommGroup X] [CommGroup G] (t : X → X → G)
   (AddMonoidHom.mk' (fun y => (AddMonoidHom.mk' (fun x => Additive.ofMul (t y x))
     (h₂ y)).toIntLinearMap) fun y y' => LinearMap.ext fun x => h₁ y y' x).toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem bilOfMul_apply {X G : Type*} [AddCommGroup X] [CommGroup G] (t : X → X → G)
     (h₁ : ∀ y y' x, t (y + y') x = t y x * t y' x) (h₂ : ∀ y x x', t y (x + x') = t y x * t y x')
     (y x : X) : bilOfMul t h₁ h₂ y x = Additive.ofMul (t y x) := rfl
@@ -256,14 +330,23 @@ noncomputable def expTwoPiI : ℂ →+ Additive ℂˣ :=
       change Complex.exp _ = Complex.exp _ * Complex.exp _
       rw [← Complex.exp_add, mul_add]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_expTwoPiI (z : ℂ) :
     ((expTwoPiI z).toMul : ℂ) = Complex.exp (2 * Real.pi * Complex.I * z) := rfl
 
+/- English proof (translation)
+Introduce `u` and use `⟨Complex.log (u.toMul : ℂ) / (2 * Real.pi * Complex.I), Units.ext <| by change Complex.exp _ = (u.toMul : ℂ) rw [mul_div_cancel₀ _ Complex.two_pi_I_ne_zero, Complex.exp_log (Units.ne_zero _)]⟩`.
+-/
 theorem expTwoPiI_surjective : Function.Surjective expTwoPiI := fun u =>
   ⟨Complex.log (u.toMul : ℂ) / (2 * Real.pi * Complex.I), Units.ext <| by
     change Complex.exp _ = (u.toMul : ℂ)
     rw [mul_div_cancel₀ _ Complex.two_pi_I_ne_zero, Complex.exp_log (Units.ne_zero _)]⟩
 
+/- English proof (translation)
+Take `⟨T, hT, h⟩` from `exists_balForms_lift hw expTwoPiI expTwoPiI_surjective hτ`. Conclude with `⟨T, hT, fun y x => by rw [← h, coe_expTwoPiI]⟩`.
+-/
 theorem exists_balForms_log {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.Free ℤ O] {τ : Bil X (Additive ℂˣ)}
     (hτ : τ ∈ balForms ℤ O X (Additive ℂˣ)) :
@@ -272,6 +355,9 @@ theorem exists_balForms_log {w : O} (hw : w + star w = 1) [Module.Finite O X]
   obtain ⟨T, hT, h⟩ := exists_balForms_lift hw expTwoPiI expTwoPiI_surjective hτ
   exact ⟨T, hT, fun y x => by rw [← h, coe_expTwoPiI]⟩
 
+/- English proof (translation)
+Establish `h₁ : ∀ y y' x, t (y + y') x = t y x * t y' x` using `fun y y' x => by`. Rewrite using `[hs, h₂, hs x, hs x]`. Take `⟨T, hT, h⟩` from `exists_balForms_log hw (τ := bilOfMul t h₁ h₂) ⟨hs, hb⟩`. Conclude with `⟨T, hT.1, hT.2, h⟩`.
+-/
 theorem exists_log_of_bimul {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.Free ℤ O] (t : X → X → ℂˣ)
     (h₂ : ∀ y x x', t y (x + x') = t y x * t y x') (hs : ∀ y x, t y x = t x y)
@@ -284,6 +370,9 @@ theorem exists_log_of_bimul {w : O} (hw : w + star w = 1) [Module.Finite O X]
   obtain ⟨T, hT, h⟩ := exists_balForms_log hw (τ := bilOfMul t h₁ h₂) ⟨hs, hb⟩
   exact ⟨T, hT.1, hT.2, h⟩
 
+/- English proof (translation)
+The claim follows from `exists_log_of_bimul hw (fun y x => Units.mk0 (t y x) (h₀ y x)) (fun y x x' => Units.ext (h₂ y x x')) (fun y x => Units.ext (hs y x)) fun a y x => Units.ext (hb a y x)`.
+-/
 theorem exists_log_of_bimul_ne_zero {w : O} (hw : w + star w = 1) [Module.Finite O X]
     [Module.Projective O X] [Module.Free ℤ O] (t : X → X → ℂ) (h₀ : ∀ y x, t y x ≠ 0)
     (h₂ : ∀ y x x', t y (x + x') = t y x * t y x') (hs : ∀ y x, t y x = t x y)

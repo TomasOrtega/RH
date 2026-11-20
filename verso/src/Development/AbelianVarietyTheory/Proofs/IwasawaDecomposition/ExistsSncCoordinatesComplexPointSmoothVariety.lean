@@ -16,6 +16,13 @@ noncomputable section
 namespace GlobalTheory
 namespace SncChart
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `l hl`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hl0 : l ≠ 0` using `fun h => by obtain ⟨i, hi⟩ := hne; exact hi (congrFun h i)`.
+
+Take `⟨δ, hc0, hlb, hne'⟩` from `GlobalTheory.T.exists_complexPointDerivation_separating_params_charZero k Y p n σ inferInstance x₀ U hy m f hR l hl0`. Take `⟨v, hv⟩` from `GlobalTheory.T.pointDerivation_affineOpen_eq_fderiv_etaleChart k Y p n σ c x₀ hx U (CxPts.mem_ptsIn.2 hy) δ hc0 hlb`. Apply `hne'` to reduce the goal to its premises. Use `congrArg (fun F => F v) hl` as an intermediate fact. Simplify using `only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.zero_apply] at this`.
+
+Simplify `this` using `[hv]`.
+-/
 theorem linearIndependent_fderiv_params (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (n : ℕ) (σ : k →+* ℂ)
     [SmoothOfRelativeDimension n p] (c : AlgChart p σ n) (x₀ : CxPts p σ) (hx : x₀ ∈ c.e.source)
     (U : Y.affineOpens) (hy : x₀.1 (IsLocalRing.closedPoint ℂ) ∈ U.1) (m : ℕ) (f : Fin m → Γ(Y, U.1))
@@ -35,6 +42,15 @@ theorem linearIndependent_fderiv_params (k : Type) [Field k] [CharZero k] (Y : S
     Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.zero_apply] at this
   simpa [hv] using this
 
+/- English proof (translation)
+Set `c'` to `c.restr (CxPts.ptsIn p σ W) (CxPts.isOpen_ptsIn W)`. Establish `hx' : x₀ ∈ c'.e.source` using `⟨hx, hW⟩`. Set `G : Fin a → ReciprocityTheory.L2DbarEstimates.V n → ℂ` to `fun i => CxPts.ev p σ W (g i) ∘ c.e.symm`. Establish `hv0 : c.e x₀ ∈ c'.e.target` using `c'.e.map_source hx'`. Establish `hG : ∀ i, DifferentiableOn ℂ (G i) c'.e.target` using `fun i => (c.holo W (g i)).mono (fun v hv => ⟨hv.1, hv.2⟩)`.
+
+Establish `hG0 : ∀ i, G i (c.e x₀) = 0`. Introduce `i`. Simplify using `only [G, Function.comp_apply, c.e.left_inv hx, h0]`. Take `⟨ψ, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.complete_holomorphic_coordinates_independent_differentials n a (c.e x₀) c'.e.target G c'.e.open_target hv0 hG hG0 hli`. Take `⟨hh, hs⟩` from `GlobalTheory.T.etaleChart_holomorphic_coordinate_change k Y p n σ c' ψ h4 h5`.
+
+Use `⟨c'.e.trans ψ, ⟨hx', h1⟩, fun x hx => hx.1.2, h3, hh, hs, fun x hx j hj => ?_⟩` and prove the remaining obligations. Use `h6 _ hx.2 j hj` as an intermediate fact. Simplify using `only [OpenPartialHomeomorph.coe_trans, Function.comp_apply] at this ⊢`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [G, Function.comp_apply]`.
+
+Conclude with `congrArg _ (c'.e.left_inv hx.1)`.
+-/
 theorem exists_chart_of_fderiv (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (n : ℕ) (σ : k →+* ℂ)
     (c : AlgChart p σ n) (x₀ : CxPts p σ) (hx : x₀ ∈ c.e.source) (W : Y.Opens)
     (hW : x₀ ∈ CxPts.ptsIn p σ W) (a : ℕ) (g : Fin a → Γ(Y, W))
@@ -61,6 +77,21 @@ theorem exists_chart_of_fderiv (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y �
   simp only [G, Function.comp_apply]
   exact congrArg _ (c'.e.left_inv hx.1)
 
+/- English proof (translation)
+Introduce `k _ _ Y p n D σ hsm hsnc x₀`. Use `haveI := hsm`. Take `⟨-, U, hy, m, f, J, hR, hD⟩` from `hsnc (x₀.1 (IsLocalRing.closedPoint ℂ))`. Take `⟨c, hc⟩` from `AlgChart.exists_mem_source (D := n) (p := p) (σ := σ) x₀`. Establish `hli` using `linearIndependent_fderiv_params k Y p n σ c x₀ hc U hy m f hR`.
+
+Set `ix : Fin J.card → Fin m` to `fun i => (J.equivFin.symm i).1`. Establish `hix : Function.Injective ix` using `fun i j h => J.equivFin.symm.injective (Subtype.ext h)`. Establish `hxU : x₀ ∈ CxPts.ptsIn p σ U.1` using `CxPts.mem_ptsIn.2 hy`. Establish `h0 : ∀ i, CxPts.ev p σ U.1 (f (ix i)) x₀ = 0`. Introduce `i`.
+
+Assume the negation of the conclusion as `hne`. Establish `hb` using `CxPts.mem_ptsIn.1 ((CxPts.mem_ptsIn_basicOpen hxU (f (ix i))).2 hne)`. Rewrite `hb` using `[Scheme.mem_basicOpen _ _ _ hy]`. Establish `hmem : Y.presheaf.germ U.1 _ hy (f (ix i)) ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[← hR.1]`.
+
+Conclude with `Ideal.subset_span ⟨ix i, rfl⟩`. Conclude with `hmem hb`. Establish `hli'` using `hli.comp ix hix`. Establish `hcard : J.card ≤ n`. Use `hli'.fintype_card_le_finrank` as an intermediate fact.
+
+Rewrite `this` using `[← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := ReciprocityTheory.L2DbarEstimates.V n) (F' := ℂ)).finrank_eq, Module.finrank_linearMap, Module.finrank_self, _root_.mul_one]`. Simplify `this` using `[ReciprocityTheory.L2DbarEstimates.V]`. Take `⟨e, hx0, hsub, he0, hhol, hsymm, hev⟩` from `exists_chart_of_fderiv k Y p n σ c x₀ hc U.1 hxU J.card (fun i => f (ix i)) h0 hli'`. Use `⟨J.card, e, hx0, he0, hhol, hsymm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.complexPoint_mem_closed_iff_factor_vanishes k Y p σ D U m f J hD x (hsub hx)]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h j hj he`. Conclude with `h ⟨ix ⟨j, hj⟩, (J.equivFin.symm _).2, by rw [← hev x hx j hj]; exact he⟩`. Introduce and unpack `h ⟨i, hi, hi0⟩`. Establish `ht : ix (J.equivFin ⟨i, hi⟩) = i` using `by simp [ix]`.
+
+Establish `hlt : ((J.equivFin ⟨i, hi⟩ : Fin J.card) : ℕ) < n` using `lt_of_lt_of_le (Fin.isLt _) hcard`. Use `h ⟨_, hlt⟩ (J.equivFin ⟨i, hi⟩).isLt ?_` and prove the remaining obligations. Rewrite using `[hev x hx ⟨_, hlt⟩ (J.equivFin ⟨i, hi⟩).isLt]`. Simplify `hi0` using `[ht]`.
+-/
 theorem exists_coords : ∀ (k : Type) [Field k] [CharZero k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (n : ℕ) (D : TopologicalSpace.Closeds Y) (σ : k →+* ℂ), SmoothOfRelativeDimension n p → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal D) → ∀ x₀ : CxPts p σ, ∃ (a : ℕ) (e : OpenPartialHomeomorph (CxPts p σ) (Fin n → ℂ)), x₀ ∈ e.source ∧ e x₀ = 0 ∧ (∀ j, HolAlong e.source fun x => e x j) ∧ IsHolTo e.target (fun z => (e.symm z).1) ∧ ∀ x ∈ e.source, (x.1 (IsLocalRing.closedPoint ℂ) ∉ D ↔ ∀ j : Fin n, (j : ℕ) < a → e x j ≠ 0) := by
   intro k _ _ Y p n D σ hsm hsnc x₀
   haveI := hsm

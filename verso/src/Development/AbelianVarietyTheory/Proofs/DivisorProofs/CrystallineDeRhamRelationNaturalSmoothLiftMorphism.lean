@@ -19,6 +19,27 @@ namespace GlobalTheory.PDForm.LiftNat
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `D D' Λ Λ' σ φ φ₀ hφ m hi c h h' ⟨k, f, w, hc, hh, hk, hw⟩ ⟨k', f', w', hc', hh', hk', hw'⟩`. Substitute `hh hh'` using the available equality. Take `⟨g0, hg0⟩` from `GlobalTheory.T.compatibleFormsCocycles_degreeOne_differ_coboundary _ _ _ _ _ _ _ _ _ _ _ _ m k k' f f' hk hk' (by rw [hc', ← hc])`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_natTrans_lifts_over_affine_pairs D D' Λ Λ' σ φ φ₀ hφ m hi`.
+
+Establish `e1 : (morMap m).h1 (QuotientAddGroup.mk k) = QuotientAddGroup.mk k'`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk ((morMap m).z1 k) : (KK D'.κ D'.t).H1) = QuotientAddGroup.mk k'`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `⟨-g0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, hg0]`.
+
+Express the relevant statement in the definitionally equal form `-((morMap m).p1 k.1 - k'.1) = -((morMap m).p1 k.1) + k'.1`. Normalize the expressions using the abelian group laws. Establish `e2 : ((pairB Λ' φ m).pre θ).h1 (QuotientAddGroup.mk k) = ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).h1 (QuotientAddGroup.mk k')`. Rewrite using `[(GlobalTheory.CxCoh.joinedOne_inst.2.1 _ _ θ (CxMap.joined_pre _ θ)).2, pairB, CxMap.cohomOne_pullback_comp, e1]`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((pairB Λ' φ m).pre θ).z1 k) : ((KK D'.κ D'.t).res (pairFst φ ⋙ Λ'.L)).H1) = QuotientAddGroup.mk (((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).z1 k') at e2`.
+
+Rewrite `e2` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Take `⟨g, hg⟩` from `e2`. Use `GlobalTheory.T.deRham_degree_one_class_pullback_of_coboundary D D' Λ Λ' σ φ φ₀ hφ m θ hθ k k' w w' hw hw' (-g) ?_` and prove the remaining obligations. Rewrite using `[map_neg, hg]`. Express the relevant statement in the definitionally equal form `-(-(((pairB Λ' φ m).pre θ).p1 k.1) + ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).p1 k'.1) = _`.
+
+Normalize the expressions using the abelian group laws. Introduce `D D' Λ Λ' σ φ φ₀ hφ m hi c h h' hr hr'`. Take `⟨k, f, w, hc, hh, hk, hw⟩` from `hr`. Take `⟨k', f', w', hc', hh', hk', hw'⟩` from `hr'`. Substitute `hh hh'` using the available equality.
+
+Take `⟨g0, hg0⟩` from `GlobalTheory.T.compatibleFormsCocycles_degreeTwo_differ_coboundary _ _ _ _ _ _ _ _ _ _ _ _ m k k' f f' hk hk' (by rw [hc', ← hc])`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_natTrans_lifts_over_affine_pairs D D' Λ Λ' σ φ φ₀ hφ m hi`. Establish `e1 : (morMap m).h2 (QuotientAddGroup.mk k) = QuotientAddGroup.mk k'`. Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk ((morMap m).z2 k) : (KK D'.κ D'.t).H2) = QuotientAddGroup.mk k'`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+
+Use `⟨-g0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, hg0]`. Express the relevant statement in the definitionally equal form `-((morMap m).p2 k.1 - k'.1) = -((morMap m).p2 k.1) + k'.1`. Normalize the expressions using the abelian group laws. Establish `e2 : ((pairB Λ' φ m).pre θ).h2 (QuotientAddGroup.mk k) = ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).h2 (QuotientAddGroup.mk k')`.
+
+Establish `j` using `GlobalTheory.CxCoh.JoinedTwoProof.main ((pairB Λ' φ m).pre θ) (pairB Λ' φ m) θ (CxMap.joined_pre _ θ) (QuotientAddGroup.mk k)`. Use `j.trans ?_` and prove the remaining obligations. Establish `j2` using `CxMap.cohomTwo_pullback_comp (morMap m) ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)) (QuotientAddGroup.mk k)`. Use `j2.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ e1`.
+
+Express the relevant statement in the definitionally equal form `(QuotientAddGroup.mk (((pairB Λ' φ m).pre θ).z2 k) : ((KK D'.κ D'.t).res (pairFst φ ⋙ Λ'.L)).H2) = QuotientAddGroup.mk (((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).z2 k') at e2`. Rewrite `e2` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Take `⟨g, hg⟩` from `e2`. Use `GlobalTheory.T.deRham_degree_two_class_pullback_of_coboundary D D' Λ Λ' σ φ φ₀ hφ m θ hθ k k' w w' hw hw' (-g) ?_` and prove the remaining obligations. Rewrite using `[map_neg, hg]`.
+
+Express the relevant statement in the definitionally equal form `-(-(((pairB Λ' φ m).pre θ).p2 k.1) + ((KK D'.κ D'.t).resMap (pairFst φ ⋙ Λ'.L)).p2 k'.1) = _`. Normalize the expressions using the abelian group laws.
+-/
 theorem main : (∀ (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* D'.R) (φ : D'.X ⟶ D.X) (φ₀ : D'.X₀ ⟶ D.X₀) (hφ : φ ≫ D.s = D'.s ≫ spMap σ) (m : IsMor D.κ D.t D'.κ D'.t σ φ₀), φ₀ ≫ D.i = D'.i ≫ φ → ∀ c h h', Λ.Rel1 c h → Λ'.Rel1 (m.pull1 c) h' → IsPull1 hφ h h') ∧ ∀ (D D' : Data) (Λ : Lift D) (Λ' : Lift D') (σ : D.R →+* D'.R) (φ : D'.X ⟶ D.X) (φ₀ : D'.X₀ ⟶ D.X₀) (hφ : φ ≫ D.s = D'.s ≫ spMap σ) (m : IsMor D.κ D.t D'.κ D'.t σ φ₀), φ₀ ≫ D.i = D'.i ≫ φ → ∀ c h h', Λ.Rel2 c h → Λ'.Rel2 (m.pull2 c) h' → IsPull2 hφ h h' := by
   refine ⟨?_, ?_⟩
   · intro D D' Λ Λ' σ φ φ₀ hφ m hi c h h' ⟨k, f, w, hc, hh, hk, hw⟩ ⟨k', f', w', hc', hh', hk', hw'⟩

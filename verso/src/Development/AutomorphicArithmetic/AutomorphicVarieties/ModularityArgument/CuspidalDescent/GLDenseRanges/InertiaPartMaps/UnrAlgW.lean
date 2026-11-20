@@ -15,6 +15,11 @@ open Polynomial
 
 namespace UpperTheory.V.J
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Establish `h1 : f j ≠ 0` using `hf j (Finset.mem_insert_self j S)`.
+
+Establish `h2 : ∏ i ∈ S, f i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i hi => hf i (Finset.mem_insert_of_mem hi)`. Rewrite using `[rootMultiplicity_mul (mul_ne_zero h1 h2), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+-/
 private lemma rm_prod {K ι : Type} [Field K] (S : Finset ι) (f : ι → K[X]) (hf : ∀ i ∈ S, f i ≠ 0) (a : K) :
     rootMultiplicity a (∏ i ∈ S, f i) = ∑ i ∈ S, rootMultiplicity a (f i) := by
   classical
@@ -27,6 +32,9 @@ private lemma rm_prod {K ι : Type} [Field K] (S : Finset ι) (f : ι → K[X]) 
       Finset.prod_ne_zero_iff.2 fun i hi => hf i (Finset.mem_insert_of_mem hi)
     rw [rootMultiplicity_mul (mul_ne_zero h1 h2), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, rootMultiplicity_mul (mul_ne_zero (pow_ne_zero _ hf) hf), ih, Nat.succ_mul]`.
+-/
 private lemma rm_pow {K : Type} [Field K] (f : K[X]) (hf : f ≠ 0) (a : K) (n : ℕ) :
     rootMultiplicity a (f ^ n) = n * rootMultiplicity a f := by
   induction n with
@@ -34,6 +42,9 @@ private lemma rm_pow {K : Type} [Field K] (f : K[X]) (hf : f ≠ 0) (a : K) (n :
   | succ n ih =>
     rw [pow_succ, rootMultiplicity_mul (mul_ne_zero (pow_ne_zero _ hf) hf), ih, Nat.succ_mul]
 
+/- English proof (translation)
+Establish `hne : ∀ i, (g i).map φ ≠ 0` using `fun i => ((hg i).map φ).ne_zero`. Rewrite using `[Polynomial.map_prod]`. Simplify using `only [Polynomial.map_pow]`. Rewrite using `[rm_prod _ _ (fun i _ => pow_ne_zero _ (hne i))]`. Conclude with `Finset.sum_congr rfl fun i _ => rm_pow _ (hne i) z (m i)`.
+-/
 private lemma rm_map_prod {Λ K : Type} [CommRing Λ] [Field K] (φ : Λ →+* K) {s : ℕ} (g : Fin s → Λ[X])
     (hg : ∀ i, (g i).Monic) (m : Fin s → ℕ) (z : K) :
     rootMultiplicity z ((∏ i, g i ^ m i).map φ) = ∑ i, m i * rootMultiplicity z ((g i).map φ) := by
@@ -43,6 +54,15 @@ private lemma rm_map_prod {Λ K : Type} [CommRing Λ] [Field K] (φ : Λ →+* K
   rw [rm_prod _ _ (fun i _ => pow_ne_zero _ (hne i))]
   exact Finset.sum_congr rfl fun i _ => rm_pow _ (hne i) z (m i)
 
+/- English proof (translation)
+Take `⟨i0, hi0⟩` from `hex`. Establish `hN : 1 ≤ N`. Establish `h0 : m i0 * k i0 ≤ ∑ i, m i * k i` using `Finset.single_le_sum (f := fun i => m i * k i) (fun i _ => Nat.zero_le _) (Finset.mem_univ i0)`. Establish `hp : 0 < m i0 * k i0` using `Nat.mul_pos (hm i0) hi0`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1 : N * ∑ i, k i ≤ N`. Rewrite using `[Finset.mul_sum]`. Use `le_trans (Finset.sum_le_sum fun i _ => ?_) hsum` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (k i) with h0 | hp` into its components or cases. Simplify using `[h0]`.
+
+Conclude with `Nat.mul_le_mul_right _ (hle i hp)`. Establish `h2 : ∑ i, k i ≤ 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: N * 2 ≤ N * ∑ i, k i` using `Nat.mul_le_mul_left _ hc`.
+
+Use linear arithmetic over natural numbers and integers. Establish `h3 : k i0 ≤ ∑ i, k i` using `Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ i0)`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma num_core {s : ℕ} (k m : Fin s → ℕ) (N : ℕ) (hm : ∀ i, 1 ≤ m i)
     (hsum : ∑ i, m i * k i ≤ N) (hle : ∀ i, 0 < k i → N ≤ m i) (hex : ∃ i, 0 < k i) :
     ∑ i, k i = 1 := by
@@ -66,6 +86,11 @@ private lemma num_core {s : ℕ} (k m : Fin s → ℕ) (N : ℕ) (hm : ∀ i, 1 
   have h3 : k i0 ≤ ∑ i, k i := Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ i0)
   omega
 
+/- English proof (translation)
+Introduce `hdvd`. Establish `hne : derivative g ≠ 0` using `fun h0 => by`. Use `natDegree_eq_zero_of_derivative_eq_zero h0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `natDegree_le_of_dvd hdvd hne`.
+
+Establish `h2` using `natDegree_derivative_lt (p := g) (by omega)`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma not_dvd_der {Λ : Type} [CommRing Λ] [IsDomain Λ] [CharZero Λ] (g : Λ[X]) (hg : g.Monic)
     (hd : 0 < g.natDegree) : ¬ g ∣ derivative g := by
   intro hdvd
@@ -76,18 +101,29 @@ private lemma not_dvd_der {Λ : Type} [CommRing Λ] [IsDomain Λ] [CharZero Λ] 
   have h2 := natDegree_derivative_lt (p := g) (by omega)
   omega
 
+/- English proof (translation)
+Unfold `cmp`. Rewrite using `[Submodule.mem_colon_singleton, smul_eq_mul]`.
+-/
 private lemma mem_cmp {O Λ B : Type} [CommRing O] [CommRing Λ] [CommRing B] [Algebra O Λ] [Algebra O B]
     (lam : Λ →ₐ[O] B) (J : Ideal B) (t : B) {s : ℕ} (g : Fin s → Λ[X]) (i : Fin s) (a : B) :
     a ∈ cmp lam J t g i ↔ a * (∏ j ∈ Finset.univ.erase i, g j).eval₂ (lam : Λ →+* B) t ∈ J := by
   unfold cmp
   rw [Submodule.mem_colon_singleton, smul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[eval_map]`. Conclude with `hom_eval₂ q (lam : Λ →+* B) (y : B →+* K) t`.
+-/
 private lemma ev {O Λ B K : Type} [CommRing O] [CommRing Λ] [CommRing B] [Field K] [Algebra O Λ] [Algebra O B]
     [Algebra O K] (lam : Λ →ₐ[O] B) (y : B →ₐ[O] K) (q : Λ[X]) (t : B) :
     y (q.eval₂ (lam : Λ →+* B) t) = (q.map (y.comp lam : Λ →+* K)).eval (y t) := by
   rw [eval_map]
   exact hom_eval₂ q (lam : Λ →+* B) (y : B →+* K) t
 
+/- English proof (translation)
+Establish `hne : (g i).map (x.comp lam : Λ →+* K) ≠ 0` using `((hC.monic i).map _).ne_zero`. Establish `hroot` using `(rootMultiplicity_pos hne).1 hk`. Establish `hev : eval₂ ((x.comp lam : Λ →ₐ[O] K) : Λ →+* K) (x t) (g i) = 0`. Rewrite using `[← eval_map]`. Conclude with `hroot`.
+
+Take `⟨x', hx', hc, ht⟩` from `lyOver O Λ B K lam J t s g hC (x.comp lam) (x t) i hev`. Establish `hJc : J ≤ cmp lam J t g i` using `fun a ha => (mem_cmp lam J t g i a).2 (J.mul_mem_right _ ha)`. Establish `hxx` using `hS x' (le_trans hJc hx') hc ht`. Rewrite using `[← hxx]`. Conclude with `hx'`.
+-/
 private lemma comp_bound {O Λ B K : Type} [CommRing O] [CommRing Λ] [IsDomain Λ] [CommRing B] [Field K] [IsAlgClosed K]
     [Algebra O Λ] [Algebra O B] [Algebra O K] (lam : Λ →ₐ[O] B) (J : Ideal B) (t : B) {s : ℕ} (g : Fin s → Λ[X])
     (hC : Cmp lam J t g) (x : B →ₐ[O] K) (hS : Sep lam J x t) (i : Fin s)
@@ -103,6 +139,17 @@ private lemma comp_bound {O Λ B K : Type} [CommRing O] [CommRing Λ] [IsDomain 
   rw [← hxx]
   exact hx'
 
+/- English proof (translation)
+Rewrite `hd`, `he` using `[ev]`. Establish `hk` using `RingHom.mem_ker.1 (hJ hC.kill)`. Rewrite `hk` using `[ev]`. Use `set φ : Λ →+* K := (y.comp lam : Λ →+* K) with hφ`. Establish `hgi : eval (y t) ((g i).map φ) = 0`.
+
+Rewrite `hk` using `[← Finset.mul_prod_erase Finset.univ g (Finset.mem_univ i), Polynomial.map_mul, eval_mul]`. Conclude with `(mul_eq_zero.1 hk).resolve_right he`. Establish `hne : ∀ j, (g j).map φ ≠ 0` using `fun j => ((hC.monic j).map _).ne_zero`. Rewrite using `[Finset.sum_eq_single i]`. Establish `hpos : 0 < rootMultiplicity (y t) ((g i).map φ)` using `(rootMultiplicity_pos (hne i)).2 hgi`.
+
+Establish `hle : ¬ 1 < rootMultiplicity (y t) ((g i).map φ)`. Rewrite using `[one_lt_rootMultiplicity_iff_isRoot (hne i)]`. Introduce and unpack `⟨_, h2⟩`. Apply `hd` to reduce the goal to its premises. Rewrite `h2` using `[Polynomial.derivative_map]`.
+
+Conclude with `h2`. Establish `h1 : rootMultiplicity (y t) ((g i).map φ) = 1` using `by omega`. Rewrite using `[h1, mul_one]`. Introduce `j _ hji`. Rewrite using `[rootMultiplicity_eq_zero, mul_zero]`.
+
+Introduce `hr`. Apply `he` to reduce the goal to its premises. Conclude with `eval_eq_zero_of_dvd_of_eval_eq_zero (Polynomial.map_dvd φ (Finset.dvd_prod_of_mem g (Finset.mem_erase.2 ⟨hji, Finset.mem_univ j⟩))) hr`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 private lemma good_point {O Λ B K : Type} [CommRing O] [CommRing Λ] [IsDomain Λ] [CommRing B] [Field K]
     [Algebra O Λ] [Algebra O B] [Algebra O K] (lam : Λ →ₐ[O] B) (J : Ideal B) (t : B) {s : ℕ} (g : Fin s → Λ[X])
     (hC : Cmp lam J t g) (y : B →ₐ[O] K) (hJ : J ≤ RingHom.ker y) (i : Fin s)
@@ -138,6 +185,29 @@ private lemma good_point {O Λ B K : Type} [CommRing O] [CommRing Λ] [IsDomain 
 
 end UpperTheory.V.J
 
+/- English proof (translation)
+Introduce `O Λ B K _ _ _ _ _ _ _ _ _ _ _ _ _ lam J M _ _ _ h x hxJ 𝒢 b₀ hb₀ hG0 hG δ hδ hδJ hδl`. Use `haveI := h.free`. Use `haveI := h.fin`. Take `⟨t, hP, hS⟩` from `UpperTheory.V.J.primEx O Λ B K lam J M h x hxJ`. Take `⟨s, g, m, hF⟩` from `UpperTheory.V.J.factEx Λ (LinearMap.charpoly (UpperTheory.V.J.actL lam M h.hs t)) (LinearMap.charpoly_monic _)`.
+
+Take `⟨hkill, hmin⟩` from `UpperTheory.V.J.minPol O Λ B lam J M h t s g m hF`. Establish `hC : UpperTheory.V.J.Cmp lam J t g` using `⟨h.tf, UpperTheory.V.J.intMod O Λ B lam J M h, hP, hF.monic, hF.irr, hF.inj, hkill, hmin⟩`. Establish `hsumAt : ∀ y : B →ₐ[O] K, rootMultiplicity (y t) ((LinearMap.charpoly (UpperTheory.V.J.actL lam M h.hs t)).map (y.comp lam : Λ →+* K)) = ∑ i, m i * rootMultiplicity (y t) ((g i).map (y.comp lam : Λ →+* K))`. Introduce `y`. Rewrite using `[hF.prod]`.
+
+Conclude with `UpperTheory.V.J.rm_map_prod _ g hF.monic m (y t)`. Establish `hge` using `UpperTheory.V.J.muGe O Λ B K lam J M h x t hS`. Rewrite `hge` using `[hsumAt x]`. Establish `hex : ∃ i, 0 < rootMultiplicity (x t) ((g i).map (x.comp lam : Λ →+* K))`. Establish `hk` using `RingHom.mem_ker.1 (hxJ hkill)`.
+
+Rewrite `hk` using `[UpperTheory.V.J.ev, Polynomial.map_prod, eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨i, _, hi⟩` from `hk`. Conclude with `⟨i, (rootMultiplicity_pos ((hF.monic i).map _).ne_zero).2 hi⟩`. Establish `hle : ∀ i, 0 < rootMultiplicity (x t) ((g i).map (x.comp lam : Λ →+* K)) → UpperTheory.V.J.mu lam M h.hs x ≤ m i`. Introduce `i hki`.
+
+Establish `hcx` using `UpperTheory.V.J.comp_bound lam J t g hC x hS i hki`. Establish `hdeg : 0 < (g i).natDegree`. Assume the negation of the conclusion as `h0`. Establish `h1 : g i = 1` using `Polynomial.eq_one_of_monic_natDegree_zero (hF.monic i) (by omega)`. Rewrite `hki` using `[h1, Polynomial.map_one]`.
+
+Simplify using `at hki`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy𝒢, hyd, hye⟩ : ∃ y ∈ 𝒢, y ((derivative (g i)).eval₂ (lam : Λ →+* B) t) ≠ 0 ∧ y ((∏ j ∈ Finset.univ.erase i, g j).eval₂ (lam : Λ →+* B) t) ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hmem : (derivative (g i)).eval₂ (lam : Λ →+* B) t * b₀ ∈ UpperTheory.V.J.cmp lam J t g i`.
+
+Rewrite using `[UpperTheory.V.J.mem_cmp, mul_right_comm]`. Apply `hG0` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[map_mul]`. Distinguish the cases in `hd : y ((derivative (g i)).eval₂ (lam : Λ →+* B) t) = 0`.
+
+Rewrite using `[hd, zero_mul]`. Rewrite using `[hno y hy hd, mul_zero]`. Take `⟨hprime, hiff, _⟩` from `UpperTheory.V.J.cmpPrime O Λ B lam J t s g hC i`. Break down `hprime.mem_or_mem hmem with h1 | h1` into its components or cases. Conclude with `UpperTheory.V.J.not_dvd_der (g i) (hF.monic i) hdeg ((hiff _).1 h1)`.
+
+Conclude with `hb₀ (RingHom.mem_ker.1 (hcx h1))`. Establish `hgp` using `UpperTheory.V.J.good_point lam J t g hC y (hG y hy𝒢).1 i hyd hye m`. Establish `hmu` using `UpperTheory.V.J.muLe O Λ B K lam M h.hs y t`. Rewrite `hmu` using `[hsumAt y, hgp]`. Conclude with `le_trans (hG y hy𝒢).2 hmu`.
+
+Establish `hsum1` using `UpperTheory.V.J.num_core (fun i => rootMultiplicity (x t) ((g i).map (x.comp lam : Λ →+* K))) m (UpperTheory.V.J.mu lam M h.hs x) hF.pos hge hle hex`. Establish `hprod1 : rootMultiplicity (x t) ((∏ j, g j).map (x.comp lam : Λ →+* K)) = 1`. Establish `e` using `UpperTheory.V.J.rm_map_prod (x.comp lam : Λ →+* K) g hF.monic (fun _ => 1) (x t)`. Simplify using `only [pow_one, one_mul] at e`. Rewrite using `[e]`.
+
+Conclude with `hsum1`. Take `⟨i, hi⟩` from `hex`. Conclude with `UpperTheory.V.J.derZero O Λ B K lam J t s g hC x i (UpperTheory.V.J.comp_bound lam J t g hC x hS i hi) hprod1 δ hδ hδJ hδl`.
+-/
 theorem UpperTheory.V.Z.Desc.V0.unrAlgW :
     UpperTheory.V.Z.Desc.V0.UnrAlgW := by
   intro O Λ B K _ _ _ _ _ _ _ _ _ _ _ _ _ lam J M _ _ _ h x hxJ 𝒢 b₀ hb₀ hG0 hG δ hδ hδJ hδl

@@ -26,6 +26,9 @@ def DTStab : Prop :=
       h * SSn.io0 k r z z' μsec ζ₁ * h'⁻¹ = SSn.io0 k r z z' μsec ζ₂ →
       ∀ p ∈ NF.Stab k r z z' μsec ζ₂, (h⁻¹ * p.1 * h, h'⁻¹ * p.2 * h') ∈ NF.Stab k r z z' μsec ζ₁
 
+/- English proof (translation)
+Introduce `k r z z' μsec hk hz hz' hT hT' hsec ζ₁ ζ₂ h₁ h₂`. Take `⟨h, hh, h', hh', e1, e2, e3⟩` from `hE k r z z' μsec hk hz hz' hT hT' hsec ζ₁ ζ₂ h₁ h₂`. Conclude with `⟨h, hh, h', hh', e1, e2, e3, hS k r z z' μsec hk hz hz' hT hT' hsec ζ₁ ζ₂ h₁ h₂ h hh h' hh' e1 e2 e3⟩`.
+-/
 theorem datumTransit_of_cut (hE : DTExists) (hS : DTStab) : DatumTransit := by
   intro k r z z' μsec hk hz hz' hT hT' hsec ζ₁ ζ₂ h₁ h₂
   obtain ⟨h, hh, h', hh', e1, e2, e3⟩ := hE k r z z' μsec hk hz hz' hT hT' hsec ζ₁ ζ₂ h₁ h₂

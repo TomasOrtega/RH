@@ -10,6 +10,11 @@ variable {l : ℕ} [hl : Fact l.Prime] {a : ℕ} [NeZero a] {O : Type} [CommRing
   (t : Wq l a →ₐ[ℤ_[l]] O) (K : Type) [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]
   (e : ℕ)
 
+/- English proof (translation)
+Use `⟨fun p => if p = (0, 0) then c else 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Rewrite using `[coeff_ofW]`. Simplify using `only [cstW, coeff_C]`.
+
+Distinguish the cases in `hi : i = 0`. Distinguish the cases in `hn : n = 0`. Simplify using `[hi, hn, dpDen]`. Simplify using `[hi, hn, coeff_C]`. Simplify using `[hi]`.
+-/
 theorem cstW_mem_QSet_of_const (c : Wq l a) : cstW t K c ∈ QSet t K e := by
   refine ⟨fun p => if p = (0, 0) then c else 0, ?_⟩
   funext τ
@@ -22,6 +27,9 @@ theorem cstW_mem_QSet_of_const (c : Wq l a) : cstW t K c ∈ QSet t K e := by
     · simp [hi, hn, coeff_C]
   · simp [hi]
 
+/- English proof (translation)
+Establish `h : sigma l a c - c ^ l ∈ Ideal.span {(l : Wq l a)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, coeff_sigma, sub_self]`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton.1 h`. Conclude with `⟨d, by rw [← hd]; ring⟩`.
+-/
 theorem exists_sigma_eq_pow_add (c : Wq l a) : ∃ d : Wq l a, sigma l a c = c ^ l + (l : Wq l a) * d := by
   have h : sigma l a c - c ^ l ∈ Ideal.span {(l : Wq l a)} := by
     rw [← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_pow, WittVector.constantCoeff_apply,
@@ -31,6 +39,13 @@ theorem exists_sigma_eq_pow_add (c : Wq l a) : ∃ d : Wq l a, sigma l a c = c ^
 
 end
 
+/- English proof (translation)
+Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ t φ₂ hC _ c`. Establish `h1 : frob2 φ₂ (cstW t K c) = cstW t K (sigma l a c)`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `φ₂ (cstW t K c (τ - 1)) = _`. Simplify using `only [cstW]`.
+
+Rewrite using `[hC, frob_C, emb_sigma]`. Use `⟨cstW_mem_QSet_of_const t K e c, h1 ▸ cstW_mem_QSet_of_const t K e _, ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `exists_sigma_eq_pow_add c`. Use `⟨cstW t K d, cstW_mem_QSet_of_const t K e d, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hd]`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[cstW]`.
+-/
 theorem cstW_mem_GoodSet : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O), ∀ (φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ f : K⟦X⟧, φ₂ (C f) = C (frob K l f)) → φ₂ X = (C X + X) ^ l - C (X ^ l) → ∀ c : Wq l a, cstW t K c ∈ GoodSet t e φ₂ := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ t φ₂ hC _ c
   have h1 : frob2 φ₂ (cstW t K c) = cstW t K (sigma l a c) := by

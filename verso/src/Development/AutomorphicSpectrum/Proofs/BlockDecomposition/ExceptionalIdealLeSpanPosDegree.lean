@@ -7,6 +7,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SurjectionOntoH4
 open CrystallineSemistableComparison.Onto
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, hg, h1, rfl⟩` from `hy`. Establish `e : (AddMonoidAlgebra.single m a : R0 K n d S) * mon K g hg = a • mon K (m.1 + g) ((cone S : AddSubmonoid (Gam n d)).add_mem m.2 hg)`. Simplify using `only [mon, AddMonoidAlgebra.single_mul_single, mul_one, AddMonoidAlgebra.smul_single, smul_eq_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, ?_, rfl⟩)` and prove the remaining obligations. Establish `h0 : 0 ≤ tdeg m.1` using `m.2.2.2`. Rewrite using `[tdeg_add]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem single_mul_mem_span_tdeg_pos {K : Type} [Field K] {n d : ℕ} (S : Finset (Fin d))
     (m : (cone S : AddSubmonoid (Gam n d))) (a : K) (x : R0 K n d S)
     (hx : x ∈ Submodule.span K {y : R0 K n d S | ∃ (g : Gam n d) (hg : g ∈ (cone S : AddSubmonoid (Gam n d))),
@@ -29,6 +38,15 @@ theorem single_mul_mem_span_tdeg_pos {K : Type} [Field K] {n d : ℕ} (S : Finse
   | add x y _ _ hx hy => rw [mul_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Introduce `K _ n d S x hx`. Unfold `I0 Ideal.span at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, _, rfl⟩` from `hy`.
+
+Conclude with `Submodule.subset_span ⟨_, _, by rw [tdeg_oneE_inr], rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[smul_eq_mul]`.
+
+Proceed by induction on `c using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => rw [zero_mul]`. Conclude with `Submodule.zero_mem _`. Consider the case `add f g hf hg => rw [add_mul]`. Conclude with `Submodule.add_mem _ hf hg`.
+
+Consider the case `single m a => exact single_mul_mem_span_tdeg_pos S m a x hx`.
+-/
 theorem exceptional_ideal_le_span_pos_degree : ∀ {K : Type} [Field K] {n d : ℕ} (S : Finset (Fin d)) (x : R0 K n d S),
     x ∈ I0 n K S → x ∈ Submodule.span K {y : R0 K n d S |
       ∃ (g : Gam n d) (hg : g ∈ (cone S : AddSubmonoid (Gam n d))), 1 ≤ tdeg g ∧ y = mon K g hg} := by

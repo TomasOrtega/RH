@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain MeasureTheory
 
 variable (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
 
+/- English proof (translation)
+Set `b` to `RingOfIntegers.basis F`. Set `φ : 𝓞 F →+* FiniteAdeleRing (𝓞 F) F` to `(algebraMap F _).comp (algebraMap (𝓞 F) F)`. Use `⟨fun r => φ (∑ j, ((r j : ℕ) : ℤ) • b j), fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, a, ha, h⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F m hm).2 y hy`. Establish `hm' : (0 : ℤ) < m` using `by exact_mod_cast hm`.
+
+Establish `h0 : ∀ j, 0 ≤ b.repr x j % m` using `fun j => Int.emod_nonneg _ hm'.ne'`. Use `⟨fun j => ⟨(b.repr x j % m).toNat, ?_⟩, φ (∑ j, (b.repr x j / m) • b j) + a, fun v => ?_, ?_⟩` and prove the remaining obligations. Use `Int.emod_lt_of_pos (b.repr x j) hm'` as an intermediate fact. Use `h0 j` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `add_mem (HeightOneSpectrum.coe_mem_adicCompletionIntegers v _) (ha v)`. Rewrite using `[h, nsmul_add, ← add_assoc, ← map_nsmul, ← map_add]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `φ x = _`. Use `congr 1`.
+
+Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `conv_lhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (h0 j), ← natCast_zsmul, smul_smul, ← add_smul, Int.emod_add_mul_ediv]`.
+-/
 theorem exists_reps (m : ℕ) (hm : 1 ≤ m) :
     ∃ rep : (Module.Free.ChooseBasisIndex ℤ (𝓞 F) → Fin m) → FiniteAdeleRing (𝓞 F) F,
       ∀ y : FiniteAdeleRing (𝓞 F) F, (∀ v, y v ∈ v.adicCompletionIntegers F) →
@@ -35,6 +44,11 @@ theorem exists_reps (m : ℕ) (hm : 1 ≤ m) :
 
 def Om : Set (κ → FiniteAdeleRing (𝓞 F) F) := {y | ∀ i v, y i v ∈ v.adicCompletionIntegers F}
 
+/- English proof (translation)
+Use `⟨Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 F)) * Fintype.card κ, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨rep, h⟩` from `exists_reps F m hm`. Establish `hsub : Om F κ ⊆ ⋃ r : κ → Module.Free.ChooseBasisIndex ℤ (𝓞 F) → Fin m, (fun y => y + -fun i => rep (r i)) ⁻¹' ((fun u => m • u) '' Om F κ)` using `fun y hy => by choose r a ha e using fun i => h (y i) (hy i)`. Use `Set.mem_iUnion.2 ⟨r, a, ha, funext fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m • a i = y i + -rep (r i)`.
+
+Rewrite using `[e i]`. Normalize the expressions using the abelian group laws. Use `(measure_mono hsub).trans ((measure_iUnion_fintype_le _ _).trans (le_of_eq ?_))` and prove the remaining obligations. Simplify using `only [measure_preimage_add_right, Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul, Nat.cast_pow, pow_mul]`.
+-/
 theorem measure_Om_le [MeasurableSpace (κ → FiniteAdeleRing (𝓞 F) F)] [BorelSpace (κ → FiniteAdeleRing (𝓞 F) F)]
     (ν : Measure (κ → FiniteAdeleRing (𝓞 F) F)) [ν.IsAddRightInvariant] :
     ∃ k : ℕ, ∀ m : ℕ, 1 ≤ m → ν (Om F κ) ≤ (m : ℝ≥0∞) ^ k * ν ((fun u => m • u) '' Om F κ) := by

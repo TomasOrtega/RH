@@ -21,21 +21,39 @@ instance (c : O) : IsTopologicalAddGroup (Lev M c) where
 def Lev.val {c : O} (x : Lev M c) : M :=
   Subtype.val (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) x
 
+/- English proof (translation)
+Establish `hx` using `LinearMap.mem_ker.1 (Subtype.property (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) x)`. Conclude with `hx`.
+-/
 theorem Lev.smul_val {c : O} (x : Lev M c) : c • x.val = 0 := by
   have hx := LinearMap.mem_ker.1
     (Subtype.property (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) x)
   exact hx
 
+/- English proof (translation)
+Conclude with `Subtype.ext (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) h`.
+-/
 @[ext] theorem Lev.ext {c : O} {x y : Lev M c} (h : x.val = y.val) : x = y := by
   exact Subtype.ext (p := fun m => m ∈ LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)) h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lev.val_add {c : O} (x y : Lev M c) : (x + y).val = x.val + y.val := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lev.val_smul {c : O} (a : O) (x : Lev M c) : (a • x).val = a • x.val := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lev.val_zero {c : O} : (0 : Lev M c).val = 0 := rfl
 
 def Lev.mk {c : O} (m : M) (h : c • m = 0) : Lev M c :=
   (⟨m, by simpa using h⟩ : ↥(LinearMap.ker (c • LinearMap.id : M →ₗ[O] M)))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lev.val_mk {c : O} (m : M) (h : c • m = 0) : (Lev.mk m h).val = m := rfl
 
 variable {G : Type} [Group G]
@@ -48,6 +66,9 @@ def levRep (ρ : Representation O G M) (c : O) : Representation O G (Lev M c) wh
   map_one' := by ext x; show ρ 1 x.val = x.val; rw [map_one]; rfl
   map_mul' g h := by ext x; show ρ (g * h) x.val = ρ g (ρ h x.val); rw [map_mul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levRep_val (ρ : Representation O G M) (c : O) (g : G) (x : Lev M c) :
     (levRep ρ c g x).val = ρ g x.val := rfl
 
@@ -69,6 +90,9 @@ def levRepZ (p r : ℕ) [NeZero (p ^ r)] {c : O} (h : ((p : O) ^ r) ∈ Ideal.sp
     map_mul' := fun g g' => LinearMap.ext fun x =>
       congrArg (fun f : Module.End O (Lev M c) => f x) (map_mul (levRep ρ c) g g') }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levRepZ_apply (p r : ℕ) [NeZero (p ^ r)] {c : O} (h : ((p : O) ^ r) ∈ Ideal.span {c})
     (ρ : Representation O G M) (g : G) (x : Lev M c) :
     levRepZ p r h ρ g x = levRep ρ c g x := rfl

@@ -16,6 +16,19 @@ variable (p : ℕ) {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type) [
   (ka : ZMod J → ℕ → Fin K → ℤ)
   (No : MvPolynomial (TL J Dt.nL r × Fin K) O) (Go : MvPolynomial (ML J Dt.nL r × Fin r) O)
 
+/- English proof (translation)
+Take `⟨hV1, hV2, -⟩` from `hVB`. Take `⟨hSp1, -⟩` from `hSp`. Set `Cv : ZMod J → Set ((ℤ → Prop) × ℤ)` to `fun j => {q | ∃ u < Dt.nL j + r, q = ((fun y => y < pU p O Fr Dt j u), ⌈tauU p O Fr deg Y N₁ G' cP Dt ka j u⌉)} ∪ {q | ∃ u < Dt.nL j, q = ((fun y => y ≤ pU p O Fr Dt j u), ⌈tauU p O Fr deg Y N₁ G' cP Dt ka j (u + 1)⌉)}`. Establish `hCv : ∀ j, ∀ q ∈ Cv j, ((q.2 : ℤ) : WithTop ℤ) ≤ valS (LSeg J) {i | i.1 = j ∧ q.1 i.2} (homComp δ (xiPl Fr O Dt.nL Go))`. Introduce `j q hq`.
+
+Break down `hq with ⟨u, hu, rfl⟩ | ⟨u, hu, rfl⟩` into its components or cases. Conclude with `le_trans (ceil_le_of_geZ (hV1 j u hu)) (hC O (ZMod J × ℤ) r (LSeg J) (SLt j (pU p O Fr Dt j u)) (xiPl Fr O Dt.nL Go) δ).1`. Conclude with `le_trans (ceil_le_of_geZ (hV2 j u hu)) (hC O (ZMod J × ℤ) r (LSeg J) (SLe j (pU p O Fr Dt j u)) (xiPl Fr O Dt.nL Go) δ).1`. Take `⟨N, A', hA', hF⟩` from `seg_dec hA hS (homComp δ (xiPl Fr O Dt.nL Go)) Cv (fun _ => ∅) hCv (fun j q hq => by simp at hq)`. Use `⟨N, A', fun i j => ?_, hF⟩` and prove the remaining obligations.
+
+Take `⟨hsup, hv, -⟩` from `hA' i j`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_supported]`. Introduce `v hv'`. Take `⟨mo, hmo, hvmo⟩` from `(MvPolynomial.mem_vars v).mp (Finset.mem_coe.mp hv')`.
+
+Take `⟨mo', hmo', he⟩` from `hsup mo hmo`. Establish `hF'` using `(support_homComp δ _ mo' hmo').1`. Establish `hne : mo' ((j, v.1), v.2) ≠ 0`. Rewrite using `[← he]`. Conclude with `Finsupp.mem_support_iff.mp hvmo`.
+
+Conclude with `hSp1 mo' hF' ((j, v.1), v.2) (Finsupp.mem_support_iff.mpr hne)`. Introduce `mo hmo x`. Take `⟨mo', hmo', he⟩` from `hsup mo hmo`. Rewrite using `[← (support_homComp δ _ mo' hmo').2 (j, x)]`. Simplify using `only [multideg, he]`.
+
+Introduce `u hu`. Conclude with `hv ((fun y => y < pU p O Fr Dt j u), ⌈tauU p O Fr deg Y N₁ G' cP Dt ka j u⌉) (Or.inl ⟨u, hu, rfl⟩)`. Introduce `u hu`. Conclude with `hv ((fun y => y ≤ pU p O Fr Dt j u), ⌈tauU p O Fr deg Y N₁ G' cP Dt ka j (u + 1)⌉) (Or.inr ⟨u, hu, rfl⟩)`.
+-/
 theorem plane_dec (hA : ATL) (hS : ValSlice) (hC : ValComp) (hVB : ValBd p O Fr deg Y N₁ G' cP Dt ka No Go)
     (hSp : SuppOK p O Fr Dt dNo No Go) (δ : ZMod J × ℤ → ℕ) :
     ∃ (N : ℕ) (A' : Fin N → ZMod J → MvPolynomial (ℤ × Fin r) O),
@@ -59,6 +72,19 @@ theorem plane_dec (hA : ATL) (hS : ValSlice) (hC : ValComp) (hVB : ValBd p O Fr 
     exact hv ((fun y => y ≤ pU p O Fr Dt j u), ⌈tauU p O Fr deg Y N₁ G' cP Dt ka j (u + 1)⌉)
       (Or.inr ⟨u, hu, rfl⟩)
 
+/- English proof (translation)
+Take `⟨-, -, hV3⟩` from `hVB`. Take `⟨-, hSp2⟩` from `hSp`. Set `Cl : ZMod J → Set ((ℤ → Prop) × ℤ)` to `fun j => {q | ∃ u < Dt.nL j + r, q = ((fun y => y < pU p O Fr Dt j u), ka j u 0 + 4 * (cP : ℤ))} ∪ {q | ∃ u < Dt.nL j + r, q = ((fun y => y ≤ pU p O Fr Dt j u), ka j (u + 1) 0 + 4 * (cP : ℤ))}`. Establish `hCl : ∀ j, ∀ q ∈ Cl j, lam1S (LSeg J) {i | i.1 = j ∧ q.1 i.2} (xiNo Fr O K Dt.nL No) ≤ ((q.2 : ℤ) : WithBot ℤ)`. Introduce `j q hq`.
+
+Break down `hq with ⟨u, hu, rfl⟩ | ⟨u, hu, rfl⟩` into its components or cases. Conclude with `(hV3 j u hu).1`. Conclude with `(hV3 j u hu).2`. Take `⟨N, B', hB', hF⟩` from `seg_dec hA hS (xiNo Fr O K Dt.nL No) (fun _ => ∅) Cl (fun j q hq => by simp at hq) hCl`. Use `⟨N, B', fun i j => ?_, hF⟩` and prove the remaining obligations.
+
+Take `⟨hsup, -, hl⟩` from `hB' i j`. Use `⟨?_, ?_, fun u hu => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_supported]`. Introduce `v hv'`. Take `⟨mo, hmo, hvmo⟩` from `(MvPolynomial.mem_vars v).mp (Finset.mem_coe.mp hv')`.
+
+Take `⟨mo', hmo', he⟩` from `hsup mo hmo`. Establish `hne : mo' ((j, v.1), v.2) ≠ 0`. Rewrite using `[← he]`. Conclude with `Finsupp.mem_support_iff.mp hvmo`. Conclude with `(hSp2 mo' hmo').1 ((j, v.1), v.2) (Finsupp.mem_support_iff.mpr hne)`.
+
+Introduce `mo hmo x`. Take `⟨mo', hmo', he⟩` from `hsup mo hmo`. Rewrite using `[← (hSp2 mo' hmo').2 (j, x)]`. Simplify using `only [multideg, he]`. Conclude with `hl ((fun y => y < pU p O Fr Dt j u), ka j u 0 + 4 * (cP : ℤ)) (Or.inl ⟨u, hu, rfl⟩)`.
+
+Conclude with `hl ((fun y => y ≤ pU p O Fr Dt j u), ka j (u + 1) 0 + 4 * (cP : ℤ)) (Or.inr ⟨u, hu, rfl⟩)`.
+-/
 theorem normal_dec (hA : ATL) (hS : ValSlice) (hVB : ValBd p O Fr deg Y N₁ G' cP Dt ka No Go)
     (hSp : SuppOK p O Fr Dt dNo No Go) :
     ∃ (N : ℕ) (B' : Fin N → ZMod J → MvPolynomial (ℤ × Fin K) O),
@@ -95,6 +121,11 @@ theorem normal_dec (hA : ATL) (hS : ValSlice) (hVB : ValBd p O Fr deg Y N₁ G' 
   · exact hl ((fun y => y < pU p O Fr Dt j u), ka j u 0 + 4 * (cP : ℤ)) (Or.inl ⟨u, hu, rfl⟩)
   · exact hl ((fun y => y ≤ pU p O Fr Dt j u), ka j (u + 1) 0 + 4 * (cP : ℤ)) (Or.inr ⟨u, hu, rfl⟩)
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_prod, PhiPl_seg, PhiNo_seg]`. Rewrite using `[sum_mul_sum_prod]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `(prod_range_zmod (fun t : ℤ => phSeg O K p Fr t (plEmb O r K (A' (finProdFinEquiv.symm q).1 (t : ZMod J)) * nmEmb O r K (B' (finProdFinEquiv.symm q).2 (t : ZMod J))))).trans ?_` and prove the remaining obligations. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [cast_segZ, map_mul]`.
+-/
 theorem dec_identity {N1 N2 : ℕ} (A' : Fin N1 → ZMod J → MvPolynomial (ℤ × Fin r) O)
     (B' : Fin N2 → ZMod J → MvPolynomial (ℤ × Fin K) O) :
     ∑ q : Fin (N1 * N2), ∏ t ∈ Finset.range J, phSeg O K p Fr (t : ℤ)
@@ -113,6 +144,15 @@ theorem dec_identity {N1 N2 : ℕ} (A' : Fin N1 → ZMod J → MvPolynomial (ℤ
 
 end At
 
+/- English proof (translation)
+Introduce `p _ n' r K _ _ _ O _ _ _ S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH δ hocc`. Take `⟨hvb, hsp⟩` from `hVB p O S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH`. Establish `hxx` using `hXX p O S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka hMH.1`. Establish `hdd` using `hDd p O S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J Dt dPl dNo ka rho No Go hMH δ hocc`. Establish `hJ : J = Fr.J` using `hMH.1.1.1`.
+
+Take `⟨N1, A', hA1, hA2⟩` from `plane_dec p O Fr deg Y N₁ G' cP Dt dNo ka No Go hA hS hC hvb hsp δ`. Take `⟨N2, B', hB1, hB2⟩` from `normal_dec p O Fr deg Y N₁ G' cP Dt dNo ka No Go hA hS hvb hsp`. Use `⟨N1 * N2, fun jz x => ((δ ((jz : ZMod J), x) + dNoOf p O Fr Dt dNo ((jz : ZMod J), x) : ℕ) : ℝ), fun q jz => plEmb O r K (A' (finProdFinEquiv.symm q).1 (jz : ZMod J)) * nmEmb O r K (B' (finProdFinEquiv.symm q).2 (jz : ZMod J)), fun jz x => δ ((jz : ZMod J), x) + dNoOf p O Fr Dt d …` and prove the remaining obligations. Introduce `q j hj`. Establish `h` using `hxx δ (((j : ℤ)) : ZMod J) _ _ (hA1 (finProdFinEquiv.symm q).1 _) (hB1 (finProdFinEquiv.symm q).2 _)`.
+
+Rewrite `h` using `[segZ_cast j (by rw [hJ]; exact hj)]`. Conclude with `h`. Introduce `j hj x hx hWL`. Establish `hs` using `segZ_cast (J := J) j (by rw [hJ]; exact hj)`. Establish `h` using `hdd (((j : ℤ)) : ZMod J) x (by rw [hs]; exact hx) (by rw [hs]; exact hWL)`.
+
+Rewrite `h` using `[hs]`. Conclude with `h`. Rewrite using `[hA2, hB2, ← hJ]`. Conclude with `dec_identity p O Fr A' B'`.
+-/
 theorem restDecG_of (hA : ATL) (hS : ValSlice) (hC : ValComp) (hVB : RestValBdG) (hXX : RestXXG) (hDd : RestDdG) :
     RestDecG := by
   intro p _ n' r K _ _ _ O _ _ _ S Fr TT L₁ L₂ N₁ G' deg d Y cP hM J _ Dt dPl dNo ka rho No Go hMH δ hocc

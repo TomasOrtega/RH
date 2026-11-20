@@ -91,6 +91,9 @@ def Datum.gPtsMap (D : Datum p) {Λ Λ' : Type} [CommRing Λ] [CommRing Λ'] (φ
       simp only [Matrix.map_mul, Matrix.transpose_map, hc, hs] at this
       exact this
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose (g : Matrix D.Ix D.Ix Λ) v, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, hg, Matrix.vecMul_smul, smul_dotProduct, smul_eq_mul, ← Matrix.dotProduct_mulVec]`.
+-/
 theorem Datum.gPts_dot (D : Datum p) {Λ : Type} [CommRing Λ] (g : GL D.Ix Λ) (ν : Λˣ)
     (hg : (g : Matrix D.Ix D.Ix Λ)ᵀ * D.gramEF.map (Int.castRingHom Λ) * g = (ν : Λ) • D.gramEF.map (Int.castRingHom Λ))
     (v w : D.Ix → Λ) :
@@ -123,12 +126,18 @@ def Obj.IsTateL (o : Obj b N s) (ℓ : ℕ) [Fact ℓ.Prime] (T : Over S) (ev : 
 section
 variable {T₀ T : Over S} {A : Over S} [GrpObj A]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow_tate (u : T₀ ⟶ T) (x : T ⟶ A) (n : ℕ) : u ≫ x ^ n = (u ≫ x) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 end
 
+/- English proof (translation)
+Take `⟨hadd, hlin, hkill, htow, hgeo⟩` from `h`. Use `⟨fun m v w => by beta_reduce; rw [hadd, MonObj.comp_mul], fun m c v => by beta_reduce; rw [hlin, Category.assoc], fun m v => by beta_reduce; rw [hkill, MonObj.comp_one], fun m v => by beta_reduce; rw [← comp_pow_tate, htow], ?_⟩` and prove the remaining obligations. Introduce `k _ _ x j`. Take `⟨χ, h1, h2, h3, h4, h5⟩` from `hgeo k x (j ≫ u)`. Conclude with `⟨χ, h1, h2, fun m v => by beta_reduce; rw [← Category.assoc]; exact h3 m v, fun m q => by beta_reduce; simp only [← Category.assoc]; exact h4 m q, fun m v w => by beta_reduce; simp only [← Category.assoc]; exact h5 m v w⟩`.
+-/
 theorem Obj.IsTateL.comp {o : Obj b N s} {ℓ : ℕ} [Fact ℓ.Prime] {T T' : Over S}
     {ev : ℕ → (D.Ix → ℤ_[ℓ]) → (T ⟶ o.A)} (h : o.IsTateL ℓ T ev) (u : T' ⟶ T) :
     o.IsTateL ℓ T' (fun m v => u ≫ ev m v) := by
@@ -143,6 +152,21 @@ theorem Obj.IsTateL.comp {o : Obj b N s} {ℓ : ℕ} [Fact ℓ.Prime] {T T' : Ov
     fun m q => by beta_reduce; simp only [← Category.assoc]; exact h4 m q,
     fun m v w => by beta_reduce; simp only [← Category.assoc]; exact h5 m v w⟩
 
+/- English proof (translation)
+Take `⟨hadd, hlin, hkill, htow, hgeo⟩` from `h`. Take `⟨hc, ν, hν⟩` from `g.2`. Use `set M : Matrix D.Ix D.Ix ℤ_[ℓ] := ((g : GL D.Ix ℤ_[ℓ]) : Matrix D.Ix D.Ix ℤ_[ℓ]) with hM`. Use `set Mi : Matrix D.Ix D.Ix ℤ_[ℓ] := (((g : GL D.Ix ℤ_[ℓ])⁻¹ : GL D.Ix ℤ_[ℓ]) : Matrix D.Ix D.Ix ℤ_[ℓ]) with hMi`. Establish `hMiM : ∀ v, Mi *ᵥ (M *ᵥ v) = v` using `fun v => by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hMi, hM, Units.inv_mul, Matrix.one_mulVec]`. Establish `hMMi : ∀ v, M *ᵥ (Mi *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hMi, hM, Units.mul_inv, Matrix.one_mulVec]`. Use `⟨fun m v w => by simp only [Matrix.mulVec_add, hadd], fun m c v => ?_, fun m v => by simp only [Matrix.mulVec_smul, hkill], fun m v => htow m _, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hc c, ← Matrix.mulVec_mulVec, hlin]`. Introduce `k _ _ x j`. Take `⟨χ, h1, h2, h3, h4, h5⟩` from `hgeo k x j`. Use `⟨fun m => (χ m).compAddMonoidHom (AddMonoidHom.mulLeft (ν : ℤ_[ℓ])), fun m a => ?_, fun m a => ?_, fun m v => ?_, fun m q => ?_, fun m v w => ?_⟩` and prove the remaining obligations. Simplify using `only [AddChar.compAddMonoidHom_apply, AddMonoidHom.coe_mulLeft, h1, Units.dvd_mul_left]`.
+
+Simplify using `only [AddChar.compAddMonoidHom_apply, AddMonoidHom.coe_mulLeft, h2]`. Use `beta_reduce`. Rewrite using `[h3]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩`.
+
+Conclude with `⟨Mi *ᵥ w, by rw [← hMiM v, hw, Matrix.mulVec_smul]⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `⟨M *ᵥ w, Matrix.mulVec_smul _ _ _⟩`. Use `beta_reduce`. Rewrite using `[h4]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨Mi *ᵥ v, by beta_reduce; rw [hMMi]⟩`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨M *ᵥ v, rfl⟩`.
+
+Use `h5 m (M *ᵥ v) (M *ᵥ w)` as an intermediate fact. Rewrite `this` using `[D.gPts_dot _ ν hν]`. Establish `e : (2 : ℤ_[ℓ]) * ((ν : ℤ_[ℓ]) * (v ⬝ᵥ (D.gramEF.map (Int.castRingHom ℤ_[ℓ]) *ᵥ w))) = (ν : ℤ_[ℓ]) * (2 * (v ⬝ᵥ (D.gramEF.map (Int.castRingHom ℤ_[ℓ]) *ᵥ w)))` using `by ring`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem Obj.IsTateL.smul {o : Obj b N s} {ℓ : ℕ} [Fact ℓ.Prime] {T : Over S}
     {ev : ℕ → (D.Ix → ℤ_[ℓ]) → (T ⟶ o.A)} (h : o.IsTateL ℓ T ev) (g : D.gPts ℤ_[ℓ]) :
     o.IsTateL ℓ T (fun m v => ev m (((g : GL D.Ix ℤ_[ℓ]) : Matrix D.Ix D.Ix ℤ_[ℓ]) *ᵥ v)) := by
@@ -273,18 +297,33 @@ section Examples
 
 variable (D : Datum p) (ℓ : ℕ) [Fact ℓ.Prime]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalGroup (D.gPts ℤ_[ℓ]) := inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun c => by simp, ⟨1, by simp⟩⟩`.
+-/
 example (Λ : Type) [CommRing Λ] : (-1 : GL D.Ix Λ) ∈ D.gPts Λ :=
   ⟨fun c => by simp, ⟨1, by simp⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (g : D.gPts ℤ_[ℓ]) : D.stdRep ℓ g = g := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Et.Rel.assocTrivEquiv _ (D.stdRep ℓ).continuous T`.
+-/
 example (X : Scheme.{0}) (T : Over X) :
     GlobalTheory.Et.Rel.assocSet ℤ_[ℓ] (GlobalTheory.Et.Rel.trivTorsor X (D.gPts ℤ_[ℓ])) (D.stdRep ℓ).toMonoidHom T ≃ₗ[ℤ_[ℓ]]
       C(T.left, D.Ix → ℤ_[ℓ]) :=
   GlobalTheory.Et.Rel.assocTrivEquiv _ (D.stdRep ℓ).continuous T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : Obj b N s)
     (g : D.gPts ℤ_[ℓ]) (T : Over S) (z : (o.tateL ℓ).P.obj (Opposite.op T)) (m : ℕ) (v : D.Ix → ℤ_[ℓ]) :
     (((o.tateL ℓ).act g).app _ z).1 m v = z.1 m (((g : GL D.Ix ℤ_[ℓ]) : Matrix D.Ix D.Ix ℤ_[ℓ]) *ᵥ v) := rfl

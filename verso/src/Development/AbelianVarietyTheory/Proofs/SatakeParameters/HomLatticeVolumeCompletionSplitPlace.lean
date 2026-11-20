@@ -16,6 +16,15 @@ namespace GlobalTheory.VolAt
 
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.MainNotions.FormalGroupSystem Formalism.L2.G.Pend Matrix
 
+/- English proof (translation)
+Establish `hS` using `X.G.P.setting v`. Use `haveI := hS.frac_alt`. Consider the cases of `j with`. Consider the case `zero`. Establish `h0 : IsLattice (X.G.P.W v) (X.latAt v 0 L)` using `hL v`.
+
+Take `⟨g, hg, hL'⟩` from `h0`. Use `⟨g, hg, hL', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lenLat (X.G.P.W v) p (X.latAt v 0 L) = _`. Rewrite using `[hL']`. Conclude with `lenLat_colSpan hS.p_unif g hg`.
+
+Consider the case `succ j`. Establish `h0 : IsLattice (X.G.P.W v) (X.latAt v (j + 1) L)` using `hL v`. Take `⟨g, hg, hL'⟩` from `h0`. Use `⟨g, hg, hL', ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `lenLat (X.G.P.W v) p (X.latAt v (j + 1) L) = _`.
+
+Rewrite using `[hL']`. Conclude with `lenLat_colSpan hS.p_unif g hg`.
+-/
 theorem latAt_lattice {p : ℕ} [Fact p.Prime] (X : Sys p) (v : X.Pl) (j : ℕ) (L : (X.Pj j).Tup)
     (hL : (X.Pj j).IsLatTup L) :
     ∃ g : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v), IsUnit g.det ∧
@@ -38,6 +47,9 @@ theorem latAt_lattice {p : ℕ} [Fact p.Prime] (X : Sys p) (v : X.Pl) (j : ℕ) 
     rw [hL']
     exact lenLat_colSpan hS.p_unif g hg
 
+/- English proof (translation)
+Consider the cases of `j with`. Consider the case `zero => simp [NN, Sys.Pj, Fills.Pj]`. Consider the case `succ j`. Simplify using `only [NN, Sys.Pj, Fills.Pj, Places.withWt, Sys.t]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Pj_m_succ {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) : (X.Pj j).m + 1 = NN X.G.P.m X.t j := by
   cases j with
   | zero => simp [NN, Sys.Pj, Fills.Pj]
@@ -45,6 +57,15 @@ theorem Pj_m_succ {p : ℕ} [Fact p.Prime] (X : Sys p) (j : ℕ) : (X.Pj j).m + 
     simp only [NN, Sys.Pj, Fills.Pj, Places.withWt, Sys.t]
     ring
 
+/- English proof (translation)
+Rewrite using `[← colSpan_mul, ← colSpan_mul, mem_homLat]`. Establish `hinv : M'⁻¹ * M' = 1` using `Matrix.nonsing_inv_mul M' hM'`. Establish `hinv' : M' * M'⁻¹ = 1` using `Matrix.mul_nonsing_inv M' hM'`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+
+Take `⟨u, hu, hu'⟩` from `h (M *ᵥ y) (Submodule.mem_map_of_mem hy)`. Establish `e : (M'⁻¹ * z * M) *ᵥ y = u`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `: z *ᵥ (M *ᵥ y) = M' *ᵥ u` using `hu'.symm`. Rewrite using `[this, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+
+Rewrite using `[e]`. Conclude with `hu`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Establish `e : z *ᵥ ((M.mulVecLin.restrictScalars W) y) = M' *ᵥ ((M'⁻¹ * z * M) *ᵥ y)`. Express the relevant statement in the definitionally equal form `z *ᵥ (M *ᵥ y) = _`.
+
+Simplify using `only [Matrix.mulVec_mulVec]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hinv', Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `Submodule.mem_map_of_mem (h y hy)`.
+-/
 theorem homLat_conj {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k k' : ℕ}
     (M g : Matrix (Fin k) (Fin k) Qq) (M' g' : Matrix (Fin k') (Fin k') Qq) (hM' : IsUnit M'.det)
     (z : Matrix (Fin k') (Fin k) Qq) :
@@ -70,6 +91,27 @@ theorem homLat_conj {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k k' :
     rw [e]
     exact Submodule.mem_map_of_mem (h y hy)
 
+/- English proof (translation)
+Introduce `D p _ X v j ρ P hA h1 h2`. Establish `hS` using `X.G.P.setting v`. Use `haveI := hS.frac_alt`. Take `⟨φ, hφ, hop, hnb⟩` from `GlobalTheory.T.numberField_completion_ringEquiv_of_dense_unramified P p hS.p_unif hS.eq_sum_herm_smul_frame_of_inW ρ h1 h2`. Use `⟨φ, hφ, ?_⟩` and prove the remaining obligations.
+
+Introduce `M M' hM hM' N N' S hSq`. Establish `key : ∀ q ∈ S, ∃ (g : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (g' : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj (j + 1)).m + 1)) (X.G.P.Qq v)), IsUnit (M * g).det ∧ IsUnit (M' * g').det ∧ (∀ y, y ∈ GL3Theta.YP D P (N q.1) (N' q.2) ↔ y.map φ ∈ homLat …`. Introduce `q hq`. Take `⟨hL, hL', hAdm, hsp, hsp'⟩` from `hSq q hq`. Take `⟨g, hg, hgL, hlen⟩` from `latAt_lattice X v j q.1 hL`.
+
+Take `⟨g', hg', hgL', hlen'⟩` from `latAt_lattice X v (j + 1) q.2 hL'`. Establish `hMg : IsUnit (M * g).det` using `by rw [Matrix.det_mul]; exact hM.mul hg`. Establish `hMg' : IsUnit (M' * g').det` using `by rw [Matrix.det_mul]; exact hM'.mul hg'`. Establish `hNa : Submodule.span (X.G.P.W v) ((fun x k => ρ (x k)) '' (N q.1 : Set (Fin ((X.Pj j).m + 1) → D.host.E))) = colSpan (X.G.P.W v) (M * g)` using `by rw [hsp, hgL, colSpan_mul]`. Establish `hNb : Submodule.span (X.G.P.W v) ((fun x k => ρ (x k)) '' (N' q.2 : Set (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))) = colSpan (X.G.P.W v) (M' * g')` using `by rw [hsp', hgL', colSpan_mul]`.
+
+Take `⟨-, -, ⟨hFG, hspan, -⟩, ⟨hFG', hspan', -⟩⟩` from `hAdm`. Use `⟨g, g', hMg, hMg', fun y => ?_, fun z => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.mem_closure_iff_map_mem_matrixHomLattice_completion P p hS.p_unif ρ h2 φ hφ hop hnb (TaylorLogMetric.YYl D (N q.1) (N' q.2)) _ _ hMg hMg' (GlobalTheory.T.ideal_mul_hom_map_mem_matrixHomLattice D P p hS.p_unif ρ hA h1 _ _ _ _ hNa hNb) (GlobalTheory.T.matrixHomLattic …`. Rewrite using `[homLat_conj M g M' g' hM' z, ← hgL, ← hgL']`. Unfold `Sys.ind`.
+
+Use `split_ifs with h`. Conclude with `iff_of_true rfl h`. Conclude with `iff_of_false (by norm_num) h`. Rewrite using `[Matrix.det_mul, ordP_mul hS.p_unif hM.ne_zero hg.ne_zero, hlen]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Matrix.det_mul, ordP_mul hS.p_unif hM'.ne_zero hg'.ne_zero, hlen']`. Expand and normalize the polynomial expressions, which then agree. Introduce `q hq`. Take `⟨g, g', hMg, hMg', hY, hind, ho, ho'⟩` from `key q hq`. Use `⟨fun y => (hY y).trans (hind _).symm, fun q₀ hq₀ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g₀, g₀', hMg₀, hMg₀', hY₀, -, ho₀, ho₀'⟩` from `key q₀ hq₀`. Set `e : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) (GL3Theta.EP D P) →+ Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)` to `φ.toAddEquiv.toAddMonoidHom.mapMatrix`. Establish `he : Function.Surjective e` using `fun z => ⟨z.map φ.symm, by ext i l; simp [e]⟩`. Establish `hYc : ∀ (A : Submodule (X.G.P.W v) _), (∀ y, y ∈ GL3Theta.YP D P (N q.1) (N' q.2) ↔ y.map φ ∈ A) → GL3Theta.YP D P (N q.1) (N' q.2) = A.toAddSubgroup.comap e` using `fun A h => by`. Use extensionality with `y`.
+
+Conclude with `h y`. Establish `hYc₀ : ∀ (A : Submodule (X.G.P.W v) _), (∀ y, y ∈ GL3Theta.YP D P (N q₀.1) (N' q₀.2) ↔ y.map φ ∈ A) → GL3Theta.YP D P (N q₀.1) (N' q₀.2) = A.toAddSubgroup.comap e` using `fun A h => by`. Use extensionality with `y`. Conclude with `h y`. Establish `hrel : ∀ A B : AddSubgroup (Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)), ((A.comap e).addSubgroupOf (B.comap e)).index = A.relIndex B` using `fun A B => by`.
+
+Express the relevant statement in the definitionally equal form `(A.comap e).relIndex (B.comap e) = _`. Rewrite using `[AddSubgroup.relIndex_comap, AddSubgroup.map_comap_eq_self_of_surjective he]`. Unfold `GL3Theta.volP`. Rewrite using `[hYc _ hY, hYc₀ _ hY₀, hrel, hrel, GlobalTheory.T.relIndex_matrixHomLattice_ratio_eq_residue_pow p (X.G.P.n' v) hS.p_unif hS.res_card _ _ _ _ hMg₀ hMg hMg₀' hMg', ho, ho', ho₀, ho₀']`. Use `congr 1`.
+
+Unfold `volE`. Rewrite using `[← Pj_m_succ X j, ← Pj_m_succ X (j + 1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vol_main : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (v : X.Pl) (j : ℕ) (ρ : D.host.E →+* X.G.P.Qq v) (P : HeightOneSpectrum (𝓞 D.host.E)), Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) = Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (1 : Submodule (𝓞 D.host.E) D.host.E) → (∀ x : 𝓞 D.host.E, ∃ y : X.G.P.W v, ρ x = algebraMap _ _ y ∧ (x ∈ P.asIdeal ↔ (p : X.G.P.W v) ∣ y)) → (∀ (y : X.G.P.W v) (n : ℕ), ∃ (x : 𝓞 D.host.E) (z : X.G.P.W v), ρ x = algebraMap _ _ (y + (p : X.G.P.W v) ^ n * z)) → ∃ φ : GL3Theta.EP D P ≃+* X.G.P.Qq v, (∀ x : D.host.E, φ (algebraMap _ _ x) = ρ x) ∧ ∀ (M : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v)) (M' : Matrix (Fin ((X.Pj (j + 1)).m + 1)) (Fin ((X.Pj (j + 1)).m + 1)) (X.G.P.Qq v)), IsUnit M.det → IsUnit M'.det → ∀ (N : (X.Pj j).Tup → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E)) (N' : (X.Pj (j + 1)).Tup → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E)) (S : Set ((X.Pj j).Tup × (X.Pj (j + 1)).Tup)), (∀ q ∈ S, (X.Pj j).IsLatTup q.1 ∧ (X.Pj (j + 1)).IsLatTup q.2 ∧ TaylorLogMetric.admitted D _ _ (N q.1) (N' q.2) ∧ Submodule.span (X.G.P.W v) ((fun x k => ρ (x k)) '' (N q.1 : Set (Fin ((X.Pj j).m + 1) → D.host.E))) = (X.latAt v j q.1).map ((M.mulVecLin).restrictScalars (X.G.P.W v)) ∧ Submodule.span (X.G.P.W v) ((fun x k => ρ (x k)) '' (N' q.2 : Set (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))) = (X.latAt v (j + 1) q.2).map ((M'.mulVecLin).restrictScalars (X.G.P.W v))) → ∀ q ∈ S, (∀ y, y ∈ GL3Theta.YP D P (N q.1) (N' q.2) ↔ X.ind v j q.1 q.2 (M'⁻¹ * y.map φ * M) = 1) ∧ ∀ q₀ ∈ S, GL3Theta.volP (GL3Theta.YP D P (N q₀.1) (N' q₀.2)) (GL3Theta.YP D P (N q.1) (N' q.2)) = (p : ℝ) ^ ((X.G.P.n' v : ℤ) * (volE X v j q.1 q.2 - volE X v j q₀.1 q₀.2)) := by
   intro D p _ X v j ρ P hA h1 h2
   have hS := X.G.P.setting v

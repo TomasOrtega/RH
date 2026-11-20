@@ -31,6 +31,33 @@ open Matrix Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob Globa
 
 namespace GlobalTheory.AvgSamePlace
 
+/- English proof (translation)
+Introduce `D θ hθ hPr N τ ψ _ hT e he`. Take `⟨H, i1, i2, σ, lam, ε, P, hE, hD, hP, hJ, hx⟩` from `hT`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique hE (N.M.enum τ)`. Use `haveI : CompleteSpace H := hD.1`. Establish `hfr : IsUnit (N.M.fr τ)` using `N.M.fr_unit τ`.
+
+Establish `hfrJ` using `N.M.fr_gram τ`. Establish `dfr` using `(isUnit_iff_isUnit_det _).1 hfr`. Establish `dP` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `fr1 : (N.M.fr τ)⁻¹ * N.M.fr τ = 1` using `Matrix.nonsing_inv_mul _ dfr`. Establish `fr2 : N.M.fr τ * (N.M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ dfr`.
+
+Establish `P1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ dP`. Establish `P2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ dP`. Use `set fr := N.M.fr τ with hfrdef`. Use `set h := P * fr⁻¹ with hh`. Use `set hi := fr * P⁻¹ with hhi`.
+
+Establish `hih : hi * h = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hU : h ∈ UJset (N.M.ε τ)` using `by show hᴴ * Jm (N.M.ε τ) * h = Jm (N.M.ε τ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hh, conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = (fr * fr⁻¹)ᴴ * Jm (N.M.ε τ) * (fr * fr⁻¹) := by`. Rewrite using `[hJ, ← hfrJ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [fr2]; simp`. Establish `hiU : hi ∈ UJset (N.M.ε τ)` using `by show hiᴴ * Jm (N.M.ε τ) * hi = Jm (N.M.ε τ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hhi, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P * P⁻¹)ᴴ * Jm (N.M.ε τ) * (P * P⁻¹) := by`. Rewrite using `[hfrJ, ← hJ]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [P2]; simp`. Use `set σ₂ : Mx N.V.rank → (H →L[ℂ] H) := fun y => σ (h * y * hi) with hσ₂def`. Establish `hD₂ : IsDS (N.M.ε τ) (N.M.lam τ) σ₂` using `GlobalTheory.CayleyChoice.isDS_conj hD hiU hU hih`. Establish `hσ₂ : Std (N.M.ε τ) σ₂` using `std_of_isDS hPr.harishChandraModules hD₂`. Establish `e1 : ∀ g, σ (P * g * P⁻¹) = σ₂ (fr * g * fr⁻¹)`.
+
+Introduce `g`. Use `show σ (P * g * P⁻¹) = σ (h * (fr * g * fr⁻¹) * hi)`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e1] at hx`.
+
+Use `⟨H, i1, i2, σ₂, N.M.lam τ, N.M.ε τ, fr, N.M.enum τ, hD₂, hfr, hfrJ, fun x => ?_⟩` and prove the remaining obligations. Establish `hx' : HasTypeAll (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) σ₂ (GlobalTheory.SeriesToClosure.res θ N.V τ fr ψ x)` using `hasTypeAll_transport _ H H _ σ₂ (gramAt D N.V τ) (Jm (N.M.ε τ)) fr (GlobalTheory.LowTypeDetermined.isUnit_gram hfr hfrJ) hfr hfrJ (LinearIsometryEquiv.refl ℂ H) (fun _ _ _ => rfl) (fun g => ψ (x * atTau θ N.V τ g)) (hasTypeAll_iff.2 (hx x))`. Take `⟨S, hW, hc, v, ℓ, C, hex⟩` from `hx'`. Establish `hmv` using `GlobalTheory.SeriesToClosure.moves_avg hθ hfr hfrJ hσ₂ he ψ x S v ℓ C hW hc hex`. Establish `hy : HasTypeAll (lieSet (N.M.ε τ)) (UJset (N.M.ε τ)) σ₂ (GlobalTheory.SeriesToClosure.res θ N.V τ fr (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) fr e ψ) x)` using `⟨S, hW, hc, _, ℓ, C, hmv⟩`.
+
+Establish `hJ' : (fr⁻¹)ᴴ * gramAt D N.V τ * fr⁻¹ = Jm (N.M.ε τ)`. Rewrite using `[← hfrJ]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [fr2]; simp`.
+
+Establish `hfri : IsUnit fr⁻¹` using `(Matrix.isUnit_nonsing_inv_iff).2 hfr`. Establish `hii : fr⁻¹⁻¹ = fr` using `Matrix.nonsing_inv_nonsing_inv _ dfr`. Establish `hb` using `hasTypeAll_transport _ H H σ₂ (fun g => σ₂ (fr * g * fr⁻¹)) (Jm (N.M.ε τ)) (gramAt D N.V τ) fr⁻¹ (isUnit_Jm _) hfri hJ' (LinearIsometryEquiv.refl ℂ H) (fun g _ w => by show σ₂ g w = σ₂ (fr * (fr⁻¹ * g * fr⁻¹⁻¹) * fr⁻¹) w`. Rewrite using `[hii]`. Use `congr 2`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `ef : (fun y => GlobalTheory.SeriesToClosure.res θ N.V τ fr (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) fr e ψ) x (fr⁻¹⁻¹ * y * fr⁻¹)) = fun g => GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) fr e ψ (x * atTau θ N.V τ g)`. Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.SeriesToClosure.res]`. Use `congr 3`.
+
+Rewrite using `[hii]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hb` using `[ef]`. Conclude with `hasTypeAll_iff.1 hb`.
+-/
 theorem isTypeAt_avg : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → GlobalTheory.FunPr.Hypotheses₂ → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (ψ : GA D N.V → ℂ), IsAutFunSm θ N.V ψ → IsTypeAt θ N.V τ (N.S τ) ψ → ∀ (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → IsTypeAt θ N.V τ (N.S τ) (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
   intro D θ hθ hPr N τ ψ _ hT e he
   obtain ⟨H, i1, i2, σ, lam, ε, P, hE, hD, hP, hJ, hx⟩ := hT

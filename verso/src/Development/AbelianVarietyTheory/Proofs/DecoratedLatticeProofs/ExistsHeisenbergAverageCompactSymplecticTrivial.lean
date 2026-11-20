@@ -18,6 +18,19 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.HeisAvgCompact
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Use `letI mK : MeasurableSpace K := borel K`. Use `haveI : BorelSpace K := ⟨rfl⟩`. Set `ν : Measure K` to `Measure.addHaarMeasure ⊤`. Use `haveI : IsProbabilityMeasure ν := ⟨by`.
+
+Establish `h` using `Measure.addHaarMeasure_self (G := K) (K₀ := ⊤)`. Rewrite using `[TopologicalSpace.PositiveCompacts.coe_top] at h⟩` and apply the resulting hypothesis. Establish `hF : Continuous (Function.uncurry fun (w : X) (u : K) => f w u)` using `hf.comp (continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd))`. Establish `hfw : ∀ w, Continuous fun u : K => f w u` using `fun w => hF.comp (Continuous.prodMk_right w)`. Establish `hint : ∀ w, Integrable (fun u : K => f w u) ν` using `fun w => integrableOn_univ.1 ((hfw w).continuousOn.integrableOn_compact isCompact_univ)`.
+
+Use `⟨fun w => ∫ u : K, f w u ∂ν, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `continuous_parametric_integral_of_continuous (μ := ν) hF isCompact_univ`. Simplify `h` using `only [Measure.restrict_univ]`. Introduce `c x y h show (∫ u : K, f x u ∂ν) = c * ∫ u : K, f y u ∂ν`. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Conclude with `h u u.2`. Introduce `c x y u₀ hu₀ h show c * (∫ u : K, f x u ∂ν) = ∫ u : K, f y u ∂ν`. Rewrite using `[← integral_const_mul, ← integral_add_left_eq_self (fun u : K => f y u) (⟨u₀, hu₀⟩ : K)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `u`. Conclude with `h u u.2`. Introduce `δ z w hδ`. Establish `hc : (∫ _u : K, z ∂ν) = z`.
+
+Rewrite using `[integral_const, probReal_univ, one_smul]`. Use `show ‖(∫ u : K, f w u ∂ν) - z‖ ≤ δ`. Rewrite using `[← hc, ← integral_sub (hint w) (integrable_const _)]`. Establish `h` using `norm_integral_le_of_norm_le_const (μ := ν) (C := δ) (f := fun u : K => f w u - z) (Filter.Eventually.of_forall fun u : K => hδ u u.2)`. Rewrite `h` using `[probReal_univ, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem exists_average_of_compact {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     [LocallyCompactSpace X] [SecondCountableTopology X] [T2Space X]
     (K : AddSubgroup X) (hK : IsCompact (K : Set X)) (f : X → X → ℂ)
@@ -62,6 +75,11 @@ theorem exists_average_of_compact {X : Type} [AddCommGroup X] [TopologicalSpace 
       (Filter.Eventually.of_forall fun u : K => hδ u u.2)
     rwa [probReal_univ, mul_one] at h
 
+/- English proof (translation)
+Introduce `D ψ hψ A T K hK hKψ q hq hquasi`. Take `⟨hTG, hLC, hSC, hT2, -, -⟩` from `GlobalTheory.MixModel.lattice_Mx D T.rank A.rank`. Establish `hψc : Continuous ψ` using `hψ.1.1`. Establish `hadd : Continuous fun p : WO A T × WO A T => p.1 + p.2` using `hTG.toContinuousAdd.continuous_add`. Establish `hf : Continuous fun p : WO A T × WO A T => heisO ψ A T p.2 q p.1` using `(hψc.comp (GlobalTheory.OrientedHeis.continuous_symplOH continuous_fst continuous_snd)).mul (hq.comp hadd)`.
+
+Take `⟨g, h1, h2, h3, h4⟩` from `@exists_average_of_compact (WO A T) _ _ hTG hLC hSC hT2 K hK (fun w u => heisO ψ A T u q w) hf`. Use `⟨g, h1, fun γ w => h2 _ _ _ fun u _ => GlobalTheory.OrientedHeis.heisO_quasi u q hquasi γ w, fun u₀ hu₀ => funext fun w => h3 (ψ (symplOH A T w u₀)) (w + u₀) w u₀ hu₀ fun u hu => ?_, fun δ hδ w => h4 δ (q w) w fun a ha => hδ a ha w⟩` and prove the remaining obligations. Establish `h` using `congrFun (GlobalTheory.OrientedHeis.heisO_heisO (ψ := ψ) u₀ u q) w`. Rewrite `h` using `[hKψ u₀ hu₀ u hu, one_smul]`. Conclude with `h`.
+-/
 theorem exists_average : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (K : AddSubgroup (WO A T)), IsCompact (K : Set (WO A T)) → (∀ u ∈ K, ∀ u' ∈ K, ψ (symplOH A T u u') = 1) → ∀ (q : WO A T → ℂ), Continuous q → (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), q (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * q u) → ∃ g : WO A T → ℂ, Continuous g ∧ (∀ (γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), g (ratW T A γ + u) = ψ (-(symplOH A T (ratW T A γ) u)) * g u) ∧ (∀ u ∈ K, heisO ψ A T u g = g) ∧ ∀ δ : ℝ, (∀ a ∈ K, ∀ w, ‖heisO ψ A T a q w - q w‖ ≤ δ) → ∀ w, ‖g w - q w‖ ≤ δ := by
   intro D ψ hψ A T K hK hKψ q hq hquasi
   obtain ⟨hTG, hLC, hSC, hT2, -, -⟩ := GlobalTheory.MixModel.lattice_Mx D T.rank A.rank

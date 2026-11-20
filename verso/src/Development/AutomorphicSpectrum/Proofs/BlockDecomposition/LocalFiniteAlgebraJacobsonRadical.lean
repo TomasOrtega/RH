@@ -3,6 +3,25 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.LocalFinite
 
+/- English proof (translation)
+Introduce `O R _ _ _ _ _`. Use `haveI : Algebra.IsIntegral O R := Algebra.IsIntegral.of_finite O R`. Use `set m := IsLocalRing.maximalIdeal O with hm`. Use `set I : Ideal R := Ideal.map (algebraMap O R) m with hI`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `M ⟨-, hM⟩`. Use `Ideal.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Use `haveI : (Ideal.comap (algebraMap O R) M).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Conclude with `(IsLocalRing.eq_maximalIdeal this).ge`.
+
+Establish `hle : m ≤ Ideal.comap (algebraMap O R) I` using `Ideal.le_comap_map`. Set `f : (O ⧸ m) →+* (R ⧸ I)` to `Ideal.quotientMap I (algebraMap O R) hle`. Use `letI : Field (O ⧸ m) := Ideal.Quotient.field m`. Use `letI : Algebra (O ⧸ m) (R ⧸ I) := f.toAlgebra`. Establish `hcomp : (f.comp (Ideal.Quotient.mk m)).Finite`.
+
+Establish `h1 : (algebraMap O R).Finite` using `RingHom.finite_algebraMap.mpr inferInstance`. Establish `h2 : (Ideal.Quotient.mk I).Finite` using `RingHom.Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h3 : f.comp (Ideal.Quotient.mk m) = (Ideal.Quotient.mk I).comp (algebraMap O R)`. Use extensionality with `x`. Simplify using `[f]`.
+
+Rewrite using `[h3]`. Conclude with `h2.comp h1`. Establish `hf : f.Finite` using `RingHom.Finite.of_comp_finite hcomp`. Use `haveI : Module.Finite (O ⧸ m) (R ⧸ I) := hf`. Use `haveI : IsArtinianRing (R ⧸ I) := IsArtinianRing.of_finite (O ⧸ m) (R ⧸ I)`.
+
+Take `⟨N, hN⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := R ⧸ I)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hmap : Ideal.map (Ideal.Quotient.mk I) (⊥ : Ideal R).jacobson ≤ (⊥ : Ideal (R ⧸ I)).jacobson`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `P ⟨-, hP⟩`.
+
+Use `Ideal.map_le_iff_le_comap.mpr ?_` and prove the remaining obligations. Use `haveI : (Ideal.comap (Ideal.Quotient.mk I) P).IsMaximal := Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`. Conclude with `sInf_le ⟨bot_le, this⟩`. Establish `hz : Ideal.map (Ideal.Quotient.mk I) ((⊥ : Ideal R).jacobson ^ N) = ⊥`. Rewrite using `[Ideal.map_pow]`.
+
+Conclude with `le_bot_iff.mp ((Ideal.pow_right_mono hmap N).trans hN.le)`. Introduce `x hx`. Establish `: Ideal.Quotient.mk I x = 0`. Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk I) hx` as an intermediate fact. Rewrite `this` using `[hz]`.
+
+Simplify using `using this`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp this`.
+-/
 theorem map_maximalIdeal_le_jacobson_and_pow_le :
     ∀ (O R : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [Module.Finite O R],
       Ideal.map (algebraMap O R) (IsLocalRing.maximalIdeal O) ≤ (⊥ : Ideal R).jacobson ∧

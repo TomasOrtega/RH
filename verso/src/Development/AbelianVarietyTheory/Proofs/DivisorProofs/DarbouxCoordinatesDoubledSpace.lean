@@ -18,6 +18,11 @@ section Transp
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
   [DecidableEq β]
 
+/- English proof (translation)
+Unfold `symp hTens`. Use `congr 2`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_transpose (c : A →ₐ[R] A) (ξ : A) (JA : Matrix α α A) (JB : Matrix β β A) (x y : Matrix α β A) :
     symp c ξ JB JA xᵀ yᵀ = symp c ξ JA JB x y := by
   unfold symp hTens
@@ -44,6 +49,9 @@ def darbouxTransp {c : A →ₐ[R] A} {ξ : A} {JA : Matrix α α A} {JB : Matri
     rw [Finset.sum_comm, Finset.sum_comm (f := fun a b => (d.e yᵀ).1 (a, b) * (d.e xᵀ).2 (a, b))]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem darbouxTransp_e {c : A →ₐ[R] A} {ξ : A} {JA : Matrix α α A} {JB : Matrix β β A}
     (d : Darboux (symp c ξ JA JB) (α × β)) (x : Matrix β α A) :
     (darbouxTransp d).e x = (fun p => (d.e xᵀ).1 p.swap, fun p => (d.e xᵀ).2 p.swap) :=
@@ -55,6 +63,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Take `⟨y, z, h⟩` from `hd xᵀ`. Use `⟨fun p => y p.swap, fun p => z p.swap, ?_⟩` and prove the remaining obligations. Establish `e : (incM F x)ᵀ = incM F xᵀ` using `(Matrix.transpose_map).symm`. Rewrite using `[darbouxTransp_e, e, h]`.
+-/
 theorem darbouxTransp_rational {σ : E →ₐ[F] E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {JA : Matrix α α E} {JB : Matrix β β E} (d : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JA) (incM F JB)) (α × β))
     (hd : ∀ x : Matrix α β E, ∃ y z : α × β → F,
@@ -68,6 +79,11 @@ theorem darbouxTransp_rational {σ : E →ₐ[F] E} {α β : Type} [Fintype α] 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n m J J' J₂ hJ d hd`. Take `⟨co, hr, h1, h2⟩` from `exists_rational_dblCoord hJ (darbouxTransp d) (darbouxTransp_rational d hd)`. Use `⟨darbouxTransp co, darbouxTransp_rational co hr, fun u hu => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[darbouxTransp_e, h1 uᵀ (by simpa only [Matrix.transpose_transpose] using hu)]`. Both sides reduce to the same expression.
+
+Rewrite using `[darbouxTransp_e, h2 uᵀ (by simpa only [Matrix.transpose_transpose] using hu)]`. Both sides reduce to the same expression.
+-/
 theorem exists_rational_dblCoord_right : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n m : ℕ)
     (J : Matrix (Fin m) (Fin m) E) (J' : Matrix (Fin n) (Fin n) E) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E),

@@ -14,6 +14,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (TR : TypedRed X)
 
+/- English proof (translation)
+Use `⟨fun h1 i => ?_, fun h => Formalism.L2.SG.Pf.AmpIota.levi_eq_one_of TR gδ h⟩` and prove the remaining obligations. Take `⟨hE0, hF0, hZ0, hB, hBd⟩` from `frame_Lf X`. Use `set w := X.B.I.fmat δ *ᵥ X.bw i with hwdef`. Establish `hwL : w ∈ X.B.I.Lf` using `K_mv X.B.I gδ.1.1 (hB i)`. Establish `hwM` using `gδ.1.2.2 i`.
+
+Establish `hd` using `dual_coords X hwL`. Establish `hZe : ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) w)` using `fun a => Z_pair_Mo X (hE0 a) (by`. Introduce and unpack `s (⟨b, rfl⟩ | ⟨l, rfl⟩)`. Conclude with `(X.gramIntegral a b).1`. Conclude with `((X.weightVectorsIntegral l).2.2 a).1) _ hwM`.
+
+Establish `hZz : ZMod' X.B.I X.B.g (hA X.B.I X.z0 w)` using `Z_pair_Mo X hZ0 (by`. Introduce and unpack `s (⟨b, rfl⟩ | ⟨l, rfl⟩)`. Rewrite using `[hA_symm]`. Conclude with `Z_sig X.B.I X.B.g ((X.formsAtZero).2 b).1`. Conclude with `(X.weightVectorsIntegral l).1) _ hwM`.
+
+Establish `hbw0 : ∀ j, hA X.B.I (X.bw j) w = 0` using `fun j => by`. Rewrite using `[hwdef, X.bw_w j, X.bw_w i, Matrix.mulVec_smul, hA_smul_left, hA_smul_right]`. Use `X.ew_orth` as an intermediate fact. Take the linear combination `(hA X.B.I (X.bw j) (X.B.I.fmat δ *ᵥ X.bw i)) * this`. Establish `hcoef : ∀ j : Fin D.R.k, ZMod' X.B.I X.B.g (hA X.B.I (X.bwd j) w - if j = i then X.ew else 0)`.
+
+Introduce `j`. Establish `hI` using `hA_int X.B.I (hBd j) hwL`. Establish `hIt : ((if j = i then 1 else 0 : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) ∈ IntAf X.B.I.F X.B.I.E` using `by split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `hres : ∀ v, TR.res v ⟨_, sub_mem hI hIt⟩ = 0`. Introduce `v`. Establish `hent : leviM TR δ v j i = if j = i then 1 else 0`. Rewrite using `[← levi_coe TR gδ, h1, Pi.one_apply, Units.val_one, Matrix.one_apply]`. Establish `e : (⟨_, sub_mem hI hIt⟩ : IntAf X.B.I.F X.B.I.E) = ⟨_, hI⟩ - ⟨_, hIt⟩`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Rewrite using `[e, map_sub]`. Establish `h2 : TR.res v ⟨_, hI⟩ = leviM TR δ v j i` using `by show _ = resT TR v (hA X.B.I (X.bwd j) (X.B.I.fmat δ *ᵥ X.bw i))`. Rewrite using `[resT_of_mem TR v hI]`.
+
+Rewrite using `[h2, hent]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Establish `: (⟨_, hIt⟩ : IntAf X.B.I.F X.B.I.E) = 1` using `by apply Subtype.ext; simp`. Rewrite using `[if_pos rfl, this, map_one, sub_self]`.
+
+Establish `: (⟨_, hIt⟩ : IntAf X.B.I.F X.B.I.E) = 0` using `by apply Subtype.ext; simp [h]`. Rewrite using `[if_neg h, this, map_zero, sub_self]`. Establish `hZ` using `(TR.res_ker ⟨_, sub_mem hI hIt⟩).1 hres`. Establish `e : X.ew * (hA X.B.I (X.bwd j) w - if j = i then 1 else 0) = hA X.B.I (X.bwd j) w - if j = i then X.ew else 0`. Rewrite using `[mul_sub, ← bwc_ew δ j i]`.
+
+Apply the tactic sequence `split_ifs <;> ring`. Simplify `hZ` using `[e]`. Establish `e1 : (X.B.I.fmat δ - 1) *ᵥ X.bw i = (w - repr0 X w) + ((∑ a, hA X.B.I (X.f0 a) w • X.e0 a) + (∑ a, hA X.B.I (X.e0 a) w • X.f0 a) - hA X.B.I X.z0 w • X.z0 + (∑ j, (hA X.B.I (X.bwd j) w - if j = i then X.ew else 0) • X.bw j) + (∑ j, hA X.B.I (X.bw j) w • X.bwd j))`. Establish `hbi : (∑ j, (if j = i then X.ew else 0) • X.bw j) = X.bw i`. Simplify using `only [ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+
+Conclude with `(X.bw_w i).symm`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← hwdef]`. Unfold `repr0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, hbi]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e1]`. Establish `spn : ∀ (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) (s : VA X.B.I), c ∈ IntAf X.B.I.F X.B.I.E → s ∈ Set.range X.e0 → c • s ∈ Mo X.B.I X.B.g (Set.range X.e0)` using `fun c s hc hs => by`. Establish `: c • s = (⟨c, hc⟩ : IntAf X.B.I.F X.B.I.E) • s` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (sub_Mo X.B.I hs)`.
+
+Use `add_mem (mL_Mo X.B.I hd) (add_mem (add_mem (sub_mem (add_mem ?_ ?_) ?_) ?_) ?_)` and prove the remaining obligations. Conclude with `sum_mem fun a _ => spn _ _ (hA_int X.B.I (hF0 a) hwL) ⟨a, rfl⟩`. Conclude with `sum_mem fun a _ => mL_Mo X.B.I (Z_smul_mL X (hZe a) (hF0 a))`. Conclude with `mL_Mo X.B.I (Z_smul_mL X hZz hZ0)`. Conclude with `sum_mem fun j _ => mL_Mo X.B.I (Z_smul_mL X (hcoef j) (hB j))`.
+
+Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hbw0, zero_smul]`. Conclude with `zero_mem _`.
+-/
 theorem levi_one_iff {δ : X.B.I.Gf} (gδ : Good X δ) :
     levi TR δ = 1 ↔ ∀ j, (X.B.I.fmat δ - 1) *ᵥ X.bw j ∈ Mo X.B.I X.B.g (Set.range X.e0) := by
   refine ⟨fun h1 i => ?_, fun h => Formalism.L2.SG.Pf.AmpIota.levi_eq_one_of TR gδ h⟩
@@ -90,6 +119,15 @@ theorem levi_one_iff {δ : X.B.I.Gf} (gδ : Good X δ) :
   · refine sum_mem fun j _ => ?_
     rw [hbw0, zero_smul]; exact zero_mem _
 
+/- English proof (translation)
+Establish `hTF` using `Formalism.L2.SG.Full.Full.frameTie (X := X) u u'`. Establish `hN` using `adm_norm_of_fixed_frames (Y.cs u) (Y.cs u') hTF (Formalism.L2.SG.Pf.termK X (Y.cs u) (Y.cs u')) (Formalism.L2.SG.Pf.modGAt X)`. Establish `hA` using `adm_parity_of_norm (Y.cs u) (Y.cs u') (Formalism.L2.SG.Pf.termK X (Y.cs u) (Y.cs u')) hN`. Establish `g1` using `hA s₁`. Establish `g2` using `hA s₂`.
+
+Establish `n1` using `hN s₁`. Establish `n2` using `hN s₂`. Establish `k1` using `Formalism.L2.SG.Pf.termK X (Y.cs u) (Y.cs u') (F0 := X.Fu u) (F0' := X.Fu u') s₁`. Establish `k2` using `Formalism.L2.SG.Pf.termK X (Y.cs u) (Y.cs u') (F0 := X.Fu u) (F0' := X.Fu u') s₂`. Rewrite `g2`, `n2`, `k2` using `[← hl, ← hl']`.
+
+Establish `e : (((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)⁻¹ * (s₂.pt.2 * s₁.pt.2⁻¹) * (((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u) = kOf X u u' ((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base s₁.lam') : X.B.I.Gf) s₂.pt * (kOf X u u' (( …`. Unfold `kOf`. Use `group`. Rewrite using `[e]`. Use `⟨good_mul X g2 (good_inv X g1), ncong_mul X k2 n2 (ncong_inv X k1 n1), ?_⟩` and prove the remaining obligations.
+
+Unfold `iotaOf`. Rewrite using `[← hl, ← hl', levi_mul Y.TR g2 (good_inv X g1), mul_assoc, ← levi_mul Y.TR (good_inv X g1) g1, inv_mul_cancel, levi_one, mul_one]`.
+-/
 theorem iotaOf_split {u u' : D.what₂.Word} (Y : Formalism.L2.SG.Full.Full X)
     (s₁ s₂ : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) (hl : s₁.lam = s₂.lam) (hl' : s₁.lam' = s₂.lam') :
     Good X ((((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)⁻¹ * (s₂.pt.2 * s₁.pt.2⁻¹) *
@@ -160,6 +198,13 @@ def IotaBridgeC : Prop :=
       (AdTriv X ((((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)⁻¹ * b.2 *
         (((Y.cs u).h ((Y.cs u).base Λ) : X.B.I.Gf) * X.xu u)) ↔ RatTriv u X Λ β)
 
+/- English proof (translation)
+Introduce `D X Y u u' s₁ s₂ hG1 hG2 hg1 hg2 hl hl'`. Take `⟨hgood, hN, heq⟩` from `iotaOf_split Y s₁ s₂ hl hl'`. Rewrite using `[h3 D X Y u u' s₁ s₂ hG1 hG2 hg1 hg2 hl hl', heq]`. Establish `hlink : RatLink X (s₂.pt * s₁.pt⁻¹) (s₂.lin * s₁.lin⁻¹)` using `ratLink_mul X s₂.rep.2.1 (ratLink_inv X s₁.rep.2.1)`. Establish `hB` using `h4 D X Y u s₁.lam s₁.mem (s₂.lin * s₁.lin⁻¹) (s₂.pt * s₁.pt⁻¹) hlink hgood.1.1 hN`.
+
+Establish `hc : iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ = levi Y.TR ((((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)⁻¹ * (s₂.pt.2 * s₁.pt.2⁻¹) * (((Y.cs u).h ((Y.cs u).base s₁.lam) : X.B.I.Gf) * X.xu u)) * iotaOf Y.TR (Y.cs u) (Y.cs u') s₁ ↔ levi Y.TR ((((Y.cs u).h ((Y.cs u).base s₁.lam …`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `congrArg (· * (iotaOf Y.TR (Y.cs u) (Y.cs u') s₁)⁻¹) h`. Simplify using `using h'.symm`.
+
+Introduce `h`. Rewrite using `[h, one_mul]`. Conclude with `hc.trans ((levi_one_iff Y.TR hgood).trans hB)`.
+-/
 theorem iotaDictC_of (h3 : RatIotaC) (h4 : IotaBridgeC) : IotaDictC := by
   intro D X Y u u' s₁ s₂ hG1 hG2 hg1 hg2 hl hl'
   obtain ⟨hgood, hN, heq⟩ := iotaOf_split Y s₁ s₂ hl hl'

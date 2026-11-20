@@ -19,6 +19,27 @@ open GlobalTheory.Poinc.Eq8
 
 namespace GlobalTheory.Poinc.MatChar
 
+/- English proof (translation)
+Introduce `V₁ _ _ _ hCN D₀ A₀ G₀ _ _ hG₀ U₀ D P G _ _ hG U q hq c hc a f m hf hm hfq u χ`. Establish `hB : GlobalTheory.Mum.Base V₁` using `⟨⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩, hCN.2.2.2⟩`. Take `⟨-, hone, hmul⟩` from `GlobalTheory.Poinc.Eq8.torMatch_id_one_mul V₁ hB G₀ hG₀ D₀ A₀ U₀ G hG D P U`. Establish `huniq : ∀ (β : G.left ⟶ G₀.left) (ρ ρ' : D₀.toPre.X →+ D.toPre.X), TorMatch U₀ U (RingHom.id V₁) β ρ → TorMatch U₀ U (RingHom.id V₁) β ρ' → ρ = ρ'` using `fun β ρ ρ' => GlobalTheory.Poinc.Eq8.torMatch_unique V₁ hB G₀ hG₀ D₀ A₀ U₀ V₁ hB G hG D P U (RingHom.id V₁) β Function.injective_id ρ ρ'`. Establish `hinv : ∀ (p : G ⟶ G₀) [IsMonHom p] (ρ : D₀.toPre.X →+ D.toPre.X), TorMatch U₀ U (RingHom.id V₁) p.left ρ → TorMatch U₀ U (RingHom.id V₁) (p⁻¹).left (-ρ)`.
+
+Introduce `p _ ρ hp`. Take `⟨ρ', hρ'⟩` from `GlobalTheory.Poinc.HomTor.exists_torMatch V₁ hB G₀ hG₀ D₀ A₀ U₀ G hG D P U p⁻¹ inferInstance`. Establish `h1` using `hmul p p⁻¹ ρ ρ' hp hρ'`. Rewrite `h1` using `[mul_inv_cancel]`. Establish `h2 : ρ + ρ' = 0` using `huniq _ _ _ h1 hone`.
+
+Establish `h3 : ρ' = -ρ` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact h2`. Rewrite using `[← h3]` and apply the resulting hypothesis. Establish `hnpow : ∀ (p : G ⟶ G₀) (ρ : D₀.toPre.X →+ D.toPre.X) (n : ℕ), TorMatch U₀ U (RingHom.id V₁) p.left ρ → TorMatch U₀ U (RingHom.id V₁) (p ^ n).left (n • ρ)`. Introduce `p ρ n hp`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `hone`. Consider the case `succ n ih => rw [pow_succ, succ_nsmul]`. Conclude with `hmul _ _ _ _ ih hp`. Establish `hzpow : ∀ (p : G ⟶ G₀) [IsMonHom p] (ρ : D₀.toPre.X →+ D.toPre.X) (k : ℤ), TorMatch U₀ U (RingHom.id V₁) p.left ρ → TorMatch U₀ U (RingHom.id V₁) (p ^ k).left (k • ρ)`.
+
+Introduce `p _ ρ k hp`. Consider the cases of `k with`. Consider the case `ofNat n => rw [Int.ofNat_eq_coe, zpow_natCast, natCast_zsmul]`. Conclude with `hnpow p ρ n hp`. Consider the case `negSucc n`.
+
+Rewrite using `[zpow_negSucc, ← inv_pow, negSucc_zsmul, ← smul_neg]`. Conclude with `hnpow _ _ (n + 1) (hinv p ρ hp)`. Establish `hprod : ∀ (n : ℕ) (g : Fin n → (G ⟶ G₀)) (r : Fin n → (D₀.toPre.X →+ D.toPre.X)), (∀ i, TorMatch U₀ U (RingHom.id V₁) (g i).left (r i)) → TorMatch U₀ U (RingHom.id V₁) (List.ofFn g).prod.left (∑ i, r i)`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => intro g r _`. Rewrite using `[List.ofFn_zero, List.prod_nil, Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `hone`. Consider the case `succ n ih`. Introduce `g r h`.
+
+Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ]`. Conclude with `hmul _ _ _ _ (h 0) (ih _ _ fun i => h i.succ)`. Establish `hright : TorMatch U₀ U (RingHom.id V₁) (f ≫ q u).left (∑ v, a u v • c v)`. Rewrite using `[hfq u]`. Conclude with `hprod 8 _ _ fun v => haveI := hq v`.
+
+Use `hzpow (q v) (c v) (a u v) (hc v)`. Establish `hleft` using `GlobalTheory.Poinc.Eq8.torMatch_comp V₁ hB G₀ hG₀ D₀ A₀ U₀ V₁ hB G hG D P U (RingHom.id V₁) (q u).left V₁ hB G hG D P U (RingHom.id V₁) f.left Function.injective_id (fun _ hk => hk) (c u) m (hc u) (GlobalTheory.Poinc.TorEnd.torMatch_of_endChar V₁ hB G hG D P U f hf m hm)`. Rewrite `hleft` using `[RingHom.id_comp, ← Over.comp_left]`. Establish `e` using `huniq _ _ _ hleft hright`. Establish `e'` using `DFunLike.congr_fun e χ`.
+
+Rewrite `e'` using `[AddMonoidHom.comp_apply, AddMonoidHom.finset_sum_apply]`. Conclude with `e'`.
+-/
 theorem charMap_matrix : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → ∀ (D₀ : DegData V₁ (maximalIdeal V₁)) (A₀ : PolAV (Sp (FractionRing V₁))) (G₀ : Over (Sp V₁)) [GrpObj G₀] [IsCommMonObj G₀], IsSemiAbelian G₀ → ∀ (U₀ : Unif (maximalIdeal V₁) D₀ A₀ G₀) (D : DegData V₁ (maximalIdeal V₁)) (P : PolAV (Sp (FractionRing V₁))) (G : Over (Sp V₁)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V₁) D P G) (q : Fin 8 → (G ⟶ G₀)), (∀ u, IsMonHom (q u)) → ∀ c : Fin 8 → (D₀.toPre.X →+ D.toPre.X), (∀ u, TorMatch U₀ U (RingHom.id V₁) (q u).left (c u)) → ∀ (a : Matrix (Fin 8) (Fin 8) ℤ) (f : G ⟶ G) (m : D.toPre.X →+ D.toPre.X), IsMonHom f → EndChar U f m → (∀ u, f ≫ q u = (List.ofFn fun v => q v ^ a u v).prod) → ∀ u χ, m (c u χ) = ∑ v, a u v • c v χ := by
   intro V₁ _ _ _ hCN D₀ A₀ G₀ _ _ hG₀ U₀ D P G _ _ hG U q hq c hc a f m hf hm hfq u χ
   have hB : GlobalTheory.Mum.Base V₁ := ⟨⟨hCN.1, inferInstance, hCN.2.1, hCN.2.2.1⟩, hCN.2.2.2⟩

@@ -7,6 +7,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.RankTwoDesce
 open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
+/- English proof (translation)
+Introduce `E _ _ D ω φ hφ γ g h`. Establish `key : em E (gl (ratS ℚ γ)) = ratGL E 2 (Matrix.GeneralLinearGroup.map (algebraMap ℚ E) (Matrix.SpecialLinearGroup.toGL γ))`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap ℚ E (γ.1 i j)`.
+
+Establish `e : gl (ratS ℚ γ * g) * h = gl (ratS ℚ γ) * (gl g * h)`. Rewrite using `[gl, gl, map_mul, mul_assoc]`. Rewrite using `[e, map_mul, key]`. Conclude with `hφ.left _ _`.
+-/
 theorem UpperTheory.automorphicForm_baseChange_ratSL2_mul_invariant :
     ∀ {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →
         ∀ (γ : Matrix.SpecialLinearGroup (Fin 2) ℚ) (g : G1 ℚ) (h : GL (Fin 2) (A ℚ)), φ (em E (gl (ratS ℚ γ * g) * h)) = φ (em E (gl g * h)) := by

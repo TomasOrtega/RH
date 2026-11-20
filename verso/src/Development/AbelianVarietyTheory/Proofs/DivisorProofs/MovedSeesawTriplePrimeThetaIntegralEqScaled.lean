@@ -25,6 +25,21 @@ namespace GlobalTheory.BotMove
 
 open MeasureTheory
 
+/- English proof (translation)
+Introduce `D T A A' WW Y ψ θ α β νH S hY ΛA ΛA' ΛW g g' hg' h hh t₀ r r' hr' t P y`. Establish `hW : IsWeilDatumO ψ A' WW (α t) (α t / β t) (Y.ω' t)` using `hY.weil' t`. Establish `hθ : IsInfFam θ` using `hY.isVac'.2.inf`. Establish `hf` using `(GlobalTheory.ConstRatio.theta_f hY t).2`. Establish `hk : ∀ x, (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker' ψ θ t P y x = (r' t)⁻¹ * Y.ker' ψ θ t P (y * h) (x * g')`.
+
+Introduce `x`. Express the relevant statement in the definitionally equal form `thetaKO (Y.ω' t) x y (pureTensorO ψ θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B ((r' t)⁻¹ • Y.ω' t (g', h) (Y.f' t)) P) = (r' t)⁻¹ * thetaKO (Y.ω' t) (x * g') (y * h) (pureTensorO ψ θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (Y.f' t) P)`. Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_smul, ← (GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ A' WW _ _ (Y.ω' t) hW hθ Y.rA'.s Y.rA'.s Y.rA'.B Y.rA'.B Y.rW.s Y.rW.s Y.rW.B Y.rW.B g' h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hg', Matrix.mul_one, Matrix.one_ …`. Simplify using `only [thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk]`.
+
+Set `e : GA D A' ≃ᵐ GA D A'` to `MeasurableEquiv.mulRight g'⁻¹`. Establish `hm : (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').m' = Y.m'.map e` using `rfl`. Establish `hs : e ⁻¹' (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').fd' = Y.fd'`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x * g'⁻¹ * g' ∈ Y.fd' ↔ x ∈ Y.fd'`.
+
+Rewrite using `[inv_mul_cancel_right]`. Establish `hc : ∀ x, (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker' ψ θ t P y (e x) = (r' t)⁻¹ * Y.ker' ψ θ t P (y * h) x`. Introduce `x`. Rewrite using `[hk]`. Express the relevant statement in the definitionally equal form `(r' t)⁻¹ * Y.ker' ψ θ t P (y * h) (x * g'⁻¹ * g') = _`.
+
+Rewrite using `[inv_mul_cancel_right]`. Establish `hu : IsUnit (r' t)⁻¹` using `IsUnit.mk0 _ (inv_ne_zero (hr' t))`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hm, integrableOn_map_equiv, hs]`. Express the relevant statement in the definitionally equal form `Integrable (fun x => (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker' ψ θ t P y (e x)) (Y.m'.restrict Y.fd') ↔ _`.
+
+Repeatedly rewrite using `[hc]`. Conclude with `integrable_const_mul_iff hu _`. Express the relevant statement in the definitionally equal form `∫ x in (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').fd', (moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').ker' ψ θ t P y x ∂(moveTri Y ΛA ΛA' ΛW g g' h t₀ r r').m' = (r' t)⁻¹ * ∫ x in Y.fd', Y.ker' ψ θ t P (y * h) x ∂Y.m'`. Rewrite using `[hm, setIntegral_map_equiv, hs]`. Repeatedly rewrite using `[hc]`.
+
+Conclude with `integral_const_mul _ _`.
+-/
 theorem int_prime_moveTri : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
     Y.Is ψ θ α β νH S →

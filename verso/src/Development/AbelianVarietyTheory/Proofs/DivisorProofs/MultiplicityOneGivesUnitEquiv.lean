@@ -18,6 +18,13 @@ open GlobalTheory.PrimIn
 
 namespace GlobalTheory.Stage1
 
+/- English proof (translation)
+Introduce `P D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM`. Take `⟨_hGiven, _hGS, _hCD, hLI, hTR, _hUI, _hUIW⟩` from `GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM`. Establish `hJ` using `(GlobalTheory.Hk3.inertJunk_iff A3).1 hT.junk`. Establish `hE : GlobalTheory.Published.SiegelEisensteinContinuation` using `GlobalTheory.Published.siegelEisensteinContinuation_of_doublingMethod P.q9`. Establish `hOk` using `GlobalTheory.InertOkH.heckeOperators_rows_lifts_rational_adjointClosed R F hT.char hT.junk`.
+
+Establish `hGU : R.PGUnit F` using `GlobalTheory.gUnit_of_models R F hT.char.base.models`. Establish `hGE : R.PGEquiv F` using `GlobalTheory.GEquivCx.pGEquiv_of_baseW P.q2 R F hT.char.base hT.ex`. Establish `hBlk : (R.toCx3 F).zs.InBlock` using `GlobalTheory.Hk3.inBlock_of_cuspRapidDecay P.q2 R F hLI hT.ok hT.char hT.ex hGE`. Establish `hA : R.PThmA` using `GlobalTheory.T.thetaLift_theoremA_publishedHypotheses P.q5 P.q3 P.q4 P.q6 P.q2 P.q1 P.q7 P.q8 hE P.q10 P.q11 R F hT.ok hT.char hT.ex hT.host hT.params hT.ccK hT.guard hT.types hJ`. Establish `hB : R.PThmB` using `GlobalTheory.T.thetaLift_theoremB_publishedHypotheses P.q5 P.q3 P.q4 P.q6 P.q2 P.q1 P.q7 P.q8 hE P.q10 P.q11 R F hT.ok hT.char hT.ex hT.host hT.params hT.ccK hT.guard hT.types hTR hJ`.
+
+Conclude with `⟨hOk, hGU, hGE, hBlk, hA, hB⟩`.
+-/
 theorem stage1 : Hypotheses3 → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), TiesB R F → GlobalTheory.CuspMult.MultEq R.toRealDat → ((∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) ∧ (∀ j t, (A3.A.fam.L j t).OkH ∧ (A3.liftI j t).InertRationalAdjoint)) ∧ R.PGUnit F ∧ R.PGEquiv F ∧ (R.toCx3 F).zs.InBlock ∧ R.PThmA ∧ R.PThmB := by
   intro P D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM
   obtain ⟨_hGiven, _hGS, _hCD, hLI, hTR, _hUI, _hUIW⟩ := GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM

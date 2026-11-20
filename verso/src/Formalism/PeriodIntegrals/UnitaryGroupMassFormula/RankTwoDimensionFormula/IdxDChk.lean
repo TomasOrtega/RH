@@ -9,6 +9,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RankTwoDimensionFormula
 
 namespace PI.UnitaryDimensionFormula
 
+/- English proof (translation)
+The claim follows from `idxSurj_of idxDAlg idxDAd idxDInt idxDSig hFr (idxDMat_of idxDJacE) idxDLevi`.
+-/
 theorem idxSurj_of_frame (hFr : IdxDFrame) : IdxSurj :=
   idxSurj_of idxDAlg idxDAd idxDInt idxDSig hFr (idxDMat_of idxDJacE) idxDLevi
 

@@ -3,6 +3,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp UpperTheory.V.Ws.Lk
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T Q c' h κ β hκQ hβQ hκc hβc hβr`. Set `U : (c'.O)ˣ →* (PadicAlgCl l)ˣ` to `Units.map (algebraMap c'.O (PadicAlgCl l) : c'.O →* PadicAlgCl l)`. Establish `hUinj : Function.Injective U` using `fun a b hab => Units.ext (Subtype.val_injective (congrArg Units.val hab))`. Establish `hUκ : ∀ g, U (κ g) = Q.κ g` using `fun g => by`. Rewrite using `[← hκQ]`.
+
+Both sides reduce to the same expression. Establish `hUβ : ∀ g, U (β g) = Q.β g` using `fun g => by`. Rewrite using `[← hβQ]`. Both sides reduce to the same expression. Establish `hUchi : ∀ g, U (chiO T.L Ω l c'.O g) = cycBar T.L Ω l g` using `fun g => by`.
+
+Rewrite using `[← (auChi T.L Ω c').1]`. Both sides reduce to the same expression. Establish `hUth : ∀ r, ((inc h (D.th r : c.O) : c'.O) : PadicAlgCl l) = ((toQ D.th r : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `fun r => rfl`. Use `⟨{ κ := κ, β := β, t := Q.t, κ_cont := hκc, β_cont := hβc, t_cont := Q.t_cont, β_t := ?_, β_red := hβr, conj := ?_, t_unr := Q.t_unr, unr := ?_, tame := ?_, mu := ?_, cyc := ?_ }⟩` and prove the remaining obligations. Introduce `g hg`.
+
+Establish `h1` using `Q.β_t hg`. Rewrite `h1`, the goal using `[MonoidHom.mem_ker]`. Apply `hUinj` to reduce the goal to its premises. Rewrite using `[hUβ, map_one]`. Conclude with `h1`.
+
+Introduce `σ hσ g g' hg`. Take `⟨e1, e2, e3⟩` from `Q.conj σ hσ g g' hg`. Use `⟨?_, ?_, e3⟩` and prove the remaining obligations. Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `e1'` using `congrArg Units.val e1`.
+
+Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_one] at e1'`. Establish `k1 : ((κ g : c'.O) : PadicAlgCl l) = (Q.κ g : PadicAlgCl l)` using `congrArg Units.val (hUκ g)`. Establish `k2 : ((κ g' : c'.O) : PadicAlgCl l) = (Q.κ g' : PadicAlgCl l)` using `congrArg Units.val (hUκ g')`. Establish `k3 : ((chiO T.L Ω l c'.O g : c'.O) : PadicAlgCl l) = (cycBar T.L Ω l g : PadicAlgCl l)` using `congrArg Units.val (hUchi g)`. Simplify using `only [MulMemClass.coe_mul, SubmonoidClass.coe_pow, OneMemClass.coe_one, k1, k2, k3, hUth]`.
+
+Conclude with `e1'`. Apply `hUinj` to reduce the goal to its premises. Rewrite using `[map_mul, hUβ, hUβ, map_one]`. Conclude with `e2`. Introduce `A hA g hg`.
+
+Establish `h1` using `Q.unr A hA hg`. Rewrite `h1`, the goal using `[MonoidHom.mem_ker]`. Apply `hUinj` to reduce the goal to its premises. Rewrite using `[hUκ, map_one]`. Conclude with `h1`.
+
+Take `⟨m, hm, hmA⟩` from `Q.tame`. Use `⟨m, hm, fun A hA g hg => hUinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, hUκ, map_one]`. Conclude with `hmA A hA g hg`. Introduce `g a ha`.
+
+Use `⟨hUinj ?_, (Q.mu g a ha).2⟩` and prove the remaining obligations. Rewrite using `[hUκ, map_one]`. Conclude with `(Q.mu g a ha).1`. Introduce `A hA`. Take `⟨a, b, k, hk, hb, hall⟩` from `Q.cyc A hA`.
+
+Use `⟨a, b, k, hk, hb, fun g hg => ⟨hUinj ?_, hUinj ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_mul, map_zpow, hUκ, hUchi, map_one]`. Conclude with `(hall g hg).1`. Rewrite using `[map_pow, map_mul, map_pow, map_zpow, hUβ, hUchi, map_one]`. Conclude with `(hall g hg).2`.
+-/
 theorem UpperTheory.V.Ws.Lk.ochOf :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} (Q : QCh T) (c' : Coef l) (h : c.O ≤ c'.O) (κ β : G T.L Ω →* c'.Oˣ), toQ κ = Q.κ → toQ β = Q.β → (AdicCont (maximalIdeal c'.O) fun g => (κ g : c'.O)) → (AdicCont (maximalIdeal c'.O) fun g => (β g : c'.O)) → (∀ g, residue c'.O (β g) = 1) → Nonempty (OCh T c' h) := by
   intro Ω _ _ _ l _ c D T Q c' h κ β hκQ hβQ hκc hβc hβr

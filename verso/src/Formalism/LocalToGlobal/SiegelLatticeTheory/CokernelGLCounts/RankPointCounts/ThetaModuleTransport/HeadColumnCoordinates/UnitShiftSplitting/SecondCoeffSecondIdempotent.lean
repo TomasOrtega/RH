@@ -45,6 +45,11 @@ def blk2 (h2 : ∀ y, (Θ (0, y)).1 = 0) (h2' : ∀ z, (Θ.symm (0, z)).1 = 0) :
     rw [show ((0, x + y) : A × B) = (0, x) + (0, y) by simp, map_add]
     rfl
 
+/- English proof (translation)
+Establish `e : p = (p.1, 0) + (0, p.2)` using `by simp`. Use `conv_lhs => rw [e]`. Rewrite using `[map_add]`. Use `ext`. Simplify using `[blk1, h2]`.
+
+Simplify using `[blk2, h1]`.
+-/
 theorem blk_eq (h1 : ∀ x, (Θ (x, 0)).2 = 0) (h1' : ∀ z, (Θ.symm (z, 0)).2 = 0)
     (h2 : ∀ y, (Θ (0, y)).1 = 0) (h2' : ∀ z, (Θ.symm (0, z)).1 = 0) (p : A × B) :
     Θ p = (blk1 Θ h1 h1' p.1, blk2 Θ h2 h2' p.2) := by
@@ -69,25 +74,52 @@ def dgO (g : SplitG M.L) (c : 𝒪[F]) : M.L.O :=
   ⟨algebraMap F E c, mem_O_of_comp g _ (by rw [Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg]; exact c.2)
     (by rw [Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg]; exact c.2)⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c1, eps1])`.
+-/
 theorem firstCoeff_firstIdempotent : c1 g (eps1 g) = 1 := Subtype.ext (by simp [c1, eps1])
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c2, eps1])`.
+-/
 theorem secondCoeff_firstIdempotent : c2 g (eps1 g) = 0 := Subtype.ext (by simp [c2, eps1])
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c1, eps2])`.
+-/
 theorem firstCoeff_secondIdempotent : c1 g (eps2 g) = 0 := Subtype.ext (by simp [c1, eps2])
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c2, eps2])`.
+-/
 theorem secondCoeff_secondIdempotent : c2 g (eps2 g) = 1 := Subtype.ext (by simp [c2, eps2])
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c1, dgO, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg])`.
+-/
 theorem firstCoeff_diagonal (c : 𝒪[F]) : c1 g (dgO g c) = c := Subtype.ext (by simp [c1, dgO, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg])
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [c2, dgO, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg])`.
+-/
 theorem secondCoeff_diagonal (c : 𝒪[F]) : c2 g (dgO g c) = c := Subtype.ext (by simp [c2, dgO, Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.e_alg])
 
 variable (hs : M.split = some g)
 variable {T T' : F} {TT : M.R} {Zh Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
   {Z Zσ Z₁ Z₂ Zσ₁ Zσ₂ : M.Mat (r + 1)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitH_symm_mk (h : GHyp M g T T' TT Zh Z Zσ) (l w : Fin (r + 1) → M.R) :
     (splitH hs h).symm ((QuotientAddGroup.mk l : DD1 hs Z TT), (QuotientAddGroup.mk w : DD1 hs Zσ TT)) =
       (Submodule.Quotient.mk (iota1 hs l + iota2 hs w) : DG g Zh T T') := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem splitH_mk (h : GHyp M g T T' TT Zh Z Zσ) (Y : Ix r → M.L.O) :
     splitH hs h (Submodule.Quotient.mk Y : DG g Zh T T') =
       ((QuotientAddGroup.mk (cmp1 hs Y) : DD1 hs Z TT), (QuotientAddGroup.mk (cmp2 hs Y) : DD1 hs Zσ TT)) := rfl
 
+/- English proof (translation)
+Establish `hv' : v = (splitH hs h).symm ((QuotientAddGroup.mk l : DD1 hs Z TT), (QuotientAddGroup.mk w : DD1 hs Zσ TT))` using `by rw [← hv, AddEquiv.symm_apply_apply]`. Rewrite using `[hv', splitH_symm_mk, ← Submodule.Quotient.mk_smul, splitH_mk, firstComponent_smul, secondComponent_smul, map_add, map_add, firstComponent_iotaOne, firstComponent_iotaTwo, secondComponent_iotaOne, secondComponent_iotaTwo, add_zero, zero_add]`.
+-/
 theorem splitH_smul (h : GHyp M g T T' TT Zh Z Zσ) (a : M.L.O) (v : DG g Zh T T') (l w : Fin (r + 1) → M.R)
     (hv : splitH hs h v = ((QuotientAddGroup.mk l : DD1 hs Z TT), (QuotientAddGroup.mk w : DD1 hs Zσ TT))) :
     splitH hs h (a • v) = ((QuotientAddGroup.mk (dgR hs (c1 g a) • l) : DD1 hs Z TT),
@@ -97,6 +129,9 @@ theorem splitH_smul (h : GHyp M g T T' TT Zh Z Zσ) (a : M.L.O) (v : DG g Zh T T
   rw [hv', splitH_symm_mk, ← Submodule.Quotient.mk_smul, splitH_mk, firstComponent_smul, secondComponent_smul, map_add, map_add,
     firstComponent_iotaOne, firstComponent_iotaTwo, secondComponent_iotaOne, secondComponent_iotaTwo, add_zero, zero_add]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `QuotientAddGroup.mk_surjective (splitH hs h v).1`. Take `⟨w, hw⟩` from `QuotientAddGroup.mk_surjective (splitH hs h v).2`. Conclude with `⟨l, w, Prod.ext hl.symm hw.symm⟩`.
+-/
 theorem splitH_split (h : GHyp M g T T' TT Zh Z Zσ) (v : DG g Zh T T') :
     ∃ l w : Fin (r + 1) → M.R,
       splitH hs h v = ((QuotientAddGroup.mk l : DD1 hs Z TT), (QuotientAddGroup.mk w : DD1 hs Zσ TT)) := by
@@ -104,6 +139,9 @@ theorem splitH_split (h : GHyp M g T T' TT Zh Z Zσ) (v : DG g Zh T T') :
   obtain ⟨w, hw⟩ := QuotientAddGroup.mk_surjective (splitH hs h v).2
   exact ⟨l, w, Prod.ext hl.symm hw.symm⟩
 
+/- English proof (translation)
+Take `⟨Y, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Rewrite using `[← Submodule.Quotient.mk_smul, splitH_mk, splitH_mk, firstComponent_smul, secondComponent_smul, firstCoeff_firstIdempotent, secondCoeff_firstIdempotent, map_one, map_zero, one_smul, zero_smul]`. Both sides reduce to the same expression.
+-/
 theorem firstIdempotent_split (h : GHyp M g T T' TT Zh Z Zσ) (v : DG g Zh T T') :
     splitH hs h (eps1 g • v) = ((splitH hs h v).1, 0) := by
   obtain ⟨Y, rfl⟩ := Submodule.Quotient.mk_surjective _ v
@@ -111,6 +149,9 @@ theorem firstIdempotent_split (h : GHyp M g T T' TT Zh Z Zσ) (v : DG g Zh T T')
     map_zero, one_smul, zero_smul]
   rfl
 
+/- English proof (translation)
+Take `⟨Y, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Rewrite using `[← Submodule.Quotient.mk_smul, splitH_mk, splitH_mk, firstComponent_smul, secondComponent_smul, firstCoeff_secondIdempotent, secondCoeff_secondIdempotent, map_one, map_zero, one_smul, zero_smul]`. Both sides reduce to the same expression.
+-/
 theorem secondIdempotent_split (h : GHyp M g T T' TT Zh Z Zσ) (v : DG g Zh T T') :
     splitH hs h (eps2 g • v) = (0, (splitH hs h v).2) := by
   obtain ⟨Y, rfl⟩ := Submodule.Quotient.mk_surjective _ v
@@ -124,6 +165,11 @@ def bigT (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') :
     DD1 hs Z₁ TT × DD1 hs Zσ₁ TT ≃+ DD1 hs Z₂ TT × DD1 hs Zσ₂ TT :=
   (splitH hs h₁).symm.trans (θ.toAddEquiv.trans (splitH hs h₂))
 
+/- English proof (translation)
+Use `set u := (splitH hs h).symm (x, 0) with hu_def`. Establish `hu : eps1 g • u = u`. Apply `(splitH hs h).injective` to reduce the goal to its premises. Rewrite using `[firstIdempotent_split, hu_def, AddEquiv.apply_symm_apply]`. Establish `hθ : θ u = eps1 g • θ u` using `by rw [← map_smul, hu]`.
+
+Rewrite using `[hθ, firstIdempotent_split]`.
+-/
 theorem lin_split1 {Zh Zh' : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z Zσ Z' Zσ' : M.Mat (r + 1)}
     (h : GHyp M g T T' TT Zh Z Zσ) (h' : GHyp M g T T' TT Zh' Z' Zσ')
     (θ : DG g Zh T T' ≃ₗ[M.L.O] DG g Zh' T T') (x : DD1 hs Z TT) :
@@ -135,6 +181,11 @@ theorem lin_split1 {Zh Zh' : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z Zσ Z' Zσ
   have hθ : θ u = eps1 g • θ u := by rw [← map_smul, hu]
   rw [hθ, firstIdempotent_split]
 
+/- English proof (translation)
+Use `set u := (splitH hs h).symm (0, y) with hu_def`. Establish `hu : eps2 g • u = u`. Apply `(splitH hs h).injective` to reduce the goal to its premises. Rewrite using `[secondIdempotent_split, hu_def, AddEquiv.apply_symm_apply]`. Establish `hθ : θ u = eps2 g • θ u` using `by rw [← map_smul, hu]`.
+
+Rewrite using `[hθ, secondIdempotent_split]`.
+-/
 theorem lin_split2 {Zh Zh' : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {Z Zσ Z' Zσ' : M.Mat (r + 1)}
     (h : GHyp M g T T' TT Zh Z Zσ) (h' : GHyp M g T T' TT Zh' Z' Zσ')
     (θ : DG g Zh T T' ≃ₗ[M.L.O] DG g Zh' T T') (y : DD1 hs Zσ TT) :
@@ -152,9 +203,15 @@ def th1 (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') : DD1 hs Z₁ TT �
 def th2 (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') : DD1 hs Zσ₁ TT ≃+ DD1 hs Zσ₂ TT :=
   blk2 (bigT hs h₁ h₂ θ) (fun y => lin_split2 hs h₁ h₂ θ y) (fun z => lin_split2 hs h₂ h₁ θ.symm z)
 
+/- English proof (translation)
+The claim follows from `blk_eq _ _ _ _ _ p`.
+-/
 theorem bigT_eq (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') (p : DD1 hs Z₁ TT × DD1 hs Zσ₁ TT) :
     bigT hs h₁ h₂ θ p = (th1 hs h₁ h₂ θ p.1, th2 hs h₁ h₂ θ p.2) := blk_eq _ _ _ _ _ p
 
+/- English proof (translation)
+Establish `e : θ v = (splitH hs h₂).symm (bigT hs h₁ h₂ θ (splitH hs h₁ v))` using `by simp [bigT]`. Rewrite using `[e, bigT_eq]`. Both sides reduce to the same expression.
+-/
 theorem theta_eq (θ : DG g Zh₁ T T' ≃ₗ[M.L.O] DG g Zh₂ T T') (v : DG g Zh₁ T T') :
     θ v = thetaOf hs h₁ h₂ (th1 hs h₁ h₂ θ) (th2 hs h₁ h₂ θ) v := by
   have e : θ v = (splitH hs h₂).symm (bigT hs h₁ h₂ θ (splitH hs h₁ v)) := by simp [bigT]

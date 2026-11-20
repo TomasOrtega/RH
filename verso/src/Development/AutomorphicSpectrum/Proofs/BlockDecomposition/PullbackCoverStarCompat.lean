@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.OmGlobPush
 
+/- English proof (translation)
+Introduce `K _ X Y q p u hu U W τ hτ a`. Establish `key : ∀ (T : GlobalTheory.LogCris.Thick (CrystallineSemistableComparison.smFun X q)) (α : U.ι), CrystallineSemistableComparison.Pb.InU (U.U α) T → CrystallineSemistableComparison.Pb.InU (W.U (τ α)) ((pullM u hu a).G.obj T)`. Introduce `T α h`. Establish `h0 : U.U α ≤ u ⁻¹ᵁ W.U (τ α)`. Establish `h1` using `hτ 0 (fun _ => α)`.
+
+Simplify `h1` using `[CrystallineSemistableComparison.Pb.capO]`. Unfold `CrystallineSemistableComparison.Pb.InU at h ⊢`. Express the relevant statement in the definitionally equal form `⊤ ≤ (TopologicalSpace.Opens.map (pt T ≫ u).base).obj (W.U (τ α))`. Conclude with `h.trans ((TopologicalSpace.Opens.map (pt T).base).monotone h0)`. Establish `ktf : ∀ (T : GlobalTheory.LogCris.Thick (CrystallineSemistableComparison.smFun X q)), CrystallineSemistableComparison.Pb.TF 1 (a + 1) T → CrystallineSemistableComparison.Pb.TF 1 (a + 1) ((pullM u hu a).G.obj T)`.
+
+Introduce `T h`. Conclude with `h`. Use `⟨fun T hT => ?_, fun α T hT => ?_⟩` and prove the remaining obligations. Take `⟨hTF, V, ⟨α, rfl⟩, hV⟩` from `hT`. Conclude with `⟨ktf T hTF, W.U (τ α), ⟨τ α, rfl⟩, key T α hV⟩`.
+
+Conclude with `key T.obj α hT`.
+-/
 theorem push_kc : ∀ {K : Type} [CommRing K] {X Y : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) (p : Y ⟶ Spec (CommRingCat.of K))
     (u : X ⟶ Y) (hu : u ≫ p = q) (U : Cov q) (W : Cov p) (τ : U.ι → W.ι)
     (hτ : ∀ n (i : Fin (n + 1) → U.ι), capO U.U i ≤ u ⁻¹ᵁ capO W.U (τ ∘ i)) (a : ℕ),

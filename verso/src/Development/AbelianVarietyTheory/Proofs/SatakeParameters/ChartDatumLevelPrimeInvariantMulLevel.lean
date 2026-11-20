@@ -11,6 +11,17 @@ namespace GlobalTheory.TwV.PhiTLev
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a _hPins hTie j hj β x x₁ κ p p₁ hx hp hp₁`. Establish `hL : latCo D.sp (gramN D j hj) (A.crd j hj) a x₁.1 ((St j hj).K β).lev.Lb = latCo D.sp (gramN D j hj) (A.crd j hj) a x.1 ((St j hj).K β).lev.Lb`. Unfold `latCo`. Rewrite using `[hx, Formalism.MainNotions.G.KAat.latAd_stab _ _ _ (hatStab_of_lev _ κ)]`. Establish `hN : p₁.deco.1.N = p.deco.1.N`.
+
+Establish `h` using `congrArg (latBack t.seam) ((hp₁.lat.trans hL).trans hp.lat.symm)`. Rewrite `h` using `[latBack_seam_lat, latBack_seam_lat]`. Then use the resulting hypothesis. Use `⟨hN, fun P => ?_⟩` and prove the remaining obligations. Take `⟨v, hov, hTv, -⟩` from `FnlAwayCpl.exists_place hTie P`. Establish `hat : p₁.deco.1.at P.1 = p.deco.1.at P.1` using `by show Formalism.HermitianLatticesTheory.localization₂ _ p₁.deco.1.N = Formalism.HermitianLatticesTheory.localization₂ _ p.deco.1.N`.
+
+Rewrite using `[hN]`. Use `FnlAwayCpl.f_eq_on_at p.deco.2 p₁.deco.2 P hat fun w hw hw₁ => ?_` and prove the remaining obligations. Establish `H` using `GlobalTheory.CplPt.funMoved_mul_lev t.seam _ P v (hTv j hj) _ _ _ κ (hp.fnl P v (hTv j hj) hov)`. Establish `e : ratA D.host.F (A.crd j hj) * x₁.1 = ratA D.host.F (A.crd j hj) * x.1 * κ.1`. Rewrite using `[hx, mul_assoc]`.
+
+Rewrite `H` using `[← e]`. Establish `hu₁ : (fun l => t.seam.iE (w l)) ∈ latCo D.sp (gramN D j hj) (A.crd j hj) a x₁.1 ((St j hj).K β).lev.Lb`. Rewrite using `[← hp₁.lat]`. Conclude with `Submodule.subset_span ⟨w, hw₁, rfl⟩`. Take `⟨z, hz⟩` from `FnlAwayCpl.exists_latS_pullV D.sp (gramN D j hj) (A.crd j hj) a x₁.1 x₁.2 (Formalism.L2.GlobalTheoryTheory.LocalLatticeBases.bwB_gramN_det D j hj) ((St j hj).K β).lev.Lb ((St j hj).K β).lev.Lb_fin ((St j hj).K β).lev.Lb_span ((St j hj).K β).lev.Lb_int v _ hu₁`.
+
+Rewrite using `[hp₁.fnl P v (hTv j hj) hov w hw₁ z hz, H w hw z hz]`.
+-/
 theorem deco_mul_lev : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ (j : ℕ) (hj : j ≤ D.R.m) (β : (St j hj).Ch) (x x₁ : UA D j hj) (κ : ((St j hj).K β).lev.U) p p₁,
       x₁.1 = x.1 * κ.1 → IsPtAd A a j hj β x p → IsPtAd A a j hj β x₁ p₁ →
@@ -43,6 +54,11 @@ theorem deco_mul_lev : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPins hTie i hi β β' x x₁ x' x₁' κ κ' hx hx' p p' p₁ p₁' hp hp' hp₁ hp₁' z`. Take `⟨hN, hf⟩` from `deco_mul_lev A dtU a hPins hTie i (Nat.le_of_succ_le hi) β x x₁ κ p p₁ hx hp hp₁`. Take `⟨hN', hf'⟩` from `deco_mul_lev A dtU a hPins hTie (i + 1) hi β' x' x₁' κ' p' p₁' hx' hp' hp₁'`. Unfold `phiT`. Use `@if_congr _ _ _ (_) (_) _ _ _ _ ?_ rfl rfl` and prove the remaining obligations.
+
+Use `forall_congr' fun P => ?_` and prove the remaining obligations. Simplify using `only [Deco.at, hN, hN']`. Use `forall₂_congr fun y hy => and_congr_right fun hzy => ?_` and prove the remaining obligations. Rewrite using `[hf P y hy, hf' P (z y) hzy]`.
+-/
 theorem phiT_mul_lev : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
   ∀ (i : ℕ) (hi : i + 1 ≤ D.R.m) (β : (St i (Nat.le_of_succ_le hi)).Ch) (β' : (St (i + 1) hi).Ch)
     (x x₁ : UA D i (Nat.le_of_succ_le hi)) (x' x₁' : UA D (i + 1) hi)

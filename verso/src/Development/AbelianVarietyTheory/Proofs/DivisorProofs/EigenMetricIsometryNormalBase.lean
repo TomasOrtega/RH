@@ -37,6 +37,11 @@ namespace GlobalTheory.FlagCovDeg
 
 open GlobalTheory.FlagCov GlobalTheory.PairCov GlobalTheory.FlagCovDivCore
 
+/- English proof (translation)
+Use `haveI := hM.isQuasicoherent`. Use `haveI := (hM.pullback π).isQuasicoherent`. Use `⟨h.1, fun k W hWV t hy => ?_⟩` and prove the remaining obligations. Take `⟨cf, h1, h2⟩` from `h.2 k (ρ ⁻¹ᵁ W) (ρ.preimage_mono hWV) (QCoh.pullbackSections ρ (fl.F k) le_rfl t) hy`. Use `⟨cf, h1, Eq.trans (funext fun b => ?_) h2⟩` and prove the remaining obligations.
+
+Establish `e` using `QCoh.pullback_map_app_pullbackSections ρ (fl.ι k) (le_refl (ρ ⁻¹ᵁ W)) t`. Establish `e'` using `(hf.pullback π).pullback_basis_repr ρ hWV (le_refl (ρ ⁻¹ᵁ W)) ((fl.ι k).app W t) b`. Rewrite `e'` using `[← e]`. Conclude with `((congrArg (TangentOrigin.evalPt z (ρ ⁻¹ᵁ W) hy) e').trans (GlobalTheory.FlagSec.evalPt_appLE ρ z W _ le_rfl hy hy _)).symm`.
+-/
 theorem flagMat_of_pull {B Y X : Scheme.{0}} {M : B.Modules} {r : ℕ} (hM : IsVB M r) (π : Y ⟶ B) (ρ : X ⟶ Y)
     (fl : Vert.Flag ((Scheme.Modules.pullback π).obj M) r) {V : B.Opens} {f : Fin r → Γ(M, V)} (hf : IsFrame f)
     {K : Type} [CommRing K] (z : Sp K ⟶ X) (A : Matrix (Fin r) (Fin r) K)
@@ -54,6 +59,25 @@ theorem flagMat_of_pull {B Y X : Scheme.{0}} {M : B.Modules} {r : ℕ} (hM : IsV
 
 variable {D : D7} {O : Setup D} {c : O.s.Comp}
 
+/- English proof (translation)
+Introduce `V f hf hx d hd`. Use `haveI := hM.isQuasicoherent`. Use `haveI := (hM.pullback π).isQuasicoherent`. Use `choose r h using h`. Set `y` to `(genPt G ≫ j) (IsLocalRing.closedPoint G.functionField)`.
+
+Take `⟨cc, hcc⟩ : ∃ cc : ∀ k, (((fl.pull ρ).root k).pull j).ι, ∀ k, y ∈ (cc k PUnit.unit).U` from `by choose U e hU he using fun k => (fl.pull ρ).isVB_gr k y`. Conclude with `⟨fun k _ => ⟨U k, e k, he k⟩, hU⟩`. Establish `hV : y ∈ ρ ⁻¹ᵁ (π ⁻¹ᵁ V)`. Use `hx (x := IsLocalRing.closedPoint G.functionField) trivial` as an intermediate fact. Rewrite `this` using `[Category.assoc, hjG]`.
+
+Conclude with `this`. Take `⟨W, hWV, hW, s, hxW, hs, hfr⟩` from `exists_lifts_isFrame (fl.pull ρ) (fun k => cc k PUnit.unit) hcc hV`. Establish `hsp` using `GlobalTheory.FlagCovQF.spans_of_lifts (fl.pull ρ) s fun k => by`. Use `(cc k PUnit.unit).isFrame.res (hW k)` as an intermediate fact. Rewrite using `[hs]`.
+
+Use `this using 3 with i` and compare the differences between its conclusion and the goal. Conclude with `congrArg _ (Subsingleton.elim _ _)`. Establish `hKW : ⊤ ≤ (genPt G ≫ j) ⁻¹ᵁ W` using `fun p _ => by`. Take `rfl : p = IsLocalRing.closedPoint G.functionField` from `Subsingleton.elim (α := PrimeSpectrum G.functionField) _ _`. Conclude with `hxW`.
+
+Establish `hA` using `flagMat_of_pull hM π ρ fl hf _ _ (AdaptMat.flagMat_of_adapted _ _ _ _ (hM.pullback π) ρ (fl.pull ρ) _ _ (hf.pullback π) _ (genPt G ≫ j) W hWV hKW _ ⟨hfr, hsp⟩)`. Use `choose w cf h1 h2 h3 h4 using fun k => h k (cc k) V f hf W (hW k) hWV (s k) (hs k) hKW hx`. Establish `hu` using `hLF.1 V f hf _ (genPt G ≫ jG) hx (χ.comp O.κ.e.toRingHom) (by`. Rewrite using `[spMap_trans, ← hχ]`. Simplify using `only [Category.assoc])`.
+
+Rewrite `hu` using `[show (χ.comp O.κ.e.toRingHom).comp O.κ.e.symm.toRingHom = χ from RingHom.ext fun a => by simp]`. Take `⟨u, hu⟩` from `exists_frame_of_basis g hu`. Establish `hco : u.co g σ = d.transpose` using `EigFrame.co_eq fun i => by rw [hu]; exact hd i`. Establish `hC : (Matrix.of cf).BlockTriangular OrderDual.toDual` using `fun a b hab => h4 a b hab`. Establish `hCu : IsUnit (Matrix.of cf).det`.
+
+Rewrite using `[Matrix.det_of_isLowerTriangular _ hC]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => (h3 i).trans_ne (Units.ne_zero _)).isUnit`. Use `(Matrix.of cf).invertibleOfIsUnitDet hCu` as an intermediate fact. Establish `hA'` using `hA.mul (T := (Matrix.of cf)⁻¹) (Matrix.isUnit_nonsing_inv_det _ hCu) fun a b hab => Matrix.blockTriangular_inv_of_blockTriangular hC hab`. Rewrite `hA'` using `[Category.assoc]`.
+
+Use `hA' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[eq_comm, Matrix.inv_mul_eq_iff_eq_mul_of_invertible]`. Use extensionality with `a b`. Establish `e` using `co_mulVec u u g σ (w := w a) (by rw [hu, Category.assoc]; exact h1 a) (by rw [funext (hg σ), Category.assoc]; exact h2 a)`. Rewrite `e` using `[EigFrame.co_self, Matrix.one_mulVec, hco, Matrix.mulVec_transpose]`.
+
+Conclude with `congrFun e b`.
+-/
 theorem agreeAt_of_isFrameSecX {B Bg Y X G : Scheme.{0}} [IsIntegral G] (σ : D.host.E →+* ℂ) {M : B.Modules}
     (hM : IsVB M (O.S.Dw.mult σ)) {jB : Bg ⟶ B} {πB : Bg ⟶ gen O.s.T.Z} {t : FrAssign O.s.T.Z M (O.S.Dw.mult σ) jB}
     (hLF : IsLieFrames O.s.T.Z O.κ.e jB πB M _ σ false t) {π : Y ⟶ B} {ρ : X ⟶ Y}
@@ -110,6 +134,23 @@ theorem agreeAt_of_isFrameSecX {B Bg Y X G : Scheme.{0}} [IsIntegral G] (σ : D.
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p2 pH pRA D O hO R hR c M B _ q E E' h h' H H' u hq hn hu Bg jB πB t t' hW β _ hβ _`. Set `G : ∀ σ', EigMet O.s.T.Z σ'` to `fun σ' => M.x.eigMetAt σ' (some R)`. Use `replace hW : PairWit O R c q E E' h h' u jB πB t t' G := hW`. Take `⟨pbB, finB, -, frE, frE', hmat, latE, latE', -, metE, metE'⟩` from `id hW`. Take `⟨Y, iY, π, fl, hfb, arY, nY⟩` from `GlobalTheory.T.exists_normal_isFlagBundle_isArithVar (𝓞 D.what₂.LL) B q _ hq hn (D.host.E →+* ℂ) E O.S.Dw.mult (fun σ => (h σ).isVB)`.
+
+Establish `arY' : IsArithVar (π ≫ q) (O.var c).dim`. Rewrite using `[← GlobalTheory.T.dimension_of_variety_component D O hO c]`. Conclude with `arY`. Take `⟨Gs, jY, s, pbY, iG⟩ : ∃ (Gs : Scheme.{0}) (jY : Gs ⟶ Y) (s : Gs ⟶ Sp D.what₂.LL), IsPullback jY s (π ≫ q) (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) ∧ IsIntegral Gs` from `⟨_, _, _, GlobalTheory.FlagGenFib.isPullback_f q π, GlobalTheory.FlagGenFib.isIntegral_Gf q π _ arY'⟩`. Take `⟨X, iX, ρ, fl', j, ej, pbX, hcov, nX, hcomp⟩` from `GlobalTheory.T.flag_pullback_generic_fibre D.what₂.LL Y (π ≫ q) _ arY' nY (D.host.E →+* ℂ) (fun σ => (Scheme.Modules.pullback π).obj (E σ)) (fun σ => (Scheme.Modules.pullback π).obj (E' σ)) O.S.Dw.mult (fun σ => (h' σ).isVB.pullback π) (fun σ => (Scheme.Modules.pullback π).map (u …`.
+
+Take `⟨πG, φ, jG, r, hcc, hr⟩` from `GlobalTheory.T.eigen_metric_comparison_normal p2 pH pRA D O hO R hR c B q E E' h h' u hq hn hu Bg jB πB t t' G hW Y π fl hfb arY' nY X Gs ρ j s (ej ▸ pbY) pbX`. Use `choose r' hr' using fun σ => GlobalTheory.T.pair_cover_compatibility D O R c B q Bg jB πB G Y X Gs π ρ j πG φ jG hcc σ (E σ) (E' σ) (h σ).isVB (h' σ).isVB (u σ) (t σ) (t' σ) (frE σ) (frE' σ) (hmat σ) ((fl σ).pull ρ) (fl' σ) (hcomp σ) (r σ) (hr σ)`. Take `⟨-, -, -, -, pb, hfin, hsur, φs, c1, c2⟩` from `id hcc`. Set `V : Cover (O.var c)` to `{ X := X, p := ρ ≫ π ≫ q, ar := hcov.1, normal := nX, G := Gs, j := j, π := πG, pb := pb, fin := hfin, surj := hsur, φ := φ, φ_spec := φs }`. Use `⟨V, Y, iY, π, ρ, rfl, fl, fl', ?_, arY', hcov, hfb, hcomp, fun z => ?_, fun k z hk => ?_⟩` and prove the remaining obligations.
+
+Establish `hφ : genPt Gs ≫ πG = spMap φ ≫ genericPt (O.var c)` using `φs`. Establish `e (T : Scheme.{0}) (a : gen O.s.T.Z ⟶ T) : (genPt Gs ≫ jG) ≫ πB ≫ a = spMap φ ≫ (genericPt (O.var c) ≫ (O.Φ.C c).π) ≫ a`. Rewrite using `[Category.assoc, ← Category.assoc jG, c2, Category.assoc, ← Category.assoc, hφ]`. Simplify using `only [Category.assoc]`. Establish `hχ : (genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z = spMap (φ.comp (constF O.κ.e (O.var c)))`.
+
+Rewrite using `[e, GlobalTheory.ShFam.TieBase.genericPt_str O.κ.e (O.var c) (O.Φ.C c).π (O.Φ.C c).π_str]`. Conclude with `(Spec.map_comp _ _).symm`. Establish `hx : (genPt Gs ≫ jG) ≫ πB ≫ genι O.s.T.Z = spMap φ ≫ genericPt (O.var c) ≫ (O.Φ.C c).π ≫ genι O.s.T.Z` using `(e _ _).trans (congrArg _ (Category.assoc _ _ _))`. Take `⟨g, hg⟩` from `(O.Φ.C c).f0.exists_isMap φ rfl hx`. Use `deg_eq_mul_base O c M (fun σ => (h σ).isVB) pbB frE hfb arY' V ρ rfl hcov jG c1 c2 g ⟨by simp only [Category.assoc, c1]; rfl, rfl, hχ, fun σ => agreeAt_of_isFrameSecX σ (h σ).isVB (frE σ) (fl σ) c1 hχ g hg fun i => ⟨_, hr σ i⟩⟩ ?_ β hβ` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(O.Φ.C c).Carries (genPt Gs ≫ πG) g`. Rewrite using `[hφ]`. Conclude with `GlobalTheory.T.flag_compactification_function_field _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e (O.Φ.C c) Gs.functionField φ _ _ g rfl hx hg`. Establish `hl : letterOf O.S.Dw (.inl (z.1, (z.2 : ℕ))) = some ⟨z.1, z.2⟩`. Simplify using `[letterOf, z.2.isLt]`.
+
+Establish `hind : V.Induces (lineAdl O R c (.inl (z.1, (z.2 : ℕ))) 1) (VMetric.grLB ((fl z.1).pull ρ) z.2 (((H z.1).pull π rfl).pull ρ rfl)) 1`. Take `⟨h1, h2⟩` from `GlobalTheory.T.pair_cover_hodge_comparison p2 pH pRA D O hO R hR c B q hq hn Bg jB πB G Y X Gs π ρ j πG φ jG hcov.1 nX hcc z.1 (E z.1) (h z.1) (H z.1) (t z.1) (frE z.1) ((fl z.1).pull ρ) z.2 (r z.1 z.2) (hr z.1 z.2) _ hl`. Conclude with `⟨r z.1 z.2, h1, h2, fun τ zc y y' ch e1 e2 hc => GlobalTheory.T.pair_cover_hodge_metric p2 pH pRA D O hO R hR c B q hq hn Bg jB πB G Y X Gs π ρ j πG φ jG hcov.1 nX hcc z.1 (E z.1) (h z.1) (H z.1) (t z.1) (frE z.1) (metE z.1) ((fl z.1).pull ρ) z.2 (r z.1 z.2) (hr z.1 z.2) _ hl τ z …`. Conclude with `GlobalTheory.InducesIsom.induces_of_isometric V _ _ _ 1 hind (VMetric.isometric_grLB_pull (𝓞 D.what₂.LL) Y X (π ≫ q) (ρ ≫ π ≫ q) _ _ ((h z.1).pull π rfl) ((H z.1).pull π rfl) (fl z.1) ρ rfl z.2)`. Establish `hl : letterOf O.S.Dw (.inr k) = some ⟨z.1, z.2⟩` using `hk`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.T.pair_cover_hodge_comparison p2 pH pRA D O hO R hR c B q hq hn Bg jB πB G Y X Gs π ρ j πG φ jG hcov.1 nX hcc z.1 (E' z.1) (h' z.1) (H' z.1) (t' z.1) (frE' z.1) (fl' z.1) z.2 (r' z.1 z.2) (hr' z.1 z.2) _ hl`. Conclude with `⟨r' z.1 z.2, h1, h2, fun τ zc y y' ch e1 e2 hc => GlobalTheory.T.pair_cover_hodge_metric p2 pH pRA D O hO R hR c B q hq hn Bg jB πB G Y X Gs π ρ j πG φ jG hcov.1 nX hcc z.1 (E' z.1) (h' z.1) (H' z.1) (t' z.1) (frE' z.1) (metE' z.1) (fl' z.1) z.2 (r' z.1 z.2) (hr' z.1 z.2) _ hl τ …`.
+-/
 theorem pairCoverDeg : Hypotheses2 → HypothesesH → RegularAlteration → ∀ (D : D7) (O : Setup D), O.Core → ∀ R : ℝ, 2 ≤ R → ∀ (c : O.s.Comp) (M : DRBase O c) (B : Scheme.{0}) [IsIntegral B] (q : B ⟶ Sp (𝓞 D.what₂.LL)) (E E' : (D.host.E →+* ℂ) → B.Modules) (h : ∀ σ, VMetric q (E σ) (O.S.Dw.mult σ)) (h' : ∀ σ, VMetric q (E' σ) (O.S.Dw.mult σ)) (H : ∀ σ, (h σ).IsCInf) (H' : ∀ σ, (h' σ).IsCInf) (u : ∀ σ, E σ ⟶ E' σ), IsArithVar q (dimGr D.what₂.Tau O.N O.j) → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme B → (∀ σ, IsoHom (h σ) (h' σ) (u σ)) → ∀ (Bg : Scheme.{0}) (jB : Bg ⟶ B) (πB : Bg ⟶ gen O.s.T.Z) (t : ∀ σ, FrAssign O.s.T.Z (E σ) (O.S.Dw.mult σ) jB) (t' : ∀ σ, FrAssign O.s.T.Z (E' σ) (O.S.Dw.mult σ) jB), PairAt O R c q E E' h h' u jB πB t t' (fun σ' => M.x.eigMetAt σ' (some R)) → ∀ (β : B ⟶ M.B) (w : β ≫ strL M = q), jB ≫ β ≫ M.b = πB ≫ genι O.s.T.Z → β (genericPoint B) = genericPoint M.B → PairCoverDeg O R c q E E' H H' u (β.residueDegree (genericPoint B)) := by
   intro p2 pH pRA D O hO R hR c M B _ q E E' h h' H H' u hq hn hu Bg jB πB t t' hW β _ hβ _
   let G : ∀ σ', EigMet O.s.T.Z σ' := fun σ' => M.x.eigMetAt σ' (some R)

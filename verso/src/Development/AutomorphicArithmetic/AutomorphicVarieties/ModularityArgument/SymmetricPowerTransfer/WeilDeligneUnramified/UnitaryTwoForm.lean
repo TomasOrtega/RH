@@ -50,6 +50,9 @@ structure AdInW (ι : Qbar l ≃+* ℂ) (M m : ℕ) (r : G L Ω →* GL (Fin 2) 
       ∀ s : ↥(Dec (F := L) A), (s : G L Ω) ∈ Ine (F := L) A →
         κ 0 s ^ k = (cycBar L Ω l s ^ (b + m)) ^ k ∧ κ 1 s ^ k = (cycBar L Ω l s ^ b) ^ k
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.cont, Birth.mkCsdW h.aut fun _ => h.wit, h.irr, h.gap, h.unr, h.away, h.above⟩`.
+-/
 theorem AdInW.toIn {ι : Qbar l ≃+* ℂ} {M m : ℕ} {r : G L Ω →* GL (Fin 2) (Qbar l)} (h : AdInW ι M m r) : AdIn ι M m r :=
   ⟨h.cont, Birth.mkCsdW h.aut fun _ => h.wit, h.irr, h.gap, h.unr, h.away, h.above⟩
 

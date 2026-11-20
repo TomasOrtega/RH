@@ -10,6 +10,15 @@ namespace GlobalTheory.LevelHecke.UpDia
 section Local
 variable {R V k : Type} [CommRing R] [AddCommGroup V] [Module R V] [Field k]
 
+/- English proof (translation)
+Take `⟨h1, h2, e, h3, h4⟩` from `h`. Take `⟨b, hb⟩` from `hs a⁻¹`. Establish `he : e ∈ q.L`. Assume the negation of the conclusion as `hn`. Rewrite `h3` using `[h1.off _ hn]`.
+
+Conclude with `zero_ne_one h3`. Establish `hte : t • e ∈ p.L`. Assume the negation of the conclusion as `hn`. Rewrite `h4` using `[hp.off _ hn]`. Conclude with `zero_ne_one h4`.
+
+Use `⟨h1.dil ha, fun y => ?_, b • e, ?_, ?_⟩` and prove the remaining obligations. Use `show y ∈ p.L ↔ y ∈ q.L ∧ a * q.f y = 0`. Rewrite using `[h2 y, mul_eq_zero, or_iff_right ha]`. Use `show a * q.f _ = 1`. Rewrite using `[h1.smul _ _ he, h3, hb, mul_one, mul_inv_cancel₀ ha]`.
+
+Use `show a * p.f _ = 1`. Rewrite using `[smul_comm, hp.smul _ _ hte, h4, hb, mul_one, mul_inv_cancel₀ ha]`.
+-/
 theorem inc_dil {res : R →+* k} (hs : Function.Surjective res) {t : R} {p q : Pr R V k} (hp : p.Ok res)
     (h : Pr.Inc res t p q) {a : k} (ha : a ≠ 0) : Pr.Inc res t (p.dil a) (q.dil a) := by
   obtain ⟨h1, h2, e, h3, h4⟩ := h
@@ -30,6 +39,9 @@ theorem inc_dil {res : R →+* k} (hs : Function.Surjective res) {t : R} {p q : 
   · show a * p.f _ = 1
     rw [smul_comm, hp.smul _ _ hte, h4, hb, mul_one, mul_inv_cancel₀ ha]
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => inc_dil hs hp h ha⟩` and prove the remaining obligations. Use `inc_dil hs (hp.dil ha) h (inv_ne_zero ha)` as an intermediate fact. Rewrite `this` using `[Pr.dil_dil, Pr.dil_dil, inv_mul_cancel₀ ha, Pr.dil_one, Pr.dil_one]`. Then use the resulting hypothesis.
+-/
 theorem inc_dil_iff {res : R →+* k} (hs : Function.Surjective res) {t : R} {p : Pr R V k} (hp : p.Ok res)
     (q : Pr R V k) {a : k} (ha : a ≠ 0) : Pr.Inc res t (p.dil a) (q.dil a) ↔ Pr.Inc res t p q := by
   refine ⟨fun h => ?_, fun h => inc_dil hs hp h ha⟩
@@ -48,6 +60,9 @@ def dilEquiv {a : k} (ha : a ≠ 0) : Pr R V k ≃ Pr R V k where
 
 end Local
 
+/- English proof (translation)
+Introduce `v' hv'`. Establish `h1` using `h v' hv'`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h1, mul_one, inv_mul_cancel]`.
+-/
 theorem atV_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)} {η : GA σ J}
     (h : AtV v η) (δ : GA σ J) : AtV v (δ⁻¹ * η * δ) := by
@@ -55,6 +70,23 @@ theorem atV_conj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   have h1 := h v' hv'
   simp only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h1, mul_one, inv_mul_cancel]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J T f bad ι _ S emb v hv k _ p hb hP res t hs hok g hg v' hv' a δ hb' ha hδ x`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.adelicForm_values_near_point_spec F E σ n J T f bad ι S emb v hv k p hb hP g hg`. Distinguish the cases in `hvv : v' = v`. Substitute `hvv` using the available equality. Establish `ha'` using `ha rfl`.
+
+Unfold `upAd`. Rewrite using `[hP.2.2 x δ a hδ, h2 x δ hδ.1]`. Use `finsum_mem_eq_of_bijOn (fun q => q.dil (a : k)) ?_ (fun q _ => (h3 a δ x q ha' hδ).symm)` and prove the remaining obligations. Use `(dilEquiv ha').bijOn' ?_ ?_` and prove the remaining obligations. Introduce `q hq`.
+
+Conclude with `inc_dil hs (hok x) hq ha'`. Introduce `q hq`. Use `inc_dil hs ((hok x).dil ha') hq (inv_ne_zero ha')` as an intermediate fact. Rewrite `this` using `[Pr.dil_dil, inv_mul_cancel₀ ha', Pr.dil_one]`. Conclude with `this`.
+
+Establish `hp : ∀ y, p (y * δ) = p y` using `fun y => (hP.2.1 y δ).2 (by`. Rewrite using `[hδ.1 v (Ne.symm hvv)]`. Conclude with `one_mem _)`. Establish `key : valAt v p (fun y => g (y * δ)) x = valAt v p g (x * δ)`. Use function extensionality and compare the values at `q`.
+
+Distinguish the cases in `h : ∃ η, AtV v η ∧ p (x * η) = q`. Establish `hc` using `h.choose_spec`. Establish `e : x * δ * (δ⁻¹ * h.choose * δ) = x * h.choose * δ` using `by group`. Use `h1 (x * δ) _ (atV_conj hc.1 δ)` as an intermediate fact. Rewrite `this` using `[e, hp, hc.2]`.
+
+Rewrite using `[this]`. Unfold `valAt`. Rewrite using `[dif_pos h]`. Establish `h' : ¬ ∃ η, AtV v η ∧ p (x * δ * η) = q`. Introduce and unpack `⟨η, hη, hq⟩`.
+
+Use `h ⟨δ⁻¹⁻¹ * η * δ⁻¹, atV_conj hη _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp, ← hq]`. Use `congr 1`. Use `group`. Unfold `valAt`.
+
+Rewrite using `[dif_neg h, dif_neg h']`. Unfold `upAd`. Rewrite using `[hp, key]`.
+-/
 theorem upAd_dia : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (T f : ℕ) (bad : Set (HeightOneSpectrum (𝓞 F))) (ι : Type) [Fintype ι] (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ) (v : HeightOneSpectrum (𝓞 F)) (hv : (T : 𝓞 F) ∈ v.asIdeal) (k : Type) [Field k] (p : GA σ J → Pr (𝓞 E) (Fin n → E) k), v ∉ bad → PMap S v hv p → ∀ (res : 𝓞 E →+* k) (t : 𝓞 E), Function.Surjective res → (∀ x, (p x).Ok res) → ∀ g ∈ AdFun S emb, ∀ (v' : HeightOneSpectrum (𝓞 F)) (hv' : (T : 𝓞 F) ∈ v'.asIdeal) (a : ℤ) (δ : GA σ J), v' ∉ bad → (v' = v → (a : k) ≠ 0) → IsDia S v' hv' a δ → ∀ x, upAd res t v p (fun y => g (y * δ)) x = upAd res t v p g (x * δ) := by
   intro F E _ _ _ _ _ σ n J T f bad ι _ S emb v hv k _ p hb hP res t hs hok g hg v' hv' a δ hb' ha hδ x
   obtain ⟨h1, h2, h3⟩ := GlobalTheory.T.adelicForm_values_near_point_spec F E σ n J T f bad ι S emb v hv k p hb hP g hg

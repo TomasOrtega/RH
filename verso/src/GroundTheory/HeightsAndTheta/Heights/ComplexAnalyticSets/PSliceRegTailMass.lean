@@ -12,6 +12,23 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial Filter Topology Matrix ComplexSets
 
+/- English proof (translation)
+Introduce `n e h W F u' ℓ hW hF hu hℓ hℓP δ hδ`. Use `set Φ : ℕ → ℝ → ℝ := fun k ε => varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => 1 - sliceCut h k x) (vecCons (fsLogReg h u' ε) fun _ x => Real.log (h.dualNorm x)) + varInt (W ⊔ Ideal.span {linForm ℓ - 1}) (e + 1) (fun x => 1 - sliceCut h k x) (fun _ x => Real.log (h.dua …`. Use `set L : ℕ → ℝ := fun k => ∑ P ∈ (divCycle W u').support, ((divCycle W u' P : ℕ) : ℝ) * varInt (P ⊔ Ideal.span {linForm ℓ - 1}) e (fun x => 1 - sliceCut h k x) (fun _ x => Real.log (h.dualNorm x)) with hL`. Use `set G : ℕ → ℝ → ℝ := fun k t => if 0 < t then Φ k t else L k with hG`. Establish `hmeas : ∀ k, Measurable fun x => 1 - sliceCut h k x` using `fun k => measurable_const.sub (SliceCut.measurable h k)`.
+
+Establish `hlim : ∀ k, Tendsto (Φ k) (𝓝[>] 0) (𝓝 (L k))` using `fun k => hLim n e h W F u' ℓ (sliceCut h k) hW hF hu hℓ hℓP (SliceCut.contDiff h k) (SliceCut.hasCompactSupport h k)`. Establish `hanti : ∀ ε, 0 < ε → Antitone fun k => Φ k ε` using `fun ε hε k m hkm => hMono n e h W F u' ℓ ε _ _ hW hF hℓ hε (hmeas m) (hmeas k) (fun x => by linarith [(SliceCut.mem_Icc h m x).2]) (fun x => by linarith [SliceCut.monotone h x hkm]) (fun x => by linarith [(SliceCut.mem_Icc h k x).1])`. Establish `hantiL : Antitone L` using `fun k m hkm => le_of_tendsto_of_tendsto (hlim m) (hlim k) (eventually_nhdsWithin_of_forall fun ε hε => hanti ε hε hkm)`. Establish `hGpos : ∀ k t, 0 < t → G k t = Φ k t` using `fun k t ht => by simp only [hG, if_pos ht]`. Establish `hG0 : ∀ k, G k 0 = L k` using `fun k => by simp only [hG, lt_irrefl, if_false]`.
+
+Establish `hGcont : ∀ k, ContinuousOn (G k) (Set.Icc 0 1)`. Introduce `k t ht`. Break down `ht.1.eq_or_lt with h0 | hpos` into its components or cases. Substitute `h0` using the available equality. Use `ContinuousWithinAt.mono ?_ fun x hx => (Set.mem_Ici.mpr hx.1)` and prove the remaining obligations.
+
+Rewrite using `[← continuousWithinAt_Ioi_iff_Ici, ContinuousWithinAt, hG0]`. Conclude with `(hlim k).congr' (eventually_nhdsWithin_of_forall fun ε hε => (hGpos k ε hε).symm)`. Establish `h1` using `hCont n e h W F u' ℓ (fun x => 1 - sliceCut h k x) 1 hW hF hℓ (hmeas k) fun x => by`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith [(SliceCut.mem_Icc h k x).1, (SliceCut.mem_Icc h k x).2]`. Establish `h2 : ContinuousOn (Φ k) (Set.Ioi 0)` using `h1.add continuousOn_const`.
+
+Establish `hc` using `h2.continuousAt (Ioi_mem_nhds hpos)`. Conclude with `(hc.congr (eventually_of_mem (Ioi_mem_nhds hpos) fun ε hε => (hGpos k ε hε).symm)).continuousWithinAt`. Establish `hU` using `Antitone.tendstoUniformlyOn_of_forall_tendsto (f := fun _ => (0 : ℝ)) isCompact_Icc hGcont (fun t _ => by`. Break down `lt_or_ge 0 t with hpos | hpos` into its components or cases. Simplify `hanti t hpos` using `only [hGpos _ t hpos]`.
+
+Simplify `hantiL)` using `only [hG, not_lt.mpr hpos, if_false]`. Use `continuousOn_const`. Use the proof step `(fun t ht => by`. Break down `ht.1.eq_or_lt with h0 | hpos` into its components or cases. Substitute `h0` using the available equality.
+
+Simplify using `only [hG0]`. Use `tendsto_finsetSum (divCycle W u').support fun P hP => (hSec n e h W F u' ℓ hW hF hu hℓ hℓP P hP).const_mul (((divCycle W u' P : ℕ) : ℝ))` as an intermediate fact. Simplify `this` using `only [mul_zero, Finset.sum_const_zero]`. Simplify using `only [hGpos _ t hpos]`. Simplify `(hReg n e h W F u' ℓ t hW hF hℓ hpos).add (hM n e h W F ℓ hW hF hℓ))` using `only [add_zero]`.
+
+Take `⟨K, hK⟩` from `eventually_atTop.mp (Metric.tendstoUniformlyOn_iff.mp hU δ hδ)`. Use `⟨K, fun k hk ε hε => ?_⟩` and prove the remaining obligations. Use `hK k hk ε ⟨hε.1.le, hε.2⟩` as an intermediate fact. Rewrite `this` using `[hGpos k ε hε.1, Real.dist_eq, zero_sub, abs_neg]`. Conclude with `(le_abs_self _).trans this.le`.
+-/
 theorem SliceRegTailMass.proof (hMono : SliceRegMassMono.Statement) (hCont : SliceRegMassContinuous.Statement)
     (hLim : SliceRegMassLimit.Statement) (hSec : SliceSectionTailMass.Statement)
     (hReg : SliceRegCutTail.Statement) (hM : SliceCutTailMass.Statement) : SliceRegTailMass.Statement := by

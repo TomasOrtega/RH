@@ -7,6 +7,21 @@ namespace Formalism.RepresentationBoundsCohomology.SplitClassesAll
 
 open Matrix Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Formalism.RepresentationBoundsCohomology.CyclotomicTwistCohomology Formalism.RepresentationBoundsCohomology.JT Polynomial
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT e d D X infm infX K T φ ψ hd hin hLES hT5 hCR hK hTI hT4 hT3 htf Gs _ _ _ M _ _ _ _ _ _ MB _ _ _ _ _ aM aB Fj Hs γs lg ε iGe iB Os _ _ cupL embB hlg hadd hH hgen hγ hsq hcup hpin hLa hRV _ _ _ _ exQ Hfs δ hexQ hcompat hspan hdim hLu …`. Take `⟨hv, hm1, hm2, _⟩` from `w_facts R F`. Take `⟨_, _, _, hsm⟩` from `genM ℓ (R.χ R.γ) R.s (M0 + h0) F.s1 F.s2 F.valγ`. Establish `hRec : D.Recip (beta ℓ R.s e)` using `recip ℓ D R.s e Os cupL F.s1 htf hLa hRV`. Establish `hlog : ∀ x, ((ℓ : ℤ_[ℓ]) ^ (R.s + ceilE ℓ e)) • D.bW (D.gE (T.infm x)) ∈ D.La0`.
+
+Introduce `x`. Take `⟨c, hc1, hc2, hc3, hc4⟩` from `hpin x`. Take `⟨y', ⟨y, rfl⟩, c'', hc'', heq⟩` from `class_of_w_zero_in_H1 ℓ Gs M MB aM aB Fj Hs γs lg ε R.s (ceilE ℓ e) (LinearMap.range embB) c hlg hadd hH hgen hγ hc2 hc3 hc4`. Take `⟨c', hc', hcl⟩` from `hcup y`. Establish `: c' = c''`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[hc', hc'']`. Rewrite using `[hLa]`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+
+Apply `iB.injective` to reduce the goal to its premises. Rewrite using `[hcl, this, ← heq, hc1, map_smul, hsq]`. Establish `hCor : D.Cor d`. Use `⟨hcr, fun z hz => hcorF z ?_⟩` and prove the remaining obligations. Use `set k : ℕ := (-(beta ℓ R.s e)).toNat with hk`.
+
+Use `set n : ℕ := ((k : ℤ) + beta ℓ R.s e).toNat with hn`. Establish `hn' : (n : ℤ) = k + beta ℓ R.s e`. Rewrite using `[hn, Int.toNat_of_nonneg]`. Use `Int.self_le_toNat (-(beta ℓ R.s e))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hℓ0 : ((ℓ : ℚ_[ℓ]) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : ℓ.Prime).ne_zero)`. Use `kerExp ℚ_[ℓ] D.HV D.HB exQ Hfs δ (D.La0 : Set D.HB) ((ℓ : ℚ_[ℓ]) ^ n) hℓ0 hspan ?_ hdim hLu z (by rw [hexQ, hz])` and prove the remaining obligations. Introduce `y hy`. Take `⟨z', hz'⟩` from `hRec y k n (D.La0.smul_mem _ hy) hn'`. Use `⟨D.jW z', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hexQ, ← hz', ← hcompat]`. Use `push_cast`. Both sides reduce to the same expression. Conclude with `⟨F.s1, F.s2, hsm, F.valγ, hv, hd, (X.toLL fun k => pieceW R L W (A.map R.ϑ) Y' (0 + k) (infm k) (infX k)), K, T, φ, ψ, (fun k => pieceWThm ℓ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT (0 + k) (infm k) (infX k) (hin k).2.1 (hin k).2.2), hLES, hT5, hCR, hK, hTI, hT4, hT3, htf, hlo …`.
+-/
 theorem tbWFull : StatTBWFull := by
   intro ℓ _ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT e d D X infm infX K T φ ψ hd hin hLES hT5 hCR
     hK hTI hT4 hT3 htf Gs _ _ _ M _ _ _ _ _ _ MB _ _ _ _ _ aM aB Fj Hs γs lg ε iGe iB Os _ _ cupL embB
@@ -53,6 +68,21 @@ theorem tbWFull : StatTBWFull := by
     (fun k => pieceWThm ℓ R r L En M0 h0 W U A Y' F hX hA hY1 hY2 hHT (0 + k) (infm k) (infX k)
       (hin k).2.1 (hin k).2.2), hLES, hT5, hCR, hK, hTI, hT4, hT3, htf, hlog, hC, hL, hdR, hH2, hRec, hCor⟩
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm Uτ hX hP hS hB hHT h0U hne infm infX X hInf hT4 hUn hFl hLES`. Take `⟨hv, hm1, hm2, _⟩` from `w_facts R F`. Establish `hI` using `wInter ℓ R r L En M0 h0 W A F hA`. Establish `hVm` using `w3Vm ℓ R r L En M0 h0 W F`. Establish `hinjO : Function.Injective R.eOh`.
+
+Introduce `a b hab`. Use `FH.injE hab` as an intermediate fact. Rewrite using `[← R.Tt.pr_alg a, this, R.Tt.pr_alg]`. Take `⟨s1, s2, s3, s4, s5⟩` from `sec3 ℓ R.Gg R.OC R.Tt.Om R.eOh R.actO r ρ (L.sl R.actO) Sτ (UmW R L W) (VmW R L W) (A.map R.ϑ) Y' Pp Sp Cm Bm (R.z * R.ϖ) F.lnzd hinjO hI hY2 hP hS hB hVm`. Establish `hPiece` using `pieceBThm ℓ R ρ r M0 h0 Sτ _ (Cm * VmW R L W * Bm) Uτ _ _ F hX s3 s2 s1 s5 hHT 0 infm infX hInf hT4`.
+
+Establish `hCB : Cm.map R.eOh * Bm.map R.eOh = 1`. Rewrite using `[← Matrix.map_mul, s4, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hzero` using `cyclotomicInvariantsZero_statement ℓ R ρ r M0 h0 Sτ _ (Cm * VmW R L W * Bm) Uτ _ _ F hX s3 s2 s1 s5 hHT h0U FH.t4 FH.injE FH.g0E (by`. Introduce `h hh`. Use `show (Cm.map R.eOh).map (R.actO (R.p h)) * UmW R L W (R.p h) * Bm.map R.eOh = 1`.
+
+Rewrite using `[umH ℓ R r L En M0 h0 W F FH h hh, Matrix.mul_one]`. Establish `: (Cm.map R.eOh).map (R.actO (R.p h)) = Cm.map R.eOh`. Use extensionality with `a b`. Conclude with `FH.fixOi h hh _`. Rewrite using `[this, hCB])`.
+
+Use the proof step `(by show (Cm.map R.eOh).map (R.actO (R.p R.gg)) * UmW R L W (R.p R.gg) * Bm.map R.eOh = _`. Establish `e1 : (Cm.map R.eOh).map (R.actO (R.p R.gg)) = Cm.map R.eOh`. Use extensionality with `a b`. Use `show R.actO (R.p R.gg) (R.emb (algebraMap R.Tt.Om R.Tt.Oi (Cm a b))) = _`. Rewrite using `[FH.g0E, AlgHom.commutes]`.
+
+Both sides reduce to the same expression. Establish `e2 : UmW R L W (R.p R.gg) = (VmW R L W).map R.eOh` using `umVm ℓ R r L En M0 h0 W F`. Rewrite using `[e1, e2, ← Matrix.map_mul, ← Matrix.map_mul]`. Use the proof step `rfl)`. Use `⟨hm1, fun _ => hm2, hv, h0U, hne, hPiece, hUn, hFl, hLES, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `x _ _`. Conclude with `Subtype.ext (hzero x.1 x.2)`. Introduce `x`. Conclude with `⟨map_zero _, map_zero _⟩`.
+-/
 theorem h_zero_from_w_full : HZeroFromWFull := by
   intro ℓ _ R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm Uτ hX hP hS hB hHT h0U hne infm infX X
     hInf hT4 hUn hFl hLES

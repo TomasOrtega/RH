@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `w q _ h`. Establish `hs : ((Real.sqrt q : ℝ) : ℂ) ^ 2 = (q : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg q), Complex.ofReal_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp (h.trans hs.symm) with hw | hw` into its components or cases. Rewrite using `[hw, Complex.conj_ofReal]`.
+
+Rewrite using `[hw, map_neg, Complex.conj_ofReal]`.
+-/
 theorem UpperTheory.Reformulated.B.Qh56.conj_of_sq :
     ∀ {w : ℂ} {q : ℕ},
     (0 : ℕ) < q → w ^ (2 : ℕ) = (↑q : ℂ) → (starRingEnd ℂ : ℂ → ℂ) w = w := by

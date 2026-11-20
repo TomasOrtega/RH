@@ -5,6 +5,11 @@ import Development.AbelianVarietyTheory.BlockTheory.AdelicCMFields.UnitaryHeckeC
 
 open UpperTheory.ConvolutionTheory.R
 
+/- English proof (translation)
+Introduce `K M _ _ _ _ _ _ _ _ _ ι _ κ _ n m π P h`. Establish `h'` using `Filter.eventually_all.2 h`. Use `h'.mono fun w hw f hf => ?_` and prove the remaining obligations. Use `choose B hB C hC e using fun i => hw i f hf`. Use `⟨∑ i, B i, ⟨B, hB, rfl⟩, fun a => C a.1 a.2, fun a => hC a.1 a.2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_sigma]`. Establish `: (∑ i, B i).map (· ^ f) = ∑ i, (B i).map (· ^ f)` using `map_sum (Multiset.mapAddMonoidHom (· ^ f)) B Finset.univ`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun i _ => e i`.
+-/
 theorem UpperTheory.ConvolutionTheory.R.liftSum :
     LiftSum := by
   intro K M _ _ _ _ _ _ _ _ _ ι _ κ _ n m π P h

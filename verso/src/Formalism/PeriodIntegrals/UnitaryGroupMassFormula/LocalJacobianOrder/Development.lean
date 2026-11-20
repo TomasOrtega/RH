@@ -56,6 +56,15 @@ end Defs
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Introduce `typed g r hfin ht`. Break down `h0 with h0 | ⟨m, -, h0⟩` into its components or cases. Establish `h1 : sdE (E` using `E) ψ v (Fin (r + 1) × Fin (r + 1)) = 0 := h0 _`. Establish `h2 : sdE (E` using `E) ψ v Unit = 0 := h0 _`. Establish `h3 : ∏ l : Fin (r + 1), volC (E` using `E) ψ v (PPOrd (E := E) v r l) = 0 := Finset.prod_eq_zero (Finset.mem_univ 0) (by simp [volC, h2])`.
+
+Simplify using `[volS, h1, h3]`. Take `⟨hZH, hZv⟩` from `h0 (Fin (r + 1) × Fin (r + 1))`. Take `⟨hUH, hUv⟩` from `h0 (UIdx r)`. Take `⟨hCH, hCv⟩` from `h0 Unit`. Establish `hZv' : (sdE (E` using `E) ψ v (Fin (r + 1) × Fin (r + 1)) (Obox (E := E) v _)).toReal = m ^ ((r + 1) * (r + 1)) := by rw [hZv]; simp [Fintype.card_prod]`.
+
+Establish `hCv' : (sdE (E` using `E) ψ v Unit (Obox (E := E) v Unit)).toReal = m := by rw [hCv]; simp`. Establish `eZ` using `hZ r m hfin _ hZH hZv'`. Establish `eU` using `hU r m hfin _ hUH hUv`. Establish `eP` using `hP r m hfin _ hCH hCv'`. Unfold `volS volU volC`.
+
+Rewrite using `[eZ, eU]`. Simplify using `only [eP]`. Conclude with `hA typed g r m ht`.
+-/
 theorem locJacOrd_of (h0 : SdNormO (E := E) ψ v) (hZ : VolZZO (E := E) v) (hU : VolUO (E := E) v)
     (hP : VolPO (E := E) v) (hA : ArithO (F := F) v) : LocJacOrd (E := E) ψ v := by
   intro typed g r hfin ht

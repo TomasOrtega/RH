@@ -10,6 +10,9 @@ open GlobalTheory.OrbitAvg
 
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hc`. Establish `ho : IsOpen (stab ρ K x : Set K)` using `(hs x).preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ stab ρ K x) := Subgroup.quotient_finite_of_isOpen _ ho`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+-/
 theorem stab_finiteIndex_of_smooth [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (hc : IsCompact (K : Set G)) (ρ : Representation ℂ G V) (hs : IsSmooth ρ) (x : V) :
     (stab ρ K x).FiniteIndex := by
@@ -19,6 +22,13 @@ theorem stab_finiteIndex_of_smooth [TopologicalSpace G] [IsTopologicalGroup G] (
   haveI : Finite (K ⧸ stab ρ K x) := Subgroup.quotient_finite_of_isOpen _ ho
   exact Subgroup.finiteIndex_of_finite_quotient
 
+/- English proof (translation)
+Introduce `n hn`. Establish `hc : k⁻¹ * n * k ∈ stab ρ K x`. Establish `h1` using `(Subgroup.normalCore_normal (stab ρ K x)).conj_mem n hn k⁻¹`. Rewrite `h1` using `[inv_inv]`. Conclude with `Subgroup.normalCore_le _ h1`.
+
+Rewrite `hc`, the goal using `[mem_stab]`. Establish `he : (n : G) * (k : G) = (k : G) * ((k⁻¹ * n * k : K) : G)`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul, Module.End.mul_apply]`. Use `_ = ρ (k : G) (ρ ((k⁻¹ * n * k : K) : G) x) := by`. Rewrite using `[he, map_mul, Module.End.mul_apply]`. Use `_ = ρ (k : G) x := by rw [hc]`.
+-/
 private theorem normalCore_stab_le_stab_apply (ρ : Representation ℂ G V) (K : Subgroup G) (x : V) (k : K) :
     (stab ρ K x).normalCore ≤ stab ρ K (ρ (k : G) x) := by
   intro n hn
@@ -36,6 +46,13 @@ private theorem normalCore_stab_le_stab_apply (ρ : Representation ℂ G V) (K :
         rw [he, map_mul, Module.End.mul_apply]
     _ = ρ (k : G) x := by rw [hc]
 
+/- English proof (translation)
+Use `haveI := hx`. Establish `hN1 : (stab ρ K x).normalCore ≤ stab ρ K x` using `Subgroup.normalCore_le _`. Establish `hN2 : (stab ρ K x).normalCore ≤ stab ρ K (ρ (k : G) x)` using `normalCore_stab_le_stab_apply ρ K x k`. Rewrite using `[avg_eq ρ K hN2, avg_eq ρ K hN1]`. Unfold `avgH`.
+
+Use `congr 1`. Establish `key : ∀ q : K ⧸ (stab ρ K x).normalCore, cv ρ K (stab ρ K x).normalCore (ρ (k : G) x) q = cv ρ K (stab ρ K x).normalCore x (q * (QuotientGroup.mk k))`. Introduce `q`. Establish `hq : q * (QuotientGroup.mk k : K ⧸ (stab ρ K x).normalCore) = QuotientGroup.mk (q.out * k)`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq']`.
+
+Rewrite using `[hq, cv_mk ρ K hN1]`. Simplify using `only [cv, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Repeatedly rewrite using `[key]`. Conclude with `finsum_comp_equiv (Equiv.mulRight (QuotientGroup.mk k : K ⧸ (stab ρ K x).normalCore))`.
+-/
 theorem avg_translate (ρ : Representation ℂ G V) (K : Subgroup G) {x : V}
     (hx : (stab ρ K x).FiniteIndex) (k : K) : avg ρ K (ρ (k : G) x) = avg ρ K x := by
   haveI := hx
@@ -59,6 +76,15 @@ end GlobalTheory.CompanionTheory.KAvg
 
 open GlobalTheory.OrbitAvg GlobalTheory.CompanionTheory.KAvg in
 
+/- English proof (translation)
+Unfold `PositivityTheory.SphericalProduct.KInvForm`. Introduce `G _ _ _ K _ hc V _ _ ρ hs v₀ hv₀ hne`. Establish `hfi : ∀ x : V, (stab ρ K x).FiniteIndex` using `fun x => stab_finiteIndex_of_smooth K hc ρ hs x`. Set `A : V →ₗ[ℂ] V` to `{ toFun := fun x => avg ρ K x map_add' := fun x y => avg_add ρ K (hfi x) (hfi y) map_smul' := fun c x => avg_smul ρ K (hfi x) c }`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ V, f v₀ ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne ((Module.forall_dual_apply_eq_zero_iff ℂ v₀).mp h)`. Establish `hfix : ∀ l ∈ K, ρ l v₀ = v₀`. Introduce `l hl`.
+
+Establish `h' : ∀ h : K, ρ h v₀ = ((1 : K →* ℂˣ) h : ℂ) • v₀` using `hv₀`. Simplify using `using h' ⟨l, hl⟩`. Use `⟨((f v₀)⁻¹ • f) ∘ₗ A, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Use extensionality with `v`.
+
+Use `show ((f v₀)⁻¹ • f) (avg ρ K (ρ k v)) = ((f v₀)⁻¹ • f) (avg ρ K v)`. Rewrite using `[avg_translate ρ K (hfi v) ⟨k, hk⟩]`. Use `show ((f v₀)⁻¹ • f) (avg ρ K v₀) = 1`. Rewrite using `[avg_fixed ρ K (hfi v₀) hfix, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hf]`.
+-/
 theorem GlobalTheory.CompanionTheory.KAvg.kInvForm : PositivityTheory.SphericalProduct.KInvForm := by
   unfold PositivityTheory.SphericalProduct.KInvForm
   intro G _ _ _ K _ hc V _ _ ρ hs v₀ hv₀ hne

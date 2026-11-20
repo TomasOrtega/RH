@@ -37,24 +37,45 @@ def IsCoord {S T : HSp D} {v : FinPl D} {m n : ℕ} (a : AE D) (Λ : AddSubgroup
   (∀ x y, κ (x + y) = κ x + κ y) ∧ Set.BijOn κ {t | IsHalf a t} Set.univ ∧
     IsOpen (κ '' {t | t ∈ Λ ∧ IsHalf a t}) ∧ IsCompact (κ '' {t | t ∈ Λ ∧ IsHalf a t})
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem wAt_eq_smul {m n : ℕ} (p : Place D) (w : Mx D m n) : wAt p w = idem D p • w := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onHalf_eq_pull {v : FinPl D} (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) (Fv D.host.F v))
     (BT : GL (Fin T.rank) (Fv D.host.F v)) (e : AE D) : onHalf φ S T BS BT e = pull e (mapCo φ S T BS BT) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem onHalfAdj_eq_pull {v : FinPl D} (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) (Fv D.host.F v))
     (BT : GL (Fin T.rank) (Fv D.host.F v)) (e : AE D) :
     onHalfAdj φ S T BS BT e = pull (cA D e) (adjCo φ S T BS BT) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [gAt]`.
+-/
 theorem gAt_one (V : HSp D) (p : Place D) : gAt V p 1 = 1 := by
   cases p <;> simp [gAt]
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [gAt]`.
+-/
 theorem gAt_mul (V : HSp D) (p : Place D) (g g' : GA D V) : gAt V p (g * g') = gAt V p g * gAt V p g' := by
   cases p <;> simp [gAt]
 
+/- English proof (translation)
+Apply the tactic sequence `cases p <;> simp [gAt]`.
+-/
 theorem gAt_inv (V : HSp D) (p : Place D) (g : GA D V) : gAt V p g⁻¹ = (gAt V p g)⁻¹ := by
   cases p <;> simp [gAt]
 
+/- English proof (translation)
+Unfold `latO`. Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hQ => hv v fun hP => hQ (h v hP), rest⟩`.
+-/
 theorem latO_mono {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P Q : FinPl D → Prop} (h : ∀ v, P v → Q v) : latO S T LS LT P ≤ latO S T LS LT Q := by
   unfold latO
@@ -62,6 +83,9 @@ theorem latO_mono {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (
   rintro w ⟨α, hα, hv, rest⟩
   exact ⟨α, hα, fun v hQ => hv v fun hP => hQ (h v hP), rest⟩
 
+/- English proof (translation)
+Unfold `IsLatVac at hf ⊢`. Conclude with `⟨fun u hu => hf.1 u (h hu), fun e he u hu hh => hf.2 e he u (h hu) hh⟩`.
+-/
 theorem isLatVac_mono {m n : ℕ} {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {Λ Λ' : AddSubgroup (Mx D m n)}
     (h : Λ ≤ Λ') {f : Mx D m n → ℂ} (hf : IsLatVac hs Λ' f) : IsLatVac hs Λ f := by
   unfold IsLatVac at hf ⊢
@@ -74,35 +98,59 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
   {f f₀ : WO S T → ℂ}
 
+/- English proof (translation)
+Break down `q with v | τ` into its components or cases. Conclude with `isLatVac_mono (latO_mono fun u hu => hu ▸ hq) h.2.1`. Conclude with `h.2.2 τ hq`.
+-/
 theorem vacAt_of_isLocal {p q : Place D} (h : IsLocal ψ θ S T sS sT ΛS ΛT p f) (hq : q ≠ p) :
     VacAt ψ θ S T sS sT ΛS ΛT q f := by
   rcases q with v | τ
   · exact isLatVac_mono (latO_mono fun u hu => hu ▸ hq) h.2.1
   · exact h.2.2 τ hq
 
+/- English proof (translation)
+Conclude with `h.2.2.2.2.1`.
+-/
 theorem base_std (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsStdChar D ψ (-1) := by
   exact h.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.inf`.
+-/
 theorem base_inf (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsInfFam θ :=
   h.2.2.2.2.2.inf
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.theta`.
+-/
 theorem base_theta (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsThetaFunO ψ S T f₀ :=
   h.2.2.2.2.2.theta
 
+/- English proof (translation)
+Conclude with `h.2.2.2.2.2.norm.2 (μ, 𝓕) hμ`.
+-/
 theorem restrictedTensorBasePoint_norm_sq (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) : nrm2 μ 𝓕 f₀ = 1 := by
   exact h.2.2.2.2.2.norm.2 (μ, 𝓕) hμ
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨⟨μ, 𝓕⟩, hq⟩` from `h.2.2.2.2.2.norm.1`. Establish `h1` using `restrictedTensorBasePoint_norm_sq h hq`. Simplify using `[nrm2] at h1`.
+-/
 theorem base_ne_zero (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : f₀ ≠ 0 := by
   rintro rfl
   obtain ⟨⟨μ, 𝓕⟩, hq⟩ := h.2.2.2.2.2.norm.1
   have h1 := restrictedTensorBasePoint_norm_sq h hq
   simp [nrm2] at h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.2.2.2.2.theta, isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat, fun τ _ => h.2.2.2.2.2.fock τ⟩`.
+-/
 theorem base_isLocal (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) (p : Place D) : IsLocal ψ θ S T sS sT ΛS ΛT p f₀ :=
   ⟨h.2.2.2.2.2.theta, isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat,
     fun τ _ => h.2.2.2.2.2.fock τ⟩
 
+/- English proof (translation)
+Break down `p with v | τ` into its components or cases. Conclude with `isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat`. Conclude with `h.2.2.2.2.2.fock τ`.
+-/
 theorem base_vacAt (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) (p : Place D) : VacAt ψ θ S T sS sT ΛS ΛT p f₀ := by
   rcases p with v | τ
   · exact isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat

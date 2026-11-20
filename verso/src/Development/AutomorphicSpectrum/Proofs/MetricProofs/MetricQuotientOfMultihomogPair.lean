@@ -12,6 +12,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Small.Decay
 
 open Filter Topology
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using analyticAt_const`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+
+Consider the case `mul_X p i hp`. Simplify using `only [map_mul, aeval_X]`. Conclude with `hp.mul (hv i)`.
+-/
 theorem analyticAt_aeval {E σ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {v : E → σ → ℂ} {z : E}
     (hv : ∀ p, AnalyticAt ℂ (fun w => v w p) z) (q : MvPolynomial σ ℤ) :
     AnalyticAt ℂ (fun w => (aeval (v w) q : ℂ)) z := by
@@ -24,6 +29,9 @@ theorem analyticAt_aeval {E σ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ 
     simp only [map_mul, aeval_X]
     exact hp.mul (hv i)
 
+/- English proof (translation)
+Establish `h1 : ContinuousAt (fun y => F (c.symm (c y))) x` using `ContinuousAt.comp (f := c) (g := fun z => F (c.symm z)) h (c.continuousAt hx)`. Use `h1.congr ?_` and prove the remaining obligations. Use `filter_upwards [c.open_source.mem_nhds hx] with y hy`. Rewrite using `[c.left_inv hy]`.
+-/
 theorem continuousAt_of_chart {X Y E : Type*} [TopologicalSpace X] [TopologicalSpace Y] [TopologicalSpace E]
     (c : OpenPartialHomeomorph X E) {x : X} (hx : x ∈ c.source) {F : X → Y}
     (h : ContinuousAt (fun z => F (c.symm z)) (c x)) : ContinuousAt F x := by
@@ -33,6 +41,9 @@ theorem continuousAt_of_chart {X Y E : Type*} [TopologicalSpace X] [TopologicalS
   filter_upwards [c.open_source.mem_nhds hx] with y hy
   rw [c.left_inv hy]
 
+/- English proof (translation)
+Establish `h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0}`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+-/
 theorem isOpen_multicone {K : Type*} [Finite K] {ι : K → Type*} :
     IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   have h : {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} = ⋂ k, ⋃ i, {z | z ⟨k, i⟩ ≠ 0} := by
@@ -42,10 +53,16 @@ theorem isOpen_multicone {K : Type*} [Finite K] {ι : K → Type*} :
   exact isOpen_iInter_of_finite fun k => isOpen_iUnion fun i =>
     isOpen_ne_fun (continuous_apply _) continuous_const
 
+/- English proof (translation)
+The claim follows from `(h.abs.eventually_lt (continuousAt_const (y := |u x| + 1)) (by linarith)).mono fun _ hy => hy.le`.
+-/
 theorem eventually_abs_le {X : Type*} [TopologicalSpace X] {u : X → ℝ} {x : X} (h : ContinuousAt u x) :
     ∀ᶠ y in 𝓝 x, |u y| ≤ |u x| + 1 :=
   (h.abs.eventually_lt (continuousAt_const (y := |u x| + 1)) (by linarith)).mono fun _ hy => hy.le
 
+/- English proof (translation)
+Establish `h` using `hs.2 x x' y hy`. Rewrite `h` using `[h0, norm_zero, zero_mul]`. Conclude with `norm_eq_zero.1 ((mul_eq_zero.1 h.symm).resolve_right (Real.exp_ne_zero _))`.
+-/
 theorem section_zero {e : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas e X} {L : LocPot X}
     {s : X → X → ℂ} (hs : IsSection A L s) {x x' y : X} (hy : y ∈ L.U x ∩ L.U x') (h0 : s x y = 0) :
     s x' y = 0 := by
@@ -53,6 +70,9 @@ theorem section_zero {e : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas
   rw [h0, norm_zero, zero_mul] at h
   exact norm_eq_zero.1 ((mul_eq_zero.1 h.symm).resolve_right (Real.exp_ne_zero _))
 
+/- English proof (translation)
+Unfold `logNormSec`. Rewrite using `[hs.2 y x y ⟨L.mem_U y, hy⟩, Real.log_mul (norm_ne_zero_iff.2 h0) (Real.exp_ne_zero _), Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logNormSec_eq {e : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas e X} {L : LocPot X}
     {s : X → X → ℂ} (hs : IsSection A L s) {x y : X} (hy : y ∈ L.U x) (h0 : s x y ≠ 0) :
     logNormSec L s y = Real.log ‖s x y‖ - L.φ x y := by
@@ -60,6 +80,13 @@ theorem logNormSec_eq {e : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtla
   rw [hs.2 y x y ⟨L.mem_U y, hy⟩, Real.log_mul (norm_ne_zero_iff.2 h0) (Real.exp_ne_zero _), Real.log_exp]
   ring
 
+/- English proof (translation)
+Rewrite using `[aeval_scale hG, aeval_scale hH, Eh.smul t w ht]`. Establish `hT : 0 < ∏ k, ‖t k‖ ^ Eh.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (ht k)) _`. Establish `hP : ‖∏ k, t k ^ dg k‖ = ‖∏ k, t k ^ dh k‖ * ∏ k, ‖t k‖ ^ Eh.a k`. Simplify using `only [norm_prod, norm_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_natCast, hdeg k, zpow_add₀ (norm_ne_zero_iff.2 (ht k)), zpow_natCast]`. Establish `hPh : ‖∏ k, t k ^ dh k‖ ≠ 0` using `norm_ne_zero_iff.2 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (ht k))`. Establish `hn : ‖((∏ k, t k ^ dg k) * aeval w G : ℂ) / ((∏ k, t k ^ dh k) * aeval w Hf)‖ = (∏ k, ‖t k‖ ^ Eh.a k) * ‖(aeval w G : ℂ) / aeval w Hf‖`. Rewrite using `[norm_div, norm_mul, norm_mul, hP, norm_div]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hq : ‖(aeval w G : ℂ) / aeval w Hf‖ ≠ 0` using `norm_ne_zero_iff.2 (div_ne_zero hGw hHw)`. Rewrite using `[hn, Real.log_mul hT.ne' hq, Real.log_mul hT.ne' (Eh.pos w hw).ne']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_ratio_scale {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (Eh : HermLine ι)
     {dg dh : K → ℕ} {G Hf : MRing ι} (hG : IsMultiHomog G dg) (hH : IsMultiHomog Hf dh)
     (hdeg : ∀ k, (dg k : ℤ) = dh k + Eh.a k) (t : K → ℂ) (ht : ∀ k, t k ≠ 0) (w : (Σ k, ι k) → ℂ)
@@ -83,6 +110,11 @@ theorem log_ratio_scale {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype
   rw [hn, Real.log_mul hT.ne' hq, Real.log_mul hT.ne' (Eh.pos w hw).ne']
   ring
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < N` using `Nat.cast_pos.2 hN`. Establish `e1 : Lf ≤ (lC + lg) / N`. Rewrite using `[le_div_iff₀ hn]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : -(1 / (2 * (N : ℝ))) * (Real.exp 1 - 2 * (lg - φ)) + (lC + Real.exp 1 / 2 + Bφ) / N = (lC + lg) / N + (Bφ - φ) / N`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : 0 ≤ (Bφ - φ) / N` using `div_nonneg (by linarith [le_abs_self φ]) hn.le`. Establish `e4 : -lh ≤ Bh` using `by linarith [neg_abs_le lh]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem decay_arith {N : ℕ} (hN : 0 < N) {Lf lh lg φ lC Bh Bφ : ℝ} (h1 : (N : ℝ) * Lf ≤ lC + lg)
     (h2 : |lh| ≤ Bh) (h3 : |φ| ≤ Bφ) :
     Lf - lh ≤ -(1 / (2 * (N : ℝ))) * (Real.exp 1 - 2 * (lg - φ)) +
@@ -99,6 +131,45 @@ theorem decay_arith {N : ℕ} (hN : 0 < N) {Lf lh lg φ lC Bh Bφ : ℝ} (h1 : (
   have e4 : -lh ≤ Bh := by linarith [neg_abs_le lh]
   linarith
 
+/- English proof (translation)
+Introduce `K _ ι _ P J e R σ S π hπ Eh hEh dg dh G Hf hG hH hdeg hyp x₀ hx₀`. Take `⟨j, hj⟩` from `R.A.cover x₀`. Take `⟨k, hk⟩` from `S.A.cover (π x₀)`. Establish `hz₀ : (R.A.chart j).symm (R.A.chart j x₀) = x₀` using `(R.A.chart j).left_inv hj`. Establish `hd₀ : (S.A.chart k).symm (S.A.chart k (π x₀)) = π x₀` using `(S.A.chart k).left_inv hk`.
+
+Establish `hcoord : ∀ p, AnalyticAt ℂ (fun z => R.lift x₀ ((R.A.chart j).symm z) p) (R.A.chart j x₀)` using `fun p => R.holo x₀ p j _ ⟨(R.A.chart j).map_source hj, by show (R.A.chart j).symm (R.A.chart j x₀) ∈ R.U x₀`. Rewrite using `[hz₀]`. Conclude with `R.mem_U x₀⟩`. Establish `hGa` using `analyticAt_aeval hcoord G`. Establish `hHa` using `analyticAt_aeval hcoord Hf`.
+
+Establish `hHc : ContinuousAt (fun y => (aeval (R.lift x₀ y) Hf : ℂ)) x₀` using `continuousAt_of_chart (R.A.chart j) hj hHa.continuousAt`. Establish `hne : ∀ᶠ y in 𝓝 x₀, (aeval (R.lift x₀ y) Hf : ℂ) ≠ 0` using `hHc.eventually_ne hx₀`. Establish `hU : ∀ᶠ y in 𝓝 x₀, y ∈ R.U x₀` using `(R.isOpen_U x₀).mem_nhds (R.mem_U x₀)`. Establish `hS : ∀ᶠ y in 𝓝 x₀, y ∈ (R.A.chart j).source` using `(R.A.chart j).open_source.mem_nhds hj`. Establish `hπc : ContinuousAt π x₀` using `hπ.1.continuousAt`.
+
+Establish `hπU : ∀ᶠ y in 𝓝 x₀, π y ∈ S.L.U (π x₀)` using `hπc.eventually_mem ((S.L.isOpen_U _).mem_nhds (S.L.mem_U _))`. Establish `hπk : ∀ᶠ y in 𝓝 x₀, π y ∈ (S.A.chart k).source` using `hπc.eventually_mem ((S.A.chart k).open_source.mem_nhds hk)`. Establish `tend : Tendsto (R.A.chart j).symm (𝓝 (R.A.chart j x₀)) (𝓝 x₀)`. Establish `h` using `(R.A.chart j).continuousAt_symm ((R.A.chart j).map_source hj)`. Rewrite `h` using `[ContinuousAt, hz₀]`. Then use the resulting hypothesis.
+
+Set `f : (Fin e → ℂ) → ℂ` to `fun z => (aeval (R.lift x₀ ((R.A.chart j).symm z)) G : ℂ) / aeval (R.lift x₀ ((R.A.chart j).symm z)) Hf`. Set `g : (Fin e → ℂ) → ℂ` to `fun z => S.s (π x₀) (π ((R.A.chart j).symm z))`. Establish `hf : AnalyticAt ℂ f (R.A.chart j x₀)` using `hGa.div hHa (by simpa only [hz₀] using hx₀)`. Establish `hg : AnalyticAt ℂ g (R.A.chart j x₀)`. Establish `h1 : AnalyticAt ℂ ((S.A.chart k) ∘ π ∘ (R.A.chart j).symm) (R.A.chart j x₀)` using `hπ.2 j k _ ⟨(R.A.chart j).map_source hj, by show π ((R.A.chart j).symm (R.A.chart j x₀)) ∈ (S.A.chart k).source`.
+
+Rewrite using `[hz₀]`. Conclude with `hk⟩`. Establish `h2 : AnalyticAt ℂ (S.s (π x₀) ∘ (S.A.chart k).symm) (((S.A.chart k) ∘ π ∘ (R.A.chart j).symm) (R.A.chart j x₀))`. Establish `e1 : ((S.A.chart k) ∘ π ∘ (R.A.chart j).symm) (R.A.chart j x₀) = S.A.chart k (π x₀)`. Simplify using `only [Function.comp_apply, hz₀]`.
+
+Rewrite using `[e1]`. Conclude with `S.sec.1 (π x₀) k _ ⟨(S.A.chart k).map_source hk, by show (S.A.chart k).symm (S.A.chart k (π x₀)) ∈ S.L.U (π x₀)`. Rewrite using `[hd₀]`. Conclude with `S.L.mem_U _⟩`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [tend.eventually hπk] with z hz`. Simplify using `only [Function.comp_apply, g, (S.A.chart k).left_inv hz]`. Establish `hzero : ∀ᶠ z in 𝓝 (R.A.chart j x₀), g z = 0 → f z = 0` using `by filter_upwards [tend.eventually hU, tend.eventually hπU, tend.eventually hne] with z h1 h2 h3 h0`. Take `⟨t, ht, hlt⟩` from `R.compat x₀ _ _ ⟨h1, R.mem_U ((R.A.chart j).symm z)⟩`. Establish `hs` using `section_zero S.sec (x := π x₀) (x' := π ((R.A.chart j).symm z)) ⟨h2, S.L.mem_U _⟩ h0`.
+
+Establish `hHy : (aeval (R.lift ((R.A.chart j).symm z) ((R.A.chart j).symm z)) Hf : ℂ) ≠ 0`. Introduce `h00`. Apply `h3` to reduce the goal to its premises. Rewrite using `[hlt, aeval_scale hH, h00, mul_zero]`. Establish `hGy : (aeval (R.lift ((R.A.chart j).symm z) ((R.A.chart j).symm z)) G : ℂ) = 0`.
+
+Assume the negation of the conclusion as `hG0`. Conclude with `hyp _ hG0 hHy hs`. Use `show (aeval (R.lift x₀ ((R.A.chart j).symm z)) G : ℂ) / _ = 0`. Rewrite using `[hlt, aeval_scale hG, hGy, mul_zero, zero_div]`. Take `⟨N, C₀, hN, hloj⟩` from `GlobalTheory.T.lojasiewicz_inequality_analytic e f g _ hf hg hzero`.
+
+Establish `hloj' : ∀ᶠ y in 𝓝 x₀, ‖f (R.A.chart j y)‖ ^ N ≤ C₀ * ‖g (R.A.chart j y)‖` using `((R.A.chart j).continuousAt hj).eventually hloj`. Establish `hφc : ContinuousAt (S.L.φ (π x₀)) (π x₀)` using `continuousAt_of_chart (S.A.chart k) hk (((S.potL.1 (π x₀) k).continuousOn).continuousAt (((S.A.chart k).isOpen_inter_preimage_symm (S.L.isOpen_U _)).mem_nhds ⟨(S.A.chart k).map_source hk, by show (S.A.chart k).symm (S.A.chart k (π x₀)) ∈ S.L.U (π x₀)`. Rewrite using `[hd₀]`. Conclude with `S.L.mem_U _⟩))`. Establish `hφb` using `eventually_abs_le (u := fun y => S.L.φ (π x₀) (π y)) (ContinuousAt.comp (g := S.L.φ (π x₀)) hφc hπc)`.
+
+Establish `hℓ : ContinuousAt (fun y => R.lift x₀ y) x₀` using `continuousAt_pi.2 fun p => continuousAt_of_chart (R.A.chart j) hj (hcoord p).continuousAt`. Establish `hmem : R.lift x₀ x₀ ∈ {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `(R.mem x₀ x₀ (R.mem_U x₀)).1`. Establish `hhc : ContinuousAt Eh.h (R.lift x₀ x₀)` using `(ContDiffOn.continuousOn hEh).continuousAt (isOpen_multicone.mem_nhds hmem)`. Establish `hlogc : ContinuousAt (fun y => Real.log (Eh.h (R.lift x₀ y))) x₀` using `ContinuousAt.log (ContinuousAt.comp (g := Eh.h) hhc hℓ) (Eh.pos _ hmem).ne'`. Establish `hhb` using `eventually_abs_le hlogc`.
+
+Take `⟨V, hV, hVo, hxV⟩` from `eventually_nhds_iff.1 (hU.and (hS.and (hπU.and (hne.and (hloj'.and (hφb.and hhb))))))`. Use `⟨V, N, (Real.log (max C₀ 1) + Real.exp 1 / 2 + (|S.L.φ (π x₀) (π x₀)| + 1)) / (N : ℝ) + (|Real.log (Eh.h (R.lift x₀ x₀))| + 1), hVo, hxV, hN, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨y1, y2, y3, y4, y5, y6, y7⟩` from `hV y hy`. Take `⟨t, ht, hlt⟩` from `R.compat x₀ y y ⟨y1, R.mem_U y⟩`. Establish `hw : ∀ k, ∃ i, R.lift y y ⟨k, i⟩ ≠ 0` using `(R.mem y y (R.mem_U y)).1`.
+
+Establish `hHy : (aeval (R.lift y y) Hf : ℂ) ≠ 0`. Introduce `h00`. Apply `y4` to reduce the goal to its premises. Rewrite using `[hlt, aeval_scale hH, h00, mul_zero]`. Use `⟨hHy, fun hop hGy => ?_⟩` and prove the remaining obligations.
+
+Establish `hs : S.s (π y) (π y) ≠ 0` using `hop`. Establish `hgne : S.s (π x₀) (π y) ≠ 0` using `fun h0 => hs (section_zero S.sec ⟨y3, S.L.mem_U _⟩ h0)`. Establish `hGl : (aeval (R.lift x₀ y) G : ℂ) ≠ 0`. Rewrite using `[hlt, aeval_scale hG]`. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (ht k)) hGy`.
+
+Establish `hfy : f (R.A.chart j y) = (aeval (R.lift x₀ y) G : ℂ) / aeval (R.lift x₀ y) Hf`. Simplify using `only [f, (R.A.chart j).left_inv y2]`. Establish `hgy : g (R.A.chart j y) = S.s (π x₀) (π y)`. Simplify using `only [g, (R.A.chart j).left_inv y2]`. Rewrite `y5` using `[hfy, hgy]`.
+
+Establish `hfne : (aeval (R.lift x₀ y) G : ℂ) / aeval (R.lift x₀ y) Hf ≠ 0` using `div_ne_zero hGl y4`. Establish `key` using `log_ratio_scale Eh hG hH hdeg t ht (R.lift y y) hw hGy hHy`. Rewrite `key` using `[← hlt]`. Rewrite using `[key, rW, logNormSec_eq S.sec y3 hgne]`. Establish `hloglog : (N : ℝ) * Real.log ‖(aeval (R.lift x₀ y) G : ℂ) / aeval (R.lift x₀ y) Hf‖ ≤ Real.log (max C₀ 1) + Real.log ‖S.s (π x₀) (π y)‖`.
+
+Establish `hC : 0 < max C₀ 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hgp : 0 < ‖S.s (π x₀) (π y)‖` using `norm_pos_iff.2 hgne`. Establish `hle : ‖(aeval (R.lift x₀ y) G : ℂ) / aeval (R.lift x₀ y) Hf‖ ^ N ≤ max C₀ 1 * ‖S.s (π x₀) (π y)‖` using `y5.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hgp.le)`. Use `Real.log_le_log (pow_pos (norm_pos_iff.2 hfne) N) hle` as an intermediate fact. Rewrite `this` using `[Real.log_pow, Real.log_mul hC.ne' hgp.ne']`. Then use the resulting hypothesis.
+
+Conclude with `decay_arith hN hloglog y7 y6`.
+-/
 theorem local_decay : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P J : Ideal (MRing ι)) (e : ℕ) (R : AnLogRes P J e) (σ : Type) (S : PB.AnSys e σ) (π : R.X → S.X), HoloMap R.A S.A π → ∀ (Eh : HermLine ι), IsSmoothHerm Eh → ∀ (dg dh : K → ℕ) (G Hf : MRing ι), IsMultiHomog G dg → IsMultiHomog Hf dh → (∀ k, (dg k : ℤ) = dh k + Eh.a k) → (∀ y : R.X, aeval (R.lift y y) G ≠ (0 : ℂ) → aeval (R.lift y y) Hf ≠ (0 : ℂ) → π y ∈ S.open') → ∀ x₀ : R.X, aeval (R.lift x₀ x₀) Hf ≠ (0 : ℂ) → ∃ (V : Set R.X) (N : ℕ) (C : ℝ), IsOpen V ∧ x₀ ∈ V ∧ 0 < N ∧ ∀ y ∈ V, aeval (R.lift y y) Hf ≠ (0 : ℂ) ∧ (π y ∈ S.open' → aeval (R.lift y y) G ≠ (0 : ℂ) → Real.log ‖(aeval (R.lift y y) G : ℂ) / aeval (R.lift y y) Hf‖ - Real.log (Eh.h (R.lift y y)) ≤ -(1 / (2 * (N : ℝ))) * rW S.L S.s (π y) + C) := by
   intro K _ ι _ P J e R σ S π hπ Eh hEh dg dh G Hf hG hH hdeg hyp x₀ hx₀
   obtain ⟨j, hj⟩ := R.A.cover x₀

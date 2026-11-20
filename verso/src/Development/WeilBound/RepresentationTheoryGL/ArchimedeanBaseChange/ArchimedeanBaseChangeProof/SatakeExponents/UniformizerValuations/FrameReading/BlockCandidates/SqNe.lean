@@ -19,6 +19,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {hR : Rd.R
   {χ : Rd.ChAlg (fun x => F.g x i) (X F i) →⋆ₐ[ℂ] ℂ}
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `e` using `O.eigX`. Introduce `h0`. Rewrite `e` using `[h0]`. Use `smul_ne_zero (div_ne_zero hχ.2.2 (pow_ne_zero _ ?_)) O.ne e.symm` and prove the remaining obligations. Conclude with `((hχ.2.1 (.inl ())).trans hc).trans_ne one_ne_zero`.
+-/
 theorem sq_ne (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g x i) (X F i) c χ) (O : BO F i χ) :
     convF (F.B i).ν ((F.β i).sq (F.m - 1)).ψ O.F ≠ 0 := by
   have e := O.eigX
@@ -28,6 +31,9 @@ theorem sq_ne (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g
   exact ((hχ.2.1 (.inl ())).trans hc).trans_ne one_ne_zero
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `e` using `O.eigFin (.inr (.inr x)) (F.ptL i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2)) rfl ⟨rfl, rfl, rfl, rfl, rfl⟩`. Rewrite `e` using `[hχ.2.1 (.inr (.inr x)), hχ.2.1 (.inl ()), hc, div_one]`. Conclude with `e`.
+-/
 theorem eig_h (c : F.Γ → ℂ) (hc : c (.inl ()) = 1) (hχ : Chi (fun x => F.g x i) (X F i) c χ) (O : BO F i χ)
     (x : {w : Pl E // w ∈ F₀.Sec ∧ F.d.Good w} × ℕ × Bool) :
     convF (F.B i).ν (F.ψ i (F.d.hL _ (F₀.C.le i) x.1.1 x.2.1 x.2.2)) O.F = c (.inr (.inr x)) • O.F := by

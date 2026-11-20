@@ -19,12 +19,24 @@ def LeafResY : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B] [A
     ∃ (y : Fin e → B), Submodule.span P.ResidueField
       (Set.range fun i => (1 : P.ResidueField) ⊗ₜ[B] dyt (A := A) y (fun j => (t j : B)) i) = ⊤
 
+/- English proof (translation)
+Introduce `d e A B _ _ _ I hB hBI P _ hIP`. Take `⟨t, ht⟩` from `hT d e A B I hB hBI P hIP`. Take `⟨y, hy⟩` from `hY d e A B I hB hBI P hIP t ht`. Conclude with `⟨t, y, ht, hy⟩`.
+-/
 theorem LeafCoordsPointRes_of (hT : LeafResT) (hY : LeafResY) : LeafCoordsPointRes := by
   intro d e A B _ _ _ I hB hBI P _ hIP
   obtain ⟨t, ht⟩ := hT d e A B I hB hBI P hIP
   obtain ⟨y, hy⟩ := hY d e A B I hB hBI P hIP t ht
   exact ⟨t, y, ht, hy⟩
 
+/- English proof (translation)
+Take `⟨b, hb, hsp, hli⟩` from `exists_linearIndependent K (Set.range g)`. Rewrite `hsp` using `[hs]`. Set `bb : Module.Basis b K V` to `Module.Basis.mk hli (by rw [Subtype.range_coe]; exact hsp.ge)`. Establish `: Finite b` using `Module.Finite.finite_basis bb`. Establish `: Fintype b` using `Fintype.ofFinite b`.
+
+Establish `hcard : Fintype.card b ≤ d` using `(Module.finrank_eq_card_basis bb).symm ▸ hd`. Set `e` to `Fintype.equivFin b`. Establish `hpre : ∀ v : b, ∃ i, g i = v` using `fun v => hb v.2`. Set `f : Fin d → ι` to `fun j => if h : j.val < Fintype.card b then Classical.choose (hpre (e.symm ⟨j, h⟩)) else i0`. Use `⟨f, eq_top_iff.mpr ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hsp]`. Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce `v hv`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨⟨(e ⟨v, hv⟩).val, lt_of_lt_of_le (e ⟨v, hv⟩).2 hcard⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, f, (e ⟨v, hv⟩).2, dite_true]`. Rewrite using `[Classical.choose_spec (hpre _)]`. Simplify using the standard rewrite rules.
+-/
 theorem pick {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (d : ℕ)
     (g : ι → V) (i0 : ι) (hs : Submodule.span K (Set.range g) = ⊤)
     (hd : Module.finrank K V ≤ d) : ∃ f : Fin d → ι, Submodule.span K (Set.range (g ∘ f)) = ⊤ := by
@@ -48,6 +60,11 @@ theorem pick {K V ι : Type} [Field K] [AddCommGroup V] [Module K V] [FiniteDime
   rw [Classical.choose_spec (hpre _)]
   simp
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `tmul k m`.
+
+Establish `: k ⊗ₜ[B] m = k • ((1 : P.ResidueField) ⊗ₜ[B] m)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, rfl⟩)`. Consider the case `add x y hx hy => exact add_mem hx hy`.
+-/
 theorem span_one_tmul {B M : Type} [CommRing B] [AddCommGroup M] [Module B M] (P : Ideal B) [P.IsPrime] :
     Submodule.span P.ResidueField (Set.range fun m : M => (1 : P.ResidueField) ⊗ₜ[B] m) = ⊤ := by
   rw [eq_top_iff]; rintro z -
@@ -62,6 +79,9 @@ def LeafResDimI : Prop := ∀ (d e : ℕ) (A B : Type) [CommRing A] [CommRing B]
   Algebra.IsStandardSmoothOfRelativeDimension (e + d) A B → Algebra.IsStandardSmoothOfRelativeDimension e A (B ⧸ I) →
   ∀ (P : Ideal B) [P.IsPrime], I ≤ P → Module.finrank P.ResidueField (P.ResidueField ⊗[B] I) ≤ d
 
+/- English proof (translation)
+Introduce `d e A B _ _ _ I hB hBI P _ hIP`. Establish `hfg` using `ideal_fg I _ _ hB hBI`. Establish `: Module.Finite B I` using `Module.Finite.iff_fg.mpr hfg`. Take `⟨f, hf⟩` from `pick d (fun m : I => (1 : P.ResidueField) ⊗ₜ[B] m) 0 (span_one_tmul P) (hD d e A B I hB hBI P hIP)`. Conclude with `⟨f, hf⟩`.
+-/
 theorem LeafResT_of (hD : LeafResDimI) : LeafResT := by
   intro d e A B _ _ _ I hB hBI P _ hIP
   have hfg := ideal_fg I _ _ hB hBI
@@ -69,6 +89,9 @@ theorem LeafResT_of (hD : LeafResDimI) : LeafResT := by
   obtain ⟨f, hf⟩ := pick d (fun m : I => (1 : P.ResidueField) ⊗ₜ[B] m) 0 (span_one_tmul P) (hD d e A B I hB hBI P hIP)
   exact ⟨f, hf⟩
 
+/- English proof (translation)
+The claim follows from `LeafCoordsPointRes_of (LeafResT_of hD) hY`.
+-/
 theorem LeafCoordsPointRes_of' (hD : LeafResDimI) (hY : LeafResY) : LeafCoordsPointRes :=
   LeafCoordsPointRes_of (LeafResT_of hD) hY
 

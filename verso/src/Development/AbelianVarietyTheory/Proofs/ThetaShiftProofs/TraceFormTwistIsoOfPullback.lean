@@ -20,12 +20,18 @@ variable {X X' Y Y' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {Φ : X' ⟶ X} {K :
 def om (w : LB.Iso L' (L.pull Φ)) (z : Z) (J : (Z ⟶ X) → L.ι) (J' : (Z ⟶ X') → L'.ι) (x : Z ⟶ X') :
     (Z.presheaf.stalk z)ˣ := Geo.Tor.gw w x z (J (x ≫ Φ)) (J' x)
 
+/- English proof (translation)
+The claim follows from `DegPull.pmaps_val hψ H r z hJ hJ'`.
+-/
 theorem pmaps_om {w : LB.Iso L' (L.pull Φ)} {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} {h : Y' ⟶ Y}
     (hψ : ∀ k, φ' k ≫ Φ = h ≫ φ k) {a : LB.Gen (LB.LinComb L' φ' ε)} {t : LB.Gen (LB.LinComb L φ ε)}
     (H : PMaps w φ' φ ε a t h) (r : Z ⟶ Y') (z : Z) {J J'} (hJ : Good L z J) (hJ' : Good L' z J') :
     val t (r ≫ h) z J = (∏ k, om w z J J' (r ≫ φ' k) ^ ε k) * val a r z J' :=
   DegPull.pmaps_val hψ H r z hJ hJ'
 
+/- English proof (translation)
+Take `⟨a, ha, H⟩` from `DegPull.exists_pmaps ((isGen_iff w).1 hw) hL hL' h hψ t ht`. Conclude with `⟨a, ha, fun Z r z J J' hJ hJ' => pmaps_om hψ H r z hJ hJ'⟩`.
+-/
 theorem exists_down_om {w : LB.Iso L' (L.pull Φ)} (hw : w.IsGen) (hL : L.IsLB) (hL' : L'.IsLB)
     {φ' : K → (Y' ⟶ X')} {φ : K → (Y ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) (hψ : ∀ k, φ' k ≫ Φ = h ≫ φ k)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) :
@@ -42,6 +48,11 @@ variable {S S' : Scheme.{0}} {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] 
   {f : S' ⟶ S} {Φ : A'.left ⟶ A.left} {L : LB A.left} {L' : LB A'.left}
 
 omit [IsCommMonObj A] [IsCommMonObj A'] in
+/- English proof (translation)
+Establish `hh : h ≫ T.hom = T'.hom ≫ f`. Rewrite using `[← Over.w x, ← Category.assoc, ← hx, Category.assoc, gp.1.w, ← Category.assoc, Over.w]`. Set `ρ : Over.mk (T'.hom ≫ f) ⟶ T` to `Over.homMk h hh`. Establish `e` using `gp.2 T' x' y' (ρ ≫ x) (ρ ≫ y) hx.symm hy.symm`. Rewrite `e` using `[← MonObj.comp_mul]`.
+
+Conclude with `e.symm`.
+-/
 theorem mul_push (gp : IsGrpPullback A' A f Φ) {T' : Over S'} {T : Over S} (h : T'.left ⟶ T.left) {x' y' : T' ⟶ A'}
     {x y : T ⟶ A} (hx : x'.left ≫ Φ = h ≫ x.left) (hy : y'.left ≫ Φ = h ≫ y.left) :
     (x' * y').left ≫ Φ = h ≫ (x * y).left := by
@@ -52,6 +63,21 @@ theorem mul_push (gp : IsGrpPullback A' A f Φ) {T' : Over S'} {T : Over S} (h :
   rw [← MonObj.comp_mul] at e
   exact e.symm
 
+/- English proof (translation)
+Set `Φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left` to `(lift (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A'))).left`. Establish `f₁ : (fst A' A').left ≫ Φ = Φ₂ ≫ (fst A A).left` using `(congrArg (fun q => q.left) (lift_fst (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A')))).symm`. Establish `f₂ : (snd A' A').left ≫ Φ = Φ₂ ≫ (snd A A).left` using `(congrArg (fun q => q.left) (lift_snd (pushPt gp.1.w (fst A' A')) (pushPt gp.1.w (snd A' A')))).symm`. Establish `f₃ : (fst A' A' ≫ a').left ≫ Φ = Φ₂ ≫ (fst A A ≫ a).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ha, ← Category.assoc, f₁, Category.assoc]`.
+
+Establish `f₄ : (snd A' A' ≫ b').left ≫ Φ = Φ₂ ≫ (snd A A ≫ b).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hb, ← Category.assoc, f₂, Category.assoc]`. Establish `hψ : ∀ i, rosatiφ A' a' b' i ≫ Φ = Φ₂ ≫ rosatiφ A a b i` using `fun i => by fin_cases i exacts [mul_push gp Φ₂ f₃ f₂, f₃, f₂, mul_push gp Φ₂ f₁ f₄, f₁, f₄]`. Establish `cmp : ∀ {T' : Over S'} (x' y' : T' ⟶ A') (m : T'.left ⟶ (A ⊗ A).left), x'.left ≫ Φ = m ≫ (fst A A).left → y'.left ≫ Φ = m ≫ (snd A A).left → (lift x' y').left ≫ Φ₂ = m` using `fun x' y' m hx hy => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Use `Eq.trans ?_ hx` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) f₁.symm).trans ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, lift_fst]`. Use `Eq.trans ?_ hy` and prove the remaining obligations. Use `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) f₂.symm).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← Over.comp_left, lift_snd]`. Take `⟨t, ht, vt⟩` from `exists_down_om hw hL hL' Φ₂ hψ u hu.1`. Establish `rt : TorusExt.IsRos L' a' b' t` using `⟨ht, corr_of_val hL' fun y I' hI' => by`. Take `⟨I, hI⟩` from `DegPull.exists_good' hL y`. Establish `o : lift (1 : 𝟙_ (Over S') ⟶ A') (1 : 𝟙_ (Over S') ⟶ A') = lift η[A'] η[A']` using `by simp [Hom.one_def]`.
+
+Establish `he : eSec A' ≫ Φ = f ≫ eSec A` using `(cubeMapOf gp).e_comm`. Establish `o₁ : (1 : 𝟙_ (Over S') ⟶ A').left = eSec A'` using `Category.id_comp _`. Establish `e` using `vt _ (lift (1 : 𝟙_ (Over S') ⟶ A') (1 : 𝟙_ (Over S') ⟶ A')).left y I I' hI hI'`. Rewrite using `[prod_ros, cmp 1 1 (f ≫ zero2 A) (by`. Rewrite using `[o₁, he, Category.assoc, ← Over.comp_left, lift_fst]; rfl) (by`.
+
+Rewrite using `[o₁, he, Category.assoc, ← Over.comp_left, lift_snd]`. Use the proof step `rfl),`. Use the proof step `MonObj.one_comp, MonObj.one_comp, _root_.mul_one, o] at e`. Establish `e₁` using `(val_pull hI _ _ _).symm.trans ((val_corr hI hu.2 f).trans (val_one _))`. Rewrite `e` using `[e₁]`.
+
+Rewrite using `[val_pull hI', val_one, Category.id_comp]`. Simplify using `using e.symm⟩`. Establish `e` using `vt _ (lift x' y').left z J J' hJ hJ'`. Rewrite `e` using `[prod_ros, cmp x' y' m hx hy]`. Conclude with `e.trans (congrArg _ (TorusExt.IsRos.unique hG hA' hL' rt hu' hJ' x' y'))`.
+-/
 theorem ros_val (hG : GlobalFnsSt) (gp : IsGrpPullback A' A f Φ) (hA' : IsAbelianScheme A') (hL : L.IsLB) (hL' : L'.IsLB)
     {w : LB.Iso L' (L.pull Φ)} (hw : w.IsGen) {a b : A ⟶ A} {a' b' : A' ⟶ A'} [IsMonHom a'] [IsMonHom b']
     (ha : a'.left ≫ Φ = Φ ≫ a.left) (hb : b'.left ≫ Φ = Φ ≫ b.left)
@@ -112,6 +138,11 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   (hJ : Good D.P.L z J) (hJ' : Good D'.P.L z J')
 include hr hJ hJ'
 
+/- English proof (translation)
+Establish `hW : r ≫ jK R = (r' ≫ hD.g) ≫ hD.W.ι`. Rewrite using `[Category.assoc, hD.g_comm]`. Conclude with `hr.symm`. Take `⟨lam, l₁, l₂⟩ : ∃ lam : Z ⟶ (jK R ⁻¹ᵁ hD.W).toScheme, lam ≫ (jK R ⁻¹ᵁ hD.W).ι = r ∧ lam ≫ (jK R ∣_ hD.W) = r' ≫ hD.g` from `⟨(isPullback_morphismRestrict (jK R) hD.W).lift _ _ hW.symm, (isPullback_morphismRestrict (jK R) hD.W).lift_snd _ _ _, (isPullback_morphismRestrict (jK R) hD.W).lift_fst _ _ _⟩`. Establish `e` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (hD.psiW.psi_eq (hD.xe x)) lam).trans (val_pull hJ _ _ _))`.
+
+Rewrite `e` using `[l₁, l₂]`. Conclude with `e.symm.trans (PsiEvenPull.psi_pull hD x r' z hJ hJ')`.
+-/
 theorem psi_val (x : D'.X) :
     val (D.psi (hD.xe x)) r z J = (om hD.w z J J' (r' ≫ D'.xK x))⁻¹ * val (D'.psi x) r' z J' := by
   have hW : r ≫ jK R = (r' ≫ hD.g) ≫ hD.W.ι := by
@@ -125,6 +156,9 @@ theorem psi_val (x : D'.X) :
   rw [l₁, l₂] at e
   exact e.symm.trans (PsiEvenPull.psi_pull hD x r' z hJ hJ')
 
+/- English proof (translation)
+Establish `pm` using `(maps_iff hD.w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf φ) _ (rigPull_le (proj hD) (specOf φ) hD.he D.P.L) (fun _ => rfl)).1 hD.w_rig`. Establish `e` using `pmaps_om (fun _ => hD.he) pm (r' ≫ jK R') z hJ hJ'`. Rewrite `e` using `[Fintype.prod_unique, zpow_one, Category.assoc, Category.assoc]`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))` and prove the remaining obligations. Conclude with `(congrArg (fun q => val D.rig q z J) hr.symm).trans e`.
+-/
 theorem rig_val : val D.rigK r z J = om hD.w z J J' (r' ≫ (1 : TK R' ⟶ D'.P.A).left) * val D'.rigK r' z J' := by
   have pm := (maps_iff hD.w _ (fun _ => eSec D.P.A) _ D'.rig D.rig (specOf φ) _
     (rigPull_le (proj hD) (specOf φ) hD.he D.P.L) (fun _ => rfl)).1 hD.w_rig
@@ -133,6 +167,9 @@ theorem rig_val : val D.rigK r z J = om hD.w z J J' (r' ≫ (1 : TK R' ⟶ D'.P.
   refine (val_pull hJ _ _ _).trans (Eq.trans ?_ (congrArg₂ (· * ·) rfl (val_pull hJ' _ _ _).symm))
   exact (congrArg (fun q => val D.rig q z J) hr.symm).trans e
 
+/- English proof (translation)
+Rewrite using `[TauPull.val_tau r hJ, TauPull.val_tau r' hJ', ← map_add, psi_val hD r r' hr hJ hJ', psi_val hD r r' hr hJ hJ', psi_val hD r r' hr hJ hJ', rig_val hD r r' hr hJ hJ']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem tau_val (a b : D'.X) : val (D.tau (hD.xe a) (hD.xe b)) r z J =
     (om hD.w z J J' (r' ≫ D'.xK (a + b)))⁻¹ * om hD.w z J J' (r' ≫ D'.xK a) * om hD.w z J J' (r' ≫ D'.xK b) *
       (om hD.w z J J' (r' ≫ (1 : TK R' ⟶ D'.P.A).left))⁻¹ * val (D'.tau a b) r' z J' := by
@@ -151,11 +188,17 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
 def fracMap (hφ : Function.Injective φ) : FractionRing R →+* FractionRing R' :=
   IsFractionRing.lift (g := (algebraMap R' (FractionRing R')).comp φ) ((IsFractionRing.injective R' _).comp hφ)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap _ x`.
+-/
 theorem fracMap_algebraMap (hφ : Function.Injective φ) (x : R) :
     fracMap hφ (algebraMap R _ x) = algebraMap R' _ (φ x) := IsFractionRing.lift_algebraMap _ x
 
 def genMap (hφ : Function.Injective φ) : (TK R').left ⟶ (TK R).left := spMap (fracMap hφ)
 
+/- English proof (translation)
+The claim follows from `(Category.id_comp _).trans ((spMap_comp _ (fracMap hφ)).symm.trans ((congrArg spMap (RingHom.ext (fracMap_algebraMap hφ))).trans (spMap_comp φ _))).symm`.
+-/
 theorem fracMap_sq (hφ : Function.Injective φ) :
     𝟙 (TK R').left ≫ jK R' ≫ spMap φ = genMap hφ ≫ jK R :=
   (Category.id_comp _).trans ((spMap_comp _ (fracMap hφ)).symm.trans
@@ -163,6 +206,9 @@ theorem fracMap_sq (hφ : Function.Injective φ) :
 
 variable {D : DegPre R} {D' : DegPre R'} (hD : IsPullDeg φ D D')
 
+/- English proof (translation)
+Use `show (T'.hom ≫ (D'.c x).left) ≫ proj hD = h ≫ T.hom ≫ (D.c (hD.xe x)).left`. Rewrite using `[Category.assoc, hD.c_pr, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) hh`.
+-/
 theorem cPoint_proj {T : Over (Sp R)} {T' : Over (Sp R')} (h : T'.left ⟶ T.left) (hh : T'.hom ≫ spMap φ = h ≫ T.hom)
     (x : D'.X) : (cP D' T' x).left ≫ proj hD = h ≫ (cP D T (hD.xe x)).left := by
   show (T'.hom ≫ (D'.c x).left) ≫ proj hD = h ≫ T.hom ≫ (D.c (hD.xe x)).left
@@ -171,6 +217,21 @@ theorem cPoint_proj {T : Over (Sp R)} {T' : Over (Sp R')} (h : T'.left ⟶ T.lef
 
 variable {O : Type} [CommRing O] [StarRing O] [Module O D.X] [Module O D'.X]
 
+/- English proof (translation)
+Establish `gp` using `pull_grp hD`. Take `⟨o, ho⟩` from `polOActPull _ _ _ D.P D'.P _ gp (LBIso.symm ⟨hD.w, hD.w_gen⟩) O oa.onB`. Establish `cl : ∀ (a : O) y, D'.c (a • y) = D'.c y ≫ o.act a` using `fun a y => by`. Use `Over.OverMorphism.ext (gp.1.hom_ext ?_ (by rw [Over.w, Over.w]))` and prove the remaining obligations. Rewrite using `[hD.c_pr, hx, oa.c_lin, Over.comp_left, Over.comp_left, Category.assoc, ho, ← Category.assoc (D'.c y).left, hD.c_pr, Category.assoc]`.
+
+Use `⟨⟨o, cl, fun a u' hu' h₀ y y' => corr_of_val D'.P.isLB fun z J' hJ' => ?_⟩, ho⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB z`. Use `oa.onB.hom a` as an intermediate fact. Use `oa.onB.hom (star a)` as an intermediate fact. Use `o.hom a` as an intermediate fact.
+
+Use `o.hom (star a)` as an intermediate fact. Take `⟨u, hu, u₀⟩` from `exists_ros hG D.P.isAb D.P.isLB _ _ (oa.onB.rosati a)`. Establish `sq` using `fracMap_sq hφ`. Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`. Establish `e` using `val_corr hJ (oa.tau_bal a u hu u₀ (hD.xe y) (hD.xe y')) (genMap hφ)`.
+
+Establish `v` using `ros_val hG gp D'.P.isAb D.P.isLB D'.P.isLB hD.w_gen (ho a) (ho (star a)) ⟨hu, u₀⟩ ⟨hu', h₀⟩ (cP D' (TK R') y) (cP D' (TK R') y') (genMap hφ ≫ D.pt2 (hD.xe y) (hD.xe y')) ((cPoint_proj hD _ hh y).trans (by`. Rewrite using `[Category.assoc, DegPre.pt2, ← Over.comp_left, lift_fst]`. Use the proof step `rfl))`. Use the proof step `((cPoint_proj hD _ hh y').trans (by`. Rewrite using `[Category.assoc, DegPre.pt2, ← Over.comp_left, lift_snd]`.
+
+Use the proof step `rfl)) hJ hJ'`. Establish `cs : ∀ (a : O) y, cP D' (TK R') y ≫ o.act a = cP D' (TK R') (a • y)` using `fun a y => by`. Rewrite using `[cP, cP, cl, Category.assoc]`. Rewrite `v` using `[cs, cs, ← cPoint_add, ← cPoint_add]`. Rewrite `e` using `[val_mul hJ, val_pull hJ, v]`.
+
+Use `beta_reduce at e`. Rewrite `e` using `[← hx, ← hx, tau_val hD _ _ sq hJ hJ', tau_val hD _ _ sq hJ hJ']`. Simplify using `only [Category.id_comp] at e`. Rewrite using `[val_mul hJ', val_pull hJ', Category.id_comp]`. Establish `e'` using `congrArg Additive.ofMul e`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `c₀ : ∀ x, (cP D' (TK R') x).left = D'.xK x` using `fun _ => rfl`. Establish `c₁ : val₂ u' z J' (cP D' (TK R') y) (cP D' (TK R') y') = val u' (D'.pt2 y y') z J'` using `rfl`. Simplify using `only [ofMul_mul, ofMul_inv, c₀, c₁] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+-/
 theorem exists_oAct (hG : GlobalFnsSt) (hφ : Function.Injective φ) (oa : D.OAct O)
     (hx : ∀ (a : O) y, hD.xe (a • y) = a • hD.xe y) :
     ∃ oa' : D'.OAct O, ∀ a, (oa'.onB.act a).left ≫ proj hD = proj hD ≫ (oa.onB.act a).left := by
@@ -211,6 +272,25 @@ theorem exists_oAct (hG : GlobalFnsSt) (hφ : Function.Injective φ) (oa : D.OAc
   simp only [ofMul_mul, ofMul_inv, c₀, c₁] at e' ⊢
   linear_combination (norm := abel) e'
 
+/- English proof (translation)
+Establish `gp` using `pull_grp hD`. Take `⟨u, hu, u₀, hy⟩` from `h`. Use `oa'.onB.hom w0` as an intermediate fact. Establish `i₁ : (𝟙 D'.P.A : D'.P.A ⟶ _).left ≫ proj hD = proj hD ≫ (𝟙 D.P.A : D.P.A ⟶ _).left` using `(Category.id_comp _).trans (Category.comp_id _).symm`. Establish `i₂ : (toUnit D'.P.A ≫ η[D'.P.A]).left ≫ proj hD = proj hD ≫ (toUnit D.P.A ≫ η[D.P.A]).left` using `by show (D'.P.A.hom ≫ eSec D'.P.A) ≫ proj hD = proj hD ≫ D.P.A.hom ≫ eSec D.P.A`.
+
+Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hD.he).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) gp.1.w.symm).trans (Category.assoc _ _ _))))`. Take `⟨t, ht, vt⟩` from `exists_down_om hD.w_gen D.P.isLB D'.P.isLB (φ' := ![(padd D'.P.A (𝟙 _) (oa'.onB.act w0)).left, 𝟙 D'.P.A.left, (oa'.onB.act w0).left, (toUnit D'.P.A ≫ η[D'.P.A]).left]) (proj hD) (fun k => by fin_cases k exacts [mul_push gp _ i₁ (ho w0), i₁, ho w0, i₂]) u hu`. Establish `pr : ∀ {T : Over (Sp R')} (x : T ⟶ D'.P.A) {U : Type} [CommGroup U] (h : (T.left ⟶ D'.P.A.left) → U), ∏ k : Fin 4, h (x.left ≫ ![(padd D'.P.A (𝟙 _) (oa'.onB.act w0)).left, 𝟙 D'.P.A.left, (oa'.onB.act w0).left, (toUnit D'.P.A ≫ η[D'.P.A]).left] k) ^ (![1, -2, -1, 2] : Fin 4 → ℤ) k …`. Introduce `T x U _ h`. Establish `a₀ : x ≫ padd D'.P.A (𝟙 _) (oa'.onB.act w0) = x * (x ≫ oa'.onB.act w0)` using `(MonObj.comp_mul _ _ _).trans (by rw [Category.comp_id])`.
+
+Establish `a₁ : x ≫ toUnit D'.P.A ≫ η[D'.P.A] = 1` using `MonObj.comp_one (M := D'.P.A) x`. Rewrite using `[Fin.prod_univ_four]`. Use `show h (x ≫ padd D'.P.A (𝟙 _) (oa'.onB.act w0)).left ^ (1 : ℤ) * h (x.left ≫ 𝟙 _) ^ (-2 : ℤ) * h (x ≫ oa'.onB.act w0).left ^ (-1 : ℤ) * h (x ≫ toUnit D'.P.A ≫ η[D'.P.A]).left ^ (2 : ℤ) = _`. Rewrite using `[a₀, a₁, Category.comp_id]`. Simplify using `only [zpow_neg, zpow_ofNat, pow_one]`.
+
+Use `⟨t, ht, corr_of_val D'.P.isLB fun y J' hJ' => ?_, fun x => corr_of_val D'.P.isLB fun z J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `o₁ : (1 : 𝟙_ (Over (Sp R')) ⟶ D'.P.A).left = eSec D'.P.A` using `Category.id_comp _`. Establish `e` using `vt _ (1 : 𝟙_ (Over (Sp R')) ⟶ D'.P.A).left y J J' hJ hJ'`. Rewrite `e` using `[pr, MonObj.one_comp, _root_.mul_one, o₁, hD.he]`.
+
+Establish `e₁` using `(val_pull hJ _ _ _).symm.trans ((val_corr hJ u₀ (specOf φ)).trans (val_one _))`. Rewrite `e` using `[e₁]`. Rewrite using `[val_pull hJ', val_one, Category.id_comp]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_one] at e' ⊢`. Take the linear combination `(norm := abel) -e'`. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB z`. Establish `sq` using `fracMap_sq hφ`. Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`.
+
+Establish `e` using `val_corr hJ (hy (hD.xe x)) (genMap hφ)`. Establish `v` using `vt _ (cP D' (TK R') x).left z J J' hJ hJ'`. Rewrite `v` using `[pr, cPoint_proj hD _ hh, ← TorusExt.cPoint_smul oa', ← cPoint_add]`. Establish `c₀ : ∀ x, (cP D' (TK R') x).left = D'.xK x` using `fun _ => rfl`. Establish `c₁ : ∀ x, (cP D (TK R) x).left = D.xK x` using `fun _ => rfl`.
+
+Simplify using `only [c₀, c₁] at v`. Rewrite `e` using `[val_mul hJ, val_mul hJ, val_pull hJ, v, ← hx, tau_val hD _ _ sq hJ hJ', psi_val hD _ _ sq hJ hJ', rig_val hD _ _ sq hJ hJ']`. Simplify using `only [Category.id_comp] at e`. Rewrite using `[val_mul hJ', val_mul hJ', val_pull hJ', Category.id_comp]`. Establish `e'` using `congrArg Additive.ofMul e`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ⊢`. Take the linear combination `(norm := abel) e'`.
+-/
 theorem traceFormTwistIso_of_pullback (hφ : Function.Injective φ) {oa : D.OAct O} {oa' : D'.OAct O}
     (hx : ∀ (a : O) y, hD.xe (a • y) = a • hD.xe y)
     (ho : ∀ a, (oa'.onB.act a).left ≫ proj hD = proj hD ≫ (oa.onB.act a).left) {w0 : O} (h : TraceFormTwistIso D oa w0) :
@@ -273,6 +353,27 @@ theorem traceFormTwistIso_of_pullback (hφ : Function.Injective φ) {oa : D.OAct
     simp only [ofMul_mul, ofMul_inv, ofMul_pow] at e' ⊢
     linear_combination (norm := abel) e'
 
+/- English proof (translation)
+Establish `hss : Subsingleton (TK R).left` using `inferInstanceAs (Subsingleton (PrimeSpectrum (FractionRing R)))`. Take `⟨z⟩ : Nonempty (TK R).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`. Establish `dn` using `TauPull.jK_mem (R := R) z`. Establish `inj` using `TauPull.gm_injective_of_dense (jK R) z dn`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `H`. Establish `glue : ∀ j : PUnit → D.P.L.ι, ∃ s : Γ(Sp R, LB.wchart D.P.L (Y` using `Sp R) (fun _ : PUnit => (D.c χ).left) j)ˣ, jK R z ∈ LB.wchart D.P.L (Y := Sp R) (fun _ : PUnit => (D.c χ).left) j → gm (jK R) z _ s = gm (𝟙 _) z (LB.wchart D.P.L (fun _ : PUnit => D.xK χ) j) ((D.psi χ).s j) := by`. Introduce `j`. Set `U` to `LB.wchart D.P.L (Y := Sp R) (fun _ : PUnit => (D.c χ).left) j`. Establish `loc : ∀ V : {V : (Sp R).Opens // IsAffineOpen V ∧ V ≤ U}, ∃ s : Γ(Sp R, V.1)ˣ, jK R z ∈ V.1 → gm (jK R) z _ s = gm (𝟙 _) z (LB.wchart D.P.L (fun _ : PUnit => D.xK χ) j) ((D.psi χ).s j)`.
+
+Introduce and unpack `⟨V, hV, hU⟩`. Establish `h : jK R ⁻¹ᵁ V ≤ (LB.LinComb D.P.L (K` using `PUnit) (fun _ => D.xK χ) (fun _ => -1)).U j := fun y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (hU hy) k`. Take `⟨r, hr, e⟩` from `H j V hV (Set.subset_univ _) (fun y hy => Set.mem_iInter.1 (hU hy) PUnit.unit) h`. Use `⟨hr.unit, fun hz => ?_⟩` and prove the remaining obligations. Establish `e' : pullU (jK R) V hr.unit = res h ((D.psi χ).s j)` using `Units.ext e`.
+
+Establish `p` using `gm_pull (𝟙 _) (jK R) z V hz hr.unit`. Rewrite `p` using `[Category.id_comp, e']`. Conclude with `p.symm.trans (gm_res (𝟙 _) z h hz _)`. Use `choose s hs using loc`. Take `⟨a, ha⟩` from `glue_unit U (fun V : {V : (Sp R).Opens // IsAffineOpen V ∧ V ≤ U} => V.1) (fun V => V.2.2) (fun y hy => by`.
+
+Take `⟨_, ⟨V, hV, rfl⟩, hy', hle⟩` from `(Sp R).isBasis_affineOpens.exists_subset_of_mem_open hy U.isOpen`. Conclude with `Opens.mem_iSup.2 ⟨⟨V, hV, hle⟩, hy'⟩) s (fun V V' y hy => by`. Establish `hz : jK R z ∈ V.1 ⊓ V'.1` using `dn _ ⟨y, hy⟩`. Establish `: res (inf_le_left : V.1 ⊓ V'.1 ≤ _) (s V) = res inf_le_right (s V')` using `inj _ hz ((gm_res _ z _ hz _).trans ((hs V hz.1).trans ((gm_res _ z _ hz _).trans (hs V' hz.2)).symm))`. Conclude with `(gm_res _ y inf_le_left hy _).symm.trans ((congrArg (gm _ y _) this).trans (gm_res _ y _ hy _)))`.
+
+Use `⟨a, fun hz => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨V, hV, rfl⟩, hy', hle⟩` from `(Sp R).isBasis_affineOpens.exists_subset_of_mem_open hz U.isOpen`. Conclude with `(gm_res _ z hle hy' a).symm.trans ((congrArg (gm _ z _) (ha ⟨V, hV, hle⟩)).trans (hs ⟨V, hV, hle⟩ hy'))`. Use `choose s hs using glue`. Use `⟨⟨s⟩, fun j j' => unit_ext fun y hy => congrArg (gm _ y _) ?_, corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : jK R z ∈ LB.wchart D.P.L (Y` using `Sp R) (fun _ : PUnit => (D.c χ).left) j ⊓ LB.wchart D.P.L (Y := Sp R) (fun _ : PUnit => (D.c χ).left) j' := dn _ ⟨y, hy⟩`. Use `inj _ hz (((gm_res _ z _ hz _).trans (hs j hz.1)).trans (Eq.symm ?_))` and prove the remaining obligations. Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb D.P.L _ _ (jK R) z j j' hz.1 hz.2) ((gm_res _ z _ hz _).trans (hs j' hz.2)))).trans (Eq.symm ?_)` and prove the remaining obligations. Use `(gen_trans (D.psi_gen χ) (𝟙 _) z (j' := j') (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.1 k) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hz.2 k)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Simplify using `only [trF, Category.id_comp]`.
+
+Both sides reduce to the same expression. Take `rfl : y = z` from `Subsingleton.elim _ _`. Rewrite using `[val_pull hJ, Category.id_comp, val_of (D.psi χ) _ y J (fun _ => J (D.xK χ)) (fun _ => by rw [Category.id_comp])]`. Conclude with `hs _ (hJ.mem _ _)`. Introduce and unpack `⟨t, -, H⟩ j V _ _ hle h`.
+
+Establish `le : V ≤ LB.wchart D.P.L (Y` using `Sp R) (fun _ : PUnit => (D.c χ).left) j := fun y hy => Set.mem_iInter.2 fun k => hle hy`. Use `⟨(res le (t.s j)).val, Units.isUnit _, ?_⟩` and prove the remaining obligations. Establish `: pullU (jK R) V (res le (t.s j)) = res h ((D.psi χ).s j)` using `unit_ext fun y hy => by`. Use `(gm_pull (𝟙 _) (jK R) y V hy _).trans ((gm_res _ y le hy _).trans (Eq.trans ?_ (gm_res _ y h hy _).symm))` and prove the remaining obligations. Conclude with `(gm_pullGen D.P.L _ _ t (jK R) (𝟙 _) y j (h hy)).symm.trans (gm_corr D.P.L H (𝟙 _) y (j PUnit.unit) (h hy) (h hy))`.
+
+Conclude with `congrArg Units.val this`.
+-/
 theorem psiUnitOn_univ_iff (D : DegPre R) (χ : D.X) : PsiUnitOn D χ Set.univ ↔
     ∃ t : LB.Gen (LB.LinComb D.P.L (K := PUnit) (Y := Sp R) (fun _ => (D.c χ).left) (fun _ => -1)), t.IsGen ∧
       LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ t (jK R)) (D.psi χ) := by
@@ -334,6 +435,9 @@ theorem psiUnitOn_univ_iff (D : DegPre R) (χ : D.X) : PsiUnitOn D χ Set.univ �
         (gm_corr D.P.L H (𝟙 _) y (j PUnit.unit) (h hy) (h hy))
     exact congrArg Units.val this
 
+/- English proof (translation)
+Use `choose t ht H using fun χ => (psiUnitOn_univ_iff D χ).1 (h χ)`. Use `⟨⟨fun χ => LB.pullGen D.P.L _ _ (t χ) (⊤ : (Sp R).Opens).ι, fun χ => pullGen_isGen _ _ _ _ (ht χ) _, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩⟩` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans ((val_pull hJ (t χ) _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))` and prove the remaining obligations. Rewrite using `[← val_corr hJ (H χ), val_pull hJ, Category.assoc, Category.assoc, morphismRestrict_ι]`.
+-/
 theorem nonempty_psiOn_top (D : DegPre R) (h : ∀ χ, PsiUnitOn D χ Set.univ) : Nonempty (PsiOn D ⊤) := by
   choose t ht H using fun χ => (psiUnitOn_univ_iff D χ).1 (h χ)
   refine ⟨⟨fun χ => LB.pullGen D.P.L _ _ (t χ) (⊤ : (Sp R).Opens).ι, fun χ => pullGen_isGen _ _ _ _ (ht χ) _,
@@ -343,6 +447,11 @@ theorem nonempty_psiOn_top (D : DegPre R) (h : ∀ χ, PsiUnitOn D χ Set.univ) 
 
 include hD in
 
+/- English proof (translation)
+Take `⟨t, ht, H⟩` from `(psiUnitOn_univ_iff D _).1 h`. Take `⟨a, ha, va⟩` from `exists_down_om hD.w_gen D.P.isLB D'.P.isLB (Y' := Sp R') (K := PUnit) (φ' := fun _ => (D'.c x).left) (spMap φ) (fun _ => hD.c_pr x) t ht`. Use `(psiUnitOn_univ_iff D' x).2 ⟨a, ha, corr_of_val D'.P.isLB fun y J' hJ' => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `DegPull.exists_good' D.P.isLB y`. Establish `sq` using `fracMap_sq hφ`.
+
+Establish `e` using `((psi_val hD _ _ sq hJ hJ' x).symm.trans ((val_corr hJ H _).symm.trans ((val_pull hJ _ _ _).trans (congrArg (fun q => val t q y J) (sq.symm.trans (Category.assoc _ _ _).symm))))).trans (va _ (𝟙 _ ≫ jK R') y J J' hJ hJ')`. Rewrite `e` using `[Fintype.prod_unique, zpow_neg_one, Category.assoc]`. Conclude with `(val_pull hJ' _ _ _).trans (mul_left_cancel e).symm`.
+-/
 theorem psiUnitOn_pull (hφ : Function.Injective φ) (x : D'.X) (h : PsiUnitOn D (hD.xe x) Set.univ) :
     PsiUnitOn D' x Set.univ := by
   obtain ⟨t, ht, H⟩ := (psiUnitOn_univ_iff D _).1 h

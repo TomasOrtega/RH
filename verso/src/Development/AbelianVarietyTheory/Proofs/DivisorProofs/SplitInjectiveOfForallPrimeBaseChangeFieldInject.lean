@@ -4,6 +4,15 @@ open TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ M _ _ _ _ N _ _ _ _ f h`. Use `split_injective_of_forall_lTensor_residueField_injective f fun m hm => ?_` and prove the remaining obligations. Take `⟨k, _, _, hk, hinj⟩` from `h ⟨m, hm.isPrime⟩`. Simplify using `only at hk`. Set `φ : m.ResidueField →ₐ[R] k` to `Ideal.ResidueField.liftₐ m (Algebra.ofId R k) hk.ge (by`.
+
+Introduce `x hx`. Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff, isUnit_iff_ne_zero]`. Introduce `h0`. Conclude with `hx (hk ▸ h0))`. Use `letI : Algebra m.ResidueField k := φ.toRingHom.toAlgebra`.
+
+Use `haveI : IsScalarTower R m.ResidueField k := IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`. Establish `e : (AlgebraTensorModule.cancelBaseChange R m.ResidueField m.ResidueField k N) ∘ ((f.baseChange m.ResidueField).lTensor k) = (f.lTensor k) ∘ (AlgebraTensorModule.cancelBaseChange R m.ResidueField m.ResidueField k M)`. Use function extensionality and compare the values at `x`. Conclude with `(LinearMap.congr_fun (AlgebraTensorModule.lTensor_comp_cancelBaseChange R m.ResidueField m.ResidueField (M := k) f) x).symm`. Establish `h1 : Function.Injective ((f.baseChange m.ResidueField).lTensor k)` using `Function.Injective.of_comp (e ▸ (hinj.comp (LinearEquiv.injective _)))`.
+
+Conclude with `(Module.FaithfullyFlat.lTensor_injective_iff_injective m.ResidueField k _).1 h1`.
+-/
 theorem split_injective_of_forall_prime_baseChange_field_injective :
     ∀ (R : Type) [CommRing R] (M : Type 1) [AddCommGroup M] [Module R M] [Module.Finite R M]
       [Module.Projective R M] (N : Type 1) [AddCommGroup N] [Module R N] [Module.Finite R N]

@@ -20,6 +20,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨b y, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨z, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem gmap_mul (a b : GV D) (M : LV D) :
     Formalism.HermitianLatticesTheory.gmap (a * b) M = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b M) := by
   ext x
@@ -30,6 +35,11 @@ theorem gmap_mul (a b : GV D) (M : LV D) :
   · rintro ⟨z, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+
+Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`.
+-/
 theorem gmap_one (M : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : GV D) M = M := by
   ext x
   simp only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]
@@ -39,9 +49,19 @@ theorem gmap_one (M : LV D) : Formalism.HermitianLatticesTheory.gmap (1 : GV D) 
   · intro hx
     exact ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[← h, ← gmap_mul, inv_mul_cancel, gmap_one]`.
+-/
 theorem gmap_inv_of {a : GV D} {M N : LV D} (h : Formalism.HermitianLatticesTheory.gmap a M = N) : Formalism.HermitianLatticesTheory.gmap a⁻¹ N = M := by
   rw [← h, ← gmap_mul, inv_mul_cancel, gmap_one]
 
+/- English proof (translation)
+Use `⟨mul_mem hg'.1 hg.1, fun a => ?_⟩` and prove the remaining obligations. Establish `hmap` using `(GlobalTheory.T.frameAdaptedIsometry_map_flagSpaces D T G H g' hg').1 a.val`. Establish `h1 : g' (g (frame F a) - frame G a) ∈ Xflag H a.val`. Rewrite using `[← hmap]`. Conclude with `Submodule.mem_map_of_mem (hg.2 a)`.
+
+Establish `h2` using `hg'.2 a`. Establish `e : (g' * g) (frame F a) - frame H a = g' (g (frame F a) - frame G a) + (g' (frame G a) - frame H a)`. Rewrite using `[map_sub, LinearEquiv.mul_apply]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+
+Conclude with `add_mem h1 h2`.
+-/
 theorem adapt_mul {T : D.host.E} {F G H : LFlag (VS D) D.R.rS T} {g g' : GV D} (hg : Adapt g F G)
     (hg' : Adapt g' G H) : Adapt (g' * g) F H := by
   refine ⟨mul_mem hg'.1 hg.1, fun a => ?_⟩
@@ -57,12 +77,20 @@ theorem adapt_mul {T : D.host.E} {F G H : LFlag (VS D) D.R.rS T} {g g' : GV D} (
   rw [e]
   exact add_mem h1 h2
 
+/- English proof (translation)
+Use `⟨hi, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hf a, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem adapt_fix {T : D.host.E} {F : LFlag (VS D) D.R.rS T} {h : GV D} (hi : h ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (hf : ∀ a, h (frame F a) = frame F a) : Adapt h F F := by
   refine ⟨hi, fun a => ?_⟩
   rw [hf a, sub_self]
   exact zero_mem _
 
+/- English proof (translation)
+Simplify using `only [frame, mapLF, dif_pos hγ, Formalism.MainNotions.S.FlagG.fvec]`. Use `Fin.lastCases ?_ (fun i => ?_) a` and prove the remaining obligations. Simplify using `only [Fin.snoc_last]`. Both sides reduce to the same expression. Simplify using `only [Fin.snoc_castSucc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem frame_mapLF {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {γ : GV D} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     (a : Fin (D.R.rS + 1)) : frame (mapLF γ F) a = γ (frame F a) := by
   simp only [frame, mapLF, dif_pos hγ, Formalism.MainNotions.S.FlagG.fvec]
@@ -72,11 +100,19 @@ theorem frame_mapLF {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {γ : GV D} (hγ 
   · simp only [Fin.snoc_castSucc]
     rfl
 
+/- English proof (translation)
+Simplify using `only [Xsp, mapLF, dif_pos hγ, Formalism.MainNotions.S.FlagG.X, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem xsp_mapLF {T : D.host.E} (F : LFlag (VS D) D.R.rS T) {γ : GV D} (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) :
     Xsp (mapLF γ F) = (Xsp F).map (γ : (VS D).V →ₗ[D.host.E] (VS D).V) := by
   simp only [Xsp, mapLF, dif_pos hγ, Formalism.MainNotions.S.FlagG.X, Submodule.map_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Simplify using `only [Adapt, frame_mapLF F hγ, LinearEquiv.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨mul_mem h1 hγ, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨?_, h2⟩` and prove the remaining obligations. Use `mul_mem h1 (inv_mem hγ)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem adapt_mapLF {T : D.host.E} {F G : LFlag (VS D) D.R.rS T} {γ g : GV D}
     (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) : Adapt g (mapLF γ F) G ↔ Adapt (g * γ) F G := by
   simp only [Adapt, frame_mapLF F hγ, LinearEquiv.mul_apply]
@@ -94,6 +130,35 @@ namespace GlobalTheory.Unfold.CntC
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D X Y u u' F F' w _ _ t₀ t Λ₀ Λ₁ h₀ h₁ hR`. Take `⟨g₀, hg₀a, hg₀b, rfl⟩` from `h₀`. Take `⟨ψ₁, hψ₁a, hψ₁b, rfl⟩` from `h₁`. Take `⟨h, ⟨hhi, hhF, hhF'⟩, hgd⟩` from `hR`. Rewrite `hgd` using `[← gmap_mul]`.
+
+Use `set ψ₀ := h * g₀ with hψ₀`. Establish `hψ₀a : Adapt ψ₀ (lf D (X.Fu u)) F` using `adapt_mul hg₀a (adapt_fix hhi hhF)`. Establish `hψ₀b : Adapt ψ₀ t₀.frame F'` using `adapt_mul hg₀b (adapt_fix hhi hhF')`. Establish `li₀ : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`. Establish `lg₀ : Formalism.HermitianLatticesTheory.gmap t₀.lin t₀.lam' = t₀.lam` using `t₀.rep.2.2.2.1`.
+
+Establish `li : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `lg : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Establish `e1 : Lsub (Formalism.HermitianLatticesTheory.gmap ψ₀ t₀.lam) F = Lsub (Formalism.HermitianLatticesTheory.gmap ψ₁ t.lam) F` using `congrArg Prod.fst hgd`. Establish `e2 : Lsub (Formalism.HermitianLatticesTheory.gmap ψ₀ t₀.lam) F' = Lsub (Formalism.HermitianLatticesTheory.gmap ψ₁ t.lam) F'` using `congrArg (fun x => x.2.1) hgd`. Establish `e3 : (gdat F F' (Formalism.HermitianLatticesTheory.gmap ψ₀ t₀.lam)).2.2 = (gdat F F' (Formalism.HermitianLatticesTheory.gmap ψ₁ t.lam)).2.2` using `congrArg (fun x => x.2.2) hgd`.
+
+Take `⟨hlam, n, hn, hA⟩` from `GlobalTheory.T.rowLattices_eq_of_adaptedIsometry_innerLattices_eq D X Y u F ψ₀ ψ₁ t₀.lam t.lam t₀.mem t.mem hψ₀a hψ₁a e1`. Establish `hψ₀b' : Adapt (ψ₀ * t₀.lin) (lf D (X.Fu u')) F'` using `(adapt_mapLF (F := lf D (X.Fu u')) (G := F') (g := ψ₀) li₀).1 hψ₀b`. Establish `hψ₁b' : Adapt (ψ₁ * t.lin) (lf D (X.Fu u')) F'` using `(adapt_mapLF (F := lf D (X.Fu u')) (G := F') (g := ψ₁) li).1 hψ₁b`. Establish `q₀ : Formalism.HermitianLatticesTheory.gmap (ψ₀ * t₀.lin) t₀.lam' = Formalism.HermitianLatticesTheory.gmap ψ₀ t₀.lam` using `(gmap_mul ψ₀ t₀.lin t₀.lam').trans (congrArg (Formalism.HermitianLatticesTheory.gmap ψ₀) lg₀)`. Establish `q₁ : Formalism.HermitianLatticesTheory.gmap (ψ₁ * t.lin) t.lam' = Formalism.HermitianLatticesTheory.gmap ψ₁ t.lam` using `(gmap_mul ψ₁ t.lin t.lam').trans (congrArg (Formalism.HermitianLatticesTheory.gmap ψ₁) lg)`.
+
+Establish `e2' : Lsub (Formalism.HermitianLatticesTheory.gmap (ψ₀ * t₀.lin) t₀.lam') F' = Lsub (Formalism.HermitianLatticesTheory.gmap (ψ₁ * t.lin) t.lam') F'`. Rewrite using `[q₀, q₁]`. Conclude with `e2`. Take `⟨hlam', n', hn', hA'⟩` from `GlobalTheory.T.rowLattices_eq_of_adaptedIsometry_innerLattices_eq D X Y u' F' (ψ₀ * t₀.lin) (ψ₁ * t.lin) t₀.lam' t.lam' t₀.mem' t.mem' hψ₀b' hψ₁b' e2'`. Use `⟨hlam, hlam', n * (ψ₁⁻¹ * ψ₀), hA, n' * ((ψ₁ * t.lin)⁻¹ * (ψ₀ * t₀.lin)), hA', ?_⟩` and prove the remaining obligations.
+
+Establish `hA2 : Formalism.HermitianLatticesTheory.gmap (n * (ψ₁⁻¹ * ψ₀)) t₀.lam = t₀.lam` using `hA.2`. Establish `hA'2 : Formalism.HermitianLatticesTheory.gmap (n' * ((ψ₁ * t.lin)⁻¹ * (ψ₀ * t₀.lin))) t₀.lam' = t₀.lam'` using `hA'.2`. Establish `hγ : n * (ψ₁⁻¹ * ψ₀) * t₀.lin * (n' * ((ψ₁ * t.lin)⁻¹ * (ψ₀ * t₀.lin)))⁻¹ = n * t.lin * n'⁻¹` using `by group`. Establish `hβ : t.lin * (n * t.lin * n'⁻¹)⁻¹ = t.lin * (n' * ((ψ₁ * t.lin)⁻¹ * (ψ₀ * t₀.lin))) * t₀.lin⁻¹ * (n * (ψ₁⁻¹ * ψ₀))⁻¹` using `by group`. Rewrite using `[hγ]`.
+
+Establish `hnN` using `GlobalTheory.T.rationalUnipotent_frameAdapted_and_inv_mem D _ _ n hn`. Establish `hn'N` using `GlobalTheory.T.rationalUnipotent_frameAdapted_and_inv_mem D _ _ n' hn'`. Establish `hn'iN` using `GlobalTheory.T.rationalUnipotent_frameAdapted_and_inv_mem D _ _ n'⁻¹ hn'N.2`. Establish `hni : n⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hnN.2.1`. Establish `hn'i : n'⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hn'N.2.1`.
+
+Establish `hni' : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hn.1`. Establish `hγi : n * t.lin * n'⁻¹ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem (mul_mem hni' li) hn'i`. Unfold `KeyEq`. Use `⟨⟨n⁻¹, hnN.2, n', hn', by group⟩, ?_⟩` and prove the remaining obligations. Establish `hΨ₀a : Adapt (ψ₁ * n⁻¹) (lf D (X.Fu u)) F` using `adapt_mul (GlobalTheory.T.rationalUnipotent_frameAdapted_and_inv_mem D _ _ n⁻¹ hnN.2).1 hψ₁a`.
+
+Establish `hΨ₀b : Adapt (ψ₁ * n⁻¹) (mapLF (n * t.lin * n'⁻¹) (lf D (X.Fu u'))) F'`. Use `(adapt_mapLF (F := lf D (X.Fu u')) (G := F') (g := ψ₁ * n⁻¹) hγi).2 ?_` and prove the remaining obligations. Establish `: ψ₁ * n⁻¹ * (n * t.lin * n'⁻¹) = ψ₁ * t.lin * n'⁻¹` using `by group`. Establish `key` using `adapt_mul hn'iN.1 hψ₁b'`. Rewrite `key` using `[← this]`.
+
+Conclude with `key`. Establish `hg1 : Formalism.HermitianLatticesTheory.gmap (ψ₁ * n⁻¹) t₀.lam = Formalism.HermitianLatticesTheory.gmap ψ₀ t₀.lam`. Establish `: ψ₁ * n⁻¹ = ψ₀ * (n * (ψ₁⁻¹ * ψ₀))⁻¹` using `by group`. Rewrite using `[this, gmap_mul, gmap_inv_of hA2]`. Use `GlobalTheory.T.innerLatticeIdentification_compat_of_graph_eq D _ _ (lf D (X.Fu u)) F (mapLF (n * t.lin * n'⁻¹) (lf D (X.Fu u'))) (mapLF t.lin (lf D (X.Fu u'))) F' t₀.lam (ψ₁ * n⁻¹) ψ₁ (t.lin * (n * t.lin * n'⁻¹)⁻¹) (mul_mem hψ₁a.1 hni) hψ₁a.1 (GlobalTheory.T.frameAdaptedIsometry_ …` and prove the remaining obligations.
+
+Conclude with `(congrArg (fun Λ => (gdat F F' Λ).2.2) hg1).trans (e3.trans (congrArg (fun Λ => (gdat F F' (Formalism.HermitianLatticesTheory.gmap ψ₁ Λ)).2.2) hlam))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[xsp_mapLF _ hγi, xsp_mapLF _ li, ← Submodule.map_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (fun g : GV D => g x) (inv_mul_cancel_right t.lin (n * t.lin * n'⁻¹))`. Introduce `l hl`. Establish `: ψ₁⁻¹ * (ψ₁ * n⁻¹) = n⁻¹` using `by group`. Establish `key` using `hnN.2.2.2 l (Submodule.mem_inf.mp hl).2`. Rewrite `key` using `[← this]`.
+
+Conclude with `key`. Introduce `x' hx'`. Establish `: ψ₁⁻¹ * (ψ₁ * n⁻¹) = n⁻¹` using `by group`. Establish `key` using `GlobalTheory.T.unipotent_right_change_moves_flag_complement D _ (lf D (X.Fu u')) (n * t.lin * n'⁻¹) t.lin n⁻¹ n' hγi hni hn' (by group) x' (Submodule.mem_inf.mp hx').2`. Rewrite `key` using `[← this]`.
+
+Conclude with `key`.
+-/
 theorem translates : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ (t₀ t : TauC Y u u') (Λ₀ Λ₁ : LV D), TG F F' t₀ Λ₀ → TG F F' t Λ₁ → LRel F F' Λ₀ Λ₁ → t.lam = t₀.lam ∧ t.lam' = t₀.lam' ∧ ∃ a ∈ Aut0 (lf D (X.Fu u)) t₀.lam, ∃ a' ∈ Aut0 (lf D (X.Fu u')) t₀.lam', KeyEq (lf D (X.Fu u)) (lf D (X.Fu u')) t₀.lam (a * t₀.lin * a'⁻¹) t.lin := by
   intro D X Y u u' F F' w _ _ t₀ t Λ₀ Λ₁ h₀ h₁ hR
   obtain ⟨g₀, hg₀a, hg₀b, rfl⟩ := h₀

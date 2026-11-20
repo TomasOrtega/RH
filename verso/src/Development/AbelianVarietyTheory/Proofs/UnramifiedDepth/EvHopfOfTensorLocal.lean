@@ -31,6 +31,9 @@ def IsPt (t : Nb p g) (i : D.fin.ι) (φ : LHom (D.fin.AAx i) Tw.O) : Prop :=
 
 variable (C : Type) [Field C] [Algebra (Tw.O : Type) C]
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_add, ← add_smul]`. Use `conv_rhs => rw [← Nat.mod_add_div (a.val + b.val) p, add_smul, mul_comm, mul_smul, hx, smul_zero, add_zero]`.
+-/
 lemma val_add_smul {M : Type} [AddCommGroup M] (x : M) (hx : p • x = 0) (a b : ZMod p) :
     (a + b).val • x = a.val • x + b.val • x := by
   rw [ZMod.val_add, ← add_smul]
@@ -43,6 +46,9 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Establish `h` using `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (_root_.ReciprocityTheory.PGsh.LHom.id _) _ (D.pt_p t)))`. Conclude with `⟨h.1, h.2.1⟩`.
+-/
 private theorem ptMap_comp_sO_and_map_y (t : _root_.ReciprocityTheory.PGsh.Up.Nb p g) :
     (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O ∧
       B.map (D.ptMap t) (D.fin.y (D.ptIdx t)) = _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t := by
@@ -56,6 +62,9 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem evAll_apply (C : Type) [Field C] [Algebra Tw.O.carrier C]
     (a : (i : D.fin.ι) → (D.fin.AAx i).carrier) (t : _root_.ReciprocityTheory.PGsh.Up.Nb p g) :
     D.evAll C a t = algebraMap Tw.O.carrier C ((D.ptMap t).1 (a (D.ptIdx t))) := rfl
@@ -66,6 +75,9 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Establish `h` using `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (_root_.ReciprocityTheory.PGsh.LHom.id _) _ (D.pt_p t)))`. Take `⟨rfl, hh⟩` from `h.2.2 i φ h₁ h₂`. Rewrite using `[eq_of_heq hh]`. Both sides reduce to the same expression.
+-/
 private theorem retraction_apply_eq_ptMap (t : _root_.ReciprocityTheory.PGsh.Up.Nb p g) (i : D.fin.ι)
     (φ : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx i) Tw.O) (h₁ : φ.comp (D.fin.sO i) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O)
     (h₂ : B.map φ (D.fin.y i) = _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t) (a : (j : D.fin.ι) → (D.fin.AAx j).carrier) :
@@ -82,6 +94,17 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Introduce `x`. Use `letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO j)`. Use `letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO k)`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ _ _ => rfl, fun _ _ _ _ _ _ _ _ => by simp⟩`.
+
+Consider the case `tmul b c`. Use `⟨fun q => D.evAll C (Pi.single (M := fun i => (D.fin.AAx i).carrier) j b) q.1 * D.evAll C (Pi.single (M := fun i => (D.fin.AAx i).carrier) k c) q.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.PGsh.L2.tensorSpan _root_.ReciprocityTheory.PGsh.Be2.Dat.evImg`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨_, rfl⟩, _, Submodule.subset_span ⟨_, rfl⟩, rfl⟩`. Introduce `t t' h`.
+
+Simplify using `only [evAll_apply]`. Distinguish the cases in `hj : D.ptIdx t = j`. Establish `hk : D.ptIdx t' ≠ k` using `fun hk => h ⟨hj, hk⟩`. Rewrite using `[Pi.single_eq_of_ne hk, map_zero, map_zero, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne hj, map_zero, map_zero, zero_mul]`.
+
+Introduce `t t' φ hφ φ' hφ' h₁ h₂`. Simplify using `only [evAll_apply]`. Rewrite using `[← retraction_apply_eq_ptMap D t j φ hφ h₁ (Pi.single j b), ← retraction_apply_eq_ptMap D t' k φ' hφ' h₂ (Pi.single k c), Pi.single_eq_same, Pi.single_eq_same, Algebra.TensorProduct.lift_tmul, map_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy`.
+
+Take `⟨G, hG, h0, h1⟩` from `hx`. Take `⟨G', hG', h0', h1'⟩` from `hy`. Use `⟨G + G', add_mem hG hG', fun t t' h => by simp [h0 t t' h, h0' t t' h], fun t t' φ hφ φ' hφ' e e' => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, h1 t t' φ hφ φ' hφ' e e', h1' t t' φ hφ φ' hφ' e e', map_add]`.
+-/
 private theorem tensor_evAll_mem_tensorSpan (C : Type) [Field C] [Algebra Tw.O.carrier C] (j k : D.fin.ι) :
     letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO j); letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO k)
     ∀ x : (D.fin.AAx j).carrier ⊗[Tw.O.carrier] (D.fin.AAx k).carrier,
@@ -130,6 +153,9 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem lHom_comp_assoc {R S T U : _root_.ReciprocityTheory.PGsh.LAlg R₀} (f : _root_.ReciprocityTheory.PGsh.LHom T U) (f' : _root_.ReciprocityTheory.PGsh.LHom S T)
     (f'' : _root_.ReciprocityTheory.PGsh.LHom R S) : (f.comp f').comp f'' = f.comp (f'.comp f'') := rfl
 
@@ -139,6 +165,9 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Establish `h` using `D.pt_p (Pi.single j 1 : _root_.ReciprocityTheory.PGsh.Up.Ix g → ZMod p)`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.ptOf at h`. Rewrite `h` using `[Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_eq_of_ne hb]) (by simp), Pi.single_eq_same, ZMod.val_one, one_smul]`. Then use the resulting hypothesis.
+-/
 private theorem p_nsmul_tau_zero (j : _root_.ReciprocityTheory.PGsh.Up.Ix g) : p • D.L.τ j 0 = 0 := by
   classical
   have h := D.pt_p (Pi.single j 1 : _root_.ReciprocityTheory.PGsh.Up.Ix g → ZMod p)
@@ -152,6 +181,11 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.PGsh.Be2.ptOf`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hp` using `p_nsmul_tau_zero D j`. Establish `key : ∀ n : ℕ, n • D.L.τ j 0 = (n % p) • D.L.τ j 0` using `fun n => by conv_lhs => rw [← Nat.mod_add_div n p]`.
+
+Rewrite using `[add_nsmul, mul_nsmul, hp, nsmul_zero, add_zero]`. Rewrite using `[← add_nsmul, key ((t j).val + (t' j).val), ← ZMod.val_add]`. Both sides reduce to the same expression.
+-/
 private theorem ptOf_add_unramified_depth (t t' : _root_.ReciprocityTheory.PGsh.Up.Nb p g) :
     _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ (t + t') = _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t + _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t' := by
   unfold _root_.ReciprocityTheory.PGsh.Be2.ptOf
@@ -170,6 +204,31 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ t₀ t₀' : _root_.ReciprocityTheory.PGsh.Up.Nb p g, D.ptIdx t₀ = j ∧ D.ptIdx t₀' = k`. Use `swap`. Conclude with `⟨0, zero_mem _, fun _ _ _ => rfl, fun t t' ht ht' => (hex ⟨t, t', ht, ht'⟩).elim⟩`. Take `⟨t₀, t₀', h₀, h₀'⟩` from `hex`. Establish `hcl : ∀ (t : _root_.ReciprocityTheory.PGsh.Up.Nb p g) (i : D.fin.ι), D.ptIdx t = i → ∃ φ : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx i) Tw.O, φ.comp (D.fin.sO i) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O ∧ B.map φ (D.fin.y i) = _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L. …`.
+
+Introduce and unpack `t i rfl`. Conclude with `⟨_, ptMap_comp_sO_and_map_y D t⟩`. Take `⟨φ₀, hφ₀, -⟩` from `hcl t₀ j h₀`. Take `⟨φ₀', hφ₀', -⟩` from `hcl t₀' k h₀'`. Use `letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO j)`.
+
+Use `letI := _root_.ReciprocityTheory.PGsh.Be2.algOf (D.fin.sO k)`. Use `haveI : Module.Finite Tw.O.carrier (D.fin.AAx j).carrier := (D.fin.free j).2`. Use `haveI : Module.Finite Tw.O.carrier (D.fin.AAx k).carrier := (D.fin.free k).2`. Use `haveI hloc : IsLocalRing ((D.fin.AAx j).carrier ⊗[Tw.O.carrier] (D.fin.AAx k).carrier) := hTL _ _ _ (_root_.GlobalTheory.EvHopf.secAlg _ φ₀ hφ₀) (_root_.GlobalTheory.EvHopf.secAlg _ φ₀' hφ₀')`. Use `letI : Algebra R₀ ((D.fin.AAx j).carrier ⊗[Tw.O.carrier] (D.fin.AAx k).carrier) := RingHom.toAlgebra (Algebra.TensorProduct.includeLeftRingHom.comp (algebraMap R₀ (D.fin.AAx j).carrier))`.
+
+Set `S : _root_.ReciprocityTheory.PGsh.LAlg R₀` to `⟨(D.fin.AAx j).carrier ⊗[Tw.O.carrier] (D.fin.AAx k).carrier⟩`. Set `ev` to `fun (φ : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx j) Tw.O) (hφ : φ.comp (D.fin.sO j) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O) (φ' : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx k) Tw.O) (hφ' : φ'.comp (D.fin.sO k) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O) => Algebr …`. Establish `ev_tmul : ∀ φ hφ φ' hφ' (b : (D.fin.AAx j).carrier) (c : (D.fin.AAx k).carrier), ev φ hφ φ' hφ' (b ⊗ₜ c) = φ.1 b * φ'.1 c` using `fun _ _ _ _ _ _ => Algebra.TensorProduct.lift_tmul _ _ _ _ _`. Set `Φ : ∀ (φ : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx j) Tw.O) (hφ : φ.comp (D.fin.sO j) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O) (φ' : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx k) Tw.O) (hφ' : φ'.comp (D.fin.sO k) = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O), _root_ …` to `fun φ hφ φ' hφ' => ⟨{ toRingHom := (ev φ hφ φ' hφ').toRingHom commutes' := fun r => by show ev φ hφ φ' hφ' (algebraMap R₀ (D.fin.AAx j).carrier r ⊗ₜ 1) = _`. Rewrite using `[ev_tmul, map_one, mul_one]`.
+
+Conclude with `φ.1.commutes r },`. Use the proof step `IsLocalHom.of_surjective _ (fun o => ⟨algebraMap Tw.O.carrier _ o, (ev φ hφ φ' hφ').commutes o⟩)⟩`. Set `sT : _root_.ReciprocityTheory.PGsh.LHom Tw.O S` to `⟨{ toRingHom := algebraMap Tw.O.carrier ((D.fin.AAx j).carrier ⊗[Tw.O.carrier] (D.fin.AAx k).carrier) commutes' := fun r => by show algebraMap Tw.O.carrier (D.fin.AAx j).carrier (algebraMap R₀ Tw.O.carrier r) ⊗ₜ 1 = algebraMap R₀ (D.fin.AAx j).carrier r ⊗ₜ 1`. Use `congr 1`. Conclude with `(D.fin.sO j).1.commutes r },`.
+
+Use the proof step `⟨fun o hu => by`. Conclude with `(congrArg IsUnit ((ev φ₀ hφ₀ φ₀' hφ₀').commutes o)).mp (hu.map (ev φ₀ hφ₀ φ₀' hφ₀'))⟩⟩`. Set `inclL : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx j) S` to `⟨{ toRingHom := Algebra.TensorProduct.includeLeftRingHom commutes' := fun r => rfl }, ⟨fun b hu => by`. Use `hu.map (ev φ₀ hφ₀ φ₀' hφ₀')` as an intermediate fact. Establish `h3 : ev φ₀ hφ₀ φ₀' hφ₀' (Algebra.TensorProduct.includeLeftRingHom b) = φ₀.1 b` using `by show ev φ₀ hφ₀ φ₀' hφ₀' (b ⊗ₜ 1) = _`.
+
+Rewrite using `[ev_tmul, map_one, mul_one]`. Establish `h2 : IsUnit (φ₀.1 b)` using `h3 ▸ this`. Conclude with `φ₀.2.map_nonunit b h2⟩⟩`. Set `inclR : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx k) S` to `⟨{ toRingHom := Algebra.TensorProduct.includeRight.toRingHom commutes' := fun r => by show (1 : (D.fin.AAx j).carrier) ⊗ₜ algebraMap R₀ (D.fin.AAx k).carrier r = algebraMap R₀ (D.fin.AAx j).carrier r ⊗ₜ 1`. Establish `e₁ : algebraMap R₀ (D.fin.AAx k).carrier r = algebraMap Tw.O.carrier (D.fin.AAx k).carrier (algebraMap R₀ Tw.O.carrier r)` using `((D.fin.sO k).1.commutes r).symm`.
+
+Establish `e₂ : algebraMap R₀ (D.fin.AAx j).carrier r = algebraMap Tw.O.carrier (D.fin.AAx j).carrier (algebraMap R₀ Tw.O.carrier r)` using `((D.fin.sO j).1.commutes r).symm`. Rewrite using `[e₁, e₂, Algebra.algebraMap_eq_smul_one (A := (D.fin.AAx k).carrier), Algebra.algebraMap_eq_smul_one (A := (D.fin.AAx j).carrier), TensorProduct.tmul_smul, TensorProduct.smul_tmul'] },`. Use the proof step `⟨fun c hu => by`. Use `hu.map (ev φ₀ hφ₀ φ₀' hφ₀')` as an intermediate fact. Establish `h3 : ev φ₀ hφ₀ φ₀' hφ₀' (Algebra.TensorProduct.includeRight c) = φ₀'.1 c` using `by show ev φ₀ hφ₀ φ₀' hφ₀' (1 ⊗ₜ c) = _`.
+
+Rewrite using `[ev_tmul, map_one, one_mul]`. Establish `h2 : IsUnit (φ₀'.1 c)` using `h3 ▸ this`. Conclude with `φ₀'.2.map_nonunit c h2⟩⟩`. Establish `hΦs : ∀ φ hφ φ' hφ', (Φ φ hφ φ' hφ').comp sT = _root_.ReciprocityTheory.PGsh.LHom.id Tw.O` using `fun φ hφ φ' hφ' => Subtype.ext (AlgHom.ext fun o => (ev φ hφ φ' hφ').commutes o)`. Establish `hΦL : ∀ φ hφ φ' hφ', (Φ φ hφ φ' hφ').comp inclL = φ` using `fun φ hφ φ' hφ' => Subtype.ext (AlgHom.ext fun b => by show ev φ hφ φ' hφ' (b ⊗ₜ 1) = φ.1 b`.
+
+Rewrite using `[ev_tmul, map_one, mul_one])`. Establish `hΦR : ∀ φ hφ φ' hφ', (Φ φ hφ φ' hφ').comp inclR = φ'` using `fun φ hφ φ' hφ' => Subtype.ext (AlgHom.ext fun c => by show ev φ hφ φ' hφ' (1 ⊗ₜ c) = φ'.1 c`. Rewrite using `[ev_tmul, map_one, one_mul])`. Establish `hz : p • (B.map inclL (D.fin.y j) + B.map inclR (D.fin.y k)) = 0`. Rewrite using `[smul_add, ← map_nsmul, ← map_nsmul, D.fin.y_p, D.fin.y_p, map_zero, map_zero, add_zero]`.
+
+Take `⟨i, ψ, hψ₁, hψ₂, -⟩` from `D.fin.univ S sT _ hz`. Take `⟨G, hG, h0, h1⟩` from `tensor_evAll_mem_tensorSpan D C j k (ψ.1 (a i))`. Use `⟨G, hG, h0, fun t t' ht ht' => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `hcl t j ht`. Take `⟨φ', hφ', e'⟩` from `hcl t' k ht'`.
+
+Rewrite using `[h1 t t' φ hφ φ' hφ' e e', evAll_apply]`. Use `congr 1`. Use `retraction_apply_eq_ptMap D (t + t') i ((Φ φ hφ φ' hφ').comp ψ) ?_ ?_ a` and prove the remaining obligations. Rewrite using `[lHom_comp_assoc, hψ₁, hΦs]`. Rewrite using `[_root_.ReciprocityTheory.PGsh.BX.map_comp, hψ₂, map_add, ← _root_.ReciprocityTheory.PGsh.BX.map_comp, ← _root_.ReciprocityTheory.PGsh.BX.map_comp, hΦL, hΦR, e, e', ptOf_add_unramified_depth]`.
+-/
 private theorem exists_tensorSpan_eq_evAll_add (hTL : _root_.GlobalTheory.EvHopf.TensorLocal) (C : Type) [Field C]
     [Algebra Tw.O.carrier C] (a : (i : D.fin.ι) → (D.fin.AAx i).carrier) (j k : D.fin.ι) :
     ∃ G ∈ _root_.ReciprocityTheory.PGsh.L2.tensorSpan Tw.O.carrier (D.evImg C),
@@ -284,6 +343,11 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Establish `h` using `ptOf_add_unramified_depth D (-t) t`. Rewrite `h` using `[neg_add_cancel]`. Establish `h0 : _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ (0 : _root_.ReciprocityTheory.PGsh.Up.Nb p g) = 0`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.ptOf`. Simplify using the standard rewrite rules.
+
+Rewrite `h` using `[h0]`. Conclude with `eq_neg_of_add_eq_zero_left h.symm`.
+-/
 private theorem ptOf_neg' (t : _root_.ReciprocityTheory.PGsh.Up.Nb p g) :
     _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ (-t) = - _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t := by
   have h := ptOf_add_unramified_depth D (-t) t
@@ -299,6 +363,13 @@ variable {R₀ : Type} [CommRing R₀] in
 variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw}
   [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe}
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
+/- English proof (translation)
+Establish `hu` using `fun j => D.fin.univ (D.fin.AAx j) (D.fin.sO j) (-D.fin.y j) (by rw [smul_neg, D.fin.y_p, neg_zero])`. Use `choose i ψ hψ using hu`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.Dat.evImg`. Use `Submodule.subset_span ⟨fun j => (ψ j).1 (a (i j)), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[evAll_apply, evAll_apply]`. Use `congr 1`. Establish `hP` using `ptMap_comp_sO_and_map_y D t`. Use `(retraction_apply_eq_ptMap D (-t) (i (D.ptIdx t)) ((D.ptMap t).comp (ψ (D.ptIdx t))) ?_ ?_ a)` and prove the remaining obligations. Rewrite using `[lHom_comp_assoc, (hψ _).1, hP.1]`.
+
+Rewrite using `[_root_.ReciprocityTheory.PGsh.BX.map_comp, (hψ _).2.1, map_neg, hP.2, ptOf_neg']`.
+-/
 private theorem evAll_comp_neg_mem_evImg (C : Type) [Field C] [Algebra Tw.O.carrier C]
     (a : (i : D.fin.ι) → (D.fin.AAx i).carrier) :
     (fun x => D.evAll C a (-x)) ∈ D.evImg C := by
@@ -324,6 +395,21 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.B
   {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp) in
 variable (C : Type) [Field C] [Algebra (Tw.O : Type) C] in
 
+/- English proof (translation)
+Introduce `hTL R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.EvHopfStatement`. Introduce `C _ _ _`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.PGsh.Be2.Dat.evImg at hf`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, rfl⟩` from `hf`. Use `choose G hG h0 h1 using exists_tensorSpan_eq_evAll_add D hTL C a`. Establish `hsum : _root_.ReciprocityTheory.PGsh.L2.addPull Tw.O.carrier (_root_.ReciprocityTheory.PGsh.Up.Nb p g) (D.evAll C a) = ∑ jk : D.fin.ι × D.fin.ι, G jk.1 jk.2`.
+
+Use function extensionality and compare the values at `q`. Take `⟨t, t'⟩` from `q`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single (D.ptIdx t, D.ptIdx t')]`. Conclude with `(h1 _ _ t t' rfl rfl).symm`. Introduce and unpack `⟨j, k⟩ _ hne`.
+
+Conclude with `h0 j k t t' (fun h => hne (by rw [h.1, h.2]))`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun jk _ => hG jk.1 jk.2`. Consider the case `zero => rw [map_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add f f' _ _ hf hf' => rw [map_add]`. Conclude with `add_mem hf hf'`. Consider the case `smul r f _ hf => rw [map_smul]`. Conclude with `Submodule.smul_mem _ r hf`.
+
+Unfold `_root_.ReciprocityTheory.PGsh.Be2.Dat.evImg at hf ⊢`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, rfl⟩` from `hf`. Establish `h` using `evAll_comp_neg_mem_evImg D C a`.
+
+Unfold `_root_.ReciprocityTheory.PGsh.Be2.Dat.evImg at h`. Conclude with `h`. Consider the case `zero => exact zero_mem _`. Consider the case `add f f' _ _ hf hf' => exact add_mem hf hf'`. Consider the case `smul r f _ hf => exact Submodule.smul_mem _ r hf`.
+-/
 theorem _root_.GlobalTheory.EvHopf.evHopf_of_tensorLocal :
   (∀ (O A A' : Type) [CommRing O] [CommRing A] [CommRing A'] [IsLocalRing O] [IsLocalRing A] [IsLocalRing A'] [Algebra O A] [Algebra O A']
     [Module.Finite O A] [Module.Finite O A'], (A →ₐ[O] O) → (A' →ₐ[O] O) → IsLocalRing (A ⊗[O] A')) →

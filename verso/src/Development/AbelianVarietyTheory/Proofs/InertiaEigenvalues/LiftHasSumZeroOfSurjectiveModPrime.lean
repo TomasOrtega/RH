@@ -3,11 +3,43 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`.
+-/
 theorem padicComplex_norm_prime (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends,
     ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)),
     PadicAlgCl.norm_extends, Padic.norm_p]
 
+/- English proof (translation)
+Introduce `l _ X ι η τ S hS x hx hxb`. Establish `hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹` using `padicComplex_norm_prime l`. Establish `hp : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hlpos : 0 < ‖(l : ℂ_[l])‖` using `by rw [hl]; positivity`. Establish `hllt : ‖(l : ℂ_[l])‖ < 1` using `by rw [hl]; exact inv_lt_one_of_one_lt₀ hp`.
+
+Establish `hl0 : (l : ℂ_[l]) ≠ 0` using `norm_pos_iff.mp hlpos`. Set `T` to `{t : ι → ℂ_[l] // ∀ i, ‖t i‖ ≤ τ i}`. Establish `hg : ∀ t : T, ∃ y ∈ S, ∀ i, ‖η y i + t.1 i‖ ≤ ‖(l : ℂ_[l])‖ * τ i`. Introduce `t`. Take `⟨y, hyS, hy⟩` from `hS (-t.1) (fun i => by simpa using t.2 i)`.
+
+Conclude with `⟨y, hyS, fun i => by simpa [sub_eq_add_neg] using hy i⟩`. Use `choose g hgS hgb using hg`. Establish `hdiv : ∀ z : ℂ_[l], ∀ i, ‖z‖ ≤ ‖(l : ℂ_[l])‖ * τ i → ‖z / l‖ ≤ τ i`. Introduce `z i hz`. Rewrite using `[norm_div, div_le_iff₀ hlpos]`.
+
+Combine the linear relations using `[mul_comm (‖(l : ℂ_[l])‖) (τ i)]`. Set `step : T → T` to `fun t => ⟨fun i => (t.1 i + η (g t) i) / l, fun i => hdiv _ i (by rw [add_comm]; exact hgb t i)⟩`. Set `t0 : T` to `⟨fun i => η x i / l, fun i => hdiv _ i (hxb i)⟩`. Set `ts : ℕ → T` to `fun k => step^[k] t0`. Set `y : ℕ → X` to `fun k => Nat.casesOn k x (fun k => g (ts k))`.
+
+Establish `hy0 : y 0 = x` using `rfl`. Establish `hysucc : ∀ k, y (k+1) = g (ts k)` using `fun k => rfl`. Establish `htsucc : ∀ k, ts (k+1) = step (ts k)` using `fun k => Function.iterate_succ_apply' step k t0`. Use `⟨y, hy0, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`.
+
+Consider the cases of `k with`. Consider the case `zero => exact hx`. Consider the case `succ k => exact hgS _`. Introduce `i`. Establish `hinv : ∀ k, ∑ m ∈ Finset.range (k+1), (l : ℂ_[l]) ^ m * η (y m) i = (l : ℂ_[l]) ^ (k+1) * (ts k).1 i`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hy0, ts, t0]`. Clear the denominators using the available nonvanishing facts. Consider the case `succ k ih`.
+
+Rewrite using `[Finset.sum_range_succ, ih, hysucc, htsucc]`. Simplify using `only [step]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hτ : ∀ k, 0 ≤ τ i` using `fun k => le_trans (norm_nonneg _) ((ts k).2 i)`.
+
+Establish `hbd : ∀ k, ‖η (y k) i‖ ≤ τ i`. Introduce `k`. Consider the cases of `k with`. Consider the case `zero => exact le_trans (hxb i) (by nlinarith [hτ 0])`. Consider the case `succ k`.
+
+Rewrite using `[hysucc]`. Establish `h1` using `hgb (ts k) i`. Establish `h2` using `(ts k).2 i`. Establish `: η (g (ts k)) i = (η (g (ts k)) i + (ts k).1 i) - (ts k).1 i` using `by ring`. Rewrite using `[this]`.
+
+Rewrite using `[sub_eq_add_neg]`. Use `le_trans (IsUltrametricDist.norm_add_le_max _ _) (max_le ?_ (by rw [norm_neg]; exact h2))` and prove the remaining obligations. Conclude with `le_trans h1 (by nlinarith [hτ 0])`. Establish `hterm : ∀ k, ‖(l : ℂ_[l]) ^ k * η (y k) i‖ ≤ τ i * ‖(l : ℂ_[l])‖ ^ k`. Introduce `k`.
+
+Rewrite using `[norm_mul, norm_pow, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right (hbd k) (pow_nonneg (norm_nonneg _) _)`. Establish `hsum : Summable (fun k : ℕ => (l : ℂ_[l]) ^ k * η (y k) i)` using `Summable.of_norm_bounded ((summable_geometric_of_lt_one (norm_nonneg _) hllt).mul_left (τ i)) hterm`. Rewrite using `[hsum.hasSum_iff_tendsto_nat]`. Establish `hlim : Filter.Tendsto (fun k : ℕ => (l : ℂ_[l]) ^ (k+1) * (ts k).1 i) Filter.atTop (nhds 0)`.
+
+Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero (fun k => norm_nonneg _) (fun k => ?_) (g := fun k : ℕ => ‖(l : ℂ_[l])‖ ^ (k+1) * τ i) ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_left ((ts k).2 i) (pow_nonneg (norm_nonneg _) _)`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hllt).comp (Filter.tendsto_add_atTop_nat 1)` as an intermediate fact.
+
+Simplify using `using this.mul_const (τ i)`. Establish `hlim2 : Filter.Tendsto (fun k : ℕ => ∑ m ∈ Finset.range (k+1), (l : ℂ_[l]) ^ m * η (y m) i) Filter.atTop (nhds 0)`. Simplify `hlim` using `only [hinv]`. Conclude with `(Filter.tendsto_add_atTop_iff_nat 1).mp hlim2`.
+-/
 theorem lift_hasSum_zero : ∀ (l : ℕ) [Fact l.Prime] (X ι : Type) (η : X → ι → ℂ_[l]) (τ : ι → ℝ) (S : Set X), (∀ t : ι → ℂ_[l], (∀ i, ‖t i‖ ≤ τ i) → ∃ y ∈ S, ∀ i, ‖η y i - t i‖ ≤ ‖(l : ℂ_[l])‖ * τ i) → ∀ x ∈ S, (∀ i, ‖η x i‖ ≤ ‖(l : ℂ_[l])‖ * τ i) → ∃ y : ℕ → X, y 0 = x ∧ (∀ k, y k ∈ S) ∧ ∀ i, HasSum (fun k : ℕ => (l : ℂ_[l]) ^ k * η (y k) i) 0 := by
   intro l _ X ι η τ S hS x hx hxb
   have hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := padicComplex_norm_prime l

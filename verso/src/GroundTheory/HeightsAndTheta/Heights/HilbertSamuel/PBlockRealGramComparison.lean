@@ -22,11 +22,17 @@ set_option linter.unusedSectionVars false
 variable {D : ℕ} {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Simplify using `only [pairValH, map_div₀, map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_pairValH (A : HermLine ι) (n : ℕ) (b b' : MvPolynomial (Σ k, ι k) ℚ) (z : (Σ k, ι k) → ℂ) :
     conj (pairValH A n b b' z) = pairValH A n b' b z := by
   simp only [pairValH, map_div₀, map_mul, Complex.conj_conj, Complex.conj_ofReal]
   ring
 
+/- English proof (translation)
+Establish `hh : A.h (conjPt z) = A.h z` using `hA z`. Simplify using `only [pairValH, SupBoundCount.eval_map_int_rat, SupBoundCount.eval_conjPt, hh, map_div₀, map_mul, Complex.conj_ofReal]`.
+-/
 theorem pairValH_conjPt (A : HermLine ι) (hA : IsConjInvariantH A) (n : ℕ) (f f' : MRing ι)
     (z : (Σ k, ι k) → ℂ) :
     pairValH A n (map (Int.castRingHom ℚ) f) (map (Int.castRingHom ℚ) f') (conjPt z) =
@@ -35,15 +41,26 @@ theorem pairValH_conjPt (A : HermLine ι) (hA : IsConjInvariantH A) (n : ℕ) (f
   simp only [pairValH, SupBoundCount.eval_map_int_rat, SupBoundCount.eval_conjPt, hh, map_div₀, map_mul,
     Complex.conj_ofReal]
 
+/- English proof (translation)
+Simplify using `only [blockGram, ← conj_pairValH d.A n (b k) (b l), integral_conj, Complex.conj_re]`.
+-/
 theorem blockGram_symm (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ} (b : Fin r → MvPolynomial (Σ k, ι k) ℚ)
     (k l : Fin r) : blockGram d n b l k = blockGram d n b k l := by
   simp only [blockGram, ← conj_pairValH d.A n (b k) (b l), integral_conj, Complex.conj_re]
 
+/- English proof (translation)
+Use `Matrix.IsHermitian.ext fun k l => ?_` and prove the remaining obligations. Simplify using `only [blockCGram, Complex.star_def, ← integral_conj, conj_pairValH]`.
+-/
 theorem blockCGram_isHermitian (d : HSMBlockDatum D K ι Ω) (n : ℕ) {r : ℕ}
     (b : Fin r → MvPolynomial (Σ k, ι k) ℚ) : (blockCGram d n b).IsHermitian := by
   refine Matrix.IsHermitian.ext fun k l => ?_
   simp only [blockCGram, Complex.star_def, ← integral_conj, conj_pairValH]
 
+/- English proof (translation)
+Establish `hS : (((‖∑ k, conj (c k) * w k‖ / t) ^ 2 : ℝ) : ℂ) = (∑ k, conj (c k) * w k) * conj (∑ k, conj (c k) * w k) / ((t ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hS, map_sum, Finset.sum_mul_sum, Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_quad {r : ℕ} (c w : Fin r → ℂ) (t : ℝ) :
     ∑ k, ∑ l, conj (c k) * (w k * conj (w l) / ((t ^ 2 : ℝ) : ℂ)) * c l =
       (((‖∑ k, conj (c k) * w k‖ / t) ^ 2 : ℝ) : ℂ) := by
@@ -59,6 +76,15 @@ theorem sum_quad {r : ℕ} (c w : Fin r → ℂ) (t : ℝ) :
   simp only [map_mul, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Rewrite using `[← integral_complex_ofReal]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, Complex.star_def, hM]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, integral_const_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ x, ∑ k, ∑ l, conj (c k) * pairValH A n (map (Int.castRingHom ℚ) (f k)) (map (Int.castRingHom ℚ) (f l)) (p x) * c l ∂μ := by`. Rewrite using `[integral_finsetSum _ fun k _ => integrable_finsetSum _ fun l _ => ((hi k l).const_mul _).mul_const _]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun l _ => ((hi k l).const_mul _).mul_const _]`.
+
+Use `_ = _ := by`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `e : ∀ k l, pairValH A n (map (Int.castRingHom ℚ) (f k)) (map (Int.castRingHom ℚ) (f l)) (p x) = eval (p x) (map (Int.castRingHom ℂ) (f k)) * conj (eval (p x) (map (Int.castRingHom ℂ) (f l))) / (((A.h (p x) ^ n) ^ 2 : ℝ) : ℂ)`. Introduce `k l`. Simplify using `only [pairValH, SupBoundCount.eval_map_int_rat]`.
+
+Rewrite using `[← pow_mul, mul_comm n 2]`. Simplify using `only [e]`. Conclude with `sum_quad c (fun k => eval (p x) (map (Int.castRingHom ℂ) (f k))) _`.
+-/
 theorem quad_gram {X : Type*} [MeasurableSpace X] (μ : Measure X) (A : HermLine ι) (n : ℕ) {r : ℕ}
     (f : Fin r → MRing ι) (p : X → (Σ k, ι k) → ℂ) (M : Matrix (Fin r) (Fin r) ℂ)
     (hM : ∀ k l, M k l = ∫ x, pairValH A n (map (Int.castRingHom ℚ) (f k)) (map (Int.castRingHom ℚ) (f l)) (p x) ∂μ)
@@ -91,11 +117,17 @@ theorem quad_gram {X : Type*} [MeasurableSpace X] (μ : Measure X) (A : HermLine
         simp only [e]
         exact sum_quad c (fun k => eval (p x) (map (Int.castRingHom ℂ) (f k))) _
 
+/- English proof (translation)
+Simplify using `only [map_sum, smul_eval]`.
+-/
 theorem eval_comb {r : ℕ} (f : Fin r → MRing ι) (a : Fin r → ℂ) (z : (Σ k, ι k) → ℂ) :
     eval z (∑ k, a k • map (Int.castRingHom ℂ) (f k) : MRingOver ℂ ι) =
       ∑ k, a k * eval z (map (Int.castRingHom ℂ) (f k)) := by
   simp only [map_sum, smul_eval]
 
+/- English proof (translation)
+Introduce `m hm`. Take `⟨k, -, hk⟩` from `Finset.mem_biUnion.1 (MvPolynomial.support_sum hm)`. Conclude with `hf k m (MvPolynomial.support_map_subset _ _ (MvPolynomial.support_smul hk))`.
+-/
 theorem isMultiHomog_comb {r : ℕ} (f : Fin r → MRing ι) (a : Fin r → ℂ) {e : K → ℕ}
     (hf : ∀ k, IsMultiHomog (f k) e) :
     IsMultiHomog (∑ k, a k • map (Int.castRingHom ℂ) (f k) : MRingOver ℂ ι) e := by
@@ -104,15 +136,26 @@ theorem isMultiHomog_comb {r : ℕ} (f : Fin r → MRing ι) (a : Fin r → ℂ)
   obtain ⟨k, -, hk⟩ := Finset.mem_biUnion.1 (MvPolynomial.support_sum hm)
   exact hf k m (MvPolynomial.support_map_subset _ _ (MvPolynomial.support_smul hk))
 
+/- English proof (translation)
+Unfold `Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_smul, hA.eq, Complex.star_def, Complex.conj_ofReal]`.
+-/
 theorem isHermitian_ofReal_smul {r : ℕ} {A : Matrix (Fin r) (Fin r) ℂ} (hA : A.IsHermitian) (t : ℝ) :
     ((t : ℂ) • A).IsHermitian := by
   unfold Matrix.IsHermitian
   rw [Matrix.conjTranspose_smul, hA.eq, Complex.star_def, Complex.conj_ofReal]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`.
+-/
 theorem re_det_ofReal_smul {r : ℕ} (t : ℝ) (A : Matrix (Fin r) (Fin r) ℂ) :
     ((t : ℂ) • A).det.re = t ^ r * A.det.re := by
   rw [Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Establish `hsub` using `psd_sub_of_quad_le (isHermitian_ofReal_smul hB t) hA.isHermitian fun c => by`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]`. Conclude with `h c`. Use `GroundTheory.Heights₂.Heights.MCDet.re_det_mono hA hsub` as an intermediate fact. Simplify using `only [RCLike.re_to_complex] at this`.
+
+Rewrite `this` using `[re_det_ofReal_smul]`. Then use the resulting hypothesis.
+-/
 theorem re_det_le_of_quad {r : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ} (hA : A.PosSemidef) (hB : B.IsHermitian)
     (t : ℝ) (h : ∀ c : Fin r → ℂ, (star c ⬝ᵥ (A *ᵥ c)).re ≤ t * (star c ⬝ᵥ (B *ᵥ c)).re) :
     A.det.re ≤ t ^ r * B.det.re := by
@@ -123,6 +166,9 @@ theorem re_det_le_of_quad {r : ℕ} {A B : Matrix (Fin r) (Fin r) ℂ} (hA : A.P
   simp only [RCLike.re_to_complex] at this
   rwa [re_det_ofReal_smul] at this
 
+/- English proof (translation)
+The claim follows from `|blockChi d n - blockCChi d n| ≤ (finrank ℤ (secM d.y (blockDeg d.k₀ n)) : ℝ) * (Real.log 2 + Real.log Kc + D * Real.log n) := by classical obtain ⟨C, hC⟩ := hR D K ι Ω d refine ⟨max (C ^ 2) 1, le_max_right _ _, fun n hn => ?_⟩ set Kc := max (C ^ 2) 1 with hKc have hK1 : 1 ≤ Kc : …`.
+-/
 theorem abs_sub_le (hR : BlockResolutionSupBound.Statement) (d : HSMBlockDatum D K ι Ω) :
     ∃ Kc : ℝ, 1 ≤ Kc ∧ ∀ n : ℕ, 1 ≤ n →
       |blockChi d n - blockCChi d n| ≤
@@ -275,6 +321,13 @@ theorem abs_sub_le (hR : BlockResolutionSupBound.Statement) (d : HSMBlockDatum D
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hS D K ι Ω d`. Use `set C' := max C 1 with hC'`. Establish `hC'1 : 1 ≤ C'` using `le_max_right _ _`. Use `⟨2 * C' ^ 2, by positivity, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hnp : 0 < (n : ℝ) ^ ((D : ℝ) / 2)` using `Real.rpow_pos_of_pos (by linarith) _`. Establish `hc : 0 < C' * (n : ℝ) ^ ((D : ℝ) / 2)` using `by positivity`. Establish `h` using `(hN D K ι Ω d n _ hc fun F hF z hz => (hC n hn F hF z hz).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hnp.le) (Real.sqrt_nonneg _))).1`. Establish `hpow : ((n : ℝ) ^ ((D : ℝ) / 2)) ^ 2 = (n : ℝ) ^ D`. Rewrite using `[← Real.rpow_mul_natCast (Nat.cast_nonneg n), show (D : ℝ) / 2 * ((2 : ℕ) : ℝ) = (D : ℝ) by push_cast; ring, Real.rpow_natCast]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rank_le (hS : SupBoundBlock.Statement) (hN : SupBoundCount.Statement) (d : HSMBlockDatum D K ι Ω) :
     ∃ A : ℝ, 0 ≤ A ∧ ∀ n : ℕ, 1 ≤ n → (finrank ℤ (secM d.y (blockDeg d.k₀ n)) : ℝ) ≤ A * (n : ℝ) ^ D := by
   obtain ⟨C, hC⟩ := hS D K ι Ω d
@@ -293,6 +346,17 @@ theorem rank_le (hS : SupBoundBlock.Statement) (hN : SupBoundCount.Statement) (d
   calc (finrank ℤ (secM d.y (blockDeg d.k₀ n)) : ℝ) ≤ 2 * (C' * (n : ℝ) ^ ((D : ℝ) / 2)) ^ 2 := h
     _ = 2 * C' ^ 2 * (n : ℝ) ^ D := by rw [mul_pow, hpow]; ring
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d`. Take `⟨Kc, hK1, hK⟩` from `abs_sub_le hR d`. Take `⟨A, hA0, hA⟩` from `rank_le hS hN d`. Establish `hlog2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hlogK` using `Real.log_nonneg hK1`.
+
+Use `set B := (Real.log 2 + Real.log Kc) / Real.log 2 + D with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `IsBigO.of_bound (A * B) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+
+Establish `hlogn0` using `Real.log_nonneg hn1`. Establish `hlog21 : Real.log 2 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `hlogn : Real.log n ≤ Real.log ((n : ℝ) + 1)` using `Real.log_le_log (by linarith) (by linarith)`. Establish `hlog1 : 0 ≤ Real.log ((n : ℝ) + 1)` using `Real.log_nonneg (by linarith)`. Establish `hL : Real.log 2 + Real.log Kc + D * Real.log n ≤ B * Real.log ((n : ℝ) + 1)`.
+
+Establish `h1 : Real.log 2 + Real.log Kc ≤ (Real.log 2 + Real.log Kc) / Real.log 2 * Real.log ((n : ℝ) + 1)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hlog2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (D : ℝ) * Real.log n ≤ D * Real.log ((n : ℝ) + 1)` using `mul_le_mul_of_nonneg_left hlogn (Nat.cast_nonneg _)`. Rewrite using `[hB, add_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ Real.log 2 + Real.log Kc + D * Real.log n` using `by positivity`. Rewrite using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (by positivity : 0 ≤ (n : ℝ) ^ D * Real.log ((n : ℝ) + 1))]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proof (hR : BlockResolutionSupBound.Statement) (hS : SupBoundBlock.Statement)
     (hN : SupBoundCount.Statement) : BlockRealGramComparison.Statement := by
   intro D K _ _ ι _ Ω _ _ d

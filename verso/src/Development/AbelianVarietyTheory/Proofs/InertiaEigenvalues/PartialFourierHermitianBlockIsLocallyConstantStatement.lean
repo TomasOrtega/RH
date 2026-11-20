@@ -3,5 +3,8 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PartialFourier
 import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.fourU_isLocallyConstant | exact GlobalTheory.fourU_isLocallyConstant | (intros; apply GlobalTheory.fourU_isLocallyConstant <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.partialFourierHermitianBlock_isLocallyConstant : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → (∀ y : E, algebraMap F E (Algebra.trace F E y) = y + star y) → ∀ f : Hn r F E → ℂ, IsTest f → (∃ U ∈ 𝓝 (0 : Hn r F E), ∀ X : Hn r F E, ∀ u ∈ U, f (X + u) = f X) → IsLocallyConstant (fourU M ψ f) := by
   first | exact @GlobalTheory.fourU_isLocallyConstant | exact GlobalTheory.fourU_isLocallyConstant | (intros; apply GlobalTheory.fourU_isLocallyConstant <;> assumption)

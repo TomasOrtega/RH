@@ -31,26 +31,49 @@ section Calc
 
 open PI.PhNormUnits.UnitaryGroupMassFormula.PAdicPowerSeriesCoefficients
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem simeq_iff_lemma {σ : Type*} (f g : MvPowerSeries σ ℂ_[p]) :
     Simeq f g ↔ PI.PhNormUnits.Simeq f g := Iff.rfl
 
+/- English proof (translation)
+Conclude with `(simeq_iff_lemma f f).2 (simeq_refl f)`.
+-/
 theorem sRefl {σ : Type*} (f : MvPowerSeries σ ℂ_[p]) : Simeq f f := by
   exact (simeq_iff_lemma f f).2 (simeq_refl f)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `sRefl f`.
+-/
 theorem sOfEq {σ : Type*} {f g : MvPowerSeries σ ℂ_[p]} (h : f = g) : Simeq f g := by
   subst h
   exact sRefl f
 
+/- English proof (translation)
+Conclude with `(simeq_iff_lemma _ _).2 (simeq_symm ((simeq_iff_lemma _ _).1 h))`.
+-/
 theorem sSymm {σ : Type*} {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq g f := by
   exact (simeq_iff_lemma _ _).2 (simeq_symm ((simeq_iff_lemma _ _).1 h))
 
+/- English proof (translation)
+Conclude with `(simeq_iff_lemma _ _).2 (simeq_trans ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))`.
+-/
 theorem sTrans {σ : Type*} {f g k : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq g k) : Simeq f k := by
   exact (simeq_iff_lemma _ _).2 (simeq_trans ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))
 
+/- English proof (translation)
+Conclude with `(simeq_iff_lemma _ _).2 (simeq_add ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))`.
+-/
 theorem sAdd {σ : Type*} {f g h k : MvPowerSeries σ ℂ_[p]} (h1 : Simeq f g) (h2 : Simeq h k) :
     Simeq (f + h) (g + k) := by
   exact (simeq_iff_lemma _ _).2 (simeq_add ((simeq_iff_lemma _ _).1 h1) ((simeq_iff_lemma _ _).1 h2))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `sRefl 0`. Consider the case `@insert a s ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `sAdd (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sSum {σ ι : Type*} (s : Finset ι) {f g : ι → MvPowerSeries σ ℂ_[p]} (h : ∀ i ∈ s, Simeq (f i) (g i)) :
     Simeq (∑ i ∈ s, f i) (∑ i ∈ s, g i) := by
   induction s using Finset.induction_on with
@@ -61,10 +84,16 @@ theorem sSum {σ ι : Type*} (s : Finset ι) {f g : ι → MvPowerSeries σ ℂ_
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact sAdd (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Conclude with `integral_subst s (fun i => (hs i).1) (fun i => (hs i).2) hf`.
+-/
 theorem integral_subst' {σ τ : Type*} [Finite τ] (s : τ → MvPowerSeries σ ℂ_[p]) (hs : ∀ i, Good (s i))
     {f : MvPowerSeries τ ℂ_[p]} (hf : IntegralMv f) : IntegralMv (MvPowerSeries.subst s f) := by
   exact integral_subst s (fun i => (hs i).1) (fun i => (hs i).2) hf
 
+/- English proof (translation)
+Conclude with `(simeq_iff_lemma _ _).2 (simeq_subst s (fun i => (hs i).1) (fun i => (hs i).2) ((simeq_iff_lemma _ _).1 h))`.
+-/
 theorem sSubst {σ τ : Type*} [Finite τ] (s : τ → MvPowerSeries σ ℂ_[p]) (hs : ∀ i, Good (s i))
     {f g : MvPowerSeries τ ℂ_[p]} (h : Simeq f g) :
     Simeq (MvPowerSeries.subst s f) (MvPowerSeries.subst s g) := by

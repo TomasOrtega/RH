@@ -8,5 +8,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open GlobalTheory.FlagCls
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCls.exists_adapted | exact GlobalTheory.FlagCls.exists_adapted | (intros; apply GlobalTheory.FlagCls.exists_adapted <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_local_adapted_sections : ∀ (Y : Scheme.{0}) (N : Y.Modules) (r : ℕ) (fl : Vert.Flag N r) (p : Y) (U : Y.Opens), p ∈ U → ∃ (W : Y.Opens) (s : Fin r → Γ(N, W)), W ≤ U ∧ p ∈ W ∧ Adapted fl s := by
   first | exact @GlobalTheory.FlagCls.exists_adapted | exact GlobalTheory.FlagCls.exists_adapted | (intros; apply GlobalTheory.FlagCls.exists_adapted <;> assumption)

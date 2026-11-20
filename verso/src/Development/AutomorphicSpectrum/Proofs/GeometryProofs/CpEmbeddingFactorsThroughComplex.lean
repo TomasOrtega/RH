@@ -12,6 +12,13 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c p κ s`. Use `haveI : CharZero ℂ_[p] := charZero_of_injective_ringHom κ.injective`. Establish `hinj : Function.Injective (fun τ : E →+* ℂ => κ.comp (inE c τ))`. Introduce `τ τ' h`. Use extensionality with `a`.
+
+Establish `h1 : κ (inE c τ a) = κ (inE c τ' a)` using `RingHom.congr_fun h a`. Establish `h2` using `κ.injective h1`. Conclude with `congrArg (fun x : c.F => (x : ℂ)) h2`. Establish `hle : Nat.card (E →+* ℂ_[p]) ≤ Nat.card (E →+* ℂ)`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, NumberField.Embeddings.card E ℂ, NumberField.Embeddings.card E ℂ_[p]]`.
+
+Use `haveI : Finite (E →+* ℂ_[p]) := inferInstance`. Take `⟨τ, hτ⟩` from `(hinj.bijective_of_nat_card_le hle).2 s`. Conclude with `⟨τ, hτ.symm⟩`.
+-/
 theorem exists_emb_through_coeff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (p : Nat.Primes)
     (κ : c.F →+* ℂ_[p]) (s : E →+* ℂ_[p]), ∃ τ : E →+* ℂ, s = κ.comp (inE c τ) := by
   intro E _ _ _ H l c p κ s

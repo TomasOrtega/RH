@@ -3,10 +3,40 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.TwistedDualEva
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Pr UpperTheory.V.Fr UpperTheory.V
 
+/- English proof (translation)
+Conclude with `Nat.card_unique`.
+-/
 private theorem card_bot' {R N : Type} [Ring R] [AddCommGroup N] [Module R N] :
     Nat.card (⊥ : Submodule R N) = 1 := by
   exact Nat.card_unique
 
+/- English proof (translation)
+Introduce `hGF hGW Ω _ _ _ l _ hl2 M _ _ _ _ _ S ρ hS hρ μ hμ Av hAv σ hσ hfix hdual v₀ hloc hlt`. Establish `hH0 : H0 ρ = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`. Express the relevant statement in the definitionally equal form `m ∈ ρ.invariants at hm`.
+
+Conclude with `(Submodule.mem_bot _).2 (hfix m ((Representation.mem_invariants ρ m).1 hm _))`. Take `⟨L, hL⟩ : ∃ L : LocCond ρ (locFam S Av), ∀ v, L v = if v = v₀ then ⊤ else ⊥` from `⟨fun v => if v = v₀ then ⊤ else ⊥, fun _ => rfl⟩`. Establish `hcc : ∀ w : InfinitePlace ℚ, w.IsReal → IsCCAt w ((fun _ => σ) w)`. Introduce `w _`. Take `⟨j, hj⟩` from `hσ`.
+
+Conclude with `⟨j, hj, Subsingleton.elim _ _⟩`. Establish `hgw` using `hGW ℚ Ω l 1 M S ρ one_pos hl2 hS hρ μ hμ Av hAv (fun _ => σ) hcc L`. Take `⟨_, hfin1, _, _⟩` from `hGF ℚ Ω l 1 M S ρ one_pos hS hρ`. Establish `e1 : Nat.card (H0 (twDual μ ρ)) = 1`. Rewrite using `[hdual]`.
+
+Conclude with `card_bot'`. Establish `e2 : ∏ v, Nat.card (H0 (ρ.comp (locFam S Av v))) = Nat.card (H0 (ρ.comp (locFam S Av v₀)))`. Use `Finset.prod_eq_single v₀ (fun v _ hv => ?_) (fun h => absurd (Finset.mem_univ _) h)` and prove the remaining obligations. Rewrite using `[hloc v hv]`. Conclude with `card_bot'`.
+
+Establish `e3 : archH0Card S ρ (fun _ => σ) = 1`. Unfold `archH0Card`. Rewrite using `[InfinitePlace.nrComplexPlaces_eq_zero_of_finrank_eq_one (Module.finrank_self ℚ), pow_zero, mul_one]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `w _`.
+
+Conclude with `Nat.card_eq_one_iff_unique.2 ⟨⟨fun a b => Subtype.ext ((hfix _ a.2).trans (hfix _ b.2).symm)⟩, ⟨⟨0, map_zero _⟩⟩⟩`. Establish `e4 : Nat.card (H0 ρ) = 1`. Rewrite using `[hH0]`. Conclude with `card_bot'`. Establish `e5 : ∏ v, Nat.card (L v) = Nat.card (H1 (ρ.comp (locFam S Av v₀)))`.
+
+Rewrite using `[Finset.prod_eq_single v₀ (fun v _ hv => by rw [hL, if_neg hv]; exact card_bot') (fun h => absurd (Finset.mem_univ _) h)]`. Rewrite using `[hL, if_pos rfl]`. Conclude with `Nat.card_congr Submodule.topEquiv.toEquiv`. Rewrite `hgw` using `[e1, e2, e3, e4, e5]`. Establish `hapos : 0 < Nat.card (Sel ρ (locFam S Av) (continuous_locFam S Av) L)` using `Nat.card_pos`.
+
+Establish `hcpos : 0 < Nat.card (H0 (ρ.comp (locFam S Av v₀)))` using `Nat.card_pos`. Establish `key : ∀ a b c d : ℕ, a * 1 * c * 1 = b * 1 * d → c < d → 0 < a → 0 < c → 1 < a`. Introduce `a b c d h hcd ha hc`. Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Simplify using `at h`.
+
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hle`. Establish `ha1 : a = 1` using `by omega`. Substitute `ha1` using the available equality. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h2` using `key _ _ _ _ hgw hlt hapos hcpos`. Use `haveI := Finite.one_lt_card_iff_nontrivial.1 h2`. Take `⟨x, hx⟩` from `exists_ne (0 : Sel ρ (locFam S Av) (continuous_locFam S Av) L)`. Take `⟨z', hz'⟩` from `Submodule.Quotient.mk_surjective _ x.1`. Use `⟨z'.1, z'.2, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `hz`. Apply `hx` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_zero, ← hz']`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 hz`.
+
+Introduce `v hv`. Establish `hm` using `(mem_Sel ρ (locFam S Av) (continuous_locFam S Av) L x.1).1 x.2 v`. Rewrite `hm` using `[hL, if_neg hv, Submodule.mem_bot, ← hz']`. Simplify using `only [resH1, Submodule.mapQ_apply] at hm`. Take `⟨m, hm'⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hm)`.
+
+Conclude with `⟨m, fun g hg => hm' ⟨g, hg⟩⟩`.
+-/
 theorem UpperTheory.V.Fr.st_count :
     GlobalFiniteness → GreenbergWiles → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (M : Type) [AddCommGroup M] [Module (ZMod (l ^ 1)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 ℚ))) (ρ : Representation (ZMod (l ^ 1)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))) M), ContainsAbove S l → ContAction ρ → ∀ μ : GS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ))) →* (ZMod (l ^ 1))ˣ, μ.comp (toGS Ω _) = cycMod ℚ Ω l 1 → ∀ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) → ∀ σ : G ℚ Ω, IsCC σ → (∀ m, ρ (toGS Ω _ σ) m = m → m = 0) → H0 (twDual μ ρ) = ⊥ → ∀ v₀ : S, (∀ v, v ≠ v₀ → H0 (ρ.comp (locFam S Av v)) = ⊥) → Nat.card (H0 (ρ.comp (locFam S Av v₀))) < Nat.card (H1 (ρ.comp (locFam S Av v₀))) → ∃ z ∈ Z1 ρ, z ∉ B1 ρ ∧ ∀ v, v ≠ v₀ → ∃ m, ∀ g ∈ Dec (F := ℚ) (Av v), z (toGS Ω _ g) = ρ (toGS Ω _ g) m - m := by
   intro hGF hGW Ω _ _ _ l _ hl2 M _ _ _ _ _ S ρ hS hρ μ hμ Av hAv σ hσ hfix hdual v₀ hloc hlt

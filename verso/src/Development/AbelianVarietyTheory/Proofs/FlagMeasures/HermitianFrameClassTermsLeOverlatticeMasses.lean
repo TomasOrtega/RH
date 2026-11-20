@@ -17,11 +17,33 @@ namespace GlobalTheory.HL.ClassMass
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : LocE F E} {r k : ℕ}
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Conclude with `((GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ) (S.fr' d Λ)).2.1 p hp).2.symm`.
+-/
 theorem M_eq_Mof (S : Frames L r k) {C : Set S.FrP} {p : S.FrP} (hp : p ∈ C) {d : S.Datum}
     {Λ : Submodule L.O S.V} (hC : S.Fr d Λ = C) : S.M d Λ = S.Mof p.1 p.2 := by
   subst hC
   exact ((GlobalTheory.HL.FrameClass.frame_classes L r k S (S.fr d Λ) (S.fr' d Λ)).2.1 p hp).2.symm
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S C hC p hp`. Establish `hM : ∀ d Λ, S.Fr d Λ = C → S.M d Λ = S.Mof p.1 p.2` using `fun d Λ hF => M_eq_Mof S hp hF`. Prove the components needed by the constructor for the conclusion. Introduce `Q`. Use `(GlobalTheory.T.sum_over_data_term_count_eq_lattice_mass L r k S C (fun d Λ => Q (S.be d Λ)) ?_).trans_le ?_` and prove the remaining obligations.
+
+Introduce `h hh d Λ hT hQ`. Take `⟨-, -, -, hM', hsat', -⟩` from `GlobalTheory.HL.ComplAct.main L r k S d Λ hT h hh`. Use `show Q (S.be (h • d) (h • Λ))`. Unfold `Frames.be`. Rewrite using `[hM', hsat']`.
+
+Conclude with `hQ`. Unfold `Frames.massSig`. Rewrite using `[ENNReal.tsum_comm]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Use `split_ifs with hcond`.
+
+Take `⟨d, hT, hQ, hF⟩` from `hcond`. Establish `hbasic` using `GlobalTheory.HL.TermBasic.term_basic L r k S d o.out hT`. Establish `hSD : IsSD L S.Hm o.out` using `hbasic.1`. Establish `hle : S.M d o.out ≤ S.sat o.out` using `hbasic.2.2.1`. Rewrite `hle` using `[hM d o.out hF]`.
+
+Establish `hQ' : Q ((S.Mof p.1 p.2).toAddSubgroup.relIndex (S.sat o.out).toAddSubgroup)`. Establish `h` using `hQ`. Unfold `Frames.be at h`. Rewrite `h` using `[hM d o.out hF]`. Conclude with `h`.
+
+Use `le_trans (le_of_eq ?_) (ENNReal.le_tsum ⟨S.sat o.out, hle, fun x hx => (Submodule.mem_inf.mp hx).2, fun x hx y hy => (hSD.2 y).mpr (Submodule.mem_inf.mp hy).1 x (Submodule.mem_inf.mp hx).1, hQ'⟩)` and prove the remaining obligations. Rewrite using `[if_pos ⟨hSD, rfl⟩]`. Conclude with `zero_le`. Establish `hb : ∀ Λ : Submodule L.O S.V, (∃ d, S.IsTerm d Λ ∧ S.BBzero d Λ ∧ S.Fr d Λ = C) ↔ (IsSD L S.Hm Λ ∧ S.sat Λ = S.Mof p.1 p.2)`. Introduce `Λ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hT, hB, hF⟩`. Conclude with `⟨(GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT).1, (show S.M d Λ = S.sat Λ from hB).symm.trans (hM d Λ hF)⟩`. Introduce and unpack `⟨hSD, hsat⟩`. Take `⟨d, hT, hF, hB⟩` from `GlobalTheory.HL.PrimTerm.term_of_primitive L r k S Λ hSD C hC p hp hsat`.
+
+Conclude with `⟨d, hT, hB, hF⟩`. Use `(GlobalTheory.T.sum_over_data_term_count_eq_lattice_mass L r k S C (fun d Λ => S.BBzero d Λ) ?_).trans ?_` and prove the remaining obligations. Introduce `h hh d Λ hT hB`. Take `⟨-, -, -, hM', hsat', -⟩` from `GlobalTheory.HL.ComplAct.main L r k S d Λ hT h hh`. Use `show S.M (h • d) (h • Λ) = S.sat (h • Λ)`.
+
+Rewrite using `[hM', hsat']`. Conclude with `hB`. Unfold `Frames.massSig`. Conclude with `tsum_congr fun o => if_congr (hb o.out) rfl rfl`.
+-/
 theorem class_mass : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ C, S.IsCls C → ∀ p ∈ C, (∀ Q : ℕ → Prop, (S.sumData fun d => S.nT d C fun Λ => Q (S.be d Λ)) ≤ ∑' Mh : {Mh : Submodule L.O S.V // S.Mof p.1 p.2 ≤ Mh ∧ (∀ x ∈ Mh, x ∈ S.ME) ∧ (∀ x ∈ Mh, ∀ y ∈ Mh, S.h x y ∈ L.O) ∧ Q ((S.Mof p.1 p.2).toAddSubgroup.relIndex Mh.toAddSubgroup)}, S.massSig Mh) ∧ (S.sumData fun d => S.nT d C fun Λ => S.BBzero d Λ) = S.massSig (S.Mof p.1 p.2) := by
   intro F _ _ _ _ _ E _ _ _ L r k S C hC p hp
   have hM : ∀ d Λ, S.Fr d Λ = C → S.M d Λ = S.Mof p.1 p.2 := fun d Λ hF => M_eq_Mof S hp hF

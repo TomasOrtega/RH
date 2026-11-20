@@ -15,6 +15,11 @@ section Lin
 
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p r hp hr => rw [Polynomial.map_add, map_add, hp, hr, map_add, LinearMap.baseChange_add]`. Consider the case `monomial k c`. Rewrite using `[Polynomial.map_monomial, aeval_monomial, aeval_monomial, ← LinearMap.baseChange_pow]`. Apply `TensorProduct.AlgebraTensorModule.curry_injective` to reduce the goal to its premises.
+
+Use extensionality with `x`. Simplify using `[Module.algebraMap_end_apply, LinearMap.baseChange_tmul]`.
+-/
 theorem aeval_baseChange_map (L : Type) [Field L] [Algebra K L] (f : Module.End K V) (p : K[X]) :
     aeval (f.baseChange L) (p.map (algebraMap K L)) = (aeval f p).baseChange L := by
   induction p using Polynomial.induction_on' with
@@ -25,6 +30,9 @@ theorem aeval_baseChange_map (L : Type) [Field L] [Algebra K L] (f : Module.End 
     ext x
     simp [Module.algebraMap_end_apply, LinearMap.baseChange_tmul]
 
+/- English proof (translation)
+Establish `hsep : (minpoly K f).Separable` using `PerfectField.separable_iff_squarefree.2 hsq`. Apply `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (hsep.map (f := algebraMap K L)).squarefree` to reduce the goal to its premises. Rewrite using `[aeval_baseChange_map, minpoly.aeval, LinearMap.baseChange_zero]`.
+-/
 theorem isSemisimple_baseChange [CharZero K] [FiniteDimensional K V] (f : Module.End K V)
     (hsq : Squarefree (minpoly K f)) (L : Type) [Field L] [Algebra K L] :
     Module.End.IsSemisimple (f.baseChange L) := by
@@ -36,11 +44,17 @@ variable {U : Type} [AddCommGroup U] [Module ℂ U] {σ : K →+* ℂ} (φ : V �
   (S : Module.End ℂ U) (h : ∀ x, φ (T x) = S (φ x))
 include h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', Module.End.mul_apply, h, ih, pow_succ', Module.End.mul_apply]`.
+-/
 theorem map_pow_apply (n : ℕ) (x : V) : φ ((T ^ n) x) = (S ^ n) (φ x) := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ', Module.End.mul_apply, h, ih, pow_succ', Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, LinearMap.add_apply, map_add, hp, hq, Polynomial.map_add, map_add, LinearMap.add_apply]`. Consider the case `monomial n c`. Rewrite using `[aeval_monomial, Polynomial.map_monomial, aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, LinearMap.map_smulₛₗ, map_pow_apply φ T S h]`.
+-/
 theorem map_aeval_apply (p : K[X]) (x : V) : φ (aeval T p x) = aeval S (p.map σ) (φ x) := by
   induction p using Polynomial.induction_on' with
   | add p q hp hq =>
@@ -61,6 +75,21 @@ open Module
 
 variable {U : Type} [AddCommGroup U] [Module ℂ U]
 
+/- English proof (translation)
+Apply `GlobalTheory.WeilDeligne.isSemisimple_of_iSup_eigenspace` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← Module.End.iSup_maxGenEigenspace_eq_top S]`. Use `iSup_mono fun μ => ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hA : ∀ v, (S - μ • 1 : Module.End ℂ U) ((S - μ • 1 : Module.End ℂ U) v) = 0 → (S - μ • 1 : Module.End ℂ U) v = 0`.
+
+Introduce `v hv`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at hv ⊢`. Rewrite `hv`, the goal using `[sub_eq_zero]`. Conclude with `h μ v hv`. Establish `step : ∀ k v, ((S - μ • 1 : Module.End ℂ U) ^ (k + 1)) v = 0 → (S - μ • 1 : Module.End ℂ U) v = 0`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v hv`. Simplify using `using hv`. Consider the case `succ k ih`.
+
+Introduce `v hv`. Apply `ih` to reduce the goal to its premises. Establish `e1 : ((S - μ • 1 : Module.End ℂ U) ^ (k + 1 + 1)) v = (S - μ • 1 : Module.End ℂ U) ((S - μ • 1 : Module.End ℂ U) (((S - μ • 1 : Module.End ℂ U) ^ k) v))`. Rewrite using `[pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply]`. Establish `e2 : ((S - μ • 1 : Module.End ℂ U) ^ (k + 1)) v = (S - μ • 1 : Module.End ℂ U) (((S - μ • 1 : Module.End ℂ U) ^ k) v)`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Rewrite using `[e2]`. Conclude with `hA _ (e1 ▸ hv)`. Rewrite `hu` using `[Module.End.mem_maxGenEigenspace]`. Take `⟨k, hk⟩` from `hu`.
+
+Rewrite using `[Module.End.mem_eigenspace_iff]`. Establish `hz : (S - μ • 1 : Module.End ℂ U) u = 0`. Consider the cases of `k with`. Consider the case `zero => simp at hk`. Simplify using `[hk]`.
+
+Consider the case `succ k => exact step k u hk`. Simplify `hz` using `[sub_eq_zero]`.
+-/
 theorem isSemisimple_of_sq [FiniteDimensional ℂ U] (S : Module.End ℂ U)
     (h : ∀ (μ : ℂ) (u : U), S (S u - μ • u) = μ • (S u - μ • u) → S u = μ • u) : S.IsSemisimple := by
   apply GlobalTheory.WeilDeligne.isSemisimple_of_iSup_eigenspace
@@ -96,6 +125,9 @@ theorem isSemisimple_of_sq [FiniteDimensional ℂ U] (S : Module.End ℂ U)
     | succ k => exact step k u hk
   simpa [sub_eq_zero] using hz
 
+/- English proof (translation)
+Establish `h1 : u ∈ A.maxGenEigenspace 0`. Rewrite using `[Module.End.mem_maxGenEigenspace]`. Conclude with `⟨2, by simpa [pow_two] using hu⟩`. Rewrite `h1` using `[hA.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace, Module.End.mem_eigenspace_iff]`. Simplify using `using h1`.
+-/
 theorem apply_eq_zero_of_sq [FiniteDimensional ℂ U] {A : Module.End ℂ U} (hA : A.IsSemisimple) {u : U}
     (hu : A (A u) = 0) : A u = 0 := by
   have h1 : u ∈ A.maxGenEigenspace 0 := by
@@ -106,6 +138,17 @@ theorem apply_eq_zero_of_sq [FiniteDimensional ℂ U] {A : Module.End ℂ U} (hA
 
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] {σ : K →+* ℂ}
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨r, hr⟩` from `hp`. Establish `key : aeval T (p * r) = 0`. Use extensionality with `x`. Establish `hm : aeval T (minpoly K T) = 0` using `minpoly.aeval K T`.
+
+Rewrite `hm` using `[hr]`. Establish `h0 : aeval T p (aeval T p (aeval T r x)) = 0`. Use `LinearMap.congr_fun hm x` as an intermediate fact. Simplify `this` using `[map_mul, Module.End.mul_apply]`. Establish `h1 : aeval S (p.map σ) (aeval S (p.map σ) (φ (aeval T r x))) = 0`.
+
+Rewrite using `[← map_aeval_apply φ T S h, ← map_aeval_apply φ T S h, h0, map_zero]`. Establish `h2` using `apply_eq_zero_of_sq (hS.aeval (p.map σ)) h1`. Rewrite `h2` using `[← map_aeval_apply φ T S h]`. Establish `h3 : aeval T p (aeval T r x) = 0` using `hφ (by rw [h2, map_zero])`. Simplify `h3` using `[map_mul, Module.End.mul_apply]`.
+
+Establish `hdvd` using `minpoly.dvd K T key`. Establish `hm0 : minpoly K T ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral T)`. Rewrite `hdvd`, `hm0` using `[hr]`. Establish `hne : p * r ≠ 0` using `fun h => hm0 (by rw [mul_assoc, h, mul_zero])`. Establish `h3 : p * (p * r) ∣ 1 * (p * r)` using `by rw [one_mul, ← mul_assoc]; exact hdvd`.
+
+Conclude with `isUnit_of_dvd_one ((mul_dvd_mul_iff_right hne).1 h3)`.
+-/
 theorem squarefree_minpoly [FiniteDimensional K V] [FiniteDimensional ℂ U] (φ : V →ₛₗ[σ] U)
     (hφ : Function.Injective φ) (T : Module.End K V) (S : Module.End ℂ U) (h : ∀ x, φ (T x) = S (φ x))
     (hS : S.IsSemisimple) : Squarefree (minpoly K T) := by
@@ -137,11 +180,21 @@ namespace GlobalTheory.HeckeLocN
 
 open Module
 
+/- English proof (translation)
+Establish `hli` using `(D.what₂.jMt_basis μ j (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j))).1`. Use `haveI := hli.finite`. Conclude with `Module.Finite.of_basis (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j))`.
+-/
 theorem finiteDimensional_MtL (D : D7) (μ : D.what₂.Tup) (j : ℕ) : FiniteDimensional D.what₂.LL (D.what₂.MtL μ j) := by
   have hli := (D.what₂.jMt_basis μ j (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j))).1
   haveI := hli.finite
   exact Module.Finite.of_basis (Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j))
 
+/- English proof (translation)
+Use `set b := Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j)`. Establish `hli` using `(D.what₂.jMt_basis μ j b).1`. Use `haveI := hli.finite`. Use `haveI := Fintype.ofFinite (Module.Free.ChooseBasisIndex D.what₂.LL (D.what₂.MtL μ j))`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Establish `e : D.what₂.jMt μ j x = ∑ i, D.what₂.embLL (b.repr x i) • D.what₂.jMt μ j (b i)` using `by conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `[LinearMap.map_smulₛₗ]`. Rewrite `hx` using `[e]`.
+
+Establish `hc` using `Fintype.linearIndependent_iff.1 hli _ hx`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `using hc i`.
+-/
 theorem jMt_injective (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Function.Injective (D.what₂.jMt μ j) := by
   classical
   set b := Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j)
@@ -160,6 +213,21 @@ theorem jMt_injective (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Function.Injecti
   ext i
   simpa using hc i
 
+/- English proof (translation)
+Introduce `D M C hR X hS hStd hJord hGen hSpl`. Introduce `j w h1 h2 _ v k hg`. Take `⟨B, hBO, hBv⟩` from `hGen w j h1 h2`. Take `⟨s, ϖ, hc, hu⟩` from `hSpl v hg.1`. Establish `hsB : s.v ∉ B` using `hBv v k s hg hc`.
+
+Establish `hst` using `hStd D.host.E D.R.nV (M (D.what₂.muTw w) j h1 h2).wt (M (D.what₂.muTw w) j h1 h2).J (M (D.what₂.muTw w) j h1 h2).χ B (M (D.what₂.muTw w) j h1 h2).J_open hBO s ϖ k hsB hu hg.2.2.2.2.1 hg.2.2.2.2.2`. Establish `hjo` using `hJord D.host.E D.R.nV (M (D.what₂.muTw w) j h1 h2).wt (M (D.what₂.muTw w) j h1 h2).J (M (D.what₂.muTw w) j h1 h2).χ B (M (D.what₂.muTw w) j h1 h2).J_open hBO s ϖ k hsB hu hg.2.2.2.2.1 hg.2.2.2.2.2`. Use `set Mr := M (D.what₂.muTw w) j h1 h2 with hMr`. Establish `t0 : NG.tN Mr.J s ϖ k (0 : GAf D.host.E D.R.nV → Mr.wt.W) = 0`. Establish `e` using `hst.2.1 0 (zero_mem _) 0 (zero_mem _) 1`.
+
+Simplify using `only [one_smul, add_zero] at e`. Conclude with `left_eq_add.mp e`. Set `S : Module.End ℂ (NG.TypeSp Mr.wt.ρ Mr.J Mr.χ)` to `{ toFun := fun f => ⟨NG.tN Mr.J s ϖ k f, hst.1 f f.2⟩ map_add' := fun f g => Subtype.ext (by simpa using hst.2.1 f f.2 g g.2 1) map_smul' := fun c f => Subtype.ext (by`. Establish `e` using `hst.2.1 f f.2 0 (zero_mem _) c`. Simplify `e) }` using `[t0]`.
+
+Use `haveI : FiniteDimensional ℂ (NG.TypeSp Mr.wt.ρ Mr.J Mr.χ) := by`. Rewrite using `[← Mr.real_range]`. Use `infer_instance`. Use `haveI := finiteDimensional_MtL D (D.what₂.muTw w) j`. Establish `hmem : ∀ x, Mr.real (D.what₂.jMt (D.what₂.muTw w) j x) ∈ NG.TypeSp Mr.wt.ρ Mr.J Mr.χ` using `fun x => by`.
+
+Rewrite using `[← Mr.real_range]`. Conclude with `LinearMap.mem_range_self _ _`. Set `φ : D.what₂.MtL (D.what₂.muTw w) j →ₛₗ[D.what₂.embLL] NG.TypeSp Mr.wt.ρ Mr.J Mr.χ` to `{ toFun := fun x => ⟨Mr.real (D.what₂.jMt _ j x), hmem x⟩ map_add' := fun x y => Subtype.ext (by simp) map_smul' := fun c x => Subtype.ext (by simp [LinearMap.map_smulₛₗ]) }`. Establish `hφ : Function.Injective φ` using `fun x y hxy => jMt_injective D _ j (Mr.real_inj (congrArg Subtype.val hxy))`. Establish `hcomm : ∀ x, φ (hLC (mt0 M) C.Q hR j w v k x) = S (φ x)` using `fun x => Subtype.ext (hLC_spec (mt0 M) C.Q hR j w v k h1 h2 hg s ϖ hc hu x)`.
+
+Establish `hSs : S.IsSemisimple` using `GlobalTheory.HeckeSemis.isSemisimple_of_sq S (fun μ u hμ => Subtype.ext (by`. Establish `e : NG.tN Mr.J s ϖ k (↑(S u - μ • u)) = μ • (↑(S u - μ • u) : GAf D.host.E D.R.nV → Mr.wt.W)` using `congrArg Subtype.val hμ`. Rewrite `e` using `[Submodule.coe_sub, Submodule.coe_smul]`. Conclude with `hjo u u.2 μ e))`. Establish `hsq` using `GlobalTheory.HeckeSemis.squarefree_minpoly φ hφ (hLC (mt0 M) C.Q hR j w v k) S hcomm hSs`.
+
+Use `haveI : CharZero D.what₂.LL := RingHom.charZero D.what₂.embLL`. Conclude with `GlobalTheory.HeckeSemis.isSemisimple_baseChange _ hsq (FractionRing (OcC X j w))`.
+-/
 theorem semisimpleTw_base : ∀ (D : D7) (M : MtFam D) (C : NChoice D) (hR : HeckeLift0 (mt0 M) C.Q) (X : CoefIn D.what₂) (hS : SplitK (mt0 M) C.Q hR X), HeckeStdPlain → (∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n) (J : Subgroup (GAf L n)) (χ : J →* ℂˣ) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield L)))), (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → NG.HypOutside J χ B → ∀ (s : SplitPlace L) (ϖ : s.v.adicCompletion (maximalRealSubfield L)) (k : ℕ), s.v ∉ B → IsUnif L s.v ϖ → 1 ≤ k → k ≤ n → ∀ f ∈ NG.TypeSp a.ρ J χ, ∀ μ : ℂ, NG.tN J s ϖ k (NG.tN J s ϖ k f - μ • f) = μ • (NG.tN J s ϖ k f - μ • f) → NG.tN J s ϖ k f = μ • f) → GenHyp M C.Q → (∀ v : PlE D.host, IsSplitPl D.host v → ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ) → SemisimpleTw (base M C hR X hS) := by
   intro D M C hR X hS hStd hJord hGen hSpl
   intro j w h1 h2 _ v k hg

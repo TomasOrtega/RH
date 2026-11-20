@@ -8,6 +8,9 @@ noncomputable def gPoly (D : ℕ) (c : ℕ → ℝ) (a b : ℕ) : ℝ :=
   ∑ i ∈ range (D + 1),
     c i * ((a : ℝ) ^ i * (b : ℝ) ^ (D - i) / ((i.factorial : ℝ) * ((D - i).factorial : ℝ)))
 
+/- English proof (translation)
+The claim follows from `|gPoly D c a b| ≤ (∑ i ∈ range (D + 1), |c i|) * (((a + b : ℕ) : ℝ) + 1) ^ D := by unfold gPoly rw [Finset.sum_mul] refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i hi => ?_) rw [abs_mul] refine mul_le_mul_of_nonneg_left ?_ (abs_nonneg _) have hi : i ≤ D := N …`.
+-/
 theorem abs_gPoly_le (D : ℕ) (c : ℕ → ℝ) (a b : ℕ) :
     |gPoly D c a b| ≤ (∑ i ∈ range (D + 1), |c i|) * (((a + b : ℕ) : ℝ) + 1) ^ D := by
   unfold gPoly

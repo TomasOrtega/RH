@@ -41,44 +41,76 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree
 
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {K : Type}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.flag_chain_arith_variety Ψ N K j hj`.
+-/
 theorem arith [Fintype K] [Nonempty K] (j : K → FlBlock Ψ N) (hj : IsChain j) :
     IsArithVar (PPart j) (cellDim j + 1) := GlobalTheory.T.flag_chain_arith_variety Ψ N K j hj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.generic_fibre_linear_equations Ψ N K j hj k₀ hmax hne`.
+-/
 theorem fibreLin [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K)
     (hmax : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) (hne : ∃ k, k ≠ k₀) :
     ∃ G : GenFibre (dropV j k₀) (PPart j), ∃ S : Set (MRingOver G.Φ (fibreIdx (PIdx j) (Subtype.val : {k // k ≠ k₀} → K))),
       (∀ f ∈ S, IsMultiHomog f fun _ => 1) ∧ fibreIdeal (Subtype.val : {k // k ≠ k₀} → K) G = Ideal.span S :=
   GlobalTheory.T.generic_fibre_linear_equations Ψ N K j hj k₀ hmax hne
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.field_intersection_linear_degree_one F K ι k₀ hK J hJ S hS r hV`.
+-/
 theorem linDeg {F : Type} [Field F] {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (k₀ : K)
     (hK : ∀ a : K, a = k₀) (J : IFamily F ι) (hJ : IsFieldIntersection J) (S : Set (MRingOver F ι))
     (hS : ∀ f ∈ S, IsMultiHomog f fun _ => 1) (r : ℕ) (hV : IsProjVarF (Ideal.span S) r) :
     J (Ideal.span S) r (fun _ _ => 1) = 1 := GlobalTheory.T.field_intersection_linear_degree_one F K ι k₀ hK J hJ S hS r hV
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.flag_chain_unit_log_integral Ψ N K II hII k₀ hK j hj`.
+-/
 theorem base (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) [Fintype K] [DecidableEq K] (k₀ : K)
     (hK : ∀ a : K, a = k₀) (j : K → FlBlock Ψ N) (hj : IsChain j) :
     ptsIntegral (PPart j) (pot fun _ : Fin (N - 1) => unitLine j k₀) (fun _ => 1) = 1 :=
   GlobalTheory.T.flag_chain_unit_log_integral Ψ N K II hII k₀ hK j hj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.symmetric_form_polynomial_coeff σ n a hsym w₀ m hm`.
+-/
 theorem coeff_formPoly_sym {σ : Type} [Fintype σ] [DecidableEq σ] (n : ℕ) (a : (Fin n → σ) → ℝ)
     (hsym : ∀ (π : Equiv.Perm (Fin n)) (w : Fin n → σ), a (w ∘ π) = a w) (w₀ : Fin n → σ) (m : σ →₀ ℕ)
     (hm : ∀ p, m p = (Finset.univ.filter fun r => w₀ r = p).card) :
     coeff m (PB.formPoly n a) * ∏ p, ((m p).factorial : ℝ) = (n.factorial : ℝ) * a w₀ :=
   GlobalTheory.T.symmetric_form_polynomial_coeff σ n a hsym w₀ m hm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.weight_map_injective Ψ N`.
+-/
 theorem toWt_injective (Ψ : Type) (N : ℕ) :
     Function.Injective (PB.toWt : MvPolynomial (Ψ × Fin N) ℝ →ₐ[ℝ] MvPolynomial (Ψ × Fin N) ℝ) := GlobalTheory.T.weight_map_injective Ψ N
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.weight_gap_delta_eq_antisymmetric Ψ N`.
+-/
 theorem toWt_gapDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     PB.toWt (gapDelta Ψ N) = GroundTheory.Heights₂.Heights.antisymDelta Ψ N := GlobalTheory.T.weight_gap_delta_eq_antisymmetric Ψ N
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rho_coeff_gap_delta_one Ψ N`.
+-/
 theorem coeff_gapDelta (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) : coeff (rhoM Ψ N) (gapDelta Ψ N) = 1 :=
   GlobalTheory.T.rho_coeff_gap_delta_one Ψ N
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rho_factorial_product_eq Ψ N`.
+-/
 theorem prod_rhoM (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     ∏ p, (((rhoM Ψ N) p).factorial : ℝ) =
       ∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1) := GlobalTheory.T.rho_factorial_product_eq Ψ N
 
+/- English proof (translation)
+Use `ContDiffOn.congr (GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.isSmoothHerm_fsLineZ (ι := ι) a) ?_` and prove the remaining obligations. Introduce `z _`. Use `show refNorm a z = ∏ k, GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.blkNorm z k ^ a k`. Unfold `refNorm GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.blkNorm`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `h0 : 0 ≤ ∑ i, ‖z ⟨k, i⟩‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Rewrite using `[← sq_rpow_half (Real.sqrt_nonneg _), Real.sq_sqrt h0]`.
+-/
 theorem fsHerm_smooth {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (a : K → ℤ) :
     IsSmoothHerm (fsHerm ι a) := by
   refine ContDiffOn.congr (GroundTheory.Heights₂.Heights.Targets.LiftGraphFactor.isSmoothHerm_fsLineZ (ι := ι) a) ?_
@@ -89,11 +121,21 @@ theorem fsHerm_smooth {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (
   have h0 : 0 ≤ ∑ i, ‖z ⟨k, i⟩‖ ^ 2 := Finset.sum_nonneg fun _ _ => by positivity
   rw [← sq_rpow_half (Real.sqrt_nonneg _), Real.sq_sqrt h0]
 
+/- English proof (translation)
+Use `show ContDiffOn ℝ _ (fun _ => Real.exp (-(-1))) _`. Conclude with `contDiffOn_const`.
+-/
 theorem constLine_smooth {K : Type} [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] :
     IsSmoothHerm (constLine ι) := by
   show ContDiffOn ℝ _ (fun _ => Real.exp (-(-1))) _
   exact contDiffOn_const
 
+/- English proof (translation)
+Unfold `ptsIntegral`. Use `split_ifs with h`. Simplify using `only [ptsIntegralAt]`. Rewrite using `[← MeasureTheory.integral_neg]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Use `show ∑ᶠ w ∈ fibre P h.choose y, sheetDensity P h.choose φ (fun _ => -1) y w = -∑ᶠ w ∈ fibre P h.choose y, sheetDensity P h.choose φ (fun _ => 1) y w`. Rewrite using `[← finsum_neg_distrib]`. Use `finsum_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[← finsum_neg_distrib]`. Use `finsum_congr fun _ => ?_` and prove the remaining obligations.
+
+Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using the standard rewrite rules.
+-/
 theorem ptsIntegral_neg_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) {e : ℕ}
     (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ) :
     ptsIntegral P φ (fun _ => -1) = -ptsIntegral P φ (fun _ => 1) := by
@@ -113,6 +155,25 @@ theorem ptsIntegral_neg_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
     split_ifs <;> simp
   · simp
 
+/- English proof (translation)
+Take `⟨hs, -, hR⟩` from `hII K ι`. Establish `hT` using `constLine_smooth ι`. Establish `hsm : ∀ i, IsSmoothHerm ((Fin.snoc L (constLine ι) : Fin (e + 1) → HermLine ι) i)`. Introduce `i`. Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `using hT`. Simplify using `using hL i`. Establish `h1 : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Establish `hsec` using `hR P e L (constLine ι) 1 (fun _ => 0) hP hL hT (fun k => by simp [constLine, HermLine.ofWeight]) (fun m hm k => by classical`. Establish `: m = 0`.
+
+Assume the negation of the conclusion as `h0`. Simplify using `[MvPolynomial.support_one, h0] at hm`. Simplify using `[this]) h1`. Establish `hperm` using `hs P (e + 1) (Fin.snoc L (constLine ι)) (finRotate (e + 1)).symm hP hsm`. Establish `hc : (Fin.snoc L (constLine ι) : Fin (e + 1) → HermLine ι) ∘ (finRotate (e + 1)).symm = (Fin.cons (constLine ι) L : Fin (e + 1) → HermLine ι)`.
+
+Rewrite using `[Fin.snoc_eq_cons_rotate]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `hperm` using `[hc]`. Rewrite using `[hperm, hsec]`.
+
+Establish `hd : divSupp P (1 : MRing ι) = ∅`. Use extensionality with `W`. Simplify using `only [divSupp, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hW`. Establish `: (P ⊔ Ideal.span {(1 : MRing ι)}) = ⊤` using `by simp`.
+
+Rewrite `hW` using `[this]`. Conclude with `absurd (hW.1.2 ) (by`. Introduce `h`. Conclude with `hW.1.1.ne_top (top_le_iff.1 h))`. Establish `hlog : logNorm (constLine ι) (1 : MRing ι) = fun _ => -1`.
+
+Use function extensionality and compare the values at `z`. Simplify using `[logNorm, constLine, HermLine.ofWeight]`. Establish `hz : recR (II K ι) P L (constLine ι) 1 = -arInt P 1 (constLine ι) L`. Unfold `recR`. Rewrite using `[hd]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hz]`. Unfold `arInt`. Rewrite using `[hlog]`. Use `show -ptsIntegral P (pot L) (fun _ => -1) = _`.
+
+Rewrite using `[ptsIntegral_neg_one, neg_neg]`.
+-/
 theorem tie (II : IntersectionSystem) (hII : IsIntersectionSystem II) {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (e : ℕ) (L : Fin e → HermLine ι) (hP : IsArithVar P (e + 1))
     (hL : ∀ j, IsSmoothHerm (L j)) :
@@ -162,9 +223,21 @@ theorem tie (II : IntersectionSystem) (hII : IsIntersectionSystem II) {K : Type}
   show -ptsIntegral P (pot L) (fun _ => -1) = _
   rw [ptsIntegral_neg_one, neg_neg]
 
+/- English proof (translation)
+The claim follows from `fsHerm_smooth _ _`.
+-/
 theorem unitLine_smooth [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k : K) : IsSmoothHerm (unitLine j k) :=
   fsHerm_smooth _ _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `k' show (if k' = k.1 then (1 : ℤ) else 0) = Function.extend _ _ _ k'`. Distinguish the cases in `h : k' = k₀`. Substitute `h` using the available equality. Rewrite using `[Function.extend_apply' _ _ _ (by rintro ⟨x, hx⟩; exact x.2 hx), if_neg (Ne.symm k.2)]`.
+
+Both sides reduce to the same expression. Rewrite using `[show k' = ((⟨k', h⟩ : {k // k ≠ k₀}) : K) from rfl, Subtype.val_injective.extend_apply] show _ = if (⟨k', h⟩ : {k // k ≠ k₀}) = k then (1 : ℤ) else 0`. Simplify using `only [Subtype.ext_iff]`. Introduce `z`. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.PB.FA.BlockPot.refNorm_block (isBlockMap_drop j k₀) (a := fun k' => if k' = k.1 then (1 : ℤ) else 0) (by`.
+
+Introduce `k' hk'`. Establish `: k' ≠ k.1` using `fun h => hk' ⟨k, h.symm⟩`. Simplify using `[this]) z`. Establish `h2 : (fun k' : {k // k ≠ k₀} => if k'.1 = k.1 then (1 : ℤ) else 0) = fun k' => if k' = k then 1 else 0`. Use function extensionality and compare the values at `k'`.
+
+Simplify using `[Subtype.ext_iff]`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem isPull_unit [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ : K) (k : {k // k ≠ k₀}) :
     IsPullHerm (Subtype.val : {k // k ≠ k₀} → K) (dropV j k₀) (unitLine (dropJ j k₀) k) (unitLine j k.1) := by
   constructor
@@ -189,6 +262,11 @@ theorem isPull_unit [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ :
     rw [h2] at h1
     exact h1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `k' show (0 : ℤ) = Function.extend _ _ _ k'`. Distinguish the cases in `h : k' ∈ Set.range (Subtype.val : {k // k ≠ k₀} → K)`. Take `⟨x, rfl⟩` from `h`. Rewrite using `[Subtype.val_injective.extend_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[Function.extend_apply' _ _ _ (by simpa using h)]`. Both sides reduce to the same expression. Introduce `_`. Both sides reduce to the same expression.
+-/
 theorem isPull_const [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ : K) :
     IsPullHerm (Subtype.val : {k // k ≠ k₀} → K) (dropV j k₀) (constLine (PIdx (dropJ j k₀))) (constLine (PIdx j)) := by
   constructor
@@ -203,11 +281,19 @@ theorem isPull_const [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ 
   · intro _
     rfl
 
+/- English proof (translation)
+Unfold `cellDim dropJ`. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ k₀, add_comm]`.
+-/
 theorem cellDim_drop [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) (k₀ : K) :
     cellDim j = cellDim (dropJ j k₀) + (N - 1 - ((j k₀).2 : ℕ)) := by
   unfold cellDim dropJ
   rw [Fintype.sum_eq_add_sum_subtype_ne _ k₀, add_comm]
 
+/- English proof (translation)
+Use `⟨fun a b h => Subtype.ext (hj.inj h), fun k q h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨k', rfl⟩` from `hj.down k.1 q h1 h2`. Establish `hne : k' ≠ k₀`. Introduce and unpack `rfl`. Apply `k.2` to reduce the goal to its premises.
+
+Apply `hj.inj` to reduce the goal to its premises. Establish `e : ((j k.1).2 : ℕ) = (j k').2` using `le_antisymm (hmax _) h2`. Conclude with `Prod.ext h1.symm (Fin.ext e)`. Conclude with `⟨⟨k', hne⟩, rfl⟩`.
+-/
 theorem isChain_drop (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K) (hmax : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) :
     IsChain (dropJ j k₀) := by
   refine ⟨fun a b h => Subtype.ext (hj.inj h), fun k q h1 h2 => ?_⟩
@@ -220,6 +306,11 @@ theorem isChain_drop (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K) (hmax 
     exact Prod.ext h1.symm (Fin.ext e)
   exact ⟨⟨k', hne⟩, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `: Fin.cast (by omega : a + 1 + b = a + b + 1) (Fin.castAdd b (0 : Fin (a + 1))) = 0` using `by ext; simp`.
+
+Simplify using `[this]`. Establish `: Fin.cast (by omega : a + 1 + b = a + b + 1) (Fin.castAdd b i.succ) = ((Fin.castAdd b i).succ)` using `by ext; simp`. Simplify using `only [Function.comp_apply, this, Fin.cons_succ, Fin.append_left]`. Establish `: Fin.cast (by omega : a + 1 + b = a + b + 1) (Fin.natAdd (a + 1) i) = ((Fin.natAdd a i).succ)` using `by ext; simp; omega`. Simplify using `only [Fin.append_right, Function.comp_apply, this, Fin.cons_succ]`.
+-/
 theorem append_cons_eq {α : Type*} {a b : ℕ} (x : α) (u : Fin a → α) (v : Fin b → α) :
     (Fin.append (Fin.cons x u : Fin (a + 1) → α) v) =
       (Fin.cons x (Fin.append u v) : Fin (a + b + 1) → α) ∘ Fin.cast (by omega) := by
@@ -237,6 +328,29 @@ theorem append_cons_eq {α : Type*} {a b : ℕ} (x : α) (u : Fin a → α) (v :
       ext; simp; omega
     simp only [Fin.append_right, Function.comp_apply, this, Fin.cons_succ]
 
+/- English proof (translation)
+Establish `hc₀` using `isChain_drop j hj k₀ hmax`. Take `⟨k₁, hk₁⟩` from `hne`. Use `haveI : Nonempty {k // k ≠ k₀} := ⟨⟨k₁, hk₁⟩⟩`. Use `haveI : Nonempty K := ⟨k₀⟩`. Establish `hA₀ : IsArithVar (PPart (dropJ j k₀)) (e₀ + 1)` using `he ▸ arith _ hc₀`.
+
+Establish `hAe : IsArithVar (PPart j) (e₀ + r + 1)`. Use `arith j hj` as an intermediate fact. Rewrite `this` using `[cellDim_drop j k₀, ← he, ← hr]`. Then use the resulting hypothesis. Establish `hA : IsArithVar (PPart j) (e₀ + 1 + r)`. Rewrite using `[show e₀ + 1 + r = e₀ + r + 1 by omega]; exact hAe`.
+
+Establish `hImg` using `imageZ_drop j k₀`. Establish `hB` using `isBlockMap_drop j k₀`. Take `⟨G, S, hS, hG⟩` from `fibreLin j hj k₀ hmax ⟨k₁, hk₁⟩`. Take `⟨J, hJ, -⟩` from `GroundTheory.Heights₂.Heights.Targets.ExistsUnique.full G.Φ (fibreIdx (PIdx j) (Subtype.val : {k // k ≠ k₀} → K))`. Establish `hsm₀ : ∀ i, IsSmoothHerm ((Fin.cons (constLine _) (fun i => unitLine (dropJ j k₀) (w₀ i)) : Fin (e₀ + 1) → HermLine (PIdx (dropJ j k₀))) i)`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using constLine_smooth _`. Simplify using `using unitLine_smooth _ _`. Establish `hpl : ∀ i, IsPullHerm (Subtype.val : {k // k ≠ k₀} → K) (dropV j k₀) ((Fin.cons (constLine _) (fun i => unitLine (dropJ j k₀) (w₀ i)) : Fin (e₀ + 1) → HermLine (PIdx (dropJ j k₀))) i) ((Fin.cons (constLine _) (fun i => unitLine j (w₀ i).1) : Fin (e₀ + 1) → HermLine (PIdx j)) i)`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using isPull_const j k₀`. Simplify using `using isPull_unit j k₀ (w₀ i)`. Establish `hPF` using `hIn.projFormula II hII.1 {k // k ≠ k₀} (PIdx (dropJ j k₀)) K (PIdx j) Subtype.val (dropV j k₀) (PPart j) (e₀ + 1) r G _ _ _ (fun _ => unitLine j k₀) hB hA (hImg ▸ hA₀) hJ hsm₀ hpl (fun _ => unitLine_smooth _ _)`.
+
+Establish `hV` using `hIn.fibreDim {k // k ≠ k₀} (PIdx (dropJ j k₀)) K (PIdx j) Subtype.val (dropV j k₀) (PPart j) (e₀ + 1) r G hB hA (hImg ▸ hA₀)`. Establish `hone : ∃ b : FibreBlock (Subtype.val : {k // k ≠ k₀} → K), ∀ a, a = b`. Use `⟨⟨k₀, by rintro ⟨x, hx⟩; exact x.2 hx⟩, fun a => Subtype.ext ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `a.2 ⟨⟨a.1, h⟩, rfl⟩`.
+
+Take `⟨b, hb⟩` from `hone`. Establish `hdeg : (fun _ : Fin r => fibreDeg (Subtype.val : {k // k ≠ k₀} → K) (unitLine j k₀).a) = fun _ _ => 1`. Use function extensionality and compare the values at `_ a`. Establish `ha : a.1 = k₀`. Assume the negation of the conclusion as `h`.
+
+Conclude with `a.2 ⟨⟨a.1, h⟩, rfl⟩`. Use `show (if a.1 = k₀ then (1 : ℤ) else 0) = 1`. Simplify using `[ha]`. Rewrite `hV` using `[hG]`. Establish `hval` using `linDeg _ b hb _ hJ S hS r hV`.
+
+Rewrite `hPF` using `[hdeg, hG, hval, hImg]`. Establish `hT₀` using `tie II hII.1 (PPart (dropJ j k₀)) e₀ (fun i => unitLine (dropJ j k₀) (w₀ i)) hA₀ (fun _ => unitLine_smooth _ _)`. Establish `hT` using `tie II hII.1 (PPart j) (e₀ + r) (Fin.append (fun i => unitLine j (w₀ i).1) (fun _ : Fin r => unitLine j k₀)) hAe (by`. Introduce `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations.
+
+Simplify using `using unitLine_smooth _ _`. Simplify using `using unitLine_smooth _ _)`. Rewrite using `[← hT₀, ← hT]`. Establish `hcast : ∀ {n m : ℕ} (h : n = m) (M : Fin m → HermLine (PIdx j)), II K (PIdx j) (PPart j) n (M ∘ Fin.cast h) = II K (PIdx j) (PPart j) m M`. Introduce `n m h M`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[← hcast (by omega : e₀ + 1 + r = e₀ + r + 1), ← append_cons_eq, hPF]`. Simplify using the standard rewrite rules.
+-/
 theorem step (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) [Fintype K] [DecidableEq K]
     (j : K → FlBlock Ψ N) (hj : IsChain j) (k₀ : K) (hmax : ∀ k, ((j k).2 : ℕ) ≤ (j k₀).2) (hne : ∃ k, k ≠ k₀)
     (e₀ : ℕ) (w₀ : Fin e₀ → {k // k ≠ k₀}) (r : ℕ) (he : e₀ = cellDim (dropJ j k₀)) (hr : r = N - 1 - ((j k₀).2 : ℕ)) :
@@ -310,6 +424,9 @@ theorem step (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullIntersecti
   rw [← hcast (by omega : e₀ + 1 + r = e₀ + r + 1), ← append_cons_eq, hPF]
   simp
 
+/- English proof (translation)
+Simplify using `only [Finset.card_filter]`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem count_append {α : Type} [DecidableEq α] {a b : ℕ} (u : Fin a → α) (v : Fin b → α) (k : α) :
     (Finset.univ.filter fun r => Fin.append u v r = k).card =
       (Finset.univ.filter fun r => u r = k).card + (Finset.univ.filter fun r => v r = k).card := by
@@ -317,6 +434,9 @@ theorem count_append {α : Type} [DecidableEq α] {a b : ℕ} (u : Fin a → α)
   rw [Fin.sum_univ_add]
   simp [Fin.append_left, Fin.append_right]
 
+/- English proof (translation)
+Use `Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset (Fin e))) (t := (Finset.univ : Finset K)) (f := w) (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _))` as an intermediate fact. Simplify using `only [Finset.card_univ, Fintype.card_fin] at this`. Rewrite using `[this]`. Conclude with `Finset.sum_congr rfl fun k _ => h k`.
+-/
 theorem len_eq_cellDim [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) {e : ℕ} (w : Fin e → K)
     (h : ∀ k, (Finset.univ.filter fun r => w r = k).card = N - 1 - ((j k).2 : ℕ)) : e = cellDim j := by
   have := Finset.card_eq_sum_card_fiberwise (s := (Finset.univ : Finset (Fin e))) (t := (Finset.univ : Finset K))
@@ -325,6 +445,27 @@ theorem len_eq_cellDim [Fintype K] [DecidableEq K] (j : K → FlBlock Ψ N) {e :
   rw [this]
   exact Finset.sum_congr rfl fun k _ => h k
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `K _ _ hc j hj`. Take `⟨k₀, hk⟩` from `Fintype.card_eq_one_iff.1 hc`.
+
+Establish `h0 : ((j k₀).2 : ℕ) = 0`. Take `⟨k, hk'⟩` from `hj.down k₀ ((j k₀).1, ⟨0, by have := (j k₀).2.2; omega⟩) rfl (by simp)`. Rewrite `hk'` using `[hk k]`. Rewrite using `[hk']`. Use `⟨N - 1, fun _ => k₀, fun k => ?_, base II hII k₀ hk j hj⟩` and prove the remaining obligations.
+
+Rewrite using `[hk k, h0]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `K _ _ hc j hj`. Use `haveI : Nonempty K := Fintype.card_pos_iff.1 (by omega)`.
+
+Take `⟨k₀, hmax⟩` from `Finite.exists_max (fun k => ((j k).2 : ℕ))`. Establish `hcard : Fintype.card {k // k ≠ k₀} = n + 1`. Establish `h` using `Fintype.card_subtype_compl (α := K) (fun k => k = k₀)`. Rewrite `h` using `[Fintype.card_subtype_eq]`. Establish `h' : Fintype.card {k // k ≠ k₀} = Fintype.card K - 1` using `by convert h`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨e₀, w₀, hcnt, hval⟩` from `ih {k // k ≠ k₀} hcard (dropJ j k₀) (isChain_drop j hj k₀ hmax)`. Establish `hne : ∃ k, k ≠ k₀`. Take `⟨x⟩ : Nonempty {k // k ≠ k₀}` from `Fintype.card_pos_iff.1 (by omega)`. Conclude with `⟨x.1, x.2⟩`.
+
+Establish `he` using `len_eq_cellDim (dropJ j k₀) w₀ hcnt`. Use `⟨e₀ + (N - 1 - ((j k₀).2 : ℕ)), Fin.append (fun i => (w₀ i).1) (fun _ => k₀), fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[count_append]`. Distinguish the cases in `hk : k = k₀`. Substitute `hk` using the available equality.
+
+Establish `h1 : (Finset.univ.filter fun r => (w₀ r).1 = k) = ∅`. Use extensionality with `r`. Simplify using `using (w₀ r).2`. Rewrite using `[h1]`. Simplify using the standard rewrite rules.
+
+Establish `h1 : (Finset.univ.filter fun r => (w₀ r).1 = k) = Finset.univ.filter fun r => w₀ r = ⟨k, hk⟩`. Use extensionality with `r`. Simplify using `[Subtype.ext_iff]`. Establish `h2 : (Finset.univ.filter fun _ : Fin (N - 1 - ((j k₀).2 : ℕ)) => k₀ = k) = ∅` using `Finset.filter_false_of_mem fun _ _ => Ne.symm hk`. Rewrite using `[h1, h2, hcnt ⟨k, hk⟩]`.
+
+Simplify using `[dropJ]`. Establish `hs` using `step hIn II hII j hj k₀ hmax hne e₀ w₀ _ he rfl`. Rewrite `hs` using `[hval]`. Establish `hfun : (fun r => unitLine j (Fin.append (fun i => (w₀ i).1) (fun _ : Fin (N - 1 - ((j k₀).2 : ℕ)) => k₀) r)) = Fin.append (fun i => unitLine j (w₀ i).1) (fun _ : Fin (N - 1 - ((j k₀).2 : ℕ)) => unitLine j k₀)`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp`. Rewrite using `[hfun]`. Conclude with `hs`.
+-/
 theorem tower (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) :
     ∀ (n : ℕ) (K : Type) [Fintype K] [DecidableEq K], Fintype.card K = n + 1 → ∀ j : K → FlBlock Ψ N, IsChain j →
       ∃ (e : ℕ) (w : Fin e → K), (∀ k, (Finset.univ.filter fun r => w r = k).card = N - 1 - ((j k).2 : ℕ)) ∧
@@ -380,6 +521,11 @@ theorem tower (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullIntersect
       rw [hfun]
       exact hs
 
+/- English proof (translation)
+Establish `hG : PB.formPoly D a = C c * gapDelta Ψ N`. Apply `toWt_injective Ψ N` to reduce the goal to its premises. Rewrite using `[h, map_mul, toWt_gapDelta]`. Simplify using `[PB.toWt]`. Establish `h2` using `coeff_formPoly_sym D a hsym w₀ (rhoM Ψ N) (fun p => by`.
+
+Rewrite using `[hcnt p]`. Use the proof step `rfl)`. Rewrite `h2` using `[hG, coeff_C_mul, coeff_gapDelta, h1, prod_rhoM]`. Simplify using `using h2`.
+-/
 theorem alg_const (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (D : ℕ)
     (a : (Fin D → Ψ × Fin N) → ℝ) (c : ℝ) (w₀ : Fin D → Ψ × Fin N)
     (hcnt : ∀ p : Ψ × Fin N, (Finset.univ.filter fun r => w₀ r = p).card = N - 1 - (p.2 : ℕ))
@@ -397,6 +543,19 @@ theorem alg_const (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (D : ℕ)
   simpa using h2
 
 open GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights in
+/- English proof (translation)
+Take `⟨M, BM, hhom, hfs, hbd⟩` from `GlobalTheory.T.flag_variety_model_base_metric Ψ N hN`. Establish `hpos : 1 ≤ antisymDegree Ψ N` using `Nat.mul_pos Fintype.card_pos (Nat.choose_pos hN)`. Take `⟨d, hd⟩ : ∃ d, d + 1 = antisymDegree Ψ N` from `⟨antisymDegree Ψ N - 1, by omega⟩`. Establish `harith : IsArithVar (mCoordIdeal (yFl Ψ N)) (d + 2)`. Use `GlobalTheory.T.flag_variety_arithmetic Ψ N hN` as an intermediate fact.
+
+Rewrite `this` using `[← hd]`. Conclude with `this`. Establish `hdim : d + 1 = 0 + Fintype.card Ψ * (N.choose 2 + (N - N).choose 2)`. Simplify `hd` using `[antisymDegree]`. Take `⟨FA, -⟩` from `PositivityTheory.Xgp.t_c_fl_an _ _ _ (yFl Ψ N) Ψ N N M 0 d BM harith hdim hbd (fun p => (hhom p).trans (hfs p).symm)`.
+
+Take `⟨Cv, CR, hdeg, href, -⟩` from `GlobalTheory.T.flag_cover_degree_one_realisation _ _ _ (yFl Ψ N) Ψ N N M 0 d BM FA`. Establish `hU` using `GlobalTheory.T.flag_analytic_data_uniformised _ _ _ (yFl Ψ N) Ψ N N M 0 d BM FA (by simp) hd`. Establish `hdeg1 : CR.Re.deg = 1` using `by rw [CR.deg_eq, hdeg]`. Establish `href1 : ∀ p, CR.Re.ref p = yLineFl Ψ N p` using `fun p => by rw [href, FA.ref_some, hfs]`. Establish `hP` using `(GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1`.
+
+Establish `hR` using `GlobalTheory.T.realisation_potential_degree_compatibility hIn.2.1.1 _ _ _ _ (FA.S.comap some) _ CR.Re`. Establish `hw : ∀ w : Fin (d + 1) → Ψ × Fin N, ptsIntegral (PFl Ψ N) (pot fun r => yLineFl Ψ N (w r)) (fun _ => 1) = (FA.S.comap some).degNum w`. Introduce `w`. Use `hR.2.1 w` as an intermediate fact. Simplify using `only [href1, hdeg1] at this`.
+
+Simplify `this` using `[PFl]`. Take `⟨c, -, hc'⟩` from `GlobalTheory.T.uniformised_degree_polynomial_antisymmetric hIn Ψ N N (d + 1) (FA.S.comap some) le_rfl hd hU`. Use `⟨c, Eq.trans ?_ hc'⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.flag_height_polynomial_weight_form hIn II hII Ψ N hN hP).2, AnSys.degPoly]`. Use `congr 1`.
+
+Rewrite using `[← hd]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `hw w`.
+-/
 theorem degFl_vand (hIn : PB.Inputs) (II : IntersectionSystem) (hII : IsFullIntersectionSystem II) (Ψ : Type) [Fintype Ψ]
     [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ) (hN : 2 ≤ N) : ∃ c : ℝ, degFlPoly Ψ N = C c * antisymDelta Ψ N := by
   obtain ⟨M, BM, hhom, hfs, hbd⟩ := GlobalTheory.T.flag_variety_model_base_metric Ψ N hN
@@ -438,6 +597,39 @@ open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundF
 
 namespace GlobalTheory.CompanionTheory.Ar.IndefiniteRowSideFullHecke
 
+/- English proof (translation)
+Introduce `hIn II hII Ψ _ _ N _ lam hN`. Take `⟨c, hC⟩` from `degFl_vand hIn II hII Ψ N hN`. Establish `hAr` using `(GlobalTheory.T.flag_variety_boundary_dimension_drop Ψ N hN).1`. Establish `hL` using `(GlobalTheory.T.flag_height_polynomial_weight_form hIn II hII Ψ N hN hAr).2`. Establish `hchain : IsChain (id : FlBlock Ψ N → FlBlock Ψ N)` using `⟨Function.injective_id, fun _ q _ _ => ⟨q, rfl⟩⟩`.
+
+Use `haveI hK : Nonempty (FlBlock Ψ N) := ⟨(Classical.arbitrary Ψ, ⟨0, by omega⟩)⟩`. Take `⟨n, hn⟩ : ∃ n, Fintype.card (FlBlock Ψ N) = n + 1` from `⟨Fintype.card (FlBlock Ψ N) - 1, by have := Fintype.card_pos (α := FlBlock Ψ N); omega⟩`. Take `⟨e, w, hcnt, hval⟩` from `tower hIn II hII n (FlBlock Ψ N) hn id hchain`. Establish `he : e = antisymDegree Ψ N`. Establish `h1` using `(arith (id : FlBlock Ψ N → FlBlock Ψ N) hchain).2.2.2`.
+
+Establish `h2` using `hAr.2.2.2`. Establish `h3 : ringKrullDim (MRing (FlIdx Ψ N) ⧸ PFl Ψ N) = ((cellDim (id : FlBlock Ψ N → FlBlock Ψ N) + 1 + Fintype.card (FlBlock Ψ N) : ℕ) : WithBot ℕ∞)` using `h1`. Rewrite `h2` using `[h3]`. Establish `h4 : cellDim (id : FlBlock Ψ N → FlBlock Ψ N) + 1 + Fintype.card (FlBlock Ψ N) = antisymDegree Ψ N + 1 + Fintype.card (FlBlock Ψ N)`. Conclude with `h2` after adjusting the coercions.
+
+Rewrite using `[len_eq_cellDim id w hcnt]`. Use linear arithmetic over natural numbers and integers. Substitute `he` using the available equality. Set `pr : FlBlock Ψ N → Ψ × Fin N` to `fun q => (q.1, ⟨q.2, by have := q.2.2; omega⟩)`. Establish `hpr : ∀ q, PB.yLineFl Ψ N (pr q) = unitLine (id : FlBlock Ψ N → FlBlock Ψ N) q`.
+
+Introduce `q`. Use `show fsHerm _ _ = fsHerm _ _`. Use `congr 1`. Use function extensionality and compare the values at `q'`. Simplify using `[pr, Prod.ext_iff, Fin.ext_iff]`.
+
+Set `a : (Fin (antisymDegree Ψ N) → Ψ × Fin N) → ℝ` to `fun w' => ptsIntegral (PFl Ψ N) (pot fun r => PB.yLineFl Ψ N (w' r)) fun _ => 1`. Establish `ha : a (fun r => pr (w r)) = 1` using `by show ptsIntegral (PFl Ψ N) (pot fun r => PB.yLineFl Ψ N (pr (w r))) (fun _ => 1) = 1`. Simplify using `only [hpr]`. Conclude with `hval`. Establish `hsmY : ∀ p, IsSmoothHerm (PB.yLineFl Ψ N p)` using `fun p => fsHerm_smooth _ _`.
+
+Establish `hsym : ∀ (π : Equiv.Perm (Fin (antisymDegree Ψ N))) (w' : Fin (antisymDegree Ψ N) → Ψ × Fin N), a (w' ∘ π) = a w'`. Introduce `π w'`. Use `(GlobalTheory.T.log_integral_multilinear II hII (FlBlock Ψ N) (FlIdx Ψ N) (PFl Ψ N) (antisymDegree Ψ N) Unit (fun _ => fsHerm (FlIdx Ψ N) 0) (fun _ _ => 0) hAr (fun _ => fsHerm_smooth _ _)).2 (fun r => PB.yLineFl Ψ N (w' r)) (fun r => PB.yLineFl Ψ N (w' (π r))) π (fun _ => hsmY _ …` as an intermediate fact. Conclude with `this`. Establish `hcnt' : ∀ p : Ψ × Fin N, (Finset.univ.filter fun r => pr (w r) = p).card = N - 1 - (p.2 : ℕ)`.
+
+Introduce and unpack `⟨τ, i⟩`. Distinguish the cases in `hi : (i : ℕ) < N - 1`. Establish `: (Finset.univ.filter fun r => pr (w r) = (τ, i)) = Finset.univ.filter fun r => w r = (τ, ⟨i, hi⟩)`. Use extensionality with `r`. Simplify using `[pr, Prod.ext_iff, Fin.ext_iff]`.
+
+Rewrite using `[this, hcnt]`. Both sides reduce to the same expression. Establish `: (Finset.univ.filter fun r => pr (w r) = (τ, i)) = ∅`. Use extensionality with `r`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`.
+
+Introduce `h`. Establish `h2` using `congrArg (fun x : Ψ × Fin N => (x.2 : ℕ)) h`. Use `(w r).2.2` as an intermediate fact. Simplify using `only [pr] at h2`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `hcst` using `alg_const Ψ N (antisymDegree Ψ N) a c (fun r => pr (w r)) hcnt' hsym ha (hL ▸ hC)`. Take `⟨hW, -, -⟩` from `flagDeg_eq_weyl Ψ N lam`.
+
+Establish `hdim : Top.dimFl Ψ N = antisymDegree Ψ N`. Simplify using `[Top.dimFl, antisymDegree, Nat.choose_two_right]`. Establish `hΔ : eval (fun x : Ψ × Fin N => lam x.1 x.2) (antisymDelta Ψ N) = ∏ τ, ∏ a : Fin N, ∏ b ∈ Finset.Ioi a, (lam τ a - lam τ b)`. Simplify using `[antisymDelta, map_prod]`. Establish `hsplit : ∏ τ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then (lam τ i - lam τ k) / ((k : ℝ) - (i : ℝ)) else 1) = (∏ τ, ∏ a : Fin N, ∏ b ∈ Finset.Ioi a, (lam τ a - lam τ b)) / ∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1)`.
+
+Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hI : Finset.Ioi i = Finset.univ.filter fun k => i < k`.
+
+Use extensionality with `k`. Simplify using the standard rewrite rules. Rewrite using `[hI, Finset.prod_filter, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite using `[hC, map_mul, eval_C, hW, hdim, hsplit, hΔ]`. Establish `hPr : (∏ _τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then ((k : ℝ) - (i : ℝ)) else 1)) ≠ 0`. Introduce `h0`. Rewrite `hcst` using `[h0, mul_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)) hcst.symm`.
+
+Rewrite using `[← hcst]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem degFlPoly_eval' : PB.Inputs → ∀ II : IntersectionSystem, IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ] (lam : Wt Ψ N), 2 ≤ N → eval (fun x => lam x.1 x.2) (PB.degFlPoly Ψ N) = flagDeg lam := by
   intro hIn II hII Ψ _ _ N _ lam hN
   obtain ⟨c, hC⟩ := degFl_vand hIn II hII Ψ N hN

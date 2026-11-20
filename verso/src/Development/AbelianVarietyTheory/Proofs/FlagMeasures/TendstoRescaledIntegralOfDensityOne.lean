@@ -7,6 +7,13 @@ open scoped NNReal ENNReal
 
 namespace GlobalTheory.VagueRescale
 
+/- English proof (translation)
+Establish `hcν : ∀ A, (κ.toNNReal • ν) A = ENNReal.ofReal κ * ν A` using `fun A => by`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hsub : ∀ s ⊆ U, μ s ≤ (κ.toNNReal • ν) s`. Introduce `s hs`.
+
+Use `(Besicovitch.vitaliFamily μ).measure_le_of_frequently_le (κ.toNNReal • ν) (Measure.AbsolutelyContinuous.refl μ) s fun x hx => ?_` and prove the remaining obligations. Establish `hfr` using `(Besicovitch.tendsto_filterAt μ x).frequently (p := fun a => μ a ≤ ENNReal.ofReal κ * ν a) (h x (hs hx)).frequently`. Conclude with `hfr.mono fun a ha => ha.trans_eq (hcν a).symm`. Establish `hle : μ.restrict U ≤ κ.toNNReal • ν.restrict U`. Rewrite using `[Measure.le_iff]`.
+
+Introduce `s hs`. Rewrite using `[Measure.restrict_apply hs, Measure.smul_apply, Measure.restrict_apply hs, ← Measure.smul_apply]`. Conclude with `hsub _ Set.inter_subset_right`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_smul_nnreal_measure, setIntegral_eq_integral_of_forall_compl_eq_zero hU, NNReal.smul_def, Real.coe_toNNReal _ hκ, smul_eq_mul]`.
+-/
 theorem integral_le_of_small_balls {d : ℕ} (μ ν : Measure (EuclideanSpace ℝ (Fin d)))
     [IsLocallyFiniteMeasure μ] [IsLocallyFiniteMeasure ν] (κ : ℝ) (hκ : 0 ≤ κ)
     (U : Set (EuclideanSpace ℝ (Fin d)))
@@ -37,6 +44,27 @@ theorem integral_le_of_small_balls {d : ℕ} (μ ν : Measure (EuclideanSpace �
         rw [integral_smul_nnreal_measure, setIntegral_eq_integral_of_forall_compl_eq_zero hU,
           NNReal.smul_def, Real.coe_toNNReal _ hκ, smul_eq_mul]
 
+/- English proof (translation)
+Establish `hmeas : Measurable (fun x : EuclideanSpace ℝ (Fin d) => r⁻¹ • x)` using `(continuous_const_smul _).measurable`. Establish `hJ : ∫ x, φ x ∂(ν.map (fun x => r⁻¹ • x)) = ∫ x, φ (r⁻¹ • x) ∂ν` using `integral_map hmeas.aemeasurable hφ.aestronglyMeasurable`. Establish `hrd : 0 < r ^ d` using `pow_pos hr d`. Establish `hpre : ∀ (y : EuclideanSpace ℝ (Fin d)) (s : ℝ), 0 ≤ s → (ν.map (fun x => r⁻¹ • x)) (Metric.closedBall y s) = ν (Metric.closedBall (r • y) (r * s))`. Introduce `y s hs`.
+
+Rewrite using `[Measure.map_apply hmeas Metric.isClosed_closedBall.measurableSet, Set.preimage_smul_inv₀ hr.ne', smul_closedBall _ _ hs, Real.norm_of_nonneg hr.le]`. Establish `hvol : ∀ (y : EuclideanSpace ℝ (Fin d)) (s : ℝ), 0 ≤ s → volume (Metric.closedBall (r • y) (r * s)) = ENNReal.ofReal (r ^ d) * volume (Metric.closedBall y s)`. Introduce `y s hs`. Rewrite using `[Measure.addHaar_closedBall' _ _ (mul_nonneg hr.le hs), Measure.addHaar_closedBall' _ _ hs, finrank_euclideanSpace_fin, mul_pow, ENNReal.ofReal_mul (pow_nonneg hr.le _), mul_assoc]`. Establish `hcv : ∀ A, ((r ^ d).toNNReal • volume : Measure (EuclideanSpace ℝ (Fin d))) A = ENNReal.ofReal (r ^ d) * volume A` using `fun A => by`.
+
+Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hscale : Filter.Tendsto (fun s : ℝ => r * s) (nhdsWithin 0 (Set.Ioi 0)) (nhdsWithin 0 (Set.Ioi 0))`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Use `((continuous_const_mul r).tendsto (0 : ℝ))` as an intermediate fact.
+
+Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Conclude with `mul_pos hr hs`. Use `set U : Set (EuclideanSpace ℝ (Fin d)) := {y | r * ‖y‖ < δ} with hU`.
+
+Establish `hnorm : ∀ y : EuclideanSpace ℝ (Fin d), ‖r • y‖ = r * ‖y‖` using `fun y => by`. Rewrite using `[norm_smul, Real.norm_of_nonneg hr.le]`. Establish `hvan : ∀ y ∉ U, φ y = 0`. Introduce `y hy`. Simplify using `only [hU, Set.mem_setOf_eq, not_lt] at hy`.
+
+Use `hR y ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hlt hr]`. Establish `hnear : ∀ y ∈ U, ∀ᶠ s : ℝ in nhdsWithin 0 (Set.Ioi 0), (ν (Metric.closedBall (r • y) (r * s)) ≤ ENNReal.ofReal κ * volume (Metric.closedBall (r • y) (r * s)) ∧ volume (Metric.closedBall (r • y) (r * s)) ≤ ENNReal.ofReal κ * ν (Metric.closedBall (r • y) (r * s))) ∧ 0 < s`.
+
+Introduce `y hy`. Establish `hy' : ‖r • y‖ < δ` using `by rw [hnorm]; exact hy`. Use `filter_upwards [hscale.eventually (hball _ hy'), self_mem_nhdsWithin] with s hs hs0`. Conclude with `⟨hs, hs0⟩`. Establish `A1` using `integral_le_of_small_balls (ν.map (fun x => r⁻¹ • x)) ((r ^ d).toNNReal • volume) κ (by linarith) U (fun y hy => (hnear y hy).mono fun s hs => by`.
+
+Rewrite using `[hpre y s hs.2.le, hcv, ← hvol y s hs.2.le]`. Conclude with `hs.1.1) φ hφ hc h0 hvan`. Establish `A2` using `integral_le_of_small_balls ((r ^ d).toNNReal • volume) (ν.map (fun x => r⁻¹ • x)) κ (by linarith) U (fun y hy => (hnear y hy).mono fun s hs => by`. Rewrite using `[hpre y s hs.2.le, hcv, ← hvol y s hs.2.le]`. Conclude with `hs.1.2) φ hφ hc h0 hvan`.
+
+Establish `hvolint : ∫ x, φ x ∂((r ^ d).toNNReal • volume) = r ^ d * ∫ x, φ x`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Real.coe_toNNReal _ hrd.le, smul_eq_mul]`. Rewrite `A1`, `A2` using `[hJ, hvolint]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[inv_mul_le_iff₀ hrd]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[show κ * ((r ^ d)⁻¹ * ∫ x, φ (r⁻¹ • x) ∂ν) = (κ * ∫ x, φ (r⁻¹ • x) ∂ν) / r ^ d by field_simp, le_div_iff₀ hrd]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem rescaled_integral_comparable_of_nonneg_compactSupport {d : ℕ} (ν : Measure (EuclideanSpace ℝ (Fin d)))
     [IsFiniteMeasure ν] (κ δ : ℝ) (hκ : 1 < κ)
     (hball : ∀ x : EuclideanSpace ℝ (Fin d), ‖x‖ < δ →
@@ -110,6 +138,21 @@ private theorem rescaled_integral_comparable_of_nonneg_compactSupport {d : ℕ} 
       field_simp, le_div_iff₀ hrd]
     linarith
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R : ℝ, ∀ x : EuclideanSpace ℝ (Fin d), R ≤ ‖x‖ → φ x = 0 := by`. Take `⟨R₀, hR₀⟩` from `hc.isCompact.isBounded.subset_closedBall 0`. Use `⟨R₀ + 1, fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hx'` using `hR₀ (subset_tsupport φ (Function.mem_support.2 hne))`.
+
+Rewrite `hx'` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL0 : 0 ≤ ∫ x, φ x` using `integral_nonneg h0`. Establish `key : ∀ κ : ℝ, 1 < κ → ∀ᶠ r : ℝ in nhdsWithin 0 (Set.Ioi 0), (r ^ d)⁻¹ * ∫ x, φ (r⁻¹ • x) ∂ν ≤ κ * ∫ x, φ x ∧ ∫ x, φ x ≤ κ * ((r ^ d)⁻¹ * ∫ x, φ (r⁻¹ • x) ∂ν)`. Introduce `κ hκ`.
+
+Take `⟨δ, hδ, hball⟩` from `h κ hκ`. Establish `hlin : Filter.Tendsto (fun r : ℝ => r * R) (nhds 0) (nhds 0)`. Use `((continuous_mul_const R).tendsto (0 : ℝ))` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis. Use `filter_upwards [(hlin.mono_left nhdsWithin_le_nhds).eventually (eventually_lt_nhds hδ), self_mem_nhdsWithin] with r hrR hr`.
+
+Conclude with `rescaled_integral_comparable_of_nonneg_compactSupport ν κ δ hκ hball φ hφ hc h0 R r hR hr hrR`. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Use `set L := ∫ x, φ x with hLdef`. Use `set η : ℝ := min 1 (ε / (2 * (L + 1))) with hηdef`.
+
+Establish `hη : 0 < η` using `lt_min one_pos (by positivity)`. Establish `hη1 : η ≤ 1` using `min_le_left _ _`. Establish `hη2 : η * (2 * (L + 1)) ≤ ε` using `(le_div_iff₀ (by positivity)).1 (min_le_right _ _)`. Use `filter_upwards [key (1 + η) (by linarith)] with r hr`. Take `⟨hu, hl⟩` from `hr`.
+
+Use `set I := (r ^ d)⁻¹ * ∫ x, φ (r⁻¹ • x) ∂ν`. Establish `h6 : 0 ≤ η * L` using `mul_nonneg hη.le hL0`. Establish `h3 : η * I ≤ η * ((1 + η) * L)` using `mul_le_mul_of_nonneg_left hu hη.le`. Establish `h4 : η * (η * L) ≤ 1 * (η * L)` using `mul_le_mul_of_nonneg_right hη1 h6`. Rewrite using `[Real.dist_eq, abs_lt]`.
+
+Apply the tactic sequence `constructor <;> nlinarith`.
+-/
 theorem tendsto_of_nonneg {d : ℕ} (ν : Measure (EuclideanSpace ℝ (Fin d))) [IsFiniteMeasure ν]
     (h : ∀ κ : ℝ, 1 < κ → ∃ δ : ℝ, 0 < δ ∧ ∀ x : EuclideanSpace ℝ (Fin d), ‖x‖ < δ →
       ∀ᶠ r : ℝ in nhdsWithin 0 (Set.Ioi 0),
@@ -158,6 +201,17 @@ end GlobalTheory.VagueRescale
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `d ν hν h φ hφ hc`. Establish `hsplit : ∀ t : ℝ, max t 0 - max (-t) 0 = t`. Introduce `t`. Break down `le_total 0 t with ht | ht` into its components or cases. Rewrite using `[max_eq_left ht, max_eq_right (by linarith)]; ring`.
+
+Rewrite using `[max_eq_right ht, max_eq_left (by linarith)]; ring`. Establish `hp : Continuous (fun x => max (φ x) 0)` using `hφ.max continuous_const`. Establish `hm : Continuous (fun x => max (-φ x) 0)` using `hφ.neg.max continuous_const`. Establish `hpc : HasCompactSupport (fun x => max (φ x) 0)` using `hc.comp_left (g := fun t : ℝ => max t 0) (by simp)`. Establish `hmc : HasCompactSupport (fun x => max (-φ x) 0)` using `hc.comp_left (g := fun t : ℝ => max (-t) 0) (by simp)`.
+
+Establish `Tp` using `VagueRescale.tendsto_of_nonneg ν h _ hp hpc (fun x => le_max_right _ _)`. Establish `Tm` using `VagueRescale.tendsto_of_nonneg ν h _ hm hmc (fun x => le_max_right _ _)`. Establish `hint : ∀ g : EuclideanSpace ℝ (Fin d) → ℝ, Continuous g → HasCompactSupport g → ∀ r : ℝ, Integrable (fun x => g (r⁻¹ • x)) ν`. Introduce `g hg hgc r`. Take `⟨C, hC⟩` from `hg.bounded_above_of_compact_support hgc`.
+
+Conclude with `Integrable.of_bound (hg.comp (continuous_const_smul _)).aestronglyMeasurable C (Filter.Eventually.of_forall fun x => hC _)`. Establish `heq : (fun r : ℝ => (r ^ d)⁻¹ * ∫ x, φ (r⁻¹ • x) ∂ν) = fun r => (r ^ d)⁻¹ * ∫ x, max (φ (r⁻¹ • x)) 0 ∂ν - (r ^ d)⁻¹ * ∫ x, max (-φ (r⁻¹ • x)) 0 ∂ν`. Use function extensionality and compare the values at `r`. Rewrite using `[← mul_sub, ← integral_sub (hint _ hp hpc r) (hint _ hm hmc r)]`. Simplify using `only [hsplit]`.
+
+Establish `hvol : ∫ x, φ x = (∫ x, max (φ x) 0) - ∫ x, max (-φ x) 0`. Rewrite using `[← integral_sub (hp.integrable_of_hasCompactSupport hpc) (hm.integrable_of_hasCompactSupport hmc)]`. Simplify using `only [hsplit]`. Rewrite using `[heq, hvol]`. Conclude with `Tp.sub Tm`.
+-/
 theorem tendsto_rescaled_integral_of_density_one :
     ∀ (d : ℕ) (ν : Measure (EuclideanSpace ℝ (Fin d))), IsFiniteMeasure ν →
     (∀ κ : ℝ, 1 < κ → ∃ δ : ℝ, 0 < δ ∧ ∀ x : EuclideanSpace ℝ (Fin d), ‖x‖ < δ →

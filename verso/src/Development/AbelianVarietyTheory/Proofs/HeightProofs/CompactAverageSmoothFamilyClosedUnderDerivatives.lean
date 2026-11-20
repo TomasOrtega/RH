@@ -19,6 +19,9 @@ section Compact
 variable {K : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
   (μ : Measure K) [IsFiniteMeasure μ]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn hf.continuousOn`. Conclude with `Integrable.mono' (integrable_const C) hf.aestronglyMeasurable (Filter.Eventually.of_forall fun k => hC k (Set.mem_univ k))`.
+-/
 theorem integrable_of_continuous {f : K → ℂ} (hf : Continuous f) : Integrable f μ := by
   obtain ⟨C, hC⟩ := isCompact_univ.exists_bound_of_continuousOn hf.continuousOn
   exact Integrable.mono' (integrable_const C) hf.aestronglyMeasurable
@@ -34,6 +37,9 @@ def intCLM : C(K, ℂ) →L[ℂ] ℂ :=
       rw [mul_comm]
       exact norm_integral_le_of_norm_le_const (Filter.Eventually.of_forall fun k => f.norm_coe_le_norm k)
 
+/- English proof (translation)
+Set `Φ : C(Y × K, ℂ)` to `⟨fun p => F p.2 p.1, hF.comp continuous_swap⟩`. Conclude with `(intCLM μ).continuous.comp Φ.curry.continuous`.
+-/
 theorem continuous_avg {Y : Type} [TopologicalSpace Y] {F : K → Y → ℂ}
     (hF : Continuous fun p : K × Y => F p.1 p.2) : Continuous fun x => ∫ k, F k x ∂μ := by
   let Φ : C(Y × K, ℂ) := ⟨fun p => F p.2 p.1, hF.comp continuous_swap⟩
@@ -41,6 +47,11 @@ theorem continuous_avg {Y : Type} [TopologicalSpace Y] {F : K → Y → ℂ}
 
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
+/- English proof (translation)
+Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hc1 : Continuous fun p : K × ℝ => Rder θ V τ X (F p.1) (g * oneP θ V τ X p.2)` using `hGc.comp (continuous_fst.prodMk (continuous_const.mul ((GlobalTheory.Mem.Lift.continuous_oneP hθ hX).comp continuous_snd)))`. Take `⟨C, hC⟩` from `(isCompact_univ.prod (isCompact_closedBall (0 : ℝ) 1)).exists_bound_of_continuousOn hc1.continuousOn`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun t k => F k (g * oneP θ V τ X t)) (F' := fun t k => Rder θ V τ X (F k) (g * oneP θ V τ X t)) (x₀ := 0) (bound := fun _ => C) (Metric.closedBall_mem_nhds (0 : ℝ) zero_lt_one) (Filter.Eventually.of_forall fun t => ( …`. Establish `e` using `key.2`.
+
+Simplify using `only [GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one] at e`. Conclude with `e`.
+-/
 theorem hasDerivAt_avg (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) {F : K → GA D V → ℂ} (hF : ∀ k, F k ∈ GlobalTheory.Mem.AutSpace.SmFun θ V)
     (hFc : ∀ x, Continuous fun k => F k x)
@@ -68,6 +79,31 @@ theorem hasDerivAt_avg (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin
 
 end Compact
 
+/- English proof (translation)
+Introduce `D θ hθ V K _ _ _ _ μ _ 𝒢 hc hsm hder`. Establish `: IsTopologicalGroup (GA D V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hk : ∀ F ∈ 𝒢, ∀ x, Continuous fun k => F k x` using `fun F hF x => (hc F hF).comp (continuous_id.prodMk continuous_const)`. Establish `hint : ∀ F ∈ 𝒢, ∀ x, Integrable (fun k => F k x) μ` using `fun F hF x => integrable_of_continuous μ (hk F hF x)`. Establish `hd : ∀ F ∈ 𝒢, ∀ τ, ∀ X ∈ lieAt V τ, ∀ g, HasDerivAt (fun t : ℝ => ∫ k, F k (g * oneP θ V τ X t) ∂μ) (∫ k, Rder θ V τ X (F k) g ∂μ) 0` using `fun F hF τ X hX g => hasDerivAt_avg μ hθ hX (hsm F hF) (hk F hF) (hc _ (hder F hF τ X hX)) g`.
+
+Establish `hR : ∀ F ∈ 𝒢, ∀ τ, ∀ X ∈ lieAt V τ, Rder θ V τ X (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, Rder θ V τ X (F k) x ∂μ` using `fun F hF τ X hX => funext fun g => (hd F hF τ X hX g).deriv`. Establish `hSm : ∀ F ∈ 𝒢, (fun x => ∫ k, F k x ∂μ) ∈ GlobalTheory.Mem.AutSpace.SmFun θ V`. Introduce `F hF`. Use `GlobalTheory.Mem.DerClosed.mem_smFun_of_closed D θ hθ V {φ | ∃ F ∈ 𝒢, φ = fun x => ∫ k, F k x ∂μ} ?_ ?_ _ ⟨F, hF, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+
+Conclude with `continuous_avg μ (hc F hF)`. Introduce and unpack `_ ⟨F, hF, rfl⟩ τ X hX`. Conclude with `⟨_, ⟨_, hder F hF τ X hX, rfl⟩, hd F hF τ X hX⟩`. Establish `hW : ∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → ∀ F ∈ 𝒢, (fun k => l.foldr (fun p f => Rder θ V p.1 p.2 f) (F k)) ∈ 𝒢 ∧ l.foldr (fun p f => Rder θ V p.1 p.2 f) (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, (l.foldr (fun p f => Rder θ …`. Introduce `l hl F hF`.
+
+Proceed by induction on `l with`. Consider the case `nil => exact ⟨hF, rfl⟩`. Consider the case `cons p l ih`. Take `⟨h1, h2⟩` from `ih fun q hq => hl q (List.mem_cons_of_mem _ hq)`. Establish `hp` using `hl p List.mem_cons_self`.
+
+Use `⟨hder _ h1 p.1 p.2 hp, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons]`. Rewrite using `[h2]`. Conclude with `hR _ h1 p.1 p.2 hp`. Establish `hC : ∀ F ∈ 𝒢, ∀ τ Z, (fun k => RderC θ V τ Z (F k)) ∈ 𝒢 ∧ RderC θ V τ Z (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, RderC θ V τ Z (F k) x ∂μ`.
+
+Introduce `F hF τ Z`. Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Establish `m1` using `hder F hF τ _ h1`. Establish `m2` using `hder F hF τ _ h2`. Establish `e : (fun k => RderC θ V τ Z (F k)) = (fun k => Rder θ V τ ((1 / 2 : ℂ) • (Z + conjAt V τ Z)) (F k)) + Complex.I • (fun k => Rder θ V τ ((1 / (2 * Complex.I)) • (Z - conjAt V τ Z)) (F k))` using `rfl`.
+
+Use `⟨e ▸ add_mem m1 (Submodule.smul_mem _ _ m2), ?_⟩` and prove the remaining obligations. Establish `i1` using `hint _ m1`. Establish `i2` using `hint _ m2`. Simplify using `only [RderC]`. Rewrite using `[hR F hF τ _ h1, hR F hF τ _ h2]`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (i1 x) ((i2 x).const_mul _), integral_const_mul]`. Establish `hL : ∀ τ (L : List ((GA D V → ℂ) → GA D V → ℂ)), (∀ f ∈ L, ∃ Z, f = RderC θ V τ Z) → ∀ F ∈ 𝒢, (fun k => L.foldr (fun f acc => f acc) (F k)) ∈ 𝒢 ∧ L.foldr (fun f acc => f acc) (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, (L.foldr (fun f acc => f acc) (F k)) x ∂μ`. Introduce `τ L hLZ F hF`.
+
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨hF, rfl⟩`. Consider the case `cons f L ih`. Take `⟨h1, h2⟩` from `ih fun q hq => hLZ q (List.mem_cons_of_mem _ hq)`. Take `⟨Z, rfl⟩` from `hLZ f List.mem_cons_self`.
+
+Use `⟨(hC _ h1 τ Z).1, ?_⟩` and prove the remaining obligations. Simplify using `only [List.foldr_cons]`. Rewrite using `[h2]`. Conclude with `(hC _ h1 τ Z).2`. Introduce `F hF`.
+
+Use `⟨continuous_avg μ (hc F hF), hSm F hF, fun l hl => (hW l hl F hF).2, fun τ j => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ idx : Fin (j + 1) → Fin V.rank, ∀ f ∈ List.ofFn (fun a : Fin (j + 1) => RderC θ V τ (Matrix.single (idx a) (idx (a + 1)) 1)), ∃ Z, f = RderC θ V τ Z`. Introduce `idx f hf`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hf`. Conclude with `⟨_, rfl⟩`.
+
+Simplify using `only [gelf]`. Rewrite using `[Finset.sum_congr rfl fun idx _ => (hL τ _ (hmem idx) F hF).2]`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[integral_finset_sum _ fun idx _ => hint _ (hL τ _ (hmem idx) F hF).1 x]`.
+-/
 theorem avg_closed : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam (D := D) θ → ∀ (V : HSp D) (K : Type) [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] (𝒢 : Submodule ℂ (K → GA D V → ℂ)), (∀ F ∈ 𝒢, Continuous fun p : K × GA D V => F p.1 p.2) → (∀ F ∈ 𝒢, ∀ k, F k ∈ GlobalTheory.Mem.AutSpace.SmFun θ V) → (∀ F ∈ 𝒢, ∀ τ, ∀ X ∈ lieAt V τ, (fun k => Rder θ V τ X (F k)) ∈ 𝒢) → ∀ F ∈ 𝒢, Continuous (fun x => ∫ k, F k x ∂μ) ∧ (fun x => ∫ k, F k x ∂μ) ∈ GlobalTheory.Mem.AutSpace.SmFun θ V ∧ (∀ l : List (D.what₂.Tau × Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ p ∈ l, p.2 ∈ lieAt V p.1) → l.foldr (fun p f => Rder θ V p.1 p.2 f) (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, (l.foldr (fun p f => Rder θ V p.1 p.2 f) (F k)) x ∂μ) ∧ ∀ τ j, gelf θ V τ j (fun x => ∫ k, F k x ∂μ) = fun x => ∫ k, gelf θ V τ j (F k) x ∂μ := by
   intro D θ hθ V K _ _ _ _ μ _ 𝒢 hc hsm hder
   have : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _

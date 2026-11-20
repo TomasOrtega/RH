@@ -15,6 +15,11 @@ namespace PositivityTheory.Rg.Rsw.L.LApproxId
 
 open GlobalTheory.CompanionTheory.SiegelND.Coef.TestN
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a c`. Establish `h' : GlobalTheory.MixModel.adj X = X` using `h`. Use `congrFun (congrFun h' a) c` as an intermediate fact. Simplify `this` using `[GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply]`.
+
+Introduce `h`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj X = X`. Use extensionality with `a c`. Simplify `h a c` using `[GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply]`.
+-/
 theorem memHA (D : D7) (t : ℕ) (X : Mx D t t) : X ∈ hermA D t ↔ X ∈ HermR (AF D.host.F) D.sp.cm.sig t := by
   constructor
   · intro h a c
@@ -26,6 +31,11 @@ theorem memHA (D : D7) (t : ℕ) (X : Mx D t t) : X ∈ hermA D t ↔ X ∈ Herm
     ext a c
     simpa [GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply] using h a c
 
+/- English proof (translation)
+Establish `h' : GlobalTheory.MixModel.adj X = X` using `h`. Express the relevant statement in the definitionally equal form `GlobalTheory.MixModel.adj (e • X) = e • X`. Use extensionality with `a c`. Use `congrFun (congrFun h' a) c` as an intermediate fact. Simplify using `only [GlobalTheory.MixModel.adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, he] at this ⊢`.
+
+Rewrite using `[this]`.
+-/
 theorem smul_memA (D : D7) (t : ℕ) (e : AE D) (he : cA D e = e) (X : Mx D t t) (h : X ∈ hermA D t) :
     e • X ∈ hermA D t := by
   have h' : GlobalTheory.MixModel.adj X = X := h
@@ -36,17 +46,28 @@ theorem smul_memA (D : D7) (t : ℕ) (e : AE D) (he : cA D e = e) (X : Mx D t t)
     map_mul, he] at this ⊢
   rw [this]
 
+/- English proof (translation)
+Simplify using `only [pch, halfTr, trA, pairHerm, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]`.
+-/
 theorem pch_eq (D : D7) (t : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (X T : Mx D t t) (hX : X ∈ hermA D t)
     (hT : T ∈ hermA D t) :
     pch ψ X T = ψ (pairHerm (AF D.host.F) D.sp.cm.sig t ⟨X, (memHA D t X).1 hX⟩ ⟨T, (memHA D t T).1 hT⟩) := by
   simp only [pch, halfTr, trA, pairHerm, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply]
 
+/- English proof (translation)
+The claim follows from `(hCo_smul _ b ε X X (by rw [← heS, hX]) i).symm`.
+-/
 theorem coord_fix (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
     (X : HermR (AF D.host.F) D.sp.cm.sig t) (hX : e • X.1 = X.1) (i : Idx t d) :
     ε * hCo (AF D.host.F) D.sp.cm.sig b X i = hCo (AF D.host.F) D.sp.cm.sig b X i :=
   (hCo_smul _ b ε X X (by rw [← heS, hX]) i).symm
 
+/- English proof (translation)
+Establish `hyA : y.1 ∈ hermA D t` using `(memHA D t y.1).2 y.2`. Establish `hY` using `(memHA D t _).1 (smul_memA D t e hcA y.1 hyA)`. Establish `h1 : eA ⟨e • y.1, hY⟩ = eA y`. Use function extensionality and compare the values at `i`. Rewrite using `[heA, hCo_smul _ b ε y ⟨e • y.1, hY⟩ (by rw [← heS]) i, ← heA, hw]`.
+
+Conclude with `congrArg Subtype.val (eA.injective h1)`.
+-/
 theorem mem_of_coord (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     (hcA : cA D e = e) {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
     (eA : HermR (AF D.host.F) D.sp.cm.sig t ≃ₜ+ (Idx t d → AF D.host.F))
@@ -61,6 +82,15 @@ theorem mem_of_coord (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e =
 
 set_option synthInstance.maxHeartbeats 200000 in
 
+/- English proof (translation)
+Establish `hfix : ∀ (x : hermS D t e) i, ε * eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i = eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i` using `fun x i => by`. Rewrite using `[heA]`. Conclude with `coord_fix D t e ε heS b ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ x.2 i`. Establish `hinv : ∀ v : Idx t d → fixE ε, e • (eA.symm (fun i => (v i).1)).1 = (eA.symm (fun i => (v i).1)).1` using `fun v => mem_of_coord D t e ε heS hcA b eA heA _ (fun i => by rw [eA.apply_symm_apply]; exact (v i).2)`. Use `⟨{ toFun := fun x i => ⟨eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ i, hfix x i⟩ invFun := fun v => ⟨⟨(eA.symm (fun i => (v i).1)).1, (memHA D t _).2 (eA.symm _).2⟩, hinv v⟩ left_inv := fun x => by` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use `right_inv := fun v => by`. Use function extensionality and compare the values at `i`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Use the proof step `map_add' := fun x y => by`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `eA _ i = eA _ i + eA _ i`. Conclude with `congrFun (map_add eA ⟨x.1.1, (memHA D t x.1.1).1 x.1.2⟩ ⟨y.1.1, (memHA D t y.1.1).1 y.1.2⟩) i`. Use `continuous_toFun := continuous_pi fun i => Continuous.subtype_mk ((continuous_apply i).comp (eA.continuous.comp ((continuous_subtype_val.comp continuous_subtype_val).subtype_mk _))) _`. Use `continuous_invFun := ((continuous_subtype_val.comp (eA.symm.continuous.comp (continuous_pi fun i => continuous_subtype_val.comp (continuous_apply i)))).subtype_mk _).subtype_mk _ },`. Use `fun x i => rfl⟩`.
+-/
 theorem exTheta' (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = algebraMap (AF D.host.F) (AE D) ε)
     (hcA : cA D e = e) {d : ℕ} (b : Module.Basis (Fin d) D.host.F D.host.E)
     (eA : HermR (AF D.host.F) D.sp.cm.sig t ≃ₜ+ (Idx t d → AF D.host.F))
@@ -92,6 +122,9 @@ theorem exTheta' (D : D7) (t : ℕ) (e : AE D) (ε : AF D.host.F) (heS : e = alg
               (continuous_pi fun i => continuous_subtype_val.comp (continuous_apply i)))).subtype_mk _).subtype_mk _ },
     fun x i => rfl⟩
 
+/- English proof (translation)
+Establish `h : e = LIdemEx.eS S` using `LIdemEx.ae_ext _ _ (fun w => by rw [he.1 w, (LIdemEx.isIdem_eS S).1 w]) (fun v => by rw [he.2 v, (LIdemEx.isIdem_eS S).2 v])`. Conclude with `h.trans rfl`.
+-/
 theorem e_eq (D : D7) (S : Finset (Pl D)) (e : AE D) (he : IsIdem S e) :
     e = algebraMap (AF D.host.F) (AE D) ((1, LIdemEx.indS S) : AF D.host.F) := by
   have h : e = LIdemEx.eS S := LIdemEx.ae_ext _ _ (fun w => by rw [he.1 w, (LIdemEx.isIdem_eS S).1 w])

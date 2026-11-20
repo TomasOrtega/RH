@@ -17,6 +17,9 @@ def HasSmoothCoordCodim {X Y : Scheme.{u}} {k : Type u} [Field k]
       q ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin c)) = U.ι ≫ s ∧
       restrictIdeal t.ker U = (coordSubspaceIdeal k c Finset.univ).comap q
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem hasSmoothCoordCodim_iff {X Y : Scheme.{u}} {k : Type u} [Field k]
     (s : Y ⟶ Spec (CommRingCat.of k)) (t : X ⟶ Y) (c : ℕ) :
     HasSmoothCoordCodim s t c ↔

@@ -20,6 +20,11 @@ section SplitFacts
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι] {d : ι → ℕ} {a : ι}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Use `splitSymm_apply_ne (d := d) c 1 ⟨i, hi⟩` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this, Pi.mulSingle_eq_of_ne hi]`. Both sides reduce to the same expression.
+-/
 theorem splitSymm_mulSingle_self (c : GL (Fin (d a)) F) :
     splitSymm d a c 1 = (Pi.mulSingle a c : ∀ i, GL (Fin (d i)) F) := by
   funext i
@@ -30,6 +35,13 @@ theorem splitSymm_mulSingle_self (c : GL (Fin (d a)) F) :
     rw [this, Pi.mulSingle_eq_of_ne hi]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = a`. Substitute `hi` using the available equality. Rewrite using `[splitSymm_apply_self, Pi.mulSingle_eq_of_ne (Ne.symm j.2)]`. Use `splitSymm_apply_ne (d := d) 1 (Pi.mulSingle j c) ⟨i, hi⟩` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite using `[this]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Pi.mulSingle_eq_of_ne (show (⟨i, hi⟩ : {i // i ≠ a}) ≠ j from fun h => hij (by rw [← h])), Pi.mulSingle_eq_of_ne hij]`.
+-/
 theorem splitSymm_one_mulSingle (j : {i // i ≠ a}) (c : GL (Fin (d j)) F) :
     splitSymm d a 1 (Pi.mulSingle j c) = (Pi.mulSingle (j : ι) c : ∀ i, GL (Fin (d i)) F) := by
   funext i
@@ -45,6 +57,9 @@ theorem splitSymm_one_mulSingle (j : {i // i ≠ a}) (c : GL (Fin (d j)) F) :
     · rw [Pi.mulSingle_eq_of_ne (show (⟨i, hi⟩ : {i // i ≠ a}) ≠ j from fun h => hij (by rw [← h])),
         Pi.mulSingle_eq_of_ne hij]
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ a, splitSymm_apply_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[splitSymm_apply_ne]`.
+-/
 theorem prod_splitSymm {M : Type*} [CommMonoid M] (f : ∀ i, GL (Fin (d i)) F → M)
     (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F) :
     ∏ i, f i (splitSymm d a g y i) = f a g * ∏ j : {i // i ≠ a}, f j (y j) := by
@@ -53,6 +68,9 @@ theorem prod_splitSymm {M : Type*} [CommMonoid M] (f : ∀ i, GL (Fin (d i)) F �
   refine Finset.prod_congr rfl fun j _ => ?_
   rw [splitSymm_apply_ne]
 
+/- English proof (translation)
+Rewrite using `[Pi.mul_apply, splitSymm_apply_ne]`.
+-/
 theorem centralPow_mul_splitSymm_apply (j : ι → ℤ) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F)
     (k : {i // i ≠ a}) :
     ((fun i => centralUnif F (d i) ^ j i) * splitSymm d a 1 y) k =
@@ -103,6 +121,9 @@ def blockBLin (Φ : Matrix (Fin m) (Fin m) F → ℂ) (w : W) (s : ℂ)
 
 variable {μ₀}
 
+/- English proof (translation)
+Establish `h2 : ((1 : GL (Fin m) F), k.2⁻¹) ∈ Ka.prod K'` using `Subgroup.mem_prod.2 ⟨one_mem _, inv_mem (Subgroup.mem_prod.1 hk).2⟩`. Apply the tactic sequence `have : k⁻¹ * (g, 1) = (k.1⁻¹ * g, 1) * (1, k.2⁻¹) := by ext1 <;> simp`. Rewrite using `[← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply, hw _ h2]`.
+-/
 theorem rep_inv_mul_prod {Ka : Subgroup (GL (Fin m) F)} {K' : Subgroup H₁} {w : W}
     (hw : w ∈ fixedVectors ρ₁ (Ka.prod K')) {k : GL (Fin m) F × H₁} (hk : k ∈ Ka.prod K')
     (g : GL (Fin m) F) : ρ₁ k⁻¹ (ρ₁ (g, 1) w) = ρ₁ (k.1⁻¹ * g, 1) w := by
@@ -112,6 +133,11 @@ theorem rep_inv_mul_prod {Ka : Subgroup (GL (Fin m) F)} {K' : Subgroup H₁} {w 
     ext1 <;> simp
   rw [← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply, hw _ h2]
 
+/- English proof (translation)
+Use `eq_sum_of_invariant hρ₁ hKc hKo (blockALin μ₀ Ψ w s hint) ?_ μ` and prove the remaining obligations. Introduce `k hk ν`. Use `show blockA μ₀ ρ₁ Ψ w (contragredient ρ₁ k ν : smoothVectors _) s = blockA μ₀ ρ₁ Ψ w ν s`. Simplify using `only [blockA, contragredient_apply_apply]`. Establish `hk1 : k.1 ∈ Ka` using `(Subgroup.mem_prod.1 hk).1`.
+
+Repeatedly rewrite using `[rep_inv_mul_prod hw hk]`. Rewrite using `[← integral_mul_left_eq_self _ k.1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [inv_mul_cancel_left, Units.val_mul, hΨ k.1 hk1]`. Rewrite using `[detPow_mul, detPow_of_mem_integralGL (hKa hk1), one_mul]`.
+-/
 theorem blockA_eq_sum (hρ₁ : IsSmooth ρ₁) {Ka : Subgroup (GL (Fin m) F)} {K' : Subgroup H₁}
     (hKc : IsCompact ((Ka.prod K' : Subgroup (GL (Fin m) F × H₁)) : Set (GL (Fin m) F × H₁)))
     (hKo : IsOpen ((Ka.prod K' : Subgroup (GL (Fin m) F × H₁)) : Set (GL (Fin m) F × H₁)))
@@ -140,6 +166,13 @@ theorem blockA_eq_sum (hρ₁ : IsSmooth ρ₁) {Ka : Subgroup (GL (Fin m) F)} {
   simp only [inv_mul_cancel_left, Units.val_mul, hΨ k.1 hk1]
   rw [detPow_mul, detPow_of_mem_integralGL (hKa hk1), one_mul]
 
+/- English proof (translation)
+Establish `: μ₀.IsMulRightInvariant` using `Measures.isMulRightInvariant_GL F m μ₀`. Use `eq_sum_of_invariant hρ₁ hKc hKo (blockBLin μ₀ Φ w s hint) ?_ μ` and prove the remaining obligations. Introduce `k hk ν`. Use `show blockB μ₀ ρ₁ Φ w (contragredient ρ₁ k ν : smoothVectors _) s = blockB μ₀ ρ₁ Φ w ν s`. Simplify using `only [blockB, contragredient_apply_apply]`.
+
+Establish `hk1 : k.1 ∈ Ka` using `(Subgroup.mem_prod.1 hk).1`. Repeatedly rewrite using `[rep_inv_mul_prod hw hk]`. Rewrite using `[← integral_mul_right_eq_self _ k.1⁻¹]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul, hΦ _ (inv_mem hk1)]`.
+
+Rewrite using `[detPow_mul_of_mem_integralGL _ (hKa (inv_mem hk1)), _root_.mul_inv_rev, inv_inv, inv_mul_cancel_left]`.
+-/
 theorem blockB_eq_sum (hρ₁ : IsSmooth ρ₁) {Ka : Subgroup (GL (Fin m) F)} {K' : Subgroup H₁}
     (hKc : IsCompact ((Ka.prod K' : Subgroup (GL (Fin m) F × H₁)) : Set (GL (Fin m) F × H₁)))
     (hKo : IsOpen ((Ka.prod K' : Subgroup (GL (Fin m) F × H₁)) : Set (GL (Fin m) F × H₁)))
@@ -196,6 +229,17 @@ def MultiFEStatement (ψ : AddChar F Circle) (r : ℕ) : Prop :=
           (fun s => ∫ x, multiB ρ (fun i => GJMatrix.localMatrixFourier ψ (Ψ i)) w ℓ s x
             ∂Measure.pi μ)
 
+/- English proof (translation)
+Introduce `ι _ _ hcard d _ μ _ H _ _ _ _ _ _ ρ _ _ α _ _ _`. Establish `hempty : IsEmpty ι` using `Fintype.card_eq_zero_iff.1 hcard`. Use `⟨1, fun Ψ _ w ℓ _ => ?_⟩` and prove the remaining obligations. Establish `hval : ∀ f : (∀ i, GL (Fin (d i)) F) → ℂ, ∫ x, f x ∂Measure.pi μ = f 1`. Introduce `f`.
+
+Establish `hu : (Measure.pi μ).real Set.univ = 1`. Rewrite using `[Measure.real, Measure.pi_of_empty μ (1 : ∀ i, GL (Fin (d i)) F), measure_univ, ENNReal.toReal_one]`. Rewrite using `[integral_unique, hu, one_smul]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+
+Use `⟨RatFunc.C (ℓ w), 0, fun s _ => ?_, fun s _ => ?_⟩` and prove the remaining obligations. Use `show ∫ x, multiA ρ Ψ w ℓ s x ∂Measure.pi μ = _`. Rewrite using `[hval, RatFunc.eval_C]`. Simplify using `only [multiA, Finset.univ_eq_empty, Finset.prod_empty, one_mul]`. Rewrite using `[show ((1 : ∀ i, GL (Fin (d i)) F), (1 : H)) = 1 from rfl, map_one]`.
+
+Both sides reduce to the same expression. Use `show ∫ x, multiB ρ (fun i => GJMatrix.localMatrixFourier ψ (Ψ i)) w ℓ s x ∂Measure.pi μ = _`. Rewrite using `[hval, one_mul, RatFunc.eval_C]`. Simplify using `only [multiB, Finset.univ_eq_empty, Finset.prod_empty, one_mul, inv_one]`. Rewrite using `[show ((1 : ∀ i, GL (Fin (d i)) F), (1 : H)) = 1 from rfl, map_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem multiFEStatement_zero (ψ : AddChar F Circle) : MultiFEStatement.{uF, u, w} F W ψ 0 := by
   intro ι _ _ hcard d _ μ _ H _ _ _ _ _ _ ρ _ _ α _ _ _
   have hempty : IsEmpty ι := Fintype.card_eq_zero_iff.1 hcard
@@ -221,6 +265,75 @@ theorem multiFEStatement_zero (ψ : AddChar F Circle) : MultiFEStatement.{uF, u,
     rw [show ((1 : ∀ i, GL (Fin (d i)) F), (1 : H)) = 1 from rfl, map_one]
     rfl
 
+/- English proof (translation)
+Introduce `ι _ _ hcard d _ μ _ H _ _ _ _ _ _ ρ hadm hirr α hα0 hα hsupp`. Take `⟨a⟩ : Nonempty ι` from `Fintype.card_pos_iff.1 (by omega)`. Use `set ρ₁ : Representation ℂ (GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H)) W := ρ.comp (peelFst d H a).symm.toMonoidHom with hρ₁def`. Use `set ρ₂ : Representation ℂ ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × (GL (Fin (d a)) F × H)) W := ρ.comp (peelSnd d H a).symm.toMonoidHom with hρ₂def`. Establish `hρ₁ : ∀ g y h, ρ₁ (g, (y, h)) = ρ (splitSymm d a g y, h)` using `fun g y h => by`.
+
+Rewrite using `[hρ₁def, MonoidHom.comp_apply]`. Conclude with `congrArg ρ (peelFst_symm_apply d H a (g, (y, h)))`. Establish `hρ₂ : ∀ y g h, ρ₂ (y, (g, h)) = ρ (splitSymm d a g y, h)` using `fun y g h => by`. Rewrite using `[hρ₂def, MonoidHom.comp_apply]`. Conclude with `congrArg ρ (peelSnd_symm_apply d H a (y, (g, h)))`.
+
+Establish `hadm₁ : IsAdmissible ρ₁` using `(isAdmissible_comp_iff (peelFst d H a).symm ρ).2 hadm`. Establish `hadm₂ : IsAdmissible ρ₂` using `(isAdmissible_comp_iff (peelSnd d H a).symm ρ).2 hadm`. Establish `hirr₁ : ρ₁.IsIrreducible` using `(isIrreducible_comp_iff (peelFst d H a).symm ρ).2 hirr`. Establish `hirr₂ : ρ₂.IsIrreducible` using `(isIrreducible_comp_iff (peelSnd d H a).symm ρ).2 hirr`. Establish `hsm₁ : ∀ ℓ : Module.Dual ℂ W, ℓ ∈ smoothVectors (Representation.dual ρ₁) ↔ ℓ ∈ smoothVectors (Representation.dual ρ)` using `fun ℓ => mem_smoothVectors_dual_comp_iff (peelFst d H a).symm ρ`.
+
+Establish `hsm₂ : ∀ ℓ : Module.Dual ℂ W, ℓ ∈ smoothVectors (Representation.dual ρ₂) ↔ ℓ ∈ smoothVectors (Representation.dual ρ)` using `fun ℓ => mem_smoothVectors_dual_comp_iff (peelSnd d H a).symm ρ`. Establish `hα₁ : ∀ v, ρ₁ (centralUnif F (d a), 1) v = α a • v`. Introduce `v`. Express the relevant statement in the definitionally equal form `ρ₁ (centralUnif F (d a), ((1 : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F), (1 : H))) v = _`. Rewrite using `[hρ₁, splitSymm_mulSingle_self]`.
+
+Conclude with `hα a v`. Establish `hsupp₁ : ∀ v : W, ∀ ℓ ∈ smoothVectors (Representation.dual ρ₁), ∃ C : Set (GL (Fin (d a)) F), IsCompact C ∧ ∀ g, ℓ (ρ₁ (g, 1) v) ≠ 0 → ∃ j : ℤ, centralUnif F (d a) ^ j * g ∈ C`. Introduce `v ℓ hℓ`. Take `⟨C, hC, hCs⟩` from `hsupp v ℓ ((hsm₁ ℓ).1 hℓ)`. Use `⟨(fun x : ∀ i, GL (Fin (d i)) F => x a) '' C, hC.image (continuous_apply a), fun g hg => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ℓ (ρ₁ (g, ((1 : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F), (1 : H))) v) ≠ 0 at hg`. Rewrite `hg` using `[hρ₁, splitSymm_mulSingle_self]`. Take `⟨j, hj⟩` from `hCs _ hg`. Conclude with `⟨j a, _, hj, by simp [Pi.mul_apply]⟩`. Take `⟨γa, sa, hblock⟩` from `exists_blockFE (μ a) hadm₁ hψ hψ1 hα₁ hsupp₁`.
+
+Establish `hcard' : Fintype.card {i // i ≠ a} = r`. Rewrite using `[Fintype.card_subtype, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ a), Finset.card_univ, hcard]`. Both sides reduce to the same expression. Establish `hα₂ : ∀ (j : {i // i ≠ a}) v, ρ₂ (Pi.mulSingle j (centralUnif F (d j)), 1) v = α j • v`. Introduce `j v`.
+
+Express the relevant statement in the definitionally equal form `ρ₂ (Pi.mulSingle j (centralUnif F (d j)), ((1 : GL (Fin (d a)) F), (1 : H))) v = _`. Rewrite using `[hρ₂, splitSymm_one_mulSingle]`. Conclude with `hα j v`. Establish `hsupp₂ : ∀ v : W, ∀ ℓ ∈ smoothVectors (Representation.dual ρ₂), ∃ C : Set (∀ i : {i // i ≠ a}, GL (Fin (d i)) F), IsCompact C ∧ ∀ y, ℓ (ρ₂ (y, 1) v) ≠ 0 → ∃ j : {i // i ≠ a} → ℤ, (fun i : {i // i ≠ a} => centralUnif F (d i) ^ j i) * y ∈ C`. Introduce `v ℓ hℓ`.
+
+Take `⟨C, hC, hCs⟩` from `hsupp v ℓ ((hsm₂ ℓ).1 hℓ)`. Use `⟨(fun x : ∀ i, GL (Fin (d i)) F => fun k : {i // i ≠ a} => x k) '' C, hC.image (continuous_pi fun k => continuous_apply (k : ι)), fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ℓ (ρ₂ (y, ((1 : GL (Fin (d a)) F), (1 : H))) v) ≠ 0 at hy`. Rewrite `hy` using `[hρ₂]`. Take `⟨j, hj⟩` from `hCs _ hy`.
+
+Use `⟨fun k => j k, _, hj, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Conclude with `centralPow_mul_splitSymm_apply j y k`. Take `⟨γ', hIH⟩` from `ih {i // i ≠ a} hcard' (fun j => d j) (fun j => μ j) (GL (Fin (d a)) F × H) ρ₂ hadm₂ hirr₂ (fun j => α j) (fun j => hα0 j) hα₂ hsupp₂`. Take `⟨s₀, hconv⟩` from `exists_integrable_multi ρ hadm.1 hα0 hα hsupp μ`.
+
+Take `⟨s₂, hconv₂⟩` from `exists_integrable_multi ρ₂ hadm₂.1 (fun j => hα0 j) hα₂ hsupp₂ (fun j => μ j)`. Use `⟨γa * γ', fun Ψ hΨ w ℓ hℓ => ?_⟩` and prove the remaining obligations. Establish `hℓ₁ : ℓ ∈ smoothVectors (Representation.dual ρ₁)` using `(hsm₁ ℓ).2 hℓ`. Establish `hℓ₂ : ℓ ∈ smoothVectors (Representation.dual ρ₂)` using `(hsm₂ ℓ).2 hℓ`. Take `⟨m₀, hm₀⟩` from `(hΨ a).exists_congruence_invariant`.
+
+Establish `hw₁ : w ∈ smoothVectors ρ₁` using `hadm₁.1 w`. Establish `hnhds : (stabilizerOf ρ₁ w : Set (GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H))) ∈ nhds ((1 : GL (Fin (d a)) F), (1 : (∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H))` using `(mem_smoothVectors.1 hw₁).mem_nhds (one_mem (stabilizerOf ρ₁ w))`. Take `⟨U, hU, V, hV, hUV⟩` from `mem_nhds_prod_iff.1 hnhds`. Take `⟨Ka, hKac, hKaU⟩` from `exists_openSubgroup_isCompact_subset (Filter.inter_mem hU ((isOpen_congruenceSubgroup F (d a) m₀).mem_nhds (one_mem _)))`. Take `⟨K', hK'c, hK'V⟩` from `exists_openSubgroup_isCompact_subset hV`.
+
+Use `set K := (Ka : Subgroup (GL (Fin (d a)) F)).prod (K' : Subgroup ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H)) with hKdef`. Establish `hKc : IsCompact (K : Set (GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H)))`. Rewrite using `[hKdef, Subgroup.coe_prod]`. Conclude with `hKac.prod hK'c`. Establish `hKo : IsOpen (K : Set (GL (Fin (d a)) F × ((∀ i : {i // i ≠ a}, GL (Fin (d i)) F) × H)))`.
+
+Rewrite using `[hKdef, Subgroup.coe_prod]`. Conclude with `Ka.isOpen.prod K'.isOpen`. Establish `hKa : (Ka : Subgroup (GL (Fin (d a)) F)) ≤ integralGL F (d a)` using `fun k hk => congruenceSubgroup_le F (d a) m₀ (hKaU hk).2`. Establish `hΨa : ∀ k ∈ (Ka : Subgroup (GL (Fin (d a)) F)), ∀ X, Ψ a ((k : Matrix (Fin (d a)) (Fin (d a)) F) * X) = Ψ a X` using `fun k hk X => (hm₀ k (hKaU hk).2 X).1`. Establish `hΦa : ∀ k ∈ (Ka : Subgroup (GL (Fin (d a)) F)), ∀ X, GJMatrix.localMatrixFourier ψ (Ψ a) (X * (k : Matrix (Fin (d a)) (Fin (d a)) F)) = GJMatrix.localMatrixFourier ψ (Ψ a) X` using `fun k hk X => localMatrixFourier_mul_right_of_invariant (hKa hk) (fun x => (hm₀ k⁻¹ (inv_mem (hKaU hk).2) x).1) X`.
+
+Establish `hwK : w ∈ fixedVectors ρ₁ K` using `fun k hk => hUV ⟨(hKaU (Subgroup.mem_prod.1 hk).1).1, hK'V (Subgroup.mem_prod.1 hk).2⟩`. Establish `: FiniteDimensional ℂ (fixedVectors ρ₁ K)` using `hadm₁.2 K hKc hKo`. Use `set b := Module.finBasis ℂ (fixedVectors ρ₁ K) with hb`. Use `set L : Fin (Module.finrank ℂ (fixedVectors ρ₁ K)) → Module.Dual ℂ W := fun i => (((extendFixed hadm₁.1 hKc hKo (b.coord i) : fixedVectors (contragredient ρ₁) K) : smoothVectors (Representation.dual ρ₁)) : Module.Dual ℂ W) with hL`. Establish `hLsm : ∀ i, L i ∈ smoothVectors (Representation.dual ρ₁)` using `fun i => ((extendFixed hadm₁.1 hKc hKo (b.coord i) : fixedVectors (contragredient ρ₁) K) : smoothVectors (Representation.dual ρ₁)).2`.
+
+Establish `hmp` using `measurePreserving_piSplitAt d a μ`. Establish `hemb : MeasurableEmbedding (Equiv.piSplitAt a fun i => GL (Fin (d i)) F)` using `(Homeomorph.piSplitAt a fun i => GL (Fin (d i)) F).toMeasurableEquiv.measurableEmbedding`. Establish `hprod1 : ∀ (g : GL (Fin (d a)) F) (y : ∀ i : {i // i ≠ a}, GL (Fin (d i)) F) (h : H), ρ (splitSymm d a g y, h) = ρ₁ (1, (y, h)) * ρ₁ (g, 1)`. Introduce `g y h`. Rewrite using `[← map_mul, ← hρ₁]`.
+
+Use `congr 1`. Apply the tactic sequence `ext1 <;> simp`. Establish `hA : ∀ s : ℂ, max sa (max s₀ s₂) < s.re → ∫ x, multiA ρ Ψ w ℓ s x ∂Measure.pi μ = ∑ i, blockA (μ a) ρ₁ (Ψ a) w (L i) s * ∫ y, multiA ρ₂ (fun j : {i // i ≠ a} => Ψ j) (b i : W) ℓ s y ∂Measure.pi (fun j : {i // i ≠ a} => μ j)`. Introduce `s hs`. Simplify using `only [max_lt_iff] at hs`.
+
+Take `⟨hsa, hs₀, hs₂⟩` from `hs`. Establish `hint` using `(hconv Ψ hΨ w ℓ hℓ).1 s hs₀`. Use `set G : GL (Fin (d a)) F × (∀ j : {i // i ≠ a}, GL (Fin (d j)) F) → ℂ := fun p => multiA ρ Ψ w ℓ s (splitSymm d a p.1 p.2) with hG`. Establish `hGF : ∀ x, G (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x) = multiA ρ Ψ w ℓ s x` using `fun x => by`. Simplify using `only [hG]`.
+
+Rewrite using `[show splitSymm d a (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x).1 (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x).2 = x from (Equiv.piSplitAt a fun i => GL (Fin (d i)) F).symm_apply_apply x]`. Establish `hGint : Integrable G ((μ a).prod (Measure.pi fun j : {i // i ≠ a} => μ j))`. Rewrite using `[← hmp.integrable_comp_emb hemb]`. Conclude with `hint.congr (Filter.Eventually.of_forall fun x => (hGF x).symm)`. Establish `hinner : ∀ y : ∀ j : {i // i ≠ a}, GL (Fin (d j)) F, ∫ g, G (g, y) ∂(μ a) = ∑ i, blockA (μ a) ρ₁ (Ψ a) w (L i) s * multiA ρ₂ (fun j : {i // i ≠ a} => Ψ j) (b i : W) ℓ s y`.
+
+Introduce `y`. Use `set μy : smoothVectors (Representation.dual ρ₁) := contragredient ρ₁ ((1 : GL (Fin (d a)) F), (y, (1 : H)))⁻¹ ⟨ℓ, hℓ₁⟩ with hμy`. Establish `hμyv : ∀ v, (μy : Module.Dual ℂ W) v = ℓ (ρ₁ ((1 : GL (Fin (d a)) F), (y, (1 : H))) v)` using `fun v => by rw [hμy, contragredient_apply_apply, inv_inv]`. Use `set P : ℂ := ∏ j : {i // i ≠ a}, Ψ j (y j : Matrix (Fin (d j)) (Fin (d j)) F) * detPow (y j) s with hP`. Establish `hGy : ∀ g, G (g, y) = P * (Ψ a (g : Matrix (Fin (d a)) (Fin (d a)) F) * detPow g s * (μy : Module.Dual ℂ W) (ρ₁ (g, 1) w))` using `fun g => by`.
+
+Simplify using `only [hG, multiA]`. Rewrite using `[prod_splitSymm (fun i x => Ψ i (x : Matrix (Fin (d i)) (Fin (d i)) F) * detPow x s) g y, hprod1, Module.End.mul_apply, hμyv]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hGy]`. Rewrite using `[integral_const_mul]`.
+
+Establish `hblockA` using `blockA_eq_sum (μ₀ := μ a) hadm₁.1 hKc hKo hKa hΨa hwK (fun ν hν => (hblock (Ψ a) (hΨ a) w ν hν).1 s hsa) μy`. Rewrite using `[show ∫ g, Ψ a (g : Matrix (Fin (d a)) (Fin (d a)) F) * detPow g s * (μy : Module.Dual ℂ W) (ρ₁ (g, 1) w) ∂(μ a) = blockA (μ a) ρ₁ (Ψ a) w μy s from rfl, hblockA, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hμyv]`. Simplify using `only [multiA]`.
+
+Rewrite using `[show ρ₁ ((1 : GL (Fin (d a)) F), (y, (1 : H))) = ρ₂ (y, ((1 : GL (Fin (d a)) F), (1 : H))) by`. Rewrite using `[hρ₁, hρ₂]]`. Express the relevant statement in the definitionally equal form `P * (ℓ (ρ₂ (y, ((1 : GL (Fin (d a)) F), (1 : H))) (b i : W)) * blockA (μ a) ρ₁ (Ψ a) w (L i) s) = _`. Rewrite using `[hP, show ((1 : GL (Fin (d a)) F), (1 : H)) = (1 : GL (Fin (d a)) F × H) from rfl]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hGF]`. Use `_ = ∫ p, G p ∂((μ a).prod (Measure.pi fun j : {i // i ≠ a} => μ j)) := hmp.integral_comp hemb G`. Use `_ = ∫ y, ∫ g, G (g, y) ∂(μ a) ∂(Measure.pi fun j : {i // i ≠ a} => μ j) := integral_prod_symm G hGint`. Use `_ = ∫ y, ∑ i, blockA (μ a) ρ₁ (Ψ a) w (L i) s * multiA ρ₂ (fun j : {i // i ≠ a} => Ψ j) (b i : W) ℓ s y ∂(Measure.pi fun j : {i // i ≠ a} => μ j) := integral_congr_ae (Filter.Eventually.of_forall hinner)`.
+
+Use `_ = _ := by`. Rewrite using `[integral_finsetSum _ fun i _ => ((hconv₂ (fun j : {i // i ≠ a} => Ψ j) (fun j => hΨ j) (b i : W) ℓ hℓ₂).1 s hs₂).const_mul _]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Use `set Ψh : ∀ i, Matrix (Fin (d i)) (Fin (d i)) F → ℂ := fun i => GJMatrix.localMatrixFourier ψ (Ψ i) with hΨhdef`.
+
+Establish `hΨh : ∀ i, IsSchwartzBruhat (Ψh i)` using `fun i => (hΨ i).localMatrixFourier hψ hψ1`. Establish `hB : ∀ s : ℂ, s.re < -max sa (max s₀ s₂) → ∫ x, multiB ρ Ψh w ℓ s x ∂Measure.pi μ = ∑ i, blockB (μ a) ρ₁ (Ψh a) w (L i) s * ∫ y, multiB ρ₂ (fun j : {i // i ≠ a} => Ψh j) (b i : W) ℓ s y ∂Measure.pi (fun j : {i // i ≠ a} => μ j)`. Introduce `s hs`. Establish `hsa : s.re < -sa` using `lt_of_lt_of_le hs (neg_le_neg (le_max_left _ _))`. Establish `hs₀ : s.re < -s₀` using `lt_of_lt_of_le hs (neg_le_neg ((le_max_left _ _).trans (le_max_right _ _)))`.
+
+Establish `hs₂ : s.re < -s₂` using `lt_of_lt_of_le hs (neg_le_neg ((le_max_right _ _).trans (le_max_right _ _)))`. Establish `hint` using `(hconv Ψh hΨh w ℓ hℓ).2 s hs₀`. Use `set G : GL (Fin (d a)) F × (∀ j : {i // i ≠ a}, GL (Fin (d j)) F) → ℂ := fun p => multiB ρ Ψh w ℓ s (splitSymm d a p.1 p.2) with hG`. Establish `hGF : ∀ x, G (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x) = multiB ρ Ψh w ℓ s x` using `fun x => by`. Simplify using `only [hG]`.
+
+Rewrite using `[show splitSymm d a (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x).1 (Equiv.piSplitAt a (fun i => GL (Fin (d i)) F) x).2 = x from (Equiv.piSplitAt a fun i => GL (Fin (d i)) F).symm_apply_apply x]`. Establish `hGint : Integrable G ((μ a).prod (Measure.pi fun j : {i // i ≠ a} => μ j))`. Rewrite using `[← hmp.integrable_comp_emb hemb]`. Conclude with `hint.congr (Filter.Eventually.of_forall fun x => (hGF x).symm)`. Establish `hinner : ∀ y : ∀ j : {i // i ≠ a}, GL (Fin (d j)) F, ∫ g, G (g, y) ∂(μ a) = ∑ i, blockB (μ a) ρ₁ (Ψh a) w (L i) s * multiB ρ₂ (fun j : {i // i ≠ a} => Ψh j) (b i : W) ℓ s y`.
+
+Introduce `y`. Use `set μy : smoothVectors (Representation.dual ρ₁) := contragredient ρ₁ ((1 : GL (Fin (d a)) F), (y⁻¹, (1 : H)))⁻¹ ⟨ℓ, hℓ₁⟩ with hμy`. Establish `hμyv : ∀ v, (μy : Module.Dual ℂ W) v = ℓ (ρ₁ ((1 : GL (Fin (d a)) F), (y⁻¹, (1 : H))) v)` using `fun v => by rw [hμy, contragredient_apply_apply, inv_inv]`. Use `set P : ℂ := ∏ j : {i // i ≠ a}, Ψh j (y j : Matrix (Fin (d j)) (Fin (d j)) F) * detPow (y j) ((d j : ℂ) - s) with hP`. Establish `hGy : ∀ g, G (g, y) = P * (Ψh a (g : Matrix (Fin (d a)) (Fin (d a)) F) * detPow g ((d a : ℂ) - s) * (μy : Module.Dual ℂ W) (ρ₁ (g⁻¹, 1) w))` using `fun g => by`.
+
+Simplify using `only [hG, multiB]`. Rewrite using `[prod_splitSymm (fun i x => Ψh i (x : Matrix (Fin (d i)) (Fin (d i)) F) * detPow x ((d i : ℂ) - s)) g y, splitSymm_inv, hprod1, Module.End.mul_apply, hμyv]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hGy]`. Rewrite using `[integral_const_mul]`.
+
+Establish `hblockB` using `blockB_eq_sum (μ₀ := μ a) hadm₁.1 hKc hKo hKa hΦa hwK (fun ν hν => (hblock (Ψ a) (hΨ a) w ν hν).2.1 s hsa) μy`. Rewrite using `[show ∫ g, Ψh a (g : Matrix (Fin (d a)) (Fin (d a)) F) * detPow g ((d a : ℂ) - s) * (μy : Module.Dual ℂ W) (ρ₁ (g⁻¹, 1) w) ∂(μ a) = blockB (μ a) ρ₁ (Ψh a) w μy s from rfl, hblockB, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hμyv]`. Simplify using `only [multiB]`.
+
+Rewrite using `[show ρ₁ ((1 : GL (Fin (d a)) F), (y⁻¹, (1 : H))) = ρ₂ (y⁻¹, ((1 : GL (Fin (d a)) F), (1 : H))) by rw [hρ₁, hρ₂]]`. Express the relevant statement in the definitionally equal form `P * (ℓ (ρ₂ (y⁻¹, ((1 : GL (Fin (d a)) F), (1 : H))) (b i : W)) * blockB (μ a) ρ₁ (Ψh a) w (L i) s) = _`. Rewrite using `[hP, show ((1 : GL (Fin (d a)) F), (1 : H)) = (1 : GL (Fin (d a)) F × H) from rfl]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+
+Repeatedly rewrite using `[hGF]`. Use `_ = ∫ p, G p ∂((μ a).prod (Measure.pi fun j : {i // i ≠ a} => μ j)) := hmp.integral_comp hemb G`. Use `_ = ∫ y, ∫ g, G (g, y) ∂(μ a) ∂(Measure.pi fun j : {i // i ≠ a} => μ j) := integral_prod_symm G hGint`. Use `_ = ∫ y, ∑ i, blockB (μ a) ρ₁ (Ψh a) w (L i) s * multiB ρ₂ (fun j : {i // i ≠ a} => Ψh j) (b i : W) ℓ s y ∂(Measure.pi fun j : {i // i ≠ a} => μ j) := integral_congr_ae (Filter.Eventually.of_forall hinner)`. Use `_ = _ := by`.
+
+Rewrite using `[integral_finsetSum _ fun i _ => ((hconv₂ (fun j : {i // i ≠ a} => Ψh j) (fun j => hΨh j) (b i : W) ℓ hℓ₂).2 s hs₂).const_mul _]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Establish `hterm : ∀ i, RatFE F (γa * γ') (fun s => blockA (μ a) ρ₁ (Ψ a) w (L i) s * ∫ y, multiA ρ₂ (fun j : {i // i ≠ a} => Ψ j) (b i : W) ℓ s y ∂Measure.pi (fun j : {i // i ≠ a} => μ j)) (fun s => blockB (μ a) ρ₁ (Ψh a) w (L i) s * ∫ y, multiB ρ₂ (fun j : {i // i ≠ a} => Ψh j) (b i : W) …` using `fun i => ((hblock (Ψ a) (hΨ a) w (L i) (hLsm i)).2.2).mul (hIH (fun j => Ψ j) (fun j => hΨ j) (b i : W) ℓ hℓ₂)`. Conclude with `(RatFE.sum Finset.univ fun i _ => hterm i).congr ⟨_, hA⟩ ⟨_, hB⟩`.
+-/
 theorem multiFEStatement_succ {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {r : ℕ}
     (ih : MultiFEStatement.{uF, u, w} F W ψ r) : MultiFEStatement.{uF, u, w} F W ψ (r + 1) := by
   intro ι _ _ hcard d _ μ _ H _ _ _ _ _ _ ρ hadm hirr α hα0 hα hsupp
@@ -507,6 +620,9 @@ theorem multiFEStatement_succ {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ
       (hIH (fun j => Ψ j) (fun j => hΨ j) (b i : W) ℓ hℓ₂)
   exact (RatFE.sum Finset.univ fun i _ => hterm i).congr ⟨_, hA⟩ ⟨_, hB⟩
 
+/- English proof (translation)
+The claim follows from `| 0 => multiFEStatement_zero ψ | r + 1 => multiFEStatement_succ hψ hψ1 (multiFEStatement_all hψ hψ1 r)`.
+-/
 theorem multiFEStatement_all {ψ : AddChar F Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) :
     ∀ r, MultiFEStatement.{uF, u, w} F W ψ r
   | 0 => multiFEStatement_zero ψ

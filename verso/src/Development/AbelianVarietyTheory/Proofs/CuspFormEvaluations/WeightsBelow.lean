@@ -13,6 +13,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunWeights
 
+/- English proof (translation)
+Establish `hK : (0 : ℝ) ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ)` using `by positivity`. Establish `hc1 : (1 : ℝ) ≤ c` using `by exact_mod_cast hc`. Establish `hS : (∑ τ, ((∑ i, (x.aP τ i : ℝ)) + ∑ i, (x.aM τ i : ℝ))) ≤ (c : ℝ) * ∑ τ, ((∑ i, (z.aP τ i : ℝ)) + ∑ i, (z.aM τ i : ℝ))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum]`. Use `add_le_add (Finset.sum_le_sum fun i _ => ?_) (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Conclude with `h1 τ i` after adjusting the coercions. Conclude with `h2 τ i` after adjusting the coercions. Establish `hn : (x.n : ℝ) ≤ (c : ℝ) * z.n` using `by exact_mod_cast h3`.
+
+Establish `hKn` using `mul_le_mul_of_nonneg_left hn hK`. Unfold `WeightFamilies.Wt.size`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem size_le_mul {D : D7} {j : ℕ} (x z : WeightFamilies.Wt D j) (c : ℕ) (hc : 1 ≤ c)
     (h1 : ∀ τ i, x.aP τ i ≤ c * z.aP τ i) (h2 : ∀ τ i, x.aM τ i ≤ c * z.aM τ i) (h3 : x.n ≤ c * z.n) :
     x.size ≤ (c : ℝ) * z.size := by
@@ -31,12 +38,88 @@ theorem size_le_mul {D : D7} {j : ℕ} (x z : WeightFamilies.Wt D j) (c : ℕ) (
   unfold WeightFamilies.Wt.size
   nlinarith
 
+/- English proof (translation)
+Unfold `WeightAlgebra.DF WeightAlgebra.degP`. Conclude with `Finset.sum_le_sum fun τ _ => add_le_add (Finset.sum_le_sum fun i _ => h1 τ i) (Finset.sum_le_sum fun i _ => h2 τ i)`.
+-/
 theorem DF_le {D : D7} {j : ℕ} (x z : WeightFamilies.Wt D j)
     (h1 : ∀ τ i, x.aP τ i ≤ z.aP τ i) (h2 : ∀ τ i, x.aM τ i ≤ z.aM τ i) : WeightAlgebra.DF x ≤ WeightAlgebra.DF z := by
   unfold WeightAlgebra.DF WeightAlgebra.degP
   exact Finset.sum_le_sum fun τ _ =>
     add_le_add (Finset.sum_le_sum fun i _ => h1 τ i) (Finset.sum_le_sum fun i _ => h2 τ i)
 
+/- English proof (translation)
+Introduce `D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hj hH`. Unfold `FamilyHypotheses.HypPage at hH`. Take `⟨_, hSet, _, _, _⟩` from `hH`. Unfold `SetC at hSet`. Take `⟨hkan, _, _, hh0, _, hlastP, _, _, _, hnP8, hnPW, _, _, hnV, hL, hF, _, hT0, hDT, h40, hDnW, h40n, _, _, _, hDom⟩` from `hSet`.
+
+Take `⟨hLn, hLP, _⟩` from `hL`. Take `⟨hFn, hFP, hFM⟩` from `hF`. Establish `kaP : ∀ τ i, ka.aP τ i = Tn * wL.aP τ i + wF.aP τ i` using `fun τ i => by`. Establish `e` using `hFP τ i`. Establish `e' : ((ka.aP τ i : ℕ) : ℤ) = ((Tn * wL.aP τ i + wF.aP τ i : ℕ) : ℤ)` using `by push_cast; linarith`.
+
+Conclude with `e'` after adjusting the coercions. Establish `kaM : ∀ τ i, ka.aM τ i = Tn * wL.aM τ i + wF.aM τ i` using `fun τ i => by`. Establish `e` using `hFM τ i`. Establish `e' : ((ka.aM τ i : ℕ) : ℤ) = ((Tn * wL.aM τ i + wF.aM τ i : ℕ) : ℤ)` using `by push_cast; linarith`. Conclude with `e'` after adjusting the coercions.
+
+Establish `kan : ka.n = nP + Tn * nW` using `by rw [hkan, hnV]`. Establish `f0P : ∀ τ i, (X.wF0 wL wF).aP τ i = wF.aP τ i + WeightFamilies.dimY D j * wL.aP τ i` using `fun _ _ => rfl`. Establish `f0M : ∀ τ i, (X.wF0 wL wF).aM τ i = wF.aM τ i + WeightFamilies.dimY D j * wL.aM τ i` using `fun _ _ => rfl`. Establish `f0n : (X.wF0 wL wF).n = wF.n + WeightFamilies.dimY D j * wL.n` using `rfl`. Establish `hT1 : 1 ≤ Tn` using `hT0`.
+
+Establish `hT2 : 2 ≤ Tn` using `by omega`. Establish `hD4 : WeightFamilies.dimY D j + 4 ≤ Tn` using `by omega`. Establish `hf : 0 < D.R.f`. Take `⟨hC, hCZ, _⟩` from `hDom`. Establish `hZ : (0 : ℝ) < Zb D large₂` using `lt_of_lt_of_le (by positivity) hCZ`.
+
+Unfold `Zb at hZ`. Break down `Nat.eq_zero_or_pos D.R.f with h | h` into its components or cases. Simplify using `[h] at hZ`. Conclude with `h`. Establish `hrP : D.R.r ≤ nP`.
+
+Establish `e : 8 * D.R.f * D.R.r = 8 * (D.R.f * D.R.r)` using `by ring`. Use `Nat.mul_le_mul hf (le_refl D.R.r)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `leKa : ∀ w : WeightFamilies.Wt D j, (∀ τ i, w.aP τ i ≤ ka.aP τ i) → (∀ τ i, w.aM τ i ≤ ka.aM τ i) → WeightAlgebra.DF w ≤ WeightAlgebra.DF ka` using `fun w a b => DF_le w ka a b`. Establish `kaLast : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 2 * Tn * Tn ≤ ka.aP τ i`.
+
+Introduce `τ i hi`. Establish `e` using `hlastP τ i hi`. Establish `e' : (2 * (Tn : ℝ) * Tn) ≤ ka.aP τ i` using `by nlinarith`. Conclude with `e'` after adjusting the coercions. Establish `wLLast : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 1 ≤ wL.aP τ i ∧ ((Tn + WeightFamilies.dimY D j + 2 : ℕ) : ℤ) * wL.aP τ i ≤ (ka.aP τ i : ℤ) - ((WeightFamilies.dimY D j : ℤ) + 2) * nW - 2 * D.R.r`.
+
+Introduce `τ i hi`. Establish `e` using `hLP τ i`. Unfold `gapZ at e`. Rewrite `e` using `[dif_neg (by omega), if_neg (by omega)]`. Unfold `Tp at e`.
+
+Establish `hb : (0 : ℤ) < ((Tn + WeightFamilies.dimY D j + 2 : ℕ) : ℤ)` using `by positivity`. Rewrite `e` using `[Int.fdiv_eq_ediv, if_pos (Or.inl hb.le), sub_zero]`. Establish `hk` using `kaLast τ i hi`. Establish `hTT` using `Nat.mul_le_mul hT2 (le_refl Tn)`. Prove the components needed by the constructor for the conclusion.
+
+Establish `: (1 : ℤ) ≤ (wL.aP τ i : ℤ)`. Rewrite using `[e, Int.le_ediv_iff_mul_le hb]`. Establish `hk' : ((2 * Tn * Tn : ℕ) : ℤ) ≤ (ka.aP τ i : ℤ)` using `by exact_mod_cast hk`. Establish `hTT' : ((2 * Tn : ℕ) : ℤ) ≤ ((Tn * Tn : ℕ) : ℤ)` using `by exact_mod_cast hTT`. Establish `hDnW' : (((WeightFamilies.dimY D j + 2) * nW + 2 * D.R.r : ℕ) : ℤ) ≤ (Tn : ℤ)` using `by exact_mod_cast hDnW`.
+
+Establish `hDT' : ((WeightFamilies.dimY D j : ℕ) : ℤ) ≤ (Tn : ℤ)` using `by exact_mod_cast hDT`. Move the coercions through the operations in `at hk' hTT' hDnW' hDT' ⊢`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions. Rewrite using `[e]`.
+
+Conclude with `Int.mul_ediv_self_le hb.ne'`. Establish `wFLast : ∀ τ (i : Fin (D.R.sigW j).1), i.1 + 1 = (D.R.sigW j).1 → 1 ≤ wF.aP τ i`. Introduce `τ i hi`. Take `⟨_, h2⟩` from `wLLast τ i hi`. Establish `e` using `hFP τ i`.
+
+Establish `h0' : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ) * wL.aP τ i` using `by positivity`. Establish `h1' : (0 : ℤ) ≤ (WeightFamilies.dimY D j : ℤ) * nW` using `by positivity`. Establish `h40' : (40 : ℤ) ≤ nW` using `by exact_mod_cast h40n`. Establish `: (1 : ℤ) ≤ (wF.aP τ i : ℤ)`. Move the coercions through the operations in `at h2`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hw`.
+
+Break down `hw with rfl | rfl | rfl | rfl` into its components or cases. Use `⟨leKa _ (fun τ i => ?_) (fun τ i => ?_), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul hT1 (le_refl (w.aP τ i))` as an intermediate fact. Rewrite using `[kaP]`. Use linear arithmetic over natural numbers and integers.
+
+Use `Nat.mul_le_mul hT1 (le_refl (w.aM τ i))` as an intermediate fact. Rewrite using `[kaM]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hT1 (le_refl nW)` as an intermediate fact. Rewrite using `[kan, hLn]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hLn]`. Use linear arithmetic over natural numbers and integers. Introduce `τ i hi`. Conclude with `(wLLast τ i hi).1`.
+
+Use `⟨leKa _ (fun τ i => ?_) (fun τ i => ?_), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[kaP]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[kaM]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[kan, hFn]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hFn]`. Use linear arithmetic over natural numbers and integers. Introduce `τ i hi`.
+
+Conclude with `wFLast τ i hi`. Use `⟨leKa _ (fun τ i => ?_) (fun τ i => ?_), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul hDT (le_refl (wL.aP τ i))` as an intermediate fact. Rewrite using `[kaP, f0P]`. Use linear arithmetic over natural numbers and integers.
+
+Use `Nat.mul_le_mul hDT (le_refl (wL.aM τ i))` as an intermediate fact. Rewrite using `[kaM, f0M]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hDT (le_refl nW)` as an intermediate fact. Rewrite using `[kan, f0n, hFn, hLn]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[f0n, hFn]`. Use linear arithmetic over natural numbers and integers. Introduce `τ i hi`. Use `wFLast τ i hi` as an intermediate fact.
+
+Rewrite using `[f0P]`. Use linear arithmetic over natural numbers and integers. Use `⟨le_refl _, le_refl _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[kan]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `τ i hi`. Use `kaLast τ i hi` as an intermediate fact. Establish `hTT` using `Nat.mul_le_mul hT2 hT1`. Establish `e : 2 * Tn * Tn = 2 * (Tn * Tn)` using `by ring`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `w hw`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hw`. Break down `hw with rfl | rfl | rfl` into its components or cases. Rewrite using `[hFn]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[f0n, hFn]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[kan]`. Use linear arithmetic over natural numbers and integers. Introduce `w2 hw2`.
+
+Take `⟨h2n, h2P, h2M⟩` from `hw2`. Establish `bP : ∀ τ i, w2.aP τ i ≤ (WeightFamilies.dimY D j + 4) * wL.aP τ i` using `fun τ i => by`. Use `h2P τ i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `bM : ∀ τ i, w2.aM τ i ≤ (WeightFamilies.dimY D j + 4) * wL.aM τ i` using `fun τ i => by`.
+
+Use `h2M τ i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `bn : w2.n ≤ (WeightFamilies.dimY D j + 4) * wL.n` using `by omega`. Use `⟨leKa _ (fun τ i => ?_) (fun τ i => ?_), ?_, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul hD4 (le_refl (wL.aP τ i))` as an intermediate fact.
+
+Use `bP τ i` as an intermediate fact. Rewrite using `[kaP]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hD4 (le_refl (wL.aM τ i))` as an intermediate fact. Use `bM τ i` as an intermediate fact.
+
+Rewrite using `[kaM]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hD4 (le_refl nW)` as an intermediate fact. Rewrite using `[kan]`. Rewrite `bn` using `[hLn]`.
+
+Use linear arithmetic over natural numbers and integers. Use `size_le_mul w2 wL (WeightFamilies.dimY D j + 4) (by omega) bP bM bn` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Introduce `w1 hw1`.
+
+Take `⟨h1n, h1P, h1M⟩` from `hw1`. Establish `bn : w1.n ≤ 2 * wL.n` using `by omega`. Use `⟨leKa _ (fun τ i => ?_) (fun τ i => ?_), ?_, ?_⟩` and prove the remaining obligations. Use `Nat.mul_le_mul hT2 (le_refl (wL.aP τ i))` as an intermediate fact. Use `h1P τ i` as an intermediate fact.
+
+Rewrite using `[kaP]`. Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hT2 (le_refl (wL.aM τ i))` as an intermediate fact. Use `h1M τ i` as an intermediate fact. Rewrite using `[kaM]`.
+
+Use linear arithmetic over natural numbers and integers. Use `Nat.mul_le_mul hT2 (le_refl nW)` as an intermediate fact. Rewrite using `[kan]`. Rewrite `bn` using `[hLn]`. Use linear arithmetic over natural numbers and integers.
+
+Use `size_le_mul w1 wL 2 (by norm_num) (fun τ i => (h1P τ i).le) (fun τ i => (h1M τ i).le) bn` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+-/
 theorem weights_below : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), 1 ≤ j → FamilyHypotheses.HypPage large₂ X H C2 A2 CR CT ka wL wF Tn nP nW h0 → (∀ w ∈ ({wL, wF, X.wF0 wL wF, ka} : Set (WeightFamilies.Wt D j)), WeightAlgebra.DF w ≤ WeightAlgebra.DF ka ∧ w.n ≤ ka.n ∧ D.R.r ≤ w.n ∧ w.LastPos) ∧ (∀ w ∈ ({wF, X.wF0 wL wF, ka} : Set (WeightFamilies.Wt D j)), 8 * D.R.f * D.R.r + 4 ≤ w.n) ∧ (∀ w2, IsG2 wL wF w2 → WeightAlgebra.DF w2 ≤ WeightAlgebra.DF ka ∧ w2.n ≤ ka.n ∧ w2.size ≤ ((WeightFamilies.dimY D j : ℝ) + 4) * wL.size) ∧ (∀ w1, IsDoubledWeightWithShift wL w1 nW → WeightAlgebra.DF w1 ≤ WeightAlgebra.DF ka ∧ w1.n ≤ ka.n ∧ w1.size ≤ 2 * wL.size) := by
   intro D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hj hH
   unfold FamilyHypotheses.HypPage at hH

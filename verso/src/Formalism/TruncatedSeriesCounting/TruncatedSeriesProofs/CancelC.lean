@@ -6,6 +6,11 @@ namespace Formalism.TruncatedSeriesCounting.R9
 
 open PowerSeries
 
+/- English proof (authored)
+Write C(aᵛ)g = p C(aᵗ) + qXᵇ using membership in the two-generator ideal. For every degree n < b, the last term has coefficient zero. Comparing degree-n coefficients therefore gives aᵛgₙ = aᵗpₙ. Since a is nonzero and v ≤ t, cancel aᵛ to obtain gₙ = a^(t−v)pₙ.
+
+Thus every coefficient of g − p C(a^(t−v)) below degree b vanishes. This difference is divisible by Xᵇ, so g is a linear combination of C(a^(t−v)) and Xᵇ.
+-/
 theorem mem_span_of_C_pow_mul : CancelC := by
   intro O _ _ a v t b g ha hvt hg
   rw [Ideal.mem_span_pair] at hg ⊢

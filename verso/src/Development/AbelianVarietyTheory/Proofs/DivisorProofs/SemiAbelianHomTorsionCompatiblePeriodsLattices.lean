@@ -16,6 +16,35 @@ noncomputable section
 namespace GlobalTheory.Mum.Two
 open GlobalTheory.TorusExt
 
+/- English proof (translation)
+Introduce `R _ _ _ I hA D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hco E E' hE hW F _ _ _ hkey`. Establish `hL` using `GlobalTheory.firstFiveLaws`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`. Use `letI := gtGroup D₁.toPre F`. Use `letI := gtGroup D₂.toPre F`.
+
+Establish `hB₁` using `D₁.tau_bimult`. Establish `hB₂` using `D₂.tau_bimult`. Establish `inj₂` using `GlobalTheory.IotaInj.main hL R I hA D₂ F`. Establish `dv₁` using `(gt_onto_divisible_kernel hL R I hA D₁ F).2.1`. Take `⟨ex, ad, tor⟩` from `GlobalTheory.T.torusExtensionMap_welldefined_additive_characters R D₁.toPre D₂.toPre b h hlin.2.1 (fun χ => (hco χ).imp fun _ hu => hu.1) F`.
+
+Use `choose mf hmf hmu using ex`. Set `m : GtPtF D₁.toPre F →+ GtPtF D₂.toPre F` to `AddMonoidHom.mk' mf fun x x' => (isAdd_iff_eq _ _ _).1 (ad x x' (x + x') _ _ _ ((isAdd_iff_eq _ _ _).2 rfl) (hmf x) (hmf x') (hmf _))`. Establish `hm : ∀ x x', Act D₁.toPre D₂.toPre b h x x' ↔ x' = m x` using `fun x x' => ⟨hmu x x', fun e => e ▸ hmf x⟩`. Establish `push : ∀ k : ℕ, 1 ≤ k → ∀ f₁ f₂, Tors U₁.toUnifPre F k f₁ → Tors U₂.toUnifPre F k f₂ → ∀ p : QkPt D₁.toPre F k, ∃ p' : QkPt D₂.toPre F k, p'.g = m p.g ∧ f₂ p' = f₁ p ≫ c ∧ GtPtF.IsIota p'.y (m (iota hB₁ F p.y))`. Introduce `k hk f₁ f₂ hf₁ hf₂ p`.
+
+Take `⟨p', e₁, e₂⟩` from `hkey k hk p (f₁ p) ((hf₁.1 _ _).2 rfl) (m p.g) ((hm _ _).2 rfl)`. Use `⟨p', e₁, ((hf₂.1 _ _).1 e₂).symm, (isIota_iff_eq hB₂ _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← qk_nsmul hB₂ p', e₁, ← map_nsmul, qk_nsmul hB₁ p]`. Take `⟨f₁, hf₁⟩` from `GlobalTheory.TorsionIso.torsion_eq hL R I hA D₁ A₁ G₁ hG₁ U₁ F 1 le_rfl`. Take `⟨f₂, hf₂⟩` from `GlobalTheory.TorsionIso.torsion_eq hL R I hA D₂ A₂ G₂ hG₂ U₂ F 1 le_rfl`.
+
+Establish `ex₁ : ∀ y, ∃ y', GtPtF.IsIota y' (m (iota hB₁ F y))` using `fun y => by`. Take `⟨p', -, -, hp'⟩` from `push 1 le_rfl f₁ f₂ hf₁ hf₂ (qkMk hB₁ y (iota hB₁ F y) (one_smul _ _))`. Conclude with `⟨p'.y, hp'⟩`. Use `choose φ₀ hφ₀ using ex₁`. Set `φ : D₁.toPre.X →+ D₂.toPre.X` to `AddMonoidHom.mk' φ₀ fun y y' => inj₂ _ _ _ (hφ₀ (y + y')) ((isIota_iff_eq hB₂ _ _).2 (by`.
+
+Rewrite using `[map_add, map_add, map_add, ← (isIota_iff_eq hB₂ _ _).1 (hφ₀ y), ← (isIota_iff_eq hB₂ _ _).1 (hφ₀ y')]))`. Establish `hφ : ∀ y, GtPtF.IsIota (φ y) (m (iota hB₁ F y))` using `hφ₀`. Use `⟨φ, fun y g hg => ⟨m g, (hm _ _).2 rfl, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[(isIota_iff_eq hB₁ _ _).1 hg]`. Conclude with `hφ y`.
+
+Use `GlobalTheory.KeyIota.eq_of_torsion_chars (F := F) fun k hk t ht => ?_` and prove the remaining obligations. Take `⟨f₁, hf₁⟩` from `GlobalTheory.TorsionIso.torsion_eq hL R I hA D₁ A₁ G₁ hG₁ U₁ F k hk`. Take `⟨f₂, hf₂⟩` from `GlobalTheory.TorsionIso.torsion_eq hL R I hA D₂ A₂ G₂ hG₂ U₂ F k hk`. Establish `wp₁` using `GlobalTheory.T.weilQk_pairing_existsUnique_torus hL R I hA D₁ F k hk`. Establish `wp₂` using `GlobalTheory.T.weilQk_pairing_existsUnique_torus hL R I hA D₂ F k hk`.
+
+Establish `torp : ∀ p : QkPt D₁.toPre F k, f₁ p ^ k = 1` using `fun p => by`. Take `⟨w, hw⟩` from `U₁.toUnifPre.ext`. Conclude with `((hf₁.1 p _).2 rfl w hw).1`. Take `⟨gk, hgk⟩` from `dv₁ k hk (iota hB₁ F y)`. Set `p : QkPt D₁.toPre F k` to `⟨y, gk, _, hgk, (isIota_iff_eq hB₁ _ _).2 rfl⟩`.
+
+Take `⟨p', -, hpp', hp'⟩` from `push k hk f₁ f₂ hf₁ hf₂ p`. Establish `hyp' : p'.y = φ y` using `inj₂ _ _ _ hp' (hφ y)`. Establish `h0 : k • torusPt D₁.toPre F (Additive.ofMul t) = iota hB₁ F 0`. Rewrite using `[← map_nsmul, ← ofMul_pow, ht, ofMul_one, map_zero, map_zero]`. Set `q : QkPt D₁.toPre F k` to `qkMk hB₁ 0 (torusPt D₁.toPre F (Additive.ofMul t)) h0`.
+
+Establish `hq : IsTor t q.g` using `(isTor_iff _ _).2 (isTorusPtF_torusPt t)`. Take `⟨q', hqg, hqq', hq'i⟩` from `push k hk f₁ f₂ hf₁ hf₂ q`. Establish `hq'0 : q'.y = 0` using `inj₂ _ _ _ hq'i ((isIota_iff_eq hB₂ _ _).2 (by show m (iota hB₁ F 0) = iota hB₂ F 0`. Simplify using `only [map_zero]))`. Establish `hq'tor : IsTor (t.comp (AddMonoidHom.toMultiplicative h)) q'.g` using `tor t q.g q'.g hq ((hm _ _).2 hqg)`.
+
+Establish `ec` using `GlobalTheory.T.uniformizationEndomorphism_calculus hL R I hA D₁ A₁ G₁ hG₁ U₁ F E E E`. Establish `adE` using `ec.2.1`. Use `choose aEf haE huE using ec.1`. Set `aE : GtPtF D₁.toPre F →+ GtPtF D₁.toPre F` to `AddMonoidHom.mk' aEf fun x x' => (isAdd_iff_eq _ _ _).1 (adE x x' (x + x') _ _ _ ((isAdd_iff_eq _ _ _).2 rfl) (haE x) (haE x') (haE _))`. Establish `hqE0 : k • aE q.g = iota hB₁ F 0`.
+
+Rewrite using `[← map_nsmul]`. Use `show aE (k • torusPt D₁.toPre F (Additive.ofMul t)) = _`. Simplify using `only [h0, map_zero]`. Set `qE : QkPt D₁.toPre F k` to `qkMk hB₁ 0 (aE q.g) hqE0`. Establish `hqEtor : IsTor (t.comp (AddMonoidHom.toMultiplicative E.h)) qE.g` using `ec.2.2.1 t q.g qE.g hq (haE q.g)`.
+
+Establish `hFu` using `(GlobalTheory.UT.functorial_of_unif R I hA D₁ A₁ G₁ hG₁ U₁).2 E E' hE`. Establish `hqE : f₁ qE = f₁ q ≫ E.aA` using `((hf₁.1 _ _).1 ((hFu.2 F).2.2 k hk q qE (f₁ q) (by show (0 : D₁.toPre.X) = E'.h 0; rw [map_zero]) (haE q.g) ((hf₁.1 _ _).2 rfl))).symm`. Establish `w₁` using `(hf₁.2.2.2.2 _ _ _).1 ((wp₁ qE p).2 (t.comp (AddMonoidHom.toMultiplicative E.h)) rfl hqEtor)`. Rewrite `w₁` using `[hqE, ← Category.comp_id (f₁ p)]`. Establish `w₂` using `(GlobalTheory.T.commutator_pairing_eq_of_mumford_bundle_iso _ A₁ A₂ A₁ c c E.aA (𝟙 _) hc hc E.homA inferInstance hW F _ k (f₁ q) (f₁ p) (torp q) (torp p) _).2 w₁`.
+
+Rewrite `w₂` using `[← hqq', ← hpp']`. Establish `w₃` using `(hf₂.2.2.2.2 _ _ _).2 w₂`. Establish `e` using `(wp₂ q' p').1.unique w₃ ((wp₂ q' p').2 _ hq'0 hq'tor)`. Rewrite `e` using `[hyp']`. Conclude with `e.symm`.
+-/
 theorem periods_of_key : ∀ (R : Type) [CommRing R] [IsDomain R] [CharZero R] (I : Ideal R), AdmBase R I → ∀ (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂], IsSemiAbelian G₁ → IsSemiAbelian G₂ → ∀ (U₁ : Unif I D₁ A₁ G₁) (U₂ : Unif I D₂ A₂ G₂) (a : G₁ ⟶ G₂) (c : A₁.A ⟶ A₂.A) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (h : D₂.toPre.X →+ D₁.toPre.X), IsMonHom c → Gen₀ U₁.toUnifPre U₂.toUnifPre a c → Lin U₁.toUnifPre U₂.toUnifPre a b h → Coord U₁.toUnifPre U₂.toUnifPre a b h → ∀ E E' : EndU U₁.toUnifPre, LBIso (cubeLB G₁ ![fst G₁ G₁ ≫ E.aG, snd G₁ G₁] U₁.LG.L) (cubeLB G₁ ![fst G₁ G₁, snd G₁ G₁ ≫ E'.aG] U₁.LG.L) → LBIso (cubeLB A₂.A ![fst A₁.A A₁.A ≫ c, snd A₁.A A₁.A ≫ c] A₂.L) (cubeLB A₁.A ![fst A₁.A A₁.A ≫ E.aA, snd A₁.A A₁.A ≫ 𝟙 A₁.A] A₁.L) → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F], Key U₁.toUnifPre U₂.toUnifPre c b h F → ∃ φ : D₁.toPre.X →+ D₂.toPre.X, (∀ (y : D₁.toPre.X) (g : GtPtF D₁.toPre F), GtPtF.IsIota y g → ∃ g' : GtPtF D₂.toPre F, Act D₁.toPre D₂.toPre b h g g' ∧ GtPtF.IsIota (φ y) g') ∧ ∀ y, h (φ y) = E.h y := by
   intro R _ _ _ I hA D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ hG₁ hG₂ U₁ U₂ a c b h hc hgen hlin hco E E' hE hW F _ _ _ hkey
   have hL := GlobalTheory.firstFiveLaws

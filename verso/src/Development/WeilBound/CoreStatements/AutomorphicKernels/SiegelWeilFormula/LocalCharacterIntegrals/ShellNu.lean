@@ -13,6 +13,13 @@ namespace ShNu
 
 variable {v : HeightOneSpectrum (𝓞 F)} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨ε, hε, hεL⟩` from `exists_ballV_subset (v := v) (U := (L : Set (Fin n → Fv F v ⊗[F] E))) (hL.1.mem_nhds L.zero_mem)`. Take `⟨ρ, hρ⟩` from `exists_bound_nV (v := v) hL.2`. Take `⟨C, hC0, hC⟩` from `exists_nM_mulVec v (E := E) n n`. Use `set ρ' := max ρ 0 with hρ'`. Establish `hρ'0 : 0 ≤ ρ'` using `le_max_right _ _`.
+
+Use `⟨ε / (C * ρ' + 1), by positivity, fun g hg y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : nV v y ≤ ρ'` using `(hρ y hy).trans (le_max_left _ _)`. Establish `hsmall : nV v (g.mulVec y) ≤ ε`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec]`.
+
+Conclude with `L.add_mem hy (hεL hsmall)`.
+-/
 theorem stable (v : HeightOneSpectrum (𝓞 F)) {L : AddSubgroup (Fin n → Fv F v ⊗[F] E)} (hL : IsCO L) :
     ∃ r > 0, ∀ d : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v d ≤ r → ∀ y ∈ L,
       ((1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) + d).mulVec y ∈ L := by
@@ -33,12 +40,24 @@ theorem stable (v : HeightOneSpectrum (𝓞 F)) {L : AddSubgroup (Fin n → Fv F
   rw [Matrix.add_mulVec, Matrix.one_mulVec]
   exact L.add_mem hy (hεL hsmall)
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(nM_le_iff (nM_nonneg x)).2 fun i j => nA_le_nM x j i`. Conclude with `(nM_le_iff (nM_nonneg (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E))).2 fun i j => nA_le_nM (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E) j i`.
+-/
 theorem nM_transpose (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : nM v xᵀ = nM v x := by
   apply le_antisymm
   · exact (nM_le_iff (nM_nonneg x)).2 fun i j => nA_le_nM x j i
   · exact (nM_le_iff (nM_nonneg (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E))).2 fun i j =>
       nA_le_nM (v := v) (xᵀ : Fin n → Fin n → Fv F v ⊗[F] E) j i
 
+/- English proof (translation)
+Use `set u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (1 + x)⁻¹ - 1 with hu_def`. Establish `hmul : (1 + x) * (1 + x)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `h1 : (1 + x) * (1 + u) = 1` using `by rw [hu_def, add_sub_cancel]; exact hmul`. Establish `h2 : (1 + x) * (1 + u) = 1 + (u + (x + x * u))` using `by noncomm_ring`. Rewrite `h1` using `[h2]`.
+
+Establish `h3 : u + (x + x * u) = 0` using `by simpa using h1`. Establish `h4 : u = -(x + x * u)` using `eq_neg_of_add_eq_zero_left h3`. Establish `e1 : nM v u = nM v (x + x * u)` using `by conv_lhs => rw [h4]`. Conclude with `nM_neg (v := v) ((x + x * u : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Fin n → Fin n → Fv F v ⊗[F] E)`. Establish `hb : nM v u ≤ max (nM v x) (C * nM v x * nM v u)`.
+
+Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hx0` using `nM_nonneg (v := v) x`. Break down `le_max_iff.1 hb with h | h` into its components or cases.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: nM v u ≤ 1 / 2 * nM v u` using `h.trans (mul_le_mul_of_nonneg_right hx (nM_nonneg _))`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inv_small {C : ℝ} (hC : ∀ x y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), nM v (x * y) ≤ C * nM v x * nM v y)
     {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (hx : C * nM v x ≤ 1 / 2) (hu : IsUnit (1 + x).det) :
     nM v (((1 + x)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ nM v x := by
@@ -67,12 +86,18 @@ theorem inv_small {C : ℝ} (hC : ∀ x y : Matrix (Fin n) (Fin n) (Fv F v ⊗[F
 def cs (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) :=
   (x.map (sigR (Fv F v) σ))ᵀ
 
+/- English proof (translation)
+Simplify using `only [cs]`. Rewrite using `[Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add, Matrix.transpose_one]`.
+-/
 theorem cs_one_add (σ : E →ₐ[F] E) (x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     cs σ (1 + x) = 1 + cs σ x := by
   simp only [cs]
   rw [Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_add,
     Matrix.transpose_one]
 
+/- English proof (translation)
+Simplify using `only [cs, Matrix.det_transpose]`. Establish `: (a.map (sigR (Fv F v) σ)).det = sigR (Fv F v) σ a.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[this]`. Conclude with `ha.map _`.
+-/
 theorem isUnit_det_cs (σ : E →ₐ[F] E) {a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)} (ha : IsUnit a.det) :
     IsUnit (cs σ a).det := by
   simp only [cs, Matrix.det_transpose]
@@ -83,6 +108,11 @@ theorem isUnit_det_cs (σ : E →ₐ[F] E) {a : Matrix (Fin n) (Fin n) (Fv F v �
 def Sx (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E)) (B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     Set (Fin n → Fv F v ⊗[F] E) := {x | ∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + B.mulVec y'}
 
+/- English proof (translation)
+Establish `e : Sx L₁ L₂ B = (fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + B.mulVec p.2) '' ((L₁ : Set (Fin n → Fv F v ⊗[F] E)) ×ˢ (L₂ : Set (Fin n → Fv F v ⊗[F] E)))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Conclude with `⟨(y, y'), ⟨hy, hy'⟩, rfl⟩`.
+
+Introduce and unpack `⟨⟨y, y'⟩, ⟨hy, hy'⟩, rfl⟩`. Conclude with `⟨y, hy, y', hy', rfl⟩`. Rewrite using `[e]`. Establish `hc : Continuous fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + B.mulVec p.2` using `continuous_fst.add (Continuous.matrix_mulVec continuous_const continuous_snd)`. Conclude with `((h₁.2.prod h₂.2).image hc).isClosed.measurableSet`.
+-/
 theorem measurableSet_Sx {L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E)} (h₁ : IsCO L₁) (h₂ : IsCO L₂)
     (B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) : MeasurableSet (Sx L₁ L₂ B) := by
   have e : Sx L₁ L₂ B = (fun p : (Fin n → Fv F v ⊗[F] E) × (Fin n → Fv F v ⊗[F] E) => p.1 + B.mulVec p.2) ''
@@ -108,6 +138,33 @@ end ShNu
 
 open ShNu in
 
+/- English proof (translation)
+Take `⟨Cm, hCm0, hCm⟩` from `exists_nM_mul v (E := E) n n n`. Take `⟨Cs, hCs0, hCs⟩` from `exists_nM_sig v σ n n`. Take `⟨rd, hrd, hdet⟩` from `exists_isUnit_det v (E := E) n`. Take `⟨r₁, hr₁, hst₁⟩` from `stable v h₁`. Take `⟨r₂, hr₂, hst₂⟩` from `stable v h₂`.
+
+Use `set rh : ℝ := 1 / (2 * (Cm + 1)) with hrh`. Establish `hrh0 : 0 < rh` using `by positivity`. Establish `hrhC : ∀ t, 0 ≤ t → t ≤ rh → Cm * t ≤ 1 / 2`. Introduce `t ht0 ht`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `⟨min (min rd rh) (min r₂ (min r₁ rh / (Cs + 1))), by positivity, fun x hx B => ?_⟩` and prove the remaining obligations. Establish `hx0` using `nM_nonneg (v := v) x`. Establish `hxd : nM v x ≤ rd` using `hx.trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hxh : nM v x ≤ rh` using `hx.trans ((min_le_left _ _).trans (min_le_right _ _))`. Establish `hx2 : nM v x ≤ r₂` using `hx.trans ((min_le_right _ _).trans (min_le_left _ _))`.
+
+Establish `hxs : nM v x ≤ min r₁ rh / (Cs + 1)` using `hx.trans ((min_le_right _ _).trans (min_le_right _ _))`. Establish `hcs : nM v (cs σ x) ≤ min r₁ rh`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ (by linarith)] at hxs; linarith`. Establish `hcs0` using `nM_nonneg (v := v) (cs σ x)`.
+
+Establish `hcs1 : nM v (cs σ x) ≤ r₁` using `hcs.trans (min_le_left _ _)`. Establish `hcsh : nM v (cs σ x) ≤ rh` using `hcs.trans (min_le_right _ _)`. Use `set a : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := 1 + x with ha_def`. Establish `ha : IsUnit a.det` using `hdet x hxd`. Establish `has : IsUnit (cs σ a).det` using `isUnit_det_cs σ ha`.
+
+Establish `has' : IsUnit (1 + cs σ x).det` using `by rw [← cs_one_add]; exact has`. Establish `hai : nM v ((a⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₂` using `(inv_small hCm (hrhC _ hx0 hxh) ha).trans hx2`. Establish `hasi : nM v (((cs σ a)⁻¹ - 1 : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) ≤ r₁`. Rewrite using `[ha_def, cs_one_add]`. Conclude with `(inv_small hCm (hrhC _ hcs0 hcsh) has').trans hcs1`.
+
+Establish `hsplit : ∀ P : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), P = 1 + (P - 1)` using `fun P => by abel`. Establish `hL2a : ∀ y ∈ L₂, a.mulVec y ∈ L₂` using `hst₂ x hx2`. Establish `hL2ai : ∀ y ∈ L₂, a⁻¹.mulVec y ∈ L₂` using `by rw [hsplit a⁻¹]; exact hst₂ _ hai`. Establish `hL1as : ∀ y ∈ L₁, (cs σ a).mulVec y ∈ L₁` using `by rw [ha_def, cs_one_add]; exact hst₁ _ hcs1`. Establish `hL1asi : ∀ y ∈ L₁, (cs σ a)⁻¹.mulVec y ∈ L₁` using `by rw [hsplit (cs σ a)⁻¹]; exact hst₁ _ hasi`.
+
+Establish `hPQ : (cs σ a)⁻¹ * cs σ a = 1` using `Matrix.nonsing_inv_mul _ has`. Establish `hQP : cs σ a * (cs σ a)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ has`. Use `set e := mulVecEquiv _ _ hPQ hQP with he`. Establish `hmp : MeasurePreserving e lam lam`. Use `measurePreserving_of_addEquiv lam e (Continuous.matrix_mulVec continuous_const continuous_id) (Continuous.matrix_mulVec continuous_const continuous_id) (L₁ : Set (Fin n → Fv F v ⊗[F] E)) h₁.2 (by rw [h₁.1.interior_eq]; exact ⟨0, L₁.zero_mem⟩) ?_` and prove the remaining obligations.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `hL1as _ hy` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`. Then use the resulting hypothesis. Conclude with `hL1asi y`. Establish `hset : Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a) = e ⁻¹' Sx L₁ L₂ B`. Establish `hcsa : (a.map (sigR (Fv F v) σ))ᵀ = cs σ a` using `rfl`. Rewrite using `[hcsa]`.
+
+Use extensionality with `z`. Simplify using `only [Sx, Set.mem_preimage, Set.mem_setOf_eq, he, mulVecEquiv, AddEquiv.coe_mk, Equiv.coe_fn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Use `⟨(cs σ a)⁻¹.mulVec y, hL1asi y hy, a.mulVec y', hL2a y' hy', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Introduce and unpack `⟨y, hy, y', hy', hz⟩`. Use `⟨(cs σ a).mulVec y, hL1as y hy, a⁻¹.mulVec y', hL2ai y' hy', ?_⟩` and prove the remaining obligations. Establish `hz' : z = (cs σ a).mulVec ((cs σ a)⁻¹.mulVec z)`. Rewrite using `[Matrix.mulVec_mulVec, hQP, Matrix.one_mulVec]`.
+
+Rewrite using `[hz', hz, Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha, Matrix.mul_one]`. Establish `hmeas` using `hmp.measure_preimage (measurableSet_Sx h₁ h₂ B).nullMeasurableSet`. Use `show (lam (Sx L₁ L₂ ((a.map (sigR (Fv F v) σ))ᵀ * B * a)) / lam L₁).toReal = (lam (Sx L₁ L₂ B) / lam L₁).toReal`. Rewrite using `[hset, hmeas]`.
+-/
 theorem lattice_norm_conj_invariant (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ}
     (lam : Measure (Fin n → Fv F v ⊗[F] E)) [lam.IsAddHaarMeasure] (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E))
     (h₁ : IsCO L₁) (h₂ : IsCO L₂) :

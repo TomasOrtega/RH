@@ -15,6 +15,9 @@ section CompletionTransfer
 
 variable {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (J : Ideal A)
 
+/- English proof (translation)
+Rewrite using `[Ideal.smul_top_eq_map, Ideal.map_pow]`. Use extensionality with `x`. Simplify using `[smul_eq_mul, Ideal.mul_top]`.
+-/
 theorem pow_smul_top_eq_restrictScalars (n : ℕ) :
     (J ^ n • ⊤ : Submodule A B) =
       ((J.map (algebraMap A B)) ^ n • ⊤ : Submodule B B).restrictScalars A := by
@@ -27,6 +30,9 @@ def levelEquiv (n : ℕ) :
   (Submodule.quotEquivOfEq _ _ (pow_smul_top_eq_restrictScalars J n)).trans
     (Submodule.Quotient.restrictScalarsEquiv A _)
 
+/- English proof (translation)
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Both sides reduce to the same expression.
+-/
 theorem levelEquiv_transitionMap {m n : ℕ} (hmn : m ≤ n) (q : B ⧸ (J ^ n • ⊤ : Submodule A B)) :
     levelEquiv J m (AdicCompletion.transitionMap J B hmn q) =
       AdicCompletion.transitionMap (J.map (algebraMap A B)) B hmn (levelEquiv J n q) := by
@@ -37,15 +43,26 @@ def complEquivFun (x : AdicCompletion J B) : AdicCompletion (J.map (algebraMap A
   ⟨fun n => levelEquiv J n (x.val n), fun {m n} hmn => by
     rw [← levelEquiv_transitionMap, x.property hmn]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem complEquivFun_val (x : AdicCompletion J B) (n : ℕ) :
     (complEquivFun J x).val n = levelEquiv J n (x.val n) := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Use `AdicCompletion.ext fun n => (levelEquiv J n).injective ?_` and prove the remaining obligations. Use `congrArg (fun z : AdicCompletion (J.map (algebraMap A B)) B => z.val n) h` as an intermediate fact. Simplify `this` using `only [complEquivFun_val]`.
+-/
 theorem complEquivFun_injective : Function.Injective (complEquivFun (B := B) J) := by
   intro x y h
   refine AdicCompletion.ext fun n => (levelEquiv J n).injective ?_
   have := congrArg (fun z : AdicCompletion (J.map (algebraMap A B)) B => z.val n) h
   simpa only [complEquivFun_val] using this
 
+/- English proof (translation)
+Introduce `z`. Use `⟨⟨fun n => (levelEquiv J n).symm (z.val n), fun {m n} hmn => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `(levelEquiv J m).injective` to reduce the goal to its premises. Rewrite using `[levelEquiv_transitionMap, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Conclude with `z.property hmn`.
+
+Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Conclude with `LinearEquiv.apply_symm_apply (levelEquiv J n) (z.val n)`.
+-/
 theorem complEquivFun_surjective : Function.Surjective (complEquivFun (B := B) J) := by
   intro z
   refine ⟨⟨fun n => (levelEquiv J n).symm (z.val n), fun {m n} hmn => ?_⟩, ?_⟩
@@ -57,6 +74,9 @@ theorem complEquivFun_surjective : Function.Surjective (complEquivFun (B := B) J
 
 end CompletionTransfer
 
+/- English proof (translation)
+Establish `hle : I ^ n ≤ (I ^ n • ⊤ : Ideal R)` using `by rw [smul_eq_mul, Ideal.mul_top]`. Rewrite using `[← AdicCompletion.eval_apply, ← AdicCompletion.factor_evalₐ_eq_eval I y hle, h]`. Both sides reduce to the same expression.
+-/
 theorem val_eq_mk_of_evalₐ {R : Type} [CommRing R] (I : Ideal R) (y : AdicCompletion I R) (n : ℕ) (b : R)
     (h : AdicCompletion.evalₐ I n y = Ideal.Quotient.mk _ b) :
     y.val n = Submodule.Quotient.mk b := by
@@ -64,6 +84,9 @@ theorem val_eq_mk_of_evalₐ {R : Type} [CommRing R] (I : Ideal R) (y : AdicComp
   rw [← AdicCompletion.eval_apply, ← AdicCompletion.factor_evalₐ_eq_eval I y hle, h]
   rfl
 
+/- English proof (translation)
+Establish `hle : (I ^ n • ⊤ : Ideal R) ≤ I ^ n` using `by rw [smul_eq_mul, Ideal.mul_top]`. Rewrite using `[← AdicCompletion.factor_eval_eq_evalₐ I y hle, AdicCompletion.eval_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem evalₐ_eq_mk_of_val {R : Type} [CommRing R] (I : Ideal R) (y : AdicCompletion I R) (n : ℕ) (b : R)
     (h : y.val n = Submodule.Quotient.mk b) :
     AdicCompletion.evalₐ I n y = Ideal.Quotient.mk _ b := by
@@ -71,6 +94,19 @@ theorem evalₐ_eq_mk_of_val {R : Type} [CommRing R] (I : Ideal R) (y : AdicComp
   rw [← AdicCompletion.factor_eval_eq_evalₐ I y hle, AdicCompletion.eval_apply, h]
   rfl
 
+/- English proof (translation)
+Introduce `A B _ _ _ J Γ g hinj hrange`. Establish `h1 : ∀ x, complEquivFun J (AdicCompletion.map J (Algebra.linearMap A B) x) = cmap (algebraMap A B) J (J.map (algebraMap A B)) le_rfl x`. Introduce `x`. Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective _ (x.val n)`.
+
+Rewrite using `[complEquivFun_val, AdicCompletion.map_val_apply, ← ha]`. Use `symm`. Apply `val_eq_mk_of_evalₐ` to reduce the goal to its premises. Rewrite using `[evalₐ_cmap, evalₐ_eq_mk_of_val J x n a ha.symm, Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+
+Establish `h2 : ∀ σ z, complEquivFun J (AdicCompletion.map J (g σ).toLinearMap z) = cmap (g σ).toRingHom (J.map (algebraMap A B)) (J.map (algebraMap A B)) (map_algebraMap_le (g σ) J) (complEquivFun J z)`. Introduce `σ z`. Use `AdicCompletion.ext fun n => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Submodule.Quotient.mk_surjective _ (z.val n)`. Rewrite using `[complEquivFun_val, AdicCompletion.map_val_apply, ← hb]`.
+
+Use `symm`. Apply `val_eq_mk_of_evalₐ` to reduce the goal to its premises. Use `(evalₐ_cmap _ _ _ _ n _).trans ?_` and prove the remaining obligations. Rewrite using `[evalₐ_eq_mk_of_val _ (complEquivFun J z) n b (by rw [complEquivFun_val, ← hb]; rfl), Ideal.quotientMap_mk]`. Both sides reduce to the same expression.
+
+Use `⟨fun x y hxy => hinj (complEquivFun_injective J (by rw [h1, h1, hxy])), fun y => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `complEquivFun_surjective J y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ σ`. Establish `hz : z ∈ LinearMap.range (AdicCompletion.map J (Algebra.linearMap A B))` using `⟨x, complEquivFun_injective J (by rw [h1, hx])⟩`.
+
+Rewrite using `[← h2, (hrange z).1 hz σ]`. Introduce `h`. Take `⟨x, hx⟩` from `(hrange z).2 fun σ => complEquivFun_injective J (by rw [h2, h σ])`. Conclude with `⟨x, by rw [← h1, hx]⟩`.
+-/
 theorem cmap_transfer : ∀ (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (J : Ideal A) (Γ : Type) (g : Γ → (B →ₐ[A] B)),
     Function.Injective (AdicCompletion.map J (Algebra.linearMap A B)) →
     (∀ y, y ∈ LinearMap.range (AdicCompletion.map J (Algebra.linearMap A B)) ↔

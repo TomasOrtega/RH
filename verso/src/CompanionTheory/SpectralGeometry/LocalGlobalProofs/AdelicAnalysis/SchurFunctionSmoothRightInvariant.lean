@@ -10,6 +10,17 @@ open scoped ENNReal NNReal MatrixGroups
 
 namespace GlobalTheory.CompanionTheory.SW.CoefEis
 
+/- English proof (translation)
+Introduce `K X _ _ μ _ T C hm hs hb`. Establish `hbound : ∀ b x, ‖T b x‖ ≤ C` using `fun b x => ((hs x).le_tsum b (fun _ _ => norm_nonneg _)).trans (hb x)`. Establish `hint : ∀ b, Integrable (T b) μ` using `fun b => Integrable.of_bound (hm b) C (ae_of_all _ (hbound b))`. Establish `hlin : ∑' b, ∫⁻ x, ‖T b x‖ₑ ∂μ ≠ ⊤`. Rewrite using `[← lintegral_tsum (fun b => (hm b).enorm)]`.
+
+Establish `h1 : ∀ x, ∑' b, ‖T b x‖ₑ ≤ ENNReal.ofReal C`. Introduce `x`. Establish `h2 : ∀ b, ‖T b x‖ₑ = ENNReal.ofReal ‖T b x‖` using `fun b => (ofReal_norm_eq_enorm _).symm`. Simplify using `only [h2]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hs x)]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hb x)`. Use `ne_of_lt ((lintegral_mono h1).trans_lt ?_)` and prove the remaining obligations. Rewrite using `[lintegral_const]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (measure_lt_top _ _)`. Establish `hsn : Summable fun b => ∫ x, ‖T b x‖ ∂μ`.
+
+Establish `h3` using `ENNReal.summable_toReal hlin`. Use `h3.congr fun b => ?_` and prove the remaining obligations. Conclude with `(integral_norm_eq_lintegral_enorm (hm b)).symm`. Establish `hS` using `hasSum_integral_of_summable_integral_norm hint hsn`. Use `⟨?_, hS.summable, hS.tsum_eq.symm⟩` and prove the remaining obligations.
+
+Use `Integrable.of_bound ?_ C (ae_of_all _ fun x => (norm_tsum_le_tsum_norm (hs x)).trans (hb x))` and prove the remaining obligations. Use `aestronglyMeasurable_of_tendsto_ae (Filter.atTop : Filter (Finset K)) (f := fun s x => ∑ b ∈ s, T b x) (fun s => ?_) (ae_of_all _ fun x => (hs x).of_norm.hasSum)` and prove the remaining obligations. Conclude with `Finset.aestronglyMeasurable_fun_sum s fun b _ => hm b`.
+-/
 theorem tsum_integral_swap : ∀ (K X : Type) [Countable K] [MeasurableSpace X] (μ : Measure X) [IsFiniteMeasure μ] (T : K → X → ℂ) (C : ℝ), (∀ b, AEStronglyMeasurable (T b) μ) → (∀ x, Summable fun b => ‖T b x‖) → (∀ x, ∑' b, ‖T b x‖ ≤ C) → Integrable (fun x => ∑' b, T b x) μ ∧ Summable (fun b => ∫ x, T b x ∂μ) ∧ ∫ x, ∑' b, T b x ∂μ = ∑' b, ∫ x, T b x ∂μ := by
   intro K X _ _ μ _ T C hm hs hb
   have hbound : ∀ b x, ‖T b x‖ ≤ C := fun b x =>
@@ -38,6 +49,11 @@ theorem tsum_integral_swap : ∀ (K X : Type) [Countable K] [MeasurableSpace X] 
     (f := fun s x => ∑ b ∈ s, T b x) (fun s => ?_) (ae_of_all _ fun x => (hs x).of_norm.hasSum)
   exact Finset.aestronglyMeasurable_fun_sum s fun b _ => hm b
 
+/- English proof (translation)
+Introduce `K _ H f hf`. Set `E : K ≃ (K ⧸ H) × H` to `{ toFun := fun b => ((b : K ⧸ H), ⟨-(b : K ⧸ H).out + b, QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' (b : K ⧸ H))⟩) invFun := fun p => p.1.out + (p.2 : K) left_inv := fun b => by simp right_inv := by`. Introduce and unpack `⟨q, h⟩`. Establish `hq : ((q.out + (h : K) : K) : K ⧸ H) = q`. Rewrite using `[QuotientAddGroup.mk_add_of_mem _ h.2]`.
+
+Conclude with `QuotientAddGroup.out_eq' q`. Use `Prod.ext hq (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `[hq] }`. Establish `h1 : Summable (fun p : (K ⧸ H) × H => f (p.1.out + (p.2 : K)))` using `(E.symm.summable_iff (f := f)).2 hf`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tsum_cosets : ∀ (K : Type) [AddCommGroup K] (H : AddSubgroup K) (f : K → ℂ), Summable f → ∑' b, f b = ∑' q : K ⧸ H, ∑' h : H, f (q.out + (h : K)) := by
   intro K _ H f hf
   let E : K ≃ (K ⧸ H) × H :=
@@ -56,6 +72,17 @@ theorem tsum_cosets : ∀ (K : Type) [AddCommGroup K] (H : AddSubgroup K) (f : K
   calc ∑' b, f b = ∑' p : (K ⧸ H) × H, f (p.1.out + (p.2 : K)) := (E.symm.tsum_eq f).symm
     _ = _ := h1.tsum_prod
 
+/- English proof (translation)
+Introduce `κ _ Λ _ D hD c e hc hecont he1 hadd hΛ s`. Establish `hf : Integrable (fun x => c (x + s) * e x) volume`. Use `(hc.comp_add_right s).mono ((hc.comp_add_right s).aestronglyMeasurable.mul hecont.aestronglyMeasurable) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Simplify using `[he1]`. Establish `h1` using `hD.integral_eq_tsum'' _ hf`.
+
+Establish `h2 : ∫ x, c (x + s) * e x = e (-s) * ∫ x, c x * e x`. Establish `h3 : ∀ x, c (x + s) * e x = (fun y => e (-s) * (c y * e y)) (x + s)`. Introduce `x`. Establish `h4 : e x = e (-s) * e (x + s)`. Rewrite using `[← hadd]`.
+
+Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only []`. Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[integral_congr_ae (ae_of_all _ h3), integral_add_right_eq_self (μ := volume) (fun y => e (-s) * (c y * e y)) s, integral_const_mul]`. Rewrite using `[← h2, h1]`. Use `tsum_congr fun l => integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Establish `h4 : (l +ᵥ x) = (l : κ → ℝ) + x` using `rfl`. Establish `h5 : x + (s + (l : κ → ℝ)) = (l : κ → ℝ) + x + s` using `by abel`.
+
+Simplify using `only [h4, h5, hadd, hΛ l l.2, one_mul]`.
+-/
 theorem unfold_char : ∀ (κ : Type) [Fintype κ] (Λ : AddSubgroup (κ → ℝ)) [Countable Λ] (D : Set (κ → ℝ)), IsAddFundamentalDomain Λ D volume → ∀ (c e : (κ → ℝ) → ℂ), Integrable c → Continuous e → (∀ x, ‖e x‖ = 1) → (∀ x y, e (x + y) = e x * e y) → (∀ l ∈ Λ, e l = 1) → ∀ s : κ → ℝ, ∑' l : Λ, ∫ x in D, c (x + (s + (l : κ → ℝ))) * e x = e (-s) * ∫ x, c x * e x := by
   intro κ _ Λ _ D hD c e hc hecont he1 hadd hΛ s
   have hf : Integrable (fun x => c (x + s) * e x) volume := by
@@ -81,6 +108,19 @@ theorem unfold_char : ∀ (κ : Type) [Fintype κ] (Λ : AddSubgroup (κ → ℝ
   have h5 : x + (s + (l : κ → ℝ)) = (l : κ → ℝ) + x + s := by abel
   simp only [h4, h5, hadd, hΛ l l.2, one_mul]
 
+/- English proof (translation)
+Introduce `G Q _ _ _ _ _ _ lf _ s W hW hcov hdis g hg hper`. Set `E : Q → Set G` to `fun q => (fun y => -s q + y) ⁻¹' W`. Establish `hEo : ∀ q, IsOpen (E q)` using `fun q => hW.preimage (by fun_prop)`. Establish `hEm : ∀ q, MeasurableSet (E q)` using `fun q => (hEo q).measurableSet`. Establish `hEd : Pairwise (Function.onFun Disjoint E)`.
+
+Introduce `q q' hne`. Use `Set.disjoint_left.2 fun y h1 h2 => hne (hdis q q' ⟨_, h1, _, h2, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s q + (-s q + y) = s q' + (-s q' + y)`. Rewrite using `[add_neg_cancel_left, add_neg_cancel_left]`. Establish `hEc : ⋃ q, E q = Set.univ`.
+
+Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `hcov y`. Use `Set.mem_iUnion.2 ⟨q, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-s q + y ∈ W`. Rewrite using `[neg_add_eq_sub]` and apply the resulting hypothesis.
+
+Establish `hS` using `hasSum_integral_iUnion (μ := lf) (f := g) hEm hEd (by rw [hEc]; exact hg.integrableOn)`. Rewrite `hS` using `[hEc, setIntegral_univ]`. Establish `hq : ∀ q, ∫ a in E q, g a ∂lf = ((lf W).toReal : ℂ) * g (s q)`. Introduce `q`. Establish `h1 : ∫ a in E q, g a ∂lf = ∫ a in E q, g (s q) ∂lf`.
+
+Use `setIntegral_congr_fun (hEm q) fun y hy => ?_` and prove the remaining obligations. Establish `h2` using `hper (s q) _ hy`. Simplify using `using h2`. Establish `h3 : lf (E q) = lf W` using `measure_preimage_add lf (-s q) W`. Rewrite using `[h1, setIntegral_const, Measure.real, h3, Complex.real_smul]`.
+
+Simplify using `only [hq] at hS`. Conclude with `hS`.
+-/
 theorem hasSum_integral_cosets : ∀ (G Q : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G] [BorelSpace G] [Countable Q] (lf : Measure G) [lf.IsAddLeftInvariant] (s : Q → G) (W : Set G), IsOpen W → (∀ y, ∃ q, y - s q ∈ W) → (∀ q q', (∃ w ∈ W, ∃ w' ∈ W, s q + w = s q' + w') → q = q') → ∀ g : G → ℂ, Integrable g lf → (∀ y, ∀ w ∈ W, g (y + w) = g y) → HasSum (fun q => ((lf W).toReal : ℂ) * g (s q)) (∫ y, g y ∂lf) := by
   intro G Q _ _ _ _ _ _ lf _ s W hW hcov hdis g hg hper
   let E : Q → Set G := fun q => (fun y => -s q + y) ⁻¹' W
@@ -110,6 +150,21 @@ theorem hasSum_integral_cosets : ∀ (G Q : Type) [AddCommGroup G] [TopologicalS
   simp only [hq] at hS
   exact hS
 
+/- English proof (translation)
+Introduce `F _ _ N hN H hH`. Take `⟨-, -, -, -, hOopen, hdense, hOint, -, -, hWopen⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Establish `hO0 : (0 : A F) ∈ Oh F` using `fun v => zero_mem _`. Establish `hOsub : ∀ x y : A F, x ∈ Oh F → y ∈ Oh F → x - y ∈ Oh F` using `fun x y hx hy v => sub_mem (hx v) (hy v)`. Establish `hNal : algebraMap F (A F) (N : F) = (N : A F)` using `map_natCast _ N`.
+
+Establish `hN0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Prove the components needed by the constructor for the conclusion. Introduce `y`. Establish `hU : IsOpen {b : A F | y - b ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}}` using `(hWopen N hN).preimage (by fun_prop)`. Take `⟨b, z, hz, hbz⟩` from `hdense.exists_mem_open hU ⟨y, ⟨0, hO0, by simp⟩⟩`.
+
+Use `⟨((b : F) : F ⧸ H), ?_⟩` and prove the remaining obligations. Establish `h1 : -b + ((b : F) : F ⧸ H).out ∈ H` using `QuotientAddGroup.eq.1 (QuotientAddGroup.out_eq' _).symm`. Take `⟨r, hr⟩` from `(hH _).1 h1`. Establish `h2 : ((b : F) : F ⧸ H).out = b + (N : F) * (r : F)`. Rewrite using `[← hr]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨z - algebraMap F (A F) (r : F), hOsub _ _ hz ((hOint _).2 ⟨r, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[h2, map_add, map_mul, hNal, mul_sub, ← hbz]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `q q' ⟨w, ⟨z, hz, rfl⟩, w', ⟨z', hz', rfl⟩, h⟩`.
+
+Establish `h1 : algebraMap F (A F) (q.out - q'.out) = (N : A F) * (z' - z)`. Rewrite using `[map_sub, mul_sub]`. Take the linear combination `h`. Establish `h2 : algebraMap F (A F) ((q.out - q'.out) / (N : F)) = z' - z`. Establish `h3 : algebraMap F (A F) (N : F)⁻¹ * (N : A F) = 1`.
+
+Rewrite using `[← hNal, ← map_mul, inv_mul_cancel₀ hN0, map_one]`. Rewrite using `[div_eq_mul_inv, map_mul, h1, mul_comm, ← mul_assoc, h3, one_mul]`. Take `⟨r, hr⟩` from `(hOint _).1 (h2 ▸ hOsub _ _ hz' hz)`. Establish `h3 : -q'.out + q.out ∈ H` using `(hH _).2 ⟨r, by`. Rewrite using `[hr]`.
+
+Clear the denominators using the available nonvanishing facts. Use the proof step `ring⟩`. Establish `h4 : ((q'.out : F) : F ⧸ H) = ((q.out : F) : F ⧸ H)` using `QuotientAddGroup.eq.2 h3`. Rewrite `h4` using `[QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Conclude with `h4.symm`.
+-/
 theorem cosets_of_multiples : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ), 0 < N → ∀ H : AddSubgroup F, (∀ b, b ∈ H ↔ ∃ r : 𝓞 F, b = (N : F) * (r : F)) → (∀ y : A F, ∃ q : F ⧸ H, y - algebraMap F (A F) q.out ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}) ∧ ∀ q q' : F ⧸ H, (∃ w ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}, ∃ w' ∈ {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}, algebraMap F (A F) q.out + w = algebraMap F (A F) q'.out + w') → q = q' := by
   intro F _ _ N hN H hH
   obtain ⟨-, -, -, -, hOopen, hdense, hOint, -, -, hWopen⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
@@ -150,6 +205,17 @@ theorem cosets_of_multiples : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ)
     rw [QuotientAddGroup.out_eq', QuotientAddGroup.out_eq'] at h4
     exact h4.symm
 
+/- English proof (translation)
+Introduce `F _ _ _ _ lf hlf h1 N hN`. Take `⟨-, -, -, -, hOopen, -⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Take `⟨h2, -⟩` from `GlobalTheory.T.adelic_haar_measure_scaling F lf hlf h1`. Establish `hN0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `h3` using `h2 (N : F) hN0 (Oh F) hOopen.measurableSet`.
+
+Establish `h4 : (fun x => algebraMap F (A F) (N : F) * x) '' Oh F = {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}`. Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, map_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨z, hz, rfl⟩`. Rewrite `h3` using `[h4, h1, mul_one]`. Establish `h5 : Algebra.norm ℚ (N : F) = (N : ℚ) ^ Module.finrank ℚ F`.
+
+Establish `: (N : F) = algebraMap ℚ F (N : ℚ)` using `(map_natCast _ N).symm`. Rewrite using `[this, Algebra.norm_algebraMap]`. Rewrite using `[h3, h5]`. Establish `h6 : (0 : ℝ) < (N : ℝ) ^ Module.finrank ℚ F` using `by positivity`. Use `push_cast`.
+
+Rewrite using `[abs_of_pos h6, ENNReal.toReal_ofReal (inv_nonneg.2 h6.le), inv_mul_cancel₀ h6.ne']`.
+-/
 theorem mass_multiples : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ N : ℕ, 0 < N → (lf {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z}).toReal * (N : ℝ) ^ Module.finrank ℚ F = 1 := by
   intro F _ _ _ _ lf hlf h1 N hN
   obtain ⟨-, -, -, -, hOopen, -⟩ := GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F
@@ -173,6 +239,17 @@ theorem mass_multiples : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpa
   push_cast
   rw [abs_of_pos h6, ENNReal.toReal_ofReal (inv_nonneg.2 h6.le), inv_mul_cancel₀ h6.ne']
 
+/- English proof (translation)
+Introduce `F _ _ hTR ρ hρ z`. Establish `h1` using `trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := z)`. Establish `hreal : ∀ φ : F →+* ℂ, (InfinitePlace.mk φ).embedding = φ`. Introduce `φ`. Establish `hr : (InfinitePlace.mk φ).IsReal` using `IsTotallyReal.isReal _`.
+
+Conclude with `InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 hr)`. Set `E : InfinitePlace F ≃ (F →ₐ[ℚ] ℂ)` to `{ toFun := fun w => w.embedding.toRatAlgHom invFun := fun σ => InfinitePlace.mk (σ : F →+* ℂ) left_inv := fun w => by`. Express the relevant statement in the definitionally equal form `InfinitePlace.mk w.embedding = w`. Conclude with `InfinitePlace.mk_embedding w`. Use `right_inv := fun σ => by`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(InfinitePlace.mk (σ : F →+* ℂ)).embedding x = σ x`. Rewrite using `[hreal]`. Use `rfl }`. Establish `h2 : ((∑ w, ρ w z : ℝ) : ℂ) = ∑ σ : F →ₐ[ℚ] ℂ, σ z`.
+
+Rewrite using `[Complex.ofReal_sum, ← E.sum_comp]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hρ]`. Both sides reduce to the same expression. Rewrite `h2` using `[← h1]`.
+
+Establish `h3 : ((∑ w, ρ w z : ℝ) : ℂ) = (((Algebra.trace ℚ F z : ℚ) : ℝ) : ℂ)`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Conclude with `h3` after adjusting the coercions.
+-/
 theorem sum_places_eq_trace : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ ρ : InfinitePlace F → (F →+* ℝ), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) → ∀ z : F, ∑ w, ρ w z = ((Algebra.trace ℚ F z : ℚ) : ℝ) := by
   intro F _ _ hTR ρ hρ z
   have h1 := trace_eq_sum_embeddings (K := ℚ) (L := F) ℂ (x := z)
@@ -202,10 +279,90 @@ theorem sum_places_eq_trace : ∀ (F : Type) [Field F] [NumberField F], IsTotall
     simp
   exact_mod_cast h3
 
+/- English proof (translation)
+Introduce `F _ _ x y hx hy v`. Conclude with `mul_mem (hx v) (hy v)`.
+-/
 theorem Oh_mul_mem : ∀ (F : Type) [Field F] [NumberField F] (x y : A F), x ∈ Oh F → y ∈ Oh F → x * y ∈ Oh F := by
   intro F _ _ x y hx hy v
   exact mul_mem (hx v) (hy v)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ hM φ hφ hΦ hc β hβ N hN hNβ hper D hD`. Take `⟨hTR, -, -, -, hρ, -, -⟩` from `id hQ`. Establish `hcount : Countable F` using `(Module.finBasis ℚ F).equivFun.toEquiv.injective.countable`. Take `⟨-, hLcount, hLmem, hLD⟩` from `GlobalTheory.T.lattice_fundamental_domain_volume F hTR ρ hρ N hN`. Take `⟨hvol, horth⟩` from `hLD D hD`.
+
+Take `⟨-, -, -, -, hOopen, -, hOint, -, -, hWopen⟩` from `GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F`. Take `⟨-, hψ'⟩` from `GlobalTheory.T.standard_adelic_character F`. Take `⟨hψ1, hψO, -⟩` from `hψ' ψ hψ`. Take `⟨C, hC⟩` from `GlobalTheory.T.summable_norm_eiTerm_and_wt_mul_tsum_le F lf hlf h1 ψ hψ ι M B ρ P hQ hM φ hφ 1 one_pos`. Use `haveI := hLcount`.
+
+Use `haveI : lf.IsAddHaarMeasure := hlf`. Use `set Φ := fstar ψ (hf F) (Bf B) (muF B lf) φ with hΦdef`. Use `set c : (InfinitePlace F → ℝ) → ℂ := fun x => cG B ρ P (fun w => (x w : ℂ) + Complex.I) with hcdef`. Use `set e : (InfinitePlace F → ℝ) → ℂ := fun x => Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ((∑ w, ρ w β * x w : ℝ) : ℂ)) with hedef`. Set `j : F →+ (InfinitePlace F → ℝ)` to `{ toFun := fun b w => ρ w b map_zero' := by ext w; simp map_add' := fun a b => by ext w; simp }`.
+
+Establish `hj : ∀ b w, j b w = ρ w b` using `fun _ _ => rfl`. Establish `hjinj : Function.Injective j`. Introduce `a b hab`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `(ρ w).injective (congrFun hab w)`.
+
+Use `set al : F →+* A F := algebraMap F (A F) with hal`. Establish `hecont : Continuous e`. Simplify using `only [hedef]`. Use `fun_prop`. Establish `henorm : ∀ x, ‖e x‖ = 1`.
+
+Introduce `x`. Simplify using `only [hedef]`. Establish `: -(2 * (Real.pi : ℂ) * Complex.I) * ((∑ w, ρ w β * x w : ℝ) : ℂ) = ((-(2 * Real.pi * ∑ w, ρ w β * x w) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this, Complex.norm_exp_ofReal_mul_I]`. Establish `headd : ∀ x y, e (x + y) = e x * e y`.
+
+Introduce `x y`. Simplify using `only [hedef, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hechar : ∀ b : F, e (-(j b)) = ψ (-(al β) * al b)`. Introduce `b`. Establish `h2 : -(al β) * al b = al (-(β * b))` using `by simp [hal]`. Rewrite using `[h2, hψ.2]`.
+
+Simplify using `only [hedef]`. Use `congr 1`. Establish `h3 : (∑ w, ρ w β * (-(j b)) w) = -((Algebra.trace ℚ F (β * b) : ℚ) : ℝ)`. Rewrite using `[← sum_places_eq_trace F hTR ρ hρ (β * b), ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Simplify using `[hj]`. Rewrite using `[h3, map_neg]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Set `H : AddSubgroup F` to `(latR ρ N).comap j`.
+
+Establish `hHmem : ∀ b, b ∈ H ↔ ∃ r : 𝓞 F, b = (N : F) * (r : F)`. Introduce `b`. Rewrite using `[AddSubgroup.mem_comap, hLmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr⟩`.
+
+Use `⟨r, hjinj ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Both sides reduce to the same expression. Introduce and unpack `⟨r, rfl⟩`. Conclude with `⟨r, rfl⟩`.
+
+Establish `hNal : ∀ n : ℕ, al (n : F) = (n : A F)` using `fun n => map_natCast _ n`. Establish `hOr : ∀ r : 𝓞 F, al (r : F) ∈ Oh F` using `fun r => (hOint _).2 ⟨r, rfl⟩`. Establish `heLat : ∀ l ∈ latR ρ N, e l = 1`. Introduce `l hl`. Take `⟨r, rfl⟩` from `(hLmem l).1 hl`.
+
+Take `⟨r0, hr0⟩` from `hNβ`. Establish `h4 : (fun w => ρ w ((N : F) * (r : F))) = -(j (-((N : F) * (r : F))))`. Use extensionality with `w`. Simplify using `[hj]`. Rewrite using `[h4, hechar]`.
+
+Establish `h5 : -(al β) * al (-((N : F) * (r : F))) = al ((r0 * r : 𝓞 F) : F)`. Rewrite using `[← map_neg, ← map_mul]`. Use `congr 1`. Rewrite using `[show ((r0 * r : 𝓞 F) : F) = (r0 : F) * (r : F) from map_mul (algebraMap (𝓞 F) F) r0 r, hr0]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h5]`. Conclude with `hψO _ (hOr _)`. Establish `hap : ∀ b, ∀ h ∈ H, Φ (al (b + h)) = Φ (al b)`. Introduce `b h hh`. Take `⟨r, rfl⟩` from `(hHmem h).1 hh`.
+
+Establish `: al (b + (N : F) * (r : F)) = al b + (N : A F) * al (r : F)`. Rewrite using `[map_add, map_mul, hNal]`. Rewrite using `[this]`. Conclude with `hper _ (hOr r) _`. Establish `hterm : ∀ (x : InfinitePlace F → ℝ) (b : F), eiTerm ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) b = Φ (al b) * c (x + j b)`.
+
+Introduce `x b`. Simplify using `only [eiTerm, hcdef]`. Use `congr 2`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.add_apply, hj]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hbd : ∀ x : InfinitePlace F → ℝ, Summable (fun b => ‖Φ (al b) * c (x + j b)‖) ∧ ∑' b, ‖Φ (al b) * c (x + j b)‖ ≤ C`. Introduce `x`. Establish `h6` using `hC (fun w => (x w : ℂ) + Complex.I) (fun w => by simp)`.
+
+Simplify using `only [hterm] at h6`. Establish `h7 : wt M (fun w => (x w : ℂ) + Complex.I) = 1` using `by simp [wt]`. Rewrite `h6` using `[h7, one_mul]`. Conclude with `h6`. Establish `hDfin : volume D ≠ ⊤` using `by rw [hvol]; exact ENNReal.ofReal_ne_top`.
+
+Use `haveI : IsFiniteMeasure (volume.restrict D) := ⟨by rw [Measure.restrict_apply_univ]; exact lt_top_iff_ne_top.2 hDfin⟩`. Use `set T : F → (InfinitePlace F → ℝ) → ℂ := fun b x => Φ (al b) * c (x + j b) * e x with hT`. Establish `hTnorm : ∀ b x, ‖T b x‖ = ‖Φ (al b) * c (x + j b)‖`. Introduce `b x`. Simplify using `only [hT, norm_mul, henorm, mul_one]`.
+
+Establish `hTmeas : ∀ b, AEStronglyMeasurable (T b) (volume.restrict D)`. Introduce `b`. Establish `h8 : AEStronglyMeasurable (fun x => c (x + j b)) volume` using `(hc.comp_add_right (j b)).aestronglyMeasurable`. Conclude with `((h8.const_mul _).mul hecont.aestronglyMeasurable).restrict`. Take `⟨hInt, hSum, hEq⟩` from `tsum_integral_swap F (InfinitePlace F → ℝ) (volume.restrict D) T C hTmeas (fun x => by simpa only [hTnorm] using (hbd x).1) (fun x => by simpa only [hTnorm] using (hbd x).2)`.
+
+Establish `heInt : Integrable e (volume.restrict D)` using `Integrable.of_bound hecont.aestronglyMeasurable 1 (ae_of_all _ fun x => (henorm x).le)`. Establish `Heisenberg₂ : ∀ x : InfinitePlace F → ℝ, eis ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) * e x = φ 0 * e x + ∑' b, T b x`. Introduce `x`. Simplify using `only [eis, add_mul, hT, hterm, tsum_mul_right]`. Establish `he0 : ∫ x in D, e x = 0`.
+
+Establish `h9` using `horth (-β) (neg_ne_zero.2 hβ) (by`. Take `⟨r0, hr0⟩` from `hNβ`. Conclude with `⟨-r0, by rw [show ((-r0 : 𝓞 F) : F) = -(r0 : F) from map_neg (algebraMap (𝓞 F) F) r0, hr0]; ring⟩)`. Rewrite using `[← h9]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hedef]`. Use `congr 1`. Simplify using `only [map_neg, neg_mul, Finset.sum_neg_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: (fun x : InfinitePlace F → ℝ => eis ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) * e x) = fun x => φ 0 * e x + ∑' b, T b x` using `funext Heisenberg₂`. Rewrite using `[IntegrableOn, this]`. Conclude with `(heInt.const_mul _).add hInt`. Express the relevant statement in the definitionally equal form `∫ x in D, eis ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) * e x = ((N : ℂ) ^ Module.finrank ℚ F * ∫ y, Φ y * ψ (-(al β) * y) ∂lf) * ∫ x, c x * e x set Ch : ℂ := ∫ x, c x * e x with hCh`.
+
+Simplify using `only [Heisenberg₂]`. Rewrite using `[integral_add (heInt.const_mul _) hInt, integral_const_mul, he0, mul_zero, zero_add, hEq, tsum_cosets F H _ hSum]`. Set `eH : H ≃ latR ρ N` to `Equiv.ofBijective (fun h => ⟨j h, h.2⟩) (by`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`.
+
+Conclude with `Subtype.ext (hjinj (congrArg Subtype.val hab))`. Introduce and unpack `⟨l, hl⟩`. Take `⟨r, rfl⟩` from `(hLmem l).1 hl`. Conclude with `⟨⟨(N : F) * (r : F), (hHmem _).2 ⟨r, rfl⟩⟩, rfl⟩)`. Establish `hcoset : ∀ q : F ⧸ H, ∑' h : H, ∫ x in D, T (q.out + (h : F)) x = Φ (al q.out) * e (-(j q.out)) * Ch`.
+
+Introduce `q`. Establish `h10 : ∀ h : H, ∫ x in D, T (q.out + (h : F)) x = Φ (al q.out) * ∫ x in D, c (x + (j q.out + ((eH h : latR ρ N) : InfinitePlace F → ℝ))) * e x`. Introduce `h`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hT]`. Rewrite using `[hap _ _ h.2, map_add j, mul_assoc]`. Both sides reduce to the same expression. Simplify using `only [h10]`. Rewrite using `[tsum_mul_left, eH.tsum_eq (fun l : latR ρ N => ∫ x in D, c (x + (j q.out + (l : InfinitePlace F → ℝ))) * e x), unfold_char (InfinitePlace F) (latR ρ N) D hD c e hc hecont henorm headd heLat (j q.out)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hcoset]`. Rewrite using `[tsum_mul_right]`. Use `congr 1`. Use `set W : Set (A F) := {x : A F | ∃ z ∈ Oh F, x = (N : A F) * z} with hW`.
+
+Take `⟨hcov, hdis⟩` from `cosets_of_multiples F N hN H hHmem`. Use `set G : A F → ℂ := fun y => Φ y * ψ (-(al β) * y) with hG`. Establish `hGint : Integrable G lf`. Use `hΦ.mono ?_ (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `hΦ.aestronglyMeasurable.mul (Continuous.aestronglyMeasurable ?_)` and prove the remaining obligations.
+
+Conclude with `hψ.1.comp (by fun_prop)`. Simplify using `only [hG, norm_mul, hψ1, mul_one, le_refl]`. Establish `hGper : ∀ y, ∀ w ∈ W, G (y + w) = G y`. Introduce and unpack `y w ⟨z, hz, rfl⟩`. Take `⟨r0, hr0⟩` from `hNβ`.
+
+Establish `h11 : -(al β) * (y + (N : A F) * z) = -(al β) * y + al (-(r0 : F)) * z`. Rewrite using `[hr0, ← hNal]`. Simplify using `only [map_neg, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h12 : al (-(r0 : F)) * z ∈ Oh F`.
+
+Rewrite using `[show -(r0 : F) = ((-r0 : 𝓞 F) : F) from (map_neg (algebraMap (𝓞 F) F) r0).symm]`. Conclude with `Oh_mul_mem F _ _ (hOr _) hz`. Simplify using `only [hG]`. Rewrite using `[hper z hz y, h11, AddChar.map_add_eq_mul, hψO _ h12, mul_one]`. Use `haveI : Countable (F ⧸ H) := Function.Surjective.countable (f := fun b : F => (b : F ⧸ H)) (fun q => ⟨q.out, QuotientAddGroup.out_eq' q⟩)`.
+
+Establish `hsum` using `hasSum_integral_cosets (A F) (F ⧸ H) lf (fun q => al q.out) W (hWopen N hN) hcov hdis G hGint hGper`. Establish `h13 : ∀ q : F ⧸ H, G (al q.out) = Φ (al q.out) * e (-(j q.out))`. Introduce `q`. Simplify using `only [hG, hechar]`. Establish `h14` using `hsum.tsum_eq`.
+
+Simplify using `only [h13] at h14`. Rewrite `h14` using `[tsum_mul_left]`. Rewrite using `[← h14, ← mul_assoc]`. Establish `h15` using `mass_multiples F lf hlf h1 N hN`. Establish `h16 : (((N : ℂ) ^ Module.finrank ℚ F) * (((lf W).toReal : ℝ) : ℂ)) = 1`.
+
+Rewrite using `[mul_comm]`. Conclude with `h15` after adjusting the coercions. Rewrite using `[h16, one_mul]`.
+-/
 theorem fourier_coeff_eis : ∀ (F : Type) [Field F] [NumberField F] [MeasurableSpace (A F)] [BorelSpace (A F)] (lf : Measure (A F)), lf.IsAddHaarMeasure → lf (Oh F) = 1 → ∀ ψ : AddChar (A F) ℂ, IsStdChar F ψ → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → 3 ≤ M → ∀ φ : (ι → A F) → ℂ, SB φ → Integrable (fstar ψ (hf F) (Bf B) (muF B lf) φ) lf → Integrable (fun x : InfinitePlace F → ℝ => cG B ρ P (fun w => (x w : ℂ) + Complex.I)) → ∀ β : F, β ≠ 0 → ∀ N : ℕ, 0 < N → (∃ r : 𝓞 F, (r : F) = (N : F) * β) → (∀ x ∈ Oh F, ∀ y : A F, fstar ψ (hf F) (Bf B) (muF B lf) φ (y + (N : A F) * x) = fstar ψ (hf F) (Bf B) (muF B lf) φ y) → ∀ D : Set (InfinitePlace F → ℝ), IsAddFundamentalDomain (latR ρ N) D volume → IntegrableOn (fun x : InfinitePlace F → ℝ => eis ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ((∑ w, ρ w β * x w : ℝ) : ℂ))) D volume ∧ ∫ x in D, eis ψ lf B ρ P φ (fun w => (x w : ℂ) + Complex.I) * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ((∑ w, ρ w β * x w : ℝ) : ℂ)) = ((N : ℂ) ^ Module.finrank ℚ F * ∫ y, fstar ψ (hf F) (Bf B) (muF B lf) φ y * ψ (-(algebraMap F (A F) β) * y) ∂lf) * ∫ x : InfinitePlace F → ℝ, cG B ρ P (fun w => (x w : ℂ) + Complex.I) * Complex.exp (-(2 * (Real.pi : ℂ) * Complex.I) * ((∑ w, ρ w β * x w : ℝ) : ℂ)) := by
   intro F _ _ _ _ lf hlf h1 ψ hψ ι _ _ M B ρ P hQ hM φ hφ hΦ hc β hβ N hN hNβ hper D hD
   obtain ⟨hTR, -, -, -, hρ, -, -⟩ := id hQ

@@ -6,6 +6,11 @@ open scoped TensorProduct Topology
 
 namespace GlobalTheory.CompanionTheory.SaGen
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h K _ _ t`. Establish `hσ : ∀ x : E, σ (σ x) = x`. Introduce `x`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+
+Rewrite using `[h.2.2.2, h.2.2.2, star_star]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_sigR_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (K : Type) [Field K] [Algebra F K] (t : K ⊗[F] E), sigR K σ (sigR K σ t) = t := by
   intro F E _ _ _ _ _ σ h K _ _ t
   have hσ : ∀ x : E, σ (σ x) = x := by

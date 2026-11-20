@@ -31,28 +31,46 @@ def transposeInv : GL (Fin n) F ≃* GL (Fin n) F where
 variable {F n}
 
 @[simp]
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem coe_transposeInv (g : GL (Fin n) F) :
     ((transposeInv F n g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
       ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)ᵀ := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_inv_transposeInv (g : GL (Fin n) F) :
     (((transposeInv F n g)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) =
       ((g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `(transposeInv F n).left_inv g`.
+-/
 theorem transposeInv_transposeInv (g : GL (Fin n) F) : transposeInv F n (transposeInv F n g) = g :=
   (transposeInv F n).left_inv g
 
+/- English proof (translation)
+Rewrite `hk`, the goal using `[mem_integralGL_iff]`. Conclude with `⟨fun i j => hk.2 j i, fun i j => hk.1 j i⟩`.
+-/
 theorem transposeInv_mem_integralGL {k : GL (Fin n) F} (hk : k ∈ integralGL F n) :
     transposeInv F n k ∈ integralGL F n := by
   rw [mem_integralGL_iff] at hk ⊢
   exact ⟨fun i j => hk.2 j i, fun i j => hk.1 j i⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa [transposeInv_transposeInv] using transposeInv_mem_integralGL h, transposeInv_mem_integralGL⟩`.
+-/
 theorem transposeInv_mem_integralGL_iff {k : GL (Fin n) F} :
     transposeInv F n k ∈ integralGL F n ↔ k ∈ integralGL F n :=
   ⟨fun h => by simpa [transposeInv_transposeInv] using transposeInv_mem_integralGL h,
     transposeInv_mem_integralGL⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[coe_inv_transposeInv, Cartan.coe_diagPow, diagonal_transpose]`.
+-/
 theorem inv_transposeInv_diagPow [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (l : Fin n → ℤ) : (transposeInv F n (Cartan.diagPow F n l))⁻¹ = Cartan.diagPow F n l := by
   ext i j
@@ -60,6 +78,9 @@ theorem inv_transposeInv_diagPow [TopologicalSpace F] [IsNonarchimedeanLocalFiel
 
 variable [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g : GL (Fin n) F => ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)ᵀ`. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_transpose`. Express the relevant statement in the definitionally equal form `Continuous fun g : GL (Fin n) F => ((g : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)ᵀ`. Conclude with `Units.continuous_val.matrix_transpose`.
+-/
 theorem continuous_transposeInv : Continuous (transposeInv F n) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
   · change Continuous fun g : GL (Fin n) F => ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)ᵀ
@@ -75,6 +96,15 @@ def transposeInvHomeomorph : GL (Fin n) F ≃ₜ GL (Fin n) F where
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hH : (μ.map (transposeInv F n)).IsHaarMeasure` using `(transposeInv F n).isHaarMeasure_map μ continuous_transposeInv (transposeInvHomeomorph (F := F) (n := n)).continuous_invFun`. Use `set K := integralGL F n`. Establish `hK0 : μ K ≠ 0` using `(isOpen_integralGL F n).measure_ne_zero μ ⟨1, K.one_mem⟩`. Establish `hKT : μ K ≠ ⊤` using `(isCompact_integralGL F n).measure_lt_top.ne`. Establish `e` using `isMulLeftInvariant_eq_smul (μ.map (transposeInv F n)) μ`.
+
+Establish `hpre : transposeInv F n ⁻¹' (K : Set (GL (Fin n) F)) = K`. Use extensionality with `x`. Conclude with `transposeInv_mem_integralGL_iff`. Establish `hK : μ.map (transposeInv F n) K = μ K`. Rewrite using `[map_apply continuous_transposeInv.measurable (isOpen_integralGL F n).measurableSet, hpre]`.
+
+Establish `hc : haarScalarFactor (μ.map (transposeInv F n)) μ = 1`. Establish `h` using `congrArg (fun ν : Measure (GL (Fin n) F) => ν K) e`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h`. Rewrite `h` using `[hK]`. Use `(ENNReal.mul_eq_right hK0 hKT).1 h.symm` as an intermediate fact.
+
+Conclude with `this` after adjusting the coercions. Rewrite using `[e, hc, one_smul]`.
+-/
 theorem map_transposeInv : μ.map (transposeInv F n) = μ := by
   have hH : (μ.map (transposeInv F n)).IsHaarMeasure :=
     (transposeInv F n).isHaarMeasure_map μ continuous_transposeInv
@@ -96,6 +126,9 @@ theorem map_transposeInv : μ.map (transposeInv F n) = μ := by
     exact_mod_cast this
   rw [e, hc, one_smul]
 
+/- English proof (translation)
+Use `integral_map_equiv (μ := μ) (transposeInvHomeomorph (F := F) (n := n)).toMeasurableEquiv f` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫ g, f g ∂(μ.map (transposeInv F n)) = _ at this`. Rewrite `this` using `[map_transposeInv]`. Conclude with `this.symm`.
+-/
 theorem integral_comp_transposeInv (f : GL (Fin n) F → ℂ) :
     ∫ g, f (transposeInv F n g) ∂μ = ∫ g, f g ∂μ := by
   have := integral_map_equiv (μ := μ) (transposeInvHomeomorph (F := F) (n := n)).toMeasurableEquiv f
@@ -103,6 +136,11 @@ theorem integral_comp_transposeInv (f : GL (Fin n) F → ℂ) :
   rw [map_transposeInv] at this
   exact this.symm
 
+/- English proof (translation)
+Take `⟨l, -, k₁, hk₁, k₂, hk₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul F n g`. Establish `: (transposeInv F n (k₁ * Cartan.diagPow F n l * k₂))⁻¹ = (transposeInv F n k₂)⁻¹ * Cartan.diagPow F n l * (transposeInv F n k₁)⁻¹`. Rewrite using `[map_mul, map_mul, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_transposeInv_diagPow, mul_assoc]`. Establish `h₁` using `(integralGL F n).inv_mem (transposeInv_mem_integralGL hk₁)`. Establish `h₂` using `(integralGL F n).inv_mem (transposeInv_mem_integralGL hk₂)`.
+
+Rewrite using `[this, (hf _ h₁ _).2, (hf _ h₂ _).1, (hf _ hk₂ _).2, (hf _ hk₁ _).1]`.
+-/
 theorem apply_inv_transposeInv {f : GL (Fin n) F → ℂ}
     (hf : ∀ k ∈ integralGL F n, ∀ x, f (k * x) = f x ∧ f (x * k) = f x) (g : GL (Fin n) F) :
     f (transposeInv F n g)⁻¹ = f g := by
@@ -116,6 +154,19 @@ theorem apply_inv_transposeInv {f : GL (Fin n) F → ℂ}
 
 variable {μ}
 
+/- English proof (translation)
+Establish `ha` using `HeckeAlgebraLevel.val_mem (isCompact_integralGL F n) (isOpen_integralGL F n) a`. Establish `hb` using `HeckeAlgebraLevel.val_mem (isCompact_integralGL F n) (isOpen_integralGL F n) b`. Establish `hab` using `HeckeAlgebraLevel.val_mem (isCompact_integralGL F n) (isOpen_integralGL F n) (a * b)`. Use `HeckeAlgebraLevel.ext (isCompact_integralGL F n) (isOpen_integralGL F n) (HeckeAlgebra.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[HeckeAlgebraLevel.val_mul, HeckeAlgebraLevel.val_mul]`.
+
+Rewrite using `[HeckeAlgebra.mul_apply (b : HeckeAlgebra μ)]`. Use `set c := (transposeInv F n x)⁻¹`. Establish `step1 : ∫ y, (b : HeckeAlgebra μ) y * (a : HeckeAlgebra μ) (y⁻¹ * x) ∂μ = ∫ y, (b : HeckeAlgebra μ) (transposeInv F n y)⁻¹ * (a : HeckeAlgebra μ) (c * transposeInv F n y) ∂μ`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e1` using `apply_inv_transposeInv hb y`.
+
+Establish `e2` using `apply_inv_transposeInv ha (y⁻¹ * x)`. Establish `hyx : (transposeInv F n (y⁻¹ * x))⁻¹ = c * transposeInv F n y`. Rewrite using `[map_mul, map_inv (transposeInv F n), _root_.mul_inv_rev, inv_inv]`. Use `show _ * _ = _ * _`. Rewrite using `[← e1, ← e2, hyx]`.
+
+Establish `step2 : ∫ y, (b : HeckeAlgebra μ) (transposeInv F n y)⁻¹ * (a : HeckeAlgebra μ) (c * transposeInv F n y) ∂μ = ∫ w, (b : HeckeAlgebra μ) w⁻¹ * (a : HeckeAlgebra μ) (c * w) ∂μ` using `integral_comp_transposeInv μ (fun w => (b : HeckeAlgebra μ) w⁻¹ * (a : HeckeAlgebra μ) (c * w))`. Establish `step3 : ∫ w, (b : HeckeAlgebra μ) w⁻¹ * (a : HeckeAlgebra μ) (c * w) ∂μ = ((a : HeckeAlgebra μ) * (b : HeckeAlgebra μ)) c`. Establish `key` using `integral_mul_left_eq_self (μ := μ) (fun y => (a : HeckeAlgebra μ) y * (b : HeckeAlgebra μ) (y⁻¹ * c)) c`. Rewrite using `[HeckeAlgebra.mul_apply, ← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
+
+Simplify using `only [_root_.mul_inv_rev, inv_mul_cancel_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[step1, step2, step3]`. Use `apply_inv_transposeInv hab x` as an intermediate fact. Rewrite `this` using `[HeckeAlgebraLevel.val_mul]`.
+
+Conclude with `this.symm`.
+-/
 theorem heckeAlgebraLevel_mul_comm
     (a b : HeckeAlgebraLevel μ (integralGL F n) (isCompact_integralGL F n)
       (isOpen_integralGL F n)) : a * b = b * a := by

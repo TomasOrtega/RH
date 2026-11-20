@@ -11,6 +11,11 @@ namespace Formalism.L2.SG.Pf.FrameGlobalPatching
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `haveI : ∀ i : {i // i ∉ T}, Unique (α i) := fun i => (h i.1 i.2).some`. Rewrite using `[Nat.card_congr (Equiv.piEquivPiSubtypeProd (fun i => i ∈ T) α), Nat.card_prod, Nat.card_unique (α := ∀ i : {i // i ∉ T}, α i), mul_one, Nat.card_pi]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := T)]`. Conclude with `(Finset.prod_coe_sort T (fun i => Nat.card (α i)))`. Introduce `i hi`.
+
+Assume the negation of the conclusion as `hT`. Use `haveI := (h i hT).some`. Conclude with `hi Nat.card_unique`.
+-/
 theorem card_pi_of_unique {ι : Type*} {α : ι → Type*} (T : Finset ι) (h : ∀ i ∉ T, Nonempty (Unique (α i))) :
     Nat.card (∀ i, α i) = ∏ᶠ i, Nat.card (α i) := by
   haveI : ∀ i : {i // i ∉ T}, Unique (α i) := fun i => (h i.1 i.2).some
@@ -47,6 +52,17 @@ def LocFullC : Prop :=
 
 variable {Zd u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `γ w hγ w' hG' hk Z hZ F'₂ φ φ' hF hT hC`. Take `⟨Λ₀, hΛ₀, hfin⟩` from `hC`. Establish `hfull` using `hL γ w hγ w' hG' hk Z hZ F'₂ φ φ' hF hT`. Use `set S : ∀ p : PlF D, Set (Submodule (Zd.M p).L.O (Vp D p)) := fun p => locSet Zd p (tLoc Zd p γ) (locF' Zd p F'₂) (φ p) (φ' p) with hS`. Establish `hex : ∀ f : ∀ p, S p, ∃! Λ : Submodule (𝓞 D.host.E) (VS D).V, Submodule.IsLattice D.host.E Λ ∧ ∀ p, lattice₂ D Zd.M p Λ = (f p).1` using `fun f => hP D Zd Λ₀ hΛ₀ (fun p => (f p).1) (fun p => hfull p _ (f p).2) (hfin.subset fun p hp hS' => hp (Set.mem_singleton_iff.1 ((Set.ext_iff.1 hS' (f p).1).1 (f p).2)))`.
+
+Set `e : GlobSet Zd γ F'₂ φ φ' ≃ ∀ p, S p` to `{ toFun := fun Λ p => ⟨lattice₂ D Zd.M p Λ.1, Λ.2.2 p⟩ invFun := fun f => ⟨(hex f).choose, (hex f).choose_spec.1.1, fun p => by`. Rewrite using `[(hex f).choose_spec.1.2 p]`. Conclude with `(f p).2⟩`. Use `left_inv := fun Λ => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `(hex _).unique (hex _).choose_spec.1 ⟨Λ.2.1, fun p => rfl⟩`. Use `right_inv := fun f => by`. Use function extensionality and compare the values at `p`. Conclude with `Subtype.ext ((hex f).choose_spec.1.2 p) }`. Rewrite using `[Nat.card_congr e]`.
+
+Take `⟨T, hTs⟩` from `hfin.exists_finset`. Use `card_pi_of_unique (α := fun p => S p) T (fun p hp => ?_)` and prove the remaining obligations. Establish `hsing : S p = {lattice₂ D Zd.M p Λ₀}`. Assume the negation of the conclusion as `hne`. Conclude with `hp ((hTs p).2 hne)`.
+
+Rewrite using `[hsing]`. Conclude with `⟨Set.uniqueSingleton _⟩`.
+-/
 theorem patchC_of (hP : LatPatch) (hL : LocFullC Zd u u' F0 what₂) : PatchC Zd u u' F0 what₂ := by
   intro γ w hγ w' hG' hk Z hZ F'₂ φ φ' hF hT hC
   obtain ⟨Λ₀, hΛ₀, hfin⟩ := hC

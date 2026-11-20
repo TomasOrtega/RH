@@ -4,6 +4,15 @@ namespace Formalism.NuclearRankWeightBounds.P
 
 open Matrix Polynomial Finset
 
+/- English proof (translation)
+Establish `h` using `Matrix.det_one_add_mul_comm ((X : R[X]) • (A.map C)) ((diagonal d * B).map C)`. Establish `e1 : (X : R[X]) • A.map C * (diagonal d * B).map C = (X : R[X]) • (A * diagonal d * B).map C`. Rewrite using `[Matrix.smul_mul, ← Matrix.map_mul, Matrix.mul_assoc]`. Establish `e2 : (diagonal d * B).map C * ((X : R[X]) • A.map C) = (X : R[X]) • (diagonal d * (B * A)).map C`. Rewrite using `[Matrix.mul_smul, ← Matrix.map_mul, Matrix.mul_assoc]`.
+
+Rewrite `h` using `[e1, e2]`. Establish `h2` using `congrArg (fun p => Polynomial.coeff p k) h`. Simplify using `only [coeff_det_one_add_X_smul_eq_sum_minors] at h2`. Establish `hu : powersetCard k (univ : Finset (Fin k)) = {univ}`. Simplify using `using Finset.powersetCard_self (univ : Finset (Fin k))`.
+
+Rewrite `h2` using `[hu, sum_singleton]`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (fun x => mem_univ x))]`. Use `h2.trans (sum_congr rfl fun J _ => ?_)` and prove the remaining obligations. Establish `: (diagonal d * (B * A)).submatrix (fun x : J => (x : n)) (fun x : J => (x : n)) = diagonal (fun x : J => d x) * (B * A).submatrix (fun x : J => (x : n)) (fun x : J => (x : n))`. Use extensionality with `a b`.
+
+Simplify using `[diagonal_mul]`. Rewrite using `[this, det_mul, det_diagonal, Finset.prod_coe_sort J d]`.
+-/
 theorem det_mul_diagonal_mul_eq_sum {R : Type*} [CommRing R] {n : Type*} [Fintype n]
     [DecidableEq n] {k : ℕ} (A : Matrix (Fin k) n R) (B : Matrix n (Fin k) R) (d : n → R) :
     (A * diagonal d * B).det =
@@ -29,6 +38,13 @@ theorem det_mul_diagonal_mul_eq_sum {R : Type*} [CommRing R] {n : Type*} [Fintyp
     ext a b; simp [diagonal_mul]
   rw [this, det_mul, det_diagonal, Finset.prod_coe_sort J d]
 
+/- English proof (translation)
+Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => simp [coeff_one]`. Consider the case `insert a J ha ih`. Take `⟨h0, h1, h2⟩` from `ih`. Rewrite using `[prod_insert ha, sum_insert ha, sum_insert ha]`.
+
+Use `set P := ∏ j ∈ J, (1 + X * C (f j))`. Establish `key : (1 + X * C (f a)) * P = P + X * (C (f a) * P)` using `by ring`. Rewrite using `[key]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[coeff_add, h0]`.
+
+Rewrite using `[coeff_add, coeff_X_mul, coeff_C_mul, h0, h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[coeff_add, coeff_X_mul, coeff_C_mul, h1]`. Take the linear combination `h2`.
+-/
 theorem coeff_prod_one_add {R : Type*} [CommRing R] {ι : Type*} [DecidableEq ι] (f : ι → R)
     (J : Finset ι) :
     (∏ j ∈ J, (1 + X * C (f j))).coeff 0 = 1 ∧
@@ -47,6 +63,15 @@ theorem coeff_prod_one_add {R : Type*} [CommRing R] {ι : Type*} [DecidableEq ι
     · rw [coeff_add, coeff_X_mul, coeff_C_mul, h0, h1]; ring
     · rw [coeff_add, coeff_X_mul, coeff_C_mul, h1]; linear_combination h2
 
+/- English proof (translation)
+Establish `h` using `det_mul_diagonal_mul_eq_sum (A.map C) (Aᴴ.map C) (fun j => 1 + X * C (ν j))`. Establish `hd : diagonal (fun j => (1 : ℂ[X]) + X * C (ν j)) = 1 + (X : ℂ[X]) • (diagonal ν).map C`. Apply the tactic sequence `ext a b; by_cases hab : a = b <;> simp [diagonal, one_apply, hab]`. Establish `h1 : A.map C * Aᴴ.map C = 1` using `by rw [← Matrix.map_mul, hA]; simp`. Establish `h3 : A.map C * (diagonal ν).map C * Aᴴ.map C = (A * diagonal ν * Aᴴ).map C`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Establish `e : A.map C * diagonal (fun j => 1 + X * C (ν j)) * Aᴴ.map C = 1 + (X : ℂ[X]) • (A * diagonal ν * Aᴴ).map C`. Rewrite using `[hd, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, h1, Matrix.mul_smul, Matrix.smul_mul, h3]`. Rewrite `h` using `[e]`. Rewrite using `[h, finsetSum_coeff]`.
+
+Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Establish `hs : (Aᴴ.map C * A.map C).submatrix (fun x : J => (x : n)) (fun x : J => (x : n)) = ((Aᴴ * A).submatrix (fun x : J => (x : n)) (fun x : J => (x : n))).map C`. Rewrite using `[← Matrix.map_mul]`. Both sides reduce to the same expression. Establish `hdet : (((Aᴴ * A).submatrix (fun x : J => (x : n)) (fun x : J => (x : n))).map C).det = C ((Aᴴ * A).submatrix (fun x : J => (x : n)) (fun x : J => (x : n))).det`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hs, hdet, coeff_mul_C]`.
+-/
 theorem moment {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} (A : Matrix (Fin k) n ℂ)
     (hA : A * Aᴴ = 1) (ν : n → ℂ) (m : ℕ) :
     ∑ J ∈ powersetCard k (univ : Finset n),
@@ -73,6 +98,19 @@ theorem moment {n : Type*} [Fintype n] [DecidableEq n] {k : ℕ} (A : Matrix (Fi
     rw [RingHom.map_det]; rfl
   rw [hs, hdet, coeff_mul_C]
 
+/- English proof (translation)
+Use `set V : Matrix (Fin k) (Fin k) ℂ := (hM.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) with hVdef`. Use `set L : Fin k → ℂ := RCLike.ofReal ∘ hM.eigenvalues with hLdef`. Establish `hVV : V * Vᴴ = 1`. Simplify `Unitary.coe_mul_star_self hM.eigenvectorUnitary` using `[V, star_eq_conjTranspose]`. Establish `hVV' : Vᴴ * V = 1`.
+
+Simplify `Unitary.coe_star_mul_self hM.eigenvectorUnitary` using `[V, star_eq_conjTranspose]`. Establish `hspec : M = V * diagonal L * Vᴴ` using `by conv_lhs => rw [hM.spectral_theorem]`. Simplify using `[V, L, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]`. Establish `hMM : M * M = V * diagonal (fun a => L a * L a) * Vᴴ`. Rewrite using `[hspec]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Vᴴ V, hVV', Matrix.one_mul, ← Matrix.mul_assoc (diagonal L) (diagonal L), diagonal_mul_diagonal]`. Establish `hu : powersetCard k (univ : Finset (Fin k)) = {univ}`. Simplify using `using Finset.powersetCard_self (univ : Finset (Fin k))`. Establish `hone : ((Vᴴ * V).submatrix (fun x : (univ : Finset (Fin k)) => (x : Fin k)) (fun x : (univ : Finset (Fin k)) => (x : Fin k))).det = 1`.
+
+Rewrite using `[hVV']`. Conclude with `(Matrix.det_submatrix_equiv_self (Equiv.subtypeUnivEquiv (fun x => mem_univ x)) 1).trans det_one`. Establish `single : ∀ (ν : Fin k → ℂ) (m : ℕ), (det (1 + (X : ℂ[X]) • (V * diagonal ν * Vᴴ).map C)).coeff m = (∏ j ∈ (univ : Finset (Fin k)), (1 + X * C (ν j))).coeff m`. Introduce `ν m`. Rewrite using `[← moment V hVV ν m, hu, sum_singleton, hone, mul_one]`.
+
+Establish `htr : trace M = ∑ j, L j`. Rewrite using `[← coeff_det_one_add_X_smul_one, hspec, single, (coeff_prod_one_add L univ).2.1]`. Establish `htr2 : trace (M * M) = ∑ j, L j ^ 2`. Rewrite using `[← coeff_det_one_add_X_smul_one, hMM, single, (coeff_prod_one_add (fun a => L a * L a) univ).2.1]`. Simplify using `[pow_two]`.
+
+Rewrite using `[htr, htr2, hspec, single, (coeff_prod_one_add L univ).2.2]`.
+-/
 theorem two_coeff_two_det {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (hM : M.IsHermitian) :
     2 * (det (1 + (X : ℂ[X]) • M.map C)).coeff 2 = (trace M) ^ 2 - trace (M * M) := by
   set V : Matrix (Fin k) (Fin k) ℂ := (hM.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) with hVdef
@@ -109,12 +147,66 @@ theorem two_coeff_two_det {k : ℕ} (M : Matrix (Fin k) (Fin k) ℂ) (hM : M.IsH
     simp [pow_two]
   rw [htr, htr2, hspec, single, (coeff_prod_one_add L univ).2.2]
 
+/- English proof (translation)
+Apply the tactic sequence `refine Finset.sum_bij' (fun a _ => Fin.castLE hi a) (fun a ha => ⟨a.val, (mem_filter.mp ha).2⟩) ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp_all`.
+-/
 theorem sum_castLE_eq {N i : ℕ} (hi : i ≤ N) {β : Type*} [AddCommMonoid β] (f : Fin N → β) :
     ∑ a : Fin i, f (Fin.castLE hi a) = ∑ a ∈ univ.filter (fun a : Fin N => a.val < i), f a := by
   refine Finset.sum_bij' (fun a _ => Fin.castLE hi a) (fun a ha => ⟨a.val, (mem_filter.mp ha).2⟩)
     ?_ ?_ ?_ ?_ ?_ <;> intros <;> simp_all
 
 open scoped ComplexOrder in
+/- English proof (translation)
+Introduce `N Y hY i hi`. Use `set U : Matrix (Fin N) (Fin N) ℂ := (hY.eigenvectorUnitary : Matrix (Fin N) (Fin N) ℂ) with hUdef`. Use `set D : Fin N → ℂ := RCLike.ofReal ∘ hY.eigenvalues with hDdef`. Establish `hD : ∀ j, D j = (hY.eigenvalues j : ℂ)` using `fun j => rfl`. Establish `hUU : U * Uᴴ = 1`.
+
+Simplify `Unitary.coe_mul_star_self hY.eigenvectorUnitary` using `[U, star_eq_conjTranspose]`. Establish `hUU' : Uᴴ * U = 1`. Simplify `Unitary.coe_star_mul_self hY.eigenvectorUnitary` using `[U, star_eq_conjTranspose]`. Establish `hspec : Y = U * diagonal D * Uᴴ` using `by conv_lhs => rw [hY.spectral_theorem]`. Simplify using `[U, D, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose]`.
+
+Use `set c : Fin i → Fin N := Fin.castLE hi with hc`. Use `set A : Matrix (Fin i) (Fin N) ℂ := U.submatrix c id with hA`. Establish `hsub : ∀ d : Fin N → ℂ, (U * diagonal d * Uᴴ).submatrix c c = A * diagonal d * Aᴴ`. Introduce `d`. Use extensionality with `a b`.
+
+Simplify using `[A, Matrix.mul_apply, conjTranspose_apply]`. Establish `hAA : A * Aᴴ = 1`. Use `hsub (fun _ => 1)` as an intermediate fact. Rewrite `this` using `[diagonal_one, Matrix.mul_one, Matrix.mul_one, hUU]`. Rewrite using `[← this]`.
+
+Use extensionality with `a b`. Simplify using `[one_apply, c]`. Use `set W : Finset (Fin N) → ℂ := fun J => ((Aᴴ * A).submatrix (fun x : J => (x : Fin N)) (fun x : J => (x : Fin N))).det with hWdef`. Establish `hWnn : ∀ J, 0 ≤ W J`. Introduce `J`.
+
+Establish `e : (Aᴴ * A).submatrix (fun x : J => (x : Fin N)) (fun x : J => (x : Fin N)) = (A.submatrix id (fun x : J => (x : Fin N)))ᴴ * A.submatrix id (fun x : J => (x : Fin N))`. Rewrite using `[Matrix.submatrix_mul _ _ _ id _ Function.bijective_id, Matrix.conjTranspose_submatrix A id (fun x : J => (x : Fin N))]`. Establish `hp` using `posSemidef_conjTranspose_mul_self (A.submatrix id (fun x : J => (x : Fin N)))`. Rewrite `hp` using `[← e]`. Conclude with `hp.det_nonneg`.
+
+Use `set w : Finset (Fin N) → ℝ := fun J => (W J).re with hwdef`. Establish `hw0 : ∀ J, 0 ≤ w J` using `fun J => (Complex.nonneg_iff.mp (hWnn J)).1`. Establish `hW : ∀ J, W J = (w J : ℂ)` using `fun J => by`. Use `(Complex.nonneg_iff.mp (hWnn J)).2` as an intermediate fact. Apply the tactic sequence `apply Complex.ext <;> simp [w, this.symm]`.
+
+Establish `key : ∀ d : Fin N → ℂ, (A * diagonal d * Aᴴ).det = ∑ J ∈ powersetCard i (univ : Finset (Fin N)), (∏ j ∈ J, d j) * (w J : ℂ)`. Introduce `d`. Rewrite using `[det_mul_diagonal_mul_eq_sum]`. Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[← hW J]`.
+
+Establish `mom : ∀ (ν : Fin N → ℂ) (m : ℕ), ∑ J ∈ powersetCard i (univ : Finset (Fin N)), (∏ j ∈ J, (1 + X * C (ν j))).coeff m * (w J : ℂ) = (det (1 + (X : ℂ[X]) • (A * diagonal ν * Aᴴ).map C)).coeff m`. Introduce `ν m`. Rewrite using `[← moment A hAA ν m]`. Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[← hW J]`.
+
+Establish `hdiag : ∀ a, ((Y a a).re : ℂ) = Y a a` using `fun a => by simpa using hY.coe_re_apply_self a`. Establish `m1 : ∑ J ∈ powersetCard i (univ : Finset (Fin N)), (w J : ℂ) * (∑ j ∈ J, D j) = ∑ a : Fin i, Y (c a) (c a)`. Establish `h` using `mom D 1`. Rewrite `h` using `[coeff_det_one_add_X_smul_one, ← hsub, ← hspec]`. Rewrite using `[show ∑ a : Fin i, Y (c a) (c a) = trace (Y.submatrix c c) from rfl, ← h]`.
+
+Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[(coeff_prod_one_add D J).2.1, mul_comm]`. Use `⟨w, hw0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `key (fun _ => 1)`. Rewrite `h` using `[diagonal_one, Matrix.mul_one, hAA, det_one]`.
+
+Simplify using `only [prod_const_one, one_mul] at h`. Conclude with `h.symm` after adjusting the coercions. Establish `hexp : NormedSpace.exp Y = U * diagonal (fun j => Complex.exp (D j)) * Uᴴ`. Set `u : (Matrix (Fin N) (Fin N) ℂ)ˣ` to `⟨U, Uᴴ, hUU, hUU'⟩`. Establish `h` using `Matrix.exp_units_conj u (diagonal D)`.
+
+Rewrite using `[hspec]`. Express the relevant statement in the definitionally equal form `NormedSpace.exp ((u : Matrix (Fin N) (Fin N) ℂ) * diagonal D * ((u⁻¹ : (Matrix (Fin N) (Fin N) ℂ)ˣ) : Matrix (Fin N) (Fin N) ℂ)) = _`. Rewrite using `[h, Matrix.exp_diagonal, Pi.exp_def]`. Simplify using `only [← Complex.exp_eq_exp_ℂ]`. Both sides reduce to the same expression.
+
+Unfold `Formalism.NuclearRankWeightBounds.D.lead`. Rewrite using `[dif_pos hi, hexp]`. Express the relevant statement in the definitionally equal form `((U * _ * Uᴴ).submatrix c c).det = _`. Rewrite using `[hsub, key]`. Use `push_cast`.
+
+Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, ← Complex.exp_sum]`. Simplify using `only [hD]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+
+Repeatedly rewrite using `[hdiag]`. Rewrite using `[← sum_castLE_eq hi, ← m1]`. Simplify using `only [hD]`. Use `set F := univ.filter (fun a : Fin N => a.val < i) with hF set G := univ.filter (fun b : Fin N => i ≤ b.val) with hGdef`. Establish `h2` using `mom D 2`.
+
+Rewrite `h2` using `[← hsub, ← hspec]`. Establish `h3` using `two_coeff_two_det (Y.submatrix c c) (hY.submatrix c)`. Establish `hYY : Y * Y = U * diagonal (fun j => D j * D j) * Uᴴ`. Rewrite using `[hspec]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc Uᴴ U, hUU', Matrix.one_mul, ← Matrix.mul_assoc (diagonal D) (diagonal D), diagonal_mul_diagonal]`. Establish `hq` using `mom (fun j => D j * D j) 1`. Rewrite `hq` using `[coeff_det_one_add_X_smul_one, ← hsub, ← hYY]`. Establish `hsplit : ∀ J : Finset (Fin N), (∑ j ∈ J, D j) ^ 2 = (∏ j ∈ J, (1 + X * C (D j * D j))).coeff 1 + 2 * (∏ j ∈ J, (1 + X * C (D j))).coeff 2`. Introduce `J`.
+
+Rewrite using `[(coeff_prod_one_add _ J).2.1, (coeff_prod_one_add D J).2.2]`. Simplify using `[pow_two]`. Establish `hcx : ∑ J ∈ powersetCard i (univ : Finset (Fin N)), (w J : ℂ) * (∑ j ∈ J, D j) ^ 2 = trace ((Y * Y).submatrix c c) + ((trace (Y.submatrix c c)) ^ 2 - trace (Y.submatrix c c * Y.submatrix c c))`. Rewrite using `[← h3, ← hq, ← h2, mul_sum, ← sum_add_distrib]`. Use `sum_congr rfl fun J _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsplit]`. Expand and normalize the polynomial expressions, which then agree. Establish `t1 : trace ((Y * Y).submatrix c c) = ∑ a : Fin i, ∑ b : Fin N, Y (c a) b * Y b (c a)`. Simplify using `[trace, mul_apply]`. Establish `t2 : trace (Y.submatrix c c * Y.submatrix c c) = ∑ a : Fin i, ∑ a' : Fin i, Y (c a) (c a') * Y (c a') (c a)`.
+
+Simplify using `[trace, mul_apply]`. Establish `t0 : trace (Y.submatrix c c) = ∑ a : Fin i, Y (c a) (c a)` using `rfl`. Establish `hG : ∀ f : Fin N → ℂ, ∑ b, f b = ∑ b ∈ F, f b + ∑ b ∈ G, f b`. Introduce `f`. Rewrite using `[← sum_filter_add_sum_filter_not univ (fun b : Fin N => b.val < i)]`.
+
+Simplify using `only [not_lt, F, G]`. Establish `hrow : ∀ a : Fin i, ∑ b : Fin N, Y (c a) b * Y b (c a) = ∑ a' : Fin i, Y (c a) (c a') * Y (c a') (c a) + ∑ b ∈ G, Y (c a) b * Y b (c a)`. Introduce `a`. Rewrite using `[hG, sum_castLE_eq hi (fun b => Y (c a) b * Y b (c a))]`. Establish `hn : ∀ x b : Fin N, ((‖Y x b‖ : ℂ)) ^ 2 = Y x b * Y b x`.
+
+Introduce `x b`. Rewrite using `[← hY.apply b x, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+
+Use `push_cast`. Repeatedly rewrite using `[hdiag]`. Rewrite using `[← sum_castLE_eq hi (fun a => Y a a), ← sum_castLE_eq hi (fun a => ∑ b ∈ G, (‖Y a b‖ : ℂ) ^ 2)]`. Repeatedly rewrite using `[hn]`. Simplify using `only [← hD]`.
+
+Rewrite using `[hcx, t0, t1, t2]`. Repeatedly rewrite using `[hrow]`. Rewrite using `[sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cb_weights : Formalism.NuclearRankWeightBounds.D.CBWeights := by
   intro N Y hY i hi
   set U : Matrix (Fin N) (Fin N) ℂ := (hY.eigenvectorUnitary : Matrix (Fin N) (Fin N) ℂ) with hUdef

@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.AdForm
 open GlobalTheory.AdForm
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p S n _ _ β L hL Λ h x`. Rewrite using `[h x, GlobalTheory.SeeSaw.StdOff.mem_latV_int hL]`. Conclude with `forall_congr' fun r => ((p.int_iff _).trans (and_iff_right (GlobalTheory.SeeSaw.StdOff.sec_mem_idAt p _)).symm).symm`.
+-/
 theorem GlobalTheory.FinPl.Frame.isLat_intVec_iff : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S),
     (∀ z, z ∈ L ↔ z ∈ intVec D S.rank) → ∀ Λ : Submodule 𝒪[k] (n → k), β.IsLat L Λ →

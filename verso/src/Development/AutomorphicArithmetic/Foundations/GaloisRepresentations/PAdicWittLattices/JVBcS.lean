@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.Etal
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.Et GlobalTheory.GalV UpperTheory.Gal.G3
 universe u v
 
+/- English proof (translation)
+Introduce `l _ k Ω _ _ _ _ φ hl X p _ _ n i`. Use `GlobalTheory.GenusTwoPureComparison.Cmp.pullHQ_bijective l _ n i fun m => ?_` and prove the remaining obligations. Use `haveI : NeZero (l ^ m) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hq : IsUnit ((l ^ m : ℕ) : k)`. Use `push_cast`.
+
+Conclude with `hl.pow m`. Conclude with `GlobalTheory.GenusTwoPureComparison.Cmp.eqv_fieldChange UpperTheory.Et.proper_base_change UpperTheory.Et.etale_base_change_of_duality (l ^ m) k Ω φ hq p i n`.
+-/
 theorem UpperTheory.Gal.G3.jVBcS :
     VBcS := by
   intro l _ k Ω _ _ _ _ φ hl X p _ _ n i

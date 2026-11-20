@@ -9,6 +9,11 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [dif]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum, ← Finset.mul_sum]`. Establish `h : ∑ s ∈ Finset.range L, ∑ r ∈ Finset.range L, F (x + (s : ℤ) • v + (r : ℤ) • w) = ∑ r ∈ Finset.range L, ∑ s ∈ Finset.range L, F (x + (r : ℤ) • w + (s : ℤ) • v)`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[add_right_comm]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dif_comm (L : ℕ) (v w : ℤ × ℤ) (F : ℤ × ℤ → ℂ) :
     dif L v (dif L w F) = dif L w (dif L v F) := by
   funext x
@@ -22,6 +27,9 @@ theorem dif_comm (L : ℕ) (v w : ℤ × ℤ) (F : ℤ × ℤ → ℂ) :
   rw [h]
   ring
 
+/- English proof (translation)
+Take `⟨hs1, he1⟩` from `GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L w Φ G hL hΦ hw hG`. Take `⟨_, he2⟩` from `GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L w Φ (dif L w G) hL hΦ hw hs1`. Conclude with `he2.trans he1`.
+-/
 theorem sum_dif_dif (L : ℕ) (w : ℤ × ℤ) (Φ G : ℤ × ℤ → ℂ) (hL : 0 < L) (hΦ : ∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C)
     (hw : Kills L w Φ) (hG : Summable fun x => ‖G x‖) :
     ∑' x, Φ x * dif L w (dif L w G) x = ∑' x, Φ x * G x := by
@@ -29,6 +37,13 @@ theorem sum_dif_dif (L : ℕ) (w : ℤ × ℤ) (Φ G : ℤ × ℤ → ℂ) (hL :
   obtain ⟨_, he2⟩ := GlobalTheory.T.killsTranslates_sum_mul_meanDifference_eq L w Φ (dif L w G) hL hΦ hw hs1
   exact he2.trans he1
 
+/- English proof (translation)
+Introduce `j L v w Φ τ hj hL hΦ hv hw`. Use `set T : ℤ × ℤ → ℂ := fun y => trm j 0 ((y.1 : ℂ) * τ + y.2) with hT`. Establish `hsv` using `GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L v τ hj hL`. Establish `hsw` using `GlobalTheory.T.summable_regularizedEisensteinLatticeTerm j L w τ hj hL`. Simplify using `only [lat]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `c1 : ∀ F : ℤ × ℤ → ℂ, dif L w (dif L v (dif L v F)) = dif L v (dif L v (dif L w F))`. Introduce `F`. Rewrite using `[dif_comm L w v (dif L v F), dif_comm L w v F]`. Rewrite using `[c1 T, c1 (dif L w T)]`.
+
+Use `_ = ∑' x, Φ x * dif L w (dif L w T) x := sum_dif_dif L v Φ _ hL hΦ hv hsw`.
+-/
 theorem lat_indep : ∀ (j L : ℕ) (v w : ℤ × ℤ) (Φ : ℤ × ℤ → ℂ) (τ : ℍ), 1 ≤ j → 0 < L →
     (∃ C : ℝ, ∀ x, ‖Φ x‖ ≤ C) → Kills L v Φ → Kills L w Φ → lat j 0 L v Φ τ = lat j 0 L w Φ τ := by
   intro j L v w Φ τ hj hL hΦ hv hw

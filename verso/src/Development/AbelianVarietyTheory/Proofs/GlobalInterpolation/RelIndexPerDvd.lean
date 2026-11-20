@@ -7,6 +7,11 @@ namespace GlobalTheory.MomT.IdxBound
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Set `I : Ideal (𝓞 E)` to `M.comap (LinearMap.toSpanSingleton (𝓞 E) W x)`. Establish `hI : ∀ s, s ∈ I ↔ s • x ∈ M` using `fun s => Iff.rfl`. Establish `hne : I ≠ ⊤` using `fun e => hx (by simpa using (hI 1).1 (e ▸ Submodule.mem_top))`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hne`.
+
+Establish `hm0 : m ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)`. Take `⟨s, hs, hsx⟩` from `(mem_locP ⟨m, hm.isPrime, hm0⟩ M x).1 (h _)`. Conclude with `hs (hle ((hI s).2 hsx))`.
+-/
 theorem mem_of_locP {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (M : Submodule (𝓞 E) W) (x : W)
     (h : ∀ Q : HeightOneSpectrum (𝓞 E), x ∈ localization₂ Q.asIdeal M) : x ∈ M := by
   by_contra hx
@@ -18,12 +23,22 @@ theorem mem_of_locP {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (M : Submodu
   obtain ⟨s, hs, hsx⟩ := (mem_locP ⟨m, hm.isPrime, hm0⟩ M x).1 (h _)
   exact hs (hle ((hI s).2 hsx))
 
+/- English proof (translation)
+Take `⟨t, ht, htx⟩` from `(mem_locP P M _).1 h`. Use `(mem_locP P M _).2 ⟨t * s, fun h' => (P.isPrime.mem_or_mem h').elim ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]` and apply the resulting hypothesis.
+-/
 theorem mem_localization_of_smul_mem {W : Type} [AddCommGroup W] [Module (𝓞 E) W] (P : HeightOneSpectrum (𝓞 E)) (M : Submodule (𝓞 E) W)
     {x : W} {s : 𝓞 E} (hs : s ∉ P.asIdeal) (h : s • x ∈ localization₂ P.asIdeal M) : x ∈ localization₂ P.asIdeal M := by
   obtain ⟨t, ht, htx⟩ := (mem_locP P M _).1 h
   refine (mem_locP P M _).2 ⟨t * s, fun h' => (P.isPrime.mem_or_mem h').elim ht hs, ?_⟩
   rwa [mul_smul]
 
+/- English proof (translation)
+Take `⟨s', hs', hv'⟩` from `(mem_locP P N v).1 hv`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, x, hx, rfl⟩` from `hz`. Take `⟨s, hs, hr'⟩` from `(mem_locP P _ r).1 (hA ▸ le_locP P AA hr)`.
+
+Take `⟨t, ht⟩` from `Submodule.mem_one.1 hr'`. Use `mem_localization_of_smul_mem P _ hs (mem_localization_of_smul_mem P _ hs' (le_locP P _ ?_))` and prove the remaining obligations. Establish `h1 : x (s' • v) ∈ N'` using `hx _ hv'`. Establish `h2 : s' • s • (r • x) v = t • x (s' • v)`. Rewrite using `[LinearMap.map_smul_of_tower, LinearMap.smul_apply, ← smul_assoc s r, ← ht, algebraMap_smul, smul_comm]`.
+
+Rewrite using `[h2]`. Conclude with `N'.smul_mem t h1`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => simpa using add_mem hy hz`. Consider the case `smul r z _ hz => simpa using Submodule.smul_mem _ r hz`.
+-/
 theorem per_apply_mem {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     {P : HeightOneSpectrum (𝓞 E)} (hA : localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E))
     {y : HomE E a b} (hy : y ∈ perO AA N N') {v : Sp E a} (hv : v ∈ localization₂ P.asIdeal N) : y v ∈ localization₂ P.asIdeal N' := by
@@ -43,6 +58,15 @@ theorem per_apply_mem {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E 
   | add y z _ _ hy hz => simpa using add_mem hy hz
   | smul r z _ hz => simpa using Submodule.smul_mem _ r hz
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hN`. Use `choose! s hs hsy using fun v (hv : v ∈ S) => (mem_locP P N' _).1 (hy v (Submodule.subset_span hv))`. Establish `hP : ∏ v ∈ S, s v ∉ P.asIdeal` using `fun h => by`. Take `⟨v, hv, h'⟩` from `(P.isPrime.prod_mem_iff).1 h`. Conclude with `hs v hv h'`.
+
+Establish `hh : (∏ v ∈ S, s v) • y ∈ homO (Submodule.span (𝓞 E) (S : Set (Sp E a))) N'`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Rewrite using `[← Finset.prod_erase_mul S s hv, LinearMap.smul_apply, mul_smul]`.
+
+Conclude with `N'.smul_mem _ (hsy v hv)`. Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [map_add]`. Conclude with `add_mem hv hw`. Consider the case `smul r v _ hv => rw [LinearMap.map_smul_of_tower]`.
+
+Conclude with `N'.smul_mem r hv`. Take `⟨t, ht, h1⟩` from `(mem_locP P AA 1).1 (hA ▸ le_locP P _ (Submodule.one_le.1 le_rfl))`. Use `mem_localization_of_smul_mem P _ hP (mem_localization_of_smul_mem P _ ht (le_locP P _ (Submodule.subset_span ⟨_, h1, _, hh, ?_⟩)))` and prove the remaining obligations. Rewrite using `[smul_assoc t (1 : E), one_smul]`.
+-/
 theorem mem_localization_perO {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' : Submodule (𝓞 E) (Sp E b)}
     {P : HeightOneSpectrum (𝓞 E)} (hA : localization₂ P.asIdeal AA = localization₂ P.asIdeal (1 : Submodule (𝓞 E) E)) (hN : N.FG)
     {y : HomE E a b} (hy : ∀ v ∈ N, y v ∈ localization₂ P.asIdeal N') : y ∈ localization₂ P.asIdeal (perO AA N N') := by
@@ -65,6 +89,11 @@ theorem mem_localization_perO {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E
   refine mem_localization_of_smul_mem P _ hP (mem_localization_of_smul_mem P _ ht (le_locP P _ (Submodule.subset_span ⟨_, h1, _, hh, ?_⟩)))
   rw [smul_assoc t (1 : E), one_smul]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, x, hx, rfl⟩` from `hz`. Use `Submodule.subset_span ⟨r, hr, w • x, fun v hv => h _ (hx v hv), (smul_comm _ _ _).symm⟩` and prove the remaining obligations. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul r z _ hz => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hz`.
+-/
 theorem smul_mem_per {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a)} {N' N'' : Submodule (𝓞 E) (Sp E b)}
     {w : 𝓞 E} (h : ∀ y ∈ N', (w : E) • y ∈ N'') {y : HomE E a b} (hy : y ∈ perO AA N N') : w • y ∈ perO AA N N'' := by
   induction hy using Submodule.span_induction with
@@ -75,6 +104,13 @@ theorem smul_mem_per {AA : Submodule (𝓞 E) E} {N : Submodule (𝓞 E) (Sp E a
   | add y z _ _ hy hz => rw [smul_add]; exact add_mem hy hz
   | smul r z _ hz => rw [smul_comm]; exact Submodule.smul_mem _ r hz
 
+/- English proof (translation)
+Take `⟨s, hs, hsv⟩` from `(mem_locP P _ v).1 hv`. Use `choose t ht using fun i => Submodule.mem_one.1 (Submodule.mem_pi.1 hsv i (Set.mem_univ _))`. Use `mem_localization_of_smul_mem P _ hs ?_` and prove the remaining obligations. Establish `e : s • v = ∑ i, t i • (Pi.single i 1 : Sp E a)`. Use extensionality with `j`.
+
+Rewrite using `[← ht j]`. Simplify using `[Finset.sum_apply, Pi.single_apply, Algebra.smul_def]`. Rewrite using `[← LinearMap.map_smul_of_tower, e, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[LinearMap.map_smul_of_tower]`.
+
+Conclude with `Submodule.smul_mem _ _ (hy i)`.
+-/
 theorem apply_mem_of_std {N' : Submodule (𝓞 E) (Sp E b)} {P : HeightOneSpectrum (𝓞 E)} {y : HomE E a b}
     (hy : ∀ i, y (Pi.single i 1) ∈ localization₂ P.asIdeal N') {v : Sp E a} (hv : v ∈ stdAt E a P) : y v ∈ localization₂ P.asIdeal N' := by
   obtain ⟨s, hs, hsv⟩ := (mem_locP P _ v).1 hv
@@ -88,6 +124,17 @@ theorem apply_mem_of_std {N' : Submodule (𝓞 E) (Sp E b)} {P : HeightOneSpectr
   exact Submodule.sum_mem _ fun i _ => by
     rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ _ (hy i)
 
+/- English proof (translation)
+Introduce `X A a b SG ϖ p N d N'' _ _ hU h0 hp hN _ hstd ⟨h1, _, h3⟩`. Establish `he : ∀ (P : ↥(divs ϖ)) (i : Fin a), (Pi.single i 1 : Sp X.E a) ∈ localization₂ P.1.asIdeal N` using `fun P i => by`. Rewrite using `[hstd P.1 P.2]`. Conclude with `le_locP P.1 _ (by simpa using single_mem_stdLat (E := X.E) i 1)`. Establish `hm : ∀ (x : (per A N d.1.N).toAddSubgroup) (P : ↥(divs ϖ)) (i : Fin a), x.1 (Pi.single i 1) ∈ d.1.at P.1` using `fun x P i => per_apply_mem (hU P.1 P.2) x.2 (he P i)`.
+
+Set `φ : (per A N d.1.N).toAddSubgroup →+ ((P : ↥(divs ϖ)) → Fin a → 𝓞 X.E ⧸ P.1.asIdeal)` to `AddMonoidHom.mk' (fun x P i => d.1.f P (x.1 (Pi.single i 1))) fun x y => by`. Use function extensionality and compare the values at `P i`. Conclude with `d.2.f_add P _ (hm x P i) _ (hm y P i)`. Establish `hker : φ.ker ≤ (per A N N'').toAddSubgroup.addSubgroupOf (per A N d.1.N).toAddSubgroup`. Introduce `x hx`.
+
+Use `mem_of_locP (per A N N'') x.1 fun Q => ?_` and prove the remaining obligations. Distinguish the cases in `hQ : Q ∈ divs ϖ`. Use `mem_localization_perO (hU Q hQ) hN.1.fg fun v hv => apply_mem_of_std (fun i => ?_) (hstd Q hQ ▸ le_locP Q N hv)` and prove the remaining obligations. Conclude with `(h3 ⟨Q, hQ⟩ _).2 ⟨hm x ⟨Q, hQ⟩ i, congrFun (congrFun hx ⟨Q, hQ⟩) i⟩`. Conclude with `mem_localization_of_smul_mem Q _ (fun h => hQ ((mem_divs h0 Q).2 h)) (le_locP Q _ (smul_mem_per h1 x.2))`.
+
+Establish `hc : Nat.card ((P : ↥(divs ϖ)) → Fin a → 𝓞 X.E ⧸ P.1.asIdeal) = p ^ ((divs ϖ).card * a)`. Establish `: ∀ P : ↥(divs ϖ), Nat.card (Fin a → 𝓞 X.E ⧸ P.1.asIdeal) = p ^ a` using `fun P => by`. Rewrite using `[Nat.card_fun, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hp P.1 P.2]`. Simplify using the standard rewrite rules. Rewrite using `[Nat.card_pi, Finset.prod_congr rfl fun P _ => this P]`.
+
+Simplify using `[← pow_mul, mul_comm]`. Use `(AddSubgroup.index_dvd_of_le hker).trans ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.index_ker, ← hc]`. Conclude with `AddSubgroup.card_addSubgroup_dvd_card _`.
+-/
 theorem relIndex_per_dvd : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (SG : Finset (HeightOneSpectrum (𝓞 X.E))) (ϖ : 𝓞 X.E) (p : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (d : DecoSet X.E b (divs ϖ) SG) (N'' : Submodule (𝓞 X.E) (Sp X.E b)), A.AA.FG → A.AA ≠ ⊥ → A.AAUnit (divs ϖ) → ϖ ≠ 0 → (∀ P ∈ divs ϖ, Ideal.absNorm P.asIdeal = p) → IsSdLat N → IsSdLat N'' → (∀ P ∈ divs ϖ, localization₂ P.asIdeal N = stdAt X.E a P) → ((∀ y ∈ d.1.N, (ϖ : X.E) • y ∈ N'') ∧ (∀ y ∈ N'', star (ϖ : X.E) • y ∈ d.1.N) ∧ ∀ (P : ↥(divs ϖ)) (y : Sp X.E b), y ∈ localization₂ P.1.asIdeal N'' ↔ y ∈ d.1.at P.1 ∧ d.1.f P y = 0) → (per A N N'').toAddSubgroup.relIndex (per A N d.1.N).toAddSubgroup ∣ p ^ ((divs ϖ).card * a) := by
   intro X A a b SG ϖ p N d N'' _ _ hU h0 hp hN _ hstd ⟨h1, _, h3⟩
   have he : ∀ (P : ↥(divs ϖ)) (i : Fin a), (Pi.single i 1 : Sp X.E a) ∈ localization₂ P.1.asIdeal N := fun P i => by

@@ -11,11 +11,19 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.CutMP Formalism.Fouri
 
 noncomputable section
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (Wp := ℂ) (Wq := ℂ) P 0 0 0 0 ⟨0, M.qC P, 0, 0, 0, {Y | ∀ ρ : M.Ty P, M.xC P ρ Y ≠ 0}⟩ l0 hP h1 h2 rfl rfl w hw.1 hw.2).1`.
+-/
 theorem model_adm {P : M.Par} (hP : P.OK) {l0 : ℕ} (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) {w : List C.Letter}
     (hw : KB.CutWord P l0 w) : admitted (MA.startM P (MA.DQ P) l0) (D.positionted w) :=
   (Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (Wp := ℂ) (Wq := ℂ) P 0 0 0 0
     ⟨0, M.qC P, 0, 0, 0, {Y | ∀ ρ : M.Ty P, M.xC P ρ Y ≠ 0}⟩ l0 hP h1 h2 rfl rfl w hw.1 hw.2).1
 
+/- English proof (translation)
+Establish `hTT : 0 ≤ P.TT` using `(mul_pos hP.T_pos hP.T'_pos).le`. Establish `hLaw` using `analytic_laws P.r P.TT hTT`. Establish `hS` using `level_star_holds P _ hLaw L hM`. Establish `hst` using `start_admissible P hP _ hLaw l0 L hM`. Establish `H` using `model_hyp hat_bounded_decay_holds hTT hM hS l0`.
+
+Use `⟨H.fn, ?_⟩` and prove the remaining obligations. Use `word_nf word_recursion H (model_aHyp hM hS hst (sites_admissible P _ hLaw l0)) (D.positionted w) (model_adm hP h1 h2 hw) a` as an intermediate fact. Rewrite using `[gM_eq hM]`. Simplify `this` using `only [D.positionted, List.length_ofFn]`.
+-/
 theorem model_nf {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) (hM : MA.IsModelLevel P (MA.DQ P) L)
     {l0 : ℕ} (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) {w : List C.Letter} (hw : KB.CutWord P l0 w) (a : Ix (Fin w.length)) :
     (∀ b ∈ BB P L, ∀ f ∈ L.fns, Commute b f) ∧
@@ -31,6 +39,9 @@ theorem model_nf {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) 
   rw [gM_eq hM]
   simpa only [D.positionted, List.length_ofFn] using this
 
+/- English proof (translation)
+Take `⟨m, b, u, hb, hu, e1⟩` from `nfs_fin (model_nf hP hM h1 h2 hw.1 e).2`. Conclude with `⟨m, b, fun _ => w.length, fun _ => 0, u, hb, fun _ => rfl, hu, by`. Simplify using `only [pow_zero, mul_one]`. Conclude with `e1⟩`.
+-/
 theorem nfModelNFg_ok (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (hP : P.OK)
     (hM : MA.IsModelLevel P (MA.DQ P) L) (l0 : ℕ) (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) (Y : Finset ℝ) (w : List C.Letter)
     (hw : TBB.AdmW P l0 Y w) (e : Wd.Ix (Fin w.length)) :
@@ -45,6 +56,9 @@ theorem nfModelNFg_ok (P : M.Par) (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (hP :
   exact ⟨m, b, fun _ => w.length, fun _ => 0, u, hb, fun _ => rfl, hu, by
     simp only [pow_zero, mul_one]; exact e1⟩
 
+/- English proof (translation)
+The claim follows from `nf_pointwise (mul_pos hP.T_pos hP.T'_pos).le hM (model_nf hP hM h1 h2 hw a).1 (model_nf hP hM h1 h2 hw a).2 s`.
+-/
 theorem model_pt {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) (hM : MA.IsModelLevel P (MA.DQ P) L)
     {l0 : ℕ} (h1 : 1 ≤ l0) (h2 : l0 ≤ P.k) {w : List C.Letter} (hw : KB.CutWord P l0 w) (a : Ix (Fin w.length))
     (s : ℕ) :
@@ -58,6 +72,13 @@ theorem model_pt {P : M.Par} {L : LevelData (MA.A P (MA.DQ P)) P.r} (hP : P.OK) 
             ∑ j, MA.evQ P (MA.actA P (b j * (u j).prod) f ρ) q :=
   nf_pointwise (mul_pos hP.T_pos hP.T'_pos).le hM (model_nf hP hM h1 h2 hw a).1 (model_nf hP hM h1 h2 hw a).2 s
 
+/- English proof (translation)
+Introduce `P L hP hM l0 h1 h2 w hw a s`. Take `⟨m, b, u, hb, hu, h⟩` from `model_pt hP hM h1 h2 hw a s`. Use `⟨m, b, u, m, Nat.cast_nonneg _, hb, hu, fun f g hg q => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun ρ _ => ?_` and prove the remaining obligations.
+
+Establish `hG` using `(MA.Gq_pos P q).le`. Establish `c1 : ‖∑ j, MA.evQ P (MA.actA P (b j * (u j).prod) f ρ) q‖ ^ 2 ≤ (m : ℝ) * ∑ j, ‖MA.evQ P (MA.actA P (b j * (u j).prod) f ρ) q‖ ^ 2`. Use `le_trans (pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2) ?_` and prove the remaining obligations. Simplify using `using sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Fin m))) (f := fun j => ‖MA.evQ P (MA.actA P (b j * (u j).prod) f ρ) q‖)`. Rewrite using `[h f g hg q ρ, norm_mul, norm_mul, mul_pow, mul_pow, Complex.norm_real, Real.norm_of_nonneg (pow_nonneg hG s), norm_pow, norm_inv, Complex.normSq_eq_norm_sq, ← pow_mul, ← pow_mul, mul_comm s 2, mul_comm w.length 2, pow_mul _ 2 w.length, inv_pow _ 2]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem normal_form_model_point : Formalism.MainStatements.NFTie.NFModelPt := by
   intro P L hP hM l0 h1 h2 w hw a s
   obtain ⟨m, b, u, hb, hu, h⟩ := model_pt hP hM h1 h2 hw a s

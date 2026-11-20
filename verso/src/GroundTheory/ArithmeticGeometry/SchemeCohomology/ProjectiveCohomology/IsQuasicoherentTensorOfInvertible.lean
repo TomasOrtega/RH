@@ -32,17 +32,28 @@ def tensorBasisMap (M L : X.Modules) {U : X.Opens} (s : ((preMod X).obj L).obj (
 
 variable {M M' L : X.Modules} {U V : X.Opens} {s : ((preMod X).obj L).obj (op U)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma tensorBasisMap_apply (h : V ≤ U) (m : Γ(M, V)) :
     tensorBasisMap M L s h m = (tensorToSheaf M L).app (op V)
       ((show ((preMod X).obj M).obj (op V) from m) ⊗ₜ resM ((preMod X).obj L) h s :
         ((preMod X).obj M ⊗ (preMod X).obj L).obj (op V)) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(F.presheaf.map (homOfLE h).op ≫ F.presheaf.map (homOfLE i).op) m = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 lemma resF_resF_of_le (F : X.Modules) {U V W : X.Opens} (h : V ≤ U) (i : W ≤ V) (m : Γ(F, U)) :
     resF F i (resF F h m) = resF F (i.trans h) m := by
   change (F.presheaf.map (homOfLE h).op ≫ F.presheaf.map (homOfLE i).op) m = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Set `eQ` to `LinearEquiv.ofBijective (LinearMap.toSpanSingleton (ringOn X V) _ (resM Q h s)) (hs V h)`. Set `E` to `(TensorProduct.rid (ringOn X V) (P.obj (op V))).symm ≪≫ₗ TensorProduct.congr (LinearEquiv.refl _ _) eQ`. Establish `hE : (fun m : P.obj (op V) => (m ⊗ₜ resM Q h s : (P ⊗ Q).obj (op V))) = E`. Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `m ⊗ₜ resM Q h s = m ⊗ₜ ((1 : ringOn X V) • resM Q h s)`.
+
+Rewrite using `[one_smul]`. Rewrite using `[hE]`. Conclude with `E.bijective`.
+-/
 lemma tmul_basis_bijective {P Q : PMod X} {s : Q.obj (op U)} (hs : IsBasisOn Q U s)
     (h : V ≤ U) :
     Function.Bijective (fun m : P.obj (op V) => (m ⊗ₜ resM Q h s : (P ⊗ Q).obj (op V))) := by
@@ -57,6 +68,11 @@ lemma tmul_basis_bijective {P Q : PMod X} {s : Q.obj (op U)} (hs : IsBasisOn Q U
   rw [hE]
   exact E.bijective
 
+/- English proof (translation)
+Rewrite using `[tensorBasisMap_apply, tensorBasisMap_apply]`. Establish `e : ((show ((preMod X).obj M).obj (op V) from r • m) ⊗ₜ resM ((preMod X).obj L) h s : ((preMod X).obj M ⊗ (preMod X).obj L).obj (op V)) = (show ringOn X V from r) • ((show ((preMod X).obj M).obj (op V) from m) ⊗ₜ resM ((preMod X).obj L) h s : ((preMod X).obj M ⊗ (preMod X).obj L) …`. Rewrite using `[TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `app_smul _ _ _`.
+-/
 lemma tensorBasisMap_smul (h : V ≤ U) (r : Γ(X, V)) (m : Γ(M, V)) :
     tensorBasisMap M L s h (r • m) = r • tensorBasisMap M L s h m := by
   rw [tensorBasisMap_apply, tensorBasisMap_apply]
@@ -69,6 +85,11 @@ lemma tensorBasisMap_smul (h : V ≤ U) (r : Γ(X, V)) (m : Γ(M, V)) :
   rw [e]
   exact app_smul _ _ _
 
+/- English proof (translation)
+Rewrite using `[tensorBasisMap_apply, tensorBasisMap_apply]`. Use `(app_resM (tensorToSheaf M L) hWV ((show ((preMod X).obj M).obj (op V) from m) ⊗ₜ resM ((preMod X).obj L) h s : ((preMod X).obj M ⊗ (preMod X).obj L).obj (op V))).symm` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `resM _ hWV m ⊗ₜ resM _ hWV (resM _ h s) = _`.
+
+Rewrite using `[resM_resM]`. Both sides reduce to the same expression.
+-/
 lemma tensorBasisMap_res (h : V ≤ U) {W : X.Opens} (hWV : W ≤ V) (m : Γ(M, V)) :
     resF (M ⊗ L) hWV (tensorBasisMap M L s h m) =
       tensorBasisMap M L s (hWV.trans h) (resF M hWV m) := by
@@ -82,6 +103,9 @@ lemma tensorBasisMap_res (h : V ≤ U) {W : X.Opens} (hWV : W ≤ V) (m : Γ(M, 
   rw [resM_resM]
   rfl
 
+/- English proof (translation)
+Rewrite using `[tensorBasisMap_apply, tensorBasisMap_apply, hc]`. Use `congr 1`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Both sides reduce to the same expression.
+-/
 lemma tensorBasisMap_change {U' : X.Opens} (s' : ((preMod X).obj L).obj (op U')) (h : V ≤ U)
     (h' : V ≤ U') (c : ringOn X V) (hc : resM ((preMod X).obj L) h' s' = c • resM ((preMod X).obj L) h s)
     (m : Γ(M, V)) : tensorBasisMap M L s' h' m = tensorBasisMap M L s h ((show Γ(X, V) from c) • m) := by
@@ -90,6 +114,27 @@ lemma tensorBasisMap_change {U' : X.Opens} (s' : ((preMod X).obj L).obj (op U'))
   rw [TensorProduct.tmul_smul, TensorProduct.smul_tmul']
   rfl
 
+/- English proof (translation)
+Take `⟨hinj, hsurj⟩` from `(ModulesTensor.W_toPresheaf_iff (tensorToSheaf M L)).1 (W_tensorToSheaf M L)`. Establish `inj : ∀ (W : X.Opens) (hW : W ≤ U) (m : Γ(M, W)), tensorBasisMap M L s hW m = 0 → m = 0`. Introduce `W hW m hm`. Establish `hz` using `hinj (op W) _ hm`. Apply `sheaf_eq_of_locally ⟨M.presheaf, M.isSheaf⟩ (V := W) m 0` to reduce the goal to its premises.
+
+Introduce `x hx`. Take `⟨W', f, hf, hxW'⟩` from `hz x hx`. Use `⟨W', f.le, hxW', ?_⟩` and prove the remaining obligations. Establish `hf' : ((show ((preMod X).obj M).obj (op W') from resF M f.le m) ⊗ₜ resM ((preMod X).obj L) (f.le.trans hW) s : ((preMod X).obj M ⊗ (preMod X).obj L).obj (op W')) = 0`. Rewrite using `[← resM_resM _ hW f.le]`.
+
+Conclude with `hf`. Use `(tmul_basis_bijective (P := (preMod X).obj M) hs (f.le.trans hW)).1 (a₁ := resF M f.le m) (a₂ := 0) (by` as an intermediate fact. Simplify using `only`. Rewrite using `[TensorProduct.zero_tmul]`. Conclude with `hf')`.
+
+Express the relevant statement in the definitionally equal form `resF M f.le m = resF M f.le 0`. Conclude with `this.trans (map_zero _).symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `inj V h`.
+
+Introduce `y`. Establish `hσ` using `hsurj (op V) y`. Use `choose W f hf hxW using hσ`. Use `choose p hp using hf`. Establish `hWU : ∀ x hx, W x hx ≤ U` using `fun x hx => (f x hx).le.trans h`.
+
+Use `choose m hm using fun x hx => (tmul_basis_bijective (P := (preMod X).obj M) hs (hWU x hx)).2 (p x hx)`. Establish `key : ∀ x hx, tensorBasisMap M L s (hWU x hx) (show Γ(M, W x hx) from m x hx) = resF (M ⊗ L) (f x hx).le y`. Introduce `x hx`. Rewrite using `[tensorBasisMap_apply]`. Establish `e : ((show ((preMod X).obj M).obj (op (W x hx)) from m x hx) ⊗ₜ resM ((preMod X).obj L) (hWU x hx) s : ((preMod X).obj M ⊗ (preMod X).obj L).obj (op (W x hx))) = p x hx` using `hm x hx`.
+
+Rewrite using `[e]`. Conclude with `hp x hx`. Take `⟨g, hg⟩` from `sheaf_exists_glue ⟨M.presheaf, M.isSheaf⟩ (V := V) (ι := {x : X // x ∈ V}) (fun a => W a.1 a.2) (fun a => (f a.1 a.2).le) (fun x hx => ⟨⟨x, hx⟩, hxW x hx⟩) (fun a => m a.1 a.2) (by`. Introduce `a b`. Establish `hab : W a.1 a.2 ⊓ W b.1 b.2 ≤ U` using `inf_le_left.trans (hWU _ _)`.
+
+Express the relevant statement in the definitionally equal form `resF M inf_le_left (m a.1 a.2) = resF M inf_le_right (m b.1 b.2)`. Rewrite using `[← sub_eq_zero]`. Apply `inj _ hab` to reduce the goal to its premises. Rewrite using `[map_sub, sub_eq_zero]`. Establish `ea` using `tensorBasisMap_res (M := M) (s := s) (hWU a.1 a.2) (inf_le_left : W a.1 a.2 ⊓ W b.1 b.2 ≤ W a.1 a.2) (m a.1 a.2)`.
+
+Establish `eb` using `tensorBasisMap_res (M := M) (s := s) (hWU b.1 b.2) (inf_le_right : W a.1 a.2 ⊓ W b.1 b.2 ≤ W b.1 b.2) (m b.1 b.2)`. Rewrite using `[← ea, ← eb, key, key, resF_resF_of_le, resF_resF_of_le])`. Use `⟨g, ?_⟩` and prove the remaining obligations. Apply `sheaf_eq_of_locally ⟨(M ⊗ L).presheaf, (M ⊗ L).isSheaf⟩ (V := V)` to reduce the goal to its premises. Introduce `x hx`.
+
+Use `⟨W x hx, (f x hx).le, hxW x hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resF (M ⊗ L) (f x hx).le (tensorBasisMap M L s h g) = resF (M ⊗ L) (f x hx).le y`. Rewrite using `[tensorBasisMap_res, ← key x hx]`. Use `congr 1`. Conclude with `hg ⟨x, hx⟩`.
+-/
 theorem tensorBasisMap_bijective (hs : IsBasisOn ((preMod X).obj L) U s) (h : V ≤ U) :
     Function.Bijective (tensorBasisMap M L s h) := by
   obtain ⟨hinj, hsurj⟩ := (ModulesTensor.W_toPresheaf_iff (tensorToSheaf M L)).1
@@ -186,13 +231,24 @@ def tensorEquivOfInvertible (hL : IsInvertibleSheaf L) : X.Modules ≌ X.Modules
         simp
         rw [associator_naturality_left_assoc, ← whisker_exchange_assoc, rightUnitor_naturality]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma tensorEquivOfInvertible_functor (hL : IsInvertibleSheaf L) :
     (tensorEquivOfInvertible hL).functor = tensorRight L := rfl
 
+/- English proof (translation)
+The claim follows from `hS.map_of_exact _`.
+-/
 theorem shortExact_tensorEquiv (hL : IsInvertibleSheaf L) {S : ShortComplex X.Modules}
     (hS : S.ShortExact) : (S.map (tensorEquivOfInvertible hL).functor).ShortExact :=
   hS.map_of_exact _
 
+/- English proof (translation)
+Establish `key : ∀ x : X, ∃ (W : X.Opens) (t : ((preMod X).obj L).obj (op W)), IsAffineOpen W ∧ x ∈ W ∧ IsBasisOn ((preMod X).obj L) W t`. Introduce `x`. Take `⟨U, hxU, t, ht⟩` from `hL x`. Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWU⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ (U : Set X) from hxU) U.2`. Conclude with `⟨W, resM _ hWU t, hW, hxW, ht.restrict hWU⟩`.
+
+Use `choose V s hV hx hs using key`. Conclude with `⟨V, s, hV, hx, hs⟩`.
+-/
 lemma exists_affineCover_basis (hL : IsInvertibleSheaf L) :
     ∃ (V : X → X.Opens) (s : ∀ x, ((preMod X).obj L).obj (op (V x))),
       (∀ x, IsAffineOpen (V x)) ∧ (∀ x, x ∈ V x) ∧
@@ -207,9 +263,19 @@ lemma exists_affineCover_basis (hL : IsInvertibleSheaf L) :
   choose V s hV hx hs using key
   exact ⟨V, s, hV, hx, hs⟩
 
+/- English proof (translation)
+The claim follows from `eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩`.
+-/
 lemma iSup_eq_top_of_self_mem {V : X → X.Opens} (hx : ∀ x, x ∈ V x) : iSup V = ⊤ :=
   eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩
 
+/- English proof (translation)
+Take `⟨V, s, hV, hx, hs⟩` from `exists_affineCover_basis hL`. Use `isQuasicoherent_of_affineCover (M ⊗ L) V hV (iSup_eq_top_of_self_mem hx) ?_ ?_` and prove the remaining obligations. Introduce `i f m`. Take `⟨n, rfl⟩` from `(tensorBasisMap_bijective (M := M) (hs i) (X.basicOpen_le f)).2 m`. Take `⟨e, n', hn'⟩` from `qcoh_exists_res_eq M (hV i) f n`.
+
+Use `⟨e, tensorBasisMap M L (s i) le_rfl n', ?_⟩` and prove the remaining obligations. Rewrite using `[tensorBasisMap_res, hn', tensorBasisMap_smul]`. Introduce `i f m hm`. Take `⟨n, rfl⟩` from `(tensorBasisMap_bijective (M := M) (hs i) (le_refl (V i))).2 m`. Rewrite `hm` using `[tensorBasisMap_res]`.
+
+Establish `hn : resF M (X.basicOpen_le f) n = 0` using `(injective_iff_map_eq_zero _).1 (tensorBasisMap_bijective (M := M) (hs i) _).1 _ hm`. Take `⟨e, he⟩` from `qcoh_exists_pow_smul_eq_zero M (hV i) f n hn`. Conclude with `⟨e, by rw [← tensorBasisMap_smul, he, map_zero]⟩`.
+-/
 theorem isQuasicoherent_tensor_of_invertible (M : X.Modules) [M.IsQuasicoherent]
     (hL : IsInvertibleSheaf L) : (M ⊗ L).IsQuasicoherent := by
   obtain ⟨V, s, hV, hx, hs⟩ := exists_affineCover_basis hL
@@ -227,6 +293,11 @@ theorem isQuasicoherent_tensor_of_invertible (M : X.Modules) [M.IsQuasicoherent]
     obtain ⟨e, he⟩ := qcoh_exists_pow_smul_eq_zero M (hV i) f n hn
     exact ⟨e, by rw [← tensorBasisMap_smul, he, map_zero]⟩
 
+/- English proof (translation)
+Use `hM.1` as an intermediate fact. Use `isQuasicoherent_tensor_of_invertible M hL` as an intermediate fact. Take `⟨V, s, hV, hx, hs⟩` from `exists_affineCover_basis hL`. Use `isCoherent_of_affineCover (M ⊗ L) V hV (iSup_eq_top_of_self_mem hx) fun i => ?_` and prove the remaining obligations. Use `hM.2 (V i) (hV i)` as an intermediate fact.
+
+Set `e : Γ(M, V i) →ₗ[Γ(X, V i)] Γ(M ⊗ L, V i)` to `{ toFun := tensorBasisMap M L (s i) le_rfl map_add' := map_add _ map_smul' := tensorBasisMap_smul le_rfl }`. Conclude with `Module.Finite.of_surjective e (tensorBasisMap_bijective (hs i) le_rfl).2`.
+-/
 theorem isCoherent_tensor_of_invertible {M : X.Modules} (hM : IsCoherent M)
     (hL : IsInvertibleSheaf L) : IsCoherent (M ⊗ L) := by
   have := hM.1

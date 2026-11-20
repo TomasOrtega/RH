@@ -19,6 +19,9 @@ namespace GlobalTheory.CharDegree
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[P.as_sum, map_sum]`. Use `Submodule.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, ← Algebra.smul_def, ← hP (mem_support_iff.1 hd), Finsupp.weight_apply]`. Conclude with `Submodule.smul_mem _ _ (SetLike.prod_mem_graded 𝒜 _ _ fun i _ => SetLike.pow_mem_graded _ (hx _))`.
+-/
 theorem aeval_mem {A σ : Type} [CommRing A] [Algebra ℚ A] (𝒜 : ℕ → Submodule ℚ A) [SetLike.GradedMonoid 𝒜]
     (w : σ → ℕ) (x : σ → A) (hx : ∀ i, x i ∈ 𝒜 (w i)) {P : MvPolynomial σ ℚ} {j : ℕ}
     (hP : P.IsWeightedHomogeneous w j) : aeval x P ∈ 𝒜 j := by
@@ -27,12 +30,20 @@ theorem aeval_mem {A σ : Type} [CommRing A] [Algebra ℚ A] (𝒜 : ℕ → Sub
   rw [aeval_monomial, ← Algebra.smul_def, ← hP (mem_support_iff.1 hd), Finsupp.weight_apply]
   exact Submodule.smul_mem _ _ (SetLike.prod_mem_graded 𝒜 _ _ fun i _ => SetLike.pow_mem_graded _ (hx _))
 
+/- English proof (translation)
+Rewrite using `[esymm]`. Use `IsHomogeneous.sum _ _ _ fun t ht => ?_` and prove the remaining obligations. Use `IsHomogeneous.prod t (fun i => (X i : MvPolynomial (Fin r) ℚ)) (fun _ => 1) fun i _ => isHomogeneous_X _ _` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, smul_eq_mul, Nat.mul_one, (Finset.mem_powersetCard.1 ht).2]`. Then use the resulting hypothesis.
+-/
 theorem esymm_hom (r j : ℕ) : (esymm (Fin r) ℚ j).IsHomogeneous j := by
   rw [esymm]
   refine IsHomogeneous.sum _ _ _ fun t ht => ?_
   have := IsHomogeneous.prod t (fun i => (X i : MvPolynomial (Fin r) ℚ)) (fun _ => 1) fun i _ => isHomogeneous_X _ _
   rwa [Finset.sum_const, smul_eq_mul, Nat.mul_one, (Finset.mem_powersetCard.1 ht).2] at this
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `monomial d c`. Establish `h1 : (monomial d c : MvPolynomial (Fin r) ℚ).IsWeightedHomogeneous (fun i : Fin r => (i : ℕ) + 1) (Finsupp.weight (fun i : Fin r => (i : ℕ) + 1) d)` using `isWeightedHomogeneous_monomial _ _ _ rfl`. Use `haveI := HomogeneousSubmodule.gradedMonoid (σ := Fin r) (R := ℚ)`.
+
+Establish `h2` using `aeval_mem (homogeneousSubmodule (Fin r) ℚ) _ (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) (fun i => esymm_hom r _) h1`. Rewrite using `[homogeneousComponent_of_mem h2, weightedHomogeneousComponent_of_mem h1]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem comp_aeval_esymm (r j : ℕ) (P : MvPolynomial (Fin r) ℚ) :
     homogeneousComponent j (aeval (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) P) =
       aeval (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) (weightedHomogeneousComponent (fun i : Fin r => (i : ℕ) + 1) j P) := by
@@ -47,6 +58,11 @@ theorem comp_aeval_esymm (r j : ℕ) (P : MvPolynomial (Fin r) ℚ) :
     rw [homogeneousComponent_of_mem h2, weightedHomogeneousComponent_of_mem h1]
     split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨P, rfl⟩` from `(esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).surjective φ`. Establish `hv (Q : MvPolynomial (Fin r) ℚ) : (esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r) Q).1 = aeval (fun i : Fin r => esymm (Fin r) ℚ (i + 1)) Q` using `esymmAlgHom_apply Q`. Establish `e : weightedHomogeneousComponent (fun i : Fin r => (i : ℕ) + 1) j P = P`. Apply `(esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[hv, ← comp_aeval_esymm, ← hv, homogeneousComponent_of_mem hφ, if_pos rfl]`. Establish `e2 : R.char E (esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r) P) = aeval (fun i : Fin r => R.cl E (i + 1)) P` using `congrArg (aeval (fun i : Fin r => R.cl E (i + 1))) ((esymmAlgEquiv (Fin r) ℚ (Fintype.card_fin r)).symm_apply_apply P)`. Rewrite using `[e2, ← e]`. Conclude with `aeval_mem R.gr _ _ (fun i => R.cl_mem E _) (weightedHomogeneousComponent_isWeightedHomogeneous _ _)`.
+-/
 theorem char_mem {B : BottChern} {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {D : ℕ} {h : IsRegVar p D}
     (R : ArRing B h) {r : ℕ} (E : HermVB p r) {j : ℕ} (φ : symmetricSubalgebra (Fin r) ℚ)
     (hφ : φ.1.IsHomogeneous j) : R.char E φ ∈ R.gr j := by
@@ -62,6 +78,9 @@ theorem char_mem {B : BottChern} {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y
   rw [e2, ← e]
   exact aeval_mem R.gr _ _ (fun i => R.cl_mem E _) (weightedHomogeneousComponent_isWeightedHomogeneous _ _)
 
+/- English proof (translation)
+Introduce `B k _ Y p D h R r E j`. Use `⟨char_mem R E _ ?_, char_mem R E _ (homogeneousComponent_isHomogeneous _ _)⟩` and prove the remaining obligations. Establish `: (psum (Fin r) ℚ j).IsHomogeneous j` using `IsHomogeneous.sum _ _ _ fun i _ => isHomogeneous_X_pow i j`. Conclude with `(homogeneousSubmodule (Fin r) ℚ j).smul_mem _ this`.
+-/
 theorem char_chPart_tdPart_mem : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (R : ArRing B h) (r : ℕ) (E : HermVB p r) (j : ℕ), R.char E (chPart r j) ∈ R.gr j ∧ R.char E (tdPart r j) ∈ R.gr j := by
   intro B k _ Y p D h R r E j
   refine ⟨char_mem R E _ ?_, char_mem R E _ (homogeneousComponent_isHomogeneous _ _)⟩

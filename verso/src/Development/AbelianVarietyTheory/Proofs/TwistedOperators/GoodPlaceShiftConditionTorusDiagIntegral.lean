@@ -19,10 +19,22 @@ namespace GlobalTheory.AscFin.ShiftInt
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 hb.2⟩`.
+-/
 theorem mul_mem_intAt {v : GlobalTheory.FinPl.Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a * b ∈ intAt D (· = v) :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 hb.2⟩
 
+/- English proof (translation)
+Unfold `upSum`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Rewrite using `[if_pos hj, Matrix.single_apply, if_pos ⟨rfl, rfl⟩]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Conclude with `hb (Fin.ext (by omega))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `b _ hb`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, -⟩`. Conclude with `hb rfl`.
+
+Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem upSum_single {ρ : ℕ} {i j : Fin ρ} (hj : j.1 = i.1 + 1) (c : AE D) :
     upSum (Matrix.single i j c : Mx D ρ ρ) = c := by
   unfold upSum
@@ -42,6 +54,9 @@ theorem upSum_single {ρ : ℕ} {i j : Fin ρ} (hj : j.1 = i.1 + 1) (c : AE D) :
     · rfl
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `a b`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Conclude with `hc`. Conclude with `zero_mem _`.
+-/
 theorem mxAt_single {P : GlobalTheory.FinPl.Pl D → Prop} {ρ : ℕ} (i j : Fin ρ) {c : AE D} (hc : c ∈ idAt D P) :
     MxAt P (Matrix.single i j c : Mx D ρ ρ) := by
   intro a b
@@ -50,6 +65,11 @@ theorem mxAt_single {P : GlobalTheory.FinPl.Pl D → Prop} {ρ : ℕ} (i j : Fin
   · exact hc
   · exact zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.single_mulVec, Matrix.mulVec, dotProduct, Finset.sum_eq_single i]`. Simplify using `[GlobalTheory.FinPl.colMul, mul_comm]`. Introduce `b _ hb`. Simplify using `[Function.update_of_ne hb]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mul_single_mulVec {m ρ : ℕ} (x : Mx D m ρ) (i j : Fin ρ) (c : AE D) (z : Fin ρ → AE D) :
     (x ⬝ (Matrix.single i j c : Mx D ρ ρ)) *ᵥ z = GlobalTheory.FinPl.colMul x i (c * z j) := by
   funext k
@@ -61,6 +81,25 @@ theorem mul_single_mulVec {m ρ : ℕ} (x : Mx D m ρ) (i j : Fin ρ) (c : AE D)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ _ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t htd ht hsh i j hj`. Establish `hlt : i < j` using `by rw [Fin.lt_def]; omega`. Take `⟨h1, -, -⟩` from `GlobalTheory.FinPl.InvStep.diag_inv t htd`. Establish `hti : t.1 i i - 1 ∈ idAt D (· = v)`. Use `GlobalTheory.FinPl.InvStep.levi_sub_one_mem dW ht i i` as an intermediate fact.
+
+Rewrite `this` using `[one_apply_eq]`. Then use the resulting hypothesis. Use `GlobalTheory.ColonInt.colon_int D V V₀ ρ dV LV LV₀ v (GlobalTheory.FinPl.TamePlaces.tame D v) hG.sdV hG.monoV i j _ hti ?_` and prove the remaining obligations. Introduce `r hr hR`. Establish `hP` using `hG.prim i j hj`. Use `(hP (r * t.1 i i) (Ideal.mul_mem_right _ _ hr)).2 ?_` and prove the remaining obligations.
+
+Introduce `o ho`. Establish `hψr` using `(hP r hr).1 hR`. Establish `hro : r * o ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ hr`. Establish `hRo : ∀ a : AE D, GlobalTheory.FinPl.colMul dV.jX j a ∈ latV V LV (· = v) → GlobalTheory.FinPl.colMul dV.jX i (r * o * a) ∈ latV V LV (· = v)` using `(hP (r * o) hro).2 fun o' ho' => by rw [mul_assoc]; exact hψr _ (mul_mem_intAt ho ho')`. Establish `hN : (Matrix.single i j (r * t.1 i i * o) : Mx D ρ ρ) = t.1 ⬝ (Matrix.single i j (r * o) : Mx D ρ ρ)` using `by conv_rhs => rw [h1]`.
+
+Use extensionality with `a b`. Rewrite using `[diagonal_mul, Matrix.single_apply, Matrix.single_apply]`. Use `split_ifs with h`. Rewrite using `[← h.1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[mul_zero]`. Establish `hmove : mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ (Matrix.single i j (r * t.1 i i * o) : Mx D ρ ρ)) = xZero dW ⬝ (Matrix.single i j (r * o) : Mx D ρ ρ)`. Rewrite using `[hN, xZero, ← map_inv, ← Matrix.mul_assoc, HypDec.levi_jX, Matrix.mul_assoc, ← Matrix.mul_assoc (t⁻¹).1, show (t⁻¹).1 ⬝ t.1 = 1 from t.inv_mul, Matrix.one_mul]`. Establish `hx : MxAt (· = v) (xZero dW ⬝ (Matrix.single i j (r * o) : Mx D ρ ρ))`. Introduce `a b`.
+
+Use `GlobalTheory.FinPl.InvStep.mat_mem_idAt (xZero dW) _ 1 (mxAt_single i j hro) a b` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hA : xZero dW ⬝ (Matrix.single i j (r * o) : Mx D ρ ρ) ∈ p.A₁`. Use `(hS.a _ hx).2 ((GlobalTheory.FinPl.LatMem.mem_latO_iff D V W LV LW hG.sdV hG.sdW _ _).2 ⟨?_, fun y hy => ?_⟩)` and prove the remaining obligations. Rewrite using `[HypDec.extX_apply]`.
+
+Conclude with `fun a b => GlobalTheory.FinPl.InvStep.mat_mem_idAt (xZero dW) _ dV.pX (mxAt_single i j hro) a b`. Establish `h2` using `(hG.cols i _ (Ideal.mul_mem_right _ _ hro)).1 (hRo _ (((hG.monoV y).1 hy).1 j))`. Rewrite `h2` using `[← mul_single_mulVec, Matrix.mulVec_mulVec]`. Rewrite using `[HypDec.extX_apply]`. Conclude with `h2`.
+
+Establish `h3` using `hsh (Matrix.single i j (r * t.1 i i * o)) (mxAt_single i j (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ hr))) (fun a b hab => by`. Rewrite using `[Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `absurd hlt (not_lt.2 hab))`. Use the proof step `(by rw [hmove]; exact hA)`.
+
+Rewrite `h3` using `[upSum_single hj]`. Then use the resulting hypothesis.
+-/
 theorem shift_int : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ : HSp D) (ρ : ℕ) (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ ρ) (p : Pieces V₀ W W₀ ρ ρ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (v : GlobalTheory.FinPl.Pl D), GoodAt dV dW (xZero dW) ψ LV LV₀ LW LW₀ v → StdAt dV dW p LV LW v → ∀ t : GL (Fin ρ) (AE D), (∀ i j, i ≠ j → t.1 i j = 0) → dW.levi t ∈ grpAt W (· = v) → (∀ N : Mx D ρ ρ, MxAt (· = v) N → (∀ i j, j ≤ i → N i j = 0) → mt W (dW.levi t)⁻¹ ⬝ (xZero dW ⬝ N) ∈ p.A₁ → psiE ψ (upSum N) = 1) → ∀ i j : Fin ρ, j.1 = i.1 + 1 → t.1 i i - 1 ∈ intAt D (· = v) := by
   intro D ψ _ V V₀ W W₀ ρ dV dW p LV LV₀ LW LW₀ v hG hS t htd ht hsh i j hj
   have hlt : i < j := by rw [Fin.lt_def]; omega

@@ -15,6 +15,9 @@ namespace PositivityTheory.ThKF0.GeoAdm
 open GlobalTheory.EvAdm
 open scoped Classical
 
+/- English proof (translation)
+Conclude with `PositivityTheory.Mix.T.indicator_coset_scaledIntegral_eq_restrictedProduct`.
+-/
 theorem boxS : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F) (r : κ → FiniteAdeleRing (𝓞 F) F), a ≠ 0 →
     ∃ φ : ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ, (∀ v, φ v ∈ GlobalTheory.WeilM.SB (κ → Fv F v)) ∧
       (∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) ∧
@@ -24,6 +27,21 @@ theorem boxS : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ]
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Take `⟨hlc, hcs⟩` from `hg'`. Establish `hK : IsCompact (tsupport g)` using `hcs`. Establish `hW : ∀ x : κ → FiniteAdeleRing (𝓞 F) F, ∃ W ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F), ∀ u ∈ W, ∀ w ∈ W, g (x + u + w) = g x`. Introduce `x`.
+
+Establish `h1 : {y | g y = g x} ∈ 𝓝 x` using `(hlc.isOpen_fiber (g x)).mem_nhds rfl`. Establish `h2 : (fun u => x + u) ⁻¹' {y | g y = g x} ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `(continuous_const_add x).continuousAt.preimage_mem_nhds (by simpa using h1)`. Take `⟨W, hW0, hWW⟩` from `exists_nhds_zero_half h2`. Conclude with `⟨W, hW0, fun u hu w hw => by simpa [add_assoc] using hWW u hu w hw⟩`. Use `choose W hW0 hWg using hW`.
+
+Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun x => {y | y - x ∈ W x}) (fun x _ => (continuous_sub_right x).continuousAt.preimage_mem_nhds (by simpa using hW0 x))`. Establish `hV : (⋂ x ∈ t, W x) ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `(Filter.biInter_finset_mem t).2 fun x _ => hW0 x`. Establish `hkey : ∀ y ∈ tsupport g, ∀ z ∈ ⋂ x ∈ t, W x, g (y + z) = g y`. Introduce `y hy z hz`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hy)`.
+
+Establish `hzx : z ∈ W x` using `Set.mem_iInter₂.1 hz x hx`. Establish `e1` using `hWg x (y - x) hyx z hzx`. Establish `e2` using `hWg x (y - x) hyx 0 (mem_of_mem_nhds (hW0 x))`. Simplify using `only [add_sub_cancel, add_zero] at e1 e2`. Rewrite using `[e1, e2]`.
+
+Establish `hV' : (fun z : κ → FiniteAdeleRing (𝓞 F) F => -z) ⁻¹' (⋂ x ∈ t, W x) ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `continuous_neg.continuousAt.preimage_mem_nhds (by simpa using hV)`. Take `⟨a, ha, hsub⟩` from `PositivityTheory.Mix.exists_scaled_integral_lattice_subset F κ _ (Filter.inter_mem hV hV')`. Use `⟨a, ha, fun y z hz => ?_⟩` and prove the remaining obligations. Establish `hz'` using `hsub hz`. Distinguish the cases in `hy : y ∈ tsupport g`.
+
+Conclude with `hkey y hy z hz'.1`. Distinguish the cases in `hyz : y + z ∈ tsupport g`. Establish `h3` using `hkey (y + z) hyz (-z) hz'.2`. Establish `h4 : g y = g (y + z)` using `by simpa using h3`. Conclude with `h4.symm`.
+
+Rewrite using `[image_eq_zero_of_notMem_tsupport hyz, image_eq_zero_of_notMem_tsupport hy]`.
+-/
 theorem exists_invariant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ a : F, a ≠ 0 ∧ ∀ x, ∀ z ∈ scaledInt F κ a, g (x + z) = g x := by
   have hg' : IsLocallyConstant g ∧ HasCompactSupport g := hg
@@ -64,6 +82,19 @@ theorem exists_invariant {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg :
       exact h4.symm
     · rw [image_eq_zero_of_notMem_tsupport hyz, image_eq_zero_of_notMem_tsupport hy]
 
+/- English proof (translation)
+Take `⟨a, ha, hinv⟩` from `exists_invariant hg`. Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Establish `hK : IsCompact (tsupport g)` using `hg'.2`. Establish `hopen : IsOpen ((scaledInt F κ a : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)) : Set (κ → FiniteAdeleRing (𝓞 F) F))` using `GlobalTheory.EvAdm.isOpen_scaledInt a`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun x => {y | y - x ∈ scaledInt F κ a}) (fun x _ => (continuous_sub_right x).continuousAt.preimage_mem_nhds (hopen.mem_nhds (by simp)))`.
+
+Use `⟨a, ha, (t.image (fun x => (QuotientAddGroup.mk x : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a))).image Quotient.out, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Establish `hmem : ∀ q : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a, y - Quotient.out q ∈ scaledInt F κ a ↔ (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) = q`. Introduce `q`. Establish `hq : (QuotientAddGroup.mk (Quotient.out q) : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) = q` using `Quotient.out_eq' q`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← (scaledInt F κ a).neg_mem_iff, neg_sub, sub_eq_neg_add]`. Use `_ ↔ (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a) = QuotientAddGroup.mk (Quotient.out q) := QuotientAddGroup.eq.symm`. Use `_ ↔ _ := by rw [hq]`. Rewrite using `[Finset.sum_apply, Finset.sum_image (by intro q _ q' _ h; exact Quotient.out_injective h)]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Set.indicator_apply, Set.mem_ofPred_eq, hmem, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hy`. Establish `h1` using `hinv (Quotient.out (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a)) (y - Quotient.out (QuotientAddGroup.mk y : (κ → FiniteAdeleRing (𝓞 F) F) ⧸ scaledInt F κ a)) ((hmem _).2 rfl)`. Simplify using `using h1`.
+
+Assume the negation of the conclusion as `hne`. Establish `hyK : y ∈ tsupport g` using `subset_tsupport g hne`. Take `⟨x, hx, hyx⟩` from `Set.mem_iUnion₂.1 (ht hyK)`. Apply `hy` to reduce the goal to its premises. Use `Finset.mem_image.2 ⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `hyx`.
+-/
 theorem exists_sum_cosets {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ a : F, a ≠ 0 ∧ ∃ R : Finset (κ → FiniteAdeleRing (𝓞 F) F),
       g = ∑ r ∈ R, g r • Set.indicator {y | y - r ∈ scaledInt F κ a} (fun _ => (1 : ℂ)) := by
@@ -106,6 +137,11 @@ theorem exists_sum_cosets {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg 
     rw [QuotientAddGroup.eq, neg_add_eq_sub]
     exact hyx
 
+/- English proof (translation)
+Take `⟨a, ha, R, hR⟩` from `exists_sum_cosets hg`. Use `choose ψ hψSB hψcof hψeq using fun r => boxS F κ a r ha`. Use `⟨R.card, fun k => g (R.equivFin.symm k), fun k => ψ (R.equivFin.symm k), fun k v => hψSB _ v, fun k => hψcof _, ?_⟩` and prove the remaining obligations. Establish `key : ∀ r, Set.indicator {y | y - r ∈ scaledInt F κ a} (fun _ => (1 : ℂ)) = fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, ψ r v fun i => evalV F v (y i)` using `fun r => funext (hψeq r)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[key r]`. Use `_ = _ := by`. Rewrite using `[← Finset.sum_coe_sort R]`. Conclude with `(Equiv.sum_comp R.equivFin.symm (fun r : R => g r • fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, ψ r v fun i => evalV F v (y i))).symm`.
+-/
 theorem exists_sum_finprod {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) :
     ∃ (m : ℕ) (c : Fin m → ℂ) (φ : Fin m → ∀ v : HeightOneSpectrum (𝓞 F), (κ → Fv F v) → ℂ),
       (∀ k v, φ k v ∈ GlobalTheory.WeilM.SB (κ → Fv F v)) ∧
@@ -126,6 +162,21 @@ theorem exists_sum_finprod {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg
         exact (Equiv.sum_comp R.equivFin.symm
           (fun r : R => g r • fun y : κ → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, ψ r v fun i => evalV F v (y i))).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hev l hl`. Take `⟨-, -, hstd, -, -⟩` from `hM`. Take `⟨-, -, hstd₁, -, -⟩` from `hM₁`. Take `⟨ei, ev, -, hev_v, hpure⟩` from `hev.loc`. Simplify using `only [GlobalTheory.WeilM.adeleClass, Set.mem_ofPred_eq] at hl ⊢`.
+
+Introduce `g hg`. Take `⟨m, c, φ, hφ, hcof, hgeq⟩` from `exists_sum_finprod hg`. Establish `hcofM : ∀ k, ∀ᶠ v in cofinite, φ k v = M.vac v` using `fun k => (hcof k).mp (hstd.mono fun v h1 h2 => h2.trans h1.symm)`. Use `set H : Fin m → (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F) → ℂ := fun k y => ∏ᶠ v, ev v (φ k v) fun i => evalV F v (y i) with hHdef`. Establish `hH : ∀ k, H k ∈ GlobalTheory.WeilM.SB (Fin n₁ × Fin d₁ → FiniteAdeleRing (𝓞 F) F)`.
+
+Introduce `k`. Establish `hSB : ∀ v : HeightOneSpectrum (𝓞 F), ev v (φ k v) ∈ GlobalTheory.WeilM.SB (Fin n₁ × Fin d₁ → Fv F v)` using `fun v => by`. Rewrite using `[← (hev_v v).2]`. Conclude with `Submodule.mem_map_of_mem (hφ k v)`. Establish `hc : ∀ᶠ v in cofinite, ev v (φ k v) = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `((hcofM k).and hstd₁).mono fun v h => by rw [h.1, (hev_v v).1, h.2]`.
+
+Use `show IsLocallyConstant (H k) ∧ HasCompactSupport (H k)`. Conclude with `⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV (fun v => ev v (φ k v)) hSB hc, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod (fun v => ev v (φ k v)) hSB hc⟩`. Use `choose T hT using fun k => hl (H k) (hH k)`. Establish `hsplit : ∀ f : SchwartzMap (Fin n × Fin d → NumberField.mixedEmbedding.mixedSpace F) ℂ, GlobalTheory.WeilM.pureA F (⇑f) g = ∑ k, c k • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (φ k)`. Introduce `f`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[hgeq]`. Simplify using `only [GlobalTheory.WeilM.pureA, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+
+Both sides reduce to the same expression. Use `⟨∑ k, c k • (T k).comp ei, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hsplit f, map_sum, map_sum, ContinuousLinearMap.sum_apply]`. Simplify using `only [map_smul, smul_eq_mul, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hpure f (φ k) (hφ k) (hcofM k), ← hT k (ei f)]`. Use `congr 2`.
+-/
 theorem comp_mem_adm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ)
     (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))

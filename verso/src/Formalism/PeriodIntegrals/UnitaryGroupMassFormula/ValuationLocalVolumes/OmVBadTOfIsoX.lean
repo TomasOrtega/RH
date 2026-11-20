@@ -10,6 +10,9 @@ open Formalism.L2.SG.Pf.NcVal.OmVSt Formalism.BasicNotions Formalism.L2.SG.HidaS
 
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
+/- English proof (translation)
+Establish `h1` using `X.n_eq`. Establish `h2` using `D.R.rS_two`. Establish `h3` using `D.R.m_add_three_le_k`. Unfold `Ranks.r at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem a_succ_le_n : D.R.rS + 1 + D.R.rS + 1 ≤ X.B.I.n := by
   have h1 := X.n_eq
   have h2 := D.R.rS_two
@@ -17,6 +20,9 @@ theorem a_succ_le_n : D.R.rS + 1 + D.R.rS + 1 ≤ X.B.I.n := by
   unfold Ranks.r at h1
   omega
 
+/- English proof (translation)
+The claim follows from `omVBadT_of_red X u' ψ hStd hLat hGram (fun v hv => extP_of _ _ _ _ _ _ _ (a_succ_le_n X) (hIso v hv)) hLI hRed hFI hFS`.
+-/
 theorem omVBadT_of_iso (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hIso : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
       IsoExt X.B.I.cm.sig X.B.I.J ψ v (abelian₂ X) (D.R.rS + 1 + D.R.rS) (yTup X u' v))
@@ -28,6 +34,9 @@ theorem omVBadT_of_iso (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X
   omVBadT_of_red X u' ψ hStd hLat hGram
     (fun v hv => extP_of _ _ _ _ _ _ _ (a_succ_le_n X) (hIso v hv)) hLI hRed hFI hFS
 
+/- English proof (translation)
+The claim follows from `omVBadT_of_iso X u' ψ hStd hLat hGram hIso hLI hRed hFI hFS`.
+-/
 theorem omVBadT_of_isoX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
     (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u')
     (hIso : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →

@@ -12,10 +12,18 @@ noncomputable section
 
 namespace PivotProductBound
 
+/- English proof (translation)
+The claim follows from `div_pos ((hLB d S).2.2 hS (i + 1) hi) ((hLB d S).2.2 hS i hi.le)`.
+-/
 theorem pivot_pos (hLB : LeadMinorBasic.Statement) {d : ℕ} {S : Matrix (Fin d) (Fin d) ℝ}
     (hS : S.PosDef) {i : ℕ} (hi : i < d) : 0 < pivot S i :=
   div_pos ((hLB d S).2.2 hS (i + 1) hi) ((hLB d S).2.2 hS i hi.le)
 
+/- English proof (translation)
+Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro _`. Simplify using `[(hLB d S).1]`. Consider the case `succ n ih`.
+
+Introduce `hn`. Rewrite using `[Finset.prod_range_succ, ih (Nat.le_of_succ_le hn), pivot, mul_div_cancel₀ _ ((hLB d S).2.2 hS n (Nat.le_of_succ_le hn)).ne']`.
+-/
 theorem prod_range_pivot (hLB : LeadMinorBasic.Statement) {d : ℕ} {S : Matrix (Fin d) (Fin d) ℝ}
     (hS : S.PosDef) : ∀ r, r ≤ d → ∏ i ∈ Finset.range r, pivot S i = leadMinor S r := by
   intro r
@@ -30,6 +38,21 @@ end PivotProductBound
 
 open PivotProductBound in
 
+/- English proof (translation)
+Introduce `d r S hS hrd α ε hε hα hεp P hP`. Establish `hpos : ∀ i ∈ P, 0 < pivot S i` using `fun i hi => pivot_pos hLB hS (hP i hi)`. Use `set m := max 1 α with hm`. Use `set c := min 1 ε with hc`. Establish `hm1 : 1 ≤ m` using `le_max_left _ _`.
+
+Establish `hm0 : 0 < m` using `lt_of_lt_of_le one_pos hm1`. Establish `hc0 : 0 < c` using `lt_min one_pos hε`. Establish `hc1 : c ≤ 1` using `min_le_left _ _`. Use `set A := P.filter (· < r) with hA`. Use `set B := P.filter (fun i => ¬ i < r) with hB`.
+
+Establish `hAr : A ⊆ Finset.range r`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_filter]`. Conclude with `Finset.mem_range.2 hi.2`. Establish `hQpos : ∀ i ∈ Finset.range r \ A, 0 < pivot S i` using `fun i hi => pivot_pos hLB hS (lt_of_lt_of_le (Finset.mem_range.1 (Finset.mem_sdiff.1 hi).1) hrd)`.
+
+Establish `hQ : ∏ i ∈ Finset.range r \ A, pivot S i ≤ m ^ r`. Combine the equalities or inequalities in the displayed calculation. Establish `hL : leadMinor S r = (∏ i ∈ Finset.range r \ A, pivot S i) * ∏ i ∈ A, pivot S i`. Rewrite using `[Finset.prod_sdiff hAr, prod_range_pivot hLB hS r hrd]`. Establish `hApos : 0 < ∏ i ∈ A, pivot S i` using `Finset.prod_pos fun i hi => hpos i (Finset.mem_filter.1 hi).1`.
+
+Establish `h1 : m⁻¹ ^ r * leadMinor S r ≤ ∏ i ∈ A, pivot S i`. Rewrite using `[hL, ← mul_assoc]`. Establish `: m⁻¹ ^ r * ∏ i ∈ Finset.range r \ A, pivot S i ≤ 1`. Rewrite using `[inv_pow]`. Conclude with `inv_mul_le_one_of_le₀ hQ (pow_nonneg hm0.le r)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h2 : c ^ d ≤ ∏ i ∈ B, pivot S i`. Establish `hBd : B.card ≤ d`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hi` using `[Finset.mem_filter]`. Conclude with `(min_le_right _ _).trans (hεp i (not_lt.1 hi.2) (hP i hi.1)))`. Rewrite using `[← Finset.prod_filter_mul_prod_filter_not P (· < r), mul_assoc, mul_comm]`. Conclude with `mul_le_mul h1 h2 (pow_nonneg hc0.le d) hApos.le`.
+-/
 theorem PivotProductBound.proof (hLB : LeadMinorBasic.Statement) : PivotProductBound.Statement := by
   intro d r S hS hrd α ε hε hα hεp P hP
   have hpos : ∀ i ∈ P, 0 < pivot S i := fun i hi => pivot_pos hLB hS (hP i hi)

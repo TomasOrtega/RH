@@ -15,6 +15,9 @@ def sigF (σ : Qq ≃+* Qq) (hσ : ∀ x : W, ∃ y : W, σ (algebraMap W Qq x) 
     (x : W) : W :=
   x ^ p + (p : W) * (hσ x).choose
 
+/- English proof (translation)
+The claim follows from `(hσ x).choose_spec.symm`.
+-/
 theorem sigF_spec (σ : Qq ≃+* Qq)
     (hσ : ∀ x : W, ∃ y : W, σ (algebraMap W Qq x) = algebraMap W Qq (x ^ p + (p : W) * y)) (x : W) :
     algebraMap W Qq (sigF σ hσ x) = σ (algebraMap W Qq x) := (hσ x).choose_spec.symm
@@ -27,10 +30,16 @@ def sigW (hinj : Function.Injective (algebraMap W Qq)) (σ : Qq ≃+* Qq)
   map_zero' := hinj (by rw [sigF_spec]; simp)
   map_add' x y := hinj (by simp only [sigF_spec, map_add])
 
+/- English proof (translation)
+The claim follows from `sigF_spec σ hσ x`.
+-/
 theorem sigW_spec (hinj : Function.Injective (algebraMap W Qq)) (σ : Qq ≃+* Qq)
     (hσ : ∀ x : W, ∃ y : W, σ (algebraMap W Qq x) = algebraMap W Qq (x ^ p + (p : W) * y)) (x : W) :
     algebraMap W Qq (sigW hinj σ hσ x) = σ (algebraMap W Qq x) := sigF_spec σ hσ x
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hσ x).choose, rfl⟩`.
+-/
 theorem sigW_lift (hinj : Function.Injective (algebraMap W Qq)) (σ : Qq ≃+* Qq)
     (hσ : ∀ x : W, ∃ y : W, σ (algebraMap W Qq x) = algebraMap W Qq (x ^ p + (p : W) * y)) (x : W) :
     ∃ y : W, sigW hinj σ hσ x = x ^ p + (p : W) * y := ⟨(hσ x).choose, rfl⟩
@@ -44,21 +53,35 @@ variable (p Qq) [Invertible (p : Qq)] (F : W →+* W)
 def G (x : W) : WittVector p Qq :=
   (ghostEquiv p Qq).symm (fun n => algebraMap W Qq ((F^[n]) x))
 
+/- English proof (translation)
+Establish `h` using `congrFun ((ghostEquiv p Qq).apply_symm_apply (fun n => algebraMap W Qq ((F^[n]) x))) n`. Rewrite using `[← WittVector.ghostMap_apply, ← WittVector.ghostEquiv_coe p Qq]`. Conclude with `h`.
+-/
 theorem ghostComponent_G (x : W) (n : ℕ) :
     ghostComponent n (G p Qq F x) = algebraMap W Qq ((F^[n]) x) := by
   have h := congrFun ((ghostEquiv p Qq).apply_symm_apply (fun n => algebraMap W Qq ((F^[n]) x))) n
   rw [← WittVector.ghostMap_apply, ← WittVector.ghostEquiv_coe p Qq]
   exact h
 
+/- English proof (translation)
+Rewrite using `[← ghostComponent_G p Qq F x k, WittVector.ghostComponent_apply, wittPolynomial_eq_sum_C_mul_X_pow]`. Simplify using `[map_sum, MvPolynomial.aeval_X]`.
+-/
 theorem ghost_sum_G (x : W) (k : ℕ) :
     ∑ i ∈ range (k + 1), (p : Qq) ^ i * (G p Qq F x).coeff i ^ p ^ (k - i) = algebraMap W Qq ((F^[k]) x) := by
   rw [← ghostComponent_G p Qq F x k, WittVector.ghostComponent_apply, wittPolynomial_eq_sum_C_mul_X_pow]
   simp [map_sum, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `h` using `ghost_sum_G p Qq F x 0`. Simplify using `using h`.
+-/
 theorem G_coeff_zero (x : W) : (G p Qq F x).coeff 0 = algebraMap W Qq x := by
   have h := ghost_sum_G p Qq F x 0
   simpa using h
 
+/- English proof (translation)
+Establish `hit : ∀ n, (F^[n]) = ⇑(F ^ n)` using `fun n => (RingHom.coe_pow F n).symm`. Simplify using `only [G]`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Pi.add_apply, hit, map_add]`.
+-/
 theorem G_add (x y : W) : G p Qq F (x + y) = G p Qq F x + G p Qq F y := by
   have hit : ∀ n, (F^[n]) = ⇑(F ^ n) := fun n => (RingHom.coe_pow F n).symm
   simp only [G]
@@ -67,6 +90,11 @@ theorem G_add (x y : W) : G p Qq F (x + y) = G p Qq F x + G p Qq F y := by
   funext n
   simp only [Pi.add_apply, hit, map_add]
 
+/- English proof (translation)
+Establish `hit : ∀ n, (F^[n]) = ⇑(F ^ n)` using `fun n => (RingHom.coe_pow F n).symm`. Simplify using `only [G]`. Rewrite using `[← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Pi.mul_apply, hit, map_mul]`.
+-/
 theorem G_mul (x y : W) : G p Qq F (x * y) = G p Qq F x * G p Qq F y := by
   have hit : ∀ n, (F^[n]) = ⇑(F ^ n) := fun n => (RingHom.coe_pow F n).symm
   simp only [G]
@@ -75,6 +103,11 @@ theorem G_mul (x y : W) : G p Qq F (x * y) = G p Qq F x * G p Qq F y := by
   funext n
   simp only [Pi.mul_apply, hit, map_mul]
 
+/- English proof (translation)
+Establish `hit : ∀ n, (F^[n]) = ⇑(F ^ n)` using `fun n => (RingHom.coe_pow F n).symm`. Simplify using `only [G]`. Rewrite using `[← map_one (ghostEquiv p Qq).symm]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Pi.one_apply, hit, map_one]`.
+-/
 theorem G_one : G p Qq F (1 : W) = 1 := by
   have hit : ∀ n, (F^[n]) = ⇑(F ^ n) := fun n => (RingHom.coe_pow F n).symm
   simp only [G]
@@ -83,6 +116,11 @@ theorem G_one : G p Qq F (1 : W) = 1 := by
   funext n
   simp only [Pi.one_apply, hit, map_one]
 
+/- English proof (translation)
+Establish `hit : ∀ n, (F^[n]) = ⇑(F ^ n)` using `fun n => (RingHom.coe_pow F n).symm`. Simplify using `only [G]`. Rewrite using `[← map_zero (ghostEquiv p Qq).symm]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [Pi.zero_apply, hit, map_zero]`.
+-/
 theorem G_zero : G p Qq F (0 : W) = 0 := by
   have hit : ∀ n, (F^[n]) = ⇑(F ^ n) := fun n => (RingHom.coe_pow F n).symm
   simp only [G]
@@ -91,6 +129,11 @@ theorem G_zero : G p Qq F (0 : W) = 0 := by
   funext n
   simp only [Pi.zero_apply, hit, map_zero]
 
+/- English proof (translation)
+Apply `(ghostEquiv p Qq).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `n`. Establish `h1 : (ghostEquiv p Qq) (G p Qq F (F x)) n = ghostComponent n (G p Qq F (F x))`. Rewrite using `[← WittVector.ghostMap_apply, ← WittVector.ghostEquiv_coe p Qq]`. Both sides reduce to the same expression.
+
+Establish `h2 : (ghostEquiv p Qq) (frobenius (G p Qq F x)) n = ghostComponent n (frobenius (G p Qq F x))`. Rewrite using `[← WittVector.ghostMap_apply, ← WittVector.ghostEquiv_coe p Qq]`. Both sides reduce to the same expression. Rewrite using `[h1, h2, WittVector.ghostComponent_frobenius, ghostComponent_G, ghostComponent_G, ← Function.iterate_succ_apply]`.
+-/
 theorem G_frob (x : W) : G p Qq F (F x) = frobenius (G p Qq F x) := by
   apply (ghostEquiv p Qq).injective
   funext n
@@ -106,6 +149,25 @@ theorem G_frob (x : W) : G p Qq F (F x) = frobenius (G p Qq F x) := by
 variable (hF : ∀ x : W, ∃ y : W, F x = x ^ p + (p : W) * y)
 include hF
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `n with _ | k` into its components or cases. Conclude with `⟨x, G_coeff_zero p Qq F x⟩`. Use `choose! b hb using ih`.
+
+Establish `hbk : ∀ i ∈ range (k + 1), (G p Qq F x).coeff i = algebraMap W Qq (b i)` using `fun i hi => hb i (by simp at hi; omega)`. Establish `hk : (F^[k]) x = ∑ i ∈ range (k + 1), (p : W) ^ i * b i ^ p ^ (k - i)`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← ghost_sum_G p Qq F x k]`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast]`.
+
+Conclude with `Finset.sum_congr rfl fun i hi => by rw [hbk i hi]`. Establish `hk1 : (F^[k + 1]) x = ∑ i ∈ range (k + 1), (p : W) ^ i * F (b i) ^ p ^ (k - i)`. Rewrite using `[Function.iterate_succ_apply', hk]`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast]`. Establish `hdvd : (p : W) ^ (k + 1) ∣ (F^[k + 1]) x - ∑ i ∈ range (k + 1), (p : W) ^ i * b i ^ p ^ (k + 1 - i)`.
+
+Rewrite using `[hk1, ← Finset.sum_sub_distrib]`. Use `Finset.dvd_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ≤ k` using `by simp at hi; omega`. Take `⟨y, hy⟩` from `hF (b i)`. Establish `h1 : (p : W) ∣ F (b i) - b i ^ p` using `⟨y, by rw [hy]; ring⟩`.
+
+Establish `h2` using `dvd_sub_pow_of_dvd_sub h1 (k - i)`. Rewrite `h2` using `[← pow_mul, ← pow_succ']`. Establish `e : k + 1 - i = k - i + 1` using `by omega`. Rewrite using `[e, ← mul_sub, show (p : W) ^ (k + 1) = (p : W) ^ i * (p : W) ^ (k - i + 1) by`. Rewrite using `[← pow_add]`.
+
+Use `congr 1`. Use the proof step `omega]`. Conclude with `mul_dvd_mul_left _ h2`. Take `⟨d, hd⟩` from `hdvd`. Use `⟨d, ?_⟩` and prove the remaining obligations.
+
+Establish `hs` using `ghost_sum_G p Qq F x (k + 1)`. Rewrite `hs` using `[Finset.sum_range_succ, Nat.sub_self, pow_zero, pow_one]`. Establish `hsum : ∑ i ∈ range (k + 1), (p : Qq) ^ i * (G p Qq F x).coeff i ^ p ^ (k + 1 - i) = algebraMap W Qq (∑ i ∈ range (k + 1), (p : W) ^ i * b i ^ p ^ (k + 1 - i))`. Simplify using `only [map_sum, map_mul, map_pow, map_natCast]`. Conclude with `Finset.sum_congr rfl fun i hi => by rw [hbk i hi]`.
+
+Rewrite `hs` using `[hsum]`. Establish `hpk : (p : Qq) ^ (k + 1) ≠ 0` using `pow_ne_zero _ (Invertible.ne_zero (p : Qq))`. Establish `key : (p : Qq) ^ (k + 1) * (G p Qq F x).coeff (k + 1) = (p : Qq) ^ (k + 1) * algebraMap W Qq d`. Establish `e2 : algebraMap W Qq ((F^[k + 1]) x - ∑ i ∈ range (k + 1), (p : W) ^ i * b i ^ p ^ (k + 1 - i)) = (p : Qq) ^ (k + 1) * algebraMap W Qq d`. Rewrite using `[hd, map_mul, map_pow, map_natCast]`.
+
+Rewrite using `[← e2, map_sub, ← hs]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ hpk key`.
+-/
 theorem G_coeff_integral (hinj : Function.Injective (algebraMap W Qq)) (x : W) (n : ℕ) :
     ∃ a : W, (G p Qq F x).coeff n = algebraMap W Qq a := by
   induction n using Nat.strong_induction_on with
@@ -159,6 +221,9 @@ theorem G_coeff_integral (hinj : Function.Injective (algebraMap W Qq)) (x : W) (
 def sFun (hinj : Function.Injective (algebraMap W Qq)) (x : W) : WittVector p W :=
   WittVector.mk p fun n => (G_coeff_integral p Qq F hF hinj x n).choose
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[WittVector.map_coeff]`. Conclude with `(G_coeff_integral p Qq F hF hinj x n).choose_spec.symm`.
+-/
 theorem map_sFun (hinj : Function.Injective (algebraMap W Qq)) (x : W) :
     WittVector.map (algebraMap W Qq) (sFun p Qq F hF hinj x) = G p Qq F x := by
   ext n
@@ -172,9 +237,19 @@ def sHom (hinj : Function.Injective (algebraMap W Qq)) : W →+* WittVector p W 
   map_zero' := map_injective _ hinj (by rw [map_sFun, map_zero, G_zero])
   map_add' x y := map_injective _ hinj (by rw [map_add, map_sFun, map_sFun, map_sFun, G_add])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sHom_apply (hinj : Function.Injective (algebraMap W Qq)) (x : W) :
     sHom p Qq F hF hinj x = sFun p Qq F hF hinj x := rfl
 
+/- English proof (translation)
+Establish `key : ∀ P : MvPolynomial ℕ ℤ, f (MvPolynomial.aeval w.coeff P) = MvPolynomial.aeval (fun i => f (w.coeff i)) P`. Introduce `P`. Use `first`. Consider the case `exact DFunLike.congr_fun (MvPolynomial.comp_aeval (f := w.coeff) f.toIntAlgHom) P`. Consider the case `exact DFunLike.congr_fun (MvPolynomial.comp_aeval w.coeff f.toIntAlgHom) P`.
+
+Consider the case `(induction P using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.aeval_C, algebraMap_int_eq, eq_intCast, map_intCast]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `mul_X P i hP => simp only [map_mul, hP, MvPolynomial.aeval_X])`. Use extensionality with `n`.
+
+Rewrite using `[WittVector.map_coeff, WittVector.coeff_frobenius, WittVector.coeff_frobenius, key]`. Use `congr 1`. Apply the tactic sequence `try (funext i; exact (WittVector.map_coeff f w i).symm)`.
+-/
 private theorem map_frobenius' (f : W →+* Qq) (w : WittVector p W) :
     WittVector.map f (frobenius w) = frobenius (WittVector.map f w) := by
   have key : ∀ P : MvPolynomial ℕ ℤ,
@@ -192,11 +267,17 @@ private theorem map_frobenius' (f : W →+* Qq) (w : WittVector p W) :
   congr 1
   try (funext i; exact (WittVector.map_coeff f w i).symm)
 
+/- English proof (translation)
+Apply `WittVector.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[sHom_apply, map_sFun, G_frob, map_frobenius' p Qq F hF (algebraMap W Qq), sHom_apply, map_sFun]`.
+-/
 theorem sHom_frob (hinj : Function.Injective (algebraMap W Qq)) (x : W) :
     sHom p Qq F hF hinj (F x) = frobenius (sHom p Qq F hF hinj x) := by
   apply WittVector.map_injective _ hinj
   rw [sHom_apply, map_sFun, G_frob, map_frobenius' p Qq F hF (algebraMap W Qq), sHom_apply, map_sFun]
 
+/- English proof (translation)
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[← G_coeff_zero p Qq F x, ← map_sFun p Qq F hF hinj x, WittVector.map_coeff]`. Apply the tactic sequence `try rfl`.
+-/
 theorem sHom_coeff_zero (hinj : Function.Injective (algebraMap W Qq)) (x : W) :
     (sHom p Qq F hF hinj x).coeff 0 = x := by
   apply hinj

@@ -8,6 +8,11 @@ namespace Formalism.L2.KerInert.Rep
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 open Formalism.MainNotions.FormalGroupSystem (Sys)
 
+/- English proof (translation)
+Take `⟨m, r, t, L₁, L₁', hr, ht, hL, rfl⟩` from `h`. Use `⟨m, fun k => c * r k, t, L₁, L₁', fun k => ?_, ht, hL, ?_⟩` and prove the remaining obligations. Use `hr k` as an intermediate fact. Simplify using `only [IsIntP] at this ⊢`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_one₀ hc (norm_nonneg _) this`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, mul_assoc]`.
+-/
 theorem isComb_smul (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     {F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]} (h : IsComb D T e lam L L' F) {c : ℂ_[p]}
@@ -22,6 +27,9 @@ theorem isComb_smul (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Pri
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [Algebra.smul_def, map_mul, mul_assoc]
 
+/- English proof (translation)
+Establish `e1 : ((p : ℂ_[p]) ^ k) • pSer D lam (fun z => s * G z) = ((p : ℂ_[p]) ^ k * lamC lam s) • pSer D lam G`. Rewrite using `[Formalism.L2.PairingIndexBounds.PowerSeriesNecessity.pSer_const_mul D lam hs, Algebra.smul_def, Algebra.smul_def, map_mul, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Conclude with `isComb_smul D T e lam h hk`.
+-/
 theorem isComb_scalar (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p])
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
     (G : VC D N N' → ℂ) (h : IsComb D T e lam L L' (pSer D lam G)) {s : ℂ} (hs : s ∈ Qbar) (k : ℤ)
@@ -33,6 +41,9 @@ theorem isComb_scalar (D : D7) (T : Tor D) (e : FamE D) {N N' p : ℕ} [Fact p.P
   rw [e1]
   exact isComb_smul D T e lam h hk
 
+/- English proof (translation)
+Introduce `j L0 h0 La' hL'`. Take `⟨hA, hC⟩` from `h j L0 h0 La' hL'`. Conclude with `⟨hA, isComb_scalar D T e lam _ hC (hs j L0 h0 La' hL').1 _ (hs j L0 h0 La' hL').2⟩`.
+-/
 theorem combAt_scalar {p : ℕ} [Fact p.Prime] (X : Sys p) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7)
     (large₂ : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj j).m + 1) → D.host.E))
     (Lg' : ∀ j, X.Lt j → X.Lt (j + 1) → Submodule (𝓞 D.host.E) (Fin ((X.Pj (j + 1)).m + 1) → D.host.E))

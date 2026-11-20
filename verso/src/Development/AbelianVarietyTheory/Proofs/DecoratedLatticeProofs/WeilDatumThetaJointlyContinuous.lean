@@ -13,6 +13,9 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.Unf
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hom f hf`. Conclude with `GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf`.
+-/
 theorem jointCont_all : ∀ D : D7, JointCont D := by
   intro D ψ S T χS χT om hom f hf
   exact GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf

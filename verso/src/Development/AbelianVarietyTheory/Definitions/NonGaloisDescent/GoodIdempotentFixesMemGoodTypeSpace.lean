@@ -60,6 +60,9 @@ def SigTiedOf : Prop := ∀ i, X.NonzeroIndexPlace i → SigTiedAt Y i
 
 variable {Y} {i : X.Tw} {j : ℕ} {b : Bool}
 
+/- English proof (translation)
+Rewrite using `[Submodule.ne_bot_iff]`. Use `exists_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [IsEigVec, Eigsp, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. The claim follows by propositional logic.
+-/
 theorem isEigSys_iff {ev : ℕ → PlE D.host → FractionRing (X.O i)} :
     IsEigSys Y i j b ev ↔ Eigsp Y i j b ev ⊓ V0 Y i j b ≠ ⊥ := by
   rw [Submodule.ne_bot_iff]
@@ -68,15 +71,28 @@ theorem isEigSys_iff {ev : ℕ → PlE D.host → FractionRing (X.O i)} :
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
   tauto
 
+/- English proof (translation)
+The claim follows from `let ⟨x, h1, h2, h3⟩ := h ⟨x, h1, h2, fun k P hk => e k P hk ▸ h3 k P hk⟩`.
+-/
 theorem IsEigSys.congr {ev ev' : ℕ → PlE D.host → FractionRing (X.O i)} (h : IsEigSys Y i j b ev)
     (e : ∀ k P, HkIdx i k P → ev k P = ev' k P) : IsEigSys Y i j b ev' :=
   let ⟨x, h1, h2, h3⟩ := h
   ⟨x, h1, h2, fun k P hk => e k P hk ▸ h3 k P hk⟩
 
+/- English proof (translation)
+Take `⟨y, -, rfl⟩` from `hx`. Rewrite using `[← Module.End.mul_apply, eG, ← map_mul, Y.eAlg_idem]`.
+-/
 theorem good_idempotent_fixes_mem_good_type_space {x : Y.Fm i j b} (hx : x ∈ V0 Y i j b) : eG Y i j b x = x := by
   obtain ⟨y, -, rfl⟩ := hx
   rw [← Module.End.mul_apply, eG, ← map_mul, Y.eAlg_idem]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨fun s s' e1 e2 e3 => h2 trivial trivial ?_, fun s => ?_, fun j hj b ev h => ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext e1 (Prod.ext e2 (funext fun p => congrArg (algebraMap _ _) (e3 _ _ p.2)))`. Take `⟨-, ev, h, e⟩` from `h1 (Set.mem_univ s)`.
+
+Conclude with `IsEigSys.congr h fun k P hk => (congrFun e ⟨(k, P), hk⟩).symm`. Take `⟨s, -, e⟩` from `h3 (show (j, b, fun p : HkSet X i => ev p.1.1 p.1.2) ∈ eigSet Y i from ⟨hj, ev, h, rfl⟩)`. Conclude with `⟨s, congrArg Prod.fst e, congrArg (fun t => t.2.1) e, fun k P hk => congrFun (congrArg (fun t => t.2.2) e) ⟨(k, P), hk⟩⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨fun s _ => ⟨Finset.mem_Icc.2 (X.jS_range i s), _, h2 s, rfl⟩, fun s _ s' _ e => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `h1 s s' (congrArg Prod.fst e) (congrArg (fun t => t.2.1) e) fun k P hk => IsFractionRing.injective (X.O i) (FractionRing (X.O i)) (congrFun (congrArg (fun t => t.2.2) e) ⟨(k, P), hk⟩)`. Introduce and unpack `⟨j, b, f⟩ ⟨hj, ev, h, e⟩`. Take `⟨s, e1, e2, e3⟩` from `h3 j hj b ev h`. Conclude with `⟨s, trivial, Prod.ext e1 (Prod.ext e2 ((funext fun p => e3 _ _ p.2).trans e.symm))⟩`.
+-/
 theorem bijOn_iff : Set.BijOn (sysOf (X := X) (i := i)) Set.univ (eigSet Y i) ↔
     (∀ s s' : X.Sig i, X.jS i s = X.jS i s' → X.side i s = X.side i s' →
       (∀ k P, HkIdx i k P → X.hEig i s k P = X.hEig i s' k P) → s = s') ∧
@@ -100,19 +116,31 @@ theorem bijOn_iff : Set.BijOn (sysOf (X := X) (i := i)) Set.univ (eigSet Y i) �
       obtain ⟨s, e1, e2, e3⟩ := h3 j hj b ev h
       exact ⟨s, trivial, Prod.ext e1 (Prod.ext e2 ((funext fun p => e3 _ _ p.2).trans e.symm))⟩
 
+/- English proof (translation)
+The claim follows from `bijOn_iff.2 ⟨h.inj, h.vec, h.all⟩`.
+-/
 theorem SigTiedAt.bijOn (h : SigTiedAt Y i) : Set.BijOn (sysOf (X := X) (i := i)) Set.univ (eigSet Y i) :=
   bijOn_iff.2 ⟨h.inj, h.vec, h.all⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨x, h1, h2, h3⟩ := h.vec s ⟨x, h2, good_idempotent_fixes_mem_good_type_space h1, fun k P a b c d => h3 k P ⟨a, b, c, d⟩⟩`.
+-/
 theorem SigTiedAt.goodE (h : SigTiedAt Y i) (s : X.Sig i) : goodE Y i s :=
   let ⟨x, h1, h2, h3⟩ := h.vec s
   ⟨x, h2, good_idempotent_fixes_mem_good_type_space h1, fun k P a b c d => h3 k P ⟨a, b, c, d⟩⟩
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos k with rfl | h0` into its components or cases. Conclude with `⟨1, by rw [map_one, h.zero]⟩`. Conclude with `h.mem s k P ⟨h0, hk, hP, hS⟩`.
+-/
 theorem SigTiedAt.mem' (h : SigTiedAt Y i) (s : X.Sig i) {k : ℕ} {P : PlE D.host} (hk : k ≤ D.R.r)
     (hP : IsSplitPl D.host P) (hS : P ∉ X.S0 i) : ∃ x : X.O0 i, algebraMap (X.O0 i) (X.O i) x = X.hEig i s k P := by
   rcases Nat.eq_zero_or_pos k with rfl | h0
   · exact ⟨1, by rw [map_one, h.zero]⟩
   · exact h.mem s k P ⟨h0, hk, hP, hS⟩
 
+/- English proof (translation)
+Establish `h1 : 1 ≤ D.R.r` using `(GlobalTheory.GalChar.odd_r D.R).pos`. Use `h.frob s P hS hP σ hσ 1 h1` as an intermediate fact. Rewrite `this` using `[Matrix.coeff_charpolyRev_eq_neg_trace, map_neg]`. Simplify using `using this`.
+-/
 theorem SigTiedAt.hEig_one (h : SigTiedAt Y i) (s : X.Sig i) {P : PlE D.host} (hP : IsSplitPl D.host P)
     (hS : P ∉ X.S0 i) {σ : G D.host.E N.Om} (hσ : IsFrob (F := D.host.E) (N.plOm.1 P) (normV P) σ⁻¹) :
     X.hEig i s 1 P = algebraMap (X.O0 i) (X.O i)
@@ -135,6 +163,9 @@ def fracMap (i : X.Tw) : FractionRing (X.O0 i) →+* FractionRing (X.O i) :=
 
 def embO (i : X.Tw) (b : Bool) : ↥D.LL0 →+* FractionRing (X.O i) := (fracMap X i).comp (embSide X i b)
 
+/- English proof (translation)
+Simplify using `[fracMap, IsFractionRing.map]`.
+-/
 theorem fracMap_algebraMap (i : X.Tw) (x : X.O0 i) :
     fracMap X i (algebraMap (X.O0 i) (FractionRing (X.O0 i)) x) =
       algebraMap (X.O i) (FractionRing (X.O i)) (algebraMap (X.O0 i) (X.O i) x) :=
@@ -189,8 +220,14 @@ def EigParOf : Prop := ∀ i, X.NonzeroIndexPlace i → EigParAt C Rw Y i
 
 variable {C Rw Y} {i : X.Tw} {b : Bool}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftIdx_jS (s : X.Sig i) : liftIdx (Finset.mem_Icc.2 (X.jS_range i s)) = jIdx s := rfl
 
+/- English proof (translation)
+The claim follows from `h b (CoefRead.ofFull iC hC) j hj ev hev`.
+-/
 theorem EigParAt.full (h : EigParAt C Rw Y i) (iC : FractionRing (X.O i) →+* ℂ)
     (hC : ∀ x, iC (embO X i b x) = embLL0 D x) {j : ℕ} (hj : j ∈ Finset.Icc 1 D.R.m)
     {ev : ℕ → PlE D.host → FractionRing (X.O i)} (hev : IsEigSys Y i j b ev) :
@@ -198,6 +235,9 @@ theorem EigParAt.full (h : EigParAt C Rw Y i) (iC : FractionRing (X.O i) →+* �
       ∀ k P, HkIdx i k P → iC (ev k P) = heckeVal (muBase C (X.l i) (liftIdx hj)) π k P :=
   h b (CoefRead.ofFull iC hC) j hj ev hev
 
+/- English proof (translation)
+The claim follows from `h b (CoefRead.ofReading ρ) j hj (fun k P => algebraMap (X.O0 i) (FractionRing (X.O0 i)) (ev k P)) (hev.congr fun k P _ => (fracMap_algebraMap X i (ev k P)).symm)`.
+-/
 theorem EigParAt.evidence (h : EigParAt C Rw Y i) (ρ : Reading X i b) {j : ℕ} (hj : j ∈ Finset.Icc 1 D.R.m)
     {ev : ℕ → PlE D.host → X.O0 i}
     (hev : IsEigSys Y i j b fun k P => algebraMap (X.O i) (FractionRing (X.O i)) (algebraMap (X.O0 i) (X.O i) (ev k P))) :
@@ -206,6 +246,11 @@ theorem EigParAt.evidence (h : EigParAt C Rw Y i) (ρ : Reading X i b) {j : ℕ}
   h b (CoefRead.ofReading ρ) j hj (fun k P => algebraMap (X.O0 i) (FractionRing (X.O0 i)) (ev k P))
     (hev.congr fun k P _ => (fracMap_algebraMap X i (ev k P)).symm)
 
+/- English proof (translation)
+Establish `H : ∀ k P, ∃ x : X.O0 i, HkIdx i k P → algebraMap (X.O0 i) (X.O i) x = X.hEig i s k P` using `fun k P => by`. Distinguish the cases in `hk : HkIdx i k P`. Conclude with `(hS.mem s k P hk).imp fun _ e _ => e`. Conclude with `⟨0, fun a => (hk a).elim⟩`. Use `choose ev hev using H`.
+
+Take `⟨σ, π, h1, h2, h3, h4⟩` from `h.evidence ρ (Finset.mem_Icc.2 (X.jS_range i s)) (ev := ev) ((hS.vec s).congr fun k P hk => by rw [hev k P hk, sigEv])`. Use `⟨σ, π, h1, h2, h3, fun k P a c d => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos k with rfl | h0` into its components or cases. Conclude with `⟨1, by rw [map_one, hS.zero], by rw [map_one, GlobalTheory.Triple.heckeVal_zero]⟩`. Conclude with `⟨ev k P, hev k P ⟨h0, a, c, d⟩, h4 k P ⟨h0, a, c, d⟩⟩`.
+-/
 theorem EigParAt.exists_row (h : EigParAt C Rw Y i) (hS : SigTiedAt Y i) (s : X.Sig i) (ρ : Reading X i (X.side i s)) :
     ∃ σ π, D.nd.goodRow σ ∧ D.what₂.isot (X.jS i s) σ ≠ ⊥ ∧ IsRowPar Rw σ π ∧
       ∀ k P, k ≤ D.R.r → IsSplitPl D.host P → P ∉ X.S0 i → ∃ x : X.O0 i,
@@ -250,6 +295,9 @@ def ResTied (D : D7) (Rw : RowSide D) : Prop :=
 
 section Bridge
 
+/- English proof (translation)
+Set `v : Valuation (Qbar l) NNReal` to `NormedField.valuation`. Establish `h : IsIntegral v.integer (a x)` using `(map_isIntegral_int a x.isIntegral_coe).tower_top`. Use `(Valuation.integer.integers v).mem_of_integral h` as an intermediate fact. Rewrite `this` using `[Valuation.mem_integer_iff]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem norm_int_le {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] (a : L →+* Qbar l) (x : 𝓞 L) :
     ‖a x‖ ≤ 1 := by
   let v : Valuation (Qbar l) NNReal := NormedField.valuation
@@ -258,6 +306,11 @@ theorem norm_int_le {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime
   rw [Valuation.mem_integer_iff] at this
   exact_mod_cast this
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff`. Consider the case `exact _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff`. Consider the case `(apply _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff ..)`.
+-/
 theorem ball_of_int {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime] (a b : L →+* Qbar l)
     (h : ∀ x : 𝓞 L, ‖a x‖ < 1 ↔ ‖b x‖ < 1) (x : L) : ‖a x‖ ≤ 1 ↔ ‖b x‖ ≤ 1 := by
   first
@@ -268,6 +321,9 @@ theorem ball_of_int {L : Type} [Field L] [NumberField L] {l : ℕ} [Fact l.Prime
   | (intros; apply @_root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SmallPrimeIdeal.norm_le_one_iff ..)
 
+/- English proof (translation)
+Establish `h` using `(D.what₂.places.val w).map_mul x x⁻¹`. Rewrite `h` using `[mul_inv_cancel₀ hx, AddValuation.map_one, D.val_eq w x hx, D.val_eq w _ (inv_ne_zero hx)]`. Rewrite using `[D.val_eq w x hx, D.val_eq w _ (inv_ne_zero hx)]`. Normalize the coercions in `at h ⊢`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_pos_iff (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x ≠ 0) :
     0 < D.what₂.places.val w x ↔ ¬ 0 ≤ D.what₂.places.val w x⁻¹ := by
   have h := (D.what₂.places.val w).map_mul x x⁻¹
@@ -276,6 +332,9 @@ theorem val_pos_iff (w : D.what₂.places.Pl) {x : D.what₂.LL} (hx : x ≠ 0) 
   norm_cast at h ⊢
   omega
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < ‖ι.symm (D.what₂.embLL x)‖` using `by simpa using hx`. Rewrite using `[val_pos_iff w hx, h, map_inv₀, map_inv₀, norm_inv, inv_le_one₀ h0, not_le]`.
+-/
 theorem IsoInduces.lt_iff {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {w : D.what₂.places.Pl} (h : IsoInduces ι w)
     (x : D.what₂.LL) : 0 < D.what₂.places.val w x ↔ ‖ι.symm (D.what₂.embLL x)‖ < 1 := by
   rcases eq_or_ne x 0 with rfl | hx
@@ -283,6 +342,15 @@ theorem IsoInduces.lt_iff {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {w : 
   · have h0 : 0 < ‖ι.symm (D.what₂.embLL x)‖ := by simpa using hx
     rw [val_pos_iff w hx, h, map_inv₀, map_inv₀, norm_inv, inv_le_one₀ h0, not_le]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hp` using `D.what₂.places.resChar_prime w`. Establish `h1 : 0 < D.what₂.places.val w ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[D.what₂.places.val_resChar]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions.
+
+Establish `hint : ∀ n : ℤ, 0 ≤ D.what₂.places.val w (n : D.what₂.LL)` using `fun n => by`. Establish `hn : ∀ n : ℕ, 0 ≤ D.what₂.places.val w (n : D.what₂.LL)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Nat.cast_succ]; exact (D.what₂.places.val w).map_le_add ih (by simp)`.
+
+Take `⟨n, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using hn n`. Rewrite using `[Int.cast_neg, AddValuation.map_neg]`. Simplify using `using hn n`. Take `⟨a, b, e⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp hl).2 hne)`.
+
+Establish `e' : (a : D.what₂.LL) * (D.what₂.places.resChar w : ℕ) + (b : D.what₂.LL) * l = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → D.what₂.LL) e`. Use `(D.what₂.places.val w).map_lt_add (g := 0) (x := (a : D.what₂.LL) * (D.what₂.places.resChar w : ℕ)) (y := (b : D.what₂.LL) * l) (by rw [AddValuation.map_mul]; exact h1.trans_le (le_add_of_nonneg_left (hint a))) (by rw [AddValuation.map_mul]; exact h.trans_le (le_add_of_nonneg_lef …` as an intermediate fact. Rewrite `this` using `[e', AddValuation.map_one]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem resChar_eq {w : D.what₂.places.Pl} {l : ℕ} (hl : l.Prime) (h : 0 < D.what₂.places.val w (l : D.what₂.LL)) :
     D.what₂.places.resChar w = l := by
   by_contra hne
@@ -308,6 +376,15 @@ theorem resChar_eq {w : D.what₂.places.Pl} {l : ℕ} (hl : l.Prime) (h : 0 < D
 
 variable {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {i : X.Tw} {b : Bool}
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `GlobalTheory.padicAlgCl_embedding_bounded_continuous (X.l i) (X.twistBaseCoefficientRing_isAdic i) (GlobalTheory.GalChar.toQ ρ.κ) ρ.κ_alg`. Use `⟨fun ⟨y, hy, e⟩ => e ▸ h2 y hy, fun h => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Conclude with `⟨0, zero_mem _, map_zero _⟩`. Establish `h0 : 0 < ‖ρ.κ z‖` using `by simpa using hz`.
+
+Break down `ValuationRing.isInteger_or_isInteger (X.O0 i) z with ⟨y, e⟩ | ⟨y, e⟩` into its components or cases. Use `⟨y, ?_, e⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hy`. Take `⟨u, rfl⟩` from `IsLocalRing.notMem_maximalIdeal.1 hy`. Establish `e1 : ‖GlobalTheory.GalChar.toQ ρ.κ u‖ * ‖GlobalTheory.GalChar.toQ ρ.κ (u⁻¹ : (X.O0 i)ˣ)‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, Units.mul_inv, map_one, norm_one]`. Establish `e2 : ‖GlobalTheory.GalChar.toQ ρ.κ u‖ < 1` using `by rw [← e] at h; exact h`. Conclude with `(mul_lt_one_of_nonneg_of_lt_one_left (norm_nonneg _) e2 (h1 _)).ne e1`. Use `h1 y` as an intermediate fact. Express the relevant statement in the definitionally equal form `‖ρ.κ (algebraMap _ _ y)‖ ≤ 1 at this`.
+
+Rewrite `this` using `[e, map_inv₀, norm_inv, inv_le_one₀ h0]`. Conclude with `absurd h (not_lt.2 this)`.
+-/
 theorem norm_lt_iff (ρ : Reading X i b) (z : FractionRing (X.O0 i)) :
     (∃ y ∈ IsLocalRing.maximalIdeal (X.O0 i), algebraMap (X.O0 i) (FractionRing (X.O0 i)) y = z) ↔ ‖ρ.κ z‖ < 1 := by
   obtain ⟨h1, h2, -⟩ := GlobalTheory.padicAlgCl_embedding_bounded_continuous (X.l i) (X.twistBaseCoefficientRing_isAdic i) (GlobalTheory.GalChar.toQ ρ.κ) ρ.κ_alg
@@ -328,6 +405,9 @@ theorem norm_lt_iff (ρ : Reading X i b) (z : FractionRing (X.O0 i)) :
     rw [e, map_inv₀, norm_inv, inv_le_one₀ h0] at this
     exact absurd h (not_lt.2 this)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `GlobalTheory.EmbUnitBallConj.exists_conj (X.l i) ↥D.LL0 (ρ.κ.comp (embSide X i b)) (ι.symm.toRingHom.comp (embLL0 D)) fun x => (hw x).symm.trans (h x)`. Use `⟨⟨(g : Qbar (X.l i) →+* Qbar (X.l i)).comp ρ.κ, ι, fun z => ?_, fun x => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ρ.κ_alg]`. Conclude with `g.commutes _`. Conclude with `(congrArg ι (hg x)).trans (ι.apply_symm_apply _)`.
+-/
 theorem exists_reading_of_induces {b' : Bool} (ρ : Reading X i b') {ι : Qbar (X.l i) ≃+* ℂ} {w : D.what₂.places.Pl}
     (h : IsoInduces ι w) (hw : ∀ x : ↥D.LL0, 0 ≤ D.what₂.places.val w x ↔ ‖ρ.κ (embSide X i b x)‖ ≤ 1) :
     ∃ ρ' : Reading X i b, ρ'.ι = ι := by
@@ -338,6 +418,15 @@ theorem exists_reading_of_induces {b' : Bool} (ρ : Reading X i b') {ι : Qbar (
     exact g.commutes _
   · exact (congrArg ι (hg x)).trans (ι.apply_symm_apply _)
 
+/- English proof (translation)
+Take `⟨w, hw, H⟩` from `hi`. Take `⟨ρ⟩` from `Reading.nonempty (X := X) i true`. Establish `hl : 0 < D.what₂.places.val w ((X.l i : ℕ) : D.what₂.LL)`. Use `(H ((X.l i : ℕ) : 𝓞 ↥D.LL0)).1 ((norm_lt_iff ρ _).2 (by` as an intermediate fact. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_natCast, map_natCast, map_natCast, ← map_natCast (algebraMap ℚ_[X.l i] (Qbar (X.l i))), norm_algebraMap']`.
+
+Conclude with `Padic.norm_p_lt_one))`. Simplify using `using this`. Take `⟨ι, red, hι⟩` from `h w hw (X.l i) (resChar_eq (X.lPrime i).out hl)`. Establish `key : ∀ x : ↥D.LL0, 0 ≤ D.what₂.places.val w x ↔ ‖ρ.κ (X.emb0 i x)‖ ≤ 1` using `fun x => (hι.1 x).trans (ball_of_int (ι.symm.toRingHom.comp (embLL0 D)) (ρ.κ.comp (X.emb0 i)) (fun y => ((hι.1.lt_iff _).symm.trans (H y).symm).trans (norm_lt_iff ρ _)) x)`. Consider the cases of `b`.
+
+Take `⟨ι', red', hι'⟩` from `h (D.what₂.places.conj w) (by rwa [D.what₂.muAt_conj]) (X.l i) (resChar_eq (X.lPrime i).out (by rwa [D.conj_val, star_natCast]))`. Take `⟨ρ', rfl⟩` from `exists_reading_of_induces (b := false) ρ hι'.1 fun x => by`. Rewrite using `[D.conj_val]`. Conclude with `(key ⟨_, hs x⟩).trans (by rw [← X.restX_coefficientEmbedding_conj i x ⟨_, hs x⟩ rfl]; rfl)`. Conclude with `⟨ρ', _, red', hι'.1, hι'⟩`.
+
+Take `⟨ρ', rfl⟩` from `exists_reading_of_induces (b := true) ρ hι.1 key`. Conclude with `⟨ρ', _, red, hι.1, hι⟩`.
+-/
 theorem ResTied.exists_reading {Rw : RowSide D} (h : ResTied D Rw) (hs : ∀ x : ↥D.LL0, star (x : D.what₂.LL) ∈ D.LL0)
     (hi : X.NonzeroIndexPlace i) (b : Bool) :
     ∃ (ρ : Reading X i b) (w : D.what₂.places.Pl) (red : Zbar (X.l i) →+* FbAt D w), ρ.Induces w ∧ ResAt Rw ρ.ι w red := by
@@ -435,6 +524,11 @@ open Classical in
     eH := fun _ _ _ => 1
     eH_idem := fun _ _ _ => mul_one _ }
 
+/- English proof (translation)
+Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Fm0, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `u`. Conclude with `sub_eq_zero.2 (one_smul (FractionRing (D.ntw.O i)) x).symm`. Establish `: eG (ex D) i j b = 1` using `map_one _`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem mem_invariant_forms (i : D.ntw.Tw) (j : ℕ) (b : Bool) (x : (ex D).Fm i j b) : x ∈ V0 (ex D) i j b := by
   refine ⟨x, ?_, ?_⟩
   · simp only [Fm0, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker]
@@ -444,6 +538,11 @@ theorem mem_invariant_forms (i : D.ntw.Tw) (j : ℕ) (b : Bool) (x : (ex D).Fm i
     rw [this]
     rfl
 
+/- English proof (translation)
+Establish `e : (1 : Matrix (Fin n) (Fin n) A[X]) - (X : A[X]) • (c • (1 : Matrix (Fin n) (Fin n) A)).map C = Matrix.diagonal fun _ => 1 + C (-c) * X`. Use extensionality with `a b : 2`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, mul_one, Matrix.diagonal_apply_eq, map_neg]`.
+
+Put the polynomial expressions in normal form. Simplify using `[h]`. Establish `e2 : ((1 + C (-c) * X) ^ n : A[X]) = ((1 + X) ^ n : A[X]).comp (C (-c) * X)` using `by simp`. Rewrite using `[Matrix.charpolyRev, e, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin, e2, comp_C_mul_X_coeff, coeff_one_add_X_pow, neg_pow c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_charpolyRev_scalar {A : Type} [CommRing A] (n k : ℕ) (c : A) :
     (c • (1 : Matrix (Fin n) (Fin n) A)).charpolyRev.coeff k = (-1) ^ k * (n.choose k : A) * c ^ k := by
   have e : (1 : Matrix (Fin n) (Fin n) A[X]) - (X : A[X]) • (c • (1 : Matrix (Fin n) (Fin n) A)).map C =
@@ -460,6 +559,9 @@ theorem coeff_charpolyRev_scalar {A : Type} [CommRing A] (n k : ℕ) (c : A) :
     comp_C_mul_X_coeff, coeff_one_add_X_pow, neg_pow c]
   ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(((chiS (X := tw D) i s g)⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) • Matrix.scalar (Fin D.R.r) ((chiS (X := tw D) i s g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = 1`. Rewrite using `[Matrix.scalar_apply, ← Matrix.diagonal_smul, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+-/
 theorem tmat_eq (i : D.ntw.Tw) (s : (tw D).Sig i) (g : GalE D) : Tmat (X := tw D) i s g = 1 := by
   change (((chiS (X := tw D) i s g)⁻¹ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) •
     Matrix.scalar (Fin D.R.r) ((chiS (X := tw D) i s g : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = 1
@@ -468,6 +570,13 @@ theorem tmat_eq (i : D.ntw.Tw) (s : (tw D).Sig i) (g : GalE D) : Tmat (X := tw D
   funext a
   simp
 
+/- English proof (translation)
+Introduce `P hS _ σ hσ k _`. Establish `h1` using `(GlobalTheory.TripleGal.eps0_unram_frob D i P (fun h => hS (D.ntw.twistExcludedPlaces_contains_residueChar i h)) _ (D.nd.plOm.2 P)).2 σ⁻¹ hσ`. Establish `h2 : Ring.inverse ((normV P : ℕ) : D.ntw.O0 i) = ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i)`. Rewrite using `[← h1, Ring.inverse_unit, map_inv, inv_inv]`. Establish `h3 : ((normV P : ℕ) : D.ntw.O0 i) * ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = 1`.
+
+Rewrite using `[← h1, map_inv, Units.inv_mul]`. Rewrite using `[tmat_eq, coeff_charpolyRev_scalar]`. Express the relevant statement in the definitionally equal form `(-1 : D.ntw.O i) ^ k * ((normV P : ℕ) : D.ntw.O i) ^ (k * (k - 1) / 2) * algebraMap (D.ntw.O0 i) (D.ntw.O i) (val D i k P) = algebraMap (D.ntw.O0 i) (D.ntw.O i) ((-1) ^ k * (D.R.r.choose k : D.ntw.O0 i) * (((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t) ^ k)`. Establish `h4 : (-1) ^ k * (D.R.r.choose k : D.ntw.O0 i) * (((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t) ^ k = (-1) ^ k * ((normV P : ℕ) : D.ntw.O0 i) ^ (k * (k - 1) / 2) * val D i k P`. Rewrite using `[val, h2, pow_add, pow_mul]`.
+
+Take the linear combination `(-((-1) ^ k * (D.R.r.choose k : D.ntw.O0 i) * (((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t) ^ k)) * ((mul_pow _ _ (k * (k - 1) / 2)).symm.trans ((congrArg (· ^ (k * (k - 1) / 2)) h3).trans (one_pow _)))`. Rewrite using `[h4]`. Simplify using the standard rewrite rules.
+-/
 theorem hkFrob (i : D.ntw.Tw) (s : (tw D).Sig i) : HkFrob (X := tw D) i s := by
   intro P hS _ σ hσ k _
   have h1 := (GlobalTheory.TripleGal.eps0_unram_frob D i P (fun h => hS (D.ntw.twistExcludedPlaces_contains_residueChar i h)) _ (D.nd.plOm.2 P)).2 σ⁻¹ hσ
@@ -488,6 +597,9 @@ theorem hkFrob (i : D.ntw.Tw) (s : (tw D).Sig i) : HkFrob (X := tw D) i s := by
   rw [h4]
   simp
 
+/- English proof (translation)
+The claim follows from `Prod.ext (Fin.ext (Nat.succ_injective e1)) e2 vec s := ⟨(1 : FractionRing (D.ntw.O i)), mem_invariant_forms D i _ _ _, one_ne_zero, fun _ _ _ => rfl⟩ all j hj b ev := fun ⟨x, _, h0, h⟩ => ⟨(liftIdx hj, b), Nat.sub_add_cancel (Finset.mem_Icc.1 hj).1, rfl, fun k P hk => smul_left_i …`.
+-/
 theorem sigTiedAt (i : D.ntw.Tw) : SigTiedAt (X := tw D) (ex D) i where
   inj s s' e1 e2 _ := Prod.ext (Fin.ext (Nat.succ_injective e1)) e2
   vec s := ⟨(1 : FractionRing (D.ntw.O i)), mem_invariant_forms D i _ _ _, one_ne_zero, fun _ _ _ => rfl⟩
@@ -507,20 +619,32 @@ theorem sigTiedAt (i : D.ntw.Tw) : SigTiedAt (X := tw D) (ex D) i where
     exact W'.smul_mem _ hv
   frob := hkFrob D i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨tw D, ex D, Equiv.refl _, fun _ => Iff.rfl, fun _ => by simp, sigTiedAt D, fun i _ => sigTiedAt D i⟩`.
+-/
 theorem exists_sigTied : ∃ (X : NTw D.R D.host D.what₂ D.LL0 D.nd) (Y : NExp D.R D.host D.what₂ D.LL0 D.nd X)
     (e : X.Tw ≃ D.ntw.Tw), (∀ i, X.NonzeroIndexPlace i ↔ D.ntw.NonzeroIndexPlace (e i)) ∧ (∀ i, Fintype.card (X.Sig i) = D.R.m * 2) ∧
       (∀ i, SigTiedAt Y i) ∧ SigTiedOf Y :=
   ⟨tw D, ex D, Equiv.refl _, fun _ => Iff.rfl, fun _ => by simp, sigTiedAt D, fun i _ => sigTiedAt D i⟩
 
+/- English proof (translation)
+Simplify using `[val]`.
+-/
 example (i : D.ntw.Tw) (P : PlE D.host) :
     val D i 1 P = (D.R.r : D.ntw.O0 i) * Ring.inverse ((normV P : ℕ) : D.ntw.O0 i) ^ D.R.t := by simp [val]
 
 variable {D}
 
+/- English proof (translation)
+Introduce `H` and use `let ⟨s, _⟩ := H.all j hj b ev h; isEmptyElim s`.
+-/
 theorem not_sigTiedAt_of_isEmpty {X : NTw D.R D.host D.what₂ D.LL0 D.nd} {Y : NExp D.R D.host D.what₂ D.LL0 D.nd X} {i : X.Tw}
     [IsEmpty (X.Sig i)] {j : ℕ} (hj : j ∈ Finset.Icc 1 D.R.m) {b ev} (h : IsEigSys Y i j b ev) : ¬ SigTiedAt Y i :=
   fun H => let ⟨s, _⟩ := H.all j hj b ev h; isEmptyElim s
 
+/- English proof (translation)
+Introduce `H` and use `let s : (tw D).Sig i := (⟨0, by have := D.R.two_le_m; omega⟩, true) let ⟨σ, _, hσ, _⟩ := H.exists_row (sigTiedAt D i) s (Reading.nonempty (X := tw D) i true).some h σ hσ`.
+-/
 theorem not_eigParAt (C : CharFrame D) (Rw : RowSide D) (h : ∀ σ, ¬ D.nd.goodRow σ) (i : D.ntw.Tw) :
     ¬ EigParAt C Rw (X := tw D) (ex D) i := fun H =>
   let s : (tw D).Sig i := (⟨0, by have := D.R.two_le_m; omega⟩, true)

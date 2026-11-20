@@ -6,6 +6,9 @@ open Formalism.BasicNotions GlobalTheory.Mem GlobalTheory.MemN NumberField IsDed
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `B C W nd h`. Take `⟨c, hc⟩` from `GlobalTheory.T.exists_cm_conjugation_omega B.R B.host W.what₂ nd`. Conclude with `⟨{ cc := c cc_cm := hc Tw := Empty l := fun i => i.elim lPrime := fun i => i.elim O0 := fun i => i.elim crO0 := fun i => i.elim twistBaseCoefficientRing_isDomain := fun i => i.elim twistBaseCoefficientRing_isDVR := fun i => i.elim algO0 := fun i => i.elim twistBaseCoefficientRing …`.
+-/
 theorem GlobalTheory.MemN.exists_nTw_empty : ∀ (B : Base) (C : Cols B) (W : RowsRest B C) (nd : NData B.R B.host W.what₂), IsEmpty nd.Loc → ∃ tw : NTw B.R B.host W.what₂ B.LL0 nd, IsEmpty tw.Tw := by
   intro B C W nd h
   obtain ⟨c, hc⟩ := GlobalTheory.T.exists_cm_conjugation_omega B.R B.host W.what₂ nd

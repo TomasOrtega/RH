@@ -11,10 +11,16 @@ section Core
 
 variable {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `h.conj_inner_symm x x` as an intermediate fact. Conclude with `Complex.conj_eq_iff_im.mp this`.
+-/
 theorem core_inner_self_im (h : InnerProductSpace.Core ℂ V) (x : V) : (h.inner x x).im = 0 := by
   have := h.conj_inner_symm x x
   exact Complex.conj_eq_iff_im.mp this
 
+/- English proof (translation)
+The claim follows from `h.definite x (Complex.ext hx (core_inner_self_im h x)) @[instance_reducible]`.
+-/
 theorem core_eq_zero_of_re (h : InnerProductSpace.Core ℂ V) (x : V)
     (hx : (h.inner x x).re = 0) : x = 0 :=
   h.definite x (Complex.ext hx (core_inner_self_im h x))
@@ -29,6 +35,9 @@ def coreComap (h : InnerProductSpace.Core ℂ W) (f : V →ₗ[ℂ] W) (hf : Fun
   smul_left x y r := by simp only [map_smul, h.smul_left]
   definite x hx := hf (by rw [map_zero]; exact h.definite _ hx)
 
+/- English proof (translation)
+The claim follows from `rfl @[instance_reducible]`.
+-/
 theorem coreComap_inner (h : InnerProductSpace.Core ℂ W) (f : V →ₗ[ℂ] W)
     (hf : Function.Injective f) (x y : V) :
     (coreComap h f hf).inner x y = h.inner (f x) (f y) := rfl
@@ -63,6 +72,9 @@ def coreProd (hV : InnerProductSpace.Core ℂ V) (hW : InnerProductSpace.Core �
       linarith
     exact Prod.ext (core_eq_zero_of_re hV _ e1) (core_eq_zero_of_re hW _ e2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coreProd_inner (hV : InnerProductSpace.Core ℂ V) (hW : InnerProductSpace.Core ℂ W)
     (x y : V × W) : (coreProd hV hW).inner x y = hV.inner x.1 y.1 + hW.inner x.2 y.2 := rfl
 
@@ -81,9 +93,15 @@ def fibreProd : Fibre σ (E × F) ≃ₗ[ℂ] Fibre σ E × Fibre σ F :=
 variable {σ E F}
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fibreProd_tmul (z : ComplexAt σ) (e : E) (f : F) :
     fibreProd σ E F (z ⊗ₜ (e, f)) = (z ⊗ₜ e, z ⊗ₜ f) := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Prod.fst_zero, Prod.snd_zero, Prod.mk_zero_zero]`. Consider the case `tmul z v => rfl`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add, Prod.fst_add, Prod.snd_add, map_add, map_add, Prod.mk_add_mk]`.
+-/
 theorem fibreProd_conjMap (x : Fibre σ (E × F)) :
     fibreProd (conjugate σ) E F (conjMap σ (E × F) x) =
       (conjMap σ E (fibreProd σ E F x).1, conjMap σ F (fibreProd σ E F x).2) := by
@@ -113,6 +131,9 @@ def HermitianMetric.prod (hE : HermitianMetric K E) (hF : HermitianMetric K F) :
 def HermitianBundle.prod (A B : HermitianBundle K) : HermitianBundle K :=
   ⟨A.carrier × B.carrier, A.metric.prod B.metric⟩
 
+/- English proof (translation)
+The claim follows from `gaussianIntegers.prod (gaussianStandard 2)`.
+-/
 example : HermitianBundle GaussianField := gaussianIntegers.prod (gaussianStandard 2)
 
 end

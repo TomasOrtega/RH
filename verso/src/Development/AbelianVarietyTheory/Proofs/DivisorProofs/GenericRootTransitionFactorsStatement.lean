@@ -14,6 +14,9 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.ProjVar
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling | exact GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling | (intros; apply GlobalTheory.FlagCov.isRatSec_pull_root_of_scaling <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generic_root_transition_factors : ∀ {X Y₀ : Scheme.{0}} [IsIntegral X] (j : X ⟶ Y₀) {M : Y₀.Modules} {N : ℕ} (fl : Vert.Flag M N) (i : Fin N)
     (r : ((fl.root i).pull j).ι → X.functionFieldˣ),
     (∀ ch ch' : ((fl.root i).pull j).ι, genericPoint X ∈ ((fl.root i).pull j).U ch ⊓ ((fl.root i).pull j).U ch' →

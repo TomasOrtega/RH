@@ -22,6 +22,9 @@ def CA (A : HSp D) : Submodule ℂ (GA D A → ℂ) where
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {p : SplitPt D k}
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun γ hγ x => by change φ (γ * x * α.gl g) = φ (x * α.gl g) rw [mul_assoc, h.1 γ hγ], h.2.comp (continuous_mul_right _)⟩`.
+-/
 theorem rep_mem_CA {A : HSp D} (α : Frame p A n) (g : GL n k) {φ : GA D A → ℂ} (h : φ ∈ CA A) : α.rep g φ ∈ CA A :=
   ⟨fun γ hγ x => by
     change φ (γ * x * α.gl g) = φ (x * α.gl g)
@@ -32,6 +35,9 @@ def caRep {A : HSp D} (α : Frame p A n) : Representation ℂ (GL n k) (CA A) wh
   map_one' := by ext φ x; simp
   map_mul' g h := by ext φ x; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem caRep_apply {A : HSp D} (α : Frame p A n) (g : GL n k) (φ : CA A) :
     ((caRep α g φ : CA A) : GA D A → ℂ) = α.rep g φ := rfl
 
@@ -42,6 +48,9 @@ def blkHom : Matrix n n k →* Matrix (n ⊕ Fin 1) (n ⊕ Fin 1) k where
 
 def blk : GL n k →* GL (n ⊕ Fin 1) k := Units.map blkHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blk_val (g : GL n k) : (blk g).val = fromBlocks g.val (0 : Matrix n (Fin 1) k) 0 1 := rfl
 
 end GlobalTheory.FinPl.SrcGl

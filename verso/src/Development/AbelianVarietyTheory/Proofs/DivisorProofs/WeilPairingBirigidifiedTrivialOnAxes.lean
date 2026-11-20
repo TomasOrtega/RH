@@ -13,6 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AxisPairing
 
+/- English proof (translation)
+Establish `hL : (P.pull ψ.left).IsLB` using `LB.isLB_pull hP ψ.left`. Establish `h0 : GlobalTheory.CechPic.cls _ hL = 0` using `(GlobalTheory.CechPic.cls_eq_zero_iff hL).2 hg`. Establish `hw : LBIso (lbPow (P.pull ψ.left) 1) (P.pull ψ.left)`. Establish `hp : (lbPow (P.pull ψ.left) 1).IsLB` using `LB.isLB_pull hL _`. Use `(GlobalTheory.CechPic.cls_eq_iff hp hL).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CechPic.cls_lbPow hL 1 hp, one_smul]`. Establish `h1` using `GlobalTheory.WeilIsogeny.weilIs_pull_hom GlobalTheory.globalFns_holds hA hL hP ψ hw h`. Rewrite `h1` using `[Nat.cast_one, _root_.mul_one]`. Establish `h2` using `GlobalTheory.SiegelOfTheta.weilIs_of_pow GlobalTheory.globalFns_holds hA hL hL 0 (by rw [h0, zero_smul]) h1`. Rewrite `h2` using `[pow_zero]`.
+
+Conclude with `GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.globalFns_holds hA hL h1 h2`.
+-/
 theorem weilIs_comp_eq_one_of_pull_isGen {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left)
     (hA : IsAbelianScheme A) (hP : P.IsLB) (ψ : A ⟶ G2 A) [IsMonHom ψ]
     (hg : ∃ t : (P.pull ψ.left).Gen, t.IsGen) {n : ℤ} {T : Over S} {u v : T ⟶ A}
@@ -30,6 +37,13 @@ theorem weilIs_comp_eq_one_of_pull_isGen {S : Scheme.{0}} {A : Over S} [GrpObj A
   rw [pow_zero] at h2
   exact GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.globalFns_holds hA hL h1 h2
 
+/- English proof (translation)
+Introduce `S A _ _ P hA hP h₂ h₁ n T u v c`. Use `GlobalTheory.Raynaud.ProdToric.isMonHom_lift_id_one A A` as an intermediate fact. Use `GlobalTheory.Raynaud.ProdToric.isMonHom_lift_one_id A A` as an intermediate fact. Establish `e₁ : ∀ w : T ⟶ A, w ≫ lift (𝟙 A) (1 : A ⟶ A) = lift w 1` using `fun w => by`. Rewrite using `[comp_lift, Category.comp_id, MonObj.comp_one]`.
+
+Establish `e₂ : ∀ w : T ⟶ A, w ≫ lift (1 : A ⟶ A) (𝟙 A) = lift 1 w` using `fun w => by`. Rewrite using `[comp_lift, Category.comp_id, MonObj.comp_one]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← e₁ u, ← e₁ v]`. Conclude with `weilIs_comp_eq_one_of_pull_isGen P hA hP _ h₁ h`.
+
+Rewrite `h` using `[← e₂ u, ← e₂ v]`. Conclude with `weilIs_comp_eq_one_of_pull_isGen P hA hP _ h₂ h`.
+-/
 theorem axes : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (P : LB (G2 A).left), IsAbelianScheme A → P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → ∀ (n : ℤ) (T : Over S) (u v : T ⟶ A) (c : Γ(T.left, ⊤)ˣ), (Out.WeilIs (G2 A) P n (lift u 1) (lift v 1) c → c = 1) ∧ (Out.WeilIs (G2 A) P n (lift 1 u) (lift 1 v) c → c = 1) := by
   intro S A _ _ P hA hP h₂ h₁ n T u v c
   have := GlobalTheory.Raynaud.ProdToric.isMonHom_lift_id_one A A

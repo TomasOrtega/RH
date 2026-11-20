@@ -20,16 +20,28 @@ variable {R : Type} [CommRing R] {B : Type} [CommRing B] [Algebra R B] {J : Idea
 
 attribute [local instance] opK
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ ↦ rfl⟩`.
+-/
 theorem isCentral_K : IsCentralScalar B (K1 R δ) := ⟨fun _ _ ↦ rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun r b m ↦ smul_assoc r b.unop m⟩`.
+-/
 theorem isTower_K : IsScalarTower R Bᵐᵒᵖ (K1 R δ) := ⟨fun r b m ↦ smul_assoc r b.unop m⟩
 
 attribute [local instance] isCentral_K isTower_K
 
 def kdD : Derivation R B (K1 R δ) := (N1 R δ).mkQ.compDer (D R B)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kdD_apply (b : B) : kdD (R := R) δ b = kd0 R δ b := rfl
 
+/- English proof (translation)
+The claim follows from `fun n a ha ↦ by rw [kdD_apply, kdD_apply, divPowerCompatFunctionDifferential_apply, divPowerCompatFunctionDifferential_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq] change ι1 _ ∈ rel R δ exact Ideal.subset_span ⟨n, a, ha, rfl⟩`.
+-/
 theorem isDPDer_kdD : IsDPDer δ (kdD (R := R) δ) := fun n a ha ↦ by
   rw [kdD_apply, kdD_apply, divPowerCompatFunctionDifferential_apply, divPowerCompatFunctionDifferential_apply, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]
   change ι1 _ ∈ rel R δ
@@ -72,8 +84,14 @@ def nbAlg {T T' : Thick κ t} (φ : T ⟶ T') : ER T →ₐ[R] ER T' :=
       · exact (add_zero _).trans (φ.φ.commutes r)
       · exact (zero_add _).trans (map_zero _) }
 
+/- English proof (translation)
+The claim follows from `add_zero _`.
+-/
 @[simp] theorem nbAlg_fst {T T' : Thick κ t} (φ : T ⟶ T') (x : ER T) : (nbAlg φ x).fst = φ.φ x.fst := add_zero _
 
+/- English proof (translation)
+The claim follows from `zero_add _`.
+-/
 @[simp] theorem nbAlg_snd {T T' : Thick κ t} (φ : T ⟶ T') (x : ER T) :
     (nbAlg φ x).snd = km1 (SemiHom.of_algHom φ.φ) φ.dp x.snd := zero_add _
 
@@ -146,6 +164,9 @@ section Retr
 variable {R B C : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing C] [Algebra R C]
   {J : Ideal B} (δ : DividedPowers J) {JC : Ideal C} (δC : DividedPowers JC) (ρ : DR R C → DR R B)
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `ι1 (ω - ω') ∈ rel R δ`. Use `sub_mem h' h` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left, ← map_sub]`. Then use the resulting hypothesis.
+-/
 theorem oneForm_quotient_class_eq_of_rel_differences {x : DR R C} {ω ω' : Ω[B⁄R]} (h : ρ x - ι1 ω ∈ rel R δ) (h' : ρ x - ι1 ω' ∈ rel R δ) :
     (Submodule.Quotient.mk ω : K1 R δ) = Submodule.Quotient.mk ω' := by
   rw [Submodule.Quotient.eq]
@@ -153,6 +174,9 @@ theorem oneForm_quotient_class_eq_of_rel_differences {x : DR R C} {ω ω' : Ω[B
   have := sub_mem h' h
   rwa [sub_sub_sub_cancel_left, ← map_sub] at this
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `((y - y' : Om R B j) : DR R B) ∈ rel R δ`. Use `sub_mem h' h` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left, ← Submodule.coe_sub]`. Then use the resulting hypothesis.
+-/
 theorem mk_eq {j : ℕ} {x : DR R C} {y y' : Om R B j} (h : ρ x - y ∈ rel R δ) (h' : ρ x - y' ∈ rel R δ) :
     (Submodule.Quotient.mk y : K R δ j) = Submodule.Quotient.mk y' := by
   rw [Submodule.Quotient.eq]
@@ -185,6 +209,9 @@ def r1 (hadd : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R δ) (hrel : ∀ x ∈
       rw [map_zero, sub_zero]; exact hrel _ hx
     rw [oneForm_quotient_class_eq_of_rel_differences δ ρ (hone x).choose_spec h0, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+The claim follows from `oneForm_quotient_class_eq_of_rel_differences δ ρ (hone x).choose_spec h`.
+-/
 theorem divPowerCompatOneForm_retraction_spec (hadd : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R δ) (hrel : ∀ x ∈ rel R δC, ρ x ∈ rel R δ)
     (hone : ∀ x, ∃ ω, ρ (ι1 x) - ι1 ω ∈ rel R δ) {x : Ω[C⁄R]} {ω : Ω[B⁄R]} (h : ρ (ι1 x) - ι1 ω ∈ rel R δ) :
     r1 δC hadd hrel hone (Submodule.Quotient.mk x) = Submodule.Quotient.mk ω :=
@@ -215,6 +242,9 @@ def rK (hadd : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R δ) (hrel : ∀ x ∈
       rw [ZeroMemClass.coe_zero, sub_zero]; exact hrel _ hx
     rw [mk_eq δ ρ (hdeg j _ x.2).choose_spec.2 h0, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+The claim follows from `mk_eq δ ρ (hdeg j _ x.2).choose_spec.2 h`.
+-/
 theorem rK_spec (hadd : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R δ) (hrel : ∀ x ∈ rel R δC, ρ x ∈ rel R δ)
     (hdeg : ∀ (j : ℕ), ∀ x ∈ ⋀[C]^j Ω[C⁄R], ∃ y ∈ ⋀[B]^j Ω[B⁄R], ρ x - y ∈ rel R δ) {j : ℕ}
     {x : Om R C j} {y : Om R B j} (h : ρ x - y ∈ rel R δ) :
@@ -228,6 +258,13 @@ section Agree
 variable {R B C : Type} [CommRing R] [CommRing B] [Algebra R B] [CommRing C] [Algebra R C]
   {J : Ideal B} {δ : DividedPowers J}
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h c => exact h0 c`. Consider the case `hd c => exact h1 c`. Consider the case `hm x y hx hy`. Use `add_mem (sub_mem (fm x y) (gm x y)) (add_mem (hr _ hx (f y)) (Ideal.mul_mem_left _ (g x) hy))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `noncomm_ring`. Consider the case `ha x y hx hy`. Use `add_mem (sub_mem (fa x y) (ga x y)) (add_mem hx hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem agree (hr : ∀ x ∈ rel R δ, ∀ y, x * y ∈ rel R δ) (f g : DR R C → DR R B)
     (fa : ∀ x y, f (x + y) - f x - f y ∈ rel R δ) (fm : ∀ x y, f (x * y) - f x * f y ∈ rel R δ)
     (ga : ∀ x y, g (x + y) - g x - g y ∈ rel R δ) (gm : ∀ x y, g (x * y) - g x * g y ∈ rel R δ)
@@ -245,6 +282,11 @@ theorem agree (hr : ∀ x ∈ rel R δ, ∀ y, x * y ∈ rel R δ) (f g : DR R C
     convert this using 1
     abel
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap b => exact absurd rfl hj`. Consider the case `add x y i _ _ hx hy => rw [map_add, hx hj, hy hj, add_zero]`. Consider the case `mem_mul m hm i x hx ih`. Take `⟨ω, rfl⟩` from `hm`.
+
+Establish `: ExteriorAlgebra.algebraMapInv (ExteriorAlgebra.ι B ω) = 0`. Simplify using `[ExteriorAlgebra.algebraMapInv]`. Rewrite using `[map_mul, this, zero_mul]`.
+-/
 theorem algebraMapInv_eq_zero {M : Type} [AddCommGroup M] [Module B M] {j : ℕ} (hj : j ≠ 0) {x : ExteriorAlgebra B M}
     (hx : x ∈ ⋀[B]^j M) : ExteriorAlgebra.algebraMapInv x = 0 := by
   induction hx using Submodule.pow_induction_on_left' with
@@ -273,15 +315,27 @@ def sndA (T : Thick κ t) : ER T →+ K1 R T.δ where
   map_zero' := rfl
   map_add' := snd_add
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sndA_apply (T : Thick κ t) (x : ER T) : sndA T x = x.snd := rfl
 
+/- English proof (translation)
+Rewrite using `[sndA_apply, sndA_apply, sndA_apply, snd_mul]`. Both sides reduce to the same expression.
+-/
 theorem sndA_mul (T : Thick κ t) (x y : ER T) :
     sndA T (x * y) = fstA T x • sndA T y + fstA T y • sndA T x := by
   rw [sndA_apply, sndA_apply, sndA_apply, snd_mul]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sndA_algebraMap (T : Thick κ t) (r : R) : sndA T (algebraMap R (ER T) r) = 0 := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((extDP (K1 R T.δ) T.δ).dpow (n + 1) a).snd = ((extDP (K1 R T.δ) T.δ).dpow n a).fst • a.snd`. Rewrite using `[snd_extDP, fst_extDP]`. Both sides reduce to the same expression.
+-/
 theorem sndA_dpow (T : Thick κ t) (n : ℕ) (a : ER T) (_ : a ∈ (nb T).J) :
     sndA T ((nb T).δ.dpow (n + 1) a) = fstA T ((nb T).δ.dpow n a) • sndA T a := by
   change ((extDP (K1 R T.δ) T.δ).dpow (n + 1) a).snd = ((extDP (K1 R T.δ) T.δ).dpow n a).fst • a.snd
@@ -294,6 +348,19 @@ variable (hr : ∀ T : Thick κ t, ∀ x ∈ rel R T.δ, ∀ y, x * y ∈ rel R 
 
 include hr in
 
+/- English proof (translation)
+Use `set h := SemiHom.of_algHom φ.φ`. Use `set he := SemiHom.of_algHom (nbAlg φ)`. Establish `mr : ∀ z ∈ rel R T.δ, h.mDR z ∈ rel R T'.δ` using `fun z hz ↦ mDR_mem_rel h φ.dp hz`. Use `agree (C := ER T) (hr T') (fun x ↦ ρ' (he.mDR x)) (fun x ↦ h.mDR (ρ x)) (fun x y ↦ by rw [map_add]; exact ha' _ _) (fun x y ↦ by rw [map_mul]; exact hm' _ _) (fun x y ↦ by have := mr _ (ha x y); rwa [map_sub, map_sub] at this) (fun x y ↦ by have := mr _ (hm x y); rwa [map_sub, ma …` and prove the remaining obligations. Establish `e1` using `h0' (nbAlg φ c)`.
+
+Establish `e2` using `mr _ (h0 c)`. Rewrite `e2` using `[map_sub, SemiHom.mDR_algebraMap]`. Establish `k1 : he.mDR (algebraMap (ER T) (DR R (ER T)) c) = algebraMap (ER T') (DR R (ER T')) (nbAlg φ c)` using `SemiHom.mDR_algebraMap _ _`. Establish `k2 : fstA T' (nbAlg φ c) = φ.φ (fstA T c)` using `nbAlg_fst φ c`. Rewrite `e1` using `[k2]`.
+
+Simplify using `only [RingHom.coe_coe] at e2`. Express the relevant statement in the definitionally equal form `ρ' (he.mDR (algebraMap (ER T) (DR R (ER T)) c)) - h.mDR (ρ (algebraMap (ER T) (DR R (ER T)) c)) ∈ _`. Rewrite using `[k1]`. Use `sub_mem e1 e2 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Take `⟨ω, hω⟩` from `Submodule.Quotient.mk_surjective _ (sndA T c)`. Establish `e1` using `h1' (nbAlg φ c) (h.m1 ω) (by`. Rewrite using `[sndA_apply, nbAlg_snd, ← sndA_apply, ← hω, divPowerCompatOneFormMap_mk])`. Establish `e2` using `mr _ (h1 c ω hω)`. Rewrite `e2` using `[map_sub, SemiHom.mDR_ι]`.
+
+Establish `k1 : he.mDR (ι1 (D R (ER T) c)) = ι1 (D R (ER T') (nbAlg φ c))`. Rewrite using `[SemiHom.mDR_ι, SemiHom.m1_D]`. Both sides reduce to the same expression. Establish `e3 : ρ' (he.mDR (ι1 (D R (ER T) c))) - ι1 (h.m1 ω) ∈ rel R T'.δ` using `by rw [k1]; exact e1`. Establish `e4` using `sub_mem e3 e2`.
+
+Rewrite `e4` using `[sub_sub_sub_cancel_right]`. Conclude with `e4`.
+-/
 theorem natAgree {T T' : Thick κ t} (φ : T ⟶ T') (ρ : DR R (ER T) → DR R T.B) (ρ' : DR R (ER T') → DR R T'.B)
     (ha : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R T.δ) (hm : ∀ x y, ρ (x * y) - ρ x * ρ y ∈ rel R T.δ)
     (h0 : ∀ c, ρ (algebraMap (ER T) (DR R (ER T)) c) - algebraMap T.B (DR R T.B) (fstA T c) ∈ rel R T.δ)
@@ -336,6 +403,11 @@ theorem natAgree {T T' : Thick κ t} (φ : T ⟶ T') (ρ : DR R (ER T) → DR R 
 
 include hr in
 
+/- English proof (translation)
+Use `set h := SemiHom.of_algHom (inlMap T).φ`. Use `agree (C := T.B) (hr T) (fun x ↦ ρ (h.mDR x)) (fun x ↦ algebraMap T.B (DR R T.B) (ExteriorAlgebra.algebraMapInv x)) (fun x y ↦ by rw [map_add]; exact ha _ _) (fun x y ↦ by rw [map_mul]; exact hm _ _) (fun x y ↦ by simp) (fun x y ↦ by simp) (fun b ↦ ?_) (fun b ↦ ?_) x` and prove the remaining obligations. Establish `e` using `h0 ((inlMap T).φ b)`. Simplify using `only [SemiHom.mDR_algebraMap, AlgHom.commutes]`. Conclude with `e`.
+
+Establish `e` using `h1 ((inlMap T).φ b) 0 (by rw [Submodule.Quotient.mk_zero]; rfl)`. Establish `z : ExteriorAlgebra.algebraMapInv (ι1 (D R T.B b)) = 0` using `by simp [ExteriorAlgebra.algebraMapInv]`. Simplify using `only [SemiHom.mDR_ι, SemiHom.m1_D, z, map_zero, sub_zero] at e ⊢`. Conclude with `e`.
+-/
 theorem uAgree (T : Thick κ t) (ρ : DR R (ER T) → DR R T.B)
     (ha : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R T.δ) (hm : ∀ x y, ρ (x * y) - ρ x * ρ y ∈ rel R T.δ)
     (h0 : ∀ c, ρ (algebraMap (ER T) (DR R (ER T)) c) - algebraMap T.B (DR R T.B) (fstA T c) ∈ rel R T.δ)
@@ -357,6 +429,11 @@ theorem uAgree (T : Thick κ t) (ρ : DR R (ER T) → DR R T.B)
 
 include hr in
 
+/- English proof (translation)
+Use `set h := SemiHom.of_algHom (difMap T).φ`. Use `agree (C := T.B) (hr T) (fun x ↦ ρ (h.mDR x)) id (fun x y ↦ by rw [map_add]; exact ha _ _) (fun x y ↦ by rw [map_mul]; exact hm _ _) (fun x y ↦ by simp) (fun x y ↦ by simp) (fun b ↦ ?_) (fun b ↦ ?_) x` and prove the remaining obligations. Establish `e` using `h0 ((difMap T).φ b)`. Establish `hf : fstA T ((difMap T).φ b) = b` using `fst_derSec _ b`. Rewrite `e` using `[hf]`.
+
+Simplify using `only [SemiHom.mDR_algebraMap, id]`. Conclude with `e`. Establish `e` using `h1 ((difMap T).φ b) (D R T.B b) rfl`. Simplify using `only [SemiHom.mDR_ι, SemiHom.m1_D, id]`. Conclude with `e`.
+-/
 theorem vAgree (T : Thick κ t) (ρ : DR R (ER T) → DR R T.B)
     (ha : ∀ x y, ρ (x + y) - ρ x - ρ y ∈ rel R T.δ) (hm : ∀ x y, ρ (x * y) - ρ x * ρ y ∈ rel R T.δ)
     (h0 : ∀ c, ρ (algebraMap (ER T) (DR R (ER T)) c) - algebraMap T.B (DR R T.B) (fstA T c) ∈ rel R T.δ)

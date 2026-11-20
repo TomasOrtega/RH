@@ -19,6 +19,11 @@ namespace GlobalTheory.FinalJoin2
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨x₀, hrun⟩` from `GlobalTheory.T.exists_threshold_run_holds`. Use `⟨x₀, fun D J EX hJ hJc hcan hpos hH hk => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hTc⟩` from `GlobalTheory.FinalJoin.exists_top_of_core D J.toCore hJc hpos hk`. Establish `hTH : HalfEX T.toCore EX` using `by rw [hTc]; exact hH`. Establish `hTcan : T.toCore.Q.Canon` using `by rw [hTc]; exact hcan`.
+
+Use `⟨T, hT, hTc, fun p hK P hP xi hxi => ?_⟩` and prove the remaining obligations. Take `⟨dd, TF, hF, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.exists_full_data_extension D J T hJ hT hTc hTcan p hK P hP xi hxi`. Establish `hH' : HalfEX TF.toTop.toCore EX` using `by rw [h1]; exact hTH`. Establish `hpar : ∀ j, InR D j → ParOK TF.toTop EX p j` using `GlobalTheory.T.parameters_ok_of_laws D TF.J TF.toTop EX p hF.j hF.p hF.sh rfl hF.canon hK hH' (fun j hj n => ⟨hF.lvA j hj n, (h5 j hj).2 n⟩)`. Conclude with `⟨dd, TF, hF, h1, h2, h3, h4, h5, hpar, hrun D TF.toTop hF.p hK.full.1 EX p hpar⟩`.
+-/
 theorem exists_full_runHolds_of_core : ∃ x₀ : ℝ → ℝ → ℝ, ∀ (D : D7) (J : CoreJ D) (EX : ErrX D), LawsJ J → LawsCore J.toCore → J.Q.Canon → (∀ j, 1 ≤ (J.Q.Dw j).p + (J.Q.Dw j).q) → HalfEX J.toCore EX → OKPsi D → ∃ T : Top D, LawsP T ∧ T.toCore = J.toCore ∧ ∀ (p : ℕ) (hK : FieldOK0 D p) (P : HeightOneSpectrum (𝓞 D.host.K)), ((p : ℕ) : 𝓞 D.host.K) ∈ P.asIdeal → ∀ xi, XiOK D p xi → ∃ (dd : ∀ j n, DeltaDat (T.Q.Xo j) T.Q.c n) (TF : Full D) (hF : LawsFull TF), TF.toTop = { T with dδ := dd } ∧ TF.J = J ∧ TF.xi = xi ∧ TF.half₂ = (P.asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))) ∧ (∀ j, InR D j → GlobalTheory.FormTies.OneCover TF.toTop j ∧ ∀ n, (TF.dδ j n).pd = p) ∧ (∀ j, InR D j → ParOK TF.toTop EX p j) ∧ RunHolds x₀ hF.p hK.full.1 EX p := by
   obtain ⟨x₀, hrun⟩ := GlobalTheory.T.exists_threshold_run_holds
   refine ⟨x₀, fun D J EX hJ hJc hcan hpos hH hk => ?_⟩

@@ -10,6 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UMin
 
+/- English proof (translation)
+Set `φ : K →+* X.residueField x` to `(X.residue x).hom.comp ((X.presheaf.germ ⊤ x trivial).hom.comp (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom))`. Conclude with `(RingHom.charZero_iff φ.injective).1 inferInstance`.
+-/
 theorem xF_charZero_residueField {X : Scheme.{0}} {K : Type} [Field K] [CharZero K] (s : X ⟶ Sp K) (x : X) :
     CharZero (X.residueField x) := by
   let φ : K →+* X.residueField x :=
@@ -17,6 +20,11 @@ theorem xF_charZero_residueField {X : Scheme.{0}} {K : Type} [Field K] [CharZero
       (s.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom))
   exact (RingHom.charZero_iff φ.injective).1 inferInstance
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Take `⟨N, i, hi, hq, hc⟩` from `Xo.qproj`. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth Dw.dim _`. Establish `: IsProper (PSpace.str (KA l) N)` using `isProper_str (KA l) N`.
+
+Establish `: IsSeparated Xo.s` using `by rw [← hc]; infer_instance`. Establish `: QuasiCompact Xo.s` using `by rw [← hc]; infer_instance`. Establish `hsm : Smooth (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))` using `inferInstance`. Take `⟨-, hn, hl⟩` from `isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hsm`. Conclude with `⟨hn, hl, fun x => xF_charZero_residueField (pullback.snd _ _) x, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem xF_props : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) , Geo.Tor.IsNormalScheme (Xo.XF c) ∧ IsLocallyNoetherian (Xo.XF c) ∧ (∀ x : Xo.XF c, CharZero ((Xo.XF c).residueField x)) ∧ IsSeparated (pullback.snd _ _ : Xo.XF c ⟶ Sp c.F) ∧ LocallyOfFiniteType (pullback.snd _ _ : Xo.XF c ⟶ Sp c.F) ∧ QuasiCompact (pullback.snd _ _ : Xo.XF c ⟶ Sp c.F) := by
   intro E _ _ _ H Dw l Xo c
   obtain ⟨N, i, hi, hq, hc⟩ := Xo.qproj

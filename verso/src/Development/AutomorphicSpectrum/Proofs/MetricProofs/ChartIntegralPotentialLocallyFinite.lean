@@ -24,8 +24,30 @@ def trivLine (ι : K → Type) : HermLine ι where
   pos := fun _ _ => one_pos
   smul := fun c z hc => by simp
 
+/- English proof (translation)
+The claim follows from `contDiffOn_const`.
+-/
 theorem trivLine_smooth : IsSmoothHerm (trivLine ι) := contDiffOn_const
 
+/- English proof (translation)
+Use `set u := M.atlas.chart j x with hudef`. Establish `hsu : (M.atlas.chart j).symm u = x` using `(M.atlas.chart j).left_inv hj`. Take `⟨hQa, hQd⟩` from `modelQ_good_of_notMem M Ψ E x hx j hj`. Use `set Q := modelQ M Ψ ∘ (M.atlas.chart j).symm with hQdef`. Use `set Df := fderiv ℂ Q u with hDf`.
+
+Establish `hdet : Df.det ≠ 0` using `hQd`. Use `set Ce := Df.toContinuousLinearEquivOfDetNeZero hdet with hCe`. Establish `hCe' : (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) = Df` using `ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero Df hdet`. Establish `hstrict : HasStrictFDerivAt Q (Ce : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) u`. Rewrite using `[hCe']`.
+
+Conclude with `hQa.hasStrictFDerivAt`. Use `set F := hstrict.toOpenPartialHomeomorph Q with hF`. Establish `hFc : (F : (Fin e → ℂ) → (Fin e → ℂ)) = Q` using `hstrict.toOpenPartialHomeomorph_coe`. Establish `hus : u ∈ F.source` using `hstrict.mem_toOpenPartialHomeomorph_source`. Establish `hyt : Q u ∈ F.target` using `hstrict.image_mem_toOpenPartialHomeomorph_target`.
+
+Establish `hσu : F.symm (Q u) = u`. Use `F.left_inv hus` as an intermediate fact. Rewrite `this` using `[hFc]`. Then use the resulting hypothesis. Establish `hy0 : Q u = modelQ M Ψ x` using `by simp only [hQdef, Function.comp_apply, hsu]`. Establish `hσa : AnalyticAt ℂ F.symm (Q u)`.
+
+Use `F.analyticAt_symm (i := Ce) hyt ?_ ?_` and prove the remaining obligations. Rewrite using `[hσu, hFc]`. Conclude with `hQa`. Rewrite using `[hσu, hFc, hCe']`. Establish `hσd : HasFDerivAt F.symm (Ce.symm : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) (Q u)`.
+
+Use `F.hasFDerivAt_symm hyt ?_` and prove the remaining obligations. Rewrite using `[hσu, hFc, hCe']`. Conclude with `hQa.differentiableAt.hasFDerivAt`. Establish `hdetinv : LinearMap.det ((Ce.symm : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = (LinearMap.det (Df : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)))⁻¹`. Use `ContinuousLinearEquiv.det_coe_symm Ce` as an intermediate fact.
+
+Rewrite `this` using `[hCe']`. Conclude with `this`. Use `⟨F.symm, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy0]`. Conclude with `hσa`.
+
+Rewrite using `[← hy0]`. Conclude with `hσu`. Rewrite using `[← hy0, ReciprocityTheory.AnForm.A.det_jacC, hσd.fderiv, hdetinv, Complex.normSq_inv, Complex.normSq_eq_norm_sq]`. Establish `hopen : IsOpen ((M.atlas.chart j).source ∩ M.atlas.chart j ⁻¹' F.source)` using `(M.atlas.chart j).isOpen_inter_preimage F.open_source filter_upwards [hopen.mem_nhds (⟨hj, hus⟩ : x ∈ (M.atlas.chart j).source ∩ M.atlas.chart j ⁻¹' F.source)] with x' hx'`. Use `⟨?_, hx'.1⟩` and prove the remaining obligations.
+
+Establish `h1` using `F.left_inv hx'.2`. Rewrite `h1` using `[hFc]`. Simplify `h1` using `only [hQdef, Function.comp_apply, (M.atlas.chart j).left_inv hx'.1]`.
+-/
 theorem exists_localInverse (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (E : Set M.Xc) (x : M.Xc) (hx : x ∉ modelBad M Ψ E) (j : Fin M.atlas.n)
     (hj : x ∈ (M.atlas.chart j).source) :
@@ -82,6 +104,21 @@ theorem exists_localInverse (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ)
     rw [hFc] at h1
     simpa only [hQdef, Function.comp_apply, (M.atlas.chart j).left_inv hx'.1] using h1
 
+/- English proof (translation)
+Use `choose i0 hi0 using hy`. Use `set t : K → (Fin e → ℂ) → ℂ := fun k y' => γ' y' ⟨k, i0 k⟩ / γ y' ⟨k, i0 k⟩ with ht_def`. Establish `hcont : ∀ᶠ y' in 𝓝 y, ∀ k, γ y' ⟨k, i0 k⟩ ≠ 0` using `eventually_all.mpr fun k => (analyticAt_coord hγ ⟨k, i0 k⟩).continuousAt.eventually_ne (hi0 k)`. Establish `hrel' : ∀ᶠ y' in 𝓝 y, (∀ k, t k y' ≠ 0) ∧ γ' y' = bsmul (fun k => t k y') (γ y')` using `by filter_upwards [hcont, hrel] with y' h1 ⟨c, hc, h2⟩`. Establish `htc : ∀ k, t k y' = c k`.
+
+Introduce `k`. Simplify using `only [ht_def, h2]`. Conclude with `mul_div_cancel_right₀ _ (h1 k)`. Use `⟨fun k => by rw [htc k]; exact hc k, ?_⟩` and prove the remaining obligations. Rewrite using `[show (fun k => t k y') = c from funext htc]`.
+
+Conclude with `h2`. Take `⟨ht0, -⟩` from `hrel'.self_of_nhds`. Establish `htan : ∀ k, AnalyticAt ℂ (t k) y` using `fun k => (analyticAt_coord hγ' ⟨k, i0 k⟩).div (analyticAt_coord hγ ⟨k, i0 k⟩) (hi0 k)`. Use `set G : (Fin e → ℂ) → ℂ := fun y' => (∑ k, ((r * (L.a k : ℝ) : ℝ) : ℂ) * Complex.log (t k y' / t k y)) - G₁ y' with hG`. Use `set C : ℝ := ∑ k, r * (L.a k : ℝ) * Real.log ‖t k y‖ with hC`.
+
+Establish `hGan : AnalyticAt ℂ G y`. Use `AnalyticAt.sub (Finset.analyticAt_fun_sum _ fun k _ => analyticAt_const.mul ?_) hG₁` and prove the remaining obligations. Use `((htan k).div analyticAt_const (ht0 k)).clog ?_` and prove the remaining obligations. Use `show t k y / t k y ∈ Complex.slitPlane`. Rewrite using `[div_self (ht0 k)]`.
+
+Conclude with `Complex.one_mem_slitPlane`. Establish `heq : (fun y' => r * Real.log (L.h (γ' y'))) =ᶠ[𝓝 y] fun y' => ψ y' + (G y').re + C` using `by filter_upwards [hrel', hcont, hpot] with y' ⟨hc, hr⟩ hγ0 hp`. Establish `hpos : 0 < L.h (γ y')` using `L.pos _ fun k => ⟨i0 k, hγ0 k⟩`. Establish `hsm : L.h (bsmul (fun k => t k y') (γ y')) = (∏ k, ‖t k y'‖ ^ L.a k) * L.h (γ y')` using `L.smul _ _ hc`. Establish `hne : ∀ k, ‖t k y'‖ ^ L.a k ≠ 0` using `fun k => zpow_ne_zero _ (norm_ne_zero_iff.mpr (hc k))`.
+
+Establish `hterm : ∀ k, ((((r * (L.a k : ℝ)) : ℝ) : ℂ) * Complex.log (t k y' / t k y)).re = r * (L.a k : ℝ) * Real.log ‖t k y'‖ - r * (L.a k : ℝ) * Real.log ‖t k y‖`. Introduce `k`. Rewrite using `[Complex.re_ofReal_mul, Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.mpr (hc k)) (norm_ne_zero_iff.mpr (ht0 k)), mul_sub]`. Simplify using `only [hG, hC]`. Rewrite using `[hr, hsm, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => hne k) hpos.ne', Real.log_prod (fun k _ => hne k), Complex.sub_re, Complex.re_sum, ← hp]`.
+
+Simplify using `only [Real.log_zpow, hterm, Finset.sum_sub_distrib]`. Rewrite using `[mul_add, Finset.mul_sum]`. Simplify using `only [← mul_assoc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cxHessian_congr heq, cxHessian_add_re C hψ hGan]`.
+-/
 theorem cxHessian_eq_of_torus (L : HermLine ι) (r : ℝ) {γ γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ}
     {y : Fin e → ℂ} (hγ : AnalyticAt ℂ γ y) (hγ' : AnalyticAt ℂ γ' y)
     (hy : ∀ k, ∃ i, γ y ⟨k, i⟩ ≠ 0)
@@ -135,6 +172,15 @@ theorem cxHessian_eq_of_torus (L : HermLine ι) (r : ℝ) {γ γ' : (Fin e → �
     ring
   rw [cxHessian_congr heq, cxHessian_add_re C hψ hGan]
 
+/- English proof (translation)
+Establish `hmem : u ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' U` using `⟨hu, by rw [Set.mem_preimage, hsu]; exact hxU⟩`. Establish `hopen` using `(M.atlas.chart j).isOpen_inter_preimage_symm hU`. Establish `hev : ∀ᶠ y' in 𝓝 y, σ y' ∈ (M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' U` using `hσ.continuousAt.preimage_mem_nhds (by rw [hσy]; exact hopen.mem_nhds hmem)`. Establish `hγ₁ : AnalyticAt ℂ (fun y' => s ((M.atlas.chart j).symm (σ y'))) y` using `analyticAt_pi_iff.mpr fun p => (hsa p j u hmem).comp_of_eq hσ hσy`. Establish `hG₁ : AnalyticAt ℂ (fun y' => G ((M.atlas.chart j).symm (σ y'))) y` using `(hG j u hmem).comp_of_eq hσ hσy`.
+
+Establish `hψ : ContDiffAt ℝ 2 ((ϕ ∘ (M.atlas.chart j).symm) ∘ σ) y` using `ContDiffAt.comp y (by rw [hσy]; exact hϕ) (hσ.contDiffAt.restrict_scalars ℝ)`. Use `cxHessian_eq_of_torus L r hγ₁ hγ' ?_ ?_ hψ hG₁ ?_` and prove the remaining obligations. Use `show ∀ k, ∃ i, s ((M.atlas.chart j).symm (σ y)) ⟨k, i⟩ ≠ 0`. Rewrite using `[hσy, hsu]`. Conclude with `(hs x hxU).1.1`.
+
+Use `filter_upwards [hev, hpts] with y' h1 ⟨h2, h3⟩`. Establish `h4` using `hs _ h1.2`. Take `⟨c, hc, h⟩` from `(M.fibre _ h4.1 _ h2).mp (h4.2.trans h3.symm)`. Conclude with `⟨c, hc, h⟩`. Use `filter_upwards [hev] with y' h1`.
+
+Conclude with `hpot _ h1.2`.
+-/
 theorem sheet_cxHessian (M : CxModel P e) {σ : (Fin e → ℂ) → (Fin e → ℂ)}
     {γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ} {y u : Fin e → ℂ} {x : M.Xc} {j : Fin M.atlas.n}
     (hσ : AnalyticAt ℂ σ y) (hσy : σ y = u) (hu : u ∈ (M.atlas.chart j).target)
@@ -170,6 +216,19 @@ theorem sheet_cxHessian (M : CxModel P e) {σ : (Fin e → ℂ) → (Fin e → �
   · filter_upwards [hev] with y' h1
     exact hpot _ h1.2
 
+/- English proof (translation)
+Use `set j := chartIdx M.atlas x with hjdef`. Establish `hj : x ∈ (M.atlas.chart j).source` using `Classical.choose_spec (M.atlas.cover x)`. Use `set u := M.atlas.chart j x with hudef`. Establish `hsu : (M.atlas.chart j).symm u = x` using `(M.atlas.chart j).left_inv hj`. Establish `hu : u ∈ (M.atlas.chart j).target` using `(M.atlas.chart j).map_source hj`.
+
+Take `⟨σ, hσ, hσy, hnorm, hV⟩` from `exists_localInverse M Ψ E x hx j hj`. Establish `han : AnalyticAt ℂ γ' (modelQ M Ψ x)` using `sheet_analyticAt osgood hγ'`. Establish `hz' : γ' (modelQ M Ψ x) ∈ mcPts P` using `hγ'.2.self_of_nhds.2.1`. Establish `hproj : M.proj (γ' (modelQ M Ψ x)) = x` using `proj_eq_of_segre M hz' _ (inv_ne_zero (psi_zero_ne_of_not_mem_bad M Ψ hx)) hγ'.1`. Establish `hcont : Tendsto (fun y' => M.proj (γ' y')) (𝓝 (modelQ M Ψ x)) (𝓝 x)`.
+
+Establish `h1 : Tendsto γ' (𝓝 (modelQ M Ψ x)) (𝓝[mcPts P] γ' (modelQ M Ψ x))` using `tendsto_nhdsWithin_iff.mpr ⟨han.continuousAt.tendsto, hγ'.2.mono fun _ h => h.2.1⟩`. Establish `h2` using `(M.cont _ hz').tendsto.comp h1`. Rewrite `h2` using `[hproj]`. Then use the resulting hypothesis. Establish `hpts : ∀ᶠ y' in 𝓝 (modelQ M Ψ x), γ' y' ∈ mcPts P ∧ M.proj (γ' y') = (M.atlas.chart j).symm (σ y')` using `by filter_upwards [hγ'.2, hcont.eventually hV] with y' ⟨_, h1, h2⟩ ⟨h3, h4⟩`. Take `⟨-, hq, -⟩` from `mem_fibre_data M Ψ h1 h2`.
+
+Rewrite `h3` using `[hq]`. Conclude with `⟨h1, by rw [h3, (M.atlas.chart j).left_inv h4]⟩`. Establish `hH : ∀ i, cxHessian (fun y' => c i * Real.log ((B i).h (γ' y'))) (modelQ M Ψ x) = cxHessian (((Φ i).φ x ∘ (M.atlas.chart j).symm) ∘ σ) (modelQ M Ψ x)`. Introduce `i`. Take `⟨U, hU, hxU, s, hs, hsa, G, hG, hpot⟩` from `hsec i`.
+
+Conclude with `sheet_cxHessian M hσ hσy hu hsu han hpts (B i) (c i) _ (hsm i) hU hxU hs hsa hG hpot`. Establish `hma : maDensity (fun i y' => c i * Real.log ((B i).h (γ' y'))) (modelQ M Ψ x) = maDensity (fun i => ((Φ i).φ x ∘ (M.atlas.chart j).symm) ∘ σ) (modelQ M Ψ x)`. Simplify using `only [maDensity, hH]`. Establish `hloc : ReciprocityTheory.AnForm.maDens (fun i => (Φ i).φ x ∘ (M.atlas.chart j).symm) u = locDens M.atlas Φ j u`. Unfold `locDens`.
+
+Rewrite using `[hsu]`. Both sides reduce to the same expression. Establish `hpush : pushDens M.atlas Φ (modelQ M Ψ) x = locDens M.atlas Φ j u / ‖LinearMap.det (fderiv ℂ (modelQ M Ψ ∘ (M.atlas.chart j).symm) u : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))‖ ^ 2` using `rfl`. Rewrite using `[hma, maDensity_eq_maDens, ReciprocityTheory.AnForm.A.maDens_comp (fun i => (Φ i).φ x ∘ (M.atlas.chart j).symm) σ _ hσ (fun i => by rw [hσy]; exact hsm i), hnorm, hσy, hloc, hpush, div_eq_mul_inv]`.
+-/
 theorem sheet_density_eq (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ))
     (E : Set M.Xc) (x : M.Xc) (hx : x ∉ modelBad M Ψ E) {γ' : (Fin e → ℂ) → (Σ k, ι k) → ℂ}
     (hγ' : IsSheet P Ψ (modelQ M Ψ x) (modelW M Ψ x) γ') (c : Fin e → ℝ) (B : Fin e → HermLine ι)
@@ -223,6 +282,25 @@ theorem sheet_density_eq (M : CxModel P e) (Ψ : (((k : K) → ι k) → ℂ) �
     (fun i => (Φ i).φ x ∘ (M.atlas.chart j).symm) σ _ hσ (fun i => by rw [hσy]; exact hsm i),
     hnorm, hσy, hloc, hpush, div_eq_mul_inv]
 
+/- English proof (translation)
+Introduce `K _ ι _ P n M Q Y Z N c B Φ g G₀ hP hQ hY hnull hN hΦs hΦt hg`. Establish `hnull' : volume ({y : Fin n → ℂ | ∃ z ∈ mcPts P, z ∈ N ∧ Q (segre z) = Fin.cons 1 y} ∪ modelQ M Q '' (modelBad M Q (Yᶜ ∪ Z) ∩ {x | Q (segre (modelLift M x x)) 0 ≠ 0})) = 0` using `measure_union_null (hN Q hQ) (image_bad_null M Q hnull)`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.mp hnull'] with y hy`. Establish `hyN : ¬ ∃ z ∈ mcPts P, z ∈ N ∧ Q (segre z) = Fin.cons 1 y` using `fun h => hy (Or.inl h)`. Establish `hfib : fibre P Q y = modelW M Q '' (modelQ M Q ⁻¹' {y} \ modelBad M Q (Yᶜ ∪ Z))`.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl, hΨz⟩`. Take `⟨h0, hq, hw⟩` from `mem_fibre_data M Q hz hΨz`. Conclude with `⟨M.proj z, ⟨hq, fun hb => hy (Or.inr ⟨M.proj z, ⟨hb, h0⟩, hq⟩)⟩, hw⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Use `modelW_mem_fibre M Q hP.1 hP.2.1.2.1 (psi_zero_ne_of_not_mem_bad M Q hx.2)` as an intermediate fact. Rewrite `this` using `[show modelQ M Q x = y from hx.1]`. Then use the resulting hypothesis. Use `⟨modelW M Q, (modelW_injOn M Q).mono fun x hx => psi_zero_ne_of_not_mem_bad M Q hx.2, hfib, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hxy : modelQ M Q x = y` using `hx.1`.
+
+Establish `hxb : x ∉ modelBad M Q (Yᶜ ∪ Z)` using `hx.2`. Substitute `hxy` using the available equality. Establish `hxE` using `notMem_of_notMem_bad M Q hxb`. Establish `hxY : x ∈ Y`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hxE (Or.inl h)`. Establish `hxZ : x ∉ Z` using `fun h => hxE (Or.inr h)`. Take `⟨γ, hγ, -⟩` from `exists_sheet M Q (trivLine ι) 0 (Yᶜ ∪ Z) hP trivLine_smooth x hxb`. Establish `hex : ∃ γ, IsSheet P Q (modelQ M Q x) (modelW M Q x) γ` using `⟨γ, hγ⟩`. Establish `hγ' : IsSheet P Q (modelQ M Q x) (modelW M Q x) hex.choose` using `hex.choose_spec`.
+
+Establish `hz' : hex.choose (modelQ M Q x) ∈ mcPts P` using `hγ'.2.self_of_nhds.2.1`. Establish `hproj : M.proj (hex.choose (modelQ M Q x)) = x` using `proj_eq_of_segre M hz' _ (inv_ne_zero (psi_zero_ne_of_not_mem_bad M Q hxb)) hγ'.1`. Establish `hgv : g (hex.choose (modelQ M Q x)) = G₀ x` using `(hg _ hz' (fun hzN => hyN ⟨_, hz', hzN, hγ'.2.self_of_nhds.2.2⟩) (by rw [hproj]; exact hxY) (by rw [hproj]; exact hxZ)).trans (by rw [hproj])`. Establish `hsm : ∀ i, ContDiffAt ℝ 2 ((Φ i).φ x ∘ (M.atlas.chart (chartIdx M.atlas x)).symm) (M.atlas.chart (chartIdx M.atlas x) x)`. Introduce `i`.
+
+Establish `hk : x ∈ (M.atlas.chart (chartIdx M.atlas x)).source` using `Classical.choose_spec (M.atlas.cover x)`. Establish `hxk` using `(M.atlas.chart (chartIdx M.atlas x)).left_inv hk`. Establish `hmem : M.atlas.chart (chartIdx M.atlas x) x ∈ (M.atlas.chart (chartIdx M.atlas x)).target ∩ (M.atlas.chart (chartIdx M.atlas x)).symm ⁻¹' ((Φ i).U x ∩ Y)` using `⟨(M.atlas.chart _).map_source hk, by`. Rewrite using `[Set.mem_preimage, hxk]`. Conclude with `⟨(Φ i).mem_U x, hxY⟩⟩`.
+
+Establish `hop` using `(M.atlas.chart (chartIdx M.atlas x)).isOpen_inter_preimage_symm (((Φ i).isOpen_U x).inter hY)`. Conclude with `((hΦs i x _).contDiffAt (hop.mem_nhds hmem)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hsec : ∀ i, ∃ U : Set M.Xc, IsOpen U ∧ x ∈ U ∧ ∃ s : M.Xc → (Σ k, ι k) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts P ∧ M.proj (s y') = y') ∧ (∀ p, M.atlas.HoloOn U fun y' => s y' p) ∧ ∃ G : M.Xc → ℂ, M.atlas.HoloOn U G ∧ ∀ y' ∈ U, (Φ i).φ x y' - c i * Real.log ((B i).h (s y')) = (G y').re`. Introduce `i`. Take `⟨U, hU, hxU, -, s, hs, hsa, G, hG, hpot⟩` from `hΦt i x x ⟨(Φ i).mem_U x, hxY⟩`.
+
+Conclude with `⟨U, hU, hxU, s, hs, hsa, G, hG, hpot⟩`. Unfold `sheetDensity`. Rewrite using `[dif_pos hex]`. Use `beta_reduce`. Rewrite using `[hgv, sheet_density_eq M Q (Yᶜ ∪ Z) x hxb hγ' c B Φ hsm hsec]`.
+-/
 theorem fibre_term_ae : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (n : ℕ) (M : CxModel P n) (Q : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (n + 1) → ℂ)) (Y Z : Set M.Xc) (N : Set ((Σ k, ι k) → ℂ)) (c : Fin n → ℝ) (B : Fin n → HermLine ι) (Φ : Fin n → LocPot M.Xc) (g : ((Σ k, ι k) → ℂ) → ℝ) (G₀ : M.Xc → ℝ), IsArithVar P (n + 1) → IsGoodProj P Q → IsOpen Y → (∀ j, volume ((M.atlas.chart j).target ∩ (M.atlas.chart j).symm ⁻¹' (Yᶜ ∪ Z)) = 0) → IsPtsNull P n N → (∀ i x, M.atlas.SmoothOn ((Φ i).U x ∩ Y) ((Φ i).φ x)) → (∀ i, ∀ x, ∀ y₀ ∈ (Φ i).U x ∩ Y, ∃ U : Set M.Xc, IsOpen U ∧ y₀ ∈ U ∧ U ⊆ (Φ i).U x ∩ Y ∧ ∃ s : M.Xc → (Σ k, ι k) → ℂ, (∀ y' ∈ U, s y' ∈ mcPts (P) ∧ M.proj (s y') = y') ∧ (∀ p, M.atlas.HoloOn U fun y' => s y' p) ∧ ∃ G : M.Xc → ℂ, M.atlas.HoloOn U G ∧ ∀ y' ∈ U, (Φ i).φ x y' - (fun z => c i * Real.log ((B i).h z)) (s y') = (G y').re) → (∀ z ∈ mcPts P, z ∉ N → M.proj z ∈ Y → M.proj z ∉ Z → g z = G₀ (M.proj z)) → ∀ᵐ y, ∃ W : M.Xc → (((k : K) → ι k) → ℂ), Set.InjOn W (modelQ M Q ⁻¹' {y} \ modelBad M Q (Yᶜ ∪ Z)) ∧ fibre P Q y = W '' (modelQ M Q ⁻¹' {y} \ modelBad M Q (Yᶜ ∪ Z)) ∧ ∀ x ∈ modelQ M Q ⁻¹' {y} \ modelBad M Q (Yᶜ ∪ Z), sheetDensity P Q (fun i z => c i * Real.log ((B i).h z)) g y (W x) = G₀ x * pushDens M.atlas Φ (modelQ M Q) x := by
   intro K _ ι _ P n M Q Y Z N c B Φ g G₀ hP hQ hY hnull hN hΦs hΦt hg
   have hnull' : volume ({y : Fin n → ℂ | ∃ z ∈ mcPts P, z ∈ N ∧ Q (segre z) = Fin.cons 1 y} ∪

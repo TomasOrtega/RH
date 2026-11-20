@@ -14,6 +14,31 @@ open scoped ENNReal NNReal
 
 section Abs
 
+/- English proof (translation)
+Rewrite `hX` using `[Fintype.not_linearIndependent_iff]`. Take `⟨c, hc, i₀, hi₀⟩` from `hX`. Establish `hex : ∃ e ∈ I, e * c i₀ ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hi₀ (hsep _ h)`. Take `⟨e, he, hne⟩` from `hex`. Establish `hmax : ∀ s : Finset (Fin n), s.Nonempty → ∃ l ∈ s, ∀ i ∈ s, ∃ z ∈ O, e * c i = z * (e * c l)`. Introduce `s hs`. Proceed by induction on `hs using Finset.Nonempty.cons_induction with`.
+
+Consider the case `singleton a`. Use `⟨a, by simp, fun i hi => ⟨1, O.one_mem, ?_⟩⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_singleton]`. Simplify using `[hi]`. Consider the case `cons a s ha hs ih`.
+
+Take `⟨l, hl, h⟩` from `ih`. Take `⟨z, hz, h1 | h1⟩` from `htot e he (c a) (c l)`. Use `⟨l, by simp [hl], fun i hi => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_cons]`. Break down `hi with rfl | hi` into its components or cases.
+
+Conclude with `⟨z, hz, h1⟩`. Conclude with `h i hi`. Use `⟨a, by simp, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_cons]`. Break down `hi with rfl | hi` into its components or cases.
+
+Conclude with `⟨1, O.one_mem, by simp⟩`. Take `⟨w, hw, h2⟩` from `h i hi`. Conclude with `⟨w * z, O.mul_mem hw hz, by rw [h2, h1]; ring⟩`. Take `⟨l, -, hl⟩` from `hmax Finset.univ ⟨i₀, Finset.mem_univ _⟩`. Use `choose! z hz hzc using fun i => hl i (Finset.mem_univ i)`.
+
+Establish `hl0 : e * c l ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hzc i₀ , h0, mul_zero]`. Establish `hac : ∀ i, (if i = l then 1 else z i) * (e * c l) = e * c i`.
+
+Introduce `i`. Distinguish the cases in `h : i = l`. Simplify using `[h]`. Simplify using `[h, ← hzc i]`. Use `⟨e, he, l, fun i => if i = l then 1 else z i, ?_, by simp, fun k => ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Distinguish the cases in `h : i = l`. Simplify using `[h, O.one_mem]`. Simplify using `[h, hz i]`. Establish `hk : ∑ i, c i * X i k = 0`.
+
+Establish `h1` using `congrFun hc k`. Simplify `h1` using `[Finset.sum_apply]`. Use `set w := ∑ i, X i k * (if i = l then 1 else z i) with hw`. Establish `hz0 : (e * c l) * (e * w) = 0`. Establish `h2 : (e * c l) * (e * w) = e * ∑ i, c i * X i k * e`.
+
+Rewrite using `[hw, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `hac i` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, ← Finset.sum_mul, hk, zero_mul, mul_zero]`.
+
+Conclude with `(hdom e he _ _ hz0).resolve_left hl0`.
+-/
 theorem detect_of_idem {K : Type} [CommRing K] (O : Subring K) (I : Finset K)
     (hid : ∀ e ∈ I, e * e = e)
     (hdom : ∀ e ∈ I, ∀ x y : K, (e * x) * (e * y) = 0 → e * x = 0 ∨ e * y = 0)
@@ -83,6 +108,13 @@ theorem detect_of_idem {K : Type} [CommRing K] (O : Subring K) (I : Finset K)
     rw [h2, ← Finset.sum_mul, hk, zero_mul, mul_zero]
   exact (hdom e he _ _ hz0).resolve_left hl0
 
+/- English proof (translation)
+Establish `hee : e * e = e` using `by rw [hl e, he, one_smul]`. Rewrite `h` using `[hl x, hl y, smul_mul_smul_comm, hee, smul_eq_zero]`. Rewrite using `[hl x, hl y]`. Break down `h with h | h` into its components or cases. Break down `mul_eq_zero.1 h with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[h, zero_smul]`. Use `right`. Rewrite using `[h, zero_smul]`. Use `left`.
+
+Rewrite using `[h, smul_zero]`.
+-/
 theorem line_dom {k K : Type} [Field k] [CommRing K] [Algebra k K] (φ : K →ₐ[k] k) (e : K) (he : φ e = 1)
     (hl : ∀ x, e * x = φ x • e) (x y : K) (h : (e * x) * (e * y) = 0) : e * x = 0 ∨ e * y = 0 := by
   have hee : e * e = e := by rw [hl e, he, one_smul]
@@ -94,6 +126,11 @@ theorem line_dom {k K : Type} [Field k] [CommRing K] [Algebra k K] (φ : K →�
     · right; rw [h, zero_smul]
   · left; rw [h, smul_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hy : φ y = 0`. Conclude with `⟨0, O.zero_mem, Or.inr (by rw [hl y, hy, zero_smul, zero_mul])⟩`. Distinguish the cases in `hx : φ x = 0`. Conclude with `⟨0, O.zero_mem, Or.inl (by rw [hl x, hx, zero_smul, zero_mul])⟩`. Break down `A.mem_or_inv_mem (φ x / φ y) with h | h` into its components or cases.
+
+Use `⟨_, hA _ h, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[hl x, hl y, ← Algebra.smul_def, smul_smul, div_mul_cancel₀ _ hy]`. Use `⟨_, hA _ h, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[hl x, hl y, ← Algebra.smul_def, smul_smul, inv_div, div_mul_cancel₀ _ hx]`.
+-/
 theorem line_tot {k K : Type} [Field k] [CommRing K] [Algebra k K] (A : ValuationSubring k) (O : Subring K)
     (hA : ∀ r ∈ A, algebraMap k K r ∈ O) (φ : K →ₐ[k] k) (e : K)
     (hl : ∀ x, e * x = φ x • e) (x y : K) : ∃ z ∈ O, e * x = z * (e * y) ∨ e * y = z * (e * x) := by
@@ -107,6 +144,15 @@ theorem line_tot {k K : Type} [Field k] [CommRing K] [Algebra k K] (A : Valuatio
   · refine ⟨_, hA _ h, Or.inr ?_⟩
     rw [hl x, hl y, ← Algebra.smul_def, smul_smul, inv_div, div_mul_cancel₀ _ hx]
 
+/- English proof (translation)
+Use `haveI : Algebra.IsAlgebraic k L := Algebra.IsAlgebraic.of_finite k L`. Establish `key : ∀ y : L, spectralNorm k L y ≤ 1 → IsIntegral A y`. Introduce `y hy`. Establish `hyi : IsIntegral k y` using `Algebra.IsIntegral.isIntegral y`. Rewrite using `[PositivityTheory.UnitarySelfGeneration.Mend.specInt_isIntegral_iff_coeff A y hyi]`.
+
+Rewrite `hy` using `[spectralNorm, spectralValue_le_one_iff (minpoly.monic hyi)]`. Introduce `n`. Conclude with `(hA _).1 (hy n)`. Establish `hmul : spectralNorm k L x * spectralNorm k L x⁻¹ = 1`. Establish `h1` using `map_mul (spectralMulAlgNorm k L) x x⁻¹`.
+
+Rewrite `h1` using `[mul_inv_cancel₀ hx]`. Simplify using `only [spectralMulAlgNorm_def, spectralNorm_one] at h1`. Conclude with `h1.symm`. Distinguish the cases in `h : spectralNorm k L x ≤ 1`. Conclude with `Or.inl (key _ h)`.
+
+Use `Or.inr (key _ ?_) push_neg at h` and prove the remaining obligations. Establish `h0 : 0 ≤ spectralNorm k L x⁻¹` using `spectralNorm_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem field_total {k L : Type} [NontriviallyNormedField k] [IsUltrametricDist k] [CompleteSpace k] [Field L]
     [Algebra k L] [FiniteDimensional k L] (A : ValuationSubring k) (hA : ∀ x : k, ‖x‖ ≤ 1 ↔ x ∈ A) [Algebra A L]
     [IsScalarTower A k L] (x : L) (hx : x ≠ 0) : IsIntegral A x ∨ IsIntegral A x⁻¹ := by
@@ -130,6 +176,11 @@ theorem field_total {k L : Type} [NontriviallyNormedField k] [IsUltrametricDist 
     have h0 : 0 ≤ spectralNorm k L x⁻¹ := spectralNorm_nonneg _
     nlinarith
 
+/- English proof (translation)
+Introduce `hi`. Establish `hmem : ∀ j : ℕ, (((t⁻¹ : Kˣ) : K)) ^ j ∈ (O : Set K)` using `fun j => O.pow_mem hi j`. Take `⟨w, -, φ, hφ, hw⟩` from `hc.tendsto_subseq hmem`. Establish `h1` using `(ht.comp hφ.tendsto_atTop).mul hw`. Establish `h2 : ∀ j, ((fun j : ℕ => e * (t : K) ^ j) ∘ φ) j * (((fun j : ℕ => (((t⁻¹ : Kˣ) : K)) ^ j) ∘ φ) j) = e`.
+
+Introduce `j`. Simplify using `only [Function.comp]`. Rewrite using `[mul_assoc, ← mul_pow, Units.mul_inv, one_pow, mul_one]`. Simplify using `only [h2, zero_mul] at h1`. Conclude with `he (tendsto_nhds_unique tendsto_const_nhds h1)`.
+-/
 theorem inv_notMem {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [T2Space K]
     [FirstCountableTopology K] (O : Subring K) (hc : IsCompact (O : Set K)) (t : Kˣ) (e : K) (he : e ≠ 0)
     (ht : Tendsto (fun j : ℕ => e * (t : K) ^ j) atTop (𝓝 0)) : ((t⁻¹ : Kˣ) : K) ∉ O := by
@@ -144,6 +195,29 @@ theorem inv_notMem {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRi
   simp only [h2, zero_mul] at h1
   exact he (tendsto_nhds_unique tendsto_const_nhds h1)
 
+/- English proof (translation)
+Set `φ : K ≃+ K` to `{ toFun := fun x => ((t⁻¹ : Kˣ) : K) * x invFun := fun x => (t : K) * x left_inv := fun x => by simp right_inv := fun x => by simp map_add' := mul_add _ }`. Establish `c1 : Continuous φ` using `continuous_const.mul continuous_id`. Establish `c2 : Continuous φ.symm` using `continuous_const.mul continuous_id`. Set `h : K ≃ₜ K` to `{ φ.toEquiv with continuous_toFun := c1, continuous_invFun := c2 }`. Use `haveI hH : (μ.map φ).IsAddHaarMeasure := φ.isAddHaarMeasure_map μ c1 c2`.
+
+Establish `hν` using `Measure.isAddLeftInvariant_eq_smul (μ.map φ) μ`. Use `set c := Measure.addHaarScalarFactor (μ.map φ) μ with hcdef`. Establish `hall : ∀ Y : Set K, μ ((fun x => (t : K) * x) '' Y) = c * μ Y`. Introduce `Y`. Establish `h1 : (μ.map φ) Y = μ ((fun x => (t : K) * x) '' Y)`.
+
+Establish `h2 : (μ.map h.toMeasurableEquiv) Y = μ (h.toMeasurableEquiv ⁻¹' Y)` using `h.toMeasurableEquiv.map_apply Y`. Establish `h3 : h.toMeasurableEquiv ⁻¹' Y = (fun x => (t : K) * x) '' Y`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Conclude with `⟨_, hx, by change (t : K) * (((t⁻¹ : Kˣ) : K) * x) = x; simp⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `((t⁻¹ : Kˣ) : K) * ((t : K) * y) ∈ Y`. Simplify using `using hy`. Rewrite using `[← h3, ← h2]`.
+
+Both sides reduce to the same expression. Rewrite using `[← h1, hν]`. Simplify using the standard rewrite rules. Use `⟨c, ?_, hall⟩` and prove the remaining obligations. Establish `hfin : μ (O : Set K) ≠ ⊤` using `hc.measure_lt_top.ne`.
+
+Use `set T := (fun x => (t : K) * x) '' (O : Set K) with hTdef`. Establish `hT : IsCompact T` using `hc.image (continuous_const.mul continuous_id)`. Establish `hsub : T ⊆ (O : Set K)`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `O.mul_mem ht hx`.
+
+Establish `h1 : (1 : K) ∉ T`. Introduce and unpack `⟨x, hx, h⟩`. Apply `ht'` to reduce the goal to its premises. Establish `: x = ((t⁻¹ : Kˣ) : K)`. Use `congrArg (fun y => ((t⁻¹ : Kˣ) : K) * y) h` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[← this]`. Conclude with `hx`. Establish `hdiff : 0 < μ ((O : Set K) \ T)` using `(ho.sdiff hT.isClosed).measure_pos μ ⟨1, O.one_mem, h1⟩`. Establish `hadd : μ T + μ ((O : Set K) \ T) = μ (O : Set K)`.
+
+Rewrite using `[measure_add_diff hT.measurableSet.nullMeasurableSet, Set.union_eq_right.2 hsub]`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `h2 : μ (O : Set K) ≤ μ T`. Rewrite using `[hTdef, hall]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `hge` after adjusting the coercions. Establish `h3 : μ (O : Set K) + μ ((O : Set K) \ T) ≤ μ (O : Set K)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : μ (O : Set K) < μ (O : Set K) + μ ((O : Set K) \ T)` using `ENNReal.lt_add_right hfin hdiff.ne'`.
+
+Conclude with `absurd h3 (not_le.2 h4)`.
+-/
 theorem contract {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [LocallyCompactSpace K]
     [SecondCountableTopology K] [T2Space K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K)
     [μ.IsAddHaarMeasure] (O : Subring K) (hc : IsCompact (O : Set K)) (ho : IsOpen (O : Set K)) (t : Kˣ)
@@ -215,6 +289,17 @@ end Abs
 
 section Pair
 
+/- English proof (translation)
+Establish `h1 : (p * e + 1 - e) * (q * e + 1 - e) = 1`. Take the linear combination `(e * e) * hpq + (2 - p - q) * he`. Establish `h2 : (q * e + 1 - e) * (p * e + 1 - e) = 1`. Rewrite using `[mul_comm]`. Conclude with `h1`.
+
+Set `t : Kˣ` to `⟨p * e + 1 - e, q * e + 1 - e, h1, h2⟩`. Establish `ht : (t : K) = p * e + 1 - e` using `rfl`. Establish `hpow : ∀ j : ℕ, e * (t : K) ^ j = p ^ j * e`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, ← mul_assoc, ih, ht, pow_succ]`. Take the linear combination `(p ^ j * (p - 1)) * he`. Establish `hlim : Tendsto (fun j : ℕ => e * (t : K) ^ j) atTop (𝓝 0)`.
+
+Simplify using `only [hpow]`. Simplify using `using hpt.mul_const e`. Use `⟨t, ?_, inv_notMem O hc t e he0 hlim, ?_, hlim⟩` and prove the remaining obligations. Rewrite using `[ht]`. Conclude with `O.sub_mem (O.add_mem (O.mul_mem hp heO) O.one_mem) heO`.
+
+Introduce `x hx`. Rewrite using `[ht]`. Take the linear combination `(p - 1) * hx`.
+-/
 theorem pair_props {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] [T2Space K]
     [FirstCountableTopology K] (O : Subring K) (hc : IsCompact (O : Set K)) (p q : K) (hpq : p * q = 1)
     (hp : p ∈ O) (hpt : Tendsto (fun j : ℕ => p ^ j) atTop (𝓝 0)) (e : K) (he : e * e = e) (he0 : e ≠ 0)
@@ -253,6 +338,53 @@ open scoped TensorProduct
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `letI nf : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Use `haveI pf : ProperSpace (Fv F v) := Formalism.BasicNotions.Examples₂.LocF.proper v`. Use `haveI uf : IsUltrametricDist (Fv F v) := inferInstanceAs (@IsUltrametricDist (v.adicCompletion F) (Valued.toNormedField (v.adicCompletion F) (WithZero (Multiplicative ℤ))).toDist)`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1`. Establish `hnorm : ∀ x : Fv F v, ‖x‖ ≤ 1 ↔ x ∈ v.adicCompletionIntegers F` using `PositivityTheory.UnitarySelfGeneration.Mend.specInt_norm_le_one_iff_mem F v`.
+
+Distinguish the cases in `hs : Nonempty (E →ₐ[F] Fv F v)`. Take `⟨τ⟩` from `hs`. Take `⟨-, δ, hδ, hσδ⟩` from `GlobalTheory.CompanionTheory.SW.HaarCoord.conj_facts hσ`. Set `ψ₁ : (Fv F v ⊗[F] E) →ₐ[Fv F v] Fv F v` to `Algebra.TensorProduct.productLeftAlgHom (AlgHom.id (Fv F v) (Fv F v)) τ`. Set `ψ₂ : (Fv F v ⊗[F] E) →ₐ[Fv F v] Fv F v` to `Algebra.TensorProduct.productLeftAlgHom (AlgHom.id (Fv F v) (Fv F v)) (τ.comp σ)`.
+
+Establish `hc : τ δ ≠ 0` using `(map_ne_zero τ).2 hδ`. Establish `h20 : (2 : Fv F v) ≠ 0` using `two_ne_zero`. Use `set c := τ δ with hcdef`. Set `θ : Fv F v ⊗[F] E` to `(1 : Fv F v) ⊗ₜ[F] δ`. Establish `p1 : ψ₁ θ = c` using `by simp [ψ₁, θ, hcdef]`.
+
+Establish `p2 : ψ₂ θ = -c` using `by simp [ψ₂, θ, hcdef, hσδ]`. Set `e₁ : Fv F v ⊗[F] E` to `(2⁻¹ : Fv F v) • (1 + c⁻¹ • θ)`. Set `e₂ : Fv F v ⊗[F] E` to `(2⁻¹ : Fv F v) • (1 - c⁻¹ • θ)`. Establish `v11 : ψ₁ e₁ = 1`. Simplify using `only [e₁, map_smul, map_add, map_one, p1, smul_eq_mul]`.
+
+Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish `v12 : ψ₂ e₁ = 0`. Simplify using `only [e₁, map_smul, map_add, map_one, p2, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Evaluate the numerical expressions. Establish `v21 : ψ₁ e₂ = 0`. Simplify using `only [e₂, map_smul, map_sub, map_one, p1, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+
+Establish `v22 : ψ₂ e₂ = 1`. Simplify using `only [e₂, map_smul, map_sub, map_one, p2, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Set `f : (Fv F v ⊗[F] E) →ₗ[Fv F v] Fv F v × Fv F v` to `ψ₁.toLinearMap.prod ψ₂.toLinearMap`.
+
+Establish `hfr : Module.finrank (Fv F v) (Fv F v ⊗[F] E) = Module.finrank (Fv F v) (Fv F v × Fv F v)`. Rewrite using `[Module.finrank_baseChange, hσ.2.2.1]`. Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨r, s⟩`.
+
+Use `⟨r • e₁ + s • e₂, ?_⟩` and prove the remaining obligations. Simplify using `[f, v11, v12, v21, v22]`. Establish `hinj : Function.Injective f` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).2 hsurj`. Establish `hext : ∀ x y : Fv F v ⊗[F] E, ψ₁ x = ψ₁ y → ψ₂ x = ψ₂ y → x = y`. Introduce `x y h1 h2`.
+
+Conclude with `hinj (Prod.ext h1 h2)`. Establish `l1 : ∀ x, e₁ * x = ψ₁ x • e₁`. Introduce `x`. Use `hext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[v11]`.
+
+Simplify using `[v12]`. Establish `l2 : ∀ x, e₂ * x = ψ₂ x • e₂`. Introduce `x`. Use `hext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[v21]`.
+
+Simplify using `[v22]`. Establish `hsum : e₁ + e₂ = 1`. Use `hext _ _ ?_ ?_` and prove the remaining obligations. Simplify using `[v11, v21]`. Simplify using `[v12, v22]`.
+
+Establish `hL : ∀ e ∈ ({e₁, e₂} : Finset (Fv F v ⊗[F] E)), ∃ φ : (Fv F v ⊗[F] E) →ₐ[Fv F v] Fv F v, φ e = 1 ∧ ∀ x, e * x = φ x • e`. Introduce `e he`. Rewrite `he` using `[Finset.mem_insert, Finset.mem_singleton]`. Break down `he with rfl | rfl` into its components or cases. Conclude with `⟨ψ₁, v11, l1⟩`.
+
+Conclude with `⟨ψ₂, v22, l2⟩`. Establish `hA : ∀ r ∈ v.adicCompletionIntegers F, algebraMap (Fv F v) (Fv F v ⊗[F] E) r ∈ (integralClosure (v.adicCompletionIntegers F) (Fv F v ⊗[F] E)).toSubring`. Introduce `r hr`. Establish `h` using `isIntegral_algebraMap (R := v.adicCompletionIntegers F) (A := Fv F v ⊗[F] E) (x := (⟨r, hr⟩ : v.adicCompletionIntegers F))`. Rewrite `h` using `[IsScalarTower.algebraMap_apply (v.adicCompletionIntegers F) (Fv F v) (Fv F v ⊗[F] E)]`. Then use the resulting hypothesis.
+
+Use `⟨{e₁, e₂}, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he`. Take `⟨φ, h1, h2⟩` from `hL e he`. Use `⟨by rw [h2 e, h1, one_smul], fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[h0, map_zero]`.
+
+Conclude with `zero_ne_one h1`. Introduce `e he x y h`. Take `⟨φ, h1, h2⟩` from `hL e he`. Conclude with `line_dom φ e h1 h2 x y h`. Introduce `e he x y`.
+
+Take `⟨φ, h1, h2⟩` from `hL e he`. Conclude with `line_tot (v.adicCompletionIntegers F) _ hA φ e h2 x y`. Introduce `x h`. Establish `h1` using `h e₁ (by simp)`. Establish `h2` using `h e₂ (by simp)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hf : IsField (Fv F v ⊗[F] E)` using `GlobalTheory.CompanionTheory.DictLoc.isField_tensor_of_no_algHom hσ.2.2.1 (not_nonempty_iff.1 hs)`. Use `letI fK : Field (Fv F v ⊗[F] E) := hf.toField`. Use `haveI : FiniteDimensional (Fv F v) (Fv F v ⊗[F] E) := inferInstance`. Use `⟨{1}, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `e he`. Rewrite `he` using `[Finset.mem_singleton]`. Substitute `he` using the available equality. Conclude with `⟨one_mul _, one_ne_zero⟩`. Introduce `e he x y h`.
+
+Rewrite `he` using `[Finset.mem_singleton]`. Substitute `he` using the available equality. Rewrite `*` using `[one_mul, one_mul]`. Conclude with `mul_eq_zero.1 h`. Introduce `e he x y`.
+
+Rewrite `he` using `[Finset.mem_singleton]`. Substitute `he` using the available equality. Simplify using `only [one_mul]`. Distinguish the cases in `hy : y = 0`. Conclude with `⟨0, Subring.zero_mem _, Or.inr (by simp [hy])⟩`.
+
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, Subring.zero_mem _, Or.inl (by simp [hx])⟩`. Break down `field_total (v.adicCompletionIntegers F) hnorm (x / y) (div_ne_zero hx hy) with h | h` into its components or cases. Conclude with `⟨x / y, h, Or.inl (by field_simp)⟩`. Use `⟨(x / y)⁻¹, h, Or.inr (by field_simp)⟩` and prove the remaining obligations.
+
+Introduce `x h`. Simplify using `using h 1 (Finset.mem_singleton_self _)`.
+-/
 theorem exists_idems (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : HeightOneSpectrum (𝓞 F)) :
     ∃ I : Finset (Fv F v ⊗[F] E), (∀ e ∈ I, e * e = e ∧ e ≠ 0) ∧
       (∀ e ∈ I, ∀ x y : Fv F v ⊗[F] E, (e * x) * (e * y) = 0 → e * x = 0 ∨ e * y = 0) ∧
@@ -384,6 +516,9 @@ theorem exists_idems (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (v : HeightOneS
     · intro x h
       simpa using h 1 (Finset.mem_singleton_self _)
 
+/- English proof (translation)
+Use `letI nf : NontriviallyNormedField (Fv F v) := Valued.toNontriviallyNormedField (Fv F v) (WithZero (Multiplicative ℤ))`. Take `⟨w, h0, h1⟩` from `NormedField.exists_norm_lt_one (Fv F v)`. Conclude with `⟨w, norm_pos_iff.1 h0, (PositivityTheory.UnitarySelfGeneration.Mend.specInt_norm_le_one_iff_mem F v w).1 h1.le, tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1⟩`.
+-/
 theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) :
     ∃ w : Fv F v, w ≠ 0 ∧ w ∈ v.adicCompletionIntegers F ∧ Tendsto (fun j : ℕ => w ^ j) atTop (𝓝 0) := by
   letI nf : NontriviallyNormedField (Fv F v) :=
@@ -392,6 +527,9 @@ theorem exists_unif (v : HeightOneSpectrum (𝓞 F)) :
   exact ⟨w, norm_pos_iff.1 h0, (PositivityTheory.UnitarySelfGeneration.Mend.specInt_norm_le_one_iff_mem F v w).1 h1.le,
     tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1⟩
 
+/- English proof (translation)
+Establish `hd : (Polynomial.X : Polynomial A).degree < ((1 + 1 : ℕ) : WithBot ℕ)` using `(Polynomial.degree_X_le (R := A)).trans_lt (by norm_cast)`. Use `⟨Polynomial.X ^ (1 + 1) - Polynomial.X, Polynomial.monic_X_pow_sub hd, ?_⟩` and prove the remaining obligations. Simplify using `[pow_two, he]`.
+-/
 theorem isIntegral_of_idem {A K : Type} [CommRing A] [CommRing K] [Algebra A K] (e : K) (he : e * e = e) :
     IsIntegral A e := by
   have hd : (Polynomial.X : Polynomial A).degree < ((1 + 1 : ℕ) : WithBot ℕ) :=
@@ -406,6 +544,27 @@ end GlobalTheory.CompanionTheory.AvgFree.Ord
 open scoped Matrix NNReal ENNReal TensorProduct
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.WhitFree GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.AvgFree MeasureTheory in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ d b v lv hlv`. Take `⟨r1, r2, r3, r4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := r1`. Use `haveI := r2`. Use `haveI := r3`.
+
+Use `haveI := r4`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Take `⟨a1, a2, a3, a4, -, -, -, -, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)`. Use `haveI := a1`. Use `haveI := a2`.
+
+Use `haveI := a3`. Use `haveI := a4`. Use `haveI : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI := hlv.1`. Use `haveI : (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv).IsAddHaarMeasure := (GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hσ (Fv F v) d b lv hlv.1).1`.
+
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_eq_succ hσ.2.2.1`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousSMul (Fv F v) (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousSMul (Fv F v) _`. Take `⟨hOc, hOo⟩` from `GlobalTheory.CompletedOrder.isCompact_isOpen_integralClosure F E σ hσ v`. Take `⟨I, h1, h2, h3, h4⟩` from `GlobalTheory.CompanionTheory.AvgFree.Ord.exists_idems σ hσ v`.
+
+Take `⟨w, hw0, hwA, hwt⟩` from `GlobalTheory.CompanionTheory.AvgFree.Ord.exists_unif (F := F) v`. Set `O : Subring (Fv F v ⊗[F] E)` to `(integralClosure (v.adicCompletionIntegers F) (Fv F v ⊗[F] E)).toSubring`. Establish `hOc' : IsCompact (O : Set (Fv F v ⊗[F] E))` using `hOc`. Establish `hOo' : IsOpen (O : Set (Fv F v ⊗[F] E))` using `hOo`. Set `p : Fv F v ⊗[F] E` to `algebraMap (Fv F v) (Fv F v ⊗[F] E) w`.
+
+Set `q : Fv F v ⊗[F] E` to `algebraMap (Fv F v) (Fv F v ⊗[F] E) w⁻¹`. Establish `hpq : p * q = 1`. Simplify using `only [p, q]`. Rewrite using `[← map_mul, mul_inv_cancel₀ hw0, map_one]`. Establish `hp : p ∈ O`.
+
+Establish `h` using `isIntegral_algebraMap (R := v.adicCompletionIntegers F) (A := Fv F v ⊗[F] E) (x := (⟨w, hwA⟩ : v.adicCompletionIntegers F))`. Rewrite `h` using `[IsScalarTower.algebraMap_apply (v.adicCompletionIntegers F) (Fv F v) (Fv F v ⊗[F] E)]`. Then use the resulting hypothesis. Establish `hpt : Filter.Tendsto (fun j : ℕ => p ^ j) Filter.atTop (nhds 0)`. Establish `hcont : Continuous (algebraMap (Fv F v) (Fv F v ⊗[F] E))` using `continuous_algebraMap _ _`. Establish `h` using `(hcont.tendsto 0).comp hwt`.
+
+Simplify `h` using `[Function.comp_def, p, map_pow]`. Establish `hpair : ∀ e ∈ I, ∃ t : (Fv F v ⊗[F] E)ˣ, (t : Fv F v ⊗[F] E) ∈ O ∧ ((t⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∉ O ∧ (∀ x, e * x = 0 → (t : Fv F v ⊗[F] E) * x = x) ∧ Filter.Tendsto (fun j : ℕ => e * (t : Fv F v ⊗[F] E) ^ j) Filter.atTop (nhds 0)` using `fun e he => GlobalTheory.CompanionTheory.AvgFree.Ord.pair_props O hOc' p q hpq hp hpt e (h1 e he).1 (h1 e he).2 (GlobalTheory.CompanionTheory.AvgFree.Ord.isIntegral_of_idem e (h1 e he).1)`. Use `choose! t ht using hpair`. Use `⟨O, I.image fun e => (t e, e), hOc', hOo', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx' : IsIntegral (v.adicCompletionIntegers F) x` using `hx`. Conclude with `hx'.map ((Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ).restrictScalars (v.adicCompletionIntegers F))`. Introduce `r hr`. Take `⟨e, he, rfl⟩` from `Finset.mem_image.1 hr`. Take `⟨g1, g2, g3, g4⟩` from `ht e he`.
+
+Take `⟨θ, hθ, hY⟩` from `GlobalTheory.CompanionTheory.AvgFree.Ord.contract (GlobalTheory.CompanionTheory.SW.coordK (Fv F v) b lv) O hOc' hOo' (t e) g1 g2`. Conclude with `⟨g1, (h1 e he).2, g3, g4, θ, hθ, hY⟩`. Introduce `n M X hX`. Take `⟨e, he, l, a, ha, hl, hk⟩` from `GlobalTheory.CompanionTheory.AvgFree.Ord.detect_of_idem O I (fun e he => (h1 e he).1) h2 h3 h4 n M X hX`. Conclude with `⟨(t e, e), Finset.mem_image_of_mem _ he, l, a, ha, hl, hk⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.AvgFree.exists_ordData : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∃ (O : Subring (Fv F v ⊗[F] E)) (S : Finset ((Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E))), IsOrdData (Fv F v) σ b lv O S := by
   intro F E _ _ _ _ _ σ hσ d b v lv hlv
   classical

@@ -18,6 +18,13 @@ noncomputable section
 
 namespace GlobalTheory.ReadModel
 
+/- English proof (translation)
+Introduce `hD F _ _ C Y A P L k cf ⟨_, r, hr, _⟩`. Set `E` to `Equiv.ofBijective _ (GlobalTheory.TwistTop.bijective_comp_algebraMap F)`. Establish `e (σ : F →+* ℂ) : (L.φ (E σ)).chernInt Y.dim Set.univ (fun _ => 1) = ((k : ℕ) : ℝ) ^ Y.dim * (Y.inter (fun _ => A.D) : ℝ)`. Establish `h` using `GlobalTheory.TwistTop.chernInt_model hD.2 P L hr σ`. Rewrite `h` using `[Var.inter_const_nsmul]`.
+
+Move the coercions through the operations in `at h`. Conclude with `h`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Simplify using `only [gdeg, chInt]`. Rewrite using `[← finsum_comp_equiv E, finsum_eq_sum_of_fintype]`.
+
+Simplify using `only [e, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[NumberField.Embeddings.card, ← NumberField.RingOfIntegers.rank, Adl.deg, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem gdeg_induced : GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (P : TrueGeo.Model Y) (L : HermLB P.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced P L k cf → gdeg L Y.dim = (Module.finrank ℤ (𝓞 F) : ℝ) * (((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ)) ^ Y.dim * A.deg := by
   intro hD F _ _ C Y A P L k cf ⟨_, r, hr, _⟩
   let E := Equiv.ofBijective _ (GlobalTheory.TwistTop.bijective_comp_algebraMap F)

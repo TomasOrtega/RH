@@ -14,6 +14,11 @@ namespace GlobalTheory.PlaceTensor.SplitProduct
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `ext1 z`. Use `show singleV D.host.F u 1 z * singleV D.host.F w 1 z = 0`. Distinguish the cases in `hz : z = u`. Substitute `hz` using the available equality. Rewrite using `[show singleV D.host.F w 1 z = 0 from RestrictedProduct.single_eq_of_ne _ 1 h, mul_zero]`.
+
+Rewrite using `[show singleV D.host.F u 1 z = 0 from RestrictedProduct.single_eq_of_ne _ 1 hz, zero_mul]`.
+-/
 theorem single_mul_single {u w : FinPl D} (h : u ≠ w) :
     singleV D.host.F u 1 * singleV D.host.F w 1 = 0 := by
   classical
@@ -24,6 +29,13 @@ theorem single_mul_single {u w : FinPl D} (h : u ≠ w) :
     rw [show singleV D.host.F w 1 z = 0 from RestrictedProduct.single_eq_of_ne _ 1 h, mul_zero]
   · rw [show singleV D.host.F u 1 z = 0 from RestrictedProduct.single_eq_of_ne _ 1 hz, zero_mul]
 
+/- English proof (translation)
+Consider the cases of `p with`. Consider the case `inl u`. Establish `hu : u ≠ w` using `fun e => h (by rw [e])`. Use `show algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F u 1)) * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F w 1)) = 0`. Rewrite using `[← map_mul]`.
+
+Use `map_zero (algebraMap (AF D.host.F) (AE D))` and compare the differences between its conclusion and the goal. Conclude with `Prod.ext (mul_zero _) (single_mul_single hu)`. Consider the case `inr τ => show algebraMap (AF D.host.F) (AE D) (pairA D.host.F (GlobalTheory.AutFunCompare.sgW (plTau D τ) 1) 0) * algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F w 1)) = 0`. Rewrite using `[← map_mul]`. Use `map_zero (algebraMap (AF D.host.F) (AE D))` and compare the differences between its conclusion and the goal.
+
+Conclude with `Prod.ext (mul_zero _) (zero_mul _)`.
+-/
 theorem idem_mul_inl {p : Place D} {w : FinPl D} (h : p ≠ .inl w) : idem D p * idem D (.inl w) = 0 := by
   cases p with
   | inl u =>
@@ -40,23 +52,38 @@ theorem idem_mul_inl {p : Place D} {w : FinPl D} (h : p ≠ .inl w) : idem D p *
     convert map_zero (algebraMap (AF D.host.F) (AE D))
     exact Prod.ext (mul_zero _) (zero_mul _)
 
+/- English proof (translation)
+Rewrite using `[← hb, mul_left_comm, idem_mul_inl hp, mul_zero]`.
+-/
 theorem attach_kill {b : AE D} {w : FinPl D} {p : Place D} (hb : b * idem D (.inl w) = b) (hp : p ≠ .inl w) :
     idem D p * b = 0 := by
   rw [← hb, mul_left_comm, idem_mul_inl hp, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[← hb, mul_assoc, attach_kill hb' (fun e => h (Sum.inl_injective e)), mul_zero]`.
+-/
 theorem attach_orth {b b' : AE D} {w w' : FinPl D} (hb : b * idem D (.inl w) = b)
     (hb' : b' * idem D (.inl w') = b') (h : w ≠ w') : b * b' = 0 := by
   rw [← hb, mul_assoc, attach_kill hb' (fun e => h (Sum.inl_injective e)), mul_zero]
 
+/- English proof (translation)
+Take the linear combination `(-e) * h + he.1 + he.2.1`.
+-/
 theorem split_attach {e : AE D} {p : Place D} (he : IsSplitIdem D e) (h : e + cA D e = idem D p) :
     e * idem D p = e := by
   linear_combination (-e) * h + he.1 + he.2.1
 
+/- English proof (translation)
+Establish `hc : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he.1]`. Take the linear combination `(-(cA D e)) * h + he.2.1 + hc`.
+-/
 theorem split_attach_conj {e : AE D} {p : Place D} (he : IsSplitIdem D e) (h : e + cA D e = idem D p) :
     cA D e * idem D p = cA D e := by
   have hc : cA D e * cA D e = cA D e := by rw [← RingHom.map_mul, he.1]
   linear_combination (-(cA D e)) * h + he.2.1 + hc
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum, Finset.sum_eq_single i (fun j hj hji => ?_) (fun h => (h hi).elim), ← hu i hi, smul_smul, hii]`. Rewrite using `[← hu j hj, smul_smul, hij j hj hji, zero_smul]`.
+-/
 theorem smul_sum_single {m n : ℕ} {ι : Type} (s : Finset ι) (b : AE D) (c : ι → AE D) (u : ι → Mx D m n)
     (hu : ∀ j ∈ s, c j • u j = u j) {i : ι} (hi : i ∈ s) (hii : b * c i = c i)
     (hij : ∀ j ∈ s, j ≠ i → b * c j = 0) : b • ∑ j ∈ s, u j = u i := by
@@ -64,12 +91,18 @@ theorem smul_sum_single {m n : ℕ} {ι : Type} (s : Finset ι) (b : AE D) (c : 
     ← hu i hi, smul_smul, hii]
   rw [← hu j hj, smul_smul, hij j hj hji, zero_smul]
 
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← hu j hj, smul_smul, h j hj, zero_smul]`.
+-/
 theorem smul_sum_zero {m n : ℕ} {ι : Type} (s : Finset ι) (b : AE D) (c : ι → AE D) (u : ι → Mx D m n)
     (hu : ∀ j ∈ s, c j • u j = u j) (h : ∀ j ∈ s, b * c j = 0) : b • ∑ j ∈ s, u j = 0 := by
   rw [Finset.smul_sum]
   refine Finset.sum_eq_zero fun j hj => ?_
   rw [← hu j hj, smul_smul, h j hj, zero_smul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, AddChar.map_add_eq_mul, ih]`.
+-/
 theorem addChar_sum {A : Type*} [AddCommMonoid A] (ψ : AddChar A ℂ) {ι : Type} (s : Finset ι) (g : ι → A) :
     ψ (∑ i ∈ s, g i) = ∏ i ∈ s, ψ (g i) := by
   classical
@@ -86,6 +119,13 @@ open Classical in
 def prodHalf {S T : HSp D} {ι : Type} (s : Finset ι) (a : ι → AE D) (Φ : ι → WO S T → ℂ) : WO S T → ℂ :=
   fun t => if IsHalf (∑ i ∈ s, a i) t then ∏ i ∈ s, Φ i (a i • t) else 0
 
+/- English proof (translation)
+Establish `key : ∀ (G : WO S T → ℂ) t, ∏ i ∈ s, Function.update Φ j G i (a i • t) = G (a j • t) * ∏ i ∈ s.erase j, Φ i (a i • t)`. Introduce `G t`. Rewrite using `[← Finset.mul_prod_erase s (fun i => Function.update Φ j G i (a i • t)) hj]`. Simplify using `only [Function.update_self]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Use function extensionality and compare the values at `t`. Simplify using `only [prodHalf, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs`.
+
+Rewrite using `[key, key, key]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+-/
 theorem prodHalf_update {S T : HSp D} {ι : Type} [DecidableEq ι] (s : Finset ι) (a : ι → AE D)
     (Φ : ι → WO S T → ℂ) {j : ι} (hj : j ∈ s) (c : ℂ) (g h : WO S T → ℂ) :
     prodHalf s a (Function.update Φ j (c • g + h)) =
@@ -110,6 +150,11 @@ def IsFam {S T : HSp D} {ι : Type} (s : Finset ι) (v : ι → FinPl D) (f₀ :
     (Tm : ι → (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)) (Φ : ι → WO S T → ℂ) (x : Place D → WO S T → ℂ) : Prop :=
   (∀ i ∈ s, x (.inl (v i)) = Tm i (Φ i)) ∧ ∀ p, (∀ i ∈ s, p ≠ .inl (v i)) → x p = f₀
 
+/- English proof (translation)
+Use `⟨fun i hi => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Function.update_self]`. Establish `hne : (Sum.inl (v i) : Place D) ≠ .inl (v j)` using `fun h => hij (hv hi hj (Sum.inl_injective h))`.
+
+Rewrite using `[Function.update_of_ne hne, hx.1 i hi, Function.update_of_ne hij, Function.update_of_ne hij]`. Rewrite using `[Function.update_of_ne (hp j hj)]`. Conclude with `hx.2 p hp`.
+-/
 theorem isFam_update {S T : HSp D} {ι : Type} [DecidableEq ι] [DecidableEq (Place D)] {s : Finset ι} {v : ι → FinPl D}
     (hv : Set.InjOn v s) {f₀ : WO S T → ℂ} {Tm : ι → (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} {Φ : ι → WO S T → ℂ}
     {x : Place D → WO S T → ℂ} {j : ι} (hj : j ∈ s) {G : WO S T → ℂ}
@@ -126,6 +171,73 @@ theorem isFam_update {S T : HSp D} {ι : Type} [DecidableEq ι] [DecidableEq (Pl
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `A1 : ∀ i ∈ s, a i * idem D (.inl (v i)) = a i` using `fun i hi => split_attach (ha i hi).1 (ha i hi).2`. Establish `A2 : ∀ i ∈ s, cA D (a i) * idem D (.inl (v i)) = cA D (a i)` using `fun i hi => split_attach_conj (ha i hi).1 (ha i hi).2`. Establish `vne : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → v i ≠ v j` using `fun i hi j hj hij e => hij (hv hi hj e)`. Establish `hAa : ∀ i ∈ s, (∑ j ∈ s, a j) * a i = a i`. Introduce `i hi`.
+
+Rewrite using `[Finset.sum_mul, Finset.sum_eq_single i (fun j hj hji => attach_orth (A1 j hj) (A1 i hi) (vne j hj i hi hji)) (fun h => (h hi).elim), (ha i hi).1.1]`. Establish `hAc : ∀ i ∈ s, (∑ j ∈ s, a j) * cA D (a i) = 0`. Introduce `i hi`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Conclude with `(ha j hj).1.2.1`. Conclude with `attach_orth (A1 j hj) (A2 i hi) (vne j hj i hi hji)`. Establish `hcAc : ∀ i ∈ s, cA D (∑ j ∈ s, a j) * cA D (a i) = cA D (a i)`.
+
+Introduce `i hi`. Rewrite using `[map_sum, Finset.sum_mul, Finset.sum_eq_single i (fun j hj hji => attach_orth (A2 j hj) (A2 i hi) (vne j hj i hi hji)) (fun h => (h hi).elim), ← RingHom.map_mul, (ha i hi).1.1]`. Establish `hAA : (∑ j ∈ s, a j) * (∑ j ∈ s, a j) = ∑ j ∈ s, a j`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl hAa`.
+
+Establish `hAcA : (∑ j ∈ s, a j) * cA D (∑ j ∈ s, a j) = 0`. Rewrite using `[map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero hAc`. Establish `hAinf : infPart D (∑ j ∈ s, a j) = 0`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun j hj => GlobalTheory.SplitScalar.infPart_splitIdem (ha j hj).1`. Establish `wsp : ∀ i ∈ s, _` using `fun i hi => hwave (a i) (ha i hi).1.1 (ha i hi).1.2.1 (GlobalTheory.SplitScalar.infPart_splitIdem (ha i hi).1)`. Establish `wspA` using `hwave (∑ j ∈ s, a j) hAA hAcA hAinf`. Take `⟨⟨Tm0, hTm0⟩, hfT⟩` from `hf`. Establish `hfeq : f = Tm0 Ψ` using `hfT Tm0 hTm0`.
+
+Establish `hmod : ∀ i, ∃ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ), i ∈ s → IsPlaceModel ψ (symplO S T) (heisO ψ S T) (a i) (latO S T ΛS ΛT fun _ => True) 1 f₀ Tm`. Introduce `i`. Distinguish the cases in `hi : i ∈ s`. Take `⟨⟨Tm, hTm⟩, -⟩` from `hx i hi`. Conclude with `⟨Tm, fun _ => hTm⟩`.
+
+Conclude with `⟨0, fun h => (hi h).elim⟩`. Use `choose Tmi hTmi using hmod`. Establish `base : ∀ (Φ' : ι → WO S T → ℂ) (x' : Place D → WO S T → ℂ), (∀ i ∈ s, ∃ xi yi, IsHalf (a i) xi ∧ IsHalf (cA D (a i)) yi ∧ Φ' i = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a i) xi yi) → IsFam s v f₀ Tmi Φ' x' → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x' (Tm0 (prodHalf s a Φ'))`. Introduce `Φ' x' hw hfam`. Establish `hxy : ∀ i, ∃ p : WO S T × WO S T, i ∈ s → IsHalf (a i) p.1 ∧ IsHalf (cA D (a i)) p.2 ∧ Φ' i = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a i) p.1 p.2`.
+
+Introduce `i`. Distinguish the cases in `hi : i ∈ s`. Take `⟨xi, yi, h⟩` from `hw i hi`. Conclude with `⟨(xi, yi), fun _ => h⟩`. Conclude with `⟨0, fun h => (hi h).elim⟩`.
+
+Use `choose xy hxy using hxy`. Establish `hX : ∀ i ∈ s, a i • (xy i).1 = (xy i).1` using `fun i hi => (GlobalTheory.SplitScalar.isHalf_iff _ _).1 (hxy i hi).1`. Establish `hY : ∀ i ∈ s, cA D (a i) • (xy i).2 = (xy i).2` using `fun i hi => (GlobalTheory.SplitScalar.isHalf_iff _ _).1 (hxy i hi).2.1`. Establish `hAX : (∑ j ∈ s, a j) • ∑ i ∈ s, (xy i).1 = ∑ i ∈ s, (xy i).1`. Rewrite using `[Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← hX i hi, smul_smul, hAa i hi]`. Establish `hAY : cA D (∑ j ∈ s, a j) • ∑ i ∈ s, (xy i).2 = ∑ i ∈ s, (xy i).2`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[← hY i hi, smul_smul, hcAc i hi]`. Establish `haX : ∀ i ∈ s, a i • ∑ j ∈ s, (xy j).1 = (xy i).1` using `fun i hi => smul_sum_single s (a i) a (fun j => (xy j).1) hX hi (ha i hi).1.1 (fun j hj hji => attach_orth (A1 i hi) (A1 j hj) (vne i hi j hj (Ne.symm hji)))`. Establish `hplX : ∀ i ∈ s, wAt (.inl (v i)) (∑ j ∈ s, (xy j).1) = (xy i).1` using `fun i hi => (wAt_eq_smul _ _).trans (smul_sum_single s _ a (fun j => (xy j).1) hX hi (by rw [mul_comm, A1 i hi]) (fun j hj hji => attach_kill (A1 j hj) (fun e => vne j hj i hi hji (Sum.inl_injective e).symm)))`. Establish `hplY : ∀ i ∈ s, wAt (.inl (v i)) (∑ j ∈ s, (xy j).2) = (xy i).2` using `fun i hi => (wAt_eq_smul _ _).trans (smul_sum_single s _ (fun j => cA D (a j)) (fun j => (xy j).2) hY hi (by rw [mul_comm, A2 i hi]) (fun j hj hji => attach_kill (A2 j hj) (fun e => vne j hj i hi hji (Sum.inl_injective e).symm)))`. Establish `hoffX : ∀ p, (∀ i ∈ s, p ≠ .inl (v i)) → wAt p (∑ j ∈ s, (xy j).1) = 0` using `fun p hp => (wAt_eq_smul _ _).trans (smul_sum_zero s _ a (fun j => (xy j).1) hX fun j hj => attach_kill (A1 j hj) (hp j hj))`.
+
+Establish `hoffY : ∀ p, (∀ i ∈ s, p ≠ .inl (v i)) → wAt p (∑ j ∈ s, (xy j).2) = 0` using `fun p hp => (wAt_eq_smul _ _).trans (smul_sum_zero s _ (fun j => cA D (a j)) (fun j => (xy j).2) hY fun j hj => attach_kill (A2 j hj) (hp j hj))`. Establish `hΨw : prodHalf s a Φ' = wave ψ S T (latO S T ΛS ΛT fun _ => True) (∑ j ∈ s, a j) (∑ i ∈ s, (xy i).1) (∑ i ∈ s, (xy i).2)`. Use function extensionality and compare the values at `t`. Establish `hprod : ∏ i ∈ s, Φ' i (a i • t) = ∏ i ∈ s, wave ψ S T (latO S T ΛS ΛT fun _ => True) (a i) (xy i).1 (xy i).2 (a i • t)` using `Finset.prod_congr rfl fun i hi => by rw [(hxy i hi).2.2]`. Distinguish the cases in `ht : IsHalf (∑ j ∈ s, a j) t`.
+
+Rewrite using `[prodHalf, if_pos ht, hprod]`. Simplify using `only [wave]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← addChar_sum, show symplO S T t (∑ i ∈ s, (xy i).2) = ∑ i ∈ s, symplO S T t (xy i).2 from map_sum (GlobalTheory.LatVac.symplHom S T t) _ _]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitScalar.symplO_smul, hY i hi]`. Establish `ht'` using `(GlobalTheory.SplitScalar.isHalf_iff _ _).1 ht`. Establish `hsum : t + ∑ i ∈ s, (xy i).1 = ∑ i ∈ s, (a i • t + (xy i).1)`.
+
+Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_smul, ht']`. Establish `hhalf : ∀ i ∈ s, IsHalf (a i) (a i • t + (xy i).1)` using `fun i hi => (GlobalTheory.SplitScalar.isHalf_iff _ _).2 (by rw [smul_add, smul_smul, (ha i hi).1.1, hX i hi])`. Establish `hhalfA : IsHalf (∑ j ∈ s, a j) (t + ∑ i ∈ s, (xy i).1)` using `(GlobalTheory.SplitScalar.isHalf_iff _ _).2 (by rw [smul_add, ht', hAX])`. Simplify using `only [halfInd]`. Distinguish the cases in `hall : ∀ i ∈ s, a i • t + (xy i).1 ∈ latO S T ΛS ΛT fun _ => True`.
+
+Rewrite using `[Finset.prod_eq_one fun i hi => if_pos ⟨hall i hi, hhalf i hi⟩, if_pos ⟨hsum ▸ AddSubgroup.sum_mem _ hall, hhalfA⟩]`. Use `push_neg at hall`. Take `⟨i, hi, hni⟩` from `hall`. Rewrite using `[Finset.prod_eq_zero hi (if_neg fun h => hni h.1), if_neg fun h => hni ?_]`. Use `GlobalTheory.PlaceModelSum.idem_smul_latO (ha i hi).1.1 h.1` as an intermediate fact.
+
+Rewrite `this` using `[smul_add, haX i hi]`. Then use the resulting hypothesis. Rewrite using `[prodHalf, if_neg ht]`. Simplify using `only [wave, halfInd]`. Rewrite using `[if_neg, mul_zero]`. Introduce and unpack `⟨-, h2⟩`.
+
+Apply `ht` to reduce the goal to its premises. Use `(GlobalTheory.SplitScalar.isHalf_iff _ _).2 ?_` and prove the remaining obligations. Use `(GlobalTheory.SplitScalar.isHalf_iff _ _).1 h2` as an intermediate fact. Rewrite `this` using `[smul_add, hAX]`. Conclude with `add_right_cancel this`.
+
+Establish `hT0` using `wspA.1 _ _ ((GlobalTheory.SplitScalar.isHalf_iff _ _).2 hAX) ((GlobalTheory.SplitScalar.isHalf_iff _ _).2 hAY) Tm0 hTm0`. Establish `hP` using `hheis _ _ (hheis _ _ hpure0 (∑ i ∈ s, (xy i).1)) (∑ i ∈ s, (xy i).2)`. Establish `hx' : x' = fun p => heisO ψ S T (wAt p (∑ i ∈ s, (xy i).2)) (heisO ψ S T (wAt p (∑ i ∈ s, (xy i).1)) f₀)`. Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : ∃ i ∈ s, p = .inl (v i)`.
+
+Take `⟨i, hi, rfl⟩` from `hp`. Rewrite using `[hfam.1 i hi, (hxy i hi).2.2, hplX i hi, hplY i hi]`. Conclude with `(wsp i hi).1 _ _ (hxy i hi).1 (hxy i hi).2.1 (Tmi i) (hTmi i hi)`. Use `push_neg at hp`. Rewrite using `[hfam.2 p hp, hoffX p hp, hoffY p hp, GlobalTheory.SplitScalar.heisO_zero, GlobalTheory.SplitScalar.heisO_zero]`.
+
+Rewrite using `[hΨw, hT0, hx']`. Conclude with `hP`. Establish `main : ∀ (s' : Finset ι) (Φ' : ι → WO S T → ℂ) (x' : Place D → WO S T → ℂ), (∀ i ∈ s, i ∉ s' → ∃ xi yi, IsHalf (a i) xi ∧ IsHalf (cA D (a i)) yi ∧ Φ' i = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a i) xi yi) → (∀ i ∈ s, i ∈ s' → Φ' i ∈ Submodule.span ℂ {G | ∃ xi yi : WO S T, IsH …`. Introduce `s'`. Proceed by induction on `s' using Finset.induction_on with`.
+
+Consider the case `empty => exact fun Φ' x' hw _ hfam => base Φ' x' (fun i hi => hw i hi (Finset.notMem_empty i)) hfam`. Consider the case `insert j s' hj ih`. Introduce `Φ' x' hw hsp hfam`. Distinguish the cases in `hjs : j ∈ s`. Establish `lin : ∀ (c : ℂ) (g h : WO S T → ℂ), (∀ x'', IsFam s v f₀ Tmi (Function.update Φ' j g) x'' → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x'' (Tm0 (prodHalf s a (Function.update Φ' j g)))) → (∀ x'', IsFam s v f₀ Tmi (Function.update Φ' j h) x'' → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x'' (Tm0 (p …`.
+
+Introduce `c g h Pg Ph x'' hx''`. Establish `hg` using `Pg _ (isFam_update hv hjs hx'' g)`. Establish `hh` using `Ph _ (isFam_update hv hjs hx'' h)`. Use `hlin _ _ x'' _ _ (.inl (v j)) c hg hh (fun p hp => by rw [Function.update_of_ne hp, Function.update_of_ne hp]) (fun p hp => by rw [Function.update_of_ne hp]) (by rw [hx''.1 j hjs, Function.update_self, Function.update_self, Function.update_self, map_add, map_smul])` as an intermediate fact. Rewrite using `[prodHalf_update s a Φ' hjs, map_add, map_smul]` and apply the resulting hypothesis.
+
+Establish `hmem : ∀ G, G ∈ {G | ∃ xi yi : WO S T, IsHalf (a j) xi ∧ IsHalf (cA D (a j)) yi ∧ G = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a j) xi yi} → ∀ x'', IsFam s v f₀ Tmi (Function.update Φ' j G) x'' → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x'' (Tm0 (prodHalf s a (Function.update Φ' j G)) …`. Introduce `G hG x'' hx''`. Use `ih _ x'' (fun i hi his => ?_) (fun i hi his => ?_) hx''` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hG`. Rewrite using `[Function.update_of_ne hij]`. Conclude with `hw i hi fun h => by`. Break down `Finset.mem_insert.1 h with h | h` into its components or cases.
+
+Conclude with `hij h`. Conclude with `his h`. Establish `hij : i ≠ j` using `fun e => hj (e ▸ his)`. Rewrite using `[Function.update_of_ne hij]`. Conclude with `hsp i hi (Finset.mem_insert_of_mem his)`.
+
+Establish `key : ∀ G ∈ Submodule.span ℂ {G | ∃ xi yi : WO S T, IsHalf (a j) xi ∧ IsHalf (cA D (a j)) yi ∧ G = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a j) xi yi}, ∀ x'', IsFam s v f₀ Tmi (Function.update Φ' j G) x'' → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x'' (Tm0 (prodHalf s a (Function.upd …`. Introduce `G hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem G hG => exact hmem G hG`. Consider the case `zero`.
+
+Establish `h0 : wave ψ S T (latO S T ΛS ΛT fun _ => True) (a j) 0 0 ∈ {G | ∃ xi yi : WO S T, IsHalf (a j) xi ∧ IsHalf (cA D (a j)) yi ∧ G = wave ψ S T (latO S T ΛS ΛT fun _ => True) (a j) xi yi}` using `⟨0, 0, fun _ _ => by simp, fun _ _ => by simp, rfl⟩`. Use `lin (-1) _ _ (hmem _ h0) (hmem _ h0)` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_add_cancel]`. Then use the resulting hypothesis. Consider the case `add g h _ _ ihg ihh`. Use `lin 1 g h ihg ihh` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Consider the case `smul c g _ ihg`. Use `lin (c - 1) g g ihg ihg` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul, sub_add_cancel]`. Then use the resulting hypothesis. Use `key (Φ' j) (hsp j hjs (Finset.mem_insert_self j s')) x' (by rwa [Function.update_eq_self])` as an intermediate fact.
+
+Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Conclude with `ih Φ' x' (fun i hi his => hw i hi fun h => by`. Break down `Finset.mem_insert.1 h with h | h` into its components or cases. Conclude with `hjs (h ▸ hi)`. Conclude with `his h) (fun i hi his => hsp i hi (Finset.mem_insert_of_mem his)) hfam`.
+
+Establish `hΨ : Ψ = prodHalf s a Φ`. Use function extensionality and compare the values at `t`. Unfold `prodHalf`. Use `split_ifs with h`. Conclude with `hΨ1 t h`.
+
+Conclude with `hΨ0 t h`. Rewrite using `[hfeq, hΨ]`. Conclude with `main s Φ x (fun i hi his => (his hi).elim) (fun i hi _ => (wsp i hi).2 (Φ i) (hΦ i hi)) ⟨fun i hi => (hx i hi).2 (Tmi i) (hTmi i hi), hxo⟩`.
+-/
 theorem isPure_of_facts (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))

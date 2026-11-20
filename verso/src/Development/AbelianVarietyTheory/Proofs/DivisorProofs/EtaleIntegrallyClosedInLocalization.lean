@@ -6,6 +6,13 @@ open GlobalTheory.LocAcyc GlobalTheory.KeyOriginNoeth GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.EtaleNormalLoc
 
+/- English proof (translation)
+Set `K` to `FractionRing S`. Use `letI : Algebra (Localization M) K := IsLocalization.localizationAlgebraOfSubmonoidLe (Localization M) K M _ hM`. Use `haveI : IsScalarTower S (Localization M) K := IsLocalization.localization_isScalarTower_of_submonoid_le (Localization M) K M _ hM`. Use `haveI : IsFractionRing (Localization M) K := IsFractionRing.isFractionRing_of_isLocalization M (Localization M) K hM`. Use `haveI : IsDomain (Localization M) := IsLocalization.isDomain_localization hM`.
+
+Establish `hK : Function.Injective (algebraMap (Localization M) K)` using `IsFractionRing.injective _ _`. Use `isIntegrallyClosedIn_iff.mpr ⟨fun x y hxy ↦ ?_, fun {x} hx ↦ ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective S K` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply S (Localization M) K, hxy, ← IsScalarTower.algebraMap_apply]`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.algebraMap_eq_of_integral (hx.algebraMap (B := K))`.
+
+Conclude with `⟨y, hK (by rw [← hy, IsScalarTower.algebraMap_apply S (Localization M) K])⟩`.
+-/
 theorem isIntegrallyClosedIn_localization (S : Type) [CommRing S] [IsDomain S]
     [IsIntegrallyClosed S] (M : Submonoid S) (hM : M ≤ nonZeroDivisors S) :
     IsIntegrallyClosedIn S (Localization M) := by
@@ -24,6 +31,25 @@ theorem isIntegrallyClosedIn_localization (S : Type) [CommRing S] [IsDomain S]
   · obtain ⟨y, hy⟩ := IsIntegrallyClosed.algebraMap_eq_of_integral (hx.algebraMap (B := K))
     exact ⟨y, hK (by rw [← hy, IsScalarTower.algebraMap_apply S (Localization M) K])⟩
 
+/- English proof (translation)
+Introduce `S E _ _ _ _ _ _ M hM`. Establish `hle : Algebra.algebraMapSubmonoid E M ≤ nonZeroDivisors E`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Establish `hreg : IsSMulRegular E m` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (hM hm)`. Use `mem_nonZeroDivisors_iff.mpr ⟨fun x hx ↦ hreg ?_, fun x hx ↦ hreg ?_⟩` and prove the remaining obligations.
+
+Use `show m • x = m • (0 : E)`. Rewrite using `[smul_zero, Algebra.smul_def]`. Conclude with `hx`. Use `show m • x = m • (0 : E)`. Rewrite using `[smul_zero, Algebra.smul_def, mul_comm]`.
+
+Conclude with `hx`. Use `⟨IsLocalization.injective _ hle, fun x hx ↦ ?_⟩` and prove the remaining obligations. Set `SM` to `Localization M`. Set `T` to `E ⊗[S] SM`. Use `letI : Algebra SM T := Algebra.TensorProduct.rightAlgebra`.
+
+Use `haveI : IsScalarTower S SM T := inferInstance`. Use `haveI : Algebra.IsPushout S E SM T := inferInstance`. Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid E M) T := (Algebra.isLocalization_iff_isPushout M SM).2 (Algebra.IsPushout.symm inferInstance)`. Set `e : T ≃ₐ[E] Localization (Algebra.algebraMapSubmonoid E M)` to `IsLocalization.algEquiv (Algebra.algebraMapSubmonoid E M) T _`. Establish `hic` using `isIntegrallyClosedIn_localization S M hM`.
+
+Establish `htS : IsIntegral S (e.symm x)` using `hx.map (e.symm.toAlgHom.restrictScalars S)`. Establish `htE : IsIntegral E (e.symm x)` using `htS.tower_top`. Take `⟨y, hy⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := S) (S := E) (B := SM)).2 ⟨e.symm x, htE⟩`. Establish `hy' : (TensorProduct.toIntegralClosure S E SM y : T) = e.symm x` using `congrArg Subtype.val hy`. Establish `key : ∀ y : E ⊗[S] integralClosure S SM, ∃ b : E, (TensorProduct.toIntegralClosure S E SM y : T) = b ⊗ₜ[S] (1 : SM)`.
+
+Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul b c`. Take `⟨r, hr⟩` from `IsIntegrallyClosedIn.isIntegral_iff.1 c.2`.
+
+Use `⟨r • b, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hr]`. Both sides reduce to the same expression. Consider the case `add u v hu hv`. Take `⟨a, ha⟩` from `hu`.
+
+Take `⟨b, hb⟩` from `hv`. Conclude with `⟨a + b, by rw [map_add, Subalgebra.coe_add, ha, hb, TensorProduct.add_tmul]⟩`. Take `⟨b, hb⟩` from `key y`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `: e.symm x = algebraMap E T b`.
+
+Rewrite using `[← hy', hb]`. Both sides reduce to the same expression. Rewrite using `[← e.apply_symm_apply x, this, AlgEquiv.commutes]`.
+-/
 theorem etale_integrallyClosed_localization : ∀ (S E : Type) [CommRing S] [IsDomain S] [IsIntegrallyClosed S]
     [CommRing E] [Algebra S E] [Algebra.Etale S E] (M : Submonoid S), M ≤ nonZeroDivisors S →
     Function.Injective (algebraMap E (Localization (Algebra.algebraMapSubmonoid E M))) ∧

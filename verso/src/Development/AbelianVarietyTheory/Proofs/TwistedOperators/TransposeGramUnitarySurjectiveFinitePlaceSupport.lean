@@ -22,6 +22,13 @@ namespace GlobalTheory.SquareAgree.KapOnto
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hx : (x.1.1 : Matrix (Fin d) (Fin d) (AE D))ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J * (x.1.1 : Matrix (Fin d) (Fin d) (AE D)).map (cA D) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM J` using `x.2`. Use `show (((x.1.1 : Matrix (Fin d) (Fin d) (AE D)).submatrix e e).map (cA D))ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram * (x.1.1 : Matrix (Fin d) (Fin d) (AE D)).submatrix e e = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram`. Generalize the expression as in `(x.1.1 : Matrix (Fin d) (Fin d) (AE D)) = Y at hx ⊢`. Rewrite `hx` using `[hJ, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hx'` using `congrArg (fun y => incA D (D.host.xi0)⁻¹ • y) hx`.
+
+Simplify using `only [smul_smul, ← map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_smul] at hx'`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (reindex e e X.gramᵀ) = reindex e e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM X.gram)ᵀ` using `rfl`. Rewrite `hx'` using `[e1]`. Establish `hs` using `congrArg (fun y => y.submatrix e e) hx'`. Simplify using `only [reindex_apply] at hs`.
+
+Rewrite `hs` using `[← submatrix_mul_equiv _ _ _ e _, ← submatrix_mul_equiv _ _ _ e _]`. Simplify using `only [submatrix_submatrix, Equiv.symm_comp_self, submatrix_id_id, ← transpose_submatrix, ← Matrix.submatrix_map] at hs`. Establish `ht` using `congrArg transpose hs`. Rewrite `ht` using `[transpose_mul, transpose_mul, transpose_transpose, transpose_transpose, ← Matrix.mul_assoc]`. Conclude with `ht`.
+-/
 theorem inv_mem (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) (x : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) :
     Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom x.1 ∈
@@ -47,6 +54,21 @@ theorem inv_mem (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fi
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D X d e Wd hJ v h hh`. Set `h' : GA D X` to `⟨Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e.symm).toMonoidHom h.1, inv_mem X e hJ h⟩`. Use `⟨h', ?_, ?_⟩` and prove the remaining obligations. Use `set a : AF D.host.F := 1 - GlobalTheory.EmbChart.atPlace v 1 with ha`. Establish `h0 : GlobalTheory.AdelicU.evFin D.host.F v a = 0`.
+
+Rewrite using `[ha, map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h1 : fstA D.host.F a = 1` using `by show (1 : Ainf D.host.F) - (0 : Ainf D.host.F) = 1`. Conclude with `sub_zero 1`. Set `f` to `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)`. Establish `hf1 : f (a ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`.
+
+Simplify using `only [f, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, h1]`. Both sides reduce to the same expression. Establish `hz : ∀ i j, f ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat h - 1) i j) = 0`. Introduce `i j`. Establish `k` using `congrFun (congrFun (hh a h0) i) j`.
+
+Rewrite `k` using `[Matrix.smul_apply, Matrix.zero_apply, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `k2` using `congrArg f k`. Rewrite `k2` using `[map_mul, map_zero, hf1, one_mul]`. Conclude with `k2`. Rewrite using `[GfC, MonoidHom.mem_ker]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show f (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat h (e i) (e j)) = (1 : Matrix (Fin X.rank) (Fin X.rank) _) i j`. Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat h (e i) (e j) = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat h - 1) (e i) (e j) + (1 : Matrix (Fin d) (Fin d) (AE D)) (e i) (e j)`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`.
+
+Rewrite using `[e2, map_add, hz, zero_add]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq (α := AF D.host.F ⊗[D.host.F] D.host.E), map_one, Matrix.one_apply_eq (α := Ainf D.host.F ⊗[D.host.F] D.host.E)]`. Rewrite using `[Matrix.one_apply_ne (α := AF D.host.F ⊗[D.host.F] D.host.E) (e.injective.ne hij), map_zero, Matrix.one_apply_ne (α := Ainf D.host.F ⊗[D.host.F] D.host.E) hij]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (h.1.1 : Matrix (Fin d) (Fin d) (AE D)) (e (e.symm i)) (e (e.symm j)) = h.1.1 i j`. Simplify using `only [Equiv.apply_symm_apply]`.
+-/
 theorem kapX_onto : ∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d)
     (hJ : Wd.J = D.host.xi0 • reindex e e X.gramᵀ) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F),
     ∀ h ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt D.sp.cm.sig Wd (GlobalTheory.AdelicU.evFin D.host.F v), ∃ h' ∈ GfC X, kapX X e hJ h' = h := by

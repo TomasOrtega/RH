@@ -6,6 +6,11 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsUniqueFixe
 
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.algHom_sub_aeval_truncTotal_mem g hg N y`. Rewrite `h1` using `[hJ, Ideal.mem_bot, sub_eq_zero]`. Rewrite using `[h1]`. Establish `ht : truncTotal N y = ∑ d ∈ D, MvPolynomial.monomial d (coeff d y)`. Use extensionality with `d`.
+
+Rewrite using `[MvPolynomial.coeff_sum, coeff_truncTotal_eq_ite]`. Simplify using `only [MvPolynomial.coeff_monomial, Finset.sum_ite_eq', hD]`. Rewrite using `[ht, map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_monomial]`.
+-/
 private theorem hos_expand {O S σ : Type} [CommRing O] [CommRing S] [Algebra O S] [Finite σ]
     (N : ℕ) (D : Finset (σ →₀ ℕ)) (hD : ∀ d, d ∈ D ↔ d.degree < N)
     (g : MvPowerSeries σ O →ₐ[O] S) (J : Ideal S) (hg : ∀ s, g (MvPowerSeries.X s) ∈ J) (hJ : J ^ N = ⊥)
@@ -23,6 +28,11 @@ private theorem hos_expand {O S σ : Type} [CommRing O] [CommRing S] [Algebra O 
   refine Finset.sum_congr rfl fun d _ => ?_
   rw [MvPolynomial.aeval_monomial]
 
+/- English proof (translation)
+Unfold `Finsupp.prod`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, ofAdd_sum, map_prod, Units.coe_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]`.
+-/
 private theorem hos_prod {S σ X : Type} [CommRing S] [AddCommGroup X] (wt : σ → X)
     (t : Multiplicative X →* Sˣ) (a : σ → S) (d : σ →₀ ℕ) :
     (d.prod fun s k => ((t (Multiplicative.ofAdd (wt s)) : S) * a s) ^ k) =
@@ -35,6 +45,37 @@ private theorem hos_prod {S σ X : Type} [CommRing S] [AddCommGroup X] (wt : σ 
   refine Finset.prod_congr rfl fun s _ => ?_
   rw [ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]
 
+/- English proof (translation)
+Take `⟨n, t, ht1, ht2⟩` from `tchar O X`. Use `haveI : IsCO O (MvPowerSeries (Fin n) S) := co_mvps O S (Fin n)`. Set `i : S →ₐ[O] MvPowerSeries (Fin n) S` to `IsScalarTower.toAlgHom O S (MvPowerSeries (Fin n) S)`. Establish `hi : ∀ a, i a = MvPowerSeries.C a` using `fun a => rfl`. Set `t' : Multiplicative X →* (MvPowerSeries (Fin n) S)ˣ` to `(Units.map (MvPowerSeries.map (algebraMap O S)).toMonoidHom).comp t`.
+
+Establish `ht' : ∀ k, res O (MvPowerSeries (Fin n) S) (t' k) = 1`. Introduce `k`. Rewrite using `[← sub_eq_zero, ← map_one (res O (MvPowerSeries (Fin n) S)), ← map_sub, res_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`. Establish `hc : constantCoeff ((t' k : MvPowerSeries (Fin n) S) - 1) = 0` using `by show constantCoeff (MvPowerSeries.map (algebraMap O S) (t k : MvPowerSeries (Fin n) O) - 1) = 0`. Rewrite using `[map_sub, MvPowerSeries.constantCoeff_map, ht1, map_one, map_one, sub_self]`.
+
+Rewrite using `[hc]`. Conclude with `not_isUnit_zero`. Establish `hJm : Ideal.map i (maximalIdeal S) ≤ maximalIdeal (MvPowerSeries (Fin n) S)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha`.
+
+Rewrite using `[Ideal.mem_comap]`. Use `show i a ∈ maximalIdeal _`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff, hi, MvPowerSeries.constantCoeff_C]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha`. Set `e : σ → MvPowerSeries (Fin n) S` to `fun s => (t' (Multiplicative.ofAdd (wt s)) : MvPowerSeries (Fin n) S) * i (p (MvPowerSeries.X s))`.
+
+Establish `he : ∀ s, e s ∈ Ideal.map i (maximalIdeal S)` using `fun s => Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (hp s))`. Use `haveI : IsAdicComplete (maximalIdeal (MvPowerSeries (Fin n) S)) (MvPowerSeries (Fin n) S) := IsCO.complete (O := O)`. Set `f'` to `GlobalTheory.mvEvalAdic O (maximalIdeal (MvPowerSeries (Fin n) S)) e (fun s => hJm (he s))`. Establish `hf'X : ∀ s, f' (MvPowerSeries.X s) = t' (Multiplicative.ofAdd (wt s)) * i (p (MvPowerSeries.X s))` using `fun s => GlobalTheory.mvEvalAdic_X _ _ _ s`. Establish `h0 : f' x = 0` using `H _ i t' ht' f' hf'X`.
+
+Establish `hJN : Ideal.map i (maximalIdeal S) ^ N = ⊥`. Rewrite using `[← Ideal.map_pow, hJ, Ideal.map_bot]`. Establish `hf'J : ∀ s, f' (MvPowerSeries.X s) ∈ Ideal.map i (maximalIdeal S)` using `fun s => by`. Rewrite using `[hf'X]`. Conclude with `he s`.
+
+Set `D : Finset (σ →₀ ℕ)` to `(Finsupp.finite_of_degree_lt N).toFinset`. Establish `hD : ∀ d, d ∈ D ↔ d.degree < N` using `fun d => by simp [D]`. Establish `E1` using `hos_expand N D hD f' (Ideal.map i (maximalIdeal S)) hf'J hJN x`. Set `T : (σ →₀ ℕ) → S` to `fun d => algebraMap O S (coeff d x) * d.prod fun s k => p (MvPowerSeries.X s) ^ k`. Establish `hT : ∀ k, p (wcomp O wt k x) = ∑ d ∈ D, if Finsupp.weight wt d = k then T d else 0`.
+
+Introduce `k`. Rewrite using `[hos_expand N D hD p (maximalIdeal S) hp hJ]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_wcomp]`. Apply the tactic sequence `split_ifs <;> simp [T]`.
+
+Establish `hE : f' x = ∑ d ∈ D, (t' (Multiplicative.ofAdd (Finsupp.weight wt d)) : MvPowerSeries (Fin n) S) * i (T d)`. Rewrite using `[E1]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [hf'X]`. Establish `hp'` using `hos_prod wt t' (fun s => i (p (MvPowerSeries.X s))) d`.
+
+Use `beta_reduce at hp'`. Rewrite using `[hp']`. Simplify using `only [T, map_mul, AlgHom.commutes, Finsupp.prod, map_prod, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Set `s : Finset X` to `D.image (Finsupp.weight wt)`.
+
+Establish `hz : ∀ k ∈ s, p (wcomp O wt k x) = 0`. Use `ht2 S s (fun k => p (wcomp O wt k x)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hT, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use `_ = ∑ d ∈ D, ∑ k ∈ s, if Finsupp.weight wt d = k then (t' (Multiplicative.ofAdd k) : MvPowerSeries (Fin n) S) * i (T d) else 0 := Finset.sum_comm`. Use `_ = f' x := by`. Rewrite using `[hE]`.
+
+Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_image_of_mem _ hd)]`. Use `_ = 0 := h0`. Distinguish the cases in `hj : j ∈ s`. Conclude with `hz j hj`.
+
+Rewrite using `[hT]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `d hd`. Rewrite using `[if_neg]`. Introduce `h`.
+
+Conclude with `hj (h ▸ Finset.mem_image_of_mem _ hd)`.
+-/
 private theorem hos_art {O : Type} [CommRing O] [IsLocalRing O] {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] {S : Type} [CommRing S] [Algebra O S] [IsCO O S] {σ : Type} [Finite σ] (wt : σ → X)
     (p : MvPowerSeries σ O →ₐ[O] S) (N : ℕ) (hJ : maximalIdeal S ^ N = ⊥)
@@ -133,6 +174,27 @@ private theorem hos_art {O : Type} [CommRing O] [IsLocalRing O] {X : Type} [AddC
     intro h
     exact hj (h ▸ Finset.mem_image_of_mem _ hd)
 
+/- English proof (translation)
+Introduce `O _ _ _ _ X _ _ _ R _ _ _ σ _ wt π hπ hstab`. Introduce `x hx j`. Establish `hx' : π x = 0` using `hx`. Use `show π (wcomp O wt j x) = 0`. Use `haveI : IsAdicComplete (maximalIdeal R) R := IsCO.complete (O := O)`.
+
+Apply `GlobalTheory.eq_of_forall_sub_mem_ideal_pow (maximalIdeal R)` to reduce the goal to its premises. Introduce `N`. Rewrite using `[sub_zero]`. Use `Ideal.pow_le_pow_right (Nat.le_succ N) ?_` and prove the remaining obligations. Take `⟨I, hI⟩ : ∃ I : Ideal R, I = maximalIdeal R ^ (N + 1)` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hI]`. Establish `hIm : I ≤ maximalIdeal R` using `hI ▸ Ideal.pow_le_self (Nat.succ_ne_zero N)`. Establish `hItop : I ≠ ⊤` using `fun h => (maximalIdeal.isMaximal R).ne_top (top_le_iff.1 (h ▸ hIm))`. Use `haveI : Nontrivial (R ⧸ I) := by`. Use `⟨⟨0, 1, fun h => hItop ((Ideal.eq_top_iff_one _).2 ?_)⟩⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[← map_one (Ideal.Quotient.mk I)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h.symm`. Set `q : R →ₐ[O] R ⧸ I` to `Ideal.Quotient.mkₐ O I`. Use `haveI : IsCO O (R ⧸ I) := co_quot O R (R ⧸ I) q (Ideal.Quotient.mkₐ_surjective O I)`. Establish `hmap : ∀ r ∈ maximalIdeal R, q r ∈ maximalIdeal (R ⧸ I)`.
+
+Introduce `r hr`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Take `⟨v, hv⟩` from `Ideal.Quotient.mk_surjective ((u⁻¹ : (R ⧸ I)ˣ) : R ⧸ I)`. Establish `hrv : r * v - 1 ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq, map_mul, hv, map_one]`. Use `show q r * _ = 1`. Rewrite using `[← hu, Units.mul_inv]`. Apply `(maximalIdeal.isMaximal R).ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1` using `Ideal.sub_mem _ (Ideal.mul_mem_right v _ hr) (hIm hrv)`. Simplify using `using h1`. Establish `hle : maximalIdeal (R ⧸ I) ≤ Ideal.map (Ideal.Quotient.mk I) (maximalIdeal R)`. Introduce `y hy`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Apply `Ideal.mem_map_of_mem` to reduce the goal to its premises. Assume the negation of the conclusion as `hr`. Rewrite `hr` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hy (hr.map _)`. Establish `hJ : maximalIdeal (R ⧸ I) ^ (N + 1) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : ∀ s, (q.comp π) (MvPowerSeries.X s) ∈ maximalIdeal (R ⧸ I)` using `fun s => hmap _ (hπ s)`. Establish `key` using `hos_art wt (q.comp π) (N + 1) hJ hp x (fun R' _ _ _ i t ht f' hf' => hstab R' ((i.comp q).comp π) t ht (fun y hy => by simp [hy]) f' (fun s => (hf' s).trans rfl) x hx') j`. Rewrite `key` using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `key`.
+-/
 theorem UpperTheory.V.Alg.homog_of_stable :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (σ : Type) [Finite σ] (wt : σ → X) (π : MvPowerSeries σ O →ₐ[O] R), (∀ s, π (MvPowerSeries.X s) ∈ maximalIdeal R) →
       (∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (f : MvPowerSeries σ O →ₐ[O] R') (t : Multiplicative X →* R'ˣ), (∀ j, res O R' (t j) = 1) → (∀ x, π x = 0 → f x = 0) →

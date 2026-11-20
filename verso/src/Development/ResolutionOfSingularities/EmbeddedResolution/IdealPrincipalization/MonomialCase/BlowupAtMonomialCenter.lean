@@ -46,31 +46,56 @@ def blowupTriple (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' �
   mult := T.mult
   boundary := transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blowupTriple_baseField (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').base = T.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupTriple_scheme (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').scheme = X' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blowupTriple_structureMorphism (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').structMap = q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupTriple_ideal (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').ideal = I' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupTriple_mult (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
     (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').mult = T.mult := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupTriple_boundary (T : MarkedIdealWithBoundary.{u}) {X' : Scheme.{u}}
     (π : X' ⟶ T.scheme) (q : X' ⟶ Spec (CommRingCat.of T.base)) (I' : X'.IdealSheafData) :
     (blowupTriple T π q I').boundary =
       transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary := rfl
 
+/- English proof (translation)
+Establish `hE : Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary) = (monomialCenter T.ideal T.mult T.boundary).comap π`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`. Establish `hx2 : x' ∉ ((monomialCenter T.ideal T.mult T.boundary).comap π).support`. Rewrite using `[← hE]`. Conclude with `hx'`.
+
+Establish `htop : stalkIdeal ((monomialCenter T.ideal T.mult T.boundary).comap π) x' = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `hx2 ((mem_support_iff_stalkIdeal_ne_top _ _).2 hne)`. Establish `hst : stalkIdeal (T.ideal.comap π) x' = stalkIdeal I' x'`. Rewrite using `[← hI', stalkIdeal_mul, stalkIdeal_pow, htop, ← Ideal.one_eq_top, one_pow, one_mul]`.
+
+Conclude with `(orderAt_eq_of_stalkIdeal_eq hst).symm.trans (hGeom.orderAt_comap_off_exceptional T hT.valid X' π (monomialCenter T.ideal T.mult T.boundary) hπ x' hx' T.ideal)`.
+-/
 theorem orderAt_transform_eq_of_not_mem_exceptional (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     {X' : Scheme.{u}} (π : X' ⟶ T.scheme)
@@ -96,6 +121,13 @@ theorem orderAt_transform_eq_of_not_mem_exceptional (hGeom : MonomialGeometryHyp
     (hGeom.orderAt_comap_off_exceptional T hT.valid X' π
       (monomialCenter T.ideal T.mult T.boundary) hπ x' hx' T.ideal)
 
+/- English proof (translation)
+Establish `hgen : IsGenericPoint (isIrreducible_of_mem_intersectionComponents hC').genericPoint C'` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC'`. Establish `hSirr : IsIrreducible (⇑π '' C')` using `(isIrreducible_of_mem_intersectionComponents hC').image _ π.continuous.continuousOn`. Establish `hclim : closure (⇑π '' C') = closure ({π (isIrreducible_of_mem_intersectionComponents hC').genericPoint} : Set ↥T.scheme)` using `closure_image_genericPoint (f := ⇑π) π.continuous hgen`. Establish `h2 : orderAlong T.ideal (⇑π '' C') = orderAt T.ideal (π (isIrreducible_of_mem_intersectionComponents hC').genericPoint)`. Rewrite using `[orderAlong_eq_orderAt_genericPoint T.ideal hSirr]`.
+
+Establish `h3 : closure ({hSirr.genericPoint} : Set ↥T.scheme) = closure ({π (isIrreducible_of_mem_intersectionComponents hC').genericPoint} : Set ↥T.scheme)`. Rewrite using `[← hclim]`. Simplify using the standard rewrite rules. Rewrite using `[(inseparable_iff_closure_eq.mpr h3).eq]`. Rewrite using `[orderAlong_eq_orderAt_of_mem_intersectionComponents I' hC', h2]`.
+
+Conclude with `orderAt_transform_eq_of_not_mem_exceptional hGeom hT π hπ I' hI' _ hoff`.
+-/
 theorem orderAlong_transform_eq_of_genericPoint_not_mem_exceptional (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     (_h : minIndexCard T.ideal T.mult T.boundary ≠ 0)
@@ -129,6 +161,11 @@ theorem orderAlong_transform_eq_of_genericPoint_not_mem_exceptional (hGeom : Mon
   rw [orderAlong_eq_orderAt_of_mem_intersectionComponents I' hC', h2]
   exact orderAt_transform_eq_of_not_mem_exceptional hGeom hT π hπ I' hI' _ hoff
 
+/- English proof (translation)
+Establish `hlt : ((strictTransformIndex π Z L j : Fin (transformedBoundary π Z L).length) : ℕ) < (L.map (Blowup.strictTransform π Z)).length`. Rewrite using `[strictTransformIndex_val]`. Simplify using the standard rewrite rules. Simplify using `only [List.get_eq_getElem]`. Rewrite using `[List.getElem_append_left hlt]`.
+
+Conclude with `List.getElem_map _`.
+-/
 private theorem get_transformedBoundary_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) (j : Fin L.length) :
     (transformedBoundary π Z L).get (strictTransformIndex π Z L j) = Blowup.strictTransform π Z (L.get j) := by
@@ -140,6 +177,11 @@ private theorem get_transformedBoundary_strictTransformIndex {X' X : Scheme.{u}}
   rw [List.getElem_append_left hlt]
   exact List.getElem_map _
 
+/- English proof (translation)
+Establish `hge : (L.map (Blowup.strictTransform π Z)).length ≤ ((exceptionalIndex π Z L : Fin (transformedBoundary π Z L).length) : ℕ)`. Rewrite using `[exceptionalIndex_val]`. Simplify using the standard rewrite rules. Simplify using `only [List.get_eq_getElem]`. Rewrite using `[List.getElem_append_right hge]`.
+
+Simplify using `[exceptionalIndex_val]`.
+-/
 private theorem get_transformedBoundary_exceptionalIndex {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData) :
     (transformedBoundary π Z L).get (exceptionalIndex π Z L) = Blowup.exceptionalIdeal π Z := by
@@ -151,6 +193,9 @@ private theorem get_transformedBoundary_exceptionalIndex {X' X : Scheme.{u}} (π
   rw [List.getElem_append_right hge]
   simp [exceptionalIndex_val]
 
+/- English proof (translation)
+Introduce `i j hij`. Establish `hv : ((strictTransformIndex π Z L i : Fin (transformedBoundary π Z L).length) : ℕ) = ((strictTransformIndex π Z L j : Fin (transformedBoundary π Z L).length) : ℕ)` using `by rw [hij]`. Rewrite `hv` using `[strictTransformIndex_val, strictTransformIndex_val]`. Conclude with `Fin.val_injective hv`.
+-/
 private theorem strictTransformIndex_injective {X' X : Scheme.{u}} (π : X' ⟶ X) (Z : X.IdealSheafData)
     (L : List X.IdealSheafData) : Function.Injective (strictTransformIndex π Z L) := by
   intro i j hij
@@ -159,6 +204,11 @@ private theorem strictTransformIndex_injective {X' X : Scheme.{u}} (π : X' ⟶ 
   rw [strictTransformIndex_val, strictTransformIndex_val] at hv
   exact Fin.val_injective hv
 
+/- English proof (translation)
+Establish `hlen` using `transformedBoundary_length π Z L`. Establish `hi : (i : ℕ) < (transformedBoundary π Z L).length` using `i.isLt`. Establish `hlt : (i : ℕ) < L.length + 1` using `by omega`. Break down `Nat.lt_or_ge (i : ℕ) L.length with hj | hj` into its components or cases. Conclude with `Or.inr ⟨⟨(i : ℕ), hj⟩, Fin.val_injective (by rw [strictTransformIndex_val])⟩`.
+
+Use `Or.inl (Fin.val_injective ?_)` and prove the remaining obligations. Rewrite using `[exceptionalIndex_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem eq_exceptionalIndex_or_exists_strictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData)
     (i : Fin (transformedBoundary π Z L).length) :
@@ -172,6 +222,11 @@ private theorem eq_exceptionalIndex_or_exists_strictTransformIndex {X' X : Schem
     rw [exceptionalIndex_val]
     omega
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [Finset.mem_image, mem_preimageStrictTransformIndex_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Conclude with `hj`.
+
+Introduce `hi`. Break down `eq_exceptionalIndex_or_exists_strictTransformIndex π Z L i with rfl | ⟨j, rfl⟩` into its components or cases. Conclude with `absurd hi hnew`. Conclude with `⟨j, hi, rfl⟩`.
+-/
 private theorem image_strictTransformIndex_preimageStrictTransformIndex {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData)
     (J' : Finset (Fin (transformedBoundary π Z L).length))
@@ -188,6 +243,9 @@ private theorem image_strictTransformIndex_preimageStrictTransformIndex {X' X : 
     · exact absurd hi hnew
     · exact ⟨j, hi, rfl⟩
 
+/- English proof (translation)
+Establish `h1` using `Finset.card_image_of_injective (preimageStrictTransformIndex π Z L J') (strictTransformIndex_injective π Z L)`. Rewrite `h1` using `[image_strictTransformIndex_preimageStrictTransformIndex π Z L J' hnew]`. Conclude with `h1.symm`.
+-/
 private theorem card_preimageStrictTransformIndex_of_not_mem {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData)
     (J' : Finset (Fin (transformedBoundary π Z L).length)) (hnew : exceptionalIndex π Z L ∉ J') :
@@ -197,6 +255,15 @@ private theorem card_preimageStrictTransformIndex_of_not_mem {X' X : Scheme.{u}}
   rw [image_strictTransformIndex_preimageStrictTransformIndex π Z L J' hnew] at h1
   exact h1.symm
 
+/- English proof (translation)
+Establish `himg : (preimageStrictTransformIndex π Z L J').image (strictTransformIndex π Z L) = J'.erase (exceptionalIndex π Z L)`. Use extensionality with `i`. Simplify using `only [Finset.mem_image, mem_preimageStrictTransformIndex_iff, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+
+Use `⟨?_, hj⟩` and prove the remaining obligations. Introduce `hc`. Establish `hval : ((strictTransformIndex π Z L j : Fin (transformedBoundary π Z L).length) : ℕ) = ((exceptionalIndex π Z L : Fin (transformedBoundary π Z L).length) : ℕ)` using `by rw [hc]`. Rewrite `hval` using `[strictTransformIndex_val, exceptionalIndex_val]`. Conclude with `absurd hval (Nat.ne_of_lt j.isLt)`.
+
+Introduce and unpack `⟨hne, hi⟩`. Break down `eq_exceptionalIndex_or_exists_strictTransformIndex π Z L i with rfl | ⟨j, rfl⟩` into its components or cases. Conclude with `absurd rfl hne`. Conclude with `⟨j, hi, rfl⟩`. Establish `h1` using `Finset.card_image_of_injective (preimageStrictTransformIndex π Z L J') (strictTransformIndex_injective π Z L)`.
+
+Rewrite `h1` using `[himg, Finset.card_erase_of_mem hnew]`. Establish `h2 : 1 ≤ J'.card` using `Finset.card_pos.2 ⟨_, hnew⟩`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem card_preimageStrictTransformIndex_add_one_of_mem {X' X : Scheme.{u}} (π : X' ⟶ X)
     (Z : X.IdealSheafData) (L : List X.IdealSheafData)
     (J' : Finset (Fin (transformedBoundary π Z L).length)) (hnew : exceptionalIndex π Z L ∈ J') :
@@ -222,6 +289,13 @@ private theorem card_preimageStrictTransformIndex_add_one_of_mem {X' X : Scheme.
   have h2 : 1 ≤ J'.card := Finset.card_pos.2 ⟨_, hnew⟩
   omega
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth q` using `hq`. Establish `hmemL : T.boundary.get i ∈ T.boundary` using `by simp`. Take `⟨U', ε, hx'U', hε01, hεiff, hfact⟩` from `hGeom.blowup_total_transform T hT.valid (monomialCenter T.ideal T.mult T.boundary) (smooth_monomialCenter hGeom hT h) (hasStrictNormalCrossingsWith_monomialCenter hGeom hT h) X' π hπ (T.boundary.get i) hmemL x'`. Use `⟨ε, hε01, hεiff, ?_⟩` and prove the remaining obligations.
+
+Establish `: AlgebraicGeometry.Smooth U'.ι` using `inferInstance`. Establish `: AlgebraicGeometry.Smooth (U'.ι ≫ q)` using `inferInstance`. Establish `e1 : orderAt (((T.boundary.get i).comap π).comap U'.ι) ⟨x', hx'U'⟩ = orderAt ((T.boundary.get i).comap π) x'` using `orderAt_comap T.base q U'.ι ((T.boundary.get i).comap π) ⟨x', hx'U'⟩`. Establish `e2 : orderAt ((Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)).comap U'.ι) ⟨x', hx'U'⟩ = orderAt (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)) x'` using `orderAt_comap T.base q U'.ι (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)) ⟨x', hx'U'⟩`. Establish `e3 : orderAt ((Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).comap U'.ι) ⟨x', hx'U'⟩ = orderAt (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) x'` using `orderAt_comap T.base q U'.ι (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) ⟨x', hx'U'⟩`.
+
+Establish `hmul` using `orderAt_mul T.base (U'.ι ≫ q) ((Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)).comap U'.ι) (((Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).comap U'.ι) ^ ε) ⟨x', hx'U'⟩`. Establish `hpow` using `orderAt_pow T.base (U'.ι ≫ q) ((Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).comap U'.ι) ε ⟨x', hx'U'⟩`. Establish `h4 : orderAt (((Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).comap U'.ι) ^ ε) ⟨x', hx'U'⟩ = (ε : ℕ∞) * orderAt (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) x'` using `hpow.trans (congrArg (fun z : ℕ∞ => (ε : ℕ∞) * z) e3)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, h4]`.
+-/
 private theorem exists_orderAt_comap_eq_strictTransform_add_exceptional (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     (h : minIndexCard T.ideal T.mult T.boundary ≠ 0)
@@ -293,6 +367,9 @@ private theorem exists_orderAt_comap_eq_strictTransform_add_exceptional (hGeom :
           orderAt (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) x' := by
         rw [e2, h4]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons A l ih`. Simplify using `only [List.foldr_cons, List.map_cons, AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]`.
+-/
 private theorem comap_foldr_mul {X Y : Scheme.{u}} (f : Y ⟶ X) (l : List X.IdealSheafData) :
     (l.foldr (· * ·) ⊤).comap f = (l.map (fun A => A.comap f)).foldr (· * ·) ⊤ := by
   induction l with
@@ -301,6 +378,53 @@ private theorem comap_foldr_mul {X Y : Scheme.{u}} (f : Y ⟶ X) (l : List X.Ide
     simp only [List.foldr_cons, List.map_cons,
       AlgebraicGeometry.Scheme.IdealSheafData.comap_mul, ih]
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth q` using `hT'.valid.smooth`. Establish `hC'' : C' ∈ intersectionComponents (blowupTriple T π q I').boundary J'` using `hC'`. Establish `hmemiff : ∀ i : Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length, ((isIrreducible_of_mem_intersectionComponents hC').genericPoint ∈ ((transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).get i).support) ↔ i ∈ J'` using `fun i => genericPoint_mem_support_iff_mem hGeom hT' hC'' i`. Establish `hEmem : (isIrreducible_of_mem_intersectionComponents hC').genericPoint ∈ (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).support`.
+
+Establish `hx` using `(hmemiff (exceptionalIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary)).2 hJ'`. Rewrite `hx` using `[get_transformedBoundary_exceptionalIndex]`. Then use the resulting hypothesis. Establish `hstrictmem0 : Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary) ∈ (blowupTriple T π q I').boundary`. Simplify using `only [blowupTriple_boundary]`. Conclude with `List.mem_append_right _ (List.mem_singleton_self _)`.
+
+Establish `hEord : orderAt (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = 1` using `hGeom.orderAt_boundary_eq_one (blowupTriple T π q I') hT'.valid (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)) hstrictmem0 (isIrreducible_of_mem_intersectionComponents hC').genericPoint hEmem`. Establish `hZord : orderAt ((monomialCenter T.ideal T.mult T.boundary).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = 1`. Rewrite using `[← Blowup.exceptionalIdeal_eq_comap]`. Conclude with `hEord`. Establish `h3 : orderAt (T.ideal.comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = (T.mult : ℕ∞) + orderAt I' (isIrreducible_of_mem_intersectionComponents hC').genericPoint`.
+
+Rewrite using `[← hI', orderAt_mul T.base q, orderAt_pow T.base q, hZord, mul_one]`. Establish `hmaxIdx : ∀ i ∈ lexMaxIndices T.ideal T.mult T.boundary, (↑(monomialCenter T.ideal T.mult T.boundary).support : Set ↥T.scheme) ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme)`. Introduce `i hi`. Rewrite using `[support_monomialCenter hGeom hT h, monomialCenterSet_eq_sUnion_centerComponents]`. Introduce and unpack `y ⟨C, hCmem, hyC⟩`.
+
+Conclude with `(subset_support_iff_mem_of_mem_intersectionComponents hGeom hT (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary hCmem) i).2 hi hyC`. Establish `hkeyc : ∀ (i : Fin T.boundary.length) (V : T.scheme.Opens), π (isIrreducible_of_mem_intersectionComponents hC').genericPoint ∈ V → ((↑(monomialCenter T.ideal T.mult T.boundary).support : Set ↥T.scheme) ∩ (V : Set ↥T.scheme)) ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme) → i ∈ l …`. Introduce `i V hVmem hVsub`. Establish `hC₀comp : C₀ ∈ intersectionComponents T.boundary (lexMaxIndices T.ideal T.mult T.boundary)` using `centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary hC₀`. Establish `hirr0 : IsIrreducible C₀` using `isIrreducible_of_mem_intersectionComponents hC₀comp`.
+
+Establish `hC₀Z : C₀ ⊆ (↑(monomialCenter T.ideal T.mult T.boundary).support : Set ↥T.scheme)`. Rewrite using `[support_monomialCenter hGeom hT h, monomialCenterSet_eq_sUnion_centerComponents]`. Introduce `y hy`. Conclude with `⟨C₀, hC₀, hy⟩`. Establish `hclosed : IsClosed (↑(T.boundary.get i).support : Set ↥T.scheme)` using `(T.boundary.get i).support.2`.
+
+Establish `hcl : closure (C₀ ∩ (V : Set ↥T.scheme)) ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme)` using `closure_minimal (fun z hz => hVsub ⟨hC₀Z hz.1, hz.2⟩) hclosed`. Establish `hsub2 : C₀ ⊆ (↑(T.boundary.get i).support : Set ↥T.scheme)`. Introduce `y hy`. Use `hcl ?_` and prove the remaining obligations. Rewrite using `[mem_closure_iff]`.
+
+Introduce `W hW hyW`. Take `⟨z, hzC, hzW, hzV⟩` from `hirr0.2 W (V : Set ↥T.scheme) hW V.isOpen ⟨y, hy, hyW⟩ ⟨π (isIrreducible_of_mem_intersectionComponents hC').genericPoint, hmem₀, hVmem⟩`. Conclude with `⟨z, hzW, hzC, hzV⟩`. Conclude with `(subset_support_iff_mem_of_mem_intersectionComponents hGeom hT hC₀comp i).1 hsub2`. Establish `hξU : (isIrreducible_of_mem_intersectionComponents hC').genericPoint ∈ π ⁻¹ᵁ U` using `hU`.
+
+Establish `hrestr : ∀ A : T.scheme.IdealSheafData, (A.comap U.ι).comap (π ∣_ U) = (A.comap π).comap (π ⁻¹ᵁ U).ι`. Introduce `A`. Establish `h1 : A.comap ((π ∣_ U) ≫ U.ι) = A.comap ((π ⁻¹ᵁ U).ι ≫ π)`. Rewrite using `[morphismRestrict_ι]`. Simplify `h1` using `only [AlgebraicGeometry.Scheme.IdealSheafData.comap_comp]`.
+
+Establish `hmon' : (T.ideal.comap π).comap (π ⁻¹ᵁ U).ι = (List.ofFn fun i : Fin T.boundary.length => ((T.boundary.get i).comap π).comap (π ⁻¹ᵁ U).ι ^ a i).foldr (· * ·) ⊤`. Rewrite using `[← hrestr T.ideal, hmon, comap_foldr_mul]`. Use `congr 1`. Rewrite using `[List.map_ofFn]`. Use `congrArg List.ofFn (funext fun i => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_pow, hrestr]`. Establish `: AlgebraicGeometry.Smooth (π ⁻¹ᵁ U).ι` using `inferInstance`. Establish `: AlgebraicGeometry.Smooth ((π ⁻¹ᵁ U).ι ≫ q)` using `inferInstance`. Establish `e0 : orderAt ((T.ideal.comap π).comap (π ⁻¹ᵁ U).ι) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩ = orderAt (T.ideal.comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint` using `orderAt_comap T.base q (π ⁻¹ᵁ U).ι (T.ideal.comap π) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩`.
+
+Establish `ecomap : ∀ i : Fin T.boundary.length, orderAt (((T.boundary.get i).comap π).comap (π ⁻¹ᵁ U).ι) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩ = orderAt ((T.boundary.get i).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint` using `fun i => orderAt_comap T.base q (π ⁻¹ᵁ U).ι ((T.boundary.get i).comap π) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩`. Establish `e2 : orderAt ((T.ideal.comap π).comap (π ⁻¹ᵁ U).ι) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩ = ∑ i : Fin T.boundary.length, orderAt (((T.boundary.get i).comap π).comap (π ⁻¹ᵁ U).ι ^ a i) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, …`. Rewrite using `[hmon', orderAt_foldr_mul T.base ((π ⁻¹ᵁ U).ι ≫ q) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩]`. Simplify using `[List.map_ofFn, List.sum_ofFn]`. Establish `e3 : ∀ i : Fin T.boundary.length, orderAt (((T.boundary.get i).comap π).comap (π ⁻¹ᵁ U).ι ^ a i) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩ = (a i : ℕ∞) * orderAt ((T.boundary.get i).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoin …`.
+
+Introduce `i`. Establish `hp` using `orderAt_pow T.base ((π ⁻¹ᵁ U).ι ≫ q) (((T.boundary.get i).comap π).comap (π ⁻¹ᵁ U).ι) (a i) ⟨(isIrreducible_of_mem_intersectionComponents hC').genericPoint, hξU⟩`. Conclude with `hp.trans (congrArg (fun z : ℕ∞ => (a i : ℕ∞) * z) (ecomap i))`. Establish `h1 : orderAt (T.ideal.comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = ∑ i : Fin T.boundary.length, (a i : ℕ∞) * orderAt ((T.boundary.get i).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint`. Rewrite using `[← e0, e2]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => e3 i`. Establish `hoi : ∀ i : Fin T.boundary.length, orderAt ((T.boundary.get i).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = (((if strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J' then 1 else 0) + (if i ∈ lexMaxIndices T.ideal T.mult …`. Introduce `i`. Take `⟨ε, hε01, hεiff, hfact⟩` from `exists_orderAt_comap_eq_strictTransform_add_exceptional hGeom hT h π q hT'.valid.smooth hπ i (isIrreducible_of_mem_intersectionComponents hC').genericPoint`. Establish `hstrictmem : Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i) ∈ (blowupTriple T π q I').boundary`.
+
+Simplify using `only [blowupTriple_boundary]`. Conclude with `List.mem_append_left _ (List.mem_map_of_mem (f := Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary)) (by simp))`. Establish `hstrict : orderAt (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = ((if strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J' then 1 else 0 : ℕ) …`. Distinguish the cases in `hi : strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J'`. Establish `hmem` using `(hmemiff (strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i)).2 hi`.
+
+Rewrite `hmem` using `[get_transformedBoundary_strictTransformIndex]`. Establish `hone : orderAt (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = 1` using `hGeom.orderAt_boundary_eq_one (blowupTriple T π q I') hT'.valid _ hstrictmem _ hmem`. Rewrite using `[hone]`. Simplify using `[hi]`. Establish `hnot : (isIrreducible_of_mem_intersectionComponents hC').genericPoint ∉ (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get i)).support`.
+
+Introduce `hc`. Use `hi ((hmemiff (strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i)).1 ?_)` and prove the remaining obligations. Rewrite using `[get_transformedBoundary_strictTransformIndex]`. Conclude with `hc`. Rewrite using `[(orderAt_eq_zero_iff_not_mem_support _ _).2 hnot]`.
+
+Simplify using `[hi]`. Establish `hεval : ε = (if i ∈ lexMaxIndices T.ideal T.mult T.boundary then 1 else 0)`. Distinguish the cases in `hi : i ∈ lexMaxIndices T.ideal T.mult T.boundary`. Rewrite using `[if_pos hi]`. Conclude with `hεiff.2 ⟨⊤, trivial, fun y hy => hmaxIdx i hi hy.1⟩`.
+
+Rewrite using `[if_neg hi]`. Break down `hε01 with h0 | h1` into its components or cases. Conclude with `h0`. It suffices to derive a contradiction. Take `⟨V, hVmem, hVsub⟩` from `hεiff.1 h1`.
+
+Conclude with `hi (hkeyc i V hVmem hVsub)`. Rewrite using `[hfact, hstrict, hEord, mul_one, hεval, Nat.cast_add]`. Establish `hA : ∑ i : Fin T.boundary.length, a i * ((if strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J' then 1 else 0 : ℕ)) = ∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', a i`. Simplify using `[preimageStrictTransformIndex, mul_ite, mul_one, mul_zero, Finset.sum_filter]`. Establish `hB : ∑ i : Fin T.boundary.length, a i * ((if i ∈ lexMaxIndices T.ideal T.mult T.boundary then 1 else 0 : ℕ)) = ∑ j ∈ lexMaxIndices T.ideal T.mult T.boundary, a j`.
+
+Simplify using `[mul_ite, mul_one, mul_zero, Finset.sum_ite_mem]`. Establish `hnat : ∑ i : Fin T.boundary.length, a i * ((if strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J' then 1 else 0) + (if i ∈ lexMaxIndices T.ideal T.mult T.boundary then 1 else 0)) = (∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mu …`. Combine the equalities or inequalities in the displayed calculation. Establish `hgoal1 : orderAlong T.ideal C₀ = ((∑ j ∈ lexMaxIndices T.ideal T.mult T.boundary, a j : ℕ) : ℕ∞)` using `orderAlong_eq_sum_of_monomial hGeom hT (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary hC₀) hmem₀ U hU a hmon`. Establish `ekey : ∑ i : Fin T.boundary.length, (a i : ℕ∞) * orderAt ((T.boundary.get i).comap π) (isIrreducible_of_mem_intersectionComponents hC').genericPoint = ((∑ i : Fin T.boundary.length, a i * ((if strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary i ∈ J' the …`.
+
+Rewrite using `[Nat.cast_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hoi i, Nat.cast_mul]`. Establish `key : (T.mult : ℕ∞) + orderAt I' (isIrreducible_of_mem_intersectionComponents hC').genericPoint = ((∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', a i : ℕ) : ℕ∞) + ((∑ j ∈ lexMaxIndices T.ideal T.mult T.boundary, a j : ℕ) : ℕ∞)`. Rewrite using `[← h3, h1, ekey, hnat, Nat.cast_add]`.
+
+Rewrite using `[orderAlong_eq_orderAt_of_mem_intersectionComponents I' hC', hgoal1, add_comm (orderAt I' (isIrreducible_of_mem_intersectionComponents hC').genericPoint) ((T.mult : ℕ∞))]`. Conclude with `key`.
+-/
 theorem orderAlong_transform_add_mult_of_exceptionalIndex_mem (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     (h : minIndexCard T.ideal T.mult T.boundary ≠ 0)
@@ -552,6 +676,35 @@ theorem orderAlong_transform_add_mult_of_exceptionalIndex_mem (hGeom : MonomialG
     add_comm (orderAt I' (isIrreducible_of_mem_intersectionComponents hC').genericPoint) ((T.mult : ℕ∞))]
   exact key
 
+/- English proof (translation)
+Introduce `hnew`. Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth q` using `hT'.valid.smooth`. Establish `hC'comp : C' ∈ intersectionComponents (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary) J'`. Establish `hc` using `hcand`.
+
+Unfold `IsCandidateComponent at hc`. The claim follows by propositional logic. Establish `hC'' : C' ∈ intersectionComponents (blowupTriple T π q I').boundary J'` using `hC'comp`. Establish `hmemiff : ∀ i : Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length, ((isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ ((transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).get i).support) ↔ i ∈ J'` using `fun i => genericPoint_mem_support_iff_mem hGeom hT' hC'' i`. Establish `hEmem : (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ (Blowup.exceptionalIdeal π (monomialCenter T.ideal T.mult T.boundary)).support`.
+
+Establish `hx` using `(hmemiff (exceptionalIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary)).2 hnew`. Rewrite `hx` using `[get_transformedBoundary_exceptionalIndex]`. Then use the resulting hypothesis. Establish `hZmem : (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ ((monomialCenter T.ideal T.mult T.boundary).comap π).support`. Rewrite using `[← Blowup.exceptionalIdeal_eq_comap]`. Conclude with `hEmem`.
+
+Establish `hπZ : π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ (monomialCenter T.ideal T.mult T.boundary).support` using `(AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap ..).mp hZmem`. Establish `hπZset : π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ (↑(monomialCenter T.ideal T.mult T.boundary).support : Set ↥T.scheme)` using `hπZ`. Establish `hcos : π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ orderAtLeastLocus T.ideal T.mult` using `support_monomialCenter_subset_orderAtLeastLocus hGeom hT h hπZset`. Take `⟨U, hU, a, hmon⟩` from `hT.monomialNear _ hcos`. Establish `hπcenter : π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ monomialCenterSet T.ideal T.mult T.boundary`.
+
+Rewrite using `[← support_monomialCenter hGeom hT h]`. Conclude with `hπZset`. Rewrite `hπcenter` using `[monomialCenterSet_eq_sUnion_centerComponents]`. Take `⟨C₀, hC₀, hmem₀⟩` from `Set.mem_sUnion.1 hπcenter`. Establish `hformula` using `orderAlong_transform_add_mult_of_exceptionalIndex_mem hGeom hT h π q hπ I' hI' hT' hnew hC'comp U hU a hmon hC₀ hmem₀`.
+
+Establish `hv0 : orderAlong T.ideal C₀ = maxCandidateOrder T.ideal T.mult T.boundary` using `((mem_centerComponents_iff T.ideal T.mult T.boundary C₀).1 hC₀).2`. Establish `hvU : orderAlong I' C' = maxCandidateOrder T.ideal T.mult T.boundary` using `by rw [hordmax, hv]`. Rewrite `hformula` using `[hvU, hv0]`. Establish `hvlt : maxCandidateOrder T.ideal T.mult T.boundary < ⊤` using `(maxCandidateOrder_spec hGeom hT h).2.2.2`. Take `⟨N, hN⟩` from `ENat.ne_top_iff_exists.1 (ne_of_lt hvlt)`.
+
+Rewrite `hformula` using `[← hN]`. Establish `hnateq : N + T.mult = (∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', a i) + N`. Conclude with `hformula` after adjusting the coercions. Establish `hsumeq : (∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', a i) = T.mult` using `by omega`. Establish `hmpos : 1 ≤ T.mult` using `hT.valid.one_le_mult`.
+
+Establish `hcardpos : 1 ≤ (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J').card`. Break down `Finset.eq_empty_or_nonempty (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J') with he | hne` into its components or cases. It suffices to derive a contradiction. Rewrite `hsumeq` using `[he, Finset.sum_empty]`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Finset.card_pos.2 hne`. Establish `hdiv : ∀ j ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ (T.boundary.get j).support`. Introduce `j hj`. Establish `hj' : strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary j ∈ J'` using `(mem_preimageStrictTransformIndex_iff π (monomialCenter T.ideal T.mult T.boundary) T.boundary J' j).1 hj`. Establish `hmem` using `(hmemiff (strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary j)).2 hj'`.
+
+Rewrite `hmem` using `[get_transformedBoundary_strictTransformIndex]`. Take `⟨ε, hε01, hεiff, hfact⟩` from `exists_orderAt_comap_eq_strictTransform_add_exceptional hGeom hT h π q hT'.valid.smooth hπ j (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint`. Establish `h1 : (1 : ℕ∞) ≤ orderAt (Blowup.strictTransform π (monomialCenter T.ideal T.mult T.boundary) (T.boundary.get j)) (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint` using `(one_le_orderAt_iff_mem_support _ _).2 hmem`. Establish `h2 : (1 : ℕ∞) ≤ orderAt ((T.boundary.get j).comap π) (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint`. Rewrite using `[hfact]`.
+
+Conclude with `le_trans h1 le_self_add`. Establish `h3 : (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ ((T.boundary.get j).comap π).support` using `(one_le_orderAt_iff_mem_support _ _).1 h2`. Conclude with `(AlgebraicGeometry.Scheme.IdealSheafData.mem_support_comap ..).mp h3`. Establish `hsupp : π (isIrreducible_of_mem_intersectionComponents hC'comp).genericPoint ∈ (intersectionIdeal T.boundary (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J')).support` using `mem_support_intersectionIdeal T.boundary (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J') _ hdiv`. Take `⟨C₁, hxC₁, hcomp₁⟩` from `exists_isIrreducibleComponentOf_mem (↑(intersectionIdeal T.boundary (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J')).support : Set ↥T.scheme) _ hsupp`.
+
+Establish `hC₁ : C₁ ∈ intersectionComponents T.boundary (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J')` using `(mem_intersectionComponents_iff _ _ _).2 hcomp₁`. Establish `hord₁ : orderAlong T.ideal C₁ = ((∑ i ∈ preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J', a i : ℕ) : ℕ∞)` using `orderAlong_eq_sum_of_monomial hGeom hT hC₁ hxC₁ U hU a hmon`. Establish `hcand₁ : IsCandidateComponent T.ideal T.mult T.boundary (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J').card (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J') C₁`. Unfold `IsCandidateComponent`. Use `⟨rfl, hC₁, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hord₁, hsumeq]`. Establish `hex : ∃ r : ℕ, 1 ≤ r ∧ ∃ (J : Finset (Fin T.boundary.length)) (C : Set ↥T.scheme), IsCandidateComponent T.ideal T.mult T.boundary r J C` using `⟨_, hcardpos, _, _, hcand₁⟩`. Establish `hle` using `(minIndexCard_spec T.ideal T.mult T.boundary hex).2.2 _ hcardpos _ _ hcand₁`. Establish `hcardJ' : J'.card = minIndexCard I' T.mult (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary)`. Establish `hc` using `hcand`.
+
+Unfold `IsCandidateComponent at hc`. Conclude with `hc.1`. Establish `hcard2 : (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary J').card + 1 = J'.card` using `card_preimageStrictTransformIndex_add_one_of_mem π (monomialCenter T.ideal T.mult T.boundary) T.boundary J' hnew`. Rewrite `hcardJ'` using `[hr]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem exceptionalIndex_not_mem_of_orderAlong_eq_maxCandidateOrder (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     (h : minIndexCard T.ideal T.mult T.boundary ≠ 0)
@@ -698,6 +851,43 @@ private theorem exceptionalIndex_not_mem_of_orderAlong_eq_maxCandidateOrder (hGe
   rw [hr] at hcardJ'
   omega
 
+/- English proof (translation)
+Establish `: CharZero T.base` using `hT.valid.charZero`. Establish `: AlgebraicGeometry.Smooth q` using `hT'.valid.smooth`. Establish `hfinD : (maxOrderCandidatePairs T.ideal T.mult T.boundary).Finite` using `finite_maxOrderCandidatePairs hGeom hT`. Establish `hbest` using `(lexMaxIndices_spec hGeom hT h).1`. Unfold `IsMaxOrderIndexSet at hbest`.
+
+Take `⟨C₀, hcand₀, hord₀⟩` from `hbest`. Establish `hC₀opt : C₀ ∈ centerComponents T.ideal T.mult T.boundary` using `(mem_centerComponents_iff T.ideal T.mult T.boundary C₀).2 ⟨hcand₀, hord₀⟩`. Establish `hp₀ : (lexMaxIndices T.ideal T.mult T.boundary, C₀) ∈ maxOrderCandidatePairs T.ideal T.mult T.boundary` using `(mem_maxOrderCandidatePairs_iff T.ideal T.mult T.boundary _).2 ⟨hcand₀, hord₀⟩`. Establish `hπ' : Blowup.IsBlowupAlongIdealSheaf π (componentUnionIdeal T.boundary (lexMaxIndices T.ideal T.mult T.boundary) (centerComponents T.ideal T.mult T.boundary) (isOpen_preimage_sUnion_centerComponents hGeom hT))`. Rewrite using `[← monomialCenter_eq_componentUnionIdeal hGeom hT h]`.
+
+Conclude with `hπ`. Establish `htc` using `hGeom.transformed_components T hT.valid (lexMaxIndices T.ideal T.mult T.boundary) (centerComponents T.ideal T.mult T.boundary) (centerComponents_subset_intersectionComponents T.ideal T.mult T.boundary) (isOpen_preimage_sUnion_centerComponents hGeom hT) X' π hπ'`. Rewrite `htc` using `[← monomialCenter_eq_componentUnionIdeal hGeom hT h]`. Establish `hkey : ∀ p ∈ maxOrderCandidatePairs I' T.mult (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary), ((preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1, closure (⇑π '' p.2)) ∈ maxOrderCandidatePairs T.ideal T.mult T. …`. Introduce `p hp`.
+
+Take `⟨hcand, hordmax⟩` from `(mem_maxOrderCandidatePairs_iff I' T.mult (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary) p).1 hp`. Establish `hnew` using `exceptionalIndex_not_mem_of_orderAlong_eq_maxCandidateOrder hGeom hT h π q hπ I' hI' hT' hr hv hcand hordmax`. Establish `hC'comp : p.2 ∈ intersectionComponents (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary) p.1`. Establish `hc` using `hcand`. Unfold `IsCandidateComponent at hc`.
+
+The claim follows by propositional logic. Establish `hC'img : p.2 ∈ intersectionComponents (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary) ((preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1).image (strictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) …`. Rewrite using `[image_strictTransformIndex_preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1 hnew]`. Conclude with `hC'comp`. Establish `hgen : IsGenericPoint (isIrreducible_of_mem_intersectionComponents hC'img).genericPoint p.2` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC'img`.
+
+Take `⟨hoff, C, hC, hCnot, hC'eq, hlast⟩` from `htc (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1) p.2 hC'img _ hgen`. Establish `hCirr : IsIrreducible C` using `isIrreducible_of_mem_intersectionComponents hC`. Establish `hCcl : IsClosed C` using `isClosed_intersectionComponents_of_mem hC`. Establish `hgpC : IsGenericPoint hCirr.genericPoint C` using `isGenericPoint_genericPoint_of_mem_intersectionComponents hC`. Establish `hπgp : π (isIrreducible_of_mem_intersectionComponents hC'img).genericPoint = hCirr.genericPoint` using `hlast _ hgpC`.
+
+Establish `hclim : closure (⇑π '' p.2) = C`. Rewrite using `[closure_image_genericPoint (f := ⇑π) π.continuous hgen, hπgp, hgpC]`. Establish `hSirr : IsIrreducible (⇑π '' p.2)` using `(isIrreducible_of_mem_intersectionComponents hC'img).image _ π.continuous.continuousOn`. Establish `hcl2 : closure (⇑π '' p.2) = closure C`. Rewrite using `[hclim, hCcl.closure_eq]`.
+
+Establish `hordeq : orderAlong I' p.2 = orderAlong T.ideal C`. Establish `h1` using `orderAlong_transform_eq_of_genericPoint_not_mem_exceptional hGeom hT h π hπ I' hI' hC'img hoff`. Rewrite using `[h1]`. Conclude with `orderAlong_eq_of_closure_eq T.ideal hSirr hCirr hcl2`. Establish `hordC : orderAlong T.ideal C = maxCandidateOrder T.ideal T.mult T.boundary`.
+
+Rewrite using `[← hordeq, hordmax, hv]`. Use `⟨?_, ?_, hnew, ?_⟩` and prove the remaining obligations. Use `(mem_maxOrderCandidatePairs_iff T.ideal T.mult T.boundary _).2 ⟨?_, ?_⟩` and prove the remaining obligations. Unfold `IsCandidateComponent`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[card_preimageStrictTransformIndex_of_not_mem π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1 hnew]`. Establish `hc` using `hcand`. Unfold `IsCandidateComponent at hc`. Rewrite using `[hc.1]`. Conclude with `hr`.
+
+Rewrite using `[hclim]`. Conclude with `hC`. Rewrite using `[hclim, hordC]`. Conclude with `(maxCandidateOrder_spec hGeom hT h).2.2.1`. Rewrite using `[hclim, hordC]`.
+
+Rewrite using `[hclim]`. Conclude with `hCnot`. Rewrite using `[hclim]`. Conclude with `hC'eq`. Establish `hinj : Set.InjOn (fun p : Finset (Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length) × Set ↥X' => (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1, closure (⇑π '' p.2))) (maxOrderCandidatePairs I' T.m …`.
+
+Introduce `p hp p' hp' heq`. Take `⟨-, -, hnew1, hrep1⟩` from `hkey p hp`. Take `⟨-, -, hnew2, hrep2⟩` from `hkey p' hp'`. Establish `hJ : preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1 = preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p'.1` using `congrArg Prod.fst heq`. Establish `hC : closure (⇑π '' p.2) = closure (⇑π '' p'.2)` using `congrArg Prod.snd heq`.
+
+Establish `hfst : p.1 = p'.1`. Rewrite using `[← image_strictTransformIndex_preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1 hnew1, ← image_strictTransformIndex_preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p'.1 hnew2, hJ]`. Establish `hsnd : p.2 = p'.2`. Rewrite using `[hrep1, hC]`. Conclude with `hrep2.symm`.
+
+Conclude with `Prod.ext hfst hsnd`. Establish `himg : (fun p : Finset (Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length) × Set ↥X' => (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1, closure (⇑π '' p.2))) '' (maxOrderCandidatePairs I' T.mult (tr …`. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `(hkey p hp).1`. Establish `hnotin : (lexMaxIndices T.ideal T.mult T.boundary, C₀) ∉ (fun p : Finset (Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length) × Set ↥X' => (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1, closure (⇑π …`.
+
+Introduce and unpack `⟨p, hp, heq⟩`. Establish `hsnd : closure (⇑π '' p.2) = C₀` using `congrArg Prod.snd heq`. Use `(hkey p hp).2.1 ?_` and prove the remaining obligations. Rewrite using `[hsnd]`. Conclude with `hC₀opt`.
+
+Establish `hss : (fun p : Finset (Fin (transformedBoundary π (monomialCenter T.ideal T.mult T.boundary) T.boundary).length) × Set ↥X' => (preimageStrictTransformIndex π (monomialCenter T.ideal T.mult T.boundary) T.boundary p.1, closure (⇑π '' p.2))) '' (maxOrderCandidatePairs I' T.mult (tra …`. Use `Set.ssubset_iff_subset_ne.2 ⟨himg, ?_⟩` and prove the remaining obligations. Introduce `hEq`. Apply `hnotin` to reduce the goal to its premises. Rewrite using `[hEq]`.
+
+Conclude with `hp₀`. Establish `hlt` using `Set.ncard_lt_ncard hss hfinD`. Rewrite `hlt` using `[Set.InjOn.ncard_image hinj]`. Then use the resulting hypothesis.
+-/
 theorem maxOrderCandidatePairs_ncard_lt_of_blowup (hGeom : MonomialGeometryHypotheses.{u})
     {T : MarkedIdealWithBoundary.{u}} (hT : MonomialCenter.IsLocallyMonomialTriple T)
     (h : minIndexCard T.ideal T.mult T.boundary ≠ 0)

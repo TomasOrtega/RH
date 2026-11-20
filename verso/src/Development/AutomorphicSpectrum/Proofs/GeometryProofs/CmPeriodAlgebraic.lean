@@ -16,6 +16,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Fl.CMGiven
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Substitute `hρ` using the available equality. Take `⟨ψ', hψ', hex⟩` from `GlobalTheory.T.exists_cmCurve_homFamily_to_fibre_at_period hU hL E H D l Xo g ty FU i P hP _ C' u c T' n ε _ hu hc hΛ hε hh`. Take `⟨k₁, hk₁, hle, hdesc⟩` from `GlobalTheory.T.cmFamily_descends_to_numberField hU hL E H k₀ _ C₀ (FU.Di i) _ T _ _ C' φ T' mT ψ' c' hψ'`. Use `⟨k₁, hk₁, hle, fun K e eK ω₂ C₂ φ₂ φ₃ T₂ m₂ m₃ f m c₂ c₃ hφ hm hn => ?_⟩` and prove the remaining obligations. Take `⟨ψ₂, hψ₂, hsq⟩` from `hdesc K e eK _ C₂ φ₂ φ₃ T₂ m₂ m₃ c₂ c₃ hφ hm`.
+
+Use `⟨ψ₂, hψ₂, fun a z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hex, ← hn, ← Category.assoc _ m₃.φ, Over.comp_left, Category.assoc _ _ m₃.φ]`. Conclude with `congrArg (fun q => (_ ≫ q) ≫ m.φ) (hsq a).symm`.
+-/
 theorem exists_desc (hU : ThetaUnifAV) (hL : Out.Laws) {D : Datum H} {l : Level H} {Xo : Moduli D l} {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
     {P : (FU.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (FU.Di i) ty P)
@@ -44,6 +49,9 @@ theorem exists_desc (hU : ThetaUnifAV) (hL : Out.Laws) {D : Datum H} {l : Level 
   rw [← hex, ← hn, ← Category.assoc _ m₃.φ, Over.comp_left, Category.assoc _ _ m₃.φ]
   exact congrArg (fun q => (_ ≫ q) ≫ m.φ) (hsq a).symm
 
+/- English proof (translation)
+Take `⟨C₁, φ₁, c₁⟩` from `exists_ellMap hB E H _ ω C (𝓞 K) (RingOfIntegers.mapRingHom (IntermediateField.inclusion (e₂.trans e₅)).toRingHom)`. Take `⟨C₂, φ₁₂, c₁₂⟩` from `exists_ellMap hB E H _ _ C₁ K (algebraMap (𝓞 K) K)`. Take `⟨φ₂, c₂, hφ₂⟩` from `(Factor.ellMap_cancel_and_sabMap_cancel E H (𝓞 M) k₀ K _ (IntermediateField.inclusion e₅).toRingHom).1 _ _ _ C C₀ C₂ φ₀ _ c₀ ((EllComp.ellMap_comp E H _ _ C _ _ C₁ _ _ c₁).1 _ _ C₂ _ _ c₁₂)`. Take `⟨φ₃, c₃, hφ₃⟩` from `(Factor.ellMap_cancel_and_sabMap_cancel E H k₀ K ℂ _ (algebraMap K ℂ)).1 _ _ _ C₀ C₂ C' φ₂ φ c₂ c'`. Conclude with `⟨_, C₁, φ₁, _, C₂, φ₁₂, φ₂, φ₃, c₁, c₁₂, c₂, c₃, hφ₃, hφ₂.symm⟩`.
+-/
 theorem exists_tower (hB : Out.PolBaseChangeSt) {M k₀ K : IntermediateField ℚ ℂ} [NumberField M] [NumberField K]
     (e₂ : M ≤ k₀) (e₅ : k₀ ≤ K) {ω : 𝓞 M} (C : Ell H (𝓞 M) ω) {ω₀ : k₀} (C₀ : Ell H k₀ ω₀)
     {φ₀ : C₀.P.A.left ⟶ C.P.A.left}
@@ -64,10 +72,56 @@ theorem exists_tower (hB : Out.PolBaseChangeSt) {M k₀ K : IntermediateField �
     _ _ _ C₀ C₂ C' φ₂ φ c₂ c'
   exact ⟨_, C₁, φ₁, _, C₂, φ₁₂, φ₂, φ₃, c₁, c₁₂, c₂, c₃, hφ₃, hφ₂.symm⟩
 
+/- English proof (translation)
+Unfold `sgnRt`. Apply the tactic sequence `split_ifs <;> simp [H.sqrt_neg_disc_sq]`.
+-/
 theorem sgnRt_sq (b : Bool) : sgnRt H b ^ 2 = -(H.d : ℂ) := by
   unfold sgnRt
   split_ifs <;> simp [H.sqrt_neg_disc_sq]
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c g ty FU i Z P hP n k hkf hn hy`. Use `c.fin` as an intermediate fact. Establish `hU : ThetaUnifAV` using `GlobalTheory.thetaUnifAV_closed`. Take `⟨hL, hL₂⟩` from `GlobalTheory.abelianSchemeLaws_all`. Establish `hX : HomExtDvr` using `GlobalTheory.CM.homExtDvr_of_card_torsion GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional`.
+
+Establish `hK : Published.KernelFiniteFlatSt` using `GlobalTheory.kernelFiniteFlat_holds`. Establish `hB` using `hL.polBaseChange`. Take `⟨K₀, hK₀, y₀, _, hy₀, hy₀'⟩` from `GlobalTheory.T.family_pure_periods_span E H D l Xo c g ty FU i P hP n hn hy`. Take `⟨hg0, bb0, a0, hspan0⟩` from `GlobalTheory.T.periods_span_pure_decomposition E H (FU.Di i) g ty P hP n hn hy`. Take `⟨k₀, _, e₁, e₂, e₃, e₆⟩ : ∃ k₀ : IntermediateField ℚ ℂ, FiniteDimensional ℚ k₀ ∧ K₀ ≤ k₀ ∧ (∀ b, (Z b).M ≤ k₀) ∧ k ≤ k₀ ∧ c.F ≤ k₀` from `⟨K₀ ⊔ (Z true).M ⊔ (Z false).M ⊔ k ⊔ c.F, inferInstance, le_sup_left.trans (le_sup_left.trans (le_sup_left.trans le_sup_left)), fun b => by`.
+
+Consider the cases of `b`. Conclude with `le_sup_right.trans (le_sup_left.trans le_sup_left)`. Conclude with `le_sup_right.trans (le_sup_left.trans (le_sup_left.trans le_sup_left)),`. Use the proof step `le_sup_right.trans le_sup_left, le_sup_right⟩`. Use `choose C₀ φ₀ c₀ using fun b => exists_ellMap hB E H _ (Z b).ω (Z b).C k₀ ((IntermediateField.inclusion (e₂ b)).toRingHom.comp (algebraMap (𝓞 (Z b).M) (Z b).M))`.
+
+Use `choose φ c' hφ using fun b => (Factor.ellMap_cancel_and_sabMap_cancel E H (𝓞 (Z b).M) k₀ ℂ _ (algebraMap k₀ ℂ)).1 _ _ _ (Z b).C (C₀ b) (Z b).C' (φ₀ b) (Z b).π (c₀ b) (Z b).map`. Take `⟨T, mT, -⟩` from `exists_pat_univ Xo (spMap (IntermediateField.inclusion e₁).toRingHom ≫ y₀)`. Take `⟨T', nT, -⟩` from `exists_pat_univ Xo (FU.u i P)`. Take `⟨mT', hmT'⟩` from `(Factor.ellMap_cancel_and_sabMap_cancel E H k₀ k₀ ℂ (RingHom.id _) (algebraMap k₀ ℂ)).2 _ _ _ _ _ _ mT nT (by rw [← Category.assoc, spMap_comp_spMap]; exact hy₀')`. Use `choose ε hε using fun b => exists_sign (H := H) (Z b).hω (sgnRt_sq b)`.
+
+Use `choose h hh _ using fun b => GlobalTheory.T.exists_unique_cmHermitianLatticeForm E H (FU.Di i) (ε b)`. Establish `htw : 2 * (1 - (((Z true).ω : (Z true).M) : ℂ)) - 1 = sgnRt H false`. Use `(Z true).hω` as an intermediate fact. Simplify using `only [sgnRt, Bool.false_eq_true, if_false, if_true] at this ⊢`. Take the linear combination `-this`.
+
+Take `⟨ε₁, hε₁⟩` from `exists_sign (H := H) htw (sgnRt_sq false)`. Take `⟨h₁, hh₁, -⟩` from `GlobalTheory.T.exists_unique_cmHermitianLatticeForm E H (FU.Di i) ε₁`. Use `choose k₁ hk₁ hle hdesc using fun b => exists_desc hU hL FU i hP k₀ (C₀ b) (Z b).C' (c' b) (Z b).u (Z b).theta (Z b).c_ne (Z b).lat (Z b).hω (hε b) (hh b) T T' nT mT'`. Take `⟨k₂, hk₂, hle₂, hdesc₂⟩` from `exists_desc hU hL FU i hP k₀ (twist (C₀ true) false) (twist (Z true).C' false) (ellMap_twist (c' true) false) (Z true).u (Z true).theta (Z true).c_ne (Z true).lat htw hε₁ hh₁ T T' nT mT'`. Choose the witnesses or unpack the hypotheses as in `⟨K₁, _, e₄, e₄'⟩ : ∃ K₁ : IntermediateField ℚ ℂ, FiniteDimensional ℚ K₁ ∧ (∀ b, k₁ b ≤ K₁) ∧ k₂ ≤ K₁ := by`.
+
+Use `hk₁ true` as an intermediate fact. Use `hk₁ false` as an intermediate fact. Conclude with `⟨k₁ true ⊔ k₁ false ⊔ k₂, inferInstance, fun b => by`. Consider the cases of `b`. Use `exacts [le_sup_right.trans le_sup_left, le_sup_left.trans le_sup_left], le_sup_right⟩`.
+
+Establish `: NumberField K₁` using `⟨⟩`. Establish `e₅ : k₀ ≤ K₁` using `(hle true).trans (e₄ true)`. Use `choose ω₁ C₁ φ₁ ω₂ C₂ φ₁₂ φ₂ φ₃ c₁ c₁₂ c₂ c₃ hφ₃ hφ₂ using fun b => exists_tower hB (e₂ b) e₅ (Z b).C (C₀ b) (c₀ b) (Z b).C' (c' b)`. Establish `hyy : spMap (algebraMap K₁ ℂ) ≫ spMap (IntermediateField.inclusion (e₁.trans e₅)).toRingHom ≫ y₀ = FU.u i P`. Rewrite using `[← Category.assoc, spMap_comp_spMap]`.
+
+Conclude with `hy₀'`. Take `⟨T₂, m, hg⟩` from `exists_pat_univ Xo (spMap (IntermediateField.inclusion (e₁.trans e₅)).toRingHom ≫ y₀)`. Take `⟨m₂, hm₂⟩` from `(Factor.ellMap_cancel_and_sabMap_cancel E H k₀ k₀ K₁ (RingHom.id _) (IntermediateField.inclusion e₅).toRingHom).2 _ _ _ _ _ _ mT m (by rw [← Category.assoc, spMap_comp_spMap]; rfl)`. Take `⟨m₃, hm₃⟩` from `(Factor.ellMap_cancel_and_sabMap_cancel E H K₁ K₁ ℂ (RingHom.id _) (algebraMap K₁ ℂ)).2 _ _ _ _ _ _ m₂ mT' (by rw [spMap_comp_spMap]; rfl)`. Establish `hnT : m₃.φ ≫ m.φ = nT.φ` using `by rw [← hm₂, ← Category.assoc, hm₃, hmT']`.
+
+Use `choose ψ₂ hψ₂ hex₂ using fun b => hdesc b K₁ e₅ (e₄ b) _ (C₂ b) (φ₂ b) (φ₃ b) T₂ m₂ m₃ _ m (c₂ b) (c₃ b) (hφ₃ b) hm₃ hnT`. Take `⟨ψt, hψt, hext⟩` from `hdesc₂ K₁ e₅ e₄' _ (twist (C₂ true) false) (φ₂ true) (φ₃ true) T₂ m₂ m₃ _ m (ellMap_twist (c₂ true) false) (ellMap_twist (c₃ true) false) (hφ₃ true) hm₃ hnT`. Establish `hpt : ∀ b (z : Fin (Z b).C'.P.g → ℂ), (((Z b).u.ex z).left ≫ φ₃ b) ≫ (C₂ b).P.A.hom = spMap (algebraMap K₁ ℂ)` using `fun b z => by`. Rewrite using `[Category.assoc, (c₃ b).2.1.2.1.1.w, ← Category.assoc, Over.w]`. Conclude with `Category.id_comp _`.
+
+Establish `hΨ : ∀ b, ∃ Ψ : PureType.lat hP (sgnRt H b) → ((C₂ true).P.A ⟶ T₂.t.G), (∀ a, IsMonHom (Ψ a)) ∧ ∀ a (z : ℂ), (((Z true).u.ex fun _ => (Z true).c * z).left ≫ φ₃ true ≫ (Ψ a).left) ≫ m.φ = (FU.ex i P (z • P a)).left`. Introduce `b`. Consider the cases of `b`. Conclude with `⟨ψt, fun a => (hψt.1 a).1, hext⟩`. Conclude with `⟨ψ₂ true, fun a => ((hψ₂ true).1 a).1, hex₂ true⟩`.
+
+Use `choose Ψ hΨm hΨe using hΨ`. Establish `hgT : T₂.g = g` using `by rw [hg, hg0, (FU.sig i).1, (FU.sig i).2]`. Establish `key : ∀ N : ℕ, N = g → ∃ (bb : Fin N → Bool) (a : ∀ j, PureType.lat hP (sgnRt H (bb j))), ∀ z : Fin g → ℂ, ∃ s : Fin N → ℂ, z = ∑ j, s j • P (a j)`. Introduce and unpack `N rfl`. Conclude with `⟨bb0, a0, hspan0⟩`.
+
+Take `⟨bb, a, hspan⟩` from `key _ hgT`. Take `⟨B, m', hBg⟩` from `GlobalTheory.T.principal_triple_extends_of_curve_homomorphisms hU hL hL₂ hX hK E H (𝓞 K₁) K₁ (algebraMap K₁ ℂ) (C₁ true).P (C₂ true).P (φ₁₂ true) T₂ (fun j => Ψ (bb j) (a j)) (c₁₂ true).2.1 (C₁ true).dim (fun j => hΨm (bb j) (a j)) (ontoAt_of_exp m.cart _ hyy (FU.ex i P) (FU.ex_a …`. Rewrite using `[← hΨe (bb j) (a j) z]`. Simplify using `only [Category.assoc]`. Conclude with `Category.assoc _ _ _⟩)`.
+
+Use `choose ψ hψ hsq' using fun b => GlobalTheory.T.cmFamily_extends_over_dedekindDomain hL hX E H (𝓞 K₁) K₁ _ (C₁ b) (FU.Di i) _ B _ _ (C₂ b) (φ₁₂ b) T₂ m' (ψ₂ b) (c₁₂ b) (hψ₂ b)`. Establish `hcF : c.F ≤ K₁` using `e₆.trans e₅`. Set `yK : Sp K₁ ⟶ Xo.XF c` to `pullback.lift (spMap (IntermediateField.inclusion (e₁.trans e₅)).toRingHom ≫ y₀) (spMap (IntermediateField.inclusion hcF).toRingHom) (by`. Rewrite using `[Category.assoc, hy₀, spMap_comp_spMap, spMap_comp_spMap]`. Use the proof step `rfl)`.
+
+Establish `hyK : under yK = spMap (IntermediateField.inclusion (e₁.trans e₅)).toRingHom ≫ y₀` using `pullback.lift_fst _ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨mK, hmK⟩ : ∃ mK : SABMap T₂.t Xo.univ.t (under yK), mK.φ = m.φ := by`. Rewrite using `[hyK]`. Conclude with `⟨m, rfl⟩`. Use `⟨ { K := K₁, hc := hcF, hM := fun b => (e₂ b).trans e₅, ω := ω₁, C := C₁, φ := φ₁ map := c₁ π := fun b => φ₃ b ≫ φ₁₂ b map' := fun b => (EllComp.ellMap_comp E H _ _ (C₁ b) _ _ (C₂ b) _ _ (c₁₂ b)).1 _ _ (Z b).C' _ _ (c₃ b) tri := fun b => by` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hφ₂, ← Category.assoc, hφ₃, hφ]`. Use `ε := ε`. Use `sgn := fun b => by`. Establish `e` using `congrArg Complex.im (Z b).hω`. Establish `e' : (sgnRt H b).im = 2 * (((Z b).ω : (Z b).M) : ℂ).im`.
+
+Rewrite using `[← e]`. Simplify using the standard rewrite rules. Rewrite using `[e']`. Use polynomial arithmetic with `[hε b]`. Use `h := fun b x y => h b x y`.
+
+Use `kform := hh`. Use `B := B`. Use `dim := by rw [hBg, hgT]`. Use `y := yK`. Use `hy := pullback.lift_snd _ _ _`.
+
+Use `pt := by rw [hyK]; exact hyy`. Use `t := T₂.t, m := mK, m' := m', ψ := ψ, fam := hψ`. Use `tie := fun b a z x hx hx' => ?_ }, e₃.trans e₅⟩`. Rewrite using `[hmK, ← hex₂ b a z]`. Use `congr 1`.
+
+Use `m'.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Use `hx'.trans ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Conclude with `congrArg (fun q => _ ≫ φ₃ b ≫ q) (hsq' b a).symm`. Rewrite using `[hx, ← hpt b fun _ => (Z b).c * z]`.
+
+Simplify using `only [Category.assoc]`. Conclude with `congrArg (fun q => _ ≫ φ₃ b ≫ q) (Over.w (ψ₂ b a)).symm`.
+-/
 theorem exists_pack_given : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (Z : ∀ b : Bool, Curve0 H (sgnRt H b)) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (n : ℕ) (k : IntermediateField ℚ ℂ), FiniteDimensional ℚ k → 0 < n → (∀ y : (FU.Di i).La, ∃ a ∈ PureType.lat hP (sgnRt H true), ∃ b ∈ PureType.lat hP (sgnRt H false), n • y = a + b) → ∃ X : CMPack Z c FU i hP, k ≤ X.K := by
   intro E _ _ _ H D l Xo c g ty FU i Z P hP n k hkf hn hy
   have := c.fin

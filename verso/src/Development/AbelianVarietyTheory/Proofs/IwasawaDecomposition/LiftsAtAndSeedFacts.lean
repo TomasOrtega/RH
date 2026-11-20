@@ -24,34 +24,57 @@ section Chars
 
 variable {T : Type} {L : LevCh D T} {μ0 : T}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(hL.mu0 j).1.1.mul (hL.xi t).1.1, fun x => (congrArg₂ (· * ·) ((hL.mu0 j).1.2 x) ((hL.xi t).1.2 x)).trans (mul_one _)⟩`.
+-/
 theorem isHecke_mu (hL : L.Is μ0) (t : T) (j : Fin D.R.m) : IsHeckeChar D (L.mu t ((j : ℕ) + 1)) :=
   ⟨(hL.mu0 j).1.1.mul (hL.xi t).1.1, fun x =>
     (congrArg₂ (· * ·) ((hL.mu0 j).1.2 x) ((hL.xi t).1.2 x)).trans (mul_one _)⟩
 
+/- English proof (translation)
+Establish `hres` using `GlobalTheory.Mem.EtaTilde.isEta_res D L.eta L.C.eta hL.eta L.C.isEta`. Use `⟨⟨_, hres⟩, fun η _ a => ?_⟩` and prove the remaining obligations. Use `show L.mu0 ((j : ℕ) + 1) (idF D a) * L.xi t (idF D a) = _`. Rewrite using `[pow_zero, GlobalTheory.GridWeil.triv_base (hL.mu0 j) (L.C.isMu0 j).triv a, GlobalTheory.GridWeil.triv_base (hL.xi t) (hL.xi_triv t) a, mul_one]`.
+-/
 theorem resEta_mu (hL : L.Is μ0) (t : T) (j : Fin D.R.m) : ResEta D (L.mu t ((j : ℕ) + 1)) 0 := by
   have hres := GlobalTheory.Mem.EtaTilde.isEta_res D L.eta L.C.eta hL.eta L.C.isEta
   refine ⟨⟨_, hres⟩, fun η _ a => ?_⟩
   show L.mu0 ((j : ℕ) + 1) (idF D a) * L.xi t (idF D a) = _
   rw [pow_zero, GlobalTheory.GridWeil.triv_base (hL.mu0 j) (L.C.isMu0 j).triv a, GlobalTheory.GridWeil.triv_base (hL.xi t) (hL.xi_triv t) a, mul_one]
 
+/- English proof (translation)
+Establish `hres` using `GlobalTheory.Mem.EtaTilde.isEta_res D L.eta L.C.eta hL.eta L.C.isEta`. Use `⟨⟨_, hres⟩, fun η h a => ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique h hres, pow_one, MonoidHom.comp_apply]`.
+-/
 theorem resEta_eta (hL : L.Is μ0) : ResEta D L.eta 1 := by
   have hres := GlobalTheory.Mem.EtaTilde.isEta_res D L.eta L.C.eta hL.eta L.C.isEta
   refine ⟨⟨_, hres⟩, fun η h a => ?_⟩
   rw [(GlobalTheory.IdeleNormChar.existsUnique_isEta D).unique h hres, pow_one, MonoidHom.comp_apply]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isHecke_mu hL t j).1.mul (hL.eta.1.1.inv), fun x => by rw [MonoidHom.mul_apply, MonoidHom.inv_apply, (isHecke_mu hL t j).2, hL.eta.1.2, inv_one, mul_one]⟩`.
+-/
 theorem isHecke_quot (hL : L.Is μ0) (t : T) (j : Fin D.R.m) : IsHeckeChar D (L.mu t ((j : ℕ) + 1) * L.eta⁻¹) :=
   ⟨(isHecke_mu hL t j).1.mul (hL.eta.1.1.inv), fun x => by
     rw [MonoidHom.mul_apply, MonoidHom.inv_apply, (isHecke_mu hL t j).2, hL.eta.1.2, inv_one, mul_one]⟩
 
+/- English proof (translation)
+The claim follows from `resEta_parity (resEta_mul (resEta_mu hL t j) (resEta_inv (resEta_eta hL))) (by obtain ⟨c, rfl⟩ := hn; omega)`.
+-/
 theorem resEta_quot (hL : L.Is μ0) (t : T) (j : Fin D.R.m) {n : ℕ} (hn : Odd n) :
     ResEta D (L.mu t ((j : ℕ) + 1) * L.eta⁻¹) n :=
   resEta_parity (resEta_mul (resEta_mu hL t j) (resEta_inv (resEta_eta hL)))
     (by obtain ⟨c, rfl⟩ := hn; omega)
 
+/- English proof (translation)
+The claim follows from `resEta_parity (resEta_mu hL t j) (by obtain ⟨c, rfl⟩ := hn; omega)`.
+-/
 theorem resEta_even (hL : L.Is μ0) (t : T) (j : Fin D.R.m) {n : ℕ} (hn : Even n) :
     ResEta D (L.mu t ((j : ℕ) + 1)) n :=
   resEta_parity (resEta_mu hL t j) (by obtain ⟨c, rfl⟩ := hn; omega)
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use `⟨a + b - 1, ?_⟩` and prove the remaining obligations. Unfold `Ranks.r`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem odd_r : Odd D.R.r := by
   obtain ⟨a, ha⟩ := D.R.k_even
   obtain ⟨b, hb⟩ := D.R.m_even
@@ -60,6 +83,9 @@ theorem odd_r : Odd D.R.r := by
   unfold Ranks.r
   omega
 
+/- English proof (translation)
+Establish `h1 : ¬ Even D.R.r` using `Nat.not_even_iff_odd.2 odd_r`. Establish `h2 : ¬ Even D.R.t` using `Nat.not_even_iff_odd.2 D.R.t_odd`. Unfold `Ranks.rankY`. Rewrite using `[Nat.even_add, Nat.even_mul]`. The claim follows by propositional logic.
+-/
 theorem even_rankY (j : ℕ) : Even (D.R.rankY j) ↔ ¬ Even j := by
   have h1 : ¬ Even D.R.r := Nat.not_even_iff_odd.2 odd_r
   have h2 : ¬ Even D.R.t := Nat.not_even_iff_odd.2 D.R.t_odd
@@ -67,11 +93,19 @@ theorem even_rankY (j : ℕ) : Even (D.R.rankY j) ↔ ¬ Even j := by
   rw [Nat.even_add, Nat.even_mul]
   tauto
 
+/- English proof (translation)
+Use `show (D.sp.Y (min k D.R.m)).rank = _`. Rewrite using `[min_eq_left h]`. Conclude with `D.sp.Y_rank k h`.
+-/
 theorem rank_Yc {k : ℕ} (h : k ≤ D.R.m) : (Yc D k).rank = D.R.rankY k := by
   show (D.sp.Y (min k D.R.m)).rank = _
   rw [min_eq_left h]
   exact D.sp.Y_rank k h
 
+/- English proof (translation)
+Unfold `Lift.chrStep`. Distinguish the cases in `h : Even (j : ℕ)`. Rewrite using `[if_pos h.add_one]`. Conclude with `⟨isHecke_quot hL t j, isHecke_mu hL t j, resEta_quot hL t j (Nat.not_even_iff_odd.1 fun e => ha.1 e h), resEta_even hL t j (hb.2 h)⟩`. Rewrite using `[if_neg (fun e => h (by simpa [Nat.odd_add_one] using e))]`.
+
+Conclude with `⟨isHecke_mu hL t j, isHecke_quot hL t j, resEta_even hL t j (ha.2 h), resEta_quot hL t j (Nat.not_even_iff_odd.1 fun e => h (hb.1 e))⟩`.
+-/
 theorem step_facts (hL : L.Is μ0) (t : T) (j : Fin D.R.m) {a b : ℕ} (ha : Even a ↔ ¬ Even (j : ℕ)) (hb : Even b ↔ Even (j : ℕ)) :
     IsHeckeChar D (Lift.chrStep (L.mu t) L.eta ((j : ℕ) + 1)).1 ∧ IsHeckeChar D (Lift.chrStep (L.mu t) L.eta ((j : ℕ) + 1)).2 ∧
       ResEta D (Lift.chrStep (L.mu t) L.eta ((j : ℕ) + 1)).1 a ∧ ResEta D (Lift.chrStep (L.mu t) L.eta ((j : ℕ) + 1)).2 b := by
@@ -84,6 +118,17 @@ theorem step_facts (hL : L.Is μ0) (t : T) (j : Fin D.R.m) {a b : ℕ} (ha : Eve
     exact ⟨isHecke_mu hL t j, isHecke_quot hL t j, resEta_even hL t j (ha.2 h),
       resEta_quot hL t j (Nat.not_even_iff_odd.1 fun e => h (hb.1 e))⟩
 
+/- English proof (translation)
+Establish `hm2` using `D.R.two_le_m`. Use `⟨fun k hk => ?_, ?_, fun i => ?_⟩` and prove the remaining obligations. Use `step_facts hL t ⟨k, by omega⟩ (a := (Yc D k).rank) (b := (Yc D (k + 1)).rank) ?_ ?_` and prove the remaining obligations. Rewrite using `[rank_Yc (by omega)]; exact even_rankY k`. Rewrite using `[rank_Yc (by omega), even_rankY] show _ ↔ Even k`.
+
+Rewrite using `[Nat.even_add_one, not_not]`. Establish `hj : D.R.m - 1 < D.R.m` using `by omega`. Establish `e : D.R.m - 1 + 1 = D.R.m` using `by omega`. Establish `hne : ¬ Even (D.R.m - 1)` using `fun h => by`. Use `h.add_one` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Conclude with `(Nat.not_odd_iff_even.2 D.R.m_even) this`. Establish `key` using `step_facts hL t ⟨D.R.m - 1, hj⟩ (a := (Yc D (D.R.m - 1)).rank) (b := D.sp.X'.rank) (by rw [rank_Yc (by omega)]; exact even_rankY _) (by`. Rewrite using `[D.sp.X'_rank]`. Use `show Even (D.R.rankY D.R.m) ↔ Even (D.R.m - 1)`.
+
+Rewrite using `[even_rankY]`. Conclude with `iff_of_false (not_not.2 D.R.m_even) hne)`. Simplify `key` using `only [e]`. Establish `hV : (Vc D i).rank = D.R.nV` using `D.sp.V_rank _ (by omega) (by omega)`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (by omega) (by omega)`.
+
+Use `⟨isHecke_mu hL t i, isHecke_quot hL t i, resEta_even hL t i ?_, resEta_quot hL t i ?_⟩` and prove the remaining obligations. Rewrite using `[hV]`. Conclude with `odd_r.add_odd D.R.t_odd`. Rewrite using `[hW]`. Conclude with `odd_r`.
+-/
 theorem splitFacts (hL : L.Is μ0) (t : T) :
     (∀ k, k + 1 < D.R.m → IsHeckeChar D (Lift.chrStep (L.mu t) L.eta (k + 1)).1 ∧
       IsHeckeChar D (Lift.chrStep (L.mu t) L.eta (k + 1)).2 ∧
@@ -131,6 +176,13 @@ section Places
 
 variable {T : Type} {L : LevCh D T} {μ0 : T}
 
+/- English proof (translation)
+Break down `h with h | h` into its components or cases. Conclude with `(GlobalTheory.ChainEquiv.places_sep L μ0 hL t).1 P h P' h'`. Break down `h' with h' | h'` into its components or cases. Introduce `hc`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t P h`.
+
+Take `⟨k, hk⟩` from `(hL.Pg P').1 h'`. Establish `h1 : (q : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[← hcard]`. Conclude with `Ideal.absNorm_mem P.asIdeal`. Conclude with `hne k (GlobalTheory.ChainEquiv.eq_of_natCast_mem P' hq (D.host.g_prime k) (GlobalTheory.ChainEquiv.natCast_mem_of_isConjPl hc h1) (L.C.P.overP hk))`.
+
+Conclude with `(hL.Q_pl t P h).2 P' h'`.
+-/
 theorem not_isConjPl_union (hL : L.Is μ0) (t : T) {P P' : Pl D.host.E} (h : P ∈ L.Pg ∨ P ∈ L.Q t)
     (h' : P' ∈ L.Pg ∨ P' ∈ L.Q t) : ¬ Lev.IsConjPl P P' := by
   rcases h with h | h
@@ -148,6 +200,11 @@ theorem not_isConjPl_union (hL : L.Is μ0) (t : T) {P P' : Pl D.host.E} (h : P �
 
 end Places
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ F`. Use `⟨fun R h => ⟨GlobalTheory.LevelRowsObj.liftsExist h.lev, fun i => GlobalTheory.GeoActRoad.levelLiftsExist_gridVertexSpaces h.lev i⟩, fun R h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `fun t => splitFacts h.lev t`. Introduce `t`. Use `⟨(GlobalTheory.ChainEquiv.places_sep R.toLevCh A.μ0 h.lev t).2, GlobalTheory.CentralShift.exists_idemSum _ fun P hP P' hP' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `not_isConjPl_union h.lev t (Finset.mem_union.1 hP) (Finset.mem_union.1 hP')`.
+-/
 theorem liftsAt_and_seedFacts : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type)
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (F : Face D A), LiftsAt D A Ks F ∧ SeedFacts D A Ks F := by
   intro D G _ _ Pl0 T A Ks _ _ _ F

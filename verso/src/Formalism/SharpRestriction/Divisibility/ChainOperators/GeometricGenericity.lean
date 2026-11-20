@@ -11,6 +11,15 @@ open Formalism.BasicNotions Formalism.MainNotions
 def UCard (D : D7) : Prop :=
   (Nat.card D.nexp.U : ℝ) = ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ)) ^ (D.R.f * (D.R.r * (D.R.r - 1) / 2))
 
+/- English proof (translation)
+Take `⟨Y, hY8, -, -, hYg⟩` from `P.g_Y`. Establish `hf1 : 1 ≤ D.R.f`. Unfold `Ranks.f Ranks.n`. Use `D.R.ord_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfk : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Establish `hb : 2 ≤ L.sc.b`. Unfold `Scale.b Scale.L`. Establish `h1 : 1 < L.sc.x ^ L.sc.eps` using `Real.one_lt_rpow L.sc.one_lt_alt L.sc.eps_pos`. Establish `h2 : Real.exp 1 < Real.exp (L.sc.x ^ L.sc.eps)` using `Real.exp_lt_exp.mpr h1`.
+
+Establish `h3` using `Real.exp_one_gt_d9`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `hc D.R.f D.R.k D.R.r L.sc.b (D.host.g 0) (D.host.g 1) hf1 hfk hb (hY8.trans (hYg 0).1) (hY8.trans (hYg 1).1)`. Unfold `ThetaNormsAndLinks.admG2 ThetaNormsAndLinks.eSh LiftErrorLocal.delq`. Rewrite using `[hU]`.
+
+Conclude with `h`.
+-/
 theorem geometric_generic_of_hypothesis (hc : GaussianProductPowerBound) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (hU : UCard D) : ThetaNormsAndLinks.admG2 D := by
   obtain ⟨Y, hY8, -, -, hYg⟩ := P.g_Y
   have hf1 : 1 ≤ D.R.f := by
@@ -28,12 +37,18 @@ theorem geometric_generic_of_hypothesis (hc : GaussianProductPowerBound) (D : D7
   rw [hU]
   exact h
 
+/- English proof (translation)
+Unfold `UCard`. Rewrite using `[Formalism.L2.NExpTied.uCard T]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem uCard_of_tied (D : D7) (T : Formalism.L2.NExpTied D) : UCard D := by
   unfold UCard
   rw [Formalism.L2.NExpTied.uCard T]
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `geometric_generic_of_hypothesis hc D L P (uCard_of_tied D T)`.
+-/
 theorem geometric_generic_of_layer_two (hc : GaussianProductPowerBound) (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (T : Formalism.L2.NExpTied D) :
     ThetaNormsAndLinks.admG2 D :=
   geometric_generic_of_hypothesis hc D L P (uCard_of_tied D T)
@@ -44,6 +59,9 @@ namespace Formalism.MainNotions.DIV.GeometricGenericity
 
 open Formalism.BasicNotions Formalism.MainNotions
 
+/- English proof (translation)
+The claim follows from `ConditionalKappaBounds.G2.geometric_generic_of_layer_two geometric_product_power D L P T`.
+-/
 theorem geometric_generic_of_layer_two (D : D7) (L : SizeData₂ D) (P : ParameterChoice' D L) (T : Formalism.L2.NExpTied D) : ThetaNormsAndLinks.admG2 D :=
   ConditionalKappaBounds.G2.geometric_generic_of_layer_two geometric_product_power D L P T
 

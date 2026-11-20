@@ -53,16 +53,27 @@ variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} {hI : SIso D.s 
 def pairOf {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) : RP Y u u' :=
   ⟨(x.1.toTerm, x.2.toTerm), ⟨x.1, rfl⟩, ⟨x.2, rfl⟩, h⟩
 
+/- English proof (translation)
+Conclude with `inv_nonneg.mpr (Nat.cast_nonneg _)`.
+-/
 theorem wRow_nonneg' {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     0 ≤ wRow D F0 Λ := by
   exact inv_nonneg.mpr (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Unfold `rowL Formalism.L2.SG.TermOp.rowOf at h`. Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at h`. Conclude with `⟨h.1, h.2.1⟩`.
+-/
 theorem lam_eq_of_row {u u' : D.what₂.Word} {s₁ s₂ : TT Y u u'} (h : rowL s₁ = rowL s₂) :
     s₁.lam = s₂.lam ∧ s₁.lam' = s₂.lam' := by
   unfold rowL Formalism.L2.SG.TermOp.rowOf at h
   simp only [Prod.mk.injEq, Subtype.mk.injEq] at h
   exact ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Establish `key : ∀ i, (Y.tO u u').vec s i = if i = (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩) then ((Formalism.L2.SG.TermOp.wt s : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG.TermOp.ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') s) else 0` using `fun i => rfl`. Establish `hwt : 0 ≤ Formalism.L2.SG.TermOp.wt s` using `Real.sqrt_nonneg _`. Rewrite using `[PiLp.norm_eq_of_L2, Finset.sum_eq_single (⟨s.lam, s.mem⟩, ⟨s.lam', s.mem'⟩)]`. Rewrite using `[key, if_pos rfl, Real.sqrt_sq (norm_nonneg _), norm_smul, Complex.norm_real, Real.norm_of_nonneg hwt]`. Both sides reduce to the same expression.
+
+Introduce `b _ hb`. Rewrite using `[key, if_neg hb, norm_zero]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 private theorem norm_tO_vec_eq_wt_mul_ampL {u u' : D.what₂.Word} (s : TT Y u u') :
     ‖(Y.tO u u').vec s‖ = Formalism.L2.SG.TermOp.wt s * ampL s := by
   classical
@@ -80,6 +91,23 @@ private theorem norm_tO_vec_eq_wt_mul_ampL {u u' : D.what₂.Word} (s : TT Y u u
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hq1 : ((hI.eP u u' p).l1).toTerm = hI.eT u u' (D.s.pfst p)`. Rewrite using `[hI.pfst]`. Conclude with `(hI.eP u u' p).2.choose.2`. Establish `hw0 : 0 ≤ T.wRow p`. Rewrite using `[hW u u' p _ hq1]`.
+
+Conclude with `wRow_nonneg' _ _`. Establish `hwP : 0 ≤ Formalism.MainNotions.BridgeLemma.wP T p` using `mul_nonneg hw0 (mul_nonneg (Real.sqrt_nonneg _) (Real.sqrt_nonneg _))`. Establish `ee : ∀ x ∈ S, x.1.toTerm = hI.eT u u' (D.s.pfst p) ∧ x.2.toTerm = hI.eT u u' (D.s.psnd p) ∧ rowL x.1 = rowL x.2`. Introduce `x hx`. Take `⟨h, hp⟩` from `hS x hx`.
+
+Use `⟨?_, ?_, h⟩` and prove the remaining obligations. Rewrite using `[hI.pfst, hp]`. Both sides reduce to the same expression. Rewrite using `[hI.psnd, hp]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ x ∈ S, ‖(Y.tO u u').vec x.1‖ * ‖(Y.tO u u').vec x.2‖ = Formalism.MainNotions.BridgeLemma.wP T p * wRow D (X.Fu u') x.1.lam'`. Introduce `x hx`. Take `⟨e1, e2, h⟩` from `ee x hx`. Establish `a1 : Formalism.MainNotions.BridgeLemma.aT T (D.s.pfst p) = ampL x.1`. Unfold `Formalism.MainNotions.BridgeLemma.aT`.
+
+Rewrite using `[hJ u u' _ x.1 e1]`. Conclude with `Real.sqrt_sq (norm_nonneg _)`. Establish `a2 : Formalism.MainNotions.BridgeLemma.aT T (D.s.psnd p) = ampL x.2`. Unfold `Formalism.MainNotions.BridgeLemma.aT`. Rewrite using `[hJ u u' _ x.2 e2]`.
+
+Conclude with `Real.sqrt_sq (norm_nonneg _)`. Take `⟨hl, hl'⟩` from `lam_eq_of_row h`. Rewrite using `[norm_tO_vec_eq_wt_mul_ampL, norm_tO_vec_eq_wt_mul_ampL, Formalism.MainNotions.BridgeLemma.wP, a1, a2, hW u u' p x.1 e1]`. Establish `hw2 : Formalism.L2.SG.TermOp.wt x.2 = Formalism.L2.SG.TermOp.wt x.1`. Unfold `Formalism.L2.SG.TermOp.wt`.
+
+Rewrite using `[hl, hl']`. Establish `hs : Formalism.L2.SG.TermOp.wt x.1 * Formalism.L2.SG.TermOp.wt x.1 = wRow D (X.Fu u) x.1.lam * wRow D (X.Fu u') x.1.lam'` using `Real.mul_self_sqrt (mul_nonneg (wRow_nonneg' (X.Fu u) x.1.lam) (wRow_nonneg' (X.Fu u') x.1.lam'))`. Rewrite using `[hw2]`. Take the linear combination `(ampL x.1 * ampL x.2) * hs`. Rewrite using `[Finset.sum_congr rfl key, ← Finset.mul_sum]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fibre_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {u u' : D.what₂.Word} (p : D.s.Pair u u') (S : Finset (TT Y u u' × TT Y u u'))
     (hS : ∀ x ∈ S, ∃ h : rowL x.1 = rowL x.2, hI.eP u u' p = pairOf x h) :
@@ -133,10 +161,20 @@ theorem fibre_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC
 def recP {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) : D.s.Pair u u' :=
   (hI.eP u u').symm (pairOf x h)
 
+/- English proof (translation)
+Conclude with `(hI.eP u u').apply_symm_apply _`.
+-/
 theorem eP_recP {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) :
     hI.eP u u' (recP (hI := hI) x h) = pairOf x h := by
   exact (hI.eP u u').apply_symm_apply _
 
+/- English proof (translation)
+Establish `hmap : ∀ x ∈ S.attach, (fun x : {x // x ∈ S} => recP (hI` using `hI) x.1 (hS x.1 x.2)) x ∈ S.attach.image (fun x => recP (hI := hI) x.1 (hS x.1 x.2)) := fun x hx => Finset.mem_image_of_mem _ hx`. Rewrite using `[← Finset.sum_attach S, ← Finset.sum_fiberwise_of_maps_to hmap]`. Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations. Establish `hS' : ∀ x ∈ (S.attach.filter (fun y => recP (hI` using `hI) y.1 (hS y.1 y.2) = p)).map (Function.Embedding.subtype _), ∃ h : rowL x.1 = rowL x.2, hI.eP u u' p = pairOf x h := by`. Introduce `x hx`.
+
+Take `⟨y, hy, rfl⟩` from `Finset.mem_map.1 hx`. Use `⟨hS y.1 y.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hy).2]`. Conclude with `eP_recP _ _`. Use `fibre_le T hJ hW hC p _ hS'` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_map]`. Then use the resulting hypothesis.
+-/
 theorem finSum_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {u u' : D.what₂.Word} (S : Finset (TT Y u u' × TT Y u u')) (hS : ∀ x ∈ S, rowL x.1 = rowL x.2) :
     ∑ x ∈ S, ‖(Y.tO u u').vec x.1‖ * ‖(Y.tO u u').vec x.2‖ ≤
@@ -164,6 +202,13 @@ variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} {hI : SIso D.s 
 
 open Formalism.MainNotions.BridgeLemma in
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.RowsOther.ampSum`. Use `Real.tsum_le_of_sum_le (fun p => ?_) (fun s => ?_)` and prove the remaining obligations. Conclude with `Set.indicator_nonneg (fun p _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)) p`. Establish `hS : ∀ x ∈ s.filter (· ∈ Q'), rowL x.1 = rowL x.2` using `fun x hx => (hQ x (Finset.mem_filter.1 hx).2).choose`. Use `le_trans (le_of_eq ?_) (le_trans (finSum_le T hJ hW hC _ hS) (hB _ ?_))` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i ∈ Q' <;> simp [hi]`. Introduce `p hp`. Take `⟨⟨x, hx⟩, -, rfl⟩` from `Finset.mem_image.1 hp`.
+
+Conclude with `(hQ x (Finset.mem_filter.1 hx).2).choose_spec`.
+-/
 theorem ampSum_le_of_rows (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (Q : D.s.Pair u u' → Prop) (B : ℝ)
     (hB : RowBound T L Q B) (Q' : Set (TT Y u u' × TT Y u u'))
@@ -184,6 +229,9 @@ theorem ampSum_le_of_rows (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF 
 
 open Formalism.MainNotions.BridgeLemma in
 
+/- English proof (translation)
+Introduce `S hS`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S Q₁, mul_add]`. Use `add_le_add (h₁ _ fun p hp => (Finset.mem_filter.1 hp).2) (h₂ _ fun p hp => ?_)` and prove the remaining obligations. Take `⟨hpS, hn⟩` from `Finset.mem_filter.1 hp`. Conclude with `(hS p hpS).resolve_left hn`.
+-/
 theorem rowBound_or (T : TermTie D) {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1)
     {Q₁ Q₂ : D.s.Pair u u' → Prop} {B₁ B₂ : ℝ} (h₁ : RowBound T L Q₁ B₁) (h₂ : RowBound T L Q₂ B₂) :
     RowBound T L (fun p => Q₁ p ∨ Q₂ p) (B₁ + B₂) := by
@@ -194,16 +242,25 @@ theorem rowBound_or (T : TermTie D) {large₂ : SizeData₂ D} {u u' : D.what₂
   obtain ⟨hpS, hn⟩ := Finset.mem_filter.1 hp
   exact (hS p hpS).resolve_left hn
 
+/- English proof (translation)
+Rewrite using `[hI.pfst, eP_recP]`. Both sides reduce to the same expression.
+-/
 theorem pfst_recP {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) :
     hI.eT u u' (D.s.pfst (recP (hI := hI) x h)) = x.1.toTerm := by
   rw [hI.pfst, eP_recP]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hI.psnd, eP_recP]`. Both sides reduce to the same expression.
+-/
 theorem psnd_recP {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) :
     hI.eT u u' (D.s.psnd (recP (hI := hI) x h)) = x.2.toTerm := by
   rw [hI.psnd, eP_recP]
   rfl
 
+/- English proof (translation)
+Rewrite using `[hI.Gterm, e]`. Introduce `h0`. Apply `hs` to reduce the goal to its premises. Use `congrArg Subtype.val h0` as an intermediate fact. Conclude with `this`.
+-/
 theorem gterm_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (s : TT Y u u') (e : hI.eT u u' t = s.toTerm)
     (hs : s.G ≠ 0) : D.s.Gterm t ≠ 0 := by
   rw [hI.Gterm, e]
@@ -212,29 +269,46 @@ theorem gterm_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (s : TT Y u u') (e 
   have := congrArg Subtype.val h0
   exact this
 
+/- English proof (translation)
+Rewrite using `[hI.generic, e]`. Conclude with `hs`.
+-/
 theorem generic_of {u u' : D.what₂.Word} (t : D.s.Term u u') (s : TT Y u u') (e : hI.eT u u' t = s.toTerm)
     (hs : s.generic) : D.s.generic t := by
   rw [hI.generic, e]
   exact hs
 
+/- English proof (translation)
+Rewrite using `[hI.s0, eP_recP]`. Conclude with `(hF.pairIndep u u' _ _ x.1 x.2 (pairOf x h).2.choose.2 (pairOf x h).2.choose_spec.choose.2 (pairOf x h).2.choose_spec.choose_spec h).1`.
+-/
 theorem corank_of_pair {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) :
     D.s.s0 (recP (hI := hI) x h) = Formalism.L2.SG.TermOp.s0T x.1 x.2 := by
   rw [hI.s0, eP_recP]
   exact (hF.pairIndep u u' _ _ x.1 x.2 (pairOf x h).2.choose.2 (pairOf x h).2.choose_spec.choose.2
     (pairOf x h).2.choose_spec.choose_spec h).1
 
+/- English proof (translation)
+Rewrite using `[hI.scalarPair, eP_recP]`. Conclude with `(hF.pairIndep u u' _ _ x.1 x.2 (pairOf x h).2.choose.2 (pairOf x h).2.choose_spec.choose.2 (pairOf x h).2.choose_spec.choose_spec h).2`.
+-/
 theorem scal_recP {u u' : D.what₂.Word} (x : TT Y u u' × TT Y u u') (h : rowL x.1 = rowL x.2) :
     D.s.scalarPair (recP (hI := hI) x h) ↔ liftScalar x.1 x.2 := by
   rw [hI.scalarPair, eP_recP]
   exact (hF.pairIndep u u' _ _ x.1 x.2 (pairOf x h).2.choose.2 (pairOf x h).2.choose_spec.choose.2
     (pairOf x h).2.choose_spec.choose_spec h).2
 
+/- English proof (translation)
+Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `show (if s.G = 0 then (0 : ℝ) else 1) = 0`. Rewrite using `[if_pos h0]`.
+-/
 theorem G_ne_of_Gt {u u' : D.what₂.Word} (s : TT Y u u') (h : (Y.tO u u').G s ≠ 0) : s.G ≠ 0 := by
   intro h0
   apply h
   show (if s.G = 0 then (0 : ℝ) else 1) = 0
   rw [if_pos h0]
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨⟨h1, h2, h⟩, hs⟩` from `hx`. Use `⟨h, ?_⟩` and prove the remaining obligations. Establish `g1` using `gterm_ne (hI := hI) _ x.1 (pfst_recP x h) (G_ne_of_Gt x.1 h1)`. Establish `g2` using `gterm_ne (hI := hI) _ x.2 (psnd_recP x h) (G_ne_of_Gt x.2 h2)`.
+
+Establish `e0 : D.s.s0 (recP (hI` using `hI) x h) = s := (corank_of_pair x h).trans hs`. Distinguish the cases in `hn : Formalism.MainNotions.BridgeLemma.ndP T (recP (hI := hI) x h)`. Conclude with `Or.inl ⟨g1, g2, e0, hn⟩`. Conclude with `Or.inr ⟨g1, g2, e0, hn⟩`.
+-/
 theorem bigS_cls (T : TermTie D) {u u' : D.what₂.Word} (s : ℕ) :
     ∀ x ∈ LoopsCut.bigS (Y.tO u u') s, ∃ h : rowL x.1 = rowL x.2,
       (fun p => Formalism.MainNotions.BridgeLemma.clsND T s p ∨ Formalism.MainNotions.BridgeLemma.clsDeg T s p) (recP (hI := hI) x h) := by
@@ -248,6 +322,13 @@ theorem bigS_cls (T : TermTie D) {u u' : D.what₂.Word} (s : ℕ) :
   · exact Or.inl ⟨g1, g2, e0, hn⟩
   · exact Or.inr ⟨g1, g2, e0, hn⟩
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨⟨h1, h2, h⟩, hs, hns⟩` from `hx`. Use `⟨h, gterm_ne (hI := hI) _ x.1 (pfst_recP x h) (G_ne_of_Gt x.1 h1.1), gterm_ne (hI := hI) _ x.2 (psnd_recP x h) (G_ne_of_Gt x.2 h2.1), generic_of (hI := hI) _ x.1 (pfst_recP x h) h1.2, generic_of (hI := hI) _ x.2 (psnd_recP x h) h2.2, (corank_of_pair x h).trans hs, ?_⟩` and prove the remaining obligations. Introduce `hc`. Apply `hns` to reduce the goal to its premises.
+
+Establish `hsc` using `(scal_recP x h).1 hc`. Establish `hl` using `lam_eq_of_row h`. Use `show Formalism.L2.SG.TermOp.scalT x.1 x.2`. Unfold `Formalism.L2.SG.TermOp.scalT`. Establish `hs' : Formalism.L2.SG.TermOp.s0T x.1 x.2 = 1` using `hs`.
+
+Unfold `Formalism.L2.SG.TermOp.s0T at hs'`. Rewrite `hs'` using `[if_pos hl]`. Conclude with `⟨hl, hs', hsc⟩`.
+-/
 theorem nsc_cls {u u' : D.what₂.Word} :
     ∀ x ∈ (Y.tO u u').nsc (Y.tO u u').genSet, ∃ h : rowL x.1 = rowL x.2,
       Formalism.MainNotions.BridgeLemma.clsOne (recP (hI := hI) x h) := by
@@ -268,6 +349,9 @@ theorem nsc_cls {u u' : D.what₂.Word} :
   rw [if_pos hl] at hs'
   exact ⟨hl, hs', hsc⟩
 
+/- English proof (translation)
+Conclude with `ampSum_le_of_rows T hJ hW hC L _ _ (rowBound_or T L (hn s h2 hk) (hd s h2 hk)) _ (bigS_cls T s)`.
+-/
 theorem classS_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (C : ℝ)
     (hn : Formalism.MainNotions.BridgeLemma.RowsND T L C) (hd : Formalism.MainNotions.BridgeLemma.RowsDeg T L C) (s : ℕ) (h2 : 2 ≤ s) (hk : s ≤ D.R.k) :
@@ -278,6 +362,9 @@ theorem classS_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (h
           LatticeSumBounds.degRow C D.R.k D.R.m D.R.f s large₂.sc.b (gg D) D.host.v (GamS D large₂) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C)) := by
   exact ampSum_le_of_rows T hJ hW hC L _ _ (rowBound_or T L (hn s h2 hk) (hd s h2 hk)) _ (bigS_cls T s)
 
+/- English proof (translation)
+Conclude with `ampSum_le_of_rows T hJ hW hC L _ _ h1 _ nsc_cls`.
+-/
 theorem classOne_le (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (C : ℝ)
     (h1 : Formalism.MainNotions.BridgeLemma.RowsOne T L C) :
@@ -291,6 +378,9 @@ section Cut
 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {hF : FinX Y} {hI : SIso D.s (sOf hF)}
 
+/- English proof (translation)
+Rewrite using `[hG u u', ← hFo L.F0 L.flag_e_eq_hyperbolic L.formsAtZero L.what₂ L.isRows]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gam_mul_le (hG : GamPin Y) {large₂ : SizeData₂ D} {T : TermTie D} {u u' : D.what₂.Word} {C1 : ℝ}
     (L : LoopTie D large₂ T u u' C1) (hFo : UnitaryVolumeMass.FormAt D u) {a B : ℝ}
     (h : a ≤ massRows D L.F0 L.what₂ * dimPi (hc := D.hcW) u * B) :
@@ -300,6 +390,9 @@ theorem gam_mul_le (hG : GamPin Y) {large₂ : SizeData₂ D} {T : TermTie D} {u
         mul_le_mul_of_nonneg_left h (Formalism.MainNotions.BridgeLemma.gaG_nonneg D)
     _ = gaG D * massRows D L.F0 L.what₂ * dimPi (hc := D.hcW) u * B := by ring
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `hCT`. Unfold `Formalism.L2.SG.RowsConc.ddC Formalism.MainNotions.BridgeLemma.rDD`. Rewrite using `[h3, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddC_eq (hCT : Formalism.L2.SG.RowsConc.ConcTie X Y) (u u' : D.what₂.Word) :
     Formalism.L2.SG.RowsConc.ddC X Y u u' = (D.duS u : ℝ) * Formalism.MainNotions.BridgeLemma.rDD D u' := by
   obtain ⟨-, -, h3, h4, -⟩ := hCT
@@ -307,6 +400,13 @@ theorem ddC_eq (hCT : Formalism.L2.SG.RowsConc.ConcTie X Y) (u u' : D.what₂.Wo
   rw [h3, h3, h4]
   ring
 
+/- English proof (translation)
+Unfold `Cnt.Hyp Cnt.Hyp0 at hH`. Take `⟨⟨-, hD, hC0⟩, -⟩` from `hH`. Use `⟨hC0, ?_⟩` and prove the remaining obligations. Unfold `StandingNumericalData at hD`. Establish `hw` using `(hD.2.2.2.2.2.2.2.2.2.1 u').1`.
+
+Rewrite `hw` using `[Formalism.MainNotions.BridgeLemma.d_GamP_eq (D := D) (large₂ := large₂) u']`. Establish `hDs : 0 < D.what₂.Dstar` using `Formalism.MainNotions.BridgeLemma.Dstar_pos D`. Establish `hG : 0 < GamS D large₂` using `Real.exp_pos _`. Establish `hC0p : 0 < C0` using `by linarith`. Rewrite `hw` using `[zpow_neg, zpow_ofNat, div_le_iff₀ hC0p]`.
+
+Unfold `Formalism.MainNotions.BridgeLemma.rDD`. Rewrite using `[show C0 * ((D.duS u' : ℝ) / D.what₂.Dstar) * GamS D large₂ ^ 2 = ((D.duS u' : ℝ) * C0 * GamS D large₂ ^ 2) / D.what₂.Dstar by ring, le_div_iff₀ hDs, one_mul]`. Establish `h2 : D.what₂.Dstar = (GamS D large₂ ^ 2)⁻¹ * D.what₂.Dstar * GamS D large₂ ^ 2` using `by field_simp`. Rewrite using `[h2]`. Conclude with `mul_le_mul_of_nonneg_right hw (sq_nonneg _)`.
+-/
 theorem window {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C' Cl Cg cb Cw cT CT C0 A : ℝ}
     (hH : Cnt.Hyp D large₂ u u' C' Cl Cg cb Cw cT CT C0 A) :
     1 ≤ C0 ∧ 1 ≤ C0 * Formalism.MainNotions.BridgeLemma.rDD D u' * GamS D large₂ ^ 2 := by
@@ -327,6 +427,23 @@ theorem window {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C' Cl Cg cb C
   rw [h2]
   exact mul_le_mul_of_nonneg_right hw (sq_nonneg _)
 
+/- English proof (translation)
+Establish `hwin` using `window hH`. Establish `hw` using `hwin.2`. Establish `hH'` using `hH`. Unfold `Cnt.Hyp Cnt.Hyp0 at hH'`. Take `⟨⟨-, hD, -⟩, -⟩` from `hH'`.
+
+Unfold `StandingNumericalData at hD`. Establish `hwu` using `(hD.2.2.2.2.2.2.2.2.2.1 u).1`. Rewrite `hwu` using `[Formalism.MainNotions.BridgeLemma.d_GamP_eq (D := D) (large₂ := large₂) u]`. Establish `hDs : 0 < D.what₂.Dstar` using `Formalism.MainNotions.BridgeLemma.Dstar_pos D`. Establish `hGs : 0 < GamS D large₂` using `Real.exp_pos _`.
+
+Establish `hC0p : 0 < C0` using `by linarith [hwin.1]`. Establish `hdu0 : 0 ≤ (D.duS u : ℝ)` using `le_trans (div_pos (mul_pos (zpow_pos hGs _) hDs) hC0p).le hwu`. Establish `hR : 0 ≤ Formalism.MainNotions.BridgeLemma.rDD D u'`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`.
+
+Establish `: C0 * Formalism.MainNotions.BridgeLemma.rDD D u' * GamS D large₂ ^ 2 < 0` using `mul_neg_of_neg_of_pos (mul_neg_of_pos_of_neg hC0p hneg) (pow_pos hGs 2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgg : gg D = (X.B.g : ℝ)`. Rewrite using `[X.g_eq]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hcl` using `gam_mul_le hG L hFo (classS_le T hJ hW hC L C hn hd s h2 hk)`. Rewrite `hcl` using `[Formalism.MainNotions.BridgeLemma.d_m_eq (D := D), hgg]`. Unfold `LoopsCut.ClassLe`. Rewrite using `[ddC_eq hCT]`.
+
+Unfold `LoopsCut.rowS`. Use `set N := LatticeSumBounds.ndRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (GamS D large₂) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C) with hN`. Use `set E := LatticeSumBounds.degRow C D.R.k (2 * D.R.rS + 2) D.R.f s large₂.sc.b (X.B.g : ℝ) D.host.v (GamS D large₂) (Formalism.MainNotions.BridgeLemma.XiB D large₂ u C) with hE`. Establish `hM1 : 1 ≤ max 1 C0` using `le_max_left _ _`. Establish `hMC : C0 ≤ max 1 C0` using `le_max_right _ _`.
+
+Establish `e1 : (D.duS u : ℝ) * N * Formalism.MainNotions.BridgeLemma.rDD D u' ≤ max 1 C0 * ((D.duS u : ℝ) * N * Formalism.MainNotions.BridgeLemma.rDD D u')` using `le_mul_of_one_le_left (mul_nonneg (mul_nonneg hdu0 hnd0) hR) hM1`. Establish `e2 : (D.duS u : ℝ) * E ≤ (max 1 C0 * Formalism.MainNotions.BridgeLemma.rDD D u' * GamS D large₂ ^ 2) * ((D.duS u : ℝ) * E)` using `le_mul_of_one_le_left (mul_nonneg hdu0 hdg0) (le_trans hw (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hMC hR) (sq_nonneg _)))`. Establish `e3 : max 1 C0 * (N + GamS D large₂ ^ 2 * E) * ((D.duS u : ℝ) * Formalism.MainNotions.BridgeLemma.rDD D u') = max 1 C0 * ((D.duS u : ℝ) * N * Formalism.MainNotions.BridgeLemma.rDD D u') + (max 1 C0 * Formalism.MainNotions.BridgeLemma.rDD D u' * GamS D large₂ ^ 2) * ((D.duS u : ℝ) …` using `by ring`. Establish `e4 : (D.duS u : ℝ) * (N * Formalism.MainNotions.BridgeLemma.rDD D u' + E) = (D.duS u : ℝ) * N * Formalism.MainNotions.BridgeLemma.rDD D u' + (D.duS u : ℝ) * E` using `by ring`. Rewrite using `[e3]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem rowsSC_at (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y) (hG : GamPin Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (hFo : UnitaryVolumeMass.FormAt D u)
     (hCT : Formalism.L2.SG.RowsConc.ConcTie X Y) {C' Cl Cg cb Cw cT CT C0 A : ℝ}
@@ -386,6 +503,11 @@ theorem rowsSC_at (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (h
   rw [e3]
   linarith
 
+/- English proof (translation)
+Establish `hg : gg D = (X.B.g : ℝ)`. Rewrite using `[X.g_eq]`. Use `push_cast`. Both sides reduce to the same expression. Unfold `Formalism.MainNotions.BridgeLemma.oneB LoopsCut.oneT`.
+
+Rewrite using `[hg]`.
+-/
 theorem oneB_eq {large₂ : SizeData₂ D} (C : ℝ) :
     Formalism.MainNotions.BridgeLemma.oneB D large₂ C = LoopsCut.oneT C D.R.k D.R.rS D.R.f large₂.sc.b (X.B.g : ℝ) (GamS D large₂) := by
   have hg : gg D = (X.B.g : ℝ) := by
@@ -395,6 +517,13 @@ theorem oneB_eq {large₂ : SizeData₂ D} (C : ℝ) :
   unfold Formalism.MainNotions.BridgeLemma.oneB LoopsCut.oneT
   rw [hg]
 
+/- English proof (translation)
+Unfold `LoopsCut.ClassLe`. Rewrite using `[← oneB_eq (X := X) C, ddC_eq hCT]`. Establish `hcl` using `gam_mul_le hG L hFo (classOne_le T hJ hW hC L C h1)`. Establish `hA : 0 ≤ Formalism.L2.SG.RowsOther.ampSum (Y.tO u u') ((Y.tO u u').nsc (Y.tO u u').genSet)`. Unfold `Formalism.L2.SG.RowsOther.ampSum`.
+
+Conclude with `tsum_nonneg fun p => Set.indicator_nonneg (fun p _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)) p`. Establish `hg0 : 0 ≤ (Y.tO u u').Gam1`. Rewrite using `[hG u u']`. Conclude with `Formalism.MainNotions.BridgeLemma.gaG_nonneg D`. Establish `hq : 0 ≤ (D.duS u : ℝ) * (Formalism.MainNotions.BridgeLemma.oneB D large₂ C * Formalism.MainNotions.BridgeLemma.rDD D u')` using `le_trans (mul_nonneg hg0 hA) hcl`.
+
+Establish `hM1 : 1 ≤ max 1 C0` using `le_max_left _ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem oneSC_at (T : TermTie D) (hJ : JtPin hF hI T) (hW : WRowPin hF hI T) (hC : FibreCount Y) (hG : GamPin Y)
     {large₂ : SizeData₂ D} {u u' : D.what₂.Word} {C1 : ℝ} (L : LoopTie D large₂ T u u' C1) (hFo : UnitaryVolumeMass.FormAt D u)
     (hCT : Formalism.L2.SG.RowsConc.ConcTie X Y) (C0 C : ℝ) (hC0' : 0 ≤ C)
@@ -456,6 +585,11 @@ def RowLoopsF : Prop :=
         ((Fm.D x i).duS u : ℝ) *
           (Formalism.MainNotions.BridgeLemma.oneB (Fm.D x i) (Fm.L x i) C * Formalism.MainNotions.BridgeLemma.rDD (Fm.D x i) u')
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0 A`. Take `⟨C₀, hC₀⟩` from `hR Cg cb Cu cT CT C0 A`. Use `⟨C₀, fun C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `hC₀ C hC`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations.
+
+Introduce `hx1 u u' hH`. Take `⟨hn, hd, h1⟩` from `hx0 x hx i hx1 u u' hH`. Use `⟨fun s h2 hk => ?_, ?_⟩` and prove the remaining obligations. Conclude with `gam_mul_le (Cc x hx1 i).gam (Yt x hx1 i u u') (hFo x hx1 i u) (classS_le (At x hx1 i) (Cc x hx1 i).jt (Cc x hx1 i).wr (Cc x hx1 i).fc (Yt x hx1 i u u') C hn hd s h2 hk)`. Conclude with `gam_mul_le (Cc x hx1 i).gam (Yt x hx1 i u u') (hFo x hx1 i u) (classOne_le (At x hx1 i) (Cc x hx1 i).jt (Cc x hx1 i).wr (Cc x hx1 i).fc (Yt x hx1 i u u') C h1)`.
+-/
 theorem rowLoopsF_of (hFo : ∀ x, Fm.x1 < x → ∀ (i : Fm.Ix x) u, UnitaryVolumeMass.FormAt (Fm.D x i) u)
     (hR : Formalism.MainNotions.BridgeLemma.RowsF Fm C1 At Yt) : RowLoopsF Fm At Cc := by
   intro Cg cb Cu cT CT C0 A
@@ -551,6 +685,9 @@ def loopTieOfParts {D : D7} {large₂ : SizeData₂ D} {T : TermTie D} {u u' : D
   J_irr := M.J_irr
   J_norm := M.J_norm
 
+/- English proof (translation)
+Conclude with `⟨⟨L.F0, L.flag_e_eq_hyperbolic, L.formsAtZero, L.what₂, L.isRows, L.fl_eq, L.Lam_mem, L.frame_ok, L.wRow_eq, L.pair_inj⟩, ⟨L.θ, L.θ_win, L.W, L.goodW, L.A, L.goodS, L.deg_eq⟩, ⟨L.γ, L.pt, L.θR, L.νR, L.volR, L.volR_pos, L.gram, L.rel, L.J_irr, L.J_norm⟩, rfl⟩`.
+-/
 theorem loopTie_parts {D : D7} {large₂ : SizeData₂ D} {T : TermTie D} {u u' : D.what₂.Word} {C1 : ℝ}
     (L : LoopTie D large₂ T u u' C1) :
     ∃ (R : LoopRowsDat D T u u') (B : LoopLocDat D large₂ u u' C1) (M : LoopTermDat D large₂ T u u' C1 B),

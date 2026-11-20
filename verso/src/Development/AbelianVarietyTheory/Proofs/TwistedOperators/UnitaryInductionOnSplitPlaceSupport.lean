@@ -28,6 +28,39 @@ namespace GlobalTheory.SplitInduct
 
 open GlobalTheory.IdemModTwo GlobalTheory.SplitIdem
 
+/- English proof (translation)
+Introduce `D V N Q h1 hmul hloc g hg hs`. Take `⟨e₀, he1, he2, he3, he4⟩` from `hs`. Establish `heS : e₀ = GlobalTheory.LocalApprox.indA D.host.F he2.toFinset`. Use `GlobalTheory.LocalApprox.af_ext _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ he2.toFinset`.
+
+Rewrite using `[GlobalTheory.LocalApprox.evalV_indA_of_mem _ hw]`. Establish `hne : evalV D.host.F w e₀ ≠ 0` using `he2.mem_toFinset.1 hw`. Establish `h` using `congrArg (evalV D.host.F w) he1`. Rewrite `h` using `[map_mul]`. Conclude with `mul_left_cancel₀ hne (h.trans (mul_one _).symm)`.
+
+Rewrite using `[GlobalTheory.LocalApprox.evalV_indA_of_notMem _ hw]`. Assume the negation of the conclusion as `h`. Conclude with `hw (he2.mem_toFinset.2 h)`. Establish `hsupp : ∀ i j, GlobalTheory.LocalApprox.idemE D he2.toFinset * (Formalism.L2.Theta.mt V g - 1) i j = (Formalism.L2.Theta.mt V g - 1) i j`. Introduce `i j`.
+
+Establish `e0 : GlobalTheory.LocalApprox.idemE D he2.toFinset = fj D e₀` using `(congrArg (fj D) heS).symm`. Rewrite using `[e0]`. Use `GlobalTheory.UnitarySplit.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Establish `h5 : infPart D ((Formalism.L2.Theta.mt V g - 1) i j) = 0`. Establish `h6 : (Formalism.L2.Theta.mt V g).map (infPart D) = 1` using `congrArg Units.val (show infHom V g = 1 from hg)`.
+
+Establish `h7` using `congrFun (congrFun h6 i) j`. Rewrite using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `h7.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+
+Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`. Rewrite using `[RingHom.map_mul, h5, mul_zero]`. Establish `h5 : finPart D ((Formalism.L2.Theta.mt V g - 1) i j) = ((finHom V g).1 - 1) i j`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, RingHom.map_sub]`.
+
+Use `congr 1`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one]`. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne e, RingHom.map_zero]`.
+
+Rewrite using `[RingHom.map_mul, h5]`. Conclude with `congrFun (congrFun he4 i) j`. Establish `hgS : GlobalTheory.LocalApprox.cutAt V g he2.toFinset = g`. Use `GlobalTheory.IdemSupport.mt_inj V ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LocalApprox.mt_cutAt]`.
+
+Use extensionality with `i j`. Establish `h` using `hsupp i j`. Rewrite `h` using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul]`. Take the linear combination `h`.
+
+Establish `hpl : ∀ v, pl D v = GlobalTheory.LocalApprox.idemE D {v}` using `fun v => by show fj D _ = fj D _`. Use `congr 1`. Use `GlobalTheory.LocalApprox.af_ext _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[evalV_singleV_same, GlobalTheory.LocalApprox.evalV_indA_of_mem _ (Finset.mem_singleton_self _)]`. Rewrite using `[evalV_singleV_ne _ v _ hw, GlobalTheory.LocalApprox.evalV_indA_of_notMem _ (Finset.notMem_singleton.2 hw)]`. Establish `hv : ∀ v ∈ he2.toFinset, Q (GlobalTheory.LocalApprox.cutAt V g {v})`. Introduce `v hvS`. Establish `hv'` using `he3 v (he2.mem_toFinset.1 hvS)`.
+
+Take `⟨e, he⟩` from `_root_.GlobalTheory.MovedSplit.exists_splitAt D v hv'.1`. Take `⟨PP, hP, hco⟩` from `_root_.GlobalTheory.IdemPrime.exists_isIdemAt D v e he`. Use `hloc e PP hP ?_ _ (GlobalTheory.LocalApprox.cutAt_mem_GfC V g {v}) ?_` and prove the remaining obligations. Introduce `hm`. Use `hv'.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hco, Ideal.mem_comap, map_natCast]`. Conclude with `hm`. Introduce `i j`. Rewrite using `[he.2.2, hpl v]`. Conclude with `GlobalTheory.LocalApprox.cutAt_supp V g {v} i j`.
+
+Establish `key : ∀ s : Finset (IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)), s ⊆ he2.toFinset → Q (GlobalTheory.LocalApprox.cutAt V g s)`. Introduce `s`. Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => intro _`. Rewrite using `[GlobalTheory.LocalApprox.cutAt_empty]`.
+
+Conclude with `h1`. Consider the case `cons v s h ih`. Introduce `hsub`. Rewrite using `[GlobalTheory.LocalApprox.cutAt_cons]`. Conclude with `hmul _ _ (hv v (hsub (Finset.mem_cons_self _ _))) (ih ((Finset.subset_cons h).trans hsub))`.
+
+Rewrite using `[← hgS]`. Conclude with `key _ subset_rfl`.
+-/
 theorem induct_suppSplit : ∀ {D : D7} (V : HSp D) (N : ℕ) (Q : GA D V → Prop), Q 1 → (∀ x y, Q x → Q y → Q (x * y)) →
     (∀ (e : AE D) (P : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e P → ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal →
       ∀ x ∈ GfC V, Formalism.L2.Theta.SuppAt e V x → Q x) →

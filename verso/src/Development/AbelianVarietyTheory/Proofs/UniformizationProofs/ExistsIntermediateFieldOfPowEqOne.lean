@@ -14,6 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TorsionSeparable
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_2 h_3 h_4 h_7 h_8; revert k Ω h_2 h_3 h_4 X p h_7 h_8 a ha; exact @_root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point)`. Consider the case `exact @_root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point`. Consider the case `exact _root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point`. Consider the case `(apply _root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point ..)`.
+-/
 theorem exists_intermediateField {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of k)) [FormallyUnramified p] [LocallyOfFiniteType p]
     (a : Spec (CommRingCat.of Ω) ⟶ X)
@@ -30,6 +35,15 @@ theorem exists_intermediateField {k Ω : Type} [Field k] [Field Ω] [Algebra k �
   | (intros; apply @_root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.FiniteSeparablePoints.exists_finite_separable_point ..)
 
+/- English proof (translation)
+Establish `hN' : IsUnit (N : Γ(Spec (CommRingCat.of V), ⊤))`. Simplify using `using hN.map (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom`. Establish `h₁` using `formallyUnramified_mulN _ G N hN'`. Establish `h₂ : LocallyOfFiniteType (mulN G N).left`. Establish `: LocallyOfFiniteType ((mulN G N).left ≫ G.hom)` using `by rw [Over.w]; infer_instance`.
+
+Conclude with `locallyOfFiniteType_of_comp _ G.hom`. Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk (Spec.map (CommRingCat.ofHom r))`. Set `e : Spec (CommRingCat.of k) ⟶ G.left` to `(1 : T ⟶ G).left`. Set `j : Over.mk (Spec.map (CommRingCat.ofHom f)) ⟶ T` to `Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap k Ω))) (by`. Substitute `hf` using the available equality.
+
+Conclude with `(Spec.map_comp _ _).symm)`. Establish `hw : x.left ≫ (mulN G N).left = Spec.map (CommRingCat.ofHom (algebraMap k Ω)) ≫ e`. Express the relevant statement in the definitionally equal form `(x ≫ mulN G N).left = (j ≫ (1 : T ⟶ G)).left`. Rewrite using `[MulUnramified.comp_mulN, hx, comp_one]`. Establish `: FormallyUnramified (pullback.snd (mulN G N).left e)` using `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @FormallyUnramified) (IsPullback.of_hasPullback _ _) h₁`.
+
+Take `⟨K, hK, hK', b, hb⟩` from `exists_intermediateField (pullback.snd (mulN G N).left e) (pullback.lift x.left _ hw) (pullback.lift_snd _ _ _)`. Conclude with `⟨K, hK, hK', b ≫ pullback.fst _ _, by rw [reassoc_of% hb, pullback.lift_fst]⟩`.
+-/
 theorem exists_intermediateField_of_pow_eq_one {V : Type} [CommRing V]
     (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] [LocallyOfFiniteType G.hom]
     {N : ℕ} (hN : IsUnit (N : V)) {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] (r : V →+* k)
@@ -60,6 +74,9 @@ theorem exists_intermediateField_of_pow_eq_one {V : Type} [CommRing V]
     (pullback.lift x.left _ hw) (pullback.lift_snd _ _ _)
   exact ⟨K, hK, hK', b ≫ pullback.fst _ _, by rw [reassoc_of% hb, pullback.lift_fst]⟩
 
+/- English proof (translation)
+Establish `: Flat (Spec.map (CommRingCat.ofHom σ))` using `inferInstance`. Establish `: Surjective (Spec.map (CommRingCat.ofHom σ))` using `⟨fun u => ⟨IsLocalRing.closedPoint L, Subsingleton.elim _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+-/
 theorem epi_specMap {K L : Type} [Field K] [Field L] (σ : K →+* L) :
     Epi (Spec.map (CommRingCat.ofHom σ)) := by
   have : Flat (Spec.map (CommRingCat.ofHom σ)) := inferInstance
@@ -73,6 +90,25 @@ namespace GlobalTheory
 
 open TorsionSeparable IsLocalRing
 
+/- English proof (translation)
+Introduce `hU V _ _ _ _ G _ _ _ N hN Ω _ _ f hf s hs`. Set `: Algebra (ResidueField V) Ω` to `(ResidueField.lift f).toAlgebra`. Establish `hr : (algebraMap (ResidueField V) Ω).comp (residue V) = f` using `ResidueField.lift_comp_residue f`. Use `choose K hK hK' b hb using fun x : s => exists_intermediateField_of_pow_eq_one G hN (residue V) f hr x.1 (hs x.1 x.2)`. Set `L : IntermediateField (ResidueField V) Ω` to `⨆ x, K x`.
+
+Establish `: FiniteDimensional (ResidueField V) L` using `inferInstance`. Establish `: Algebra.IsSeparable (ResidueField V) L` using `inferInstance`. Take `⟨W, _, _, _, _, _, hfin, hinj, hloc, -, e, he⟩` from `hU V L`. Set `σ : ResidueField W →+* Ω` to `(algebraMap L Ω).comp e.toRingHom`. Establish `hcomp : (σ.comp (residue W)).comp (algebraMap V W) = f`.
+
+Use extensionality with `v`. Express the relevant statement in the definitionally equal form `algebraMap L Ω (e (residue W (algebraMap V W v))) = f v`. Rewrite using `[he, ← IsScalarTower.algebraMap_apply, ← hr]`. Both sides reduce to the same expression. Establish `hσ : IsLocalHom (σ.comp (residue W))` using `⟨fun a ha => by`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `ha.ne_zero (by rw [RingHom.comp_apply, (residue_eq_zero_iff a).2 hn, map_zero])⟩`. Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, σ.comp (residue W), hfin, hinj, hloc, hσ, hcomp, fun x hx => ?_⟩` and prove the remaining obligations. Use `epi_specMap σ` as an intermediate fact. Set `c : Spec (CommRingCat.of (ResidueField W)) ⟶ G.left` to `Spec.map (CommRingCat.ofHom (e.symm.toRingHom.comp (IntermediateField.inclusion (le_iSup K ⟨x, hx⟩)).toRingHom)) ≫ b ⟨x, hx⟩`.
+
+Establish `hc : Spec.map (CommRingCat.ofHom σ) ≫ c = x.left`. Rewrite using `[← hb ⟨x, hx⟩, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `t`. Simplify using `[σ]`.
+
+Establish `hp : Spec.map (CommRingCat.ofHom σ) ≫ Spec.map (CommRingCat.ofHom (residue W)) ≫ Spec.map (CommRingCat.ofHom (algebraMap V W)) = Spec.map (CommRingCat.ofHom f)`. Rewrite using `[← hcomp, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `T : Over (Spec (CommRingCat.of V))` to `Over.mk (Spec.map (CommRingCat.ofHom (residue W)) ≫ Spec.map (CommRingCat.ofHom (algebraMap V W)))`. Set `x₀ : T ⟶ G` to `Over.homMk c (by`.
+
+Rewrite using `[← cancel_epi (Spec.map (CommRingCat.ofHom σ))]`. Conclude with `((reassoc_of% hc) _).trans ((Over.w x).trans hp.symm))`. Set `j : Over.mk (Spec.map (CommRingCat.ofHom f)) ⟶ T` to `Over.homMk (Spec.map (CommRingCat.ofHom σ)) hp`. Establish `hj : j ≫ x₀ = x` using `Over.OverMorphism.ext hc`. Establish `: Epi j.left` using `epi_specMap σ`.
+
+Establish `: Epi j` using `Over.epi_of_epi_left j`. Establish `hx₀ : x₀ ^ N = 1`. Rewrite using `[← cancel_epi j, comp_pow, hj, hs x hx, comp_one]`. Take `⟨y, ⟨hy, hy'⟩, -⟩` from `existsUnique_torsion_lift W _ G (Spec.map (CommRingCat.ofHom (algebraMap V W))) N (by simpa using hN.map (algebraMap V W)) x₀ hx₀`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hc, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, hy']`. Both sides reduce to the same expression.
+-/
 theorem exists_finite_extension_torsion_lift : UnramExtSt → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (N : ℕ), IsUnit (N : V) → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (f : V →+* Ω), IsLocalHom f → ∀ s : Finset (Over.mk (Spec.map (CommRingCat.ofHom f)) ⟶ G), (∀ x ∈ s, x ^ N = 1) → ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W) (_ : IsAdicComplete (IsLocalRing.maximalIdeal W) W) (_ : Algebra V W) (f' : W →+* Ω), Module.Finite V W ∧ Function.Injective (algebraMap V W) ∧ IsLocalHom (algebraMap V W) ∧ IsLocalHom f' ∧ f'.comp (algebraMap V W) = f ∧ ∀ x ∈ s, ∃ y : Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W))) ⟶ G, y ^ N = 1 ∧ Spec.map (CommRingCat.ofHom f') ≫ y.left = x.left := by
   intro hU V _ _ _ _ G _ _ _ N hN Ω _ _ f hf s hs
   let : Algebra (ResidueField V) Ω := (ResidueField.lift f).toAlgebra

@@ -599,19 +599,34 @@ def CorollaryBSecondTwo.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem dim_three : antisymDegree (Fin 3) 2 = 3 := by decide
 
+/- English proof (translation)
+Rewrite using `[← (Fin.consEquiv fun _ => α).sum_comp, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+-/
 theorem sum_pi_fin_succ {α : Type} [Fintype α] {n : ℕ} (F : (Fin (n + 1) → α) → ℝ) :
     ∑ w, F w = ∑ a, ∑ v : Fin n → α, F (Fin.cons a v) := by
   rw [← (Fin.consEquiv fun _ => α).sum_comp, Fintype.sum_prod_type]
   rfl
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem univ_perm_two : (Finset.univ : Finset (Equiv.Perm (Fin 2))) = {1, Equiv.swap 0 1} := by
   decide
 
+/- English proof (translation)
+Rewrite using `[univ_perm_two, Finset.sum_pair (by decide)]`.
+-/
 theorem sum_perm_two (F : Equiv.Perm (Fin 2) → ℝ) : ∑ w, F w = F 1 + F (Equiv.swap 0 1) := by
   rw [univ_perm_two, Finset.sum_pair (by decide)]
 
+/- English proof (translation)
+Simplify using `[flagDegree, LinearMap.sum_apply, smul_eq_mul]`.
+-/
 theorem flagDegree_apply {T : Type} [Fintype T] [DecidableEq T] {N : ℕ}
     (G : MvPolynomial (T × Fin N) ℝ) :
     flagDegree T N G = (-1 : ℝ) ^ antisymDegree T N / eval (basePoint T N) (antisymDelta T N) *
@@ -619,12 +634,25 @@ theorem flagDegree_apply {T : Type} [Fintype T] [DecidableEq T] {N : ℕ}
         eval (fun p => basePoint T N (fullAct T N w p)) (homogeneousComponent (antisymDegree T N) G) := by
   simp [flagDegree, LinearMap.sum_apply, smul_eq_mul]
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem Ioi_one_fin_two_eq_empty : Finset.Ioi (1 : Fin 2) = ∅ := by decide
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cons_three_two {α : Type} (a : α) (v : Fin 2 → α) : (Fin.cons a v : Fin 3 → α) 2 = v 1 := rfl
 
 def gap2 (v : Fin 3 × Fin 2 → ℝ) (τ : Fin 3) : ℝ := v (τ, 0) - v (τ, 1)
 
+/- English proof (translation)
+Establish `hl : ∀ x : Fin 3 × Fin 2 → ℝ, linForm x ∈ homogeneousSubmodule (Fin 3 × Fin 2) ℝ 1`. Introduce `x`. Unfold `linForm`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `isHomogeneous_X ℝ p`.
+
+Establish `hp : linForm u * linForm v * linForm w ∈ homogeneousSubmodule (Fin 3 × Fin 2) ℝ 3` using `((hl u).mul (hl v)).mul (hl w)`. Establish `hΔ : eval (basePoint (Fin 3) 2) (antisymDelta (Fin 3) 2) = 1`. Simplify using `[antisymDelta, basePoint, Fin.prod_univ_three, Fin.prod_univ_two, Ioi_one_fin_two_eq_empty]`. Rewrite using `[flagDegree_apply, dim_three, homogeneousComponent_of_mem hp, if_pos rfl, hΔ, sum_pi_fin_succ]`. Repeatedly rewrite using `[sum_pi_fin_succ, sum_perm_two, Fintype.sum_unique]`.
+
+Simplify using `[fullSign, fullAct, basePoint, linForm, Fin.prod_univ_three, Fintype.sum_prod_type, Fin.sum_univ_three, Fin.sum_univ_two, gap2, cons_three_two, Equiv.Perm.sign_swap']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flagDegree_three (u v w : Fin 3 × Fin 2 → ℝ) :
     flagDegree (Fin 3) 2 (linForm u * linForm v * linForm w) =
       gap2 u 0 * gap2 v 1 * gap2 w 2 + gap2 u 0 * gap2 v 2 * gap2 w 1 +
@@ -647,22 +675,39 @@ theorem flagDegree_three (u v w : Fin 3 × Fin 2 → ℝ) :
 
 def ellPoly : MvPolynomial (Fin 3 × Fin 2) ℝ := ∑ τ : Fin 3, (X (τ, 0) - X (τ, 1))
 
+/- English proof (translation)
+Simplify using `[ellPoly, Fin.sum_univ_three, gap2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval_ellPoly (x : Fin 3 × Fin 2 → ℝ) : eval x ellPoly = gap2 x 0 + gap2 x 1 + gap2 x 2 := by
   simp [ellPoly, Fin.sum_univ_three, gap2]
   ring
 
+/- English proof (translation)
+Simplify using `[antisymDelta, Fin.prod_univ_three, Fin.prod_univ_two, Ioi_one_fin_two_eq_empty, gap2]`.
+-/
 theorem eval_antisymDelta_three (x : Fin 3 × Fin 2 → ℝ) :
     eval x (antisymDelta (Fin 3) 2) = gap2 x 0 * gap2 x 1 * gap2 x 2 := by
   simp [antisymDelta, Fin.prod_univ_three, Fin.prod_univ_two, Ioi_one_fin_two_eq_empty, gap2]
 
+/- English proof (translation)
+Simplify using `[antisymDelta, Fin.prod_univ_three, Fin.prod_univ_two, Ioi_one_fin_two_eq_empty]`.
+-/
 theorem antisymDelta_three : antisymDelta (Fin 3) 2 =
     (X (0, 0) - X (0, 1)) * (X (1, 0) - X (1, 1)) * (X (2, 0) - X (2, 1)) := by
   simp [antisymDelta, Fin.prod_univ_three, Fin.prod_univ_two, Ioi_one_fin_two_eq_empty]
 
+/- English proof (translation)
+The claim follows from `(isHomogeneous_X ℝ p).sub (isHomogeneous_X ℝ q)`.
+-/
 theorem sub_X_homogeneous (p q : Fin 3 × Fin 2) :
     (X p - X q : MvPolynomial (Fin 3 × Fin 2) ℝ).IsHomogeneous 1 :=
   (isHomogeneous_X ℝ p).sub (isHomogeneous_X ℝ q)
 
+/- English proof (translation)
+Rewrite using `[dim_three]`. Establish `hΔ : (antisymDelta (Fin 3) 2).IsHomogeneous 3`. Rewrite using `[antisymDelta_three]`. Conclude with `((sub_X_homogeneous _ _).mul (sub_X_homogeneous _ _)).mul (sub_X_homogeneous _ _)`. Establish `hℓ : ellPoly.IsHomogeneous 1`.
+
+Unfold `ellPoly`. Conclude with `IsHomogeneous.sum _ _ _ fun τ _ => sub_X_homogeneous _ _`. Establish `h` using `hΔ.mul hℓ`. Rewrite `h`, the goal using `[← mem_homogeneousSubmodule]`. Conclude with `Submodule.smul_mem _ c h`.
+-/
 theorem delta_ell_homogeneous (c : ℝ) :
     (c • (antisymDelta (Fin 3) 2 * ellPoly)).IsHomogeneous (antisymDegree (Fin 3) 2 + 1) := by
   rw [dim_three]
@@ -676,9 +721,17 @@ theorem delta_ell_homogeneous (c : ℝ) :
   rw [← mem_homogeneousSubmodule] at h ⊢
   exact Submodule.smul_mem _ c h
 
+/- English proof (translation)
+Simplify using `[ncGap, gapAtIndex, entry, gap2]`.
+-/
 theorem ncGap_two (x : Fin 3 × Fin 2 → ℝ) (τ : Fin 3) : ncGap 1 x τ = gap2 x τ := by
   simp [ncGap, gapAtIndex, entry, gap2]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h τ`. Use `h τ 0 (by norm_num)` as an intermediate fact. Simplify `this` using `[gapAtIndex, entry, gap2]`. Introduce `h τ i hi`.
+
+Establish `hi0 : i = 0` using `by omega`. Substitute `hi0` using the available equality. Simplify `h τ` using `[gapAtIndex, entry, gap2]`.
+-/
 theorem isDominant_two (x : Fin 3 × Fin 2 → ℝ) : IsDominantWeight x ↔ ∀ τ, 0 ≤ gap2 x τ := by
   constructor
   · intro h τ
@@ -689,6 +742,9 @@ theorem isDominant_two (x : Fin 3 × Fin 2 → ℝ) : IsDominantWeight x ↔ ∀
     subst hi0
     simpa [gapAtIndex, entry, gap2] using h τ
 
+/- English proof (translation)
+Introduce and unpack `⟨τ, a, b, hab, hblk, -⟩`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem no_simple_swap (σ : Equiv.Perm (Fin 3 × Fin 2)) : ¬ IsBlockSimpleSwap (Fin 3) 2 1 σ := by
   rintro ⟨τ, a, b, hab, hblk, -⟩
   have := a.isLt
@@ -710,11 +766,17 @@ def sampleInter : MultilinearMap ℝ (fun _ : Fin (antisymDegree (Fin 3) 2) => F
     ((MultilinearMap.mkPiAlgebra ℝ (Fin (antisymDegree (Fin 3) 2)) (MvPolynomial (Fin 3 × Fin 2) ℝ)).compLinearMap
       fun _ => linFormL)
 
+/- English proof (translation)
+Simplify using `[sampleInter, linFormL]`. Both sides reduce to the same expression.
+-/
 theorem sampleInter_apply (v : Fin (antisymDegree (Fin 3) 2) → Fin 3 × Fin 2 → ℝ) :
     sampleInter v = flagDegree (Fin 3) 2 (∏ i, linForm (v i)) := by
   simp [sampleInter, linFormL]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `sampleInter_apply (v ∘ σ)`. Establish `h2` using `sampleInter_apply v`. Rewrite using `[h1, h2]`. Conclude with `congrArg _ (Equiv.prod_comp σ (fun i => linForm (v i)))`.
+-/
 theorem sampleInter_symm (v : Fin (antisymDegree (Fin 3) 2) → Fin 3 × Fin 2 → ℝ)
     (σ : Equiv.Perm (Fin (antisymDegree (Fin 3) 2))) : sampleInter (v ∘ σ) = sampleInter v := by
   have h1 := sampleInter_apply (v ∘ σ)
@@ -722,6 +784,9 @@ theorem sampleInter_symm (v : Fin (antisymDegree (Fin 3) 2) → Fin 3 × Fin 2 �
   rw [h1, h2]
   exact congrArg _ (Equiv.prod_comp σ (fun i => linForm (v i)))
 
+/- English proof (translation)
+Repeatedly apply the rules in `[add_nonneg, mul_nonneg]`.
+-/
 theorem six_terms_nonneg (u v w : Fin 3 × Fin 2 → ℝ) (hu : ∀ τ, 0 ≤ gap2 u τ) (hv : ∀ τ, 0 ≤ gap2 v τ)
     (hw : ∀ τ, 0 ≤ gap2 w τ) :
     0 ≤ gap2 u 0 * gap2 v 1 * gap2 w 2 + gap2 u 0 * gap2 v 2 * gap2 w 1 +
@@ -729,6 +794,9 @@ theorem six_terms_nonneg (u v w : Fin 3 × Fin 2 → ℝ) (hu : ∀ τ, 0 ≤ ga
       gap2 u 2 * gap2 v 0 * gap2 w 1 + gap2 u 2 * gap2 v 1 * gap2 w 0 := by
   apply_rules [add_nonneg, mul_nonneg]
 
+/- English proof (translation)
+Rewrite using `[sampleInter_apply, ← Fin.prod_congr' (fun i => linForm (v i)) dim_three.symm, Fin.prod_univ_three, flagDegree_three]`. Conclude with `six_terms_nonneg _ _ _ ((isDominant_two _).1 (hv _)) ((isDominant_two _).1 (hv _)) ((isDominant_two _).1 (hv _))`.
+-/
 theorem sampleInter_nonneg (v : Fin (antisymDegree (Fin 3) 2) → Fin 3 × Fin 2 → ℝ)
     (hv : ∀ i, IsDominantWeight (v i)) : 0 ≤ sampleInter v := by
   rw [sampleInter_apply, ← Fin.prod_congr' (fun i => linForm (v i)) dim_three.symm,
@@ -736,12 +804,18 @@ theorem sampleInter_nonneg (v : Fin (antisymDegree (Fin 3) 2) → Fin 3 × Fin 2
   exact six_terms_nonneg _ _ _ ((isDominant_two _).1 (hv _)) ((isDominant_two _).1 (hv _))
     ((isDominant_two _).1 (hv _))
 
+/- English proof (translation)
+Rewrite using `[degFl, dim_three, show linForm x ^ 3 = linForm x * linForm x * linForm x by ring, flagDegree_three]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degFl_three (x : Fin 3 × Fin 2 → ℝ) :
     degFl (Fin 3) 2 x = 6 * (gap2 x 0 * gap2 x 1 * gap2 x 2) := by
   rw [degFl, dim_three, show linForm x ^ 3 = linForm x * linForm x * linForm x by ring,
     flagDegree_three]
   ring
 
+/- English proof (translation)
+Rewrite using `[sampleInter_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← degFl_three]`. Both sides reduce to the same expression.
+-/
 theorem sampleInter_const (x : Fin 3 × Fin 2 → ℝ) :
     sampleInter (fun _ => x) = 6 * (gap2 x 0 * gap2 x 1 * gap2 x 2) := by
   rw [sampleInter_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← degFl_three]
@@ -749,9 +823,15 @@ theorem sampleInter_const (x : Fin 3 × Fin 2 → ℝ) :
 
 def coeffSum {σ : Type} (Q : MvPolynomial σ ℝ) : ℝ := ∑ m ∈ Q.support, |coeff m Q|
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem coeffSum_nonneg {σ : Type} (Q : MvPolynomial σ ℝ) : 0 ≤ coeffSum Q :=
   Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+The claim follows from `|coeff m Q| ≤ coeffSum Q := by by_cases h : m ∈ Q.support · exact Finset.single_le_sum (f := fun m => |coeff m Q|) (fun _ _ => abs_nonneg _) h · have h0 : coeff m Q = 0 := by by_contra h' exact h (mem_support_iff.2 h') rw [h0, abs_zero] exact coeffSum_nonneg Q`.
+-/
 theorem abs_coeff_le_coeffSum {σ : Type} (Q : MvPolynomial σ ℝ) (m : σ →₀ ℕ) :
     |coeff m Q| ≤ coeffSum Q := by
   by_cases h : m ∈ Q.support
@@ -762,6 +842,9 @@ theorem abs_coeff_le_coeffSum {σ : Type} (Q : MvPolynomial σ ℝ) (m : σ →�
     rw [h0, abs_zero]
     exact coeffSum_nonneg Q
 
+/- English proof (translation)
+Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `hB' : Real.log 2 ≤ Real.log B` using `Real.log_le_log (by norm_num) (by exact_mod_cast hB)`. Establish `hK0 : 0 ≤ K` using `(coeffSum_nonneg Q).trans hK`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem abs_coeff_le_log {σ : Type} (Q : MvPolynomial σ ℝ) (K : ℝ) (hK : coeffSum Q ≤ K)
     (B : ℕ) (hB : 2 ≤ B) (m : σ →₀ ℕ) : |coeff m Q| ≤ K / Real.log 2 * Real.log B := by
   have h2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
@@ -773,10 +856,18 @@ theorem abs_coeff_le_log {σ : Type} (Q : MvPolynomial σ ℝ) (K : ℝ) (hK : c
 
 def samplePoly (a : ℝ) : MvPolynomial (Fin 3 × Fin 2) ℝ := (6 * a / 25) • (antisymDelta (Fin 3) 2 * ellPoly)
 
+/- English proof (translation)
+Simplify using `[samplePoly, eval_antisymDelta_three, eval_ellPoly]`.
+-/
 theorem eval_samplePoly (a : ℝ) (x : Fin 3 × Fin 2 → ℝ) :
     eval x (samplePoly a) = 6 * a / 25 * ((gap2 x 0 * gap2 x 1 * gap2 x 2) * (gap2 x 0 + gap2 x 1 + gap2 x 2)) := by
   simp [samplePoly, eval_antisymDelta_three, eval_ellPoly]
 
+/- English proof (translation)
+Rewrite `hx`, `hy`, the goal using `[isDominant_two]`. Introduce `τ`. Use `hx τ` as an intermediate fact. Use `hy τ` as an intermediate fact. Simplify using `only [gap2, Pi.add_apply] at *`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isDominant_add (x y : Fin 3 × Fin 2 → ℝ) (hx : IsDominantWeight x) (hy : IsDominantWeight y) :
     IsDominantWeight (x + y) := by
   rw [isDominant_two] at hx hy ⊢
@@ -786,6 +877,9 @@ theorem isDominant_add (x y : Fin 3 × Fin 2 → ℝ) (hx : IsDominantWeight x) 
   simp only [gap2, Pi.add_apply] at *
   linarith
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[isDominant_two]`. Introduce `τ`. Use `mul_nonneg ht (hx τ)` as an intermediate fact. Simplify using `only [gap2, Pi.smul_apply, smul_eq_mul] at *`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isDominant_smul (t : ℝ) (ht : 0 ≤ t) (x : Fin 3 × Fin 2 → ℝ) (hx : IsDominantWeight x) :
     IsDominantWeight (t • x) := by
   rw [isDominant_two] at hx ⊢
@@ -794,15 +888,24 @@ theorem isDominant_smul (t : ℝ) (ht : 0 ≤ t) (x : Fin 3 × Fin 2 → ℝ) (h
   simp only [gap2, Pi.smul_apply, smul_eq_mul] at *
   linarith
 
+/- English proof (translation)
+Rewrite using `[isDominant_two]`. Introduce `τ`. Simplify using `[gap2]`.
+-/
 theorem isDominant_zero : IsDominantWeight (0 : Fin 3 × Fin 2 → ℝ) := by
   rw [isDominant_two]
   intro τ
   simp [gap2]
 
+/- English proof (translation)
+Use `(norm_le_pi_norm x p).trans hx` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Then use the resulting hypothesis.
+-/
 theorem abs_le_of_norm {x : Fin 3 × Fin 2 → ℝ} (hx : ‖x‖ ≤ 1) (p : Fin 3 × Fin 2) : |x p| ≤ 1 := by
   have := (norm_le_pi_norm x p).trans hx
   rwa [Real.norm_eq_abs] at this
 
+/- English proof (translation)
+Establish `h1` using `abs_le.1 (abs_le_of_norm hx (τ, 0))`. Establish `h2` using `abs_le.1 (abs_le_of_norm hx (τ, 1))`. Simplify using `only [gap2]`. Combine the linear relations using `[h1.2, h2.1]`.
+-/
 theorem gap_le_two_of_norm_le_one {x : Fin 3 × Fin 2 → ℝ} (hx : ‖x‖ ≤ 1) (τ : Fin 3) : gap2 x τ ≤ 2 := by
   have h1 := abs_le.1 (abs_le_of_norm hx (τ, 0))
   have h2 := abs_le.1 (abs_le_of_norm hx (τ, 1))
@@ -949,6 +1052,9 @@ def sampleSystem (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
 def zeroSystem : VolumeSystem (Fin 3) 2 1 Unit (Fin 3 × Fin 2 → ℝ) Unit :=
   sampleSystem 0 le_rfl zero_le_one
 
+/- English proof (translation)
+Use `show samplePoly 0 = 0`. Simplify using `[samplePoly]`.
+-/
 theorem zeroSystem_P (B : ℕ) : zeroSystem.P B = 0 := by
   show samplePoly 0 = 0
   simp [samplePoly]
@@ -956,6 +1062,13 @@ theorem zeroSystem_P (B : ℕ) : zeroSystem.P B = 0 := by
 def oneSystem : VolumeSystem (Fin 3) 2 1 Unit (Fin 3 × Fin 2 → ℝ) Unit :=
   sampleSystem 1 zero_le_one le_rfl
 
+/- English proof (translation)
+Establish `hb : ∀ τ, gap2 (basePoint (Fin 3) 2) τ = 1`. Introduce `τ`. Simplify using `[gap2, basePoint]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h'` using `congrArg (eval (basePoint (Fin 3) 2)) h`. Express the relevant statement in the definitionally equal form `eval (basePoint (Fin 3) 2) (samplePoly 1) = eval (basePoint (Fin 3) 2) 0 at h'`. Rewrite `h'` using `[eval_samplePoly, hb, hb, hb]`. Evaluate the numerical expressions using `at h'`. Introduce `h`.
+
+Establish `h'` using `congrArg (eval (basePoint (Fin 3) 2)) h`. Express the relevant statement in the definitionally equal form `eval (basePoint (Fin 3) 2) ((1 : ℝ) • (antisymDelta (Fin 3) 2 * ellPoly)) = eval (basePoint (Fin 3) 2) 0 at h'`. Rewrite `h'` using `[smul_eval, map_mul, eval_antisymDelta_three, eval_ellPoly, hb, hb, hb]`. Evaluate the numerical expressions using `at h'`.
+-/
 theorem oneSystem_P_ne_zero (B : ℕ) : oneSystem.P B ≠ 0 ∧ oneSystem.hFl ≠ 0 := by
   have hb : ∀ τ, gap2 (basePoint (Fin 3) 2) τ = 1 := by
     intro τ
@@ -975,9 +1088,21 @@ theorem oneSystem_P_ne_zero (B : ℕ) : oneSystem.P B ≠ 0 ∧ oneSystem.hFl �
 
 def lamK : Fin 3 × Fin 2 → ℝ := fun p => if p.1 ≠ 0 ∧ p.2 = 0 then 1 / 4 else 0
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases τ <;> simp [gap2, lamK]`.
+-/
 theorem gap_sample_weight_eq (τ : Fin 3) : gap2 lamK τ = if τ = 0 then 0 else 1 / 4 := by
   fin_cases τ <;> simp [gap2, lamK]
 
+/- English proof (translation)
+Use `⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by norm_num)).2 fun p => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Simplify using `only [lamK]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Rewrite using `[ncGap_two, gap_sample_weight_eq]`. Simplify using the standard rewrite rules. Introduce `τ hτ`. Rewrite using `[ncGap_two, gap_sample_weight_eq, if_neg hτ]`. Evaluate the numerical expressions.
+
+Introduce `τ i hi hij`. Use linear arithmetic over natural numbers and integers. Introduce `p`. Simplify using `only [lamK]`. Use `split_ifs`.
+
+Conclude with `⟨1 / 4, by push_cast; ring⟩`. Conclude with `⟨0, by simp⟩`.
+-/
 theorem lamK_mem : lamK ∈ Kset 1 (0 : Fin 3) (1 / 8) ∧ IsRatVec lamK := by
   refine ⟨⟨?_, ?_, ?_, ?_⟩, ?_⟩
   · refine (pi_norm_le_iff_of_nonneg (by norm_num)).2 fun p => ?_
@@ -997,11 +1122,17 @@ theorem lamK_mem : lamK ∈ Kset 1 (0 : Fin 3) (1 / 8) ∧ IsRatVec lamK := by
     · exact ⟨1 / 4, by push_cast; ring⟩
     · exact ⟨0, by simp⟩
 
+/- English proof (translation)
+Establish `h : (1 / (4 * ((2 : ℕ) : ℝ)) : ℝ) = 1 / 8` using `by norm_num`. Rewrite using `[h]`. Conclude with `lamK_mem.1`.
+-/
 theorem lamK_mem_quarter : lamK ∈ Kset 1 (0 : Fin 3) (1 / (4 * ((2 : ℕ) : ℝ))) := by
   have h : (1 / (4 * ((2 : ℕ) : ℝ)) : ℝ) = 1 / 8 := by norm_num
   rw [h]
   exact lamK_mem.1
 
+/- English proof (translation)
+Use `⟨⟨1 / 8, by push_cast; ring⟩, by norm_num, by norm_num, lamK_mem.2, lamK_mem.1, ?_⟩` and prove the remaining obligations. Use `show 20 * (Fintype.card (Fin 3) : ℝ) * (1 + 2 * ‖(0 : Fin 3 × Fin 2 → ℝ)‖) / (1 / 8 * min (min (1 / 2) 1) 1) ≤ ((1000 : ℕ) : ℝ)`. Evaluate the numerical expressions.
+-/
 theorem sample_satisfies_W_setting (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
     (sampleSystem a ha₀ ha₁).TheoremWSetting (1 / 8) 0 lamK 1000 := by
   refine ⟨⟨1 / 8, by push_cast; ring⟩, by norm_num, by norm_num, lamK_mem.2, lamK_mem.1, ?_⟩
@@ -1009,6 +1140,9 @@ theorem sample_satisfies_W_setting (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1)
       (1 / 8 * min (min (1 / 2) 1) 1) ≤ ((1000 : ℕ) : ℝ)
   norm_num
 
+/- English proof (translation)
+Introduce `V`. Establish `hC : V.C7 = 0` using `by show 2 * ‖(0 : Fin 3 × Fin 2 → ℝ)‖ = 0`. Simplify using the standard rewrite rules. Apply the tactic sequence `refine ⟨by norm_num, lamK_mem.1, by norm_num, by norm_num, ?_, ?_, ?_⟩ <;>`. Apply the tactic sequence `simp [hC, tauB, kappa] <;> norm_num`.
+-/
 theorem sample_gap_hypotheses (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
     let V := sampleSystem a ha₀ ha₁
     (0 : ℝ) < 1 / 8 ∧ lamK ∈ Kset 1 (0 : Fin 3) (1 / 8) ∧ (10 : ℝ) ≤ ((1000 : ℕ) : ℝ) ∧
@@ -1024,6 +1158,17 @@ theorem sample_gap_hypotheses (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
 
 def lamG : Fin 3 × Fin 2 → ℝ := fun p => if p.2 = 0 then 1 / 4 else 0
 
+/- English proof (translation)
+Introduce `V`. Establish `hg : ∀ τ, gap2 lamG τ = 1 / 4`. Introduce `τ`. Simplify using `[gap2, lamG]`. Use `⟨?_, ?_, by norm_num, ?_, ⟨1 / 16, by push_cast; norm_num⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p`. Simplify using `only [lamG]`. Use `split_ifs`. Conclude with `⟨1 / 4, by push_cast; ring⟩`. Conclude with `⟨0, by simp⟩`.
+
+Use `(pi_norm_le_iff_of_nonneg (by norm_num)).2 fun p => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Simplify using `only [lamG]`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `show (1 / 4 : ℝ) ≤ 1 / 2`.
+
+Evaluate the numerical expressions. Introduce `τ`. Rewrite using `[ncGap_two, hg]`. Introduce `τ i hi hij`. Use linear arithmetic over natural numbers and integers.
+
+Use `show IsDominantWeight lamG`. Rewrite using `[isDominant_two]`. Introduce `τ`. Rewrite using `[hg]`. Evaluate the numerical expressions.
+-/
 theorem sample_height_hypotheses (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
     let V := sampleSystem a ha₀ ha₁
     IsRatVec lamG ∧ ‖lamG‖ ≤ 1 ∧ (0 : ℝ) < 1 / 4 ∧ (1 / 4 : ℝ) ≤ V.ta0 1 ∧ IsRatNum ((1 / 4 : ℝ) ^ 2) ∧
@@ -1055,6 +1200,11 @@ theorem sample_height_hypotheses (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) :
     rw [hg]
     norm_num
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨l, hl, rfl⟩`. Use `⟨?_, fun σ hσ => absurd hσ (no_simple_swap σ)⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mulLeft_apply, mem_homogeneousSubmodule, dim_three]`. Establish `hΔ : (antisymDelta (Fin 3) 2).IsHomogeneous 3`. Rewrite using `[antisymDelta_three]`.
+
+Conclude with `((sub_X_homogeneous _ _).mul (sub_X_homogeneous _ _)).mul (sub_X_homogeneous _ _)`. Conclude with `hΔ.mul ((mem_homogeneousSubmodule _ _).1 hl.1)`.
+-/
 theorem UDelInv_le_sample : UDelInv (Fin 3) 2 1 ≤ antisymSpace (Fin 3) 2 1 := by
   rintro _ ⟨l, hl, rfl⟩
   refine ⟨?_, fun σ hσ => absurd hσ (no_simple_swap σ)⟩
@@ -1064,17 +1214,26 @@ theorem UDelInv_le_sample : UDelInv (Fin 3) 2 1 ≤ antisymSpace (Fin 3) 2 1 := 
     exact ((sub_X_homogeneous _ _).mul (sub_X_homogeneous _ _)).mul (sub_X_homogeneous _ _)
   exact hΔ.mul ((mem_homogeneousSubmodule _ _).1 hl.1)
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `Submodule.exists_isCompl (UDelInv (Fin 3) 2 1)`. Use `⟨W ⊓ antisymSpace (Fin 3) 2 1, inf_le_right, hW.disjoint.symm.mono_left inf_le_left, ?_⟩` and prove the remaining obligations. Rewrite using `[sup_comm, ← sup_inf_assoc_of_le W UDelInv_le_sample, hW.sup_eq_top, top_inf_eq]`.
+-/
 theorem exists_complement_sample : ∃ V', IsComplInV (Fin 3) 2 1 V' := by
   obtain ⟨W, hW⟩ := Submodule.exists_isCompl (UDelInv (Fin 3) 2 1)
   refine ⟨W ⊓ antisymSpace (Fin 3) 2 1, inf_le_right, hW.disjoint.symm.mono_left inf_le_left, ?_⟩
   rw [sup_comm, ← sup_inf_assoc_of_le W UDelInv_le_sample, hW.sup_eq_top, top_inf_eq]
 
+/- English proof (translation)
+Introduce `lam`. Use `show _ = eval lam (samplePoly a) - 1 * (eval lam (a • (antisymDelta (Fin 3) 2 * ellPoly)) + _)`. Simplify using `[invForm]`.
+-/
 theorem sample_thmBError (a : ℝ) (ha₀ : 0 ≤ a) (ha₁ : a ≤ 1) (B : ℕ) :
     (sampleSystem a ha₀ ha₁).IsThmBError B 0 0 (samplePoly a - a • (antisymDelta (Fin 3) 2 * ellPoly)) := by
   intro lam
   show _ = eval lam (samplePoly a) - 1 * (eval lam (a • (antisymDelta (Fin 3) 2 * ellPoly)) + _)
   simp [invForm]
 
+/- English proof (translation)
+Rewrite using `[dim_three]`. Conclude with `⟨by simp, (isHomogeneous_X ℝ _).pow 3⟩`.
+-/
 theorem sample_degrees : (Finsupp.single ((0 : Fin 3), (0 : Fin 2)) 4).degree = antisymDegree (Fin 3) 2 + 1 ∧
     (X ((0 : Fin 3), (0 : Fin 2)) ^ 3 : MvPolynomial (Fin 3 × Fin 2) ℝ).IsHomogeneous (antisymDegree (Fin 3) 2) := by
   rw [dim_three]

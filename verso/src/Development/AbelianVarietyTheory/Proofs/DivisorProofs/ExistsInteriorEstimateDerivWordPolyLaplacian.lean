@@ -16,6 +16,11 @@ namespace GlobalTheory
 
 open ZetaZeros.D.EllReg GlobalTheory.HCA
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`.
+
+Use function extensionality and compare the values at `y`. Simplify using `only [IsExpLieAlgebra.rightDeriv, mul_assoc]`.
+-/
 theorem foldr_rightDeriv_leftTranslate {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
     [FiniteDimensional ℝ 𝔸] {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
     (F : G → ℂ) (g : G) (l : List 𝔤) :
@@ -28,6 +33,21 @@ theorem foldr_rightDeriv_leftTranslate {𝔸 : Type} [NormedRing 𝔸] [NormedAl
     funext y
     simp only [IsExpLieAlgebra.rightDeriv, mul_assoc]
 
+/- English proof (translation)
+Introduce `𝔸 _ _ _ _ G 𝔤 h d b P hP`. Take `⟨r₁, hr₁, m, a, ha, hell, hsol⟩` from `GlobalTheory.T.exists_elliptic_weakSol_of_polynomial_laplacian_zero 𝔸 G 𝔤 h d b P hP`. Take `⟨r₂, hr₂, c, hc⟩` from `GlobalTheory.T.leftInvariantVectorFields_expCoords_smooth_frame 𝔸 G 𝔤 h d b`. Use `⟨(fun x : E d => h.expG (coordEquiv b x)) '' Metric.closedBall 0 r₁, (isCompact_closedBall 0 r₁).image (h.continuous_expG.comp (coordEquiv b).continuous), ?_⟩` and prove the remaining obligations. Introduce `l`.
+
+Take `⟨al, -, hword⟩` from `GlobalTheory.T.rightDerivWord_expCoords_differentialOperator 𝔸 G 𝔤 h d b r₂ c hc l`. Establish `hsup : ∀ w : List (Fin d), ∃ C : ℝ, 0 ≤ C ∧ ∀ u : E d → ℂ, ContinuousOn u (Metric.ball 0 r₁) → WeakSol (oneSys m a) (Metric.ball 0 r₁) u → ∀ M : ℝ, (∀ x ∈ Metric.ball (0 : E d) r₁, ‖u x‖ ≤ M) → ‖dw w u 0‖ ≤ C * M` using `fun w => GlobalTheory.T.elliptic_weakSol_wordDeriv_le_const_mul_sup d Unit (oneSys m a) (Metric.ball 0 r₁) Metric.isOpen_ball (fun _ n w => ha n w) (fun x hx ξ hξ => ⟨(), hell x hx ξ hξ⟩) w 0 (Metric.mem_ball_self hr₁)`. Use `choose Cw hCw0 hCw using hsup`. Use `⟨∑ n ∈ Finset.range (l.length + 1), ∑ w : Fin n → Fin d, ‖al n w 0‖ * Cw (List.ofFn w), Finset.sum_nonneg fun n _ => Finset.sum_nonneg fun w _ => mul_nonneg (norm_nonneg _) (hCw0 _), ?_⟩` and prove the remaining obligations. Introduce `f hf g M hM`.
+
+Establish `hfs : h.IsSmoothFun (f : G → ℂ)` using `f.2`. Establish `hf' : h.IsSmoothFun (fun y : G => (f : G → ℂ) (g * y))`. Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Conclude with `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hfs (contMDiff_const.mul contMDiff_id)`.
+
+Establish `key : l.foldr h.rightDeriv (f : G → ℂ) g = apOp l.length al (fun y => (f : G → ℂ) (g * h.expG (coordEquiv b y))) 0`. Use `hword _ hf' 0 (Metric.mem_ball_self hr₂)` as an intermediate fact. Rewrite `this` using `[foldr_rightDeriv_leftTranslate]`. Simplify `this` using `[coordEquiv_zero]`. Establish `hu : ContinuousOn (fun y => (f : G → ℂ) (g * h.expG (coordEquiv b y))) (Metric.ball 0 r₁)` using `(h.contDiff_comp_coordEquiv hfs g b).continuous.continuousOn`.
+
+Establish `hbd : ∀ x ∈ Metric.ball (0 : E d) r₁, ‖(f : G → ℂ) (g * h.expG (coordEquiv b x))‖ ≤ M` using `fun x hx => hM _ ⟨x, Metric.ball_subset_closedBall hx, rfl⟩`. Establish `hdw : ∀ w : List (Fin d), ‖dw w (fun y => (f : G → ℂ) (g * h.expG (coordEquiv b y))) 0‖ ≤ Cw w * M` using `fun w => hCw w _ hu (hsol f hf g) M hbd`. Rewrite using `[key, apOp]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_le_sum fun n _ => ?_` and prove the remaining obligations. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_left (hdw _) (norm_nonneg _)`.
+-/
 theorem interior_word_bound : ∀ (𝔸 : Type) [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] (G : Subgroup 𝔸ˣ) (𝔤 : Submodule ℝ 𝔸) (h : IsExpLieAlgebra G 𝔤) (d : ℕ) (b : Module.Basis (Fin d) ℝ 𝔤) (P : Polynomial ℂ), P.Monic → ∃ Kc : Set G, IsCompact Kc ∧ ∀ l : List 𝔤, ∃ C : ℝ, 0 ≤ C ∧ ∀ f : h.smoothFuns (F := ℂ), Polynomial.aeval (∑ i, h.rightDerivEnd (F := ℂ) (b i) * h.rightDerivEnd (F := ℂ) (b i)) P f = 0 → ∀ (g : G) (M : ℝ), (∀ y ∈ Kc, ‖(f : G → ℂ) (g * y)‖ ≤ M) → ‖l.foldr h.rightDeriv (f : G → ℂ) g‖ ≤ C * M := by
   intro 𝔸 _ _ _ _ G 𝔤 h d b P hP
   obtain ⟨r₁, hr₁, m, a, ha, hell, hsol⟩ := GlobalTheory.T.exists_elliptic_weakSol_of_polynomial_laplacian_zero 𝔸 G 𝔤 h d b P hP

@@ -71,6 +71,9 @@ structure HidaSetting : Prop where
   thP : R.IsThP
   scal : R.IsScal F
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : (0 : ℝ) < dGood R F b i` using `lt_of_lt_of_le h.2 h.1`. Unfold `dGood at h1`. Rewrite `h1` using `[h0, finrank_bot]`. Simplify using `at h1`.
+-/
 theorem GoodShare.ne_bot {δ : ℝ} {b : Bool} {i : Fin D.R.m} (h : GoodShare R F δ b i) :
     R.Wat i (sg0 D A) (levB R F b) ≠ ⊥ := by
   intro h0
@@ -81,6 +84,9 @@ theorem GoodShare.ne_bot {δ : ℝ} {b : Bool} {i : Fin D.R.m} (h : GoodShare R 
 
 end Objects
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩, by have := D.R.two_le_m; show D.R.m - 1 + 1 = _; omega⟩`.
+-/
 theorem exists_last (D : D7) : ∃ i : Fin D.R.m, (i : ℕ) + 1 = D.R.m :=
   ⟨⟨D.R.m - 1, by have := D.R.two_le_m; omega⟩, by have := D.R.two_le_m; show D.R.m - 1 + 1 = _; omega⟩
 

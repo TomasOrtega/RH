@@ -29,6 +29,17 @@ def infIncl (F : Type) [Field F] [NumberField F] : Ainf F →ₗ[F] AF F where
     show ((c • a, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) = c • ((a, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)
     simp
 
+/- English proof (translation)
+Set `e : AF F` to `((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)`. Establish `h1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (1 - e) = 0`. Establish `: (1 - e).1 = 0` using `by show ((1 : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) - ((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)).1 = 0`. Simplify using the standard rewrite rules. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI, this, map_zero]`.
+
+Establish `hu' : u = u * e`. Use `hu (1 - e) h1` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Rewrite using `[mul_comm]`. Conclude with `this`.
+
+Establish `key : ∀ y : AF F ⊗[F] E, e • y = (infIncl F).rTensor E (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) y)`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+
+Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, LinearMap.rTensor_tmul]`. Use `congr 1`. Use `show ((1, 0) : Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) * (show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a) = (((show Ainf F × Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F from a).1, 0) : Ainf F …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `one_mul _`.
+
+Conclude with `zero_mul _`. Consider the case `add y z hy hz => rw [smul_add, hy, hz, map_add, map_add]`. Rewrite using `[hu', mul_smul, key, hx, map_zero, smul_zero]`.
+-/
 theorem smul_eq_zero_of_fst (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : AF F ⊗[F] E) (hx : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x = 0) (u : AF F)
     (hu : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) u) : u • x = 0 := by
@@ -64,6 +75,15 @@ namespace GlobalTheory.InfKill
 
 open GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Introduce `D X d e J hJ g hg u hu`. Rewrite using `[mat_kapX]`. Establish `h1 : (infHom X g).val = 1` using `by rw [show infHom X g = 1 from hg]; rfl`. Establish `hM : ∀ a b, Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.fstA D.host.F) (AlgHom.id D.host.F D.host.E) ((Formalism.L2.Theta.mt X g - 1) a b) = 0`. Introduce `a b`.
+
+Establish `e2` using `congrFun (congrFun h1 a) b`. Rewrite using `[Matrix.sub_apply, map_sub]`. Use `sub_eq_zero.2 ((congrArg id e2).trans ?_)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hr : Matrix.reindex e e (Formalism.L2.Theta.mt X g) - 1 = Matrix.reindex e e (Formalism.L2.Theta.mt X g - 1)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, e.symm.injective.eq_iff]`. Rewrite using `[hr]`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.smul_apply, Matrix.zero_apply, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `smul_eq_zero_of_fst _ _ _ (hM _ _) u hu`.
+-/
 theorem smul_mat_kapX_sub_one : (∀ (D : D7) (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ), ∀ g ∈ GfC X, ∀ u : AF D.host.F,
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) u → u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (kapX X e hJ g) - 1) = 0) := by

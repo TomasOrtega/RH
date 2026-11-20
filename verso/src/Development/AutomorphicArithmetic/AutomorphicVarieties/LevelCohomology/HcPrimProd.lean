@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 
+/- English proof (translation)
+Introduce `O _ _ M N _ _ χ θ`. Establish `hc0 : θ.conductor ≠ 0` using `θ.conductor_ne_zero`. Use `haveI : NeZero θ.conductor := ⟨hc0⟩`. Use `haveI : NeZero (M * θ.conductor) := ⟨mul_ne_zero (NeZero.ne M) hc0⟩`. Use `set θ' := θ.primitiveCharacter with hθe`.
+
+Establish `hM : M ∣ M * θ.conductor` using `dvd_mul_right M _`. Establish `hC : θ.conductor ∣ M * θ.conductor` using `dvd_mul_left _ M`. Use `set ψ : DirichletCharacter O (M * θ.conductor) := DirichletCharacter.changeLevel hM χ * DirichletCharacter.changeLevel hC θ' with hψe`. Use `⟨ψ.conductor, ψ.primitiveCharacter, ψ.primitiveCharacter_isPrimitive, ψ.conductor_dvd_level, ?_, ?_⟩` and prove the remaining obligations. Introduce `t hχ hθ`.
+
+Establish `hθ1 : θ' ^ t = 1`. Rewrite using `[← DirichletCharacter.changeLevel_eq_one_iff θ.conductor_dvd_level, map_pow, DirichletCharacter.changeLevel_primitiveCharacter]`. Conclude with `hθ`. Establish `hψ1 : ψ ^ t = 1`. Rewrite using `[hψe, mul_pow, ← map_pow, ← map_pow, hχ, hθ1, map_one, map_one, mul_one]`.
+
+Rewrite using `[← DirichletCharacter.changeLevel_eq_one_iff ψ.conductor_dvd_level, map_pow, DirichletCharacter.changeLevel_primitiveCharacter]`. Conclude with `hψ1`. Introduce `a ha`. Rewrite `ha` using `[Nat.cast_mul]`. Establish `haM : IsCoprime a (M : ℤ)` using `ha.of_mul_right_left`.
+
+Establish `haN : IsCoprime a (N : ℤ)` using `ha.of_mul_right_right`. Establish `haC : IsCoprime a (θ.conductor : ℤ)` using `haN.of_isCoprime_of_dvd_right (Int.natCast_dvd_natCast.mpr θ.conductor_dvd_level)`. Establish `haMC : IsCoprime a ((M * θ.conductor : ℕ) : ℤ)`. Rewrite using `[Nat.cast_mul]`. Conclude with `haM.mul_right haC`.
+
+Rewrite using `[ψ.primitiveCharacter_apply_of_isCoprime haMC, hψe, MulChar.mul_apply, DirichletCharacter.changeLevel_eq_cast_of_dvd' χ hM haMC, DirichletCharacter.changeLevel_eq_cast_of_dvd' θ' hC haMC, θ.primitiveCharacter_apply_of_isCoprime haN]`.
+-/
 theorem UpperTheory.V.X.primProd :
     ∀ (O : Type) [CommRing O] [IsDomain O] (M N : ℕ) [NeZero M] [NeZero N] (χ : DirichletCharacter O M) (θ : DirichletCharacter O N), ∃ (f : ℕ) (φ : DirichletCharacter O f), φ.IsPrimitive ∧ f ∣ M * θ.conductor ∧ (∀ t : ℕ, χ ^ t = 1 → θ ^ t = 1 → φ ^ t = 1) ∧ ∀ a : ℤ, IsCoprime a (M * N : ℕ) → φ a = χ a * θ a := by
   intro O _ _ M N _ _ χ θ

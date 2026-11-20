@@ -8,6 +8,11 @@ namespace HeightCancellation.C4
 open Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB SquareStatements.Sing
 open scoped ComplexOrder
 
+/- English proof (translation)
+Establish `e : A * fromBlocks 1 B.toBlocks₁₂ 0 B.toBlocks₂₂ = fromBlocks A.toBlocks₁₁ 0 A.toBlocks₂₁ 1`. Rewrite `h` using `[← fromBlocks_toBlocks A, ← fromBlocks_toBlocks B, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`. Use `conv_lhs => rw [← fromBlocks_toBlocks A, fromBlocks_multiply]`. Rewrite using `[h.2.1, h.2.2.2]`. Simplify using the standard rewrite rules.
+
+Use `congrArg det e` as an intermediate fact. Rewrite `this` using `[det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂, det_one, det_one, one_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem jacobi_blocks {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A B : Matrix (m ⊕ n) (m ⊕ n) ℂ) (h : A * B = 1) : A.det * B.toBlocks₂₂.det = A.toBlocks₁₁.det := by
   have e : A * fromBlocks 1 B.toBlocks₁₂ 0 B.toBlocks₂₂ = fromBlocks A.toBlocks₁₁ 0 A.toBlocks₂₁ 1 := by
@@ -19,6 +24,11 @@ theorem jacobi_blocks {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [Deci
   have := congrArg det e
   rwa [det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂, det_one, det_one, one_mul, mul_one] at this
 
+/- English proof (translation)
+Establish `h : O.submatrix finSumFinEquiv finSumFinEquiv * O⁻¹.submatrix finSumFinEquiv finSumFinEquiv = 1`. Rewrite using `[submatrix_mul_equiv, mul_nonsing_inv _ hO.isUnit, submatrix_one_equiv]`. Establish `h1` using `jacobi_blocks _ _ h`. Rewrite `h1` using `[det_submatrix_equiv_self]`. Establish `e : (revDual O).submatrix (Fin.castLE (Nat.le_add_left l k)) (Fin.castLE (Nat.le_add_left l k)) = ((O⁻¹.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂ᵀ).submatrix Fin.revPerm Fin.revPerm`.
+
+Use extensionality with `a b`. Establish `r : ∀ a : Fin l, Fin.rev (Fin.castLE (Nat.le_add_left l k) a) = Fin.natAdd k (Fin.rev a)` using `fun a => Fin.ext (by have := a.2; simp [Fin.rev]; omega)`. Simplify using `only [revDual, submatrix_apply, r, ← transpose_nonsing_inv, transpose_apply, toBlocks₂₂, of_apply, finSumFinEquiv_apply_right, Fin.revPerm_apply]`. Rewrite using `[e, det_submatrix_equiv_self, det_transpose, h1]`. Both sides reduce to the same expression.
+-/
 theorem jacobi {k l : ℕ} (O : Matrix (Fin (k + l)) (Fin (k + l)) ℂ) (hO : O.det ≠ 0) :
     O.det * ((revDual O).submatrix (Fin.castLE (Nat.le_add_left l k)) (Fin.castLE (Nat.le_add_left l k))).det =
       (O.submatrix (Fin.castLE (Nat.le_add_right k l)) (Fin.castLE (Nat.le_add_right k l))).det := by
@@ -36,10 +46,16 @@ theorem jacobi {k l : ℕ} (O : Matrix (Fin (k + l)) (Fin (k + l)) ℂ) (hO : O.
   rw [e, det_submatrix_equiv_self, det_transpose, h1]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Complex.mul_re, ← (Complex.pos_iff.1 ha).2]`. Simplify using the standard rewrite rules.
+-/
 theorem re_mul_pos {a b : ℂ} (ha : 0 < a) : (a * b).re = a.re * b.re := by
   rw [Complex.mul_re, ← (Complex.pos_iff.1 ha).2]
   simp
 
+/- English proof (translation)
+Substitute `e` using the available equality. Unfold `leadMinor`. Rewrite using `[dif_pos (Nat.le_add_left l k), dif_pos (Nat.le_add_right k l), ← jacobi O hO.det_pos.ne', re_mul_pos hO.det_pos]`.
+-/
 theorem jacobi_lead {q : ℕ} (O : Matrix (Fin q) (Fin q) ℂ) (hO : O.PosDef) {k l : ℕ} (e : k + l = q) :
     O.det.re * leadMinor (revDual O) l = leadMinor O k := by
   subst e
@@ -47,6 +63,9 @@ theorem jacobi_lead {q : ℕ} (O : Matrix (Fin q) (Fin q) ℂ) (hO : O.PosDef) {
   rw [dif_pos (Nat.le_add_left l k), dif_pos (Nat.le_add_right k l), ← jacobi O hO.det_pos.ne',
     re_mul_pos hO.det_pos]
 
+/- English proof (translation)
+Establish `h0 : O.det.re ≠ 0` using `(Complex.pos_iff.1 hO.det_pos).1.ne'`. Unfold `grN`. Rewrite using `[← jacobi_lead O hO (k := k + 1) (l := l) (by omega), ← jacobi_lead O hO (k := k) (l := l + 1) (by omega), mul_div_mul_left _ _ h0, ← Real.sqrt_inv, inv_div]`.
+-/
 theorem grN_rev {q : ℕ} (O : Matrix (Fin q) (Fin q) ℂ) (hO : O.PosDef) {k l : ℕ} (e : k + l + 1 = q) :
     (grN (revDual O) l)⁻¹ = grN O k := by
   have h0 : O.det.re ≠ 0 := (Complex.pos_iff.1 hO.det_pos).1.ne'
@@ -54,6 +73,11 @@ theorem grN_rev {q : ℕ} (O : Matrix (Fin q) (Fin q) ℂ) (hO : O.PosDef) {k l 
   rw [← jacobi_lead O hO (k := k + 1) (l := l) (by omega), ← jacobi_lead O hO (k := k) (l := l + 1) (by omega),
     mul_div_mul_left _ _ h0, ← Real.sqrt_inv, inv_div]
 
+/- English proof (translation)
+Establish `a` using `leadMinor_pos_of_posDef hΓ (s := k + 1) hk`. Establish `b` using `leadMinor_pos_of_posDef hΓ (s := k) hk.le`. Unfold `grN`. Use `⟨Real.sqrt_pos.2 (div_pos a b), ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_sqrt (div_pos a b).le, Real.log_div a.ne' b.ne']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_grN {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ} (hΓ : Γ.PosDef) {k : ℕ} (hk : k < r) :
     0 < grN Γ k ∧ Real.log (grN Γ k) =
       (1 / 2) * Real.log (leadMinor Γ (k + 1)) - (1 / 2) * Real.log (leadMinor Γ k) := by
@@ -64,6 +88,11 @@ theorem log_grN {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ} (hΓ : Γ.PosDef) {k
   rw [Real.log_sqrt (div_pos a b).le, Real.log_div a.ne' b.ne']
   ring
 
+/- English proof (translation)
+Establish `e : C = Finset.univ.image f`. Use extensionality with `a`. Simplify using `[hC]`. Establish `hc : C.card = k`. Rewrite using `[e, Finset.card_image_of_injective _ hf.injective]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[MinorCalc.minorIJ_eq_det T C C k hc hc, ← Finset.orderEmbOfFin_unique hc (f := f) (fun s => (hC _).2 ⟨s, rfl⟩) hf]`.
+-/
 theorem minor_emb {R : Type} [CommRing R] {N k : ℕ} (T : Matrix (Fin N) (Fin N) R) (C : Finset (Fin N))
     (f : Fin k → Fin N) (hf : StrictMono f) (hC : ∀ a, a ∈ C ↔ ∃ s, f s = a) :
     minorIJ T C C = (T.submatrix f f).det := by
@@ -78,6 +107,13 @@ theorem minor_emb {R : Type} [CommRing R] {N k : ℕ} (T : Matrix (Fin N) (Fin N
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Rewrite using `[minor_emb Γ _ (fun s => wEmb p q (Fin.castLE hi s)) (fun a b h => wEmb_strictMono p q h) fun a => ?_]`. Unfold `leadMinor`. Rewrite using `[dif_pos hi]`. Both sides reduce to the same expression. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos hi]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨a - q, by omega⟩, Fin.ext (by show q + (a - q) = a; omega)⟩`. Introduce and unpack `⟨s, rfl⟩`. Use `s.2` as an intermediate fact.
+
+Use `show _ ≤ q + (s : ℕ) ∧ q + (s : ℕ) < _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem minor_w (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (i : Fin (p + q)) (hi : (i : ℕ) + 1 ≤ p) :
     (minorIJ Γ (stepCols (p + q) p i) (stepCols (p + q) p i)).re = leadMinor (wBlock Γ) (i + 1) := by
   rw [minor_emb Γ _ (fun s => wEmb p q (Fin.castLE hi s)) (fun a b h => wEmb_strictMono p q h) fun a => ?_]
@@ -93,6 +129,13 @@ theorem minor_w (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (i : Fin (p + q)) 
       show _ ≤ q + (s : ℕ) ∧ q + (s : ℕ) < _
       omega
 
+/- English proof (translation)
+Establish `hq : (i : ℕ) + 1 - p ≤ q` using `by have := i.2; omega`. Rewrite using `[minor_emb Γ _ (fun s => omEmb p q (Fin.castLE hq s)) (fun a b h => omEmb_strictMono p q h) fun a => ?_]`. Unfold `leadMinor`. Rewrite using `[dif_pos hq]`. Both sides reduce to the same expression.
+
+Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg hi]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨a, h⟩, rfl⟩`. Introduce and unpack `⟨s, rfl⟩`.
+
+Conclude with `s.2`.
+-/
 theorem minor_om (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (i : Fin (p + q)) (hi : ¬ (i : ℕ) + 1 ≤ p) :
     (minorIJ Γ (stepCols (p + q) p i) (stepCols (p + q) p i)).re = leadMinor (omBlock Γ) (i + 1 - p) := by
   have hq : (i : ℕ) + 1 - p ≤ q := by have := i.2; omega
@@ -110,6 +153,13 @@ theorem minor_om (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (i : Fin (p + q))
 def pot (Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ) (n : ℕ) : ℝ :=
   (1 / 2) * Real.log (leadMinor (wBlock Γ) (min n p)) + (1 / 2) * Real.log (leadMinor (omBlock Γ) (n - p))
 
+/- English proof (translation)
+Establish `hW : (wBlock Γ).PosDef` using `hΓ.submatrix (wEmb_strictMono p q).injective`. Establish `hO : (omBlock Γ).PosDef` using `hΓ.submatrix (omEmb_strictMono p q).injective`. Establish `hm` using `m.2`. Unfold `mu pot`. Use `split_ifs with h`.
+
+Take `⟨a, b⟩` from `log_grN hW h`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[b, min_eq_left (show (m : ℕ) + 1 ≤ p from h), min_eq_left h.le, show (m : ℕ) + 1 - p = 0 by omega, show (m : ℕ) - p = 0 by omega]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[grN_rev _ hO (k := m - p) (by omega)]`.
+
+Take `⟨a, b⟩` from `log_grN hO (k := m - p) (by omega)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[b, min_eq_right (show p ≤ (m : ℕ) + 1 by omega), min_eq_right (show p ≤ (m : ℕ) by omega), show (m : ℕ) + 1 - p = m - p + 1 by omega]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_mu {Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ} (hΓ : Γ.PosDef) (m : Fin (p + q)) :
     0 < mu p q Γ m ∧ Real.log (mu p q Γ m) = pot Γ (m + 1) - pot Γ m := by
   have hW : (wBlock Γ).PosDef := hΓ.submatrix (wEmb_strictMono p q).injective
@@ -129,6 +179,11 @@ theorem log_mu {Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ} (hΓ : Γ.PosDef) (
       show (m : ℕ) + 1 - p = m - p + 1 by omega]
     ring
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_range_sub f]`. Use `Finset.sum_bij (fun m _ => (m : ℕ)) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `m hm`. Conclude with `Finset.mem_range.2 (Nat.lt_succ_of_le (Fin.le_def.1 (Finset.mem_Iic.1 hm)))`. Introduce `a _ b _ h`.
+
+Conclude with `Fin.ext h`. Introduce `n hn`. Establish `h1` using `Finset.mem_range.1 hn`. Establish `h2` using `i.2`. Conclude with `⟨⟨n, by omega⟩, Finset.mem_Iic.2 (show n ≤ (i : ℕ) by omega), rfl⟩`.
+-/
 theorem sum_tele {N : ℕ} (f : ℕ → ℝ) (i : Fin N) :
     ∑ m ∈ Finset.Iic i, (f ((m : ℕ) + 1) - f m) = f (i + 1) - f 0 := by
   rw [← Finset.sum_range_sub f]
@@ -143,6 +198,13 @@ theorem sum_tele {N : ℕ} (f : ℕ → ℝ) (i : Fin N) :
     exact ⟨⟨n, by omega⟩, Finset.mem_Iic.2 (show n ≤ (i : ℕ) by omega), rfl⟩
 
 open Classical in
+/- English proof (translation)
+Establish `hW : (wBlock Γ).PosDef` using `hΓ.submatrix (wEmb_strictMono p q).injective`. Establish `hO : (omBlock Γ).PosDef` using `hΓ.submatrix (omEmb_strictMono p q).injective`. Establish `hi` using `i.2`. Unfold `pot detFac IsProperStep`. Rewrite using `[minorIJ_wIdx, minorIJ_omIdx]`.
+
+Distinguish the cases in `hN : (i : ℕ) + 1 = p + q`. Rewrite using `[if_pos (by omega), if_pos hN, if_neg (fun h => h.2 hN), min_eq_right (by omega), show (i : ℕ) + 1 - p = q by omega, leadMinor_size_self, leadMinor_size_self, re_mul_pos hW.det_pos, Real.log_mul (Complex.pos_iff.1 hW.det_pos).1.ne' (Complex.pos_iff.1 hO.det_pos).1.ne']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hN, mul_one]`. Break down `lt_trichotomy ((i : ℕ) + 1) p with h | h | h` into its components or cases.
+
+Rewrite using `[if_neg (by omega), if_pos ⟨h.ne, hN⟩, minor_w Γ i h.le, min_eq_left h.le, show (i : ℕ) + 1 - p = 0 by omega, leadMinor_size_zero]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos h.ge, if_neg (fun h' => h'.1 h), min_eq_right h.ge, show (i : ℕ) + 1 - p = 0 by omega, leadMinor_size_zero, leadMinor_size_self]`. Simplify using the standard rewrite rules. Rewrite using `[if_pos h.le, if_pos ⟨h.ne', hN⟩, minor_om Γ i (by omega), min_eq_right h.le, leadMinor_size_self]`.
+-/
 theorem pot_eq {Γ : Matrix (Fin (p + q)) (Fin (p + q)) ℂ} (hΓ : Γ.PosDef) (i : Fin (p + q)) :
     pot Γ (i + 1) = (1 / 2) * Real.log (detFac p i Γ).re + if IsProperStep (p + q) p i then
       (1 / 2) * Real.log (minorIJ Γ (stepCols (p + q) p i) (stepCols (p + q) p i)).re else 0 := by
@@ -170,6 +232,11 @@ end HeightCancellation.C4
 
 open scoped ComplexOrder in
 open Matrix GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.PB HeightCancellation.C4 in
+/- English proof (translation)
+Introduce `p q G h bG hG bh hh`. Establish `hP : (hᴴ * G * h).PosDef` using `hG.conjTranspose_mul_mul_same (Matrix.mulVec_injective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det h).2 hh.isUnit))`. Use `⟨fun m => (log_mu hP m).1, fun i => ⟨CPts.detFac_ne_zero (Nat.le_add_right p q) i bh hh, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [(log_mu hP _).2]`. Rewrite using `[sum_tele (pot (hᴴ * G * h)) i, pot_eq hP, PositivityTheory.Xgp.c_bm_exists_hom.log_detFac (Nat.le_add_right p q) i hG bG bh hh]`.
+
+Establish `e : pot (hᴴ * G * h) 0 = 0` using `by simp [pot, leadMinor_size_zero]`. Rewrite using `[e, blockPot]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HeightCancellation.c4 : SquareStatements.Sing.C4 := by
   intro p q G h bG hG bh hh
   have hP : (hᴴ * G * h).PosDef := hG.conjTranspose_mul_mul_same

@@ -6,6 +6,13 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `f N`. Use `⟨fun H => ?_, fun ψ P => ?_⟩` and prove the remaining obligations. Unfold `realFlagIntegral RestTerms.flagIntegral`. Move the coercions through the operations in `[Rat.cast_sum, Rat.cast_mul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[coeff_map, eq_ratCast]`. Expand and normalize the polynomial expressions, which then agree. Unfold `realFlagIntegral RestTerms.flagIntegral`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[KRest.coeff_psiPoly]`. Establish `h : coeff α P * ((coeff α (RestTerms.blockVandermonde f N) * α.prod (fun _ e => (e.factorial : ℚ)) : ℚ) : ℝ) = (coeff α (RestTerms.blockVandermonde f N) * α.prod (fun _ e => (e.factorial : ℚ))) • coeff α P`. Rewrite using `[Rat.smul_def, mul_comm]`. Rewrite using `[h, ψ.map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RestCutPsiFlag.proof : RestCutPsiFlag.Statement := by
   intro f N
   refine ⟨fun H => ?_, fun ψ P => ?_⟩

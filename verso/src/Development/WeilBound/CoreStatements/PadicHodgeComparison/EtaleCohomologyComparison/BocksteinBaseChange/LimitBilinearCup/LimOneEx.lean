@@ -22,11 +22,17 @@ def lev (r : Res l K) (M : Model l K) (i j m : ℕ) :
       (Wc.HS l (B.schFn M.p) r.ρ (i + j)).M m :=
   (P.cup_bilin (CH.mulP (Wc.OA l (B.schFn M.p) r.ρ m)) (rfl : i + j = i + j)).choose
 
+/- English proof (translation)
+The claim follows from `(P.cup_bilin (CH.mulP (Wc.OA l (B.schFn M.p) r.ρ m)) (rfl : i + j = i + j)).choose_spec x y`.
+-/
 theorem lev_eq (r : Res l K) (M : Model l K) (i j m : ℕ) (x : (Wc.HS l (B.schFn M.p) r.ρ i).M m)
     (y : (Wc.HS l (B.schFn M.p) r.ρ j).M m) :
     lev r M i j m x y = (CH.mulP (Wc.OA l (B.schFn M.p) r.ρ m)).cup rfl x y :=
   (P.cup_bilin (CH.mulP (Wc.OA l (B.schFn M.p) r.ρ m)) (rfl : i + j = i + j)).choose_spec x y
 
+/- English proof (translation)
+Rewrite using `[lev_eq, lev_eq]`. Conclude with `CupAbs.om_cup (Wc.redM l (B.schFn M.p) r.ρ m) (RingHom.id _) (Wc.red_mk l r.k m) rfl x y`.
+-/
 theorem lev_comm (r : Res l K) (M : Model l K) (i j m : ℕ) (x : (Wc.HS l (B.schFn M.p) r.ρ i).M (m + 1))
     (y : (Wc.HS l (B.schFn M.p) r.ρ j).M (m + 1)) :
     (Wc.HS l (B.schFn M.p) r.ρ (i + j)).r m (lev r M i j (m + 1) x y) =
@@ -42,6 +48,9 @@ end PlusCup
 
 open PlusCup in
 
+/- English proof (translation)
+Introduce `l _ K r`. Use `⟨fun M i j => CupAbs.bc (Wc.K₀ l r.k) (limCup r M i j), fun M i j x y => ⟨limCup r M i j x y, fun m => ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(CupAbs.limBil_apply _ _ x y m).trans (lev_eq r M i j m _ _)`. Conclude with `CupAbs.bc_tmul _ _ _ _`.
+-/
 theorem cupEx : CupEx := by
   intro l _ K r
   refine ⟨fun M i j => CupAbs.bc (Wc.K₀ l r.k) (limCup r M i j), fun M i j x y =>
@@ -49,6 +58,9 @@ theorem cupEx : CupEx := by
   · exact (CupAbs.limBil_apply _ _ x y m).trans (lev_eq r M i j m _ _)
   · exact CupAbs.bc_tmul _ _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun m => CH.oneH (Wc.OA l (B.schFn M.p) r.ρ m), fun m => CupAbs.om_one (Wc.redM l (B.schFn M.p) r.ρ m) (RingHom.id _) (Wc.red_mk l r.k m)⟩, fun _ => rfl⟩`.
+-/
 theorem limOne_ex (r : Res l K) (M : Model l K) : ∃ x, Pb.LimOne r M x :=
   ⟨⟨fun m => CH.oneH (Wc.OA l (B.schFn M.p) r.ρ m),
     fun m => CupAbs.om_one (Wc.redM l (B.schFn M.p) r.ρ m) (RingHom.id _) (Wc.red_mk l r.k m)⟩, fun _ => rfl⟩

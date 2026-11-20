@@ -13,10 +13,20 @@ namespace PositivityTheory.Xgn.A_flatten_many
 variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 variable {V : Type} [AddCommGroup V] [Module Ω V]
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨a, ha, e, he, rfl⟩`.
+-/
 theorem mem_span (R : Subalgebra O Ω) {S : Set V} {e : V} (he : e ∈ S) {a : Ω} (ha : a ∈ R) :
     a • e ∈ spanOver R S :=
   AddSubgroup.subset_closure ⟨a, ha, e, he, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, w, hw, rfl⟩` from `hy`. Rewrite using `[smul_smul]`. Conclude with `mem_span R hw (mul_mem ha hb)`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y w _ _ hy hw => rw [smul_add]`. Conclude with `add_mem hy hw`. Consider the case `neg y _ hy => rw [smul_neg]`.
+
+Conclude with `neg_mem hy`.
+-/
 theorem smul_mem_span (R : Subalgebra O Ω) (S : Set V) {a : Ω} (ha : a ∈ R) {e : V}
     (he : e ∈ spanOver R S) : a • e ∈ spanOver R S := by
   induction he using AddSubgroup.closure_induction with
@@ -38,17 +48,42 @@ def combs (R : Subalgebra O Ω) {N : ℕ} (b : Fin N → V) : AddSubgroup V wher
     rintro _ ⟨a, ha, rfl⟩
     exact ⟨-a, fun q => neg_mem (ha q), by simp⟩
 
+/- English proof (translation)
+Take `⟨u, hu, rfl⟩` from `he`. Conclude with `⟨fun q => a * u q, fun q => mul_mem ha (hu q), by simp [Finset.smul_sum, smul_smul]⟩`.
+-/
 theorem smul_mem_combs (R : Subalgebra O Ω) {N : ℕ} (b : Fin N → V) {a : Ω} (ha : a ∈ R) {e : V}
     (he : e ∈ combs R b) : a • e ∈ combs R b := by
   obtain ⟨u, hu, rfl⟩ := he
   exact ⟨fun q => a * u q, fun q => mul_mem ha (hu q), by simp [Finset.smul_sum, smul_smul]⟩
 
+/- English proof (translation)
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`. Conclude with `smul_mem_combs R b (h ha) (hS e he)`.
+-/
 theorem spanOver_le_combs (R R₀ : Subalgebra O Ω) (h : R₀ ≤ R) {N : ℕ} (b : Fin N → V) (S : Set V)
     (hS : ∀ e ∈ S, e ∈ combs R b) : spanOver R₀ S ≤ combs R b := by
   refine (AddSubgroup.closure_le _).2 ?_
   rintro _ ⟨a, ha, e, he, rfl⟩
   exact smul_mem_combs R b (h ha) (hS e he)
 
+/- English proof (translation)
+Take `⟨hli, hsp⟩` from `(B.is_basis_iff_det (v := v ∘ I)).2 (Ne.isUnit hI)`. Set `C` to `Module.Basis.mk hli hsp.ge`. Establish `hC : ∀ q, C q = v (I q)` using `fun q => Module.Basis.mk_apply hli hsp.ge q`. Establish `hco : ∀ l q, C.repr (v l) q ∈ R`. Introduce `l q`.
+
+Establish `h1` using `LinearMap.congr_fun (B.det_smul_mk_coord_eq_det_update hli hsp.ge q) (v l)`. Establish `h2 : B.det (v ∘ I) * C.repr (v l) q = B.det (v ∘ Function.update I q l)`. Rewrite using `[Function.comp_update]`. Conclude with `h1`. Establish `h3 : C.repr (v l) q = B.det (v ∘ Function.update I q l) / B.det (v ∘ I)`.
+
+Rewrite using `[eq_div_iff hI, mul_comm, h2]`. Rewrite using `[h3]`. Conclude with `hJ _`. Set `b : Fin N → V` to `fun q => p • v (I q)`. Establish `hb : b = ⇑(C.unitsSMul fun _ => Units.mk0 p hp)`.
+
+Use function extensionality and compare the values at `q`. Rewrite using `[Module.Basis.unitsSMul_apply, hC]`. Both sides reduce to the same expression. Establish `key : spanOver R (spanOver R₀ (Set.range fun l => p • v l) : Set V) = combs R b`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `spanOver_le_combs R R le_rfl b _ fun e he => ?_` and prove the remaining obligations. Use `spanOver_le_combs R R₀ h b _ ?_ he` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Use `⟨fun q => C.repr (v l) q, hco l, ?_⟩` and prove the remaining obligations. Establish `e1` using `C.sum_repr (v l)`.
+
+Simplify using `only [b]`. Use `conv_lhs => rw [← e1]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hC, smul_comm]`.
+
+Introduce and unpack `_ ⟨a, ha, rfl⟩`. Use `sum_mem fun q _ => mem_span R ?_ (ha q)` and prove the remaining obligations. Use `mem_span R₀ (S := Set.range fun l => p • v l) ⟨I q, rfl⟩ (one_mem R₀)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `⟨fun a ha e he => smul_mem_span R _ ha he, 1, fun _ => 1, fun _ => 1, fun _ => one_mem _, fun _ => one_mem _, by simp, fun _ => ⟨b, ?_, ?_, fun e => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Conclude with `Module.Basis.linearIndependent _`. Rewrite using `[hb]`. Conclude with `Module.Basis.span_eq _`. Rewrite using `[key]`.
+
+Simplify using `only [one_pow, one_smul, one_mul, exists_const]`. Both sides reduce to the same expression.
+-/
 theorem locFree_of_minor (R R₀ : Subalgebra O Ω) (h : R₀ ≤ R) {N M : ℕ} (B : Module.Basis (Fin N) Ω V)
     (v : Fin M → V) (p : Ω) (hp : p ≠ 0) (I : Fin N → Fin M) (hI : B.det (v ∘ I) ≠ 0)
     (hJ : ∀ J : Fin N → Fin M, B.det (v ∘ J) / B.det (v ∘ I) ∈ R) :
@@ -96,6 +131,13 @@ theorem locFree_of_minor (R R₀ : Subalgebra O Ω) (h : R₀ ≤ R) {N M : ℕ}
     simp only [one_pow, one_smul, one_mul, exists_const]
     rfl
 
+/- English proof (translation)
+Take `⟨κ, e, he, hsp, hli⟩` from `exists_linearIndependent' Ω v`. Use `haveI : Finite κ := Finite.of_injective e he`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Set `B : Module.Basis κ Ω V` to `Module.Basis.mk hli (by rw [hsp, hv])`. Establish `hc : Fintype.card κ = N` using `by rw [← hN, Module.finrank_eq_card_basis B]`.
+
+Set `σ : κ ≃ Fin N` to `Fintype.equivFinOfCardEq hc`. Use `⟨B.reindex σ, fun a => e (σ.symm a), ?_⟩` and prove the remaining obligations. Establish `: (v ∘ fun a => e (σ.symm a)) = ⇑(B.reindex σ)`. Use function extensionality and compare the values at `a`. Rewrite using `[Module.Basis.reindex_apply]`.
+
+Conclude with `(Module.Basis.mk_apply hli _ _).symm`. Rewrite using `[this, Module.Basis.det_self]`. Conclude with `one_ne_zero`.
+-/
 theorem exists_minor {N M : ℕ} (hN : Module.finrank Ω V = N) (v : Fin M → V)
     (hv : Submodule.span Ω (Set.range v) = ⊤) :
     ∃ (B : Module.Basis (Fin N) Ω V) (I : Fin N → Fin M), B.det (v ∘ I) ≠ 0 := by
@@ -114,6 +156,11 @@ theorem exists_minor {N M : ℕ} (hN : Module.finrank Ω V = N) (v : Fin M → V
   rw [this, Module.Basis.det_self]
   exact one_ne_zero
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← hS, Submodule.span_le]`. Introduce `e he`. Establish `h1` using `mem_span R he (one_mem R)`. Rewrite `h1` using `[one_smul, h]`. Establish `h2 : spanOver R (Set.range fun l => p • v l) ≤ (Submodule.span Ω (Set.range v)).toAddSubgroup`.
+
+Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, -, _, ⟨l, rfl⟩, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩))`. Conclude with `h2 h1`.
+-/
 theorem span_top (R : Subalgebra O Ω) (S : Set V) (hS : Submodule.span Ω S = ⊤) {M : ℕ} (v : Fin M → V)
     (p : Ω) (h : spanOver R S = spanOver R (Set.range fun l => p • v l)) :
     Submodule.span Ω (Set.range v) = ⊤ := by
@@ -130,6 +177,21 @@ theorem span_top (R : Subalgebra O Ω) (S : Set V) (hS : Submodule.span Ω S = �
 end PositivityTheory.Xgn.A_flatten_many
 
 open PositivityTheory.Xgn.A_flatten_many in
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hM hF I _ N V _ _ Γ hΓ`. Establish `hjoin : ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) → GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d`. Introduce `K' _ _ ι' _ z hz`. Use `PositivityTheory.Xgn.t_join_model O Ω K ι x d 0 hM K' ι' z hz Fin.elim0 algebraicIndependent_empty_type (fun i => i.elim0) fun v _ => ?_` and prove the remaining obligations. Establish `hv : v ∈ fnField O x` using `hF ▸ Subfield.mem_top v`.
+
+Conclude with `isAlgebraic_algebraMap (⟨v, IntermediateField.algebraMap_mem _ (⟨v, hv⟩ : fnField O x)⟩ : IntermediateField.adjoin (fnField O x) (Set.range (Fin.elim0 : Fin 0 → Ω)))`. Establish `hch` using `(PositivityTheory.Xgn.t_chart_noeth_frac O Ω K ι x).2.2`. Distinguish the cases in `h0 : ∃ c₀, mseg x c₀ ≠ 0`. Take `⟨c₀, hc₀⟩` from `h0`. Establish `hg : ∀ j, ∃ (a : K → ℤ) (M : ℕ) (v : Fin M → V j) (B : Module.Basis (Fin (N j)) Ω (V j)), (∃ J : Fin (N j) → Fin M, B.det (v ∘ J) ≠ 0) ∧ ∀ c, mseg x c ≠ 0 → Γ j c = spanOver (chartRing O (mseg x) c) (Set.range fun l => (chartMon x c a)⁻¹ • v l)`.
+
+Introduce `j`. Take `⟨h1, h2, h3⟩` from `hΓ j`. Take `⟨a, ha⟩` from `PositivityTheory.Xgn.t_coherent_gens O Ω K ι x (V j) (Γ j) h2 fun c hc => (h3 c hc).imp fun _ h => h.1`. Take `⟨M, v, hv⟩` from `ha a le_rfl`. Take `⟨S, hS, hS'⟩` from `h3 c₀ hc₀`.
+
+Take `⟨B, J, hJ⟩` from `exists_minor h1 v (span_top _ _ hS' v _ (hS.symm.trans (hv c₀ hc₀)))`. Conclude with `⟨a, M, v, B, ⟨J, hJ⟩, hv⟩`. Use `choose a M v B hJ hv using hg`. Set `ι' : I → Type` to `fun j => Fin (N j) → Fin (M j)`. Set `z : (Σ j, ι' j) → Ω` to `fun q => (B q.1).det (v q.1 ∘ q.2)`.
+
+Use `⟨I, inferInstance, inferInstance, ι', inferInstance, z, hjoin I ι' z hJ, fun j c hc => ?_⟩` and prove the remaining obligations. Take `⟨hc1, hle⟩` from `(hch I ι' z).2 c hc`. Rewrite using `[hv j _ hc1]`. Establish `hk : ∀ k, x ⟨k, restrictChart c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc1 k (Finset.mem_univ k)`. Use `locFree_of_minor _ _ hle (B j) (v j) _ (inv_ne_zero ?_) (c (.inr j)) (Finset.prod_ne_zero_iff.1 hc (.inr j) (Finset.mem_univ _)) fun J => ?_` and prove the remaining obligations.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hk k)`. Establish `h` using `PositivityTheory.Xgn.A_chart_noeth_frac.ratio_eq (joinCoord x z) c hc (.inr j) J`. Express the relevant statement in the definitionally equal form `joinCoord x z ⟨.inr j, J⟩ / joinCoord x z ⟨.inr j, c (.inr j)⟩ ∈ _`. Rewrite using `[← h]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := O) _ _ _`.
+
+Set `ι' : Empty → Type` to `fun _ => Empty`. Set `z : (Σ k, ι' k) → Ω` to `fun _ => 0`. Use `⟨Empty, inferInstance, inferInstance, ι', inferInstance, z, hjoin Empty ι' z (fun k => k.elim), fun j c hc => ?_⟩` and prove the remaining obligations. Conclude with `absurd ⟨_, ((hch Empty ι' z).2 c hc).1⟩ h0`.
+-/
 theorem PositivityTheory.Xgn.t_flatten_many : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → fnField O x = ⊤ → ∀ (I : Type) [Fintype I] (N : I → ℕ) (V : I → Type) [∀ j, AddCommGroup (V j)] [∀ j, Module Ω (V j)] (Γ : ∀ j, (∀ k, ι k) → AddSubgroup (V j)), (∀ j, Module.finrank Ω (V j) = N j ∧ IsLatFamily O x (Γ j) ∧ ∀ c, mseg x c ≠ 0 → ∃ S : Finset (V j), Γ j c = spanOver (chartRing O (mseg x) c) (S : Set (V j)) ∧ Submodule.span Ω (S : Set (V j)) = ⊤) → ∃ (K' : Type) (_ : Fintype K') (_ : DecidableEq K') (ι' : K' → Type) (_ : ∀ k, Fintype (ι' k)) (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d ∧ ∀ j c, mseg (joinCoord x z) c ≠ 0 → LocFree (chartRing O (mseg (joinCoord x z)) c) (N j) (spanOver (chartRing O (mseg (joinCoord x z)) c) (Γ j (restrictChart c) : Set (V j))) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hM hF I _ N V _ _ Γ hΓ
   classical

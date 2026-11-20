@@ -9,10 +9,18 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B
 
 namespace B2
 
+/- English proof (translation)
+Unfold `AB`. Check the signs of the components of the expression.
+-/
 theorem AB_nonneg (k r : ℕ) : (0 : ℝ) ≤ AB k r := by
   unfold AB
   positivity
 
+/- English proof (translation)
+Establish `hp : ∀ n : ℕ, t ^ n ≠ 0` using `fun n => pow_ne_zero n ht`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Unfold `aDil`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Use `split_ifs with h1 h2`. Rewrite using `[← Complex.ofReal_mul, inv_pow, inv_mul_cancel₀ (hp _), Complex.ofReal_one]`. Conclude with `mul_one 1`. Rewrite using `[← Complex.ofReal_mul, inv_pow, inv_inv, mul_inv_cancel₀ (hp _), Complex.ofReal_one]`.
+-/
 theorem aDil_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : (aDil k r t)⁻¹ = aDil k r t⁻¹ := by
   have hp : ∀ n : ℕ, t ^ n ≠ 0 := fun n => pow_ne_zero n ht
   apply Matrix.inv_eq_left_inv
@@ -27,6 +35,11 @@ theorem aDil_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : (aDil k r t)⁻¹ = aDil
 
 end B2
 
+/- English proof (translation)
+Introduce `hFC hAe hFat hCC hDil hJ hRB hRA hU hJC hDB hPA hRP hEq hAdj`. Unfold `StepRegBound StepRegAverage StepUnfold StepJCont StepDilBeta at *`. Introduce `k r Wp Wq _ _ _ _ _ _ D Ξ A hA hInt hConj hDJ hCCI hCoef hXi`. Establish `h0A : 0 ≤ A` using `(B2.AB_nonneg k r).trans hA`. Apply the tactic sequence `have h12 := hEq hFC hAe hFat hCC hDil hJ k r Wp Wq D A h0A (by apply hRB <;> assumption) (by apply hRA <;> assumption) (by apply hU <;> assumption) (by apply hJC <;> assumption) (by apply hDB <;> assumption)`.
+
+Conclude with `⟨h12.1, h12.2, hAdj hPA hRP k r Wp Wq D A h12.2⟩`.
+-/
 theorem bessel_lemma_from_reductions : Formalism.FourierDecayAlt.B.LemmaBFromSteps := by
   intro hFC hAe hFat hCC hDil hJ hRB hRA hU hJC hDB hPA hRP hEq hAdj
   unfold StepRegBound StepRegAverage StepUnfold StepJCont StepDilBeta at *
@@ -37,6 +50,11 @@ theorem bessel_lemma_from_reductions : Formalism.FourierDecayAlt.B.LemmaBFromSte
     (by apply hJC <;> assumption) (by apply hDB <;> assumption)
   exact ⟨h12.1, h12.2, hAdj hPA hRP k r Wp Wq D A h12.2⟩
 
+/- English proof (translation)
+Introduce `hPA hRP k r Wp Wq _ _ _ _ _ _ D A hB2 UU Θ hStab hSm hCom F F' hCk hCk' hS hS' h1 h2 h3 h4 hIC`. Establish `hT : ∀ τ, betaInfTau D τ (opApply Θ F) F' = betaInfTau D τ F (opAdj Θ F')` using `fun τ => hRP k r Wp Wq D τ _ _ _ _ (hPA k r Wp Wq D UU Θ hStab hSm hCom F F' hCk hCk' hS hS' hIC)`. Rewrite using `[hB2 _ _ h3 h2, hB2 _ _ h1 h4]`. Use `first`. Consider the case `(unfold betaInf; simp only [hT])`.
+
+Consider the case `(simp only [betaInf, hT])`. Consider the case `(unfold betaInf; rw [hT])`.
+-/
 theorem adjointness_of_bessel_transform : Formalism.FourierDecayAlt.B.AssembleAdj := by
   intro hPA hRP k r Wp Wq _ _ _ _ _ _ D A hB2 UU Θ hStab hSm hCom F F' hCk hCk' hS hS' h1 h2 h3 h4 hIC
   have hT : ∀ τ, betaInfTau D τ (opApply Θ F) F' = betaInfTau D τ F (opAdj Θ F') := fun τ =>
@@ -47,6 +65,13 @@ theorem adjointness_of_bessel_transform : Formalism.FourierDecayAlt.B.AssembleAd
   | (simp only [betaInf, hT])
   | (unfold betaInf; rw [hT])
 
+/- English proof (translation)
+Introduce `hSC k r Wp Wq _ _ _ _ _ _ D A hA hCC hB3 Θ ε d hε hd hSm hCom hPoly F F' hF hF' hsF hsF'`. Take `⟨hStab, hcl⟩` from `hSC k r Wp Wq D A hA hCC`. Take `⟨hs1, hs2, h1, h2, h3, h4, hIC⟩` from `hcl Θ ε d hε hd hSm hPoly F F' hF hF' hsF hsF'`. Establish `hCk : ∀ G : Mat k r → (Wq →L[ℂ] Wp), InCC (A + d) (opOrder Θ + 5) G → CkOn ((opOrder Θ + 5 : ℕ) : ℕ∞) (GV k r) G`. Introduce `G hG`.
+
+Take `⟨c, hc⟩` from `hG`. Unfold `CCle at hc`. Use `first`. Consider the case `exact hc.1`. Consider the case `exact hc.2.1`.
+
+Consider the case `exact hc.2.2.1`. Consider the case `exact hc.1.1`. Consider the case `exact hc`. Conclude with `hB3 (GPos D) Θ hStab hSm hCom F F' (hCk F hF) (hCk F' hF') hs1 hs2 h1 h2 h3 h4 hIC`.
+-/
 theorem adjointness_polynomially_bounded : Formalism.FourierDecayAlt.B.AssemblePoly := by
   intro hSC k r Wp Wq _ _ _ _ _ _ D A hA hCC hB3 Θ ε d hε hd hSm hCom hPoly F F' hF hF' hsF hsF'
   obtain ⟨hStab, hcl⟩ := hSC k r Wp Wq D A hA hCC
@@ -64,6 +89,15 @@ theorem adjointness_polynomially_bounded : Formalism.FourierDecayAlt.B.AssembleP
     | exact hc
   exact hB3 (GPos D) Θ hStab hSm hCom F F' (hCk F hF) (hCk F' hF') hs1 hs2 h1 h2 h3 h4 hIC
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.JtauOne`. Introduce `k r Wp Wq _ _ _ _ D F g`. Unfold `Jtau JF xiTau besselJ RealPlaceData.μSS`. Unfold `rho sgs`. Use `congr 1`.
+
+Use function extensionality and compare the values at `p`. Use `congr 1`. Unfold `psi cStd`. Establish `hs : ∀ z : ℂ, star (Complex.exp z) = Complex.exp ((starRingEnd ℂ) z)` using `fun z => (Complex.exp_conj z).symm`. Rewrite using `[hs, ← Complex.exp_add]`.
+
+Use `congr 1`. Apply the tactic sequence `try unfold lam`. Simplify using `only`. Simplify using `only [map_mul, Complex.conj_I, Complex.conj_ofReal, one_mul]`. Apply the tactic sequence `try unfold cStd`.
+
+Put the polynomial expressions in normal form. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem bessel_function_trivial_index : Formalism.FourierDecayAlt.B.JtauOne := by
   unfold Formalism.FourierDecayAlt.B.JtauOne
   intro k r Wp Wq _ _ _ _ D F g
@@ -85,8 +119,24 @@ theorem bessel_function_trivial_index : Formalism.FourierDecayAlt.B.JtauOne := b
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal x`.
+-/
 private lemma star_ofReal_eq (x : ℝ) : star (x : ℂ) = x := Complex.conj_ofReal x
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.DilBigCell`. Introduce `k r c μ t₁ t₂ h1 h2`. Rewrite using `[B2.aDil_inv k r t₁ h1]`. Unfold `aDil`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul]`. Unfold `bigCell esI`. Use `beta_reduce`. Use `split_ifs`. Apply the tactic sequence `all_goals try first`.
+
+Consider the case `(exfalso; (try simp only [Fin.ext_iff, Fin.val_mk] at *); omega)`. Consider the case `rfl`. Consider the case `(rw [one_mul, mul_one])`. Consider the case `exact (congrArg (· * (1 : ℂ)) (one_mul _)).trans (mul_one _)`. Consider the case `(simp; done)`.
+
+Consider the case `(have e : (i : ℕ) - (r + k) = r - (j : ℕ) := by (try simp only [Fin.ext_iff, Fin.val_mk] at *); omega`. Rewrite using `[e]`. Apply the tactic sequence `try simp only [Fin.val_mk]`. Use `push_cast`. Simplify using `only [inv_pow, inv_inv]`.
+
+Use the proof step `ring)`. Consider the case `(have e1 : r - (i : ℕ) = (j : ℕ) - (r + k) := by (try simp only [Fin.ext_iff, Fin.val_mk] at *); omega`. Establish `e2 : r - (2 * r + k - (j : ℕ)) = (j : ℕ) - (r + k)` using `by omega`. Simplify using `only [Fin.val_mk, e1, e2, star_mul', star_ofReal_eq]`. Use `push_cast`.
+
+Use the proof step `ring)`.
+-/
 theorem dilation_big_cell_formula : Formalism.FourierDecayAlt.B.DilBigCell := by
   unfold Formalism.FourierDecayAlt.B.DilBigCell
   intro k r c μ t₁ t₂ h1 h2
@@ -117,8 +167,20 @@ theorem dilation_big_cell_formula : Formalism.FourierDecayAlt.B.DilBigCell := by
        push_cast
        ring)
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal x`.
+-/
 private lemma star_ofReal_eq_self (x : ℝ) : star (x : ℂ) = x := Complex.conj_ofReal x
 
+/- English proof (translation)
+Unfold `Formalism.FourierDecayAlt.B.DilMem`. Introduce `k r t ht`. Establish `hp : ∀ n : ℕ, t ^ n ≠ 0` using `fun n => pow_ne_zero n ht`. Unfold `GV UH aDil`. Rewrite using `[Set.mem_setOf_eq, Matrix.diagonal_conjTranspose]`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Pi.star_apply]`. Unfold `Hpk`. Use `beta_reduce`. Use `split_ifs`.
+
+Apply the tactic sequence `all_goals (try simp only [star_ofReal_eq_self, star_one, mul_one, one_mul, mul_zero, zero_mul, mul_neg])`. Apply the tactic sequence `all_goals try first`. Consider the case `rfl`. Consider the case `(exfalso; (try simp only [Fin.ext_iff, Fin.val_mk] at *); omega)`. Consider the case `(rw [show (j : ℕ) - (r + k) = r - (i : ℕ) by omega, ← Complex.ofReal_mul, mul_inv_cancel₀ (hp _), Complex.ofReal_one])`.
+
+Consider the case `(rw [show (i : ℕ) - (r + k) = r - (j : ℕ) by omega, ← Complex.ofReal_mul, inv_mul_cancel₀ (hp _), Complex.ofReal_one])`.
+-/
 theorem dilation_mem_group : Formalism.FourierDecayAlt.B.DilMem := by
   unfold Formalism.FourierDecayAlt.B.DilMem
   intro k r t ht
@@ -139,6 +201,9 @@ theorem dilation_mem_group : Formalism.FourierDecayAlt.B.DilMem := by
     | (rw [show (i : ℕ) - (r + k) = r - (j : ℕ) by omega, ← Complex.ofReal_mul,
           inv_mul_cancel₀ (hp _), Complex.ofReal_one])
 
+/- English proof (translation)
+Introduce `hXi hLB hSC hAP k r Wp Wq _ _ _ _ _ _ D A hA hInt hConj hDJ hCCI`. Take `⟨Ξ, hCB, hXI⟩` from `hXi k r Wp Wq D A hA`. Establish `h0A : 0 ≤ A` using `(B2.AB_nonneg k r).trans hA`. Take `⟨h1, h2, h3⟩` from `hLB k r Wp Wq D Ξ A hA hInt hConj hDJ hCCI hCB hXI`. Conclude with `⟨h1, h2, h3, hAP hSC k r Wp Wq D A h0A hCCI h3⟩`.
+-/
 theorem bessel_lemma_closed_form : Formalism.FourierDecayAlt.B.LemmaBClosedFromParts := by
   intro hXi hLB hSC hAP k r Wp Wq _ _ _ _ _ _ D A hA hInt hConj hDJ hCCI
   obtain ⟨Ξ, hCB, hXI⟩ := hXi k r Wp Wq D A hA

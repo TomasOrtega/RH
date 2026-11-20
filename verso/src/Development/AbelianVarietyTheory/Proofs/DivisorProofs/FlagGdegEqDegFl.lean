@@ -15,6 +15,15 @@ open scoped Classical
 
 namespace GlobalTheory.FlagDegTie
 
+/- English proof (translation)
+Introduce `hP hA ι _ N n`. Take `⟨Y, j, gr, hpb, hdim, hpres, X0, E, E', φ, f, hX, hRef, hGr⟩` from `GlobalTheory.T.flag_variety_cartier_rational_model ι N`. Establish `h1` using `GlobalTheory.T.degree_combination_eq_intersection hA.2 ι N Y j hpb gr hpres n`. Rewrite using `[← hdim, h1]`. Set `e : GlobalTheory.GoodMetric.Root (fun _ : ι => N) ≃ ι × Fin N` to `Equiv.sigmaEquivProd ι (Fin N)`.
+
+Establish `hI : ((Y.inter fun _ => ∑ x, n x • gr x : ℤ) : ℝ) = Y.interPoly (fun x : GlobalTheory.GoodMetric.Root (fun _ : ι => N) => gr (x.1, x.2)) (∏ _i : Fin Y.dim, ∑ x : GlobalTheory.GoodMetric.Root (fun _ : ι => N), C ((n (e x) : ℤ) : ℝ) * X x)`. Rewrite using `[GlobalTheory.ProjVar.Var.interPoly_prod_sum]`. Use `congr 2`. Use function extensionality and compare the values at `_`. Conclude with `(e.sum_comp (fun x => n x • gr x)).symm`.
+
+Take `⟨R, hR⟩` from `GlobalTheory.AntisymmChern.antisymm_eq_chernRoots_mul_rootDiscr ι (fun _ : ι => N) (∏ _i : Fin Y.dim, ∑ x : GlobalTheory.GoodMetric.Root (fun _ : ι => N), C ((n (e x) : ℤ) : ℝ) * X x)`. Take `⟨σ, H, hH, hG, hT⟩` from `GlobalTheory.T.good_metric_chern_integral_eval ι (fun _ : ι => N) X0 E hX`. Establish `hc` using `hP.p16.flag hRef hGr hH hG hR`. Rewrite using `[hI, hT R _ hc, GlobalTheory.T.chern_root_eval_eq_flag_degree ι N _ R hR, map_prod, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `congr 2`.
+
+Rewrite using `[map_sum, lin]`. Rewrite using `[← e.sum_comp (fun x => C ((n x : ℤ) : ℝ) * (X x : MvPolynomial (ι × Fin N) ℝ))]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rename_C, rename_X]`. Both sides reduce to the same expression.
+-/
 theorem flag_gdeg_eq_degFl : Hypotheses2 → GlobalTheory.Published.ArDegree → ∀ (ι : Type) [Fintype ι] (N : ℕ) (n : ι × Fin N → ℤ), gdeg (comb (GlobalTheory.FlagZ.grLine (ι := ι) (N := N)) n) (dimFl ι N) = degFl ι N (lin (fun x => (n x : ℝ)) ^ dimFl ι N) := by
   intro hP hA ι _ N n
   obtain ⟨Y, j, gr, hpb, hdim, hpres, X0, E, E', φ, f, hX, hRef, hGr⟩ := GlobalTheory.T.flag_variety_cartier_rational_model ι N

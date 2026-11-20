@@ -14,6 +14,19 @@ noncomputable section
 
 namespace GlobalTheory.JacUnimod
 
+/- English proof (translation)
+Introduce `D V V₀ ρ d μ hμ`. Take `⟨i1, i2, i3, i4, i5, -, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨j1, j2, j3, j4, j5, -, j7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V₀`. Establish `hNc : IsClosed (flagN d : Set (GA D V))` using `GlobalTheory.Mem.TrueRecord.isClosed_NFlag V (isIsoSub_e d)`. Take `⟨hlc, hsc, hbor, hcount⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag V (isIsoSub_e d)`.
+
+Take `⟨ν, 𝓝, hνH, h𝓝, h𝓝1⟩` from `GlobalTheory.Per.UnitN.exists_isUnitN D V ρ d.e (isIsoSub_e d)`. Establish `hnorm` using `GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D V V₀ ρ d`. Establish `hp` using `GlobalTheory.JacProj.exists_continuous_proj D V V₀ ρ d`. Establish `hc` using `GlobalTheory.FlagModulus.map_conj_smallerUnitary_flagUnipotent_haar D V V₀ ρ d ν hνH`. Set `μ₀ : Measure (GA D V₀)` to `Measure.haar`.
+
+Establish `hμ₀ : μ₀.IsHaarMeasure` using `inferInstance`. Use `haveI := hνH`. Use `haveI : μ₀.IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V₀ μ₀ hμ₀`. Use `haveI : ν.IsMulRightInvariant := GlobalTheory.SemiHaar.rightInv_of_fd _ ν h𝓝 (by rw [h𝓝1]; exact ENNReal.one_ne_top)`. Establish `a` using `GlobalTheory.MixPer.semiMeas_isMulLeftInvariant (flagN d) d.emb0 hNc d.continuous_embed hnorm hp μ₀ ν hμ₀ hνH hc`.
+
+Take `⟨b, c⟩` from `GlobalTheory.MixPer.semiMeas_finite_on_compacts_and_open_pos (flagN d) d.emb0 hNc d.continuous_embed hnorm hp μ₀ ν hμ₀ hνH hc`. Establish `hH : (semiMeas (flagN d) d.emb0 μ₀ ν).IsHaarMeasure` using `{ toIsFiniteMeasureOnCompacts := b, toIsMulLeftInvariant := a, toIsOpenPosMeasure := c }`. Establish `hR` using `GlobalTheory.SemiHaar.semiMeas_rightInv (flagN d) d.emb0 hNc d.continuous_embed hnorm μ₀ ν`. Take `⟨e, -⟩` from `GlobalTheory.SemiHaar.exists_homeo (flagN d) d.emb0 hnorm d.continuous_embed hp`. Use `haveI : LocallyCompactSpace (jacGrp d) := e.symm.isClosedEmbedding.locallyCompactSpace`.
+
+Set `κ : Measure (jacGrp d)` to `semiMeas (flagN d) d.emb0 μ₀ ν`. Use `haveI hκH : κ.IsHaarMeasure := hH`. Use `haveI hκR : κ.IsMulRightInvariant := hR`. Establish `hk` using `Measure.isMulLeftInvariant_eq_smul μ κ`. Rewrite using `[hk]`.
+
+Use `infer_instance`.
+-/
 theorem jacGrp_rightInv : ∀ (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (μ : Measure (jacGrp d)), μ.IsHaarMeasure → μ.IsMulRightInvariant := by
   intro D V V₀ ρ d μ hμ
   obtain ⟨i1, i2, i3, i4, i5, -, i7⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V

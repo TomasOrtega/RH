@@ -6,6 +6,13 @@ namespace Formalism.RepresentationBoundsCohomology.RowCol
 
 open Module
 
+/- English proof (translation)
+Set `gi : ι → (O →ₗ[O] X)` to `fun i => LinearMap.toSpanSingleton O X (g (fun j => if i = j then 1 else 0))`. Establish `hker : ∀ i, Ideal.span {b} ≤ LinearMap.ker (gi i)`. Introduce `i`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `LinearMap.mem_ker.mpr (hb _)`.
+
+Set `h : (ι → O ⧸ Ideal.span {b}) →ₗ[O] X` to `∑ i, (Submodule.liftQ (Ideal.span {b}) (gi i) (hker i)).comp (LinearMap.proj i)`. Establish `hs : Function.Surjective h`. Introduce `x`. Take `⟨v, rfl⟩` from `hg x`. Use `⟨fun i => Submodule.Quotient.mk (v i), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [h, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply, Submodule.liftQ_apply, gi, LinearMap.toSpanSingleton_apply]`. Use `conv_rhs => rw [pi_eq_sum_univ v]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem length_le_of_killed {O : Type*} [CommRing O] (b : O) {X : Type*} [AddCommGroup X]
     [Module O X] {ι : Type*} [Fintype ι] (g : (ι → O) →ₗ[O] X) (hg : Function.Surjective g)
     (hb : ∀ x : X, b • x = 0) :
@@ -32,6 +39,23 @@ theorem length_le_of_killed {O : Type*} [CommRing O] (b : O) {X : Type*} [AddCom
         Module.length_le_of_surjective h hs
     _ = _ := by rw [Module.length_pi, ENat.card_eq_coe_fintype_card]
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero`. Introduce `X _ _ ι _ g _ hb`. Establish `: Subsingleton X` using `⟨fun x y => by`.
+
+Establish `hx` using `hb x`. Establish `hy` using `hb y`. Simplify using `only [pow_zero, one_smul] at hx hy`. Rewrite using `[hx, hy]⟩`. Rewrite using `[Module.length_eq_zero_iff.mpr this]`.
+
+Conclude with `zero_le`. Consider the case `succ e ih`. Introduce `X _ _ ι _ g hg hb`. Set `φ : X →ₗ[O] X` to `b • LinearMap.id`. Set `Y : Submodule O X` to `LinearMap.range φ`.
+
+Establish `hlen` using `Module.length_eq_add_of_exact Y.subtype Y.mkQ Y.injective_subtype Y.mkQ_surjective (LinearMap.exact_subtype_mkQ Y)`. Set `gY : (ι → O) →ₗ[O] Y` to `φ.rangeRestrict.comp g`. Establish `hgY : Function.Surjective gY` using `(LinearMap.surjective_rangeRestrict φ).comp hg`. Establish `hbY : ∀ y : Y, b ^ e • y = 0`. Introduce `y`.
+
+Take `⟨x, hx⟩` from `LinearMap.mem_range.mp y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_zero]`. Rewrite using `[← hx]`. Use `show b ^ e • (b • x) = 0`.
+
+Rewrite using `[smul_smul, ← pow_succ]`. Conclude with `hb x`. Establish `hY` using `ih gY hgY hbY`. Establish `hbQ : ∀ z : X ⧸ Y, b • z = 0`. Introduce `z`.
+
+Take `⟨x, rfl⟩` from `Y.mkQ_surjective z`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `LinearMap.mem_range.mpr ⟨x, rfl⟩`. Establish `hQ` using `length_le_of_killed b (Y.mkQ.comp g) (Y.mkQ_surjective.comp hg) hbQ`. Rewrite using `[hlen]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem length_le_of_killed_pow {O : Type*} [CommRing O] (b : O) : ∀ (e : ℕ) {X : Type*}
     [AddCommGroup X] [Module O X] {ι : Type*} [Fintype ι] (g : (ι → O) →ₗ[O] X),
     Function.Surjective g → (∀ x : X, b ^ e • x = 0) →
@@ -80,6 +104,27 @@ theorem length_le_of_killed_pow {O : Type*} [CommRing O] (b : O) : ∀ (e : ℕ)
 end Formalism.RepresentationBoundsCohomology.RowCol
 
 open Module in
+/- English proof (translation)
+Introduce `O _ _ _ M _ _ _ I ℓ e hI`. Use `set T := Submodule.torsion O M with hT`. Use `haveI : Module.Free O (M ⧸ T) := Module.free_of_finite_type_torsion_free'`. Set `bQ` to `Module.Free.chooseBasis O (M ⧸ T)`. Use `choose m hm using fun i => T.mkQ_surjective (bQ i)`.
+
+Establish `hli : LinearIndependent O m`. Apply `LinearIndependent.of_comp T.mkQ` to reduce the goal to its premises. Establish `hc : T.mkQ ∘ m = bQ` using `funext hm`. Rewrite using `[hc]`. Conclude with `bQ.linearIndependent`.
+
+Establish `hcard` using `hli.fintype_card_le_finrank`. Set `G0 : (Module.Free.ChooseBasisIndex O (M ⧸ T) → O) →ₗ[O] M` to `∑ i, (LinearMap.toSpanSingleton O M (m i)).comp (LinearMap.proj i)`. Establish `hG0 : ∀ c, G0 c = ∑ i, c i • m i`. Introduce `c`. Simplify using `[G0]`.
+
+Set `N : Submodule O (M ⧸ I)` to `LinearMap.range (I.mkQ.comp T.subtype)`. Set `G : (Module.Free.ChooseBasisIndex O (M ⧸ T) → O) →ₗ[O] ((M ⧸ I) ⧸ N)` to `N.mkQ.comp (I.mkQ.comp G0)`. Establish `hGs : Function.Surjective G`. Introduce `y`. Take `⟨z, rfl⟩` from `N.mkQ_surjective y`.
+
+Take `⟨x, rfl⟩` from `I.mkQ_surjective z`. Use `⟨fun i => bQ.repr (T.mkQ x) i, ?_⟩` and prove the remaining obligations. Establish `h1 : T.mkQ (G0 (fun i => bQ.repr (T.mkQ x) i)) = T.mkQ x`. Rewrite using `[hG0, map_sum]`. Simplify using `only [map_smul, hm]`.
+
+Conclude with `bQ.sum_repr (T.mkQ x)`. Establish `h2 : G0 (fun i => bQ.repr (T.mkQ x) i) - x ∈ T`. Rewrite using `[← Submodule.Quotient.eq]`. Conclude with `h1`. Use `show N.mkQ (I.mkQ (G0 _)) = N.mkQ (I.mkQ x)`.
+
+Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply]`. Apply `(Submodule.Quotient.eq N).mpr` to reduce the goal to its premises. Use `LinearMap.mem_range.mpr ⟨⟨_, h2⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hGk : ∀ p : (M ⧸ I) ⧸ N, ((ℓ : O) ^ e) • p = 0`.
+
+Introduce `p`. Take `⟨z, rfl⟩` from `N.mkQ_surjective p`. Take `⟨x, rfl⟩` from `I.mkQ_surjective z`. Establish `h0 : I.mkQ (((ℓ : O) ^ e) • x) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Conclude with `hI x`. Rewrite using `[← map_smul, ← map_smul, h0, map_zero]`. Establish `hP` using `Formalism.RepresentationBoundsCohomology.RowCol.length_le_of_killed_pow ((ℓ : O)) e G hGs hGk`. Establish `hlen` using `Module.length_eq_add_of_exact N.subtype N.mkQ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N)`. Establish `hN : Module.length O N ≤ Module.length O T` using `Module.length_le_of_surjective (I.mkQ.comp T.subtype).rangeRestrict (LinearMap.surjective_rangeRestrict _)`.
+
+Rewrite using `[hlen, add_comm]`. Use `add_le_add ?_ hN` and prove the remaining obligations. Establish `hcard' : ((Fintype.card (Module.Free.ChooseBasisIndex O (M ⧸ T)) : ℕ) : ℕ∞) ≤ (Module.finrank O M : ℕ∞)` using `by exact_mod_cast hcard`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Formalism.RepresentationBoundsCohomology.rowColength : Formalism.RepresentationBoundsCohomology.StatRowColength := by
   intro O _ _ _ M _ _ _ I ℓ e hI
   classical

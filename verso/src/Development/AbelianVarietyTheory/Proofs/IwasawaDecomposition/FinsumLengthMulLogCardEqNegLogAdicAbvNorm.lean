@@ -8,6 +8,11 @@ namespace GlobalTheory
 
 namespace OrderNorm
 
+/- English proof (translation)
+Set `_ : Algebra T U` to `e.toRingHom.toAlgebra`. Set `f : T ≃ₐ[T] U` to `AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl)`. Establish `hI : Ideal.span {e x} = (Ideal.span {x}).map (f : T →+* U)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+
+Rewrite using `[(Ideal.quotientEquivAlg (Ideal.span {x}) (Ideal.span {e x}) f hI).toLinearEquiv.length_eq]`. Conclude with `Module.length_eq_of_surjective e.surjective`.
+-/
 theorem length_quot_ringEquiv {T U : Type*} [CommRing T] [CommRing U] (e : T ≃+* U) (x : T) :
     Module.length T (T ⧸ Ideal.span {x}) = Module.length U (U ⧸ Ideal.span {e x}) := by
   let _ : Algebra T U := e.toRingHom.toAlgebra
@@ -18,6 +23,15 @@ theorem length_quot_ringEquiv {T U : Type*} [CommRing T] [CommRing U] (e : T ≃
   rw [(Ideal.quotientEquivAlg (Ideal.span {x}) (Ideal.span {e x}) f hI).toLinearEquiv.length_eq]
   exact Module.length_eq_of_surjective e.surjective
 
+/- English proof (translation)
+Establish `hfin` using `(GlobalTheory.addVal_norm_ne_top_iff A x).mpr hx`. Establish `hsum` using `GlobalTheory.addVal_norm_eq_sum_length A (fun n : MaximalSpectrum B => Localization.AtPrime n.asIdeal) hx`. Establish `hloc : ∀ n : MaximalSpectrum B, IsLocalHom (algebraMap A (Localization.AtPrime n.asIdeal))` using `fun n => GlobalTheory.NormVal.isLocalHom_algebraMap A n.asIdeal _`. Establish `hdeg : ∀ n : MaximalSpectrum B, n.asIdeal.inertiaDeg A = Module.finrank (ResidueField A) (ResidueField (Localization.AtPrime n.asIdeal))` using `fun n => GlobalTheory.NormVal.inertiaDeg_eq_finrank_residueField A n.asIdeal _`. Establish `hcard : ∀ n : MaximalSpectrum B, Real.log (Nat.card (ResidueField (Localization.AtPrime n.asIdeal))) = (n.asIdeal.inertiaDeg A : ℝ) * Real.log (Nat.card (ResidueField A))`.
+
+Introduce `n`. Use `GlobalTheory.NormVal.finite_residueField A n.asIdeal (Localization.AtPrime n.asIdeal)` as an intermediate fact. Rewrite using `[hdeg n]`. Break down `finite_or_infinite (ResidueField A) with hA | hA` into its components or cases. Rewrite using `[Module.natCard_eq_pow_finrank (K := ResidueField A), Nat.cast_pow, Real.log_pow]`.
+
+Establish `: Infinite (ResidueField (Localization.AtPrime n.asIdeal))` using `Infinite.of_injective _ (algebraMap (ResidueField A) _).injective`. Simplify using `[Nat.card_eq_zero_of_infinite]`. Rewrite `hfin`, the goal using `[hsum]`. Rewrite using `[ENat.toNat_sum (ENat.sum_ne_top.mp hfin)]`. Simplify using `only [ENat.toNat_mul, ENat.toNat_natCast, Nat.cast_sum, Nat.cast_mul, Finset.sum_mul, hcard]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_maximal (A B : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [CommRing B] [Algebra A B] [Module.Free A B] [Module.Finite A B]
     [Fintype (MaximalSpectrum B)] {x : B} (hx : x ∈ nonZeroDivisors B) :
@@ -51,6 +65,25 @@ theorem sum_maximal (A B : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuation
   refine Finset.sum_congr rfl fun n _ => ?_
   ring
 
+/- English proof (translation)
+Establish `: v.asIdeal.IsMaximal` using `v.isMaximal`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective v.asIdeal.primeCompl a`. Establish `hspec : IsLocalization.mk' A r s * algebraMap (𝓞 F) A s = algebraMap (𝓞 F) A r` using `IsLocalization.mk'_spec A r s`. Establish `hsu : IsUnit (algebraMap (𝓞 F) A s)` using `IsLocalization.map_units A s`.
+
+Establish `hra : algebraMap (𝓞 F) A r ≠ 0`. Rewrite using `[← hspec]`. Conclude with `mul_ne_zero ha hsu.ne_zero`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hra (map_zero _)`. Establish `hval : addVal A (IsLocalization.mk' A r s) = addVal A (algebraMap (𝓞 F) A r)`. Rewrite using `[← hspec, addVal_mul, addVal_eq_zero_iff.mpr hsu, add_zero]`. Take `⟨n, hn⟩ : ∃ n : ℕ, addVal A (algebraMap (𝓞 F) A r) = n` from `ENat.ne_top_iff_exists.mp (fun h => hra (addVal_eq_top_iff.mp h)) |>.imp fun _ h => h.symm`. Establish `hmem : ∀ k : ℕ, r ∈ v.asIdeal ^ k ↔ k ≤ n`.
+
+Introduce `k`. Rewrite using `[← IsLocalization.AtPrime.under_maximalIdeal_pow v.asIdeal A k, Ideal.under_def, Ideal.mem_comap, (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← addVal_le_iff_dvd, addVal_pow, addVal_uniformizer hϖ, hn]`. Simplify using the standard rewrite rules. Establish `hne : v.intValuation r ≠ 0` using `v.intValuation_ne_zero r hr0`. Establish `hint : v.intValuation r = WithZero.exp (-(n : ℤ))`.
+
+Establish `h1` using `(v.intValuation_le_pow_iff_mem r n).mpr ((hmem n).mpr le_rfl)`. Establish `h2 : ¬ v.intValuation r ≤ WithZero.exp (-((n + 1 : ℕ) : ℤ))`. Rewrite using `[v.intValuation_le_pow_iff_mem r (n + 1), hmem]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hne]`.
+
+Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h2`. Use linear arithmetic over natural numbers and integers. Establish `hF : algebraMap A F (IsLocalization.mk' A r s) * algebraMap (𝓞 F) F s = algebraMap (𝓞 F) F r`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) A F s, IsScalarTower.algebraMap_apply (𝓞 F) A F r, ← map_mul, hspec]`. Establish `hvF : v.valuation F (algebraMap A F (IsLocalization.mk' A r s)) = WithZero.exp (-(n : ℤ))`. Use `congrArg (v.valuation F) hF` as an intermediate fact. Rewrite `this` using `[map_mul, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, (v.intValuation_eq_one_iff_mem_primeCompl (s : 𝓞 F)).mpr s.2, mul_one]`. Rewrite using `[this, hint]`.
+
+Establish `hcard : Nat.card (ResidueField A) = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (IsLocalization.AtPrime.equivQuotMaximalIdeal v.asIdeal A).toEquiv.symm`. Rewrite using `[NumberField.HeightOneSpectrum.adicAbv_def, hvF, WithZeroMulInt.toNNReal_neg_apply _ WithZero.exp_ne_zero, hval, hn, hcard]`. Establish `hz : ∀ h : WithZero.exp (-(n : ℤ)) ≠ 0, Multiplicative.toAdd (WithZero.unzero h) = -(n : ℤ)` using `fun _ => rfl`.
+
+Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+-/
 theorem log_adicAbv (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
     (A : Type*) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Algebra (𝓞 F) A]
     [IsLocalization.AtPrime A v.asIdeal] [Algebra A F] [IsScalarTower (𝓞 F) A F]
@@ -111,6 +144,23 @@ theorem log_adicAbv (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum 
   rw [hz]
   simp
 
+/- English proof (translation)
+Set `g : MaximalSpectrum B → PrimeSpectrum R` to `fun n => PrimeSpectrum.comap (algebraMap R B) n.toPrimeSpectrum`. Establish `hover : ∀ J : Ideal B, (J.comap (algebraMap R B)).comap (algebraMap O R) = (J.comap (algebraMap A B)).comap (algebraMap O A)`. Introduce `J`. Rewrite using `[Ideal.comap_comap, Ideal.comap_comap, ← IsScalarTower.algebraMap_eq O R B, ← IsScalarTower.algebraMap_eq O A B]`. Establish `hinj : Function.Injective g`.
+
+Introduce `n₁ n₂ h`. Establish `h' : n₁.asIdeal.under R = n₂.asIdeal.under R` using `congrArg PrimeSpectrum.asIdeal h`. Use `ext1`. Rewrite using `[← IsLocalization.map_under (Algebra.algebraMapSubmonoid R p.primeCompl) B n₁.asIdeal, ← IsLocalization.map_under (Algebra.algebraMapSubmonoid R p.primeCompl) B n₂.asIdeal, h']`. Establish `hrange : Set.range g = {m : PrimeSpectrum R | m.asIdeal.comap (algebraMap O R) = p}`.
+
+Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, rfl⟩`. Establish `hl` using `GlobalTheory.NormVal.liesOver_maximalIdeal A n.asIdeal`. Establish `hu : n.asIdeal.comap (algebraMap A B) = IsLocalRing.maximalIdeal A` using `hl.over.symm`.
+
+Use `show (n.asIdeal.comap (algebraMap R B)).comap (algebraMap O R) = p`. Rewrite using `[hover, hu]`. Conclude with `IsLocalization.AtPrime.under_maximalIdeal A p`. Introduce `hm`. Establish `hm : m.asIdeal.comap (algebraMap O R) = p` using `hm`.
+
+Establish `hdisj : Disjoint ((Algebra.algebraMapSubmonoid R p.primeCompl : Submonoid R) : Set R) m.asIdeal`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hsm`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← hm]`.
+
+Conclude with `hsm`. Establish `hJp : (m.asIdeal.map (algebraMap R B)).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint _ B _ m.isPrime hdisj`. Establish `hJc : (m.asIdeal.map (algebraMap R B)).comap (algebraMap R B) = m.asIdeal` using `IsLocalization.under_map_of_isPrime_disjoint _ B m.isPrime hdisj`. Establish `hJA : (m.asIdeal.map (algebraMap R B)).comap (algebraMap A B) = IsLocalRing.maximalIdeal A`. Establish `hJO : ((m.asIdeal.map (algebraMap R B)).comap (algebraMap A B)).comap (algebraMap O A) = p`.
+
+Rewrite using `[← hover, hJc, hm]`. Establish `hJO' : Ideal.under O ((m.asIdeal.map (algebraMap R B)).comap (algebraMap A B)) = p` using `hJO`. Rewrite using `[← IsLocalization.map_under p.primeCompl A ((m.asIdeal.map (algebraMap R B)).comap (algebraMap A B)), hJO']`. Conclude with `IsLocalization.AtPrime.map_eq_maximalIdeal p A`. Establish `hJm : (m.asIdeal.map (algebraMap R B)).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := A) _ (hJA ▸ IsLocalRing.maximalIdeal.isMaximal A)`.
+
+Use `⟨⟨_, hJm⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `hJc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finsum_eq_sum {O R : Type*} [CommRing O] [CommRing R] [Algebra O R] (p : Ideal O)
     [p.IsPrime] (A B : Type*) [CommRing A] [Algebra O A] [IsLocalization.AtPrime A p]
     [IsLocalRing A] [CommRing B] [Algebra R B]
@@ -176,6 +226,11 @@ theorem finsum_eq_sum {O R : Type*} [CommRing O] [CommRing R] [Algebra O R] (p :
     _ = ∑ᶠ n, f (g n) := finsum_mem_range hinj
     _ = ∑ n, f (g n) := finsum_eq_sum_of_fintype _
 
+/- English proof (translation)
+Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime n) n` as an intermediate fact. Set `e : T ≃ₐ[R] Localization.AtPrime n` to `IsLocalization.algEquiv (n.comap (algebraMap R B)).primeCompl T (Localization.AtPrime n)`. Establish `he : e.toRingEquiv (algebraMap R T t) = algebraMap B (Localization.AtPrime n) (algebraMap R B t)`. Express the relevant statement in the definitionally equal form `e (algebraMap R T t) = _`. Rewrite using `[AlgEquiv.commutes, IsScalarTower.algebraMap_apply R B (Localization.AtPrime n)]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `length_quot_ringEquiv e.toRingEquiv (algebraMap R T t)`. Rewrite `h` using `[he]`. Conclude with `h`. Conclude with `Nat.card_congr (IsLocalRing.ResidueField.mapEquiv e.toRingEquiv).toEquiv`.
+-/
 theorem local_term {R : Type*} [CommRing R] (M : Submonoid R) (B : Type*) [CommRing B]
     [Algebra R B] [IsLocalization M B] (n : Ideal B) [n.IsPrime] (T : Type*) [CommRing T]
     [IsLocalRing T] [Algebra R T] [IsLocalization.AtPrime T (n.comap (algebraMap R B))] (t : R) :
@@ -201,6 +256,35 @@ end OrderNorm
 
 open OrderNorm in
 
+/- English proof (translation)
+Establish `hvM : v.asIdeal.IsMaximal` using `v.isMaximal`. Establish `hOK : Function.Injective (algebraMap (𝓞 F) K)`. Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 F) F K]`. Conclude with `(algebraMap F K).injective.comp (IsFractionRing.injective (𝓞 F) F)`. Establish `hOR : Function.Injective (algebraMap (𝓞 F) R)`.
+
+Introduce `a b h`. Apply `hOK` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) R K a, IsScalarTower.algebraMap_apply (𝓞 F) R K b, h]`. Establish `hle : Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl ≤ nonZeroDivisors R`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Use `mem_nonZeroDivisors_of_ne_zero fun h => hs ?_` and prove the remaining obligations. Rewrite using `[(map_eq_zero_iff _ hOR).mp h]`. Conclude with `zero_mem _`. Establish `hleO : v.asIdeal.primeCompl ≤ nonZeroDivisors (𝓞 F)` using `v.asIdeal.primeCompl_le_nonZeroDivisors`. Establish `: IsDomain (Localization.AtPrime v.asIdeal)` using `IsLocalization.isDomain_localization hleO`.
+
+Establish `: IsDiscreteValuationRing (Localization.AtPrime v.asIdeal)` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F) v.ne_bot _`. Set `_ : Algebra (Localization.AtPrime v.asIdeal) F` to `IsLocalization.localizationAlgebraOfSubmonoidLe _ F v.asIdeal.primeCompl (nonZeroDivisors (𝓞 F)) hleO`. Establish `: IsScalarTower (𝓞 F) (Localization.AtPrime v.asIdeal) F` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ F _ _ hleO`. Establish `: IsFractionRing (Localization.AtPrime v.asIdeal) F` using `IsFractionRing.isFractionRing_of_isLocalization v.asIdeal.primeCompl _ F hleO`. Establish `: IsDomain (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))` using `IsLocalization.isDomain_localization hle`.
+
+Establish `hAB : Function.Injective (algebraMap (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)))` using `localizationAlgebra_injective (M := v.asIdeal.primeCompl) (S := R) (Rₘ := (Localization.AtPrime v.asIdeal)) (Sₘ := (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))) hOR`. Establish `: Module.IsTorsionFree (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hAB`. Establish `: Module.Free (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))` using `Module.free_of_finite_type_torsion_free'`. Establish `: Finite (MaximalSpectrum (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)))` using `GlobalTheory.NormVal.finite_maximalSpectrum (Localization.AtPrime v.asIdeal) (S := (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)))`. Set `_ : Fintype (MaximalSpectrum (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)))` to `Fintype.ofFinite _`.
+
+Set `_ : Algebra (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K` to `IsLocalization.localizationAlgebraOfSubmonoidLe _ K (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl) (nonZeroDivisors R) hle`. Establish `: IsScalarTower R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K` using `IsLocalization.localization_isScalarTower_of_submonoid_le _ K _ _ hle`. Establish `: IsFractionRing (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K` using `IsFractionRing.isFractionRing_of_isLocalization _ _ K hle`. Set `_ : Algebra (Localization.AtPrime v.asIdeal) K` to `((algebraMap F K).comp (algebraMap (Localization.AtPrime v.asIdeal) F)).toAlgebra`. Establish `: IsScalarTower (Localization.AtPrime v.asIdeal) F K` using `IsScalarTower.of_algebraMap_eq' rfl`.
+
+Establish `hO_AK : (algebraMap (Localization.AtPrime v.asIdeal) K).comp (algebraMap (𝓞 F) (Localization.AtPrime v.asIdeal)) = algebraMap (𝓞 F) K`. Rewrite using `[IsScalarTower.algebraMap_eq (𝓞 F) F K, IsScalarTower.algebraMap_eq (𝓞 F) (Localization.AtPrime v.asIdeal) F]`. Both sides reduce to the same expression. Establish `: IsScalarTower (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K`. Use `IsScalarTower.of_algebraMap_eq' (IsLocalization.ringHom_ext v.asIdeal.primeCompl ?_)` and prove the remaining obligations.
+
+Rewrite using `[hO_AK, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq (𝓞 F) (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)), IsScalarTower.algebraMap_eq (𝓞 F) R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)), ← RingHom …`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) (nonZeroDivisors (Localization.AtPrime v.asIdeal))) K`. Rewrite using `[isLocalization_iff]`. Use `⟨?_, fun z => ?_, ?_⟩` and prove the remaining obligations. Introduce `y`.
+
+Take `⟨a, ha, hy⟩` from `Submonoid.mem_map.mp y.2`. Rewrite using `[isUnit_iff_ne_zero, ← hy, ← IsScalarTower.algebraMap_apply (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K, IsScalarTower.algebraMap_apply (Localization.AtPrime v.asIdeal) F K]`. Conclude with `(map_ne_zero _).mpr ((map_ne_zero_iff _ (IsFractionRing.injective (Localization.AtPrime v.asIdeal) F)).mpr (nonZeroDivisors.ne_zero ha))`. Take `⟨b, c, hc, rfl⟩` from `IsFractionRing.div_surjective (A := (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))) z`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`.
+
+Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := (Localization.AtPrime v.asIdeal)) hc0 (Ideal.mem_span_singleton_self c) (Algebra.IsIntegral.isIntegral c)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp (Ideal.mem_comap.mp ha)`. Use `⟨⟨b * d, ⟨algebraMap (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) a, a, mem_nonZeroDivisors_of_ne_zero ha0, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hc' : algebraMap (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K c ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K)).mpr hc0`.
+
+Simplify using `only [Subtype.coe_mk]`. Rewrite using `[← hd, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `x y h`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using IsFractionRing.injective (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K h`. Establish `hnorm : Algebra.norm F (algebraMap R K t) = algebraMap (Localization.AtPrime v.asIdeal) F (Algebra.norm (Localization.AtPrime v.asIdeal) (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) t))`. Rewrite using `[IsScalarTower.algebraMap_apply R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) K t]`. Conclude with `Algebra.norm_localization (Localization.AtPrime v.asIdeal) (nonZeroDivisors (Localization.AtPrime v.asIdeal)) (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) t)`. Establish `hx : algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) t ∈ nonZeroDivisors (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))` using `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ (IsLocalization.injective _ hle)).mpr ht)`.
+
+Establish `hN0 : Algebra.norm (Localization.AtPrime v.asIdeal) (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) t) ≠ 0`. Introduce `h`. Apply `(GlobalTheory.addVal_norm_ne_top_iff (Localization.AtPrime v.asIdeal) _).mpr hx` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `IsDiscreteValuationRing.addVal_zero`.
+
+Rewrite using `[hnorm, ← log_adicAbv F v (Localization.AtPrime v.asIdeal) hN0, ← sum_maximal (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) hx, finsum_eq_sum v.asIdeal (Localization.AtPrime v.asIdeal) (Localization (Algebra.algebraMapSubmono …`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Establish `: IsLocalization.AtPrime (S (PrimeSpectrum.comap (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))) n.toPrimeSpectrum)) (n.asIdeal.comap (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))))` using `inferInstanceAs (IsLocalization.AtPrime (S _) (PrimeSpectrum.comap (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))) n.toPrimeSpectrum).asIdeal)`. Take `⟨h1, h2⟩` from `local_term (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl) (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl)) n.asIdeal (S (PrimeSpectrum.comap (algebraMap R (Localization (Algebra.algebraMapSubmonoid R v.asIdeal.primeCompl))) n.toPrimeSpectrum)) t`. Rewrite using `[h1, h2]`.
+-/
 theorem finsum_length_mul_log_card_eq_neg_log_adicAbv_norm (F : Type) [Field F] [NumberField F]
     (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra (𝓞 F) R] [Module.Finite (𝓞 F) R]
     [Algebra R K] [IsFractionRing R K] [Algebra F K] [IsScalarTower (𝓞 F) R K]

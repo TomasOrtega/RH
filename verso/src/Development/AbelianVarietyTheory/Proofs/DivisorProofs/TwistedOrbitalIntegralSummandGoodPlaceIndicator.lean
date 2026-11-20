@@ -7,6 +7,11 @@ noncomputable section
 
 namespace GlobalTheory.TwOrbGood
 
+/- English proof (translation)
+Establish `h : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[GlobalTheory.TwOrbConj.mem_rStab]`. Unfold `GlobalTheory.BCT.avg`. Rewrite using `[h, Subgroup.index_top]`.
+
+Establish `: (∑ᶠ q : H ⧸ (⊤ : Subgroup H), (fun _ : H => c) q.out) = c`. Rewrite using `[finsum_eq_single (fun q : H ⧸ (⊤ : Subgroup H) => (fun _ : H => c) q.out) (QuotientGroup.mk 1) (fun q hq => absurd (by induction q using QuotientGroup.induction_on with | H a => exact QuotientGroup.eq.2 (Subgroup.mem_top _)) hq)]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem avg_const {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun _ : H => c) = c := by
   have h : GlobalTheory.BCT.rStab (fun _ : H => c) = ⊤ := by
     ext k; simp [GlobalTheory.TwOrbConj.mem_rStab]
@@ -17,6 +22,21 @@ theorem avg_const {H : Type} [Group H] (c : ℂ) : GlobalTheory.BCT.avg (fun _ :
       (fun q hq => absurd (by induction q using QuotientGroup.induction_on with | H a => exact QuotientGroup.eq.2 (Subgroup.mem_top _)) hq)]
   rw [this]; simp
 
+/- English proof (translation)
+Introduce `H _ _ _ KH δ hδ hc hg x`. Use `split_ifs with hx`. Take `⟨t, ht, k, hk, rfl⟩` from `hx`. Establish `e : t * k = t * 1 * k` using `by group`. Rewrite using `[e, GlobalTheory.TwOrbConj.summand_rep _ _ _ _ _ ht hk]`.
+
+Unfold `GlobalTheory.TwOrbConj.summand`. Establish `hmap : KH.map (MulAut.conj (1 : H)).toMonoidHom = KH` using `GlobalTheory.TwOrbConj.map_conj_self KH KH.one_mem`. Establish `hcT : cptPart (twCent (MonoidHom.id H) δ) ≤ twCent (MonoidHom.id H) δ`. Unfold `GlobalTheory.BCT.cptPart`. Rewrite using `[Subgroup.closure_le]`.
+
+Introduce `y hy`. Conclude with `hy.1`. Establish `hrel : (twCent (MonoidHom.id H) δ ⊓ KH.map (MulAut.conj (1 : H)).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id H) δ)) = 1`. Rewrite using `[hmap, Subgroup.relIndex_eq_one]`. Conclude with `le_inf hcT hc`.
+
+Establish `hfun : (fun k : KH => (KH : Set H).indicator (1 : H → ℂ) ((1 * (k : H))⁻¹ * δ * (MonoidHom.id H) (1 * (k : H)))) = fun _ => 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Set.indicator_of_mem]`. Both sides reduce to the same expression. Simplify using `only [one_mul, MonoidHom.id_apply]`.
+
+Conclude with `KH.mul_mem (KH.mul_mem (KH.inv_mem k.2) hδ) k.2`. Rewrite using `[hrel, hfun, avg_const]`. Simplify using the standard rewrite rules. Unfold `GlobalTheory.TwOrbConj.summand`. Establish `hfun : (fun k : KH => (KH : Set H).indicator (1 : H → ℂ) ((x * (k : H))⁻¹ * δ * (MonoidHom.id H) (x * (k : H)))) = fun _ => 0`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[Set.indicator_of_notMem]`. Introduce `hm`. Simplify using `only [MonoidHom.id_apply] at hm`. Take `⟨t, ht, htk⟩` from `hg (x * k) hm`.
+
+Apply `hx` to reduce the goal to its premises. Use `⟨t, ht, t⁻¹ * (x * k) * (k : H)⁻¹, KH.mul_mem htk (KH.inv_mem k.2), by group⟩` and prove the remaining obligations. Rewrite using `[hfun, avg_const]`. Simplify using the standard rewrite rules.
+-/
 theorem summand_goodplace : ∀ (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H] (KH : Subgroup H) (δ : H), δ ∈ KH → cptPart (twCent (MonoidHom.id H) δ) ≤ KH → (∀ g : H, g⁻¹ * δ * g ∈ KH → ∃ t ∈ twCent (MonoidHom.id H) δ, t⁻¹ * g ∈ KH) → ∀ x : H, GlobalTheory.TwOrbConj.summand (MonoidHom.id H) KH δ ((KH : Set H).indicator 1) x = if ∃ t ∈ twCent (MonoidHom.id H) δ, ∃ k ∈ KH, x = t * k then 1 else 0 := by
   intro H _ _ _ KH δ hδ hc hg x
   split_ifs with hx

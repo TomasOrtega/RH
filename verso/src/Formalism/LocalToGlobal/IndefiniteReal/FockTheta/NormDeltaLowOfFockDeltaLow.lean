@@ -12,19 +12,31 @@ open Formalism.BasicNotions Formalism.IndefR.Fock.Sk
 
 namespace Formalism.IndefR.Fock.Final
 
+/- English proof (translation)
+The claim follows from `Formalism.IndefR.Fock.CCR.ccrTheta_of Formalism.IndefR.Fock.Alg.unitBracket hT hL hC`.
+-/
 theorem ccrTheta_of_drho {D : D7} (hT : ThetaDRho D) (hL : DRhoLin D) (hC : DRhoComm D) : CCRTheta D :=
   Formalism.IndefR.Fock.CCR.ccrTheta_of Formalism.IndefR.Fock.Alg.unitBracket hT hL hC
 
+/- English proof (translation)
+The claim follows from `Formalism.IndefR.Fock.Norm.fockNormO_of (ccrTheta_of_drho hT hL hC) Formalism.IndefR.Fock.Alg.fockNormAbs (Formalism.IndefR.Fock.Skew.dRhoSkew_of D hT) (Formalism.IndefR.Fock.Skew.thetaIntO D) hT`.
+-/
 theorem fockNormO_of_drho {D : D7} (hT : ThetaDRho D) (hL : DRhoLin D) (hC : DRhoComm D) : FockNormO D :=
   Formalism.IndefR.Fock.Norm.fockNormO_of (ccrTheta_of_drho hT hL hC) Formalism.IndefR.Fock.Alg.fockNormAbs
     (Formalism.IndefR.Fock.Skew.dRhoSkew_of D hT) (Formalism.IndefR.Fock.Skew.thetaIntO D) hT
 
+/- English proof (translation)
+The claim follows from `fockNormO_of_drho (Formalism.IndefR.Fock.DRho.thetaDRho D) (Formalism.IndefR.Fock.DRho.dRhoLin D) (Formalism.IndefR.Fock.DRho.dRhoComm D)`.
+-/
 theorem fockNormO (D : D7) : FockNormO D :=
   fockNormO_of_drho (Formalism.IndefR.Fock.DRho.thetaDRho D) (Formalism.IndefR.Fock.DRho.dRhoLin D) (Formalism.IndefR.Fock.DRho.dRhoComm D)
 
 open Formalism.IndefR.Datum in
 attribute [local instance] Formalism.BasicNotions.Host.cmStar in
 
+/- English proof (translation)
+The claim follows from `fockNormO D (Formalism.IndefR.Eqv.lineAtExists_holds D)`.
+-/
 theorem fockNormO_lines (D : D7) :
     ∀ (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) ℂ) (θ : Formalism.IndefR.Datum.InfFam D) (S T : Formalism.BasicNotions.TH.HSp D) sS sT BS BT
       (pS pT : D.what₂.Tau → ℕ), PairSetup ψ θ S T sS sT BS BT pS pT →

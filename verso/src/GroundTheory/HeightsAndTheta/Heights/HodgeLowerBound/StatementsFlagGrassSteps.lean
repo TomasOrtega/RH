@@ -94,6 +94,11 @@ def GrassDegFlagInt.Statement : Prop :=
         geomDeg (grassIdeal (Fintype.card Ψ) j (N - j))
           (GroundTheory.Heights₂.Heights.fsMulti (plBlocks (Fintype.card Ψ) j (N - j))) (dimN Ψ N j)
 
+/- English proof (translation)
+Use `⟨⟨()⟩, le_rfl, le_rfl, le_rfl, ?_, rfl⟩` and prove the remaining obligations. Unfold `vandCount`. Rewrite using `[Fintype.card_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, a, b⟩, hab, hh⟩`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`.
+-/
 example : Nonempty Unit ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ vandCount Unit 2 1 = 0 ∧ dimFl Unit 2 + 1 = 2 := by
   refine ⟨⟨()⟩, le_rfl, le_rfl, le_rfl, ?_, rfl⟩
   unfold vandCount
@@ -102,8 +107,16 @@ example : Nonempty Unit ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ vandCount Un
   rintro ⟨⟨u, a, b⟩, hab, hh⟩
   fin_cases a <;> fin_cases b <;> simp_all
 
+/- English proof (translation)
+The claim follows from `Inter.isArithVar_projLine`.
+-/
 example : IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 := Inter.isArithVar_projLine
 
+/- English proof (translation)
+Use `⟨⟨()⟩, le_rfl, rfl, ?_⟩` and prove the remaining obligations. Unfold `linForm`. Rewrite using `[Fintype.sum_eq_single ((), 1)]`. Simplify using the standard rewrite rules. Introduce `p hp`.
+
+Simplify using `[hp]`.
+-/
 example : Nonempty Unit ∧ 2 ≤ 2 ∧ (2 = dimFl Unit 2 + 1) ∧
     linForm Unit 2 (fun p => if p = ((), 1) then 1 else 0) = X ((), 1) := by
   refine ⟨⟨()⟩, le_rfl, rfl, ?_⟩

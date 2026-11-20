@@ -15,6 +15,11 @@ section Loc
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem a ha`. Take `⟨i, hi, rfl⟩` from `ha`. Rewrite using `[aeval_X]`. Conclude with `(mem_support x).mp (hI hi)`.
+
+Consider the case `one => simp`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_ne_zero ha hb`.
+-/
 theorem aeval_ne_zero_of_mem_monos_support {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
     {s : Poly S N} (hs : s ∈ monos I) : aeval x s ≠ 0 := by
   induction hs using Submonoid.closure_induction with
@@ -25,6 +30,9 @@ theorem aeval_ne_zero_of_mem_monos_support {I : Finset (Fin (N + 1))} (hI : I �
   | one => simp
   | mul a b _ _ ha hb => rw [map_mul]; exact mul_ne_zero ha hb
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `monos_isHomogeneous hs`. Rewrite using `[coneLaurent_of_isHomogeneous he]`. Conclude with `isUnit_coneSingle (S := S) (x := x) e (aeval_ne_zero_of_mem_monos_support hI hs)`.
+-/
 theorem isUnit_coneLaurent_of_mem_monos {I : Finset (Fin (N + 1))} (hI : I ⊆ support x)
     {s : Poly S N} (hs : s ∈ monos I) : IsUnit (coneLaurent S x s) := by
   obtain ⟨e, he⟩ := monos_isHomogeneous hs
@@ -39,6 +47,11 @@ def locCone (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) :
     rw [Module.End.isUnit_iff]
     exact IsUnit.isUnit_iff_mulLeft_bijective.mp (isUnit_coneLaurent_of_mem_monos hI s.2)
 
+/- English proof (translation)
+Establish `h1 : (s : Poly S N) • (LocalizedModule.mk m s : LocalizedModule (monos (S` using `S) I) M.coneSub) = LocalizedModule.mk m 1 := by`. Rewrite using `[LocalizedModule.smul'_mk]`. Conclude with `LocalizedModule.mk_cancel s m`. Establish `h2 : locCone M I hI ((s : Poly S N) • LocalizedModule.mk m s) = m`. Express the relevant statement in the definitionally equal form `LocalizedModule.lift (monos I) M.coneSub.subtype _ ((s : Poly S N) • (LocalizedModule.mk m s : LocalizedModule (monos (S := S) I) M.coneSub)) = m`.
+
+Rewrite using `[h1]`. Simplify using the standard rewrite rules. Establish `h3` using `(locCone M I hI).map_smul (s : Poly S N) (LocalizedModule.mk m s : LocMod S N M.coneSub I)`. Conclude with `h3.symm.trans h2`.
+-/
 theorem locCone_mk (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) (m : M.coneSub)
     (s : monos (S := S) I) :
     coneLaurent S x s * locCone M I hI (LocalizedModule.mk m s) = m := by
@@ -54,11 +67,19 @@ theorem locCone_mk (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) (m : M.cone
   have h3 := (locCone M I hI).map_smul (s : Poly S N) (LocalizedModule.mk m s : LocMod S N M.coneSub I)
   exact h3.symm.trans h2
 
+/- English proof (translation)
+The claim follows from `(isUnit_coneLaurent_of_mem_monos hI s.2).mul_left_cancel ((locCone_mk M I hI m s).trans h.symm)`.
+-/
 theorem locCone_mk_eq {I : Finset (Fin (N + 1))} (hI : I ⊆ support x) {m : M.coneSub}
     {s : monos (S := S) I} {w : ConeLaurent S x} (h : coneLaurent S x s * w = m) :
     locCone M I hI (LocalizedModule.mk m s) = w :=
   (isUnit_coneLaurent_of_mem_monos hI s.2).mul_left_cancel ((locCone_mk M I hI m s).trans h.symm)
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).mpr fun z => ?_` and prove the remaining obligations. Use `LocalizedModule.induction_on (β := fun z : LocalizedModule (monos (S := S) I) M.coneSub => locCone M I hI z = 0 → z = 0) (fun m s hz => ?_) z` and prove the remaining obligations. Establish `h` using `locCone_mk M I hI m s`. Rewrite `h` using `[hz, mul_zero]`. Establish `hm : m = 0` using `Subtype.ext h.symm`.
+
+Rewrite using `[hm, LocalizedModule.zero_mk]`.
+-/
 theorem locCone_injective (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) :
     Function.Injective (locCone M I hI) := by
   refine (injective_iff_map_eq_zero _).mpr fun z => ?_
@@ -70,6 +91,9 @@ theorem locCone_injective (I : Finset (Fin (N + 1))) (hI : I ⊆ support x) :
   have hm : m = 0 := Subtype.ext h.symm
   rw [hm, LocalizedModule.zero_mk]
 
+/- English proof (translation)
+Use `LocalizedModule.induction_on (β := fun z : LocalizedModule (monos (S := S) I) M.coneSub => locCone M J hJ (locRes h z) = locCone M I (h.trans hJ) z) (fun m s => ?_) z` and prove the remaining obligations. Rewrite using `[locRes_mk]`. Conclude with `locCone_mk_eq M hJ (locCone_mk M I _ m s)`.
+-/
 theorem locCone_locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (hJ : J ⊆ support x)
     (z : LocMod S N M.coneSub I) :
     locCone M J hJ (locRes h z) = locCone M I (h.trans hJ) z := by
@@ -79,6 +103,11 @@ theorem locCone_locRes {I J : Finset (Fin (N + 1))} (h : I ⊆ J) (hJ : J ⊆ su
   rw [locRes_mk]
   exact locCone_mk_eq M hJ (locCone_mk M I _ m s)
 
+/- English proof (translation)
+Establish `hX : ∀ m : M.coneSub, (X i : Poly S N) • m = 0` using `fun m => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `coneLaurent S x (X i) * (m : ConeLaurent S x) = 0`. Rewrite using `[coneLaurent_of_isHomogeneous (isHomogeneous_X S i), aeval_X, hx, AddMonoidAlgebra.single_zero, map_zero, zero_mul]`. Use `subsingleton_of_forall_eq 0 fun z => ?_` and prove the remaining obligations.
+
+Use `LocalizedModule.induction_on (β := fun z : LocalizedModule (monos (S := S) I) M.coneSub => z = 0) (fun m s => ?_) z` and prove the remaining obligations. Rewrite using `[← LocalizedModule.mk_cancel_common_left ⟨X i, X_mem_monos hi⟩ s m]`. Establish `h0 : (⟨X i, X_mem_monos hi⟩ : monos (S` using `S) I) • m = 0 := hX m`. Rewrite using `[h0, LocalizedModule.zero_mk]`.
+-/
 theorem locMod_subsingleton {I : Finset (Fin (N + 1))} {i : Fin (N + 1)} (hi : i ∈ I) (hx : x i = 0) :
     Subsingleton (LocMod S N M.coneSub I) := by
   have hX : ∀ m : M.coneSub, (X i : Poly S N) • m = 0 := fun m => by
@@ -93,6 +122,13 @@ theorem locMod_subsingleton {I : Finset (Fin (N + 1))} {i : Fin (N + 1)} (hi : i
   have h0 : (⟨X i, X_mem_monos hi⟩ : monos (S := S) I) • m = 0 := hX m
   rw [h0, LocalizedModule.zero_mk]
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun z _ => ∃ v ∈ M.tilde c ⟨I.1, I.2.1, hI⟩, locCone M I.1 hI z = coneSingle S x c v) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hm, hse, hae, rfl⟩`. Establish `hs0` using `aeval_ne_zero_of_mem_monos_support hI s.2`. Use `⟨(aeval x (s : Poly S N))⁻¹ • coeffAt S x a (m : ConeLaurent S x), Submodule.subset_span ⟨coeffAt S x a m, s, a, e, s.2, hse, m.2 a, hae, rfl⟩, locCone_mk_eq M hI ?_⟩` and prove the remaining obligations. Rewrite using `[← coneLaurent_smul, smul_coneSingle hse, smul_eq_mul, mul_inv_cancel_left₀ hs0, show c + (e : ℤ) = a by omega]`.
+
+Conclude with `(M.eq_coneSingle_of_mem_conePiece hm).symm`. Conclude with `⟨0, zero_mem _, by rw [map_zero, map_zero]⟩`. Introduce and unpack `_ _ _ _ ⟨v, hv, hzv⟩ ⟨v', hv', hzv'⟩`. Conclude with `⟨v + v', add_mem hv hv', by rw [map_add, map_add, hzv, hzv']⟩`. Introduce and unpack `s _ _ ⟨v, hv, hzv⟩`.
+
+Conclude with `⟨s • v, (M.tilde c _).smul_of_tower_mem s hv, by rw [LinearMap.map_smul_of_tower, hzv, map_smul]⟩`.
+-/
 theorem locCone_degLoc (c : ℤ) (I : StdCell N) (hI : I.1 ⊆ support x) {z : LocMod S N M.coneSub I.1}
     (hz : z ∈ degLoc M.coneGraded c I) :
     ∃ v ∈ M.tilde c ⟨I.1, I.2.1, hI⟩, locCone M I.1 hI z = coneSingle S x c v := by
@@ -115,6 +151,17 @@ def tildeGens (c : ℤ) (I : Chart x) : Set Ω :=
   {y | ∃ (m : Ω) (s : Poly S N) (a : ℤ) (e : ℕ), s ∈ monos I.1 ∧ s.IsHomogeneous e ∧ m ∈ M.piece a ∧
     a - e = c ∧ y = (aeval x s)⁻¹ • m}
 
+/- English proof (translation)
+Establish `hclosed : ∀ a : chartRing S x I, ∀ y ∈ Submodule.span S (tildeGens M c I), a • y ∈ Submodule.span S (tildeGens M c I)`. Introduce `a y hy`. Use `Submodule.span_induction (p := fun y _ => a • y ∈ Submodule.span S (tildeGens M c I)) ?_ ?_ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, b, e, hs, hse, hm, hbe, rfl⟩`. Take `⟨f, s', e', hs', hf, hse', ha⟩` from `a.2`.
+
+Use `Submodule.subset_span ⟨aeval x f • m, s' * s, b + e', e' + e, mul_mem hs' hs, hse'.mul hse, M.smul_mem e' b f m hf hm, by push_cast; omega, ?_⟩` and prove the remaining obligations. Simplify using `only [chartRing_smul_def, smul_eq_mul, ha, map_mul, mul_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`.
+
+Introduce `y y' _ _ hy hy'`. Rewrite using `[smul_add]`. Conclude with `add_mem hy hy'`. Introduce `t y _ hy`. Establish `: a • (t • y) = t • (a • y)`.
+
+Rewrite using `[chartRing_smul_def, chartRing_smul_def, Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ t hy`. Introduce `y hy`.
+
+Conclude with `Submodule.span_induction (p := fun y _ => y ∈ Submodule.span S (tildeGens M c I)) (fun y hy => Submodule.subset_span hy) (zero_mem _) (fun _ _ _ _ => add_mem) (fun a y _ hy => hclosed a y hy) hy`.
+-/
 theorem tilde_le_span (c : ℤ) (I : Chart x) :
     (M.tilde c I : Set Ω) ⊆ Submodule.span S (tildeGens M c I) := by
   have hclosed : ∀ a : chartRing S x I, ∀ y ∈ Submodule.span S (tildeGens M c I),
@@ -139,6 +186,13 @@ theorem tilde_le_span (c : ℤ) (I : Chart x) :
     (fun y hy => Submodule.subset_span hy) (zero_mem _) (fun _ _ _ _ => add_mem)
     (fun a y _ hy => hclosed a y hy) hy
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun y _ => ∃ z ∈ degLoc M.coneGraded c I, locCone M I.1 hI z = coneSingle S x c y) ?_ ?_ ?_ ?_ (tilde_le_span M c _ hy)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hs, hse, hm, hae, rfl⟩`. Use `⟨LocalizedModule.mk ⟨coneSingle S x a m, M.coneSingle_mem_coneSub hm⟩ ⟨s, hs⟩, Submodule.subset_span ⟨_, ⟨s, hs⟩, a, e, M.coneSingle_mem_conePiece hm, hse, hae, rfl⟩, locCone_mk_eq M hI ?_⟩` and prove the remaining obligations. Establish `hs0` using `aeval_ne_zero_of_mem_monos_support hI hs`. Express the relevant statement in the definitionally equal form `s • coneSingle S x c ((aeval x s)⁻¹ • m) = coneSingle S x a m`.
+
+Rewrite using `[smul_coneSingle hse, smul_eq_mul, mul_inv_cancel_left₀ hs0, show c + (e : ℤ) = a by omega]`. Conclude with `⟨0, zero_mem _, by rw [map_zero, map_zero]⟩`. Introduce and unpack `_ _ _ _ ⟨z, hz, hzy⟩ ⟨z', hz', hzy'⟩`. Conclude with `⟨z + z', add_mem hz hz', by rw [map_add, map_add, hzy, hzy']⟩`. Introduce and unpack `t _ _ ⟨z, hz, hzy⟩`.
+
+Conclude with `⟨t • z, Submodule.smul_mem _ t hz, by rw [LinearMap.map_smul_of_tower, hzy, map_smul]⟩`.
+-/
 theorem exists_locCone_eq (c : ℤ) (I : StdCell N) (hI : I.1 ⊆ support x) {y : Ω}
     (hy : y ∈ M.tilde c ⟨I.1, I.2.1, hI⟩) :
     ∃ z ∈ degLoc M.coneGraded c I, locCone M I.1 hI z = coneSingle S x c y := by

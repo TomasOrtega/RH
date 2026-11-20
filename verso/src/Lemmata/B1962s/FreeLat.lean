@@ -16,6 +16,11 @@ noncomputable def Bl.FreeLattices.FreeLat :
 
 namespace Bl.FreeLattices
 
+/- English proof (translation)
+Use `Module.IsTorsionFree.comap (S := Padic p) (algebraMap (PadicInt p) (Padic p)) ?_ ?_` and prove the remaining obligations. Introduce `r hr`. Establish `h0 : r ≠ 0` using `hr.ne_zero`. Establish `h1 : algebraMap (PadicInt p) (Padic p) r ≠ 0`. Simplify using `using h0`.
+
+Conclude with `IsRegular.of_ne_zero h1`. Introduce `r m`. Conclude with `algebraMap_smul (Padic p) r m`.
+-/
 private theorem tf (p : Nat) [Fact (Nat.Prime p)] (σ : Type) :
     Module.IsTorsionFree (PadicInt p) (MvPolynomial σ (Padic p)) := by
   refine Module.IsTorsionFree.comap (S := Padic p) (algebraMap (PadicInt p) (Padic p)) ?_ ?_
@@ -27,6 +32,13 @@ private theorem tf (p : Nat) [Fact (Nat.Prime p)] (σ : Type) :
   · intro r m
     exact algebraMap_smul (Padic p) r m
 
+/- English proof (translation)
+Introduce `p _ σ L W _ _ hL`. Use `tf p σ` as an intermediate fact. Establish `: Module.Finite (PadicInt p) L` using `Module.Finite.iff_fg.mpr hL`. Set `b` to `Module.finBasis (PadicInt p) L`. Use `⟨Module.finrank (PadicInt p) L, fun i => (b i : MvPolynomial σ (Padic p)), ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a`. Conclude with `(b a).2`. Conclude with `b.linearIndependent.map' L.subtype L.ker_subtype`. Establish `h` using `congrArg (Submodule.map L.subtype) b.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype, ← Set.range_comp]`.
+
+Conclude with `h`.
+-/
 theorem goal1 :
   Bl.FreeLattices.FreeLat := by
   intro p _ σ L W _ _ hL

@@ -9,6 +9,9 @@ namespace GlobalTheory.MomOne.Triang
 
 variable {q : ℕ} [Fact q.Prime]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[PowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+-/
 theorem bd_one_mul {f g : ℂ_[q]⟦X⟧} (hf : Bd 1 f) (hg : Bd 1 g) : Bd 1 (f * g) := by
   intro n
   rw [PowerSeries.coeff_mul]
@@ -16,6 +19,11 @@ theorem bd_one_mul {f g : ℂ_[q]⟦X⟧} (hf : Bd 1 f) (hg : Bd 1 g) : Bd 1 (f 
   rw [norm_mul]
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `m`. Rewrite using `[pow_zero, PowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `bd_one_mul ih hf`.
+-/
 theorem bd_one_pow {f : ℂ_[q]⟦X⟧} (hf : Bd 1 f) (n : ℕ) : Bd 1 (f ^ n) := by
   induction n with
   | zero =>
@@ -26,6 +34,19 @@ theorem bd_one_pow {f : ℂ_[q]⟦X⟧} (hf : Bd 1 f) (n : ℕ) : Bd 1 (f ^ n) :
     rw [pow_succ]
     exact bd_one_mul ih hf
 
+/- English proof (translation)
+Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hB 0)`. Establish `hcoeff : ∀ N, coeff N (∑ j ∈ s, C (c j) * (X ^ e j * u j)) = ∑ j ∈ s, c j * (if e j ≤ N then coeff (N - e j) (u j) else 0)`. Introduce `N`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul']`. Establish `key : ∀ N, ∀ j ∈ s, e j = N → ‖c j‖ ≤ B`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`.
+
+Introduce `j hj hjN`. Establish `hsplit` using `(hcoeff N).trans (Finset.add_sum_erase s _ hj).symm`. Use `beta_reduce at hsplit`. Establish `hjterm : c j * (if e j ≤ N then coeff (N - e j) (u j) else 0) = c j * constantCoeff (u j)`. Rewrite using `[if_pos hjN.le, hjN, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply]`.
+
+Establish `hrest : ‖∑ i ∈ s.erase j, c i * (if e i ≤ N then coeff (N - e i) (u i) else 0)‖ ≤ B`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hB0 fun i hi => ?_` and prove the remaining obligations. Take `⟨hij, his⟩` from `Finset.mem_erase.mp hi`. Use `split_ifs with hle`. Establish `hlt : e i < N` using `lt_of_le_of_ne hle fun h => hij (he his hj (h.trans hjN.symm))`.
+
+Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `using hB0`. Establish `hmain : c j * constantCoeff (u j) = coeff N (∑ j ∈ s, C (c j) * (X ^ e j * u j)) - ∑ i ∈ s.erase j, c i * (if e i ≤ N then coeff (N - e i) (u i) else 0)`. Take the linear combination `-hsplit - hjterm`.
+
+Establish `hnorm : ‖c j‖ = ‖c j * constantCoeff (u j)‖` using `by rw [norm_mul, h0 j hj, mul_one]`. Rewrite using `[hnorm, hmain, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hB N) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]` and apply the resulting hypothesis. Conclude with `fun j hj => key (e j) j hj rfl`.
+-/
 theorem norm_le_of_distinct {ι : Type*} (s : Finset ι) (e : ι → ℕ) (u : ι → ℂ_[q]⟦X⟧) (c : ι → ℂ_[q]) (B : ℝ)
     (he : Set.InjOn e s) (hu : ∀ j ∈ s, Bd 1 (u j)) (h0 : ∀ j ∈ s, ‖constantCoeff (u j)‖ = 1)
     (hB : Bd B (∑ j ∈ s, C (c j) * (X ^ e j * u j))) : ∀ j ∈ s, ‖c j‖ ≤ B := by
@@ -65,6 +86,21 @@ theorem norm_le_of_distinct {ι : Type*} (s : Finset ι) (e : ι → ℕ) (u : �
     rwa [norm_neg]
   exact fun j hj => key (e j) j hj rfl
 
+/- English proof (translation)
+Introduce `q _ xs ys k a b B hxs hys hx0 hy0 hB`. Set `s : Finset (Bool × ℕ)` to `Finset.univ ×ˢ Finset.range (k + 1)`. Set `e : Bool × ℕ → ℕ` to `fun j => bif j.1 then 2 * (k - j.2) + 3 else 2 * (k - j.2)`. Set `u : Bool × ℕ → ℂ_[q]⟦X⟧` to `fun j => bif j.1 then xs ^ j.2 else xs ^ j.2 * ys`. Set `c : Bool × ℕ → ℂ_[q]` to `fun j => bif j.1 then a j.2 else b j.2`.
+
+Establish `hmem : ∀ {j : Bool × ℕ}, j ∈ s → j.2 < k + 1` using `fun hj => Finset.mem_range.mp (Finset.mem_product.mp hj).2`. Establish `he : Set.InjOn e s`. Introduce and unpack `⟨b₁, i₁⟩ h₁ ⟨b₂, i₂⟩ h₂ heq`. Establish `hi₁` using `hmem (Finset.mem_coe.mp h₁)`. Establish `hi₂` using `hmem (Finset.mem_coe.mp h₂)`.
+
+Apply the tactic sequence `cases b₁ <;> cases b₂ <;> simp only [e, cond_true, cond_false] at heq hi₁ hi₂ <;> first | (exfalso; omega) | (congr 1; omega)`. Establish `hu : ∀ j ∈ s, Bd 1 (u j)`. Introduce and unpack `⟨_ | _, i⟩ _`. Conclude with `bd_one_mul (bd_one_pow hxs i) hys`. Conclude with `bd_one_pow hxs i`.
+
+Establish `h0 : ∀ j ∈ s, ‖constantCoeff (u j)‖ = 1`. Introduce and unpack `⟨_ | _, i⟩ _`. Use `show ‖constantCoeff (xs ^ i * ys)‖ = 1`. Rewrite using `[map_mul, map_pow, norm_mul, norm_pow, hx0, hy0, one_pow, one_mul]`. Use `show ‖constantCoeff (xs ^ i)‖ = 1`.
+
+Rewrite using `[map_pow, norm_pow, hx0, one_pow]`. Establish `hsum : (∑ j ∈ s, C (c j) * (X ^ e j * u j)) = ∑ i ∈ Finset.range (k + 1), (C (a i) * X ^ (2 * (k - i) + 3) * xs ^ i + C (b i) * X ^ (2 * (k - i)) * xs ^ i * ys)`. Simplify using `only [s]`. Rewrite using `[Finset.sum_product, Fintype.sum_bool, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [e, u, c, cond_true, cond_false]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB' : Bd B (∑ j ∈ s, C (c j) * (X ^ e j * u j))`. Rewrite using `[hsum]`. Conclude with `hB`.
+
+Establish `key` using `norm_le_of_distinct s e u c B he hu h0 hB'`. Introduce `i hi`. Establish `hi' : i ∈ Finset.range (k + 1)` using `Finset.mem_range.mpr (Nat.lt_succ_of_le hi)`. Conclude with `⟨key (true, i) (Finset.mem_product.mpr ⟨Finset.mem_univ _, hi'⟩), key (false, i) (Finset.mem_product.mpr ⟨Finset.mem_univ _, hi'⟩)⟩`.
+-/
 theorem coeff_norm_le : ∀ (q : ℕ) [Fact q.Prime] (xs ys : ℂ_[q]⟦X⟧) (k : ℕ) (a b : ℕ → ℂ_[q]) (B : ℝ), Bd 1 xs → Bd 1 ys → ‖constantCoeff xs‖ = 1 → ‖constantCoeff ys‖ = 1 → Bd B (∑ i ∈ Finset.range (k + 1), (C (a i) * X ^ (2 * (k - i) + 3) * xs ^ i + C (b i) * X ^ (2 * (k - i)) * xs ^ i * ys)) → ∀ i ≤ k, ‖a i‖ ≤ B ∧ ‖b i‖ ≤ B := by
   intro q _ xs ys k a b B hxs hys hx0 hy0 hB
   classical

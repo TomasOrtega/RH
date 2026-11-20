@@ -5,6 +5,11 @@ namespace GlobalTheory.RowTie.RepDet
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+Unfold `isoLoc`. Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons x _ ih => simp only [List.foldr_cons, ih]`. Consider the case `swap x y l`.
+
+Simplify using `only [List.foldr_cons]`. Rewrite using `[← A.lpSum_assoc, ← A.lpSum_assoc, A.lpSum_comm (spehLoc N A y w)]`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+-/
 theorem isoLoc_perm {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (A : NAut N)
     {Pa Pa' : List (Part A.CG)} (h : Pa.Perm Pa') (w : PlE H) : isoLoc N A Pa w = isoLoc N A Pa' w := by
   unfold isoLoc
@@ -20,6 +25,11 @@ end GlobalTheory.RowTie.RepDet
 
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+Introduce `R H what₂ N A i hBC hSp hRep P P' hP`. Take `⟨Pa, hPa⟩` from `hBC P`. Take `⟨Pa', hPa'⟩` from `hBC P'`. Establish `hperm` using `hSp P P' hP Pa Pa' hPa hPa'`. Establish `hiso` using `GlobalTheory.RowTie.RepDet.isoLoc_perm N A hperm`.
+
+Apply `hRep P P'` to reduce the goal to its premises. Introduce `w hw`. Rewrite using `[← hPa.2.2.2.1 w hw, ← hPa'.2.2.2.1 w hw, hiso w]`. Introduce `w hw`. Rewrite using `[← (hPa.2.2.2.2.1 w hw).2, ← (hPa'.2.2.2.2.1 w hw).2, hiso w]`.
+-/
 theorem GlobalTheory.RowTie.repDet_split : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N)
     (i : N.Loc), GlobalTheory.RowTie.BCEx N A i → GlobalTheory.RowTie.SplitBC N A i → GlobalTheory.RowTie.RepOfLoc N A i →
     ∀ P P' : A.AV i, (∀ᶠ w in Filter.cofinite, IsSplitPl H w → A.locV i P w = A.locV i P' w) → P = P' := by

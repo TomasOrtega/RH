@@ -19,6 +19,13 @@ section Analysis
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
+/- English proof (translation)
+Apply `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero` to reduce the goal to its premises. Rewrite using `[Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε hr`. Use `Filter.eventually_cofinite.2 ((hfin N).subset ?_)` and prove the remaining obligations.
+
+Introduce `i hi`. Simplify using `only [Set.mem_ofPred_eq, dist_zero_right, not_lt] at hi ⊢`. Use `⟨fun h0 => by rw [h0, norm_zero] at hi; linarith, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hge`. Use `push Not at hge`.
+
+Establish `h1` using `h i`. Establish `h2 : r ^ deg i ≤ r ^ N` using `pow_le_pow_of_le_one hr0 hr.le hge`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem summable_of_bound {ι : Type*} {f : ι → K} (deg : ι → ℕ) {r : ℝ} (hr0 : 0 ≤ r)
     (hr : r < 1) (hfin : ∀ N : ℕ, {i | f i ≠ 0 ∧ deg i < N}.Finite)
     (h : ∀ i, ‖f i‖ ≤ r ^ deg i) : Summable f := by
@@ -36,9 +43,15 @@ theorem summable_of_bound {ι : Type*} {f : ι → K} (deg : ι → ℕ) {r : �
   have h2 : r ^ deg i ≤ r ^ N := pow_le_pow_of_le_one hr0 hr.le hge
   linarith
 
+/- English proof (translation)
+Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`.
+-/
 theorem degree_fin_two_eq_add_of_ne (d : Fin 2 →₀ ℕ) : d.degree = d 0 + d 1 := by
   rw [Finsupp.degree_eq_sum, Fin.sum_univ_two]
 
+/- English proof (translation)
+Use `(Set.finite_Iic (Finsupp.equivFunOnFinite.symm fun _ => N)).subset ?_` and prove the remaining obligations. Introduce `d hd`. Simplify using `only [Set.mem_ofPred_eq, degree_fin_two_eq_add_of_ne] at hd`. Simplify using `only [Set.mem_Iic, Finsupp.le_def]`. Apply the tactic sequence `intro i; fin_cases i <;> simp <;> omega`.
+-/
 theorem finite_degree_lt (N : ℕ) : {d : Fin 2 →₀ ℕ | d.degree < N}.Finite := by
   refine (Set.finite_Iic (Finsupp.equivFunOnFinite.symm fun _ => N)).subset ?_
   intro d hd
@@ -46,6 +59,9 @@ theorem finite_degree_lt (N : ℕ) : {d : Fin 2 →₀ ℕ | d.degree < N}.Finit
   simp only [Set.mem_Iic, Finsupp.le_def]
   intro i; fin_cases i <;> simp <;> omega
 
+/- English proof (translation)
+Rewrite using `[degree_fin_two_eq_add_of_ne, pow_add, norm_mul, norm_pow, norm_pow]`. Establish `hr : 0 ≤ r` using `(norm_nonneg a).trans ha`. Conclude with `mul_le_mul (pow_le_pow_left₀ (norm_nonneg _) ha _) (pow_le_pow_left₀ (norm_nonneg _) hb _) (pow_nonneg (norm_nonneg _) _) (pow_nonneg hr _)`.
+-/
 theorem norm_mono_le {a b : K} {r : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ r) (d : Fin 2 →₀ ℕ) :
     ‖a ^ (d 0) * b ^ (d 1)‖ ≤ r ^ d.degree := by
   rw [degree_fin_two_eq_add_of_ne, pow_add, norm_mul, norm_pow, norm_pow]
@@ -56,10 +72,16 @@ theorem norm_mono_le {a b : K} {r : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ 
 def term (F : MvPowerSeries (Fin 2) K) (a b : K) (d : Fin 2 →₀ ℕ) : K :=
   MvPowerSeries.coeff d F * (a ^ (d 0) * b ^ (d 1))
 
+/- English proof (translation)
+Unfold `evalMv2 term`. Use `congr 1`. Use function extensionality and compare the values at `d`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalMv2_eq (F : MvPowerSeries (Fin 2) K) (a b : K) :
     evalMv2 F a b = ∑' d, term F a b d := by
   unfold evalMv2 term; congr 1; funext d; ring
 
+/- English proof (translation)
+Unfold `term`. Rewrite using `[norm_mul]`. Establish `hr : 0 ≤ r` using `(norm_nonneg a).trans ha`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_term_le {F : MvPowerSeries (Fin 2) K} (hF : IntegralMv F) {a b : K} {r : ℝ}
     (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ r) (d : Fin 2 →₀ ℕ) : ‖term F a b d‖ ≤ r ^ d.degree := by
   unfold term
@@ -69,6 +91,9 @@ theorem norm_term_le {F : MvPowerSeries (Fin 2) K} (hF : IntegralMv F) {a b : K}
         mul_le_mul (hF d) (norm_mono_le ha hb d) (norm_nonneg _) zero_le_one
     _ = _ := one_mul _
 
+/- English proof (translation)
+The claim follows from `summable_of_bound Finsupp.degree (le_trans (norm_nonneg a) (le_max_left _ _)) (max_lt ha hb) (fun N => (finite_degree_lt N).subset fun d hd => hd.2) (norm_term_le hF (le_max_left _ _) (le_max_right _ _))`.
+-/
 theorem summable_term {F : MvPowerSeries (Fin 2) K} (hF : IntegralMv F) {a b : K}
     (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : Summable (term F a b) :=
   summable_of_bound Finsupp.degree (le_trans (norm_nonneg a) (le_max_left _ _))
@@ -84,8 +109,18 @@ def IL (K : Type u) [NormedField K] [IsUltrametricDist K] : Subring (MvPowerSeri
   zero_mem' := fun d => by simp
   neg_mem' {F} hF := fun d => by rw [map_neg, norm_neg]; exact hF d
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_IL {F : MvPowerSeries (Fin 2) K} : F ∈ IL K ↔ IntegralMv F := Iff.rfl
 
+/- English proof (translation)
+Establish `hr0 : 0 ≤ max ‖a‖ ‖b‖` using `le_trans (norm_nonneg a) (le_max_left _ _)`. Use `summable_of_bound (fun x => x.1.degree + x.2.degree) hr0 (max_lt ha hb) ?_ ?_` and prove the remaining obligations. Introduce `N`. Use `((finite_degree_lt N).prod (finite_degree_lt N)).subset ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [Set.mem_ofPred_eq] at hx`. Simplify using `only [Set.mem_prod, Set.mem_ofPred_eq]`. Use linear arithmetic over natural numbers and integers. Introduce `x`. Rewrite using `[norm_mul, pow_add]`.
+
+Conclude with `mul_le_mul (norm_term_le hF (le_max_left _ _) (le_max_right _ _) _) (norm_term_le hG (le_max_left _ _) (le_max_right _ _) _) (norm_nonneg _) (pow_nonneg hr0 _)`.
+-/
 theorem summable_prod_term {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
     (hG : IntegralMv G) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
     Summable fun x : (Fin 2 →₀ ℕ) × (Fin 2 →₀ ℕ) => term F a b x.1 * term G a b x.2 := by
@@ -103,6 +138,9 @@ theorem summable_prod_term {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
       (norm_term_le hG (le_max_left _ _) (le_max_right _ _) _) (norm_nonneg _)
       (pow_nonneg hr0 _)
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, tsum_eq_single 0]`. Simplify using `[term]`. Introduce `d hd`. Simplify using `[term, MvPowerSeries.coeff_one, hd]`.
+-/
 theorem evalMv2_one (a b : K) : evalMv2 (1 : MvPowerSeries (Fin 2) K) a b = 1 := by
   classical
   rw [evalMv2_eq, tsum_eq_single 0]
@@ -110,6 +148,13 @@ theorem evalMv2_one (a b : K) : evalMv2 (1 : MvPowerSeries (Fin 2) K) a b = 1 :=
   · intro d hd
     simp [term, MvPowerSeries.coeff_one, hd]
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, evalMv2_eq, evalMv2_eq, (summable_term hF ha hb).tsum_mul_tsum_eq_tsum_sum_antidiagonal (summable_term hG ha hb) (summable_prod_term hF hG ha hb)]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Unfold `term`. Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_mul]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `kl hkl`. Rewrite `hkl` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Rewrite using `[← hkl]`. Simplify using `only [Finsupp.add_apply, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evalMv2_mul {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
     (hG : IntegralMv G) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
     evalMv2 (F * G) a b = evalMv2 F a b * evalMv2 G a b := by
@@ -127,6 +172,9 @@ theorem evalMv2_mul {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
   simp only [Finsupp.add_apply, pow_add]
   ring
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, evalMv2_eq, evalMv2_eq, ← (summable_term hF ha hb).tsum_add (summable_term hG ha hb)]`. Use `congr 1`. Use function extensionality and compare the values at `d`. Simplify using `[term, add_mul]`.
+-/
 theorem evalMv2_add {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
     (hG : IntegralMv G) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
     evalMv2 (F + G) a b = evalMv2 F a b + evalMv2 G a b := by
@@ -142,9 +190,15 @@ def ev (a b : K) (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : IL K →+* K where
   map_zero' := by simp [evalMv2]
   map_add' F G := evalMv2_add F.2 G.2 ha hb
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) (F : IL K) :
     ev a b ha hb F = evalMv2 F.1 a b := rfl
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, tsum_eq_single 0]`. Simplify using `[term]`. Introduce `d hd`. Simplify using `[term, MvPowerSeries.coeff_C, hd]`.
+-/
 theorem evalMv2_C (c a b : K) : evalMv2 (MvPowerSeries.C c : MvPowerSeries (Fin 2) K) a b = c := by
   classical
   rw [evalMv2_eq, tsum_eq_single 0]
@@ -152,6 +206,9 @@ theorem evalMv2_C (c a b : K) : evalMv2 (MvPowerSeries.C c : MvPowerSeries (Fin 
   · intro d hd
     simp [term, MvPowerSeries.coeff_C, hd]
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, tsum_eq_single (Finsupp.single 0 1)]`. Simplify using `[term]`. Introduce `d hd`. Simplify using `[term, MvPowerSeries.coeff_X, hd]`.
+-/
 theorem evalMv2_X0 (a b : K) : evalMv2 (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) a b = a := by
   classical
   rw [evalMv2_eq, tsum_eq_single (Finsupp.single 0 1)]
@@ -159,6 +216,9 @@ theorem evalMv2_X0 (a b : K) : evalMv2 (MvPowerSeries.X 0 : MvPowerSeries (Fin 2
   · intro d hd
     simp [term, MvPowerSeries.coeff_X, hd]
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, tsum_eq_single (Finsupp.single 1 1)]`. Simplify using `[term]`. Introduce `d hd`. Simplify using `[term, MvPowerSeries.coeff_X, hd]`.
+-/
 theorem evalMv2_X1 (a b : K) : evalMv2 (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) a b = b := by
   classical
   rw [evalMv2_eq, tsum_eq_single (Finsupp.single 1 1)]
@@ -166,6 +226,15 @@ theorem evalMv2_X1 (a b : K) : evalMv2 (MvPowerSeries.X 1 : MvPowerSeries (Fin 2
   · intro d hd
     simp [term, MvPowerSeries.coeff_X, hd]
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, evalPS]`. Establish `hsupp : Function.support (term (w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)) a b) ⊆ Set.range (Finsupp.single (0 : Fin 2))`. Introduce `e he`. Use `WeierstrassChordSeries.coeff_Wi w 0 e` as an intermediate fact. Unfold `WeierstrassChordSeries.Wi at this`.
+
+Distinguish the cases in `h : e = Finsupp.single 0 (e 0)`. Conclude with `⟨e 0, h.symm⟩`. It suffices to derive a contradiction. Apply `he` to reduce the goal to its premises. Simplify using `[term, this, h]`.
+
+Rewrite using `[← (Finsupp.single_injective (0 : Fin 2)).tsum_eq hsupp]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Use `WeierstrassChordSeries.coeff_Wi w 0 (Finsupp.single 0 n)` as an intermediate fact. Unfold `WeierstrassChordSeries.Wi at this`.
+
+Simplify using `[term, this]`.
+-/
 theorem evalMv2_subst_X0 (w : PowerSeries K) (a b : K) :
     evalMv2 (w.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)) a b = evalPS w a := by
   classical
@@ -184,8 +253,16 @@ theorem evalMv2_subst_X0 (w : PowerSeries K) (a b : K) :
   unfold WeierstrassChordSeries.Wi at this
   simp [term, this]
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem integral_of_mem {F : MvPowerSeries (Fin 2) K} (h : F ∈ IL K) : IntegralMv F := h
 
+/- English proof (translation)
+Apply the tactic sequence `have hst : MvPowerSeries.HasSubst ![s, t] := MvPowerSeries.hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simp [hs0, ht0])`. Rewrite using `[MvPowerSeries.coeff_subst hst]`. Use `congr 1`. Use function extensionality and compare the values at `d`. Rewrite using `[smul_eq_mul, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]`.
+
+Both sides reduce to the same expression.
+-/
 theorem coeff_subst_two (G s t : MvPowerSeries (Fin 2) K) (hs0 : MvPowerSeries.constantCoeff s = 0)
     (ht0 : MvPowerSeries.constantCoeff t = 0) (e : Fin 2 →₀ ℕ) :
     MvPowerSeries.coeff e (G.subst ![s, t]) =
@@ -197,6 +274,9 @@ theorem coeff_subst_two (G s t : MvPowerSeries (Fin 2) K) (hs0 : MvPowerSeries.c
   rw [smul_eq_mul, Finsupp.prod_fintype _ _ (by simp), Fin.prod_univ_two]
   rfl
 
+/- English proof (translation)
+Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (MvPowerSeries.le_order_mul)` and prove the remaining obligations. Use `lt_of_lt_of_le ?_ (add_le_add (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero _ hs0) (MvPowerSeries.le_order_pow_of_constantCoeff_eq_zero _ ht0))` and prove the remaining obligations. Rewrite `h` using `[degree_fin_two_eq_add_of_ne d]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem coeff_mono_eq_zero {s t : MvPowerSeries (Fin 2) K} (hs0 : MvPowerSeries.constantCoeff s = 0)
     (ht0 : MvPowerSeries.constantCoeff t = 0) {d e : Fin 2 →₀ ℕ} (h : e.degree < d.degree) :
     MvPowerSeries.coeff e (s ^ (d 0) * t ^ (d 1)) = 0 := by
@@ -207,6 +287,33 @@ theorem coeff_mono_eq_zero {s t : MvPowerSeries (Fin 2) K} (hs0 : MvPowerSeries.
   rw [degree_fin_two_eq_add_of_ne d] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Use `set M : (Fin 2 →₀ ℕ) → MvPowerSeries (Fin 2) K := fun d => s ^ (d 0) * t ^ (d 1) with hMdef`. Establish `hM : ∀ d, IntegralMv (M d)` using `fun d => SubstitutionCoefficientCongruence.integral_mul (SubstitutionCoefficientCongruence.integral_pow hs _) (SubstitutionCoefficientCongruence.integral_pow ht _)`. Establish `hMev : ∀ d, evalMv2 (M d) a b = evalMv2 s a b ^ (d 0) * evalMv2 t a b ^ (d 1)`. Introduce `d`. Establish `h` using `map_mul (ev a b ha hb) ((⟨s, hs⟩ : IL K) ^ (d 0)) ((⟨t, ht⟩ : IL K) ^ (d 1))`.
+
+Rewrite `h` using `[map_pow, map_pow]`. Simplify `h` using `[ev_apply, hMdef]`. Use `set T : (Fin 2 →₀ ℕ) → (Fin 2 →₀ ℕ) → K := fun d e => MvPowerSeries.coeff d G * (MvPowerSeries.coeff e (M d) * (a ^ (e 0) * b ^ (e 1))) with hT`. Establish `hr0 : 0 ≤ max ‖a‖ ‖b‖` using `le_trans (norm_nonneg a) (le_max_left _ _)`. Establish `hsum : Summable (Function.uncurry T)`.
+
+Use `summable_of_bound (fun x => x.2.degree) hr0 (max_lt ha hb) ?_ ?_` and prove the remaining obligations. Introduce `N`. Use `((finite_degree_lt N).prod (finite_degree_lt N)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨d, e⟩ ⟨hne, hlt⟩`. Simplify using `only [Set.mem_prod, Set.mem_ofPred_eq]`.
+
+Use `⟨?_, hlt⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hge`. Use `push Not at hge`. Apply `hne` to reduce the goal to its premises. Simplify using `only [Function.uncurry_apply_pair, hT]`.
+
+Rewrite using `[coeff_mono_eq_zero hs0 ht0 (lt_of_lt_of_le hlt hge)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨d, e⟩`. Simplify using `only [Function.uncurry_apply_pair, hT, norm_mul]`. Establish `h1` using `hG d`.
+
+Establish `h2` using `hM d e`. Establish `h3` using `norm_mono_le (le_max_left ‖a‖ ‖b‖) (le_max_right ‖a‖ ‖b‖) e`. Rewrite `h3` using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hL : evalMv2 (G.subst ![s, t]) a b = ∑' e, ∑' d, T d e`.
+
+Rewrite using `[evalMv2_eq]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Establish `hfin : (Function.support fun d => MvPowerSeries.coeff d G * MvPowerSeries.coeff e (M d)).Finite`. Use `(finite_degree_lt (e.degree + 1)).subset ?_` and prove the remaining obligations.
+
+Introduce `d hd`. Simplify using `only [Set.mem_ofPred_eq]`. Assume the negation of the conclusion as `hge`. Apply `hd` to reduce the goal to its premises. Simplify using `only [hMdef]`.
+
+Rewrite using `[coeff_mono_eq_zero hs0 ht0 (by omega : e.degree < d.degree), mul_zero]`. Establish `hfin' : (Function.support fun d => T d e).Finite`. Use `hfin.subset ?_` and prove the remaining obligations. Introduce `d hd h0`. Apply `hd` to reduce the goal to its premises.
+
+Establish `h0' : MvPowerSeries.coeff d G * MvPowerSeries.coeff e (M d) = 0` using `h0`. Simplify using `only [hT]`. Rewrite using `[← mul_assoc, h0', zero_mul]`. Unfold `term`. Rewrite using `[coeff_subst_two G s t hs0 ht0 e, finsum_mul, tsum_eq_finsum hfin']`.
+
+Use `congr 1`. Use function extensionality and compare the values at `d`. Simplify using `only [hT, hMdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : evalMv2 G (evalMv2 s a b) (evalMv2 t a b) = ∑' d, ∑' e, T d e`.
+
+Rewrite using `[evalMv2_eq G (evalMv2 s a b) (evalMv2 t a b)]`. Use `congr 1`. Use function extensionality and compare the values at `d`. Simplify using `only [hT, term]`. Rewrite using `[tsum_mul_left, ← hMev d, evalMv2_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[hL, hR, hsum.tsum_comm]`.
+-/
 theorem evalMv2_subst {G s t : MvPowerSeries (Fin 2) K} (hG : IntegralMv G) (hs : IntegralMv s)
     (ht : IntegralMv t) (hs0 : MvPowerSeries.constantCoeff s = 0)
     (ht0 : MvPowerSeries.constantCoeff t = 0) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
@@ -275,21 +382,42 @@ theorem evalMv2_subst {G s t : MvPowerSeries (Fin 2) K} (hG : IntegralMv G) (hs 
     rfl
   rw [hL, hR, hsum.tsum_comm]
 
+/- English proof (translation)
+Simplify using `[evalMv2]`.
+-/
 theorem evalMv2_zero' (a b : K) : evalMv2 (0 : MvPowerSeries (Fin 2) K) a b = 0 := by
   simp [evalMv2]
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `h (evalMv2_zero' a b)`.
+-/
 theorem ne_zero_of_eval {p : MvPowerSeries (Fin 2) K} {a b : K} (h : evalMv2 p a b ≠ 0) : p ≠ 0 := by
   rintro rfl; exact h (evalMv2_zero' a b)
 
+/- English proof (translation)
+The claim follows from `map_sub (ev a b ha hb) ⟨F, hF⟩ ⟨G, hG⟩`.
+-/
 theorem evalMv2_sub {F G : MvPowerSeries (Fin 2) K} (hF : IntegralMv F)
     (hG : IntegralMv G) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
     evalMv2 (F - G) a b = evalMv2 F a b - evalMv2 G a b :=
   map_sub (ev a b ha hb) ⟨F, hF⟩ ⟨G, hG⟩
 
+/- English proof (translation)
+The claim follows from `map_neg (ev a b ha hb) ⟨F, hF⟩`.
+-/
 theorem evalMv2_neg {F : MvPowerSeries (Fin 2) K} (hF : IntegralMv F) {a b : K} (ha : ‖a‖ < 1)
     (hb : ‖b‖ < 1) : evalMv2 (-F) a b = -evalMv2 F a b :=
   map_neg (ev a b ha hb) ⟨F, hF⟩
 
+/- English proof (translation)
+Rewrite using `[evalMv2_eq, evalPS]`. Establish `hsupp : Function.support (term (w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)) a b) ⊆ Set.range (Finsupp.single (1 : Fin 2))`. Introduce `e he`. Use `WeierstrassChordSeries.coeff_Wi w 1 e` as an intermediate fact. Unfold `WeierstrassChordSeries.Wi at this`.
+
+Distinguish the cases in `h : e = Finsupp.single 1 (e 1)`. Conclude with `⟨e 1, h.symm⟩`. It suffices to derive a contradiction. Apply `he` to reduce the goal to its premises. Simplify using `[term, this, h]`.
+
+Rewrite using `[← (Finsupp.single_injective (1 : Fin 2)).tsum_eq hsupp]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Use `WeierstrassChordSeries.coeff_Wi w 1 (Finsupp.single 1 n)` as an intermediate fact. Unfold `WeierstrassChordSeries.Wi at this`.
+
+Simplify using `[term, this]`.
+-/
 theorem evalMv2_subst_X1 (w : PowerSeries K) (a b : K) :
     evalMv2 (w.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)) a b = evalPS w b := by
   classical
@@ -308,14 +436,27 @@ theorem evalMv2_subst_X1 (w : PowerSeries K) (a b : K) :
   unfold WeierstrassChordSeries.Wi at this
   simp [term, this]
 
+/- English proof (translation)
+Apply the tactic sequence `intro d; rw [MvPowerSeries.coeff_X]; split_ifs <;> simp`.
+-/
 theorem integral_X (i : Fin 2) : IntegralMv (MvPowerSeries.X i : MvPowerSeries (Fin 2) K) := by
   classical
   intro d; rw [MvPowerSeries.coeff_X]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `intro d; rw [MvPowerSeries.coeff_C]; split_ifs <;> simp [hc]`.
+-/
 theorem integral_C {c : K} (hc : ‖c‖ ≤ 1) : IntegralMv (MvPowerSeries.C c : MvPowerSeries (Fin 2) K) := by
   classical
   intro d; rw [MvPowerSeries.coeff_C]; split_ifs <;> simp [hc]
 
+/- English proof (translation)
+Introduce `e`. Rewrite using `[coeff_subst_two G s t hs0 ht0 e]`. Establish `hfin : (Function.support fun d => MvPowerSeries.coeff d G * MvPowerSeries.coeff e (s ^ (d 0) * t ^ (d 1))).Finite`. Use `(finite_degree_lt (e.degree + 1)).subset ?_` and prove the remaining obligations. Introduce `d hd`.
+
+Simplify using `only [Set.mem_ofPred_eq]`. Assume the negation of the conclusion as `hge`. Apply `hd` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[coeff_mono_eq_zero hs0 ht0 (by omega : e.degree < d.degree), mul_zero]`.
+
+Rewrite using `[finsum_eq_sum _ hfin, ← SubstitutionCoefficientCongruence.mem_unitBall]`. Use `Subring.sum_mem _ fun d _ => Subring.mul_mem _ (SubstitutionCoefficientCongruence.mem_unitBall.mpr (hG d)) (SubstitutionCoefficientCongruence.mem_unitBall.mpr ?_)` and prove the remaining obligations. Conclude with `SubstitutionCoefficientCongruence.integral_mul (SubstitutionCoefficientCongruence.integral_pow hs _) (SubstitutionCoefficientCongruence.integral_pow ht _) e`.
+-/
 theorem integral_subst2 {G s t : MvPowerSeries (Fin 2) K} (hG : IntegralMv G) (hs : IntegralMv s)
     (ht : IntegralMv t) (hs0 : MvPowerSeries.constantCoeff s = 0)
     (ht0 : MvPowerSeries.constantCoeff t = 0) : IntegralMv (G.subst ![s, t]) := by
@@ -335,6 +476,13 @@ theorem integral_subst2 {G s t : MvPowerSeries (Fin 2) K} (hG : IntegralMv G) (h
     (SubstitutionCoefficientCongruence.mem_unitBall.mpr ?_)
   exact SubstitutionCoefficientCongruence.integral_mul (SubstitutionCoefficientCongruence.integral_pow hs _) (SubstitutionCoefficientCongruence.integral_pow ht _) e
 
+/- English proof (translation)
+Set `EU : MvPowerSeries (Fin 2) (unitBall K)` to `fun d => ⟨MvPowerSeries.coeff d E, hE d⟩`. Establish `hmap : MvPowerSeries.map (unitBall K).subtype EU = E`. Use extensionality with `d`. Rewrite using `[MvPowerSeries.coeff_map]`. Both sides reduce to the same expression.
+
+Establish `hc : MvPowerSeries.constantCoeff EU = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `: MvPowerSeries.constantCoeff E = 1` using `h1`. Rewrite `this`, the goal using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `this`.
+
+Take `⟨v, hv⟩` from `MvPowerSeries.isUnit_iff_constantCoeff.mpr (by rw [hc]; exact isUnit_one)`. Use `⟨MvPowerSeries.map (unitBall K).subtype ↑v⁻¹, fun d => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff d (↑v⁻¹ : MvPowerSeries (Fin 2) (unitBall K))).2`. Rewrite using `[← hmap, ← map_mul, ← hv, Units.mul_inv, map_one]`.
+-/
 theorem exists_inv_integral {E : MvPowerSeries (Fin 2) K} (hE : IntegralMv E)
     (h1 : MvPowerSeries.constantCoeff E = 1) : ∃ ψ, IntegralMv ψ ∧ E * ψ = 1 := by
   let EU : MvPowerSeries (Fin 2) (unitBall K) := fun d => ⟨MvPowerSeries.coeff d E, hE d⟩
@@ -375,6 +523,9 @@ section Field
 
 variable {E : Type*} [Field E] (W : WeierstrassCurve.Affine E)
 
+/- English proof (translation)
+Establish `h : z1 / w1 - z2 / w2 = (z1 * w2 - z2 * w1) / (w1 * w2)` using `by field_simp`. Rewrite using `[h]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chord_slope {z1 z2 w1 w2 : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     (hN : z1 * w2 - z2 * w1 ≠ 0) :
     (-1 / w1 - -1 / w2) / (z1 / w1 - z2 / w2) = (w1 - w2) / (z1 * w2 - z2 * w1) := by
@@ -383,6 +534,9 @@ theorem chord_slope {z1 z2 w1 w2 : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[chord_slope hw1 hw2 hN, WeierstrassCurve.Affine.addX, chordPX]`. Generalize the expression as in `z1 * w2 - z2 * w1 = N at *`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+-/
 theorem chord_x_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     (hN : z1 * w2 - z2 * w1 ≠ 0) (hv : v ≠ 0) :
     (c / v - W.addX (z1 / w1) (z2 / w2) ((-1 / w1 - -1 / w2) / (z1 / w1 - z2 / w2)))
@@ -392,6 +546,9 @@ theorem chord_x_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
   field_simp
   try ring
 
+/- English proof (translation)
+Rewrite using `[chord_slope hw1 hw2 hN, WeierstrassCurve.Affine.negY, chordPY]`. Generalize the expression as in `z1 * w2 - z2 * w1 = N at *`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chord_y_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     (hN : z1 * w2 - z2 * w1 ≠ 0) (hv : v ≠ 0) :
     (-1 / v - W.negY (c / v) ((-1 / w1 - -1 / w2) / (z1 / w1 - z2 / w2) * (c / v - z1 / w1)
@@ -401,6 +558,11 @@ theorem chord_y_id {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
   field_simp
   ring
 
+/- English proof (translation)
+Establish `h : -1 / w - W.negY (z / w) (-1 / w) = (-2 + W.a₁ * z + W.a₃ * w) / w`. Rewrite using `[WeierstrassCurve.Affine.negY]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tan_slope {z w : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w ≠ 0) :
     (3 * (z / w) ^ 2 + 2 * W.a₂ * (z / w) + W.a₄ - W.a₁ * (-1 / w)) /
       (-1 / w - W.negY (z / w) (-1 / w)) =
@@ -411,6 +573,9 @@ theorem tan_slope {z w : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w �
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[tan_slope W hw hM, WeierstrassCurve.Affine.addX, tanPX]`. Generalize the expression as in `3 * z ^ 2 + 2 * W.a₂ * z * w + W.a₄ * w ^ 2 + W.a₁ * w = Nt`. Generalize the expression as in `-2 + W.a₁ * z + W.a₃ * w = M at *`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tan_x_id {z w c v : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w ≠ 0) (hv : v ≠ 0) :
     (c / v - W.addX (z / w) (z / w) ((3 * (z / w) ^ 2 + 2 * W.a₂ * (z / w) + W.a₄ - W.a₁ * (-1 / w)) /
       (-1 / w - W.negY (z / w) (-1 / w)))) * (v * w ^ 2 * (-2 + W.a₁ * z + W.a₃ * w) ^ 2)
@@ -421,6 +586,9 @@ theorem tan_x_id {z w c v : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w
   field_simp
   ring
 
+/- English proof (translation)
+Rewrite using `[tan_slope W hw hM, WeierstrassCurve.Affine.negY, tanPY]`. Generalize the expression as in `3 * z ^ 2 + 2 * W.a₂ * z * w + W.a₄ * w ^ 2 + W.a₁ * w = Nt`. Generalize the expression as in `-2 + W.a₁ * z + W.a₃ * w = M at *`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+-/
 theorem tan_y_id {z w c v : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w ≠ 0) (hv : v ≠ 0) :
     (-1 / v - W.negY (c / v) ((3 * (z / w) ^ 2 + 2 * W.a₂ * (z / w) + W.a₄ - W.a₁ * (-1 / w)) /
       (-1 / w - W.negY (z / w) (-1 / w)) * (c / v - z / w) + -1 / w))
@@ -431,6 +599,15 @@ theorem tan_y_id {z w c v : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w
   field_simp
   try ring
 
+/- English proof (translation)
+Establish `hk1 : v * (z1 * w2 - z2 * w1) ^ 2 * w1 * w2 ≠ 0`. Use `pow_ne_zero 2 hN` as an intermediate fact. Check the signs of the components of the expression. Establish `hk2 : v * (z1 * w2 - z2 * w1) * w1 ≠ 0` using `by positivity`. Establish `eX` using `chord_x_id W hw1 hw2 hN hv (c := c)`.
+
+Establish `eY` using `chord_y_id W hw1 hw2 hN hv (c := c)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨by rw [← eX, h1, sub_self, zero_mul], ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, ← h1]`.
+
+Rewrite `eY` using `[h2, sub_self, zero_mul]`. Conclude with `neg_eq_zero.mp eY.symm`. Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1` using `[← eX]`. Establish `h1'` using `sub_eq_zero.mp ((mul_eq_zero.mp h1).resolve_right hk1)`.
+
+Use `⟨h1', ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, ← h1']`. Rewrite `eY` using `[h2, neg_zero]`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp eY).resolve_right hk2)`.
+-/
 theorem chord_iff {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     (hN : z1 * w2 - z2 * w1 ≠ 0) (hv : v ≠ 0) :
     (c / v = W.addX (z1 / w1) (z2 / w2) ((-1 / w1 - -1 / w2) / (z1 / w1 - z2 / w2)) ∧
@@ -455,6 +632,15 @@ theorem chord_iff {z1 z2 w1 w2 c v : E} (hw1 : w1 ≠ 0) (hw2 : w2 ≠ 0)
     rw [h2, neg_zero] at eY
     exact sub_eq_zero.mp ((mul_eq_zero.mp eY).resolve_right hk2)
 
+/- English proof (translation)
+Establish `hk1 : v * w ^ 2 * (-2 + W.a₁ * z + W.a₃ * w) ^ 2 ≠ 0` using `by positivity`. Establish `hk2 : v * w ^ 2 * (-2 + W.a₁ * z + W.a₃ * w) ≠ 0` using `by positivity`. Establish `eX` using `tan_x_id W hw hM hv (c := c)`. Establish `eY` using `tan_y_id W hw hM hv (c := c)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩`. Use `⟨by rw [← eX, h1, sub_self, zero_mul], ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, ← h1]`. Rewrite `eY` using `[h2, sub_self, zero_mul]`. Conclude with `neg_eq_zero.mp eY.symm`.
+
+Introduce and unpack `⟨h1, h2⟩`. Rewrite `h1` using `[← eX]`. Establish `h1'` using `sub_eq_zero.mp ((mul_eq_zero.mp h1).resolve_right hk1)`. Use `⟨h1', ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, ← h1']`.
+
+Rewrite `eY` using `[h2, neg_zero]`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp eY).resolve_right hk2)`.
+-/
 theorem tan_iff {z w c v : E} (hw : w ≠ 0) (hM : -2 + W.a₁ * z + W.a₃ * w ≠ 0) (hv : v ≠ 0) :
     (c / v = W.addX (z / w) (z / w) ((3 * (z / w) ^ 2 + 2 * W.a₂ * (z / w) + W.a₄ - W.a₁ * (-1 / w)) /
       (-1 / w - W.negY (z / w) (-1 / w))) ∧
@@ -490,26 +676,44 @@ section Maps
 
 variable {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
 
+/- English proof (translation)
+Simplify using `only [chordPX, map_sub, map_add, map_mul, map_pow]`.
+-/
 theorem map_chordPX (a1 a2 z1 z2 w1 w2 c v : R) :
     f (chordPX a1 a2 z1 z2 w1 w2 c v) = chordPX (f a1) (f a2) (f z1) (f z2) (f w1) (f w2) (f c) (f v) := by
   simp only [chordPX, map_sub, map_add, map_mul, map_pow]
 
+/- English proof (translation)
+Simplify using `only [chordPY, map_sub, map_add, map_mul, map_pow]`.
+-/
 theorem map_chordPY (a1 a3 z1 z2 w1 w2 c v : R) :
     f (chordPY a1 a3 z1 z2 w1 w2 c v) = chordPY (f a1) (f a3) (f z1) (f z2) (f w1) (f w2) (f c) (f v) := by
   simp only [chordPY, map_sub, map_add, map_mul, map_pow]
 
+/- English proof (translation)
+Simplify using `only [tanPX, map_sub, map_add, map_mul, map_pow, map_neg, map_ofNat]`.
+-/
 theorem map_tanPX (a1 a2 a3 a4 z w c v : R) :
     f (tanPX a1 a2 a3 a4 z w c v) = tanPX (f a1) (f a2) (f a3) (f a4) (f z) (f w) (f c) (f v) := by
   simp only [tanPX, map_sub, map_add, map_mul, map_pow, map_neg, map_ofNat]
 
+/- English proof (translation)
+Simplify using `only [tanPY, map_sub, map_add, map_mul, map_pow, map_neg, map_ofNat]`.
+-/
 theorem map_tanPY (a1 a2 a3 a4 z w c v : R) :
     f (tanPY a1 a2 a3 a4 z w c v) = tanPY (f a1) (f a2) (f a3) (f a4) (f z) (f w) (f c) (f v) := by
   simp only [tanPY, map_sub, map_add, map_mul, map_pow, map_neg, map_ofNat]
 
+/- English proof (translation)
+Simplify using `only [weqP, map_sub, map_add, map_mul, map_pow]`.
+-/
 theorem map_weqP (a1 a2 a3 a4 a6 s v : R) :
     f (weqP a1 a2 a3 a4 a6 s v) = weqP (f a1) (f a2) (f a3) (f a4) (f a6) (f s) (f v) := by
   simp only [weqP, map_sub, map_add, map_mul, map_pow]
 
+/- English proof (translation)
+Simplify using `only [mP, map_add, map_mul, map_neg, map_ofNat]`.
+-/
 theorem map_mP (a1 a3 z w : R) : f (mP a1 a3 z w) = mP (f a1) (f a3) (f z) (f w) := by
   simp only [mP, map_add, map_mul, map_neg, map_ofNat]
 
@@ -519,6 +723,9 @@ section Formal
 
 variable {K : Type u} [Field K]
 
+/- English proof (translation)
+Establish `: (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) K) = MvPowerSeries.X`. Apply the tactic sequence `funext i; fin_cases i <;> rfl`. Rewrite using `[this, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+-/
 theorem subst_XX (G : MvPowerSeries (Fin 2) K) :
     G.subst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1] = G := by
   have : (![MvPowerSeries.X 0, MvPowerSeries.X 1] : Fin 2 → MvPowerSeries (Fin 2) K) =
@@ -526,25 +733,42 @@ theorem subst_XX (G : MvPowerSeries (Fin 2) K) :
     funext i; fin_cases i <;> rfl
   rw [this, MvPowerSeries.subst_self]; rfl
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simp [hs, ht])`.
+-/
 theorem hasSubst2 {s t : MvPowerSeries (Fin 2) K} (hs : MvPowerSeries.constantCoeff s = 0)
     (ht : MvPowerSeries.constantCoeff t = 0) : MvPowerSeries.HasSubst ![s, t] :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (by intro i; fin_cases i <;> simp [hs, ht])
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst2 hs ht) (by intro i; fin_cases i <;> simp [hs, ht]) hG`.
+-/
 theorem cc_subst2 {G s t : MvPowerSeries (Fin 2) K} (hG : MvPowerSeries.constantCoeff G = 0)
     (hs : MvPowerSeries.constantCoeff s = 0) (ht : MvPowerSeries.constantCoeff t = 0) :
     MvPowerSeries.constantCoeff (G.subst ![s, t]) = 0 :=
   MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst2 hs ht)
     (by intro i; fin_cases i <;> simp [hs, ht]) hG
 
+/- English proof (translation)
+Take `⟨u0, hwu, _⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Rewrite using `[WeierstrassCoordinateSubstitution.subst_w hwu s hs, map_mul, map_pow, hs]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_wsubst {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WFixed W w) {σ : Type}
     {s : MvPowerSeries σ K} (hs : MvPowerSeries.constantCoeff s = 0) :
     MvPowerSeries.constantCoeff (w.subst s) = 0 := by
   obtain ⟨u0, hwu, _⟩ := WeierstrassCoordinateSubstitution.exists_unit_factor hw
   rw [WeierstrassCoordinateSubstitution.subst_w hwu s hs, map_mul, map_pow, hs]; simp
 
+/- English proof (translation)
+Introduce `h`. Use `F.lin_coeff_X` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+-/
 theorem fg_ne_zero (F : FormalGroup K) : F.toPowerSeries ≠ 0 := by
   intro h; have := F.lin_coeff_X; rw [h] at this; simp at this
 
+/- English proof (translation)
+Take `⟨u0, hwu, hu⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Establish `hφ : MvPowerSeries.HasSubst ![(0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1]` using `hasSubst2 (by simp) (by simp)`. Use `WeierstrassCoordinateSubstitution.xOf_ne_of_hom hwu hu (MvPowerSeries.substAlgHom hφ) _ _ (by simp) F.zero_constantCoeff (WeierstrassCoordinateSubstitution.X_ne_zero' 0) (fg_ne_zero F) ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hφ]`. Both sides reduce to the same expression.
+
+Rewrite using `[MvPowerSeries.coe_substAlgHom, F.zero_add (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]`. Conclude with `WeierstrassCoordinateSubstitution.X_ne_zero' 1`.
+-/
 theorem x_X0_ne_formal_group {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WFixed W w)
     (F : FormalGroup K) :
     xOf w (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ≠ xOf w F.toPowerSeries := by
@@ -558,6 +782,11 @@ theorem x_X0_ne_formal_group {W : WeierstrassCurve K} {w : PowerSeries K} (hw : 
       F.zero_add (PowerSeries.HasSubst.of_constantCoeff_zero (by simp))]
     exact WeierstrassCoordinateSubstitution.X_ne_zero' 1
 
+/- English proof (translation)
+Take `⟨u0, hwu, hu⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Establish `hφ : MvPowerSeries.HasSubst ![(0 : MvPowerSeries (Fin 2) K), MvPowerSeries.X 1]` using `hasSubst2 (by simp) (by simp)`. Use `WeierstrassCoordinateSubstitution.xOf_ne_of_hom hwu hu (MvPowerSeries.substAlgHom hφ) _ _ (by simp) (by simp) (WeierstrassCoordinateSubstitution.X_ne_zero' 0) (WeierstrassCoordinateSubstitution.X_ne_zero' 1) ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hφ]`. Both sides reduce to the same expression.
+
+Rewrite using `[MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hφ]`. Conclude with `WeierstrassCoordinateSubstitution.X_ne_zero' 1`.
+-/
 theorem x_X0_ne_x_X1 {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WFixed W w) :
     xOf w (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) ≠ xOf w (MvPowerSeries.X 1) := by
   obtain ⟨u0, hwu, hu⟩ := WeierstrassCoordinateSubstitution.exists_unit_factor hw
@@ -569,6 +798,9 @@ theorem x_X0_ne_x_X1 {W : WeierstrassCurve K} {w : PowerSeries K} (hw : WFixed W
   · rw [MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hφ]
     exact WeierstrassCoordinateSubstitution.X_ne_zero' 1
 
+/- English proof (translation)
+Unfold `WEqAt at h`. Simplify `h` using `only [MvPowerSeries.smul_eq_C_mul]`.
+-/
 theorem weq_C {W : WeierstrassCurve K} {σ : Type} {s v : MvPowerSeries σ K} (h : WEqAt W s v) :
     v = s ^ 3 + MvPowerSeries.C W.a₁ * (s * v) + MvPowerSeries.C W.a₂ * (s ^ 2 * v)
       + MvPowerSeries.C W.a₃ * v ^ 2 + MvPowerSeries.C W.a₄ * (s * v ^ 2)
@@ -576,6 +808,9 @@ theorem weq_C {W : WeierstrassCurve K} {σ : Type} {s v : MvPowerSeries σ K} (h
   unfold WEqAt at h
   simpa only [MvPowerSeries.smul_eq_C_mul] using h
 
+/- English proof (translation)
+Unfold `WEqAt`. Simplify `h` using `only [MvPowerSeries.smul_eq_C_mul]`.
+-/
 theorem weq_of_C {W : WeierstrassCurve K} {σ : Type} {s v : MvPowerSeries σ K}
     (h : v = s ^ 3 + MvPowerSeries.C W.a₁ * (s * v) + MvPowerSeries.C W.a₂ * (s ^ 2 * v)
       + MvPowerSeries.C W.a₃ * v ^ 2 + MvPowerSeries.C W.a₄ * (s * v ^ 2)
@@ -583,6 +818,45 @@ theorem weq_of_C {W : WeierstrassCurve K} {σ : Type} {s v : MvPowerSeries σ K}
   unfold WEqAt
   simpa only [MvPowerSeries.smul_eq_C_mul] using h
 
+/- English proof (translation)
+Take `⟨u0, hwu, hu⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Use `set z0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hz0`. Use `set z1 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 1 with hz1`. Use `set G := F.toPowerSeries with hG`. Use `set w0 := w.subst z0 with hw0`.
+
+Establish `c0 : MvPowerSeries.constantCoeff z0 = 0` using `by simp [hz0]`. Establish `c1 : MvPowerSeries.constantCoeff z1 = 0` using `by simp [hz1]`. Establish `n0 : z0 ≠ 0` using `WeierstrassCoordinateSubstitution.X_ne_zero' 0`. Establish `n1 : z1 ≠ 0` using `WeierstrassCoordinateSubstitution.X_ne_zero' 1`. Establish `cw0 : MvPowerSeries.constantCoeff w0 = 0` using `cc_wsubst hw c0`.
+
+Establish `cG : MvPowerSeries.constantCoeff G = 0` using `F.zero_constantCoeff`. Establish `nG : G ≠ 0` using `fg_ne_zero F`. Use `set E := 1 - MvPowerSeries.C W.a₁ * z0 - MvPowerSeries.C W.a₃ * w0 with hE`. Establish `nE : E ≠ 0` using `left_ne_zero_of_mul_eq_one hψ`. Establish `nψ : ψ ≠ 0` using `right_ne_zero_of_mul_eq_one hψ`.
+
+Use `set J := -z0 * ψ with hJ`. Establish `cJ : MvPowerSeries.constantCoeff J = 0` using `by simp [hJ, c0]`. Establish `nJ : J ≠ 0`. Rewrite using `[hJ, neg_mul, neg_ne_zero]`. Conclude with `mul_ne_zero n0 nψ`.
+
+Establish `hW0` using `weq_C (hU K W w hw (Fin 2) z0 c0).1`. Establish `hwJ : w.subst J = -w0 * ψ`. Take `⟨_, huniq⟩` from `hU K W w hw (Fin 2) J cJ`. Use `(huniq _ (by simp [cw0]) (weq_of_C ?_)).symm` and prove the remaining obligations. Establish `key : E ^ 3 * ((-w0 * ψ) - (J ^ 3 + MvPowerSeries.C W.a₁ * (J * (-w0 * ψ)) + MvPowerSeries.C W.a₂ * (J ^ 2 * (-w0 * ψ)) + MvPowerSeries.C W.a₃ * (-w0 * ψ) ^ 2 + MvPowerSeries.C W.a₄ * (J * (-w0 * ψ) ^ 2) + MvPowerSeries.C W.a₆ * (-w0 * ψ) ^ 3)) = 0`.
+
+Rewrite using `[hJ]`. Take the linear combination `((z0 ^ 3 + MvPowerSeries.C W.a₂ * (z0 ^ 2 * w0) + MvPowerSeries.C W.a₄ * (z0 * w0 ^ 2) + MvPowerSeries.C W.a₆ * w0 ^ 3) * ((E * ψ) ^ 2 + E * ψ + 1) - (MvPowerSeries.C W.a₁ * (z0 * w0) + MvPowerSeries.C W.a₃ * w0 ^ 2) * E * (E * ψ + 1) - w0 * E ^ 2) * hψ - hW0 - (1 + E) * w0 * hE`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_left (pow_ne_zero 3 nE))`. Use `set j := algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K)) with hj`. Establish `hinj : Function.Injective j` using `IsFractionRing.injective _ _`.
+
+Establish `jne : ∀ {x}, x ≠ 0 → j x ≠ 0` using `fun hx h => hx (hinj (by rw [h, map_zero]))`. Establish `nw0 : w0 ≠ 0` using `WeierstrassSubstitution.ne_zero_of_weq (hU K W w hw (Fin 2) z0 c0).1 n0`. Establish `hjC : ∀ a : K, algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)) a = j (MvPowerSeries.C a)`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply K (MvPowerSeries (Fin 2) K), MvPowerSeries.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Establish `hjψ : j ψ = (j E)⁻¹` using `WeierstrassSubstitution.eq_inv_of_map j hψ`. Establish `hjE : j E = 1 - j (MvPowerSeries.C W.a₁) * j z0 - j (MvPowerSeries.C W.a₃) * j w0`. Rewrite using `[hE]`. Simplify using `only [map_sub, map_one, map_mul]`.
+
+Establish `hxJ : xOf w J = xOf w z0`. Unfold `xOf`. Rewrite using `[hwJ, hJ, map_mul, map_mul, map_neg, map_neg, neg_mul, neg_mul, neg_div_neg_eq, mul_div_mul_right _ _ (jne nψ)]`. Establish `hyJ : yOf w J = (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.negY (xOf w z0) (yOf w z0)`. Unfold `yOf xOf`.
+
+Rewrite using `[WeierstrassCurve.Affine.negY, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, hjC, hjC, hwJ, map_mul, map_neg, hjψ]`. Establish `h1` using `jne nw0`. Establish `h2` using `jne nE`. Rewrite `h2`, the goal using `[hjE]`. Simplify using `only [← hj, ← hw0]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `p0` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) z0 c0 n0`. Establish `p1` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) z1 c1 n1`. Establish `pJ` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) J cJ nJ`. Establish `hPJ : WeierstrassCurve.Affine.Point.some _ _ pJ = -WeierstrassCurve.Affine.Point.some _ _ p0`.
+
+Rewrite using `[WeierstrassCurve.Affine.Point.neg_some, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hxJ, hyJ⟩`. Take `⟨pG, eG⟩` from `WeierstrassCoordinateSubstitution.chord_add z0 z1 G p0 p1 (x_X0_ne_x_X1 hw) hch`. Establish `xGJ : xOf w G ≠ xOf w J` using `by rw [hxJ]; exact (x_X0_ne_formal_group hw F).symm`. Establish `chGJ` using `hS K W w hw G cG hch (Fin 2) G J cG cJ nG nJ xGJ`.
+
+Take `⟨pH, eH⟩` from `WeierstrassCoordinateSubstitution.chord_add G J _ pG pJ xGJ chGJ`. Establish `hH : WeierstrassCurve.Affine.Point.some _ _ pH = WeierstrassCurve.Affine.Point.some _ _ p1`. Rewrite using `[← eH, hPJ, ← eG]`. Normalize the expressions using the abelian group laws. Take `⟨hx, hy⟩` from `WeierstrassCurve.Affine.Point.some.inj hH`.
+
+Establish `hGJ` using `hasSubst2 cG cJ`. Establish `hHz1 : G.subst ![G, J] = z1` using `WeierstrassCoordinateSubstitution.eq_of_xy hwu hu _ _ (cc_subst2 cG cG cJ) c1 hx hy`. Establish `hφ : MvPowerSeries.HasSubst ![z0, (0 : MvPowerSeries (Fin 2) K)]` using `hasSubst2 c0 (by simp)`. Establish `hφz0 : MvPowerSeries.subst ![z0, (0 : MvPowerSeries (Fin 2) K)] z0 = z0`. Rewrite using `[hz0, MvPowerSeries.subst_X hφ]`.
+
+Both sides reduce to the same expression. Establish `hφw0 : MvPowerSeries.subst ![z0, (0 : MvPowerSeries (Fin 2) K)] w0 = w0`. Rewrite using `[hw0, WeierstrassSubstitution.mvsubst_psubst w z0 c0 _ hφ, hφz0]`. Establish `hφE : MvPowerSeries.substAlgHom hφ E = E`. Rewrite using `[hE, map_sub, map_sub, map_one, map_mul, map_mul, MvPowerSeries.coe_substAlgHom, hφz0, hφw0]`.
+
+Simplify using the standard rewrite rules. Establish `hφψ : MvPowerSeries.substAlgHom hφ ψ = ψ`. Establish `h` using `congrArg (MvPowerSeries.substAlgHom hφ) hψ`. Rewrite `h` using `[map_mul, map_one, hφE, ← hψ]`. Conclude with `mul_left_cancel₀ nE h`.
+
+Establish `hφJ : MvPowerSeries.subst ![z0, (0 : MvPowerSeries (Fin 2) K)] J = J`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hφ, hJ, map_mul, map_neg, hφψ, MvPowerSeries.coe_substAlgHom, hφz0]`. Establish `e` using `congrArg (MvPowerSeries.subst ![z0, (0 : MvPowerSeries (Fin 2) K)]) hHz1`. Rewrite `e` using `[MvPowerSeries.subst_comp_subst_apply hGJ hφ, hz1, MvPowerSeries.subst_X hφ]`. Establish `e2 : (fun i => MvPowerSeries.subst ![z0, (0 : MvPowerSeries (Fin 2) K)] (![G, J] i)) = ![z0, J]`.
+
+Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Conclude with `F.add_zero (PowerSeries.HasSubst.of_constantCoeff_zero c0)`. Simplify using `using hφJ`.
+
+Rewrite `e` using `[e2]`. Simplify using `using e`.
+-/
 theorem inv_formal (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : WeierstrassCurve K}
     {w : PowerSeries K} (hw : WFixed W w) (F : FormalGroup K)
     (hch : ChordAt W w (MvPowerSeries.X 0) (MvPowerSeries.X 1) F.toPowerSeries)
@@ -696,6 +970,33 @@ theorem inv_formal (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : Weierstra
   rw [e2] at e
   simpa using e
 
+/- English proof (translation)
+Take `⟨u0, hwu, hu⟩` from `WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Use `set z0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hz0`. Use `set z1 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 1 with hz1`. Use `set G := F.toPowerSeries with hG`. Establish `c0 : MvPowerSeries.constantCoeff z0 = 0` using `by simp [hz0]`.
+
+Establish `c1 : MvPowerSeries.constantCoeff z1 = 0` using `by simp [hz1]`. Establish `n0 : z0 ≠ 0` using `WeierstrassCoordinateSubstitution.X_ne_zero' 0`. Establish `n1 : z1 ≠ 0` using `WeierstrassCoordinateSubstitution.X_ne_zero' 1`. Establish `cG : MvPowerSeries.constantCoeff G = 0` using `F.zero_constantCoeff`. Establish `nG : G ≠ 0` using `fg_ne_zero F`.
+
+Use `set D := G.subst ![z0, z0] with hD`. Establish `cD : MvPowerSeries.constantCoeff D = 0` using `cc_subst2 cG c0 c0`. Establish `p0` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) z0 c0 n0`. Establish `p1` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) z1 c1 n1`. Take `⟨pG, eG⟩` from `WeierstrassCoordinateSubstitution.chord_add z0 z1 G p0 p1 (x_X0_ne_x_X1 hw) hch`.
+
+Establish `x0G` using `x_X0_ne_formal_group hw F`. Establish `chH` using `hS K W w hw G cG hch (Fin 2) z0 G c0 cG n0 nG x0G`. Take `⟨pH, eH⟩` from `WeierstrassCoordinateSubstitution.chord_add z0 G _ p0 pG x0G chH`. Establish `h0s : PowerSeries.HasSubst z0` using `PowerSeries.HasSubst.of_constantCoeff_zero c0`. Establish `h1s : PowerSeries.HasSubst z1` using `PowerSeries.HasSubst.of_constantCoeff_zero c1`.
+
+Establish `hassoc : G.subst ![D, z1] = G.subst ![z0, G]`. Use `F.assoc' h0s h0s h1s` as an intermediate fact. Rewrite `this` using `[← hG]`. Rewrite using `[hD, this, hz0, hz1, subst_XX]`. Distinguish the cases in `hD0 : D = 0`.
+
+It suffices to derive a contradiction. Establish `hHz : G.subst ![z0, G] = z1`. Rewrite using `[← hassoc, hD0]`. Conclude with `F.zero_add h1s`. Establish `e1 : WeierstrassCurve.Affine.Point.some _ _ pH = WeierstrassCurve.Affine.Point.some _ _ p1`.
+
+Rewrite using `[WeierstrassCurve.Affine.Point.some.injEq, hHz]`. Conclude with `⟨rfl, rfl⟩`. Rewrite `eH` using `[e1, ← eG]`. Establish `h2 : WeierstrassCurve.Affine.Point.some _ _ p0 + WeierstrassCurve.Affine.Point.some _ _ p0 = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Normalize the expressions using the abelian group laws. Use `_ = 0 := by rw [eH, sub_self]`. Establish `h3` using `eq_neg_of_add_eq_zero_left h2`. Rewrite `h3` using `[WeierstrassCurve.Affine.Point.neg_some, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `hy h3.2`.
+
+Use `⟨hD0, ?_⟩` and prove the remaining obligations. Establish `hφ : MvPowerSeries.HasSubst ![(0 : MvPowerSeries (Fin 2) K), z1]` using `hasSubst2 (by simp) c1`. Establish `xD1 : xOf w D ≠ xOf w z1`. Use `WeierstrassCoordinateSubstitution.xOf_ne_of_hom hwu hu (MvPowerSeries.substAlgHom hφ) D z1 cD c1 hD0 n1 ?_ ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coe_substAlgHom, hD, MvPowerSeries.subst_comp_subst_apply (hasSubst2 c0 c0) hφ]`.
+
+Establish `e2 : (fun i => MvPowerSeries.subst ![(0 : MvPowerSeries (Fin 2) K), z1] (![z0, z0] i)) = (0 : Fin 2 → MvPowerSeries (Fin 2) K)`. Apply the tactic sequence `funext i; fin_cases i <;> simp [hz0, MvPowerSeries.subst_X hφ]`. Rewrite using `[e2]`. Conclude with `MvPowerSeries.subst_zero_of_constantCoeff_zero cG`. Rewrite using `[MvPowerSeries.coe_substAlgHom, hz1, MvPowerSeries.subst_X hφ]`.
+
+Simplify using `using n1`. Establish `pD` using `wSeriesNonsingularPoint_holds K W w hw (Fin 2) D cD hD0`. Establish `chD` using `hS K W w hw G cG hch (Fin 2) D z1 cD c1 hD0 n1 xD1`. Take `⟨pK, eK⟩` from `WeierstrassCoordinateSubstitution.chord_add D z1 _ pD p1 xD1 chD`. Establish `e1 : WeierstrassCurve.Affine.Point.some _ _ pK = WeierstrassCurve.Affine.Point.some _ _ pH`.
+
+Rewrite using `[WeierstrassCurve.Affine.Point.some.injEq, hassoc]`. Conclude with `⟨rfl, rfl⟩`. Rewrite `eK` using `[e1, ← eH, ← eG]`. Establish `h2 : WeierstrassCurve.Affine.Point.some _ _ pD = WeierstrassCurve.Affine.Point.some _ _ p0 + WeierstrassCurve.Affine.Point.some _ _ p0`. Use `eK` as an intermediate fact.
+
+Rewrite `this` using `[← add_assoc]`. Conclude with `add_right_cancel this`. Rewrite `h2` using `[WeierstrassCurve.Affine.Point.add_self_of_Y_ne hy, WeierstrassCurve.Affine.Point.some.injEq, WeierstrassCurve.Affine.slope_of_Y_ne rfl hy]`. Conclude with `h2`.
+-/
 theorem dbl_formal (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : WeierstrassCurve K}
     {w : PowerSeries K} (hw : WFixed W w) (F : FormalGroup K)
     (hch : ChordAt W w (MvPowerSeries.X 0) (MvPowerSeries.X 1) F.toPowerSeries)
@@ -809,6 +1110,9 @@ section Main
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
+/- English proof (translation)
+The claim follows from `map_chordPX (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨z1, h3⟩ ⟨z2, h4⟩ ⟨w1, h5⟩ ⟨w2, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩`.
+-/
 theorem evalMv2_chordPX {a1 a2 z1 z2 w1 w2 c v : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a2) (h3 : IntegralMv z1) (h4 : IntegralMv z2) (h5 : IntegralMv w1)
     (h6 : IntegralMv w2) (h7 : IntegralMv c) (h8 : IntegralMv v) {a b : K} (ha : ‖a‖ < 1)
@@ -818,6 +1122,9 @@ theorem evalMv2_chordPX {a1 a2 z1 z2 w1 w2 c v : MvPowerSeries (Fin 2) K} (h1 : 
       (evalMv2 v a b) :=
   map_chordPX (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨z1, h3⟩ ⟨z2, h4⟩ ⟨w1, h5⟩ ⟨w2, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩
 
+/- English proof (translation)
+The claim follows from `map_chordPY (ev a b ha hb) ⟨a1, h1⟩ ⟨a3, h2⟩ ⟨z1, h3⟩ ⟨z2, h4⟩ ⟨w1, h5⟩ ⟨w2, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩`.
+-/
 theorem evalMv2_chordPY {a1 a3 z1 z2 w1 w2 c v : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a3) (h3 : IntegralMv z1) (h4 : IntegralMv z2) (h5 : IntegralMv w1)
     (h6 : IntegralMv w2) (h7 : IntegralMv c) (h8 : IntegralMv v) {a b : K} (ha : ‖a‖ < 1)
@@ -827,6 +1134,9 @@ theorem evalMv2_chordPY {a1 a3 z1 z2 w1 w2 c v : MvPowerSeries (Fin 2) K} (h1 : 
       (evalMv2 v a b) :=
   map_chordPY (ev a b ha hb) ⟨a1, h1⟩ ⟨a3, h2⟩ ⟨z1, h3⟩ ⟨z2, h4⟩ ⟨w1, h5⟩ ⟨w2, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩
 
+/- English proof (translation)
+The claim follows from `map_tanPX (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨z, h5⟩ ⟨w, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩`.
+-/
 theorem evalMv2_tanPX {a1 a2 a3 a4 z w c v : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a2) (h3 : IntegralMv a3) (h4 : IntegralMv a4) (h5 : IntegralMv z)
     (h6 : IntegralMv w) (h7 : IntegralMv c) (h8 : IntegralMv v) {a b : K} (ha : ‖a‖ < 1)
@@ -836,6 +1146,9 @@ theorem evalMv2_tanPX {a1 a2 a3 a4 z w c v : MvPowerSeries (Fin 2) K} (h1 : Inte
       (evalMv2 v a b) :=
   map_tanPX (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨z, h5⟩ ⟨w, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩
 
+/- English proof (translation)
+The claim follows from `map_tanPY (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨z, h5⟩ ⟨w, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩`.
+-/
 theorem evalMv2_tanPY {a1 a2 a3 a4 z w c v : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a2) (h3 : IntegralMv a3) (h4 : IntegralMv a4) (h5 : IntegralMv z)
     (h6 : IntegralMv w) (h7 : IntegralMv c) (h8 : IntegralMv v) {a b : K} (ha : ‖a‖ < 1)
@@ -845,6 +1158,9 @@ theorem evalMv2_tanPY {a1 a2 a3 a4 z w c v : MvPowerSeries (Fin 2) K} (h1 : Inte
       (evalMv2 v a b) :=
   map_tanPY (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨z, h5⟩ ⟨w, h6⟩ ⟨c, h7⟩ ⟨v, h8⟩
 
+/- English proof (translation)
+The claim follows from `map_weqP (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨a6, h5⟩ ⟨s, h6⟩ ⟨v, h7⟩`.
+-/
 theorem evalMv2_weqP {a1 a2 a3 a4 a6 s v : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a2) (h3 : IntegralMv a3) (h4 : IntegralMv a4) (h5 : IntegralMv a6)
     (h6 : IntegralMv s) (h7 : IntegralMv v) {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) :
@@ -852,12 +1168,20 @@ theorem evalMv2_weqP {a1 a2 a3 a4 a6 s v : MvPowerSeries (Fin 2) K} (h1 : Integr
       (evalMv2 a3 a b) (evalMv2 a4 a b) (evalMv2 a6 a b) (evalMv2 s a b) (evalMv2 v a b) :=
   map_weqP (ev a b ha hb) ⟨a1, h1⟩ ⟨a2, h2⟩ ⟨a3, h3⟩ ⟨a4, h4⟩ ⟨a6, h5⟩ ⟨s, h6⟩ ⟨v, h7⟩
 
+/- English proof (translation)
+The claim follows from `map_mP (ev a b ha hb) ⟨a1, h1⟩ ⟨a3, h2⟩ ⟨z, h3⟩ ⟨w, h4⟩`.
+-/
 theorem evalMv2_mP {a1 a3 z w : MvPowerSeries (Fin 2) K} (h1 : IntegralMv a1)
     (h2 : IntegralMv a3) (h3 : IntegralMv z) (h4 : IntegralMv w) {a b : K} (ha : ‖a‖ < 1)
     (hb : ‖b‖ < 1) :
     evalMv2 (mP a1 a3 z w) a b = mP (evalMv2 a1 a b) (evalMv2 a3 a b) (evalMv2 z a b) (evalMv2 w a b) :=
   map_mP (ev a b ha hb) ⟨a1, h1⟩ ⟨a3, h2⟩ ⟨z, h3⟩ ⟨w, h4⟩
 
+/- English proof (translation)
+Establish `hsub : ({W.a₁, W.a₂, W.a₃, W.a₄, W.a₆} : Set K) ⊆ (subalgebraOfSubring (unitBall K) : Set K)`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Rewrite using `[SetLike.mem_coe, mem_subalgebraOfSubring, SubstitutionCoefficientCongruence.mem_unitBall]`.
+
+Apply the tactic sequence `rcases hx with rfl | rfl | rfl | rfl | rfl <;> assumption`. Conclude with `SubstitutionCoefficientCongruence.mem_unitBall.mp (mem_subalgebraOfSubring.mp (Algebra.adjoin_le hsub (WeierstrassChordSeries.w_coeff_mem hw n)))`.
+-/
 theorem w_integral {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralModel W)
     (hw : WFixed W w) (n : ℕ) : ‖coeff n w‖ ≤ 1 := by
   have hsub : ({W.a₁, W.a₂, W.a₃, W.a₄, W.a₆} : Set K) ⊆
@@ -870,16 +1194,25 @@ theorem w_integral {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralMo
   exact SubstitutionCoefficientCongruence.mem_unitBall.mp
     (mem_subalgebraOfSubring.mp (Algebra.adjoin_le hsub (WeierstrassChordSeries.w_coeff_mem hw n)))
 
+/- English proof (translation)
+Rewrite using `[weqP]`. Conclude with `sub_eq_zero.mpr (weq_C h)`.
+-/
 theorem weierstrassPolynomial_eq_zero_of_equation {W : WeierstrassCurve K} {s v : MvPowerSeries (Fin 2) K} (h : WEqAt W s v) :
     weqP (MvPowerSeries.C W.a₁) (MvPowerSeries.C W.a₂) (MvPowerSeries.C W.a₃)
       (MvPowerSeries.C W.a₄) (MvPowerSeries.C W.a₆) s v = 0 := by
   rw [weqP]; exact sub_eq_zero.mpr (weq_C h)
 
+/- English proof (translation)
+Simplify using `only [weqP] at h`. Establish `: c ^ 3 = 0` using `by linear_combination -h`. Conclude with `pow_eq_zero_iff (by norm_num) |>.mp this`.
+-/
 theorem eq_zero_of_weqP {a1 a2 a3 a4 a6 c : K} (h : weqP a1 a2 a3 a4 a6 c 0 = 0) : c = 0 := by
   simp only [weqP] at h
   have : c ^ 3 = 0 := by linear_combination -h
   exact pow_eq_zero_iff (by norm_num) |>.mp this
 
+/- English proof (translation)
+Establish `h` using `evalMv2_subst hF (s := 0) (t := MvPowerSeries.X 1) (fun d => by simp) (integral_X 1) (by simp) (by simp) (a := 0) (b := b) (by simp) hb`. Rewrite `h` using `[F.zero_add (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), evalMv2_X1, evalMv2_zero']`. Conclude with `h.symm`.
+-/
 theorem eval_zero_left (F : FormalGroup K) (hF : IntegralMv F.toPowerSeries) {b : K}
     (hb : ‖b‖ < 1) : evalMv2 F.toPowerSeries 0 b = b := by
   have h := evalMv2_subst hF (s := 0) (t := MvPowerSeries.X 1) (fun d => by simp) (integral_X 1)
@@ -887,6 +1220,9 @@ theorem eval_zero_left (F : FormalGroup K) (hF : IntegralMv F.toPowerSeries) {b 
   rw [F.zero_add (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), evalMv2_X1, evalMv2_zero'] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `h` using `evalMv2_subst hF (s := MvPowerSeries.X 0) (t := 0) (integral_X 0) (fun d => by simp) (by simp) (by simp) (a := a) (b := 0) ha (by simp)`. Rewrite `h` using `[F.add_zero (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), evalMv2_X0, evalMv2_zero']`. Conclude with `h.symm`.
+-/
 theorem eval_zero_right (F : FormalGroup K) (hF : IntegralMv F.toPowerSeries) {a : K}
     (ha : ‖a‖ < 1) : evalMv2 F.toPowerSeries a 0 = a := by
   have h := evalMv2_subst hF (s := MvPowerSeries.X 0) (t := 0) (integral_X 0) (fun d => by simp)
@@ -894,6 +1230,9 @@ theorem eval_zero_right (F : FormalGroup K) (hF : IntegralMv F.toPowerSeries) {a
   rw [F.add_zero (PowerSeries.HasSubst.of_constantCoeff_zero (by simp)), evalMv2_X0, evalMv2_zero'] at h
   exact h.symm
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply K (MvPowerSeries σ K), MvPowerSeries.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem hjC_lemma {σ : Type} (a : K) :
     algebraMap K (FractionRing (MvPowerSeries σ K)) a =
       algebraMap (MvPowerSeries σ K) (FractionRing (MvPowerSeries σ K)) (MvPowerSeries.C a) := by
@@ -906,6 +1245,31 @@ section Cases
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
+/- English proof (translation)
+Establish `hwI` using `w_integral hW hw`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Use `set z0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hz0`. Use `set z1 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 1 with hz1`. Use `set G := F.toPowerSeries with hG`.
+
+Establish `c0 : MvPowerSeries.constantCoeff z0 = 0` using `by simp [hz0]`. Establish `c1 : MvPowerSeries.constantCoeff z1 = 0` using `by simp [hz1]`. Establish `cG : MvPowerSeries.constantCoeff G = 0` using `F.zero_constantCoeff`. Establish `iz0 : IntegralMv z0` using `integral_X 0`. Establish `iz1 : IntegralMv z1` using `integral_X 1`.
+
+Establish `iw0 : IntegralMv (w.subst z0)` using `SubstitutionCoefficientCongruence.integral_subst hwI c0 iz0`. Establish `iw1 : IntegralMv (w.subst z1)` using `SubstitutionCoefficientCongruence.integral_subst hwI c1 iz1`. Establish `iwG : IntegralMv (w.subst G)` using `SubstitutionCoefficientCongruence.integral_subst hwI cG hFi`. Establish `ez0 : evalMv2 z0 a b = a` using `evalMv2_X0 a b`. Establish `ez1 : evalMv2 z1 a b = b` using `evalMv2_X1 a b`.
+
+Establish `ew0 : evalMv2 (w.subst z0) a b = evalPS w a` using `evalMv2_subst_X0 w a b`. Establish `ew1 : evalMv2 (w.subst z1) a b = evalPS w b` using `evalMv2_subst_X1 w a b`. Establish `nw0 : w.subst z0 ≠ 0` using `ne_zero_of_eval (a := a) (b := b) (by rw [ew0]; exact hwa)`. Establish `nw1 : w.subst z1 ≠ 0` using `ne_zero_of_eval (a := a) (b := b) (by rw [ew1]; exact hwb)`. Establish `nN : z0 * w.subst z1 - z1 * w.subst z0 ≠ 0`.
+
+Use `ne_zero_of_eval (a := a) (b := b) ?_` and prove the remaining obligations. Rewrite using `[evalMv2_sub (SubstitutionCoefficientCongruence.integral_mul iz0 iw1) (SubstitutionCoefficientCongruence.integral_mul iz1 iw0) ha hb, evalMv2_mul iz0 iw1 ha hb, evalMv2_mul iz1 iw0 ha hb, ez0, ez1, ew0, ew1]`. Conclude with `hN`. Establish `nwG : w.subst G ≠ 0` using `WeierstrassSubstitution.ne_zero_of_weq (hU K W w hw (Fin 2) G cG).1 (fg_ne_zero F)`. Use `set j := algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K)) with hj`.
+
+Establish `hinj : Function.Injective j` using `IsFractionRing.injective _ _`. Establish `jne : ∀ {x}, x ≠ 0 → j x ≠ 0` using `fun hx h => hx (hinj (by rw [h, map_zero]))`. Establish `hjN : j z0 * j (w.subst z1) - j z1 * j (w.subst z0) ≠ 0`. Rewrite using `[← map_mul, ← map_mul, ← map_sub]`. Conclude with `jne nN`.
+
+Unfold `ChordAt xOf yOf at hch`. Take `⟨hX, hY⟩` from `(chord_iff (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine (jne nw0) (jne nw1) hjN (jne nwG)).mp hch`. Rewrite `hX` using `[show (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₁ = j (MvPowerSeries.C W.a₁) from hjC_lemma _, show (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₂ = j (MvPowerSeries.C W.a₂) from hjC_lemma _, ← map_chordPX]`. Rewrite `hY` using `[show (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₁ = j (MvPowerSeries.C W.a₁) from hjC_lemma _, show (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₃ = j (MvPowerSeries.C W.a₃) from hjC_lemma _, ← map_chordPY]`. Establish `hX'` using `hinj (hX.trans (map_zero j).symm)`.
+
+Establish `hY'` using `hinj (hY.trans (map_zero j).symm)`. Establish `hWq` using `weierstrassPolynomial_eq_zero_of_equation (hU K W w hw (Fin 2) G cG).1`. Establish `eX` using `evalMv2_chordPX (integral_C h1) (integral_C h2) iz0 iz1 iw0 iw1 hFi iwG ha hb`. Establish `eY` using `evalMv2_chordPY (integral_C h1) (integral_C h3) iz0 iz1 iw0 iw1 hFi iwG ha hb`. Establish `eW` using `evalMv2_weqP (integral_C h1) (integral_C h2) (integral_C h3) (integral_C h4) (integral_C h6) hFi iwG ha hb`.
+
+Rewrite `eX` using `[hX', evalMv2_zero']`. Rewrite `eY` using `[hY', evalMv2_zero']`. Rewrite `eW` using `[hWq, evalMv2_zero']`. Simplify using `only [evalMv2_C, ez0, ez1, ew0, ew1] at eX eY eW`. Use `set c := evalMv2 G a b with hc`.
+
+Use `set v := evalMv2 (w.subst G) a b with hv`. Establish `hv0 : v ≠ 0`. Introduce `hv0`. Rewrite `eW`, `eY` using `[hv0]`. Establish `hc0` using `eq_zero_of_weqP eW.symm`.
+
+Rewrite `eY` using `[hc0]`. Apply `mul_ne_zero hN hwa` to reduce the goal to its premises. Simplify using `only [chordPY] at eY`. Take the linear combination `-eY`. Establish `hK` using `(chord_iff W.toAffine hwa hwb hN hv0 (c := c)).mpr ⟨eX.symm, eY.symm⟩`.
+
+Rewrite using `[← hK.1, ← hK.2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem case_chord (hU : WSubstUnique.{u}) {W : WeierstrassCurve K} {w : PowerSeries K}
     (hW : IntegralModel W) (hw : WFixed W w) (F : FormalGroup K) (hFi : IntegralMv F.toPowerSeries)
     (hch : ChordAt W w (MvPowerSeries.X 0) (MvPowerSeries.X 1) F.toPowerSeries) {a b : K}
@@ -983,6 +1347,35 @@ theorem case_chord (hU : WSubstUnique.{u}) {W : WeierstrassCurve K} {w : PowerSe
   rw [← hK.1, ← hK.2]
   field_simp
 
+/- English proof (translation)
+Establish `hwI` using `w_integral hW hw`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Use `set z0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hz0`. Use `set G := F.toPowerSeries with hG`. Establish `c0 : MvPowerSeries.constantCoeff z0 = 0` using `by simp [hz0]`.
+
+Establish `cG : MvPowerSeries.constantCoeff G = 0` using `F.zero_constantCoeff`. Establish `iz0 : IntegralMv z0` using `integral_X 0`. Establish `iw0 : IntegralMv (w.subst z0)` using `SubstitutionCoefficientCongruence.integral_subst hwI c0 iz0`. Use `set D := G.subst ![z0, z0] with hD`. Establish `cD : MvPowerSeries.constantCoeff D = 0` using `cc_subst2 cG c0 c0`.
+
+Establish `iD : IntegralMv D` using `integral_subst2 hFi iz0 iz0 c0 c0`. Establish `iwD : IntegralMv (w.subst D)` using `SubstitutionCoefficientCongruence.integral_subst hwI cD iD`. Establish `ez0 : evalMv2 z0 a a = a` using `evalMv2_X0 a a`. Establish `ew0 : evalMv2 (w.subst z0) a a = evalPS w a` using `evalMv2_subst_X0 w a a`. Establish `eD : evalMv2 D a a = evalMv2 G a a`.
+
+Rewrite using `[hD, evalMv2_subst hFi iz0 iz0 c0 c0 ha ha, ez0]`. Establish `nw0 : w.subst z0 ≠ 0` using `ne_zero_of_eval (a := a) (b := a) (by rw [ew0]; exact hwa)`. Establish `nM : mP (MvPowerSeries.C W.a₁) (MvPowerSeries.C W.a₃) z0 (w.subst z0) ≠ 0`. Use `ne_zero_of_eval (a := a) (b := a) ?_` and prove the remaining obligations. Rewrite using `[evalMv2_mP (integral_C h1) (integral_C h3) iz0 iw0 ha ha, evalMv2_C, evalMv2_C, ez0, ew0]`.
+
+Conclude with `hM`. Use `set j := algebraMap (MvPowerSeries (Fin 2) K) (FractionRing (MvPowerSeries (Fin 2) K)) with hj`. Establish `hinj : Function.Injective j` using `IsFractionRing.injective _ _`. Establish `jne : ∀ {x}, x ≠ 0 → j x ≠ 0` using `fun hx h => hx (hinj (by rw [h, map_zero]))`. Establish `hA1 : (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₁ = j (MvPowerSeries.C W.a₁)` using `hjC_lemma _`.
+
+Establish `hA2 : (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₂ = j (MvPowerSeries.C W.a₂)` using `hjC_lemma _`. Establish `hA3 : (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₃ = j (MvPowerSeries.C W.a₃)` using `hjC_lemma _`. Establish `hA4 : (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₄ = j (MvPowerSeries.C W.a₄)` using `hjC_lemma _`. Establish `hMFr : -2 + (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₁ * j z0 + (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.a₃ * j (w.subst z0) ≠ 0`. Rewrite using `[hA1, hA3]`.
+
+Use `jne nM` as an intermediate fact. Rewrite `this` using `[map_mP]`. Then use the resulting hypothesis. Establish `hyF : yOf w z0 ≠ (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine.negY (xOf w z0) (yOf w z0)`. Introduce `h`. Apply `hMFr` to reduce the goal to its premises.
+
+Unfold `yOf xOf at h`. Rewrite `h` using `[WeierstrassCurve.Affine.negY]`. Establish `hw0'` using `jne nw0`. Simplify using `only [← hj] at h`. Clear denominators, using `at h` for the nonvanishing conditions.
+
+Apply the tactic sequence `first | linear_combination h | linear_combination -h`. Take `⟨nD, hxD, hyD⟩` from `dbl_formal hU hS hw F hch hyF`. Establish `nwD : w.subst D ≠ 0` using `WeierstrassSubstitution.ne_zero_of_weq (hU K W w hw (Fin 2) D cD).1 nD`. Unfold `xOf yOf at hxD hyD`. Take `⟨hX, hY⟩` from `(tan_iff (W.map (algebraMap K (FractionRing (MvPowerSeries (Fin 2) K)))).toAffine (jne nw0) hMFr (jne nwD)).mp ⟨hxD, hyD⟩`.
+
+Rewrite `hX` using `[hA1, hA2, hA3, hA4, ← map_tanPX]`. Rewrite `hY` using `[hA1, hA2, hA3, hA4, ← map_tanPY]`. Establish `hX'` using `hinj (hX.trans (map_zero j).symm)`. Establish `hY'` using `hinj (hY.trans (map_zero j).symm)`. Establish `hWq` using `weierstrassPolynomial_eq_zero_of_equation (hU K W w hw (Fin 2) D cD).1`.
+
+Establish `eX` using `evalMv2_tanPX (integral_C h1) (integral_C h2) (integral_C h3) (integral_C h4) iz0 iw0 iD iwD ha ha`. Establish `eY` using `evalMv2_tanPY (integral_C h1) (integral_C h2) (integral_C h3) (integral_C h4) iz0 iw0 iD iwD ha ha`. Establish `eW` using `evalMv2_weqP (integral_C h1) (integral_C h2) (integral_C h3) (integral_C h4) (integral_C h6) iD iwD ha ha`. Rewrite `eX` using `[hX', evalMv2_zero']`. Rewrite `eY` using `[hY', evalMv2_zero']`.
+
+Rewrite `eW` using `[hWq, evalMv2_zero']`. Simplify using `only [evalMv2_C, ez0, ew0, eD] at eX eY eW`. Use `set c := evalMv2 G a a with hc`. Use `set v := evalMv2 (w.subst D) a a with hv`. Establish `hv0 : v ≠ 0`.
+
+Introduce `hv0`. Rewrite `eW`, `eY` using `[hv0]`. Establish `hc0` using `eq_zero_of_weqP eW.symm`. Rewrite `eY` using `[hc0]`. Apply `mul_ne_zero (pow_ne_zero 2 hwa) hM` to reduce the goal to its premises.
+
+Simplify using `only [tanPY] at eY`. Take the linear combination `-eY`. Establish `hK` using `(tan_iff W.toAffine hwa hM hv0 (c := c)).mpr ⟨eX.symm, eY.symm⟩`. Rewrite using `[← hK.1, ← hK.2]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem case_tan (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : WeierstrassCurve K}
     {w : PowerSeries K} (hW : IntegralModel W) (hw : WFixed W w) (F : FormalGroup K)
     (hFi : IntegralMv F.toPowerSeries)
@@ -1080,6 +1473,23 @@ theorem case_tan (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : Weierstrass
   rw [← hK.1, ← hK.2]
   field_simp
 
+/- English proof (translation)
+Establish `hwI` using `w_integral hW hw`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW`. Use `set z0 : MvPowerSeries (Fin 2) K := MvPowerSeries.X 0 with hz0`. Use `set G := F.toPowerSeries with hG`. Establish `c0 : MvPowerSeries.constantCoeff z0 = 0` using `by simp [hz0]`.
+
+Establish `iz0 : IntegralMv z0` using `integral_X 0`. Establish `iw0 : IntegralMv (w.subst z0)` using `SubstitutionCoefficientCongruence.integral_subst hwI c0 iz0`. Establish `cw0 : MvPowerSeries.constantCoeff (w.subst z0) = 0` using `cc_wsubst hw c0`. Establish `ez0 : evalMv2 z0 a a = a` using `evalMv2_X0 a a`. Establish `ew0 : evalMv2 (w.subst z0) a a = evalPS w a` using `evalMv2_subst_X0 w a a`.
+
+Use `set E := 1 - MvPowerSeries.C W.a₁ * z0 - MvPowerSeries.C W.a₃ * w.subst z0 with hE`. Establish `iE : IntegralMv E` using `(IL K).sub_mem ((IL K).sub_mem (IL K).one_mem ((IL K).mul_mem (integral_C h1) iz0)) ((IL K).mul_mem (integral_C h3) iw0)`. Establish `cE : MvPowerSeries.constantCoeff E = 1` using `by simp [hE, c0, cw0]`. Take `⟨ψ, iψ, hEψ⟩` from `exists_inv_integral iE cE`. Establish `h0` using `inv_formal hU hS hw F hch ψ hEψ`.
+
+Establish `iJ : IntegralMv (-z0 * ψ)` using `(IL K).mul_mem ((IL K).neg_mem iz0) iψ`. Establish `cJ : MvPowerSeries.constantCoeff (-z0 * ψ) = 0` using `by simp [c0]`. Establish `e` using `evalMv2_subst hFi iz0 iJ c0 cJ ha ha`. Rewrite `e` using `[h0, evalMv2_zero', ez0]`. Establish `eJ : evalMv2 (-z0 * ψ) a a = -a * evalMv2 ψ a a`.
+
+Rewrite using `[evalMv2_mul ((IL K).neg_mem iz0) iψ ha ha, evalMv2_neg iz0 ha ha, ez0]`. Establish `eE : evalMv2 E a a * evalMv2 ψ a a = 1`. Rewrite using `[← evalMv2_mul iE iψ ha ha, hEψ, evalMv2_one]`. Establish `eE' : evalMv2 E a a = 1 - W.a₁ * a - W.a₃ * evalPS w a`. Rewrite using `[hE, evalMv2_sub ((IL K).sub_mem (IL K).one_mem ((IL K).mul_mem (integral_C h1) iz0)) ((IL K).mul_mem (integral_C h3) iw0) ha ha, evalMv2_sub (IL K).one_mem ((IL K).mul_mem (integral_C h1) iz0) ha ha, evalMv2_one, evalMv2_mul (integral_C h1) iz0 ha ha, evalMv2_mul (integral_C h3) …`.
+
+Establish `hEa : 1 - W.a₁ * a - W.a₃ * evalPS w a ≠ 0`. Rewrite using `[← eE']`. Conclude with `left_ne_zero_of_mul_eq_one eE`. Establish `hψa : evalMv2 ψ a a = (1 - W.a₁ * a - W.a₃ * evalPS w a)⁻¹`. Rewrite using `[← eE']`.
+
+Conclude with `eq_inv_of_mul_eq_one_right eE`. Rewrite `e` using `[eJ, hψa]`. Rewrite using `[show -(a / evalPS w a) / W.toAffine.negY (a / evalPS w a) (-1 / evalPS w a) = -a * (1 - W.a₁ * a - W.a₃ * evalPS w a)⁻¹ from ?_]`. Conclude with `e.symm`. Rewrite using `[WeierstrassCurve.Affine.negY]`.
+
+Establish `: -(-1 / evalPS w a) - W.toAffine.a₁ * (a / evalPS w a) - W.toAffine.a₃ = (1 - W.a₁ * a - W.a₃ * evalPS w a) / evalPS w a`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem case_inv (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) {W : WeierstrassCurve K}
     {w : PowerSeries K} (hW : IntegralModel W) (hw : WFixed W w) (F : FormalGroup K)
     (hFi : IntegralMv F.toPowerSeries)
@@ -1140,6 +1550,9 @@ section MainLemma
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CompleteSpace K]
 
+/- English proof (translation)
+Take `⟨hpos, hlt, hxe, hye⟩` from `(hPar K W w hW hw).2 x y h hx`. Conclude with `⟨hlt, ((hPar K W w hW hw).1 _ hpos hlt).1, hxe, hye⟩`.
+-/
 theorem param_facts (hPar : FormalGroupPointsParametrisation.{u}) {W : WeierstrassCurve K} {w : PowerSeries K}
     (hW : IntegralModel W) (hw : WFixed W w) {x y : K} (h : W.toAffine.Nonsingular x y)
     (hx : 1 < ‖x‖) :
@@ -1148,6 +1561,29 @@ theorem param_facts (hPar : FormalGroupPointsParametrisation.{u}) {W : Weierstra
   obtain ⟨hpos, hlt, hxe, hye⟩ := (hPar K W w hW hw).2 x y h hx
   exact ⟨hlt, ((hPar K W w hW hw).1 _ hpos hlt).1, hxe, hye⟩
 
+/- English proof (translation)
+Apply the tactic sequence `rcases P with _ | ⟨x1, y1, h1⟩ <;> rcases Q with _ | ⟨x2, y2, h2⟩`. Use `eval_zero_left F hFi (b := 0) (by simp)` as an intermediate fact. Rewrite using `[← WeierstrassCurve.Affine.Point.zero_def, zero_add]`. Conclude with `this.symm`. Take `⟨hb, -, -, -⟩` from `param_facts hPar hW hw h2 hQ`.
+
+Rewrite using `[← WeierstrassCurve.Affine.Point.zero_def, zero_add]`. Conclude with `(eval_zero_left F hFi hb).symm`. Take `⟨ha, -, -, -⟩` from `param_facts hPar hW hw h1 hP`. Rewrite using `[← WeierstrassCurve.Affine.Point.zero_def, add_zero]`. Conclude with `(eval_zero_right F hFi ha).symm`.
+
+Take `⟨ha, hwa, hxa, hya⟩` from `param_facts hPar hW hw h1 hP`. Take `⟨hb, hwb, hxb, hyb⟩` from `param_facts hPar hW hw h2 hQ`. Express the relevant statement in the definitionally equal form `uOf (WeierstrassCurve.Affine.Point.some x1 y1 h1 + WeierstrassCurve.Affine.Point.some x2 y2 h2) = evalMv2 F.toPowerSeries (-x1 / y1) (-x2 / y2)`. Generalize the expression as in `hA : -x1 / y1 = a at ha hwa hxa hya ⊢`. Generalize the expression as in `hB : -x2 / y2 = b at hb hwb hxb hyb ⊢`.
+
+Distinguish the cases in `hx : x1 = x2`. Distinguish the cases in `hy : y1 = W.toAffine.negY x2 y2`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_Y_eq hx hy, ← hB]`. Substitute `hx` using the available equality. Establish `hy2 : y2 = W.toAffine.negY x1 y1`.
+
+Rewrite using `[hy, WeierstrassCurve.Affine.negY_negY]`. Substitute `hy2` using the available equality. Express the relevant statement in the definitionally equal form `(0 : K) = _`. Rewrite using `[hxa, hya]`. Conclude with `(case_inv hU hS hW hw F hFi hch ha hwa).symm`.
+
+Establish `hyy` using `WeierstrassCurve.Affine.Y_eq_of_Y_ne h1.1 h2.1 hx hy`. Substitute `hx` using the available equality. Substitute `hyy` using the available equality. Establish `hab : b = a` using `by rw [← hA, ← hB]`. Substitute `hab` using the available equality.
+
+Rewrite using `[WeierstrassCurve.Affine.Point.add_self_of_Y_ne hy]`. Express the relevant statement in the definitionally equal form `-(W.toAffine.addX x1 x1 (W.toAffine.slope x1 x1 y1 y1)) / W.toAffine.addY x1 x1 y1 (W.toAffine.slope x1 x1 y1 y1) = _`. Rewrite using `[WeierstrassCurve.Affine.slope_of_Y_ne rfl hy]`. Establish `hM : -2 + W.a₁ * b + W.a₃ * evalPS w b ≠ 0`. Introduce `hM0`.
+
+Apply `hy` to reduce the goal to its premises. Rewrite using `[hxa, hya, WeierstrassCurve.Affine.negY]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | linear_combination hM0 | linear_combination -hM0`. Rewrite using `[hxa, hya]`.
+
+Conclude with `case_tan hU hS hW hw F hFi hch ha hwa hM`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_X_ne hx]`. Express the relevant statement in the definitionally equal form `-(W.toAffine.addX x1 x2 (W.toAffine.slope x1 x2 y1 y2)) / W.toAffine.addY x1 x2 y1 (W.toAffine.slope x1 x2 y1 y2) = _`. Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hx]`. Establish `hN : a * evalPS w b - b * evalPS w a ≠ 0`.
+
+Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hxa, hxb]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | linear_combination h0 | linear_combination -h0`.
+
+Rewrite using `[hxa, hxb, hya, hyb]`. Conclude with `case_chord hU hW hw F hFi hch ha hb hwa hwb hN`.
+-/
 theorem e1hom_main (hU : WSubstUnique.{u}) (hS : WChordSubst.{u}) (hPar : FormalGroupPointsParametrisation.{u})
     {W : WeierstrassCurve K} {w : PowerSeries K} (hW : IntegralModel W) (hw : WFixed W w)
     (F : FormalGroup K) (hFi : IntegralMv F.toPowerSeries)
@@ -1214,6 +1650,11 @@ end MainLemma
 
 end Formalism.ELL.FormalGroupPointsHom
 
+/- English proof (translation)
+Introduce `K _ _ _ W w F₂ hW hw hF₂i hF₂0 hch P Q hP hQ`. Take `⟨F, -, hFch⟩` from `hFG K W w hw`. Take `⟨u0, hwu, hu⟩` from `Formalism.ELL.WeierstrassCoordinateSubstitution.exists_unit_factor hw`. Establish `hFeq : F₂ = F.toPowerSeries` using `Formalism.ELL.WeierstrassCoordinateSubstitution.eq_of_xy hwu hu _ _ hF₂0 F.zero_constantCoeff (hch.1.trans hFch.1.symm) (hch.2.trans hFch.2.symm)`. Substitute `hFeq` using the available equality.
+
+Conclude with `Formalism.ELL.FormalGroupPointsHom.e1hom_main hU hS hPar hW hw F hF₂i hch P Q hP hQ`.
+-/
 theorem Formalism.ELL.formal_group_points_hom_of (hU : Formalism.ELL.WSubstUnique.{u}) (hS : Formalism.ELL.WChordSubst.{u})
     (hFG : Formalism.ELL.WFormalGroup.{u}) (hPar : Formalism.ELL.FormalGroupPointsParametrisation.{u}) : Formalism.ELL.FormalGroupPointsHomomorphism.{u} := by
   intro K _ _ _ W w F₂ hW hw hF₂i hF₂0 hch P Q hP hQ

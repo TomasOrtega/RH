@@ -9,5 +9,8 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.AboveL
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMSub.isCMField_sup_le_adjoin | exact GlobalTheory.CMSub.isCMField_sup_le_adjoin | (intros; apply GlobalTheory.CMSub.isCMField_sup_le_adjoin <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cm_subfields_compositum_closed : ∀ (Ω : Type) [Field Ω] (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra E Ω] [IsAlgClosure E Ω], (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N] [NumberField ↥(M ⊔ N)], IsCMField M → IsCMField N → IsCMField ↥(M ⊔ N)) ∧ (∀ (M N : IntermediateField E Ω) [NumberField M] [NumberField N], N ≤ M → IsCMField M → IsCMField N) ∧ ∀ (M : IntermediateField E Ω) [NumberField M] (S : Set Ω), (∀ x ∈ S, ∀ φ : Ω →+* ℂ, (φ x).im = 0) → M = IntermediateField.adjoin E S → IsCMField M := by
   first | exact @GlobalTheory.CMSub.isCMField_sup_le_adjoin | exact GlobalTheory.CMSub.isCMField_sup_le_adjoin | (intros; apply GlobalTheory.CMSub.isCMField_sup_le_adjoin <;> assumption)

@@ -8,6 +8,9 @@ open GlobalTheory.ChiGrid GlobalTheory.FunObj GlobalTheory.FunObj.SqNum GlobalTh
 
 namespace GlobalTheory.ArchGrid
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos Q with rfl | h` into its components or cases. Establish `h1` using `P.idx_le`. Rewrite `h1` using `[zero_pow (by positivity)]`. Conclude with `absurd (Nat.le_zero.1 h1) P.idx_ne`. Conclude with `h`.
+-/
 theorem level_pos {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} (P : Pair D cc δ t0 Q) : 0 < Q := by
   rcases Nat.eq_zero_or_pos Q with rfl | h
   · have h1 := P.idx_le
@@ -15,6 +18,25 @@ theorem level_pos {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ t0 : ℂ} {Q : ℕ} 
     exact absurd (Nat.le_zero.1 h1) P.idx_ne
   · exact h
 
+/- English proof (translation)
+Take `⟨C0, -, hA⟩` from `GlobalTheory.ArchFree.st.archSt`. Use `⟨0, fun ε CF _ => ⟨C0, 0, fun C hC D large₂ _ _ hR T Lc μ₀ hμ G => ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `zA zA' ⟨δ, t0, h⟩`. Use `choose P P' hB hz hz' using h`. Use `haveI := D.tcLL`.
+
+Take `⟨-, -, hf4, hm44, -, -, -, -, -, hrd1, hrd2, -⟩` from `hR.size`. Establish `hLpos : 0 < large₂.sc.L` using `Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hL1 : (1 : ℝ) ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Establish `hlb : Real.log large₂.sc.b = large₂.sc.L` using `by unfold Scale.b; exact Real.log_exp _`. Establish `hN : 1 ≤ bigN D` using `by have := D.R.m_add_three_le_k; unfold bigN; omega`.
+
+Establish `hB1 : (1 : ℝ) ≤ (maxWt D 1 : ℝ)` using `by exact_mod_cast le_max_left _ _`. Establish `hrd : Real.log D.host.rdE ≤ Real.log large₂.sc.b` using `by rw [hlb]; linarith`. Establish `hdl : |TaylorLogMetric.logDerivativeAtOne D| ≤ Real.log large₂.sc.b`. Rewrite using `[hlb]`. Establish `e : TaylorLogMetric.logDerivativeAtOne D = large₂.logDerivativeAtOne` using `by rw [large₂.logDerivative_at_one_eq]; rfl`.
+
+Rewrite using `[e]`. Conclude with `hR.dlog`. Introduce `ij`. Establish `hQ : 0 < levQ G.pl` using `level_pos (P ij)`. Establish `key` using `hA D ⊤ δ t0 (levQ G.pl) (P ij).crv (P ij).pt0 hQ D.what₂.LL D.what₂.embLL (Fin D.R.m × Fin D.R.m) (bigN D) (maxWt D 1 : ℝ) (Real.log large₂.sc.b) P P' zA zA' hN hB1 (by rw [hlb]; exact hL1) hrd hdl (fun k => GlobalTheory.T.squareBottomPairs_small_reference_tuple hμ G δ t0 _ (P k) …`.
+
+Establish `hf : (1 : ℝ) ≤ (D.R.f : ℝ)`. Establish `: 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hf4`. Conclude with `this` after adjusting the coercions. Establish `hN' : (1 : ℝ) ≤ (bigN D : ℝ)` using `by exact_mod_cast hN`. Establish `hX : 0 ≤ (D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D 1 : ℝ) * (Real.log large₂.sc.b + Real.log ((maxWt D 1 : ℝ) * (2 * (bigN D : ℝ)))) + (D.R.f : ℝ) * (bigN D : ℝ) ^ 2 * (Real.log large₂.sc.b + Real.log ((D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D 1 : ℝ))) + (bigN D : ℝ) ^ 2 * Re …`.
+
+Establish `h1 : 0 ≤ Real.log ((maxWt D 1 : ℝ) * (2 * (bigN D : ℝ)))` using `Real.log_nonneg (by nlinarith)`. Establish `h2 : 0 ≤ Real.log ((D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D 1 : ℝ))`. Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `: 1 ≤ (D.R.f : ℝ) * (2 * (bigN D : ℝ))` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h3 : 0 ≤ Real.log (levQ G.pl : ℝ)` using `Real.log_natCast_nonneg _`. Establish `hl : 0 ≤ Real.log large₂.sc.b` using `by rw [hlb]; linarith`. Check the signs of the components of the expression. Establish `hle : ∀ c : ℝ, c * (D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D 1 : ℝ) * (Real.log large₂.sc.b + Real.log ((maxWt D 1 : ℝ) * (2 * (bigN D : ℝ)))) + c * (D.R.f : ℝ) * (bigN D : ℝ) ^ 2 * (Real.log large₂.sc.b + Real.log ((D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D 1 : ℝ))) + c * (bi …` using `fun c => by ring`. Establish `hmono` using `mul_le_mul_of_nonneg_right hC hX`.
+
+Use `show _ ∧ _`. Prove the components needed by the constructor for the conclusion. Use `le_trans key.1 (le_of_eq_of_le ?_ (le_of_le_of_eq hmono ?_))` and prove the remaining obligations. Conclude with `(hle C0).symm ▸ rfl`. Conclude with `(hle C).symm`.
+
+Use `le_trans key.2 (le_of_eq_of_le ?_ (le_of_le_of_eq hmono ?_))` and prove the remaining obligations. Conclude with `(hle C0).symm ▸ rfl`. Conclude with `(hle C).symm`.
+-/
 theorem arch_grid : GlobalTheory.SqTop.GBig fun {D} _ _ {sc} G μ₀ C _ b => ∀ (zA zA' : Fin D.R.m × Fin D.R.m → D.what₂.LL), (∃ δ t0 : ℂ, ∀ ij : Fin D.R.m × Fin D.R.m, ∃ P P' : Pair D ⊤ δ t0 (levQ G.pl), IsBottom G μ₀ ij.1 ij.2 (SqNum.condE G.pl) P P' ∧ D.what₂.embLL (zA ij) = (P.norm : ℂ) ∧ D.what₂.embLL (zA' ij) = (P'.norm : ℂ)) → ArchimedeanHeightBound zA zA' (C * D.R.f * (2 * (bigN D : ℝ)) * (maxWt D sc.cGap : ℝ) * (Real.log b + Real.log ((maxWt D sc.cGap : ℝ) * (2 * (bigN D : ℝ)))) + C * D.R.f * (bigN D : ℝ) ^ 2 * (Real.log b + Real.log ((D.R.f : ℝ) * (2 * (bigN D : ℝ)) * (maxWt D sc.cGap : ℝ))) + C * (bigN D : ℝ) ^ 2 * Real.log (levQ G.pl)) := by
   obtain ⟨C0, -, hA⟩ := GlobalTheory.ArchFree.st.archSt
   refine ⟨0, fun ε CF _ => ⟨C0, 0, fun C hC D large₂ _ _ hR T Lc μ₀ hμ G => ?_⟩⟩

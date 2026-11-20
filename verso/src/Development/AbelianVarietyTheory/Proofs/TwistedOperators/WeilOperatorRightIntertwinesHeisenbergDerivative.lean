@@ -19,6 +19,23 @@ namespace GlobalTheory.HeisOrbit
 
 open GlobalTheory.WeilM
 
+/- English proof (translation)
+Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F X.J) (incM F W.J) M.co hψ`. Establish `hS` using `hW.isUSplitting`. Establish `laws` using `GlobalTheory.RealLift.actsLaws F (Fin n × Fin d)`. Establish `h1 : f₁ = D u f`. Establish `hAD : ActsD (evI F) (M.heisLine ψ u) f (D u f)` using `(laws f (D u f) (D u f)).1 (M.heisLine ψ u) (fun t => by funext x; simp [Model.heisLine, Darboux.rho, schr]) (hD u hu f).1`.
+
+Conclude with `(laws f f₁ (D u f)).2.2.1 _ hf hAD`. Establish `h2 : ∀ (f' : SInf F (Fin n × Fin d)) (g : (Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ), g ∈ SB (Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → om (1, h) (pureA F f' g) = pureA F (Th f') g`. Introduce `f' g hg`. Establish `hr : Rest (evI F) (⇑f') (fun x => g (fun i => (x i).2))`. Use `⟨fun x z hz => ?_, Submodule.subset_span ⟨f', g, hg, rfl⟩⟩` and prove the remaining obligations.
+
+Use `show g _ = g _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz, add_zero]`.
+
+Conclude with `hTh f' _ hr`. Use `set g₀ : (Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ := (GlobalTheory.RealLift.intPts F (Fin n × Fin d)).indicator 1 with hg₀def`. Establish `hg₀ : g₀ ∈ SB (Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)` using `GlobalTheory.RealLift.indicator_intPts_mem_SB`. Establish `hg₀0 : g₀ 0 = 1` using `by rw [hg₀def, Set.indicator_of_mem GlobalTheory.RealLift.zero_mem_intPts]; rfl`. Use `set x₀ := GlobalTheory.RealLift.ptAt y (0 : Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) with hx₀`.
+
+Use `set u' := u * (mat h)ᵀ with hu'def`. Establish `hu' : At (evI F) u'` using `fun a ha => by rw [hu'def, ← Matrix.smul_mul, hu a ha, Matrix.zero_mul]`. Establish `hl` using `GlobalTheory.RealLift.eval_mem_adm (F := F) x₀`. Establish `hl'` using `hS.adm (1, h) _ hl`. Establish `dA` using `(hD u hu f).1 g₀ hg₀ _ hl'`.
+
+Establish `dB` using `(hD u' hu' (Th f)).1 g₀ hg₀ _ hl`. Establish `hfun : (fun t : ℝ => (LinearMap.proj x₀ ∘ₗ om (1, h)) (M.co.rho ψ (realAd F t • u) (pureA F f g₀))) = fun t : ℝ => (LinearMap.proj x₀ : ((Fin n × Fin d → AF F) → ℂ) →ₗ[ℂ] ℂ) (M.co.rho ψ (realAd F t • u') (pureA F (Th f) g₀))`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.comp_apply, hS.impl (1, h) _ _ (Submodule.subset_span ⟨f, g₀, hg₀, rfl⟩), h2 f g₀ hg₀]`. Use `congr 3`.
+
+Simplify using `[actAB, hu'def, mat, Matrix.smul_mul]`. Rewrite `dA` using `[hfun]`. Establish `e` using `dA.unique dB`. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, h2 _ g₀ hg₀, hx₀, GlobalTheory.RealLift.pureA_ptAt, hg₀0, mul_one] at e`. Rewrite using `[h1, e, (hD u' hu' (Th f)).2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem weil_heisDeriv_intertw {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (χX χW : Chr F E) (om : Rep σ X W) (hψ : IsStd ψ) (hW : M.IsWeil ψ χX χW om) (h : UA σ W.J)

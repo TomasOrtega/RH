@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
+/- English proof (translation)
+Establish `h : ((mConeMap y).comp (rename v : MRing ι →ₐ[ℤ] MRing ι')) = ((rename κ : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K' Ω).restrictScalars ℤ).comp (mConeMap (y ∘ v))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[mConeMap, hv p]`. Conclude with `congrArg (fun φ => φ f) h`.
+-/
 theorem ImageCoord.mConeMap_rename {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     (κ : K → K') (v : (Σ k, ι k) → (Σ k', ι' k')) (hv : ∀ p, (v p).1 = κ p.1)
     {Ω : Type} [Field Ω] (y : (Σ k', ι' k') → Ω) (f : MRing ι) :
@@ -20,6 +23,11 @@ theorem ImageCoord.mConeMap_rename {K : Type} {ι : K → Type} {K' : Type} {ι'
     simp [mConeMap, hv p]
   exact congrArg (fun φ => φ f) h
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v Ω _ y hB`. Take `⟨hκ, -, hv, -⟩` from `hB`. Use extensionality with `f`. Simplify using `only [imageZ, mCoordIdeal, Ideal.mem_comap, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ImageCoord.mConeMap_rename κ v hv y f]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Conclude with `rename_injective κ hκ (by rw [h, map_zero])`. Introduce `h`. Rewrite using `[h, map_zero]`.
+-/
 theorem ImageCoord.proof : ImageCoordStatement := by
   intro K _ ι _ K' _ ι' _ κ v Ω _ y hB
   obtain ⟨hκ, -, hv, -⟩ := hB

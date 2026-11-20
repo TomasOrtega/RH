@@ -13,6 +13,29 @@ namespace GlobalTheory.CompanionTheory.LatPdpB
 
 variable (l : ℕ) [Fact l.Prime]
 
+/- English proof (translation)
+Use `haveI : IsPerfectoidField ℂ_[l] l := IsPerfectoidField.padicComplex l`. Establish `hg` using `IsPerfectoidField.ker_fontaineTheta_eq_span_kerThetaGenerator ℂ_[l] l`. Generalize the expression as in `IsPerfectoidField.kerThetaGenerator ℂ_[l] l = g at hg`. Establish `hnorm : ∀ z : normInteger ℂ_[l], ‖(z : ℂ_[l])‖ ≤ 1` using `fun z => mem_normInteger.1 z.2`. Establish `hbound : ∀ w : WittVector l (PreTilt (normInteger ℂ_[l]) l), WittVector.fontaineTheta (normInteger ℂ_[l]) l w = 0 → ‖((PreTilt.untilt (WittVector.constantCoeff w) : normInteger ℂ_[l]) : ℂ_[l])‖ ≤ ‖((l : normInteger ℂ_[l]) : ℂ_[l])‖`.
+
+Introduce `w hw`. Establish `h1 : Ideal.Quotient.mk (Ideal.span {(l : normInteger ℂ_[l])}) (PreTilt.untilt (WittVector.constantCoeff w)) = 0`. Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero]`. Establish `h2` using `WittVector.mk_fontaineTheta (R := normInteger ℂ_[l]) (p := l) w`. Rewrite `h2` using `[hw, map_zero]`.
+
+Conclude with `h2.symm`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨z, hz⟩` from `h1`. Rewrite using `[← hz, Subring.coe_mul, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (hnorm z)`.
+
+Establish `hx : xi0 l ∈ RingHom.ker (WittVector.fontaineTheta (normInteger ℂ_[l]) l)`. Rewrite using `[RingHom.mem_ker, CrystallineSemistableComparison.xi0, map_sub, map_natCast, WittVector.fontaineTheta_teichmuller, untilt_pFlat, sub_self]`. Rewrite `hx` using `[hg, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hx`. Establish `hg0 : WittVector.fontaineTheta (normInteger ℂ_[l]) l g = 0`.
+
+Rewrite using `[← RingHom.mem_ker, hg]`. Conclude with `Ideal.mem_span_singleton_self g`. Establish `hcn : WittVector.fontaineTheta (normInteger ℂ_[l]) l c ≠ 0`. Introduce `hc0`. Establish `hcm : c ∈ RingHom.ker (WittVector.fontaineTheta (normInteger ℂ_[l]) l)` using `hc0`.
+
+Rewrite `hcm` using `[hg, Ideal.mem_span_singleton']`. Take `⟨d, hd⟩` from `hcm`. Establish `hxe : xi0 l = d * g * g` using `by rw [← hc, ← hd]`. Establish `hco` using `congrArg WittVector.constantCoeff hxe`. Establish `hT : WittVector.constantCoeff (WittVector.teichmuller l (pFlat l)) = pFlat l` using `WittVector.teichmuller_coeff_zero l _`.
+
+Rewrite `hco` using `[CrystallineSemistableComparison.xi0, map_sub, map_natCast, hT, map_mul, map_mul, CharP.cast_eq_zero (PreTilt (normInteger ℂ_[l]) l) l, zero_sub]`. Establish `hpf : pFlat l = (-WittVector.constantCoeff d) * WittVector.constantCoeff g * WittVector.constantCoeff g`. Rewrite using `[neg_mul, neg_mul, ← hco, neg_neg]`. Establish `hu` using `congrArg (fun y => ‖((PreTilt.untilt y : normInteger ℂ_[l]) : ℂ_[l])‖) hpf`. Simplify using `only [map_mul, Subring.coe_mul, norm_mul, untilt_pFlat] at hu`.
+
+Establish `hb` using `hbound g hg0`. Establish `hd1` using `hnorm (PreTilt.untilt (-WittVector.constantCoeff d))`. Establish `hpos : 0 < ‖((l : normInteger ℂ_[l]) : ℂ_[l])‖`. Rewrite using `[norm_pos_iff]`. Use `push_cast`.
+
+Conclude with `natCast_p_ne_zero_cp`. Establish `hlt : ‖((l : normInteger ℂ_[l]) : ℂ_[l])‖ < 1` using `IsPerfectoidField.norm_natCast_integer_lt_one (K := ℂ_[l]) l`. Establish `hn0` using `norm_nonneg ((PreTilt.untilt (WittVector.constantCoeff g) : normInteger ℂ_[l]) : ℂ_[l])`. Establish `hn1` using `norm_nonneg ((PreTilt.untilt (-WittVector.constantCoeff d) : normInteger ℂ_[l]) : ℂ_[l])`. Use polynomial arithmetic with `[mul_le_mul hb hb hn0 hpos.le, mul_le_mul_of_nonneg_right hd1 (mul_nonneg hn0 hn0), mul_lt_of_lt_one_left hpos hlt]`.
+
+Establish `hcu : IsUnit (wittToBDeRhamPlus (normInteger ℂ_[l]) l c)`. Assume the negation of the conclusion as `hnu`. Establish `hm : wittToBDeRhamPlus (normInteger ℂ_[l]) l c ∈ IsLocalRing.maximalIdeal (BDeRhamPlus (normInteger ℂ_[l]) l)` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hnu)`. Rewrite `hm` using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus]`. Conclude with `hcn (by exact_mod_cast hm)`.
+
+Rewrite using `[← hc, map_mul, Ideal.span_singleton_mul_left_unit hcu, ← IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span hg, maximalIdeal_eq_span_tBdR]`.
+-/
 theorem span_xi_eq_span_fontaine_t :
     Ideal.span {wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l)} = Ideal.span {tBdR l} := by
   haveI : IsPerfectoidField ℂ_[l] l := IsPerfectoidField.padicComplex l
@@ -79,6 +102,9 @@ theorem span_xi_eq_span_fontaine_t :
   rw [← hc, map_mul, Ideal.span_singleton_mul_left_unit hcu,
     ← IsPerfectoidField.maximalIdeal_bDeRhamPlus_eq_span hg, maximalIdeal_eq_span_tBdR]
 
+/- English proof (translation)
+Establish `h2 : Ideal.span {wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l) ^ r} = Ideal.span {tBdR l ^ r}`. Rewrite using `[← Ideal.span_singleton_pow, ← Ideal.span_singleton_pow, span_xi_eq_span_fontaine_t]`. Establish `h3` using `congrArg (Ideal.map (pk l k)) h2`. Simplify using `only [Ideal.map_span, Set.image_singleton, map_pow] at h3`. Conclude with `h3`.
+-/
 theorem span_fk_pow (k r : ℕ) :
     Ideal.span {fk l k (xi0 l) ^ r} = Ideal.span {pk l k (tBdR l) ^ r} := by
   have h2 : Ideal.span {wittToBDeRhamPlus (normInteger ℂ_[l]) l (xi0 l) ^ r} =
@@ -88,6 +114,11 @@ theorem span_fk_pow (k r : ℕ) :
   simp only [Ideal.map_span, Set.image_singleton, map_pow] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hi : GroundTheory.PAdicHodge.ACris.iota ℂ_[l] l (Formalism.Per6.tA l) = tBdR l` using `GroundTheory.PAdicHodge.ACris.iota_periodT (ε := epsilon l) untilt_epsilon`. Establish `key : (algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l)).rangeRestrict (tBdR l) = t`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Eq.trans ?_ ht.symm` and prove the remaining obligations. Use `show algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (tBdR l) = algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l) (GroundTheory.PAdicHodge.ACris.iota ℂ_[l] l (Formalism.Per6.tA l))`.
+
+Rewrite using `[hi]`. Rewrite using `[← key]`. Unfold `CrystallineSemistableComparison.Pb.Lat.pInv`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom]`. Conclude with `(RingEquiv.symm_apply_eq _).2 rfl`.
+-/
 theorem pInv_eq_tBdR {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (t : (per l K).P)
     (ht : (t : (per l K).B) = (per l K).tB) : pInv l t = tBdR l := by
   have hi : GroundTheory.PAdicHodge.ACris.iota ℂ_[l] l (Formalism.Per6.tA l) = tBdR l :=
@@ -108,6 +139,9 @@ end GlobalTheory.CompanionTheory.LatPdpB
 
 open GlobalTheory.CompanionTheory.LatPdpB in
 
+/- English proof (translation)
+Introduce `l _ K M h k r t ht`. Use `show pdP (γB (fk l k) (xi0 l)) r = Ideal.span {(pk l k) (pInv l t) ^ r}`. Rewrite using `[GlobalTheory.CompanionTheory.DPFiltration.pdP_γB, pInv_eq_tBdR l t ht, span_fk_pow]`.
+-/
 theorem GlobalTheory.CompanionTheory.LatPdpB.dividedPowerFiltration_lev_eq_span_pow : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ), ∀ (r : ℕ) (t : (per l K).P), (t : (per l K).B) = (per l K).tB → pdP (lev h k).γB r = Ideal.span {(lev h k).toB t ^ r} := by
   intro l _ K M h k r t ht
   show pdP (γB (fk l k) (xi0 l)) r = Ideal.span {(pk l k) (pInv l t) ^ r}

@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 
 namespace GlobalTheory.admissible_shape_and_epsilon_at_every_localisation
 
+/- English proof (translation)
+Introduce `D i`. Use `⟨fun w hw => ?_, GlobalTheory.TameFixedLift.main D.nd i⟩` and prove the remaining obligations. Conclude with `UpperTheory.KStar.Cyc.kw_le_roots D.host.toHostRaw (D.nbr i w hw)`.
+-/
 theorem main : ∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.CyclotomicCompletionAdmissible (D := D) i ∧ TruncatedSeriesCountingIdentities.CyclotomicInertiaImage (D := D) i := by
   intro D i
   refine ⟨fun w hw => ?_, GlobalTheory.TameFixedLift.main D.nd i⟩

@@ -18,6 +18,15 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq hDS hS`. Take `⟨hz, hT, -, -, hW, hN, hG, hq⟩` from `hS`. Take `⟨h0, h1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`. Establish `hae : ∀ᵐ x ∂νq, (Matrix.of x) ∈ GG k r` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 h0 h1 hq`. Establish `hm : MeasurableSet {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ GG k r}`.
+
+Use `(Formalism.FourierDecayAlt.P.DDSmoothness.uh_measurableSet (k := k) (r := r)).compl` as an intermediate fact. Simplify `this` using `[Set.compl_setOf]`. Establish `key : ∀ (V : Type) [NormedAddCommGroup V] [SecondCountableTopology V] (φ : Mx k r → V), ContinuousOn φ (GG k r) → AEStronglyMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => φ (Matrix.of x)) νq`. Introduce `V _ _ φ hφ`. Establish `hc : ContinuousOn (fun x : Formalism.QuantumDeterminants.Mt k r => φ (Matrix.of x)) {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ GG k r}` using `hφ`.
+
+Use `hc.aestronglyMeasurable (μ := νq) hm` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem (s := {x : Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ GG k r}) hae]`. Then use the resulting hypothesis. Use `⟨hae, key, fun a => ?_, fun l hl w hw => ?_⟩` and prove the remaining obligations. Conclude with `(key ℝ (fun g => lenA k r z g a) (GlobalTheory.LengthCont.lenA_continuousOn k r z hz hT a)).aemeasurable`. Use `haveI : SecondCountableTopology Wp := by haveI : ProperSpace Wp := FiniteDimensional.proper ℂ Wp infer_instance`.
+
+Conclude with `key Wp (fun g => l (R.σ g w)) (GlobalTheory.T.frechetContinuous_continuousOn_orbit_hasDerivAt hK k r ε mu R hDS Wp l hl.1 hl.2.1 hl.2.2.2 w hw).1`.
+-/
 theorem quotMeas_ae_mem_and_measurable : PI.KFinSmooth → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)), R.IsDG ε mu → SideG k r z π u μW μN μG νq → (∀ᵐ x ∂νq, (Matrix.of x) ∈ GG k r) ∧ (∀ (V : Type) [NormedAddCommGroup V] [SecondCountableTopology V] (φ : Mx k r → V), ContinuousOn φ (GG k r) → AEStronglyMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => φ (Matrix.of x)) νq) ∧ (∀ a, AEMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => lenA k r z (Matrix.of x) a) νq) ∧ ∀ l, IsBes R z π l → ∀ w ∈ R.sm, AEStronglyMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => l (R.σ (Matrix.of x) w)) νq := by
   intro hK k r ε mu R Wp _ _ _ _ z π u μW μN μG νq hDS hS
   obtain ⟨hz, hT, -, -, hW, hN, hG, hq⟩ := hS

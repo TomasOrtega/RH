@@ -72,6 +72,9 @@ variable {R}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Apply `Submodule.map_injective_of_injective (hV i t).1` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, (hV i t).2.1, ← Set.range_comp]`. Establish `h1 : (⇑(R.HV i t).e ∘ ⇑(R.jV i t)) = ⇑((R.B.L i t).pres.extL)` using `funext fun x => hj i t x`. Rewrite using `[h1]`. Conclude with `GlobalTheory.PresBasic.ext_span (R.B.L i t).pres`.
+-/
 theorem span_jV (hV : R.models_HV) (hj : R.models_jV) (i : Fin D.R.m) (t : T0) : Submodule.span ℂ (Set.range (R.jV i t)) = ⊤ := by
   apply Submodule.map_injective_of_injective (hV i t).1
   rw [Submodule.map_span, Submodule.map_top, (hV i t).2.1, ← Set.range_comp]

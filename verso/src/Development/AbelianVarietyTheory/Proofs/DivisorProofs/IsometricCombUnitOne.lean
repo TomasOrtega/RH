@@ -18,6 +18,9 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} [IsIntegral X
 
 omit [IsIntegral X] [IsLocallyNoetherian X] in
 
+/- English proof (translation)
+Establish `e : (fun _ : Unit => (1 : ℤ)) = Pi.single () 1`. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `isometric_comb_single (fun _ : Unit => M) ()`.
+-/
 theorem isometric_comb_unit_one (M : HermLB p) :
     (comb (fun _ : Unit => M) fun _ => 1).Isometric M := by
   have e : (fun _ : Unit => (1 : ℤ)) = Pi.single () 1 := by
@@ -26,6 +29,11 @@ theorem isometric_comb_unit_one (M : HermLB p) :
   rw [e]
   exact isometric_comb_single (fun _ : Unit => M) ()
 
+/- English proof (translation)
+Establish `e` using `isometric_comb_unit_one M`. Take `⟨h₁, h₂⟩` from `HM k X p 1 hX Unit L (fun _ => M) Φ hΦ (fun _ => 1) h (e.symm.isArithHeight hX H) r hr`. Establish `hl : MvPolynomial.rename some (lin fun _ : Unit => (((1 : ℤ) : ℤ) : ℝ)) ^ 1 = (MvPolynomial.X (some ()) : MvPolynomial (Option Unit) ℝ)`. Simplify using `[lin]`. Rewrite `h₂` using `[hl]`.
+
+Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.chernIntegrableOn_eq σ 1]`. Conclude with `h₁ σ`. Establish `a : (comb (fun _ : Unit => M) fun _ => 1).archInt L 1 hr = M.archInt L 1 hr` using `finsum_congr fun σ => congrFun (congrFun (e.chernInt_eq σ 1) _) _`. Rewrite using `[h₂, a]`.
+-/
 theorem arMix_pair (HM : Published.ArMix) (hX : IsArithVar p 1) {L M : HermLB p}
     {Φ : MvPolynomial (Option Unit) ℝ →ₗ[ℝ] ℝ}
     (hΦ : IsArFun (fun o : Option Unit => o.elim L fun _ => M) 1 Φ) {h : X → ℝ} (H : M.IsArithHeight h)
@@ -47,6 +55,11 @@ theorem arMix_pair (HM : Published.ArMix) (hX : IsArithVar p 1) {L M : HermLB p}
       finsum_congr fun σ => congrFun (congrFun (e.chernInt_eq σ 1) _) _
     rw [h₂, a]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, H, ha⟩`. Take `⟨r, hr⟩` from `exists_isRatSec L.isLB`. Rewrite using `[(ha r hr).2, (arMix_pair HM hX hΦ H r hr).2]`. Introduce and unpack `rfl`.
+
+Take `⟨h, H⟩` from `(HE k X p 1 hX).1 M`. Conclude with `⟨h, H, fun r hr => arMix_pair HM hX hΦ H r hr⟩`.
+-/
 theorem isInter_iff (HE : Published.ArExists) (HM : Published.ArMix) (hX : IsArithVar p 1) {L M : HermLB p}
     {Φ : MvPolynomial (Option Unit) ℝ →ₗ[ℝ] ℝ}
     (hΦ : IsArFun (fun o : Option Unit => o.elim L fun _ => M) 1 Φ) (a : ℝ) :
@@ -59,6 +72,9 @@ theorem isInter_iff (HE : Published.ArExists) (HM : Published.ArMix) (hX : IsAri
     obtain ⟨h, H⟩ := (HE k X p 1 hX).1 M
     exact ⟨h, H, fun r hr => arMix_pair HM hX hΦ H r hr⟩
 
+/- English proof (translation)
+Establish `hΦ` using `((HI k X p 1 hX).2 ι T Ψ hΨ).2.2 (Option Unit) (fun o => o.elim L fun _ => M) (fun o => o.elim u fun _ => v) (by rintro (_ | _); exacts [hu, hv])`. Use `(isInter_iff HE HM hX hΦ _).2 ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem isInter_of_comb (HE : Published.ArExists) (HM : Published.ArMix) (HI : Published.ArIso) (hX : IsArithVar p 1)
     {ι : Type} [Fintype ι] {T : ι → HermLB p} {Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΨ : IsArFun T 1 Ψ)
     {u v : ι → ℤ} {L M : HermLB p} (hu : (comb T u).Isometric L) (hv : (comb T v).Isometric M) :
@@ -68,6 +84,9 @@ theorem isInter_of_comb (HE : Published.ArExists) (HM : Published.ArMix) (HI : P
   refine (isInter_iff HE HM hX hΦ _).2 ?_
   simp
 
+/- English proof (translation)
+Simplify using `[lin, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem lin_add_int {ι : Type} [Fintype ι] (u v : ι → ℤ) :
     (lin fun i => (((u + v) i : ℤ) : ℝ)) = (lin fun i => (u i : ℝ)) + lin fun i => (v i : ℝ) := by
   simp [lin, add_mul, Finset.sum_add_distrib]
@@ -76,6 +95,21 @@ end GlobalTheory.HermLB
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hC k _ X p _ _ hX L L' M`. Establish `HE` using `hC.arExists`. Establish `HM` using `hC.arMix`. Establish `HI` using `hC.arIso`. Set `T : Fin 3 → HermLB p` to `![L, L', M]`.
+
+Take `⟨Ψ, hΨ⟩` from `((HE k X p 1 hX).2 (Fin 3) T).1`. Set `e : Fin 3 → Fin 3 → ℤ` to `fun i => Pi.single i 1`. Establish `c₀ : (comb T (e 0)).Isometric L` using `isometric_comb_single T 0`. Establish `c₁ : (comb T (e 1)).Isometric L'` using `isometric_comb_single T 1`. Establish `c₂ : (comb T (e 2)).Isometric M` using `isometric_comb_single T 2`.
+
+Establish `l (i : Fin 3) : (lin fun j => ((e i j : ℤ) : ℝ)) = MvPolynomial.X i` using `lin_single i`. Establish `s₀₁ : (comb T (e 0 + e 1)).Isometric (L.tens L')` using `(isometric_comb_add T _ _).trans (c₀.tens c₁)`. Establish `s₀₂ : (comb T (e 0 + e 2)).Isometric (L.tens M)` using `(isometric_comb_add T _ _).trans (c₀.tens c₂)`. Establish `I₀` using `HermLB.isInter_of_comb HE HM HI hX hΨ c₀ c₂`. Establish `I₀'` using `HermLB.isInter_of_comb HE HM HI hX hΨ c₂ c₀`.
+
+Establish `I₁` using `HermLB.isInter_of_comb HE HM HI hX hΨ c₁ c₂`. Establish `I₀₁` using `HermLB.isInter_of_comb HE HM HI hX hΨ s₀₁ c₂`. Rewrite `I₀`, `I₀'`, `I₁` using `[l, l]`. Rewrite `I₀₁` using `[HermLB.lin_add_int, l, l, l]`. Use `⟨⟨_, I₀⟩, fun a ha => ?_, fun a a' ha ha' => ?_, fun a x y z ha hx hy hz => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha.unique hX I₀, mul_comm]`. Conclude with `I₀'`. Rewrite using `[ha.unique hX I₀, ha'.unique hX I₁, ← map_add, ← add_mul]`. Conclude with `I₀₁`. Establish `S₀` using `c₀.isSelfInter hX (hΨ.1 (e 0))`.
+
+Establish `S₂` using `c₂.isSelfInter hX (hΨ.1 (e 2))`. Establish `S` using `s₀₂.isSelfInter hX (hΨ.1 (e 0 + e 2))`. Rewrite `S₀`, `S₂` using `[l]`. Rewrite `S` using `[HermLB.lin_add_int, l, l]`. Rewrite using `[hx.unique hX S₀, hy.unique hX S₂, hz.unique hX S, ha.unique hX I₀]`.
+
+Establish `E : (MvPolynomial.X 0 + MvPolynomial.X 2 : MvPolynomial (Fin 3) ℝ) ^ (1 + 1) = MvPolynomial.X 0 ^ (1 + 1) + (MvPolynomial.X 0 * MvPolynomial.X 2 + MvPolynomial.X 0 * MvPolynomial.X 2) + MvPolynomial.X 2 ^ (1 + 1)` using `by ring`. Rewrite using `[E, map_add, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isInter_calculus : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X]
     [IsLocallyNoetherian X], IsArithVar p 1 → ∀ (L L' M : HermLB p), (∃ a, L.IsInter M a) ∧
       (∀ a, L.IsInter M a → M.IsInter L a) ∧

@@ -11,6 +11,9 @@ namespace GlobalTheory.HilbFam
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Rewrite using `[PowerSeries.coeff_mul]`. Conclude with `sum_mem fun p _ ↦ mul_mem (hf _) (hg _)`.
+-/
 private lemma coeff_mul_mem_algebraicClosure {f g : PowerSeries ℂ}
     (hf : ∀ n, PowerSeries.coeff n f ∈ algebraicClosure ℚ ℂ)
     (hg : ∀ n, PowerSeries.coeff n g ∈ algebraicClosure ℚ ℂ) (n : ℕ) :
@@ -20,6 +23,11 @@ private lemma coeff_mul_mem_algebraicClosure {f g : PowerSeries ℂ}
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Proceed by induction on `e with`. Consider the case `zero`. Introduce `n`. Rewrite using `[pow_zero, PowerSeries.coeff_one]`. Use `split_ifs`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Consider the case `succ e ih`. Rewrite using `[pow_succ]`. Conclude with `coeff_mul_mem_algebraicClosure ih hf`.
+-/
 private lemma coeff_pow_mem_algebraicClosure {f : PowerSeries ℂ}
     (hf : ∀ n, PowerSeries.coeff n f ∈ algebraicClosure ℚ ℂ) (e : ℕ) :
     ∀ n, PowerSeries.coeff n (f ^ e) ∈ algebraicClosure ℚ ℂ := by
@@ -36,6 +44,11 @@ private lemma coeff_pow_mem_algebraicClosure {f : PowerSeries ℂ}
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Use `(IsIntegral.of_pow q.den_pos ?_).isAlgebraic` and prove the remaining obligations. Establish `h : Complex.exp (2 * ↑Real.pi * Complex.I * (q : ℂ)) ^ q.den = 1`. Rewrite using `[← Complex.exp_nat_mul]`. Establish `hq : (q : ℂ) * q.den = q.num` using `by exact_mod_cast Rat.mul_den_eq_num q`. Establish `hmul : (q.den : ℂ) * (2 * ↑Real.pi * Complex.I * (q : ℂ)) = (q.num : ℂ) * (2 * ↑Real.pi * Complex.I)`.
+
+Take the linear combination `(2 * ↑Real.pi * Complex.I) * hq`. Rewrite using `[hmul, Complex.exp_int_mul_two_pi_mul_I]`. Rewrite using `[h]`. Conclude with `isIntegral_one`.
+-/
 private lemma isAlgebraic_exp_two_pi_I_mul_rat (q : ℚ) :
     IsAlgebraic ℚ (Complex.exp (2 * ↑Real.pi * Complex.I * (q : ℂ))) := by
   refine (IsIntegral.of_pow q.den_pos ?_).isAlgebraic
@@ -51,12 +64,22 @@ private lemma isAlgebraic_exp_two_pi_I_mul_rat (q : ℚ) :
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+The claim follows from `(Algebra.IsAlgebraic.isAlgebraic y).algHom (Complex.ofRealHom.comp i).toRatAlgHom`.
+-/
 private lemma isAlgebraic_realEmbedding_apply {F : Type} [Field F] [NumberField F]
     (i : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F) (y : F) : IsAlgebraic ℚ ((i y : ℝ) : ℂ) :=
   (Algebra.IsAlgebraic.isAlgebraic y).algHom (Complex.ofRealHom.comp i).toRatAlgHom
 
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.HilbFam.ecoef`. Use `finsum_mem_induction _ (zero_mem _) (fun _ _ ↦ add_mem) fun ξ _ ↦ ?_` and prove the remaining obligations. Use `mul_mem (mul_mem ?_ ?_) (prod_mem fun i _ ↦ pow_mem ?_ _)` and prove the remaining obligations. Rewrite using `[mem_algebraicClosure_iff]`. Distinguish the cases in `hξ : ξ = 0`.
+
+Rewrite using `[hξ, ha.1]`. Conclude with `ha₀`. Take `⟨m, hm⟩` from `ha.2.1 ξ hξ`. Rewrite using `[hm]`. Conclude with `isAlgebraic_int _`.
+
+Rewrite using `[mem_algebraicClosure_iff]`. Unfold `_root_.GlobalTheory.HilbFam.eTr`. Conclude with `isAlgebraic_exp_two_pi_I_mul_rat _`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `isAlgebraic_realEmbedding_apply i ξ`.
+-/
 private lemma ecoef_mem_algebraicClosure_of_isCoef {F : Type} [Field F] [NumberField F] {k : ℕ}
     {𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F} {a₀ : ℂ} {a : F → ℂ}
     (ha : _root_.GlobalTheory.HilbFam.IsCoef k 𝔞 𝔟 a₀ a) (ha₀ : IsAlgebraic ℚ a₀) (N : ℕ)
@@ -81,6 +104,13 @@ private lemma ecoef_mem_algebraicClosure_of_isCoef {F : Type} [Field F] [NumberF
 open NumberField UpperHalfPlane in
 open scoped Classical MatrixGroups nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x s N κ c n hk ha ha₀ hc`. Rewrite using `[← mem_algebraicClosure_iff]`. Unfold `_root_.GlobalTheory.HilbFam.hser`. Simplify using `only [map_smul, map_sum, smul_eq_mul]`. Use `mul_mem ?_ (sum_mem fun μ _ ↦ mul_mem (intCast_mem _ _) ?_)` and prove the remaining obligations.
+
+Rewrite using `[hk, _root_.GlobalTheory.HilbFam.omegaFactor_pow_two_mul]`. Conclude with `SubfieldClass.ratCast_mem _ _`. Use `coeff_mul_mem_algebraicClosure (coeff_pow_mem_algebraicClosure (fun m ↦ ?_) _) (fun m ↦ ?_) n` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_mk, mem_algebraicClosure_iff]`. Conclude with `hc m`.
+
+Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `ecoef_mem_algebraicClosure_of_isCoef ha ha₀ N x μ m`.
+-/
 theorem _root_.GlobalTheory.HilbFam.hser_coeff_isAlgebraic : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (s N : ℕ) (κ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℕ) (c : ℕ → ℂ) (n : ℕ), k = 2 * s → _root_.GlobalTheory.HilbFam.IsCoef k 𝔞 𝔟 a₀ a → IsAlgebraic ℚ a₀ → (∀ m, IsAlgebraic ℚ (c m)) → IsAlgebraic ℚ (PowerSeries.coeff n (_root_.GlobalTheory.HilbFam.hser k N 𝔞 a x κ c)) := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x s N κ c n hk ha ha₀ hc
   rw [← mem_algebraicClosure_iff]

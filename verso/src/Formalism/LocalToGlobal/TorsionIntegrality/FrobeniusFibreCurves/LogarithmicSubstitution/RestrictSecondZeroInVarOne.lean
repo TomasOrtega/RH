@@ -15,9 +15,15 @@ variable {K : Type} [Field K] [CharZero K]
 def at1H {ι : Type} (x : ι) : PowerSeries K →ₐ[K] MvPowerSeries ι K :=
   PowerSeries.substAlgHom (PowerSeries.HasSubst.X x)
 
+/- English proof (translation)
+Simplify using `only [Formalism.InvariantFactorPaths.G7.at1, at1H, PowerSeries.coe_substAlgHom]`.
+-/
 theorem triple_lintegral_eq {ι : Type} (x : ι) (f : PowerSeries K) : at1 x f = at1H x f := by
   simp only [Formalism.InvariantFactorPaths.G7.at1, at1H, PowerSeries.coe_substAlgHom]
 
+/- English proof (translation)
+Rewrite using `[← triple_lintegral_eq]`. Conclude with `PowerSeries.subst_C c`.
+-/
 theorem inVarAlgHom_C {ι : Type} (x : ι) (c : K) :
     at1H x (PowerSeries.C c) = (MvPowerSeries.C c : MvPowerSeries ι K) := by
   rw [← triple_lintegral_eq]
@@ -30,57 +36,96 @@ def ev0H : MvPowerSeries (Fin 2) K →ₐ[K] PowerSeries K :=
       · exact PowerSeries.constantCoeff_X
       · exact map_zero _))
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.B.ev0, ev0H, MvPowerSeries.coe_substAlgHom]`.
+-/
 theorem evalYZero_eq (h : MvPowerSeries (Fin 2) K) : ev0 h = ev0H h := by
   simp only [Formalism.L2.Th1.B.ev0, ev0H, MvPowerSeries.coe_substAlgHom]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero ha f hf`.
+-/
 theorem cc_psubst {ι : Type} {a : MvPowerSeries ι K} (ha : MvPowerSeries.constantCoeff a = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst a f) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero ha f hf
 
+/- English proof (translation)
+The claim follows from `cc_psubst (MvPowerSeries.constantCoeff_X x) hf`.
+-/
 theorem constantCoeff_inVar_eq_zero {ι : Type} (x : ι) {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (at1 x f) = 0 :=
   cc_psubst (MvPowerSeries.constantCoeff_X x) hf
 
+/- English proof (translation)
+Simplify using `only [triple_lintegral_eq, map_mul]`.
+-/
 private theorem at1_mul {ι : Type} (x : ι) (f g : PowerSeries K) :
     Formalism.InvariantFactorPaths.G7.at1 x (f * g) = Formalism.InvariantFactorPaths.G7.at1 x f * Formalism.InvariantFactorPaths.G7.at1 x g := by
   simp only [triple_lintegral_eq, map_mul]
 
+/- English proof (translation)
+The claim follows from `PowerSeries.subst_X (PowerSeries.HasSubst.X x)`.
+-/
 private theorem at1_X_eq_X {ι : Type} (x : ι) :
     Formalism.InvariantFactorPaths.G7.at1 x (PowerSeries.X : PowerSeries K) = MvPowerSeries.X x :=
   PowerSeries.subst_X (PowerSeries.HasSubst.X x)
 
+/- English proof (translation)
+Simplify using `only [evalYZero_eq, map_mul]`.
+-/
 private theorem ev0_mul (a b : MvPowerSeries (Fin 2) K) :
     Formalism.L2.Th1.B.ev0 (a * b) = Formalism.L2.Th1.B.ev0 a * Formalism.L2.Th1.B.ev0 b := by
   simp only [evalYZero_eq, map_mul]
 
+/- English proof (translation)
+Rewrite using `[evalYZero_eq, ev0H, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+-/
 private theorem ev0_X_one_eq_zero : Formalism.L2.Th1.B.ev0 (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0 := by
   rw [evalYZero_eq, ev0H, MvPowerSeries.substAlgHom_X]
   rfl
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr hf`. Rewrite using `[at1_mul, at1_X_eq_X, ev0_mul, ev0_X_one_eq_zero, zero_mul]`.
+-/
 theorem restrictSecondZero_inVar_one {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     ev0 (at1 1 f) = 0 := by
   obtain ⟨g, rfl⟩ := PowerSeries.X_dvd_iff.mpr hf
   rw [at1_mul, at1_X_eq_X, ev0_mul, ev0_X_one_eq_zero, zero_mul]
 
+/- English proof (translation)
+Use `show MvPowerSeries.pderiv K x (PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries (Fin 2) K) f) = PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries (Fin 2) K) (PowerSeries.derivative K f)`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X x) f x, MvPowerSeries.pderiv_X_self, mul_one]`.
+-/
 theorem partialDeriv_inVar_self (x : Fin 2) (f : PowerSeries K) : pd x (at1 x f) = at1 x (dz f) := by
   show MvPowerSeries.pderiv K x (PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries (Fin 2) K) f) =
     PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries (Fin 2) K) (PowerSeries.derivative K f)
   rw [Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X x) f x,
     MvPowerSeries.pderiv_X_self, mul_one]
 
+/- English proof (translation)
+Use `show MvPowerSeries.pderiv K x (PowerSeries.subst (MvPowerSeries.X y : MvPowerSeries (Fin 2) K) f) = 0`. Rewrite using `[Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X y) f x, MvPowerSeries.pderiv_X_of_ne h, mul_zero]`.
+-/
 theorem partialDeriv_inVar_of_ne {x y : Fin 2} (h : y ≠ x) (f : PowerSeries K) : pd x (at1 y f) = 0 := by
   show MvPowerSeries.pderiv K x (PowerSeries.subst (MvPowerSeries.X y : MvPowerSeries (Fin 2) K) f) = 0
   rw [Formalism.G.LogCR.pderiv_psubst (MvPowerSeries.constantCoeff_X y) f x,
     MvPowerSeries.pderiv_X_of_ne h, mul_zero]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Th1.B.pd, Derivation.leibniz, smul_eq_mul]`.
+-/
 theorem pd_mul {ι : Type} (i : ι) (x y : MvPowerSeries ι K) :
     pd i (x * y) = x * pd i y + y * pd i x := by
   simp only [Formalism.L2.Th1.B.pd, Derivation.leibniz, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `map_sub (MvPowerSeries.pderiv K i) x y`.
+-/
 theorem pd_sub {ι : Type} (i : ι) (x y : MvPowerSeries ι K) : pd i (x - y) = pd i x - pd i y :=
   map_sub (MvPowerSeries.pderiv K i) x y
 
+/- English proof (translation)
+Take the linear combination `(1 - k * u * v) ^ 2 * hW - (1 - k * u * v) * h0' - (k * u1 * v) * h0 + (1 - k * u * v) * h1' + (k * u * v1) * h1 + ((1 - k * u * v) * k * v) * E2u - ((1 - k * u * v) * k * u) * E2v + (k ^ 2 * v ^ 2) * E1u - (k ^ 2 * u ^ 2) * E1v`.
+-/
 theorem wave_alg {R : Type} [CommRing R] (k a u v u1 u2 v1 v2 p0 p1 q0 q1 P0 P1 : R)
     (hW : P0 - P1 = 2 * k * (u - v))
     (h0 : (1 - k * u * v) * p0 = -(k * u1 * v))
@@ -96,28 +141,49 @@ theorem wave_alg {R : Type} [CommRing R] (k a u v u1 u2 v1 v2 p0 p1 q0 q1 P0 P1 
     + (1 - k * u * v) * h1' + (k * u * v1) * h1 + ((1 - k * u * v) * k * v) * E2u
     - ((1 - k * u * v) * k * u) * E2v + (k ^ 2 * v ^ 2) * E1u - (k ^ 2 * u ^ 2) * E1v
 
+/- English proof (translation)
+Simplify using `only [evalYZero_eq, map_sub]`.
+-/
 private theorem ev0_sub (a b : MvPowerSeries (Fin 2) K) :
     Formalism.L2.Th1.B.ev0 (a - b) = Formalism.L2.Th1.B.ev0 a - Formalism.L2.Th1.B.ev0 b := by
   simp only [evalYZero_eq, map_sub]
 
+/- English proof (translation)
+Simplify using `only [evalYZero_eq, map_neg]`.
+-/
 private theorem ev0_neg (a : MvPowerSeries (Fin 2) K) :
     Formalism.L2.Th1.B.ev0 (-a) = -Formalism.L2.Th1.B.ev0 a := by
   simp only [evalYZero_eq, map_neg]
 
+/- English proof (translation)
+Simplify using `only [evalYZero_eq, map_one]`.
+-/
 private theorem ev0_one : Formalism.L2.Th1.B.ev0 (1 : MvPowerSeries (Fin 2) K) = 1 := by
   simp only [evalYZero_eq, map_one]
 
+/- English proof (translation)
+The claim follows from `map_neg (MvPowerSeries.pderiv K i) x`.
+-/
 private theorem pd_neg {ι : Type} (i : ι) (x : MvPowerSeries ι K) :
     Formalism.L2.Th1.B.pd i (-x) = -Formalism.L2.Th1.B.pd i x :=
   map_neg (MvPowerSeries.pderiv K i) x
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.pderiv_one`.
+-/
 private theorem pd_one_eq_zero {ι : Type} (i : ι) : Formalism.L2.Th1.B.pd i (1 : MvPowerSeries ι K) = 0 :=
   MvPowerSeries.pderiv_one
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.pderiv_C`.
+-/
 private theorem pd_C_eq_zero {ι : Type} (i : ι) (c : K) :
     Formalism.L2.Th1.B.pd i (MvPowerSeries.C c : MvPowerSeries ι K) = 0 :=
   MvPowerSeries.pderiv_C
 
+/- English proof (translation)
+Rewrite using `[pd_mul, pd_mul, partialDeriv_inVar_self, partialDeriv_inVar_of_ne (show (1 : Fin 2) ≠ 0 by decide), pd_C_eq_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pd_zero_C_mul_at1_mul_at1 (c : K) (F G : PowerSeries K) :
     Formalism.L2.Th1.B.pd (0 : Fin 2) (MvPowerSeries.C c * Formalism.InvariantFactorPaths.G7.at1 0 F * Formalism.InvariantFactorPaths.G7.at1 1 G) =
       MvPowerSeries.C c * Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.dz F) * Formalism.InvariantFactorPaths.G7.at1 1 G := by
@@ -125,6 +191,9 @@ private theorem pd_zero_C_mul_at1_mul_at1 (c : K) (F G : PowerSeries K) :
     partialDeriv_inVar_of_ne (show (1 : Fin 2) ≠ 0 by decide), pd_C_eq_zero]
   ring
 
+/- English proof (translation)
+Rewrite using `[pd_mul, pd_mul, partialDeriv_inVar_self, partialDeriv_inVar_of_ne (show (0 : Fin 2) ≠ 1 by decide), pd_C_eq_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pd_one_C_mul_at1_mul_at1 (c : K) (F G : PowerSeries K) :
     Formalism.L2.Th1.B.pd (1 : Fin 2) (MvPowerSeries.C c * Formalism.InvariantFactorPaths.G7.at1 0 F * Formalism.InvariantFactorPaths.G7.at1 1 G) =
       MvPowerSeries.C c * Formalism.InvariantFactorPaths.G7.at1 0 F * Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.dz G) := by
@@ -132,43 +201,67 @@ private theorem pd_one_C_mul_at1_mul_at1 (c : K) (F G : PowerSeries K) :
     partialDeriv_inVar_of_ne (show (0 : Fin 2) ≠ 1 by decide), pd_C_eq_zero]
   ring
 
+/- English proof (translation)
+Rewrite using `[pd_sub, pd_one_eq_zero, pd_zero_C_mul_at1_mul_at1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pd_zero_one_sub_C_mul_at1_mul_at1 (kap : K) (w : PowerSeries K) :
     Formalism.L2.Th1.B.pd (0 : Fin 2) (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) =
       -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.dz w) * Formalism.InvariantFactorPaths.G7.at1 1 w) := by
   rw [pd_sub, pd_one_eq_zero, pd_zero_C_mul_at1_mul_at1]
   ring
 
+/- English proof (translation)
+Rewrite using `[pd_sub, pd_one_eq_zero, pd_one_C_mul_at1_mul_at1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pd_one_one_sub_C_mul_at1_mul_at1 (kap : K) (w : PowerSeries K) :
     Formalism.L2.Th1.B.pd (1 : Fin 2) (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) =
       -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.dz w)) := by
   rw [pd_sub, pd_one_eq_zero, pd_one_C_mul_at1_mul_at1]
   ring
 
+/- English proof (translation)
+Rewrite using `[pd_zero_one_sub_C_mul_at1_mul_at1, pd_neg, pd_zero_C_mul_at1_mul_at1]`.
+-/
 private theorem pd_zero_pd_zero_one_sub_C_mul_at1_mul_at1 (kap : K) (w : PowerSeries K) :
     Formalism.L2.Th1.B.pd (0 : Fin 2) (Formalism.L2.Th1.B.pd (0 : Fin 2) (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w)) =
       -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.dz (Formalism.L2.Th1.B.dz w)) * Formalism.InvariantFactorPaths.G7.at1 1 w) := by
   rw [pd_zero_one_sub_C_mul_at1_mul_at1, pd_neg, pd_zero_C_mul_at1_mul_at1]
 
+/- English proof (translation)
+Rewrite using `[pd_one_one_sub_C_mul_at1_mul_at1, pd_neg, pd_one_C_mul_at1_mul_at1]`.
+-/
 private theorem pd_one_pd_one_one_sub_C_mul_at1_mul_at1 (kap : K) (w : PowerSeries K) :
     Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.pd (1 : Fin 2) (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w)) =
       -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.dz (Formalism.L2.Th1.B.dz w))) := by
   rw [pd_one_one_sub_C_mul_at1_mul_at1, pd_neg, pd_one_C_mul_at1_mul_at1]
 
+/- English proof (translation)
+Rewrite using `[map_sub, map_one, map_mul, map_mul, constantCoeff_inVar_eq_zero (0 : Fin 2) hw0]`. Simplify using the standard rewrite rules.
+-/
 private theorem constantCoeff_one_sub_C_mul_at1_mul_at1 {kap : K} {w : PowerSeries K}
     (hw0 : PowerSeries.constantCoeff w = 0) :
     MvPowerSeries.constantCoeff ((1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) : MvPowerSeries (Fin 2) K) = 1 := by
   rw [map_sub, map_one, map_mul, map_mul, constantCoeff_inVar_eq_zero (0 : Fin 2) hw0]
   simp
 
+/- English proof (translation)
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `[Formalism.L2.Th1.B.sigmaOneSeries, Formalism.L2.Th1.B.prim]`.
+-/
 private theorem constantCoeff_sig1S_eq_zero (e1 kap : K) (w : PowerSeries K) :
     PowerSeries.constantCoeff (Formalism.L2.Th1.B.sigmaOneSeries e1 kap w) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
   simp [Formalism.L2.Th1.B.sigmaOneSeries, Formalism.L2.Th1.B.prim]
 
+/- English proof (translation)
+Simplify using `[Formalism.L2.Th1.B.sigmaOneSeries, Formalism.L2.Th1.B.prim]`.
+-/
 private theorem coeff_one_sig1S_eq_zero (e1 kap : K) (w : PowerSeries K) :
     PowerSeries.coeff 1 (Formalism.L2.Th1.B.sigmaOneSeries e1 kap w) = 0 := by
   simp [Formalism.L2.Th1.B.sigmaOneSeries, Formalism.L2.Th1.B.prim]
 
+/- English proof (translation)
+Establish `hp : ∀ f : PowerSeries K, PowerSeries.derivative K (Formalism.L2.Th1.B.prim f) = f` using `fun f => (h4 K f).1`. Use `show PowerSeries.derivative K (PowerSeries.derivative K (-Formalism.L2.Th1.B.prim (Formalism.L2.Th1.B.prim (PowerSeries.C e1 + PowerSeries.C kap * w)))) = _`. Rewrite using `[Derivation.map_neg, Derivation.map_neg, hp, hp]`.
+-/
 private theorem dz_dz_sig1S_eq_neg_C_add_C_mul (h4 : Formalism.L2.Th1.B.PrimRules) (e1 kap : K) (w : PowerSeries K) :
     Formalism.L2.Th1.B.dz (Formalism.L2.Th1.B.dz (Formalism.L2.Th1.B.sigmaOneSeries e1 kap w)) = -(PowerSeries.C e1 + PowerSeries.C kap * w) := by
   have hp : ∀ f : PowerSeries K, PowerSeries.derivative K (Formalism.L2.Th1.B.prim f) = f := fun f => (h4 K f).1
@@ -176,11 +269,17 @@ private theorem dz_dz_sig1S_eq_neg_C_add_C_mul (h4 : Formalism.L2.Th1.B.PrimRule
       (-Formalism.L2.Th1.B.prim (Formalism.L2.Th1.B.prim (PowerSeries.C e1 + PowerSeries.C kap * w)))) = _
   rw [Derivation.map_neg, Derivation.map_neg, hp, hp]
 
+/- English proof (translation)
+Simplify using `only [triple_lintegral_eq, map_neg, map_add, map_mul, inVarAlgHom_C]`.
+-/
 private theorem at1_neg_C_add_C_mul {ι : Type} (e1 kap : K) (w : PowerSeries K) (x : ι) :
     Formalism.InvariantFactorPaths.G7.at1 x (-(PowerSeries.C e1 + PowerSeries.C kap * w)) =
       -(MvPowerSeries.C e1 + MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 x w) := by
   simp only [triple_lintegral_eq, map_neg, map_add, map_mul, inVarAlgHom_C]
 
+/- English proof (translation)
+Establish `h` using `congrArg (at1H (K := K) x) hw`. Simplify using `only [map_add, map_mul, map_pow, map_ofNat, inVarAlgHom_C] at h`. Simplify using `only [triple_lintegral_eq]`. Conclude with `h`.
+-/
 private theorem at1_dz_sq_eq_cubic {A kap : K} {w : PowerSeries K}
     (hw : Formalism.L2.Th1.B.dz w ^ 2 = 4 * w + 4 * PowerSeries.C A * w ^ 2 + 4 * PowerSeries.C kap * w ^ 3)
     (x : Fin 2) :
@@ -191,6 +290,9 @@ private theorem at1_dz_sq_eq_cubic {A kap : K} {w : PowerSeries K}
   simp only [triple_lintegral_eq]
   exact h
 
+/- English proof (translation)
+Rewrite using `[hw]`. Simplify using `only [triple_lintegral_eq, map_add, map_mul, map_pow, map_ofNat, inVarAlgHom_C]`.
+-/
 private theorem at1_dz_dz_eq_quadratic {A kap : K} {w : PowerSeries K}
     (hw : Formalism.L2.Th1.B.dz (Formalism.L2.Th1.B.dz w) = 2 + 4 * PowerSeries.C A * w + 6 * PowerSeries.C kap * w ^ 2)
     (x : Fin 2) :
@@ -199,6 +301,11 @@ private theorem at1_dz_dz_eq_quadratic {A kap : K} {w : PowerSeries K}
   rw [hw]
   simp only [triple_lintegral_eq, map_add, map_mul, map_pow, map_ofNat, inVarAlgHom_C]
 
+/- English proof (translation)
+Take `⟨hA, hB, -⟩` from `h1 K ι`. Establish `h0 : MvPowerSeries.constantCoeff (0 : MvPowerSeries ι K) = 0` using `map_zero _`. Establish `hsq : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries ι K) * Formalism.L2.Th1.B.fExp 0 = Formalism.L2.Th1.B.fExp 0 * 1`. Rewrite using `[← hA 0 0 h0 h0, add_zero, mul_one]`. Establish `hu : IsUnit (Formalism.L2.Th1.B.fExp (0 : MvPowerSeries ι K))` using `MvPowerSeries.isUnit_iff_constantCoeff.mpr (by rw [(hB 0 h0).1]; exact isUnit_one)`.
+
+Establish `he : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries ι K) = 1` using `hu.mul_left_cancel hsq`. Establish `hl` using `(hB 0 h0).2`. Rewrite `hl` using `[he]`. Conclude with `hl`.
+-/
 theorem fLog_one (h1 : ExpLogRules) {ι : Type} : fLog (1 : MvPowerSeries ι K) = 0 := by
   obtain ⟨hA, hB, -⟩ := h1 K ι
   have h0 : MvPowerSeries.constantCoeff (0 : MvPowerSeries ι K) = 0 := map_zero _
@@ -215,6 +322,29 @@ end SlopeTestRemainingChoices
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Unfold `Formalism.L2.Th1.B.AddSigma1Log`. Introduce `K _ _ A kap e1 w hw`. Establish `hw0 : PowerSeries.constantCoeff w = 0` using `hw.1`. Take `⟨hw1, hw2⟩` from `h8 K A kap w hw`. Establish `hwd0 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.dz w) = 0`.
+
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using `[hw1]`. Establish `hL0` using `constantCoeff_sig1S_eq_zero e1 kap w`. Establish `hL1` using `coeff_one_sig1S_eq_zero e1 kap w`. Establish `hL2` using `dz_dz_sig1S_eq_neg_C_add_C_mul h4 e1 kap w`.
+
+Take `⟨hC0, hC1⟩` from `h7 K _ hL0 hL1`. Establish `hg : MvPowerSeries.constantCoeff ((1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) : MvPowerSeries (Fin 2) K) = 1` using `constantCoeff_one_sub_C_mul_at1_mul_at1 hw0`. Establish `hW : Formalism.L2.Th1.B.pd (0 : Fin 2) (Formalism.L2.Th1.B.pd (0 : Fin 2) (Formalism.L2.Th1.B.par0 (Formalism.L2.Th1.B.sigmaOneSeries e1 kap w))) - Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.par0 (Formalism.L2.Th1.B.sigmaOneSeries e1 …`. Rewrite using `[h6 K, hL2, at1_neg_C_add_C_mul, at1_neg_C_add_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hd0` using `(h2 K (Fin 2) 0).2 _ hg`. Establish `hd1` using `(h2 K (Fin 2) 1).2 _ hg`. Establish `e0 : (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) * Formalism.L2.Th1.B.pd (0 : Fin 2) (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPath …` using `hd0.trans (pd_zero_one_sub_C_mul_at1_mul_at1 kap w)`. Establish `e1' : (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) * Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPat …` using `hd1.trans (pd_one_one_sub_C_mul_at1_mul_at1 kap w)`. Establish `f0 : -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.dz w) * Formalism.InvariantFactorPaths.G7.at1 1 w) * Formalism.L2.Th1.B.pd (0 : Fin 2) (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalis …`.
+
+Establish `t` using `congrArg (Formalism.L2.Th1.B.pd (0 : Fin 2)) hd0`. Rewrite `t` using `[pd_mul, pd_zero_pd_zero_one_sub_C_mul_at1_mul_at1, pd_zero_one_sub_C_mul_at1_mul_at1]`. Take the linear combination `t`. Establish `f1 : -(MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.dz w)) * Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalis …`. Establish `t` using `congrArg (Formalism.L2.Th1.B.pd (1 : Fin 2)) hd1`.
+
+Rewrite `t` using `[pd_mul, pd_one_pd_one_one_sub_C_mul_at1_mul_at1, pd_one_one_sub_C_mul_at1_mul_at1]`. Take the linear combination `t`. Establish `hsq` using `wave_alg _ _ _ _ _ _ _ _ _ _ _ _ _ _ hW e0 f0 e1' f1 (at1_dz_sq_eq_cubic hw.2.2 0) (at1_dz_sq_eq_cubic hw.2.2 1) (at1_dz_dz_eq_quadratic hw2 0) (at1_dz_dz_eq_quadratic hw2 1)`. Establish `hu : IsUnit (((1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) : MvPowerSeries (Fin 2) K) ^ 2)` using `MvPowerSeries.isUnit_iff_constantCoeff.mpr (by rw [map_pow, hg, one_pow]; exact isUnit_one)`. Establish `hwave` using `hu.mul_left_cancel hsq`.
+
+Establish `hRg : Formalism.L2.Th1.B.ev0 ((1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w) : MvPowerSeries (Fin 2) K) = 1`. Rewrite using `[ev0_sub, ev0_one, ev0_mul, restrictSecondZero_inVar_one hw0, mul_zero, sub_zero]`. Establish `hRl : Formalism.L2.Th1.B.ev0 (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w)) = 0`. Establish `hφ : ∀ i, MvPowerSeries.constantCoeff ((![(PowerSeries.X : PowerSeries K), 0] : Fin 2 → PowerSeries K) i) = 0`. Introduce `i`.
+
+Use `fin_cases i`. Conclude with `PowerSeries.constantCoeff_X`. Conclude with `map_zero _`. Establish `e : Formalism.L2.Th1.B.ev0 (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w)) = Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.ev0 ((1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.a …` using `(h3 K (Fin 2) Unit ![(PowerSeries.X : PowerSeries K), 0] hφ).2 _ hg`. Rewrite using `[e, hRg]`.
+
+Conclude with `fLog_one h1`. Establish `hRp : Formalism.L2.Th1.B.ev0 (Formalism.L2.Th1.B.pd (1 : Fin 2) (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w))) = 0`. Establish `t` using `congrArg Formalism.L2.Th1.B.ev0 hd1`. Rewrite `t` using `[ev0_mul, hRg, one_mul, pd_one_one_sub_C_mul_at1_mul_at1, ev0_neg, ev0_mul, restrictSecondZero_inVar_one hwd0, mul_zero, neg_zero]`. Conclude with `t`.
+
+Establish `hfin : (Formalism.L2.Th1.B.par0 (Formalism.L2.Th1.B.sigmaOneSeries e1 kap w)) - (Formalism.L2.Th1.B.fLog (1 - MvPowerSeries.C kap * Formalism.InvariantFactorPaths.G7.at1 0 w * Formalism.InvariantFactorPaths.G7.at1 1 w)) = 0`. Apply `h5 K` to reduce the goal to its premises. Simplify using `only [pd_sub]`. Conclude with `hwave`. Rewrite using `[ev0_sub, hC0, hRl, sub_zero]`.
+
+Rewrite using `[pd_sub, ev0_sub, hC1, hRp, sub_zero]`. Conclude with `sub_eq_zero.mp hfin`.
+-/
 theorem AddSigma1Log_of (h1 : ExpLogRules) (h2 : ExpLogDeriv) (h3 : ExpLogSubst) (h4 : PrimRules)
     (h5 : WaveUnique) (h6 : WaveKills) (h7 : ParCauchy) (h8 : WSecond) : AddSigma1Log := by
   unfold Formalism.L2.Th1.B.AddSigma1Log

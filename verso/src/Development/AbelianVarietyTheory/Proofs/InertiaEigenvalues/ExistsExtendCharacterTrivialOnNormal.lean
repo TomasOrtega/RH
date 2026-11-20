@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hmem : ((⟨s, hs⟩⁻¹ * ⟨t, ht⟩ : ↥Ik) : G) ∈ H`. Establish `h3 : s⁻¹ * t = (s⁻¹ * g) * (t⁻¹ * g)⁻¹` using `by group`. Establish `h5 : s⁻¹ * t ∈ H`. Rewrite using `[h3]`. Conclude with `H.mul_mem h1 (H.inv_mem h2)`.
+
+Conclude with `h5`. Establish `h4` using `hψ _ hmem`. Rewrite `h4` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h4`.
+-/
 private lemma char_eq_of_same_coset {G M : Type} [Group G] [CommGroup M]
     (Ik H : Subgroup G) (ψ : ↥Ik →* M) (hψ : ∀ s : ↥Ik, (s : G) ∈ H → ψ s = 1)
     (g s t : G) (hs : s ∈ Ik) (ht : t ∈ Ik) (h1 : s⁻¹ * g ∈ H) (h2 : t⁻¹ * g ∈ H) :
@@ -16,6 +21,15 @@ private lemma char_eq_of_same_coset {G M : Type} [Group G] [CommGroup M]
   rw [map_mul, map_inv, inv_mul_eq_one] at h4
   exact h4
 
+/- English proof (translation)
+Use `choose f hfIk hfH using hdec`. Establish `key` using `char_eq_of_same_coset Ik H ψ hψ`. Use `⟨{ toFun := fun g => ψ ⟨f g g.2, hfIk g g.2⟩, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use `show ψ ⟨f _ _, _⟩ = 1`. Rewrite using `[key _ _ 1 _ Ik.one_mem (hfH _ _) (by simp)]`.
+
+Conclude with `map_one ψ`. Introduce `a b show ψ ⟨f _ _, _⟩ = ψ ⟨f _ _, _⟩ * ψ ⟨f _ _, _⟩`. Establish `hab : (f a a.2 * f b b.2)⁻¹ * ((a * b : ↥I) : G) ∈ H` using `by show (f a a.2 * f b b.2)⁻¹ * ((a : G) * b) ∈ H`. Establish `hc` using `hH.conj_mem _ (hfH a a.2) (f b b.2)⁻¹`. Establish `he : (f a a.2 * f b b.2)⁻¹ * ((a : G) * b) = ((f b b.2)⁻¹ * ((f a a.2)⁻¹ * a) * (f b b.2)⁻¹⁻¹) * ((f b b.2)⁻¹ * b)` using `by group`.
+
+Rewrite using `[he]`. Conclude with `H.mul_mem hc (hfH b b.2)`. Rewrite using `[key ((a * b : ↥I) : G) _ (f a a.2 * f b b.2) _ (Ik.mul_mem (hfIk a a.2) (hfIk b b.2)) (hfH _ _) hab]`. Conclude with `map_mul ψ ⟨f a a.2, hfIk a a.2⟩ ⟨f b b.2, hfIk b b.2⟩`. Introduce `g s hs hsg`.
+
+Conclude with `key g _ s _ hs (hfH g g.2) hsg`.
+-/
 theorem exists_extend_character_trivial_on_normal {G M : Type} [Group G] [CommGroup M]
     (I Ik H : Subgroup G) (hH : H.Normal) (hdec : ∀ g ∈ I, ∃ s ∈ Ik, s⁻¹ * g ∈ H)
     (ψ : ↥Ik →* M) (hψ : ∀ s : ↥Ik, (s : G) ∈ H → ψ s = 1) :
@@ -42,6 +56,21 @@ theorem exists_extend_character_trivial_on_normal {G M : Type} [Group G] [CommGr
   · intro g s hs hsg
     exact key g _ s _ hs (hfH g g.2) hsg
 
+/- English proof (translation)
+Introduce `G F LL _ _ _ I Ik H hH _ hdec n hn Ψ Y hY hΨ`. Establish `: NeZero n` using `⟨hn.ne'⟩`. Set `K : Subgroup ↥(rootsOfUnity n F)` to `{ carrier := {u | ∀ s : ↥Ik, (s : G) ∈ H → Ψ u s = 1} mul_mem' := fun {a b} ha hb s hs => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb`. Rewrite using `[map_mul, MonoidHom.mul_apply, ha s hs, hb s hs, mul_one]`.
+
+Use the proof step `one_mem' := fun s _ => by rw [map_one, MonoidHom.one_apply]`. Use the proof step `inv_mem' := fun {a} ha s hs => by`. Simplify using `only [Set.mem_ofPred_eq] at ha`. Rewrite using `[map_inv, MonoidHom.inv_apply, ha s hs, inv_one] }`. Take `⟨ζ, hζ⟩` from `IsCyclic.exists_generator (α := ↥K)`.
+
+Take `⟨c, hc⟩` from `exists_extend_character_trivial_on_normal I Ik H hH hdec (Ψ (ζ : ↥(rootsOfUnity n F))) (fun s hs => ζ.2 s hs)`. Establish `hk : ∀ y ∈ Y, ∃ k : ℕ, ∀ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) = y → (ζ : ↥(rootsOfUnity n F)) ^ k = u`. Introduce `y hy`. Take `⟨u₀, hu₀⟩` from `hY y hy`. Establish `hK : u₀ ∈ K` using `hΨ u₀ (hu₀ ▸ hy)`.
+
+Take `⟨k, hk⟩` from `(mem_powers_iff_mem_zpowers (x := ζ) (y := ⟨u₀, hK⟩)).mpr (hζ _)`. Use `⟨k, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hu' : u = u₀` using `Subtype.ext (Units.ext (hu.trans hu₀.symm))`. Rewrite using `[hu']`. Use `congrArg (fun v : ↥K => (v : ↥(rootsOfUnity n F))) hk` as an intermediate fact.
+
+Simplify using `using this`. Use `choose! kk hkk using hk`. Establish `hpow : (ζ : ↥(rootsOfUnity n F)) ^ n = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_pow, OneMemClass.coe_one]`.
+
+Conclude with `(mem_rootsOfUnity n _).mp (ζ : ↥(rootsOfUnity n F)).2`. Use `⟨fun y => c ^ kk y, ?_, c, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu g s hs hsg show (c ^ kk ((u : Fˣ) : F)) g = Ψ u ⟨s, hs⟩`. Rewrite using `[MonoidHom.pow_apply, hc g s hs hsg, ← MonoidHom.pow_apply, ← map_pow, hkk _ hu u rfl]`. Introduce `g`.
+
+Take `⟨s, hs, hsg⟩` from `hdec g g.2`. Rewrite using `[hc g s hs hsg, ← MonoidHom.pow_apply, ← map_pow, hpow, map_one, MonoidHom.one_apply]`. Introduce `y _`. Conclude with `⟨kk y, fun g => MonoidHom.pow_apply c (kk y) g⟩`.
+-/
 theorem extend_characters_and_generator : ∀ {G F LL : Type} [Group G] [Field F] [Field LL] (I Ik H : Subgroup G), H.Normal → Ik ≤ I → (∀ g ∈ I, ∃ s ∈ Ik, s⁻¹ * g ∈ H) → ∀ (n : ℕ), 0 < n → ∀ (Ψ : ↥(rootsOfUnity n F) →* (↥Ik →* LLˣ)) (Y : Set F), (∀ y ∈ Y, ∃ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) = y) → (∀ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) ∈ Y → ∀ s : ↥Ik, (s : G) ∈ H → Ψ u s = 1) → ∃ ch : F → (↥I →* LLˣ), (∀ u : ↥(rootsOfUnity n F), ((u : Fˣ) : F) ∈ Y → ∀ (g : ↥I) (s : G) (hs : s ∈ Ik), s⁻¹ * (g : G) ∈ H → ch ((u : Fˣ) : F) g = Ψ u ⟨s, hs⟩) ∧ ∃ c : ↥I →* LLˣ, (∀ g, c g ^ n = 1) ∧ ∀ y ∈ Y, ∃ k : ℕ, ∀ g, ch y g = c g ^ k := by
   intro G F LL _ _ _ I Ik H hH _ hdec n hn Ψ Y hY hΨ
   classical

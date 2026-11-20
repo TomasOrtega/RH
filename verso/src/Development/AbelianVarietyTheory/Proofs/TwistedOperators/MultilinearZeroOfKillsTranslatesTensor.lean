@@ -4,6 +4,29 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.DensityMultiPlace
 
+/- English proof (translation)
+Introduce `ι _ H _ _ _ G _ π hu hs Sm hd hinv L C hL n c v hv φ u`. Set `w : Fin n → (∀ i, G i) → ∀ i, Sm i` to `fun j g i => ⟨π i (g i) (v j i), hinv i (g i) _ (v j i).2⟩`. Establish `key : ∀ s : Finset ι, ∀ (g : ∀ i, G i) (u : ∀ i, Sm i), ∑ j, c j * (∏ i ∈ s, ⟪φ i, (v j i : H i)⟫_ℂ) * L (s.piecewise u (w j g)) = 0`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+
+Introduce `g u`. Simplify `hv g` using `[w]`. Introduce `a s ha ih g u`. Establish `hnorm : ∀ (m : ∀ i, Sm i) (x : Sm a), ∏ i, ‖((Function.update m a x) i : H i)‖ = (∏ i ∈ Finset.univ.erase a, ‖(m i : H i)‖) * ‖x‖`. Introduce `m x`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ a), Function.update_self, mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Establish `hbd : ∀ j (x : Sm a), ‖L.toLinearMap (s.piecewise u (w j g)) a x‖ ≤ (C * ∏ i ∈ Finset.univ.erase a, ‖((s.piecewise u (w j g)) i : H i)‖) * ‖x‖`.
+
+Introduce `j x`. Rewrite using `[MultilinearMap.toLinearMap_apply, mul_assoc, ← hnorm]`. Conclude with `hL _`. Establish `hden : DenseRange (Sm a).subtypeL` using `(hd a).denseRange_val`. Establish `hui : IsUniformInducing (Sm a).subtypeL` using `isUniformEmbedding_subtype_val.isUniformInducing`.
+
+Set `Λ : Fin n → (H a →L[ℂ] ℂ)` to `fun j => (c j * ∏ i ∈ s, ⟪φ i, (v j i : H i)⟫_ℂ) • ((L.toLinearMap (s.piecewise u (w j g)) a).mkContinuous _ (hbd j)).extend (Sm a).subtypeL`. Establish `hΛ : ∀ j (x : Sm a), Λ j (x : H a) = (c j * ∏ i ∈ s, ⟪φ i, (v j i : H i)⟫_ℂ) * L (Function.update (s.piecewise u (w j g)) a x)`. Introduce `j x`. Use `ContinuousLinearMap.extend_eq ((L.toLinearMap (s.piecewise u (w j g)) a).mkContinuous _ (hbd j)) hden hui x` as an intermediate fact. Simplify using `only [Λ, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+
+Use `erw [this]`. Rewrite using `[LinearMap.mkContinuous_apply, MultilinearMap.toLinearMap_apply]`. Establish `hupd : ∀ j (k : G a), s.piecewise u (w j (Function.update g a k)) = Function.update (s.piecewise u (w j g)) a ⟨π a k (v j a), hinv a k _ (v j a).2⟩`. Introduce `j k`. Use function extensionality and compare the values at `i`.
+
+Distinguish the cases in `hia : i = a`. Substitute `hia` using the available equality. Simplify using `[Finset.piecewise_eq_of_notMem _ _ _ ha, w]`. Rewrite using `[Function.update_of_ne hia]`. Distinguish the cases in `his : i ∈ s`.
+
+Simplify using `[Finset.piecewise_eq_of_mem _ _ _ his]`. Simplify using `[Finset.piecewise_eq_of_notMem _ _ _ his, w, Function.update_of_ne hia]`. Establish `hG : ∀ k : G a, ∑ j, Λ j (π a k (v j a)) = 0`. Introduce `k`. Establish `h1` using `ih (Function.update g a k) u`.
+
+Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (π a k (v j a) : H a) = ((⟨π a k (v j a), hinv a k _ (v j a).2⟩ : Sm a) : H a) from rfl, hΛ, hupd, mul_assoc]`. Establish `h2` using `GlobalTheory.T.irreducibleUnitary_vector_density (H a) (G a) (π a) (hu a) (hs a) n (fun j => (v j a : H a)) Λ hG (φ a) (u a)`. Rewrite using `[← h2]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hΛ, Finset.prod_insert ha, Finset.piecewise_insert]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `key Finset.univ (fun _ => 1) u`. Simplify using `only [Finset.piecewise_univ] at h`.
+
+Rewrite using `[Finset.sum_mul]`. Rewrite using `[← h]`.
+-/
 theorem multilinear_translates_zero : ∀ (ι : Type) [Fintype ι] (H : ι → Type) [∀ i, NormedAddCommGroup (H i)] [∀ i, InnerProductSpace ℂ (H i)] [∀ i, CompleteSpace (H i)] (G : ι → Type) [∀ i, Group (G i)] (π : ∀ i, G i →* (H i →L[ℂ] H i)), (∀ i g x, ‖π i g x‖ = ‖x‖) → (∀ i, ∀ B : H i →L[ℂ] H i, (∀ g, B.comp (π i g) = (π i g).comp B) → ∃ c : ℂ, B = c • ContinuousLinearMap.id ℂ (H i)) → ∀ (Sm : ∀ i, Submodule ℂ (H i)), (∀ i, Dense (Sm i : Set (H i))) → ∀ (hinv : ∀ i g, ∀ x ∈ Sm i, π i g x ∈ Sm i) (L : MultilinearMap ℂ (fun i => Sm i) ℂ) (C : ℝ), (∀ v, ‖L v‖ ≤ C * ∏ i, ‖(v i : H i)‖) → ∀ (n : ℕ) (c : Fin n → ℂ) (v : Fin n → ∀ i, Sm i), (∀ g : ∀ i, G i, ∑ j, c j * L (fun i => ⟨π i (g i) (v j i), hinv i (g i) _ (v j i).2⟩) = 0) → ∀ (φ : ∀ i, H i) (u : ∀ i, Sm i), (∑ j, c j * ∏ i, ⟪φ i, (v j i : H i)⟫_ℂ) * L u = 0 := by
   intro ι _ H _ _ _ G _ π hu hs Sm hd hinv L C hL n c v hv φ u
   classical

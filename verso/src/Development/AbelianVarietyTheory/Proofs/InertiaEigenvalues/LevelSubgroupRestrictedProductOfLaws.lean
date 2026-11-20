@@ -23,16 +23,28 @@ section Generic
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `Units.ext (mix_self e _)`.
+-/
 theorem piece_one {e : A} (he : e * e = e) : piece he (1 : GL n A) = 1 :=
   Units.ext (mix_self e _)
 
+/- English proof (translation)
+The claim follows from `Units.ext (by show e • (x.1 * y.1) + (1 - e) • (1 : Matrix n n A) = (e • x.1 + (1 - e) • 1) * (e • y.1 + (1 - e) • 1) rw [mix_mul he, Matrix.one_mul])`.
+-/
 theorem piece_mul' {e : A} (he : e * e = e) (x y : GL n A) : piece he (x * y) = piece he x * piece he y :=
   Units.ext (by
     show e • (x.1 * y.1) + (1 - e) • (1 : Matrix n n A) = (e • x.1 + (1 - e) • 1) * (e • y.1 + (1 - e) • 1)
     rw [mix_mul he, Matrix.one_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piece_inv' {e : A} (he : e * e = e) (x : GL n A) : (piece he x)⁻¹ = piece he x⁻¹ := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show b.1 * (e • x.1 + (1 - e) • (1 : Matrix n n A)) * (b⁻¹).1 = e • (b.1 * x.1 * (b⁻¹).1) + (1 - e) • (1 : Matrix n n A)`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Units.mul_inv]`.
+-/
 theorem piece_conj {e : A} (he : e * e = e) (b x : GL n A) :
     b * piece he x * b⁻¹ = piece he (b * x * b⁻¹) := by
   apply Units.ext
@@ -41,10 +53,16 @@ theorem piece_conj {e : A} (he : e * e = e) (b x : GL n A) :
   rw [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mul,
     Matrix.mul_one, Units.mul_inv]
 
+/- English proof (translation)
+Simplify using `using piece_conj he b⁻¹ x`.
+-/
 theorem piece_conj' {e : A} (he : e * e = e) (b x : GL n A) :
     b⁻¹ * piece he x * b = piece he (b⁻¹ * x * b) := by
   simpa using piece_conj he b⁻¹ x
 
+/- English proof (translation)
+Establish `h : (piece he x).1 - 1 = e • (x.1 - 1)` using `by show e • x.1 + (1 - e) • (1 : Matrix n n A) - 1 = _`. Rewrite using `[smul_sub, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[h, smul_smul, he]`.
+-/
 theorem smul_piece_sub {e : A} (he : e * e = e) (x : GL n A) :
     e • ((piece he x).1 - 1) = (piece he x).1 - 1 := by
   have h : (piece he x).1 - 1 = e • (x.1 - 1) := by
@@ -52,12 +70,21 @@ theorem smul_piece_sub {e : A} (he : e * e = e) (x : GL n A) :
     rw [smul_sub, sub_smul, one_smul]; abel
   rw [h, smul_smul, he]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piece_apply {e : A} (he : e * e = e) (x : GL n A) (i j : n) :
     (piece he x).1 i j = e * x.1 i j + (1 - e) * (1 : Matrix n n A) i j := rfl
 
+/- English proof (translation)
+Take the linear combination `(-x) * he`.
+-/
 theorem mul_one_sub_mul {e : A} (he : e * e = e) (x : A) : e * ((1 - e) * x) = 0 := by
   linear_combination (-x) * he
 
+/- English proof (translation)
+Establish `e1 : M * (e • M' + (1 - e) • (1 : Matrix n n A)) - 1 = (1 - e) • (M - 1)`. Rewrite using `[Matrix.mul_add, Matrix.mul_smul, Matrix.mul_smul, h, Matrix.mul_one, sub_smul, sub_smul, one_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Conclude with `mul_one_sub_mul he _`.
+-/
 theorem triv_gen {e : A} (he : e * e = e) (M M' : Matrix n n A) (h : M * M' = 1) (a b : n) :
     e * (M * (e • M' + (1 - e) • (1 : Matrix n n A)) - 1) a b = 0 := by
   have e1 : M * (e • M' + (1 - e) • (1 : Matrix n n A)) - 1 = (1 - e) • (M - 1) := by
@@ -66,10 +93,16 @@ theorem triv_gen {e : A} (he : e * e = e) (M M' : Matrix n n A) (h : M * M' = 1)
   rw [e1]
   exact mul_one_sub_mul he _
 
+/- English proof (translation)
+Simplify using `only [map_add, map_mul, map_sub, map_one]`.
+-/
 theorem map_mix {B : Type} [CommRing B] (ψ : A →+* B) (e m d : A) :
     ψ (e * m + (1 - e) * d) = ψ e * ψ m + (1 - ψ e) * ψ d := by
   simp only [map_add, map_mul, map_sub, map_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_one_apply {B : Type} [CommRing B] (ψ : A →+* B) (i j : n) :
     ψ ((1 : Matrix n n A) i j) = (1 : Matrix n n B) i j := by
   rw [Matrix.one_apply, Matrix.one_apply]
@@ -81,6 +114,9 @@ section Stab
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Establish `: β⁻¹ * frGL β y * β = intGL F E n y` using `by show β⁻¹ * (β * intGL F E n y * β⁻¹) * β = _ group`. Rewrite using `[this]`. Conclude with `(y.1 i j).2`.
+-/
 theorem int_of_mem_St {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx : x ∈ St β) (i j : Fin n) :
     (β⁻¹ * x * β).1 i j ∈ Formalism.L2.Herm.intAf F E := by
   obtain ⟨y, rfl⟩ := hx
@@ -90,6 +126,15 @@ theorem int_of_mem_St {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hx 
   rw [this]
   exact (y.1 i j).2
 
+/- English proof (translation)
+Set `M : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, a1 i j⟩`. Set `M' : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf F E)` to `fun i j => ⟨_, a2 i j⟩`. Establish `hM : (Formalism.L2.Herm.intAf F E).subtype.mapMatrix M = (β⁻¹ * x * β).1` using `rfl`. Establish `hM' : (Formalism.L2.Herm.intAf F E).subtype.mapMatrix M' = (β⁻¹ * x⁻¹ * β).1` using `rfl`. Establish `inj : Function.Injective ((Formalism.L2.Herm.intAf F E).subtype.mapMatrix (m` using `Fin n)) := by`.
+
+Introduce `A B h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `p1 : M * M' = 1` using `inj (by`. Rewrite using `[map_mul, map_one, hM, hM', ← Units.val_mul]`.
+
+Simplify using `[mul_assoc])`. Establish `p2 : M' * M = 1` using `inj (by`. Rewrite using `[map_mul, map_one, hM, hM', ← Units.val_mul]`. Simplify using `[mul_assoc])`. Use `⟨⟨M, M', p1, p2⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `: intGL F E n ⟨M, M', p1, p2⟩ = β⁻¹ * x * β` using `Units.ext hM`. Use `show β * intGL F E n ⟨M, M', p1, p2⟩ * β⁻¹ = x`. Rewrite using `[this]`. Use `group`.
+-/
 theorem mem_St_of_int {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (a1 : ∀ i j, (β⁻¹ * x * β).1 i j ∈ Formalism.L2.Herm.intAf F E)
     (a2 : ∀ i j, (β⁻¹ * x⁻¹ * β).1 i j ∈ Formalism.L2.Herm.intAf F E) : x ∈ St β := by
@@ -110,6 +155,11 @@ theorem mem_St_of_int {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
   show β * intGL F E n ⟨M, M', p1, p2⟩ * β⁻¹ = x
   rw [this]; group
 
+/- English proof (translation)
+Establish `h1 : intGL F E n (piece hφ y) = piece he (intGL F E n y)`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show (((piece hφ y).1 i j : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) = (φ : E ⊗[F] Formalism.L2.Herm.Af F) * ((y.1 i j : Formalism.L2.Herm.intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) + (1 - (φ : E ⊗[F] Formalism.L2.Herm.Af F)) * (1 : Matrix (Fin n) (Fin n) (E …`. Rewrite using `[piece_apply, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use `show piece he (β * intGL F E n y * β⁻¹) = β * intGL F E n (piece hφ y) * β⁻¹`. Rewrite using `[h1, piece_conj]`.
+-/
 theorem piece_frGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {φ : Formalism.L2.Herm.intAf F E} (hφ : φ * φ = φ)
     (he : (φ : E ⊗[F] Formalism.L2.Herm.Af F) * φ = φ) (y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
     piece he (frGL β y) = frGL β (piece hφ y) := by
@@ -124,12 +174,20 @@ theorem piece_frGL (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {φ : For
   show piece he (β * intGL F E n y * β⁻¹) = β * intGL F E n (piece hφ y) * β⁻¹
   rw [h1, piece_conj]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Rewrite using `[piece_frGL β hφ he]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem piece_mem_St {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {φ : Formalism.L2.Herm.intAf F E} (hφ : φ * φ = φ)
     (he : (φ : E ⊗[F] Formalism.L2.Herm.Af F) * φ = φ) (hx : x ∈ St β) : piece he x ∈ St β := by
   obtain ⟨y, rfl⟩ := hx
   rw [piece_frGL β hφ he]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Rewrite using `[piece_frGL β hφ he, redFn_frGL, redFn_frGL]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show resS F PP ((piece hφ y).1 i j) = resS F PP (y.1 i j)`.
+
+Rewrite using `[piece_apply, map_add, map_mul, map_mul, h, map_sub, h, map_one, sub_self, zero_mul, add_zero, one_mul]`.
+-/
 theorem redFn_piece {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {φ : Formalism.L2.Herm.intAf F E} (hφ : φ * φ = φ)
     (he : (φ : E ⊗[F] Formalism.L2.Herm.Af F) * φ = φ) (hx : x ∈ St β) (PP : Pl E) (h : resS F PP φ = 1) :
     redFn β PP (piece he x) = redFn β PP x := by
@@ -140,6 +198,9 @@ theorem redFn_piece {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {φ : 
   show resS F PP ((piece hφ y).1 i j) = resS F PP (y.1 i j)
   rw [piece_apply, map_add, map_mul, map_mul, h, map_sub, h, map_one, sub_self, zero_mul, add_zero, one_mul]
 
+/- English proof (translation)
+The claim follows from `redFn_eq_one β PP _ hx φ h (smul_piece_sub he x)`.
+-/
 theorem redFn_piece_eq_one {β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {φ : Formalism.L2.Herm.intAf F E}
     (he : (φ : E ⊗[F] Formalism.L2.Herm.Af F) * φ = φ) (hx : piece he x ∈ St β) (PP : Pl E) (h : resS F PP φ = 0) :
     redFn β PP (piece he x) = 1 :=
@@ -154,6 +215,11 @@ variable {D : D7}
 def phi (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : Formalism.L2.Herm.intAf D.host.F D.host.E :=
   adS D.host.F D.host.E (idemAd fun w => w = v)
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `FiniteAdeleRing.ext _ fun w => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : w = v`. Establish `e` using `idemAd_pos (F := D.host.F) (P := fun w => w = v) (v := w) h`. Conclude with `(congrArg₂ (· * ·) e e).trans ((one_mul _).trans e.symm)`. Establish `e` using `idemAd_neg (F := D.host.F) (P := fun w => w = v) (v := w) h`. Conclude with `(congrArg₂ (· * ·) e e).trans ((zero_mul _).trans e.symm)`.
+-/
 theorem phi_idem (v : HeightOneSpectrum (𝓞 D.host.F)) : phi D v * phi D v = phi D v := by
   unfold phi
   rw [← map_mul]
@@ -166,35 +232,61 @@ theorem phi_idem (v : HeightOneSpectrum (𝓞 D.host.F)) : phi D v * phi D v = p
   · have e := idemAd_neg (F := D.host.F) (P := fun w => w = v) (v := w) h
     exact (congrArg₂ (· * ·) e e).trans ((zero_mul _).trans e.symm)
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val (phi_idem v)`.
+-/
 theorem phi_idem' (v : HeightOneSpectrum (𝓞 D.host.F)) :
     (phi D v : Formalism.IndefR.Lev.EAf D) * (phi D v : Formalism.IndefR.Lev.EAf D) = (phi D v : Formalism.IndefR.Lev.EAf D) :=
   congrArg Subtype.val (phi_idem v)
 
+/- English proof (translation)
+The claim follows from `resS_idemAd_pos PP (PP.under (𝓞 D.host.F)) rfl h`.
+-/
 theorem resS_phi_pos {PP : Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)} (h : PP.under (𝓞 D.host.F) = v) :
     resS D.host.F PP (phi D v) = 1 :=
   resS_idemAd_pos PP (PP.under (𝓞 D.host.F)) rfl h
 
+/- English proof (translation)
+The claim follows from `resS_idemAd_neg PP (PP.under (𝓞 D.host.F)) rfl h`.
+-/
 theorem resS_phi_neg {PP : Pl D.host.E} {v : HeightOneSpectrum (𝓞 D.host.F)} (h : ¬ PP.under (𝓞 D.host.F) = v) :
     resS D.host.F PP (phi D v) = 0 :=
   resS_idemAd_neg PP (PP.under (𝓞 D.host.F)) rfl h
 
 def epsF (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : AF D.host.F := (exists_placeIdem (D := D) v).choose
 
+/- English proof (translation)
+The claim follows from `(exists_placeIdem (D := D) v).choose_spec`.
+-/
 theorem epsF_spec (v : HeightOneSpectrum (𝓞 D.host.F)) : IsPlaceIdem D v (epsF D v) :=
   (exists_placeIdem (D := D) v).choose_spec
 
 def fE (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) : AE D := algebraMap _ _ (epsF D v)
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_comp D`. Conclude with `place_idem hΦ (epsF_spec v)`.
+-/
 theorem fE_idem (v : HeightOneSpectrum (𝓞 D.host.F)) : fE D v * fE D v = fE D v := by
   obtain ⟨Φ, hΦ⟩ := exists_comp D
   exact place_idem hΦ (epsF_spec v)
 
+/- English proof (translation)
+The claim follows from `cA_algebraMap _`.
+-/
 theorem fE_conj (v : HeightOneSpectrum (𝓞 D.host.F)) : cA D (fE D v) = fE D v := cA_algebraMap _
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `exists_comp D`. Conclude with `(place_comp hΦ (epsF_spec v)).1`.
+-/
 theorem fE_inf (v : HeightOneSpectrum (𝓞 D.host.F)) : infPart D (fE D v) = 0 := by
   obtain ⟨Φ, hΦ⟩ := exists_comp D
   exact (place_comp hΦ (epsF_spec v)).1
 
+/- English proof (translation)
+Take `⟨α, h, h1, h0⟩` from `epsF_spec (D := D) v`. Establish `hα : α = ((idemAd (F` using `D.host.F) fun w => w = v : _) : _) := FiniteAdeleRing.ext _ fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `h1.trans (idemAd_pos (F := D.host.F) (P := fun w' => w' = w) (v := w) rfl).symm`.
+
+Conclude with `(h0 w hw).trans (idemAd_neg (F := D.host.F) (P := fun w' => w' = v) (v := w) hw).symm`. Unfold `fE`. Rewrite using `[h, hα]`. Both sides reduce to the same expression.
+-/
 theorem finSw_fE (v : HeightOneSpectrum (𝓞 D.host.F)) : finSw D (fE D v) = (phi D v : Formalism.IndefR.Lev.EAf D) := by
   obtain ⟨α, h, h1, h0⟩ := epsF_spec (D := D) v
   have hα : α = ((idemAd (F := D.host.F) fun w => w = v : _) : _) := FiniteAdeleRing.ext _ fun w => by
@@ -213,13 +305,27 @@ def cmp (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) : GA D V →* GA D V
 
 variable (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_cmp : mt V (cmp V v g) = fE D v • mt V g + (1 - fE D v) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) := rfl
 
+/- English proof (translation)
+The claim follows from `(suppF_iff V _ _).2 (smul_mix (fE_idem v) (mt_cmp V v g))`.
+-/
 theorem cmp_supp : SuppF V (fE D v) (cmp V v g) :=
   (suppF_iff V _ _).2 (smul_mix (fE_idem v) (mt_cmp V v g))
 
+/- English proof (translation)
+The claim follows from `mem_GfC_of_suppF V (fE_inf v) (cmp_supp V v g)`.
+-/
 theorem cmp_mem_GfC : cmp V v g ∈ GfC V := mem_GfC_of_suppF V (fE_inf v) (cmp_supp V v g)
 
+/- English proof (translation)
+Introduce `a b`. Establish `e1 : mt V g * mt V g⁻¹ = 1` using `by rw [← GlobalTheory.IdemSupport.mt_mul, mul_inv_cancel, GlobalTheory.IdemSupport.mt_one]`. Establish `e : mt V (g * (cmp V v g)⁻¹) = mt V g * (fE D v • mt V g⁻¹ + (1 - fE D v) • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)))`. Rewrite using `[← map_inv, GlobalTheory.IdemSupport.mt_mul, mt_cmp]`. Rewrite using `[e]`.
+
+Conclude with `triv_gen (fE_idem v) _ _ e1 a b`.
+-/
 theorem cmp_triv : TrivAt V (fE D v) (g * (cmp V v g)⁻¹) := by
   intro a b
   have e1 : mt V g * mt V g⁻¹ = 1 := by rw [← GlobalTheory.IdemSupport.mt_mul, mul_inv_cancel, GlobalTheory.IdemSupport.mt_one]
@@ -229,6 +335,9 @@ theorem cmp_triv : TrivAt V (fE D v) (g * (cmp V v g)⁻¹) := by
   rw [e]
   exact triv_gen (fE_idem v) _ _ e1 a b
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `(map_mix (finSw D) (fE D v) (mt V g i j) ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j)).trans ?_` and prove the remaining obligations. Rewrite using `[finSw_fE, map_one_apply]`. Both sides reduce to the same expression.
+-/
 theorem finE_cmp : finE V (cmp V v g) = piece (phi_idem' v) (finE V g) := by
   apply Units.ext
   ext i j
@@ -242,6 +351,9 @@ section Local
 
 variable {D : D7} {ι : Formalism.L2.DIV.AfE D.host.F D.host.E →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E}
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+-/
 theorem one_int {n : ℕ} (i j : Fin n) :
     (1 : Matrix (Fin n) (Fin n) (Formalism.IndefR.Lev.EAf D)) i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := by
   rw [Matrix.one_apply]
@@ -254,12 +366,18 @@ def badPl (ι : Formalism.L2.DIV.AfE D.host.F D.host.E →+* FiniteAdeleRing (�
   (fun Q : HeightOneSpectrum (𝓞 D.host.E) => Q.under (𝓞 D.host.F)) ''
     {Q | ι a Q ∉ Q.adicCompletionIntegers D.host.E}
 
+/- English proof (translation)
+The claim follows from `(Filter.eventually_cofinite.1 (ι a).2).image _`.
+-/
 theorem badPl_finite (a : Formalism.IndefR.Lev.EAf D) : (badPl ι a).Finite :=
   (Filter.eventually_cofinite.1 (ι a).2).image _
 
 variable (hι : ∀ x a, ι (x ⊗ₜ[D.host.F] a) = algebraMap D.host.E _ x * GlobalTheory.AdeleBaseChange.adMap D.host.F D.host.E a)
 include hι
 
+/- English proof (translation)
+Use `show ι ((1 : D.host.E) ⊗ₜ[D.host.F] _) = _`. Rewrite using `[hι, map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem ι_phi (v : HeightOneSpectrum (𝓞 D.host.F)) :
     ι (phi D v : Formalism.IndefR.Lev.EAf D) =
       GlobalTheory.AdeleBaseChange.adMap D.host.F D.host.E ((idemAd (F := D.host.F) fun w => w = v : _) : _) := by
@@ -267,35 +385,56 @@ theorem ι_phi (v : HeightOneSpectrum (𝓞 D.host.F)) :
   rw [hι, map_one, one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ι_phi hι, GlobalTheory.AdeleBaseChange.adMap_apply]`. Conclude with `(congrArg _ (idemAd_pos (F := D.host.F) (P := fun w => w = v) (v := Q.under (𝓞 D.host.F)) h)).trans (map_one _)`.
+-/
 theorem ι_phi_pos {Q : HeightOneSpectrum (𝓞 D.host.E)} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (h : Q.under (𝓞 D.host.F) = v) : ι (phi D v : Formalism.IndefR.Lev.EAf D) Q = 1 := by
   rw [ι_phi hι, GlobalTheory.AdeleBaseChange.adMap_apply]
   exact (congrArg _ (idemAd_pos (F := D.host.F) (P := fun w => w = v) (v := Q.under (𝓞 D.host.F)) h)).trans (map_one _)
 
+/- English proof (translation)
+Rewrite using `[ι_phi hι, GlobalTheory.AdeleBaseChange.adMap_apply]`. Conclude with `(congrArg _ (idemAd_neg (F := D.host.F) (P := fun w => w = v) (v := Q.under (𝓞 D.host.F)) h)).trans (map_zero _)`.
+-/
 theorem ι_phi_neg {Q : HeightOneSpectrum (𝓞 D.host.E)} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (h : ¬ Q.under (𝓞 D.host.F) = v) : ι (phi D v : Formalism.IndefR.Lev.EAf D) Q = 0 := by
   rw [ι_phi hι, GlobalTheory.AdeleBaseChange.adMap_apply]
   exact (congrArg _ (idemAd_neg (F := D.host.F) (P := fun w => w = v) (v := Q.under (𝓞 D.host.F)) h)).trans (map_zero _)
 
+/- English proof (translation)
+Rewrite using `[map_mix ι]`. Both sides reduce to the same expression.
+-/
 theorem ι_mix (Q : HeightOneSpectrum (𝓞 D.host.E)) (e a c : Formalism.IndefR.Lev.EAf D) :
     ι (e * a + (1 - e) * c) Q = ι e Q * ι a Q + (1 - ι e Q) * ι c Q := by
   rw [map_mix ι]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ι_mix hι, ι_phi_pos hι h, one_mul, sub_self, zero_mul, add_zero]`.
+-/
 theorem ι_mix_pos {Q : HeightOneSpectrum (𝓞 D.host.E)} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (h : Q.under (𝓞 D.host.F) = v) (a c : Formalism.IndefR.Lev.EAf D) :
     ι ((phi D v : Formalism.IndefR.Lev.EAf D) * a + (1 - (phi D v : Formalism.IndefR.Lev.EAf D)) * c) Q = ι a Q := by
   rw [ι_mix hι, ι_phi_pos hι h, one_mul, sub_self, zero_mul, add_zero]
 
+/- English proof (translation)
+Rewrite using `[ι_mix hι, ι_phi_neg hι h, zero_mul, sub_zero, one_mul, zero_add]`.
+-/
 theorem ι_mix_neg {Q : HeightOneSpectrum (𝓞 D.host.E)} {v : HeightOneSpectrum (𝓞 D.host.F)}
     (h : ¬ Q.under (𝓞 D.host.F) = v) (a c : Formalism.IndefR.Lev.EAf D) :
     ι ((phi D v : Formalism.IndefR.Lev.EAf D) * a + (1 - (phi D v : Formalism.IndefR.Lev.EAf D)) * c) Q = ι c Q := by
   rw [ι_mix hι, ι_phi_neg hι h, zero_mul, sub_zero, one_mul, zero_add]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h Q => GlobalTheory.AdeleBaseChange.map_mem_int hι h Q, fun h => GlobalTheory.AdeleBaseChange.mem_int_of_map hι h⟩`.
+-/
 theorem int_iff (a : Formalism.IndefR.Lev.EAf D) : a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔
     ∀ Q : HeightOneSpectrum (𝓞 D.host.E), ι a Q ∈ Q.adicCompletionIntegers D.host.E :=
   ⟨fun h Q => GlobalTheory.AdeleBaseChange.map_mem_int hι h Q, fun h => GlobalTheory.AdeleBaseChange.mem_int_of_map hι h⟩
 
+/- English proof (translation)
+The claim follows from `(int_iff hι a).2 fun Q => by have := (int_iff hι _).1 (h (Q.under (𝓞 D.host.F))) Q rwa [ι_mix_pos hι rfl] at this`.
+-/
 theorem int_of_local (a c : Formalism.IndefR.Lev.EAf D)
     (h : ∀ v, (phi D v : Formalism.IndefR.Lev.EAf D) * a + (1 - (phi D v : Formalism.IndefR.Lev.EAf D)) * c ∈
       Formalism.L2.Herm.intAf D.host.F D.host.E) : a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E :=
@@ -303,6 +442,9 @@ theorem int_of_local (a c : Formalism.IndefR.Lev.EAf D)
     have := (int_iff hι _).1 (h (Q.under (𝓞 D.host.F))) Q
     rwa [ι_mix_pos hι rfl] at this
 
+/- English proof (translation)
+The claim follows from `(int_iff hι _).2 fun Q => by by_cases h : Q.under (𝓞 D.host.F) = v · rw [ι_mix_pos hι h] by_contra hn exact hv ⟨Q, hn, h⟩ · rw [ι_mix_neg hι h] exact (int_iff hι c).1 hc Q`.
+-/
 theorem int_off {v : HeightOneSpectrum (𝓞 D.host.F)} {a c : Formalism.IndefR.Lev.EAf D} (hv : v ∉ badPl ι a)
     (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) :
     (phi D v : Formalism.IndefR.Lev.EAf D) * a + (1 - (phi D v : Formalism.IndefR.Lev.EAf D)) * c ∈
@@ -321,12 +463,26 @@ section Level
 
 variable {D : D7} {V : HSp D} {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank}
 
+/- English proof (translation)
+Distinguish the cases in `h : PP.under (𝓞 D.host.F) = v`. Conclude with `Or.inl (redFn_piece (phi_idem v) _ hS PP (resS_phi_pos h))`. Conclude with `Or.inr (redFn_piece_eq_one _ (piece_mem_St (phi_idem v) _ hS) PP (resS_phi_neg h))`.
+-/
 theorem red_cases {x : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} (hS : x ∈ St β) (v : HeightOneSpectrum (𝓞 D.host.F))
     (PP : Pl D.host.E) : redFn β PP (piece (phi_idem' v) x) = redFn β PP x ∨ redFn β PP (piece (phi_idem' v) x) = 1 := by
   by_cases h : PP.under (𝓞 D.host.F) = v
   · exact Or.inl (redFn_piece (phi_idem v) _ hS PP (resS_phi_pos h))
   · exact Or.inr (redFn_piece_eq_one _ (piece_mem_St (phi_idem v) _ hS) PP (resS_phi_neg h))
 
+/- English proof (translation)
+Establish `hx : finE V g ∈ lev D.sp.cm V.gram β L` using `hg.2`. Establish `hS` using `parLev_St hx.1`. Establish `hU` using `finE_mem_UA V (cmp V v g)`. Use `⟨cmp_mem_GfC V v g, ?_⟩` and prove the remaining obligations. Use `show finE V (cmp V v g) ∈ lev D.sp.cm V.gram β L`.
+
+Rewrite `hU`, the goal using `[finE_cmp]`. Establish `hSv` using `piece_mem_St (phi_idem v) (phi_idem' v) hS`. Establish `h1 : rTup β L (finE V g) = 1`. Use `hx.2` as an intermediate fact. Rewrite `this` using `[hH]`.
+
+Conclude with `Subgroup.mem_bot.1 this`. Use `mem_lev.2 ⟨mem_parLev.2 ⟨hU, hSv, fun PP hP => ?_, fun PP hP => ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases red_cases hS v PP with e | e <;> rw [e]`. Conclude with `parLev_g hx.1 hP`. Conclude with `Subgroup.one_mem _`.
+
+Apply the tactic sequence `rcases red_cases hS v PP with e | e <;> rw [e]`. Conclude with `parLev_q hx.1 hP`. Conclude with `Subgroup.one_mem _`. Rewrite using `[hH]`. Use `Subgroup.mem_bot.2 (funext fun PP => ?_)` and prove the remaining obligations.
+
+Use `show upperLeftBlock L.hr (redFn β PP.1 _) = 1`. Apply the tactic sequence `rcases red_cases hS v PP.1 with e | e <;> rw [e]`. Conclude with `congrFun h1 PP`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+-/
 theorem cmp_mem_of_mem (hH : L.P.H = ⊥) {g : GA D V} (hg : g ∈ levG V β L) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     cmp V v g ∈ levG V β L := by
   have hx : finE V g ∈ lev D.sp.cm V.gram β L := hg.2
@@ -354,6 +510,19 @@ theorem cmp_mem_of_mem (hH : L.P.H = ⊥) {g : GA D V} (hg : g ∈ levG V β L) 
     · exact congrFun h1 PP
     · exact blockDiagonalExtendByOnePrimeField_one _ _
 
+/- English proof (translation)
+Take `⟨ι, hι⟩` from `GlobalTheory.AdeleBaseChange.exists_toAd D.host.F D.host.E`. Establish `hxv : ∀ v, piece (phi_idem' v) (finE V g) ∈ lev D.sp.cm V.gram β L` using `fun v => by`. Establish `: finE V (cmp V v g) ∈ lev D.sp.cm V.gram β L` using `(h v).2`. Rewrite `this` using `[finE_cmp]`. Then use the resulting hypothesis. Establish `hSt : ∀ v, piece (phi_idem' v) (finE V g) ∈ St β` using `fun v => parLev_St (hxv v).1`.
+
+Establish `hS : finE V g ∈ St β`. Use `mem_St_of_int (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Use `int_of_local hι _ ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) i j) fun v => ?_` and prove the remaining obligations. Use `int_of_mem_St (hSt v) i j` as an intermediate fact. Rewrite `this` using `[piece_conj']`.
+
+Conclude with `this`. Use `int_of_local hι _ ((1 : Matrix (Fin V.rank) (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) i j) fun v => ?_` and prove the remaining obligations. Use `int_of_mem_St ((St β).inv_mem (hSt v)) i j` as an intermediate fact. Rewrite `this` using `[piece_inv', piece_conj']`. Conclude with `this`.
+
+Establish `hr : ∀ PP : Pl D.host.E, redFn β PP (finE V g) = redFn β PP (piece (phi_idem' (PP.under (𝓞 D.host.F))) (finE V g))` using `fun PP => (redFn_piece (phi_idem _) _ hS PP (resS_phi_pos rfl)).symm`. Use `⟨hf, mem_lev.2 ⟨mem_parLev.2 ⟨finE_mem_UA V g, hS, fun PP hP => ?_, fun PP hP => ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hr PP]`. Conclude with `parLev_g (hxv _).1 hP`. Rewrite using `[hr PP]`.
+
+Conclude with `parLev_q (hxv _).1 hP`. Rewrite using `[hH]`. Use `Subgroup.mem_bot.2 (funext fun PP => ?_)` and prove the remaining obligations. Use `show upperLeftBlock L.hr (redFn β PP.1 _) = 1`. Rewrite using `[hr PP.1]`.
+
+Establish `h2` using `(hxv (PP.1.under (𝓞 D.host.F))).2`. Rewrite `h2` using `[hH]`. Conclude with `congrFun (Subgroup.mem_bot.1 h2) PP`.
+-/
 theorem mem_of_cmp_mem (hH : L.P.H = ⊥) {g : GA D V} (hf : g ∈ GfC V) (h : ∀ v, cmp V v g ∈ levG V β L) :
     g ∈ levG V β L := by
   obtain ⟨ι, hι⟩ := GlobalTheory.AdeleBaseChange.exists_toAd D.host.F D.host.E
@@ -387,6 +556,15 @@ theorem mem_of_cmp_mem (hH : L.P.H = ⊥) {g : GA D V} (hf : g ∈ GfC V) (h : �
     rw [hH] at h2
     exact congrFun (Subgroup.mem_bot.1 h2) PP
 
+/- English proof (translation)
+Take `⟨ι, hι⟩` from `GlobalTheory.AdeleBaseChange.exists_toAd D.host.F D.host.E`. Establish `hB : ((⋃ i, ⋃ j, badPl ι ((β⁻¹ * finE V g * β).1 i j)) ∪ (⋃ i, ⋃ j, badPl ι ((β⁻¹ * (finE V g)⁻¹ * β).1 i j)) ∪ ((fun Q : HeightOneSpectrum (𝓞 D.host.E) => Q.under (𝓞 D.host.F)) '' ((L.Pg : Set _) ∪ (L.Q : Set _)))).Finite` using `((Set.finite_iUnion fun i => Set.finite_iUnion fun j => badPl_finite _).union (Set.finite_iUnion fun i => Set.finite_iUnion fun j => badPl_finite _)).union ((L.Pg.finite_toSet.union L.Q.finite_toSet).image _)`. Use `hB.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hvB`. Apply `hv` to reduce the goal to its premises.
+
+Simplify using `only [Set.mem_union, Set.mem_iUnion, not_or, not_exists] at hvB`. Take `⟨⟨a1, a2⟩, a3⟩` from `hvB`. Establish `hS : piece (phi_idem' v) (finE V g) ∈ St β`. Use `mem_St_of_int (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[piece_conj']`.
+
+Conclude with `int_off hι (a1 i j) (one_int i j)`. Rewrite using `[piece_inv', piece_conj']`. Conclude with `int_off hι (a2 i j) (one_int i j)`. Establish `hU` using `finE_mem_UA V (cmp V v g)`. Use `⟨cmp_mem_GfC V v g, ?_⟩` and prove the remaining obligations.
+
+Use `show finE V (cmp V v g) ∈ lev D.sp.cm V.gram β L`. Rewrite `hU`, the goal using `[finE_cmp]`. Use `mem_lev_of_red _ _ β L _ hU hS fun PP hPP => ?_` and prove the remaining obligations. Use `redFn_piece_eq_one _ hS PP (resS_phi_neg fun e => a3 ⟨PP, ?_, e⟩)` and prove the remaining obligations. Conclude with `hPP.imp (fun h => h) (fun h => h)`.
+-/
 theorem finite_cmp (g : GA D V) : {v | cmp V v g ∉ levG V β L}.Finite := by
   obtain ⟨ι, hι⟩ := GlobalTheory.AdeleBaseChange.exists_toAd D.host.F D.host.E
   have hB : ((⋃ i, ⋃ j, badPl ι ((β⁻¹ * finE V g * β).1 i j)) ∪ (⋃ i, ⋃ j, badPl ι ((β⁻¹ * (finE V g)⁻¹ * β).1 i j)) ∪
@@ -415,6 +593,15 @@ theorem finite_cmp (g : GA D V) : {v | cmp V v g ∉ levG V β L}.Finite := by
 
 end Level
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ _ i`. Establish `hH : (R.datWp i R.triv).P.H = ⊥` using `rfl`. Use `⟨fun k hk => hk.1, fun k _ => ?_, fun v => cmp (Wc D i) v, fun v f hf g => ?_, fun g hg => ⟨⟨fun h v => cmp_mem_of_mem hH h v, mem_of_cmp_mem hH hg⟩, finite_cmp g⟩⟩` and prove the remaining obligations. Unfold `levChi levFn`. Establish `h1 : ∀ x, ext1 (R.datWp i R.triv).P.H (R.datWp i R.triv).P.chi x = 1`.
+
+Introduce `x`. Unfold `ext1`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[h1, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul, Units.val_one]`. Introduce `PP hP`.
+
+Conclude with `absurd hP (Finset.notMem_empty _)`. Introduce `PP _`. Conclude with `Finset.prod_eq_one fun c hc => absurd hc (Finset.notMem_empty _)`. Take `⟨ε, hε, rfl⟩` from `hf`. Take `rfl` from `placeIdem_unique hε (epsF_spec v)`.
+
+Conclude with `⟨cmp_supp _ v g, cmp_triv _ v g⟩`.
+-/
 theorem levProd_of_laws : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type)
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i, LevProd R i := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ _ i

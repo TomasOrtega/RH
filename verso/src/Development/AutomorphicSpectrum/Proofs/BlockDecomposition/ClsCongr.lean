@@ -18,12 +18,20 @@ universe w w'
 
 section LES
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem cls_congr {R : Type} [CommRing R] {K : Cx.{w} R} {n : ℕ} {x y : K.X n} (h : x = y) (hx : K.d n x = 0)
     (hy : K.d n y = 0) : K.cls x hx = K.cls y hy := by
   subst h; rfl
 
 variable {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'}
 
+/- English proof (translation)
+Take `⟨x, hx, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj K n).1 z`. Establish `c1 : L.d n (φ.f n x) = 0` using `by rw [φ.comm, hx, map_zero]`. Establish `c2 : L'.d n (ψ.f n (φ.f n x)) = 0` using `by rw [ψ.comm, c1, map_zero]`. Establish `c3 : K'.d n (ψ'.f n x) = 0` using `by rw [ψ'.comm, hx, map_zero]`. Establish `c4 : L'.d n (φ'.f n (ψ'.f n x)) = 0` using `by rw [φ'.comm, c3, map_zero]`.
+
+Rewrite using `[CrystallineSemistableComparison.P.mapH_cls φ n x hx c1, CrystallineSemistableComparison.P.mapH_cls ψ n _ c1 c2, CrystallineSemistableComparison.P.mapH_cls ψ' n x hx c3, CrystallineSemistableComparison.P.mapH_cls φ' n _ c3 c4]`. Conclude with `cls_congr (h n x) _ _`.
+-/
 theorem sq_mapH {K L : Cx.{w} R} {K' L' : Cx.{w'} R'} (φ : Cx.Hom K L (RingHom.id R)) (ψ : Cx.Hom L L' σ)
     (φ' : Cx.Hom K' L' (RingHom.id R')) (ψ' : Cx.Hom K K' σ)
     (h : ∀ n x, ψ.f n (φ.f n x) = φ'.f n (ψ'.f n x)) (n : ℕ) (z : K.H n) :
@@ -39,6 +47,21 @@ theorem sq_mapH {K L : Cx.{w} R} {K' L' : Cx.{w'} R'} (φ : Cx.Hom K L (RingHom.
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ι → Type} [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]
 
+/- English proof (translation)
+Introduce `j`. Use `choose δ hδ h0 e1 e2 e3 using fun i => CrystallineSemistableComparison.P.les (f i) (g i) (hf i) (hfg i) (hg i)`. Take `⟨δ', hδ', h0', e1', e2', e3'⟩` from `CrystallineSemistableComparison.P.les f' g' hf' hfg' hg'`. Establish `dcomm : ∀ i n k z, (a i n).mapH (k + 1) (δ i k z) = δ' k ((c i n).mapH k z)`. Introduce `i n k z`.
+
+Take `⟨m, hm, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj (M i) k).1 z`. Take `⟨y, rfl⟩` from `hg i k m`. Take `⟨x, hx⟩` from `CrystallineSemistableComparison.CechClassBoundaries.conn_ex (f i) (g i) (hfg i) y hm`. Establish `hxc` using `CrystallineSemistableComparison.CechClassBoundaries.conn_cyc (f i) (hf i) y x hx`. Establish `c3 : K'.d (k + 1) ((a i n).f (k + 1) x) = 0` using `by rw [(a i n).comm, hxc, map_zero]`.
+
+Establish `c4 : M'.d k ((c i n).f k ((g i).f k y)) = 0` using `by rw [(c i n).comm, hm, map_zero]`. Establish `c5 : M'.d k (g'.f k ((b i n).f k y)) = 0` using `by rw [← hbc]; exact c4`. Rewrite using `[hδ i k y x hm hxc hx, CrystallineSemistableComparison.P.mapH_cls (a i n) _ x hxc c3, CrystallineSemistableComparison.P.mapH_cls (c i n) k _ hm c4, cls_congr (hbc i n k y) c4 c5, hδ' k _ _ c5 c3 (by rw [← hab, hx, (b i n).comm])]`. Consider the cases of `j with`. Consider the case `zero`.
+
+Use `tens_five (M₁ := fun _ => PUnit.{w + 1}) (M₂ := fun _ => PUnit.{w + 1}) (L₁ := PUnit.{w' + 1}) (L₂ := PUnit.{w' + 1}) (fun _ => 0) (fun _ => 0) (fun i => (f i).mapH 0) (fun i => (g i).mapH 0) 0 0 (f'.mapH 0).toAddMonoidHom (g'.mapH 0).toAddMonoidHom (fun _ _ _ => 0) (fun _ _ _ => …` and prove the remaining obligations. Establish `: (0 : PUnit.{w + 1} →ₗ[R] (K i).H 0) x = 0` using `rfl`. Simplify using the standard rewrite rules. Conclude with `sq_mapH (f i) (b i n) f' (a i n) (hab i n) 0 x`. Conclude with `sq_mapH (g i) (c i n) g' (b i n) (hbc i n) 0 x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: y = 0` using `h0 i (h.trans (map_zero _).symm)`. Conclude with `⟨0, by simp [this]⟩`. Introduce and unpack `⟨t, rfl⟩`.
+
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: y = 0` using `h0' (h.trans (map_zero _).symm)`. Conclude with `⟨0, by simp [this]⟩`.
+
+Introduce and unpack `⟨t, rfl⟩`. Simplify using the standard rewrite rules. Consider the case `succ k`. Conclude with `tens_five (fun i => (g i).mapH k) (fun i => δ i k) (fun i => (f i).mapH (k + 1)) (fun i => (g i).mapH (k + 1)) (g'.mapH k).toAddMonoidHom (δ' k).toAddMonoidHom (f'.mapH (k + 1)).toAddMonoidHom (g'.mapH (k + 1)).toAddMonoidHom (fun i n x => (b i n).mapH k x) (fun i n x => (c i n). …`.
+-/
 theorem tens_les [∀ i, Module.Flat R (N i)]
     {K L M : ι → Cx.{w} R} {K' L' M' : Cx.{w'} R'}
     (f : ∀ i, Cx.Hom (K i) (L i) (RingHom.id R)) (g : ∀ i, Cx.Hom (L i) (M i) (RingHom.id R))

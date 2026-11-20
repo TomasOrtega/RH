@@ -16,17 +16,40 @@ open scoped Matrix ENNReal SchwartzMap
 
 namespace GlobalTheory.SvNForm
 
+/- English proof (translation)
+Establish `h1 : pPart (-w) = -pPart w` using `rfl`. Establish `h2 : qPart (-w) = -qPart w` using `rfl`. Simplify using `only [sympl, h1, h2, inner_neg_right, real_inner_comm (pPart w) (qPart w)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sympl_neg_self {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) : sympl w (-w) = 0 := by
   have h1 : pPart (-w) = -pPart w := rfl
   have h2 : qPart (-w) = -qPart w := rfl
   simp only [sympl, h1, h2, inner_neg_right, real_inner_comm (pPart w) (qPart w)]
   ring
 
+/- English proof (translation)
+Rewrite using `[rhoFun_rhoFun, sympl_neg_self, add_neg_cancel, rhoFun_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem rhoFun_neg_cancel {n : ℕ} (w : Fin n ⊕ Fin n → ℝ) (u : EuclideanSpace ℝ (Fin n) → ℂ) :
     rhoFun w (rhoFun (-w) u) = u := by
   rw [rhoFun_rhoFun, sympl_neg_self, add_neg_cancel, rhoFun_zero]
   simp
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `hB f'`. Use `set ip : ℂ := ∫ x, f x * starRingEnd ℂ (g x) with hip`. Use `set c : (Fin n ⊕ Fin n → ℝ) → ℂ := fun w => starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) with hc`. Establish `hcc : Continuous c` using `Complex.continuous_conj.comp (GlobalTheory.T.matrix_coeff_continuous_rapid_decay n g g').1`. Establish `hint : ∀ k m : ℕ, Integrable (fun w => ‖c w‖ * SchwartzMap.seminorm ℂ k m (G w))`.
+
+Introduce `k m`. Take `⟨C, N, hC⟩` from `hGb k m`. Use `set d : ℕ := Module.finrank ℝ (Fin n ⊕ Fin n → ℝ)`. Take `⟨C', hC'⟩` from `(GlobalTheory.T.matrix_coeff_continuous_rapid_decay n g g').2 (N + (d + 1))`. Establish `hsc : Continuous fun w => SchwartzMap.seminorm ℂ k m (G w)` using `((schwartz_withSeminorms ℂ (EuclideanSpace ℝ (Fin n)) ℂ).continuous_seminorm (k, m)).comp hGc`.
+
+Establish `hI : Integrable (fun w : Fin n ⊕ Fin n → ℝ => (1 + ‖w‖) ^ (-((d + 1 : ℕ) : ℝ)))` using `integrable_one_add_norm (by push_cast; linarith)`. Use `(hI.const_mul (C' * |C|)).mono' ((hcc.norm.mul hsc).aestronglyMeasurable) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `hpos : 0 < 1 + ‖w‖` using `by positivity`. Establish `e1 : ‖c w‖ = ‖∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)‖` using `by simp [hc]`. Establish `h1` using `hC' w`.
+
+Establish `h2` using `hC w`. Establish `hs0 : 0 ≤ SchwartzMap.seminorm ℂ k m (G w)` using `apply_nonneg _ _`. Rewrite using `[norm_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg _), abs_of_nonneg hs0, e1]`. Establish `hrp : (1 + ‖w‖) ^ (-((d + 1 : ℕ) : ℝ)) = ((1 + ‖w‖) ^ (d + 1))⁻¹`. Rewrite using `[Real.rpow_neg hpos.le, Real.rpow_natCast]`.
+
+Rewrite using `[hrp]`. Use `set M := ‖∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)‖`. Establish `hM : 0 ≤ M` using `norm_nonneg _`. Establish `hA : (0:ℝ) < (1 + ‖w‖) ^ N` using `by positivity`. Establish `hB' : (0:ℝ) < (1 + ‖w‖) ^ (d + 1)` using `by positivity`.
+
+Establish `h3 : SchwartzMap.seminorm ℂ k m (G w) ≤ |C| * (1 + ‖w‖) ^ N` using `h2.trans (mul_le_mul_of_nonneg_right (le_abs_self C) hA.le)`. Rewrite `h1` using `[pow_add]`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ |C| * C' * ((1 + ‖w‖) ^ (d + 1))⁻¹ := by gcongr`.
+
+Use `_ = C' * |C| * ((1 + ‖w‖) ^ (d + 1))⁻¹ := by ring`. Establish `hpt : ∀ x, (ip • g') x = ∫ w, c w * G w x`. Introduce `x`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, hc, hG]`. Rewrite using `[GlobalTheory.T.schrodinger_orthogonality_relation n f g g' x]`.
+
+Establish `key` using `GlobalTheory.T.schwartz_functional_integral_comm (Fin n ⊕ Fin n → ℝ) volume n L G c (ip • g') hGc hcc hint hpt`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem step (n : ℕ) (B : Sch (Fin n) → Sch (Fin n) → ℂ)
     (hB : ∀ h', ∃ L : Sch (Fin n) →L[ℂ] ℂ, ∀ h, B h h' = L h)
     (f f' g g' : Sch (Fin n)) (G : (Fin n ⊕ Fin n → ℝ) → Sch (Fin n)) (hGc : Continuous G)
@@ -80,6 +103,21 @@ theorem step (n : ℕ) (B : Sch (Fin n) → Sch (Fin n) → ℂ)
     _ = ∫ w, c w * L (G w) := by rw [hL]; exact key
     _ = ∫ w, c w * B (G w) f' := by simp only [hL]
 
+/- English proof (translation)
+Introduce `n B hB hherm hpos hinv`. Use `GlobalTheory.T.hermitian_form_const_mul_inner n B hherm hpos fun f f' g g' => ?_` and prove the remaining obligations. Take `⟨G, hGc, hG, hGb⟩` from `GlobalTheory.T.schrodinger_rep_schwartz_polynomial_bound n f`. Take `⟨G', hG'c, hG', hG'b⟩` from `GlobalTheory.T.schrodinger_rep_schwartz_polynomial_bound n f'`. Establish `s1` using `step n B hB f f' g g' G hGc hG hGb`.
+
+Establish `s2` using `step n B hB f' f g' g G' hG'c hG' hG'b`. Use `set mc : Sch (Fin n) → Sch (Fin n) → (Fin n ⊕ Fin n → ℝ) → ℂ := fun u v w => ∫ t, rhoFun w ⇑u t * starRingEnd ℂ (v t) with hmc`. Establish `pw : ∀ w, starRingEnd ℂ (mc g g' w) * B (G w) f' = mc g' g (-w) * starRingEnd ℂ (B (G' (-w)) f)`. Introduce `w`. Establish `e1 : B (G w) f' = B f (G' (-w))` using `hinv w f (G' (-w)) (G w) f' (hG w) (by rw [hG' (-w), rhoFun_neg_cancel])`.
+
+Establish `e2 : mc g g' w = ∫ t, g t * starRingEnd ℂ (rhoFun (-w) ⇑g' t)`. Simplify using `only [hmc]`. Use `conv_lhs => rw [← rhoFun_neg_cancel w ⇑g']`. Conclude with `GlobalTheory.T.schrodinger_rep_unitary n w ⇑g (rhoFun (-w) ⇑g')`. Rewrite using `[e1, hherm, e2, ← integral_conj]`.
+
+Simplify using `only [hmc, map_mul, Complex.conj_conj]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`. Rewrite using `[s1]`.
+
+Establish `e3 : (∫ x, g' x * starRingEnd ℂ (f' x)) * B f g = starRingEnd ℂ ((∫ x, f' x * starRingEnd ℂ (g' x)) * B g f)`. Rewrite using `[map_mul, ← integral_conj, hherm g f]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[mul_comm]`.
+
+Simplify using `only [hmc] at pw`. Rewrite using `[e3, s2, ← integral_conj]`. Simplify using `only [pw]`. Establish `hneg` using `integral_neg_eq_self (fun w => (∫ t, rhoFun w ⇑g' t * starRingEnd ℂ (g t)) * starRingEnd ℂ (B (G' w) f)) (volume : Measure (Fin n ⊕ Fin n → ℝ))`. Rewrite using `[hneg]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `[map_mul]`.
+-/
 theorem core : ∀ (n : ℕ) (B : GlobalTheory.RealWeil.Sch (Fin n) → GlobalTheory.RealWeil.Sch (Fin n) → ℂ),
     (∀ h', ∃ L : GlobalTheory.RealWeil.Sch (Fin n) →L[ℂ] ℂ, ∀ h, B h h' = L h) →
     (∀ h h', B h' h = starRingEnd ℂ (B h h')) → (∀ h, 0 ≤ (B h h).re) →
@@ -123,6 +161,9 @@ theorem core : ∀ (n : ℕ) (B : GlobalTheory.RealWeil.Sch (Fin n) → GlobalTh
   refine integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)
   simp [map_mul]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.rho_invariant_form_const_mul_inner core`.
+-/
 theorem schrodinger_intertwiner_l2_const : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : mixedEmbedding.mixedSpace F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (mixedEmbedding.mixedSpace F) ℂ),
     (∀ a, ψ a = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) a : ℝ))) →

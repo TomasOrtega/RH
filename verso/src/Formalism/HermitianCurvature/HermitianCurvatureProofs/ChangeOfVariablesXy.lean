@@ -16,26 +16,44 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.StationaryPhaseMode
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `tail_estimate_of_bound tailBound_statement matrix_cutoff_spec cutoff_phase_bound`.
+-/
 theorem orbit_tail_estimate : Formalism.FourierDecayAlt.G.TailStep :=
   tail_estimate_of_bound tailBound_statement matrix_cutoff_spec cutoff_phase_bound
 
+/- English proof (translation)
+The claim follows from `inner_xy_of_reduced orbital_integral_reduced reduced_integrand_integrable split_xy_coordinates amplitude_eq`.
+-/
 theorem change_of_variables_xy : Formalism.FourierDecayAlt.G.InnerXY :=
   inner_xy_of_reduced orbital_integral_reduced reduced_integrand_integrable split_xy_coordinates amplitude_eq
 
+/- English proof (translation)
+The claim follows from `nonstationary_estimate_of_parts nonstationary_phase gradient_lower_bound phase_function_deriv phase_relative_deriv critical_cutoff_spec amplitude_bound_far orbital_integral_converges_abs cutoff_phase_bound change_of_variables_xy`.
+-/
 theorem nonstationary_estimate : Formalism.FourierDecayAlt.G.NonStatStep :=
   nonstationary_estimate_of_parts nonstationary_phase gradient_lower_bound phase_function_deriv phase_relative_deriv
     critical_cutoff_spec amplitude_bound_far orbital_integral_converges_abs cutoff_phase_bound change_of_variables_xy
 
+/- English proof (translation)
+The claim follows from `stationary_estimate_of_parts stationary_phase_holomorphic phase_function_deriv phase_function_critical_points hessian_at_critical hessian_determinant phase_near_critical critical_cutoff_spec amplitude_bound_critical amplitude_continuous_at_critical majorant_y orbital_integral_con …`.
+-/
 theorem stationary_estimate : Formalism.FourierDecayAlt.G.StatStep :=
   stationary_estimate_of_parts stationary_phase_holomorphic phase_function_deriv phase_function_critical_points hessian_at_critical hessian_determinant
     phase_near_critical critical_cutoff_spec amplitude_bound_critical amplitude_continuous_at_critical majorant_y
     orbital_integral_converges_abs cutoff_phase_bound change_of_variables_xy
 
+/- English proof (translation)
+The claim follows from `germ_rate_of_estimates orbital_integral_converges_abs cutoff_phase_bound critical_cutoff_spec exists_small_delta root_set_characterization orbit_tail_estimate change_of_variables_xy nonstationary_estimate stationary_estimate amplitude_limit limit_integral stationary_leading_const …`.
+-/
 theorem germ_rate : Formalism.FourierDecayAlt.G.GermRate :=
   germ_rate_of_estimates orbital_integral_converges_abs cutoff_phase_bound critical_cutoff_spec exists_small_delta
     root_set_characterization orbit_tail_estimate change_of_variables_xy nonstationary_estimate stationary_estimate amplitude_limit
     limit_integral stationary_leading_constant germ_large_parameter
 
+/- English proof (translation)
+The claim follows from `germ_of_rate germ_rate`.
+-/
 theorem germExpansion_true : Formalism.FourierDecayAlt.G.Germ :=
   germ_of_rate germ_rate
 

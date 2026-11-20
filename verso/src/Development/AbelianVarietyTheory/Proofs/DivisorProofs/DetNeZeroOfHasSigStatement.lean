@@ -10,5 +10,8 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SigDet.det_ne_zero_of_hasSig | exact GlobalTheory.SigDet.det_ne_zero_of_hasSig | (intros; apply GlobalTheory.SigDet.det_ne_zero_of_hasSig <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.det_ne_zero_of_hasSig_divisor : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ) (r s : ℕ), HasSig M r s → M.det ≠ 0 := by
   first | exact @GlobalTheory.SigDet.det_ne_zero_of_hasSig | exact GlobalTheory.SigDet.det_ne_zero_of_hasSig | (intros; apply GlobalTheory.SigDet.det_ne_zero_of_hasSig <;> assumption)

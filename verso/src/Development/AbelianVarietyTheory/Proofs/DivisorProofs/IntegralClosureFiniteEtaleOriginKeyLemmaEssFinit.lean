@@ -11,6 +11,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FiniteEtaleOfGalois
 open IsLocalRing Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `A _ _ _ _ _ _ EA _ _ _ _ _ QA _ hQA ρ hρ hker q hq hqu DA _ _ actA htor hgood`. Use `haveI : NeZero q := ⟨hq.ne'⟩`. Take `⟨hflat, hnoeth, ht, hic⟩` from `GlobalTheory.T.genericFibreBase_flat_noetherian_intClosed A EA QA hQA ρ hρ hker`. Use `haveI := hflat`. Use `haveI := hnoeth`.
+
+Establish `hHR` using `GlobalTheory.T.hasHartogsPropertyHeightOnePrimes_of_flat A (Localization.AtPrime QA)`. Take `⟨act', T, hT, ⟨a, ha, n, x, y, hxy⟩, htf, hHC, hint, hnt⟩` from `GlobalTheory.T.integralClosure_zmodTorsor_genericFibre_data A (Localization.AtPrime QA) hHR hic q DA actA htor`. Use `letI := GlobalTheory.KeyOriginNoeth.closureAlg A (Localization.AtPrime QA) DA`. Take `⟨hEt, s, hs⟩` from `hgood`. Take `⟨O, _, _, hO, hσ⟩` from `GlobalTheory.T.exists_faithfullyFlat_algHom_etale_height_one A (Localization.AtPrime QA) (GlobalTheory.KeyOriginNoeth.closure A _ DA) ρ hρ _ hker ht hint (fun P _ h => hEt P h) ⟨s, hs⟩`.
+
+Take `⟨hfin, het⟩` from `GlobalTheory.T.finiteEtale_of_galois_descent_hartogs A (Localization.AtPrime QA) (GlobalTheory.KeyOriginNoeth.closure A _ DA) O (Multiplicative (ZMod q)) act' T hT a ha n x y hxy htf hHC (fun P _ h => hEt P h) hσ`. Conclude with `⟨hfin, het, hnt⟩`.
+-/
 theorem GlobalTheory.GoodEtale.closure_finiteEtale : ∀ (A : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] [IsIntegrallyClosed A]
       [Algebra.EssFiniteType ℤ A]
     (EA : Type) [CommRing EA] [Algebra (Polynomial A) EA] [Algebra A EA]

@@ -15,5 +15,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HorizontalChange.dflat_change_eq_zero | exact GlobalTheory.HorizontalChange.dflat_change_eq_zero | (intros; apply GlobalTheory.HorizontalChange.dflat_change_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.period_chart_transition_holomorphic : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (D : ℕ) (c c' : AlgChart p σ D) (τ τ' : V D → Matrix (Fin g) (Fin g) ℂ) (ex ex' : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → IsPeriodChart w c' τ' ex' → ∀ P ∈ cov c.e.target g, ∀ ψ : Pt (V D) g → Pt (V D) g, DifferentiableAt ℂ ψ P → (∀ᶠ Q in 𝓝 P, ContinuousAt ψ Q ∧ ψ Q ∈ cov c'.e.target g ∧ ex' (ψ Q) = ex Q) → ∀ u : Pt (V D) g, dflat τ P u = 0 → dflat τ' (ψ P) (fderiv ℂ ψ P u) = 0 := by
   first | exact @GlobalTheory.HorizontalChange.dflat_change_eq_zero | exact GlobalTheory.HorizontalChange.dflat_change_eq_zero | (intros; apply GlobalTheory.HorizontalChange.dflat_change_eq_zero <;> assumption)

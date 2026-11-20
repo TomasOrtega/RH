@@ -14,6 +14,45 @@ noncomputable section
 open GlobalTheory.Mem.Col2.TypeRead in
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `B X I hI hP l Z u Ch0 chOf0 F hF hfr h1 β0`. Take `⟨k, H⟩` from `hF.mid (B.R.m - 1) h1 (succ_pred_m _)`. Take `⟨c, rfl⟩` from `H.onto β0`. Establish `hm2` using `B.R.two_le_m`. Establish `hmj : B.R.m - 1 + 1 = B.R.m` using `by omega`.
+
+Use `haveI : NeZero (B.R.N (B.R.m - 1)) := ⟨by unfold Ranks.N; have := B.R.m_add_three_le_k; omega⟩`. Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `hPr` using `(base_fields_primes_ok B X).2.1`. Take `⟨wOf, hwOf, hwP, -⟩` from `GlobalTheory.Mem.TypePrimes.primes_over_places B.fields (B.primes X) B.sp.cm hPr`. Establish `hres` using `fun (a : Fin 2) (v : HeightOneSpectrum (𝓞 B.host.F)) (h : (B.host.g a : 𝓞 B.host.F) ∈ v.asIdeal) => GlobalTheory.SplitResidue.exists_residue_equiv B.host.F B.host.E v (wOf a v h).1 (F.gl.phi a v h) (B.fields.conjO ((B.primes X).piG a)) (fun t => congrArg Prod.fst (F.gl.sp_alg a v …`.
+
+Use `F.gl.sp_pi a v h` as an intermediate fact. Rewrite `this` using `[hF.gl.piG]`. Conclude with `this) (hwP a v h).1`. Use `choose ρ e hρ hρe using hres`. Set `P0 : ∀ a v h, rowSG (B.primes X) I.sel (I.tup I.mu0)` to `fun a v h => ⟨(wOf a v h).1, Finset.mem_union_left _ (wOf a v h).2⟩`.
+
+Use `⟨fun a v h i => e a v h (cvec ((I.stp u I.mu0 (B.R.m - 1)).rep c) (P0 a v h) i), fun v hv x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hv`. Establish `hgram : gramN (I.rec7 l Z) (B.R.m - 1) (Nat.sub_le _ _) = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hI hP l Z).2.2.2 (B.R.m - 1) (Nat.sub_le _ _)).1`. Establish `hB` using `basePi_of_ok hX hPr u`. Establish `hLb : F.levJ.Lb = baseLb B.host.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u)`.
+
+Use extensionality with `y`. Rewrite using `[← F.levJ_Lb h1 (chOf0 _ c)]`. Use `(H.lb _ y).trans (Iff.trans ?_ (rll_mem_baseLb _ _ y).symm)` and prove the remaining obligations. Simplify using `only [baseL, Set.mem_setOf_eq]`. Establish `hl : (lastIdx (B.R.N (B.R.m - 1))).1 + 1 = B.R.N (B.R.m - 1)`.
+
+Use `NeZero.pos (B.R.N (B.R.m - 1))` as an intermediate fact. Simplify using `only [lastIdx]`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `h choose r hr1 hr2 using h`.
+
+Conclude with `⟨r, fun i => (hr1 i).symm, (hB.dvd _).2 (hr2 _ hl)⟩`. Introduce and unpack `⟨r, hr1, hr2⟩ i`. Use `⟨r i, (hr1 i).symm, fun hi => ?_⟩` and prove the remaining obligations. Take `rfl : i = lastIdx (B.R.N (B.R.m - 1))` from `Fin.ext (by omega)`. Conclude with `(hB.dvd _).1 hr2`.
+
+Establish `hxL : x ∈ levelVL B.sp.cm.sig (1 : Matrix (Fin (B.R.N (B.R.m - 1))) (Fin (B.R.N (B.R.m - 1))) B.host.E) v (baseLb B.host.E (B.R.N (B.R.m - 1)) ((B.primes X).vT u))`. Use `F.levJ.Uloc_lev v hx` as an intermediate fact. Establish `hgram' : gramN (I.rec7 l Z) ((I.rec7 l Z).R.m - 1) (Nat.sub_le _ _) = 1` using `hgram`. Rewrite `this` using `[hLb]`. Rewrite `this` using `[hgram']`.
+
+Conclude with `this`. Establish `hT : v ∉ plUnder B.host.F ((B.primes X).vT u)` using `fun hvT => rls_T_notUnder hPr u v ((mem_plUnder_iff_norm B.sp.cm (rls_vT_iff hX hPr u) ((B.primes X).T u) (hPr.piT_norm u) v).1 hvT) ⟨(wOf a v ha).1, (wOf a v ha).2, (hwOf a v ha _).2 rfl⟩`. Establish `hJ` using `put_mem_J0 B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) v hT x hxL`. Establish `hUA` using `congruence_le_adelic_unitary B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) hJ`. Use `(mem_iff_read H c _ hUA).trans ?_` and prove the remaining obligations.
+
+Take `⟨b, hb⟩ : ∃ b, (c.1 : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) (B.R.m - 1)).1 = some b` from `Option.isSome_iff_exists.1 (c.1.2.2 (by omega))`. Establish `hgrp : levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) c.1 = (I.idx I.mu0).levG (B.R.m - 1) b`. Simplify using `only [levGAt, hb, Option.elim]`. Establish `hred` using `fun a' (h' : (B.host.g a' : 𝓞 B.host.F) ∈ v.asIdeal) => red_put_at B.sp.cm _ _ (B.primes X).vGs F.gl a' v h' (wOf a' v h') (e a' v h') (fun z => ⟨hρ a' v h' z ▸ (ρ a' v h' z).2, (congrArg (IsLocalRing.residue _) (Subtype.ext (hρ a' v h' z).symm)).trans (hρe a' v h' z)⟩) x hJ`. Establish `hm0 : (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨_, hJ⟩)⁻¹ ∈ (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) (B.R.m - 1) c.1).grp`.
+
+Rewrite using `[hgrp]`. Use `inv_mem (fun w _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hw : w = wOf a v ha`. Substitute `hw` using the available equality. Apply `GlobalTheory.Mem.LastGrp.mem_levG_last _ _ _ _ _ _ _ hX hPr hI.sel_ok (hI.idx_ok I.mu0) (hI.sharp I.mu0) (B.R.m - 1) hmj b (wOf a v ha) _ (e a v ha)` to reduce the goal to its premises.
+
+Take `⟨M, hM, hMe⟩` from `(F.glevJ.mem a v ha x (F.levJ.Uloc_lev v hx)).1 hx`. Rewrite `hMe` using `[hfr a v ha]`. Establish `e2 : Matrix.GeneralLinearGroup.map (e a v ha).toRingHom (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨_, hJ⟩ (wOf a v ha)) = M`. Apply `Units.ext` to reduce the goal to its premises. Use `Eq.trans ?_ ((hred a ha).trans hMe.symm)` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `hM`. Establish `e1` using `red_put_off B.sp.cm (B.R.N (B.R.m - 1)) _ (B.primes X).vGs v x hJ w (fun h => hw ((hwOf a v ha w).1 h)) show _ ∈ ((I.idx I.mu0).levG (B.R.m - 1) b w).H erw [e1]`. Conclude with `one_mem _`.
+
+Establish `hQ : QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K) = ∅`. Rewrite using `[I.trueColumn_tuple_trivial_eq_one]`. Conclude with `twistPrimes_trivialTuple_empty I.sel I.S`. Establish `hvG : ∀ P : rowSG (B.primes X) I.sel (I.tup I.mu0), P.1 ∈ (B.primes X).vGs` using `fun P => (Finset.mem_union.1 P.2).resolve_right fun h => by simp [hQ] at h`. Establish `hdeg : ∀ P : rowSG (B.primes X) I.sel (I.tup I.mu0), GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.DegOneUnram P.1` using `fun P => GlobalTheory.UnfoldTwoSided.degOne_bad hX hPr hI.sel_ok P`.
+
+Establish `hcos` using `fun P => GlobalTheory.T.couplingCoset_reduction_fixed_iff_residues hmj ((I.stp u I.mu0 (B.R.m - 1)).rep c) ((I.stp u I.mu0 (B.R.m - 1)).act c.1 (1, ⟨_, hm0⟩, 1) ((I.stp u I.mu0 (B.R.m - 1)).rep c)) (redG B.sp.cm (B.R.N (B.R.m - 1)) ((B.primes X).vT u) (B.primes X).vGs ⟨_, hJ⟩)⁻¹ …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hJ', hm', hc'⟩ j hv`. Establish `hfix` using `(hcos (P0 j v hv)).1 (congrFun hc' _)`. Establish `hfix'` using `(fix_inv_iff _ _).1 hfix`.
+
+Establish `key` using `(fix_map_iff (e j v hv) _ _).2 hfix'`. Rewrite using `[hfr j v hv]`. Establish `hM : redM (I.rec7 l Z).host.F v (F.gl.mat j v hv 1 x) = _` using `(hred j hv).symm`. Rewrite using `[hM]`. Conclude with `key`.
+
+Introduce `hall`. Use `⟨hJ, hm0, funext fun P => (hcos P).2 ?_⟩` and prove the remaining obligations. Use `(fix_inv_iff _ _).2 ?_` and prove the remaining obligations. Distinguish the cases in `hw : (⟨P.1, hvG P⟩ : (B.primes X).vGs) = wOf a v ha`. Establish `hP : P = P0 a v ha` using `Subtype.ext (show P.1 = (wOf a v ha).1 from congrArg Subtype.val hw)`.
+
+Substitute `hP` using the available equality. Establish `h2` using `hall a ha`. Rewrite `h2` using `[hfr a v ha]`. Use `(fix_map_iff (e a v ha) _ _).1 ?_` and prove the remaining obligations. Establish `hM : redM (I.rec7 l Z).host.F v (F.gl.mat a v ha 1 x) = _` using `(hred a ha).symm`.
+
+Rewrite `h2` using `[hM]`. Conclude with `h2`. Establish `e1` using `red_put_off B.sp.cm (B.R.N (B.R.m - 1)) _ (B.primes X).vGs v x hJ ⟨P.1, hvG P⟩ (fun h => hw ((hwOf a v ha _).1 h)) erw [e1]`. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.Mem.Col2.TC.typeRead_core : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch0 : ℕ → Type} {chOf0 : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch0 i} (F : FormsTiedSym (I.rec7 l Z) u Ch0 chOf0), I.StdF l Z u F → (∀ j v h, F.glevJ.fr j v h = 1) → ∀ (h1 : 1 ≤ B.R.m - 1) (β0 : Ch0 (B.R.m - 1)), ∃ w : ∀ (j : Fin 2) (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal → Fin (B.R.N (B.R.m - 1)) → kv (I.rec7 l Z).host.F v, ∀ (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), (∃ j, ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal) → ∀ x, x ∈ F.levJ.Uloc v → (rll_put ((I.rec7 l Z).R.N (B.R.m - 1)) v x ∈ (F.ch (B.R.m - 1) h1 (succ_pred_m B.R) β0).lev.U ↔ ∀ j (hv : ((I.rec7 l Z).host.g j : 𝓞 (I.rec7 l Z).host.F) ∈ v.asIdeal), redM (I.rec7 l Z).host.F v (F.gl.mat j v hv (F.glevJ.fr j v hv) x) *ᵥ w j v hv = w j v hv) := by
   intro B X I hI hP l Z u Ch0 chOf0 F hF hfr h1 β0
   classical

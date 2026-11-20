@@ -21,12 +21,18 @@ def φM (x : Matrix (Fin n) (Fin n) k) : Matrix (Fin (n * d)) (Fin (n * d)) k :=
   fun r s => B.cF (x (ix r).1 (ix s).1 * B.β (ix s).2) (ix r).2
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [eI, eF, ix, Equiv.symm_apply_apply]`. Conclude with `B.recon (v i)`.
+-/
 theorem eI_eF (v : Fin n → k) : eI B (eF B v) = v := by
   funext i
   simp only [eI, eF, ix, Equiv.symm_apply_apply]
   exact B.recon (v i)
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Establish `h` using `B.uniq (fun j => w (finProdFinEquiv ((ix r).1, j)))`. Simplify using `only [eF, eI]`. Rewrite using `[h]`. Conclude with `congrArg w (finProdFinEquiv.apply_symm_apply r)`.
+-/
 theorem eF_eI (w : Fin (n * d) → k) : eF B (eI B w) = w := by
   funext r
   have h := B.uniq (fun j => w (finProdFinEquiv ((ix r).1, j)))
@@ -35,10 +41,18 @@ theorem eF_eI (w : Fin (n * d) → k) : eF B (eI B w) = w := by
   exact congrArg w (finProdFinEquiv.apply_symm_apply r)
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `[eF]`.
+-/
 theorem eF_add (v v' : Fin n → k) : eF B (v + v') = eF B v + eF B v' := by
   funext r; simp [eF]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use function extensionality and compare the values at `r`. Simplify using `only [eF, φM, mulVec, dotProduct]`. Rewrite using `[map_sum, Finset.sum_apply]`. Rewrite using `[← (finProdFinEquiv : Fin n × Fin d ≃ Fin (n * d)).sum_comp, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [ix, Equiv.symm_apply_apply]`. Use `conv_lhs => rw [← B.recon (v i'), Finset.mul_sum, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Rewrite using `[show x (finProdFinEquiv.symm r).1 i' * (B.cF (v i') j' ^ p ^ c * B.β j') = B.cF (v i') j' ^ p ^ c * (x (finProdFinEquiv.symm r).1 i' * B.β j') by ring, fb_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem key (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k) : eF B (x *ᵥ v) = φM B x *ᵥ eF B v := by
   funext r
   simp only [eF, φM, mulVec, dotProduct]
@@ -53,9 +67,17 @@ theorem key (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k) : eF B (x *ᵥ v) =
   ring
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Introduce `w` and use `⟨eI B w, eF_eI B w⟩`.
+-/
 theorem eF_surj : Function.Surjective (eF B (n := n)) := fun w => ⟨eI B w, eF_eI B w⟩
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Establish `hw : ∀ w, M *ᵥ w = M' *ᵥ w`. Introduce `w`. Take `⟨v, rfl⟩` from `eF_surj B w`. Conclude with `h v`. Use extensionality with `i j`.
+
+Establish `h1` using `congrFun (hw (Pi.single j 1)) i`. Simplify `h1` using `[mulVec_single_one]`.
+-/
 theorem ext_of_eF {M M' : Matrix (Fin (n * d)) (Fin (n * d)) k} (h : ∀ v, M *ᵥ eF B v = M' *ᵥ eF B v) : M = M' := by
   have hw : ∀ w, M *ᵥ w = M' *ᵥ w := by
     intro w
@@ -74,10 +96,20 @@ def φ : Matrix (Fin n) (Fin n) k →+* Matrix (Fin (n * d)) (Fin (n * d)) k whe
   map_add' x y := ext_of_eF B fun v => by rw [← key, add_mulVec, add_mulVec, eF_add, key, key]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+The claim follows from `(key B x v).symm`.
+-/
 theorem φ_apply_mulVec (x : Matrix (Fin n) (Fin n) k) (v : Fin n → k) : φ B x *ᵥ eF B v = eF B (x *ᵥ v) :=
   (key B x v).symm
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Introduce `x y h`. Establish `hv : ∀ v, x *ᵥ v = y *ᵥ v`. Introduce `v`. Establish `h1` using `φ_apply_mulVec B x v`. Rewrite `h1` using `[h, φ_apply_mulVec]`.
+
+Establish `h2` using `congrArg (eI B) h1`. Rewrite `h2` using `[eI_eF, eI_eF]`. Conclude with `h2.symm`. Use extensionality with `i j`. Establish `h1` using `congrFun (hv (Pi.single j 1)) i`.
+
+Simplify `h1` using `[mulVec_single_one]`.
+-/
 theorem φ_inj : Function.Injective (φ B (n := n)) := by
   intro x y h
   have hv : ∀ v, x *ᵥ v = y *ᵥ v := by
@@ -92,6 +124,9 @@ theorem φ_inj : Function.Injective (φ B (n := n)) := by
   simpa [mulVec_single_one] using h1
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Apply `ext_of_eF B` to reduce the goal to its premises. Introduce `v`. Rewrite using `[φ_apply_mulVec]`. Use function extensionality and compare the values at `r`. Simplify using `[algebraMap_eq_diagonal, mulVec_diagonal, eF, fb_smul]`.
+-/
 theorem φ_scal (a : k) : φ B (algebraMap k (Matrix (Fin n) (Fin n) k) (a ^ p ^ c)) = algebraMap k _ a := by
   apply ext_of_eF B
   intro v
@@ -107,13 +142,22 @@ def e : (Fin n → k) ≃+ (Fin (n * d) → k) where
   map_add' := eF_add B
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fact p.Prime] [CharP k p] in
+/- English proof (translation)
+Use `continuous_pi fun r => ?_` and prove the remaining obligations. Conclude with `(continuous_apply _).comp (B.cont.comp (continuous_apply _))`.
+-/
 theorem continuous_eF : Continuous (eF B (n := n)) := by
   refine continuous_pi fun r => ?_
   exact (continuous_apply _).comp (B.cont.comp (continuous_apply _))
 
+/- English proof (translation)
+Unfold `eI`. Use `fun_prop`.
+-/
 theorem continuous_eI : Continuous (eI B (n := n)) := by
   unfold eI; fun_prop
 
+/- English proof (translation)
+Use `show Continuous (φM B)`. Unfold `φM`. Use `continuous_pi fun r => continuous_pi fun s => ?_` and prove the remaining obligations. Establish `hx : Continuous fun a : Matrix (Fin n) (Fin n) k => a (ix r).1 (ix s).1 * B.β (ix s).2` using `by fun_prop`. Conclude with `(continuous_apply _).comp (B.cont.comp hx)`.
+-/
 theorem continuous_φ : Continuous (φ B (n := n)) := by
   show Continuous (φM B)
   unfold φM
@@ -125,15 +169,24 @@ theorem continuous_φ : Continuous (φ B (n := n)) := by
 def ψ (M : Matrix (Fin (n * d)) (Fin (n * d)) k) : Matrix (Fin n) (Fin n) k :=
   fun i i' => eI B (M *ᵥ eF B (Pi.single i' 1)) i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i i'`. Simplify using `[ψ, φ_apply_mulVec, eI_eF, mulVec_single_one]`.
+-/
 theorem ψ_φ (x : Matrix (Fin n) (Fin n) k) : ψ B (φ B x) = x := by
   funext i i'
   simp [ψ, φ_apply_mulVec, eI_eF, mulVec_single_one]
 
+/- English proof (translation)
+Unfold `ψ`. Use `continuous_pi fun i => continuous_pi fun i' => ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp ((continuous_eI B).comp (continuous_id.matrix_mulVec continuous_const))`.
+-/
 theorem continuous_ψ : Continuous (ψ B (n := n)) := by
   unfold ψ
   refine continuous_pi fun i => continuous_pi fun i' => ?_
   exact (continuous_apply i).comp ((continuous_eI B).comp (continuous_id.matrix_mulVec continuous_const))
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.isClosedEmbedding (ψ_φ B) (continuous_ψ B) (continuous_φ B)`.
+-/
 theorem φ_emb : Topology.IsClosedEmbedding (φ B (n := n)) :=
   Function.LeftInverse.isClosedEmbedding (ψ_φ B) (continuous_ψ B) (continuous_φ B)
 

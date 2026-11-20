@@ -25,10 +25,18 @@ instance isCocomm_quot : IsCocomm k (CartierDual k A ⧸ kerIdeal (CartierDual.m
 def quotMap : CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π)) →ₐc[k] A :=
   ((CartierDual.bidual k A).symm : _ →ₐc[k] A).comp (CartierDual.map (proj π))
 
+/- English proof (translation)
+Simplify using `[quotMap]`.
+-/
 theorem apply_quotMap (y : CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π)))
     (φ : CartierDual k A) : φ (quotMap π y) = y (proj π φ) := by
   simp [quotMap]
 
+/- English proof (translation)
+Establish `hmem : CartierDual.map π ψ - algebraMap k _ (counit (R` using `k) ψ) ∈ kerIdeal (CartierDual.map π) := by`. Establish `h : CartierDual.map π ψ - algebraMap k _ (counit (R` using `k) ψ) = CartierDual.map π (ψ - algebraMap k _ (counit (R := k) ψ)) := by`. Rewrite using `[map_sub, AlgHomClass.commutes]`. Rewrite using `[h]`. Conclude with `Ideal.mem_map_of_mem _ (by simp [RingHom.mem_ker])`.
+
+Rewrite using `[← sub_eq_zero, ← AlgHomClass.commutes (proj π), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hmem`.
+-/
 theorem proj_map (ψ : CartierDual k C) :
     proj π (CartierDual.map π ψ) = algebraMap k _ (counit (R := k) ψ) := by
   have hmem : CartierDual.map π ψ - algebraMap k _ (counit (R := k) ψ) ∈
@@ -41,6 +49,9 @@ theorem proj_map (ψ : CartierDual k C) :
   rw [← sub_eq_zero, ← AlgHomClass.commutes (proj π), ← map_sub]
   exact Ideal.Quotient.eq_zero_iff_mem.2 hmem
 
+/- English proof (translation)
+Use `CartierDual.eq_of_forall_apply (R := k) fun ψ => ?_` and prove the remaining obligations. Establish `h1 : ψ (π (quotMap π y)) = (CartierDual.map π ψ) (quotMap π y)` using `rfl`. Rewrite using `[h1, apply_quotMap, proj_map, CartierDual.counit_apply, CartierDual.counit_apply, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, map_smul, map_smul]`. Simplify using `[mul_comm]`.
+-/
 theorem quotMap_trivial (y : CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π))) :
     π (quotMap π y) = algebraMap k C (counit (R := k) y) := by
   refine CartierDual.eq_of_forall_apply (R := k) fun ψ => ?_
@@ -49,6 +60,13 @@ theorem quotMap_trivial (y : CartierDual k (CartierDual k A ⧸ kerIdeal (Cartie
     Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, map_smul, map_smul]
   simp [mul_comm]
 
+/- English proof (translation)
+Establish `hann : (CartierDual.bidual k A a).ofConv ∈ (LinearMap.ker (proj π : CartierDual k A →ₐ[k] CartierDual k A ⧸ kerIdeal (CartierDual.map π)).toLinearMap).dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `x hx`. Establish `hx' : x ∈ kerIdeal (CartierDual.map π)` using `Ideal.Quotient.eq_zero_iff_mem.1 (LinearMap.mem_ker.1 hx)`. Conclude with `ha x hx'`.
+
+Rewrite `hann` using `[← LinearMap.range_dualMap_eq_dualAnnihilator_ker]`. Take `⟨y, hy⟩` from `hann`. Use `⟨WithConv.toConv y, ?_⟩` and prove the remaining obligations. Use `CartierDual.eq_of_forall_apply (R := k) fun φ => ?_` and prove the remaining obligations. Rewrite using `[apply_quotMap]`.
+
+Conclude with `LinearMap.congr_fun hy φ`.
+-/
 theorem mem_range_quotMap {a : A} (ha : ∀ x ∈ kerIdeal (CartierDual.map π), x a = 0) :
     a ∈ Set.range (quotMap π) := by
   have hann : (CartierDual.bidual k A a).ofConv ∈
@@ -65,6 +83,15 @@ theorem mem_range_quotMap {a : A} (ha : ∀ x ∈ kerIdeal (CartierDual.map π),
   rw [apply_quotMap]
   exact LinearMap.congr_fun hy φ
 
+/- English proof (translation)
+Establish `hπf` using `(kerIdeal_le_ker_iff f (π : A →ₐ[k] C)).1 hf`. Establish `key : ∀ t : D ⊗[k] D, CartierDual.pair k A A (r ⊗ₜ CartierDual.map π ψ) (TensorProduct.map (f : D →ₗ[k] A) (f : D →ₗ[k] A) t) = r (f (TensorProduct.rid k D (LinearMap.lTensor D (counit (R` using `k) (A := D)) t))) * ψ 1 := by`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_mul]`. Consider the case `tmul x y`. Rewrite using `[TensorProduct.map_tmul, CartierDual.pair_tmul_tmul, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, CartierDual.map_apply]`. Establish `h1 : π (f y) = algebraMap k C (counit (R` using `k) y) := hπf y`. Use `erw [h1]`.
+
+Rewrite using `[map_smul, map_smul, Algebra.algebraMap_eq_smul_one, map_smul]`. Simplify using `only [smul_eq_mul]`. Establish `hfx : (f : D →ₗ[k] A) x = f x` using `rfl`. Rewrite using `[hfx]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[CartierDual.mul_apply]`. Establish `hc : comul (R` using `k) (f d) = TensorProduct.map (f : D →ₗ[k] A) (f : D →ₗ[k] A) (comul d) := (LinearMap.congr_fun (CoalgHomClass.map_comp_comul f) d).symm`. Rewrite using `[hc, key, Coalgebra.lTensor_counit_comul, TensorProduct.rid_tmul, one_smul]`.
+-/
 theorem mul_map_apply {D : Type} [CommRing D] [Bialgebra k D] (f : D →ₐc[k] A)
     (hf : kerIdeal f ≤ RingHom.ker π) (d : D) (r : CartierDual k A) (ψ : CartierDual k C) :
     (r * CartierDual.map π ψ) (f d) = r (f d) * ψ 1 := by
@@ -91,6 +118,15 @@ theorem mul_map_apply {D : Type} [CommRing D] [Bialgebra k D] (f : D →ₐc[k] 
     (LinearMap.congr_fun (CoalgHomClass.map_comp_comul f) d).symm
   rw [hc, key, Coalgebra.lTensor_counit_comul, TensorProduct.rid_tmul, one_smul]
 
+/- English proof (translation)
+Introduce `x hx`. It suffices to establish `h : ∀ r : CartierDual k A, (r * x) (f d) = 0 by simpa using h 1`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨ψ, hψ, rfl⟩` from `hx`.
+
+Introduce `r`. Establish `hψ' : ψ 1 = 0` using `hψ`. Use `erw [mul_map_apply π f hf d r ψ]`. Rewrite using `[hψ', mul_zero]`. Consider the case `zero => intro r`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy => intro r`. Simplify using `[mul_add, hx r, hy r]`. Consider the case `smul s x _ hx => intro r`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
+
+Conclude with `hx (r * s)`.
+-/
 theorem ideal_apply_eq_zero {D : Type} [CommRing D] [Bialgebra k D] (f : D →ₐc[k] A)
     (hf : kerIdeal f ≤ RingHom.ker π) (d : D) :
     ∀ x ∈ kerIdeal (CartierDual.map π), x (f d) = 0 := by
@@ -107,6 +143,11 @@ theorem ideal_apply_eq_zero {D : Type} [CommRing D] [Bialgebra k D] (f : D →�
   | add x y _ _ hx hy => intro r; simp [mul_add, hx r, hy r]
   | smul s x _ hx => intro r; rw [smul_eq_mul, ← mul_assoc]; exact hx (r * s)
 
+/- English proof (translation)
+Establish `h1` using `Submodule.finrank_quotient_add_finrank (I.restrictScalars k)`. Establish `h2` using `Submodule.finrank_quotient_add_finrank (J.restrictScalars k)`. Rewrite `h1` using `[(Submodule.Quotient.restrictScalarsEquiv k I).finrank_eq]`. Rewrite `h2` using `[(Submodule.Quotient.restrictScalarsEquiv k J).finrank_eq]`. Establish `hle : I.restrictScalars k ≤ J.restrictScalars k` using `hIJ`.
+
+Conclude with `Submodule.restrictScalars_injective k R R (Submodule.eq_of_le_of_finrank_eq hle (by omega))`.
+-/
 theorem ideal_eq_of_le_of_finrank_eq {R : Type} [CommRing R] [Algebra k R] [Module.Finite k R]
     {I J : Ideal R} (hIJ : I ≤ J)
     (h : Module.finrank k (R ⧸ I) = Module.finrank k (R ⧸ J)) : I = J := by
@@ -118,10 +159,16 @@ theorem ideal_eq_of_le_of_finrank_eq {R : Type} [CommRing R] [Algebra k R] [Modu
   exact Submodule.restrictScalars_injective k R R
     (Submodule.eq_of_le_of_finrank_eq hle (by omega))
 
+/- English proof (translation)
+The claim follows from `(CartierDual.toDual k M).finrank_eq.trans Subspace.dual_finrank_eq`.
+-/
 theorem finrank_cartierDual (M : Type) [AddCommGroup M] [Module k M] [FiniteDimensional k M] :
     Module.finrank k (CartierDual k M) = Module.finrank k M :=
   (CartierDual.toDual k M).finrank_eq.trans Subspace.dual_finrank_eq
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h` using `congrArg (CartierDual.bidual k A) hxy`. Simplify using `only [quotMap, BialgHom.comp_apply] at h`. Use `erw [BialgEquiv.apply_symm_apply, BialgEquiv.apply_symm_apply] at h`. Conclude with `CartierDual.map_injective_of_surjective (f := proj π) Ideal.Quotient.mk_surjective h`.
+-/
 theorem quotMap_injective : Function.Injective (quotMap π) := by
   intro x y hxy
   have h := congrArg (CartierDual.bidual k A) hxy
@@ -129,6 +176,17 @@ theorem quotMap_injective : Function.Injective (quotMap π) := by
   erw [BialgEquiv.apply_symm_apply, BialgEquiv.apply_symm_apply] at h
   exact CartierDual.map_injective_of_surjective (f := proj π) Ideal.Quotient.mk_surjective h
 
+/- English proof (translation)
+Introduce `k _ A _ _ _ _ C _ _ _ _ π hπ`. Establish `hinj` using `quotMap_injective π`. Use `⟨CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π)), inferInstance, inferInstance, inferInstance, inferInstance, quotMap π, hinj, ?_, ?_⟩` and prove the remaining obligations. Establish `hle : kerIdeal (quotMap π) ≤ RingHom.ker π` using `(kerIdeal_le_ker_iff _ (π : A →ₐ[k] C)).2 (quotMap_trivial π)`. Use `ideal_eq_of_le_of_finrank_eq (k := k) hle ?_` and prove the remaining obligations.
+
+Establish `hA` using `GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k A _ (quotMap π)`. Establish `hD` using `GlobalTheory.T.finrank_hopfAlgebra_eq_range_mul_kernel k (CartierDual k A) (CartierDual k C) (CartierDual.map π)`. Rewrite `hA` using `[LinearMap.finrank_range_of_inj (f := ((quotMap π : CartierDual k (CartierDual k A ⧸ kerIdeal (CartierDual.map π)) →ₐ[k] A)).toLinearMap) (by exact hinj), finrank_cartierDual]`. Rewrite `hD` using `[LinearMap.finrank_range_of_inj (f := ((CartierDual.map π : CartierDual k C →ₐ[k] CartierDual k A)).toLinearMap) (by exact CartierDual.map_injective_of_surjective hπ), finrank_cartierDual, finrank_cartierDual]`. Establish `hC : Module.finrank k (A ⧸ RingHom.ker π) = Module.finrank k C` using `(Ideal.quotientKerAlgEquivOfSurjective (f := (π : A →ₐ[k] C)) hπ).toLinearEquiv.finrank_eq`.
+
+Use `haveI : Nontrivial A := RingHom.domain_nontrivial (counitAlgHom k A : A →+* k)`. Establish `hpos : 0 < Module.finrank k A` using `Module.finrank_pos`. Rewrite using `[hC]`. Establish `hQ : 0 < Module.finrank k (CartierDual k A ⧸ kerIdeal (CartierDual.map π))`. Break down `Nat.eq_zero_or_pos (Module.finrank k (CartierDual k A ⧸ kerIdeal (CartierDual.map π))) with h0 | h0` into its components or cases.
+
+Rewrite `hD` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h0`. Conclude with `Nat.eq_of_mul_eq_mul_left hQ (by rw [← hA, hD, mul_comm])`. Introduce `D _ _ f hf d`.
+
+Conclude with `mem_range_quotMap π (ideal_apply_eq_zero π f hf d)`.
+-/
 theorem exists_quotient : ∀ (k : Type) [Field k] (A : Type) [CommRing A] [HopfAlgebra k A]
     [IsCocomm k A] [Module.Finite k A] (C : Type) [CommRing C] [HopfAlgebra k C] [IsCocomm k C]
     [Module.Finite k C] (π : A →ₐc[k] C), Function.Surjective π → ∃ (B : Type) (_ : CommRing B)

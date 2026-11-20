@@ -33,8 +33,14 @@ def SB (g r : ℕ) : ℕ :=
   ∑ e ∈ Finset.Icc 1 r, ∑ e' ∈ Finset.Icc 1 (min e (r - e)), ∑ ℓ ∈ LS g r ((g ^ e - 1) * (g ^ e' - 1)),
     g ^ e' * Lp g e ℓ * g ^ (r - e - e')
 
+/- English proof (translation)
+The claim follows from `pow_pos hℓ.pos _`.
+-/
 theorem lp_pos {g e ℓ : ℕ} (hℓ : ℓ.Prime) : 0 < Lp g e ℓ := pow_pos hℓ.pos _
 
+/- English proof (translation)
+The claim follows from `minpoly.monic (Algebra.IsIntegral.isIntegral w)`.
+-/
 theorem minpoly_monic' {g : ℕ} [Fact g.Prime] (w : Fbar g) : (minpoly (ZMod g) w).Monic :=
   minpoly.monic (Algebra.IsIntegral.isIntegral w)
 
@@ -47,10 +53,20 @@ def PB (g r : ℕ) [Fact g.Prime] (f : (ZMod g)[X]) : Prop :=
     ∃ ℓ ∈ LS g r ((g ^ e - 1) * (g ^ e' - 1)), ∃ y ∈ YB g e', ∃ x ∈ XB g e ℓ y,
       minpoly (ZMod g) x * minpoly (ZMod g) y ∣ f
 
+/- English proof (translation)
+Use `Nat.one_lt_pow (by omega : e ≠ 0) hg2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem g_pow_sub_one_ne {g e : ℕ} (hg2 : 1 < g) (he : 1 ≤ e) : g ^ e - 1 ≠ 0 := by
   have := Nat.one_lt_pow (by omega : e ≠ 0) hg2
   omega
 
+/- English proof (translation)
+Establish `hg2 : 1 < g` using `hg.out.one_lt`. Take `⟨e, j, w, he2, her, hj1, hj2, hdv, hdeg, hdvd, hpow⟩` from `h`. Use `⟨e, ?_, j, ?_, ℓ, ?_, w, ?_, hdvd⟩` and prove the remaining obligations. Conclude with `Finset.mem_Icc.2 ⟨he2, her⟩`. Conclude with `Finset.mem_Icc.2 ⟨hj1, by omega⟩`.
+
+Conclude with `Finset.mem_filter.2 ⟨Nat.mem_primeFactors.2 ⟨hℓ, hdv, g_pow_sub_one_ne hg2 (by omega)⟩, hB⟩`. Use `Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ((mem_nthRoots ?_).2 hpow), hdeg⟩` and prove the remaining obligations. Establish `: 1 ≤ g ^ j - 1`. Use `Nat.one_lt_pow (by omega : j ≠ 0) hg2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `Nat.mul_pos this (lp_pos hℓ)`.
+-/
 theorem caseA_PA {g r ℓ : ℕ} [hg : Fact g.Prime] {f : (ZMod g)[X]} (hℓ : ℓ.Prime)
     (hB : ℓ ∉ BB r g) (h : CaseA g r ℓ f) : PA g r f := by
   have hg2 : 1 < g := hg.out.one_lt
@@ -65,6 +81,13 @@ theorem caseA_PA {g r ℓ : ℕ} [hg : Fact g.Prime] {f : (ZMod g)[X]} (hℓ : �
       omega
     exact Nat.mul_pos this (lp_pos hℓ)
 
+/- English proof (translation)
+Establish `hg2 : 1 < g` using `hg.out.one_lt`. Take `⟨e, e', x, y, he', he'e, hsum, hdv, hdx, hdy, hdvd, hy, hx⟩` from `h`. Use `⟨e, ?_, e', ?_, ℓ, ?_, y, ?_, x, ?_, hdvd⟩` and prove the remaining obligations. Conclude with `Finset.mem_Icc.2 ⟨by omega, by omega⟩`. Conclude with `Finset.mem_Icc.2 ⟨he', by omega⟩`.
+
+Conclude with `Finset.mem_filter.2 ⟨Nat.mem_primeFactors.2 ⟨hℓ, hdv, Nat.mul_ne_zero (g_pow_sub_one_ne hg2 (by omega)) (g_pow_sub_one_ne hg2 he')⟩, hB⟩`. Use `Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ?_, hdy⟩` and prove the remaining obligations. Establish `hM : 1 < g ^ e'` using `Nat.one_lt_pow (by omega) hg2`. Rewrite using `[mem_roots (FiniteField.X_pow_card_sub_X_ne_zero _ hM)]`. Simplify using `[hy]`.
+
+Conclude with `Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ((mem_nthRoots (lp_pos hℓ)).2 hx), hdx⟩`.
+-/
 theorem caseB_PB {g r ℓ : ℕ} [hg : Fact g.Prime] {f : (ZMod g)[X]} (hℓ : ℓ.Prime)
     (hB : ℓ ∉ BB r g) (h : CaseB g r ℓ f) : PB g r f := by
   have hg2 : 1 < g := hg.out.one_lt
@@ -80,6 +103,15 @@ theorem caseB_PB {g r ℓ : ℕ} [hg : Fact g.Prime] {f : (ZMod g)[X]} (hℓ : �
     simp [hy]
   · exact Finset.mem_filter.2 ⟨Multiset.mem_toFinset.2 ((mem_nthRoots (lp_pos hℓ)).2 hx), hdx⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `(Finset.card_le_card (t := (Finset.Icc 2 r).biUnion fun e => (Finset.Icc 1 (e / 2)).biUnion fun j => (LS g r (g ^ e - 1)).biUnion fun ℓ => (WA g e j ℓ).biUnion fun w => T.filter (fun f => minpoly (ZMod g) w ∣ f)) ?_).trans ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨hfT, e, he, j, hj, ℓ, hℓ, w, hw, hd⟩` from `Finset.mem_filter.1 hf`. Simplify using `only [Finset.mem_biUnion]`.
+
+Conclude with `⟨e, he, j, hj, ℓ, hℓ, w, hw, Finset.mem_filter.2 ⟨hfT, hd⟩⟩`. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun e _ => ?_)` and prove the remaining obligations. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun ℓ _ => ?_)` and prove the remaining obligations. Conclude with `Finset.card_biUnion_le`.
+
+Use `_ ≤ SA g r := by`. Use `Finset.sum_le_sum fun e _ => Finset.sum_le_sum fun j _ => Finset.sum_le_sum fun ℓ _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `divCount r T hmon _ (minpoly_monic' w)`.
+
+Establish `h2 : (minpoly (ZMod g) w).natDegree = e` using `(Finset.mem_filter.1 hw).2`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Use `_ = (WA g e j ℓ).card * g ^ (r - e) := by rw [Finset.sum_const, smul_eq_mul]`. Use `_ ≤ (g ^ j - 1) * Lp g e ℓ * g ^ (r - e) := Nat.mul_le_mul_right _ ((Finset.card_filter_le _ _).trans (card_nthRoots_toFinset_le _ _))`.
+-/
 theorem cardA (g r : ℕ) [hg : Fact g.Prime] (T : Finset (ZMod g)[X])
     (hmon : ∀ f ∈ T, f.Monic ∧ f.natDegree = r) : (T.filter (PA g r)).card ≤ SA g r := by
   calc (T.filter (PA g r)).card ≤ ∑ e ∈ Finset.Icc 2 r, ∑ j ∈ Finset.Icc 1 (e / 2),
@@ -111,6 +143,19 @@ theorem cardA (g r : ℕ) [hg : Fact g.Prime] (T : Finset (ZMod g)[X])
               Nat.mul_le_mul_right _
                 ((Finset.card_filter_le _ _).trans (card_nthRoots_toFinset_le _ _))
 
+/- English proof (translation)
+Establish `hg2 : 1 < g` using `hg.out.one_lt`. Combine the equalities or inequalities in the displayed calculation. Use `(Finset.card_le_card (t := (Finset.Icc 1 r).biUnion fun e => (Finset.Icc 1 (min e (r - e))).biUnion fun e' => (LS g r ((g ^ e - 1) * (g ^ e' - 1))).biUnion fun ℓ => (YB g e').biUnion fun y => (XB g e ℓ y).biUnion fun x => T.filter (fun f => minpoly (ZMod g) x * minpoly (ZMod g) y …` and prove the remaining obligations. Introduce `f hf`. Take `⟨hfT, e, he, e', he', ℓ, hℓ, y, hy, x, hx, hd⟩` from `Finset.mem_filter.1 hf`.
+
+Simplify using `only [Finset.mem_biUnion]`. Conclude with `⟨e, he, e', he', ℓ, hℓ, y, hy, x, hx, Finset.mem_filter.2 ⟨hfT, hd⟩⟩`. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun e _ => ?_)` and prove the remaining obligations. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun e' _ => ?_)` and prove the remaining obligations. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun ℓ _ => ?_)` and prove the remaining obligations.
+
+Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun y _ => ?_)` and prove the remaining obligations. Conclude with `Finset.card_biUnion_le`. Use `_ ≤ SB g r := by`. Use `Finset.sum_le_sum fun e _ => Finset.sum_le_sum fun e' he' => Finset.sum_le_sum fun ℓ _ => ?_` and prove the remaining obligations. Establish `he1 : 1 ≤ e'` using `(Finset.mem_Icc.1 he').1`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun y hy => Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `divCount r T hmon _ ((minpoly_monic' x).mul (minpoly_monic' y))`. Establish `h2 : (minpoly (ZMod g) x * minpoly (ZMod g) y).natDegree = e + e'`. Rewrite using `[(minpoly_monic' x).natDegree_mul (minpoly_monic' y), (Finset.mem_filter.1 hx).2, (Finset.mem_filter.1 hy).2]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[Nat.sub_sub]`. Conclude with `h1`. Use `_ = ∑ y ∈ YB g e', (XB g e ℓ y).card * g ^ (r - e - e') := by`. Simplify using `only [Finset.sum_const, smul_eq_mul]`.
+
+Use `_ ≤ ∑ y ∈ YB g e', Lp g e ℓ * g ^ (r - e - e') := Finset.sum_le_sum fun y _ => Nat.mul_le_mul_right _ ((Finset.card_filter_le _ _).trans (card_nthRoots_toFinset_le _ _))`. Use `_ = (YB g e').card * (Lp g e ℓ * g ^ (r - e - e')) := by`. Rewrite using `[Finset.sum_const, smul_eq_mul]`. Use `_ ≤ g ^ e' * (Lp g e ℓ * g ^ (r - e - e')) := Nat.mul_le_mul_right _ ((Finset.card_filter_le _ _).trans (card_roots_X_pow_sub_X_le _ (Nat.one_lt_pow (by omega) hg2)))`. Use `_ = g ^ e' * Lp g e ℓ * g ^ (r - e - e') := by rw [mul_assoc]`.
+-/
 theorem cardB (g r : ℕ) [hg : Fact g.Prime] (T : Finset (ZMod g)[X])
     (hmon : ∀ f ∈ T, f.Monic ∧ f.natDegree = r) : (T.filter (PB g r)).card ≤ SB g r := by
   have hg2 : 1 < g := hg.out.one_lt
@@ -157,6 +202,11 @@ theorem cardB (g r : ℕ) [hg : Fact g.Prime] (T : Finset (ZMod g)[X])
                 (card_roots_X_pow_sub_X_le _ (Nat.one_lt_pow (by omega) hg2)))
           _ = g ^ e' * Lp g e ℓ * g ^ (r - e - e') := by rw [mul_assoc]
 
+/- English proof (translation)
+Establish `hmon : ∀ f ∈ T, f.Monic ∧ f.natDegree = r` using `fun f hf => ⟨(hT f hf).1.1, (hT f hf).1.2.1⟩`. Establish `hcov : T ⊆ T.filter (PA g r) ∪ T.filter (PB g r)`. Introduce `f hf`. Take `⟨_, ℓ, hℓ, hB, hAB⟩` from `hT f hf`. Break down `hAB with h | h` into its components or cases.
+
+Conclude with `Finset.mem_union_left _ (Finset.mem_filter.2 ⟨hf, caseA_PA hℓ hB h⟩)`. Conclude with `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨hf, caseB_PB hℓ hB h⟩)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_le_SA_SB (g r : ℕ) [hg : Fact g.Prime] (T : Finset (ZMod g)[X])
     (hT : ∀ f ∈ T, IsLab g r f ∧ ∃ ℓ : ℕ, ℓ.Prime ∧ ℓ ∉ BB r g ∧
       (CaseA g r ℓ f ∨ CaseB g r ℓ f)) :

@@ -14,6 +14,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial
   UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Br
 
+/- English proof (translation)
+Use `choose u hu using hQ`. Establish `hex : ∀ x : X, ∃ y, Q y (u x)` using `fun x => ⟨x, hu x⟩`. Use `⟨fun x => (u x, decide (R (Classical.epsilon (α := X) (h := ⟨x⟩) fun y => Q y (u x)) x)), fun x x' h => ?_, hu⟩` and prove the remaining obligations. Take `⟨h1, h3⟩` from `Prod.ext_iff.1 h`. Simplify using `only at h1 h3`.
+
+Establish `h0` using `Classical.epsilon_spec (hex x)`. Rewrite `h3` using `[← h1, decide_eq_decide]`. Establish `hx' : Q x' (u x)` using `h1 ▸ hu x'`. Distinguish the cases in `hc : R (Classical.epsilon (α := X) (h := ⟨x⟩) fun y => Q y (u x)) x`. Conclude with `ht _ _ _ (hs _ _ hc) (h3.1 hc)`.
+
+Conclude with `h2 _ _ _ _ h0 (hu x) hx' hc fun h4 => hc (h3.2 h4)`.
+-/
 private theorem bit_of_fibre {X U : Type} (R : X → X → Prop) (hs : ∀ x y, R x y → R y x)
     (ht : ∀ x y z, R x y → R y z → R x z) (Q : X → U → Prop) (hQ : ∀ x, ∃ u, Q x u)
     (h2 : ∀ u x₀ x x', Q x₀ u → Q x u → Q x' u → ¬ R x₀ x → ¬ R x₀ x' → R x x') :
@@ -31,23 +38,37 @@ private theorem bit_of_fibre {X U : Type} (R : X → X → Prop) (hs : ∀ x y, 
   · exact ht _ _ _ (hs _ _ hc) (h3.1 hc)
   · exact h2 _ _ _ _ h0 (hu x) hx' hc fun h4 => hc (h3.2 h4)
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Conclude with `⟨g⁻¹, fun s => by rw [hg s]; group⟩`.
+-/
 private theorem iso_symm {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') :
     RepIso r' r := by
   obtain ⟨g, hg⟩ := h
   exact ⟨g⁻¹, fun s => by rw [hg s]; group⟩
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Take `⟨g', hg'⟩` from `h'`. Conclude with `⟨g' * g, fun s => by rw [hg' s, hg s]; group⟩`.
+-/
 private theorem iso_trans {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' r'' : Γ →* GL (Fin n) k} (h : RepIso r r')
     (h' : RepIso r' r'') : RepIso r r'' := by
   obtain ⟨g, hg⟩ := h
   obtain ⟨g', hg'⟩ := h'
   exact ⟨g' * g, fun s => by rw [hg' s, hg s]; group⟩
 
+/- English proof (translation)
+Take `⟨h, h1, h2, h3⟩` from `UpperTheory.exists_normV_eq_prime_pow_le_finrank ℚ p w hp hw`. Rewrite `h2` using `[Module.finrank_self]`. Rewrite using `[h3, le_antisymm h2 h1, pow_one]`.
+-/
 private theorem normV_rat {p : ℕ} (hp : p.Prime) (w : HeightOneSpectrum (𝓞 ℚ)) (hw : (p : 𝓞 ℚ) ∈ w.asIdeal) :
     normV w = p := by
   obtain ⟨h, h1, h2, h3⟩ := UpperTheory.exists_normV_eq_prime_pow_le_finrank ℚ p w hp hw
   rw [Module.finrank_self] at h2
   rw [h3, le_antisymm h2 h1, pow_one]
 
+/- English proof (translation)
+Use `haveI := w.isMaximal`. Take `⟨Q, hQ, hL⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 K) w.asIdeal`. Establish `hpQ : (p : 𝓞 K) ∈ Q`. Establish `: (p : 𝓞 ℚ) ∈ Q.under (𝓞 ℚ)` using `hL.over ▸ hw`. Simplify `this` using `[Ideal.under, Ideal.mem_comap]`.
+
+Establish `h0 : Q ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hp.ne_zero (by simpa using hpQ)`. Take `⟨f, f1, f2, f3⟩` from `UpperTheory.exists_normV_eq_prime_pow_le_finrank K p ⟨Q, hQ.isPrime, h0⟩ hp hpQ`. Conclude with `⟨⟨Q, hQ.isPrime, h0⟩, f, HeightOneSpectrum.ext hL.over.symm, hpQ, f1, h2 ▸ f2, f3⟩`.
+-/
 private theorem exists_over (K : Type) [Field K] [NumberField K] (h2 : Module.finrank ℚ K = 2) {p : ℕ} (hp : p.Prime)
     (w : HeightOneSpectrum (𝓞 ℚ)) (hw : (p : 𝓞 ℚ) ∈ w.asIdeal) :
     ∃ (v : HeightOneSpectrum (𝓞 K)) (f : ℕ), v.under (𝓞 ℚ) = w ∧ (p : 𝓞 K) ∈ v.asIdeal ∧ 1 ≤ f ∧ f ≤ 2 ∧ normV v = p ^ f := by
@@ -62,12 +83,20 @@ private theorem exists_over (K : Type) [Field K] [NumberField K] (h2 : Module.fi
   obtain ⟨f, f1, f2, f3⟩ := UpperTheory.exists_normV_eq_prime_pow_le_finrank K p ⟨Q, hQ.isPrime, h0⟩ hp hpQ
   exact ⟨⟨Q, hQ.isPrime, h0⟩, f, HeightOneSpectrum.ext hL.over.symm, hpQ, f1, h2 ▸ f2, f3⟩
 
+/- English proof (translation)
+Introduce `ha` and use `by obtain ⟨x, y, e⟩ : IsCoprime (p : 𝓞 F) (a : 𝓞 F) := Nat.Coprime.cast h exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ hw) (w.asIdeal.mul_mem_left _ ha)))`.
+-/
 private theorem not_mem_of_coprime {F : Type} [Field F] [NumberField F] {p a : ℕ} (h : p.Coprime a)
     (w : HeightOneSpectrum (𝓞 F)) (hw : (p : 𝓞 F) ∈ w.asIdeal) : (a : 𝓞 F) ∉ w.asIdeal := fun ha => by
   obtain ⟨x, y, e⟩ : IsCoprime (p : 𝓞 F) (a : 𝓞 F) := Nat.Coprime.cast h
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left _ hw)
     (w.asIdeal.mul_mem_left _ ha)))
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ j, (p : ℤ) ∣ d j`. Take `⟨j, hj⟩` from `h`. Use `⟨j.succAbove, Fin.succAbove_right_injective, fun i hi => ?_⟩` and prove the remaining obligations. Use `(hd _ _ (Fin.succAbove_ne j i)).isUnit_of_dvd' hi hj` as an intermediate fact. Conclude with `(Nat.prime_iff_prime_int.1 hp).not_unit this`.
+
+Conclude with `⟨Fin.succ, Fin.succ_injective _, fun i hi => h ⟨_, hi⟩⟩`.
+-/
 private theorem exists_avoid {N : ℕ} (d : Fin (N + 1) → ℤ) (hd : ∀ i j, i ≠ j → IsCoprime (d i) (d j)) {p : ℕ} (hp : p.Prime) :
     ∃ u : Fin N → Fin (N + 1), Function.Injective u ∧ ∀ i, ¬ (p : ℤ) ∣ d (u i) := by
   by_cases h : ∃ j, (p : ℤ) ∣ d j
@@ -77,10 +106,42 @@ private theorem exists_avoid {N : ℕ} (d : Fin (N + 1) → ℤ) (hd : ∀ i j, 
     exact (Nat.prime_iff_prime_int.1 hp).not_unit this
   · exact ⟨Fin.succ, Fin.succ_injective _, fun i hi => h ⟨_, hi⟩⟩
 
+/- English proof (translation)
+Rewrite using `[Multiset.map_map]`. Simplify using the standard rewrite rules.
+-/
 private theorem map_inv_inv (B : Multiset ℂ) : (B.map (·⁻¹)).map (·⁻¹) = B := by
   rw [Multiset.map_map]
   simp
 
+/- English proof (translation)
+Introduce `hP n hn`. Take `⟨K₀, _, _, _, hK2, hKc⟩` from `quadFam (n ^ 2 + 1 + 1)`. Use `choose c A hcA using fun i => countP hP (K₀ i) (hK2 i) n hn`. Use `⟨2 ^ (n + 1) * ((n ^ 2 + 1) * ∑ i, c i), ∑ i, A i, ?_⟩` and prove the remaining obligations. Introduce `m wt hm hwt H hH M hM p w hp hpw hpM`.
+
+Take `⟨u, hu, hup⟩` from `exists_avoid (fun i => discr (K₀ i)) hKc hp`. Use `choose v f hvw hpv hf1 hf2 hvf using fun i => exists_over (K₀ (u i)) (hK2 _) hp w hpw`. Use `choose D hDc hD using fun i => hcA (u i) m wt hm hwt H hH M hM p (v i) hp (hpv i) hpM (hup i)`. Take `⟨D', hD', e, he, heβ⟩` from `rootSum n p hp.pos m wt (Fin (n ^ 2 + 1)) (fun i => normV (v i)) f (fun i => ⟨hf1 i, hf2 i, hvf i⟩) D`. Use `⟨D', hD'.trans ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_assoc, mul_assoc]`. Use `Nat.mul_le_mul_left _ ?_` and prove the remaining obligations. Establish `hb : ∀ i, Nat.card (D i).S ≤ (∑ i, c i) * (M * (H + 1)) ^ (∑ i, A i)` using `fun i => (hDc i).trans (Nat.mul_le_mul (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)) (Nat.pow_le_pow_right (Nat.mul_pos hM (Nat.succ_pos _)) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ _))))`. Use `(Finset.sum_le_sum fun i _ => hb i).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Introduce `l _ hl2 hlp Ω _ _ _ ι`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `emb : ∀ i, K₀ (u i) →ₐ[ℚ] Ω` to `fun i => IsAlgClosed.lift`. Use `letI alg : ∀ i, Algebra (K₀ (u i)) Ω := fun i => (emb i).toRingHom.toAlgebra`.
+
+Use `haveI tow : ∀ i, IsScalarTower ℚ (K₀ (u i)) Ω := fun i => IsScalarTower.of_algebraMap_eq fun x => ((emb i).commutes x).symm`. Use `haveI clo : ∀ i, IsAlgClosure (K₀ (u i)) Ω := fun i => ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `choose δ _ _ hδ _ using fun i => UpperTheory.exists_quadratic_sign_character ℚ (K₀ (u i)) Ω l (hK2 _)`. Establish `hδi : Function.Injective δ` using `fun i j hij => by`. Assume the negation of the conclusion as `hne`.
+
+Use `signNe (K₀ (u i)) (K₀ (u j)) Ω (hK2 _) (hKc _ _ fun h => hne (hu h)) (Subgroup.ext fun s => ?_)` and prove the remaining obligations. Rewrite using `[← (hδ i).1, ← (hδ j).1, hij]`. Use `choose cl hcl hclβ using fun i => hD i l hl2 hlp Ω ι`. Establish `hlw : ((l : ℕ) : 𝓞 ℚ) ∉ w.asIdeal` using `not_mem_of_coprime ((Nat.coprime_primes hp Fact.out).2 hlp.symm) w hpw`. Establish `hMw : ((M : ℕ) : 𝓞 ℚ) ∉ w.asIdeal` using `not_mem_of_coprime ((Nat.Prime.coprime_iff_not_dvd hp).2 hpM) w hpw`.
+
+Use `Exists.elim (bit_of_fibre (X := {r : G ℚ Ω →* GL (Fin n) (Qbar l) // AdmR ι M m wt r}) (U := Σ i, {x : (D i).S × Multiset ℂ // x.2.map (· ^ f i) = (D i).β x.1}) (fun r r' => RepIso r.1 r'.1) (fun _ _ => iso_symm) (fun _ _ _ => iso_trans) (fun r t => (∃ h : AdmP ι M m (r.1.comp (r …` and prove the remaining obligations. Use `case main =>`. Introduce and unpack `g ⟨hg, hgQ⟩`. Use `⟨fun r => e ⟨(g r).1.1, (g r).1.2, (g r).2⟩, fun r r' h => hg r r' ?_, fun r => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun x : (Σ i, {x : (D i).S × Multiset ℂ // x.2.map (· ^ f i) = (D i).β x.1} × Bool) => ((⟨x.1, x.2.1⟩ : Σ i, {x : (D i).S × Multiset ℂ // x.2.map (· ^ f i) = (D i).β x.1}), x.2.2)) (he h)`.
+
+Conclude with `h1`. Rewrite using `[heβ]`. Conclude with `(hgQ r).2`. Use `case ex =>`. Introduce and unpack `⟨r, hr⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ¬ RepIso r (tw r (δ i)) := by`. Assume the negation of the conclusion as `hall`. Establish `h1` using `twCard _ _ n r hr.irr (Finset.univ.image δ) fun d hd => by`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hd`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hall ⟨i, h⟩`. Rewrite `h1` using `[Finset.card_image_of_injective _ hδi, Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hirr` using `(resTwo _ _ _ n (res ℚ Ω (K₀ (u i))) (δ i) (hδ i).1 (hδ i).2 r).1 hr.irr hi`. Establish `hadm` using `isCrys_isDR_restrict_openSubgroup hP (K₀ (u i)) (hK2 _) n hn m wt hm M hM l hl2 Ω ι r hr hirr`.
+
+Take `⟨B, hB⟩` from `(frobEx ℚ Ω l ι n r w).2 M hr.level.away hlw hMw`. Establish `h1` using `(UpperTheory.frobenius_power_compatibility ℚ (K₀ (u i)) Ω l ι (v i) (f i) (by rw [hvw, hvf, normV_rat hp w hpw])).1 n r B (by rw [hvw]; exact hB)`. Establish `h2` using `(frobEx (K₀ (u i)) Ω l ι n _ (v i)).1 _ _ h1 (hclβ i ⟨_, hadm⟩)`. Use `⟨⟨i, ⟨(cl i ⟨_, hadm⟩, B.map (·⁻¹)), ?_⟩⟩, ⟨hadm, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (B.map (·⁻¹)).map (· ^ f i) = (D i).β (cl i ⟨_, hadm⟩)`.
+
+Rewrite using `[← map_inv_inv ((D i).β _), ← h2, Multiset.map_map, Multiset.map_map]`. Conclude with `Multiset.map_congr rfl fun b _ => inv_pow b (f i)`. Use `show FrobEig ι r w ((B.map (·⁻¹)).map (·⁻¹))`. Rewrite using `[map_inv_inv]`. Conclude with `hB`.
+
+Use `case two =>`. Introduce and unpack `⟨i, t⟩ r₀ r r' ⟨⟨a₀, e₀⟩, -⟩ ⟨⟨a, e₁⟩, -⟩ ⟨⟨a', e₂⟩, -⟩ n1 n2`. Establish `hR` using `(resTwo _ _ _ n (res ℚ Ω (K₀ (u i))) (δ i) (hδ i).1 (hδ i).2 r₀.1).2`. Establish `k1` using `(hR r.1 a₀.irr (hcl i _ _ (e₀.trans e₁.symm))).resolve_left n1`. Establish `k2` using `(hR r'.1 a₀.irr (hcl i _ _ (e₀.trans e₂.symm))).resolve_left n2`.
+
+Conclude with `iso_trans (iso_symm k1) k2`.
+-/
 theorem UpperTheory.V.Br.count_quadratic_of_hypotheses :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.CountQ := by
   intro hP n hn

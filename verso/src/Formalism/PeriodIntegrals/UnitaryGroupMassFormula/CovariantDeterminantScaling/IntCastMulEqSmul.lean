@@ -11,6 +11,11 @@ namespace PI.QnCovDetW
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Establish `h2 : ∑ σ : Equiv.Perm (Fin n), g σ = ∑ c ∈ Finset.univ.filter Function.Injective, g c`. Use `Finset.sum_nbij (fun σ => (σ : Fin n → Fin n)) (fun σ _ => by simpa using σ.injective) (by intro a _ b _ h; exact DFunLike.coe_injective h) (by` and prove the remaining obligations. Introduce `c hc`. Establish `hc' : Function.Injective c` using `(Finset.mem_filter.1 (Finset.mem_coe.1 hc)).2`. Conclude with `⟨Equiv.ofBijective c (Finite.injective_iff_bijective.1 hc'), Finset.mem_coe.2 (Finset.mem_univ _), rfl⟩) (fun _ _ => rfl)`.
+
+Rewrite using `[h2, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `hg c h`.
+-/
 theorem sum_fun_eq_sum_perm {M : Type*} [AddCommMonoid M] {n : ℕ}
     (g : (Fin n → Fin n) → M) (hg : ∀ c, ¬ Function.Injective c → g c = 0) :
     ∑ c, g c = ∑ σ : Equiv.Perm (Fin n), g σ := by
@@ -28,10 +33,18 @@ theorem sum_fun_eq_sum_perm {M : Type*} [AddCommMonoid M] {n : ℕ}
   · rfl
   · exact hg c h
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_intCast]`.
+-/
 theorem intCast_mul_eq_smul {A : Type*} [Ring A] [Algebra ℂ A] (z : ℤ) (x : A) :
     (z : A) * x = (z : ℂ) • x := by
   rw [Algebra.smul_def, map_intCast]
 
+/- English proof (translation)
+Unfold `qminor`. Rewrite using `[Finset.mul_sum]`. Establish `hs : ((Equiv.Perm.sign π : ℤ) : A) * ((Equiv.Perm.sign π : ℤ) : A) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Use `Fintype.sum_equiv (Equiv.mulLeft π) _ _ (fun σ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, Function.comp_apply]`. Rewrite using `[Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul, ← mul_assoc, ← mul_assoc, hs, one_mul]`.
+-/
 private theorem qminor_rowperm_lemma {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin t → Fin n) (u : ℂ) (π : Equiv.Perm (Fin t)) :
     qminor E (a ∘ π) b u = ((Equiv.Perm.sign π : ℤ) : A) * qminor E a b u := by
@@ -43,6 +56,13 @@ private theorem qminor_rowperm_lemma {A : Type} [Ring A] [Algebra ℂ A] {n t : 
   simp only [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, Function.comp_apply]
   rw [Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul, ← mul_assoc, ← mul_assoc, hs, one_mul]
 
+/- English proof (translation)
+Establish `hcl : τ ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`. Conclude with `Submonoid.mem_top τ`. Proceed by induction on `hcl using Submonoid.closure_induction with`. Consider the case `mem x hx`.
+
+Take `⟨i, rfl⟩` from `hx`. Introduce `b`. Rewrite using `[quantumMinor_adjacent_col_swap E hE a b i u, Equiv.Perm.sign_swap (show i.castSucc < i.succ from Fin.castSucc_lt_succ).ne]`. Simplify using the standard rewrite rules. Consider the case `one`.
+
+Introduce `b`. Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `b`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hy, hx, Equiv.Perm.sign_mul, mul_comm (Equiv.Perm.sign x), Units.val_mul, Int.cast_mul, mul_assoc]`.
+-/
 private theorem qminor_colperm_lemma_2 {A : Type} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A)
     (hE : GlRel E) (a : Fin (m + 1) → Fin n) (u : ℂ) (τ : Equiv.Perm (Fin (m + 1))) :
     ∀ b : Fin (m + 1) → Fin n, qminor E a (b ∘ τ) u = ((Equiv.Perm.sign τ : ℤ) : A) * qminor E a b u := by
@@ -63,6 +83,13 @@ private theorem qminor_colperm_lemma_2 {A : Type} [Ring A] [Algebra ℂ A] {n m 
     rw [Equiv.Perm.coe_mul, ← Function.comp_assoc, hy, hx, Equiv.Perm.sign_mul,
       mul_comm (Equiv.Perm.sign x), Units.val_mul, Int.cast_mul, mul_assoc]
 
+/- English proof (translation)
+Break down `n with _ | m` into its components or cases. Establish `hσ : σ = 1` using `Equiv.ext fun i => i.elim0`. Establish `hτ : τ = 1` using `Equiv.ext fun i => i.elim0`. Substitute `hσ hτ` using the available equality. Simplify using `only [Equiv.Perm.sign_one, Units.val_one, Int.cast_one, mul_one, one_smul, Equiv.Perm.coe_one]`.
+
+Both sides reduce to the same expression. Establish `h1` using `qminor_rowperm_lemma E id (⇑τ) u σ`. Establish `h2` using `qminor_colperm_lemma_2 E hE id u τ id`. Simplify using `only [Function.id_comp] at h1 h2`. Rewrite using `[h1, h2, intCast_mul_eq_smul, intCast_mul_eq_smul, smul_smul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem qminor_perm_perm {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (hE : GlRel E) (σ τ : Equiv.Perm (Fin n)) (u : ℂ) :
     qminor E σ τ u =
@@ -79,18 +106,37 @@ theorem qminor_perm_perm {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin 
     rw [h1, h2, intCast_mul_eq_smul, intCast_mul_eq_smul, smul_smul]
     rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul]`.
+-/
 theorem sum_sign_prod_left {n : ℕ} (P : Matrix (Fin n) (Fin n) ℂ) :
     ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, P (σ k) k = P.det := by
   rw [Matrix.det_apply]
   refine Finset.sum_congr rfl fun σ _ => ?_
   simp only [Units.smul_def, zsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Simplify using `only [Units.smul_def, zsmul_eq_mul, Matrix.transpose_apply]`.
+-/
 theorem sum_sign_prod_right {n : ℕ} (Q : Matrix (Fin n) (Fin n) ℂ) :
     ∑ τ : Equiv.Perm (Fin n), ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ k, Q k (τ k) = Q.det := by
   rw [← Matrix.det_transpose, Matrix.det_apply]
   refine Finset.sum_congr rfl fun σ _ => ?_
   simp only [Units.smul_def, zsmul_eq_mul, Matrix.transpose_apply]
 
+/- English proof (translation)
+Introduce `A _ _ n E P Q hE hQP hPQ u`. Establish `hrep : ∀ c : Fin n → Fin n, ¬ Function.Injective c → ∃ p q, p ≠ q ∧ c p = c q`. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Conclude with `hc (fun p q hpq => by_contra fun h => hne p q h hpq)`. Establish `hrow : ∀ c d : Fin n → Fin n, ¬ Function.Injective c → qminor E c d u = 0`. Introduce `c d hc`. Take `⟨p, q, hpq, hcq⟩` from `hrep c hc`. Conclude with `quantumMinor_eq_zero_of_row_eq quantumMinorRowSkew_holds E c d u p q hpq hcq`.
+
+Establish `hcol : ∀ c d : Fin n → Fin n, ¬ Function.Injective d → qminor E c d u = 0`. Introduce `c d hd`. Take `⟨p, q, hpq, hdq⟩` from `hrep d hd`. Conclude with `quantumMinor_eq_zero_of_col_eq quantumMinorColSkew_holds E hE c d u p q hpq hdq`. Establish `key : qdet (Econj E P Q) u = ∑ σ : Equiv.Perm (Fin n), ∑ τ : Equiv.Perm (Fin n), ((((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ k, P (σ k) k) * (((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ k, Q k (τ k))) • qdet E u`.
+
+Rewrite using `[show qdet (Econj E P Q) u = qminor (Econj E P Q) id id u from rfl, h A n n E P Q hQP id id u, sum_fun_eq_sum_perm]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[sum_fun_eq_sum_perm]`. Use `Finset.sum_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[qminor_perm_perm E hE σ τ u, smul_smul]`.
+
+Use `congr 1`. Apply the tactic sequence `try simp only [id_eq]`. Expand and normalize the polynomial expressions, which then agree. Introduce `d hd`. Rewrite using `[hcol _ d hd, smul_zero]`.
+
+Introduce `c hc`. Conclude with `Finset.sum_eq_zero (fun d _ => by rw [hrow c d hc, smul_zero])`. Rewrite using `[key]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Rewrite using `[← Finset.sum_mul_sum, sum_sign_prod_left, sum_sign_prod_right, ← Matrix.det_mul, hPQ, Matrix.det_one, one_smul]`.
+-/
 theorem qnCovDet_of_lin (h : PI.QnCovLin) : PI.QnCovDet := by
   intro A _ _ n E P Q hE hQP hPQ u
   have hrep : ∀ c : Fin n → Fin n, ¬ Function.Injective c → ∃ p q, p ≠ q ∧ c p = c q := by

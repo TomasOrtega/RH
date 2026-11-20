@@ -21,10 +21,24 @@ def conjClassesEquivOrbits (Γ : Type) [Group Γ] :
     · rintro ⟨c, hc⟩
       exact ⟨c, congrArg val hc⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjClassesEquivOrbits_mk {Γ : Type} [Group Γ] (γ : Γ) :
     conjClassesEquivOrbits Γ (Quotient.mk (IsConj.setoid Γ) γ) =
       Quotient.mk (MulAction.orbitRel Γ (ConjSelf Γ)) (of γ) := rfl
 
+/- English proof (translation)
+Use `set e := conjClassesEquivOrbits Γ`. Establish `key` using `GlobalTheory.T.finsum_orbitRel_fibred_equivariant (H := Γ) (X := Y × ConjSelf Γ) (B := ConjSelf Γ) (E := Y) Prod.snd (fun _ _ => rfl) (fun b => Subgroup.centralizer {val b}) (fun b => by rw [stabilizer_eq_centralizer]) (fun b y => (y, b)) (fun b y y' h => congrArg Prod.fst h) (fu …`. Establish `: h • b = b`. Rewrite using `[← MulAction.mem_stabilizer_iff, stabilizer_eq_centralizer]`. Conclude with `hh`.
+
+Use `show (h • y, b) = (h • y, h • b)`. Rewrite using `[this])`. Use the proof step `(fun q => of (Quotient.out (e.symm q)))`. Use the proof step `(fun q => by show Quotient.mk _ (of (Quotient.out (e.symm q))) = q`. Establish `hout : ∀ c : ConjClasses Γ, (Quotient.mk (IsConj.setoid Γ) (Quotient.out c) : ConjClasses Γ) = c` using `fun c => Quotient.out_eq c`.
+
+Rewrite using `[← conjClassesEquivOrbits_mk, hout, Equiv.apply_symm_apply])`. Use the proof step `(fun o => pairTerm F (Quotient.out o))`. Use the proof step `(GlobalTheory.T.finite_support_stabilizerWeightedPairTerm F hF hsupp hfin)`. Unfold `pairSum`. Rewrite using `[key, ← finsum_comp_equiv e]`.
+
+Use `finsum_congr (fun c => ?_)` and prove the remaining obligations. Establish `hc : e.symm (e c) = c` using `e.symm_apply_apply c`. Generalize the expression as in `e.symm (e c) = c' at hc ⊢`. Substitute `hc` using the available equality. Simplify using `only [val_of]`.
+
+Use `finsum_congr (fun o => ?_)` and prove the remaining obligations. Rewrite using `[pairTerm_out F hF]`. Unfold `pairTerm`. Rewrite using `[stabilizer_pair]`. Both sides reduce to the same expression.
+-/
 theorem finsum_conjClasses_centralizer_orbits {Γ Y : Type} [Group Γ] [MulAction Γ Y] (F : Y → Γ → ℂ)
     (hF : ∀ (η : Γ) (y : Y) (γ : Γ), F (η • y) (η * γ * η⁻¹) = F y γ)
     (_hstab : ∀ y : Y, (MulAction.stabilizer Γ y : Set Γ).Finite)

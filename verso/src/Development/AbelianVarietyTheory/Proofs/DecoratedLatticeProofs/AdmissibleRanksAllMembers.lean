@@ -13,6 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.MemberRanks
 
+/- English proof (translation)
+Introduce `i`. Establish `h1 : ((D.R.k : ℝ) * L.sc.b) ^ 8 ≤ (D.host.g i : ℝ)` using `(hv.host.2.2.2.2.1 i).1`. Establish `hb : 1 ≤ L.sc.b`. Unfold `Scale.b`. Conclude with `Real.one_le_exp (Real.rpow_nonneg (by linarith [L.sc.one_lt_alt]) _)`.
+
+Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h2 : (D.R.k : ℝ) ^ 8 ≤ ((D.R.k : ℝ) * L.sc.b) ^ 8` using `pow_le_pow_left₀ hk0 (le_mul_of_one_le_right hk0 hb) 8`. Establish `h3 : D.R.k ^ 8 ≤ D.host.g i` using `by exact_mod_cast h2.trans h1`. Establish `hf : D.R.f ≤ D.R.k` using `D.R.f_le_k`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; omega`.
+
+Establish `h4 : D.R.k ^ 3 ≤ D.R.k ^ 8` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `h5 : 2 * D.R.f * D.R.k + 1 < D.R.k ^ 3`. Establish `: D.R.f * D.R.k ≤ D.R.k * D.R.k` using `Nat.mul_le_mul_right _ hf`. Establish `h6 : 5 * (D.R.k * D.R.k) ≤ D.R.k ^ 3`. Rewrite using `[pow_succ, pow_two, mul_comm 5]`.
+
+Conclude with `Nat.mul_le_mul_left _ hk`. Establish `h7 : 25 ≤ D.R.k * D.R.k` using `Nat.mul_le_mul hk hk`. Rewrite using `[mul_assoc]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem typePrimesLarge_of_val {C} {cD ch : ℝ} {D : D7} (L : SizeData₂ D) (hv : Val C cD ch L) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnipotentLevelStabilisers.TypePrimesLarge D := by
   intro i
@@ -35,6 +44,9 @@ theorem typePrimesLarge_of_val {C} {cD ch : ℝ} {D : D7} (L : SizeData₂ D) (h
     rw [mul_assoc]; omega
   omega
 
+/- English proof (translation)
+Establish `e : X.toD7.what₂.Dstar = X.B.Dstar` using `(X.toD7.Dstar_eq X.toD7.u₀).symm.trans (X.C.A_Dstar _)`. Rewrite using `[e, hO.sizes.2]`. Unfold `DsPre StandardLattice.DstarP`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun τ _ => (hd τ).symm`.
+-/
 theorem dstar_mass (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre)
     (hd : ∀ τ, X.S.dsig τ = Vol.trueDsig X.B.R (X.B.hc τ)) :
     X.toD7.what₂.Dstar =
@@ -45,6 +57,11 @@ theorem dstar_mass (K : Ctx) (X : Stages) (hO : K.Over X.B.toPre)
   congr 1
   exact Finset.prod_congr rfl fun τ _ => (hd τ).symm
 
+/- English proof (translation)
+Establish `h4` using `Formalism.MainNotions.StandardLattice.HarishChandraReduction.rankFormula_of_classNumber D Lv (GlobalTheory.ColClassNumber.classNumber_all D Lv)`. Introduce `V _ _ _ _ h L _`. Use `⟨fun hL u => ?_, fun hL => ?_⟩` and prove the remaining obligations. Establish `e` using `h4 hG (Formalism.MainNotions.J.splitsF_g D) u (Formalism.MainNotions.J.splitsF_of_splitsE D _ (D.mem u).A.T_prime (hT u)) (Formalism.MainNotions.Ext.Lw.mu0Tie_of_sym C u)`. Establish `em : Formalism.HermitianLatticesTheory.mass h L = StandardLattice.massI D D.R.k` using `Formalism.MainNotions.J.mass_ortho_eq hL (Formalism.MainNotions.J.std_ortho D.host.E D.R.k)`.
+
+Rewrite using `[em, ← Formalism.MainNotions.J.idxColTie_holds D]`. Conclude with `e`. Establish `em : Formalism.HermitianLatticesTheory.mass h L = StandardLattice.massI D D.R.r` using `Formalism.MainNotions.J.mass_ortho_eq hL (Formalism.MainNotions.J.std_ortho D.host.E D.R.r)`. Rewrite using `[em, ← Formalism.MainNotions.J.idxRowTie_holds D, hD]`. Both sides reduce to the same expression.
+-/
 theorem columnRowRanks_admissible_of_massFormula (D : D7) (Lv : LevelData D) (C : Formalism.L2.Forms.ColsTiedSym D)
     (hD : D.what₂.Dstar = StandardLattice.DstarP D (D.host.g 0) (D.host.g 1) (StandardLattice.massI D D.R.r) D.dsig)
     (hG : StandardLattice.GBig D) (hT : ∀ u, Formalism.MainNotions.S.SplitsE D (D.mem u).A.T) : LocalBesselAndTopKernel.FamilyMidVolume D := by
@@ -60,6 +77,9 @@ theorem columnRowRanks_admissible_of_massFormula (D : D7) (Lv : LevelData D) (C 
     rw [em, ← Formalism.MainNotions.J.idxRowTie_holds D, hD]
     rfl
 
+/- English proof (translation)
+Introduce `hL p`. Use `GlobalTheory.Fc.RowE.of_all fun κ K β c b h0 h1 h2 => ?_` and prove the remaining obligations. Take `⟨hv, -⟩` from `GlobalTheory.Fc.built_val GlobalTheory.Fc.Bundle (Bl.IsGoodE p.s) (Bl.IsLinked p) κ β.D β.O c b (GlobalTheory.Fc.Built.intro h0 h1 h2)`. Conclude with `columnRowRanks_admissible_of_massFormula β.D β.O.lev b.R.T.cols (dstar_mass K β.X β.c.isOver β.c.dsig_eq) (GlobalTheory.Proof.ColumnStabilizerTrivialLocal.gBig_of_large (typePrimesLarge_of_val β.O.L hv)) (fun u => GlobalTheory.CollCompare.splits_level β.D u)`.
+-/
 theorem admissible_ranks_at_member : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => Formalism.MainNotions.LocalBesselAndTopKernel.FamilyMidVolume D) := by
   intro hL p

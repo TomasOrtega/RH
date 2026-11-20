@@ -13,6 +13,13 @@ open CategoryTheory Limits TensorProduct
 
 namespace GlobalTheory.TorsorColim
 
+/- English proof (translation)
+Introduce `R D _ _ _ hP ⟨τ, hτ⟩`. Use `haveI : Module.Flat R D := inferInstance`. Use `⟨fun m hm h => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : D) ∈ m • (⊤ : Submodule R D)` using `by rw [h]; exact Submodule.mem_top`. Establish `h2 : ∀ x ∈ m • (⊤ : Submodule R D), τ x ∈ m`.
+
+Introduce `x hx`. Use `Submodule.smul_induction_on hx (fun r hr d _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `m.mul_mem_right _ hr`. Rewrite using `[map_add]`.
+
+Conclude with `m.add_mem hx hy`. Use `h2 1 h1` as an intermediate fact. Rewrite `this` using `[hτ]`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 this)`.
+-/
 theorem faithfullyFlat_of_split : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D], Module.Projective R D →
     (∃ τ : D →ₗ[R] R, τ 1 = 1) → Module.FaithfullyFlat R D := by
   intro R D _ _ _ hP ⟨τ, hτ⟩
@@ -28,6 +35,17 @@ theorem faithfullyFlat_of_split : ∀ (R D : Type) [CommRing R] [CommRing D] [Al
   rw [hτ] at this
   exact hm.ne_top ((Ideal.eq_top_iff_one m).2 this)
 
+/- English proof (translation)
+Introduce `R D D' _ _ _ _ _ q act act' e he hD`. Take `⟨h1, h2, h3, h4⟩` from `hD`. Establish `el : D ≃ₗ[R] D'` using `e.toLinearEquiv`. Use `⟨Module.Finite.equiv el, Module.Projective.of_equiv el, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Module.FaithfullyFlat.of_linearEquiv R D el.symm`.
+
+Set `eT : D ⊗[R] D ≃ₐ[R] D' ⊗[R] D'` to `Algebra.TensorProduct.congr e e`. Set `eP : (Multiplicative (ZMod q) → D) ≃ₐ[R] (Multiplicative (ZMod q) → D')` to `AlgEquiv.piCongrRight (fun _ => e)`. Establish `key : ∀ x, GlobalTheory.TorsorColim.prodMapOf R D' q act' (eT x) = eP (GlobalTheory.TorsorColim.prodMapOf R D q act x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul a b`. Use function extensionality and compare the values at `g`. Simplify using `[eT, eP, he]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+
+Establish `hb : Function.Bijective (GlobalTheory.TorsorColim.prodMapOf R D q act)` using `h4`. Establish `: ⇑(GlobalTheory.TorsorColim.prodMapOf R D' q act') = eP ∘ (GlobalTheory.TorsorColim.prodMapOf R D q act) ∘ eT.symm`. Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[← key, AlgEquiv.apply_symm_apply]`.
+
+Express the relevant statement in the definitionally equal form `Function.Bijective (GlobalTheory.TorsorColim.prodMapOf R D' q act')`. Rewrite using `[this]`. Conclude with `eP.bijective.comp (hb.comp eT.symm.bijective)`.
+-/
 theorem isZModTorsor_of_algEquiv : ∀ (R D D' : Type) [CommRing R] [CommRing D] [CommRing D'] [Algebra R D] [Algebra R D'] (q : ℕ)
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[R] D)) (act' : Multiplicative (ZMod q) →* (D' ≃ₐ[R] D'))
     (e : D ≃ₐ[R] D'), (∀ (g : Multiplicative (ZMod q)) (x : D), e (act g x) = act' g (e x)) →
@@ -57,6 +75,19 @@ theorem isZModTorsor_of_algEquiv : ∀ (R D D' : Type) [CommRing R] [CommRing D]
     rw [this]
     exact eP.bijective.comp (hb.comp eT.symm.bijective)
 
+/- English proof (translation)
+Introduce `J _ _ F c hc q hq D _ _ act hD`. Use `haveI : Module.Finite c.pt D := hD.1`. Use `haveI : Module.Projective c.pt D := hD.2.1`. Use `haveI : Module.FinitePresentation c.pt D := Module.finitePresentation_of_projective c.pt D`. Take `⟨j, A, _, _, _, he0⟩` from `GlobalTheory.T.exists_finitePresentation_descent_of_isColimit J F c hc D inferInstance`.
+
+Take `⟨k, B, _, _, _, actB, e, he⟩` from `GlobalTheory.T.exists_zmod_action_model_of_isColimit_filtered J F c hc q hq j A D act he0`. Use `letI : Algebra (F.obj k) c.pt := (c.ι.app k).hom.toAlgebra`. Establish `hT : GlobalTheory.LocAcyc.IsZModTorsor c.pt (c.pt ⊗[F.obj k] B) q (GlobalTheory.TorsorColim.bcAct c.pt actB)`. Use `GlobalTheory.TorsorColim.isZModTorsor_of_algEquiv c.pt D _ q act _ e.symm (fun g y => ?_) hD` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[he, AlgEquiv.apply_symm_apply, AlgEquiv.apply_symm_apply]`. Establish `h1` using `GlobalTheory.T.eventually_finite_baseChange_filtered_colimit J F c hc k B hT.1`. Establish `h2` using `GlobalTheory.T.projective_eventually_filteredColimit_algebra J F c hc k B ⟨hT.1, hT.2.1⟩`. Establish `h3` using `GlobalTheory.T.exists_late_split_of_filteredColimit J F c hc k B ⟨hT.1, GlobalTheory.T.exists_linear_splitting_unit_faithfullyFlat _ _ hT.1 hT.2.1 hT.2.2.1⟩`. Establish `h4` using `GlobalTheory.T.eventually_zmodTorsorGaloisProductMap_bijective_colimit J F c hc q hq k B actB hT`.
+
+Establish `h34` using `GlobalTheory.TorsorColim.eventually_and (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; ∃ τ : (F.obj m ⊗[F.obj k] B) →ₗ[F.obj m] F.obj m, τ 1 = 1) (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; …`. Establish `h234` using `GlobalTheory.TorsorColim.eventually_and (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; Module.Projective (F.obj m) (F.obj m ⊗[F.obj k] B)) (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; (∃ τ : …`. Take `⟨m, f₀, hm⟩` from `GlobalTheory.TorsorColim.eventually_and (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; Module.Finite (F.obj m) (F.obj m ⊗[F.obj k] B)) (fun (m : J) (h : k ⟶ m) => letI : Algebra (F.obj k) (F.obj m) := (F.map h).hom.toAlgebra; Module.Pro …`. Take `⟨i1, i2, ⟨τ, hτ⟩, i4⟩` from `hm m (𝟙 m)`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+
+Use `letI : Algebra (F.obj k) (F.obj m) := (F.map (f₀ ≫ 𝟙 m)).hom.toAlgebra`. Use `letI : Algebra (F.obj m) c.pt := (c.ι.app m).hom.toAlgebra`. Use `haveI : IsScalarTower (F.obj k) (F.obj m) c.pt := IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `(c.ι.app k).hom x = (c.ι.app m).hom ((F.map (f₀ ≫ 𝟙 m)).hom x)`. Rewrite using `[← c.w (f₀ ≫ 𝟙 m)]`.
+
+Use the proof step `rfl)`. Conclude with `⟨F.obj m ⊗[F.obj k] B, inferInstance, inferInstance, GlobalTheory.TorsorColim.bcAct (F.obj m) actB, ⟨i1, i2, GlobalTheory.TorsorColim.faithfullyFlat_of_split _ _ i2 ⟨τ, hτ⟩, i4⟩, ⟨(Algebra.TensorProduct.cancelBaseChange (F.obj k) (F.obj m) c.pt c.pt B).trans e⟩⟩`.
+-/
 theorem exists_torsor_model_of_isColimit : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (q : ℕ), 0 < q → ∀ (D : Type) [CommRing D] [Algebra c.pt D]
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[c.pt] D)), GlobalTheory.LocAcyc.IsZModTorsor c.pt D q act →

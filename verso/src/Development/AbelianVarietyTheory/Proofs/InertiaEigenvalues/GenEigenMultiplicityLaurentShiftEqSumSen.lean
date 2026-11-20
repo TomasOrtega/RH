@@ -9,6 +9,11 @@ namespace GlobalTheory.PhiGam.Range
 open GlobalTheory.PhiGam
 open scoped LaurentSeries PowerSeries
 
+/- English proof (translation)
+Use `Module.Finite.iff_fg.mpr (Submodule.fg_of_fg_map_of_fg_inf_ker (Submodule.factor hSQ) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Submodule.map_comp, Submodule.factor_comp_mk]`. Conclude with `Module.Finite.iff_fg.mp h1`. Establish `hle : P.map S.mkQ ⊓ LinearMap.ker (Submodule.factor hSQ) ≤ Q.map S.mkQ`. Introduce and unpack `_ ⟨⟨p, -, rfl⟩, hp⟩`.
+
+Conclude with `⟨p, (Submodule.Quotient.mk_eq_zero Q).mp hp, rfl⟩`. Conclude with `Module.Finite.iff_fg.mp (Submodule.finiteDimensional_of_le hle)`.
+-/
 theorem finite_map_trans {k U : Type} [Field k] [AddCommGroup U] [Module k U] {P Q S : Submodule k U}
     (hSQ : S ≤ Q) (h1 : FiniteDimensional k (P.map Q.mkQ)) (h2 : FiniteDimensional k (Q.map S.mkQ)) :
     FiniteDimensional k (P.map S.mkQ) := by
@@ -20,6 +25,11 @@ theorem finite_map_trans {k U : Type} [Field k] [AddCommGroup U] [Module k U] {P
       exact ⟨p, (Submodule.Quotient.mk_eq_zero Q).mp hp, rfl⟩
     exact Module.Finite.iff_fg.mp (Submodule.finiteDimensional_of_le hle)
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker (S.mkQ ∘ₗ P.subtype) = S.submoduleOf P`. Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Both sides reduce to the same expression. Establish `hr : LinearMap.range (S.mkQ ∘ₗ P.subtype) = P.map S.mkQ`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+
+Use `haveI : FiniteDimensional k (LinearMap.range (S.mkQ ∘ₗ P.subtype)) := by rw [hr]; exact h`. Rewrite using `[← hker]`. Conclude with `LinearEquiv.finiteDimensional (LinearMap.quotKerEquivRange _).symm`.
+-/
 theorem finite_quot_of_map {k U : Type} [Field k] [AddCommGroup U] [Module k U] {P S : Submodule k U}
     (h : FiniteDimensional k (P.map S.mkQ)) : FiniteDimensional k (↥P ⧸ S.submoduleOf P) := by
   have hker : LinearMap.ker (S.mkQ ∘ₗ P.subtype) = S.submoduleOf P := by
@@ -30,6 +40,9 @@ theorem finite_quot_of_map {k U : Type} [Field k] [AddCommGroup U] [Module k U] 
   rw [← hker]
   exact LinearEquiv.finiteDimensional (LinearMap.quotKerEquivRange _).symm
 
+/- English proof (translation)
+Unfold `gmult`. Use `set P' := P ⊓ ⨆ m : ℕ, P.comap ((T - algebraMap k (Module.End k U) x) ^ m)`. Establish `h : P.submoduleOf P' = ⊤` using `eq_top_iff.mpr fun y _ => y.2.1`. Use `haveI : Subsingleton (↥P' ⧸ P.submoduleOf P') := Submodule.Quotient.subsingleton_iff.mpr h`. Conclude with `Module.finrank_zero_of_subsingleton`.
+-/
 theorem gmult_self {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T : Module.End k U)
     (P : Submodule k U) (x : k) : gmult T P P x = 0 := by
   unfold gmult
@@ -38,6 +51,11 @@ theorem gmult_self {k U : Type} [Field k] [AddCommGroup U] [Module k U] (T : Mod
   haveI : Subsingleton (↥P' ⧸ P.submoduleOf P') := Submodule.Quotient.subsingleton_iff.mpr h
   exact Module.finrank_zero_of_subsingleton
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, add_zero, Submodule.mkQ_map_self]`. Use `infer_instance`. Consider the case `succ m ih`.
+
+Establish `h` using `Window.finite_quot (hN.shift (a + m)).1`. Rewrite `h` using `[sh_sh_eq, add_comm (1 : ℤ)]`. Rewrite using `[Nat.cast_succ, ← add_assoc]`. Conclude with `finite_map_trans (fun y hy => Window.sh_succ_le _ _ hy) ih h`.
+-/
 theorem finite_sh {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
     [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V]
     {N : Submodule k⟦X⟧ V} (hN : IsLat N) (a : ℤ) (m : ℕ) :
@@ -52,6 +70,11 @@ theorem finite_sh {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k⸨X
     rw [Nat.cast_succ, ← add_assoc]
     exact finite_map_trans (fun y hy => Window.sh_succ_le _ _ hy) ih h
 
+/- English proof (translation)
+Introduce `k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N hN hC a m x`. Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[Nat.cast_zero, add_zero, Finset.sum_range_zero]`. Conclude with `gmult_self _ _ _`.
+
+Consider the case `succ m ih`. Establish `hf` using `finite_quot_of_map (finite_sh hN a (m + 1))`. Rewrite using `[Finset.sum_range_succ, ← ih, ← GlobalTheory.T.senMultiplicity_shift_lattice_variablePow R g hg N hN hC (a + m) x, sen, sh_sh_eq, add_comm (1 : ℤ)]`. Rewrite `hf`, the goal using `[Nat.cast_succ, ← add_assoc]`. Conclude with `GlobalTheory.T.genEigenMultiplicityQuotient_additive_chain (nab g) _ _ _ (fun y hy => Window.sh_succ_le _ _ hy) (fun y hy => Window.sh_add_le a m N hy) (fun y hy => Window.nab_mem_sh R hg hC _ hy) (fun y hy => Window.nab_mem_sh R hg hC _ hy) (fun y hy => Window.nab_mem_sh R hg hC …`.
+-/
 theorem qmult_sh_range : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (g : V →ₗ[k] V), Semi R.γ g → ∀ N : Submodule k⟦X⟧ V, IsLat N → CondC g N → ∀ (a : ℤ) (m : ℕ) (x : k), qmult g (sh a N) (sh (a + m) N) x = ∑ j ∈ Finset.range m, sen g N (x + (a + j : ℤ)) := by
   intro k _ l _ _ R V _ _ _ _ _ _ _ _ g hg N hN hC a m x
   induction m with

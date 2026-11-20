@@ -14,6 +14,9 @@ open GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.LocM 
 
 namespace GlobalTheory.ChainPts
 
+/- English proof (translation)
+The claim follows from `latHalfSt_of (GlobalTheory.T.lattice_uniqueness_of_covering h₁) (GlobalTheory.T.chain_cover_of_hypotheses h₁ h₂ h₃ h₄)`.
+-/
 theorem latHalfSt (h₁ : GlobalTheory.CovTop.Hypotheses2) (h₂ : GlobalTheory.CovHt.HypothesesH) (h₃ : GlobalTheory.Published.PrismaticDieudonnePerfd)
     (h₄ : GlobalTheory.GroupBplus.GroupAllSt) : LatHalfSt :=
   latHalfSt_of (GlobalTheory.T.lattice_uniqueness_of_covering h₁) (GlobalTheory.T.chain_cover_of_hypotheses h₁ h₂ h₃ h₄)

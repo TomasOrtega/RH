@@ -12,6 +12,9 @@ noncomputable section
 variable {X : Scheme.{0}}
 
 @[simp]
+/- English proof (translation)
+Use `ext1`. Simplify using `[pullbackIsoAlong]`.
+-/
 lemma pullbackIsoAlong_refl {T Y Z : Scheme.{0}} {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶ Z}
     (e : g ≫ h = k) (F : Z.Modules) :
     pullbackIsoAlong e (Iso.refl ((Scheme.Modules.pullback h).obj F)) = Iso.refl _ := by

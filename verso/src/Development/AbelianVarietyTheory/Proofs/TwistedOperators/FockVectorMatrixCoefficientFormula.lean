@@ -17,6 +17,15 @@ open GlobalTheory.AdelicScalar GlobalTheory.IndefiniteRowSideFullHecke.TwistedLe
 
 namespace GlobalTheory.FockCoeffImage
 
+/- English proof (translation)
+Introduce `hHM D G _ _ Pl0 T A Ks _ _ _ R F hPM`. Introduce `i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ x hx g hg e e' w w'`. Take `⟨hne, hth, hcart1, hvac⟩` from `GlobalTheory.T.thetaLiftDatum_isNonzeroFockVacuum R F i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ`. Establish `hreal` using `GlobalTheory.T.jointHarmonics_lowest_KType_coefficient_real hHM R F hPM i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ g hg e e' w w'`. Take `⟨hC, -, -, -, -, hW, hON, -, hPt, -, -⟩` from `h`.
+
+Establish `hinf : IsInfFam R.θ` using `hC.models.inf`. Establish `hbM : GlobalTheory.AdelicScalar.realElt R.θ (Wc D i) g ∈ GinfC (Wc D i)`. Use `list_prod_mem fun y hy => ?_` and prove the remaining obligations. Take `⟨τ, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `GlobalTheory.PointAtPlaceHom.atTau_mem _ τ _`.
+
+Establish `key` using `GlobalTheory.T.fockMatrixCoefficient_splits_real_finite_factors D R.ψ R.θ (Vc D i) (Wc D i) cμ (cμ * cη⁻¹) ω hinf hW μ 𝓧 hμ (fun _ => 1) (R.BV i) (cart (R.MW i σ)) BW hcart1 (fun τ => GlobalTheory.Chain.VacVec.cart_isCartanInv _ τ) (fun _ => (Vc D i).rank) (pW D i) (fun τ => hC.m …`. Rewrite `key` using `[one_mul]`. Express the relevant statement in the definitionally equal form `_ * l2 μ 𝓧 f f = l2 μ 𝓧 (ω (1, GlobalTheory.AdelicScalar.realElt R.θ (Wc D i) g) (ptAt R i σ BW f (io (PiTensorProduct.tprod ℂ e) w))) (ptAt R i σ BW f (io (PiTensorProduct.tprod ℂ e') w')) * _ at key`. Rewrite `key` using `[hreal]`. Use `mul_right_cancel₀ hne (key.trans ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fockCoefficientC : GlobalTheory.IndefiniteRowSideFullHecke.MatrixMinorProducts.HarmonicModule → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.PlaceModels D → FockCoefficientC R F := by
   intro hHM D G _ _ Pl0 T A Ks _ _ _ R F hPM
   intro i t σ s P cμ cη m ω BW f₀ f c io h μ 𝓧 hμ x hx g hg e e' w w'

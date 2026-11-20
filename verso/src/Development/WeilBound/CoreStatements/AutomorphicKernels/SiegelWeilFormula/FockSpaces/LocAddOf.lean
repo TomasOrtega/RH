@@ -12,11 +12,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 variable {d : SD σ} (R : RD d)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Pi.add_apply, mul_add]`.
+-/
 theorem tens_add (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (Ψ Ψ' : Mx F E d.m d.n → ℂ) :
     R.tens w f (Ψ + Ψ') = R.tens w f Ψ + R.tens w f Ψ' := by
   funext X
   simp only [RD.tens, Pi.add_apply, mul_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Simplify using `only [RD.tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tens_smul (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) (a : ℂ) (Ψ : Mx F E d.m d.n → ℂ) :
     R.tens w f (a • Ψ) = a • R.tens w f Ψ := by
   funext X
@@ -29,20 +35,36 @@ def tensL (w : InfinitePlace F) (f : (Fin d.m → Fin d.n → ℂ) → ℂ) : (M
   map_smul' a Ψ := tens_smul R w f a Ψ
 
 omit R in
+/- English proof (translation)
+The claim follows from `Matrix.map_add _ (map_add _) X Z`.
+-/
 theorem cw_add (d : SD σ) (w : InfinitePlace F) (X Z : Mx F E d.m d.n) : d.cw w (X + Z) = d.cw w X + d.cw w Z :=
   Matrix.map_add _ (map_add _) X Z
 
+/- English proof (translation)
+Unfold `RD.loc`. Rewrite using `[cw_add, h, add_zero]`.
+-/
 theorem loc_add_of (w : InfinitePlace F) (X Z : Mx F E d.m d.n) (h : d.cw w Z = 0) : R.loc w (X + Z) = R.loc w X := by
   unfold RD.loc
   rw [cw_add, h, add_zero]
 
 omit R in
+/- English proof (translation)
+Unfold `SD.crd`. Rewrite using `[Matrix.add_apply, map_add, Finsupp.add_apply]`.
+-/
 theorem crd_add (d : SD σ) (X Z : Mx F E d.m d.n) (k : Fin d.m × Fin d.n × Fin 2) :
     d.crd (X + Z) k = d.crd X k + d.crd Z k := by
   unfold SD.crd
   rw [Matrix.add_apply, map_add, Finsupp.add_apply]
 
 omit R in
+/- English proof (translation)
+Establish `e1 : d.crd (finOne F • Z) k = finOne F * d.crd Z k`. Unfold `SD.crd`. Rewrite using `[Matrix.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `e2 : d.crd (finOne F • Z) k = 0`. Rewrite using `[h]`.
+
+Unfold `SD.crd`. Rewrite using `[Matrix.zero_apply, map_zero, Finsupp.zero_apply]`. Establish `e3 : (finOne F * d.crd Z k).2 = (d.crd Z k).2` using `by show (finOne F).2 * (d.crd Z k).2 = _`. Rewrite using `[show (finOne F).2 = 1 from rfl, one_mul]`. Rewrite using `[← e3, ← e1, e2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem crd_fin (d : SD σ) (Z : Mx F E d.m d.n) (h : finOne F • Z = 0) (k : Fin d.m × Fin d.n × Fin 2) :
     (d.crd Z k).2 = 0 := by
   have e1 : d.crd (finOne F • Z) k = finOne F * d.crd Z k := by
@@ -58,6 +80,15 @@ theorem crd_fin (d : SD σ) (Z : Mx F E d.m d.n) (h : finOne F • Z = 0) (k : F
   rw [← e3, ← e1, e2]
   rfl
 
+/- English proof (translation)
+Introduce `X Z hZ hf`. Proceed by induction on `hΨ using Submodule.span_induction generalizing X with`. Consider the case `mem x hx`. Take `⟨P, g, -, rfl⟩` from `hx`. Establish `e1 : ∀ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' (X + Z)) = fP (P w') (R.loc w' X)` using `fun w' hw' => by`.
+
+Rewrite using `[loc_add_of R w' X Z (hZ w' (Finset.ne_of_mem_erase hw'))]`. Establish `e2 : (fun k => (d.crd (X + Z) k).2) = fun k => (d.crd X k).2`. Use function extensionality and compare the values at `k`. Rewrite using `[crd_add]`. Use `show (d.crd X k).2 + (d.crd Z k).2 = _`.
+
+Rewrite using `[crd_fin d Z hf k, add_zero]`. Use `show (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' (X + Z))) * g (fun k => (d.crd (X + Z) k).2) = (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g (fun k => (d.crd X k).2)`. Rewrite using `[Finset.prod_congr rfl e1, e2]`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, hx, hy]`.
+
+Consider the case `smul a x _ hx => simp only [Pi.smul_apply, hx]`.
+-/
 theorem away_inv (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) :
     ∀ X Z, (∀ w', w' ≠ w → d.cw w' Z = 0) → finOne F • Z = 0 → Ψ (X + Z) = Ψ X := by
   intro X Z hZ hf
@@ -78,6 +109,11 @@ theorem away_inv (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ �
   | add x y _ _ hx hy => simp only [Pi.add_apply, hx, hy]
   | smul a x _ hx => simp only [Pi.smul_apply, hx]
 
+/- English proof (translation)
+Establish `h : R.away w ≤ R.fock.comap (tensL R w (fP P))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P', g, hg, rfl⟩`. Use `Submodule.subset_span ⟨Function.update P' w P, g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`.
+
+Use `show fP P (R.loc w X) * ((∏ w' ∈ Finset.univ.erase w, fP (P' w') (R.loc w' X)) * g fun k => (d.crd X k).2) = (∏ w', fP (Function.update P' w P w') (R.loc w' X)) * g fun k => (d.crd X k).2`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), Function.update_self, mul_assoc]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hw')]`. Conclude with `h hΨ`.
+-/
 theorem away_tens (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ ∈ R.away w) (P : PX d.m d.n) :
     R.tens w (fP P) Ψ ∈ R.fock := by
   have h : R.away w ≤ R.fock.comap (tensL R w (fP P)) := by
@@ -92,6 +128,17 @@ theorem away_tens (w : InfinitePlace F) (Ψ : Mx F E d.m d.n → ℂ) (hΨ : Ψ 
     exact Finset.prod_congr rfl fun w' hw' => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hw')]
   exact h hΨ
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨P, g, hg, rfl⟩` from `hx`. Use `⟨1, fun _ => P w, fun _ X => (∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g fun k => (d.crd X k).2, fun _ => Submodule.subset_span ⟨P, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`.
+
+Use function extensionality and compare the values at `X`. Use `show (∏ w', fP (P w') (R.loc w' X)) * g (fun k => (d.crd X k).2) = fP (P w) (R.loc w X) * ((∏ w' ∈ Finset.univ.erase w, fP (P w') (R.loc w' X)) * g fun k => (d.crd X k).2)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), mul_assoc]`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun i => Fin.elim0 i, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨k1, P1, Ψ1, h1, e1⟩` from `hx`. Take `⟨k2, P2, Ψ2, h2, e2⟩` from `hy`. Use `⟨k1 + k2, Fin.append P1 P2, Fin.append Ψ1 Ψ2, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+
+Conclude with `h1 j`. Rewrite using `[Fin.append_right]`. Conclude with `h2 j`. Rewrite using `[Fin.sum_univ_add, e1, e2]`. Simplify using `only [Fin.append_left, Fin.append_right]`.
+
+Consider the case `smul a x _ hx`. Take `⟨k, P, Ψ, h, e⟩` from `hx`. Use `⟨k, P, fun i => a • Ψ i, fun i => (R.away w).smul_mem a (h i), ?_⟩` and prove the remaining obligations. Rewrite using `[e, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (tens_smul R w _ a (Ψ i)).symm`.
+-/
 theorem fock_dec (w : InfinitePlace F) (f : Mx F E d.m d.n → ℂ) (hf : f ∈ R.fock) :
     ∃ (k : ℕ) (P : Fin k → PX d.m d.n) (Ψ : Fin k → Mx F E d.m d.n → ℂ),
       (∀ i, Ψ i ∈ R.away w) ∧ f = ∑ i, R.tens w (fP (P i)) (Ψ i) := by
@@ -122,6 +169,11 @@ theorem fock_dec (w : InfinitePlace F) (f : Mx F E d.m d.n → ℂ) (hf : f ∈ 
     exact Finset.sum_congr rfl fun i _ => (tens_smul R w _ a (Ψ i)).symm
 
 omit R in
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Use `show d.l (d.dd.rho d.B.ψ _ (Φ + Φ')) = d.l (d.dd.rho d.B.ψ _ Φ) + d.l (d.dd.rho d.B.ψ _ Φ')`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Darboux.rho, schr, Pi.add_apply, mul_add]`.
+-/
 theorem T_add (d : SD σ) (Φ Φ' : d.Fn) : d.T (Φ + Φ') = d.T Φ + d.T Φ' := by
   funext X
   show d.l (d.dd.rho d.B.ψ _ (Φ + Φ')) = d.l (d.dd.rho d.B.ψ _ Φ) + d.l (d.dd.rho d.B.ψ _ Φ')
@@ -131,6 +183,11 @@ theorem T_add (d : SD σ) (Φ Φ' : d.Fn) : d.T (Φ + Φ') = d.T Φ + d.T Φ' :=
   simp only [Darboux.rho, schr, Pi.add_apply, mul_add]
 
 omit R in
+/- English proof (translation)
+Use function extensionality and compare the values at `X`. Use `show d.l (d.dd.rho d.B.ψ _ (a • Φ)) = a • d.l (d.dd.rho d.B.ψ _ Φ)`. Rewrite using `[← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem T_smul (d : SD σ) (a : ℂ) (Φ : d.Fn) : d.T (a • Φ) = a • d.T Φ := by
   funext X
   show d.l (d.dd.rho d.B.ψ _ (a • Φ)) = a • d.l (d.dd.rho d.B.ψ _ Φ)

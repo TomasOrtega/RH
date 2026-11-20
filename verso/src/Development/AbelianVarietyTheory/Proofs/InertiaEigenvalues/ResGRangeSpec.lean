@@ -12,14 +12,25 @@ namespace GlobalTheory.DelGlob.ResRange
 variable (Ω K L : Type) [Field Ω] [Field K] [Algebra K Ω] [Field L] [Algebra L Ω] [Algebra K L]
   [IsScalarTower K L Ω]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resG_apply (τ : G L Ω) (z : Ω) : resG K L Ω τ z = τ z := rfl
 
+/- English proof (translation)
+Introduce `a b h`. Use extensionality with `z`. Use `congrArg (fun σ : G K Ω => σ z) h` as an intermediate fact. Conclude with `this`.
+-/
 theorem resG_injective : Function.Injective (resG K L Ω) := by
   intro a b h
   ext z
   have := congrArg (fun σ : G K Ω => σ z) h
   exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, rfl⟩ x`. Conclude with `τ.commutes x`. Introduce `h`. Use `⟨{ σ.toRingEquiv with commutes' := h }, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `z`. Both sides reduce to the same expression.
+-/
 theorem mem_range_iff (σ : G K Ω) :
     σ ∈ (resG K L Ω).range ↔ ∀ x : L, σ (algebraMap L Ω x) = algebraMap L Ω x := by
   constructor
@@ -37,6 +48,11 @@ def embAction : MulAction (G K Ω) (L →ₐ[K] Ω) where
 
 attribute [local instance] embAction
 
+/- English proof (translation)
+Use extensionality with `σ`. Rewrite using `[mem_range_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Use `congrArg (fun φ : L →ₐ[K] Ω => φ x) h` as an intermediate fact.
+
+Conclude with `this`. Introduce `h show (σ : Ω →ₐ[K] Ω).comp (IsScalarTower.toAlgHom K L Ω) = IsScalarTower.toAlgHom K L Ω`. Use extensionality with `x`. Conclude with `h x`.
+-/
 theorem stabilizer_eq :
     MulAction.stabilizer (G K Ω) (IsScalarTower.toAlgHom K L Ω) =
       (resG K L Ω).range := by
@@ -60,6 +76,11 @@ variable (Ω K L : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Is
 
 attribute [local instance] embAction
 
+/- English proof (translation)
+Use `haveI : Normal K Ω := IsAlgClosure.normal K Ω`. Use extensionality with `φ`. Simplify using `only [Set.mem_univ, iff_true]`. Set `ψ : Ω →ₐ[K] Ω` to `φ.liftNormal Ω`. Set `σ : G K Ω` to `AlgEquiv.ofBijective ψ (Algebra.IsAlgebraic.algHom_bijective ψ)`.
+
+Use `⟨σ, ?_⟩` and prove the remaining obligations. Use `show (σ : Ω →ₐ[K] Ω).comp (IsScalarTower.toAlgHom K L Ω) = φ`. Use extensionality with `x`. Conclude with `AlgHom.liftNormal_commutes φ Ω x`.
+-/
 theorem orbit_eq_univ :
     MulAction.orbit (G K Ω) (IsScalarTower.toAlgHom K L Ω) = Set.univ := by
   haveI : Normal K Ω := IsAlgClosure.normal K Ω
@@ -72,12 +93,22 @@ theorem orbit_eq_univ :
   ext x
   exact AlgHom.liftNormal_commutes φ Ω x
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K`. Rewrite using `[← stabilizer_eq, MulAction.index_stabilizer, orbit_eq_univ Ω K L, Set.ncard_univ, Nat.card_eq_fintype_card, AlgHom.card]`.
+-/
 theorem index_range : (resG K L Ω).range.index = Module.finrank K L := by
   haveI : FiniteDimensional K L := Module.Finite.of_restrictScalars_finite ℚ K L
   haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed K
   rw [← stabilizer_eq, MulAction.index_stabilizer, orbit_eq_univ Ω K L, Set.ncard_univ,
     Nat.card_eq_fintype_card, AlgHom.card]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional K L := Module.Finite.of_restrictScalars_finite ℚ K L`. Take `⟨E, hE, hEN⟩` from `(krullTopology_mem_nhds_one_iff L Ω (N : Set (G L Ω))).mp (hN.mem_nhds N.one_mem)`. Establish `hfin : FiniteDimensional K ↥(E.restrictScalars K)` using `(Module.Finite.trans (R := K) L ↥E : FiniteDimensional K ↥E)`. Use `Subgroup.isOpen_mono (H₁ := (E.restrictScalars K).fixingSubgroup) ?_ (IntermediateField.fixingSubgroup_isOpen _)` and prove the remaining obligations. Introduce `σ hσ`.
+
+Establish `hfix : ∀ z ∈ E, σ z = z` using `fun z hz => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ z hz`. Take `⟨τ, hτ⟩` from `(mem_range_iff Ω K L σ).2 (fun x => hfix _ (E.algebraMap_mem x))`. Use `⟨τ, hEN ?_, hτ⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `z hz`.
+
+Rewrite using `[← resG_apply Ω K L, hτ]`. Conclude with `hfix z hz`.
+-/
 theorem isOpen_map (N : Subgroup (G L Ω)) (hN : IsOpen (N : Set (G L Ω))) :
     IsOpen (N.map (resG K L Ω) : Set (G K Ω)) := by
   haveI : FiniteDimensional K L := Module.Finite.of_restrictScalars_finite ℚ K L
@@ -101,6 +132,9 @@ end GlobalTheory.DelGlob.ResRange
 
 namespace GlobalTheory.DelGlob
 
+/- English proof (translation)
+Introduce `Ω _ K _ _ _ _ L _ _ _ _ _ _`. Use `⟨ResRange.resG_injective Ω K L, ResRange.resG_apply Ω K L, ResRange.mem_range_iff Ω K L, ?_, ResRange.index_range Ω K L, ResRange.isOpen_map Ω K L⟩` and prove the remaining obligations. Establish `h` using `ResRange.isOpen_map Ω K L ⊤ isOpen_univ`. Rewrite `h` using `[← MonoidHom.range_eq_map]`. Then use the resulting hypothesis.
+-/
 theorem resG_range_spec : ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (L : Type) [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω], Function.Injective (resG K L Ω) ∧ (∀ (τ : G L Ω) (z : Ω), resG K L Ω τ z = τ z) ∧ (∀ σ : G K Ω, σ ∈ (resG K L Ω).range ↔ ∀ x : L, σ (algebraMap L Ω x) = algebraMap L Ω x) ∧ IsOpen ((resG K L Ω).range : Set (G K Ω)) ∧ (resG K L Ω).range.index = Module.finrank K L ∧ ∀ N : Subgroup (G L Ω), IsOpen (N : Set (G L Ω)) → IsOpen (N.map (resG K L Ω) : Set (G K Ω)) := by
   intro Ω _ K _ _ _ _ L _ _ _ _ _ _
   refine ⟨ResRange.resG_injective Ω K L, ResRange.resG_apply Ω K L, ResRange.mem_range_iff Ω K L, ?_,

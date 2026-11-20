@@ -7,9 +7,15 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CompactUnitHold
 
 namespace PositivityTheory.Rg.BcB.F.U
 
+/- English proof (translation)
+The claim follows from `UU.uWordOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU`.
+-/
 theorem unitary_words_holds : UWord :=
   UU.uWordOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU
 
+/- English proof (translation)
+The claim follows from `UU.uAdjOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU`.
+-/
 theorem unitary_adjoint_holds : UAdj :=
   UU.uAdjOfU GlobalTheory.T.diagonal_algebra_holds GlobalTheory.T.local_algebra_holds (GlobalTheory.T.spherical_one_of_local_algebra GlobalTheory.T.local_algebra_holds) GlobalTheory.T.compact_unit_holds PositivityTheory.Rg.BcB.F.Fok.sphStarU
 

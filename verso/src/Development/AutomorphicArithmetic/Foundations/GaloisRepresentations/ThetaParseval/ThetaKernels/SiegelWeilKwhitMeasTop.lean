@@ -14,6 +14,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
+/- English proof (translation)
+Establish `hCM : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ` using `d.ok.good.cm`. Take `⟨⟨hLC, hSC, hT2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Take `⟨hTR, hLC', hSC', hT2', -, -, -, -, hcl, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := hTR`. Use `haveI := hLC'`. Use `haveI := hSC'`. Use `haveI := hT2'`.
+
+Use `haveI : LocallyCompactSpace (Matrix (Fin d.n) (Fin d.n) (AF F ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin d.n → Fin d.n → AF F ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin d.n) (Fin d.n) (AF F ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin d.n → Fin d.n → AF F ⊗[F] E))`. Use `haveI : Countable E := meas_countableE`. Use `haveI : Countable (Matrix (Fin d.n) (Fin d.n) E) := inferInstanceAs (Countable (Fin d.n → Fin d.n → E))`. Use `⟨inferInstance, (hcl d.n).locallyCompactSpace, inferInstanceAs (SecondCountableTopology ((HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n : Set (Matrix (Fin d.n) (Fin d.n) (AF F ⊗[F] E))))), ⟨rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hc : (Set.range (AddMonoidHom.mapMatrix (HeckeCharacterZeroLocus.SiegelWeilU.inclR (F` using `F) (E := E) (AF F)).toAddMonoidHom : Matrix (Fin d.n) (Fin d.n) E → Matrix (Fin d.n) (Fin d.n) (AF F ⊗[F] E))).Countable := Set.countable_range _`. Use `haveI := hc.to_subtype`. Use `Function.Injective.countable (f := fun x : MeasP.ratHerm F E σ d.n => (⟨x.1.1, AddMonoidHom.mem_range.mp (AddSubgroup.mem_comap.mp x.2)⟩ : Set.range _)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h` using `congrArg Subtype.val hxy`.
+
+Conclude with `Subtype.ext (Subtype.ext h)`.
+-/
 theorem meas_herm_top'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsTopologicalAddGroup (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     LocallyCompactSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ SecondCountableTopology (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧
     BorelSpace (HeckeCharacterZeroLocus.SiegelWeilU.HermR (AF F) σ d.n) ∧ Countable (MeasP.ratHerm F E σ d.n) := by
@@ -39,6 +50,17 @@ theorem meas_herm_top'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
   intro x y hxy
   have h := congrArg Subtype.val hxy
   exact Subtype.ext (Subtype.ext h)
+/- English proof (translation)
+Establish `hCM : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ` using `d.ok.good.cm`. Take `⟨⟨hLC, hSC, hT2⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Take `⟨hTR, hLC', hSC', hT2', -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := hTR`. Use `haveI := hLC'`. Use `haveI := hSC'`. Use `haveI := hT2'`.
+
+Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : Countable E := meas_countableE`. Use `haveI : Countable (Matrix (Fin d.m) (Fin d.n) E) := inferInstanceAs (Countable (Fin d.m → Fin d.n → E))`. Use `⟨inferInstance, inferInstanceAs (LocallyCompactSpace (Fin d.m → Fin d.n → AE F E)), inferInstanceAs (SecondCountableTopology (Fin d.m → Fin d.n → AE F E)), ⟨(inferInstance : BorelSpace (Fin d.m → Fin d.n → AE F E)).measurable_eq⟩, ?_⟩` and prove the remaining obligations. Set `K : AddSubgroup (Mx F E d.m d.n)` to `(AddMonoidHom.mapMatrix (inclR (F := F) (E := E) (AF F)).toAddMonoidHom).range`.
+
+Establish `hle : d.ratM ≤ K`. Use `(AddSubgroup.closure_le K).mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨X, rfl⟩`. Conclude with `⟨X, rfl⟩`. Establish `hc : (Set.range (AddMonoidHom.mapMatrix (inclR (F` using `F) (E := E) (AF F)).toAddMonoidHom : Matrix (Fin d.m) (Fin d.n) E → Mx F E d.m d.n)).Countable := Set.countable_range _`.
+
+Use `haveI := hc.to_subtype`. Use `Function.Injective.countable (f := fun x : d.ratM => (⟨x.1, AddMonoidHom.mem_range.mp (hle x.2)⟩ : Set.range _)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext h`.
+-/
 theorem meas_mx_top'_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : IsTopologicalAddGroup (Mx F E d.m d.n) ∧ LocallyCompactSpace (Mx F E d.m d.n) ∧
     SecondCountableTopology (Mx F E d.m d.n) ∧ BorelSpace (Mx F E d.m d.n) ∧ Countable d.ratM := by
   have hCM : HeckeCharacterZeroLocus.SiegelWeilU.IsCMExt F E σ := d.ok.good.cm

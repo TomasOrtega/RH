@@ -20,6 +20,11 @@ namespace GlobalTheory.FockNegSubst
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp only [GlobalTheory.CompactHowe.substF, MvPolynomial.aeval_C, MvPolynomial.map_C, MvPolynomial.algebraMap_eq, Algebra.algebraMap_self, RingHom.id_apply]`. Consider the case `add p q hp hq => rw [map_add, map_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul (GlobalTheory.CompactHowe.substF h g), map_mul (MvPolynomial.map (starRingEnd ℂ)), hp, map_mul (MvPolynomial.map (starRingEnd ℂ)), map_mul, MvPolynomial.map_X, GlobalTheory.CompactHowe.substF_X, GlobalTheory.CompactHowe.substF_X]`.
+
+Use `congr 1`. Simplify using `only [map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, Matrix.map_apply]`.
+-/
 theorem map_conj_substF {ι : Type} {N n : ℕ} (h : ι → Matrix (Fin N) (Fin N) ℂ) (g : ι → Matrix (Fin n) (Fin n) ℂ)
     (P : MvPolynomial (ι × Fin N × Fin n) ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (GlobalTheory.CompactHowe.substF h g P) =
@@ -36,6 +41,9 @@ theorem map_conj_substF {ι : Type} {N n : ℕ} (h : ι → Matrix (Fin N) (Fin 
     congr 1
     simp only [map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, Matrix.map_apply]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.map_map]`. Establish `e : (starRingEnd ℂ).comp (starRingEnd ℂ) = RingHom.id ℂ` using `RingHom.ext fun z => Complex.conj_conj z`. Rewrite using `[e, MvPolynomial.map_id]`.
+-/
 theorem map_conj_conj {σ : Type} (P : MvPolynomial σ ℂ) :
     MvPolynomial.map (starRingEnd ℂ) (MvPolynomial.map (starRingEnd ℂ) P) = P := by
   rw [MvPolynomial.map_map]
@@ -44,6 +52,13 @@ theorem map_conj_conj {σ : Type} (P : MvPolynomial σ ℂ) :
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial k a`. Establish `hm` using `GlobalTheory.FockConj.pureTensorO_negSp_monomial ψ θ S T (fun _ => 1) (fun _ => 1) BS BT f hψ hθ k x`. Establish `e1 : (MvPolynomial.monomial k a : MvPolynomial (FVar D T.rank S.rank) ℂ) = a • MvPolynomial.monomial k 1`.
+
+Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `e2 : MvPolynomial.map (starRingEnd ℂ) (MvPolynomial.monomial k a : MvPolynomial (FVar D T.rank S.rank) ℂ) = (starRingEnd ℂ a) • MvPolynomial.monomial k 1`. Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e2, e1, map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, ← hm]`. Consider the case `add p q hp hq`.
+
+Rewrite using `[map_add, map_add, map_add, Pi.add_apply, Pi.add_apply, hp, hq, map_add]`.
+-/
 theorem pureTensorO_negSp_map_conj {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
@@ -70,6 +85,9 @@ namespace GlobalTheory.FockNegSubst
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D ψ θ S T hψ hθ BS u BT v f hf P`. Establish `hf' : IsThetaFunO ψ S T (fun w => starRingEnd ℂ (f w))` using `GlobalTheory.CjNeg.theta_negS' hψ hf`. Rewrite using `[← map_conj_conj P, pureTensorO_negSp_map_conj ψ θ S T hψ hθ (fun τ => BS τ * u τ) (fun τ => BT τ * v τ) f (MvPolynomial.map (starRingEnd ℂ) P), GlobalTheory.FockBaseChange.pureTensorO_subst D ψ θ S T hψ hθ BS u BT v _ hf' (MvPolynomial.map (starRingEnd ℂ) P), ← map_conj_substF, …`.
+-/
 theorem pureTensorO_negSp_subst : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (BS u : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT v : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO (GlobalTheory.ChiGrid.negSp S) T → ℂ), IsThetaFunO ψ (GlobalTheory.ChiGrid.negSp S) T f → ∀ P : MvPolynomial (FVar D T.rank S.rank) ℂ, pureTensorO ψ θ (GlobalTheory.ChiGrid.negSp S) T (fun _ => -1) (fun _ => 1) (fun τ => BS τ * u τ) (fun τ => BT τ * v τ) f P = pureTensorO ψ θ (GlobalTheory.ChiGrid.negSp S) T (fun _ => -1) (fun _ => 1) BS BT f (GlobalTheory.CompactHowe.substF (fun τ => (v τ).map (starRingEnd ℂ)) (fun τ => (((u τ)⁻¹)ᵀ).map (starRingEnd ℂ)) P) := by
   intro D ψ θ S T hψ hθ BS u BT v f hf P
   have hf' : IsThetaFunO ψ S T (fun w => starRingEnd ℂ (f w)) := GlobalTheory.CjNeg.theta_negS' hψ hf

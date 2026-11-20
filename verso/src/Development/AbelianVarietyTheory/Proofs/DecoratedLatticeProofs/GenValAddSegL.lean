@@ -12,6 +12,11 @@ namespace GlobalTheory.ParHecke.StringEig
 
 open GlobalTheory.ChainOnto (esymm_add_C esymm_map_mul_C esymm_string esymm_eq_zero_of_lt sqrt_sq_C natCast_cpow_half)
 
+/- English proof (translation)
+Rewrite using `[segL, Multiset.map_map, Finset.range_val]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul]`. Use `congr 1`. Rewrite using `[GlobalTheory.MellinPoly.absPow_eq_zpow, ord_eq_one hϖ, zpow_one, ← natCast_cpow_half]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem map_coe_segL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ϖ : kˣ) (hϖ : valuation k (ϖ : k) = uniformizer k) (z : ℂˣ) (t : ℕ) :
     (segL ϖ z t).map (fun b : ℂˣ => (b : ℂ)) =
@@ -25,6 +30,25 @@ theorem map_coe_segL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   push_cast
   ring
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ϖ hϖ r N t n₀ B zS zT hB hn₀`. Use `set Q := resCard k with hQdef`. Establish `hsQ` using `sqrt_sq_C Q`. Establish `hs : ((Real.sqrt Q : ℝ) : ℂ) ≠ 0`. Introduce `h0`.
+
+Rewrite `hsQ` using `[h0]`. Establish `h1 : 1 < Q` using `one_lt_resCard k`. Establish `: ((Q : ℕ) : ℂ) = 0` using `by rw [← hsQ]; ring`. Conclude with `(by omega : Q ≠ 0) (by exact_mod_cast this)`. Use `set s : ℂ := ((Real.sqrt Q : ℝ) : ℂ) with hsdef`.
+
+Establish `hA : (B.map (· * (zS * zT⁻¹))).map (fun b : ℂˣ => (b : ℂ)) = (B.map fun b : ℂˣ => (b : ℂ)).map fun x => ((zS : ℂ) * (zT : ℂ)⁻¹) * x`. Simplify using `[Multiset.map_map, Function.comp_def, mul_comm]`. Establish `hBc : (B.map fun b : ℂˣ => (b : ℂ)).card = N` using `by simp [hB]`. Use `set F : ℕ → ℂ := fun n => (if n ≤ n₀ then ((Q ^ (n * (t - (n₀ - n))) * Formalism.L2.Col.gaussBin Q t (n₀ - n) : ℕ) : ℂ) else 0) * (((zT : ℂ) ^ n * s ^ (n * (r + N + t)))⁻¹ * genVal Q r N B n) with hF`. Establish `hFa : ∀ j, N < j → F j = 0`.
+
+Introduce `j hj`. Simplify using `only [hF, genVal, esymm_eq_zero_of_lt _ (hBc ▸ hj), mul_zero]`. Establish `hFk : ∀ j, n₀ < j → F j = 0`. Introduce `j hj`. Simplify using `only [hF, if_neg (show ¬ j ≤ n₀ by omega), zero_mul]`.
+
+Establish `hR : ∑ j ∈ Finset.range (N + 1), F j = ∑ j ∈ Finset.range (n₀ + 1), F j`. Rewrite using `[Finset.sum_subset (Finset.range_mono (show N + 1 ≤ N + n₀ + 1 by omega)) (fun j _ hn => hFa j (by simp at hn; omega)), Finset.sum_subset (Finset.range_mono (show n₀ + 1 ≤ N + n₀ + 1 by omega)) (fun j _ hn => hFk j (by simp at hn; omega))]`. Rewrite using `[hR, genVal, Multiset.map_add, esymm_add_C, Finset.mul_sum, Finset.mul_sum, hA, map_coe_segL k ϖ hϖ]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjk : j ≤ n₀` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`.
+
+Rewrite using `[esymm_map_mul_C, esymm_string Q s zS hs hsQ t]`. Simplify using `only [hF, if_pos hjk, genVal]`. Distinguish the cases in `hjN : j ≤ N`. Distinguish the cases in `hat : n₀ - j ≤ t`. Establish `hsI : s ^ (r * n₀ + n₀ * (N + t - n₀)) * s ^ (-(((n₀ - j : ℕ) : ℤ) * ((t : ℤ) - ((n₀ - j : ℕ) : ℤ)))) = s ^ (n₀ * (r + N)) * (s ^ 2) ^ (j * (t - (n₀ - j))) * (s ^ (j * (r + N + t)))⁻¹ * s ^ (r * j + j * (N - j))`.
+
+Rewrite using `[← pow_mul]`. Simplify using `only [← zpow_natCast, ← _root_.zpow_neg, ← zpow_add₀ hs]`. Use `congr 1`. Move the coercions through the operations in `[Nat.cast_sub hjN, Nat.cast_sub hjk, Nat.cast_sub hat, Nat.cast_sub hn₀]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hz : ((zS : ℂ) * (zT : ℂ)⁻¹) ^ j * (zS : ℂ) ^ (n₀ - j) = (zS : ℂ) ^ n₀ * ((zT : ℂ) ^ j)⁻¹`. Rewrite using `[mul_pow, mul_right_comm, ← pow_add, Nat.add_sub_cancel' hjk, inv_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.L2.Col.gaussBin_eq_zero Q (show t < n₀ - j by omega)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[esymm_eq_zero_of_lt _ (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem genVal_add_segL : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (r N t n₀ : ℕ) (B : Multiset ℂˣ) (zS zT : ℂˣ), B.card = N → n₀ ≤ N + t → genVal (resCard k) r (N + t) (B.map (· * (zS * zT⁻¹)) + segL ϖ zS t) n₀ = (zS : ℂ) ^ n₀ * ((Real.sqrt (resCard k) : ℝ) : ℂ) ^ (n₀ * (r + N)) * ∑ n ∈ Finset.range (N + 1), (if n ≤ n₀ then ((resCard k ^ (n * (t - (n₀ - n))) * Formalism.L2.Col.gaussBin (resCard k) t (n₀ - n) : ℕ) : ℂ) else 0) * (((zT : ℂ) ^ n * ((Real.sqrt (resCard k) : ℝ) : ℂ) ^ (n * (r + N + t)))⁻¹ * genVal (resCard k) r N B n) := by
   intro k _ _ _ _ ϖ hϖ r N t n₀ B zS zT hB hn₀
   set Q := resCard k with hQdef

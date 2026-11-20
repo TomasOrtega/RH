@@ -8,6 +8,19 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrow
 
 namespace GlobalTheory.AutGrowth
 
+/- English proof (translation)
+Introduce `E _ _ _ a Ω hK`. Establish `c1 : Continuous fun u : GL (Fin a) (Cinf E) => toL u.val` using `(Units.continuous_val : Continuous fun u : GL (Fin a) (Cinf E) => u.val)`. Establish `c2 : Continuous fun u : GL (Fin a) (Cinf E) => toL (u⁻¹).val` using `(Units.continuous_coe_inv : Continuous fun u : GL (Fin a) (Cinf E) => (u⁻¹).val)`. Choose the witnesses or unpack the hypotheses as in `⟨M, M0, hM⟩ : ∃ M : ℝ, 0 ≤ M ∧ ∀ u ∈ Ω, ‖toL u.val‖ ≤ M ∧ ‖toL (u⁻¹).val‖ ≤ M := by`. Take `⟨M1, h1⟩` from `hK.exists_bound_of_continuousOn c1.continuousOn`.
+
+Take `⟨M2, h2⟩` from `hK.exists_bound_of_continuousOn c2.continuousOn`. Use `⟨max 0 (max M1 M2), le_max_left _ _, fun x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(h1 x hx).trans ((le_max_left _ _).trans (le_max_right _ _))`. Conclude with `(h2 x hx).trans ((le_max_right _ _).trans (le_max_right _ _))`. Establish `aM : 0 ≤ (a : ℝ) * M` using `by positivity`.
+
+Use `⟨1 + a * M, by linarith, fun u hu y => ?_⟩` and prove the remaining obligations. Take `⟨m1, m2'⟩` from `hM u hu`. Establish `e2 : ((y * u)⁻¹ : GL (Fin a) (Cinf E)).val = (u⁻¹).val * (y⁻¹).val`. Rewrite using `[_root_.mul_inv_rev]`. Both sides reduce to the same expression.
+
+Establish `p1` using `norm_toL_mul_le y.val u.val`. Establish `p2` using `norm_toL_mul_le (u⁻¹).val (y⁻¹).val`. Establish `n1` using `norm_nonneg (toL y.val)`. Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `q1 : (a : ℝ) * (‖toL y.val‖ * ‖toL u.val‖) ≤ a * M * ‖toL y.val‖`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `q2 : (a : ℝ) * (‖toL (u⁻¹).val‖ * ‖toL (y⁻¹).val‖) ≤ a * M * ‖toL (y⁻¹).val‖`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left m2' (Nat.cast_nonneg a)) n2`. Unfold `CuspRep.height`.
+
+Rewrite using `[show toL (y * u).val = toL (y.val * u.val) from rfl, e2]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem height_mul_le_of_isCompact : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (Ω : Set (GL (Fin a) (Cinf E))), IsCompact Ω →
     ∃ B : ℝ, 1 ≤ B ∧ ∀ c ∈ Ω, ∀ y : GL (Fin a) (Cinf E), CuspRep.height (y * c) ≤ B * CuspRep.height y := by

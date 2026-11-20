@@ -6,6 +6,9 @@ open Matrix GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe GlobalTheory.T
 open scoped Real ContDiff
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DdcVert.ddc_log_vert | exact GlobalTheory.DdcVert.ddc_log_vert | (intros; apply GlobalTheory.DdcVert.ddc_log_vert <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ddc_log_vertical : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ} {B : Set E}
     {h : Pt E g → ℝ} (hB : IsOpen B) (hh : ContDiffOn ℝ ∞ h (cov B g))
     (hpos : ∀ P ∈ cov B g, 0 < h P) {b : E} (hb : b ∈ B) (z v w : Fin g → ℂ),

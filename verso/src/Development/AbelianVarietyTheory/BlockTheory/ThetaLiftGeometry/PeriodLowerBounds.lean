@@ -54,11 +54,29 @@ def FamilyErrorExponentBound {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) : Prop :=
     ExpLe (Fm.L x i) (Fm.ex x hx i).errX C1 ∧
       (PeriodBound (Fm.L x i) (Fm.ex x hx i).errX C1 → LinkRam (Fm.L x i) ∧ LinkNu (Fm.L x i))
 
+/- English proof (translation)
+Introduce `hC x hx i` and use `have h1 := h _ (Fm.L x i) (Fm.ex x hx i).errX (Fm.ex x hx i).lev Fm.GK Fm.cX.err C1 (Fm.ex x hx i).fdef (Fm.ex x hx i).err hC ⟨h1.1, fun hP => ⟨(h1.2 hP).1, (h1.2 hP).2 (Fm.nuDef x hx i)⟩⟩`.
+-/
 theorem stmtFam_of (h : Stmt) {eps : ℝ} (Fm : FamP eps) (C1 : ℝ) : FamilyErrorExponentBound Fm C1 := fun hC x hx i =>
   have h1 := h _ (Fm.L x i) (Fm.ex x hx i).errX (Fm.ex x hx i).lev Fm.GK Fm.cX.err C1
     (Fm.ex x hx i).fdef (Fm.ex x hx i).err hC
   ⟨h1.1, fun hP => ⟨(h1.2 hP).1, (h1.2 hP).2 (Fm.nuDef x hx i)⟩⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton.1 (X.piT_cong u)`. Establish `hdiv : ∃ b : 𝓞 D.host.E, X.piT u = 1 + (D.host.g i : 𝓞 D.host.E) * b`. Establish `hd : D.host.g i ∣ D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.pow ?_ two_ne_zero) _` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨k, hk⟩` from `hd`. Use `⟨k * a, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ha` using `[hk]`. Move the coercions through the operations in `at ha`. Take the linear combination `ha`. Take `⟨b, hb⟩` from `hdiv`. Establish `hn` using `X.piT_norm u`.
+
+Rewrite `hn` using `[← h, hb]`. Establish `hbi : IsIntegral ℤ (D.host.conj (b : D.host.E))` using `(IsIntegral.map (D.host.conj : D.host.E →+* D.host.E).toIntAlgHom b.isIntegral_coe)`. Use `set b' : 𝓞 D.host.E := ⟨_, hbi⟩ with hb'`. Establish `hu : (D.host.g i : 𝓞 D.host.E) * (1 - b - b' - D.host.g i * b * b') = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e : ((b' : 𝓞 D.host.E) : D.host.E) = D.host.conj (b : D.host.E)` using `rfl`. Simplify using `only [map_add, map_mul, map_one, map_natCast] at hn`. Express the relevant statement in the definitionally equal form `algebraMap _ D.host.E ((D.host.g i : 𝓞 D.host.E) * (1 - b - b' - D.host.g i * b * b')) = algebraMap _ D.host.E (1 : 𝓞 D.host.E)`. Simplify using `only [map_sub, map_mul, map_one, map_natCast]`. Express the relevant statement in the definitionally equal form `_ * (1 - (b : D.host.E) - (b' : D.host.E) - _ * (b : D.host.E) * (b' : D.host.E)) = 1`.
+
+Rewrite using `[e]`. Take the linear combination `-hn`. Establish `hunit : IsUnit ((D.host.g i : ℤ))`. Establish `: IsUnit (algebraMap ℤ (𝓞 D.host.E) (D.host.g i : ℤ))`. Simplify using `using IsUnit.of_mul_eq_one _ hu`.
+
+Conclude with `isUnit_of_map_unit (algebraMap ℤ (𝓞 D.host.E)) _ this`. Use `Int.isUnit_iff.1 hunit` as an intermediate fact. Establish `h2` using `(D.host.g_prime i).two_le`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem T_ne_g {D : D7} (X : ErrX D) (u : D.what₂.Word) (i : Fin 2) : D.host.g i ≠ (D.mem u).A.T := by
   intro h
   obtain ⟨a, ha⟩ := Ideal.mem_span_singleton.1 (X.piT_cong u)
@@ -96,6 +114,27 @@ theorem T_ne_g {D : D7} (X : ErrX D) (u : D.what₂.Word) (i : Fin 2) : D.host.g
   have h2 := (D.host.g_prime i).two_le
   omega
 
+/- English proof (translation)
+Introduce `i w hw u`. Establish `hT : D.what₂.places.resChar w ≠ (D.mem u).A.T` using `hw ▸ T_ne_g X u i`. Establish `hmem : D.what₂.places.resChar w ∈ ({D.host.g 0, D.host.g 1} : Finset ℕ)`. Apply the tactic sequence `rw [hw]; fin_cases i <;> simp`. Establish `hterm : ∀ j ∈ SizeData₂.lifts D, L.gainD j w + L.F j w - L.E u j w ≤ -vNN X i u j w - c.g * (D.R.f : ℝ) * (Nm D ^ 2 + (D.R.m : ℝ) ^ 2 * L.etaSz)`.
+
+Introduce `j hj`. Establish `h1 : L.gainD j w = 0`. Unfold `SizeData₂.gainD`. Rewrite using `[L.gain_g j w hmem]`. Simplify using the standard rewrite rules.
+
+Establish `h2 : L.F j w = FTypeG D j`. Rewrite using `[hF j hj w]`. Unfold `Fval FvalP SizeData₂.gTypes`. Rewrite using `[if_pos hmem]`. Establish `h3 : EatG L X c i u j w ≤ L.E u j w`.
+
+Rewrite using `[hE.edef u j hj w]`. Unfold `Eval`. Simplify using `only [if_neg hT]`. Establish `h0 : (0 : ℝ) ≤ (padicValNat (D.what₂.places.resChar w) (D.mem u).C.DGam : ℝ)` using `Nat.cast_nonneg _`. Use `fin_cases i`.
+
+Rewrite using `[if_pos (by simpa using hw)]; simpa using h0`. Rewrite using `[if_neg (by rw [hw]; exact fun h => D.host.g_ne h.symm), if_pos (by simpa using hw)]; simpa using h0`. Unfold `EatG at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(Finset.sum_le_sum hterm).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_const]`. Unfold `perBound Nm`. Establish `hcard : (SizeData₂.lifts D).card = D.R.m` using `by simp [SizeData₂.lifts]`. Rewrite using `[hcard, nsmul_eq_mul]`. Establish `htN : (D.R.t : ℝ) ≤ (D.R.N D.R.m : ℝ)`.
+
+Use `D.R.two_le_m` as an intermediate fact. Conclude with `(by unfold Ranks.N; nlinarith : D.R.t ≤ D.R.N D.R.m)` after adjusting the coercions. Establish `hg : (10 : ℝ) ≤ c.g` using `hE.large.2.2`. Establish `he` using `L.etaSz_pos`. Use `set N : ℝ := (D.R.N D.R.m : ℝ)`.
+
+Use `set t : ℝ := (D.R.t : ℝ)`. Use `set m : ℝ := (D.R.m : ℝ)`. Use `set f : ℝ := (D.R.f : ℝ)`. Establish `hN : 0 ≤ N` using `Nat.cast_nonneg _`. Establish `ht : 0 ≤ t` using `Nat.cast_nonneg _`.
+
+Establish `hm : 0 ≤ m` using `Nat.cast_nonneg _`. Establish `hf : 0 ≤ f` using `Nat.cast_nonneg _`. Establish `hA : 0 ≤ f * (m * N * (N + t) + m ^ 3 * L.etaSz)` using `by positivity`. Establish `hB : f * (m * N * (N + t) + m ^ 3 * L.etaSz) ≤ 2 * (m * (f * (N ^ 2 + m ^ 2 * L.etaSz)))`. Establish `a1 : 0 ≤ f * m * N * (N - t)` using `by have := sub_nonneg.2 htN; positivity`.
+
+Establish `a2 : 0 ≤ f * m ^ 3 * L.etaSz` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : C1 * (f * (m * N * (N + t) + m ^ 3 * L.etaSz)) ≤ c.g / 2 * (f * (m * N * (N + t) + m ^ 3 * L.etaSz))` using `mul_le_mul_of_nonneg_right (by linarith) hA`. Establish `h2` using `mul_le_mul_of_nonneg_left hB (by linarith : 0 ≤ c.g / 2)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem expLe_of {D : D7} {L : SizeData₂ D} {X : ErrX D} {lev : LevelData D} {K : Consts} {c : ErrC} {C1 : ℝ}
     (hF : L.FDef) (hE : ErrDefs D L X lev K c) (hC : 2 * C1 ≤ c.g) : ExpLe L X C1 := by
   intro i w hw u

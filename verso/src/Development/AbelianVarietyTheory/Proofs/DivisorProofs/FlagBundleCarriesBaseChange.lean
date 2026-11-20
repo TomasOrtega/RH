@@ -24,6 +24,9 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 
 namespace GlobalTheory.FlagCell.CellOpen
 
+/- English proof (translation)
+Introduce `l`. Take `⟨s, hs, hsv⟩` from `hv l`. Conclude with `⟨fun j => resM _ h (s j), hs.res h, fun j => by rw [app_resM, hsv]⟩`.
+-/
 theorem spans_res {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.Flag F m} {V W : X.Opens}
     {v : Fin m → Γ(F, V)} (hv : Spans fl V v) (h : W ≤ V) :
     Spans fl W fun j => resM F h (v j) := by
@@ -31,6 +34,9 @@ theorem spans_res {X : Scheme.{0}} {F : X.Modules} {m : ℕ} {fl : Vert.Flag F m
   obtain ⟨s, hs, hsv⟩ := hv l
   exact ⟨fun j => resM _ h (s j), hs.res h, fun j => by rw [app_resM, hsv]⟩
 
+/- English proof (translation)
+Simplify using `only [pullCol, map_sum, resM_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `QCoh.res_pullbackSections π E hV h (e l)`.
+-/
 theorem res_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ}
     (e : Fin m → Γ(E, U)) {V W : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) (h : W ≤ V)
     (M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
@@ -40,6 +46,9 @@ theorem res_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Ope
   congr 1
   exact QCoh.res_pullbackSections π E hV h (e l)
 
+/- English proof (translation)
+Simplify using `only [pullCol, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem sum_smul_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : B.Opens} {m : ℕ}
     (e : Fin m → Γ(E, U)) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     (N M : Matrix (Fin m) (Fin m) Γ(Y, V)) (j : Fin m) :
@@ -49,12 +58,18 @@ theorem sum_smul_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} {U : 
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Use `(he.pullback π).res hV` as an intermediate fact. Rewrite `this` using `[funext fun i => QCoh.res_pullbackSections π E le_rfl hV (e i)]`. Then use the resulting hypothesis.
+-/
 theorem isFrame_pullbackSections {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} [E.IsQuasicoherent]
     {U : B.Opens} {m : ℕ} {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U) :
     IsFrame fun l => QCoh.pullbackSections π E hV (e l) := by
   have := (he.pullback π).res hV
   rwa [funext fun i => QCoh.res_pullbackSections π E le_rfl hV (e i)] at this
 
+/- English proof (translation)
+Establish `hb` using `isFrame_pullbackSections π he hV V le_rfl`. Use `choose c hc using fun j => hb.2 (v j)`. Use `⟨Matrix.of fun l j => c j l, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc j, Fintype.linearCombination_apply]`. Simplify using `only [pullCol, Matrix.of_apply, resM_self]`.
+-/
 theorem exists_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} [E.IsQuasicoherent]
     {U : B.Opens} {m : ℕ} {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     (v : Fin m → Γ((Scheme.Modules.pullback π).obj E, V)) :
@@ -65,6 +80,11 @@ theorem exists_pullCol {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} [E.IsQu
   rw [← hc j, Fintype.linearCombination_apply]
   simp only [pullCol, Matrix.of_apply, resM_self]
 
+/- English proof (translation)
+Establish `hb` using `isFrame_pullbackSections π he hV V le_rfl`. Use extensionality with `l j`. Use `hb.1 (a₁ := fun l => M l j) (a₂ := fun l => N l j) (by` as an intermediate fact. Simplify using `only [Fintype.linearCombination_apply, resM_self]`. Conclude with `h j)`.
+
+Conclude with `congrFun this l`.
+-/
 theorem pullCol_injective {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} [E.IsQuasicoherent]
     {U : B.Opens} {m : ℕ} {e : Fin m → Γ(E, U)} (he : IsFrame e) {V : Y.Opens} (hV : V ≤ π ⁻¹ᵁ U)
     {M N : Matrix (Fin m) (Fin m) Γ(Y, V)} (h : ∀ j, pullCol π e hV M j = pullCol π e hV N j) :
@@ -76,6 +96,9 @@ theorem pullCol_injective {B Y : Scheme.{0}} (π : Y ⟶ B) {E : B.Modules} [E.I
     exact h j)
   exact congrFun this l
 
+/- English proof (translation)
+Establish `hM' : (M.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).BlockTriangular id` using `fun i j hij => hM (show Fin.castLE l.is_le j < Fin.castLE l.is_le i from hij)`. Rewrite using `[Matrix.det_of_isUpperTriangular hM']`. Rewrite `hd` using `[Matrix.det_of_isUpperTriangular hM]`. Use `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => ?_` and prove the remaining obligations. Conclude with `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun k => M k k) (Finset.mem_univ _)) hd`.
+-/
 theorem isUnit_minor_of_upper {R : Type} [CommRing R] {m : ℕ} (M : Matrix (Fin m) (Fin m) R)
     (hM : M.BlockTriangular id) (hd : IsUnit M.det) (l : Fin (m + 1)) :
     IsUnit (M.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det := by
@@ -86,6 +109,9 @@ theorem isUnit_minor_of_upper {R : Type} [CommRing R] {m : ℕ} (M : Matrix (Fin
   refine Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one fun i _ => ?_
   exact isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun k => M k k) (Finset.mem_univ _)) hd
 
+/- English proof (translation)
+Establish `e` using `Scheme.basicOpen_appLE g' V' V h d`. Rewrite `e` using `[T.basicOpen_of_isUnit hd]`. Establish `: t ∈ V' ⊓ g' ⁻¹ᵁ Y.basicOpen d` using `e ▸ ht`. Conclude with `this.2`.
+-/
 theorem mem_basicOpen_of_isUnit_appLE {T Y : Scheme.{0}} (g' : T ⟶ Y) {V : Y.Opens} {V' : T.Opens}
     (h : V' ≤ g' ⁻¹ᵁ V) (d : Γ(Y, V)) (hd : IsUnit (g'.appLE V V' h d)) {t : T} (ht : t ∈ V') :
     g' t ∈ Y.basicOpen d := by
@@ -94,6 +120,9 @@ theorem mem_basicOpen_of_isUnit_appLE {T Y : Scheme.{0}} (g' : T ⟶ Y) {V : Y.O
   have : t ∈ V' ⊓ g' ⁻¹ᵁ Y.basicOpen d := e ▸ ht
   exact this.2
 
+/- English proof (translation)
+Establish `hu : IsUnit (resG Y (Y.basicOpen_le d) d)` using `RingedSpace.isUnit_res_basicOpen _ d`. Use `hu.map (resG Y h)` as an intermediate fact. Rewrite `this` using `[resG_resG]`. Then use the resulting hypothesis.
+-/
 theorem isUnit_resG_of_le_basicOpen {Y : Scheme.{0}} {V W : Y.Opens} (d : Γ(Y, V))
     (h : W ≤ Y.basicOpen d) : IsUnit (resG Y (h.trans (Y.basicOpen_le d)) d) := by
   have hu : IsUnit (resG Y (Y.basicOpen_le d) d) := RingedSpace.isUnit_res_basicOpen _ d
@@ -104,11 +133,43 @@ end GlobalTheory.FlagCell.CellOpen
 
 namespace GlobalTheory.FlagCell.CellOpen
 
+/- English proof (translation)
+Rewrite using `[← SetLike.mem_coe, Opens.coe_finset_inf]`. Simplify using `using h`.
+-/
 theorem mem_finset_inf {X : Scheme.{0}} {κ : Type} [Fintype κ] (W : κ → X.Opens) (x : X)
     (h : ∀ k, x ∈ W k) : x ∈ Finset.univ.inf W := by
   rw [← SetLike.mem_coe, Opens.coe_finset_inf]
   simpa using h
 
+/- English proof (translation)
+Introduce `B Y π ι _ r E fl hE U eU heU T g' g w fl' hC V' hV' n' hn' t ht`. Use `haveI : ∀ a, (E a).IsQuasicoherent := fun a => (hE a).isQuasicoherent`. Establish `hy : ∀ a, ∃ W : Y.Opens, g' t ∈ W ∧ ∃ v : Fin (r a) → Γ((Scheme.Modules.pullback π).obj (E a), W), Spans (fl a) W v`. Introduce `a`. Take `⟨W, hW, u, -, hs⟩` from `GlobalTheory.FlagZ.Loc.exists_nested_frames (fl a) (g' t) (Fin.last (r a))`.
+
+Conclude with `⟨W, hW, fun j => ((fl a).ι (Fin.last _)).app W (u j), fun l => hs l l.is_le⟩`. Use `choose W hyW v hv using hy`. Establish `hπ : g' t ∈ π ⁻¹ᵁ U`. Establish `h1` using `hV' ht`. Rewrite `h1` using `[← w]`.
+
+Conclude with `h1`. Set `V₀ : Y.Opens` to `π ⁻¹ᵁ U ⊓ Finset.univ.inf W`. Establish `hyV₀ : g' t ∈ V₀` using `⟨hπ, mem_finset_inf W _ hyW⟩`. Establish `hV₀a : ∀ a, V₀ ≤ W a` using `fun a => inf_le_right.trans (Finset.inf_le (Finset.mem_univ a))`. Establish `hV₀U : V₀ ≤ π ⁻¹ᵁ U` using `inf_le_left`.
+
+Establish `hA : ∀ a, ∃ A : Matrix (Fin (r a)) (Fin (r a)) Γ(Y, V₀), Spans (fl a) V₀ (pullCol π (eU a) hV₀U A)`. Introduce `a`. Take `⟨A, hA⟩` from `exists_pullCol π (heU a) hV₀U (fun j => resM _ (hV₀a a) (v a j))`. Use `⟨A, ?_⟩` and prove the remaining obligations. Use `spans_res (hv a) (hV₀a a)` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Conclude with `(hA j).symm`. Use `choose A hA using hA`. Set `V'' : T.Opens` to `V' ⊓ g' ⁻¹ᵁ V₀`.
+
+Establish `htV'' : t ∈ V''` using `⟨ht, hyV₀⟩`. Establish `h₁ : V'' ≤ g' ⁻¹ᵁ V₀` using `inf_le_right`. Establish `h₂ : V'' ≤ g ⁻¹ᵁ U` using `inf_le_left.trans hV'`. Establish `hmin : ∀ a (l : Fin (r a + 1)), IsUnit ((g'.appLE V₀ V'' h₁).hom ((A a).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det)`. Introduce `a l`.
+
+Establish `hp` using `GlobalTheory.T.carried_flag_triangular_frame B Y T π ι r E fl g' g w fl' hC U a (eU a) V₀ hV₀U (A a) V'' h₁ h₂ (hA a)`. Establish `hq : Spans (fl' a) V'' (pullCol g (eU a) h₂ (uniR fun s => resG T (inf_le_left : V'' ≤ V') (n' ⟨a, s⟩)))`. Use `spans_res (hn' a) (inf_le_left : V'' ≤ V')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[res_pullCol, map_uniR]`. Take `⟨M, hMt, hMd, hM⟩` from `GlobalTheory.T.flag_frames_triangular_change T _ (r a) (fl' a) V'' _ _ hq hp`. Establish `heq : (A a).map (g'.appLE V₀ V'' h₁).hom = (uniR fun s => resG T (inf_le_left : V'' ≤ V') (n' ⟨a, s⟩)) * M`. Apply `pullCol_injective g (heU a) h₂` to reduce the goal to its premises. Introduce `j`.
+
+Rewrite using `[hM j, sum_smul_pullCol]`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, heq, GlobalTheory.T.leading_minors_unipotent_mul _ (r a) _ M hMt l]`. Conclude with `isUnit_minor_of_upper M hMt hMd l`. Set `D : (Σ a, Fin (r a + 1)) → Y.Opens` to `fun p => Y.basicOpen ((A p.1).submatrix (Fin.castLE p.2.is_le) (Fin.castLE p.2.is_le)).det`. Set `V₁ : Y.Opens` to `V₀ ⊓ Finset.univ.inf D`.
+
+Establish `hyV₁ : g' t ∈ V₁` using `⟨hyV₀, mem_finset_inf D _ fun p => mem_basicOpen_of_isUnit_appLE g' h₁ _ (hmin p.1 p.2) htV''⟩`. Establish `hV₁₀ : V₁ ≤ V₀` using `inf_le_left`. Establish `hV₁U : V₁ ≤ π ⁻¹ᵁ U` using `hV₁₀.trans hV₀U`. Establish `hLU : ∀ a, ∃ n : Low (r a) → Γ(Y, V₁), Spans (fl a) V₁ (pullCol π (eU a) hV₁U (uniR n))`. Introduce `a`.
+
+Establish `hunit : ∀ l : Fin (r a + 1), IsUnit (((A a).map (resG Y hV₁₀)).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det`. Introduce `l`. Rewrite using `[Matrix.submatrix_map, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hle : V₁ ≤ D ⟨a, l⟩` using `inf_le_right.trans (Finset.inf_le (Finset.mem_univ _))`. Conclude with `isUnit_resG_of_le_basicOpen _ hle`.
+
+Take `⟨n, M₁, hM₁t, hM₁d, hM₁⟩` from `GlobalTheory.T.exists_unipotent_triangular_factor _ (r a) _ hunit`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hs' : Spans (fl a) V₁ (pullCol π (eU a) hV₁U (uniR n * M₁))`. Establish `hs` using `spans_res (hA a) hV₁₀`. Use `hs using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[res_pullCol, hM₁]`. Use `haveI := M₁.invertibleOfIsUnitDet hM₁d`. Use `GlobalTheory.T.triangular_change_spans_flag Y _ (r a) (fl a) V₁ _ M₁⁻¹ hs' (Matrix.blockTriangular_inv_of_blockTriangular hM₁t) (Matrix.isUnit_nonsing_inv_det _ hM₁d)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[sum_smul_pullCol, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hM₁d, Matrix.mul_one]`. Use `choose n hn using hLU`. Conclude with `⟨V₁, hV₁U, fun p => n p.1 p.2, hyV₁, fun a => hn a⟩`.
+-/
 theorem spans_uniR_near_image : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (r : ι → ℕ) (E : ι → B.Modules) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, IsVB (E a) (r a)) → ∀ (U : B.Opens) (eU : ∀ a, Fin (r a) → Γ(E a, U)), (∀ a, IsFrame (eU a)) → ∀ (T : Scheme.{0}) (g' : T ⟶ Y) (g : T ⟶ B) (w : g' ≫ π = g) (fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback g).obj (E a)) (r a)), Carries π E r fl g' g w fl' → ∀ (V' : T.Opens) (hV' : V' ≤ g ⁻¹ᵁ U) (n' : (Σ a, Low (r a)) → Γ(T, V')), (∀ a, Spans (fl' a) V' (pullCol g (eU a) hV' (uniR fun s => n' ⟨a, s⟩))) → ∀ t ∈ V', ∃ (V : Y.Opens) (hV : V ≤ π ⁻¹ᵁ U) (n : (Σ a, Low (r a)) → Γ(Y, V)), g' t ∈ V ∧ ∀ a, Spans (fl a) V (pullCol π (eU a) hV (uniR fun s => n ⟨a, s⟩)) := by
   intro B Y π ι _ r E fl hE U eU heU T g' g w fl' hC V' hV' n' hn' t ht
   haveI : ∀ a, (E a).IsQuasicoherent := fun a => (hE a).isQuasicoherent

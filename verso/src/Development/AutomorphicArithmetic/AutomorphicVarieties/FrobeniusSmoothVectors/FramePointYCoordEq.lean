@@ -3,6 +3,49 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ hF Q _ _ ρ hbar htri hlc`. Establish `hd0 : ∀ g : F.G0, ρ.r g 0 0 = algebraMap k Q ((F.Ψ (g : F.Γ) : k))`. Introduce `g`. Establish `h` using `hbar.1 g 0`. Simplify `h` using `[w]`.
+
+Establish `hd1 : ∀ g : F.G0, ρ.r g 1 1 = 1`. Introduce `g`. Establish `h` using `hbar.1 g 1`. Simplify `h` using `[w]`. Establish `hd2 : ∀ g : F.G0, ρ.r g 2 2 = algebraMap k Q ((F.Ψ (g : F.Γ) : k))⁻¹`.
+
+Introduce `g`. Establish `h` using `hbar.1 g 2`. Simplify `h` using `[w]`. Establish `hup : ∀ (g : F.G0) (i j : Fin 3), i < j → ρ.r g i j = 0`. Introduce `g i j hij`.
+
+Establish `h : ρ.r g i j ∈ ρ.triM` using `Ideal.subset_span ⟨g, i, j, hij, rfl⟩`. Rewrite `h` using `[htri, Ideal.mem_bot]`. Conclude with `h`. Establish `h01` using `fun g => hup g 0 1 (by decide)`. Establish `h02` using `fun g => hup g 0 2 (by decide)`.
+
+Establish `h12` using `fun g => hup g 1 2 (by decide)`. Establish `hψ0 : ∀ v (s : F.Gv v), ((ρ.ψ v 0 s : Qˣ) : Q) = algebraMap k Q ((F.Ψ (F.loc v s) : k))`. Introduce `v s`. Establish `h` using `hbar.2 v 0 s`. Simplify `h` using `[w]`.
+
+Establish `hψ1 : ∀ v (s : F.Gv v), ((ρ.ψ v 1 s : Qˣ) : Q) = 1`. Introduce `v s`. Establish `h` using `hbar.2 v 1 s`. Simplify `h` using `[w]`. Establish `hψ2 : ∀ v (s : F.Gv v), ((ρ.ψ v 2 s : Qˣ) : Q) = algebraMap k Q ((F.Ψ (F.loc v s) : k))⁻¹`.
+
+Introduce `v s`. Establish `h` using `hbar.2 v 2 s`. Simplify `h` using `[w]`. Use `⟨hlc 1 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g h`.
+
+Simplify using `only [map_mul, Matrix.mul_apply, Fin.sum_univ_three, Algebra.smul_def]`. Rewrite using `[hd0, hd1, h12]`. Expand and normalize the polynomial expressions, which then agree. Establish `h` using `ρ.diag 1 0 (by decide)`. Rewrite `h` using `[Matrix.sub_apply, sub_eq_zero]`.
+
+Conclude with `h`. Introduce `v`. Take `⟨t, ht⟩` from `hF.f3 v`. Establish `hne` using `Units.ne_zero (F.Ψ (F.loc v t))`. Establish `hsq : ((F.Ψ (F.loc v t) : k)) * (F.Ψ (F.loc v t) : k) ≠ 1`.
+
+Introduce `h`. Apply `ht` to reduce the goal to its premises. Rewrite using `[Units.ext_iff, Units.val_pow_eq_pow_val, Units.val_one, pow_two, h]`. Establish `hf : ((F.Ψ (F.loc v t) : k)) - 1 ≠ 0`. Introduce `h`.
+
+Rewrite `h` using `[sub_eq_zero]`. Apply `hsq` to reduce the goal to its premises. Rewrite using `[h, one_mul]`. Establish `he : ((F.Ψ (F.loc v t) : k)) - ((F.Ψ (F.loc v t) : k))⁻¹ ≠ 0`. Introduce `h`.
+
+Rewrite `h` using `[sub_eq_zero]`. Apply `hsq` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hl : ∀ s, ((F.loc0 v s : F.G0) : F.Γ) = F.loc v s` using `fun _ => rfl`. Use `⟨algebraMap k Q (((F.Ψ (F.loc v t) : k)) - 1)⁻¹ * ρ.r (F.loc0 v t) 1 0, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h10` using `congrFun (congrFun (ρ.ord v ![t, s, t]) 1) 0`. Simplify using `[ordProd, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, hd0, hd1, hd2, h01, h02, h12, hψ0, hψ1, hψ2, hl] at h10`. Simplify using `only [Algebra.smul_def, mul_one] at h10`. Establish `hE : (algebraMap k Q ((F.Ψ (F.loc v t) : k)) - algebraMap k Q ((F.Ψ (F.loc v t) : k))⁻¹) * algebraMap k Q (((F.Ψ (F.loc v t) : k)) - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹ = 1`. Rewrite using `[← map_sub, ← map_mul, mul_inv_cancel₀ he, map_one]`.
+
+Establish `hF : (algebraMap k Q ((F.Ψ (F.loc v t) : k)) - 1) * algebraMap k Q (((F.Ψ (F.loc v t) : k)) - 1)⁻¹ = 1`. Rewrite using `[← map_one (algebraMap k Q), ← map_sub, ← map_mul, mul_inv_cancel₀ hf, map_one]`. Simplify using `only [Algebra.smul_def, map_sub, map_one]`. Take the linear combination `(-(algebraMap k Q (((F.Ψ (F.loc v t) : k)) - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹ * algebraMap k Q (((F.Ψ (F.loc v t) : k)) - 1)⁻¹)) * h10 + ((algebraMap k Q ((F.Ψ (F.loc v s) : k)) - 1) * algebraMap k Q (((F.Ψ (F.loc v t) : k)) - 1)⁻¹ * ρ.r (F.loc0 v t) 1 0 - ρ.r (F.loc0 v s) 1 0) * hE …`. Introduce `v`.
+
+Take `⟨t, ht⟩` from `hF.f3 v`. Establish `hne` using `Units.ne_zero (F.Ψ (F.loc v t))`. Establish `hsq : ((F.Ψ (F.loc v t) : k)) * (F.Ψ (F.loc v t) : k) ≠ 1`. Introduce `h`. Apply `ht` to reduce the goal to its premises.
+
+Rewrite using `[Units.ext_iff, Units.val_pow_eq_pow_val, Units.val_one, pow_two, h]`. Establish `hf : ((F.Ψ (F.loc v t) : k)) - 1 ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`. Apply `hsq` to reduce the goal to its premises.
+
+Rewrite using `[h, one_mul]`. Establish `he : ((F.Ψ (F.loc v t) : k)) - ((F.Ψ (F.loc v t) : k))⁻¹ ≠ 0`. Introduce `h`. Rewrite `h` using `[sub_eq_zero]`. Apply `hsq` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hl : ∀ s, ((F.loc0 v s : F.G0) : F.Γ) = F.loc v s` using `fun _ => rfl`. Establish `hg : 1 - ((F.Ψ (F.loc v t) : k))⁻¹ ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+
+Conclude with `hf (by rw [← inv_eq_one.mp h.symm, sub_self])`. Use `⟨algebraMap k Q (1 - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹ * ρ.r (F.loc0 v t) 2 1, fun s => ?_⟩` and prove the remaining obligations. Establish `h21` using `congrFun (congrFun (ρ.ord v ![t, s, t]) 2) 1`. Simplify using `[ordProd, Matrix.mul_apply, Fin.sum_univ_three, Matrix.one_apply, hd0, hd1, hd2, h01, h02, h12, hψ0, hψ1, hψ2, hl] at h21`. Simplify using `only [Algebra.smul_def, mul_one] at h21`.
+
+Establish `hD : (algebraMap k Q ((F.Ψ (F.loc v t) : k))⁻¹ - algebraMap k Q ((F.Ψ (F.loc v t) : k))) * algebraMap k Q (((F.Ψ (F.loc v t) : k))⁻¹ - ((F.Ψ (F.loc v t) : k)))⁻¹ = 1`. Rewrite using `[← map_sub, ← map_mul, mul_inv_cancel₀ (by rw [← neg_sub]; exact neg_ne_zero.mpr he), map_one]`. Establish `hG : (1 - algebraMap k Q ((F.Ψ (F.loc v t) : k))⁻¹) * algebraMap k Q (1 - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹ = 1`. Rewrite using `[← map_one (algebraMap k Q), ← map_sub, ← map_mul, mul_inv_cancel₀ hg, map_one]`. Use `show ρ.r (F.star (F.loc0 v s)) 1 0 = _`.
+
+Rewrite using `[(UpperTheory.V.Fr.star hF).2.2.2.2 ρ _ 1 0]`. Express the relevant statement in the definitionally equal form `ρ.r (F.loc0 v s) 2 1 = _`. Simplify using `only [Algebra.smul_def, map_sub, map_one, Units.val_inv_eq_inv_val]`. Take the linear combination `(algebraMap k Q (((F.Ψ (F.loc v t) : k))⁻¹ - ((F.Ψ (F.loc v t) : k)))⁻¹ * algebraMap k Q (1 - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹) * h21 + ((1 - algebraMap k Q ((F.Ψ (F.loc v s) : k))⁻¹) * algebraMap k Q (1 - ((F.Ψ (F.loc v t) : k))⁻¹)⁻¹ * ρ.r (F.loc0 v t) 2 1 - ρ.r (F.loc0 v s) 2 1) * …`.
+-/
 theorem UpperTheory.V.Fr.framePoint_y_coord_eq :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}, F.Ok C₀ → ∀ (Q : Type) [CommRing Q] [Algebra k Q] (ρ : NRep F 3 Q), ρ.IsBar (algebraMap k Q) → ρ.triM = ⊥ → (∀ i j, IsLocallyConstant fun g => ρ.r g i j) → (fun g => ρ.r g 1 0) ∈ F.strY Q := by
   intro l _ k _ _ F C₀ hF Q _ _ ρ hbar htri hlc

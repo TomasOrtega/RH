@@ -14,6 +14,11 @@ open scoped TensorProduct Topology
 
 namespace GlobalTheory.Cyc.FontW
 
+/- English proof (translation)
+Establish `e : (f - LinearMap.id).lTensor P = f.lTensor P - LinearMap.id`. Rewrite using `[LinearMap.lTensor_sub, LinearMap.lTensor_id]`. Use `⟨fun y => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `LinearMap.lTensor_surjective P (g := f - LinearMap.id) (fun y => h1 y) y`. Conclude with `⟨b, by rw [e] at hb; exact hb⟩`.
+
+Establish `hex : Function.Exact i (f - LinearMap.id : N →ₗ[R] N)` using `fun y => ⟨fun hy => (h2 y (sub_eq_zero.1 hy)).imp fun _ h => h.symm, by`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `sub_eq_zero.2 (hi x)⟩`. Take `⟨x, hx⟩` from `(Module.Flat.lTensor_exact P hex b).1 (by rw [e]; exact sub_eq_zero.2 hb)`. Conclude with `⟨x, hx.symm⟩`.
+-/
 theorem as_left {R X N P : Type*} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup N]
     [Module R N] [AddCommGroup P] [Module R P] [Module.Flat R P] (i : X →ₗ[R] N) (f : N →ₗ[R] N)
     (h1 : ∀ y, ∃ b, f b - b = y) (hi : ∀ x, f (i x) = i x) (h2 : ∀ b, f b = b → ∃ x, b = i x) :
@@ -29,6 +34,11 @@ theorem as_left {R X N P : Type*} [CommRing R] [AddCommGroup X] [Module R X] [Ad
     obtain ⟨x, hx⟩ := (Module.Flat.lTensor_exact P hex b).1 (by rw [e]; exact sub_eq_zero.2 hb)
     exact ⟨x, hx.symm⟩
 
+/- English proof (translation)
+Establish `e : (f - LinearMap.id).rTensor P = f.rTensor P - LinearMap.id`. Rewrite using `[LinearMap.rTensor_sub, LinearMap.rTensor_id]`. Use `⟨fun y => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `LinearMap.rTensor_surjective P (g := f - LinearMap.id) (fun y => h1 y) y`. Conclude with `⟨b, by rw [e] at hb; exact hb⟩`.
+
+Establish `hex : Function.Exact i (f - LinearMap.id : N →ₗ[R] N)` using `fun y => ⟨fun hy => (h2 y (sub_eq_zero.1 hy)).imp fun _ h => h.symm, by`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `sub_eq_zero.2 (hi x)⟩`. Take `⟨x, hx⟩` from `(Module.Flat.rTensor_exact P hex b).1 (by rw [e]; exact sub_eq_zero.2 hb)`. Conclude with `⟨x, hx.symm⟩`.
+-/
 theorem as_right {R X N P : Type*} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup N]
     [Module R N] [AddCommGroup P] [Module R P] [Module.Flat R P] (i : X →ₗ[R] N) (f : N →ₗ[R] N)
     (h1 : ∀ y, ∃ b, f b - b = y) (hi : ∀ x, f (i x) = i x) (h2 : ∀ b, f b = b → ∃ x, b = i x) :
@@ -49,6 +59,15 @@ section Gen
 variable {Z O W P : Type*} [CommRing Z] [CommRing O] [CommRing W] [Algebra Z O] [Algebra Z W]
   [AddCommGroup P] [Module O P]
 
+/- English proof (translation)
+Take `⟨k1, k2⟩` from `as_left (P := O) (Algebra.linearMap Z W) f.toLinearMap h1 (fun x => f.commutes x) h2`. Establish `e : ∀ b, Algebra.TensorProduct.map (AlgHom.id O O) f b = f.toLinearMap.lTensor O b` using `fun b => by`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Consider the case `tmul x y => rfl`. Use `⟨fun y => by simpa only [e] using k1 y, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `k2 b (by rw [← e, hb])`. Use `⟨TensorProduct.rid Z _ x, ?_⟩` and prove the remaining obligations. Use `clear hb`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Consider the case `tmul x y`. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.rid_tmul, Algebra.linearMap_apply, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem as_one [Module.Flat Z O] (f : W →ₐ[Z] W) (h1 : ∀ y, ∃ b, f b - b = y)
     (h2 : ∀ b, f b = b → ∃ z, b = algebraMap Z W z) :
     (∀ y, ∃ b, Algebra.TensorProduct.map (AlgHom.id O O) f b - b = y) ∧
@@ -73,6 +92,13 @@ theorem as_one [Module.Flat Z O] (f : W →ₐ[Z] W) (h1 : ∀ y, ∃ b, f b - b
       Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul]
     rfl
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `as_one (O := O) f h1 h2`. Take `⟨k1, k2⟩` from `as_right (P := P) (Algebra.linearMap O (O ⊗[Z] W)) (Algebra.TensorProduct.map (AlgHom.id O O) f).toLinearMap h1 (fun x => (Algebra.TensorProduct.map (AlgHom.id O O) f).commutes x) h2`. Use `⟨k1, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `k2 b hb`. Use `⟨TensorProduct.lid _ _ x, ?_⟩` and prove the remaining obligations.
+
+Use `clear hb`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, TensorProduct.tmul_add, hx, hy]`. Consider the case `tmul x y`.
+
+Rewrite using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Algebra.linearMap_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+-/
 theorem as_two [Module.Flat Z O] [Module.Flat O P] (f : W →ₐ[Z] W) (h1 : ∀ y, ∃ b, f b - b = y)
     (h2 : ∀ b, f b = b → ∃ z, b = algebraMap Z W z) :
     (∀ y, ∃ b, TensorProduct.map (Algebra.TensorProduct.map (AlgHom.id O O) f).toLinearMap
@@ -94,6 +120,17 @@ theorem as_two [Module.Flat Z O] [Module.Flat O P] (f : W →ₐ[Z] W) (h1 : ∀
     rw [LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Algebra.linearMap_apply,
       Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
+/- English proof (translation)
+Establish `amul' : ∀ g h (β : O ⊗[Z] W), Algebra.TensorProduct.map (AlgHom.id O O) (a (g * h)) β = Algebra.TensorProduct.map (AlgHom.id O O) (a g) (Algebra.TensorProduct.map (AlgHom.id O O) (a h) β)` using `fun g h β => by`. Proceed by induction on `β using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y => simp [amul]`.
+
+Use `avg_cob l 𝓕 (fun g β => Algebra.TensorProduct.map (AlgHom.id O O) (a g) β) (fun g => (TensorProduct.map (Algebra.TensorProduct.map (AlgHom.id O O) (a g)).toLinearMap (ρ g)).toAddMonoidHom) hW.tensor_left.tensor_right amul' (fun g h x => ?_) (fun g β x => ?_) (fun U hU => ?_) (fun …` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x y => simp only [LinearMap.toAddMonoidHom_coe, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, amul', ρmul]`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul x y => simp only [LinearMap.toAddMonoidHom_coe, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, TensorProduct.smul_tmul', smul_eq_mul, map_mul]`. Take `⟨N, h1, h2, h3, S, h4, β, h5, h6⟩` from `htr U hU`.
+
+Use `⟨N, h1, h2, h3, S, h4, (1 : O) ⊗ₜ[Z] β, fun n hn => by simp [h5 n hn], ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[← TensorProduct.tmul_sum, h6]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.toAddMonoidHom_coe, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, hc, TensorProduct.tmul_add, map_one]`.
+
+Use `filter_upwards [hcont r] with g hg`. Conclude with `Dv_map (TensorProduct.mk O (O ⊗[Z] W) P 1) hg`.
+-/
 theorem cob_two [Module.Free Z O] [Module.Finite Z O] [Module.Free O P] [Module.Finite O P]
     {G : Type*} [Group G] (l : ℕ) (𝓕 : Filter G) (hW : Cpl l W) (a : G → W →ₐ[Z] W)
     (ρ : G → P →ₗ[O] P) (amul : ∀ g h β, a (g * h) β = a g (a h β))
@@ -138,6 +175,13 @@ theorem cob_two [Module.Free Z O] [Module.Finite Z O] [Module.Free O P] [Module.
 
 end Gen
 
+/- English proof (translation)
+Take `⟨n, t, ht⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 fg`. Establish `hs : Function.Surjective (Fintype.linearCombination F t)`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, ← hspan, ← ht, Submodule.span_span_of_tower]`. Establish `ho` using `IsModuleTopology.isOpenMap_of_surjective hs`. Establish `h1 : Set.pi Set.univ (fun _ : Fin n => {x : F | ∃ o : O, x = u • algebraMap O F o}) ∈ 𝓝 (0 : Fin n → F)` using `set_pi_mem_nhds Set.finite_univ fun _ _ => hu`.
+
+Establish `h2` using `ho.image_mem_nhds h1`. Rewrite `h2` using `[map_zero]`. Use `Filter.mem_of_superset h2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `choose o ho using fun i => hx i (Set.mem_univ i)`.
+
+Use `⟨∑ i, o i • t i, sum_mem fun i _ => T.smul_mem _ (ht ▸ Submodule.subset_span ⟨i, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [ho i, smul_assoc, algebraMap_smul]`.
+-/
 theorem lattice_nhds {F O V : Type*} [Field F] [TopologicalSpace F] [IsTopologicalRing F]
     [CommRing O] [Algebra O F] [AddCommGroup V] [Module F V] [Module O V] [IsScalarTower O F V]
     [TopologicalSpace V] [IsModuleTopology F V] (T : Submodule O V) (fg : T.FG)
@@ -162,6 +206,9 @@ theorem lattice_nhds {F O V : Type*} [Field F] [TopologicalSpace F] [IsTopologic
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+The claim follows from `haveI := LL.2 haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.isTorsionFree_iff_algebraMap_injective.mpr (by rw [IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1] exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])) IsIntegralClosure.module_free ℤ …`.
+-/
 theorem free_OL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
   haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := Module.isTorsionFree_iff_algebraMap_injective.mpr (by
@@ -169,10 +216,20 @@ theorem free_OL (LL : FinExt l) : Module.Free ℤ_[l] ↥(OL LL) :=
     exact (algebraMap ℚ_[l] ↥LL.1).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l]))
   IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
+/- English proof (translation)
+The claim follows from `haveI := LL.2 IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)`.
+-/
 theorem finite_OL (LL : FinExt l) : Module.Finite ℤ_[l] ↥(OL LL) :=
   haveI := LL.2
   IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(integralClosure ℤ_[l] ↥LL.1)
 
+/- English proof (translation)
+Establish `hu' : (u : Om l) ≠ 0` using `Nat.cast_ne_zero.2 hu`. Establish `hpos : 0 < ‖(u : Om l)‖` using `norm_pos_iff.2 hu'`. Establish `h1 : (fun x : ↥LL.1 => (x : Om l)) ⁻¹' Metric.ball 0 ‖(u : Om l)‖ ∈ 𝓝 (0 : ↥LL.1)` using `continuous_subtype_val.continuousAt.preimage_mem_nhds (Metric.ball_mem_nhds _ hpos)`. Use `Filter.mem_of_superset h1 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : ‖(x : Om l)‖ < ‖(u : Om l)‖` using `by simpa using hx`.
+
+Use `⟨⟨x / u, (GlobalTheory.mem_integralClosure_padicInt_iff LL.1 _).2 ?_⟩, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[norm_div, div_le_one hpos]`. Conclude with `hx'.le`. Express the relevant statement in the definitionally equal form `x = u • (x / u)`.
+
+Establish `: (u : ↥LL.1) ≠ 0` using `Nat.cast_ne_zero.2 hu`. Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem OL_nhds (LL : FinExt l) (u : ℕ) (hu : u ≠ 0) :
     {x : ↥LL.1 | ∃ o : ↥(OL LL), x = u • algebraMap ↥(OL LL) ↥LL.1 o} ∈ 𝓝 0 := by
   have hu' : (u : Om l) ≠ 0 := Nat.cast_ne_zero.2 hu
@@ -188,6 +245,11 @@ theorem OL_nhds (LL : FinExt l) (u : ℕ) (hu : u ≠ 0) :
     have : (u : ↥LL.1) ≠ 0 := Nat.cast_ne_zero.2 hu
     rw [nsmul_eq_mul]; field_simp
 
+/- English proof (translation)
+Use `PerfectRing.ofSurjective _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := OCb l) x`. Take `⟨a', rfl⟩` from `surjective_frobenius (OCb l) l a`. Take `⟨b', rfl⟩` from `surjective_frobenius (OCb l) l b`. Use `⟨algebraMap _ _ a' / algebraMap _ _ b', ?_⟩` and prove the remaining obligations.
+
+Simplify using `[frobenius_def, div_pow]`.
+-/
 theorem perfect_Cb : PerfectRing (Cb l) l := by
   refine PerfectRing.ofSurjective _ _ fun x => ?_
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := OCb l) x
@@ -196,6 +258,31 @@ theorem perfect_Cb : PerfectRing (Cb l) l := by
   refine ⟨algebraMap _ _ a' / algebraMap _ _ b', ?_⟩
   simp [frobenius_def, div_pow]
 
+/- English proof (translation)
+Rewrite `hU`, the goal using `[hι.isInducing.nhds_eq_comap, map_one]`. Take `⟨W, hW, hWU⟩` from `hU`. Take `⟨E, hfd, hN, hE⟩` from `(krullTopology_mem_nhds_one_iff_of_normal ℚ_[l] (Om l) W).1 hW`. Use `haveI : E.fixingSubgroup.FiniteIndex := by haveI := Subgroup.quotient_finite_of_isOpen E.fixingSubgroup E.fixingSubgroup_isOpen`. Conclude with `Subgroup.finiteIndex_of_finite_quotient`.
+
+Establish `hEn : E.fixingSubgroup.Normal`. Rewrite using `[← IntermediateField.restrictNormalHom_ker]`. Use `infer_instance`. Set `N : Subgroup G` to `E.fixingSubgroup.comap ι`. Use `haveI : N.FiniteIndex := ⟨by`.
+
+Rewrite using `[Subgroup.index_comap]`. Conclude with `(inferInstance : (E.fixingSubgroup.subgroupOf ι.range).FiniteIndex).index_ne_zero⟩`. Use `letI : Fintype (G ⧸ N) := Fintype.ofFinite _`. Set `S : Finset G` to `Finset.univ.image (fun q : G ⧸ N => q.out)`. Establish `hS : ∀ h, ∃! s, s ∈ S ∧ s⁻¹ * h ∈ N`.
+
+Introduce `h`. Establish `key : ∀ q : G ⧸ N, q.out⁻¹ * h ∈ N ↔ q = (h : G ⧸ N)`. Introduce `q`. Use `conv_rhs => rw [← q.out_eq']`. Rewrite using `[QuotientGroup.eq]`.
+
+Use `⟨(h : G ⧸ N).out, ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, (key _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hs'⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hs`. Rewrite using `[(key q).1 hs']`. Establish `hsup : (Kinf K ⊔ E).fixingSubgroup = Hinf K ⊓ E.fixingSubgroup` using `IntermediateField.fixingSubgroup_sup`.
+
+Establish `hH : ∀ g, ι g ∈ Hinf K` using `fun g => hr ▸ ⟨g, rfl⟩`. Take `⟨β, hβ, hsum⟩` from `GlobalTheory.Cyc.TraceTilt.main l P AI K (Kinf K ⊔ E) (S.image ι) le_sup_left (fun h hh => by`. Establish `: Kinf K ⊔ E ≤ (Kinf K ⊔ E).comap (h : Om l →ₐ[ℚ_[l]] Om l)`. Use `sup_le (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Establish `h1 : h x = x` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hh x hx`.
+
+Express the relevant statement in the definitionally equal form `h x ∈ Kinf K ⊔ E`. Rewrite using `[h1]`. Conclude with `(le_sup_left : Kinf K ≤ Kinf K ⊔ E) hx`. Express the relevant statement in the definitionally equal form `h x ∈ Kinf K ⊔ E`. Establish `h1` using `AlgEquiv.restrictNormal_commutes h E ⟨x, hx⟩`.
+
+Establish `h2 : h x ∈ E`. Establish `: h x = (h.restrictNormal E ⟨x, hx⟩ : E)` using `h1.symm`. Rewrite using `[this]`. Conclude with `Subtype.property _`. Conclude with `(le_sup_right : E ≤ Kinf K ⊔ E) h2`.
+
+Conclude with `fun x hx => this hx)`. Use the proof step `(fun s hs => by`. Take `⟨t, -, rfl⟩` from `Finset.mem_image.1 hs`. Conclude with `hH t)`. Use the proof step `(fun h hh => by`.
+
+Rewrite `hh` using `[← hr]`. Take `⟨g, rfl⟩` from `hh`. Take `⟨s, ⟨hs, hs'⟩, hu⟩` from `hS g`. Use `⟨ι s, ⟨Finset.mem_image_of_mem _ hs, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hsup, ← map_inv, ← map_mul]`.
+
+Conclude with `⟨hH _, hs'⟩`. Introduce and unpack `_ ⟨ht, ht'⟩`. Take `⟨t, ht0, rfl⟩` from `Finset.mem_image.1 ht`. Rewrite `ht'` using `[hsup, ← map_inv, ← map_mul]`. Rewrite using `[hu t ⟨ht0, ht'.2⟩])`.
+
+Use `⟨N, hEn.comap ι, ⟨E.fixingSubgroup, E.fixingSubgroup_isOpen.mem_nhds (one_mem _), subset_rfl⟩, fun g hg => hWU (hE hg), S, hS, β, fun n hn => hβ _ (hsup ▸ ⟨hH n, hn⟩), ?_⟩` and prove the remaining obligations. Rewrite `hsum` using `[Finset.sum_image fun _ _ _ _ h => hι.injective h]`. Conclude with `hsum`.
+-/
 theorem exists_trace {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {G : Type} [Group G]
     [TopologicalSpace G] (ι : G →* GQ l) (hι : Topology.IsEmbedding ι) (hr : ι.range = Hinf K)
     (U : Set G) (hU : U ∈ 𝓝 1) :
@@ -262,6 +349,9 @@ theorem exists_trace {P : LocPrime l} (AI : LocAinf l P) (K : FinExt l) {G : Typ
   rw [Finset.sum_image fun _ _ _ _ h => hι.injective h] at hsum
   exact hsum
 
+/- English proof (translation)
+The claim follows from `haveI := T.L.free haveI := free_OL LL as_two (O := ↥(OL LL)) (P := ↥T.L.T) (frobW l) (GlobalTheory.ArtinSchreierWitt.main l).1 (GlobalTheory.ArtinSchreierWitt.main l).2.1`.
+-/
 theorem as_TW {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt l)
     (T : LocLat G ℚ_[l] ↥LL.1 ↥(OL LL)) : (∀ y, ∃ b, TWmap (φRW LL) T b - b = y) ∧
     ∀ b, TWmap (φRW LL) T b = b → ∃ t : ↥T.L.T, b = (1 : RW LL) ⊗ₜ[↥(OL LL)] t :=
@@ -272,6 +362,19 @@ theorem as_TW {G : Type} [Group G] [TopologicalSpace G] (LL : FinExt l)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `haveI := T.L.free`. Use `haveI : Module.Finite ↥(OL LL) ↥T.L.T := Module.Finite.iff_fg.2 T.L.fg`. Use `haveI := free_OL LL`. Use `haveI := finite_OL LL`. Use `haveI := perfect_Cb (l := l)`.
+
+Take `⟨c, ⟨hcont, hcoc⟩, hT⟩` from `c`. Set `c' : ↥H → ↥T.L.T` to `fun σ => ⟨c σ, hT σ (Set.mem_univ _)⟩`. Establish `h1 : c 1 = 0`. Use `hcoc 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, map_one, Module.End.one_apply]`.
+
+Conclude with `left_eq_add.1 this`. Take `⟨b, hb⟩` from `cob_two (O := ↥(OL LL)) (P := ↥T.L.T) (G := ↥H) l (𝓝 1) (cpl_witt l (Cb l)) (fun σ => (AI.actWCbHom ((σ : ↥(GK K)) : GQ l)).toAlgHom) (fun σ => T.actT (σ : ↥(GK K))) (fun g h β => by`. Express the relevant statement in the definitionally equal form `AI.actWCbHom ((g : ↥(GK K)) * (h : ↥(GK K))) β = _`. Rewrite using `[map_mul]`. Use the proof step `rfl)`.
+
+Use the proof step `(fun g h x => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `T.ρ ((g : ↥(GK K)) * (h : ↥(GK K))) x = _`. Rewrite using `[map_mul]`. Use the proof step `rfl))`. Use the proof step `(exists_trace AI K ((GK K).subtype.comp H.subtype) (Topology.IsEmbedding.subtypeVal.comp Topology.IsEmbedding.subtypeVal) hH)`.
+
+Use the proof step `c' (fun g h => Subtype.ext (hcoc g h)) (fun r => by`. Establish `h2` using `lattice_nhds T.L.T T.L.fg T.L.span (l ^ r) (OL_nhds LL _ (pow_ne_zero r (Fact.out : l.Prime).ne_zero))`. Rewrite `h2` using `[← h1]`. Use `filter_upwards [hcont.continuousAt.preimage_mem_nhds h2] with g hg`. Take `⟨t, ht, e⟩` from `hg`.
+
+Conclude with `mem_Dv.2 ⟨⟨t, ht⟩, Subtype.ext e.symm⟩)`. Use `⟨b, fun σ t ht => ?_⟩` and prove the remaining obligations. Take `rfl : t = c' σ` from `Subtype.ext ht`. Conclude with `hb σ`.
+-/
 theorem cob_TW {P : LocPrime l} (AI : LocAinf l P) (K LL : FinExt l)
     (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (H : Subgroup ↥(GK K))
     (hH : ((GK K).subtype.comp H.subtype).range = Hinf K) (c : ↥(latticeCocycles (resLat T H))) :
@@ -310,6 +413,17 @@ theorem cob_TW {P : LocPrime l} (AI : LocAinf l P) (K LL : FinExt l)
   obtain rfl : t = c' σ := Subtype.ext ht
   exact hb σ
 
+/- English proof (translation)
+Take `⟨-, -, hc⟩` from `GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc`. Establish `hK0 : ∀ g : ↥(GK K), (g : GQ l) ∈ (K0 K).fixingSubgroup` using `fun g x => g.2 ⟨x.1, x.2.1⟩`. Establish `key : ∀ g : ↥(GK K), W.resΓ g = 1 ↔ P.χQ (g : GQ l) = 1`. Introduce `g`. Establish `h1` using `W.χΓ_res g`.
+
+Rewrite `h1` using `[P.PD_χ]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Rewrite `h1` using `[hg, map_one, Units.val_one, map_one]`. Conclude with `Units.ext ((algebraMap ℚ_[l] ↥LL.1).injective (by rw [← h1, Units.val_one, map_one]))`.
+
+Introduce `hg`. Rewrite `h1` using `[hg, Units.val_one, map_one]`. Use `W.χΓ_inj (Units.ext (Subtype.ext ?_))` and prove the remaining obligations. Rewrite using `[map_one]`. Conclude with `h1`.
+
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, rfl⟩`. Conclude with `(hc K _ (hK0 σ)).2.2 ((key σ).1 σ.2)`. Introduce `hg`.
+
+Establish `hle : K.1 ≤ Kinf K` using `h.2.2.1.trans (sup_le_sup_left (IntermediateField.adjoin.mono ℚ_[l] {x : Om l | x ^ (l ^ s) = 1} {x : Om l | ∃ j : ℕ, x ^ (l ^ j) = 1} fun x hx => ⟨s, hx⟩) _)`. Establish `hgK : g ∈ GK K` using `fun x => hg ⟨x.1, hle x.2⟩`. Conclude with `⟨⟨⟨g, hgK⟩, (key ⟨g, hgK⟩).2 ((hc K g (hK0 ⟨g, hgK⟩)).2.1 hg)⟩, rfl⟩`.
+-/
 theorem ker_eq {P : LocPrime l} (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL)
     (W : LocWach (P.PD K) ↥LL.1 ↥(OL LL) (P.v LL) (Module.finrank ℚ_[l] ↥(K0 K))) :
     ((GK K).subtype.comp W.resΓ.ker.subtype).range = Hinf K := by
@@ -339,6 +453,11 @@ theorem ker_eq {P : LocPrime l} (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Go
     have hgK : g ∈ GK K := fun x => hg ⟨x.1, hle x.2⟩
     exact ⟨⟨⟨g, hgK⟩, (key ⟨g, hgK⟩).2 ((hc K g (hK0 ⟨g, hgK⟩)).2.1 hg)⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h S E T`. Take `⟨h1, h2⟩` from `as_TW LL T`. Use `⟨fun x _ => ?_, h2, fun c => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h1 x`. Conclude with `⟨b, Submodule.mem_top, hb⟩`.
+
+Take `⟨b, hb⟩` from `cob_TW (D.locA l) K LL T ((HW l).W K s LL h).resΓ.ker (ker_eq K s LL h _) c`. Conclude with `⟨b, Submodule.mem_top, hb⟩`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let S := sit D.loc HW l (D.locA l) K s LL h; let E : S.Comparison₂ := ((F l).E K s LL h).tie; FNatW S := by
   intro D HW F l _ K s LL h S E T
   obtain ⟨h1, h2⟩ := as_TW LL T

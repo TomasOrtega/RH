@@ -26,6 +26,9 @@ noncomputable section
 
 namespace GlobalTheory.EvenOnto.FockOff
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩`.
+-/
 theorem latO_le {D : D7} (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E))
     {p q : HeightOneSpectrum (𝓞 D.host.F) → Prop} (h : ∀ v, p v → q v) : latO S T LS LT p ≤ latO S T LS LT q :=
   AddSubgroup.closure_mono fun _ ⟨α, h1, h2, h3⟩ => ⟨α, h1, fun v hv => h2 v fun hp => hv (h v hp), h3⟩
@@ -34,6 +37,13 @@ end GlobalTheory.EvenOnto.FockOff
 
 open GlobalTheory.EvenOnto.FockOff in
 
+/- English proof (translation)
+Introduce `D c hc k hk s s' hs hs' p hp φ`. Establish `hψ : IsStdChar D c.ψ (-1)` using `hc.std`. Establish `hθ : IsInfFam c.θ` using `hc.inf`. Establish `hv` using `hp.pre.vac`. Establish `hF : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsFockVec c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (p.pt φ)` using `GlobalTheory.FockSph.isFockVec_pureTensorO hψ hθ (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s.M τ) (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s'.M τ) (onb s.M) (onb s'.M) hv.theta hv.vac φ`.
+
+Establish `hpt : ∀ φ', IsThetaFunO c.ψ s.V s'.V (p.pt φ')` using `fun φ' => (GlobalTheory.FockSph.isFockVec_pureTensorO hψ hθ (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s.M τ) (fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart s'.M τ) (onb s.M) (onb s'.M) hv.theta hv.vac φ').1`. Establish `hle : latO s.V s'.V (s.Λ : Set (Fin s.V.rank → D.host.E)) (s'.Λ : Set (Fin s'.V.rank → D.host.E)) (fun v => v ∉ c.S) ≤ latO s.V s'.V (s.Λ : Set (Fin s.V.rank → D.host.E)) (s'.Λ : Set (Fin s'.V.rank → D.host.E)) fun _ => True` using `latO_le _ _ _ _ fun _ _ => trivial`. Establish `fix : ∀ u ∈ latO s.V s'.V (s.Λ : Set (Fin s.V.rank → D.host.E)) (s'.Λ : Set (Fin s'.V.rank → D.host.E)) (fun v => v ∉ c.S), heisO c.ψ s.V s'.V u p.f = p.f → heisO c.ψ s.V s'.V u (p.pt φ) = p.pt φ` using `fun u hu h0 => GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite c.ψ c.θ s.V s'.V hθ _ _ _ _ p.f hpt u (GlobalTheory.VacGood.infPart_latO (hle hu)) h0 φ`. Establish `hsph` using `hp.pre.sph`. Establish `hS : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsSphOff c.ψ s.V s'.V s.Λ s'.Λ c.S (p.pt φ)` using `⟨fun u hu => fix (2 • u) (AddSubgroup.nsmul_mem _ hu 2) (hsph.1 u hu), fun e he u hu hh => fix u hu (hsph.2 e he u hu hh)⟩`.
+
+Use `⟨hF.1, hF, hS, fun v hv => ⟨hF.1, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `u hu`. Conclude with `hS.1 u (latO_le _ _ _ _ (fun w hw => hw ▸ hv) hu)`. Introduce `e he u hu hh`. Conclude with `hS.2 e he u (latO_le _ _ _ _ (fun w hw => hw ▸ hv) hu) hh`.
+-/
 theorem GlobalTheory.EvenOnto.fock_sph_vac : ∀ D : D7, ForStep D fun c _ s s' p => ∀ φ, IsThetaFunO c.ψ s.V s'.V (p.pt φ) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsFockVec c.ψ c.θ s.V s'.V (cart s.M) (cart s'.M) (p.pt φ) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsSphOff c.ψ s.V s'.V s.Λ s'.Λ c.S (p.pt φ) ∧ ∀ v ∉ c.S, GlobalTheory.FinZeta.VacFin c.ψ s.V s'.V v (p.pt φ) := by
   intro D c hc k hk s s' hs hs' p hp φ
   have hψ : IsStdChar D c.ψ (-1) := hc.std

@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.DivisorFrames.FiniteDimensionalAutomorp
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NontrivialOfNeBot
 import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueChars.MemISupIrreducibleOfAdmissibleUnitary
 
+/- English proof (translation)
+Establish `hf : (X * Y).map (RingHom.fst R₁ R₂) = (Y * X).map (RingHom.fst R₁ R₂)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hY, mul_one, one_mul]`. Establish `hs : (X * Y).map (RingHom.snd R₁ R₂) = (Y * X).map (RingHom.snd R₁ R₂)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hX, mul_one, one_mul]`. Conclude with `Matrix.ext fun i j => Prod.ext (congr_fun (congr_fun hf i) j) (congr_fun (congr_fun hs i) j)`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.matrix_comm {R₁ R₂ m : Type} [CommRing R₁] [CommRing R₂] [Fintype m]
     [DecidableEq m] (X Y : Matrix m m (R₁ × R₂))
     (hX : X.map (RingHom.snd R₁ R₂) = 1) (hY : Y.map (RingHom.fst R₁ R₂) = 1) : X * Y = Y * X := by
@@ -15,6 +18,13 @@ private theorem UpperTheory.Reformulated.B.Gr38.matrix_comm {R₁ R₂ m : Type}
   exact Matrix.ext fun i j =>
     Prod.ext (congr_fun (congr_fun hf i) j) (congr_fun (congr_fun hs i) j)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Set `X : Matrix (Fin n) (Fin n) (GlobalTheory.CuspRep.Ad E)` to `(((x : ↥(GlobalTheory.UnitaryBC.UA E n)) : GlobalTheory.CuspRep.GA E n) : Matrix _ _ _)`. Set `Y : Matrix (Fin n) (Fin n) (GlobalTheory.CuspRep.Ad E)` to `(((k : ↥(GlobalTheory.UnitaryBC.UA E n)) : GlobalTheory.CuspRep.GA E n) : Matrix _ _ _)`. Establish `hx : X.map (GlobalTheory.CuspRep.pFin E) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 x.2)`.
+
+Establish `hk : Y.map (GlobalTheory.CuspRep.pInf E) = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 k.2)`. Establish `hk' : Y.map (RingHom.fst (NumberField.InfiniteAdeleRing E) (GlobalTheory.CuspRep.Af E)) = 1`. Establish `h1 : Y.map (RingHom.fst (NumberField.InfiniteAdeleRing E) (GlobalTheory.CuspRep.Af E)) = (Y.map (GlobalTheory.CuspRep.pInf E)).map (GlobalTheory.CuspRep.infEq E)`. Use extensionality with `i j : 2`. Conclude with `((GlobalTheory.CuspRep.infEq E).apply_symm_apply _).symm`.
+
+Rewrite using `[h1, hk]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Conclude with `UpperTheory.Reformulated.B.Gr38.matrix_comm (R₁ := NumberField.InfiniteAdeleRing E) (R₂ := GlobalTheory.CuspRep.Af E) X Y hx hk'`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.inf_fin_comm {E : Type} [Field E] [NumberField E]
     [NumberField.IsCMField E] {n : ℕ} (x : ↥(GlobalTheory.UnitaryBC.infU E n))
     (k : ↥(GlobalTheory.UnitaryBC.finU E n)) :
@@ -38,6 +48,9 @@ private theorem UpperTheory.Reformulated.B.Gr38.inf_fin_comm {E : Type} [Field E
   exact UpperTheory.Reformulated.B.Gr38.matrix_comm (R₁ := NumberField.InfiniteAdeleRing E)
     (R₂ := GlobalTheory.CuspRep.Af E) X Y hx hk'
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, UpperTheory.Reformulated.B.Gr38.inf_fin_comm]`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.ru_comm {E : Type} [Field E] [NumberField E]
     [NumberField.IsCMField E] {n : ℕ} (x : ↥(GlobalTheory.UnitaryBC.infU E n))
     (k : ↥(GlobalTheory.UnitaryBC.finU E n)) (φ : ↥(GlobalTheory.UnitaryBC.UA E n) → ℂ) :
@@ -46,6 +59,13 @@ private theorem UpperTheory.Reformulated.B.Gr38.ru_comm {E : Type} [Field E] [Nu
   rw [← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul,
     UpperTheory.Reformulated.B.Gr38.inf_fin_comm]
 
+/- English proof (translation)
+Establish `h1 : ∀ v, R k⁻¹ (R k v) = v` using `fun v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ v, R k (R k⁻¹ v) = v` using `fun v => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[map_mul, map_mul]`. Simplify using `only [Module.End.mul_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `congrArg (R k) h` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis. Introduce `h`. Rewrite using `[h, h1]`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.conj_fix {G V : Type} [Group G] [AddCommGroup V] [_root_.Module ℂ V]
     (R : Representation ℂ G V) (a k : G) (φ : V) :
     R (k⁻¹ * a * k) φ = φ ↔ R a (R k φ) = R k φ := by
@@ -62,6 +82,15 @@ private theorem UpperTheory.Reformulated.B.Gr38.conj_fix {G V : Type} [Group G] 
   · intro h
     rw [h, h1]
 
+/- English proof (translation)
+Take `⟨hc, hr, ho, hf⟩` from `(h : GlobalTheory.UnitaryBC.IsAutFormU φ)`. Use `(GlobalTheory.UnitaryBC.IsAutFormU.mk ?_ ?_ ?_ ?_ : GlobalTheory.UnitaryBC.IsAutFormU (GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) φ))` and prove the remaining obligations. Conclude with `hc.comp (continuous_mul_right (k : ↥(GlobalTheory.UnitaryBC.UA E n)))`. Introduce `γ hγ g`. Use `hr γ hγ (g * k)` as an intermediate fact.
+
+Rewrite `this` using `[← mul_assoc]`. Conclude with `this`. Establish `hs : {k' : ↥(GlobalTheory.UnitaryBC.finU E n) | GlobalTheory.UnitaryBC.RU E n (k' : ↥(GlobalTheory.UnitaryBC.UA E n)) (GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) φ) = GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) φ} = (fun k' : ↥(G …`. Use extensionality with `k'`. Conclude with `(UpperTheory.Reformulated.B.Gr38.conj_fix (GlobalTheory.UnitaryBC.RU E n) (k' : ↥(GlobalTheory.UnitaryBC.UA E n)) (k : ↥(GlobalTheory.UnitaryBC.UA E n)) φ).symm`.
+
+Rewrite using `[hs]`. Conclude with `ho.preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hs : Submodule.span ℂ (Set.range fun x : ↥(GlobalTheory.UnitaryBC.infU E n) => GlobalTheory.UnitaryBC.RU E n (x : ↥(GlobalTheory.UnitaryBC.UA E n)) (GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) φ)) = (Submodule.span ℂ (Set.range fun x : ↥(GlobalTheory.Unit …`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `x`. Conclude with `UpperTheory.Reformulated.B.Gr38.ru_comm x k φ`. Rewrite using `[hs]`. Use `infer_instance`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.aut_translate {E : Type} [Field E] [NumberField E]
     [NumberField.IsCMField E] {n : ℕ} (k : ↥(GlobalTheory.UnitaryBC.finU E n))
     {φ : ↥(GlobalTheory.UnitaryBC.UA E n) → ℂ} (h : φ ∈ GlobalTheory.DefU.autU E n) :
@@ -114,6 +143,11 @@ private def UpperTheory.Reformulated.B.Gr38.fixer {G W : Type} [Group G] [AddCom
       rw [← Module.End.mul_apply, ← map_mul]; simp
     rwa [ha] at h
 
+/- English proof (translation)
+Use `haveI : CompactSpace ↥K := isCompact_iff_compactSpace.mp hK`. Set `U : Subgroup ↥K` to `(UpperTheory.Reformulated.B.Gr38.fixer R w).subgroupOf K`. Establish `hU : IsOpen (U : Set ↥K)` using `hw.preimage continuous_subtype_val`. Use `haveI : Finite (↥K ⧸ U) := Subgroup.quotient_finite_of_isOpen U hU`. Use `(Set.finite_range (fun c : ↥K ⧸ U => R ((c.out : ↥K) : G) w)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, rfl⟩`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul U k`. Use `⟨(k : ↥K ⧸ U), ?_⟩` and prove the remaining obligations. Establish `hfix : R ((h : ↥K) : G) w = w` using `h.2`. Simplify using `only [hh, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hfix]`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.orbit_finite {G W : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [AddCommGroup W] [_root_.Module ℂ W] (R : Representation ℂ G W)
     (K : Subgroup G) (hK : IsCompact (K : Set G)) (w : W)
@@ -130,6 +164,13 @@ private theorem UpperTheory.Reformulated.B.Gr38.orbit_finite {G W : Type} [Group
   have hfix : R ((h : ↥K) : G) w = w := h.2
   simp only [hh, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hfix]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ S`. Establish `hs : {k : ↥(GlobalTheory.UnitaryBC.finU E n) | ∀ v, GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) (f v) = f v} = ⋂ i, {k : ↥(GlobalTheory.UnitaryBC.finU E n) | GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) (f (b i)) = f (b i)}`. Use extensionality with `k`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Use `⟨fun h i => h _, fun h v => ?_⟩` and prove the remaining obligations.
+
+Establish `: (GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n))) ∘ₗ f = f` using `b.ext h`. Conclude with `LinearMap.congr_fun this v`. Rewrite using `[hs]`. Use `isOpen_iInter_of_finite fun i => ?_` and prove the remaining obligations. Take `⟨_, _, ho, _⟩` from `(hf (b i) : GlobalTheory.UnitaryBC.IsAutFormU (f (b i)))`.
+
+Conclude with `ho`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr38.stab_open {E : Type} [Field E] [NumberField E]
     [NumberField.IsCMField E] {n : ℕ} {S : Type} [AddCommGroup S] [_root_.Module ℂ S]
     [FiniteDimensional ℂ S] (f : S →ₗ[ℂ] ↥(GlobalTheory.UnitaryBC.UA E n) → ℂ)
@@ -235,6 +276,19 @@ noncomputable def UpperTheory.Reformulated.B.Gr38.eqRep :
           rw [Subgroup.coe_mul, map_mul, Module.End.mul_apply]) :
         ↥(GlobalTheory.UnitaryBC.finU E n) →* ↥(UpperTheory.Reformulated.B.Gr38.eqForms ρ) →ₗ[ℂ] ↥(UpperTheory.Reformulated.B.Gr38.eqForms ρ) }
 
+/- English proof (translation)
+Introduce `E _ _ _ n S _ _ _ ρ f`. Take `⟨K0, hK0o, hK0c⟩` from `UpperTheory.exists_isOpen_isCompact_subgroup_finiteAdelicUnitary E n`. Establish `hopen : ∀ w : ↥(UpperTheory.Reformulated.B.Gr38.eqForms ρ), IsOpen (UpperTheory.Reformulated.B.Gr38.fixer (UpperTheory.Reformulated.B.Gr38.eqRep ρ) w : Set ↥(GlobalTheory.UnitaryBC.finU E n))`. Introduce `w`. Establish `hs : (UpperTheory.Reformulated.B.Gr38.fixer (UpperTheory.Reformulated.B.Gr38.eqRep ρ) w : Set ↥(GlobalTheory.UnitaryBC.finU E n)) = {k : ↥(GlobalTheory.UnitaryBC.finU E n) | ∀ v, GlobalTheory.UnitaryBC.RU E n (k : ↥(GlobalTheory.UnitaryBC.UA E n)) (w.1 v) = w.1 v}`.
+
+Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val (show UpperTheory.Reformulated.B.Gr38.eqRep ρ k w = w from h)) v`. Introduce `h show UpperTheory.Reformulated.B.Gr38.eqRep ρ k w = w`.
+
+Conclude with `Subtype.ext (LinearMap.ext h)`. Rewrite using `[hs]`. Conclude with `UpperTheory.Reformulated.B.Gr38.stab_open w.1 w.2.1`. Set `K : Subgroup ↥(GlobalTheory.UnitaryBC.finU E n)` to `K0 ⊓ UpperTheory.Reformulated.B.Gr38.fixer (UpperTheory.Reformulated.B.Gr38.eqRep ρ) f`. Establish `hKo : IsOpen (K : Set ↥(GlobalTheory.UnitaryBC.finU E n))` using `hK0o.inter (hopen f)`.
+
+Establish `hKc : IsCompact (K : Set ↥(GlobalTheory.UnitaryBC.finU E n))` using `hK0c.of_isClosed_subset (Subgroup.isClosed_of_isOpen K hKo) Set.inter_subset_left`. Use `⟨K, fun k hk => hk.2, ?_, fun w => UpperTheory.Reformulated.B.Gr38.orbit_finite (UpperTheory.Reformulated.B.Gr38.eqRep ρ) K hKc w (hopen w)⟩` and prove the remaining obligations. Set `M : Submodule ℂ (S →ₗ[ℂ] ↥(GlobalTheory.UnitaryBC.UA E n) → ℂ)` to `(GlobalTheory.PRep.fixed (UpperTheory.Reformulated.B.Gr38.eqRep ρ) K).map (UpperTheory.Reformulated.B.Gr38.eqForms ρ).subtype`. Establish `hM : FiniteDimensional ℂ ↥M`. Use `UpperTheory.finiteDimensional_automorphicForms_unitary_of_type_level E n S (fun x => ρ x) K hKo M ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `⟨fun v γ hγ g => ?_, fun x v => w.2.2 x v, fun k hk v => ?_⟩` and prove the remaining obligations. Take `⟨_, hr, _, _⟩` from `(w.2.1 v : GlobalTheory.UnitaryBC.IsAutFormU (w.1 v))`. Conclude with `hr γ hγ g`. Establish `h1 : UpperTheory.Reformulated.B.Gr38.eqRep ρ k w = w`.
+
+Use `hw ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Conclude with `LinearMap.congr_fun (congrArg Subtype.val h1) v`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (UpperTheory.Reformulated.B.Gr38.eqForms ρ).subtype (Submodule.injective_subtype _) (GlobalTheory.PRep.fixed (UpperTheory.Reformulated.B.Gr38.eqRep ρ) K)).symm`.
+-/
 theorem UpperTheory.Reformulated.B.Gr38.eqRep_adm :
     ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E] {n : ℕ} {S : Type}
       [inst_3 : AddCommGroup S] [inst_4 : _root_.Module ℂ S] [FiniteDimensional ℂ S]

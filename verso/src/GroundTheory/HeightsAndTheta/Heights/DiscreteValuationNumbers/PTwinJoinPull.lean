@@ -24,13 +24,22 @@ def combChart (t : ∀ k, ι k) (u : ∀ k, ι' k) : ∀ k : K ⊕ K', Sum.elim 
   | .inl k => t k
   | .inr k => u k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictChart_combChart (t : ∀ k, ι k) (u : ∀ k, ι' k) :
     restrictChart (combChart t u) = t :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zChart_combChart (t : ∀ k, ι k) (u : ∀ k, ι' k) : zChart (combChart t u) = u :=
   rfl
 
+/- English proof (translation)
+Simplify using `only [mseg, Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+-/
 theorem mseg_joinCoord (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
     mseg (joinCoord x z) s = mseg x (restrictChart s) * mseg z (zChart s) := by
   simp only [mseg, Fintype.prod_sum_type]
@@ -38,6 +47,13 @@ theorem mseg_joinCoord (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (s :
 
 variable (O : Type*) [CommRing O] [Algebra O Ω]
 
+/- English proof (translation)
+Establish `hz : mseg z (zChart s) ≠ 0`. Rewrite `hs` using `[mseg_joinCoord]`. Conclude with `right_ne_zero_of_mul hs`. Unfold `chartRing`. Apply `Algebra.adjoin_le` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨t', rfl⟩`. Establish `h : mseg x t' / mseg x (restrictChart s) = mseg (joinCoord x z) (combChart t' (zChart s)) / mseg (joinCoord x z) s`. Rewrite using `[mseg_joinCoord x z (combChart t' (zChart s)), mseg_joinCoord x z s, restrictChart_combChart, zChart_combChart, mul_div_mul_right _ _ hz]`. Simplify using `only`. Rewrite using `[h]`.
+
+Conclude with `div_mem_chartRing (o := O) _ _ _`.
+-/
 theorem chartRing_le_join (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k)
     (hs : mseg (joinCoord x z) s ≠ 0) :
     chartRing O (mseg x) (restrictChart s) ≤ chartRing O (mseg (joinCoord x z)) s := by
@@ -55,6 +71,11 @@ theorem chartRing_le_join (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (
   rw [h]
   exact div_mem_chartRing (o := O) _ _ _
 
+/- English proof (translation)
+Establish `hx : mseg x (restrictChart s') ≠ 0`. Rewrite `hs'` using `[mseg_joinCoord]`. Conclude with `left_ne_zero_of_mul hs'`. Establish `h : mseg z (zChart s) / mseg z (zChart s') = mseg (joinCoord x z) (combChart (restrictChart s') (zChart s)) / mseg (joinCoord x z) s'`. Rewrite using `[mseg_joinCoord x z (combChart (restrictChart s') (zChart s)), mseg_joinCoord x z s', restrictChart_combChart, zChart_combChart, mul_div_mul_left _ _ hx]`.
+
+Rewrite using `[h]`. Conclude with `div_mem_chartRing (o := O) _ _ _`.
+-/
 theorem zRatio_mem (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (s s' : ∀ k : K ⊕ K', Sum.elim ι ι' k)
     (hs' : mseg (joinCoord x z) s' ≠ 0) :
     mseg z (zChart s) / mseg z (zChart s') ∈ chartRing O (mseg (joinCoord x z)) s' := by
@@ -82,6 +103,13 @@ def pullLat (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundl
   AddSubgroup.closure
     {v | ∃ a ∈ chartRing O (mseg (joinCoord x z)) s, ∃ e ∈ E.lat (restrictChart s), v = a • e}
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨b, hb, e, he, rfl⟩` from `hv`. Rewrite using `[smul_smul]`. Conclude with `AddSubgroup.subset_closure ⟨a * b, mul_mem ha hb, e, he, rfl⟩`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `neg v _ hv => rw [smul_neg]`.
+
+Conclude with `neg_mem hv`.
+-/
 theorem pullLat_stable (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundle O (mseg x) N V)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (a : Ω) (ha : a ∈ chartRing O (mseg (joinCoord x z)) s)
     (v : V) (hv : v ∈ pullLat O x z E s) : a • v ∈ pullLat O x z E s := by
@@ -94,6 +122,21 @@ theorem pullLat_stable (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E :
   | add v w _ _ hv hw => rw [smul_add]; exact add_mem hv hw
   | neg v _ hv => rw [smul_neg]; exact neg_mem hv
 
+/- English proof (translation)
+Establish `hle` using `chartRing_le_join O x z s hs`. Establish `hf' : f ∈ chartRing O (mseg (joinCoord x z)) s` using `hle hf`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e', he', rfl⟩` from `hv`.
+
+Take `⟨α, hα, rfl⟩` from `(hiff e').1 ⟨0, by simpa using he'⟩`. Use `⟨fun q => a * α q, fun q => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hα q`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+
+Conclude with `mul_mem ha (hle hm)`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_smul]`. Consider the case `zero => exact ⟨0, fun q => ⟨0, by simp⟩, by simp⟩`. Consider the case `add v w _ _ hv hw`.
+
+Take `⟨a, ha, rfl⟩` from `hv`. Take `⟨a', ha', rfl⟩` from `hw`. Use `⟨a + a', fun q => ?_, by simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib]⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha q`. Take `⟨m', hm'⟩` from `ha' q`.
+
+Use `⟨m + m', ?_⟩` and prove the remaining obligations. Establish `h : f ^ (m + m') * (a + a') q = f ^ m' * (f ^ m * a q) + f ^ m * (f ^ m' * a' q)`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Conclude with `add_mem (mul_mem (pow_mem hf' _) hm) (mul_mem (pow_mem hf' _) hm')`. Consider the case `neg v _ hv`. Take `⟨a, ha, rfl⟩` from `hv`. Use `⟨-a, fun q => ?_, by simp only [Pi.neg_apply, neg_smul, Finset.sum_neg_distrib]⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha q`.
+
+Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.neg_apply, mul_neg]`. Conclude with `neg_mem hm`.
+-/
 theorem pullLat_coords (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundle O (mseg x) N V)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (joinCoord x z) s ≠ 0) (f : Ω)
     (hf : f ∈ chartRing O (mseg x) (restrictChart s)) (b : Fin N → V)
@@ -137,6 +180,25 @@ theorem pullLat_coords (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E :
     simp only [Pi.neg_apply, mul_neg]
     exact neg_mem hm
 
+/- English proof (translation)
+Establish `ht : mseg x (restrictChart s) ≠ 0`. Establish `hs'` using `hs`. Rewrite `hs'` using `[mseg_joinCoord]`. Conclude with `left_ne_zero_of_mul hs'`. Establish `hle` using `chartRing_le_join O x z s hs`.
+
+Take `⟨k, f, c, hf, hc, hsum, hl⟩` from `E.frame _ ht`. Use `⟨k, f, c, fun l => hle (hf l), fun l => hle (hc l), hsum, fun l => ?_⟩` and prove the remaining obligations. Take `⟨b, hli, hspan, hiff⟩` from `hl l`. Use `⟨b, hli, hspan, fun e => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`.
+
+Take `⟨a, ha, hfe⟩` from `pullLat_coords O x z E s hs (f l) (hf l) b hiff _ hn`. Establish `he : e ∈ Submodule.span Ω (Set.range b)` using `by rw [hspan]; exact Submodule.mem_top`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 he`. Establish `hcoef : ∀ q, f l ^ n * cc q = a q`. Establish `h0 : ∑ q, (f l ^ n * cc q - a q) • b q = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, ← Finset.smul_sum, hcc, ← hfe, sub_self]`. Introduce `q`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hli _ h0 q)`. Use `⟨cc, fun q => ?_, hcc.symm⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `ha q`.
+
+Use `⟨m + n, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_assoc, hcoef]`. Conclude with `hm`. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hb : ∀ q, ∃ m : ℕ, f l ^ m • b q ∈ E.lat (restrictChart s)` using `fun q => (hiff (b q)).2 ⟨fun q' => if q' = q then 1 else 0, fun q' => ⟨0, by`.
+
+Simplify using `only [pow_zero, one_mul]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _⟩, by simp [ite_smul]⟩`. Use `choose m hm using hb`.
+
+Use `choose n hn using ha`. Use `⟨∑ q, (n q + m q), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `sum_mem fun q _ => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := fun q => n q + m q) (fun _ _ => Nat.zero_le _) (Finset.mem_univ q))`.
+
+Establish `h : f l ^ (∑ q, (n q + m q)) • (a q • b q) = (f l ^ d * (f l ^ n q * a q)) • (f l ^ m q • b q)`. Rewrite using `[hd, smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨_, mul_mem (pow_mem (hle (hf l)) _) (hn q), _, hm q, rfl⟩`.
+-/
 theorem pullLat_frame (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundle O (mseg x) N V)
     (s : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (joinCoord x z) s ≠ 0) :
     ∃ (k : ℕ) (f c : Fin k → Ω), (∀ l, f l ∈ chartRing O (mseg (joinCoord x z)) s) ∧
@@ -191,6 +253,23 @@ theorem pullLat_frame (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : 
     exact AddSubgroup.subset_closure
       ⟨_, mul_mem (pow_mem (hle (hf l)) _) (hn q), _, hm q, rfl⟩
 
+/- English proof (translation)
+Establish `hρ : mseg (joinCoord x z) s / mseg (joinCoord x z) s' ∈ chartRing O (mseg (joinCoord x z)) s'` using `div_mem_chartRing (o := O) _ _ _`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`. Establish `ht : mseg x (restrictChart s) ≠ 0`.
+
+Establish `h` using `hs`. Rewrite `h` using `[mseg_joinCoord]`. Conclude with `left_ne_zero_of_mul h`. Establish `ht' : mseg x (restrictChart s') ≠ 0`. Establish `h` using `hs'`.
+
+Rewrite `h` using `[mseg_joinCoord]`. Conclude with `left_ne_zero_of_mul h`. Take `⟨m₁, hm₁⟩` from `E.overlap _ _ ht ht' e he`. Take `⟨m₂, hm₂⟩` from `exists_pow_mul_mem_chartRing (o := O) (mseg (joinCoord x z)) s s' hs ha`. Establish `hμ` using `zRatio_mem O x z s s' hs'`.
+
+Use `⟨m₁ + m₂, ?_⟩` and prove the remaining obligations. Establish `h : (mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ (m₁ + m₂) • (a • e) = ((mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ m₂ * a * (mseg z (zChart s) / mseg z (zChart s')) ^ m₁) • ((mseg x (restrictChart s) / mseg x (restrictChart s')) ^ m₁ • e)`. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[mseg_joinCoord x z s, mseg_joinCoord x z s']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `AddSubgroup.subset_closure ⟨_, mul_mem hm₂ (pow_mem hμ _), _, hm₁, rfl⟩`. Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add v w _ _ hv hw`.
+
+Take `⟨m, hm⟩` from `hv`. Take `⟨n, hn⟩` from `hw`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Establish `h₁ : (mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ (m + n) • v = (mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ n • ((mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ m • v)`.
+
+Rewrite using `[smul_smul, ← pow_add, add_comm n m]`. Establish `h₂ : (mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ (m + n) • w = (mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ m • ((mseg (joinCoord x z) s / mseg (joinCoord x z) s') ^ n • w)`. Rewrite using `[smul_smul, ← pow_add]`. Rewrite using `[h₁, h₂]`. Conclude with `add_mem (pullLat_stable O x z E s' _ (pow_mem hρ _) _ hm) (pullLat_stable O x z E s' _ (pow_mem hρ _) _ hn)`.
+
+Consider the case `neg v _ hv`. Take `⟨m, hm⟩` from `hv`. Conclude with `⟨m, by rw [smul_neg]; exact neg_mem hm⟩`.
+-/
 theorem pullLat_overlap (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundle O (mseg x) N V)
     (s s' : ∀ k : K ⊕ K', Sum.elim ι ι' k) (hs : mseg (joinCoord x z) s ≠ 0)
     (hs' : mseg (joinCoord x z) s' ≠ 0) (v : V) (hv : v ∈ pullLat O x z E s) :
@@ -250,10 +329,22 @@ def pullBundle (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBu
   frame := pullLat_frame O x z E
   overlap := pullLat_overlap O x z E
 
+/- English proof (translation)
+Introduce `_ _` and use `rfl`.
+-/
 theorem isPull_pullBundle (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (E : ChartBundle O (mseg x) N V) :
     IsPull O x z E (pullBundle O x z E) :=
   fun _ _ => rfl
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`. Take `⟨c, hc, hce⟩` from `h e he`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_comm]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, _, hce, rfl⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨c₁, hc₁, h₁⟩` from `hv`.
+
+Take `⟨c₂, hc₂, h₂⟩` from `hw`. Use `⟨c₁ * c₂, mul_ne_zero hc₁ hc₂, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap O Ω (c₁ * c₂) • (v + w) = algebraMap O Ω c₂ • (algebraMap O Ω c₁ • v) + algebraMap O Ω c₁ • (algebraMap O Ω c₂ • w)`. Rewrite using `[smul_add, smul_smul, smul_smul, map_mul, mul_comm (algebraMap O Ω c₂)]`. Rewrite using `[e]`.
+
+Conclude with `add_mem (pullLat_stable O x z E' s _ (Subalgebra.algebraMap_mem _ _) _ h₁) (pullLat_stable O x z E' s _ (Subalgebra.algebraMap_mem _ _) _ h₂)`. Consider the case `neg v _ hv`. Take `⟨c, hc, h⟩` from `hv`. Conclude with `⟨c, hc, by rw [smul_neg]; exact neg_mem h⟩`.
+-/
 theorem pullLat_const [IsDomain O] (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω)
     (E E' : ChartBundle O (mseg x) N V) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k)
     (h : ∀ v ∈ E.lat (restrictChart s), ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ E'.lat (restrictChart s))
@@ -281,6 +372,11 @@ theorem pullLat_const [IsDomain O] (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) 
     obtain ⟨c, hc, h⟩ := hv
     exact ⟨c, hc, by rw [smul_neg]; exact neg_mem h⟩
 
+/- English proof (translation)
+Introduce `s hs`. Establish `ht : mseg x (restrictChart s) ≠ 0`. Establish `h'` using `hs`. Rewrite `h'` using `[mseg_joinCoord]`. Conclude with `left_ne_zero_of_mul h'`.
+
+Conclude with `⟨pullLat_const O x z E E' s (h _ ht).1, pullLat_const O x z E' E s (h _ ht).2⟩`.
+-/
 theorem sameGeneric_pullBundle [IsDomain O] [IsDiscreteValuationRing O] (x : (Σ k, ι k) → Ω)
     (z : (Σ k, ι' k) → Ω) (E E' : ChartBundle O (mseg x) N V) (h : SameGeneric O x E E') :
     SameGeneric O (joinCoord x z) (pullBundle O x z E) (pullBundle O x z E') := by
@@ -297,6 +393,9 @@ end JoinPullbackAlt
 
 open JoinPullbackAlt in
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z N V _ _ E E' hE`. Conclude with `⟨pullBundle O x z E, pullBundle O x z E', isPull_pullBundle O x z E, isPull_pullBundle O x z E', sameGeneric_pullBundle O x z E E' hE⟩`.
+-/
 theorem JoinPullbackAlt.proof : JoinPullbackAlt.Statement := by
   intro O _ _ _ Ω _ _ K _ ι _ x K' _ ι' _ z N V _ _ E E' hE
   exact ⟨pullBundle O x z E, pullBundle O x z E', isPull_pullBundle O x z E, isPull_pullBundle O x z E',

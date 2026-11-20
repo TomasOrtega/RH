@@ -25,6 +25,9 @@ section Orbits
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, mul_toBlocks₁₁]`. Establish `: g.val.toBlocks₁₂ * h.val.toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, add_zero]`.
+-/
 theorem corner_mul (g h : GL (n ⊕ Fin 0) k) :
     (g * h).val.toBlocks₁₁ = g.val.toBlocks₁₁ * h.val.toBlocks₁₁ := by
   rw [Units.val_mul, mul_toBlocks₁₁]
@@ -32,9 +35,15 @@ theorem corner_mul (g h : GL (n ⊕ Fin 0) k) :
     ext i j; simp [Matrix.mul_apply]
   rw [this, add_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+-/
 theorem corner_one : (1 : GL (n ⊕ Fin 0) k).val.toBlocks₁₁ = 1 := by
   ext i j; simp [Matrix.toBlocks₁₁, Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_of_le_one_of_le (hA i l) (hy l)`.
+-/
 theorem mulVec_mem_box {A : Matrix n n k} (hA : IntM A) {c : kˣ} {y : n → k} (hy : y ∈ box n c) :
     A *ᵥ y ∈ box n c := by
   intro i
@@ -43,6 +52,13 @@ theorem mulVec_mem_box {A : Matrix n n k} (hA : IntM A) {c : kˣ} {y : n → k} 
   rw [map_mul]
   exact mul_le_of_le_one_of_le (hA i l) (hy l)
 
+/- English proof (translation)
+Use `⟨fun yb => ?_, fun {yb yb'} H => ?_, fun {yb yb' yb''} H H' => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ yb`. Conclude with `⟨1, one_mem _, y, rfl, by rw [corner_one, one_mulVec]⟩`. Take `⟨g, hg, y, rfl, e⟩` from `H`. Use `⟨g⁻¹, inv_mem hg, g.val.toBlocks₁₁ *ᵥ y, e, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mulVec_mulVec, ← corner_mul, inv_mul_cancel, corner_one, one_mulVec]`. Take `⟨g, hg, y, rfl, e1⟩` from `H`. Take `⟨h, hh, y', e2, e3⟩` from `H'`. Use `⟨h * g, mul_mem hh hg, y, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← e3, corner_mul, ← mulVec_mulVec, Submodule.Quotient.eq, ← mulVec_sub]`.
+
+Establish `hI : IntM h.val.toBlocks₁₁` using `fun i j => intM_of_mem_KO (hJ hh) (.inl i) (.inl j)`. Use `mulVec_mem_box hI ?_` and prove the remaining obligations. Rewrite `e2` using `[← e1]`. Conclude with `(Submodule.Quotient.eq _).1 e2.symm`.
+-/
 theorem sameOrb_equivalence (J : Subgroup (GL (n ⊕ Fin 0) k)) (hJ : J ≤ KO k _) (c : kˣ) :
     Equivalence (SameOrb J (box n c)) := by
   refine ⟨fun yb => ?_, fun {yb yb'} H => ?_, fun {yb yb' yb''} H H' => ?_⟩
@@ -75,6 +91,13 @@ section Data
 variable {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E} (G : QGeo v B PP)
   (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ) (A : RepFam G.k G.s (XIx (Fin D.R.k) (Fin D.R.t))) (M : ℕ)
 
+/- English proof (translation)
+Establish `e1 : ∀ x, (plainFrame (stdOrd (Fin D.R.k) (Fin D.R.t) 0 d h) : LatFrame G.k _ _).conj.symm x = (reGL (stdOrd (Fin D.R.k) (Fin D.R.t) 0 d h)).symm x`. Introduce `x`. Simplify using `[LatFrame.conj, plainFrame]`. Both sides reduce to the same expression. Use `⟨le_antisymm (G.T_le δ hδ η 0 d h) fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(plainFrame (stdOrd (Fin D.R.k) (Fin D.R.t) 0 d h) : LatFrame G.k _ _).conj.symm x ∈ (parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin 0 × Fin D.R.t) δ hδ).J`. Rewrite using `[e1, mem_parahoric]`. Use `⟨mem_KO.2 ⟨fun i j => ?_, fun i j => ?_⟩, fun i _ => i.1.elim0⟩` and prove the remaining obligations. Rewrite using `[reGL_symm_val]`. Conclude with `(mem_KO.1 hx).1 _ _`.
+
+Rewrite using `[← map_inv, reGL_symm_val]`. Conclude with `(mem_KO.1 hx).2 _ _`. Express the relevant statement in the definitionally equal form `(parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin 0 × Fin D.R.t) δ hδ).lam ⟨_, x.2⟩ = 1`. Rewrite using `[parahoric_lam _ 1 (by ext i; exact i.1.elim0), map_one, map_one]`.
+-/
 theorem lev_zero (d : ℕ) (h : 0 + d = G.s + 1) :
     ((G.T δ hδ η).lev 0 d h).J = KO G.k _ ∧ ∀ x, ((G.T δ hδ η).lev 0 d h).lam x = 1 := by
   have e1 : ∀ x, (plainFrame (stdOrd (Fin D.R.k) (Fin D.R.t) 0 d h) : LatFrame G.k _ _).conj.symm x =
@@ -90,6 +113,9 @@ theorem lev_zero (d : ℕ) (h : 0 + d = G.s + 1) :
   · change (parahoric (Fin D.R.k ⊕ Fin (G.s + 1)) (Fin 0 × Fin D.R.t) δ hδ).lam ⟨_, x.2⟩ = 1
     rw [parahoric_lam _ 1 (by ext i; exact i.1.elim0), map_one, map_one]
 
+/- English proof (translation)
+Establish `hs` using `G.hs`. Take `⟨hJ, hl⟩` from `lev_zero G δ hδ η (d + 1) h`. Conclude with `(GlobalTheory.QPl.SphOne.isOneComb_sph_level G.k _ _ (ρ + 1) (by omega) (by omega) G.ψk G.cond.continuous G.cond G.ν G.unitVol _ hJ hl).1`.
+-/
 theorem isOneComb_zero (ρ d : ℕ) (hρ : 0 + 2 * ρ + 2 = D.R.m) (h : 0 + (d + 1) = G.s + 1) :
     IsOneComb G.ψk G.ν (ρ + 1) ((G.T δ hδ η).lev 0 (d + 1) h) 1 (Finsupp.single 1 1) := by
   have hs := G.hs
@@ -99,6 +125,11 @@ theorem isOneComb_zero (ρ d : ℕ) (hρ : 0 + 2 * ρ + 2 = D.R.m) (h : 0 + (d +
 def PiA (j : ℕ) : Type :=
   {g : ∀ d (_ : j + d = G.s), GL (XIx (Fin D.R.k) (Fin D.R.t) j ⊕ Fin (d + 1)) G.k // ∀ d h, g d h ∈ A j d h}
 
+/- English proof (translation)
+Distinguish the cases in `hj : j ≤ G.s`. Use `haveI := (hfin j (G.s - j) (by omega)).to_subtype`. Use `Finite.of_injective (fun x : PiA G A j => (⟨x.1 (G.s - j) (by omega), x.2 _ _⟩ : ↥(A j (G.s - j) (by omega)))) ?_` and prove the remaining obligations. Introduce `x y e`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `d h`. Take `rfl : d = G.s - j` from `by omega`. Conclude with `congrArg Subtype.val e`. Conclude with `@Finite.of_subsingleton _ ⟨fun x y => Subtype.ext (funext fun d => funext fun h => absurd h (by omega))⟩`.
+-/
 theorem piA_finite (hfin : ∀ j d h, (A j d h).Finite) (j : ℕ) : Finite (PiA G A j) := by
   by_cases hj : j ≤ G.s
   · haveI := (hfin j (G.s - j) (by omega)).to_subtype
@@ -113,6 +144,9 @@ def ChT (j : ℕ) : Type :=
   {x : PiA G A j // j ≠ G.s + 1} ⊕
     {o : Orb ((G.T δ hδ η).lev (G.s + 1) 0 rfl).J (G.T_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)⁻¹ (G.ϖ ^ M) // j = G.s + 1}
 
+/- English proof (translation)
+Use `haveI := piA_finite G A hfin j`. Unfold `ChT`. Use `infer_instance`.
+-/
 theorem chT_finite (hfin : ∀ j d h, (A j d h).Finite) (j : ℕ) : Finite (ChT G δ hδ η A M j) := by
   haveI := piA_finite G A hfin j; unfold ChT; infer_instance
 
@@ -130,6 +164,9 @@ def idxT (j : ℕ) : ℕ :=
 def mT (j : ℕ) : Measure (GL (XIx (Fin D.R.k) (Fin D.R.t) j) G.k) :=
   haveI := G.unitVol.1; (Model.exists_haar G.ν (XIx (Fin D.R.k) (Fin D.R.t) j)).choose
 
+/- English proof (translation)
+Use `haveI := G.unitVol.1`. Conclude with `(Model.exists_haar G.ν _).choose_spec`.
+-/
 theorem mT_spec (j : ℕ) : (mT G j).IsHaarMeasure ∧ mT G j (KO G.k (XIx (Fin D.R.k) (Fin D.R.t) j) : Set _) = 1 := by
   haveI := G.unitVol.1; exact (Model.exists_haar G.ν _).choose_spec
 
@@ -157,6 +194,9 @@ def combOf (hstd : IsStdChar D c.ψ (-1)) {S T : HSp D} {Y Y' : Type} [Fintype Y
     (FS : Frame G.k S.rank Y') (FT : Frame G.k T.rank Y) (Ξ : Matrix Y Y' G.k → ℂ) : WO S T →₀ ℂ :=
   (CombAt.exists_isCombAt (ofSplit G.q) hstd FS FT Ξ).choose
 
+/- English proof (translation)
+The claim follows from `(CombAt.exists_isCombAt (ofSplit G.q) hstd FS FT Ξ).choose_spec`.
+-/
 theorem combOf_spec (hstd : IsStdChar D c.ψ (-1)) {S T : HSp D} {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y']
     [DecidableEq Y'] (FS : Frame G.k S.rank Y') (FT : Frame G.k T.rank Y) (Ξ : Matrix Y Y' G.k → ℂ) :
     (ofSplit G.q).IsCombAt c.ψ FS FT (combOf G hstd FS FT Ξ) Ξ :=
@@ -185,6 +225,9 @@ end Data
 
 section Main
 
+/- English proof (translation)
+Break down `α with x | o` into its components or cases. Conclude with `x.1.2 d h`. Conclude with `absurd o.2 (by omega)`.
+-/
 theorem repT_mem {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c} {PP : Formalism.L2.DIV.Pl D.host.E} (G : QGeo v B PP)
     (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ) (A : RepFam G.k G.s (XIx (Fin D.R.k) (Fin D.R.t))) (M : ℕ)
     (j d : ℕ) (h : j + d = G.s) (α : ChT G δ hδ η A M j) : repT G δ hδ η A M j d h α ∈ A j d h := by
@@ -194,6 +237,51 @@ theorem repT_mem {D : D7} {c : Comm D} {v : VCom c} {B : GlobalTheory.Fam.Base c
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D c v B PP G χ hc δ hδ η hη hcomp A hA M hM`. Use `haveI := G.unitVol.1`. Establish `hs` using `G.hs`. Establish `hreg : (G.T δ hδ η).Regular` using `Chain.ofTwist_regular _ _ _ _ _`. Establish `hlaws : (G.T δ hδ η).Laws` using `Chain.ofTwist_laws _ _ _ hη _ _`.
+
+Establish `hfin : ∀ j d h, (A j d h).Finite` using `(((GlobalTheory.UnfoldedEntries.chainFinite (ν := G.ν) G.cond) G.s _ _ (G.T δ hδ η) hreg hlaws).2 A hA).1`. Establish `hstd` using `hc.std`. Use `⟨{ δ := δ, tame := hδ, η := η, unr := hη, mu_comp := hcomp A := A, reps := hA Ch := ChT G δ hδ η A M fC := fun j => @Fintype.ofFinite _ (chT_finite G δ hδ η A M hfin j) rep := repT G δ hδ η A M rep_bij := ?_ M := M, adapt := hM cos := cosT G δ hδ η A M cos_inj := ?_, cos_all := ? …` and prove the remaining obligations. Introduce `j d h`. Use `⟨fun α _ => repT_mem G δ hδ η A M j d h α, fun α _ β _ e => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Break down `α with x | o` into its components or cases. Break down `β with y | o'` into its components or cases. Conclude with `congrArg Sum.inl (Subtype.ext (Subtype.ext (funext fun d' => funext fun h' => by`. Take `rfl : d' = d` from `by omega`. Conclude with `e)))`.
+
+Conclude with `absurd o'.2 (by omega)`. Conclude with `absurd o.2 (by omega)`. Establish `hx : ∃ x : PiA G A j, x.1 d h = g`. Use `⟨⟨fun d' _ => (show d' = d by omega) ▸ g, fun d' h' => ?_⟩, rfl⟩` and prove the remaining obligations. Take `rfl : d' = d` from `by omega`.
+
+Conclude with `hg`. Take `⟨x, hx⟩` from `hx`. Conclude with `⟨.inl ⟨x, by omega⟩, trivial, hx⟩`. Introduce `y y' H`. Break down `y with x | o` into its components or cases.
+
+Conclude with `absurd rfl x.2`. Break down `y' with x' | o'` into its components or cases. Conclude with `absurd rfl x'.2`. Establish `e : Quotient.mk (orbSetoid _ (G.T_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)) (Quotient.out o.1.1) = Quotient.mk _ (Quotient.out o'.1.1)` using `Quotient.sound H`. Rewrite `e` using `[Quotient.out_eq, Quotient.out_eq]`.
+
+Conclude with `congrArg Sum.inr (Subtype.ext (Subtype.ext e))`. Introduce `z hz`. Conclude with `⟨.inr ⟨⟨Quotient.mk _ (Submodule.Quotient.mk z), ⟨_, ⟨z, hz, rfl⟩, rfl⟩⟩, rfl⟩, Quotient.mk_out (s := orbSetoid _ (G.T_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)) _⟩`. Use `haveI := chT_finite G δ hδ η A M hfin (G.s + 1 + 1)`. Use `letI := Fintype.ofFinite (ChT G δ hδ η A M (G.s + 1 + 1))`.
+
+Use `Fintype.card_eq_one_iff.2 ⟨.inl ⟨⟨fun d h => absurd h (by omega), fun d h => absurd h (by omega)⟩, by omega⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `(x | o)`. Conclude with `congrArg Sum.inl (Subtype.ext (Subtype.ext (funext fun d => funext fun h => absurd h (by omega))))`. Conclude with `absurd o.2 (by omega)`. Introduce `j d h`.
+
+Take `rfl : d = G.s - j` from `by omega`. Unfold `eLT`. Rewrite using `[dif_pos (by omega)]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `j d H α γ`.
+
+Take `rfl : d = G.s - (j + 1)` from `by omega`. Unfold `dLT`. Rewrite using `[dif_pos (by omega)]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `α y`.
+
+Unfold `dLT`. Rewrite using `[dif_neg (by omega), dif_pos rfl]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `y u`. Unfold `dLT`.
+
+Rewrite using `[dif_neg (by omega), dif_neg (by omega), dif_pos rfl]`. Conclude with `combOf_spec _ _ _ _ _`. Introduce `j ρ hρ d h α`. Take `rfl : d = G.s - j` from `by omega`. Distinguish the cases in `hj0 : j = 0`.
+
+Substitute `hj0` using the available equality. Use `⟨Finsupp.single 1 1, ?_, ?_⟩` and prove the remaining obligations. Establish `hr : repT G δ hδ η A M 0 (G.s - 0) h α = 1`. Use `repT_mem G δ hδ η A M 0 (G.s - 0) h α` as an intermediate fact. Rewrite `this` using `[hA.zero]`. Then use the resulting hypothesis.
+
+Rewrite using `[hr]`. Conclude with `isOneComb_zero G δ hδ η ρ _ hρ _`. Unfold `epsT`. Rewrite using `[if_pos rfl]`. Simplify using the standard rewrite rules.
+
+Establish `hP : (D.R.m - j) / 2 = ρ + 1` using `by omega`. Establish `H : ∃ e, IsOneComb G.ψk G.ν ((D.R.m - j) / 2) ((G.T δ hδ η).lev j (G.s - j + 1) (by omega)) (repT G δ hδ η A M j (G.s - j) (by omega) α) e`. Rewrite using `[hP]`. Conclude with `GlobalTheory.QPl.OneComb.exists_isOneComb G.k _ _ (ρ + 1) (by omega) (by omega) G.ψk G.cond.continuous G.cond.ne_one G.ν (isSelfDual_of_isUnitVol G.ν G.cond G.unitVol) _ ⟨(hreg.2.2 _ _ _).1, (hreg.2.2 _ _ _).2.1⟩ _`. Use `⟨H.choose, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `H2` using `H.choose_spec revert H2`. Generalize the expression as in `H.choose = e`. Rewrite using `[hP]`. Conclude with `id`. Unfold `epsT`.
+
+Rewrite using `[if_neg hj0, dif_pos (by omega), dif_pos H]`. Introduce `α`. Unfold `epsT`. Rewrite using `[if_pos rfl]`. Introduce `j d h`.
+
+Take `rfl : d = G.s + 1 - j` from `by omega`. Unfold `idxT`. Rewrite using `[dif_pos (by omega)]`. Unfold `idxT`. Rewrite using `[dif_neg (by omega)]`.
+
+Introduce `j d h α`. Take `rfl : d = G.s - j` from `by omega`. Unfold `wtT`. Rewrite using `[dif_pos (by omega)]`. Introduce `y`.
+
+Unfold `wtT`. Rewrite using `[dif_neg (by omega), dif_pos rfl]`. Introduce `u`. Unfold `wtT`. Rewrite using `[dif_neg (by omega), dif_neg (by omega)]`.
+
+Introduce and unpack `(x | o)`. Conclude with `absurd rfl x.2`. Take `⟨_, ⟨z, hz, rfl⟩, e⟩` from `o.1.2`. Take `⟨g, hg, w, hw, e2⟩ : SameOrb ((G.T δ hδ η).lev (G.s + 1) 0 rfl).J (box _ (G.ϖ ^ M)) (Submodule.Quotient.mk z) (Quotient.out o.1.1)` from `Quotient.exact (s := orbSetoid _ (G.T_le δ hδ η (G.s + 1) 0 rfl) (G.ϖ ^ M)) (e.trans (Quotient.out_eq _).symm)`. Establish `hI : IntM g.val.toBlocks₁₁` using `fun i j => intM_of_mem_KO (G.T_le δ hδ η _ _ _ hg) (.inl i) (.inl j)`.
+
+Use `⟨_, mulVec_mem_box hI hz, Eq.trans ?_ e2⟩` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.eq, ← mulVec_sub]`. Conclude with `mulVec_mem_box hI ((Submodule.Quotient.eq _).1 hw.symm)`.
+-/
 theorem exists_ext_of_reps : ∀ (D : D7) (c : Comm D) (v : VCom c) (B : GlobalTheory.Fam.Base c) (PP : Formalism.L2.DIV.Pl D.host.E) (G : QGeo v B PP) (χ : ℕ → (AE D)ˣ →* Circle), c.Is → ∀ (δ : G.kˣ →* ℂˣ) (hδ : IsTame δ) (η : ℕ → G.kˣ →* ℂˣ), (∀ j, IsUnram (η j)) → (∀ j, j ≤ G.s + 1 → (ofSplit G.q).IsComp (χ j)⁻¹ (η (j + 1) * δ)) → ∀ A, (G.T δ hδ η).IsRepSystem A G.ψk G.ν → ∀ M : ℕ, (G.T δ hδ η).Adapted A (box _ (G.ϖ ^ M)⁻¹) (box _ (G.ϖ ^ M)) → ∃ E : QExt G χ, E.δ = δ ∧ E.η = η ∧ E.A = A ∧ E.M = M ∧ ∀ y, ∃ z ∈ box (XIx (Fin D.R.k) (Fin D.R.t) (G.s + 1)) (G.ϖ ^ E.M)⁻¹, Submodule.Quotient.mk z = E.cos y := by
   intro D c v B PP G χ hc δ hδ η hη hcomp A hA M hM
   haveI := G.unitVol.1

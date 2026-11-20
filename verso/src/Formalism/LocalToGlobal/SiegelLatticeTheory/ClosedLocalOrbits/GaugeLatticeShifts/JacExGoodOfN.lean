@@ -78,6 +78,9 @@ def JacExGoodN : Prop :=
       ∀ μS μS' : Measure (Formalism.REAL.UJ ε), IsHaarS (SLoc ε e z) μS → IsHaarS (SLoc ε e z') μS' →
         ∃ C, 0 < C ∧ DisintLoc ε k T T' μS μS' h C
 
+/- English proof (translation)
+Introduce `n r k ε e z z' T T' sc hF hG hsc`. Establish `hn : n = 2 * r + k + 1` using `by have := hF.dim; omega`. Substitute `hn` using the available equality. Conclude with `H r k ε e z z' T T' sc hF hG hsc`.
+-/
 theorem jacExGood_of_N (H : JacExGoodN) : JacExGood := by
   intro n r k ε e z z' T T' sc hF hG hsc
   have hn : n = 2 * r + k + 1 := by have := hF.dim; omega

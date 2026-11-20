@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.InertUnitOrb
 
+/- English proof (translation)
+Set `b : Module.Basis (Fin n) K.E B.A` to `Module.Basis.ofEquivFun ψ`. Set `φ : B.A →ₐ[K.O] Matrix (Fin n) (Fin n) K.E` to `(Algebra.leftMulMatrix b).restrictScalars K.O`. Establish `hinj : Function.Injective φ` using `Algebra.leftMulMatrix_injective b`. Establish `hφ : φ a = M`. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `Algebra.leftMulMatrix b a i j = M i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, ← Module.Basis.equivFun_apply, Module.Basis.equivFun_ofEquivFun, h]`. Simplify using `[b, Module.Basis.coe_ofEquivFun, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[← hφ]`. Conclude with `(isIntegral_algHom_iff φ hinj).symm`.
+-/
 theorem isIntegral_iff_of_mulVec {K : UQ} (B : InvAlg K) {n : ℕ} (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)) (a : B.A)
     (M : Matrix (Fin n) (Fin n) K.E) (h : ∀ y, ψ (a * y) = M *ᵥ ψ y) : IsIntegral K.O a ↔ IsIntegral K.O M := by
   let b : Module.Basis (Fin n) K.E B.A := Module.Basis.ofEquivFun ψ
@@ -28,6 +33,31 @@ theorem isIntegral_iff_of_mulVec {K : UQ} (B : InvAlg K) {n : ℕ} (ψ : B.A ≃
   rw [← hφ]
   exact (isIntegral_algHom_iff φ hinj).symm
 
+/- English proof (translation)
+Introduce `E _ _ _ hE w hw K e he hint n B ψ x γ hmod hsep τ hτ t`. Establish `hcont` using `(GlobalTheory.ConjAtPlace.main E hE w).1`. Establish `hcl : IsClosed ((UL n w : Subgroup (GLw n w)) : Set (GLw n w))`. Unfold `UL`. Rewrite using `[if_neg hw]`.
+
+Establish `: ((UJ (cj w) (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) : Subgroup _) : Set (GLw n w)) = (fun g : GLw n w => cT (cj w) (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * 1 * (g : Matrix (Fin n) (Fin n) (w.adicCompletion E))) ⁻¹' {1}` using `rfl`. Rewrite using `[this]`. Use `IsClosed.preimage ?_ isClosed_singleton` and prove the remaining obligations. Unfold `cT`. Conclude with `(((Units.continuous_val.matrix_map hcont).matrix_transpose).matrix_mul continuous_const).matrix_mul Units.continuous_val`.
+
+Establish `hmat : ∀ (g : GLw n w) (k : ℕ) i j, e ((((g : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) ^ k) i j) = ((g ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j`. Introduce `g k i j`. Establish `: ((g : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) ^ k = ((g ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm`. Rewrite using `[Units.val_pow_eq_pow_val]`. Conclude with `(map_pow (e.symm.toRingHom.mapMatrix) _ k).symm`.
+
+Rewrite using `[this, Matrix.map_apply, RingEquiv.apply_symm_apply]`. Establish `key : ∀ s : twCent (MonoidHom.id (UL n w)) γ, IsCompact (closure (Subgroup.zpowers (s : UL n w) : Set (UL n w))) ↔ (τ s : B.Aˣ) ∈ intUnits K.O B.A`. Introduce `s`. Establish `hinv : ((τ s : B.Aˣ))⁻¹ = ((τ s⁻¹ : B.T) : B.Aˣ)` using `by rw [map_inv, Subgroup.coe_inv]`. Establish `hI1 : IsIntegral K.O ((τ s : B.Aˣ) : B.A) ↔ ∃ m : ℤ, ∀ k : ℕ, ∀ i j, Valued.v (((((s : UL n w) : GLw n w) ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp m`.
+
+Rewrite using `[isIntegral_iff_of_mulVec B ψ _ _ (hτ s), GlobalTheory.T.isIntegral_matrix_iff_bounded_powers K e hint n]`. Simplify using `only [hmat]`. Establish `hI2 : IsIntegral K.O ((((τ s : B.Aˣ))⁻¹ : B.Aˣ) : B.A) ↔ ∃ m : ℤ, ∀ k : ℕ, ∀ i j, Valued.v (((((s : UL n w) : GLw n w)⁻¹ ^ k : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp m`. Rewrite using `[hinv, isIntegral_iff_of_mulVec B ψ _ _ (hτ s⁻¹), GlobalTheory.T.isIntegral_matrix_iff_bounded_powers K e hint n]`. Simplify using `only [hmat, Subgroup.coe_inv]`.
+
+Rewrite using `[GlobalTheory.T.isCompact_closure_zpowers_iff_bounded_entries w n (UL n w) hcl (s : UL n w)]`. Use `show _ ↔ IsIntegral K.O _ ∧ IsIntegral K.O _`. Rewrite using `[hI1, hI2]`. Simplify using `only [SubgroupClass.coe_zpow]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, hm⟩`. Use `⟨⟨m, fun k i j => ?_⟩, ⟨m, fun k i j => ?_⟩⟩` and prove the remaining obligations. Use `hm (k : ℤ) i j` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis. Use `hm (-(k : ℤ)) i j` as an intermediate fact.
+
+Rewrite `this` using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Then use the resulting hypothesis. Introduce and unpack `⟨⟨m1, h1⟩, ⟨m2, h2⟩⟩`. Use `⟨max m1 m2, fun k i j => ?_⟩` and prove the remaining obligations. Break down `Int.eq_nat_or_neg k with ⟨l, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`.
+
+Conclude with `(h1 l i j).trans (WithZero.exp_le_exp.2 (le_max_left _ _))`. Rewrite using `[_root_.zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `(h2 l i j).trans (WithZero.exp_le_exp.2 (le_max_right _ _))`. Set `H' : Subgroup (UL n w)` to `((intUnits K.O B.A).comap (B.T.subtype.comp τ.toMonoidHom)).map (twCent (MonoidHom.id (UL n w)) γ).subtype`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `ht`. Establish `hle : cptPart (twCent (MonoidHom.id (UL n w)) γ) ≤ H'`. Rewrite using `[cptPart, Subgroup.closure_le]`. Introduce and unpack `u ⟨hu, hc⟩`. Conclude with `⟨⟨u, hu⟩, (key ⟨u, hu⟩).1 hc, rfl⟩`.
+
+Take `⟨t₀, ht₀, he₀⟩` from `hle ht`. Establish `: t₀ = t` using `Subtype.ext he₀`. Substitute `this` using the available equality. Conclude with `ht₀`. Introduce `ht`.
+
+Conclude with `Subgroup.subset_closure ⟨t.2, (key t).2 ht⟩`.
+-/
 theorem cptPart_iff_intUnits_of_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ) (γ : UL n w), IsModel B ((((γ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) x ψ → B.P.Separable → ∀ τ : twCent (MonoidHom.id (UL n w)) γ ≃* B.T, (∀ (t : twCent (MonoidHom.id (UL n w)) γ) (y : B.A), ψ (((τ t : B.Aˣ) : B.A) * y) = (((((t : UL n w) : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y) → ∀ t : twCent (MonoidHom.id (UL n w)) γ, ((t : UL n w) ∈ cptPart (twCent (MonoidHom.id (UL n w)) γ) ↔ ((τ t : B.Aˣ)) ∈ intUnits K.O B.A) := by
   intro E _ _ _ hE w hw K e he hint n B ψ x γ hmod hsep τ hτ t
   have hcont := (GlobalTheory.ConjAtPlace.main E hE w).1

@@ -14,6 +14,9 @@ namespace GlobalTheory.IsoLineCarry
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.coe_toRingHom]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hform_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : E) (u : Fin n → E) :
     Formalism.UG.hform (σ : E →+* E) J (b • u) (a • u) = σ b * a * Formalism.UG.hform (σ : E →+* E) J u u := by
   simp only [Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -21,6 +24,11 @@ theorem hform_smul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
   simp only [AlgHom.coe_toRingHom]
   ring
 
+/- English proof (translation)
+Establish `hxx' : Formalism.UG.hform (σ : E →+* E) J x x = 0` using `hxx`. Establish `hzz' : Formalism.UG.hform (σ : E →+* E) J z z = 0` using `hzz`. Take `⟨g, hg, hgx⟩` from `GlobalTheory.HermWitt.exists_gl_isometry_comp_eq (c := (σ : E →+* E)) (G := Jᵀ) two_ne_zero (GlobalTheory.RatOrbit.sigma_sigma σ hCM) (fun a b => hJ.1 a b) (by rw [Matrix.det_transpose]; exact hJ.2) (g := LinearMap.toSpanSingleton E _ x) (f := LinearMap.toSpanSingleton E _ z) (fu …`. Simplify using `only [LinearMap.toSpanSingleton_apply]`. Rewrite using `[← GlobalTheory.RatOrbit.hform_eq, ← GlobalTheory.RatOrbit.hform_eq, hform_smul, hform_smul, hxx', hzz'])`.
+
+Use `⟨g, GlobalTheory.UnitarySplit.mem_of_form _ _ _ fun a b => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RatOrbit.hform_eq, GlobalTheory.RatOrbit.hform_eq]`. Conclude with `hg b a`. Simplify using `using hgx 1`.
+-/
 theorem exists_unitary_isotropic (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : IsHermND σ J) (x z : Fin n → E) (hx : x ≠ 0) (hz : z ≠ 0) (hxx : hE σ J x x = 0) (hzz : hE σ J z z = 0) :
     ∃ g : GL (Fin n) E, g ∈ Formalism.UG.UJ (σ : E →+* E) J ∧ (g : Matrix (Fin n) (Fin n) E) *ᵥ x = z := by
@@ -37,6 +45,11 @@ theorem exists_unitary_isotropic (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {n 
   · rw [GlobalTheory.RatOrbit.hform_eq, GlobalTheory.RatOrbit.hform_eq]; exact hg b a
   · simpa using hgx 1
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h` using `congrFun (congrFun hX.xy 0) 0`. Establish `hc : ∀ i, X i 0 = 0` using `fun i => congrFun h0 i`. Simplify using `[Matrix.mul_apply, Formalism.UG.cT, hc] at h`.
+
+Establish `h` using `congrFun (congrFun hX.xx 0) 0`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.zero_apply, Finset.sum_mul] at h`. Use `show Formalism.UG.hform (σ : E →+* E) J _ _ = 0`. Rewrite using `[Formalism.UG.hform, Finset.sum_comm]`. Conclude with `h`.
+-/
 theorem col0v_isotropic_ne_zero (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {r : ℕ}
     {X Y : Matrix (Fin n) (Fin (r + 1)) E} (hX : IsWittFrame σ J X Y) :
     GlobalTheory.EisMidHt.firstColumn X ≠ 0 ∧ hE σ J (GlobalTheory.EisMidHt.firstColumn X) (GlobalTheory.EisMidHt.firstColumn X) = 0 := by
@@ -52,17 +65,42 @@ theorem col0v_isotropic_ne_zero (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin 
     rw [Formalism.UG.hform, Finset.sum_comm]
     exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, col0, GlobalTheory.EisMidHt.adVec, GlobalTheory.EisMidHt.firstColumn]`.
+-/
 theorem adMat_col0_mulVec {n : ℕ} {r : ℕ} (X : Matrix (Fin n) (Fin (r + 1)) E) :
     adMat F (col0 X) *ᵥ (fun _ => 1) = GlobalTheory.EisMidHt.adVec F (GlobalTheory.EisMidHt.firstColumn X) := by
   funext i
   simp [Matrix.mulVec, dotProduct, col0, GlobalTheory.EisMidHt.adVec, GlobalTheory.EisMidHt.firstColumn]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) _ _ i).symm`.
+-/
 theorem bc_mulVec_adVec {n : ℕ} (h : GL (Fin n) E) (x : Fin n → E) :
     ((Formalism.UG.bc (inclR (F := F) (AF F)) h : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) *ᵥ
       GlobalTheory.EisMidHt.adVec F x = GlobalTheory.EisMidHt.adVec F ((h : Matrix (Fin n) (Fin n) E) *ᵥ x) := by
   funext i
   exact (RingHom.map_mulVec (inclR (F := F) (AF F)) _ _ i).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hCM hJ hX T hT z hz hzz`. Take `⟨hx0, hxx⟩` from `col0v_isotropic_ne_zero σ J hX`. Take `⟨g, hgU, hgx⟩` from `exists_unitary_isotropic σ hCM J hJ _ z hx0 hz hxx hzz`. Set `ι : E →+* AF F ⊗[F] E` to `inclR (F := F) (AF F)`. Establish `hbc : ∀ h : GL (Fin n) E, h ∈ Formalism.UG.UJ (σ : E →+* E) J → Formalism.UG.bc ι h ∈ HR (AF F) σ J` using `fun h hh => GlobalTheory.RatOrbit.bc_mem ι (σ : E →+* E) (sigR (AF F) σ) (fun t => by simp [ι, inclR, sigR]) J h hh`.
+
+Set `γ0 : GAd σ J` to `⟨Formalism.UG.bc ι g⁻¹, hbc _ (inv_mem hgU)⟩`. Establish `hγ0 : γ0 ∈ ratPts σ J` using `by show (γ0 : HR (AF F) σ J) ∈ HFinIn (AF F) σ J`. Conclude with `⟨g⁻¹, inv_mem hgU, rfl⟩`. Take `⟨t, ⟨htT, l, hl⟩, -⟩` from `hT ⟨γ0, hγ0⟩`. Take `⟨g', hg'U, hg'⟩` from `t.2`.
+
+Establish `hMt : matHom (AF F) σ J (t : GAd σ J) = Formalism.UG.bc ι g'` using `hg'.symm`. Establish `hMt' : matHom (AF F) σ J (t : GAd σ J)⁻¹ = Formalism.UG.bc ι g'⁻¹` using `by rw [map_inv, hMt, map_inv]`. Establish `hMγ : matHom (AF F) σ J γ0 = Formalism.UG.bc ι g⁻¹` using `rfl`. Use `set w : Fin n → E := ((g'⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ GlobalTheory.EisMidHt.firstColumn X with hw`. Establish `hv` using `congrArg (fun M => M *ᵥ (fun _ : Fin 1 => (1 : AF F ⊗[F] E))) hl`.
+
+Establish `hmul : ((⟨γ0, hγ0⟩ * t⁻¹ : ratPts σ J) : GAd σ J) = γ0 * (t : GAd σ J)⁻¹` using `rfl`. Rewrite `hv` using `[hmul, map_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, adMat_col0_mulVec, Matrix.smul_mulVec, adMat_col0_mulVec, hMt', hMγ, bc_mulVec_adVec, bc_mulVec_adVec]`. Establish `hw' : GlobalTheory.EisMidHt.adVec F w = l.1 • GlobalTheory.EisMidHt.adVec F z`. Establish `key : GlobalTheory.EisMidHt.adVec F w = ((Formalism.UG.bc ι g : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) _) *ᵥ GlobalTheory.EisMidHt.adVec F (((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) *ᵥ w)`. Rewrite using `[bc_mulVec_adVec, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Rewrite using `[key, hv, Matrix.mulVec_smul, bc_mulVec_adVec, hgx]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, z i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hz (funext h)`.
+
+Establish `hinj` using `GlobalTheory.RatOrbit.inclR_injective F E`. Establish `hwi : ι (w i) = l.1 * ι (z i)` using `congrFun hw' i`. Establish `hwi0 : w i ≠ 0`. Introduce `h0`. Rewrite `hwi` using `[h0, map_zero]`.
+
+Establish `: ι (z i) = 0`. Use `congrArg (fun a => (l⁻¹ : (AF F ⊗[F] E)ˣ).1 * a) hwi` as an intermediate fact. Simplify `this.symm` using `[← mul_assoc]`. Conclude with `hi (hinj (by rw [this, map_zero]))`. Use `⟨t, htT, w i / z i, div_ne_zero hwi0 hi, ?_⟩` and prove the remaining obligations.
+
+Establish `hl' : l.1 = ι (w i / z i)`. Rewrite using `[div_eq_mul_inv, map_mul, hwi, mul_assoc, ← map_mul, mul_inv_cancel₀ hi, map_one, mul_one]`. Rewrite using `[hMt', bc_mulVec_adVec, ← hw, hw']`. Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.EisMidHt.adVec, Pi.smul_apply, smul_eq_mul, hl', map_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem main : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),
     IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y →

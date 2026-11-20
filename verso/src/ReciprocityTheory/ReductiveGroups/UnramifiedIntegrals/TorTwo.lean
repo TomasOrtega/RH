@@ -13,6 +13,11 @@ open Formalism.L2.Th1.A (shortW)
 
 variable {l : ℕ} [Fact l.Prime] {g2 g3 : ℂ_[l]}
 
+/- English proof (translation)
+Break down `i with _ | _ | _ | _ | i` into its components or cases. Simplify `hd` using `[Cubic.coeff_eq_d]`. Simplify `hc` using `[Cubic.coeff_eq_c]`. Simplify `hb` using `[Cubic.coeff_eq_b]`. Simplify `ha` using `[Cubic.coeff_eq_a]`.
+
+Rewrite using `[Cubic.coeff_eq_zero (by omega)]`. Conclude with `h0`.
+-/
 theorem cubic_coeff_ind (p : ℂ_[l] → Prop) (T : Cubic ℂ_[l]) (h0 : p 0) (ha : p T.a) (hb : p T.b)
     (hc : p T.c) (hd : p T.d) (i : ℕ) : p (T.toPoly.coeff i) := by
   rcases i with _ | _ | _ | _ | i
@@ -23,6 +28,25 @@ theorem cubic_coeff_ind (p : ℂ_[l] → Prop) (T : Cubic ℂ_[l]) (h0 : p 0) (h
   · rw [Cubic.coeff_eq_zero (by omega)]
     exact h0
 
+/- English proof (translation)
+Establish `hl2 : ¬ l ∣ 2` using `fun hd => by`. Use `Nat.le_of_dvd (by norm_num) hd` as an intermediate fact. Use `h.five` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hl4 : ¬ l ∣ 4` using `fun hd => by`.
+
+Use `Nat.le_of_dvd (by norm_num) hd` as an intermediate fact. Use `h.five` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hE : ¬ InFormalGroupPoints P` using `torsion_not_mem_formalGroup h P 2 hl2 (by rw [two_nsmul]; exact h2) hP0`. Take `⟨-, hx, hy⟩` from `integral_of_not_mem_formalGroup h P hE`.
+
+Take `⟨hpsi, hkap⟩` from `Formalism.L2.Th1.E.UnitKap_of Formalism.L2.Th1.E.nonsingular_norm ℂ_[l] (shortW g2 g3) (good_int h) P hP0 h2 hx hy`. Consider the cases of `P with`. Consider the case `zero => exact absurd rfl hP0`. Consider the case `some x y hns`. Express the relevant statement in the definitionally equal form `‖x‖ ≤ 1 at hx`.
+
+Express the relevant statement in the definitionally equal form `2 * y + (shortW g2 g3).a₁ * x + (shortW g2 g3).a₃ = 0 at hpsi`. Express the relevant statement in the definitionally equal form `‖3 * x ^ 2 + 2 * (shortW g2 g3).a₂ * x + (shortW g2 g3).a₄ - (shortW g2 g3).a₁ * y‖ = 1 at hkap`. Express the relevant statement in the definitionally equal form `x ∈ MaximalUnramifiedExtension l ∧ y ∈ MaximalUnramifiedExtension l`. Establish `hy0 : y = 0`. Simplify using `only [shortW, zero_mul, add_zero] at hpsi`.
+
+Simplify using `using hpsi`. Establish `heq` using `hns.1`. Rewrite `heq` using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [shortW] at heq hkap`. Establish `n4 : ‖(4 : ℂ_[l])‖ = 1` using `by exact_mod_cast norm_natCast_Cl_of_not_dvd (l := l) hl4`.
+
+Establish `m4 : (4 : ℂ_[l]) ∈ MaximalUnramifiedExtension l` using `by exact_mod_cast natCast_mem (MaximalUnramifiedExtension l) 4`. Use `⟨?_, hy0 ▸ zero_mem _⟩` and prove the remaining obligations. Use `hensel_mem l (Cubic.toPoly ⟨1, 0, -g2 / 4, -g3 / 4⟩) ?_ ?_ x hx ?_ ?_` and prove the remaining obligations. Conclude with `cubic_coeff_ind (· ∈ MaximalUnramifiedExtension l) _ (zero_mem _) (one_mem _) (zero_mem _) (div_mem (neg_mem h.mem2) m4) (div_mem (neg_mem h.mem3) m4)`. Use `cubic_coeff_ind (‖·‖ ≤ 1) _ (by simp) (by simp) (by simp) ?_ ?_` and prove the remaining obligations.
+
+Simplify `h.norm2` using `[norm_div, n4]`. Simplify `h.norm3` using `[norm_div, n4]`. Simplify using `only [Cubic.toPoly, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Rewrite `heq` using `[hy0]`. Take the linear combination `-heq`.
+
+Establish `: (Cubic.toPoly (⟨1, 0, -g2 / 4, -g3 / 4⟩ : Cubic ℂ_[l])).derivative.eval x = 3 * x ^ 2 + 2 * 0 * x + -g2 / 4 - 0 * y`. Simplify using `only [Cubic.toPoly, Polynomial.derivative_add, Polynomial.derivative_mul, Polynomial.derivative_C, Polynomial.derivative_X_pow, Polynomial.derivative_X, Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_zero, Poly …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `hkap`.
+-/
 theorem tor_two (h : GoodPair l g2 g3) (P : (shortW g2 g3).toAffine.Point) (hP0 : P ≠ 0)
     (h2 : P + P = 0) : px _ P ∈ MaximalUnramifiedExtension l ∧ py _ P ∈ MaximalUnramifiedExtension l := by
   have hl2 : ¬ l ∣ 2 := fun hd => by

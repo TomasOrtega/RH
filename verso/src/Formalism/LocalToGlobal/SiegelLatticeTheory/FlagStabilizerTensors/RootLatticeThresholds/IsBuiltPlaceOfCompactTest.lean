@@ -59,6 +59,9 @@ def plOf (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) 
   hP := isPlace_of _ hN hty j
   hΘ := hΘ j
 
+/- English proof (translation)
+Take `⟨hg1, hg2, hun, ⟨hcut, hbv⟩, hl1', hl2', hG', hL', hCA', -, -, hA', hon⟩` from `isBuiltPlace_carrierInT X C Cc u u' e he hv CA de de' l grid grid1 fc c (nuE X C u' e i0') (m0E X C u u' e) Θ TP A₀ hN hty (frames_carrierInT X C u u' e he hv CA de de' l grid grid1 fc c i0' Θ TP A₀) hcc hcap hw hw' hl1 hl2 hne hG hL hCA hsm hA`. Use `⟨⟨hg1, hg2, hun, hcut, fun v => hOk _, hw, hw', hl1', hl2', hne, hG', hR, hL', hCA', hA', fun v => ⟨rfl, hDD v, (hbv v).1, hsm v, (hbv v).2.2.2.2.1⟩⟩, fun v => (hbv v).2.2.2.2.2, hon⟩` and prove the remaining obligations.
+-/
 theorem isBuiltPlace_of_compact_test (Cb Cc : ℝ) (u u' : D.what₂.Word) (e : InfinitePlace D.host.E ≃ D.what₂.Tau) (he : PlaceTie X e)
     (hv : D.host.v = Formalism.FourierDecayAlt.S6.rd D.host.E / 2) (CA : ℝ) (de de' : ℕ → ℝ) (l : ℕ)
     (grid : Fin (nfE D) → ℕ → Finset ℝ) (grid1 : Fin (nfE D) → Finset ℝ)

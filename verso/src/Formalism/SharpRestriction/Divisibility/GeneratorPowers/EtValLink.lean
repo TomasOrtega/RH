@@ -59,6 +59,9 @@ def phiF (f : EtFactor E cj) : ℝ := phiC cj f.β / (f.R' ^ 2 : ℝ)
 
 end EtFactor
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, ih]`.
+-/
 theorem coe_sum_ereal {ι : Type} (s : Finset ι) (f : ι → ℝ) :
     ((∑ i ∈ s, f i : ℝ) : EReal) = ∑ i ∈ s, (f i : EReal) := by
   classical
@@ -66,6 +69,13 @@ theorem coe_sum_ereal {ι : Type} (s : Finset ι) (f : ι → ℝ) :
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, ih]
 
+/- English proof (translation)
+Establish `key : ∀ q : ℚ, (q : ℝ) ≤ f.phiF → ((q : ℚ) : WithTop ℚ) ≤ ∑ b, f.v (f.w b)` using `fun q hq => hP E cj hcj w₀ hw f.V f.ϖ f.hϖ f.D f.Q f.hQ f.β f.hβQ f.hβ2 f.hβpos f.F f.v f.hv f.R' f.R₀ f.hR' f.hR₀ f.hdvd f.r f.y f.hgen f.s f.w f.hsupp f.hnu f.hval q hq`. Unfold `EtFactor.sumV`. Generalize the expression as in `∑ b, f.v (f.w b) = t at key`. Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => exact le_top`.
+
+Consider the case `coe q0 => show ((f.phiF : ℝ) : EReal) ≤ ((q0 : ℝ) : EReal)`. Use `EReal.coe_le_coe_iff.2 (le_of_not_gt fun hlt => ?_)` and prove the remaining obligations. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn hlt`. Establish `h` using `WithTop.coe_le_coe.1 (key q hq2.le)`. Establish `h' : (q : ℝ) ≤ q0` using `by exact_mod_cast h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem EtFactor.phiF_le {E : Type} [Field E] [NumberField E] {cj : E → E}
     (hcj : ∀ c : 𝓞 E, ∃ c' : 𝓞 E, (c' : E) = cj c) (w₀ : 𝓞 E) (hw : (w₀ : E) + cj w₀ = 1)
     (hP : ETPointStatement) (f : EtFactor E cj) : ((f.phiF : ℝ) : EReal) ≤ f.sumV := by
@@ -94,6 +104,11 @@ def EtFormAtSt (E : Type) [Field E] [NumberField E] (cj : E → E) (X : WeightAl
     (κ : EReal) * ∑ k, (fac k).sumV ≤ X.vAt la y (X.inc _ η) ∧
     2 * i * X.phiC la y ≤ κ * ∑ k, (fac k).phiF
 
+/- English proof (translation)
+Introduce `la y`. Take `⟨N, fac, κ, hκ, hv, hφ⟩` from `hF la y`. Establish `h2 : ((∑ k, (fac k).phiF : ℝ) : EReal) ≤ ∑ k, (fac k).sumV`. Rewrite using `[coe_sum_ereal]`. Conclude with `Finset.sum_le_sum fun k _ => (fac k).phiF_le hcj w₀ hw hP`.
+
+Establish `h3 : ((κ * ∑ k, (fac k).phiF : ℝ) : EReal) ≤ (κ : EReal) * ∑ k, (fac k).sumV`. Rewrite using `[EReal.coe_mul]`. Conclude with `mul_le_mul_of_nonneg_left h2 (EReal.coe_nonneg.2 hκ)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem etVal_of {E : Type} [Field E] [NumberField E] {cj : E → E}
     (hcj : ∀ c : 𝓞 E, ∃ c' : 𝓞 E, (c' : E) = cj c) (w₀ : 𝓞 E) (hw : (w₀ : E) + cj w₀ = 1)
     (hP : ETPointStatement) (X : WeightAlgebra.PJ D B P j) (i : ℕ)

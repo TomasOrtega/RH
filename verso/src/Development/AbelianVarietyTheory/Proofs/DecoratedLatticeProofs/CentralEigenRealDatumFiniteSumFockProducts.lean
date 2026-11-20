@@ -13,6 +13,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SeeSaw.FinRank
 
+/- English proof (translation)
+Use `set Sp := Submodule.span ℂ (Set.range fun u : α => (LinearMap.proj u : (α → ℂ) →ₗ[ℂ] ℂ).comp E.subtype)`. Establish `hb : Sp.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_dualCoannihilator]`.
+
+Rewrite using `[Submodule.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Use `hx _ (Submodule.subset_span ⟨u, rfl⟩)` as an intermediate fact. Simplify using `using this`.
+
+Use `Subspace.dualCoannihilator_dualAnnihilator_eq (W := Sp)` as an intermediate fact. Rewrite using `[← this, hb, Submodule.dualAnnihilator_bot]`.
+-/
 theorem span_eval_eq_top {α : Type*} (E : Submodule ℂ (α → ℂ)) [FiniteDimensional ℂ E] :
     Submodule.span ℂ (Set.range fun u : α => (LinearMap.proj u : (α → ℂ) →ₗ[ℂ] ℂ).comp E.subtype) = ⊤ := by
   set Sp := Submodule.span ℂ (Set.range fun u : α => (LinearMap.proj u : (α → ℂ) →ₗ[ℂ] ℂ).comp E.subtype)
@@ -28,6 +35,17 @@ theorem span_eval_eq_top {α : Type*} (E : Submodule ℂ (α → ℂ)) [FiniteDi
   have := Subspace.dualCoannihilator_dualAnnihilator_eq (W := Sp)
   rw [← this, hb, Submodule.dualAnnihilator_bot]
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℂ E`. Set `ev : α → Module.Dual ℂ E` to `fun u => (LinearMap.proj u : (α → ℂ) →ₗ[ℂ] ℂ).comp E.subtype`. Establish `hsurj : ∀ φ : Module.Dual ℂ E, ∃ a : α →₀ ℂ, Finsupp.linearCombination ℂ ev a = φ`. Introduce `φ`. Establish `h1 : φ ∈ LinearMap.range (Finsupp.linearCombination ℂ ev)`.
+
+Rewrite using `[Finsupp.range_linearCombination]`. Rewrite using `[span_eval_eq_top E]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `h1`. Use `choose a ha using fun i => hsurj (b.coord i)`.
+
+Use `⟨Module.finrank ℂ E, fun i => (b i : α → ℂ), fun i => ∑ u ∈ (a i).support, a i u • C u, fun i => (b i).2, fun i => Submodule.sum_mem _ fun u _ => Submodule.smul_mem _ _ (hr u), ?_⟩` and prove the remaining obligations. Introduce `u v`. Establish `hs` using `b.sum_repr ⟨fun u => C u v, hl v⟩`. Establish `h2` using `congrArg (fun w : E => (w : α → ℂ) u) hs`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h2`.
+
+Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`. Establish `h3` using `congrArg (fun φ : Module.Dual ℂ E => φ ⟨fun u => C u v, hl v⟩) (ha i)`.
+
+Simplify using `only [Module.Basis.coord_apply] at h3`. Rewrite using `[← h3, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`. Simplify using `[ev, Finset.sum_apply]`.
+-/
 theorem sum_prod_of_slices {α β : Type*} (C : α → β → ℂ) (E : Submodule ℂ (α → ℂ)) [FiniteDimensional ℂ E]
     (E' : Submodule ℂ (β → ℂ)) (hl : ∀ v, (fun u => C u v) ∈ E) (hr : ∀ u, C u ∈ E') :
     ∃ (n : ℕ) (e : Fin n → α → ℂ) (g : Fin n → β → ℂ), (∀ i, e i ∈ E) ∧ (∀ i, g i ∈ E') ∧
@@ -61,6 +79,17 @@ end GlobalTheory.SeeSaw.FinRank
 
 namespace GlobalTheory.SeeSaw.FinRank
 
+/- English proof (translation)
+Introduce `D hF ψ θ hθ A S A' x y z hx hy hz k k' hk hk' χ χ' C hC hχ hχ'`. Take `⟨W, hW, hWf⟩` from `hF ψ θ hθ A S x y hx hy k hk χ`. Take `⟨W', _, hWf'⟩` from `hF ψ θ hθ S A' y z hy hz k' hk' χ'`. Use `haveI := hW`. Set `T` to `pureTensorO ψ θ A S x.s y.s x.B y.B k.vac`.
+
+Set `T'` to `pureTensorO ψ θ S A' y.s z.s y.B z.B k'.vac`. Establish `hl : ∀ v, (fun u => C u v) ∈ W.map T`. Introduce `v`. Take `⟨P, hP, e⟩` from `hWf _ (hC.left v).1 (hC.left v).2 (fun a ha hc => hχ a ha hc v)`. Conclude with `Submodule.mem_map.2 ⟨P, hP, e.symm⟩`.
+
+Establish `hr : ∀ u, C u ∈ W'.map T'`. Introduce `u`. Take `⟨P, hP, e⟩` from `hWf' _ (hC.right u).1 (hC.right u).2 (fun b hb hc => hχ' b hb hc u)`. Conclude with `Submodule.mem_map.2 ⟨P, hP, e.symm⟩`. Take `⟨n, e, g, he, hg, hs⟩` from `sum_prod_of_slices C (W.map T) (W'.map T') hl hr`.
+
+Use `choose P _ hP using fun i => Submodule.mem_map.1 (he i)`. Use `choose P' _ hP' using fun i => Submodule.mem_map.1 (hg i)`. Use `⟨n, P, P', fun u v => ?_⟩` and prove the remaining obligations. Rewrite using `[hs u v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `show e i u * g i v = T (P i) u * T' (P' i) v`. Rewrite using `[hP i, hP' i]`.
+-/
 theorem biVac_sum_fock : ∀ (D : D7), CenFock D → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (A S A' : HSp D) (x : DefSp A) (y : DefSp S) (z : DefSp A'), x.Is → y.Is → z.Is → ∀ (k : KerDat A S) (k' : KerDat S A'), k.Is ψ θ x y → k'.Is ψ θ y z → ∀ (χ : GA D A → ℂ) (χ' : GA D S → ℂ) (C : WO A S → WO S A' → ℂ), IsBiVac ψ A S A' x.L y.L z.L C → (∀ a ∈ GinfC A, a ∈ Subgroup.center (GA D A) → ∀ v, k.om (a, 1) (fun u => C u v) = χ a • fun u => C u v) → (∀ b ∈ GinfC S, b ∈ Subgroup.center (GA D S) → ∀ u, k'.om (b, 1) (C u) = χ' b • C u) → ∃ (n : ℕ) (P : Fin n → PolF D S.rank A.rank) (P' : Fin n → PolF D A'.rank S.rank), ∀ u v, C u v = ∑ i, pureTensorO ψ θ A S x.s y.s x.B y.B k.vac (P i) u * pureTensorO ψ θ S A' y.s z.s y.B z.B k'.vac (P' i) v := by
   intro D hF ψ θ hθ A S A' x y z hx hy hz k k' hk hk' χ χ' C hC hχ hχ'
   obtain ⟨W, hW, hWf⟩ := hF ψ θ hθ A S x y hx hy k hk χ

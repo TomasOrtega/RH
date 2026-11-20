@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.KummerCochainCup
 import Development.AbelianVarietyTheory.Definitions.Foundations.NotCoboundaryConstantOne
 open GlobalTheory.K5
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CuspCup.cup_congruence | exact GlobalTheory.CuspCup.cup_congruence | (intros; apply GlobalTheory.CuspCup.cup_congruence <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.kummer_cochain_cup_product_congruence : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] (H : Subgroup (Gal p Ω)) (n c : ℕ)
   (a b lz lq : Gal p Ω → ZMod (p ^ n)) (A B A' B' : Ω),
   (∀ g ∈ H, ∀ h ∈ H, a (g * h) = a g + a h) → (∀ g ∈ H, ∀ h ∈ H, b (g * h) = b g + b h) →

@@ -19,6 +19,11 @@ section Pairing
 
 variable {R₀ : Type} [CommRing R₀] (B : BX R₀) {R : LAlg R₀}
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `B.pairing_exists N 0 y (smul_zero N) hy`. Establish `h2` using `B.isPairingValue_add_left N 0 0 y z z hz hz`. Rewrite `h2` using `[add_zero]`. Establish `h3 : z * z = z` using `B.pairing_unique N 0 y _ _ h2 hz`. Establish `h4 : z = 1` using `mul_eq_left.1 h3`.
+
+Rewrite `hz` using `[h4]`. Then use the resulting hypothesis.
+-/
 lemma pairing_zero_left (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N 0 y 1 := by
   obtain ⟨z, hz⟩ := B.pairing_exists N 0 y (smul_zero N) hy
   have h2 := B.isPairingValue_add_left N 0 0 y z z hz hz
@@ -27,6 +32,11 @@ lemma pairing_zero_left (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N
   have h4 : z = 1 := mul_eq_left.1 h3
   rwa [h4] at hz
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Conclude with `pairing_zero_left B N y h.2.1`. Consider the case `succ n ih`.
+
+Rewrite using `[succ_nsmul, pow_succ]`. Conclude with `B.isPairingValue_add_left N _ _ _ _ _ ih h`.
+-/
 lemma pairing_nsmul_left (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPairing N x y z)
     (n : ℕ) : B.IsPairing N (n • x) y (z ^ n) := by
   induction n with
@@ -37,6 +47,11 @@ lemma pairing_nsmul_left (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPai
     rw [succ_nsmul, pow_succ]
     exact B.isPairingValue_add_left N _ _ _ _ _ ih h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, pow_zero]`. Conclude with `pairing_zero_left B N y hy`. Consider the case `insert b s hb ih`.
+
+Rewrite using `[Finset.sum_insert hb, Finset.sum_insert hb, pow_add, mul_comm (a b), pow_mul]`. Conclude with `B.isPairingValue_add_left N _ _ _ _ _ (pairing_nsmul_left B N _ _ _ (h b) _) ih`.
+-/
 lemma pairing_sum_left {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R) (y : B.G R)
     (ζ : (R : Type)ˣ) (a e : ι → ℕ) (hy : N • y = 0) (h : ∀ i, B.IsPairing N (x i) y (ζ ^ e i)) :
     B.IsPairing N (∑ i ∈ s, a i • x i) y (ζ ^ ∑ i ∈ s, a i * e i) := by
@@ -49,6 +64,11 @@ lemma pairing_sum_left {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R) 
     rw [Finset.sum_insert hb, Finset.sum_insert hb, pow_add, mul_comm (a b), pow_mul]
     exact B.isPairingValue_add_left N _ _ _ _ _ (pairing_nsmul_left B N _ _ _ (h b) _) ih
 
+/- English proof (translation)
+Establish `h1` using `pairing_sum_left B s N x y ζ⁻¹ a e hy fun i => by`. Rewrite using `[inv_pow]`. Conclude with `B.pairing_sw N _ _ _ (h i)`. Establish `h2` using `B.pairing_sw N _ _ _ h1`. Rewrite `h2` using `[inv_pow, inv_inv]`.
+
+Simplify `h2` using `only [mul_comm]`.
+-/
 lemma pairing_sum_right {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R) (y : B.G R)
     (ζ : (R : Type)ˣ) (a e : ι → ℕ) (hy : N • y = 0) (h : ∀ i, B.IsPairing N y (x i) (ζ ^ e i)) :
     B.IsPairing N y (∑ i ∈ s, a i • x i) (ζ ^ ∑ i ∈ s, e i * a i) := by
@@ -58,6 +78,13 @@ lemma pairing_sum_right {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R)
   rw [inv_pow, inv_inv] at h2
   simpa only [mul_comm] using h2
 
+/- English proof (translation)
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp [BX.ev]`. Consider the case `tmul x r`. Simplify using `only [BX.ev, TensorProduct.map_tmul, LinearMap.mul'_apply, LinearMap.id_apply, TensorProduct.comm_tmul, Module.Basis.baseChange_repr_tmul]`. Use `conv_lhs => rw [← gb.sum_repr x]`.
+
+Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Algebra.smul_def, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add a b ha hb`.
+
+Simplify using `only [BX.ev, map_add] at *`. Rewrite using `[ha, hb, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by rw [Finsupp.add_apply]; ring`.
+-/
 lemma ev_expand {O : LAlg R₀} {g : ℕ} (gb : Module.Basis (Fin g) R₀ B.gg)
     (h : B.gg →ₗ[R₀] (O : Type)) (b : B.gg ⊗[R₀] (O : Type)) :
     B.ev h b = ∑ a, (Module.Basis.baseChange (O : Type) gb).repr
@@ -83,11 +110,17 @@ section Padic
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+-/
 lemma sub_val_mem (n : ℕ) (c : ℤ_[p]) :
     c - ((PadicInt.toZModPow n c).val : ℤ_[p]) ∈ Ideal.span {(p : ℤ_[p]) ^ n} := by
   rw [← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val,
     sub_self]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (sub_val_mem n c)`. Establish `h2` using `congrArg φ hb`. Rewrite `h2` using `[map_mul, map_pow, map_natCast, h, mul_zero, map_sub, map_natCast]`. Conclude with `(sub_eq_zero.1 h2.symm)`.
+-/
 lemma map_eq_val {S : Type} [CommRing S] (φ : ℤ_[p] →+* S) (n : ℕ) (h : (p : S) ^ n = 0)
     (c : ℤ_[p]) : φ c = ((PadicInt.toZModPow n c).val : S) := by
   obtain ⟨b, hb⟩ := Ideal.mem_span_singleton'.1 (sub_val_mem n c)
@@ -95,25 +128,42 @@ lemma map_eq_val {S : Type} [CommRing S] (φ : ℤ_[p] →+* S) (n : ℕ) (h : (
   rw [map_mul, map_pow, map_natCast, h, mul_zero, map_sub, map_natCast] at h2
   exact (sub_eq_zero.1 h2.symm)
 
+/- English proof (translation)
+Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.mod_add_div m N, add_nsmul, mul_nsmul, hx, smul_zero, add_zero]`.
+-/
 lemma val_natCast_smul {Γ : Type} [AddCommGroup Γ] (N m : ℕ) (x : Γ) (hx : N • x = 0) :
     (m : ZMod N).val • x = m • x := by
   rw [ZMod.val_natCast]
   conv_rhs => rw [← Nat.mod_add_div m N, add_nsmul, mul_nsmul, hx, smul_zero, add_zero]
 
+/- English proof (translation)
+Rewrite using `[map_eq_val (PadicInt.toZMod (p := p)) (0 + 1) (by simp) c, val_natCast_smul p _ x hx]`.
+-/
 lemma toZMod_val_smul {Γ : Type} [AddCommGroup Γ] (c : ℤ_[p]) (x : Γ) (hx : p • x = 0) :
     (PadicInt.toZMod c).val • x = (PadicInt.toZModPow (0 + 1) c).val • x := by
   rw [map_eq_val (PadicInt.toZMod (p := p)) (0 + 1) (by simp) c, val_natCast_smul p _ x hx]
 
+/- English proof (translation)
+Rewrite using `[← add_nsmul, ← val_natCast_smul p (a.val + b.val) x hx]`. Simplify using the standard rewrite rules.
+-/
 lemma val_add_smul {Γ : Type} [AddCommGroup Γ] (a b : ZMod p) (x : Γ) (hx : p • x = 0) :
     (a + b).val • x = a.val • x + b.val • x := by
   rw [← add_nsmul, ← val_natCast_smul p (a.val + b.val) x hx]
   simp
 
+/- English proof (translation)
+Rewrite using `[← mul_nsmul', ← val_natCast_smul p (a.val * b.val) x hx]`. Simplify using the standard rewrite rules.
+-/
 lemma val_mul_smul {Γ : Type} [AddCommGroup Γ] (a b : ZMod p) (x : Γ) (hx : p • x = 0) :
     (a * b).val • x = a.val • b.val • x := by
   rw [← mul_nsmul', ← val_natCast_smul p (a.val * b.val) x hx]
   simp
 
+/- English proof (translation)
+Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`. Break down `n with _ | n` into its components or cases. Use `haveI : Subsingleton (ZMod (p ^ 0)) := by rw [pow_zero]; infer_instance`. Conclude with `Subsingleton.elim _ _`.
+
+Establish `h1` using `h n`. Rewrite `h1` using `[pow_eq_pow_iff_modEq, ← (hζ n).eq_orderOf, ← ZMod.natCast_eq_natCast_iff]`. Simplify using `using h1`.
+-/
 lemma eq_of_zeta_pow {G : Type} [CommGroup G] {κ : Type} [Fintype κ] (ζ : ℕ → G)
     (hζ : ∀ n, IsPrimitiveRoot (ζ n) (p ^ (n + 1))) (a b c d : κ → ℤ_[p])
     (h : ∀ n, ζ n ^ (∑ k, (PadicInt.toZModPow (n + 1) (a k)).val * (PadicInt.toZModPow (n + 1) (b k)).val) =
@@ -134,6 +184,11 @@ section Heights
 
 variable {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} (B : BX R₀)
 
+/- English proof (translation)
+Rewrite using `[← gb.sum_repr v, TensorProduct.sum_tmul, map_sum, map_sum, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, map_smul, Module.Basis.constr_basis, map_smul, map_sum, Finset.smul_sum, hM l _ (fun k => gb.repr v l • Dp.ηmap (s.1 (M k l))) (fun k => by`. Simplify using `only [DualPair.ηmap, DualPair.ηk, LHom.comp, LinearMap.coe_mk, AddHom.coe_mk, SetLike.val_smul, AlgHom.comp_apply, mul_smul_comm])]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.lTensor_tmul, TensorProduct.tmul_smul]`.
+-/
 lemma tangent_eq {O R : LAlg R₀} (gb : Module.Basis (Fin g) R₀ B.gg) (f : OEnd B O)
     (M : Matrix (Fin g) (Fin g) (O : Type)) (s : LHom O R) (Dp : DualPair R)
     (hM : ∀ (l : Fin g) (i : Dp.π.ker) (m : Fin g → Dp.π.ker),
@@ -154,6 +209,15 @@ lemma tangent_eq {O R : LAlg R₀} (gb : Module.Basis (Fin g) R₀ B.gg) (f : OE
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [LinearMap.lTensor_tmul, TensorProduct.tmul_smul]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `Tw.sep _ fun n => ?_` and prove the remaining obligations. Establish `hchar` using `Tw.char_R n`. Establish `hy : (p ^ (n + 1)) • B.map (Tw.q n) (τ j n) = 0` using `by rw [← map_nsmul, hτ, map_zero]`. Establish `H1` using `linHt B Tw.O A (Tw.R n) (Tw.q n) (Dp n) _ _ _ _ hy (hht j n) (tangent_eq B gb A.ab M (Tw.q n) (Dp n) (fun l i m h => hM _ _ _ l i m h))`.
+
+Establish `H2` using `htLin B (pairingProperties B) Tw Dp κ τ ht (fun k n => ((PadicInt.toZModPow (n + 1) (c k)).val : ℤ)) (fun k => algebraMap ℤ_[p] (Tw.O : Type) (c k)) hτ hht (fun k n => by`. Use `map_eq_val (((Tw.q n).1 : (Tw.O : Type) →+* (Tw.R n : Type)).comp (algebraMap ℤ_[p] (Tw.O : Type))) (n + 1) (by exact_mod_cast Tw.char_R n) (c k)` as an intermediate fact. Rewrite using `[Int.cast_natCast]`. Conclude with `this) n`. Simplify using `only [natCast_zsmul] at H2`.
+
+Rewrite `H2` using `[← hc n, ← A.a.nat]`. Establish `hya : (p ^ (n + 1)) • A.a.f (Tw.q n) (B.map (Tw.q n) (τ j n)) = 0`. Rewrite using `[← map_nsmul, hy, map_zero]`. Establish `H3` using `B.isHeight_unique (pairingProperties B) (Dp n) _ hchar _ hya _ _ H1 H2`. Establish `H4` using `LinearMap.congr_fun H3 (gb l)`.
+
+Simplify using `only [LinearMap.comp_apply, Module.Basis.constr_basis, map_sum, hext_tmul, AlgHom.toLinearMap_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul] at H4`. Simplify using `only [map_sub, map_sum, map_mul]`. Rewrite using `[sub_eq_zero]`. Simplify using `only [mul_comm] at H4 ⊢`. Conclude with `H4.symm`.
+-/
 lemma height_eq (Tw : ATower R₀ p) [Algebra ℤ_[p] (Tw.O : Type)] (Dp : ∀ n, DualPair (Tw.R n))
     (gb : Module.Basis (Fin g) R₀ B.gg) (A : OAdj B Tw.O) (M : Matrix (Fin g) (Fin g) (Tw.O : Type))
     (hM : ∀ {R S : LAlg R₀} (s : LHom Tw.O R) (π : LHom R S) (hπ : π.SqZero) (l : Fin g)
@@ -216,6 +280,9 @@ def padicExtension {κ : Type} [Fintype κ] [DecidableEq κ] (ρ : O₀ →+* Ma
   Algebra.TensorProduct.lift (Algebra.ofId ℤ_[p] _) ρ.toIntAlgHom
     fun x y => Algebra.commutes x (ρ y)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ c a`.
+-/
 lemma padicExtension_tmul {κ : Type} [Fintype κ] [DecidableEq κ] (ρ : O₀ →+* Matrix κ κ ℤ_[p])
     (c : ℤ_[p]) (a : O₀) : padicExtension ρ (c ⊗ₜ[ℤ] a) = c • ρ a := by
   rw [Algebra.smul_def]
@@ -231,6 +298,45 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 open TateMatrices in
 
+/- English proof (translation)
+Introduce `hTate hGram hAct R₀ _ p _ g B Tw _ _ Dt gb O₀ _ cj Ad dL hsurj hab hcj hAd hdL hker hprim hζ τ hτ hτp hbas hperf`. Take `⟨E, hEalt, hEdet, hE⟩` from `hGram B Tw hker hprim hζ τ hτ hτp hbas hperf`. Take `⟨A, ρL, hρL, hρLs, hAa⟩` from `hAct B Tw.O gb O₀ (fun a => (Ad a).a) p dL hsurj hAd hdL`. Take `⟨-, ρE, hρE⟩` from `hTate p (Ix g) (B.G Tw.O) τ hτ hτp hbas`. Take `⟨ht, bt, hht, hbt⟩` from `lim B (pairingProperties B) Tw Dt (Ix g) τ hτ hτp`.
+
+Set `ρ₀ : O₀ →+* Matrix (Ix g) (Ix g) ℤ_[p]` to `ρE.comp (pointAction (fun a => (Ad a).a) hAd)`. Establish `hρ₀ : ∀ a j n, (Ad a).a.f (LHom.id Tw.O) (τ j n) = ∑ k, (PadicInt.toZModPow (n + 1) (ρ₀ a k j)).val • τ k n` using `fun a j n => hρE (pointAction (fun a => (Ad a).a) hAd a) j n`. Establish `hτ0 : ∀ j, p • τ j 0 = 0` using `fun j => by`. Establish `h` using `hτ j 0`. Rewrite `h` using `[zero_add, pow_one]`. Then use the resulting hypothesis.
+
+Establish `hEspec : ∀ i j n, ∃ k : ℕ, (Tw.q n).1 (algebraMap ℤ_[p] (Tw.O : Type) (E i j)) = k ∧ B.IsPairing (p ^ (n + 1)) (τ i n) (τ j n) (Tw.ζ n ^ k)` using `fun i j n => ⟨_, map_eq_val (((Tw.q n).1 : (Tw.O : Type) →+* (Tw.R n : Type)).comp (algebraMap ℤ_[p] (Tw.O : Type))) (n + 1) (by exact_mod_cast Tw.toATower.char_R n) (E i j), hE i j n⟩`. Establish `hinv₀ : ∀ a, (ρ₀ a)ᵀ * E = E * ρ₀ (cj a)`. Introduce `a`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply]`.
+
+Use `eq_of_zeta_pow Tw.ζ hprim _ _ _ _ fun n => ?_` and prove the remaining obligations. Establish `h1` using `pairing_sum_left B Finset.univ (p ^ (n + 1)) (fun k => τ k n) (τ j n) (Tw.ζ n) (fun k => (PadicInt.toZModPow (n + 1) (ρ₀ a k i)).val) _ (hτ j n) (fun k => hE k j n)`. Establish `h2` using `pairing_sum_right B Finset.univ (p ^ (n + 1)) (fun k => τ k n) (τ i n) (Tw.ζ n) (fun k => (PadicInt.toZModPow (n + 1) (ρ₀ (cj a) k j)).val) _ (hτ i n) (fun k => hE i k n)`. Rewrite `h1`, `h2` using `[← hρ₀]`. Establish `h3` using `(Ad a).pairing_of _ _ _ _ _ (hτ i n) h1`.
+
+Rewrite `h3` using `[hab a]`. Conclude with `B.pairing_unique _ _ _ _ _ h3 h2`. Set `Ht : Matrix (Fin g) (Ix g) (Tw.O : Type)` to `Matrix.of fun k i => ht i (gb k)`. Set `Bt : Matrix (Fin g) (Ix g) (Tw.O : Type)` to `Matrix.of fun k i => (Module.Basis.baseChange (Tw.O : Type) gb).repr (TensorProduct.comm R₀ B.gg (Tw.O : Type) (bt i)) k`. Establish `hHt₀ : ∀ a, Ht * (ρ₀ a).map (algebraMap ℤ_[p] (Tw.O : Type)) = (dL (cj a))ᵀ * Ht`.
+
+Introduce `a`. Use extensionality with `l j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Ht, Matrix.of_apply]`. Use `height_eq B Tw.toATower Dt.Dp gb (Ad a) (dL (cj a)) ?_ τ hτ ht hht j _ (hρ₀ a j) l` and prove the remaining obligations. Introduce `R S s π hπ l i m h`.
+
+Rewrite using `[hab a]`. Conclude with `hdL (cj a) s π hπ l i m h`. Set `H : HodgeTateData p g (Tw.O : Type) (ℤ_[p] ⊗[ℤ] O₀) (Algebra.TensorProduct.congr (AlgEquiv.refl : ℤ_[p] ≃ₐ[ℤ_[p]] ℤ_[p]) cj) Tw.c` to `{ ρ := padicExtension ρ₀ ρL := ρL P := 0 PL := 0 E := E E_alternating := hEalt isUnit_det_E := hEdet E_equivariant := fun a => by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul c a`. Rewrite using `[Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul, padicExtension_tmul, padicExtension_tmul, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, hinv₀]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, map_add, Matrix.transpose_add, Matrix.add_mul, Matrix.mul_add, ha, hb]`.
+
+Use `projectors := by simp`. Use `Ht := Ht`. Use `Bt := Bt`. Use `Ht_equivariant := ⟨fun a => by`. Proceed by induction on `a using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul c a`. Rewrite using `[Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul, padicExtension_tmul, hρL, Matrix.transpose_smul, Matrix.smul_mul]`. Establish `e : (c • ρ₀ a).map (algebraMap ℤ_[p] (Tw.O : Type)) = algebraMap ℤ_[p] (Tw.O : Type) c • (ρ₀ a).map (algebraMap ℤ_[p] (Tw.O : Type))`. Use extensionality with `i j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, Matrix.mul_smul, hHt₀]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, map_add, Matrix.transpose_add, Matrix.add_mul, Matrix.map_add _ (map_add _), Matrix.mul_add, ha, hb], by simp⟩`.
+
+Use `form_eq_alt := by`. Use extensionality with `i j`. Establish `h4` using `bx_towerPairing B Tw.toATower Dt.Dp (Ix g) τ (fun i j => algebraMap ℤ_[p] (Tw.O : Type) (E i j)) ht bt hEspec hht hbt i j`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, Ht, Bt, Matrix.of_apply]`. Rewrite using `[h4, ev_expand B gb, ev_expand B gb]`.
+
+Simplify using `only [mul_comm] }`. Set `L : Link B Tw Dt H gb A` to `{ τ := τ τ_tors := hτ τ_compat := hτp τ_basis := by`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `x`. Simplify `hbas x.1 x.2` using `only [Subtype.ext_iff, eq_comm]`.
+
+Use `ht := ht`. Use `bt := bt`. Use `ht_spec := hht`. Use `bt_spec := hbt`. Use `Ht_eq := fun _ _ => rfl`.
+
+Use `Bt_eq := fun _ _ => rfl`. Use `E_spec := hEspec`. Use `ρ_spec := fun a j => by`. Express the relevant statement in the definitionally equal form `_ = ∑ k, (PadicInt.toZMod (padicExtension ρ₀ a k j)).val • τ k 0`. Proceed by induction on `a using TensorProduct.induction_on with`.
+
+Consider the case `zero`. Establish `h` using `hAa 0 0 Tw.O (LHom.id Tw.O) ⟨τ j 0, (mem_torP B p _).2 (hτ0 j)⟩`. Rewrite `h` using `[TensorProduct.zero_tmul]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+
+Consider the case `tmul c a`. Rewrite using `[hAa, padicExtension_tmul, hρ₀, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, map_mul, val_mul_smul _ _ _ (hτ0 k), toZMod_val_smul (ρ₀ a k j) _ (hτ0 k)]`. Consider the case `add a b ha hb`.
+
+Rewrite using `[A.act_add, AddSubgroup.coe_add, ha, hb, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, Matrix.add_apply, map_add, val_add_smul _ _ _ (hτ0 k)]`. Use `ρL_spec := hρLs }`. Use `⟨A, H, L, rfl, rfl, rfl, fun a => ?_, fun a j n => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `ρL _ = _`. Rewrite using `[hρL, map_one, one_smul]`. Express the relevant statement in the definitionally equal form `_ = ∑ k, (PadicInt.toZModPow (n + 1) (padicExtension ρ₀ (1 ⊗ₜ[ℤ] a) k j)).val • τ k n`. Rewrite using `[padicExtension_tmul, one_smul, hρ₀]`.
+-/
 theorem exists_tateMatrices_link :
   (∀ (p : ℕ) [Fact p.Prime] (κ Γ : Type) [Fintype κ] [DecidableEq κ] [AddCommGroup Γ] (τ : κ → ℕ → Γ),
     (∀ i n, (p ^ (n + 1)) • τ i n = 0) → (∀ i n, τ i n = p • τ i (n + 1)) →

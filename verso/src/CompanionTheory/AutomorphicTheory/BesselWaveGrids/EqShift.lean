@@ -14,6 +14,11 @@ noncomputable section
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Take `⟨Cb, hCb, hTL⟩` from `Formalism.FourierDecayAlt.P.top_lift_exists`. Use `⟨Cb, hCb, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq Wq' _ _ _ _ _ _ _ _ _ p u'' π'' l0 hty hOK hl1 hl2`. Take `⟨q, htie, hπ, hl⟩` from `place_swap_exists P Wp Wq Wq' p u'' π'' l0 hty hOK hl1 hl2`. Take `⟨X, μ, L, st, hD, -⟩` from `q.hΘ`.
+
+Take `⟨Θ, hI, hDD⟩` from `hTL Wp Wq' (shP P P.u u'') q.T.base X μ L st q.l0 q.hl.1 q.hl.2.1 hD`. Conclude with `⟨{ q with Θ := Θ, hΘ := ⟨X, μ, L, st, hD, hI⟩ }, htie, hπ, hl, hDD⟩`.
+-/
 theorem placeSwap_dd : ∃ Cb : ℝ, 0 ≤ Cb ∧ ∀ (P : M.Par) (Wp Wq Wq' : Type)
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -37,6 +42,13 @@ variable {k r : ℕ} {Wp Wq Wq' : Type}
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq']
 
+/- English proof (translation)
+Use `set L : (Wq →L[ℂ] Wp) →L[ℂ] (Wq' →L[ℂ] Wp) := (ContinuousLinearMap.compL ℂ Wq' Wq Wp).flip (A γ) with hL`. Establish `hi0` using `(bessel_integral_converges k r Wp Wq Ds A₀ f hThr hf).1 γ hγ`. Establish `hi : Integrable (fun q => D.orbIntegrand Ds γ f q) Ds.μSS`. Use `hi0.congr (ae_of_all _ fun q => ?_)` and prove the remaining obligations. Unfold `JF.integrand D.orbIntegrand`.
+
+Rewrite using `[xi_eq_xiTau_one_one]`. Establish `hae : ∀ᵐ q ∂Ds.μSS, D.orbIntegrand Ds' γ (fun g => (f g).comp (A g)) q = L (D.orbIntegrand Ds γ f q)` using `by filter_upwards [TBBx2.ae_inSS Ds] with q hq`. Rewrite using `[orbIntegrand_swap Ds Ds' hz hz' hπ A hA f γ hγ.1 hγ.2.2 q hq]`. Both sides reduce to the same expression. Rewrite using `[← bessel_function_trivial_index k r Wp Wq' Ds' _ γ, ← bessel_function_trivial_index k r Wp Wq Ds f γ]`.
+
+Express the relevant statement in the definitionally equal form `∫ q, D.orbIntegrand Ds' γ (fun g => (f g).comp (A g)) q ∂Ds'.μSS = L (∫ q, D.orbIntegrand Ds γ f q ∂Ds.μSS)`. Rewrite using `[muSS_swap Ds Ds' hW hN hW', integral_congr_ae hae, L.integral_comp_comm hi]`.
+-/
 theorem jf_swap (Ds : B.RealPlaceData k r Wp Wq) (Ds' : B.RealPlaceData k r Wp Wq') (hz : Ds'.z = Ds.z)
     (hz' : Ds'.z' = Ds.z') (hπ : Ds'.π = Ds.π) (hW : Ds'.μW = Ds.μW) (hN : Ds'.μN = Ds.μN)
     (hW' : Ds'.μW' = Ds.μW') (A : B.Mat k r → (Wq' →L[ℂ] Wq)) (hA : WigEquiv Ds.z Ds.z' Ds.π' Ds'.π' A)
@@ -58,6 +70,13 @@ theorem jf_swap (Ds : B.RealPlaceData k r Wp Wq) (Ds' : B.RealPlaceData k r Wp W
     L (∫ q, D.orbIntegrand Ds γ f q ∂Ds.μSS)
   rw [muSS_swap Ds Ds' hW hN hW', integral_congr_ae hae, L.integral_comp_comm hi]
 
+/- English proof (translation)
+Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarW'` as an intermediate fact. Establish `hN` using `bessel_unipotent_equiv_holds Wp Wq k r Db.z Db.z' cStd Db.π Db.π' Db.μW Db.μN Db.μW' H Db.z_mem Db.z'_mem Db.haarN.conc (fun n₀ h => Db.haarN.left n₀ h)`. Use `⟨hs, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g _ n hn`. Establish `e` using `hN g n hn.1 1 WeylGroupFacts.mem_n_one`. Rewrite `e` using `[Matrix.mul_one, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Db.z'_mem, mul_one]`. Conclude with `e`. Introduce `g _ n hn`.
+
+Establish `e` using `hN g 1 WeylGroupFacts.mem_n_one n hn.1`. Rewrite `e` using `[Matrix.one_mul, Formalism.FourierDecayAlt.P.BesselCapelliCommutation.psi_one Db.z_mem, one_mul]`. Conclude with `e`. Introduce `g _ h hh h' hh'`. Conclude with `Formalism.FourierDecayAlt.P5.jf_uEquiv Db H g hh hh'`.
+-/
 theorem jf_ff_of_smooth (Db : B.RealPlaceData k r Wp Wq) (H : B.Mat k r → (Wq →L[ℂ] Wp)) (O : Set (B.Mat k r))
     (hs : Q.SmoothLev k r 0 O (B.JF Db H)) : B.JF Db H ∈ Q.FFl k r Db.z Db.z' Db.π Db.π' 0 O := by
   have := Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite Db.haarW
@@ -80,6 +99,11 @@ theorem jf_ff_of_smooth (Db : B.RealPlaceData k r Wp Wq) (H : B.Mat k r → (Wq 
 def omZ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : Set (B.Mat k r) :=
   {g | 0 < Gf k r z z' g ∧ ∀ a : Fin r, Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0}
 
+/- English proof (translation)
+Use `jf_ff_of_smooth Ds' _ _ fun g₀ hg₀ => ?_` and prove the remaining obligations. Rewrite `hg₀` using `[hz, hz']`. Establish `hOm : g₀ ∈ JF.Om k r Ds.z Ds.z'` using `CutMP.jdc_om_of _ _ hg₀.1.1 hg₀.2`. Take `⟨U, J', hU, hgU, hJ', hJJ⟩` from `hJ g₀ hg₀`. Take `⟨V, A', hV, hgV, hA', hAA⟩` from `hAs g₀ hg₀.1.1`.
+
+Use `⟨U ∩ V ∩ Q.OmPlus k r Ds.z Ds.z', fun g => (J' g).comp (A' g), (hU.inter hV).inter (SmoothnessOnGoodSet.isOpen_OmPlus _ _), ⟨⟨hgU, hgV⟩, hOm.2⟩, ?_, fun g hg hG => ?_⟩` and prove the remaining obligations. Conclude with `isBoundedBilinearMap_compSh.contDiff.comp_contDiffOn ((hJ'.mono (Set.inter_subset_left.trans Set.inter_subset_left)).prodMk (hA'.mono (Set.inter_subset_left.trans Set.inter_subset_right)))`. Establish `e` using `jf_swap Ds Ds' hz hz' hπ hW hN hW' A hA f hThr hf (γ := g) ⟨hG.1, hg.2⟩`. Rewrite `e` using `[hJJ g hg.1.1 hG, hAA g hg.1.2 hG.1]`. Conclude with `e`.
+-/
 theorem ff_swap (Ds : B.RealPlaceData k r Wp Wq) (Ds' : B.RealPlaceData k r Wp Wq') (hz : Ds'.z = Ds.z)
     (hz' : Ds'.z' = Ds.z') (hπ : Ds'.π = Ds.π) (hW : Ds'.μW = Ds.μW) (hN : Ds'.μN = Ds.μN)
     (hW' : Ds'.μW' = Ds.μW') (A : B.Mat k r → (Wq' →L[ℂ] Wq)) (hA : WigEquiv Ds.z Ds.z' Ds.π' Ds'.π' A)
@@ -109,6 +133,9 @@ variable {P : M.Par} {Wp Wq Wq' : Type}
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
   [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] {u u' : ℕ → ℝ}
 
+/- English proof (translation)
+Take `⟨hz, hz', hπ, hW, hN, hW', -, -⟩` from `hT`. Conclude with `ff_swap (k := P.k) (r := P.r) p.T.base q.T.base hz hz' hπ hW hN hW' A hA hAs f hThr hf hJ.1`.
+-/
 theorem ffkb_swap (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hT : SwapTie p q)
     (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (A : B.Mat P.k P.r → (Wq' →L[ℂ] Wq))
     (hA : WigEquiv p.T.base.z p.T.base.z' p.T.base.π' q.T.base.π' A) (hAs : B.CkOn ⊤ (B.GV P.k P.r) A)
@@ -119,6 +146,25 @@ theorem ffkb_swap (p : KB.Pl P Wp Wq) (q : KB.Pl (shP P u u') Wp Wq') (hT : Swap
 
 end place
 
+/- English proof (translation)
+Take `⟨Cb, hCb, hPS⟩` from `placeSwap_dd`. Take `⟨c₃, hC⟩` from `cell_identity_shifted`. Use `⟨Cb, c₃, hCb, ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ l A₀ hu hl1 hlk hposition hb hub hA₀ hThr hf hf0 hJ`. Establish `hOK : P.OK` using `p.hP.1`.
+
+Establish `hdec : ∀ i ∈ Finset.Ico 1 P.k, P.u' (i + 1) + 1 ≤ P.u' i`. Introduce `i hi`. Establish `hi' : i ∈ Finset.Icc 1 (P.k - 1)`. Rewrite `hi` using `[Finset.mem_Ico]`. Rewrite using `[Finset.mem_Icc]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hg` using `hOK.gap i hi'`. Unfold `M.Par.lo M.Par.hi at hg`. Rewrite `hg` using `[hu, max_self, min_self]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨_, hz, hz', _, _, _, hty'⟩` from `p.hP`. Take `⟨W⟩` from `hW P.k P.r p.T.base.z p.T.base.z' Wq p.T.base.π' P.u' l n₀ b hz hz' p.T.base.T_pos p.T.base.T'_pos hty' hdec hl1 hlk hposition hb hub`. Take `⟨qp, htp, hπp, hlp, hDp⟩` from `hPS P Wp Wq W.Wqp p (uPlus P.u' l n₀) W.πp (l + 1) W.typeP (okPlus P l n₀ hOK hu hl1 hlk hposition) (by omega) (by omega)`. Take `⟨qm, htm, hπm, hlm, hDm⟩` from `hPS P Wp Wq W.Wqm p (uMinus P.u' l n₀) W.πm l W.typeM (okMinus P l n₀ hOK hu hl1 hlk hposition) hl1 hlk.le`. Establish `hep : WigEquiv p.T.base.z p.T.base.z' p.T.base.π' qp.T.base.π' W.Ap`.
+
+Rewrite using `[hπp]`. Conclude with `W.equivP`. Establish `hem : WigEquiv p.T.base.z p.T.base.z' p.T.base.π' qm.T.base.π' W.Am`. Rewrite using `[hπm]`. Conclude with `W.equivM`.
+
+Use `⟨⟨P.u, uPlus P.u' l n₀, P.u, uMinus P.u' l n₀, W.Wqp, W.Wqm, qp, qm, W.Ap, W.Am, fun γ => W.Ap (ptRep p γ), fun γ => W.Am (ptRep p γ), htp.1, htp.2.1, htm.1, htm.2.1, W.polyP, W.polyM, ?_⟩, rfl, rfl, rfl, rfl, hlp, hlm, hDp, hDm, ffkb_swap p qp htp f W.Ap hep (ckOn_of_polyOp W.po …` and prove the remaining obligations. Use `⟨fun γ hγ hG => hC P Wp Wq W.Wqp _ _ p qp f W.Ap A₀ htp hep hA₀ hf γ hγ hG, fun γ hγ hG => hC P Wp Wq W.Wqm _ _ p qm f W.Am A₀ htm hem hA₀ hf γ hγ hG, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ hG v`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `W.lower _ hmem (by rw [hGf]; exact hG) v`.
+
+Rewrite `h` using `[hGf]`. Conclude with `h`. Introduce `γ hγ hG`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `W.upperP _ hmem`.
+
+Rewrite `h` using `[hGf]`. Conclude with `h`. Introduce `γ hγ hG`. Take `⟨hmem, hGf⟩` from `ptRep_spec p hγ hG`. Establish `h` using `W.upperM _ hmem`.
+
+Rewrite `h` using `[hGf]`. Conclude with `h`.
+-/
 theorem shiftAtR_full (hW : WigExists) : ∃ Cb c₃ : ℝ, 0 ≤ Cb ∧ ∀ (P : M.Par) (Wp Wq : Type)
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]

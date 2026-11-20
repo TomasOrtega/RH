@@ -13,6 +13,15 @@ namespace GlobalTheory.TieLabAt
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField
   IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
+/- English proof (translation)
+Introduce `hL D P`. Set `γ : Fin 2 → PlE D.host → Formalism.ConjugateSelfDual.G D.host.E D.nd.Om` to `fun k => Function.extend (D.naut.plGw k) (D.ntypes.tg k) (fun _ => 1)`. Establish `hγ : ∀ k v, γ k (D.naut.plGw k v) = D.ntypes.tg k v` using `fun k v => (D.naut.plGw_inj k).extend_apply _ _ v`. Establish `hT : GlobalTheory.LabLaws.LabTie P.T D.ntypes.teichC γ`. Introduce `k v`.
+
+Rewrite using `[hγ k v]`. Conclude with `⟨D.ntypes.teichC_inj k, D.ntypes.tg_gen k v, P.lab k v⟩`. Use `⟨GlobalTheory.LabLaws.tieLab_of_labTie hT, _root_.GlobalTheory.LabLaws.labTameS_of_labTie hT, ?_, ⟨P.ty.rbarSS, P.ty.rbar⟩⟩` and prove the remaining obligations. Introduce `i`. Use `⟨P.ty.plB (D.nd.w i), P.ty.plκ (D.nd.w i), fun y => P.ty.plB_loc i y, fun k v x => ?_⟩` and prove the remaining obligations.
+
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `hm` using `GlobalTheory.ParRay.mem_of_monoidHom (P.ty.plB (D.nd.w i)) (D.ntypes.teichC k) x`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[P.ty.plB_iota i k v x]`. Unfold `redThrough`.
+
+Conclude with `dif_pos hm`.
+-/
 theorem main_alt_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D),
     Formalism.MainNotions.SumRepresentations.tieLab D ∧ _root_.UpperTheory.GalS.LabTameS D.nd D.naut ∧ IotaRed D ∧ GlobalTheory.RowCopy.RbarTie D := by
   intro hL D P

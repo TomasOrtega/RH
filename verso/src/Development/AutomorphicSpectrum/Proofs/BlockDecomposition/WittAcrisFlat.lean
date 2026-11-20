@@ -5,6 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 
 namespace GlobalTheory.CompanionTheory.FlatW
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simpa using h`. Consider the case `succ n ih`. Apply `ih` to reduce the goal to its premises. Apply `ACris.eq_zero_of_p_mul_eq_zero (K := ℂ_[l]) (p := l)` to reduce the goal to its premises.
+
+Rewrite using `[← mul_assoc, ← pow_succ']`. Conclude with `h`.
+-/
 theorem eq_zero_of_pow_mul_eq_zero {l : ℕ} [Fact l.Prime] (m : ℕ) {x : Acris l}
     (h : (l : Acris l) ^ m * x = 0) : x = 0 := by
   induction m with
@@ -15,6 +20,13 @@ theorem eq_zero_of_pow_mul_eq_zero {l : ℕ} [Fact l.Prime] (m : ℕ) {x : Acris
     rw [← mul_assoc, ← pow_succ']
     exact h
 
+/- English proof (translation)
+Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `a ha`. Take `⟨⟨y, hy0⟩, hy⟩` from `(Submodule.mem_torsion_iff _).1 ha`. Establish `hne : y ≠ 0` using `nonZeroDivisors.ne_zero hy0`. Take `⟨m, b, e⟩` from `WittVector.exists_eq_pow_p_mul' y hne`.
+
+Establish `hu : IsUnit (r.w (b : WittVector l r.k))` using `b.isUnit.map r.w`. Establish `key : ∀ x : Acris l, r.w y * x = 0 → x = 0`. Introduce `x h`. Rewrite `h` using `[e, map_mul, map_pow, map_natCast]`. Apply `eq_zero_of_pow_mul_eq_zero m` to reduce the goal to its premises.
+
+Apply `hu.mul_right_eq_zero.1` to reduce the goal to its premises. Take the linear combination `h`. Conclude with `(Submodule.mem_bot _).2 (key a hy)`.
+-/
 theorem flat_AW {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) :
     Module.Flat (WittVector l r.k) (CrystallineSemistableComparison.Pb.AW r) := by
   rw [Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]

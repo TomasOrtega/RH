@@ -19,6 +19,13 @@ open scoped Classical
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ ψ n d X W M hM d' hd' dd hdd x`. Establish `hx : incM F x = Matrix.fromCols (incM F (Matrix.toCols₁ x)) (incM F (Matrix.toCols₂ x))`. Apply the tactic sequence `ext i (j | j) <;> rfl`. Establish `h1 : ∀ y : Matrix (Fin d) (Fin n) E, d'.e (incM F y) = M.co.e (incM F yᵀ)` using `fun y => by`. Rewrite using `[← hd']`.
+
+Both sides reduce to the same expression. Take `⟨u₁, v₁, e₁⟩` from `hM.rat (Matrix.toCols₁ x)ᵀ`. Take `⟨u₂, v₂, e₂⟩` from `hM.rat (Matrix.toCols₂ x)ᵀ`. Use `⟨Sum.elim u₁ u₂, Sum.elim v₁ (-v₂), ?_⟩` and prove the remaining obligations. Rewrite using `[hx, hdd, h1, h1, e₁, e₂]`.
+
+Apply the tactic sequence `ext (k | k) <;> simp`.
+-/
 theorem GlobalTheory.MixedModel.dbl_rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (ψ : AddChar (AF F) ℂ)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W), M.IsGood ψ →
   ∀ (d' : Darboux (symp (cA σ) (-1) (incM F W.J) (incM F X.J)) (Fin n × Fin d)),
@@ -38,6 +45,21 @@ theorem GlobalTheory.MixedModel.dbl_rat : ∀ (F E : Type) [Field F] [NumberFiel
   rw [hx, hdd, h1, h1, e₁, e₂]
   ext (k | k) <;> simp
 
+/- English proof (translation)
+Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hr` using `GlobalTheory.MixedModel.dbl_rat F E σ B.ψ n d X W M hP.good d' hd' dd hdd`. Establish `hr₁` using `GlobalTheory.MixedModel.dbl_rat F E σ B.ψ n d₁ X W₁ M₁ hP₁.good d₁' hd₁' dd₁ hdd₁`. Take `⟨κa, _, ε, C, dN, hNr, hC, hι, hx, hy⟩` from `GlobalTheory.T.seesaw_pair_restriction_adapted F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ dd₁ hr₁`.
+
+Establish `hcard : Fintype.card ((Fin n × Fin d) ⊕ (Fin n × Fin d)) * 2 = Fintype.card (Fin d) * Fintype.card (Fin n ⊕ Fin n) * Module.finrank F E`. Rewrite using `[hP.base.cm.2.2.1]`. Simplify using `only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g, hgs, hg⟩` from `GlobalTheory.T.darboux_rational_basis_compatible F E (Fin d) (Fin n ⊕ Fin n) _ _ dd dN hcard hr hNr`.
+
+Take `⟨S, hS, hSo, hSa, hSi⟩` from `GlobalTheory.MixedModel.lin_realised F B.ψ hψ _ g (GlobalTheory.T.symplectic_mem_closure_generators F _ g hgs)`. Establish `key : ∀ w, ∀ Φ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), S (dd.rho B.ψ w Φ) = schr B.ψ (dN.e w) (S Φ)` using `fun w Φ hΦ => by rw [Darboux.rho, hSi _ Φ hΦ, hg]`. Use `⟨κa, inferInstance, ε, C, S, hC, hS, hSa, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z Φ hΦ`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[key _ Φ hΦ, hι z]`. Simplify using `only [Darboux.rho, schr, GlobalTheory.ThK.Adapt.glue_dot, GlobalTheory.ThK.Adapt.glue_add, zero_dotProduct, zero_add, add_zero]`. Introduce `y Φ hΦ v`. Take `⟨q, hq⟩` from `hx y`. Rewrite using `[key _ Φ hΦ, hq]`.
+
+Simplify using `only [schr, GlobalTheory.ThK.Adapt.glue_dot, dotProduct_zero, zero_dotProduct, add_zero, zero_add, mul_zero, AddChar.map_zero_eq_one, one_mul]`. Take `⟨Ψ, hΨ, hΨ0⟩` from `GlobalTheory.SchANonzero.exists_mem_schA_ne_zero F ((Fin n × Fin d) ⊕ (Fin n × Fin d))`. Take `⟨Φ, hΦ, hSΦ⟩` from `hSo Ψ hΨ`. Use `⟨Φ, hΦ, fun h => hΨ0 ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun h 0`.
+
+Simplify using `only [Pi.zero_apply] at h0`. Rewrite `h0` using `[hSΦ, GlobalTheory.ThK.Adapt.glue_zero]`. Conclude with `h0`. Introduce `y Φ hΦ v`. Rewrite using `[GlobalTheory.SiegelAvg.starFam_apply, key _ Φ hΦ, hy y]`.
+
+Simplify using `only [schr, GlobalTheory.ThK.Adapt.glue_dot, GlobalTheory.ThK.Adapt.glue_add, dotProduct_zero, zero_dotProduct, add_zero, zero_add, mul_zero, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem GlobalTheory.MixedModel.mixed_model : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (M₁ : Model σ X W₁) (om₁ : Rep σ X W₁) (r₁ s₁ : ℕ),

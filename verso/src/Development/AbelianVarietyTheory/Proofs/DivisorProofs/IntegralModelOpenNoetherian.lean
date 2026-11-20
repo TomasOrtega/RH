@@ -17,6 +17,21 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.ModelNoeth
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ n : ℕ, n ≠ 0 ∧ (n : L) ∈ V.nonunits`. Take `⟨n, hn, hV⟩` from `h`. Use `(GlobalTheory.isDiscreteValuationRing_and_finite_residueField_of_numberField V hn hV).1` as an intermediate fact. Use `infer_instance`. Use `push_neg at h`.
+
+Establish `hall : ∀ x : L, x ∈ V`. Introduce `x`. Use `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)` as an intermediate fact. Use `Algebra.IsAlgebraic.trans ℤ ℚ L` as an intermediate fact. Take `⟨y, hy0, hy⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) x).exists_integral_multiple`.
+
+Establish `hyx : y • x ∈ V`. Establish `h' : IsIntegral V (y • x)` using `hy.tower_top`. Take `⟨z, hz⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := V) (K := L)).mp h'`. Conclude with `hz ▸ z.2`. Establish `hn : (y.natAbs : L) ∉ V.nonunits` using `h _ (by simpa using hy0)`.
+
+Rewrite `hn` using `[ValuationSubring.mem_nonunits_iff, not_lt]`. Establish `hn1 : V.valuation (y.natAbs : L) = 1` using `le_antisymm (by simpa using V.valuation_le_one (y.natAbs : V)) hn`. Establish `hy1 : V.valuation (y : L) = 1`. Break down `Int.natAbs_eq y with e | e` into its components or cases. Rewrite using `[e]`.
+
+Simplify using `using hn1`. Rewrite using `[e]`. Simplify using `using hn1`. Rewrite `hyx`, the goal using `[← V.valuation_le_one_iff]`. Rewrite `hyx` using `[zsmul_eq_mul, map_mul, hy1, _root_.one_mul]`.
+
+Conclude with `hyx`. Establish `hF : IsField V`. Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {a} ha => ?_⟩` and prove the remaining obligations. Use `⟨⟨(a : L)⁻¹, hall _⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: (a : L) ≠ 0` using `fun e => ha (Subtype.ext e)`.
+
+Simplify using `[this]`. Use `letI := hF.toField`. Use `infer_instance`.
+-/
 theorem isNoetherianRing_valuationSubring {L : Type} [Field L] [NumberField L] (V : ValuationSubring L) :
     IsNoetherianRing V := by
   by_cases h : ∃ n : ℕ, n ≠ 0 ∧ (n : L) ∈ V.nonunits
@@ -55,6 +70,11 @@ theorem isNoetherianRing_valuationSubring {L : Type} [Field L] [NumberField L] (
 end GlobalTheory.ModelNoeth
 
 open GlobalTheory.ModelNoeth in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l' Xo' c' W Y A _ ξ hξ`. Use `c'.fin` as an intermediate fact. Establish `: NumberField c'.F` using `{}`. Establish `: IsNoetherianRing (c'.V W)` using `isNoetherianRing_valuationSubring _`. Take `⟨N, i, hi, hs⟩` from `Y.proj`.
+
+Establish `: IsProper (PSpace.str (c'.V W) N)` using `isProper_str _ _`. Establish `: LocallyOfFiniteType (i ≫ PSpace.str (c'.V W) N)` using `inferInstance`. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str (c'.V W) N)`. Conclude with `isLocallyNoetherian_Spec.1 (isLocallyNoetherian_of_isOpenImmersion ξ)`.
+-/
 theorem GlobalTheory.ModelNoeth.isNoetherianRing_of_isOpenImmersion :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H)
     (l' : Level H) (Xo' : Moduli Dw l') (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype)

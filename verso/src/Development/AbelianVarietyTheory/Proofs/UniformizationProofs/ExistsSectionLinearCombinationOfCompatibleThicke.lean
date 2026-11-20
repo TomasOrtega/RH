@@ -18,6 +18,15 @@ noncomputable section
 namespace GlobalTheory.SecAlgLinComb
 open GlobalTheory.CompleteBaseExpansion GlobalTheory.BaseExpansionExists
 
+/- English proof (translation)
+Introduce `R _ _ I hI Y hsm hp W L K _ φ ε φ' hL hφ f hf`. Take `rfl : φ' = fun e k => (fstG I e Y).left ≫ φ k` from `funext fun e => funext fun k => (hφ e k).symm`. Use `choose f' hf' using fun e => exists_in (φ := φ) (fstG I e Y).left (f e)`. Take `⟨s', hs', -⟩` from `GlobalTheory.SecAlg.existsUnique_sec R I hI Y hsm hp _ (DVR.linComb_isLB _ hL _ _) f' fun e z J hJ => by`. Use `(hf' _ _ _ z _ (hJ.mem (fun _ : PUnit => (fstG I (e + 1) Y).left) _)).trans (Eq.trans ?_ (hf' _ _ _ z _ (hJ.mem (fun _ : PUnit => (fstG I e Y).left) _)).symm)` and prove the remaining obligations.
+
+Establish `E : thickMap R I e Y ≫ (fstG I (e + 1) Y).left = 𝟙 _ ≫ (fstG I e Y).left` using `((pullback.lift_fst _ _ _).trans (Category.comp_id _)).trans (Category.id_comp _).symm`. Use `beta_reduce`. Rewrite using `[E]`. Conclude with `gs_eq_of_sval hL _ _ _ _ (fun i => (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ i) E).trans (Category.assoc _ _ _))) z (hf e z) _ (pull_le _ _ (hJ.mem (fun _ : PUnit => (fstG I e Y).left) _))`. Take `⟨s₁, hs₁⟩` from `exists_out (𝟙 _) s'`.
+
+Take `⟨s, hs⟩` from `exists_sec hL (φ' := φ) (ε' := ε) (fun U _ h => by simp only [Category.id_comp]) s₁`. Establish `key : ∀ e z J, Good L z J → sval s (fstG I e Y).left z J = sval (f e) (𝟙 _) z J`. Use `fun e z J hJ => (hs _ _ z J hJ).trans ((hs₁ _ _ z _ (hJ.mem _ _)).trans ?_)` and prove the remaining obligations. Establish `hN : Good (LB.LinComb L φ ε) z (fun ψ i => J (ψ ≫ φ i))` using `fun ψ => hJ.mem _ ψ`. Use `Eq.trans ?_ ((hs' e z _ hN).trans ((hf' _ _ _ z _ (hN.mem (fun _ : PUnit => (fstG I e Y).left) _)).trans ?_))` and prove the remaining obligations.
+
+Conclude with `(sval_of s' _ z _ _ (fun _ => funext fun i => congrArg J (Category.assoc _ _ _))).symm`. Conclude with `(sval_of (f e) _ z J _ (fun i => congrArg J (Category.assoc _ _ _).symm)).symm`. Use `⟨s, fun e Z r z J hJ => (sval_eq_of_id (key e) r z hJ).trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun p => sval (f e) p z J) (Category.comp_id _)`.
+-/
 theorem exists_sec_linComb : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : Over (Spec (CommRingCat.of R))), Smooth Y.hom → IsProjBy Y.hom → ∀ (W : Scheme.{0}) (L : LB W) (K : Type) [Fintype K] (φ : K → (Y.left ⟶ W)) (ε : K → ℤ) (φ' : ∀ e, K → ((thickObj R I e Y).left ⟶ W)), L.IsLB → (∀ e k, pullback.fst Y.hom (thick R I e) ≫ φ k = φ' e k) → ∀ f : ∀ e, LB.Sec (LB.LinComb L (φ' e) ε), (∀ e z J, Good L z J → sval (f (e + 1)) (thickMap R I e Y) z J = sval (f e) (𝟙 _) z J) → ∃ s : LB.Sec (LB.LinComb L φ ε), ∀ (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e Y).left) (z : Z) (J), Good L z J → sval s (r ≫ pullback.fst Y.hom (thick R I e)) z J = sval (f e) r z J := by
   intro R _ _ I hI Y hsm hp W L K _ φ ε φ' hL hφ f hf
   obtain rfl : φ' = fun e k => (fstG I e Y).left ≫ φ k := funext fun e => funext fun k => (hφ e k).symm

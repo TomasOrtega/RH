@@ -30,6 +30,13 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 
 namespace GlobalTheory.SymActExpansion
 
+/- English proof (translation)
+Take `⟨ω₂, hω₂⟩ : LBIso LA (LG.pull (g ≫ m₂))` from `LBIso.chartPull (chartPullSec LA a a' ha') (chartPullSame LG (fun _ : PUnit => g ≫ m₂) (fun _ => π) (fun _ => 1) a' fun _ => hg) ext`. Take `rfl : π = a ≫ g ≫ m₂` from `by rw [hg, ← Category.assoc, ha, Category.id_comp]`. Take `⟨W, hW, vW⟩` from `IsoValConst.exists_iso_pull hω₂ a`. Rewrite `g₁`, `g₂`, `hω₂` using `[isGen_iff]`. Take `⟨ω', T'⟩` from `Geo.Tor.exists_cancel hG w₂ ω₂ g₂ hω₂ h' hA`.
+
+Establish `hω'` using `T'.pgen_cancel hG g₂ hω₂`. Take `⟨ω, T⟩` from `Geo.Tor.exists_comp h' w₁ ω' g₁ hω' h₀ hA`. Use `⟨W, ω, hW, (isGen_iff _).2 (T.pgen_comp h' g₁ hω'), fun Z r z j₀ j' jG jA k₀ k' kG kA => ?_⟩` and prove the remaining obligations. Establish `e : BoxExpansion.pw W r z jA jG = Geo.Tor.gw ω₂ (r ≫ a) z jG jA` using `vW Z r z jG jA kG kA`. Rewrite using `[e, T Z (r ≫ a) z j₀ j' jA k₀ k' kA, T' Z (r ≫ a) z jG j' jA kG k' kA]`.
+
+Simplify using `only [mul_comm, mul_left_comm, _root_.mul_assoc]`.
+-/
 theorem exists_isos {X₀ X' XG XK XA : Scheme.{0}} {L₀ : LB X₀} {L' : LB X'} {LG : LB XG} {LA : LB XA}
     (h₀ : L₀.IsLB) (h' : L'.IsLB) (hG : LG.IsLB) (hA : LA.IsLB) {m₁ : X' ⟶ X₀} {m₂ : X' ⟶ XG}
     {w₁ : LB.Iso L' (L₀.pull m₁)} {w₂ : LB.Iso L' (LG.pull m₂)} (g₁ : w₁.IsGen) (g₂ : w₂.IsGen)
@@ -54,10 +61,38 @@ theorem exists_isos {X₀ X' XG XK XA : Scheme.{0}} {L₀ : LB X₀} {L' : LB X'
   rw [e, T Z (r ≫ a) z j₀ j' jA k₀ k' kA, T' Z (r ≫ a) z jG j' jA kG k' kA]
   simp only [mul_comm, mul_left_comm, _root_.mul_assoc]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hw`.
+-/
 theorem isoCast_isGen {X Y : Scheme.{0}} {L L' : LB X} (h : L = L') {M : LB Y} (f : Y ⟶ X) {w : LB.Iso M (L.pull f)}
     (hw : w.IsGen) : (isoCast h f w).IsGen := by
   subst h; exact hw
 
+/- English proof (translation)
+Take `⟨hx, hp⟩` from `hp W hW`. Take `⟨w₀, hw₀, hΦθ⟩` from `hp θ rfl`. Take `⟨hB₁, hB₂⟩` from `expansion_bijective_over_fields hL.globalFns V (maximalIdeal V) D A G U F k hk W hW`. Take `⟨Φ₀, hΦ⟩` from `phiFun_of hL V (maximalIdeal V) D F k hk p w₀ hw₀`. Take `⟨Φ, hΦw⟩` from `phiFun_of hL V (maximalIdeal V) D F k hk p w hw`.
+
+Use `choose act hact' using fun x : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R := V) F)) => (VVRank.exists_isTwistPull A.A A.isLB θ.isGen x : ∃ y, IsActOf A.A A.L (k : ℤ) θ x y)`. Establish `key : ∀ i : ℕ, U.ExpandsF F k W (act^[i] t) (((Φ₀ : Module.End F (Fam D.toPre F k)) ^ i) s)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact hs`.
+
+Consider the case `succ i ih`. Take `⟨s₁, hs₁, -⟩` from `hB₁ (act^[i + 1] t)`. Establish `h₁` using `(hΦ _ _).1 (hΦθ _ _ _ _ ih hs₁ (by rw [Function.iterate_succ_apply']; exact hact' _))`. Rewrite using `[pow_succ', Module.End.mul_apply, ← h₁]`. Conclude with `hs₁`.
+
+Establish `hcyc` using `thetaGrp_act_iterate_eq_of_pow_eq_one _ A.A A.L A.isLB (k : ℤ) _ θ k hx hc (fun i => act^[i.val] t) (fun i => by show IsActOf _ _ _ _ (act^[i.val] t) (act^[i.val + 1] t)`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hact' _)`. Establish `he : act^[k] t = t`. Establish `ext : ∀ a b : LB.Sec (LPow A.A A.L (k : ℤ) (TFK (R` using `V) F)), (∀ j, a.f j = b.f j) → a = b := by`.
+
+Introduce and unpack `⟨a, _⟩ ⟨b, _⟩ h`. Take `rfl : a = b` from `funext h`. Both sides reduce to the same expression. Conclude with `ext _ _ hcyc`. Establish `h₅` using `key k`.
+
+Rewrite `h₅` using `[he]`. Establish `h₆ : ((Φ₀ : Module.End F (Fam D.toPre F k)) ^ k) s = s` using `(hB₁ t).unique h₅ hs`. Take `⟨s', hs', -⟩` from `hB₁ t'`. Take `rfl : s' = Φ₀ s` from `(hΦ _ _).1 (hΦθ _ _ _ _ hs hs' hact)`. Take `rfl : s₀ = Φ s` from `(hΦw _ _).1 r₀`.
+
+Take `rfl : s₁ = ζ • Φ s` from `(DVR.isSmul_iff _ _ _).1 r₁`. Take `⟨M, hM, hζ⟩` from `(ThetaFinOrd.finOrd_iff p w ζ Φ hΦw).1 hf`. Take `⟨c, rfl⟩` from `ThetaFinOrd.exists_scalar hL.globalFns p w₀ w hw₀ hw Φ₀ Φ (fun _ => (hΦ _ _).2 rfl) (fun _ => (hΦw _ _).2 rfl)`. Distinguish the cases in `h0 : s = 0`. Use `⟨1, _, ⟨1, one_pos, one_pow _⟩, (DVR.isSmul_iff _ _ _).2 ?_, hs'⟩` and prove the remaining obligations.
+
+Simplify using `[h0]`. Establish `a₁ : ∀ n : ℕ, (((c • Φ : Module.End F (Fam D.toPre F k)) ^ k) ^ n) s = s` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [pow_succ, Module.End.mul_apply, h₆, ih]`.
+
+Establish `a₂ : ((ζ • Φ : Module.End F (Fam D.toPre F k)) ^ (k * M)) s = s`. Rewrite using `[mul_comm k M, pow_mul, hζ, one_pow]`. Both sides reduce to the same expression. Establish `a₃` using `a₁ M`. Rewrite `a₃` using `[← pow_mul]`.
+
+Rewrite `a₂`, `a₃` using `[smul_pow, LinearMap.smul_apply]`. Establish `hkM : 0 < k * M` using `Nat.mul_pos hk hM`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `a₂` using `[zero_pow hkM.ne', zero_smul]`.
+
+Conclude with `h0 a₂.symm`. Establish `hv : ((Φ : Module.End F (Fam D.toPre F k)) ^ (k * M)) s ≠ 0` using `fun e => by`. Rewrite `a₂` using `[e, smul_zero]`. Conclude with `h0 a₂.symm`. Establish `a₄ : c ^ (k * M) = ζ ^ (k * M)` using `smul_left_injective F hv (a₃.trans a₂.symm)`.
+
+Use `⟨c / ζ, _, ⟨k * M, hkM, by rw [div_pow, a₄, div_self (pow_ne_zero _ hζ0)]⟩, (DVR.isSmul_iff _ _ _).2 ?_, hs'⟩` and prove the remaining obligations. Rewrite using `[smul_smul, div_mul_cancel₀ _ hζ0, LinearMap.smul_apply]`.
+-/
 theorem exists_root_of_unity (hL : Laws) {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {D : DegData V (maximalIdeal V)} {A : PolAV (Spec (CommRingCat.of (FractionRing V)))}
     {G : Over (Spec (CommRingCat.of V))} [GrpObj G] [IsCommMonObj G] (U : Unif (maximalIdeal V) D A G)
@@ -133,6 +168,35 @@ theorem exists_root_of_unity (hL : Laws) {V : Type} [CommRing V] [IsDomain V] [I
 
 open scoped CategoryTheory.Obj in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T io y I P F _ _ _ xF hxF q hq σ σ' hh hh' s t₀ t x b p w ζ tσ tσ' hσ ⟨_, U, hU, hUa⟩ ⟨r, hr, hr1, hr2⟩ hp hw hf r₀ r₁`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Establish `hL : Laws` using `abelianSchemeLaws_all.1`. Use `P.U.gen_hom` as an intermediate fact.
+
+Use `P.A.isAb.comm` as an intermediate fact. Establish `gpG : IsGrpPullback P.A.A I.G.G (jK T.V) (P.U.gen.inv.left ≫ pullback.fst I.G.G.hom (jK T.V))`. Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback I.G.G (jK T.V))).congr (Category.id_comp _) rfl`. Take `⟨e, he, eφ⟩` from `grpPullback_iso gpG I.m2.cart`.
+
+Establish `gp : IsGrpPullback P.A.A Xo.univ.t.G y.x (e.hom.left ≫ I.m1.φ)` using `((isGrpPullback_of_iso e).comp I.m1.cart).congr (Category.id_comp _) rfl`. Establish `i₁ : P.U.gen.inv.left ≫ P.U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `i₂ : P.U.gen.hom.left ≫ P.U.gen.inv.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Establish `h₀` using `Xo.univ.t.PP.isLB`. Take `⟨W, ω, hW, hω, rel⟩` from `exists_isos h₀ I.t'.PP.isLB P.U.LG.isLB P.A.isLB I.rig1.1 (isoCast_isGen (congrArg RigLB.L P.bundle).symm _ I.rig2.1) i₁ i₂ eφ P.U.ext`.
+
+Establish `hr' : r = x.left ≫ e.hom.left`. Use `I.m2.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, eφ]`. Conclude with `hr2.trans (by rw [Over.comp_left, Category.assoc])`. Rewrite using `[Category.assoc, Over.w, Over.w]`.
+
+Conclude with `hr`. Establish `hx : (𝟙 (Sp F) : (TFK (R` using `T.V) F).left ⟶ (ptO Xo xF).left) ≫ b.left = x.left ≫ e.hom.left ≫ I.m1.φ := by`. Rewrite using `[← Category.assoc, ← hr', hr1]`. Conclude with `Category.id_comp _`. Establish `hb` using `TranslMove.base_comm gp (T := TFK (R := T.V) F) (T₀ := ptO Xo xF) (τ := 𝟙 (Sp F)) (x := x) (x₀ := b) hx`.
+
+Take `⟨Ψ, h₁, h₂⟩ : ∃ Ψ : (TFK (R` from `T.V) F ⊗ P.A.A).left ⟶ (ptO Xo xF ⊗ Xo.univ.t.G).left, Ψ ≫ (fst _ Xo.univ.t.G).left = (fst _ P.A.A).left ≫ 𝟙 (Sp F) ∧ Ψ ≫ (snd _ Xo.univ.t.G).left = (snd _ P.A.A).left ≫ e.hom.left ≫ I.m1.φ := ⟨pullback.lift ((fst _ P.A.A).left ≫ 𝟙 (Sp F)) ((snd _ P.A.A).left ≫ e.hom.left ≫ I.m1. …`. Rewrite using `[Category.assoc, Category.assoc, hb, gp.1.w, ← Category.assoc, ← Category.assoc, Over.w, Over.w]),`. Use the proof step `pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨θ, hθ, a⟩` from `TranslMove.exists_symLift gp (T := TFK (R := T.V) F) (T₀ := ptO Xo xF) (τ := 𝟙 (Sp F)) h₀ P.A.isLB hω h₁ h₂ (fun θ => TranslMove.pt_pow_eq_one hL.kerPow P.A q rfl θ) hx hU`. Take `⟨t₁, R₁⟩ : ∃ t₁ : LB.Sec (LPow P.A.A P.A.L (q : ℤ) (TFK (R` from `T.V) F)), TranslMove.SecRel ω Ψ hh t₁ := by`.
+
+Take `⟨s, hs⟩` from `ConstFam.exists_secThrough (φ' := fun _ : Fin 1 => (snd (TFK (R := T.V) F) P.A.A).left) (φ := fun _ => (snd (ptO Xo xF) Xo.univ.t.G).left) (ε := fun _ => (q : ℤ)) hω h₀ P.A.isLB (fun _ => h₂.symm) hh`. Use `⟨s, fun Z r z J J' hJ hJ' => (hs.sval (fun _ => h₂.symm) r hJ hJ').trans ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`. Both sides reduce to the same expression. Take `⟨t₂, act, R₂⟩` from `a _ _ _ hUa R₁`.
+
+Establish `g₁ : (P.U.genF F).left ≫ (snd (TFK (R` using `T.V) F) P.A.A).left = (snd (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left ≫ P.U.gen.hom.left := by`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`. Establish `g₂ : (P.U.genF F).left ≫ (fst (TFK (R` using `T.V) F) P.A.A).left = (fst (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left := by`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `key : ∀ (σ : P.U.toUnifPre.SecGF F q) (hh : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (q : ℤ) (ptO Xo xF))) (t : LB.Sec (LPow P.A.A P.A.L (q : ℤ) (TFK (R` using `T.V) F))), SecTieF I P F xF q σ hh → TranslMove.SecRel ω Ψ hh t → GeneratorPullback.IsoRelM P.A.L P.U.LG.L P.U.gen.hom.left (pullback.fst I.G.G.hom (jK T.V)) W (snd (TFK (R := T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left q (snd (TFK (R := T.V) F) P.A.A).left (P.U.genF F).le …`.
+
+Introduce `σ hh t tσ R`. Use `BoxExpansion.isoRel_of_val P.A.isLB P.U.LG.isLB g₁ (Category.id_comp _) fun z JA JG hJA hJG => ?_` and prove the remaining obligations. Take `⟨J₀, hJ₀⟩` from `TranslMove.exists_good_pt h₀ z`. Take `⟨J', hJ'⟩` from `TranslMove.exists_good_pt I.t'.PP.isLB z`. Take `⟨m, hm⟩ : ∃ m, m = (snd (TFK (R` from `T.V) F) ((Over.pullback (jK T.V)).obj I.G.G)).left := ⟨_, rfl⟩`.
+
+Establish `c₂ : ((m ≫ P.U.gen.hom.left) ≫ e.hom.left) ≫ I.m2.φ = m ≫ pullback.fst I.G.G.hom (jK T.V)`. Rewrite using `[Category.assoc, eφ, Category.assoc, ← Category.assoc P.U.gen.hom.left, i₂, Category.id_comp]`. Establish `a₁` using `tσ.2 _ ((m ≫ P.U.gen.hom.left) ≫ e.hom.left) (𝟙 _) ((P.U.genF F).left ≫ Ψ) (by rw [c₂, hm, Category.id_comp]) (by rw [Category.assoc, h₂, ← Category.assoc, g₁, hm]; simp only [Category.assoc]) (by rw [Category.assoc, h₁, ← Category.assoc, g₂, Category.id_comp]; exact (Category.co …`. Rewrite using `[← Category.assoc, Category.assoc _ Ψ, h₁, ← Category.assoc, g₂, Category.assoc _ e.hom.left, Over.w, Category.assoc m, Over.w, hm, Over.w]`. Conclude with `(congrArg (· ≫ _) (Category.comp_id _)).trans (Over.w (fst (TFK (R := T.V) F) _)))`.
+
+Use `z J₀ JG (J' ((m ≫ P.U.gen.hom.left) ≫ e.hom.left)) hJ₀ hJG (hJ' _)`. Establish `a₂` using `R _ (P.U.genF F).left z J₀ JA hJ₀ hJA`. Establish `a₃` using `rel _ m z (J₀ (((m ≫ P.U.gen.hom.left) ≫ e.hom.left) ≫ I.m1.φ)) (J' ((m ≫ P.U.gen.hom.left) ≫ e.hom.left)) (JG (((m ≫ P.U.gen.hom.left) ≫ e.hom.left) ≫ I.m2.φ)) (JA (m ≫ P.U.gen.hom.left)) (hJ₀ (((m ≫ P.U.gen.hom.left) ≫ e.hom.left) ≫ I.m1.φ)) (hJ' ((m ≫ P.U.gen.hom.left) ≫ e.hom …`. Rewrite `a₂` using `[g₁, ← hm, TranslMove.wv, ← Category.assoc _ e.hom.left, zpow_natCast]`. Rewrite using `[← hm, ← c₂]`.
+
+Establish `alg : ∀ {S : Type} [CommRing S] (n : ℕ) (o w₂ W w₁ : Sˣ) (s h t : S), o * w₂ = W * w₁ → h = (o ^ n).val * t → s * w₁.val ^ n = h * w₂.val ^ n → s = (W ^ n).val * t`. Introduce `S _ n o w₂ W w₁ s h t e₁ e₂ e₃`. Use `(Units.mul_left_inj (w₁ ^ n)).1 ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, ← Units.val_mul, ← mul_pow, ← e₁, mul_pow, Units.val_mul, mul_right_comm, ← e₂, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, e₃]`. Conclude with `alg q _ _ _ _ _ _ _ a₃ a₂ a₁`.
+
+Take `⟨u, s', hu, hs, σ'', k₁, k₂⟩` from `exists_root_of_unity hL P.U hq hW θ (hθ.pt_eq ▸ hp) hθ.pow_eq ⟨σ, key σ hh t₁ tσ R₁, hσ⟩ act hw hf r₀ r₁`. Take `rfl : σ' = σ''` from `FieldBaseChange.sec_ext' P.U.LG.isLB fun z JG hJG => by`. Take `⟨JA, hJA⟩` from `TranslMove.exists_good_pt P.A.isLB z`. Establish `a₁` using `BoxExpansion.isoRel_val (key σ' hh' t₂ tσ' R₂) (𝟙 _) z hJA hJG`. Establish `a₂` using `BoxExpansion.isoRel_val k₁ (𝟙 _) z hJA hJG`.
+
+Use `a₁.trans a₂.symm` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Conclude with `⟨u, s', hu, hs, k₂⟩`.
+-/
 theorem exists_expandsG_of_isSymAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I : IntData Xo c T io y) (P : PELUnif (maximalIdeal T.V) I.G) (F : Type) [Field F] [IsAlgClosed F] [Algebra T.Fr F] (xF : Sp F ⟶ Xo.X), xF = spMap (algebraMap T.Fr F) ≫ (letI := io.toAlgebra; y.x) → ∀ (q : ℕ), 1 ≤ q → ∀ (σ σ' : P.U.toUnifPre.SecGF F q) (hh hh' : LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L (q : ℤ) (ptO Xo xF))) (s t₀ t : Fam P.D.toPre F q) (x : TFK (R := T.V) F ⟶ P.A.A) (b : ptO Xo xF ⟶ Xo.univ.t.G) (p : QkPt P.D.toPre F q) (w : LB.Gen (LB.LinComb P.D.toPre.P.L (DegPre.lineφ P.D.toPre F p.g.b) (DegPre.lineε q))) (ζ : F), SecTieF I P F xF q σ hh → SecTieF I P F xF q σ' hh' → P.U.toUnifPre.ExpandsG F q σ s → IsSymAct Xo.univ.t.G Xo.univ.t.PP q b hh hh' → PtTieF I P F xF x b → P.ToA F q p x → w.IsGen → FinOrd P.D F q p w ζ → PhiRel P.D.toPre F q p w s t₀ → Fam.IsSmul P.D.toPre F ζ t₀ t → ∃ (u : F) (t' : Fam P.D.toPre F q), (∃ m : ℕ, 0 < m ∧ u ^ m = 1) ∧ Fam.IsSmul P.D.toPre F u t t' ∧ P.U.toUnifPre.ExpandsG F q σ' t' := by
   intro E _ _ _ H Dw l Xo c T io y I P F _ _ _ xF hxF q hq σ σ' hh hh' s t₀ t x b p w ζ tσ tσ' hσ
     ⟨_, U, hU, hUa⟩ ⟨r, hr, hr1, hr2⟩ hp hw hf r₀ r₁

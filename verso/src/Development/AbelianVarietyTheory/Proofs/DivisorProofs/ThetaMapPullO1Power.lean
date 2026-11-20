@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.ThetaPullback
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c o _ m n f hodd hm hunit hn hth Y g hg hdet`. Take `⟨N, i, hi, hs⟩` from `Y.proj`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (↥c.F) N`. Use `haveI : IsProper Y.s := by rw [← hs]; infer_instance`. Establish `hvb` using `(GlobalTheory.T.modelSemiAbelian_relDim_cotangent_vectorBundle E H Dw l Xo c Y).2`.
+
+Establish `hO : ((ProjSpace.O1 o n).pull g).IsLB` using `LB.isLB_pull (ProjSpace.O1_isLB o n) g`. Establish `hA : (lbPow ((ProjSpace.O1 o n).pull g) (8 * (n + 1).factorial)).IsLB` using `LB.isLB_linComb hO _ _`. Establish `hB : (lbPow (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) (4 * (n + 1).factorial * (n + 1).factorial)).IsLB` using `LB.isLB_linComb hvb.isLB_det _ _`. Establish `hC : (lbPow (GlobalTheory.FlagMod.detOm Y) (4 * (n + 1).factorial * (n + 1).factorial)).IsLB` using `LB.isLB_linComb hdet _ _`. Establish `hAB` using `GlobalTheory.T.lineBundleIso_of_iso_on_rational_model_components (↥c.F) Y.X Y.s _ _ Y.normal inferInstance inferInstance inferInstance hA hB (fun Ω _ _ M io hio hio' => GlobalTheory.T.theta_map_pull_O1_power_hodge E H Dw l Xo c o m n f hodd hm hunit hn hth Y g hg Ω M io hio hio')`.
+
+Establish `hCB : LBIso (lbPow (GlobalTheory.FlagMod.detOm Y) (4 * (n + 1).factorial * (n + 1).factorial)) (lbPow (GlobalTheory.SiegelTor.hodge Y.t.G (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) (4 * (n + 1).factorial * (n + 1).factorial))` using `GlobalTheory.PowPrimitive.lbIso_linComb (GlobalTheory.T.detInvariantDiff_iso_hodgeLineBundle E H Dw l Xo c Y hdet) _ _`. Conclude with `LBIso.trans hA hB hC hAB hCB.symm`.
+-/
 theorem theta_pull_O1_pow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (o : Type) [CommRing o] (m n : ℕ) (f : Xo.XF c ⟶ PSpace o n), Odd m → 3 ≤ m → IsUnit (m : o) → n + 1 = m ^ (4 * (Module.finrank ℚ E / 2 * (Dw.p + Dw.q))) → ThMap Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m (pullback.fst _ _ : Xo.XF c ⟶ Xo.X) f → ∀ (Y : Model Xo c (RingHom.id c.F)) (g : Y.X ⟶ PSpace o n), Y.j ≫ g = f → (GlobalTheory.FlagMod.detOm Y).IsLB → LBIso (lbPow ((ProjSpace.O1 o n).pull g) (8 * (n + 1).factorial)) (lbPow (GlobalTheory.FlagMod.detOm Y) (4 * (n + 1).factorial * (n + 1).factorial)) := by
   intro E _ _ _ H Dw l Xo c o _ m n f hodd hm hunit hn hth Y g hg hdet
   obtain ⟨N, i, hi, hs⟩ := Y.proj

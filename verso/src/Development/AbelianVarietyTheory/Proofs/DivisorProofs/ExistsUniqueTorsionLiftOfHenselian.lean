@@ -14,6 +14,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `W _ _ S G _ _ hG p N hN x₀ hx₀`. Use `hG.smooth` as an intermediate fact. Set `G'` to `(Over.pullback p).obj G`. Establish `: Smooth G'.hom` using `inferInstanceAs (Smooth (pullback.snd G.hom p))`. Establish `hN' : IsUnit (N : Γ(Sp W, ⊤))`.
+
+Simplify using `using hN.map (Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom`. Establish `: Etale (mulN G' N).left` using `GrpTangent.etale_mulN G' hN'`. Set `T : Over (Sp W)` to `Over.mk (𝟙 (Sp W))`. Set `T₀ : Over (Sp W)` to `Over.mk (spMap (residue W))`. Set `r : T₀ ⟶ T` to `Over.homMk (spMap (residue W)) (by simp [T, T₀])`.
+
+Set `e` to `TorsionLift.ptsEquiv p G T p (Category.id_comp p)`. Set `e₀` to `TorsionLift.ptsEquiv p G T₀ (spMap (residue W) ≫ p) rfl`. Establish `hpow : ∀ {Z : Over (Sp W)} (y : Z ⟶ G'), y ^ N = 1 ↔ y.left ≫ (mulN G' N).left = (1 : Z ⟶ G').left`. Introduce `Z y`. Rewrite using `[← GrpTangent.comp_mulN]`.
+
+Conclude with `⟨fun h => by rw [← Over.comp_left, h], fun h => Over.OverMorphism.ext (by rw [Over.comp_left, h])⟩`. Establish `key : ∀ y₀ : T₀ ⟶ G', y₀ ^ N = 1 → ∃! y : T ⟶ G', y ^ N = 1 ∧ r ≫ y = y₀`. Introduce `y₀ hy₀`. Establish `hone : (1 : T₀ ⟶ G').left = spMap (residue W) ≫ (1 : T ⟶ G').left`. Rewrite using `[← comp_one r, Over.comp_left]`.
+
+Both sides reduce to the same expression. Take `⟨l, ⟨hl₁, hl₂⟩, hl₃⟩` from `existsUnique_lift_of_etale_of_henselian (mulN G' N).left (residue W) residue_surjective y₀.left (1 : T ⟶ G').left (by rw [(hpow y₀).1 hy₀, hone])`. Establish `hlw : l ≫ G'.hom = T.hom`. Rewrite using `[← Over.w (mulN G' N), ← Category.assoc, hl₂]`. Conclude with `Over.w _`.
+
+Use `⟨Over.homMk l hlw, ⟨(hpow _).2 hl₂, Over.OverMorphism.ext hl₁⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨hy₁, hy₂⟩`. Conclude with `Over.OverMorphism.ext (hl₃ y.left ⟨congrArg Over.Hom.left hy₂, (hpow y).1 hy₁⟩)`. Establish `h` using `key (e₀.symm x₀) (by rw [← map_pow, hx₀, map_one])`. Use `(e.toEquiv.existsUnique_congr fun y => ?_).1 h` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `_ ↔ e y ^ N = 1 ∧ _ ≫ (e y).left = _`. Rewrite using `[← map_pow, map_eq_one_iff e e.injective, MulEquiv.eq_symm_apply]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `: (e₀ (r ≫ y)).left = spMap (residue W) ≫ (e y).left`. Rewrite using `[TorsionLift.ptsEquiv_left, TorsionLift.ptsEquiv_left, Over.comp_left, Category.assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[← this]`. Conclude with `⟨fun h => by rw [h], Over.OverMorphism.ext⟩`.
+-/
 theorem existsUnique_torsion_lift_of_henselian : ∀ (W : Type) [CommRing W] [HenselianLocalRing W] (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (p : Sp W ⟶ S) (N : ℕ), IsUnit (N : W) → ∀ x₀ : Over.mk (spMap (residue W) ≫ p) ⟶ G, x₀ ^ N = 1 → ∃! x : Over.mk p ⟶ G, x ^ N = 1 ∧ spMap (residue W) ≫ x.left = x₀.left := by
   intro W _ _ S G _ _ hG p N hN x₀ hx₀
   have := hG.smooth

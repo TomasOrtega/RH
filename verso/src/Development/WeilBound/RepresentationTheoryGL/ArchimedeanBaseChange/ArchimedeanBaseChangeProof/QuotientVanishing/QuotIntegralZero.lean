@@ -50,10 +50,26 @@ def EllFormula2J : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E
     IsFundamentalDomain (ratGL E b).range F₂ μ₂ → IsTest2J φ r → 0 ≤ r → C * (1 + r) ≤ τ →
     cutTr2 μ₁ μ₂ F₁ F₂ τ φ = ellSum2 μ₁ μ₂ φ
 
+/- English proof (translation)
+Apply the tactic sequence `unfold quotIntegral; split_ifs <;> simp`.
+-/
 theorem quotIntegral_zero {G : Type} [Group G] [MeasurableSpace G] (μ : Measure G) (H : Subgroup G) (μH : Measure H) :
     quotIntegral μ H μH (fun _ => (0 : ℂ)) = 0 := by
   unfold quotIntegral; split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `E _ _ _ _ a b`. Take `⟨C₁, h₁⟩` from `hV E a`. Take `⟨C₂, h₂⟩` from `hV E b`. Use `⟨max 0 (max C₁ C₂), fun μ₁ _ μ₂ _ τ r φ d₁ d₂ hφ hτ hd₁ hd₂ hne => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hr : 0 ≤ 1 + r`.
+
+Establish `l₁ : C₁ * (1 + r) ≤ τ` using `le_trans (mul_le_mul_of_nonneg_right ((le_max_left _ _).trans (le_max_right _ _)) hr) hτ`. Establish `l₂ : C₂ * (1 + r) ≤ τ` using `le_trans (mul_le_mul_of_nonneg_right ((le_max_right _ _).trans (le_max_right _ _)) hr) hτ`. Distinguish the cases in `he₁ : IsRegEll d₁`. Establish `he₂ : ¬ IsRegEll d₂` using `fun h => hne ⟨he₁, h⟩`. Rewrite using `[(hS E a b μ₁ μ₂ τ r φ d₁ d₂ hφ).2]`.
+
+Establish `: ∀ x : GA E a, chiT τ x * cutTerm μ₂ τ (fun g => φ (twConj (thetaA E a) x (ratGL E a d₁), g)) d₂ = 0` using `fun x => by`. Rewrite using `[h₂ μ₂ τ r _ d₂ (hφ.test₂ _).1 (fun g hg => (hφ.size _ hg).2) (hφ.test₂ _).2.2 l₂ hd₂ he₂, mul_zero]`. Simplify using `only [this]`. Conclude with `quotIntegral_zero _ _ _`. Rewrite using `[(hS E a b μ₁ μ₂ τ r φ d₁ d₂ hφ).1]`.
+
+Establish `: ∀ y : GA E b, chiT τ y * cutTerm μ₁ τ (fun g => φ (g, twConj (thetaA E b) y (ratGL E b d₂))) d₁ = 0` using `fun y => by`. Rewrite using `[h₁ μ₁ τ r _ d₁ (hφ.test₁ _).1 (fun g hg => (hφ.size _ hg).1) (hφ.test₁ _).2.2 l₁ hd₁ he₁, mul_zero]`. Simplify using `only [this]`. Conclude with `quotIntegral_zero _ _ _`. Establish `h0 : ∀ g, φ g = 0` using `fun g => by`.
+
+Assume the negation of the conclusion as `h`. Use `(hφ.size g h).1` as an intermediate fact. Use `(hZ E a).2.1 g.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (fun x : GA E a × GA E b => chiT τ x.1 * chiT τ x.2 * φ (twConj (thetaA E a) x.1 (ratGL E a d₁), twConj (thetaA E b) x.2 (ratGL E b d₂))) = fun _ => 0`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[h0, mul_zero]`. Rewrite using `[cutTerm2, this]`. Conclude with `quotIntegral_zero _ _ _`.
+-/
 theorem classVanish2_of (hS : SliceTerm) (hV : ClassVanish) (hZ : SizeBasic) : ClassVanish2 := by
   intro E _ _ _ _ a b
   obtain ⟨C₁, h₁⟩ := hV E a
@@ -89,6 +105,21 @@ theorem classVanish2_of (hS : SliceTerm) (hV : ClassVanish) (hZ : SizeBasic) : C
     rw [cutTerm2, this]
     exact quotIntegral_zero _ _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ _ a b`. Take `⟨C₁, h₁⟩` from `hE E a`. Take `⟨C₂, h₂⟩` from `hE E b`. Take `⟨C₃, h₃⟩` from `hV E a b`. Use `⟨max 0 (max C₁ (max C₂ C₃)), le_max_left _ _, fun μ₁ _ μ₂ _ F₁ F₂ τ r φ hF₁ hF₂ hφ hr0 hτ => ?_⟩` and prove the remaining obligations.
+
+Establish `l₁ : C₁ ≤ max 0 (max C₁ (max C₂ C₃))` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `l₂ : C₂ ≤ max 0 (max C₁ (max C₂ C₃))` using `((le_max_left _ _).trans (le_max_right _ _)).trans (le_max_right _ _)`. Establish `l₃ : C₃ ≤ max 0 (max C₁ (max C₂ C₃))` using `((le_max_right _ _).trans (le_max_right _ _)).trans (le_max_right _ _)`. Establish `h1r : (0 : ℝ) ≤ 1 + r` using `by linarith`. Rewrite using `[(hU E a b μ₁ μ₂ F₁ F₂ τ r φ hF₁ hF₂ hφ).2, ellSum2]`.
+
+Use `finsum_congr fun c => ?_` and prove the remaining obligations. Distinguish the cases in `he : IsRegEll (Quot.out c.1) ∧ IsRegEll (Quot.out c.2)`. Rewrite using `[finsum_eq_if, if_pos he, cutTerm2, orbTerm2]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Distinguish the cases in `h0 : φ (twConj (thetaA E a) x.1 (ratGL E a (Quot.out c.1)), twConj (thetaA E b) x.2 (ratGL E b (Quot.out c.2))) = 0`. Simplify using `[h0]`. Establish `hs` using `hφ.size _ h0`. Establish `hx₁ : x.1 ∈ cutSet E a τ`. Use `h₁ τ x.1 _ he.1 (le_trans ?_ hτ)` and prove the remaining obligations.
+
+Establish `a0` using `(hS E a).2.1 (twConj (thetaA E a) x.1 (ratGL E a (Quot.out c.1)))`. Conclude with `mul_le_mul l₁ (by linarith [hs.1]) (by linarith) (le_max_left _ _)`. Establish `hx₂ : x.2 ∈ cutSet E b τ`. Use `h₂ τ x.2 _ he.2 (le_trans ?_ hτ)` and prove the remaining obligations. Establish `a0` using `(hS E b).2.1 (twConj (thetaA E b) x.2 (ratGL E b (Quot.out c.2)))`.
+
+Conclude with `mul_le_mul l₂ (by linarith [hs.2]) (by linarith) (le_max_left _ _)`. Simplify using `[chiT, hx₁, hx₂]`. Rewrite using `[finsum_eq_if, if_neg he]`. Distinguish the cases in `hd : IsRegD (Quot.out c.1) ∧ IsRegD (Quot.out c.2)`. Conclude with `h₃ μ₁ μ₂ τ r φ _ _ hφ (le_trans (mul_le_mul_of_nonneg_right l₃ h1r) hτ) hd.1 hd.2 he`.
+
+Establish `: ∀ x : GA E a × GA E b, φ (twConj (thetaA E a) x.1 (ratGL E a (Quot.out c.1)), twConj (thetaA E b) x.2 (ratGL E b (Quot.out c.2))) = 0` using `fun x => by`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises. Conclude with `⟨(hφ.test₁ _).2.1 _ x.1 h, (hφ.test₂ _).2.1 _ x.2 h⟩`. Simplify using `[cutTerm2, this, quotIntegral]`.
+-/
 theorem ellFormula2_of (hU : Unfold2) (hE : EllTerm) (hV : ClassVanish2) (hS : SizeBasic) : EllFormula2J := by
   classical
   intro E _ _ _ _ a b

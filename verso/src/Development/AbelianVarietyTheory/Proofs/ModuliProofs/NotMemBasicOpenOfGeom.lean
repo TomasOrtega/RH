@@ -24,6 +24,13 @@ def labEquiv (g k : ℕ) : Lab g k ≃+ Ix g k where
   right_inv c := by funext j; simp
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Establish `h₁ : ∀ i : Fin g, ((idx g (.inl i) : Fin (2 * g)) : ℕ) = i` using `fun i => rfl`. Establish `h₂ : ∀ i : Fin g, ((idx g (.inr i) : Fin (2 * g)) : ℕ) = g + i` using `fun i => rfl`. Establish `e₁ : ∀ i j : Fin g, Out.stdSymp g (idx g (.inl i)) (idx g (.inl j)) = 0` using `fun i j => by`. Simplify using `only [Out.stdSymp, h₁]; rw [if_neg (by omega), if_neg (by omega)]`. Establish `e₂ : ∀ i j : Fin g, Out.stdSymp g (idx g (.inr i)) (idx g (.inr j)) = 0` using `fun i j => by`.
+
+Simplify using `only [Out.stdSymp, h₂]; rw [if_neg (by omega), if_neg (by omega)]`. Establish `e₃ : ∀ i j : Fin g, Out.stdSymp g (idx g (.inl i)) (idx g (.inr j)) = if i = j then 1 else 0` using `fun i j => by`. Simplify using `only [Out.stdSymp, h₁, h₂, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `e₄ : ∀ i j : Fin g, Out.stdSymp g (idx g (.inr i)) (idx g (.inl j)) = if i = j then -1 else 0` using `fun i j => by`.
+
+Simplify using `only [Out.stdSymp, h₁, h₂, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Rewrite using `[← (idx g).sum_comp]`. Repeatedly rewrite using `[← (idx g).sum_comp]`. Simplify using `[Fintype.sum_sum_type, e₁, e₂, e₃, e₄, labEquiv, omegaLab, Finset.sum_sub_distrib, sub_eq_add_neg, Finset.sum_add_distrib, add_comm]`.
+-/
 theorem sum_stdSymp {g k : ℕ} (a c : Lab g k) :
     ∑ i, ∑ j, (Out.stdSymp g i j : ZMod k) * (labEquiv g k a i * labEquiv g k c j) = omegaLab a c := by
   have h₁ : ∀ i : Fin g, ((idx g (.inl i) : Fin (2 * g)) : ℕ) = i := fun i => rfl
@@ -43,6 +50,9 @@ theorem sum_stdSymp {g k : ℕ} (a c : Lab g k) :
   simp [Fintype.sum_sum_type, e₁, e₂, e₃, e₄, labEquiv, omegaLab, Finset.sum_sub_distrib, sub_eq_add_neg,
     Finset.sum_add_distrib, add_comm]
 
+/- English proof (translation)
+Rewrite using `[← zpow_natCast, zpow_eq_zpow_iff_modEq]`. Use `Int.ModEq.of_dvd (Int.natCast_dvd_natCast.2 (orderOf_dvd_of_pow_eq_one hu)) ?_` and prove the remaining obligations. Rewrite using `[← ZMod.intCast_eq_intCast_iff, h]`. Simplify using the standard rewrite rules.
+-/
 theorem zpow_eq_pow_val {U : Type} [CommGroup U] {u : U} {k : ℕ} [NeZero k] (hu : u ^ k = 1) {z : ℤ} {w : ZMod k}
     (h : (z : ZMod k) = w) : u ^ z = u ^ w.val := by
   rw [← zpow_natCast, zpow_eq_zpow_iff_modEq]
@@ -53,10 +63,16 @@ section Weil
 open Out
 variable {S : Scheme.{0}} (P : PolAV S) {k : ℕ} {T : Over S}
 
+/- English proof (translation)
+The claim follows from `have lft := (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube GlobalTheory.AbLaw.CubeAssembly.cube_gen).1).2.2 CommutatorPairing.exists_weilIs globalFns_holds P.isAb P.isLB (lft S P k T x hx) (lft S P k T y hy)`.
+-/
 theorem exists_weil {x y : T ⟶ P.A} (hx : x ^ k = 1) (hy : y ^ k = 1) : ∃ c, WeilIs P.A P.L k x y c :=
   have lft := (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube GlobalTheory.AbLaw.CubeAssembly.cube_gen).1).2.2
   CommutatorPairing.exists_weilIs globalFns_holds P.isAb P.isLB (lft S P k T x hx) (lft S P k T y hy)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_weil P (one_pow k) hy`. Establish `h` using `weilIs_mul_left globalFns_holds S P k T _ _ _ _ _ hc hc`. Rewrite `h` using `[_root_.mul_one]`. Use `CommutatorPairing.weilIs_unique globalFns_holds P.isAb P.isLB h hc` as an intermediate fact. Rewrite `hc` using `[mul_eq_left.1 this]`. Then use the resulting hypothesis.
+-/
 theorem weil_one {y : T ⟶ P.A} (hy : y ^ k = 1) : WeilIs P.A P.L k 1 y 1 := by
   obtain ⟨c, hc⟩ := exists_weil P (one_pow k) hy
   have h := weilIs_mul_left globalFns_holds S P k T _ _ _ _ _ hc hc
@@ -64,6 +80,13 @@ theorem weil_one {y : T ⟶ P.A} (hy : y ^ k = 1) : WeilIs P.A P.L k 1 y 1 := by
   have := CommutatorPairing.weilIs_unique globalFns_holds P.isAb P.isLB h hc
   rwa [mul_eq_left.1 this] at hc
 
+/- English proof (translation)
+Use `letI := P.isAb.comm`. Establish `hp : ∀ i n, WeilIs P.A P.L k (x i ^ n) y (c i ^ n)` using `fun i n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using weil_one P hy`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`.
+
+Conclude with `weilIs_mul_left globalFns_holds S P k T _ _ _ _ _ ih (h i)`. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simpa using weil_one P hy`. Consider the case `insert i F hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`.
+
+Conclude with `weilIs_mul_left globalFns_holds S P k T _ _ _ _ _ (hp i _) ih`.
+-/
 theorem weil_prod {I : Type} (F : Finset I) {x : I → (T ⟶ P.A)} {y : T ⟶ P.A} (hy : y ^ k = 1) {c : I → Γ(T.left, ⊤)ˣ}
     (h : ∀ i, WeilIs P.A P.L k (x i) y (c i)) (a : I → ℕ) :
     letI := P.isAb.comm
@@ -80,14 +103,27 @@ theorem weil_prod {I : Type} (F : Finset I) {x : I → (T ⟶ P.A)} {y : T ⟶ P
     rw [Finset.prod_insert hi, Finset.prod_insert hi]
     exact weilIs_mul_left globalFns_holds S P k T _ _ _ _ _ (hp i _) ih
 
+/- English proof (translation)
+Rewrite using `[linComb, List.prod_ofFn]`.
+-/
 theorem linComb_eq {A : Over S} [GrpObj A] [IsCommMonObj A] {n : ℕ} (y : Fin n → (T ⟶ A)) (a : Fin n → ℕ) :
     linComb y a = ∏ i, y i ^ a i := by
   rw [linComb, List.prod_ofFn]
 
+/- English proof (translation)
+The claim follows from `ThetaObjPull.map_linComb (MonoidHom.mk' (fun x : T ⟶ A => f ≫ x) (fun x y => MonObj.comp_mul f x y)) y a`.
+-/
 theorem comp_linComb {A : Over S} [GrpObj A] {T' : Over S} (f : T' ⟶ T) {n : ℕ} (y : Fin n → (T ⟶ A)) (a : Fin n → ℕ) :
     f ≫ linComb y a = linComb (fun i => f ≫ y i) a :=
   ThetaObjPull.map_linComb (MonoidHom.mk' (fun x : T ⟶ A => f ≫ x) (fun x y => MonObj.comp_mul f x y)) y a
 
+/- English proof (translation)
+Use `letI := P.isAb.comm`. Establish `h₁` using `fun j => CommPairing.weilIs_symm P.isLB (weil_prod P Finset.univ (hp j) (fun i => h i j) fun i => (labEquiv g k a i).val)`. Establish `h₂` using `CommPairing.weilIs_symm P.isLB (weil_prod P Finset.univ (by rw [← linComb_eq]; exact ThetaLocal.linComb_pow_eq_one hp _) h₁ fun i => (labEquiv g k c i).val)`. Rewrite using `[linComb_eq, linComb_eq]`. Use `h₂ using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← zpow_eq_pow_val hu (z := ∑ j, ∑ i, stdSymp g i j * ((labEquiv g k a i).val * (labEquiv g k c j).val : ℕ)) (by rw [← sum_stdSymp, Finset.sum_comm]; simp)]`. Establish `hs : ∀ (F : Finset (Fin (2 * g))) (f : Fin (2 * g) → ℤ), u ^ ∑ i ∈ F, f i = ∏ i ∈ F, u ^ f i` using `fun F f => map_prod (zpowersHom _ u) (fun i => Multiplicative.ofAdd (f i)) F ▸ rfl`. Simplify using `only [inv_pow, Finset.prod_inv_distrib, inv_inv, hs]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow]`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, zpow_mul, zpow_natCast]`.
+-/
 theorem weil_linComb {g : ℕ} [NeZero k] {p : Fin (2 * g) → (T ⟶ P.A)} (hp : ∀ i, p i ^ k = 1) {u : Γ(T.left, ⊤)ˣ}
     (hu : u ^ k = 1) (h : ∀ i j, WeilIs P.A P.L k (p i) (p j) (u ^ stdSymp g i j)) (a c : Lab g k) :
     WeilIs P.A P.L k (linComb p fun i => (labEquiv g k a i).val) (linComb p fun i => (labEquiv g k c i).val)
@@ -109,6 +145,11 @@ theorem weil_linComb {g : ℕ} [NeZero k] {p : Fin (2 * g) → (T ⟶ P.A)} (hp 
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [← pow_mul, zpow_mul, zpow_natCast]
 
+/- English proof (translation)
+Introduce `hu`. Set `K` to `AlgebraicClosure (X.residueField p)`. Set `x : Sp K ⟶ X` to `spMap (algebraMap (X.residueField p) K) ≫ X.fromSpecResidueField p`. Establish `hx : x (IsLocalRing.closedPoint K) = p` using `Scheme.fromSpecResidueField_apply p _`. Establish `h₂ : IsLocalRing.closedPoint K ∈ x ⁻¹ᵁ X.basicOpen d` using `by show x _ ∈ X.basicOpen _`.
+
+Rewrite using `[hx]` and apply the resulting hypothesis. Rewrite `h₂` using `[Scheme.preimage_basicOpen_top]`. Use `erw [h K x, Scheme.basicOpen_zero] at h₂`. Conclude with `h₂`.
+-/
 theorem notMem_basicOpen_of_geom {X : Scheme.{0}} {d : Γ(X, ⊤)}
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ X), x.appTop.hom d = 0) (p : X) : p ∉ X.basicOpen d := by
   intro hu
@@ -122,6 +163,17 @@ theorem notMem_basicOpen_of_geom {X : Scheme.{0}} {d : Γ(X, ⊤)}
   erw [h K x, Scheme.basicOpen_zero] at h₂
   exact h₂
 
+/- English proof (translation)
+Use `unit_ext fun p _ => ?_` and prove the remaining obligations. Use `set φ : Γ(X, ⊤) →+* X.presheaf.stalk p := (X.presheaf.germ ⊤ p trivial).hom`. Establish `key : φ c = φ c'`. Establish `h₁ : IsLocalRing.residue _ (φ c) = IsLocalRing.residue _ (φ c')`. Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub, IsLocalRing.residue_eq_zero_iff]`.
+
+Conclude with `fun hu => notMem_basicOpen_of_geom (fun K _ _ x => by rw [map_sub, h K x, sub_self]) p ((X.mem_basicOpen_top _ p).2 hu)`. Use `set z := φ ((c * c'⁻¹ : Γ(X, ⊤)ˣ) : Γ(X, ⊤))`. Establish `hz : z ^ k = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, mul_pow, inv_pow, hc, hc']`. Simplify using the standard rewrite rules.
+
+Establish `hz' : z * φ c' = φ c` using `by rw [← map_mul]; simp`. Establish `hr : IsLocalRing.residue _ z = 1`. Establish `hne : IsLocalRing.residue _ (φ c') ≠ 0` using `((c'.isUnit.map φ).map _).ne_zero`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← map_mul, hz', h₁, _root_.one_mul]`.
+
+Establish `hs : IsUnit (∑ i ∈ Finset.range k, z ^ i)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Simplify `((hk.map φ).map (IsLocalRing.residue _)).ne_zero` using `[hr]`. Establish `: z = 1` using `sub_eq_zero.1 (hs.mul_right_eq_zero.1 (by rw [geom_sum_mul, hz, sub_self]))`. Rewrite using `[← hz', this, _root_.one_mul]`.
+
+Use `ext`. Rewrite using `[gm_val (𝟙 X) p ⊤ trivial, gm_val (𝟙 X) p ⊤ trivial]`. Conclude with `key`.
+-/
 theorem unit_eq_of_geom {X : Scheme.{0}} (hk : IsUnit (k : Γ(X, ⊤))) {c c' : Γ(X, ⊤)ˣ} (hc : c ^ k = 1) (hc' : c' ^ k = 1)
     (h : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ X), x.appTop.hom c = x.appTop.hom c') : c = c' := by
   refine unit_ext fun p _ => ?_
@@ -153,35 +205,59 @@ end Weil
 section Objects
 variable {o : Type} [CommRing o] {S S' : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o} {s' : S' ⟶ Sp o}
 
+/- English proof (translation)
+Use `ext`. Simplify using `[unitS]`. Both sides reduce to the same expression.
+-/
 theorem unitS_pull {T : Scheme.{0}} (x : T ⟶ S) (u : oˣ) :
     Units.map x.appTop.hom.toMonoidHom (unitS s u) = unitS (x ≫ s) u := by
   ext; simp [unitS]; rfl
 
+/- English proof (translation)
+Use `ext`. Conclude with `congrArg (fun f => f.hom u) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)).symm`.
+-/
 theorem unitS_spMap {K : Type} [CommRing K] (β : o →+* K) (u : oˣ) :
     unitS (spMap β) u = unitOn (Units.map β.toMonoidHom u) := by
   ext
   exact congrArg (fun f => f.hom u) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β)).symm
 
+/- English proof (translation)
+The claim follows from `map_pow _ _ _`.
+-/
 theorem unitOn_pow {K : Type} [CommRing K] (u : Kˣ) (n : ℕ) : unitOn (u ^ n) = unitOn u ^ n := map_pow _ _ _
 
+/- English proof (translation)
+Rewrite using `[← unitOn_pow, show Units.map β.toMonoidHom b.ζ ^ k = 1 from Units.ext (b.prim K β).pow_eq_one]`. Conclude with `map_one _`.
+-/
 theorem unitOn_root (K : Type) [Field K] (β : o →+* K) : unitOn (Units.map β.toMonoidHom b.ζ) ^ k = 1 := by
   rw [← unitOn_pow, show Units.map β.toMonoidHom b.ζ ^ k = 1 from Units.ext (b.prim K β).pow_eq_one]
   exact map_one _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩`.
+-/
 theorem exists_spMap {R : Type} [CommRing R] (x : Sp R ⟶ Sp o) : ∃ β : o →+* R, x = spMap β :=
   ⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩
 
+/- English proof (translation)
+The claim follows from `toUnit_unique _ _`.
+-/
 theorem homMk_eq {T : Scheme.{0}} (x : T ⟶ S) :
     (Over.homMk x (by simp) : Over.mk x ⟶ Out.baseOver S) = toUnit (Over.mk x) := toUnit_unique _ _
 
 variable [NeZero k]
 
+/- English proof (translation)
+Use `letI := t.ab.comm`. Simplify using `only [TObj.lab, linComb_eq, ← Finset.prod_mul_distrib, ← pow_add]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ZMod.val_add, ← pow_eq_pow_mod _ (t.torsion i)]`.
+-/
 theorem lab_add (t : TObj g k J b s) (a c : Ix g k) : t.lab (a + c) = t.lab a * t.lab c := by
   letI := t.ab.comm
   simp only [TObj.lab, linComb_eq, ← Finset.prod_mul_distrib, ← pow_add]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [Pi.add_apply, ZMod.val_add, ← pow_eq_pow_mod _ (t.torsion i)]
 
+/- English proof (translation)
+Use `letI := t.ab.comm`. Rewrite using `[TObj.lab, linComb_eq, Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ (t.torsion i), pow_one]`.
+-/
 theorem lab_single (t : TObj g k J b s) (i : Fin (2 * g)) : t.lab (Pi.single i 1) = t.pt i := by
   letI := t.ab.comm
   rw [TObj.lab, linComb_eq, Finset.prod_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same,
@@ -216,6 +292,15 @@ def toTh (t : TObj g k J b s) : ThObj g k J b.ζ s where
   endo := t.act
   endo_hom := t.hom
 
+/- English proof (translation)
+Introduce `t t' h`. Establish `hp : ∀ i, HEq (t.pt i) (t'.pt i)` using `fun i => by`. Establish `: ∀ u : TObj g k J b s, u.pt i = (toTh u).lev ((labEquiv g k).symm (Pi.single i 1))` using `fun u => by`. Simplify using `[toTh, lab_single]`. Establish `hh : ∀ (X Y : ThObj g k J b.ζ s) (a), X = Y → HEq (X.lev a) (Y.lev a)` using `by rintro _ _ _ rfl; rfl`.
+
+Conclude with `(heq_of_eq (this t)).trans ((hh _ _ _ h).trans (heq_of_eq (this t')).symm)`. Establish `ha : HEq (toTh t).endo (toTh t').endo` using `by rw [h]`. Establish `hP : t.pol = t'.pol` using `congrArg ThObj.P h`. Consider the cases of `t`. Consider the cases of `t'`.
+
+Simplify using `only [TObj.pol, Out.PolAV.mk.injEq] at hP`. Take `⟨rfl, h₁, -, h₂⟩` from `hP`. Consider the cases of `h₁`. Consider the cases of `h₂`. Take `rfl` from `funext fun i => eq_of_heq (hp i)`.
+
+Consider the cases of `ha`. Both sides reduce to the same expression.
+-/
 theorem toTh_injective : Function.Injective (toTh : TObj g k J b s → ThObj g k J b.ζ s) := by
   intro t t' h
   have hp : ∀ i, HEq (t.pt i) (t'.pt i) := fun i => by
@@ -233,6 +318,23 @@ theorem toTh_injective : Function.Injective (toTh : TObj g k J b s → ThObj g k
   cases ha
   rfl
 
+/- English proof (translation)
+Introduce and unpack `⟨P, rfl, lev, hadd, geom, endo, hendo⟩`. Use `letI := P.isAb.comm`. Set `ℓ : Multiplicative (Lab P.g k) →* (𝟙_ (Over S) ⟶ P.A)` to `MonoidHom.mk' (fun a => lev a.toAdd) fun a c => hadd _ _`. Establish `hℓ : ∀ a, lev a = ℓ (Multiplicative.ofAdd a)` using `fun _ => rfl`. Set `pt : Fin (2 * P.g) → (Out.baseOver S ⟶ P.A)` to `fun i => lev ((labEquiv P.g k).symm (Pi.single i 1))`.
+
+Establish `tors : ∀ a, lev a ^ k = 1` using `fun a => by`. Rewrite using `[hℓ, ← map_pow, ← ofAdd_nsmul, show k • a = 0 from by funext i; simp, ofAdd_zero, map_one]`. Establish `comb : ∀ c : Ix P.g k, Out.linComb pt (fun i => (c i).val) = lev ((labEquiv P.g k).symm c)` using `fun c => by`. Establish `: c = ∑ i, (c i).val • Pi.single i 1`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[-ZMod.natCast_val, Finset.sum_apply, Pi.single_apply, ZMod.natCast_zmod_val]`. Use `conv_rhs => rw [this, map_sum, hℓ, ofAdd_sum, map_prod]`. Rewrite using `[linComb_eq]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [map_nsmul, ofAdd_nsmul, map_pow]; rfl`. Use `⟨{ A := P.A, ab := P.isAb, dim := P.smoothDim, L := P.L, isLB := P.isLB, rigid := P.rigid, sym := P.sym ample := P.ample, ktriv := P.ktriv, pt := pt, torsion := fun i => tors _, bij := fun K _ _ x y hy => ?_ pairing := fun i j => ?_, act := endo, hom := hendo }, ?_⟩` and prove the remaining obligations.
+
+Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨h₁, h₂, -⟩` from `geom K x β hβ`. Simplify using `only [← comp_linComb, comb, homMk_eq]`. Take `⟨a, ha⟩` from `h₂ y hy`. Conclude with `⟨labEquiv _ _ a, by simpa using ha, fun c hc => by`.
+
+Rewrite using `[← h₁ _ _ (hc.trans ha.symm), AddEquiv.apply_symm_apply]⟩`. Take `⟨c, hc⟩` from `exists_weil P (tors ((labEquiv P.g k).symm (Pi.single i 1))) (tors ((labEquiv P.g k).symm (Pi.single j 1)))`. Establish `hck : c ^ k = 1`. Establish `h` using `weil_prod P (Finset.univ : Finset Unit) (tors _) (fun _ => hc) (fun _ => k)`. Simplify using `only [Finset.univ_unique, Finset.prod_singleton, tors] at h`.
+
+Conclude with `CommutatorPairing.weilIs_unique globalFns_holds P.isAb P.isLB h (weil_one P (tors _))`. Establish `hk : IsUnit (k : Γ(S, ⊤))`. Simplify using `using (b.unit.map (Scheme.ΓSpecIso (CommRingCat.of o)).inv.hom).map s.appTop.hom`. Establish `: c = unitS s b.ζ ^ Out.stdSymp P.g i j`. Use `unit_eq_of_geom (X := S) hk hck (by rw [← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζ, one_zpow]) fun K _ _ x => ?_` and prove the remaining obligations.
+
+Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Establish `h` using `CommutatorPairing.weilIs_unique globalFns_holds P.isAb P.isLB (CommPairing.weilIs_pull globalFns_holds P.isAb P.isLB (toUnit (Over.mk x)) hc) ((geom K x β hβ).2.2 _ _)`. Establish `hu` using `unitOn_root (b := b) K β`. Rewrite `h` using `[unitOn_pow, ← zpow_eq_pow_val hu (z := Out.stdSymp P.g i j) (by rw [← sum_stdSymp]; simp [Pi.single_apply]), ← unitS_spMap, ← hβ, ← unitS_pull, ← map_zpow]`. Conclude with `congrArg Units.val h`.
+
+Conclude with `this ▸ hc`. Simplify using `only [toTh, TObj.lab, comb, AddEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem toTh_surjective (hζ : unitS s b.ζ ^ k = 1) :
     Function.Surjective (toTh : TObj g k J b s → ThObj g k J b.ζ s) := by
   rintro ⟨P, rfl, lev, hadd, geom, endo, hendo⟩
@@ -288,9 +390,17 @@ section Maps
 variable {o : Type} [CommRing o] {S S' : Scheme.{0}} {g k : ℕ} {J : Type} {b : TBase o k} {s : S ⟶ Sp o} {s' : S' ⟶ Sp o}
   [NeZero k]
 
+/- English proof (translation)
+The claim follows from `congrArg t.lab (AddEquiv.apply_symm_apply _ c)`.
+-/
 theorem toTh_lev (t : TObj g k J b s) (c : Ix g k) : (toTh t).lev ((labEquiv g k).symm c) = t.lab c :=
   congrArg t.lab (AddEquiv.apply_symm_apply _ c)
 
+/- English proof (translation)
+Use `⟨fun H a => ?_, fun H i => by` and prove the remaining obligations. Use `H ((labEquiv g k).symm (Pi.single i 1))` as an intermediate fact. Simplify using `only [toTh_lev, lab_single] at this`. Conclude with `this⟩`. Establish `e` using `ThetaObjPull.map_linComb (pushHom h (Out.baseOver S')) t'.pt fun i => (labEquiv g k a i).val`.
+
+Establish `e'` using `comp_linComb (ThetaObjPull.toBase f) t.pt fun i => (labEquiv g k a i).val`. Establish `e'' : (fun i => pushHom h (Out.baseOver S') (t'.pt i)) = fun i => ThetaObjPull.toBase f ≫ t.pt i`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (H i)`. Rewrite `e` using `[e'', ← e']`. Conclude with `congrArg (fun z => z.left) e`.
+-/
 theorem level_iff {t' : TObj g k J b s'} {t : TObj g k J b s} {f : S' ⟶ S} {φ : t'.A.left ⟶ t.A.left}
     (h : IsGrpPullback t'.A t.A f φ) :
     (∀ i, (t'.pt i).left ≫ φ = f ≫ (t.pt i).left) ↔ ∀ a, ((toTh t').lev a).left ≫ φ = f ≫ ((toTh t).lev a).left := by
@@ -307,6 +417,9 @@ theorem level_iff {t' : TObj g k J b s'} {t : TObj g k J b s} {f : S' ⟶ S} {φ
 
 def forgetEnd (t : TObj g k J b s) : TObj g k PEmpty b s := { t with act := PEmpty.elim, hom := fun j => j.elim }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨φ, h₀, h₁, h₂, h₃⟩ => ⟨h₀, φ, h₁, h₂, (level_iff h₁).2 h₃, fun j => j.elim⟩, fun ⟨h₀, φ, h₁, h₂, h₃, _⟩ => ⟨φ, h₀, h₁, h₂, (level_iff (t' := t') (t := t) h₁).1 h₃⟩⟩`.
+-/
 theorem isPB₀_iff (t' : TObj g k J b s') (t : TObj g k J b s) (f : S' ⟶ S) :
     IsPB₀ (toTh t') (toTh t) f ↔ f ≫ s = s' ∧ TMap (forgetEnd t') (forgetEnd t) f :=
   ⟨fun ⟨φ, h₀, h₁, h₂, h₃⟩ => ⟨h₀, φ, h₁, h₂, (level_iff h₁).2 h₃, fun j => j.elim⟩,
@@ -317,6 +430,19 @@ end Maps
 section Cosets
 variable {g n N' : ℕ} {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `⟨fun H => ?_, ?_⟩` and prove the remaining obligations. Take `⟨r, rfl⟩` from `h`. Establish `hn : n ≠ 0` using `left_ne_zero_of_mul hN`. Rewrite using `[Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hn)]`. Establish `key : ∀ i, ∃ d : ZMod ((n * r) ^ 2), a i = c i + r • d` using `fun i => by`.
+
+Rewrite `H` using `[SameCoset, smul_smul]`. Establish `Hi` using `congrFun H i`. Rewrite `Hi` using `[Pi.smul_apply, nsmul_eq_mul, Pi.sub_apply, Pi.zero_apply]`. Take `⟨z, hz⟩` from `ZMod.intCast_surjective (a i - c i)`. Establish `h0 : (((n * (n * r) : ℕ) * z : ℤ) : ZMod ((n * r) ^ 2)) = 0`.
+
+Rewrite using `[Int.cast_mul, Int.cast_natCast, hz]`. Conclude with `Hi`. Rewrite `h0` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `h2 : ((n * (n * r) : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast mul_ne_zero hn hN`. Take `⟨d, rfl⟩ : (r : ℤ) ∣ z` from `(mul_dvd_mul_iff_left h2).1 (by`.
+
+Rewrite using `[show ((n * (n * r) : ℕ) : ℤ) * r = (((n * r) ^ 2 : ℕ) : ℤ) by push_cast; ring])` and apply the resulting hypothesis. Use `⟨(d : ZMod _), ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Move the coercions through the operations in `at hz`. Take the linear combination `-hz`.
+
+Use `choose d hd using key`. Conclude with `⟨d, funext hd⟩`. Introduce and unpack `⟨d, rfl⟩`. Rewrite using `[SameCoset, add_sub_cancel_left, smul_smul, smul_smul, show n * N' * (N' / n) = N' ^ 2 by`. Rewrite using `[mul_right_comm, Nat.mul_div_cancel' h, sq]]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[-Nat.cast_pow]`.
+-/
 theorem sameCoset_iff (h : n ∣ N') (hN : N' ≠ 0) (a c : Lab g (N' ^ 2)) :
     SameCoset n N' a c ↔ ∃ d, a = c + (N' / n) • d := by
   refine ⟨fun H => ?_, ?_⟩
@@ -343,6 +469,11 @@ theorem sameCoset_iff (h : n ∣ N') (hN : N' ≠ 0) (a c : Lab g (N' ^ 2)) :
       rw [mul_right_comm, Nat.mul_div_cancel' h, sq]]
     funext i; simp [-Nat.cast_pow]
 
+/- English proof (translation)
+Simplify using `only [sameCoset_iff h hN]`. Use `⟨fun H c => ?_, fun H a => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `H (labEquiv g _ c)`. Conclude with `⟨_, ⟨(labEquiv g _).symm d, rfl⟩, by simpa only [map_add, map_nsmul, AddEquiv.apply_symm_apply] using hd⟩`. Take `⟨_, ⟨d, rfl⟩, hd⟩` from `H ((labEquiv g _).symm a)`.
+
+Conclude with `⟨labEquiv g _ d, by simpa only [map_add, map_nsmul, AddEquiv.apply_symm_apply] using hd⟩`.
+-/
 theorem coset_iff (h : n ∣ N') (hN : N' ≠ 0) (v : Ix g (N' ^ 2) → R) (q : Ideal R) :
     Coset n N' v q ↔ ∀ c, ∃ a, SameCoset n N' a c ∧ v (labEquiv g _ a) ∉ q := by
   simp only [sameCoset_iff h hN]
@@ -360,9 +491,15 @@ variable {o : Type} [CommRing o] {S S' : Scheme.{0}} {g N' : ℕ} {J : Type} {b 
 
 def toClass (C : TObj g (N' ^ 2) J b (spMap em) → Prop) : CClass g N' J b.ζ em := toTh '' {t | C t}
 
+/- English proof (translation)
+The claim follows from `(Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom h)).symm`.
+-/
 theorem spMap_comp {A B D : Type} [CommRing A] [CommRing B] [CommRing D] (f : A →+* B) (h : B →+* D) :
     spMap h ≫ spMap f = spMap (h.comp f) := (Spec.map_comp (CommRingCat.ofHom f) (CommRingCat.ofHom h)).symm
 
+/- English proof (translation)
+The claim follows from `congrArg (fun z => z.hom) (Spec.map_injective e)`.
+-/
 theorem spMap_injective {A B : Type} [CommRing A] [CommRing B] {f h : A →+* B} (e : spMap f = spMap h) : f = h :=
   congrArg (fun z => z.hom) (Spec.map_injective e)
 

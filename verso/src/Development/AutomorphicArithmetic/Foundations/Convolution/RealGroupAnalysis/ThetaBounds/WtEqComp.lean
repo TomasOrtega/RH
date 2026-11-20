@@ -7,6 +7,9 @@ open scoped Classical
 
 set_option synthInstance.maxSize 1000
 
+/- English proof (translation)
+Use function extensionality and compare the values at `v`. Distinguish the cases in `h : finPartPi v ∈ K`. Simplify using `[wt, splitEquivPi_apply, h]`. Simplify using `[wt, splitEquivPi_apply, h]`.
+-/
 private theorem wt_eq_comp {F : Type} [Field F] [NumberField F]
     (K : Set (Fin 4 → FiniteAdeleRing (𝓞 F) F)) (N : ℕ) :
     wt (F := F) K N =
@@ -17,6 +20,11 @@ private theorem wt_eq_comp {F : Type} [Field F] [NumberField F]
   · simp [wt, splitEquivPi_apply, h]
   · simp [wt, splitEquivPi_apply, h]
 
+/- English proof (translation)
+Introduce `F _ _`. Use `⟨Module.finrank ℝ (Fin 4 → mixedEmbedding.mixedSpace F) + 1, fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[wt_eq_comp, measurePreserving_splitEquivPi.integrable_comp_emb (splitEquivPi F (Fin 4)).measurableEmbedding]`. Use `Integrable.mul_prod (f := fun x : Fin 4 → mixedEmbedding.mixedSpace F => ((1 + ‖x‖) ^ (Module.finrank ℝ (Fin 4 → mixedEmbedding.mixedSpace F) + 1))⁻¹) (g := fun y => K.indicator (fun _ => (1 : ℝ)) y) ?_ ?_` and prove the remaining obligations. Establish `h` using `integrable_one_add_norm (E := Fin 4 → mixedEmbedding.mixedSpace F) (μ := mixedMeasurePi F) (r := ((Module.finrank ℝ (Fin 4 → mixedEmbedding.mixedSpace F) + 1 : ℕ) : ℝ)) (by push_cast; linarith)`.
+
+Use `h.congr (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `hx : (0 : ℝ) ≤ 1 + ‖x‖` using `by positivity`. Simplify using `only [Real.rpow_neg hx, Real.rpow_natCast]`. Conclude with `(integrable_indicator_iff hK.measurableSet).2 (integrableOn_const hK.measure_lt_top.ne)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.wtInt :
     ∀ (F : Type) [Field F] [NumberField F], WtInt F := by
   intro F _ _

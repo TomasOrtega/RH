@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.PlaceDichotomy
 
+/- English proof (translation)
+Introduce `D v f hf`. Take `⟨ε, ⟨α, hεα, hα1, hα0⟩, rfl⟩` from `hf`. Use `haveI := v.isMaximal`. Take `⟨⟨P, hPp, hPo⟩⟩` from `v.asIdeal.nonempty_primesOver (S := 𝓞 D.host.E)`. Set `w : HeightOneSpectrum (𝓞 D.host.E)` to `⟨P, hPp, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`.
+
+Establish `hw : w.under (𝓞 D.host.F) = v` using `HeightOneSpectrum.ext hPo.over.symm`. Break down `GlobalTheory.LPositivity.split_or_inert D w with hs | hi` into its components or cases. Use `left`. Rewrite `hs` using `[hw]`. Take `⟨τ, -⟩` from `GlobalTheory.LFun.SplitChart.exists_splitPrime_eq (GlobalTheory.AdelicU.isCMExt_host D) hs hw`.
+
+Use `⟨GlobalTheory.EmbChart.idem τ, GlobalTheory.EmbChart.isSplitIdem_idem τ, ?_⟩` and prove the remaining obligations. Establish `hα : α = GlobalTheory.AdelicU.singleFin v 1`. Use `FiniteAdeleRing.ext _ fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F u α = evalV D.host.F u (GlobalTheory.AdelicU.singleFin v 1)`. Distinguish the cases in `e : u = v`.
+
+Substitute `e` using the available equality. Rewrite using `[hα1, GlobalTheory.AdelicU.evalV_singleFin_self]`. Rewrite using `[hα0 u e, GlobalTheory.AdelicU.evalV_singleFin_ne e]`. Rewrite using `[GlobalTheory.EmbChart.cA_idem, GlobalTheory.EmbChart.idem, ← LinearMap.map_add, add_sub_cancel, hεα, hα]`. Both sides reduce to the same expression.
+
+Use `right`. Conclude with `⟨w, hw ▸ hi⟩`.
+-/
 theorem split_or_inert_idem : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : Formalism.L2.Theta.AE D),
     IsFinIdem D v f → (∃ e, Formalism.L2.Theta.IsSplitIdem D e ∧ e + Formalism.L2.Theta.cA D e = f) ∨
       (∃ w : HeightOneSpectrum (𝓞 D.host.E), Formalism.UG.IsInertAt D.host.F D.host.E v w) := by

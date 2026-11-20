@@ -9,6 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
+/- English proof (translation)
+Introduce `O R _ _ _ _ _ _ _ _ hCL a h k ha hara hdim p hp q hq`. Use `haveI : IsNoetherianRing R := hCL.noeth`. Conclude with `chain a (k : WithBot ℕ∞) ((bridge a _).2 (clConn hCL a h k ha hara hdim)) p hp q hq`.
+-/
 theorem UpperTheory.V.AlgebraTools.Conn.clChain :
     ∀ {O R : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
       [CommRing R] [IsLocalRing R] [Algebra O R] [IrreducibleSpace (PrimeSpectrum R)], UpperTheory.V.CA.IsCL O R → ∀ (a : Ideal R) (h k : ℕ), a ≠ ⊤ →

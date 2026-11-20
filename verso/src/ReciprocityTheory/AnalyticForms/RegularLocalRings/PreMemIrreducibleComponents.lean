@@ -13,6 +13,11 @@ variable {α : Type*} [TopologicalSpace α]
 def compsH (T : Set α) : Set (Set α) :=
   {C | Maximal (fun C => IsIrreducible C ∧ C ⊆ T) C}
 
+/- English proof (translation)
+Rewrite `hC`, the goal using `[isPreirreducible_iff_isClosed_union_isClosed]`. Introduce `z₁ z₂ h₁ h₂ hsub`. Take `⟨Z₁, hZ₁, rfl⟩` from `isClosed_induced_iff.mp h₁`. Take `⟨Z₂, hZ₂, rfl⟩` from `isClosed_induced_iff.mp h₂`. Establish `hC' : C ⊆ Z₁ ∪ Z₂` using `fun c hc => hsub (show (⟨c, hCT hc⟩ : T) ∈ Subtype.val ⁻¹' C from hc)`.
+
+Break down `hC Z₁ Z₂ hZ₁ hZ₂ hC' with h | h` into its components or cases. Conclude with `Or.inl (fun x hx => h hx)`. Conclude with `Or.inr (fun x hx => h hx)`.
+-/
 theorem compsH_pre_isPreirreducible {T C : Set α} (hCT : C ⊆ T) (hC : IsPreirreducible C) :
     IsPreirreducible ((Subtype.val ⁻¹' C : Set T)) := by
   rw [isPreirreducible_iff_isClosed_union_isClosed] at hC ⊢
@@ -24,11 +29,19 @@ theorem compsH_pre_isPreirreducible {T C : Set α} (hCT : C ⊆ T) (hC : IsPreir
   · exact Or.inl (fun x hx => h hx)
   · exact Or.inr (fun x hx => h hx)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hC.nonempty`. Conclude with `⟨⟨⟨c, hCT hc⟩, hc⟩, compsH_pre_isPreirreducible hCT hC.isPreirreducible⟩`.
+-/
 theorem compsH_pre_isIrreducible {T C : Set α} (hCT : C ⊆ T) (hC : IsIrreducible C) :
     IsIrreducible ((Subtype.val ⁻¹' C : Set T)) := by
   obtain ⟨c, hc⟩ := hC.nonempty
   exact ⟨⟨⟨c, hCT hc⟩, hc⟩, compsH_pre_isPreirreducible hCT hC.isPreirreducible⟩
 
+/- English proof (translation)
+Use `⟨⟨hA.1.image _ continuous_subtype_val.continuousOn, by rintro _ ⟨x, _, rfl⟩; exact x.2⟩, ?_⟩` and prove the remaining obligations. Introduce `C' hC' hle`. Establish `h1 : A ⊆ Subtype.val ⁻¹' C'` using `fun x hx => hle ⟨x, hx, rfl⟩`. Establish `h2` using `hA.2 (compsH_pre_isIrreducible hC'.2 hC'.1) h1`. Introduce `c hc`.
+
+Conclude with `⟨⟨c, hC'.2 hc⟩, h2 hc, rfl⟩`.
+-/
 theorem image_mem_compsH {T : Set α} {A : Set T} (hA : A ∈ irreducibleComponents T) :
     Subtype.val '' A ∈ compsH T := by
   refine ⟨⟨hA.1.image _ continuous_subtype_val.continuousOn, by rintro _ ⟨x, _, rfl⟩; exact x.2⟩, ?_⟩
@@ -38,6 +51,11 @@ theorem image_mem_compsH {T : Set α} {A : Set T} (hA : A ∈ irreducibleCompone
   intro c hc
   exact ⟨⟨c, hC'.2 hc⟩, h2 hc, rfl⟩
 
+/- English proof (translation)
+Use `⟨compsH_pre_isIrreducible hC.1.2 hC.1.1, ?_⟩` and prove the remaining obligations. Introduce `B hB hle`. Establish `h1 : C ⊆ Subtype.val '' B` using `fun c hc => ⟨⟨c, hC.1.2 hc⟩, hle hc, rfl⟩`. Establish `h2` using `hC.2 ⟨hB.image _ continuous_subtype_val.continuousOn, by rintro _ ⟨x, _, rfl⟩; exact x.2⟩ h1`. Introduce `x hx`.
+
+Conclude with `h2 ⟨x, hx, rfl⟩`.
+-/
 theorem pre_mem_irreducibleComponents {T C : Set α} (hC : C ∈ compsH T) :
     (Subtype.val ⁻¹' C : Set T) ∈ irreducibleComponents T := by
   refine ⟨compsH_pre_isIrreducible hC.1.2 hC.1.1, ?_⟩
@@ -47,17 +65,26 @@ theorem pre_mem_irreducibleComponents {T C : Set α} (hC : C ∈ compsH T) :
   intro x hx
   exact h2 ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `hfin : (irreducibleComponents T).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Use `(hfin.image (Set.image Subtype.val)).subset fun C hC => ⟨Subtype.val ⁻¹' C, pre_mem_irreducibleComponents hC, ?_⟩` and prove the remaining obligations. Conclude with `Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hC.1.2)`.
+-/
 theorem compsH_finite [NoetherianSpace α] (T : Set α) : (compsH T).Finite := by
   have hfin : (irreducibleComponents T).Finite := NoetherianSpace.finite_irreducibleComponents
   refine (hfin.image (Set.image Subtype.val)).subset fun C hC =>
     ⟨Subtype.val ⁻¹' C, pre_mem_irreducibleComponents hC, ?_⟩
   exact Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hC.1.2)
 
+/- English proof (translation)
+Establish `h2 : closure C ⊆ C` using `hC.2 ⟨hC.1.1.closure, closure_minimal hC.1.2 hT⟩ subset_closure`. Conclude with `closure_subset_iff_isClosed.mp h2`.
+-/
 theorem isClosed_of_mem_compsH {T : Set α} (hT : IsClosed T) {C : Set α} (hC : C ∈ compsH T) :
     IsClosed C := by
   have h2 : closure C ⊆ C := hC.2 ⟨hC.1.1.closure, closure_minimal hC.1.2 hT⟩ subset_closure
   exact closure_subset_iff_isClosed.mp h2
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `x ⟨C, hC, hx⟩`. Conclude with `hC.1.2 hx`. Introduce `x hx`. Conclude with `⟨Subtype.val '' irreducibleComponent (⟨x, hx⟩ : T), image_mem_compsH (irreducibleComponent_mem_irreducibleComponents _), ⟨⟨x, hx⟩, mem_irreducibleComponent, rfl⟩⟩`.
+-/
 theorem sUnion_compsH (T : Set α) : ⋃₀ compsH T = T := by
   apply Set.Subset.antisymm
   · rintro x ⟨C, hC, hx⟩
@@ -78,6 +105,13 @@ def parPrime (f : Fin n → A) (i : Fin n) : Ideal A :=
   (Ideal.span {algebraMap A S (f i)}).comap (algebraMap A S)
 
 variable (S) in
+/- English proof (translation)
+Establish `hp` using `prime_of_regular_params _ hrsp.1 hrsp.2 i`. Establish `hP : (Ideal.span {algebraMap A S (f i)}).IsPrime` using `(Ideal.span_singleton_prime hp.ne_zero).mpr hp`. Use `⟨Ideal.comap_isPrime _ _, ?_, Ideal.mem_comap.mpr (Ideal.subset_span rfl)⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hle : Ideal.span {algebraMap A S (f i)} ≤ maximalIdeal S`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, ← hrsp.1]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `hle (Ideal.mem_comap.mp ha)` as an intermediate fact. Establish `h2 : (maximalIdeal S).comap (algebraMap A S) = p` using `IsLocalization.AtPrime.under_maximalIdeal S p`. Rewrite `this` using `[← Ideal.mem_comap, h2]`.
+
+Conclude with `this`.
+-/
 theorem parPrime_spec (hrsp : FinalTheorems.Rsp S n (fun i => algebraMap A S (f i))) (i : Fin n) :
     (parPrime (S := S) f i).IsPrime ∧ parPrime (S := S) f i ≤ p ∧ f i ∈ parPrime (S := S) f i := by
   have hp := prime_of_regular_params _ hrsp.1 hrsp.2 i
@@ -95,6 +129,13 @@ theorem parPrime_spec (hrsp : FinalTheorems.Rsp S n (fun i => algebraMap A S (f 
   exact this
 
 variable (S) in
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h (parPrime_spec (p := p) S hrsp i).2.2⟩` and prove the remaining obligations. Establish `hdisj : Disjoint (p.primeCompl : Set A) Q`. Rewrite using `[Set.disjoint_left]`. Introduce `a ha haQ`. Conclude with `ha (hQ haQ)`.
+
+Establish `hQ'` using `IsLocalization.under_map_of_isPrime_disjoint p.primeCompl S ‹Q.IsPrime› hdisj`. Introduce `a ha`. Rewrite using `[← hQ']`. Use `show algebraMap A S a ∈ Q.map (algebraMap A S)`. Establish `h1 : Ideal.span {algebraMap A S (f i)} ≤ Q.map (algebraMap A S)`.
+
+Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ h`. Conclude with `h1 (Ideal.mem_comap.mp ha)`.
+-/
 theorem mem_iff_parPrime_le (hrsp : FinalTheorems.Rsp S n (fun i => algebraMap A S (f i))) (i : Fin n)
     {Q : Ideal A} [Q.IsPrime] (hQ : Q ≤ p) : f i ∈ Q ↔ parPrime (S := S) f i ≤ Q := by
   refine ⟨fun h => ?_, fun h => h (parPrime_spec (p := p) S hrsp i).2.2⟩
@@ -112,6 +153,11 @@ theorem mem_iff_parPrime_le (hrsp : FinalTheorems.Rsp S n (fun i => algebraMap A
   exact h1 (Ideal.mem_comap.mp ha)
 
 variable (S) in
+/- English proof (translation)
+Assume the negation of the conclusion as `hji`. Establish `: IsDomain S` using `isDomain_of_isRegularLocalRing`. Establish `hpi` using `prime_of_regular_params _ hrsp.1 hrsp.2 i`. Establish `hpj` using `prime_of_regular_params _ hrsp.1 hrsp.2 j`. Establish `hd : algebraMap A S (f i) ∣ algebraMap A S (f j)` using `Ideal.mem_span_singleton.mp (Ideal.mem_comap.mp h)`.
+
+Establish `hass : Associated (algebraMap A S (f i)) (algebraMap A S (f j))` using `hpi.associated_of_dvd hpj hd`. Conclude with `(regular_params_spec _ hrsp.1 hrsp.2).2 i j (Ne.symm hji) hass`.
+-/
 theorem eq_of_mem_parPrime (hrsp : FinalTheorems.Rsp S n (fun i => algebraMap A S (f i))) {i j : Fin n}
     (h : f j ∈ parPrime (S := S) f i) : j = i := by
   by_contra hji
@@ -132,6 +178,9 @@ section Pts
 
 variable {W : Scheme.{0}} {U : W.Opens}
 
+/- English proof (translation)
+Use `hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff (x := hU.primeIdealOf ⟨z, hz⟩) (y := hU.primeIdealOf ⟨z', hz'⟩)` as an intermediate fact. Rewrite `this` using `[hU.fromSpec_primeIdealOf, hU.fromSpec_primeIdealOf]`. Rewrite using `[PrimeSpectrum.le_iff_specializes]`. Conclude with `this`.
+-/
 theorem specializes_iff_pOf (hU : IsAffineOpen U) {z z' : W} (hz : z ∈ U) (hz' : z' ∈ U) :
     z ⤳ z' ↔ hU.primeIdealOf ⟨z, hz⟩ ≤ hU.primeIdealOf ⟨z', hz'⟩ := by
   have := hU.fromSpec.isOpenEmbedding.isInducing.specializes_iff
@@ -140,6 +189,9 @@ theorem specializes_iff_pOf (hU : IsAffineOpen U) {z z' : W} (hz : z ∈ U) (hz'
   rw [PrimeSpectrum.le_iff_specializes]
   exact this
 
+/- English proof (translation)
+Establish `h1` using `hU.fromSpec_primeIdealOf ⟨z, hz⟩`. Establish `h2` using `hU.fromSpec_primeIdealOf ⟨z', hz'⟩`. Rewrite `h1` using `[h]`. Conclude with `h1.symm.trans h2`.
+-/
 theorem eq_of_pOf_eq (hU : IsAffineOpen U) {z z' : W} (hz : z ∈ U) (hz' : z' ∈ U)
     (h : hU.primeIdealOf ⟨z, hz⟩ = hU.primeIdealOf ⟨z', hz'⟩) : z = z' := by
   have h1 := hU.fromSpec_primeIdealOf ⟨z, hz⟩
@@ -147,10 +199,16 @@ theorem eq_of_pOf_eq (hU : IsAffineOpen U) {z z' : W} (hz : z ∈ U) (hz' : z' �
   rw [h] at h1
   exact h1.symm.trans h2
 
+/- English proof (translation)
+Establish `: hU.fromSpec P ∈ Set.range hU.fromSpec` using `⟨P, rfl⟩`. Rewrite `this` using `[hU.range_fromSpec]`. Then use the resulting hypothesis.
+-/
 theorem fromSpec_mem (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(W, U)) : hU.fromSpec P ∈ U := by
   have : hU.fromSpec P ∈ Set.range hU.fromSpec := ⟨P, rfl⟩
   rwa [hU.range_fromSpec] at this
 
+/- English proof (translation)
+The claim follows from `hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _)`.
+-/
 theorem pOf_fromSpec (hU : IsAffineOpen U) (P : PrimeSpectrum Γ(W, U)) :
     hU.primeIdealOf ⟨hU.fromSpec P, fromSpec_mem hU P⟩ = P :=
   hU.fromSpec.isOpenEmbedding.injective (hU.fromSpec_primeIdealOf _)

@@ -18,6 +18,25 @@ section Weight
 
 open GlobalTheory.Branching GlobalTheory.ValCmp
 
+/- English proof (translation)
+Take `⟨ha, hs, hl⟩` from `factNatW (m + 1) lam`. Establish `hl' : lam.natW (Fin.last m) = 0` using `hl (Nat.succ_pos m)`. Establish `h0 : lam.dual.detShift = -(lam.detShift + lam.natW 0 + 0)`. Use `hs 0` as an intermediate fact. Establish `e : lam.dual.detShift = -lam.w 0`.
+
+Simplify using `only [DomWeight.detShift, Nat.succ_pos, dif_pos, DomWeight.dual]`. Use `congr 2`. Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hd : lam.dual.natW = nuDual lam.natW`. Use function extensionality and compare the values at `i`. Establish `h1` using `hs i.rev`. Establish `h2` using `hs 0`. Establish `h3 : lam.dual.w i = -lam.w i.rev` using `rfl`.
+
+Establish `h4` using `ha (Fin.zero_le i.rev)`. Simplify using `only [nuDual]`. Rewrite using `[DomWeight.natW]`. Use linear arithmetic over natural numbers and integers. Take `⟨Ψ, h1, h2, h3, -⟩` from `exists_posOk_dual ℂ ℂ m lam.natW ha hl' lam.detShift 0`.
+
+Rewrite `h2` using `[← hd]`. Establish `hm : ∀ f ∈ nablaSq ℂ (m + 1) lam, Ψ f ∈ nablaSq ℂ (m + 1) lam.dual` using `fun f hf => by`. Unfold `nablaSq`. Rewrite using `[← h2]`. Conclude with `⟨f, hf, rfl⟩`.
+
+Use `⟨LinearEquiv.ofBijective (Ψ.restrict hm) ⟨(injective_iff_map_eq_zero _).2 fun f hf => Subtype.ext (h1 f f.2 (congrArg Subtype.val hf)), fun g => ?_⟩, fun g f => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hg : g.1 ∈ (Formalism.GradedWeylDivisibility.dualWeyl ℂ (m + 1) (m + 1) lam.natW).map Ψ` using `h2 ▸ g.2`. Take `⟨f, hf, e⟩` from `hg`. Conclude with `⟨⟨f, hf⟩, Subtype.ext e⟩`. Establish `key : ∀ (mu : DomWeight (m + 1)) (x : GL (Fin (m + 1)) ℂ) (p), rnd ℂ mu.detShift (x.val⁻¹)ᵀ p = sqAct ℂ (m + 1) mu x p` using `fun mu x p => by`.
+
+Establish `hx : IsUnit x.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 x.isUnit`. Simplify using `only [rnd, sqAct, detPow, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hx, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', _root_.inv_zpow', neg_neg, Units.val_zpow_eq_zpow_val, GeneralLinearGroup.val_det_apply]`. Establish `hx : IsUnit ((g.val⁻¹)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`.
+
+Conclude with `Matrix.isUnit_nonsing_inv_det _ ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit)`. Establish `h4` using `h3 _ hx f f.2`. Rewrite `h4` using `[key, zpow_zero, one_smul, ← h0]`. Express the relevant statement in the definitionally equal form `Ψ (sqAct ℂ (m + 1) lam g f) = sqAct ℂ (m + 1) lam.dual (inside₂ ℂ (m + 1) g) (Ψ f)`. Rewrite using `[h4, ← key]`.
+
+Simplify using `[inside₂]`.
+-/
 theorem exists_equiv_dual {m : ℕ} (lam : DomWeight (m + 1)) :
     ∃ κ : nablaSq ℂ (m + 1) lam ≃ₗ[ℂ] nablaSq ℂ (m + 1) lam.dual, ∀ g f,
       κ (sqRep ℂ (m + 1) lam g f) = sqRep ℂ (m + 1) lam.dual (inside₂ ℂ (m + 1) g) (κ f) := by
@@ -67,9 +86,19 @@ theorem exists_equiv_dual {m : ℕ} (lam : DomWeight (m + 1)) :
     rw [h4, ← key]
     simp [inside₂]
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.transpose_transpose _)`.
+-/
 theorem invTr_invTr {n : ℕ} (g : GL (Fin n) ℂ) : inside₂ ℂ n (inside₂ ℂ n g) = g :=
   Units.ext (Matrix.transpose_transpose _)
 
+/- English proof (translation)
+Unfold `infOfWeight`. Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_univ_val_equiv (Fin.revPerm : Equiv.Perm (Fin n)), Multiset.map_map]`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk : ((k.rev : ℕ) : ℂ) = n - (k + 1)`.
+
+Rewrite using `[Fin.val_rev, Nat.cast_sub (Nat.succ_le_of_lt k.2)]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [DomWeight.dual, Function.comp_apply, Fin.revPerm_apply, hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem infOfWeight_dual {n : ℕ} (lam : DomWeight n) :
     infOfWeight lam.dual = (infOfWeight lam).map (fun z => -z) := by
   unfold infOfWeight
@@ -84,6 +113,13 @@ theorem infOfWeight_dual {n : ℕ} (lam : DomWeight n) :
   push_cast
   ring
 
+/- English proof (translation)
+Use `Finset.univ.nodup.map fun i j h => ?_` and prove the remaining obligations. Establish `h1 : lam.w i - (i : ℕ) = lam.w j - (j : ℕ)`. Establish `: ((lam.w i - (i : ℕ) : ℤ) : ℂ) = ((lam.w j - (j : ℕ) : ℤ) : ℂ)`. Use `push_cast`. Take the linear combination `h`.
+
+Conclude with `this` after adjusting the coercions. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `lam.anti h.le` as an intermediate fact. Establish `: (i : ℕ) < j` using `h`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `h`. Use `lam.anti h.le` as an intermediate fact. Establish `: (j : ℕ) < i` using `h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nodup_infOfWeight {n : ℕ} (lam : DomWeight n) : (infOfWeight lam).Nodup := by
   refine Finset.univ.nodup.map fun i j h => ?_
   have h1 : lam.w i - (i : ℕ) = lam.w j - (j : ℕ) := by
@@ -102,6 +138,11 @@ theorem nodup_infOfWeight {n : ℕ} (lam : DomWeight n) : (infOfWeight lam).Nodu
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 h))`. Unfold `coord`. Simplify using `only [InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [InfinitePlace.mk_conjugate_eq, h]; exact hne.symm)]`.
+
+Both sides reduce to the same expression. Rewrite using `[if_pos (by rw [InfinitePlace.mk_conjugate_eq, h]), if_neg (by rw [h]; exact hne)]`. Simplify using the standard rewrite rules.
+-/
 theorem coord_conjugate (τ : E →+* ℂ) (z : Cinf E) :
     coord (ComplexEmbedding.conjugate τ) z = starRingEnd ℂ (coord τ z) := by
   have hne : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
@@ -115,6 +156,9 @@ theorem coord_conjugate (τ : E →+* ℂ) (z : Cinf E) :
   · rw [if_pos (by rw [InfinitePlace.mk_conjugate_eq, h]), if_neg (by rw [h]; exact hne)]
     simp
 
+/- English proof (translation)
+Establish `e : pInf E (conjAd E x) = star (pInf E x)` using `(infEq E).symm_apply_apply _`. Rewrite using `[e]`. Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coord_conjAd (τ : E →+* ℂ) (x : Ad E) :
     coord τ (pInf E (conjAd E x)) = starRingEnd ℂ (coord τ (pInf E x)) := by
   have e : pInf E (conjAd E x) = star (pInf E x) := (infEq E).symm_apply_apply _
@@ -122,6 +166,13 @@ theorem coord_conjAd (τ : E →+* ℂ) (x : Ad E) :
   unfold coord
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hx : Formalism.UG.cT (conjAd E) x.1.val * 1 * x.1.val = 1` using `x.2`. Establish `h1` using `congrArg (RingHom.mapMatrix ((coord τ).comp (pInf E))) hx`. Rewrite `h1` using `[mul_one, map_mul, map_one]`. Establish `h2 : (cEmb (ComplexEmbedding.conjugate τ) x).valᵀ * (cEmb τ x).val = 1`. Rewrite using `[← h1]`.
+
+Use `congr 1`. Use extensionality with `i j`. Conclude with `(coord_conjugate τ _).trans (coord_conjAd τ _).symm`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = ((cEmb τ x)⁻¹).valᵀ`.
+
+Rewrite using `[Matrix.coe_units_inv, Matrix.inv_eq_left_inv h2, Matrix.transpose_transpose]`.
+-/
 theorem cEmb_conjugate (τ : E →+* ℂ) (x : UA E n) :
     cEmb (ComplexEmbedding.conjugate τ) x = inside₂ ℂ n (cEmb τ x) := by
   have hx : Formalism.UG.cT (conjAd E) x.1.val * 1 * x.1.val = 1 := x.2
@@ -136,9 +187,17 @@ theorem cEmb_conjugate (τ : E →+* ℂ) (x : UA E n) :
   change _ = ((cEmb τ x)⁻¹).valᵀ
   rw [Matrix.coe_units_inv, Matrix.inv_eq_left_inv h2, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Simplify using `only [embU, InfinitePlace.mk_conjugate_eq]`.
+-/
 theorem embU_conjugate (τ : E →+* ℂ) : embU n (ComplexEmbedding.conjugate τ) = embU n τ := by
   simp only [embU, InfinitePlace.mk_conjugate_eq]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Take `⟨κ, hκ⟩` from `exists_equiv_dual lam`. Take `⟨hi, f, h0, h1, h2⟩` from `h`. Use `⟨(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_linearEquiv _ (fun g => ⟨_, invTr_invTr g⟩) κ hκ).1 hi, f ∘ₗ κ.symm.toLinearMap, fun e => h0 (LinearMap.ext fun v => ?_), fun v => h1 _, fun x v => ?_⟩` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun e (κ v)`.
+
+Take `⟨v, rfl⟩` from `κ.surjective v`. Express the relevant statement in the definitionally equal form `f (κ.symm (sqRep ℂ _ _ (cEmb (ComplexEmbedding.conjugate τ) x.1) (κ v))) = RU E _ x (f (κ.symm (κ v)))`. Rewrite using `[cEmb_conjugate, ← hκ, κ.symm_apply_apply, κ.symm_apply_apply]`. Conclude with `h2 ⟨x.1, embU_conjugate τ ▸ x.2⟩ v`.
+-/
 theorem hasWeightAt_conjugate (hn : 1 ≤ n) {π : Submodule ℂ (UA E n → ℂ)} {τ : E →+* ℂ} {lam : DomWeight n}
     (h : HasWeightAt π τ lam) : HasWeightAt π (ComplexEmbedding.conjugate τ) lam.dual := by
   obtain ⟨m, rfl⟩ : ∃ m, n = m + 1 := ⟨n - 1, by omega⟩
@@ -224,6 +283,11 @@ def UnitaryRead (B : NBC A) (rc : RecMap A) : Prop :=
       ∃ α, IsSatAt U w α ∧ B.satAU j π w = Finset.univ.val.map fun i => (α i : ℂ)) ∧
     ∀ τ : H.E →+* ℂ, ∃ lam, HasWeightAt U τ lam ∧ B.infW j (B.wtAU j π) τ = infOfWeight lam
 
+/- English proof (translation)
+Establish `h : Algebra.Unramified (𝓞 (maximalRealSubfield H.E)) (𝓞 H.E)` using `Formalism.L2.Pj.unramBridge_holds H.E fun P hP => by`. Use `letI := H.cmStar`. Take `⟨θ, t, e1, e2⟩` from `(GlobalTheory.Mem.host_cmData R H).cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj H.E : H.E ≃+* H.E) θ = t` using `RingOfIntegers.ext e1.symm`.
+
+Rewrite using `[this]` and apply the resulting hypothesis. Conclude with `Algebra.unramified_iff_forall.1 h ⟨w.asIdeal, w.isPrime⟩`.
+-/
 theorem host_unramified (H : Host R) (w : PlE H) :
     Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield H.E)) w.asIdeal := by
   have h : Algebra.Unramified (𝓞 (maximalRealSubfield H.E)) (𝓞 H.E) :=
@@ -236,6 +300,11 @@ theorem host_unramified (H : Host R) (w : PlE H) :
       rwa [this]
   exact Algebra.unramified_iff_forall.1 h ⟨w.asIdeal, w.isPrime⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hy⟩` from `h`. Set `c` to `IsCMField.ringOfIntegersComplexConj H.E`. Use `⟨w.comap c.toRingEquiv.toRingHom c.surjective, fun e => hy (c x) (host_complexConj H x) ?_, HeightOneSpectrum.ext (Ideal.ext fun y => ?_)⟩` and prove the remaining obligations. Rewrite `hx` using `[← e]`. Conclude with `hx`.
+
+Express the relevant statement in the definitionally equal form `c (algebraMap _ _ y) ∈ w.asIdeal ↔ algebraMap _ _ y ∈ w.asIdeal`. Rewrite using `[c.commutes]`.
+-/
 theorem isSplitAt_of_isSplitPl {w : PlE H} (h : IsSplitPl H w) : IsSplitAt w := by
   obtain ⟨x, hx, hy⟩ := h
   let c := IsCMField.ringOfIntegersComplexConj H.E
@@ -246,6 +315,9 @@ theorem isSplitAt_of_isSplitPl {w : PlE H} (h : IsSplitPl H w) : IsSplitAt w := 
   · change c (algebraMap _ _ y) ∈ w.asIdeal ↔ algebraMap _ _ y ∈ w.asIdeal
     rw [c.commutes]
 
+/- English proof (translation)
+Unfold `GlobalTheory.LGrp.bcParam ubc`. Simplify using `only [Multiset.map_add, Multiset.map_map, Function.comp_def, inv_inv, Units.val_inv_eq_inv_val]`. Rewrite using `[add_comm (Multiset.map (fun i => ((α i : ℂ))⁻¹) _)]`. Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one n with h | h <;> simp [h, Nat.odd_iff]`.
+-/
 theorem ubc_eq_map_inv (n : ℕ) (α : Fin (n / 2) → ℂˣ) :
     ((GlobalTheory.LGrp.bcParam n α).map fun z => ((z⁻¹ : ℂˣ) : ℂ)) = ubc n (Finset.univ.val.map fun i => (α i : ℂ)) := by
   unfold GlobalTheory.LGrp.bcParam ubc
@@ -253,14 +325,25 @@ theorem ubc_eq_map_inv (n : ℕ) (α : Fin (n / 2) → ℂˣ) :
   rw [add_comm (Multiset.map (fun i => ((α i : ℂ))⁻¹) _)]
   rcases Nat.mod_two_eq_zero_or_one n with h | h <;> simp [h, Nat.odd_iff]
 
+/- English proof (translation)
+Simplify using `only [spehLoc, lpSumList, bind_pure_comp, List.map_eq_map, List.foldr_map]`.
+-/
 theorem spehLoc_eq (p : Part A.CG) (w : PlE H) : spehLoc N A p w =
     lpSumList ((List.range p.d).map fun k : ℕ => A.lpTw (A.locG p.π w) (((p.d : ℝ) - 1) / 2 - k)) := by
   simp only [spehLoc, lpSumList, bind_pure_comp, List.map_eq_map, List.foldr_map]
 
+/- English proof (translation)
+Simplify using `only [isoInf, spehInf, bind_pure_comp, List.map_eq_map, List.map_map, Function.comp_def]`.
+-/
 theorem isoInf_eq (Pa : List (Part A.CG)) (τ : H.E →+* ℂ) :
     isoInf N A Pa τ = (Pa.map fun p => spehInf p.d (A.infG p.π τ)).sum := by
   simp only [isoInf, spehInf, bind_pure_comp, List.map_eq_map, List.map_map, Function.comp_def]
 
+/- English proof (translation)
+Take `⟨a, d, h, P, h1, h2, h3⟩` from `hMW n hn V hV`. Establish `had : a * d = n` using `by simpa [mul_comm] using h`. Establish `ha : 1 ≤ a` using `Nat.pos_of_mul_pos_right (had ▸ hn)`. Take `⟨π, c1, c2, c3⟩` from `hC a P ha (h1 hc)`. Use `⟨⟨a, π, d⟩, ha, Nat.pos_of_mul_pos_left (had ▸ hn), c1, had, fun w σ' hσ' => ?_, fun τ m' hm' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨u, σ, l, u', q⟩` from `h2 w σ' hσ'`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[hS w a d n h P σ σ' l u' q, ← c2 w σ l, spehLoc_eq]`. Take `⟨m, hm, rfl⟩` from `h3 τ m' hm'`. Rewrite using `[c3 τ m hm]`.
+-/
 theorem exists_part {rc : RecMap A} (hMW : DiscreteSpectrum H.E) (hS : RecSpeh rc) (hC : CuspRead rc) {n : ℕ}
     (hn : 0 < n) {V : Submodule ℂ (Sm H.E n)} (hV : IsDiscrete V) (hc : IsCsdGL V) :
     ∃ p : Part A.CG, 1 ≤ p.a ∧ 1 ≤ p.d ∧ A.csd p.π ∧ p.a * p.d = n ∧
@@ -279,6 +362,17 @@ theorem exists_part {rc : RecMap A} (hMW : DiscreteSpectrum H.E) (hS : RecSpeh r
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField in
 
+/- English proof (translation)
+Take `⟨c, d, h, V, σ, m, bc⟩` from `hNT H.E (host_unramified H) n hn U hU`. Use `choose p p1 p2 p3 p4 p5 p6 using fun i => exists_part hMW hS hC (bc.pos i) (bc.discrete i) (bc.csd i)`. Set `Q : ∀ w, LocIrr w n` to `fun w => { V := _ ρ := locProd h w (σ · w) smooth := GlobalTheory.SmGL.isSmooth_parInd _ _ irred := GlobalTheory.SmGL.MultiIrr.isIrreducible_multiProd hB _ (fun i => (σ i w).smooth) (fun i => (σ i w).irred) fun i => (p5 i w _ (bc.loc i w)).1 }`. Establish `hloc : ∀ w, isoLoc N A (List.ofFn p) w = rc w n (Q w)` using `fun w => by`. Rewrite using `[hP w c n d h (σ · w) (Q w) ⟨.refl _⟩]`.
+
+Simplify using `only [fun i => (p5 i w _ (bc.loc i w)).2]`. Rewrite using `[lpSumList, ← Function.comp_def (fun q => spehLoc N A q w) p, ← List.map_ofFn, List.foldr_map]`. Both sides reduce to the same expression. Establish `hinf : ∀ τ, isoInf N A (List.ofFn p) τ = ∑ i, m i τ` using `fun τ => by`. Rewrite using `[isoInf_eq, List.map_ofFn, List.sum_ofFn]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (p6 i τ _ (bc.inf i τ)).symm`. Use `⟨List.ofFn p, fun q hq => ?_, ?_, fun w hw => ⟨Q w, bc.split w (isSplitAt_of_isSplitPl hw), hloc w⟩, fun w α ⟨s, ϖ, q, e1, e2, e3⟩ => ?_, fun τ lam hl => ⟨List.nodup_ofFn.2 fun i j e => ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hq`. Conclude with `⟨p1 i, p2 i, p3 i⟩`. Rewrite using `[rankIso, List.map_ofFn, List.sum_ofFn, ← h]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => p4 i`. Rewrite using `[hloc, ← ubc_eq_map_inv]`. Conclude with `hSat w n (Q w) _ (bc.inert w s ϖ q e1 e2 α e3)`. Use `GlobalTheory.eq_of_nodup_sum_multiset_of_eq (Fin c) (m · τ) (bc.weight τ lam hl ▸ nodup_infOfWeight lam) i j (fun h0 => (bc.pos i).ne' ?_) ?_` and prove the remaining obligations. Rewrite using `[← (bc.inf i τ).1]`.
+
+Conclude with `Multiset.card_eq_zero.2 h0`. Express the relevant statement in the definitionally equal form `m i τ = m j τ`. Rewrite using `[p6 i τ _ (bc.inf i τ), p6 j τ _ (bc.inf j τ), e]`. Rewrite using `[hinf, bc.weight τ lam hl]`. Rewrite using `[hinf, bc.weight _ _ (hasWeightAt_conjugate hn hl), infOfWeight_dual]`.
+-/
 theorem exists_parts {rc : RecMap A} (hNT : GlobalTheory.Published.BaseChangeDefiniteUnitary)
     (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hMW : DiscreteSpectrum H.E)
     (hP : RecProd rc) (hS : RecSpeh rc) (hSat : RecSatake rc) (hC : CuspRead rc)
@@ -323,6 +417,15 @@ theorem exists_parts {rc : RecMap A} (hNT : GlobalTheory.Published.BaseChangeDef
   · rw [hinf, bc.weight τ lam hl]
   · rw [hinf, bc.weight _ _ (hasWeightAt_conjugate hn hl), infOfWeight_dual]
 
+/- English proof (translation)
+Introduce `j h1 h2 π hπ`. Take `⟨U, u1, u2, u3, u4⟩` from `hU j h1 h2 π`. Establish `hn : 1 ≤ R.nV`. Use `R.rank_add_five_le` as an intermediate fact. Simplify using `only [Ranks.nV]`.
+
+Use linear arithmetic over natural numbers and integers. Take `⟨Pa, a1, a2, a3, a4, a5⟩` from `exists_parts hNT hB hMW hP hS hSat hC hn u1`. Use `⟨Pa, fun p hp => ⟨(a1 p hp).1, (a1 p hp).2.1⟩, fun p hp => (a1 p hp).2.2, ?_, a2, fun w hw => ?_, fun w hw => ?_, fun τ => ?_, fun τ _ => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl, -⟩` from `u4 H.φ₀`. Conclude with `(a5 _ lam hl).1`.
+
+Take `⟨σ, s1, s2⟩` from `a3 w hw`. Rewrite using `[s2, u2 w hw σ s1]`. Take `⟨α, s1, s2⟩` from `u3 w hw (hπ w hw)`. Rewrite using `[s2]`. Conclude with `a4 w α s1`.
+
+Take `⟨lam, hl, e⟩` from `u4 τ`. Rewrite using `[e, (a5 τ lam hl).2.1]`. Take `⟨lam, hl, e⟩` from `u4 τ`. Rewrite using `[e, (a5 τ lam hl).2.2]`.
+-/
 theorem baseChangeDefinite_at (B : NBC A) (rc : RecMap A) (hNT : GlobalTheory.Published.BaseChangeDefiniteUnitary)
     (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (hMW : DiscreteSpectrum H.E)
     (hP : RecProd rc) (hS : RecSpeh rc) (hSat : RecSatake rc) (hC : CuspRead rc) (hU : UnitaryRead B rc) :

@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerSymmet
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 open ReciprocityTheory.Ty.Fin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym | exact GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym | (intros; apply GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_symmetry : ReciprocityTheory.Ty.Fin.St.WhSym := by
   first | exact @GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym | exact GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym | (intros; apply GlobalTheory.CompanionTheory.TyFin.WhSymProof.whSym <;> assumption)

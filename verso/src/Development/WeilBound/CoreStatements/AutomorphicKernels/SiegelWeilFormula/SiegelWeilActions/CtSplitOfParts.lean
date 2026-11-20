@@ -68,6 +68,13 @@ def SecLaw : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} in
 
+/- English proof (translation)
+Establish `hH : ((d.Ht (p * g) : ℝ) : ℂ) = (Real.exp (-(2 * τ)) : ℂ) * ((d.Ht g : ℝ) : ℂ)`. Simplify using `only [SD.Ht]`. Rewrite using `[d.ok.hgt.mul hp, ha, Real.toNNReal_mul (Real.exp_pos _).le, NNReal.coe_mul, Real.coe_toNNReal _ (Real.exp_pos _).le, Complex.ofReal_mul]`. Establish `he : ∀ w : ℂ, ((Real.exp (-(2 * τ)) : ℝ) : ℂ) ^ w = Complex.exp (-(2 * τ) * w)`. Introduce `w`.
+
+Apply the tactic sequence `rw [Complex.ofReal_exp, Complex.cpow_def_of_ne_zero (Complex.exp_ne_zero _), Complex.log_exp] <;> push_cast <;> simp [Real.pi_pos, Real.pi_pos.le]`. Unfold `phz`. Rewrite using `[hH, Complex.mul_cpow_ofReal_nonneg (Real.exp_pos _).le NNReal.zero_le_coe, hf.law p t g hp, hχ, ha, he, he, ← mul_assoc]`. Establish `: Complex.exp (-(τ * (2 * z + d.n))) = Complex.exp (-(2 * τ) * (z - s₁)) * Complex.exp (-(2 * τ) * (s₁ + d.n / 2))`. Rewrite using `[← Complex.exp_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phz_par {d : SD σ} {f : d.G → ℂ} {s₁ : ℂ} (hf : IsSec d.K d.χ s₁ f) (z : ℂ) {τ : ℝ} {p : d.G} {t : GL (Fin d.n) (AE F E)}
     (hp : IsPar p t) (ha : (absE F E (Matrix.GeneralLinearGroup.det t) : ℝ) = Real.exp (-(2 * τ)))
     (hχ : (d.χ (Matrix.GeneralLinearGroup.det t) : ℂ) = 1) (g : d.G) :
@@ -86,6 +93,17 @@ theorem phz_par {d : SD σ} {f : d.G → ℂ} {s₁ : ℂ} (hf : IsSec d.K d.χ 
     rw [← Complex.exp_add]; congr 1; ring
   rw [this]; ring
 
+/- English proof (translation)
+Introduce `hU F E _ _ _ _ _ σ d R L s₁ f hf he`. Take `⟨t, ht⟩` from `hU F E σ d R L s₁ f hf he`. Use `⟨t, fun z hz nb lam 𝓖 hc hcG uM ν 𝓤 hUd hcU T T' hTT' nb' lam' 𝓖' hc' hcG' w τ y x hy => ?_⟩` and prove the remaining obligations. Take `⟨w₁, cM, κ, hL, K, hK⟩` from `ht z hz nb lam 𝓖 hc hcG uM ν 𝓤 hUd hcU T T' hTT' nb' lam' 𝓖' hc' hcG'`. Take `⟨p, tp, hp, ha, hχ, hw⟩` from `hL.wdil w τ y hy`.
+
+Take `⟨sc, hsc, hκ⟩` from `hL.cdil w τ y hy`. Establish `key : ∀ h : G2 σ L.Y, ∫ c, phz d f s₁ z (w₁ * (cM c * (L.j h * (R.ι w y * x)))) ∂κ = Complex.exp (τ * (d.n - 2 * z)) * ∫ c, phz d f s₁ z (w₁ * (cM c * (L.j h * x))) ∂κ`. Introduce `h`. Establish `h1 : ∀ c, w₁ * (cM c * (L.j h * (R.ι w y * x))) = p * (w₁ * (cM (sc c) * (L.j h * x)))`. Introduce `c`.
+
+Rewrite using `[← mul_assoc (L.j h), hL.comm w τ y h hy, mul_assoc, ← mul_assoc (cM c), hsc c, mul_assoc, ← mul_assoc w₁, hw, mul_assoc]`. Repeatedly rewrite using `[h1, phz_par hf z hp ha hχ]`. Rewrite using `[integral_const_mul, ← integral_map_equiv sc (fun c => phz d f s₁ z (w₁ * (cM c * (L.j h * x)))), hκ, integral_smul_measure, ENNReal.toReal_ofReal (Real.exp_pos _).le, Complex.real_smul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[Complex.ofReal_exp, ← Complex.exp_add]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hK, hK]`. Repeatedly rewrite using `[key, mul_assoc (Complex.exp _), integral_const_mul]`.
+
+Rewrite using `[tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secLaw_of : SecUnf → SecLaw := by
   intro hU F E _ _ _ _ _ σ d R L s₁ f hf he
   obtain ⟨t, ht⟩ := hU F E σ d R L s₁ f hf he
@@ -112,6 +130,13 @@ theorem secLaw_of : SecUnf → SecLaw := by
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} in
 
+/- English proof (translation)
+Establish `: Countable (rat2 σ d.Y)` using `GlobalTheory.EisBL.DoubledGroupTopology.countable_rational_points_doubled σ d.Y`. Establish `: Countable (Cs d)` using `Quotient.countable`. Establish `: IsFiniteMeasure (ν.restrict 𝓤)` using `isFiniteMeasure_restrict.2 (by simp [hν])`. Establish `: IsFiniteMeasure (lam.restrict 𝓖)` using `isFiniteMeasure_restrict.2 (by simp [hlam])`. Take `⟨h1, h2⟩` from `exch (fun q : Cs d => kq L f s₁ z nb T uM (rep q) x) hi hs`.
+
+Establish `htm : ∀ q : Cs d, tm L f s₁ z nb lam 𝓖 T uM ν 𝓤 (rep q) x = ∫ u, ∫ v, kq L f s₁ z nb T uM (rep q) x (u, v) ∂(lam.restrict 𝓖) ∂(ν.restrict 𝓤)` using `fun q => rfl`. Repeatedly rewrite using `[htm]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`. Use `integral_congr_ae (ae_of_all _ fun u => integral_congr_ae (ae_of_all _ fun β => ?_))` and prove the remaining obligations.
+
+Simplify using `only [SD.eis, GlobalTheory.Eis.cosetSum, GlobalTheory.Eis.term, kq, phz, rep]`. Rewrite using `[tsum_mul_right]`. Both sides reduce to the same expression.
+-/
 theorem lhs_eq_tsum {d : SD σ} (L : LD d) (f : d.G → ℂ) (s₁ z : ℂ) (nb : nA σ d.Y d.b → d.G) (lam : Measure (nA σ d.Y d.b))
     (𝓖 : Set (nA σ d.Y d.b)) (T : nF σ d.Y d.b) (uM : (Fin L.n → AE F E) → d.G) (ν : Measure (Fin L.n → AE F E))
     (𝓤 : Set (Fin L.n → AE F E)) (hν : ν 𝓤 = 1) (hlam : lam 𝓖 = 1) (x : d.G)
@@ -134,6 +159,15 @@ theorem lhs_eq_tsum {d : SD σ} (L : LD d) (f : d.G → ℂ) (s₁ z : ℂ) (nb 
   rw [tsum_mul_right]
   rfl
 
+/- English proof (translation)
+Introduce `hI hC hA hF hS F E _ _ _ _ _ σ d R L s₁ f hf he`. Take `⟨tA, hA'⟩` from `hA F E σ d L s₁ f hf he`. Take `⟨tF, hF'⟩` from `hF F E σ d L s₁ f hf he`. Take `⟨tS, hS'⟩` from `hS F E σ d R L s₁ f hf he`. Use `⟨max tA (max tF tS), fun z hz nb lam 𝓖 hc nb' lam' 𝓖' hc' uM ν 𝓤 hU T T' hTT' => ?_⟩` and prove the remaining obligations.
+
+Establish `hzA : tA < z.re` using `lt_of_le_of_lt (le_max_left _ _) hz`. Establish `hzF : tF < z.re` using `lt_of_le_of_lt ((le_max_left _ _).trans (le_max_right _ _)) hz`. Establish `hzS : tS < z.re` using `lt_of_le_of_lt ((le_max_right _ _).trans (le_max_right _ _)) hz`. Take `⟨𝓖₀, hc₀, hk₀⟩` from `(hC F E σ d).1 nb lam 𝓖 hc`. Take `⟨𝓤₀, hU₀, hkU⟩` from `(hC F E σ d).2 L uM ν 𝓤 hU`.
+
+Take `⟨𝓖'₀, hc'₀, hk'₀⟩` from `(hC F E σ L.sd).1 nb' lam' 𝓖' hc'`. Use `⟨sec2 L f s₁ z nb lam 𝓖₀ T uM ν 𝓤₀, fun x => ?_, fun w τ y x hy => hS' z hzS nb lam 𝓖₀ hc₀ hk₀ uM ν 𝓤₀ hU₀ hkU T T' hTT' nb' lam' 𝓖'₀ hc'₀ hk'₀ w τ y x hy⟩` and prove the remaining obligations. Establish `e1` using `(hI F E σ d L s₁ f hf z).1 nb lam 𝓖 𝓖₀ hc hc₀ uM ν 𝓤 𝓤₀ hU hU₀ T T' hTT' x`. Establish `e2` using `(hI F E σ d L s₁ f hf z).2 nb' lam' 𝓖' 𝓖'₀ hc' hc'₀ T' x`. Establish `e3` using `hF' z hzF nb lam 𝓖₀ hc₀ hk₀ nb' lam' 𝓖'₀ hc'₀ hk'₀ uM ν 𝓤₀ hU₀ hkU T T' hTT' x`.
+
+Take `⟨hi, hs⟩` from `hA' z hzA nb lam 𝓖₀ hc₀ hk₀ uM ν 𝓤₀ hU₀ hkU T x`. Take `⟨hsum, e4⟩` from `lhs_eq_tsum L f s₁ z nb lam 𝓖₀ T uM ν 𝓤₀ hU₀.2.2.2 hc₀.2.2.2 x hi hs`. Express the relevant statement in the definitionally equal form `_ = first L f s₁ z nb' lam' 𝓖' T' x + _`. Rewrite using `[e1, e2, ← e3, e4, ← hsum.tsum_subtype_add_tsum_subtype_compl {q : Cs d | LagrangianCondition L (rep q)}]`. Both sides reduce to the same expression.
+-/
 theorem ctSplit_of_parts : IndepDom → CptDom → AbsConv → FirstEq → SecLaw → CTSplit := by
   intro hI hC hA hF hS F E _ _ _ _ _ σ d R L s₁ f hf he
   obtain ⟨tA, hA'⟩ := hA F E σ d L s₁ f hf he

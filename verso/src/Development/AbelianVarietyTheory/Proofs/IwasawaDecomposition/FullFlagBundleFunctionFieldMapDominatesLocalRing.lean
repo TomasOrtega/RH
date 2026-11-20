@@ -10,6 +10,13 @@ open Classical
 
 namespace GlobalTheory.FlagBundle.Dom
 
+/- English proof (translation)
+Use `haveI := (ratOf Y).lft`. Use `haveI : IsLocallyNoetherian (ratOf Y).Z := LocallyOfFiniteType.isLocallyNoetherian (ratOf Y).s`. Use `haveI : IsNoetherianRing ((ratOf Y).O y) := isNoetherianRing_of_ringEquiv _ ((ratOf Y).stalkEquiv y)`. Use `haveI : Algebra.EssFiniteType ((ratOf Y).O y) Y.Fn := Algebra.EssFiniteType.of_isLocalization Y.Fn (nonZeroDivisors ((ratOf Y).O y))`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (ratOf Y).Z` using `fun z => ⟨(Y.isNormalScheme).isDomain_stalk z, (Y.isNormalScheme).isIntegrallyClosed_stalk z⟩`.
+
+Use `haveI := RatModel.isIntegrallyClosed_O hN y`. Assume the negation of the conclusion as `hn`. Establish `hi : ¬ IsIntegral ((ratOf Y).O y) x` using `fun h => by`. Take `⟨a, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Conclude with `hn a.2`.
+
+Take `⟨V, h1, h2, h3⟩` from `GlobalTheory.exists_discreteValuationSubring_dominating_notMem hi`. Conclude with `h3 (hx V h1 h2)`.
+-/
 theorem mem_O_of_forall_dvr {F : Type} [Field F] (Y : Var F) (y : (ratOf Y).Z) (x : Y.Fn)
     (hx : ∀ V : ValuationSubring Y.Fn, IsDiscreteValuationRing V →
       LocalSubring.range (algebraMap ((ratOf Y).O y) Y.Fn) ≤ V.toLocalSubring → x ∈ V) :
@@ -34,6 +41,17 @@ end GlobalTheory.FlagBundle.Dom
 
 namespace GlobalTheory.FlagBundle.Dom
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.localSubring_range_le_valuationSubring_iff _ V).1 hV`. Set `ι : M.O z →+* V` to `(algebraMap (M.O z) Ω).codRestrict V h1`. Use `haveI hι : IsLocalHom ι := ⟨fun r hr => by`. Assume the negation of the conclusion as `hn`. Take `⟨_, hm⟩` from `(ValuationSubring.mem_nonunits_iff_exists_mem_maximalIdeal).1 (h2 r hn)`.
+
+Conclude with `hm hr⟩`. Set `g : M.Z.presheaf.stalk z →+* V` to `ι.comp (M.stalkEquiv z).toRingHom`. Use `haveI : IsLocalHom g := ⟨fun a ha => (isUnit_map_iff (M.stalkEquiv z) a).1 (IsLocalHom.map_nonunit (f := ι) _ ha)⟩`. Use `⟨spMap g ≫ M.Z.fromSpecStalk z, ?_, ?_, IsLocalRing.ResidueField.map g, ?_⟩` and prove the remaining obligations. Use `show M.Z.fromSpecStalk z (spMap g (IsLocalRing.closedPoint V)) = z`.
+
+Rewrite using `[show spMap g (IsLocalRing.closedPoint V) = IsLocalRing.closedPoint _ from IsLocalRing.comap_closedPoint g]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `e : (algebraMap V Ω).comp g = M.stalkHom z` using `rfl`. Establish `e2 : spMap (M.stalkHom z) = spMap (Scheme.stalkClosedPointTo (R` using `.of Ω) M.pt).hom ≫ Spec.map (M.Z.presheaf.stalkSpecializes (M.pt_specializes (IsLocalRing.closedPoint Ω) z)) := by`. Rewrite using `[RatModel.stalkHom]`.
+
+Use `show Spec.map _ = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, e]`. Express the relevant statement in the definitionally equal form `spMap (M.stalkHom z) ≫ _ = _`.
+
+Rewrite using `[e2, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`. Conclude with `spMap_stalkClosedPointTo M.pt`. Rewrite using `[← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, IsLocalRing.ResidueField.map_comp_residue]`.
+-/
 theorem exists_pt_of_le {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (z : M.Z)
     (V : ValuationSubring Ω) (hV : LocalSubring.range (algebraMap (M.O z) Ω) ≤ V.toLocalSubring) :
     ∃ v : Sp V ⟶ M.Z, v (IsLocalRing.closedPoint V) = z ∧ spMap (algebraMap V Ω) ≫ v = M.pt ∧
@@ -74,6 +92,9 @@ namespace GlobalTheory.FlagBundle.Dom
 variable {F : Type} [Field F] {ι : Type} {m : ι → ℕ} {X Y₁ Y₂ : Var F} {Eb : Fr (ratOf X) m 0}
   {S₁ : Fr (ratOf Y₁) m m} {φ₁ : X.Fn →ₐ[F] Y₁.Fn} {S₂ : Fr (ratOf Y₂) m m} {φ₂ : X.Fn →ₐ[F] Y₂.Fn}
 
+/- English proof (translation)
+Substitute `hx hp₁ hp₂` using the available equality. Take `⟨A, hA, g, hg, b₁, b₂⟩` from `h`. Conclude with `⟨A, hA, g, hg, b₂, b₁⟩`.
+-/
 theorem coBear_swap {K : Type} [Field K] {x x' : Sp K ⟶ X.X} {p₁ p₁' : Sp K ⟶ Y₁.X}
     {p₂ p₂' : Sp K ⟶ Y₂.X} (hx : x = x') (hp₁ : p₁ = p₁') (hp₂ : p₂ = p₂')
     (h : CoBear Eb S₁ φ₁ S₂ φ₂ x p₁ p₂) : CoBear Eb S₂ φ₂ S₁ φ₁ x' p₂' p₁' := by
@@ -87,6 +108,25 @@ namespace GlobalTheory.FlagBundle
 
 open GlobalTheory.FlagBundle.Dom in
 
+/- English proof (translation)
+Set `κ` to `IsLocalRing.ResidueField (Y₁.X.presheaf.stalk y)`. Set `py : Sp κ ⟶ Y₁.X` to `spMap (IsLocalRing.residue _) ≫ Y₁.X.fromSpecStalk y`. Take `⟨A, hA, h, hh, hb⟩` from `GlobalTheory.T.exists_pointCarriesFrameFlags_own_frame F ι m X Y₁ Eb S₁ φ₁ f₁ h₁ κ py`. Take `⟨s, ⟨hs, hsb⟩, -⟩` from `h₂.2.2 κ (py ≫ f₁) A hA h hh`. Use `⟨s (IsLocalRing.closedPoint κ), fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `mem_O_of_forall_dvr Y₁ y (ψ a) fun V _ hV => ?_` and prove the remaining obligations. Take `⟨v, -, hv1, σ, hv2⟩` from `exists_pt_of_le (ratOf Y₁) y V hV`. Use `haveI : IsProper (f₂ ≫ X.str) := by`. Rewrite using `[show f₂ ≫ X.str = Y₂.str from h₂.1.inducedModelMorphism_comp_structureMap]`. Use `infer_instance`.
+
+Use `haveI : IsProper f₂ := IsProper.of_comp f₂ X.str`. Establish `hψ' : spMap ψ.toRingHom ≫ spMap φ₂.toRingHom = spMap φ₁.toRingHom`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← hψ]`. Both sides reduce to the same expression. Establish `hq : (spMap ψ.toRingHom ≫ (ratOf Y₂).pt) ≫ f₂ = spMap (algebraMap V Y₁.Fn) ≫ (v ≫ f₁)`.
+
+Establish `e1 : (ratOf Y₂).pt ≫ f₂ = spMap φ₂.toRingHom ≫ (ratOf X).pt` using `h₂.1`. Establish `e2 : (ratOf Y₁).pt ≫ f₁ = spMap φ₁.toRingHom ≫ (ratOf X).pt` using `h₁.1`. Use `erw [Category.assoc, e1, ← Category.assoc, hψ', ← e2, ← Category.assoc, hv1]`. Take `⟨ℓ, ⟨hℓ1, hℓ2⟩, -⟩` from `GlobalTheory.ModelPoints.existsUnique_extension f₂ (spMap ψ.toRingHom ≫ (ratOf Y₂).pt) (v ≫ f₁) hq`. Establish `hinc` using `GlobalTheory.T.fullFlag_common_closedPoint_of_generic F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ V Y₁.Fn v ℓ hℓ1.symm (by erw [hℓ2, ← Category.assoc, hv1]; exact hg)`.
+
+Establish `hbc` using `GlobalTheory.T.pointsCarryCommonFlag_spectrumMap_field_ext F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ κ (IsLocalRing.ResidueField V) σ (py ≫ f₁) py s ⟨A, hA, h, hh, hb, hsb⟩`. Establish `hpv : spMap (IsLocalRing.residue V) ≫ v = spMap σ ≫ py` using `hv2`. Establish `E1 : (spMap (IsLocalRing.residue V) ≫ ℓ) ≫ f₂ = (spMap σ ≫ py) ≫ f₁` using `(Category.assoc _ _ _).trans ((congrArg (spMap (IsLocalRing.residue V) ≫ ·) hℓ1).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ f₁) hpv)))`. Establish `E2 : (spMap σ ≫ s) ≫ f₂ = (spMap σ ≫ py) ≫ f₁` using `(Category.assoc _ _ _).trans ((congrArg (spMap σ ≫ ·) hs).trans (Category.assoc _ _ _).symm)`. Establish `E3 : spMap (IsLocalRing.residue V) ≫ v ≫ f₁ = (spMap (IsLocalRing.residue V) ≫ ℓ) ≫ f₂` using `(congrArg (spMap (IsLocalRing.residue V) ≫ ·) hℓ1.symm).trans (Category.assoc _ _ _).symm`.
+
+Establish `E4 : spMap σ ≫ py ≫ f₁ = (spMap σ ≫ s) ≫ f₂` using `(congrArg (spMap σ ≫ ·) hs.symm).trans (Category.assoc _ _ _).symm`. Establish `e : spMap (IsLocalRing.residue V) ≫ ℓ = spMap σ ≫ s` using `GlobalTheory.T.eq_of_bear_common_fullFlag F ι m X Y₂ Y₁ Eb S₂ φ₂ f₂ S₁ φ₁ f₁ h₂ h₁ _ (spMap (IsLocalRing.residue V) ≫ ℓ) (spMap σ ≫ s) (spMap σ ≫ py) E1 E2 (coBear_swap E3 hpv rfl hinc) (coBear_swap E4 rfl rfl hbc)`. Establish `hℓc : ℓ (IsLocalRing.closedPoint V) = s (IsLocalRing.closedPoint κ)`. Establish `h3 : ℓ (spMap (IsLocalRing.residue V) (IsLocalRing.closedPoint (IsLocalRing.ResidueField V))) = s (spMap σ (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)))` using `congrArg (fun t : Sp (IsLocalRing.ResidueField V) ⟶ Y₂.X => t (IsLocalRing.closedPoint (IsLocalRing.ResidueField V))) e`. Establish `h4 : spMap (IsLocalRing.residue V) (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)) = IsLocalRing.closedPoint V` using `IsLocalRing.comap_closedPoint (IsLocalRing.residue V)`.
+
+Establish `h5 : spMap σ (IsLocalRing.closedPoint (IsLocalRing.ResidueField V)) = IsLocalRing.closedPoint κ` using `Subsingleton.elim (α := PrimeSpectrum κ) _ _`. Rewrite `h3` using `[h4, h5]`. Conclude with `h3`. Establish `hsp : ℓ (IsLocalRing.closedPoint V) ⤳ s (IsLocalRing.closedPoint κ)` using `hℓc ▸ specializes_rfl`. Establish `k1` using `RatModel.val_spMap_comp (M := ratOf Y₂) (algebraMap V Y₁.Fn) ℓ hsp ⟨a, ha⟩`.
+
+Establish `k2` using `RatModel.val_spMap_comp (M := ratOf Y₂) ψ.toRingHom (ratOf Y₂).pt ((ratOf Y₂).pt_specializes (IsLocalRing.closedPoint _) _) ⟨a, ha⟩`. Establish `k4` using `(RatModel.valLoc_eq_val (M := ratOf Y₂) (ratOf Y₂).pt ((ratOf Y₂).pt_specializes (IsLocalRing.closedPoint _) (s (IsLocalRing.closedPoint κ))) ⟨a, ha⟩).trans (RatModel.val_pt (M := ratOf Y₂) a)`. Establish `k3 : ψ a = algebraMap V Y₁.Fn (RatModel.valLoc ℓ _ hsp ⟨a, ha⟩)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[k3]`.
+
+Conclude with `(RatModel.valLoc ℓ _ hsp ⟨a, ha⟩).2`.
+-/
 theorem dominates_O (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ) (X Y₁ Y₂ : Var F)
     (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X)
     (S₂ : Fr (ratOf Y₂) m m) (φ₂ : X.Fn →ₐ[F] Y₂.Fn) (f₂ : Y₂.X ⟶ X.X) (h₁ : Reps Eb S₁ φ₁ f₁)

@@ -18,9 +18,15 @@ def incl (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestri
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incl_val (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ) (v : kfin ε σ) :
     ((incl hK v : ReciprocityTheory.ChartRestriction.DS.smD ε σ) : H) = v := rfl
 
+/- English proof (translation)
+Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h'`.
+-/
 theorem incl_inj (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ) {v w : kfin ε σ}
     (h : incl hK v = incl hK w) : v = w := by
   have h' := congrArg Subtype.val h
@@ -36,9 +42,15 @@ def Eop (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestric
 variable (hK : ∀ v : H, IsKFin ε σ v → v ∈ ReciprocityTheory.ChartRestriction.DS.smD ε σ)
     (h2 : ∀ a b, ∀ v ∈ CompanionTheory.D.gk.HC.KF ε σ, ReciprocityTheory.ChartRestriction.DS.smE ε σ a b v ∈ CompanionTheory.D.gk.HC.KF ε σ)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext rfl`.
+-/
 theorem incl_E (a b : Fin n) (v : kfin ε σ) :
     incl hK (Eop hK h2 a b v) = ReciprocityTheory.ChartRestriction.DS.smE ε σ a b (incl hK v) := Subtype.ext rfl
 
+/- English proof (translation)
+Simplify using `only [ReciprocityTheory.ChartRestriction.DS.actM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, incl_E]`.
+-/
 theorem incl_actM (X : Mx n) (v : kfin ε σ) :
     incl hK (ReciprocityTheory.ChartRestriction.DS.actM (Eop hK h2) X v) = ReciprocityTheory.ChartRestriction.DS.actM (ReciprocityTheory.ChartRestriction.DS.smE ε σ) X (incl hK v) := by
   simp only [ReciprocityTheory.ChartRestriction.DS.actM, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, incl_E]
@@ -49,6 +61,25 @@ namespace PositivityTheory.CW
 
 open KFiniteInclusion
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ hirr`. Take `⟨hK, h2⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr`. Establish `hD` using `ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hσ`. Establish `hun` using `ReciprocityTheory.ChartRestriction.DS.isInfUnitary_of_isDerivedOn hσ hD`. Use `⟨Eop hK h2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `X hX v`. Establish `h` using `ReciprocityTheory.ChartRestriction.DS.dS_eq_actM hD (X := X) hX (incl hK v)`. Establish `e1 : ((ReciprocityTheory.ChartRestriction.DS.actM (Eop hK h2) X v : kfin ε σ) : H) = ((ReciprocityTheory.ChartRestriction.DS.actM (ReciprocityTheory.ChartRestriction.DS.smE ε σ) X (incl hK v) : ReciprocityTheory.ChartRestriction.DS.smD ε σ) : H)`. Rewrite using `[← incl_actM hK h2 X v]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, ← h]`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.dS, dRep, Complex.coe_smul, incl_val]`. Introduce `a b c d`. Use `LinearMap.ext fun v => incl_inj hK ?_` and prove the remaining obligations. Establish `h` using `LinearMap.congr_fun (hD.glRep a b c d) (incl hK v)`.
+
+Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub, incl_E] at h ⊢`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp [incl_E]`. Introduce `a b x y`. Establish `h` using `hun a b (incl hK x) (incl hK y)`.
+
+Rewrite `h` using `[Submodule.coe_inner, Submodule.coe_inner]`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner]`. Conclude with `h`. Introduce `N hN set M := N.map (incl hK) with hM`. Establish `hMK : (M : Set (ReciprocityTheory.ChartRestriction.DS.smD ε σ)) ⊆ CompanionTheory.D.gk.HC.KF ε σ`.
+
+Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `w.2`. Establish `hMst : ∀ a b, ∀ v ∈ M, ReciprocityTheory.ChartRestriction.DS.smE ε σ a b v ∈ M`. Introduce and unpack `a b _ ⟨w, hw, rfl⟩`. Conclude with `⟨Eop hK h2 a b w, hN a b w hw, incl_E hK h2 a b w⟩`.
+
+Break down `CompanionTheory.D.gk.HC.uIrr n ε H σ hσ hirr M hMK hMst with h | h` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations. Establish `: incl hK x ∈ M` using `⟨x, hx, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`.
+
+Rewrite using `[Submodule.mem_bot]`. Conclude with `incl_inj hK (this.trans (map_zero _).symm)`. Use `right`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `: incl hK x ∈ (M : Set (ReciprocityTheory.ChartRestriction.DS.smD ε σ))` using `by rw [h]; exact x.2`.
+
+Take `⟨w, hw, e⟩` from `this`. Rewrite using `[← incl_inj hK e]` and apply the resulting hypothesis.
+-/
 theorem c1 : C1 := by
   intro n ε H _ _ _ σ hσ hirr
   obtain ⟨hK, h2⟩ := CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr

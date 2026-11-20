@@ -10,10 +10,16 @@ namespace PositivityTheory.SiegelWeilFormula.Ald.PCI
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] {κ' κ'' : Type} [Fintype κ']
   [Fintype κ'']
 
+/- English proof (translation)
+The claim follows from `(h.smooth ⊤).comp contDiff_Ain`.
+-/
 theorem contDiff_Θ (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) :
     ContDiff ℝ ∞ (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) :=
   (h.smooth ⊤).comp contDiff_Ain
 
+/- English proof (translation)
+Establish `e : pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s) = iteratedFDeriv ℝ m (⇑h ∘ ⇑(Ain s : (κ' ⊕ κ'' → W) →L[ℝ] (κ' ⊕ κ'' → W))) x` using `rfl`. Rewrite using `[e, (Ain s).iteratedFDeriv_comp_right (h.smooth ⊤) x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations. Establish `hp : ∏ _i : Fin m, ‖(Ain s : (κ' ⊕ κ'' → W) →L[ℝ] (κ' ⊕ κ'' → W))‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => norm_Ain_le hs)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_pder_le (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (m : ℕ) (x : κ' ⊕ κ'' → W) {s : ℝ} (hs : |s| ≤ 1) :
     ‖pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s)‖ ≤ ‖iteratedFDeriv ℝ m h (Ain s x)‖ := by
   have e : pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s)
@@ -25,6 +31,17 @@ theorem norm_pder_le (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (m : ℕ) (x : �
   calc _ ≤ ‖iteratedFDeriv ℝ m h (Ain s x)‖ * 1 := mul_le_mul_of_nonneg_left hp (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1))` using `contDiff_Θ h`. Rewrite using `[show iteratedFDeriv ℝ m (fun y => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y)) x = ∫ s in Ioc (0 : ℝ) 1, pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s) from iteratedFDeriv_integral hc m x]`. Establish `hpt : ∀ s ∈ Ioc (0 : ℝ) 1, ‖(‖x‖ ^ k) • pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s)‖ ≤ SchwartzMap.seminorm ℝ k m h + R ^ k * SchwartzMap.seminorm ℝ 0 m h`. Introduce `s hs`. Establish `hs' : |s| ≤ 1`.
+
+Rewrite using `[abs_of_pos hs.1]`. Conclude with `hs.2`. Rewrite using `[norm_smul, Real.norm_of_nonneg (by positivity)]`. Establish `h1` using `norm_pder_le h m x hs'`. Establish `h2` using `norm_le_max_Ain s x`.
+
+Establish `hA` using `SchwartzMap.le_seminorm ℝ k m h (Ain s x)`. Establish `hB` using `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ h m (Ain s x)`. Establish `hxk : ‖x‖ ^ k ≤ ‖Ain s x‖ ^ k + R ^ k`. Break down `le_total ‖Ain s x‖ ‖x ∘ Sum.inr‖ with hle | hle` into its components or cases. Rewrite `h2` using `[max_eq_right hle]`.
+
+Establish `: ‖x‖ ^ k ≤ R ^ k` using `pow_le_pow_left₀ (norm_nonneg _) (h2.trans hx) k`. Combine the linear relations using `[pow_nonneg (norm_nonneg (Ain s x)) k]`. Rewrite `h2` using `[max_eq_left hle]`. Establish `: ‖x‖ ^ k ≤ ‖Ain s x‖ ^ k` using `pow_le_pow_left₀ (norm_nonneg _) h2 k`. Combine the linear relations using `[pow_nonneg hR k]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hI` using `norm_setIntegral_le_of_norm_le_const (μ := volume) measure_Ioc_lt_top hpt`. Rewrite `hI` using `[integral_smul, norm_smul, Real.norm_of_nonneg (by positivity)]`. Simplify using `using hI`.
+-/
 theorem near_bound (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) {R : ℝ} (hR : 0 ≤ R) (k m : ℕ) (x : κ' ⊕ κ'' → W)
     (hx : ‖x ∘ Sum.inr‖ ≤ R) :
     ‖x‖ ^ k * ‖iteratedFDeriv ℝ m (fun y => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y)) x‖ ≤
@@ -63,6 +80,13 @@ theorem near_bound (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) {R : ℝ} (hR : 0 
   rw [integral_smul, norm_smul, Real.norm_of_nonneg (by positivity)] at hI
   simpa using hI
 
+/- English proof (translation)
+Set `L : (κ' ⊕ κ'' → W) →L[ℝ] (κ'' → W)` to `ContinuousLinearMap.pi fun j => ContinuousLinearMap.proj (Sum.inr j)`. Establish `hL : ‖L‖ ≤ 1`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun y => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg y)).2 fun j => ?_` and prove the remaining obligations.
+
+Conclude with `norm_le_pi_norm y (Sum.inr j)`. Establish `e : (fun y : κ' ⊕ κ'' → W => (β (y ∘ Sum.inr) : ℂ)) = ⇑Complex.ofRealLI ∘ (β ∘ ⇑L)` using `rfl`. Establish `hβL : ContDiff ℝ ∞ (β ∘ ⇑L)` using `hβ.comp L.contDiff`. Rewrite using `[e, Complex.ofRealLI.norm_iteratedFDeriv_comp_left hβL.contDiffAt (by exact_mod_cast le_top), L.iteratedFDeriv_comp_right hβ x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `hp : ∏ _j : Fin i, ‖L‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => hL)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_iteratedFDeriv_B_le (β : (κ'' → W) → ℝ) (hβ : ContDiff ℝ ∞ β) (i : ℕ) (x : κ' ⊕ κ'' → W) :
     ‖iteratedFDeriv ℝ i (fun y : κ' ⊕ κ'' → W => (β (y ∘ Sum.inr) : ℂ)) x‖ ≤ ‖iteratedFDeriv ℝ i β (x ∘ Sum.inr)‖ := by
   let L : (κ' ⊕ κ'' → W) →L[ℝ] (κ'' → W) :=
@@ -81,6 +105,13 @@ theorem norm_iteratedFDeriv_B_le (β : (κ'' → W) → ℝ) (hβ : ContDiff ℝ
   calc _ ≤ ‖iteratedFDeriv ℝ i β (L x)‖ * 1 := mul_le_mul_of_nonneg_left hp (norm_nonneg _)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `x₀`. Establish `hK : IsCompact (Metric.closedBall x₀ 1 ×ˢ Icc (0 : ℝ) 1)` using `(isCompact_closedBall x₀ 1).prod isCompact_Icc`. Establish `hGd : Continuous (fderiv ℝ G)` using `hG.continuous_fderiv one_ne_zero`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hGd.continuousOn`. Establish `hGc : Continuous G` using `hG.continuous`.
+
+Establish `hd : ∀ p, HasFDerivAt G (fderiv ℝ G p) p` using `fun p => (hG.differentiable (by simp) p).hasFDerivAt`. Use `(hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (μ := volume.restrict (Ioc (0 : ℝ) 1)) (F := fun x s => G (x, s)) (F' := fun x s => (fderiv ℝ G (x, s)).comp (ContinuousLinearMap.inl ℝ V ℝ)) (bound := fun _ => C * ‖ContinuousLinearMap.inl ℝ V ℝ‖) (Metric.closedBall_mem_nh …` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun x => (hGc.comp (Continuous.prodMk continuous_const continuous_id)).aestronglyMeasurable`. Conclude with `((hGc.comp (Continuous.prodMk continuous_const continuous_id)).integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Conclude with `((hGd.comp (Continuous.prodMk continuous_const continuous_id)).clm_comp continuous_const).aestronglyMeasurable`.
+
+Use `ae_restrict_of_forall_mem measurableSet_Ioc fun s hs x hx => ?_` and prove the remaining obligations. Use `(ContinuousLinearMap.opNorm_comp_le _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hC _ ⟨hx, Ioc_subset_Icc_self hs⟩) (norm_nonneg _)`. Conclude with `(continuous_const.integrableOn_Icc).mono_set Ioc_subset_Icc_self`. Conclude with `Filter.Eventually.of_forall fun s x _ => (hd (x, s)).comp x (hasFDerivAt_prodMk_left x s)`.
+-/
 private theorem differentiable_integral_Ioc_of_contDiff {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     (G : V × ℝ → E) (hG : ContDiff ℝ 1 G) :
@@ -112,6 +143,23 @@ private theorem differentiable_integral_Ioc_of_contDiff {V E : Type} [NormedAddC
   · exact Filter.Eventually.of_forall fun s x _ =>
       (hd (x, s)).comp x (hasFDerivAt_prodMk_left x s)
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1))` using `contDiff_Θ h`. Establish `hIF : ∀ m x, iteratedFDeriv ℝ m (fun y => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y)) x = ∫ s in Ioc (0 : ℝ) 1, pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s)` using `fun m x => iteratedFDeriv_integral hc m x`. Establish `hF : ContDiff ℝ ∞ (fun y : κ' ⊕ κ'' → W => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y))`. Use `contDiff_of_differentiable_iteratedFDeriv fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show iteratedFDeriv ℝ m (fun y : κ' ⊕ κ'' → W => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y)) = fun x => ∫ s in Ioc (0 : ℝ) 1, pder m (fun p : (κ' ⊕ κ'' → W) × ℝ => h (Ain p.2 p.1)) (x, s) from funext (hIF m)]`.
+
+Conclude with `differentiable_integral_Ioc_of_contDiff _ ((contDiff_pder m hc).of_le (by exact_mod_cast le_top))`. Establish `hB : ContDiff ℝ ∞ (fun y : κ' ⊕ κ'' → W => (β (y ∘ Sum.inr) : ℂ))`. Establish `hL : ContDiff ℝ ∞ (fun y : κ' ⊕ κ'' → W => y ∘ Sum.inr)` using `contDiff_pi.2 fun j => contDiff_apply ℝ W (Sum.inr j)`. Conclude with `Complex.ofRealCLM.contDiff.comp (hβ.comp hL)`. Take `⟨R0, hR0⟩` from `hβc.isCompact.isBounded.subset_closedBall 0`.
+
+Establish `hR : 0 ≤ max R0 0` using `le_max_right _ _`. Establish `hsupp : ∀ y ∈ tsupport β, ‖y‖ ≤ max R0 0` using `fun y hy => by`. Use `hR0 hy` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `this.trans (le_max_left _ _)`.
+
+Establish `hM : ∀ i, ∃ C, ∀ y, ‖iteratedFDeriv ℝ i β y‖ ≤ C` using `fun i => (hβ.continuous_iteratedFDeriv (by exact_mod_cast le_top)).bounded_above_of_compact_support (hβc.iteratedFDeriv i)`. Use `choose M hM using hM`. Establish `hM0 : ∀ i, 0 ≤ M i` using `fun i => (norm_nonneg _).trans (hM i 0)`. Use `⟨⟨fun x => (β (x ∘ Sum.inr) : ℂ) * ∫ s in Ioc (0 : ℝ) 1, h (Ain s x), hB.mul hF, ?_⟩, fun x => rfl⟩` and prove the remaining obligations. Introduce `k n`.
+
+Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * (M i * (SchwartzMap.seminorm ℝ k (n - i) h + (max R0 0) ^ k * SchwartzMap.seminorm ℝ 0 (n - i) h)), fun x => ?_⟩` and prove the remaining obligations. Establish `hmul` using `norm_iteratedFDeriv_mul_le hB hF x (n := n) (by exact_mod_cast le_top)`. Use `(mul_le_mul_of_nonneg_left hmul (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Establish `key : ‖iteratedFDeriv ℝ i (fun y : κ' ⊕ κ'' → W => (β (y ∘ Sum.inr) : ℂ)) x‖ * (‖x‖ ^ k * ‖iteratedFDeriv ℝ (n - i) (fun y => ∫ s in Ioc (0 : ℝ) 1, h (Ain s y)) x‖) ≤ M i * (SchwartzMap.seminorm ℝ k (n - i) h + (max R0 0) ^ k * SchwartzMap.seminorm ℝ 0 (n - i) h)`. Establish `h3` using `norm_iteratedFDeriv_B_le β hβ i x`. Distinguish the cases in `hx : x ∘ Sum.inr ∈ tsupport β`. Conclude with `mul_le_mul (h3.trans (hM i _)) (near_bound h hR k (n - i) x (hsupp _ hx)) (by positivity) (hM0 i)`. Establish `h0 : iteratedFDeriv ℝ i β (x ∘ Sum.inr) = 0` using `image_eq_zero_of_notMem_tsupport fun hm => hx (tsupport_iteratedFDeriv_subset i hm)`.
+
+Rewrite `h3` using `[h0, norm_zero]`. Establish `hz : ‖iteratedFDeriv ℝ i (fun y : κ' ⊕ κ'' → W => (β (y ∘ Sum.inr) : ℂ)) x‖ = 0` using `le_antisymm h3 (norm_nonneg _)`. Rewrite using `[hz, zero_mul]`. Conclude with `mul_nonneg (hM0 i) (add_nonneg (apply_nonneg _ _) (mul_nonneg (pow_nonneg hR k) (apply_nonneg _ _)))`. Combine the equalities or inequalities in the displayed calculation.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := mul_le_mul_of_nonneg_left key (by positivity)`.
+-/
 theorem near_schwartz (h : SchwartzMap (κ' ⊕ κ'' → W) ℂ) (β : (κ'' → W) → ℝ) (hβ : ContDiff ℝ ∞ β)
     (hβc : HasCompactSupport β) :
     ∃ g : SchwartzMap (κ' ⊕ κ'' → W) ℂ, ∀ x, g x = (β (x ∘ Sum.inr) : ℂ) * ∫ s in Ioc (0 : ℝ) 1, h (Ain s x) := by

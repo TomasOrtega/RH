@@ -12,6 +12,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Introduce `hC D T h j hj w hn hM σ hσ k x hx`. Take `⟨_, _, _, _, hr1, hxi, hDF, _, hc, _⟩` from `GlobalTheory.T.unitaryDatumNumbers_for_supBounds D T h j hj w`. Take `⟨st, hnab⟩` from `h.nabPin j hj`. Take `⟨f, hf, hne⟩` from `GlobalTheory.T.exists_thetaGenerator_reading_ne_zero_at_frame hC _ _ _ _ (T.Q.Xo j) T.Q.c σ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) ((Formalism.L2.PjFree.goodEmb_iff σ).2 hσ) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (h.toLawsCore.unf j hj σ hσ)) hr1 (2 * xiR D) (mul_pos two_p …`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hne` using `[Formalism.L2.PjFree.rdU_ofPj]`. Then use the resulting hypothesis.
+-/
 theorem exists_theta_ne_zero_record : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), D.R.r ≤ w.n → 3 * WeightAlgebra.DF w + 2 ≤ T.Q.l.M → ∀ (σ : T.Q.c.F →+* ℂ), GoodEmb T.Q.c σ → ∀ k, ∀ x ∈ ((T.U j σ).X k).dom, ∃ f ∈ T.th j w, rdU (T.U j σ) f k x ≠ 0 := by
   intro hC D T h j hj w hn hM σ hσ k x hx
   obtain ⟨_, _, _, _, hr1, hxi, hDF, _, hc, _⟩ := GlobalTheory.T.unitaryDatumNumbers_for_supBounds D T h j hj w

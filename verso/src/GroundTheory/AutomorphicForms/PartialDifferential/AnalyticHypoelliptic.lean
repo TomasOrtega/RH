@@ -12,6 +12,9 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos s with rfl | hs` into its components or cases. Take `⟨rfl, rfl⟩ : i = 0 ∧ q = 0` from `by omega`. Simplify using the standard rewrite rules. Establish `hs' : (1 : ℝ) ≤ s` using `by exact_mod_cast hs`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem powMul_self_le {s i q : ℕ} (h : i + q ≤ s) : (s : ℝ) ^ i * (q : ℝ) ^ q ≤ (s : ℝ) ^ s := by
   rcases Nat.eq_zero_or_pos s with rfl | hs
   · obtain ⟨rfl, rfl⟩ : i = 0 ∧ q = 0 := by omega
@@ -22,12 +25,20 @@ theorem powMul_self_le {s i q : ℕ} (h : i + q ≤ s) : (s : ℝ) ^ i * (q : �
       _ = (s : ℝ) ^ (i + q) := by rw [pow_add]
       _ ≤ (s : ℝ) ^ s := pow_le_pow_right₀ hs' h
 
+/- English proof (translation)
+Establish `h` using `Real.pow_div_factorial_le_exp (x := (p : ℝ)) (Nat.cast_nonneg _) p`. Rewrite `h` using `[div_le_iff₀ (by positivity), ← Real.exp_one_pow]`. Conclude with `h`.
+-/
 theorem pow_self_le_exp_mul_factorial (p : ℕ) :
     (p : ℝ) ^ p ≤ Real.exp 1 ^ p * p.factorial := by
   have h := Real.pow_div_factorial_le_exp (x := (p : ℝ)) (Nat.cast_nonneg _) p
   rw [div_le_iff₀ (by positivity), ← Real.exp_one_pow] at h
   exact h
 
+/- English proof (translation)
+Establish `h` using `Nat.add_choose_mul_factorial_mul_factorial k σ`. Establish `hc : (k + σ).choose σ ≤ 2 ^ (k + σ)` using `Nat.choose_le_two_pow _ _`. Establish `: (k + σ).factorial ≤ 2 ^ (k + σ) * k.factorial * σ.factorial`. Rewrite using `[← h]`. Use `gcongr`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem factorial_add_le (k σ : ℕ) :
     ((k + σ).factorial : ℝ) ≤ 2 ^ (k + σ) * k.factorial * σ.factorial := by
   have h := Nat.add_choose_mul_factorial_mul_factorial k σ
@@ -37,6 +48,11 @@ theorem factorial_add_le (k σ : ℕ) :
     gcongr
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `mem : ∀ {f : EuclideanSpace ℝ (Fin n) → ℝ}, Continuous f → (∀ x, x ∉ tsupport u → f x = 0) → MemLp f 2 volume` using `fun hc hz ↦ memLp_two_of_continuous_hasCompactSupport hc (HasCompactSupport.intro hu_c hz)`. Establish `memg : ∀ q, MemLp (fun x ↦ χ x ^ q * hsD q u x) 2 volume` using `fun q ↦ mem ((hχ.continuous.pow q).mul (continuous_hsD hu q)) fun x hx ↦ by`. Rewrite using `[hsD_eq_zero_of_eventuallyEq_zero (notMem_tsupport_iff_eventuallyEq.1 hx), mul_zero]`. Establish `memR : MemLp (fun x ↦ ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * (s : ℝ) ^ ij.1) * (χ x ^ (ij.2 + k) * hsD (ij.2 + k) u x)) 2 volume` using `memLp_sum_mul _ _ _ fun ij _ ↦ memg _`. Establish `hvC : ∀ I : Fin k → Fin n, ContDiff ℝ ∞ (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y)` using `fun I ↦ (contDiff_weight hχ s).mul (contDiff_pdT hu I)`.
+
+Establish `hcont : Continuous (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD j (fun y ↦ ((χ y : ℂ)) ^ s * pdT I u y) x ^ 2))` using `(continuous_finsetSum _ fun I _ ↦ (continuous_hsD (hvC I) j).pow 2).sqrt`. Use `(l2Norm_le_of_abs_le memR hcont.aestronglyMeasurable fun x ↦ ?_).trans (l2Norm_sum_const_mul_le _ _ (fun _ _ ↦ by positivity) _ fun ij _ ↦ memg _)` and prove the remaining obligations. Rewrite using `[abs_of_nonneg (Real.sqrt_nonneg _)]`. Conclude with `sqrt_sum_hsD_weight_le hu hχ h01 hK0 hK hjL hjs x`.
+-/
 theorem l2Norm_sqrt_sum_derivative_cutoff_power_le {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
     (hu_c : HasCompactSupport u) {χ : EuclideanSpace ℝ (Fin n) → ℝ} (hχ : ContDiff ℝ ∞ χ)
     (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1) {K : ℝ} (hK0 : 0 ≤ K) {L₀ : ℕ}
@@ -65,6 +81,19 @@ theorem l2Norm_sqrt_sum_derivative_cutoff_power_le {u : EuclideanSpace ℝ (Fin 
   rw [abs_of_nonneg (Real.sqrt_nonneg _)]
   exact sqrt_sum_hsD_weight_le hu hχ h01 hK0 hK hjL hjs x
 
+/- English proof (translation)
+Use `set s := k + σ with hs`. Use `set w : (Fin k → Fin n) → EuclideanSpace ℝ (Fin n) → ℂ := fun I z ↦ ((χ z : ℂ)) ^ s * pdT I u z with hw`. Establish `hwC : ∀ I, ContDiff ℝ ∞ (w I)` using `fun I ↦ (contDiff_weight hχ s).mul (contDiff_pdT hu I)`. Establish `hwc : ∀ I, HasCompactSupport (w I)`. Introduce `I`.
+
+Use `HasCompactSupport.intro hu_c fun x hx ↦ ?_` and prove the remaining obligations. Use `(dT_eventuallyEq_zero_of_not_mem_tsupport hx (fun l ↦ ev (I l))).self_of_nhds` as an intermediate fact. Simplify using `only [hw, pdT]`. Rewrite using `[this, mul_zero]`. Establish `mem : ∀ {f : EuclideanSpace ℝ (Fin n) → ℝ}, Continuous f → (∀ x, x ∉ tsupport u → f x = 0) → MemLp f 2 volume` using `fun hc hz ↦ memLp_two_of_continuous_hasCompactSupport hc (HasCompactSupport.intro hu_c hz)`.
+
+Establish `memh : ∀ j I, MemLp (hsD j (w I)) 2 volume` using `fun j I ↦ memLp_two_of_continuous_hasCompactSupport (continuous_hsD (hwC I) j) (by`. Use `HasCompactSupport.intro (hwc I) fun x hx ↦ ?_` and prove the remaining obligations. Conclude with `hsD_eq_zero_of_eventuallyEq_zero (notMem_tsupport_iff_eventuallyEq.1 hx) j)`. Establish `hpt : ∀ I, ‖pdT I u y‖ ≤ CS * (l2n (hsD 0 (w I)) + l2n (hsD σ (w I)))`. Introduce `I`.
+
+Establish `h` using `hsob (w I) (hwC I) (hwc I) y`. Simplify using `only [hw, hy, Complex.ofReal_one, one_pow, one_mul] at h`. Conclude with `h`. Establish `e0 : l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD 0 (w I) x ^ 2)) = Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD 0 (w I)) ^ 2)` using `l2Norm_sqrt_sum_sq_eq _ fun I ↦ memh 0 I`. Establish `eσ : l2n (fun x ↦ Real.sqrt (∑ I : Fin k → Fin n, hsD σ (w I) x ^ 2)) = Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD σ (w I)) ^ 2)` using `l2Norm_sqrt_sum_sq_eq _ fun I ↦ memh σ I`.
+
+Establish `h0` using `l2Norm_sqrt_sum_derivative_cutoff_power_le hu hu_c hχ h01 hK0 hK (k := k) (s := s) (j := 0) (Nat.zero_le _) (by omega)`. Establish `hσ` using `l2Norm_sqrt_sum_derivative_cutoff_power_le hu hu_c hχ h01 hK0 hK (k := k) (s := s) (j := σ) hσL (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sqrt_sum_sq_const_mul, abs_of_nonneg hCS]`. Use `_ ≤ CS * (Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD 0 (w I)) ^ 2) + Real.sqrt (∑ I : Fin k → Fin n, l2n (hsD σ (w I)) ^ 2)) := mul_le_mul_of_nonneg_left (sqrt_sum_sq_add_le _ _) hCS`.
+
+Use `_ ≤ _ := by`. Rewrite using `[← e0, ← eσ]`. Conclude with `mul_le_mul_of_nonneg_left (add_le_add h0 hσ) hCS`.
+-/
 theorem hsD_le_of_sobolev {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDiff ℝ ∞ u)
     (hu_c : HasCompactSupport u) {χ : EuclideanSpace ℝ (Fin n) → ℝ} (hχ : ContDiff ℝ ∞ χ)
     (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1) {K : ℝ} (hK0 : 0 ≤ K) {L₀ : ℕ}
@@ -123,6 +152,21 @@ theorem hsD_le_of_sobolev {u : EuclideanSpace ℝ (Fin n) → ℂ} (hu : ContDif
         rw [← e0, ← eσ]
         exact mul_le_mul_of_nonneg_left (add_le_add h0 hσ) hCS
 
+/- English proof (translation)
+Use `set e := Real.exp 1`. Establish `he : 0 ≤ e` using `(Real.exp_pos 1).le`. Use `⟨CS * (2 * 2 ^ σ * K * B) * (σ.factorial * (2 * e * L) ^ σ), 2 * e * L, fun k y hy ↦ ?_⟩` and prove the remaining obligations. Use `set s := k + σ with hs`. Establish `hL0 : 0 ≤ L` using `by linarith`.
+
+Establish `hterm : ∀ j, j ≤ σ → ∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ) * (K * ((k + σ : ℕ) : ℝ) ^ ij.1) * wN χ u (ij.2 + k) ≤ 2 ^ σ * K * (B * L ^ s * (s : ℝ) ^ s)`. Introduce `j hj`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun ij hij ↦ ?_` and prove the remaining obligations. Establish `h1 : ij.1 + ij.2 = j` using `mem_antidiagonal.1 hij`.
+
+Establish `hb` using `hN (ij.2 + k)`. Establish `hp` using `powMul_self_le (s := s) (i := ij.1) (q := ij.2 + k) (by omega)`. Establish `hLq : L ^ (ij.2 + k) ≤ L ^ s` using `pow_le_pow_right₀ hL (by omega)`. Establish `hsi : (0 : ℝ) ≤ (s : ℝ) ^ ij.1` using `by positivity`. Establish `hqq : (0 : ℝ) ≤ ((ij.2 + k : ℕ) : ℝ) ^ (ij.2 + k)` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `_ = (∑ ij ∈ antidiagonal j, (j.choose ij.1 : ℝ)) * K * (B * L ^ s * (s : ℝ) ^ s) := by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Use `_ ≤ 2 ^ σ * K * (B * L ^ s * (s : ℝ) ^ s) := by`. Rewrite using `[sum_antidiagonal_choose_eq]`.
+
+Establish `: (0 : ℝ) ≤ B * L ^ s * (s : ℝ) ^ s` using `by positivity`. Use `gcongr`. Evaluate the numerical expressions. Establish `hmain` using `hsD_le_of_sobolev hu hu_c hχ h01 hK0 hK hσL hCS hsob k hy`. Establish `hss : (s : ℝ) ^ s ≤ e ^ s * (2 ^ s * k.factorial * σ.factorial)` using `(pow_self_le_exp_mul_factorial s).trans (by gcongr; exact factorial_add_le k σ)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ CS * (2 * 2 ^ σ * K * B)` using `by positivity`. Use `gcongr`. Use `_ = CS * (2 * 2 ^ σ * K * B) * (σ.factorial * (2 * e * L) ^ σ) * (2 * e * L) ^ k * k.factorial := by`. Rewrite using `[hs]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_norm_iteratedFDeriv_le_of_wN {u : EuclideanSpace ℝ (Fin n) → ℂ}
     (hu : ContDiff ℝ ∞ u) (hu_c : HasCompactSupport u) {χ : EuclideanSpace ℝ (Fin n) → ℝ}
     (hχ : ContDiff ℝ ∞ χ) (h01 : ∀ x, 0 ≤ χ x ∧ χ x ≤ 1) {K : ℝ} (hK0 : 0 ≤ K) {L₀ : ℕ}
@@ -183,6 +227,13 @@ theorem exists_norm_iteratedFDeriv_le_of_wN {u : EuclideanSpace ℝ (Fin n) → 
           k.factorial := by
         rw [hs]; ring
 
+/- English proof (translation)
+Establish `h` using `fun α (hα : α ∈ A) ↦ exists_norm_iteratedFDeriv_le_of_analyticAt (ha α hα)`. Use `choose! r hr C M hC hM hb using h`. Establish `hev : ∀ᶠ y in nhds x₀, ∀ α ∈ A, y ∈ Metric.ball x₀ (r α)` using `(Filter.eventually_all_finset A).2 fun α hα ↦ Metric.ball_mem_nhds x₀ (hr α hα)`. Take `⟨ρ, hρ, hρb⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Use `⟨ρ, hρ, ∑ α ∈ A, C α, ∑ α ∈ A, M α, Finset.sum_nonneg fun α hα ↦ hC α hα, Finset.sum_nonneg fun α hα ↦ hM α hα, fun α hα y hy k ↦ ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : C α ≤ ∑ β ∈ A, C β` using `Finset.single_le_sum (fun β hβ ↦ hC β hβ) hα`. Establish `h2 : M α ≤ ∑ β ∈ A, M β` using `Finset.single_le_sum (fun β hβ ↦ hM β hβ) hα`. Establish `hC0` using `hC α hα`. Establish `hM0` using `hM α hα`. Establish `hS0 : 0 ≤ ∑ β ∈ A, C β` using `le_trans hC0 h1`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_coef_bound {A : Finset (Fin n → ℕ)}
     {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ} {x₀ : EuclideanSpace ℝ (Fin n)}
     (ha : ∀ α ∈ A, AnalyticAt ℝ (a α) x₀) :
@@ -205,6 +256,39 @@ theorem exists_coef_bound {A : Finset (Fin n → ℕ)}
         hb α hα y (hρb y hy α hα) k
     _ ≤ (∑ β ∈ A, C β) * (∑ β ∈ A, M β) ^ k * k.factorial := by gcongr
 
+/- English proof (translation)
+Establish `haAt : ∀ α ∈ A, AnalyticAt ℝ (a α) x₀` using `fun α hα ↦ (hΩ.analyticOn_iff_analyticOnNhd.1 (ha α hα)) x₀ hx₀`. Take `⟨ρ, hρ, Ca0, Ma0, hCa0, hMa0, hcb⟩` from `exists_coef_bound haAt`. Take `⟨ε, hε, hεΩ⟩` from `Metric.isOpen_iff.1 hΩ x₀ hx₀`. Use `set R₁ := min ε ρ with hR₁`. Establish `hR₁0 : 0 < R₁` using `lt_min hε hρ`.
+
+Take `⟨θ, hθ, hθc, _, hθs, hθ1⟩` from `exists_cutoff x₀ hR₁0`. Establish `hθC : ContDiff ℝ ∞ (fun y ↦ ((θ y : ℂ)))` using `Complex.ofRealCLM.contDiff.comp hθ`. Establish `hθc' : HasCompactSupport (fun y ↦ ((θ y : ℂ)))` using `hθc.comp_left (g := fun t : ℝ ↦ (t : ℂ)) Complex.ofReal_zero`. Establish `hθΩ : tsupport (fun y ↦ ((θ y : ℂ))) ⊆ Ω` using `(tsupport_comp_subset (g := fun t : ℝ ↦ (t : ℂ)) Complex.ofReal_zero θ).trans (hθs.trans ((Metric.ball_subset_ball (min_le_left _ _)).trans hεΩ))`. Establish `haC : ∀ α ∈ A, ContDiffOn ℝ ∞ (a α) Ω` using `fun α hα ↦ (ha α hα).contDiffOn hΩ.uniqueDiffOn`.
+
+Use `set ã : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ := fun α y ↦ ((θ y : ℂ)) * a α y with hã`. Use `set ũ : EuclideanSpace ℝ (Fin n) → ℂ := fun y ↦ ((θ y : ℂ)) * u y with hũ`. Establish `hãC : ∀ α ∈ A, ContDiff ℝ ∞ (ã α)` using `fun α hα ↦ contDiff_mul_of_tsupport hΩ (haC α hα) hθC hθΩ`. Establish `hũC : ContDiff ℝ ∞ ũ` using `contDiff_mul_of_tsupport hΩ hu hθC hθΩ`. Establish `hũc : HasCompactSupport ũ` using `hθc'.mul_right`.
+
+Establish `hbnd : ∀ α ∈ A, ∃ C, ∀ x, ‖ã α x‖ ≤ C` using `fun α hα ↦ (hãC α hα).continuous.bounded_above_of_compact_support hθc'.mul_right`. Use `choose! Cb hCb using hbnd`. Use `set A₀ : ℝ := ∑ α ∈ A, |Cb α| with hA₀def`. Establish `hA₀0 : 0 ≤ A₀` using `Finset.sum_nonneg fun α _ ↦ abs_nonneg _`. Establish `hA₀ : ∀ α ∈ A, ∀ x, ‖ã α x‖ ≤ A₀` using `fun α hα x ↦ (hCb α hα x).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun β ↦ |Cb β|) (fun β _ ↦ abs_nonneg _) hα))`.
+
+Use `set R₂ := R₁ / 2 with hR₂`. Establish `hR₂0 : 0 < R₂` using `by positivity`. Establish `hev : ∀ y ∈ Metric.ball x₀ R₂, (∀ α, ã α =ᶠ[nhds y] a α) ∧ ũ =ᶠ[nhds y] u`. Introduce `y hy`. Establish `hnb : Metric.ball x₀ R₂ ∈ nhds y` using `Metric.isOpen_ball.mem_nhds hy`.
+
+Use `⟨fun α ↦ ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hnb] with z hz`. Simplify using `[hã, hθ1 z hz]`. Use `filter_upwards [hnb] with z hz`. Simplify using `[hũ, hθ1 z hz]`.
+
+Establish `hR₂Ω : Metric.ball x₀ R₂ ⊆ Ω` using `(Metric.ball_subset_ball (by`. Establish `: R₁ ≤ ε` using `min_le_left _ _`. Use the proof step `linarith)).trans hεΩ`. Establish `hR₂ρ : Metric.ball x₀ R₂ ⊆ Metric.ball x₀ ρ` using `Metric.ball_subset_ball (by`. Establish `: R₁ ≤ ρ` using `min_le_right _ _`.
+
+Use the proof step `linarith)`. Establish `hPu : ∀ y ∈ Metric.ball x₀ R₂, diffOp A ã ũ y = 0`. Introduce `y hy`. Rewrite using `[← hDu y (hR₂Ω hy)]`. Simplify using `only [diffOp]`.
+
+Use `Finset.sum_congr rfl fun α _ ↦ ?_` and prove the remaining obligations. Rewrite using `[((hev y hy).1 α).eq_of_nhds, pderiv_eq_dT, pderiv_eq_dT, dT_congr_of_eventuallyEq (hev y hy).2]`. Establish `hcoef : ∀ α ∈ A, ∀ y ∈ Metric.ball x₀ R₂, ∀ i, hsD i (ã α) y ≤ Ca0 * ((n : ℝ) * Ma0) ^ i * i.factorial`. Introduce `α hα y hy i`. Rewrite using `[hsD_congr_of_eventuallyEq ((hev y hy).1 α)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hx₀R₂ : x₀ ∈ Metric.ball x₀ R₂` using `Metric.mem_ball_self hR₂0`. Establish `hell0 : ∀ ξ : EuclideanSpace ℝ (Fin n), ξ ≠ 0 → prinSymbol A ã m x₀ ξ ≠ 0`. Introduce `ξ hξ`. Establish `e : prinSymbol A ã m x₀ ξ = prinSymbol A a m x₀ ξ`.
+
+Simplify using `only [prinSymbol, hã, hθ1 x₀ hx₀R₂, Complex.ofReal_one, one_mul]`. Rewrite using `[e]`. Conclude with `hell x₀ hx₀ ξ hξ`. Take `⟨R₀, hR₀, C₀, hC₀, hE⟩` from `elliptic_estimate (Or.inl hn) hA (fun α hα ↦ (hãC α hα).continuous) hell0`. Use `set R := min R₂ R₀ with hR`.
+
+Establish `hR0 : 0 < R` using `lt_min hR₂0 hR₀`. Take `⟨χ, hχ, hχc, h01, hχs, hχ1⟩` from `exists_cutoff x₀ hR0`. Establish `hUR₂ : Metric.ball x₀ R ⊆ Metric.ball x₀ R₂` using `Metric.ball_subset_ball (min_le_left _ _)`. Establish `hUR₀ : Metric.ball x₀ R ⊆ Metric.ball x₀ R₀` using `Metric.ball_subset_ball (min_le_right _ _)`. Take `⟨σ, CS, hCS, hsob⟩` from `sobolev_pointwise (n := n)`.
+
+Take `⟨K₁, hK₁0, hK₁⟩` from `exists_norm_iteratedFDeriv_pow_le hχ hχc h01 (m + σ)`. Use `set K : ℝ := max 1 (n : ℝ) ^ (m + σ) * K₁ with hKdef`. Establish `hK0 : 0 ≤ K` using `by positivity`. Establish `hK : ∀ (s i : ℕ) (x : EuclideanSpace ℝ (Fin n)), i ≤ m + σ → i ≤ s → hsD i (fun y ↦ ((χ y : ℂ)) ^ s) x ≤ K * (s : ℝ) ^ i * χ x ^ (s - i)`. Introduce `s i x hi his`.
+
+Establish `hni : (n : ℝ) ^ i ≤ max 1 (n : ℝ) ^ (m + σ)` using `(pow_le_pow_left₀ (Nat.cast_nonneg _) (le_max_right _ _) i).trans (pow_le_pow_right₀ (le_max_left _ _) hi)`. Establish `hb` using `hK₁ s i x hi his`. Establish `hχ0` using `(h01 x).1`. Combine the equalities or inequalities in the displayed calculation. Establish `hKm : ∀ (s i : ℕ) (x : EuclideanSpace ℝ (Fin n)), i ≤ m → i ≤ s → hsD i (fun y ↦ ((χ y : ℂ)) ^ s) x ≤ K * (s : ℝ) ^ i * χ x ^ (s - i)` using `fun s i x hi his ↦ hK s i x (by omega) his`.
+
+Establish `hE' : ∀ v : EuclideanSpace ℝ (Fin n) → ℂ, ContDiff ℝ ∞ v → HasCompactSupport v → tsupport v ⊆ Metric.ball x₀ R → l2n (hsD m v) ≤ C₀ * (l2n (fun x ↦ ‖diffOp A ã v x‖) + ∑ j ∈ range m, l2n (hsD j v))` using `fun v h1 h2 h3 ↦ hE v h1 h2 (h3.trans hUR₀)`. Take `⟨B, L, hB, hL, hN⟩` from `weighted_derivative_bound hm hãC hA₀0 hA₀ hA hũC hũc Metric.isOpen_ball (fun y hy ↦ hPu y (hUR₂ hy)) hχ h01 hχs hCa0 (by positivity : (0 : ℝ) ≤ (n : ℝ) * Ma0) (fun α hα y hy i ↦ hcoef α hα y (hUR₂ hy) i) hC₀ hE' hK0 hKm`. Take `⟨C, M, hbound⟩` from `exists_norm_iteratedFDeriv_le_of_wN hũC hũc hχ h01 hK0 hK (σ := σ) (by omega) hCS hsob hB hL hN`. Establish `hhalf : Metric.ball x₀ (R / 2) ⊆ Metric.ball x₀ R₂` using `(Metric.ball_subset_ball (by linarith)).trans hUR₂`. Use `analyticAt_of_norm_iteratedFDeriv_le (r := R / 2) (C := C) (M := M) (by positivity) (hu.mono (hhalf.trans hR₂Ω)) fun y hy k ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[← (((hev y (hhalf hy)).2).iteratedFDeriv (𝕜 := ℝ) k).eq_of_nhds]`. Conclude with `hbound k y (hχ1 y hy)`.
+-/
 theorem analyticAt_of_elliptic_of_pos (hn : 0 < n) {m : ℕ} (hm : 1 ≤ m)
     {Ω : Set (EuclideanSpace ℝ (Fin n))} (hΩ : IsOpen Ω)
     {A : Finset (Fin n → ℕ)} {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ}
@@ -333,6 +417,25 @@ theorem analyticAt_of_elliptic_of_pos (hn : 0 < n) {m : ℕ} (hm : 1 ≤ m)
   rw [← (((hev y (hhalf hy)).2).iteratedFDeriv (𝕜 := ℝ) k).eq_of_nhds]
   exact hbound k y (hχ1 y hy)
 
+/- English proof (translation)
+Introduce `x₀ hx₀`. Use `AnalyticAt.analyticWithinAt ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Establish `hpt : ∀ y : EuclideanSpace ℝ (Fin 0), y = x₀` using `fun y ↦ by`.
+
+Use extensionality with `i`. Conclude with `Fin.elim0 i`. Conclude with `(analyticAt_const (v := u x₀)).congr (Filter.Eventually.of_forall fun y ↦ by rw [hpt y])`. Break down `Nat.eq_zero_or_pos m with hm | hm` into its components or cases. Substitute `hm` using the available equality.
+
+Establish `hA0 : ∀ α ∈ A, ∀ i, α i = 0` using `fun α hα i ↦ by`. Establish `h` using `hA α hα`. Establish `h0 : mabs α = 0` using `Nat.le_zero.1 h`. Conclude with `(Finset.sum_eq_zero_iff.1 h0) i (Finset.mem_univ _)`. Establish `hzero : ∀ x ∈ Ω, u x = 0`.
+
+Introduce `x hx`. Use `set ξ₀ : EuclideanSpace ℝ (Fin n) := EuclideanSpace.single ⟨0, hn⟩ 1`. Establish `hξ₀ : ξ₀ ≠ 0`. Introduce `h`. Use `congrArg (fun z : EuclideanSpace ℝ (Fin n) ↦ z ⟨0, hn⟩) h` as an intermediate fact.
+
+Simplify using `[ξ₀] at this`. Establish `hs` using `hell x hx ξ₀ hξ₀`. Establish `hmp : ∀ α ∈ A, mpow α ξ₀ = 1` using `fun α hα ↦ by`. Simplify using `[mpow, hA0 α hα]`. Establish `hfilt : A.filter (fun α ↦ mabs α = 0) = A` using `Finset.filter_true_of_mem fun α hα ↦ Nat.le_zero.1 (hA α hα)`.
+
+Establish `hsym : prinSymbol A a 0 x ξ₀ = ∑ α ∈ A, a α x`. Simplify using `only [prinSymbol, hfilt]`. Conclude with `Finset.sum_congr rfl fun α hα ↦ by rw [hmp α hα]; simp`. Establish `hpd : ∀ α ∈ A, pderiv α u x = u x`. Introduce `α hα`.
+
+Establish `key : ∀ (j : ℕ), j = 0 → ∀ v : Fin j → EuclideanSpace ℝ (Fin n), iteratedFDeriv ℝ j u x v = u x`. Introduce and unpack `j rfl v`. Simplify using the standard rewrite rules. Conclude with `key _ (Nat.le_zero.1 (hA α hα)) _`. Establish `hD` using `hDu x hx`.
+
+Simplify using `only [diffOp] at hD`. Rewrite `hD` using `[Finset.sum_congr rfl fun α hα ↦ by rw [hpd α hα], ← Finset.sum_mul]`. Rewrite `hs` using `[hsym]`. Conclude with `(mul_eq_zero.1 hD).resolve_left hs`. Use `(analyticAt_const (v := (0 : ℂ))).congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hΩ.mem_nhds hx₀] with y hy`. Conclude with `(hzero y hy).symm`. Conclude with `analyticAt_of_elliptic_of_pos hn hm hΩ hA ha hell hu hDu hx₀`.
+-/
 theorem analyticOn_of_elliptic {m : ℕ} {Ω : Set (EuclideanSpace ℝ (Fin n))} (hΩ : IsOpen Ω)
     {A : Finset (Fin n → ℕ)} {a : (Fin n → ℕ) → EuclideanSpace ℝ (Fin n) → ℂ}
     (hA : ∀ α ∈ A, mabs α ≤ m) (ha : ∀ α ∈ A, AnalyticOn ℝ (a α) Ω)

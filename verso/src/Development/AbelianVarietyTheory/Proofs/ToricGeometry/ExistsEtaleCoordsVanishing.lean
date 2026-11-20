@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.HolChart
 
+/- English proof (translation)
+Take `⟨φ, h1, h2⟩` from `hc.exists_etale_mvPolynomial`. Set `a : Fin g → ℂ` to `fun i => e (φ (MvPolynomial.X i))`. Set `T : MvPolynomial (Fin g) ℂ ≃ₐ[ℂ] MvPolynomial (Fin g) ℂ` to `AlgEquiv.ofAlgHom (MvPolynomial.aeval fun i => MvPolynomial.X i - MvPolynomial.C (a i)) (MvPolynomial.aeval fun i => MvPolynomial.X i + MvPolynomial.C (a i)) (by ext i; simp) (by ext i; simp)`. Establish `hC : ∀ x, φ (MvPolynomial.C x) = c x` using `fun x => by rw [← h1]; rfl`. Use `⟨φ.comp T.toRingEquiv.toRingHom, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `x`. Simplify using `[T, hC]`. Conclude with `RingHom.Etale.respectsIso.2 φ T.toRingEquiv h2`. Introduce `i`. Simplify using `[T, hC, he, a]`.
+-/
 theorem exists_etale_coords_vanishing {g : ℕ} {A : Type} [CommRing A] (c : ℂ →+* A)
     (hc : c.IsStandardSmoothOfRelativeDimension g) (e : A →+* ℂ) (he : ∀ a, e (c a) = a) :
     ∃ φ : MvPolynomial (Fin g) ℂ →+* A, φ.comp MvPolynomial.C = c ∧ φ.Etale ∧
@@ -28,6 +33,19 @@ theorem exists_etale_coords_vanishing {g : ℕ} {A : Type} [CommRing A] (c : ℂ
   · intro i
     simp [T, hC, he, a]
 
+/- English proof (translation)
+Establish `h1 : D 1 = 0` using `by simpa using h0 1`. Establish `hP : ∀ p, D (φ p) = 0`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact h0 a`.
+
+Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, add_zero]`. Consider the case `mul_X p i hp => rw [map_mul, hm, hp, hX]`. Simplify using the standard rewrite rules. Apply the tactic sequence `let F : A →+* DualNumber ℂ := { toFun := fun f => TrivSqZeroExt.inl (e f) + TrivSqZeroExt.inr (D f) map_one' := by ext <;> simp [h1] map_mul' := fun f f' => by ext <;> simp [hm, mul_comm] map_zero' := by ext <;> simp map_add' := fun f f' => by ext <;> simp }`. Set `F₀ : A →+* DualNumber ℂ` to `(algebraMap ℂ (DualNumber ℂ)).comp e`.
+
+Establish `hFF : ∀ p, F (φ p) = F₀ (φ p)` using `fun p => by`. Apply the tactic sequence `ext <;> simp [F, F₀, hP, TrivSqZeroExt.algebraMap_eq_inl]`. Set `_` to `φ.toAlgebra`. Set `_ : Algebra (MvPolynomial (Fin g) ℂ) (DualNumber ℂ)` to `(F₀.comp φ).toAlgebra`. Establish `_ : Algebra.Etale (MvPolynomial (Fin g) ℂ) A` using `hφ`.
+
+Set `G : A →ₐ[MvPolynomial (Fin g) ℂ] DualNumber ℂ` to `{ F with commutes' := hFF }`. Set `G₀ : A →ₐ[MvPolynomial (Fin g) ℂ] DualNumber ℂ` to `{ F₀ with commutes' := fun p => rfl }`. Establish `hnil : IsNilpotent (RingHom.ker (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`.
+
+Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`.
+
+Apply the tactic sequence `ext <;> simp [hx', hy']`. Establish `hG : G = G₀` using `Algebra.FormallyUnramified.ext' (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom hnil G G₀ (fun x => by simp [G, G₀, F, F₀])`. Use extensionality with `f`. Use `congrArg (fun H : A →ₐ[MvPolynomial (Fin g) ℂ] DualNumber ℂ => (H f).snd) hG` as an intermediate fact. Simplify `this` using `[G, G₀, F, F₀, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem derivation_eq_zero {g : ℕ} {A : Type} [CommRing A] (φ : MvPolynomial (Fin g) ℂ →+* A)
     (hφ : φ.Etale) (e : A →+* ℂ) (D : A →+ ℂ) (h0 : ∀ a, D (φ (MvPolynomial.C a)) = 0)
     (hm : ∀ f f', D (f * f') = e f * D f' + e f' * D f)
@@ -69,6 +87,17 @@ theorem derivation_eq_zero {g : ℕ} {A : Type} [CommRing A] (φ : MvPolynomial 
   have := congrArg (fun H : A →ₐ[MvPolynomial (Fin g) ℂ] DualNumber ℂ => (H f).snd) hG
   simpa [G, G₀, F, F₀, TrivSqZeroExt.algebraMap_eq_inl] using this
 
+/- English proof (translation)
+Establish `key : ∀ w₀ ∈ {w | w ∈ W ∧ ⊤ ≤ s w ⁻¹ᵁ V}, {w | w ∈ W ∧ ⊤ ≤ s w ⁻¹ᵁ V} ∈ 𝓝 w₀ ∧ DifferentiableAt ℂ (fun w => valAt' (s w) V f) w₀`. Introduce and unpack `w₀ ⟨hw₀, hV⟩`. Take `⟨h, hhV, hh⟩` from `hU.exists_basicOpen_le (V := V) ⟨_, ((hval X (s w₀)).1 V).1 hV⟩ (((hval X (s w₀)).1 U).1 (hs w₀ hw₀))`. Establish `hB₀ : ⊤ ≤ s w₀ ⁻¹ᵁ X.basicOpen h` using `((hval X (s w₀)).1 _).2 hh`. Establish `hne₀ : valAt' (s w₀) U h ≠ 0` using `((hval X (s w₀)).2.2.2.2.1 U h).1 hB₀`.
+
+Establish `hWn : W ∈ 𝓝 w₀` using `hW.mem_nhds hw₀`. Establish `hda : ∀ a : Γ(X, U), DifferentiableAt ℂ (fun w => valAt' (s w) U a) w₀` using `fun a => (hd a w₀ hw₀).differentiableAt hWn`. Establish `hN : ∀ᶠ w in 𝓝 w₀, w ∈ W ∧ valAt' (s w) U h ≠ 0` using `Filter.Eventually.and hWn ((hda h).continuousAt.eventually_ne hne₀)`. Establish `_` using `hU.isLocalization_basicOpen h`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj h (resG X hhV f)`.
+
+Use `⟨hN.mono fun w hw => ⟨hw.1, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `((hval X (s w)).1 V).2 (hhV (((hval X (s w)).1 _).1 (((hval X (s w)).2.2.2.2.1 U h).2 hw.2)))`. Establish `hq : DifferentiableAt ℂ (fun w => valAt' (s w) U a * (valAt' (s w) U h ^ n)⁻¹) w₀` using `(hda a).mul (((hda h).pow n).inv (pow_ne_zero n hne₀))`. Use `DifferentiableAt.congr_of_eventuallyEq hq (hN.mono fun w hw => ?_)` and prove the remaining obligations. Establish `hB : ⊤ ≤ s w ⁻¹ᵁ X.basicOpen h` using `((hval X (s w)).2.2.2.2.1 U h).2 hw.2`.
+
+Take `⟨ev, hev⟩` from `(hval X (s w)).2.1 _ hB`. Establish `r1` using `(hval X (s w)).2.2.1 V _ hhV f hB`. Establish `r2` using `(hval X (s w)).2.2.1 U _ (X.basicOpen_le h) a hB`. Establish `r3` using `(hval X (s w)).2.2.1 U _ (X.basicOpen_le h) h hB`. Establish `ha' : resG X hhV f * resG X (X.basicOpen_le h) h ^ n = resG X (X.basicOpen_le h) a` using `ha`.
+
+Use `congrArg ev ha'` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, ← hev, ← hev, ← hev, r1, r2, r3]`. Use `show valAt' (s w) V f = valAt' (s w) U a * (valAt' (s w) U h ^ n)⁻¹`. Rewrite using `[← this, mul_inv_cancel_right₀ (pow_ne_zero n hw.2)]`. Conclude with `⟨isOpen_iff_mem_nhds.2 fun w hw => (key w hw).1, fun w hw => (key w hw).2.differentiableWithinAt⟩`.
+-/
 theorem hol_of_affine
     (hval : (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)))
     {g : ℕ} {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) {W : Set (Fin g → ℂ)} (hW : IsOpen W)
@@ -110,6 +139,39 @@ theorem hol_of_affine
   exact ⟨isOpen_iff_mem_nhds.2 fun w hw => (key w hw).1,
     fun w hw => (key w hw).2.differentiableWithinAt⟩
 
+/- English proof (translation)
+Introduce `hval haff hring X g hX e`. Set `e' : Sp ℂ ⟶ X.left` to `e.left`. Take `⟨U₀, -, U, hU, hp, hle, hsm⟩` from `hX.exists_isStandardSmoothOfRelativeDimension (e' (default : PrimeSpectrum ℂ))`. Establish `hU₀ : U₀ = ⊤`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations.
+
+Establish `h1 : X.hom (e' (default : PrimeSpectrum ℂ)) ∈ U₀` using `hle hp`. Establish `h2 : y = X.hom (e' (default : PrimeSpectrum ℂ))` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Rewrite using `[h2]`. Conclude with `h1`. Substitute `hU₀` using the available equality.
+
+Set `c : ℂ →+* Γ(X.left, U)` to `(X.hom.appLE ⊤ U hle).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `hcc : ∀ a, constFn X.hom U a = c a` using `fun a => rfl`. Establish `hc : c.IsStandardSmoothOfRelativeDimension g` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 (X.hom.appLE ⊤ U hle).hom (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv hsm`. Establish `hpts : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ X, ⊤ ≤ x.left ⁻¹ᵁ U → ∃ ev : Γ(X.left, U) →+* ℂ, (∀ f, valAt' x.left U f = ev f) ∧ ∀ a, ev (c a) = a`. Introduce `x hx`.
+
+Take `⟨ev, hev⟩` from `(hval X.left x.left).2.1 U hx`. Use `⟨ev, hev, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hev, ← hcc]`. Conclude with `(hval X.left x.left).2.2.2.2.2 X.hom (Over.w x) U a hx`. Establish `heU : ⊤ ≤ e.left ⁻¹ᵁ U` using `((hval X.left e').1 U).2 hp`.
+
+Take `⟨ev, hev, hevc⟩` from `hpts e heU`. Take `⟨φ, hφc, hφ, hφ0⟩` from `exists_etale_coords_vanishing c hc ev hevc`. Establish `hφc' : ∀ a, φ (MvPolynomial.C a) = c a` using `fun a => by rw [← hφc]; rfl`. Set `_ : Algebra ℂ Γ(X.left, U)` to `c.toAlgebra`. Set `_ : Algebra (MvPolynomial (Fin g) ℂ) Γ(X.left, U)` to `φ.toAlgebra`.
+
+Establish `_ : IsScalarTower ℂ (MvPolynomial (Fin g) ℂ) Γ(X.left, U)` using `IsScalarTower.of_algebraMap_eq' hφc.symm`. Establish `_ : Algebra.Etale (MvPolynomial (Fin g) ℂ) Γ(X.left, U)` using `hφ`. Set `eA : Γ(X.left, U) →ₐ[ℂ] ℂ` to `{ ev with commutes' := hevc }`. Take `⟨W, σ, n, f, ε, hW, hW0, hσ0, hε, hσd, hσt, hσs⟩` from `hring g Γ(X.left, U) eA hφ0`. Establish `hex : ∀ x : Γ(X.left, U) →ₐ[ℂ] ℂ, ∃! y : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ y.left ⁻¹ᵁ U ∧ ∀ f, valAt' y.left U f = x f` using `fun x => haff X U hU x.toRingHom (fun a => x.commutes a)`.
+
+Use `choose pt hpt hptu using hex`. Set `W' : Set (Fin g → ℂ)` to `W ∩ ⋂ k, (W ∩ (fun w => σ w (f k)) ⁻¹' Metric.ball (eA (f k)) ε)`. Establish `hW' : IsOpen W'` using `hW.inter (isOpen_iInter_of_finite fun k => (hσd (f k)).continuousOn.isOpen_inter_preimage hW Metric.isOpen_ball)`. Establish `hmem : ∀ w, w ∈ W' ↔ w ∈ W ∧ ∀ k, ‖σ w (f k) - eA (f k)‖ < ε`. Introduce `w`.
+
+Simplify using `only [W', Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, Metric.mem_ball, dist_eq_norm]`. Conclude with `⟨fun h => ⟨h.1, fun k => (h.2 k).2⟩, fun h => ⟨h.1, fun k => ⟨h.1, h.2 k⟩⟩⟩`. Use `⟨W', fun w => pt (σ w), U, fun i => φ (MvPolynomial.X i), hW', ?_, ?_, hU, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hmem 0).2 ⟨hW0, fun k => by rw [hσ0, sub_self, norm_zero]; exact hε⟩`. Use `show pt (σ 0) = e`.
+
+Rewrite using `[hσ0]`. Conclude with `(hptu eA e ⟨heU, hev⟩).symm`. Introduce `V a`. Use `hol_of_affine hval hU hW' (fun w => (pt (σ w)).left) (fun w _ => (hpt (σ w)).1) (fun b => ?_) V a` and prove the remaining obligations. Conclude with `((hσd b).mono Set.inter_subset_left).congr fun w _ => (hpt (σ w)).2 b`.
+
+Introduce `w hw`. Conclude with `⟨(hpt (σ w)).1, fun i => ((hpt (σ w)).2 _).trans (hσt w hw.1 i)⟩`. Establish `himg : (fun w => pt (σ w)) '' W' = {x : 𝟙_ (Over (Sp ℂ)) ⟶ X | ⊤ ≤ x.left ⁻¹ᵁ U ∧ valAt' x.left U 0 ∈ (Set.univ : Set ℂ)} ∩ ⋂ k, {x : 𝟙_ (Over (Sp ℂ)) ⟶ X | ⊤ ≤ x.left ⁻¹ᵁ U ∧ valAt' x.left U (f k) ∈ Metric.ball (eA (f k)) ε}`. Use extensionality with `x`. Simplify using `only [Set.mem_image, Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, Set.mem_univ, and_true, Metric.mem_ball, dist_eq_norm]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Use `⟨(hpt (σ w)).1, fun k => ⟨(hpt (σ w)).1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[(hpt (σ w)).2]`. Conclude with `((hmem w).1 hw).2 k`.
+
+Introduce and unpack `⟨hx, hk⟩`. Take `⟨ex, hex, hexc⟩` from `hpts x hx`. Set `xA : Γ(X.left, U) →ₐ[ℂ] ℂ` to `{ ex with commutes' := hexc }`. Establish `hk' : ∀ k, ‖xA (f k) - eA (f k)‖ < ε` using `fun k => by`. Use `(hk k).2` as an intermediate fact.
+
+Rewrite `this` using `[hex]`. Conclude with `this`. Take `⟨w, hw, hxw⟩` from `hσs xA hk'`. Use `⟨w, (hmem w).2 ⟨hw, hxw ▸ hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxw]`.
+
+Conclude with `(hptu xA x ⟨hx, hex⟩).symm`. Rewrite using `[himg]`. Set `_` to `TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ X) | ∃ (U : X.left.Opens) (f : Γ(X.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}}`. Use `IsOpen.inter ?_ (isOpen_iInter_of_finite fun k => ?_)` and prove the remaining obligations. Conclude with `TopologicalSpace.isOpen_generateFrom_of_mem ⟨U, 0, Set.univ, isOpen_univ, rfl⟩`.
+
+Conclude with `TopologicalSpace.isOpen_generateFrom_of_mem ⟨U, f k, _, Metric.isOpen_ball, rfl⟩`. Introduce `D h0 hm hX`. Use `derivation_eq_zero φ hφ ev D (fun a => ?_) (fun a b => ?_) hX` and prove the remaining obligations. Rewrite using `[hφc', ← hcc]`. Conclude with `h0 a`.
+
+Rewrite using `[← hev, ← hev]`. Conclude with `hm a b`.
+-/
 theorem exists_holomorphic_chart :
     (∀ (X : Scheme.{0}) (x : Sp ℂ ⟶ X), (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U ↔ x (default : PrimeSpectrum ℂ) ∈ U) ∧ (∀ (U : X.Opens), ⊤ ≤ x ⁻¹ᵁ U → ∃ e : Γ(X, U) →+* ℂ, ∀ f, valAt' x U f = e f) ∧ (∀ (U V : X.Opens) (h : V ≤ U) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ V → valAt' x V (resG X h f) = valAt' x U f) ∧ (∀ (Y : Scheme.{0}) (φ : X ⟶ Y) (U : Y.Opens) (f : Γ(Y, U)), valAt' x (φ ⁻¹ᵁ U) ((φ.app U).hom f) = valAt' (x ≫ φ) U f) ∧ (∀ (U : X.Opens) (f : Γ(X, U)), ⊤ ≤ x ⁻¹ᵁ X.basicOpen f ↔ valAt' x U f ≠ 0) ∧ (∀ (p : X ⟶ Sp ℂ), x ≫ p = 𝟙 _ → ∀ (U : X.Opens) (a : ℂ), ⊤ ≤ x ⁻¹ᵁ U → valAt' x U (constFn p U a) = a)) → (∀ (X : Over (Sp ℂ)) (U : X.left.Opens), IsAffineOpen U → ∀ e : Γ(X.left, U) →+* ℂ, (∀ a, e (constFn X.hom U a) = a) → ∃! x : (𝟙_ (Over (Sp ℂ)) ⟶ X), ⊤ ≤ (x).left ⁻¹ᵁ U ∧ ∀ f, valAt' x.left U f = e f) → (∀ (g : ℕ) (A : Type) [CommRing A] [Algebra ℂ A] [Algebra (MvPolynomial (Fin g) ℂ) A] [IsScalarTower ℂ (MvPolynomial (Fin g) ℂ) A] [Algebra.Etale (MvPolynomial (Fin g) ℂ) A] (e : A →ₐ[ℂ] ℂ), (∀ i, e (algebraMap (MvPolynomial (Fin g) ℂ) A (MvPolynomial.X i)) = 0) → ∃ (W : Set (Fin g → ℂ)) (σ : (Fin g → ℂ) → (A →ₐ[ℂ] ℂ)) (n : ℕ) (f : Fin n → A) (ε : ℝ), IsOpen W ∧ 0 ∈ W ∧ σ 0 = e ∧ 0 < ε ∧ (∀ a, DifferentiableOn ℂ (fun w => σ w a) W) ∧ (∀ w ∈ W, ∀ i, σ w (algebraMap (MvPolynomial (Fin g) ℂ) A (MvPolynomial.X i)) = w i) ∧ ∀ x : A →ₐ[ℂ] ℂ, (∀ k, ‖x (f k) - e (f k)‖ < ε) → ∃ w ∈ W, x = σ w) → (∀ (X : Over (Sp ℂ)) (g : ℕ), SmoothOfRelativeDimension g X.hom → ∀ e : (𝟙_ (Over (Sp ℂ)) ⟶ X), ∃ (W : Set (Fin g → ℂ)) (σ : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ X)) (U : X.left.Opens) (t : Fin g → Γ(X.left, U)), IsOpen W ∧ 0 ∈ W ∧ σ 0 = e ∧ IsAffineOpen U ∧ (∀ (U : (X).left.Opens) (f : Γ((X).left, U)), IsOpen {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U} ∧ DifferentiableOn ℂ (fun w => valAt' (σ w).left U f) {w | w ∈ W ∧ ⊤ ≤ (σ w).left ⁻¹ᵁ U}) ∧ (∀ w ∈ W, ⊤ ≤ (σ w).left ⁻¹ᵁ U ∧ ∀ i, valAt' (σ w).left U (t i) = w i) ∧ IsOpen[(TopologicalSpace.generateFrom {S : Set (𝟙_ (Over (Sp ℂ)) ⟶ X) | ∃ (U : X.left.Opens) (f : Γ(X.left, U)) (O : Set ℂ), IsOpen O ∧ S = {x | ⊤ ≤ (x).left ⁻¹ᵁ U ∧ valAt' x.left U f ∈ O}})] (σ '' W) ∧ (∀ D : Γ(X.left, U) →+ ℂ, (∀ a, D (constFn X.hom U a) = 0) → (∀ f f', D (f * f') = valAt' e.left U f * D f' + valAt' e.left U f' * D f) → (∀ i, D (t i) = 0) → D = 0)) := by
   intro hval haff hring X g hX e

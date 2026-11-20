@@ -8,6 +8,11 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [LaurentPolynomial.C_apply, AddMonoidAlgebra.mapRingHom_single]`. Consider the case `simp [LaurentPolynomial.C_apply, Finsupp.mapRange_single]`. Consider the case `(ext k; simp [LaurentPolynomial.C_apply, Finsupp.single_apply]; split_ifs <;> simp)`. Consider the case `(ext k; simp [LaurentPolynomial.C_apply, AddMonoidAlgebra.coeff_single]; split_ifs <;> simp)`.
+
+Consider the case `rfl`.
+-/
 private theorem mapRingHom_laurent_C' {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (a : A) :
     AddMonoidAlgebra.mapRingHom ℤ f (LaurentPolynomial.C a) = LaurentPolynomial.C (f a) := by
   first
@@ -17,6 +22,13 @@ private theorem mapRingHom_laurent_C' {A B : Type*} [CommRing A] [CommRing B] (f
   | (ext k; simp [LaurentPolynomial.C_apply, AddMonoidAlgebra.coeff_single]; split_ifs <;> simp)
   | rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(simp [LaurentPolynomial.T, -LaurentPolynomial.single_eq_C_mul_T]; done)`. Consider the case `(ext j`. Simplify using `[LaurentPolynomial.T, -LaurentPolynomial.single_eq_C_mul_T, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp; done)`.
+
+Consider the case `(ext j`. Simplify using `[LaurentPolynomial.T, -LaurentPolynomial.single_eq_C_mul_T, AddMonoidAlgebra.single_apply]`. Apply the tactic sequence `split_ifs <;> simp; done)`. Consider the case `(ext j`. Simplify using `[LaurentPolynomial.T_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp; done)`. Consider the case `(ext j`. Simplify using `[LaurentPolynomial.coeff_T]`. Apply the tactic sequence `split_ifs <;> simp; done)`.
+-/
 private theorem mapRingHom_laurent_T {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (k : ℤ) :
     AddMonoidAlgebra.mapRingHom ℤ f (LaurentPolynomial.T k : LaurentPolynomial A) = LaurentPolynomial.T k := by
   first
@@ -34,6 +46,13 @@ private theorem mapRingHom_laurent_T {A B : Type*} [CommRing A] [CommRing B] (f 
      simp [LaurentPolynomial.coeff_T]
      split_ifs <;> simp; done)
 
+/- English proof (translation)
+Establish `key : (eval₂Hom (AddMonoidAlgebra.mapRingHom ℤ φ0) (fun v => LaurentPolynomial.C (x v)) : MvPolynomial σ (LaurentPolynomial A) →+* LaurentPolynomial R') = (AddMonoidAlgebra.mapRingHom ℤ (eval₂Hom φ0 x)).comp (mul_Phi σ A)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Use extensionality with `k`. Simplify using `[mul_Phi]`.
+
+Introduce `i`. Simplify using `[mul_Phi, mapRingHom_laurent_C']`. Rewrite using `[key, mul_degs_eq]`. Introduce `k hk`. Rewrite `hk`, the goal using `[Finsupp.mem_support_iff]`.
+
+Introduce `h`. Apply `hk` to reduce the goal to its premises. Simplify using `[h]`.
+-/
 theorem mul_Psi_support {σ A R' : Type*} [CommRing A] [CommRing R'] (φ0 : A →+* R') (x : σ → R')
     (P : MvPolynomial σ (LaurentPolynomial A)) :
     ((eval₂Hom (AddMonoidAlgebra.mapRingHom ℤ φ0) (fun v => LaurentPolynomial.C (x v))) P).coeff.support ⊆
@@ -57,16 +76,25 @@ theorem mul_Psi_support {σ A R' : Type*} [CommRing A] [CommRing R'] (φ0 : A �
 def identityEvaluation (R : Type*) [CommRing R] (n : ℕ) : MvPolynomial (Fin n × Fin n) R →+* R :=
   MvPolynomial.eval (fun ab => if ab.1 = ab.2 then (1 : R) else 0)
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[identityEvaluation, genMat, Matrix.one_apply]`.
+-/
 theorem identity_evaluation_generic_matrix (R : Type*) [CommRing R] (n : ℕ) : (identityEvaluation R n).mapMatrix (genMat R n) = 1 := by
   ext a b
   simp [identityEvaluation, genMat, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det, identity_evaluation_generic_matrix, Matrix.det_one]`.
+-/
 theorem identity_evaluation_generic_det (R : Type*) [CommRing R] (n : ℕ) : identityEvaluation R n (genMat R n).det = 1 := by
   rw [RingHom.map_det, identity_evaluation_generic_matrix, Matrix.det_one]
 
 def mul_ev (R : Type*) [CommRing R] (n : ℕ) : GLCoord R n →+* R :=
   IsLocalization.Away.lift (genMat R n).det (g := identityEvaluation R n) (by rw [identity_evaluation_generic_det]; exact isUnit_one)
 
+/- English proof (translation)
+Use `first`. Consider the case `simp [mul_ev]`. Consider the case `exact IsLocalization.Away.lift_eq _ _ a`. Consider the case `(unfold mul_ev; exact IsLocalization.lift_eq _ a)`.
+-/
 theorem mul_ev_alg (R : Type*) [CommRing R] (n : ℕ) (a : MvPolynomial (Fin n × Fin n) R) :
     mul_ev R n (algebraMap _ (GLCoord R n) a) = identityEvaluation R n a := by
   first
@@ -74,6 +102,9 @@ theorem mul_ev_alg (R : Type*) [CommRing R] (n : ℕ) (a : MvPolynomial (Fin n �
   | exact IsLocalization.Away.lift_eq _ _ a
   | (unfold mul_ev; exact IsLocalization.lift_eq _ a)
 
+/- English proof (translation)
+Establish `h` using `congrArg (mul_ev R n) (IsLocalization.Away.mul_invSelf (S := GLCoord R n) (genMat R n).det)`. Rewrite `h` using `[map_mul, map_one, mul_ev_alg, identity_evaluation_generic_det, one_mul]`. Conclude with `h`.
+-/
 theorem mul_ev_inv (R : Type*) [CommRing R] (n : ℕ) :
     mul_ev R n (IsLocalization.Away.invSelf (S := GLCoord R n) (genMat R n).det) = 1 := by
   have h := congrArg (mul_ev R n)
@@ -84,22 +115,36 @@ theorem mul_ev_inv (R : Type*) [CommRing R] (n : ℕ) :
 def mul_ph (R : Type*) [CommRing R] (n : ℕ) : GLLaurent R n →+* LaurentPolynomial R :=
   AddMonoidAlgebra.mapRingHom ℤ (mul_ev R n)
 
+/- English proof (translation)
+Simplify using `only [mul_ph]`. Conclude with `mapRingHom_laurent_C' _ _`.
+-/
 theorem mul_ph_C (R : Type*) [CommRing R] (n : ℕ) (a : GLCoord R n) :
     mul_ph R n (LaurentPolynomial.C a) = LaurentPolynomial.C (mul_ev R n a) := by
   simp only [mul_ph]
   exact mapRingHom_laurent_C' _ _
 
+/- English proof (translation)
+Simplify using `only [mul_ph]`. Conclude with `mapRingHom_laurent_T _ _`.
+-/
 theorem mul_ph_T (R : Type*) [CommRing R] (n : ℕ) (k : ℤ) :
     mul_ph R n (LaurentPolynomial.T k) = LaurentPolynomial.T k := by
   simp only [mul_ph]
   exact mapRingHom_laurent_T _ _
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gL, RingHom.mapMatrix_apply, Matrix.map_apply, genMat, Matrix.of_apply, mul_ph_C, mul_ev_alg, identityEvaluation, MvPolynomial.eval_X, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mul_ph_gL (R : Type*) [CommRing R] (n : ℕ) : (mul_ph R n).mapMatrix (gL R n) = 1 := by
   ext a b
   simp only [gL, RingHom.mapMatrix_apply, Matrix.map_apply, genMat, Matrix.of_apply, mul_ph_C,
     mul_ev_alg, identityEvaluation, MvPolynomial.eval_X, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Establish `hadj : (identityEvaluation R n).mapMatrix (genMat R n).adjugate = 1`. Rewrite using `[RingHom.map_adjugate, identity_evaluation_generic_matrix, Matrix.adjugate_one]`. Use extensionality with `a b`. Establish `hab` using `congrFun (congrFun hadj a) b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at hab`.
+
+Simplify using `only [gLinv, RingHom.mapMatrix_apply, Matrix.map_apply, mul_ph_C, map_mul, mul_ev_inv, mul_ev_alg, one_mul, hab, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mul_ph_gLinv (R : Type*) [CommRing R] (n : ℕ) : (mul_ph R n).mapMatrix (gLinv R n) = 1 := by
   have hadj : (identityEvaluation R n).mapMatrix (genMat R n).adjugate = 1 := by
     rw [RingHom.map_adjugate, identity_evaluation_generic_matrix, Matrix.adjugate_one]
@@ -110,6 +155,9 @@ theorem mul_ph_gLinv (R : Type*) [CommRing R] (n : ℕ) : (mul_ph R n).mapMatrix
     mul_ev_alg, one_mul, hab, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[twistMat, map_mul, map_mul, mul_ph_gL, mul_ph_gLinv, one_mul, mul_one]`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp [mul_ph_T]`.
+-/
 theorem mul_ph_twist (R : Type*) [CommRing R] (n : ℕ) (j : Fin n) (k : ℤ) :
     (mul_ph R n).mapMatrix (twistMat R n j k) =
       Matrix.diagonal (fun a => if a = j then LaurentPolynomial.T k else 1) := by
@@ -119,6 +167,27 @@ theorem mul_ph_twist (R : Type*) [CommRing R] (n : ℕ) (j : Fin n) (k : ℤ) :
   split_ifs <;> simp [mul_ph_T]
 
 open Classical in
+/- English proof (translation)
+Use `set Ψ : MvPolynomial (ι × Fin r) (GLLaurent R r) →+* LaurentPolynomial R := eval₂Hom (AddMonoidAlgebra.mapRingHom ℤ (mul_ev R r)) (fun v => LaurentPolynomial.C (if v.1 = A v.2 then (1 : R) else 0)) with hΨ`. Establish `hC : ∀ b, Ψ (C b) = mul_ph R r b` using `fun b => by rw [hΨ, coe_eval₂Hom, eval₂_C]; rfl`. Establish `hX : ∀ i b, Ψ (X (A i, b)) = if i = b then 1 else 0`. Introduce `i b`. Rewrite using `[hΨ, coe_eval₂Hom, eval₂_X]`.
+
+Distinguish the cases in `h : i = b`. Simplify using `[h]`. Establish `: A i ≠ A b` using `fun h' => h (hA h')`. Simplify using `[h, this]`. Establish `key : Ψ (twistSub LL S' (lastIdx r) (detA (R` using `R) A)) = (Matrix.diagonal (fun i : Fin r => if A i ∈ S' ∧ i = lastIdx r then (LaurentPolynomial.T 1 : LaurentPolynomial R) else 1)).det := by`.
+
+Rewrite using `[detA, RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Establish `ht` using `fun b => congrFun (congrFun (mul_ph_twist R r (lastIdx r) 1) b) j`.
+
+Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply] at ht`. Distinguish the cases in `hS : A i ∈ S'`. Establish `: twistSub LL S' (lastIdx r) (X (A i, j) : MvPolynomial (ι × Fin r) R) = ∑ b : Fin r, C (twistMat R r (lastIdx r) 1 b j) * X (A i, b)`. Simplify using `[twistSub, hS, hv]`. Rewrite using `[this, map_sum]`.
+
+Simplify using `only [map_mul, hC, hX, ht]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hS]`.
+
+Simplify using `[hij]`. Establish `: twistSub LL S' (lastIdx r) (X (A i, j) : MvPolynomial (ι × Fin r) R) = X (A i, j)`. Simplify using `[twistSub, hS]`. Rewrite using `[this, hX]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using `[hS]`. Simplify using `[hij]`. Rewrite `key` using `[Matrix.det_diagonal, Finset.prod_eq_single (lastIdx r) (fun b _ hb => by simp [hb]) (by simp)]`. Establish `hsub` using `mul_Psi_support (mul_ev R r) (fun v : ι × Fin r => if v.1 = A v.2 then (1 : R) else 0) (twistSub LL S' (lastIdx r) (detA (R := R) A))`.
+
+Distinguish the cases in `hS : A (lastIdx r) ∈ S'`. Establish `hm : (1 : ℤ) ∈ sDegs LL S' (lastIdx r) (detA (R` using `R) A) := by`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[← hΨ, key]`. Simplify using `[hS]`.
+
+Conclude with `Finset.inf_le (f := fun k : ℤ => (k : WithTop ℤ)) hm`. Establish `hm : (0 : ℤ) ∈ sDegs LL S' (lastIdx r) (detA (R` using `R) A) := by`. Apply `hsub` to reduce the goal to its premises. Rewrite using `[← hΨ, key]`. Simplify using `[hS]`.
+
+Use `(Finset.inf_le (f := fun k : ℤ => (k : WithTop ℤ)) hm).trans ?_` and prove the remaining obligations. Conclude with `(zero_le_one : (0 : ℤ) ≤ 1)` after adjusting the coercions.
+-/
 theorem mul_valS_detA_le {R : Type} [Field R] {ι : Type} (LL : Letters ι) {r : ℕ} [NeZero r]
     (A : Fin r → ι) (hA : Function.Injective A) (hv : ∀ l, LL.vec (A l) = true) (S' : Set ι) :
     valS LL S' (detA (R := R) A) ≤ ((1 : ℤ) : WithTop ℤ) := by

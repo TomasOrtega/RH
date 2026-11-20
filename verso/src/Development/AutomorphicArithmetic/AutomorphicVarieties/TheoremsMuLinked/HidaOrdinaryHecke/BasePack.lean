@@ -8,6 +8,21 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V₀ O _ _ _ n r B J D wt A _ _ e lam hres hw M _ _ _ _ μ hμ hker`. Use `letI mB : Module B.B M := Module.compHom M μ`. Use `letI mL : Module (Pa.abelian₂ O Empty D) M := Module.compHom M e.toRingEquiv.toRingHom`. Establish `hB : ∀ (t : B.B) (y : M), t • y = μ t y` using `fun _ _ => rfl`. Establish `hL : ∀ (a : Pa.abelian₂ O Empty D) (y : M), a • y = e a • y` using `fun _ _ => rfl`.
+
+Establish `bs : Module.Basis (Module.Free.ChooseBasisIndex A M) (Pa.abelian₂ O Empty D) M` using `(Module.Free.chooseBasis A M).mapCoeffs e.symm.toRingEquiv (fun c x => by`. Rewrite using `[hL]`. Use the proof step `simp)`. Establish `hann : Module.annihilator B.B M = J`. Rewrite using `[← hker]`.
+
+Use extensionality with `t`. Rewrite using `[Module.mem_annihilator, RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `y`.
+
+Conclude with `h y`. Introduce `h y`. Rewrite using `[hB, h]`. Both sides reduce to the same expression. Use `⟨{ wt := wt, wt_res := hres, lam := lam.comp e.toAlgHom, segmentWeightExponent := hw, M := M, smul_lam := fun a m => ?_, free := Module.Free.of_basis bs, fin := Module.Finite.of_basis bs, supp := fun p _ => by rw [hann] }, AddEquiv.refl M, rfl, fun t y => rfl, fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hL, hB]`. Conclude with `(hμ _ _).symm`. Express the relevant statement in the definitionally equal form `y ∈ (RingHom.ker (x.comp (lam.comp e.toAlgHom)) • ⊤ : Submodule (Pa.abelian₂ O Empty D) M) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `Submodule.smul_induction_on h (fun a ha m _ => ?_) fun _ _ => add_mem` and prove the remaining obligations. Conclude with `Submodule.smul_mem_smul (r := e a) ha Submodule.mem_top`. Introduce `h`. Use `Submodule.smul_induction_on h (fun a ha m _ => ?_) fun _ _ => add_mem` and prove the remaining obligations. Take `⟨a, rfl⟩` from `e.surjective a`.
+
+Conclude with `Submodule.smul_mem_smul (r := a) (n := m) ha Submodule.mem_top`.
+-/
 theorem UpperTheory.V.Th.AnnihilatorQuotientFinite.basePack :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V₀ : s.Lev) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V₀.frame O n) (B : UniversalOrdinaryDeterminantRing r) (J : Ideal B.B) (D : ℕ) (wt : Pa.WtVars (Pa.locOf r) O n D) (A : Type) [CommRing A] [Algebra O A] (e : Pa.abelian₂ O Empty D ≃ₐ[O] A) (lam : A →ₐ[O] B.B), (∀ k, residue O (wt.c k) * (r.psib (wt.v k) (wt.i k) (wt.γ k) : ResidueField O) = 1) → (∀ k, lam (e (MvPowerSeries.X (.inr k))) = algebraMap O B.B (wt.c k) * (B.u.ψ (wt.v k) (wt.i k) (wt.γ k) : B.B) - 1) → ∀ (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M] [Module.Free A M] (μ : B.B →+* Module.End A M), (∀ a y, μ (lam a) y = a • y) → RingHom.ker μ = J → ∃ (b : Pa.TWBase (Pa.pairOf B.u) J Empty D) (eb : M ≃+ b.M), b.wt = wt ∧ (∀ t y, eb (μ t y) = t • eb y) ∧ ∀ (x : B.B →ₐ[O] O) y, eb y ∈ Th.wtSub b x ↔ y ∈ (RingHom.ker (x.comp lam) • ⊤ : Submodule A M) := by
   intro l _ L Ω _ _ _ _ _ _ s V₀ O _ _ _ n r B J D wt A _ _ e lam hres hw M _ _ _ _ μ hμ hker

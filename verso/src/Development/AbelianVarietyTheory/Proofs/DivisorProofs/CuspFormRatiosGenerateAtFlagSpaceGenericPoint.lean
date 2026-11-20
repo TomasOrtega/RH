@@ -24,6 +24,11 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.HSApp
 
+/- English proof (translation)
+Establish `key` using `Scheme.germ_stalkClosedPointTo (R := CommRingCat.of V) x W hy`. Use `congrArg (fun φ => φ.hom g) key` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.TangentOrigin.evalPt, Scheme.Hom.appLE, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, CommRingCat.hom_comp, RingHom.comp_apply, Category.assoc]`.
+
+Use `congr!`.
+-/
 theorem stalkClosedPointTo_ger {V : Type} [CommRing V] [IsLocalRing V] {Y : Scheme.{0}} (x : Sp V ⟶ Y) (W : Y.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ W) (g : Γ(Y, W)) (hy : x (IsLocalRing.closedPoint V) ∈ W) :
     (Scheme.stalkClosedPointTo (R := CommRingCat.of V) x).hom (ger _ hy g) = GlobalTheory.TangentOrigin.evalPt x W h g := by
@@ -35,6 +40,9 @@ theorem stalkClosedPointTo_ger {V : Type} [CommRing V] [IsLocalRing V] {Y : Sche
     CommRingCat.hom_comp, RingHom.comp_apply, Category.assoc]
   congr!
 
+/- English proof (translation)
+The claim follows from `Scheme.isLocalHom_stalkClosedPointTo' (R := K) x H0.val x i hO hi f = IsLocalRing.ResidueField.lift (Scheme.stalkClosedPointTo (R := CommRingCat.of K) x).hom ((Y.residue (ptOf x)).hom (germ i (ptOf x) hy hj f)) := by haveI : IsLocalHom (Scheme.stalkClosedPointTo (R := CommRingCat …`.
+-/
 theorem val_eq_lift_residue {k K : Type} [CommRing k] [Field K] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens}
     (x : Sp K ⟶ Y) (i : B.ι) (hO : ⊤ ≤ x ⁻¹ᵁ O) (hi : ⊤ ≤ x ⁻¹ᵁ B.U i) (hy : ptOf x ∈ O) (hj : ptOf x ∈ B.U i)
     (f : H0 p B O) :
@@ -54,6 +62,33 @@ open GlobalTheory.AllWt (exOf secZ)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Introduce `Y X Z r U la ⟨M⟩ hB`. Establish `h : GenFrEx Xo c` using `(Reg.genFrEx_and_genFromTest E H Dw l Xo c).1`. Take `⟨z, hz, hO⟩` from `exists_lift_genFr M h`. Establish `hgen` using `isGenericPoint_of_lift M h hz hO`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z`.
+
+Introduce `s _`. Use `hO (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`. Establish `hη : ptOf (z ≫ M.σ) ∈ U₀ X Z` using `(le_iff_ptOf_mem _ _).1 hU`.
+
+Establish `hdense : closure (M.σ '' Set.univ) = Set.univ`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← (dense_U₀ X Z).closure_eq]`. Use `closure_mono fun u hu => ?_` and prove the remaining obligations. Establish `hu' : ⊤ ≤ resPt u ⁻¹ᵁ U₀ X Z` using `(le_iff_ptOf_mem _ _).2 ((ptOf_resPt u).symm ▸ hu)`.
+
+Take `⟨w, hw, -⟩` from `M.existsUnique_lift (resPt u) hu'`. Use `⟨ptOf w, trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[← ptOf_comp, hw, ptOf_resPt]`. Establish `hgen' : IsGenericPoint (ptOf (z ≫ M.σ)) Set.univ`. Use `hgen.image M.σ.continuous` as an intermediate fact.
+
+Rewrite `this` using `[hdense]`. Then use the resulting hypothesis. Use `⟨ptOf (z ≫ M.σ), hη, hgen', ?_⟩` and prove the remaining obligations. Use `haveI : IsLocalHom (Scheme.stalkClosedPointTo (R := CommRingCat.of (Om Z)) (z ≫ M.σ)).hom := Scheme.isLocalHom_stalkClosedPointTo' (R := Om Z) (z ≫ M.σ)`. Use `set ψ := IsLocalRing.ResidueField.lift (Scheme.stalkClosedPointTo (R := CommRingCat.of (Om Z)) (z ≫ M.σ)).hom with hψ`. Establish `e₁ : (z ≫ M.σ) ≫ inc₀ X Z = X.pt (genFr h Z) ≫ X.inc`.
+
+Rewrite using `[Category.assoc, X.pt_inc]`. Conclude with `hz`. Establish `hO₂ : ⊤ ≤ ((z ≫ M.σ) ≫ inc₀ X Z) ⁻¹ᵁ flagOpen X` using `hU`. Establish `key : ∀ (i : (L₀ X Z la).ι) (hi : ptOf (z ≫ M.σ) ∈ (L₀ X Z la).U i), ∃ T : Om Z, T ≠ 0 ∧ ∀ g : Cusp Z U la, ψ (((Y₀ X Z).residue (ptOf (z ≫ M.σ))).hom (germ i (ptOf (z ≫ M.σ)) hη hi (cuspSec X Z U la g))) = T * genVal Z g.1`. Introduce `i hi`.
+
+Establish `hi' : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ (L₀ X Z la).U i` using `(le_iff_ptOf_mem _ _).2 hi`. Establish `hk₂ : ⊤ ≤ ((z ≫ M.σ) ≫ inc₀ X Z) ⁻¹ᵁ X.F.U (i PUnit.unit)` using `(le_iff_ptOf_mem _ _).2 (mem_pull.1 hi)`. Establish `hk₁ : ⊤ ≤ (X.pt (genFr h Z) ≫ X.inc) ⁻¹ᵁ X.F.U (i PUnit.unit)` using `e₁ ▸ hk₂`. Take `⟨Q, t, hQ, ht⟩` from `X.exists_chartFr_frBor (genFr h Z) (i PUnit.unit) hk₁`. Establish `hQ₂ : X.F.ChartFr (i PUnit.unit) ((z ≫ M.σ) ≫ inc₀ X Z) hk₂ Q` using `chartFr_congr e₁.symm hQ`.
+
+Use `⟨((∏ ix, t ix ^ exOf Dw la 0 ix : (Om Z)ˣ) : Om Z)⁻¹, inv_ne_zero (Units.ne_zero _), fun g => ?_⟩` and prove the remaining obligations. Establish `v₈` using `evR_eq_val_secOf ⟨g.1, cusp_le_secZ Z U la g.2⟩ hO₂ hQ₂ ht`. Establish `v₅ : H0.val (z ≫ M.σ) i hU hi' (cuspSec X Z U la g) = H0.val (B` using `X.LL (exOf Dw la 0)) ((z ≫ M.σ) ≫ inc₀ X Z) (i PUnit.unit) hO₂ hk₂ (secOf X _ ⟨g.1, cusp_le_secZ Z U la g.2⟩) := H0.val_pull (inc₀ X Z) le_rfl (z ≫ M.σ) i hU hi' hO₂ hk₂ _`. Establish `v₆ : genVal Z g.1 = evR Xo c g.1 (genFr h Z)` using `rfl`. Rewrite using `[← val_eq_lift_residue (z ≫ M.σ) i hU hi' hη hi, v₅, v₆, v₈, inv_mul_cancel_left₀ (Units.ne_zero _)]`.
+
+Establish `hmap : ∀ v w : Cusp Z U la, ∃ q ∈ ratField (Set.range (cuspSec X Z U la)) (ptOf (z ≫ M.σ)) hη, ψ q = genVal Z v.1 / genVal Z w.1`. Introduce `v w`. Take `⟨i, hi⟩` from `exists_chart (isLB_L₀ X Z la) (ptOf (z ≫ M.σ))`. Take `⟨T, hT, hv⟩` from `key i hi`. Use `⟨_, Subfield.subset_closure ⟨i, hi, _, _, ⟨v, rfl⟩, ⟨w, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `(map_div₀ ψ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hv, hv, mul_div_mul_left _ _ hT]`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v₀ : Cusp Z U la, genVal Z v₀.1 ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hB.1 (LinearMap.ext fun v => hc v)`. Establish `hsub : (⊤ : IntermediateField c.F (Om Z)).toSubfield ≤ (ratField (Set.range (cuspSec X Z U la)) (ptOf (z ≫ M.σ)) hη).map ψ`. Rewrite using `[← hB.2, GlobalTheory.DegVal.ratioField, IntermediateField.adjoin_toSubfield]`. Use `Subfield.closure_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Take `⟨q, hq, e⟩` from `hmap ⟨a • v₀.1, Submodule.smul_mem _ a v₀.2⟩ v₀`. Use `⟨q, hq, e.trans ?_⟩` and prove the remaining obligations. Use `show genVal Z (a • v₀.1) / genVal Z v₀.1 = _`. Rewrite using `[map_smul, Algebra.smul_def, mul_div_cancel_right₀ _ hv₀]`. Introduce and unpack `_ ⟨v, w, rfl⟩`.
+
+Conclude with `hmap v w`. Use `eq_top_iff.2 fun q _ => ?_` and prove the remaining obligations. Take `⟨q', hq', e⟩` from `hsub (show ψ q ∈ (⊤ : IntermediateField c.F (Om Z)).toSubfield from trivial)`. Conclude with `(ψ.injective e) ▸ hq'`.
+-/
 theorem ratGen_of_birOn : ∀ {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c) {r : ℕ}
     (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (la : AllWt.Weight Dw),
     Nonempty (Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) → GlobalTheory.DegVal.BirOn U Z (wtOf Dw la 0) → RatGen X Z U la := by
@@ -129,6 +164,9 @@ theorem ratGen_of_birOn : ∀ {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y
   obtain ⟨q', hq', e⟩ := hsub (show ψ q ∈ (⊤ : IntermediateField c.F (Om Z)).toSubfield from trivial)
   exact (ψ.injective e) ▸ hq'
 
+/- English proof (translation)
+The claim follows from `@ratGen_of_birOn`.
+-/
 example : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : FlagCover Y) (Z : Comp Xo c) {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (la : AllWt.Weight Dw), Nonempty (Modif (str₀ X Z) (U₀ X Z) (dimFlag Dw)) → GlobalTheory.DegVal.BirOn U Z (wtOf Dw la 0) → RatGen X Z U la := @ratGen_of_birOn
 
 end GlobalTheory.HSApp

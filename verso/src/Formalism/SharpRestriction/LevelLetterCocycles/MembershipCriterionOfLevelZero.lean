@@ -15,6 +15,9 @@ def SecCrit0L (D : D7) (HW : HWOf D.loc) : Prop :=
         (sol : Fin d → ℕ → Fin d → ↥LL.1), Formalism.MainNotions.ArcLiftingSetup.IsHor ((HW l).W K 1 LL hG) T c' b sol →
           ∀ e : ℕ, LevC.SecCrit0 (W := (HW l).W K 1 LL hG) A c' e T b sol
 
+/- English proof (translation)
+The claim follows from `neZero_finrank_max_unramified K LevC.Ctx ((HW l).W K 1 LL hG) := by obtain ⟨h3, -, h5, h9, hH, hTr, -, hSat⟩ := h have := neZero_finrank_max_unramified K have : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 have hCW : Formalism.MainNotions.LiftingTheory.CaseA ((HW l).W K 1 LL hG) := case …`.
+-/
 theorem ctx_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmArcA D HW F Cm) (l : ℕ) [Fact l.Prime] (K LL : FinExt l)
     (hG : Good K 1 LL) (hCA : CaseA K LL) (h5l : 5 ≤ l) :
@@ -44,6 +47,11 @@ theorem ctx_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
   rw [map_natCast, map_zero] at this
   exact Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero ((HW l).W K 1 LL hG) this
 
+/- English proof (translation)
+Introduce `l _ K LL hG hCA h5l`. Use `neZero_finrank_max_unramified K` as an intermediate fact. Establish `C` using `ctx_of D HW F Cm h l K LL hG hCA h5l`. Introduce `_ _ A hA c hc e _ _ T hT d b sol hb`. Establish `hc' : c - ((A.len c : ℕ) : ZMod _) ∈ A.cuts` using `((hA.2.2.1 c hc).2.2).1`.
+
+Conclude with `LevC.secCrit_all C A hA _ hc' T hT b sol hb (h0 l K LL hG hCA h5l A hA _ hc' T hT d b sol hb) e`.
+-/
 theorem membership_criterion_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h : AdmArcA D HW F Cm) (h0 : SecCrit0L D HW) : SecCritL D HW := by
   intro l _ K LL hG hCA h5l
@@ -53,6 +61,9 @@ theorem membership_criterion_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf
   have hc' : c - ((A.len c : ℕ) : ZMod _) ∈ A.cuts := ((hA.2.2.1 c hc).2.2).1
   exact LevC.secCrit_all C A hA _ hc' T hT b sol hb (h0 l K LL hG hCA h5l A hA _ hc' T hT d b sol hb) e
 
+/- English proof (translation)
+Introduce `h` and use `arc_coordinates_of_membership D HW F Cm (membership_criterion_of_level_zero D HW F Cm h h0) h`.
+-/
 theorem arc_coordinates_of_level_zero (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F) (h0 : SecCrit0L D HW) : ArcCoordinatesTheorem D HW F Cm := fun h =>
   arc_coordinates_of_membership D HW F Cm (membership_criterion_of_level_zero D HW F Cm h h0) h

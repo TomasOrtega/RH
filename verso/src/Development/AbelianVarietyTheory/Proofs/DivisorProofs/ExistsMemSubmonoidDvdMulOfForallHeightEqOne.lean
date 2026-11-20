@@ -4,6 +4,15 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `B _ _ _ _ S _ x y hy h`. Use `by_contra! hS`. Use `set M := B ⧸ Ideal.span {y}`. Use `set N : Submodule B M := B ∙ (Ideal.Quotient.mk (Ideal.span {y}) x)`. Establish `hmem : ∀ r : B, r ∈ Module.annihilator B N ↔ y ∣ r * x`.
+
+Introduce `r`. Express the relevant statement in the definitionally equal form `r ∈ Submodule.annihilator N ↔ _`. Rewrite using `[Submodule.mem_annihilator_span_singleton, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Use `set I := Module.annihilator B N`. Establish `hdisj : Disjoint (S : Set B) (I : Set B)`.
+
+Rewrite using `[Set.disjoint_left]`. Introduce `u hu huI`. Conclude with `hS u hu ((hmem u).mp huI)`. Take `⟨P, hP, hIP, hPS⟩` from `Ideal.exists_le_prime_disjoint I S hdisj.symm`. Take `⟨P', hP'min, hP'P⟩` from `Ideal.exists_minimalPrimes_le hIP`.
+
+Establish `hass : P' ∈ associatedPrimes B N` using `Module.associatedPrimes.minimalPrimes_annihilator_subset_associatedPrimes B N hP'min`. Establish `hass' : P' ∈ associatedPrimes B M` using `associatedPrimes.subset_of_injective Subtype.val_injective (f := N.subtype) hass`. Take `⟨hpr, h1, hyP⟩` from `(mem_associatedPrimes_iff_height_eq_one hy).mp hass'`. Take `⟨t, htQ, ht⟩` from `h P' hpr h1 hyP (hPS.symm.mono_right hP'P)`. Conclude with `htQ (hP'min.1.2 ((hmem t).mpr ht))`.
+-/
 theorem exists_mem_submonoid_dvd_mul_of_forall_height_eq_one :
     ∀ (B : Type) [CommRing B] [IsDomain B] [IsNoetherianRing B] [IsIntegrallyClosed B]
     (S : Submonoid B), (0 : B) ∉ S → ∀ x y : B, y ≠ 0 →

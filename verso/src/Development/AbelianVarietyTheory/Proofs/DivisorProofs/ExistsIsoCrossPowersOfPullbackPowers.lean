@@ -11,11 +11,17 @@ namespace GlobalTheory.FormalAlg.CrossIso
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+The claim follows from `map_zpow (gm f y (L.U i ⊓ L.U j)) (L.g i j) t`.
+-/
 theorem gm_pw_g (L : LB X) (t : ℤ) (f : Y ⟶ X) (y : Y) (i j : L.ι) :
     gm f y ((GlobalTheory.AbLaw.pw L t).U i ⊓ (GlobalTheory.AbLaw.pw L t).U j) ((GlobalTheory.AbLaw.pw L t).g i j) =
       gm f y (L.U i ⊓ L.U j) (L.g i j) ^ t :=
   map_zpow (gm f y (L.U i ⊓ L.U j)) (L.g i j) t
 
+/- English proof (translation)
+Establish `hp : f z ∈ (L.pull F).U J ⊓ (L.pull F).U J'` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm f z _ (∏ _k : PUnit, (res _ (pullU F _ (L.g (J PUnit.unit) (J' PUnit.unit)))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f z _ hp _).trans (gm_pull f F z (L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)) ⟨hj, hj'⟩ _)`.
+-/
 theorem gm_pull_g (L : LB X) (F : Y ⟶ X) (f : Z ⟶ Y) (z : Z) (J J' : PUnit → L.ι)
     (hj : F (f z) ∈ L.U (J PUnit.unit)) (hj' : F (f z) ∈ L.U (J' PUnit.unit)) :
     gm f z ((L.pull F).U J ⊓ (L.pull F).U J') ((L.pull F).g J J') =
@@ -26,6 +32,9 @@ theorem gm_pull_g (L : LB X) (F : Y ⟶ X) (f : Z ⟶ Y) (z : Z) (J J' : PUnit �
   exact (gm_res f z _ hp _).trans
     (gm_pull f F z (L.U (J PUnit.unit) ⊓ L.U (J' PUnit.unit)) ⟨hj, hj'⟩ _)
 
+/- English proof (translation)
+Use `(isGen_iff w).1 hw Z r z k k' l l' hk hk' hl hl'` as an intermediate fact. Rewrite `this` using `[gm_pw_g]`. Conclude with `this`.
+-/
 theorem gw_chart {b : Y ⟶ X} {A : LB X} {N : LB Y} {p : ℤ} (w : LB.Iso (GlobalTheory.AbLaw.pw N p) (A.pull b))
     (hw : w.IsGen) (r : Z ⟶ Y) (z : Z) (k k' : A.ι) (l l' : N.ι) (hk : b (r z) ∈ A.U k) (hk' : b (r z) ∈ A.U k')
     (hl : r z ∈ N.U l) (hl' : r z ∈ N.U l') :
@@ -34,6 +43,11 @@ theorem gw_chart {b : Y ⟶ X} {A : LB X} {N : LB Y} {p : ℤ} (w : LB.Iso (Glob
   rw [gm_pw_g] at this
   exact this
 
+/- English proof (translation)
+Simplify using `only [mul_zpow, inv_zpow, ← zpow_mul, mul_comm q p, mul_inv, inv_inv]`. Generalize the expression as in `n ^ (p * q) = m`. Generalize the expression as in `a' ^ p = A'`. Generalize the expression as in `a ^ q = A`. Generalize the expression as in `u' ^ p = U'`.
+
+Generalize the expression as in `u ^ q = U`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem cross_alg {G : Type} [CommGroup G] (p q : ℤ) (a a' n u u' : G) :
     (a' * (n ^ q)⁻¹ * u') ^ p * ((a * (n ^ p)⁻¹ * u) ^ q)⁻¹ = a' ^ p * (a ^ q)⁻¹ * (u' ^ p * (u ^ q)⁻¹) := by
   simp only [mul_zpow, inv_zpow, ← zpow_mul, mul_comm q p, mul_inv, inv_inv]
@@ -46,6 +60,9 @@ theorem cross_alg {G : Type} [CommGroup G] (p q : ℤ) (a a' n u u' : G) :
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Rewrite using `[gw_chart w hw r z k₁ k₂ l₁ l₂ hk₁ hk₂ hl₁ hl₂, gw_chart w' hw' r z j₁ j₂ l₁ l₂ hj₁ hj₂ hl₁ hl₂]`. Conclude with `cross_alg _ _ _ _ _ _ _`.
+-/
 theorem cross_chart {b : Y ⟶ X} {A A' : LB X} {N : LB Y} {p q : ℤ} (w : LB.Iso (GlobalTheory.AbLaw.pw N p) (A.pull b))
     (w' : LB.Iso (GlobalTheory.AbLaw.pw N q) (A'.pull b)) (hw : w.IsGen) (hw' : w'.IsGen) (r : Z ⟶ Y) (z : Z)
     (k₁ k₂ : A.ι) (j₁ j₂ : A'.ι) (l₁ l₂ : N.ι) (hk₁ : b (r z) ∈ A.U k₁) (hk₂ : b (r z) ∈ A.U k₂)
@@ -61,6 +78,21 @@ end GlobalTheory.FormalAlg.CrossIso
 namespace GlobalTheory.FormalAlg
 open CrossIso
 
+/- English proof (translation)
+Introduce `X Y b A A' N p q w w' hA hA' hN hw hw'`. Establish `glue : ∀ (j : A'.ι) (k : A.ι), ∃ s : Γ(Y, ((GlobalTheory.AbLaw.pw A' p).pull b).U (fun _ => j) ⊓ ((GlobalTheory.AbLaw.pw A q).pull b).U (fun _ => k))ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (l : N.ι), b (r z) ∈ A.U k → b (r z) ∈ A'.U j → r z ∈ N.U l → gm r z _ s = gw w' r z j l …`. Introduce `j k`. Take `⟨W, hW⟩ : ∃ W : N.ι → Y.Opens, ∀ l x, x ∈ W l ↔ b x ∈ A.U k ∧ b x ∈ A'.U j ∧ x ∈ N.U l` from `⟨fun l => b ⁻¹ᵁ A.U k ⊓ (b ⁻¹ᵁ A'.U j ⊓ N.U l), fun _ _ => Iff.rfl⟩`. Establish `l₀ : ∀ l, W l ≤ ((GlobalTheory.AbLaw.pw A' p).pull b).U (fun _ => j) ⊓ ((GlobalTheory.AbLaw.pw A q).pull b).U (fun _ => k)` using `fun l x hx => ⟨mem_pull.2 ((hW l x).1 hx).2.1, mem_pull.2 ((hW l x).1 hx).1⟩`.
+
+Establish `l₁ : ∀ l, W l ≤ (A'.pull b).U (fun _ => j) ⊓ (GlobalTheory.AbLaw.pw N q).U l` using `fun l x hx => ⟨mem_pull.2 ((hW l x).1 hx).2.1, ((hW l x).1 hx).2.2⟩`. Establish `l₂ : ∀ l, W l ≤ (A.pull b).U (fun _ => k) ⊓ (GlobalTheory.AbLaw.pw N p).U l` using `fun l x hx => ⟨mem_pull.2 ((hW l x).1 hx).1, ((hW l x).1 hx).2.2⟩`. Take `⟨u, hu⟩ : ∃ u : ∀ l, Γ(Y, W l)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (l : N.ι), r z ∈ W l → gm r z (W l) (u l) = gw w' r z j l ^ p * (gw w r z k l ^ q)⁻¹` from `⟨fun l => res (l₁ l) (w'.s (fun _ => j, l)) ^ p * (res (l₂ l) (w.s (fun _ => k, l)) ^ q)⁻¹, fun Z r z l hy => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ p) (gm_res r z (l₁ l) hy _))) ((map_inv _ _).trans (congrArg (·⁻¹) ((map_zpow _ _ _).trans …`. Take `⟨s, hs⟩` from `glue_unit _ W l₀ (fun x hx => by`. Take `⟨l, hl⟩` from `exists_chart hN x`.
+
+Conclude with `Opens.mem_iSup.2 ⟨l, (hW l x).2 ⟨mem_pull.1 hx.2, mem_pull.1 hx.1, hl⟩⟩) u (fun l l' x hx => by`. Establish `h₁` using `(hW l x).1 hx.1`. Establish `h₂` using `(hW l' x).1 hx.2`. Establish `e` using `cross_chart w w' hw hw' (𝟙 Y) x k k j j l l' h₁.1 h₁.1 h₁.2.1 h₁.2.1 h₁.2.2 h₂.2.2`. Rewrite `e` using `[gm_self hA (𝟙 Y ≫ b) x h₁.1, gm_self hA' (𝟙 Y ≫ b) x h₁.2.1, one_zpow, one_zpow, inv_one, one_mul, one_mul]`.
+
+Conclude with `(hu _ (𝟙 Y) x l hx.1).trans (e.trans (hu _ (𝟙 Y) x l' hx.2).symm))`. Use `⟨s, fun Z r z l hk hj hl => ?_⟩` and prove the remaining obligations. Establish `hy` using `(hW l (r z)).2 ⟨hk, hj, hl⟩`. Conclude with `(gm_res r z (l₀ l) hy s).symm.trans ((congrArg (gm r z (W l)) (hs l)).trans (hu Z r z l hy))`. Use `choose s hs using glue`.
+
+Set `c : LB.Iso ((GlobalTheory.AbLaw.pw A q).pull b) ((GlobalTheory.AbLaw.pw A' p).pull b)` to `⟨fun P => s (P.1 PUnit.unit) (P.2 PUnit.unit)⟩`. Establish `hc : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (K : PUnit → A.ι) (j : A'.ι) (l : N.ι), b (r z) ∈ A.U (K PUnit.unit) → b (r z) ∈ A'.U j → r z ∈ N.U l → gw c r z j K = gw w' r z j l ^ p * (gw w r z (K PUnit.unit) l ^ q)⁻¹` using `fun Z r z K j l hk hj hl => hs j (K PUnit.unit) Z r z l hk hj hl`. Use `⟨c, (isGen_iff c).2 ?_, fun Z r z k j l hk hj hl => hc Z r z (fun _ => k) j l hk hj hl⟩` and prove the remaining obligations. Introduce `Z r z j j' K K' hj hj' hK hK'`. Take `⟨l, hl⟩` from `exists_chart hN (r z)`.
+
+Establish `hk` using `mem_pull.1 hK`. Establish `hk'` using `mem_pull.1 hK'`. Establish `e` using `cross_chart w w' hw hw' r z (K PUnit.unit) (K' PUnit.unit) j j' l l hk hk' hj hj' hl hl`. Use `(hc Z r z K j l hk hj hl).trans (e.trans ?_)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (congrArg₂ (· * ·) (gm_pw_g A' p _ z j j').symm (congrArg (·⁻¹) ?_)) (hc Z r z K' j' l hk' hj' hl).symm` and prove the remaining obligations.
+
+Conclude with `((gm_pull_g (GlobalTheory.AbLaw.pw A q) b r z K K' hk hk').trans (gm_pw_g A q _ z _ _)).symm`.
+-/
 theorem exists_crossIso : ∀ (X Y : Scheme.{0}) (b : Y ⟶ X) (A A' : LB X) (N : LB Y) (p q : ℤ) (w : LB.Iso (GlobalTheory.AbLaw.pw N p) (A.pull b)) (w' : LB.Iso (GlobalTheory.AbLaw.pw N q) (A'.pull b)), A.IsLB → A'.IsLB → N.IsLB → w.IsGen → w'.IsGen → ∃ c : LB.Iso ((GlobalTheory.AbLaw.pw A q).pull b) ((GlobalTheory.AbLaw.pw A' p).pull b), c.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (k : A.ι) (k' : A'.ι) (l : N.ι), b (r z) ∈ A.U k → b (r z) ∈ A'.U k' → r z ∈ N.U l → Geo.Tor.gw c r z k' (fun _ => k) = Geo.Tor.gw w' r z k' l ^ p * (Geo.Tor.gw w r z k l ^ q)⁻¹ := by
   intro X Y b A A' N p q w w' hA hA' hN hw hw'
   have glue : ∀ (j : A'.ι) (k : A.ι), ∃ s : Γ(Y, ((GlobalTheory.AbLaw.pw A' p).pull b).U (fun _ => j) ⊓

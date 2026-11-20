@@ -15,6 +15,15 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.TrIdem
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D V T μf hμ W _ _ σ hσ v x hx`. Use `haveI := hμ v`. Establish `hc : Continuous (locFin V v)` using `(continuous_emb _ _ _).subtype_mk _`. Establish `hs : IsSmooth (σ.comp (locFin V v))` using `fun y => (hσ y).preimage hc`. Establish `hk : IsOpen (((T.frame v).red.ker : Subgroup (Kv V v)) : Set (Kv V v))`.
+
+Rewrite using `[show ((T.frame v).red.ker : Set (Kv V v)) = (↑) ⁻¹' (stabLocOne D.sp.cm.sig V.gram (T.frame v).emb (frameLat V) : Set (GLoc D.sp.cm.sig V.gram v)) from Set.ext (T.frame v).red_eq_one_iff]`. Conclude with `(isOpen_stabLocOne _ (T.frame v).emb _ (T.frame v).cm).preimage continuous_subtype_val`. Take `⟨-, h2, h3, -⟩` from `(typeIdem_projector (μf v) (isOpen_stabLoc _ _ _ v.1) (isCompact_stabLoc _ _ _ v.1) (T.frame v).red_surjective hk (T.irred v)).2.1 _ _ hs`. Express the relevant statement in the definitionally equal form `smoothOp (σ.comp (locFin V v)) (μf v) (typeIdem (μf v) (T.frame v).red (T.τ v)) x = x`. Establish `hle : Submodule.span ℂ {y | ∃ φ : T.W v →ₗ[ℂ] W, (∀ (k : Kv V v) z, φ (T.τ v ((T.frame v).red k) z) = σ (locFin V v k) (φ z)) ∧ y ∈ LinearMap.range φ} ≤ LinearMap.range (smoothOp (σ.comp (locFin V v)) (μf v) (typeIdem (μf v) (T.frame v).red (T.τ v)))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨φ, hφ, z, rfl⟩`. Rewrite using `[SetLike.mem_coe, h3]`. Conclude with `GlobalTheory.LocGL.apply_mem_isotypic ⟨φ, fun k => LinearMap.ext fun z => hφ k z⟩ z`. Take `⟨w, rfl⟩` from `hle hx`.
+
+Conclude with `LinearMap.congr_fun h2 w`.
+-/
 theorem idemOp_fix_span : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GfC V) W), GlobalTheory.PRep.IsSmooth σ → ∀ (v : T.S) (x : W), x ∈ Submodule.span ℂ {y | ∃ φ : T.W v →ₗ[ℂ] W, (∀ (k : Kv V v) z, φ (T.τ v ((T.frame v).red k) z) = σ (locFin V v k) (φ z)) ∧ y ∈ LinearMap.range φ} → smoothOp (σ.comp (locFin V v)) (μf v) (T.idem μf v) x = x := by
   intro D V T μf hμ W _ _ σ hσ v x hx
   haveI := hμ v

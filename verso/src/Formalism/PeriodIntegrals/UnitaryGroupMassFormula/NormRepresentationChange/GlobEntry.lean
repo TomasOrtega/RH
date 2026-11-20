@@ -15,6 +15,25 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `ha : a.val < D.R.rS` using `by omega`. Establish `hf : fmat D G n a ⟨a.val + 1, h⟩ = G.fl.coefX (n (frame G ⟨a.val + 1, h⟩) - frame G ⟨a.val + 1, h⟩) ⟨a.val, ha⟩`. Simplify using `only [fmat, dif_pos ha]`. Rewrite using `[if_neg (by intro e; have := congrArg Fin.val e; simp at this), zero_add]`. Rewrite using `[hf]`.
+
+Establish `hXSΛ : ∀ v, v ∈ XS D G.fl → v ∈ Λ`. Introduce `v hv`. Rewrite `hv` using `[← hXS, XLam, Submodule.mem_inf]`. Conclude with `hv.1`. Distinguish the cases in `hr : a.val + 1 < D.R.rS`.
+
+Establish `hfi : frame G ⟨a.val + 1, h⟩ = G.fl.e ⟨a.val + 1, hr⟩`. Rewrite using `[show (⟨a.val + 1, h⟩ : Fin (D.R.rS + 1)) = (⟨a.val + 1, hr⟩ : Fin D.R.rS).castSucc from Fin.ext rfl, frame_castSucc]`. Rewrite using `[hfi]`. Apply `frac_lemma D _ (-((D.R.rS : ℤ) - ((a.val + 1 : ℕ) : ℤ)))` to reduce the goal to its premises. Introduce `x hx`.
+
+Establish `hxe : x • G.fl.e ⟨a.val + 1, hr⟩ ∈ XS D G.fl` using `Submodule.subset_span ⟨⟨a.val + 1, hr⟩, x, hx, rfl⟩`. Establish `hn1 : n (x • G.fl.e ⟨a.val + 1, hr⟩) ∈ XS D G.fl`. Rewrite using `[← hXS, XLam, Submodule.mem_inf]`. Conclude with `⟨nlam_mem hn (hXSΛ _ hxe), nlam_X hn (Submodule.smul_mem _ x (e_mem_X _ _))⟩`. Establish `hc` using `(coefX_of_mem_XS D G.fl hn1).2 ⟨a.val, ha⟩`.
+
+Establish `hd : n (G.fl.e ⟨a.val + 1, hr⟩) - G.fl.e ⟨a.val + 1, hr⟩ ∈ G.fl.X` using `Xa_le_X _ _ ((nlam_frame_mem G hn).1 _)`. Establish `hsplit : n (x • G.fl.e ⟨a.val + 1, hr⟩) = x • (G.fl.e ⟨a.val + 1, hr⟩ + (n (G.fl.e ⟨a.val + 1, hr⟩) - G.fl.e ⟨a.val + 1, hr⟩))`. Rewrite using `[map_smul]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+
+Rewrite `hc` using `[hsplit, coefX_smul _ (add_mem (e_mem_X _ _) hd), coefX_add _ (e_mem_X _ _) hd, coefX_e, if_neg (by intro e; have := congrArg Fin.val e; simp at this), zero_add]`. Establish `hexp : -((D.R.rS : ℤ) - ((a.val + 1 : ℕ) : ℤ)) - 1 = -((D.R.rS : ℤ) - (((⟨a.val, ha⟩ : Fin D.R.rS) : ℕ) : ℤ))` using `by push_cast; ring`. Rewrite using `[hexp]`. Conclude with `hc`. Establish `hfz : frame G ⟨a.val + 1, h⟩ = G.fl.z`.
+
+Rewrite using `[show (⟨a.val + 1, h⟩ : Fin (D.R.rS + 1)) = Fin.last _ from Fin.ext (by simp; omega), frame_last]`. Rewrite using `[hfz]`. Apply `frac_lemma D _ 0` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[zpow_zero]`.
+
+Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hx`. Establish `hv : n G.fl.z - G.fl.z ∈ XS D G.fl`. Rewrite using `[← hXS, XLam, Submodule.mem_inf]`. Conclude with `⟨sub_mem (nlam_mem hn hz) hz, (nlam_frame_mem G hn).2⟩`. Establish `hc` using `(coefX_of_mem_XS D G.fl hv).2 ⟨a.val, ha⟩`.
+
+Establish `hexp : (0 : ℤ) - 1 = -((D.R.rS : ℤ) - (((⟨a.val, ha⟩ : Fin D.R.rS) : ℕ) : ℤ))` using `by push_cast; omega`. Rewrite using `[hexp, ← Algebra.smul_def]`. Conclude with `fi_smul _ o hc`.
+-/
 theorem glob_entry (D : D7) (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E} (G : LFlag (VS D) D.R.rS T)
     (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ NLam Λ G) (hXS : XLam Λ G = XS D G.fl) (hz : G.fl.z ∈ Λ)
     (a : Fin (D.R.rS + 1)) (h : a.val + 1 < D.R.rS + 1) :
@@ -69,6 +88,13 @@ theorem glob_entry (D : D7) (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.hos
     rw [hexp, ← Algebra.smul_def]
     exact fi_smul _ o hc
 
+/- English proof (translation)
+Introduce `Λ T G n hn hXS hz δ hδ`. Establish `hmem : sgUp (fmat D G n) * δ ∈ (algebraMap (𝓞 D.host.E) D.host.E).range`. Unfold `sgUp`. Rewrite using `[Finset.sum_mul]`. Apply `Subring.sum_mem` to reduce the goal to its premises.
+
+Introduce `a _`. Use `split_ifs with h`. Apply the tactic sequence `obtain ⟨o, ho⟩ := glob_entry D Λ G n hn hXS hz a h δ hδ`. Conclude with `⟨o, ho⟩`. Rewrite using `[zero_mul]`.
+
+Conclude with `Subring.zero_mem _`. Take `⟨o, ho⟩` from `hmem`. Conclude with `⟨o, ho⟩`.
+-/
 theorem stepGlob (D : D7) : StepGlob D := by
   intro Λ T G n hn hXS hz δ hδ
   have hmem : sgUp (fmat D G n) * δ ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by

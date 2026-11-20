@@ -42,6 +42,75 @@ section Pass3
 
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Use `set Fη := Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (-(η : ℤ)) with hFη`. Use `set φ1 : (T.V ⊗[Qp] B) →ₗ[LL] (T.V ⊗[Qp] B) := φVB PD (LL := LL) (V := T.V) with hφ1`. Use `set φ2 : (T.V ⊗[Qp] B) →ₗ[LL] (T.V ⊗[Qp] B) := φ1.comp φ1 with hφ2`. Use `set ιv : (T.V ⊗[Qp] B) →ₗ[LL] (T.V ⊗[Qp] BdR) := ιV PD (LL := LL) (V := T.V) with hιv`.
+
+Use `set Gx := ιv.comp φ2 with hGx`. Use `set G3 := ιv.comp (φ1.comp φ2) with hG3`. Use `set K3 := preG W T (c - 1 - 1) Gx Fη with hK3`. Set `R : ↥A → ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1)) → Prop` to `fun f x => (PD.p : LL) ^ e₂ • d0 f - (PD.p : LL) ^ (κ - hh) • Gx (Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x : W.DD T)) ∈ Fη`. Establish `hex' : ∀ f, ∃ x, R f x` using `fun f => by`.
+
+Take `⟨x, hx, hx'⟩` from `hex f`. Conclude with `⟨⟨x, hx⟩, hx'⟩`. Establish `hadd : ∀ f g x x', R f x → R g x' → R (f + g) (x + x')`. Introduce `f g x x' h1 h2`. Use `show _ ∈ Fη`.
+
+Establish `e : Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((x + x' : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1))) : W.DD T) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x : W.DD T) + Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x' : W.DD T)` using `cmpD_add W T (NDl_N W T x.2) (NDl_N W T x'.2)`. Rewrite using `[e, hd0a, map_add, smul_add, smul_add]`. Use `Fη.add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Establish `hsm : ∀ (o : O) f x, R f x → R (o • f) (o • x)`. Introduce `o f x h`. Use `show _ ∈ Fη`. Establish `e : Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((o • x : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1))) : W.DD T) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x : W.DD T)` using `cmpD_osmul W T o (NDl_N W T x.2)`. Rewrite using `[e, hd0s, map_smul, smul_comm _ (algebraMap O LL o), smul_comm _ (algebraMap O LL o), ← smul_sub]`.
+
+Conclude with `Fη.smul_mem _ h`. Establish `huniq : ∀ f x x', R f x → R f x' → x - x' ∈ K3`. Introduce `f x x' h1 h2`. Use `show Gx (Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((x - x' : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1))) : W.DD T)) ∈ Fη`. Rewrite using `[Submodule.coe_sub, cmpD_sub W T (NDl_N W T x.2) (NDl_N W T x'.2), map_sub]`.
+
+Establish `h` using `Fη.sub_mem h2 h1`. Rewrite `h` using `[sub_sub_sub_cancel_left, ← smul_sub]`. Establish `h'` using `Fη.smul_mem ((PD.p : LL) ^ (κ - hh))⁻¹ h`. Rewrite `h'` using `[smul_smul, inv_mul_cancel₀ (zpow_ne_zero _ hp), one_smul]`. Then use the resulting hypothesis. Take `⟨ψ3, hψ3⟩` from `linLift K3 R hex' hadd hsm huniq`.
+
+Take `⟨s₂, hs₂, hs₂N, L, kO, hL, hkO, hLc⟩` from `hDN`. Establish `ch1` using `pchain_DN' W T (c - 1 - 1) hh K3 s₂ hs₂ hs₂N L kO hL hkO hLc A ψ3`. Use `set F3b := kerSub A ψ3 (((Xd W T (c - 1 - 1) hh).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1)).subtype).map K3.mkQ) with hF3bdef`. Establish `hF3b : F3b ≤ A` using `kerSub_le _ _ _`. Use `set Amb := preG W T (c - 1 - 1 - 1) G3 Fη with hAmb`.
+
+Set `R3 : ↥F3b → ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) → Prop` to `fun f y => (PD.p : LL) ^ e₂ • d0 (Submodule.inclusion hF3b f) - (PD.p : LL) ^ κ • G3 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y : W.DD T)) ∈ Fη`. Establish `hex3 : ∀ f, ∃ y, R3 f y`. Introduce `f`. Establish `hf` using `(mem_kerSub_coe A ψ3 _ (Submodule.inclusion hF3b f)).1 f.2`. Take `⟨x, hxX, hxe⟩` from `Submodule.mem_map.1 hf`.
+
+Take `⟨xf, hRf, hψf⟩` from `hψ3 (Submodule.inclusion hF3b f)`. Rewrite `hxe` using `[hψf]`. Establish `hdiff : xf - x ∈ K3` using `(Submodule.Quotient.eq K3).1 hxe.symm`. Take `⟨y, hy, hyx⟩` from `cmp_of_mem_X W T hs hR h3 hM' hxX`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show _ ∈ Fη`. Establish `hk : Gx (Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((xf - x : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1))) : W.DD T)) ∈ Fη` using `hdiff`. Rewrite `hk` using `[Submodule.coe_sub, cmpD_sub W T (NDl_N W T xf.2) (NDl_N W T x.2), map_sub]`. Establish `hGxx : Gx (Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x : W.DD T)) = (PD.p : LL) ^ hh • G3 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T y)`. Establish `hyx' : Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x : W.DD T) = (PD.p : LL) ^ hh • φVB PD (LL` using `LL) (V := T.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T y) := hyx`.
+
+Rewrite using `[hyx']`. Simplify using `only [hGx, hG3, LinearMap.comp_apply, map_smul]`. Both sides reduce to the same expression. Use `Fη.add_mem hRf (Fη.smul_mem ((PD.p : LL) ^ (κ - hh)) hk)` as an intermediate fact. Rewrite `this` using `[hGxx]`.
+
+Establish `hsc : (PD.p : LL) ^ (κ - hh) * (PD.p : LL) ^ hh = (PD.p : LL) ^ κ`. Rewrite using `[← zpow_natCast, ← zpow_add₀ hp, sub_add_cancel]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub, smul_smul, hsc]`. Normalize the expressions using the abelian group laws.
+
+Establish `hadd3 : ∀ f g y y', R3 f y → R3 g y' → R3 (f + g) (y + y')`. Introduce `f g y y' h1 h2`. Use `show _ ∈ Fη`. Establish `e : Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((y + y' : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y : W.DD T) + Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y' : W.DD T)` using `cmpD_add W T (NDl_N W T y.2) (NDl_N W T y'.2)`. Rewrite using `[e, map_add, map_add, hd0a, smul_add, smul_add]`.
+
+Use `Fη.add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hsm3 : ∀ (o : O) f y, R3 f y → R3 (o • f) (o • y)`. Introduce `o f y h`.
+
+Use `show _ ∈ Fη`. Establish `e : Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((o • y : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y : W.DD T)` using `cmpD_osmul W T o (NDl_N W T y.2)`. Rewrite using `[e, map_smul, map_smul, hd0s, smul_comm _ (algebraMap O LL o), smul_comm _ (algebraMap O LL o), ← smul_sub]`. Conclude with `Fη.smul_mem _ h`. Establish `huniq3 : ∀ f y y', R3 f y → R3 f y' → y - y' ∈ Amb`.
+
+Introduce `f y y' h1 h2`. Use `show G3 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((y - y' : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T)) ∈ Fη`. Rewrite using `[Submodule.coe_sub, cmpD_sub W T (NDl_N W T y.2) (NDl_N W T y'.2), map_sub]`. Establish `h` using `Fη.sub_mem h2 h1`. Rewrite `h` using `[sub_sub_sub_cancel_left, ← smul_sub]`.
+
+Establish `h'` using `Fη.smul_mem ((PD.p : LL) ^ κ)⁻¹ h`. Rewrite `h'` using `[smul_smul, inv_mul_cancel₀ (zpow_ne_zero _ hp), one_smul]`. Then use the resulting hypothesis. Take `⟨ψ3c, hψ3c⟩` from `linLift Amb R3 hex3 hadd3 hsm3 huniq3`. Use `set preC := preG W T (c - 1 - 1 - 1) φ2 C with hpreC`. Take `⟨d, bF, hbN, hcoord⟩` from `NDl_coords W T (c - 1 - 1 - 1) hmod`.
+
+Establish `hbN' : ∀ k, bF k ∈ W.N T` using `fun k => NDl_N W T (hbN k)`. Set `phA : (Fin d → O) →+ (T.V ⊗[Qp] B) ⧸ C` to `{ toFun := fun α => C.mkQ (φ2 (∑ k, algebraMap O LL (α k) • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (bF k))) map_zero' := by simp map_add' := fun α β => by`. Simplify using `only [Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib] }`. Establish `hphA : ∀ (o : O) (α : Fin d → O), phA (o • α) = algebraMap O LL o • phA α`. Introduce `o α`.
+
+Simplify using `only [phA, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Pi.smul_apply, smul_eq_mul, map_mul, mul_smul, ← Finset.smul_sum, map_smul]`. Establish `hletter : ∀ k, φ2 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T (bF k)) ∈ DcrisL PD T.ρ (W.emb (c - 1))`. Introduce `k`. Establish `h0 : Formalism.MainNotions.ArcLiftingSetup.cmpD W T (bF k) ∈ DcrisL PD T.ρ (W.emb (c - 1 - 1 - 1))`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (hbN' k)]`.
+
+Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_mem_letter W T _ (hbN' k) (NDl_DL W T (hbN k)).1`. Establish `h2` using `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_letter W T _ (Formalism.MainNotions.UnusedSlot80.ArcF.φVB_letter W T _ h0)`. Rewrite `h2` using `[show c - 1 - 1 - 1 + 1 + 1 = c - 1 by ring]`. Conclude with `h2`. Establish `hrank : Module.finrank LL ↥(Submodule.span LL (Set.range phA)) ≤ m`.
+
+Establish `hsub : Submodule.span LL (Set.range phA) ≤ (DcrisL PD T.ρ (W.emb (c - 1))).map C.mkQ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨α, rfl⟩`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Conclude with `Submodule.sum_mem _ fun k _ => by`. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (hletter k)`. Conclude with `(Submodule.finrank_mono hsub).trans hRk`. Take `⟨s₀, hs₀, hs₀g⟩` from `genM phA hphA hrank`.
+
+Set `lin : (Fin d → O) →ₗ[O] ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))` to `Fintype.linearCombination O (fun k => (⟨bF k, hbN k⟩ : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))))`. Establish `hlin : ∀ α, Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((lin α : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T) = ∑ k, algebraMap O LL (α k) • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (bF k)`. Introduce `α`. Simplify using `only [lin, Fintype.linearCombination_apply, Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[cmpD_sum W T _ _ (fun k _ => by`.
+
+Rewrite using `[← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T).smul_mem _ (hbN' k))]`. Conclude with `Finset.sum_congr rfl fun k _ => cmpD_osmul W T _ (hbN' k)`. Use `set sG : Finset (↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) ⧸ Amb) := s₀.image (fun α => Amb.mkQ (lin α)) with hsG`. Establish `hsGc : sG.card ≤ m` using `Finset.card_image_le.trans hs₀`.
+
+Establish `hgenz : ∀ z : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) ⧸ Amb, z ∈ preC.map Amb.mkQ ⊔ Submodule.span O (↑sG : Set _)`. Introduce `z`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective Amb z`. Take `⟨α, hα⟩` from `hcoord y y.2`. Take `⟨σ, hσ, hφ0⟩` from `hs₀g α`.
+
+Establish `hy' : y - lin σ ∈ preC` using `by show φ2 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((y - lin σ : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T)) ∈ C`. Rewrite using `[Submodule.coe_sub, cmpD_sub W T (NDl_N W T y.2) (NDl_N W T (lin σ).2), hα, hlin]`. Establish `h0 : C.mkQ (φ2 (∑ k, algebraMap O LL ((α - σ) k) • Formalism.MainNotions.ArcLiftingSetup.cmpD W T (bF k))) = 0` using `hφ0`. Rewrite `h0` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `h0 using 2` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [Pi.sub_apply, map_sub, sub_smul, Finset.sum_sub_distrib]`. Establish `hm1 : Amb.mkQ (y - lin σ) ∈ preC.map Amb.mkQ` using `Submodule.mem_map_of_mem hy'`. Establish `hm2 : Amb.mkQ (lin σ) ∈ Submodule.span O (↑sG : Set _)`. Establish `h` using `Submodule.mem_map_of_mem (f := Amb.mkQ ∘ₗ lin) hσ`. Rewrite `h` using `[Submodule.map_span]`.
+
+Rewrite using `[hsG, Finset.coe_image]`. Conclude with `h`. Establish `e : Submodule.Quotient.mk y = Amb.mkQ (y - lin σ) + Amb.mkQ (lin σ)`. Rewrite using `[← map_add, sub_add_cancel]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left hm1) (Submodule.mem_sup_right hm2)`. Establish `ch2` using `pchain_of_gen (pstep_gen (lenO := lenOl PD (O := O)) (m := m) (c := cc) F3b ψ3c (preC.map Amb.mkQ) sG hsGc (fun a => hgenz _))`. Use `set F3 := kerSub F3b ψ3c (preC.map Amb.mkQ) with hF3def`. Establish `hF3' : F3 ≤ F3b` using `kerSub_le _ _ _`.
+
+Use `⟨F3, hF3'.trans hF3b, (ch1.trans ch2).mono (by norm_num) (by norm_num), fun f => ?_⟩` and prove the remaining obligations. Use `set f3b : ↥F3b := Submodule.inclusion hF3' f`. Establish `hker` using `(mem_kerSub_coe F3b ψ3c _ f3b).1 f.2`. Take `⟨y', hy'C, hy'e⟩` from `Submodule.mem_map.1 hker`. Take `⟨yf, hR3f, hψf⟩` from `hψ3c f3b`.
+
+Rewrite `hy'e` using `[hψf]`. Establish `hdiff : yf - y' ∈ Amb` using `(Submodule.Quotient.eq Amb).1 hy'e.symm`. Establish `hdiff' : G3 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T ((yf - y' : ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1))) : W.DD T)) ∈ Fη` using `hdiff`. Rewrite `hdiff'` using `[Submodule.coe_sub, cmpD_sub W T (NDl_N W T yf.2) (NDl_N W T y'.2), map_sub]`. Use `⟨φ2 (Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y' : W.DD T)), ⟨Formalism.MainNotions.ArcLiftingSetup.cmpD W T (y' : W.DD T), ⟨(y' : W.DD T), NDl_N W T y'.2, NDl_DL W T y'.2, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T _⟩, rfl⟩, hy'C, ?_⟩` and prove the remaining obligations.
+
+Establish `e2 : Submodule.inclusion (hF3'.trans hF3b) f = Submodule.inclusion hF3b f3b` using `rfl`. Rewrite using `[e2]`. Use `Fη.add_mem hR3f (Fη.smul_mem ((PD.p : LL) ^ κ) hdiff')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hG3, LinearMap.comp_apply, smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem pass3 [IsDomain O] [IsPrincipalIdealRing O] [IsFractionRing O LL]
     (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (h3 : Formalism.MainNotions.DeltaInvariantLattices.p3 W T)
     (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (c : ZMod n) {hh e₂ m : ℕ} {κ : ℤ} {cc : ℝ} (η : ℕ)

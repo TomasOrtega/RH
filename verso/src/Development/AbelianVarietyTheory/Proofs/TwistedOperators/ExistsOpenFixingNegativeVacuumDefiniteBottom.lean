@@ -30,6 +30,31 @@ open GlobalTheory.Grid (neg)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T L sc G W i j A A' WW X hX t`. Use `set om' := (X.ω t).toSgn true with hom'`. Establish `hW : IsWeilDatumO W.ψ (neg A) WW _ _ om'` using `hX.is.weil t`. Establish `hvac : IsVacO W.ψ W.θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.Λ X.rW.Λ X.vac` using `hX.is.isVac`. Establish `hθ : IsInfFam W.θ` using `hvac.2.inf`.
+
+Establish `hsdS : IsSelfDualC (neg A) X.rA.Λ` using `GlobalTheory.RowTest.isSelfDualC_neg' hX.is.rigA.1`. Establish `hsdT : IsSelfDualC WW X.rW.Λ` using `hX.is.rigW.1`. Establish `hcS : ∀ τ, IsCartanInv (gramAt D (neg A) τ) (-X.rA.s τ)` using `fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hX.is.rigA.2.2 τ).1`. Establish `hcT : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hX.is.rigW.2.2 τ).1`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.VacTranslate.exists_finCong_mod (neg A) WW X.rA.Λ X.rW.Λ hsdS hsdT 1 one_pos`.
+
+Use `set N₁ := n₀.factorial with hN₁def`. Establish `hN₁ : 0 < N₁` using `n₀.factorial_pos`. Establish `hscal : ∀ k ∈ GfC (neg A), GlobalTheory.Member.FinCong (neg A) N₁ k → ∃ c : ℂ, ‖c‖ = 1 ∧ om' (k, 1) X.vac = c • X.vac`. Introduce `k hk hc`. Establish `hΛ` using `GlobalTheory.VacTranslate.lat_iff_of_mod hn₀ (show k ∈ GlobalTheory.Member.PrincLevel.levelGroup (neg A) N₁ from ⟨hk, hc⟩)`.
+
+Establish `hvac'` using `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ (neg A) WW _ _ om' hW hθ (fun τ => -X.rA.s τ) (fun τ => -X.rA.s τ) X.rW.s X.rW.s _ _ _ _ k 1 (fun τ => by rw [GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ (neg A) hk τ, Matrix.one_mul, Matrix.mul_one]) (fun τ => GlobalTheory.Smoo …`. Conclude with `GlobalTheory.VacUnique.vacUniqueO D W.ψ W.θ hvac.1 hθ (Formalism.L2.Fam.ThC.fixSig (neg A)) (Formalism.L2.Fam.ThC.fixSig WW) (fun τ => -X.rA.s τ) X.rW.s (Formalism.L2.Fam.ThC.fixSig_ok _) (Formalism.L2.Fam.ThC.fixSig_ok _) hcS hcT X.rA.Λ X.rW.Λ hsdS hsdT X.vac _ (GlobalTheory.Vac …`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.SmoothVac.exists_ne_zero_of_isVacO hvac`. Establish `hcont : Continuous fun k : GA D (neg A) => om' (k, 1) X.vac w₀` using `(hW.om_cont _ hvac.2.theta w₀).comp (continuous_id.prodMk continuous_const)`. Establish `key : ∃ n : ℕ, ∀ k ∈ GfC (neg A), GlobalTheory.Member.FinCong (neg A) (N₁ * n.factorial) k → om' (k, 1) X.vac = X.vac`.
+
+Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose k hk hkc hkne using hne`. Establish `hpow : ∀ n, ∃ m : ℕ, ∃ c : ℂ, om' (k n ^ m, 1) X.vac = c • X.vac ∧ ¬ ‖c - 1‖ ≤ 1 / 2`. Introduce `n`.
+
+Take `⟨c, -, hc⟩` from `hscal (k n) (hk n) (GlobalTheory.SmoothVac.finCong_of_mul_left (hkc n))`. Establish `hc1 : c ≠ 1`. Introduce and unpack `rfl`. Conclude with `hkne n (by rw [hc, one_smul])`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hc1 (GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le (A := ℂ) fun m => h m (c ^ m) (GlobalTheory.VacFixSource.om_pow_eq_fst _ (k n) _ c hc m))`. Use `choose m c hmc hc using hpow`. Establish `hmem : ∀ n, k n ^ m n ∈ GlobalTheory.Member.PrincLevel.levelGroup (neg A) (N₁ * n.factorial)` using `fun n => pow_mem (show k n ∈ GlobalTheory.Member.PrincLevel.levelGroup (neg A) (N₁ * n.factorial) from ⟨hk n, hkc n⟩) _`. Establish `ht` using `GlobalTheory.SplitCharTrivial.tendsto_one_of_finCong (k := fun n => k n ^ m n) (fun n => (hmem n).1) (fun n => GlobalTheory.SmoothVac.finCong_of_mul_right (hmem n).2)`.
+
+Establish `h2` using `(hcont.tendsto 1).comp ht`. Establish `e1 : om' ((1 : GA D (neg A)), (1 : GA D WW)) X.vac w₀ = X.vac w₀` using `by show om' 1 X.vac w₀ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite `h2` using `[Function.comp_def, e1]`.
+
+Establish `hpos : 0 < ‖X.vac w₀‖ / 2` using `half_pos (norm_pos_iff.2 hw₀)`. Take `⟨n, hn⟩` from `(h2.eventually (Metric.ball_mem_nhds _ hpos)).exists`. Rewrite `hn` using `[hmc n, Pi.smul_apply, smul_eq_mul, dist_eq_norm, ← sub_one_mul, norm_mul]`. Use `hc n` as an intermediate fact. Use `push_neg at this`.
+
+Use polynomial arithmetic with `[norm_nonneg (X.vac w₀)]`. Take `⟨n, hn⟩` from `key`. Establish `hNpos : 0 < N₁ * n.factorial` using `Nat.mul_pos hN₁ n.factorial_pos`. Use `⟨(GlobalTheory.VacFixTarget.congGroup (neg A) (N₁ * n.factorial)).comap (GlobalTheory.Grid.ofSgn true A).symm.toMonoidHom, (GlobalTheory.Grid.continuous_ofSgn_symm true A).isOpen_preimage _ (GlobalTheory.VacFixTarget.isOpen_congGroup (neg A) hNpos), fun k hk => ?_, fun k hU hk => …` and prove the remaining obligations. Use `show GlobalTheory.Member.FinCong (neg A) (N₁ * n.factorial) ((GlobalTheory.Grid.ofSgn true A).symm k)`.
+
+Establish `h1 : finHom (neg A) ((GlobalTheory.Grid.ofSgn true A).symm k) = 1` using `hk`. Introduce `z hz`. Apply the tactic sequence `refine ⟨0, by first | exact zero_mem _ | exact Submodule.zero_mem _ | exact AddSubgroup.zero_mem _ | simp [Formalism.L2.Pj.latHat], ?_⟩`. Rewrite using `[h1, Units.val_one, Matrix.one_mulVec, sub_self]`. Conclude with `(nsmul_zero _).symm`.
+
+Establish `h1` using `hn ((GlobalTheory.Grid.ofSgn true A).symm k) hk hU`. Establish `e : om' ((GlobalTheory.Grid.ofSgn true A).symm k, 1) = X.ω t (k, 1)`. Simplify using `[hom', GlobalTheory.Grid.WRep.toSgn]`. Rewrite `h1` using `[e]`. Conclude with `h1`.
+-/
 theorem exists_open_fix_vac_neg : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, IsBottomTri W i j X → ∀ t : T,
     ∃ U : Subgroup (GA D A), IsOpen (U : Set (GA D A)) ∧ GinfC A ≤ U ∧

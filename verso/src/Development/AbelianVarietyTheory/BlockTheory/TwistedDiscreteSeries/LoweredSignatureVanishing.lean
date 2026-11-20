@@ -37,6 +37,9 @@ def LowVanishConv (D : D7) : Prop :=
       IsThetaFunO ψ V' W f' → ∀ g, IntegrableOn (fun h => thetaKO ω' g h f' * F v h) 𝓕 ν ∧
         ∫ h in 𝓕, thetaKO ω' g h f' * F v h ∂ν = 0
 
+/- English proof (translation)
+Unfold `signCard dualPar`. Rewrite using `[Finset.filter_image, Finset.card_image_of_injective]`. Introduce `x y h`. Simplify using `only [Prod.mk.injEq, neg_inj] at h`. Conclude with `Prod.ext h.1 h.2`.
+-/
 theorem signCard_dualPar (S : SPar) (b : Bool) : signCard (dualPar S) b = signCard S b := by
   unfold signCard dualPar
   rw [Finset.filter_image, Finset.card_image_of_injective]
@@ -44,6 +47,9 @@ theorem signCard_dualPar (S : SPar) (b : Bool) : signCard (dualPar S) b = signCa
   simp only [Prod.mk.injEq, neg_inj] at h
   exact Prod.ext h.1 h.2
 
+/- English proof (translation)
+Use `decide +kernel`.
+-/
 example : signCard {((5 : ℚ), true), (3, false), (-4, true)} true = 2 := by decide +kernel
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LoweredSignatureVanishing

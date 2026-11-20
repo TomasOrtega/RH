@@ -9,6 +9,15 @@ namespace GlobalTheory.InertiaLift
 
 variable {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
+/- English proof (translation)
+Use `⟨hσ, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨s, t, hs, ht, hs1, e⟩` from `exists_den F A hx`. Establish `hσs : A.valuation (σ s) = 1`. Use `le_antisymm ((A.valuation_le_one_iff _).mpr ((apply_mem_iff_of_mem_Dec hσ s).mpr (mem_of_isIntegral_int A hs))) ?_` and prove the remaining obligations. Rewrite using `[← not_lt, valuation_apply_lt_one_iff hσ, hs1]`.
+
+Conclude with `lt_irrefl 1`. Establish `he' : σ s * σ x = σ t` using `by rw [← map_mul, e]`. Establish `key : σ s * (σ x - x) = (σ t - t) + x * (s - σ s)`. Rewrite using `[← he', ← e]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv : A.valuation (σ s * (σ x - x)) < 1`. Rewrite using `[key]`. Use `Valuation.map_add_lt _ (h t ht) ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul, Valuation.map_sub_swap]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `hv` using `[Valuation.map_mul, hσs, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_Ine_of_integral {A : ValuationSubring Ω} {σ : G F Ω} (hσ : σ ∈ Dec (F := F) A)
     (h : ∀ b : Ω, IsIntegral ℤ b → A.valuation (σ b - b) < 1) : σ ∈ Ine (F := F) A := by
   refine ⟨hσ, fun x hx => ?_⟩
@@ -30,6 +39,15 @@ theorem mem_Ine_of_integral {A : ValuationSubring Ω} {σ : G F Ω} (hσ : σ �
       _ < 1 := by rw [one_mul]; exact h s hs
   rwa [Valuation.map_mul, hσs, one_mul] at hv
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (IntCl F Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl F Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl F Ω`. Use `haveI := isInvariant_intCl F Ω`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := 𝓞 F) (G := Ω ≃ₐ[F] Ω) (primeBelow (F := F) A) (primeBelow (F := F) A') (by`.
+
+Use extensionality with `x`. Rewrite using `[Ideal.under, Ideal.under, Ideal.mem_comap, Ideal.mem_comap, mem_primeBelow, mem_primeBelow]`. Conclude with `h x)`. Establish `e : g • A = A'`. Use `eq_of_valuation_lt_one_iff F fun b hb => ?_` and prove the remaining obligations.
+
+Set `b' : IntCl F Ω` to `⟨b, hb.tower_top⟩`. Express the relevant statement in the definitionally equal form `b' ∈ primeBelow (F := F) (g • A) ↔ b' ∈ primeBelow (F := F) A'`. Rewrite using `[primeBelow_smul, hg]`. Use `⟨g, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← e, smul_valuation_lt_one_iff]`.
+
+Establish `: (g⁻¹ : Ω ≃ₐ[F] Ω) (g y) = y` using `g.symm_apply_apply y`. Rewrite using `[this]`.
+-/
 theorem exists_smul_eq {A A' : ValuationSubring Ω}
     (h : ∀ x : 𝓞 F, A.valuation (algebraMap F Ω x) < 1 ↔ A'.valuation (algebraMap F Ω x) < 1) :
     ∃ g : Ω ≃ₐ[F] Ω, ∀ y, A'.valuation (g y) < 1 ↔ A.valuation y < 1 := by
@@ -64,6 +82,19 @@ noncomputable def intEquiv (s : Ω ≃+* Ω) : IntCl F Ω ≃+* IntCl F Ω where
   map_mul' a b := Subtype.ext (map_mul s (a : Ω) b)
   map_add' a b := Subtype.ext (map_add s (a : Ω) b)
 
+/- English proof (translation)
+Use `letI : TopologicalSpace (IntCl F Ω) := ⊥`. Use `haveI : DiscreteTopology (IntCl F Ω) := ⟨rfl⟩`. Use `haveI := continuousSMul_intCl F Ω`. Use `haveI := isInvariant_intCl F Ω`. Use `set Q := primeBelow (F := F) A with hQ`.
+
+Establish `hmap : Q = Q.map (intEquiv (F` using `F) s : IntCl F Ω →+* IntCl F Ω) := by`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `b`. Rewrite using `[Ideal.mem_comap, mem_primeBelow, mem_primeBelow, ← hs ((intEquiv (F := F) s).symm b)]`. Establish `: s (((intEquiv (F` using `F) s).symm b : IntCl F Ω) : Ω) = b := s.apply_symm_apply b`.
+
+Rewrite using `[this]`. Set `φ : (IntCl F Ω ⧸ Q) ≃ₐ[𝓞 F ⧸ Q.under (𝓞 F)] (IntCl F Ω ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := Ideal.quotientEquiv Q Q (intEquiv (F := F) s) hmap) (by`. Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk Q (intEquiv (F := F) s (algebraMap _ _ x)) = Ideal.Quotient.mk Q (algebraMap _ _ x)`.
+
+Rewrite using `[Ideal.Quotient.eq]`. Conclude with `h x)`. Take `⟨⟨σ, hσQ⟩, hσ⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := Ω ≃ₐ[F] Ω) (Q.under (𝓞 F)) Q φ`. Establish `hσQ' : σ • Q = Q` using `hσQ`. Use `⟨σ, ?_, fun b hb => ?_⟩` and prove the remaining obligations.
+
+Use `eq_of_valuation_lt_one_iff F fun b hb => ?_` and prove the remaining obligations. Set `b' : IntCl F Ω` to `⟨b, hb.tower_top⟩`. Express the relevant statement in the definitionally equal form `b' ∈ primeBelow (F := F) (σ • A) ↔ b' ∈ Q`. Rewrite using `[primeBelow_smul, hσQ']`. Set `b' : IntCl F Ω` to `⟨b, hb.tower_top⟩`.
+
+Establish `h1 : Ideal.Quotient.mk Q (σ • b') = Ideal.Quotient.mk Q (intEquiv (F` using `F) s b') := DFunLike.congr_fun hσ (Ideal.Quotient.mk Q b')`. Rewrite `h1` using `[Ideal.Quotient.eq]`. Conclude with `h1`.
+-/
 theorem exists_congr {A : ValuationSubring Ω} (s : Ω ≃+* Ω)
     (hs : ∀ y, A.valuation (s y) < 1 ↔ A.valuation y < 1)
     (h : ∀ x : 𝓞 F, A.valuation (s (algebraMap F Ω x) - algebraMap F Ω x) < 1) :
@@ -103,6 +134,11 @@ theorem exists_congr {A : ValuationSubring Ω} (s : Ω ≃+* Ω)
     exact h1
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+Establish `key : ∀ y, y ∈ A ↔ (y = 0 ∨ ¬ A.valuation y⁻¹ < 1)`. Introduce `y`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : 0 < A.valuation y` using `zero_lt_iff.mpr (by simpa using hy)`.
+
+Rewrite using `[← A.valuation_le_one_iff, map_inv₀, inv_lt_one₀ h0, not_lt]`. Simplify using `[hy]`. Use `show σ • A = A`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, key, key y, ← h, map_inv₀ σ, mul_inv_apply, map_eq_zero_iff _ (σ⁻¹ : G F Ω).injective]`.
+-/
 theorem mem_Dec_of_lt {A : ValuationSubring Ω} {σ : G F Ω}
     (h : ∀ y, A.valuation (σ y) < 1 ↔ A.valuation y < 1) : σ ∈ Dec (F := F) A := by
   have key : ∀ y, y ∈ A ↔ (y = 0 ∨ ¬ A.valuation y⁻¹ < 1) := by
@@ -117,6 +153,23 @@ theorem mem_Dec_of_lt {A : ValuationSubring Ω} {σ : G F Ω}
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, key, key y,
     ← h, map_inv₀ σ, mul_inv_apply, map_eq_zero_iff _ (σ⁻¹ : G F Ω).injective]
 
+/- English proof (translation)
+Use `haveI : NumberField M := NumberField.of_module_finite F M`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : IsAlgClosure M Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := F) M⟩`. Establish `hint : ∀ x : 𝓞 M, A.valuation (algebraMap M Ω (x : M)) ≤ 1` using `fun x => (A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (x.isIntegral_coe.map (algebraMap M Ω).toIntAlgHom))`. Set `σ₁ : Ω ≃ₐ[F] Ω` to `τ.liftNormal Ω`.
+
+Establish `h₁ : ∀ x : M, σ₁ (algebraMap M Ω x) = (algebraMap M Ω (τ x))` using `fun x => τ.liftNormal_commutes Ω x`. Take `⟨g, hg⟩` from `exists_smul_eq (F := M) (A := A) (A' := σ₁⁻¹ • A) (by`. Introduce `x`. Rewrite using `[smul_valuation_lt_one_iff, inv_inv]`. Express the relevant statement in the definitionally equal form `A.valuation (algebraMap M Ω (x : M)) < 1 ↔ A.valuation (σ₁ (algebraMap M Ω (x : M))) < 1`.
+
+Rewrite using `[h₁]`. Establish `hx` using `h x (hint x)`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Simplify using `using Valuation.map_add_lt _ hx hl`.
+
+Introduce `hl`. Simplify using `using Valuation.map_sub_lt _ hl hx)`. Set `σ₂ : Ω ≃ₐ[F] Ω` to `σ₁ * g.restrictScalars F`. Establish `h₂ : ∀ x : M, σ₂ (algebraMap M Ω x) = (algebraMap M Ω (τ x))` using `fun x => by`. Rewrite using `[← h₁]`.
+
+Conclude with `congrArg σ₁ (g.commutes x)`. Establish `h₂' : ∀ y, A.valuation (σ₂ y) < 1 ↔ A.valuation y < 1` using `fun y => by`. Rewrite using `[← hg y, smul_valuation_lt_one_iff, inv_inv]`. Both sides reduce to the same expression. Take `⟨k, hk, hk'⟩` from `exists_congr (F := M) (A := A) σ₂.toRingEquiv h₂' (by`.
+
+Introduce `x`. Express the relevant statement in the definitionally equal form `A.valuation (σ₂ (algebraMap M Ω (x : M)) - (algebraMap M Ω (x : M))) < 1`. Rewrite using `[h₂]`. Conclude with `h x (hint x))`. Establish `hkinv : ∀ y, A.valuation (k.symm y) < 1 ↔ A.valuation y < 1` using `fun y => by`.
+
+Rewrite using `[← valuation_apply_lt_one_iff hk, k.apply_symm_apply]`. Use `⟨k.symm.restrictScalars F * σ₂, mem_Ine_of_integral (mem_Dec_of_lt fun y => ?_) fun b hb => ?_, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.valuation (k.symm (σ₂ y)) < 1 ↔ _`. Rewrite using `[hkinv, h₂']`. Express the relevant statement in the definitionally equal form `A.valuation (k.symm (σ₂ b) - b) < 1`.
+
+Rewrite using `[← valuation_apply_lt_one_iff hk, map_sub, k.apply_symm_apply, Valuation.map_sub_swap]`. Conclude with `hk' b hb`. Express the relevant statement in the definitionally equal form `k.symm (σ₂ (algebraMap M Ω x)) = _`. Rewrite using `[h₂]`. Conclude with `k.symm.commutes (τ x)`.
+-/
 theorem exists_mem_Ine_lift (A : ValuationSubring Ω) (M : Type*) [Field M] [Algebra F M]
     [Algebra M Ω] [IsScalarTower F M Ω]
     [FiniteDimensional F M] [IsGalois F M] (τ : M ≃ₐ[F] M)
@@ -166,6 +219,11 @@ theorem exists_mem_Ine_lift (A : ValuationSubring Ω) (M : Type*) [Field M] [Alg
     rw [h₂]
     exact k.symm.commutes (τ x)
 
+/- English proof (translation)
+Introduce `Ω _ _ _ _ _ A _ M _ _ τ h _`. Establish `hst : @IsScalarTower ℚ M Ω (DivisionRing.toRatAlgebra (R` using `M)).toSMul (inferInstance : Algebra M Ω).toSMul (‹Algebra ℚ Ω›).toSMul := @IsScalarTower.of_algebraMap_eq' ℚ M Ω _ _ _ DivisionRing.toRatAlgebra _ _ (Subsingleton.elim _ _)`. Establish `e : (DivisionRing.toRatAlgebra : Algebra ℚ M) = M.algebra'` using `Subsingleton.elim _ _`. Establish `hfd : @FiniteDimensional ℚ M _ _ (DivisionRing.toRatAlgebra (R` using `M)).toModule := by`. Rewrite using `[e]`.
+
+Use the matching hypothesis. Conclude with `@exists_mem_Ine_lift ℚ Ω _ _ _ _ _ A M _ DivisionRing.toRatAlgebra _ hst hfd _ τ h`.
+-/
 theorem main : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ (M : IntermediateField ℚ Ω) [FiniteDimensional ℚ M] [IsGalois ℚ M] (τ : M ≃ₐ[ℚ] M), (∀ x : M, A.valuation (x : Ω) ≤ 1 → A.valuation ((τ x : Ω) - (x : Ω)) < 1) → (∀ x : M, A.valuation ((τ x : M) : Ω) ≤ 1 ↔ A.valuation (x : Ω) ≤ 1) → ∃ σ ∈ Ine (F := ℚ) A, ∀ x : M, σ (x : Ω) = (τ x : Ω) := by
   intro Ω _ _ _ _ _ A _ M _ _ τ h _
   have hst : @IsScalarTower ℚ M Ω (DivisionRing.toRatAlgebra (R := M)).toSMul

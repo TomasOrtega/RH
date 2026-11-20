@@ -8,6 +8,19 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 open Formalism.ZeroFreeDirichlet
 
+/- English proof (translation)
+Use `set h : ℝ := (b - a) / (2 * ((S.card : ℝ) + 1)) with hh`. Establish `hn : (0 : ℝ) < 2 * ((S.card : ℝ) + 1)` using `by positivity`. Establish `hpos : 0 < h` using `div_pos (by linarith) hn`. Establish `hmul : h * (2 * ((S.card : ℝ) + 1)) = b - a`. Rewrite using `[hh]`.
+
+Clear the denominators using the available nonvanishing facts. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `key : ∀ i ∈ Finset.range (S.card + 1), ∃ s ∈ S, |a + (2 * (i : ℝ) + 1) * h - s| < h`. Introduce `i hi`.
+
+Establish `hi' : (i : ℝ) ≤ S.card`. Use `Finset.mem_range.mp hi` as an intermediate fact. Conclude with `Nat.lt_succ_iff.mp this` after adjusting the coercions. Establish `hi0 : (0 : ℝ) ≤ i` using `Nat.cast_nonneg i`. Apply `hcon` to reduce the goal to its premises.
+
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `choose! f hfS hf using key`. Establish `hcard : S.card < (Finset.range (S.card + 1)).card` using `by simp`. Take `⟨i, hi, j, hj, hij, hfij⟩` from `Finset.exists_ne_map_eq_of_card_lt_of_maps_to hcard (fun i hi => hfS i hi)`.
+
+Establish `h1` using `hf i hi`. Establish `h2` using `hf j hj`. Rewrite `h1` using `[hfij]`. Rewrite `h1`, `h2` using `[abs_lt]`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases.
+
+Establish `: (i : ℝ) + 1 ≤ j` using `by exact_mod_cast hlt`. Use the polynomial consequences of the given equalities and inequalities. Establish `: (j : ℝ) + 1 ≤ i` using `by exact_mod_cast hlt`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem ex_pick (S : Finset ℝ) (a b : ℝ) (hab : a < b) :
     ∃ x : ℝ, a ≤ x ∧ x ≤ b ∧ ∀ s ∈ S, (b - a) / (2 * ((S.card : ℝ) + 1)) ≤ |x - s| := by
   set h : ℝ := (b - a) / (2 * ((S.card : ℝ) + 1)) with hh
@@ -40,6 +53,33 @@ theorem ex_pick (S : Finset ℝ) (a b : ℝ) (hab : a < b) :
   · have : (j : ℝ) + 1 ≤ i := by exact_mod_cast hlt
     nlinarith
 
+/- English proof (translation)
+Take `⟨C0, hC0, hbox⟩` from `ex_box`. Use `⟨8 * (4 * C0 + 1), by positivity, ?_⟩` and prove the remaining obligations. Introduce `κ hκ hκ' M _ χ T hM hT`. Take `⟨Z, hZ, -, hcard⟩` from `hbox M χ (T + 3) hM (by linarith)`. Establish `hMr : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`.
+
+Use `set N : ℝ := (Z.card : ℝ) with hN`. Establish `hN0 : 0 ≤ N` using `Nat.cast_nonneg _`. Use `set lg : ℝ := Real.log ((M : ℝ) * (T + 2)) with hlg`. Establish `hx12 : (12 : ℝ) ≤ (M : ℝ) * (T + 2)` using `by nlinarith`. Establish `hlg1 : 1 ≤ lg`.
+
+Rewrite using `[hlg, Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlg2 : Real.log ((M : ℝ) * (T + 3 + 2)) ≤ 2 * lg`. Establish `h1 : (M : ℝ) * (T + 3 + 2) ≤ ((M : ℝ) * (T + 2)) ^ 2` using `by nlinarith`.
+
+Establish `h2 : Real.log (((M : ℝ) * (T + 2)) ^ 2) = 2 * lg`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2]`.
+
+Conclude with `Real.log_le_log (by nlinarith) h1`. Establish `hNb : 8 * (N + 1) ≤ 8 * (4 * C0 + 1) * (T + 1) * lg`. Establish `h1 : C0 * (T + 3 + 1) * Real.log ((M : ℝ) * (T + 3 + 2)) ≤ C0 * (2 * (T + 1)) * (2 * lg)`. Apply `mul_le_mul _ hlg2 _ (by positivity)` to reduce the goal to its premises. Apply `mul_le_mul_of_nonneg_left (by linarith) hC0.le` to reduce the goal to its premises.
+
+Apply `Real.log_nonneg` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : 1 ≤ (T + 1) * lg` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨σ₁, hσa, hσb, hσ⟩` from `ex_pick (Z.image Complex.re) (1 - κ) (1 - 3 * κ / 4) (by linarith)`.
+
+Take `⟨T', hTa, hTb, hT'⟩` from `ex_pick (Z.image (fun ρ => |ρ.im|)) T (T + 1) (by linarith)`. Establish `hc1 : (((Z.image Complex.re).card : ℕ) : ℝ) ≤ N`. Rewrite using `[hN]`. Conclude with `Nat.cast_le.mpr Finset.card_image_le`. Establish `hc2 : (((Z.image (fun ρ : ℂ => |ρ.im|)).card : ℕ) : ℝ) ≤ N`.
+
+Rewrite using `[hN]`. Conclude with `Nat.cast_le.mpr Finset.card_image_le`. Establish `hδpos : 0 < κ / (8 * (N + 1))` using `by positivity`. Establish `hg1 : κ / (8 * (N + 1)) ≤ (1 - 3 * κ / 4 - (1 - κ)) / (2 * (((Z.image Complex.re).card : ℝ) + 1))`. Establish `e : (1 - 3 * κ / 4 - (1 - κ)) = κ / 4` using `by ring`.
+
+Rewrite using `[e, div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg2 : κ / (8 * (N + 1)) ≤ (T + 1 - T) / (2 * (((Z.image (fun ρ : ℂ => |ρ.im|)).card : ℝ) + 1))`. Establish `e : (T + 1 - T) = 1` using `by ring`. Rewrite using `[e, div_le_div_iff₀ (by positivity) (by positivity)]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hδle : κ / (8 * (N + 1)) ≤ 1 / 20`. Rewrite using `[div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨σ₁, T', κ / (8 * (N + 1)), hσa, hσb, hTa, hTb, hδpos, hδle, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `div_le_div_of_nonneg_left hκ.le (by positivity) hNb`. Introduce `ρ h0 hre him`. Establish `hmem : ρ ∈ Z` using `(hZ ρ).2 ⟨h0, hre, him⟩`. Conclude with `hg1.trans (hσ _ (Finset.mem_image_of_mem _ hmem))`. Introduce `ρ h0 hre`.
+
+Distinguish the cases in `him : |ρ.im| ≤ T + 3`. Establish `hmem : ρ ∈ Z` using `(hZ ρ).2 ⟨h0, hre, him⟩`. Use `hT' _ (Finset.mem_image_of_mem (fun ρ : ℂ => |ρ.im|) hmem)` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`. Conclude with `hg2.trans this`.
+
+Use `push Not at him`. Establish `: (2 : ℝ) ≤ |ρ.im| - T'` using `by linarith`. Establish `h3` using `le_abs_self (|ρ.im| - T')`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ex_choose : ∃ C : ℝ, 0 < C ∧ ∀ κ : ℝ, 0 < κ → κ ≤ 1 / 20 →
     ∀ (M : ℕ) [NeZero M] (χ : DirichletCharacter ℂ M) (T : ℝ), 3 ≤ M → 2 ≤ T →
     ∃ σ₁ T' δ : ℝ, 1 - κ ≤ σ₁ ∧ σ₁ ≤ 1 - 3 * κ / 4 ∧ T ≤ T' ∧ T' ≤ T + 1 ∧ 0 < δ ∧ δ ≤ 1 / 20 ∧

@@ -11,6 +11,21 @@ namespace PositivityTheory.JMult1
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `h`. Take `⟨μ, hμ⟩` from `exists_haar_GA (E := E) (a := a)`. Establish `: μ.IsMulRightInvariant` using `GlobalTheory.CovolGL.isMulRightInvariant E a μ`. Use `set hL := memL2_normalised_cusp_form hB μ hπ`. Use `set u := toL2ₗ μ π.V hL`.
+
+Set `D : π.V → (dualSubC π).V` to `fun ψ => ⟨dualMapC E a ψ.1, ⟨ψ.1, ψ.2, rfl⟩⟩`. Set `J : π.V → π.V` to `fun ψ => T (D ψ)`. Establish `Jsurj : ∀ φ, ∃ ψ, J ψ = φ` using `fun φ => by`. Take `⟨⟨_, ψ, hψ, rfl⟩, e⟩` from `T.surjective φ`. Conclude with `⟨⟨ψ, hψ⟩, e⟩`.
+
+Establish `Jzero : ∀ ψ, J ψ = 0 → ψ = 0` using `fun ψ e => by`. Establish `h1 : D ψ = 0` using `T.injective (e.trans (map_zero T).symm)`. Establish `h2 : dualMapC E a ψ.1 = 0` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext (dualMapC_injective (h2.trans (map_zero _).symm))`. Establish `Jadd : ∀ ψ ψ', J (ψ + ψ') = J ψ + J ψ'` using `fun ψ ψ' => (congrArg T (show D (ψ + ψ') = D ψ + D ψ' from Subtype.ext (map_add (dualMapC E a) ψ.1 ψ'.1))).trans (map_add T _ _)`.
+
+Establish `Jsmul : ∀ (c : ℂ) ψ, J (c • ψ) = (starRingEnd ℂ c) • J ψ` using `fun c ψ => (congrArg T (show D (c • ψ) = (starRingEnd ℂ c) • D ψ from Subtype.ext (LinearMap.map_smulₛₗ (dualMapC E a) c ψ.1))).trans (map_smul T _ _)`. Establish `Jop : ∀ o ψ, J (π.op (invTOp o) ψ) = π.op o (J ψ)` using `fun o ψ => (congrArg T (show D (π.op (invTOp o) ψ) = (dualSubC π).op o (D ψ) from Subtype.ext (act_dualMapC o ψ.1).symm)).trans (hT o _)`. Establish `ufin : ∀ (k : GL (Fin a) (Af E)) (x : π.V), u (π.op (.fin k) x) = R (latticeGL E a) μ (finGL E a k) (u x)` using `fun k x => (R_toL2ₗ hL x (π.stable (.fin k) x.1 x.2)).symm`. Establish `ucpt : ∀ (k : Kinf E a) (x : π.V), u (π.op (.cpt k) x) = R (latticeGL E a) μ (infGL E a (Unitary.toUnits k)) (u x)` using `fun k x => (R_toL2ₗ hL x (π.stable (.cpt k) x.1 x.2)).symm`. Establish `hinj : Function.Injective u` using `toL2ₗ_injective hL continuous_of_mem`.
+
+Set `B : π.V →ₗ[ℂ] π.V →ₗ[ℂ] ℂ` to `LinearMap.mk₂ ℂ (fun φ ψ => ⟪u (J ψ), u φ⟫_ℂ) (fun φ φ' ψ => by simp only [map_add, inner_add_right]) (fun c φ ψ => by simp only [map_smul, inner_smul_right, smul_eq_mul]) (fun φ ψ ψ' => by simp only [Jadd, map_add, inner_add_left]) (fun c φ ψ => by simp only [Jsmul, map_smul, in …`. Establish `hB' : ∀ φ ψ, B φ ψ = ⟪u (J ψ), u φ⟫_ℂ` using `fun _ _ => rfl`. Establish `hself : ∀ x : π.V, ⟪u x, u x⟫_ℂ = 0 → x = 0` using `fun x hx => hinj ((inner_self_eq_zero.1 hx).trans (map_zero u).symm)`. Use `⟨B, fun φ hφ => ?_, fun ψ hψ => Jzero ψ (hself (J ψ) ((hB' _ _).symm.trans (hψ (J ψ)))), fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `Jsurj φ`.
+
+Conclude with `hself _ ((hB' _ _).symm.trans (hφ ψ))`. Rewrite using `[hB', hB', Jop, ufin, ufin]`. Conclude with `inner_R μ _ _ _`. Rewrite using `[hB', hB', Jop, ucpt, ucpt]`. Conclude with `inner_R μ _ _ _`.
+
+Rewrite using `[hB', hB', Jop, add_comm]`. Conclude with `inner_lie_skew' hB μ hπ X (J ψ) φ`.
+-/
 theorem paired_of_dualSubC_iso (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hπ : IsNormalised π)
     (h : (dualSubC π).Iso π) : Paired π π invTOp := by
   obtain ⟨T, hT⟩ := h
@@ -61,6 +76,9 @@ theorem paired_of_dualSubC_iso (hB : GlobalTheory.Published.CuspFormsBoundedGL) 
   · rw [hB', hB', Jop, add_comm]
     exact inner_lie_skew' hB μ hπ X (J ψ) φ
 
+/- English proof (translation)
+Use `Quotient.exact (hJ.strong_multiplicity_one ha (CG.mk (dualSubC π)) (CG.mk π) ?_)` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.cuspidal_satake_almost_all π] with w hw`. Take `⟨B, hw⟩` from `hw`. Conclude with `⟨B, PositivityTheory.PRW.SatakeDual.hasSat_dual hB hπ (dualSubC π) (fun ψ => ⟨fun ⟨φ, hφ, e⟩ => ⟨φ, hφ, e ▸ rfl⟩, fun ⟨φ, hφ, e⟩ => ⟨φ, hφ, Subtype.ext e.symm⟩⟩) w B hw, hw⟩`.
+-/
 theorem dualSubC_iso (hJ : GlobalTheory.Published.JacquetShalikaRigidity)
     (hB : GlobalTheory.Published.CuspFormsBoundedGL) (ha : 1 ≤ a) {π : CuspSub E a} (hπ : IsNormalised π) : (dualSubC π).Iso π := by
   refine Quotient.exact (hJ.strong_multiplicity_one ha (CG.mk (dualSubC π)) (CG.mk π) ?_)
@@ -69,6 +87,9 @@ theorem dualSubC_iso (hJ : GlobalTheory.Published.JacquetShalikaRigidity)
   exact ⟨B, PositivityTheory.PRW.SatakeDual.hasSat_dual hB hπ (dualSubC π) (fun ψ => ⟨fun ⟨φ, hφ, e⟩ => ⟨φ, hφ, e ▸ rfl⟩,
     fun ⟨φ, hφ, e⟩ => ⟨φ, hφ, Subtype.ext e.symm⟩⟩) w B hw, hw⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ n π`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `GlobalTheory.Published.InvTransposeModel.rank_zero π`. Take `⟨π₀, χ, h0, rfl⟩` from `GlobalTheory.T.cuspidal_eq_twist_normalised π`. Conclude with `GlobalTheory.Published.InvTransposeModel.twist (paired_of_dualSubC_iso hB h0 (dualSubC_iso hJ hB hn h0)) χ`.
+-/
 theorem gelfandKazhdanDual_of_rigidity (hJ : GlobalTheory.Published.JacquetShalikaRigidity)
     (hB : GlobalTheory.Published.CuspFormsBoundedGL) : GlobalTheory.Published.GelfandKazhdanDual := by
   intro E _ _ _ n π

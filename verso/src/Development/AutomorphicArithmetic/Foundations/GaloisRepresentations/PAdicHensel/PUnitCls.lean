@@ -4,6 +4,27 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `hScale hNorm hSq p D hD`. Use `choose sc hsc0 hsc using hScale p`. Use `choose m κ hκ using hSq`. Establish `hfin : {v : HeightOneSpectrum ℤ | (2 * D : ℤ) ∈ v.asIdeal}.Finite`. Establish `h0 : Ideal.span {(2 * D : ℤ)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Use linear arithmetic over natural numbers and integers. Use `(Ideal.finite_factors h0).subset ?_` and prove the remaining obligations. Introduce `v hv`. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+
+Use `haveI : Finite {v : HeightOneSpectrum ℤ | (2 * D : ℤ) ∈ v.asIdeal} := hfin.to_subtype`. Use `⟨(v : {v : HeightOneSpectrum ℤ | (2 * D : ℤ) ∈ v.asIdeal}) → Option (Fin (m v.1)), inferInstance, fun t v => if h : (v.1 : HeightOneSpectrum ℤ).asIdeal ≠ Ideal.span {(p : ℤ)} then some (κ v.1 (AfP.eval (⟨v.1, h⟩ : AwayP p) (t : AfP p) / algebraMap ℚ (HeightOneSpectrum.adicComplet …` and prove the remaining obligations. Introduce `t t' hk`. Use `⟨sc t' / sc t, div_pos (hsc0 t') (hsc0 t), fun v => ?_⟩` and prove the remaining obligations. Establish `hunit : ∀ r : (AfP p)ˣ, AfP.eval v (r : AfP p) ≠ 0`.
+
+Introduce `r`. Establish `h1 : AfP.eval v (r : AfP p) * AfP.eval v ((r⁻¹ : (AfP p)ˣ) : AfP p) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one h1`. Establish `hsne : ∀ r : (AfP p)ˣ, algebraMap ℚ (HeightOneSpectrum.adicCompletion ℚ v.1) (sc r) ≠ 0` using `fun r => (map_ne_zero _).2 (hsc0 r).ne'`.
+
+Establish `hval : ∀ r : (AfP p)ˣ, Valued.v (AfP.eval v (r : AfP p) / algebraMap ℚ (HeightOneSpectrum.adicCompletion ℚ v.1) (sc r)) = 1`. Introduce `r`. Rewrite using `[map_div₀, hsc r v, div_self]`. Conclude with `(Valuation.ne_zero_iff _).2 (hsne r)`. It suffices to establish `hs : ∃ x y : HeightOneSpectrum.adicCompletion ℚ v.1, AfP.eval v (t' : AfP p) / algebraMap ℚ _ (sc t') = AfP.eval v (t : AfP p) / algebraMap ℚ _ (sc t) * (x ^ 2 - (D : _) * y ^ 2) by`.
+
+Take `⟨x, y, hxy⟩` from `hs`. Use `⟨x, y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`. Establish `e` using `hsne t`. Establish `e'` using `hsne t'`.
+
+Rewrite `hxy` using `[div_eq_iff e']`. Rewrite using `[hxy]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h2 : (2 * D : ℤ) ∈ v.1.asIdeal`. Establish `hk'` using `congrFun hk ⟨v.1, h2⟩ dsimp only at hk'`.
+
+Rewrite `hk'` using `[dif_pos v.2, dif_pos v.2]`. Establish `hk''` using `Option.some.inj hk'`. Take `⟨z, hz⟩` from `hκ v.1 _ _ (hval t) (hval t') hk''`. Use `⟨z, 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hne : AfP.eval v (t : AfP p) / algebraMap ℚ (HeightOneSpectrum.adicCompletion ℚ v.1) (sc t) ≠ 0` using `div_ne_zero (hunit t) (hsne t)`. Establish `hv1 : Valued.v ((AfP.eval v (t' : AfP p) / algebraMap ℚ (HeightOneSpectrum.adicCompletion ℚ v.1) (sc t')) / (AfP.eval v (t : AfP p) / algebraMap ℚ (HeightOneSpectrum.adicCompletion ℚ v.1) (sc t))) = 1`. Rewrite using `[map_div₀, hval t, hval t', div_one]`. Take `⟨x, y, hxy⟩` from `hNorm v.1 D h2 _ hv1`.
+
+Use `⟨x, y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hxy, mul_div_assoc', mul_div_cancel_left₀ _ hne]`.
+-/
 theorem UpperTheory.Gal.G1.pUnitCls :
     Scale → ZUnitNorm → ZSqFin → UnitCls := by
   intro hScale hNorm hSq p D hD

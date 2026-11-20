@@ -23,6 +23,9 @@ def canφ (k : ℕ) : Fin 8 → ((A ⊗ A).left ⟶ A.left) :=
 
 def canε (k : ℕ) : Fin 8 → ℤ := ![1, -1, -1, 1, -(k : ℤ) ^ 2, (k : ℤ) ^ 2, (k : ℤ) ^ 2, -(k : ℤ) ^ 2]
 
+/- English proof (translation)
+Simplify using `[canε, Fin.sum_univ_succ]`.
+-/
 example (k : ℕ) : ∑ i, canε k i = 0 := by simp [canε, Fin.sum_univ_succ]
 
 def IsCanIso (L : LB A.left) (k : ℕ) (u : LB.Gen (LB.LinComb L (canφ A k) (canε k))) : Prop :=

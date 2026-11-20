@@ -23,6 +23,9 @@ noncomputable def prodComplex (M N : CochainComplex (ModuleCat.{u} k) ℕ) :
 
 variable (M N : CochainComplex (ModuleCat.{u} k) ℕ)
 
+/- English proof (translation)
+Unfold `prodComplex`. Conclude with `CochainComplex.of_d (V := ModuleCat.{u} k) (fun n => ModuleCat.of k (M.X n × N.X n)) (fun n => ModuleCat.ofHom ((M.d n (n + 1)).hom.prodMap (N.d n (n + 1)).hom)) n`.
+-/
 theorem prodComplex_d (n : ℕ) :
     (prodComplex M N).d n (n + 1) =
       ModuleCat.ofHom ((M.d n (n + 1)).hom.prodMap (N.d n (n + 1)).hom) := by
@@ -30,12 +33,18 @@ theorem prodComplex_d (n : ℕ) :
   exact CochainComplex.of_d (V := ModuleCat.{u} k) (fun n => ModuleCat.of k (M.X n × N.X n))
     (fun n => ModuleCat.ofHom ((M.d n (n + 1)).hom.prodMap (N.d n (n + 1)).hom)) n
 
+/- English proof (translation)
+Rewrite using `[prodComplex_d]`. Both sides reduce to the same expression.
+-/
 theorem prodComplex_d_hom_apply (n : ℕ) (x : (prodComplex M N).X n) :
     ((prodComplex M N).d n (n + 1)).hom x =
       (((M.d n (n + 1)).hom x.1, (N.d n (n + 1)).hom x.2) : M.X (n + 1) × N.X (n + 1)) := by
   rw [prodComplex_d]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = j`. Substitute `h` using the available equality. Conclude with `prodComplex_d_hom_apply M N i x`. Rewrite using `[(prodComplex M N).shape i j h, M.shape i j h, N.shape i j h]`. Both sides reduce to the same expression.
+-/
 theorem prodComplex_d_hom_apply' (i j : ℕ) (x : (prodComplex M N).X i) :
     ((prodComplex M N).d i j).hom x =
       (((M.d i j).hom x.1, (N.d i j).hom x.2) : M.X j × N.X j) := by
@@ -67,11 +76,17 @@ noncomputable def prodLift {P : CochainComplex (ModuleCat.{u} k) ℕ} (f : P ⟶
         (hom_apply_hom_apply_eq_of_comp_eq (g.comm n (n + 1)) x))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl) @[reassoc (attr := simp)]`.
+-/
 theorem prodLift_prodFst {P : CochainComplex (ModuleCat.{u} k) ℕ} (f : P ⟶ M) (g : P ⟶ N) :
     prodLift f g ≫ prodFst M N = f :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)`.
+-/
 theorem prodLift_prodSnd {P : CochainComplex (ModuleCat.{u} k) ℕ} (f : P ⟶ M) (g : P ⟶ N) :
     prodLift f g ≫ prodSnd M N = g :=
   HomologicalComplex.hom_ext _ _ fun _ => ModuleCat.hom_ext (LinearMap.ext fun _ => rfl)
@@ -93,6 +108,9 @@ noncomputable def degZeroX (E : ModuleCat.{u} k) : ℕ → ModuleCat.{u} k
 noncomputable def degZeroComplex (E : ModuleCat.{u} k) : CochainComplex (ModuleCat.{u} k) ℕ :=
   CochainComplex.of (degZeroX E) (fun _ => 0) fun _ => Limits.zero_comp
 
+/- English proof (translation)
+Distinguish the cases in `h : i + 1 = j`. Substitute `h` using the available equality. Conclude with `CochainComplex.of_d (V := ModuleCat.{u} k) (degZeroX E) (fun _ => 0) i`. Conclude with `(degZeroComplex E).shape i j h`.
+-/
 theorem degZeroComplex_d (E : ModuleCat.{u} k) (i j : ℕ) : (degZeroComplex E).d i j = 0 := by
   by_cases h : i + 1 = j
   · subst h
@@ -113,10 +131,16 @@ noncomputable def zeroCochain (B : Rep.{u} k F) [IsDiscreteRep B] : B →ₗ[k] 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_zeroCochain (B : Rep.{u} k F) [IsDiscreteRep B] (m : B) (σ : Fin 0 → F) :
     cochainOf B (zeroCochain B m) σ = m :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[cochainOf_d]`. Simplify using `[inhomogeneousCochains.d_hom_apply, cochainOf_zeroCochain, sub_eq_add_neg]`.
+-/
 theorem cochainOf_d_zeroCochain (B : Rep.{u} k F) [IsDiscreteRep B] (m : B) (σ : Fin 1 → F) :
     cochainOf B (((cochainsComplex B).d 0 1).hom (zeroCochain B m)) σ = B.ρ (σ 0) m - m := by
   rw [cochainOf_d]
@@ -124,6 +148,9 @@ theorem cochainOf_d_zeroCochain (B : Rep.{u} k F) [IsDiscreteRep B] (m : B) (σ 
 
 variable [Fintype F]
 
+/- English proof (translation)
+Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_d_zeroCochain, Representation.self_norm_apply, sub_self]`. Both sides reduce to the same expression.
+-/
 theorem d_zeroCochain_norm (B : Rep.{u} k F) [IsDiscreteRep B] (m : B) :
     ((cochainsComplex B).d 0 1).hom (zeroCochain B (B.ρ.norm m)) = 0 := by
   apply cochainOf_injective
@@ -151,6 +178,9 @@ noncomputable def normCochainsF : ∀ n, (degZeroComplex (ModuleCat.of k (∀ w,
       (zeroCochain (Aᵣ w)).comp ((Aᵣ w).ρ.norm.comp (LinearMap.proj w)))
   | _ + 1 => 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem normCochainsF_zero_apply (e : (degZeroComplex (ModuleCat.of k (∀ w, Aᵣ w))).X 0)
     (w : κ) :
     (normCochainsF Aᵣ 0).hom e w = zeroCochain (Aᵣ w) ((Aᵣ w).ρ.norm ((show ∀ w, Aᵣ w from e) w)) :=

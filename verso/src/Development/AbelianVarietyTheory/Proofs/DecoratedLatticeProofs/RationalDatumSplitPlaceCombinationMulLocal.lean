@@ -18,6 +18,33 @@ namespace GlobalTheory.LocMod
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ hψ hdense S T Y Y' _ _ _ _ FS FT P PP e hPP hIdemAt hE hE' hstd ΛS ΛT hS hT hΛS hΛT Ξ Ξk hΞk c hc f₀ f hf₀ hvac hf`. Establish `hL : stdHom S T = latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) (fun _ => True)`. Rewrite using `[hΛS, hΛT]`. Establish `hf₁` using `hf`. Take `⟨Φ, hΦSB, hΦrat, -⟩` from `hf₁`.
+
+Establish `he1 : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hE`. Establish `he2 : (e + p.e) * (e + p.e) = e + p.e` using `GlobalTheory.PlaceDatum.idemSum_mul_self hE'`. Establish `hpe2 : p.e * p.e = p.e` using `p.split.1`. Establish `horth : e * p.e = 0`. Establish `h2 : incA D 2 * (e * p.e) = 0`.
+
+Rewrite using `[map_ofNat]`. Take the linear combination `he2 - he1 - hpe2`. Establish `hu : incA D (1 / 2) * incA D 2 = 1`. Rewrite using `[← map_mul]`. Evaluate the numerical expressions.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hstabp : ∀ u ∈ stdHom S T, u.map (fun a => p.e * a) ∈ stdHom S T` using `fun u hu => by`. Use `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ p.e (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← map_mul, hpe2])) u hu` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `hsb` using `GlobalTheory.LocMod.Place.isSBHalf_tensorAt D k p S T Y Y' FS FT e horth hstd hstabp Φ hΦSB Ξk hΞk`. Establish `hpi1 : p.π p.e = 1`. Establish `h` using `p.ι_π 1`. Rewrite `h` using `[map_one, mul_one]`.
+
+Rewrite using `[← h, p.π_ι]`. Establish `hπe : p.π e = 0`. Use `congrArg p.π horth` as an intermediate fact. Rewrite `this` using `[map_mul, hpi1, mul_one, map_zero]`. Then use the resulting hypothesis. Establish `hud : ∀ t : WO S T, p.up FS FT (p.down FS FT t) = t.map (fun x => p.e * x)` using `fun t => by`.
+
+Unfold `Place.up Place.down`. Establish `hM : FT.β * (FT.γ * (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π * FS.β) * FS.γ = (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, FT.βγ, Matrix.one_mul, Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Rewrite using `[hM]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, p.ι_π]`. Establish `hrat : ∀ γ, p.tensorAt FS FT Φ Ξk (γ.map fun a => (e + p.e) * incA D a) = Ξ γ * Ξk (FT.γ * γ.map p.pr * FS.β)` using `fun γ => by`. Establish `hd : p.down FS FT (γ.map fun a => (e + p.e) * incA D a) = FT.γ * γ.map p.pr * FS.β`. Unfold `Place.down`. Use `congr 2`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, map_mul, map_add, hπe, hpi1, zero_add, one_mul, Place.pr]`. Establish `hs : ((γ.map fun a => (e + p.e) * incA D a : WO S T) - p.up FS FT (p.down FS FT (γ.map fun a => (e + p.e) * incA D a)) : WO S T) = (γ.map fun a => e * incA D a : WO S T)`. Rewrite using `[hud]`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.sub_apply, Matrix.map_apply]`. Establish `h2 : p.e * e = 0` using `by rw [mul_comm]; exact horth`. Take the linear combination `(-(incA D (γ i j))) * h2 + (-(incA D (γ i j))) * hpe2`. Simplify using `only [Place.tensorAt]`. Rewrite using `[hs, hd, hΦrat]`.
+
+Establish `hvac' : IsLatVac (heisO ψ S T) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) f₀`. Rewrite using `[← hL]`. Conclude with `hvac`. Establish `hex` using `(GlobalTheory.PlaceModelSum.placeModelExistsSum D ψ hψ S T ΛS ΛT hS hT _ (e + p.e) hE' f₀ hf₀ hvac').1`. Establish `hsb' : IsSBHalf (e + p.e) (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True) (p.tensorAt FS FT Φ Ξk)`.
+
+Rewrite using `[← hL]`. Conclude with `hsb`. Take `⟨f', hf'⟩` from `GlobalTheory.PlaceVec.exists_isThetaAt hψ hS hT he2 (GlobalTheory.PlaceDatum.infPart_idemSum hE') hex hsb'`. Establish `hR : IsRatDatum ψ S T (e + p.e) (fun γ => Ξ γ * Ξk (FT.γ * γ.map p.pr * FS.β)) f₀ f'` using `⟨p.tensorAt FS FT Φ Ξk, hsb, hrat, by rw [hL]; exact hf'⟩`. Establish `key` using `GlobalTheory.T.rationalDatum_theta_factors_placeByPlace D k p ψ hψ hdense S T Y Y' FS FT P PP e hPP hIdemAt hE hE' hstd Ξ _ Ξk hΞk (fun _ => rfl) c hc f₀ f f' hf₀ hvac hf hR`.
+
+Rewrite using `[← key]`. Conclude with `hR`.
+-/
 theorem ratDatum_comb_place : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : Place D k) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → DenseRange p.pr → ∀ (S T : HSp D) (Y Y' : Type) [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (FS : Frame k S.rank Y') (FT : Frame k T.rank Y) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (PP : Formalism.L2.DIV.Pl D.host.E) (e : AE D), PP ∉ P → Formalism.L2.NTheta.IsIdemAt p.e PP → IsIdemSum e P → IsIdemSum (e + p.e) (@insert _ _ (@Finset.instInsert _ (Classical.decEq _)) PP P) → (∀ x : Matrix Y Y' k, (∀ r q, x r q ∈ 𝒪[k]) ↔ p.up FS FT x ∈ stdHom S T) → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → (ΛS : Set (Fin S.rank → D.host.E)) = intVec D S.rank → (ΛT : Set (Fin T.rank → D.host.E)) = intVec D T.rank → ∀ (Ξ : Matrix (Fin T.rank) (Fin S.rank) D.host.E → ℂ) (Ξk : Matrix Y Y' k → ℂ), Ξk ∈ SB (Matrix Y Y' k) → ∀ c, p.IsCombAt ψ FS FT c Ξk → ∀ f₀ f, IsThetaFunO ψ S T f₀ → IsLatVac (heisO ψ S T) (stdHom S T) f₀ → IsRatDatum ψ S T e Ξ f₀ f → IsRatDatum ψ S T (e + p.e) (fun γ => Ξ γ * Ξk (FT.γ * γ.map p.pr * FS.β)) f₀ (comb ψ S T c f) := by
   intro D k _ _ _ _ p ψ hψ hdense S T Y Y' _ _ _ _ FS FT P PP e hPP hIdemAt hE hE' hstd ΛS ΛT hS hT hΛS hΛT Ξ Ξk hΞk c hc
     f₀ f hf₀ hvac hf

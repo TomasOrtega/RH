@@ -13,6 +13,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 noncomputable section
 namespace GlobalTheory.PosOne.MidVertex
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hc ψ hψc hψ1 ν hsd μ₁ μ₂ hk₁ hk₂ m₁ _ G₁ _ m₂ _ G₂ _ A _ _ σ hσ T hT F ρ₁ hsrc`. Use `haveI : ν.IsAddHaarMeasure := hsd.1`. Establish `h1 : 1 ≤ ρ` using `by omega`. Establish `h2 : ρ ≤ c` using `by omega`. Establish `hR` using `fun Ψ => GlobalTheory.T.exists_linear_isQuotInt_tInt_alt k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc`.
+
+Use `choose R hQ hN using hR`. Establish `uniq : ∀ (f : GL (n₂ ⊕ Fin c) k → ℂ) (z z' : ℂ), IsQuotInt ν m₂ G₂ ρ f z → IsQuotInt ν m₂ G₂ ρ f z' → z = z'` using `fun f z z' => (GlobalTheory.QuotInt.quotInt_unique_exists k n₂ c ρ h1 h2 ν m₂ G₂ f).1 z z'`. Establish `lin` using `fun f f' a z z' => GlobalTheory.RootEx.QuotLinear.isQuotInt_linear k n₂ c ρ h1 h2 ν m₂ G₂ f f' a z z'`. Establish `key : ∀ (a : ℂ) Ψ Ψ' Φ, R (a • Ψ + Ψ') Φ = a * R Ψ Φ + R Ψ' Φ`. Introduce `a Ψ Ψ' Φ`.
+
+Establish `h` using `lin _ _ a _ _ (hQ Ψ Φ) (hQ Ψ' Φ)`. Establish `hf : (fun h => a * tInt ψ ν μ₂ ρ σ (T Ψ) F Φ.1 h + tInt ψ ν μ₂ ρ σ (T Ψ') F Φ.1 h) = tInt ψ ν μ₂ ρ σ (T (a • Ψ + Ψ')) F Φ.1`. Use function extensionality and compare the values at `h`. Simplify using `only [tInt, app, map_add, map_smul]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Rewrite `h` using `[hf]`. Conclude with `uniq _ _ _ (hQ _ Φ) h`. Establish `hz : ∀ Φ, R 0 Φ = 0`. Introduce `Φ`. Use `key 1 0 0 Φ` as an intermediate fact.
+
+Simplify using `only [one_smul, add_zero, one_mul] at this`. Take the linear combination `-this`. Set `b : SB (Matrix n₁ n₀ k) →ₗ[ℂ] SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k) →ₗ[ℂ] ℂ` to `{ toFun := R map_add' := fun Ψ Ψ' => by`. Use extensionality with `Φ`. Use `key 1 Ψ Ψ' Φ` as an intermediate fact.
+
+Simplify using `using this`. Use the proof step `map_smul' := fun a Ψ => by`. Use extensionality with `Φ`. Use `key a Ψ 0 Φ` as an intermediate fact. Simplify using `only [add_zero] at this`.
+
+Simplify using `[this, hz] }`. Use `⟨b, ⟨fun Ψ => hN Ψ, ?_⟩, fun Ψ Φ₂ => hQ Ψ Φ₂, fun Ψ Φ₂ => GlobalTheory.T.isQuotientInvariantIntegral_exchange_toPositionOne k n₂ n₁ c ρ h1 h2 ψ hψc hψ1 ν hsd μ₂ hk₂ m₂ G₂ A σ hσ (T Ψ) (hT.1 Ψ) F ρ₁ hsrc (R Ψ) (hQ Ψ) Φ₂⟩` and prove the remaining obligations. Introduce `g Ψ Ψ₁ v hΨ`. Use `show R Ψ₁ (ρ₁ (embX (c + 1) g) v) = _ * R Ψ v`. Use `set s : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 2) / 2 - ρ) : ℝ) : ℂ) with hs`.
+
+Establish `hexp : ((((c + 1 : ℕ) : ℝ) + 1) / 2 - (ρ : ℝ)) = ((c : ℝ) + 2) / 2 - ρ` using `by push_cast; ring`. Rewrite using `[hexp]`. Establish `hfun : tInt ψ ν μ₂ ρ σ (T Ψ₁) F (ρ₁ (embX (c + 1) g) v).1 = fun h => (s - 1) * tInt ψ ν μ₂ ρ σ (T Ψ) F v.1 h + tInt ψ ν μ₂ ρ σ (T Ψ) F v.1 h`. Use function extensionality and compare the values at `h`. Establish `hv : ((ρ₁ (embX (c + 1) g) v : SB _) : Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k → ℂ) = om μ₂ (embX (c + 1) g) 1 v.1` using `hsrc _ _`.
+
+Establish `hcomm : om μ₂ 1 h (om μ₂ (embX (c + 1) g) 1 v.1) = om μ₂ (embX (c + 1) g) 1 (om μ₂ 1 h v.1)`. Rewrite using `[← om_mul, ← om_mul, one_mul, mul_one, mul_one, one_mul]`. Establish `hΦ' : om μ₂ 1 h v.1 ∈ SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)` using `om_mem_SB μ₂ 1 h v.2`. Establish `hX` using `(GlobalTheory.RootEx.opE_SB_and_linear k n₂ n₁ c ρ ψ hψc ν).1 _ hΦ'`. Establish `hE'` using `(GlobalTheory.RootEx.opE_om_embX k n₂ n₁ c ρ h1 h2 ψ ν μ₂ (om μ₂ 1 h v.1)).2 g`.
+
+Establish `hX' : om μ₂ g 1 (opE ψ ν ρ (om μ₂ 1 h v.1)) ∈ SB (Matrix n₂ n₁ k)` using `om_mem_SB μ₂ g 1 hX`. Establish `hinv` using `hT.2 g Ψ Ψ₁ ⟨_, hX⟩ ⟨_, hX'⟩ hΨ rfl`. Simplify using `only [tInt]`. Rewrite using `[hv, hcomm, hE']`. Establish `e1 : ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 2) / 2 - ρ) : ℝ) : ℂ) • om μ₂ g 1 (opE ψ ν ρ (om μ₂ 1 h v.1)) = ((s • (⟨_, hX'⟩ : SB (Matrix n₂ n₁ k)) : SB _) : Matrix n₂ n₁ k → ℂ)`.
+
+Both sides reduce to the same expression. Establish `e2 : app (T Ψ) (opE ψ ν ρ (om μ₂ 1 h v.1)) = T Ψ ⟨_, hX⟩` using `GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe _ ⟨_, hX⟩`. Rewrite using `[e1, GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.app_coe, e2, map_smul, hinv]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `lin _ _ (s - 1) _ _ (hQ Ψ v) (hQ Ψ v)`. Rewrite `h` using `[← hfun]`. Rewrite using `[uniq _ _ _ (hQ Ψ₁ _) h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_bilPos_mid : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n₀ n₁ n₂ : Type) [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂] (c ρ : ℕ) (_ : c + 1 = 2 * ρ) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) (_ : IsSelfDual ψ ν) (μ₁ μ₂ : kˣ →* ℂˣ) (_ : IsOpen (μ₁.ker : Set kˣ)) (_ : IsOpen (μ₂.ker : Set kˣ)) (m₁ : Measure (GL n₁ k)) [m₁.IsHaarMeasure] (G₁ : Measure (GL (n₁ ⊕ Fin (c + 1)) k)) [G₁.IsHaarMeasure] (m₂ : Measure (GL n₂ k)) [m₂.IsHaarMeasure] (G₂ : Measure (GL (n₂ ⊕ Fin c) k)) [G₂.IsHaarMeasure] (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n₂ ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (T : SB (Matrix n₁ n₀ k) →ₗ[ℂ] SB (Matrix n₂ n₁ k) →ₗ[ℂ] A →ₗ[ℂ] ℂ) (_ : TriPos ψ μ₁ μ₂ ρ σ T) (F : A) (ρ₁ : Representation ℂ (GL (n₁ ⊕ Fin (c + 1)) k) (SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k))) (_ : IsSrc μ₂ ρ₁), ∃ b : SB (Matrix n₁ n₀ k) →ₗ[ℂ] SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k) →ₗ[ℂ] ℂ, BilPos ψ μ₁ ρ ρ₁ b ∧ (∀ Ψ (Φ₂ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)), IsQuotInt ν m₂ G₂ ρ (tInt ψ ν μ₂ ρ σ (T Ψ) F Φ₂.1) (b Ψ Φ₂)) ∧ ∀ Ψ (Φ₂ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)), IsQuotInt ν m₂ G₂ 1 (tIntOne ψ ν μ₂ ρ σ (T Ψ) F Φ₂.1) (toOne ν ρ₁ ρ (b Ψ) Φ₂) := by
   intro k _ _ _ _ _ _ n₀ n₁ n₂ _ _ _ _ _ _ c ρ hc ψ hψc hψ1 ν hsd μ₁ μ₂ hk₁ hk₂ m₁ _ G₁ _ m₂ _ G₂ _ A _ _ σ hσ T hT F ρ₁ hsrc
   haveI : ν.IsAddHaarMeasure := hsd.1

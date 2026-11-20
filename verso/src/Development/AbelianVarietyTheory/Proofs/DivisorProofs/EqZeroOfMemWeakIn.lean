@@ -17,32 +17,60 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {U : Set V} {α :
 
 def IsTest (U : Set V) (α : V → ℂ) : Prop := ContDiff ℝ ∞ α ∧ HasCompactSupport α ∧ tsupport α ⊆ U
 
+/- English proof (translation)
+The claim follows from `continuous_of_tsupport fun x hx => h.1.continuous.continuousAt.mul (hG.continuousAt (hU.mem_nhds (h.2.2 (tsupport_mul_subset_left hx))))`.
+-/
 theorem IsTest.continuous_mul (hU : IsOpen U) (h : IsTest U α) {G : V → ℂ} (hG : ContinuousOn G U) :
     Continuous fun x => α x * G x :=
   continuous_of_tsupport fun x hx => h.1.continuous.continuousAt.mul
     (hG.continuousAt (hU.mem_nhds (h.2.2 (tsupport_mul_subset_left hx))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.add h'.1, h.2.1.add h'.2.1, (tsupport_add α β).trans (Set.union_subset h.2.2 h'.2.2)⟩`.
+-/
 theorem IsTest.add {β : V → ℂ} (h : IsTest U α) (h' : IsTest U β) : IsTest U (α + β) :=
   ⟨h.1.add h'.1, h.2.1.add h'.2.1, (tsupport_add α β).trans (Set.union_subset h.2.2 h'.2.2)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.mul hβ, h.2.1.mul_right, tsupport_mul_subset_left.trans h.2.2⟩`.
+-/
 theorem IsTest.mul (h : IsTest U α) {β : V → ℂ} (hβ : ContDiff ℝ ∞ β) : IsTest U fun x => α x * β x :=
   ⟨h.1.mul hβ, h.2.1.mul_right, tsupport_mul_subset_left.trans h.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(h.1.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const, h.2.1.fderiv_apply ℝ v, (tsupport_fderiv_apply_subset ℝ v).trans h.2.2⟩`.
+-/
 theorem IsTest.fderiv (h : IsTest U α) (v : V) : IsTest U fun x => fderiv ℝ α x v :=
   ⟨(h.1.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const, h.2.1.fderiv_apply ℝ v,
     (tsupport_fderiv_apply_subset ℝ v).trans h.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨contDiff_const, HasCompactSupport.zero, by simp⟩`.
+-/
 theorem isTest_zero : IsTest U (0 : V → ℂ) := ⟨contDiff_const, HasCompactSupport.zero, by simp⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction f (IsTest U) (fun _ _ => IsTest.add) isTest_zero fun i _ => h i`.
+-/
 theorem isTest_sum {ι : Type} (s : Finset ι) {f : ι → V → ℂ} (h : ∀ i, IsTest U (f i)) : IsTest U (∑ i ∈ s, f i) :=
   Finset.sum_induction f (IsTest U) (fun _ _ => IsTest.add) isTest_zero fun i _ => h i
 
 variable [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (ν : Measure V) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+The claim follows from `(h.continuous_mul hU hG).integrable_of_hasCompactSupport h.2.1.mul_right`.
+-/
 theorem IsTest.integrable_mul (hU : IsOpen U) (h : IsTest U α) {G : V → ℂ} (hG : ContinuousOn G U) :
     Integrable (fun x => α x * G x) ν :=
   (h.continuous_mul hU hG).integrable_of_hasCompactSupport h.2.1.mul_right
 
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ V`. Set `c : Fin (Module.finrank ℝ V) → V → ℂ` to `fun i x => α x * (b.repr (L x) i : ℝ)`. Establish `hc : ∀ i, IsTest U (c i)` using `fun i => h.mul (Complex.ofRealCLM.contDiff.comp ((LinearMap.toContinuousLinearMap (b.coord i)).contDiff.comp L.contDiff))`. Use `⟨∑ i, fun x => _root_.fderiv ℝ (c i) x (b i) * (-1), isTest_sum _ fun i => ((hc i).fderiv _).mul contDiff_const, fun G hG => ?_⟩` and prove the remaining obligations. Establish `hG' : ∀ v, ContinuousOn (fun x => _root_.fderiv ℝ G x v) U` using `fun v => (hG.continuousOn_fderiv_of_isOpen hU (by simp)).clm_apply continuousOn_const`.
+
+Establish `e : ∀ x, α x * _root_.fderiv ℝ G x (L x) = ∑ i, c i x * _root_.fderiv ℝ G x (b i)` using `fun x => by conv_lhs => rw [← b.sum_repr (L x)]`. Simplify using `only [map_sum, map_smul, Finset.mul_sum, c, Complex.real_smul, mul_assoc]`. Simplify using `only [e, Finset.sum_apply, Finset.sum_mul]`. Rewrite using `[integral_finset_sum _ fun i _ => (hc i).integrable_mul ν hU (hG' _), integral_finset_sum _ fun i _ => (((hc i).fderiv _).mul contDiff_const).integrable_mul ν hU hG.continuousOn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable (((hc i).fderiv _).integrable_mul ν hU hG.continuousOn) ((hc i).integrable_mul ν hU (hG' _)) ((hc i).integrable_mul ν hU hG.continuousOn) (fun x _ => (hc i).1.differentiable (by simp) x) (fun x hx => (hG.contDiffAt (hU.mem_nhds …`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsTest.exists_transpose (hU : IsOpen U) (h : IsTest U α) (L : V →L[ℝ] V) :
     ∃ β, IsTest U β ∧ ∀ G : V → ℂ, ContDiffOn ℝ ∞ G U →
       ∫ x, α x * _root_.fderiv ℝ G x (L x) ∂ν = ∫ x, β x * G x ∂ν := by
@@ -105,6 +133,17 @@ def rmulEquiv (k : GL (Fin a) (Cinf E)) : Lie E a ≃L[ℝ] Lie E a :=
 
 variable {μ} [μ.IsMulRightInvariant] {S : Submodule ℂ (L2 (latticeGL E a) μ)}
 
+/- English proof (translation)
+Introduce `o φ h ν hν α hα`. Consider the cases of `o with`. Consider the case `fin k`. Take `⟨F, h1, e⟩` from `h ν hν α hα`. Use `⟨_, hS.2 (finGL E a k) F h1, (lift_R _ F).trans (Filter.EventuallyEq.trans ((measurePreserving_mul_right μ _).quasiMeasurePreserving.ae e) (.of_forall fun x => ?_))⟩` and prove the remaining obligations.
+
+Conclude with `congrArg (fun f => ∫ y, α y * f y ∂ν) (chart_rt_fin φ.1 x k).symm`. Consider the case `cpt k`. Set `L` to `rmulEquiv (Unitary.toUnits k : GL (Fin a) (Cinf E))`. Take `⟨F, h1, e⟩` from `h (ν.map L) (L.isAddHaarMeasure_map ν) (α ∘ L.symm) ⟨hα.1.comp L.symm.contDiff, hα.2.1.comp_homeomorph L.symm.toHomeomorph, fun y hy => by`. Establish `h2 : L.symm y ∈ invSet E a` using `hα.2.2 ((Set.ext_iff.1 (tsupport_comp_eq_preimage α L.symm.toHomeomorph) y).1 hy)`.
+
+Conclude with `(Units.isUnit_mul_units _ (Unitary.toUnits k)⁻¹).1 h2⟩`. Use `⟨F, h1, e.trans (.of_forall fun x => ?_)⟩` and prove the remaining obligations. Use `(L.toHomeomorph.measurableEmbedding.integral_map _).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (congrArg α (L.symm_apply_apply y)) (congrFun (chart_rt_inf φ.1 x _) y).symm`.
+
+Consider the case `lie X`. Take `⟨β, hβ, e'⟩` from `hα.exists_transpose ν isOpen_invSet (rmul X)`. Take `⟨F, h1, e⟩` from `h ν hν β hβ`. Use `⟨F, h1, e.trans (.of_forall fun x => ?_)⟩` and prove the remaining obligations. Use `(e' _ (φ.2 x)).symm.trans (integral_congr_ae (.of_forall fun y => ?_))` and prove the remaining obligations.
+
+Distinguish the cases in `hy : y ∈ invSet E a`. Conclude with `congrArg (α y * ·) (chart_lieD φ.2 X x hy).symm`. Establish `: α y = 0` using `image_eq_zero_of_notMem_tsupport fun h => hy (hα.2.2 h)`. Simplify using `[this]`.
+-/
 theorem isStable_weakIn (hS : IsSubrep (R (latticeGL E a) μ) S) : IsStable (weakIn μ S) := by
   intro o φ h ν hν α hα
   cases o with
@@ -137,17 +176,28 @@ theorem isStable_weakIn (hS : IsSubrep (R (latticeGL E a) μ) S) : IsStable (wea
 section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Use `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _`. Conclude with `Units.isOpenEmbedding_val`.
+-/
 theorem isOpenEmbedding_val :
     IsOpenEmbedding (Units.val : GL (Fin a) (Cinf E) → Matrix (Fin a) (Fin a) (Cinf E)) := by
   haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _
   exact Units.isOpenEmbedding_val
 end
 
+/- English proof (translation)
+Use `Continuous.units_map _ ?_` and prove the remaining obligations. Establish `hs : Continuous (sInf E : Cinf E → Ad E)` using `(continuous_infEq E).prodMk continuous_const`. Conclude with `continuous_const.sub continuous_const |>.add (continuous_id.matrix_map hs)`.
+-/
 theorem continuous_infGL : Continuous (infGL E a) := by
   refine Continuous.units_map _ ?_
   have hs : Continuous (sInf E : Cinf E → Ad E) := (continuous_infEq E).prodMk continuous_const
   exact continuous_const.sub continuous_const |>.add (continuous_id.matrix_map hs)
 
+/- English proof (translation)
+Use `continuous_of_tsupport fun p hp => (hα.1.continuous.comp continuous_snd).continuousAt.mul ?_` and prove the remaining obligations. Establish `h1 : p.2 ∈ tsupport α`. Use `(closure_minimal (fun q hq => ?_) ((isClosed_tsupport α).preimage continuous_snd) : _ ⊆ Prod.snd ⁻¹' tsupport α) hp` and prove the remaining obligations. Conclude with `subset_tsupport _ (left_ne_zero_of_mul hq)`. Take `⟨x, y⟩` from `p`.
+
+Take `⟨u, hu⟩` from `hα.2.2 h1`. Take `rfl : y = toL u.val` from `hu.symm`. Establish `he : IsOpenEmbedding (Prod.map id fun u : GL (Fin a) (Cinf E) => toL u.val : GA E a × _ → GA E a × Lie E a)` using `IsOpenEmbedding.id.prodMap isOpenEmbedding_val`. Use `(he.continuousAt_iff (x := (x, u))).1 (Continuous.continuousAt ?_)` and prove the remaining obligations. Conclude with `(hφ.comp (continuous_fst.mul (continuous_infGL.comp continuous_snd))).congr fun q => (chart_val φ q.1 q.2).symm`.
+-/
 theorem continuous_integrand {α : Lie E a → ℂ} (hα : IsTest (invSet E a) α) {φ : GA E a → ℂ} (hφ : Continuous φ) :
     Continuous fun p : GA E a × Lie E a => α p.2 * chart φ p.1 p.2 := by
   refine continuous_of_tsupport fun p hp => (hα.1.continuous.comp continuous_snd).continuousAt.mul ?_
@@ -163,12 +213,18 @@ theorem continuous_integrand {α : Lie E a → ℂ} (hα : IsTest (invSet E a) �
   refine (he.continuousAt_iff (x := (x, u))).1 (Continuous.continuousAt ?_)
   exact (hφ.comp (continuous_fst.mul (continuous_infGL.comp continuous_snd))).congr fun q => (chart_val φ q.1 q.2).symm
 
+/- English proof (translation)
+Unfold `chart`. Use `split_ifs`. Conclude with `hC _`. Conclude with `norm_zero.trans_le ((norm_nonneg _).trans (hC 1))`.
+-/
 theorem norm_chart_le {φ : GA E a → ℂ} {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) (x : GA E a) (y : Lie E a) : ‖chart φ x y‖ ≤ C := by
   unfold chart
   split_ifs
   · exact hC _
   · exact norm_zero.trans_le ((norm_nonneg _).trans (hC 1))
 
+/- English proof (translation)
+The claim follows from `continuous_of_dominated (bound := fun y => ‖α y‖ * C) (fun x => ((continuous_integrand hα hφ).comp (Continuous.prodMk_right x)).aestronglyMeasurable) (fun x => .of_forall fun y => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (norm_chart_le hC x y) (norm_nonneg _))) ((hα.1.c …`.
+-/
 theorem continuous_smoothing (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] {α : Lie E a → ℂ}
     (hα : IsTest (invSet E a) α) {φ : GA E a → ℂ} (hφ : Continuous φ) {C : ℝ} (hC : ∀ g, ‖φ g‖ ≤ C) :
     Continuous (smoothing ν α φ) :=
@@ -183,11 +239,31 @@ variable [IsFiniteMeasure (GlobalTheory.AutomorphicL2Unitary.quotMeasure (lattic
 
 omit [μ.IsMulRightInvariant] in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hl, MemLp.of_bound (aestronglyMeasurable_quotMeasure_iff_lift.2 (by rw [hl.lift_descend]; exact hφ.aestronglyMeasurable)) C (.of_forall fun q => hC _)⟩`.
+-/
 theorem memL2_of_bound {φ : GA E a → ℂ} (hφ : Continuous φ) (hl : LeftInv (latticeGL E a) φ) {C : ℝ}
     (hC : ∀ g, ‖φ g‖ ≤ C) : MemL2Quotient (latticeGL E a) μ φ :=
   ⟨hl, MemLp.of_bound (aestronglyMeasurable_quotMeasure_iff_lift.2 (by
     rw [hl.lift_descend]; exact hφ.aestronglyMeasurable)) C (.of_forall fun q => hC _)⟩
 
+/- English proof (translation)
+Introduce `ν hν α hα`. Establish `: ProperSpace (Lie E a)` using `FiniteDimensional.proper ℝ _`. Establish `: SigmaFinite ν` using `Measure.IsAddHaarMeasure.sigmaFinite ν`. Establish `hαi : Integrable α ν` using `hα.1.continuous.integrable_of_hasCompactSupport hα.2.1`. Establish `hm : MemL2Quotient (latticeGL E a) μ (smoothing ν α φ.1)` using `memL2_of_bound (C := ∫ y, ‖α y‖ * C ∂ν) (continuous_smoothing ν hα hφ hC) (fun γ hγ g => by simp only [smoothing, chart, mul_assoc, hl γ hγ]) fun g => norm_integral_le_of_norm_le (hαi.norm.mul_const C) (.of_forall fun y => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (norm_ …`.
+
+Use `⟨hm.toL2, ?_, hm.lift_toL2_ae_eq⟩` and prove the remaining obligations. Use `hS.completeSpace` as an intermediate fact. Rewrite using `[← S.orthogonal_orthogonal]`. Introduce `y hy`. Establish `hD` using `isFundamentalDomain_stdDom (latticeGL E a) μ`.
+
+Establish `hyi : Integrable (fun g => conj (lift (latticeGL E a) y g)) (μ.restrict (stdDom (latticeGL E a)))`. Establish `h1 : Integrable (fun q => conj (y q)) (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ)` using `(Lp.memLp y).star.integrable one_le_two`. Conclude with `(measurePreserving_mk hD).integrable_comp_of_integrable h1`. Establish `key : ∀ {G : L2 (latticeGL E a) μ} {ψ : GA E a → ℂ}, lift (latticeGL E a) G =ᵐ[μ] ψ → ⟪y, G⟫_ℂ = ∫ g in stdDom (latticeGL E a), conj (lift (latticeGL E a) y g) * ψ g ∂μ`. Introduce `G ψ h`.
+
+Rewrite using `[MeasureTheory.L2.inner_def, integral_quotMeasure hD]`. Use `integral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [h] with g e`. Rewrite using `[← e, RCLike.inner_apply']`. Both sides reduce to the same expression.
+
+Establish `hi : Integrable (fun p : GA E a × Lie E a => conj (lift (latticeGL E a) y p.1) * (α p.2 * chart φ.1 p.1 p.2)) ((μ.restrict (stdDom (latticeGL E a))).prod ν)`. Use `((hyi.norm.mul_prod hαi.norm).mul_const C).mono' (hyi.1.comp_fst.mul (continuous_integrand hα hφ).aestronglyMeasurable) (.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (norm_chart_le hC _ _) (norm_nonneg _)) (norm_nonneg _)`. Rewrite using `[key hm.lift_toL2_ae_eq]`.
+
+Simplify using `only [smoothing, ← integral_const_mul]`. Rewrite using `[integral_integral_swap hi]`. Use `integral_eq_zero_of_ae (.of_forall fun M => ?_)` and prove the remaining obligations. Distinguish the cases in `hM : M ∈ invSet E a`. Take `⟨u, hu⟩` from `hM`.
+
+Take `rfl : M = toL u.val` from `hu.symm`. Simplify using `only [chart_val, mul_left_comm _ (α _), integral_const_mul]`. Rewrite using `[← key ((lift_R _ F).trans ((measurePreserving_mul_right μ _).quasiMeasurePreserving.ae e)), (S.mem_orthogonal' y).1 hy _ (hS.2 _ F hF), mul_zero]`. Both sides reduce to the same expression. Establish `: α M = 0` using `image_eq_zero_of_notMem_tsupport fun h => hM (hα.2.2 h)`.
+
+Simplify using `[this]`.
+-/
 theorem mem_weakIn (hS : IsSubrep (R (latticeGL E a) μ) S) {φ : Sm E a} (hφ : Continuous φ.1)
     (hl : LeftInv (latticeGL E a) φ.1) {C : ℝ} (hC : ∀ g, ‖φ.1 g‖ ≤ C) {F : L2 (latticeGL E a) μ} (hF : F ∈ S)
     (e : lift (latticeGL E a) F =ᵐ[μ] φ.1) : φ ∈ weakIn μ S := by
@@ -239,6 +315,13 @@ theorem mem_weakIn (hS : IsSubrep (R (latticeGL E a) μ) S) {φ : Sm E a} (hφ :
 
 omit [μ.IsMulRightInvariant] [IsFiniteMeasure (GlobalTheory.AutomorphicL2Unitary.quotMeasure (latticeGL E a) μ)] in
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Set `ν : Measure (Lie E a)` to `Measure.addHaar`. Establish `h1` using `isOpen_invSet.ae_eq_zero_of_integral_contDiff_smul_eq_zero (μ := ν) (f := chart φ.1 x) ((φ.2 x).continuousOn.locallyIntegrableOn isOpen_invSet.measurableSet) fun β b1 b2 b3 => by`. Establish `hα : IsTest (invSet E a) fun y => (β y : ℂ)` using `⟨Complex.ofRealCLM.contDiff.comp b1, b2.comp_left (g := Complex.ofReal) rfl, (tsupport_comp_subset (g := Complex.ofReal) rfl β).trans b3⟩`. Take `⟨F, h1, e⟩` from `h ν inferInstance _ hα`.
+
+Take `⟨F', h2, e'⟩` from `h' ν inferInstance _ hα`. Take `rfl : F = F'` from `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (e.trans e'.symm)`. Take `rfl : F = 0` from `inner_self_eq_zero.1 (h2 F h1)`. Use `(Continuous.ae_eq_iff_eq μ (continuous_smoothing ν hα hφ hC) continuous_zero).1 (e.symm.trans (ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)))` as an intermediate fact. Conclude with `congrFun this x`.
+
+Establish `h2 : Set.EqOn (chart φ.1 x) 0 (invSet E a)` using `Measure.eqOn_open_of_ae_eq ((ae_restrict_iff' isOpen_invSet.measurableSet).2 h1) isOpen_invSet (φ.2 x).continuousOn continuousOn_const`. Establish `h3` using `(chart_val φ.1 x 1).symm.trans (h2 (val_mem_invSet 1))`. Rewrite `h3` using `[map_one, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem eq_zero_of_mem_weakIn {φ : Sm E a} (hφ : Continuous φ.1) {C : ℝ} (hC : ∀ g, ‖φ.1 g‖ ≤ C)
     (h : φ ∈ weakIn μ S) (h' : φ ∈ weakIn μ Sᗮ) : φ = 0 := by
   refine Subtype.ext (funext fun x => ?_)

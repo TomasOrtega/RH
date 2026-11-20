@@ -6,6 +6,9 @@ noncomputable section
 
 namespace PI.Dv.TIW
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, dvTransferIdx_of (block_index_formula hI) (sum_index_formula hI) hG volume_nonneg volume_finite' volume_sum_le⟩`.
+-/
 theorem dvTransferIdx_of_idx (hI : PI.Dv.IdxCalc) (hG : GrpData) : ∃ C : ℝ, PI.Dv.Conclusion4b C :=
   ⟨1, dvTransferIdx_of (block_index_formula hI) (sum_index_formula hI) hG volume_nonneg volume_finite' volume_sum_le⟩
 

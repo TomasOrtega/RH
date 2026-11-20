@@ -11,6 +11,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC.RedChern
 
+/- English proof (translation)
+Establish `hq0 : q ≠ 0` using `fun h0 => NeZero.ne Q (Nat.eq_zero_of_zero_dvd (h0 ▸ hqQ))`. Use `haveI : NeZero q := ⟨hq0⟩`. Take `⟨ξ, hξ⟩` from `(GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties Q Γ(U, ⊤)).2.2.2.2.2 q hqQ ζ`. Establish `h1 : kumT Q U w = kumT Q U v + resGen 1 ζ` using `(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting Q).2 U ζ v w h`. Establish `h2 : (redMap Q q 1).app U 0 (resGen 1 ζ) = resGen 1 ξ` using `GlobalTheory.T.tateTwistReductionResolutionMap_generator Q q hqQ 1 U ζ ξ hξ`.
+
+Establish `h3 : ((w ^ (Q / q) : (Γ(U, ⊤))ˣ) : Γ(U, ⊤)) = ξ.1 * ((v ^ (Q / q) : (Γ(U, ⊤))ˣ) : Γ(U, ⊤))`. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, h, hξ, mul_pow]`. Establish `h4 : kumT q U (w ^ (Q / q)) = kumT q U (v ^ (Q / q)) + resGen 1 ξ` using `(GlobalTheory.T.isKummerTorsorSplitting_kummerTorsorSplitting q).2 U ξ _ _ h3`. Unfold `defect`. Rewrite using `[h1, h4, map_add, h2]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem defect_mul_prim (Q q : ℕ) [NeZero Q] (hqQ : q ∣ Q) (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤))
     (v w : (Γ(U, ⊤))ˣ) (h : (w : Γ(U, ⊤)) = ζ.1 * v) : defect Q q U w = defect Q q U v := by
   have hq0 : q ≠ 0 := fun h0 => NeZero.ne Q (Nat.eq_zero_of_zero_dvd (h0 ▸ hqQ))
@@ -26,6 +33,13 @@ theorem defect_mul_prim (Q q : ℕ) [NeZero Q] (hqQ : q ∣ Q) (U : Scheme.{0}) 
   rw [h1, h4, map_add, h2]
   abel
 
+/- English proof (translation)
+Establish `hζ : IsUnit ζ.1` using `IsUnit.of_pow_eq_one ((GlobalTheory.T.primitiveRoot_pow_unit_sub_prod_properties Q Γ(U, ⊤)).1 ζ) (NeZero.ne Q)`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `w hw`. Rewrite `hw` using `[pow_zero, one_mul]`.
+
+Rewrite using `[Units.ext hw]`. Consider the case `succ a ih`. Introduce `w hw`. Establish `e : ((hζ.unit ^ a * v : (Γ(U, ⊤))ˣ) : Γ(U, ⊤)) = ζ.1 ^ a * v` using `by simp`. Rewrite using `[defect_mul_prim Q q hqQ U ζ (hζ.unit ^ a * v) w (by rw [hw, e, pow_succ]; ring)]`.
+
+Conclude with `ih _ e`.
+-/
 theorem defect_mul_prim_pow (Q q : ℕ) [NeZero Q] (hqQ : q ∣ Q) (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤))
     (v : (Γ(U, ⊤))ˣ) (a : ℕ) : ∀ w : (Γ(U, ⊤))ˣ, (w : Γ(U, ⊤)) = ζ.1 ^ a * v →
       defect Q q U w = defect Q q U v := by
@@ -45,6 +59,13 @@ end GlobalTheory.EtC.RedChern
 
 namespace GlobalTheory.EtC.RedChern
 
+/- English proof (translation)
+Use `(GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) ((res _ (tw q 1)).X 0) U).1 _ _ ?_` and prove the remaining obligations. Use `loc_bind ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity Q U).1 hQ) fun V g hV => ?_` and prove the remaining obligations. Take `⟨ζ⟩` from `hV`. Use `set v' : (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom v`. Use `set w' : (Γ(V, ⊤))ˣ := Units.map g.appTop.hom.toMonoidHom w`.
+
+Establish `hx : (((w' * v'⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤))) ^ Q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, inv_pow, ← map_pow, ← map_pow, ← hvw, mul_inv_cancel, Units.val_one]`. Use `loc_mono ((GlobalTheory.T.etaleLocal_primitiveRoot_and_roots_of_unity Q V).2.2.1 ζ _ hx) fun W k ⟨a, ha⟩ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.kummerReductionChernDefect_restriction Q q hqQ W U (k ≫ g) v hQ, GlobalTheory.T.kummerReductionChernDefect_restriction Q q hqQ W U (k ≫ g) w hQ]`. Use `symm`.
+
+Use `defect_mul_prim_pow Q q hqQ W (ζ.map k.appTop.hom) _ a _ ?_` and prove the remaining obligations. Establish `e1 : ∀ u : (Γ(U, ⊤))ˣ, ((Units.map (k ≫ g).appTop.hom.toMonoidHom u : (Γ(W, ⊤))ˣ) : Γ(W, ⊤)) = k.appTop.hom ((Units.map g.appTop.hom.toMonoidHom u : (Γ(V, ⊤))ˣ) : Γ(V, ⊤))` using `fun u => rfl`. Rewrite using `[e1, e1]`. Express the relevant statement in the definitionally equal form `k.appTop.hom (w' : Γ(V, ⊤)) = (k.appTop.hom ζ.1) ^ a * k.appTop.hom (v' : Γ(V, ⊤))`. Rewrite using `[← ha, ← map_mul, Units.val_mul, mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, mul_one]`.
+-/
 theorem defect_eq_of_pow_eq (Q q : ℕ) [NeZero Q] (hqQ : q ∣ Q) (U : Scheme.{0}) (v w : (Γ(U, ⊤))ˣ)
     (hQ : IsUnit (Q : Γ(U, ⊤))) (hvw : v ^ Q = w ^ Q) : defect Q q U v = defect Q q U w := by
   refine (GlobalTheory.T.etaleSheafSections_ext_and_glue (ZMod q) ((res _ (tw q 1)).X 0) U).1 _ _ ?_

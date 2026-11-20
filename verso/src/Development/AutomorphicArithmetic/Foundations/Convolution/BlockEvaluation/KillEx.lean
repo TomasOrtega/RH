@@ -13,11 +13,21 @@ namespace UpperTheory.ConvolutionTheory.Ci
 
 open PositivityTheory.Rg.Fx UpperTheory.ConvolutionTheory.FX
 
+/- English proof (translation)
+Simplify using `only [Multiset.esymm, map_multiset_sum, Multiset.powersetCard_map, Multiset.map_map, Function.comp_def, map_multiset_prod]`.
+-/
 private theorem ke_esymm_map {R A : Type} [CommRing R] [CommRing A] (f : R →+* A) (s : Multiset R) (k : ℕ) :
     f (s.esymm k) = (s.map f).esymm k := by
   simp only [Multiset.esymm, map_multiset_sum, Multiset.powersetCard_map, Multiset.map_map, Function.comp_def,
     map_multiset_prod]
 
+/- English proof (translation)
+Establish `he : ∀ k, k ≤ n → s.esymm k = t.esymm k`. Introduce `k hk`. Break down `k with _ | k` into its components or cases. Simplify using `[Multiset.esymm]`. Conclude with `h ⟨k, hk⟩`.
+
+Establish `hp : (s.map fun a => Polynomial.X - Polynomial.C a).prod = (t.map fun a => Polynomial.X - Polynomial.C a).prod`. Rewrite using `[Multiset.prod_X_sub_X_eq_sum_esymm, Multiset.prod_X_sub_X_eq_sum_esymm, hs, ht]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[he j (Nat.lt_succ_iff.mp (Finset.mem_range.mp hj))]`.
+
+Use `congrArg Polynomial.roots hp` as an intermediate fact. Rewrite `this` using `[Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis.
+-/
 private theorem ke_ext {n : ℕ} (s t : Multiset ℂ) (hs : s.card = n) (ht : t.card = n)
     (h : ∀ i : Fin n, s.esymm (i + 1) = t.esymm (i + 1)) : s = t := by
   have he : ∀ k, k ≤ n → s.esymm k = t.esymm k := by
@@ -34,6 +44,9 @@ private theorem ke_ext {n : ℕ} (s t : Multiset ℂ) (hs : s.card = n) (ht : t.
   have := congrArg Polynomial.roots hp
   rwa [Polynomial.roots_multiset_prod_X_sub_C, Polynomial.roots_multiset_prod_X_sub_C] at this
 
+/- English proof (translation)
+Use `(perm_of_esymm n x y).1 fun i => ?_` and prove the remaining obligations. Establish `e : ∀ z : Fin n → ℂ, eval z (esymm (Fin n) ℂ (i + 1)) = (Finset.univ.val.map z).esymm (i + 1)` using `fun z => MvPolynomial.aeval_esymm_eq_multiset_esymm (Fin n) ℂ (i + 1) z`. Rewrite using `[e, e, h]`.
+-/
 private theorem ke_perm {n : ℕ} (x y : Fin n → ℂ) (h : Finset.univ.val.map x = Finset.univ.val.map y) :
     ∃ w : Equiv.Perm (Fin n), y = x ∘ w := by
   refine (perm_of_esymm n x y).1 fun i => ?_
@@ -41,6 +54,11 @@ private theorem ke_perm {n : ℕ} (x y : Fin n → ℂ) (h : Finset.univ.val.map
     MvPolynomial.aeval_esymm_eq_multiset_esymm (Fin n) ℂ (i + 1) z
   rw [e, e, h]
 
+/- English proof (translation)
+Establish `: (ev Λ).comp (ren δ) = ev (Λ ∘ δ)` using `RingHom.ext fun f => by`. Rewrite using `[RingHom.comp_apply, ren, (subst ι ι _ _ f).1]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[apply_ite]`.
+
+Rewrite using `[evK, evK, coe_eval₂Hom, coe_eval₂Hom, eval₂_map, this]`.
+-/
 private theorem ke_evK_ren {ι κ : Type} [Fintype ι] [DecidableEq ι] (δ : ι → ι) (Λ : ι → ℂ) (h : κ → ℂ)
     (G : KF ι κ) : evK Λ h (map (ren δ) G) = evK (Λ ∘ δ) h G := by
   have : (ev Λ).comp (ren δ) = ev (Λ ∘ δ) := RingHom.ext fun f => by
@@ -50,6 +68,19 @@ private theorem ke_evK_ren {ι κ : Type} [Fintype ι] [DecidableEq ι] (δ : ι
     simp [apply_ite]
   rw [evK, evK, coe_eval₂Hom, coe_eval₂Hom, eval₂_map, this]
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Set `e : (Σ i, Fin (d i)) ≃ Fin (∑ i, d i)` to `finSigmaFinEquiv`. Use `⟨fun a => (e.symm a).1, fun l => ⟨e ⟨l, ⟨0, hd l⟩⟩, by simp⟩, fun M hM => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, ∃ y : Fin (d i) → ℂ, M i = Finset.univ.val.map y`. Introduce `i`.
+
+Use `hM i` as an intermediate fact. Use the proof step `induction' h : M i using Quotient.inductionOn with l`. Rewrite `this` using `[h]`. Establish `hl : l.length = d i` using `this`. Use `⟨fun a => l.get (a.cast hl.symm), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Fin.univ_val_map]`. Use `congr 1`. Apply `List.ext_get (by simp [hl])` to reduce the goal to its premises. Introduce `k h1 h2`. Simplify using the standard rewrite rules.
+
+Use `choose y hy using h1`. Use `⟨fun a => y (e.symm a).1 (e.symm a).2, fun g => ?_⟩` and prove the remaining obligations. Establish `h2 : (Finset.univ.val.map fun a => g (e.symm a).1 (y (e.symm a).1 (e.symm a).2)) = Finset.univ.val.map fun p : (Σ i, Fin (d i)) => g p.1 (y p.1 p.2)`. Rewrite using `[← Multiset.map_univ_val_equiv e.symm, Multiset.map_map]`. Both sides reduce to the same expression.
+
+Establish `h3 : ∀ (α : Type) [Fintype α] (f : α → ℂ), Finset.univ.val.map f = ∑ a, {f a}`. Introduce `α _ f`. Rewrite using `[← Finset.sum_multiset_singleton, ← Multiset.coe_mapAddMonoidHom, map_sum]`. Simplify using the standard rewrite rules. Rewrite using `[h2, h3, Fintype.sum_sigma]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hy, Multiset.map_map, h3]`. Both sides reduce to the same expression.
+-/
 private theorem ke_enum {n r : ℕ} (d : Fin r → ℕ) (hd : ∀ i, 0 < d i) (hs : ∑ i, d i = n) :
     ∃ blk : Fin n → Fin r, Function.Surjective blk ∧ ∀ M : Fin r → Multiset ℂ, (∀ i, (M i).card = d i) →
       ∃ x : Fin n → ℂ, ∀ g : Fin r → ℂ → ℂ, ∑ i, (M i).map (g i) = Finset.univ.val.map fun a => g (blk a) (x a) := by
@@ -97,6 +128,23 @@ private def AF.Pt (a : AF K n) (S : Set (Pl K)) (M : (K →+* ℂ) → Multiset 
   ∃ lam : Fin a.r → ℂ, (∀ τ, M τ = Finset.univ.val.map fun i => a.Λ (τ, i) + lam (a.blk i)) ∧
     ∀ w ∉ S, t w = Finset.univ.val.map fun i => a.β (w, i) * Complex.exp (a.c w * lam (a.blk i))
 
+/- English proof (translation)
+Take `⟨-, -, -, m, B, hAt, -⟩` from `hb`. Take `⟨blk, hsurj, hblk⟩` from `ke_enum b.d b.pos b.sum`. Use `choose x hx using fun τ => hblk (fun i => m i τ) fun i => ((hAt i).1 τ).1`. Establish `hB : ∀ w, ∃ y : Fin n → ℂ, w ∉ S → ∀ g : Fin b.r → ℂ → ℂ, ∑ i, (B i w).map (g i) = Finset.univ.val.map fun a => g (blk a) (y a)`. Introduce `w`.
+
+Distinguish the cases in `hw : w ∈ S`. Conclude with `⟨0, fun h => absurd hw h⟩`. Take `⟨y, hy⟩` from `hblk (fun i => B i w) fun i => ((hAt i).2 w hw).1`. Conclude with `⟨y, fun _ => hy⟩`. Use `choose y hy using hB`.
+
+Establish `hq : ∀ (w : Pl K) (z : ℂ), (Ideal.absNorm w.asIdeal : ℂ) ^ (-z) = Complex.exp (((-Real.log (Ideal.absNorm w.asIdeal) : ℝ) : ℂ) * z)`. Introduce `w z`. Establish `: (Ideal.absNorm w.asIdeal : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`.
+
+Rewrite using `[Complex.cpow_def_of_ne_zero this, Complex.ofReal_neg, Complex.natCast_log]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨b.r, blk, hsurj, fun p => x p.1 p.2, fun p => y p.1 p.2, fun w => -Real.log (Ideal.absNorm w.asIdeal)⟩, fun Λ t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨lam, m', B', hAt', h1, h2⟩`.
+
+Establish `hm : ∀ i τ, m' i τ = m i τ` using `fun i τ => ((hP K (b.d i) (b.pos i) (b.μ i) (b.V i) (b.summand i)).1 τ).unique ((hAt' i).1 τ) ((hAt i).1 τ)`. Establish `hB : ∀ i, ∀ w ∉ S, B' i w = B i w` using `fun i w hw => ((hP K (b.d i) (b.pos i) (b.μ i) (b.V i) (b.summand i)).2.1 w ((hAt i).2 w hw).2.1).unique ((hAt' i).2 w hw) ((hAt i).2 w hw)`. Use `⟨lam, fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Simplify using `only [hm]`.
+
+Conclude with `hx τ fun i z => z + lam i`. Rewrite using `[h2 w hw]`. Simplify using `only [hB _ w hw, hq]`. Conclude with `hy w hw fun i z => z * Complex.exp (_ * lam i)`. Introduce and unpack `⟨lam, h1, h2⟩`.
+
+Use `⟨lam, m, B, hAt, fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(hx τ fun i z => z + lam i).symm`. Rewrite using `[h2 w hw]`. Simplify using `only [hq]`.
+
+Conclude with `(hy w hw fun i z => z * Complex.exp (_ * lam i)).symm`.
+-/
 private theorem ke_datum [IsTotallyComplex K] (hP : ParEx) (S : Set (Pl K)) (b : Datum K n) (hb : ∃ Λ t, b.Pt S Λ t) :
     ∃ a : AF K n, ∀ Λ t, b.Pt S Λ t ↔ a.Pt S Λ t := by
   classical
@@ -143,6 +191,15 @@ private theorem ke_datum [IsTotallyComplex K] (hP : ParEx) (S : Set (Pl K)) (b :
       simp only [hq]
       exact (hy w hw fun i z => z * Complex.exp (_ * lam i)).symm
 
+/- English proof (translation)
+Use `⟨⟨a.r, a.blk, a.surj, fun p => a.Λ (p.1.comp (algebraMap F E), p.2), fun p => a.β (p.1.under (𝓞 F), p.2) ^ resDeg F p.1, fun w => resDeg F w * a.c (w.under (𝓞 F))⟩, fun Λ t => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (lam : Fin a.r → ℂ) (w : Pl E), (Finset.univ.val.map fun i => a.β (w.under (𝓞 F), i) * Complex.exp (a.c (w.under (𝓞 F)) * lam (a.blk i))).map (· ^ resDeg F w) = Finset.univ.val.map fun i => a.β (w.under (𝓞 F), i) ^ resDeg F w * Complex.exp (((resDeg F w * a.c (w.under (𝓞 …`. Introduce `lam w`. Rewrite using `[Multiset.map_map]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, mul_pow, ← Complex.exp_nat_mul]`. Use `push_cast`. Rewrite using `[mul_assoc]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨lam, h1, h2⟩`. Use `⟨_, _, ⟨lam, fun _ => rfl, fun _ _ => rfl⟩, funext h1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 w hw, bcSat, key]`. Introduce and unpack `⟨Λ', t', ⟨lam, h1, h2⟩, rfl, h3⟩`. Use `⟨lam, fun τ => h1 _, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h3 w hw, bcSat, h2 _ (fun h => hw ((hS w).2 h)), key]`.
+-/
 private theorem ke_bc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (SE : Set (Pl E)) (SF : Set (Pl F)) (hS : ∀ w : Pl E, w ∈ SE ↔ w.under (𝓞 F) ∈ SF) (a : AF F n) :
     ∃ a' : AF E n, ∀ Λ t, a'.Pt SE Λ t ↔ ∃ Λ' t', a.Pt SF Λ' t' ∧ Λ = bcInf Λ' ∧ ∀ w ∉ SE, t w = bcSat t' w := by
@@ -177,6 +234,9 @@ private def blkW (K : Type) [Field K] (n : ℕ) : Subgroup (Equiv.Perm (Ix K n))
     rintro _ ⟨w, rfl⟩
     exact ⟨w⁻¹, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Rewrite using `[msOf, msOf]`. Use `conv_rhs => rw [← Multiset.map_univ_val_equiv (w τ), Multiset.map_map]`. Both sides reduce to the same expression.
+-/
 private theorem ke_ms (L : Ix K n → ℂ) (w : (K →+* ℂ) → Equiv.Perm (Fin n)) :
     msOf (L ∘ Equiv.prodCongrRight w) = msOf L := by
   funext τ
@@ -184,6 +244,21 @@ private theorem ke_ms (L : Ix K n → ℂ) (w : (K →+* ℂ) → Equiv.Perm (Fi
   conv_rhs => rw [← Multiset.map_univ_val_equiv (w τ), Multiset.map_map]
   rfl
 
+/- English proof (translation)
+Take `⟨τ₀⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Take `⟨sec, hsec⟩` from `a.surj.hasRightInverse`. Set `b : Fam (Ix K n) {x : Pl K × Fin n // x.1 ∉ S}` to `{ r := a.r Λ := a.Λ emb := Matrix.of fun x l => if a.blk x.2 = l then 1 else 0 pr := Matrix.of fun l x => if x = (τ₀, sec l) then 1 else 0 pr_emb := by`. Use extensionality with `l l'`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (τ₀, sec l)]`.
+
+Simplify using `[hsec l, Matrix.one_apply]`. Introduce `x _ hx`. Simplify using `[hx]`. Simplify using the standard rewrite rules. Use `h := fun x => (Finset.univ.val.map fun i => (AddMonoidAlgebra.single (fun l => if a.blk i = l then a.c x.1.1 else 0) (C (a.β (x.1.1, i))) : EP (Fin a.r))).esymm (x.1.2 + 1) }`.
+
+Establish `h1 : ∀ (lam : Fin a.r → ℂ) (x : Ix K n), ∑ j, (b.emb x j : ℂ) * lam j = lam (a.blk x.2)`. Introduce `lam x`. Simplify using `[b, apply_ite]`. Establish `h2 : ∀ (lam : Fin a.r → ℂ) x, ev lam (b.h x) = (Finset.univ.val.map fun i => a.β (x.1.1, i) * Complex.exp (a.c x.1.1 * lam (a.blk i))).esymm (x.1.2 + 1)`. Introduce `lam x`.
+
+Rewrite using `[ke_esymm_map, Multiset.map_map]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[ev, PositivityTheory.Rg.Fx.lift, expChar, apply_ite]`. Use `⟨b, fun L t => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce and unpack `⟨lam, hL, ht⟩ choose w hw using fun τ => ke_perm _ _ (hL τ)`. Use `⟨_, ⟨w, rfl⟩, lam, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(congrFun (hw x.1) x.2).symm`. Rewrite using `[h2, ← ht _ x.2]`.
+
+Both sides reduce to the same expression. Introduce and unpack `hc _ ⟨w, rfl⟩ ⟨lam, hL, ht⟩`. Use `⟨lam, fun τ => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← ke_ms L w, msOf]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[hL, h1]`. Use `ke_ext _ _ (hc v hv) (by simp) fun i => ?_` and prove the remaining obligations. Conclude with `(ht ⟨(v, i), hv⟩).trans (h2 _ _)`.
+-/
 private theorem ke_fam (S : Set (Pl K)) (a : AF K n) :
     ∃ b : Fam (Ix K n) {x : Pl K × Fin n // x.1 ∉ S}, ∀ (L : Ix K n → ℂ) (t : Pl K → Multiset ℂ),
       (a.Pt S (msOf L) t → ∃ σ ∈ blkW K n, b.Mem (L ∘ σ) fun x => hval t x.1) ∧
@@ -232,6 +307,15 @@ private theorem ke_fam (S : Set (Pl K)) (a : AF K n) :
     · refine ke_ext _ _ (hc v hv) (by simp) fun i => ?_
       exact (ht ⟨(v, i), hv⟩).trans (h2 _ _)
 
+/- English proof (translation)
+Use `choose b hb using fun i => ke_fam S (a i)`. Take `⟨G, hG1, hG2, hG3⟩` from `killing0 _ _ B (blkW K n) b L (fun x => hval t x.1) fun σ hσ i hm => h i ((hb i L t).2 hc σ hσ hm)`. Establish `hr : ∀ (L' : Ix K n → ℂ) (h' : Pl K × Fin n → ℂ), evK L' h' (rename Subtype.val G) = evK L' (fun x => h' x.1) G`. Introduce `L' h'`. Rewrite using `[evK, evK, coe_eval₂Hom, coe_eval₂Hom, eval₂_rename]`.
+
+Both sides reduce to the same expression. Use `⟨rename Subtype.val G, ⟨fun w => ?_, fun x hx => ?_⟩, by rwa [hr], fun i L' t' hp => ?_⟩` and prove the remaining obligations. Rewrite using `[map_rename]`. Establish `h0` using `hG1 (Equiv.prodCongrRight w) ⟨w, rfl⟩`. Establish `h1 : (Equiv.prodCongrRight w : Ix K n → Ix K n) = fun x => (x.1, w x.1 x.2)` using `rfl`.
+
+Rewrite `h0` using `[h1]`. Rewrite using `[h0]`. Take `⟨y, -, rfl⟩` from `mem_vars_rename _ _ hx`. Conclude with `y.2`. Take `⟨σ, hσ, hm⟩` from `(hb i L' t').1 hp`.
+
+Rewrite using `[hr, ← hG1 σ hσ, ke_evK_ren]`. Conclude with `(sub_eq_zero_iff _ _ _ _).1 (hG2 i) _ _ hm`.
+-/
 private theorem ke_main (S : Set (Pl K)) (B : Type) [Fintype B] (a : B → AF K n) (L : Ix K n → ℂ)
     (t : Pl K → Multiset ℂ) (hc : ∀ w ∉ S, (t w).card = n) (h : ∀ i, ¬ (a i).Pt S (msOf L) t) :
     ∃ Φ : KF (Ix K n) (Pl K × Fin n), admitted S Φ ∧ evK L (hval t) Φ ≠ 0 ∧
@@ -257,6 +341,11 @@ private theorem ke_main (S : Set (Pl K)) (B : Type) [Fintype B] (a : B → AF K 
     rw [hr, ← hG1 σ hσ, ke_evK_ren]
     exact (sub_eq_zero_iff _ _ _ _).1 (hG2 i) _ _ hm
 
+/- English proof (translation)
+Use `choose a ha using fun i => ke_datum hP SE (b i) (hb i)`. Use `choose a' ha' using fun i => ke_datum hP SF (b' i) (hb' i)`. Use `choose a'' ha'' using fun i => ke_bc SE SF hS (a' i)`. Take `⟨Φ, h1, h2, h3⟩` from `ke_main SE (B ⊕ B') (Sum.elim a a'') L t hc (by`. Introduce and unpack `(i | i) hp`.
+
+Conclude with `h i ((ha i _ _).2 hp)`. Take `⟨Λ', t', hp', he⟩` from `(ha'' i _ _).1 hp`. Conclude with `h' i Λ' t' ((ha' i _ _).2 hp') he)`. Use `⟨Φ, h1, h2, fun i L' t' hp => h3 (Sum.inl i) L' t' ((ha i _ _).1 hp), fun i L' t' hp => ?_⟩` and prove the remaining obligations. Conclude with `h3 (Sum.inr i) _ _ ((ha'' i _ _).2 ⟨_, t', (ha' i _ _).1 hp, rfl, fun _ _ => rfl⟩)`.
+-/
 theorem killEx_listed (hP : ParEx)
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyComplex F] [IsTotallyComplex E]
     (n : ℕ) (SE : Set (Pl E)) (SF : Set (Pl F)) (hS : ∀ w : Pl E, w ∈ SE ↔ w.under (𝓞 F) ∈ SF)
@@ -280,6 +369,9 @@ theorem killEx_listed (hP : ParEx)
 
 end UpperTheory.ConvolutionTheory.Ci
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ _ _ n SE SF hS B B' _ _ b b' hb hb' L t hc hO`. Conclude with `killEx_listed hP F E n SE SF hS B B' b b' hb hb' L t hc (fun i => hO.1 _) fun i => hO.2 _`.
+-/
 theorem UpperTheory.ConvolutionTheory.Ci.killEx :
     ParEx → KillEx := by
   intro hP F E _ _ _ _ _ _ _ n SE SF hS B B' _ _ b b' hb hb' L t hc hO

@@ -4,6 +4,27 @@ open MeasureTheory DoubleCoset
 
 namespace GlobalTheory.TwistedOperatorMainTheorem
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ m _ J hJo hJc ι _ x hdisj F hF hsupp hsum`. Establish `hmeas : ∀ a : G, MeasurableSet (doubleCoset a (J : Set G) J)` using `fun a => (IsOpen.mul_left hJo).measurableSet`. Establish `hfin : ∀ a : G, m (doubleCoset a (J : Set G) J) < ⊤` using `fun a => ((hJc.mul isCompact_singleton).mul hJc).measure_lt_top`. Establish `hconst : ∀ a g, g ∈ doubleCoset a (J : Set G) J → F g = F a`. Introduce `a g hg`.
+
+Take `⟨u, hu, w, hw, rfl⟩` from `mem_doubleCoset.1 hg`. Conclude with `hF a u hu w hw`. Establish `hint : ∀ i, ∫ g in doubleCoset (x i) (J : Set G) J, F g ∂m = (m.real (doubleCoset (x i) (J : Set G) J) : ℂ) * F (x i)`. Introduce `i`. Rewrite using `[setIntegral_congr_fun (hmeas _) (fun g hg => hconst (x i) g hg), setIntegral_const, Complex.real_smul]`.
+
+Establish `hnorm : ∀ i, ∫ g in doubleCoset (x i) (J : Set G) J, ‖F g‖ ∂m = m.real (doubleCoset (x i) (J : Set G) J) * ‖F (x i)‖`. Introduce `i`. Rewrite using `[setIntegral_congr_fun (hmeas _) (fun g hg => by rw [hconst (x i) g hg]), setIntegral_const, smul_eq_mul]`. Establish `hon : ∀ i, IntegrableOn F (doubleCoset (x i) (J : Set G) J) m` using `fun i => (integrableOn_const (hfin (x i)).ne).congr_fun (fun g hg => (hconst (x i) g hg).symm) (hmeas _)`. Establish `hU : IntegrableOn F (⋃ i, doubleCoset (x i) (J : Set G) J) m` using `integrableOn_iUnion_of_summable_integral_norm hon (by simpa only [hnorm] using hsum)`.
+
+Establish `hout : ∀ g, g ∉ ⋃ i, doubleCoset (x i) (J : Set G) J → F g = 0`. Introduce `g hg`. Assume the negation of the conclusion as `h`. Take `⟨i, hi⟩` from `hsupp g h`. Conclude with `hg (Set.mem_iUnion.2 ⟨i, hi⟩)`.
+
+Establish `hsumI : HasSum (fun i => (m.real (doubleCoset (x i) (J : Set G) J) : ℂ) * F (x i)) (∫ g, F g ∂m)`. Establish `h` using `hasSum_integral_iUnion (fun i => hmeas (x i)) hdisj hU`. Rewrite `h` using `[setIntegral_eq_integral_of_forall_compl_eq_zero hout]`. Simplify using `only [hint] at h`. Conclude with `h`.
+
+Use `⟨hU.integrable_of_forall_notMem_eq_zero hout, hsumI, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (fun i => DoubleCoset.mk J J (x i))`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `hj : x j ∈ doubleCoset (x i) (J : Set G) J`.
+
+Take `⟨u, hu, w, hw, e⟩` from `(DoubleCoset.eq J J (x i) (x j)).1 hij`. Conclude with `mem_doubleCoset.2 ⟨u, hu, w, hw, e⟩`. Conclude with `Set.disjoint_left.1 (hdisj hne) hj (mem_doubleCoset_self J J (x j))`. Establish `hcls : ∀ i, Quotient.out (DoubleCoset.mk J J (x i)) ∈ doubleCoset (x i) (J : Set G) J`. Introduce `i`.
+
+Take `⟨u, w, hu, hw, e⟩` from `DoubleCoset.mk_out_eq_mul J J (x i)`. Conclude with `mem_doubleCoset.2 ⟨u, hu, w, hw, e⟩`. Establish `hzero : ∀ c ∉ Set.range (fun i => DoubleCoset.mk J J (x i)), (m.real (doubleCoset (Quotient.out c) (J : Set G) J) : ℂ) * F (Quotient.out c) = 0`. Introduce `c hc`. Assume the negation of the conclusion as `h`.
+
+Take `⟨i, hi⟩` from `hsupp _ (right_ne_zero_of_mul h)`. Use `hc ⟨i, ?_⟩` and prove the remaining obligations. Use `show DoubleCoset.mk J J (x i) = c`. Rewrite using `[← DoubleCoset.out_eq' J J c]`. Conclude with `(DoubleCoset.mk_eq_of_doubleCoset_eq (doubleCoset_eq_of_mem hi)).symm`.
+
+Use `(hinj.hasSum_iff hzero).1 ?_` and prove the remaining obligations. Use `hsumI using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `show (m.real (doubleCoset (Quotient.out (DoubleCoset.mk J J (x i))) (J : Set G) J) : ℂ) * F (Quotient.out (DoubleCoset.mk J J (x i))) = _`. Rewrite using `[doubleCoset_eq_of_mem (hcls i), hconst (x i) _ (hcls i)]`.
+-/
 theorem main_thm : ∀ (G : Type) [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G] [inst_3 : MeasurableSpace G] [BorelSpace G] (m : MeasureTheory.Measure G) [MeasureTheory.Measure.IsHaarMeasure m] (J : Subgroup G), IsOpen (↑J : Set G) → IsCompact (↑J : Set G) → ∀ (ι : Type) [Countable ι] (x : ι → G), Pairwise (Function.onFun Disjoint fun (i : ι) ↦ DoubleCoset.doubleCoset (x i) (↑J : Set G) (↑J : Set G)) → ∀ (F : G → ℂ), (∀ (g j : G), j ∈ J → ∀ j' ∈ J, F (j * g * j') = F g) → (∀ (g : G), F g ≠ (0 : ℂ) → ∃ (i : ι), g ∈ DoubleCoset.doubleCoset (x i) (↑J : Set G) (↑J : Set G)) → (Summable fun (i : ι) ↦ MeasureTheory.Measure.real m (DoubleCoset.doubleCoset (x i) (↑J : Set G) (↑J : Set G)) * ‖F (x i)‖) → MeasureTheory.Integrable F m ∧ HasSum (fun (i : ι) ↦ (↑(MeasureTheory.Measure.real m (DoubleCoset.doubleCoset (x i) (↑J : Set G) (↑J : Set G))) : ℂ) * F (x i)) (∫ (g : G), F g ∂m) ∧ HasSum (fun (c : DoubleCoset.Quotient (↑J : Set G) (↑J : Set G)) ↦ (↑(MeasureTheory.Measure.real m (DoubleCoset.doubleCoset (Quotient.out c) (↑J : Set G) (↑J : Set G))) : ℂ) * F (Quotient.out c)) (∫ (g : G), F g ∂m) := by
   intro G _ _ _ _ _ m _ J hJo hJc ι _ x hdisj F hF hsupp hsum
 

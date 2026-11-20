@@ -9,6 +9,9 @@ namespace MassDataIdxSteps
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.Sub Formalism.L2.SG.Measures Formalism.L2.SG.TypedSets MeasureTheory NumberField
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge MassDataIdxStIm
 
+/- English proof (translation)
+The claim follows from `Subgroup.card_map_of_injective (MulAut.conj c).injective`.
+-/
 theorem card_conj {G : Type} [Group G] (H : Subgroup G) (c : G) :
     Nat.card (H.map (MulAut.conj c).toMonoidHom) = Nat.card H :=
   Subgroup.card_map_of_injective (MulAut.conj c).injective
@@ -29,6 +32,17 @@ def ParabolicReductionImage (u : D.what₂.Word) (p : TypX X) : Prop :=
       ∃ B : Subgroup K, Subtype.val '' (B : Set K) = KnatX X u p ∧ ρ₀.ker ≤ B ∧
         ∃ c, B.map ρ₀ = (sG (ZMod (gOf p)) D.R.rS D.R.k).map (MulAut.conj c).toMonoidHom
 
+/- English proof (translation)
+Take `⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩` from `h`. Introduce `K hK ρ hρ hker`. Establish `hKK : K = K₀` using `SetLike.coe_injective (hK.trans hK₀.symm)`. Substitute `hKK` using the available equality. Establish `hkers : ρ.ker = ρ₀.ker`.
+
+Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, hker, hker₀]`. Establish `hkA' : ρ.ker ≤ A` using `hkers.le.trans hkA`. Use `⟨A, hA, hkA', ?_⟩` and prove the remaining obligations. Establish `hq : ∀ f : ↥K →* GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)), Nat.card (A.map f) = Nat.card (↥A ⧸ (f.comp A.subtype).ker)`.
+
+Introduce `f`. Establish `hr : A.map f = (f.comp A.subtype).range` using `by first`. Consider the case `rw [MonoidHom.range_comp, Subgroup.range_subtype]`. Consider the case `rw [MonoidHom.range_comp, Subgroup.subtype_range]`. Rewrite using `[hr]`.
+
+Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm`. Establish `hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker`. Use extensionality with `x`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, hker, hker₀]`. Rewrite using `[hq ρ, hk2, ← hq ρ₀, hc, card_conj]`.
+
+Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩`. Use `first`. Consider the case `exact card_nuG (ZMod (gOf p)) D.R.rS D.R.k`. Consider the case `(rw [card_nuG]; unfold nnC ukC; rfl)`. Consider the case `(rw [card_nuG]; unfold nnC ukC)`.
+-/
 theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p := by
   obtain ⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩ := h
   intro K hK ρ hρ hker
@@ -58,6 +72,17 @@ theorem stImA_of (p : TypX X) (h : LevelReductionImage X hb p) : StImA X hb p :=
   | (rw [card_nuG]; unfold nnC ukC; rfl)
   | (rw [card_nuG]; unfold nnC ukC)
 
+/- English proof (translation)
+Take `⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩` from `h`. Introduce `K hK ρ hρ hker`. Establish `hKK : K = K₀` using `SetLike.coe_injective (hK.trans hK₀.symm)`. Substitute `hKK` using the available equality. Establish `hkers : ρ.ker = ρ₀.ker`.
+
+Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker, hker, hker₀]`. Establish `hkA' : ρ.ker ≤ A` using `hkers.le.trans hkA`. Use `⟨A, hA, hkA', ?_⟩` and prove the remaining obligations. Establish `hq : ∀ f : ↥K →* GL (Formalism.FourierDecayAlt.S3.Idx D.R.rS D.R.k) (ZMod (gOf p)), Nat.card (A.map f) = Nat.card (↥A ⧸ (f.comp A.subtype).ker)`.
+
+Introduce `f`. Establish `hr : A.map f = (f.comp A.subtype).range` using `by first`. Consider the case `rw [MonoidHom.range_comp, Subgroup.range_subtype]`. Consider the case `rw [MonoidHom.range_comp, Subgroup.subtype_range]`. Rewrite using `[hr]`.
+
+Conclude with `Nat.card_congr (QuotientGroup.quotientKerEquivRange (f.comp A.subtype)).toEquiv.symm`. Establish `hk2 : (ρ.comp A.subtype).ker = (ρ₀.comp A.subtype).ker`. Use extensionality with `x`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.coe_comp, Function.comp_apply, hker, hker₀]`. Rewrite using `[hq ρ, hk2, ← hq ρ₀, hc, card_conj]`.
+
+Use `haveI : Fact (gOf p).Prime := ⟨gOf_prime X p⟩`. Use `first`. Consider the case `exact card_sG (ZMod (gOf p)) D.R.rS D.R.k`. Consider the case `(rw [card_sG]; unfold glkC nnC; rfl)`. Consider the case `(rw [card_sG]; unfold glkC nnC)`.
+-/
 theorem stImB_of (u : D.what₂.Word) (p : TypX X) (h : ParabolicReductionImage X u p) : StImB X u p := by
   obtain ⟨K₀, hK₀, ρ₀, hρ₀, hker₀, A, hA, hkA, c, hc⟩ := h
   intro K hK ρ hρ hker

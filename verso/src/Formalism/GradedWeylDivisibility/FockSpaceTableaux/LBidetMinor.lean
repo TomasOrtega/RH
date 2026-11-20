@@ -9,6 +9,17 @@ namespace Formalism.GradedWeylDivisibility
 
 def initW (n s : ℕ) : Fin n → ℕ := fun t => if t.val < s then 1 else 0
 
+/- English proof (translation)
+Use function extensionality and compare the values at `t`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [initW]`. Distinguish the cases in `h : t.val < s`. Rewrite using `[if_pos h, Finset.sum_eq_single ⟨t.val, h⟩]`.
+
+Establish `e : Fin.castLE hs ⟨t.val, h⟩ = t` using `Fin.ext rfl`. Rewrite using `[e, Pi.single_eq_same]`. Introduce `q _ hq`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `htq`.
+
+Apply `hq` to reduce the goal to its premises. Substitute `htq` using the available equality. Conclude with `Fin.ext rfl`. Introduce `hq`. Conclude with `absurd (Finset.mem_univ _) hq`.
+
+Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `htq`. Apply `h` to reduce the goal to its premises.
+
+Substitute `htq` using the available equality. Conclude with `q.isLt`.
+-/
 theorem sum_single_castLE {n s : ℕ} (hs : s ≤ n) :
     (∑ q : Fin s, (Pi.single (Fin.castLE hs q) 1 : Fin n → ℕ)) = initW n s := by
   funext t
@@ -34,6 +45,11 @@ theorem sum_single_castLE {n s : ℕ} (hs : s ≤ n) :
     subst htq
     exact q.isLt
 
+/- English proof (translation)
+Rewrite using `[← mem_weightedHomogeneousSubmodule]`. Unfold `initMinor`. Rewrite using `[Matrix.det_apply]`. Use `_root_.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
+
+Use `zsmul_mem ?_ _` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, ← sum_single_castLE hs]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `q _`. Conclude with `isWeightedHomogeneous_X (R := R) (colW r n) (I (σ q), Fin.castLE hs q)`.
+-/
 theorem initMinor_isWeightedHomogeneous {R : Type*} [CommRing R] {r n s : ℕ}
     (I : Fin s → Fin r) (hs : s ≤ n) :
     IsWeightedHomogeneous (colW r n) (initMinor R I hs) (initW n s) := by
@@ -48,17 +64,38 @@ theorem initMinor_isWeightedHomogeneous {R : Type*} [CommRing R] {r n s : ℕ}
   intro q _
   exact isWeightedHomogeneous_X (R := R) (colW r n) (I (σ q), Fin.castLE hs q)
 
+/- English proof (translation)
+Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem algHom_det_of {R A B : Type*} [CommRing R] [CommRing A] [CommRing B] [Algebra R A]
     [Algebra R B] (φ : A →ₐ[R] B) {s : ℕ} (M : Fin s → Fin s → A) :
     φ (Matrix.of M).det = (Matrix.of fun p q => φ (M p q)).det := by
   rw [AlgHom.map_det]
   rfl
 
+/- English proof (translation)
+Simplify using `only [colAddGen, aeval_X]`.
+-/
 theorem colAddGen_X {R : Type*} [CommRing R] {r n : ℕ} (l j : Fin n) (v : Fin r × Fin n) :
     colAddGen R l j (X v) =
       if v.2 = j then X (some v) + X none * X (some (v.1, l)) else X (some v) := by
   simp only [colAddGen, aeval_X]
 
+/- English proof (translation)
+Unfold `initMinor`. Rewrite using `[algHom_det_of, algHom_det_of]`. Simplify using `only [colAddGen_X, rename_X]`. Distinguish the cases in `hj : j.val < s`. Establish `hl : l.val < s` using `Nat.lt_trans (show l.val < j.val from hlj) hj`.
+
+Establish `hjl : (⟨j.val, hj⟩ : Fin s) ≠ ⟨l.val, hl⟩`. Introduce `h`. Conclude with `hlj.ne' (Fin.ext (Fin.mk.inj_iff.mp h))`. Rewrite using `[← Matrix.det_updateCol_add_smul_self (Matrix.of fun p q : Fin s => (X (some (I p, Fin.castLE hs q)) : MvPolynomial (Option (Fin r × Fin n)) R)) hjl (X none)]`. Use `congr 1`.
+
+Use extensionality with `p q`. Simplify using `only [Matrix.updateCol_apply, Matrix.of_apply]`. Distinguish the cases in `hq : q = ⟨j.val, hj⟩`. Substitute `hq` using the available equality. Establish `e1 : Fin.castLE hs ⟨j.val, hj⟩ = j` using `Fin.ext rfl`.
+
+Establish `e2 : Fin.castLE hs ⟨l.val, hl⟩ = l` using `Fin.ext rfl`. Rewrite using `[e1, e2]`. Simplify using the standard rewrite rules. Establish `hne : Fin.castLE hs q ≠ j`. Introduce `h`.
+
+Establish `hv` using `congrArg Fin.val h`. Conclude with `hq (Fin.ext hv)`. Rewrite using `[if_neg hne, if_neg hq]`. Use `congr 1`. Use extensionality with `p q`.
+
+Simplify using `only [Matrix.of_apply]`. Establish `hne : Fin.castLE hs q ≠ j`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Rewrite using `[← h]`.
+
+Conclude with `q.isLt`. Rewrite using `[if_neg hne]`.
+-/
 theorem initMinor_invariant {R : Type*} [CommRing R] {r n s : ℕ}
     (I : Fin s → Fin r) (hs : s ≤ n) (l j : Fin n) (hlj : l < j) :
     colAddGen R l j (initMinor R I hs) = rename some (initMinor R I hs) := by
@@ -97,6 +134,11 @@ theorem initMinor_invariant {R : Type*} [CommRing R] {r n s : ℕ}
       exact q.isLt
     rw [if_neg hne]
 
+/- English proof (translation)
+Unfold `dualWeyl`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `initMinor_isWeightedHomogeneous I hs`. Simplify using `only [Submodule.mem_iInf]`.
+
+Introduce `l j hlj`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `initMinor_invariant I hs l j hlj`.
+-/
 theorem initMinor_mem {R : Type*} [CommRing R] {r n s : ℕ}
     (I : Fin s → Fin r) (hs : s ≤ n) :
     initMinor R I hs ∈ dualWeyl R r n (initW n s) := by

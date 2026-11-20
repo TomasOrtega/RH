@@ -17,10 +17,16 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Mat
 
 abbrev sizes (r t : ℕ) : Fin (t + 1) → ℕ := Fin.cons r (fun _ => 1)
 
+/- English proof (translation)
+Simplify using `[sizes, Fin.sum_cons]`.
+-/
 theorem sum_sizes (r t : ℕ) : ∑ a, sizes r t a = r + t := by simp [sizes, Fin.sum_cons]
 
 def blocks (r t : ℕ) : (Σ a : Fin (t + 1), Fin (sizes r t a)) ≃ Fin (r + t) := stdBlocks _ (sum_sizes r t)
 
+/- English proof (translation)
+Use `ext`. Establish `hv` using `stdBlocks_val (sizes r t) (sum_sizes r t) 0 i`. Use `haveI : IsEmpty (Fin ((0 : Fin (t + 1)) : ℕ)) := by simp only [Fin.val_zero]; infer_instance`. Rewrite `hv` using `[Finset.univ_eq_empty, Finset.sum_empty, zero_add]`. Conclude with `hv`.
+-/
 theorem blocks_zero (r t : ℕ) (i : Fin r) : blocks r t ⟨0, i⟩ = Fin.castAdd t i := by
   ext
   have hv := stdBlocks_val (sizes r t) (sum_sizes r t) 0 i
@@ -28,6 +34,9 @@ theorem blocks_zero (r t : ℕ) (i : Fin r) : blocks r t ⟨0, i⟩ = Fin.castAd
   rw [Finset.univ_eq_empty, Finset.sum_empty, zero_add] at hv
   exact hv
 
+/- English proof (translation)
+Use `ext`. Establish `hi : (i : ℕ) = 0` using `by have := i.2; simp [sizes] at this; omega`. Simplify using `[blocks, stdBlocks_val, hi, Fin.sum_univ_succ, sizes]`.
+-/
 theorem blocks_succ (r t : ℕ) (j : Fin t) (i : Fin (sizes r t j.succ)) :
     blocks r t ⟨j.succ, i⟩ = Fin.natAdd r j := by
   ext
@@ -36,18 +45,35 @@ theorem blocks_succ (r t : ℕ) (j : Fin t) (i : Fin (sizes r t j.succ)) :
 
 def zeroIdx (r t : ℕ) (j : Fin t) : Fin (sizes r t j.succ) := ⟨0, by simp [sizes]⟩
 
+/- English proof (translation)
+The claim follows from `(blocks_succ r t j _).symm`.
+-/
 theorem natAdd_eq (r t : ℕ) (j : Fin t) : Fin.natAdd r j = blocks r t ⟨j.succ, zeroIdx r t j⟩ :=
   (blocks_succ r t j _).symm
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[← blocks_zero, Equiv.symm_apply_apply]`.
+-/
 theorem blk_castAdd (r t : ℕ) (i : Fin r) : blk (blocks r t) (Fin.castAdd t i) = 0 := by
   unfold blk; rw [← blocks_zero, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[natAdd_eq, Equiv.symm_apply_apply]`.
+-/
 theorem blk_natAdd (r t : ℕ) (j : Fin t) : blk (blocks r t) (Fin.natAdd r j) = j.succ := by
   unfold blk; rw [natAdd_eq, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem natAdd_ne_castAdd {r t : ℕ} (i : Fin t) (j : Fin r) : Fin.natAdd r i ≠ Fin.castAdd t j := by
   intro h; have := congrArg Fin.val h; simp at this; omega
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, ← Matrix.fromBlocks_toBlocks (M.submatrix finSumFinEquiv finSumFinEquiv)]`. Establish `: (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0`. Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₁, h0]`. Rewrite using `[this, Matrix.det_fromBlocks_zero₂₁]`.
+
+Apply the tactic sequence `congr 2 <;> ext i j <;> simp [Matrix.toBlocks₁₁, Matrix.toBlocks₂₂]`.
+-/
 theorem det_of_lowerLeft {R : Type} [CommRing R] {r t : ℕ} (M : Matrix (Fin (r + t)) (Fin (r + t)) R)
     (h0 : ∀ (i : Fin t) (j : Fin r), M (Fin.natAdd r i) (Fin.castAdd t j) = 0) :
     M.det = (M.submatrix (Fin.castAdd t) (Fin.castAdd t)).det * (M.submatrix (Fin.natAdd r) (Fin.natAdd r)).det := by
@@ -58,6 +84,9 @@ theorem det_of_lowerLeft {R : Type} [CommRing R] {r t : ℕ} (M : Matrix (Fin (r
   rw [this, Matrix.det_fromBlocks_zero₂₁]
   congr 2 <;> ext i j <;> simp [Matrix.toBlocks₁₁, Matrix.toBlocks₂₂]
 
+/- English proof (translation)
+Rewrite using `[det_of_lowerLeft M h0, h1, det_one, one_mul]`.
+-/
 theorem det_lowerRight {R : Type} [CommRing R] {r t : ℕ} (M : Matrix (Fin (r + t)) (Fin (r + t)) R)
     (h0 : ∀ (i : Fin t) (j : Fin r), M (Fin.natAdd r i) (Fin.castAdd t j) = 0)
     (h1 : M.submatrix (Fin.castAdd t) (Fin.castAdd t) = 1) :
@@ -75,6 +104,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def stab {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (v : W) : Subgroup G :=
   GlobalTheory.DoubleCosetSetoid.repStabilizer ρ v
 
+/- English proof (translation)
+Introduce `h hh`. Establish `hKO` using `GlobalTheory.StepData.KOne_le_KO hh`. Establish `hm` using `GlobalTheory.StepData.mem_KOne.1 hh`. Establish `hM : GlobalTheory.StepData.MaxM (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r) - 1)`. Introduce `i j`.
+
+Use `hm (Fin.natAdd r i) (Fin.natAdd r j)` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`. Take `⟨g', hg', hgv⟩` from `GlobalTheory.StepData.exists_mem_KOne hM`. Establish `hu` using `GlobalTheory.StepData.det_of_mem_KOne hg'`. Establish `key` using `hv h hKO (fun i j => by`.
+
+Use `hm (Fin.natAdd r i) (Fin.castAdd t j)` as an intermediate fact. Simplify `this)` using `[Matrix.one_apply, natAdd_ne_castAdd i j]`. Use the proof step `(fun i j => by`. Use `hm (Fin.castAdd t i) (Fin.castAdd t j)` as an intermediate fact. Simplify `this)` using `[Matrix.one_apply]`.
+
+Use the proof step `(Matrix.GeneralLinearGroup.det g') (by rw [Matrix.GeneralLinearGroup.val_det_apply, hgv])`. Use `show π h v = v`. Rewrite using `[key, hχ _ hu, Units.val_one, one_smul]`.
+-/
 theorem KOne_le_stab {r t : ℕ} {χ : kˣ →* ℂˣ} (hχ : IsTame χ) {W : Type} [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin (r + t)) k) W} {v : W} (hv : IsBlockVec χ π v) :
     KOne k (Fin (r + t)) ≤ stab π v := by
@@ -105,6 +143,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Spl
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `h hh`. Take `⟨hP, hD⟩` from `mem_unipRad.1 hh.1`. Establish `h0 : ∀ (i : Fin t) (j : Fin r), h.val (Fin.natAdd r i) (Fin.castAdd t j) = 0` using `fun i j => mem_parab.1 hP _ _ (by rw [blk_castAdd, blk_natAdd]; exact Fin.succ_pos i)`. Establish `h1 : h.val.submatrix (Fin.castAdd t) (Fin.castAdd t) = 1`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.submatrix_apply, Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos rfl]`. Rewrite using `[← blocks_zero]`.
+
+Conclude with `(hD 0 i i).trans (Matrix.one_apply_eq _)`. Rewrite using `[if_neg hij]`. Rewrite using `[← blocks_zero, ← blocks_zero]`. Conclude with `(hD 0 i j).trans (Matrix.one_apply_ne hij)`. Establish `hdet : (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det = 1`.
+
+Rewrite using `[det_lowerRight _ h0 h1, ← Matrix.GeneralLinearGroup.val_det_apply, det_eq_one_of_mem_unipRad k hh.1, Units.val_one]`. Establish `key` using `hv h hh.2 (fun i j => by simp [h0]) (fun i j => by`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply] at this`. Simplify using `[this, Matrix.one_apply]) 1 (by rw [hdet, Units.val_one])`.
+
+Use `show π h v = v`. Rewrite using `[key, map_one, Units.val_one, one_smul]`.
+-/
 theorem unipRad_inf_KO_le_stab {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin (r + t)) k) W} {v : W} (hv : IsBlockVec χ π v) :
     unipRad k (blocks r t) ⊓ KO k (Fin (r + t)) ≤ stab π v := by
@@ -141,6 +190,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Spl
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Introduce `p q`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective q`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Conclude with `hy a i j`. Rewrite using `[leviEmb_apply_ne k e y h]`. Conclude with `zero_mem _`.
+-/
 theorem intM_leviEmb {α n : Type} {m : α → Type} [Fintype α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
     [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) (y : Levi k m) (hy : ∀ a, GlobalTheory.StepData.IntM (y a).val) :
     GlobalTheory.StepData.IntM (leviEmb k e y).val := by
@@ -157,6 +211,11 @@ theorem intM_leviEmb {α n : Type} {m : α → Type} [Fintype α] [∀ a, Fintyp
 abbrev single {r t : ℕ} (j : Fin t) (g : GL (Fin (sizes r t j.succ)) k) : Levi k (fun a => Fin (sizes r t a)) :=
   Pi.mulSingle j.succ g
 
+/- English proof (translation)
+Distinguish the cases in `ha : a = j.succ`. Substitute `ha` using the available equality. Rewrite using `[single, Pi.mulSingle_eq_same]`. Conclude with `hg`. Rewrite using `[single, Pi.mulSingle_eq_of_ne ha]`.
+
+Conclude with `one_mem _`.
+-/
 theorem single_mem_KO {r t : ℕ} (j : Fin t) {g : GL (Fin (sizes r t j.succ)) k}
     (hg : g ∈ KO k (Fin (sizes r t j.succ))) (a : Fin (t + 1)) : single j g a ∈ KO k (Fin (sizes r t a)) := by
   by_cases ha : a = j.succ
@@ -166,12 +225,26 @@ theorem single_mem_KO {r t : ℕ} (j : Fin t) {g : GL (Fin (sizes r t j.succ)) k
   · rw [single, Pi.mulSingle_eq_of_ne ha]
     exact one_mem _
 
+/- English proof (translation)
+Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => isUnram_absPow k _ _ ?_` and prove the remaining obligations. Conclude with `GlobalTheory.StepData.valuation_det_of_mem_KO (single_mem_KO j hg a)`.
+-/
 theorem deltaHalf_single {r t : ℕ} (j : Fin t) {g : GL (Fin (sizes r t j.succ)) k}
     (hg : g ∈ KO k (Fin (sizes r t j.succ))) : deltaHalf k (fun a => Fin (sizes r t a)) (single j g) = 1 := by
   rw [deltaHalf_apply]
   refine Finset.prod_eq_one fun a _ => isUnram_absPow k _ _ ?_
   exact GlobalTheory.StepData.valuation_det_of_mem_KO (single_mem_KO j hg a)
 
+/- English proof (translation)
+Use `set h := leviEmb k (blocks r t) (single j g) with hdef`. Establish `hKO : h ∈ KO k (Fin (r + t))`. Use `GlobalTheory.StepData.mem_KO.2 ⟨intM_leviEmb _ _ fun a => GlobalTheory.StepData.intM_of_mem_KO (single_mem_KO j hg a), ?_⟩` and prove the remaining obligations. Rewrite using `[hdef, ← map_inv]`. Conclude with `intM_leviEmb _ _ fun a => GlobalTheory.StepData.intM_of_mem_KO (inv_mem (single_mem_KO j hg a))`.
+
+Establish `h0 : ∀ (i : Fin t) (j' : Fin r), h.val (Fin.natAdd r i) (Fin.castAdd t j') = 0` using `fun i j' => by`. Rewrite using `[natAdd_eq, ← blocks_zero]`. Conclude with `leviEmb_apply_ne k _ _ (Fin.succ_ne_zero i) _ _`. Establish `hx0 : single j g 0 = 1` using `Pi.mulSingle_eq_of_ne (Fin.succ_ne_zero j).symm _`. Establish `h1 : h.val.submatrix (Fin.castAdd t) (Fin.castAdd t) = 1`.
+
+Establish `hx0' : ((single j g 0 : GL (Fin (sizes r t 0)) k) : Matrix (Fin (sizes r t 0)) (Fin (sizes r t 0)) k) = 1`. Rewrite using `[hx0, Units.val_one]`. Use extensionality with `i i'`. Rewrite using `[Matrix.submatrix_apply, ← blocks_zero, ← blocks_zero, hdef]`. Conclude with `(leviEmb_apply_same k (blocks r t) (single j g) 0 i i').trans (congrFun (congrFun hx0' i) i')`.
+
+Establish `key` using `hv h hKO (fun i j' => by simp [h0]) (fun i j' => by`. Use `congrFun (congrFun h1 i) j'` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply] at this`. Simplify using `[this, Matrix.one_apply]) (Matrix.GeneralLinearGroup.det g) (by`. Rewrite using `[det_lowerRight _ h0 h1, ← Matrix.GeneralLinearGroup.val_det_apply, hdef, det_leviEmb k, Finset.prod_eq_single j.succ (fun b _ hb => by rw [single, Pi.mulSingle_eq_of_ne hb, map_one]) (by simp), single, Pi.mulSingle_eq_same])`.
+
+Conclude with `key`.
+-/
 theorem act_single {r t : ℕ} {χ : kˣ →* ℂˣ} {W : Type} [AddCommGroup W] [Module ℂ W]
     {π : Representation ℂ (GL (Fin (r + t)) k) W} {v : W} (hv : IsBlockVec χ π v) (j : Fin t)
     {g : GL (Fin (sizes r t j.succ)) k} (hg : g ∈ KO k (Fin (sizes r t j.succ))) :
@@ -204,6 +277,13 @@ end GlobalTheory.JacBlock
 
 namespace GlobalTheory.JacBlock
 
+/- English proof (translation)
+Introduce `hP k _ _ _ _ r t χ π v hχ hv0 hv`. Use `⟨blocks r t, Submodule.Quotient.mk v, ?_, ?_⟩` and prove the remaining obligations. Introduce `hx`. Apply `hv0` to reduce the goal to its premises. Use `hP k (r + t) (t + 1) _ (blocks r t) π v ?_ hx` and prove the remaining obligations.
+
+Introduce and unpack `⟨h, hh⟩`. Use `sup_le (KOne_le_stab hχ hv) (unipRad_inf_KO_le_stab hv) hh` as an intermediate fact. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `this`. Introduce `j g hg`.
+
+Rewrite using `[GlobalTheory.SmGL.jac_mk, deltaHalf_single j hg, act_single hv j hg, inv_one, Units.val_one, one_smul, Submodule.Quotient.mk_smul]`.
+-/
 theorem exists_jacquet_ne_zero_of_isBlockVec : GlobalTheory.Published.DepthZeroJacquetInjective → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ) (π : Irr k (r + t)) (v : π.V), GlobalTheory.SplitWeil.IsTame χ → v ≠ 0 → IsBlockVec χ π.π v → ∃ (e : (Σ a : Fin (t + 1), Fin ((Fin.cons r (fun _ => 1) : Fin (t + 1) → ℕ) a)) ≃ Fin (r + t)) (x : GlobalTheory.PRep.Jacquet π.π (GlobalTheory.SmGL.unipRad k e)), x ≠ 0 ∧ ∀ (j : Fin t) (g : GL (Fin ((Fin.cons r (fun _ => 1) : Fin (t + 1) → ℕ) j.succ)) k), g ∈ GlobalTheory.SplitWeil.KO k (Fin ((Fin.cons r (fun _ => 1) : Fin (t + 1) → ℕ) j.succ)) → GlobalTheory.SmGL.jac e π.π (Pi.mulSingle j.succ g) x = (χ (Matrix.GeneralLinearGroup.det g) : ℂ) • x := by
   intro hP k _ _ _ _ r t χ π v hχ hv0 hv
   refine ⟨blocks r t, Submodule.Quotient.mk v, ?_, ?_⟩

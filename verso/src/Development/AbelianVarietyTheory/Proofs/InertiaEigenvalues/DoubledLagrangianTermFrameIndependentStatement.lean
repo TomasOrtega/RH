@@ -8,5 +8,8 @@ open Formalism.IndefR.Lev Formalism.IndefR.Mult Formalism.IndefR.Datum Formalism
 open GlobalTheory.RawLift
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RawLift.lagTerm_frame_indep | exact GlobalTheory.RawLift.lagTerm_frame_indep | (intros; apply GlobalTheory.RawLift.lagTerm_frame_indep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.doubled_lagrangian_term_frame_independent : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)), IsCovolOne (ratL W V) μ 𝓕 → IsStdChar D ψ (-1) → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → ∀ (Y : Lag W) C C', IsLagFrame W Y C → IsLagFrame W Y C' → lagTerm μ 𝓕 C f₁ f₂ = lagTerm μ 𝓕 C' f₁ f₂ := by
   first | exact @GlobalTheory.RawLift.lagTerm_frame_indep | exact GlobalTheory.RawLift.lagTerm_frame_indep | (intros; apply GlobalTheory.RawLift.lagTerm_frame_indep <;> assumption)

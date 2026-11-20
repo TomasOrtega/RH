@@ -12,6 +12,37 @@ open PositivityTheory.RgTw (Mat)
 open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.RealD UpperTheory.RealTr
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
+/- English proof (translation)
+Introduce `n c ν hν hc hmaj hnsq`. Take `⟨_, _, _, hlin, _, _, halt, hperm, hasym, hsym, _, hstrict, _⟩` from `cfBasic n`. Take `⟨hR1, -, hρ, -, -, hR6⟩` from `rearr n`. Use `set ρ := rhoV n with hρdef`. Use `set lam : Wt n := ν + ρ with hlam`.
+
+Establish `hlamS : StrictAnti lam`. Introduce `a b hab`. Use `show ν b + ρ b < ν a + ρ a`. Combine the linear relations using `[hν hab.le, hρ hab]`. Establish `hA : ASym (alt ρ * c)`.
+
+Rewrite using `[mul_comm]`. Conclude with `(hsym c (alt ρ) hc).1 (hasym ρ)`. Establish `hsg1 : sg (1 : Equiv.Perm (Fin n)) = 1`. Establish `e` using `hperm ρ 1`. Simplify using `only [Equiv.Perm.coe_one, Function.comp_id] at e`.
+
+Establish `e2 : cf (alt ρ) ρ = cf (sg (1 : Equiv.Perm (Fin n)) • alt ρ) ρ` using `by rw [← e]`. Rewrite `e2` using `[(hlin (alt ρ) (alt ρ) (sg (1 : Equiv.Perm (Fin n))) ρ).2, (hstrict ρ hρ).1]`. Simplify using `using e2.symm`. Establish `hterm : ∀ (x : Wt n) (w : Equiv.Perm (Fin n)), Antitone x → cf c (x - ρ ∘ ⇑w) ≠ 0 → ∑ a, x a * x a ≤ ∑ a, x a * ν a + ∑ a, x a * ρ (w a)`. Introduce `x w hx hne`.
+
+Establish `h1 : ∑ a, x a * (x - ρ ∘ ⇑w) a ≤ ∑ a, x a * ν a` using `hmaj _ hne x hx`. Establish `h2 : ∑ a, x a * (x - ρ ∘ ⇑w) a = ∑ a, x a * x a - ∑ a, x a * ρ (w a)`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Simplify using `[mul_sub]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsplit : ∀ x : Wt n, ∑ a, x a * lam a = ∑ a, x a * ν a + ∑ a, x a * ρ a`. Introduce `x`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[hlam, mul_add]`. Establish `hone : ∀ x : Wt n, StrictAnti x → cf (alt ρ * c) x ≠ 0 → x = lam`. Introduce `x hx hne0`. Establish `hne` using `hne0`. Rewrite `hne` using `[halt]`.
+
+Take `⟨w, -, hw⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Establish `hcw : cf c (x - ρ ∘ ⇑w) ≠ 0` using `right_ne_zero_of_mul hw`. Establish `h3` using `hterm x w hx.antitone hcw`. Establish `h4` using `(hR1 x ρ hx.antitone hρ.antitone w).1`. Establish `h5 : nsq x ≤ ∑ a, x a * lam a`.
+
+Establish `e1` using `hsplit x`. Establish `e2 : nsq x = ∑ a, x a * x a`. Unfold `nsq`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hR6 x lam h5).2 (hnsq x hne0).ge`. Establish `hcoef : cf (alt ρ * c) lam = cf c ν`. Rewrite using `[halt, Finset.sum_eq_single 1]`. Establish `e : lam - ρ ∘ ⇑(1 : Equiv.Perm (Fin n)) = ν`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[hlam]`. Rewrite using `[e, hsg1, one_mul]`. Introduce `w _ hw1`. Assume the negation of the conclusion as `hne`.
+
+Establish `hcw : cf c (lam - ρ ∘ ⇑w) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `h3` using `hterm lam w hlamS.antitone hcw`. Establish `h4` using `hR1 lam ρ hlamS.antitone hρ.antitone w`. Establish `e1 : ∑ a, lam a * lam a = ∑ a, lam a * ν a + ∑ a, lam a * ρ a` using `hsplit lam`. Conclude with `hw1 (h4.2 hlamS hρ (le_antisymm h4.1 (by linarith)))`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Take `⟨s, hs, hf⟩` from `asymExp n _ hA`. Establish `hsub : s ⊆ {lam}` using `fun x hx => Finset.mem_singleton.mpr (hone x (hs x hx).1 (hs x hx).2)`. Rewrite using `[← hcoef]`.
+
+Break down `Finset.subset_singleton_iff.mp hsub with h | h` into its components or cases. Rewrite `hf` using `[h, Finset.sum_empty]`. Establish `z` using `(hlin 0 0 0 lam).2`. Rewrite `z` using `[zero_smul, zero_mul]`. Rewrite using `[hf, z, zero_smul]`.
+
+Rewrite `hf` using `[h, Finset.sum_singleton]`. Conclude with `hf`.
+-/
 theorem UpperTheory.RealTr.wcfForm :
     ∀ (n : ℕ) (c : FR n) (ν : Wt n), Antitone ν → Sym c → (∀ μ, cf c μ ≠ 0 → Maj μ ν) →
       (∀ x, cf (alt (rhoV n) * c) x ≠ 0 → nsq x = nsq (ν + rhoV n)) → alt (rhoV n) * c = cf c ν • alt (ν + rhoV n) := by

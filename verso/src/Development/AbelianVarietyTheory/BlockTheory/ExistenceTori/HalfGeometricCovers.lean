@@ -33,6 +33,9 @@ def TrivMod (ξ : (AdE F E)ˣ →* Circle) (𝔞 : Ideal (𝓞 E)) : Prop :=
 def RamExactly (ξ : (AdE F E)ˣ →* Circle) (𝔣 : Ideal (𝓞 E)) : Prop :=
   𝔣 ≠ ⊥ ∧ TrivMod ξ 𝔣 ∧ ∀ P 𝔤 : Ideal (𝓞 E), P.IsPrime → 𝔣 = P * 𝔤 → ¬ TrivMod ξ 𝔤
 
+/- English proof (translation)
+Use `⟨top_ne_bot, fun _ _ _ => rfl, fun P 𝔤 hP h _ => hP.ne_top ?_⟩` and prove the remaining obligations. Conclude with `top_le_iff.1 (h.le.trans Ideal.mul_le_left)`.
+-/
 example : RamExactly (1 : (AdE F E)ˣ →* Circle) ⊤ := by
   refine ⟨top_ne_bot, fun _ _ _ => rfl, fun P 𝔤 hP h _ => hP.ne_top ?_⟩
   exact top_le_iff.1 (h.le.trans Ideal.mul_le_left)
@@ -80,6 +83,9 @@ def ClassesAt {Cl : Type} (r M M₂ bad : ℕ) (PQ : Ideal (𝓞 E)) (Lh : Cl �
     (⟨L⟩ : GenLat E n).TrivAt M₂ → ∃! k, ∃ γ, InLevel r M PQ γ ∧ Carries γ (Lh k) L) ∧
   ∀ k, 0 < gam k ∧ gam k = Nat.card {γ : Matrix (Fin n) (Fin n) E // InLevel r M PQ γ ∧ Carries γ (Lh k) (Lh k)}
 
+/- English proof (translation)
+Use `⟨⟨?_, ⟨1, by simp, fun i j => ⟨0, by simp⟩⟩, 1, by simp, fun i b hi hb => ⟨0, zero_mem _, ?_⟩⟩, fun v => by simp⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_one _ (by simp [cc]) (by simp [cc])]`. Simplify using the standard rewrite rules. Establish `: i ≠ b` using `fun e => by subst e; omega`. Simplify using `[Matrix.one_apply_ne this]`.
+-/
 example (r M : ℕ) (PQ : Ideal (𝓞 E)) (L : Submodule (𝓞 E) (Fin n → E)) :
     InLevel r M PQ (1 : Matrix (Fin n) (Fin n) E) ∧ Carries 1 L L := by
   refine ⟨⟨?_, ⟨1, by simp, fun i j => ⟨0, by simp⟩⟩, 1, by simp, fun i b hi hb => ⟨0, zero_mem _, ?_⟩⟩, fun v => by simp⟩
@@ -101,6 +107,9 @@ def finU (D : D7) : (AE D)ˣ →* IdF D := Units.map (finPart D).toMonoidHom
 def LLc (D : D7) : IntermediateField ℚ ℂ :=
   IntermediateField.adjoin ℚ (Set.range D.what₂.embLL)
 
+/- English proof (translation)
+The claim follows from `Nat.le_add_right _ _`.
+-/
 theorem r_le_nV (D : D7) : D.R.r ≤ D.R.nV := Nat.le_add_right _ _
 
 def chiSplit {X : ThetaX D} (Tt : ThetaTied D X) (t : D.what₂.Tup) (j : ℕ) : (AE D)ˣ →* Circle :=

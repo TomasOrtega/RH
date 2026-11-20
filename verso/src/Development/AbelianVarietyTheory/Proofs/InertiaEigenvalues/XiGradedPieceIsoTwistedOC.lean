@@ -13,21 +13,38 @@ namespace GlobalTheory.Cyc.Graded
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff]`. Rewrite using `[PadicComplex.norm_eq_norm]`. Conclude with `(Valued.toNormedField.norm_le_one_iff (L := PadicComplex l) (Γ₀ := NNReal)).symm`.
+-/
 theorem mem_OC_iff (y : PadicComplex l) : y ∈ PadicComplexInt l ↔ ‖y‖ ≤ 1 := by
   rw [PadicComplexInt, Valuation.mem_valuationSubring_iff]
   rw [PadicComplex.norm_eq_norm]
   exact (Valued.toNormedField.norm_le_one_iff (L := PadicComplex l) (Γ₀ := NNReal)).symm
 
+/- English proof (translation)
+The claim follows from `(mem_OC_iff _).1 y.2`.
+-/
 theorem norm_OC (y : OC l) : ‖(y : PadicComplex l)‖ ≤ 1 := (mem_OC_iff _).1 y.2
 
+/- English proof (translation)
+Conclude with `norm_algebraMap' _ x`.
+-/
 theorem norm_alg (x : ℚ_[l]) : ‖algebraMap ℚ_[l] (PadicComplex l) x‖ = ‖x‖ := by
   exact norm_algebraMap' _ x
 
+/- English proof (translation)
+Establish `h` using `norm_alg ((l : ℚ_[l]) ^ m)`. Rewrite `h` using `[map_pow, map_natCast]`. Rewrite using `[h, Padic.norm_p_pow]`.
+-/
 theorem norm_lpow (m : ℕ) : ‖(l : PadicComplex l) ^ m‖ = (l : ℝ) ^ (-(m : ℤ)) := by
   have h := norm_alg ((l : ℚ_[l]) ^ m)
   rw [map_pow, map_natCast] at h
   rw [h, Padic.norm_p_pow]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy`. Establish `hpos : 0 < ‖y‖ / 2` using `by positivity`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one hpos (inv_lt_one_of_one_lt₀ hl)`. Use `h m` as an intermediate fact.
+
+Rewrite `this` using `[zpow_neg, zpow_natCast, ← inv_pow]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_zero_of_norm_le (y : PadicComplex l) (h : ∀ m : ℕ, ‖y‖ ≤ 2 * (l : ℝ) ^ (-(m : ℤ))) :
     y = 0 := by
   by_contra hy
@@ -38,6 +55,15 @@ theorem eq_zero_of_norm_le (y : PadicComplex l) (h : ∀ m : ℕ, ‖y‖ ≤ 2 
   rw [zpow_neg, zpow_natCast, ← inv_pow] at this
   linarith
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_norm_le` to reduce the goal to its premises. Introduce `m`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec m z)`. Establish `hz : z = (z.appr m : ℤ_[l]) + w * (l : ℤ_[l]) ^ m` using `by rw [hw]; ring`.
+
+Establish `h1 : ((θ (algebraMap ℤ_[l] (Ainf l) z) : OC l) : PadicComplex l) - zC z = ((θ (algebraMap ℤ_[l] (Ainf l) w) : OC l) : PadicComplex l) * (l : PadicComplex l) ^ m - zC w * (l : PadicComplex l) ^ m`. Generalize the expression as in `z.appr m = n at hz`. Substitute `hz` using the available equality. Simplify using `[zC]`. Establish `h2 : ‖zC w‖ ≤ 1` using `by rw [zC, norm_alg]; exact w.2`.
+
+Establish `h3` using `norm_OC (θ (algebraMap ℤ_[l] (Ainf l) w))`. Establish `h4 : 0 ≤ (l : ℝ) ^ (-(m : ℤ))` using `by positivity`. Rewrite using `[h1]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_lpow]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem theta_alg (θ : Ainf l →+* OC l) (z : ℤ_[l]) :
     ((θ (algebraMap ℤ_[l] (Ainf l) z) : OC l) : PadicComplex l) = zC z := by
   rw [← sub_eq_zero]
@@ -59,17 +85,26 @@ theorem theta_alg (θ : Ainf l →+* OC l) (z : ℤ_[l]) :
   rw [norm_mul, norm_mul, norm_lpow]
   nlinarith
 
+/- English proof (translation)
+The claim follows from `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+-/
 theorem inclW_inj : Function.Injective (inclW l) :=
   WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
 variable {P : LocPrime l} (AI : LocAinf l P)
 
+/- English proof (translation)
+Apply `inclW_inj` to reduce the goal to its premises. Use `congrArg (inclW l) h` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul]`. Conclude with `AI.isUnit_inclW_ξ.mul_left_cancel this`.
+-/
 theorem xi_cancel {a b : Ainf l} (h : AI.ξ * a = AI.ξ * b) : a = b := by
   apply inclW_inj
   have := congrArg (inclW l) h
   rw [map_mul, map_mul] at this
   exact AI.isUnit_inclW_ξ.mul_left_cancel this
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [LocAinf.εroot]`. Consider the case `succ k ih`. Rewrite using `[pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]`. Conclude with `ih`.
+-/
 theorem εroot_pow (m : ℕ) : AI.εroot m ^ (l ^ m) = AI.ε := by
   induction m with
   | zero => simp [LocAinf.εroot]
@@ -77,11 +112,39 @@ theorem εroot_pow (m : ℕ) : AI.εroot m ^ (l ^ m) = AI.ε := by
     rw [pow_succ', pow_mul, LocAinf.εroot, Function.iterate_succ_apply', frobeniusEquiv_symm_pow_p]
     exact ih
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+-/
 theorem ζQ_pow (m : ℕ) : P.ζQ m ^ (l ^ m) = 1 := by
   induction m with
   | zero => simp [P.ζQ_zero]
   | succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]
 
+/- English proof (translation)
+Take `⟨-, -, hact, hker, hζ⟩` from `hθ`. Establish `hπ : θ AI.π₁ = AI.ζ 1 - 1`. Rewrite using `[LocAinf.π₁, map_sub, map_one, ← hζ 1]`. Both sides reduce to the same expression. Establish `hne : ((AI.ζ 1 - 1 : OC l) : PadicComplex l) ≠ 0`.
+
+Introduce `h`. Conclude with `AI.ζ_one (sub_eq_zero.1 (Subtype.ext h))`. Establish `hgπ : θ (AI.actW g AI.π₁) = AI.ζ 1 - 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hact g AI.π₁` as an intermediate fact.
+
+Rewrite `this` using `[hπ]`. Rewrite using `[this]`. Use `push_cast`. Rewrite using `[map_sub, map_one, AI.ζ_eq, AI.actC_ext, hg]`. Rewrite using `[← sub_eq_zero]`.
+
+Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[mul_zero]`. Apply `eq_zero_of_norm_le` to reduce the goal to its premises. Introduce `m`. Take `⟨a, ha, hga⟩` from `P.χQ_cyc g m (P.ζQ m) (ζQ_pow m)`.
+
+Use `set z : Ainf l := WittVector.teichmuller l (AI.εroot m) with hz`. Establish `hzl : z ^ (l ^ m) = 1 + AI.μ`. Rewrite using `[hz, ← map_pow, εroot_pow, LocAinf.μ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : θ (AI.actW g z - z ^ a) = 0`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_sub, map_pow]`. Use `push_cast`. Rewrite using `[hact, hζ m, AI.ζ_eq, AI.actC_ext, hga, sub_eq_zero]`. Conclude with `map_pow (algebraMap (Om l) (PadicComplex l)) _ _`.
+
+Take `⟨b, hb⟩` from `(hker _).1 h0`. Establish `hb' : AI.actW g z = z ^ a + AI.ξ * b` using `by rw [← hb]; ring`. Take `⟨k, hk⟩` from `Polynomial.powAddExpansion (z ^ a) (AI.ξ * b) (l ^ m)`. Take `⟨k', hk'⟩` from `Polynomial.powAddExpansion (1 : Ainf l) AI.μ a`. Establish `h1 : 1 + AI.actW g AI.μ = (z ^ a + AI.ξ * b) ^ (l ^ m)`.
+
+Rewrite using `[← hb', ← map_pow, hzl, map_add, map_one]`. Rewrite `h1` using `[hk, ← pow_mul, mul_comm a, pow_mul, hzl, hk', AI.μ_eq, map_mul, hlam]`. Establish `h2 : AI.actW g AI.π₁ * lam = (a : Ainf l) * AI.π₁ + (l : Ainf l) ^ m * ((z ^ a) ^ (l ^ m - 1) * b) + AI.ξ * (k' * AI.π₁ ^ 2 + k * b ^ 2)`. Apply `xi_cancel AI` to reduce the goal to its premises. Rewrite `h1` using `[Nat.cast_pow, one_pow, one_pow]`.
+
+Take the linear combination `h1`. Establish `hξ : θ AI.ξ = 0` using `(hker _).2 dvd_rfl`. Establish `h3` using `congrArg (fun t => ((θ t : OC l) : PadicComplex l)) h2`. Simplify using `only [map_add, map_mul, hξ, hgπ, hπ, map_pow, map_natCast, zero_mul, add_zero] at h3`. Use `set u : OC l := (θ z ^ a) ^ (l ^ m - 1) * θ b with hu`.
+
+Establish `h4 : ((AI.ζ 1 - 1 : OC l) : PadicComplex l) * (((θ lam : OC l) : PadicComplex l) - algebraMap ℚ_[l] (PadicComplex l) (P.χQ g : ℚ_[l])) = (l : PadicComplex l) ^ m * (u : PadicComplex l) - ((AI.ζ 1 - 1 : OC l) : PadicComplex l) * algebraMap ℚ_[l] (PadicComplex l) ((P.χQ g : ℚ_[l]) …`. Rewrite using `[map_sub, map_natCast]`. Generalize the expression as in `(AI.ζ 1 - 1 : OC l) = t at h3 ⊢`. Move the coercions through the operations in `at h3`. Take the linear combination `h3`.
+
+Rewrite using `[h4]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_lpow, norm_alg]`. Establish `h5` using `norm_OC u`. Establish `h6` using `norm_OC (AI.ζ 1 - 1)`.
+
+Establish `h7 : 0 ≤ (l : ℝ) ^ (-(m : ℤ))` using `by positivity`. Establish `h8` using `norm_nonneg ((P.χQ g : ℚ_[l]) - a)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem theta_lambda (θ : Ainf l →+* OC l) (hθ : IsTheta AI θ) (g : GQ l)
     (hg : g (P.ζQ 1) = P.ζQ 1) (lam : Ainf l) (hlam : AI.actW g AI.ξ = lam * AI.ξ) :
     ((θ lam : OC l) : PadicComplex l) = algebraMap ℚ_[l] (PadicComplex l) (P.χQ g : ℚ_[l]) := by
@@ -151,9 +214,17 @@ def toM (i : ℤ) : Ainf l →+ Mxi (AinfSub l) (xiU AI) i where
   map_zero' := Subtype.ext (by simp)
   map_add' a b := Subtype.ext (by simp [mul_add])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toM_val (i : ℤ) (a : Ainf l) :
     (toM AI i a : WCb l) = ((xiU AI ^ i : (WCb l)ˣ) : WCb l) * inclW l a := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Use `congrArg Subtype.val h` as an intermediate fact. Rewrite `this` using `[toM_val, toM_val]`. Conclude with `inclW_inj ((Units.mul_right_inj _).1 this)`.
+
+Introduce and unpack `⟨x, y, ⟨a, rfl⟩, rfl⟩`. Conclude with `⟨a, rfl⟩`.
+-/
 theorem toM_bij (i : ℤ) : Function.Bijective (toM AI i) := by
   constructor
   · intro a b h
@@ -163,6 +234,13 @@ theorem toM_bij (i : ℤ) : Function.Bijective (toM AI i) := by
   · rintro ⟨x, y, ⟨a, rfl⟩, rfl⟩
     exact ⟨a, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ b : Ainf l, ((xiU AI ^ (i + 1) : (WCb l)ˣ) : WCb l) * inclW l b = ((xiU AI ^ i : (WCb l)ˣ) : WCb l) * inclW l (AI.ξ * b)`. Introduce `b`. Rewrite using `[zpow_add_one, Units.val_mul, map_mul, mul_assoc]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, ⟨b, rfl⟩, h⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `h' : ((xiU AI ^ (i + 1) : (WCb l)ˣ) : WCb l) * inclW l b = ((xiU AI ^ i : (WCb l)ˣ) : WCb l) * inclW l a` using `h`. Rewrite `h'` using `[key]`. Conclude with `(inclW_inj ((Units.mul_right_inj _).1 h')).symm`.
+
+Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨inclW l b, ⟨b, rfl⟩, key b⟩`.
+-/
 theorem toM_mem (i : ℤ) (a : Ainf l) :
     toM AI i a ∈ (Mxi (AinfSub l) (xiU AI) (i + 1)).comap (Mxi (AinfSub l) (xiU AI) i).subtype ↔
       AI.ξ ∣ a := by
@@ -180,6 +258,9 @@ theorem toM_mem (i : ℤ) (a : Ainf l) :
   · rintro ⟨b, rfl⟩
     exact ⟨inclW l b, ⟨b, rfl⟩, key b⟩
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, toM_val, toM_val, map_mul, Algebra.smul_def]`. Establish `: inclW l (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℤ_[l] (WCb l) z` using `(inclWA l).commutes z`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toM_smul (i : ℤ) (z : ℤ_[l]) (a : Ainf l) :
     z • toM AI i a = toM AI i (algebraMap ℤ_[l] (Ainf l) z * a) := by
   apply Subtype.ext
@@ -187,6 +268,17 @@ theorem toM_smul (i : ℤ) (z : ℤ_[l]) (a : Ainf l) :
   have : inclW l (algebraMap ℤ_[l] (Ainf l) z) = algebraMap ℤ_[l] (WCb l) z := (inclWA l).commutes z
   rw [this]; ring
 
+/- English proof (translation)
+Take `⟨u, ⟨b, hb⟩, ⟨b', hb'⟩, hu⟩` from `(xiOK AI).2.2 g`. Establish `hb1 : inclW l b = u` using `hb`. Establish `hb2 : inclW l b' = ((u⁻¹ : (WCb l)ˣ) : WCb l)` using `hb'`. Establish `hbb : b * b' = 1`. Apply `inclW_inj` to reduce the goal to its premises.
+
+Rewrite using `[map_mul, hb1, hb2, map_one, Units.mul_inv]`. Set `lam : (Ainf l)ˣ` to `⟨b, b', hbb, by rw [mul_comm, hbb]⟩`. Establish `hmap : Units.map (inclW l).toMonoidHom lam = u` using `Units.ext hb1`. Use `⟨lam, ?_, fun a => ?_⟩` and prove the remaining obligations. Apply `inclW_inj` to reduce the goal to its premises.
+
+Establish `h1` using `inclW_act AI g AI.ξ`. Establish `h2 : AI.actWCbHom g (inclW l AI.ξ) = u * inclW l AI.ξ` using `hu`. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `inclW l (AI.actWHom g AI.ξ) = inclW l b * _`. Rewrite using `[← h1, h2, hb1]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `AI.actWCbHom g (((xiU AI ^ i : (WCb l)ˣ) : WCb l) * inclW l a) = _`. Rewrite using `[toM_val, map_mul, act_zpow (act := AI.actWCbHom) g i u hu, inclW_act, map_mul, mul_zpow, Units.val_mul]`. Establish `h3 : inclW l ((lam ^ i : (Ainf l)ˣ) : Ainf l) = ((u ^ i : (WCb l)ˣ) : WCb l)`. Rewrite using `[← hmap, ← map_zpow]`.
+
+Both sides reduce to the same expression. Rewrite using `[h3]`. Express the relevant statement in the definitionally equal form `_ = _ * (_ * inclW l (AI.actWHom g a))`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toM_act (i : ℤ) (g : GQ l) : ∃ lam : (Ainf l)ˣ, AI.actW g AI.ξ = lam * AI.ξ ∧
     ∀ a : Ainf l, actM (xiOK AI) i g (toM AI i a) =
       toM AI i (((lam ^ i : (Ainf l)ˣ) : Ainf l) * AI.actW g a) := by
@@ -214,6 +306,27 @@ theorem toM_act (i : ℤ) (g : GQ l) : ∃ lam : (Ainf l)ˣ, AI.actW g AI.ξ = l
     change _ = _ * (_ * inclW l (AI.actWHom g a))
     ring
 
+/- English proof (translation)
+Set `θ' : Ainf l →+* PadicComplex l` to `(PadicComplexInt l).subtype.comp θ`. Establish `hθ' : ∀ a, θ' a = ((θ a : OC l) : PadicComplex l)` using `fun _ => rfl`. Establish `hker : ∀ a, θ' a = 0 ↔ AI.ξ ∣ a`. Introduce `a`. Rewrite using `[← hθ.2.2.2.1 a, hθ']`.
+
+Conclude with `ZeroMemClass.coe_eq_zero`. Set `e` to `AddEquiv.ofBijective (toM AI i) (toM_bij AI i)`. Set `f : Mxi (AinfSub l) (xiU AI) i →+ PadicComplex l` to `θ'.toAddMonoidHom.comp e.symm.toAddMonoidHom`. Establish `hf : ∀ a, f (toM AI i a) = θ' a` using `fun a => congrArg θ' (e.symm_apply_apply a)`. Set `Φ : Qab (AinfSub l) (xiU AI) i (i + 1) →+ PadicComplex l` to `QuotientAddGroup.lift ((Mxi (AinfSub l) (xiU AI) (i + 1)).comap (Mxi (AinfSub l) (xiU AI) i).subtype).toAddSubgroup f (by`.
+
+Introduce `x hx`. Take `⟨a, rfl⟩` from `(toM_bij AI i).2 x`. Rewrite using `[AddMonoidHom.mem_ker, hf, hker]`. Conclude with `(toM_mem AI i a).1 hx)`. Establish `hΦ : ∀ a, Φ (Submodule.Quotient.mk (toM AI i a)) = θ' a` using `fun a => hf a`.
+
+Establish `hsurj : ∀ x : Qab (AinfSub l) (xiU AI) i (i + 1), ∃ a, x = Submodule.Quotient.mk (toM AI i a)`. Introduce `x`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨a, rfl⟩` from `(toM_bij AI i).2 y`. Conclude with `⟨a, rfl⟩`.
+
+Use `⟨Φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨a, rfl⟩` from `hsurj x`. Rewrite `hx` using `[hΦ, hker]`.
+
+Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ((toM_mem AI i a).2 hx)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨a, rfl⟩` from `hsurj x`.
+
+Rewrite using `[Set.mem_setOf_eq, hΦ]`. Conclude with `norm_OC _`. Introduce `hy`. Take `⟨a, ha⟩` from `hθ.2.1 ⟨y, (mem_OC_iff y).2 hy⟩`. Conclude with `⟨_, by rw [hΦ a, hθ', ha]⟩`.
+
+Introduce `z x`. Take `⟨a, rfl⟩` from `hsurj x`. Rewrite using `[← Submodule.Quotient.mk_smul, toM_smul, hΦ, hΦ, map_mul, hθ', theta_alg]`. Introduce `g hg x`. Take `⟨a, rfl⟩` from `hsurj x`.
+
+Take `⟨lam, h1, h2⟩` from `toM_act AI i g`. Establish `h3` using `theta_lambda AI θ hθ g hg lam h1`. Establish `h4 : actQab (xiOK AI) i (i + 1) g (Submodule.Quotient.mk (toM AI i a)) = Submodule.Quotient.mk (actM (xiOK AI) i g (toM AI i a))` using `rfl`. Rewrite using `[h4, h2, hΦ, hΦ, map_mul, hθ' (AI.actW g a), hθ.2.2.1, hθ' a]`. Use `congr 1`.
+
+Establish `h5 : Units.map θ'.toMonoidHom lam = Units.map (algebraMap ℚ_[l] (PadicComplex l)).toMonoidHom (P.χQ g)` using `Units.ext h3`. Establish `h6` using `congrArg (fun u : (PadicComplex l)ˣ => ((u ^ i : (PadicComplex l)ˣ) : PadicComplex l)) h5`. Use `beta_reduce at h6`. Rewrite `h6` using `[← map_zpow, ← map_zpow]`. Conclude with `h6`.
+-/
 theorem graded_of_theta (θ : Ainf l →+* OC l) (hθ : IsTheta AI θ) (i : ℤ) :
     ∃ Φ : Qab (AinfSub l) (xiU AI) i (i + 1) →+ PadicComplex l, Function.Injective Φ ∧
       Set.range Φ = {y | ‖y‖ ≤ 1} ∧ (∀ (z : ℤ_[l]) x, Φ (z • x) = zC z * Φ x) ∧
@@ -276,6 +389,9 @@ theorem graded_of_theta (θ : Ainf l →+* OC l) (hθ : IsTheta AI θ) (i : ℤ)
     rw [← map_zpow, ← map_zpow] at h6
     exact h6
 
+/- English proof (translation)
+Introduce `l _ P AI i`. Take `⟨θ, hθ⟩` from `GlobalTheory.T.exists_fontaineTheta_on_Ainf l P AI`. Conclude with `graded_of_theta AI θ hθ i`.
+-/
 theorem graded_iso : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (i : ℤ),
     ∃ Φ : Qab (AinfSub l) (xiU AI) i (i + 1) →+ PadicComplex l, Function.Injective Φ ∧
       Set.range Φ = {y | ‖y‖ ≤ 1} ∧ (∀ (z : ℤ_[l]) x, Φ (z • x) = zC z * Φ x) ∧

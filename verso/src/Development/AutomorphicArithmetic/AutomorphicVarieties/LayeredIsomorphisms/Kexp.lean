@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
+/- English proof (translation)
+Introduce `CK eps c0 x e n n0 D hCK heps hc0 hx he hn hD`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hn' : (n : ℝ) ≤ n0` using `by exact_mod_cast hn`. Establish `he0 : (0 : ℝ) ≤ e` using `Nat.cast_nonneg _`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg _`.
+
+Establish `hn00 : (0 : ℝ) ≤ n0` using `Nat.cast_nonneg _`. Establish `hy : 0 ≤ x ^ (eps / (2 * CK))` using `Real.rpow_nonneg hx0.le _`. Establish `h1 : 2 * (e : ℝ) * n ≤ (2 * (n0 : ℝ)) * x ^ (eps / (2 * CK))`. Use `mul_le_mul he hn' hn0 hy` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `h2 : (2 * (e : ℝ) * n) ^ CK ≤ (2 * (n0 : ℝ)) ^ CK * x ^ (eps / 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) hy, ← Real.rpow_mul hx0.le]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts.
+
+Establish `h3 : x ^ (3 * eps / 4) = x ^ (eps / 2) * x ^ (eps / 4)`. Rewrite using `[← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Unfold `kBound`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `ha : 0 ≤ (2 * (e : ℝ) * n) ^ CK` using `Real.rpow_nonneg (by positivity) _`. Establish `hb : 0 ≤ c0 * x ^ (eps / 4)` using `mul_nonneg hc0 (Real.rpow_nonneg hx0.le _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.Win.kexp :
     ∀ (CK eps c0 x : ℝ) (e n n0 D : ℕ), 0 < CK → 0 < eps → 0 ≤ c0 → 1 ≤ x → (e : ℝ) ≤ x ^ (eps / (2 * CK)) → n ≤ n0 →
       Real.log (2 * (D : ℝ)) ≤ c0 * x ^ (eps / 4) →

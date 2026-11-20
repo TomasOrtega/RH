@@ -11,6 +11,11 @@ open NumberField Module IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Unfold `NE`. Rewrite using `[j_finrank D, ← pow_mul]`. Use `congr 1`. Establish `h2` using `D.R.two_le_m`. Take `⟨k, hk⟩` from `D.R.m_even`.
+
+Establish `hm : 2 * (D.R.rS + 1) = D.R.m`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem NE_pow (D : D7) : NE (E := D.host.E) (gS D) ^ (D.R.rS + 1) = (gS D : ℝ) ^ (D.R.m * D.R.f) := by
   unfold NE
   rw [j_finrank D, ← pow_mul]
@@ -31,11 +36,17 @@ def DetProductFormula : Prop :=
   ∀ F' : FlagU D u', IsTermF D Λ (lf D F0) F' → IsGeneric Λ (gS D) (lf D F0) F' →
     NG Λ (lf D F0) F' = ∏ τ, Cnt.Gz D (Tu D u) (Tu D u') (ZhatL (lf D F0) F') τ
 
+/- English proof (translation)
+Introduce `D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hH F0 he hz0 Λ hΛr F' hT' hgen`. Unfold `G0 localGramProduct`. Rewrite using `[h D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hH F0 he hz0 Λ hΛr F' hT' hgen, NE_pow, div_eq_mul_inv, inv_pow]`.
+-/
 theorem id_of_detUU (h : DetProductFormula) : LatticeIdentityGeneric := by
   intro D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hH F0 he hz0 Λ hΛr F' hT' hgen
   unfold G0 localGramProduct
   rw [h D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hH F0 he hz0 Λ hΛr F' hT' hgen, NE_pow, div_eq_mul_inv, inv_pow]
 
+/- English proof (translation)
+The claim follows from `gram_flag_family_of_identity (id_of_detUU h) Fm Cg cb Cu cT CT C0 A`.
+-/
 theorem gram_flag_family_of_det_product (h : DetProductFormula) {eps : ℝ} (Fm : FamP eps) (Cg cb Cu cT CT C0 A : ℝ) :
     FamilyGenericTermDetProductBound Fm Cg cb Cu cT CT C0 A :=
   gram_flag_family_of_identity (id_of_detUU h) Fm Cg cb Cu cT CT C0 A

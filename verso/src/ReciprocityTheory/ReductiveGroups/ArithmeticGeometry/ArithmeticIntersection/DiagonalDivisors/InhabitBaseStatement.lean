@@ -136,6 +136,9 @@ def twoXiDeg (j : Fin 2) : WBlk → ℤ :=
 def llDeg : WBlk → ℤ :=
   unitDeg .det + unitDeg .line0 + unitDeg .line1 - 3 • unitDeg .base
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [llDeg, twoXiDeg, unitDeg]`.
+-/
 theorem two_llDeg : 2 • llDeg = -(twoXiDeg 0 + twoXiDeg 1) := by
   funext k
   cases k <;> simp [llDeg, twoXiDeg, unitDeg]
@@ -146,6 +149,9 @@ def pullDeg (j : Fin 2) (c : YBlk → ℤ) : WBlk → ℤ
   | .line0 => if j = 0 then c .line else 0
   | .line1 => if j = 0 then 0 else c .line
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `cases k <;> simp [pullDeg, hc]`.
+-/
 theorem pullDeg_base (c : YBlk → ℤ) (hc : c .line = 0) : pullDeg 0 c = pullDeg 1 c := by
   funext k
   cases k <;> simp [pullDeg, hc]
@@ -155,6 +161,9 @@ def twoXiDegY : YBlk → ℤ
   | .det => -1
   | .line => -2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases j <;> cases k <;> simp [pullDeg, twoXiDegY, twoXiDeg, unitDeg]`.
+-/
 theorem pullDeg_twoXiDegY (j : Fin 2) : pullDeg j twoXiDegY = twoXiDeg j := by
   funext k
   fin_cases j <;> cases k <;> simp [pullDeg, twoXiDegY, twoXiDeg, unitDeg]

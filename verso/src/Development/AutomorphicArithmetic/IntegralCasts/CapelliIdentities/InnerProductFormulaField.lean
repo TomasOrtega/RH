@@ -24,6 +24,9 @@ noncomputable def UpperTheory.Reformulated.B.InnerProductFormulaField.GlRel.{u_2
               (@OfNat.ofNat A (nat_lit 0)
                 (@Zero.toOfNat0 A (@MulZeroClass.toZero A (@instMulZeroClassOfSemiring A (@Ring.toSemiring A inst_1)))))))
 
+/- English proof (translation)
+Conclude with `⟨le_refl _⟩`.
+-/
 theorem UpperTheory.Reformulated.B.InnerProductFormulaField.aux2 :
     (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
         (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))).AtLeastTwo := by

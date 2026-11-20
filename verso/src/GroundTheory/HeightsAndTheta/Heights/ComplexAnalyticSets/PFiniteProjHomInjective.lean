@@ -6,11 +6,29 @@ namespace GroundTheory.Heights₂.Heights.ComplexSets
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+-/
 theorem ringKrullDim_mvPolynomial_complex (d : ℕ) :
     ringKrullDim (MvPolynomial (Fin d) ℂ) = d := by
   rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
   simp
 
+/- English proof (translation)
+Introduce `n d J A _ hdim hfin`. Use `set f : MvPolynomial (Fin d) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ J := (projHom J A).toRingHom with hf`. Establish `hinj : Function.Injective f`. Assume the negation of the conclusion as `hni`. Rewrite `hni` using `[injective_iff_map_eq_zero]`.
+
+Use `push Not at hni`. Take `⟨p, hp0, hp⟩` from `hni`. Set `_ : Algebra (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J)` to `f.toAlgebra`. Establish `hint : f.IsIntegral` using `hfin.to_isIntegral`. Set `g : PrimeSpectrum (MvPolynomial (Fin n) ℂ ⧸ J) → PrimeSpectrum.zeroLocus (R` to `MvPolynomial (Fin d) ℂ) (Ideal.span {p}) := fun q => ⟨PrimeSpectrum.comap f q, by`.
+
+Rewrite using `[PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, Ideal.span_le, Set.singleton_subset_iff]`. Use `show f p ∈ q.asIdeal`. Rewrite using `[hp0]`. Conclude with `q.asIdeal.zero_mem⟩`. Establish `hg : StrictMono g`.
+
+Introduce `q₁ q₂ hq`. Establish `hlt : q₁.asIdeal < q₂.asIdeal` using `hq`. Take `⟨hle, x, hx2, hx1⟩` from `SetLike.lt_iff_le_and_exists.mp hlt`. Use `show q₁.asIdeal.comap (algebraMap _ _) < q₂.asIdeal.comap (algebraMap _ _)`. Conclude with `Ideal.comap_lt_comap_of_integral_mem_sdiff hle ⟨hx2, hx1⟩ (hint x)`.
+
+Establish `h1 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ ringKrullDim (MvPolynomial (Fin d) ℂ ⧸ Ideal.span {p})`. Rewrite using `[ringKrullDim_quotient (Ideal.span {p})]`. Conclude with `Order.krullDim_le_of_strictMono g hg`. Establish `h2` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hp)`. Rewrite `h2` using `[ringKrullDim_mvPolynomial_complex]`.
+
+Rewrite `h1` using `[hdim]`. Establish `h3 : ((d : ℕ) : WithBot ℕ∞) + 1 ≤ (d : WithBot ℕ∞)` using `le_trans (by gcongr) h2`. Establish `h4 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ (d : WithBot ℕ∞)` using `by exact_mod_cast h3`. Establish `h5 : d + 1 ≤ d` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `fun a b h => hinj h`.
+-/
 theorem FiniteProjHomInjective.proof : FiniteProjHomInjective.Statement := by
   intro n d J A _ hdim hfin
   set f : MvPolynomial (Fin d) ℂ →+* MvPolynomial (Fin n) ℂ ⧸ J := (projHom J A).toRingHom with hf

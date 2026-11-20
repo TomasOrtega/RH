@@ -12,12 +12,30 @@ open GlobalTheory.VB (IsVB IsFrame Chart det)
 
 namespace GlobalTheory.GenUnitGlue
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) a = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_comp {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
   change ((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) a = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `O _ _ _ Z U f hloc`. Use `choose V hV hxV v hv using hloc`. Set `W : U → Z.X.Opens` to `fun x => V x.1 x.2`. Establish `hWU : ∀ i, W i ≤ U` using `fun i => hV i.1 i.2`. Establish `hc : U ≤ iSup W` using `fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hxV x hx⟩`.
+
+Set `u : ∀ i, Γ(Z.X, W i)ˣ` to `fun i => v i.1 i.2`. Establish `hu : ∀ i, resG Z.X (inf_le_right : Z.gen ⊓ W i ≤ W i) (u i).val = resG Z.X (inf_le_inf_left Z.gen (hWU i)) f` using `fun i => hv i.1 i.2`. Establish `hh : ∀ i j, resG Z.X (inf_le_left : W i ⊓ W j ≤ W i) (u i).val = resG Z.X (inf_le_right : W i ⊓ W j ≤ W j) (u j).val`. Introduce `i j`. Apply `Z.resG_injective (inf_le_right : Z.gen ⊓ (W i ⊓ W j) ≤ W i ⊓ W j) le_rfl` to reduce the goal to its premises.
+
+Rewrite using `[resG_comp, resG_comp]`. Establish `e1 : resG Z.X ((inf_le_right : Z.gen ⊓ (W i ⊓ W j) ≤ W i ⊓ W j).trans inf_le_left) (u i).val = resG Z.X (inf_le_inf_left Z.gen inf_le_left : Z.gen ⊓ (W i ⊓ W j) ≤ Z.gen ⊓ W i) (resG Z.X (inf_le_right : Z.gen ⊓ W i ≤ W i) (u i).val)`. Rewrite using `[resG_comp]`. Establish `e2 : resG Z.X ((inf_le_right : Z.gen ⊓ (W i ⊓ W j) ≤ W i ⊓ W j).trans inf_le_right) (u j).val = resG Z.X (inf_le_inf_left Z.gen inf_le_right : Z.gen ⊓ (W i ⊓ W j) ≤ Z.gen ⊓ W j) (resG Z.X (inf_le_right : Z.gen ⊓ W j ≤ W j) (u j).val)`. Rewrite using `[resG_comp]`.
+
+Rewrite using `[e1, e2, hu, hu, resG_comp, resG_comp]`. Establish `hh' : ∀ i j, resG Z.X (inf_le_left : W i ⊓ W j ≤ W i) ((u i)⁻¹).val = resG Z.X (inf_le_right : W i ⊓ W j ≤ W j) ((u j)⁻¹).val`. Introduce `i j`. Establish `e : Units.map (resG Z.X (inf_le_left : W i ⊓ W j ≤ W i)).toMonoidHom (u i) = Units.map (resG Z.X (inf_le_right : W i ⊓ W j ≤ W j)).toMonoidHom (u j)` using `Units.ext (hh i j)`. Use `congrArg (fun w => (w⁻¹ : Γ(Z.X, W i ⊓ W j)ˣ).val) e` as an intermediate fact.
+
+Simplify using `only [← map_inv, Units.coe_map] at this`. Conclude with `this`. Take `⟨s, hs₀, -⟩ : ∃! s : Γ(Z.X, U), ∀ i, resG Z.X (hWU i) s = (u i).val` from `Z.X.sheaf.existsUnique_gluing' W U (fun i => homOfLE (hWU i)) hc (fun i => (u i).val) (fun i j => hh i j)`. Take `⟨s', hs₀', -⟩ : ∃! s : Γ(Z.X, U), ∀ i, resG Z.X (hWU i) s = ((u i)⁻¹).val` from `Z.X.sheaf.existsUnique_gluing' W U (fun i => homOfLE (hWU i)) hc (fun i => ((u i)⁻¹).val) (fun i j => hh' i j)`. Establish `e : s * s' = 1`.
+
+Apply `Z.X.sheaf.eq_of_locally_eq' W U (fun i => homOfLE (hWU i)) hc` to reduce the goal to its premises. Introduce `i`. Use `show resG Z.X (hWU i) _ = resG Z.X (hWU i) _`. Rewrite using `[map_mul, map_one, hs₀, hs₀']`. Conclude with `(u i).mul_inv`.
+
+Use `⟨⟨s, s', e, (mul_comm _ _).trans e⟩, ?_⟩` and prove the remaining obligations. Apply `Z.X.sheaf.eq_of_locally_eq' (fun i => Z.gen ⊓ W i) (Z.gen ⊓ U) (fun i => homOfLE (inf_le_inf_left Z.gen (hWU i))) (fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx.2⟩, ⟨hx.1, hxV x hx.2⟩⟩)` to reduce the goal to its premises. Introduce `i`. Use `show resG Z.X (inf_le_inf_left Z.gen (hWU i)) (resG Z.X inf_le_right s) = resG Z.X (inf_le_inf_left Z.gen (hWU i)) f`. Rewrite using `[resG_comp, ← hu i, ← hs₀ i, resG_comp]`.
+-/
 theorem exists_unit_resG_eq : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O) {U : Z.X.Opens} (f : Γ(Z.X, Z.gen ⊓ U)), (∀ x ∈ U, ∃ (V : Z.X.Opens) (hV : V ≤ U), x ∈ V ∧ ∃ v : Γ(Z.X, V)ˣ, resG Z.X (inf_le_right : Z.gen ⊓ V ≤ V) v.val = resG Z.X (inf_le_inf_left Z.gen hV) f) → ∃ u : Γ(Z.X, U)ˣ, resG Z.X (inf_le_right : Z.gen ⊓ U ≤ U) u.val = f := by
   intro O _ _ _ Z U f hloc
   choose V hV hxV v hv using hloc

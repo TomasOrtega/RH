@@ -27,6 +27,13 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨𝓕, hμ⟩` from `hS.hμ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hS.hψ χ hS.hχ hS.hη θ hS.hθ μ 𝓕 hμ ω hS.hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hS.hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`.
+
+Substitute `hll` using the available equality. Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hS.hθ l l' hS.hl hl''`. Substitute `hleq` using the available equality. Introduce `τ h0`.
+
+Establish `h` using `habs τ`. Rewrite `h` using `[h0, abs_zero]`. Establish `h1 : tauE D τ D.host.xi0 ≠ 0` using `(map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`. Establish `h2 : tauE D τ μ' ≠ 0` using `(map_ne_zero _).2 hsk.1`. Conclude with `(div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2)) h.symm`.
+-/
 theorem par_ne_zero {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}
     {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ν : Measure (GA D V)}
@@ -48,6 +55,17 @@ theorem par_ne_zero {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ 
   have h2 : tauE D τ μ' ≠ 0 := (map_ne_zero _).2 hsk.1
   exact (div_ne_zero (norm_ne_zero_iff.2 h1) (norm_ne_zero_iff.2 h2)) h.symm
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (MvPolynomial.C a) (fun τ => Matrix.of (z τ))) = fun _ => a`. Use function extensionality and compare the values at `z`. Simplify using `[evalPoly]`.
+
+Rewrite using `[this]`. Conclude with `Function.HasTemperateGrowth.const a`. Consider the case `add p q hp hq`. Establish `: (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p + q) (fun τ => Matrix.of (z τ))) = fun z => evalPoly p (fun τ => Matrix.of (z τ)) + evalPoly q (fun τ => Matrix.of (z τ))`. Use function extensionality and compare the values at `z`.
+
+Simplify using `[evalPoly]`. Rewrite using `[this]`. Conclude with `hp.add hq`. Consider the case `mul_X p k hp`. Take `⟨τ, i, j, e⟩` from `k`.
+
+Set `L0 : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℂ` to `(ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) j).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : D.what₂.Tau => Fin m → Fin n → ℂ) τ))`. Set `L : (D.what₂.Tau → Fin m → Fin n → ℂ) →L[ℝ] ℂ` to `if e then (Complex.conjCLE : ℂ →L[ℝ] ℂ).comp L0 else L0`. Establish `: (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly (p * MvPolynomial.X (τ, i, j, e)) (fun τ => Matrix.of (z τ))) = fun z => evalPoly p (fun τ => Matrix.of (z τ)) * L z`. Use function extensionality and compare the values at `z`. Apply the tactic sequence `cases e <;> simp [evalPoly, L, L0]`.
+
+Rewrite using `[this]`. Conclude with `hp.mul L.hasTemperateGrowth`.
+-/
 theorem temperate_poly {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fin n × Bool) ℂ) :
     Function.HasTemperateGrowth
       (fun z : D.what₂.Tau → Fin m → Fin n → ℂ => evalPoly p (fun τ => Matrix.of (z τ))) := by
@@ -77,6 +95,9 @@ theorem temperate_poly {m : ℕ} (p : MvPolynomial (D.what₂.Tau × Fin m × Fi
       cases e <;> simp [evalPoly, L, L0]
     rw [this]; exact hp.mul L.hasTemperateGrowth
 
+/- English proof (translation)
+Take `⟨f0, hf0⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_gauss D n V l hl s hs`. Use `⟨SchwartzMap.bilinLeftCLM (ContinuousLinearMap.mul ℝ ℂ) (temperate_poly p) f0, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.bilinLeftCLM_apply]`. Simplify using `[hf0, mul_comm]`.
+-/
 theorem exists_schwartz_polyGauss (V : HSp D) (l : D.what₂.Tau → ℝ) (hl : ∀ τ, l τ ≠ 0)
     (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (hs : ∀ τ, IsCartanInv (gramAt D V τ) (s τ))
     (p : MvPolynomial (D.what₂.Tau × Fin V.rank × Fin n × Bool) ℂ) :
@@ -93,6 +114,27 @@ open NumberField IsDedekindDomain GlobalTheory.PureFinite PI.VolStabS.PositiveNe
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] [FiniteDimensional F E]
   {d : ℕ} (b : Module.Basis (Fin d) F E) {n' M : ℕ}
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `X`. Establish `hS` using `Filter.eventually_cofinite.1 (hae.and (eventually_mem_latV b X))`. Set `O : Set (Af F)` to `{x | ∀ v, x v ∈ v.adicCompletionIntegers F}`. Establish `hOo : IsOpen O` using `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_valuationSubring _)`.
+
+Set `U : Set (Fin n' → Fin M → Af F ⊗[F] E)` to `{Y | ∀ a i k, crd b (Af F) ((Y - X) a i) k ∈ O}`. Establish `hUo : IsOpen U`. Establish `e : U = ⋂ a, ⋂ i, ⋂ k, (fun Y : Fin n' → Fin M → Af F ⊗[F] E => crd b (Af F) ((Y - X) a i) k) ⁻¹' O`. Use extensionality with `Y`. Simplify using `[U]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => hOo.preimage ((continuous_crd b (Af F) k).comp ((continuous_apply i).comp ((continuous_apply a).comp (continuous_id.sub continuous_const))))`. Establish `hXU : X ∈ U`. Introduce `a i k v`. Simplify using `only [sub_self, crd, Pi.zero_apply, map_zero, Finsupp.zero_apply]`.
+
+Conclude with `zero_mem (v.adicCompletionIntegers F)`. Establish `hev : ∀ Y ∈ U, (∏ᶠ v, Φv v (projV v Y)) = ∏ v ∈ hS.toFinset, Φv v (projV v Y)`. Introduce `Y hY`. Apply `finprod_eq_prod_of_mulSupport_subset` to reduce the goal to its premises. Introduce `v hv`.
+
+Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h`. Apply `hv` to reduce the goal to its premises. Establish `hYX : projV v (Y - X) ∈ latV b v`. Introduce `a i k`.
+
+Use `crd_projV b (Y - X) v a i k` as an intermediate fact. Simplify using `only [crd] at this`. Rewrite using `[this]`. Conclude with `hY a i k v`. Establish `hmem : projV v Y ∈ latV b v`.
+
+Establish `e : projV v Y = projV v (Y - X) + projV v X`. Rewrite using `[← projV_add]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `latV_add b v hYX h.2`.
+
+Use `show Φv v (projV v Y) = 1`. Rewrite using `[h.1, Set.indicator_of_mem hmem]`. Both sides reduce to the same expression. Establish `hP : IsLocallyConstant (fun Y : Fin n' → Fin M → Af F ⊗[F] E => ∏ v ∈ hS.toFinset, Φv v (projV v Y))`. Use `Finset.induction_on hS.toFinset ?_ ?_` and prove the remaining obligations.
+
+Simplify using `only [Finset.prod_empty]`. Conclude with `IsLocallyConstant.const _`. Introduce `a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `((hSB a).1.comp_continuous (continuous_projV_fin b a)).mul ih`.
+
+Use `filter_upwards [hUo.mem_nhds hXU, (IsLocallyConstant.iff_eventually_eq _).1 hP X] with Y hY hPY`. Rewrite using `[hev Y hY, hPY, hev X hXU]`.
+-/
 theorem isLocallyConstant_finprod
     (Φv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n' → Fin M → Fv F v ⊗[F] E) → ℂ) (hSB : ∀ v, IsSB (Φv v))
     (hae : ∀ᶠ v in Filter.cofinite, Φv v = (latV b v).indicator 1) :
@@ -151,6 +193,11 @@ theorem isLocallyConstant_finprod
 
 end Pure
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional D.host.F D.host.E := Module.Finite.of_basis bs`. Take `⟨hSB, hae, hprod⟩` from `h`. Set `f : (Fin n → Fin m → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ` to `fun X => ∏ᶠ v, gv v (projV v X)`. Establish `hlc : IsLocallyConstant f` using `isLocallyConstant_finprod bs gv hSB hae`. Establish `hcs : HasCompactSupport f` using `GlobalTheory.PureFinite.hasCompactSupport_finprod bs gv hSB hae`.
+
+Set `e : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) ≃ₜ (Fin n → Fin m → Af D.host.F ⊗[D.host.F] D.host.E)` to `{ toFun := fun X j i => X i j invFun := fun X i j => X j i left_inv := fun _ => rfl right_inv := fun _ => rfl continuous_toFun := continuous_pi fun j => continuous_pi fun i => (continuous_apply j).comp (continuous_apply i) continuous_invFun := continuous_pi fun i => continuous_pi …`. Establish `hg : g = f ∘ e` using `funext fun X => hprod (e X)`. Rewrite using `[hg]`. Conclude with `⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩`.
+-/
 theorem sb_of_pure {m d : ℕ} {bs : Module.Basis (Fin d) D.host.F D.host.E}
     {g : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ}
     {gv : ∀ v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F),
@@ -176,6 +223,11 @@ theorem sb_of_pure {m d : ℕ} {bs : Module.Basis (Fin d) D.host.F D.host.E}
   rw [hg]
   exact ⟨hlc.comp_continuous e.continuous, hcs.comp_homeomorph e⟩
 
+/- English proof (translation)
+Take `⟨e, c, g, d, bs, gv, hp, rfl⟩` from `h`. Establish `hg` using `sb_of_pure hp`. Take `⟨f, hf⟩` from `exists_schwartz_polyGauss V l (par_ne_zero hS) s hS.hs (MvPolynomial.monomial e c)`. Use `⟨Submodule.subset_span ⟨f, g, hg, ?_⟩, Submodule.subset_span ⟨_, g, hg, rfl⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[hf]`. Both sides reduce to the same expression.
+-/
 theorem mem_of_mono {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}
     {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ν : Measure (GA D V)}
@@ -189,16 +241,37 @@ theorem mem_of_mono {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ 
   rw [hf]
   rfl
 
+/- English proof (translation)
+Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Rewrite using `[PolesModel.height_eq hH]`. Conclude with `PolesModel.isIwasawa.continuous_iwAbs GlobalTheory.StdUnn.Model.isClosed_P PolesModel.continuous_modP GlobalTheory.StdUnn.Model.isCompact_K`.
+-/
 theorem continuous_height {H : G D n → ℝ≥0} (hH : IsHeight H) : Continuous H := by
   haveI := t2Space_adeleRing' (F := D.host.F)
   rw [PolesModel.height_eq hH]
   exact PolesModel.isIwasawa.continuous_iwAbs GlobalTheory.StdUnn.Model.isClosed_P PolesModel.continuous_modP
     GlobalTheory.StdUnn.Model.isCompact_K
 
+/- English proof (translation)
+Rewrite using `[PolesModel.height_eq hH]`. Conclude with `iwAbs_pos _ _ x`.
+-/
 theorem height_pos {H : G D n → ℝ≥0} (hH : IsHeight H) (x : G D n) : 0 < H x := by
   rw [PolesModel.height_eq hH]
   exact iwAbs_pos _ _ x
 
+/- English proof (translation)
+Establish `hc` using `continuous_height hH`. Establish `hK : IsCompact (K D n : Set (G D n))` using `GlobalTheory.StdUnn.Model.isCompact_K`. Establish `h1 : Continuous fun k : G D n => (H (k * g) : ℝ)` using `NNReal.continuous_coe.comp (hc.comp (continuous_id.mul continuous_const))`. Establish `h2 : Continuous fun k : G D n => (H (k * g) : ℝ)⁻¹` using `h1.inv₀ fun k => (NNReal.coe_pos.2 (height_pos hH _)).ne'`. Take `⟨C₁, hC₁⟩` from `hK.exists_bound_of_continuousOn h1.continuousOn`.
+
+Take `⟨C₂, hC₂⟩` from `hK.exists_bound_of_continuousOn h2.continuousOn`. Use `⟨max 1 (max C₁ C₂), le_max_left _ _, fun x => ?_⟩` and prove the remaining obligations. Take `⟨p, k, hk, rfl⟩` from `PolesModel.isIwasawa.1 x`. Establish `hkH : H k = 1`. Rewrite using `[PolesModel.height_eq hH]`.
+
+Conclude with `PolesModel.isIwasawa.iwAbs_of_mem hk`. Establish `e1 : H ((p : G D n) * k) = PolesModel.modP p`. Rewrite using `[PolesModel.height_eq hH]`. Conclude with `PolesModel.isIwasawa.iwAbs_mul p hk`. Establish `e2 : H ((p : G D n) * k * g) = PolesModel.modP p * H (k * g)`.
+
+Rewrite using `[PolesModel.height_eq hH, mul_assoc]`. Conclude with `PolesModel.isIwasawa.iwAbs_left p _`. Establish `hp0 : (0 : ℝ) ≤ PolesModel.modP p` using `NNReal.coe_nonneg _`. Establish `hk0 : (0 : ℝ) < H (k * g)` using `NNReal.coe_pos.2 (height_pos hH _)`. Establish `b1 : (H (k * g) : ℝ) ≤ max 1 (max C₁ C₂)`.
+
+Use `hC₁ k hk` as an intermediate fact. Rewrite `this` using `[Real.norm_of_nonneg hk0.le]`. Conclude with `this.trans ((le_max_left _ _).trans (le_max_right _ _))`. Establish `b2 : (H (k * g) : ℝ)⁻¹ ≤ max 1 (max C₁ C₂)`. Use `hC₂ k hk` as an intermediate fact.
+
+Rewrite `this` using `[Real.norm_of_nonneg (inv_nonneg.2 hk0.le)]`. Conclude with `this.trans ((le_max_right _ _).trans (le_max_right _ _))`. Rewrite using `[e1, e2, NNReal.coe_mul]`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := mul_le_mul_of_nonneg_right b2 (mul_nonneg hp0 hk0.le)`.
+-/
 theorem height_ratio {H : G D n → ℝ≥0} (hH : IsHeight H) (g : G D n) :
     ∃ C : ℝ, 1 ≤ C ∧ ∀ x, (H (x * g) : ℝ) ≤ C * H x ∧ (H x : ℝ) ≤ C * H (x * g) := by
   have hc := continuous_height hH
@@ -236,6 +309,15 @@ theorem height_ratio {H : G D n → ℝ≥0} (hH : IsHeight H) (g : G D n) :
           field_simp
       _ ≤ _ := mul_le_mul_of_nonneg_right b2 (mul_nonneg hp0 hk0.le)
 
+/- English proof (translation)
+Take `⟨C, hC, hb⟩` from `height_ratio hH g`. Establish `hC0 : 0 < C` using `lt_of_lt_of_le one_pos hC`. Use `⟨C ^ |t.re|, (Real.rpow_pos_of_pos hC0 _).le, fun x => ?_⟩` and prove the remaining obligations. Establish `ha : (0 : ℝ) < H (x * g)` using `NNReal.coe_pos.2 (height_pos hH _)`. Establish `hx : (0 : ℝ) < H x` using `NNReal.coe_pos.2 (height_pos hH _)`.
+
+Rewrite using `[norm_npow (height_pos hH _), norm_npow (height_pos hH _)]`. Take `⟨h1, h2⟩` from `hb x`. Break down `le_total 0 t.re with h | h` into its components or cases. Rewrite using `[abs_of_nonneg h, ← Real.mul_rpow hC0.le hx.le]`. Conclude with `Real.rpow_le_rpow ha.le h1 h`.
+
+Rewrite using `[abs_of_nonpos h]`. Establish `h3 : (H x : ℝ) * C⁻¹ ≤ H (x * g)`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hC0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (H (x * g) : ℝ) ^ t.re ≤ ((H x : ℝ) * C⁻¹) ^ t.re` using `Real.antitoneOn_rpow_Ioi_of_exponent_nonpos h (Set.mem_Ioi.2 (mul_pos hx (inv_pos.2 hC0))) (Set.mem_Ioi.2 ha) h3`.
+
+Rewrite `h4` using `[Real.mul_rpow hx.le (inv_pos.2 hC0).le, Real.inv_rpow hC0.le, ← Real.rpow_neg hC0.le]`. Combine the linear relations using `[h4, mul_comm ((H x : ℝ) ^ t.re) (C ^ (-t.re))]`.
+-/
 theorem norm_npow_le {H : G D n → ℝ≥0} (hH : IsHeight H) (g : G D n) (t : ℂ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ x, ‖npow (H (x * g)) t‖ ≤ M * ‖npow (H x) t‖ := by
   obtain ⟨C, hC, hb⟩ := height_ratio hH g
@@ -256,6 +338,9 @@ theorem norm_npow_le {H : G D n → ℝ≥0} (hH : IsHeight H) (g : G D n) (t : 
     rw [Real.mul_rpow hx.le (inv_pos.2 hC0).le, Real.inv_rpow hC0.le, ← Real.rpow_neg hC0.le] at h4
     linarith [h4, mul_comm ((H x : ℝ) ^ t.re) (C ^ (-t.re))]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CompanionTheory.SWGlue.weil_cell_zero hω hw b (hNb b) Φ 1`. Simplify using `only [mul_one, map_one, Module.End.one_apply] at h`. Conclude with `h.symm`.
+-/
 theorem jt_eq {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)}
     (hω : IsWeilSch ψ χ θ V μ ω) {w : G D n} (hw : mat w = blk4 0 1 (-1) 0) {nb : hermA D n → G D n}
@@ -265,6 +350,17 @@ theorem jt_eq {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* C
   simp only [mul_one, map_one, Module.End.one_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Establish `hJ : ∀ b, Jt ψ V μ Φ.1 b = (ω (w * nb b) Φ).1 0` using `jt_eq hS.hω hw hC.1 Φ`. Take `⟨𝓕, hμ⟩` from `hS.hμ`. Establish `hsec` using `GlobalTheory.StdUnn.SiegelSection.fock_mem_degenerate D n V ψ hS.hψ χ hS.hχ hS.hη θ hS.hθ μ 𝓕 hμ ω hS.hω l hS.hl s hS.hs Φ hS.hΦ`. Establish `hcn` using `GlobalTheory.CompanionTheory.SwUnf.nb_continuous hC.1`. Establish `hI` using `(GlobalTheory.CompanionTheory.SwUnf.unfold D n V ψ χ θ μ ω H l s ν Φ hS hR nb lam 𝓖 hC w hw β hβ z hz 1).1`.
+
+Take `⟨M, hM0, hM⟩` from `norm_npow_le hS.hH g (z - s0 V n)`. Establish `hcJ : Continuous fun b : hermA D n => Jt ψ V μ Φ.1 b`. Simplify using `only [hJ]`. Conclude with `hsec.2.1.comp (continuous_const.mul hcn)`. Establish `hcH : Continuous fun b : hermA D n => npow (H (w * nb b * g)) (z - s0 V n)`.
+
+Establish `e : (fun b : hermA D n => npow (H (w * nb b * g)) (z - s0 V n)) = fun b => Complex.exp (((Real.log (H (w * nb b * g)) : ℝ) : ℂ) * (z - s0 V n))`. Use function extensionality and compare the values at `fun b => npow_eq_exp (height_pos hS.hH _) _`. Rewrite using `[e]`. Use `Continuous.cexp ((Complex.continuous_ofReal.comp ?_).mul continuous_const)` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp ((continuous_height hS.hH).comp ((continuous_const.mul hcn).mul continuous_const))).log fun b => (NNReal.coe_pos.2 (height_pos hS.hH _)).ne'`.
+
+Establish `hcχ : Continuous fun b : hermA D n => ψ (-halfTr (Matrix.trace (HMul.hMul T b.1 : Mx D n n)))` using `(GlobalTheory.CompanionTheory.HermPoisson.continuous_chi hS.hψ (-T)).congr fun b => GlobalTheory.CompanionTheory.HermPoisson.chi_neg_left ψ _ b`. Use `(hI.norm.const_mul M).mono' ((hcH.mul hcJ).mul hcχ).aestronglyMeasurable (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Establish `e : sect ω H Φ z (w * nb b * 1) = npow (H (w * nb b)) (z - s0 V n) * Jt ψ V μ Φ.1 b`. Rewrite using `[hJ, mul_one, sect]`. Rewrite using `[norm_mul, norm_mul, hS.hψ.2.1, mul_one, e, norm_mul, ← mul_assoc]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`.
+-/
 theorem integrable_term {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D)ˣ →* Circle} {θ : InfFam D}
     {μ : Measure (Mx D V.rank n)} {ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)} {H : G D n → ℝ≥0}
     {l : D.what₂.Tau → ℝ} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} {ν : Measure (GA D V)}
@@ -302,6 +398,15 @@ theorem integrable_term {V : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {χ : (AE D
   rw [norm_mul, norm_mul, hS.hψ.2.1, mul_one, e, norm_mul, ← mul_assoc]
   exact mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a g N φs hφ`. Use `⟨(n : ℝ) / 2, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ j, φs j ∈ schwartzA θ V.rank n ∧ φs j ∈ fockA θ V n l s` using `fun j => mem_of_mono hS (hφ j)`. Set `Ψ : Fin N → schwartzA θ V.rank n` to `fun j => ⟨φs j, (hmem j).1⟩`. Establish `hS' : ∀ j, Std D n V ψ χ θ μ ω H l s ν (Ψ j)` using `fun j => ⟨hS.hψ, hS.hχ, hS.hη, hS.hθ, hS.hμ, hS.hω, hS.hH, hS.hl, hS.hs, hS.hν, (hmem j).2⟩`.
+
+Establish `hI` using `fun j => integrable_term (hS' j) hR hC hw hβ g (adj a.1 * β.1.map (incA D) * a.1) hz`. Establish `hsum : (∑ j, φs j) = (∑ j, Ψ j : schwartzA θ V.rank n).1`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Establish `hJ : ∀ b, Jt ψ V μ (∑ j, φs j) b = ∑ j, Jt ψ V μ (φs j) b` using `fun b => by`. Rewrite using `[hsum, jt_eq hS.hω hw hC.1, map_sum, AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => (jt_eq hS.hω hw hC.1 (Ψ j) b).symm`. Simplify using `only [whitT]`. Rewrite using `[← integral_finset_sum _ fun j _ => hI j]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only [hJ, Finset.mul_sum, Finset.sum_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem whitTAdd : PositivityTheory.PfSWUS.WhitTAdd := by
   intro D n V ψ χ θ μ ω H l s ν Φ hS hR lam 𝓖 nb hC w hw β hβ a g N φs hφ
   refine ⟨(n : ℝ) / 2, fun z hz => ?_⟩

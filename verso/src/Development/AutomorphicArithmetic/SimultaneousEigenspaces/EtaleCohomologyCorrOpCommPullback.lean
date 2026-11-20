@@ -17,6 +17,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdicWittLattices.PFEtInj
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV UpperTheory.Gal.Int.Geo TensorProduct
 
+/- English proof (translation)
+Establish `h1 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Establish `h2 : IsUnit (l : Ω)` using `isUnit_iff_ne_zero.mpr h1`. Establish `h3` using `h2.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.symm`. Simplify using `using h3`.
+-/
 private theorem l_unit_of_charZero (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [CharZero Ω] :
     IsUnit (l : Γ(UpperTheory.Gal.G3.sp Ω, ⊤)) := by
   have h1 : (l : Ω) ≠ 0 := Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero
@@ -24,11 +27,31 @@ private theorem l_unit_of_charZero (l : ℕ) [Fact l.Prime] (Ω : Type) [Field �
   have h3 := h2.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).commRingCatIsoToRingEquiv.symm
   simpa using h3
 
+/- English proof (translation)
+Rewrite using `[Functor.map_comp, pullTot_comp]`. Both sides reduce to the same expression.
+-/
 private theorem pullTot_comp_apply (l : ℕ) [Fact l.Prime] {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (x) :
     pullTot l (sch.map (f ≫ g)) x = pullTot l (sch.map f) (pullTot l (sch.map g) x) := by
   rw [Functor.map_comp, pullTot_comp]; rfl
 
 open UpperTheory.Gal.G3 in
+/- English proof (translation)
+Introduce `l _ Ω' _ _ Z Y Z₁ Y₁ s t _ _ s₁ t₁ q₁ u v hv hvt hq A A₁ hA hA₁`. Take `⟨W, c, G, _, _, a, J, _, σ, hG, hS, hc⟩` from `hA`. Establish `SB : SplitsBasic` using `pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits`. Establish `FB : FEtBasic` using `pFEtBasic pPtsOfSplits`. Establish `hT : (et l (sp Ω')).Good` using `pEtGood (pEtnGood FB pEtTr) l _ (l_unit_of_charZero l Ω')`.
+
+Establish `OE : OpEx.{1}` using `pOpEx pOpTr`. Establish `FI : FEtInj.{1}` using `pFEtInj (pGalClosD (pSplitsPts pIsoPts) (pOrdEx pOrdStep))`. Use `haveI : IsFinite s₁ := MorphismProperty.of_isPullback (P := @IsFinite) hv ‹_›`. Use `haveI : Etale s₁ := MorphismProperty.of_isPullback (P := @Etale) hv ‹_›`. Take `⟨hσ, -⟩` from `id hS`.
+
+Establish `e : ∀ j, (pullback.fst c u ≫ σ j) ≫ s = pullback.snd c u ≫ u`. Introduce `j`. Rewrite using `[Category.assoc, hσ j, pullback.condition]`. Set `σ₁ : J → (pullback c u ⟶ Y₁)` to `fun j => hv.lift (pullback.fst c u ≫ σ j) (pullback.snd c u) (e j)`. Establish `σ₁v : ∀ j, σ₁ j ≫ v = pullback.fst c u ≫ σ j` using `fun j => hv.lift_fst _ _ _`.
+
+Establish `σ₁s : ∀ j, σ₁ j ≫ s₁ = pullback.snd c u` using `fun j => hv.lift_snd _ _ _`. Establish `hS0 : Splits s (pullback.snd c u ≫ u) fun j => σ₁ j ≫ v`. Establish `h` using `SB.1 s c J σ (pullback.fst c u) hS`. Simplify using `only [σ₁v]`. Rewrite using `[← pullback.condition]`.
+
+Conclude with `h`. Establish `hS₁ : Splits s₁ (pullback.snd c u) σ₁` using `(SB.2 v s₁ s u hv (pullback.snd c u) J σ₁ σ₁s).2 hS0`. Establish `hOp : (et l (sp Ω')).IsOp q₁ q₁ s₁ t₁ A₁` using `(pOpEt l q₁ q₁ s₁ t₁ hq A₁).2 hA₁`. Establish `key` using `(OE _ hT q₁ q₁ s₁ t₁ hq).2 A₁ hOp _ (pullback.snd c u ≫ q₁) (pullback.snd c u) rfl J σ₁ (fun j => by rw [Category.assoc, hq, ← Category.assoc, σ₁s]) hS₁`. Establish `key' : ∀ y, pullTot l (sch.map (pullback.snd c u)) (A₁ y) = ∑ j, pullTot l (sch.map (σ₁ j ≫ t₁)) y` using `fun y => key y`.
+
+Establish `hfet : FEt c (Nat.card G)` using `FB.2.2 c G a hG`. Establish `hfet₁ : FEt (pullback.snd c u) (Nat.card G)` using `FB.1 (pullback.fst c u) (pullback.snd c u) c u _ (IsPullback.of_hasPullback c u) hfet`. Establish `hinj : Function.Injective (pullTot l (sch.map (pullback.snd c u)))` using `FI _ hT q₁ (pullback.snd c u ≫ q₁) (pullback.snd c u) rfl _ Nat.card_pos hfet₁`. Use `LinearMap.ext fun x => hinj ?_` and prove the remaining obligations. Use `show pullTot l (sch.map (pullback.snd c u)) (pullTot l (sch.map u) (A x)) = pullTot l (sch.map (pullback.snd c u)) (A₁ (pullTot l (sch.map u) x))`.
+
+Rewrite using `[key', ← pullTot_comp_apply, ← pullback.condition, pullTot_comp_apply, hc, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← pullTot_comp_apply, ← pullTot_comp_apply]`. Establish `hm : pullback.fst c u ≫ σ j ≫ t = (σ₁ j ≫ t₁) ≫ u`. Rewrite using `[Category.assoc, ← hvt, ← Category.assoc (σ₁ j), σ₁v, Category.assoc]`.
+
+Rewrite using `[hm]`.
+-/
 theorem UpperTheory.etaleCohomology_corrOp_comm_pullback :
     ∀ (l : ℕ) [Fact l.Prime] (Ω' : Type) [Field Ω'] [CharZero Ω'] {Z Y Z₁ Y₁ : Scheme.{0}} (s t : Y ⟶ Z) [IsFinite s] [Etale s] (s₁ t₁ : Y₁ ⟶ Z₁) (q₁ : Z₁ ⟶ Spec (CommRingCat.of Ω')) (u : Z₁ ⟶ Z) (v : Y₁ ⟶ Y), IsPullback v s₁ s u → v ≫ t = t₁ ≫ u → t₁ ≫ q₁ = s₁ ≫ q₁ → ∀ (A : Htot l (sch.obj Z) →ₗ[ℚ_[l]] Htot l (sch.obj Z)) (A₁ : Htot l (sch.obj Z₁) →ₗ[ℚ_[l]] Htot l (sch.obj Z₁)), IsCorrOp l s t A → IsCorrOp l s₁ t₁ A₁ → pullTot l (sch.map u) ∘ₗ A = A₁ ∘ₗ pullTot l (sch.map u) := by
   intro l _ Ω' _ _ Z Y Z₁ Y₁ s t _ _ s₁ t₁ q₁ u v hv hvt hq A A₁ hA hA₁

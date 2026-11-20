@@ -9,6 +9,9 @@ open Matrix NumberField GlobalTheory GlobalTheory.SW GlobalTheory.SW.Lev GlobalT
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
 
+/- English proof (translation)
+Take `⟨a, m, hm, e⟩` from `cop_iff.1 hs`. Conclude with `cop_iff.2 ⟨a, m, h hm, e⟩`.
+-/
 theorem cop_mono {O : Type} [CommRing O] {𝔞 𝔟 : Ideal O} {s : O} (h : 𝔞 ≤ 𝔟)
     (hs : IsCoprime (Ideal.span {s}) 𝔞) : IsCoprime (Ideal.span {s}) 𝔟 := by
   obtain ⟨a, m, hm, e⟩ := cop_iff.1 hs
@@ -16,6 +19,13 @@ theorem cop_mono {O : Type} [CommRing O] {𝔞 𝔟 : Ideal O} {s : O} (h : 𝔞
 
 variable {D : SW.Level X} {𝔐 : Ideal (𝓞 E)}
 
+/- English proof (translation)
+Take `⟨-, k, hk, a, ha, h⟩` from `(mem_grp ga).1 hga`. Take `⟨s, hs, h⟩` from `h i`. Use `cong_trans ⟨s, cop_mono hle hs, Submodule.smul_mono_left hle h⟩ ?_` and prove the remaining obligations. Establish `e : D.β i = ∑ j, (1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i • D.β j`. Simplify using `[Matrix.one_apply]`.
+
+Rewrite using `[cong_iff, e, ← Finset.sum_sub_distrib]`. Use `le_loc _ (Submodule.sum_mem _ fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← sub_smul]`. Use `Submodule.smul_mem_smul ?_ (D.β_mem j)` and prove the remaining obligations. Take `⟨c, hc, e'⟩` from `hJ k hk j i`.
+
+Establish `e1 : (1 : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)) j i = Ideal.Quotient.mk D.𝔪 ((1 : Matrix (Fin r) (Fin r) (𝓞 E)) j i)`. Apply the tactic sequence `simp only [Matrix.one_apply]; split_ifs <;> simp`. Rewrite `e'` using `[← ha, e1, Matrix.map_apply, ← map_sub]`. Use `add_mem (hle (Ideal.Quotient.eq.1 e')) hc` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem cong_frame (hle : D.𝔪 ≤ 𝔐)
     (hJ : ∀ k ∈ D.J, ∀ i j, ∃ a ∈ 𝔐, ((k : GL (Fin r) (𝓞 E ⧸ D.𝔪)) : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)) i j -
       (1 : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)) i j = Ideal.Quotient.mk D.𝔪 a)
@@ -37,6 +47,13 @@ theorem cong_frame (hle : D.𝔪 ≤ 𝔐)
   have := add_mem (hle (Ideal.Quotient.eq.1 e')) hc
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Take `⟨-, t, ht, h3, h4⟩` from `hL`. Take `⟨s, hs, hN⟩` from `nakayama X.Λ_fg D.β_span`. Establish `ht'` using `cop_mono hle ht.of_mul_right_left`. Use `mem_of_loc (sub_mem (hfix u hu) hu) le_rfl ?_` and prove the remaining obligations. Establish `h1 : Submodule.span (𝓞 E) (Set.range D.β) ≤ (loc 𝔐 (𝔐 • X.Λ)).comap (lin ga - LinearMap.id)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `cong_iff.1 (h i)`. Establish `h2` using `h1 (hN _ (h3 u hu))`. Rewrite `h2` using `[Submodule.mem_comap, map_smul, map_smul]`.
+
+Take `⟨q, hq, h5⟩` from `loc_loc ht' (loc_loc (cop_mono hle hs) h2)`. Conclude with `⟨t * q, cop_mul ht' hq, by`. Rewrite using `[mul_smul]`. Conclude with `smul_map_mem LinearMap.id h4 h5⟩`.
+-/
 theorem sub_mem_smul (hle : D.𝔪 ≤ 𝔐) {ga : GL (Fin r) E} (h : ∀ i, Cong X 𝔐 (lin ga (D.β i)) (D.β i))
     {L : Lt E r} (hL : L ∈ D.lats) (hfix : ∀ u ∈ L, lin ga u ∈ L) {u : Fin r → E} (hu : u ∈ L) :
     lin ga u - u ∈ 𝔐 • L := by
@@ -57,14 +74,27 @@ theorem sub_mem_smul (hle : D.𝔪 ≤ 𝔐) {ga : GL (Fin r) E} (h : ∀ i, Con
 noncomputable def quo (ga : GL (Fin r) E) (M : ℕ) : (Fin r → E) →ₗ[𝓞 E] (Fin r → E) :=
   ((M : E)⁻¹) • (lin ga - LinearMap.id)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem quo_apply (ga : GL (Fin r) E) (M : ℕ) (u : Fin r → E) :
     quo ga M u = ((M : E)⁻¹) • (lin ga u - u) := rfl
 
+/- English proof (translation)
+Establish `: (M : E) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Rewrite using `[quo_apply, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ this, one_smul, add_sub_cancel]`.
+-/
 theorem lin_eq_add {M : ℕ} (hM : M ≠ 0) (ga : GL (Fin r) E) (u : Fin r → E) :
     lin ga u = u + M • quo ga M u := by
   have : (M : E) ≠ 0 := Nat.cast_ne_zero.2 hM
   rw [quo_apply, ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ this, one_smul, add_sub_cancel]
 
+/- English proof (translation)
+Establish `: (M : E) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Use `Submodule.smul_induction_on hz (fun a ha l hl => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (hn ▸ Ideal.mul_mem_mul ha hb)`. Establish `hc' : (c : E) * M = a * b` using `by exact_mod_cast congrArg (fun z : 𝓞 E => (z : E)) hc`. Establish `e : b • ((M : E)⁻¹) • a • l = c • l`.
+
+Rewrite using `[O_smul, O_smul, O_smul, smul_smul, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hc'`. Rewrite using `[e]`.
+
+Conclude with `L.smul_mem _ hl`. Rewrite using `[smul_add, smul_add]`. Conclude with `add_mem hx hy`.
+-/
 theorem div_mem {M : ℕ} (hM : M ≠ 0) (hn : 𝔐 * conjI 𝔐 = Ideal.span {(M : 𝓞 E)}) {L : Lt E r}
     {b : 𝓞 E} (hb : b ∈ conjI 𝔐) {z : Fin r → E} (hz : z ∈ 𝔐 • L) : b • ((M : E)⁻¹) • z ∈ L := by
   have : (M : E) ≠ 0 := Nat.cast_ne_zero.2 hM
@@ -79,6 +109,15 @@ theorem div_mem {M : ℕ} (hM : M ≠ 0) (hn : 𝔐 * conjI 𝔐 = Ideal.span {(
     rw [e]; exact L.smul_mem _ hl
   · rw [smul_add, smul_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Take `⟨m, hm, m', hm', e⟩` from `Ideal.isCoprime_iff_exists.1 hc`. Rewrite using `[← one_smul (𝓞 E) (quo ga M u), ← e, add_smul]`. Use `add_mem ((hL.2 _).2 fun y hy => ?_) (div_mem hM hn hm' (h u hmem))` and prove the remaining obligations. Establish `hb : bar m ∈ conjI 𝔐` using `mem_conjI.2 (by rwa [bar_bar])`. Establish `hcc : cc ((M : E)⁻¹) = (M : E)⁻¹` using `by simp [cc]`.
+
+Establish `key (w : Fin r → E) : EF X (lin ga u - u) w = EF X u (lin ga⁻¹ w - w)`. Establish `h1` using `EF_add_left (X := X) (lin ga u - u) u w`. Establish `h2` using `EF_add_right (X := X) u (lin ga⁻¹ w - w) w`. Rewrite `h1`, `h2` using `[sub_add_cancel]`. Rewrite `h1` using `[EF_lin hu, h2]`.
+
+Conclude with `(add_right_cancel h1).symm`. Take `⟨k, hk⟩` from `(hL.2 u).1 hmem _ (div_mem hM hn hb (h' y hy))`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[EF_smul, quo_apply, EF_smulE, hcc, key, ← hk]`. Use `congr 1`.
+
+Simplify using `only [lin_apply, O_smul, Matrix.mulVec_smul, smul_sub]`. Rewrite using `[smul_comm, smul_comm ((M : E)⁻¹)]`.
+-/
 theorem quo_mem {M : ℕ} (hM : M ≠ 0) (hn : 𝔐 * conjI 𝔐 = Ideal.span {(M : 𝓞 E)})
     (hc : IsCoprime 𝔐 (conjI 𝔐)) {L : Lt E r} (hL : SelfD X L) {ga : GL (Fin r) E} (hu : IsUn X ga)
     (h : ∀ u ∈ L, lin ga u - u ∈ 𝔐 • L) (h' : ∀ u ∈ L, lin ga⁻¹ u - u ∈ 𝔐 • L)
@@ -101,6 +140,11 @@ theorem quo_mem {M : ℕ} (hM : M ≠ 0) (hn : 𝔐 * conjI 𝔐 = Ideal.span {(
   simp only [lin_apply, O_smul, Matrix.mulVec_smul, smul_sub]
   rw [smul_comm, smul_comm ((M : E)⁻¹)]
 
+/- English proof (translation)
+Take `⟨s, hs, hN⟩` from `nakayama X.Λ_fg D.β_span`. Establish `hs0 : (s : E) ≠ 0` using `by simpa using cop_ne_zero D.proper hs`. Establish `hli : LinearIndependent E D.β`. Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp)` and prove the remaining obligations. Rewrite using `[← X.Λ_span, Submodule.span_le]`.
+
+Introduce `v hv`. Use `Submodule.span_le_restrictScalars (𝓞 E) E _ (hN v hv)` as an intermediate fact. Conclude with `(Submodule.smul_mem_iff _ hs0).1 this`. Establish `: IsUnit (Matrix.of D.β)` using `Matrix.linearIndependent_rows_iff_isUnit.1 hli`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero`.
+-/
 theorem det_frame_ne_zero (D : SW.Level X) : (Matrix.of D.β).det ≠ 0 := by
   obtain ⟨s, hs, hN⟩ := nakayama X.Λ_fg D.β_span
   have hs0 : (s : E) ≠ 0 := by simpa using cop_ne_zero D.proper hs
@@ -113,6 +157,23 @@ theorem det_frame_ne_zero (D : SW.Level X) : (Matrix.of D.β).det ≠ 0 := by
   have : IsUnit (Matrix.of D.β) := Matrix.linearIndependent_rows_iff_isUnit.1 hli
   exact ((Matrix.isUnit_iff_isUnit_det _).1 this).ne_zero
 
+/- English proof (translation)
+Take `⟨s₁, hs₁, h1, -⟩` from `keeps h`. Take `⟨s₂, hs₂, hN⟩` from `nakayama X.Λ_fg D.β_span`. Take `⟨a, ha, h⟩` from `h`. Establish `hs` using `cop_mul hs₂ hs₁`. Use `set s := s₂ * s₁ with hsdef`.
+
+Establish `h2 (i) : ∃ c : Fin r → 𝓞 E, ∑ j, c j • D.β j = s • lin ga (D.β i)`. Rewrite using `[hsdef, mul_smul]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 (hN _ (h1 _ (D.β_mem i)))`. Use `choose c hc using h2`. Establish `h3 (i j) : c i j - s * a j i ∈ D.𝔪`.
+
+Use `coeff_cong D (c := c i) (d := fun j => s * a j i) ?_ j` and prove the remaining obligations. Rewrite using `[hc, cong_iff]`. Simplify using `only [mul_smul, ← Finset.smul_sum, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ (cong_iff.1 (h i))`. Establish `h4 : (Matrix.of c).map (algebraMap (𝓞 E) E) * Matrix.of D.β = (s : E) • (Matrix.of D.β * (ga : Matrix (Fin r) (Fin r) E)ᵀ)`.
+
+Use extensionality with `i l`. Use `congrFun (hc i) l` as an intermediate fact. Rewrite `this` using `[Finset.sum_apply]`. Use `Eq.trans this ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s : E) * ∑ j, (ga : Matrix (Fin r) (Fin r) E) l j * D.β i j = (s : E) * ∑ j, D.β i j * (ga : Matrix (Fin r) (Fin r) E) l j`.
+
+Simplify using `only [mul_comm]`. Establish `h5 : (Matrix.of c).det = s ^ r`. Use `congrArg Matrix.det h4` as an intermediate fact. Rewrite `this` using `[det_mul, det_smul, det_mul, det_transpose, hd, mul_one, Fintype.card_fin, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises.
+
+Rewrite using `[map_pow]`. Conclude with `mul_right_cancel₀ (det_frame_ne_zero D) this`. Establish `h6 : (Matrix.of c).map (Ideal.Quotient.mk D.𝔪) = Ideal.Quotient.mk D.𝔪 s • (k : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪))ᵀ`. Use extensionality with `i j`. Rewrite using `[← ha]`.
+
+Conclude with `(Ideal.Quotient.eq.2 (h3 i j)).trans (map_mul _ _ _)`. Establish `h7` using `congrArg Matrix.det h6`. Rewrite `h7` using `[det_smul, det_transpose, Fintype.card_fin, ← RingHom.mapMatrix_apply, ← RingHom.map_det, h5, map_pow]`. Take `⟨b, m, hm, e⟩` from `cop_iff.1 hs`. Establish `hu : IsUnit (Ideal.Quotient.mk D.𝔪 s)`.
+
+Use `IsUnit.of_mul_eq_one_right (Ideal.Quotient.mk D.𝔪 b) ?_` and prove the remaining obligations. Use `congrArg (Ideal.Quotient.mk D.𝔪) e` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, Ideal.Quotient.eq_zero_iff_mem.2 hm, add_zero, map_one]`. Then use the resulting hypothesis. Conclude with `((hu.pow r).mul_left_cancel (h7.symm.trans (mul_one _).symm))`.
+-/
 theorem det_red {ga : GL (Fin r) E} {k : GL (Fin r) (𝓞 E ⧸ D.𝔪)}
     (h : D.Red (fun i => lin ga (D.β i)) k) (hd : (ga : Matrix (Fin r) (Fin r) E).det = 1) :
     (k : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)).det = 1 := by
@@ -172,6 +233,17 @@ open scoped ComplexConjugate Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas _ n _ _ D 𝔐 M hle hn hJ ga hga`. Establish `hM : M ≠ 0`. Introduce and unpack `rfl`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot D.ne_bot`. Establish `hb : Lev.bar a ∈ conjI 𝔐` using `Lev.mem_conjI.2 (by rw [Lev.bar_bar]; exact hle ha)`.
+
+Use `Ideal.mul_mem_mul (hle ha) hb` as an intermediate fact. Rewrite `this` using `[hn, Nat.cast_zero, Ideal.span_singleton_zero, Ideal.mem_bot]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `ha0 h`. Conclude with `ha0 (by rw [← Lev.bar_bar a, h, map_zero])`.
+
+Establish `hc : IsCoprime 𝔐 (conjI 𝔐)`. Take `⟨m, hm, m', hm', e⟩` from `Ideal.isCoprime_iff_exists.1 D.cop`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨m, hle hm, m', Lev.mem_conjI.2 (hle (Lev.mem_conjI.1 hm')), e⟩`. Use `⟨Stab.cong_frame hle hJ hga, fun L hL hfix => ?_⟩` and prove the remaining obligations. Establish `hu` using `((Lev.mem_grp ga).1 hga).1`.
+
+Establish `f1 : ∀ u ∈ L, Lev.lin ga u ∈ L` using `fun u hu => hfix ▸ ⟨u, hfix.symm ▸ hu, rfl⟩`. Establish `f2 : ∀ u ∈ L, Lev.lin ga⁻¹ u ∈ L` using `fun u hu => Lev.mem_mapL.1 (hfix.symm ▸ hu)`. Establish `hq : ∀ u ∈ L, Stab.quo ga M u ∈ L` using `fun u hmem => Stab.quo_mem hM hn hc hL.1 hu (fun _ => Stab.sub_mem_smul hle (Stab.cong_frame hle hJ hga) hL f1) (fun _ => Stab.sub_mem_smul hle (Stab.cong_frame hle hJ (inv_mem hga)) hL f2) hmem`. Establish `h1 : ∀ u ∈ L, ∃ u' ∈ L, (ga : Matrix (Fin r) (Fin r) E) *ᵥ u = u + M • u'` using `fun u hmem => ⟨_, hq u hmem, Stab.lin_eq_add hM ga u⟩`. Use `⟨h1, fun u hmem => ⟨Stab.quo ga M u, fun b hb => ?_, Stab.lin_eq_add hM ga u⟩, fun k hk h3 => Stab.det_red hk ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_smul, ← one_smul (𝓞 E) (Stab.quo ga M _)]`. Conclude with `Lev.smul_map_mem _ (fun v hv => by rw [one_smul]; exact hq v hv) (hmem b hb)`. Use `GlobalTheory.CongruenceDet.det_eq_one E r M X.Gm L ga X.Gm_det hL.1.1 (Lev.span_lats hL) h3 ⟨hu, fun x => ⟨f1 x, fun hx => ?_⟩⟩ h1` and prove the remaining obligations. Conclude with `Lev.lin_inv ga x ▸ f2 _ hx`.
+-/
 theorem GlobalTheory.Dict.stab_trivial_mod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (D : SW.Level X) (𝔐 : Ideal (𝓞 E)) (M : ℕ), D.𝔪 ≤ 𝔐 → 𝔐 * conjI 𝔐 = Ideal.span {(M : 𝓞 E)} → (∀ k ∈ D.J, ∀ i j, ∃ a ∈ 𝔐, ((k : GL (Fin r) (𝓞 E ⧸ D.𝔪)) : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)) i j - (1 : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)) i j = Ideal.Quotient.mk D.𝔪 a) → ∀ ga ∈ D.grp, (∀ i, Cong X 𝔐 ((ga : Matrix (Fin r) (Fin r) E) *ᵥ D.β i) (D.β i)) ∧ ∀ L ∈ D.lats, mapL ga L = L → (∀ u ∈ L, ∃ u' ∈ L, (ga : Matrix (Fin r) (Fin r) E) *ᵥ u = u + M • u') ∧ (∀ u ∈ D.sh L, ∃ u' ∈ D.sh L, (ga : Matrix (Fin r) (Fin r) E) *ᵥ u = u + M • u') ∧ ∀ k : D.J, D.Red (fun i => (ga : Matrix (Fin r) (Fin r) E) *ᵥ D.β i) k → 3 ≤ M → ((k : GL (Fin r) (𝓞 E ⧸ D.𝔪)) : Matrix (Fin r) (Fin r) (𝓞 E ⧸ D.𝔪)).det = 1 := by
   intro E _ _ _ r X g bas _ n _ _ D 𝔐 M hle hn hJ ga hga
   have hM : M ≠ 0 := by

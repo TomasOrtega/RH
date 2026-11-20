@@ -35,9 +35,15 @@ def IsMDens (ρ : AlgChart p σ D → CxPts p σ → ℝ) : Prop :=
     ρ c y = ‖ChartGlue.transDet c.e c'.e y‖ ^ 2 * ρ c' y) ∧
   ∀ c : AlgChart p σ D, AEMeasurable (fun v => ρ c (c.e.symm v)) (volume.restrict c.e.target)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun c => (h.2 c).aemeasurable c.e.open_target.measurableSet⟩`.
+-/
 theorem isMDens_of_isDens {ρ : AlgChart p σ D → CxPts p σ → ℝ} (h : IsDens ρ) : IsMDens ρ :=
   ⟨h.1, fun c => (h.2 c).aemeasurable c.e.open_target.measurableSet⟩
 
+/- English proof (translation)
+Simplify using `[densInt, IntegrableDens, Weight.chernInt, Weight.ChernIntegrableOn, (MixDens.chernPart_eq φ).1, (MixDens.chernPart_eq φ).2, integrableOn_univ]`.
+-/
 theorem densInt_chernDens {B : LB X} (φ : Weight p σ B) (f : CxPts p σ → ℝ) :
     densInt (fun (c : AlgChart p σ D) y => c.chernDens φ y) f = φ.chernInt D univ f ∧
       (IntegrableDens (fun (c : AlgChart p σ D) y => c.chernDens φ y) f ↔ φ.ChernIntegrableOn D univ f) := by
@@ -67,10 +73,16 @@ def fib (v : V D) : Low r → ℂ := fun s => v (ε.symm (.inr s))
 
 def pt (u : V n) (x : Low r → ℂ) : V D := WithLp.toLp 2 fun j => Sum.elim (fun a => u a) x (ε j)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `[base, pt]`.
+-/
 theorem base_pt (u : V n) (x : Low r → ℂ) : base ε (pt ε u x) = u := by
   ext j
   simp [base, pt]
 
+/- English proof (translation)
+Use extensionality with `s`. Simplify using `[fib, pt]`.
+-/
 theorem fib_pt (u : V n) (x : Low r → ℂ) : fib ε (pt ε u x) = x := by
   ext s
   simp [fib, pt]
@@ -114,9 +126,15 @@ def up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (
     CxPts (genStr Z) σ :=
   ⟨pullback.lift (y.1 ≫ j) (spMap σ) (by rw [Category.assoc, hj, y.2, ← Spec.map_comp]; rfl), pullback.lift_snd _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem up_ι {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) (y : CxPts q (σ.comp β)) :
     (up j hj σ y).1 ≫ genι Z = y.1 ≫ j := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[(isEmbedding_of_isPullback (C := ℂ) (IsPullback.of_hasPullback Z.s (spMap β))).continuous_iff]`. Use `(((continuous_comp j).comp continuous_subtype_val).prodMk (continuous_const (y := spMap σ))).congr fun y => ?_` and prove the remaining obligations. Conclude with `Prod.ext (pullback.lift_fst _ _ _).symm (pullback.lift_snd _ _ _).symm`.
+-/
 theorem continuous_up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) :
     Continuous (up j hj σ) := by
   refine Continuous.subtype_mk ?_ _
@@ -124,6 +142,9 @@ theorem continuous_up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j
   refine (((continuous_comp j).comp continuous_subtype_val).prodMk (continuous_const (y := spMap σ))).congr fun y => ?_
   exact Prod.ext (pullback.lift_fst _ _ _).symm (pullback.lift_snd _ _ _).symm
 
+/- English proof (translation)
+Establish `e : genι Z ((up j hj σ y).1 (IsLocalRing.closedPoint ℂ)) = j (y.1 (IsLocalRing.closedPoint ℂ))` using `congrArg (fun g : Sp ℂ ⟶ Z.X => g (IsLocalRing.closedPoint ℂ)) (up_ι j hj σ y)`. Rewrite using `[← e]`. Conclude with `not_not.trans (Set.ext_iff.1 Z.ab_gen _).symm`.
+-/
 theorem inner_up {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ)
     (y : CxPts q (σ.comp β)) : Inner (up j hj σ y) ↔ j (y.1 (IsLocalRing.closedPoint ℂ)) ∈ abLocus Z.t.G := by
   have e : genι Z ((up j hj σ y).1 (IsLocalRing.closedPoint ℂ)) = j (y.1 (IsLocalRing.closedPoint ℂ)) :=

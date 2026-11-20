@@ -6,6 +6,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory.Cyc
 
+/- English proof (translation)
+Establish `key : ∀ (n : ℕ) (a : PowerSeries O), PowerSeries.X ^ n ∣ f a - g a`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules.
+
+Consider the case `succ n ih`. Introduce `a`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : PowerSeries.X ∣ a - PowerSeries.C (PowerSeries.constantCoeff a) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules.
+
+Establish `ha : a = algebraMap O (PowerSeries O) (PowerSeries.constantCoeff a) + PowerSeries.X * b`. Rewrite using `[← hb, PowerSeries.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree. Establish `: f a - g a = f PowerSeries.X * (f b - g b)` using `by conv_lhs => rw [ha]`. Rewrite using `[map_add, map_add, map_mul, map_mul, f.commutes, g.commutes, ← h]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, pow_succ']`. Conclude with `mul_dvd_mul (PowerSeries.X_dvd_iff.2 h0) (ih b)`. Use extensionality with `a n`. Use `(PowerSeries.X_pow_dvd_iff.1 (key (n + 1) a)) n (Nat.lt_succ_self n)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem algHom_ext_of_constantCoeff_zero {O : Type} [CommRing O]
     (f g : PowerSeries O →ₐ[O] PowerSeries O) (h : f PowerSeries.X = g PowerSeries.X)
     (h0 : PowerSeries.constantCoeff (f PowerSeries.X) = 0) : f = g := by
@@ -29,6 +40,11 @@ theorem algHom_ext_of_constantCoeff_zero {O : Type} [CommRing O]
   rw [map_sub] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : PowerSeries.X ∣ a - PowerSeries.C (PowerSeries.constantCoeff a) := by`. Rewrite using `[PowerSeries.X_dvd_iff]`. Simplify using the standard rewrite rules. Establish `ha : a = algebraMap O (PowerSeries O) (PowerSeries.constantCoeff a) + PowerSeries.X * b`. Rewrite using `[← hb, PowerSeries.algebraMap_eq]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [ha]`. Rewrite using `[map_add, map_mul, f.commutes, map_add, map_mul, h0, PowerSeries.algebraMap_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_algHom {O : Type} [CommRing O]
     (f : PowerSeries O →ₐ[O] PowerSeries O)
     (h0 : PowerSeries.constantCoeff (f PowerSeries.X) = 0) (a : PowerSeries O) :
@@ -41,6 +57,25 @@ theorem constantCoeff_algHom {O : Type} [CommRing O]
   rw [map_add, map_mul, f.commutes, map_add, map_mul, h0, PowerSeries.algebraMap_eq]
   simp
 
+/- English proof (translation)
+Use `set F := f PowerSeries.X with hF`. Use `set G := g PowerSeries.X with hG`. Establish `hφ0 : PowerSeries.constantCoeff (φ PowerSeries.X) = 0` using `by rw [hφ]; simp`. Establish `hp : φ PowerSeries.X = PowerSeries.X * ∑ i ∈ Finset.range l, (1 + PowerSeries.X : PowerSeries O) ^ i`. Rewrite using `[hφ, ← geom_sum_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : φ (F - G) = (F - G) * ∑ i ∈ Finset.range l, (1 + F) ^ i * (1 + G) ^ (l - 1 - i)`. Rewrite using `[map_sub, hf, hg, hφ]`. Use `(Commute.all (1 + F) (1 + G)).mul_geom_sum₂ l` as an intermediate fact. Simplify using `only [map_sub, map_pow, map_add, map_one, ← hF, ← hG]`.
+
+Rewrite `this` using `[show (1 + F) - (1 + G) = F - G by ring]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ n : ℕ, PowerSeries.X ^ (n + 2) ∣ F - G`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Use `interval_cases m`.
+
+Simplify using `[hf0, hg0]`. Rewrite using `[map_sub, h1, sub_self]`. Consider the case `succ n ih`. Take `⟨e, he⟩` from `ih`. Rewrite `hd` using `[he, map_mul, map_pow, hp, mul_pow, mul_assoc, mul_assoc]`.
+
+Establish `hc` using `congrArg PowerSeries.constantCoeff (mul_left_cancel₀ (pow_ne_zero _ PowerSeries.X_ne_zero) hd)`. Simplify using `only [map_mul, map_pow, map_sum, map_add, map_one, PowerSeries.constantCoeff_X, hf0, hg0, add_zero, one_pow, mul_one, Finset.sum_const, Finset.card_range, nsmul_eq_mul, constantCoeff_algHom φ hφ0] at hc`. Establish `he0 : PowerSeries.constantCoeff e = 0`. Assume the negation of the conclusion as `hne`. Establish `h2 : (l : O) * ((l : O) ^ (n + 1) - 1) * PowerSeries.constantCoeff e = 0`.
+
+Take the linear combination `hc`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `hl0 h4`. Conclude with `hlu (IsUnit.of_pow_eq_one (sub_eq_zero.1 h4) (Nat.succ_ne_zero n))`.
+
+Conclude with `hne h3`. Rewrite using `[he, show n + 1 + 2 = n + 2 + 1 from rfl, pow_succ]`. Conclude with `mul_dvd_mul_left _ (PowerSeries.X_dvd_iff.2 he0)`. Use extensionality with `n`. Use `(PowerSeries.X_pow_dvd_iff.1 (key n)) n (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub]`. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem eq_of_commute_pow {O : Type} [CommRing O] [IsDomain O] (l : ℕ) (hl0 : (l : O) ≠ 0)
     (hlu : ¬ IsUnit (l : O)) (φ f g : PowerSeries O →ₐ[O] PowerSeries O)
     (hφ : φ PowerSeries.X = (1 + PowerSeries.X) ^ l - 1)
@@ -95,6 +130,11 @@ theorem eq_of_commute_pow {O : Type} [CommRing O] [IsDomain O] (l : ℕ) (hl0 : 
   rw [map_sub] at this
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ hl0 hlu f φ₀ c hφ hcomm hf0 hf1`. Take `⟨hX, hmul, -, hnat, hlin, -⟩` from `GlobalTheory.T.cyclotomicPowerSeriesAlgHom_action_laws l O`. Establish `hφe : φ₀ = phi l O`. Use `algHom_ext_of_constantCoeff_zero _ _ ?_ (by rw [hφ]; simp)` and prove the remaining obligations. Rewrite using `[hφ, phi, hX, hnat]`.
+
+Use `⟨hφe, algHom_ext_of_constantCoeff_zero _ _ ?_ hf0⟩` and prove the remaining obligations. Use `eq_of_commute_pow l hl0 hlu φ₀ f (act l O c) hφ (hcomm _) ?_ hf0 ?_ ?_` and prove the remaining obligations. Rewrite using `[hφe, phi, hmul, hmul, mul_comm]`. Rewrite using `[hX, cyc_const]`. Rewrite using `[hX, hlin, hf1]`.
+-/
 theorem act_unique : ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Algebra ℤ_[l] O], (l : O) ≠ 0 → ¬ IsUnit (l : O) → ∀ (f : PowerSeries O →ₐ[O] PowerSeries O) (φ₀ : PowerSeries O →ₐ[O] PowerSeries O) (c : ℤ_[l]), φ₀ PowerSeries.X = (1 + PowerSeries.X) ^ l - 1 → (∀ a, φ₀ (f a) = f (φ₀ a)) → PowerSeries.constantCoeff (f PowerSeries.X) = 0 → PowerSeries.coeff 1 (f PowerSeries.X) = algebraMap ℤ_[l] O c → φ₀ = phi l O ∧ f = act l O c := by
   intro l _ O _ _ _ _ _ hl0 hlu f φ₀ c hφ hcomm hf0 hf1
   obtain ⟨hX, hmul, -, hnat, hlin, -⟩ := GlobalTheory.T.cyclotomicPowerSeriesAlgHom_action_laws l O

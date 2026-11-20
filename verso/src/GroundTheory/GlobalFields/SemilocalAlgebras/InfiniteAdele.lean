@@ -31,6 +31,9 @@ def piPlacesOverEquiv :
   commutes' l := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem piPlacesOverEquiv_apply (x : (v : InfinitePlace K) → PiPlacesOver (L := L) v)
     (w : InfinitePlace L) :
     piPlacesOverEquiv x w = x (w.comap (algebraMap K L)) ⟨w, liesOver_comap w⟩ := rfl
@@ -44,6 +47,9 @@ def tensorInfiniteAdeleRingEquiv :
   (Algebra.TensorProduct.piRight K L L (fun v : InfinitePlace K => v.Completion)).trans <|
     (AlgEquiv.piCongrRight fun v => tensorPiEquivLeft (L := L) v).trans piPlacesOverEquiv
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `tensorPiEquivLeft (L := L) (w.comap (algebraMap K L)) (l ⊗ₜ x (w.comap (algebraMap K L))) ⟨w, liesOver_comap w⟩ = _`. Rewrite using `[tensorPiEquivLeft_tmul]`.
+-/
 theorem tensorInfiniteAdeleRingEquiv_tmul (l : L) (x : InfiniteAdeleRing K)
     (w : InfinitePlace L) :
     tensorInfiniteAdeleRingEquiv (l ⊗ₜ x) w =
@@ -62,6 +68,9 @@ def infiniteAdeleRingMap : InfiniteAdeleRing K →+* InfiniteAdeleRing L :=
 
 omit [NumberField K] [NumberField L] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem infiniteAdeleRingMap_apply (x : InfiniteAdeleRing K) (w : InfinitePlace L) :
     infiniteAdeleRingMap x w =
       algebraMap (w.comap (algebraMap K L)).Completion w.Completion
@@ -69,6 +78,9 @@ theorem infiniteAdeleRingMap_apply (x : InfiniteAdeleRing K) (w : InfinitePlace 
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun w => (NumberField.LiesOver.continuous_completionMap (v := w.comap (algebraMap K L)) (w := w)).comp (continuous_apply (w.comap (algebraMap K L)))`.
+-/
 theorem continuous_infiniteAdeleRingMap :
     Continuous (infiniteAdeleRingMap (K := K) (L := L)) :=
   continuous_pi fun w =>
@@ -77,6 +89,9 @@ theorem continuous_infiniteAdeleRingMap :
 
 omit [NumberField K] [NumberField L] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[infiniteAdeleRingMap_apply, InfiniteAdeleRing.algebraMap_apply, InfiniteAdeleRing.algebraMap_apply, ← Completion.algebraMap_apply, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L]`. Both sides reduce to the same expression.
+-/
 theorem infiniteAdeleRingMap_algebraMap (k : K) :
     infiniteAdeleRingMap (algebraMap K (InfiniteAdeleRing K) k) =
       algebraMap L (InfiniteAdeleRing L) (algebraMap K L k) := by
@@ -86,6 +101,9 @@ theorem infiniteAdeleRingMap_algebraMap (k : K) :
     ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply K L]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[tensorInfiniteAdeleRingEquiv_tmul]`. Both sides reduce to the same expression.
+-/
 theorem tensorInfiniteAdeleRingEquiv_tmul' (l : L) (x : InfiniteAdeleRing K) :
     tensorInfiniteAdeleRingEquiv (l ⊗ₜ x) =
       algebraMap L (InfiniteAdeleRing L) l * infiniteAdeleRingMap x := by

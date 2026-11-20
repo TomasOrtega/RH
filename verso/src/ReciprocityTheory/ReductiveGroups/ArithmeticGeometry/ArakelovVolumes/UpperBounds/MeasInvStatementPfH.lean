@@ -9,11 +9,19 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use `letI := Matrix.invertibleOfIsUnitDet M (isUnit_iff_ne_zero.mpr hd)`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hM`.
+-/
 private lemma blockTriangular_inv_of_det_ne_zero {M : Matrix (Fin n) (Fin n) ℂ} (hM : M.BlockTriangular id)
     (hd : M.det ≠ 0) : M⁻¹.BlockTriangular id := by
   letI := Matrix.invertibleOfIsUnitDet M (isUnit_iff_ne_zero.mpr hd)
   exact Matrix.blockTriangular_inv_of_blockTriangular hM
 
+/- English proof (translation)
+Establish `hP'` using `isUnit_iff_ne_zero.mpr hP`. Establish `hQ'` using `isUnit_iff_ne_zero.mpr hQ`. Establish `e : ∀ Z : Matrix (Fin n) (Fin n) ℂ, Z = P⁻¹ * (P * Z * Q) * Q⁻¹`. Introduce `Z`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP', Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ', Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma eq_of_mul_mul_eq_of_det_ne_zero {P Q X Y : Matrix (Fin n) (Fin n) ℂ} (hP : P.det ≠ 0) (hQ : Q.det ≠ 0)
     (h : P * X * Q = P * Y * Q) : X = Y := by
   have hP' := isUnit_iff_ne_zero.mpr hP
@@ -26,6 +34,29 @@ private lemma eq_of_mul_mul_eq_of_det_ne_zero {P Q X Y : Matrix (Fin n) (Fin n) 
     _ = P⁻¹ * (P * Y * Q) * Q⁻¹ := by rw [h]
     _ = Y := (e Y).symm
 
+/- English proof (translation)
+Establish `hε0 : ∀ a, ε a ≠ 0` using `fun a h0 => by`. Use `hε a` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `zero_ne_one this`. Establish `hu` using `isUnit_iff_ne_zero.mpr hd`.
+
+Take `⟨γ, hγdef⟩ : ∃ γ : Matrix (Fin n) (Fin n) ℂ, γ = β' * β⁻¹` from `⟨_, rfl⟩`. Establish `hγ : γ.BlockTriangular id` using `hγdef ▸ hβ'.mul (blockTriangular_inv_of_det_ne_zero hβ hd)`. Establish `hγβ : β' = γ * β`. Rewrite using `[hγdef, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`. Establish `hγd : γ.det ≠ 0`.
+
+Introduce `h0`. Apply `hd'` to reduce the goal to its premises. Rewrite using `[hγβ, Matrix.det_mul, h0, zero_mul]`. Establish `hbar : ∀ M : Matrix (Fin n) (Fin n) ℂ, (M.map (starRingEnd ℂ)).det = starRingEnd ℂ M.det` using `fun M => by`. Rewrite using `[RingHom.map_det]`.
+
+Both sides reduce to the same expression. Establish `key : γᵀ * diagonal ε * γ.map (starRingEnd ℂ) = diagonal ε`. Apply `eq_of_mul_mul_eq_of_det_ne_zero (P := βᵀ) (Q := β.map (starRingEnd ℂ))` to reduce the goal to its premises. Rewrite using `[Matrix.det_transpose]` and apply the resulting hypothesis. Rewrite using `[hbar]`.
+
+Conclude with `(map_ne_zero _).mpr hd`. Rewrite using `[← h, hγβ, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hγinv` using `blockTriangular_inv_of_det_ne_zero hγ hγd`. Establish `hγtu : IsUnit γᵀ.det` using `by rw [Matrix.det_transpose]; exact isUnit_iff_ne_zero.mpr hγd`.
+
+Establish `key2 : diagonal ε * γ.map (starRingEnd ℂ) = (γ⁻¹)ᵀ * diagonal ε`. Rewrite using `[Matrix.transpose_nonsing_inv]`. Use `conv_rhs => rw [← key]`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hγtu, Matrix.one_mul]`. Establish `hoff : ∀ i j, i ≠ j → γ i j = 0`.
+
+Introduce `i j hij`. Break down `lt_or_gt_of_ne hij with hlt | hlt` into its components or cases. Establish `e` using `congrFun (congrFun key2 i) j`. Rewrite `e` using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transpose_apply, hγinv hlt, zero_mul, Matrix.map_apply]`. Conclude with `(map_eq_zero _).mp ((mul_eq_zero.mp e).resolve_left (hε0 i))`.
+
+Conclude with `hγ hlt`. Establish `hγdiag : γ = diagonal (fun a => γ a a)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[Matrix.diagonal_apply_ne _ hij, hoff i j hij]`. Use `⟨fun a => γ a a, fun a => ?_, by rw [← hγdiag]; exact hγβ⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun key a) a`. Rewrite `e` using `[hγdiag]`.
+
+Simplify using `only [Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq] at e`. Establish `h2 : γ a a * starRingEnd ℂ (γ a a) = 1`. Establish `: ε a * (γ a a * starRingEnd ℂ (γ a a)) = ε a * 1` using `by linear_combination e`. Conclude with `mul_left_cancel₀ (hε0 a) this`. Rewrite `h2` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Establish `h3 : ‖γ a a‖ ^ 2 = 1` using `by exact_mod_cast h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h3`.
+-/
 theorem gram_upper_unique {ε : Fin n → ℂ} (hε : ∀ a, ε a * ε a = 1)
     {β β' : Matrix (Fin n) (Fin n) ℂ} (hβ : β.BlockTriangular id) (hβ' : β'.BlockTriangular id)
     (hd : β.det ≠ 0) (hd' : β'.det ≠ 0)

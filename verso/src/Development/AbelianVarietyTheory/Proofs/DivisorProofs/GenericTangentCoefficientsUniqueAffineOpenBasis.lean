@@ -25,6 +25,9 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (spMap_comp_spMap)
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h1` using `congrArg TrivSqZeroExt.fst h`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Simplify using `only [Formalism.L2.Pj.dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.fst_add, TrivSqZeroExt.fst_inl, TrivSqZeroExt.fst_inr, add_zero, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add] at h1 h2`. Conclude with `TrivSqZeroExt.ext (hf h1) (hf h2)`.
+-/
 theorem dualMap_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     (hf : Function.Injective f) : Function.Injective (Formalism.L2.Pj.dualMap f) := by
   intro a b h
@@ -35,6 +38,11 @@ theorem dualMap_injective {A B : Type} [CommRing A] [CommRing B] (f : A →+* B)
     TrivSqZeroExt.snd_inr, zero_add] at h1 h2
   exact TrivSqZeroExt.ext (hf h1) (hf h2)
 
+/- English proof (translation)
+Use `choose a b hb hab using hfr`. Use `⟨∏ i, b (c i), fun i => a (c i) * ∏ j ∈ Finset.univ.erase i, b (c j), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hb _`. Rewrite using `[← Finset.mul_prod_erase Finset.univ (fun j => b (c j)) (Finset.mem_univ i), map_mul, map_mul, ← hab]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_common_denom {A K : Type} [CommRing A] [Field K] (ρ : A →+* K)
     (hfr : ∀ x : K, ∃ a b : A, ρ b ≠ 0 ∧ x * ρ b = ρ a) {κ : Type} [Fintype κ] (c : κ → K) :
     ∃ (b : A) (a : κ → A), ρ b ≠ 0 ∧ ∀ i, ρ b * c i = ρ (a i) := by
@@ -56,6 +64,9 @@ def bcEps {A K : Type} [CommRing A] [CommRing K] (ρ : A →+* K) (x : Sp A ⟶ 
       spMap (algebraMap K (DualNumber K)) ≫ spMap ρ ≫ x
     rw [← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_alg])
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (Formalism.L2.Pj.dualMap ρ) ≫ spMap (epsMul a) ≫ v.left = spMap (epsMul (ρ a)) ≫ spMap (Formalism.L2.Pj.dualMap ρ) ≫ v.left`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_epsMul]`.
+-/
 theorem bcEps_smT {A K : Type} [CommRing A] [CommRing K] (ρ : A →+* K) (x : Sp A ⟶ X) (a : A)
     (v : tEpsG x ⟶ t.G) :
     bcEps ρ x ≫ smT x a v = smT (spMap ρ ≫ x) (ρ a) (bcEps ρ x ≫ v) := by
@@ -64,6 +75,9 @@ theorem bcEps_smT {A K : Type} [CommRing A] [CommRing K] (ρ : A →+* K) (x : S
     spMap (epsMul (ρ a)) ≫ spMap (Formalism.L2.Pj.dualMap ρ) ≫ v.left
   rw [← Category.assoc, ← Category.assoc, spMap_comp_spMap, spMap_comp_spMap, dualMap_comp_epsMul]
 
+/- English proof (translation)
+Set `f : (tEpsG x ⟶ t.G) →* (tEpsG (spMap ρ ≫ x) ⟶ t.G)` to `{ toFun := fun u => bcEps ρ x ≫ u map_one' := MonObj.comp_one _ map_mul' := fun u w => MonObj.comp_mul _ _ _ }`. Establish `h` using `map_prod f (fun j => smT x (a j) (v j)) Finset.univ`. Use `h.trans ?_` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun i _ => bcEps_smT t ρ x (a i) (v i)`.
+-/
 theorem bcEps_combT {A K : Type} [CommRing A] [CommRing K] (ρ : A →+* K) (x : Sp A ⟶ X) {n : ℕ}
     (v : Fin n → (tEpsG x ⟶ t.G)) (a : Fin n → A) :
     bcEps ρ x ≫ combT x v a = combT (spMap ρ ≫ x) (fun i => bcEps ρ x ≫ v i) (fun i => ρ (a i)) := by
@@ -75,6 +89,15 @@ theorem bcEps_combT {A K : Type} [CommRing A] [CommRing K] (ρ : A →+* K) (x :
   refine h.trans ?_
   exact Finset.prod_congr rfl fun i _ => bcEps_smT t ρ x (a i) (v i)
 
+/- English proof (translation)
+Set `V : Fin n → (tEpsG x ⟶ t.G)` to `fun i => ovT (hv i)`. Establish `e` using `(isCombAtG_iff t (spMap ρ ≫ x) (fun i => bcEps ρ x ≫ V i) cf w).1 h`. Establish `e'` using `(isCombAtG_iff t (spMap ρ ≫ x) (fun i => bcEps ρ x ≫ V i) cf' w).1 h'`. Establish `hc : combT (spMap ρ ≫ x) (fun i => bcEps ρ x ≫ V i) cf = combT (spMap ρ ≫ x) (fun i => bcEps ρ x ≫ V i) cf'` using `Over.OverMorphism.ext (e.trans e'.symm)`. Take `⟨b, a, hb0, ha⟩` from `exists_common_denom ρ hfr (Sum.elim cf cf')`.
+
+Establish `hs` using `congrArg (smT (spMap ρ ≫ x) (ρ b)) hc`. Rewrite `hs` using `[smT_combT, smT_combT]`. Establish `a1 : (fun j => ρ b * cf j) = fun j => ρ (a (Sum.inl j))` using `funext fun j => ha (Sum.inl j)`. Establish `a2 : (fun j => ρ b * cf' j) = fun j => ρ (a (Sum.inr j))` using `funext fun j => ha (Sum.inr j)`. Rewrite `hs` using `[a1, a2, ← bcEps_combT, ← bcEps_combT]`.
+
+Establish `hsep : IsSeparated t.G.hom` using `t.semi.separated`. Establish `hdom : IsSchemeTheoreticallyDominant (spMap (Formalism.L2.Pj.dualMap ρ))` using `GlobalTheory.ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom _) (dualMap_injective ρ hinj)`. Establish `hA : (combT x V fun j => a (Sum.inl j)).left = (combT x V fun j => a (Sum.inr j)).left` using `GlobalTheory.ExtUnique.hom_ext_of_dominant t.G.hom ((Over.w (combT x V fun j => a (Sum.inl j))).trans (Over.w (combT x V fun j => a (Sum.inr j))).symm) (spMap (Formalism.L2.Pj.dualMap ρ)) (congrArg (fun φ => φ.left) hs)`. Establish `ht : IsTanAtG t x (combT x V fun j => a (Sum.inl j)).left` using `isTanAtG_of _ (combT_tan x V (fun j => smT_zero_ovT (hv j)) _)`. Establish `haa : (fun j => a (Sum.inl j)) = fun j => a (Sum.inr j)` using `(hb _ ht).unique ((isCombAtG_iff t x V _ _).2 rfl) ((isCombAtG_iff t x V _ _).2 hA.symm)`.
+
+Use function extensionality and compare the values at `j`. Apply `mul_left_cancel₀ hb0` to reduce the goal to its premises. Rewrite using `[congrFun a1 j, congrFun a2 j, congrFun haa j]`.
+-/
 theorem coeff_unique {A K : Type} [CommRing A] [Field K] (ρ : A →+* K) (hinj : Function.Injective ρ)
     (hfr : ∀ x : K, ∃ a b : A, ρ b ≠ 0 ∧ x * ρ b = ρ a) (x : Sp A ⟶ X) {n : ℕ}
     (v : Fin n → (Sp (DualNumber A) ⟶ t.G.left)) (hv : ∀ i, IsTanAtG t x (v i))
@@ -112,6 +135,9 @@ end GlobalTheory.LogKSDiv.GenUniq
 
 namespace GlobalTheory.LogKSDiv
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ t W _ _ ρW hinj hfr _ v hv hb cf cf' w h h'` and use `GenUniq.coeff_unique t ρW hinj hfr (GlobalTheory.LogKS.chart W) v hv hb cf cf' w h h'`.
+-/
 theorem generic_coeff_unique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (W : X.affineOpens) (K : Type) [Field K] (ρW : Γ(X, W.1) →+* K), Function.Injective ρW → (∀ x : K, ∃ a b : Γ(X, W.1), ρW b ≠ 0 ∧ x * ρW b = ρW a) → ∀ (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(X, W.1)) ⟶ t.G.left)), (∀ i, IsTanAtG t (GlobalTheory.LogKS.chart W) (v i)) → (∀ w, IsTanAtG t (GlobalTheory.LogKS.chart W) w → ∃! cf : Fin n → Γ(X, W.1), IsCombAtG t (GlobalTheory.LogKS.chart W) v cf w) → ∀ (cf cf' : Fin n → K) (w : Sp (DualNumber K) ⟶ t.G.left), IsCombAtG t (spMap ρW ≫ GlobalTheory.LogKS.chart W) (fun i => spMap (dualMap ρW) ≫ v i) cf w → IsCombAtG t (spMap ρW ≫ GlobalTheory.LogKS.chart W) (fun i => spMap (dualMap ρW) ≫ v i) cf' w → cf = cf' :=
   fun _ _ _ _ _ _ t W _ _ ρW hinj hfr _ v hv hb cf cf' w h h' =>
     GenUniq.coeff_unique t ρW hinj hfr (GlobalTheory.LogKS.chart W) v hv hb cf cf' w h h'

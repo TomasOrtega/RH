@@ -14,6 +14,13 @@ def diagChart {ι ν κ : Type} (c : ∀ k, T.yyIdx ι ν κ k) : ∀ k, T.wwIdx
   | .line0 => (c .line : κ)
   | .line1 => (c .line : κ)
 
+/- English proof (translation)
+Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨k, i⟩, rfl⟩`. Consider the cases of `k`. Conclude with `⟨⟨.base, (i : ι)⟩, rfl⟩`.
+
+Conclude with `⟨⟨.det, (i : ν)⟩, rfl⟩`. Conclude with `⟨⟨.line, (i : κ)⟩, rfl⟩`. Conclude with `⟨⟨.line, (i : κ)⟩, rfl⟩`. Introduce and unpack `⟨⟨k, i⟩, rfl⟩`. Consider the cases of `k`.
+
+Conclude with `⟨⟨.base, (i : ι)⟩, rfl⟩`. Conclude with `⟨⟨.det, (i : ν)⟩, rfl⟩`. Conclude with `⟨⟨.line0, (i : κ)⟩, rfl⟩`.
+-/
 theorem coneRatios_wwCoord_diag {Ω : Type} [Field Ω] {ι ν κ : Type} {E : Type} [AddCommGroup E] [Module Ω E]
     {Φ : Type} [Field Φ] [Algebra Ω Φ] (x : ι → Ω) (δ : ν → Ω) (e : Module.Basis (Fin 2) Ω E)
     (φ : κ → E →ₗ[Ω] Ω) (a : Φ) (c : ∀ k, T.yyIdx ι ν κ k) :
@@ -32,6 +39,11 @@ theorem coneRatios_wwCoord_diag {Ω : Type} [Field Ω] {ι ν κ : Type} {E : Ty
     · exact ⟨⟨.det, (i : ν)⟩, rfl⟩
     · exact ⟨⟨.line0, (i : κ)⟩, rfl⟩
 
+/- English proof (translation)
+Introduce `Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha`. Take `⟨c, t', hc, hind, hmem, halg⟩` from `hY Ω ι ν κ E Φ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha`. Use `⟨diagChart c, t', fun k => ?_, hind, ?_, ?_⟩` and prove the remaining obligations. Consider the cases of `k exacts [hc .base, hc .det, hc .line, hc .line]`. Rewrite using `[coneRatios_wwCoord_diag]`.
+
+Conclude with `hmem`. Rewrite using `[coneRatios_wwCoord_diag]`. Conclude with `halg`.
+-/
 theorem DiagRatioBasis.proof (hY : YYRatioBasis.Statement) : DiagRatioBasis.Statement := by
   intro Ω _ _ ι ν κ _ _ _ E _ _ Φ _ _ _ x e b φ δ g i₀ l₀ k₀ k₁ d t a hx ht htF htA hδ hδF hφ hgF hg ha
   obtain ⟨c, t', hc, hind, hmem, halg⟩ :=

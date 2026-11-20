@@ -12,6 +12,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.VolBr
 
+/- English proof (translation)
+Introduce `hHS hC k _ X _ p D hX P a b M α t₀ hRep hα hN t ht`. Establish `hNt` using `GlobalTheory.T.hermitianLineBundle_isNef_shift_monotone hC k X p D hX M t₀ t ht hN`. Establish `hSt` using `hC.arShift k X p D hX M α t hα`. Establish `hT` using `GlobalTheory.Published.ArithHilbertSamuel.tendsto_of_triv hHS hX hNt hSt`. Establish `hF : ((D + 1).factorial : ℝ) ≠ 0` using `by positivity`.
+
+Establish `h2` using `hT.div_const ((D + 1).factorial : ℝ)`. Establish `e (m : ℕ) : P.lc (m * a) (m * b) (Real.exp (t * m)) = Real.log ((((M.shift (fun _ => t) fun _ => rfl).pow m).smallSec.ncard : ℝ))`. Rewrite using `[Pair.lc, Set.ncard_def, Set.ncard_def, (GlobalTheory.T.smallSections_twistedPower_encard_eq_ball k X p P a b M hRep t m).1]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[e]`. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
+-/
 theorem lc_tendsto_of_rep : GlobalTheory.Published.ArithHilbertSamuel → GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (a b : ℤ) (M : HermLB p) (α t₀ : ℝ), P.Rep a b M → M.IsSelfInter α → (M.shift (fun _ => t₀) fun _ => rfl).IsNef D → ∀ t, t₀ ≤ t → Tendsto (fun m : ℕ => P.lc (m * a) (m * b) (Real.exp (t * m)) / (m : ℝ) ^ (D + 1)) atTop (𝓝 (α / (D + 1).factorial + ((D + 1) * gdeg M D / (D + 1).factorial) * t)) := by
   intro hHS hC k _ X _ p D hX P a b M α t₀ hRep hα hN t ht
   have hNt := GlobalTheory.T.hermitianLineBundle_isNef_shift_monotone hC k X p D hX M t₀ t ht hN

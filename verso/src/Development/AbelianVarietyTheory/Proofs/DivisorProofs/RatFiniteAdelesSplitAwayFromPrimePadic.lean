@@ -16,6 +16,13 @@ def placeP (p : ℕ) [hp : Fact p.Prime] : HeightOneSpectrum ℤ where
     (Nat.prime_iff_prime_int.mp hp.out)
   ne_bot := by simpa using hp.out.ne_zero
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `natGenerator (placeP p) = p`. Establish `h1` using `span_natGenerator (placeP p)`. Establish `he : Rat.IsIntegralClosure.intEquiv ℤ = RingEquiv.refl ℤ` using `RingEquiv.ext fun x ↦ by simpa using eq_intCast (Rat.IsIntegralClosure.intEquiv ℤ) x`. Establish `h2 : (placeP p).asIdeal.map (Rat.IsIntegralClosure.intEquiv ℤ) = (placeP p).asIdeal`.
+
+Rewrite using `[he]`. Conclude with `Ideal.map_id _`. Rewrite `h1` using `[h2]`. Express the relevant statement in the definitionally equal form `Ideal.span {((natGenerator (placeP p) : ℕ) : ℤ)} = Ideal.span {(p : ℤ)} at h1`. Rewrite `h1` using `[Ideal.span_singleton_eq_span_singleton, Int.associated_iff_natAbs]`.
+
+Simplify using `using h1`.
+-/
 theorem primesEquiv_placeP (p : ℕ) [hp : Fact p.Prime] :
     primesEquiv (placeP p) = (⟨p, hp.out⟩ : Nat.Primes) := by
   apply Subtype.ext
@@ -36,24 +43,56 @@ def compP (p : ℕ) [hp : Fact p.Prime] : FiniteAdeleRing ℤ ℚ →+* ℚ_[p] 
     (adicCompletion.padicEquiv (placeP p)).toRingEquiv.toRingHom).comp
     (RestrictedProduct.evalRingHom (fun v : HeightOneSpectrum ℤ ↦ v.adicCompletion ℚ) (placeP p))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem compP_apply (p : ℕ) [Fact p.Prime] (a : FiniteAdeleRing ℤ ℚ) :
     compP p a = ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p)
       (adicCompletion.padicEquiv (placeP p) (a (placeP p))) := rfl
 
+/- English proof (translation)
+The claim follows from `show Continuous (fun a ↦ compP p a) from (ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p)).continuous.comp ((adicCompletion.padicEquiv (placeP p)).continuous.comp (RestrictedProduct.continuous_eval _))`.
+-/
 theorem continuous_compP (p : ℕ) [Fact p.Prime] : Continuous (compP p) :=
   show Continuous (fun a ↦ compP p a) from (ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p)).continuous.comp
     ((adicCompletion.padicEquiv (placeP p)).continuous.comp (RestrictedProduct.continuous_eval _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restr_eval (p : ℕ) (a : FiniteAdeleRing ℤ ℚ) (w : AwayP p) :
     AfP.eval w (AfP.restr p a) = a w.1 := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun w ↦ h w)`.
+-/
 theorem finiteAdeleRingAway_ext {p : ℕ} {b c : AfP p} (h : ∀ w, AfP.eval w b = AfP.eval w c) : b = c :=
   Subtype.ext (funext fun w ↦ h w)
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext hv`.
+-/
 theorem eq_placeP {p : ℕ} [Fact p.Prime] {v : HeightOneSpectrum ℤ}
     (hv : v.asIdeal = Ideal.span {(p : ℤ)}) : v = placeP p :=
   HeightOneSpectrum.ext hv
 
+/- English proof (translation)
+Use `⟨(compP p).toRatAlgHom, continuous_compP p, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Simplify using `only [Prod.mk.injEq] at hab`. Take `⟨h1, h2⟩` from `hab`. Use `FiniteAdeleRing.ext _ fun v ↦ ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v.asIdeal = Ideal.span {(p : ℤ)}`. Take `rfl` from `eq_placeP hv`. Establish `h2' : compP p a = compP p b` using `h2`. Rewrite `h2'` using `[compP_apply, compP_apply]`. Conclude with `(adicCompletion.padicEquiv (placeP p)).injective ((ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p)).injective h2')`.
+
+Conclude with `congrArg (AfP.eval ⟨v, hv⟩) h1`. Introduce and unpack `⟨b, y⟩ classical`. Set `x0 : (placeP p).adicCompletion ℚ` to `(adicCompletion.padicEquiv (placeP p)).symm ((ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p)).symm y)`. Set `g0 : ∀ v : HeightOneSpectrum ℤ, v.adicCompletion ℚ` to `fun v ↦ if h : v.asIdeal = Ideal.span {(p : ℤ)} then 0 else AfP.eval ⟨v, h⟩ b`. Set `g : ∀ v : HeightOneSpectrum ℤ, v.adicCompletion ℚ` to `Function.update g0 (placeP p) x0`.
+
+Establish `hg : ∀ v (hv : v.asIdeal ≠ Ideal.span {(p : ℤ)}), g v = AfP.eval ⟨v, hv⟩ b`. Introduce `v hv`. Establish `hv0 : v ≠ placeP p` using `fun h ↦ hv (h ▸ rfl)`. Simplify using `only [g, g0, Function.update_of_ne hv0, dif_neg hv]`. Establish `hS : {w : AwayP p | ¬ AfP.eval w b ∈ w.1.adicCompletionIntegers ℚ}.Finite` using `Filter.eventually_cofinite.1 b.2`.
+
+Establish `hfin : {v : HeightOneSpectrum ℤ | ¬ g v ∈ v.adicCompletionIntegers ℚ}.Finite`. Use `((hS.image Subtype.val).insert (placeP p)).subset fun v hv ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hv0 : v = placeP p`. Conclude with `Or.inl hv0`. Establish `hv' : v.asIdeal ≠ Ideal.span {(p : ℤ)}` using `fun h ↦ hv0 (eq_placeP h)`.
+
+Use `Or.inr ⟨⟨v, hv'⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hv2 : ¬ g v ∈ v.adicCompletionIntegers ℚ` using `hv`. Rewrite `hv2` using `[hg v hv']`. Conclude with `hv2`. Set `A : FiniteAdeleRing ℤ ℚ` to `⟨g, Filter.eventually_cofinite.2 hfin⟩`.
+
+Use `⟨A, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Use `show AfP.restr p A = b`. Use `finiteAdeleRingAway_ext fun w ↦ ?_` and prove the remaining obligations. Rewrite using `[restr_eval]`. Conclude with `hg w.1 w.2`.
+
+Use `show compP p A = y`. Express the relevant statement in the definitionally equal form `ContinuousAlgEquiv.cast (R := ℚ) (A := fun q : Nat.Primes ↦ ℚ_[q]) (primesEquiv_placeP p) (adicCompletion.padicEquiv (placeP p) (g (placeP p))) = y`. Simplify using `only [g, Function.update_self, x0, ContinuousAlgEquiv.apply_symm_apply]`.
+-/
 theorem finiteAdele_split (p : ℕ) [Fact p.Prime] :
     ∃ π : FiniteAdeleRing ℤ ℚ →ₐ[ℚ] ℚ_[p], Continuous π ∧
       Function.Bijective (fun a ↦ (GlobalTheory.LKTrip.AfP.restr p a, π a)) := by

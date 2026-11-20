@@ -2,6 +2,15 @@ import Mathlib
 
 namespace GlobalTheory.EqZeroOfMemMaximalPow
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy`. Establish `hJ : LinearMap.ker (LinearMap.toSpanSingleton R R y) ≠ ⊤`. Introduce `htop`. Establish `h1 : (1 : R) ∈ LinearMap.ker (LinearMap.toSpanSingleton R R y)` using `htop ▸ Submodule.mem_top`. Rewrite `h1` using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, one_smul]`.
+
+Conclude with `hy h1`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hJ`. Establish `hmem : y ∈ (⨅ i : ℕ, m ^ i • ⊤ : Submodule R R)`. Rewrite using `[Submodule.mem_iInf]`. Introduce `i`.
+
+Break down `i with _ | i` into its components or cases. Simplify using the standard rewrite rules. Establish `hi` using `h (⟨m, hm⟩, i)`. Simplify `hi` using `[smul_eq_mul, Ideal.mul_top]`. Take `⟨⟨r, hr⟩, hry⟩` from `(Ideal.mem_iInf_smul_pow_eq_bot_iff m y).mp hmem`.
+
+Establish `hJr : (1 - r) ∈ LinearMap.ker (LinearMap.toSpanSingleton R R y)`. Rewrite using `[LinearMap.mem_ker, LinearMap.toSpanSingleton_apply, sub_smul, one_smul]`. Conclude with `sub_eq_zero.mpr hry.symm`. Establish `h1 : (1 : R) ∈ m` using `by simpa using m.add_mem (hle hJr) hr`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+-/
 theorem eq_zero_of_mem_pow_maximal {R : Type} [CommRing R] [IsNoetherianRing R] (y : R)
     (h : ∀ i : MaximalSpectrum R × ℕ, y ∈ i.1.asIdeal ^ (i.2 + 1)) : y = 0 := by
   by_contra hy

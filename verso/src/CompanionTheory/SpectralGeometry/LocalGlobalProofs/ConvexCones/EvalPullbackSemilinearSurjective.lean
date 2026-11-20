@@ -11,6 +11,19 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan.SemilinearPullbackEval
 
 open GlobalTheory.PolFan.OrbMark
 
+/- English proof (translation)
+Introduce `O _ _ _ _ bar w0 _ φ hφ X Y _ _ _ _ _ _ τ hτ f hf hsl B`. Take `⟨n, πX, hπX⟩` from `Module.Finite.exists_fin' O X`. Set `g : (Fin n → O) →ₗ[O] Y` to `{ toFun := fun a => f (πX (twv τ.symm a)) map_add' := fun a b => by show f (πX (twv τ.symm (a + b))) = f (πX (twv τ.symm a)) + f (πX (twv τ.symm b))`. Establish `hadd : twv τ.symm (a + b) = twv τ.symm a + twv τ.symm b`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[twv_apply]`. Rewrite using `[hadd, map_add, map_add]`. Use the proof step `map_smul' := fun c a => by show f (πX (twv τ.symm (c • a))) = c • f (πX (twv τ.symm a))`. Rewrite using `[twv_smul, map_smul, hsl, RingEquiv.apply_symm_apply] }`. Establish `hg_apply : ∀ a, g a = f (πX (twv τ.symm a))` using `fun _ => rfl`.
+
+Establish `hg : Function.Surjective g`. Introduce `y`. Take `⟨x, rfl⟩` from `hf y`. Take `⟨a, rfl⟩` from `hπX x`. Conclude with `⟨twv τ a, by rw [hg_apply, twv_symm_twv]⟩`.
+
+Establish `key : ∀ a : Fin n → O, g (fun i => τ (a i)) = f (πX a)`. Introduce `a`. Rewrite using `[hg_apply]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[twv_apply]`. Rewrite using `[φ.eval_eq hπX, φ.eval_eq hg, ← hφ τ hτ n (fun a b => B (g a) (g b))]`. Use `congr 1`. Use function extensionality and compare the values at `a b`. Use `show B (f (πX a)) (f (πX b)) = B (g (fun i => τ (a i))) (g (fun i => τ (b i)))`.
+
+Rewrite using `[key a, key b]`.
+-/
 theorem eval_pull_semilinear_of_isTwG : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O]
     (bar : O → O) (w0 : O), CMOrd O bar → ∀ (φ : InvFun O), IsTwG w0 φ →
     ∀ {X Y : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] [AddCommGroup Y] [Module O Y] [Module.Finite O Y]

@@ -23,10 +23,16 @@ def levCol (L : LevCh D T) (t : T) (j : ℕ) : Subgroup (GL (Fin (columnBlock L 
       (Formalism.L2.DIV.lev D.sp.cm (Yc D (j + 1)).gram (L.βY (j + 1)) (L.datYt t (j + 1) L.triv))
   else cast (by rw [columnBlock, if_neg h]) (Formalism.L2.DIV.lev D.sp.cm D.sp.X'.gram L.βX (L.datXt t))
 
+/- English proof (translation)
+Rewrite using `[levCol, dif_pos h]`. Conclude with `cast_heq _ _`.
+-/
 theorem levCol_lt (L : LevCh D T) (t : T) {j : ℕ} (h : j + 1 < D.R.m) : HEq (levCol L t j)
     (Formalism.L2.DIV.lev D.sp.cm (Yc D (j + 1)).gram (L.βY (j + 1)) (L.datYt t (j + 1) L.triv)) := by
   rw [levCol, dif_pos h]; exact cast_heq _ _
 
+/- English proof (translation)
+Rewrite using `[levCol, dif_neg h]`. Conclude with `cast_heq _ _`.
+-/
 theorem levCol_top (L : LevCh D T) (t : T) {j : ℕ} (h : ¬ j + 1 < D.R.m) : HEq (levCol L t j)
     (Formalism.L2.DIV.lev D.sp.cm D.sp.X'.gram L.βX (L.datXt t)) := by
   rw [levCol, dif_neg h]; exact cast_heq _ _
@@ -39,6 +45,9 @@ def levJ (G : GridData L sc) (t : T) : ∀ X : Node, Subgroup (GL (Fin (G.V X).r
   | .top 0 => G.levCong (.top 0)
   | .top (j + 1) => G.levMax (.top (j + 1))
 
+/- English proof (translation)
+Apply the tactic sequence `cases i <;> rfl`.
+-/
 theorem levJ_row (G : GridData L sc) (t : T) (i : ℕ) : levJ G t (.grid i 0) = G.levCong (.grid i 0) := by
   cases i <;> rfl
 
@@ -57,6 +66,9 @@ variable {G : GridData L sc}
 def Vol.IsAt (M : Vol G) (X : Node) (K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))) : Prop :=
   if X.neg D.R.m = 0 then IsMeasDef (G.V X) K (M.ν X) (M.fd X) else Lev.IsMeasFD (G.V X) K (M.ν X) (M.fd X)
 
+/- English proof (translation)
+Unfold `Vol.IsAt at h`. Apply the tactic sequence `split_ifs at h <;> exact ⟨h.1.1, h.2⟩`.
+-/
 theorem Vol.IsAt.haar_fund {M : Vol G} {X : Node} {K : Subgroup (GL (Fin (G.V X).rank) (Lev.EAf D))} (h : M.IsAt X K) :
     (M.ν X).IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.V X)) (M.fd X) (M.ν X) := by
   unfold Vol.IsAt at h
@@ -76,9 +88,15 @@ structure Vol.Is (M : Vol G) (t : T) : Prop where
 
   unip : GlobalTheory.Per.IsUnitN _ G.besTop.e M.νN M.fdN
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i hi => levJ_row G t i ▸ h.vtx (.grid i 0) ⟨hi, Nat.zero_le _⟩, h.vtx (.top 0) (Nat.zero_le _), h.unip⟩`.
+-/
 theorem Vol.Is.isRow {M : Vol G} {t : T} (h : M.Is t) : M.IsRow :=
   ⟨fun i hi => levJ_row G t i ▸ h.vtx (.grid i 0) ⟨hi, Nat.zero_le _⟩, h.vtx (.top 0) (Nat.zero_le _), h.unip⟩
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∃ j, X = .grid 0 j`. Take `⟨j, rfl⟩` from `h0`. Conclude with `colY_isV D T L μ0 hL j h.2`. Conclude with `G.isV h fun j e => h0 ⟨j, e⟩`.
+-/
 theorem node_isV (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) {X : Node} (h : X.InRange D.R.m) :
     (G.node X).IsV (X.rank D) (X.neg D.R.m) := by
   by_cases h0 : ∃ j, X = .grid 0 j
@@ -86,6 +104,13 @@ theorem node_isV (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) {X : Node} (h : X
     exact colY_isV D T L μ0 hL j h.2
   · exact G.isV h fun j e => h0 ⟨j, e⟩
 
+/- English proof (translation)
+Establish `hc` using `congLev_open_compact _ (node_isV G hL h).sd.1 (G.pl.modul_ne_bot sc)`. Establish `hm` using `congLev_open_compact _ (node_isV G hL h).sd.1 (𝔪 := ⊤) top_ne_bot`. Establish `key : ∀ (Y : LSp D) (V : HSp D) Λ β (d : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (K : Subgroup (GL (Fin Y.sp.rank) (Lev.EAf D))), Y = ⟨V, Λ⟩ → HEq K (Formalism.L2.DIV.lev D.sp.cm V.gram β d) → IsOpen ((K.comap (Lev.finE Y.sp) : Subgroup (GA D Y.sp)) : Set (GA D Y.sp)) ∧ IsComp …`. Introduce and unpack `_ V Λ β d K rfl e`. Take `rfl` from `eq_of_heq e`.
+
+Conclude with `⟨GlobalTheory.ParahoricCompact.isOpen_comap_lev V β d, GlobalTheory.ParahoricCompact.isCompact_levG V β d⟩`. Break down `X with ⟨_ | i, _ | j⟩ | i | _ | j` into its components or cases. Apply the tactic sequence `any_goals first | exact hc | exact hm`. Distinguish the cases in `hj : j + 1 < D.R.m`. Conclude with `key _ _ _ _ _ _ (colY_lt L hj) (levCol_lt L t hj)`.
+
+Conclude with `key _ _ _ _ _ _ (if_neg hj) (levCol_top L t hj)`.
+-/
 theorem levJ_open_compact (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) (t : T) {X : Node} (h : X.InRange D.R.m) :
     IsOpen (((levJ G t X).comap (Lev.finE (G.V X)) : Subgroup (GA D (G.V X))) : Set (GA D (G.V X))) ∧
       IsCompact ((Lev.levA (G.V X) (levJ G t X) : Subgroup (GA D (G.V X))) : Set (GA D (G.V X))) := by
@@ -104,6 +129,11 @@ theorem levJ_open_compact (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) (t : T) 
   · exact key _ _ _ _ _ _ (colY_lt L hj) (levCol_lt L t hj)
   · exact key _ _ _ _ _ _ (if_neg hj) (levCol_top L t hj)
 
+/- English proof (translation)
+Establish `H : ∀ X : Node, ∃ μ 𝓕, X.InRange D.R.m → if X.neg D.R.m = 0 then IsMeasDef (G.V X) (levJ G t X) μ 𝓕 else Lev.IsMeasFD (G.V X) (levJ G t X) μ 𝓕` using `fun X => by`. Distinguish the cases in `h : X.InRange D.R.m`. Take `⟨μ, 𝓕, e⟩` from `exists_meas _ (node_isV G hL h).sigOK (fun τ => congrArg Prod.snd ((node_isV G hL h).sig τ)) _ (levJ_open_compact G hL t h)`. Conclude with `⟨μ, 𝓕, fun _ => e⟩`. Conclude with `⟨0, ∅, fun h' => absurd h' h⟩`.
+
+Use `choose ν fd hν using H`. Take `⟨νN, fdN, hN⟩` from `GlobalTheory.Per.UnitN.exists_isUnitN D _ _ _ G.besTop.e_iso`. Conclude with `⟨⟨ν, fd, νN, fdN⟩, hν, hN⟩`.
+-/
 theorem exists_vol (G : GridData L sc) {μ0 : T} (hL : L.Is μ0) (t : T) : ∃ M : Vol G, M.Is t := by
   have H : ∀ X : Node, ∃ μ 𝓕, X.InRange D.R.m → if X.neg D.R.m = 0 then IsMeasDef (G.V X) (levJ G t X) μ 𝓕
       else Lev.IsMeasFD (G.V X) (levJ G t X) μ 𝓕 := fun X => by
@@ -125,17 +155,26 @@ variable (W : G.Weil) (M : Vol G)
 def liftA (a : Arrow T) (f : Sch G a) (F : Fn G a.src) : Fn G a.tgt :=
   Lift.liftInt (M.ν a.src) (M.fd a.src) (fun h g f => W.kerA a f g h) f F
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftA_apply (a : Arrow T) (f : Sch G a) (F : Fn G a.src) (h : GA D (G.V a.tgt)) :
     liftA W M a f F h = ∫ g in M.fd a.src, W.kerA a f g h * F g ∂M.ν a.src := rfl
 
 def LiftConv (a : Arrow T) (f : Sch G a) (F : Fn G a.src) : Prop :=
   ∀ h, IntegrableOn (fun g => W.kerA a f g h * F g) (M.fd a.src) (M.ν a.src)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Simplify using `only [liftA_apply, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+-/
 theorem liftA_smul (a : Arrow T) (f : Sch G a) (c : ℂ) (F : Fn G a.src) :
     liftA W M a f (c • F) = c • liftA W M a f F := by
   funext h
   simp only [liftA_apply, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [liftA_apply, Pi.add_apply, mul_add]`. Conclude with `integral_add (h x) (h' x)`.
+-/
 theorem liftA_add {a : Arrow T} {f : Sch G a} {F F' : Fn G a.src} (h : LiftConv W M a f F) (h' : LiftConv W M a f F') :
     liftA W M a f (F + F') = liftA W M a f F + liftA W M a f F' := by
   funext x
@@ -227,11 +266,17 @@ def tensT {p : Path T X Y} (τi : PolT G p →₀ ℂ) (τf : TotT G p) : TotT G
   τi.sum fun P c => τf.sum fun d c' =>
     Finsupp.single (Path.Fam.zip (fun a (f : Sch G a) Q => W.fock a.pair f Q) d P) (c * c')
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _ => rfl | _, .snoc a q, e => congrArg (liftA W M a e.2) (pathLift_comp p d F q e.1)`.
+-/
 theorem pathLift_comp (p : Path T X Y) (d : PureT G p) (F : Fn G X) : ∀ {Z : Node} (q : Path T Y Z) (e : PureT G q),
     liftP W M (p.comp q) (d.append e) F = liftP W M q e (liftP W M p d F)
   | _, .nil, _ => rfl
   | _, .snoc a q, e => congrArg (liftA W M a e.2) (pathLift_comp p d F q e.1)
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _ => (and_iff_left trivial).symm | _, .snoc a q, e => by show PathConv W M (p.comp q) (d.append e.1) F ∧ LiftConv W M a e.2 (liftP W M (p.comp q) (d.append e.1) F) ↔ _ rw [pathConv_comp p d F q e.1, pathLift_comp, and_assoc] rfl`.
+-/
 theorem pathConv_comp (p : Path T X Y) (d : PureT G p) (F : Fn G X) : ∀ {Z : Node} (q : Path T Y Z) (e : PureT G q),
     PathConv W M (p.comp q) (d.append e) F ↔ PathConv W M p d F ∧ PathConv W M q e (liftP W M p d F)
   | _, .nil, _ => (and_iff_left trivial).symm
@@ -240,20 +285,32 @@ theorem pathConv_comp (p : Path T X Y) (d : PureT G p) (F : Fn G X) : ∀ {Z : N
     rw [pathConv_comp p d F q e.1, pathLift_comp, and_assoc]
     rfl
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _ => rfl | _, .snoc a p, d => (congrArg (liftA W M a d.2) (pathLift_smul c F p d.1)).trans (liftA_smul W M a d.2 c _)`.
+-/
 theorem pathLift_smul (c : ℂ) (F : Fn G X) : ∀ {Y : Node} (p : Path T X Y) (d : PureT G p),
     liftP W M p d (c • F) = c • liftP W M p d F
   | _, .nil, _ => rfl
   | _, .snoc a p, d => (congrArg (liftA W M a d.2) (pathLift_smul c F p d.1)).trans (liftA_smul W M a d.2 c _)
 
+/- English proof (translation)
+The claim follows from `| _, .nil, _, _, _ => rfl | _, .snoc a p, d, h, h' => (congrArg (liftA W M a d.2) (pathLift_add p d.1 h.1 h'.1)).trans (liftA_add W M h.2 h'.2)`.
+-/
 theorem pathLift_add {F F' : Fn G X} : ∀ {Y : Node} (p : Path T X Y) (d : PureT G p), PathConv W M p d F → PathConv W M p d F' →
     liftP W M p d (F + F') = liftP W M p d F + liftP W M p d F'
   | _, .nil, _, _, _ => rfl
   | _, .snoc a p, d, h, h' => (congrArg (liftA W M a d.2) (pathLift_add p d.1 h.1 h'.1)).trans (liftA_add W M h.2 h'.2)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_single_index (zero_smul _ _)`.
+-/
 theorem liftT_single (p : Path T X Y) (d : PureT G p) (c : ℂ) (F : Fn G X) :
     liftT W M p (Finsupp.single d c) F = c • liftP W M p d F :=
   Finsupp.sum_single_index (zero_smul _ _)
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_add_index' (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _`.
+-/
 theorem liftT_add (p : Path T X Y) (τ τ' : TotT G p) (F : Fn G X) :
     liftT W M p (τ + τ') F = liftT W M p τ F + liftT W M p τ' F :=
   Finsupp.sum_add_index' (fun _ => zero_smul _ _) fun _ _ _ => add_smul _ _ _
@@ -269,6 +326,9 @@ def ThetaConv (ρ : G.RealVec) (Φ : G.Datum) (u : GA D (Yc D 0) → ℂ) : Prop
 def stabilizerEmbedding {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (h : GA D A) : GA D B :=
   (GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom h).choose
 
+/- English proof (translation)
+The claim follows from `have H := (GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom h).choose_spec ⟨H.2 g, fun e => e ▸ H.1⟩`.
+-/
 theorem embRel_iff {A B : HSp D} {c : ℕ} {ε : D.host.E} (d : HermitianOrthogonalExtensionData A B c ε) (h : GA D A) (g : GA D B) :
     EmbRel B A d.ι g h ↔ g = stabilizerEmbedding d h :=
   have H := (GlobalTheory.AutFunCounterexample.embRel_existsUnique B A d.ι d.isom h).choose_spec
@@ -290,22 +350,36 @@ def BplusConv (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)) : Prop :=
   (∀ h, IntegrableOn (besInt W φ F h) M.fdN M.νN) ∧
     IntegrableOn (fun h => ∫ n in M.fdN, besInt W φ F h n ∂M.νN) (M.fd (.top 0)) (M.ν (.top 0))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h n`. Establish `e : (G.besTop.y : GA D (G.V (.grid D.R.m 0))) = 1` using `rfl`. Rewrite using `[besInt, GlobalTheory.Per.besFun, e, mul_one, Pi.star_apply, star_star]`.
+-/
 theorem besInt_eq (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)) :
     besInt W φ F = GlobalTheory.Per.besFun W.ψ G.besTop (embTop G) (star φ) F := by
   funext h n
   have e : (G.besTop.y : GA D (G.V (.grid D.R.m 0))) = 1 := rfl
   rw [besInt, GlobalTheory.Per.besFun, e, mul_one, Pi.star_apply, star_star]
 
+/- English proof (translation)
+Rewrite using `[Bplus, besInt_eq]`. Both sides reduce to the same expression.
+-/
 theorem Bplus_eq (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)) : Bplus W M φ F =
     GlobalTheory.Per.besPer W.ψ G.besTop (M.ν (.top 0)) (M.fd (.top 0)) M.νN M.fdN (embTop G) (star φ) F := by
   rw [Bplus, besInt_eq]; rfl
 
+/- English proof (translation)
+Establish `e : ∀ h n, besInt W (c • φ) (c' • F) h n = c * c' * besInt W φ F h n` using `fun h n => by`. Simplify using `only [besInt, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Bplus, e, integral_const_mul]`.
+-/
 theorem Bplus_smul (c c' : ℂ) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)) :
     Bplus W M (c • φ) (c' • F) = c * c' * Bplus W M φ F := by
   have e : ∀ h n, besInt W (c • φ) (c' • F) h n = c * c' * besInt W φ F h n := fun h n => by
     simp only [besInt, Pi.smul_apply, smul_eq_mul]; ring
   simp only [Bplus, e, integral_const_mul]
 
+/- English proof (translation)
+Establish `e : ∀ h n, besInt W φ F h n = φ h * F (embTop G h)` using `fun h n => by`. Establish `h1` using `Complex.mul_conj' (besChar W.ψ G.besTop (n : GA D _))`. Rewrite `h1` using `[hψ _ n.2]`. Rewrite using `[besInt, hF _ n.2]`. Take the linear combination `(norm := (simp; ring_nf)) φ h * F (embTop G h) * h1`.
+
+Simplify using `[Bplus, e, Measure.real, hM]`.
+-/
 theorem Bplus_of_equivariant (hM : M.νN M.fdN = 1) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0))
     (hψ : ∀ n ∈ NFlag _ G.besTop.e, ‖besChar W.ψ G.besTop n‖ = 1)
     (hF : ∀ n ∈ NFlag _ G.besTop.e, ∀ g, F (n * g) = besChar W.ψ G.besTop n * F g) :
@@ -320,6 +394,9 @@ theorem Bplus_of_equivariant (hM : M.νN M.fdN = 1) (φ : Fn G (.top 0)) (F : Fn
 def pairVec {V : HSp D} (c : CoefA V) (ξ : Module.Dual ℂ c.W) : (Bridge.Gf V → c.W) →ₗ[ℂ] (GA D V → ℂ) :=
   ξ.compLeft _ ∘ₗ c.ext
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pairVec_apply {V : HSp D} (c : CoefA V) (ξ : Module.Dual ℂ c.W) (Ψ : Bridge.Gf V → c.W) (h : GA D V) :
     pairVec c ξ Ψ h = ξ (c.ρ h⁻¹ (Ψ ((finHom V).rangeRestrict h))) := rfl
 
@@ -331,12 +408,20 @@ def FConv (ρ : G.RealVec) {c : CoefA (G.V (.top 0))} (ξ : Module.Dual ℂ c.W)
     (Φ : G.Datum) (u : GA D (Yc D 0) → ℂ) : Prop :=
   ThetaConv W M ρ Φ u ∧ BplusConv W M (pairVec c ξ Ψ) (thetaChi W M ρ Φ u)
 
+/- English proof (translation)
+Establish `e : thetaChi W M ρ Φ (b • u) = b • thetaChi W M ρ Φ u` using `pathLift_smul W M (X := .grid 0 0) b u _ _`. Rewrite using `[fPsiPhi, map_smul, e, Bplus_smul]`. Both sides reduce to the same expression.
+-/
 theorem fPsiPhi_smul (ρ : G.RealVec) {c : CoefA (G.V (.top 0))} (ξ : Module.Dual ℂ c.W) (a b : ℂ)
     (Ψ : Bridge.Gf (G.V (.top 0)) → c.W) (Φ : G.Datum) (u : GA D (Yc D 0) → ℂ) :
     fPsiPhi W M ρ ξ (a • Ψ) Φ (b • u) = a * b * fPsiPhi W M ρ ξ Ψ Φ u := by
   have e : thetaChi W M ρ Φ (b • u) = b • thetaChi W M ρ Φ u := pathLift_smul W M (X := .grid 0 0) b u _ _
   rw [fPsiPhi, map_smul, e, Bplus_smul]; rfl
 
+/- English proof (translation)
+Establish `e : thetaChi W M ρ Φ (u + u') = thetaChi W M ρ Φ u + thetaChi W M ρ Φ u'` using `pathLift_add W M (X := .grid 0 0) _ _ h.1 h'.1`. Establish `e2 : ∀ φ F F' x n, besInt W φ (F + F') x n = besInt W φ F x n + besInt W φ F' x n` using `fun φ F F' x n => by`. Simplify using `only [besInt, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[fPsiPhi, e, fPsiPhi, fPsiPhi, Bplus, Bplus, Bplus, ← integral_add h.2.2 h'.2.2]`.
+
+Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [e2]`. Conclude with `integral_add (h.2.1 x) (h'.2.1 x)`.
+-/
 theorem fPsiPhi_add {ρ : G.RealVec} {c : CoefA (G.V (.top 0))} {ξ : Module.Dual ℂ c.W}
     {Ψ : Bridge.Gf (G.V (.top 0)) → c.W} {Φ : G.Datum} {u u' : GA D (Yc D 0) → ℂ}
     (h : FConv W M ρ ξ Ψ Φ u) (h' : FConv W M ρ ξ Ψ Φ u') :
@@ -350,9 +435,15 @@ theorem fPsiPhi_add {ρ : G.RealVec} {c : CoefA (G.V (.top 0))} {ξ : Module.Dua
   simp only [e2]
   exact integral_add (h.2.1 x) (h'.2.1 x)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+-/
 example (t : T) : (givenPath t 2).arrows = [.down t 0 1, .down t 0 0, .right 0 0, .right 1 0] ∧
     (oppPath t 2).arrows = [.right 0 2, .right 1 2, .down t 2 1, .down t 2 0] := ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (f : ∀ i : Fin 2, Sch G (.right i 0)) (u : Fn G (.grid 0 0)) :
     liftP W M (rowPath T 0 2) (rowFam 0 2 f) u = liftA W M (.right 1 0) (f 1) (liftA W M (.right 0 0) (f 0) u) := rfl
 

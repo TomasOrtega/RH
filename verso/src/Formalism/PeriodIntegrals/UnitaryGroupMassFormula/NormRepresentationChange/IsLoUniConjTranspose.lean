@@ -13,6 +13,15 @@ section Mat
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Introduce `i j`. Prove the components needed by the constructor for the conclusion. Introduce `hji`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hk : k < i`. Rewrite using `[(hU i k).1 hk, zero_mul]`. Rewrite using `[(hV k j).1 (lt_of_lt_of_le hji (not_lt.mp hk)), mul_zero]`. Introduce `hij`. Substitute `hij` using the available equality.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[(hU i i).2 rfl, (hV i i).2 rfl, mul_one]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with h | h` into its components or cases. Rewrite using `[(hU i k).1 h, zero_mul]`.
+
+Rewrite using `[(hV k i).1 h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem isUpUni_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hV : IsUpUni V) :
     IsUpUni (U * V) := by
   intro i j
@@ -33,6 +42,15 @@ theorem isUpUni_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) 
       · rw [(hV k i).1 h, mul_zero]
     · simp
 
+/- English proof (translation)
+Unfold `sgUp`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add a ⟨a.val + 1, h⟩]`.
+
+Rewrite using `[(hU a a).2 rfl, (hV ⟨a.val + 1, h⟩ ⟨a.val + 1, h⟩).2 rfl, one_mul, mul_one, add_comm]`. Introduce `e`. Rewrite `e` using `[Fin.ext_iff]`. Simplify using `at e`. Introduce and unpack `x ⟨hxa, hxb⟩`.
+
+Break down `lt_or_gt_of_ne hxa with hx | hx` into its components or cases. Rewrite using `[(hU a x).1 hx, zero_mul]`. Establish `hne : x.val ≠ a.val + 1` using `fun e => hxb (Fin.ext e)`. Establish `hx' : (⟨a.val + 1, h⟩ : Fin N) < x`. Rewrite `hx`, the goal using `[Fin.lt_def]`.
+
+Use `show a.val + 1 < x.val`. Use linear arithmetic over natural numbers and integers. Rewrite using `[(hV x ⟨a.val + 1, h⟩).1 hx', mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem sgUp_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hV : IsUpUni V) :
     sgUp (U * V) = sgUp U + sgUp V := by
   unfold sgUp
@@ -55,6 +73,11 @@ theorem sgUp_mul {N : ℕ} {U V : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) (hV
         rw [(hV x ⟨a.val + 1, h⟩).1 hx', mul_zero]
   · simp
 
+/- English proof (translation)
+Unfold `sgUp`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`.
+
+Rewrite `e` using `[Fin.ext_iff]`. Simplify using `at e`. Both sides reduce to the same expression.
+-/
 theorem sgUp_one {N : ℕ} : sgUp (1 : Matrix (Fin N) (Fin N) K) = 0 := by
   unfold sgUp
   refine Finset.sum_eq_zero fun a _ => ?_
@@ -65,16 +88,29 @@ theorem sgUp_one {N : ℕ} : sgUp (1 : Matrix (Fin N) (Fin N) K) = 0 := by
     simp at e
   · rfl
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `Matrix.one_apply_eq i`.
+-/
 theorem isUpUni_one {N : ℕ} : IsUpUni (1 : Matrix (Fin N) (Fin N) K) := by
   intro i j
   refine ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => ?_⟩
   subst h
   exact Matrix.one_apply_eq i
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => (hU i j).1 h)]`. Conclude with `Finset.prod_eq_one fun i _ => (hU i i).2 rfl`.
+-/
 theorem det_upUni {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) : U.det = 1 := by
   rw [Matrix.det_of_upperTriangular (fun i j h => (hU i j).1 h)]
   exact Finset.prod_eq_one fun i _ => (hU i i).2 rfl
 
+/- English proof (translation)
+Establish `hdet : IsUnit U.det` using `by rw [det_upUni hU]; exact isUnit_one`. Establish `hmul : U * U⁻¹ = 1` using `Matrix.mul_nonsing_inv U hdet`. Use `haveI : Invertible U := Matrix.invertibleOfIsUnitDet U hdet`. Establish `htri : (U⁻¹).BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular (fun i j h => (hU i j).1 h)`. Use `⟨fun i j => ⟨fun h => htri h, fun h => ?_⟩, hmul⟩` and prove the remaining obligations.
+
+Substitute `h` using the available equality. Establish `hii` using `congrFun (congrFun hmul i) i`. Rewrite `hii` using `[Matrix.mul_apply, Finset.sum_eq_single i, (hU i i).2 rfl, one_mul, Matrix.one_apply_eq]`. Conclude with `hii`. Introduce `k _ hki`.
+
+Break down `lt_or_gt_of_ne hki with h | h` into its components or cases. Rewrite using `[(hU i k).1 h, zero_mul]`. Rewrite using `[htri h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem isUpUni_inv {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) :
     IsUpUni U⁻¹ ∧ U * U⁻¹ = 1 := by
   have hdet : IsUnit U.det := by rw [det_upUni hU]; exact isUnit_one
@@ -93,6 +129,9 @@ theorem isUpUni_inv {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) :
     · rw [htri h, mul_zero]
   · simp
 
+/- English proof (translation)
+Take `⟨hI, hmul⟩` from `isUpUni_inv hU`. Establish `hs` using `sgUp_mul hU hI`. Rewrite `hs` using `[hmul, sgUp_one]`. Take the linear combination `-hs`.
+-/
 theorem sgUp_inv {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) : sgUp U⁻¹ = - sgUp U := by
   obtain ⟨hI, hmul⟩ := isUpUni_inv hU
   have hs := sgUp_mul hU hI
@@ -101,6 +140,9 @@ theorem sgUp_inv {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) : sgU
 
 variable [StarRing K]
 
+/- English proof (translation)
+Introduce `i j`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, (hU j i).1 h, star_zero]`. Substitute `h` using the available equality. Rewrite using `[Matrix.conjTranspose_apply, (hU i i).2 rfl, star_one]`.
+-/
 theorem isLoUni_conjTranspose {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsUpUni U) : IsLoUni Uᴴ := by
   intro i j
   refine ⟨fun h => ?_, fun h => ?_⟩
@@ -108,6 +150,11 @@ theorem isLoUni_conjTranspose {N : ℕ} {U : Matrix (Fin N) (Fin N) K} (hU : IsU
   · subst h
     rw [Matrix.conjTranspose_apply, (hU i i).2 rfl, star_one]
 
+/- English proof (translation)
+Unfold `sgLo sgUp`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `Matrix.conjTranspose_apply _ _ _`.
+
+Rewrite using `[star_zero]`.
+-/
 theorem sgLo_conjTranspose {N : ℕ} (U : Matrix (Fin N) (Fin N) K) : sgLo Uᴴ = star (sgUp U) := by
   unfold sgLo sgUp
   rw [star_sum]
@@ -118,17 +165,28 @@ theorem sgLo_conjTranspose {N : ℕ} (U : Matrix (Fin N) (Fin N) K) : sgLo Uᴴ 
 
 def epsM (r : ℕ) : Matrix (Fin (r + 1)) (Fin (r + 1)) K := Matrix.diagonal fun b => (-1) ^ (r - b.val)
 
+/- English proof (translation)
+Rewrite using `[epsM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use extensionality with `b`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+-/
 theorem epsM_mul_self (r : ℕ) : (epsM r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * epsM r = 1 := by
   rw [epsM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   ext b
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [ZhatOM, epsM, Matrix.mul_diagonal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhatOM_eq {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) K) : ZhatOM Z = Z * epsM r := by
   ext a b
   simp only [ZhatOM, epsM, Matrix.mul_diagonal]
   ring
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [epsM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[(hM i j).1 h]`. Expand and normalize the polynomial expressions, which then agree.
+
+Substitute `h` using the available equality. Rewrite using `[(hM i i).2 rfl, mul_one, ← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+-/
 theorem isUpUni_eps {r : ℕ} {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hM : IsUpUni M) :
     IsUpUni (epsM r * M * epsM r) := by
   intro i j
@@ -139,6 +197,13 @@ theorem isUpUni_eps {r : ℕ} {M : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hM : I
   · subst h
     rw [(hM i i).2 rfl, mul_one, ← mul_pow, neg_one_mul, neg_neg, one_pow]
 
+/- English proof (translation)
+Unfold `sgUp`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `only [epsM, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+
+Establish `hra : r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Establish `hx : ((-1 : K) ^ (r - (a.val + 1))) * (-1) ^ (r - (a.val + 1)) = 1`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`. Use `show (-1 : K) ^ (r - a.val) * M a ⟨a.val + 1, h⟩ * (-1) ^ (r - (a.val + 1)) = -M a ⟨a.val + 1, h⟩`. Rewrite using `[hra, pow_succ]`.
+
+Take the linear combination `(-(M a ⟨a.val + 1, h⟩)) * hx`. Simplify using the standard rewrite rules.
+-/
 theorem sgUp_eps {r : ℕ} (M : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     sgUp (epsM r * M * epsM r) = - sgUp M := by
   unfold sgUp
@@ -154,6 +219,13 @@ theorem sgUp_eps {r : ℕ} (M : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     linear_combination (-(M a ⟨a.val + 1, h⟩)) * hx
   · simp
 
+/- English proof (translation)
+Take `⟨hNi, hNN⟩` from `isUpUni_inv hN`. Use `⟨(N⁻¹)ᴴ, epsM r * M * epsM r, isLoUni_conjTranspose hNi, isUpUni_eps hM, ?_, ?_⟩` and prove the remaining obligations. Establish `hinv : (N⁻¹)ᴴ * Nᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hNN, Matrix.conjTranspose_one]`. Establish `hZ2 : Z₂ = (N⁻¹)ᴴ * (Z₁ * M)`.
+
+Rewrite using `[← h, ← Matrix.mul_assoc, hinv, Matrix.one_mul]`. Rewrite using `[zhatOM_eq, zhatOM_eq, hZ2]`. Establish `hee` using `epsM_mul_self (K := K) r`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (epsM r) (epsM r), hee, Matrix.one_mul]`.
+
+Rewrite using `[sgLo_conjTranspose, sgUp_inv hN, sgUp_eps, star_neg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem core_Z {r : ℕ} (Z₁ Z₂ N M : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (hN : IsUpUni N) (hM : IsUpUni M)
     (h : Nᴴ * Z₂ = Z₁ * M) :
     ∃ A B : Matrix (Fin (r + 1)) (Fin (r + 1)) K, IsLoUni A ∧ IsUpUni B ∧

@@ -14,6 +14,9 @@ open GlobalTheory.Doubling (absE)
 open GlobalTheory.ThK.LemF.QuotInv
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers | exact GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers | (intros; apply GlobalTheory.ThK.LemF.QuotInv.PowSet.exists_compact_zpowers <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.unipotent_stabilizer_relatively_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (Y : Spc F E n) (v : Pl F) (x : Fin n → E) (q : stabAt σ Y (evFin F v) x), (mat q.1.1 - 1) ^ 3 = 0 →
     ∃ P : Set (Matrix (Fin n) (Fin n) (AE F E)), IsCompact P ∧

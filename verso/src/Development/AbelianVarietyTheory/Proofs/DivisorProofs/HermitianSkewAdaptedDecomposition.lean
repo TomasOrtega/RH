@@ -19,6 +19,13 @@ namespace GlobalTheory.PlaneDec
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span E (X.L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem z hz`.
+
+Take `⟨s, t, u, -, -, -, hz⟩` from `hH.split z hz`. Conclude with `⟨s, t, u, hz⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨s, t, u, rfl⟩` from `hy`.
+
+Take `⟨s', t', u', rfl⟩` from `hz`. Conclude with `⟨s + s', t + t', u + u', by rw [Matrix.mulVec_add]; module⟩`. Consider the case `smul a y _ hy`. Take `⟨s, t, u, rfl⟩` from `hy`. Conclude with `⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩`.
+-/
 theorem span3 {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) (v : Fin n → E) :
     ∃ (s t : E) (u : Fin n₁ → E), v = s • H.x + H.ι *ᵥ u + t • H.y := by
@@ -37,6 +44,11 @@ theorem span3 {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : 
     obtain ⟨s, t, u, rfl⟩ := hy
     exact ⟨a * s, a * t, a • u, by rw [Matrix.mulVec_smul]; module⟩
 
+/- English proof (translation)
+Use `choose s t U hU using fun j : Fin n => span3 hL hH (Pi.single j 1)`. Use `⟨s, t, Matrix.of fun k j => U j k, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrFun (hU j) i` as an intermediate fact. Rewrite using `[Matrix.one_apply, show (if i = j then (1 : E) else 0) = (Pi.single j (1 : E) : Fin n → E) i by`.
+
+Simplify using `[Pi.single_apply], this]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, mul_comm]`.
+-/
 theorem one_eq {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∃ (a b : Fin n → E) (C : Matrix (Fin n₁) (Fin n) E),
@@ -49,6 +61,11 @@ theorem one_eq {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X :
     simp [Pi.single_apply], this]
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct, Matrix.vecMulVec_apply, mul_comm]
 
+/- English proof (translation)
+Take `⟨a, b, C, h⟩` from `one_eq hL hH`. Use `⟨incV F a, incV F b, incM F C, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map (inclR (F := F) (E := E) (AF F))) h`. Rewrite `h2` using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_add _ (map_add _), Matrix.map_add _ (map_add _), Matrix.map_mul]`. Rewrite using `[h2]`.
+
+Use `congr 2`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`. Use extensionality with `i j`. Simplify using `[incV, Matrix.vecMulVec_apply]`.
+-/
 theorem one_eq_A {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁}
     {H : Plane E n n₁} (hL : X.L.IsLattice E) (hH : H.IsAdapted σ B X X₁ i₀ i₁) :
     ∃ (a b : Fin n → AE F E) (C : Matrix (Fin n₁) (Fin n) (AE F E)),
@@ -64,6 +81,15 @@ theorem one_eq_A {σ : E →ₐ[F] E} {B : Base F E} {n n₁ i₀ i₁ : ℕ} {X
   · ext i j; simp [incV, Matrix.vecMulVec_apply]
   · ext i j; simp [incV, Matrix.vecMulVec_apply]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i₀ i₁ j₀ j₁ hX hW hH hH' u`. Take `⟨a, b, C, hC⟩` from `one_eq_A (F := F) hX.lat hH`. Take `⟨a', b', C', hC'⟩` from `one_eq_A (F := F) hW.lat hH'`. Establish `hT : (1 : Matrix (Fin d) (Fin d) (AE F E)) = Matrix.vecMulVec a' (incV F H'.x) + C'ᵀ * (incM F H'.ι)ᵀ + Matrix.vecMulVec b' (incV F H'.y)`. Rewrite using `[← Matrix.transpose_one, hC', Matrix.transpose_add, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_vecMulVec, Matrix.transpose_vecMulVec]`.
+
+Use `set M := u * C'ᵀ with hM`. Establish `hMd : M = Matrix.vecMulVec (incV F H.x) (a ᵥ* M) + incM F H.ι * (C * M) + Matrix.vecMulVec (incV F H.y) (b ᵥ* M)` using `by conv_lhs => rw [← Matrix.one_mul M, hC]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, Matrix.mul_assoc]`. Use `⟨u *ᵥ a', u *ᵥ b', a ᵥ* M, b ᵥ* M, C * M, ?_⟩` and prove the remaining obligations. Establish `hu : u = Matrix.vecMulVec (u *ᵥ a') (incV F H'.x) + M * (incM F H'.ι)ᵀ + Matrix.vecMulVec (u *ᵥ b') (incV F H'.y)` using `by conv_lhs => rw [← Matrix.mul_one u, hT]`.
+
+Rewrite using `[Matrix.mul_add, Matrix.mul_add, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, hM, Matrix.mul_assoc]`. Establish `hm2 : M * (incM F H'.ι)ᵀ = Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (a ᵥ* M)) + incM F H.ι * (C * M) * (incM F H'.ι)ᵀ + Matrix.vecMulVec (incV F H.y) (incM F H'.ι *ᵥ (b ᵥ* M))` using `by conv_lhs => rw [hMd]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.vecMulVec_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, Matrix.vecMul_transpose]`. Rewrite `hu` using `[hm2]`. Use `hu.trans ?_` and prove the remaining obligations.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem point_dec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁)
     (r s r' s' i₀ i₁ j₀ j₁ : ℕ), X.IsHerm σ B r s → W.IsSkew σ B r' s' → H.IsAdapted σ B X X₁ i₀ i₁ → H'.IsAdapted σ B W W₁ j₀ j₁ →

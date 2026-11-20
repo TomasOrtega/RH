@@ -13,6 +13,11 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (x0 : Frame X.Ψ r)
 
+/- English proof (translation)
+Unfold `nmat`. Distinguish the cases in `h : b < a`. Simplify using `only [dif_pos h] first`. Consider the case `fun_prop`. Consider the case `exact (EuclideanSpace.proj (𝕜 := ℂ) _).contDiff`.
+
+Simplify using `only [dif_neg h]`. Conclude with `contDiff_const`.
+-/
 theorem cd_nmat (τ : X.Ψ) (a b : Fin r) : ContDiff ℂ ∞ fun z : V (nd X) => nmat X z τ a b := by
   unfold nmat
   by_cases h : b < a
@@ -23,6 +28,9 @@ theorem cd_nmat (τ : X.Ψ) (a b : Fin r) : ContDiff ℂ ∞ fun z : V (nd X) =>
   · simp only [dif_neg h]
     exact contDiff_const
 
+/- English proof (translation)
+Establish `he : (fun z : V (nd X) => cpt X x0 z τ a b) = fun z => ∑ c, x0 τ a c * nmat X z τ c b`. Use function extensionality and compare the values at `z`. Simplify using `[cpt, rmul, mat, Matrix.mul_apply]`. Rewrite using `[he]`. Conclude with `ContDiff.sum fun c _ => contDiff_const.mul (cd_nmat X τ c b)`.
+-/
 theorem cd_cpt_entry (τ : X.Ψ) (a b : Fin r) :
     ContDiff ℂ ∞ fun z : V (nd X) => cpt X x0 z τ a b := by
   have he : (fun z : V (nd X) => cpt X x0 z τ a b) = fun z => ∑ c, x0 τ a c * nmat X z τ c b := by
@@ -31,12 +39,27 @@ theorem cd_cpt_entry (τ : X.Ψ) (a b : Fin r) :
   rw [he]
   exact ContDiff.sum fun c _ => contDiff_const.mul (cd_nmat X τ c b)
 
+/- English proof (translation)
+The claim follows from `contDiff_pi.mpr fun τ => contDiff_pi.mpr fun a => contDiff_pi.mpr fun b => cd_cpt_entry X x0 τ a b`.
+-/
 theorem cd_cpt : ContDiff ℂ ∞ (cpt X x0) := contDiff_pi.mpr fun τ => contDiff_pi.mpr fun a => contDiff_pi.mpr fun b =>
   cd_cpt_entry X x0 τ a b
 
+/- English proof (translation)
+The claim follows from `hf.comp ((cd_cpt X x0).differentiable (by simp)).differentiableOn (fun _ hz => hz)`.
+-/
 theorem hol_comp {f : Frame X.Ψ r → ℂ} (hf : DifferentiableOn ℂ f X.dom) :
     DifferentiableOn ℂ (fun z => f (cpt X x0 z)) (OmF X x0) := hf.comp ((cd_cpt X x0).differentiable (by simp)).differentiableOn (fun _ hz => hz)
 
+/- English proof (translation)
+Establish `hmat : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => mat x τ` using `fun τ => continuous_matrix fun a b => (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`. Establish `hent : ∀ (τ : X.Ψ) (a b : Fin r), Continuous fun x : Frame X.Ψ r => x τ a b` using `fun τ a b => (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`. Establish `hdmin : ∀ (τ : X.Ψ) (i : Fin (r + 1)), Continuous fun x : Frame X.Ψ r => dmin X.Gm x τ i`. Introduce `τ i`. Unfold `dmin lminor`.
+
+Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply]`. Use `continuous_finset_sum _ fun c _ => continuous_finset_sum _ fun d _ => ?_` and prove the remaining obligations. Conclude with `((hent τ c _).mul continuous_const).mul (Complex.continuous_conj.comp (hent τ d _))`.
+
+Establish `hGG : GG X.Ψ X.Gm X.p0 = ⋂ τ : X.Ψ, ({x : Frame X.Ψ r | (mat x τ).det ≠ 0} ∩ ⋂ i : Fin (r + 1), {x : Frame X.Ψ r | 0 < psgn X.p0 i * (dmin X.Gm x τ i).re})`. Use extensionality with `x`. Simplify using `[GG]`. Establish `hopen : IsOpen (GG X.Ψ X.Gm X.p0)`. Rewrite using `[hGG]`.
+
+Use `isOpen_iInter_of_finite fun τ => ?_` and prove the remaining obligations. Use `IsOpen.inter (isOpen_ne_fun (hmat τ).matrix_det continuous_const) (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations. Conclude with `isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hdmin τ i)))`. Conclude with `(cd_cpt X x0).continuous.isOpen_preimage _ hopen`.
+-/
 theorem isOpen_OmF : IsOpen (OmF X x0) := by
   have hmat : ∀ τ : X.Ψ, Continuous fun x : Frame X.Ψ r => mat x τ := fun τ =>
     continuous_matrix fun a b => (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))
@@ -63,6 +86,13 @@ theorem isOpen_OmF : IsOpen (OmF X x0) := by
     exact isOpen_lt continuous_const (continuous_const.mul (Complex.continuous_re.comp (hdmin τ i)))
   exact (cd_cpt X x0).continuous.isOpen_preimage _ hopen
 
+/- English proof (translation)
+Apply the tactic sequence `have hE : ∀ (τ : X.Ψ) (a b : Fin r), ContDiff ℝ ∞ fun z : V (nd X) => cpt X x0 z τ a b := fun τ a b => (cd_cpt_entry X x0 τ a b).restrict_scalars ℝ`. Establish `hC : ∀ (τ : X.Ψ) (a b : Fin r), ContDiff ℝ ∞ fun z : V (nd X) => starRingEnd ℂ (cpt X x0 z τ a b)`. Introduce `τ a b`. Establish `h` using `Complex.conjCLE.contDiff.comp (hE τ a b)`. Simplify `h` using `[Function.comp_def]`.
+
+Unfold `dmin lminor`. Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `ContDiff.sum fun σ _ => contDiff_const.mul ?_` and prove the remaining obligations. Use `contDiff_prod fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.submatrix_apply, ReciprocityTheory.ChartRestriction.G.FD.gram, ReciprocityTheory.ChartRestriction.G.FD.hermC, ReciprocityTheory.ChartRestriction.G.FD.col, ReciprocityTheory.ChartRestriction.G.FD.mat, Matrix.of_apply]`.
+
+Use `ContDiff.sum fun c _ => ContDiff.sum fun d _ => ?_` and prove the remaining obligations. Conclude with `((hE τ c _).mul contDiff_const).mul (hC τ d _)`.
+-/
 theorem cd_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
     ContDiff ℝ ∞ fun z : V (nd X) => dmin X.Gm (cpt X x0 z) τ i := by
   have hE : ∀ (τ : X.Ψ) (a b : Fin r), ContDiff ℝ ∞ fun z : V (nd X) => cpt X x0 z τ a b :=
@@ -83,6 +113,9 @@ theorem cd_dmin (τ : X.Ψ) (i : Fin (r + 1)) :
 
 variable {X x0}
 
+/- English proof (translation)
+Introduce `h0`. Establish `h1 : 0 < psgn X.p0 i * (dmin X.Gm (cpt X x0 z) τ i).re` using `(hz τ).2 i`. Rewrite `h1` using `[h0, Complex.zero_re, mul_zero]`. Conclude with `lt_irrefl _ h1`.
+-/
 theorem dmin_ne {z : V (nd X)} (hz : z ∈ OmF X x0) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (cpt X x0 z) τ i ≠ 0 := by
   intro h0
@@ -97,11 +130,19 @@ def LD (z : V (nd X)) : ℝ :=
 
 variable {X x0}
 
+/- English proof (translation)
+Unfold `densF`. Use `Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_` and prove the remaining obligations. Conclude with `zpow_pos (norm_pos_iff.mpr (dmin_ne hz τ i.castSucc)) _`.
+-/
 theorem densF_pos {z : V (nd X)} (hz : z ∈ OmF X x0) : 0 < densF X x0 z := by
   unfold densF
   refine Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => ?_
   exact zpow_pos (norm_pos_iff.mpr (dmin_ne hz τ i.castSucc)) _
 
+/- English proof (translation)
+Establish `hp : ∀ (τ : X.Ψ) (i : Fin r), 0 < ‖dmin X.Gm (cpt X x0 z) τ i.castSucc‖ ^ (-2 : ℤ)` using `fun τ i => zpow_pos (norm_pos_iff.mpr (dmin_ne hz τ i.castSucc)) _`. Unfold `densF LD`. Rewrite using `[Real.log_prod (fun τ _ => (Finset.prod_pos fun i _ => hp τ i).ne')]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun i _ => (hp τ i).ne')]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_zpow]`. Evaluate the numerical expressions.
+-/
 theorem log_densF {z : V (nd X)} (hz : z ∈ OmF X x0) : Real.log (densF X x0 z) = LD X x0 z := by
   have hp : ∀ (τ : X.Ψ) (i : Fin r), 0 < ‖dmin X.Gm (cpt X x0 z) τ i.castSucc‖ ^ (-2 : ℤ) :=
     fun τ i => zpow_pos (norm_pos_iff.mpr (dmin_ne hz τ i.castSucc)) _
@@ -113,6 +154,11 @@ theorem log_densF {z : V (nd X)} (hz : z ∈ OmF X x0) : Real.log (densF X x0 z)
   rw [Real.log_zpow]
   norm_num
 
+/- English proof (translation)
+Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), ContDiffAt ℝ ∞ (fun w => Real.log ‖dmin X.Gm (cpt X x0 w) τ i‖) z`. Introduce `τ i`. Establish `hne` using `dmin_ne hz τ i`. Establish `h1 : ContDiffAt ℝ ∞ (fun w => ‖dmin X.Gm (cpt X x0 w) τ i‖) z` using `(contDiffAt_norm ℂ hne).comp z (cd_dmin X x0 τ i).contDiffAt`. Conclude with `h1.log (norm_ne_zero_iff.mpr hne)`.
+
+Unfold `LD`. Conclude with `ContDiffAt.sum fun τ _ => ContDiffAt.sum fun i _ => contDiffAt_const.mul (hd τ i.castSucc)`.
+-/
 theorem LD_contDiffAt {z : V (nd X)} (hz : z ∈ OmF X x0) : ContDiffAt ℝ ∞ (LD X x0) z := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)),
       ContDiffAt ℝ ∞ (fun w => Real.log ‖dmin X.Gm (cpt X x0 w) τ i‖) z := by
@@ -124,17 +170,28 @@ theorem LD_contDiffAt {z : V (nd X)} (hz : z ∈ OmF X x0) : ContDiffAt ℝ ∞ 
   unfold LD
   exact ContDiffAt.sum fun τ _ => ContDiffAt.sum fun i _ => contDiffAt_const.mul (hd τ i.castSucc)
 
+/- English proof (translation)
+Use `(LD_contDiffAt hz).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_OmF X x0).mem_nhds hz] with w hw using log_densF hw`.
+-/
 theorem logDens_contDiffAt {z : V (nd X)} (hz : z ∈ OmF X x0) :
     ContDiffAt ℝ ∞ (fun w => Real.log (densF X x0 w)) z := by
   refine (LD_contDiffAt hz).congr_of_eventuallyEq ?_
   filter_upwards [(isOpen_OmF X x0).mem_nhds hz] with w hw using log_densF hw
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h` using `Real.continuous_exp.continuousAt.comp (logDens_contDiffAt hz).continuousAt`. Use `(ContinuousAt.congr h ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(isOpen_OmF X x0).mem_nhds hz] with w hw using Real.exp_log (densF_pos hw)`.
+-/
 theorem densF_continuousOn : ContinuousOn (densF X x0) (OmF X x0) := by
   intro z hz
   have h := Real.continuous_exp.continuousAt.comp (logDens_contDiffAt hz).continuousAt
   refine (ContinuousAt.congr h ?_).continuousWithinAt
   filter_upwards [(isOpen_OmF X x0).mem_nhds hz] with w hw using Real.exp_log (densF_pos hw)
 
+/- English proof (translation)
+Establish `hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)), ContDiffAt ℝ ∞ (fun w => Real.log ‖dmin X.Gm (cpt X x0 w) τ i‖) z`. Introduce `τ i`. Establish `hne` using `dmin_ne hz τ i`. Establish `h1 : ContDiffAt ℝ ∞ (fun w => ‖dmin X.Gm (cpt X x0 w) τ i‖) z` using `(contDiffAt_norm ℂ hne).comp z (cd_dmin X x0 τ i).contDiffAt`. Conclude with `h1.log (norm_ne_zero_iff.mpr hne)`.
+
+Unfold `rhF`. Conclude with `(ContDiffAt.sum fun τ _ => hd τ _).neg`.
+-/
 theorem rhF_contDiffAt {z : V (nd X)} (hz : z ∈ OmF X x0) : ContDiffAt ℝ ∞ (rhF X x0) z := by
   have hd : ∀ (τ : X.Ψ) (i : Fin (r + 1)),
       ContDiffAt ℝ ∞ (fun w => Real.log ‖dmin X.Gm (cpt X x0 w) τ i‖) z := by
@@ -146,11 +203,35 @@ theorem rhF_contDiffAt {z : V (nd X)} (hz : z ∈ OmF X x0) : ContDiffAt ℝ ∞
   unfold rhF
   exact (ContDiffAt.sum fun τ _ => hd τ _).neg
 
+/- English proof (translation)
+Unfold `kaF`. Conclude with `Real.contDiff_exp.contDiffAt.comp z (contDiffAt_const.mul (rhF_contDiffAt hz))`.
+-/
 theorem ka_contDiffAt (bb : ℝ) {z : V (nd X)} (hz : z ∈ OmF X x0) :
     ContDiffAt ℝ ∞ (kaF X x0 bb) z := by
   unfold kaF
   exact Real.contDiff_exp.contDiffAt.comp z (contDiffAt_const.mul (rhF_contDiffAt hz))
 
+/- English proof (translation)
+Establish `hG` using `hGrad r X x0 hx0 z hz ξ`. Distinguish the cases in `hC : ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ) = 0`. Establish `hwd : ∀ w ∈ OmF X x0, ∀ j, wd (nd X) j (fun w => ((rhF X x0 w : ℝ) : ℂ)) w = 0`. Introduce `w hw j`. Establish `h` using `hGrad r X x0 hx0 w hw (Pi.single j 1)`.
+
+Rewrite `h` using `[hC, zero_mul]`. Establish `h'` using `le_antisymm h (Complex.normSq_nonneg _)`. Rewrite `h'` using `[Complex.normSq_eq_zero]`. Simplify `h'` using `[Pi.single_apply]`. Establish `hwdb : ∀ w ∈ OmF X x0, ∀ k, wdb (nd X) k (fun w => ((rhF X x0 w : ℝ) : ℂ)) w = 0`.
+
+Introduce `w hw k`. Establish `hd : DifferentiableAt ℝ (rhF X x0) w` using `(rhF_contDiffAt hw).differentiableAt (by simp)`. Establish `hf : ∀ v, fderiv ℝ (fun w => ((rhF X x0 w : ℝ) : ℂ)) w v = ((fderiv ℝ (rhF X x0) w v : ℝ) : ℂ)`. Introduce `v`. Establish `hh : HasFDerivAt (fun w => ((rhF X x0 w : ℝ) : ℂ)) (Complex.ofRealCLM.comp (fderiv ℝ (rhF X x0) w)) w` using `Complex.ofRealCLM.hasFDerivAt.comp w hd.hasFDerivAt`.
+
+Rewrite using `[hh.fderiv]`. Both sides reduce to the same expression. Establish `h0` using `hwd w hw k`. Simplify using `only [wd, hf] at h0`. Simplify using `only [wdb, hf]`.
+
+Use `set p := fderiv ℝ (rhF X x0) w (bas (nd X) k)`. Use `set q := fderiv ℝ (rhF X x0) w (Complex.I • bas (nd X) k)`. Establish `h2 : (p : ℂ) - Complex.I * (q : ℂ) = 0`. Break down `div_eq_zero_iff.mp h0 with h0 | h0` into its components or cases. Conclude with `h0`.
+
+Evaluate the numerical expressions using `at h0`. Establish `hp : p = 0`. Establish `h3` using `congrArg Complex.re h2`. Simplify using `using h3`. Establish `hq : q = 0`.
+
+Establish `h3` using `congrArg Complex.im h2`. Simplify using `using h3`. Rewrite using `[hp, hq]`. Simplify using the standard rewrite rules. Establish `hL : leviV (nd X) (fun w => ((rhF X x0 w : ℝ) : ℂ)) z ξ = 0`.
+
+Unfold `leviV`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hev : wdb (nd X) k (fun w => ((rhF X x0 w : ℝ) : ℂ)) =ᶠ[𝓝 z] fun _ => (0 : ℂ)` using `by filter_upwards [(isOpen_OmF X x0).mem_nhds hz] with w hw using hwdb w hw k`. Establish `hfd : fderiv ℝ (wdb (nd X) k (fun w => ((rhF X x0 w : ℝ) : ℂ))) z = 0`. Rewrite using `[hev.fderiv_eq]`.
+
+Simplify using the standard rewrite rules. Simplify using `[wd, hfd]`. Rewrite using `[hL]`. Simplify using the standard rewrite rules. Establish `hCpos : (0 : ℝ) < ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ)` using `lt_of_le_of_ne (Nat.cast_nonneg _) (Ne.symm hC)`.
+
+Establish `h0 : ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ) * 0 ≤ ((X.Ψ.card * min X.p0 (r - X.p0) : ℕ) : ℝ) * (leviV (nd X) (fun w => ((rhF X x0 w : ℝ) : ℂ)) z ξ).re`. Rewrite using `[mul_zero]`. Conclude with `le_trans (Complex.normSq_nonneg _) hG`. Conclude with `le_of_mul_le_mul_left h0 hCpos`.
+-/
 theorem levi_rh_nonneg (hGrad : RhGradFStatement (E := E)) (hx0 : IsOrth X x0) {z : V (nd X)}
     (hz : z ∈ OmF X x0) (ξ : Fin (nd X) → ℂ) :
     0 ≤ (leviV (nd X) (fun w => ((rhF X x0 w : ℝ) : ℂ)) z ξ).re := by

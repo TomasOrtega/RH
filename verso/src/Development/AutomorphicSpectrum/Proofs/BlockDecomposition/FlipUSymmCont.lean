@@ -13,10 +13,18 @@ namespace GlobalTheory.CompanionTheory.NegDS
 
 variable {n : ℕ} {ε ε' : Fin n → Bool}
 
+/- English proof (translation)
+Rewrite using `[he a, he b]`. Apply the tactic sequence `cases ε a <;> cases ε b <;> simp`.
+-/
 theorem sign_eq_iff (he : ∀ a, ε' a = !ε a) (a b : Fin n) : ε' a = ε' b ↔ ε a = ε b := by
   rw [he a, he b]
   cases ε a <;> cases ε b <;> simp
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[he a]`.
+
+Apply the tactic sequence `cases ε a <;> simp`.
+-/
 theorem Jm_flip (he : ∀ a, ε' a = !ε a) : Formalism.REAL.Jm ε' = -Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
   rw [Matrix.diagonal_neg]
@@ -25,34 +33,55 @@ theorem Jm_flip (he : ∀ a, ε' a = !ε a) : Formalism.REAL.Jm ε' = -Formalism
   rw [he a]
   cases ε a <;> simp
 
+/- English proof (translation)
+Use extensionality with `g`. Use `show Formalism.REAL.inUJ ε' g ↔ Formalism.REAL.inUJ ε g`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[Jm_flip he, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem UJset_flip (he : ∀ a, ε' a = !ε a) : Formalism.MainNotions.S.UJset ε' = Formalism.MainNotions.S.UJset ε := by
   ext g
   show Formalism.REAL.inUJ ε' g ↔ Formalism.REAL.inUJ ε g
   unfold Formalism.REAL.inUJ
   rw [Jm_flip he, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Use extensionality with `g`. Use `show g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε' = Formalism.REAL.Jm ε' * g ↔ g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g`. Rewrite using `[Jm_flip he, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+-/
 theorem Kset_flip (he : ∀ a, ε' a = !ε a) : Formalism.REAL.Kset ε' = Formalism.REAL.Kset ε := by
   ext g
   show g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε' = Formalism.REAL.Jm ε' * g ↔
     g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g
   rw [Jm_flip he, Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.REAL.rhoC, sign_eq_iff he]`.
+-/
 theorem rhoC_flip (he : ∀ a, ε' a = !ε a) : Formalism.REAL.rhoC ε' = Formalism.REAL.rhoC ε := by
   funext a
   simp only [Formalism.REAL.rhoC, sign_eq_iff he]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.REAL.rhoN, ne_eq, sign_eq_iff he]`.
+-/
 theorem rhoN_flip (he : ∀ a, ε' a = !ε a) : Formalism.REAL.rhoN ε' = Formalism.REAL.rhoN ε := by
   funext a
   simp only [Formalism.REAL.rhoN, ne_eq, sign_eq_iff he]
 
+/- English proof (translation)
+Unfold `Formalism.QuantumDeterminants.lowK`. Rewrite using `[rhoC_flip he, rhoN_flip he]`.
+-/
 theorem lowK_flip (he : ∀ a, ε' a = !ε a) (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.lowK ε' lam = Formalism.QuantumDeterminants.lowK ε lam := by
   unfold Formalism.QuantumDeterminants.lowK
   rw [rhoC_flip he, rhoN_flip he]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.vNormSq`. Rewrite using `[rhoC_flip he]`.
+-/
 theorem vNormSq_flip (he : ∀ a, ε' a = !ε a) (μ : Fin n → ℝ) : Formalism.MainNotions.S.vNormSq ε' μ = Formalism.MainNotions.S.vNormSq ε μ := by
   unfold Formalism.MainNotions.S.vNormSq
   rw [rhoC_flip he]
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.S.CDom, sign_eq_iff he]`.
+-/
 theorem cdom_flip (he : ∀ a, ε' a = !ε a) (μ Λ : Fin n → ℝ) : Formalism.MainNotions.S.CDom ε' μ Λ ↔ Formalism.MainNotions.S.CDom ε μ Λ := by
   simp only [Formalism.MainNotions.S.CDom, sign_eq_iff he]
 
@@ -60,10 +89,16 @@ section Rep
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.S.IsKStableOn, Kset_flip he]`.
+-/
 theorem kstable_flip (he : ∀ a, ε' a = !ε a) (S : Submodule ℂ H) :
     Formalism.MainNotions.S.IsKStableOn ε' σ S ↔ Formalism.MainNotions.S.IsKStableOn ε σ S := by
   simp only [Formalism.MainNotions.S.IsKStableOn, Kset_flip he]
 
+/- English proof (translation)
+Simplify using `only [Formalism.MainNotions.S.IsKTypeOf, kstable_flip he, Kset_flip he, cdom_flip he]`.
+-/
 theorem ktype_flip (he : ∀ a, ε' a = !ε a) (Λ : Fin n → ℝ) (S : Submodule ℂ H) :
     Formalism.MainNotions.S.IsKTypeOf ε' σ Λ S ↔ Formalism.MainNotions.S.IsKTypeOf ε σ Λ S := by
   simp only [Formalism.MainNotions.S.IsKTypeOf, kstable_flip he, Kset_flip he, cdom_flip he]
@@ -77,12 +112,23 @@ def flipU (he : ∀ a, ε' a = !ε a) : Formalism.REAL.UJ ε' ≃* Formalism.REA
   right_inv _ := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Conclude with `continuous_induced_rng.2 continuous_subtype_val`.
+-/
 theorem flipU_cont (he : ∀ a, ε' a = !ε a) : Continuous (flipU he) := by
   exact continuous_induced_rng.2 continuous_subtype_val
 
+/- English proof (translation)
+Conclude with `continuous_induced_rng.2 continuous_subtype_val`.
+-/
 theorem flipU_symm_cont (he : ∀ a, ε' a = !ε a) : Continuous (flipU he).symm := by
   exact continuous_induced_rng.2 continuous_subtype_val
 
+/- English proof (translation)
+Establish `hc` using `flipU_cont he`. Establish `hcs` using `flipU_symm_cont he`. Set `eH : Formalism.REAL.UJ ε' ≃ₜ Formalism.REAL.UJ ε` to `⟨(flipU he).toEquiv, hc, hcs⟩`. Establish `hme : MeasurableEmbedding (flipU he)` using `eH.measurableEmbedding`. Use `haveI : (Measure.map (flipU he) (Formalism.REAL.muG ε')).IsHaarMeasure := (flipU he).isHaarMeasure_map (Formalism.REAL.muG ε') hc hcs`.
+
+Establish `hmap : Measure.map (flipU he) (Formalism.REAL.muG ε') = MeasureTheory.Measure.haarScalarFactor (Measure.map (flipU he) (Formalism.REAL.muG ε')) (Formalism.REAL.muG ε) • Formalism.REAL.muG ε` using `MeasureTheory.Measure.isMulLeftInvariant_eq_smul _ _`. Rewrite using `[← hme.memLp_map_measure_iff, hmap, ENNReal.smul_def]`. Conclude with `hF.smul_measure ENNReal.coe_ne_top`.
+-/
 theorem memLp_flip (he : ∀ a, ε' a = !ε a) {F : Formalism.REAL.UJ ε → ℂ} (hF : MemLp F 2 (Formalism.REAL.muG ε)) :
     MemLp (F ∘ flipU he) 2 (Formalism.REAL.muG ε') := by
   have hc := flipU_cont he
@@ -98,6 +144,11 @@ theorem memLp_flip (he : ∀ a, ε' a = !ε a) {F : Formalism.REAL.UJ ε → ℂ
   rw [← hme.memLp_map_measure_iff, hmap, ENNReal.smul_def]
   exact hF.smul_measure ENNReal.coe_ne_top
 
+/- English proof (translation)
+Introduce `v w`. Establish `e : Formalism.MainNotions.S.coefOn (ε` using `ε') σ v w = Formalism.MainNotions.S.coefOn (ε := ε) σ v w ∘ flipU he := by`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `memLp_flip he (h v w)`.
+-/
 theorem sqInt_flip {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (he : ∀ a, ε' a = !ε a) (h : Formalism.MainNotions.S.IsSqIntOn ε σ) : Formalism.MainNotions.S.IsSqIntOn ε' σ := by
   intro v w
@@ -107,6 +158,13 @@ theorem sqInt_flip {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {
   rw [e]
   exact memLp_flip he (h v w)
 
+/- English proof (translation)
+Introduce `n H _ _ ε lam σ h`. Establish `he : ∀ a, (fun a => !ε a) a = !ε a` using `fun _ => rfl`. Unfold `Formalism.MainNotions.S.IsDS at h ⊢`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `h`. Use `⟨h1, h2, ?_, ?_, sqInt_flip he h5, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[UJset_flip he]`. Conclude with `h3`. Rewrite using `[UJset_flip he]`. Conclude with `h4`. Take `⟨S, hS⟩` from `h6`.
+
+Conclude with `⟨S, by rw [lowK_flip he, ktype_flip he]; exact hS⟩`. Introduce `μ S hS`. Rewrite using `[lowK_flip he, vNormSq_flip he, vNormSq_flip he]`. Conclude with `h7 μ S ((ktype_flip he μ S).1 hS)`.
+-/
 theorem isDS_flip : ∀ (n : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), Formalism.MainNotions.S.IsDS ε lam σ → Formalism.MainNotions.S.IsDS (fun a => !ε a) lam σ := by
   intro n H _ _ ε lam σ h

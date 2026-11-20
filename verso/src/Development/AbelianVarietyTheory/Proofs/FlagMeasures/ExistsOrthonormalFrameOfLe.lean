@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.IntertwinerFrame
 
+/- English proof (translation)
+Introduce `B d hd S hle hfin`. Take `⟨hU, hirr, -, hw, -⟩` from `GlobalTheory.Dec.tensorRep B d hd`. Take `⟨-, -, hR, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Set `σ : B.I.Ginf →* (B.Hs →L[ℂ] B.Hs)` to `{ toFun := B.σs map_one' := hU.1 map_mul' := hU.2.1 }`. Take `⟨T, h1, h2, h3, -⟩` from `exists_frame S (B.tens B.w) fun T hT T' hT' u u' => inner_intertwiners σ hU.2.2.1 hirr (fun g => B.R (g, 1)) (fun g => hR _) _ hw T T' (hle hT) (hle hT') u u'`.
+
+Conclude with `⟨T, h1, h2, h3⟩`.
+-/
 theorem exists_orthonormal_frame_of_le : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSData B d → ∀ S : Submodule ℂ (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), S ≤ B.I.HomS B.σs B.μf B.fund B.R → FiniteDimensional ℂ S → ∃ T : Fin (Module.finrank ℂ S) → (B.Hs →L[ℂ] B.I.L2 B.μf B.fund), (∀ i, T i ∈ S) ∧ (∀ i u, ‖T i u‖ = ‖u‖) ∧ ∀ i j, i ≠ j → ∀ u u', ⟪T i u, T j u'⟫_ℂ = 0 := by
   intro B d hd S hle hfin
   obtain ⟨hU, hirr, -, hw, -⟩ := GlobalTheory.Dec.tensorRep B d hd

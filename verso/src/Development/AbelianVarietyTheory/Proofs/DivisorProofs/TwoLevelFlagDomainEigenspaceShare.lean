@@ -15,24 +15,42 @@ noncomputable section
 
 namespace GlobalTheory.ShareEig
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.cuspForm_pullback_isBoundedSection`.
+-/
 theorem bddSec_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (la : Wt M.Ψ r) (F : C → Frame M.Ψ r → ℂ), F ∈ M.SS la → ∀ (h : U) (c : C), (M.comp c).IsBddSec (castWt (M.comp_Ψ c) la) (fun x => M.pull h F c (castFrame (M.comp_Ψ c) x)) := GlobalTheory.T.cuspForm_pullback_isBoundedSection
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castFrame_lact {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (γ : GL (Fin r) E) (x : Frame Ψ r) :
     castFrame h (lact γ x) = lact γ (castFrame h x) := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castFrame_castFrame {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (y : Frame Ψ' r) :
     castFrame h (castFrame h.symm y) = y := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castFrame_mem_GG {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (G : Matrix (Fin r) (Fin r) E) (p : ℕ)
     (x : Frame Ψ r) : castFrame h x ∈ GG Ψ' G p ↔ x ∈ GG Ψ G p := by subst h; rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hf`.
+-/
 theorem differentiableOn_of_castFrame {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') (G : Matrix (Fin r) (Fin r) E) (p : ℕ)
     {f : Frame Ψ' r → ℂ} (hf : DifferentiableOn ℂ (fun x => f (castFrame h x)) (GG Ψ G p)) :
     DifferentiableOn ℂ f (GG Ψ' G p) := by
   subst h; exact hf
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `((a * b : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (a : Matrix (Fin r) (Fin r) E).map τ.1 * ((b : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, mul_assoc]`.
+-/
 theorem lact_mul {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ r) :
     lact (a * b) x = lact a (lact b x) := by
   funext τ
@@ -42,12 +60,20 @@ theorem lact_mul {Ψ : Finset (E →+* ℂ)} (a b : GL (Fin r) E) (x : Frame Ψ 
 
 variable {U C : Type} [Group U] [MulAction U C] (M : TwoLevels E r U C)
 
+/- English proof (translation)
+Use `show castFrame _ x ∈ GG M.Ψ M.Gm M.p0 ↔ x ∈ GG (M.comp c).Ψ (M.comp c).Gm (M.comp c).p0`. Rewrite using `[M.comp_Gm c, M.comp_basePoint c]`. Conclude with `castFrame_mem_GG _ _ _ _`.
+-/
 theorem mem_dom_iff (c : C) (x : Frame (M.comp c).Ψ r) :
     castFrame (M.comp_Ψ c) x ∈ M.dom ↔ x ∈ (M.comp c).dom := by
   show castFrame _ x ∈ GG M.Ψ M.Gm M.p0 ↔ x ∈ GG (M.comp c).Ψ (M.comp c).Gm (M.comp c).p0
   rw [M.comp_Gm c, M.comp_basePoint c]
   exact castFrame_mem_GG _ _ _ _
 
+/- English proof (translation)
+Establish `hxz : castFrame (M.comp_Ψ c) (castFrame (M.comp_Ψ c).symm z) = z` using `castFrame_castFrame _ _`. Establish `hx : castFrame (M.comp_Ψ c).symm z ∈ (M.comp c).dom` using `(mem_dom_iff M c _).1 (hxz ▸ hz)`. Establish `h` using `(hF c).1.1.2.2 γ hγ _ hx`. Simplify using `only at h`. Rewrite `h` using `[M.χ_one c _ γ hγ, one_mul, castFrame_lact, hxz]`.
+
+Conclude with `h`.
+-/
 theorem inv_of_SS {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.SS la) (c : C) {γ : GL (Fin r) E}
     (hγ : γ ∈ (M.comp c).Γ) {z : Frame M.Ψ r} (hz : z ∈ M.dom) : F c (lact γ z) = F c z := by
   have hxz : castFrame (M.comp_Ψ c) (castFrame (M.comp_Ψ c).symm z) = z := castFrame_castFrame _ _
@@ -57,9 +83,17 @@ theorem inv_of_SS {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ 
   rw [M.χ_one c _ γ hγ, one_mul, castFrame_lact, hxz] at h
   exact h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `continuous_id`.
+-/
 theorem continuous_castFrame {Ψ Ψ' : Finset (E →+* ℂ)} (h : Ψ = Ψ') : Continuous (castFrame (r := r) h) := by
   subst h; exact continuous_id
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨castFrame (M.comp_Ψ c).symm y, (mem_dom_iff M c _).1 ?_, castFrame_castFrame _ _⟩` and prove the remaining obligations. Rewrite using `[castFrame_castFrame]` and apply the resulting hypothesis.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_dom_iff M c x).2 hx`.
+-/
 theorem dom_eq_image (c : C) : M.dom = castFrame (M.comp_Ψ c) '' (M.comp c).dom := by
   ext y
   constructor
@@ -69,6 +103,9 @@ theorem dom_eq_image (c : C) : M.dom = castFrame (M.comp_Ψ c) '' (M.comp c).dom
   · rintro ⟨x, hx, rfl⟩
     exact (mem_dom_iff M c x).2 hx
 
+/- English proof (translation)
+Use extensionality with `y`. Simplify using `only [Set.mem_preimage]`. Rewrite using `[← mem_dom_iff M c, castFrame_castFrame]`.
+-/
 theorem dom_eq_preimage (c : C) : M.dom = castFrame (M.comp_Ψ c).symm ⁻¹' (M.comp c).dom := by
   ext y
   simp only [Set.mem_preimage]
@@ -78,6 +115,15 @@ end GlobalTheory.ShareEig
 
 namespace GlobalTheory.ShareEig
 
+/- English proof (translation)
+Introduce `E _ _ _ r U C _ _ M c D f hD hf hne h0 z hz`. Establish `hopen : IsOpen M.dom`. Rewrite using `[dom_eq_preimage M c]`. Conclude with `(ReciprocityTheory.ChartRestriction.G.FD.FourierCoefficientDomain.isOpen_dom (M.comp c).toData).preimage (continuous_castFrame _)`. Establish `hconn : IsPreconnected M.dom`.
+
+Rewrite using `[dom_eq_image M c]`. Conclude with `((ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.flag_domain_frames_connected r (M.comp c).toData).image _ (continuous_castFrame _).continuousOn).isPreconnected`. Assume the negation of the conclusion as `hfz`. Establish `hev : D =ᶠ[nhds z] 0`. Establish `h1 : ∀ᶠ y in nhds z, f y ≠ 0` using `(hf.continuousAt (hopen.mem_nhds hz)).eventually_ne hfz`.
+
+Use `filter_upwards [h1, hopen.mem_nhds hz] with y hy1 hy2`. Assume the negation of the conclusion as `hDy`. Conclude with `hy1 (h0 y hy2 hDy)`. Establish `han : AnalyticOnNhd ℂ D M.dom` using `GlobalTheory.LogExt.analyticOnNhd_of_differentiableOn hopen hD`. Establish `hall` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero hconn hz hev`.
+
+Take `⟨x, hx, hDx⟩` from `hne`. Conclude with `hDx (hall hx)`.
+-/
 theorem eq_zero_of_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (c : C) (D f : Frame M.Ψ r → ℂ), DifferentiableOn ℂ D M.dom → ContinuousOn f M.dom → (∃ x ∈ M.dom, D x ≠ 0) → (∀ z ∈ M.dom, D z ≠ 0 → f z = 0) → ∀ z ∈ M.dom, f z = 0 := by
   intro E _ _ _ r U C _ _ M c D f hD hf hne h0 z hz
   have hopen : IsOpen M.dom := by
@@ -101,6 +147,13 @@ theorem eq_zero_of_det : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 variable {U C : Type} [Group U] [MulAction U C] (M : TwoLevels E r U C)
 
+/- English proof (translation)
+Simplify using `only [TwoLevels.pull]`. Rewrite using `[← mul_smul]`. Use `set β := M.tr h (g • c) * M.tr g c with hβdef`. Establish `hβ : ∀ v w, herm M.Gm ((β : Matrix (Fin r) (Fin r) E).mulVec v) ((β : Matrix (Fin r) (Fin r) E).mulVec w) = herm M.Gm v w`. Introduce `v w`.
+
+Rewrite using `[hβdef, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, M.tr_herm, M.tr_herm]`. Establish `hw : lact β z ∈ M.dom` using `GlobalTheory.FrameFibre.lact_mem_GG hβ hz`. Establish `hγ : M.tr (h * g) c * β⁻¹ ∈ (M.comp ((h * g) • c)).Γ` using `M.tr_mul h g c`. Establish `e2 : lact (M.tr h (g • c)) (lact (M.tr g c) z) = lact β z` using `(lact_mul _ _ _).symm`. Establish `e : M.tr (h * g) c = (M.tr (h * g) c * β⁻¹) * β` using `by group`.
+
+Rewrite using `[e2, e, lact_mul (M.tr (h * g) c * β⁻¹) β z, inv_of_SS M hF _ hγ hw]`.
+-/
 theorem pull_pull {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.SS la) (g h : U) (c : C)
     {z : Frame M.Ψ r} (hz : z ∈ M.dom) : M.pull g (M.pull h F) c z = M.pull (h * g) F c z := by
   simp only [TwoLevels.pull]
@@ -116,6 +169,11 @@ theorem pull_pull {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ 
   have e : M.tr (h * g) c = (M.tr (h * g) c * β⁻¹) * β := by group
   rw [e2, e, lact_mul (M.tr (h * g) c * β⁻¹) β z, inv_of_SS M hF _ hγ hw]
 
+/- English proof (translation)
+Establish `h1` using `M.tr_mul 1 1 c`. Simplify using `only [mul_one, one_smul] at h1`. Establish `h2 : (M.tr 1 c)⁻¹ ∈ (M.comp c).Γ`. Establish `e : M.tr 1 c * (M.tr 1 c * M.tr 1 c)⁻¹ = (M.tr 1 c)⁻¹` using `by group`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+
+Establish `h3 : M.tr 1 c ∈ (M.comp c).Γ` using `by simpa using inv_mem h2`. Simplify using `only [TwoLevels.pull, one_smul]`. Conclude with `inv_of_SS M hF c h3 hz`.
+-/
 theorem pull_one {la : Wt M.Ψ r} {F : C → Frame M.Ψ r → ℂ} (hF : F ∈ M.SS la) (c : C)
     {z : Frame M.Ψ r} (hz : z ∈ M.dom) : M.pull 1 F c z = F c z := by
   have h1 := M.tr_mul 1 1 c
@@ -133,6 +191,13 @@ namespace GlobalTheory.ShareEig
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {U C : Type} [Group U] [MulAction U C]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨X, hX, rfl⟩ := hy`. Conclude with `⟨X, hX, rfl⟩`. Consider the case `zero => exact ⟨0, fun c => (siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) la) 0).1.1, rfl⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨X, hX, rfl⟩` from `hy`. Take `⟨Y, hY, rfl⟩` from `hz`. Conclude with `⟨X + Y, fun c => (siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) la) 0).1.2.1 _ (hX c) _ (hY c), rfl⟩`. Consider the case `smul t y _ hy`. Take `⟨X, hX, rfl⟩` from `hy`.
+
+Conclude with `⟨t • X, fun c => (siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) la) 0).1.2.2 t _ (hX c), rfl⟩`.
+-/
 theorem cusp_exists (M : TwoLevels E r U C) (la : Wt M.Ψ r) (x : C → M.dom → ℂ) (hx : x ∈ M.cusp la) :
     ∃ X ∈ M.SS la, M.res X = x := by
   induction hx using Submodule.span_induction with
@@ -146,11 +211,17 @@ theorem cusp_exists (M : TwoLevels E r U C) (la : Wt M.Ψ r) (x : C → M.dom �
     obtain ⟨X, hX, rfl⟩ := hy
     exact ⟨t • X, fun c => (siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) la) 0).1.2.2 t _ (hX c), rfl⟩
 
+/- English proof (translation)
+Introduce `c` and use `(siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) mu) 0).2.1 _ (hX c) _ (hQ c)`.
+-/
 theorem mul_mem_SS (M : TwoLevels E r U C) {la mu : Wt M.Ψ r} {X Q : C → Frame M.Ψ r → ℂ} (hX : X ∈ M.SS la)
     (hQ : ∀ c, (M.comp c).IsBddSec (castWt (M.comp_Ψ c) mu) (fun x => Q c (castFrame (M.comp_Ψ c) x))) :
     X * Q ∈ M.SS (la + mu) := fun c =>
   (siegelSpaceAlgebra_holds r (M.comp c).toData (castWt (M.comp_Ψ c) la) (castWt (M.comp_Ψ c) mu) 0).2.1 _ (hX c) _ (hQ c)
 
+/- English proof (translation)
+Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (c := (1 : ℂ))`. Consider the case `insert j u hj ih`. Simplify using `only [Finset.prod_insert hj]`. Conclude with `(h j (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem diffOn_prod {V ι : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {s : Set V} (u : Finset ι)
     (f : ι → V → ℂ) (h : ∀ i ∈ u, DifferentiableOn ℂ (f i) s) : DifferentiableOn ℂ (fun y => ∏ i ∈ u, f i y) s := by
   classical
@@ -160,6 +231,9 @@ theorem diffOn_prod {V ι : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {s 
     simp only [Finset.prod_insert hj]
     exact (h j (Finset.mem_insert_self _ _)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Establish `e : (M.comp c).dom = GG (M.comp c).Ψ M.Gm M.p0` using `by show GG _ (M.comp c).Gm (M.comp c).p0 = _`. Rewrite using `[M.comp_Gm c, M.comp_basePoint c]`. Rewrite `hG` using `[e]`. Conclude with `differentiableOn_of_castFrame _ _ _ hG`.
+-/
 theorem diff_of_comp (M : TwoLevels E r U C) (c : C) (G : Frame M.Ψ r → ℂ)
     (hG : DifferentiableOn ℂ (fun x => G (castFrame (M.comp_Ψ c) x)) (M.comp c).dom) : DifferentiableOn ℂ G M.dom := by
   have e : (M.comp c).dom = GG (M.comp c).Ψ M.Gm M.p0 := by
@@ -172,6 +246,39 @@ end GlobalTheory.ShareEig
 
 namespace GlobalTheory.ShareEig
 
+/- English proof (translation)
+Introduce `E _ _ _ r U C _ _ _ _ M ka ρ hρ ep c0 hR H hL lam`. Use `letI : Fintype H := Fintype.ofFinite H`. Take `⟨a, ha⟩` from `hρ`. Take `⟨u0, hu0, hdet⟩` from `GlobalTheory.T.exists_cuspForm_independent_translates E r H C (sub M H) hL (sOf M) (even_sOf M) (le_sOf M)`. Establish `hu0' : u0 ∈ M.SS (deMul M.Ψ r M.p0 (sOf M))` using `hu0`.
+
+Use `haveI : Module.Finite ℂ (M.cusp ka) := hR.1`. Establish `hQ : ∀ (h : U) (c : C), (M.comp c).IsBddSec (castWt (M.comp_Ψ c) (deMul M.Ψ r M.p0 (sOf M))) (fun x => M.pull h u0 c (castFrame (M.comp_Ψ c) x))` using `fun h c => bddSec_pull E r U C M _ u0 hu0' h c`. Establish `hprod : ∀ (h : U) (X : C → Frame M.Ψ r → ℂ), X ∈ M.SS (ka - deMul M.Ψ r M.p0 (sOf M)) → X * M.pull h u0 ∈ M.SS ka`. Introduce `h X hX`. Use `mul_mem_SS M hX (hQ h)` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Set `mulH : H → M.cusp (ka - deMul M.Ψ r M.p0 (sOf M)) →ₗ[ℂ] M.cusp ka` to `fun h => { toFun := fun x => ⟨(x : C → M.dom → ℂ) * M.res (M.pull (h : U) u0), by`. Take `⟨X, hX, hXx⟩` from `cusp_exists M _ _ x.2`. Rewrite using `[← hXx]`. Conclude with `Submodule.subset_span ⟨X * M.pull (h : U) u0, hprod h X hX, rfl⟩⟩`.
+
+Use the proof step `map_add' := fun x y => Subtype.ext (add_mul _ _ _)`. Use the proof step `map_smul' := fun t x => Subtype.ext (smul_mul_assoc _ _ _) }`. Set `S : Module.End ℂ (M.cusp ka)` to `∑ g : H, ((lam g : ℂˣ) : ℂ) • ρ ((g : U)⁻¹)`. Establish `hS : ∀ v, S v ∈ GlobalTheory.BadCount.eig ρ H lam`. Introduce `v`.
+
+Simplify using `only [GlobalTheory.BadCount.eig, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `k`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Simplify using `only [S, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.smul_sum]`. Use `symm`.
+
+Apply `Fintype.sum_equiv (Equiv.mulRight k)` to reduce the goal to its premises. Introduce `g`. Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, mul_inv_rev]`. Establish `e : ρ (k : U) (ρ ((k : U)⁻¹ * (g : U)⁻¹) v) = ρ ((g : U)⁻¹) v`. Rewrite using `[← Module.End.mul_apply, ← MonoidHom.map_mul, mul_inv_cancel_left]`.
+
+Rewrite using `[e, map_mul lam, Units.val_mul, smul_smul, mul_comm]`. Set `P : M.cusp ka →ₗ[ℂ] GlobalTheory.BadCount.eig ρ H lam` to `LinearMap.codRestrict _ S hS`. Set `Φ : M.cusp (ka - deMul M.Ψ r M.p0 (sOf M)) →ₗ[ℂ] (H → GlobalTheory.BadCount.eig ρ H lam)` to `LinearMap.pi fun h => P ∘ₗ mulH h`. Establish `hinj : Function.Injective Φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+
+Introduce `x hx`. Take `⟨X, hX, hXx⟩` from `cusp_exists M _ _ x.2`. Establish `hm : ∀ h : H, mulH h x = ⟨M.res (X * M.pull (h : U) u0), Submodule.subset_span ⟨X * M.pull (h : U) u0, hprod h X hX, rfl⟩⟩`. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show (x : C → M.dom → ℂ) * M.res (M.pull (h : U) u0) = M.res (X * M.pull (h : U) u0)`. Rewrite using `[← hXx]`. Both sides reduce to the same expression. Establish `hent : ∀ (k : U) (c : C), DifferentiableOn ℂ (M.pull k u0 c) M.dom` using `fun k c => diff_of_comp M c _ (hQ k c).1.1`. Establish `key : ∀ c, ∀ z ∈ M.dom, X c z = 0`.
+
+Introduce `c`. Establish `hD : DifferentiableOn ℂ ((sub M H).detTr u0 c) M.dom` using `by show DifferentiableOn ℂ (fun y => (Matrix.of fun h h' : H => M.pull ((h : U) * h') u0 c y).det) M.dom`. Simplify using `only [Matrix.det_apply, Matrix.of_apply, Units.smul_def, zsmul_eq_mul]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Conclude with `(diffOn_prod _ _ fun i _ => hent _ c).const_mul _`.
+
+Establish `hXc : ContinuousOn (X c) M.dom` using `(diff_of_comp M c _ (hX c).1.1.1).continuousOn`. Use `eq_zero_of_det E r U C M c _ _ hD hXc (hdet c) ?_` and prove the remaining obligations. Introduce `z hz hDz`. Establish `hrow : ∀ h : H, ∑ g : H, M.pull ((h : U) * (g : U)) u0 c z * (((lam g : ℂˣ) : ℂ) * (a (g : U) c : ℂ) * M.pull (g : U) X c z) = 0`. Introduce `h`.
+
+Establish `h1 : P (mulH h x) = 0` using `congrFun hx h`. Establish `h2` using `congrArg (fun w : GlobalTheory.BadCount.eig ρ H lam => ((w : M.cusp ka) : C → M.dom → ℂ) c ⟨z, hz⟩) h1`. Simplify using `only [ZeroMemClass.coe_zero, Pi.zero_apply] at h2`. Rewrite using `[← h2, hm h]`. Use `show _ = ((S _ : M.cusp ka) : C → M.dom → ℂ) c ⟨z, hz⟩`.
+
+Simplify using `only [S, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[ha (g : U) _ (hprod _ X hX) c ⟨z, hz⟩]`. Rewrite using `[show M.pull (g : U) (X * M.pull (h : U) u0) c z = M.pull (g : U) X c z * M.pull (g : U) (M.pull (h : U) u0) c z from rfl, pull_pull M hu0' (g : U) (h : U) c hz]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw` using `Matrix.eq_zero_of_mulVec_eq_zero (M := Matrix.of fun h g : H => M.pull ((h : U) * (g : U)) u0 c z) (v := fun g : H => ((lam g : ℂˣ) : ℂ) * (a (g : U) c : ℂ) * M.pull (g : U) X c z) hDz (funext hrow)`. Establish `h1` using `congrFun hw 1`. Simplify using `only [Pi.zero_apply, OneMemClass.coe_one, map_one, Units.val_one, one_mul] at h1`. Rewrite using `[← pull_one M hX c hz]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (Units.ne_zero _)`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hXx]`. Use function extensionality and compare the values at `c z`. Conclude with `key c z.1 z.2`. Establish `h2` using `LinearMap.finrank_le_finrank_of_injective hinj`.
+
+Rewrite `h2` using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Establish `h1 : finrank ℂ (M.cusp (ka - deMul M.Ψ r M.p0 (sOf M))) ≤ Nat.card H * finrank ℂ (GlobalTheory.BadCount.eig ρ H lam)`. Rewrite using `[Nat.card_eq_fintype_card]` and apply the resulting hypothesis. Use `⟨h1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem share_eig : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [Finite U] [Finite C] [MulAction U C] (M : TwoLevels E r U C), ∀ (ka : Wt M.Ψ r) (ρ : Representation ℂ U (M.cusp ka)), IsPullRep M ka ρ → ∀ ep c : ℝ, Ranks M ka (sOf M) ep c → ∀ H : Subgroup U, LevelHyp (sub M H) → ∀ lam : H →* ℂˣ, finrank ℂ (M.cusp (ka - deMul M.Ψ r M.p0 (sOf M))) ≤ Nat.card H * finrank ℂ (GlobalTheory.BadCount.eig ρ H lam) ∧ (1 - ep) * finrank ℂ (M.cusp ka) ≤ (Nat.card H : ℝ) * finrank ℂ (GlobalTheory.BadCount.eig ρ H lam) := by
   intro E _ _ _ r U C _ _ _ _ M ka ρ hρ ep c0 hR H hL lam
   classical

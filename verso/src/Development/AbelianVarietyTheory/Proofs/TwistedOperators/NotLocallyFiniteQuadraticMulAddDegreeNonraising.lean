@@ -4,6 +4,11 @@ namespace GlobalTheory.Chain.RealIt
 
 open MvPolynomial
 
+/- English proof (translation)
+Establish `h1 : (Q * φ).totalDegree = φ.totalDegree + 2`. Rewrite using `[totalDegree_mul_of_isDomain hQ hφ, hh.totalDegree hQ, add_comm]`. Establish `h2 : (L φ).totalDegree < (Q * φ).totalDegree`. Use `hL φ` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[LinearMap.add_apply, LinearMap.mulLeft_apply, totalDegree_add_eq_left_of_totalDegree_lt h2, h1]`.
+-/
 theorem totalDegree_mulLeft_add {σ : Type} (Q : MvPolynomial σ ℂ)
     (L : Module.End ℂ (MvPolynomial σ ℂ)) (hQ : Q ≠ 0) (hh : Q.IsHomogeneous 2)
     (hL : ∀ P, (L P).totalDegree ≤ P.totalDegree) (φ : MvPolynomial σ ℂ) (hφ : φ ≠ 0) :
@@ -15,6 +20,11 @@ theorem totalDegree_mulLeft_add {σ : Type} (Q : MvPolynomial σ ℂ)
     omega
   rw [LinearMap.add_apply, LinearMap.mulLeft_apply, totalDegree_add_eq_left_of_totalDegree_lt h2, h1]
 
+/- English proof (translation)
+Take `⟨s, hs⟩ : F.FG` from `(Submodule.fg_iff_finiteDimensional F).2 hF`. Use `⟨s.sup totalDegree, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hle : F ≤ restrictTotalDegree σ ℂ (s.sup totalDegree)`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `x hx`.
+
+Conclude with `(mem_restrictTotalDegree σ _ x).2 (Finset.le_sup (f := totalDegree) hx)`. Conclude with `(mem_restrictTotalDegree σ _ P).1 (hle hP)`.
+-/
 theorem exists_totalDegree_le_of_finiteDimensional {σ : Type} (F : Submodule ℂ (MvPolynomial σ ℂ))
     (hF : FiniteDimensional ℂ F) : ∃ N : ℕ, ∀ P ∈ F, P.totalDegree ≤ N := by
   obtain ⟨s, hs⟩ : F.FG := (Submodule.fg_iff_finiteDimensional F).2 hF
@@ -25,6 +35,13 @@ theorem exists_totalDegree_le_of_finiteDimensional {σ : Type} (F : Submodule �
     exact (mem_restrictTotalDegree σ _ x).2 (Finset.le_sup (f := totalDegree) hx)
   exact (mem_restrictTotalDegree σ _ P).1 (hle hP)
 
+/- English proof (translation)
+Introduce `σ _ Q L hQ hh hL φ hφ F hF hall`. Take `⟨N, hN⟩` from `exists_totalDegree_le_of_finiteDimensional F hF`. Establish `key : ∀ n : ℕ, ((LinearMap.mulLeft ℂ Q + L) ^ n) φ ≠ 0 ∧ (((LinearMap.mulLeft ℂ Q + L) ^ n) φ).totalDegree = φ.totalDegree + 2 * n`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero => simpa using hφ`. Consider the case `succ n ih`. Establish `h` using `totalDegree_mulLeft_add Q L hQ hh hL _ ih.1`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Use `⟨fun h0 => ?_, by rw [h, ih.2]; ring⟩` and prove the remaining obligations.
+
+Rewrite `h` using `[h0, totalDegree_zero]`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hN _ (hall (N + 1))`. Rewrite `h1` using `[(key (N + 1)).2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_locallyFinite_mulLeft_add :
     ∀ (σ : Type) [Finite σ] (Q : MvPolynomial σ ℂ) (L : Module.End ℂ (MvPolynomial σ ℂ)),
       Q ≠ 0 → Q.IsHomogeneous 2 → (∀ P, (L P).totalDegree ≤ P.totalDegree) →

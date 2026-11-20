@@ -8,16 +8,27 @@ def zR (m n p : ℕ) : Fin (min p m) × Fin n → Fin m × Fin n :=
 def yR (m n p : ℕ) : Fin (m - p) × Fin n → Fin m × Fin n :=
   fun u => (⟨m - 1 - u.1, by have := u.1.2; omega⟩, u.2)
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [zR, Prod.mk.injEq, Fin.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext h.1) h.2`.
+-/
 theorem zR_inj (m n p : ℕ) : Function.Injective (zR m n p) := by
   rintro ⟨a, b⟩ ⟨c, d⟩ h
   simp only [zR, Prod.mk.injEq, Fin.mk.injEq] at h
   exact Prod.ext (Fin.ext h.1) h.2
 
+/- English proof (translation)
+Introduce and unpack `⟨⟨a, ha⟩, b⟩ ⟨⟨c, hc⟩, d⟩ h`. Simplify using `only [yR, Prod.mk.injEq, Fin.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext (by simp only; omega)) h.2`.
+-/
 theorem yR_inj (m n p : ℕ) : Function.Injective (yR m n p) := by
   rintro ⟨⟨a, ha⟩, b⟩ ⟨⟨c, hc⟩, d⟩ h
   simp only [yR, Prod.mk.injEq, Fin.mk.injEq] at h
   exact Prod.ext (Fin.ext (by simp only; omega)) h.2
 
+/- English proof (translation)
+Introduce `h`. Simplify using `only [zR, yR, Prod.mk.injEq, Fin.mk.injEq] at h`. Use `u.1.2` as an intermediate fact. Use `v.1.2` as an intermediate fact. Use `min_le_left p m` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem zR_ne_yR (m n p : ℕ) (u : Fin (min p m) × Fin n) (v : Fin (m - p) × Fin n) : zR m n p u ≠ yR m n p v := by
   intro h
   simp only [zR, yR, Prod.mk.injEq, Fin.mk.injEq] at h
@@ -25,6 +36,13 @@ theorem zR_ne_yR (m n p : ℕ) (u : Fin (min p m) × Fin n) (v : Fin (m - p) × 
   have := min_le_left p m
   omega
 
+/- English proof (translation)
+Break down `s with ⟨i, a⟩` into its components or cases. Distinguish the cases in `h : (i : ℕ) < p`. Use `left`. Conclude with `⟨(⟨i, lt_min h i.2⟩, a), rfl⟩`. Use `right`.
+
+Use `⟨(⟨m - 1 - i, by have := i.2; omega⟩, a), ?_⟩` and prove the remaining obligations. Simplify using `only [yR, Prod.mk.injEq, and_true]`. Use `ext`. Simplify using `only`. Use `i.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem zR_yR_cover (m n p : ℕ) (s : Fin m × Fin n) : (∃ u, zR m n p u = s) ∨ ∃ v, yR m n p v = s := by
   rcases s with ⟨i, a⟩
   by_cases h : (i : ℕ) < p

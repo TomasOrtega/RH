@@ -17,15 +17,44 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.ArcPts GlobalTheory.AmpleSpan
 open scoped CategoryTheory.Obj LaurentSeries PowerSeries
 
+/- English proof (translation)
+Introduce `q _` and use `by obtain rfl : q = p := Subsingleton.elim (α := PrimeSpectrum K) _ _ exact h`.
+-/
 theorem top_le_of_mem {K : Type} [Field K] {Z : Scheme.{0}} (x : Sp K ⟶ Z) {V : Z.Opens} (p : Sp K) (h : x p ∈ V) :
     ⊤ ≤ x ⁻¹ᵁ V := fun q _ => by
   obtain rfl : q = p := Subsingleton.elim (α := PrimeSpectrum K) _ _
   exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨IsOpenImmersion.lift V.ι x (by rintro _ ⟨p, rfl⟩; exact ⟨⟨x p, h trivial⟩, rfl⟩), IsOpenImmersion.lift_fac _ _ _⟩`.
+-/
 theorem exists_lift {Z Y : Scheme.{0}} (x : Y ⟶ Z) {V : Z.Opens} (h : ⊤ ≤ x ⁻¹ᵁ V) :
     ∃ x' : Y ⟶ V.toScheme, x' ≫ V.ι = x :=
   ⟨IsOpenImmersion.lift V.ι x (by rintro _ ⟨p, rfl⟩; exact ⟨⟨x p, h trivial⟩, rfl⟩), IsOpenImmersion.lift_fac _ _ _⟩
 
+/- English proof (translation)
+Establish `hLB : o.t.PP.L.IsLB` using `o.t.PP.isLB`. Use `o.proper` as an intermediate fact. Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := ⊤) (x := y (default : PrimeSpectrum ℂ⸨X⸩)) trivial`. Establish `hy` using `top_le_of_mem y _ hyU`. Establish `: IsAffine U` using `hU`.
+
+Take `⟨m, b, hb⟩` from `exists_span_powOver hL.secBaseChange (objPolAV o) (N := N) (by omega) hU`. Establish `emb : EmbedsBy (o.t.G.hom ∣_ U) b` using `embedsBy_powOver o.t.G (hL.ample S (objPolAV o) N hN).2 hU b (hb _ _ (𝟙 _) _ (𝟙 _) IsPullback.of_id_fst (Fin N) (fun _ => 1) _ (Category.id_comp _) (by simp) b fun i => (secScal_iff_sval hLB).2 fun Z r z J _ => by rw [Category.comp_id])`. Take `⟨g, hg⟩` from `exists_lift y hy`. Take `⟨h, e, sq⟩` from `exists_isPullback_restrict o.t.G (φ := pullback.fst o.t.G.hom y) (f' := pullback.snd o.t.G.hom y) (g := g) (by rw [hg]; exact IsPullback.of_hasPullback _ _)`. Use `choose b' hb' _ using fun i => existsUnique_secScal hLB (φ := fun _ : Fin N => (o.t.G.hom ⁻¹ᵁ U).ι) (ε := fun _ => 1) (h := h) (formEq_const (K' := Fin 1) (ε' := fun _ => (N : ℤ)) e (by simp)) (b i)`.
+
+Establish `span` using `hb _ _ h _ g sq (Fin 1) (fun _ => (N : ℤ)) _ e (by simp) b' hb'`. Use `choose f hf hf' using fun i => Φ.span N (b' i)`. Establish `hfib : ∀ v, fib (Φ.x v) ≫ pullback.fst o.t.G.hom y = (Φ.x v).left` using `fun v => pullback.lift_fst _ _ _`. Establish `val : ∀ i v (x' : Sp ℂ⸨X⸩ ⟶ (o.t.G.hom ⁻¹ᵁ U).toScheme) (j : o.t.PP.L.ι), x' ≫ (o.t.G.hom ⁻¹ᵁ U).ι = (Φ.x v).left → ⊤ ≤ (Φ.x v).left ⁻¹ᵁ o.t.PP.L.U j → valR x' ((Out.powOver o.t.G o.t.PP.L U N).U (fun _ => j)) ((b i).f (fun _ => j)) = f i v * Φ.τ v j ^ N` using `fun i v x' j hx hj => by`. Choose the witnesses or unpack the hypotheses as in `rfl : x' = fib (Φ.x v) ≫ h := by`.
+
+Rewrite using `[← cancel_mono (o.t.G.hom ⁻¹ᵁ U).ι, Category.assoc, e, hfib, hx]`. Rewrite `hj` using `[← hfib]`. Conclude with `(valR_of_secScal e (hb' i) _ j hj).trans (hf' i v j hj)`. Establish `chart : ∀ v, ∃ j, ⊤ ≤ (Φ.x v).left ⁻¹ᵁ o.t.PP.L.U j` using `fun v => by`. Take `⟨j, hj⟩` from `exists_chart hLB ((Φ.x v).left (default : PrimeSpectrum ℂ⸨X⸩))`.
+
+Conclude with `⟨j, top_le_of_mem _ _ hj⟩`. Establish `conv : ∀ i v, f i v ∈ Conv.convLaurent` using `fun i v => by`. Take `⟨x₀, hx₀⟩` from `hΦ.1 v`. Take `⟨j, hj⟩` from `chart v`. Establish `down : ∀ V, ⊤ ≤ (Φ.x v).left ⁻¹ᵁ V → ⊤ ≤ x₀ ⁻¹ᵁ V` using `fun V hV => by`.
+
+Rewrite `hV` using `[← hx₀]`. Conclude with `top_le_of_mem x₀ _ (hV (x := (default : PrimeSpectrum ℂ⸨X⸩)) trivial)`. Take `⟨x₁, rfl⟩` from `exists_lift x₀ (down (o.t.G.hom ⁻¹ᵁ U) (by`. Establish `w : (Φ.x v).left ≫ o.t.G.hom = y` using `Over.w (Φ.x v)`. Rewrite using `[← Scheme.Hom.comp_preimage, w]`.
+
+Conclude with `hy))`. Establish `h1` using `val i v _ j ((Category.assoc _ _ _).trans hx₀) hj`. Establish `hx₁ : ⊤ ≤ x₁ ⁻¹ᵁ (Out.powOver o.t.G o.t.PP.L U N).U (fun _ => j)` using `fun p _ => Set.mem_iInter.2 fun _ => down _ hj (x := p) trivial`. Use `replace h1 := (HolHom.valR_spMap _ x₁ _ hx₁ _).symm.trans h1`. Establish `h2 : Φ.τ v j ^ N ≠ 0` using `pow_ne_zero _ ((Φ.frm v).1 j hj).ne_zero`.
+
+Rewrite `h1` using `[← div_eq_iff h2]`. Rewrite using `[← h1]`. Conclude with `div_mem (Subtype.prop _) (pow_mem (hΦ.2 v j hj) _)`. Take `⟨T, hm, hc, hz⟩` from `exists_no_common_zero hA (by omega) hth hli hsp f (fun i => hrat _ (hf i) (conv i)) fun β t ht => by`. Take `⟨c, hc⟩` from `span (Φ.sig N β t)`.
+
+Use `⟨fun i => valR (𝟙 _) ⊤ (c i), fun v => ?_⟩` and prove the remaining obligations. Take `⟨j, hj⟩` from `chart v`. Establish `h2 : Φ.τ v j ^ N ≠ 0` using `pow_ne_zero _ ((Φ.frm v).1 j hj).ne_zero`. Rewrite `hj` using `[← hfib]`. Establish `hw : ⊤ ≤ fib (Φ.x v) ⁻¹ᵁ LB.wchart o.t.PP.L (fun _ : Fin 1 => pullback.fst o.t.G.hom y) (fun _ => j)` using `fun z hz => Set.mem_iInter.2 fun _ => hj hz`.
+
+Use `mul_right_cancel₀ h2 ((Φ.val N β t ht v j hj).symm.trans ?_)` and prove the remaining obligations. Use `(congrArg (valR (fib (Φ.x v)) _) (hc fun _ => j)).trans ((HolHom.valR_eq _ _ hw _).trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `(map_sum _ _ _).trans (Finset.sum_congr rfl fun i _ => (map_mul _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, ← hf' i v j hj]`.
+
+Use `congrArg₂ (· * ·) ?_ (HolHom.valR_eq _ _ hw _).symm` and prove the remaining obligations. Use `(HolHom.valR_eq _ _ hw _).symm.trans ((HolHom.valR_appLE _ _ ⊤ _ le_top _ hw).trans ?_)` and prove the remaining obligations. Rewrite using `[fib, pullback.lift_snd]`. Conclude with `⟨⟨T, U, hU, hy, m, b, emb, fun i v => ⟨f i v, hm i v⟩, hc, val, hz⟩⟩`.
+-/
 theorem nonempty_coords_of_basis (hL : Out.Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     [StarRing (𝓞 E)] {D : Datum H} {l : Level H} {B : Type} [CommRing B] {bb : Base l B} {S : Scheme.{0}}
     [IsLocallyNoetherian S] {s : S ⟶ Sp B} (o : Obj D l bb s) {A : AnArc (𝓞 E)} {y : Sp ℂ⸨X⸩ ⟶ S}
@@ -103,6 +132,9 @@ theorem nonempty_coords_of_basis (hL : Out.Laws) {E : Type} [Field E] [NumberFie
       rw [fib, pullback.lift_snd]
   exact ⟨⟨T, U, hU, hy, m, b, emb, fun i v => ⟨f i v, hm i v⟩, hc, val, hz⟩⟩
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H _ D l B _ bb S _ s o A y Φ hA hΦ N _ hN`. Take `⟨n, α, th, -, hth, hli, -, hsp⟩` from `AnArc.exists_basis_FSum _ A hA N`. Conclude with `nonempty_coords_of_basis hL o Φ hA hΦ N hN hth hli hsp (exists_isComb_halfRing _ A hA N)`.
+-/
 theorem nonempty_coords : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (B : Type) [CommRing B] (bb : Base l B) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp B) (o : Obj D l bb s) (A : AnArc (𝓞 E)) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A o.t y) , AnFin A → Φ.Rational → ∀ (N : ℕ) [NeZero N], 4 ≤ N → Nonempty (Coords Φ N) := by
   intro hL _ E _ _ _ H _ D l B _ bb S _ s o A y Φ hA hΦ N _ hN
   obtain ⟨n, α, th, -, hth, hli, -, hsp⟩ := AnArc.exists_basis_FSum _ A hA N

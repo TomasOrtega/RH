@@ -12,9 +12,15 @@ section pairing
 
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualOperators_apply (E : GLOps n K V) (a b : Fin n) (φ : Module.Dual K V) (x : V) :
     dualOps E a b φ x = -φ (E a b x) := rfl
 
+/- English proof (translation)
+Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ' (dualOps E a b), Module.End.mul_apply, dualOperators_apply, ih, pow_succ (E a b), Module.End.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_dualOperators_apply (E : GLOps n K V) (a b : Fin n) (k : ℕ) (φ : Module.Dual K V) (x : V) :
     ((dualOps E a b) ^ k) φ x = (-1 : K) ^ k * φ (((E a b) ^ k) x) := by
   induction k generalizing x with
@@ -23,16 +29,27 @@ theorem pow_dualOperators_apply (E : GLOps n K V) (a b : Fin n) (k : ℕ) (φ : 
     rw [pow_succ' (dualOps E a b), Module.End.mul_apply, dualOperators_apply, ih, pow_succ (E a b), Module.End.mul_apply]
     ring
 
+/- English proof (translation)
+Simplify using `only [divPowE, LinearMap.smul_apply, smul_eq_mul, pow_dualOperators_apply, map_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dividedPower_dualOperators_apply (E : GLOps n K V) (a b : Fin n) (k : ℕ) (φ : Module.Dual K V) (x : V) :
     divPowE (dualOps E) a b k φ x = (-1 : K) ^ k * φ (divPowE E a b k x) := by
   simp only [divPowE, LinearMap.smul_apply, smul_eq_mul, pow_dualOperators_apply, map_smul]
   ring
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_iInf _).1 hx a`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 private theorem wt_apply_lemma_3 {m : ℕ} {L W : Type*} [Field L] [AddCommGroup W] [Module L W] {E : GLOps m L W}
     {nu : Fin m → ℤ} {x : W} (hx : x ∈ weightSp E nu) (a : Fin m) : E a a x = (nu a : L) • x := by
   have h := (Submodule.mem_iInf _).1 hx a
   rwa [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero] at h
 
+/- English proof (translation)
+Proceed by induction on `k generalizing w with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Simplify using `only [List.range_succ, List.map_append, List.prod_append, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, _root_.mul_one]`. Rewrite using `[Module.End.mul_apply, ih, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hsub, hsmul, hD]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem prod_eval_lemma_2 {L W : Type*} [Field L] [AddCommGroup W] [Module L W] (D : Module.End L W)
     (ev : W → L) (hsub : ∀ w w', ev (w - w') = ev w - ev w') (hsmul : ∀ (c : L) w, ev (c • w) = c * ev w)
     (c : L) (hD : ∀ w, ev (D w) = c * ev w) (k : ℕ) (w : W) :
@@ -46,6 +63,11 @@ private theorem prod_eval_lemma_2 {L W : Type*} [Field L] [AddCommGroup W] [Modu
     rw [Module.End.mul_apply, ih, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, hsub, hsmul, hD]
     ring
 
+/- English proof (translation)
+Set `E' : GLOps 1 L L` to `fun _ _ => (m : L) • 1`. Establish `hw : (1 : L) ∈ weightSp E' (fun _ => m)`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `a`. Simplify using `[E']`.
+
+Establish `h1` using `binomial_diagonal_on_weight hw 0 k`. Establish `h2` using `prod_eval_lemma_2 (E' 0 0) id (fun _ _ => rfl) (fun _ _ => rfl) (m : L) (fun w => by simp [E']) k 1`. Simplify using `only [binomE, LinearMap.smul_apply, smul_eq_mul, id] at h1 h2`. Rewrite `h1` using `[h2]`. Simplify using `using h1`.
+-/
 private theorem binom_scalar_lemma {L : Type*} [Field L] [CharZero L] (m : ℤ) (k : ℕ) :
     (k.factorial : L)⁻¹ * ((List.range k).map fun j : ℕ => ((m : L) - j)).prod = ((Ring.choose m k : ℤ) : L) := by
   let E' : GLOps 1 L L := fun _ _ => (m : L) • 1
@@ -59,6 +81,11 @@ private theorem binom_scalar_lemma {L : Type*} [Field L] [CharZero L] (m : ℤ) 
   rw [h2] at h1
   simpa using h1
 
+/- English proof (translation)
+Establish `e` using `wt_apply_lemma_3 hx a`. Establish `hD : ∀ ψ : Module.Dual K V, (dualOps E a a ψ) x = ((-(nu a) : ℤ) : K) * ψ x`. Introduce `ψ`. Rewrite using `[dualOperators_apply, e, map_smul, smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `binomE`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, prod_eval_lemma_2 (dualOps E a a) (fun ψ => ψ x) (fun _ _ => LinearMap.sub_apply _ _ _) (fun _ _ => LinearMap.smul_apply _ _ _) _ hD k φ, ← mul_assoc, binom_scalar_lemma]`.
+-/
 theorem binomialDual_apply_weightVector [CharZero K] (E : GLOps n K V) (a : Fin n) (k : ℕ) (φ : Module.Dual K V) {nu : Fin n → ℤ}
     {x : V} (hx : x ∈ weightSp E nu) :
     binomE (dualOps E) a k φ x = ((Ring.choose (-(nu a)) k : ℤ) : K) * φ x := by
@@ -73,6 +100,13 @@ theorem binomialDual_apply_weightVector [CharZero K] (E : GLOps n K V) (a : Fin 
     prod_eval_lemma_2 (dualOps E a a) (fun ψ => ψ x) (fun _ _ => LinearMap.sub_apply _ _ _)
       (fun _ _ => LinearMap.smul_apply _ _ _) _ hD k φ, ← mul_assoc, binom_scalar_lemma]
 
+/- English proof (translation)
+Establish `e` using `wt_apply_lemma_3 hφ a`. Establish `hD : ∀ y, φ (E a a y) = ((-(nu a) : ℤ) : K) * φ y`. Introduce `y`. Establish `h` using `congrArg (fun ψ : Module.Dual K V => ψ y) e`. Simplify using `only [dualOperators_apply, LinearMap.smul_apply, smul_eq_mul] at h`.
+
+Rewrite `h` using `[neg_eq_iff_eq_neg]`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Unfold `binomE`.
+
+Rewrite using `[LinearMap.smul_apply, map_smul, smul_eq_mul, prod_eval_lemma_2 (E a a) φ (fun _ _ => map_sub _ _ _) (fun _ _ => map_smul _ _ _) _ hD k x, ← mul_assoc, binom_scalar_lemma]`.
+-/
 theorem apply_binomial_of_dual_weightVector [CharZero K] (E : GLOps n K V) (a : Fin n) (k : ℕ) {nu : Fin n → ℤ} {φ : Module.Dual K V}
     (hφ : φ ∈ weightSp (dualOps E) nu) (x : V) :
     φ (binomE E a k x) = ((Ring.choose (-(nu a)) k : ℤ) : K) * φ x := by
@@ -96,6 +130,13 @@ section weights
 
 variable {n : ℕ} {K V : Type*} [Field K] [CharZero K] [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, nu' a ≠ -nu a := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hne (funext fun a => by rw [h a, Pi.neg_apply])`. Establish `e1` using `wt_apply_lemma_3 hx a`.
+
+Establish `e2` using `wt_apply_lemma_3 hφ a`. Establish `e3` using `congrArg (fun ψ : Module.Dual K V => ψ x) e2`. Simplify using `only [dualOperators_apply, LinearMap.smul_apply, smul_eq_mul, e1, map_smul] at e3`. Establish `h4 : ((nu a + nu' a : ℤ) : K) * φ x = 0`. Use `push_cast`.
+
+Take the linear combination `-e3`. Break down `mul_eq_zero.1 h4 with h | h` into its components or cases. Conclude with `absurd h (Int.cast_ne_zero.2 (by omega))`. Conclude with `h`.
+-/
 theorem dual_weightVector_apply_eq_zero_of_ne_neg (E : GLOps n K V) {nu' nu : Fin n → ℤ} {φ : Module.Dual K V} {x : V}
     (hφ : φ ∈ weightSp (dualOps E) nu') (hx : x ∈ weightSp E nu) (hne : nu' ≠ -nu) : φ x = 0 := by
   obtain ⟨a, ha⟩ : ∃ a, nu' a ≠ -nu a := by
@@ -122,25 +163,54 @@ variable {n : ℕ} {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
 
 def Oval (O : Type*) [CommRing O] [IsDomain O] (c : KK O) : Prop := c ∈ Set.range (algebraMap O (KK O))
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`.
+-/
 theorem Oval.add {a b : KK O} (ha : Oval O a) (hb : Oval O b) : Oval O (a + b) := by
   obtain ⟨a, rfl⟩ := ha
   obtain ⟨b, rfl⟩ := hb
   exact ⟨a + b, map_add _ _ _⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a * b, map_mul _ _ _⟩`.
+-/
 theorem Oval.mul {a b : KK O} (ha : Oval O a) (hb : Oval O b) : Oval O (a * b) := by
   obtain ⟨a, rfl⟩ := ha
   obtain ⟨b, rfl⟩ := hb
   exact ⟨a * b, map_mul _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨z, map_intCast _ z⟩`.
+-/
 theorem Oval.int (z : ℤ) : Oval O ((z : ℤ) : KK O) := ⟨z, map_intCast _ z⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, map_zero _⟩`.
+-/
 theorem Oval.zero : Oval O (0 : KK O) := ⟨0, map_zero _⟩
 
+/- English proof (translation)
+Conclude with `Finset.sum_induction f (Oval O) (fun _ _ => Oval.add) Oval.zero h`.
+-/
 theorem Oval.sum {ι : Type*} (s : Finset ι) (f : ι → KK O) (h : ∀ i ∈ s, Oval O (f i)) : Oval O (∑ i ∈ s, f i) := by
   exact Finset.sum_induction f (Oval O) (fun _ _ => Oval.add) Oval.zero h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(-1) ^ k, by simp⟩`.
+-/
 theorem Oval.negOnePow (k : ℕ) : Oval O ((-1 : KK O) ^ k) := ⟨(-1) ^ k, by simp⟩
 
+/- English proof (translation)
+Establish `hx' : x ∈ ⨆ mu, ⨆ (_ : True), weightSp E mu`. Rewrite using `[show (⨆ mu, ⨆ (_ : True), weightSp E mu) = ⨆ mu, weightSp E mu by simp, hE]`. Conclude with `Submodule.mem_top`. Take `⟨F, f, hf, rfl⟩` from `mem_weight_sup_exists_finset_sum E (fun _ => True) hx'`. Take `⟨P, hPM, hP1, hP0⟩` from `exists_integral_weight_projections E F`.
+
+Establish `hcomp : ∀ nu ∈ F, P nu (∑ mu ∈ F, f mu) = f nu`. Introduce `nu hnu`. Rewrite using `[map_sum, Finset.sum_eq_single nu]`. Conclude with `hP1 nu _ (hf nu hnu).2`. Introduce `mu hmu hne`.
+
+Conclude with `hP0 nu mu hmu hne _ (hf mu hmu).2`. Introduce `h`. Conclude with `absurd hnu h`. Set `g : (Fin n → ℤ) →₀ V` to `Finsupp.onFinset F (fun mu => if mu ∈ F then f mu else 0) (by intro a ha; by_contra h; exact ha (if_neg h))`. Use `⟨g, fun nu => ?_, fun nu => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [g, Finsupp.onFinset_apply] split_ifs with h`. Conclude with `(hf nu h).2`. Conclude with `Submodule.zero_mem _`. Simplify using `only [g, Finsupp.onFinset_apply] split_ifs with h`. Rewrite using `[← hcomp nu h]`.
+
+Conclude with `hPM nu M hM _ hx`. Conclude with `Submodule.zero_mem _`. Use `show _ = g.sum fun _ v => v`. Rewrite using `[Finsupp.onFinset_sum _ (fun _ => rfl)]`. Conclude with `Finset.sum_congr rfl fun mu hmu => (if_pos hmu).symm`.
+-/
 theorem stableLattice_weight_decomposition [CharZero (KK O)] (E : GLOps n (KK O) V) (hE : (⨆ mu : Fin n → ℤ, weightSp E mu) = ⊤)
     (M : Submodule O V) (hM : UZStable (O := O) E M) {x : V} (hx : x ∈ M) :
     ∃ f : (Fin n → ℤ) →₀ V, (∀ nu, f nu ∈ weightSp E nu) ∧ (∀ nu, f nu ∈ M) ∧ x = ∑ nu ∈ f.support, f nu := by
@@ -174,6 +244,15 @@ theorem stableLattice_weight_decomposition [CharZero (KK O)] (E : GLOps n (KK O)
     rw [Finsupp.onFinset_sum _ (fun _ => rfl)]
     exact Finset.sum_congr rfl fun mu hmu => (if_pos hmu).symm
 
+/- English proof (translation)
+Unfold `UZmon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Introduce `ψ hψ x hx`.
+
+Rewrite using `[dividedPower_dualOperators_apply]`. Conclude with `Oval.mul (Oval.negOnePow k) (hψ _ (hM _ (Or.inl ⟨a, b, k, hab, rfl⟩) x hx))`. Introduce `ψ hψ x hx`. Take `⟨f, hfw, hfM, rfl⟩` from `stableLattice_weight_decomposition E hE M hM hx`. Rewrite using `[map_sum]`.
+
+Conclude with `Oval.sum _ _ fun nu _ => by`. Rewrite using `[binomialDual_apply_weightVector E a k ψ (hfw nu)]`. Conclude with `Oval.mul (Oval.int _) (hψ _ (hfM nu))`. Consider the case `one`. Introduce `ψ hψ x hx`.
+
+Conclude with `hψ x hx`. Consider the case `mul u v _ _ ihu ihv`. Introduce `ψ hψ x hx`. Conclude with `ihu (v ψ) (ihv ψ hψ) x hx`.
+-/
 theorem integral_dual_preserved_by_integralMonoid [CharZero (KK O)] (E : GLOps n (KK O) V) (hE : (⨆ mu : Fin n → ℤ, weightSp E mu) = ⊤)
     (M : Submodule O V) (hM : UZStable (O := O) E M) {u' : Module.End (KK O) (Module.Dual (KK O) V)}
     (hu : u' ∈ UZmon (dualOps E)) :
@@ -198,6 +277,21 @@ theorem integral_dual_preserved_by_integralMonoid [CharZero (KK O)] (E : GLOps n
     intro ψ hψ x hx
     exact ihu (v ψ) (ihv ψ hψ) x hx
 
+/- English proof (translation)
+Unfold `UZmon at hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem u hu`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Introduce `ψ hψ`.
+
+Establish `h1 : divPowE (dualOps E) a b k ψ ∈ M'` using `hM' _ (Or.inl ⟨a, b, k, hab, rfl⟩) ψ hψ`. Establish `h2 : ψ ∘ₗ divPowE E a b k = (-1 : KK O) ^ k • divPowE (dualOps E) a b k ψ`. Use extensionality with `y`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul, dividedPower_dualOperators_apply]`. Rewrite using `[← mul_assoc, ← mul_pow]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h2]`. Break down `neg_one_pow_eq_or (KK O) k with h | h` into its components or cases. Rewrite using `[h, one_smul]`. Conclude with `h1`.
+
+Rewrite using `[h, neg_one_smul]`. Conclude with `M'.neg_mem h1`. Introduce `ψ hψ`. Take `⟨f, hfw, hfM, rfl⟩` from `stableLattice_weight_decomposition (dualOps E) hE' M' hM' hψ`. Establish `h3 : (∑ nu ∈ f.support, f nu) ∘ₗ binomE E a k = ∑ nu ∈ f.support, (Ring.choose (-(nu a)) k : ℤ) • f nu`.
+
+Use extensionality with `y`. Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun nu _ => ?_` and prove the remaining obligations. Rewrite using `[apply_binomial_of_dual_weightVector E a k (hfw nu) y, ← Int.cast_smul_eq_zsmul (KK O), LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[h3]`.
+
+Conclude with `Submodule.sum_mem _ fun nu _ => zsmul_mem (hfM nu) _`. Consider the case `one`. Introduce `ψ hψ`. Rewrite using `[Module.End.one_eq_id, LinearMap.comp_id]`. Conclude with `hψ`.
+
+Consider the case `mul u v _ _ ihu ihv`. Introduce `ψ hψ`. Rewrite using `[Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `ihv _ (ihu ψ hψ)`.
+-/
 theorem dualLattice_comp_integralMonoid_mem [CharZero (KK O)] (E : GLOps n (KK O) V)
     (hE' : (⨆ mu : Fin n → ℤ, weightSp (dualOps E) mu) = ⊤)
     (M' : Submodule O (Module.Dual (KK O) V)) (hM' : UZStable (O := O) (dualOps E) M')

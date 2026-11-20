@@ -21,19 +21,49 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 namespace PositivityTheory.Rg.Rsw.Kplug
 
+/- English proof (translation)
+The claim follows from `residue_vanishes_of_siegel_eisenstein`.
+-/
 theorem resKilled_of_leaves : K0 → K1 → K2 → SimplePoleRescaling → ContinuousInvariantCoefficients → KillingPolyConst → ContinuationThroughChart → K4 →
     GlobalTheory.Published.SiegelEisensteinContinuation → PositivityTheory.Rg.Rsw.ResCore → ResidueVanishing :=
   residue_vanishes_of_siegel_eisenstein
 
+/- English proof (translation)
+The claim follows from `mem_section_space`.
+-/
 theorem k0 : K0 := mem_section_space
+/- English proof (translation)
+The claim follows from `local_representation_smoothness`.
+-/
 theorem k1 : K1 := local_representation_smoothness
+/- English proof (translation)
+The claim follows from `continuation_pole_order`.
+-/
 theorem k2 : K2 := continuation_pole_order
+/- English proof (translation)
+The claim follows from `simple_pole_rescaling`.
+-/
 theorem k2b : SimplePoleRescaling := simple_pole_rescaling
+/- English proof (translation)
+The claim follows from `continuous_invariant_coefficients`.
+-/
 theorem k2c : ContinuousInvariantCoefficients := continuous_invariant_coefficients
+/- English proof (translation)
+The claim follows from `continuation_chart_defined`.
+-/
 theorem k3a : KillingPolyConst := continuation_chart_defined
+/- English proof (translation)
+The claim follows from `continuation_through_chart`.
+-/
 theorem k3b : ContinuationThroughChart := continuation_through_chart
+/- English proof (translation)
+The claim follows from `theta_continuation`.
+-/
 theorem k4 : K4 := theta_continuation
 
+/- English proof (translation)
+The claim follows from `resKilled_of_leaves k0 k1 k2 k2b k2c k3a k3b k4`.
+-/
 theorem res_killed' : GlobalTheory.Published.SiegelEisensteinContinuation → PositivityTheory.Rg.Rsw.ResCore → ResidueVanishing :=
   resKilled_of_leaves k0 k1 k2 k2b k2c k3a k3b k4
 

@@ -22,16 +22,25 @@ variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+
 def CopyTw.cm (h : CopyTw D D' ι e) (j : Fin D.R.m) : Fin D'.R.m :=
   Fin.cast (congrArg Ranks.m h.gal.R) j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem CopyTw.cm_val (h : CopyTw D D' ι e) (j : Fin D.R.m) : ((h.cm j : Fin D'.R.m) : ℕ) = j := rfl
 
 abbrev SameSetup (ρ : Setup D.ntw) (ρ' : Setup D'.ntw) : Prop := SameData ρ ρ'
 
+/- English proof (translation)
+The claim follows from `SameData.refl ρ`.
+-/
 theorem SameSetup.refl (ρ : Setup D.ntw) : SameSetup ρ ρ := SameData.refl ρ
 
 def RdRel (h : CopyTw D D' ι e) {ρ : Setup D.ntw} {ρ' : Setup D'.ntw} (rd : Rds D.nexp ρ) (rd' : Rds D'.nexp ρ') : Prop :=
   ∀ (i : D.ntw.Tw) (i' : D'.ntw.Tw) (hi : HEq i i') (j : Fin D.R.m) (b : Bool) (f : D.nexp.Fm i ((j : ℕ) + 1) b),
     HEq (rd' i' (h.cm j) b (h.fmCast hi ((j : ℕ) + 1) b f)) (rd i j b f)
 
+/- English proof (translation)
+Introduce `i i' hi j b f` and use `by cases hi; exact HEq.rfl`.
+-/
 theorem RdRel.refl (D : D7) {ρ : Setup D.ntw} (rd : Rds D.nexp ρ) : RdRel (CopyTw.refl D) rd rd := fun i i' hi j b f => by
   cases hi; exact HEq.rfl
 

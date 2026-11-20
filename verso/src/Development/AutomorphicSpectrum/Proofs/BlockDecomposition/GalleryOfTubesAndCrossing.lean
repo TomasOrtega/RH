@@ -15,14 +15,27 @@ section Help
 variable {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGroup W]
   [NormedSpace ℂ W]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.mono fun _ hz => lt_of_lt_of_le hz h, fun b c hc => hf.2 b c (lt_of_lt_of_le hc h)⟩`.
+-/
 lemma LeftGood_mono {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] {f : ℂ → X} {a a' : ℝ}
     (hf : LeftGood f a) (h : a' ≤ a) : LeftGood f a' :=
   ⟨hf.1.mono fun _ hz => lt_of_lt_of_le hz h, fun b c hc => hf.2 b c (lt_of_lt_of_le hc h)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun p hp g => h.left p (hPQ hp) g, h.right, fun γ hγ hp => h.rat γ hγ (hPQ hp), h.cont⟩`.
+-/
 lemma IsHt_restrict {Γ K P Q : Subgroup G} {η : G → ℝ} (h : IsHt Γ K Q η) (hPQ : P ≤ Q) :
     IsHt Γ K P η :=
   ⟨fun p hp g => h.left p (hPQ hp) g, h.right, fun γ hγ hp => h.rat γ hγ (hPQ hp), h.cont⟩
 
+/- English proof (translation)
+Establish `he : η = fun g => s * η₁ g + t * η₂ g` using `funext e`. Substitute `he` using the available equality. Use `⟨fun p hp g => ?_, fun g k hk => ?_, fun γ hγ hp => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [h₁.left p hp g, h₂.left p hp g]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h₁.right g k hk, h₂.right g k hk]`. Simplify using `only [h₁.rat γ hγ hp, h₂.rat γ hγ hp]`. Expand and normalize the polynomial expressions, which then agree. Establish `c₁` using `h₁.cont`. Establish `c₂` using `h₂.cont`.
+
+Use `fun_prop`.
+-/
 lemma IsHt_lin {Γ K P : Subgroup G} {η₁ η₂ η : G → ℝ} (h₁ : IsHt Γ K P η₁) (h₂ : IsHt Γ K P η₂)
     (s t : ℝ) (e : ∀ g, η g = s * η₁ g + t * η₂ g) : IsHt Γ K P η := by
   have he : η = fun g => s * η₁ g + t * η₂ g := funext e
@@ -35,6 +48,9 @@ lemma IsHt_lin {Γ K P : Subgroup G} {η₁ η₂ η : G → ℝ} (h₁ : IsHt �
     have c₂ := h₂.cont
     fun_prop
 
+/- English proof (translation)
+Establish `he : Λ = Λ'` using `funext e`. Rewrite using `[hs, he]`.
+-/
 lemma eis_congr {Γ K P : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[ℂ] W)} {Λ Λ' : G → ℂ} {s s' : ℂ}
     (g : G) (w : W) (hs : s = s') (e : ∀ x, Λ x = Λ' x) :
     s • eis Γ K P c ρ Λ g w = s' • eis Γ K P c ρ Λ' g w := by
@@ -43,6 +59,11 @@ lemma eis_congr {Γ K P : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[ℂ] 
 
 variable [CompleteSpace W]
 
+/- English proof (translation)
+Rewrite using `[outer_apply h H (0, z) g hs w]`. Simplify using `only [hH]`. Rewrite using `[tsum_cos_inf Γ S fun u => Complex.exp (z * h (u * g)) • a₀ • sec K S c ρ (u * g) w]`. Simplify using `only [eis]`. Rewrite using `[← tsum_const_smul'' a₀]`.
+
+Use `congr 1`. Use extensionality with `q`. Rewrite using `[smul_comm]`.
+-/
 lemma series_first {Γ K S : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[ℂ] W)} {h : G → ℝ}
     {H : ℂ → G → (secSp K S c ρ) →L[ℂ] W} {a₀ : ℂ}
     (hH : ∀ g (w : secSp K S c ρ), H 0 g w = a₀ • sec K S c ρ g w) (z : ℂ) (g : G)
@@ -58,6 +79,11 @@ lemma series_first {Γ K S : Subgroup G} {c : G → ℂ} {ρ : K →* (W →L[�
   ext q
   rw [smul_comm]
 
+/- English proof (translation)
+Rewrite using `[outer_apply h H (N, u) g hs w]`. Simplify using `only [hT]`. Rewrite using `[tsum_cos_inf Γ S fun v => Complex.exp (u * h (v * g)) • Complex.exp (h (v * g)) • sec K S c ρ (v * g) (T w)]`. Simplify using `only [eis]`. Use `congr 1`.
+
+Use extensionality with `q`. Rewrite using `[smul_smul, ← Complex.exp_add, add_comm]`.
+-/
 lemma series_last {Γ K S : Subgroup G} {L : Type} [NormedAddCommGroup L] [NormedSpace ℂ L]
     {c : G → ℂ} {ρ : K →* (W →L[ℂ] W)} {h : G → ℝ}
     {H : ℂ → G → L →L[ℂ] W} {N : ℂ} {T : L →L[ℂ] secSp K S c ρ}
@@ -80,41 +106,159 @@ section Re
 
 variable (N : ℝ) (l : ℂ × ℂ)
 
+/- English proof (translation)
+Simplify using `[chg, aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma mc_re₁ : (mc N l).1.re = l.1.re + l.2.re + 1 - N := by
   simp [chg, aff]; ring
+/- English proof (translation)
+Simplify using `[chg, aff]`.
+-/
 lemma mc_re₂ : (mc N l).2.re = l.2.re + 1 := by simp [chg, aff]
+/- English proof (translation)
+Simplify using `[chg, aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ma_re₁ : (ma N l).1.re = l.1.re + 2 * l.2.re + 1 - N := by
   simp [chg, aff]; ring
+/- English proof (translation)
+Simplify using `[chg, aff]`.
+-/
 lemma ma_re₂ : (ma N l).2.re = l.2.re + 1 := by simp [chg, aff]
+/- English proof (translation)
+Simplify using `[chg, aff]`.
+-/
 lemma mb_fst : (mb N l).1 = l.2 := by simp [chg, aff]
+/- English proof (translation)
+Simplify using `[chg, aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma mb_re₂ : (mb N l).2.re = 2 * N - 1 - l.1.re - l.2.re := by
   simp [chg, aff]; ring
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma ml_fst : (ml N l).1 = nz N l := rfl
+/- English proof (translation)
+Simplify using `[aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma nz_eq : nz N l = N - l.1 := by simp [aff]; ring
+/- English proof (translation)
+Simplify using `[chg, aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ml_re₁ : (ml N l).1.re = N - l.1.re := by simp [chg, aff]; ring
+/- English proof (translation)
+Simplify using `[chg, aff]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma ml_re₂ : (ml N l).2.re = N - 1 - l.2.re := by simp [chg, aff]; ring
 
 end Re
 
+/- English proof (translation)
+The claim follows from `(open_convex2 (-1) 1 0 1 1 0 r fun x => by simp only [coneC, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+-/
 lemma isOpen_coneC (r : ℝ) : IsOpen (coneC r) :=
   (open_convex2 (-1) 1 0 1 1 0 r fun x => by
     simp only [coneC, affR, Set.mem_setOf_eq]
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
+/- English proof (translation)
+The claim follows from `(open_convex2 (-1) 1 0 0 1 0 r fun x => by simp only [coneA, affR, Set.mem_setOf_eq] constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1`.
+-/
 lemma isOpen_coneA (r : ℝ) : IsOpen (coneA r) :=
   (open_convex2 (-1) 1 0 0 1 0 r fun x => by
     simp only [coneA, affR, Set.mem_setOf_eq]
     constructor <;> rintro ⟨h₁, h₂⟩ <;> constructor <;> linarith).1
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma tube_coneI_iff {r : ℝ} {m : ℂ × ℂ} : m ∈ tube (coneI r) ↔ r < m.2.re ∧ r < m.2.re + m.1.re :=
   Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma tube_coneC_iff {r : ℝ} {m : ℂ × ℂ} :
     m ∈ tube (coneC r) ↔ r < m.2.re - m.1.re ∧ r < m.2.re + m.1.re := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma tube_coneA_iff {r : ℝ} {m : ℂ × ℂ} : m ∈ tube (coneA r) ↔ r < m.2.re - m.1.re ∧ r < m.2.re :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hId hTC hCross G _ _ _ _ _ W _ _ _ K ρ hK hρ hFC Γ S A B Q₁ Q₂ c h a b N hAS hBS hAQ hBQ pS pA pB hS hQa hQb hconv hFirst hWc hWa hWb hLast`. Use `haveI := hFC`. Use `haveI : CompleteSpace W := FiniteDimensional.complete ℂ W`. Take `⟨Rv, cS, cA, cB⟩` from `hconv`. Take `⟨R₀, D₀, Op₀, H₀, W₀, ⟨a₀, ha₀, hH₀⟩, O, hO, hOp⟩` from `hFirst`.
+
+Take `⟨Rc, Dc, Opc, Hc, Wc⟩` from `hWc`. Take `⟨Ra, Da, Opa, Ha, Wa⟩` from `hWa`. Take `⟨Rb, Db, Opb, Hb, Wb⟩` from `hWb`. Take `⟨Rl, Dl, Opl, Hl, Wl, ⟨d, hd, hdN, hDl⟩, T, hT⟩` from `hLast`. Establish `p₀` using `W₀.pos`.
+
+Establish `pc` using `Wc.pos`. Establish `pa` using `Wa.pos`. Establish `pb` using `Wb.pos`. Establish `pl` using `Wl.pos`. Take `⟨R, hRdef⟩ : ∃ R, R = |Rv| + R₀ + Rc + Ra + Rb + Rl + |N| + 1` from `⟨_, rfl⟩`.
+
+Establish `hv₁` using `abs_nonneg Rv`. Establish `hv₂` using `le_abs_self Rv`. Establish `hv₃` using `abs_nonneg N`. Establish `hN : |N| + 1 ≤ R` using `by linarith`. Establish `hRv : Rv ≤ R` using `by linarith`.
+
+Establish `h₀ : R₀ ≤ R` using `by linarith`. Establish `hc : Rc ≤ R` using `by linarith`. Establish `ha : Ra ≤ R` using `by linarith`. Establish `hb : Rb ≤ R` using `by linarith`. Establish `hl : Rl ≤ R` using `by linarith`.
+
+Establish `hN'` using `abs_le.1 (show |N| ≤ R - 1 by linarith)`. Establish `hN₁` using `hN'.1`. Establish `hN₂` using `hN'.2`. Establish `hR1 : 1 ≤ R` using `by linarith`. Establish `hAa` using `IsHt_restrict hQa hAQ`.
+
+Establish `hAh` using `IsHt_restrict hS hAS`. Establish `hBhb` using `IsHt_restrict hQb hBQ`. Establish `hBh` using `IsHt_restrict hS hBS`. Establish `hBb : IsHt Γ K B b` using `IsHt_lin hBhb hBh 1 (-1) fun g => by ring`. Establish `hBβ : IsHt Γ K B fun g => h g + N * b g` using `IsHt_lin hBh hBb 1 N fun g => by ring`.
+
+Establish `hBn : IsHt Γ K B fun g => -b g` using `IsHt_lin hBb hBb (-1) 0 fun g => by ring`. Establish `hAβ : IsHt Γ K A fun g => N * a g - h g` using `IsHt_lin hAa hAh N (-1) fun g => by ring`. Establish `hAd : IsHt Γ K A fun g => h g - a g` using `IsHt_lin hAh hAa 1 (-1) fun g => by ring`. Establish `hAe : IsHt Γ K A fun g => (N - 1) * (h g - a g)` using `IsHt_lin hAd hAd (N - 1) 0 fun g => by ring`. Establish `cA' : ∀ z y : ℝ, R < z → R < y → Conv Γ A fun g => z * a g + y * h g` using `fun z y h₁ h₂ => cA z y (by linarith) (by linarith)`.
+
+Establish `cB' : ∀ r y : ℝ, R < r → R < y → Conv Γ B fun g => r * (h g + b g) + y * h g` using `fun z y h₁ h₂ => cB z y (by linarith) (by linarith)`. Take `⟨g₀, s₀, -, l₀⟩` from `hCross G W K ρ hK hρ Γ S A B c a b (fun g => h g + N * b g) h _ R₀ D₀ Op₀ H₀ (coneI (10 * R)) hAS hBS pA pB hAa hBb hBβ hS W₀ (oc_coneI _).1 (cond_first hN h₀ cA' cB')`. Take `⟨gc, -, rc, lc⟩` from `hCross G W K ρ hK hρ Γ Q₂ B B c (fun g => -b g) (fun g => -b g) (fun g => -b g) (fun g => h g + b g) _ Rc Dc Opc Hc (coneC (10 * R)) hBQ hBQ pB pB hBn hBn hBn hQb Wc (isOpen_coneC _) (cond_c hN hc cB')`. Take `⟨ga, -, ra, la⟩` from `hCross G W K ρ hK hρ Γ S B A c b a (fun g => N * a g - h g) h _ Ra Da Opa Ha (coneA (10 * R)) hBS hAS pB pA hBb hAa hAβ hS Wa (isOpen_coneA _) (cond_a hN ha cA' cB')`. Take `⟨gb, -, rb, lb⟩` from `hCross G W K ρ hK hρ Γ Q₁ A A c (fun g => h g - a g) (fun g => h g - a g) (fun g => (N - 1) * (h g - a g)) a _ Rb Db Opb Hb (coneC (10 * R)) hAQ hAQ pA pA hAd hAd hAe hQa Wb (isOpen_coneC _) (cond_b hN hb cA')`.
+
+Take `⟨gl, sl, rl, -⟩` from `hCross G W K ρ hK hρ Γ S A B c a b (fun g => h g + N * b g) h _ Rl Dl Opl Hl (coneI (10 * R)) hAS hBS pA pB hAa hBb hBβ hS Wl (oc_coneI _).1 (cond_first hN hl cA' cB')`. Establish `J₀ : ∀ l ∈ tube (chamberPairOneTwo (100 * R)), ∀ g, Dc (yv N l) • outer Γ (Γ ⊓ S) h H₀ l g = (outer Γ (Γ ⊓ Q₂) (fun g => h g + b g) Hc (mc N l) g).comp (Op₀ l.1)`. Introduce `l hl g`. Establish `hl' : l.1.re < -(100 * R) ∧ 100 * R < l.1.re + l.2.re` using `hl`. Take `⟨x₁, x₂⟩` from `hl'`.
+
+Establish `t₁ : l ∈ tube (coneI (10 * R))` using `tube_coneI_iff.2 ⟨by linarith, by linarith⟩`. Establish `t₂ : mc N l ∈ tube (coneC (10 * R))` using `tube_coneC_iff.2 (by`. Apply the tactic sequence `rw [mc_re₁, mc_re₂]; constructor <;> linarith)`. Establish `cv` using `cB' (N - l.1.re) (l.1.re + l.2.re + 1 - N) (by linarith) (by linarith)`. Establish `e₁` using `l₀ l t₁ (by linarith) (conv_congr cv fun x => by ring) g`.
+
+Establish `e₂` using `rc (mc N l) t₂ (by rw [mc_re₁]; linarith) (conv_congr cv fun x => by rw [mc_re₁, mc_re₂]; ring) g`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[e₁, e₂]`. Conclude with `eis_congr g _ rfl fun x => by simp only [chg, aff]; push_cast; ring`.
+
+Establish `J₁ : ∀ l ∈ tube (chamberPairTwoThree (100 * R)), ∀ g, Da (zv N l) • outer Γ (Γ ⊓ Q₂) (fun g => h g + b g) Hc (mc N l) g = (outer Γ (Γ ⊓ S) h Ha (ma N l) g).comp (Opc (yv N l))`. Introduce `l hl g`. Establish `hl' : l.1.re + l.2.re < -(100 * R) ∧ 100 * R < l.1.re + 2 * l.2.re` using `hl`. Take `⟨x₁, x₂⟩` from `hl'`. Establish `t₁ : mc N l ∈ tube (coneC (10 * R))` using `tube_coneC_iff.2 (by`.
+
+Apply the tactic sequence `rw [mc_re₁, mc_re₂]; constructor <;> linarith)`. Establish `t₂ : ma N l ∈ tube (coneA (10 * R))` using `tube_coneA_iff.2 (by`. Apply the tactic sequence `rw [ma_re₁, ma_re₂]; constructor <;> linarith)`. Establish `cv` using `cB' (l.1.re + 2 * l.2.re + 1 - N) (N - l.1.re - l.2.re) (by linarith) (by linarith)`. Establish `e₁` using `lc (mc N l) t₁ (by rw [mc_re₁]; linarith) (conv_congr cv fun x => by rw [mc_re₁, mc_re₂]; ring) g`.
+
+Establish `e₂` using `ra (ma N l) t₂ (by rw [ma_re₁]; linarith) (conv_congr cv fun x => by rw [ma_re₁, ma_re₂]; ring) g`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[e₁, e₂]`. Conclude with `eis_congr g _ rfl fun x => by simp only [chg, aff]; push_cast; ring`.
+
+Establish `J₂ : ∀ l ∈ tube (chamberPairThreeFour (100 * R)), ∀ g, Db l.2 • outer Γ (Γ ⊓ S) h Ha (ma N l) g = (outer Γ (Γ ⊓ Q₁) a Hb (mb N l) g).comp (Opa (zv N l))`. Introduce `l hl g`. Establish `hl' : l.1.re + 2 * l.2.re < -(100 * R) ∧ 100 * R < l.2.re` using `hl`. Take `⟨x₁, x₂⟩` from `hl'`. Establish `t₁ : ma N l ∈ tube (coneA (10 * R))` using `tube_coneA_iff.2 (by`.
+
+Apply the tactic sequence `rw [ma_re₁, ma_re₂]; constructor <;> linarith)`. Establish `t₂ : mb N l ∈ tube (coneC (10 * R))` using `tube_coneC_iff.2 (by`. Apply the tactic sequence `rw [mb_fst, mb_re₂]; constructor <;> linarith)`. Establish `cv` using `cA' (N - (l.1.re + 2 * l.2.re + 1 - N)) l.2.re (by linarith) (by linarith)`. Establish `e₁` using `la (ma N l) t₁ (by rw [ma_re₁]; linarith) (conv_congr cv fun x => by rw [ma_re₁, ma_re₂]; ring) g`.
+
+Establish `e₂` using `rb (mb N l) t₂ (by rw [mb_fst]; linarith) (conv_congr cv fun x => by rw [mb_fst, mb_re₂]; ring) g`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[e₁, e₂]`. Conclude with `eis_congr g _ (by rw [mb_fst]) fun x => by simp only [chg, aff]; push_cast; ring`.
+
+Establish `J₃ : ∀ l ∈ tube (chamberPairFourLast (100 * R)), ∀ g, (-d (nz N l)) • (outer Γ (Γ ⊓ Q₁) a Hb (mb N l) g).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (Op₀ l.1))) = (outer Γ (Γ ⊓ S) h Hl (ml N l) g).comp ((Opb l.2).comp ((Opa (zv N l)).comp ((Opc (yv N l)).comp (O l.1))))`. Introduce `l hl g`. Establish `hl' : l.2.re < -(100 * R) ∧ l.1.re < -(100 * R)` using `hl`. Take `⟨x₁, x₂⟩` from `hl'`. Establish `t₁ : mb N l ∈ tube (coneC (10 * R))` using `tube_coneC_iff.2 (by`.
+
+Apply the tactic sequence `rw [mb_fst, mb_re₂]; constructor <;> linarith)`. Establish `t₂ : ml N l ∈ tube (coneI (10 * R))` using `tube_coneI_iff.2 (by`. Apply the tactic sequence `rw [ml_re₁, ml_re₂]; constructor <;> linarith)`. Establish `cv` using `cA' (N - l.1.re) (N - 1 - l.2.re) (by linarith) (by linarith)`. Establish `hz` using `hOp l.1 (by linarith)`.
+
+Establish `e₁` using `lb (mb N l) t₁ (by rw [mb_fst]; linarith) (conv_congr cv fun x => by rw [mb_fst, mb_re₂]; ring) g`. Establish `e₂` using `rl (ml N l) t₂ (by rw [ml_re₁]; linarith) (conv_congr cv fun x => by rw [ml_re₁, ml_re₂]) g`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`. Rewrite using `[hz]`.
+
+Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Rewrite using `[e₁, e₂, mb_fst, smul_smul, hDl]`. Conclude with `eis_congr g _ (by rw [ml_fst, nz_eq]; push_cast; ring) fun x => by simp only [chg, aff]; push_cast; ring`. Take `⟨Φ, hΦ, eR, eL⟩` from `core hId hTC N R hN g₀ gc ga gb gl Wc.dEnt Wa.dEnt Wb.dEnt hd (LeftGood_mono W₀.op (by linarith)) hO (LeftGood_mono Wc.op (by linarith)) (LeftGood_mono Wa.op (by linarith)) (LeftGood_mono Wb.op (by linarith)) J₀ J₁ J₂ J₃`. Establish `hdN' : d N ≠ 0` using `hdN`.
+
+Establish `hsl` using `slice_good hΦ`. Establish `hOpa' : LeftGood Opa (-R)` using `LeftGood_mono Wa.op (by linarith)`. Establish `hOpb' : LeftGood Opb (-R)` using `LeftGood_mono Wb.op (by linarith)`. Establish `hOpc' : LeftGood Opc (-R)` using `LeftGood_mono Wc.op (by linarith)`. Use `⟨20 * R, fun y => Complex.exp ((0 : ℂ) ^ 2 + y ^ 2) * (Dc (yv N (0, y)) * Da (zv N (0, y)) * Db y) * a₀, fun y => (Complex.exp ((0 : ℂ) ^ 2 + y ^ 2) * (-(d N)⁻¹)) • T.comp ((Opb y).comp ((Opa (aff 0 2 (1 - N) (0, y))).comp ((Opc (aff 0 1 (1 - N) (0, y))).comp (O 0)))), fun y g => …` and prove the remaining obligations.
+
+Use `{ le := le_rfl pos := by linarith convR := fun x hx => cS x (by linarith) convL := fun x hx => conv_congr (cS (N - x) (by linarith)) fun g => by ring dEnt := ?_ dNe := ?_ op := ?_ hol := hsl.1 cont := hsl.2.1 bdd := hsl.2.2 eqR := ?_ eqL := ?_ }` and prove the remaining obligations. Conclude with `stripEntire_of_fac (A := fun l => Complex.exp (l.1 ^ 2 + l.2 ^ 2) * (Dc (yv N l) * Da (zv N l) * Db l.2) * a₀) (Fac_mul (Fac_mul (Fac_exp _) (Fac_mul (Fac_mul (Fac_strip Wc.dEnt _ _ _ _) (Fac_strip Wa.dEnt _ _ _ _)) (Fac_strip_snd Wb.dEnt _))) (Fac_const _ _)) fun _ => rfl`. Establish `d₁ : Differentiable ℂ fun y : ℂ => Dc (yv N (0, y))` using `(stripEntire_of_fac (A := fun l => Dc (yv N l)) (Fac_strip Wc.dEnt _ _ _ _) fun _ => rfl).1`. Establish `d₂ : Differentiable ℂ fun y : ℂ => Da (zv N (0, y))` using `(stripEntire_of_fac (A := fun l => Da (zv N l)) (Fac_strip Wa.dEnt _ _ _ _) fun _ => rfl).1`. Take `⟨y₁, hy₁⟩` from `exists_ne_mul d₁ d₂ (exists_ne_aff Wc.dNe 1 1 (1 - N) one_ne_zero) (exists_ne_aff Wa.dNe 1 2 (1 - N) two_ne_zero)`.
+
+Take `⟨y, hy⟩` from `exists_ne_mul (f := fun y : ℂ => Dc (yv N (0, y)) * Da (zv N (0, y))) (d₁.mul d₂) Wb.dEnt.1 ⟨y₁, hy₁⟩ Wb.dNe`. Conclude with `⟨y, mul_ne_zero (mul_ne_zero (Complex.exp_ne_zero _) hy) ha₀⟩`. Use `leftGood_of_fac (A := fun l => (Complex.exp (l.1 ^ 2 + l.2 ^ 2) * (-(d N)⁻¹)) • T.comp ((Opb l.2).comp ((Opa (aff 0 2 (1 - N) l)).comp ((Opc (aff 0 1 (1 - N) l)).comp (O 0))))) ?_ fun _ => rfl` and prove the remaining obligations. Use `Fac_smul (Fac_mul (Fac_exp _) (Fac_const _ _)) (Fac_comp (Fac_const _ _) (Fac_comp (Fac_left_snd hOpb' fun x hx => ?_) (Fac_comp (Fac_left hOpa' _ _ _ fun x hx => ?_) (Fac_comp (Fac_left hOpc' _ _ _ fun x hx => ?_) (Fac_const _ _)))))` and prove the remaining obligations. Establish `: x.2 < -(20 * R)` using `hx`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `: x.2 < -(20 * R)` using `hx`. Simplify using `only [affR]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: x.2 < -(20 * R)` using `hx`.
+
+Simplify using `only [affR]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `z hz g w`. Apply the tactic sequence `have hm : ((0 : ℂ), z) ∈ tube (coneI (10 * R)) := tube_coneI_iff.2 (by simp only [Complex.zero_re, add_zero]; constructor <;> linarith)`. Establish `e₂` using `series_first hH₀ z g (s₀ (0, z) hm g) w`.
+
+Express the relevant statement in the definitionally equal form `Φ (0, z) g w = _`. Rewrite using `[eR (0, z) hm g]`. Simplify using `only [ContinuousLinearMap.smul_apply]`. Rewrite using `[e₂]`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `y hy g w`. Establish `hm : ((0 : ℂ), y) ∈ tube (Om4 N (10 * R))`. Use `mem_Om4.2 ⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show 10 * R < N - 1 - y.re`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show 10 * R < 2 * N - 1 - y.re - (0 : ℂ).re`. Simplify using `only [Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `show (0 : ℂ).re < 1 / 2`. Simplify using the standard rewrite rules. Establish `e` using `eL (0, y) hm g`. Establish `ez : nz N ((0 : ℂ), y) = N` using `by simp [aff]`. Establish `ez₁ : zv N ((0 : ℂ), y) = aff 0 2 (1 - N) (0, y)` using `by simp [aff]`.
+
+Establish `ez₂ : yv N ((0 : ℂ), y) = aff 0 1 (1 - N) (0, y)` using `by simp [aff]`. Take `⟨u, hu, hu'⟩ : ∃ u : ℂ, ml N ((0 : ℂ), y) = ((N : ℂ), u) ∧ u = N - 1 - y` from `⟨_, Prod.ext (by simp [chg, aff]) rfl, by simp [chg, aff]; ring⟩`. Establish `hm₂ : ml N ((0 : ℂ), y) ∈ tube (coneI (10 * R))` using `tube_coneI_iff.2 (by`. Rewrite using `[ml_re₁, ml_re₂]`. Simplify using `only [Complex.zero_re]`.
+
+Apply the tactic sequence `constructor <;> linarith)`. Establish `hs` using `sl _ hm₂ g`. Rewrite `hs`, `e` using `[hu]`. Rewrite `e` using `[ez, ez₁, ez₂]`. Use `set w' := (Opb y) ((Opa (aff 0 2 (1 - N) (0, y))) ((Opc (aff 0 1 (1 - N) (0, y))) (O 0 w))) with hw'`.
+
+Establish `e'` using `DFunLike.congr_fun e w`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply] at e'`. Rewrite `e'` using `[series_last hT u g hs w']`. Establish `hinv : (Φ (0, y) g) w = (-(d N))⁻¹ • ((-d N) • (Φ (0, y) g) w)`. Rewrite using `[smul_smul, inv_mul_cancel₀ (neg_ne_zero.2 hdN'), one_smul]`.
+
+Express the relevant statement in the definitionally equal form `(Φ (0, y) g) w = eis Γ K S c ρ (fun x => (N * h x : ℝ) - y * h x) g (((Complex.exp ((0 : ℂ) ^ 2 + y ^ 2) * (-(d N)⁻¹)) • T w' : secSp K S c ρ) : W)`. Rewrite using `[hinv, e', Submodule.coe_smul, eis_smul, smul_smul]`. Use `eis_congr g _ ?_ fun x => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[hu']`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gallery : SecLaw → IdTube → TubeChain → Cross → Gallery := by
   intro _ hId hTC hCross G _ _ _ _ _ W _ _ _ K ρ hK hρ hFC Γ S A B Q₁ Q₂ c h a b N hAS hBS hAQ hBQ
     pS pA pB hS hQa hQb hconv hFirst hWc hWa hWb hLast

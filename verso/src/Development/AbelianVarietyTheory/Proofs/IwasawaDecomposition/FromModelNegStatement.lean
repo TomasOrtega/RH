@@ -7,5 +7,8 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LineNorm MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LineNorm.Neg.fromModel_neg | exact GlobalTheory.LineNorm.Neg.fromModel_neg | (intros; apply GlobalTheory.LineNorm.Neg.fromModel_neg <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fromModel_neg' : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (Δ : Y.Dv) (t : Y.X → Y.Fnˣ) (φ : PtFn Y), (∀ y, Δ.IsEqn y (t y)) → FromModel Y Δ t φ → FromModel Y (-Δ) (fun y => (t y)⁻¹) (fun v e y => -φ v e y) := by
   first | exact @GlobalTheory.LineNorm.Neg.fromModel_neg | exact GlobalTheory.LineNorm.Neg.fromModel_neg | (intros; apply GlobalTheory.LineNorm.Neg.fromModel_neg <;> assumption)

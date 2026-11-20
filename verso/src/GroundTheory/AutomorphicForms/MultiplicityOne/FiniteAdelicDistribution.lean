@@ -18,6 +18,9 @@ def pullL {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_pullL {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y)
     (φ : locallyConstantCompactSupport Y ℂ ℂ) :
     ((pullL e φ : locallyConstantCompactSupport X ℂ ℂ) : X → ℂ) = (φ : Y → ℂ) ∘ e := rfl

@@ -14,6 +14,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def pLat (D : Datum H) (p : ℕ) : AddSubgroup D.La := (DistribMulAction.toAddMonoidHom D.La p).range
 
+/- English proof (translation)
+Simplify using `[pLat, eq_comm]`.
+-/
 theorem mem_pLat {D : Datum H} {p : ℕ} {a : D.La} : a ∈ pLat D p ↔ ∃ b, a = p • b := by
   simp [pLat, eq_comm]
 
@@ -28,11 +31,17 @@ variable {D : Datum H} {k : Type} [Field k] {Q : Type} [CommGroup Q] {act : 𝓞
 def evA (p : ℕ) : D.La →+ Additive Q :=
   AddMonoidHom.mk' (fun a => Additive.ofMul (I.ev p a)) fun a b => by rw [I.add]; rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[AddMonoidHom.mem_ker, mem_pLat, ← I.ker p hp a]`. Conclude with `ofMul_eq_zero`.
+-/
 theorem ker_evA {p : ℕ} (hp : 0 < p) : (evA I p).ker = pLat D p := by
   ext a
   rw [AddMonoidHom.mem_ker, mem_pLat, ← I.ker p hp a]
   exact ofMul_eq_zero
 
+/- English proof (translation)
+Rewrite using `[← ker_evA I hp, AddSubgroup.relIndex, AddSubgroup.addSubgroupOf, AddMonoidHom.comap_ker, AddSubgroup.index_ker, AddMonoidHom.range_comp, AddSubgroup.range_subtype]`.
+-/
 theorem relIndex_eq {p : ℕ} (hp : 0 < p) (N : AddSubgroup D.La) :
     (pLat D p).relIndex N = Nat.card (N.map (evA I p)) := by
   rw [← ker_evA I hp, AddSubgroup.relIndex, AddSubgroup.addSubgroupOf, AddMonoidHom.comap_ker,
@@ -47,6 +56,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 variable {D : Datum H} {k : Type} [Field k] {Q : Type} [CommGroup Q] {act : 𝓞 E → Q → Q}
   {e : ℕ → Q → Q → kˣ → Prop} (I : TateIso D k Q act e)
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.subtypeEquiv Additive.toMul fun _ => Iff.rfl)`.
+-/
 theorem card_toAdd (C : Subgroup Q) : Nat.card C.toAddSubgroup = Nat.card C :=
   Nat.card_congr (Equiv.subtypeEquiv Additive.toMul fun _ => Iff.rfl)
 
@@ -112,6 +124,15 @@ variable {B : Type} [CommRing B] {b : Base l B} {k : Type} [Field k] {s : Sp k �
 
 include hL in
 
+/- English proof (translation)
+Establish `hcard : Nat.card (C.map (powMonoidHom p)) = Ideal.absNorm P ^ i`. Take `⟨-, -, -, -, c₅, c₆⟩` from `hC`. Take `⟨-, -, hp, -, -⟩` from `(splitPrime_iff l p P).1 h`. Take `⟨-, -, hc⟩` from `tate_facts hL o`. Establish `hpos` using `pow_pos hp.pos (2 * (Module.finrank ℚ E / 2 * (D.p + D.q)))`.
+
+Establish `hm` using `card_eq_tors_mul C p`. Rewrite `c₆` using `[card_tors, card_inter_tors, hc p hp.pos]`. Rewrite `hm` using `[c₅]`. Establish `h₁` using `mul_ne_zero_iff.1 (hm ▸ hpos.ne')`. Conclude with `mul_left_cancel₀ h₁.1 (hm.symm.trans c₆)`.
+
+Establish `: Finite C₀` using `h₀.2.2.1`. Use `Subgroup.eq_of_le_of_card_ge ?_ (by rw [hcard, h₀.2.2.2])` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ heckeKernel o.t p P C₀` using `e ▸ hx`. Take `⟨x₁, x₂, x₃, rfl, ⟨t₁, -⟩, ⟨-, k₂⟩, ⟨t₃, -⟩⟩` from `hx'`.
+
+Use `show (x₁ * x₂ * x₃) ^ p ∈ C₀`. Rewrite using `[mul_pow, mul_pow, t₁, t₃, _root_.one_mul, _root_.mul_one]`. Conclude with `k₂`.
+-/
 theorem map_pow_eq (h : IsSplitPrimeOff l p P) {i : ℕ} {C : Subgroup (Pts o.t)}
     (hC : o.t.HeckeKer (𝟙_ _) D P p i C) {C₀ : Subgroup (Pts o.t)} (h₀ : IsHeckeDatum o.t P i C₀)
     (e : (C : Set (Pts o.t)) = heckeKernel o.t p P C₀) : C.map (powMonoidHom p) = C₀ := by
@@ -135,6 +156,9 @@ theorem map_pow_eq (h : IsSplitPrimeOff l p P) {i : ℕ} {C : Subgroup (Pts o.t)
   exact k₂
 
 include hL in
+/- English proof (translation)
+Take `⟨C₀, h₀, e⟩` from `(heckeKer_iff hL o h i C).1 hC`. Rewrite using `[map_pow_eq hL o h hC h₀ e]`. Conclude with `h₀`.
+-/
 theorem isHeckeDatum_map_pow (h : IsSplitPrimeOff l p P) {i : ℕ} {C : Subgroup (Pts o.t)}
     (hC : o.t.HeckeKer (𝟙_ _) D P p i C) : IsHeckeDatum o.t P i (C.map (powMonoidHom p)) := by
   obtain ⟨C₀, h₀, e⟩ := (heckeKer_iff hL o h i C).1 hC
@@ -173,6 +197,11 @@ variable {B : Type} [CommRing B] {b : Base l B} {k : Type} [Field k] {s : Sp k �
   [IsAlgClosed k] [CharZero k] (hL : Out.Laws) (o : Obj D l b s) {p : ℕ} {P : Ideal (𝓞 E)}
 
 include hL in
+/- English proof (translation)
+Take `⟨hP, -, hp, hpP, -⟩` from `(splitPrime_iff l p P).1 h`. Take `⟨⟨I⟩, -, -⟩` from `tate_facts hL o`. Establish `h0 : Ideal.absNorm P ≠ 0` using `fun e => by`. Rewrite `hpP` using `[Ideal.absNorm_eq_zero_iff.1 e]`. Conclude with `Nat.cast_ne_zero.2 hp.pos.ne' (Ideal.mem_bot.1 hpP)`.
+
+Conclude with `⟨(Equiv.subtypeEquivRight fun C₀ => Iff.rfl).trans (datumEquiv I hp.pos (fun x => (isAct_ptAct o.t _).nat p x) (natCast_mem_conj hpP) (pow_ne_zero i h0))⟩`.
+-/
 theorem nonempty_datum_equiv (h : IsSplitPrimeOff l p P) (i : ℕ) :
     Nonempty ({C₀ : Subgroup (Pts o.t) // IsHeckeDatum o.t P i C₀} ≃
       LatCount D p (conjIdeal H P) (Ideal.absNorm P ^ i)) := by
@@ -191,6 +220,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
 variable {B : Type} [CommRing B] {b : Base l B} {X : Scheme.{0}} {sX : X ⟶ Sp B} {k : Type} [Field k]
   {s : Sp k ⟶ Sp B}
 
+/- English proof (translation)
+Take `⟨ρ, -, e₀, -⟩` from `exists_fibre_equiv u m`. Establish `hx : ∀ (x : Pts o.t) (x₀ : Over.mk y ⟶ u.t.G), x₀.left = x.left ≫ m.cm.F → x₀ = ρ x` using `fun x x₀ h => Over.OverMorphism.ext (h.trans (e₀ x).symm)`. Establish `same : ∀ C : Subgroup (Over.mk y ⟶ u.t.G), SamePoints m (C.comap ρ.toMonoidHom : Set (Pts o.t)) C` using `fun C x x₀ h => by rw [hx x x₀ h]; rfl`. Use `⟨{ toFun := fun C' => ⟨C'.1.map ρ.toMonoidHom, ?_⟩ invFun := fun C => ⟨C.1.comap ρ.toMonoidHom, (heckeKer_transfer m (same C.1) P p i).1 C.2⟩ left_inv := fun C' => Subtype.ext (Subgroup.comap_map_eq_self_of_injective ρ.injective _) right_inv := fun C => Subtype.ext (Subgroup.map_ …` and prove the remaining obligations. Use `(heckeKer_transfer m (same _) P p i).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Subgroup.comap_map_eq_self_of_injective ρ.injective]`. Conclude with `C'.2`.
+-/
 theorem nonempty_transfer_equiv (u : Obj D l b sX) {o : Obj D l b s} {y : Sp k ⟶ X} (m : ObjMap o u y)
     (P : Ideal (𝓞 E)) (p i : ℕ) :
     Nonempty ({C' : Subgroup (Pts o.t) // o.t.HeckeKer (𝟙_ _) D P p i C'} ≃
@@ -215,6 +249,13 @@ namespace GlobalTheory.HeckeCount
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 open ReciprocityTheory.ChartRestriction.G GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels GlobalTheory.HeckeCompare
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c P q i hP`. Use `⟨Nat.card (LatCount Dw q (conjIdeal H P) (Ideal.absNorm P ^ i)), fun Ω _ _ _ z => ?_⟩` and prove the remaining obligations. Establish `hs : IsSplitPrimeOff l q P` using `(splitPrime_iff l q P).2 (GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff.1 hP)`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom (Spec.preimage (z.x ≫ Xo.s)).hom.injective`. Take `⟨o, ⟨m⟩⟩` from `exists_fibre_obj Xo z.x z.x rfl`.
+
+Take `⟨eT⟩` from `nonempty_transfer_equiv Xo.univ m P q i`. Take `⟨eL⟩` from `nonempty_datum_equiv GlobalTheory.firstFiveLaws.1 o hs i`. Set `e : hkKer (Xo` to `Xo) P q i Ω z ≃ LatCount Dw q (conjIdeal H P) (Ideal.absNorm P ^ i) := eT.symm.trans ((heckeKerEquivDatum GlobalTheory.firstFiveLaws.1 o hs i).trans eL)`. Establish `: Finite (hkKer (Xo` using `Xo) P q i Ω z) := GlobalTheory.HeckePointLaw.finite_heckeKer hs.1.pos hs.2.2.1 i z.x`. Establish `: Finite (LatCount Dw q (conjIdeal H P) (Ideal.absNorm P ^ i))` using `Finite.of_equiv _ e`.
+
+Conclude with `⟨(Finite.equivFin _).symm.trans e.symm⟩`.
+-/
 theorem card_hkKer_const : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (P : Ideal (𝓞 E)) (q i : ℕ),
     GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.IsHeckePrime l P q → ∃ n : ℕ, ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω]

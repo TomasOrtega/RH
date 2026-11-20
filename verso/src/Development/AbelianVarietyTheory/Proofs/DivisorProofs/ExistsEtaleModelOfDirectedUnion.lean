@@ -5,6 +5,13 @@ namespace GlobalTheory.EtaleDescent
 
 open TensorProduct
 
+/- English proof (translation)
+Introduce `R _ ι _ _ _ Ri hmono hcov A _ _ _`. Take `⟨κ, σ, _, _, P, hP⟩` from `(Algebra.Etale.iff_isStandardSmoothOfRelativeDimension_zero (R := R) (S := A)).mp inferInstance |>.out`. Establish `hfin` using `P.finite_coeffs`. Establish `hex : ∃ i, P.coeffs ⊆ (Ri i : Set R)` using `by classical choose j hj using hcov`. Take `⟨i, hi⟩` from `Finset.exists_le (hfin.toFinset.image j)`.
+
+Use `⟨i, fun x hx ↦ hmono (hi _ (Finset.mem_image_of_mem _ (hfin.mem_toFinset.mpr hx))) (hj x)⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hex`. Use `letI : Algebra (Ri i) A := ((algebraMap R A).comp (algebraMap (Ri i) R)).toAlgebra`. Use `haveI : IsScalarTower (Ri i) R A := IsScalarTower.of_algebraMap_eq (fun _ ↦ rfl)`. Use `haveI : P.HasCoeffs (Ri i) := ⟨fun x hx ↦ ⟨⟨x, hi hx⟩, rfl⟩⟩`.
+
+Set `Q` to `P.ofHasCoeffs (Ri i)`. Use `⟨i, P.ModelOfHasCoeffs (Ri i), inferInstance, inferInstance, ?_, ⟨P.tensorModelOfHasCoeffsEquiv (Ri i)⟩⟩` and prove the remaining obligations. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension 0 (Ri i) (P.ModelOfHasCoeffs (Ri i)) := Q.isStandardSmoothOfRelativeDimension (by rw [← hP]; rfl)`. Use `infer_instance`.
+-/
 theorem exists_etale_model_of_directed_union :
     ∀ (R : Type) [CommRing R] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]
       (Ri : ι → Subring R), Monotone Ri → (∀ x, ∃ i, x ∈ Ri i) →

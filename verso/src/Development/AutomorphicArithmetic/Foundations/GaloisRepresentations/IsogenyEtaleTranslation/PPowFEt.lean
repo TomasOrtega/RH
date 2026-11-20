@@ -13,11 +13,23 @@ private noncomputable def coordMap (j : Fin k) (φ : A ⟶ A) :
     (∏ᶜ fun _ : Fin k => A) ⟶ ∏ᶜ fun _ : Fin k => A :=
   Pi.lift fun i => if i = j then Pi.π (fun _ : Fin k => A) j ≫ φ else Pi.π (fun _ : Fin k => A) i
 
+/- English proof (translation)
+Simplify using `[coordMap]`.
+-/
 private lemma coordMap_π (j i : Fin k) (φ : A ⟶ A) :
     coordMap j φ ≫ Pi.π (fun _ : Fin k => A) i =
       if i = j then Pi.π (fun _ : Fin k => A) j ≫ φ else Pi.π (fun _ : Fin k => A) i := by
   simp [coordMap]
 
+/- English proof (translation)
+Use `⟨⟨by simp [coordMap_π]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => Pi.lift fun i => if i = j then s.snd else s.fst ≫ Pi.π (fun _ : Fin k => A) i) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Use `Pi.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, coordMap_π]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using `using s.condition.symm`. Simplify using `[h]`. Introduce `s`. Simplify using the standard rewrite rules.
+
+Introduce `s m h₁ h₂`. Use `Pi.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `using h₂`.
+
+Use `congrArg (· ≫ Pi.π (fun _ : Fin k => A) i) h₁` as an intermediate fact. Simplify `this` using `[coordMap_π, h]`.
+-/
 private lemma coordMap_isPullback (j : Fin k) (φ : A ⟶ A) :
     IsPullback (coordMap j φ) (Pi.π (fun _ : Fin k => A) j) (Pi.π (fun _ : Fin k => A) j) φ := by
   refine ⟨⟨by simp [coordMap_π]⟩, ⟨PullbackCone.IsLimit.mk _
@@ -42,6 +54,23 @@ private lemma coordMap_isPullback (j : Fin k) (φ : A ⟶ A) :
 
 end Coord
 
+/- English proof (translation)
+Establish `step : ∀ j : ℕ, j ≤ k → ∃ h : GlobalTheory.KS.pow A k ⟶ GlobalTheory.KS.pow A k, P h.left ∧ ∀ i : Fin k, h ≫ GlobalTheory.KS.pr A i = if i.val < j then GlobalTheory.KS.pr A i ≫ f i else GlobalTheory.KS.pr A i`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`.
+
+Conclude with `⟨𝟙 _, by simpa using P.id_mem _, fun i => by simp⟩`. Consider the case `succ j ih`. Introduce `hj`. Take `⟨h, hP, hh⟩` from `ih (by omega)`. Set `j' : Fin k` to `⟨j, by omega⟩`.
+
+Establish `hb : IsPullback (coordMap j' (f j')).left (GlobalTheory.KS.pr A j').left (GlobalTheory.KS.pr A j').left (f j').left` using `(coordMap_isPullback j' (f j')).map (Over.forget S)`. Establish `he : P (coordMap j' (f j')).left` using `P.of_isPullback hb.flip (hf j')`. Use `⟨h ≫ coordMap j' (f j'), ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Conclude with `P.comp_mem _ _ hP he`.
+
+Rewrite using `[Category.assoc, GlobalTheory.KS.pr, coordMap_π]`. Distinguish the cases in `hi : i = j'`. Substitute `hi` using the available equality. Establish `h0 : h ≫ Pi.π (fun _ : Fin k => A) j' = Pi.π (fun _ : Fin k => A) j'`. Use `hh j'` as an intermediate fact.
+
+Simplify `this` using `[GlobalTheory.KS.pr, j']`. Rewrite using `[if_pos rfl, if_pos (by simp [j']), ← Category.assoc, h0]`. Establish `hne : i.val ≠ j` using `fun e => hi (Fin.ext e)`. Use `hh i` as an intermediate fact. Simplify using `only [GlobalTheory.KS.pr] at this`.
+
+Simplify using `only [hi, if_false, this]`. Distinguish the cases in `hlt : i.val < j`. Simplify using `[hlt, Nat.lt_succ_of_lt hlt]`. Establish `: ¬ i.val < j + 1` using `by omega`. Simplify using `[hlt, this]`.
+
+Take `⟨h, hP, hh⟩` from `step k le_rfl`. Establish `: g = h` using `Pi.hom_ext _ _ fun i => by`. Use `hh i` as an intermediate fact. Simplify using `only [i.isLt, if_true] at this`. Conclude with `(hg i).trans this.symm`.
+
+Rewrite using `[this]`. Conclude with `hP`.
+-/
 private lemma pow_prop (P : MorphismProperty Scheme.{0}) [P.IsMultiplicative]
     [P.IsStableUnderBaseChange] {S : Scheme.{0}} (A : Over S) (k : ℕ) (f : Fin k → (A ⟶ A))
     (hf : ∀ i, P (f i).left) (g : GlobalTheory.KS.pow A k ⟶ GlobalTheory.KS.pow A k)
@@ -88,6 +117,9 @@ private lemma pow_prop (P : MorphismProperty Scheme.{0}) [P.IsMultiplicative]
   rw [this]
   exact hP
 
+/- English proof (translation)
+Introduce `S A k f hf g hg`. Conclude with `⟨pow_prop @IsFinite A k f (fun i => (hf i).1) g hg, pow_prop @Etale A k f (fun i => (hf i).2.1) g hg, pow_prop @Surjective A k f (fun i => (hf i).2.2) g hg⟩`.
+-/
 theorem powFEt_of : PowFEt := by
   intro S A k f hf g hg
   exact ⟨pow_prop @IsFinite A k f (fun i => (hf i).1) g hg,

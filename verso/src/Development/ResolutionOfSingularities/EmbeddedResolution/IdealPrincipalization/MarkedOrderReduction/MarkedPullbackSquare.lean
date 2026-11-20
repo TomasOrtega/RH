@@ -52,6 +52,9 @@ abbrev upperTriple (S : MarkedPullbackSquare T g) (k' : Type u) [Field k']
     MarkedIdealWithBoundary.{u} :=
   (S.lowerTriple.pullbackOverField S.topScheme k' (S.top ≫ q) S.left).withBoundary E
 
+/- English proof (translation)
+Establish `hval : (MarkedIdealWithBoundary.mk T.base S.baseScheme S.structMap S.ideal T.mult S.boundary).IsAdmissible` using `{ charZero := S.valid.charZero locallyOfFiniteType := S.valid.locallyOfFiniteType nonzeroOnComponents := S.valid.nonzeroOnComponents one_le_mult := hT.one_le_mult quasiCompact := S.valid.quasiCompact smooth := S.valid.smooth snc := S.valid.snc }`. Conclude with `hg S.baseScheme S.bottom S.structMap S.ideal S.boundary hval S.bottom_structMap S.topScheme S.left S.top S.isPullback A y`.
+-/
 theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (y : ↥S.topScheme) :
     orderAt (A.comap S.left) y = orderAt A (S.left.base y) := by
@@ -67,6 +70,9 @@ theorem orderAt_comap_verticalMap (S : MarkedPullbackSquare T g) (hT : T.IsAdmis
   exact hg S.baseScheme S.bottom S.structMap S.ideal S.boundary hval S.bottom_structMap
     S.topScheme S.left S.top S.isPullback A y
 
+/- English proof (translation)
+Rewrite using `[S.orderAt_comap_verticalMap hT hg A y]`. Conclude with `hA (S.left.base y)`.
+-/
 theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAdmissible)
     (hg : OrderAtPullbackInvariant T g) (A : S.baseScheme.IdealSheafData) (c : ℕ∞)
     (hA : ∀ x : ↥S.baseScheme, orderAt A x ≤ c) (y : ↥S.topScheme) :
@@ -74,6 +80,9 @@ theorem orderAt_comap_verticalMap_le (S : MarkedPullbackSquare T g) (hT : T.IsAd
   rw [S.orderAt_comap_verticalMap hT hg A y]
   exact hA (S.left.base y)
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) S.isPullback.flip ‹AlgebraicGeometry.Flat g›`.
+-/
 theorem flat_verticalMap (S : MarkedPullbackSquare T g) [AlgebraicGeometry.Flat g] :
     AlgebraicGeometry.Flat S.left :=
   MorphismProperty.IsStableUnderBaseChange.of_isPullback

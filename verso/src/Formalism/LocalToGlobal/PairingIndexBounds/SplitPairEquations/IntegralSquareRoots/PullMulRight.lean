@@ -26,6 +26,11 @@ def J2at (B : Ker.Base D cc δ) (N N' : ℕ)
         (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (SDLat.smulLat (γ' : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N')))
         (B.thZero N N')
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull, TaylorLogMetric.tor0]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[Matrix.map_one, Matrix.map_mul]`.
+
+Conclude with `(Matrix.mul_assoc _ _ _).symm`.
+-/
 theorem pull_mul_left {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N) (Fin N) D.host.E) (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) (γ₁ * γ₂) (1 : Matrix (Fin N') (Fin N') D.host.E) G =
       TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) γ₁ 1 (TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) γ₂ 1 G) := by
@@ -36,6 +41,11 @@ theorem pull_mul_left {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N) (Fin N) D.host.
   simp [Matrix.map_one, Matrix.map_mul]
   exact (Matrix.mul_assoc _ _ _).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.pull, TaylorLogMetric.tor0]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[Matrix.map_one, Matrix.map_mul, Matrix.mul_assoc, Matrix.conjTranspose_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pull_mul_right {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N') (Fin N') D.host.E) (G : TaylorLogMetric.VC D N N' → ℂ) :
     TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) (1 : Matrix (Fin N) (Fin N) D.host.E) (γ₁ * γ₂) G =
       TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) 1 γ₁ (TaylorLogMetric.pull D (TaylorLogMetric.tor0 D cc δ) 1 γ₂ G) := by
@@ -48,6 +58,15 @@ theorem pull_mul_right {N N' : ℕ} (γ₁ γ₂ : Matrix (Fin N') (Fin N') D.ho
 
 variable {B : Ker.Base D cc δ}
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Introduce `γ₁ γ₂ j1 j2`. Establish `e1 : ((1 : Matrix.unitaryGroup (Fin N') D.host.E) : Matrix (Fin N') (Fin N') D.host.E) = 1` using `rfl`. Establish `em : ((γ₁ * γ₂ : Matrix.unitaryGroup (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) = (γ₁ : Matrix (Fin N) (Fin N) D.host.E) * (γ₂ : Matrix (Fin N) (Fin N) D.host.E)` using `rfl`. Establish `s1` using `smulSD D N (StandardLatticesGL3.stdL D N) γ₁ (sd0 N)`.
+
+Establish `s2` using `smulSD D N (StandardLatticesGL3.stdL D N) γ₂ (sd0 N)`. Establish `s12` using `smulSD D N _ γ₁ s2`. Establish `p` using `(pullIop_of hL N N' (StandardLatticesGL3.stdL D N) (SDLat.smulLat (γ₂ : Matrix (Fin N) (Fin N) D.host.E) (StandardLatticesGL3.stdL D N)) (StandardLatticesGL3.stdL D N') (StandardLatticesGL3.stdL D N') γ₁ 1 hN hN' (sd0 N) s2 (sd0 N') (sd0 N') (B.thZero N N') (mem_ThSp_of' _ _ _ _ …`. Rewrite `p` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one]`. Establish `t` using `hTL N N' _ _ hN hN' s1 s12 _ (mem_ThSp_of' _ _ _ _ h0)`.
+
+Unfold `J1at at j1 j2 ⊢`. Rewrite using `[em, pull_mul_left, j2, pull_smul]`. Use `show _ • TaylorLogMetric.pull D B.tor _ _ (TaylorLogMetric.Iop D B.tor _ _ (B.thZero N N')) = _`. Rewrite using `[p, j1, Iop_smulF]`. Use `show _ • _ • TaylorLogMetric.Iop D B.tor _ _ (TaylorLogMetric.Iop D B.tor _ _ (B.thZero N N')) = _`.
+
+Rewrite using `[t, smul_smul, Formalism.BasicNotions.Examples₂.smulLat_mul, Matrix.det_mul, star_mul']`. Simplify using `only [map_mul, Finset.prod_mul_distrib, mul_pow]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem J1at_mul (hL : B.LatAll) (hTL : Tr0L D B.tor) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') :
     letI := D.host.cmStar
@@ -75,6 +94,13 @@ theorem J1at_mul (hL : B.LatAll) (hTL : Tr0L D B.tor) {N N' : ℕ} (hN : Even N)
   rw [mul_comm]
   rfl
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Introduce `γ₁ γ₂ j1 j2`. Establish `e1 : ((1 : Matrix.unitaryGroup (Fin N) D.host.E) : Matrix (Fin N) (Fin N) D.host.E) = 1` using `rfl`. Establish `em : ((γ₁ * γ₂ : Matrix.unitaryGroup (Fin N') D.host.E) : Matrix (Fin N') (Fin N') D.host.E) = (γ₁ : Matrix (Fin N') (Fin N') D.host.E) * (γ₂ : Matrix (Fin N') (Fin N') D.host.E)` using `rfl`. Establish `s1` using `smulSD D N' (StandardLatticesGL3.stdL D N') γ₁ (sd0 N')`.
+
+Establish `s2` using `smulSD D N' (StandardLatticesGL3.stdL D N') γ₂ (sd0 N')`. Establish `s12` using `smulSD D N' _ γ₁ s2`. Establish `p` using `(pullIop_of hL N N' (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') (SDLat.smulLat (γ₂ : Matrix (Fin N') (Fin N') D.host.E) (StandardLatticesGL3.stdL D N')) 1 γ₁ hN hN' (sd0 N) (sd0 N) (sd0 N') s2 (B.thZero N N') (mem_ThSp_of' _ _ _ _ …`. Rewrite `p` using `[e1, Formalism.BasicNotions.Examples₂.smulLat_one]`. Establish `t` using `hTR N N' _ _ hN hN' s1 s12 _ (mem_ThSp_of' _ _ _ _ h0)`.
+
+Unfold `J2at at j1 j2 ⊢`. Rewrite using `[em, pull_mul_right, j2, pull_smul, p, j1, Iop_smulF, t, smul_smul, Formalism.BasicNotions.Examples₂.smulLat_mul, Matrix.det_mul]`. Simplify using `only [map_mul, Finset.prod_mul_distrib, mul_pow]`. Rewrite using `[mul_comm]`.
+-/
 theorem J2at_mul (hL : B.LatAll) (hTR : Tr0R D B.tor) {N N' : ℕ} (hN : Even N) (hN' : Even N')
     (h0 : B.ThZeroMem N N') :
     letI := D.host.cmStar

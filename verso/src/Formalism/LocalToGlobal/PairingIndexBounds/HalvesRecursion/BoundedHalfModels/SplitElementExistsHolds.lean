@@ -24,6 +24,17 @@ def RecSplitElt : Prop :=
   ∀ (D : D7) (a : 𝓞 D.host.E), a ≠ 0 → (∀ Q : HeightOneSpectrum (𝓞 D.host.E), a ∈ Q.asIdeal → SplitP D Q) →
     ∃ π : 𝓞 D.host.E, π ≠ 0 ∧ IsCoprime π (cO D π) ∧ ∃ j : ℕ, a ∣ (π * cO D π) ^ j
 
+/- English proof (translation)
+Introduce `R _ _ K _ _ _ m n I π πb n₀ ι Y₀ Y hπ0 hπb0 hcop h0i hi0 i`. Establish `hP : algebraMap R K π ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hπ0`. Establish `hQ : algebraMap R K πb ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hπb0`. Choose the witnesses or unpack the hypotheses as in `⟨x, y, hxy⟩ : IsCoprime (πb ^ n₀ * πb ^ n₀) (π ^ n₀ * π ^ n₀) := by`. Establish `h` using `hcop.symm.pow (m := n₀) (n := n₀)`.
+
+Establish `h'` using `h.mul_left h`. Conclude with `h'.mul_right h'`. Introduce `u MA MB`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`.
+
+Use `⟨(x * (πb ^ n₀ * πb ^ n₀)) • w, Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ hw, ?_⟩, (y * (π ^ n₀ * π ^ n₀)) • w, Submodule.mem_inf.2 ⟨Submodule.smul_mem _ _ hw, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `gh_toHalf I (r := x * (π * πb) ^ n₀) (fun z hz => by rw [mul_smul]; exact Y₀.smul_mem x (hi0 i z hz)) (by simp only [u, map_mul, map_pow]; exact div_pow_mul_prod_pow_left hP n₀) w hw`. Conclude with `gh_toHalf I (r := y * (π * πb) ^ n₀) (fun z hz => by rw [mul_smul]; exact Y₀.smul_mem y (hi0 i z hz)) (by simp only [u, map_mul, map_pow]; exact inv_div_pow_mul_prod_pow_right hQ n₀) w hw`. Rewrite using `[← add_smul, hxy, one_smul]`. Introduce `a ha b hb hab`.
+
+Establish `hfa : (y * (π ^ n₀ * π ^ n₀)) • a ∈ I • Y i` using `gh_fromHalf I (r := y * (π * πb) ^ n₀) (fun z hz => by rw [mul_smul]; exact (Y i).smul_mem y (h0i i z hz)) (by simp only [u, map_mul, map_pow]; exact sq_pow_mul_div_pow_eq_prod_pow hP n₀) a ha`. Establish `heb : (x * (πb ^ n₀ * πb ^ n₀)) • b ∈ I • Y i` using `gh_fromHalf I (r := x * (π * πb) ^ n₀) (fun z hz => by rw [mul_smul]; exact (Y i).smul_mem x (h0i i z hz)) (by simp only [u, map_mul, map_pow]; exact sq_pow_mul_inv_div_pow_eq_prod_pow hQ n₀) b hb`. Establish `h1 : (x * (πb ^ n₀ * πb ^ n₀)) • (a + b) + (y * (π ^ n₀ * π ^ n₀)) • a - (x * (πb ^ n₀ * πb ^ n₀)) • b = (x * (πb ^ n₀ * πb ^ n₀) + y * (π ^ n₀ * π ^ n₀)) • a`. Rewrite using `[smul_add, add_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h1` using `[hxy, one_smul]`. Rewrite using `[← h1]`. Conclude with `sub_mem (add_mem (Submodule.smul_mem _ _ hab) hfa) heb`.
+-/
 theorem generic_splitting_holds : GenSplit := by
   intro R _ _ K _ _ _ m n I π πb n₀ ι Y₀ Y hπ0 hπb0 hcop h0i hi0 i
   have hP : algebraMap R K π ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective R K)).2 hπ0
@@ -60,6 +71,15 @@ theorem generic_splitting_holds : GenSplit := by
     rw [← h1]
     exact sub_mem (add_mem (Submodule.smul_mem _ _ hab) hfa) heb
 
+/- English proof (translation)
+Establish `hP0 : Q.asIdeal ≠ ⊥` using `Q.ne_bot`. Use `set h := Fintype.card (ClassGroup (𝓞 D.host.E))`. Establish `hh : 0 < h` using `Fintype.card_pos`. Establish `hm : Q.asIdeal ^ h ∈ (Ideal (𝓞 D.host.E))⁰` using `pow_mem (mem_nonZeroDivisors_of_ne_zero hP0) h`. Establish `hprin : (Q.asIdeal ^ h).IsPrincipal`.
+
+Rewrite using `[← ClassGroup.mk0_eq_one_iff hm]`. Establish `: ClassGroup.mk0 (⟨Q.asIdeal ^ h, hm⟩ : (Ideal (𝓞 D.host.E))⁰) = ClassGroup.mk0 ⟨Q.asIdeal, mem_nonZeroDivisors_of_ne_zero hP0⟩ ^ h`. Rewrite using `[← map_pow, SubmonoidClass.mk_pow]`. Rewrite using `[this, pow_card_eq_one]`. Take `⟨π, hπ⟩` from `hprin`.
+
+Establish `hspan : Ideal.span {π} = Q.asIdeal ^ h` using `hπ.symm`. Use `⟨π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `hspan` using `[h0, Ideal.span_singleton_eq_bot.2 rfl]`. Conclude with `pow_ne_zero h hP0 hspan.symm`.
+
+Establish `: π ∈ Q.asIdeal ^ h` using `by rw [← hspan]; exact Ideal.mem_span_singleton_self π`. Conclude with `Ideal.pow_le_self hh.ne' this`. Introduce `M hM hπM`. Establish `: Q.asIdeal ^ h ≤ M` using `by rw [← hspan, Ideal.span_le]; simpa using hπM`. Conclude with `Q.isMaximal.eq_of_le hM.ne_top (hM.le_of_pow_le this)`.
+-/
 theorem genPow (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     ∃ x : 𝓞 D.host.E, x ≠ 0 ∧ x ∈ Q.asIdeal ∧ ∀ M : Ideal (𝓞 D.host.E), M.IsPrime → x ∈ M → Q.asIdeal = M := by
   classical
@@ -85,6 +105,9 @@ theorem genPow (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     have : Q.asIdeal ^ h ≤ M := by rw [← hspan, Ideal.span_le]; simpa using hπM
     exact Q.isMaximal.eq_of_le hM.ne_top (hM.le_of_pow_le this)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (conj_conj' D (x : D.host.E))`.
+-/
 theorem cO_cO (D : D7) (x : 𝓞 D.host.E) : cO D (cO D x) = x := Subtype.ext (conj_conj' D (x : D.host.E))
 
 def cQ (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) : HeightOneSpectrum (𝓞 D.host.E) where
@@ -98,12 +121,23 @@ def cQ (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) : HeightOneSpectrum (�
     apply hx0
     rw [← cO_cO D x, this, map_zero]
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_comap`.
+-/
 theorem mem_cQ (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) (x : 𝓞 D.host.E) :
     x ∈ (cQ D Q).asIdeal ↔ cO D x ∈ Q.asIdeal := Ideal.mem_comap
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_cQ, mem_cQ, cO_cO]`.
+-/
 theorem cQ_cQ (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) : cQ D (cQ D Q) = Q := by
   ext x; rw [mem_cQ, mem_cQ, cO_cO]
 
+/- English proof (translation)
+Take `⟨a, b, hab, ha, hb⟩` from `h`. Introduce `he`. Apply `hb` to reduce the goal to its premises. Establish `hb' : b = cO D a` using `Subtype.ext (hab.trans rfl)`. Rewrite using `[hb', ← mem_cQ, he]`.
+
+Conclude with `ha`.
+-/
 theorem cQ_ne (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) (h : SplitP D Q) : cQ D Q ≠ Q := by
   obtain ⟨a, b, hab, ha, hb⟩ := h
   intro he
@@ -111,6 +145,29 @@ theorem cQ_ne (D : D7) (Q : HeightOneSpectrum (𝓞 D.host.E)) (h : SplitP D Q) 
   have hb' : b = cO D a := Subtype.ext (hab.trans rfl)
   rw [hb', ← mem_cQ, he]; exact ha
 
+/- English proof (translation)
+Introduce `D a ha0 hsplit`. Establish `hfin : {Q : HeightOneSpectrum (𝓞 D.host.E) | Q.asIdeal ∣ Ideal.span {a}}.Finite` using `Ideal.finite_factors (by rw [ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]; exact ha0)`. Set `S0` to `hfin.toFinset`. Set `S` to `S0 ∪ S0.image (cQ D)`. Set `r` to `WellOrderingRel (α := HeightOneSpectrum (𝓞 D.host.E))`.
+
+Set `Sp` to `S.filter (fun Q => r Q (cQ D Q))`. Use `choose g hg0 hgQ hgM using genPow D`. Set `π` to `∏ Q ∈ Sp, g Q`. Establish `hπ0 : π ≠ 0` using `Finset.prod_ne_zero_iff.2 fun Q _ => hg0 Q`. Establish `hmemπ : ∀ M : Ideal (𝓞 D.host.E), M.IsPrime → π ∈ M → ∃ Q ∈ Sp, Q.asIdeal = M`.
+
+Introduce `M hM h`. Take `⟨Q, hQ, hgm⟩` from `(hM.prod_mem_iff).1 h`. Conclude with `⟨Q, hQ, hgM Q M hM hgm⟩`. Establish `hmemπb : ∀ M : Ideal (𝓞 D.host.E), M.IsPrime → cO D π ∈ M → ∃ Q ∈ Sp, (cQ D Q).asIdeal = M`. Introduce `M hM h`.
+
+Rewrite `h` using `[map_prod]`. Take `⟨Q, hQ, hgm⟩` from `(hM.prod_mem_iff).1 h`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations. Establish `hM' : (M.comap (cO D)).IsPrime` using `Ideal.IsPrime.comap _`. Establish `e` using `hgM Q _ hM' (Ideal.mem_comap.2 hgm)`.
+
+Use extensionality with `x`. Rewrite using `[mem_cQ, e, Ideal.mem_comap, cO_cO]`. Use `⟨π, hπ0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.isCoprime_span_singleton_iff, Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Take `⟨Q₁, hQ₁, e₁⟩` from `hmemπ M hM.isPrime (hle (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)))`. Take `⟨Q₂, hQ₂, e₂⟩` from `hmemπb M hM.isPrime (hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)))`. Establish `e : Q₁ = cQ D Q₂` using `HeightOneSpectrum.ext (e₁.trans e₂.symm)`. Establish `r1 : WellOrderingRel Q₁ (cQ D Q₁)` using `(Finset.mem_filter.1 hQ₁).2`.
+
+Establish `r2 : WellOrderingRel Q₂ (cQ D Q₂)` using `(Finset.mem_filter.1 hQ₂).2`. Rewrite `r1` using `[e, cQ_cQ]`. Conclude with `asymm r2 r1`. Establish `hrad : π * cO D π ∈ (Ideal.span {a}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`.
+
+Introduce and unpack `J ⟨hJa, hJ⟩`. Establish `haJ : a ∈ J` using `hJa (Ideal.mem_span_singleton_self a)`. Establish `hJ0 : J ≠ ⊥` using `by intro h; rw [h, Ideal.mem_bot] at haJ; exact ha0 haJ`. Set `Q : HeightOneSpectrum (𝓞 D.host.E)` to `⟨J, hJ, hJ0⟩`. Establish `hQS0 : Q ∈ S0` using `by rw [Set.Finite.mem_toFinset]; exact Ideal.dvd_iff_le.2 hJa`.
+
+Break down `trichotomous_of WellOrderingRel Q (cQ D Q) with h | h | h` into its components or cases. Establish `hQ : Q ∈ Sp` using `Finset.mem_filter.2 ⟨Finset.mem_union_left _ hQS0, h⟩`. Establish `: π ∈ J` using `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem g hQ) (hgQ Q)`. Conclude with `Ideal.mul_mem_right _ J this`. Conclude with `absurd h.symm (cQ_ne D Q (hsplit Q haJ))`.
+
+Establish `hQ : cQ D Q ∈ Sp` using `Finset.mem_filter.2 ⟨Finset.mem_union_right _ (Finset.mem_image_of_mem _ hQS0), by rw [cQ_cQ]; exact h⟩`. Establish `h1 : cO D (g (cQ D Q)) ∈ J` using `(mem_cQ D Q _).1 (hgQ (cQ D Q))`. Establish `: cO D π ∈ J`. Rewrite using `[map_prod]`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem (fun Q' => cO D (g Q')) hQ) h1`.
+
+Conclude with `Ideal.mul_mem_left J _ this`. Take `⟨j, hj⟩` from `hrad`. Conclude with `⟨j, Ideal.mem_span_singleton.1 hj⟩`.
+-/
 theorem split_element_exists_holds : RecSplitElt := by
   intro D a ha0 hsplit
   classical

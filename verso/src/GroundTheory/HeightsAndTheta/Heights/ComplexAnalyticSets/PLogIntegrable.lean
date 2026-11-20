@@ -16,6 +16,31 @@ namespace LogIntegrableProof
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Take `⟨C, α, hα, hC⟩` from `hS n d J u R hJ hdim hu`. Use `set S := zeroSetEuc J ∩ {z : EuclideanSpace ℂ (Fin n) | ‖z‖ ≤ R} with hSdef`. Use `set μ := (μH[((2 * d : ℕ) : ℝ)]).restrict S`. Establish `hsub : S ⊆ zeroSetEuc J ∩ Metric.ball 0 (R + 1)`. Introduce `z hz`.
+
+Use `⟨hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff]`. Combine the linear relations using `[(show ‖z‖ ≤ R from hz.2)]`. Establish `hSfin : μH[((2 * d : ℕ) : ℝ)] S < ⊤` using `(measure_mono hsub).trans_lt (hF n d J hJ hdim (R + 1))`. Establish `hcont : Continuous fun z : EuclideanSpace ℂ (Fin n) => ∑ j, u j * z j` using `by fun_prop`.
+
+Use `set F : EuclideanSpace ℂ (Fin n) → ℝ := fun z => Real.log ‖∑ j, u j * z j‖`. Establish `hFm : Measurable F` using `Real.measurable_log.comp hcont.norm.measurable`. Use `set G : EuclideanSpace ℂ (Fin n) → ℝ := fun z => max (-F z) 0`. Establish `hGm : Measurable G` using `hFm.neg.max measurable_const`. Use `set M : ℝ := max (∑ j, ‖u j‖ * R) 0`.
+
+Establish `hFle : ∀ z ∈ S, F z ≤ M`. Introduce `z hz`. Use `(Real.log_le_self (norm_nonneg _)).trans ((norm_sum_le _ _).trans ?_)` and prove the remaining obligations. Use `le_trans ?_ (le_max_left _ _)` and prove the remaining obligations. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((PiLp.norm_apply_le z j).trans hz.2) (norm_nonneg _)`. Establish `hG : ∫⁻ z, ENNReal.ofReal (G z) ∂μ < ⊤`. Rewrite using `[lintegral_eq_lintegral_meas_le (f := G) μ (Eventually.of_forall fun z => le_max_right _ _) hGm.aemeasurable]`. Establish `hint : IntegrableOn (fun t => C * Real.exp (-α * t)) (Ioi 0)` using `(exp_neg_integrableOn_Ioi 0 hα).const_mul C`.
+
+Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hint.lintegral_lt_top` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).mpr (Eventually.of_forall fun t (ht : 0 < t) => ?_)` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (measurableSet_le measurable_const hGm)]`. Use `(measure_mono ?_).trans ((hC (Real.exp (-t)) (Real.exp_pos _) (Real.exp_le_one_iff.mpr (by linarith))).trans_eq ?_)` and prove the remaining obligations. Introduce and unpack `z ⟨hz, hzS⟩`.
+
+Use `⟨hzS, ?_⟩` and prove the remaining obligations. Establish `htF : F z ≤ -t`. Break down `le_max_iff.mp (show t ≤ G z from hz) with h1 | h1` into its components or cases. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Express the relevant statement in the definitionally equal form `‖∑ j, u j * z j‖ ≤ Real.exp (-t)`. Break down `(norm_nonneg (∑ j, u j * z j)).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. Conclude with `(Real.log_le_iff_le_exp h0).mp htF`.
+
+Rewrite using `[← Real.exp_mul]`. Put the polynomial expressions in normal form. Establish `hle : ∀ z ∈ S, ‖F z‖ₑ ≤ ENNReal.ofReal M + ENNReal.ofReal (G z)`. Introduce `z hz`. Rewrite using `[Real.enorm_eq_ofReal_abs, ← ENNReal.ofReal_add (le_max_right _ _) (le_max_right _ _)]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h1` using `hFle z hz`. Break down `le_or_gt 0 (F z) with h2 | h2` into its components or cases. Rewrite using `[abs_of_nonneg h2]`. Use `le_max_right (-F z) 0` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_of_neg h2]`. Use `le_max_left (-F z) 0` as an intermediate fact. Use `le_max_right (∑ j, ‖u j‖ * R) 0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `lt_of_le_of_lt (setLIntegral_mono (g := fun z => ENNReal.ofReal M + ENNReal.ofReal (G z)) (measurable_const.add hGm.ennreal_ofReal) hle) ?_` and prove the remaining obligations. Rewrite using `[lintegral_add_left measurable_const, lintegral_const, Measure.restrict_apply_univ]`. Conclude with `ENNReal.add_lt_top.mpr ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hSfin, hG⟩`.
+-/
 theorem lintegral_lt_top (hS : VarSlabMeasure.Statement) (hF : MassFinite.Statement) {d : ℕ}
     {J : Ideal (MvPolynomial (Fin n) ℂ)} (u : Fin n → ℂ) (R : ℝ) (hJ : J.IsPrime)
     (hdim : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d) (hu : linForm u ∉ J) :
@@ -85,6 +110,13 @@ end LogIntegrableProof
 
 open LogIntegrableProof in
 
+/- English proof (translation)
+Introduce `n d J A u φ R hJ hdim hA hu hφ`. Establish `hcont : Continuous fun x : Fin n → ℂ => linEval u x` using `by unfold linEval; fun_prop`. Establish `hwm : Measurable fun x : Fin n → ℂ => Real.log ‖linEval u x‖` using `Real.measurable_log.comp (continuous_norm.comp hcont).measurable`. Use `⟨(hM n d J A _ φ hJ hdim hA (hwm.indicator measurableSet_closedBall) hφ).2.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Take `⟨K, hK, hDK⟩` from `hD n d J A φ R hJ hdim hA hφ`.
+
+Take `⟨L, hL0, hL⟩ : ∃ L : ℝ, 0 ≤ L ∧ ∀ z : EuclideanSpace ℂ (Fin n), ‖z‖ ≤ L * ‖WithLp.ofLp z‖` from `⟨(n : ℝ) ^ (2⁻¹ : ℝ), by positivity, fun z => by`. Simplify `(PiLp.lipschitzWith_toLp 2 (fun _ : Fin n => ℂ)).dist_le_mul (WithLp.ofLp z) 0⟩` using `[dist_zero_right]`. Unfold `HasFiniteIntegral`. Use `(hDK _ hwm).trans_lt (ENNReal.mul_lt_top hK ?_)` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono_set ?_) (lintegral_lt_top hS hF u (L * R) hJ hdim hu)` and prove the remaining obligations.
+
+Introduce and unpack `z ⟨hz, hzB⟩`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Establish `: ‖WithLp.ofLp z‖ ≤ R` using `mem_closedBall_zero_iff.mp hzB`. Conclude with `(hL z).trans (mul_le_mul_of_nonneg_left this hL0)`.
+-/
 theorem LogIntegrable.proof (hM : SheetSumMeasurable.Statement) (hD : ChartMassCompare.Statement)
     (hS : VarSlabMeasure.Statement) (hF : MassFinite.Statement) : LogIntegrable.Statement := by
   intro n d J A u φ R hJ hdim hA hu hφ

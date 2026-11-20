@@ -13,6 +13,11 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Rewrite using `[← Fin.card_Ioi, ← Fintype.card_coe]`. Use `Fintype.card_congr { toFun := fun j => ⟨j.1.1.1, by simpa [Finset.mem_Ioi, ← j.2] using j.1.2⟩ invFun := fun c => ⟨⟨(c.1, i), Finset.mem_Ioi.mp c.2⟩, rfl⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Introduce and unpack `⟨⟨⟨b, a⟩, h⟩, rfl⟩`. Both sides reduce to the same expression. Introduce and unpack `⟨c, hc⟩`.
+
+Both sides reduce to the same expression.
+-/
 theorem card_row_sub (s : ℕ) (i : Fin s) : Fintype.card {j : Low s // j.1.2 = i} = s - 1 - i := by
   rw [← Fin.card_Ioi, ← Fintype.card_coe]
   refine Fintype.card_congr
@@ -35,6 +40,9 @@ noncomputable def rowEquiv {ι : Type} (m : ι → ℕ) (τ : ι) (i : Fin (m τ
       obtain ⟨rfl, h2⟩ := h
       exact ⟨⟨l, eq_of_heq h2⟩, rfl⟩)
 
+/- English proof (translation)
+Simplify using `[coordVec, Finset.sum_apply, EuclideanSpace.single_apply, Pi.single_apply, mul_ite]`.
+-/
 theorem add_sum_coord_apply {n : ℕ} {B : Type} [Fintype B] (e : B → Fin n) (he : Function.Injective e)
     (z : V n) (t : B → ℂ) (k : Fin n) :
     (z + ∑ a, t a • coordVec (e a)) k = z k + ∑ a, if k = e a then t a else 0 := by
@@ -44,6 +52,11 @@ end GlobalTheory.FlagCell2
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Establish `hv : (fun a => star (Option.elim a 1 z)) ≠ 0`. Introduce `h`. Use `congrFun h none` as an intermediate fact. Simplify using `at this`. Use `hQ.dotProduct_mulVec_pos hv` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, star_star, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quad_pos {B : Type} [Fintype B] [DecidableEq B] (Q : Matrix (Option B) (Option B) ℂ) (hQ : Q.PosDef)
     (z : B → ℂ) : 0 < ∑ a, ∑ b, Option.elim a 1 z * Q a b * star (Option.elim b 1 z) := by
   have hv : (fun a => star (Option.elim a 1 z)) ≠ 0 := by
@@ -57,6 +70,43 @@ end GlobalTheory.FlagCell2
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+Take `⟨τ, i⟩` from `x`. Establish `hsm` using `GlobalTheory.CellPotSmooth.cellPot_contDiffAt ι m n d ε G w ⟨τ, i⟩ hG hs`. Establish `hcard : Fintype.card {j : Cell m // j.root = ⟨τ, i⟩} = m τ - 1 - i`. Rewrite using `[← Fintype.card_congr (rowEquiv m τ i), card_row_sub]`. Use `⟨hcard, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only at hG hs hsm ⊢`. Set `e : {j : Low (m τ) // j.1.2 = i} → Fin n` to `fun b => ε.symm (.inr ⟨τ, b.1⟩)`. Establish `he : Function.Injective e`. Introduce `b b' h`. Use `ε.symm.injective h` as an intermediate fact.
+
+Simplify using `only [Sum.inr.injEq, Sigma.mk.inj_iff, heq_eq_eq, true_and] at this`. Conclude with `Subtype.ext this`. Use `set y : Low (m τ) → ℂ := fun s => fb ε w ⟨τ, s⟩ with hy`. Take `⟨Q, hQpd, hQdet, hQg⟩` from `hQ (m τ) (G (bsL ε w) τ) hG y i`. Use `set q : ℂ := ∑ a, ∑ b, Option.elim a 1 (fun a => w (e a)) * Q a b * star (Option.elim b 1 (fun b => w (e b))) with hq`.
+
+Establish `hqpos : 0 < q` using `quad_pos Q hQpd _`. Establish `hgr : grD (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i = q.re` using `hQg y (fun _ _ => rfl)`. Establish `hqre : q = ((grD (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i : ℝ) : ℂ)`. Rewrite using `[hgr]; exact Complex.ext rfl (by simp [(Complex.pos_iff.mp hqpos).2])`. Establish `hq0 : q ≠ 0` using `hqpos.ne'`.
+
+Establish `hstar : ∀ c : Option {j : Low (m τ) // j.1.2 = i}, star (Option.elim c 1 (fun c => w (e c))) = Option.elim c 1 (fun c => star (w (e c)))`. Apply the tactic sequence `intro c; cases c <;> simp`. Establish `hres : ∀ t : {j : Low (m τ) // j.1.2 = i} → ℂ, (fun v => -cellPot ε G ⟨τ, i⟩ v) (w + ∑ a, t a • coordVec (e a)) = Real.log ((∑ a, ∑ b, Option.elim a 1 (fun a => w (e a) + t a) * Q a b * star (Option.elim b 1 (fun b => w (e b) + t b))).re)`. Introduce `t`. Use `set w' := w + ∑ a, t a • coordVec (e a) with hw'`.
+
+Establish `hb : bsL ε w' = bsL ε w`. Use extensionality with `c`. Simplify using `only [bsL_apply, hw', add_sum_coord_apply e he]`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules.
+
+Introduce `a _`. Rewrite using `[if_neg]`. Simplify using `[e]`. Establish `hf : ∀ s : Low (m τ), fb ε w' ⟨τ, s⟩ = y s + if h : s.1.2 = i then t ⟨s, h⟩ else 0`. Introduce `s`.
+
+Simplify using `only [fb, hy, hw', add_sum_coord_apply e he]`. Use `congr 1`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨s, h⟩]`. Simplify using `[e]`.
+
+Introduce `b _ hb`. Rewrite using `[if_neg]`. Introduce `h'`. Conclude with `hb (he (show e ⟨s, h⟩ = e b from h')).symm`. Simplify using the standard rewrite rules.
+
+Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h'`. Use `ε.symm.injective h'` as an intermediate fact. Simplify using `only [e, Sum.inr.injEq, Sigma.mk.inj_iff, heq_eq_eq, true_and] at this`.
+
+Conclude with `h (this ▸ b.2)`. Establish `hfa : ∀ a : Option {j : Low (m τ) // j.1.2 = i}, Option.elim a 1 (fun a => fb ε w' ⟨τ, a.1⟩) = Option.elim a 1 (fun a => w (e a) + t a)`. Introduce and unpack `(_ | b)`. Both sides reduce to the same expression. Simplify using `only [Option.elim, hf, dif_pos b.2]`.
+
+Both sides reduce to the same expression. Simplify using `only [cellPot, neg_neg]`. Rewrite using `[hb, show upM (fb ε w') τ = upU (fun s => fb ε w' ⟨τ, s⟩) from rfl, hQg _ (fun j hj => by rw [hf, dif_neg (ne_of_lt hj)]; simp)]`. Simplify using `only [hfa]`. Establish `hR'` using `hR n {j : Low (m τ) // j.1.2 = i} e he Q hQpd.1 (fun v => -cellPot ε G ⟨τ, i⟩ v) w hsm.1.neg hres q hq hq0`.
+
+Establish `hD'` using `hD {j : Low (m τ) // j.1.2 = i} Q (fun a => w (e a)) (fun b => star (w (e b))) q (by rw [hq]; simp only [hstar]) hq0`. Rewrite using `[← Matrix.det_submatrix_equiv_self (rowEquiv m τ i)]`. Establish `hM : (Matrix.of fun a b : {j : Cell m // j.root = ⟨τ, i⟩} => -leviForm (cellPot ε G ⟨τ, i⟩) w (coordVec (ε.symm (.inr a.1))) (coordVec (ε.symm (.inr b.1)))).submatrix (rowEquiv m τ i) (rowEquiv m τ i) = Matrix.of fun a b : {j : Low (m τ) // j.1.2 = i} => Q (some a) (some b) / q - …`. Use extensionality with `a b`. Use `hR' a b` as an intermediate fact.
+
+Simplify using `only [leviForm_neg, ContinuousLinearMap.neg_apply, hstar] at this`. Rewrite using `[Matrix.submatrix_apply, Matrix.of_apply, Matrix.of_apply, ← this]`. Both sides reduce to the same expression. Rewrite using `[hM, hD', card_row_sub]`. Establish `hQd` using `hQpd.det_pos`.
+
+Establish `hGd` using `hG.det_pos`. Take `⟨hQr, hQi⟩` from `Complex.pos_iff.mp hQd`. Take `⟨hGr, hGi⟩` from `Complex.pos_iff.mp hGd`. Establish `h1 : Q.det = (Q.det.re : ℂ)` using `Complex.ext rfl (by simp [hQi])`. Establish `h2 : (G (bsL ε w) τ).det = ((G (bsL ε w) τ).det.re : ℂ)` using `Complex.ext rfl (by simp [hGi])`.
+
+Establish `hQdet' : Q.det * leadMinor (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i = (G (bsL ε w) τ).det` using `hQdet`. Establish `hQ0 : (Q.det.re : ℂ) ≠ 0` using `by exact_mod_cast hQr.ne'`. Establish `hL : leadMinor (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i = (((G (bsL ε w) τ).det.re / Q.det.re : ℝ) : ℂ)`. Rewrite `hQdet'` using `[h1, h2]`. Use `push_cast`.
+
+Rewrite using `[eq_div_iff hQ0, mul_comm]`. Conclude with `hQdet'`. Rewrite using `[hL, Complex.ofReal_re]`. Use `conv_lhs => rw [h1, hqre]`. Establish `hgpos : 0 < grD (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i` using `hsm.2`.
+
+Use `push_cast`. Establish `: ((G (bsL ε w) τ).det.re : ℂ) ≠ 0` using `by exact_mod_cast hGr.ne'`. Establish `: (grD (upM (fb ε w) τ * G (bsL ε w) τ * (upM (fb ε w) τ)ᴴ) i : ℂ) ≠ 0` using `by exact_mod_cast hgpos.ne'`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem row_levi_det_of (hR : ∀ (n : ℕ) (B : Type) [Fintype B] [DecidableEq B] (e : B → Fin n), Function.Injective e → ∀ (Q : Matrix (Option B) (Option B) ℂ), Q.IsHermitian → ∀ (u : V n → ℝ) (z : V n), ContDiffAt ℝ 2 u z → (∀ t : B → ℂ, u (z + ∑ a, t a • coordVec (e a)) = Real.log ((∑ a, ∑ b, Option.elim a 1 (fun a => z (e a) + t a) * Q a b * star (Option.elim b 1 (fun b => z (e b) + t b))).re)) → ∀ q : ℂ, q = ∑ a, ∑ b, Option.elim a 1 (fun a => z (e a)) * Q a b * star (Option.elim b 1 (fun b => z (e b))) → q ≠ 0 → ∀ a b : B, leviForm u z (coordVec (e a)) (coordVec (e b)) = Q (some a) (some b) / q - (∑ c, Q (some a) c * star (Option.elim c 1 (fun c => z (e c)))) * (∑ c, Option.elim c 1 (fun c => z (e c)) * Q c (some b)) / q ^ 2) (hD : ∀ (B : Type) [Fintype B] [DecidableEq B] (Q : Matrix (Option B) (Option B) ℂ) (z z' : B → ℂ) (q : ℂ), q = ∑ a, ∑ b, Option.elim a 1 z * Q a b * Option.elim b 1 z' → q ≠ 0 → (Matrix.of fun a b : B => Q (some a) (some b) / q - (∑ c, Q (some a) c * Option.elim c 1 z') * (∑ c, Option.elim c 1 z * Q c (some b)) / q ^ 2).det = Q.det / q ^ (Fintype.card B + 1)) (hQ : ∀ (s : ℕ) (G : Matrix (Fin s) (Fin s) ℂ), G.PosDef → ∀ (y : Low s → ℂ) (i : Fin s), ∃ Q : Matrix (Option {j : Low s // j.1.2 = i}) (Option {j : Low s // j.1.2 = i}) ℂ, Q.PosDef ∧ Q.det * leadMinor (upU y * G * (upU y)ᴴ) i = G.det ∧ ∀ y' : Low s → ℂ, (∀ j : Low s, j.1.2 < i → y' j = y j) → grD (upU y' * G * (upU y')ᴴ) i = (∑ a, ∑ b, Option.elim a 1 (fun a => y' a.1) * Q a b * star (Option.elim b 1 (fun b => y' b.1))).re) (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ) (w : V n) (x : Root m) (hG : (G (bsL ε w) x.1).PosDef) (hs : MContDiffAt 2 (fun v => G v x.1) (bsL ε w)) : Fintype.card {j : Cell m // j.root = x} = m x.1 - 1 - x.2 ∧ (Matrix.of fun a b : {j : Cell m // j.root = x} => -leviForm (cellPot ε G x) w (coordVec (ε.symm (.inr a.1))) (coordVec (ε.symm (.inr b.1)))).det = (((G (bsL ε w) x.1).det.re / (leadMinor (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2).re / grD (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2 ^ ((m x.1 - 1 - x.2 : ℕ) + 1) : ℝ) : ℂ) := by
   obtain ⟨τ, i⟩ := x
   have hsm := GlobalTheory.CellPotSmooth.cellPot_contDiffAt ι m n d ε G w ⟨τ, i⟩ hG hs
@@ -153,6 +203,9 @@ end GlobalTheory.FlagCell2
 
 namespace GlobalTheory.FlagCell2
 
+/- English proof (translation)
+The claim follows from `row_levi_det_of GlobalTheory.LogHermHess.leviForm_log_herm GlobalTheory.det_schur_bilinear_entry GlobalTheory.FlagCell2.exists_posDef_grD ι m n d ε G w x hG hs`.
+-/
 theorem row_levi_det (ι : Type) [Fintype ι] (m : ι → ℕ) (n d : ℕ) (ε : Fin n ≃ Fin d ⊕ Cell m) (G : V d → Mat m ℂ)
     (w : V n) (x : Root m) (hG : (G (bsL ε w) x.1).PosDef) (hs : MContDiffAt 2 (fun v => G v x.1) (bsL ε w)) :
     Fintype.card {j : Cell m // j.root = x} = m x.1 - 1 - x.2 ∧ (Matrix.of fun a b : {j : Cell m // j.root = x} => -leviForm (cellPot ε G x) w (coordVec (ε.symm (.inr a.1))) (coordVec (ε.symm (.inr b.1)))).det = (((G (bsL ε w) x.1).det.re / (leadMinor (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2).re / grD (upM (fb ε w) x.1 * G (bsL ε w) x.1 * (upM (fb ε w) x.1)ᴴ) x.2 ^ ((m x.1 - 1 - x.2 : ℕ) + 1) : ℝ) : ℂ) :=

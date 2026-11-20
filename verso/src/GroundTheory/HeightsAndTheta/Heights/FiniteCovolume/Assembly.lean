@@ -68,21 +68,42 @@ section Matrices
 
 variable (ι : Type*) [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `MajorantBound.proof ι`.
+-/
 theorem MajorantBound.full : MajorantBound.Statement ι := MajorantBound.proof ι
 
+/- English proof (translation)
+The claim follows from `EigenspacesOrthogonal.proof ι`.
+-/
 theorem EigenspacesOrthogonal.full : EigenspacesOrthogonal.Statement ι :=
   EigenspacesOrthogonal.proof ι
 
+/- English proof (translation)
+The claim follows from `EigenReflection.proof ι`.
+-/
 theorem EigenReflection.full : EigenReflection.Statement ι := EigenReflection.proof ι
 
+/- English proof (translation)
+The claim follows from `EigenReflectionMaps.proof ι (EigenReflection.full ι) (EigenspacesOrthogonal.full ι)`.
+-/
 theorem EigenReflectionMaps.full : EigenReflectionMaps.Statement ι :=
   EigenReflectionMaps.proof ι (EigenReflection.full ι) (EigenspacesOrthogonal.full ι)
 
+/- English proof (translation)
+The claim follows from `IsotropicSplit.proof ι (EigenspacesOrthogonal.full ι)`.
+-/
 theorem IsotropicSplit.full : IsotropicSplit.Statement ι :=
   IsotropicSplit.proof ι (EigenspacesOrthogonal.full ι)
 
+/- English proof (translation)
+The claim follows from `PhaseOnMinus.proof ι`.
+-/
 theorem PhaseOnMinus.full : PhaseOnMinus.Statement ι := PhaseOnMinus.proof ι
 
+/- English proof (translation)
+The claim follows from `KTransitive.proof ι (IsotropicSplit.full ι) (EigenReflectionMaps.full ι) (PhaseOnMinus.full ι) (EigenspacesOrthogonal.full ι)`.
+-/
 theorem KTransitive.full : KTransitive.Statement ι :=
   KTransitive.proof ι (IsotropicSplit.full ι) (EigenReflectionMaps.full ι) (PhaseOnMinus.full ι)
     (EigenspacesOrthogonal.full ι)
@@ -91,27 +112,45 @@ end Matrices
 
 section Groups
 
+/- English proof (translation)
+The claim follows from `UnfoldOrbit.proof G`.
+-/
 theorem UnfoldOrbit.full (G : Type*) [Group G] [MeasurableSpace G] [MeasurableMul G] :
     UnfoldOrbit.Statement G :=
   UnfoldOrbit.proof G
 
+/- English proof (translation)
+The claim follows from `DiscreteFundamentalDomain.proof G`.
+-/
 theorem DiscreteFundamentalDomain.full (G : Type*) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] : DiscreteFundamentalDomain.Statement G :=
   DiscreteFundamentalDomain.proof G
 
+/- English proof (translation)
+The claim follows from `TorusIntegralHomogeneous.proof κ`.
+-/
 theorem TorusIntegralHomogeneous.full (κ : Type*) [Fintype κ] :
     TorusIntegralHomogeneous.Statement κ :=
   TorusIntegralHomogeneous.proof κ
 
+/- English proof (translation)
+The claim follows from `BoundedIndexSubgroupsFinite.proof G`.
+-/
 theorem BoundedIndexSubgroupsFinite.full (G : Type*) [AddCommGroup G] :
     BoundedIndexSubgroupsFinite.Statement G :=
   BoundedIndexSubgroupsFinite.proof G
 
+/- English proof (translation)
+The claim follows from `MinkowskiVolumeForm.proof V d`.
+-/
 theorem MinkowskiVolumeForm.full (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] (d : ℕ) [Fact (finrank ℝ V = d)] : MinkowskiVolumeForm.Statement V d :=
   MinkowskiVolumeForm.proof V d
 
+/- English proof (translation)
+The claim follows from `VolumeFormIntComb.proof V d`.
+-/
 theorem VolumeFormIntComb.full (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] (d : ℕ) [Fact (finrank ℝ V = d)] : VolumeFormIntComb.Statement V d :=
   VolumeFormIntComb.proof V d
@@ -122,34 +161,70 @@ section Numbers
 
 variable (E : Type*) [Field E] [NumberField E]
 
+/- English proof (translation)
+The claim follows from `IntegerSmallAtPlaces.proof E`.
+-/
 theorem IntegerSmallAtPlaces.full : IntegerSmallAtPlaces.Statement E := IntegerSmallAtPlaces.proof E
 
+/- English proof (translation)
+The claim follows from `CoeffLatticeBasis.proof E`.
+-/
 theorem CoeffLatticeBasis.full : CoeffLatticeBasis.Statement E := CoeffLatticeBasis.proof E
 
+/- English proof (translation)
+The claim follows from `IndexLeDet.proof E`.
+-/
 theorem IndexLeDet.full : IndexLeDet.Statement E := IndexLeDet.proof E
 
+/- English proof (translation)
+The claim follows from `WeightedNormSq.proof E`.
+-/
 theorem WeightedNormSq.full : WeightedNormSq.Statement E := WeightedNormSq.proof E
 
+/- English proof (translation)
+The claim follows from `IdealClassesFinite.proof E`.
+-/
 theorem IdealClassesFinite.full : IdealClassesFinite.Statement E := IdealClassesFinite.proof E
 
+/- English proof (translation)
+The claim follows from `IntegralFamilyBound.proof E`.
+-/
 theorem IntegralFamilyBound.full : IntegralFamilyBound.Statement E := IntegralFamilyBound.proof E
 
+/- English proof (translation)
+The claim follows from `CongruenceUnitsFiniteIndex.proof E`.
+-/
 theorem CongruenceUnitsFiniteIndex.full : CongruenceUnitsFiniteIndex.Statement E :=
   CongruenceUnitsFiniteIndex.proof E
 
+/- English proof (translation)
+The claim follows from `WeightedSpaceDim.proof E`.
+-/
 theorem WeightedSpaceDim.full [IsTotallyComplex E] : WeightedSpaceDim.Statement E :=
   WeightedSpaceDim.proof E
 
+/- English proof (translation)
+The claim follows from `WeightedIndexBound.proof E (CoeffLatticeBasis.full E) (IndexLeDet.full E) (WeightedNormSq.full E) (WeightedSpaceDim.full E) (MinkowskiVolumeForm.full _ _) (VolumeFormIntComb.full _ _)`.
+-/
 theorem WeightedIndexBound.full [IsTotallyComplex E] : WeightedIndexBound.Statement E :=
   WeightedIndexBound.proof E (CoeffLatticeBasis.full E) (IndexLeDet.full E) (WeightedNormSq.full E)
     (WeightedSpaceDim.full E) (MinkowskiVolumeForm.full _ _) (VolumeFormIntComb.full _ _)
 
 variable (W : Type*) [AddCommGroup W] [Module E W]
 
+/- English proof (translation)
+The claim follows from `LineIndexNeZero.proof E W`.
+-/
 theorem LineIndexNeZero.full : LineIndexNeZero.Statement E W := LineIndexNeZero.proof E W
 
+/- English proof (translation)
+The claim follows from `LineIndexCoeffs.proof E W`.
+-/
 theorem LineIndexCoeffs.full : LineIndexCoeffs.Statement (E := E) W := LineIndexCoeffs.proof E W
 
+/- English proof (translation)
+The claim follows from `LineCoeffsFG.proof W`.
+-/
 theorem LineCoeffsFG.full : LineCoeffsFG.Statement (E := E) W := LineCoeffsFG.proof W
 
 end Numbers
@@ -161,52 +236,109 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 variable (h : HermitianForm F E W) (v : Basis ι E W)
 
+/- English proof (translation)
+The claim follows from `HermAtPlace.proof h v`.
+-/
 theorem HermAtPlace.full : HermAtPlace.Statement h v := HermAtPlace.proof h v
 
+/- English proof (translation)
+The claim follows from `GramAtData.proof h v`.
+-/
 theorem GramAtData.full : GramAtData.Statement h v := GramAtData.proof h v
 
+/- English proof (translation)
+The claim follows from `ArchInvariant.proof h v`.
+-/
 theorem ArchInvariant.full : ArchInvariant.Statement h v := ArchInvariant.proof h v
 
+/- English proof (translation)
+The claim follows from `LenSq.proof h v`.
+-/
 theorem LenSq.full : LenSq.Statement h v := LenSq.proof h v
 
+/- English proof (translation)
+The claim follows from `VecAtNeZero.proof v`.
+-/
 theorem VecAtNeZero.full : VecAtNeZero.Statement v := VecAtNeZero.proof v
 
+/- English proof (translation)
+The claim follows from `WeightedLenSmul.proof h v (LenSq.full h v)`.
+-/
 theorem WeightedLenSmul.full : WeightedLenSmul.Statement h v :=
   WeightedLenSmul.proof h v (LenSq.full h v)
 
+/- English proof (translation)
+The claim follows from `WeightPos.proof h v (VecAtNeZero.full v)`.
+-/
 theorem WeightPos.full : WeightPos.Statement h v := WeightPos.proof h v (VecAtNeZero.full v)
 
+/- English proof (translation)
+The claim follows from `MajorantExists.proof h v (GramAtData.full h v)`.
+-/
 theorem MajorantExists.full : MajorantExists.Statement h v :=
   MajorantExists.proof h v (GramAtData.full h v)
 
+/- English proof (translation)
+The claim follows from `ArchLatticeDiscrete.proof h v`.
+-/
 theorem ArchLatticeDiscrete.full : ArchLatticeDiscrete.Statement h v := ArchLatticeDiscrete.proof h v
 
+/- English proof (translation)
+The claim follows from `LenCauchySchwarz.proof h v`.
+-/
 theorem LenCauchySchwarz.full : LenCauchySchwarz.Statement h v := LenCauchySchwarz.proof h v
 
+/- English proof (translation)
+The claim follows from `BoundedInverseCompact.proof h v`.
+-/
 theorem BoundedInverseCompact.full : BoundedInverseCompact.Statement h v :=
   BoundedInverseCompact.proof h v
 
+/- English proof (translation)
+The claim follows from `GramDetermines.proof h`.
+-/
 theorem GramDetermines.full : GramDetermines.Statement h := GramDetermines.proof h
 
+/- English proof (translation)
+The claim follows from `WittPartner.proof h`.
+-/
 theorem WittPartner.full : WittPartner.Statement h := WittPartner.proof h
 
+/- English proof (translation)
+The claim follows from `ComplementForm.proof h`.
+-/
 theorem ComplementForm.full : ComplementForm.Statement h := ComplementForm.proof h
 
+/- English proof (translation)
+The claim follows from `IsotropicScaling.proof h (WittPartner.full h)`.
+-/
 theorem IsotropicScaling.full : IsotropicScaling.Statement h :=
   IsotropicScaling.proof h (WittPartner.full h)
 
+/- English proof (translation)
+The claim follows from `HyperbolicPairTransitive.proof h`.
+-/
 theorem HyperbolicPairTransitive.full [FiniteDimensional E W] :
     HyperbolicPairTransitive.Statement h :=
   HyperbolicPairTransitive.proof h
 
+/- English proof (translation)
+The claim follows from `ShortVectorIsotropic.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ArchInvariant.full h v) (MajorantBound.full ι) (LenSq.full h v) (IntegerSmallAtPlaces.full E)`.
+-/
 theorem ShortVectorIsotropic.full : ShortVectorIsotropic.Statement h v :=
   ShortVectorIsotropic.proof h v (HermAtPlace.full h v) (GramAtData.full h v) (ArchInvariant.full h v)
     (MajorantBound.full ι) (LenSq.full h v) (IntegerSmallAtPlaces.full E)
 
+/- English proof (translation)
+The claim follows from `ShortestVectorIndex.proof h v (LineIndexCoeffs.full E W) (LineCoeffsFG.full E W) (WeightedLenSmul.full h v) (WeightPos.full h v) (WeightedIndexBound.full E)`.
+-/
 theorem ShortestVectorIndex.full : ShortestVectorIndex.Statement h v :=
   ShortestVectorIndex.proof h v (LineIndexCoeffs.full E W) (LineCoeffsFG.full E W)
     (WeightedLenSmul.full h v) (WeightPos.full h v) (WeightedIndexBound.full E)
 
+/- English proof (translation)
+The claim follows from `ParabolicDecomposition.proof h v (KTransitive.full ι) (HermAtPlace.full h v) (GramAtData.full h v) (ArchInvariant.full h v) (VecAtNeZero.full v)`.
+-/
 theorem ParabolicDecomposition.full : ParabolicDecomposition.Statement h v :=
   ParabolicDecomposition.proof h v (KTransitive.full ι) (HermAtPlace.full h v) (GramAtData.full h v)
     (ArchInvariant.full h v) (VecAtNeZero.full v)
@@ -218,6 +350,9 @@ section Conditional
 variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 
+/- English proof (translation)
+The claim follows from `MahlerCompactness.proof h v (BoundedGenerators.proof h v hR hA hT) (LenCauchySchwarz.full h v) (GramDetermines.full h) (BoundedInverseCompact.full h v)`.
+-/
 theorem MahlerCompactness.full_of {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*}
     [Fintype ι] [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W)
     (hR : ReducedBasisBound.Statement) (hA : ArchCovolumeBound.Statement h v)
@@ -225,11 +360,17 @@ theorem MahlerCompactness.full_of {W : Type*} [AddCommGroup W] [Module E W] {ι 
   MahlerCompactness.proof h v (BoundedGenerators.proof h v hR hA hT) (LenCauchySchwarz.full h v)
     (GramDetermines.full h) (BoundedInverseCompact.full h v)
 
+/- English proof (translation)
+The claim follows from `AdaptedReduction.proof h (HyperbolicPairTransitive.full h) hLN hCL`.
+-/
 theorem AdaptedReduction.full_of {W : Type*} [AddCommGroup W] [Module E W] [FiniteDimensional E W]
     (h : HermitianForm F E W) (hLN : LineNormalForm.Statement h)
     (hCL : ComplementLattice.Statement h) : AdaptedReduction.Statement h :=
   AdaptedReduction.proof h (HyperbolicPairTransitive.full h) hLN hCL
 
+/- English proof (translation)
+The claim follows from `LinePairOrbitsFinite.proof h hB (WittPartner.full h) (ComplementForm.full h) hCE (AdaptedReduction.full_of h hLN hCL)`.
+-/
 theorem LinePairOrbitsFinite.full_of {W : Type u} [AddCommGroup W] [Module E W]
     [FiniteDimensional E W] (h : HermitianForm F E W)
     (hB : LatticeOrbitsFiniteBelow.{u} F E (finrank E W)) (hCE : ComplementExtension.Statement h)
@@ -238,6 +379,9 @@ theorem LinePairOrbitsFinite.full_of {W : Type u} [AddCommGroup W] [Module E W]
   LinePairOrbitsFinite.proof h hB (WittPartner.full h) (ComplementForm.full h) hCE
     (AdaptedReduction.full_of h hLN hCL)
 
+/- English proof (translation)
+The claim follows from `LatticeOrbitsFinite.proof h (Module.finBasis E W) (MahlerCompactness.full_of h _ hR hA hT) (MajorantExists.full h _) (ShortVectorIsotropic.full h _) (LinePairOrbitsFinite.full_of h hB hCE hLN hCL)`.
+-/
 theorem LatticeOrbitsFinite.step_of {W : Type u} [AddCommGroup W] [Module E W]
     [FiniteDimensional E W] (h : HermitianForm F E W)
     (hB : LatticeOrbitsFiniteBelow.{u} F E (finrank E W)) (hR : ReducedBasisBound.Statement)
@@ -249,6 +393,9 @@ theorem LatticeOrbitsFinite.step_of {W : Type u} [AddCommGroup W] [Module E W]
     (MajorantExists.full h _) (ShortVectorIsotropic.full h _)
     (LinePairOrbitsFinite.full_of h hB hCE hLN hCL)
 
+/- English proof (translation)
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `W _ _ _ h hN`. Conclude with `LatticeOrbitsFinite.step_of h (ih _ hN) hR (hA W h _ _) (hT W h _ _) (hCE W h) (hLN W h) (hCL W h)`.
+-/
 theorem LatticeOrbitsFiniteBelow.of_steps (hR : ReducedBasisBound.Statement)
     (hA : ∀ (W : Type u) [AddCommGroup W] [Module E W] [FiniteDimensional E W]
       (h : HermitianForm F E W) (n : ℕ) (v : Basis (Fin n) E W), ArchCovolumeBound.Statement h v)
@@ -267,6 +414,9 @@ theorem LatticeOrbitsFiniteBelow.of_steps (hR : ReducedBasisBound.Statement)
     exact LatticeOrbitsFinite.step_of h (ih _ hN) hR (hA W h _ _) (hT W h _ _) (hCE W h)
       (hLN W h) (hCL W h)
 
+/- English proof (translation)
+The claim follows from `ScalingLaw.proof h v hU (VectorOrbitsFinite.proof h hP (IsotropicScaling.full h) (BoundedIndexSubgroupsFinite.full W) (LineIndexNeZero.full E W)) (UnfoldOrbit.full _) (DiscreteFundamentalDomain.full _) (ArchLatticeDiscrete.full h v)`.
+-/
 theorem ScalingLaw.full_of {W : Type*} [AddCommGroup W] [Module E W] [FiniteDimensional E W]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W)
     (hP : LinePairOrbitsFinite.Statement h) (hU : UnfoldingIntegral.Statement h v) :
@@ -276,6 +426,9 @@ theorem ScalingLaw.full_of {W : Type*} [AddCommGroup W] [Module E W] [FiniteDime
       (LineIndexNeZero.full E W))
     (UnfoldOrbit.full _) (DiscreteFundamentalDomain.full _) (ArchLatticeDiscrete.full h v)
 
+/- English proof (translation)
+The claim follows from `UnfoldingIntegral.proof h v (UnfoldingTorus.proof h v hUA hHP hSC) (TorusIntegralHomogeneous.full _) (DiscreteFundamentalDomain.full _)`.
+-/
 theorem UnfoldingIntegral.full_of {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*}
     [Fintype ι] [DecidableEq ι] (h : HermitianForm F E W) (v : Basis ι E W)
     (hUA : ∀ M : Majorant h v,
@@ -285,6 +438,9 @@ theorem UnfoldingIntegral.full_of {W : Type*} [AddCommGroup W] [Module E W] {ι 
   UnfoldingIntegral.proof h v (UnfoldingTorus.proof h v hUA hHP hSC)
     (TorusIntegralHomogeneous.full _) (DiscreteFundamentalDomain.full _)
 
+/- English proof (translation)
+The claim follows from `ArithmeticCovolumeFinite.proof h v (ScalingLaw.full_of h v (LinePairOrbitsFinite.full_of h hL hCE hLN hCL) (UnfoldingIntegral.full_of h v hUA hHP hSC)) (MahlerCompactness.full_of h v hR hA hT) (ShortVectorIsotropic.full h v) (ShortestVectorIndex.full h v) (IntegralFamilyBound.ful …`.
+-/
 theorem ArithmeticCovolumeFinite.step_of {W : Type u} [AddCommGroup W] [Module E W]
     [FiniteDimensional E W] {ι : Type*} [Fintype ι] [DecidableEq ι] (h : HermitianForm F E W)
     (v : Basis ι E W) (hL : LatticeOrbitsFiniteBelow.{u} F E (finrank E W))
@@ -302,6 +458,9 @@ theorem ArithmeticCovolumeFinite.step_of {W : Type u} [AddCommGroup W] [Module E
     (ShortestVectorIndex.full h v) (IntegralFamilyBound.full E) (MajorantExists.full h v)
     (ArchLatticeDiscrete.full h v) hPB
 
+/- English proof (translation)
+Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `W _ _ _ h n v hN`. Conclude with `ArithmeticCovolumeFinite.step_of h v (LatticeOrbitsFiniteBelow.of_steps hR hA hT hCE hLN hCL _) hR (hA W h n v) (hT W h n v) (hCE W h) (hLN W h) (hCL W h) (hUA W h n v) (hHP W h n v) (hSC W h n v (ih _ hN)) (hPB W h n v)`.
+-/
 theorem CovolumeFiniteBelow.of_steps (hR : ReducedBasisBound.Statement)
     (hA : ∀ (W : Type u) [AddCommGroup W] [Module E W] [FiniteDimensional E W]
       (h : HermitianForm F E W) (n : ℕ) (v : Basis (Fin n) E W), ArchCovolumeBound.Statement h v)
@@ -334,6 +493,9 @@ theorem CovolumeFiniteBelow.of_steps (hR : ReducedBasisBound.Statement)
       (hCE W h) (hLN W h) (hCL W h) (hUA W h n v) (hHP W h n v) (hSC W h n v (ih _ hN))
       (hPB W h n v)
 
+/- English proof (translation)
+The claim follows from `AdelicCovolumeFinite.proof h v hL hC hAU hAL hDC`.
+-/
 theorem AdelicCovolumeFinite.full_of {W : Type*} [AddCommGroup W] [Module E W]
     [FiniteDimensional E W] {ι : Type*} [Fintype ι] [DecidableEq ι] (h : HermitianForm F E W)
     (v : Basis ι E W) (hL : LatticeOrbitsFinite.Statement h)

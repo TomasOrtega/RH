@@ -25,6 +25,13 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
   {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} {w : Plc F} {τ : SmIrr (GLw n w)} {B : Multiset ℂˣ}
 end
+/- English proof (translation)
+Take `⟨r, HT, hc, hs, -, -, hLG, -, hcusp⟩` from `_root_.UpperTheory.V.Z.Win.Gu.galUnitaryT_of_printsH H E Ω hE l hl2 ι n hn σ hσ`. Establish `hagree : ∀ᶠ w : Plc E in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 → ∃ B, Af.FrobEig ι r w B ∧ Af.FrobEig ι ρ w B` using `by filter_upwards [ev_offL (K := E) l, unram_ev hσ, hρF] with w hl hu hw hd`. Establish `hsp` using `UpperTheory.isSplitAt_of_unramified_of_inertiaDeg_eq_one E w (hE w) hd`. Take `⟨τ, hτ⟩` from `(GlobalTheory.SplitComp.exists_comp_and_unique E n σ hσ w hsp).1`. Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 (GlobalTheory.SphBC.isSpherical_of_isCompAlong_split hσ hsp τ.ρ hτ hu)`.
+
+Take `⟨B, hB⟩` from `(_root_.UpperTheory.V.Af.satake_local_of_printed_results H.toClassicalTheorems E n w τ).1 ⟨x, h0, GlobalTheory.LGrp.mem_fixed.1 hx⟩`. Conclude with `⟨_, _root_.UpperTheory.Gal.projectedFormsSystemPart.frobLG'_alt H.toClassicalTheorems hc hl hB (hLG w hsp τ hτ).1, hw hsp τ hτ B hB⟩`. Establish `e : Af.RepIso r ρ` using `iso_deg_one ι r ρ hc hρc hs (ss_irr hρi) hagree`. Take `⟨π, p1, p2, p3, -, p4, p5⟩` from `hcusp (irr_conj (Af.RepIso.symm' e) hρi)`. Use `⟨π, p1, p2, ⟨ss_irr hρi, p3.2.mono fun w ⟨b, hb, hf⟩ => ⟨b, hb, hf.of_iso e⟩⟩, p4, fun w hw τ => ⟨p5 w hw τ, fun hτ => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨τ', hτ'⟩` from `(_root_.UpperTheory.V.Af.local_comp_complex_of_printed_results H.toClassicalTheorems E n π w).1`. Conclude with `(GlobalTheory.BCT.isLocComp_iff_equiv hτ' τ).2 (UpperTheory.building_component_uniqueness E n σ hσ w hw _ _ _ _ hτ (p5 w hw τ' hτ'))`.
+-/
 theorem link2_alt (H : _root_.UpperTheory.V.Af.HypothesesH') (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (hE : ∀ w : Plc E, Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) (l : ℕ) [Fact l.Prime] (hl2 : l ≠ 2)
     (ι : Qbar l ≃+* ℂ) (n : ℕ) (hn : 1 ≤ n) (σ : Submodule ℂ (UA E n → ℂ)) (hσ : IsAutRepU σ)

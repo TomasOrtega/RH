@@ -24,14 +24,33 @@ variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 def rpt (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) : X.B.I.GA :=
   (Formalism.L2.SG.Pf.ratPt_holds D X n hn).choose
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.SG.Pf.ratPt_holds D X n hn).choose_spec`.
+-/
 theorem rpt_spec (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hn : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) :
     RatLink X (rpt X n hn) n :=
   (Formalism.L2.SG.Pf.ratPt_holds D X n hn).choose_spec
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.TermOp.Vanish.ratLink_unique X (rpt_spec X n hn) hx`.
+-/
 theorem rpt_eq {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT) {x : X.B.I.GA}
     (hx : RatLink X x n) : rpt X n hn = x :=
   Formalism.L2.SG.TermOp.Vanish.ratLink_unique X (rpt_spec X n hn) hx
 
+/- English proof (translation)
+Take `⟨M, -, hM1, -, hM3⟩` from `hx`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace X.B.I.F))`. Establish `hu : uMat ((1 : X.B.I.GA).1 v) = 1` using `by simp [uMat]`. Establish `h` using `hM1 v`. Rewrite `h` using `[h1, show (1 : X.B.I.Ginf) = (1 : X.B.I.GA).1 from rfl, hu]`.
+
+Establish `hMφ : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) = 1`. Establish `e` using `congrArg (fun A => X.B.I.P v * A * (X.B.I.P v)⁻¹) h`. Simplify using `only [Matrix.mul_one, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv] at e`. Rewrite `e` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv, Matrix.one_mul, Matrix.mul_assoc, Formalism.MainNotions.LeviCoordinates.rrg_P_mul_inv, Matrix.mul_one]`. Conclude with `e.symm`.
+
+Establish `hM : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = 1`. Use extensionality with `i j`. Use `congrFun (congrFun hMφ i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Apply `(X.B.I.φ v).injective` to reduce the goal to its premises.
+
+Rewrite using `[this]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`.
+
+Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `y`. Use `hM3 y` as an intermediate fact. Rewrite `this` using `[hM, Matrix.one_mulVec]`. Apply `X.bas.equivFun.injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Conclude with `X.ιE.symm.injective (congrFun this i)`.
+-/
 theorem ratLink_inf_one {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n) (h1 : x.1 = 1) :
     n = 1 := by
   obtain ⟨M, -, hM1, -, hM3⟩ := hx
@@ -68,6 +87,13 @@ section Main
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
 
+/- English proof (translation)
+Take `⟨_, _, hL, hU, hZ⟩` from `hN`. Establish `hZ1 : Zhat F0 F'.fl * sgnM D.R.rS = L * ptMat w * U` using `by rw [← zhatOM_eq]; exact hZ`. Use `⟨by rw [lo_det hL]; exact isUnit_one, ?_, hZ1⟩` and prove the remaining obligations. Establish `hZe : Zhat F0 F'.fl = L * ptMat w * U * sgnM D.R.rS`. Rewrite using `[← hZ1, Matrix.mul_assoc, sgnM_sq, Matrix.mul_one]`.
+
+Rewrite using `[isUnit_iff_ne_zero, hZe, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, lo_det hL, up_det hU, one_mul, mul_one]`. Use `mul_ne_zero (ptMat_det w) ?_` and prove the remaining obligations. Introduce `h0`. Use `congrArg Matrix.det (sgnM_sq (K := D.host.E) (r := D.R.rS))` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`.
+
+Conclude with `zero_ne_one this`.
+-/
 theorem nr_units {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} {t : Formalism.L2.SG.TermDef.Term D u u' F0 what₂}
     {w : Point D.host.E (D.R.rS + 1)} {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {L U : MatR D}
@@ -86,6 +112,11 @@ theorem nr_units {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
   rw [Matrix.det_mul, h0, zero_mul, Matrix.det_one] at this
   exact zero_ne_one this
 
+/- English proof (translation)
+Establish `h' : Formalism.DoubleCosetMeasures.IsUpUni U`. Use `⟨?_, fun a => (h a a).2 rfl⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `(h i j).1 hij`. Establish `h2` using `Formalism.DoubleCosetMeasures.isUpUni_inv K h'`.
+
+Introduce `i j`. Conclude with `⟨fun hij => h2.1 hij, fun hij => hij ▸ h2.2 i⟩`.
+-/
 private theorem isUpUni_inv' {N : ℕ} {K : Type} [Field K] {U : Matrix (Fin N) (Fin N) K}
     (h : IsUpUni U) : IsUpUni U⁻¹ := by
   have h' : Formalism.DoubleCosetMeasures.IsUpUni U := by
@@ -96,6 +127,19 @@ private theorem isUpUni_inv' {N : ℕ} {K : Type} [Field K] {U : Matrix (Fin N) 
   intro i j
   exact ⟨fun hij => h2.1 hij, fun hij => hij ▸ h2.2 i⟩
 
+/- English proof (translation)
+Establish `hBinv : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`. Establish `hLinv : L⁻¹ * L = 1` using `Matrix.nonsing_inv_mul L hL`. Establish `hUinv : U * U⁻¹ = 1` using `Matrix.mul_nonsing_inv U hU`. Establish `hZinv : Z⁻¹ * Z = 1` using `Matrix.nonsing_inv_mul Z hZ`. Establish `h1 : W * b = B⁻¹ * W` using `by conv_rhs => rw [← hBW]`.
+
+Simplify using `only [← Matrix.mul_assoc, hBinv, Matrix.one_mul]`. Establish `hZe : Z = L * W * U * S`. Rewrite using `[← hZ1, Matrix.mul_assoc, hS2, Matrix.mul_one]`. Establish `hmain : L * B⁻¹ * L⁻¹ * Z = Z * (S * (U⁻¹ * b * U) * S)`. Establish `e1 : Z * (S * (U⁻¹ * b * U) * S) = L * (B⁻¹ * W) * U * S`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = L * W * (U * U⁻¹) * b * U * S := by`. Rewrite using `[hZ1]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = L * (W * b) * U * S := by`. Rewrite using `[hUinv, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = L * (B⁻¹ * W) * U * S := by rw [h1]`. Rewrite using `[e1]`.
+
+Use `conv_lhs => rw [hZe]`. Simplify using `only [← Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_assoc (L * B⁻¹) L⁻¹ L, hLinv, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Z⁻¹ * (Z * (S * (U⁻¹ * b * U) * S)) := by rw [hmain]`. Use `_ = S * (U⁻¹ * b * U) * S := by rw [← Matrix.mul_assoc, hZinv, Matrix.one_mul]`.
+-/
 private theorem conj_lemma_2 {N : ℕ} {K : Type} [Field K] (Z L B W U b S : Matrix (Fin N) (Fin N) K)
     (hZ : IsUnit Z.det) (hL : IsUnit L.det) (hU : IsUnit U.det) (hB : IsUnit B.det)
     (hS2 : S * S = 1) (hZ1 : Z * S = L * W * U) (hBW : B * W * b = W) :
@@ -127,6 +171,11 @@ private theorem conj_lemma_2 {N : ℕ} {K : Type} [Field K] (Z L B W U b S : Mat
     _ = Z⁻¹ * (Z * (S * (U⁻¹ * b * U) * S)) := by rw [hmain]
     _ = S * (U⁻¹ * b * U) * S := by rw [← Matrix.mul_assoc, hZinv, Matrix.one_mul]
 
+/- English proof (translation)
+Introduce `i j`. Unfold `sgnM`. Simplify using `only [Matrix.diagonal_mul, Matrix.mul_diagonal]`. Use `⟨fun hij => ?_, fun hij => ?_⟩` and prove the remaining obligations. Rewrite using `[(hB i j).1 hij, mul_zero, zero_mul]`.
+
+Substitute `hij` using the available equality. Rewrite using `[(hB i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`.
+-/
 private theorem isUpUni_sgnM_conj {r : ℕ} {K : Type} [Field K] {B : Matrix (Fin (r + 1)) (Fin (r + 1)) K}
     (hB : IsUpUni B) : IsUpUni ((sgnM r : Matrix (Fin (r + 1)) (Fin (r + 1)) K) * B * sgnM r) := by
   intro i j
@@ -137,6 +186,17 @@ private theorem isUpUni_sgnM_conj {r : ℕ} {K : Type} [Field K] {B : Matrix (Fi
   · subst hij
     rw [(hB i i).2 rfl, mul_one, ← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]
 
+/- English proof (translation)
+Take `⟨_, b, hb, hβW⟩` from `hβ`. Establish `hLd : IsUnit L.det`. Establish `h : L.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular L (fun i j hij => (hL i j).1 (OrderDual.toDual_lt_toDual.mp hij))]`. Conclude with `Finset.prod_eq_one fun i _ => (hL i i).2 rfl`.
+
+Rewrite using `[h]`. Conclude with `isUnit_one`. Establish `hUd : IsUnit U.det`. Establish `h : U.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => (hU i j).1 hij)]`.
+
+Conclude with `Finset.prod_eq_one fun i _ => (hU i i).2 rfl`. Rewrite using `[h]`. Conclude with `isUnit_one`. Establish `hS2 : (sgnM D.R.rS : MatR D) * sgnM D.R.rS = 1`. Unfold `sgnM`.
+
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← pow_add, ← two_mul, pow_mul, neg_one_sq, one_pow]`. Unfold `P'm`.
+
+Rewrite using `[conj_lemma_2 _ _ _ _ _ _ _ hZu hLd hUd (Matrix.isUnits_det_units β) hS2 hZ1 hβW]`. Conclude with `isUpUni_sgnM_conj (Formalism.L2.SG.Pf.isUpUni_mul (Formalism.L2.SG.Pf.isUpUni_mul (isUpUni_inv' hU) hb) hU)`.
+-/
 theorem P'm_up_st {u' : D.what₂.Word} {u : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {F'' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'').det)
@@ -171,6 +231,9 @@ section Phi
 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Establish `h : L.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular L (fun i j hij => (hL i j).1 (OrderDual.toDual_lt_toDual.mp hij))]`. Conclude with `Finset.prod_eq_one fun i _ => (hL i i).2 rfl`. Rewrite using `[h]`. Conclude with `isUnit_one`.
+-/
 theorem hLu_of {L : MatR D} (hL : IsLoUni L) : IsUnit L.det := by
   have h : L.det = 1 := by
     rw [Matrix.det_of_lowerTriangular L (fun i j hij => (hL i j).1 (OrderDual.toDual_lt_toDual.mp hij))]
@@ -178,6 +241,9 @@ theorem hLu_of {L : MatR D} (hL : IsLoUni L) : IsUnit L.det := by
   rw [h]
   exact isUnit_one
 
+/- English proof (translation)
+Establish `hβ : (β : GLR D) ∈ StSet (ptMat w)` using `β.2`. Introduce `x y`. Conclude with `tw_isom hL (hLu_of hL) hZu hGr (β : GLR D) hβ.1 (P'm_up_st hL hU hZu hZ1 hβ) x y`.
+-/
 theorem tw_isom_st (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F'' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'').det)
@@ -213,12 +279,20 @@ def Phi (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     show (rpt X _ _).1 = (rpt X _ _).1 * (rpt X _ _).1
     rw [rpt_eq X _ hx, Prod.fst_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Phi_apply (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F'' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'').det)
     (hZ1 : Zhat F0 F'' * sgnM D.R.rS = L * ptMat w * U) (hGr : IsUnit (gramOf (gg F0 F'')).det) (β : StG w) :
     Phi X F0 F'' hL hU hZu hZ1 hGr β = (rpt X _ (tw_isom_st F0 F'' hL hU hZu hZ1 hGr β⁻¹)).1 := rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `β hβ`. Rewrite `hβ` using `[Phi_apply]`. Establish `h1 : tw F0 F'' L (hLu_of hL) hZu hGr ((β⁻¹ : StG w) : GLR D) = 1` using `ratLink_inf_one X (rpt_spec X _ (tw_isom_st F0 F'' hL hU hZu hZ1 hGr β⁻¹)) hβ`. Establish `h2 : ((β⁻¹ : StG w) : GLR D) = 1` using `tw_inj hT (hLu_of hL) hZu hGr h1`.
+
+Rewrite using `[← inv_eq_one]`. Conclude with `Subtype.ext h2`.
+-/
 theorem Phi_inj (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F'' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'').det)
@@ -239,15 +313,42 @@ section Nlam
 
 variable {D : D7} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Conclude with `Submodule.map_bot _`.
+-/
 theorem gmap_bot (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     Formalism.HermitianLatticesTheory.gmap n (⊥ : Submodule (𝓞 D.host.E) (VS D).V) = ⊥ := by
   unfold Formalism.HermitianLatticesTheory.gmap
   exact Submodule.map_bot _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.1.1, gmap_bot n⟩, h.2.1, h.2.2⟩`.
+-/
 theorem nlam_bot_of {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host.E}
     {F : LFlag (VS D) D.R.rS T} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (h : n ∈ NLam Λ F) : n ∈ NLam ⊥ F :=
   ⟨⟨h.1.1, gmap_bot n⟩, h.2.1, h.2.2⟩
 
+/- English proof (translation)
+Use `set Z := Zhat F0 F'.fl`. Use `set B : MatR D := ((β : GLR D) : MatR D) with hB`. Establish `hβlo : IsLoUni B` using `β.2.1`. Establish `hBu : IsUnit B.det` using `by rw [lo_det hβlo]; exact isUnit_one`. Establish `hLu` using `hLu_of hL`.
+
+Establish `hPu : IsUpUni (Pm L B)` using `Pm_up hL hβlo`. Establish `hP'u : IsUpUni (P'm F0 F'.fl L B)` using `P'm_up_st hL hU hZu hZ1 β.2`. Establish `hiso` using `tw_isom_st F0 F'.fl hL hU hZu hZ1 hGr β`. Establish `hAut : IsAutLam (VS D) ⊥ (tw F0 F'.fl L hLu hZu hGr (β : GLR D))` using `⟨hiso, gmap_bot _⟩`. Establish `hPH : (Pm L B).conjTranspose = L * B * L⁻¹` using `by rw [Pm, Matrix.conjTranspose_conjTranspose]`.
+
+Establish `hPHinv : ((Pm L B).conjTranspose)⁻¹ = L * B⁻¹ * L⁻¹`. Rewrite using `[hPH]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hrel : P'm F0 F'.fl L B = Z⁻¹ * ((Pm L B).conjTranspose)⁻¹ * Z` using `by rw [hPHinv]; rfl`.
+
+Establish `hPl : IsLoUni ((Pm L B).conjTranspose)⁻¹`. Rewrite using `[hPHinv]`. Conclude with `lo_mul (lo_mul hL (lo_inv hβlo)) (lo_inv hL)`. Use `set Q : MatR D := Z⁻¹ * (L * B * L⁻¹) * Z with hQ`. Establish `hPQ : P'm F0 F'.fl L B * Q = 1`.
+
+Unfold `P'm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul, Matrix.nonsing_inv_mul _ hLu, Matrix.one_mul, Matrix.nonsing_inv_mul _ hBu, Matrix.mul_one, Matrix.mul_nonsing_inv _ hLu, Matrix.mul_one, Matrix.nonsing_inv_mul _ hZu]`. Establish `hQP : Q * P'm F0 F'.fl L B = 1` using `mul_eq_one_comm.1 hPQ`. Establish `hQup : IsUpUni Q`.
+
+Establish `: Q = (P'm F0 F'.fl L B)⁻¹` using `(Matrix.inv_eq_left_inv hQP).symm`. Rewrite using `[this]`. Conclude with `up_inv hP'u`. Establish `hP'Hinv : ((P'm F0 F'.fl L B).conjTranspose)⁻¹ = Q.conjTranspose`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.conjTranspose_mul, hPQ, Matrix.conjTranspose_one]`. Establish `hP'l : IsLoUni ((P'm F0 F'.fl L B).conjTranspose)⁻¹` using `by rw [hP'Hinv]; exact lo_conjT hQup`. Establish `hZtu : IsUnit Z.conjTranspose.det` using `by rw [Matrix.det_conjTranspose]; exact hZu.star`. Establish `hrel' : Pm L B = (Z.conjTranspose)⁻¹ * ((P'm F0 F'.fl L B).conjTranspose)⁻¹ * Z.conjTranspose`. Rewrite using `[hP'Hinv, hQ, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`.
+
+Establish `hZc : (Z⁻¹).conjTranspose * Z.conjTranspose = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hZu, Matrix.conjTranspose_one]`. Establish `hZtZ : (Z.conjTranspose)⁻¹ * Z.conjTranspose = 1` using `Matrix.nonsing_inv_mul _ hZtu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hZtZ, hZc, Matrix.one_mul, Matrix.mul_one]`.
+
+Use `_ = _ := by rw [Pm]; simp only [Matrix.mul_assoc]`. Use `⟨⟨hAut, fun j x hx => sL_Xa F0 F'.fl hGr hPu j x hx, fun x hx => ?_⟩, ⟨hAut, fun j x hx => sL_Xa' F0 F'.fl hGr hP'u j x hx, fun x hx => ?_⟩⟩` and prove the remaining obligations. Establish `hx0 : ∀ a, (VS D).hT (F0.e a) x = 0` using `fun a => (Formalism.L2.SG.Pf.mem_orth' _ x).1 hx _ (Submodule.subset_span ⟨a, rfl⟩)`. Conclude with `sL_orth F0 F'.fl hGr hPu hZu hrel hPl x hx0`. Establish `hx0 : ∀ a, (VS D).hT (F'.fl.e a) x = 0` using `fun a => (Formalism.L2.SG.Pf.mem_orth' _ x).1 hx _ (Submodule.subset_span ⟨a, rfl⟩)`.
+
+Conclude with `sL_orth' F0 F'.fl hGr hP'u hZtu hrel' hP'l x hx0`.
+-/
 theorem tw_nlam (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'.fl).det)
@@ -315,6 +416,31 @@ section Gen
 
 variable {D : D7} {u u' : D.what₂.Word}
 
+/- English proof (translation)
+Take `⟨⟨hiso, _⟩, hf1, hf2⟩` from `hs1`. Take `⟨⟨_, _⟩, hg1, hg2⟩` from `hs2`. Take `⟨uu0, huu0, hu0⟩` from `tri_exists F0 s hf1 hf2`. Take `⟨uu', huu', hu'⟩` from `tri_exists F'.fl s hg1 hg2`. Establish `heq : uu = uu0` using `coef_unique (frame_indep F0 hT) (fun b => s (F0.fvec b)) uu uu0 hu hu0`.
+
+Substitute `heq` using the available equality. Establish `hZc` using `zhat_conj F0 F'.fl s hiso uu uu' hu0 hu'`. Use `set Z := Zhat F0 F'.fl with hZdef`. Establish `hLu` using `hLu_of hL`. Establish `hLi : L⁻¹ * L = 1` using `Matrix.nonsing_inv_mul _ hLu`.
+
+Establish `hLL : L * L⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hLu`. Establish `hUi : U * U⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (by rw [up_det hU]; exact isUnit_one)`. Establish `huH : IsUnit uu.conjTranspose.det` using `by rw [Matrix.det_conjTranspose, up_det huu0, star_one]; exact isUnit_one`. Prove the components needed by the constructor for the conclusion. Establish `h2 : uu.conjTranspose * (L * ptMat w * U) * (sgnM D.R.rS * uu' * sgnM D.R.rS) = L * ptMat w * U`.
+
+Rewrite using `[← hZ1]`. Rewrite using `[show uu.conjTranspose * (Z * sgnM D.R.rS) * (sgnM D.R.rS * uu' * sgnM D.R.rS) = uu.conjTranspose * Z * (sgnM D.R.rS * sgnM D.R.rS) * uu' * sgnM D.R.rS by simp only [Matrix.mul_assoc], sgnM_sq, Matrix.mul_one, ← hZc]`. Use `⟨?_, U * (sgnM D.R.rS * uu' * sgnM D.R.rS) * U⁻¹, up_mul (up_mul hU (up_sgn huu')) (up_inv hU), ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Conclude with `lo_mul (lo_mul (lo_inv hL) (lo_conjT huu0)) hL`.
+
+Rewrite using `[ha]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (L⁻¹ * L) * ptMat w * (U * U⁻¹) := by rw [h2]; simp only [Matrix.mul_assoc]`. Use `_ = ptMat w := by rw [hLi, hUi, Matrix.one_mul, Matrix.mul_one]`.
+
+Establish `hPm : Pm L (a : MatR D) = uu`. Rewrite using `[Pm, ha]`. Establish `: L * (L⁻¹ * uu.conjTranspose * L) * L⁻¹ = uu.conjTranspose`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = uu.conjTranspose := by rw [hLL, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[this, Matrix.conjTranspose_conjTranspose]`. Establish `hainv : (a : MatR D)⁻¹ = L⁻¹ * (uu.conjTranspose)⁻¹ * L`. Rewrite using `[ha]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hP'm : P'm F0 F'.fl L (a : MatR D) = uu'`. Rewrite using `[P'm, hainv]`. Establish `e1 : L * (L⁻¹ * (uu.conjTranspose)⁻¹ * L) * L⁻¹ = (uu.conjTranspose)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hLL, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[e1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hZc]`.
+
+Use `_ = Z⁻¹ * ((uu.conjTranspose)⁻¹ * uu.conjTranspose) * Z * uu' := by simp only [Matrix.mul_assoc]`. Use `_ = uu' := by rw [Matrix.nonsing_inv_mul _ huH, Matrix.mul_one, Matrix.nonsing_inv_mul _ hZu, Matrix.one_mul]`. Use `symm`. Use `tw_eq_of hLu hZu hGr a s hiso (fun b => ?_) (fun b => ?_) (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[hPm]`.
+
+Conclude with `hu0 b`. Rewrite using `[hP'm]`. Conclude with `hu' b`. Use `hf2 x ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.mem_orth']`.
+
+Conclude with `Formalism.L2.SG.Pf.hT_span_left (by rintro _ ⟨i, rfl⟩; exact hx i)`.
+-/
 theorem gen_data (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {w : Point D.host.E (D.R.rS + 1)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat F0 F'.fl).det)
@@ -391,6 +517,9 @@ section Dict
 
 variable {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D}
 
+/- English proof (translation)
+Rewrite using `[eq_inv_iff_mul_eq_one, ← tw_mul, mul_inv_cancel, tw_one]`.
+-/
 theorem tw_inv_eq {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (F'' : FlagG (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) {L : MatR D} (hLu : IsUnit L.det)
     (hZu : IsUnit (Zhat F0 F'').det) (hGr : IsUnit (gramOf (gg F0 F'')).det) (a : GLR D) :
@@ -399,6 +528,59 @@ theorem tw_inv_eq {u u' : D.what₂.Word} (F0 : FlagG (VS D) D.R.rS ((Tu D u : �
 
 open Formalism.L2.SG.PackageTie2 in
 
+/- English proof (translation)
+Establish `hγi : t.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t.rep.2.2.1`. Establish `hγΛ : Formalism.HermitianLatticesTheory.gmap t.lin t.lam' = t.lam` using `t.rep.2.2.2.1`. Establish `hγx : RatLink X t.pt t.lin` using `t.rep.2.1`. Establish `hfe : t.frame = Formalism.L2.SG.Saturated.mapL t.lin hγi (lf D (X.Fu u'))` using `Formalism.L2.SG.Pf.FibreCounting.frame_eq t`. Use `set xn := rpt X n0 hn0.1.1 with hxn`.
+
+Establish `hxnL : RatLink X xn n0` using `rpt_spec X _ _`. Use `set Φ := Phi X (X.Fu u) F'.fl hL hU hZu hZ1 hGr with hΦ`. Use `set m0' := t.lin⁻¹ * m0 * t.lin with hm0'def`. Establish `hm0' : m0' ∈ NLam t.lam' (lf D (X.Fu u'))` using `(Formalism.L2.SG.Pf.mem_NLam_map t.lin hγi t.lam' (lf D (X.Fu u')) m0).1 (by rw [hγΛ, ← hfe]; exact hm0)`. Use `set γ' := n0 * t.lin * m0' with hγ'def`.
+
+Establish `hγ'i : γ' ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem (mul_mem hn0.1.1 hγi) hm0'.1.1`. Establish `hγ'Λ : Formalism.HermitianLatticesTheory.gmap γ' t.lam' = t.lam`. Rewrite using `[hγ'def, Formalism.L2.SG.Pf.gmap_mul_sat, Formalism.L2.SG.Pf.gmap_mul_sat, hm0'.1.2, hγΛ, hn0.1.2]`. Establish `hNF' : ∀ n, γ'⁻¹ * n * γ' ∈ NLam t.lam' (lf D (X.Fu u')) ↔ n ∈ NLam t.lam F'`. Introduce `n`.
+
+Rewrite using `[← Formalism.L2.SG.Pf.mem_NLam_map γ' hγ'i t.lam' (lf D (X.Fu u')) n, hγ'Λ]`. Establish `h1 : IsAutLam (VS D) t.lam (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V)` using `⟨(Formalism.HermitianLatticesTheory.isom (VS D).hT).one_mem, Formalism.L2.SG.Pf.gmap_one_sat _⟩`. Establish `hfr1 : ∀ a, frame F' a = (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) (frame (Formalism.L2.SG.Saturated.mapL γ' hγ'i (lf D (X.Fu u'))) a)`. Introduce `a`. Establish `h2 : frame F' a = n0 (m0 (frame t.frame a))` using `hfr a`.
+
+Establish `h3 : frame t.frame a = t.lin ((X.Fu u').fvec a)` using `Formalism.L2.SG.Pf.FibreCounting.frame_apply t a`. Establish `h4 : frame (Formalism.L2.SG.Saturated.mapL γ' hγ'i (lf D (X.Fu u'))) a = γ' ((X.Fu u').fvec a)` using `Formalism.L2.SG.Saturated.frame_mapL γ' hγ'i (lf D (X.Fu u')) a`. Establish `h5 : γ' ((X.Fu u').fvec a) = n0 (m0 (t.lin ((X.Fu u').fvec a)))` using `by show n0 (t.lin (t.lin.symm (m0 (t.lin _)))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `h2.trans ((congrArg (fun v => n0 (m0 v)) h3).trans (h5.symm.trans h4.symm))`.
+
+Establish `this2` using `(Formalism.L2.SG.Pf.RelativeIndexFlags.nlam_conj h1 hfr1 n).symm`. Simplify using `only [inv_one, one_mul, mul_one] at this2`. Conclude with `this2`. Establish `hRO : ∀ y, (∃ r ∈ Formalism.L2.SG.TermOp.ROinf t, y = xn.1 * r * xn.1⁻¹) ↔ y ∈ ROset X (X.Fu u) (X.Fu u') t.lam t.lam' γ'`. Introduce `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `(Formalism.L2.SG.TermOp.Vanish.roset_conj X hn0 hm0' hxnL r).1 hr`. Introduce `hy`. Use `⟨xn.1⁻¹ * y * xn.1, ?_, by group⟩` and prove the remaining obligations.
+
+Use `(Formalism.L2.SG.TermOp.Vanish.roset_conj X hn0 hm0' hxnL _).2 ?_` and prove the remaining obligations. Establish `e : xn.1 * (xn.1⁻¹ * y * xn.1) * xn.1⁻¹ = y` using `by group`. Rewrite using `[e]`. Conclude with `hy`. Establish `hgen : ∀ a ∈ stabAutSet D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L, a ∈ StSet (ptMat w) ∧ ∃ s ∈ NLam t.lam (lf D (X.Fu u)) ∩ NLam t.lam F', tw (X.Fu u) F'.fl L (hLu_of hL) hZu hGr a = s`.
+
+Introduce and unpack `a ⟨s, ⟨hs1, hs2⟩, uu, hu, ha⟩`. Take `⟨h1, h2⟩` from `gen_data (X.Fu u) F' hL hU hZu hZ1 hGr hT hs1 hs2 hu a ha`. Conclude with `⟨h1, s, ⟨hs1, hs2⟩, h2⟩`. Establish `hsub : stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L ≤ StG w` using `(Subgroup.closure_le _).2 fun a ha => (hgen a ha).1`. Use `⟨Formalism.L2.SG.Pf.nLamNinf_holds D X u t.lam xn n0 hxnL hn0, Phi_inj X (X.Fu u) F'.fl hL hU hZu hZ1 hGr hT, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `β`. Establish `hsβ` using `tw_nlam (X.Fu u) F' hL hU hZu hZ1 hGr β⁻¹`. Use `set sβ := tw (X.Fu u) F'.fl L (hLu_of hL) hZu hGr ((β⁻¹ : StG w) : GLR D) with hsβdef`. Establish `hxs : RatLink X (rpt X sβ (tw_isom_st (X.Fu u) F'.fl hL hU hZu hZ1 hGr β⁻¹)) sβ` using `rpt_spec X _ _`. Use `set y0 := xn⁻¹ * rpt X sβ (tw_isom_st (X.Fu u) F'.fl hL hU hZu hZ1 hGr β⁻¹) * xn with hy0`.
+
+Establish `hy0L : RatLink X y0 (n0⁻¹ * sβ * n0)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hxnL) hxs) hxnL`. Establish `hn0b` using `nlam_bot_of hn0`. Establish `hm1 : n0⁻¹ * sβ * n0 ∈ NLam ⊥ (lf D (X.Fu u))` using `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_inv hn0b) hsβ.1) hn0b`. Establish `he : xn.1⁻¹ * Φ β * xn.1 = y0.1`. Simplify using `only [hy0, Prod.fst_mul, Prod.fst_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[he]`. Use `⟨Formalism.L2.SG.Pf.nLamNinf_holds D X u ⊥ y0 _ hy0L hm1, ?_⟩` and prove the remaining obligations. Establish `hg : IsAutLam (VS D) ⊥ (n0 * m0)` using `⟨mul_mem hn0.1.1 hm0.1.1, gmap_bot _⟩`. Establish `hfr' : ∀ a, frame F' a = (n0 * m0) (frame t.frame a)` using `fun a => hfr a`.
+
+Establish `hc1` using `(Formalism.L2.SG.Pf.RelativeIndexFlags.nlam_conj hg hfr' sβ).1 hsβ.2`. Establish `hm0b` using `nlam_bot_of hm0`. Establish `hc2 : n0⁻¹ * sβ * n0 ∈ NLam ⊥ t.frame`. Establish `e : n0⁻¹ * sβ * n0 = m0 * ((n0 * m0)⁻¹ * sβ * (n0 * m0)) * m0⁻¹` using `by group`. Rewrite using `[e]`.
+
+Conclude with `Formalism.L2.SG.Pf.nlamPf_mul (Formalism.L2.SG.Pf.nlamPf_mul hm0b hc1) (Formalism.L2.SG.Pf.nlamPf_inv hm0b)`. Establish `hc3 : t.lin⁻¹ * (n0⁻¹ * sβ * n0) * t.lin ∈ NLam ⊥ (lf D (X.Fu u'))`. Use `(Formalism.L2.SG.Pf.mem_NLam_map t.lin hγi ⊥ (lf D (X.Fu u')) (n0⁻¹ * sβ * n0)).1` as an intermediate fact. Apply `this` to reduce the goal to its premises. Rewrite using `[gmap_bot, ← hfe]`.
+
+Conclude with `hc2`. Establish `hz : RatLink X (t.pt⁻¹ * y0 * t.pt) (t.lin⁻¹ * (n0⁻¹ * sβ * n0) * t.lin)` using `Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_mul X (Formalism.L2.SG.TermOp.Vanish.ratLink_inv X hγx) hy0L) hγx`. Use `Formalism.L2.SG.Pf.nLamNinf_holds D X u' ⊥ _ _ hz hc3` as an intermediate fact. Rewrite `this` using `[Prod.fst_mul, Prod.fst_mul, Prod.fst_inv]`. Then use the resulting hypothesis. Introduce `y`.
+
+Rewrite using `[hRO y]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβS, rfl⟩`. Establish `key : ∀ a (ha : a ∈ stabAut D u u' (X.Fu u) (Y.what₂ u) t.toTerm F' L) (hst : a ∈ StG w), Φ ⟨a, hst⟩ ∈ ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' γ'`. Introduce `a ha`.
+
+Proceed by induction on `ha using Subgroup.closure_induction with`. Consider the case `mem a ha`. Introduce `hst`. Take `⟨-, s, ⟨hs1, hs2⟩, hts⟩` from `hgen a ha`. Establish `hinv : tw (X.Fu u) F'.fl L (hLu_of hL) hZu hGr ((⟨a, hst⟩⁻¹ : StG w) : GLR D) = s⁻¹`.
+
+Conclude with `(tw_inv_eq (X.Fu u) F'.fl (hLu_of hL) hZu hGr a).trans (congrArg Inv.inv hts)`. Establish `hxs : RatLink X (rpt X _ (tw_isom_st (X.Fu u) F'.fl hL hU hZu hZ1 hGr ⟨a, hst⟩⁻¹)) s⁻¹`. Rewrite using `[← hinv]`. Conclude with `rpt_spec X _ _`. Use `⟨_, s⁻¹, hxs, rfl, Formalism.L2.SG.Pf.nlamPf_inv hs1, (hNF' s⁻¹).2 (Formalism.L2.SG.Pf.nlamPf_inv hs2)⟩` and prove the remaining obligations.
+
+Consider the case `one`. Introduce `hst`. Establish `: (⟨1, hst⟩ : StG w) = 1` using `rfl`. Rewrite using `[this, map_one]`. Conclude with `(ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' γ').one_mem`.
+
+Consider the case `mul x z hx hz ihx ihz`. Introduce `hst`. Establish `hxS` using `hsub hx`. Establish `hzS` using `hsub hz`. Establish `: (⟨x * z, hst⟩ : StG w) = ⟨x, hxS⟩ * ⟨z, hzS⟩` using `rfl`.
+
+Rewrite using `[this, map_mul]`. Conclude with `(ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' γ').mul_mem (ihx hxS) (ihz hzS)`. Consider the case `inv x hx ihx`. Introduce `hst`. Establish `hxS` using `hsub hx`.
+
+Establish `: (⟨x⁻¹, hst⟩ : StG w) = (⟨x, hxS⟩ : StG w)⁻¹` using `rfl`. Rewrite using `[this, map_inv]`. Conclude with `(ROsub X (X.Fu u) (X.Fu u') t.lam t.lam' γ').inv_mem (ihx hxS)`. Conclude with `key (β : GLR D) hβS β.2`. Introduce and unpack `⟨x, n, hx, rfl, hn1, hn2⟩`.
+
+Establish `hn2'` using `(hNF' n).1 hn2`. Establish `hs1` using `Formalism.L2.SG.Pf.nlamPf_inv hn1`. Establish `hs2` using `Formalism.L2.SG.Pf.nlamPf_inv hn2'`. Take `⟨⟨_, _⟩, hf1, hf2⟩` from `hs1`. Take `⟨uu, huu, hu⟩` from `tri_exists (X.Fu u) n⁻¹ hf1 hf2`.
+
+Use `set M : MatR D := L⁻¹ * uu.conjTranspose * L with hM`. Establish `hMdet : IsUnit M.det`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, up_det huu, star_one, mul_one, ← Matrix.det_mul, Matrix.nonsing_inv_mul _ (hLu_of hL), Matrix.det_one]`. Conclude with `isUnit_one`. Use `set a : GLR D := Matrix.nonsingInvUnit M hMdet with ha`.
+
+Establish `haM : (a : MatR D) = L⁻¹ * uu.conjTranspose * L` using `rfl`. Take `⟨haS, hta⟩` from `gen_data (X.Fu u) F' hL hU hZu hZ1 hGr hT (Formalism.L2.SG.Pf.nlamPf_inv hn1) (Formalism.L2.SG.Pf.nlamPf_inv hn2') hu a haM`. Use `⟨⟨a, haS⟩, Subgroup.subset_closure ⟨n⁻¹, ⟨Formalism.L2.SG.Pf.nlamPf_inv hn1, Formalism.L2.SG.Pf.nlamPf_inv hn2'⟩, uu, hu, haM⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : tw (X.Fu u) F'.fl L (hLu_of hL) hZu hGr ((⟨a, haS⟩⁻¹ : StG w) : GLR D) = n`. Conclude with `(tw_inv_eq (X.Fu u) F'.fl (hLu_of hL) hZu hGr a).trans ((congrArg Inv.inv hta).trans (inv_inv n))`.
+
+Establish `hxL : RatLink X x (tw (X.Fu u) F'.fl L (hLu_of hL) hZu hGr ((⟨a, haS⟩⁻¹ : StG w) : GLR D))`. Rewrite using `[hinv]`. Conclude with `hx`. Conclude with `congrArg Prod.fst (rpt_eq X _ hxL)`.
+-/
 theorem volume_dictionary_lu_decomposition (Y : Formalism.L2.SG.Full.Full X) {u u' : D.what₂.Word} (t : TT Y u u')
     {w : Point D.host.E (D.R.rS + 1)} {F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)} {L U : MatR D}
     (hL : IsLoUni L) (hU : IsUpUni U) (hZu : IsUnit (Zhat (X.Fu u) F'.fl).det)

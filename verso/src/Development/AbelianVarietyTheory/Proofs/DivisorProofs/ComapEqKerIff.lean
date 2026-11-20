@@ -12,6 +12,9 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits Opposite
 def IsFinFlatRk {X Y : Scheme.{0}} (f : X ⟶ Y) (r : ℕ) : Prop :=
   IsFinite f ∧ Flat f ∧ ∀ y, f.finrank y = r
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hf`. Use `⟨MorphismProperty.of_isPullback (P := @IsFinite) h h1, MorphismProperty.of_isPullback (P := @Flat) h h2, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.finrank_of_isPullback fst snd f g h y, h3]`.
+-/
 lemma IsFinFlatRk.of_isPullback {P X Y T : Scheme.{0}} {fst : P ⟶ X} {snd : P ⟶ T} {f : X ⟶ Y}
     {g : T ⟶ Y} (h : IsPullback fst snd f g) {r : ℕ} (hf : IsFinFlatRk f r) : IsFinFlatRk snd r := by
   obtain ⟨h1, h2, h3⟩ := hf
@@ -19,10 +22,16 @@ lemma IsFinFlatRk.of_isPullback {P X Y T : Scheme.{0}} {fst : P ⟶ X} {snd : P 
     MorphismProperty.of_isPullback (P := @Flat) h h2, fun y => ?_⟩
   rw [Scheme.Hom.finrank_of_isPullback fst snd f g h y, h3]
 
+/- English proof (translation)
+The claim follows from `IsFinFlatRk.of_isPullback (IsPullback.of_horiz_isIso (fst := e) (g := 𝟙 Y) ⟨by simp⟩) hf`.
+-/
 lemma IsFinFlatRk.iso_comp {X X' Y : Scheme.{0}} (e : X' ⟶ X) [IsIso e] {f : X ⟶ Y} {r : ℕ}
     (hf : IsFinFlatRk f r) : IsFinFlatRk (e ≫ f) r :=
   IsFinFlatRk.of_isPullback (IsPullback.of_horiz_isIso (fst := e) (g := 𝟙 Y) ⟨by simp⟩) hf
 
+/- English proof (translation)
+The claim follows from `isPullback_of_isClosedImmersion _ _ _ _ (Scheme.IdealSheafData.subschemeMap_subschemeι _ _ _ _).symm (by simp [Scheme.IdealSheafData.ker_subschemeι])`.
+-/
 lemma isPullback_comap {X Y : Scheme.{0}} (I : Y.IdealSheafData) (f : X ⟶ Y) :
     IsPullback (I.comap f).subschemeι (Scheme.IdealSheafData.subschemeMap _ _ f (I.le_map_comap f))
       f I.subschemeι :=
@@ -35,6 +44,9 @@ def bc {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (w : c �
     pullback z k ⟶ pullback z g :=
   pullback.map z k z g (𝟙 Z) c (𝟙 S) (by simp) (by rw [Category.comp_id, w])
 
+/- English proof (translation)
+Substitute `w` using the available equality. Use `IsPullback.of_right ?_ (by simp only [bc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.assoc]) (IsPullback.of_hasPullback z g)` and prove the remaining obligations. Establish `e : bc z c g (c ≫ g) rfl ≫ pullback.fst z g = pullback.fst z (c ≫ g)` using `by simp only [bc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.assoc]`. Rewrite using `[e]`. Conclude with `IsPullback.of_hasPullback z (c ≫ g)`.
+-/
 lemma isPullback_bc {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (w : c ≫ g = k) :
     IsPullback (bc z c g k w) (pullback.snd z k) (pullback.snd z g) c := by
   subst w
@@ -43,9 +55,15 @@ lemma isPullback_bc {T T' : Scheme.{0}} (c : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶
   rw [e]
   exact IsPullback.of_hasPullback z (c ≫ g)
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp [bc]`.
+-/
 lemma bc_id {T : Scheme.{0}} (g : T ⟶ S) (w : 𝟙 T ≫ g = g) : bc z (𝟙 T) g g w = 𝟙 _ := by
   apply pullback.hom_ext <;> simp [bc]
 
+/- English proof (translation)
+Apply the tactic sequence `apply pullback.hom_ext <;> simp only [bc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc, Category.comp_id, Category.assoc]`.
+-/
 lemma bc_comp {R T T' : Scheme.{0}} (b : R ⟶ T') (a : T' ⟶ T) (g : T ⟶ S) (k : T' ⟶ S) (m : R ⟶ S)
     (w : a ≫ g = k) (w' : b ≫ k = m) (w'' : (b ≫ a) ≫ g = m) :
     bc z (b ≫ a) g m w'' = bc z b k m w' ≫ bc z a g k w := by
@@ -68,15 +86,24 @@ def HIdeal.pull {T T' : Scheme.{0}} (c : T' ⟶ T) {g : T ⟶ S} {k : T' ⟶ S} 
 def HPt.map {T T' : Scheme.{0}} (c : T' ⟶ T) (x : HPt z r T) : HPt z r T' :=
   ⟨c ≫ x.1, x.2.pull c rfl⟩
 
+/- English proof (translation)
+Substitute `w` using the available equality. Both sides reduce to the same expression.
+-/
 lemma HPt.map_mk {T T' : Scheme.{0}} (c : T' ⟶ T) {g : T ⟶ S} {k : T' ⟶ S} (w : c ≫ g = k)
     (I : HIdeal z r g) : HPt.map c ⟨g, I⟩ = ⟨k, I.pull c w⟩ := by
   subst w; rfl
 
+/- English proof (translation)
+Rewrite using `[Sigma.mk.inj_iff, heq_iff_eq, Subtype.ext_iff]`. Simplify using the standard rewrite rules.
+-/
 lemma HPt.mk_eq_mk_iff {T : Scheme.{0}} {g : T ⟶ S} (I J : HIdeal z r g) :
     (⟨g, I⟩ : HPt z r T) = ⟨g, J⟩ ↔ I.1 = J.1 := by
   rw [Sigma.mk.inj_iff, heq_iff_eq, Subtype.ext_iff]
   simp
 
+/- English proof (translation)
+Take `⟨g, I⟩` from `x`. Rewrite using `[HPt.map_mk c w, HPt.mk_eq_mk_iff]`. Both sides reduce to the same expression.
+-/
 lemma HPt.map_eq_mk_iff {T T' : Scheme.{0}} (c : T' ⟶ T) (x : HPt z r T) {k : T' ⟶ S}
     (w : c ≫ x.1 = k) (J : HIdeal z r k) :
     HPt.map c x = ⟨k, J⟩ ↔ x.2.1.comap (bc z c x.1 k w) = J.1 := by
@@ -84,12 +111,18 @@ lemma HPt.map_eq_mk_iff {T T' : Scheme.{0}} (c : T' ⟶ T) (x : HPt z r T) {k : 
   rw [HPt.map_mk c w, HPt.mk_eq_mk_iff]
   rfl
 
+/- English proof (translation)
+Take `⟨g, I⟩` from `x`. Rewrite using `[HPt.map_mk (𝟙 T) (Category.id_comp g), HPt.mk_eq_mk_iff]`. Express the relevant statement in the definitionally equal form `I.1.comap (bc z (𝟙 T) g g _) = I.1`. Rewrite using `[bc_id, Scheme.IdealSheafData.comap_id]`.
+-/
 lemma HPt.map_id {T : Scheme.{0}} (x : HPt z r T) : HPt.map (𝟙 T) x = x := by
   obtain ⟨g, I⟩ := x
   rw [HPt.map_mk (𝟙 T) (Category.id_comp g), HPt.mk_eq_mk_iff]
   change I.1.comap (bc z (𝟙 T) g g _) = I.1
   rw [bc_id, Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+Take `⟨g, I⟩` from `x`. Rewrite using `[HPt.map_mk (b ≫ a) (Category.assoc b a g), HPt.map_mk a rfl, HPt.map_mk b rfl, HPt.mk_eq_mk_iff]`. Express the relevant statement in the definitionally equal form `I.1.comap (bc z (b ≫ a) g _ _) = (I.1.comap (bc z a g _ rfl)).comap (bc z b (a ≫ g) _ rfl)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, bc_comp z b a g (a ≫ g) (b ≫ a ≫ g) rfl rfl]`.
+-/
 lemma HPt.map_comp {R T T' : Scheme.{0}} (b : R ⟶ T') (a : T' ⟶ T) (x : HPt z r T) :
     HPt.map (b ≫ a) x = HPt.map b (HPt.map a x) := by
   obtain ⟨g, I⟩ := x
@@ -110,6 +143,9 @@ def hilbProj : hilbFunctor z r ⟶ yoneda.obj S where
 
 variable {z r}
 
+/- English proof (translation)
+Establish `e : v.ker.subschemeι = inv v.toImage ≫ v`. Rewrite using `[IsIso.eq_inv_comp, Scheme.Hom.toImage_imageι]`. Rewrite using `[e, Category.assoc]`. Conclude with `hv.iso_comp _`.
+-/
 lemma IsFinFlatRk.ker_subschemeι {T V : Scheme.{0}} {g : T ⟶ S} (v : V ⟶ pullback z g)
     [IsClosedImmersion v] (hv : IsFinFlatRk (v ≫ pullback.snd z g) r) :
     IsFinFlatRk (v.ker.subschemeι ≫ pullback.snd z g) r := by
@@ -122,6 +158,11 @@ def mkPt {T V : Scheme.{0}} (g : T ⟶ S) (v : V ⟶ pullback z g) [IsClosedImme
     (hv : IsFinFlatRk (v ≫ pullback.snd z g) r) : HPt z r T :=
   ⟨g, v.ker, hv.ker_subschemeι v⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `H : I.subschemeι.ker ≤ (v ≫ m).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, Scheme.Hom.ker_comp, Scheme.IdealSheafData.le_map_iff_comap_le, h]`. Use `⟨IsClosedImmersion.lift I.subschemeι (v ≫ m) H, isPullback_of_isClosedImmersion _ _ _ _ (IsClosedImmersion.lift_fac _ _ _).symm ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, h]`. Introduce and unpack `⟨w, hP⟩`. Rewrite using `[← hP.isoPullback_hom_fst, Scheme.Hom.ker_comp_of_isIso, Scheme.IdealSheafData.ker_fst_of_isClosedImmersion, Scheme.IdealSheafData.ker_subschemeι]`.
+-/
 theorem comap_eq_ker_iff {X Y V : Scheme.{0}} (m : X ⟶ Y) (I : Y.IdealSheafData) (v : V ⟶ X)
     [IsClosedImmersion v] : I.comap m = v.ker ↔ ∃ w : V ⟶ I.subscheme, IsPullback v w m I.subschemeι := by
   constructor

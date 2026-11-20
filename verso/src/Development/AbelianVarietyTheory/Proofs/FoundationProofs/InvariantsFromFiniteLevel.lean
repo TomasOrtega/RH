@@ -8,6 +8,17 @@ namespace GlobalTheory.K5.FinLevel
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Establish `hpp : p.Prime` using `Fact.out`. Establish `hp : (p : Ω) ≠ 0`. Introduce `h0`. Use `haveI : CharP Ω p := (CharP.charP_iff_prime_eq_zero hpp).mpr h0`. Establish `hz` using `T.prim 1`.
+
+Rewrite `hz` using `[pow_one]`. Establish `h1 : (T.ζ 1 - 1) ^ p = 0` using `by rw [sub_pow_char, one_pow, hz.pow_eq_one, sub_self]`. Establish `h2 : T.ζ 1 = 1` using `sub_eq_zero.mp (pow_eq_zero_iff hpp.ne_zero |>.mp h1)`. Rewrite `hz` using `[h2]`. Conclude with `hpp.one_lt.ne' (hz.eq_orderOf.trans orderOf_one)`.
+
+Set `f : ℤ_[p] →+* Ω` to `(algebraMap (O0 p) Ω).comp ((algebraMap (Lau p) (O0 p)).comp (algebraMap ℤ_[p] (Lau p)))`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn0`. Take `⟨e, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn0 p hpp.one_lt.ne'`. Establish `hu : IsUnit (((m : ℤ) : ℤ_[p]))`.
+
+Use `PadicInt.isUnit_iff.mpr (le_antisymm (PadicInt.norm_le_one _) (not_lt.mp fun h => hm ?_))` and prove the remaining obligations. Conclude with `Int.natCast_dvd_natCast.mp ((PadicInt.norm_int_lt_one_iff_dvd _).mp h)`. Establish `hmu : IsUnit (m : Ω)`. Use `hu.map f` as an intermediate fact. Simplify using `using this`.
+
+Move the coercions through the operations in `at hn`. Break down `mul_eq_zero.mp hn with h | h` into its components or cases. Conclude with `hp (pow_eq_zero_iff' |>.mp h).1`. Conclude with `hmu.ne_zero h`.
+-/
 theorem charZero_of_tower (T : Tower p Ω) : CharZero Ω := by
   have hpp : p.Prime := Fact.out
   have hp : (p : Ω) ≠ 0 := by
@@ -41,11 +52,17 @@ namespace GlobalTheory.K5.FinLevel
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [ih, ← T.ζpow (i + d), ← pow_mul, ← pow_succ', add_assoc]`.
+-/
 theorem zeta_eq_pow (T : Tower p Ω) (i d : ℕ) : T.ζ i = T.ζ (i + d) ^ (p ^ d) := by
   induction d with
   | zero => simp
   | succ d ih => rw [ih, ← T.ζpow (i + d), ← pow_mul, ← pow_succ', add_assoc]
 
+/- English proof (translation)
+Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [ih, ← T.qpow (i + d), ← pow_mul, ← pow_succ', add_assoc]`.
+-/
 theorem qq_eq_pow (T : Tower p Ω) (i d : ℕ) : T.qq i = T.qq (i + d) ^ (p ^ d) := by
   induction d with
   | zero => simp
@@ -54,10 +71,18 @@ theorem qq_eq_pow (T : Tower p Ω) (i d : ℕ) : T.qq i = T.qq (i + d) ^ (p ^ d)
 def gens (T : Tower p Ω) (n : ℕ) : Set Ω :=
   Set.range (algebraMap (O0 p) Ω) ∪ T.ζ '' Set.Iic n ∪ T.qq '' Set.Iic n
 
+/- English proof (translation)
+Unfold `gens`. Apply the tactic sequence `gcongr <;> exact Set.Iic_subset_Iic.mpr h`.
+-/
 theorem gens_mono (T : Tower p Ω) {m n : ℕ} (h : m ≤ n) : gens T m ⊆ gens T n := by
   unfold gens
   gcongr <;> exact Set.Iic_subset_Iic.mpr h
 
+/- English proof (translation)
+Establish `hz : g (T.ζ n) = T.ζ n` using `(Subgroup.mem_inf.mp hg).1`. Establish `hq : g (T.qq n) = T.qq n` using `(Subgroup.mem_inf.mp hg).2`. Introduce and unpack `a ((⟨r, rfl⟩ | ⟨i, hi, rfl⟩) | ⟨i, hi, rfl⟩)`. Conclude with `g.commutes r`. Establish `hi' : i + (n - i) = n` using `Nat.add_sub_cancel' hi`.
+
+Rewrite using `[zeta_eq_pow T i (n - i), hi', map_pow, hz]`. Establish `hi' : i + (n - i) = n` using `Nat.add_sub_cancel' hi`. Rewrite using `[qq_eq_pow T i (n - i), hi', map_pow, hq]`.
+-/
 theorem fixes_gens (T : Tower p Ω) (n : ℕ) (g : Gal p Ω) (hg : g ∈ Gn T n) :
     ∀ a ∈ gens T n, g a = a := by
   have hz : g (T.ζ n) = T.ζ n := (Subgroup.mem_inf.mp hg).1
@@ -75,6 +100,27 @@ namespace GlobalTheory.K5.FinLevel
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Use `haveI := charZero_of_tower T`. Set `L : IntermediateField ℚ Ω` to `IntermediateField.adjoin ℚ (⋃ n, gens T n)`. Establish `hmemL : ∀ a ∈ ⋃ n, gens T n, a ∈ L` using `fun a ha => IntermediateField.subset_adjoin ℚ _ ha`. Establish `hO : ∀ r : O0 p, algebraMap (O0 p) Ω r ∈ L` using `fun r => hmemL _ (Set.mem_iUnion.mpr ⟨0, Or.inl (Or.inl ⟨r, rfl⟩)⟩)`. Set `φ : O0 p →+* L` to `(algebraMap (O0 p) Ω).codRestrict L hO`.
+
+Establish `hφ : ∀ r, algebraMap L Ω (φ r) = algebraMap (O0 p) Ω r` using `fun r => rfl`. Establish `hφinj : Function.Injective φ`. Introduce `a b hab`. Apply `hClo.inj` to reduce the goal to its premises. Rewrite using `[← hφ a, ← hφ b, hab]`.
+
+Use `haveI halg : Algebra.IsAlgebraic L Ω := by`. Prove the components needed by the constructor for the conclusion. Introduce `z`. Take `⟨P, hP0, hPz⟩` from `hClo.alg.isAlgebraic z`. Use `⟨P.map φ, (Polynomial.map_ne_zero_iff hφinj).mpr hP0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Rewrite `hPz` using `[Polynomial.aeval_def]`. Use `hPz using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext hφ`. Use `haveI : IsAlgClosure L Ω := ⟨hClo.clo, halg⟩`.
+
+Use `haveI : IsGalois L Ω := IsAlgClosure.isGalois L Ω`. Establish `hyL : y ∈ L`. Establish `: y ∈ Set.range (algebraMap L Ω)`. Rewrite using `[InfiniteGalois.mem_range_algebraMap_iff_fixed]`. Introduce `f`.
+
+Set `g : Gal p Ω` to `AlgEquiv.ofRingEquiv (f := f.toRingEquiv) (fun r => f.commutes (φ r))`. Establish `hg : g ∈ ⨅ n, Gn T n`. Use `Subgroup.mem_iInf.mpr fun n => Subgroup.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `show g (T.ζ n) = T.ζ n`. Conclude with `f.commutes ⟨T.ζ n, hmemL _ (Set.mem_iUnion.mpr ⟨n, Or.inl (Or.inr ⟨n, Set.mem_Iic.mpr le_rfl, rfl⟩)⟩)⟩`.
+
+Use `show g (T.qq n) = T.qq n`. Conclude with `f.commutes ⟨T.qq n, hmemL _ (Set.mem_iUnion.mpr ⟨n, Or.inr ⟨n, Set.mem_Iic.mpr le_rfl, rfl⟩⟩)⟩`. Conclude with `hy g hg`. Take `⟨l, rfl⟩` from `this`. Conclude with `l.2`.
+
+Take `⟨S, hS, hyS⟩` from `IntermediateField.exists_finset_of_mem_adjoin hyL`. Establish `hex : ∀ t ∈ S, ∃ m, t ∈ gens T m` using `fun t ht => Set.mem_iUnion.mp (hS ht)`. Use `choose! m hm using hex`. Use `⟨S.sup m, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hSN : (S : Set Ω) ⊆ gens T (S.sup m)` using `fun t ht => gens_mono T (Finset.le_sup (f := m) ht) (hm t ht)`.
+
+Establish `hyN : y ∈ IntermediateField.adjoin ℚ (gens T (S.sup m))` using `IntermediateField.adjoin.mono ℚ _ _ hSN hyS`. Set `gq : Ω ≃ₐ[ℚ] Ω` to `AlgEquiv.ofRingEquiv (f := g.toRingEquiv) (fun q => by simp)`. Establish `hle : Algebra.adjoin ℚ (gens T (S.sup m)) ≤ AlgHom.equalizer (gq : Ω →ₐ[ℚ] Ω) (AlgHom.id ℚ Ω)` using `Algebra.adjoin_le fun a ha => fixes_gens T _ g hg a ha`. Take `⟨r, hr, s, hs, rfl⟩` from `IntermediateField.mem_adjoin_iff_div.mp hyN`. Establish `hr' : g r = r` using `hle hr`.
+
+Establish `hs' : g s = s` using `hle hs`. Rewrite using `[map_div₀, hr', hs']`.
+-/
 theorem exists_level_of_fixed (hClo : IsClo p Ω) (T : Tower p Ω) (y : Ω)
     (hy : ∀ h ∈ ⨅ n, Gn T n, h y = y) : ∃ n, ∀ g ∈ Gn T n, g y = y := by
   haveI := charZero_of_tower T
@@ -135,6 +181,19 @@ namespace GlobalTheory.K5.FinLevel
 
 variable {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
+/- English proof (translation)
+Simplify using `only [Finset.mem_singleton, forall_eq] at huniq`. Set `rep : Gal p Ω → Gal p Ω` to `fun a => if ha : a ∈ H then (huniq a ha).exists.choose else 1`. Establish `hrep : ∀ a ∈ H, rep a ∈ E ∧ a y₀ = rep a y₀ ∧ a x = rep a x`. Introduce `a ha`. Simplify using `only [rep, dif_pos ha]`.
+
+Conclude with `(huniq a ha).exists.choose_spec`. Establish `hun : ∀ a ∈ H, ∀ g ∈ E, a y₀ = g y₀ → a x = g x → rep a = g`. Introduce `a ha g hg h1 h2`. Conclude with `((huniq a ha).unique (hrep a ha) ⟨hg, h1, h2⟩)`. Introduce `h hh`.
+
+Rewrite using `[map_sum]`. Establish `hmem : ∀ g ∈ E, h * g ∈ H` using `fun g hg => H.mul_mem hh (hEH g hg)`. Establish `hmem' : ∀ g ∈ E, h⁻¹ * g ∈ H` using `fun g hg => H.mul_mem (H.inv_mem hh) (hEH g hg)`. Use `Finset.sum_bij' (fun g _ => rep (h * g)) (fun g _ => rep (h⁻¹ * g)) (fun g hg => (hrep _ (hmem g hg)).1) (fun g hg => (hrep _ (hmem' g hg)).1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Take `⟨_, h1, h2⟩` from `hrep _ (hmem g hg)`. Use `hun _ (hmem' _ (hrep _ (hmem g hg)).1) g hg ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, ← h1, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Rewrite using `[AlgEquiv.mul_apply, ← h2, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Introduce `g hg`.
+
+Take `⟨_, h1, h2⟩` from `hrep _ (hmem' g hg)`. Use `hun _ (hmem _ (hrep _ (hmem' g hg)).1) g hg ?_ ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, ← h1, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Rewrite using `[AlgEquiv.mul_apply, ← h2, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply]`. Introduce `g hg`.
+
+Take `⟨_, h1, h2⟩` from `hrep _ (hmem g hg)`. Use `show (h * g) (y₀ * x) = _`. Rewrite using `[map_mul, map_mul (rep (h * g)), h1, h2]`.
+-/
 theorem sum_fixed (H : Subgroup (Gal p Ω)) (E : Finset (Gal p Ω)) (y₀ x : Ω)
     (hEH : ∀ g ∈ E, g ∈ H)
     (huniq : ∀ h ∈ H, ∃! g, g ∈ E ∧ h y₀ = g y₀ ∧ ∀ s ∈ ({x} : Finset Ω), h s = g s) :

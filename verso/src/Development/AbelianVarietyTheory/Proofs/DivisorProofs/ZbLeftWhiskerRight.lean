@@ -39,9 +39,15 @@ variable (A B) in
 
 def zb : A ⊗ B ⟶ A ⊗ B := lift (fst A B) (1 : A ⊗ B ⟶ B)
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [zb]`.
+-/
 theorem zb_whiskerRight (q : A ⟶ A') : zb A B ≫ q ▷ B = q ▷ B ≫ zb A' B := by
   ext <;> simp [zb]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left, zb_whiskerRight]`.
+-/
 theorem zb_left_whiskerRight (q : A ⟶ A') :
     (q ▷ B).left ≫ (zb A' B).left = (zb A B).left ≫ (q ▷ B).left := by
   rw [← Over.comp_left, ← Over.comp_left, zb_whiskerRight]
@@ -51,11 +57,17 @@ def rhoZ (q : A ⟶ A') : pullback (q ▷ B).left (q ▷ B).left ⟶ pullback (q
     (zb_left_whiskerRight q) (zb_left_whiskerRight q)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem rhoZ_fst (q : A ⟶ A') : rhoZ (B := B) q ≫ pullback.fst (q ▷ B).left (q ▷ B).left =
     pullback.fst (q ▷ B).left (q ▷ B).left ≫ (zb A B).left :=
   pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem rhoZ_snd (q : A ⟶ A') : rhoZ (B := B) q ≫ pullback.snd (q ▷ B).left (q ▷ B).left =
     pullback.snd (q ▷ B).left (q ▷ B).left ≫ (zb A B).left :=
   pullback.lift_snd _ _ _
@@ -66,12 +78,18 @@ def rhoW (q : A ⟶ A') : Triple (q ▷ B).left ⟶ Triple (q ▷ B).left :=
     (rhoZ_snd q).symm (rhoZ_fst q).symm
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc (attr := simp)]`.
+-/
 theorem rhoW_fst (q : A ⟶ A') :
     rhoW (B := B) q ≫ pullback.fst (pullback.snd (q ▷ B).left (q ▷ B).left) (pullback.fst (q ▷ B).left (q ▷ B).left) =
       pullback.fst (pullback.snd (q ▷ B).left (q ▷ B).left) (pullback.fst (q ▷ B).left (q ▷ B).left) ≫ rhoZ q :=
   pullback.lift_fst _ _ _
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem rhoW_snd (q : A ⟶ A') :
     rhoW (B := B) q ≫ pullback.snd (pullback.snd (q ▷ B).left (q ▷ B).left) (pullback.fst (q ▷ B).left (q ▷ B).left) =
       pullback.snd (pullback.snd (q ▷ B).left (q ▷ B).left) (pullback.fst (q ▷ B).left (q ▷ B).left) ≫ rhoZ q :=

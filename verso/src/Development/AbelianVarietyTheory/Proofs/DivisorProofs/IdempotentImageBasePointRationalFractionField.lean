@@ -15,6 +15,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum.RatBase
 
+/- English proof (translation)
+Take `⟨gs, h0, hs, rfl⟩` from `H`. Establish `: ∀ i : Fin (k + 1), (gs i).b = g.b ^ (i : ℕ)` using `fun i => by`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => rw [Fin.val_zero, pow_zero]`. Conclude with `h0.1`.
+
+Consider the case `succ i ih => rw [(hs i).1, ih, Fin.val_succ, pow_succ]`. Both sides reduce to the same expression. Conclude with `this _`.
+-/
 theorem nsmul_b' {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {k : ℕ} {g h : GtPtF D F} (H : GtPtF.IsNsmul k g h) : h.b = g.b ^ k := by
   obtain ⟨gs, h0, hs, rfl⟩ := H
@@ -24,12 +29,38 @@ theorem nsmul_b' {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} 
     | succ i ih => rw [(hs i).1, ih, Fin.val_succ, pow_succ]; rfl
   exact this _
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+-/
 theorem pow_comp' {S : Scheme.{0}} {G H Z : Over S} [GrpObj G] [GrpObj H] (φ : G ⟶ H) [IsMonHom φ]
     (x : Z ⟶ G) (n : ℕ) : (x ^ n) ≫ φ = (x ≫ φ) ^ n := by
   induction n with
   | zero => simp
   | succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]
 
+/- English proof (translation)
+Introduce `o W _ _ _ T R _ _ _ iw I _ s ε n _ hn _ ζ _ Q e hD hT D' F p₀ p hy hg`. Use `haveI := F.inc_hom`. Use `haveI := F.pr_hom`. Use `set L := AlgebraicClosure (FractionRing R)`. Use `set a := F.xp p₀.y`.
+
+Set `b₀ : TF (R` to `R) L ⟶ Q.B := p₀.g.b ≫ F.pr`. Establish `hpb : p.g.b = b₀ ≫ F.inc` using `by rw [hg.1, ← F.pr_inc, Category.assoc]`. Take `⟨h, h1, h2⟩` from `p₀.eq`. Establish `hn1 : p₀.g.b ^ n = toUnit _ ≫ D'.toPre.c p₀.y` using `(nsmul_b' h1).symm.trans h2.1`. Establish `hcpr : D'.toPre.c p₀.y ≫ F.pr = Q.c a`.
+
+Establish `h3 : D'.toPre.c p₀.y ≫ F.pr ≫ F.inc = Q.c a ≫ F.inc`. Rewrite using `[F.pr_inc, ← F.o.c_lin, ← F.xi_xp, F.c_xi]`. Establish `h4` using `congrArg (· ≫ F.pr) h3`. Simplify `h4` using `only [Category.assoc, F.inc_pr, Category.comp_id]`. Establish `hb₀ : b₀ ^ n = toUnit _ ≫ Q.c a`.
+
+Rewrite using `[← pow_comp', hn1, Category.assoc, hcpr]`. Take `⟨β, β₂, w, hpb', hsq, hw, hc, htau⟩` from `hD`. Establish `hcomm : (spMap iw ≫ (T.c₀ (e a)).left) ≫ T.B.hom = 𝟙 (Sp R) ≫ spMap iw`. Rewrite using `[Category.assoc, Over.w (T.c₀ (e a))]`. Simplify using the standard rewrite rules.
+
+Set `d : 𝟙_ (Over (Sp R)) ⟶ Q.B` to `Over.homMk (hpb'.1.lift _ _ hcomm) (by simpa using hpb'.1.lift_snd _ _ hcomm)`. Establish `hd : d.left ≫ β = spMap iw ≫ (T.c₀ (e a)).left` using `hpb'.1.lift_fst _ _ hcomm`. Establish `hdn : d ^ n = Q.c a`. Use `Over.OverMorphism.ext (hpb'.1.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Rewrite using `[GlobalTheory.FrameMove.pow_comm hpb' hd n, hc a]`.
+
+Use `congr 2`. Establish `key : ∀ k : ℕ, T.c₀ ((k : ℤ) • e a) = T.c₀ (e a) ^ k` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => rw [Nat.cast_zero, zero_smul, pow_zero, T.c₀_zero]`. Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, one_smul, T.c₀_add, ih, pow_succ]`.
+
+Conclude with `(key n).symm`. Set `κ` to `algebraMap (FractionRing R) L`. Set `x : TF (R` to `R) L ⟶ Q.B := b₀ * (toUnit _ ≫ d)⁻¹`. Establish `hx : x ^ n = 1`. Simplify using `only [x]`.
+
+Rewrite using `[mul_pow, inv_pow, hb₀, ← GlobalTheory.FrameMove.comp_pow, hdn, mul_inv_cancel]`. Take `⟨x₀, hx₀⟩` from `hT L κ x hx`. Set `ρ : TF (R` to `R) L ⟶ TK R := Over.homMk (spMap κ) rfl`. Establish `hxρ : x = ρ ≫ x₀` using `Over.OverMorphism.ext hx₀`. Establish `hb₀' : b₀ = ρ ≫ (x₀ * (toUnit _ ≫ d))`.
+
+Rewrite using `[MonObj.comp_mul, ← hxρ, ← Category.assoc, toUnit_unique (ρ ≫ toUnit _) (toUnit _)]`. Simplify using `only [x, inv_mul_cancel_right]`. Set `σ : TF (R` to `R) (FractionRing R) ⟶ TK R := Over.homMk (jFK (R := R) (FractionRing R)) rfl`. Use `⟨σ ≫ (x₀ * (toUnit _ ≫ d)) ≫ F.inc, ?_⟩` and prove the remaining obligations. Rewrite using `[hpb, hb₀']`.
+
+Simplify using `only [Over.comp_left]`. Establish `hj : jFK (R` using `R) (FractionRing R) = 𝟙 _ := by`. Simplify using `only [jFK, Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Establish `hσ : σ.left = 𝟙 _` using `hj`. Rewrite using `[hσ, Category.id_comp, Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ratBase : ∀ {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (iw : W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ), IsCN R → 1 ≤ n → IsUnit (n : R) → ∀ ζ : R, IsPrimitiveRoot ζ n → ∀ (Q : Data R) (e : Q.X ≃+ (Fin T.r → ℤ)), DataFrom T iw s ε n Q e → TorsRat Q.B n → ∀ (D' : DegData R (maximalIdeal R)) (F : PFactor Q D'.toPre) (p₀ p : QkPt D'.toPre (AlgebraicClosure (FractionRing R)) n), p.y = F.e • p₀.y → GtPtAct F.o F.e p₀.g p.g → ∃ b : TF (R := R) (FractionRing R) ⟶ D'.toPre.P.A, p.g.b.left = spMap (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ≫ b.left := by
   intro o W _ _ _ T R _ _ _ iw I _ s ε n _ hn _ ζ _ Q e hD hT D' F p₀ p hy hg
   haveI := F.inc_hom

@@ -24,6 +24,17 @@ open scoped InnerProductSpace ENNReal
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Establish `hK : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `hRS : R.IsDS ε mu` using `GlobalTheory.isDS_of_isDG hR`. Take `⟨-, hS2⟩` from `GlobalTheory.CompactStable.kStable_smooth_and_stable hK k r ε mu R hRS Q hQ S hfin hst`. Take `⟨hw1, hw2⟩` from `GlobalTheory.TorusWeight.torus_weight_action hK k r ε mu R hRS Q E hQ hE (Formalism.QuantumDeterminants.lowK ε mu) w hw`. Establish `hMod` using `Gp91.GlobalTheory.isMod_smooth_of_isDS hH k r ε mu R hk hR Q E hQ hE`.
+
+Use `GlobalTheory.lev_zero_of_kHighest _ _ _ E _ w hMod.1 hMod.2.1 ⟨hw1, ?_⟩ ?_` and prove the remaining obligations. Introduce `a b hab he`. Assume the negation of the conclusion as `h0`. Establish `hmem : ((E a b w : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b w]`.
+
+Conclude with `hS2 a b he _ hwS`. Establish `h0' : ((E a b w : R.smSub) : R.H) ≠ 0` using `fun h => h0 (Subtype.ext h)`. Conclude with `GlobalTheory.DominantRootSums.not_cDom_add_root _ ε _ a b hab (hmax _ _ hmem h0' (hw2 a b))`. Establish `hle : Formalism.REAL.kSpan ε E w ≤ S.comap R.smSub.subtype`. Use `sInf_le ⟨hwS, ?_⟩` and prove the remaining obligations.
+
+Introduce `a b he x hx`. Use `show ((E a b x : R.smSub) : R.H) ∈ S`. Rewrite using `[hE a b x]`. Conclude with `hS2 a b he _ hx`. Establish `: FiniteDimensional ℂ (S.comap R.smSub.subtype)` using `FiniteDimensional.of_injective ((R.smSub.subtype.comp (S.comap R.smSub.subtype).subtype).codRestrict S (fun x => x.2)) (fun x y h => by`.
+
+Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h'))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem lev_zero_of_wt_gap (hH : HypsG) (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ}
     {R : Rep k r} (hR : R.IsDG ε mu) {Q : Mx k r}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ R.smSub} (hQ : PI.UpqRep.IsCayleyU k r ε Q)
@@ -60,6 +71,35 @@ theorem lev_zero_of_wt_gap (hH : HypsG) (hk : 1 ≤ k) {ε : Fin (2 * r + k + 1)
           exact Subtype.ext (Subtype.ext h'))
     exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Establish `hK : PI.KFinSmooth` using `hH.1.1.2.2.1`. Establish `hNum` using `hS.1`. Establish `hFam` using `hS.2.1`. Establish `hSide` using `hS.2.2.1`. Establish `hSF` using `hS.2.2.2`.
+
+Establish `hk : 1 ≤ k` using `hNum.1`. Take `⟨Q, hQ, hw1, hwL⟩` from `hw`. Establish `hQu : IsUnit Q` using `hQ.1.1`. Establish `hE : ∀ ν', ∃ E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν').smSub, n1 ν' ≤ q0 → (R ν').IsE Q E ∧ Formalism.REAL.GlRel E`. Introduce `ν'`.
+
+Distinguish the cases in `h' : n1 ν' ≤ q0`. Take `⟨E, hE⟩` from `GlobalTheory.smooth_gl_module hK k r _ _ (R ν') (hFam ν' h') Q hQu`. Conclude with `⟨E, fun _ => hE⟩`. Conclude with `⟨fun _ _ => 0, fun h'' => absurd h'' h'⟩`. Use `choose E hE using hE`.
+
+Establish `hbd'` using `hbd Q E hQ hE`. Establish `hDG : (R ν).IsDG (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ))` using `GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.1 k r lam u b bv ga h q0 R hNum hFam ν hν0`. Establish `hDS` using `GlobalTheory.isDS_of_isDG hDG`. Establish `hD` using `(GlobalTheory.CayleyChoice.cayley_exists_and_any k r).2 _ _ _ hDS Q hQ`. Take `⟨hG, -, hlen, hmeas⟩` from `GlobalTheory.quotMeas_ae_mem_and_measurable hK k r _ _ (R ν) Wp z π u μW μN μG νq hDS hSide`.
+
+Take `⟨hBeL, hdg, -⟩` from `hSF ν hν0`. Take `⟨hmul, -, -, hsm, -⟩` from `GlobalTheory.rep_basic_of_isDS hK k r _ _ (R ν) hDS`. Establish `hT : 0 < Formalism.QuantumDeterminants.Tz k r z` using `hSide.2.1`. Establish `hsmS : ∀ S : Submodule ℂ (R ν).H, FiniteDimensional ℂ S → PI.UpqRep.IsKStableOn (PI.BesselPeriodGGP.eps48 k r) (fun g => (R ν).σ (Q⁻¹ * g * Q)) S → S ≤ (R ν).smSub` using `fun S h1 h2 v hv => ((GlobalTheory.CompactStable.kStable_smooth_and_stable hK k r _ _ (R ν) hDS Q hQ S h1 h2).1 v hv).2`. Establish `hlenv : AEMeasurable (fun x : Formalism.QuantumDeterminants.Mt k r => fun a => lenA k r z (Matrix.of x) a) νq` using `aemeasurable_pi_iff.2 hlen`.
+
+Break down `eq_or_ne Bd ⊤ with rfl | hBd` into its components or cases. Conclude with `le_top`. Establish `hCB : ENNReal.ofReal Bd.toReal = Bd` using `ENNReal.ofReal_toReal hBd`. Rewrite using `[← hCB]`. Rewrite `hbd'` using `[← hCB]`.
+
+Establish `key` using `GlobalTheory.MomOne.lintegral_le_of_highest (m := νq) hD.2.2.1 _ (R ν).smSub hsmS (fun v x => ((Real.sqrt (φ (fun a => lenA k r z (Matrix.of x) a)) * Real.sqrt (dg ν) : ℝ) : ℂ) • lb ν ((R ν).σ (Matrix.of x) v)) ?_ ?_ ?_ ?_ Bd.toReal ENNReal.toReal_nonneg ?_ w hwL hw1`. Simplify `key` using `only [norm_sq_sqrt_scaled (hφ0 _) hdg.le]`. Introduce `v hv v' hv' filter_upwards [hG] with x hx`. Simplify using `only [Pi.add_apply]`. Rewrite using `[map_add, hBeL.1.1 _ (hsm _ hx v hv) _ (hsm _ hx v' hv'), smul_add]`.
+
+Introduce `c v hv filter_upwards [hG] with x hx`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[map_smul, hBeL.1.2.1 c _ (hsm _ hx v hv), smul_comm]`. Introduce `v hv`. Use `(Complex.continuous_ofReal.comp_aestronglyMeasurable ?_).smul (hmeas (lb ν) hBeL.1 v hv)` and prove the remaining obligations.
+
+Conclude with `(((hφm.comp_aemeasurable hlenv).sqrt).mul_const _).aestronglyMeasurable`. Introduce `g hg v hv`. Take `⟨hgG, hgU⟩` from `GlobalTheory.MomOne.conj_back hQ hg`. Simplify using `only [norm_sq_sqrt_scaled (hφ0 _) hdg.le]`. Establish `hBc` using `(GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r _ _ (R ν) hDS Wp (lb ν) hBeL.1.1 hBeL.1.2.1 hBeL.1.2.2.2 v hv).1`.
+
+Establish `hF` using `measurable_piecewise_mass z hSide.1 hT φ hφm (dg ν) (fun x => lb ν ((R ν).σ x v)) hBc`. Use `lintegral_rmul_of_measurable hSide (fun x => ENNReal.ofReal (φ (fun a => lenA k r z x a)) * ENNReal.ofReal (dg ν * ‖lb ν ((R ν).σ x v)‖ ^ 2)) hF ?_ hgG` as an intermediate fact. Establish `e1 : ∀ x : Formalism.QuantumDeterminants.Mt k r, ENNReal.ofReal (φ (fun a => lenA k r z (Matrix.of x) a) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) v)‖ ^ 2)) = ENNReal.ofReal (φ (fun a => lenA k r z (Matrix.of x) a)) * ENNReal.ofReal (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) v)‖ ^ 2)` using `fun x => ENNReal.ofReal_mul (hφ0 _)`. Simplify using `only [e1]`. Rewrite using `[← this]`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hG] with x hx`. Simplify using `only [GlobalTheory.MomOne.lenA_mul_unitary z _ hgU, hmul _ hx _ hgG]`. Rewrite using `[ENNReal.ofReal_mul (hφ0 _)]`. Introduce `s hs x hx`.
+
+Establish `e` using `(GlobalTheory.TensLen.lengths k r z hSide.1 hT _ hx).2.2.2 s hs`. Take `⟨h', hh, m, hmN, rfl⟩` from `hs`. Take `⟨u₀, hπ⟩` from `hSide.2.2.1`. Establish `hsG : h' * m ∈ GG k r` using `Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hh.1 hmN.1`. Use `beta_reduce`.
+
+Simplify using `only [e]`. Rewrite using `[hmul _ hsG _ hx, hBeL.1.2.2.1 h' hh m hmN _ (hsm _ hx v hv), norm_smul, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.psi_norm, one_mul, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary hT hπ h' hh]`. Introduce `S hfd hst hcd v hv hv1 hwt`. Simplify using `only [norm_sq_sqrt_scaled (hφ0 _) hdg.le]`. Establish `hvs : v ∈ (R ν).sm` using `hsmS S hfd hst hv`.
+
+Establish `hLev` using `lev_zero_of_wt_gap hH.1 hk hDG hQ (hE ν hν0).1 S hfd hst hcd ⟨v, hvs⟩ hv hwt`. Establish `hv1' : ‖(⟨v, hvs⟩ : (R ν).smSub)‖ = 1` using `hv1`. Conclude with `hbd' ⟨v, hvs⟩ hLev hv1'`.
+-/
 theorem weightedMass_bound_lowestType_largeGap (hH : GlobalTheory.GapIn.Hyp) (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ)
     (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r))
@@ -171,6 +211,9 @@ section main
 open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp GlobalTheory.TypeAsm Formalism.BasicNotions Formalism.MainNotions.S Formalism.QuantumDeterminants Matrix MeasureTheory Finset
 open scoped InnerProductSpace ENNReal
 
+/- English proof (translation)
+Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν hν0 φ Bd hφm hφ0 hbd w hw` and use `weightedMass_bound_lowestType_largeGap hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν hν0 φ Bd hφm hφ0 hbd w hw`.
+-/
 theorem mass_low_gap : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (lb : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R lb dg → ∀ ν, n1 ν ≤ q0 → ∀ (φ : (Fin (r + 1) → ℝ) → ℝ) (Bd : ℝ≥0∞), Measurable φ → (∀ y, 0 ≤ φ y) → (∀ (Q : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (E : ∀ ν', Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ (R ν').smSub), PI.UpqRep.IsCayleyU k r (PI.BesselPeriodGGP.eps48 k r) Q → (∀ ν', n1 ν' ≤ q0 → (R ν').IsE Q (E ν') ∧ Formalism.REAL.GlRel (E ν')) → ∀ w : (R ν).smSub, Lev (PI.BesselPeriodGGP.eps48 k r) (E ν) (fun a => lam a + (ν a : ℝ)) 0 w → ‖w‖ = 1 → ∫⁻ x, ENNReal.ofReal (φ (fun a => lenA k r z (Matrix.of x) a) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ Bd) → ∀ w : (R ν).H, PI.UpqRep.IsLowUnitH k r (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + (ν a : ℝ)) (R ν).σ w → ∫⁻ x, ENNReal.ofReal (φ (fun a => lenA k r z (Matrix.of x) a) * (dg ν * ‖lb ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ Bd :=
   fun hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν hν0 φ Bd hφm hφ0 hbd w hw =>
     weightedMass_bound_lowestType_largeGap hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg hS ν hν0 φ Bd hφm hφ0 hbd w hw

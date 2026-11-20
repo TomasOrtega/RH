@@ -16,6 +16,13 @@ section Int
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Proceed by induction on `hz using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨_, b, rfl⟩, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Rewrite using `[Algebra.TensorProduct.comm_symm_tmul, h.1]`. Conclude with `GlobalTheory.AdeleEv.norm_int_le i b`.
+
+Rewrite using `[Algebra.TensorProduct.comm_symm_tmul]`. Conclude with `h.2.1 _ y.2`. Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `neg x _ hx => rwa [map_neg, map_neg, norm_neg]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, map_mul, norm_mul]`. Conclude with `mul_le_one₀ hx (norm_nonneg _) hy`.
+-/
 theorem norm_ev_intAf_le {i : E →+* PadicAlgCl l} {ev : FiniteAdeleRing (𝓞 F) F ⊗[F] E →+* PadicAlgCl l} (h : EvOk i ev)
     (z : E ⊗[F] FiniteAdeleRing (𝓞 F) F) (hz : z ∈ Formalism.L2.Herm.intAf F E) :
     ‖ev ((Algebra.TensorProduct.comm F (FiniteAdeleRing (𝓞 F) F) E).symm z)‖ ≤ 1 := by
@@ -45,12 +52,24 @@ section Pt
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 
+/- English proof (translation)
+Consider the cases of `b`. Conclude with `⟨_, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem incOf_mem_range {l : ℕ} [Fact l.Prime] (e0 : D.what₂.LL →+* PadicAlgCl l) (b : Bool) (τ : D.what₂.Tau) (x : D.host.E) :
     incOf D e0 b τ x ∈ Set.range e0 := by
   cases b
   · exact ⟨_, rfl⟩
   · exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Introduce `_ e0 b ev rk _ hev`. Take `⟨y, hy⟩` from `exists_levInt p j (p.R.mu w)`. Use `⟨fun _ => 1, fun _ => rfl, fun κ τ a c => ?_⟩` and prove the remaining obligations. Establish `hk : kapMat p j (p.R.mu w) ev (fun _ => 1) rk κ τ a c = ev τ (matOf j κ.1 (rk a) (rk c))`. Simplify using `[kapMat, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Rewrite using `[hk]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `IntermediateField.adjoin.mono _ _ _ ?_ ((hev τ).2.2.2 _)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `incOf_mem_range e0 b τ x`.
+
+Establish `hz : Formalism.IndefR.Lev.swapAE D (matOf j κ.1 (rk a) (rk c)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[← hy κ (rk a) (rk c)]`. Conclude with `((y κ).val (rk a) (rk c)).2`. Establish `h` using `norm_ev_intAf_le (hev τ) _ hz`. Establish `he : (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm (Formalism.IndefR.Lev.swapAE D (matOf j κ.1 (rk a) (rk c))) = matOf j κ.1 (rk a) (rk c)` using `(Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm_apply_apply _`.
+
+Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+-/
 theorem kapAt (j : Fin D.R.m) (P : Par) (w : HeightOneSpectrum (𝓞 D.what₂.LL)) : KapAt p j P w := by
   intro _ e0 b ev rk _ hev
   obtain ⟨y, hy⟩ := exists_levInt p j (p.R.mu w)
@@ -71,6 +90,9 @@ theorem kapAt (j : Fin D.R.m) (P : Par) (w : HeightOneSpectrum (𝓞 D.what₂.L
       (Algebra.TensorProduct.comm D.host.F (FiniteAdeleRing (𝓞 D.host.F) D.host.F) D.host.E).symm_apply_apply _
     rwa [he] at h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p _ _ j P _ _ _ w _ _ _ => kapAt p j P w⟩⟩⟩`.
+-/
 theorem kapSt : InRange fun _ _ _ _ p j P _ w => SmallAt p j P w → KapAt p j P w :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
     ⟨0, fun _ _ _ _ p _ _ j P _ _ _ w _ _ _ => kapAt p j P w⟩⟩⟩

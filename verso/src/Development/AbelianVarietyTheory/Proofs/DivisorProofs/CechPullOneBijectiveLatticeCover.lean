@@ -29,6 +29,13 @@ def counitCoef {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [Category.
     change mp F (adj.counit.app V) (r • b) = r • mp F (adj.counit.app V) b
     exact map_smul _ r b
 
+/- English proof (translation)
+Establish `hl : ∀ c, (counitCoef F adj).pull1 ((CoefMap.restrict F G).pull1 c) = c`. Introduce `c`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Conclude with `(CoefMap.pullCohomologyOne_eq_of_natTrans _ (CoefMap.id F) adj.counit (fun T b ↦ rfl) c).trans (CoefMap.pullCohomologyOne_id c)`. Establish `hr : ∀ c, (CoefMap.restrict F G).pull1 ((counitCoef F adj).pull1 c) = c`.
+
+Introduce `c`. Rewrite using `[← CoefMap.pullCohomologyOne_comp]`. Use `((CoefMap.pullCohomologyOne_eq_of_natTrans (CoefMap.id (G ⋙ F)) ((counitCoef F adj).comp (CoefMap.restrict F G)) adj.unit (fun T b ↦ ?_) c).symm.trans (CoefMap.pullCohomologyOne_id c))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mp F (adj.counit.app (G.obj T)) (mp F (G.map (adj.unit.app T)) b) = b`. Conclude with `(mp_comp F (G.map (adj.unit.app T)) (adj.counit.app (G.obj T)) b).symm.trans ((congrArg (fun ξ ↦ mp F ξ b) (adj.left_triangle_components T)).trans (mp_id F (G.obj T) b))`.
+
+Conclude with `⟨Function.LeftInverse.injective hl, Function.RightInverse.surjective hr⟩`.
+-/
 theorem restrict_pull1_bijective_of_adj {R : Type} [CommRing R] {C C' : Type} [Category.{0} C]
     [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C) (H : C ⥤ C') (adj : G ⊣ H) :
     Function.Bijective (CoefMap.restrict F G).pull1 := by
@@ -48,6 +55,27 @@ theorem restrict_pull1_bijective_of_adj {R : Type} [CommRing R] {C C' : Type} [C
       ((congrArg (fun ξ ↦ mp F ξ b) (adj.left_triangle_components T)).trans (mp_id F (G.obj T) b))
   exact ⟨Function.LeftInverse.injective hl, Function.RightInverse.surjective hr⟩
 
+/- English proof (translation)
+Set `G : {V : X.affineOpens // ∃ i, V.1 ≤ U i}ᵒᵖ ⥤ AffOp X` to `(Monotone.functor (f := (Subtype.val : {V : X.affineOpens // ∃ i, V.1 ≤ U i} → X.affineOpens)) fun _ _ h ↦ h).op`. Establish `hcov : ∀ T : AffOp X, ∃ (n : ℕ) (b : Fin n → (OAff s).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X) (u : T ⟶ S), IsUnit (mp (OAff s) u (b i)) → ∃ (t : {V : X.affineOpens // ∃ i, V.1 ≤ U i}ᵒᵖ) (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u`. Introduce `T`. Establish `hT : IsAffineOpen T.unop.1` using `T.unop.2`. Set `Gs : Set Γ(X, T.unop.1)` to `{f | ∃ j, X.basicOpen f ≤ U j}`.
+
+Establish `hG : Ideal.span Gs = ⊤`. Rewrite using `[← hT.self_le_iSup_basicOpen_iff]`. Introduce `x hx`. Establish `hxU : x ∈ ⨆ i, U i` using `by rw [hU]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxU`.
+
+Take `⟨f, hf, hxf⟩` from `hT.exists_basicOpen_le (V := U j) ⟨x, hj⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, ⟨j, hf⟩⟩, hxf⟩`. Take `⟨F, hFG, hF⟩` from `(Ideal.span_eq_top_iff_finite Gs).1 hG`. Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, ?_⟩` and prove the remaining obligations. Establish `hR : Set.range (fun i : Fin F.card ↦ (F.equivFin.symm i).1) = (F : Set Γ(X, T.unop.1))`.
+
+Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(F.equivFin.symm i).2`. Introduce `hf; exact ⟨F.equivFin ⟨f, hf⟩, by simp⟩`.
+
+Conclude with `hR ▸ hF`. Introduce `i S u hu`. Take `⟨j, hj⟩` from `hFG (F.equivFin.symm i).2`. Use `set f : Γ(X, T.unop.1) := (F.equivFin.symm i).1`. Establish `hW : IsAffineOpen (X.basicOpen f)` using `hT.basicOpen f`.
+
+Establish `hWT : X.basicOpen f ≤ T.unop.1` using `X.basicOpen_le f`. Establish `hSW : S.unop.1 ≤ X.basicOpen f`. Establish `h1 : X.basicOpen (X.presheaf.map (homOfLE (leOfHom u.unop)).op f) = S.unop.1` using `X.basicOpen_of_isUnit hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`. Rewrite using `[← h1]`.
+
+Conclude with `inf_le_right`. Set `t : {V : X.affineOpens // ∃ i, V.1 ≤ U i}` to `⟨⟨_, hW⟩, j, hj⟩`. Use `⟨Opposite.op t, (homOfLE (show (⟨_, hW⟩ : X.affineOpens) ≤ T.unop from hWT)).op, (homOfLE (show S.unop ≤ (⟨_, hW⟩ : X.affineOpens) from hSW)).op, ?_⟩` and prove the remaining obligations. Conclude with `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Establish `hdir : ∀ (t₁ t₂ : {V : X.affineOpens // ∃ i, V.1 ≤ U i}ᵒᵖ) (S : AffOp X), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (OAff s).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X) (u : S ⟶ S'), IsUnit (mp (OAff s) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ …`.
+
+Introduce `t₁ t₂ S h₁ h₂`. Use `⟨1, fun _ ↦ 1, ?_, fun _ S' u _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_eq_top_iff_finite]`. Conclude with `⟨{1}, by simp, by simp⟩`. Take `⟨j, hj⟩` from `t₁.unop.2`.
+
+Establish `hS'S : S'.unop ≤ S.unop` using `leOfHom u.unop`. Establish `hS1 : S.unop ≤ t₁.unop.1` using `leOfHom h₁.unop`. Establish `hS2 : S.unop ≤ t₂.unop.1` using `leOfHom h₂.unop`. Set `t₃ : {V : X.affineOpens // ∃ i, V.1 ≤ U i}` to `⟨S'.unop, j, le_trans (hS'S.trans hS1) hj⟩`. Use `⟨Opposite.op t₃, ⟨(homOfLE (show t₃ ≤ t₁.unop from hS'S.trans hS1)).op⟩, ⟨(homOfLE (show t₃ ≤ t₂.unop from hS'S.trans hS2)).op⟩, ⟨𝟙 _⟩⟩` and prove the remaining obligations.
+
+Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s) G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s) G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s) G H hcov hdir`. Conclude with `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`.
+-/
 theorem restrict_cover_affine_pull1_bijective (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R)
     (J : Type) (U : J → X.Opens) (hU : ⨆ i, U i = ⊤) :
     Function.Bijective (CoefMap.restrict (OAff s) (Monotone.functor
@@ -112,6 +140,15 @@ theorem restrict_cover_affine_pull1_bijective (R : Type) [CommRing R] (X : Schem
   exact ⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg,
     _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩
 
+/- English proof (translation)
+Introduce `R _ X s J _ _ U hU hinf hcov`. Use `haveI := Fintype.ofFinite J`. Set `B : Type` to `{V : X.affineOpens // ∃ i, V.1 ≤ (U i).1}`. Establish `hne : ∀ V : B, (Finset.univ.filter fun i => V.1.1 ≤ (U i).1).Nonempty` using `fun V => by`. Take `⟨i, hi⟩` from `V.2`.
+
+Conclude with `⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, hi⟩⟩`. Set `σ : B → J` to `fun V => (Finset.univ.filter fun i => V.1.1 ≤ (U i).1).inf' (hne V) id`. Set `u : J → B` to `fun i => ⟨U i, i, le_rfl⟩`. Establish `hσ : ∀ V : B, V.1.1 ≤ (U (σ V)).1` using `fun V => Finset.inf'_induction (p := fun i => V.1.1 ≤ (U i).1) (hne V) id (fun a ha b hb => by rw [hinf]; exact le_inf ha hb) fun i hi => (Finset.mem_filter.1 hi).2`. Establish `gc : GaloisConnection σ u` using `fun V i => ⟨fun h => (hσ V).trans (hU h), fun h => Finset.inf'_le (s := Finset.univ.filter fun i : J => V.1.1 ≤ (U i).1) (id : J → J) (Finset.mem_filter.2 ⟨Finset.mem_univ i, h⟩)⟩`.
+
+Set `incl : Bᵒᵖ ⥤ AffOp X` to `(Monotone.functor (f := (Subtype.val : B → X.affineOpens)) fun _ _ h ↦ h).op`. Establish `b1 : Function.Bijective (CoefMap.restrict (OAff s) incl).pull1` using `restrict_cover_affine_pull1_bijective R X s J (fun i => (U i).1) hcov`. Establish `b2` using `restrict_pull1_bijective_of_adj (incl ⋙ OAff s) gc.monotone_u.functor.op gc.monotone_l.functor.op gc.adjunction.op`. Establish `e : ∀ c, (CoefMap.restrict (OAff s) hU.functor.op).pull1 c = (CoefMap.restrict (incl ⋙ OAff s) gc.monotone_u.functor.op).pull1 ((CoefMap.restrict (OAff s) incl).pull1 c)` using `fun c => (CoefMap.pullCohomologyOne_eq_of_natTrans (CoefMap.restrict (OAff s) hU.functor.op) ((CoefMap.restrict (OAff s) incl).comp (CoefMap.restrict (incl ⋙ OAff s) gc.monotone_u.functor.op)) (𝟙 _) (fun T b => mp_id (OAff s) _ b) c).trans (CoefMap.pullCohomologyOne_comp _ _ c)`. Use `b2.comp b1` as an intermediate fact.
+
+Conclude with `(funext e : _ = _) ▸ this`.
+-/
 theorem restrict_bijective : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (s : X ⟶ Sp R) (J : Type) [Finite J] [SemilatticeInf J] (U : J → X.affineOpens) (hU : Monotone U), (∀ i j, (U (i ⊓ j)).1 = (U i).1 ⊓ (U j).1) → ⨆ i, (U i).1 = ⊤ → Function.Bijective (CoefMap.restrict (OAff s) hU.functor.op).pull1 := by
   intro R _ X s J _ _ U hU hinf hcov
   classical

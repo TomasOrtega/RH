@@ -23,6 +23,27 @@ def submoduleEvaluationFunctional {H : Type*} [NormedAddCommGroup H] [InnerProdu
   map_add' x y := by simp [inner_add_right]
   map_smul' c x := by simp [inner_smul_right]
 
+/- English proof (translation)
+Use `hV.1` as an intermediate fact. Establish `hVK : ∀ (k : KG ε) (v : V), ∃ w : V, ((w : D) : H) = σ (toMK k) ((v : D) : H)`. Introduce `k v`. Take `⟨Z, hZ, he⟩` from `HW.exists_log ε k`. Establish `hs` using `KTypeIsomorphism.orbit_hasSum hσ hD hV.1 hV.2.1 hZ v`.
+
+Set `P : Submodule ℂ H` to `LinearMap.range (D.subtype ∘ₗ V.subtype)`. Establish `hmem : σ (NormedSpace.exp Z) ((v : D) : H) ∈ P` using `P.closed_of_finiteDimensional.mem_of_tendsto hs (Filter.Eventually.of_forall fun t => P.sum_mem fun m _ => P.smul_mem _ ⟨_, rfl⟩)`. Take `⟨w, hw⟩` from `hmem`. Conclude with `⟨w, by rw [he]; exact hw⟩`. Set `L : T.V →L[ℂ] H` to `LinearMap.toContinuousLinearMap (D.subtype ∘ₗ V.subtype ∘ₗ ι.symm.toLinearMap)`.
+
+Establish `hK : ∀ X, inK ε X → ((actM E X ((ι.symm T.w : V) : D) : D) : H) = L (T.dτ X T.w)`. Introduce `X hX`. Take `⟨γ, hγ⟩` from `HW.exists_curve ε hX`. Establish `h1` using `((L.comp (ContinuousLinearMap.apply ℂ T.V T.w)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (T.hasDeriv X hX γ hγ)`. Use `(hD.deriv X hX.1 _).unique (h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_))` and prove the remaining obligations.
+
+Take `⟨w, hw⟩` from `hVK (γ t) (ι.symm T.w)`. Establish `h2` using `hιK (γ t) _ w hw`. Rewrite `h2` using `[ι.apply_symm_apply]`. Use `show σ _ _ = ((ι.symm (T.op (γ t) T.w) : D) : H)`. Rewrite using `[← h2, ι.symm_apply_apply, hw, hγ]`.
+
+Establish `hC : ∀ a b, ε a = ε b → ((E a b ((ι.symm T.w : V) : D) : D) : H) = L (T.dτ (Matrix.single a b 1) T.w)`. Introduce `a b hab`. Establish `hZ : (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ) * Jm ε = Jm ε * Matrix.single a b 1`. Use extensionality with `i j`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.single_apply]`.
+
+Apply the tactic sequence `split_ifs with h <;> simp_all`. Establish `hJ : Jm ε * Jm ε = 1`. Apply the tactic sequence `rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; split_ifs <;> simp`. Establish `hJh : (Jm ε).conjTranspose = Jm ε`. Rewrite using `[Jm, Matrix.diagonal_conjTranspose]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `simp only [Pi.star_apply]; split_ifs <;> simp`. Establish `hZ' : Jm ε * (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * Jm ε = Jm ε * (Jm ε * (Matrix.single a b 1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε)`. Use `congrArg Matrix.conjTranspose hZ` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJh]`. Rewrite using `[Matrix.mul_assoc _ (Jm ε) (Jm ε), hJ, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ, Matrix.one_mul, this]`. Establish `k1 : inK ε (cpart1 ε (Matrix.single a b 1))` using `⟨ta_inG_cpart1 ε _, by`. Simplify using `only [cpart1, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, hZ, hZ']⟩`. Establish `k2 : inK ε (cpart2 ε (Matrix.single a b 1))` using `⟨ta_inG_cpart2 ε _, by`.
+
+Simplify using `only [cpart2, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, hZ, hZ']⟩`. Rewrite using `[← TRA.actM_single E a b, TRA.act_cpart (ε := ε), Submodule.coe_add, Submodule.coe_smul, hK _ k1, hK _ k2]`. Use `conv_rhs => rw [← ta_cpart_sum ε (Matrix.single a b 1), map_add, map_smul, _root_.add_apply, _root_.smul_apply, map_add, map_smul]`. Use `⟨fun a => Subtype.ext ?_, fun a b hab he => Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hC a a rfl, T.w_wt a, map_smul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hC a b he, T.w_hw a b hab he, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem lowestKType_vector_exists (ε : Fin n → Bool) (lam : Fin n → ℝ)
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D)
@@ -83,6 +104,45 @@ theorem lowestKType_vector_exists (ε : Fin n → Bool) (lam : Fin n → ℝ)
   · rw [hC a a rfl, T.w_wt a, map_smul]; rfl
   · rw [hC a b he, T.w_hw a b hab he, map_zero]; rfl
 
+/- English proof (translation)
+Use `hV.1` as an intermediate fact. Introduce `x hx`. Use function extensionality and compare the values at `c`. Use `set w0 : H := (((ι.symm T.w : V) : D) : H) with hw0`. Establish `hsT : sT E V x c = ∑ p ∈ x.support, if p.2 = c then wordE E p.1 (x p : D) else 0` using `by conv_lhs => rw [← Finsupp.sum_single x, Finsupp.sum, map_sum, Finset.sum_apply]`.
+
+Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[show p = (p.1, p.2) from rfl, sT_single, Pi.single_apply]`. Simplify using `only [eq_comm]`. Establish `hword : ∀ w : List (Fin n × Fin n), ((w.map fun p => (Matrix.single p.1 p.2 1 : Matrix (Fin n) (Fin n) ℂ)).map (actM E)).prod = wordE E w` using `fun w => by`. Rewrite using `[List.map_map, wordE]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `p`. Conclude with `TRA.actM_single E p.1 p.2`. Establish `h1J : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by show (1 : Matrix (Fin n) (Fin n) ℂ).conjTranspose * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules.
+
+Use `TRA.eq_zero_of_coef hσ hD (V := V) ?_ fun g hg v' => ?_` and prove the remaining obligations. Rewrite using `[hsT]`. Use `Submodule.sum_mem _ fun p _ => ?_` and prove the remaining obligations. Use `split_ifs`. Generalize the expression as in `p.1 = w`.
+
+Proceed by induction on `w with`. Consider the case `nil => exact Submodule.mem_sInf.mpr fun S hS => hS.1 (x p).2`. Consider the case `cons q w ih => exact Submodule.mem_sInf.mpr fun S hS => hS.2 _ _ _ (Submodule.mem_sInf.mp ih S hS)`. Conclude with `Submodule.zero_mem _`. Set `e` to `x.support.equivFin`.
+
+Establish `hsum : ∀ F : List (Fin n × Fin n) × Fin n → ℂ, ∑ i, F (e.symm i) = ∑ p ∈ x.support, F p` using `fun F => by rw [Equiv.sum_comp e.symm (fun p : x.support => F p), Finset.sum_coe_sort]`. Establish `key` using `transfer n ε lam T μ ⟨hanti, hint⟩ hμ _ (fun i => (e.symm i).1.1.map fun p => (Matrix.single p.1 p.2 1 : Matrix (Fin n) (Fin n) ℂ)) (fun i => if (e.symm i).1.2 = c then ι (x (e.symm i)) else 0) ?_ g hg`. Establish `h2` using `congrArg (fun u => ⟪ι v', u⟫_ℂ) key`. Simplify using `only [inner_sum, inner_zero_right] at h2`. Rewrite `h2` using `[hsum fun p => ⟪ι v', rWord ε (p.1.map fun q => (Matrix.single q.1 q.2 1 : Matrix (Fin n) (Fin n) ℂ)) (PsiM T μ) g (if p.2 = c then ι (x p) else 0)⟫_ℂ]`.
+
+Rewrite using `[hsT, ← h2, Submodule.coe_sum, map_sum, inner_sum]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[TRA.rWord_coef hσ hD ι _ hcoef _ g hg, hword]`. Simplify using the standard rewrite rules.
+
+Introduce `k z hz`. Take `⟨X, hX, he⟩` from `HW.exists_log ε k`. Establish `he1 : NormedSpace.exp (((1 : ℝ) : ℂ) • X) = toMK k` using `by rw [he]; simp`. Establish `hinv : toMK k * TRA.ei X 1 = 1`. Rewrite using `[← he1, TRA.ei, ← exp_add_smul]`.
+
+Simplify using the standard rewrite rules. Establish `hki : toMK k⁻¹ = TRA.ei X 1`. Rewrite using `[← Matrix.mul_one (toMK k⁻¹), ← hinv, ← Matrix.mul_assoc, toMK_inv_mul', Matrix.one_mul]`. Establish `hXi : ∀ c', TRA.Xi σ V w0 (eMM μ) (phiMM μ) (TRA.evZ μ z) c' X 1 x = 0` using `fun c' => TRA.Xi_vanish hσ hD hV.2.1 w0 _ _ _ c' hX W hW (fun y hy => by`. Establish `h0 : ∀ y, TRA.Xi σ V w0 (eMM μ) (phiMM μ) (TRA.evZ μ z) c' X 0 y = TRA.evZ μ z (sθ V (eMM μ) (phiMM μ) (submoduleEvaluationFunctional V (ι.symm T.w)) y c')`.
+
+Introduce `y`. Proceed by induction on `y using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add y y' h h' => simp only [map_add, Pi.add_apply, h, h']`. Consider the case `single p v`.
+
+Establish `e0 : TRA.ei X 0 = 1` using `by simp [TRA.ei]`. Establish `e1 : TRA.wB (eMM μ) (phiMM μ) X 0 p.1 = wordE (eMM μ) p.1 (phiMM μ)`. Simplify using `[TRA.wB, TRA.cj, e0, TRA.actM_single, wordE]`. Establish `e2 : TRA.aF σ V w0 1 v = submoduleEvaluationFunctional V (ι.symm T.w) v` using `by show ⟪w0, σ 1 _⟫_ℂ = _`. Rewrite using `[hσ.1.1]`.
+
+Both sides reduce to the same expression. Rewrite using `[TRA.Xi_single, e0, e1, e2, show p = (p.1, p.2) from rfl, sθ_single, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Rewrite using `[h0, hθ y hy, Pi.zero_apply, map_zero]) 1 x hx`. Set `a : List (Fin n × Fin n) × Fin n → ℂ` to `fun p => ⟪T.op k T.w, ι (x p)⟫_ℂ * hWord (adW ε k (p.1.map fun q => (Matrix.single q.1 q.2 1 : Matrix (Fin n) (Fin n) ℂ))) (PhiP μ) z`.
+
+Establish `hXa : ∀ c', ∑ p ∈ x.support, TRA.ei X 1 c' p.2 * a p = 0` using `fun c' => by`. Rewrite using `[← hXi c']`. Use `conv_rhs => rw [← Finsupp.sum_single x, Finsupp.sum, map_sum]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `e1 : TRA.evZ μ z (TRA.wB (eMM μ) (phiMM μ) X 1 p.1) = hWord (adW ε k (p.1.map fun q => (Matrix.single q.1 q.2 1 : Matrix (Fin n) (Fin n) ℂ))) (PhiP μ) z`.
+
+Rewrite using `[← TRA.evZ_word μ _ z hz, adW, List.map_map, List.map_map, hki, ← he1]`. Both sides reduce to the same expression. Establish `e2 : TRA.aF σ V w0 (TRA.ei X 1) (x p) = ⟪T.op k T.w, ι (x p)⟫_ℂ`. Establish `hP : PsiM T μ (toMK k⁻¹) = T.op k⁻¹`. Use `psiM_equiv T μ k⁻¹ 1 h1J` as an intermediate fact.
+
+Rewrite `this` using `[toMK_one', Matrix.mul_one, Matrix.mul_one, psiM_one, op_one', mul_one, mul_one]`. Then use the resulting hypothesis. Establish `h3` using `hcoef (toMK k⁻¹) (k⁻¹).1.2 (x p) (ι.symm T.w)`. Rewrite `h3` using `[ι.apply_symm_apply, hP]`. Rewrite using `[← hki]`. Use `h3.trans ?_` and prove the remaining obligations.
+
+Establish `hu : star (T.op k) * T.op k = 1` using `Unitary.star_mul_self_of_mem (T.τ k).2`. Establish `h4 : T.op k⁻¹ = star (T.op k)`. Rewrite using `[← one_mul (T.op k⁻¹), ← hu, mul_assoc, ← op_mul', mul_inv_cancel, op_one', mul_one]`. Rewrite using `[h4, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right]`. Rewrite using `[TRA.Xi_single, e1, e2]`.
+
+Simplify using `only [a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum fun p => ⟪T.op k T.w, if p.2 = c then ι (x p) else 0⟫_ℂ * hWord (adW ε k (p.1.map fun q => (Matrix.single q.1 q.2 1 : Matrix (Fin n) (Fin n) ℂ))) (PhiP μ) z]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, Matrix.one_apply]`.
+
+Distinguish the cases in `h : p.2 = c`. Simplify using `[h, a]`. Simplify using `[h, Ne.symm h]`. Use `_ = ∑ c', toMK k c c' * ∑ p ∈ x.support, TRA.ei X 1 c' p.2 * a p := by`. Simplify using `only [Matrix.mul_apply, sum_mul, mul_sum, mul_assoc]`.
+
+Conclude with `sum_comm`. Use `_ = 0 := by simp [hXa]`.
+-/
 theorem lowestKType_trace_integral (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D)
@@ -197,6 +257,9 @@ theorem lowestKType_trace_integral (ε : Fin n → Bool) (lam : Fin n → ℝ)
         exact sum_comm
     _ = 0 := by simp [hXa]
 
+/- English proof (translation)
+Conclude with `lowestKType_trace_integral ε lam H σ D E V hσ hD hV hint hanti T μ ι hμ hcoef W hW hθ`.
+-/
 theorem lowestKType_trace (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ)
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D)

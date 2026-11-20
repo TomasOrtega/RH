@@ -7,6 +7,9 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.L3.LandL
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `Subring.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `Subring.zsmul_mem _ (Subring.prod_mem _ fun i _ => h _ _) _`.
+-/
 theorem det_mem_subring {K : Type*} [Field K] (A : Subring K) {n : ℕ}
     (M : Matrix (Fin n) (Fin n) K) (h : ∀ i j, M i j ∈ A) : M.det ∈ A := by
   rw [Matrix.det_apply]
@@ -14,6 +17,21 @@ theorem det_mem_subring {K : Type*} [Field K] (A : Subring K) {n : ℕ}
   rw [Units.smul_def]
   exact Subring.zsmul_mem _ (Subring.prod_mem _ fun i _ => h _ _) _
 
+/- English proof (translation)
+Establish `hg : ∀ j i, g.repr (g j) i ∈ A`. Introduce `j i`. Rewrite using `[Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `A.one_mem`.
+
+Conclude with `A.zero_mem`. Use `⟨det_mem_subring A _ fun i j => (hdual (g j)).2 (hg j) (g i) (hg i), ?_⟩` and prove the remaining obligations. Use `set G := gram h g with hG`. Establish `hmul : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G (isUnit_iff_ne_zero.2 h0)`. Establish `key : ∀ y j, h y (∑ i, G⁻¹ i j • g i) = star (g.repr y j)`.
+
+Introduce `y j`. Use `conv_lhs => rw [← g.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_smul, starRingEnd_apply]`. Establish `h2 : ∀ k, ∑ i, star (g.repr y k) * (G⁻¹ i j * h (g k) (g i)) = star (g.repr y k) * (1 : Matrix (Fin n) (Fin n) K) k j`. Introduce `k`.
+
+Rewrite using `[← hmul, Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hG]`. Simplify using `only [gram, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h3 : ∀ k, ∑ i, G⁻¹ i j * (star (g.repr y k) * h (g k) (g i)) = star (g.repr y k) * (1 : Matrix (Fin n) (Fin n) K) k j`. Introduce `k`. Rewrite using `[← h2 k]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun k _ => h3 k]`. Simplify using `[Matrix.one_apply]`. Establish `hinv : ∀ i j, G⁻¹ i j ∈ A`.
+
+Introduce `i j`. Establish `h3` using `(hdual (∑ i, G⁻¹ i j • g i)).1 (fun y hy => by rw [key]; exact hA _ (hy j)) i`. Rewrite `h3` using `[Basis.repr_sum_self]`. Then use the resulting hypothesis. Establish `h4` using `det_mem_subring A _ hinv`. Rewrite `h4` using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Then use the resulting hypothesis.
+-/
 theorem gram_det_unit {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     (A : Subring K) (hA : ∀ x ∈ A, star x ∈ A) (h : V →ₗ⋆[K] V →ₗ[K] K) {n : ℕ}
     (g : Basis (Fin n) K V)

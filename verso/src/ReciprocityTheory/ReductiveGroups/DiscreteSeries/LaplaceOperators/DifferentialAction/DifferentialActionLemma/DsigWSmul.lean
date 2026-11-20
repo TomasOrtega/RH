@@ -10,6 +10,13 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons Y w ih`. Establish `hw : ∀ X ∈ w, InLieHpk k r X` using `fun X hX => hW X (List.mem_cons_of_mem _ hX)`. Establish `hY : InLieHpk k r Y` using `hW Y List.mem_cons_self`.
+
+Establish `h1` using `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hU ha w hw hY`. Establish `h2` using `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hU hb w hw hY`. Use `show dsig σ Y (dsigW σ w (a + b)) = _`. Rewrite using `[ih hw]`. Unfold `dsig`.
+
+Simplify using `only [map_add]`. Conclude with `(h1.add h2).deriv`.
+-/
 theorem dsigW_add (hU : IsURepOn (UH (Hpk k r)) σ) {a b : H} (ha : a ∈ smoothVecs (k := k) (r := r) σ)
     (hb : b ∈ smoothVecs (k := k) (r := r) σ) (W : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))
     (hW : ∀ X ∈ W, InLieHpk k r X) :
@@ -27,6 +34,13 @@ theorem dsigW_add (hU : IsURepOn (UH (Hpk k r)) σ) {a b : H} (ha : a ∈ smooth
     simp only [map_add]
     exact (h1.add h2).deriv
 
+/- English proof (translation)
+Proceed by induction on `W with`. Consider the case `nil => rfl`. Consider the case `cons Y w ih`. Establish `hw : ∀ X ∈ w, InLieHpk k r X` using `fun X hX => hW X (List.mem_cons_of_mem _ hX)`. Establish `hY : InLieHpk k r Y` using `hW Y List.mem_cons_self`.
+
+Establish `h1` using `Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hU ha w hw hY`. Use `show dsig σ Y (dsigW σ w (c • a)) = _`. Rewrite using `[ih hw]`. Unfold `dsig`. Simplify using `only [map_smul]`.
+
+Conclude with `(h1.const_smul c).deriv`.
+-/
 theorem dsigW_smul (hU : IsURepOn (UH (Hpk k r)) σ) (c : ℂ) {a : H} (ha : a ∈ smoothVecs (k := k) (r := r) σ)
     (W : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) (hW : ∀ X ∈ W, InLieHpk k r X) :
     dsigW (k := k) (r := r) σ W (c • a) = c • dsigW (k := k) (r := r) σ W a := by

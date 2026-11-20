@@ -22,6 +22,15 @@ open scoped TensorProduct
 open GlobalTheory.ClosureSeries
 end ClosureSeries
 open Formalism.MainNotions.S Formalism.REAL GlobalTheory.SmoothGlob GlobalTheory.LowTypeDetermined GlobalTheory.TypeSum in
+/- English proof (translation)
+Introduce `D θ hθ hPr N τ τ' hne ψ hψ hty e he`. Establish `hec : Continuous e`. Take `⟨F, -, h1, h2, -⟩` from `he`. Conclude with `h2 _ h1`. Establish `hHC` using `hPr.harishChandraModules`.
+
+Establish `hCW` using `hPr.casselmanWallach`. Establish `hUn` using `GlobalTheory.Published.discreteSeriesHermitianUnique_iff.1 hPr.discreteSeriesHermitianUnique`. Establish `hT` using `hasTypeAt_of_isTypeAt θ N.V τ' (N.S τ') ψ hHC hθ hψ hty`. Establish `hP` using `N.M.fr_unit τ`. Establish `hJ` using `N.M.fr_gram τ`.
+
+Establish `hU : ∀ k, (N.M.fr τ)⁻¹ * Formalism.REAL.toMK k * N.M.fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D N.V τ)` using `fun k => GlobalTheory.LowTypeDetermined.conj_inv_mem hP hJ (K_le_UJ (toMK_mem_K k))`. Establish `hκ` using `GlobalTheory.SeriesToClosure.continuous_conjK (ε := N.M.ε τ) (P := N.M.fr τ)`. Establish `hA` using `GlobalTheory.AvgOtherPlace.hasTypeAt_avgF (Formalism.REAL.muK (N.M.ε τ)) hθ hne hκ hU hec hψ.cont hT`. Establish `hAs` using `GlobalTheory.RealAverage.isAutFunSm_average D θ hθ N.V τ (Formalism.REAL.KG (N.M.ε τ)) (Formalism.REAL.muK (N.M.ε τ)) _ hκ hU e hec ψ hψ`. Take `⟨H, i1, i2, σ, lam, ε, P, hE, hD, hP', hJ', -⟩` from `hty`.
+
+Conclude with `isTypeAt_of_hasTypeAt_model θ N.V τ' (N.S τ') _ hUn hHC hCW hθ H σ lam ε P hE (GlobalTheory.Published.HermitianUnique.isHCParam_of_isDS hE.1 hD) hD hP' hJ' hAs hA`.
+-/
 theorem isTypeAt_average_other_place : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ τ' : D.what₂.Tau), τ' ≠ τ → ∀ (ψ : GA D N.V → ℂ), IsAutFunSm θ N.V ψ → IsTypeAt θ N.V τ' (N.S τ') ψ → ∀ (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → IsTypeAt θ N.V τ' (N.S τ') (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
   intro D θ hθ hPr N τ τ' hne ψ hψ hty e he
   have hec : Continuous e := by
@@ -52,6 +61,9 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 open GlobalTheory.Grow GlobalTheory.Size
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place | exact _root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place | (intros; apply _root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.average_isTypeAt_other_place_twist : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ τ' : D.what₂.Tau), τ' ≠ τ → ∀ (ψ : GA D N.V → ℂ), IsAutFunSm θ N.V ψ → IsTypeAt θ N.V τ' (N.S τ') ψ → ∀ (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → IsTypeAt θ N.V τ' (N.S τ') (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
   first | exact @_root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place | exact _root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place | (intros; apply _root_.GlobalTheory.AvgTypeOther.isTypeAt_average_other_place <;> assumption)
 end

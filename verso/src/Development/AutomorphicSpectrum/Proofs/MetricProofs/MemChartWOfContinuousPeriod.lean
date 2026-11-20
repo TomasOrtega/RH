@@ -16,6 +16,9 @@ variable {n a g : ℕ} {Λ : Type} [AddCommGroup Λ] {L : Flat.LogPeriods n a g 
   {bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ} {A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ}
   {B : Fin a → Matrix (Fin g) (Fin g) ℤ} {c ρ : ℝ}
 
+/- English proof (translation)
+Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Take `⟨ρ₂, K, hρ₂, -, hinv⟩` from `GlobalTheory.CompanionTheory.Ar.RiemannLimit.inv n g A (h.A_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0)) h.A_det`. Conclude with `⟨min ρ₂ ρ, lt_min hρ₂ h.ρ_pos, min_le_right _ _, fun z hz => (hinv z (Metric.ball_subset_ball (min_le_left _ _) hz)).1⟩`.
+-/
 theorem exists_ball_det (h : IsChart L bas A T0 B c ρ) :
     ∃ ρ' : ℝ, 0 < ρ' ∧ ρ' ≤ ρ ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ', (A z).det ≠ 0 := by
   have h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1 := Metric.mem_ball_self one_pos
@@ -24,16 +27,25 @@ theorem exists_ball_det (h : IsChart L bas A T0 B c ρ) :
   exact ⟨min ρ₂ ρ, lt_min hρ₂ h.ρ_pos, min_le_right _ _,
     fun z hz => (hinv z (Metric.ball_subset_ball (min_le_left _ _) hz)).1⟩
 
+/- English proof (translation)
+Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Conclude with `((h.A_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0)).tendsto).comp hz`.
+-/
 theorem A_tendsto (h : IsChart L bas A T0 B c ρ) {zs : ℕ → Fin n → ℂ}
     (hz : Tendsto zs atTop (𝓝 0)) : Tendsto (fun m => A (zs m)) atTop (𝓝 (A 0)) := by
   have h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1 := Metric.mem_ball_self one_pos
   exact ((h.A_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0)).tendsto).comp hz
 
+/- English proof (translation)
+Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Conclude with `((h.T_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0)).tendsto).comp hz`.
+-/
 theorem T_tendsto (h : IsChart L bas A T0 B c ρ) {zs : ℕ → Fin n → ℂ}
     (hz : Tendsto zs atTop (𝓝 0)) : Tendsto (fun m => T0 (zs m)) atTop (𝓝 (T0 0)) := by
   have h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1 := Metric.mem_ball_self one_pos
   exact ((h.T_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0)).tendsto).comp hz
 
+/- English proof (translation)
+Rewrite using `[h.per w hw x, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (Ne.isUnit (by rw [det_transpose]; exact hdet _ hz)), Matrix.one_mulVec]`.
+-/
 theorem inv_period (h : IsChart L bas A T0 B c ρ) {ρ' : ℝ}
     (hdet : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ', (A z).det ≠ 0) (w : Fin n → ℂ)
     (hw : w ∈ logCover L.a_le) (hz : expCover a w ∈ Metric.ball (0 : Fin n → ℂ) ρ') (x : Λ) :
@@ -43,6 +55,9 @@ theorem inv_period (h : IsChart L bas A T0 B c ρ) {ρ' : ℝ}
     Matrix.nonsing_inv_mul _ (Ne.isUnit (by rw [det_transpose]; exact hdet _ hz)),
     Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hinv` using `tendsto_inv_transpose (A_tendsto h hz) h.A_det`. Establish `hy` using `(((continuous_fst.matrix_mulVec continuous_snd : Continuous fun q : Matrix (Fin g) (Fin g) ℂ × (Fin g → ℂ) => q.1 *ᵥ q.2)).tendsto (((A 0)ᵀ)⁻¹, p)).comp (hinv.prodMk_nhds hq)`. Conclude with `hy.congr fun m => rfl`.
+-/
 theorem tendsto_inv_mulVec (h : IsChart L bas A T0 B c ρ) {zs : ℕ → Fin n → ℂ}
     (hz : Tendsto zs atTop (𝓝 0)) {q : ℕ → Fin g → ℂ} {p : Fin g → ℂ}
     (hq : Tendsto q atTop (𝓝 p)) :
@@ -53,6 +68,11 @@ theorem tendsto_inv_mulVec (h : IsChart L bas A T0 B c ρ) {zs : ℕ → Fin n �
       (((A 0)ᵀ)⁻¹, p)).comp (hinv.prodMk_nhds hq)
   exact hy.congr fun m => rfl
 
+/- English proof (translation)
+Establish `hR : (∑ j, B j).map (fun x : ℤ => (x : ℝ)) = ∑ j, (B j).map (fun x : ℤ => (x : ℝ))`. Use extensionality with `p q`. Simplify using `[Matrix.sum_apply]`. Establish `h0 : v ⬝ᵥ ((∑ j, B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v) = 0` using `by rw [hv]; simp`. Rewrite `h0` using `[hR, Matrix.sum_mulVec, dotProduct_sum]`.
+
+Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ v ⬝ᵥ ((B i).map (fun x : ℤ => (x : ℝ)) *ᵥ v)` using `fun i _ => by`. Simplify using `using (hB i).dotProduct_mulVec_nonneg v`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0 j (Finset.mem_univ j)`. Conclude with `((hB j).dotProduct_mulVec_zero_iff v).1 (by simpa using h1)`.
+-/
 theorem ker_each (hB : ∀ j, ((B j).map (fun x : ℤ => (x : ℝ))).PosSemidef) (v : Fin g → ℝ)
     (hv : (∑ j, B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0) (j : Fin a) :
     (B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0 := by
@@ -66,6 +86,9 @@ theorem ker_each (hB : ∀ j, ((B j).map (fun x : ℤ => (x : ℝ))).PosSemidef)
   have h1 := (Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0 j (Finset.mem_univ j)
   exact ((hB j).dotProduct_mulVec_zero_iff v).1 (by simpa using h1)
 
+/- English proof (translation)
+Use `GlobalTheory.CompanionTheory.ChartBlockLower.im_lower_on_kernel n a g L.a_le (Metric.ball 0 ρ) T0 B c Metric.isOpen_ball (h.T_cont.mono (Metric.ball_subset_ball h.ρ_le)) h.B_psd h.c_pos h.im_lower 0 (Metric.mem_ball_self h.ρ_pos) (fun _ => 0) (fun j hj => (hj rfl).elim) (fun _ _ …` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lower_at_centre (h : IsChart L bas A T0 B c ρ) (v : Fin g → ℝ)
     (hv : (∑ j, B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0) :
     c * (v ⬝ᵥ v) ≤ v ⬝ᵥ (((T0 0).map Complex.im) *ᵥ v) := by
@@ -75,11 +98,53 @@ theorem lower_at_centre (h : IsChart L bas A T0 B c ρ) (v : Fin g → ℝ)
     (fun j _ => ker_each h.B_psd v hv j)
   simpa using this
 
+/- English proof (translation)
+Establish `hj : (Fin.castLE ha j).val < a` using `j.2`. Simplify using `only [expCover, if_pos hj]`.
+-/
 theorem exp_cast (ha : a ≤ n) (w : Fin n → ℂ) (j : Fin a) :
     Complex.exp (w (Fin.castLE ha j)) = expCover a w (Fin.castLE ha j) := by
   have hj : (Fin.castLE ha j).val < a := j.2
   simp only [expCover, if_pos hj]
 
+/- English proof (translation)
+Take `⟨ρ', hρ', hρle, hdet⟩` from `exists_ball_det h`. Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Use `set r : ℕ → ℝ := fun m => ρ'⁻¹ + m with hr`. Use `set tm : ℕ → ℂ := fun m => ((r m / (2 * Real.pi) : ℝ) : ℂ) * Complex.I with htm`. Use `set ws : ℕ → Fin n → ℂ := fun m k => if k.val < a then -(r m : ℂ) else 0 with hws`.
+
+Establish `hrpos : ∀ m, 0 < r m` using `fun m => by`. Establish `: 0 < ρ'⁻¹` using `inv_pos.2 hρ'`. Establish `h2 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Simplify using `only [hr]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hexpr : ∀ m, Real.exp (-(r m)) < ρ'`. Introduce `m`. Establish `h1 : r m + 1 ≤ Real.exp (r m)` using `Real.add_one_le_exp _`. Establish `h3 : ρ'⁻¹ ≤ r m`. Establish `h2 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`.
+
+Simplify using `only [hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.exp_neg]`. Establish `h4 : ρ'⁻¹ < Real.exp (r m)` using `by linarith`. Conclude with `inv_lt_of_inv_lt₀ hρ' h4`.
+
+Establish `hws_cast : ∀ m (j : Fin a), ws m (Fin.castLE L.a_le j) = -(r m : ℂ)`. Introduce `m j`. Establish `hj : (Fin.castLE L.a_le j).val < a` using `j.2`. Simplify using `only [hws, if_pos hj]`. Establish `hws_mem : ∀ m, ws m ∈ logCover L.a_le`.
+
+Introduce `m`. Use `⟨fun i => ?_, fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[hws_cast]`. Simplify using `[hrpos m]`. Establish `hk' : ¬ k.val < a` using `not_lt.2 hk`.
+
+Simplify using `only [hws, if_neg hk']`. Simplify using the standard rewrite rules. Use `set zs : ℕ → Fin n → ℂ := fun m => expCover a (ws m) with hzs`. Establish `hzs_k : ∀ m k, zs m k = if k.val < a then ((Real.exp (-(r m)) : ℝ) : ℂ) else 0`. Introduce `m k`.
+
+Simplify using `only [hzs, expCover, hws]`. Distinguish the cases in `hk : k.val < a`. Simplify using `[hk]`. Simplify using `[hk]`. Establish `hzs_ball : ∀ m, zs m ∈ Metric.ball (0 : Fin n → ℂ) ρ'`.
+
+Introduce `m`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hρ']`. Introduce `k`. Rewrite using `[hzs_k]`. Use `split_ifs`.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Conclude with `hexpr m`. Simplify using `using hρ'`. Establish `hrtop : Tendsto r atTop atTop` using `tendsto_atTop_add_const_left _ _ tendsto_natCast_atTop_atTop`. Establish `hzs_lim : Tendsto zs atTop (𝓝 0)`.
+
+Rewrite using `[tendsto_pi_nhds]`. Introduce `k`. Simplify using `only [hzs_k]`. Distinguish the cases in `hk : k.val < a`. Simplify using `only [hk, if_true]`.
+
+Establish `h1 : Tendsto (fun m => Real.exp (-(r m))) atTop (𝓝 0)` using `Real.tendsto_exp_atBot.comp (tendsto_neg_atTop_atBot.comp hrtop)`. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp h1`. Simplify `h2` using `only [Function.comp_def, Complex.ofReal_zero, Pi.zero_apply]`. Simplify using `only [hk, if_false]`. Conclude with `tendsto_const_nhds`.
+
+Establish `hdiv : ∀ m, (-(r m : ℂ)) / (2 * Real.pi * Complex.I) = tm m`. Introduce `m`. Rewrite using `[div_eq_iff h2pi]`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [htm]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Establish `hC : (∑ j, B j).map (fun x : ℤ => (x : ℂ)) = ∑ j, (B j).map (fun x : ℤ => (x : ℂ))`. Use extensionality with `p q`.
+
+Simplify using `[Matrix.sum_apply]`. Establish `hdec : ∀ m, tauAt L.a_le T0 B (ws m) = T0 (zs m) + tm m • (∑ j, B j).map (fun x : ℤ => (x : ℂ))`. Introduce `m`. Establish `hsum : ∑ j, (ws m (Fin.castLE L.a_le j) / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ)) = tm m • (∑ j, B j).map (fun x : ℤ => (x : ℂ))`. Rewrite using `[hC, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hws_cast, hdiv]`. Simplify using `only [tauAt]`. Rewrite using `[hsum]`. Establish `him : Tendsto (fun m => (tm m).im) atTop atTop`.
+
+Establish `h1 : ∀ m, (tm m).im = r m / (2 * Real.pi)` using `fun m => by`. Simplify using `only [htm, Complex.mul_I_im, Complex.ofReal_re]`. Simplify using `only [h1]`. Conclude with `hrtop.atTop_div_const (by positivity)`. Establish `hYm : ∀ m, ((tauAt L.a_le T0 B (ws m)).map Complex.im - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef` using `fun m => h.im_lower _ (Metric.ball_subset_ball hρle (hzs_ball m)) (fun j => ws m (Fin.castLE L.a_le j)) (fun j => exp_cast L.a_le (ws m) j)`.
+
+Establish `hq` using `tendsto_inv_mulVec h hzs_lim (ht.tendsto.comp hzs_lim)`. Establish `hy' : Tendsto (fun m => (fun k => ((uCo bas x k : ℤ) : ℂ)) + tauAt L.a_le T0 B (ws m) *ᵥ (fun k => ((vCo bas x k : ℤ) : ℂ))) atTop (𝓝 (((A 0)ᵀ)⁻¹ *ᵥ t 0))` using `hq.congr fun m => by`. Use `inv_period h hdet (ws m) (hws_mem m) (hzs_ball m) x` as an intermediate fact. Rewrite `this` using `[hP _ (hws_mem m)]`. Conclude with `this`.
+
+Take `⟨u, v, hv, -, hev⟩` from `GlobalTheory.T.siegel_limit_imag_bound g (∑ j, B j) (T0 0) (fun m => T0 (zs m)) (fun m => tauAt L.a_le T0 B (ws m)) tm c (fun _ => uCo bas x) (fun _ => vCo bas x) _ h.c_pos (T_tendsto h hzs_lim) him hdec hYm (lower_at_centre h) hy'`. Take `⟨m, hm⟩` from `hev.exists`. Establish `hvx : vCo bas x = v` using `hm.2`. Rewrite using `[chartW, LinearMap.mem_ker, LinearMap.comp_apply, hvx, Matrix.mulVecLin_apply]`. Conclude with `hv`.
+-/
 theorem extend_mem (h : IsChart L bas A T0 B c ρ) (x : Λ) (t : (Fin n → ℂ) → Fin g → ℂ)
     (ht : ContinuousAt t 0) (hP : ∀ w ∈ logCover L.a_le, L.P w x = t (expCover a w)) :
     x ∈ chartW bas B := by
@@ -188,6 +253,13 @@ theorem extend_mem (h : IsChart L bas A T0 B c ρ) (x : Λ) (t : (Fin n → ℂ)
   rw [chartW, LinearMap.mem_ker, LinearMap.comp_apply, hvx, Matrix.mulVecLin_apply]
   exact hv
 
+/- English proof (translation)
+Take `⟨ρ', hρ', hρle, hdet⟩` from `exists_ball_det h`. Establish `hU : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ'` using `Metric.mem_ball_self hρ'`. Establish `hq` using `tendsto_inv_mulVec h hz hp`. Establish `key` using `GlobalTheory.CompanionTheory.PeriodLimit.limit_period n a g L.a_le (Metric.ball 0 ρ') T0 B c Metric.isOpen_ball (h.T_cont.mono (Metric.ball_subset_ball (hρle.trans h.ρ_le))) h.B_psd h.c_pos (fun z hz => h.im_lower z (Metric.ball_subset_ball hρle hz)) 0 hU (fun _ => 0) (fun j hj = …`. Take `⟨u, v, hv, hw⟩` from `key (mem_closure_of_tendsto (hz.prodMk_nhds hq) (by filter_upwards [hz.eventually (Metric.isOpen_ball.mem_nhds hU)] with k hk`.
+
+Conclude with `⟨hk, fun j => ws k (Fin.castLE L.a_le j), uCo bas (x k), vCo bas (x k), fun j => exp_cast L.a_le (ws k) j, inv_period h hdet _ (hws k) hk (x k)⟩))`. Simplify using `only [zero_div, zero_smul, Finset.sum_const_zero, add_zero] at hw`. Establish `hw' : ((A 0)ᵀ)⁻¹ *ᵥ p = cst u + T0 0 *ᵥ cst v` using `hw`. Use `⟨⟨mk bas u v, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[chartW, LinearMap.mem_ker, LinearMap.comp_apply, vCo_mk, Matrix.mulVecLin_apply, Matrix.sum_mulVec]`.
+
+Conclude with `Finset.sum_eq_zero fun j _ => hv j rfl`. Use `show p = (A 0)ᵀ *ᵥ (cst (uCo bas (mk bas u v)) + T0 0 *ᵥ cst (vCo bas (mk bas u v)))`. Rewrite using `[uCo_mk, vCo_mk, ← hw', Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (by rw [det_transpose]; exact h.A_det)), Matrix.one_mulVec]`.
+-/
 theorem limit_mem (h : IsChart L bas A T0 B c ρ) (ws : ℕ → Fin n → ℂ) (x : ℕ → Λ) (p : Fin g → ℂ)
     (hws : ∀ k, ws k ∈ logCover L.a_le)
     (hz : Tendsto (fun k => expCover a (ws k)) atTop (𝓝 0))
@@ -215,6 +287,9 @@ theorem limit_mem (h : IsChart L bas A T0 B c ρ) (ws : ℕ → Fin n → ℂ) (
       Matrix.mul_nonsing_inv _ (Ne.isUnit (by rw [det_transpose]; exact h.A_det)),
       Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ _ h` and use `⟨fun x t ht hP => extend_mem h x t ht hP, fun ws x p hws hz hp => limit_mem h ws x p hws hz hp⟩`.
+-/
 theorem periods_at_centre : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (c ρ : ℝ), IsChart L bas A T0 B c ρ → (∀ (x : Λ) (t : (Fin n → ℂ) → Fin g → ℂ), ContinuousAt t 0 → (∀ w ∈ logCover L.a_le, L.P w x = t (expCover a w)) → x ∈ chartW bas B) ∧ ∀ (ws : ℕ → Fin n → ℂ) (x : ℕ → Λ) (p : Fin g → ℂ), (∀ k, ws k ∈ logCover L.a_le) → Tendsto (fun k => expCover a (ws k)) atTop (𝓝 0) → Tendsto (fun k => L.P (ws k) (x k)) atTop (𝓝 p) → ∃ x₀ : chartW bas B, p = chartPer bas A T0 B x₀ :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ h =>
     ⟨fun x t ht hP => extend_mem h x t ht hP, fun ws x p hws hz hp => limit_mem h ws x p hws hz hp⟩

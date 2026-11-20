@@ -10,5 +10,8 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 open scoped TensorProduct ContDiff
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.cutoff_chart | exact GlobalTheory.cutoff_chart | (intros; apply GlobalTheory.cutoff_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_smooth_bump_in_chart : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [T2Space (CxPts p σ)] (c : AlgChart p σ d) (C U : Set (CxPts p σ)), IsCompact C → IsOpen U → C ⊆ U → U ⊆ c.e.source → ∃ ρ : CxPts p σ → ℝ, Continuous ρ ∧ ContDiffOn ℝ ∞ (ρ ∘ c.e.symm) c.e.target ∧ (∀ y, 0 ≤ ρ y ∧ ρ y ≤ 1) ∧ (∀ y ∈ C, ρ y = 1) ∧ tsupport ρ ⊆ U := by
   first | exact @GlobalTheory.cutoff_chart | exact GlobalTheory.cutoff_chart | (intros; apply GlobalTheory.cutoff_chart <;> assumption)

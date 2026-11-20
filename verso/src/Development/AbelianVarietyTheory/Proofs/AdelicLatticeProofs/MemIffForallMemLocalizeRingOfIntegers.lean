@@ -21,6 +21,9 @@ variable {O K : Type*} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFrac
 
 omit [IsDomain O] [IsScalarTower O A K] [IsScalarTower A K V] [Algebra A K] in
 
+/- English proof (translation)
+The claim follows from `(mem_span_localization_iff K O⁰ (N.restrictScalars O) x).1 (by rw [Submodule.coe_restrictScalars, hN]; trivial)`.
+-/
 theorem exists_smul_mem {N : Submodule A V} (hN : Submodule.span K (N : Set V) = ⊤) (x : V) :
     ∃ d ∈ O⁰, d • x ∈ N :=
   (mem_span_localization_iff K O⁰ (N.restrictScalars O) x).1 (by
@@ -28,6 +31,13 @@ theorem exists_smul_mem {N : Submodule A V} (hN : Submodule.span K (N : Set V) =
 
 omit [IsDomain O] [IsScalarTower O A K] [IsScalarTower A K V] [Algebra A K] in
 
+/- English proof (translation)
+Proceed by induction on `s, hs using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `@insert a s _ _ ih`. Take `⟨d, hd, h⟩` from `ih`. Take `⟨e, he, h'⟩` from `exists_smul_mem (O := O) hN a`.
+
+Use `⟨d * e, mul_mem hd he, ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`. Rewrite using `[mul_smul]`. Conclude with `N.smul_of_tower_mem d h'`. Rewrite using `[mul_comm, mul_smul]`.
+
+Conclude with `N.smul_of_tower_mem e (h x hx)`.
+-/
 theorem exists_smul_mem_of_finite {N : Submodule A V} (hN : Submodule.span K (N : Set V) = ⊤)
     {s : Set V} (hs : s.Finite) : ∃ d ∈ O⁰, ∀ x ∈ s, d • x ∈ N := by
   induction s, hs using Set.Finite.induction_on with
@@ -42,6 +52,11 @@ theorem exists_smul_mem_of_finite {N : Submodule A V} (hN : Submodule.span K (N 
 
 omit [IsDomain O] [IsScalarTower O A K] [IsScalarTower A K V] [Algebra A K] in
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hM`. Take `⟨d, hd, h⟩` from `exists_smul_mem_of_finite (O := O) hN s.finite_toSet`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `N.smul_mem a hx`.
+-/
 theorem exists_smul_le {M N : Submodule A V} (hM : M.FG)
     (hN : Submodule.span K (N : Set V) = ⊤) : ∃ d ∈ O⁰, ∀ x ∈ M, d • x ∈ N := by
   obtain ⟨s, rfl⟩ := hM
@@ -55,6 +70,11 @@ theorem exists_smul_le {M N : Submodule A V} (hM : M.FG)
 
 omit [IsScalarTower O A K] [IsScalarTower A K V] [Algebra A K] in
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`. Introduce `x hx`. Establish `hd' : algebraMap O K d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Establish `: x = (algebraMap O K d)⁻¹ • d • x`. Rewrite using `[← algebraMap_smul K d x, smul_smul, inv_mul_cancel₀ hd', one_smul]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (h x hx))`.
+-/
 theorem span_eq_top_of_smul_mem {s : Set V} {N : Submodule A V} (hs : Submodule.span K s = ⊤)
     {d : O} (hd : d ∈ O⁰) (h : ∀ x ∈ s, d • x ∈ N) : Submodule.span K (N : Set V) = ⊤ := by
   rw [eq_top_iff, ← hs, Submodule.span_le]
@@ -68,6 +88,11 @@ theorem span_eq_top_of_smul_mem {s : Set V} {N : Submodule A V} (hs : Submodule.
 omit [IsScalarTower O A K] [IsScalarTower A K V] [Algebra A K] in
 include K in
 
+/- English proof (translation)
+Establish `hd' : algebraMap O K d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Establish `hinj : Function.Injective (LinearMap.lsmul A V (algebraMap O A d))`. Introduce `x y hxy`. Simplify using `only [LinearMap.lsmul_apply, algebraMap_smul] at hxy`. Rewrite `hxy` using `[← algebraMap_smul K d x, ← algebraMap_smul K d y]`.
+
+Conclude with `smul_right_injective V hd' hxy`. Use `Submodule.fg_of_fg_map_injective _ hinj (hN.of_le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `using h x hx`.
+-/
 theorem fg_of_smul_mem [IsNoetherianRing A] {M N : Submodule A V} (hN : N.FG)
     {d : O} (hd : d ∈ O⁰) (h : ∀ x ∈ M, d • x ∈ N) : M.FG := by
   have hd' : algebraMap O K d ≠ 0 := by simpa using nonZeroDivisors.ne_zero hd
@@ -98,29 +123,52 @@ def localize (v : HeightOneSpectrum O) (L : Submodule O V) :
 
 variable {K}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localize_def (v : HeightOneSpectrum O) (L : Submodule O V) :
     localize K v L = Submodule.span (v.valuationSubringAtPrime K) (L : Set V) := rfl
 
+/- English proof (translation)
+Rewrite using `[valuationSubringAtPrime_eq_valuationSubring]`. Both sides reduce to the same expression.
+-/
 theorem mem_localRing_iff_valuation (v : HeightOneSpectrum O) (x : K) :
     x ∈ v.valuationSubringAtPrime K ↔ v.valuation K x ≤ 1 := by
   rw [valuationSubringAtPrime_eq_valuationSubring]; rfl
 
+/- English proof (translation)
+The claim follows from `mem_span_localization_iff _ v.asIdeal.primeCompl L x`.
+-/
 theorem mem_localize_iff (v : HeightOneSpectrum O) (L : Submodule O V) (x : V) :
     x ∈ localize K v L ↔ ∃ s ∉ v.asIdeal, s • x ∈ L :=
   mem_span_localization_iff _ v.asIdeal.primeCompl L x
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span hx`.
+-/
 theorem mem_localize_of_mem (v : HeightOneSpectrum O) {L : Submodule O V} {x : V} (hx : x ∈ L) :
     x ∈ localize K v L := Submodule.subset_span hx
 
+/- English proof (translation)
+The claim follows from `Submodule.span_eq M`.
+-/
 theorem localize_restrictScalars (v : HeightOneSpectrum O)
     (M : Submodule (v.valuationSubringAtPrime K) V) :
     localize K v (M.restrictScalars O) = M := Submodule.span_eq M
 
+/- English proof (translation)
+Rewrite using `[← localize_restrictScalars v M, mem_localize_iff]`. Conclude with `⟨s, hs, hx⟩`.
+-/
 theorem mem_of_smul_mem (v : HeightOneSpectrum O) {M : Submodule (v.valuationSubringAtPrime K) V}
     {s : O} (hs : s ∉ v.asIdeal) {x : V} (hx : s • x ∈ M) : x ∈ M := by
   rw [← localize_restrictScalars v M, mem_localize_iff]
   exact ⟨s, hs, hx⟩
 
+/- English proof (translation)
+Rewrite using `[← mem_localize_iff (K := K), localize_def, Submodule.one_eq_span, Submodule.span_span_of_tower, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, hx⟩, mul_one x⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Establish `: a • (1 : K) = a` using `mul_one (a : K)`. Rewrite using `[this]`. Conclude with `a.2`.
+-/
 theorem mem_localRing_iff (v : HeightOneSpectrum O) (x : K) :
     x ∈ v.valuationSubringAtPrime K ↔ ∃ s ∉ v.asIdeal, s • x ∈ (1 : Submodule O K) := by
   rw [← mem_localize_iff (K := K), localize_def, Submodule.one_eq_span,
@@ -139,6 +187,11 @@ instance isLattice_localize (v : HeightOneSpectrum O) (L : Submodule O V)
   span_eq_top := by
     rw [localize_def, Submodule.span_span_of_tower, h.span_eq_top]
 
+/- English proof (translation)
+Take `⟨d, hd, hdx⟩` from `(mem_span_localization_iff K O⁰ L x).1 hx`. Assume the negation of the conclusion as `hxL`. Set `J : Ideal O` to `L.comap (LinearMap.toSpanSingleton O V x)`. Establish `hJ : J ≠ ⊤` using `fun hJ => hxL (by simpa [J] using (Ideal.eq_top_iff_one J).1 hJ)`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal J hJ`.
+
+Establish `hm0 : m ≠ ⊥` using `fun h0 => nonZeroDivisors.ne_zero hd (by`. Simplify `hJm (show d ∈ J from hdx))` using `[h0]`. Take `⟨s, hs, hsx⟩` from `(mem_localize_iff _ L x).1 (h ⟨m, hm.isPrime, hm0⟩)`. Conclude with `hs (hJm (show s ∈ J from hsx))`.
+-/
 theorem mem_of_forall_mem_localize {L : Submodule O V} {x : V}
     (hx : x ∈ Submodule.span K (L : Set V)) (h : ∀ v : HeightOneSpectrum O, x ∈ localize K v L) :
     x ∈ L := by
@@ -152,6 +205,9 @@ theorem mem_of_forall_mem_localize {L : Submodule O V} {x : V}
   obtain ⟨s, hs, hsx⟩ := (mem_localize_iff _ L x).1 (h ⟨m, hm.isPrime, hm0⟩)
   exact hs (hJm (show s ∈ J from hsx))
 
+/- English proof (translation)
+Take `⟨m, hm0, hm⟩` from `Ring.not_isField_iff_exists_prime.1 hO`. Use `mem_of_forall_mem_localize ?_ h` and prove the remaining obligations. Conclude with `Submodule.span_le_restrictScalars ((⟨m, hm, hm0⟩ : HeightOneSpectrum O).valuationSubringAtPrime K) K _ (h ⟨m, hm, hm0⟩)`.
+-/
 theorem mem_of_forall_mem_localize_of_not_isField (hO : ¬ IsField O) {L : Submodule O V} {x : V}
     (h : ∀ v : HeightOneSpectrum O, x ∈ localize K v L) : x ∈ L := by
   obtain ⟨m, hm0, hm⟩ := Ring.not_isField_iff_exists_prime.1 hO
@@ -159,20 +215,32 @@ theorem mem_of_forall_mem_localize_of_not_isField (hO : ¬ IsField O) {L : Submo
   exact Submodule.span_le_restrictScalars
     ((⟨m, hm, hm0⟩ : HeightOneSpectrum O).valuationSubringAtPrime K) K _ (h ⟨m, hm, hm0⟩)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hx v => mem_localize_of_mem v hx, mem_of_forall_mem_localize (by rw [hL]; trivial)⟩`.
+-/
 theorem mem_iff_forall_mem_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤)
     (x : V) : x ∈ L ↔ ∀ v : HeightOneSpectrum O, x ∈ localize K v L :=
   ⟨fun hx v => mem_localize_of_mem v hx, mem_of_forall_mem_localize (by rw [hL]; trivial)⟩
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_iff_forall_mem_localize hL x]`.
+-/
 theorem iInf_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤) :
     ⨅ v : HeightOneSpectrum O, (localize K v L).restrictScalars O = L := by
   ext x
   simp [mem_iff_forall_mem_localize hL x]
 
+/- English proof (translation)
+Use `Ideal.finite_factors (I := Ideal.span {d}) (by simpa using nonZeroDivisors.ne_zero hd)` as an intermediate fact. Simplify `this` using `[Filter.eventually_cofinite, Ideal.dvd_span_singleton]`.
+-/
 theorem eventually_notMem {d : O} (hd : d ∈ O⁰) :
     ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, d ∉ v.asIdeal := by
   have := Ideal.finite_factors (I := Ideal.span {d}) (by simpa using nonZeroDivisors.ne_zero hd)
   simpa [Filter.eventually_cofinite, Ideal.dvd_span_singleton] using this
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `exists_smul_le (O := O) hL hL'`. Use `filter_upwards [eventually_notMem hd] with v hv`. Conclude with `Submodule.span_le.2 fun x hx => (mem_localize_iff v L' x).2 ⟨d, hv, h x hx⟩`.
+-/
 theorem eventually_localize_le {L L' : Submodule O V} (hL : L.FG)
     (hL' : Submodule.span K (L' : Set V) = ⊤) :
     ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, localize K v L ≤ localize K v L' := by
@@ -180,6 +248,9 @@ theorem eventually_localize_le {L L' : Submodule O V} (hL : L.FG)
   filter_upwards [eventually_notMem hd] with v hv
   exact Submodule.span_le.2 fun x hx => (mem_localize_iff v L' x).2 ⟨d, hv, h x hx⟩
 
+/- English proof (translation)
+Use `filter_upwards [eventually_localize_le h.fg h'.span_eq_top, eventually_localize_le h'.fg h.span_eq_top] with v h₁ h₂ using le_antisymm h₁ h₂`.
+-/
 theorem eventually_localize_eq (L L' : Submodule O V) [h : Submodule.IsLattice K L]
     [h' : Submodule.IsLattice K L'] :
     ∀ᶠ v : HeightOneSpectrum O in Filter.cofinite, localize K v L = localize K v L' := by
@@ -187,6 +258,11 @@ theorem eventually_localize_eq (L L' : Submodule O V) [h : Submodule.IsLattice K
     eventually_localize_le h'.fg h.span_eq_top] with v h₁ h₂ using le_antisymm h₁ h₂
 
 omit [IsDedekindDomain O] in
+/- English proof (translation)
+Proceed by induction on `T, hT using Set.Finite.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, by simp⟩`. Consider the case `@insert a T _ _ ih`. Take `⟨d, hd, h₁⟩` from `ih fun i hi => h i (Set.mem_insert_of_mem _ hi)`. Take `⟨e, he, h₂⟩` from `h a (Set.mem_insert _ _)`.
+
+Use `⟨d * e, mul_mem hd he, ?_⟩` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`. Conclude with `hP _ _ _ h₂`. Rewrite using `[mul_comm]`. Conclude with `hP _ _ _ (h₁ x hx)`.
+-/
 theorem exists_mem_submonoid_forall {ι : Type*} {T : Set ι} (hT : T.Finite) (S : Submonoid O)
     (P : ι → O → Prop) (hP : ∀ i s t, P i s → P i (t * s)) (h : ∀ i ∈ T, ∃ s ∈ S, P i s) :
     ∃ s ∈ S, ∀ i ∈ T, P i s := by
@@ -200,6 +276,13 @@ theorem exists_mem_submonoid_forall {ι : Type*} {T : Set ι} (hT : T.Finite) (S
     · exact hP _ _ _ h₂
     · rw [mul_comm]; exact hP _ _ _ (h₁ x hx)
 
+/- English proof (translation)
+Establish `hnle : ¬ w.asIdeal ≤ v.asIdeal` using `fun hle => hvw (HeightOneSpectrum.ext (w.isMaximal.eq_of_le v.isPrime.ne_top hle))`. Take `⟨s, hsw, hsv⟩` from `SetLike.not_le_iff_exists.1 hnle`. Establish `hd' : algebraMap O K d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Establish `hvd : w.valuation K (algebraMap O K d) ≠ 0` using `by simpa using hd'`. Establish `hs1 : w.valuation K (algebraMap O K s) < 1` using `(w.valuation_lt_one_iff_mem s).2 hsw`.
+
+Take `⟨n, hn⟩` from `exists_pow_lt₀ hs1 (Units.mk0 _ hvd)`. Establish `hmem : algebraMap O K s ^ n / algebraMap O K d ∈ w.valuationSubringAtPrime K`. Rewrite using `[mem_localRing_iff_valuation, map_div₀, map_pow, div_le_one₀ (zero_lt_iff.2 hvd)]`. Conclude with `hn.le`. Use `⟨s ^ n, fun h => hsv (v.isPrime.mem_of_pow_mem n h), ?_⟩` and prove the remaining obligations.
+
+Establish `: s ^ n • x = (⟨_, hmem⟩ : w.valuationSubringAtPrime K) • d • x`. Express the relevant statement in the definitionally equal form `_ = (algebraMap O K s ^ n / algebraMap O K d) • d • x`. Rewrite using `[← algebraMap_smul K d x, smul_smul, div_mul_cancel₀ _ hd', ← map_pow, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `M.smul_mem _ hx`.
+-/
 theorem exists_notMem_smul_mem {v w : HeightOneSpectrum O} (hvw : w ≠ v)
     {M : Submodule (w.valuationSubringAtPrime K) V} {d : O} (hd : d ∈ O⁰) {x : V}
     (hx : d • x ∈ M) : ∃ s ∉ v.asIdeal, s • x ∈ M := by
@@ -224,13 +307,26 @@ def glue (M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime 
     Submodule O V :=
   ⨅ v, (M v).restrictScalars O
 
+/- English proof (translation)
+Simplify using `[glue]`.
+-/
 theorem mem_glue {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V}
     {x : V} : x ∈ glue M ↔ ∀ v, x ∈ M v := by
   simp [glue]
 
+/- English proof (translation)
+The claim follows from `iInf_localize hL`.
+-/
 theorem glue_localize {L : Submodule O V} (hL : Submodule.span K (L : Set V) = ⊤) :
     glue (fun v => localize K v L) = L := iInf_localize hL
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 fun x hx => mem_glue.1 hx v) fun x hx => ?_` and prove the remaining obligations. Take `⟨d, hd, hdx⟩` from `exists_smul_mem (O := O) hM x`. Rewrite `hdx` using `[mem_glue]`. Establish `hfin : {w : HeightOneSpectrum O | d ∈ w.asIdeal}.Finite`. Simplify `eventually_notMem hd` using `[Filter.eventually_cofinite]`.
+
+Take `⟨s, hs, h⟩` from `exists_mem_submonoid_forall hfin v.asIdeal.primeCompl (fun w s => s • x ∈ M w) (fun w s t h => by rw [mul_smul]; exact (M w).smul_of_tower_mem t h) (fun w _ => by`. Distinguish the cases in `hwv : w = v`. Substitute `hwv; exact ⟨1, one_mem _, by simpa using hx⟩` using the available equality. Conclude with `exists_notMem_smul_mem hwv hd (hdx w))`. Use `(mem_localize_iff v _ x).2 ⟨s, hs, mem_glue.2 fun w => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hw : d ∈ w.asIdeal`. Conclude with `h w hw`. Conclude with `(M w).smul_of_tower_mem s (mem_of_smul_mem w hw (hdx w))`.
+-/
 theorem localize_glue {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V}
     (hM : Submodule.span K (glue M : Set V) = ⊤) (v : HeightOneSpectrum O) :
     localize K v (glue M) = M v := by
@@ -251,6 +347,13 @@ theorem localize_glue {M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSu
   · exact h w hw
   · exact (M w).smul_of_tower_mem s (mem_of_smul_mem w hw (hdx w))
 
+/- English proof (translation)
+Establish `hfin` using `Filter.eventually_cofinite.1 hML`. Prove the components needed by the constructor for the conclusion. Take `⟨d, hd, h⟩` from `exists_mem_submonoid_forall hfin O⁰ (fun w s => ∀ x ∈ M w, s • x ∈ localize K w L) (fun w s t h x hx => by rw [mul_smul]; exact Submodule.smul_of_tower_mem _ t (h x hx)) (fun w _ => exists_smul_le (hM w).fg (isLattice_localize w L).span_eq_top)`. Use `fg_of_smul_mem (K := K) hL.fg hd fun x hx => ?_` and prove the remaining obligations. Use `(mem_iff_forall_mem_localize hL.span_eq_top _).2 fun w => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hw : M w = localize K w L`. Rewrite using `[← hw]`. Conclude with `Submodule.smul_of_tower_mem _ d (mem_glue.1 hx w)`. Conclude with `h w hw x (mem_glue.1 hx w)`. Take `⟨d, hd, h⟩` from `exists_mem_submonoid_forall hfin O⁰ (fun w s => ∀ x ∈ localize K w L, s • x ∈ M w) (fun w s t h x hx => by rw [mul_smul]; exact Submodule.smul_of_tower_mem _ t (h x hx)) (fun w _ => exists_smul_le (isLattice_localize w L).fg (hM w).span_eq_top)`.
+
+Use `span_eq_top_of_smul_mem hL.span_eq_top hd fun x hx => mem_glue.2 fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : M w = localize K w L`. Rewrite using `[hw]`. Conclude with `Submodule.smul_of_tower_mem _ d (mem_localize_of_mem w hx)`. Conclude with `h w hw x (mem_localize_of_mem w hx)`.
+-/
 theorem isLattice_glue (L : Submodule O V) [hL : Submodule.IsLattice K L]
     (M : ∀ v : HeightOneSpectrum O, Submodule (v.valuationSubringAtPrime K) V)
     (hM : ∀ v, Submodule.IsLattice K (M v))
@@ -297,6 +400,11 @@ def frameLattice (g : GL ι K) : Submodule A (ι → K) :=
 
 variable {A}
 
+/- English proof (translation)
+Rewrite using `[frameLattice, Submodule.mem_span_range_iff_exists_fun]`. Use `exists_congr fun a => ?_` and prove the remaining obligations. Establish `: (g : Matrix ι ι K) *ᵥ (fun i => algebraMap A K (a i)) = ∑ i, a i • (g : Matrix ι ι K).col i`. Use extensionality with `j`. Simplify using `[Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]`.
+
+Rewrite using `[this]`.
+-/
 theorem mem_frameLattice_iff (g : GL ι K) (x : ι → K) :
     x ∈ frameLattice A g ↔
       ∃ a : ι → A, (g : Matrix ι ι K) *ᵥ (fun i => algebraMap A K (a i)) = x := by
@@ -308,6 +416,11 @@ theorem mem_frameLattice_iff (g : GL ι K) (x : ι → K) :
     simp [Matrix.mulVec, dotProduct, Algebra.smul_def, mul_comm]
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[mem_frameLattice_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩ i`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `Submodule.mem_one.2 ⟨a i, rfl⟩`.
+
+Introduce `h`. Simplify using `only [Submodule.mem_one] at h`. Use `choose a ha using h`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[funext ha, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+-/
 theorem mem_frameLattice_iff_inv (g : GL ι K) (x : ι → K) :
     x ∈ frameLattice A g ↔
       ∀ i, (((g⁻¹ : GL ι K) : Matrix ι ι K) *ᵥ x) i ∈ (1 : Submodule A K) := by
@@ -329,6 +442,13 @@ instance isLattice_frameLattice (g : GL ι K) : Submodule.IsLattice K (frameLatt
     intro x _
     exact (mem_frameLattice_iff_inv (A := K) g x).2 fun i => Submodule.mem_one.2 ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex A M) = Fintype.card ι`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, Submodule.IsLattice.finrank_of_pi K M]`. Set `b : Module.Basis ι A M` to `(Module.Free.chooseBasis A M).reindex (Fintype.equivOfCardEq hcard)`. Set `c : Module.Basis ι K (ι → K)` to `b.extendOfIsLattice K`. Set `` to `(Pi.basisFun K ι).invertibleToMatrix c`.
+
+Use `⟨unitOfInvertible ((Pi.basisFun K ι).toMatrix c), ?_⟩` and prove the remaining obligations. Establish `hc : ((Pi.basisFun K ι).toMatrix c).col = fun i => M.subtype (b i)`. Use extensionality with `i j`. Simplify using `[Module.Basis.toMatrix_apply, c]`. Rewrite using `[frameLattice, val_unitOfInvertible, hc]`.
+
+Express the relevant statement in the definitionally equal form `M = Submodule.span A (Set.range (M.subtype ∘ b))`. Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_subtype_top]`.
+-/
 theorem exists_eq_frameLattice [IsDomain A] [IsPrincipalIdealRing A] [IsFractionRing A K]
     (M : Submodule A (ι → K)) [Submodule.IsLattice K M] : ∃ g : GL ι K, M = frameLattice A g := by
   have hcard : Fintype.card (Module.Free.ChooseBasisIndex A M) = Fintype.card ι := by
@@ -372,6 +492,9 @@ variable {O K : Type*} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K]
   {V W : Type*} [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
   [AddCommGroup W] [Module K W] [Module O W] [IsScalarTower O K W]
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_one_localRing (v : HeightOneSpectrum O) (x : K) :
     x ∈ (1 : Submodule (v.valuationSubringAtPrime K) K) ↔ x ∈ v.valuationSubringAtPrime K :=
   Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
@@ -386,9 +509,15 @@ variable {O K : Type*} [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K]
 def toCompletion : (ι → K) →ₗ[K] (ι → v.adicCompletion K) :=
   (Algebra.linearMap K (v.adicCompletion K)).compLeft ι
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toCompletion_apply (x : ι → K) (i : ι) :
     toCompletion v x i = algebraMap K (v.adicCompletion K) (x i) := rfl
 
+/- English proof (translation)
+Rewrite using `[mem_localRing_iff_valuation, mem_adicCompletionIntegers, ← valuedAdicCompletion_eq_valuation' v x]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_mem_adicCompletionIntegers_iff (x : K) :
     algebraMap K (v.adicCompletion K) x ∈ v.adicCompletionIntegers K ↔
       x ∈ v.valuationSubringAtPrime K := by
@@ -396,6 +525,9 @@ theorem algebraMap_mem_adicCompletionIntegers_iff (x : K) :
     ← valuedAdicCompletion_eq_valuation' v x]
   rfl
 
+/- English proof (translation)
+Establish `ho : IsOpen {z : v.adicCompletion K | y - z ∈ v.adicCompletionIntegers K}` using `(Valued.isOpen_valuationSubring (v.adicCompletion K)).preimage (by fun_prop)`. Conclude with `(denseRange_algebraMap K v).exists_mem_open ho ⟨y, by simp⟩`.
+-/
 theorem exists_sub_mem_adicCompletionIntegers (y : v.adicCompletion K) :
     ∃ x : K, y - algebraMap K (v.adicCompletion K) x ∈ v.adicCompletionIntegers K := by
   have ho : IsOpen {z : v.adicCompletion K | y - z ∈ v.adicCompletionIntegers K} :=
@@ -419,14 +551,23 @@ def rationalPart (N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompl
       funext fun i => map_mul (algebraMap K (v.adicCompletion K)) (a : K) (x i)
     exact (show toCompletion v (a • x) ∈ N from h ▸ this)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_rationalPart {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)}
     {x : ι → K} : x ∈ rationalPart v N ↔ toCompletion v x ∈ N := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[complete, Submodule.span_le, Set.image_subset_iff]`. Both sides reduce to the same expression.
+-/
 theorem complete_le_iff {M : Submodule (v.valuationSubringAtPrime K) (ι → K)}
     {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)} :
     complete v M ≤ N ↔ M ≤ rationalPart v N := by
   rw [complete, Submodule.span_le, Set.image_subset_iff]; rfl
 
+/- English proof (translation)
+Use `le_antisymm ((complete_le_iff v).2 (Submodule.span_le.2 fun x hx => ?_)) (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem complete_span (s : Set (ι → K)) :
     complete v (Submodule.span (v.valuationSubringAtPrime K) s) =
       Submodule.span _ (toCompletion v '' s) := by
@@ -436,11 +577,17 @@ theorem complete_span (s : Set (ι → K)) :
 
 variable [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `ext1 i`. Conclude with `RingHom.map_mulVec (algebraMap K (v.adicCompletion K)) g x i`.
+-/
 theorem toCompletion_mulVec (g : Matrix ι ι K) (x : ι → K) :
     toCompletion v (g *ᵥ x) = g.map (algebraMap K (v.adicCompletion K)) *ᵥ toCompletion v x := by
   ext1 i
   exact RingHom.map_mulVec (algebraMap K (v.adicCompletion K)) g x i
 
+/- English proof (translation)
+Rewrite using `[frameLattice, complete_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem complete_frameLattice (g : GL ι K) :
     complete v (frameLattice (v.valuationSubringAtPrime K) g) =
       frameLattice (v.adicCompletionIntegers K)
@@ -448,6 +595,11 @@ theorem complete_frameLattice (g : GL ι K) :
   rw [frameLattice, complete_span, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_rationalPart, mem_frameLattice_iff_inv, mem_frameLattice_iff_inv, ← map_inv]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_one_localRing, ← algebraMap_mem_adicCompletionIntegers_iff, ← toCompletion_apply, toCompletion_mulVec]`. Conclude with `Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => by`.
+
+Use `a.2` as an intermediate fact. Conclude with `ha ▸ this, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+-/
 theorem rationalPart_frameLattice (g : GL ι K) :
     rationalPart v (frameLattice (v.adicCompletionIntegers K)
         (Matrix.GeneralLinearGroup.map (algebraMap K (v.adicCompletion K)) g)) =
@@ -466,6 +618,9 @@ instance isLattice_complete (M : Submodule (v.valuationSubringAtPrime K) (ι →
   rw [complete_frameLattice]
   infer_instance
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `exists_eq_frameLattice M`. Rewrite using `[complete_frameLattice, rationalPart_frameLattice]`.
+-/
 theorem rationalPart_complete (M : Submodule (v.valuationSubringAtPrime K) (ι → K))
     [Submodule.IsLattice K M] : rationalPart v (complete v M) = M := by
   obtain ⟨g, rfl⟩ := exists_eq_frameLattice M
@@ -473,6 +628,11 @@ theorem rationalPart_complete (M : Submodule (v.valuationSubringAtPrime K) (ι �
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Take `⟨c, hc, hcy⟩` from `exists_smul_mem (O := v.adicCompletionIntegers K) hN y`. Establish `hc0 : (c : v.adicCompletion K) ≠ 0` using `fun h => nonZeroDivisors.ne_zero hc (Subtype.ext h)`. Take `⟨d, hd, h⟩` from `adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v (c : v.adicCompletion K)⁻¹`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Establish `: d • y = (⟨_, h⟩ : v.adicCompletionIntegers K) • c • y`.
+
+Express the relevant statement in the definitionally equal form `_ = ((c : v.adicCompletion K)⁻¹ * algebraMap O (v.adicCompletion K) d) • (c : v.adicCompletion K) • y`. Rewrite using `[smul_smul, mul_right_comm, inv_mul_cancel₀ hc0, one_mul, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `N.smul_mem _ hcy`.
+-/
 theorem exists_smul_mem_completion
     {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)}
     (hN : Submodule.span (v.adicCompletion K) (N : Set (ι → v.adicCompletion K)) = ⊤)
@@ -490,6 +650,11 @@ theorem exists_smul_mem_completion
   exact N.smul_mem _ hcy
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hN`. Take `⟨d, hd, h⟩` from `exists_mem_submonoid_forall s.finite_toSet O⁰ (fun y d => d • y ∈ N') (fun w s t h => by rw [mul_smul]; exact N'.smul_of_tower_mem t h) (fun y _ => exists_smul_mem_completion v hN' y)`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `N'.smul_mem a hx`.
+-/
 theorem exists_smul_le_completion
     {N N' : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)} (hN : N.FG)
     (hN' : Submodule.span (v.adicCompletion K) (N' : Set (ι → v.adicCompletion K)) = ⊤) :
@@ -521,6 +686,21 @@ instance isLattice_rationalPart
     rw [mem_rationalPart, LinearMap.map_smul_of_tower]
     exact h _ (Submodule.subset_span ⟨x, hx, rfl⟩)
 
+/- English proof (translation)
+Use `le_antisymm ((complete_le_iff v).2 le_rfl) fun y hy => ?_` and prove the remaining obligations. Set `M` to `frameLattice (v.valuationSubringAtPrime K) (1 : GL ι K)`. Establish `hM : Submodule.IsLattice K M` using `isLattice_frameLattice _`. Take `⟨d, hd, h⟩` from `exists_smul_le_completion v (isLattice_complete v M).fg hN`. Establish `hstd : ∀ z ∈ complete v M, d • z ∈ complete v (rationalPart v N)`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Rewrite using `[← LinearMap.map_smul_of_tower]`.
+
+Use `Submodule.subset_span ⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_rationalPart, LinearMap.map_smul_of_tower]`. Conclude with `h _ (Submodule.subset_span ⟨x, hx, rfl⟩)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`. Establish `hd' : algebraMap O K d ≠ 0` using `by simpa using nonZeroDivisors.ne_zero hd`. Use `choose x hx using fun i => exists_sub_mem_adicCompletionIntegers v (((algebraMap O K d)⁻¹ • y) i)`.
+
+Establish `hz : (algebraMap O K d)⁻¹ • y - toCompletion v x ∈ complete v M`. Rewrite using `[complete_frameLattice, mem_frameLattice_iff_inv]`. Introduce `i`. Simplify using `only [map_one, inv_one, Units.val_one, Matrix.one_mulVec]`. Conclude with `Submodule.mem_one.2 ⟨⟨_, hx i⟩, rfl⟩`.
+
+Establish `hy' : y = d • ((algebraMap O K d)⁻¹ • y - toCompletion v x) + toCompletion v (d • x)`. Rewrite using `[LinearMap.map_smul_of_tower, ← smul_add, sub_add_cancel, ← algebraMap_smul K d, smul_smul, mul_inv_cancel₀ hd', one_smul]`. Establish `hxN : d • x ∈ rationalPart v N`. Rewrite using `[mem_rationalPart, ← sub_eq_iff_eq_add'.2 hy']`. Conclude with `sub_mem hy (h _ hz)`.
+
+Rewrite using `[hy']`. Conclude with `add_mem (hstd _ hz) (Submodule.subset_span ⟨_, hxN, rfl⟩)`.
+-/
 theorem complete_rationalPart_of_span_eq_top
     {N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K)}
     (hN : Submodule.span (v.adicCompletion K) (N : Set (ι → v.adicCompletion K)) = ⊤) :
@@ -559,6 +739,9 @@ theorem complete_rationalPart_of_span_eq_top
   rw [hy']
   exact add_mem (hstd _ hz) (Submodule.subset_span ⟨_, hxN, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `complete_rationalPart_of_span_eq_top v hN.span_eq_top`.
+-/
 theorem complete_rationalPart
     (N : Submodule (v.adicCompletionIntegers K) (ι → v.adicCompletion K))
     [hN : Submodule.IsLattice (v.adicCompletion K) N] : complete v (rationalPart v N) = N :=
@@ -585,15 +768,24 @@ section NumberField
 
 open NumberField
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.fg, h.span_eq_top⟩⟩`.
+-/
 theorem isLattice_iff {K : Type} [Field K] [NumberField K] {r : ℕ}
     (L : Submodule (𝓞 K) (Fin r → K)) : ReciprocityTheory.MultiplicativeHeights.IsLattice L ↔ Submodule.IsLattice K L :=
   ⟨fun h => ⟨h.1, h.2⟩, fun h => ⟨h.fg, h.span_eq_top⟩⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_one.trans ⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_one_ringOfIntegers_iff {K : Type*} [Field K] [NumberField K] (x : K) :
     x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral ℤ x :=
   Submodule.mem_one.trans
     ⟨fun ⟨a, ha⟩ => ha ▸ a.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun hx v => mem_localize_of_mem v hx, mem_of_forall_mem_localize_of_not_isField (RingOfIntegers.not_isField K)⟩`.
+-/
 theorem mem_iff_forall_mem_localize_ringOfIntegers {K V : Type*} [Field K] [NumberField K]
     [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (L : Submodule (𝓞 K) V) (x : V) :
@@ -617,9 +809,15 @@ def hermPairing (G : Matrix (Fin r) (Fin r) E) :
     (fun x y z => by simp [herm, cc, mul_add, Finset.sum_add_distrib])
     (fun c x y => by simp [herm, cc, Finset.mul_sum, mul_left_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem hermPairing_apply (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     hermPairing G x y = herm G x y := rfl
 
+/- English proof (translation)
+Use `Matrix.eq_zero_of_vecMul_eq_zero hG (funext fun b => ?_)` and prove the remaining obligations. Use `hx (Pi.single b 1)` as an intermediate fact. Simplify `this` using `[herm, cc, Pi.single_apply, apply_ite, Matrix.vecMul, dotProduct]`.
+-/
 theorem hermPairing_separating {G : Matrix (Fin r) (Fin r) E} (hG : G.det ≠ 0) (x : Fin r → E)
     (hx : ∀ y, hermPairing G x y = 0) : x = 0 := by
   refine Matrix.eq_zero_of_vecMul_eq_zero hG (funext fun b => ?_)

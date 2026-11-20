@@ -15,6 +15,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   (hσσ : ∀ x, σ (σ x) = x) (hJ : IsHermND σ J) (hP : P.IsStd σ J T)
 include hσσ hJ hP
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Unfold `Hsub`. Rewrite using `[mem_stabT]`. Introduce `b`. Rewrite using `[lin_piG]`.
+
+Use `Fin.addCases (fun b => ?_) (fun b => ?_) b` and prove the remaining obligations. Rewrite using `[tupH, Fin.append_left]`. Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Rewrite using `[F0, Fin.snoc_last]`. Conclude with `SemiG.Dat.unipotent_proj_fixes_normal H _`.
+
+Rewrite using `[F0, Fin.snoc_castSucc]`. Conclude with `SemiG.Dat.Pi_e H _ a`. Rewrite using `[tupH, Fin.append_right]`. Conclude with `SemiG.Dat.Pi_f H _ b`.
+-/
 theorem piG_mem_H (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : piG hσσ hJ hP g hg ∈ Hsub R σ J P := by
   have H := datR_hyp (R := R) hσσ hJ hP
   unfold Hsub
@@ -31,6 +38,17 @@ theorem piG_mem_H (g : HA R σ J) (hg : g ∈ Ssub R σ J P) : piG hσσ hJ hP g
   · rw [tupH, Fin.append_right]
     exact SemiG.Dat.Pi_f H _ b
 
+/- English proof (translation)
+Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+
+Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Unfold `Hsub at hh`.
+
+Rewrite `hh` using `[mem_stabT]`. Establish `he : ∀ a, lin R σ J h (ratV (F` using `F) R (P.e a)) = ratV (F := F) R (P.e a) := fun a => by`. Establish `h1` using `hh (Fin.castAdd r (Fin.castSucc a))`. Rewrite `h1` using `[tupH, Fin.append_left, F0, Fin.snoc_castSucc]`. Then use the resulting hypothesis. Establish `hz : lin R σ J h (ratV (F` using `F) R P.z) = ratV (F := F) R P.z := by`.
+
+Establish `h1` using `hh (Fin.castAdd r (Fin.last r))`. Rewrite `h1` using `[tupH, Fin.append_left, F0, Fin.snoc_last]`. Then use the resulting hypothesis. Establish `hf : ∀ a, lin R σ J h (ratV (F` using `F) R (P.f a)) = ratV (F := F) R (P.f a) := fun a => by`. Establish `h1` using `hh (Fin.natAdd (r + 1) a)`. Rewrite `h1` using `[tupH, Fin.append_right]`. Then use the resulting hypothesis.
+
+Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG]`. Conclude with `SemiG.Dat.Pi_of_fix H ⟨he, hz⟩ hf (uni_lin h) x`.
+-/
 theorem piG_of_H {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (hg : h ∈ Ssub R σ J P) :
     piG hσσ hJ hP h hg = h := by
   have hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂ := by
@@ -58,6 +76,13 @@ theorem piG_of_H {h : HA R σ J} (hh : h ∈ Hsub R σ J P) (hg : h ∈ Ssub R �
   rw [lin_piG]
   exact SemiG.Dat.Pi_of_fix H ⟨he, hz⟩ hf (uni_lin h) x
 
+/- English proof (translation)
+Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+
+Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Take `⟨-, hn2⟩` from `hn`.
+
+Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG, lin_one]`. Use `SemiG.Dat.Pi_of_N H (fun v hv => spanR_le Set.univ (hn2 v fun a => ?_)) x` and prove the remaining obligations. Establish `h1` using `hv a`. Rewrite `h1` using `[datR_h]`. Then use the resulting hypothesis.
+-/
 theorem piG_of_N {n : HA R σ J} (hn : n ∈ Nsub R σ J P) (hg : n ∈ Ssub R σ J P) :
     piG hσσ hJ hP n hg = 1 := by
   have hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂ := by
@@ -77,6 +102,13 @@ theorem piG_of_N {n : HA R σ J} (hn : n ∈ Nsub R σ J P) (hg : n ∈ Ssub R �
   have h1 := hv a
   rwa [datR_h] at h1
 
+/- English proof (translation)
+Establish `hext : ∀ {g₁ g₂ : HA R σ J}, (∀ x, lin R σ J g₁ x = lin R σ J g₂ x) → g₁ = g₂`. Introduce `g₁ g₂ hgg`. Establish `hm : ((HA.mat R σ J g₁ : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = (HA.mat R σ J g₂ : GL (Fin M) (R ⊗[F] E))`. Use extensionality with `i j`. Establish `h1` using `hgg (Pi.single j 1)`.
+
+Simplify using `only [lin, Matrix.mulVecLin_apply, Matrix.mulVec_single_one] at h1`. Conclude with `congrFun h1 i`. Conclude with `Subtype.ext (Units.ext hm)`. Use `hext fun x => ?_` and prove the remaining obligations. Rewrite using `[lin_piG, lin_mul, lin_piG, lin_piG, Pi_lin_mul hσσ hJ hP hg hg']`.
+
+Both sides reduce to the same expression.
+-/
 theorem piG_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ Ssub R σ J P) :
     piG hσσ hJ hP (g * g') ((Ssub R σ J P).mul_mem hg hg') =
       piG hσσ hJ hP g hg * piG hσσ hJ hP g' hg' := by
@@ -93,6 +125,17 @@ theorem piG_mul {g g' : HA R σ J} (hg : g ∈ Ssub R σ J P) (hg' : g' ∈ Ssub
   rw [lin_piG, lin_mul, lin_piG, lin_piG, Pi_lin_mul hσσ hJ hP hg hg']
   rfl
 
+/- English proof (translation)
+Establish `H` using `datR_hyp (R := R) hσσ hJ hP`. Use `set π := piG hσσ hJ hP s hs with hπ`. Establish `hpe : ∀ b, lin R σ J π (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := fun b => by`. Rewrite using `[hπ, lin_piG]`. Conclude with `SemiG.Dat.Pi_e H _ b`.
+
+Establish `hpie : ∀ b, lin R σ J π⁻¹ (ratV (F` using `F) R (P.e b)) = ratV (F := F) R (P.e b) := fun b => by conv_lhs => rw [← hpe b]`. Rewrite using `[lin_inv_lin]`. Use `⟨fun b => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[lin_mul, hpie]`. Conclude with `S_e hs b`.
+
+Use `set u := lin R σ J π⁻¹ v with hu`. Establish `hu' : ∀ a, (datR R σ J P T).h ((datR R σ J P T).e a) u = 0` using `fun a => by`. Rewrite using `[datR_h]`. Use `show hR R σ J (ratV (F := F) R (P.e a)) u = 0`. Rewrite using `[← hR_lin π, hpe, hu, lin_lin_inv]`.
+
+Conclude with `hv a`. Establish `hZ : lin R σ J s (datR R σ J P T).z - (datR R σ J P T).z ∈ Submodule.span (R ⊗[F] E) (Set.range (datR R σ J P T).e)` using `spanR_le Set.univ (stabilizer_fixes_tail_coords hs)`. Establish `h1` using `SemiG.Dat.N_part H (mapX_S hs) (mapW_S hs) hZ u hu'`. Establish `h2 : (datR R σ J P T).Pi (lin R σ J s) u = v`. Rewrite using `[← lin_piG hσσ hJ hP s hs, ← hπ, hu, lin_lin_inv]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[lin_mul, ← hu]`. Conclude with `span_le_spanR h1`.
+-/
 theorem mul_inv_piG_mem_N {s : HA R σ J} (hs : s ∈ Ssub R σ J P) :
     s * (piG hσσ hJ hP s hs)⁻¹ ∈ Nsub R σ J P := by
   have H := datR_hyp (R := R) hσσ hJ hP

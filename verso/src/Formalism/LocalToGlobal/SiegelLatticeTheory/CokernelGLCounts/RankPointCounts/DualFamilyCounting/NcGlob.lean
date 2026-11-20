@@ -24,12 +24,20 @@ def fac (i : ℕ) (v : PlX X) : ℝ :=
 def tf (k t : ℕ) (v : PlX X) : ℝ :=
   if ((t : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal then fac X k v else 1
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1` using `Ideal.absNorm_eq_one_iff.not.2 v.isPrime.ne_top`. Establish `: 1 < Ideal.absNorm v.asIdeal` using `by omega`. Conclude with `this` after adjusting the coercions.
+-/
 theorem absNorm_gt_one (v : PlX X) : (1 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot
   have h1 : Ideal.absNorm v.asIdeal ≠ 1 := Ideal.absNorm_eq_one_iff.not.2 v.isPrime.ne_top
   have : 1 < Ideal.absNorm v.asIdeal := by omega
   exact_mod_cast this
 
+/- English proof (translation)
+Unfold `fac`. Establish `hq` using `absNorm_gt_one X v`. Establish `hq0 : (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)` using `by linarith`. Establish `habs : |((etaV (E` using `X.B.I.E) v : ℤ) : ℝ)| = 1 := by`. Apply the tactic sequence `unfold etaV; split_ifs <;> simp`.
+
+Establish `hη : ((etaV (E` using `X.B.I.E) v : ℤ) : ℝ) ^ i ≤ 1 := by`. Combine the equalities or inequalities in the displayed calculation. Establish `hqi : (1 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ i` using `one_lt_pow₀ hq (by omega)`. Establish `: ((etaV (E` using `X.B.I.E) v : ℤ) : ℝ) ^ i / ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ i < 1 := (div_lt_one (by positivity)).mpr (lt_of_le_of_lt hη hqi)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem fac_pos (i : ℕ) (hi : 1 ≤ i) (v : PlX X) : 0 < fac X i v := by
   unfold fac
   have hq := absNorm_gt_one X v
@@ -44,11 +52,21 @@ theorem fac_pos (i : ℕ) (hi : 1 ≤ i) (v : PlX X) : 0 < fac X i v := by
     (div_lt_one (by positivity)).mpr (lt_of_le_of_lt hη hqi)
   linarith
 
+/- English proof (translation)
+Unfold `tf`. Use `split_ifs`. Conclude with `fac_pos X k hk v`. Conclude with `one_pos`.
+-/
 theorem tf_pos (k t : ℕ) (hk : 1 ≤ k) (v : PlX X) : 0 < tf X k t v := by
   unfold tf; split_ifs
   · exact fac_pos X k hk v
   · exact one_pos
 
+/- English proof (translation)
+Unfold `aP tf`. Distinguish the cases in `ht : ((t : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal`. Rewrite using `[if_pos ht, if_pos ht, Finset.Icc_eq_cons_Ioc (show k ≤ N by omega), Finset.prod_cons]`. Establish `hIo : Finset.Ioc k N = Finset.Icc (k + 1) N`. Use extensionality with `i`.
+
+Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hIo, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[if_neg ht, if_neg ht, mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem aP_split (k N t : ℕ) (hk : k + 1 ≤ N) (v : PlX X) :
     aP (E := X.B.I.E) v k N t = (∏ i ∈ Finset.Icc (k + 1) N, fac X i v) * tf X k t v := by
   unfold aP tf
@@ -61,6 +79,11 @@ theorem aP_split (k N t : ℕ) (hk : k + 1 ≤ N) (v : PlX X) :
   · rw [if_neg ht, if_neg ht, mul_one]
     rfl
 
+/- English proof (translation)
+Unfold `aP`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `: 1 ≤ i`. Simplify using `only [Finset.mem_Icc] at hi`.
+
+Apply the tactic sequence `split_ifs at hi <;> omega`. Conclude with `fac_pos X i this v`.
+-/
 theorem aPlus_pos (k N t : ℕ) (hk : 1 ≤ k) (v : PlX X) : 0 < aP (E := X.B.I.E) v k N t := by
   unfold aP
   apply Finset.prod_pos
@@ -70,6 +93,11 @@ theorem aPlus_pos (k N t : ℕ) (hk : 1 ≤ k) (v : PlX X) : 0 < aP (E := X.B.I.
     split_ifs at hi <;> omega
   exact fac_pos X i this v
 
+/- English proof (translation)
+Establish `hI : Ideal.span {((t : ℕ) : 𝓞 X.B.I.F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `ht` after adjusting the coercions. Use `(Ideal.finite_factors hI).subset ?_` and prove the remaining obligations. Introduce `v hv`.
+
+Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+-/
 theorem finite_dvd (t : ℕ) (ht : t ≠ 0) :
     {v : PlX X | ((t : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal}.Finite := by
   have hI : Ideal.span {((t : ℕ) : 𝓞 X.B.I.F)} ≠ 0 := by
@@ -79,6 +107,9 @@ theorem finite_dvd (t : ℕ) (ht : t ≠ 0) :
   intro v hv
   exact Ideal.dvd_span_singleton.mpr hv
 
+/- English proof (translation)
+Unfold `absV`. Use `split_ifs`. Conclude with `le_rfl`. Check the signs of the components of the expression.
+-/
 theorem absV_nonneg (v : PlX X) : 0 ≤ absV v (dV v) := by
   unfold absV; split_ifs
   · exact le_rfl
@@ -88,6 +119,65 @@ end Loc
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
+/- English proof (translation)
+Introduce `D X hb hK FdN FdN' u u' X0 ψ τ Rw I H H₁ i1 i2 i3 i4 i5 T sd C Th F0 what₂ vR Q M δ i0 i0' νq a' ha hRR hS hR hχ hstd hcong hVo hVt hIx hOm hDP hRMp hFD hPC hP`. Take `⟨hd, hfc, hEul, hTfac, hvI, hfE, hn, htδ, htaP, hgprod⟩` from `hFD`. Take `⟨hKc, hFc, -⟩` from `Formalism.L2.SG.Pf.Cnt.field_dictionary_holds D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hm : D.R.m = 2 * (D.R.rS + 1)` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`.
+
+Establish `hr : D.R.r = D.R.k + 2 * D.R.rS + 1` using `by show D.R.k + D.R.m - 1 = D.R.k + 2 * D.R.rS + 1`. Use linear arithmetic over natural numbers and integers. Establish `hLpos : ∀ i, 2 ≤ i → 0 < Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F i`. Introduce `i hi`. Rewrite using `[← Formalism.HermitianLattices.Ext.L3.lValEta_eq_lValEtaF hKc hFc i hi]`.
+
+Conclude with `Formalism.HermitianLattices.Ext.L3.lValEta_pos hKc i hi`. Use `set PiL : ℝ := ∏ i ∈ Finset.Icc (D.R.k + 1) D.R.r, Formalism.HermitianLattices.Ext.L3.lValEtaF D.host.E D.host.F i with hPiL`. Establish `hPiLpos : 0 < PiL`. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`.
+
+Conclude with `hLpos i (by simp only [Finset.mem_Icc] at hi; omega)`. Establish `hfacHP : HasProd (fun v : PlX X => ∏ i ∈ Finset.Icc (D.R.k + 1) D.R.r, fac X i v) PiL⁻¹`. Rewrite using `[hPiL, ← Finset.prod_inv_distrib]`. Apply `hasProd_prod` to reduce the goal to its premises. Introduce `i hi`.
+
+Establish `hi2 : 2 ≤ i` using `by simp only [Finset.mem_Icc] at hi; omega`. Establish `h1` using `hasProd_inv₀' (hEul i hi2) (hLpos i hi2).ne'`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [fac, inv_inv]`.
+
+Use `set PT : ℝ := ∏' 𝔭 : {𝔭 : Ideal (𝓞 D.host.F) // 𝔭.IsMaximal}, (if (((D.mem u).A.T : ℕ) : 𝓞 D.host.F) ∈ 𝔭.1 then 1 - Formalism.HermitianLattices.Ext.L3.etaF D.host.E D.host.F 𝔭.1 ^ D.R.k * (Ideal.absNorm 𝔭.1 : ℝ) ^ (-(D.R.k : ℤ)) else 1) with hPT`. Establish `hTHP : HasProd (tf X D.R.k (Tw u)) PT`. Use `hTfac using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [tf, fac, Tw]`.
+
+Apply the tactic sequence `by_cases hv : (((D.mem u).A.T : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal <;> simp [hv]`. Establish `hT0 : (Tw u) ≠ 0` using `(D.mem u).A.T_prime.ne_zero`. Establish `hT0' : (Tw u') ≠ 0` using `(D.mem u').A.T_prime.ne_zero`. Establish `hSf` using `finite_dvd X (Tw u) hT0`. Establish `hSf'` using `finite_dvd X (Tw u') hT0'`.
+
+Establish `hTHPf : HasProd (tf X D.R.k (Tw u)) (∏ v ∈ hSf.toFinset, tf X D.R.k (Tw u) v)` using `hasProd_of_finite_support _ hSf (fun v hv => by simp only [tf, Set.mem_ofPred_eq] at hv ⊢; rw [if_neg hv])`. Establish `hTHP' : HasProd (tf X D.R.k (Tw u')) (∏ v ∈ hSf'.toFinset, tf X D.R.k (Tw u') v)` using `hasProd_of_finite_support _ hSf' (fun v hv => by simp only [tf, Set.mem_ofPred_eq] at hv ⊢; rw [if_neg hv])`. Establish `hPTpos : 0 < PT`. Rewrite using `[hTHP.unique hTHPf]`. Conclude with `Finset.prod_pos fun v _ => tf_pos X D.R.k (Tw u) (by omega) v`.
+
+Use `set PT' : ℝ := ∏ v ∈ hSf'.toFinset, tf X D.R.k (Tw u') v with hPT'`. Establish `hPT'pos : 0 < PT'` using `Finset.prod_pos fun v _ => tf_pos X D.R.k (Tw u') (by omega) v`. Establish `hn' : X.B.I.n = D.R.r` using `hn`. Establish `hsplit : ∀ t v, aP (E` using `X.B.I.E) v D.R.k X.B.I.n t = (∏ i ∈ Finset.Icc (D.R.k + 1) D.R.r, fac X i v) * tf X D.R.k t v := by`. Introduce `t v`.
+
+Rewrite using `[aP_split X D.R.k X.B.I.n t (by omega) v, hn']`. Use `set AT : ℝ := PiL⁻¹ * PT with hAT`. Use `set A' : ℝ := PiL⁻¹ * PT' with hA'`. Establish `hATHP : HasProd (fun v : PlX X => aP (E` using `X.B.I.E) v D.R.k X.B.I.n (Tw u)) AT := by`. Use `hfacHP.mul hTHP` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Conclude with `hsplit _ v`. Establish `hA'HP : HasProd (fun v : PlX X => aP (E` using `X.B.I.E) v D.R.k X.B.I.n (Tw u')) A' := by`. Use `hfacHP.mul hTHP'` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Conclude with `hsplit _ v`. Establish `hATpos : 0 < AT` using `mul_pos (inv_pos.mpr hPiLpos) hPTpos`. Establish `hA'pos : 0 < A'` using `mul_pos (inv_pos.mpr hPiLpos) hPT'pos`.
+
+Use `set ATyp : ℝ := ∏ p : TypX X, aP (E := X.B.I.E) p.1 D.R.k X.B.I.n (Tw u) with hATyp`. Establish `hATyppos : 0 < ATyp` using `Finset.prod_pos fun p _ => aPlus_pos X D.R.k X.B.I.n (Tw u) (by omega) p.1`. Establish `hG5 : AT * PiL = PT` using `by rw [hAT]; field_simp`. Establish `hal_def : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).al = (∏ p : TypX X, alX X u u' p.1) * ∏' v : OrdX X, alX X u u' v.1` using `rfl`. Establish `halT : ∀ v : PlX X, TypAt X v → alX X u u' v = aP (E` using `X.B.I.E) v D.R.k X.B.I.n (Tw u) := by`.
+
+Introduce `v hv`. Unfold `alX`. Rewrite using `[if_pos hv]`. Establish `halO : ∀ v : PlX X, ¬ TypAt X v → alX X u u' v = aP (E` using `X.B.I.E) v D.R.k X.B.I.n (Tw u) * aP (E := X.B.I.E) v D.R.k X.B.I.n (Tw u') := by`. Introduce `v hv`.
+
+Unfold `alX`. Rewrite using `[if_neg hv]`. Establish `hordHP` using `hasProd_compl_of' (typSet X.B.I.F (D.host.g 0) (D.host.g 1)) (hATHP.mul hA'HP) (fun v _ => (mul_pos (aPlus_pos X D.R.k X.B.I.n (Tw u) (by omega) v) (aPlus_pos X D.R.k X.B.I.n (Tw u') (by omega) v)).ne')`. Establish `hord : ∏' v : OrdX X, alX X u u' v.1 = AT * A' * (∏ i : TypX X, (aP (E` using `X.B.I.E) i.1 D.R.k X.B.I.n (Tw u) * aP (E := X.B.I.E) i.1 D.R.k X.B.I.n (Tw u')))⁻¹ := by`. Rewrite using `[← hordHP.tprod_eq]`.
+
+Conclude with `tprod_congr (fun v => halO v.1 v.2)`. Establish `hTypProd : (∏ i : TypX X, (aP (E` using `X.B.I.E) i.1 D.R.k X.B.I.n (Tw u) * aP (E := X.B.I.E) i.1 D.R.k X.B.I.n (Tw u'))) = ATyp * ATyp := by`. Rewrite using `[Finset.prod_mul_distrib, Fintype.prod_congr _ _ (fun p : TypX X => htaP p), hATyp]`. Establish `hG4 : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).al * ATyp = AT * A'`. Rewrite using `[hal_def, Fintype.prod_congr _ _ (fun p : TypX X => halT p.1 p.2), ← hATyp, hord, hTypProd]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hdX : 0 < |(NumberField.discr X.B.I.F : ℝ)|` using `abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero X.B.I.F)`. Establish `hδHP` using `hasProd_rpow' ((X.B.I.n : ℝ) * (2 * D.R.rS + 1) - ((2 * (D.R.rS : ℝ) + 1) ^ 2) / 2) (fun v => absV_nonneg X v) hDP (inv_ne_zero hdX.ne')`. Establish `hωHP` using `hδHP.mul hA'HP`. Establish `hG3 : (∏' v : PlX X, (omAt X.B.I.cm.sig X.B.I.J ψ v ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Fv X.B.I.F v))) {Y | ∃ k ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) v, Y = k • ratTup (Fv X.B.I.F v) (tupH (frameOf X u'))}).toReal) = |(Numb …`.
+
+Establish `hωHP' : HasProd (fun v : PlX X => (omAt X.B.I.cm.sig X.B.I.J ψ v ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Fv X.B.I.F v))) {Y | ∃ k ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) v, Y = k • ratTup (Fv X.B.I.F v) (tupH (frameOf X u'))}).toR …`. Use `hωHP using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Conclude with `hOm hχ hstd v`. Rewrite using `[hωHP'.tprod_eq, Real.inv_rpow (abs_nonneg _), ← Real.rpow_neg (abs_nonneg _), hd, hn']`.
+
+Establish `hU_def : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).unitLevelVolume = (∏' v : OrdX X, localVolumeUnit X ψ v.1) * ∏ p : TypX X, localVolumeUnit X ψ p.1` using `rfl`. Establish `hZ_def : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volZZ = ∏' v : PlX X, ZZX X u u' ψ v` using `rfl`. Take `⟨-, -, -, hU00m, -, hZZm, hZZpos, -⟩` from `hPC`. Establish `hUHP : HasProd (fun v => localVolumeUnit X ψ v) (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).unitLevelVolume`. Rewrite using `[hU_def]`.
+
+Conclude with `hasProd_of_compl' (typSet X.B.I.F (D.host.g 0) (D.host.g 1)) hU00m.hasProd`. Establish `hZHP : HasProd (fun v => ZZX X u u' ψ v) (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volZZ`. Rewrite using `[hZ_def]`. Conclude with `hZZm.hasProd`. Establish `hratHP` using `hUHP.mul (hasProd_inv₀' hZHP (by rw [hZ_def]; exact hZZpos.ne'))`.
+
+Establish `hpp : ∀ v : PlX X, localVolumeUnit X ψ v * (ZZX X u u' ψ v)⁻¹ = absV v (dV v) ^ (-(((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3)) * (if TypAt X v then (gAt X v : ℝ) ^ ((D.R.rS + 1) * (2 * D.R.rS + 3)) else 1)`. Introduce `v`. Distinguish the cases in `hv : TypAt X v`. Rewrite using `[if_pos hv, ← div_eq_mul_inv, hVt hχ hstd hcong v hv, htδ ⟨v, hv⟩, Real.one_rpow, one_mul]`. Rewrite using `[if_neg hv, ← div_eq_mul_inv, hVo hχ hstd v hv, mul_one]`.
+
+Establish `hgHP : HasProd (fun v : PlX X => if TypAt X v then (gAt X v : ℝ) ^ ((D.R.rS + 1) * (2 * D.R.rS + 3)) else 1) (∏ p : TypX X, (gAt X p.1 : ℝ) ^ ((D.R.rS + 1) * (2 * D.R.rS + 3)))`. Establish `h0` using `hasProd_of_compl' (typSet X.B.I.F (D.host.g 0) (D.host.g 1)) (f := fun v : PlX X => if TypAt X v then (gAt X v : ℝ) ^ ((D.R.rS + 1) * (2 * D.R.rS + 3)) else 1) (a := 1) (by`. Use `(hasProd_one : HasProd (fun _ : {i // i ∉ typSet X.B.I.F (D.host.g 0) (D.host.g 1)} => (1 : ℝ)) 1) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Conclude with `if_neg v.2)`.
+
+Use `h0 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[one_mul]`. Conclude with `Fintype.prod_congr _ _ (fun p => (if_pos p.2).symm)`. Establish `hδX` using `hasProd_rpow' (-(((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3)) (fun v => absV_nonneg X v) hDP (inv_ne_zero hdX.ne')`. Establish `hval : HasProd (fun v : PlX X => localVolumeUnit X ψ v * (ZZX X u u' ψ v)⁻¹) ((|(NumberField.discr X.B.I.F : ℝ)|⁻¹) ^ (-(((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3)) * ∏ p : TypX X, (gAt X p.1 : ℝ) ^ ((D.R.rS + 1) * (2 * D.R.rS + 3)))`.
+
+Use `hδX.mul hgHP using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Conclude with `hpp v`. Establish `hG1 : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).unitLevelVolume / (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volZZ = |(NumberField.discr D.host.F : ℝ)| ^ (((D.R.rS : ℝ) + 1) * (8 * (D.R.rS : ℝ) ^ 2 + 10 * D.R.rS + 3) / 3) * ((Lat.gS D : ℕ) : …`. Rewrite using `[div_eq_mul_inv, hratHP.unique hval, Real.inv_rpow (abs_nonneg _), ← Real.rpow_neg (abs_nonneg _), neg_neg, hd, Finset.prod_pow, hgprod, ← pow_mul, mul_comm (Module.finrank ℚ D.host.F)]`.
+
+Establish `hKo` using `hP.2.1`. Establish `hKp : ∀ p, 0 < (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μKp p` using `fun p => (hP.1 p).2.2.2.2.2.1`. Establish `hG2 : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μKnat / (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μK = ((Lat.gS D : ℕ) : ℝ) ^ (-(((D.R.rS + 1) * (2 * D.R.k + 2 * D.R.rS + 1) * Module.finrank ℚ D.host.F : ℕ) : ℤ)) / ATyp`. Unfold `Formalism.FourierDecayAlt.S3.MassData.μKnat Formalism.FourierDecayAlt.S3.MassData.μK`. Rewrite using `[mul_div_mul_left _ _ hKo.ne', ← Finset.prod_div_distrib, Fintype.prod_congr _ _ hIx, Finset.prod_div_distrib, Finset.prod_zpow, hgprod, ← hATyp]`.
+
+Use `congr 1`. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfinE : Module.finrank ℚ D.host.E = 2 * Module.finrank ℚ D.host.F`. Rewrite using `[← Module.finrank_mul_finrank ℚ D.host.F D.host.E, D.sp.cm.deg2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hng : ngFac D = ((Lat.gS D : ℕ) : ℝ) ^ (D.R.m * Module.finrank ℚ D.host.F * (D.R.k - 1))`. Unfold `ngFac`.
+
+Establish `hcast : (((Lat.gS D : ℕ) : D.host.E)) ^ D.R.m = algebraMap ℚ D.host.E (((Lat.gS D : ℕ) : ℚ) ^ D.R.m)` using `by simp`. Rewrite using `[hcast, Algebra.norm_algebraMap, hfinE]`. Establish `hg0 : (0 : ℝ) ≤ ((Lat.gS D : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hsq : |((((((Lat.gS D : ℕ) : ℚ) ^ D.R.m) ^ (2 * Module.finrank ℚ D.host.F) : ℚ)) : ℝ)| = (((Lat.gS D : ℕ) : ℝ) ^ (D.R.m * Module.finrank ℚ D.host.F)) ^ 2`. Use `push_cast`.
+
+Rewrite using `[abs_of_nonneg (by positivity), ← pow_mul, ← pow_mul]`. Put the polynomial expressions in normal form. Rewrite using `[hsq, Real.sqrt_sq (by positivity), ← pow_mul]`. Rewrite `hR` using `[hd, hfc]`. Conclude with `Formalism.L2.SG.Pf.NcArithG.ncValueC_of_global X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq a' _ ATyp A' AT PT hP ha hATyppos hA'pos hPTpos hS hR hG1 hG2 hG3 hG4 hG5 (hRMp D u u' hcong F0 what₂ hRR) hvI hfE hng`.
+-/
 theorem normalizing_arithmetic_holds : NcArith := by
   intro D X hb hK FdN FdN' u u' X0 ψ τ Rw I H H₁ i1 i2 i3 i4 i5 T sd C Th F0 what₂ vR Q M δ i0 i0' νq a'
     ha hRR hS hR hχ hstd hcong hVo hVt hIx hOm hDP hRMp hFD hPC hP

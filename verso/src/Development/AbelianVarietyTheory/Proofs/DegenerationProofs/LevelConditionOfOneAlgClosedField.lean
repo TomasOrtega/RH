@@ -16,6 +16,9 @@ namespace GlobalTheory.LevelField
 
 open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.ArcDataDescent
 
+/- English proof (translation)
+Use `⟨h'.1.trans h.1, ?_, fun χ => corr_of_val D.P.isLB fun (y : Sp F₂) J hJ => ?_⟩` and prove the remaining obligations. Conclude with `h'.2.1.trans ((congrArg (spMap g ≫ ·) h.2.1).trans ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ p₀.g.b.left) (spMap_comp f g).symm)))`. Use `(val_corr hJ (h'.2.2 χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (h.2.2 χ) _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm))))` and prove the remaining obligations. Conclude with `congrArg (fun q => val (p₀.g.s χ) q y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 (Sp F₂) ≫ ·) (spMap_comp f g).symm))`.
+-/
 theorem qkExt_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F₀ F₁ F₂ : Type} [Field F₀] [Field F₁]
     [Field F₂] [Algebra (FractionRing R) F₀] [Algebra (FractionRing R) F₁] [Algebra (FractionRing R) F₂]
     {f : F₀ →+* F₁} {g : F₁ →+* F₂} {k : ℕ} {p₀ : QkPt D F₀ k} {p₁ : QkPt D F₁ k} {p₂ : QkPt D F₂ k}
@@ -28,6 +31,11 @@ theorem qkExt_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F₀ F�
     exact congrArg (fun q => val (p₀.g.s χ) q y J) ((Category.assoc _ _ _).trans
       (congrArg (𝟙 (Sp F₂) ≫ ·) (spMap_comp f g).symm))
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Use `choose J₀ hJ₀ using fun χ : Sp F ⟶ B₀ => exists_chart hM₀ (χ z)`. Establish `e` using `((genRel_iff w t t₀ x z).1 h).2 (fun k => J (pt k)) (fun k => J₀ (pt k ≫ φ)) (fun k => hJ₀ (pt k ≫ φ)) (fun k => hJ (pt k))`. Establish `e'` using `((genRel_iff w t' t₀ x z).1 h').2 (fun k => J (pt k)) (fun k => J₀ (pt k ≫ φ)) (fun k => hJ₀ (pt k ≫ φ)) (fun k => hJ (pt k))`. Rewrite using `[val_of t _ z J (fun k => J (pt k)) (fun k => by rw [Category.id_comp]), val_of t' _ z J (fun k => J (pt k)) (fun k => by rw [Category.id_comp])]`.
+
+Conclude with `mul_left_cancel (Units.ext (e.trans e'.symm))`.
+-/
 theorem val_eq_of_genRel {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {M₀ : LB B₀} (hM₀ : M₀.IsLB)
     {φ : B ⟶ B₀} {w : LB.Iso M (M₀.pull φ)} {K : Type} [Fintype K] {pt pt' : K → (Sp F ⟶ B)} {pt₀ : K → (Sp F ⟶ B₀)}
     {ε : K → ℤ} {t : LB.Gen (LB.LinComb M pt ε)} {t' : LB.Gen (LB.LinComb M pt' ε)}
@@ -46,6 +54,9 @@ theorem val_eq_of_genRel {F : Type} [Field F] {B B₀ : Scheme.{0}} {M : LB B} {
 variable {R O' : Type} [CommRing R] [IsDomain R] [CommRing O'] [IsDomain O'] {D : DegPre R} {D₀ : DegPre O'}
   {ψ : D.P.A.left ⟶ D₀.P.A.left} {w : LB.Iso D.P.L (D₀.P.L.pull ψ)} {k : ℕ}
 
+/- English proof (translation)
+The claim follows from `(genRel_congr D.P.isLB D₀.P.isLB w (gtφ_ext hσ h χ) (gtφ_ext hσ₀ h₀ χ₀) (q'.g.isGen _) (pullGen_isGen _ _ _ _ (q.g.isGen _) _) (q₀'.g.isGen _) (pullGen_isGen _ _ _ _ (q₀.g.isGen _) _) (fun _ _ hJ => val_corr hJ (h.2.2 χ) _) (fun _ _ hJ => val_corr hJ (h₀.2.2 χ₀) _) _).2 ((genRel_ …`.
+-/
 theorem genRel_ext {F F' : Type} [Field F] [Field F'] [Algebra (FractionRing R) F] [Algebra (FractionRing R) F']
     [Algebra (FractionRing O') F] [Algebra (FractionRing O') F'] {σ : F →+* F'}
     (hσ : σ.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
@@ -58,6 +69,9 @@ theorem genRel_ext {F F' : Type} [Field F] [Field F'] [Algebra (FractionRing R) 
     (fun _ _ hJ => val_corr hJ (h.2.2 χ) _) (fun _ _ hJ => val_corr hJ (h₀.2.2 χ₀) _) _).2
     ((genRel_pull_iff σ w _ _ x).2 H)
 
+/- English proof (translation)
+Establish `hb : q.g.b = q'.g.b` using `Over.OverMorphism.ext (gp.1.hom_ext (((H 0).1 2).trans ((H' 0).1 2).symm) (by rw [Over.w, Over.w]))`. Use `TorusExt.qk_ext hy (TorusExt.gt_ext hb fun χ => corr_of_val D.P.isLB fun y J hJ => ?_)` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `e.surjective χ`. Conclude with `val_eq_of_genRel D₀.P.isLB (by rw [hb]) (H χ) (H' χ) y hJ`.
+-/
 theorem eq_of_genRel {F : Type} [Field F] [Algebra (FractionRing R) F] [Algebra (FractionRing O') F] {f : O' →+* R}
     (gp : IsGrpPullback D.P.A D₀.P.A (spMap f) ψ) (e : D₀.X ≃+ D.X) {q q' : QkPt D F k} {q₀ : QkPt D₀ F k}
     {x : D₀.X → F} (hy : q.y = q'.y) (H : ∀ χ, GenRel w (q.g.s (e χ)) (q₀.g.s χ) (x χ))
@@ -68,6 +82,21 @@ theorem eq_of_genRel {F : Type} [Field F] [Algebra (FractionRing R) F] [Algebra 
   obtain ⟨χ, rfl⟩ := e.surjective χ
   exact val_eq_of_genRel D₀.P.isLB (by rw [hb]) (H χ) (H' χ) y hJ
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H R O' _ _ _ _ _ I _ t P D₀ hB f ψ w e gp _ k hk p₀ s x₀ C _ _ _ _ hC q₀ q x h₀ hy hg hx hA F _ _ _ _ hF q₀' q' x' h₀' hy' hg' hx'`. Take `⟨F', _, _, σ, τ, hστ⟩` from `exists_common_field (algebraMap (FractionRing R) C) (algebraMap (FractionRing R) F)`. Use `letI : Algebra (FractionRing R) F' := (σ.comp (algebraMap _ C)).toAlgebra`. Use `letI : Algebra (FractionRing O') F' := (σ.comp (algebraMap _ C)).toAlgebra`. Establish `hσ : σ.comp (algebraMap (FractionRing R) C) = algebraMap (FractionRing R) F'` using `rfl`.
+
+Establish `hσ₀ : σ.comp (algebraMap (FractionRing O') C) = algebraMap (FractionRing O') F'` using `rfl`. Establish `hτ : τ.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F'` using `hστ.symm`. Establish `hτ₀ : τ.comp (algebraMap (FractionRing O') F) = algebraMap (FractionRing O') F'` using `IsLocalization.ringHom_ext (nonZeroDivisors O') (RingHom.ext fun a => (congrArg τ (hF a).symm).trans ((RingHom.congr_fun hστ _).symm.trans (congrArg σ (hC a))))`. Take `⟨r, hr, -⟩` from `TorusExt.existsUnique_qkExt P.D.tau_bimult σ hσ q`. Take `⟨r', hr', -⟩` from `TorusExt.existsUnique_qkExt P.D.tau_bimult τ hτ q'`.
+
+Take `⟨r₀, hr₀, -⟩` from `TorusExt.existsUnique_qkExt hB σ hσ₀ q₀`. Take `⟨r₀', hr₀', -⟩` from `TorusExt.existsUnique_qkExt hB τ hτ₀ q₀'`. Establish `a` using `qkExt_trans h₀ hr₀`. Establish `a'` using `qkExt_trans h₀' hr₀'`. Rewrite `a` using `[hσ₀]`.
+
+Rewrite `a'` using `[hτ₀]`. Take `rfl : r₀ = r₀'` from `(TorusExt.existsUnique_qkExt hB (algebraMap (FractionRing O') F') (RingHom.ext fun _ => rfl) p₀).unique a a'`. Take `rfl : r = r'` from `eq_of_genRel gp e (q₀ := r₀) (x := fun χ => algebraMap (FractionRing R) F' (s χ)) (by rw [hr.1, hr'.1, hy, hy', h₀.1, h₀'.1]) (fun χ => genRel_ext hσ hσ₀ hr hr₀ (hg χ)) (fun χ => by`. Establish `b` using `genRel_ext hτ hτ₀ hr' hr₀' (hg' χ)`. Rewrite using `[show τ (algebraMap (FractionRing R) F (s χ)) = algebraMap (FractionRing R) F' (s χ) from RingHom.congr_fun hτ _] at b)` and apply the resulting hypothesis.
+
+Use `letI : Algebra C F' := σ.toAlgebra`. Use `letI : Algebra F F' := τ.toAlgebra`. Use `haveI : IsScalarTower (FractionRing R) C F' := IsScalarTower.of_algebraMap_eq' hσ.symm`. Use `haveI : IsScalarTower (FractionRing R) F F' := IsScalarTower.of_algebraMap_eq' hτ.symm`. Establish `hj : spMap σ ≫ jFK (R` using `R) C = jFK (R := R) F' := (spMap_comp _ _).symm.trans (congrArg spMap hσ)`.
+
+Establish `hj' : spMap τ ≫ jFK (R` using `R) F = jFK (R := R) F' := (spMap_comp _ _).symm.trans (congrArg spMap hτ)`. Establish `ex : TorsionExt.fieldMap (R` using `R) C F' ≫ x = TorsionExt.fieldMap (R := R) F F' ≫ x' := by`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show spMap σ ≫ x.left = spMap τ ≫ x'.left`. Rewrite using `[hx, hx', ← Category.assoc, ← Category.assoc, hj, hj']`.
+
+Use `(TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow P.U hk hr' x').2 ?_` and prove the remaining obligations. Rewrite using `[← ex]`. Conclude with `(TorsionExt.qkToAkU_iff_of_algebra hL.1.globalFns hL.1.kerPow P.U hk hr x).1 hA`.
+-/
 theorem toA_of_toA : GlobalTheory.UT.LL → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R O' : Type) [CommRing R] [IsDomain R] [CharZero R] [CommRing O'] [IsDomain O'] (I : Ideal R), AdmBase R I → ∀ (t : SAB H (Sp R)) (P : PELUnif I t) (D₀ : DegPre O'), D₀.TauBimult → ∀ (f : O' →+* R) (ψ : P.D.toPre.P.A.left ⟶ D₀.P.A.left) (w : LB.Iso P.D.toPre.P.L (D₀.P.L.pull ψ)) (e : D₀.X ≃+ P.D.toPre.X), IsGrpPullback P.D.toPre.P.A D₀.P.A (spMap f) ψ → w.IsGen → ∀ k : ℕ, 1 ≤ k → ∀ (p₀ : QkPt D₀ (FractionRing O') k) (s : D₀.X → FractionRing R) (x₀ : Sp (FractionRing R) ⟶ P.A.A.left) (C : Type) [Field C] [IsAlgClosed C] [Algebra (FractionRing R) C] [Algebra (FractionRing O') C], Along f C → ∀ (q₀ : QkPt D₀ C k) (q : QkPt P.D.toPre C k) (x : TFK (R := R) C ⟶ P.A.A), QkExt (algebraMap _ C) p₀ q₀ → q.y = e q₀.y → (∀ χ, GenRel w (q.g.s (e χ)) (q₀.g.s χ) (algebraMap _ C (s χ))) → x.left = jFK (R := R) C ≫ x₀ → P.ToA C k q x → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] [Algebra (FractionRing O') F], Along f F → ∀ (q₀' : QkPt D₀ F k) (q' : QkPt P.D.toPre F k) (x' : TFK (R := R) F ⟶ P.A.A), QkExt (algebraMap _ F) p₀ q₀' → q'.y = e q₀'.y → (∀ χ, GenRel w (q'.g.s (e χ)) (q₀'.g.s χ) (algebraMap _ F (s χ))) → x'.left = jFK (R := R) F ≫ x₀ → P.ToA F k q' x' := by
   intro hL E _ _ _ H R O' _ _ _ _ _ I _ t P D₀ hB f ψ w e gp _ k hk p₀ s x₀ C _ _ _ _ hC q₀ q x h₀ hy hg hx hA
     F _ _ _ _ hF q₀' q' x' h₀' hy' hg' hx'

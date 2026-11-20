@@ -14,6 +14,9 @@ open Matrix GlobalTheory.LocPair
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.WeilM.hTens, GlobalTheory.VanishLoc.uAt, uS, Matrix.vecMulVec_apply, Matrix.smul_apply, Pi.smul_apply, incV, incM, Matrix.map_apply, smul_eq_mul, map_mul, cA_inclR, cA_cA hσ, form, dotProduct, Matrix.mulVec, map_sum, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_comm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun i _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans (Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem hTens_uS {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n n₁ d d₁ : ℕ} (JA : Matrix (Fin n) (Fin n) E)
     (JB : Matrix (Fin d) (Fin d) E) (H : Plane E n n₁) (H' : Plane E d d₁) (v : Pl F) (t s : Fv F v ⊗[F] E) :
     GlobalTheory.WeilM.hTens (cA σ) (incM F JA) (incM F JB) (GlobalTheory.VanishLoc.uAt H H' v t) (uS σ H H' v s) =
@@ -28,6 +31,11 @@ private theorem hTens_uS {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n n�
     Finset.sum_congr rfl fun k _ => ?_)
   ring
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hT.base.cm.2.2.1]; norm_num)`. Establish `hσ` using `cm_conj_conj hT.base.cm`. Establish `hxy : form σ G.V'.J H.x H.y = 1` using `hC.hH.xy`. Establish `hyx : form σ G.W.J H'.y H'.x = -1`. Rewrite using `[form_swap_skew hσ _ hT.geo.hW.skew, hC.hH'.xy, map_one]`.
+
+Rewrite using `[locCo_pair, GlobalTheory.WeilM.symp, hTens_uS hσ, evFin_trace, hxy, hyx, map_one, map_neg, map_one]`. Establish `e : (-1 : AE F E) * (GlobalTheory.VanishLoc.liftT v t * GlobalTheory.VanishLoc.liftT v s * 1 * -1) = GlobalTheory.VanishLoc.liftT v t * GlobalTheory.VanishLoc.liftT v s` using `by ring`. Rewrite using `[e, map_mul, compFin_liftT, compFin_liftT]`.
+-/
 private theorem pair_uS {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b))
     (hC : CfgB B G G₁ H H') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (hT : IsTriple B G X om om')
@@ -47,6 +55,11 @@ private theorem pair_uS {σ : E →ₐ[F] E} (B : Base F E) {a b : ℕ}
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC e' hE ei ev hL X om om' om₁ om₁' hT hT₁ v φ hφ t s`. Take `⟨hei, hvac, hfac⟩` from `hL`. Establish `hψ : Continuous B.ψ` using `hT.base.std.1`. Establish `hU` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ v (GlobalTheory.LatVac.locCo G.M'.co v (GlobalTheory.VanishLoc.uAt H H' v t)) φ hφ`. Establish `hS` using `GlobalTheory.SchrSB.schr_mem_SB B.ψ hψ v (GlobalTheory.LatVac.locCo G.M'.co v (uS σ H H' v s)) φ hφ`.
+
+Establish `h1` using `GlobalTheory.VanishLocInv.inv_local B G G₁ H H' e' hE X om om' om₁ om₁' hT hT₁ ei ev hei hvac hfac v (GlobalTheory.VanishLoc.uAt H H' v t) (GlobalTheory.VanishLoc.uAt_mem_isoB H H' v t) (GlobalTheory.VanishLoc.at_uAt H H' v t) _ hS`. Rewrite using `[evS, evS, (locOp_rho G.M'.co hψ v (GlobalTheory.VanishLoc.uAt H H' v t) hφ).2, (locOp_rho G.M'.co hψ v (uS σ H H' v s) hU).2, (locOp_rho G.M'.co hψ v (uS σ H H' v s) hφ).2, GlobalTheory.VanishLoc.schr_comm, map_smul, h1, ← pair_uS B G G₁ H H' hC X om om' hT v t s, neg_sub]`.
+-/
 theorem UpperTheory.local_theta_partition_triple :
     GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
                  (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

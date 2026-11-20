@@ -10,23 +10,48 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.FieldAscent
 
+/- English proof (translation)
+Establish `e : (f.appLE U V hle).hom a = (Y.presheaf.map (homOfLE hle).op).hom ((f.app U).hom a)` using `rfl`. Rewrite using `[e, gs_res (𝟙 Y) y hle hy, gs_pull (𝟙 Y) f y U (hle hy), Category.id_comp]`.
+-/
 theorem gs_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (hle : V ≤ f ⁻¹ᵁ U) (a : Γ(X, U))
     (y : Y) (hy : y ∈ V) : gs (𝟙 Y) y V ((f.appLE U V hle).hom a) = gs f y U a := by
   have e : (f.appLE U V hle).hom a = (Y.presheaf.map (homOfLE hle).op).hom ((f.app U).hom a) := rfl
   rw [e, gs_res (𝟙 Y) y hle hy, gs_pull (𝟙 Y) f y U (hle hy), Category.id_comp]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold gs; split_ifs <;> simp`.
+-/
 theorem gs_zero' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [gs_eq f y U h, map_sum]`.
+-/
 theorem gs_sum' {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) (h : f y ∈ U) {I : Type} (s : Finset I)
     (a : I → Γ(X, U)) : gs f y U (∑ i ∈ s, a i) = ∑ i ∈ s, gs f y U (a i) := by
   simp only [gs_eq f y U h, map_sum]
 
+/- English proof (translation)
+The claim follows from `gs_appLE q ⊤ W _ _ y hy`.
+-/
 theorem gs_algX {Y : Scheme.{0}} {A : Type} [CommRing A] (q : Y ⟶ Spec (CommRingCat.of A)) (W : Y.Opens) (s : A)
     (y : Y) (hy : y ∈ W) :
     gs (𝟙 Y) y W (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX q W s) = gs q y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom s) :=
   gs_appLE q ⊤ W _ _ y hy
 
+/- English proof (translation)
+Use `letI := ι.toAlgebra`. Take `⟨V, hV, hxV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens) hx`. Use `letI : Algebra k Γ(X, V) := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p V).toAlgebra`. Set `lam' : K →ₗ[k] k` to `{ toFun := lam, map_add' := lam.map_add map_smul' := fun c y => by`. Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra, RingHom.id_apply, smul_eq_mul]`.
+
+Conclude with `hlam c y }`. Set `t : Γ(X, V) ⊗[k] K` to `∑ i, ReciprocityTheory.ChartRestriction.G.DVR.rs hVU (B i) ⊗ₜ[k] d i`. Establish `ht : t = 0`. Apply `(ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.eTens p p' φ H V hV).injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Apply `fn_ext` to reduce the goal to its premises. Introduce `z hz`. Establish `hzV : φ z ∈ V` using `hz.1`. Simplify using `only [t, map_sum, ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.eTens_tmul]`. Rewrite using `[gs_zero', gs_sum' _ _ _ hz, ← hv z (hVU hzV)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `et` using `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.eTens_tmul p p' φ H V hV (ReciprocityTheory.ChartRestriction.G.DVR.rs hVU (B i)) (d i)`. Use `erw [et]`. Rewrite using `[gs_mul (𝟙 X') z _ hz, gs_appLE φ V _ _ _ z hz, gs_algX _ _ _ _ hz, gs_res φ z hVU hzV, mul_comm]`. Establish `e` using `congrArg (fun q => TensorProduct.rid k Γ(X, V) (LinearMap.lTensor Γ(X, V) lam' q)) ht`.
+
+Simplify using `only [t, map_sum, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, map_zero] at e`. Establish `e2` using `congrArg (gs (𝟙 X) x V) e`. Rewrite `e2` using `[gs_sum' _ _ _ hxV, gs_zero']`. Rewrite using `[← e2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, gs_mul (𝟙 X) x _ hxV, RingHom.algebraMap_toAlgebra, gs_algX p V _ x hxV, gs_res (𝟙 X) x hVU hxV]`. Both sides reduce to the same expression.
+-/
 theorem local_ascent (k K : Type) [Field k] [Field K] (ι : k →+* K) (X X' : Scheme.{0}) (p : X ⟶ Sp k)
     (p' : X' ⟶ Sp K) (φ : X' ⟶ X) (H : IsPullback φ p' p (spMap ι)) (U : X.Opens) (n : ℕ) (B : Fin n → Γ(X, U))
     (d : Fin n → K)
@@ -68,6 +93,11 @@ end GlobalTheory.FieldAscent
 
 namespace GlobalTheory.FieldAscent
 
+/- English proof (translation)
+Establish `h1 : IsPullback (snd T A).left (fst T A).left A.hom T.hom` using `(IsPullback.of_hasPullback T.hom A.hom).flip`. Establish `h2 : IsPullback (snd T' A).left (fst T' A).left A.hom T'.hom` using `(IsPullback.of_hasPullback T'.hom A.hom).flip`. Use `IsPullback.of_right ?_ ?_ h1` and prove the remaining obligations. Rewrite using `[← Over.comp_left, whiskerRight_snd, Over.w h]`. Conclude with `h2`.
+
+Rewrite using `[← Over.comp_left, ← Over.comp_left, whiskerRight_fst]`.
+-/
 theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (h : T' ⟶ T) :
     IsPullback (h ▷ A).left (fst T' A).left (fst T A).left h.left := by
   have h1 : IsPullback (snd T A).left (fst T A).left A.hom T.hom := (IsPullback.of_hasPullback T.hom A.hom).flip
@@ -78,6 +108,31 @@ theorem isPullback_whisker {S : Scheme.{0}} (A : Over S) {T T' : Over S} (h : T'
 
 def zeroSec {X : Scheme.{0}} (M : LB X) : LB.Sec M := ⟨fun _ => 0, fun i j => by simp⟩
 
+/- English proof (translation)
+Introduce `R _ G L N n b k K _ _ ψ ι hL hind c c' s hc hc'`. Set `T : Over (Sp R)` to `Over.mk (𝟙 (Sp R))`. Set `T₁ : Over (Sp R)` to `Over.mk (spMap ψ)`. Set `T₂ : Over (Sp R)` to `Over.mk (spMap (ι.comp ψ))`. Establish `hsp : spMap ι ≫ spMap ψ = spMap (ι.comp ψ)`.
+
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `h' : T₂ ⟶ T₁` to `Over.homMk (spMap ι) hsp`. Establish `hw : (toBase (ι.comp ψ) ▷ G).left = (h' ▷ G).left ≫ (toBase ψ ▷ G).left`. Establish `: h' ≫ toBase ψ = toBase (ι.comp ψ)` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hsp)`.
+
+Rewrite using `[← this, MonoidalCategory.comp_whiskerRight, Over.comp_left]`. Establish `pb : IsPullback (h' ▷ G).left (fst T₂ G).left (fst T₁ G).left (spMap ι)` using `isPullback_whisker G h'`. Establish `hvan : ∀ (z : (T₂ ⊗ G).left) (J), Good L z J → ∑ i, gs (fst T₂ G).left z ⊤ (c i - c' i) * sval (L` using `L) (φ := fun _ : Fin 1 => (snd T G).left) (ε := fun _ => (N : ℤ)) (b i) (toBase (ι.comp ψ) ▷ G).left z J = 0 := by`. Introduce `z J hJ`. Establish `e` using `(hc z J hJ).symm.trans (hc' z J hJ)`.
+
+Rewrite `e` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gs_eq _ z ⊤ trivial, gs_eq _ z ⊤ trivial, gs_eq _ z ⊤ trivial, map_sub, map_sub, sub_mul]`. Use `letI := ι.toAlgebra`.
+
+Set `d : Fin n → K` to `fun i => (Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom (c i - c' i)`. Establish `hd : ∀ i, d i = 0`. Introduce `i`. Use `(Module.forall_dual_apply_eq_zero_iff k (d i)).1 fun lam => ?_` and prove the remaining obligations. Set `a : Fin n → Γ(T₁.left, ⊤)` to `fun i => (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (lam (d i))`.
+
+Establish `l0 : ∀ x J, sval (L` using `L) (φ := fun _ : Fin 1 => (snd T₁ G).left) (ε := fun _ => (N : ℤ)) (zeroSec (LPow G L (N : ℤ) T₁)) (𝟙 _) x J = 0 := fun x J => gs_zero' _ _ _`. Establish `hlin : Lin G L N (toBase ψ) b a (zeroSec _)`. Introduce `x J hJ`. Use `(l0 x J).trans (Eq.symm ?_)` and prove the remaining obligations. Set `r₁` to `(toBase ψ ▷ G).left`.
+
+Set `j` to `J (r₁ ≫ (snd T G).left)`. Set `U₀` to `LB.wchart L (fun _ : Fin 1 => (snd T G).left) (fun _ => j)`. Establish `hx : r₁ x ∈ U₀` using `hJ.mem _ r₁`. Establish `key` using `local_ascent k K ι _ _ (fst T₁ G).left (fst T₂ G).left (h' ▷ G).left pb (r₁ ⁻¹ᵁ U₀) n (fun i => (r₁.app U₀).hom ((b i).f (fun _ => j))) d ?_ lam.toAddMonoidHom (fun c y => lam.map_smul c y) x hx`. Rewrite using `[← key]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Introduce `z hz`. Establish `hz' : ((toBase (ι.comp ψ) ▷ G).left ≫ (snd T G).left) z ∈ L.U j`. Rewrite using `[hw]`.
+
+Conclude with `Set.mem_iInter.1 hz 0`. Take `⟨J', hJ', eJ⟩` from `exists_good L hL z (K := Fin 1) (fun _ => (toBase (ι.comp ψ) ▷ G).left ≫ (snd T G).left) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hz')`. Rewrite using `[← hvan z J' hJ']`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Simplify using `[d]`. Establish `e2 : (h' ▷ G).left ≫ r₁ = (toBase (ι.comp ψ) ▷ G).left` using `hw.symm`. Use `(gs_pull (h' ▷ G).left r₁ z U₀ hz _).trans ?_` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `(sval_of (b i) _ z J' (fun _ => j) (fun k => eJ k)).symm`.
+
+Establish `hlin0 : Lin G L N (toBase ψ) b 0 (zeroSec _)`. Introduce `x J hJ`. Use `(l0 x J).trans ?_` and prove the remaining obligations. Simplify using `[gs_zero']`. Use `congrFun (hind a 0 _ hlin hlin0) i` as an intermediate fact.
+
+Simplify `congrArg (Scheme.ΓSpecIso (CommRingCat.of k)).hom.hom this` using `[a]`. Use function extensionality and compare the values at `i`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (hd i)` as an intermediate fact. Simplify using `only [d, map_zero] at this`. Conclude with `sub_eq_zero.1 (by simpa using this)`.
+-/
 theorem indepAlong_ascent : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) (L : LB G.left) (N n : ℕ)
     (b : Fin n → LB.Sec (LPow G L (N : ℤ) (Over.mk (𝟙 (Sp R))))) (k K : Type) [Field k] [Field K] (ψ : R →+* k)
     (ι : k →+* K), L.IsLB → IndepAlong G L N (toBase ψ) b → IndepAlong G L N (toBase (ι.comp ψ)) b := by

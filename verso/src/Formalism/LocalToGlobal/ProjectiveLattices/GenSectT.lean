@@ -28,6 +28,17 @@ def tJ (t : Fin (D + 1) × Fin m → K') (v : Fin m → Ω) : Ideal (Localizatio
 
 omit [Field Kl] [Field K'] [Algebra K Kl] [Algebra Kl K'] [Algebra K K'] [IsScalarTower K Kl K'] in
 
+/- English proof (translation)
+Establish `hx₀ : x k₀ ≠ 0` using `by rw [hx₁]; exact one_ne_zero`. Establish `hind` using `gs_indep (K := K) (D := D) x k₀ hx₀ htr halg`. Establish `hinj : ∀ q : KT K D m, q ≠ 0 → aeval (gs x k₀) q ≠ 0` using `fun q hq h => hq (hind (h.trans (map_zero _).symm))`. Rewrite using `[ker_Phi x k₀ hx₀ hinj, RingHom.mem_ker, Phi_algebraMap]`. Introduce `h`.
+
+Establish `h2 : psi x k₀ (∑ k, X ((0 : Fin (D + 1)), k) * C (x k)) = 0` using `IsFractionRing.injective (CT Ω D k₀) (FractionRing (CT Ω D k₀)) (h.trans (map_zero _).symm)`. Establish `hz : ∀ k : Fin m, ¬ Zs k₀ ((0 : Fin (D + 1)), k)` using `fun k hk => hk.1 rfl`. Establish `hg : ∀ k : Fin m, gs x k₀ ((0 : Fin (D + 1)), k) = X ⟨((0 : Fin (D + 1)), k), hz k⟩`. Introduce `k`. Simplify using `only [gs, xv, if_neg (hz k), dif_neg (hz k)]`.
+
+Establish `h2' : ∑ k, X ⟨((0 : Fin (D + 1)), k), hz k⟩ * C (x k) = (0 : CT Ω D k₀)`. Rewrite using `[← h2, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, psi_X, hg]`. Use `congr 1`.
+
+Conclude with `((psi x k₀).commutes (x k)).symm`. Establish `h3` using `congrArg (MvPolynomial.eval (fun q : {p : Fin (D + 1) × Fin m // ¬ Zs k₀ p} => if q.1 = ((0 : Fin (D + 1)), k₀) then (1 : Ω) else 0)) h2'`. Simplify using `only [map_sum, map_mul, MvPolynomial.eval_X, MvPolynomial.eval_C, map_zero] at h3`. Rewrite `h3` using `[Finset.sum_eq_single k₀]`. Simplify using `[hx₁] at h3`.
+
+Introduce `b _ hb`. Simplify using `[hb]`. Introduce `hk`. Conclude with `absurd (Finset.mem_univ _) hk`.
+-/
 theorem generic_section_not_mem [CharZero K] (htr : Algebra.trdeg K Ω = D) (x : Fin m → Ω) (k₀ : Fin m) (hx₁ : x k₀ = 1)
     (halg : ∀ ω : Ω, IsAlgebraic (Algebra.adjoin K (Set.range (rr x k₀))) ω) :
     algebraMap (ΩT Ω D m) (RS K Ω D m) (∑ k, X ((0 : Fin (D + 1)), k) * C (x k)) ∉ Is K x := by
@@ -64,6 +75,67 @@ theorem generic_section_not_mem [CharZero K] (htr : Algebra.trdeg K Ω = D) (x :
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hφ : Function.Injective (MvPolynomial.aeval t : KT K D m →ₐ[K] K').toRingHom` using `ht`. Use `letI : Algebra (KTf K D m) K' := (IsFractionRing.lift (A := KT K D m) (K := KTf K D m) hφ).toAlgebra`. Take `⟨-, hB⟩` from `s1 (K := K) hfg htr v k₀ hv₀ hbig`. Take `⟨hBfin, hBred⟩` from `hB K'`. Set `ι : TZ K Ω Kl K' →+* (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)` to `algebraMap (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)`.
+
+Establish `hιK : ∀ z : K', ι (algebraMap K' (TZ K Ω Kl K') z) = algebraMap K' (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v) z` using `fun z => (IsScalarTower.algebraMap_apply K' (TZ K Ω Kl K') _ z).symm`. Set `fΩ : Ω →+* TZ K Ω Kl K'` to `(Algebra.TensorProduct.includeRight (R := Kl) (A := K')).toRingHom.comp (Algebra.TensorProduct.includeRight (R := K) (A := Kl)).toRingHom`. Set `e0 : ΩT Ω D m →+* TZ K Ω Kl K'` to `MvPolynomial.eval₂Hom fΩ (fun p => t p ⊗ₜ[Kl] (1 : Kl ⊗[K] Ω))`. Establish `hKΩ : ∀ a : K, fΩ (algebraMap K Ω a) = algebraMap K' (TZ K Ω Kl K') (algebraMap K K' a)`. Introduce `a`.
+
+Use `show (1 : K') ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] algebraMap K Ω a) = _`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', Algebra.TensorProduct.algebraMap_apply]`. Establish `h1 : (algebraMap K Kl a ⊗ₜ[K] (1 : Ω) : Kl ⊗[K] Ω) = algebraMap K Kl a • (1 : Kl ⊗[K] Ω)`. Rewrite using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_one, ← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.one_def]`.
+
+Both sides reduce to the same expression. Establish `he0kt : ∀ q : KT K D m, e0 (ktToΩ K Ω D m q) = algebraMap K' (TZ K Ω Kl K') (MvPolynomial.aeval t q)`. Introduce `q`. Establish `: e0.comp (ktToΩ K Ω D m) = (algebraMap K' (TZ K Ω Kl K')).comp (MvPolynomial.aeval t : KT K D m →ₐ[K] K').toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => ?_)` and prove the remaining obligations.
+
+Simplify using `only [RingHom.comp_apply, ktToΩ, MvPolynomial.map_C, e0, MvPolynomial.eval₂Hom_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C]`. Conclude with `hKΩ a`. Simplify using `only [RingHom.comp_apply, ktToΩ, MvPolynomial.map_X, e0, MvPolynomial.eval₂Hom_X', AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`. Both sides reduce to the same expression. Conclude with `congrArg (fun f => f q) this`.
+
+Establish `he0sec : ∀ i : Fin D, e0 (sec v i) = tsec K Kl t v i.succ`. Introduce `i`. Simplify using `only [sec, tsec, map_sum, map_mul, e0, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_C]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show (t (i.succ, k) ⊗ₜ[Kl] (1 : Kl ⊗[K] Ω)) * ((1 : K') ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] v k)) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Set `g0 : RS K Ω D m →+* (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)` to `IsLocalization.lift (M := KTS K Ω D m) (g := ι.comp e0) (by`. Introduce and unpack `⟨s, hs⟩`. Take `⟨q, hq, rfl⟩` from `hs`. Use `show IsUnit (ι (e0 (ktToΩ K Ω D m q)))`.
+
+Rewrite using `[he0kt]`. Establish `hne : (MvPolynomial.aeval t : KT K D m →ₐ[K] K') q ≠ 0` using `fun h => nonZeroDivisors.ne_zero hq (hφ (h.trans (map_zero _).symm))`. Conclude with `(IsUnit.mk0 _ hne).map (ι.comp (algebraMap K' (TZ K Ω Kl K'))))`. Establish `hg0 : ∀ a : ΩT Ω D m, g0 (algebraMap (ΩT Ω D m) (RS K Ω D m) a) = ι (e0 a)` using `fun a => IsLocalization.lift_eq _ a`. Establish `hmemJ : ∀ i : Fin D, ι (tsec K Kl t v i.succ) = 0`.
+
+Introduce `i`. Rewrite using `[IsScalarTower.algebraMap_apply (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)]`. Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1 : algebraMap (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (tsec K Kl t v i.succ) = algebraMap (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (tsec K Kl t v 0) * (algebraMap (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (tsec K Kl t v i.succ) * IsLocalizati …`. Rewrite using `[mul_left_comm, IsLocalization.Away.mul_invSelf, mul_one]`.
+
+Rewrite using `[h1]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hIs : ∀ a ∈ Is K v, g0 a = 0`. Introduce `a ha`. Establish `hle : Is K v ≤ RingHom.ker g0`.
+
+Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hg0, he0sec, hmemJ]`. Conclude with `hle ha`. Set `g1 : (RS K Ω D m ⧸ Is K v) →+* (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)` to `Ideal.Quotient.lift (Is K v) g0 hIs`.
+
+Establish `hcomm : g1.comp (algebraMap (KTf K D m) (RS K Ω D m ⧸ Is K v)) = algebraMap (KTf K D m) (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (KT K D m)) (RingHom.ext fun q => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← Ideal.Quotient.mk_algebraMap]`. Establish `hmap : algebraMap (KTf K D m) (RS K Ω D m) (algebraMap (KT K D m) (KTf K D m) q) = algebraMap (ΩT Ω D m) (RS K Ω D m) (ktToΩ K Ω D m q)` using `IsLocalization.map_eq _ _`.
+
+Rewrite using `[hmap]`. Use `show g0 _ = _`. Rewrite using `[hg0, he0kt, hιK]`. Rewrite using `[IsScalarTower.algebraMap_apply (KTf K D m) K' (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)]`. Rewrite using `[RingHom.algebraMap_toAlgebra, IsFractionRing.lift_algebraMap]`.
+
+Both sides reduce to the same expression. Set `g : (RS K Ω D m ⧸ Is K v) →ₐ[KTf K D m] (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)` to `{ g1 with commutes' := fun r => congrArg (fun f => f r) hcomm }`. Set `Θ` to `Algebra.TensorProduct.lift (Algebra.ofId K' (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)) g (fun _ _ => Commute.all _ _)`. Use `haveI : IsArtinianRing (K' ⊗[KTf K D m] (RS K Ω D m ⧸ Is K v)) := IsArtinianRing.of_finite K' _`. Establish `hΘ1 : ∀ y : RS K Ω D m ⧸ Is K v, Θ (1 ⊗ₜ y) = g y` using `fun y => by`.
+
+Simplify using `[Θ, Algebra.TensorProduct.lift_tmul]`. Establish `hι : ∀ z : TZ K Ω Kl K', ι z ∈ Θ.range`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `tmul k y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `add a b ha hb => rw [TensorProduct.tmul_add, map_add]`. Conclude with `add_mem ha hb`. Consider the case `tmul l ω`. Establish `he : k ⊗ₜ[Kl] (l ⊗ₜ[K] ω) = algebraMap K' (TZ K Ω Kl K') (k * algebraMap Kl K' l) * fΩ ω` using `by show _ = ((k * algebraMap Kl K' l) ⊗ₜ[Kl] (1 : Kl ⊗[K] Ω)) * ((1 : K') ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] ω))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+
+Establish `: l ⊗ₜ[K] ω = l • ((1 : Kl) ⊗ₜ[K] ω)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def, mul_comm]`. Rewrite using `[he, map_mul]`. Use `mul_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[hιK]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Establish `: ι (fΩ ω) = Θ (1 ⊗ₜ (Ideal.Quotient.mk (Is K v) (algebraMap (ΩT Ω D m) (RS K Ω D m) (MvPolynomial.C ω))))`. Rewrite using `[hΘ1]`. Use `show _ = g0 _`.
+
+Rewrite using `[hg0]`. Simplify using `[e0]`. Rewrite using `[this]`. Conclude with `Θ.mem_range_self _`. Establish `hu : IsUnit (ι (tsec K Kl t v 0))`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v)]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (tsec K Kl t v 0)).map _`. Take `⟨b0, hb0'⟩` from `hι (tsec K Kl t v 0)`. Establish `hb0 : Θ b0 = ι (tsec K Kl t v 0)` using `hb0'`. Take `⟨n0, y0, hy0⟩` from `IsArtinian.exists_pow_succ_smul_dvd b0 (1 : K' ⊗[KTf K D m] (RS K Ω D m ⧸ Is K v))`.
+
+Establish `hinv : ι (tsec K Kl t v 0) * Θ y0 = 1`. Rewrite `hy0` using `[Nat.succ_eq_add_one, smul_eq_mul, smul_eq_mul, mul_one]`. Establish `h` using `congrArg Θ hy0`. Rewrite `h` using `[map_mul, map_pow, map_pow, hb0]`. Establish `h' : ι (tsec K Kl t v 0) ^ n0 * (ι (tsec K Kl t v 0) * Θ y0) = ι (tsec K Kl t v 0) ^ n0 * 1`.
+
+Rewrite using `[← mul_assoc, ← pow_succ, h, mul_one]`. Conclude with `(hu.pow n0).mul_left_cancel h'`. Establish `hsurj : Function.Surjective Θ`. Introduce `c`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective c`.
+
+Take `⟨⟨z, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (tsec K Kl t v 0)) w`. Take `⟨n, hn'⟩` from `s.2`. Establish `hn : tsec K Kl t v 0 ^ n = (s : TZ K Ω Kl K')` using `hn'`. Establish `hcs : Ideal.Quotient.mk (tJ K Kl t v) (IsLocalization.mk' (Localization.Away (tsec K Kl t v 0)) z s) * ι (tsec K Kl t v 0) ^ n = ι z`. Rewrite using `[IsScalarTower.algebraMap_apply (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v), IsScalarTower.algebraMap_apply (TZ K Ω Kl K') (Localization.Away (tsec K Kl t v 0)) (Localization.Away (tsec K Kl t v 0) ⧸ tJ K Kl t v) z]`.
+
+Rewrite using `[Ideal.Quotient.algebraMap_eq, ← map_pow, ← map_pow, ← map_mul, hn, IsLocalization.mk'_spec]`. Establish `hc : Ideal.Quotient.mk (tJ K Kl t v) (IsLocalization.mk' (Localization.Away (tsec K Kl t v 0)) z s) = ι z * Θ y0 ^ n`. Rewrite using `[← hcs, mul_assoc, ← mul_pow, hinv, one_pow, mul_one]`. Establish `hm : ι z * Θ y0 ^ n ∈ Θ.range` using `mul_mem (hι z) (pow_mem (Θ.mem_range_self y0) n)`. Take `⟨b, hb⟩` from `hm`.
+
+Conclude with `⟨b, by rw [hc]; exact hb⟩`. Use `⟨Module.Finite.of_surjective Θ.toLinearMap hsurj, ?_⟩` and prove the remaining obligations. Establish `hvnrB : ∀ b : K' ⊗[KTf K D m] (RS K Ω D m ⧸ Is K v), ∃ y, b = b ^ 2 * y`. Introduce `b`. Take `⟨n, y, h⟩` from `IsArtinian.exists_pow_succ_smul_dvd b (1 : K' ⊗[KTf K D m] (RS K Ω D m ⧸ Is K v))`.
+
+Rewrite `h` using `[Nat.succ_eq_add_one, smul_eq_mul, smul_eq_mul, mul_one]`. Establish `hnil : IsNilpotent (b * (1 - b * y))`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow]`. Take the linear combination `(-(b * (1 - b * y) ^ n)) * h`.
+
+Establish `h0` using `hBred.eq_zero _ hnil`. Conclude with `⟨y, by linear_combination h0⟩`. Use `⟨fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hc`. Take `⟨b, rfl⟩` from `hsurj c`.
+
+Take `⟨y, hy⟩` from `hvnrB b`. Establish `hv : Θ b = Θ b ^ 2 * Θ y` using `by rw [← map_pow, ← map_mul, ← hy]`. Establish `hpow : ∀ j : ℕ, Θ b = Θ b ^ (j + 1) * Θ y ^ j`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simp`. Consider the case `succ j ih`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hpow k, pow_succ, hk, zero_mul, zero_mul]`.
+-/
 theorem s1T [CharZero K] (hfg : (⊤ : IntermediateField K Ω).FG) (htr : Algebra.trdeg K Ω = D)
     (v : Fin m → Ω) (k₀ : Fin m) (hv₀ : v k₀ ≠ 0)
     (hbig : Algebra.trdeg K (IntermediateField.adjoin K (Set.range fun k => v k / v k₀)) = D)

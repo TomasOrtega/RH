@@ -9,9 +9,27 @@ namespace Formalism.HermitianLattices.Ext.L3.BoxSum
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+The claim follows from `(finite_boxSet hK hF T).subset fun _ hn => hn.1`.
+-/
 theorem finite_box_inter (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (T : ℝ) (A : Set (𝓞 F)) :
     {n : 𝓞 F | n ∈ boxSet K F T ∧ n ∈ A}.Finite := (finite_boxSet hK hF T).subset fun _ hn => hn.1
 
+/- English proof (translation)
+Establish `hA` using `finite_box_inter hK hF T A`. Establish `hB` using `finite_box_inter hK hF T' B`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hA, finsum_mem_eq_finite_toFinset_sum _ hB]`. Establish `key : ∀ n ∈ hA.toFinset, n + y ∈ hB.toFinset ∧ (Ideal.absNorm (Ideal.span {n}) : ℝ) ^ (m - 1) ≤ (Ideal.absNorm (Ideal.span {n + y}) : ℝ) ^ (m - 1)`. Introduce `n hn`.
+
+Rewrite `hn` using `[Set.Finite.mem_toFinset]`. Take `⟨hnb, hnA⟩` from `hn`. Establish `hb : ∀ w, 0 < rEmb w n ∧ rEmb w n ≤ T` using `(mem_boxSet_iff hK hF).1 hnb`. Establish `hny : n + y ∈ boxSet K F T'`. Rewrite using `[mem_boxSet_iff hK hF]`.
+
+Introduce `w`. Rewrite using `[map_add]`. Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[(hb w).1, hy0 w]`. Combine the linear relations using `[(hb w).2, hyT w]`.
+
+Use `⟨by rw [Set.Finite.mem_toFinset]; exact ⟨hny, hAB n hnA⟩, ?_⟩` and prove the remaining obligations. Establish `hle : (Ideal.absNorm (Ideal.span {n}) : ℝ) ≤ (Ideal.absNorm (Ideal.span {n + y}) : ℝ)`. Rewrite using `[absNorm_eq_prod_of_mem hK hF hnb, absNorm_eq_prod_of_mem hK hF hny]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `w _`.
+
+Conclude with `(hb w).1.le`. Introduce `w _`. Rewrite using `[map_add]`. Combine the linear relations using `[hy0 w]`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) hle _`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image (fun a _ b _ h => add_right_cancel h)]`. Use `_ ≤ ∑ n ∈ hB.toFinset, (Ideal.absNorm (Ideal.span {n}) : ℝ) ^ (m - 1) := by`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `x hx`.
+
+Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(key n hn).1`. Introduce `_ _ _`. Check the signs of the components of the expression.
+-/
 theorem sum_le_sum_shift (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (m : ℕ) {A B : Set (𝓞 F)}
     {T T' : ℝ} (y : 𝓞 F) (hy0 : ∀ w, 0 ≤ rEmb w y) (hyT : ∀ w, rEmb w y + T ≤ T')
     (hAB : ∀ n ∈ A, n + y ∈ B) :
@@ -59,6 +77,19 @@ theorem sum_le_sum_shift (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (h
         · intro _ _ _
           positivity
 
+/- English proof (translation)
+Establish `hN0 : Ideal.absNorm I ≠ 0` using `fun h => hI (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hNmem : ((Ideal.absNorm I : ℕ) : 𝓞 F) ∈ I` using `Ideal.absNorm_mem I`. Take `⟨C, hCw⟩ : ∃ C : ℝ, ∀ w : {w : InfinitePlace F // w.IsReal}, |rEmb w x₀| ≤ C` from `⟨∑ w : {w : InfinitePlace F // w.IsReal}, |rEmb w x₀|, fun w => Finset.single_le_sum (f := fun w => |rEmb w x₀|) (fun _ _ => abs_nonneg _) (Finset.mem_univ w)⟩`. Take `⟨c, hc⟩` from `exists_nat_ge C`. Establish `hN1 : (1 : ℝ) ≤ (Ideal.absNorm I : ℝ)`.
+
+Conclude with `Nat.one_le_iff_ne_zero.2 hN0` after adjusting the coercions. Establish `hcN : C ≤ ((c * Ideal.absNorm I : ℕ) : ℝ)`. Use `push_cast`. Establish `h0 : (0 : ℝ) ≤ c` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hmem : ((c * Ideal.absNorm I : ℕ) : 𝓞 F) ∈ I`. Rewrite using `[Nat.cast_mul]`. Conclude with `I.mul_mem_left _ hNmem`. Use `⟨((c * Ideal.absNorm I : ℕ) : 𝓞 F) - x₀, ((c * Ideal.absNorm I : ℕ) : 𝓞 F) + x₀, ((c * Ideal.absNorm I : ℕ) : ℝ) + C, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`.
+
+Rewrite using `[map_sub, map_natCast]`. Establish `h` using `abs_le.1 (hCw w)`. Apply the tactic sequence `constructor <;> linarith [h.1, h.2]`. Introduce `w`. Rewrite using `[map_add, map_natCast]`.
+
+Establish `h` using `abs_le.1 (hCw w)`. Apply the tactic sequence `constructor <;> linarith [h.1, h.2]`. Introduce `n hn`. Establish `e : n + (((c * Ideal.absNorm I : ℕ) : 𝓞 F) - x₀) = (n - x₀) + ((c * Ideal.absNorm I : ℕ) : 𝓞 F)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `I.add_mem hn hmem`. Introduce `n hn`. Establish `e : n + (((c * Ideal.absNorm I : ℕ) : 𝓞 F) + x₀) - x₀ = n + ((c * Ideal.absNorm I : ℕ) : 𝓞 F)` using `by ring`. Rewrite using `[e]`. Conclude with `I.add_mem hn hmem`.
+-/
 theorem exists_shifts {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (x₀ : 𝓞 F) :
     ∃ (y y' : 𝓞 F) (R : ℝ), (∀ w, 0 ≤ rEmb w y ∧ rEmb w y ≤ R) ∧ (∀ w, 0 ≤ rEmb w y' ∧ rEmb w y' ≤ R) ∧
       (∀ n, n - x₀ ∈ I → n + y ∈ I) ∧ ∀ n, n ∈ I → n + y' - x₀ ∈ I := by
@@ -99,6 +130,11 @@ theorem exists_shifts {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (x₀ : 𝓞 F) :
     rw [e]
     exact I.add_mem hn hmem
 
+/- English proof (translation)
+Establish `h1 : Tendsto (fun j : ℕ => (j : ℝ) / ((j + 1 : ℕ) : ℝ)) atTop (𝓝 1)`. Use `(tendsto_natCast_div_add_atTop (1 : ℝ)).congr fun j => ?_` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression. Establish `h2` using `(h1.pow 2).pow e`.
+
+Simplify using `only [one_pow] at h2`. Conclude with `h2.congr fun j => by rw [div_pow, div_pow]`.
+-/
 theorem tendsto_ratio (e : ℕ) :
     Tendsto (fun j : ℕ => (((j : ℝ) ^ 2) ^ e) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ e)) atTop (𝓝 1) := by
   have h1 : Tendsto (fun j : ℕ => (j : ℝ) / ((j + 1 : ℕ) : ℝ)) atTop (𝓝 1) := by
@@ -109,6 +145,19 @@ theorem tendsto_ratio (e : ℕ) :
   simp only [one_pow] at h2
   exact h2.congr fun j => by rw [div_pow, div_pow]
 
+/- English proof (translation)
+Establish `hg : ∀ j : ℕ, ((j : ℝ) ^ 2) ^ (-(D : ℤ)) = (((j : ℝ) ^ 2) ^ D)⁻¹` using `fun j => by`. Rewrite using `[zpow_neg, zpow_natCast]`. Simplify using `only [hg] at hv ⊢`. Establish `hs` using `tendsto_ratio D`. Establish `hs1 : Tendsto (fun j : ℕ => ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) / ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)) atTop (𝓝 1)` using `hs.comp (tendsto_add_atTop_nat 1)`.
+
+Establish `ht : Tendsto (fun j : ℕ => ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)) atTop (𝓝 1)`. Establish `h` using `hs1.inv₀ one_ne_zero`. Simplify `h` using `only [inv_div, inv_one]`. Establish `hv2 : Tendsto (fun j : ℕ => ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1)) atTop (𝓝 L)` using `(hv.comp (tendsto_add_atTop_nat 1)).comp (tendsto_add_atTop_nat 1)`. Establish `lowT : Tendsto (fun j : ℕ => (((j : ℝ) ^ 2) ^ D) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) * ((((j : ℝ) ^ 2) ^ D)⁻¹ * v j)) atTop (𝓝 L)`.
+
+Simplify `hs.mul hv` using `only [one_mul]`. Establish `upT : Tendsto (fun j : ℕ => ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) / ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D) * (((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1))) atTop (𝓝 L)`. Simplify `ht.mul hv2` using `only [one_mul]`. Establish `hup1 : ∀ᶠ j in atTop, u (j + 1) ≤ v (j + 1 + 1)` using `(tendsto_add_atTop_nat 1).eventually hup`. Rewrite using `[← tendsto_add_atTop_iff_nat 1]`.
+
+Use `tendsto_of_tendsto_of_tendsto_of_le_of_le' lowT upT ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hlo, eventually_ge_atTop 1] with j hj hj1`. Establish `hj0 : ((j : ℝ) ^ 2) ^ D ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega)))`. Establish `hpos : 0 ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[div_mul_eq_mul_div, ← mul_assoc, mul_inv_cancel₀ hj0, one_mul, div_eq_inv_mul]`. Use `_ ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * u (j + 1) := mul_le_mul_of_nonneg_left hj hpos`. Use `filter_upwards [hup1] with j hj`. Establish `hpos : 0 ≤ ((((j + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹` using `by positivity`. Establish `h0 : ((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D) ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (Nat.cast_ne_zero.2 (Nat.succ_ne_zero _)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, ← mul_assoc, mul_inv_cancel₀ h0, one_mul, div_eq_inv_mul]`.
+-/
 private theorem tendsto_scaled_of_interleaved_tendsto (D : ℕ) {u v : ℕ → ℝ} {L : ℝ}
     (hv : Tendsto (fun j : ℕ => ((j : ℝ) ^ 2) ^ (-(D : ℤ)) * v j) atTop (𝓝 L))
     (hup : ∀ᶠ j in atTop, u j ≤ v (j + 1))
@@ -156,6 +205,17 @@ private theorem tendsto_scaled_of_interleaved_tendsto (D : ℕ) {u v : ℕ → �
           (((((j + 1 + 1 : ℕ) : ℝ) ^ 2) ^ D)⁻¹ * v (j + 1 + 1)) := by
           rw [div_mul_eq_mul_div, ← mul_assoc, mul_inv_cancel₀ h0, one_mul, div_eq_inv_mul]
 
+/- English proof (translation)
+Take `⟨y, y', R, hy, hy', hyI, hy'I⟩` from `exists_shifts hI x₀`. Take `⟨j0, hj0⟩` from `exists_nat_ge R`. Use `tendsto_scaled_of_interleaved_tendsto _ (tendsto_sum_ideal hK hF hm hI) ?_ ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop j0] with j hj`. Establish `hRj : R ≤ (j : ℝ)` using `le_trans hj0 (by exact_mod_cast hj)`.
+
+Use `sum_le_sum_shift hK hF m (A := {n | n - x₀ ∈ I}) (B := (I : Set (𝓞 F))) (T := (j : ℝ) ^ 2) (T' := ((j + 1 : ℕ) : ℝ) ^ 2) y (fun w => (hy w).1) ?_ ?_` and prove the remaining obligations. Introduce `w`. Establish `h1` using `(hy w).2`. Establish `h2 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `n hn`. Conclude with `hyI n hn`. Use `filter_upwards [eventually_ge_atTop j0] with j hj`. Establish `hRj : R ≤ (j : ℝ)` using `le_trans hj0 (by exact_mod_cast hj)`.
+
+Use `sum_le_sum_shift hK hF m (A := (I : Set (𝓞 F))) (B := {n | n - x₀ ∈ I}) (T := (j : ℝ) ^ 2) (T' := ((j + 1 : ℕ) : ℝ) ^ 2) y' (fun w => (hy' w).1) ?_ ?_` and prove the remaining obligations. Introduce `w`. Establish `h1` using `(hy' w).2`. Establish `h2 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Use `push_cast`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `n hn`. Conclude with `hy'I n hn`.
+-/
 theorem tendsto_sum_coset (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {m : ℕ} (hm : 1 ≤ m)
     {I : Ideal (𝓞 F)} (hI : I ≠ ⊥) (x₀ : 𝓞 F) :
     Tendsto (fun j : ℕ => ((j : ℝ) ^ 2) ^ (-((Formalism.HermitianLatticesTheory.fDeg K * m : ℕ) : ℤ)) *

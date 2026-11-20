@@ -29,10 +29,16 @@ def sesqMap (π : Representation ℂ G V) {σ : Representation ℂ G W} (hσ : I
       rw [hg'] at h
       rw [← h, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sesqMap_apply (π : Representation ℂ G V) {σ : Representation ℂ G W} (hσ : IsSmooth σ)
     (C : V →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (hC : ∀ g v w, C (π g v) (σ g w) = C v w) (w : W) (a : V) :
     ((sesqMap π hσ C hC w : smoothPart π.dual) : Module.Dual ℂ V) a = C a w := rfl
 
+/- English proof (translation)
+Use `Subtype.ext (LinearMap.ext fun a => ?_)` and prove the remaining obligations. Rewrite using `[contra_apply, sesqMap_apply, sesqMap_apply]`. Establish `h` using `hC g (π g⁻¹ a) w`. Rewrite `h` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `h`.
+-/
 theorem sesqMap_comm (π : Representation ℂ G V) {σ : Representation ℂ G W} (hσ : IsSmooth σ)
     (C : V →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (hC : ∀ g v w, C (π g v) (σ g w) = C v w) (g : G) (w : W) :
     sesqMap π hσ C hC (σ g w) = contra π g (sesqMap π hσ C hC w) := by
@@ -42,6 +48,17 @@ theorem sesqMap_comm (π : Representation ℂ G V) {σ : Representation ℂ G W}
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply] at h
   exact h
 
+/- English proof (translation)
+Use `set f := sesqMap π hσ C hC with hf`. Establish `hi : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Use `hinj w fun v => ?_` and prove the remaining obligations.
+
+Use `congrArg (fun l : smoothPart π.dual => (l : Module.Dual ℂ V) v) hw` as an intermediate fact. Simplify `this` using `[hf, sesqMap_apply]`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Set `R : Subrepresentation (contra π)` to `{ toSubmodule := LinearMap.range f apply_mem_toSubmodule := fun g l hl => by`. Take `⟨w, rfl⟩` from `hl`.
+
+Conclude with `⟨σ g w, sesqMap_comm π hσ C hC g w⟩ }`. Break down `hirr.eq_bot_or_eq_top R with hR | hR` into its components or cases. It suffices to derive a contradiction. Take `⟨w, hw⟩` from `hne`. Establish `: f w ∈ R.toSubmodule` using `⟨w, rfl⟩`.
+
+Rewrite `this` using `[hR]`. Conclude with `hw (hi (by rw [(Submodule.mem_bot ℂ).1 this, map_zero]))`. Introduce `l`. Establish `: l ∈ R.toSubmodule` using `by rw [hR]; exact Submodule.mem_top`. Take `⟨w, hw⟩` from `this`.
+
+Conclude with `⟨w, hw⟩`.
+-/
 theorem sesqMap_bijective (π : Representation ℂ G V) {σ : Representation ℂ G W} (hσ : IsSmooth σ)
     (C : V →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (hC : ∀ g v w, C (π g v) (σ g w) = C v w)
     (hinj : ∀ w, (∀ v, C v w = 0) → w = 0) (hne : ∃ w : W, w ≠ 0)

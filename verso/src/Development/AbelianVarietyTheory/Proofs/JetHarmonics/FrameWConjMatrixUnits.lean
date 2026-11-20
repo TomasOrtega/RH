@@ -19,28 +19,46 @@ def dualIx (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
 
 def sgnIx (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
+/- English proof (translation)
+Apply the tactic sequence `unfold dualIx; split_ifs <;> rfl`.
+-/
 lemma dualIx_val (i : Fin (2 * r + k + 1)) :
     (dualIx k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
   unfold dualIx; split_ifs <;> rfl
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[dualIx_val, dualIx_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma dualIx_dualIx (i : Fin (2 * r + k + 1)) : dualIx k r (dualIx k r i) = i := by
   have := i.isLt
   apply Fin.ext
   rw [dualIx_val, dualIx_val]
   split_ifs <;> omega
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Unfold `sgnIx`. Rewrite using `[dualIx_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 lemma sgnIx_dualIx (i : Fin (2 * r + k + 1)) : sgnIx k r (dualIx k r i) = sgnIx k r i := by
   have := i.isLt
   unfold sgnIx
   rw [dualIx_val]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgnIx; split_ifs <;> simp`.
+-/
 lemma sgnIx_sq (i : Fin (2 * r + k + 1)) : sgnIx k r i * sgnIx k r i = 1 := by
   unfold sgnIx; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgnIx; split_ifs <;> simp`.
+-/
 lemma star_sgnIx (i : Fin (2 * r + k + 1)) : star (sgnIx k r i) = sgnIx k r i := by
   unfold sgnIx; split_ifs <;> simp
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Unfold `Hpk sgnIx`. Simplify using `only [Fin.ext_iff, dualIx_val]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+-/
 lemma Hpk_apply (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = dualIx k r i then sgnIx k r i else 0 := by
   have := i.isLt
@@ -49,6 +67,11 @@ lemma Hpk_apply (i j : Fin (2 * r + k + 1)) :
   simp only [Fin.ext_iff, dualIx_val]
   split_ifs <;> first | rfl | omega
 
+/- English proof (translation)
+Rewrite using `[Hpk_apply]`. Distinguish the cases in `h : j = dualIx k r i`. Substitute `h` using the available equality. Simplify using `[dualIx_dualIx, sgnIx_dualIx]`. Rewrite using `[if_neg h, if_neg]`.
+
+Introduce and unpack `rfl`. Conclude with `h (dualIx_dualIx j).symm`.
+-/
 lemma Hpk_apply' (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if i = dualIx k r j then sgnIx k r j else 0 := by
   rw [Hpk_apply]
@@ -58,18 +81,32 @@ lemma Hpk_apply' (i j : Fin (2 * r + k + 1)) :
     rintro rfl
     exact h (dualIx_dualIx j).symm
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Hpk_apply]`.
+-/
 lemma Hpk_mul_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (Hpk k r * X) i j = sgnIx k r i * X (dualIx k r i) j := by
   simp [Matrix.mul_apply, Hpk_apply]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Hpk_apply']`.
+-/
 lemma mul_Hpk_apply (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (i j) :
     (X * Hpk k r) i j = X i (dualIx k r j) * sgnIx k r j := by
   simp [Matrix.mul_apply, Hpk_apply']
 
+/- English proof (translation)
+Simplify using `[Matrix.mulVec, dotProduct, Hpk_apply]`.
+-/
 lemma Hpk_mulVec (v : Fin (2 * r + k + 1) → ℂ) (i) :
     (Hpk k r *ᵥ v) i = sgnIx k r i * v (dualIx k r i) := by
   simp [Matrix.mulVec, dotProduct, Hpk_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Hpk_mul_apply, Hpk_apply, dualIx_dualIx, sgnIx_dualIx, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sgnIx_sq]`.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 lemma Hpk_mul_self : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Hpk_mul_apply, Hpk_apply, dualIx_dualIx, sgnIx_dualIx, Matrix.one_apply]
@@ -77,11 +114,17 @@ lemma Hpk_mul_self : Hpk k r * Hpk k r = 1 := by
   · subst h; simp [sgnIx_sq]
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[← Pi.single_star, star_one, single_one_dotProduct, Hpk_mulVec]`.
+-/
 lemma herm_single (v : Fin (2 * r + k + 1) → ℂ) (j) :
     herm (Hpk k r) v (Pi.single j 1) = sgnIx k r j * v (dualIx k r j) := by
   unfold herm
   rw [← Pi.single_star, star_one, single_one_dotProduct, Hpk_mulVec]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+-/
 lemma herm_smul_right (v w : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
     herm (Hpk k r) v (c • w) = star c * herm (Hpk k r) v w := by
   unfold herm
@@ -90,25 +133,48 @@ lemma herm_smul_right (v w : Fin (2 * r + k + 1) → ℂ) (c : ℂ) :
 section U
 variable {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hU, Hpk_mul_self]`.
+-/
 lemma left_inv_U (hU : gᴴ * Hpk k r * g = Hpk k r) : (Hpk k r * gᴴ * Hpk k r) * g = 1 := by
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hU, Hpk_mul_self]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (left_inv_U hU)`.
+-/
 lemma inv_eq_U (hU : gᴴ * Hpk k r * g = Hpk k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r :=
   Matrix.inv_eq_left_inv (left_inv_U hU)
 
+/- English proof (translation)
+Rewrite using `[inv_eq_U hU, left_inv_U hU]`.
+-/
 lemma inv_mul_U (hU : gᴴ * Hpk k r * g = Hpk k r) : g⁻¹ * g = 1 := by
   rw [inv_eq_U hU, left_inv_U hU]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp (inv_mul_U hU)`.
+-/
 lemma mul_inv_U (hU : gᴴ * Hpk k r * g = Hpk k r) : g * g⁻¹ = 1 :=
   mul_eq_one_comm.mp (inv_mul_U hU)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨g, g⁻¹, mul_inv_U hU, inv_mul_U hU⟩, rfl⟩`.
+-/
 lemma isUnit_U (hU : gᴴ * Hpk k r * g = Hpk k r) : IsUnit g :=
   ⟨⟨g, g⁻¹, mul_inv_U hU, inv_mul_U hU⟩, rfl⟩
 
+/- English proof (translation)
+Use `conv_rhs => rw [← hU]`. Rewrite using `[Matrix.mul_assoc _ g, mul_inv_U hU, Matrix.mul_one]`.
+-/
 lemma adj_mul_H (hU : gᴴ * Hpk k r * g = Hpk k r) : gᴴ * Hpk k r = Hpk k r * g⁻¹ := by
   conv_rhs => rw [← hU]
   rw [Matrix.mul_assoc _ g, mul_inv_U hU, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `h1 : (g⁻¹)ᴴ * gᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, mul_inv_U hU, Matrix.conjTranspose_one]`. Establish `h2 : (g⁻¹)ᴴ * Hpk k r = Hpk k r * g` using `by conv_lhs => rw [← hU]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Hpk_mul_self, Matrix.mul_one]`. Use `_ = g * Hpk k r := by rw [h2, ← Matrix.mul_assoc, Hpk_mul_self, Matrix.one_mul]`.
+-/
 lemma H_mul_inv_adj (hU : gᴴ * Hpk k r * g = Hpk k r) : Hpk k r * (g⁻¹)ᴴ = g * Hpk k r := by
   have h1 : (g⁻¹)ᴴ * gᴴ = 1 := by
     rw [← Matrix.conjTranspose_mul, mul_inv_U hU, Matrix.conjTranspose_one]
@@ -119,10 +185,16 @@ lemma H_mul_inv_adj (hU : gᴴ * Hpk k r * g = Hpk k r) : Hpk k r * (g⁻¹)ᴴ 
         rw [Matrix.mul_assoc, Matrix.mul_assoc, Hpk_mul_self, Matrix.mul_one]
     _ = g * Hpk k r := by rw [h2, ← Matrix.mul_assoc, Hpk_mul_self, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[inv_eq_U hU, mul_Hpk_apply, Hpk_mul_apply, Matrix.conjTranspose_apply]`.
+-/
 lemma inv_apply_U (hU : gᴴ * Hpk k r * g = Hpk k r) (i j) :
     g⁻¹ i j = sgnIx k r i * star (g (dualIx k r j) (dualIx k r i)) * sgnIx k r j := by
   rw [inv_eq_U hU, mul_Hpk_apply, Hpk_mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Establish `: g = Hpk k r * (g⁻¹)ᴴ * Hpk k r`. Rewrite using `[H_mul_inv_adj hU, Matrix.mul_assoc, Hpk_mul_self, Matrix.mul_one]`. Use `conv_lhs => rw [this]`. Rewrite using `[mul_Hpk_apply, Hpk_mul_apply, Matrix.conjTranspose_apply]`.
+-/
 lemma apply_eq_inv_U (hU : gᴴ * Hpk k r * g = Hpk k r) (i j) :
     g i j = sgnIx k r i * star (g⁻¹ (dualIx k r j) (dualIx k r i)) * sgnIx k r j := by
   have : g = Hpk k r * (g⁻¹)ᴴ * Hpk k r := by
@@ -130,23 +202,38 @@ lemma apply_eq_inv_U (hU : gᴴ * Hpk k r * g = Hpk k r) (i j) :
   conv_lhs => rw [this]
   rw [mul_Hpk_apply, Hpk_mul_apply, Matrix.conjTranspose_apply]
 
+/- English proof (translation)
+Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hU]`.
+-/
 lemma herm_U (hU : gᴴ * Hpk k r * g = Hpk k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ x) (g *ᵥ y) = herm (Hpk k r) x y := by
   unfold herm
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hU]
 
+/- English proof (translation)
+Rewrite using `[← herm_U hU (g⁻¹ *ᵥ x) y, Matrix.mulVec_mulVec, mul_inv_U hU, Matrix.one_mulVec]`.
+-/
 lemma herm_U' (hU : gᴴ * Hpk k r * g = Hpk k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) x (g *ᵥ y) = herm (Hpk k r) (g⁻¹ *ᵥ x) y := by
   rw [← herm_U hU (g⁻¹ *ᵥ x) y, Matrix.mulVec_mulVec, mul_inv_U hU, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[← herm_U hU x (g⁻¹ *ᵥ y), Matrix.mulVec_mulVec, mul_inv_U hU, Matrix.one_mulVec]`.
+-/
 lemma herm_U'' (hU : gᴴ * Hpk k r * g = Hpk k r) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ x) y = herm (Hpk k r) x (g⁻¹ *ᵥ y) := by
   rw [← herm_U hU x (g⁻¹ *ᵥ y), Matrix.mulVec_mulVec, mul_inv_U hU, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_mul]`.
+-/
 lemma conj_single_apply (g h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b i j) :
     (g * Matrix.single a b (1 : ℂ) * h) i j = g i a * h b j := by
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_mul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[conj_single_apply, Hpk_apply', Hpk_apply, Matrix.smul_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : i = dualIx k r b <;> by_cases h2 : j = dualIx k r a <;> simp [h1, h2, eq_comm]`.
+-/
 lemma H_single_H (a b : Fin (2 * r + k + 1)) :
     Hpk k r * Matrix.single b a (1 : ℂ) * Hpk k r =
       (sgnIx k r b * sgnIx k r a) • Matrix.single (dualIx k r b) (dualIx k r a) (1 : ℂ) := by
@@ -154,6 +241,11 @@ lemma H_single_H (a b : Fin (2 * r + k + 1)) :
   rw [conj_single_apply, Hpk_apply', Hpk_apply, Matrix.smul_apply, Matrix.single_apply]
   by_cases h1 : i = dualIx k r b <;> by_cases h2 : j = dualIx k r a <;> simp [h1, h2, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_single, star_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = g * (Hpk k r * Matrix.single b a (1 : ℂ) * Hpk k r) * g⁻¹ := by`. Rewrite using `[H_mul_inv_adj hU, adj_mul_H hU]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [H_single_H, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 lemma theta_conj (hU : gᴴ * Hpk k r * g = Hpk k r) (a b : Fin (2 * r + k + 1)) :
     Hpk k r * (g * Matrix.single a b (1 : ℂ) * g⁻¹)ᴴ * Hpk k r =
       (sgnIx k r b * sgnIx k r a) • (g * Matrix.single (dualIx k r b) (dualIx k r a) (1 : ℂ) * g⁻¹) := by
@@ -167,6 +259,11 @@ lemma theta_conj (hU : gᴴ * Hpk k r * g = Hpk k r) (a b : Fin (2 * r + k + 1))
 
 end U
 
+/- English proof (translation)
+Unfold `ell`. Rewrite using `[Finset.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Simplify using the standard rewrite rules.
+
+Simplify using `[Matrix.neg_mulVec, Matrix.smul_mulVec]`.
+-/
 lemma ell_neg_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
     (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     ell k r z (-(c • X)) = -(c * ell k r z X) := by
@@ -180,8 +277,16 @@ lemma ell_neg_smul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
 section Frame
 variable {z : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
+/- English proof (translation)
+The claim follows from `hg.1`.
+-/
 lemma frame_U (hg : PI.UpqRep.IsFrameW k r z g) : gᴴ * Hpk k r * g = Hpk k r := hg.1
 
+/- English proof (translation)
+Use `j.isLt` as an intermediate fact. Break down `hj with hj | hj` into its components or cases. Conclude with `(hg.2.1 ⟨j.val, hj⟩).1`. Establish `e : j = PI.UpqRep.esI k r ⟨2 * r + k - j.val, by omega⟩` using `Fin.ext (by simp only [PI.UpqRep.esI]; omega)`. Rewrite using `[e]`.
+
+Conclude with `(hg.2.1 _).2`.
+-/
 lemma frame_fix (hg : PI.UpqRep.IsFrameW k r z g) {j : Fin (2 * r + k + 1)}
     (hj : j.val < r ∨ r + k < j.val) : g *ᵥ Pi.single j 1 = Pi.single j 1 := by
   have := j.isLt
@@ -192,38 +297,62 @@ lemma frame_fix (hg : PI.UpqRep.IsFrameW k r z g) {j : Fin (2 * r + k + 1)}
     rw [e]
     exact (hg.2.1 _).2
 
+/- English proof (translation)
+Use `conv_lhs => rw [← frame_fix hg hj]`. Rewrite using `[Matrix.mulVec_mulVec, inv_mul_U (frame_U hg), Matrix.one_mulVec]`.
+-/
 lemma frame_inv_fix (hg : PI.UpqRep.IsFrameW k r z g) {j : Fin (2 * r + k + 1)}
     (hj : j.val < r ∨ r + k < j.val) : g⁻¹ *ᵥ Pi.single j 1 = Pi.single j 1 := by
   conv_lhs => rw [← frame_fix hg hj]
   rw [Matrix.mulVec_mulVec, inv_mul_U (frame_U hg), Matrix.one_mulVec]
 
+/- English proof (translation)
+The claim follows from `hg.2.2`.
+-/
 lemma frame_z_eq_lin_zu (hg : PI.UpqRep.IsFrameW k r z g) :
     g *ᵥ (((Real.sqrt (Tz k r z) : ℝ) : ℂ) • Pi.single (⟨r + k, by omega⟩ : Fin (2 * r + k + 1)) 1) = z :=
   hg.2.2
 
+/- English proof (translation)
+Use `conv_lhs => rw [← frame_z_eq_lin_zu hg]`. Rewrite using `[Matrix.mulVec_mulVec, inv_mul_U (frame_U hg), Matrix.one_mulVec]`.
+-/
 lemma frame_inv_mulVec_negativeVector (hg : PI.UpqRep.IsFrameW k r z g) :
     g⁻¹ *ᵥ z = ((Real.sqrt (Tz k r z) : ℝ) : ℂ) • Pi.single (⟨r + k, by omega⟩ : Fin (2 * r + k + 1)) 1 := by
   conv_lhs => rw [← frame_z_eq_lin_zu hg]
   rw [Matrix.mulVec_mulVec, inv_mul_U (frame_U hg), Matrix.one_mulVec]
 
+/- English proof (translation)
+Use `congrFun (frame_fix hg hj) i` as an intermediate fact. Simplify `this` using `[Pi.single_apply]`.
+-/
 lemma frame_col (hg : PI.UpqRep.IsFrameW k r z g) (i) {j : Fin (2 * r + k + 1)}
     (hj : j.val < r ∨ r + k < j.val) : g i j = if i = j then 1 else 0 := by
   have := congrFun (frame_fix hg hj) i
   simpa [Pi.single_apply] using this
 
+/- English proof (translation)
+Use `congrFun (frame_inv_fix hg hj) i` as an intermediate fact. Simplify `this` using `[Pi.single_apply]`.
+-/
 lemma frame_inv_col (hg : PI.UpqRep.IsFrameW k r z g) (i) {j : Fin (2 * r + k + 1)}
     (hj : j.val < r ∨ r + k < j.val) : g⁻¹ i j = if i = j then 1 else 0 := by
   have := congrFun (frame_inv_fix hg hj) i
   simpa [Pi.single_apply] using this
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Rewrite using `[dualIx_val, if_pos hi]`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma dualIx_out {i : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) :
     (dualIx k r i).val < r ∨ r + k < (dualIx k r i).val := by
   have := i.isLt
   rw [dualIx_val, if_pos hi]; omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by rw [← dualIx_dualIx i, h, dualIx_dualIx], fun h => by rw [h]⟩`.
+-/
 lemma dualIx_inj {i j : Fin (2 * r + k + 1)} : dualIx k r i = dualIx k r j ↔ i = j :=
   ⟨fun h => by rw [← dualIx_dualIx i, h, dualIx_dualIx], fun h => by rw [h]⟩
 
+/- English proof (translation)
+Rewrite using `[apply_eq_inv_U (frame_U hg), frame_inv_col hg _ (dualIx_out hi)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sgnIx_sq]`. Simplify using `[h, dualIx_inj, Ne.symm h]`.
+-/
 lemma frame_row (hg : PI.UpqRep.IsFrameW k r z g) {i : Fin (2 * r + k + 1)}
     (hi : i.val < r ∨ r + k < i.val) (j) : g i j = if i = j then 1 else 0 := by
   rw [apply_eq_inv_U (frame_U hg), frame_inv_col hg _ (dualIx_out hi)]
@@ -231,6 +360,9 @@ lemma frame_row (hg : PI.UpqRep.IsFrameW k r z g) {i : Fin (2 * r + k + 1)}
   · subst h; simp [sgnIx_sq]
   · simp [h, dualIx_inj, Ne.symm h]
 
+/- English proof (translation)
+Rewrite using `[inv_apply_U (frame_U hg), frame_col hg _ (dualIx_out hi)]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sgnIx_sq]`. Simplify using `[h, dualIx_inj, Ne.symm h]`.
+-/
 lemma frame_inv_row (hg : PI.UpqRep.IsFrameW k r z g) {i : Fin (2 * r + k + 1)}
     (hi : i.val < r ∨ r + k < i.val) (j) : g⁻¹ i j = if i = j then 1 else 0 := by
   rw [inv_apply_U (frame_U hg), frame_col hg _ (dualIx_out hi)]
@@ -238,6 +370,11 @@ lemma frame_inv_row (hg : PI.UpqRep.IsFrameW k r z g) {i : Fin (2 * r + k + 1)}
   · subst h; simp [sgnIx_sq]
   · simp [h, dualIx_inj, Ne.symm h]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Establish `hne : i ≠ j` using `fun e => hc (Or.inl (by rw [e]))`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[frame_row hg hi, if_neg hne]`.
+
+Rewrite using `[frame_col hg i (by omega), if_neg hne]`.
+-/
 lemma frame_ne_zero (hg : PI.UpqRep.IsFrameW k r z g) {i j : Fin (2 * r + k + 1)} (h : g i j ≠ 0) :
     i.val = j.val ∨ ((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)) := by
   by_contra hc
@@ -247,6 +384,11 @@ lemma frame_ne_zero (hg : PI.UpqRep.IsFrameW k r z g) {i j : Fin (2 * r + k + 1)
   · rw [frame_row hg hi, if_neg hne]
   · rw [frame_col hg i (by omega), if_neg hne]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises. Establish `hne : i ≠ j` using `fun e => hc (Or.inl (by rw [e]))`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[frame_inv_row hg hi, if_neg hne]`.
+
+Rewrite using `[frame_inv_col hg i (by omega), if_neg hne]`.
+-/
 lemma frame_inv_ne_zero (hg : PI.UpqRep.IsFrameW k r z g) {i j : Fin (2 * r + k + 1)} (h : g⁻¹ i j ≠ 0) :
     i.val = j.val ∨ ((r ≤ i.val ∧ i.val ≤ r + k) ∧ (r ≤ j.val ∧ j.val ≤ r + k)) := by
   by_contra hc
@@ -256,6 +398,11 @@ lemma frame_inv_ne_zero (hg : PI.UpqRep.IsFrameW k r z g) {i j : Fin (2 * r + k 
   · rw [frame_inv_row hg hi, if_neg hne]
   · rw [frame_inv_col hg i (by omega), if_neg hne]
 
+/- English proof (translation)
+Rewrite using `[conj_single_apply]`. Assume the negation of the conclusion as `hc`. Establish `h1` using `frame_ne_zero hg (left_ne_zero_of_mul hc)`. Establish `h2` using `frame_inv_ne_zero hg (right_ne_zero_of_mul hc)`. Rewrite `hab`, `hij` using `[Fin.lt_def]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma frame_support (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 1)) (hab : a < b)
     (h : ¬ (r ≤ a.val ∧ b.val ≤ r + k)) (i j : Fin (2 * r + k + 1))
     (hij : ¬ (i < j ∧ ¬ (r ≤ i.val ∧ j.val ≤ r + k))) :
@@ -267,6 +414,21 @@ lemma frame_support (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 1)
   rw [Fin.lt_def] at hab hij
   omega
 
+/- English proof (translation)
+Establish `key : ∀ c : Fin r, (if h : c.val + 1 < r then (g * Matrix.single a b (1 : ℂ) * g⁻¹) (eI k r c) (eI k r ⟨c.val + 1, h⟩) else ((g * Matrix.single a b (1 : ℂ) * g⁻¹) *ᵥ z) (eI k r c)) = if c.val = a.val then (if b.val = a.val + 1 ∧ b.val < r then 1 else if a.val + 1 = r ∧ b.val = r …`. Introduce `c`. Establish `hc` using `c.isLt`. Establish `hrow : g (eI k r c) a = if c.val = a.val then 1 else 0`. Rewrite using `[frame_row hg (Or.inl hc)]`.
+
+Simplify using `only [Fin.ext_iff, eI]`. Distinguish the cases in `h : c.val + 1 < r`. Rewrite using `[dif_pos h, conj_single_apply, hrow, frame_inv_col hg _ (Or.inl h)]`. Simplify using `only [Fin.ext_iff, eI]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+
+Rewrite using `[dif_neg h, ← Matrix.mulVec_mulVec, frame_inv_mulVec_negativeVector hg, Matrix.mulVec_smul, Pi.smul_apply]`. Establish `: ((g * Matrix.single a b (1 : ℂ)) *ᵥ Pi.single (⟨r + k, by omega⟩ : Fin (2 * r + k + 1)) (1 : ℂ)) (eI k r c) = g (eI k r c) a * if b.val = r + k then 1 else 0`. Use `conj_single_apply g 1 a b (eI k r c) ⟨r + k, by omega⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one, Matrix.one_apply]`. Simplify using `only [Fin.ext_iff] at this`.
+
+Rewrite using `[← this]`. Simplify using the standard rewrite rules. Rewrite using `[this, hrow]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Unfold `ell`.
+
+Rewrite using `[Finset.sum_congr rfl fun c _ => key c]`. Distinguish the cases in `ha : a.val < r`. Rewrite using `[Finset.sum_eq_single (⟨a.val, ha⟩ : Fin r)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+
+Rewrite using `[if_neg fun e => hc (Fin.ext e)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_zero, if_neg (by omega), if_neg (by omega)]`. Introduce `c _`. Use `c.isLt` as an intermediate fact.
+
+Rewrite using `[if_neg (by omega)]`.
+-/
 lemma ell_conj_single (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 1)) :
     ell k r z (g * Matrix.single a b (1 : ℂ) * g⁻¹) =
       if b.val = a.val + 1 ∧ b.val < r then 1
@@ -309,6 +471,13 @@ lemma ell_conj_single (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 
     have := c.isLt
     rw [if_neg (by omega)]
 
+/- English proof (translation)
+Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Establish `c1 : ((dualIx k r a).val = (dualIx k r b).val + 1 ∧ (dualIx k r a).val < r) ↔ (b.val = a.val + 1 ∧ r + k < a.val)`. Apply the tactic sequence `rw [dualIx_val, dualIx_val]; split_ifs <;> omega`. Establish `c2 : ((dualIx k r b).val + 1 = r ∧ (dualIx k r a).val = r + k) ↔ (a.val = r + k ∧ b.val = r + k + 1)`.
+
+Apply the tactic sequence `rw [dualIx_val, dualIx_val]; split_ifs <;> omega`. Rewrite using `[theta_conj (frame_U hg), ell_neg_smul, ell_conj_single hg, ell_conj_single hg]`. Simplify using `only [c1, c2]`. Establish `hs : ‖sgnIx k r b * sgnIx k r a‖ = 1`. Apply the tactic sequence `unfold sgnIx; split_ifs <;> simp`.
+
+Generalize the expression as in `sgnIx k r b * sgnIx k r a = s at hs`. Generalize the expression as in `hT : Real.sqrt (Tz k r z) = T`. Establish `hT0 : 0 ≤ T` using `hT ▸ Real.sqrt_nonneg _`. Apply the tactic sequence `split_ifs <;> first | omega | simp [abs_of_nonneg hT0, hs]`.
+-/
 lemma norm_ell_sub (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 1)) :
     ‖ell k r z (g * Matrix.single a b 1 * g⁻¹) -
       star (ell k r z (-(Hpk k r * (g * Matrix.single a b (1 : ℂ) * g⁻¹)ᴴ * Hpk k r)))‖ =
@@ -334,6 +503,37 @@ lemma norm_ell_sub (hg : PI.UpqRep.IsFrameW k r z g) (a b : Fin (2 * r + k + 1))
 
 end Frame
 
+/- English proof (translation)
+Introduce `k r z g _ _ hg`. Establish `hU` using `frame_U hg`. Use `⟨isUnit_U hU, fun a b hab h => ⟨frame_support hg a b hab h, norm_ell_sub hg a b⟩, ⟨⟨?_, ?_, ?_⟩, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hi`. Use `a.isLt` as an intermediate fact.
+
+Establish `: g i ⟨r + a.val, by omega⟩ = 0`. Rewrite using `[frame_row hg hi, if_neg]`. Simplify using `only [Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `using this`.
+
+Introduce `a b`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Rewrite using `[herm_U hU, herm_single, Pi.single_apply]`. Unfold `sgnIx`.
+
+Simplify using `only [Fin.ext_iff, dualIx_val]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Introduce `a v hv`. Use `a.isLt` as an intermediate fact. Rewrite using `[List.mem_singleton.mp hv, herm_U'' hU, frame_inv_mulVec_negativeVector hg, herm_smul_right, herm_single, Pi.single_apply, if_neg, mul_zero, mul_zero]`.
+
+Simplify using `only [Fin.ext_iff, dualIx_val]`. Apply the tactic sequence `split_ifs <;> omega`. Introduce `i j`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact.
+
+Use extensionality with `p q`. Rewrite using `[conj_single_apply]`. Unfold `Formalism.FourierDecayAlt.Q.unitB`. Rewrite using `[Matrix.of_apply, herm_U' hU, herm_single]`. Establish `e1 : dualIx k r ⟨r + j.val, by omega⟩ = ⟨r + j.val, by omega⟩`.
+
+Unfold `dualIx`. Rewrite using `[if_neg]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Establish `e2 : sgnIx k r ⟨r + j.val, by omega⟩ = 1`.
+
+Unfold `sgnIx`. Rewrite using `[if_neg]`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2]`.
+
+Simplify using `[bvec]`. Unfold `fvec`. Distinguish the cases in `h : r = 0`. Rewrite using `[if_pos h, dif_neg (by simp [h]), frame_inv_mulVec_negativeVector hg]`. Substitute `h` using the available equality.
+
+Use `congr 2`. Establish `h0 : (0 : Fin (r + 1)).val < r` using `by simp; omega`. Rewrite using `[if_neg h, dif_pos h0]`. Conclude with `frame_inv_fix hg (j := 0) (Or.inl (by simp; omega))`. Use function extensionality and compare the values at `d`.
+
+Establish `hd` using `d.isLt`. Establish `e : (gᵀ *ᵥ flat k r (fvec k r z 0)) d = herm (Hpk k r) (g *ᵥ Pi.single d 1) (fvec k r z 0)`. Unfold `flat herm`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring` and prove the remaining obligations. Rewrite using `[e, herm_U'' hU]`. Unfold `fvec`. Distinguish the cases in `h : r = 0`. Rewrite using `[if_pos h, dif_neg (by simp [h]), frame_inv_mulVec_negativeVector hg, herm_smul_right, herm_single]`.
+
+Unfold `sgnIx`. Simplify using `only [Pi.smul_apply, Pi.single_apply, Fin.ext_iff, dualIx_val, Fin.val_last]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Establish `h0 : (0 : Fin (r + 1)).val < r` using `by simp; omega`. Rewrite using `[if_neg h, dif_pos h0]`.
+
+Use `frame_inv_fix hg (j := 0) (Or.inl (by simp; omega))` as an intermediate fact. Establish `e0 : bvec (eI k r ⟨(0 : Fin (r + 1)).val, h0⟩) = Pi.single (0 : Fin (2 * r + k + 1)) (1 : ℂ)` using `rfl`. Rewrite using `[e0, this, herm_single]`. Unfold `sgnIx`. Simplify using `only [Pi.smul_apply, Pi.single_apply, Fin.ext_iff, dualIx_val, Fin.val_last, Fin.val_zero]`.
+
+Establish `hr : 0 < r` using `Nat.pos_of_ne_zero h`. Establish `hr' : ¬ 0 = r + k` using `by omega`. Simplify using `[hr, hr', eq_comm]`.
+-/
 theorem frame_matrix_units : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (g : Mx k r), Formalism.QuantumDeterminants.inWb k r z → 0 < Formalism.QuantumDeterminants.Tz k r z → PI.UpqRep.IsFrameW k r z g → IsUnit g ∧ (∀ a b : Fin (2 * r + k + 1), a < b → ¬ (r ≤ a.val ∧ b.val ≤ r + k) → (∀ i j : Fin (2 * r + k + 1), ¬ (i < j ∧ ¬ (r ≤ i.val ∧ j.val ≤ r + k)) → (g * Matrix.single a b (1 : ℂ) * g⁻¹) i j = 0) ∧ ‖Formalism.QuantumDeterminants.ell k r z (g * Matrix.single a b 1 * g⁻¹) - star (Formalism.QuantumDeterminants.ell k r z (-((Formalism.QuantumDeterminants.Hpk k r) * (g * Matrix.single a b (1 : ℂ) * g⁻¹)ᴴ * (Formalism.QuantumDeterminants.Hpk k r))))‖ = (if b.val = a.val + 1 ∧ (b.val < r ∨ r + k < a.val) then (1 : ℝ) else if (a.val + 1 = r ∧ b.val = r + k) ∨ (a.val = r + k ∧ b.val = r + k + 1) then Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) else 0)) ∧ (Formalism.FourierDecayAlt.Q.IsFrameOf k r [z] (fun i : Fin k => g *ᵥ Pi.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) 1) ∧ ∀ i j : Fin k, Formalism.FourierDecayAlt.Q.unitB (Formalism.QuantumDeterminants.Hpk k r) (fun i : Fin k => g *ᵥ Pi.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) 1) i j = g * Matrix.single ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) i) ((fun i : Fin k => (⟨r + i.val, by omega⟩ : Fin (2 * r + k + 1))) j) 1 * g⁻¹) ∧ g⁻¹ *ᵥ Formalism.QuantumDeterminants.fvec k r z 0 = (if r = 0 then ((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) • Pi.single (Fin.last (2 * r + k)) 1 else Pi.single 0 1) ∧ gᵀ *ᵥ (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) = (if r = 0 then -((Real.sqrt (Formalism.QuantumDeterminants.Tz k r z) : ℝ) : ℂ) else 1) • Pi.single (Fin.last (2 * r + k)) 1 := by
   intro k r z g _ _ hg
   have hU := frame_U hg

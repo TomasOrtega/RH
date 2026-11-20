@@ -9,6 +9,9 @@ namespace PI.ZW
 
 open DirichletCharacter
 
+/- English proof (translation)
+Distinguish the cases in `h : χ.Even`. Simplify using `only [DirichletCharacter.gammaFactor, h, if_true]`. Conclude with `Complex.differentiable_Gammaℝ_inv`. Simplify using `only [DirichletCharacter.gammaFactor, h, if_false]`. Conclude with `Complex.differentiable_Gammaℝ_inv.comp (differentiable_id.add_const 1)`.
+-/
 lemma differentiable_gammaFactor_inv {N : ℕ} (χ : DirichletCharacter ℂ N) :
     Differentiable ℂ (fun s => (gammaFactor χ s)⁻¹) := by
   by_cases h : χ.Even
@@ -17,6 +20,9 @@ lemma differentiable_gammaFactor_inv {N : ℕ} (χ : DirichletCharacter ℂ N) :
   · simp only [DirichletCharacter.gammaFactor, h, if_false]
     exact Complex.differentiable_Gammaℝ_inv.comp (differentiable_id.add_const 1)
 
+/- English proof (translation)
+Distinguish the cases in `h : χ.Even`. Simplify using `only [DirichletCharacter.gammaFactor, h, if_true]`. Conclude with `Complex.Gammaℝ_ne_zero_of_re_pos hs`. Simplify using `only [DirichletCharacter.gammaFactor, h, if_false]`. Conclude with `Complex.Gammaℝ_ne_zero_of_re_pos (by simp; linarith)`.
+-/
 lemma gammaFactor_ne_zero_of_re_pos {N : ℕ} (χ : DirichletCharacter ℂ N) {s : ℂ}
     (hs : 0 < s.re) : gammaFactor χ s ≠ 0 := by
   by_cases h : χ.Even
@@ -25,11 +31,19 @@ lemma gammaFactor_ne_zero_of_re_pos {N : ℕ} (χ : DirichletCharacter ℂ N) {s
   · simp only [DirichletCharacter.gammaFactor, h, if_false]
     exact Complex.Gammaℝ_ne_zero_of_re_pos (by simp; linarith)
 
+/- English proof (translation)
+Rewrite using `[DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]`. Conclude with `(DirichletCharacter.isPrimitive_def χ).mp hχ`.
+-/
 lemma isPrimitive_inv {N : ℕ} {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) :
     χ⁻¹.IsPrimitive := by
   rw [DirichletCharacter.isPrimitive_def, DirichletCharacter.conductor_inv]
   exact (DirichletCharacter.isPrimitive_def χ).mp hχ
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `hχ.completedLFunction_one_sub (-1)`. Rewrite `h2` using `[h]`. Simplify using `only [mul_zero, zero_mul] at h2`. Evaluate the numerical expressions using `at h2`.
+
+Establish `hne` using `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inr (by norm_num : (2 : ℂ) ≠ 1)) (by norm_num : (1 : ℝ) ≤ (2 : ℂ).re)`. Rewrite `hne` using `[DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ 2 (Or.inl two_ne_zero), h2, zero_div]`. Conclude with `hne rfl`.
+-/
 lemma rootNumber_ne_zero {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) :
     rootNumber χ ≠ 0 := by
   intro h
@@ -42,9 +56,29 @@ lemma rootNumber_ne_zero {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (h
   rw [DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ 2 (Or.inl two_ne_zero), h2, zero_div] at hne
   exact hne rfl
 
+/- English proof (translation)
+Conclude with `(isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)`.
+-/
 lemma isOpen_strip : IsOpen {s : ℂ | 0 < s.re ∧ s.re < 1} := by
   exact (isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)
 
+/- English proof (translation)
+Introduce `N _ χ hχ ρ h0 h1 hz`. Establish `hχi` using `isPrimitive_inv hχ`. Establish `hstrip : ∀ s : ℂ, 0 < s.re → s.re < 1 → 0 < (1 - s).re` using `fun s _ h => by simp; linarith`. Establish `hfun : ∀ s : ℂ, 0 < s.re → s.re < 1 → DirichletCharacter.LFunction χ⁻¹ (1 - s) = ((N : ℂ) ^ (s - 1 / 2) * rootNumber χ⁻¹ * gammaFactor χ s * (gammaFactor χ⁻¹ (1 - s))⁻¹) * DirichletCharacter.LFunction χ s`. Introduce `s hs0 hs1`.
+
+Establish `h1s` using `hstrip s hs0 hs1`. Establish `hg1` using `gammaFactor_ne_zero_of_re_pos χ⁻¹ h1s`. Establish `hg0` using `gammaFactor_ne_zero_of_re_pos χ hs0`. Rewrite using `[DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ⁻¹ (1 - s) (Or.inl fun h => by rw [h] at h1s; simp at h1s), hχi.completedLFunction_one_sub s, inv_inv, DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ s (Or.inl fun h => by rw [h] at hs0; simp at hs0)]`. Clear the denominators using the available nonvanishing facts.
+
+Use `⟨by rw [hfun ρ h0 h1, hz, mul_zero], ?_⟩` and prove the remaining obligations. Establish `hρU : {s : ℂ | 0 < s.re ∧ s.re < 1} ∈ 𝓝 ρ` using `isOpen_strip.mem_nhds ⟨h0, h1⟩`. Establish `hHd : DifferentiableOn ℂ (fun s : ℂ => (N : ℂ) ^ (s - 1 / 2) * rootNumber χ⁻¹ * gammaFactor χ s * (gammaFactor χ⁻¹ (1 - s))⁻¹) {s | 0 < s.re ∧ s.re < 1}`. Introduce `s hs`. Establish `hg0` using `gammaFactor_ne_zero_of_re_pos χ hs.1`.
+
+Establish `hdg : DifferentiableAt ℂ (gammaFactor χ) s`. Establish `h` using `((differentiable_gammaFactor_inv χ) s).inv (inv_ne_zero hg0)`. Establish `e : (fun x => (gammaFactor χ x)⁻¹)⁻¹ = gammaFactor χ` using `funext fun x => by`. Simplify using `only [Pi.inv_apply, inv_inv]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+
+Establish `hdg1 : DifferentiableAt ℂ (fun s => (gammaFactor χ⁻¹ (1 - s))⁻¹) s` using `((differentiable_gammaFactor_inv χ⁻¹) (1 - s)).comp s ((differentiableAt_const 1).sub differentiableAt_id)`. Establish `hcp : DifferentiableAt ℂ (fun s : ℂ => (N : ℂ) ^ (s - 1 / 2)) s` using `(differentiableAt_id.sub_const _).const_cpow (Or.inl (by exact_mod_cast NeZero.ne N))`. Conclude with `(((hcp.mul_const _).mul hdg).mul hdg1).differentiableWithinAt`. Establish `hLd : DifferentiableOn ℂ (DirichletCharacter.LFunction χ) {s | 0 < s.re ∧ s.re < 1}` using `fun s hs => (DirichletCharacter.differentiableAt_LFunction χ s (Or.inl fun h => by rw [h] at hs; simp at hs)).differentiableWithinAt`. Establish `hHa` using `hHd.analyticAt hρU`.
+
+Establish `hLa` using `hLd.analyticAt hρU`. Establish `hH0 : (N : ℂ) ^ (ρ - 1 / 2) * rootNumber χ⁻¹ * gammaFactor χ ρ * (gammaFactor χ⁻¹ (1 - ρ))⁻¹ ≠ 0`. Use `mul_ne_zero (mul_ne_zero (mul_ne_zero ?_ (rootNumber_ne_zero hχi)) (gammaFactor_ne_zero_of_re_pos χ h0)) (inv_ne_zero (gammaFactor_ne_zero_of_re_pos χ⁻¹ (hstrip ρ h0 h1)))` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Simplify using `[NeZero.ne N]`.
+
+Establish `key : analyticOrderAt (DirichletCharacter.LFunction χ⁻¹) (1 - ρ) = analyticOrderAt (DirichletCharacter.LFunction χ) ρ`. Establish `e1` using `analyticOrderAt_comp_of_deriv_ne_zero (f := DirichletCharacter.LFunction χ⁻¹) (g := fun s : ℂ => 1 - s) (z₀ := ρ) (analyticAt_const.sub analyticAt_id) (by simp)`. Rewrite using `[← e1]`. Establish `e2 : (DirichletCharacter.LFunction χ⁻¹ ∘ fun s : ℂ => 1 - s) =ᶠ[𝓝 ρ] ((fun s : ℂ => (N : ℂ) ^ (s - 1 / 2) * rootNumber χ⁻¹ * gammaFactor χ s * (gammaFactor χ⁻¹ (1 - s))⁻¹) * DirichletCharacter.LFunction χ)` using `Filter.eventually_of_mem hρU fun s hs => hfun s hs.1 hs.2`. Rewrite using `[analyticOrderAt_congr e2, analyticOrderAt_mul hHa hLa, (hHa.analyticOrderAt_eq_zero).mpr hH0, zero_add]`.
+
+Establish `e : analyticOrderNatAt (DirichletCharacter.LFunction χ) ρ = analyticOrderNatAt (DirichletCharacter.LFunction χ⁻¹) (1 - ρ)`. Simplify using `only [analyticOrderNatAt, key]`. Conclude with `e.le`.
+-/
 theorem transfer : Transfer := by
   intro N _ χ hχ ρ h0 h1 hz
   have hχi := isPrimitive_inv hχ

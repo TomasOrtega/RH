@@ -15,6 +15,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds (a0)
 
 namespace GlobalTheory.HilbFam
 
+/- English proof (translation)
+Establish `hc : ∀ y : E, IsIntegral ℤ y → IsIntegral ℤ (IsCMField.complexConj E y)` using `fun y hy => map_isIntegral_int (IsCMField.complexConj E) hy`. Establish `hfix : ∀ y : FR E, IsCMField.complexConj E (y : E) = y` using `fun y => IsCMField.complexConj_apply_eq_self E y`. Use `set r := θ - IsCMField.complexConj E θ with hrdef`. Establish `hri : IsIntegral ℤ r` using `hθ.sub (hc _ hθ)`. Establish `h0 : IsIntegral ℤ ((x 0 : E) * r)`.
+
+Use `hu.sub (hc _ hu)` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, hfix, hfix]`. Establish `e : (x 0 : E) * r = (x 0 : E) * θ + (x 1 : E) - ((x 0 : E) * IsCMField.complexConj E θ + (x 1 : E))` using `by rw [hrdef]; ring`. Rewrite using `[e]`. Conclude with `this`.
+
+Establish `h1 : IsIntegral ℤ ((x 1 : E) * r)`. Use `(hu.mul hri).sub (h0.mul hθ)` as an intermediate fact. Establish `e : (x 1 : E) * r = ((x 0 : E) * θ + (x 1 : E)) * r - (x 0 : E) * r * θ` using `by ring`. Rewrite using `[e]`. Conclude with `this`.
+
+Establish `hj : IsIntegral ℤ ((x j : E) * r)` using `by fin_cases j`. Conclude with `h0`. Conclude with `h1`. Establish `hD' : (D : E) = -r ^ 2` using `by rw [hr]; ring`. Establish `hinj : Function.Injective (algebraMap (FR E) E)` using `(algebraMap (FR E) E).injective`.
+
+Establish `hx : algebraMap (FR E) E (x j) = (x j : E)` using `rfl`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← isIntegral_algebraMap_iff hinj, map_mul, map_pow, map_natCast, hx, hD']`. Establish `e : -r ^ 2 * (x j : E) ^ 2 = -((x j : E) * r * ((x j : E) * r))` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `(hj.mul hj).neg`. Rewrite using `[← isIntegral_algebraMap_iff hinj, map_mul, map_natCast, hx, hD']`. Establish `e : -r ^ 2 * (x j : E) = -((x j : E) * r * r)` using `by ring`. Rewrite using `[e]`. Conclude with `(hj.mul hri).neg`.
+-/
 theorem isIntegral_coord_of_isIntegral (E : Type) [Field E] [NumberField E] [IsCMField E] (θ : E) (D : ℕ)
     (x : Fin 2 → FR E) (_hD : 0 < D) (hθ : IsIntegral ℤ θ)
     (hr : (θ - IsCMField.complexConj E θ) ^ 2 = -(D : E))

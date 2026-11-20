@@ -10,6 +10,11 @@ open Classical
 
 namespace GlobalTheory.StabCpt
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n X r s K hB hX hK`. Take `⟨K', _, _, hK', hc, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hKP.base F E σ B n X r s hB hX`. Establish `e : K = K'`. Use extensionality with `g`. Rewrite using `[hK g, hK' g]`.
+
+Substitute `e` using the available equality. Conclude with `hc`.
+-/
 theorem isCompact_of_isStab : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (r s : ℕ) (K : Subgroup (UA σ X.J)),
     B.IsGood σ → X.IsHerm σ B r s → IsStab B K → IsCompact (K : Set (UA σ X.J)) := by
   intro hKP F E _ _ _ _ _ σ B n X r s K hB hX hK

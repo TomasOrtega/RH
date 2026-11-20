@@ -11,9 +11,15 @@ namespace GlobalTheory.CompanionTheory.ClassBij
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[PositivityTheory.Rg.BcB.conjE, NumberField.IsCMField.complexConj_apply_apply]`.
+-/
 theorem conjE_conjE (x : E) : conjE E (conjE E x) = x := by
   simp [PositivityTheory.Rg.BcB.conjE, NumberField.IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [PositivityTheory.Rg.BcB.thetaE, PositivityTheory.Rg.BcB.thetaR_val, ← map_inv, inv_inv, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `conjE_conjE _`.
+-/
 theorem thetaE_thetaE (g : GL (Fin n) E) : thetaE E n (thetaE E n g) = g := by
   apply Units.ext
   ext i j
@@ -21,18 +27,32 @@ theorem thetaE_thetaE (g : GL (Fin n) E) : thetaE E n (thetaE E n g) = g := by
     Matrix.map_apply]
   exact conjE_conjE _
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.Rg.BcB.nrm, twConj, map_mul, map_inv, thetaE_thetaE]`. Use `group`.
+-/
 theorem nrm_twConj (g d : GL (Fin n) E) : nrm (twConj (thetaE E n) g d) = g⁻¹ * nrm d * g := by
   simp only [PositivityTheory.Rg.BcB.nrm, twConj, map_mul, map_inv, thetaE_thetaE]
   group
 
+/- English proof (translation)
+Rewrite using `[nrm_twConj, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, _root_.mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+-/
 theorem charpoly_nrm_twConj (g d : GL (Fin n) E) :
     (nrm (twConj (thetaE E n) g d)).val.charpoly = (nrm d).val.charpoly := by
   rw [nrm_twConj, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc,
     ← Units.val_mul, _root_.mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [PositivityTheory.Rg.BcB.IsRegEll, PositivityTheory.Rg.BcB.IsRegD, charpoly_nrm_twConj]`.
+-/
 theorem isRegEll_twConj (g d : GL (Fin n) E) : IsRegEll (twConj (thetaE E n) g d) ↔ IsRegEll d := by
   simp only [PositivityTheory.Rg.BcB.IsRegEll, PositivityTheory.Rg.BcB.IsRegD, charpoly_nrm_twConj]
 
+/- English proof (translation)
+Use `⟨fun x => ⟨1, by simp [twConj]⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨g, rfl⟩`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Simplify using `only [twConj, map_inv, inv_inv]`. Use `group`.
+
+Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`. Use `⟨g * h, ?_⟩` and prove the remaining obligations. Simplify using `only [twConj, map_mul, _root_.mul_inv_rev]`. Use `group`.
+-/
 theorem twConjugate_equivalence : Equivalence (TwConjugate (thetaE E n)) := by
   refine ⟨fun x => ⟨1, by simp [twConj]⟩, ?_, ?_⟩
   · rintro x y ⟨g, rfl⟩
@@ -44,10 +64,26 @@ theorem twConjugate_equivalence : Equivalence (TwConjugate (thetaE E n)) := by
     simp only [twConj, map_mul, _root_.mul_inv_rev]
     group
 
+/- English proof (translation)
+The claim follows from `twConjugate_equivalence.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq _))`.
+-/
 theorem exists_out (y : GL (Fin n) E) :
     ∃ g, y = twConj (thetaE E n) g (Quot.out (Quot.mk (TwConjugate (thetaE E n)) y)) :=
   twConjugate_equivalence.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq _))
 
+/- English proof (translation)
+Introduce `F _ _ _ m u hu`. Establish `hθ : ∀ g : GL (Fin m) F, thE F m g = u * thetaE F m g * u⁻¹`. Take `⟨h, -⟩` from `hu`. Conclude with `h`. Set `e : TwCl (thE F m) ≃ TwClass F m` to `{ toFun := Quot.map (fun x => x * u) (by`.
+
+Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g, by simp only [twConj, hθ]; group⟩)`. Use `invFun := Quot.map (fun x => x * u⁻¹) (by`. Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g, by simp only [twConj, hθ]; group⟩)`.
+
+Use `left_inv := by`. Introduce `c`. Proceed by induction on `c using Quot.ind with`. Consider the case `mk x => exact congrArg (Quot.mk _) (mul_inv_cancel_right x u)`. Use `right_inv := by`.
+
+Introduce `c`. Proceed by induction on `c using Quot.ind with`. Consider the case `mk x => exact congrArg (Quot.mk _) (inv_mul_cancel_right x u) }`. Use `⟨e, fun c => ?_⟩` and prove the remaining obligations. Establish `he : e c = Quot.mk (TwConjugate (thetaE F m)) (c.rep * u)`.
+
+Establish `hc : c = Quot.mk _ c.rep` using `(Quot.out_eq c).symm`. Combine the equalities or inequalities in the displayed calculation. Take `⟨g, hg⟩` from `exists_out (E := F) (n := m) (c.rep * u)`. Establish `key` using `isRegEll_twConj g (Quot.out (Quot.mk (TwConjugate (thetaE F m)) (c.rep * u)))`. Rewrite `key` using `[← hg]`.
+
+Rewrite using `[he]`. Conclude with `⟨g, hg, key.symm⟩`.
+-/
 theorem classBij : PositivityTheory.Rg.BcB.G8.ClassBij := by
   intro F _ _ _ m u hu
   have hθ : ∀ g : GL (Fin m) F, thE F m g = u * thetaE F m g * u⁻¹ := by

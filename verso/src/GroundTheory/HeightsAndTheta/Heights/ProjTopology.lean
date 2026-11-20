@@ -12,17 +12,29 @@ instance : TopologicalSpace (ℙ K V) :=
 
 namespace ProjTopology
 
+/- English proof (translation)
+The claim follows from `continuous_coinduced_rng`.
+-/
 lemma continuous_mk' : Continuous (Projectivization.mk' K : {v : V // v ≠ 0} → ℙ K V) :=
   continuous_coinduced_rng
 
+/- English proof (translation)
+The claim follows from `isClosed_coinduced`.
+-/
 lemma isClosed_iff {s : Set (ℙ K V)} :
     IsClosed s ↔ IsClosed ((Projectivization.mk' K) ⁻¹' s : Set {v : V // v ≠ 0}) :=
   isClosed_coinduced
 
+/- English proof (translation)
+The claim follows from `isOpen_coinduced`.
+-/
 lemma isOpen_iff {s : Set (ℙ K V)} :
     IsOpen s ↔ IsOpen ((Projectivization.mk' K) ⁻¹' s : Set {v : V // v ≠ 0}) :=
   isOpen_coinduced
 
+/- English proof (translation)
+The claim follows from `continuous_coinduced_dom`.
+-/
 lemma continuous_iff {Y : Type*} [TopologicalSpace Y] {g : ℙ K V → Y} :
     Continuous g ↔ Continuous (g ∘ Projectivization.mk' K) :=
   continuous_coinduced_dom

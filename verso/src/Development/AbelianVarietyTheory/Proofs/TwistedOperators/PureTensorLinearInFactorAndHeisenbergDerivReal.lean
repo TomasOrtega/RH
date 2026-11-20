@@ -18,6 +18,11 @@ namespace GlobalTheory.PureLinear
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `(ha.union (Set.finite_singleton q)).subset fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`. Conclude with `Or.inr hpq`. Use `left`. Rewrite `hp`, the goal using `[Function.mem_mulSupport]`.
+
+Rewrite `hp` using `[h p hpq]`. Then use the resulting hypothesis.
+-/
 theorem finite_of_eq_off {ι : Type} {a b : ι → ℂ} (q : ι) (ha : (Function.mulSupport a).Finite)
     (h : ∀ p, p ≠ q → b p = a p) : (Function.mulSupport b).Finite := by
   refine (ha.union (Set.finite_singleton q)).subset fun p hp => ?_
@@ -27,6 +32,9 @@ theorem finite_of_eq_off {ι : Type} {a b : ι → ℂ} (q : ι) (ha : (Function
     rw [Function.mem_mulSupport] at hp ⊢
     rwa [h p hpq] at hp
 
+/- English proof (translation)
+Use `⟨∏ᶠ (p) (_ : p ≠ q), a p, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_finprod_cond_ne q (finite_of_eq_off q ha hb)]`. Use `congr 1`. Conclude with `finprod_congr fun p => finprod_congr fun hp => hb p hp`.
+-/
 theorem exists_cofactor {ι : Type} {a : ι → ℂ} (q : ι) (ha : (Function.mulSupport a).Finite) :
     ∃ C : ℂ, ∀ b : ι → ℂ, (∀ p, p ≠ q → b p = a p) → ∏ᶠ p, b p = b q * C := by
   refine ⟨∏ᶠ (p) (_ : p ≠ q), a p, fun b hb => ?_⟩
@@ -34,6 +42,9 @@ theorem exists_cofactor {ι : Type} {a : ι → ℂ} (q : ι) (ha : (Function.mu
   congr 1
   exact finprod_congr fun p => finprod_congr fun hp => hb p hp
 
+/- English proof (translation)
+Take `⟨-, hfin, hcomp⟩` from `GlobalTheory.WeilVacMove.isLineAt_lineAt hθ τ z`. Use `⟨by simpa using congrFun (congrFun (hfin t) i) j, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (hcomp t ρ) i) j`. Simplify using `only [hρ, if_false] at h`. Simplify `h` using `[compAt]`.
+-/
 private theorem lineAt_fin_eq_zero_and_inf_other_eq_zero {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau)
     (z : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) (i : Fin m) (j : Fin n) :
     finPart D (lineAt θ τ z t i j) = 0 ∧ ∀ ρ, ρ ≠ τ → θ ρ (infPart D (lineAt θ τ z t i j)) = 0 := by
@@ -43,6 +54,9 @@ private theorem lineAt_fin_eq_zero_and_inf_other_eq_zero {D : D7} {θ : InfFam D
   simp only [hρ, if_false] at h
   simpa [compAt] using h
 
+/- English proof (translation)
+Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Conclude with `hσ.ext a h1 h2`.
+-/
 private theorem ae_eq_zero_of_fin_zero_of_theta_inf_zero {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (a : AE D) (h1 : finPart D a = 0)
     (h2 : ∀ ρ, θ ρ (infPart D a) = 0) : a = 0 := by
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ
@@ -50,6 +64,13 @@ private theorem ae_eq_zero_of_fin_zero_of_theta_inf_zero {D : D7} {θ : InfFam D
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Take `⟨hf, hr⟩` from `lineAt_fin_eq_zero_and_inf_other_eq_zero hθ τ z t i j`. Establish `hid` using `GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D`. Simplify using `only [wAt]`. Rewrite using `[← sub_eq_zero]`.
+
+Apply `ae_eq_zero_of_fin_zero_of_theta_inf_zero hθ` to reduce the goal to its premises. Simplify using `[map_sub, map_mul, hf]`. Introduce `ρ`. Rewrite using `[map_sub, map_sub, map_mul, map_mul]`. Distinguish the cases in `hρ : ρ = τ`.
+
+Substitute `hρ` using the available equality. Rewrite using `[(hid.2.2.2.2.2.2 θ hθ ρ).1, one_mul, sub_self]`. Rewrite using `[hr ρ hρ, mul_zero, sub_zero]`.
+-/
 theorem wAt_lineAt_self {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ)
     (t : ℝ) : wAt (.inr τ) (lineAt θ τ z t) = lineAt θ τ z t := by
   funext i j
@@ -66,6 +87,13 @@ theorem wAt_lineAt_self {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.
       rw [(hid.2.2.2.2.2.2 θ hθ ρ).1, one_mul, sub_self]
     · rw [hr ρ hρ, mul_zero, sub_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Take `⟨hf, hr⟩` from `lineAt_fin_eq_zero_and_inf_other_eq_zero hθ τ z t i j`. Establish `hid` using `GlobalTheory.T.cmAdeleIdempotentOfPlace_properties D`. Simplify using `only [wAt, Matrix.zero_apply, Pi.zero_apply]`. Apply `ae_eq_zero_of_fin_zero_of_theta_inf_zero hθ` to reduce the goal to its premises.
+
+Simplify using `[map_mul, hf]`. Introduce `ρ`. Rewrite using `[map_mul, map_mul]`. Break down `p with v | τ'` into its components or cases. Rewrite using `[(hid.2.2.2.1 v).1, map_zero, zero_mul]`.
+
+Establish `hτ' : τ' ≠ τ` using `fun h => hp (by rw [h])`. Distinguish the cases in `hρ : ρ = τ'`. Substitute `hρ` using the available equality. Rewrite using `[hr ρ hτ', mul_zero]`. Rewrite using `[(hid.2.2.2.2.2.2 θ hθ ρ).2 τ' (Ne.symm hρ), zero_mul]`.
+-/
 theorem wAt_lineAt_ne {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ)
     (t : ℝ) {p : Place D} (hp : p ≠ .inr τ) : wAt p (lineAt θ τ z t) = 0 := by
   funext i j
@@ -84,6 +112,11 @@ theorem wAt_lineAt_ne {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.wh
         rw [hr ρ hτ', mul_zero]
       · rw [(hid.2.2.2.2.2.2 θ hθ ρ).2 τ' (Ne.symm hρ), zero_mul]
 
+/- English proof (translation)
+Use `(hx.union (Set.finite_singleton q)).subset fun p hp => ?_` and prove the remaining obligations. Distinguish the cases in `hpq : p = q`. Conclude with `Or.inr hpq`. Use `left`. Simplify using `only [Set.mem_setOf_eq] at hp ⊢`.
+
+Rewrite `hp` using `[h p hpq]`. Then use the resulting hypothesis.
+-/
 theorem finite_ne_of_eq_off {ι X : Type} {x y : ι → X} {f₀ : X} (q : ι) (hx : {p | x p ≠ f₀}.Finite)
     (h : ∀ p, p ≠ q → y p = x p) : {p | y p ≠ f₀}.Finite := by
   refine (hx.union (Set.finite_singleton q)).subset fun p hp => ?_
@@ -93,6 +126,33 @@ theorem finite_ne_of_eq_off {ι X : Type} {x y : ι → X} {f₀ : X} (q : ι) (
     simp only [Set.mem_setOf_eq] at hp ⊢
     rwa [h p hpq] at hp
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ`. Establish `hψ` using `base_std hB`. Establish `hθ` using `base_inf hB`. Establish `hf₀` using `base_theta hB`. Establish `hthH : ∀ w f, IsThetaFunO ψ S T f → IsThetaFunO ψ S T (heisO ψ S T w f)` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hψ S T).1`.
+
+Use `⟨fun x y z f g q c hx hy hyx hzx hzq => ?_, fun x x' f τ z hx hx' hxτ => ?_⟩` and prove the remaining obligations. Unfold `IsPure IsRestricted at hx hy ⊢`. Take `⟨⟨hxl, hxfin⟩, hfθ, hxw⟩` from `hx`. Take `⟨⟨hyl, -⟩, hgθ, hyw⟩` from `hy`. Establish `hzl : ∀ p, IsLocal ψ θ S T sS sT ΛS ΛT p (z p)`.
+
+Introduce `p`. Distinguish the cases in `hp : p = q`. Rewrite using `[hp, hzq]`. Conclude with `((GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ (x q) (hxl q).1).2 q (hxl q)).2.1 c (y q) (hyl q)`. Rewrite using `[hzx p hp]`.
+
+Conclude with `hxl p`. Use `⟨⟨hzl, finite_ne_of_eq_off q hxfin hzx⟩, GlobalTheory.WeilVacMove.isTheta_add (GlobalTheory.WeilVacMove.isTheta_smul c hfθ) hgθ, fun w => ?_⟩` and prove the remaining obligations. Take `⟨hxs, hxe⟩` from `hxw w`. Take `⟨-, hye⟩` from `hyw w`. Take `⟨C, hC⟩` from `exists_cofactor q hxs`.
+
+Establish `ha` using `hC (fun p => ipO μ 𝓕 (x p) (heisO ψ S T (wAt p w) f₀)) (fun _ _ => rfl)`. Establish `hb` using `hC (fun p => ipO μ 𝓕 (y p) (heisO ψ S T (wAt p w) f₀)) (fun p hp => by simp only [hyx p hp])`. Establish `hd` using `hC (fun p => ipO μ 𝓕 (z p) (heisO ψ S T (wAt p w) f₀)) (fun p hp => by simp only [hzx p hp])`. Use `beta_reduce at ha hb hd`. Use `⟨finite_of_eq_off q hxs (fun p hp => by simp only [hzx p hp]), ?_⟩` and prove the remaining obligations.
+
+Establish `hG` using `hthH w f₀ hf₀`. Establish `hGq` using `hthH (wAt q w) f₀ hf₀`. Establish `e1` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ (c • f) (heisO ψ S T w f₀) (GlobalTheory.WeilVacMove.isTheta_smul c hfθ) hG`. Establish `e2` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ f (heisO ψ S T w f₀) hfθ hG`. Establish `e3` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ (c • x q) (heisO ψ S T (wAt q w) f₀) (GlobalTheory.WeilVacMove.isTheta_smul c (hxl q).1) hGq`.
+
+Establish `e4` using `GlobalTheory.T.theta_inner_product_hermitian D ψ S T μ 𝓕 hψ hμ (x q) (heisO ψ S T (wAt q w) f₀) (hxl q).1 hGq`. Rewrite using `[hd, hzq, (e3.2.2.2.1 (y q) (hyl q).1).1, (e4.2.2.1 c).1, (e1.2.2.2.1 g hgθ).1, (e2.2.2.1 c).1, hxe, hye, ha, hb]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx1` using `hx`. Unfold `IsPure IsRestricted at hx1 ⊢`.
+
+Take `⟨⟨hxl, hxfin⟩, hfθ, hxw⟩` from `hx1`. Establish `hx'l : ∀ p, IsLocal ψ θ S T sS sT ΛS ΛT p (x' p)`. Introduce `p`. Distinguish the cases in `hp : p = .inr τ`. Rewrite using `[hp, hxτ]`.
+
+Conclude with `((GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ (x (.inr τ)) (hxl _).1).2 (.inr τ) (hxl _)).2.2 τ rfl z`. Rewrite using `[hx' p hp]`. Conclude with `hxl p`. Use `⟨⟨hx'l, finite_ne_of_eq_off (.inr τ) hxfin hx'⟩, GlobalTheory.WeilVacMove.isTheta_dRho hψ hθ τ z hfθ, fun w => ?_⟩` and prove the remaining obligations. Take `⟨hxs, -⟩` from `hxw w`.
+
+Take `⟨C, hC⟩` from `exists_cofactor (.inr τ) hxs`. Establish `key : ∀ t : ℝ, ipO μ 𝓕 (heisO ψ S T (lineAt θ τ z t) f) (heisO ψ S T w f₀) = ipO μ 𝓕 (heisO ψ S T (lineAt θ τ z t) (x (.inr τ))) (heisO ψ S T (wAt (.inr τ) w) f₀) * C`. Introduce `t`. Establish `hP` using `GlobalTheory.T.heisenberg_operator_pure_tensor_place_by_place D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ x f hx (lineAt θ τ z t)`. Unfold `IsPure at hP`.
+
+Establish `e` using `hC (fun p => ipO μ 𝓕 (heisO ψ S T (wAt p (lineAt θ τ z t)) (x p)) (heisO ψ S T (wAt p w) f₀)) (fun p hp => by simp only [wAt_lineAt_ne hθ τ z t hp, GlobalTheory.WeilVacMove.heisO_zero])`. Use `beta_reduce at e`. Rewrite using `[(hP.2.2 w).2, e, wAt_lineAt_self hθ τ z t]`. Establish `hG` using `hthH w f₀ hf₀`. Establish `h1` using `(GlobalTheory.T.hasDerivAt_heisenbergMatrixCoeff_realLine_skew D ψ θ S T μ 𝓕 hψ hθ hμ f (heisO ψ S T w f₀) hfθ hG τ z).1`.
+
+Establish `h2` using `((GlobalTheory.T.hasDerivAt_heisenbergMatrixCoeff_realLine_skew D ψ θ S T μ 𝓕 hψ hθ hμ (x (.inr τ)) (heisO ψ S T (wAt (.inr τ) w) f₀) (hxl _).1 (hthH _ _ hf₀) τ z).1).mul_const C`. Establish `h3 : HasDerivAt (fun t : ℝ => ipO μ 𝓕 (heisO ψ S T (lineAt θ τ z t) f) (heisO ψ S T w f₀)) (ipO μ 𝓕 (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z (x (.inr τ))) (heisO ψ S T (wAt (.inr τ) w) f₀) * C) 0`. Simplify `h2` using `only [key]`. Establish `hd` using `hC (fun p => ipO μ 𝓕 (x' p) (heisO ψ S T (wAt p w) f₀)) (fun p hp => by simp only [hx' p hp])`. Use `beta_reduce at hd`.
+
+Use `⟨finite_of_eq_off (.inr τ) hxs (fun p hp => by simp only [hx' p hp]), ?_⟩` and prove the remaining obligations. Rewrite using `[hd, hxτ, h1.unique h3]`.
+-/
 theorem isPure_linear_and_dRho : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ) (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsBase ψ θ S T sS sT ΛS ΛT f₀ → IsCovolOne (ratL T S) μ 𝓕 → (∀ (x y z : Place D → WO S T → ℂ) (f g : WO S T → ℂ) (q : Place D) (c : ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ y g → (∀ p, p ≠ q → y p = x p) → (∀ p, p ≠ q → z p = x p) → z q = c • x q + y q → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ z (c • f + g)) ∧ ∀ (x x' : Place D → WO S T → ℂ) (f : WO S T → ℂ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ), IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x f → (∀ p, p ≠ .inr τ → x' p = x p) → x' (.inr τ) = Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z (x (.inr τ)) → IsPure ψ θ S T sS sT ΛS ΛT μ 𝓕 f₀ x' (Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ z f) := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ μ 𝓕 hB hμ
   have hψ := base_std hB

@@ -23,12 +23,24 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open GlobalTheory.UPel.Sm GlobalTheory.Cris GlobalTheory.DeRham
 
+/- English proof (translation)
+The claim follows from `hx`.
+-/
 theorem GlobalTheory.HTGlue.isFilLift_coords {k : Type} [Field k] {A : Over (Sp k)} [GrpObj A] {A' : Over (Sp (DualNumber k))}
     [GrpObj A'] {i : A.left ⟶ A'.left} (h : IsGrpPullback A A' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) i)
     {x y : HdR A} (hx : IsFilLift h x y) :
     ∃ e ∈ liftFil (divided₂ (GlobalTheory.FODef.sqZero k k)) h,
       ∀ c, e ((GlobalTheory.FODef.constMorV k k A).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (y c) := hx
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Take `⟨A, _, i, h, act, hA, hE, hact⟩` from `GlobalTheory.T.harrisTaylor_exists_lift_orderAction_hodge_summand p D R b N C C₀ π hπ hsq tR o₀ E hEc hEf hEs`. Use `haveI : IsCommMonObj A := hA.comm`. Substitute `hE` using the available equality. Take `⟨P, φ₂, hP, r1, r2, hsym, hamp, hker, hros, hsq2, hpol⟩` from `GlobalTheory.T.harrisTaylor_exists_polarisation_bundle_lift p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hEi`.
+
+Take `⟨eta, e1, e2, e3, e4, e5⟩` from `GlobalTheory.T.harrisTaylor_primeToP_level_lift_squareZero p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hNp P φ₂ hP hsq2 hpol`. Conclude with `⟨{ A := A ab := hA act := act P := P isLB := hP rig₁ := r1 rig₂ := r2`. Use symmetry as in `:= hsym`. Use `ample := hamp`. Use `kerP := hker`.
+
+Use `rosati := hros`. Use `lie := fun R' _ β x hx v hv => GlobalTheory.T.harrisTaylor_lift_lie_of_hodge_summand_lie p D R b N C C₀ π hπ hsq tR o₀ A i h hA act hact hEl R' β x hx v hv`. Use `lieRank := fun k _ _ x β hx j => GlobalTheory.T.harrisTaylor_lieMultiplicity_squareZeroLift p D R b N C C₀ π hπ hsq tR o₀ A i h act hact k x β hx j`. Use `eta := eta`. Use `eta_add := e1`.
+
+Use `eta_lin := e2`. Use `eta_ker := e3`. Use `geom := e4 },`. Use the proof step `{ φ := i φ₂ := φ₂ cart := h sq := hsq2 act := hact pol := hpol eta := e5 }, rfl⟩`.
+-/
 theorem GlobalTheory.HTGlue.exists_obj_of_summand (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (hNp : N.Coprime p) (C C₀ : Type) [CommRing C] [IsLocalRing C]
     [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀) (hπ : Function.Surjective π) (hsq : RingHom.ker π ^ 2 = 0)
@@ -79,6 +91,9 @@ theorem GlobalTheory.HTGlue.exists_obj_of_summand (p : ℕ) [Fact p.Prime] (D : 
       pol := hpol
       eta := e5 }, rfl⟩
 
+/- English proof (translation)
+Take `⟨e, he, hc⟩` from `GlobalTheory.HTGlue.exists_mem_glueFil A₀ hA f hx`. Conclude with `⟨e, hh ▸ he, hc⟩`.
+-/
 theorem GlobalTheory.HTGlue.isFilLiftV_of_eq {k : Type} [Field k] {d : ℕ} {A₀ : Over (Sp k)} [GrpObj A₀] (hA : IsAbelianScheme A₀)
     {A : Over (Sp (TrivSqZeroExt k (Fin d → k)))} [GrpObj A] {i : A₀.left ⟶ A.left}
     (h : IsGrpPullback A₀ A (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) i)
@@ -90,6 +105,23 @@ theorem GlobalTheory.HTGlue.isFilLiftV_of_eq {k : Type} [Field k] {d : ℕ} {A�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp k _ _ t o₀ d f hdef`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Take `⟨tk, ht⟩ : ∃ tk : R →+* k, t = spMap tk` from `⟨(Spec.preimage t).hom, by simp [spMap]⟩`. Take `⟨φ, hφ⟩` from `GlobalTheory.UPel.HT.CorrForm.exists_isCorrForm_obj p D R b N hN hNp k t o₀`. Conclude with `GlobalTheory.UPel.HT.exists_sqZero_lift_realising_ks p D R b N hN hNp k t o₀ tk ht φ hφ 0 f (fun j => j.elim0)`.
+
+Use `haveI : IsArtinianRing (TrivSqZeroExt k (Fin d → k)) := GlobalTheory.HTGlue.isArtinianRing_tsze k d`. Apply the tactic sequence `haveI : Module.Finite k (DualNumber k) := Module.Finite.of_surjective ((Algebra.linearMap k (DualNumber k)).coprod (TrivSqZeroExt.inrHom k k)) (fun x => ⟨(x.fst, x.snd), by ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]⟩)`. Use `haveI : IsArtinianRing (DualNumber k) := IsArtinianRing.of_finite k _`. Take `⟨tk, ht⟩ : ∃ tk : R →+* k, t = spMap tk` from `⟨(Spec.preimage t).hom, by simp [spMap]⟩`. Use `set tR : R →+* TrivSqZeroExt k (Fin d → k) := (algebraMap k (TrivSqZeroExt k (Fin d → k))).comp tk with htR`.
+
+Establish `hs : t = spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ spMap tR`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`. Apply the tactic sequence `all_goals (congr 1 <;> ext x <;> simp [tR])`. Substitute `hs` using the available equality. Use `choose o' m' hm' using hdef`.
+
+Establish `hsε : spMap (algebraMap k (DualNumber k)) ≫ (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ spMap tR) = spMap ((algebraMap k (TrivSqZeroExt k k)).comp tk)`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`. Establish `hs₀ : spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ spMap tR = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap ((algebraMap k (TrivSqZeroExt k k)).comp tk)`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`. Apply the tactic sequence `all_goals (congr 1 <;> ext x <;> simp)`.
+
+Establish `hsurε : Function.Surjective (TrivSqZeroExt.fstHom k k k).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, by simp⟩`. Establish `n1` using `fun j => GlobalTheory.T.harrisTaylor_lift_hodge_summand_admissible_stable p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hsurε (GlobalTheory.FODef.sqZero k k) ((algebraMap k (TrivSqZeroExt k k)).comp tk) (spMap (algebraMap k (DualNumber k)) ≫ (spMap (TrivSqZero …`. Establish `n2` using `fun j => GlobalTheory.T.harrisTaylor_lift_hodge_summand_isotropic p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hsurε (GlobalTheory.FODef.sqZero k k) ((algebraMap k (TrivSqZeroExt k k)).comp tk) (spMap (algebraMap k (DualNumber k)) ≫ (spMap (TrivSqZeroExt.fstH …`. Establish `n3` using `fun j => GlobalTheory.T.harrisTaylor_lift_hodge_summand_crystalline_lie p D R b N (DualNumber k) k (TrivSqZeroExt.fstHom k k k).toRingHom hsurε (GlobalTheory.FODef.sqZero k k) ((algebraMap k (TrivSqZeroExt k k)).comp tk) (spMap (algebraMap k (DualNumber k)) ≫ (spMap (TrivSqZeroEx …`. Establish `hmem : ∀ j, ∀ x ∈ Fil o₀.A, ∃ e ∈ liftFil (divided₂ (GlobalTheory.FODef.sqZero k k)) (m' j).cart, ∀ c, e ((GlobalTheory.FODef.constMorV k k o₀.A).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (f j x c)` using `fun j x hx => GlobalTheory.HTGlue.isFilLift_coords (m' j).cart (hm' j x hx)`.
+
+Establish `hab` using `o₀.ab`. Establish `htk : spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ spMap tR = spMap tk` using `ht`. Establish `g1` using `GlobalTheory.T.exists_isCompl_crystalGluedHodgeGraphFiltration p D R b N k tk _ o₀ htk d f`. Establish `g2` using `GlobalTheory.T.mem_hodgeFiltration_iff_reduction_gluedFiltration p D R b N k tk _ o₀ htk d f`. Establish `g3` using `GlobalTheory.T.crystalGluedHodgeGraph_order_stable_of_directions p D R b N k tk _ o₀ htk d f _ (fun j => (n1 j).1) (fun j => (n1 j).2.1) hmem (fun j => (n1 j).2.2)`.
+
+Establish `g4` using `GlobalTheory.T.crystalGluedHodgeGraph_isotropic_of_directions p D R b N k tk _ o₀ htk d f _ (fun j => (n1 j).1) (fun j => (n1 j).2.1) hmem (fun j => (n1 j).2.2) n2`. Establish `g5` using `GlobalTheory.T.crystalGluedHodgeGraph_lie_condition_of_directions p D R b N k tk _ o₀ htk d hd f _ (fun j => (n1 j).1) (fun j => (n1 j).2.1) hmem (fun j => (n1 j).2.2) n3`. Establish `hsurC : Function.Surjective (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom` using `fun a => ⟨TrivSqZeroExt.inl a, by simp⟩`. Establish `hst : spMap (algebraMap k (TrivSqZeroExt k (Fin d → k))) ≫ (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom ≫ spMap tR) = spMap tR`. Rewrite using `[ht, ← GlobalTheory.Cris.spMap_comp]`.
+
+Take `⟨o, m, hm⟩` from `GlobalTheory.HTGlue.exists_obj_of_summand p D R b N hNp _ k _ hsurC (GlobalTheory.FODef.sqZero k (Fin d → k)) tR o₀ (GlobalTheory.HTGlue.glueFil o₀.A f) g1 g2 g3 g4 g5 _ hst`. Conclude with `⟨o, m, fun x hx => GlobalTheory.HTGlue.isFilLiftV_of_eq hab m.cart f hm hx⟩`.
+-/
 theorem GlobalTheory.HTGlue.exists_glue : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t), ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), (∀ j, ∃ (o' : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (DualNumber k)) ≫ t)) (m' : GlobalTheory.UPel.HT.ObjMap o₀ o' (spMap (TrivSqZeroExt.fstHom k k k).toRingHom)), ∀ x ∈ Fil o₀.A, IsFilLift m'.cart x (f j x)) → ∃ (o : GlobalTheory.UPel.HT.Obj b N (spMap (algebraMap k (TrivSqZeroExt k (Fin d → k))) ≫ t)) (m : GlobalTheory.UPel.HT.ObjMap o₀ o (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom)), ∀ x ∈ Fil o₀.A, GlobalTheory.FODef.IsFilLiftV m.cart x (LinearMap.pi fun j => f j x) := by
   intro p _ D R _ b N hN hNp k _ _ t o₀ d f hdef
   rcases Nat.eq_zero_or_pos d with rfl | hd

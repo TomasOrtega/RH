@@ -15,6 +15,13 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply]`. Use extensionality with `w`. Use `show Completion.extensionEmbeddingOfIsReal w.2 ((posIdele (K := K) r hr : 𝔸[K]).1 w) = r`. Rewrite using `[← GroundTheory.Global.IdeleGroup.coe_infiniteProj, infiniteProj_posIdele]`. Use `show Completion.extensionEmbeddingOfIsReal w.2 (GroundTheory.Global.posRealElem w.1 (r ^ w.1.mult)) = r`.
+
+Rewrite using `[GroundTheory.Global.posRealElem, dif_pos w.2, w.2.mult_eq_one, pow_one, ← Completion.ringEquivRealOfIsReal_apply, RingEquiv.apply_symm_apply]`. Use `show Completion.extensionEmbedding w.1 ((posIdele (K := K) r hr : 𝔸[K]).1 w) = (r : ℂ)`. Rewrite using `[← GroundTheory.Global.IdeleGroup.coe_infiniteProj, infiniteProj_posIdele]`. Use `show Completion.extensionEmbedding w.1 (GroundTheory.Global.posRealElem w.1 (r ^ w.1.mult)) = r`. Establish `hc : ¬ w.1.IsReal` using `not_isReal_iff_isComplex.2 w.2`.
+
+Rewrite using `[GroundTheory.Global.posRealElem, dif_neg hc, mult, if_neg hc, ← Completion.ringEquivComplexOfIsComplex_apply (not_isReal_iff_isComplex.1 hc), RingEquiv.apply_symm_apply, Real.sqrt_sq hr.le]`.
+-/
 theorem ringEquiv_posIdele (r : ℝ) (hr : 0 < r) :
     InfiniteAdeleRing.ringEquiv_mixedSpace K ((posIdele (K := K) r hr : 𝔸[K]).1) =
       algebraMap ℝ (mixedEmbedding.mixedSpace K) r := by
@@ -37,6 +44,11 @@ variable (K n) in
 
 def centralExp : ℝ := ((n * Module.finrank ℚ K : ℝ))⁻¹
 
+/- English proof (translation)
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace K ((((centralSection K n s : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) a b).1) = _`. Rewrite using `[centralSection, MonoidHom.comp_apply, MonoidHom.comp_apply, scalarUnits_apply, coe_diagUnits]`. Express the relevant statement in the definitionally equal form `_ = (Matrix.diagonal fun _ => algebraMap ℝ (mixedEmbedding.mixedSpace K) ((s : ℝ) ^ centralExp K n) : Matrix (Fin n) (Fin n) (mixedEmbedding.mixedSpace K)) a b`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, Matrix.diagonal_apply_eq, posIdeleHom_apply]`. Conclude with `ringEquiv_posIdele _ _`. Rewrite using `[Matrix.diagonal_apply_ne _ hab, Matrix.diagonal_apply_ne _ hab]`. Conclude with `map_zero _`.
+-/
 theorem coe_zInf (s : {r : ℝ // 0 < r}) :
     (((zInf K n s : archGroup K n) : (ArchMatrix K n)ˣ) : ArchMatrix K n) =
       algebraMap ℝ (ArchMatrix K n) ((s : ℝ) ^ centralExp K n) := by
@@ -58,10 +70,18 @@ variable (K n) in
 def centralZ : (isExpLieAlgebra K n).lieSubalgebra :=
   ⟨algebraMap ℝ (ArchMatrix K n) (centralExp K n), Submodule.mem_top⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_centralZ :
     ((centralZ K n : (isExpLieAlgebra K n).lieSubalgebra) : ArchMatrix K n) =
       algebraMap ℝ (ArchMatrix K n) (centralExp K n) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[IsExpLieAlgebra.coe_expG, coe_zInf]`. Express the relevant statement in the definitionally equal form `NormedSpace.exp (t • algebraMap ℝ (ArchMatrix K n) (centralExp K n)) = _`. Rewrite using `[Algebra.smul_def, ← map_mul, ← NormedSpace.algebraMap_exp_comm, ← Real.exp_eq_exp_ℝ]`.
+
+Use `congr 1`. Use `show Real.exp (t * centralExp K n) = Real.exp t ^ centralExp K n`. Rewrite using `[Real.rpow_def_of_pos (Real.exp_pos t), Real.log_exp]`.
+-/
 theorem expG_centralZ (t : ℝ) :
     (isExpLieAlgebra K n).expG (t • (isExpLieAlgebra K n).ofLie (centralZ K n)) =
       zInf K n ⟨Real.exp t, Real.exp_pos t⟩ := by
@@ -74,11 +94,17 @@ theorem expG_centralZ (t : ℝ) :
   show Real.exp (t * centralExp K n) = Real.exp t ^ centralExp K n
   rw [Real.rpow_def_of_pos (Real.exp_pos t), Real.log_exp]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[LieSubalgebra.coe_bracket, Ring.lie_def, coe_centralZ, Algebra.commutes, sub_self]`. Both sides reduce to the same expression.
+-/
 theorem lie_centralZ (X : (isExpLieAlgebra K n).lieSubalgebra) : ⁅centralZ K n, X⁆ = 0 := by
   apply Subtype.ext
   rw [LieSubalgebra.coe_bracket, Ring.lie_def, coe_centralZ, Algebra.commutes, sub_self]
   rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[IsExpLieAlgebra.coe_Ad, IsExpLieAlgebra.coe_ofLie, coe_centralZ, ← Algebra.commutes, mul_assoc, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem Ad_centralZ (g : archGroup K n) :
     (isExpLieAlgebra K n).Ad g ((isExpLieAlgebra K n).ofLie (centralZ K n)) =
       (isExpLieAlgebra K n).ofLie (centralZ K n) := by
@@ -87,6 +113,29 @@ theorem Ad_centralZ (g : archGroup K n) :
     mul_assoc, ← Units.val_mul]
   simp
 
+/- English proof (translation)
+Use `set X := (isExpLieAlgebra K n).ofLie (centralZ K n) with hX`. Use `set f : ℝ → ℂ := fun t => (φ : AdelicGLn.AdelicGL K n → ℂ) (g * infEmb K n ((isExpLieAlgebra K n).expG (t • X))) with hf`. Establish `hsm : IsArchSmooth (φ : AdelicGLn.AdelicGL K n → ℂ)` using `φ.2.1.isSmooth.1`. Establish `hder : ∀ t, HasDerivAt f (c * f t) t`. Introduce `t`.
+
+Use `set g' := g * infEmb K n ((isExpLieAlgebra K n).expG (t • X)) with hg'`. Establish `h1` using `(isExpLieAlgebra K n).hasDerivAt_rightDeriv (hsm g') X 1`. Establish `hval : (isExpLieAlgebra K n).rightDeriv X (archSlice (φ : AdelicGLn.AdelicGL K n → ℂ) g') 1 = c * f t`. Establish `e1` using `uAction_ι_apply (centralZ K n) ⟨φ, hsm⟩ g'`. Establish `e2` using `congrArg (fun ψ : cuspForms K n => (ψ : AdelicGLn.AdelicGL K n → ℂ) g') hφ`.
+
+Conclude with `e1.symm.trans e2`. Rewrite `h1` using `[hval]`. Establish `h2 : (fun u : ℝ => archSlice (φ : AdelicGLn.AdelicGL K n → ℂ) g' (1 * (isExpLieAlgebra K n).expG (u • X))) = fun u => f (t + u)`. Use function extensionality and compare the values at `u`. Simplify using `only [archSlice_apply, one_mul, hf, hg', mul_assoc, ← map_mul, ← (isExpLieAlgebra K n).expG_add_smul]`.
+
+Rewrite `h1` using `[h2]`. Establish `h1' : HasDerivAt (fun u => f (t + u)) (c * f t) (t - t)` using `by rw [sub_self]; exact h1`. Establish `h3` using `h1'.comp_sub_const t t`. Establish `e : (fun x => f (t + (x - t))) = f`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [add_sub_cancel]`. Rewrite `h3` using `[e]`. Conclude with `h3`. Use `set F : ℝ → ℂ := fun t => Complex.exp (-(c * t)) * f t with hF`. Establish `hFd : ∀ t, HasDerivAt F 0 t`.
+
+Introduce `t`. Establish `he : HasDerivAt (fun x : ℝ => Complex.exp (-(c * x))) (Complex.exp (-(c * t)) * (-c)) t`. Establish `hl : HasDerivAt (fun x : ℝ => -(c * (x : ℂ))) (-c) t`. Use `((hasDerivAt_id t).ofReal_comp).const_mul (-c)` as an intermediate fact. Establish `e1 : (fun y : ℝ => -c * ((id y : ℝ) : ℂ)) = fun x : ℝ => -(c * (x : ℂ))`.
+
+Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `e2 : -c * ((1 : ℝ) : ℂ) = -c` using `by simp`. Rewrite `this` using `[e1, e2]`. Conclude with `this`.
+
+Conclude with `hl.cexp`. Use `he.mul (hder t)` as an intermediate fact. Establish `e : Complex.exp (-(c * t)) * (-c) * f t + Complex.exp (-(c * t)) * (c * f t) = 0` using `by ring`. Rewrite `this` using `[e]`. Conclude with `this`.
+
+Establish `hconst : F (Real.log s) = F 0` using `is_const_of_deriv_eq_zero (fun t => (hFd t).differentiableAt) (fun t => (hFd t).deriv) _ _`. Establish `hf0 : f 0 = (φ : AdelicGLn.AdelicGL K n → ℂ) g`. Simplify using `[hf]`. Establish `hfs : f (Real.log s) = (φ : AdelicGLn.AdelicGL K n → ℂ) (g * centralSection K n s)`. Simplify using `only [hf]`.
+
+Rewrite using `[expG_centralZ, infEmb_zInf]`. Establish `: (⟨Real.exp (Real.log s), Real.exp_pos _⟩ : {r : ℝ // 0 < r}) = s` using `Subtype.ext (Real.exp_log s.2)`. Rewrite using `[this]`. Simplify using `only [hF, hf0, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, one_mul] at hconst`. Rewrite using `[← hfs, ← hconst, ← mul_assoc, ← Complex.exp_add]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem apply_mul_centralSection {φ : cuspForms K n} {c : ℂ}
     (hφ : lieActionCusp K n (centralZ K n) φ = c • φ) (g : AdelicGLn.AdelicGL K n)
     (s : {r : ℝ // 0 < r}) :
@@ -152,6 +201,9 @@ theorem apply_mul_centralSection {φ : cuspForms K n} {c : ℂ}
   rw [← hfs, ← hconst, ← mul_assoc, ← Complex.exp_add]
   simp
 
+/- English proof (translation)
+Rewrite `h0` using `[cuspToL2_eq_zero_iff]`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `exists_centralSection_mul_mem_normOneGL x`. Rewrite using `[centralSection_mul_comm, apply_mul_centralSection hφ, h0 y hy, mul_zero]`. Both sides reduce to the same expression.
+-/
 theorem eq_zero_of_cuspFormLp_eq_zero (μ : MeasureTheory.Measure (normOneGL K n)) [μ.IsHaarMeasure]
     {φ : cuspForms K n} {c : ℂ} (hφ : lieActionCusp K n (centralZ K n) φ = c • φ)
     (h0 : cuspToL2 μ φ = 0) : φ = 0 := by

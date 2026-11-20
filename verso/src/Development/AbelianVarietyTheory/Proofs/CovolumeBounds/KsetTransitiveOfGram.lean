@@ -10,6 +10,27 @@ open scoped ENNReal ComplexOrder
 
 namespace GlobalTheory.HCXi.Poisson
 
+/- English proof (translation)
+Use `set P : Matrix (Fin n) (Fin n) ℂ := (2⁻¹ : ℂ) • (1 + H) with hP`. Establish `hPh : Pᴴ = P`. Simplify using `[hP, conjTranspose_smul, conjTranspose_add, hH]`. Establish `hPP : P * P = P`. Simplify using `only [hP, smul_mul_assoc, mul_smul_comm, mul_add, add_mul, one_mul, mul_one, hHH]`.
+
+Use `module`. Establish `hHP : H = (2 : ℂ) • P - 1`. Simplify using `only [hP]`. Use `module`. Establish `hG : Aᴴ * P * A = Bᴴ * P * B`.
+
+Simplify using `only [hP, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, h1, h2]`. Use `clear_value P`. Establish `hQh : (1 - P)ᴴ = 1 - P` using `by simp [hPh]`. Establish `hQQ : (1 - P) * (1 - P) = 1 - P`. Simplify using `only [mul_sub, sub_mul, one_mul, mul_one, hPP, sub_self, sub_zero]`.
+
+Establish `hG' : Aᴴ * (1 - P) * A = Bᴴ * (1 - P) * B`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1, hG]`. Establish `key : ∀ E : Matrix (Fin n) (Fin n) ℂ, Eᴴ = E → E * E = E → Aᴴ * E * A = Bᴴ * E * B → ∃ U : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 ∧ U * E = E * U ∧ U * (1 - E) = 1 - E ∧ U * (E * A) = E * B`. Introduce `E hE hEE hg`. Establish `e : ∀ C : Matrix (Fin n) (Fin m) ℂ, (E * C)ᴴ * (E * C) = Cᴴ * E * C`.
+
+Introduce `C`. Rewrite using `[conjTranspose_mul, hE, Matrix.mul_assoc, ← Matrix.mul_assoc E E, hEE, Matrix.mul_assoc]`. Use `GlobalTheory.UnitaryExtension.exists_unitary_of_gram_eq n m E (E * A) (E * B) hE hEE ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc, hEE]`. Rewrite using `[← Matrix.mul_assoc, hEE]`.
+
+Rewrite using `[e, e, hg]`. Take `⟨U, hU1, hU2, hU3, hU4⟩` from `key P hPh hPP hG`. Take `⟨V, hV1, hV2, hV3, hV4⟩` from `key (1 - P) hQh hQQ hG'`. Rewrite `hV3` using `[sub_sub_cancel]`. Establish `hV5 : V * P = P * V`.
+
+Use `hV2` as an intermediate fact. Simplify using `only [mul_sub, sub_mul, one_mul, mul_one] at this`. Conclude with `sub_right_injective this`. Use `⟨U * V, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc Uᴴ, hU1, Matrix.one_mul, hV1]`.
+
+Establish `: U * V * P = P * (U * V)`. Rewrite using `[mul_assoc, hV5, ← mul_assoc, hU2, mul_assoc]`. Rewrite using `[hHP]`. Simplify using `only [mul_sub, sub_mul, one_mul, mul_one, mul_smul_comm, smul_mul_assoc, this]`. Establish `hA : A = P * A + (1 - P) * A`.
+
+Rewrite using `[← Matrix.add_mul, add_sub_cancel, Matrix.one_mul]`. Establish `hB : B = P * B + (1 - P) * B`. Rewrite using `[← Matrix.add_mul, add_sub_cancel, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_add, hV4, ← Matrix.mul_assoc V P, hV3]`.
+
+Use `_ = P * B + (1 - P) * B := by`. Rewrite using `[Matrix.mul_add, hU4, ← Matrix.mul_assoc U (1 - P), hU3]`. Use `_ = B := hB.symm`.
+-/
 theorem unitary_comm_of_gram {n m : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (A B : Matrix (Fin n) (Fin m) ℂ) (h1 : Aᴴ * A = Bᴴ * B) (h2 : Aᴴ * H * A = Bᴴ * H * B) :
     ∃ U : Matrix (Fin n) (Fin n) ℂ, Uᴴ * U = 1 ∧ U * H = H * U ∧ U * A = B := by
@@ -64,6 +85,11 @@ theorem unitary_comm_of_gram {n m : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : 
         rw [Matrix.mul_add, hU4, ← Matrix.mul_assoc U (1 - P), hU3]
       _ = B := hB.symm
 
+/- English proof (translation)
+Introduce `k r m A B h1 h2`. Establish `hF` using `Formalism.QuantumDeterminants.hermitian_pos_facts_hold k r`. Take `⟨U, hU1, hU2, hU3⟩` from `unitary_comm_of_gram (Hpk k r) hF.1 hF.2.1 A B h1 h2`. Use `⟨U, ⟨?_, hU1⟩, hU3⟩` and prove the remaining obligations. Use `show Uᴴ * Hpk k r * U = Hpk k r`.
+
+Rewrite using `[Matrix.mul_assoc, ← hU2, ← Matrix.mul_assoc, hU1, Matrix.one_mul]`.
+-/
 theorem kset_transitive_of_gram : ∀ (k r m : ℕ) (A B : Matrix (Fin (2 * r + k + 1)) (Fin m) ℂ),
     Aᴴ * A = Bᴴ * B → Aᴴ * Hpk k r * A = Bᴴ * Hpk k r * B → ∃ κ ∈ Kset k r, κ * A = B := by
   intro k r m A B h1 h2
@@ -73,24 +99,44 @@ theorem kset_transitive_of_gram : ∀ (k r m : ℕ) (A B : Matrix (Fin (2 * r + 
   show Uᴴ * Hpk k r * U = Hpk k r
   rw [Matrix.mul_assoc, ← hU2, ← Matrix.mul_assoc, hU1, Matrix.one_mul]
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _`.
+-/
 lemma sqLen_nonneg' {n : ℕ} (v : Fin n → ℂ) : 0 ≤ sqLen v :=
   Finset.sum_nonneg fun i _ => Complex.normSq_nonneg _
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `Function.ne_iff.mp hv`. Conclude with `Finset.sum_pos' (fun i _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩`.
+-/
 lemma sqLen_pos' {n : ℕ} {v : Fin n → ℂ} (hv : v ≠ 0) : 0 < sqLen v := by
   obtain ⟨i, hi⟩ := Function.ne_iff.mp hv
   exact Finset.sum_pos' (fun i _ => Complex.normSq_nonneg _)
     ⟨i, Finset.mem_univ _, Complex.normSq_pos.mpr hi⟩
 
+/- English proof (translation)
+Simplify using `[sqLen, Finset.mul_sum]`.
+-/
 lemma sqLen_smul' {n : ℕ} (c : ℂ) (v : Fin n → ℂ) : sqLen (c • v) = Complex.normSq c * sqLen v := by
   simp [sqLen, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `[sqLen, dotProduct, Complex.normSq_eq_conj_mul_self]`.
+-/
 lemma star_dot_self {n : ℕ} (v : Fin n → ℂ) : star v ⬝ᵥ v = (sqLen v : ℂ) := by
   simp [sqLen, dotProduct, Complex.normSq_eq_conj_mul_self]
 
+/- English proof (translation)
+Unfold `sqLen`. Conclude with `continuous_finset_sum _ fun i _ => Complex.continuous_normSq.comp (continuous_apply i)`.
+-/
 lemma continuous_sqLen' {n : ℕ} : Continuous (sqLen : (Fin n → ℂ) → ℝ) := by
   unfold sqLen
   exact continuous_finset_sum _ fun i _ => Complex.continuous_normSq.comp (continuous_apply i)
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+-/
 lemma mul_mem_GV {k r : ℕ} {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV k r) : a * b ∈ GV k r := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
   have hb' : bᴴ * Hpk k r * b = Hpk k r := hb
@@ -99,6 +145,11 @@ lemma mul_mem_GV {k r : ℕ} {a b : Mat k r} (ha : a ∈ GV k r) (hb : b ∈ GV 
         rw [conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Introduce `h`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hH : (Hpk k r)ᴴ * Hpk k r = 1` using `(GlobalTheory.HCXi.KGroup.kset_facts k r).2.2.1.2`. Apply `hy` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 0 := by rw [h, Matrix.mulVec_zero]`.
+-/
 lemma mulVec_ne_zero {k r : ℕ} {a : Mat k r} (ha : a ∈ GV k r) {y : Fin (2 * r + k + 1) → ℂ}
     (hy : y ≠ 0) : a *ᵥ y ≠ 0 := by
   intro h
@@ -110,6 +161,17 @@ lemma mulVec_ne_zero {k r : ℕ} {a : Mat k r} (ha : a ∈ GV k r) {y : Fin (2 *
         rw [Matrix.mulVec_mulVec]; simp only [Matrix.mul_assoc]
     _ = 0 := by rw [h, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Use `set c : ℂ := ((Real.sqrt (sqLen v) : ℝ) : ℂ) with hc`. Establish `hcn : Complex.normSq c = sqLen v`. Rewrite using `[hc, Complex.normSq_ofReal, Real.mul_self_sqrt (sqLen_nonneg' v)]`. Establish `key : ∀ (M : Mat k r) (y : Fin (2 * r + k + 1) → ℂ), (replicateCol (Fin 1) y)ᴴ * M * replicateCol (Fin 1) y = Matrix.of fun _ _ => star y ⬝ᵥ (M *ᵥ y)`. Introduce `M y`.
+
+Rewrite using `[Matrix.mul_assoc, ← replicateCol_mulVec, conjTranspose_replicateCol]`. Use extensionality with `i j`. Simplify using `[replicateRow_mul_replicateCol_apply]`. Take `⟨κ, hκ, h⟩` from `kset_transitive_of_gram k r 1 (replicateCol (Fin 1) (c • x)) (replicateCol (Fin 1) v) (by`. Establish `h1` using `key 1 (c • x)`.
+
+Establish `h2` using `key 1 v`. Rewrite `h1`, `h2` using `[Matrix.mul_one, Matrix.one_mulVec, star_dot_self]`. Rewrite using `[h1, h2, sqLen_smul', hx1, hcn, mul_one])`. Use the proof step `(by`. Rewrite using `[key, key]`.
+
+Establish `h1 : star v ⬝ᵥ (Hpk k r *ᵥ v) = 0` using `hv0`. Establish `h2 : star x ⬝ᵥ (Hpk k r *ᵥ x) = 0` using `hx0`. Rewrite using `[h1, Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, h2, smul_zero, smul_zero])`. Use `⟨κ, hκ, c, hcn, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← replicateCol_mulVec]`.
+
+Use `replicateCol_injective h` as an intermediate fact. Rewrite using `[← this, Matrix.mulVec_smul]`.
+-/
 lemma exists_translate {k r : ℕ} {x v : Fin (2 * r + k + 1) → ℂ} (hx0 : herm (Hpk k r) x x = 0)
     (hx1 : sqLen x = 1) (hv0 : herm (Hpk k r) v v = 0) :
     ∃ κ ∈ Kset k r, ∃ c : ℂ, Complex.normSq c = sqLen v ∧ v = c • (κ *ᵥ x) := by
@@ -138,6 +200,21 @@ lemma exists_translate {k r : ℕ} {x v : Fin (2 * r + k + 1) → ℂ} (hx0 : he
   have := replicateCol_injective h
   rw [← this, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Use `haveI : IsProbabilityMeasure μK := ⟨hK.2⟩`. Use `set Γ := ∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen v)) ∂m with hΓ`. Establish `hmem : ∀ᵐ κ : Mt k r ∂μK, Matrix.of κ ∈ Kset k r` using `hK.1.conc`. Establish `hx : x ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `[sqLen] at hx1`. Establish `hcg : Continuous fun κ : Mt k r => g * Matrix.of κ` using `continuous_const.matrix_mul (continuous_id (X := Mat k r))`. Establish `hcs : Continuous fun p : Mt k r × (Fin (2 * r + k + 1) → ℂ) => sqLen ((g * Matrix.of p.1) *ᵥ p.2)` using `continuous_sqLen'.comp ((hcg.comp continuous_fst).matrix_mulVec continuous_snd)`. Establish `hcx : Continuous fun κ : Mt k r => sqLen ((g * Matrix.of κ) *ᵥ x)` using `continuous_sqLen'.comp (hcg.matrix_mulVec continuous_const)`. Establish `hm1 : Measurable fun p : Mt k r × (Fin (2 * r + k + 1) → ℂ) => ENNReal.ofReal (Real.exp (-sqLen ((g * Matrix.of p.1) *ᵥ p.2)))` using `(Real.continuous_exp.comp hcs.neg).measurable.ennreal_ofReal`.
+
+Establish `hm2 : Measurable fun p : Mt k r × (Fin (2 * r + k + 1) → ℂ) => ENNReal.ofReal (Real.exp (-(sqLen ((g * Matrix.of p.1) *ᵥ x) * sqLen p.2)))` using `(Real.continuous_exp.comp ((hcx.comp continuous_fst).mul (continuous_sqLen'.comp continuous_snd)).neg).measurable.ennreal_ofReal`. Establish `e1 : Γ = ∫⁻ κ : Mt k r, ∫⁻ v, ENNReal.ofReal (Real.exp (-sqLen ((g * Matrix.of κ) *ᵥ v))) ∂m ∂μK`. Rewrite using `[lintegral_congr_ae (g := fun _ => Γ)]`. Simplify using the standard rewrite rules. Use `filter_upwards [hmem] with κ hκ using hinv _ (mul_mem_GV hg hκ.1)`.
+
+Establish `e2 : ∀ᵐ v ∂m, (∫⁻ κ : Mt k r, ENNReal.ofReal (Real.exp (-sqLen ((g * Matrix.of κ) *ᵥ v))) ∂μK) = ∫⁻ κ : Mt k r, ENNReal.ofReal (Real.exp (-(sqLen ((g * Matrix.of κ) *ᵥ x) * sqLen v))) ∂μK` using `by filter_upwards [hae] with v hv`. Take `⟨a, ha, c, hc, hv'⟩` from `exists_translate hx0 hx1 hv.2`. Establish `hr : Measurable (rmulF a)`. Establish `: Continuous (rmulF a)` using `(continuous_id (X := Mat k r)).matrix_mul continuous_const`. Conclude with `this.measurable`.
+
+Establish `hf : Measurable fun κ : Mt k r => ENNReal.ofReal (Real.exp (-(sqLen ((g * Matrix.of κ) *ᵥ x) * sqLen v)))` using `(Real.continuous_exp.comp (hcx.mul continuous_const).neg).measurable.ennreal_ofReal`. Use `conv_rhs => rw [← hK.1.right a ha]`. Rewrite using `[lintegral_map hf hr]`. Use `lintegral_congr fun κ => ?_` and prove the remaining obligations. Establish `: Matrix.of (rmulF a κ) = Matrix.of κ * a` using `rfl`.
+
+Rewrite using `[this, ← hc, ← Matrix.mul_assoc, ← Matrix.mulVec_mulVec x _ a, mul_comm _ (Complex.normSq c), ← sqLen_smul', ← Matrix.mulVec_smul, ← hv']`. Establish `e3 : ∀ᵐ κ : Mt k r ∂μK, (∫⁻ v, ENNReal.ofReal (Real.exp (-(sqLen ((g * Matrix.of κ) *ᵥ x) * sqLen v))) ∂m) = ENNReal.ofReal (sqLen ((g * Matrix.of κ) *ᵥ x) ^ d) * Γ` using `by filter_upwards [hmem] with κ hκ`. Conclude with `hhom _ (sqLen_pos' (mulVec_ne_zero (mul_mem_GV hg hκ.1) hx)) (fun t => ENNReal.ofReal (Real.exp (-t))) (Real.continuous_exp.comp continuous_neg).measurable.ennreal_ofReal`. Establish `e4 : Γ = (∫⁻ κ : Mt k r, ENNReal.ofReal (sqLen ((g * Matrix.of κ) *ᵥ x) ^ d) ∂μK) * Γ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e5 : (∫⁻ κ : Mt k r, ENNReal.ofReal (sqLen ((g * Matrix.of κ) *ᵥ x) ^ d) ∂μK) * Γ = 1 * Γ`. Rewrite using `[one_mul, ← e4]`. Conclude with `(ENNReal.mul_left_inj h0 htop).mp e5`.
+-/
 lemma core (k r : ℕ) (μK : Measure (Mt k r)) (x : Fin (2 * r + k + 1) → ℂ) (hK : IsKMeas k r μK)
     (hx0 : herm (Hpk k r) x x = 0) (hx1 : sqLen x = 1) (g : Mat k r) (hg : g ∈ GV k r)
     (m : Measure (Fin (2 * r + k + 1) → ℂ)) [SFinite m] (d : ℝ)
@@ -209,6 +286,11 @@ lemma core (k r : ℕ) (μK : Measure (Mt k r)) (x : Fin (2 * r + k + 1) → ℂ
     rw [one_mul, ← e4]
   exact (ENNReal.mul_left_inj h0 htop).mp e5
 
+/- English proof (translation)
+Introduce `k r μK x hk hK hx0 hx1 g hg`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Take `⟨m, hs, hae, hhom, h0, htop, hinv⟩` from `GlobalTheory.HCXi.ConeZero.exists_coneMeasure k hk`. Conclude with `core k 0 μK x hK hx0 hx1 g hg m _ hae hhom h0 htop hinv`. Take `⟨r', rfl⟩` from `Nat.exists_eq_add_of_le hr`.
+
+Take `⟨m, hs, hae, hhom, h0, htop, hinv⟩` from `GlobalTheory.HCXi.exists_cone_measure_pos_rank k r'`. Conclude with `core k _ μK x hK hx0 hx1 g hg m _ hae hhom h0 htop hinv`.
+-/
 theorem poisson_integral : ∀ (k r : ℕ) (μK : Measure (Mt k r)) (x : Fin (2 * r + k + 1) → ℂ), 1 ≤ k → IsKMeas k r μK → herm (Hpk k r) x x = 0 → sqLen x = 1 → ∀ g ∈ GV k r, (∫⁻ κ : Mt k r, ENNReal.ofReal (sqLen ((g * Matrix.of κ) *ᵥ x) ^ (-((2 * r + k : ℕ) : ℝ))) ∂μK) = 1 := by
   intro k r μK x hk hK hx0 hx1 g hg
   rcases Nat.eq_zero_or_pos r with rfl | hr

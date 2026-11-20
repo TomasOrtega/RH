@@ -6,6 +6,53 @@ namespace GlobalTheory.DomDVR
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `F _ _ T' hT s h1 hmul`. Use `haveI := hT`. Use `set A := Submodule.span T' (s : Set F) with hA`. Establish `hAmul : ∀ x y, x ∈ A → y ∈ A → x * y ∈ A`. Introduce `x y hx hy`.
+
+Establish `: A * A ≤ A`. Rewrite using `[hA, Submodule.span_mul_span]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `hmul a ha b hb`.
+
+Conclude with `this (Submodule.mul_mem_mul hx hy)`. Establish `hsm : ∀ d ∈ T', ∀ a ∈ A, d * a ∈ A` using `fun d hd a ha => A.smul_mem ⟨d, hd⟩ ha`. Set `Asub : Subalgebra T' F` to `A.toSubalgebra h1 hAmul`. Establish `hint : ∀ x ∈ s, IsIntegral T' x` using `fun x hx => IsIntegral.of_mem_of_fg Asub (Submodule.fg_span s.finite_toSet) x (Submodule.subset_span hx)`. Set `K` to `FractionRing T'`.
+
+Establish `hι : Function.Injective (T'.subtype)` using `Subtype.val_injective`. Use `letI : Algebra K F := (IsFractionRing.lift (K := K) hι).toAlgebra`. Use `haveI : IsScalarTower T' K F := IsScalarTower.of_algebraMap_eq (fun x => (IsFractionRing.lift_algebraMap (K := K) hι x).symm)`. Establish `hintK : ∀ x ∈ (s : Set F), IsIntegral K x` using `fun x hx => (hint x hx).tower_top`. Set `L` to `IntermediateField.adjoin K (s : Set F)`.
+
+Use `haveI : FiniteDimensional K L := IntermediateField.finiteDimensional_adjoin hintK`. Use `haveI : CharZero K := (algebraMap K F).charZero`. Use `haveI : Algebra.IsSeparable K L := inferInstance`. Set `C` to `integralClosure T' L`. Use `haveI : IsDedekindDomain C := IsIntegralClosure.isDedekindDomain T' K L C`.
+
+Establish `hLF : ∀ a : T', ((algebraMap T' L a : L) : F) = a`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply T' K L]`. Use `show algebraMap K F (algebraMap T' K a) = a`. Conclude with `IsFractionRing.lift_algebraMap (K := K) hι a`.
+
+Establish `hcoe : ∀ a : T', (((algebraMap T' C a : C) : L) : F) = a`. Introduce `a`. Rewrite using `[← hLF a, IsScalarTower.algebraMap_apply T' C L]`. Both sides reduce to the same expression. Establish `hinjC : Function.Injective (algebraMap T' C)` using `fun a b h => Subtype.val_injective (by`.
+
+Use `congrArg (fun c : C => ((c : L) : F)) h` as an intermediate fact. Simplify `this)` using `only [hcoe]`. Take `⟨P, hPmax, hPm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := C) (maximalIdeal T') (by rw [(RingHom.injective_iff_ker_eq_bot _).1 hinjC]; exact bot_le)`. Use `haveI : P.IsPrime := hPmax.isPrime`. Establish `hPbot : P ≠ ⊥`.
+
+Introduce and unpack `rfl`. Apply `IsDiscreteValuationRing.not_a_field T'` to reduce the goal to its premises. Rewrite using `[← hPm, Ideal.comap_bot_of_injective _ hinjC]`. Set `Loc` to `Localization.AtPrime P`. Use `haveI : IsDiscreteValuationRing Loc := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain C hPbot Loc`.
+
+Establish `hunit : ∀ y : P.primeCompl, IsUnit (algebraMap C L y)` using `fun y => isUnit_iff_ne_zero.2 fun h => y.2 (by`. Rewrite using `[show (y : C) = 0 from Subtype.ext (by simpa using h)]; exact P.zero_mem)`. Set `ψ : Loc →+* L` to `IsLocalization.lift (M := P.primeCompl) hunit`. Establish `hψ : Function.Injective ψ` using `(IsLocalization.lift_injective_iff hunit).2 fun x y => ⟨fun h => by rw [IsLocalization.injective Loc P.primeCompl_le_nonZeroDivisors h], fun h => by rw [Subtype.val_injective h]⟩`. Set `φ : Loc →+* F` to `(algebraMap L F).comp ψ`.
+
+Establish `hφ : Function.Injective φ` using `fun a b h => hψ ((algebraMap L F).injective h)`. Establish `hφc : ∀ c : C, φ (algebraMap C Loc c) = ((c : L) : F)`. Introduce `c`. Use `show ((ψ (algebraMap C Loc c) : L) : F) = _`. Rewrite using `[IsLocalization.lift_eq]`.
+
+Both sides reduce to the same expression. Set `T''` to `φ.range`. Set `e : Loc ≃+* T''` to `RingEquiv.ofBijective φ.rangeRestrict ⟨fun a b h => hφ (by simpa only [RingHom.coe_rangeRestrict] using congrArg Subtype.val h), φ.rangeRestrict_surjective⟩`. Use `⟨T'', IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Conclude with `RingHom.mem_range.2 ⟨algebraMap C Loc (algebraMap T' C ⟨x, hx⟩), by rw [hφc, hcoe]⟩`. Introduce `x hx`. Establish `hxL : x ∈ L` using `IntermediateField.subset_adjoin K _ hx`. Establish `hxC : (⟨x, hxL⟩ : L) ∈ C`. Rewrite using `[mem_integralClosure_iff]`.
+
+Set `f : L →ₐ[T'] F` to `{ toRingHom := algebraMap L F, commutes' := fun a => hLF a }`. Conclude with `(isIntegral_algHom_iff f (algebraMap L F).injective).1 (hint x hx)`. Conclude with `RingHom.mem_range.2 ⟨algebraMap C Loc ⟨⟨x, hxL⟩, hxC⟩, by rw [hφc]⟩`. Introduce and unpack `x hx ⟨y, hy, hxy⟩`. Assume the negation of the conclusion as `hne`.
+
+Establish `hnu : (⟨x, hx⟩ : T') ∈ maximalIdeal T'`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Conclude with `hne ⟨b, b.2, congrArg Subtype.val hb⟩`.
+
+Establish `hP : algebraMap T' C ⟨x, hx⟩ ∈ P`. Rewrite `hnu` using `[← hPm]`. Conclude with `hnu`. Establish `hmax : algebraMap C Loc (algebraMap T' C ⟨x, hx⟩) ∈ maximalIdeal Loc` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff Loc P _).2 hP`. Take `⟨z, rfl⟩` from `RingHom.mem_range.1 hy`.
+
+Apply `(IsLocalRing.mem_maximalIdeal _).1 hmax` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.2 ⟨z, hφ ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one, hφc, hcoe]`. Conclude with `hxy`. Set `M : Subalgebra K F` to `{ carrier := {y | ∃ d ∈ T', d ≠ 0 ∧ d * y ∈ A} mul_mem' := by`.
+
+Introduce and unpack `a b ⟨d1, hd1, hd1', ha⟩ ⟨d2, hd2, hd2', hb⟩`. Conclude with `⟨d1 * d2, T'.mul_mem hd1 hd2, mul_ne_zero hd1' hd2', by`. Rewrite using `[show d1 * d2 * (a * b) = (d1 * a) * (d2 * b) by ring]; exact hAmul _ _ ha hb⟩`. Use the proof step `add_mem' := by`. Introduce and unpack `a b ⟨d1, hd1, hd1', ha⟩ ⟨d2, hd2, hd2', hb⟩`.
+
+Conclude with `⟨d1 * d2, T'.mul_mem hd1 hd2, mul_ne_zero hd1' hd2', by`. Rewrite using `[show d1 * d2 * (a + b) = d2 * (d1 * a) + d1 * (d2 * b) by ring]`. Conclude with `A.add_mem (hsm _ hd2 _ ha) (hsm _ hd1 _ hb)⟩`. Use the proof step `algebraMap_mem' := by`. Introduce `k`.
+
+Take `⟨⟨a, b⟩, rfl⟩` from `IsLocalization.mk'_surjective (nonZeroDivisors T') k`. Establish `hb : ((b : T') : F) ≠ 0` using `fun h => nonZeroDivisors.coe_ne_zero b (Subtype.ext h)`. Use `⟨(b : T'), (b : T').2, hb, ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap K F (IsLocalization.mk' K a b) = (a : F) / ((b : T') : F)` using `IsFractionRing.lift_mk' hι a b`. Establish `e2 : ((b : T') : F) * ((a : F) / ((b : T') : F)) = a` using `by field_simp`.
+
+Rewrite using `[e1, e2]`. Simplify using `using hsm _ a.2 _ h1 }`. Establish `hLM : ∀ y ∈ L, y ∈ M`. Introduce `y hy`. Establish `e` using `IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (F := K) (S := (s : Set F)) (fun x hx => (hintK x hx).isAlgebraic)`.
+
+Establish `hy' : y ∈ Algebra.adjoin K (s : Set F)` using `by rw [← e]; exact hy`. Use `(Algebra.adjoin_le ?_ : Algebra.adjoin K (s : Set F) ≤ M) hy'` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨1, T'.one_mem, one_ne_zero, by rw [one_mul]; exact Submodule.subset_span hx⟩`. Introduce `y hy`.
+
+Take `⟨z, rfl⟩` from `RingHom.mem_range.1 hy`. Conclude with `hLM _ (ψ z).2`.
+-/
 theorem exists_dominating_dvr : ∀ (F : Type) [Field F] [CharZero F] (T' : Subring F), IsDiscreteValuationRing T' → ∀ (s : Finset F), (1 : F) ∈ Submodule.span T' (s : Set F) → (∀ x ∈ s, ∀ y ∈ s, x * y ∈ Submodule.span T' (s : Set F)) → ∃ T'' : Subring F, IsDiscreteValuationRing T'' ∧ T' ≤ T'' ∧ (∀ x ∈ s, x ∈ T'') ∧ (∀ x ∈ T', (∃ y ∈ T'', x * y = 1) → ∃ y ∈ T', x * y = 1) ∧ (∀ y ∈ T'', ∃ d ∈ T', d ≠ 0 ∧ d * y ∈ Submodule.span T' (s : Set F)) := by
   intro F _ _ T' hT s h1 hmul
   classical

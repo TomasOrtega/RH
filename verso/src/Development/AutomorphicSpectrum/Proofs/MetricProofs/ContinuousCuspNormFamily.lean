@@ -12,6 +12,9 @@ section Emb
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥`. Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.injective_int _)`. Conclude with `(RingHom.injective_iff_ker_eq_bot s).2 (Ideal.eq_bot_of_comap_eq_bot hc)`.
+-/
 theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
   have hc : (RingHom.ker s).comap (algebraMap ℤ (𝓞 E)) = ⊥ := by
     rw [RingHom.comap_ker]
@@ -20,9 +23,15 @@ theorem emb_injective (s : 𝓞 E →+* ℂ) : Function.Injective s := by
 
 def extEmb (s : 𝓞 E →+* ℂ) : E →+* ℂ := IsFractionRing.lift (emb_injective s)
 
+/- English proof (translation)
+The claim follows from `IsFractionRing.lift_algebraMap (emb_injective s) a`.
+-/
 theorem extEmb_apply (s : 𝓞 E →+* ℂ) (a : 𝓞 E) : extEmb s (algebraMap (𝓞 E) E a) = s a :=
   IsFractionRing.lift_algebraMap (emb_injective s) a
 
+/- English proof (translation)
+The claim follows from `RingHom.ext (extEmb_apply s)`.
+-/
 theorem extEmb_comp (s : 𝓞 E →+* ℂ) : (extEmb s).comp (algebraMap (𝓞 E) E) = s :=
   RingHom.ext (extEmb_apply s)
 
@@ -30,11 +39,23 @@ def charVec (a : 𝓞 E) : (E →+* ℂ) → ℂ := fun s => s (algebraMap (𝓞
 
 def toChar (s : E →+* ℂ) : 𝓞 E →* ℂ := (s.comp (algebraMap (𝓞 E) E) : 𝓞 E →+* ℂ)
 
+/- English proof (translation)
+Introduce `s s' h`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)` and prove the remaining obligations. Conclude with `DFunLike.congr_fun h a`.
+-/
 theorem toChar_injective : Function.Injective (toChar (E := E)) := by
   intro s s' h
   refine IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun a => ?_)
   exact DFunLike.congr_fun h a
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hf⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Apply `hf0` to reduce the goal to its premises. Establish `li` using `(linearIndependent_monoidHom (𝓞 E) ℂ).comp _ (toChar_injective (E := E))`. Rewrite `li` using `[Fintype.linearIndependent_iff]`.
+
+Establish `hl` using `li (fun s => f fun j => if s = j then 1 else 0) (by`. Use function extensionality and compare the values at `a`. Establish `h1 : f (charVec a) = 0` using `hf (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp, smul_eq_mul, Pi.zero_apply]`.
+
+Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Conclude with `mul_comm (_ : ℂ) _)`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ f v, LinearMap.zero_apply]`. Conclude with `Finset.sum_eq_zero fun s _ => (congrArg (v s • ·) (hl s)).trans (smul_zero _)`.
+-/
 theorem span_charVec : Submodule.span ℂ (Set.range (charVec (E := E))) = ⊤ := by
   classical
   by_contra hne
@@ -57,6 +78,11 @@ theorem span_charVec : Submodule.span ℂ (Set.range (charVec (E := E))) = ⊤ :
 
 open Classical in
 
+/- English proof (translation)
+Establish `h : (Pi.single s 1 : (E →+* ℂ) → ℂ) ∈ Submodule.span ℂ (Set.range (charVec (E` using `E))) := by`. Rewrite using `[span_charVec]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 h`. Use `⟨c, fun s' => ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `congrFun hc s'`. Simplify `h2` using `[Finsupp.sum, Finset.sum_apply, charVec, Pi.single_apply]`.
+-/
 theorem exists_coeff (s : E →+* ℂ) : ∃ c : 𝓞 E →₀ ℂ, ∀ s' : E →+* ℂ,
     ∑ a ∈ c.support, c a * s' (algebraMap (𝓞 E) E a) = if s' = s then 1 else 0 := by
   have h : (Pi.single s 1 : (E →+* ℂ) → ℂ) ∈ Submodule.span ℂ (Set.range (charVec (E := E))) := by
@@ -71,12 +97,22 @@ end Emb
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eigSp_iff (R : RiemLat E g Λ) {s : 𝓞 E →+* ℂ} {x : Fin g → ℂ} :
     x ∈ eigSp R.B s ↔ ∀ a, R.B a x = s a • x := by
   simp [eigSp, Submodule.mem_iInf, sub_eq_zero]
 
 open Classical in
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Establish `hy : ∀ a : 𝓞 E, R.P (a • u) = ∑ s' : E →+* ℂ, s' (algebraMap (𝓞 E) E a) • eigComp R.B (s'.comp (algebraMap (𝓞 E) E)) (R.P u)`. Introduce `a`. Rewrite using `[R.act]`. Use `conv_lhs => rw [← h4 (R.P u)]`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Conclude with `(mem_eigSp_iff R).1 ((h3 _).1 _) a`. Repeatedly rewrite using `[hy, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_smul, hc]`. Simplify using `[ite_smul]`.
+-/
 theorem eigComp_eq (R : RiemLat E g Λ) (s : E →+* ℂ) (c : 𝓞 E →₀ ℂ)
     (hc : ∀ s' : E →+* ℂ, ∑ a ∈ c.support, c a * s' (algebraMap (𝓞 E) E a) = if s' = s then 1 else 0)
     (u : Λ) :
@@ -97,6 +133,11 @@ theorem eigComp_eq (R : RiemLat E g Λ) (s : E →+* ℂ) (c : 𝓞 E →₀ ℂ
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_coeff (extEmb s)`. Establish `h : ∀ x, eigComp (R x).B s ((R x).P u) = ∑ a ∈ c.support, c a • (R x).P (a • u)`. Introduce `x`. Establish `h1` using `eigComp_eq (R x) (extEmb s) c hc u`. Rewrite `h1` using `[extEmb_comp]`. Then use the resulting hypothesis.
+
+Repeatedly rewrite using `[h]`. Conclude with `continuous_finset_sum _ fun a _ => (hP (a • u)).const_smul (c a)`.
+-/
 theorem continuous_eigComp (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fun x => (R x).P v)
     (s : 𝓞 E →+* ℂ) (u : Λ) : Continuous fun x => eigComp (R x).B s ((R x).P u) := by
   classical
@@ -108,11 +149,17 @@ theorem continuous_eigComp (R : X → RiemLat E g Λ) (hP : ∀ v, Continuous fu
   simp_rw [h]
   exact continuous_finset_sum _ fun a _ => (hP (a • u)).const_smul (c a)
 
+/- English proof (translation)
+Unfold `RiemLat.ip`. Conclude with `hq.dotProduct (hH.matrix_mulVec (continuous_star.comp hp))`.
+-/
 theorem continuous_ip (R : X → RiemLat E g Λ) (hH : Continuous fun x => (R x).Hm) {p q : X → Fin g → ℂ}
     (hp : Continuous p) (hq : Continuous q) : Continuous fun x => (R x).ip (p x) (q x) := by
   unfold RiemLat.ip
   exact hq.dotProduct (hH.matrix_mulVec (continuous_star.comp hp))
 
+/- English proof (translation)
+Unfold `RiemLat.nzOf`. Use `Continuous.div_const (continuous_finset_prod _ fun τ _ => ?_) _` and prove the remaining obligations. Use `Complex.continuous_re.comp (Continuous.matrix_det ?_)` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Conclude with `continuous_ip R hH (continuous_eigComp R hP _ _) (continuous_eigComp R hP _ _)`.
+-/
 theorem continuous_nzOf {Ψ : Type} [Fintype Ψ] (R : X → RiemLat E g Λ)
     (hP : ∀ v, Continuous fun x => (R x).P v) (hH : Continuous fun x => (R x).Hm)
     (σ : Ψ → (𝓞 E →+* ℂ)) (I : Submodule (𝓞 E) Λ) {r : ℕ} (v : Fin r → Λ) :
@@ -123,6 +170,13 @@ theorem continuous_nzOf {Ψ : Type} [Fintype Ψ] (R : X → RiemLat E g Λ)
   refine continuous_matrix fun a b => ?_
   exact continuous_ip R hH (continuous_eigComp R hP _ _) (continuous_eigComp R hP _ _)
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ X _ R σ I hP hH`. Distinguish the cases in `h : ∃ r v, GroundTheory.Heights₂.Heights.LowerBoundFree.IsNzFamily I r v`. Establish `e : (fun x => (R x).nz σ I) = fun x => (R x).nzOf σ I h.choose_spec.choose`. Use function extensionality and compare the values at `x`. Simplify using `only [RiemLat.nz, dif_pos h]`.
+
+Rewrite using `[e]`. Conclude with `continuous_nzOf R hP hH σ I _`. Establish `e : (fun x => (R x).nz σ I) = fun _ => 1`. Use function extensionality and compare the values at `x`. Simplify using `only [RiemLat.nz, dif_neg h]`.
+
+Rewrite using `[e]`. Conclude with `continuous_const`.
+-/
 theorem continuous_nz : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (X : Type) [TopologicalSpace X] (R : X → RiemLat E g Λ)
     (σ : Ψ → (𝓞 E →+* ℂ)) (I : Submodule (𝓞 E) Λ), (∀ v, Continuous fun x => (R x).P v) →

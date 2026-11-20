@@ -16,6 +16,9 @@ namespace GlobalTheory.Unf.FB
 
 variable {D : D7} {σ : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← h]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem mul_mul_mul_of_gram {a b c e n : Type*} [Fintype b] [Fintype c] [Fintype e] {R : Type*} [Semiring R]
     {A : Matrix a b R} {G : Matrix b c R} {M : Matrix c e R} {C : Matrix a e R} (h : A * G * M = C)
     (N : Matrix e n R) : A * (G * (M * N)) = C * N := by
@@ -29,6 +32,11 @@ def lastE (D : D7) (σ : ℕ) : Fin (σ + 1) → D.host.E := Pi.single (Fin.last
 def besselRationalBasePointMatrix (B : BesLev D σ) : Matrix (Fin B.V.rank) (Fin (σ + 1)) D.host.E :=
   B.d.e * selFirst D σ + B.d.i₀ * vecMulVec (vecB B.o B.ζ) (lastE D σ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = Fin.last σ`. Substitute `h show (if (Fin.last σ).1 + 1 = σ + 1 then (1 : AE D) else 0) = incA D (lastE D σ (Fin.last σ))` using the available equality. Rewrite using `[if_pos (by rw [Fin.val_last]), lastE, Pi.single_eq_same, map_one]`. Establish `h' : ¬ (i.1 + 1 = σ + 1)` using `fun h' => h (Fin.ext (by rw [Fin.val_last]; omega)) show (if i.1 + 1 = σ + 1 then (1 : AE D) else 0) = incA D (lastE D σ i)`.
+
+Rewrite using `[if_neg h', lastE, Pi.single_eq_of_ne h, map_zero]`.
+-/
 theorem ell_succ_eq : ell D (σ + 1) = fun i => incA D (lastE D σ i) := by
   funext i
   by_cases h : i = Fin.last σ
@@ -39,10 +47,16 @@ theorem ell_succ_eq : ell D (σ + 1) = fun i => incA D (lastE D σ i) := by
     show (if i.1 + 1 = σ + 1 then (1 : AE D) else 0) = incA D (lastE D σ i)
     rw [if_neg h', lastE, Pi.single_eq_of_ne h, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Simplify using `[zl, zEll, rat, ratV, vecMulVec, ell_succ_eq]`.
+-/
 theorem zl_eq_rat (B : BesLev D σ) : zl B = rat (vecMulVec B.ζ (lastE D σ)) := by
   funext i j
   simp [zl, zEll, rat, ratV, vecMulVec, ell_succ_eq]
 
+/- English proof (translation)
+Establish `hne : ∀ x : Fin σ, (Fin.last σ = x.castSucc) ↔ False` using `fun x => iff_false_intro (Fin.castSucc_lt_last x).ne'`. Use function extensionality and compare the values at `k j`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `[besselRationalBasePointMatrix, x0, xLast, rat, selFirst, lastE, Matrix.mul_apply, vecMulVec, HypDec.j0, mulVec, dotProduct, ratV, vecB, hne]`. Simplify using `[besselRationalBasePointMatrix, x0, xLast, rat, selFirst, lastE, Matrix.mul_apply, vecMulVec, HypDec.jX, mulVec, dotProduct, ratV, vecB]`.
+-/
 theorem rat_x0Rat (B : BesLev D σ) : rat (besselRationalBasePointMatrix B) = x0 B := by
   have hne : ∀ x : Fin σ, (Fin.last σ = x.castSucc) ↔ False := fun x => iff_false_intro (Fin.castSucc_lt_last x).ne'
   funext k j
@@ -52,6 +66,13 @@ theorem rat_x0Rat (B : BesLev D σ) : rat (besselRationalBasePointMatrix B) = x0
   · simp [besselRationalBasePointMatrix, x0, xLast, rat, selFirst, lastE, Matrix.mul_apply, vecMulVec, HypDec.jX, mulVec, dotProduct, ratV,
       vecB]
 
+/- English proof (translation)
+Establish `hXX` using `mul_mul_mul_of_gram (n := Fin (σ + 1)) B.d.ee`. Establish `h0X` using `mul_mul_mul_of_gram (n := Fin (σ + 1)) B.d.i₀e`. Establish `hX0 : B.d.eᴴ * B.V.gram * B.d.i₀ = 0`. Use `congrArg conjTranspose B.d.i₀e` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+
+Establish `hX0'` using `mul_mul_mul_of_gram (n := Fin (σ + 1)) hX0`. Establish `h00` using `mul_mul_mul_of_gram (n := Fin (σ + 1)) B.d.iso`. Establish `hBB` using `mul_mul_mul_of_gram (n := Fin (σ + 1)) B.o.isoB`. Establish `hz : vecMulVec (vecB B.o B.ζ) (lastE D σ) = B.o.iB * vecMulVec B.ζ (lastE D σ)`. Rewrite using `[vecB, mul_vecMulVec]`.
+
+Rewrite using `[besselRationalBasePointMatrix, hz]`. Simplify using `only [conjTranspose_add, conjTranspose_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hXX, h0X, hX0', h00, hBB, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`.
+-/
 theorem gram_x0Rat (B : BesLev D σ) :
     (besselRationalBasePointMatrix B)ᴴ * B.V.gram * besselRationalBasePointMatrix B =
       (vecMulVec B.ζ (lastE D σ))ᴴ * B.L.gram * vecMulVec B.ζ (lastE D σ) := by
@@ -70,10 +91,24 @@ theorem gram_x0Rat (B : BesLev D σ) :
   simp only [conjTranspose_add, conjTranspose_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hXX, h0X, hX0',
     h00, hBB, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]
 
+/- English proof (translation)
+Rewrite using `[zl_eq_rat, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew, gram_rat _ (gram_x0Rat B), gram_rat B.L rfl]`.
+-/
 theorem gramSkew_x0Rat (B : BesLev D σ) :
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew B.V (rat (besselRationalBasePointMatrix B) : Mx D B.V.rank (σ + 1)) = GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew B.L (zl B) := by
   rw [zl_eq_rat, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.gramSkew, gram_rat _ (gram_x0Rat B), gram_rat B.L rfl]
 
+/- English proof (translation)
+Use `Fintype.linearIndependent_iff.2 ?_` and prove the remaining obligations. Introduce `g hg`. Establish `hv : besselRationalBasePointMatrix B *ᵥ g = 0`. Use function extensionality and compare the values at `k`. Use `congrFun hg k` as an intermediate fact.
+
+Simplify `this` using `[Finset.sum_apply, mulVec, dotProduct, mul_comm]`. Establish `h0 : B.d.e'ᴴ * B.V.gram * B.d.i₀ = 0`. Use `congrArg conjTranspose B.d.i₀e'` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hq : (B.d.e'ᴴ * B.V.gram) * besselRationalBasePointMatrix B = selFirst D σ`.
+
+Rewrite using `[besselRationalBasePointMatrix, Matrix.mul_add, ← Matrix.mul_assoc, B.d.e'e, Matrix.one_mul, ← Matrix.mul_assoc, h0, Matrix.zero_mul, add_zero]`. Establish `h1 : selFirst D σ *ᵥ g = 0` using `by rw [← hq, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`. Establish `h2 : ((vecMulVec B.ζ (lastE D σ))ᴴ * B.L.gram * vecMulVec B.ζ (lastE D σ)) *ᵥ g = 0`. Rewrite using `[← gram_x0Rat B, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero]`. Introduce `i`.
+
+Use `Fin.lastCases ?_ (fun i => ?_) i` and prove the remaining obligations. Establish `h3` using `congrFun h2 (Fin.last σ)`. Rewrite `h3` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, vecMulVec_mulVec, conjTranspose_vecMulVec, vecMulVec_mulVec]`. Simplify using `[lastE, mulVec_smul] at h3`. Break down `h3 with h3 | h3` into its components or cases.
+
+Conclude with `h3`. Conclude with `absurd h3 B.line.2`. Use `congrFun h1 i` as an intermediate fact. Simplify `this` using `[selFirst, mulVec, dotProduct]`.
+-/
 theorem linearIndependent_x0Rat (B : BesLev D σ) : LinearIndependent D.host.E (besselRationalBasePointMatrix B).transpose := by
   refine Fintype.linearIndependent_iff.2 ?_
   intro g hg
@@ -103,6 +138,9 @@ theorem linearIndependent_x0Rat (B : BesLev D σ) : LinearIndependent D.host.E (
   · have := congrFun h1 i
     simpa [selFirst, mulVec, dotProduct] using this
 
+/- English proof (translation)
+Introduce `_ _ B` and use `⟨besselRationalBasePointMatrix B, ⟨linearIndependent_x0Rat B, gramSkew_x0Rat B⟩, rat_x0Rat B⟩`.
+-/
 theorem exists_rationalOrbit_point_eq_besselBasePoint : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ), ∃ x ∈ orb B, (rat x : Mx D B.V.rank (σ + 1)) = x0 B :=
   fun _ _ B => ⟨besselRationalBasePointMatrix B, ⟨linearIndependent_x0Rat B, gramSkew_x0Rat B⟩, rat_x0Rat B⟩
 

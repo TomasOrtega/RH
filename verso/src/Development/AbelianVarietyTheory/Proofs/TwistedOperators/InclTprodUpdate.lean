@@ -14,6 +14,11 @@ namespace GlobalTheory.Chain.IoLift.FinTensor
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 
+/- English proof (translation)
+Use `choose r hr using fun τ => LinearMap.exists_leftInverse_of_injective (Submodule.inclusion (h τ)) (LinearMap.ker_eq_bot.mpr (Submodule.inclusion_injective (h τ)))`. Establish `key : PiTensorProduct.map r ∘ₗ inclK h = LinearMap.id`. Unfold `inclK`. Rewrite using `[← PiTensorProduct.map_comp]`. Simplify using `only [hr, PiTensorProduct.map_id]`.
+
+Introduce `x y hxy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inclK_injective (h : KSm M) : Function.Injective (inclK h) := by
   choose r hr using fun τ =>
     LinearMap.exists_leftInverse_of_injective (Submodule.inclusion (h τ))
@@ -27,10 +32,18 @@ theorem inclK_injective (h : KSm M) : Function.Injective (inclK h) := by
     _ = (PiTensorProduct.map r ∘ₗ inclK h) y := by rw [LinearMap.comp_apply, hxy, ← LinearMap.comp_apply]
     _ = y := by rw [key, LinearMap.id_apply]
 
+/- English proof (translation)
+Simplify using `[inclT, inclK]`.
+-/
 theorem incl_tprod (h : KSm M) (v : ∀ ρ, kFin M ρ) :
     inclT M (inclK h (PiTensorProduct.tprod ℂ v)) = PiTensorProduct.tprod ℂ fun ρ => (v ρ : M.H ρ) := by
   simp [inclT, inclK]
 
+/- English proof (translation)
+Rewrite using `[incl_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Break down `eq_or_ne ρ τ with rfl | hρ` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne hρ]`.
+-/
 theorem incl_tprod_update (h : KSm M) (v : ∀ ρ, kFin M ρ) (τ : D.what₂.Tau) (u : kFin M τ) :
     inclT M (inclK h (PiTensorProduct.tprod ℂ (Function.update v τ u))) =
       PiTensorProduct.tprod ℂ (Function.update (fun ρ => (v ρ : M.H ρ)) τ (u : M.H τ)) := by
@@ -41,6 +54,11 @@ theorem incl_tprod_update (h : KSm M) (v : ∀ ρ, kFin M ρ) (τ : D.what₂.Ta
   · simp
   · simp [Function.update_of_ne hρ]
 
+/- English proof (translation)
+Simplify using `only [actT, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Break down `eq_or_ne ρ τ with rfl | hρ` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `[Function.update_of_ne hρ]`.
+-/
 theorem act_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : ∀ ρ, M.H ρ) :
     actT M τ g (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ (M.rep τ g (v τ))) := by
   simp only [actT, PiTensorProduct.map_tprod]
@@ -50,6 +68,11 @@ theorem act_tprod (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ
   · simp
   · simp [Function.update_of_ne hρ]
 
+/- English proof (translation)
+Establish `hs : ∀ ρ ∈ Finset.univ.erase τ, ⟪w ρ, Function.update v τ u ρ⟫_ℂ = ⟪w ρ, v ρ⟫_ℂ` using `fun ρ hρ => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hρ)]`. Simplify using `only [ellT, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Use `show ∏ ρ, ⟪w ρ, Function.update v τ u ρ⟫_ℂ = _`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ τ), Function.update_self]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl hs`.
+-/
 theorem ell_update (w v : ∀ ρ, M.H ρ) (τ : D.what₂.Tau) (u : M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ (Function.update v τ u)) =
       ⟪w τ, u⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, v ρ⟫_ℂ := by
@@ -62,6 +85,13 @@ theorem ell_update (w v : ∀ ρ, M.H ρ) (τ : D.what₂.Tau) (u : M.H τ) :
   congr 1
   exact Finset.prod_congr rfl hs
 
+/- English proof (translation)
+Establish `hd` using `ha.der X hX (v τ)`. Establish `hi : HasDerivAt (fun t : ℝ => ⟪w τ, M.rep τ (NormedSpace.exp (t • X)) (v τ : M.H τ)⟫_ℂ) ⟪w τ, (a X (v τ) : M.H τ)⟫_ℂ 0`. Establish `hc` using `((innerSL ℂ (w τ)).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd`. Simplify `hc` using `[Function.comp_def]`. Establish `e2 : ellT M w (inclT M (inclK h (intersection_update_fsHerm_neg_one τ (a X) (PiTensorProduct.tprod ℂ v)))) = ⟪w τ, (a X (v τ) : M.H τ)⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, (v ρ : M.H ρ)⟫_ℂ`.
+
+Rewrite using `[position_tprod, incl_tprod_update, ell_update]`. Establish `e1 : (fun t : ℝ => ellT M w (actT M τ (NormedSpace.exp (t • X)) (inclT M (inclK h (PiTensorProduct.tprod ℂ v))))) = fun t : ℝ => ⟪w τ, M.rep τ (NormedSpace.exp (t • X)) (v τ : M.H τ)⟫_ℂ * ∏ ρ ∈ Finset.univ.erase τ, ⟪w ρ, (v ρ : M.H ρ)⟫_ℂ`. Use function extensionality and compare the values at `t`. Rewrite using `[incl_tprod, act_tprod, ell_update]`. Rewrite using `[e1, e2]`.
+
+Conclude with `hi.mul_const _`.
+-/
 private theorem hasDerivAt_ellT_actT_exp_tprod (h : KSm M) (τ : D.what₂.Tau)
     (a : Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ)) (ha : IsKAct M τ a)
     (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hX : X ∈ lieAt V τ) (w : ∀ ρ, M.H ρ) (v : ∀ ρ, kFin M ρ) :
@@ -83,6 +113,11 @@ private theorem hasDerivAt_ellT_actT_exp_tprod (h : KSm M) (τ : D.what₂.Tau)
   rw [e1, e2]
   exact hi.mul_const _
 
+/- English proof (translation)
+Use `delta DerT`. Introduce `w`. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Conclude with `(hasDerivAt_ellT_actT_exp_tprod h τ a ha X hX w v).const_mul r`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Conclude with `hx.add hy`.
+-/
 theorem derT_mapFactor (h : KSm M) (τ : D.what₂.Tau) (a : Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ))
     (ha : IsKAct M τ a) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hX : X ∈ lieAt V τ) (x : KT M) :
     DerT M τ X (inclK h x) (inclK h (intersection_update_fsHerm_neg_one τ (a X) x)) := by
@@ -96,6 +131,11 @@ theorem derT_mapFactor (h : KSm M) (τ : D.what₂.Tau) (a : Matrix (Fin V.rank)
     simp only [map_add]
     exact hx.add hy
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`. Simplify using `only [map_smul]`. Use `congr 1`. Apply the tactic sequence `rw [position_tprod, incl_tprod_update, incl_tprod, act_tprod] <;> rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem incl_mapFactor_kOp (h : KSm M) (τ : D.what₂.Tau) (k : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hk : k ∈ maxCpt M τ)
     (x : KT M) : inclT M (inclK h (intersection_update_fsHerm_neg_one τ (kOp M τ hk) x)) = actT M τ k (inclT M (inclK h x)) := by
   induction x using PiTensorProduct.induction_on with
@@ -105,6 +145,11 @@ theorem incl_mapFactor_kOp (h : KSm M) (τ : D.what₂.Tau) (k : Matrix (Fin V.r
     rw [position_tprod, incl_tprod_update, incl_tprod, act_tprod] <;> rfl
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `D V S M τ h`. Use `⟨inclK_injective h, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha X hX x`. Conclude with `derT_mapFactor h τ a ha X hX x`. Introduce `k hk x`.
+
+Conclude with `incl_mapFactor_kOp h τ k hk x`.
+-/
 theorem kFinTensor : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (h : KSm M), Function.Injective (inclK h) ∧ (∀ a : Matrix (Fin V.rank) (Fin V.rank) ℂ → Module.End ℂ (kFin M τ), IsKAct M τ a → ∀ X ∈ lieAt V τ, ∀ x : KT M, DerT M τ X (inclK h x) (inclK h (intersection_update_fsHerm_neg_one τ (a X) x))) ∧ ∀ (k : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hk : k ∈ maxCpt M τ) (x : KT M), inclT M (inclK h (intersection_update_fsHerm_neg_one τ (kOp M τ hk) x)) = actT M τ k (inclT M (inclK h x)) := by
   intro D V S M τ h
   refine ⟨inclK_injective h, ?_, ?_⟩

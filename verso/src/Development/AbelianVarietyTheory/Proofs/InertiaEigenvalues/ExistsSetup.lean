@@ -41,10 +41,16 @@ def castG (Pg : Finset (Pl D.host.E)) {r r' : ℕ} (h : r' = r) : G0 Pg r ≃* G
 def levOf {G H : Type} [Group G] [Group H] (eG : G ≃* H) (U : Subgroup G) (χ : U →* ℂˣ) : Subgroup H × (U.map eG.toMonoidHom →* ℂˣ) :=
   (U.map eG.toMonoidHom, χ.comp (eG.subgroupMap U).symm.toMonoidHom)
 
+/- English proof (translation)
+Simplify using `[levOf, Subgroup.mem_map]`.
+-/
 theorem levOf_mem {G H : Type} [Group G] [Group H] (eG : G ≃* H) (U : Subgroup G) (χ : U →* ℂˣ) (g : G) :
     eG g ∈ (levOf eG U χ).1 ↔ g ∈ U := by
   simp [levOf, Subgroup.mem_map]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `χ ((eG.subgroupMap U).symm ⟨eG u, hu⟩) = χ u`. Use `congr 1`. Apply `(eG.subgroupMap U).injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+-/
 theorem levOf_chi {G H : Type} [Group G] [Group H] (eG : G ≃* H) (U : Subgroup G) (χ : U →* ℂˣ) (u : U)
     (hu : eG u ∈ (levOf eG U χ).1) : (levOf eG U χ).2 ⟨eG u, hu⟩ = χ u := by
   change χ ((eG.subgroupMap U).symm ⟨eG u, hu⟩) = χ u

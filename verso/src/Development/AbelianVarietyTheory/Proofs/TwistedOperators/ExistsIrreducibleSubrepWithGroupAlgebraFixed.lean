@@ -2,6 +2,45 @@ import Mathlib
 
 namespace GlobalTheory.FixedVec
 
+/- English proof (translation)
+Introduce `G G' W _ _ _ _ _ ρ i c x hx hfix`. Set `P : Subrepresentation ρ → Prop` to `fun S => FiniteDimensional ℂ S.toSubmodule ∧ ∃ y ∈ S.toSubmodule, y ≠ 0 ∧ ∑ g, c g • ρ (i g) y = y`. Set `S0 : Subrepresentation ρ` to `⟨Submodule.span ℂ (Set.range fun g => ρ g x), by`. Introduce `g v hv`. Establish `hle : (Submodule.span ℂ (Set.range fun g => ρ g x)).map (ρ g) ≤ Submodule.span ℂ (Set.range fun g => ρ g x)`.
+
+Rewrite using `[Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨_, ⟨h, rfl⟩, rfl⟩`. Conclude with `⟨g * h, by simp [map_mul]⟩`. Conclude with `hle (Submodule.mem_map_of_mem hv)⟩`.
+
+Establish `hP0 : P S0` using `⟨FiniteDimensional.span_of_finite ℂ (Set.finite_range _), x, Submodule.subset_span ⟨1, by simp⟩, hx, hfix⟩`. Establish `hex : ∃ m : ℕ, ∃ S : Subrepresentation ρ, P S ∧ Module.finrank ℂ S.toSubmodule = m` using `⟨_, S0, hP0, rfl⟩`. Take `⟨S, ⟨hSfd, y, hyS, hy0, hyfix⟩, hm⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ T : Subrepresentation ρ, P T → Module.finrank ℂ S.toSubmodule ≤ Module.finrank ℂ T.toSubmodule`. Introduce `T hT`.
+
+Rewrite using `[hm]`. Conclude with `Nat.find_min' hex ⟨T, hT, rfl⟩`. Use `haveI := hSfd`. Set `E : S.toSubmodule →ₗ[ℂ] S.toSubmodule` to `∑ g, c g • S.toRepresentation (i g)`. Establish `hEapp : ∀ z, E z = ∑ g, c g • S.toRepresentation (i g) z`.
+
+Introduce `z`. Simplify using `[E, LinearMap.sum_apply]`. Establish `hE : ∀ z : S.toSubmodule, ((E z : S.toSubmodule) : W) = ∑ g, c g • ρ (i g) (z : W)`. Introduce `z`. Rewrite using `[hEapp]`.
+
+Simplify using `[Subrepresentation.toRepresentation]`. Establish `key : ∀ T : Subrepresentation S.toRepresentation, T.toSubmodule ≠ ⊤ → ∀ a ∈ T.toSubmodule, a ≠ 0 → E a = a → False`. Introduce `T hT a ha ha0 hafix`. Set `T' : Subrepresentation ρ` to `⟨T.toSubmodule.map S.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`.
+
+Conclude with `⟨S.toRepresentation g v, T.apply_mem_toSubmodule g hv, rfl⟩⟩`. Establish `hPT : P T'`. Use `⟨?_, (a : W), ⟨a, ha, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.finiteDimensional_of_le (S₂ := S.toSubmodule) (by`. Introduce and unpack `_ ⟨v, -, rfl⟩`.
+
+Conclude with `v.2)`. Introduce `h`. Conclude with `ha0 (Subtype.ext h)`. Rewrite using `[← hE]`. Conclude with `congrArg Subtype.val hafix`.
+
+Establish `h1` using `hmin T' hPT`. Establish `h2 : Module.finrank ℂ T'.toSubmodule = Module.finrank ℂ T.toSubmodule` using `Submodule.finrank_map_subtype_eq _ _`. Establish `h3` using `Submodule.finrank_lt hT`. Use linear arithmetic over natural numbers and integers. Set `y' : S.toSubmodule` to `⟨y, hyS⟩`.
+
+Establish `hy'0 : y' ≠ 0` using `fun h => hy0 (congrArg Subtype.val h)`. Establish `hy'fix : E y' = y'` using `Subtype.ext (by rw [hE]; exact hyfix)`. Use `⟨S, hSfd, ?_, y', hy'0, by rw [← hEapp]; exact hy'fix⟩` and prove the remaining obligations. Use `haveI : Nontrivial (Subrepresentation S.toRepresentation) := ⟨⊥, ⊤, fun h => by`. Establish `h' : (⊥ : Submodule ℂ S.toSubmodule) = ⊤` using `congrArg Subrepresentation.toSubmodule h`.
+
+Establish `hm' : y' ∈ (⊥ : Submodule ℂ S.toSubmodule)` using `h' ▸ Submodule.mem_top`. Conclude with `hy'0 ((Submodule.mem_bot ℂ).1 hm')⟩`. Use `⟨fun T => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Take `⟨hTb, hTt⟩` from `hne`. Use `haveI hss : S.toRepresentation.IsSemisimpleRepresentation := by`. Rewrite using `[Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule]`. Use `infer_instance`. Take `⟨T', hc⟩` from `exists_isCompl T`.
+
+Establish `hsup : T.toSubmodule ⊔ T'.toSubmodule = ⊤` using `congrArg Subrepresentation.toSubmodule hc.sup_eq_top`. Establish `hinf : T.toSubmodule ⊓ T'.toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule hc.inf_eq_bot`. Establish `hTt' : T.toSubmodule ≠ ⊤` using `fun h => hTt (Subrepresentation.toSubmodule_injective h)`. Establish `hT't : T'.toSubmodule ≠ ⊤`. Introduce `h`.
+
+Apply `hTb` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite `hinf` using `[h, inf_top_eq]`. Conclude with `hinf`. Establish `hmemE : ∀ U : Subrepresentation S.toRepresentation, ∀ z ∈ U.toSubmodule, E z ∈ U.toSubmodule`.
+
+Introduce `U z hz`. Rewrite using `[hEapp]`. Conclude with `Submodule.sum_mem _ (fun g _ => Submodule.smul_mem _ _ (U.apply_mem_toSubmodule _ hz))`. Establish `hyin : y' ∈ T.toSubmodule ⊔ T'.toSubmodule` using `hsup ▸ Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 hyin`.
+
+Establish `hsum : E a + E b = a + b` using `by rw [← map_add, hab, hy'fix]`. Establish `hd : E a - a ∈ T.toSubmodule ⊓ T'.toSubmodule`. Use `⟨Submodule.sub_mem _ (hmemE T a ha) ha, ?_⟩` and prove the remaining obligations. Establish `: E a - a = b - E b`. Rewrite using `[sub_eq_sub_iff_add_eq_add, hsum, add_comm]`.
+
+Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ hb (hmemE T' b hb)`. Rewrite `hd` using `[hinf, Submodule.mem_bot, sub_eq_zero]`. Establish `hd' : E b = b`. Use `hsum` as an intermediate fact.
+
+Rewrite `this` using `[hd]`. Conclude with `add_left_cancel this`. Distinguish the cases in `ha0 : a = 0`. Establish `hb0 : b ≠ 0`. Introduce `hb0`.
+
+Apply `hy'0` to reduce the goal to its premises. Rewrite using `[← hab, ha0, hb0, add_zero]`. Conclude with `key T' hT't b hb hb0 hd'`. Conclude with `key T hTt' a ha ha0 hd`.
+-/
 theorem exists_irreducible_subrep_fixed : ∀ (G G' W : Type) [Group G] [Finite G] [Fintype G']
     [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (i : G' → G) (c : G' → ℂ) (x : W),
     x ≠ 0 → ∑ g, c g • ρ (i g) x = x → ∃ U : Subrepresentation ρ,

@@ -10,6 +10,15 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 namespace GlobalTheory.Cyc.LatBasis
 
+/- English proof (translation)
+Use `letI : Module R V := Module.compHom V (algebraMap R F)`. Establish `hsm : ∀ (c : R) (v : V), c • v = algebraMap R F c • v` using `fun _ _ => rfl`. Use `haveI : IsScalarTower R F V := ⟨fun c a v => by rw [hsm, Algebra.smul_def, mul_smul]⟩`. Set `f' : N →ₗ[R] V` to `{ toFun := f, map_add' := map_add f, map_smul' := hs }`. Use `haveI : IsLocalizedModule (nonZeroDivisors R) f' := { map_units := fun s => by`.
+
+Rewrite using `[Module.End.isUnit_iff]`. Establish `h0 : algebraMap R F s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `: ⇑(algebraMap R (Module.End R V) s) = fun v => algebraMap R F s • v`. Use extensionality with `v`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(MulAction.toPerm (Units.mk0 _ h0) : Equiv.Perm V).bijective`. Use `surj := fun v => by`. Take `⟨c, hc, x, hx⟩` from `hfull v`. Conclude with `⟨(x, ⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩), hx⟩`.
+
+Use `exists_of_eq := fun h => ⟨1, by rw [hf h]⟩ }`. Conclude with `⟨b.ofIsLocalizedModule F (nonZeroDivisors R) f', fun j => b.ofIsLocalizedModule_apply F _ f' j, fun x i => b.ofIsLocalizedModule_repr_apply F _ f' x i⟩`.
+-/
 theorem exists_basis_of_full {R F N V ι : Type} [CommRing R] [IsDomain R] [Field F] [Algebra R F]
     [IsFractionRing R F] [AddCommGroup N] [Module R N] [AddCommGroup V] [Module F V]
     (f : N →+ V) (hf : Function.Injective f)
@@ -49,11 +58,27 @@ variable {G : Type} [Group G] [TopologicalSpace G] {R Qp LL O : Type} [CommRing 
 include hφ in
 omit [IsDomain R] in
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul LL (φ c) v, ← algebraMap_smul LL (algebraMap R Qp c) v, hφ]`.
+-/
 theorem smul_eq (c : R) (v : T.V) : φ c • v = algebraMap R Qp c • v := by
   rw [← algebraMap_smul LL (φ c) v, ← algebraMap_smul LL (algebraMap R Qp c) v, hφ]
 
 include hφ hint in
 
+/- English proof (translation)
+Establish `kl : ∀ (c : R) (x : T.V), x ∈ T.L.T → algebraMap R Qp c • x ∈ T.L.T`. Introduce `c x hx`. Rewrite using `[← smul_eq T φ hφ]`. Conclude with `T.L.T.smul_mem _ hx`. Establish `hv : v ∈ Submodule.span LL (T.L.T : Set T.V)` using `by rw [T.L.span]; trivial`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, kl _ _ hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, kl _ _ T.L.T.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn0, hn⟩` from `hx`.
+
+Take `⟨m, hm0, hm⟩` from `hy`. Use `⟨n * m, mul_ne_zero hn0 hm0, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.L.T.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, map_mul, mul_smul]`.
+
+Conclude with `kl m _ hn`. Rewrite using `[map_mul, mul_smul]`. Conclude with `kl n _ hm`. Consider the case `smul a x _ hx`. Take `⟨n, hn0, hn⟩` from `hx`.
+
+Take `⟨y, hy, o, ho⟩` from `hint a`. Use `⟨y * n, mul_ne_zero hy hn0, ?_⟩` and prove the remaining obligations. Establish `h3` using `T.L.T.smul_mem o hn`. Rewrite `h3` using `[← algebraMap_smul LL o, ho, smul_assoc, smul_comm a]`. Rewrite using `[map_mul, mul_smul]`.
+
+Conclude with `h3`.
+-/
 theorem exists_smul_mem (v : T.V) : ∃ c : R, c ≠ 0 ∧ algebraMap R Qp c • v ∈ T.L.T := by
   have kl : ∀ (c : R) (x : T.V), x ∈ T.L.T → algebraMap R Qp c • x ∈ T.L.T := by
     intro c x hx
@@ -82,6 +107,11 @@ theorem exists_smul_mem (v : T.V) : ∃ c : R, c ≠ 0 ∧ algebraMap R Qp c •
 
 include hφ hint in
 
+/- English proof (translation)
+Use `letI : Module R ↥T.L.T := Module.compHom ↥T.L.T φ`. Introduce `b`. Take `⟨bV, h1, h2⟩` from `exists_basis_of_full (F := Qp) (V := T.V) T.L.T.subtype.toAddMonoidHom Subtype.val_injective (fun c x => smul_eq T φ hφ c (x : T.V)) (fun v => by`. Take `⟨c, hc, h⟩` from `exists_smul_mem T φ hφ hint v`. Conclude with `⟨c, hc, ⟨_, h⟩, rfl⟩) b`.
+
+Use `⟨bV, fun g i j => ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `(h2 (actT T.L g (b j)) i).symm`.
+-/
 theorem exists_basis_compHom [IsFractionRing R Qp] {ι : Type} :
     letI : Module R ↥T.L.T := Module.compHom ↥T.L.T φ
     ∀ b : Module.Basis ι R ↥T.L.T, ∃ bV : Module.Basis ι Qp T.V, ∀ g i j,
@@ -99,11 +129,17 @@ theorem exists_basis_compHom [IsFractionRing R Qp] {ι : Type} :
 
 end Generic
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem algebraMap_OL {l : ℕ} [Fact l.Prime] (LL : FinExt l) (c : ℤ_[l]) :
     algebraMap ↥(OL LL) ↥LL.1 (algebraMap ℤ_[l] ↥(OL LL) c) =
       algebraMap ℚ_[l] ↥LL.1 (algebraMap ℤ_[l] ℚ_[l] c) := by
   rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `h2 : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨y, hy, hi⟩` from `h2.exists_integral_multiple`. Conclude with `⟨y, hy, ⟨y • a, hi⟩, (algebraMap_smul ℚ_[l] y a).symm⟩`.
+-/
 theorem exists_multiple_OL {l : ℕ} [Fact l.Prime] (LL : FinExt l) (a : ↥LL.1) :
     ∃ c : ℤ_[l], c ≠ 0 ∧ ∃ o : ↥(OL LL),
       algebraMap ↥(OL LL) ↥LL.1 o = algebraMap ℤ_[l] ℚ_[l] c • a := by
@@ -113,6 +149,11 @@ theorem exists_multiple_OL {l : ℕ} [Fact l.Prime] (LL : FinExt l) (a : ↥LL.1
   obtain ⟨y, hy, hi⟩ := h2.exists_integral_multiple
   exact ⟨y, hy, ⟨y • a, hi⟩, (algebraMap_smul ℚ_[l] y a).symm⟩
 
+/- English proof (translation)
+Introduce `l _ K LL T d M A hM`. Take `⟨b, hb, -⟩` from `hM`. Establish `H` using `exists_basis_compHom (ι := Fin d) T (algebraMap ℤ_[l] ↥(OL LL)) (algebraMap_OL LL) (exists_multiple_OL LL)`. Take `⟨bV, h⟩` from `H b`. Use `⟨bV, fun g i j => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(hb g i j).trans (congrArg (algebraMap ℚ_[l] (PadicComplex l)) (h g i j))`.
+-/
 theorem exists_basis_of_isMat : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (A : ↥(OL LL) → Matrix (Fin d) (Fin d) (PadicComplex l)), IsMat K LL T M A → ∃ bV : Module.Basis (Fin d) ℚ_[l] T.V, ∀ (g : ↥(GK K)) (i j : Fin d), M (g : GQ l) i j = algebraMap ℚ_[l] (PadicComplex l) (bV.repr (T.ρ g (bV j)) i) := by
   intro l _ K LL T d M A hM
   obtain ⟨b, hb, -⟩ := hM

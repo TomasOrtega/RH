@@ -8,12 +8,20 @@ open scoped ENNReal
 namespace ReciprocityTheory.ChartRestriction.DS.Xi
 namespace OSAux
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ha]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma rpow_sq_half {a : ℝ} (ha : 0 ≤ a) (r : ℝ) : a ^ r = (a ^ 2) ^ (r / 2) := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul ha]
   congr 1
   push_cast
   ring
 
+/- English proof (translation)
+Apply `lintegral_congr_ae` to reduce the goal to its premises. Establish `h0 : ∀ᵐ z : ℂ, z ≠ 0` using `compl_mem_ae_iff.mpr (measure_singleton (0 : ℂ))`. Use `filter_upwards [h0] with z hz`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_rpow_of_pos (norm_pos_iff.mpr hz)]`.
+
+Use `congr 1`. Rewrite using `[← coe_nnnorm, ENNReal.ofReal_coe_nnreal]`.
+-/
 private lemma nnorm_ae (γ : ℝ) (f : ℂ → ℝ≥0∞) :
     ∫⁻ z : ℂ, f z * (‖z‖₊ : ℝ≥0∞) ^ (-γ) = ∫⁻ z : ℂ, f z * ENNReal.ofReal (‖z‖ ^ (-γ)) := by
   apply lintegral_congr_ae
@@ -24,6 +32,19 @@ private lemma nnorm_ae (γ : ℝ) (f : ℂ → ℝ≥0∞) :
   congr 1
   rw [← coe_nnnorm, ENNReal.ofReal_coe_nnreal]
 
+/- English proof (translation)
+Establish `hD : 0 < d1 / L` using `div_pos hd1 hL`. Establish `hsq : ∀ t : ℝ, L * t + d1 ^ 2 / L = L * (t + (d1 / L) ^ 2)`. Introduce `t`. Use `hL.ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Establish `he : -(2 - e0) / 2 = -1 + e0 / 2` using `by ring`. Establish `hpt : ∀ z, f z ^ (-(2 - e0)) = L ^ (-1 + e0 / 2) * (‖z - c‖ ^ 2 + (d1 / L) ^ 2) ^ (-1 + e0 / 2)`. Introduce `z`. Rewrite using `[rpow_sq_half (hf0 z), hf z, hsq, he, Real.mul_rpow hL.le (by positivity)]`. Establish `hX : ‖c‖ ^ 2 + (d1 / L) ^ 2 = d0 ^ 2 / L`.
+
+Rewrite using `[h0, hsq]`. Clear the denominators using the available nonvanishing facts. Establish `hLp : L ^ (-1 + γ / 2) = L ^ (-1 + e0 / 2) / L ^ (-(γ - e0) / 2)`. Rewrite using `[← Real.rpow_sub hL]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd0p : (d0 ^ 2) ^ (-(γ - e0) / 2) = d0 ^ (-(γ - e0))` using `(rpow_sq_half hd0 _).symm`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr (fun z => ?_)` and prove the remaining obligations. Rewrite using `[hpt z, ENNReal.ofReal_mul (Real.rpow_nonneg hL.le _), mul_assoc]`.
+
+Use `_ = ENNReal.ofReal (L ^ (-1 + e0 / 2)) * ∫⁻ z : ℂ, ENNReal.ofReal ((‖z - c‖ ^ 2 + (d1 / L) ^ 2) ^ (-1 + e0 / 2)) * ENNReal.ofReal (‖z‖ ^ (-γ)) := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ ≤ ENNReal.ofReal (L ^ (-1 + e0 / 2)) * ENNReal.ofReal (C * (‖c‖ ^ 2 + (d1 / L) ^ 2) ^ (-(γ - e0) / 2)) := by gcongr`. Conclude with `hC c _ hD`. Use `_ ≤ ENNReal.ofReal (L ^ (-1 + e0 / 2)) * ENNReal.ofReal (max C 1 * (‖c‖ ^ 2 + (d1 / L) ^ 2) ^ (-(γ - e0) / 2)) := by gcongr`. Conclude with `le_max_left _ _`.
+
+Use `_ = ENNReal.ofReal (L ^ (-1 + e0 / 2) * (max C 1 * (‖c‖ ^ 2 + (d1 / L) ^ 2) ^ (-(γ - e0) / 2))) := (ENNReal.ofReal_mul (Real.rpow_nonneg hL.le _)).symm`. Use `_ = ENNReal.ofReal (max C 1 * L ^ (-1 + γ / 2) * d0 ^ (-(γ - e0))) := by`. Use `congr 1`. Rewrite using `[hX, Real.div_rpow (sq_nonneg _) hL.le, hd0p, hLp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma core {e0 γ C : ℝ}
     (hC : ∀ (c : ℂ) (D : ℝ), 0 < D →
       (∫⁻ x : ℂ, ENNReal.ofReal ((‖x - c‖ ^ 2 + D ^ 2) ^ (-1 + e0 / 2)) *
@@ -73,6 +94,15 @@ private lemma core {e0 γ C : ℝ}
         rw [hX, Real.div_rpow (sq_nonneg _) hL.le, hd0p, hLp]
         ring
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `hK e0 γ he0 hγ hγ2`. Use `⟨max C 1, lt_of_lt_of_le one_pos (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `p m y`. Establish `hf : ∀ z : ℂ, de (ins y z) 0 ^ 2 = Lsq (tailPt y) 1 * ‖z - y.1 0 * bco (tailPt y) 1 / (Lsq (tailPt y) 1 : ℂ)‖ ^ 2 + de (tailPt y) 1 ^ 2 / Lsq (tailPt y) 1`. Introduce `z`.
+
+Establish `hb : bco (ins y z) 1 = bco (tailPt y) 1` using `by simpa using bco_ins_succ y z 0`. Establish `hd : de (ins y z) 1 = de (tailPt y) 1` using `by simpa using de_ins_succ y z 0`. Establish `h` using `hC1 p m (ins y z)`. Rewrite `h` using `[hb, hd, Lsq_ins]`. Simplify using `only [ins, Fin.cons_zero] at h`.
+
+Conclude with `h`. Establish `h0 : de (tailPt y) 0 ^ 2 = Lsq (tailPt y) 1 * ‖y.1 0 * bco (tailPt y) 1 / (Lsq (tailPt y) 1 : ℂ)‖ ^ 2 + de (tailPt y) 1 ^ 2 / Lsq (tailPt y) 1`. Use `hf 0` as an intermediate fact. Rewrite `this` using `[zero_sub, norm_neg]`. Conclude with `this`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem lintegral_insertFiber_le (hC1 : C1) (hK : KER) {e0 γ : ℝ} (he0 : 0 < e0) (hγ : e0 < γ) (hγ2 : γ < 2) :
     ∃ CK : ℝ, 0 < CK ∧ ∀ {p m : ℕ} (y : Yp p m),
       ∫⁻ z : ℂ, ENNReal.ofReal (de (ins y z) 0 ^ (-(2 - e0))) * (‖z‖₊ : ℝ≥0∞) ^ (-γ) ≤

@@ -8,6 +8,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `R _ F`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `E n hn`. Establish `hz : ∀ α : Cochain ((chains R).obj E) (res R F) n, α = 0`. Introduce `α`.
+
+Apply `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R).2.2.1 α 0` to reduce the goal to its premises. Introduce `p s h U x`. Establish `hs : s < 0` using `by omega`. Use `haveI := ((GlobalTheory.T.chosenInjectiveResolutionEtaleSheaf_sections_exactness R F U).2.2.2 s hs)`. Conclude with `Subsingleton.elim _ _`.
+
+Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `a.mk_surjective`. Take `⟨b, rfl⟩` from `b.mk_surjective`. Establish `: a = b` using `Cocycle.ext (by rw [hz a.1, hz b.1])`. Rewrite using `[this]`.
+
+Set `f : ∀ X : Scheme.{0}, Sec F X →+ H R (sch.obj X) F 0` to `fun X => AddMonoidHom.mk' (secClass F (X := X)) (GlobalTheory.T.degreeZeroSectionClass_properties R F X).2.2.1`. Use `⟨fun X => AddEquiv.ofBijective (f X) (GlobalTheory.T.degreeZeroSectionClass_properties R F X).2.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y X g s`. Conclude with `(GlobalTheory.T.degreeZeroSectionClass_properties R F X).2.2.2.1 g s`. Introduce `X s`.
+
+Take `⟨α, hα⟩` from `(secClass F s).mk_surjective`. Conclude with `⟨α, hα, ((GlobalTheory.T.degreeZeroSectionClass_properties R F X).1 s α).2 hα⟩`.
+-/
 theorem etale_cohomology_vanishing_negative_degree_zero : A9 := by
   intro R _ F
   refine ⟨?_, ?_⟩

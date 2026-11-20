@@ -10,5 +10,8 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 open scoped TensorProduct InnerProductSpace ComplexConjugate
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.upSpan_of | exact GlobalTheory.ChainOnto.upSpan_of | (intros; apply GlobalTheory.ChainOnto.upSpan_of <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLiftUpwards_in_cuspSpan : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → ∀ D : D7, GlobalTheory.ChainOnto.LevFacts D → GlobalTheory.ChainOnto.LevelLaw D → GlobalTheory.ChainOnto.UpSpan D := by
   first | exact @GlobalTheory.ChainOnto.upSpan_of | exact GlobalTheory.ChainOnto.upSpan_of | (intros; apply GlobalTheory.ChainOnto.upSpan_of <;> assumption)

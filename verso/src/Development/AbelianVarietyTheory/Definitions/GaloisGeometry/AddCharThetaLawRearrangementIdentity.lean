@@ -24,18 +24,27 @@ variable {D : D7} {V : HSp D} {n : ℕ} (P : RowPsi V n)
 
 def finP : Formalism.AUTREP.GAf D.host.E n →* Bridge.Gf V := (finHom V).rangeRestrict.comp P.ψ
 
+/- English proof (translation)
+Introduce and unpack `⟨_, g, rfl⟩`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g)`. Take `⟨h, rfl⟩` from `P.onto k k1`. Conclude with `⟨h, Subtype.ext k2⟩`.
+-/
 theorem finitePart_surjective : Function.Surjective (finP P) := by
   rintro ⟨_, g, rfl⟩
   obtain ⟨k, k1, k2⟩ := GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g)
   obtain ⟨h, rfl⟩ := P.onto k k1
   exact ⟨h, Subtype.ext k2⟩
 
+/- English proof (translation)
+Introduce `a b h` and use `P.inj (GlobalTheory.UnitarySplit.ga_ext V ((show infHom V (P.ψ a) = 1 from P.into a).trans (show infHom V (P.ψ b) = 1 from P.into b).symm) (congrArg Subtype.val h))`.
+-/
 theorem finitePart_injective : Function.Injective (finP P) := fun a b h =>
   P.inj (GlobalTheory.UnitarySplit.ga_ext V ((show infHom V (P.ψ a) = 1 from P.into a).trans (show infHom V (P.ψ b) = 1 from P.into b).symm)
     (congrArg Subtype.val h))
 
 variable (c : CoefA V)
 
+/- English proof (translation)
+Use `show c.ρ (P.ψ h)⁻¹ (φ (finP P h)) = _`. Rewrite using `[hc _ ((GfC V).inv_mem (P.into h))]`. Both sides reduce to the same expression.
+-/
 theorem ext_psi (hc : ∀ h ∈ GfC V, c.ρ h = 1) (φ : Bridge.Gf V → c.W) (h : Formalism.AUTREP.GAf D.host.E n) :
     c.ext φ (P.ψ h) = φ (finP P h) := by
   show c.ρ (P.ψ h)⁻¹ (φ (finP P h)) = _
@@ -49,6 +58,11 @@ def levJ : Subgroup (Formalism.AUTREP.GAf D.host.E n) := (levG V β L).comap P.�
 def levX : levJ P β L →* ℂˣ :=
   (levChar D.sp.cm V.gram β L).comp (((finE V).comp (P.ψ.comp (levJ P β L).subtype)).codRestrict _ fun κ => κ.2.2)
 
+/- English proof (translation)
+Establish `e : rTup β L x = 1` using `hx.2`. Use `⟨⟨hx.1, e ▸ one_mem _⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `levFn_withP (V := V) (β := β) (L := L) L.P x`. Rewrite `h1` using `[e, blockDiagonalExtendByOnePrimeField_one, one_mul]`. Rewrite using `[levFn_flag1]`.
+
+Conclude with `h1.symm`.
+-/
 theorem mem_levi_flag_of_mem_parabolic {x : GL (Fin V.rank) (EAf D)} (hx : x ∈ lev D.sp.cm V.gram β (flag1L L)) :
     x ∈ lev D.sp.cm V.gram β L ∧ levFn β (flag1L L) x = levFn β L x := by
   have e : rTup β L x = 1 := hx.2
@@ -69,6 +83,11 @@ def forms : Submodule ℂ (GA D V → c.W) :=
   (Bridge.AdForms (Bridge.ratF V) (c.ρ.comp (Formalism.L2.Theta.GQ V).subtype) (levEnv V β L).J (levEnv V β L).χ).map c.ext ⊓
     levSubV V c.W (levS V β L) (levChi V β L)
 
+/- English proof (translation)
+Establish `: φ = 0`. Use function extensionality and compare the values at `x`. Take `⟨k, rfl⟩` from `finitePart_surjective P x`. Rewrite using `[← ext_psi P c hc φ k]`. Conclude with `e.map_eq_zero_iff.1 (congrFun h k)`.
+
+Rewrite using `[this, map_zero]`.
+-/
 theorem rd_ext_eq_zero (hc : ∀ h ∈ GfC V, c.ρ h = 1) (φ : Bridge.Gf V → c.W) (h : rd P c e (c.ext φ) = 0) : c.ext φ = 0 := by
   have : φ = 0 := by
     funext x
@@ -77,24 +96,39 @@ theorem rd_ext_eq_zero (hc : ∀ h ∈ GfC V, c.ρ h = 1) (φ : Bridge.Gf V → 
     exact e.map_eq_zero_iff.1 (congrFun h k)
   rw [this, map_zero]
 
+/- English proof (translation)
+Simplify using `using hm γ h 1`.
+-/
 theorem adForms_left {G Γ W : Type} [Group G] [Group Γ] (ι : Γ →* G) [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {φ : G → W} (hm : φ ∈ Bridge.AdForms ι ρ J χ) (γ : Γ) (h : G) :
     φ (ι γ * h) = ρ γ (φ h) := by
   simpa using hm γ h 1
 
+/- English proof (translation)
+Rewrite using `[mul_inv_rev, map_mul, h, one_mul]`.
+-/
 theorem rho_inv_mul {G M : Type} [Group G] [Monoid M] (ρ : G →* M) (g k : G) (h : ρ k⁻¹ = 1) : ρ (g * k)⁻¹ = ρ g⁻¹ := by
   rw [mul_inv_rev, map_mul, h, one_mul]
 
+/- English proof (translation)
+Rewrite using `[h1, h2, map_smul, map_smul]`.
+-/
 theorem wachExpansion_smul_compatible {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (e : M ≃ₗ[ℂ] N) {a b : Module.End ℂ M}
     {x y : N} {z : ℂ} (h1 : a = b) (h2 : x = z • y) : a (e.symm x) = z • b (e.symm y) := by
   rw [h1, h2, map_smul, map_smul]
 
+/- English proof (translation)
+Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, h, e.apply_symm_apply, e.apply_symm_apply, h2, hz]`.
+-/
 theorem addChar_theta_law_rearrangement_identity {M N : Type} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] (e : M ≃ₗ[ℂ] N) {a : Module.End ℂ M}
     {b : Module.End ℂ N} (h : ∀ v, e (a v) = b (e v)) {x y : N} {z z' : ℂ} (hz : z' = z) (h2 : x = z • b y) :
     e.symm x = z' • a (e.symm y) := by
   apply e.injective
   rw [map_smul, h, e.apply_symm_apply, e.apply_symm_apply, h2, hz]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(MulEquiv.ofBijective f ⟨h1, h2⟩).symm.toMonoidHom, (MulEquiv.ofBijective f ⟨h1, h2⟩).apply_symm_apply, (MulEquiv.ofBijective f ⟨h1, h2⟩).symm_apply_apply⟩`.
+-/
 theorem exists_section {A B : Type} [Group A] [Group B] (f : A →* B) (h1 : Function.Injective f) (h2 : Function.Surjective f) :
     ∃ s : B →* A, (∀ x, f (s x) = x) ∧ ∀ a, s (f a) = a :=
   ⟨(MulEquiv.ofBijective f ⟨h1, h2⟩).symm.toMonoidHom, (MulEquiv.ofBijective f ⟨h1, h2⟩).apply_symm_apply,
@@ -106,6 +140,11 @@ variable (hc : ∀ h ∈ GfC V, c.ρ h = 1) (ρ : Representation ℂ (Reciprocit
     ∀ v, e (c.ρ γ v) = ρ h (e v))
 include hc rat wt
 
+/- English proof (translation)
+Take `⟨γ, hγ, eq⟩` from `(rat h).1 h.2`. Establish `e1 : finP P h = Bridge.ratF V ⟨γ, hγ⟩` using `Subtype.ext eq.symm`. Establish `e2 : finP P (h * g) = Bridge.ratF V ⟨γ, hγ⟩ * finP P g` using `(map_mul (finP P) _ _).trans (congrArg (fun z => z * finP P g) e1)`. Establish `e3 : φ (finP P (h * g)) = c.ρ γ (φ (finP P g))` using `(congrArg φ e2).trans (adForms_left _ hφ ⟨γ, hγ⟩ (finP P g))`. Establish `e4 : e (c.ext φ (P.ψ (h * g))) = e (c.ρ γ (φ (finP P g)))` using `congrArg e ((ext_psi P c hc φ _).trans e3)`.
+
+Establish `e5 : ρ h (e (φ (finP P g))) = ρ h (e (c.ext φ (P.ψ g)))` using `congrArg (fun z => ρ h (e z)) (ext_psi P c hc φ g).symm`. Conclude with `e4.trans ((wt h γ hγ eq _).trans e5)`.
+-/
 theorem rd_left {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ} {φ : Bridge.Gf V → c.W}
     (hφ : φ ∈ Bridge.AdForms (Bridge.ratF V) (c.ρ.comp (Formalism.L2.Theta.GQ V).subtype) J χ) (h : ReciprocityTheory.Aut.GQ D.host.E n) (g : Formalism.AUTREP.GAf D.host.E n) :
     rd P c e (c.ext φ) (h * g) = ρ h (rd P c e (c.ext φ) g) := by
@@ -118,6 +157,9 @@ theorem rd_left {J : Subgroup (Bridge.Gf V)} {χ : J →* ℂˣ} {φ : Bridge.Gf
   have e5 : ρ h (e (φ (finP P g))) = ρ h (e (c.ext φ (P.ψ g))) := congrArg (fun z => ρ h (e z)) (ext_psi P c hc φ g).symm
   exact e4.trans ((wt h γ hγ eq _).trans e5)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨F, ⟨⟨φ, hφ, rfl⟩, hF⟩, rfl⟩`. Establish `hF' : ∀ (κ g : Formalism.AUTREP.GAf D.host.E n), P.ψ κ ∈ levS V β L → rd P c e (c.ext φ) (g * κ) = levChi V β L (P.ψ κ) • rd P c e (c.ext φ) g` using `fun κ g hκ => (congrArg (fun z => e (c.ext φ z)) (map_mul P.ψ g κ)).trans ((congrArg e (hF _ hκ _)).trans (map_smul e _ _))`. Use `⟨⟨rd_left P c e hc ρ rat wt hφ, ?_⟩, fun κ => funext fun g => hF' κ g κ.2⟩` and prove the remaining obligations. Take `⟨N, hN, h⟩` from `hL`. Conclude with `⟨N, hN, fun κ hκ g => by rw [hF' κ g (h κ hκ).1, (h κ hκ).2, one_smul]⟩`.
+-/
 theorem map_forms_le (hL : principalLevelFrame.LevOK P (levS V β L) (levChi V β L)) :
     (forms c β L).map (rd P c e) ≤ NG.TypeSp ρ (levJ P β L) (levX P β L) := by
   rintro _ ⟨F, ⟨⟨φ, hφ, rfl⟩, hF⟩, rfl⟩
@@ -130,6 +172,13 @@ theorem map_forms_le (hL : principalLevelFrame.LevOK P (levS V β L) (levChi V �
 
 omit hc in
 
+/- English proof (translation)
+Introduce `γ x k`. Establish `h2 : ∀ (κ : levJ P β L) g, f (g * κ) = levChi V β L (P.ψ κ) • f g` using `fun κ g => congrFun (hf.2 κ) g`. Establish `ek : finE V (P.ψ (s k)) = Formalism.UG.bc (swapAE D) k.1.1` using `congrArg (fun z : Bridge.Gf V => Formalism.UG.bc (swapAE D) z.1) (hs k)`. Establish `hk` using `mem_levi_flag_of_mem_parabolic β L (x := Formalism.UG.bc (swapAE D) k.1.1) k.2`. Establish `hk1 : finE V (P.ψ (s k)) ∈ lev D.sp.cm V.gram β L` using `ek ▸ hk.1`.
+
+Establish `hm : s k ∈ levJ P β L` using `⟨P.into _, hk1⟩`. Establish `eγ : finHom V γ = finHom V (P.ψ (s (Bridge.ratF V γ)))` using `(congrArg Subtype.val (hs (Bridge.ratF V γ))).symm`. Establish `hγ : s (Bridge.ratF V γ) ∈ ReciprocityTheory.Aut.GQ D.host.E n` using `(rat _).2 ⟨γ, γ.2, eγ⟩`. Establish `e0 : s (Bridge.ratF V γ * x * k) = s (Bridge.ratF V γ) * s x * s k` using `(map_mul s _ _).trans (congrArg (fun z => z * s k) (map_mul s _ _))`. Establish `e1 : (((levEnv V β L).χ k : ℂˣ) : ℂ) = levChi V β L (P.ψ (s k))` using `congrArg Units.val (hk.2.trans (congrArg (levFn β L) ek.symm))`.
+
+Establish `e2 : f (s (Bridge.ratF V γ * x * k)) = levChi V β L (P.ψ (s k)) • ρ ⟨_, hγ⟩ (f (s x))` using `(congrArg f e0).trans ((h2 ⟨_, hm⟩ _).trans (congrArg _ (hf.1.1 ⟨_, hγ⟩ (s x))))`. Conclude with `addChar_theta_law_rearrangement_identity e (wt ⟨_, hγ⟩ γ γ.2 eγ) e1 e2`.
+-/
 theorem mem_adForms {f : Formalism.AUTREP.GAf D.host.E n → W} (hf : f ∈ NG.TypeSp ρ (levJ P β L) (levX P β L))
     (s : Bridge.Gf V →* Formalism.AUTREP.GAf D.host.E n) (hs : ∀ x, finP P (s x) = x) :
     (fun x => e.symm (f (s x))) ∈ Bridge.AdForms (Bridge.ratF V) (c.ρ.comp (Formalism.L2.Theta.GQ V).subtype) (levEnv V β L).J (levEnv V β L).χ := by
@@ -150,6 +199,11 @@ theorem mem_adForms {f : Formalism.AUTREP.GAf D.host.E n → W} (hf : f ∈ NG.T
     (congrArg f e0).trans ((h2 ⟨_, hm⟩ _).trans (congrArg _ (hf.1.1 ⟨_, hγ⟩ (s x))))
   exact addChar_theta_law_rearrangement_identity e (wt ⟨_, hγ⟩ γ γ.2 eγ) e1 e2
 
+/- English proof (translation)
+Use `le_antisymm (map_forms_le P c β L e hc ρ rat wt hL) fun f hf => ?_` and prove the remaining obligations. Take `⟨s, hs, hs'⟩` from `exists_section (finP P) (finitePart_injective P) (finitePart_surjective P)`. Use `⟨c.ext fun x => e.symm (f (s x)), ⟨⟨_, mem_adForms P c β L e ρ rat wt hf s hs, rfl⟩, fun k hk g => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨κ, rfl⟩` from `P.onto k hk.1`. Establish `e0 : s ((finHom V).rangeRestrict (g * P.ψ κ)) = s ((finHom V).rangeRestrict g) * κ` using `(congrArg s (map_mul (finHom V).rangeRestrict _ _)).trans ((map_mul s _ _).trans (congrArg _ (hs' κ)))`.
+
+Establish `e1 : c.ρ (g * P.ψ κ)⁻¹ = c.ρ g⁻¹` using `rho_inv_mul c.ρ g _ (hc _ ((GfC V).inv_mem (P.into κ)))`. Establish `e2 : f (s ((finHom V).rangeRestrict (g * P.ψ κ))) = levChi V β L (P.ψ κ) • f (s ((finHom V).rangeRestrict g))` using `(congrArg f e0).trans (congrFun (hf.2 ⟨κ, hk⟩) _)`. Conclude with `wachExpansion_smul_compatible e e1 e2`. Use function extensionality and compare the values at `h`. Conclude with `(congrArg e (ext_psi P c hc _ h)).trans ((e.apply_symm_apply _).trans (congrArg f (hs' h)))`.
+-/
 theorem map_forms (hL : principalLevelFrame.LevOK P (levS V β L) (levChi V β L)) :
     (forms c β L).map (rd P c e) = NG.TypeSp ρ (levJ P β L) (levX P β L) := by
   refine le_antisymm (map_forms_le P c β L e hc ρ rat wt hL) fun f hf => ?_
@@ -182,6 +236,21 @@ section Weight
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hfin : finHom V ((GlobalTheory.StdFrameModel.unitPsi hg).ψ h) = Formalism.UG.bc (GlobalTheory.StdFrameModel.sw D).symm.toRingHom h.1` using `(GlobalTheory.StdFrameModel.exists_lift hg h).choose_spec.2`. Establish `hU : ∀ x : GL (Fin V.rank) D.host.E, x ∈ ReciprocityTheory.Aut.GQ0 D.host.E V.rank ↔ x ∈ Formalism.UG.UJ (D.sp.cm.sig : D.host.E →+* D.host.E) V.gram`. Introduce `x`. Express the relevant statement in the definitionally equal form `x.1 * ReciprocityTheory.Aut.conjT _ x.1 = 1 ↔ Formalism.UG.cT _ x.1 * V.gram * x.1 = V.gram`. Rewrite using `[hg, Matrix.mul_one, mul_eq_one_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[hfin]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Establish `hx'` using `(hU x).1 hx`.
+
+Establish `hm : Formalism.UG.bc (incA D) x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram`. Establish `h0 : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) x.1 * V.gram * x.1 = V.gram` using `hx'`. Establish `h2` using `congrArg (fun M => Matrix.map M (incA D)) h0`. Simplify using `only [Matrix.map_mul] at h2`. Conclude with `h2`.
+
+Use `⟨⟨_, hm⟩, ⟨x, hx', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e' : h.1 = _` using `e.symm`. Rewrite using `[e']`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(sndA D.host.F 1) ⊗ₜ[D.host.F] (x.1 i j) = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (x.1 i j)`.
+
+Rewrite using `[map_one]`. Introduce and unpack `⟨γ, ⟨x, hx, e⟩, e2⟩`. Use `⟨x, (hU x).2 hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `e3` using `congrArg (fun g : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) => g.1 i j) e2`.
+
+Establish `e4 : (finHom V γ).1 i j = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (x.1 i j)`. Establish `e' : γ.1 = _` using `e.symm`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (γ.1.1 i j) = _`. Rewrite using `[e']`. Express the relevant statement in the definitionally equal form `(sndA D.host.F 1) ⊗ₜ[D.host.F] (x.1 i j) = _`.
+
+Rewrite using `[map_one]`. Simplify using `only [e4] at e3`. Apply `(GlobalTheory.StdFrameModel.sw D).symm.injective` to reduce the goal to its premises. Conclude with `e3`.
+-/
 theorem rat_unit {V : HSp D} (hg : V.gram = 1) (h : Formalism.AUTREP.GAf D.host.E V.rank) :
     h ∈ ReciprocityTheory.Aut.GQ D.host.E V.rank ↔
       ∃ γ ∈ Formalism.L2.Theta.GQ V, finHom V γ = finHom V ((GlobalTheory.StdFrameModel.unitPsi hg).ψ h) := by
@@ -230,6 +299,9 @@ section Agreement
 
 variable {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch} (X : RealAt D cf nch tp)
 
+/- English proof (translation)
+Take `⟨N, hN, h⟩` from `GlobalTheory.LevFinCong.exists_finCong_lev D V β L`. Take `⟨N', hN', h'⟩` from `GlobalTheory.StdFrameCong.exists_cong_finCong D V n P hF hP N hN`. Conclude with `⟨N', hN', fun κ hκ => h _ (P.into κ) (h' κ hκ)⟩`.
+-/
 theorem levOK_of_std {V : HSp D} {n : ℕ} {P : RowPsi V n} {hF : D.host.F = maximalRealSubfield D.host.E} (hP : StdFrame hF P)
     (β : GL (Fin V.rank) (EAf D)) (L : LevDat D.host.E ℂ V.rank) : principalLevelFrame.LevOK P (levS V β L) (levChi V β L) := by
   obtain ⟨N, hN, h⟩ := GlobalTheory.LevFinCong.exists_finCong_lev D V β L
@@ -238,6 +310,9 @@ theorem levOK_of_std {V : HSp D} {n : ℕ} {P : RowPsi V n} {hF : D.host.F = max
 
 abbrev datOf (μ : D.what₂.Tup) (j : Fin D.R.m) : LevDat D.host.E ℂ (Vc D j).rank := datVP X.R j (X.tupT μ) (X.R.levR X.F false)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun U => U ⊓ levSubV (Vc D j) (X.R.cV j).W (levS _ (X.R.βV j) (datOf X μ j)) (levChi _ (X.R.βV j) (datOf X μ j))) ((LinearMap.range_comp _ _).trans (congrArg (Submodule.map (X.R.cV j).ext) (X.given.core.models.HV j (X.tupT μ)).2.1))`.
+-/
 theorem amt_eq (μ : D.what₂.Tup) (j : Fin D.R.m) :
     (toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj).Amt μ j = forms (X.R.cV j) (X.R.βV j) (datOf X μ j) :=
   congrArg (fun U => U ⊓ levSubV (Vc D j) (X.R.cV j).W (levS _ (X.R.βV j) (datOf X μ j)) (levChi _ (X.R.βV j) (datOf X μ j)))
@@ -248,6 +323,11 @@ def fnL {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) : D.what₂.Mt �
   map_add' x y := congrArg Subtype.val (map_add (X.IL.jMt μ hμ j) x y)
   map_smul' a x := congrArg Subtype.val (map_smul (X.IL.jMt μ hμ j) a x)
 
+/- English proof (translation)
+Use extensionality with `F`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `(X.IL.jMt μ hμ j x).2`. Introduce `h`.
+
+Conclude with `⟨(X.IL.jMt μ hμ j).symm ⟨F, h⟩, congrArg Subtype.val ((X.IL.jMt μ hμ j).apply_symm_apply ⟨F, h⟩)⟩`.
+-/
 theorem range_fnL {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) :
     LinearMap.range (fnL X hμ j) = (toLiftReal X.R X.F X.tupT X.hm X.hTop X.hinj).Amt μ j := by
   ext F
@@ -295,6 +375,9 @@ def selfIdx (Xd : DivX D) : EigIdx D Xd where
   cOf := id
   lam_const := fun j _ _ _ e _ _ h => congrArg (fun π => Xd.logLam j π e) h
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem xi_cast {C C' : CharFrame D} (h : C = C') (tp : TupTied D C' nch) : (h ▸ tp : TupTied D C nch).xi = tp.xi := by
   subst h
   rfl

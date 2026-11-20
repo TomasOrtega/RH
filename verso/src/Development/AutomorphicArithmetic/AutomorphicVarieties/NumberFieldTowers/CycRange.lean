@@ -6,6 +6,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _ hq`. Establish `hmu` using `muQ L Ω l`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed L`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Use `haveI : IsGalois L Ω := inferInstance`.
+
+Use `haveI : NeZero (l : Ω) := ⟨by exact_mod_cast (Fact.out : l.Prime).ne_zero⟩`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hinj` using `(algebraMap L Ω).injective`. Establish `key : ∀ (σ : G L Ω) (n : ℕ) (t : Ω), t ^ l ^ n = 1 → σ t = t ^ ((cycZ L Ω l σ : ℤ_[l]).toZModPow n).val`. Introduce `σ n t ht`.
+
+Conclude with `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G L Ω) Ω σ) t ht`. Establish `hmem : ∀ (a : ℕ) (u : ℤ_[l]ˣ), u ∈ KStar.TotallyRealRoots.princ l a ↔ (u : ℤ_[l]).toZModPow a = 1`. Introduce `a u`. Simplify using `[KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff]`. Establish `hone : ∀ (n : ℕ) (t : Ω), IsPrimitiveRoot t (l ^ n) → t ^ ((1 : ZMod (l ^ n)).val) = t`.
+
+Introduce `n t ht`. Rewrite using `[ZMod.val_one_eq_one_mod, ht.eq_orderOf, pow_mod_orderOf, pow_one]`. Establish `hfixed : ∀ (n : ℕ) (t : Ω) (a : ZMod (l ^ n)), IsPrimitiveRoot t (l ^ n) → t ^ a.val = t → a = 1`. Introduce `n t a ht h`. Apply `ZMod.val_injective` to reduce the goal to its premises.
+
+Apply `ht.pow_inj (ZMod.val_lt a) (ZMod.val_lt 1)` to reduce the goal to its premises. Rewrite using `[h, hone n t ht]`. Establish `hq' : qExp l ≤ cZero l L` using `hmu.2.2.1.mp hq`. Establish `hle : (cycZ L Ω l).range ≤ KStar.TotallyRealRoots.princ l (cZero l L)`. Introduce and unpack `_ ⟨σ, rfl⟩`.
+
+Take `⟨ζ, hζ⟩` from `(hmu.1 (cZero l L)).2 le_rfl`. Establish `hζ' : IsPrimitiveRoot (algebraMap L Ω ζ) (l ^ cZero l L)` using `hζ.map_of_injective hinj`. Establish `hfix : σ (algebraMap L Ω ζ) = algebraMap L Ω ζ` using `σ.commutes ζ`. Rewrite `hfix` using `[key σ _ _ hζ'.pow_eq_one]`. Conclude with `(hmem _ _).2 (hfixed _ _ _ hζ' hfix)`.
+
+Apply `le_antisymm hle` to reduce the goal to its premises. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ (cZero l L + 1))`. Establish `hnot : ξ ∉ Set.range (algebraMap L Ω)`. Introduce and unpack `⟨x, rfl⟩`. Establish `hx : IsPrimitiveRoot x (l ^ (cZero l L + 1))` using `hξ.of_map_of_injective hinj`.
+
+Use `(hmu.1 (cZero l L + 1)).1 ⟨x, hx⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hnot` using `[InfiniteGalois.mem_range_algebraMap_iff_fixed]`. Use `push_neg at hnot`. Take `⟨σ, hσ⟩` from `hnot`.
+
+Establish `hu : cycZ L Ω l σ ∈ KStar.TotallyRealRoots.princ l (cZero l L)` using `hle ⟨σ, rfl⟩`. Establish `hu' : cycZ L Ω l σ ∉ KStar.TotallyRealRoots.princ l (cZero l L + 1)`. Introduce `hm`. Apply `hσ` to reduce the goal to its premises. Rewrite using `[key σ _ _ hξ.pow_eq_one, (hmem _ _).1 hm, hone _ _ hξ]`.
+
+Establish `hgen` using `((princGen l (cZero l L) hq').1 _ hu).2 hu'`. Use `hgen.trans (Subgroup.topologicalClosure_minimal _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `⟨σ, rfl⟩`. Rewrite using `[MonoidHom.coe_range]`.
+
+Conclude with `(isCompact_range (continuous_cycZ L Ω l)).isClosed`.
+-/
 theorem UpperTheory.V.Tower.cycRange :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime], HasMuQ l L → (cycZ L Ω l).range = KStar.TotallyRealRoots.princ l (cZero l L) := by
   intro L Ω _ _ _ _ _ l _ hq

@@ -6,6 +6,17 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
+/- English proof (translation)
+Introduce `M X Z _ _ _ ev hsep T Φ hT L`. Set `W : Submodule ℂ (Module.Dual ℂ M)` to `Submodule.span ℂ (Set.range ev)`. Establish `hbot : W.dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `m hm`.
+
+Rewrite `hm` using `[Submodule.mem_dualCoannihilator]`. Conclude with `(Submodule.mem_bot ℂ).2 (hsep m fun x => hm _ (Submodule.subset_span ⟨x, rfl⟩))`. Establish `htop : W = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := W), hbot, Submodule.dualAnnihilator_bot]`. Set `φ : Module.Dual ℂ M →ₗ[ℂ] (Z → ℂ)` to `{ toFun := fun l z => l (Φ z) map_add' := fun a b => by`.
+
+Use extensionality with `z`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := fun c a => by`. Use extensionality with `z`. Simplify using `}`.
+
+Establish `hle : W ≤ T.comap φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hT x`. Establish `hL : L ∈ W`.
+
+Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Conclude with `hle hL`.
+-/
 theorem UpperTheory.Gal.Wt.evLem_of :
     UpperTheory.Gal.Wt.EvLem := by
   intro M X Z _ _ _ ev hsep T Φ hT L

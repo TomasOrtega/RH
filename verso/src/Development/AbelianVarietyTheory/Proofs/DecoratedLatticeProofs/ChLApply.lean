@@ -45,6 +45,9 @@ def chL : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k →ₗ[k] k where
   map_add' x y := by simp [ch, Finset.sum_add_distrib]
   map_smul' a x := by simp [ch, Finset.mul_sum]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chL_apply (x : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) : chL x = ch x := rfl
 
 open Classical in

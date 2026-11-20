@@ -11,6 +11,11 @@ open UpperTheory.V.Cj UpperTheory.V.Cj.H
 section
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+Establish `e : chart φ.1 (h * g) =ᶠ[nhds (oneL E a)] chart φ.1 g` using `by filter_upwards [isOpen_invSet.mem_nhds (val_mem_invSet (1 : GL (Fin a) (Cinf E)))] with x hx`. Take `⟨u, hu⟩` from `hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[chart_val, chart_val, mul_assoc, hφ]`. Express the relevant statement in the definitionally equal form `fderiv ℝ (chart φ.1 (h * g)) (oneL E a) X = fderiv ℝ (chart φ.1 g) (oneL E a) X`.
+
+Rewrite using `[e.fderiv_eq]`.
+-/
 private theorem lie_left (X : Lie E a) (φ : Sm E a) (h g : GA E a) (hφ : ∀ g, φ.1 (h * g) = φ.1 g) :
     (lie E a X φ).1 (h * g) = (lie E a X φ).1 g := by
   have e : chart φ.1 (h * g) =ᶠ[nhds (oneL E a)] chart φ.1 g := by
@@ -21,6 +26,9 @@ private theorem lie_left (X : Lie E a) (φ : Sm E a) (h g : GA E a) (hφ : ∀ g
   change fderiv ℝ (chart φ.1 (h * g)) (oneL E a) X = fderiv ℝ (chart φ.1 g) (oneL E a) X
   rw [e.fderiv_eq]
 
+/- English proof (translation)
+Establish `h` using `lie_comm (oneL E a) X`. Establish `e : Matrix.of (oneL E a) * Matrix.of X = Matrix.of X * Matrix.of (oneL E a)` using `(one_mul (Matrix.of X)).trans (mul_one (Matrix.of X)).symm`. Rewrite `h` using `[e, sub_self, sub_eq_zero]`. Conclude with `LinearMap.congr_fun h φ`.
+-/
 private theorem lie_one_comm (X : Lie E a) (φ : Sm E a) :
     lie E a (oneL E a) (lie E a X φ) = lie E a X (lie E a (oneL E a) φ) := by
   have h := lie_comm (oneL E a) X
@@ -29,12 +37,22 @@ private theorem lie_one_comm (X : Lie E a) (φ : Sm E a) :
   rw [e, sub_self, sub_eq_zero] at h
   exact LinearMap.congr_fun h φ
 
+/- English proof (translation)
+Use `⟨fun γ g => lie_left X φ _ g (h.1 γ), fun u hu => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `(LinearMap.congr_fun (lie_rt_fin X u) φ).symm.trans (congrArg (lie E a X) (h.2.1 u hu))`. Rewrite using `[lie_one_comm, h.2.2 m hm, map_smul]`.
+-/
 private theorem level_lie {U : Subgroup (GL (Fin a) (Af E))} {Ξ : AlgRep E a} (X : Lie E a) (φ : Sm E a)
     (h : IsLevelFn U Ξ φ) : IsLevelFn U Ξ (lie E a X φ) := by
   refine ⟨fun γ g => lie_left X φ _ g (h.1 γ), fun u hu => ?_, fun m hm => ?_⟩
   · exact (LinearMap.congr_fun (lie_rt_fin X u) φ).symm.trans (congrArg (lie E a X) (h.2.1 u hu))
   · rw [lie_one_comm, h.2.2 m hm, map_smul]
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, v, hφ, rfl⟩` from `hx`. Rewrite using `[smAdj, adj_apply, smA_apply, smB_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ (Submodule.subset_span ⟨_, _, hφ, rfl⟩) (Submodule.subset_span ⟨_, _, hP X φ hφ, rfl⟩)) (Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨_, _, hφ, rfl⟩))`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 private theorem adj_span (Ξ : AlgRep E a) (r : ℝ) (P : Sm E a → Prop) (hP : ∀ X φ, P φ → P (lie E a X φ)) (X : Lie E a)
     (m : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) (hm : m ∈ Submodule.span ℂ {x | ∃ φ v, P φ ∧ x = φ ⊗ₜ[ℂ] v}) :
     smAdj Ξ r X m ∈ Submodule.span ℂ {x : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ) | ∃ φ v, P φ ∧ x = φ ⊗ₜ[ℂ] v} := by
@@ -49,6 +67,11 @@ private theorem adj_span (Ξ : AlgRep E a) (r : ℝ) (P : Sm E a → Prop) (hP :
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Take `⟨-, -, -, hA, hB, -⟩` from `smAB E a Ξ`. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (hA k X) m`. Establish `h2` using `LinearMap.congr_fun (hB k X) m`. Simplify using `only [Module.End.mul_apply] at h1 h2 ⊢`.
+
+Rewrite using `[smAdj, adj_apply, adj_apply, map_sub, map_sub, h1, h2, (ellFacts E a).2.2.1 k X, LinearMap.map_smul_of_tower]`.
+-/
 private theorem k_adj (Ξ : AlgRep E a) (r : ℝ) (k : Kinf E a) (X : Matrix (Fin a) (Fin a) (Cinf E)) :
     smK Ξ k * smAdj Ξ r (toL X) = smAdj Ξ r (toL (k.1 * X * star k.1)) * smK Ξ k := by
   obtain ⟨-, -, -, hA, hB, -⟩ := smAB E a Ξ
@@ -60,6 +83,11 @@ private theorem k_adj (Ξ : AlgRep E a) (r : ℝ) (k : Kinf E a) (X : Matrix (Fi
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ a n e he U Ξ r q ω`. Use `⟨fun h => ⟨delCochain E a n e he _ _ _ (fun k X => k_adj Ξ r k X.1) q ω h.equiv, fun X i hi => ?_, fun X => ?_⟩, fun h X => ?_⟩` and prove the remaining obligations. Rewrite using `[del_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h.basic (Matrix.vecCons (e j) X) i.succ hi, map_zero]`.
+
+Rewrite using `[del_apply]`. Conclude with `Submodule.sum_mem _ fun j _ => adj_span Ξ r _ level_lie _ _ (h.val _)`. Use `mem_tens.1 (span_le_tens (P := fun φ => φ ∈ sqSub E a r) (fun _ h => h) ?_)` and prove the remaining obligations. Rewrite using `[del_apply]`. Conclude with `Submodule.sum_mem _ fun j _ => adj_span Ξ r _ ((sqLie E a r).2) _ _ (mem_span_of_cmp (h _))`.
+-/
 theorem UpperTheory.V.Cj.H.delLev :
     UpperTheory.V.Cj.H.DelLev := by
   intro E _ _ _ a n e he U Ξ r q ω

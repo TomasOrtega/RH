@@ -14,6 +14,9 @@ open GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSide
 
 section Linear
 
+/- English proof (translation)
+Establish `h1 : f x = ∑ j, σ (bx.repr x j) • f (bx j)` using `by conv_lhs => rw [← bx.sum_repr x, map_sum]`. Simplify using `only [map_smulₛₗ]`. Use function extensionality and compare the values at `i`. Rewrite using `[h1]`. Simplify using `[Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem equivFun_semilinear {R S X Y n m : Type*} [CommRing R] [CommRing S] [AddCommGroup X]
     [Module R X] [AddCommGroup Y] [Module S Y] [Fintype n] [Fintype m] {σ : R →+* S}
     (f : X →ₛₗ[σ] Y) (bx : Module.Basis n R X) (bz : Module.Basis m S Y) (x : X) :
@@ -25,6 +28,17 @@ theorem equivFun_semilinear {R S X Y n m : Type*} [CommRing R] [CommRing S] [Add
   rw [h1]
   simp [Matrix.mulVec, dotProduct, mul_comm]
 
+/- English proof (translation)
+Establish `li : LinearIndependent O fun i => r (b i)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `choose a ha using fun i => hθ (g i)`. Take `⟨n, hn⟩` from `hk (∑ i, a i • b i) (by simpa [map_sum, map_smulₛₗ, ha] using hg)`.
+
+Use `congrArg (fun m => θ (b.repr m i)) hn` as an intermediate fact. Simplify `this` using `[Finsupp.single_apply, apply_ite θ, ha, hξ]`. Establish `sp : ⊤ ≤ Submodule.span O (Set.range fun i => r (b i))`. Introduce `y _`. Take `⟨m, rfl⟩` from `hr y`.
+
+Rewrite using `[← b.sum_repr m, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `⟨Module.Basis.mk li sp, fun m => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[equivFun_semilinear r b]`. Establish `: (Matrix.of fun i j => (Module.Basis.mk li sp).repr (r (b j)) i) = 1`. Use extensionality with `i j`. Use `(Module.Basis.mk li sp).repr_self_apply j i` as an intermediate fact. Rewrite `this` using `[Module.Basis.mk_apply]`.
+
+Rewrite using `[Matrix.of_apply, this, Matrix.one_apply]`. Simplify using `only [eq_comm]`. Rewrite using `[this, Matrix.one_mulVec]`.
+-/
 theorem exists_basis_reduction {A O M D n : Type*} [CommRing A] [CommRing O] [AddCommGroup M]
     [Module A M] [AddCommGroup D] [Module O D] [Fintype n] {θ : A →+* O} (hθ : Surjective θ)
     {ξ : A} (hξ : θ ξ = 0) (r : M →ₛₗ[θ] D) (hr : Surjective r)
@@ -54,6 +68,9 @@ theorem exists_basis_reduction {A O M D n : Type*} [CommRing A] [CommRing O] [Ad
     simp only [eq_comm]
   rw [this, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `e.surjective x`. Take `⟨c, hc⟩` from `hx (e 1)`. Rewrite `hc` using `[← map_smul, e.injective.eq_iff, smul_eq_mul]`. Use `⟨(IsUnit.of_mul_eq_one_right c hc.symm).unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← map_smul, smul_eq_mul, mul_one]`.
+-/
 theorem exists_unit_of_generator {O X : Type*} [CommRing O] [AddCommGroup X] [Module O X]
     (e : O ≃ₗ[O] X) (x : X) (hx : ∀ y, ∃ c : O, y = c • x) : ∃ u : Oˣ, x = (u : O) • e 1 := by
   obtain ⟨a, rfl⟩ := e.surjective x
@@ -62,6 +79,9 @@ theorem exists_unit_of_generator {O X : Type*} [CommRing O] [AddCommGroup X] [Mo
   refine ⟨(IsUnit.of_mul_eq_one_right c hc.symm).unit, ?_⟩
   rw [IsUnit.unit_spec, ← map_smul, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Rewrite using `[← map_smulₛₗ]`. Use `congr 1`. Conclude with `e.injective (by simp)`.
+-/
 theorem reduction_generates {A O M D : Type*} [CommRing A] [CommRing O] [AddCommGroup M]
     [Module A M] [AddCommGroup D] [Module O D] {θ : A →+* O} (r : M →ₛₗ[θ] D)
     (e : M ≃ₗ[A] A) (m : M) : r m = θ (e m) • r (e.symm 1) := by
@@ -74,6 +94,9 @@ end Linear
 variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)]
   [IsAdicComplete (span {(p : O)}) O]
 
+/- English proof (translation)
+Use `haveI : IsAdicComplete (span {(p : Ainf p O)}) (Ainf p O) := WittVector.isAdicCompleteIdealSpanP`. Set `T : (G ⟶ G') →+ Ainf p O` to `AddMonoidHom.mk' (fun f => l (M.map f m)) fun f g => by`. Rewrite using `[M.map_add, ← map_add]`. Both sides reduce to the same expression. Conclude with `Dieudonne.map_padic_smul (ofPadic p O) T a f`.
+-/
 theorem form_map_smul (M : PDivGroup p O ⥤ ModuleCat.{0} (Ainf p O)) [M.Additive]
     {G G' : PDivGroup p O} (l : M.obj G' →ₗ[Ainf p O] Ainf p O) (m : M.obj G) (a : ℤ_[p])
     (f : G ⟶ G') : l (M.map (a • f) m) = ofPadic p O a * l (M.map f m) := by
@@ -100,6 +123,13 @@ def endMap (M : PDivGroup p O ⥤ ModuleCat.{0} (Ainf p O)) [M.Additive] (G : PD
   map_zero' := congrArg ModuleCat.Hom.hom (M.map_zero G G)
   map_add' f g := congrArg ModuleCat.Hom.hom (M.map_add (f := f) (g := g))
 
+/- English proof (translation)
+Use `choose χ hχ using fun i : Fin h => hG.2 (LinearMap.toSpanSingleton ℤ_[p] _ (epsTate hε) ∘ₗ LinearMap.proj i ∘ₗ e.toLinearMap)`. Establish `h1 : ∀ i t, pairing G O t (χ i) = e t i • epsTate hε` using `fun i t => LinearMap.congr_fun (hχ i) t`. Use `⟨χ, h1, fun χ' => hG.1 (LinearMap.ext fun t => ?_)⟩` and prove the remaining obligations. Establish `ht : t = ∑ i, e t i • e.symm (Pi.single i 1)`. Apply `e.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_sum]`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Express the relevant statement in the definitionally equal form `pairing G O t χ' = pairing G O t _`. Rewrite using `[map_sum]`.
+
+Use `conv_lhs => rw [ht, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, h1, LinearMap.smul_apply, ← epsPairing_smul hε, smul_comm]`.
+-/
 theorem exists_dual_basis [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε)
     {G : PDivGroup p O} (hG : Bijective (pairing G O).flip) {h : ℕ}
     (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) :
@@ -121,6 +151,9 @@ theorem exists_dual_basis [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSyst
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_smul, map_smul, h1, LinearMap.smul_apply, ← epsPairing_smul hε, smul_comm]
 
+/- English proof (translation)
+Establish `hb : Bijective (omegaMap _ (PDivGroup.mu p O) (PDivGroup.mu p O).bidual.inv)` using `bijective_iff_has_inverse.2 ⟨omegaMap _ _ (PDivGroup.mu p O).bidual.hom, fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, Iso.hom_inv_id, omegaMap_id]; rfl, fun x => by rw [← LinearMap.comp_apply, ← omegaMap_comp, Iso.inv_hom_id, omegaMap_id]; rfl⟩`. Use `⟨muOmegaEquiv p O ≪≫ₗ LinearEquiv.ofBijective _ hb, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (omegaMap _ (PDivGroup.mu p O) (PDivGroup.mu p O).bidual.inv) (one_smul O _)`.
+-/
 theorem exists_equiv_constDlogT :
     ∃ e : O ≃ₗ[O] (const p O).dual.omega, e 1 = constDlogT p O := by
   have hb : Bijective (omegaMap _ (PDivGroup.mu p O) (PDivGroup.mu p O).bidual.inv) :=
@@ -130,11 +163,71 @@ theorem exists_equiv_constDlogT :
   refine ⟨muOmegaEquiv p O ≪≫ₗ LinearEquiv.ofBijective _ hb, ?_⟩
   exact congrArg (omegaMap _ (PDivGroup.mu p O) (PDivGroup.mu p O).bidual.inv) (one_smul O _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(LinearMap.ringLmapEquivSelf O O O).symm ≪≫ₗ (muOmegaEquiv p O).symm.dualMap, LinearMap.ext fun w => by simp [muLieGen]⟩`.
+-/
 theorem exists_equiv_muLieGen :
     ∃ e : O ≃ₗ[O] (PDivGroup.mu p O).Lie, e 1 = muLieGen p O :=
   ⟨(LinearMap.ringLmapEquivSelf O O O).symm ≪≫ₗ (muOmegaEquiv p O).symm.dualMap,
     LinearMap.ext fun w => by simp [muLieGen]⟩
 
+/- English proof (translation)
+Establish `hε1 : IsPrimitiveRoot (root ε).untilt p` using `by simpa [zeta] using hε 1`. Take `⟨hdom, -, hker, hsurj, hnu, -, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε1`. Establish `hxi : fontaineTheta O p (xi ε) = 0`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Use `haveI : IsIntegrallyClosedIn O C := isIntegrallyClosedIn_iff.2 ⟨hv.hom_inj, fun hx => hv.exists_of_le_one (hv.isIntegral_iff_v_le_one.1 hx)⟩`. Take `⟨M, H, ψ, r, ι, π, hadd, hM, hψ, nψ, hr, nr, hex, nι, nπ, -, e₀, e₁, u, he₀, -, hu⟩` from `hcov`. Choose the witnesses or unpack the hypotheses as in `⟨u₁, hu₁⟩ : ∃ u₁ : Oˣ, r _ (e₀.symm 1) = (u₁ : O) • ι _ (constDlogT p O) := by`. Take `⟨e, he⟩` from `exists_equiv_constDlogT (p := p) (O := O)`. Establish `hb : Bijective (ι (const p O))` using `⟨(hex _).1, fun y => ((hex _).2.1 y).1 (Subsingleton.elim _ _)⟩`.
+
+Rewrite using `[← he]`. Use `exists_unit_of_generator (e ≪≫ₗ LinearEquiv.ofBijective _ hb) _ fun y => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(hr _).1 y`. Conclude with `⟨_, reduction_generates _ e₀ m⟩`. Choose the witnesses or unpack the hypotheses as in `⟨u₂, hu₂⟩ : ∃ u₂ : Oˣ, π _ (r _ (e₁.symm 1)) = (u₂ : O) • muLieGen p O := by`.
+
+Take `⟨e, he⟩` from `exists_equiv_muLieGen (p := p) (O := O)`. Rewrite using `[← he]`. Use `exists_unit_of_generator e _ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `(hex _).2.2 y`. Take `⟨m, rfl⟩` from `(hr _).1 z`.
+
+Conclude with `⟨_, by rw [reduction_generates _ e₁ m, map_smul]⟩`. Use `⟨u₁, Units.map (padicToO p O : ℤ_[p] →* O) u⁻¹ * u₂⁻¹, fun G Λ _ _ ρ => ?_⟩` and prove the remaining obligations. Use `haveI := (hM G).1`. Use `haveI := (hM G).2.1`. Use `haveI := G.finite_tate C`.
+
+Use `haveI := G.free_tate C`. Set `b` to `Module.finBasisOfFinrankEq (Ainf p O) (M.obj G) (hM G).2.2`. Set `tb` to `Module.finBasisOfFinrankEq ℤ_[p] G.Tate (G.finrank_tate C)`. Set `e` to `tb.equivFun`. Take `⟨χ, hχ, hχ'⟩` from `exists_dual_basis hε (G.pairing_flip_bijective C) e`.
+
+Take `⟨c, hc⟩` from `exists_basis_reduction hsurj hxi (r G) (hr G).1 (fun m => ((hr G).2 m).1) b`. Use `choose n hn using (hψ G).2`. Set `Φ` to `tateToM M b (e₀.symm 1)`. Establish `hΦ : ∀ t, Φ t = M.map (constHom G t) (e₀.symm 1)` using `fun _ => rfl`. Set `F : Matrix (Fin G.height) (Fin G.height) (Ainf p O)` to `Matrix.of fun i j => b.repr (Φ (tb j)) i`.
+
+Establish `hF : ∀ t, F *ᵥ (ofPadic p O ∘ e t) = b.equivFun (Φ t)` using `fun t => (equivFun_semilinear Φ tb b t).symm`. Set `Gm : Matrix (Fin G.height) (Fin G.height) (Ainf p O)` to `Matrix.of fun i k => ofPadic p O ↑u⁻¹ * e₁ (M.map (charHom G (χ i)) (b k))`. Establish `hG : ∀ m i, (Gm *ᵥ b.equivFun m) i = ofPadic p O ↑u⁻¹ * e₁ (M.map (charHom G (χ i)) m)` using `fun m i => by conv_rhs => rw [← b.sum_repr m, map_sum, map_sum, Finset.mul_sum]`. Simplify using `only [Gm, Matrix.mulVec, dotProduct, Matrix.of_apply, map_smul, smul_eq_mul, Module.Basis.equivFun_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+
+Set `Ψ : Matrix (Fin G.height) (Fin G.height) (Ainf p O)` to `Matrix.of fun i k => b.repr (ψ G (b k)) i`. Establish `hΨ : ∀ m, Ψ *ᵥ (phiInv p O ∘ b.equivFun m) = b.equivFun (ψ G m)` using `fun m => (equivFun_semilinear (ψ G) b b m).symm`. Set `ρT : Λ →ₐ[ℤ_[p]] Matrix (Fin G.height) (Fin G.height) ℤ_[p]` to `(LinearMap.toMatrixAlgEquiv tb).toAlgHom.comp (ρ.onTateAlg O)`. Establish `hρT : ∀ a t, ρT a *ᵥ e t = e (tateMap G G O (ρ a) t)` using `fun a t => LinearMap.toMatrix_mulVec_repr tb tb _ t`. Set `ρM : Λ →+* Matrix (Fin G.height) (Fin G.height) (Ainf p O)` to `(LinearMap.toMatrixAlgEquiv b).toAlgHom.toRingHom.comp ((endMap M G).comp ρ)`.
+
+Establish `hρM : ∀ a m, ρM a *ᵥ b.equivFun m = b.equivFun (M.map (ρ a) m)` using `fun a m => LinearMap.toMatrix_mulVec_repr b b _ m`. Establish `hGF : ∀ t i, (Gm *ᵥ b.equivFun (Φ t)) i = ofPadic p O (e t i) * Sandwich.mu ε`. Introduce `t i`. Establish `h1 : M.map (charHom G (χ i)) (Φ t) = M.map (e t i • epsHom (zeta ε) hε.zeta_zero (zeta_succ_pow ε)) (e₀.symm 1)`. Rewrite using `[hΦ, ← ModuleCat.comp_apply, ← M.map_comp, constHom_comp_charHom, hχ, map_smul]`.
+
+Both sides reduce to the same expression. Establish `h2` using `form_map_smul M e₁.toLinearMap (e₀.symm 1) (e t i) (epsHom (zeta ε) hε.zeta_zero (zeta_succ_pow ε))`. Establish `h3 : ofPadic p O ↑u⁻¹ * ofPadic p O u = 1` using `by rw [← map_mul, Units.inv_mul, map_one]`. Rewrite `h2` using `[LinearEquiv.coe_coe, hu (zeta ε) _ _ (fun _ => rfl), LinearEquiv.apply_symm_apply]`. Rewrite using `[hG, h1, h2]`.
+
+Take the linear combination `(ofPadic p O (e t i) * Sandwich.mu ε) * h3`. Set `D : Datum ε G.height Λ` to `{ F := F, G := Gm, Ψ := Ψ Ψ' := Matrix.of fun i k => phiInv p O (b.repr (n (b k)) i) ρT := ρT, ρM := ρM G_mul_F := by ext1 i j`. Use `(hGF (tb j) i).trans ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Simplify using `[e, hij]`.
+
+Simplify using `[e, hij, Finsupp.single_apply, Ne.symm hij]`. Use `F_eq := by ext1 i j`. Use `Eq.trans ?_ (congrFun (hΨ (Φ (tb j))) i).symm` and prove the remaining obligations. Establish `h0 : ψ _ (e₀.symm 1) = e₀.symm 1` using `e₀.injective (by rw [he₀]; simp)`. Rewrite using `[hΦ, ← nψ, h0]`.
+
+Both sides reduce to the same expression. Use `Ψ_mul := by ext1 i j`. Use `(congrFun (hΨ (n (b j))) i).trans ?_` and prove the remaining obligations. Rewrite using `[hn]`. Simplify using `[Matrix.one_apply, Finsupp.single_apply, eq_comm]`.
+
+Use `F_act := fun a => by ext1 i j`. Use `Eq.trans ?_ (congrFun (hρM a (Φ (tb j))) i).symm` and prove the remaining obligations. Rewrite using `[hΦ, ← ModuleCat.comp_apply, ← M.map_comp, ← constHom_tateMap, ← hΦ, ← hF, ← hρT]`. Simplify using `[e, Matrix.mul_apply, Matrix.mulVec, dotProduct, Finsupp.single_apply] }`. Establish `red : ∀ (X : Matrix (Fin G.height) (Fin G.height) (Ainf p O)) (y : Fin G.height → Ainf p O), Matrix.toLin' (X.map (fontaineTheta O p)) (fontaineTheta O p ∘ y) = fontaineTheta O p ∘ (X *ᵥ y)` using `fun X y =>`.
+
+Use function extensionality and compare the values at `fun i => (RingHom.map_mulVec _ X y i).symm`. Establish `hal : ∀ t, D.al (toO e t) = (u₁ : O) • c.equivFun (ι G (hodgeTate G t))` using `fun t => by`. Use `(red F (ofPadic p O ∘ e t)).trans ?_` and prove the remaining obligations. Rewrite using `[hF, ← hc, hΦ, ← nr, hu₁, map_smul, map_smul, nι, hodgeTate_eq_omegaDualMap]`. Establish `hact : ∀ a y, actH D a (c.equivFun y) = c.equivFun (H.map (ρ a) y)` using `fun a y => by`.
+
+Take `⟨m, rfl⟩` from `(hr G).1 y`. Rewrite using `[nr, hc, hc, ← hρM]`. Conclude with `red _ _`. Establish `hbb : ∀ y i, D.bb (c.equivFun y) i = padicToO p O ↑u⁻¹ * ↑u₂⁻¹ * π G y (dlog G (χ i))` using `fun y i => by`. Take `⟨m, rfl⟩` from `(hr G).1 y`.
+
+Establish `h1` using `nπ _ _ (charHom G (χ i)) (r G m)`. Rewrite `h1` using `[nr, reduction_generates _ e₁, map_smul, hu₂, lieMap_charHom]`. Establish `h2` using `LinearMap.congr_fun h1 (dlogT p O)`. Simplify using `only [LinearMap.smul_apply, muLieGen_dlogT, smul_eq_mul, mul_one] at h2`. Rewrite using `[hc]`.
+
+Use `(congrFun (red Gm _) i).trans ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hG, map_mul, ← h2, mul_assoc, mul_comm _ (u₂ : O), Units.inv_mul_cancel_left]`. Both sides reduce to the same expression. Establish `hFil : ∀ y, c.equivFun y ∈ D.Fil ↔ π G y = 0` using `fun y => by`. Use `⟨fun hy => ?_, fun hy => funext fun i => by rw [hbb, hy]; simp⟩` and prove the remaining obligations.
+
+Establish `hr' : ∀ x, π G (c.equivFun.symm (D.al x)) = 0` using `fun x => by`. Establish `hx : x = ∑ j, x j • toO e (tb j)`. Use function extensionality and compare the values at `i`. Simplify using `[toO, e, Finset.sum_apply, Finsupp.single_apply, apply_ite (padicToO p O)]`. Rewrite using `[hx, map_sum, map_sum, map_sum]`.
+
+Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hal, map_smul, map_smul, map_smul, map_smul, LinearEquiv.symm_apply_apply, (hex G).2.1.apply_apply_eq_zero, smul_zero, smul_zero]`. Take `⟨x, hx⟩` from `(GlobalTheory.Sandwich.HodgeTateBound.bound p C v O hv ε hε1 Λ _ D).2.2.2.1 _ hy`. Establish `h1` using `hr' x`. Rewrite `h1` using `[hx, map_smul, LinearEquiv.symm_apply_apply, map_smul]`.
+
+Conclude with `LinearMap.ext fun w => (mul_eq_zero.1 (LinearMap.congr_fun h1 w)).resolve_left hnu`. Set `fil₀ : G.dual.omega →ₗ[O] D.Fil` to `(c.equivFun.toLinearMap ∘ₗ ι G).codRestrict _ fun w => (hFil _).2 ((hex G).2.1.apply_apply_eq_zero w)`. Establish `hfil : Bijective fil₀`. Use `⟨fun w w' h => (hex G).1 (c.equivFun.injective (congrArg Subtype.val h)), fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`.
+
+Take `⟨y, rfl⟩` from `c.equivFun.surjective x`. Take `⟨w, rfl⟩` from `((hex G).2.1 y).1 ((hFil y).1 hx)`. Conclude with `⟨w, rfl⟩`. Establish `hk : D.Fil = LinearMap.ker (π G ∘ₗ c.equivFun.symm.toLinearMap)`. Use extensionality with `x`.
+
+Take `⟨y, rfl⟩` from `c.equivFun.surjective x`. Rewrite using `[hFil, LinearMap.mem_ker, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Set `lie` to `Submodule.quotEquivOfEq _ _ hk ≪≫ₗ LinearMap.quotKerEquivOfSurjective (π G ∘ₗ c.equivFun.symm.toLinearMap) ((hex G).2.2.comp c.equivFun.symm.surjective)`. Establish `hlie : ∀ y, lie (D.Fil.mkQ (c.equivFun y)) = π G y` using `fun y => congrArg (π G) (c.equivFun.symm_apply_apply y)`. Use `⟨D, e, LinearEquiv.ofBijective fil₀ hfil, lie, fun a t => (hρT a t).symm, fun a w => ?_, fun a m => ?_, fun t => ?_, fun x χ' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(congrArg c.equivFun (nι _ _ (ρ a) w).symm).trans (hact a _).symm`. Take `⟨y, rfl⟩` from `c.equivFun.surjective m`. Rewrite using `[hact, hlie, hlie]`. Conclude with `nπ _ _ (ρ a) y`. Rewrite using `[hal, hodgeTate_eq_omegaMap]`.
+
+Both sides reduce to the same expression. Take `⟨y, rfl⟩` from `(hex G).2.2 x`. Rewrite using `[← dlog_eq_omegaMap]`. Use `conv_lhs => rw [← hlie, LinearEquiv.symm_apply_apply]`. Use `conv_rhs => rw [hχ' χ', map_sum, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dlog_smul (padicToO p O), map_smul, smul_eq_mul]`. Establish `: bQuot D (D.Fil.mkQ (c.equivFun y)) i = _` using `hbb y i`. Rewrite using `[this]`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sandwichAt_of_covariant {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} [Algebra O C] (hv : v.Integers O) [IsDomain O] {ε : PreTilt O p}
     (hε : IsPrimitiveSystem ε) (hcov : CovariantDieudonneAt ε) : HodgeTateSandwichAt hε := by
@@ -312,6 +405,9 @@ theorem sandwichAt_of_covariant {C : Type} [Field C] [IsAlgClosed C] [CharZero C
     simp only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe]
     ring
 
+/- English proof (translation)
+Introduce `h p _ C _ _ _ v O _ _ _ _ hv _ ε hε` and use `sandwichAt_of_covariant hv hε (h.covariant p C v O hv ε (by simpa [zeta] using hε 1))`.
+-/
 theorem hodgeTateSandwich_of_prismaticDieudonne₂ : GlobalTheory.Published.PrismaticDieudonneHodge →
     ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
       (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

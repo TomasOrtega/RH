@@ -10,6 +10,11 @@ open PI.AddIntG.Wk
 
 variable {K : Type*} [CommRing K]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun n => ⟨MvPowerSeries.coeff n f, h n⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Use `first`.
+
+Consider the case `rfl`. Consider the case `simp [MvPowerSeries.coeff_map]`. Introduce and unpack `⟨g, rfl⟩ n`. Rewrite using `[MvPowerSeries.coeff_map]`. Conclude with `(MvPowerSeries.coeff n g).2`.
+-/
 theorem serOver_iff (S : Subring K) {σ : Type*} (f : MvPowerSeries σ K) :
     SerOver S f ↔ f ∈ SerS S σ := by
   constructor

@@ -30,20 +30,38 @@ namespace UpperTheory.Gal.GamX
 
 open UpperTheory.V.Z.Gam UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.T
 
+/- English proof (translation)
+The claim follows from `gamSumOf matchBCX normCnt normVal (lpPowOf lpInj) chsFacts fdegEq (twValsOf normVal)`.
+-/
 theorem gamSum_holds : GamSum :=
   gamSumOf matchBCX normCnt normVal (lpPowOf lpInj) chsFacts fdegEq (twValsOf normVal)
 
+/- English proof (translation)
+The claim follows from `gamOneOf chsFacts (valsExtOf polFacts) gamSum_holds`.
+-/
 theorem gamOne_holds : GamOne := gamOneOf chsFacts (valsExtOf polFacts) gamSum_holds
 
+/- English proof (translation)
+The claim follows from `splitSuppOf nmEq suppFacts Sph.weakStable (splitStrong (descStep (coreDesc ci Sph.gm) (liftAll (liftStep (coreLift ci Sph.gm)))))`.
+-/
 theorem splitSupp_holds : SplitSupp :=
   splitSuppOf nmEq suppFacts Sph.weakStable
     (splitStrong (descStep (coreDesc ci Sph.gm) (liftAll (liftStep (coreLift ci Sph.gm)))))
 
+/- English proof (translation)
+The claim follows from `gamMixed_of gamOne_holds splitSupp_holds chsTr rkSupp (rkLiftOf UpperTheory.V.Z.Gam.normLoc) (upThruOf chsFacts)`.
+-/
 theorem gamMixed_holds : GamMixed :=
   gamMixed_of gamOne_holds splitSupp_holds chsTr rkSupp (rkLiftOf UpperTheory.V.Z.Gam.normLoc) (upThruOf chsFacts)
 
+/- English proof (translation)
+The claim follows from `charSupp_of gamMixed_holds nmEq suppFacts`.
+-/
 theorem charSupp_holds : CharSupp := charSupp_of gamMixed_holds nmEq suppFacts
 
+/- English proof (translation)
+The claim follows from `charLiftPrime_of charSupp_holds`.
+-/
 theorem charLiftPrime_holds : CharLiftPrime := charLiftPrime_of charSupp_holds
 
 end UpperTheory.Gal.GamX

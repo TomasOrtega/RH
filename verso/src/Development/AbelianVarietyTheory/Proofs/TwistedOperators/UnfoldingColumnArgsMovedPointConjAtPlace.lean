@@ -15,9 +15,19 @@ set_option maxHeartbeats 800000
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem map_mt_cpt_colCoord (w : Pl D.host.E) (V : HSp D) (g : GA D V) :
     Matrix.map (Formalism.L2.Theta.mt V g) ((cpt w).comp (toEAf D)) = (loc w (Lev.finE V g)).val := rfl
 
+/- English proof (translation)
+Establish `e0 : ∀ y : WO S T, GlobalTheory.FunObj.frAt w β' β y = (loc w β'⁻¹).val * Matrix.map y ((cpt w).comp (toEAf D)) * (loc w β).val`. Introduce `y`. Rewrite using `[GlobalTheory.FunObj.frAt, GlobalTheory.FunObj.Comparison₂.fr, Matrix.map_mul, Matrix.map_mul]`. Both sides reduce to the same expression. Establish `e1 : Matrix.map (actO S T g h x) ((cpt w).comp (toEAf D)) = (loc w (Lev.finE T h)).val * Matrix.map x ((cpt w).comp (toEAf D)) * (loc w (Lev.finE S g))⁻¹.val`.
+
+Rewrite using `[actO, Matrix.map_mul, Matrix.map_mul, map_mt_cpt_colCoord, map_mt_cpt_colCoord, map_inv, map_inv]`. Rewrite using `[e0, e0, e1]`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv, Units.val_mul, Matrix.mul_assoc]`. Establish `hA : ∀ {c : Type} [Fintype c] (Y : Matrix (Fin T.rank) c (Kw w)), (loc w β').val * ((loc w β')⁻¹.val * Y) = Y`. Introduce `c _ Y`.
+
+Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hB : (loc w β).val * ((loc w β)⁻¹.val * ((loc w (Lev.finE S g))⁻¹.val * (loc w β).val)) = (loc w (Lev.finE S g))⁻¹.val * (loc w β).val`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Rewrite using `[hA, hB]`.
+-/
 theorem frAt_actO_colCoord (w : Pl D.host.E) {S T : HSp D} (β' : GL (Fin T.rank) (Lev.EAf D))
     (β : GL (Fin S.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T) (x : WO S T) :
     GlobalTheory.FunObj.frAt w β' β (actO S T g h x) =
@@ -40,6 +50,21 @@ theorem frAt_actO_colCoord (w : Pl D.host.E) {S T : HSp D} (β' : GL (Fin T.rank
     rw [← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
   rw [hA, hB]
 
+/- English proof (translation)
+Take `⟨P', a, ⟨⟨es, hes, rfl⟩, -⟩, hsupp, hoff⟩` from `S.N.u_supp X hX`. Establish `hnot : ¬ Off S.N.S w`. Introduce `h0`. Establish `h3` using `S.N.off w h0`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases.
+
+Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `h3.1 ((G.pl.under_w hv).symm ▸ hv)`. Conclude with `h3.2.1 t ht w h rfl`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq, hqw⟩ : ∃ q ∈ S.N.S, ((q : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal := by`. Unfold `Off at hnot`.
+
+Use `push_neg at hnot`. Conclude with `hnot`. Establish `hz : cpt w (toEAf D ((∑ PP ∈ P', es PP) + cA D (∑ PP ∈ P', es PP))) = 0`. Establish `hA : ∀ PP ∈ P', cpt w (toEAf D (es PP)) = 0` using `fun PP hPP => (cpt_of_isIdemAt (hes PP hPP)).2 _ fun e => hoff PP hPP q hq (e ▸ hqw)`. Establish `hB : ∀ PP ∈ P', cpt w (sg D (toEAf D (es PP))) = 0`.
+
+Introduce `PP hPP`. Use `cpt_sg_eq_zero ((cpt_of_isIdemAt (hes PP hPP)).2 _ fun e => hoff PP hPP q hq ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `(natCast_mem_cP w q).2 hqw`. Simplify using `only [map_add, toEAf_cA, map_sum]`.
+
+Rewrite using `[Finset.sum_eq_zero hA, Finset.sum_eq_zero hB, add_zero]`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun z => cpt w (toEAf D z)) (hsupp i j)`. Simplify using `only [map_mul, hz, zero_mul] at h1`.
+
+Establish `h2 : cpt w (toEAf D (Formalism.L2.Theta.mt (G.V X) (S.N.u X).1 i j)) = cpt w (toEAf D ((1 : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) (AE D)) i j))`. Use `h1.symm` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, map_sub, sub_eq_zero]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `cpt w (toEAf D (Formalism.L2.Theta.mt (G.V X) (S.N.u X).1 i j)) = (1 : Matrix (Fin (G.V X).rank) (Fin (G.V X).rank) (Kw w)) i j`.
+
+Rewrite using `[h2, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem loc_finE_u_colCoord {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
     (S : GridChoice W U) {t : T} (ht : t ∈ U) {X : Node} (hX : DefNode D.R.m X) {w : Pl D.host.E}
     (hw : w ∈ locPl G t) : loc w (Lev.finE (G.V X) (S.N.u X).1) = 1 := by
@@ -75,6 +100,9 @@ theorem loc_finE_u_colCoord {T : Type} {L : LevCh D T} {sc : Consts} {G : GridDa
   rw [h2, Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `Matrix.submatrix_mul_equiv M N f (finCongr h) g`.
+-/
 theorem submatrix_cast_mul_colCoord {K : Type} [CommRing K] {r n n' p r' p' : ℕ} (M : Matrix (Fin r) (Fin n) K)
     (N : Matrix (Fin n) (Fin p) K) (f : Fin r' → Fin r) (h : n' = n) (g : Fin p' → Fin p) :
     M.submatrix f (Fin.cast h) * N.submatrix (Fin.cast h) g = (M * N).submatrix f g :=
@@ -86,13 +114,34 @@ end GlobalTheory.TopLevelInv
 
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem conj_inv_inv_colCoord {Γ : Type} [Group Γ] (b f : Γ) : (b⁻¹ * f⁻¹ * b)⁻¹ = b⁻¹ * f * b := by group
 
+/- English proof (translation)
+Use `group`.
+-/
 theorem conj_inv_colCoord {Γ : Type} [Group Γ] (b f : Γ) : b⁻¹ * f⁻¹ * b = (b⁻¹ * f * b)⁻¹ := by group
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t ht j hj k w hw x`. Establish `hu` using `loc_finE_u_colCoord S ht (X := .top (j + 1)) (show j + 1 ≤ D.R.m by omega) hw`. Use `set k' : FinPt G (.top (j + 1)) := (S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) with hk'def`. Establish `hk : ∀ β : GL (Fin (G.V (.top (j + 1))).rank) (Lev.EAf D), loc w (β⁻¹ * Lev.finE (G.V (.top (j + 1))) (k' : GA D (G.V (.top (j + 1)))) * β) = loc w (β⁻¹ * Lev.finE (G.V (.top (j + 1))) (k : GA D (G.V (.top (j + 1)))) * β)`. Introduce `β`.
+
+Simplify using `only [hk'def, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, hu, inv_one, one_mul, mul_one]`. Establish `hκ : (kapAt S t j hj k w).val = (loc w ((S.βp (j + 1))⁻¹ * Lev.finE (G.V (.top (j + 1))) (k : GA D (G.V (.top (j + 1)))) * S.βp (j + 1))).val.submatrix (Fin.cast (topRank_eq G t w hj.le)) (Fin.cast (topRank_eq G t w hj.le))` using `rfl`. Establish `hκi : (kapAt S t j hj k w)⁻¹.val = (loc w ((S.βp (j + 1))⁻¹ * Lev.finE (G.V (.top (j + 1))) (k : GA D (G.V (.top (j + 1)))) * S.βp (j + 1)))⁻¹.val.submatrix (Fin.cast (topRank_eq G t w hj.le)) (Fin.cast (topRank_eq G t w hj.le))`. Establish `h0 : (kapAt S t j hj k w)⁻¹.val = (loc w ((S.βp (j + 1))⁻¹ * (Lev.finE (G.V (.top (j + 1))) (k : GA D (G.V (.top (j + 1)))))⁻¹ * S.βp (j + 1))).val.submatrix (Fin.cast (topRank_eq G t w hj.le)) (Fin.cast (topRank_eq G t w hj.le))`. Rewrite using `[kapAt, ← map_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[h0, conj_inv_colCoord, map_inv]`. Use function extensionality and compare the values at `i`. Break down `eq_or_ne i (j + 1) with rfl | h1` into its components or cases. Rewrite using `[colAt_eq S t w _ hj]`.
+
+Simplify using `only [movedPt, Function.update_self]`. Rewrite using `[frAt_actO_colCoord]`. Simplify using `only [colMove, Function.update_self]`. Rewrite using `[colAt_eq S t w x hj, hκ, inv_one, map_one, mul_one, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul, map_inv (Lev.finE (G.V (.top (j + 1)))), ← map_inv (loc w), conj_inv_inv_colCoord, hk, submatrix_cast_mul_colCoord]`. Break down `eq_or_ne i j with rfl | h2` into its components or cases.
+
+Rewrite using `[colAt_eq S t w _ (show i < D.R.m by omega)]`. Rewrite using `[movedPt, Function.update_of_ne (show (⟨i, by omega⟩ : Fin D.R.m) ≠ ⟨i + 1, hj⟩ by simp [Fin.ext_iff]), Function.update_self]`. Rewrite using `[frAt_actO_colCoord]`. Simplify using `only [colMove]`. Rewrite using `[Function.update_of_ne h1, Function.update_self, colAt_eq S t w x (show i < D.R.m by omega), hκi, inv_one, map_one, mul_one, inv_mul_cancel, map_one, inv_one, Units.val_one, Matrix.mul_one, map_inv (Lev.finE (G.V (.top (i + 1)))), conj_inv_colCoord, map_inv (loc w), hk, submatrix …`.
+
+Distinguish the cases in `hi : i < D.R.m`. Establish `hm : movedPt t j hj k' x ⟨i, hi⟩ = x ⟨i, hi⟩`. Rewrite using `[movedPt, Function.update_of_ne (show (⟨i, hi⟩ : Fin D.R.m) ≠ ⟨j + 1, hj⟩ by simp [Fin.ext_iff, h1]), Function.update_of_ne (show (⟨i, hi⟩ : Fin D.R.m) ≠ ⟨j, by omega⟩ by simp [Fin.ext_iff, h2])]`. Simplify using `only [colMove]`. Rewrite using `[Function.update_of_ne h1, Function.update_of_ne h2, colAt_eq S t w _ hi, colAt_eq S t w x hi, hm]`.
+
+Simplify using `only [colMove]`. Rewrite using `[Function.update_of_ne h1, Function.update_of_ne h2]`. Simplify using `only [GridChoice.colAt, dif_neg hi]`.
+-/
 theorem colAt_movedPt_conj : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T}, t ∈ U → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))), ∀ w ∈ locPl G t,
     ∀ x : ∀ j' : Fin D.R.m, WO (G.pS (.top t j' : Pair T)) (G.pT (.top t j' : Pair T)),
       S.colAt t w (movedPt t j hj ((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1))) x) = colMove j (kapAt S t j hj k w) (S.colAt t w x) := by

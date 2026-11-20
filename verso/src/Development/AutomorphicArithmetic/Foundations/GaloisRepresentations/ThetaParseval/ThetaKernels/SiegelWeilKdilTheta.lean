@@ -13,12 +13,23 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK.Dbl GlobalTheory.Cont PositivityTheory.Rg.Sw
 open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
+/- English proof (translation)
+The claim follows from `d.ok.dbl.weil.2.1.pres x Φ hΦ`.
+-/
 theorem om_mem_k {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (x : d.G) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) : d.om x Φ ∈ d.sch :=
   d.ok.dbl.weil.2.1.pres x Φ hΦ
+/- English proof (translation)
+The claim follows from `d.ok.dbl.lin.pres h Φ hΦ`.
+-/
 theorem S_mem_k {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (h : UA σ d.A.J) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) : d.S h Φ ∈ d.sch :=
   d.ok.dbl.lin.pres h Φ hΦ
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d Φ hΦ x h`. Take `⟨-, hTPar, -, hTT, -⟩` from `hT`. Establish `hx` using `_root_.PositivityTheory.SiegelWeilFormula.Kdil.om_mem_k d x hΦ`. Rewrite using `[(hTT F E σ d Φ hΦ).2 x h, ← ((hTT F E σ d _ (_root_.PositivityTheory.SiegelWeilFormula.Kdil.S_mem_k d h hx)).1).tsum_eq]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `X`. Conclude with `(hTPar F E σ d _ hx).2.2 h (incM F X)`.
+-/
 theorem thetaPt_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) : _root_.PositivityTheory.SiegelWeilFormula.Kdil.ThetaPt_k := by
   intro F E _ _ _ _ _ σ d Φ hΦ x h
   obtain ⟨-, hTPar, -, hTT, -⟩ := hT

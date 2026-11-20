@@ -58,17 +58,29 @@ section Ranks
 variable {Y : Model Xo c β} {S₀ : Finset ℕ} {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc}
   (Or : CptOrigin Y S₀ Dc Hd)
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Or.side with ⟨h, -, hj⟩ | ⟨h, -, hj⟩ <;> simp [h, hj]`.
+-/
 theorem CptOrigin.rk_bg (τ : CMType H) : labelRk D (Or.bg τ) = Dc.j := by
   rcases Or.side with ⟨h, -, hj⟩ | ⟨h, -, hj⟩ <;> simp [h, hj]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Or.side with ⟨-, h, hj⟩ | ⟨-, h, hj⟩ <;> simp [h, hj, Or.N_eq]`.
+-/
 theorem CptOrigin.rk_sm (τ : CMType H) : labelRk D (Or.sm τ) = Dc.N - Dc.j := by
   rcases Or.side with ⟨-, h, hj⟩ | ⟨-, h, hj⟩ <;> simp [h, hj, Or.N_eq]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Or.side with ⟨h, h', -⟩ | ⟨h, h', -⟩ <;> simp [h, h']`.
+-/
 theorem CptOrigin.bg_ne_sm (τ τ' : CMType H) : Or.bg τ ≠ Or.sm τ' := by
   rcases Or.side with ⟨h, h', -⟩ | ⟨h, h', -⟩ <;> simp [h, h']
 
 include Or in
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Or.side with ⟨-, -, hj⟩ | ⟨-, -, hj⟩ <;> simp [ComponentData.n, hj, Or.N_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem CptOrigin.n_eq : Dc.n = Fintype.card (CMType H) * D.p * D.q := by
   rcases Or.side with ⟨-, -, hj⟩ | ⟨-, -, hj⟩ <;> simp [ComponentData.n, hj, Or.N_eq]
   ring
@@ -95,10 +107,16 @@ def IsPeriodAt (C : CuspDataOn Dc T O' Lt) (w : (Σ k, J k) → ℂ) {g : ℕ} (
       ∀ x', (∀ a, (B a).mulVec x' = C.emb τ a • x') → (x - pr τ x) ⬝ᵥ Hm.mulVec (star x') = 0) ∧
     ∀ τ v v', star (C.lie w τ v) ⬝ᵥ C.lie w τ v' = pr τ (P v') ⬝ᵥ Hm.mulVec (star (pr τ (P v)))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isPeriodAt_restrict (C : CuspDataOn Dc T O' Lt) (h : T' ⊆ T) (w : (Σ k, J k) → ℂ) {g : ℕ} (P : Lt → Fin g → ℂ)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (B : O' → Matrix (Fin g) (Fin g) ℂ) :
     IsPeriodAt (C.restrict h) w P Hm B ↔ IsPeriodAt C w P Hm B := Iff.rfl
 
+/- English proof (translation)
+Take `⟨-, -, -, pr, h1, h2⟩` from `h`. Use `⟨pr, h1, fun τ r v => ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, ← h2]`. Both sides reduce to the same expression.
+-/
 theorem IsPeriodAt.gramLie {C : CuspDataOn Dc T O' Lt} {w : (Σ k, J k) → ℂ} {g : ℕ} {P : Lt → Fin g → ℂ}
     {Hm : Matrix (Fin g) (Fin g) ℂ} {B : O' → Matrix (Fin g) (Fin g) ℂ} (h : IsPeriodAt C w P Hm B) :
     ∃ pr : Ψ → (Fin g → ℂ) → Fin g → ℂ,
@@ -158,6 +176,21 @@ def planeData : CuspDataOn (lineData II hII) (lineData II hII).Xo GaussianInt (G
 def planePer (v : GaussianInt × GaussianInt) : Fin 2 → ℂ :=
   ![toComplex v.1 + Complex.I * toComplex v.2, star (toComplex v.1 - Complex.I * toComplex v.2)]
 
+/- English proof (translation)
+Use `⟨fun a v => ?_, fun v => ?_, fun v v' => ?_, fun _ x => ![x 0, 0], fun _ x => ⟨fun a => ?_, fun x' hx' => ?_⟩, fun _ v v' => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext k; fin_cases k <;> simp [planePer, Matrix.mulVec_diagonal] <;> ring`. Use `show Complex.normSq (toComplex v.1) + Complex.normSq (toComplex v.2) = _`. Simplify using `[planePer, Matrix.mulVec_diagonal, dotProduct, Fin.sum_univ_two, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `show (((-planeForm) v v' : ℤ) : ℝ) = _`. Establish `hr : ∀ x : GaussianInt, ((x.re : ℤ) : ℝ) = (toComplex x).re` using `fun x => by rw [toComplex_def₂]`. Establish `hi : ∀ x : GaussianInt, ((x.im : ℤ) : ℝ) = (toComplex x).im` using `fun x => by rw [toComplex_def₂]`. Rewrite using `[LinearMap.neg_apply, LinearMap.neg_apply, planeForm_apply]`. Use `push_cast`.
+
+Rewrite using `[hr, hr, hr, hr, hi, hi, hi, hi]`. Simplify using `only [planePer]`. Generalize the expression as in `toComplex v.1 = a`. Generalize the expression as in `toComplex v.2 = b`. Generalize the expression as in `toComplex v'.1 = a'`.
+
+Generalize the expression as in `toComplex v'.2 = b'`. Simplify using `[Matrix.mulVec_diagonal, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `ext k; fin_cases k <;> simp [planeData, Matrix.mulVec_diagonal]`. Establish `h` using `congrFun (hx' ⟨0, 1⟩) 1`.
+
+Establish `h1 : x' 1 = 0`. Simplify using `[planeData, Matrix.mulVec_diagonal, toComplex_def₂, Complex.ext_iff] at h`. Break down `h with h | h` into its components or cases. Evaluate the numerical expressions using `at h`. Conclude with `Complex.ext h.1 h.2`.
+
+Simplify using `[Matrix.mulVec_diagonal, dotProduct, Fin.sum_univ_two, h1]`. Use `show ∑ _c : Fin 1, star ((1 + Complex.I) * planeLie v) * ((1 + Complex.I) * planeLie v') = _`. Simplify using `[planePer, planeLie, Matrix.mulVec_diagonal, dotProduct, Fin.sum_univ_two]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem plane_isPeriodAt (w : (Σ _ : Unit, Fin 2) → ℂ) :
     IsPeriodAt (planeData II hII) w planePer (Matrix.diagonal fun _ => (1 / 2 : ℂ))
       fun a => Matrix.diagonal ![toComplex a, star (toComplex a)] := by
@@ -192,6 +225,9 @@ theorem plane_isPeriodAt (w : (Σ _ : Unit, Fin 2) → ℂ) :
     simp
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨planeLine_ne_bot, planeLine_saturated, fun x hx y hy => by show (-planeForm) x y = 0 simpa using planeLine_isIso x hx y hy⟩`.
+-/
 example : planeLine ≠ ⊥ ∧ IsSaturated planeLine ∧ IsIsoSub (planeData II hII).form planeLine :=
   ⟨planeLine_ne_bot, planeLine_saturated, fun x hx y hy => by
     show (-planeForm) x y = 0
@@ -236,14 +272,23 @@ def CptOrigin.CuspTie (Cd : CuspData Dc O' Lt) : Prop := Or.IsFibreWeight Cd.cus
 
 variable {Or}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem CptOrigin.cuspTieAt_restrict (e : 𝓞 E ≃+* O') (C : CuspDataOn Dc T O' Lt) (h : T' ⊆ T)
     (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) (w : (Σ k, J k) → ℂ) :
     Or.CuspTieAt e (C.restrict h) z w ↔ Or.CuspTieAt e C z w := Iff.rfl
 
+/- English proof (translation)
+Introduce `z w hw hz hT` and use `hC z w hw hz (h hT)`.
+-/
 theorem CptOrigin.CuspTieOn.restrict {e : 𝓞 E ≃+* O'} {C : CuspDataOn Dc T O' Lt} (hC : Or.CuspTieOn e C)
     (h : T' ⊆ T) : Or.CuspTieOn e (C.restrict h) :=
   fun z w hw hz hT => hC z w hw hz (h hT)
 
+/- English proof (translation)
+Take `⟨A, _, φ, g, u, Hm, χ, B, α, -, hAH, -, -, -, hn, -⟩` from `h`. Rewrite using `[hn]`. Conclude with `hAH.2.1 _ fun h0 => hv (α.injective (by rw [map_zero]; exact Subtype.ext h0))`.
+-/
 theorem CptOrigin.CuspTieAt.normSq_pos {e : 𝓞 E ≃+* O'} {C : CuspDataOn Dc T O' Lt}
     {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ} (h : Or.CuspTieAt e C z w) {v : Lt} (hv : v ≠ 0) :
     0 < C.normSq w v := by
@@ -251,6 +296,9 @@ theorem CptOrigin.CuspTieAt.normSq_pos {e : 𝓞 E ≃+* O'} {C : CuspDataOn Dc 
   rw [hn]
   exact hAH.2.1 _ fun h0 => hv (α.injective (by rw [map_zero]; exact Subtype.ext h0))
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Use `⟨e, fun a z w hw hz hT => ?_⟩` and prove the remaining obligations. Take `⟨-, rfl⟩` from `hT`. Conclude with `he z w hw hz`.
+-/
 theorem CptOrigin.FamTie.cuspTieOn {F : CuspFamily Dc} (h : Or.FamTie F) :
     ∃ e : ∀ a, 𝓞 E ≃+* F.O a, ∀ a, Or.CuspTieOn (e a) (F.cusp a) := by
   obtain ⟨e, he⟩ := h
@@ -258,22 +306,34 @@ theorem CptOrigin.FamTie.cuspTieOn {F : CuspFamily Dc} (h : Or.FamTie F) :
   obtain ⟨-, rfl⟩ := hT
   exact he z w hw hz
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨e, fun z w hw hz => h _ z w hw hz ⟨⟨hXo z w hw, fun hb => (Or.bd z w hw).1 hb hz⟩, rfl⟩⟩`.
+-/
 theorem CptOrigin.famTie_of_cuspTieOn {F : CuspFamily Dc} (e : ∀ a, 𝓞 E ≃+* F.O a)
     (h : ∀ a, Or.CuspTieOn (e a) (F.cusp a))
     (hXo : ∀ (z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X) w, CoordsAt Or.𝔐.ξ Dc.y z w → w ∈ mcPts (mCoordIdeal Dc.y)) :
     Or.FamTie F :=
   ⟨e, fun z w hw hz => h _ z w hw hz ⟨⟨hXo z w hw, fun hb => (Or.bd z w hw).1 hb hz⟩, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `h`. Conclude with `fun z w hw hz => ⟨_, _, _, _, _, _, e _, F.cusp _, he z w hw hz, rfl⟩`.
+-/
 theorem CptOrigin.FamTie.isFibreWeight {F : CuspFamily Dc} (h : Or.FamTie F) : Or.IsFibreWeight F.Uat := by
   obtain ⟨e, he⟩ := h
   exact fun z w hw hz => ⟨_, _, _, _, _, _, e _, F.cusp _, he z w hw hz, rfl⟩
 
+/- English proof (translation)
+Introduce `z w hw hz`. Rewrite using `[hU w fun hb => (Or.bd z w hw).1 hb hz]`. Conclude with `h z w hw hz`.
+-/
 theorem CptOrigin.IsFibreWeight.congr {U U' : ((Σ k, J k) → ℂ) → ℝ} (h : Or.IsFibreWeight U)
     (hU : ∀ w ∉ Dc.Bd, U' w = U w) : Or.IsFibreWeight U' := by
   intro z w hw hz
   rw [hU w fun hb => (Or.bd z w hw).1 hb hz]
   exact h z w hw hz
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, C, -, hU⟩` from `h z w hw hz`. Rewrite using `[hU]`. Conclude with `le_max_left _ _`.
+-/
 theorem CptOrigin.IsFibreWeight.nonneg {U : ((Σ k, J k) → ℂ) → ℝ} (h : Or.IsFibreWeight U)
     {z : Spec (CommRingCat.of ℂ) ⟶ Or.𝔐.X} {w : (Σ k, J k) → ℂ} (hw : CoordsAt Or.𝔐.ξ Dc.y z w)
     (hz : Or.𝔐.Interior z) : 0 ≤ U w := by
@@ -281,10 +341,16 @@ theorem CptOrigin.IsFibreWeight.nonneg {U : ((Σ k, J k) → ℂ) → ℝ} (h : 
   rw [hU]
   exact le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `h.isFibreWeight.congr hU`.
+-/
 theorem CptOrigin.FamTie.cuspTie {F : CuspFamily Dc} (h : Or.FamTie F) {Cd : CuspData Dc O' Lt}
     (hU : ∀ w ∉ Dc.Bd, Cd.cuspWeight w = F.Uat w) : Or.CuspTie Cd :=
   h.isFibreWeight.congr hU
 
+/- English proof (translation)
+The claim follows from `h.cuspTie fun _ _ => rfl`.
+-/
 theorem CptOrigin.cuspTie_of_const {Cd : CuspData Dc O' Lt} (hXo : Dc.Xo.Nonempty)
     (h : Or.FamTie (CuspFamily.const Cd hXo)) : Or.CuspTie Cd :=
   h.cuspTie fun _ _ => rfl

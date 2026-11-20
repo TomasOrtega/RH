@@ -15,6 +15,9 @@ namespace GlobalTheory.CompanionTheory.EisCovar.Weyl
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Establish `h : blk4 (0 : Mx D n n) (-1) 1 0 * mat g = 1`. Rewrite using `[hg, submatrix_fromBlocks_mul]`. Simplify using `using block_matrix_one (n := n) (R := AE D)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mat_inv_eq (g : G D n) (hg : mat g = blk4 0 1 (-1) 0) : mat g⁻¹ = blk4 0 (-1) 1 0 := by
   have h : blk4 (0 : Mx D n n) (-1) 1 0 * mat g = 1 := by
     rw [hg, submatrix_fromBlocks_mul]
@@ -22,24 +25,45 @@ theorem mat_inv_eq (g : G D n) (hg : mat g = blk4 0 1 (-1) 0) : mat g⁻¹ = blk
   calc mat g⁻¹ = (blk4 (0 : Mx D n n) (-1) 1 0 * mat g) * mat g⁻¹ := by rw [h, Matrix.one_mul]
     _ = blk4 0 (-1) 1 0 := by rw [Matrix.mul_assoc, mat_mul_inv', Matrix.mul_one]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.inner, adj_add, Matrix.add_mul]`.
+-/
 theorem inner_add_left (V : HSp D) (a b c : Mx D V.rank n) :
     inner V (a + b) c = inner V a c + inner V b c := by
   simp only [GlobalTheory.StdUnn.inner, adj_add, Matrix.add_mul]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.inner, Matrix.mul_add]`.
+-/
 theorem inner_add_right (V : HSp D) (a b c : Mx D V.rank n) :
     inner V a (b + c) = inner V a b + inner V a c := by
   simp only [GlobalTheory.StdUnn.inner, Matrix.mul_add]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.inner, adj_neg, Matrix.neg_mul]`.
+-/
 theorem inner_neg_left (V : HSp D) (a c : Mx D V.rank n) : inner V (-a) c = -inner V a c := by
   simp only [GlobalTheory.StdUnn.inner, adj_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.inner, Matrix.mul_neg]`.
+-/
 theorem inner_neg_right (V : HSp D) (a c : Mx D V.rank n) : inner V a (-c) = -inner V a c := by
   simp only [GlobalTheory.StdUnn.inner, Matrix.mul_neg]
 
+/- English proof (translation)
+The claim follows from `map_add _ a b`.
+-/
 theorem trA_add (a b : AE D) : trA (a + b) = trA a + trA b := map_add _ a b
 
+/- English proof (translation)
+The claim follows from `map_neg _ a`.
+-/
 theorem trA_neg (a : AE D) : trA (-a) = -trA a := map_neg _ a
 
+/- English proof (translation)
+Establish `h : algebraMap D.host.F (AF D.host.F) (1 / 2) + algebraMap D.host.F (AF D.host.F) (1 / 2) = 1`. Rewrite using `[← map_add, add_halves, map_one]`. Rewrite using `[halfTr, halfTr, ← GlobalTheory.SWLink.trA_inner_comm V a b, ← add_mul, h, one_mul]`.
+-/
 theorem halfTr_add_swap (V : HSp D) (a b : Mx D V.rank n) :
     halfTr (Matrix.trace (inner V a b)) + halfTr (Matrix.trace (inner V b a)) =
       trA (Matrix.trace (inner V a b)) := by
@@ -47,6 +71,11 @@ theorem halfTr_add_swap (V : HSp D) (a b : Mx D V.rank n) :
     rw [← map_add, add_halves, map_one]
   rw [halfTr, halfTr, ← GlobalTheory.SWLink.trA_inner_comm V a b, ← add_mul, h, one_mul]
 
+/- English proof (translation)
+Establish `h` using `halfTr_add_swap V x y`. Establish `c` using `GlobalTheory.SWLink.trA_inner_comm V t y`. Establish `hn : halfTr (Matrix.trace (inner V y (-x))) = -halfTr (Matrix.trace (inner V y x))`. Rewrite using `[inner_neg_right, Matrix.trace_neg, halfTr, halfTr, trA_neg, mul_neg]`. Rewrite using `[hn]`.
+
+Simplify using `only [inner_add_left, inner_add_right, inner_neg_left, inner_neg_right, Matrix.trace_add, Matrix.trace_neg, trA_add, trA_neg]`. Rewrite using `[c, ← h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem phase (V : HSp D) (t x y z : Mx D V.rank n) :
     (trA (Matrix.trace (inner V (t + -x) y)) + halfTr (Matrix.trace (inner V x y))) +
         trA (Matrix.trace (inner V z (t + -x))) =
@@ -66,6 +95,15 @@ end GlobalTheory.CompanionTheory.EisCovar.Weyl
 
 namespace GlobalTheory.CompanionTheory.EisCovar
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω hω hμ g hg v Φ Ψ hΨ`. Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D V.rank n`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Establish `hx : xPart (HMul.hMul v (mat g⁻¹) : Mx D V.rank (n + n)) = yPart v`. Rewrite using `[Weyl.mat_inv_eq g hg, x_part_mul_block]`.
+
+Simplify using the standard rewrite rules. Establish `hy : yPart (HMul.hMul v (mat g⁻¹) : Mx D V.rank (n + n)) = -xPart v`. Rewrite using `[Weyl.mat_inv_eq g hg, y_part_mul_block]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `z`.
+
+Rewrite using `[hω.weyl g hg Ψ z]`. Simplify using `only [PositivityTheory.GramSchwartzFunctions.EC.Heisenberg₂]`. Rewrite using `[hx, hy, hω.weyl g hg Φ (z + yPart v), ← integral_const_mul, ← integral_add_right_eq_self (μ := μ) (fun t => Ψ.1 t * ψ (trA (Matrix.trace (inner V z t)))) (-xPart v)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `e` using `Weyl.phase V t (xPart v) (yPart v) z`.
+
+Establish `e2` using `congrArg ψ e`. Rewrite `e2` using `[AddChar.map_add_eq_mul, AddChar.map_add_eq_mul ψ (_ + _)]`. Simplify using `only [hΨ, PositivityTheory.GramSchwartzFunctions.EC.Heisenberg₂, neg_add_cancel_right]`. Take the linear combination `(Φ.1 t) * e2`.
+-/
 theorem covAt_weyl : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D) (μ : Measure (Mx D V.rank n)) (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n)), IsWeilSch ψ χ θ V μ ω → μ.IsAddHaarMeasure → ∀ g : G D n, mat g = blk4 0 1 (-1) 0 → CovAt ψ V ω g := by
   intro D n V ψ χ θ μ ω hω hμ g hg v Φ Ψ hΨ
   obtain ⟨i1, i2, i3, i4, -⟩ := lattice_Mx D V.rank n

@@ -6,5 +6,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 import Formalism.HermitianCurvature.HerGenC
 open BpJoin Formalism.FourierDecayAlt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries | exact GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries | (intros; apply GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pointwiseBound_discreteSeries_coefficients : GlobalTheory.HCXi.BesselXiIntegrable → P5.ThmPActualCpt → ThmBpDS := by
   first | exact @GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries | exact GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries | (intros; apply GlobalTheory.BpDiscreteSeriesTwoInputs.pointwise_bound_discreteSeries <;> assumption)

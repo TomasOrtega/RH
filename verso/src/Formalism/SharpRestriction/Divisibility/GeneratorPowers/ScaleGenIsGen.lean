@@ -21,6 +21,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `first`. Consider the case `(simp only [ReciprocityTheory.ChartRestriction.G.Semi.res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Use the proof step `rfl)`.
+
+Consider the case `(simp only [ReciprocityTheory.ChartRestriction.G.Semi.res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Use the proof step `rfl)`. Consider the case `(simp [ReciprocityTheory.ChartRestriction.G.Semi.res, ← Functor.map_comp_apply])`.
+-/
 private lemma res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (x : Γ(X, U)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.res h2 (ReciprocityTheory.ChartRestriction.G.Semi.res h1 x) = ReciprocityTheory.ChartRestriction.G.Semi.res (h2.trans h1) x := by
   apply Units.ext
@@ -31,6 +36,11 @@ private lemma res_res_lemma {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h
      rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl)
   | (simp [ReciprocityTheory.ChartRestriction.G.Semi.res, ← Functor.map_comp_apply])
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `first`. Consider the case `(simp only [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.naturality]`. Use the proof step `rfl)`.
+
+Consider the case `(simp only [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, Units.coe_map, MonoidHom.coe_coe]`. Conclude with `(Scheme.Hom.naturality_apply f (homOfLE h).op _).symm)`. Consider the case `(simp [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, ← Scheme.Hom.naturality_apply])`.
+-/
 private lemma pullU_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.pullU f V (ReciprocityTheory.ChartRestriction.G.Semi.res h x) =
       ReciprocityTheory.ChartRestriction.G.Semi.res (@id (f ⁻¹ᵁ V ≤ f ⁻¹ᵁ U) (fun _ hy => h hy)) (ReciprocityTheory.ChartRestriction.G.Semi.pullU f U x) := by
@@ -43,6 +53,9 @@ private lemma pullU_res_lemma_2 {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens}
      exact (Scheme.Hom.naturality_apply f (homOfLE h).op _).symm)
   | (simp [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, ← Scheme.Hom.naturality_apply])
 
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(apply Units.ext; rfl)`. Consider the case `(apply Units.ext; simp [ReciprocityTheory.ChartRestriction.G.Semi.pullU, Scheme.comp_app])`.
+-/
 private lemma pullU_comp_lemma_3 {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
     ReciprocityTheory.ChartRestriction.G.Semi.pullU (g ≫ f) U x = ReciprocityTheory.ChartRestriction.G.Semi.pullU g (f ⁻¹ᵁ U) (ReciprocityTheory.ChartRestriction.G.Semi.pullU f U x) := by
   first
@@ -50,6 +63,11 @@ private lemma pullU_comp_lemma_3 {X Y Z : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X
   | (apply Units.ext; rfl)
   | (apply Units.ext; simp [ReciprocityTheory.ChartRestriction.G.Semi.pullU, Scheme.comp_app])
 
+/- English proof (translation)
+Introduce `i j`. Establish `Pi : ∀ i', LB.wchart L (fun k => h ≫ φ k) i' ≤ h ⁻¹ᵁ LB.wchart L φ i'` using `fun i' _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `T : LB.wchart L (fun k => h ≫ φ k) i ⊓ LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ (LB.wchart L φ i ⊓ LB.wchart L φ j)` using `le_inf (inf_le_left.trans (Pi i)) (inf_le_right.trans (Pi j))`. Establish `H0 : ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ i ⊓ LB.wchart L φ j ≤ LB.wchart L φ i) inf_le_left) (@id (Γ(Y, LB.wchart L φ i)ˣ) (c.s i)) = (∏ k, (ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ i ⊓ LB.wchart L φ j ≤ φ k ⁻¹ᵁ (L.U (i k) ⊓ …` using `hc i j`. Establish `H` using `congrArg (fun z => ReciprocityTheory.ChartRestriction.G.Semi.res T (ReciprocityTheory.ChartRestriction.G.Semi.pullU h (LB.wchart L φ i ⊓ LB.wchart L φ j) z)) H0`.
+
+Use `show ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L (fun k => h ≫ φ k) i ⊓ LB.wchart L (fun k => h ≫ φ k) j ≤ LB.wchart L (fun k => h ≫ φ k) i) inf_le_left) (ReciprocityTheory.ChartRestriction.G.Semi.res (Pi i) (ReciprocityTheory.ChartRestriction.G.Semi.pullU h ( …`. Simplify using `only [map_mul, map_prod, map_zpow, res_res_lemma, pullU_res_lemma_2, pullU_comp_lemma_3] at H ⊢`. Conclude with `H`.
+-/
 private lemma pullGen_isGen_lemma_4 {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} {c : LB.Gen (LB.LinComb L φ ε)} (hc : c.IsGen) {h : Z ⟶ Y} :
     (LB.pullGen L φ ε c h).IsGen := by
@@ -72,6 +90,13 @@ private lemma pullGen_isGen_lemma_4 {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [
   simp only [map_mul, map_prod, map_zpow, res_res_lemma, pullU_res_lemma_2, pullU_comp_lemma_3] at H ⊢
   exact H
 
+/- English proof (translation)
+Introduce `i j`. Establish `Pi : ∀ i', LB.wchart L (Sum.elim φ φ') i' ≤ LB.wchart L φ (i' ∘ Sum.inl)` using `fun i' _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inl k)`. Establish `Qi : ∀ i', LB.wchart L (Sum.elim φ φ') i' ≤ LB.wchart L φ' (i' ∘ Sum.inr)` using `fun i' _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (Sum.inr k)`. Establish `H1 : ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ (i ∘ Sum.inl) ⊓ LB.wchart L φ (j ∘ Sum.inl) ≤ LB.wchart L φ (i ∘ Sum.inl)) inf_le_left) (@id (Γ(Y, LB.wchart L φ (i ∘ Sum.inl))ˣ) (t.s (i ∘ Sum.inl))) = (∏ k, (ReciprocityTheory.ChartRestriction.G.Semi.res (@i …` using `ht _ _`. Establish `H2 : ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ' (i ∘ Sum.inr) ⊓ LB.wchart L φ' (j ∘ Sum.inr) ≤ LB.wchart L φ' (i ∘ Sum.inr)) inf_le_left) (@id (Γ(Y, LB.wchart L φ' (i ∘ Sum.inr))ˣ) (t'.s (i ∘ Sum.inr))) = (∏ k, (ReciprocityTheory.ChartRestriction.G.Semi.re …` using `ht' _ _`.
+
+Establish `T1 : LB.wchart L (Sum.elim φ φ') i ⊓ LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ (i ∘ Sum.inl) ⊓ LB.wchart L φ (j ∘ Sum.inl)` using `inf_le_inf (Pi i) (Pi j)`. Establish `T2 : LB.wchart L (Sum.elim φ φ') i ⊓ LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L φ' (i ∘ Sum.inr) ⊓ LB.wchart L φ' (j ∘ Sum.inr)` using `inf_le_inf (Qi i) (Qi j)`. Establish `G1` using `congrArg (ReciprocityTheory.ChartRestriction.G.Semi.res T1) H1`. Establish `G2` using `congrArg (ReciprocityTheory.ChartRestriction.G.Semi.res T2) H2`. Use `show ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L (Sum.elim φ φ') i ⊓ LB.wchart L (Sum.elim φ φ') j ≤ LB.wchart L (Sum.elim φ φ') i) inf_le_left) (ReciprocityTheory.ChartRestriction.G.Semi.res (Pi i) (@id (Γ(Y, LB.wchart L φ (i ∘ Sum.inl))ˣ) (t.s (i ∘ Sum.inl)) …`.
+
+Simplify using `only [map_mul, map_prod, map_zpow, res_res_lemma, Fintype.prod_sum_type] at G1 G2 ⊢`. Conclude with `(congrArg₂ (· * ·) G1 G2).trans (mul_mul_mul_comm _ _ _ _)`.
+-/
 private lemma mulGen_isGen_lemma_5 {X Y : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     {t' : LB.Gen (LB.LinComb L φ' ε')} (ht : t.IsGen) (ht' : t'.IsGen) :
@@ -107,6 +132,11 @@ private lemma mulGen_isGen_lemma_5 {X Y : Scheme.{0}} {L : LB X} {K K' : Type} [
   simp only [map_mul, map_prod, map_zpow, res_res_lemma, Fintype.prod_sum_type] at G1 G2 ⊢
   exact (congrArg₂ (· * ·) G1 G2).trans (mul_mul_mul_comm _ _ _ _)
 
+/- English proof (translation)
+Introduce `j j' hj hj' hjj'`. Establish `H1 : ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ j ⊓ LB.wchart L φ' j' ≤ LB.wchart L φ j) inf_le_left) (@id (Γ(Y, LB.wchart L φ j)ˣ) (a.s j)) = ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L φ j ⊓ LB.wchart L φ' j' ≤ LB.wchart L φ' j') inf_l …` using `hab j j' (fun k₁ k₂ e => hj k₁ k₂ (by simp only [e])) (fun k₁ k₂ e => hj' k₁ k₂ (by simp only [e])) (fun k k' e => hjj' k k' (by simp only [e]))`. Establish `Pa : LB.wchart L (fun k => h ≫ φ k) j ≤ h ⁻¹ᵁ LB.wchart L φ j` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `Pb : LB.wchart L (fun k => h ≫ φ' k) j' ≤ h ⁻¹ᵁ LB.wchart L φ' j'` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Establish `T : LB.wchart L (fun k => h ≫ φ k) j ⊓ LB.wchart L (fun k => h ≫ φ' k) j' ≤ h ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ' j')` using `le_inf (inf_le_left.trans Pa) (inf_le_right.trans Pb)`.
+
+Establish `H` using `congrArg (fun z => ReciprocityTheory.ChartRestriction.G.Semi.res T (ReciprocityTheory.ChartRestriction.G.Semi.pullU h (LB.wchart L φ j ⊓ LB.wchart L φ' j') z)) H1`. Use `show ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart L (fun k => h ≫ φ k) j ⊓ LB.wchart L (fun k => h ≫ φ' k) j' ≤ LB.wchart L (fun k => h ≫ φ k) j) inf_le_left) (ReciprocityTheory.ChartRestriction.G.Semi.res Pa (ReciprocityTheory.ChartRestriction.G.Semi.pullU h (LB …`. Simplify using `only [res_res_lemma, pullU_res_lemma_2] at H ⊢`. Conclude with `H`.
+-/
 private lemma corr_pull_lemma_6 {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {a : LB.Gen (LB.LinComb L φ ε)}
     {b : LB.Gen (LB.LinComb L φ' ε')} (hab : LB.Gen.Corr L φ ε φ' ε' a b) {h : Z ⟶ Y} :
@@ -125,6 +155,9 @@ private lemma corr_pull_lemma_6 {X Y Z : Scheme.{0}} {L : LB X} {K K' : Type} [F
   simp only [res_res_lemma, pullU_res_lemma_2] at H ⊢
   exact H
 
+/- English proof (translation)
+Introduce `j j' hj hj' hjj'`. Establish `H0 : ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart Xo.univ.t.PP.L φ j ⊓ LB.wchart Xo.univ.t.PP.L φ' j' ≤ LB.wchart Xo.univ.t.PP.L φ j) inf_le_left) (@id (Γ(Y, LB.wchart Xo.univ.t.PP.L φ j)ˣ) (a.s j)) = ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart …` using `hab j j' hj hj' hjj'`. Use `show ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart Xo.univ.t.PP.L φ j ⊓ LB.wchart Xo.univ.t.PP.L φ' j' ≤ LB.wchart Xo.univ.t.PP.L φ j) inf_le_left) (ReciprocityTheory.ChartRestriction.G.Semi.res (@id (LB.wchart Xo.univ.t.PP.L φ j ≤ ⊤) le_top) v * @id (Γ(Y, LB.wcha …`. Simplify using `only [map_mul, res_res_lemma]`. Rewrite using `[H0]`.
+-/
 private lemma corr_scale_lemma_7 {Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fintype K']
     {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ} {φ' : K' → (Y ⟶ Xo.univ.t.G.left)} {ε' : K' → ℤ}
     {v : Γ(Y, ⊤)ˣ} {a : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)} {b : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ' ε')}
@@ -140,12 +173,18 @@ private lemma corr_scale_lemma_7 {Y : Scheme.{0}} {K K' : Type} [Fintype K] [Fin
   simp only [map_mul, res_res_lemma]
   rw [H0]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact mulGen_isGen_lemma_5 (pullGen_isGen_lemma_4 C.prim.1) (pullGen_isGen_lemma_4 (C.frame.gen m))`. Consider the case `(dsimp only [Formalism.L2.Pj.eL, Formalism.L2.Pj.pe]`. Conclude with `mulGen_isGen_lemma_5 (pullGen_isGen_lemma_4 C.prim.1) (pullGen_isGen_lemma_4 (C.frame.gen m)))`.
+-/
 theorem eL_isGen (C : ChartAt Xo c y) (m : ℕ) : (eL y C.d C.x C.B.A.act C.e C.wP m).IsGen := by
   first
   | exact mulGen_isGen_lemma_5 (pullGen_isGen_lemma_4 C.prim.1) (pullGen_isGen_lemma_4 (C.frame.gen m))
   | (dsimp only [Formalism.L2.Pj.eL, Formalism.L2.Pj.pe]
      exact mulGen_isGen_lemma_5 (pullGen_isGen_lemma_4 C.prim.1) (pullGen_isGen_lemma_4 (C.frame.gen m)))
 
+/- English proof (translation)
+Introduce `i j`. Establish `H` using `hg i j`. Simplify using `only [Formalism.L2.Pj.scaleGen, map_mul, res_res_lemma]`. Rewrite using `[H]`. Conclude with `mul_left_comm _ _ _`.
+-/
 theorem scaleGen_isGen {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ Xo.univ.t.G.left)) (ε : K → ℤ)
     (v : Γ(Y, ⊤)ˣ) (g : LB.Gen (LB.LinComb Xo.univ.t.PP.L φ ε)) (hg : g.IsGen) : (scaleGen φ ε v g).IsGen := by
   intro i j
@@ -154,6 +193,11 @@ theorem scaleGen_isGen {Y : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y �
   rw [H]
   exact mul_left_comm _ _ _
 
+/- English proof (translation)
+Establish `hL` using `Xo.univ.t.PP.isLB`. Establish `hch` using `(isChart_iff y C.d C.B.G.F C.B.A.act C.uvec C.x).1 C.chart`. Take `⟨τ, hτ, hv⟩` from `exists_gen hL (φ' := fun _ : Fin 1 => (C.x m).left) (ε' := fun _ => (1 : ℤ)) (by`. Introduce `U _ hU`. Establish `hf : ∀ I : ULift.{0} (Finset (Fin 2)), (C.x m).left ≫ cφ ![𝟙 Xo.univ.t.G, Xo.univ.t.act.act H.w0] I = (homAt y.x (jetSubstP m fun p : Fin 2 × Fin C.d => (![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn C.d m ![0] (C.B.A.act H.w0 j)] : Fin 2 → Fin C.d → MvPolynomial (Fin …` using `fun I => GermD.formEq_eL hch m I`.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_one, Category.comp_id, hf]`. Rewrite using `[_root_.mul_assoc, ← Finset.prod_mul_distrib]`. Simplify using `only [← zpow_add, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one]) _ (eL_isGen C m)`. Conclude with `⟨τ, hτ, corr_of_val hL fun y' J hJ => hv _ (𝟙 _) y' J hJ⟩`.
+-/
 theorem exists_tau (C : ChartAt Xo c y) (m : ℕ) :
     ∃ τ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (Y := (jO y C.d m 1).left) (K := Fin 1) (fun _ => (C.x m).left)
       fun _ => (1 : ℤ)), τ.IsGen ∧ LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ τ (eL y C.d C.x C.B.A.act C.e C.wP m) := by
@@ -173,6 +217,15 @@ theorem exists_tau (C : ChartAt Xo c y) (m : ℕ) :
       simp only [← zpow_add, neg_add_cancel, zpow_zero, Finset.prod_const_one, _root_.mul_one]) _ (eL_isGen C m)
   exact ⟨τ, hτ, corr_of_val hL fun y' J hJ => hv _ (𝟙 _) y' J hJ⟩
 
+/- English proof (translation)
+Establish `hh0 : MvPowerSeries.constantCoeff C.h = 0`. Apply the tactic sequence `have e := Formalism.MainNotions.ModuliIntegralCharts.H1.Sym.const_ev (n := 1) ![0, Germ.pt S (n := 1) C.d 0] (by intro p q; fin_cases p <;> simp [Germ.pt]) C.h`. Rewrite `e` using `[C.gauge.ax0, map_zero]`. Conclude with `e.symm`. Establish `hact : ∀ q, MvPowerSeries.constantCoeff (Germ.comp1 (C.B.actK S H.w0) (Germ.pt S (n` using `1) C.d 0) q) = 0 := by`.
+
+Introduce `q`. Unfold `Germ.comp1`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.Sym.const_ev _ (by intro p' q'; fin_cases p'; simp [Germ.pt])]`. Unfold `Germ.FB.actK`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, C.B.A.const, map_zero]`.
+
+Unfold `Germ.FB.hL`. Rewrite using `[Formalism.MainNotions.ModuliIntegralCharts.H1.Sym.const_ev _ (by`. Introduce `p q`. Use `fin_cases p`. Simplify using `[Germ.pt]`.
+
+Conclude with `hact q)]`. Conclude with `hh0`.
+-/
 theorem const_hL (C : ChartAt Xo c y) : MvPowerSeries.constantCoeff (C.B.hL S C.h H.w0) = 0 := by
   have hh0 : MvPowerSeries.constantCoeff C.h = 0 := by
     have e := Formalism.MainNotions.ModuliIntegralCharts.H1.Sym.const_ev (n := 1) ![0, Germ.pt S (n := 1) C.d 0] (by intro p q; fin_cases p <;> simp [Germ.pt])
@@ -194,6 +247,13 @@ theorem const_hL (C : ChartAt Xo c y) : MvPowerSeries.constantCoeff (C.B.hL S C.
     · exact hact q)]
   exact hh0
 
+/- English proof (translation)
+Establish `h0 : MvPowerSeries.constantCoeff (compL φ (C.B.hL S C.h H.w0)) = 0`. Unfold `compL`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.Val.const_subst (fun p : Fin 1 × Fin C.d => hφ p.2)]`. Conclude with `const_hL C`. Establish `h1 : MvPowerSeries.constantCoeff (Germ.FB.expS S (-(compL φ (C.B.hL S C.h H.w0)))) = 1`.
+
+Unfold `Germ.FB.expS`. Rewrite using `[PowerSeries.subst, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.Val.const_subst (fun _ => by rw [map_neg, h0, neg_zero])]`. Conclude with `PowerSeries.constantCoeff_exp`. Take `⟨v, hv⟩ : IsUnit (Germ.FB.expS S (-(compL φ (C.B.hL S C.h H.w0))))` from `MvPowerSeries.isUnit_iff_constantCoeff.mpr (by rw [h1]; exact isUnit_one)`. Use `⟨⟨psJet m (v : MvPowerSeries _ S), psJet m (↑v⁻¹ : MvPowerSeries _ S), ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← FBIdJet.psJet_mul, Units.mul_inv, FBIdJet.psJet_one]`. Rewrite using `[← FBIdJet.psJet_mul, Units.inv_mul, FBIdJet.psJet_one]`. Simplify using `only [hv]`.
+-/
 theorem exists_uJ (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) (m : ℕ) :
     ∃ u : (Jet S (Fin 1 × Fin (dL Dw)) m)ˣ,
@@ -219,6 +279,11 @@ def eG (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw
     (u : ∀ m, (Jet S (Fin 1 × Fin (dL Dw)) m)ˣ) (m : ℕ) : ExpFr y (xExp y C φ) m :=
   scaleGen _ _ (unitΓ (u m)) (LB.pullGen Xo.univ.t.PP.L _ _ (τ m) (homAt y.x (jφ φ m)).left)
 
+/- English proof (translation)
+Use `choose τ hτ hτc using exists_tau C`. Use `choose u hu using exists_uJ C φ hφ`. Use `⟨τ, u, hτ, hτc, hu, fun m => ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `exact scaleGen_isGen _ _ _ _ (pullGen_isGen_lemma_4 (hτ m))`.
+
+Consider the case `(unfold eG; exact scaleGen_isGen _ _ _ _ (pullGen_isGen_lemma_4 (hτ m)))`. Use `first`. Consider the case `exact fun m => ⟨u m, hu m, corr_scale_lemma_7 (corr_pull_lemma_6 (hτc m))⟩`. Consider the case `(intro m; exact ⟨u m, hu m, corr_scale_lemma_7 (corr_pull_lemma_6 (hτc m))⟩)`. Consider the case `(intro m; refine ⟨u m, hu m, ?_⟩; unfold eG; exact corr_scale_lemma_7 (corr_pull_lemma_6 (hτc m)))`.
+-/
 theorem exists_eG (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) :
     ∃ (τ : ∀ m, LB.Gen (LB.LinComb Xo.univ.t.PP.L (Y := (jO y C.d m 1).left) (K := Fin 1)

@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Take `⟨p, hchar⟩` from `CharP.exists K`. Establish `hp : p.Prime` using `CharP.char_is_prime K p`. Establish `hpl : p = l`. Assume the negation of the conclusion as `hne`. Establish `hunit : IsUnit (p : ℤ_[l])`.
+
+Assume the negation of the conclusion as `hnu`. Establish `hlt : ‖((p : ℤ) : ℤ_[l])‖ < 1`. Rewrite using `[Int.cast_natCast]`. Conclude with `PadicInt.mem_nonunits.mp hnu`. Rewrite `hlt` using `[PadicInt.norm_int_lt_one_iff_dvd, Int.natCast_dvd_natCast]`.
+
+Conclude with `hne ((Nat.prime_dvd_prime_iff_eq (Fact.out) hp).mp hlt).symm`. Establish `h` using `hunit.map f`. Rewrite `h` using `[map_natCast, CharP.cast_eq_zero]`. Conclude with `not_isUnit_zero h`. Substitute `hpl` using the available equality.
+
+Conclude with `CharP.cast_eq_zero K p`.
+-/
 private theorem char_of_padic {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [Finite K] (f : ℤ_[l] →+* K) :
     (l : K) = 0 := by
   obtain ⟨p, hchar⟩ := CharP.exists K
@@ -21,6 +30,25 @@ private theorem char_of_padic {l : ℕ} [Fact l.Prime] {K : Type} [Field K] [Fin
   subst hpl
   exact CharP.cast_eq_zero K p
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors A) Finset.univ q`. Use `choose c hc using fun a => hb a (Finset.mem_univ a)`. Establish `key : ∀ g, ψ g = 1 ↔ ∑ a, c a * ρ a g - (b : A) = 0`. Introduce `g`. Establish `h1 : algebraMap A (FractionRing A) ((b : A) * ψ g) = algebraMap A (FractionRing A) (∑ a, c a * ρ a g)`.
+
+Rewrite using `[map_mul, h g, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hc a, Algebra.smul_def, mul_assoc]`. Establish `h2` using `IsFractionRing.injective A (FractionRing A) h1`. Establish `hb0 : (b : A) ≠ 0` using `nonZeroDivisors.coe_ne_zero b`.
+
+Rewrite using `[sub_eq_zero, ← h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, mul_one]`. Introduce `h`.
+
+Conclude with `mul_left_cancel₀ hb0 (h.trans (mul_one _).symm)`. Establish `hset : {g | ψ g = 1} = ⋂ N : ℕ, {g | Ideal.Quotient.mk (maximalIdeal A ^ N) (∑ a, c a * ρ a g - (b : A)) = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Ideal.Quotient.eq_zero_iff_mem, key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h N`. Rewrite using `[h]`. Conclude with `Ideal.zero_mem _`. Introduce `h`. Establish `hbot` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal A) (maximalIdeal.isMaximal A).ne_top`.
+
+Establish `hmem : ∑ a, c a * ρ a g - (b : A) ∈ ⨅ i, maximalIdeal A ^ i` using `Submodule.mem_iInf _ |>.mpr h`. Rewrite `hmem` using `[hbot]`. Conclude with `(Submodule.mem_bot A).mp hmem`. Rewrite using `[hset]`. Use `isClosed_iInter fun N => ?_` and prove the remaining obligations.
+
+Establish `hF : IsLocallyConstant (fun g => fun a => Ideal.Quotient.mk (maximalIdeal A ^ N) (ρ a g))`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `y`. Establish `hy : (fun g => fun a => Ideal.Quotient.mk (maximalIdeal A ^ N) (ρ a g)) ⁻¹' {y} = ⋂ a, {g | Ideal.Quotient.mk (maximalIdeal A ^ N) (ρ a g) = y a}`. Use extensionality with `g`.
+
+Simplify using `[funext_iff]`. Rewrite using `[hy]`. Conclude with `isOpen_iInter_of_finite fun a => (hρ a N).isOpen_fiber (y a)`. Establish `hG` using `(hF.comp (fun w => ∑ a, Ideal.Quotient.mk (maximalIdeal A ^ N) (c a) * w a - Ideal.Quotient.mk (maximalIdeal A ^ N) (b : A))).isClopen_fiber 0`. Use `hG.isClosed using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `g`. Simplify using `[map_sub, map_sum, map_mul]`.
+-/
 private theorem closed_of_comb {A G ι : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A]
     [TopologicalSpace G] [Fintype ι] (ρ : ι → G → A) (hρ : ∀ a, AdicCont (maximalIdeal A) (ρ a))
     (q : ι → FractionRing A) (ψ : G → A)
@@ -74,6 +102,21 @@ private theorem closed_of_comb {A G ι : Type} [CommRing A] [IsDomain A] [IsLoca
   ext g
   simp [map_sub, map_sum, map_mul]
 
+/- English proof (translation)
+Introduce `l _ F O _ _ _ n r x v i g hg`. Establish `hl : (l : x.K) = 0` using `char_of_padic ((algebraMap O x.K).comp (algebraMap ℤ_[l] O))`. Use `haveI : CharP x.K l := (CharP.charP_iff_prime_eq_zero Fact.out).mpr hl`. Use `haveI : CharP (PowerSeries x.K) l := charP_of_injective_algebraMap (algebraMap x.K (PowerSeries x.K)).injective l`. Take `⟨P, hP⟩` from `x.flag v`.
+
+Establish `hclosed : IsClosed {s : F.Gv v | ((x.ψ v i s : (PowerSeries x.K)ˣ) : PowerSeries x.K) = 1}`. Use `closed_of_comb (ι := Fin n × Fin n) (fun ab s => (mat x.ρ) (F.φ v s) ab.1 ab.2) ?_ (fun ab => (P : Matrix (Fin n) (Fin n) _) i ab.1 * ((P⁻¹ : GL (Fin n) _) : Matrix (Fin n) (Fin n) _) ab.2 i) _ ?_` and prove the remaining obligations. Introduce `ab N`. Conclude with `(x.cont ab.1 ab.2 N).comp_continuous (F.φ_cont v)`. Introduce `s`.
+
+Establish `hs` using `(hP s).2 i`. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at hs`. Rewrite using `[← hs]`. Simplify using `only [pushRep, mat, MonoidHom.comp_apply, Units.coeHom_apply, Units.val_mul, Matrix.mul_apply, Finset.sum_mul, Fintype.sum_prod_type, Matrix.GeneralLinearGroup.map_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hker : (commutator (F.Gv v)).topologicalClosure ≤ (x.ψ v i).ker`. Apply `Subgroup.topologicalClosure_minimal` to reduce the goal to its premises. Conclude with `Abelianization.commutator_subset_ker (x.ψ v i)`.
+
+Use `hclosed using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_setOf_eq, Units.val_eq_one]`. Take `⟨k, hk⟩` from `CommGroup.mem_primaryComponent.mp (Subgroup.mem_comap.mp hg)`. Establish `hgk : g ^ l ^ k ∈ (commutator (F.Gv v)).topologicalClosure`.
+
+Rewrite using `[← QuotientGroup.eq_one_iff]`. Simplify using `using hk`. Establish `h1 : x.ψ v i g ^ l ^ k = 1`. Rewrite using `[← map_pow]`. Conclude with `hker hgk`.
+
+Establish `h2 : ((x.ψ v i g : PowerSeries x.K) - 1) ^ l ^ k = 0`. Rewrite using `[sub_pow_char_pow, one_pow, ← Units.val_pow_eq_pow_val, h1, Units.val_one, sub_self]`. Establish `h3 : (x.ψ v i g : PowerSeries x.K) - 1 = 0` using `pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.mp h2`. Conclude with `Units.ext (sub_eq_zero.mp h3)`.
+-/
 theorem UpperTheory.V.Pa.Det.psiMu :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ} {r : Resid F O n} (x : Point r) (v : F.Vl) (i : Fin n) (g : F.Gv v), g ∈ F.mu v → x.ψ v i g = 1 := by
   intro l _ F O _ _ _ n r x v i g hg

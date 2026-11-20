@@ -12,5 +12,8 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowGerm.pointStatements_on_copies | exact GlobalTheory.PowGerm.pointStatements_on_copies | (intros; apply GlobalTheory.PowGerm.pointStatements_on_copies <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.pointStatements_on_copies_hold : RPointT ∧ GenPointT ∧ JetsOnCopiesCompatibleFrames ∧ GermOfFamT ∧ ThetaFrameF ∧ PowPELF := by
   first | exact @GlobalTheory.PowGerm.pointStatements_on_copies | exact GlobalTheory.PowGerm.pointStatements_on_copies | (intros; apply GlobalTheory.PowGerm.pointStatements_on_copies <;> assumption)

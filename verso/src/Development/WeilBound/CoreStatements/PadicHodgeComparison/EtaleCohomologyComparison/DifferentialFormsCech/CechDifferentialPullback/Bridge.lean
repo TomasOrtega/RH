@@ -20,10 +20,16 @@ def toOm (W : X.Opens) : GlobalTheory.CechDR.OmU q W a →+ (modulesAb (GlobalTh
   map_zero' := map_zero _
   map_add' x y := map_add _ x y
 
+/- English proof (translation)
+The claim follows from `PresheafOfModules.naturality_apply (GlobalTheory.HodgeCoh.toOmega q a) (homOfLE h).op x`.
+-/
 theorem toOm_formRes {W W' : X.Opens} (h : W' ≤ W) (x : GlobalTheory.CechDR.OmU q W a) :
     toOm q a W' (GlobalTheory.HodgeCoh.formRes q h a x) = res (modulesAb (GlobalTheory.HodgeCoh.Omega q a)).obj h (toOm q a W x) :=
   PresheafOfModules.naturality_apply (GlobalTheory.HodgeCoh.toOmega q a) (homOfLE h).op x
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[mem_inter_iff]`. Unfold `Pb.capO`. Rewrite using `[← SetLike.mem_coe, Opens.coe_iInf, Set.mem_iInter]`. Conclude with `hx`.
+-/
 theorem inter_le_capO {n : ℕ} (i : Fin n → ι) : inter U i ≤ Pb.capO U i := by
   intro x hx
   rw [mem_inter_iff] at hx
@@ -42,6 +48,11 @@ def formCoch (n : ℕ) : (Glob.formCos q U a).X n →+ Cochain (modulesAb (Globa
     rw [show (c + c') i = c i + c' i from rfl, map_add, map_add]
     rfl
 
+/- English proof (translation)
+Rewrite using `[CrystallineSemistableComparison.Cos.d_apply, map_sum]`. Use function extensionality and compare the values at `i`. Rewrite using `[GroundTheory.Arith.SchemeCoh.d_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `res _ (inter_le_capO U i) (toOm q a (Pb.capO U i) (GlobalTheory.HodgeCoh.formRes q (Pb.capO_comp U i k.succAbove) a (c (i ∘ k.succAbove)))) = res _ (inter_le_comp U i k.succAbove) (res _ (inter_le_capO U (i ∘ k.succAbove)) (toOm q a (Pb.capO U (i ∘ k.succAbove)) (c (i ∘ k.succAbo …`. Rewrite using `[toOm_formRes, res_res, res_res]`.
+-/
 theorem formCoch_d (n : ℕ) (c : (Glob.formCos q U a).X n) :
     formCoch q U a (n + 1) (CrystallineSemistableComparison.Cos.d (Glob.formCos q U a) n c) =
       d (modulesAb (GlobalTheory.HodgeCoh.Omega q a)).obj U n (formCoch q U a n c) := by
@@ -84,6 +95,9 @@ def formToCO (n : ℕ) : (Glob.formCos q U a).cx.H n →+ CO q U a n :=
         rw [coboundaries_succ, ← hc]
         exact ⟨formCoch q U a n c, (formCoch_d q U a n c).symm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formToCO_cls {n : ℕ} (c : (Glob.formCos q U a).X n) (hc : (Glob.formCos q U a).cx.d n c = 0) :
     formToCO q U a n ((Glob.formCos q U a).cx.cls c hc) =
       cls (formCoch q U a n c) (by rw [← formCoch_d]; exact (congrArg _ hc).trans (map_zero _)) := rfl

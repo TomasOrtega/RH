@@ -141,6 +141,9 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E]
 variable {m l k : Type*} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
+/- English proof (translation)
+Rewrite using `[mdel_mul hT hS, homCovDel]`. Simplify using `only [Matrix.sub_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+-/
 theorem homCovDel_leibniz (A : E → Matrix m m ℂ) (B : E → Matrix l l ℂ) {T : E → Matrix l m ℂ}
     {S : E → Matrix m k ℂ} {z : E} (hT : MContDiffAt 1 T z) (hS : MContDiffAt 1 S z) (ξ : E) :
     mdel (fun x => T x * S x) z ξ + conn B z ξ * (T z * S z) =
@@ -149,6 +152,11 @@ theorem homCovDel_leibniz (A : E → Matrix m m ℂ) (B : E → Matrix l l ℂ) 
   simp only [Matrix.sub_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]
   abel
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ fun x : ℂ => conj x` using `conjCLE.contDiff`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `contDiff_const.add (contDiff_id.mul hc)`. Conclude with `contDiff_id`. Conclude with `hc`.
+
+Conclude with `contDiff_const`.
+-/
 theorem contDiff_tautPairGram (a b : Unit ⊕ Unit) :
     ContDiff ℝ ∞ fun x => tautPairGram x a b := by
   have hc : ContDiff ℝ ∞ fun x : ℂ => conj x := conjCLE.contDiff
@@ -158,6 +166,11 @@ theorem contDiff_tautPairGram (a b : Unit ⊕ Unit) :
   · exact hc
   · exact contDiff_const
 
+/- English proof (translation)
+Use `⟨isOpen_univ, fun a b => (contDiff_tautPairGram a b).contDiffOn, fun z _ => ?_⟩` and prove the remaining obligations. Set `P : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ` to `fromBlocks 1 (of fun _ _ => z) 0 1`. Establish `hP : IsUnit P`. Rewrite using `[isUnit_iff_isUnit_det, det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+
+Establish `e : tautPairGram z = P * 1 * Pᴴ`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [tautPairGram, P, mul_apply]`. Rewrite using `[e]`. Conclude with `PosDef.one.mul_mul_conjTranspose_same (vecMul_injective_iff_isUnit.2 hP)`.
+-/
 theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
   refine ⟨isOpen_univ, fun a b => (contDiff_tautPairGram a b).contDiffOn, fun z _ => ?_⟩
   let P : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ := fromBlocks 1 (of fun _ _ => z) 0 1
@@ -168,6 +181,13 @@ theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
   rw [e]
   exact PosDef.one.mul_mul_conjTranspose_same (vecMul_injective_iff_isUnit.2 hP)
 
+/- English proof (translation)
+Establish `hF` using `isPosFrame_tautPairGram.isHermFrame`. Establish `h : tautPairGram 0 = 1`. Apply the tactic sequence `rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]`. Establish `hs : subGram (tautPairGram 0) = 1` using `by rw [h]; ext a b; simp [subGram, toBlocks₁₁]`. Establish `hq : quotGram (tautPairGram 0) = 1`.
+
+Rewrite using `[h, ← fromBlocks_one, quotGram, toBlocks_fromBlocks₂₂, toBlocks_fromBlocks₂₁]`. Simplify using the standard rewrite rules. Establish `hb : ∀ ξ : ℂ, secondForm tautPairGram 0 ξ () () = ξ` using `fun ξ => by`. Rewrite using `[secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `del (fun x : ℂ => x) 0 ξ = ξ`.
+
+Rewrite using `[del_eq_fderiv differentiableAt_fun_id]`. Simplify using the standard rewrite rules. Establish `hu : IsUnit (subGram (tautPairGram 0)).det` using `by rw [hs]; simp`. Rewrite using `[vertForm, extFormAdj_eq_neg_secondForm (hF.one trivial) (hF.eventually_herm trivial) (hF.isUnit 0 trivial) hu, extForm_eq_neg_secondFormAdj (hF.one trivial) (hF.eventually_herm trivial) (hF.isUnit 0 trivial) hu, secondFormAdj, hs, hq, adj]`. Simplify using `[hb]`.
+-/
 theorem vertForm_tautPairGram_zero (ξ η : ℂ) :
     vertForm tautPairGram 0 ξ η = kappa * (ξ * conj η) := by
   have hF := isPosFrame_tautPairGram.isHermFrame
@@ -189,6 +209,17 @@ theorem vertForm_tautPairGram_zero (ξ η : ℂ) :
 def lorentzPairGram (z : ℂ) : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ :=
   fromBlocks (of fun _ _ => 1 - z * conj z) (of fun _ _ => -z) (of fun _ _ => -conj z) (-1)
 
+/- English proof (translation)
+Establish `hc : ContDiff ℝ ∞ fun x : ℂ => conj x` using `conjCLE.contDiff`. Establish `hs : ∀ z ∈ Metric.ball (0 : ℂ) 1, (1 - z * conj z) ≠ 0` using `fun z hz h => by`. Establish `h1 : ‖z‖ < 1` using `by simpa using hz`. Rewrite `h` using `[mul_conj', sub_eq_zero]`. Establish `h2 : (1 : ℝ) = ‖z‖ ^ 2` using `by exact_mod_cast h`.
+
+Use polynomial arithmetic with `[norm_nonneg z]`. Use `⟨⟨Metric.isOpen_ball, fun a b => ContDiff.contDiffOn ?_, fun z _ => ?_, fun z _ => ?_⟩, fun z hz => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Conclude with `contDiff_const.sub (contDiff_id.mul hc)`. Conclude with `contDiff_id.neg`.
+
+Conclude with `hc.neg`. Conclude with `contDiff_const`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [lorentzPairGram, mul_comm]`. Set `P : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ` to `fromBlocks 1 (of fun _ _ => z) 0 1`. Set `Q : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ` to `fromBlocks 1 0 (of fun _ _ => -conj z) (-1)`.
+
+Establish `e : lorentzPairGram z = P * Q`. Apply the tactic sequence `ext (a | a) (b | b) <;> simp [lorentzPairGram, P, Q, mul_apply, sub_eq_add_neg]`. Rewrite using `[e, det_mul, det_fromBlocks_zero₂₁, det_fromBlocks_zero₁₂]`. Simplify using the standard rewrite rules. Rewrite using `[det_unique]`.
+
+Conclude with `(hs z hz).isUnit`. Use `h.diag_pos (i := Sum.inr ())` as an intermediate fact. Simplify using `[lorentzPairGram] at this`. Conclude with `absurd this (by norm_num)`.
+-/
 theorem lorentzPairGram_spec : IsHermFrame (Metric.ball 0 1) lorentzPairGram ∧
     (∀ z ∈ Metric.ball (0 : ℂ) 1, IsUnit (subField lorentzPairGram z).det) ∧
     ¬ (lorentzPairGram 0).PosDef := by

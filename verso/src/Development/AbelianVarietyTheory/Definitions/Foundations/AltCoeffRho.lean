@@ -38,6 +38,9 @@ def IsDecomp {ι : Type} [Fintype ι] {N : ℕ} (u : ι → Fin N → ℝ)
   (∀ τ k, 1 ≤ k → k ≤ N → (Q τ k).IsHomogeneous (Formalism.DegreeFormula.dimFl ι N + 1 - k)) ∧
     Formalism.DegreeFormula.linRoot u ^ (Formalism.DegreeFormula.dimFl ι N + 1) = ∑ τ, ∑ k ∈ Icc 1 N, pw N τ k * Q τ k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem altCoeff_rho {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ} (P : MvPolynomial (ι × Fin N) ℝ) :
     altCoeff (fun _ => rho N) P = Formalism.DegreeFormula.degFl ι N P := rfl
 

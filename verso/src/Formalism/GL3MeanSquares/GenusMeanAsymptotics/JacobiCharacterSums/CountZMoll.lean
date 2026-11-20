@@ -7,6 +7,13 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimitiveCharacterCasts.ZD
 
+/- English proof (translation)
+Unfold `mco`. Establish `h : (Icc 1 Y ×ˢ Icc 1 N).filter (fun p : ℕ × ℕ => p.1 * p.2 = 1) = {(1, 1)}`. Use extensionality with `⟨a, b⟩`. Simplify using `only [mem_filter, mem_product, mem_Icc, mem_singleton, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨⟨ha1, -⟩, hb1, -⟩, h⟩`. Apply the tactic sequence `constructor <;> nlinarith`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `⟨⟨⟨le_rfl, hY⟩, le_rfl, hN⟩, rfl⟩`. Rewrite using `[h, sum_singleton]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma mco_one {Y N : ℕ} (hY : 1 ≤ Y) (hN : 1 ≤ N) : mco Y N 1 = 1 := by
   unfold mco
   have h : (Icc 1 Y ×ˢ Icc 1 N).filter (fun p : ℕ × ℕ => p.1 * p.2 = 1) = {(1, 1)} := by
@@ -20,6 +27,13 @@ lemma mco_one {Y N : ℕ} (hY : 1 ≤ Y) (hN : 1 ≤ N) : mco Y N 1 = 1 := by
   rw [h, sum_singleton]
   simp
 
+/- English proof (translation)
+Use extensionality with `⟨a, b⟩`. Simplify using `only [mem_filter, mem_product, mem_Icc, Nat.mem_divisorsAntidiagonal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `⟨h, by omega⟩`.
+
+Introduce and unpack `⟨h, -⟩`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hb : b ≠ 0`.
+
+Introduce and unpack `rfl`. Use linear arithmetic over natural numbers and integers. Establish `ha' : a ≤ n` using `Nat.le_of_dvd (by omega) (Dvd.intro b h)`. Establish `hb' : b ≤ n` using `Nat.le_of_dvd (by omega) (Dvd.intro_left a h)`. Conclude with `⟨⟨⟨by omega, by omega⟩, by omega, by omega⟩, h⟩`.
+-/
 lemma mco_filter_eq_antidiag {Y N n : ℕ} (hn : 1 ≤ n) (hnY : n ≤ Y) (hYN : Y ≤ N) :
     (Icc 1 Y ×ˢ Icc 1 N).filter (fun p : ℕ × ℕ => p.1 * p.2 = n) = n.divisorsAntidiagonal := by
   ext ⟨a, b⟩
@@ -38,6 +52,9 @@ lemma mco_filter_eq_antidiag {Y N n : ℕ} (hn : 1 ≤ n) (hnY : n ≤ Y) (hYN :
     have hb' : b ≤ n := Nat.le_of_dvd (by omega) (Dvd.intro_left a h)
     exact ⟨⟨⟨by omega, by omega⟩, by omega, by omega⟩, h⟩
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[mem_filter]`. Rewrite using `[Nat.mem_divisorsAntidiagonal]`. Conclude with `⟨hx.2, by omega⟩`.
+-/
 lemma mco_filter_subset_antidiag {Y N n : ℕ} (hn : 1 ≤ n) :
     (Icc 1 Y ×ˢ Icc 1 N).filter (fun p : ℕ × ℕ => p.1 * p.2 = n) ⊆ n.divisorsAntidiagonal := by
   intro x hx
@@ -45,11 +62,17 @@ lemma mco_filter_subset_antidiag {Y N n : ℕ} (hn : 1 ≤ n) :
   rw [Nat.mem_divisorsAntidiagonal]
   exact ⟨hx.2, by omega⟩
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun f : ArithmeticFunction ℤ => f n) moebius_mul_coe_zeta`. Simplify using `only [coe_mul_zeta_apply] at h`. Rewrite using `[h, one_apply_ne (by omega)]`.
+-/
 lemma mco_sum_moebius_divisors {n : ℕ} (hn : 2 ≤ n) : ∑ i ∈ n.divisors, (μ i : ℤ) = 0 := by
   have h := congrArg (fun f : ArithmeticFunction ℤ => f n) moebius_mul_coe_zeta
   simp only [coe_mul_zeta_apply] at h
   rw [h, one_apply_ne (by omega)]
 
+/- English proof (translation)
+Unfold `mco`. Rewrite using `[mco_filter_eq_antidiag (by omega) hnY hYN]`. Establish `h` using `Nat.sum_divisorsAntidiagonal (fun a _ => ((μ a : ℤ) : ℂ)) (n := n)`. Rewrite using `[h]`. Conclude with `mco_sum_moebius_divisors h2` after adjusting the coercions.
+-/
 lemma mco_eq_zero {Y N n : ℕ} (h2 : 2 ≤ n) (hnY : n ≤ Y) (hYN : Y ≤ N) : mco Y N n = 0 := by
   unfold mco
   rw [mco_filter_eq_antidiag (by omega) hnY hYN]
@@ -57,6 +80,15 @@ lemma mco_eq_zero {Y N n : ℕ} (h2 : 2 ≤ n) (hnY : n ≤ Y) (hYN : Y ≤ N) :
   rw [h]
   exact_mod_cast mco_sum_moebius_divisors h2
 
+/- English proof (translation)
+Unfold `mco`. Use `le_trans (norm_sum_le _ _) ?_` and prove the remaining obligations. Use `le_trans (sum_le_sum (g := fun _ => (1 : ℝ)) ?_) ?_` and prove the remaining obligations. Introduce `p _`. Establish `h1` using `abs_moebius_le_one (n := p.1)`.
+
+Use `first`. Consider the case `(rw [Complex.norm_intCast]; exact_mod_cast h1)`. Consider the case `(rw [Complex.norm_int]; exact_mod_cast h1)`. Consider the case `(rw [← Complex.ofReal_intCast, Complex.norm_real, Real.norm_eq_abs]; exact_mod_cast h1)`. Rewrite using `[sum_const, nsmul_eq_mul, mul_one]`.
+
+Establish `hc` using `card_le_card (mco_filter_subset_antidiag (Y := Y) (N := N) hn)`. Establish `he : n.divisorsAntidiagonal.card = n.divisors.card` using `by first`. Consider the case `exact Nat.card_divisorsAntidiagonal_eq_card_divisors n`. Consider the case `(rw [← Nat.map_div_right_divisors, card_map])`. Rewrite `hc` using `[he]`.
+
+Conclude with `hc` after adjusting the coercions.
+-/
 lemma mco_norm_le (Y N : ℕ) {n : ℕ} (hn : 1 ≤ n) : ‖mco Y N n‖ ≤ (n.divisors.card : ℝ) := by
   unfold mco
   refine le_trans (norm_sum_le _ _) ?_
@@ -76,6 +108,27 @@ lemma mco_norm_le (Y N : ℕ) {n : ℕ} (hn : 1 ≤ n) : ‖mco Y N n‖ ≤ (n.
     rw [he] at hc
     exact_mod_cast hc
 
+/- English proof (translation)
+Unfold `MollId`. Introduce `q _ χ s Y N K hY hYN hK`. Establish `hN : 1 ≤ N` using `le_trans hY hYN`. Establish `hYK : Y ≤ K`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmaps : ∀ p ∈ Icc 1 Y ×ˢ Icc 1 N, p.1 * p.2 ∈ Icc 1 K`. Introduce `p hp`. Simplify using `only [mem_product, mem_Icc] at hp ⊢`. Prove the components needed by the constructor for the conclusion. Use `Nat.mul_le_mul hp.1.1 hp.2.1` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `le_trans (Nat.mul_le_mul hp.1.2 hp.2.2) hK`. Rewrite using `[sum_mul]`. Repeatedly rewrite using `[mul_sum]`. Rewrite using `[sum_comm, ← sum_product', ← sum_fiberwise_of_maps_to (g := fun p : ℕ × ℕ => p.1 * p.2) (t := Icc 1 K) hmaps]`.
+
+Combine the equalities or inequalities in the displayed calculation. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Unfold `mco`. Rewrite using `[sum_mul, sum_mul]`.
+
+Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[mem_filter]`. Take `⟨-, hpk⟩` from `hp`. Substitute `hpk` using the available equality.
+
+Simplify using `only [Nat.cast_mul, map_mul, Complex.natCast_mul_natCast_cpow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 + ∑ n ∈ Ioc Y K, mco Y N n * χ n * (n : ℂ) ^ (-s) := by`. Establish `hsplit : Icc 1 K = Icc 1 Y ∪ Ioc Y K`. Use extensionality with `k`.
+
+Simplify using `only [mem_union, mem_Icc, mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Establish `hdisj : Disjoint (Icc 1 Y) (Ioc Y K)`. Rewrite using `[disjoint_left]`. Introduce `k hk hk'`.
+
+Rewrite `hk` using `[mem_Icc]`. Rewrite `hk'` using `[mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, sum_union hdisj]`. Use `congr 1`.
+
+Rewrite using `[sum_eq_single 1]`. Rewrite using `[mco_one hY hN]`. Simplify using the standard rewrite rules. Introduce `k hk hk1`. Rewrite `hk` using `[mem_Icc]`.
+
+Rewrite using `[mco_eq_zero (by omega) hk.2 hYN]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (mem_Icc.mpr ⟨le_rfl, hY⟩) h`.
+-/
 theorem mollifier_identity : MollId := by
   unfold MollId
   intro q _ χ s Y N K hY hYN hK
@@ -130,6 +183,27 @@ theorem mollifier_identity : MollId := by
         · intro h
           exact absurd (mem_Icc.mpr ⟨le_rfl, hY⟩) h
 
+/- English proof (translation)
+Unfold `CoeffSqOf`. Introduce `hD`. Unfold `CoeffSq`. Unfold `FX.DivisorBound at hD`. Establish `hs0 : s0 = 399 / 400`.
+
+Unfold `s0`. Evaluate the numerical expressions. Take `⟨C, hC⟩` from `hD (1 / 400) (by norm_num)`. Establish `hC1 : 1 ≤ C`. Establish `h` using `hC 1 le_rfl`.
+
+Simplify using `using h`. Use `⟨C ^ 2, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Y N U hU`. Establish `hUpos : (0 : ℝ) < U` using `by exact_mod_cast hU`. Establish `hU1 : (1 : ℝ) ≤ U` using `by exact_mod_cast hU`.
+
+Establish `hterm : ∀ n ∈ Ioc U (2 * U), (‖mco Y N n‖ * (n : ℝ) ^ (-s0)) ^ 2 ≤ (C * (U : ℝ) ^ (-(199 / 200 : ℝ))) ^ 2`. Introduce `n hn`. Rewrite `hn` using `[mem_Ioc]`. Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn1`.
+
+Establish `hUn : (U : ℝ) ≤ n` using `by exact_mod_cast hn.1.le`. Establish `h1 : ‖mco Y N n‖ ≤ C * (n : ℝ) ^ (1 / 400 : ℝ)` using `le_trans (mco_norm_le Y N hn1) (hC n hn1)`. Establish `h2 : (n : ℝ) ^ (1 / 400 : ℝ) * (n : ℝ) ^ (-s0) = (n : ℝ) ^ (-(199 / 200 : ℝ))`. Rewrite using `[← Real.rpow_add hnpos, hs0]`. Evaluate the numerical expressions.
+
+Establish `h3 : (n : ℝ) ^ (-(199 / 200 : ℝ)) ≤ (U : ℝ) ^ (-(199 / 200 : ℝ))` using `by first`. Consider the case `exact Real.rpow_le_rpow_of_nonpos hUpos hUn (by norm_num)`. Consider the case `exact Real.rpow_le_rpow_of_exponent_nonpos hUpos hUn (by norm_num)`. Consider the case `(rw [Real.rpow_neg hnpos.le, Real.rpow_neg hUpos.le]`. Conclude with `inv_anti₀ (Real.rpow_pos_of_pos hUpos _) (Real.rpow_le_rpow hUpos.le hUn (by norm_num)))`.
+
+Consider the case `(rw [Real.rpow_neg hnpos.le, Real.rpow_neg hUpos.le]`. Conclude with `inv_le_inv_of_le (Real.rpow_pos_of_pos hUpos _) (Real.rpow_le_rpow hUpos.le hUn (by norm_num)))`. Establish `h4 : 0 ≤ ‖mco Y N n‖ * (n : ℝ) ^ (-s0)` using `mul_nonneg (norm_nonneg _) (Real.rpow_nonneg hnpos.le _)`. Establish `h5 : ‖mco Y N n‖ * (n : ℝ) ^ (-s0) ≤ C * (U : ℝ) ^ (-(199 / 200 : ℝ))`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `first`. Consider the case `exact pow_le_pow_left h4 h5 2`. Consider the case `exact pow_le_pow_left₀ h4 h5 2`. Consider the case `nlinarith`. Establish `e1 : ((U : ℝ) ^ (-(199 / 200 : ℝ))) ^ 2 = (U : ℝ) ^ (-(199 / 100 : ℝ))`.
+
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hUpos.le]`. Evaluate the numerical expressions. Establish `e2 : (U : ℝ) * (U : ℝ) ^ (-(199 / 100 : ℝ)) = (U : ℝ) ^ (-(99 / 100 : ℝ))`. Rewrite using `[show (U : ℝ) ^ (-(99 / 100 : ℝ)) = (U : ℝ) ^ ((1 : ℝ) + -(199 / 100 : ℝ)) by norm_num, Real.rpow_add hUpos, Real.rpow_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[sum_const, Nat.card_Ioc, show 2 * U - U = U by omega, nsmul_eq_mul]`. Use `_ = C ^ 2 * ((U : ℝ) * ((U : ℝ) ^ (-(199 / 200 : ℝ))) ^ 2) := by ring`. Use `_ = C ^ 2 * (U : ℝ) ^ (-(99 / 100 : ℝ)) := by rw [e1, e2]`. Use `_ ≤ C ^ 2 * (U : ℝ) ^ (-(197 / 200 : ℝ)) := mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hU1 (by norm_num)) (by positivity)`.
+-/
 theorem coefficient_square_bound : CoeffSqOf := by
   unfold CoeffSqOf
   intro hD

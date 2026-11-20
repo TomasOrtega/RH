@@ -11,6 +11,15 @@ noncomputable section
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `k _ X Y _ _ p q π hπ φ hM`. Establish `h3 : ∀ (U : X.Opens) (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ π ⁻¹ᵁ U) (a : Γ(X, U)), φ (fnOf U h a) = fnOf (π ⁻¹ᵁ U) h' (π.app U a)`. Introduce `U h h' a`. Establish `e1` using `algebraMap_germ (X := X) (show π (genericPoint Y) ∈ U from h') a`. Establish `e2` using `algebraMap_germ (X := Y) h' (π.app U a)`.
+
+Rewrite using `[← e1, hM.compat, ← e2]`. Use `congr 1`. Conclude with `Scheme.Hom.germ_stalkMap_apply π U (genericPoint Y) h' a`. Use `⟨?_, ?_, h3, ?_⟩` and prove the remaining obligations. Introduce and unpack `y f ⟨a, rfl⟩`.
+
+Conclude with `⟨π.stalkMap y a, (hM.compat y a).symm⟩`. Introduce and unpack `y f ⟨a, ha, rfl⟩`. Conclude with `⟨π.stalkMap y a, ha.map _, (hM.compat y a).symm⟩`. Introduce `σ z f hf`. Take `⟨U, hU, a, rfl⟩` from `hf.exists_fnOf`.
+
+Establish `hz : z ∈ ptsIn q σ (π ⁻¹ᵁ U)` using `mem_ptsIn.2 hU`. Apply the tactic sequence `have hz' : GlobalTheory.Points.PtsOver.map π hπ _ z ∈ ptsIn p σ U := mem_ptsIn.2 (by first | exact hU | simpa [Function.comp_apply] using hU)`. Rewrite using `[h3 U _ (gen_mem (show under z ∈ π ⁻¹ᵁ U from hU)) a, ratVal_fnOf hz, ratVal_fnOf hz', ev_app π hπ]`.
+-/
 theorem model_regAt_unitAt_values : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (π : Y ⟶ X) (hπ : π ≫ p = q) (φ : X.functionField →+* Y.functionField), IsModel π φ → (∀ (y : Y) (f : X.functionField), RegAt (π y) f → RegAt y (φ f)) ∧ (∀ (y : Y) (f : X.functionField), UnitAt (π y) f → UnitAt y (φ f)) ∧ (∀ (U : X.Opens) (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ π ⁻¹ᵁ U) (a : Γ(X, U)), φ (fnOf U h a) = fnOf (π ⁻¹ᵁ U) h' (π.app U a)) ∧ ∀ (σ : k →+* ℂ) (z : CxPts q σ) (f : X.functionField), RegAt (π (under z)) f → ratVal (φ f) z = ratVal f (GlobalTheory.Points.PtsOver.map π hπ _ z) := by
   intro k _ X Y _ _ p q π hπ φ hM
   have h3 : ∀ (U : X.Opens) (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ π ⁻¹ᵁ U) (a : Γ(X, U)),

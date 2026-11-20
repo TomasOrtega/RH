@@ -7,6 +7,27 @@ noncomputable section
 
 namespace GlobalTheory.TwV.DelB
 
+/- English proof (translation)
+Introduce `D p _ X E pos fd lam ι hι ρ hL e c j La La' he he' hdet x y`. Establish `hs : ∀ q : D.host.E, star q = D.host.conj q` using `Formalism.BasicNotions.bridge_star_holds D.R D.host`. Establish `hcc : ∀ q : D.host.E, D.host.conj (D.host.conj q) = q` using `fun q => D.host.φ₀.injective (by`. Rewrite using `[Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply, Complex.conj_conj])`. Establish `hconj : ∀ τ q, TaylorLogMetric.embT D τ (D.host.conj q) = (starRingEnd ℂ) (TaylorLogMetric.embT D τ q)` using `fun τ q => D.host.conjE_apply (TaylorLogMetric.embT D τ) q`.
+
+Establish `hιe : ∀ τ q, ι (TaylorLogMetric.embT D τ q) = twG X E (pos.symm τ).1 (pos.symm τ).2 (ρ _ (if IsOddPos (pos.symm τ).2 then D.host.conj q else q))`. Introduce `τ q`. Establish `halg : TaylorLogMetric.embT D τ q ∈ TaylorLogMetric.Qbar` using `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) q).algHom (TaylorLogMetric.embT D τ).toRatAlgHom)`. Establish `h2` using `hL (pos.symm τ).1 (pos.symm τ).2 q`. Simplify using `only [Sigma.eta, Equiv.apply_symm_apply] at h2`.
+
+Rewrite using `[← h2]`. Unfold `TaylorLogMetric.lamC`. Rewrite using `[dif_pos halg]`. Conclude with `hι ⟨_, halg⟩`. Establish `hinv : ∀ {n : ℕ} (v : X.Pl) (A : Matrix (Fin n) (Fin n) D.host.E) (M : Matrix (Fin n) (Fin n) (X.G.P.Qq v)), A * star A = 1 → ((star A).map (ρ v) * M)⁻¹ = M⁻¹ * A.map (ρ v)`.
+
+Introduce `n v A M h`. Rewrite using `[Matrix.mul_inv_rev]`. Use `congr 1`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero (ρ v)) (map_one (ρ v))]`.
+
+Take `⟨τ, b0, a0⟩` from `x`. Take `⟨τ', b1, a1⟩` from `y`. Distinguish the cases in `hxy : τ = τ'`. Substitute `hxy` using the available equality. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ]`.
+
+Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [subBG, reframe, pullMat, ↓reduceIte]`. Rewrite using `[hinv _ _ _ he, hinv _ _ _ he']`. Distinguish the cases in `hodd : IsOddPos (pos.symm τ).2`. Simplify using `only [hodd, ↓reduceIte, map_mul, ← hconj, hιe, Matrix.map_apply, Matrix.mul_apply, Matrix.star_apply, hs, map_sum, hcc, Finset.mul_sum, Finset.sum_mul] first`.
+
+Consider the case `exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Consider the case `(rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Simplify using `only [hodd, ↓reduceIte, map_mul, ← hconj, hιe, Matrix.map_apply, Matrix.mul_apply, Matrix.star_apply, hs, map_sum, hcc, Finset.mul_sum, Finset.sum_mul] first`. Consider the case `exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Consider the case `(rw [Finset.sum_comm]; exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`.
+
+Introduce `τ'' _ hne`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `z _`. Simplify using `[pullMat, Ne.symm hne]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[show subBG E pos (reframe fd ρ e) j La La' (τ, b0, a0) (τ', b1, a1) = 0 from if_neg hxy, mul_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `z _`. Distinguish the cases in `h1 : τ = z.1`.
+
+Establish `h2 : z.1 ≠ τ'` using `fun h => hxy (h1.trans h)`. Rewrite using `[show subBG E pos fd j La La' z (τ', b1, a1) = 0 from if_neg h2, mul_zero, mul_zero]`. Rewrite using `[show pullMat (e j La) (e (j + 1) La') (τ, b0, a0) z = 0 from if_neg h1, map_zero, zero_mul]`.
+-/
 theorem sum_pullMat_subBG_reframe : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (X : Sys p) (E : CEmb X.G) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau) (fd : FData X D) (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (ι : ℂ →+* ℂ_[p]), (∀ z : TaylorLogMetric.Qbar, ι z = lam z) → ∀ (ρ : ∀ v : X.Pl, D.host.E →+* X.G.P.Qq v), LamPos X E pos lam ρ → ∀ (e : ∀ j, X.Lt j → Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) D.host.E) (c : ℂ_[p]) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)), e j La * star (e j La) = 1 → e (j + 1) La' * star (e (j + 1) La') = 1 → (∀ v, IsUnit (fd.frM j La v).det ∧ IsUnit (fd.frM (j + 1) La' v).det) → ∀ x y, ∑ z, ι (pullMat (e j La) (e (j + 1) La') x z) * (c * subBG E pos fd j La La' z y) = c * subBG E pos (reframe fd ρ e) j La La' x y := by
   intro D p _ X E pos fd lam ι hι ρ hL e c j La La' he he' hdet x y
   classical

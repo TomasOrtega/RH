@@ -26,6 +26,13 @@ def valRing (V : VF C) : Subring C where
   zero_mem' := VF.Ge.zero 0
   neg_mem' := fun ha => VF.Ge.neg ha
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hf`. Set `g : MvPowerSeries σ (valRing V)` to `fun n => ⟨coeff n f, hf n⟩`. Use `RingHom.mem_range.2 ⟨g, ?_⟩` and prove the remaining obligations. Use extensionality with `n`.
+
+Rewrite using `[coeff_map]`. Both sides reduce to the same expression. Introduce `hf n`. Take `⟨g, rfl⟩` from `RingHom.mem_range.1 hf`. Rewrite using `[coeff_map]`.
+
+Conclude with `(coeff n g).2`.
+-/
 theorem intS_iff_ig (V : VF C) {σ : Type} (f : MvPowerSeries σ C) : IntS V f ↔ f ∈ Ig (valRing V) C σ := by
   constructor
   · intro hf
@@ -42,6 +49,9 @@ theorem intS_iff_ig (V : VF C) {σ : Type} (f : MvPowerSeries σ C) : IntS V f �
 variable [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {d : ℕ}
 
 omit [CharZero C] in
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_map]`. Both sides reduce to the same expression.
+-/
 theorem map_self {σ : Type} (f : MvPowerSeries σ C) : MvPowerSeries.map (algebraMap C C) f = f := by
   ext n
   rw [coeff_map]

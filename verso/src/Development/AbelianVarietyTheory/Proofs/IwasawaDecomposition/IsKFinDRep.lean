@@ -6,6 +6,21 @@ open scoped InnerProductSpace Topology
 
 namespace GlobalTheory.TypeSum
 
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ h v hv X hX`. Take `⟨S, h1, h2, h3⟩` from `hv`. Establish `hS : S ≤ smooth (Jm ε) σ` using `fun s hs => h.2.2.1 s ⟨S, h1, hs, h3⟩`. Set `b` to `Module.finBasis ℝ (lie (Jm ε))`. Set `L : Fin (Module.finrank ℝ (lie (Jm ε))) → (S →ₗ[ℂ] H)` to `fun i => (smooth (Jm ε) σ).subtype ∘ₗ dOp (isUnit_Jm ε) h.1 (b i).2 ∘ₗ Submodule.inclusion hS`.
+
+Establish `hL : ∀ i (s : S), L i s = dRep σ (b i) s` using `fun _ _ => rfl`. Set `T : Submodule ℂ H` to `⨆ i, LinearMap.range (L i)`. Establish `hT : ∀ Y ∈ lieSet ε, ∀ s ∈ S, dRep σ Y s ∈ T`. Introduce `Y hY s hs`. Establish `e : Y = ∑ i, b.repr ⟨Y, hY⟩ i • (b i : Mx n)`.
+
+Use `congrArg Subtype.val (b.sum_repr ⟨Y, hY⟩)` as an intermediate fact. Simplify `this.symm` using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]`. Rewrite using `[e, h.dRep_sum (fun i => (b i).2) (hS hs)]`. Use `T.sum_mem fun i _ => T.smul_mem _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i ⟨⟨s, hs⟩, rfl⟩`.
+
+Use `⟨T, inferInstance, hT X hX v h2, fun k hk w hw => ?_⟩` and prove the remaining obligations. Establish `hg` using `K_le_UJ hk`. Establish `: T ≤ T.comap (σ k : H →ₗ[ℂ] H)`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Establish `hinv : (k⁻¹)⁻¹ = k` using `Matrix.inv_eq_left_inv (mul_inv_UJ hg)`. Establish `hY : k * (b i : Mx n) * k⁻¹ ∈ lieSet ε`. Use `conj_mem_lie (isUnit_Jm ε) (inv_mem_UJ hg) (b i).2` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Establish `e` using `Dw_translate h.1 hg (hS s.2) (l := [k * (b i : Mx n) * k⁻¹]) (by simpa using hY)`.
+
+Establish `e2 : k⁻¹ * (k * (b i : Mx n) * k⁻¹) * k = b i`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_UJ hg, one_mul, mul_assoc, inv_mul_UJ hg, mul_one]`. Simplify using `only [Dw, List.map_cons, List.map_nil, List.foldr_cons, List.foldr_nil, e2] at e`. Use `show σ k (dRep σ (b i) s) ∈ T`. Rewrite using `[← e]`.
+
+Conclude with `hT _ hY _ (h3 k hk s s.2)`. Conclude with `this hw`.
+-/
 theorem isKFin_dRep : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), Std ε σ → ∀ v, IsKFin ε σ v → ∀ X ∈ lieSet ε,
       IsKFin ε σ (dRep σ X v) := by

@@ -16,6 +16,9 @@ noncomputable def UpperTheory.Reformulated.B.Qi25.IsPD :
           f g * (↑g : Matrix (Fin N) (Fin N) ℂ).det ^ k =
             (MvPolynomial.eval (UpperTheory.Reformulated.B.Qi25.ent g) : MvPolynomial (Fin N × Fin N) ℂ → ℂ) P
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[UpperTheory.Reformulated.B.Qi25.ent]`.
+-/
 private theorem UpperTheory.Reformulated.B.Qi25.eval_det {N : ℕ} (g : UpperTheory.Reformulated.B.Qi25.UG N) :
     MvPolynomial.eval (UpperTheory.Reformulated.B.Qi25.ent g)
         (Matrix.of fun i j : Fin N ↦ (MvPolynomial.X (i, j) : MvPolynomial (Fin N × Fin N) ℂ)).det =
@@ -25,6 +28,13 @@ private theorem UpperTheory.Reformulated.B.Qi25.eval_det {N : ℕ} (g : UpperThe
   ext i j
   simp [UpperTheory.Reformulated.B.Qi25.ent]
 
+/- English proof (translation)
+Introduce `N ι s F`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Conclude with `⟨0, 0, fun g ↦ by simp⟩`.
+
+Consider the case `insert a s ha ih`. Introduce `h`. Take `⟨k, P, hP⟩` from `h a (Finset.mem_insert_self a s)`. Take `⟨l, Q, hQ⟩` from `ih fun i hi ↦ h i (Finset.mem_insert_of_mem hi)`. Use `⟨k + l, P * (Matrix.of fun i j : Fin N ↦ (MvPolynomial.X (i, j) : MvPolynomial (Fin N × Fin N) ℂ)).det ^ l + Q * (Matrix.of fun i j : Fin N ↦ (MvPolynomial.X (i, j) : MvPolynomial (Fin N × Fin N) ℂ)).det ^ k, fun g ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, UpperTheory.Reformulated.B.Qi25.eval_det, ← hP g, ← hQ g]`. Simplify using `only [Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Reformulated.B.Qi25.sum.{u_1} :
     ∀ {N : ℕ} {ι : Type u_1} (s : Finset ι) {F : ι → UpperTheory.Reformulated.B.Qi25.UG N → ℂ},
       (∀ i ∈ s, UpperTheory.Reformulated.B.Qi25.IsPD (F i)) → UpperTheory.Reformulated.B.Qi25.IsPD fun (g : UpperTheory.Reformulated.B.Qi25.UG N) ↦ ∑ i ∈ s, F i g := by

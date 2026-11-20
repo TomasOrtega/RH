@@ -9,6 +9,9 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) 
 noncomputable def val (U : X.Opens) (h : genPt ξ ∈ U) : Γ(X, U) →+* Ω :=
   (X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ).hom
 
+/- English proof (translation)
+Establish `key : ∀ {A B C : CommRingCat} (f : A ⟶ B) (g : B ⟶ C) (x : A), (f ≫ g).hom x = g.hom (f.hom x)` using `fun _ _ _ => rfl`. Unfold `genMap val`. Rewrite using `[← X.presheaf.germ_stalkSpecializes hqU hq]`. Conclude with `(key (X.presheaf.stalkSpecializes hq) (Scheme.stalkClosedPointTo ξ) _).trans ((congrArg (fun y => (Scheme.stalkClosedPointTo ξ).hom y) (key (X.presheaf.germ U q hqU) (X.presheaf.stalkSpecializes hq) s).symm).trans (key (X.presheaf.germ U q hqU ≫ X.presheaf.stalkSpecializes hq) (S …`.
+-/
 theorem genMap_germ (U : X.Opens) (h : genPt ξ ∈ U) {q : X} (hq : genPt ξ ⤳ q) (hqU : q ∈ U)
     (s : Γ(X, U)) :
     genMap ξ ⟨q, hq⟩ ((X.presheaf.germ U q hqU).hom s) = val ξ U h s := by
@@ -22,6 +25,9 @@ theorem genMap_germ (U : X.Opens) (h : genPt ξ ∈ U) {q : X} (hq : genPt ξ �
       (key (X.presheaf.germ U q hqU ≫ X.presheaf.stalkSpecializes hq)
         (Scheme.stalkClosedPointTo ξ) s).symm)
 
+/- English proof (translation)
+Establish `key : ∀ {A B C : CommRingCat} (f : A ⟶ B) (g : B ⟶ C) (x : A), (f ≫ g).hom x = g.hom (f.hom x)` using `fun _ _ _ => rfl`. Unfold `val`. Rewrite using `[← X.presheaf.germ_res i (genPt ξ) hV]`. Conclude with `(key (X.presheaf.germ V (genPt ξ) hV) (Scheme.stalkClosedPointTo ξ) _).trans ((congrArg (fun y => (Scheme.stalkClosedPointTo ξ).hom y) (key (X.presheaf.map i.op) (X.presheaf.germ V (genPt ξ) hV) s).symm).trans (key (X.presheaf.map i.op ≫ X.presheaf.germ V (genPt ξ) hV) (Scheme.st …`.
+-/
 theorem val_res {V U : X.Opens} (i : V ⟶ U) (hV : genPt ξ ∈ V) (hU : genPt ξ ∈ U) (s : Γ(X, U)) :
     val ξ V hV ((X.presheaf.map i.op).hom s) = val ξ U hU s := by
   have key : ∀ {A B C : CommRingCat} (f : A ⟶ B) (g : B ⟶ C) (x : A), (f ≫ g).hom x = g.hom (f.hom x) :=
@@ -34,6 +40,9 @@ theorem val_res {V U : X.Opens} (i : V ⟶ U) (hV : genPt ξ ∈ V) (hU : genPt 
       (key (X.presheaf.map i.op ≫ X.presheaf.germ V (genPt ξ) hV)
         (Scheme.stalkClosedPointTo ξ) s).symm)
 
+/- English proof (translation)
+Introduce `s t hst`. Use `TopCat.Presheaf.section_ext X.sheaf U s t (fun q hq => ?_)` and prove the remaining obligations. Establish `hq'` using `hU q hq`. Apply `hξ.inj ⟨q, hq'⟩` to reduce the goal to its premises. Conclude with `(genMap_germ ξ U h hq' hq s).trans (hst.trans (genMap_germ ξ U h hq' hq t).symm)`.
+-/
 theorem val_injective (hξ : IsCptGen ξ) (U : X.Opens) (h : genPt ξ ∈ U)
     (hU : ∀ q : X, q ∈ U → genPt ξ ⤳ q) : Function.Injective (val ξ U h) := by
   intro s t hst
@@ -42,6 +51,19 @@ theorem val_injective (hξ : IsCptGen ξ) (U : X.Opens) (h : genPt ξ ∈ U)
   apply hξ.inj ⟨q, hq'⟩
   exact (genMap_germ ξ U h hq' hq s).trans (hst.trans (genMap_germ ξ U h hq' hq t).symm)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha q hqU`. Take `⟨s, rfl⟩` from `RingHom.mem_range.mp ha`. Conclude with `RingHom.mem_range.mpr ⟨(X.presheaf.germ U q.1 hqU).hom s, genMap_germ ξ U h q.2 hqU s⟩`. Introduce `H`.
+
+Establish `loc : ∀ q : U, ∃ (W : X.Opens) (t : Γ(X, W)) (_ : (q : X) ∈ W) (hg : genPt ξ ∈ W), val ξ W hg t = a`. Introduce and unpack `⟨q, hq⟩`. Establish `hq' : genPt ξ ⤳ q` using `hU q hq`. Take `⟨x, hx⟩` from `RingHom.mem_range.mp (H ⟨q, hq'⟩ hq)`. Take `⟨W, hqW, t, ht⟩` from `TopCat.Presheaf.germ_exist X.presheaf x`.
+
+Establish `hg : genPt ξ ∈ W` using `hq'.mem_open W.isOpen hqW`. Use `⟨W, t, hqW, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[← genMap_germ ξ W hg hq' hqW t]`. Conclude with `(congrArg (genMap ξ ⟨q, hq'⟩) ht).trans hx`. Use `choose W t hqW hg hval using loc`.
+
+Set `V : U → X.Opens` to `fun q => W q ⊓ U`. Establish `hgV : ∀ q, genPt ξ ∈ V q` using `fun q => ⟨hg q, h⟩`. Set `sf : ∀ q : U, Γ(X, V q)` to `fun q => (X.presheaf.map (homOfLE inf_le_left : V q ⟶ W q).op).hom (t q)`. Establish `hsf : ∀ q, val ξ (V q) (hgV q) (sf q) = a` using `fun q => (val_res ξ (homOfLE inf_le_left : V q ⟶ W q) (hgV q) (hg q) (t q)).trans (hval q)`. Establish `hcompat : TopCat.Presheaf.IsCompatible X.sheaf.1 V sf`.
+
+Introduce `i j`. Apply `val_injective ξ hξ (V i ⊓ V j) ⟨hgV i, hgV j⟩ (fun q hq => hU q hq.1.2)` to reduce the goal to its premises. Conclude with `((val_res ξ (TopologicalSpace.Opens.infLELeft (V i) (V j)) ⟨hgV i, hgV j⟩ (hgV i) (sf i)).trans (hsf i)).trans ((val_res ξ (TopologicalSpace.Opens.infLERight (V i) (V j)) ⟨hgV i, hgV j⟩ (hgV j) (sf j)).trans (hsf j)).symm`. Establish `hcover : U ≤ iSup V`. Introduce `q hq`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨q, hq⟩, hqW ⟨q, hq⟩, hq⟩`. Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (F := X.sheaf) (U := V) U (fun q => homOfLE inf_le_right) hcover sf hcompat`. Use `RingHom.mem_range.mpr ⟨s, ?_⟩` and prove the remaining obligations. Establish `i0 : U` using `⟨genPt ξ, h⟩`. Conclude with `(val_res ξ (homOfLE inf_le_right : V i0 ⟶ U) (hgV i0) h s).symm.trans ((congrArg (val ξ (V i0) (hgV i0)) (hs i0)).trans (hsf i0))`.
+-/
 theorem mem_range_val_iff (hξ : IsCptGen ξ) (U : X.Opens) (h : genPt ξ ∈ U)
     (hU : ∀ q : X, q ∈ U → genPt ξ ⤳ q) (a : Ω) :
     a ∈ (val ξ U h).range ↔ ∀ q : Cpt ξ, q.1 ∈ U → a ∈ regAt ξ q := by
@@ -88,6 +110,9 @@ end GlobalTheory.CompanionTheory.Ar.RegSec
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X Ω _ ξ hξ U h hU`. Conclude with `⟨RegSec.val_injective ξ hξ U h hU, RegSec.mem_range_val_iff ξ hξ U h hU⟩`.
+-/
 theorem regAt_sections : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X),
     IsCptGen ξ → ∀ (U : X.Opens) (h : genPt ξ ∈ U), (∀ q : X, q ∈ U → genPt ξ ⤳ q) →
       Function.Injective (X.presheaf.germ U (genPt ξ) h ≫ Scheme.stalkClosedPointTo ξ).hom ∧

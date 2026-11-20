@@ -18,6 +18,27 @@ open GlobalTheory.HoweD
 
 namespace GlobalTheory.HoweD
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d a b A C hCM hψ hFr`. Take `⟨D, hD⟩` from `GlobalTheory.T.archHeisenbergDerivatives_exist F E σ α β κ ψ JA JB d hψ`. Establish `hDf : ∀ u, At (evI F) u → ∀ (f : SInf F κ) x, D u f x = fderiv ℝ f x (fun i => evI F ((d.e u).1 i)) - 2 * Real.pi * Complex.I * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F ((d.e u).2 i)) : ℝ) * f x` using `fun u hu f x => (hD u hu f).2 x`. Take `⟨hadd, hsm, hcom⟩` from `GlobalTheory.T.archHeisenbergDerivative_additive_commutator σ JA JB d D hDf`. Establish `hex` using `fun c : ∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ => GlobalTheory.T.existsUnique_archimedeanMatrix_adeleExtension_of_components σ τ hCM (fun w => A w * c w * (C w)ᵀ)`.
+
+Use `choose uOf huOf using fun c => (hex c).exists`. Establish `huniq : ∀ c u, At (evI F) u → (∀ w, u.map (piInf (τ w)) = A w * c w * (C w)ᵀ) → u = uOf c` using `fun c u hu hw => (hex c).unique ⟨hu, hw⟩ (huOf c)`. Establish `hAt_add : ∀ u u' : Matrix α β (AE F E), At (evI F) u → At (evI F) u' → At (evI F) (u + u')` using `fun u u' hu hu' z hz => by rw [smul_add, hu z hz, hu' z hz, add_zero]`. Establish `hAt_smul : ∀ (r : ℝ) (u : Matrix α β (AE F E)), At (evI F) u → At (evI F) (realAd F r • u)` using `fun r u hu z hz => by rw [smul_comm, hu z hz, smul_zero]`. Set `H : (∀ w : InfinitePlace F, Matrix (Ix (P w) (Q w)) (Ix (R w) (S w)) ℂ) → Module.End ℂ (SInf F κ)` to `fun c => (D (uOf c)).toLinearMap`.
+
+Establish `hHadd : ∀ c c', H (c + c') = H c + H c'`. Introduce `c c'`. Establish `e : uOf (c + c') = uOf c + uOf c'`. Use `symm`. Use `huniq _ _ (hAt_add _ _ (huOf c).1 (huOf c').1) fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_add _ (map_add _), (huOf c).2 w, (huOf c').2 w]`. Simplify using `[Matrix.mul_add, Matrix.add_mul]`. Use `ext1 f`. Simplify using `only [H, e, hadd _ _ (huOf c).1 (huOf c').1]`. Both sides reduce to the same expression.
+
+Establish `hHsmul : ∀ (r : ℝ) c, H ((r : ℂ) • c) = (r : ℂ) • H c`. Introduce `r c`. Establish `e : uOf ((r : ℂ) • c) = realAd F r • uOf c`. Use `symm`. Use `huniq _ _ (hAt_smul r _ (huOf c).1) fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace σ τ hCM, (huOf c).2 w]`. Simplify using `[Matrix.mul_smul, Matrix.smul_mul]`. Use `ext1 f`. Simplify using `only [H, e, hsm _ r (huOf c).1]`. Both sides reduce to the same expression.
+
+Establish `hHcomm : ∀ c c', H c * H c' - H c' * H c = ((4 * Real.pi : ℂ) * Complex.I * ((∑ w, ∑ a, ∑ b, lineSign a b * c w a b * star (c' w a b)).im : ℂ)) • 1`. Introduce `c c'`. Use `ext1 f`. Establish `h1` using `hcom _ _ (huOf c).1 (huOf c').1 f`. Rewrite `h1` using `[GlobalTheory.T.archimedean_trace_symplectic_orthonormal_frames σ τ JA JB a b A C hCM hFr _ _ c c' (huOf c).1 (huOf c').1 (huOf c).2 (huOf c').2]`.
+
+Simplify using `only [H, LinearMap.sub_apply, Module.End.mul_apply, ContinuousLinearMap.coe_coe, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[h1]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨f₀, hf₀, hv⟩` from `GlobalTheory.T.exists_gaussianVacuum_frames_placeSignatures σ τ JA JB d a b A C D hCM hFr hDf`. Establish `hHvac : ∀ w a b, H (Pi.single w (Matrix.single a b 1)) f₀ + (lineSign a b * Complex.I) • H (Pi.single w (Matrix.single a b Complex.I)) f₀ = 0` using `fun w a b => hv w a b _ _ (huOf _).1 (huOf _).1 (huOf _).2 (huOf _).2`. Take `⟨Φ, hinj, hint⟩` from `GlobalTheory.T.fockMap_of_canonicalCommutation_placewise_signature H hHadd hHsmul hHcomm f₀ hf₀ hHvac`. Use `⟨Φ, hinj, fun u hu c hc T => ?_⟩` and prove the remaining obligations. Rewrite using `[hint, huniq c u hu hc]`.
+
+Conclude with `(hD _ (huOf c).1 (Φ T)).1`.
+-/
 theorem exists_isFockMapD : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : InfinitePlace F → ℕ) (ψ : AddChar (AF F) ℂ)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E))

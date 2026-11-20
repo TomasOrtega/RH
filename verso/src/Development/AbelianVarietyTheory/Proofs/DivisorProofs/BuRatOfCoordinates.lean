@@ -8,6 +8,21 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D μ hμ n nV d jA V Pq eRR a eNu hB hinner hV hι hPq hper`. Substitute `hμ` using the available equality. Introduce `u φ x`. Take `⟨x', rfl⟩` from `(eNu u).surjective φ`. Take `⟨y, rfl⟩` from `eRR.surjective x`.
+
+Take `⟨G, rfl⟩` from `hPq y`. Establish `key` using `span_range_inf_ker_le_of_basis D.what₂.embLL D.div.RR.b (jA.comp V.mulVecLin) D.jEE (D.what₂.iota D.what₂.mu0) (eRR.toLinearMap ∘ₗ Pq.mulVecLin) D.jEE_basis.1 hι`. Establish `hset : {x | (eRR.toLinearMap ∘ₗ Pq.mulVecLin) x = 0} = ((LinearMap.ker Pq.mulVecLin : Submodule D.what₂.LL (Fin nV → D.what₂.LL)) : Set (Fin nV → D.what₂.LL))`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+
+Establish `hU : D.what₂.Usp D.what₂.mu0 = Submodule.span ℂ ((jA.comp V.mulVecLin) '' ((LinearMap.ker Pq.mulVecLin : Submodule D.what₂.LL (Fin nV → D.what₂.LL)) : Set (Fin nV → D.what₂.LL)))`. Rewrite using `[← hset, ← key, Formalism.BasicNotions.Rows.Data.Usp, hV]`. Both sides reduce to the same expression. Take `⟨G', hG', hperp⟩` from `GlobalTheory.T.exists_rational_orthogonal_projection_semilinear D.what₂.LL D.what₂.embLL (D.what₂.Amb D.what₂.mu0) nV (jA.comp V.mulVecLin) (fun x y => hinner _ _) (LinearMap.ker Pq.mulVecLin) G`. Establish `hG'0 : Pq.mulVec G' = 0` using `hG'`.
+
+Use `set q : D.what₂.Amb D.what₂.mu0 := jA (V.mulVec (G - G')) with hq`. Establish `hqeq : q = (jA.comp V.mulVecLin) G - (jA.comp V.mulVecLin) G'`. Rewrite using `[hq, ← map_sub]`. Both sides reduce to the same expression. Establish `hqV : q ∈ D.what₂.V0 D.what₂.mu0`.
+
+Rewrite using `[hV]`. Conclude with `Submodule.subset_span ⟨G - G', rfl⟩`. Establish `hqU : q ∈ (D.what₂.Usp D.what₂.mu0)ᗮ`. Rewrite using `[hU, hqeq]`. Conclude with `hperp`.
+
+Establish `hqQ : q ∈ D.what₂.Qsp D.what₂.mu0` using `⟨hqV, hqU⟩`. Establish `hιq : D.what₂.iota D.what₂.mu0 q = D.jEE (eRR (Pq.mulVec G))`. Rewrite using `[hq, hι, Matrix.mulVec_sub, hG'0, sub_zero]`. Take `⟨z, hz⟩` from `hper u x' (G - G')`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hB u, ← hιq, D.what₂.sec_iota _ q hqQ, hz]`.
+-/
 theorem buRat_of_coordinates : ∀ (D : D7) (μ : D.what₂.Tup), μ = D.what₂.mu0 → ∀ {n nV d : ℕ} (jA : (Fin n → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Amb μ) (V : Matrix (Fin n) (Fin nV) D.what₂.LL) (Pq : Matrix (Fin d) (Fin nV) D.what₂.LL) (eRR : (Fin d → D.what₂.LL) ≃ₗ[D.what₂.LL] D.div.RR.V) (a : D.what₂.Word → ℕ) (eNu : ∀ u, (Fin (a u) → D.what₂.LL) ≃ₗ[D.what₂.LL] (D.div.Nu u).V), Formalism.BasicNotions.Rows.BuDefQ D.what₂ → (∀ x y, ⟪jA x, jA y⟫_ℂ ∈ Set.range D.what₂.embLL) → D.what₂.V0 μ = Submodule.span ℂ (Set.range fun F0 => jA (V.mulVec F0)) → (∀ F0, D.what₂.iota μ (jA (V.mulVec F0)) = D.jEE (eRR (Pq.mulVec F0))) → Function.Surjective Pq.mulVec → (∀ u x F0, D.what₂.perCol u μ (D.jN u (eNu u x)) (jA (V.mulVec F0)) ∈ Set.range D.what₂.embLL) → Formalism.MainNotions.WeightDegreeSizes.RationalMapValues D := by
   intro D μ hμ n nV d jA V Pq eRR a eNu hB hinner hV hι hPq hper
   subst hμ

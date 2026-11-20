@@ -15,6 +15,9 @@ section Stab
 
 variable (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `((HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * (HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E))) *ᵥ X a = (HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ ((HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ X a)`. Rewrite using `[Matrix.mulVec_mulVec]`.
+-/
 theorem actW_mul_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (g h : HA R σ J)
     (X : Fin n → Fin M → R ⊗[F] E) :
     actW R σ J (g * h) X = actW R σ J g (actW R σ J h X) := by
@@ -25,6 +28,9 @@ theorem actW_mul_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin
       ((HA.mat R σ J h : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ X a)
   rw [Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin M) (Fin M) (R ⊗[F] E)) *ᵥ X a = X a`. Conclude with `Matrix.one_mulVec _`.
+-/
 theorem actW_one_apply (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) : actW R σ J 1 X = X := by
   funext a

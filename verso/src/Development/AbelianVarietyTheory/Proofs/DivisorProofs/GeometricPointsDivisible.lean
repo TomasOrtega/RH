@@ -10,12 +10,20 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.comp_one]`. Consider the case `succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+-/
 theorem pt_comp_id_pow {K : Type} [Field K] (A : AbVar K) (x : A.Pt) (n : ℕ) :
     x ≫ (𝟙 A.X) ^ n = x ^ n := by
   induction n with
   | zero => simp [MonObj.comp_one]
   | succ k ih => rw [pow_succ, MonObj.comp_mul, ih, Category.comp_id, pow_succ]
 
+/- English proof (translation)
+Introduce `K _ A n hn x`. Establish `hz : ((n : ℤ)) ≠ 0` using `by exact_mod_cast hn`. Establish `hiso` using `(GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K A (n : ℤ) hz).1`. Establish `hs : Function.Surjective (ptMap ((n : ℤ) • 𝟙 A))` using `(GlobalTheory.T.abVar_surjective_iff_ptMap_surjective K A A _).1 hiso.2`. Take `⟨y, hy⟩` from `hs x`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, ptMap_apply, natCast_zsmul, nsmul_hom, id_hom, pt_comp_id_pow]`.
+-/
 theorem pt_divisible : ∀ (K : Type) [Field K] (A : AbVar K) (n : ℕ), n ≠ 0 → ∀ x : A.Pt, ∃ y : A.Pt, y ^ n = x := by
   intro K _ A n hn x
   have hz : ((n : ℤ)) ≠ 0 := by exact_mod_cast hn

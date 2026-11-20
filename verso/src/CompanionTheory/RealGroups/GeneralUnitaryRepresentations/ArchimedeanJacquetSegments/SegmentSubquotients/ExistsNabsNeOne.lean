@@ -10,16 +10,37 @@ namespace CompanionTheory.Pf1.SegRepC.Twist
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `hi` as an intermediate fact. Establish `: Nontrivial ρ.asModule` using `IsSimpleModule.nontrivial (MonoidAlgebra ℂ G) _`. Conclude with `exists_ne (0 : ρ.asModule)`.
+-/
 theorem exists_ne_zero_irr {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (hi : ρ.IsIrreducible) : ∃ v : V, v ≠ 0 := by
   have := hi
   have : Nontrivial ρ.asModule := IsSimpleModule.nontrivial (MonoidAlgebra ℂ G) _
   exact exists_ne (0 : ρ.asModule)
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `GlobalTheory.LocGL.exists_uniformizer k`. Conclude with `⟨ϖ, fun e => ValuativeRel.uniformizer_lt_one.ne (hϖ ▸ (nabs_eq_one_iff ϖ).1 e)⟩`.
+-/
 theorem exists_nabs_ne_one : ∃ x : kˣ, nabs k x ≠ 1 := by
   obtain ⟨ϖ, hϖ⟩ := GlobalTheory.LocGL.exists_uniformizer k
   exact ⟨ϖ, fun e => ValuativeRel.uniformizer_lt_one.ne (hϖ ▸ (nabs_eq_one_iff ϖ).1 e)⟩
 
+/- English proof (translation)
+Use `⟨fun φ => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_nabs_ne_one (k := k)`. Set `z : GL (Fin d) k` to `GeneralLinearGroup.scalar (Fin d) x`. Establish `hz : ∀ g : GL (Fin d) k, z * g = g * z` using `fun g => by`. Use extensionality with `i j`.
+
+Simplify using `[z, GeneralLinearGroup.scalar, Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`. Establish `hdet : GeneralLinearGroup.det z = x ^ d`. Use `ext`. Simplify using `[z, GeneralLinearGroup.scalar]`. Take `⟨c, hc⟩` from `GlobalTheory.CompanionTheory.SocleFrob.exists_eq_smul_id σ.ρ σ.smooth σ.irr (σ.ρ z) fun g y => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, hz g, map_mul, Module.End.mul_apply]`. Establish `hcz : ∀ y, σ.ρ z y = c • y` using `fun y => by`. Rewrite using `[hc]`. Both sides reduce to the same expression. Take `⟨v, hv⟩` from `exists_ne_zero_irr σ.ρ σ.irr`.
+
+Establish `hc0 : c ≠ 0` using `fun e => hv (by`. Establish `h2 : σ.ρ z⁻¹ (σ.ρ z v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[hcz, e, zero_smul, map_zero]`.
+
+Conclude with `h2.symm)`. Establish `hφv : φ.toLinearEquiv v ≠ 0` using `fun e => hv (φ.toLinearEquiv.map_eq_zero_iff.1 e)`. Establish `h3 : φ.toLinearEquiv ((segTerm σ.ρ l a) z v) = (segTerm σ.ρ l b) z (φ.toLinearEquiv v)` using `Representation.IntertwiningMap.isIntertwining _ _ φ.toIntertwiningMap z v`. Simplify using `only [segTerm, twist_apply, detChar_apply, hdet, map_smul, hcz, smul_smul] at h3`. Establish `h4` using `mul_right_cancel₀ hc0 (smul_left_injective ℂ hφv h3)`.
+
+Rewrite `h4` using `[val_absPow, val_absPow, Complex.cpow_natCast, Complex.cpow_natCast]`. Establish `h5 : nabs k (x ^ d) ^ (a : ℕ) = nabs k (x ^ d) ^ (b : ℕ)` using `by exact_mod_cast h4`. Establish `hpos : 0 < nabs k (x ^ d)` using `nabs_pos' k _`. Establish `hne : nabs k (x ^ d) ≠ 1`. Establish `hpow : nabs k (x ^ d) = nabs k x ^ d` using `by simp [nabs]`.
+
+Rewrite using `[hpow]`. Conclude with `fun e => hx ((pow_eq_one_iff_of_nonneg (nabs_pos' k x).le hd.ne').1 e)`. Conclude with `hab (Fin.ext (pow_right_injective₀ hpos hne h5))`.
+-/
 theorem not_equiv_segTerm {d : ℕ} (hd : 0 < d) (σ : IrrRep (GL (Fin d) k)) (l : ℕ) {a b : Fin l}
     (hab : a ≠ b) : IsEmpty ((segTerm σ.ρ l a).Equiv (segTerm σ.ρ l b)) := by
   refine ⟨fun φ => ?_⟩

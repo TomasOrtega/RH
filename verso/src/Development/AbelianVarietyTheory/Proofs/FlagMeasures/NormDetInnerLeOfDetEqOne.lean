@@ -6,6 +6,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.PlueckerBound
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.Hadamard.norm_det_apply_le (𝕜 := ℂ) (fun a => innerSL ℂ (u a)) w`. Simplify using `only [innerSL_apply_apply, innerSL_apply_norm] at h`. Rewrite using `[mul_comm]`. Conclude with `h`.
+-/
 theorem norm_det_inner_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {b : ℕ}
     (u w : Fin b → E) :
     ‖(Matrix.of fun a a' => ⟪u a, w a'⟫_ℂ).det‖ ≤ (∏ a, ‖u a‖) * ∏ a, ‖w a‖ := by
@@ -14,6 +17,9 @@ theorem norm_det_inner_le {E : Type} [NormedAddCommGroup E] [InnerProductSpace �
   rw [mul_comm]
   exact h
 
+/- English proof (translation)
+Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `a a'`. Simplify using `[Matrix.mul_apply, inner_sum, inner_smul_right, mul_comm]`.
+-/
 theorem det_inner_sum_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {b : ℕ}
     (u v : Fin b → E) (t : Matrix (Fin b) (Fin b) ℂ) :
     (Matrix.of fun a a' => ⟪u a, ∑ i, t i a' • v i⟫_ℂ).det
@@ -23,6 +29,9 @@ theorem det_inner_sum_smul {E : Type} [NormedAddCommGroup E] [InnerProductSpace 
   ext a a'
   simp [Matrix.mul_apply, inner_sum, inner_smul_right, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `norm_det_inner_le u (fun a => ∑ i, t i a • v i)`. Rewrite `h` using `[det_inner_sum_smul, ht, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem norm_det_inner_le_of_det_eq_one (n b : ℕ) (v u : Fin b → EuclideanSpace ℂ (Fin n))
     (t : Matrix (Fin b) (Fin b) ℂ) (ht : t.det = 1)
     (_h : ∀ a a', a ≠ a' → ⟪∑ i, t i a • v i, ∑ i, t i a' • v i⟫_ℂ = 0) :

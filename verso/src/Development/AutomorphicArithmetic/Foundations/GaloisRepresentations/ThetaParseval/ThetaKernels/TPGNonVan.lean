@@ -18,11 +18,61 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.TP
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 private theorem nv_sf_pk {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] : SFinite μ := inferInstance
 end UpperTheory.TP
 open UpperTheory.TP
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `T hR hD hBu hDa hTl hAb hSc E _ _ _ B n d X W M χX χW om hP hn e e' he he' hd K a ε hK ha hε t₀ ht hlt U hU f₀ hf₀ hf0 φ hφ0 hS`. Take `⟨a1, a2, a3⟩` from `Euler.lcsc_UA (cj E) X.J`. Establish `hC : Cpt (cj E) X.J` using `T.cpt _ E (cj E) B n X n 0 hP.base (Or.inl hP.herm) (by simp)`. Establish `hS'` using `hS`. Establish `hA : GlobalTheory.UnitaryBC.IsAutFormU φ`.
+
+Take `⟨V, _, _, _, ρ, i, jj, x₀, -, -, hjx, hjU, -, -⟩` from `hS'`. Conclude with `hU.aut φ (hjx ▸ hjU x₀)`. Use `set φ' : UA (cj E) X.J → ℂ := φ ∘ e.symm with hφ'`. Establish `hfn : IsFn φ'` using `⟨hA.cont.comp e.symm.continuous, fun γ hγ g => by`. Establish `h1 : e.symm γ ∈ GlobalTheory.UnitaryBC.ratU E n` using `(he.rat _).1 (by simpa using hγ)`.
+
+Simplify `hA.left _ h1 (e.symm g)⟩` using `[hφ']`. Establish `hφ'0 : φ' ≠ 0` using `fun h => hφ0 (funext fun g => by simpa [hφ'] using congrFun h (e g))`. Take `⟨r, r0, r1, r2⟩` from `UpperTheory.matrix_coefficient_bounded_by_value_at_one (M := M) hC hP.good.haar hP.good.dom hfn hφ'0`. Take `⟨O, oO, eO⟩` from `isOpen_induced_iff.1 hA.level`. Establish `one_O : (1 : GlobalTheory.UnitaryBC.UA E n) ∈ O`.
+
+Establish `: (1 : GlobalTheory.UnitaryBC.finU E n) ∈ Subtype.val ⁻¹' O`. Rewrite using `[eO]`. Use `show GlobalTheory.UnitaryBC.RU E n 1 φ = φ`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+
+Conclude with `this`. Use `set N : Set (UA (cj E) X.J) := e.symm ⁻¹' O with hN`. Establish `oN : IsOpen N` using `oO.preimage e.symm.continuous`. Establish `one_N : (1 : UA (cj E) X.J) ∈ N` using `by simpa [hN] using one_O`. Establish `hfix : ∀ g ∈ gOff (cj E) X ∅, g ∈ N → ∀ y, φ' (y * g) = φ' y` using `fun g hg hgN y => by`.
+
+Establish `k1 : e.symm g ∈ GlobalTheory.UnitaryBC.finU E n` using `(he.fin _).1 (by simpa using hg)`. Establish `k2 : (⟨e.symm g, k1⟩ : GlobalTheory.UnitaryBC.finU E n) ∈ {k : GlobalTheory.UnitaryBC.finU E n | GlobalTheory.UnitaryBC.RU E n k φ = φ}`. Rewrite using `[← eO]`. Conclude with `hgN`. Establish `: φ (e.symm y * e.symm g) = φ (e.symm y)` using `congrFun k2 (e.symm y)`.
+
+Simplify `this` using `[hφ']`. Take `⟨⟨j0, hj0⟩, -, -, -, cK0, -, -, -, -⟩` from `hD _ E (cj E) B n X hP.base hP.herm ∅`. Establish `clOff : ∀ S, IsClosed (gOff (cj E) X S : Set (UA (cj E) X.J))` using `fun S => (hD _ E (cj E) B n X hP.base hP.herm S).2.2.2.1`. Take `⟨S₀, hS₀⟩` from `_root_.UpperTheory.exists_finite_places_integral_mem_nhds_one hP.base hP.herm cK0 clOff (oN.mem_nhds one_N)`. Take `⟨R, hRam⟩` from `_root_.UpperTheory.exists_finite_unramified_outside_of_isHecke hP.base hP.hW`.
+
+Establish `hint` using `ht _ hlt.le`. Take `⟨S, hSS, hTail⟩` from `hTl _ E (cj E) B n X hP.base hP.herm K a ε hK ha hε M.μ ((d : ℝ) / 2) hP.good.haar hint (S₀ ∪ R)`. Establish `hOffS : gOff (cj E) X S ≤ gOff (cj E) X S₀` using `Subgroup.closure_mono fun g hg => ⟨hg.1, fun v hv => hg.2 v (hSS (Finset.mem_union_left _ hv))⟩`. Establish `hOff0 : gOff (cj E) X S ≤ gOff (cj E) X ∅` using `Subgroup.closure_mono fun g hg => ⟨hg.1, fun v hv => absurd hv (by simp)⟩`. Establish `hunr : UnrOff χW (S : Set (Pl (maximalRealSubfield E)))` using `fun w hw => hRam w fun h => hw (by`.
+
+Simplify using `only [above, Set.mem_setOf_eq] at h ⊢`. Conclude with `hSS (Finset.mem_union_right _ h))`. Establish `hbump` using `fun v => hBu _ E (cj E) B n d X W M χX χW om hP hn hd v N (oN.mem_nhds one_N)`. Use `choose H b hb hHN using hbump`. Use `set φf : ∀ v : Pl (maximalRealSubfield E), (Fin n × Fin d → Fv (maximalRealSubfield E) v) → ℂ := fun v => if v ∈ S then b v else M.vac v with hφf`.
+
+Establish `hfin : IsFin M φf`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Simplify `(hb v).1` using `[hφf, hv]`. Simplify `(hP.good.vac v).1` using `[hφf, hv]`.
+
+Use `filter_upwards [S.finite_toSet.compl_mem_cofinite] with v hv`. Simplify using `only [Set.mem_compl_iff, Finset.mem_coe] at hv`. Simplify using `[hφf, hv]`. Use `letI : MeasurableSpace (Fin n × Fin d → AF (maximalRealSubfield E)) := borel _`. Use `haveI : BorelSpace (Fin n × Fin d → AF (maximalRealSubfield E)) := ⟨rfl⟩`.
+
+Set `ν : Measure (Fin n × Fin d → AF (maximalRealSubfield E))` to `Measure.addHaar`. Establish `hν : ν.IsAddHaarMeasure` using `inferInstance`. Take `⟨hc1, hco⟩` from `hDa _ E (cj E) B n d X W M χX χW om hP hn K a ε hK ha hε ν hν S hunr H φf hfin (fun v hv => by simpa [hφf, hv] using hb v) (fun v hv => by simp [hφf, hv]) f₀ hf₀ hf0`. Take `⟨⟨j, hj⟩, cInf, clAt, clOff', cK, oK, -, hcomp, -⟩` from `hD _ E (cj E) B n X hP.base hP.herm S`. Set `Tst : Subgroup (UA (cj E) X.J)` to `{ carrier := {g | ∀ y, φ' (y * g) = φ' y} one_mem' := fun y => by rw [mul_one] mul_mem' := fun {g h} hg hh y => by rw [← mul_assoc, hh, hg] inv_mem' := fun {g} hg y => by rw [← hg (y * g⁻¹), inv_mul_cancel_right] }`.
+
+Establish `hHfix : (⨆ v ∈ S, H v) ≤ Tst` using `iSup₂_le fun v _ g hg => hfix g (UpperTheory.unitaryLocalGroup_le_offPlaces_empty v ((hb v).2.2.1 hg)) (hHN v hg)`. Establish `hcomm : ∀ (b : gAt (cj E) X S) (c : gOff (cj E) X S), b.1 * c.1 = c.1 * b.1` using `fun b c => by`. Establish `h1 : j ((1, (b, 1)) * (1, (1, c))) = j ((1, (1, c)) * (1, (b, 1)))`. Use `congr 1`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[map_mul, map_mul, hj, hj]`. Simplify using `using h1`. Establish `hmc : ∀ (x : UA (cj E) X.J) (b : gAt (cj E) X S) (c : gOff (cj E) X S), b.1 ∈ (⨆ v ∈ S, H v) → mc M φ' (x * b.1 * c.1) = mc M φ' (x * c.1)` using `fun x b c hbH => by`. Establish `: (fun y => φ' (y * (x * b.1 * c.1))) = fun y => φ' (y * (x * c.1))` using `funext fun y => by`. Rewrite using `[mul_assoc x, hcomm, ← mul_assoc x, ← mul_assoc y]`.
+
+Conclude with `hHfix hbH _`. Simplify using `only [mc, this]`. Use `haveI : LocallyCompactSpace (gInf (cj E) X) := cInf.isClosed.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (gAt (cj E) X S) := clAt.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (gOff (cj E) X S) := clOff'.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Set `μA : Measure (gInf (cj E) X)` to `Measure.haar`. Set `μB : Measure (gAt (cj E) X S)` to `Measure.haar`. Set `μC : Measure (gOff (cj E) X S)` to `Measure.haar`. Use `haveI : SFinite μA := nv_sf_pk μA`. Use `haveI : SFinite μB := nv_sf_pk μB`.
+
+Use `haveI : SFinite μC := nv_sf_pk μC`. Take `⟨κ, hκ, hκe⟩` from `hSc E B n d X W M χX χW om hP hn e e' he he' U hU f₀ hf0 φ hφ0 hS ν hν φf hfin μA inferInstance`. Establish `hPol : pure f₀ φf ∈ PolData B M` using `Submodule.subset_span ⟨f₀, hf₀, φf, hfin.1, hfin.2, rfl⟩`. Take `⟨hI, hZ⟩` from `hR _ E (cj E) B n d X W M χX χW om hP hn (by omega) K a ε hK ha hε t₀ ht hlt ν hν _ hPol φ' hfn`. Use `⟨φf, hfin, fun h0 => ?_⟩` and prove the remaining obligations.
+
+Take `⟨hIP, c, hc⟩` from `UpperTheory.haarMeasure_triple_product_decomposition _ _ _ cInf.isClosed clAt clOff' j M.μ hP.good.haar μA μB μC inferInstance inferInstance inferInstance _ hI`. Rewrite `hc` using `[hZ h0, mul_zero]`. Use `choose s s1 s2 s3 using fun c : gOff (cj E) X S => (hco 1 (one_mem _) 1 (one_mem _) c.1 c.2).2`. Establish `oH` using `UpperTheory.unitaryAdelic_mem_of_localGroups_near_one S H (fun v _ => (hb v).2.2.2.2.1) hcomp`. Establish `hIG : ∀ g ∈ (⨆ v ∈ S, H v), IntAll g` using `fun g hg => Subgroup.mem_iInf.1 ((iSup₂_le fun v _ g hg => Subgroup.mem_iInf.2 fun w => Bad.int_all ((hb v).2.2.1 hg) ((hb v).2.2.2.1 g hg) w : (⨆ v ∈ S, H v) ≤ ⨅ w, Euler.intGrp (cj E) X w) hg)`.
+
+Establish `cB : IsCompact {b : gAt (cj E) X S | IntAll b.1}` using `clAt.isClosedEmbedding_subtypeVal.isCompact_preimage cK`. Establish `cC : IsCompact {c : gOff (cj E) X S | IntAll c.1}` using `clOff'.isClosedEmbedding_subtypeVal.isCompact_preimage cK`. Use `hAb _ _ _ μA μB μC {b | b.1 ∈ ⨆ v ∈ S, H v} {c | IntAll c.1} oH.measurableSet (oK.preimage continuous_subtype_val).measurableSet (oH.measure_ne_zero μB ⟨1, one_mem (⨆ v ∈ S, H v)⟩) (ne_top_of_le_ne_top cB.measure_lt_top.ne (measure_mono fun b hb' => hIG _ hb')) cC.measure_lt_top. …` and prove the remaining obligations. Introduce `x b c hb'`. Rewrite using `[hj]`.
+
+Rewrite using `[(hco x.1 x.2 b.1 b.2 c.1 c.2).1 hb', zero_mul]`. Introduce `x c b hb'`. Rewrite using `[hj]`. Simplify using `only`. Rewrite using `[s3 c x.1 x.2 b.1 hb', hmc _ _ _ hb', mul_assoc]`.
+
+Introduce `c`. Conclude with `hκe c.1 (hOff0 c.2)`. Introduce `c hc'`. Use `⟨s2 c hc', ?_⟩` and prove the remaining obligations. Establish `: (fun y => φ' (y * c.1)) = fun y => φ' (y * 1)` using `funext fun y => by`.
+
+Rewrite using `[mul_one]`. Conclude with `hfix _ (hOff0 c.2) (hS₀ _ (hOffS c.2) hc') y`. Establish `e1 : mc M φ' c.1 = r` using `by rw [← r1]; simp only [mc, this]`. Simplify using `[e1]`. Introduce `c`.
+
+Use `⟨by simpa using r2 c.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← s1 c, ofReal_norm_eq_enorm]`.
+-/
 theorem _root_.UpperTheory.TP.nonVan_k :
     _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.Rallis_k → _root_.UpperTheory.TP.Decomp_k → _root_.UpperTheory.TP.BumpAny_k → _root_.UpperTheory.TP.Datum_k → _root_.UpperTheory.TP.Tail_k → UpperTheory.TP.AbsNe → _root_.UpperTheory.TP.SchurStep_k → _root_.UpperTheory.TP.NonVan_k := by
   intro T hR hD hBu hDa hTl hAb hSc E _ _ _ B n d X W M χX χW om hP hn e e' he he' hd K a ε hK ha hε t₀ ht hlt U hU f₀ hf₀ hf0 φ hφ0 hS

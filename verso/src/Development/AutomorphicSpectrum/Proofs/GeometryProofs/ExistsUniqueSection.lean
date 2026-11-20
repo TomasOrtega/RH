@@ -6,12 +6,26 @@ open AlgebraicGeometry CategoryTheory Limits GlobalTheory.CompanionTheory.Ar Glo
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.RegSection
 
+/- English proof (translation)
+The claim follows from `TopCat.Presheaf.section_ext X.sheaf U s t fun q hq => h.inj ⟨q, hU q hq⟩ (e q hq)`.
+-/
 theorem section_eq {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (h : IsCptGen ξ)
     (U : X.Opens) (hU : ∀ q ∈ U, genPt ξ ⤳ q) (s t : Γ(X, U))
     (e : ∀ q (hq : q ∈ U), genMap ξ ⟨q, hU q hq⟩ (X.presheaf.germ U q hq s) =
       genMap ξ ⟨q, hU q hq⟩ (X.presheaf.germ U q hq t)) : s = t :=
   TopCat.Presheaf.section_ext X.sheaf U s t fun q hq => h.inj ⟨q, hU q hq⟩ (e q hq)
 
+/- English proof (translation)
+Introduce `X Ω _ ξ _ h U hU a _ ha`. Establish `loc : ∀ x : U, ∃ (W : X.Opens) (_ : W ≤ U) (hx : x.1 ∈ W) (t : Γ(X, W)), genMap ξ ⟨x.1, hU x.1 x.2⟩ (X.presheaf.germ W x.1 hx t) = a`. Introduce `x`. Take `⟨g, hg⟩` from `ha x.1 x.2`. Take `⟨W, hx, t, rfl⟩` from `X.presheaf.exists_germ_eq g`.
+
+Use `⟨W ⊓ U, inf_le_right, ⟨hx, x.2⟩, X.presheaf.map (homOfLE inf_le_left).op t, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (genMap ξ ⟨x.1, hU x.1 x.2⟩) (TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE inf_le_left : W ⊓ U ⟶ W) x.1 ⟨hx, x.2⟩ t)).trans hg`. Use `choose W hWU hx t ht using loc`. Establish `val : ∀ (x : U) (y : X) (hy : y ∈ W x), genMap ξ ⟨y, hU y (hWU x hy)⟩ (X.presheaf.germ (W x) y hy (t x)) = a` using `fun x y hy => (genMap_germ_eq_genMap_germ ξ (W x) ⟨y, hU y (hWU x hy)⟩ ⟨x.1, hU x.1 x.2⟩ hy (hx x) (t x)).trans (ht x)`. Establish `compat : TopCat.Presheaf.IsCompatible X.sheaf.obj W t`.
+
+Introduce `i j`. Apply `TopCat.Presheaf.section_ext X.sheaf (W i ⊓ W j)` to reduce the goal to its premises. Introduce and unpack `y ⟨hi, hj⟩`. Apply `h.inj ⟨y, hU y (hWU i hi)⟩` to reduce the goal to its premises. Conclude with `(congrArg (genMap ξ ⟨y, hU y (hWU i hi)⟩) (TopCat.Presheaf.germ_res_apply X.presheaf (TopologicalSpace.Opens.infLELeft (W i) (W j)) y ⟨hi, hj⟩ (t i))).trans ((val i y hi).trans ((val j y hj).symm.trans (congrArg (genMap ξ ⟨y, hU y (hWU i hi)⟩) (TopCat.Presheaf.germ_res_apply X.pr …`.
+
+Establish `hcov : U ≤ iSup W` using `fun y hy => TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨y, hy⟩, hx ⟨y, hy⟩⟩`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' W U (fun i => homOfLE (hWU i)) hcov t compat`. Establish `spec : ∀ q (hq : q ∈ U), genMap ξ ⟨q, hU q hq⟩ (X.presheaf.germ U q hq s) = a`. Introduce `q hq`. Establish `e` using `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE (hWU ⟨q, hq⟩)) q (hx ⟨q, hq⟩) s`.
+
+Establish `e2 : (X.presheaf.map (homOfLE (hWU ⟨q, hq⟩)).op).hom s = t ⟨q, hq⟩` using `hs ⟨q, hq⟩`. Conclude with `(congrArg (genMap ξ ⟨q, hU q hq⟩) e).symm.trans ((congrArg (fun z => genMap ξ ⟨q, hU q hq⟩ ((X.presheaf.germ (W ⟨q, hq⟩) q (hx ⟨q, hq⟩)).hom z)) e2).trans (ht ⟨q, hq⟩))`. Conclude with `⟨s, spec, fun s' hs' => section_eq h U hU s' s fun q hq => (hs' q hq).trans (spec q hq).symm⟩`.
+-/
 theorem existsUnique_section : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) [IsLocallyNoetherian X], IsCptGen ξ → ∀ (U : X.Opens) (hU : ∀ q ∈ U, genPt ξ ⤳ q) (a : Ω), (U : Set X).Nonempty → (∀ q (hq : q ∈ U), a ∈ regAt ξ ⟨q, hU q hq⟩) → ∃! g : Γ(X, U), ∀ q (hq : q ∈ U), genMap ξ ⟨q, hU q hq⟩ (X.presheaf.germ U q hq g) = a := by
   intro X Ω _ ξ _ h U hU a _ ha
   have loc : ∀ x : U, ∃ (W : X.Opens) (_ : W ≤ U) (hx : x.1 ∈ W) (t : Γ(X, W)),

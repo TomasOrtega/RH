@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.derivWeierstrassP_add_half_period | exact GlobalTheory.derivWeierstrassP_add_half_period | (intros; apply GlobalTheory.derivWeierstrassP_add_half_period <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.derivWeierstrassP_add_half_period' : ∀ (L : PeriodPair) (a t : ℂ), a ∉ L.lattice → 2 * a ∈ L.lattice → t ∉ L.lattice → t + a ∉ L.lattice → L.derivWeierstrassP (t + a) * (L.weierstrassP t - L.weierstrassP a) ^ 2 = -(3 * L.weierstrassP a ^ 2 - L.g₂ / 4) * L.derivWeierstrassP t := by
   first | exact @GlobalTheory.derivWeierstrassP_add_half_period | exact GlobalTheory.derivWeierstrassP_add_half_period | (intros; apply GlobalTheory.derivWeierstrassP_add_half_period <;> assumption)

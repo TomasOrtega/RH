@@ -6,6 +6,13 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Establish `h1 : pInf E (infId E u).val = u.val`. Express the relevant statement in the definitionally equal form `pInf E (1 - sInf E 1 + sInf E _) = _`. Establish `h : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Simplify using `[h]`. Establish `h2 : pFin E (infId E u).val = 1`.
+
+Express the relevant statement in the definitionally equal form `(1 : Af E) - 0 + 0 = 1`. Simplify using the standard rewrite rules. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pInf_infGL]`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h1]`. Rewrite using `[pFin_infGL]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.diagonal_apply, e, h2]`.
+-/
 private theorem infGL_scalarE {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (u : (Cinf E)ˣ) :
     infGL E 2 (Matrix.GeneralLinearGroup.scalar (Fin 2) u) =
       Matrix.GeneralLinearGroup.scalar (Fin 2) (infId E u) := by
@@ -28,12 +35,18 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h : y.val.det * (y⁻¹).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Conclude with `congrFun h w`.
+-/
 private theorem det_mul_inv (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) :
     y.val.det w * (y⁻¹).val.det w = 1 := by
   have h : y.val.det * (y⁻¹).val.det = 1 := by
     rw [← Matrix.det_mul, Units.mul_inv, Matrix.det_one]
   exact congrFun h w
 
+/- English proof (translation)
+Introduce `h` and use `by have := det_mul_inv y w rw [h, zero_mul] at this exact zero_ne_one this`.
+-/
 private theorem det_ne (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : y.val.det w ≠ 0 := fun h => by
   have := det_mul_inv y w
   rw [h, zero_mul] at this
@@ -41,12 +54,21 @@ private theorem det_ne (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : y.val.d
 
 private noncomputable def nd (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : ℝ := Real.sqrt ‖y.val.det w‖
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_pos.2 (norm_pos_iff.2 (det_ne y w))`.
+-/
 private theorem nd_pos (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : 0 < nd y w :=
   Real.sqrt_pos.2 (norm_pos_iff.2 (det_ne y w))
 
+/- English proof (translation)
+The claim follows from `Real.sq_sqrt (norm_nonneg _)`.
+-/
 private theorem nd_sq (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : nd y w ^ 2 = ‖y.val.det w‖ :=
   Real.sq_sqrt (norm_nonneg _)
 
+/- English proof (translation)
+Establish `h : ‖y.val.det w‖ * ‖(y⁻¹).val.det w‖ = 1`. Rewrite using `[← norm_mul, det_mul_inv, norm_one]`. Establish `h' : nd y w * nd y⁻¹ w = 1`. Rewrite using `[nd, nd, ← Real.sqrt_mul (norm_nonneg _), h, Real.sqrt_one]`. Conclude with `(eq_inv_of_mul_eq_one_right h').symm`.
+-/
 private theorem nd_inv (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : (nd y w)⁻¹ = nd y⁻¹ w := by
   have h : ‖y.val.det w‖ * ‖(y⁻¹).val.det w‖ = 1 := by
     rw [← norm_mul, det_mul_inv, norm_one]
@@ -54,10 +76,16 @@ private theorem nd_inv (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) : (nd y w
     rw [nd, nd, ← Real.sqrt_mul (norm_nonneg _), h, Real.sqrt_one]
   exact (eq_inv_of_mul_eq_one_right h').symm
 
+/- English proof (translation)
+The claim follows from `(norm_le_pi_norm (x i j) w).trans ((norm_le_pi_norm (toL x i) j).trans (norm_le_pi_norm (toL x) i))`.
+-/
 private theorem entry_le (x : Matrix (Fin 2) (Fin 2) (Cinf E)) (i j : Fin 2) (w : InfinitePlace E) :
     ‖x i j w‖ ≤ ‖toL x‖ :=
   (norm_le_pi_norm (x i j) w).trans ((norm_le_pi_norm (toL x i) j).trans (norm_le_pi_norm (toL x) i))
 
+/- English proof (translation)
+Establish `e` using `entry_le x`. Establish `n0 : 0 ≤ ‖toL x‖` using `norm_nonneg _`. Rewrite using `[Matrix.det_fin_two, Pi.sub_apply, Pi.mul_apply, Pi.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem det_le (x : Matrix (Fin 2) (Fin 2) (Cinf E)) (w : InfinitePlace E) :
     ‖x.det w‖ ≤ 2 * ‖toL x‖ ^ 2 := by
   have e := entry_le x
@@ -69,6 +97,9 @@ private theorem det_le (x : Matrix (Fin 2) (Fin 2) (Cinf E)) (w : InfinitePlace 
       gcongr <;> apply e
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `n0 : 0 ≤ ‖toL y.val‖` using `norm_nonneg _`. Use `Real.sqrt_le_iff.2 ⟨by positivity, (det_le y.val w).trans ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg ‖toL y.val‖]`.
+-/
 private theorem nd_le (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) :
     nd y w ≤ 2 * ‖toL y.val‖ := by
   have n0 : 0 ≤ ‖toL y.val‖ := norm_nonneg _
@@ -87,33 +118,51 @@ private noncomputable def sg (y : GL (Fin 2) (Cinf E)) : (Cinf E)ˣ where
     change (((nd y w)⁻¹ : ℝ) : ℂ) * ((nd y w : ℝ) : ℂ) = 1
     rw [← Complex.ofReal_mul, inv_mul_cancel₀ (nd_pos y w).ne', Complex.ofReal_one]
 
+/- English proof (translation)
+The claim follows from `Real.continuous_sqrt.comp (continuous_norm.comp ((continuous_apply w).comp (Continuous.matrix_det Units.continuous_val)))`.
+-/
 private theorem continuous_nd (w : InfinitePlace E) : Continuous fun y : GL (Fin 2) (Cinf E) => nd y w :=
   Real.continuous_sqrt.comp (continuous_norm.comp
     ((continuous_apply w).comp (Continuous.matrix_det Units.continuous_val)))
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_pi fun w => ?_, continuous_pi fun w => ?_⟩` and prove the remaining obligations. Conclude with `Complex.continuous_ofReal.comp (continuous_nd w)`. Conclude with `Complex.continuous_ofReal.comp ((continuous_nd w).inv₀ fun y => (nd_pos y w).ne')`.
+-/
 private theorem continuous_sg : Continuous (sg (E := E)) := by
   refine Units.continuous_iff.2 ⟨continuous_pi fun w => ?_, continuous_pi fun w => ?_⟩
   · exact Complex.continuous_ofReal.comp (continuous_nd w)
   · exact Complex.continuous_ofReal.comp ((continuous_nd w).inv₀ fun y => (nd_pos y w).ne')
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => by change ‖((nd y w : ℝ) : ℂ)‖ ≤ _ rw [Complex.norm_real, Real.norm_of_nonneg (nd_pos y w).le] exact nd_le y w`.
+-/
 private theorem sg_le (y : GL (Fin 2) (Cinf E)) : ‖(sg y).val‖ ≤ 2 * ‖toL y.val‖ :=
   (pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => by
     change ‖((nd y w : ℝ) : ℂ)‖ ≤ _
     rw [Complex.norm_real, Real.norm_of_nonneg (nd_pos y w).le]
     exact nd_le y w
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => by change ‖(((nd y w)⁻¹ : ℝ) : ℂ)‖ ≤ _ rw [Complex.norm_real, nd_inv, Real.norm_of_nonneg (nd_pos y⁻¹ w).le] exact nd_le y⁻¹ w`.
+-/
 private theorem sg_inv_le (y : GL (Fin 2) (Cinf E)) : ‖(sg y)⁻¹.val‖ ≤ 2 * ‖toL (y⁻¹).val‖ :=
   (pi_norm_le_iff_of_nonneg (by positivity)).2 fun w => by
     change ‖(((nd y w)⁻¹ : ℝ) : ℂ)‖ ≤ _
     rw [Complex.norm_real, nd_inv, Real.norm_of_nonneg (nd_pos y⁻¹ w).le]
     exact nd_le y⁻¹ w
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Express the relevant statement in the definitionally equal form `((Matrix.diagonal (fun _ => s.val) : Matrix (Fin 2) (Fin 2) (Cinf E)) * y.val) i j = _`. Rewrite using `[Matrix.diagonal_mul]`.
+-/
 private theorem sc_entry (s : (Cinf E)ˣ) (y : GL (Fin 2) (Cinf E)) (i j : Fin 2) :
     (Matrix.GeneralLinearGroup.scalar (Fin 2) s * y).val i j = s.val * y.val i j := by
   rw [Units.val_mul]
   change ((Matrix.diagonal (fun _ => s.val) : Matrix (Fin 2) (Fin 2) (Cinf E)) * y.val) i j = _
   rw [Matrix.diagonal_mul]
 
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => by change ‖(Matrix.GeneralLinearGroup.scalar (Fin 2) s * y).val i j‖ ≤ _ rw [sc_entry] refine (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)) exact ( …`.
+-/
 private theorem sc_le (s : (Cinf E)ˣ) (y : GL (Fin 2) (Cinf E)) :
     ‖toL (Matrix.GeneralLinearGroup.scalar (Fin 2) s * y).val‖ ≤ ‖s.val‖ * ‖toL y.val‖ :=
   (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => by
@@ -122,6 +171,9 @@ private theorem sc_le (s : (Cinf E)ˣ) (y : GL (Fin 2) (Cinf E)) :
     refine (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg _))
     exact (norm_le_pi_norm (toL y.val i) j).trans (norm_le_pi_norm (toL y.val) i)
 
+/- English proof (translation)
+Establish `h : (Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹).val.det w = (((nd y w)⁻¹ : ℝ) : ℂ) ^ 2`. Express the relevant statement in the definitionally equal form `(Matrix.diagonal fun _ => (sg y)⁻¹.val).det w = _`. Rewrite using `[Matrix.det_diagonal, Fin.prod_univ_two, Pi.mul_apply, sq]`. Both sides reduce to the same expression. Rewrite using `[Units.val_mul, Matrix.det_mul, Pi.mul_apply, h, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (nd_pos y w).le), ← nd_sq, inv_pow, inv_mul_cancel₀ (pow_pos (nd_pos y w) 2).ne']`.
+-/
 private theorem tau_det (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) :
     ‖(Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹ * y).val.det w‖ = 1 := by
   have h : (Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹).val.det w = (((nd y w)⁻¹ : ℝ) : ℂ) ^ 2 := by
@@ -132,6 +184,11 @@ private theorem tau_det (y : GL (Fin 2) (Cinf E)) (w : InfinitePlace E) :
     Real.norm_of_nonneg (inv_nonneg.2 (nd_pos y w).le), ← nd_sq, inv_pow,
     inv_mul_cancel₀ (pow_pos (nd_pos y w) 2).ne']
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_val)`. Establish `e : (fun x : (Cinf E)ˣ => (((Matrix.GeneralLinearGroup.scalar (Fin 2) x)⁻¹ : GL (Fin 2) (Cinf E)) : Matrix (Fin 2) (Fin 2) (Cinf E))) = fun x => Matrix.diagonal fun _ => (x⁻¹).val`. Use function extensionality and compare the values at `x`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => Units.continuous_val.comp continuous_inv)`.
+-/
 private theorem continuous_sc :
     Continuous (Matrix.GeneralLinearGroup.scalar (Fin 2) : (Cinf E)ˣ → GL (Fin 2) (Cinf E)) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -146,6 +203,15 @@ private theorem continuous_sc :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D`. Use `⟨sg, fun y => Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹ * y, continuous_sg, (continuous_sc.comp continuous_sg.inv).mul continuous_id, fun y => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← infGL_scalarE, ← map_mul, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Conclude with `UpperTheory.ConvolutionTheory.R2.Ff.oneOf F E D _ fun w => tau_det y w`. Establish `hA` using `(sc_le (sg y)⁻¹ y).trans (mul_le_mul_of_nonneg_right (sg_inv_le y) (norm_nonneg _))`.
+
+Establish `hB : ‖toL ((Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹ * y)⁻¹).val‖ ≤ 2 * ‖toL y.val‖ * ‖toL (y⁻¹).val‖`. Establish `e : (Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y)⁻¹ * y)⁻¹ = Matrix.GeneralLinearGroup.scalar (Fin 2) (sg y) * y⁻¹`. Rewrite using `[_root_.mul_inv_rev, ← map_inv, inv_inv]`. Conclude with `(Matrix.GeneralLinearGroup.scalar_commute _ _).symm`. Rewrite using `[e]`.
+
+Conclude with `(sc_le (sg y) y⁻¹).trans (mul_le_mul_of_nonneg_right (sg_le y) (norm_nonneg _))`. Establish `a0 : 0 ≤ ‖toL y.val‖` using `norm_nonneg _`. Establish `b0 : 0 ≤ ‖toL (y⁻¹).val‖` using `norm_nonneg _`. Unfold `Ht`. Use polynomial arithmetic with `[mul_nonneg a0 b0, sq_nonneg ‖toL y.val‖, sq_nonneg ‖toL (y⁻¹).val‖]`.
+
+Establish `hs` using `sg_le y`. Establish `hi` using `sg_inv_le y`. Unfold `Ht`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.dec :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (_D : Dat F E), Dec F E := by
   intro F E _ _ _ _ _ _ _ D

@@ -8,6 +8,31 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R R' _ _ _ W M H _ _ _ _ _ _ W' M' H' _ _ _ _ _ _ i p i' p' a b c hp hip hi' hip' hb hc hW hH`. Take `⟨eW, heW⟩` from `hW`. Take `⟨eH, heH⟩` from `hH`. Use `letI : Module R M' := Module.compHom M' (algebraMap R R')`. Use `haveI : IsScalarTower R R' M' := ⟨fun r s x => by show (r • s) • x = algebraMap R R' r • s • x`.
+
+Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Set `b' : M →ₗ[R] M'` to `{ toFun := b, map_add' := b.map_add, map_smul' := fun r m => b.map_smulₛₗ r m }`. Set `f : R' ⊗[R] M →ₗ[R'] M'` to `b'.liftBaseChange R'`. Establish `hf1 : ∀ x, f (1 ⊗ₜ x) = b x`. Introduce `x`.
+
+Simplify using `[f, b']`. Establish `hfp : ∀ s, p' (f s) = eH (LinearMap.baseChange R' p s)`. Introduce `s`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r m`. Establish `h1 : (r ⊗ₜ[R] m : R' ⊗[R] M) = r • (1 ⊗ₜ m)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h1]`. Simplify using `only [map_smul, hf1, LinearMap.baseChange_tmul, heH, hc]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hfi : ∀ u, f (LinearMap.baseChange R' i u) = i' (eW u)`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul r w`. Establish `h1 : (r ⊗ₜ[R] w : R' ⊗[R] W) = r • (1 ⊗ₜ w)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h1]`. Simplify using `only [map_smul, hf1, LinearMap.baseChange_tmul, heW, hb]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hex : Function.Exact (LinearMap.baseChange R' i) (LinearMap.baseChange R' p)`. Rewrite using `[LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor]`. Apply the tactic sequence `first | exact lTensor_exact R' hip hp | exact LinearMap.lTensor_exact R' hip hp`. Establish `hsurj : Function.Surjective (LinearMap.baseChange R' p)`.
+
+Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective R' hp`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `s hs`.
+
+Establish `h0 : LinearMap.baseChange R' p s = 0`. Use `hfp s` as an intermediate fact. Rewrite `this` using `[hs, map_zero]`. Conclude with `(LinearEquiv.map_eq_zero_iff eH).1 this.symm`. Take `⟨u, rfl⟩` from `(hex s).1 h0`.
+
+Establish `h2 : i' (eW u) = 0` using `by rw [← hfi u, hs]`. Establish `h3 : eW u = 0` using `hi' (by rw [h2, map_zero])`. Rewrite using `[(LinearEquiv.map_eq_zero_iff eW).1 h3, map_zero]`. Establish `hsur : Function.Surjective f`. Introduce `m'`.
+
+Take `⟨s, hs⟩` from `hsurj (eH.symm (p' m'))`. Establish `h0 : p' (m' - f s) = 0`. Rewrite using `[map_sub, hfp, hs, LinearEquiv.apply_symm_apply, sub_self]`. Take `⟨w', hw'⟩` from `(hip' _).1 h0`. Use `⟨s + LinearMap.baseChange R' i (eW.symm w'), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, hfi, LinearEquiv.apply_symm_apply, hw', add_sub_cancel]`. Establish `hbij : Function.Bijective f` using `⟨hinj, hsur⟩`. Conclude with `⟨LinearEquiv.ofBijective f hbij, fun x => hf1 x⟩`.
+-/
 theorem baseChange_middle_equiv_of_exact : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] (W M H : Type) [AddCommGroup W] [Module R W] [AddCommGroup M] [Module R M] [AddCommGroup H] [Module R H] (W' M' H' : Type) [AddCommGroup W'] [Module R' W'] [AddCommGroup M'] [Module R' M'] [AddCommGroup H'] [Module R' H'] (i : W →ₗ[R] M) (p : M →ₗ[R] H) (i' : W' →ₗ[R'] M') (p' : M' →ₗ[R'] H') (a : W →ₛₗ[algebraMap R R'] W') (b : M →ₛₗ[algebraMap R R'] M') (c : H →ₛₗ[algebraMap R R'] H'), Function.Surjective p → Function.Exact i p → Function.Injective i' → Function.Exact i' p' → (∀ x, b (i x) = i' (a x)) → (∀ x, p' (b x) = c (p x)) → (∃ e : R' ⊗[R] W ≃ₗ[R'] W', ∀ x, e (1 ⊗ₜ x) = a x) → (∃ e : R' ⊗[R] H ≃ₗ[R'] H', ∀ x, e (1 ⊗ₜ x) = c x) → ∃ e : R' ⊗[R] M ≃ₗ[R'] M', ∀ x, e (1 ⊗ₜ x) = b x := by
   intro R R' _ _ _ W M H _ _ _ _ _ _ W' M' H' _ _ _ _ _ _ i p i' p' a b c hp hip hi' hip' hb hc hW hH
   obtain ⟨eW, heW⟩ := hW

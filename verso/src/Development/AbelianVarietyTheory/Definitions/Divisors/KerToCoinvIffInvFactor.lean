@@ -76,6 +76,11 @@ def KSHigh : Prop :=
         ∃ q : secSpace om l →ₗ[ℂ] secSpace om' l', Function.Surjective q ∧
           ∀ (h : UG c JB) (f f₁ : secSpace om l), (∀ x, f₁.1 x = f.1 (x * h)) → ∀ x, (q f₁).1 x = (q f).1 (x * h)
 
+/- English proof (translation)
+Use `⟨fun h g φ hφ => ?_, fun h z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `h _ (Submodule.subset_span ⟨g, φ, hφ, rfl⟩)`. Use `(Submodule.span_le (p := LinearMap.ker T)).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, hφ, rfl⟩`.
+
+Conclude with `LinearMap.mem_ker.2 (by rw [map_sub, h g φ hφ, sub_self])`.
+-/
 theorem vanish_locAug_iff {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] (om : G × H →* Module.End ℂ (Y → ℂ))
     (T : (Y → ℂ) →ₗ[ℂ] ℂ) : (∀ z ∈ locAug om, T z = 0) ↔ ∀ g : G, ∀ φ ∈ SB Y, T (om (g, 1) φ) = T φ := by
   refine ⟨fun h g φ hφ => ?_, fun h z hz => ?_⟩
@@ -85,6 +90,11 @@ theorem vanish_locAug_iff {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y
     rintro _ ⟨g, φ, hφ, rfl⟩
     exact LinearMap.mem_ker.2 (by rw [map_sub, h g φ hφ, sub_self])
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `hl`. Introduce `e`. Establish `h : secMap om l φ ∈ secSpace om l` using `⟨φ, hφ, rfl⟩`. Rewrite `h` using `[e, Submodule.mem_bot]`. Use `congrFun h 1` as an intermediate fact.
+
+Rewrite `this` using `[secMap_apply, show ((1 : G), (1 : H)) = 1 from rfl, map_one]`. Conclude with `h0 this`.
+-/
 theorem secSpace_ne_bot {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] (om : G × H →* Module.End ℂ (Y → ℂ))
     {l : (Y → ℂ) →ₗ[ℂ] ℂ} (hl : ∃ φ ∈ SB Y, l φ ≠ 0) : secSpace om l ≠ ⊥ := by
   obtain ⟨φ, hφ, h0⟩ := hl
@@ -95,6 +105,9 @@ theorem secSpace_ne_bot {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] 
   rw [secMap_apply, show ((1 : G), (1 : H)) = 1 from rfl, map_one] at this
   exact h0 this
 
+/- English proof (translation)
+Take `⟨Cy, co, om, l, h, hl⟩` from `GlobalTheory.HypPair.exists_linPair k E c δ hq ψ h1 h2 h3`. Apply the tactic sequence `exact ⟨_, _, Cy, co, om, l, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp, ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩, fun a => by simp, h, hl, (vanish_locAug_iff om l).2 (h.lin l hl.1), secSpace_ne_bot om hl.2⟩`.
+-/
 example (k : Type) [Field k] [CharZero k] [Invertible (2 : k)] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (E : Type) [Field E] [Algebra k E] [TopologicalSpace E] [IsModuleTopology k E]
     (c : E →ₐ[k] E) (δ : E) (hq : IsQuad c δ) (ψ : AddChar k ℂ) (h1 : Continuous ψ) (h2 : ∀ t, ‖ψ t‖ = 1) (h3 : ψ ≠ 1) :
@@ -107,11 +120,17 @@ example (k : Type) [Field k] [CharZero k] [Invertible (2 : k)] [ValuativeRel k] 
     ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩, fun a => by simp, h, hl,
     (vanish_locAug_iff om l).2 (h.lin l hl.1), secSpace_ne_bot om hl.2⟩
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, -, rfl⟩`. Simplify using the standard rewrite rules.
+-/
 example {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] : locAug (1 : G × H →* Module.End ℂ (Y → ℂ)) = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_
   rintro _ ⟨g, φ, -, rfl⟩
   simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {G H Y : Type} [Group G] [Group H] (l : (Y → ℂ) →ₗ[ℂ] ℂ) (φ : Y → ℂ) :
     secMap (1 : G × H →* Module.End ℂ (Y → ℂ)) l φ = fun _ => l φ := rfl
 

@@ -7,6 +7,9 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 
 namespace GlobalTheory.RowsFiniteDim
 
+/- English proof (translation)
+Introduce `hHC D X h`. Conclude with `hHC X.B.I X.B.μf X.B.fund X.B.fund_spec X.B.R X.B.R_spec X.B.e X.B.Re X.B.e_adm.1 X.B.e_adm.2.2.2.2.1 X.B.Re_spec X.B.H X.B.σ (fun v => fdegOf (Formalism.REAL.muG (X.B.I.ε v)) (X.B.σ v) (X.B.w v)) X.B.w (fun v => (X.ds v).2.2.1) (fun v => (X.ds v).2.2.2.1) (fun v => GlobalTheory. …`.
+-/
 theorem finiteDimensional_HHX : Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (X : HidaSetting D),
     Integrable X.ph (Formalism.L2.SG.ProjRows.muInf X.B.I) → FiniteDimensional ℂ (HHX X) := by
   intro hHC D X h

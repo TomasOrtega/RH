@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.OrdEqZeroOfUnderEqB
 open CategoryTheory AlgebraicGeometry
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SteinFibre.ord_pos_of_mem_under | exact GlobalTheory.SteinFibre.ord_pos_of_mem_under | (intros; apply GlobalTheory.SteinFibre.ord_pos_of_mem_under <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.order_positive_along_fibre : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (z : X) (t : Γ(X, ⊤)),
     t ∈ GlobalTheory.SteinFibre.under z → t ≠ 0 → Order.coheight z = 1 →
       0 < Scheme.ord (algebraMap Γ(X, ⊤) X.functionField t) z := by

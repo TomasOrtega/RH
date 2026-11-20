@@ -10,6 +10,9 @@ open NumberField NumberField.ComplexEmbedding GroundTheory.Heights₂.Heights
 
 noncomputable section
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[← Y.exact.linearMap_ker_eq, LinearMap.mem_ker]`. Rewrite `hx` using `[map_smul]`. Conclude with `(smul_eq_zero.mp hx).resolve_left ht`.
+-/
 theorem range_incl_saturated {K : Type*} [Field K] [NumberField K]
     {E' E E'' : HermitianBundle K} (Y : HermitianExtension E' E E'') (t : 𝓞 K) (x : E.carrier)
     (ht : t ≠ 0) (hx : t • x ∈ LinearMap.range Y.incl) : x ∈ LinearMap.range Y.incl := by
@@ -17,6 +20,19 @@ theorem range_incl_saturated {K : Type*} [Field K] [NumberField K]
   rw [map_smul] at hx
   exact (smul_eq_zero.mp hx).resolve_left ht
 
+/- English proof (translation)
+Introduce `K _ _ E X _ _ L hI hr ho E' E'' Y`. Take `⟨n, e, a, d, ψ, ha, hd, hc, hψ, hrange, hfin, hline, hmet⟩` from `hA K E X L hI hr ho`. Take `⟨hFG, hspanA⟩` from `LinesIdealLatticeFG.full K n a ha`. Establish `hspan : Submodule.span K (LinearMap.range ψ : Set (Fin n → K)) = ⊤`. Rewrite using `[hrange]`.
+
+Conclude with `hspanA`. Establish `hdeg` using `hB K E n (diagMetric d) ψ hψ hspan hmet`. Use `⟨n, e, a, d, ha, hd, hc, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hu : LinearIndependent K (fun _ : Fin 1 => (Pi.single i 1 : Fin n → K))` using `linearIndependent_unique_iff.mpr (by simp)`. Establish `h1` using `hdeg (L (e i)) (Fin 1) _ hu (by rw [hline i, hrange, Set.range_const])`.
+
+Rewrite using `[HermitianBundle.normDegree, h1, hrange]`. Both sides reduce to the same expression. Use `set G := LinearMap.range Y.incl`. Take `⟨b, hb, hbmap⟩` from `hE K E.carrier n ψ hψ G (range_incl_saturated Y)`. Establish `hGr : Module.finrank (𝓞 K) G = Module.finrank (𝓞 K) E'.carrier` using `LinearMap.finrank_range_of_inj Y.incl_injective`.
+
+Establish `hmk : Module.finrank (𝓞 K) G + E''.rank ⊤ = n`. Rewrite using `[hGr, HermitianBundle.rank, finrank_top, ← hfin, Y.finrank_eq]`. Take `⟨τ, -, hli⟩` from `LinesExtendBasis.full K n _ _ b hb hmk`. Use `⟨_, _, b, fun j => Pi.single (τ j) 1, hli, hmk, rfl, ?_⟩` and prove the remaining obligations. Establish `htop : Submodule.span K (Set.range (Sum.elim b fun j => (Pi.single (τ j) 1 : Fin n → K))) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by`.
+
+Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, Module.finrank_fin_fun, hmk])`. Establish `hE1` using `hdeg ⊤ _ (Sum.elim b fun j => (Pi.single (τ j) 1 : Fin n → K)) hli (by`. Rewrite using `[Submodule.map_top, htop, Submodule.restrictScalars_top, inf_top_eq])`. Establish `hG1` using `hdeg G _ b hb hbmap`. Rewrite using `[hC K n (idealLattice a) (diagMetric d) hFG hspanA _ _ b _ hli hmk, HermitianBundle.normDegree, hD K E' E E'' Y, hE1, hG1, hrange]`.
+
+Both sides reduce to the same expression.
+-/
 theorem S6.BundleCoordinates.proof (hA : S6.LineCoordinates.Statement)
     (hB : S6.CoordinateDegree.Statement) (hC : S6.QuotientDegreeSplit.Statement)
     (hD : S6.ExtensionDegree.Statement) (hE : S6.SaturatedSpan.Statement) :

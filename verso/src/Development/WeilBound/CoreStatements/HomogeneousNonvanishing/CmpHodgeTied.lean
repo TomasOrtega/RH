@@ -13,6 +13,15 @@ namespace GlobalTheory.CompanionTheory.Ar.CmpTiedK
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR`. Take `⟨t, tΩ, k, m, mA, mA', u, u', M₁, φ, hmA, E1, E2, E3, hk, htie, hT, hL⟩` from `GlobalTheory.CompanionTheory.Ar.FrameRebase.tied_generic_fibre E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR`. Establish `E1' : m.φ ≫ k.φ ≫ A.m.φ = u.φ ≫ Y.m.φ` using `by rw [← Category.assoc, ← hmA, E1]`. Establish `hact : ∀ a v, φ (A.ρ (g.s a) v) = A'.ρ a (φ v)` using `GlobalTheory.T.lie_model_twisted_comparison E H g Ω A.X A'.X A.ξ A'.ξ A.t A'.t tΩ mA mA' A.Li A'.Li A.M A'.M A.ρ A'.ρ φ A.act A'.act (fun v => by`. Take `⟨w, hw, hw'⟩` from `htie v`.
+
+Conclude with `⟨w, by rw [hmA, ← Category.assoc, hw, hk], hw'⟩)`. Use `⟨φ, fun v => ?_, hact, PositivityTheory.UnitarySelfGeneration.twisted_bundles_match_models E H D l Xo c O O' β β' Y Y' g Φ n S Ω K J y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR t tΩ k m mA' u u' M₁ φ E1' E2 E3 hk htie hT hL hact, fun z => ⟨GlobalTheory.T.hodge_component_twi …` and prove the remaining obligations. Take `⟨w, hw, hw'⟩` from `htie v`. Establish `h1 : u'.φ ≫ Y'.oF.t.G.hom = (twistSAB tΩ g).G.hom ≫ x'` using `u'.cart.1.w`. Establish `h2 : u.φ ≫ Y.oF.t.G.hom = tΩ.G.hom ≫ x` using `u.cart.1.w`.
+
+Establish `key : u'.φ ≫ Y'.oF.t.G.hom ≫ pullback.snd _ _ = u.φ ≫ Y.oF.t.G.hom ≫ pullback.snd _ _`. Rewrite using `[reassoc_of% h1, reassoc_of% h2, hs]`. Both sides reduce to the same expression. Use `⟨w.left ≫ u.φ, w.left ≫ u'.φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+
+Rewrite using `[← E1', ← hk v, ← hw]`. Simplify using `only [Category.assoc]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Conclude with `(Category.assoc _ _ _).trans ((congrArg (fun f => w.left ≫ f) key).trans (Category.assoc _ _ _).symm)`.
+-/
 theorem cmpHodgeTied : HodgeComparisonCompatibility := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' Y Y' g Φ n S Ω _ K _ J _ y A A' e x x' hβ hβ' hΦ hξ hx hx' hf hs hc hcx hR
   obtain ⟨t, tΩ, k, m, mA, mA', u, u', M₁, φ, hmA, E1, E2, E3, hk, htie, hT, hL⟩ :=
@@ -51,6 +60,9 @@ end GlobalTheory.CompanionTheory.Ar.CmpTiedK
 
 namespace PositivityTheory.UnitarySelfGeneration
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.Ar.CmpTiedK.cmpHodgeTied`.
+-/
 theorem cmpHodgeTiedAlt : GlobalTheory.CompanionTheory.Ar.HodgeComparisonCompatibility :=
   @GlobalTheory.CompanionTheory.Ar.CmpTiedK.cmpHodgeTied
 

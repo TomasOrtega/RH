@@ -12,21 +12,35 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 
 namespace GlobalTheory.HTW.RecS
 
+/- English proof (translation)
+Rewrite using `[← Fm.params_K x hx i]`. Both sides reduce to the same expression.
+-/
 theorem famJ_CLw_eq {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) :
     (Fm.params x hx i).CLw = Fm.PK.getD 7 0 := by
   rw [← Fm.params_K x hx i]
   rfl
 
+/- English proof (translation)
+Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i]`. Conclude with `(Fm.L 0 i).sc.eps_pos`.
+-/
 theorem famJ_eps_pos {eps : ℝ} (Fm : FamP eps) : 0 < eps := by
   obtain ⟨i⟩ := Fm.Ix_zero
   rw [← Fm.L_eps 0 i]
   exact (Fm.L 0 i).sc.eps_pos
 
+/- English proof (translation)
+Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_ez 0 i]`. Conclude with `(Fm.L 0 i).sc.ez_pos`.
+-/
 theorem famJ_ez_pos {eps : ℝ} (Fm : FamP eps) : 0 < Fm.ez := by
   obtain ⟨i⟩ := Fm.Ix_zero
   rw [← Fm.L_ez 0 i]
   exact (Fm.L 0 i).sc.ez_pos
 
+/- English proof (translation)
+Introduce `eps Fm C₂ h7 hF`. Take `⟨xB, hB⟩` from `GlobalTheory.T.inertLongOrbitWordConditions_of_large_scale eps Fm.ez C₂ (Fm.PK.getD 7 0) (famJ_eps_pos Fm) (famJ_ez_pos Fm)`. Take `⟨xC, hC⟩` from `GlobalTheory.T.inertPrimeWordConditions_of_large_scale eps Fm.ez (Fm.PK.getD 7 0) (famJ_eps_pos Fm) (famJ_ez_pos Fm)`. Use `⟨max xB xC, fun x hx h1 i HW hJ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `hB _ _ (Fm.params x h1 i) HW (Fm.L_eps x i) (Fm.L_ez x i) (famJ_CLw_eq Fm x h1 i).le ?_ (h7 _) (hF _) hJ` and prove the remaining obligations.
+
+Rewrite using `[Fm.L_x x i h1]`. Conclude with `(le_max_left _ _).trans hx`. Use `hC _ _ (Fm.params x h1 i) HW (Fm.L_eps x i) (Fm.L_ez x i) (famJ_CLw_eq Fm x h1 i).le ?_ (h7 _) (hF _) hJ` and prove the remaining obligations. Rewrite using `[Fm.L_x x i h1]`. Conclude with `(le_max_right _ _).trans hx`.
+-/
 theorem fam_joints : ∀ {eps : ℝ} (Fm : FamP eps) (C₂ : ℝ), (∀ D : D7, LocalSituation.adm7 D) →
     (∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i) →
     ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) (HW : HWOf (Fm.D x i).loc),

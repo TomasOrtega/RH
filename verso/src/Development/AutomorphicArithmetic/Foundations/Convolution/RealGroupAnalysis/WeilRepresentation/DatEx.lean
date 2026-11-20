@@ -6,6 +6,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter
 open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Published GroundTheory.Global GroundTheory.Automorphic.GJMatrix
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ h`. Take `⟨δ, θ, σ, b, b0, b1, sq, conj⟩` from `datAlg F E h`. Conclude with `⟨⟨δ, θ, σ, b, b0, b1, sq, conj, datNeg F E δ θ b b0 b1 sq⟩⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.datEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E], St.DatEx F E := by
   intro F E _ _ _ _ _ _ _ h

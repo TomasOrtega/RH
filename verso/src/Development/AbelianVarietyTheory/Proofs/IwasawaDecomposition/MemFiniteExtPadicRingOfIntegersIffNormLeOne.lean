@@ -7,6 +7,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 
 namespace GlobalTheory.IntNormFinExt
 
+/- English proof (translation)
+Introduce `l _ K x` and use `GlobalTheory.EmbThroughCompletion.mem_OL_iff K x`.
+-/
 theorem mem_OL_iff_norm_le_one : ∀ (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) (x : ↥K.1), x ∈ Loc.OL K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 :=
   fun l _ K x => GlobalTheory.EmbThroughCompletion.mem_OL_iff K x
 

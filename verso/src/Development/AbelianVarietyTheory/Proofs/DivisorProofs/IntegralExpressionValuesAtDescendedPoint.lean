@@ -24,6 +24,9 @@ noncomputable section
 
 namespace GlobalTheory.USep.EvG
 
+/- English proof (translation)
+Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[map_zero, mul_zero]`. Conclude with `u.ne_zero h`. Conclude with `⟨Units.mk0 c hc, rfl, Units.ext (by rw [h, Units.val_mul]; rfl)⟩`.
+-/
 theorem unit_of_val {K S : Type} [Field K] [CommRing S] [Nontrivial S] (f : K →+* S) {u v : Sˣ} {c : K}
     (h : u.val = v.val * f c) : ∃ m : Kˣ, (m : K) = c ∧ u = v * Units.map f.toMonoidHom m := by
   have hc : c ≠ 0 := by
@@ -32,10 +35,16 @@ theorem unit_of_val {K S : Type} [Field K] [CommRing S] [Nontrivial S] (f : K �
     exact u.ne_zero h
   exact ⟨Units.mk0 c hc, rfl, Units.ext (by rw [h, Units.val_mul]; rfl)⟩
 
+/- English proof (translation)
+Introduce `s` and use `by obtain ⟨U, hU, a, rfl⟩ := (Sp K).presheaf.germ_exist s exact ⟨_, (toStk_valF_gs (𝟙 _) U z hU a).trans (gs_eq _ _ _ hU _)⟩`.
+-/
 theorem toStk_surj' {K : Type} [Field K] (z : Sp K) : Function.Surjective (toStk z) := fun s => by
   obtain ⟨U, hU, a, rfl⟩ := (Sp K).presheaf.germ_exist s
   exact ⟨_, (toStk_valF_gs (𝟙 _) U z hU a).trans (gs_eq _ _ _ hU _)⟩
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Normalize the expressions using the abelian group laws.
+-/
 theorem units_identity {U : Type} [CommGroup U] (gO gB gP gC gCn R M2 M3 M4 M5 : U) :
     (gO⁻¹ * gB * M2) ^ 2 * (gP * gC⁻¹ * gB⁻¹ * gO * M3) ^ 2 * (gCn⁻¹ * gC * M4) *
         (gO * gC⁻¹ * gCn⁻¹ * gO * M5)⁻¹ * (R ^ 2)⁻¹ =
@@ -44,14 +53,41 @@ theorem units_identity {U : Type} [CommGroup U] (gO gB gP gC gCn R M2 M3 M4 M5 :
   simp only [ofMul_mul, ofMul_inv, ofMul_pow]
   abel
 
+/- English proof (translation)
+Take the linear combination `(a * c + 1) * b ^ 2 * d * f * h`.
+-/
 theorem sq_cancel {S : Type} [CommRing S] (a b c d f : S) (h : a * c = 1) :
     (a * b) ^ 2 * (c ^ 2 * d * f) = b ^ 2 * (d * f) := by
   linear_combination (a * c + 1) * b ^ 2 * d * f * h
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.Poinc.ThetaOne.c_zero]`. Both sides reduce to the same expression.
+-/
 theorem c_zero_eta {V₁ : Type} [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) : D.c 0 = η[D.P.A] := by
   rw [GlobalTheory.Poinc.ThetaOne.c_zero]
   rfl
 
+/- English proof (translation)
+Introduce `N₁ hN V₁ _ _ _ hV hunit D X C _ e τ₀ θ hθ b hb t ht χt hχt G hG K _ _ ev k₀ hk₀ W₀ _ ib hB hib`. Take `⟨B₀, iG, M₀, c₀, τ₁, β, w, hFB⟩` from `(fromBase_iff D τ₀ ib).1 hB`. Establish `hM₀ : M₀.IsLB` using `hFB.2.1`. Set `z : Sp K` to `IsLocalRing.closedPoint K`. Use `choose J hJ using fun ψ : Sp K ⟶ D.P.A.left => exists_chart D.P.isLB (ψ z)`.
+
+Use `choose J₀ hJ₀ using fun ψ : Sp K ⟶ B₀.left => exists_chart hM₀ (ψ z)`. Establish `gJ : Good D.P.L z J` using `hJ`. Establish `gJ₀ : Good M₀ z J₀` using `hJ₀`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.thetaGenerator_values_scalar_mul_localUnit V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ θ hθ`. Use `set r : Sp K ⟶ Sp V₁ := spMap ev with hr`.
+
+Use `set U0 : ((Sp K).presheaf.stalk z)ˣ := (gwx w z J J₀ (r ≫ (D.c 0).left))⁻¹ ^ 2 * (rigV D r z J ^ 2)⁻¹ with hU0`. Establish `hO : r ≫ (η[D.P.A]).left = r ≫ (D.c 0).left` using `by rw [c_zero_eta]`. Establish `key : ∀ mu c, ∃ q ∈ k₀, toStk z (ev (G mu c)) = toStk z (κ ^ 2 * q) * U0.val`. Introduce `mu c`. Take `⟨hBd, -, hPd, -⟩` from `GlobalTheory.T.torsionPoints_projections_defined_over_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib N₁ (by omega) (b c) (hb c) (e mu)`.
+
+Take `⟨c1, hc1, e1⟩` from `hκ (b c * D.c (e mu)) hPd`. Take `⟨c2, hc2, e2⟩` from `GlobalTheory.T.torsionFrame_value_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ N₁ hN (b c) (hb c) hBd (t c) (ht c)`. Take `⟨c3, hc3, e3⟩` from `GlobalTheory.T.characterValue_mem_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ N₁ hN (e mu) (b c) (hb c) hBd (χt mu c) (hχt mu c)`. Take `⟨c4, hc4, e4⟩` from `GlobalTheory.T.symmetryGenerator_value_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ (e mu)`. Take `⟨c5, hc5, e5⟩` from `GlobalTheory.T.periodGenerators_val_localUnits_mul_subfield V₁ hV hunit D τ₀ W₀ ib B₀ M₀ c₀ τ₁ β w hFB K ev k₀ hk₀ hib z J J₀ gJ gJ₀ (e mu) (-e mu)`.
+
+Establish `hPP : r ≫ (D.c (e mu) * b c).left = r ≫ (b c * D.c (e mu)).left` using `by rw [mul_comm]`. Establish `h00 : r ≫ (D.c (e mu + -e mu)).left = r ≫ (D.c 0).left` using `by rw [add_neg_cancel]`. Rewrite `e2`, `e3` using `[hO]`. Rewrite `e3` using `[hPP]`. Rewrite `e5` using `[h00]`.
+
+Take `⟨m2, rfl, u2⟩` from `unit_of_val (toStk z) e2`. Take `⟨m3, rfl, u3⟩` from `unit_of_val (toStk z) e3`. Take `⟨m4, rfl, u4⟩` from `unit_of_val (toStk z) e4`. Take `⟨m5, rfl, u5⟩` from `unit_of_val (toStk z) e5`. Establish `h1` using `hG mu c (Sp K) r z J gJ`.
+
+Rewrite `h1` using `[u2, u3, u4, u5, e1, units_identity, ← hU0]`. Establish `hL : gs r z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom (G mu c)) = toStk z (ev (G mu c))`. Use `GlobalTheory.RatioVal.gs_specMap ev z ((Scheme.ΓSpecIso (CommRingCat.of V₁)).inv.hom (G mu c))` as an intermediate fact. Rewrite `this` using `[Iso.inv_hom_id_apply]`. Conclude with `this`.
+
+Use `⟨c1 ^ 2 * ((m2 : K) ^ 2 * (m3 : K) ^ 2 * (m4 : K) * (m5 : K)⁻¹), k₀.mul_mem (k₀.pow_mem hc1 2) (k₀.mul_mem (k₀.mul_mem (k₀.mul_mem (k₀.pow_mem hc2 2) (k₀.pow_mem hc3 2)) hc4) (k₀.inv_mem hc5)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hL, h1, Units.val_mul, Units.val_mul, Units.val_pow_eq_pow_val, sq_cancel _ _ _ _ _ (Units.inv_mul _)]`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, ← map_inv, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, Units.val_inv_eq_inv_val, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨lam, hlam⟩` from `toStk_surj' z U0.val`.
+
+Use `⟨κ ^ 2 * lam, fun mu c => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, eq⟩` from `key mu c`. Use `⟨q, hq, (toStk z).injective ?_⟩` and prove the remaining obligations. Rewrite using `[eq, ← hlam, ← map_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ev_values : ∀ (N₁ : ℕ), 2 ≤ N₁ → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ →
     (∀ m : ℕ, m ≠ 0 → IsUnit (m : V₁)) → ∀ (D : DegPre V₁) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X)
     (τ₀ : GlobalTheory.UChart.Gens D) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))),

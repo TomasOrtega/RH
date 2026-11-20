@@ -10,6 +10,13 @@ section General
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Use `⟨?_, φ.2.2.mono fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ C`. Take `⟨U, hU, hxU, h⟩` from `φ.2.1.exists_open x`.
+
+Conclude with `⟨C ∩ U, hC.2.inter hU, ⟨hx, hxU⟩, fun y hy => by`. Rewrite using `[Set.indicator_of_mem hy.1, Set.indicator_of_mem hx, h y hy.2]⟩`. Conclude with `⟨Cᶜ, hC.1.isOpen_compl, hx, fun y hy => by`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Rewrite `hx` using `[Set.support_indicator]`.
+
+Conclude with `hx.2`.
+-/
 theorem indicator_mem {C : Set X} (hC : IsClopen C) (φ : SB X) : C.indicator φ.1 ∈ SB X := by
   refine ⟨?_, φ.2.2.mono fun x hx => ?_⟩
   · rw [IsLocallyConstant.iff_exists_open]
@@ -23,6 +30,11 @@ theorem indicator_mem {C : Set X} (hC : IsClopen C) (φ : SB X) : C.indicator φ
   · rw [Set.support_indicator] at hx
     exact hx.2
 
+/- English proof (translation)
+Establish `h : IsClosed (Function.support φ.1)`. Use `(φ.2.1 {0}).isClosed_compl` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `h2` using `φ.2.2.isCompact`. Rewrite `h2` using `[tsupport, h.closure_eq]`. Then use the resulting hypothesis.
+-/
 theorem isCompact_support (φ : SB X) : IsCompact (Function.support φ.1) := by
   have h : IsClosed (Function.support φ.1) := by
     have := (φ.2.1 {0}).isClosed_compl
@@ -32,6 +44,17 @@ theorem isCompact_support (φ : SB X) : IsCompact (Function.support φ.1) := by
   have h2 := φ.2.2.isCompact
   rwa [tsupport, h.closure_eq] at h2
 
+/- English proof (translation)
+Establish `key : ∃ C, 𝒞 C ∧ Function.support φ.1 ⊆ C ∧ ∀ C', 𝒞 C' → C' ⊆ C → ∀ ψ : SB X, ψ.1 = C'.indicator φ.1 → D ψ = 0`. Use `(isCompact_support φ).induction_on (p := fun s => ∃ C, 𝒞 C ∧ s ⊆ C ∧ ∀ C', 𝒞 C' → C' ⊆ C → ∀ ψ : SB X, ψ.1 = C'.indicator φ.1 → D ψ = 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, h0, subset_rfl, fun C' _ hC' ψ hψ => ?_⟩` and prove the remaining obligations. Establish `: ψ = 0` using `Subtype.ext (by rw [hψ, Set.subset_empty_iff.1 hC']; ext; simp)`. Rewrite using `[this, map_zero]`.
+
+Introduce and unpack `s t hst ⟨C, h1, h2, h3⟩`. Conclude with `⟨C, h1, hst.trans h2, h3⟩`. Introduce and unpack `s t ⟨C, h1, h2, h3⟩ ⟨E, e1, e2, e3⟩`. Use `⟨C ∪ E, hu _ _ h1 e1, Set.union_subset_union h2 e2, fun C' hC' hs ψ hψ => ?_⟩` and prove the remaining obligations. Establish `a1` using `h3 (C' ∩ C) (hi _ _ hC' h1) Set.inter_subset_right ⟨_, indicator_mem (hcl _ (hi _ _ hC' h1)) φ⟩ rfl`.
+
+Establish `a2` using `e3 (C' \ C) (hd _ _ hC' h1) (fun x hx => (hs hx.1).resolve_left hx.2) ⟨_, indicator_mem (hcl _ (hd _ _ hC' h1)) φ⟩ rfl`. Establish `: ψ = ⟨_, indicator_mem (hcl _ (hi _ _ hC' h1)) φ⟩ + ⟨_, indicator_mem (hcl _ (hd _ _ hC' h1)) φ⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hψ]`. Use extensionality with `x`.
+
+Apply the tactic sequence `by_cases a : x ∈ C' <;> by_cases b : x ∈ C <;> simp [Set.indicator, a, b]`. Rewrite using `[this, map_add, a1, a2, add_zero]`. Introduce `x hx`. Take `⟨C, h1, h2, h3⟩` from `h x hx`. Conclude with `⟨C, mem_nhdsWithin_of_mem_nhds ((hcl _ h1).2.mem_nhds h2), C, h1, subset_rfl, h3⟩`.
+
+Take `⟨C, h1, h2, h3⟩` from `key`. Conclude with `h3 C h1 subset_rfl φ (Set.indicator_eq_self.2 h2).symm`.
+-/
 theorem glue (D : SB X →ₗ[ℂ] ℂ) (𝒞 : Set X → Prop) (hcl : ∀ C, 𝒞 C → IsClopen C) (h0 : 𝒞 ∅)
     (hu : ∀ C C', 𝒞 C → 𝒞 C' → 𝒞 (C ∪ C')) (hi : ∀ C C', 𝒞 C → 𝒞 C' → 𝒞 (C ∩ C'))
     (hd : ∀ C C', 𝒞 C → 𝒞 C' → 𝒞 (C \ C')) (φ : SB X)
@@ -71,6 +94,11 @@ section Group
 
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Establish `aux : ∀ S : Set G, (∀ a ∈ K, ∀ g ∈ S, a * g ∈ S) → IsOpen S`. Introduce `S hS`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun y => y * g⁻¹) ⁻¹' K, fun y hy => ?_, hK.preimage (by fun_prop), by simp⟩` and prove the remaining obligations.
+
+Simplify using `using hS _ hy g hg`. Use `⟨isOpen_compl_iff.1 (aux _ fun a ha g hg h => hg ?_), aux _ fun a ha g hg => ?_⟩` and prove the remaining obligations. Conclude with `(hC a ha 1 K.one_mem g).1 (by simpa using h)`. Simplify using `using (hC a ha 1 K.one_mem g).2 hg`.
+-/
 theorem isClopen_of_invariant {K : Subgroup G} (hK : IsOpen (K : Set G)) {C : Set G}
     (hC : ∀ a ∈ K, ∀ b ∈ K, ∀ g, a * g * b ∈ C ↔ g ∈ C) : IsClopen C := by
   have aux : ∀ S : Set G, (∀ a ∈ K, ∀ g ∈ S, a * g ∈ S) → IsOpen S := by
@@ -85,6 +113,11 @@ theorem isClopen_of_invariant {K : Subgroup G} (hK : IsOpen (K : Set G)) {C : Se
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
+/- English proof (translation)
+Introduce `a ha b hb g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, d, hd, h⟩`. Use `⟨a⁻¹ * c, K.mul_mem (K.inv_mem ha) hc, d * b⁻¹, K.mul_mem hd (K.inv_mem hb), ?_⟩` and prove the remaining obligations. Establish `: g = a⁻¹ * (a * g * b) * b⁻¹` using `by group`.
+
+Rewrite using `[this, h]`. Use `group`. Introduce and unpack `⟨c, hc, d, hd, rfl⟩`. Conclude with `⟨a * c, K.mul_mem ha hc, d * b, K.mul_mem hd hb, by group⟩`.
+-/
 theorem doubleCoset_invariant (K : Subgroup G) (x : G) : ∀ a ∈ K, ∀ b ∈ K, ∀ g,
     a * g * b ∈ {g : G | ∃ a ∈ K, ∃ b ∈ K, g = a * x * b} ↔
       g ∈ {g : G | ∃ a ∈ K, ∃ b ∈ K, g = a * x * b} := by
@@ -97,6 +130,11 @@ theorem doubleCoset_invariant (K : Subgroup G) (x : G) : ∀ a ∈ K, ∀ b ∈ 
   · rintro ⟨c, hc, d, hd, rfl⟩
     exact ⟨a * c, K.mul_mem ha hc, d * b, K.mul_mem hd hb, by group⟩
 
+/- English proof (translation)
+Establish `h1` using `GlobalTheory.OpTrace.isOpen_leftStabilizer φ.2.1 φ.2.2`. Establish `h2` using `GlobalTheory.OpTrace.isOpen_leftStabilizer (f := fun g => φ.1 g⁻¹) (φ.2.1.comp_continuous continuous_inv) (φ.2.2.comp_homeomorph (Homeomorph.inv G))`. Use `⟨_, (h1.inter h2).mem_nhds ⟨Subgroup.one_mem _, Subgroup.one_mem _⟩, fun a ha b hb g => ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ g, φ.1 (a * g) = φ.1 g` using `ha.1`. Establish `e2 : ∀ g, φ.1 (b * g)⁻¹ = φ.1 g⁻¹` using `hb.2`.
+
+Rewrite using `[mul_assoc, e1]`. Simplify using `using (e2 (g * b)⁻¹).symm`.
+-/
 theorem exists_nhds_invariant (φ : SB G) :
     ∃ U ∈ nhds (1 : G), ∀ a ∈ U, ∀ b ∈ U, ∀ g, φ.1 (a * g * b) = φ.1 g := by
   have h1 := GlobalTheory.OpTrace.isOpen_leftStabilizer φ.2.1 φ.2.2
@@ -111,6 +149,31 @@ theorem exists_nhds_invariant (φ : SB G) :
 
 end Group
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ ι _ K hK hb D hD`. Set `O : Set G` to `{x | ∃ W, IsOpen W ∧ x ∈ W ∧ ∀ φ : SB G, Function.support φ.1 ⊆ W → D φ = 0}`. Establish `hO : IsOpen O`. Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce and unpack `x ⟨W, h1, h2, h3⟩`.
+
+Conclude with `⟨W, fun y hy => ⟨W, h1, hy, h3⟩, h1, h2⟩`. Establish `h1 : ∀ φ : SB G, Function.support φ.1 ⊆ O → D φ = 0`. Introduce `φ hφ`. Use `glue D IsClopen (fun _ h => h) isClopen_empty (fun _ _ => IsClopen.union) (fun _ _ => IsClopen.inter) (fun _ _ => IsClopen.diff) φ fun x hx => ?_` and prove the remaining obligations. Take `⟨W, w1, w2, w3⟩` from `hφ hx`.
+
+Take `⟨i, -⟩` from `hD x`. Take `⟨m, hm⟩` from `hb i ((fun y => x * y) ⁻¹' W) ((w1.preimage (by fun_prop)).mem_nhds (by simpa using w2))`. Use `⟨(fun y => x⁻¹ * y) ⁻¹' K i m, IsClopen.preimage ⟨(K i m).isClosed_of_isOpen (hK i m).1, (hK i m).1⟩ (by fun_prop), by simp, fun C' _ hC' ψ hψ => w3 ψ fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[hψ, Set.support_indicator]`. Simplify using `using hm (hC' hy.1)`.
+
+It suffices to establish `hall : ∀ x, x ∈ O from LinearMap.ext fun φ => h1 φ fun x _ => hall x`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Set `Z : ι → Set G` to `fun i => {x | ∀ (m : ℕ) (φ : SB G), φ.1 = Set.indicator {g : G | ∃ a ∈ K i m, ∃ b ∈ K i m, g = a * x * b} (fun _ => (1 : ℂ)) → D φ = 0}`. Use `haveI : LocallyCompactSpace (Oᶜ : Set G) := hO.isClosed_compl.locallyCompactSpace`.
+
+Use `haveI : Nonempty (Oᶜ : Set G) := ⟨⟨hne.choose, hne.choose_spec⟩⟩`. Take `⟨i, y, hy⟩` from `nonempty_interior_of_iUnion_of_closed (X := (Oᶜ : Set G)) (f := fun i => Subtype.val ⁻¹' closure (Z i)) (fun i => isClosed_closure.preimage continuous_subtype_val) (Set.eq_univ_of_forall fun x => by`. Take `⟨i, hi⟩` from `hD x.1`. Conclude with `Set.mem_iUnion.2 ⟨i, subset_closure hi⟩)`. Take `⟨t, t1, t2, t3⟩` from `mem_interior.1 hy`.
+
+Take `⟨W, hW, rfl⟩` from `isOpen_induced_iff.1 t2`. Use `y.2 ⟨W, hW, t3, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hinv⟩` from `exists_nhds_invariant φ`. Take `⟨m, hm⟩` from `hb i U hU`. Use `glue D (fun C => ∀ a ∈ K i m, ∀ b ∈ K i m, ∀ g, a * g * b ∈ C ↔ g ∈ C) (fun C hC => isClopen_of_invariant (hK i m).1 hC) (by simp) (fun C C' h h' a ha b hb g => or_congr (h a ha b hb g) (h' a ha b hb g)) (fun C C' h h' a ha b hb g => and_congr (h a ha b hb g) (h' a ha b hb g)) (f …` and prove the remaining obligations.
+
+Establish `hval : ∀ g ∈ C, φ.1 g = φ.1 x` using `fun g hg => by`. Take `⟨a, ha, b, hb, rfl⟩` from `hs hg`. Conclude with `hinv a (hm ha) b (hm hb) x`. Distinguish the cases in `hCO : C ⊆ O`. Use `h1 ψ fun g hg => hCO ?_` and prove the remaining obligations.
+
+Rewrite `hg` using `[hψ, Set.support_indicator]`. Conclude with `hg.1`. Take `⟨w, w1, w2⟩` from `Set.not_subset.1 hCO`. Establish `w3 : w ∈ closure (Z i)` using `t1 (show (⟨w, w2⟩ : (Oᶜ : Set G)) ∈ Subtype.val ⁻¹' W from hφ (show φ.1 w ≠ 0 by rw [hval w w1]; exact hx))`. Take `⟨z, z1, z2⟩` from `mem_closure_iff.1 w3 C (isClopen_of_invariant (hK i m).1 hC).2 w1`.
+
+Establish `hCz : C = {g : G | ∃ a ∈ K i m, ∃ b ∈ K i m, g = a * z * b}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨a, ha, b, hb, rfl⟩` from `hs hg`.
+
+Take `⟨c, hc, d, hd, rfl⟩` from `hs z1`. Conclude with `⟨a * c⁻¹, mul_mem ha (inv_mem hc), d⁻¹ * b, mul_mem (inv_mem hd) hb, by group⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `(hC a ha b hb z).2 z1`. Establish `hx' : φ.1 x ≠ 0` using `hx`.
+
+Use `z2 m ((φ.1 x)⁻¹ • ψ) (by` as an intermediate fact. Rewrite using `[← hCz, Submodule.coe_smul, hψ]`. Use extensionality with `g`. Distinguish the cases in `hg : g ∈ C`. Simplify using `[Set.indicator_of_mem hg, hval g hg, hx']`.
+
+Simplify using `[Set.indicator_of_notMem hg])`. Simplify `this` using `[hx']`.
+-/
 theorem eq_zero : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] (ι : Type) [Countable ι] (K : ι → ℕ → Subgroup G), (∀ i m, IsOpen (K i m : Set G) ∧ IsCompact (K i m : Set G)) → (∀ i, ∀ U ∈ nhds (1 : G), ∃ m, (K i m : Set G) ⊆ U) → ∀ D : SB G →ₗ[ℂ] ℂ, (∀ x : G, ∃ i, ∀ (m : ℕ) (φ : SB G), φ.1 = Set.indicator {g : G | ∃ a ∈ K i m, ∃ b ∈ K i m, g = a * x * b} (fun _ => (1 : ℂ)) → D φ = 0) → D = 0 := by
   intro G _ _ _ _ _ ι _ K hK hb D hD
   let O : Set G := {x | ∃ W, IsOpen W ∧ x ∈ W ∧ ∀ φ : SB G, Function.support φ.1 ⊆ W → D φ = 0}

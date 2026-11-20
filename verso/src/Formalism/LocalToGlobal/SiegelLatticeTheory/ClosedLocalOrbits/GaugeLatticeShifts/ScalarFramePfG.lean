@@ -20,6 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : �
 abbrev Xs (h : Fin (r + 1) → S.V) : Submodule E S.V :=
   Submodule.span E (Set.range fun a : Fin r => h a.castSucc)
 
+/- English proof (translation)
+Use `show ∑ c, ((ξ c a.castSucc : 𝓞 E) : E) • h c ∈ _`. Establish `h0 : ((ξ (Fin.last r) a.castSucc : 𝓞 E) : E) = 0`. Rewrite using `[hξ _ _ (Fin.castSucc_lt_last a)]`. Both sides reduce to the same expression. Rewrite using `[Fin.sum_univ_castSucc, h0, zero_smul, add_zero]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem frameAct_castSucc_mem (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (hξ : ∀ a b, b < a → ξ a b = 0) (a : Fin r) : frameAct h ξ a.castSucc ∈ Xs h := by
   show ∑ c, ((ξ c a.castSucc : 𝓞 E) : E) • h c ∈ _
@@ -29,6 +34,11 @@ theorem frameAct_castSucc_mem (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1
   rw [Fin.sum_univ_castSucc, h0, zero_smul, add_zero]
   exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
+/- English proof (translation)
+Use `show ∑ c, ((ξ c (Fin.last r) : 𝓞 E) : E) • h c - h (Fin.last r) ∈ _`. Establish `h1 : ((ξ (Fin.last r) (Fin.last r) : 𝓞 E) : E) = 1`. Rewrite using `[hl]`. Both sides reduce to the same expression. Rewrite using `[Fin.sum_univ_castSucc, h1, one_smul, add_sub_cancel_right]`.
+
+Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem frameAct_last_sub (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (hl : ξ (Fin.last r) (Fin.last r) = 1) : frameAct h ξ (Fin.last r) - h (Fin.last r) ∈ Xs h := by
   show ∑ c, ((ξ c (Fin.last r) : 𝓞 E) : E) • h c - h (Fin.last r) ∈ _
@@ -38,10 +48,18 @@ theorem frameAct_last_sub (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (
   rw [Fin.sum_univ_castSucc, h1, one_smul, add_sub_cancel_right]
   exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+-/
 theorem frameAct_mem_span (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (b : Fin (r + 1)) : frameAct h ξ b ∈ Submodule.span E (Set.range h) :=
   Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, Finset.smul_sum, smul_smul, Matrix.mul_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun c _ => by rw [mul_comm]`.
+-/
 theorem frameAct_frameAct (h : Fin (r + 1) → S.V) (ξ ξ' : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E)) :
     frameAct (frameAct h ξ) ξ' = frameAct h (ξ * ξ') := by
   funext b
@@ -52,6 +70,11 @@ theorem frameAct_frameAct (h : Fin (r + 1) → S.V) (ξ ξ' : Matrix (Fin (r + 1
   rw [Finset.sum_smul]
   exact Finset.sum_congr rfl fun c _ => by rw [mul_comm]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `b`. Simplify using `only [frameAct, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+
+Simplify using `[hc]`. Introduce `hb`. Conclude with `absurd (Finset.mem_univ b) hb`.
+-/
 theorem frameAct_one (h : Fin (r + 1) → S.V) : frameAct h 1 = h := by
   funext b
   simp only [frameAct, Matrix.one_apply]
@@ -60,16 +83,27 @@ theorem frameAct_one (h : Fin (r + 1) → S.V) : frameAct h 1 = h := by
   · intro c _ hc; simp [hc]
   · intro hb; exact absurd (Finset.mem_univ b) hb
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => h1 i j hij)]`. Simplify using `[h2]`.
+-/
 theorem det_unitri {n : ℕ} {R : Type*} [CommRing R] (ξ : Matrix (Fin n) (Fin n) R)
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) : ξ.det = 1 := by
   rw [Matrix.det_of_isUpperTriangular (fun i j hij => h1 i j hij)]
   simp [h2]
 
+/- English proof (translation)
+Rewrite using `[frameAct_frameAct, Matrix.nonsing_inv_mul _ (by rw [det_unitri ξ h1 h2]; exact isUnit_one), frameAct_one]`.
+-/
 theorem frameAct_inv_back (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) : frameAct (frameAct h ξ⁻¹) ξ = h := by
   rw [frameAct_frameAct, Matrix.nonsing_inv_mul _ (by rw [det_unitri ξ h1 h2]; exact isUnit_one),
     frameAct_one]
 
+/- English proof (translation)
+Establish `hi` using `inv_unitri ξ h1 h2`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `frameAct_castSucc_mem h _ hi.1 a`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `frameAct_castSucc_mem (frameAct h ξ⁻¹) ξ h1 a` as an intermediate fact. Rewrite `this` using `[frameAct_inv_back h ξ h1 h2]`. Then use the resulting hypothesis.
+-/
 theorem Xs_frameAct_inv (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) : Xs (frameAct h ξ⁻¹) = Xs h := by
   have hi := inv_unitri ξ h1 h2
@@ -82,6 +116,11 @@ theorem Xs_frameAct_inv (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fi
     have := frameAct_castSucc_mem (frameAct h ξ⁻¹) ξ h1 a
     rwa [frameAct_inv_back h ξ h1 h2] at this
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `frameAct_mem_span h _ a`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `frameAct_mem_span (frameAct h ξ⁻¹) ξ a` as an intermediate fact. Rewrite `this` using `[frameAct_inv_back h ξ h1 h2]`. Then use the resulting hypothesis.
+-/
 theorem span_frameAct_inv (h : Fin (r + 1) → S.V) (ξ : Matrix (Fin (r + 1)) (Fin (r + 1)) (𝓞 E))
     (h1 : ∀ a b, b < a → ξ a b = 0) (h2 : ∀ a, ξ a a = 1) :
     Submodule.span E (Set.range (frameAct h ξ⁻¹)) = Submodule.span E (Set.range h) := by
@@ -108,6 +147,9 @@ section GZ
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, h1 a b hab]`. Both sides reduce to the same expression. Rewrite using `[Matrix.map_apply, h2 a]`. Both sides reduce to the same expression.
+-/
 theorem unitri_map (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → η a b = 0) (h2 : ∀ a, η a a = 1) :
     (∀ a b, b < a → η.map (fun x => (x : D.host.E)) a b = 0) ∧ (∀ a, η.map (fun x => (x : D.host.E)) a a = 1) := by
@@ -115,6 +157,9 @@ theorem unitri_map (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.ho
   · rw [Matrix.map_apply, h1 a b hab]; rfl
   · rw [Matrix.map_apply, h2 a]; rfl
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [GZ, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, frameAct, brS, map_sum, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+-/
 theorem GZ_frameAct (u h : Fin (D.R.rS + 1) → (VS D).V) (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E)) :
     GZ u (frameAct h η) = GZ u h * η.map (fun x => (x : D.host.E)) := by
   ext a b
@@ -122,6 +167,9 @@ theorem GZ_frameAct (u h : Fin (D.R.rS + 1) → (VS D).V) (η : Matrix (Fin (D.R
     smul_eq_mul]
   exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hm` using `unitri_map η h1 h2`. Unfold `GDl`. Rewrite using `[dif_pos le_rfl, dif_pos le_rfl]`. Establish `e : ∀ M : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, M.submatrix (Fin.castLE (le_refl _)) (Fin.castLE (le_refl _)) = M` using `fun M => by ext i j; rfl`. Rewrite using `[e, e, GZ_frameAct, Matrix.det_mul, det_unitri _ hm.1 hm.2, mul_one]`.
+-/
 theorem GDl_frameAct_top (u h : Fin (D.R.rS + 1) → (VS D).V)
     (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → η a b = 0) (h2 : ∀ a, η a a = 1) :
@@ -133,6 +181,13 @@ theorem GDl_frameAct_top (u h : Fin (D.R.rS + 1) → (VS D).V)
       M.submatrix (Fin.castLE (le_refl _)) (Fin.castLE (le_refl _)) = M := fun M => by ext i j; rfl
   rw [e, e, GZ_frameAct, Matrix.det_mul, det_unitri _ hm.1 hm.2, mul_one]
 
+/- English proof (translation)
+Establish `hm` using `unitri_map η h1 h2`. Unfold `GDl`. Rewrite using `[dif_pos (Nat.le_succ _), dif_pos (Nat.le_succ _), GZ_frameAct]`. Establish `ecs : (Fin.castLE (Nat.le_succ D.R.rS) : Fin D.R.rS → Fin (D.R.rS + 1)) = Fin.castSucc`. Use function extensionality and compare the values at `fun i => Fin.ext rfl`.
+
+Rewrite using `[ecs]`. Establish `e : (GZ u h * η.map (fun x => (x : D.host.E))).submatrix Fin.castSucc Fin.castSucc = (GZ u h).submatrix Fin.castSucc Fin.castSucc * (η.map (fun x => (x : D.host.E))).submatrix Fin.castSucc Fin.castSucc`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, Matrix.mul_apply, Matrix.mul_apply, Fin.sum_univ_castSucc, hm.1 _ _ (Fin.castSucc_lt_last j), mul_zero, add_zero]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Matrix.det_mul, det_unitri ((η.map (fun x => (x : D.host.E))).submatrix Fin.castSucc Fin.castSucc) (fun a b hab => hm.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 hab)) (fun a => hm.2 _), mul_one]`.
+-/
 theorem GDl_frameAct_r (u h : Fin (D.R.rS + 1) → (VS D).V)
     (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → η a b = 0) (h2 : ∀ a, η a a = 1) :
@@ -153,6 +208,13 @@ theorem GDl_frameAct_r (u h : Fin (D.R.rS + 1) → (VS D).V)
   rw [e, Matrix.det_mul, det_unitri ((η.map (fun x => (x : D.host.E))).submatrix Fin.castSucc Fin.castSucc)
     (fun a b hab => hm.1 _ _ (Fin.castSucc_lt_castSucc_iff.2 hab)) (fun a => hm.2 _), mul_one]
 
+/- English proof (translation)
+Establish `hm` using `unitri_map η h1 h2`. Use `set ηE := η.map (fun x => (x : D.host.E)) with hηE`. Establish `hkey : ηE * (ηE.adjugate * (GZ u h).adjugate) = (GZ u h).adjugate`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_adjugate, det_unitri _ hm.1 hm.2, one_smul, Matrix.one_mul]`. Unfold `Gom'`.
+
+Rewrite using `[GZ_frameAct, Matrix.adjugate_mul_distrib]`. Simplify using `only [frameAct, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`.
+
+Use `congr 1`. Use `congrFun (congrFun hkey c) (Fin.last _)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+-/
 theorem Gom'_frameAct (u h : Fin (D.R.rS + 1) → (VS D).V)
     (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → η a b = 0) (h2 : ∀ a, η a a = 1) :
@@ -173,6 +235,13 @@ theorem Gom'_frameAct (u h : Fin (D.R.rS + 1) → (VS D).V)
   rw [← this]
   exact Finset.sum_congr rfl fun b _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hm` using `unitri_map η h1 h2`. Use `set ηE := η.map (fun x => (x : D.host.E)) with hηE`. Establish `hadj : ηE.adjugate = ηE⁻¹`. Rewrite using `[Matrix.inv_def, det_unitri _ hm.1 hm.2, Ring.inverse_one, one_smul]`. Establish `hinv` using `inv_unitri ηE hm.1 hm.2`.
+
+Unfold `Gom`. Rewrite using `[GZ_frameAct, Matrix.adjugate_mul_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last _), hadj, hinv.2, one_mul]`.
+
+Introduce `k _ hk`. Rewrite using `[hadj, hinv.1 _ _ (lt_of_le_of_ne (Fin.le_last k) hk), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem Gom_frameAct (u h : Fin (D.R.rS + 1) → (VS D).V)
     (η : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (𝓞 D.host.E))
     (h1 : ∀ a b, b < a → η a b = 0) (h2 : ∀ a, η a a = 1) :

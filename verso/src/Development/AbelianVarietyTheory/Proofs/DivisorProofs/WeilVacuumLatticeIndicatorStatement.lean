@@ -9,6 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 open Formalism.UG (IsUnifV qV)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KSplit.vac_act_torus | exact GlobalTheory.KSplit.vac_act_torus | (intros; apply GlobalTheory.KSplit.vac_act_torus <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.weil_vacuum_lattice_indicator : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r₁ s₁ : ℕ),
     IsPair B M χX χW om r s r₁ s₁ →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (b : GL (Fin n) (Fv F v)) (c : GL (Fin d) (Fv F v)) ι, M.IsLinW B.ψ t b c ι →

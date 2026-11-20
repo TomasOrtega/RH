@@ -12,6 +12,15 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.PowerSeriesUniformiser
 
+/- English proof (translation)
+Establish `hm : IsLocalRing.maximalIdeal A = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩`.
+
+Use extensionality with `n`. Simplify using `[PowerSeries.coeff_C_mul, hm, Ideal.mem_span_singleton']`. Introduce `hf`. Establish `h : ∀ n, ∃ b : A, PowerSeries.coeff n f = ϖ * b` using `fun n => by`. Establish `: IsLocalRing.residue A (PowerSeries.coeff n f) = 0`.
+
+Use `congrArg (PowerSeries.coeff n) hf` as an intermediate fact. Simplify using `using this`. Rewrite `this` using `[IsLocalRing.residue_eq_zero_iff, hm, Ideal.mem_span_singleton]`. Conclude with `this`. Use `choose b hb using h`.
+
+Use `⟨PowerSeries.mk b, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, hb]`.
+-/
 theorem span_C_eq_ker {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {ϖ : A}
     (hϖ : Irreducible ϖ) :
     Ideal.span {(PowerSeries.C ϖ : PowerSeries A)} =
@@ -36,11 +45,19 @@ theorem span_C_eq_ker {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationR
     ext n
     rw [PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, hb]
 
+/- English proof (translation)
+Rewrite using `[span_C_eq_ker hϖ]`. Conclude with `RingHom.ker_isPrime _`.
+-/
 theorem span_C_isPrime {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] {ϖ : A}
     (hϖ : Irreducible ϖ) : (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}).IsPrime := by
   rw [span_C_eq_ker hϖ]
   exact RingHom.ker_isPrime _
 
+/- English proof (translation)
+Establish `hm : IsLocalRing.maximalIdeal (Localization.AtPrime (Ideal.span {π})) = Ideal.span {algebraMap R _ π}`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_span, Set.image_singleton]`. Establish `hinj : Function.Injective (algebraMap R (Localization.AtPrime (Ideal.span {π})))` using `IsLocalization.injective _ (Ideal.span {π}).primeCompl_le_nonZeroDivisors`. Establish `hnf : ¬ IsField (Localization.AtPrime (Ideal.span {π}))` using `fun hf => by`. Rewrite `hf` using `[IsLocalRing.isField_iff_maximalIdeal_eq, hm, Ideal.span_singleton_eq_bot]`.
+
+Conclude with `h0 (hinj (hf.trans (map_zero _).symm))`. Establish `hp : (IsLocalRing.maximalIdeal (Localization.AtPrime (Ideal.span {π}))).IsPrincipal` using `⟨_, hm⟩`. Conclude with `((IsDiscreteValuationRing.TFAE _ hnf).out 0 4).2 hp`.
+-/
 theorem isDiscreteValuationRing_atPrime_span {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] {π : R}
     (h0 : π ≠ 0) [(Ideal.span {π}).IsPrime] :
     IsDiscreteValuationRing (Localization.AtPrime (Ideal.span {π})) := by
@@ -55,6 +72,9 @@ theorem isDiscreteValuationRing_atPrime_span {R : Type} [CommRing R] [IsDomain R
   have hp : (IsLocalRing.maximalIdeal (Localization.AtPrime (Ideal.span {π}))).IsPrincipal := ⟨_, hm⟩
   exact ((IsDiscreteValuationRing.TFAE _ hnf).out 0 4).2 hp
 
+/- English proof (translation)
+Introduce `A _ _ _ ϖ hϖ`. Use `haveI := span_C_isPrime hϖ`. Use `⟨this, isDiscreteValuationRing_atPrime_span ?_⟩` and prove the remaining obligations. Introduce `h`. Conclude with `hϖ.ne_zero (PowerSeries.C_injective (h.trans (map_zero _).symm))`.
+-/
 theorem main : ∀ (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (ϖ : A), Irreducible ϖ →
     ∃ _ : (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)}).IsPrime,
       IsDiscreteValuationRing (Localization.AtPrime (Ideal.span {(PowerSeries.C ϖ : PowerSeries A)})) := by

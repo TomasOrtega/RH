@@ -27,6 +27,9 @@ def Top.Amp {n N : ℕ} (T : Top Xo n N) : Prop :=
 
 def System.Amp (S : System Xo) : Prop := ∀ i, (S.T i).Amp
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem topExists_iff_amp : TopExists ↔
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q →
       ∀ (Xo : ∀ l : Level H, Moduli D l) (n : ℕ), AuxiliaryInertOddPrime H n → ∃ J : ℕ, 1 ≤ J ∧ ∃ T : Top Xo n (n ^ J), T.Amp :=
@@ -76,9 +79,15 @@ def tensorTriple (H : Host E) (A : Over X) [GrpObj A] [IsCommMonObj A] (hA : IsA
 
 variable (A : Over X) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
 
+/- English proof (translation)
+The claim follows from `((Serre.isTensor (𝓞 E) (Serre.intAct A)).isAbelianScheme hA).proper`.
+-/
 theorem isProper_tensorTriple : IsProper (tensorTriple H A hA).G.hom :=
   ((Serre.isTensor (𝓞 E) (Serre.intAct A)).isAbelianScheme hA).proper
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ (𝓞 E)`. Take `⟨j⟩` from `b.index_nonempty`. Conclude with `⟨_, _, (Serre.isTensor (𝓞 E) (Serre.intAct A)).tmul_mapLeft_self (b.coord j) (m := b j) (by simp)⟩`.
+-/
 theorem exists_retract_tensorTriple :
     ∃ (i : A ⟶ (tensorTriple H A hA).G) (r : (tensorTriple H A hA).G ⟶ A), i ≫ r = 𝟙 A := by
   let b := Module.Free.chooseBasis ℤ (𝓞 E)
@@ -87,6 +96,9 @@ theorem exists_retract_tensorTriple :
 
 end Abelian
 
+/- English proof (translation)
+The claim follows from `haveI : IsZariskiLocalAtSource @Flat.{0} := HasRingHomProperty.instIsZariskiLocalAtSource IsZariskiLocalAtSource.of_openCover (P := @Flat) (ProjSpace.chartCover R N) fun (i : Fin (N + 1)) => by change Flat (ProjSpace.chartι R N i ≫ _) rw [ProjSpace.chartι_str, HasRingHomProperty. …`.
+-/
 theorem flat_projSpace (R : Type) [CommRing R] (N : ℕ) : Flat (PSpace.str R N) :=
   haveI : IsZariskiLocalAtSource @Flat.{0} := HasRingHomProperty.instIsZariskiLocalAtSource
   IsZariskiLocalAtSource.of_openCover (P := @Flat) (ProjSpace.chartCover R N) fun (i : Fin (N + 1)) => by
@@ -94,6 +106,9 @@ theorem flat_projSpace (R : Type) [CommRing R] (N : ℕ) : Flat (PSpace.str R N)
     rw [ProjSpace.chartι_str, HasRingHomProperty.Spec_iff (P := @Flat)]
     exact RingHom.flat_algebraMap_iff.2 (inferInstanceAs (Module.Flat R (MvPolynomial _ R)))
 
+/- English proof (translation)
+Use `(isNormalScheme_iff_pred _).1 (IsNormalScheme.of_forall_exists_isOpenImmersion fun x => ?_)` and prove the remaining obligations. Take `⟨i, y, hy⟩` from `(ProjSpace.chartCover R N).exists_eq x`. Conclude with `⟨_, ProjSpace.chartι R N i, ProjSpace.isOpenImmersion_chartι R N i, IsNormalScheme.of_pred (ZJ.isNormalScheme_sp _), y, hy⟩`.
+-/
 theorem isNormalScheme_projSpace (R : Type) [CommRing R] [IsDomain R] [UniqueFactorizationMonoid R] (N : ℕ) :
     Geo.Tor.IsNormalScheme (PSpace R N) := by
   refine (isNormalScheme_iff_pred _).1 (IsNormalScheme.of_forall_exists_isOpenImmersion fun x => ?_)

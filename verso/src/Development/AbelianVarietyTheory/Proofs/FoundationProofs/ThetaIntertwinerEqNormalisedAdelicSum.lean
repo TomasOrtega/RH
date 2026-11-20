@@ -17,14 +17,23 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil.IopSum
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem act_inv_act {D : D7} {N N' : ℕ} (u : GA D N × GA D N') (ζ : XA D N N') :
     actA D N N' u⁻¹ (actA D N N' u ζ) = ζ := by
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem act_act_inv {D : D7} {N N' : ℕ} (u : GA D N × GA D N') (ζ : XA D N N') :
     actA D N N' u (actA D N N' u⁻¹ ζ) = ζ := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Rewrite using `[act_inv_act]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, act_act_inv u ζ⟩`.
+-/
 theorem mem_map_act {D : D7} {N N' : ℕ} (A : Submodule (𝓞 D.host.E) (XA D N N')) (u : GA D N × GA D N') (ζ : XA D N N') :
     ζ ∈ A.map (actA D N N' u) ↔ actA D N N' u⁻¹ ζ ∈ A := by
   constructor
@@ -33,17 +42,26 @@ theorem mem_map_act {D : D7} {N N' : ℕ} (A : Submodule (𝓞 D.host.E) (XA D N
   · intro h
     exact ⟨_, h, act_act_inv u ζ⟩
 
+/- English proof (translation)
+Rewrite using `[mem_map_act, Prod.inv_mk, actA_apply, mem_latA, Subgroup.coe_inv, Subgroup.coe_inv, inv_inv]`.
+-/
 theorem mem_moved {D : D7} {cc : Ideal (𝓞 D.host.K)} {N N' : ℕ} (g : GA D N) (g' : GA D N') (ζ : XA D N N') :
     ζ ∈ (latA D cc N N').map (actA D N N' (g, g')) ↔
       ∀ i j, ((((g' : GL (Fin N') (AE D))⁻¹ : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D)) * ζ *
         ((g : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))) i j ∈ IhE D cc := by
   rw [mem_map_act, Prod.inv_mk, actA_apply, mem_latA, Subgroup.coe_inv, Subgroup.coe_inv, inv_inv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Simplify using `[pt, embV, tor0, mul_sub]`.
+-/
 theorem pt_sub {D : D7} (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (z z' : Matrix (Fin N') (Fin N) D.host.E) :
     pt D (tor0 D cc δ) δ (z - z') = pt D (tor0 D cc δ) δ z - pt D (tor0 D cc δ) δ z' := by
   funext τ i j
   simp [pt, embV, tor0, mul_sub]
 
+/- English proof (translation)
+Take `⟨Lt, hLt, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Establish `: L = Lt g` using `Submodule.ext fun x => (h x).trans ((hLt g).1 x).symm`. Rewrite using `[this]`. Conclude with `(hLt g).2`.
+-/
 theorem sd_of_moves {D : D7} {N : ℕ} (g : GA D N) {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)}
     (h : Moves D (g : GL (Fin N) (AE D)) L) : SD D L := by
   obtain ⟨Lt, hLt, -⟩ := GlobalTheory.NormSum.exists_lattice_of_adelic_point D N
@@ -57,6 +75,31 @@ namespace GlobalTheory.FinWeil
 
 open IopSum
 
+/- English proof (translation)
+Introduce `D hG cc δ hC N N' w γ WA hM g g' L₁ L₁' hL hL' hSD F hF`. Take `⟨hlat1, -, hlat3, -⟩` from `GlobalTheory.T.completedStandardAdelicLattice_properties D hG cc δ hC N N'`. Establish `hidx` using `(GlobalTheory.T.heisenbergRelativeIndex_translate_completed_lattice D hG cc δ hC N N' g g').1`. Establish `hidx'` using `(GlobalTheory.T.heisenbergRelativeIndex_translate_completed_lattice D hG cc δ hC N N' g⁻¹ g'⁻¹).1`. Establish `hA` using `GlobalTheory.NormSum.exists_pt_of_mem_La_moved D hG cc δ hC.1.1 N N' g g' L₁ L₁' hL hL'`.
+
+Establish `hB` using `GlobalTheory.NormSum.pt_mem_La_of_adelic D hG cc δ hC.1.1 N N' g g' L₁ L₁' hL hL'`. Establish `hW` using `(GlobalTheory.ThetaLine.theta_line D hG cc δ hC N N' (La D (tor0 D cc δ) L₁ L₁') (Or.inr ⟨L₁, L₁', sd_of_moves g hL, sd_of_moves g' hL', rfl⟩)).2.1`. Simplify using `only [← mem_moved] at hA hB`. Use `set A := latA D cc N N' with hAdef`. Use `set B := A.map (actA D N N' (g, g')) with hBdef`.
+
+Use `set La₂ := La D (tor0 D cc δ) L₁ L₁' with hLa₂`. Use `set La₁ := La0 D (tor0 D cc δ) N N' with hLa₁`. Establish `hm : ∀ a ∈ A, idx A (A.map (actA D N N' (g⁻¹, g'⁻¹))) • a ∈ B`. Introduce `a ha`. Rewrite using `[hBdef, mem_map_act, map_nsmul, Prod.inv_mk]`.
+
+Conclude with `AddSubgroup.nsmul_relIndex_mem A.toAddSubgroup (K := (A.map (actA D N N' (g⁻¹, g'⁻¹))).toAddSubgroup) ⟨a, ha, rfl⟩`. Use `choose z hz hzB using fun q : La₂ ⧸ La₁.addSubgroupOf La₂ => hA _ (Quotient.out q).2`. Establish `hsub : ∀ x y : Matrix (Fin N') (Fin N) D.host.E, x.map (inc D) - y.map (inc D) ∈ A ↔ pt D (tor0 D cc δ) δ x - pt D (tor0 D cc δ) δ y ∈ La₁`. Introduce `x y`. Rewrite using `[← Matrix.map_sub _ (map_sub (inc D)), hlat1, pt_sub]`.
+
+Establish `huniq : ∀ q q', (z q).map (inc D) - (z q').map (inc D) ∈ A → q = q'`. Introduce `q q' h`. Rewrite `h` using `[hsub, ← hz, ← hz]`. Rewrite using `[← QuotientAddGroup.out_eq' q, ← QuotientAddGroup.out_eq' q', eq_comm, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `h` using `[neg_add_eq_sub]`.
+
+Establish `htr : ∀ b ∈ B, ∃! q, b - (z q).map (inc D) ∈ A`. Introduce `b hb`. Take `⟨y, a, ha, hy⟩` from `hlat3 b _ (Nat.pos_of_ne_zero hidx')`. Establish `hyB : y.map (inc D) ∈ B` using `hy ▸ B.add_mem hb (hm a ha)`. Establish `hex : b - (z (QuotientAddGroup.mk ⟨_, hB y hyB⟩)).map (inc D) ∈ A`.
+
+Establish `h1 : y.map (inc D) - (z (QuotientAddGroup.mk ⟨_, hB y hyB⟩)).map (inc D) ∈ A`. Rewrite using `[hsub, ← hz]`. Establish `h2` using `QuotientAddGroup.out_eq' (QuotientAddGroup.mk ⟨_, hB y hyB⟩ : La₂ ⧸ La₁.addSubgroupOf La₂)`. Rewrite `h2` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Simplify `h2` using `[neg_add_eq_sub]`.
+
+Establish `h3` using `A.sub_mem h1 (nsmul_mem ha (idx A (A.map (actA D N N' (g⁻¹, g'⁻¹)))))`. Rewrite `h3` using `[hy]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `⟨QuotientAddGroup.mk ⟨_, hB y hyB⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hex`. Introduce `q hq`. Use `huniq _ _ ?_` and prove the remaining obligations. Use `A.sub_mem hex hq` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+
+Use `haveI : Finite (B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) := Nat.finite_of_card_ne_zero hidx`. Use `haveI : Finite (La₂ ⧸ La₁.addSubgroupOf La₂) := by`. Use `Finite.of_injective (fun q => (QuotientAddGroup.mk ⟨_, hzB q⟩ : B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup)) fun q q' h => ?_` and prove the remaining obligations. Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `(huniq q' q ?_).symm` and prove the remaining obligations.
+
+Simplify `h` using `[neg_add_eq_sub]`. Use `haveI := Fintype.ofFinite (La₂ ⧸ La₁.addSubgroupOf La₂)`. Take `⟨h1, h2⟩` from `(GlobalTheory.FinWeil.sumOp_transversal hM.1 A B hSD).1 F hF _ (fun q => (z q).map (inc D)) hzB htr`. Rewrite using `[h1, h2]`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[Iop, finsum_eq_sum_of_fintype, AddSubgroup.index, Nat.card_eq_fintype_card, Pi.smul_apply, smul_eq_mul, Submodule.coe_sum, Finset.sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hM.2.2.2.1, ← hz, hW _ (Quotient.out q).2]`.
+-/
 theorem iop_eq_sumOp : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) w γ WA, GlobalTheory.FinWeil.IsModel D cc δ N N' w γ WA → ∀ (g : GA D N) (g' : GA D N') L₁ L₁', Moves D (g : GL (Fin N) (AE D)) L₁ → Moves D (g' : GL (Fin N') (AE D)) L₁' → SelfDual γ ((latA D cc N N').map (actA D N N' (g, g'))) → ∀ F : TTs D (tor0 D cc δ) N N', Fixes WA (latA D cc N N') F → Iop D (tor0 D cc δ) (La0 D (tor0 D cc δ) N N') (La D (tor0 D cc δ) L₁ L₁') F = ((Real.sqrt (idx (latA D cc N N') ((latA D cc N N').map (actA D N N' (g, g'))) : ℝ))⁻¹ : ℂ) • ((sumOp WA (latA D cc N N') ((latA D cc N N').map (actA D N N' (g, g'))) F : TTs D (tor0 D cc δ) N N') : VC D N N' → ℂ) := by
   intro D hG cc δ hC N N' w γ WA hM g g' L₁ L₁' hL hL' hSD F hF
   obtain ⟨hlat1, -, hlat3, -⟩ := GlobalTheory.T.completedStandardAdelicLattice_properties D hG cc δ hC N N'

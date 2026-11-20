@@ -16,6 +16,15 @@ namespace GlobalTheory.SiteEx
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex t u w hg μ J hQ`. Establish `hfr` using `GlobalTheory.Ggeo.FracLocal.isFractionRing_gat Gl u w hg`. Establish `hrat` using `GlobalTheory.TwUChiRat.chiRatAll_of_adTie t u μ J.St J.A J.Hh.dt J.a J.tie J.kin`. Establish `hpT : ∀ i (hi : i ≤ D.R.m), ¬ D.what₂.places.resChar w ∣ (J.St i hi).T` using `fun i hi => by`. Rewrite using `[J.tie.T_eq i hi]`.
+
+Conclude with `hg.2.2.2.2.2`. Establish `hψ : ∀ i hi, PsiEx (foOf J.Hh J.St J.val i hi) (ex.cmp.embW u w hg)` using `fun i hi => psiEx_of (foOf J.Hh J.St J.val i hi) (ex.cmp.embW u w hg) hfr (fun β => hrat (i + 1) hi β) (fun β => J.ord (i + 1) hi β)`. Set `Z : SiteD J.Gd.herm u w hg (ex.tw.fm u μ)` to `{ Fo := foOf J.Hh J.St J.val chFin := fun i hi => J.fin (i + 1) hi S := fun i hi => { B := (Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E).symm (J.A.crd (i + 1) hi)⁻¹ B_lat := fun β => GlobalTheory.T.inv_coords_isBasisAt_baseLattice_of_std_companion J.Gd.herm u w hg hi (( …`. Use `⟨Z, rfl, ⟨fun i hi => hpT (i + 1) hi, fun i hi w' hw' => ?_, fun i hi => trivial⟩, ⟨fun i hi => ?_, fun i hi β => ?_, fun i hi β cl => ?_⟩, fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.TwU.not_mem_underSB_of_gIdx t u w hg μ hQ w' (J.tie.bad (i + 1) hi w' hw')`.
+
+Use `show cT (sigD D : D.host.E →+* D.host.E) (Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E ((Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E).symm (J.A.crd (i + 1) hi)⁻¹)).1 * gramN D (i + 1) hi * (Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E ((Formalism.L2.Fo …`. Rewrite using `[MulEquiv.apply_symm_apply]`. Conclude with `std_of_C _ _ _ (J.pins.crd_orth (i + 1) hi)`. Conclude with `(hψ i hi β).choose_spec`. Conclude with `chRat_ofChiD J.chiD _ _ _`.
+
+Use `show Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E ((Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E).symm (J.A.crd (i + 1) hi)⁻¹) = _`. Conclude with `MulEquiv.apply_symm_apply _ _`.
+-/
 theorem siteD_exists : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (μ : D.what₂.Tup) (J : JIn t u μ), (D.what₂.places.resChar w) ∉ Dx.Qp μ → ∃ Z : SiteD J.Gd.herm u w hg (ex.tw.fm u μ), Z.Fo = foOf J.Hh J.St J.val ∧ SiteGood Z ∧ SiteRest Z ex.cmp ∧ ∀ i hi, Formalism.L2.Forms.reGL (rankN D (i + 1) hi) D.host.E (Z.S i hi).B = (J.A.crd (i + 1) hi)⁻¹ := by
   intro D L hT Gi Gl Kc Dx cX ex t u w hg μ J hQ
   have hfr := GlobalTheory.Ggeo.FracLocal.isFractionRing_gat Gl u w hg

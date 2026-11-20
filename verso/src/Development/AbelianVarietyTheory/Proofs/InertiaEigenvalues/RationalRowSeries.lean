@@ -16,6 +16,25 @@ set_option maxHeartbeats 1600000
 
 namespace GlobalTheory.PlaceRead.SeriesAtState
 
+/- English proof (translation)
+Establish `hp` using `P.isPrime`. Establish `mem : ∀ p ∈ lowAll D, ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∈ D.ntw.S0 i` using `fun p a b => by`. Rewrite using `[← Finset.mem_coe, h.ringSpec_excludedPlaces_eq i]`. Conclude with `Or.inr (h.concreteTwistFrame_extraExcluded_over_smallPrimes i p a b)`. Establish `key : ∀ m : ℕ, m ≠ 0 → ((m : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → ∃ p : ℕ, p.Prime ∧ p ∣ m ∧ ((p : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`.
+
+Introduce `m`. Proceed by induction on `m using Nat.recOnMul with`. Consider the case `zero => exact fun h0 => absurd rfl h0`. Consider the case `one => exact fun _ h1 => absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h1)) hp.ne_top`. Consider the case `prime p pp => exact fun _ h1 => ⟨p, pp, dvd_rfl, h1⟩`.
+
+Consider the case `mul a b iha ihb`. Introduce `h0 h1`. Rewrite `h1` using `[Nat.cast_mul]`. Break down `hp.mem_or_mem h1 with h1 | h1` into its components or cases. Take `⟨p, p1, p2, p3⟩` from `iha (left_ne_zero_of_mul h0) h1`.
+
+Conclude with `⟨p, p1, p2.mul_right _, p3⟩`. Take `⟨p, p1, p2, p3⟩` from `ihb (right_ne_zero_of_mul h0) h1`. Conclude with `⟨p, p1, p2.mul_left _, p3⟩`. Simplify using `only [Nat.cast_mul] at hP`. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases.
+
+Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Take `⟨p, p1, p2, p3⟩` from `key _ D.host.QS_pos.ne' hP`. Use `mem p (Finset.mem_union_left _ ?_) p3` and prove the remaining obligations. Use `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_right _ ?_))` and prove the remaining obligations.
+
+Conclude with `Nat.mem_primeFactors.2 ⟨p1, (D.host.dvd_natAbs_discr_iff p1).2 (p2.trans D.host.QS_dvd_condN), Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)⟩`. Use `mem _ (Finset.mem_union_left _ ?_) hP` and prove the remaining obligations. Use `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_right _ ?_))` and prove the remaining obligations. Conclude with `Nat.mem_primeFactors.2 ⟨D.host.hyp.1, GlobalTheory.TwInputs.JoinModel.q_dvd_discr D, Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _)⟩`. Establish `hN : Ideal.absNorm D.host.ccK ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `D.host.ccK_ne_bot`. Take `⟨p, p1, p2, p3⟩` from `key _ hN hP`. Use `mem p (Finset.mem_union_left _ ?_) p3` and prove the remaining obligations. Conclude with `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_left _ (Nat.mem_primeFactors.2 ⟨p1, p2, hN⟩)))`.
+
+Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Break down `hp.mem_or_mem hP with hP | hP` into its components or cases. Conclude with `mem _ (by simp [lowAll]) hP`. Conclude with `mem _ (by simp [lowAll]) hP`.
+
+Conclude with `mem _ (by simp [lowAll]) hP`. Conclude with `mem _ (by simp [lowAll]) hP`.
+-/
 theorem low_of_tiedC {D : D7} {Fr : TwFrameC D} (h : TwistFrameLowIndexCompatibility D Fr (lowAll D)) (i) (P : PlE D.host)
     (hP : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK * (D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde') : ℕ) :
       𝓞 D.host.E) ∈ P.asIdeal) : P ∈ D.ntw.S0 i := by
@@ -64,6 +83,21 @@ theorem low_of_tiedC {D : D7} {Fr : TwFrameC D} (h : TwistFrameLowIndexCompatibi
       · exact mem _ (by simp [lowAll]) hP
     · exact mem _ (by simp [lowAll]) hP
 
+/- English proof (translation)
+Introduce `hP hS hLL`. Establish `ev : ∀ {Q : Ctx → Prop}, Ev Q → StepW Start fun K _ _ _ _ => Q K` using `fun h => Step.of_evG ((evG_of_ev h).imp fun _ _ _ _ _ H _ _ _ _ _ _ _ _ _ => H)`. Establish `hF : StepW Start fun _ B f T w => ∀ (Z : w.Lt) (X : GlobalTheory.TwInputs.RealSide (w.st Z).toD7), X.R.C = (TC.cf w.I w.l Z) → GlobalTheory.TwInputs.FieldOk X` using `EvG.imp (GlobalTheory.TwInputs.SmallField.evLgG_fieldOk hP) fun _ _ _ _ _ H => H.imp fun _ _ _ _ G hK _ _ w _ Z => (G hK _ w Z).1`. Use `(((((ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev).and (ev GlobalTheory.Mem.StdSize.vstd_size_ev)).and hF).and (sXd_all hLL)).and (GlobalTheory.T.series_character_inverse hLL)).trans (StepW.of_all fun K B f T w hO _ H => ?_)` and prove the remaining obligations. Take `⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩` from `H`.
+
+Introduce `P x l`. Take `⟨hHo, -⟩` from `h1 (w.st x.o.Z) hO`. Take `⟨hStd, hSize⟩` from `h2 (w.st x.o.Z) hO`. Establish `hfin : Finite (TupU w.I (usedOf w.I T P.Wt))` using `Finite.of_injective _ (ixOf_injective w.I _)`. Set `X` to `GlobalTheory.TwInputs.RealSide.ofPins x.m.z.geo x.m.z.pins x.m.intersectionNumber_baseChange x.m.inGeo hfin hHo hStd hSize`.
+
+Establish `hX : GlobalTheory.TwInputs.FieldOk X` using `h3 x.o.Z X x.m.z.lev.C`. Take `⟨xd, hxd⟩` from `h4 P x ⟨l.toLI, l.b.toSeriesState⟩`. Take `⟨hU, hψ⟩` from `h5 P x l`. Take `⟨f', s1, s2, s3⟩` from `GlobalTheory.T.exists_rationalHeckeOperators_adelicReading hP.decay hS.hkTr hS.hkRead (Dof x) X _ l.b.YS`. Take `⟨H, r1, r2⟩` from `GlobalTheory.TwInputs.AtLayer.exists_hecke X _ l.b.YS l.b.ser.ex f' s1 s2 s3 l.b.Bs.cHk l.b.Bs.cHk_del (GlobalTheory.TwInputs.AtLayer.hkF_zero_of_sideB l.b.Bs l.rat.In.hL_zero)`.
+
+Set `Y : GlobalTheory.TwInputs.SerSide X (twEOf xd)` to `{ S := _ YS := l.b.YS sup := l.b.ser.sup H := H reads := r1 del := r2 Z := l.b.ser.ex U_eq := hU psi_eq := hψ low := low_of_tiedC l.b.Bs.tw Sb := fun i Q hQ => by`. Establish `hA : x.m.z.R.Sb = x.m.z.R.Pg` using `x.m.z.pins.char.allPl`. Take `⟨k, hk⟩` from `l.b.ser.ex.good.Pg i ⟨0, lt_of_lt_of_le two_pos B.R.two_le_m⟩ true Q (by rw [l.b.ser.ex.pin.Pg]; exact hA ▸ hQ)`. Conclude with `(Dof x).ntw.placesOver_subset_exceptional i k hk`. Use `B_range := fun i _ j _ b => l.b.Bs.tw.B_range i j b`.
+
+Use `hk_emb := fun i j b k P y h1 h2 h => l.b.Bs.hk_emb i j b k P y h1 h2 h.2.2.2 h.2.2.1 h.2.1`. Use `hk_split := fun i _ j _ b k P h => by`. Take `⟨s, hs⟩` from `l.b.Bs.tw.hk_split i j b k P h.2.2.2`. Conclude with `hs ▸ Polynomial.Splits.multisetProd fun p hp => by`. Take `⟨a, -, rfl⟩` from `Multiset.mem_map.1 hp`.
+
+Conclude with `Polynomial.Splits.X_sub_C a`. Use `off := fun i _ => ⟨fun j hj b => l.b.ser.off i j b fun h => hj (Finset.mem_Icc.2 h), l.b.Bs.hEig_zero i⟩`. Use `all := fun i j hj b a => by`. Use `hxd i j b (Finset.mem_Icc.1 hj).1 (Finset.mem_Icc.1 hj).2` as an intermediate fact. Express the relevant statement in the definitionally equal form `a ∈ xd.xd0 i j b`.
+
+Rewrite using `[this]`. Use `trivial }`. Conclude with `(GlobalTheory.T.thetaSeries_rationality_and_coefficientBound hP.decay hP.what₂.art hS.rat hS.int (Dof x) X _ Y hX).1`.
+-/
 theorem ratRow_at_state : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => ∀ (l : StrictHenselianAcyclic hL x) (i : (Dof x).ntw.Tw), (Dof x).ntw.NonzeroIndexPlace i → ∀ j b, GlobalTheory.SeriesTie.RatRow l.b.YS x.m.z.geo.v₀ l.b.ser.ex.good i j b := by
   intro hP hS hLL
   have ev : ∀ {Q : Ctx → Prop}, Ev Q → StepW Start fun K _ _ _ _ => Q K := fun h =>

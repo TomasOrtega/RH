@@ -17,6 +17,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TrOffShift
 
+/- English proof (translation)
+Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Establish `h2` using `GlobalTheory.Ker.MovLev.bar_algebraMap (D := D) s`. Establish `h3` using `congrArg (fun x : 𝓞 D.host.E => (x : D.host.E)) h2`. Simplify using `only [Lev.bar] at h3`.
+
+Establish `h4` using `IsCMField.coe_ringOfIntegersComplexConj D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s)`. Conclude with `h3.symm.trans h4`.
+-/
 theorem algebraMap_mem_conjI {D : D7} (I : Ideal (𝓞 D.host.E)) (s : 𝓞 D.host.F)
     (h : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ I) :
     algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ conjI I := by
@@ -28,6 +33,15 @@ theorem algebraMap_mem_conjI {D : D7} (I : Ideal (𝓞 D.host.E)) (s : 𝓞 D.ho
   have h4 := IsCMField.coe_ringOfIntegersComplexConj D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s)
   exact h3.symm.trans h4
 
+/- English proof (translation)
+Introduce `D r Pg Q L w hne u hu`. Establish `hex : ∀ PP ∈ Pg ∪ Q, ∃ s : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s ∈ PP.asIdeal ∧ s ∉ w.asIdeal`. Introduce `PP hPP`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Apply `hne PP hPP` to reduce the goal to its premises. Establish `hle : (HeightOneSpectrum.under (𝓞 D.host.F) PP).asIdeal ≤ w.asIdeal`. Introduce `s hs`. Conclude with `hcon s hs`. Conclude with `HeightOneSpectrum.ext ((HeightOneSpectrum.isMaximal _).eq_of_le w.isPrime.ne_top hle)`.
+
+Use `choose! tf htf1 htf2 using hex`. Use `⟨∏ PP ∈ Pg ∪ Q, tf PP, ?_, ?_⟩` and prove the remaining obligations. Establish `: ∏ PP ∈ Pg ∪ Q, tf PP ∈ w.asIdeal.primeCompl` using `Submonoid.prod_mem _ (fun c hc => htf2 c hc)`. Conclude with `this`. Establish `hmem : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (∏ PP ∈ Pg ∪ Q, tf PP) ∈ GlobalTheory.LiftLevel.liftI Pg Q`.
+
+Rewrite using `[map_prod]`. Conclude with `Ideal.prod_mem_prod (fun PP hPP => algebraMap_mem_conjI (D := D) _ _ (htf1 PP hPP))`. Establish `h1` using `hu _ (algebraMap_mem_conjI (D := D) _ _ hmem)`. Conclude with `Submodule.smul_le_right h1`.
+-/
 theorem shift_mult : ∀ (D : D7) (r : ℕ) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (L : Lt D.host.E r) (w : HeightOneSpectrum (𝓞 D.host.F)), (∀ PP ∈ Pg ∪ Q, HeightOneSpectrum.under (𝓞 D.host.F) PP ≠ w) → ∀ u ∈ idq (GlobalTheory.LiftLevel.liftI Pg Q) (conjI (GlobalTheory.LiftLevel.liftI Pg Q)) L, ∃ t : 𝓞 D.host.F, t ∉ w.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t • u ∈ L := by
   intro D r Pg Q L w hne u hu
   classical

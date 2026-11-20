@@ -10,12 +10,22 @@ open scoped BigOperators
 
 namespace GlobalTheory.Vacuum.Parity
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem zmod_two : ∀ a b c f r s p q : ZMod 2, a * a + b * c = a → a * b + b * f = b → c * a + f * c = c →
     c * b + f * f = f → ¬ (r * a + s * c = 0 ∧ r * b + s * f = 0) →
     ¬ (r - (r * a + s * c) = 0 ∧ s - (r * b + s * f) = 0) →
     (((p * b + q * f) * p - (p * a + q * c) * q) + (q * r - p * s) = 0 ↔ p = 0 ∧ q = 0) := by
   decide
 
+/- English proof (translation)
+Establish `he' : ¬ Even e`. Introduce `h`. Establish `: Even (e * e)` using `h.mul_right e`. Rewrite `this` using `[he]`. Conclude with `Int.not_even_one this`.
+
+Rewrite using `[← mul_add, Int.even_mul, or_iff_right he']`. Simplify using `only [← ZMod.intCast_eq_zero_iff_even] at h5 h6 ⊢`. Establish `two : (2 : ZMod 2) = 0` using `rfl`. Establish `g1` using `congrArg (Int.cast : ℤ → ZMod 2) h1`. Establish `g2` using `congrArg (Int.cast : ℤ → ZMod 2) h2`.
+
+Establish `g3` using `congrArg (Int.cast : ℤ → ZMod 2) h3`. Establish `g4` using `congrArg (Int.cast : ℤ → ZMod 2) h4`. Move the coercions through the operations in `at g1 g2 g3 g4 h5 h6 ⊢`. Rewrite `g1`, `g4` using `[two, zero_mul, sub_zero]`. Conclude with `zmod_two _ _ _ _ _ _ _ _ g1 g2 g3 g4 h5 h6`.
+-/
 theorem int_two (a b c f r s p q n e : ℤ) (he : e * e = 1) (h1 : a * a + b * c = a - 2 * n) (h2 : a * b + b * f = b)
     (h3 : c * a + f * c = c) (h4 : c * b + f * f = f - 2 * n)
     (h5 : ¬ (Even (r * a + s * c) ∧ Even (r * b + s * f)))
@@ -37,6 +47,9 @@ theorem int_two (a b c f r s p q n e : ℤ) (he : e * e = 1) (h1 : a * a + b * c
   rw [two, zero_mul, sub_zero] at g1 g4
   exact zmod_two _ _ _ _ _ _ _ _ g1 g2 g3 g4 h5 h6
 
+/- English proof (translation)
+Establish `hi` using `LinearIndependent.pair_iff.1 L.indep ((p : ℝ) - p') ((q : ℝ) - q') (by`. Simplify using `only [Complex.real_smul]`. Use `push_cast`. Take the linear combination `h)`. Conclude with `⟨by exact_mod_cast sub_eq_zero.1 hi.1, by exact_mod_cast sub_eq_zero.1 hi.2⟩`.
+-/
 theorem coord_unique (L : PeriodPair) {p q p' q' : ℤ}
     (h : (p : ℂ) * L.ω₁ + q * L.ω₂ = p' * L.ω₁ + q' * L.ω₂) : p = p' ∧ q = q' := by
   have hi := LinearIndependent.pair_iff.1 L.indep ((p : ℝ) - p') ((q : ℝ) - q') (by
@@ -45,6 +58,11 @@ theorem coord_unique (L : PeriodPair) {p q p' q' : ℤ}
     linear_combination h)
   exact ⟨by exact_mod_cast sub_eq_zero.1 hi.1, by exact_mod_cast sub_eq_zero.1 hi.2⟩
 
+/- English proof (translation)
+Rewrite using `[PeriodPair.mem_lattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, h⟩`. Use `coord_unique L (p := p) (q := q) (p' := m + m) (q' := n + n) (by` as an intermediate fact. Use `push_cast`.
+
+Take the linear combination `-2 * h)`. Conclude with `⟨⟨m, this.1⟩, ⟨n, this.2⟩⟩`. Introduce and unpack `⟨⟨m, rfl⟩, ⟨n, rfl⟩⟩`. Conclude with `⟨m, n, by push_cast; ring⟩`.
+-/
 theorem half_mem_iff (L : PeriodPair) (p q : ℤ) :
     ((p : ℂ) * L.ω₁ + q * L.ω₂) / 2 ∈ L.lattice ↔ Even p ∧ Even q := by
   rw [PeriodPair.mem_lattice]
@@ -57,6 +75,13 @@ theorem half_mem_iff (L : PeriodPair) (p q : ℤ) :
   · rintro ⟨⟨m, rfl⟩, ⟨n, rfl⟩⟩
     exact ⟨m, n, by push_cast; ring⟩
 
+/- English proof (translation)
+Establish `hd` using `GlobalTheory.PlaneLattice.signedArea_ne_zero L`. Establish `ha` using `GlobalTheory.PlaneLattice.area_eq L Λ h`. Establish `hpos : 0 < area Λ` using `ha ▸ abs_pos.2 hd`. Choose the witnesses or unpack the hypotheses as in `⟨e, he, he2⟩ : ∃ e : ℤ, area Λ = e * ((starRingEnd ℂ) L.ω₁ * L.ω₂).im ∧ e * e = 1 := by`. Break down `abs_choice ((starRingEnd ℂ) L.ω₁ * L.ω₂).im with h' | h'` into its components or cases.
+
+Conclude with `⟨1, by rw [ha, h']; simp only [Int.cast_one, one_mul], by simp⟩`. Conclude with `⟨-1, by rw [ha, h']; simp only [Int.cast_neg, Int.cast_one, neg_mul, one_mul], by simp⟩`. Use `⟨e, he2, fun p q r s => ?_⟩` and prove the remaining obligations. Establish `he3 : (e : ℝ) * e = 1` using `by exact_mod_cast he2`. Rewrite using `[gl3FieldFirst, div_eq_iff hpos.ne', he]`.
+
+Simplify using the standard rewrite rules. Take the linear combination `(-((q : ℝ) * r - p * s) * (L.ω₁.re * L.ω₂.im - L.ω₁.im * L.ω₂.re)) * he3`.
+-/
 theorem exists_sign (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z : ℂ, z ∈ Λ ↔ z ∈ L.lattice) :
     ∃ e : ℤ, e * e = 1 ∧ ∀ p q r s : ℤ,
       gl3FieldFirst Λ ((p : ℂ) * L.ω₁ + q * L.ω₂) ((r : ℂ) * L.ω₁ + s * L.ω₂) = ((e * (q * r - p * s) : ℤ) : ℝ) := by
@@ -73,11 +98,19 @@ theorem exists_sign (L : PeriodPair) (Λ : AddSubgroup ℂ) (h : ∀ z : ℂ, z 
   simp
   linear_combination (-((q : ℝ) * r - p * s) * (L.ω₁.re * L.ω₂.im - L.ω₁.im * L.ω₂.re)) * he3
 
+/- English proof (translation)
+Rewrite using `[q1, gl3FieldFirst, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, w0]`. Simplify using `[← Complex.ofReal_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmQuadraticForm_eq_alternatingForm (D : D7) (Λ : AddSubgroup ℂ) (x : ℂ) : q1 D Λ x = gl3FieldFirst Λ (w0 D * x) x := by
   rw [q1, gl3FieldFirst, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, w0]
   simp [← Complex.ofReal_pow]
   ring
 
+/- English proof (translation)
+Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Take `⟨n, hn⟩ : ∃ n : ℕ, D.host.d + 1 = 8 * n` from `⟨(D.host.d + 1) / 8, by omega⟩`. Establish `hn' : (D.host.d : ℂ) + 1 = 8 * n` using `by exact_mod_cast hn`. Establish `hs : (Real.sqrt D.host.d : ℂ) ^ 2 = D.host.d`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+
+Simplify using the standard rewrite rules. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[w0]`. Use `push_cast`. Take the linear combination `(Real.sqrt D.host.d : ℂ) ^ 2 / 4 * Complex.I_sq - 1 / 4 * hs - 1 / 4 * hn'`.
+-/
 theorem cm_generator_sq_quadratic_eq (D : D7) : ∃ n : ℤ, w0 D * w0 D = w0 D - 2 * n := by
   have hd16 : D.host.d % 16 = 7 := D.host.hyp.2.2.2.1
   obtain ⟨n, hn⟩ : ∃ n : ℕ, D.host.d + 1 = 8 * n := ⟨(D.host.d + 1) / 8, by omega⟩
@@ -90,6 +123,11 @@ theorem cm_generator_sq_quadratic_eq (D : D7) : ∃ n : ℤ, w0 D * w0 D = w0 D 
   push_cast
   linear_combination (Real.sqrt D.host.d : ℂ) ^ 2 / 4 * Complex.I_sq - 1 / 4 * hs - 1 / 4 * hn'
 
+/- English proof (translation)
+Introduce `w hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * c, cc.mul_mem_left a hc, by simp; ring⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem lamOf_stable (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 D.host.K) :
     ∀ w ∈ lamOf D cc δ, D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ lamOf D cc δ := by
   intro w hw
@@ -101,6 +139,9 @@ theorem lamOf_stable (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (a : 𝓞 
   | add x y _ _ hx hy => rw [mul_add]; exact add_mem hx hy
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc`. Use `⟨L.ω₁, L.ω₂, L.indep, AddSubgroup.ext fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hL, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]`. Simplify using `only [zsmul_eq_mul]`.
+-/
 theorem lamOf_eq_closure (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) :
     ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ lamOf D cc δ = AddSubgroup.closure {w₁, w₂} := by
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc
@@ -108,6 +149,25 @@ theorem lamOf_eq_closure (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : 
   rw [hL, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]
   simp only [zsmul_eq_mul]
 
+/- English proof (translation)
+Introduce `D _ cc δ hc t0 ht`. Take `⟨L, hL⟩` from `GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc`. Take `⟨α, hα⟩` from `GlobalTheory.NormSum.exists_integer_map_eq_w0 D`. Establish `hst : ∀ w ∈ lamOf D cc δ, w0 D * w ∈ lamOf D cc δ` using `fun w hw => hα ▸ lamOf_stable D cc δ α w hw`. Take `⟨ht1, ht2, ht3⟩` from `ht`.
+
+Use `⟨fun h0 => ht2 (hst _ h0), fun ω hω => ?_⟩` and prove the remaining obligations. Take `⟨e, he, hE⟩` from `exists_sign L _ hL`. Take `⟨n, hn⟩` from `cm_generator_sq_quadratic_eq D`. Take `⟨a, b, hab⟩` from `PeriodPair.mem_lattice.1 ((hL _).1 (hst _ ((hL _).2 L.ω₁_mem_lattice)))`. Take `⟨c, f, hcf⟩` from `PeriodPair.mem_lattice.1 ((hL _).1 (hst _ ((hL _).2 L.ω₂_mem_lattice)))`.
+
+Take `⟨r, s, hrs⟩` from `PeriodPair.mem_lattice.1 ((hL _).1 ht1)`. Take `⟨p, q, rfl⟩` from `PeriodPair.mem_lattice.1 ((hL _).1 hω)`. Establish `h12` using `coord_unique L (p := a * a + b * c) (q := a * b + b * f) (p' := a - 2 * n) (q' := b) (by`. Use `push_cast`. Take the linear combination `(a + w0 D - 1) * hab + b * hcf + L.ω₁ * hn)`.
+
+Establish `h34` using `coord_unique L (p := c * a + f * c) (q := c * b + f * f) (p' := c) (q' := f - 2 * n) (by`. Use `push_cast`. Take the linear combination `c * hab + (f + w0 D - 1) * hcf + L.ω₂ * hn)`. Establish `h5 : ¬ (Even (r * a + s * c) ∧ Even (r * b + s * f))`. Rewrite using `[← half_mem_iff L, ← hL]`.
+
+Introduce `h`. Apply `ht2` to reduce the goal to its premises. Use `h using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `w0 D * t0 = _`. Use `push_cast`.
+
+Take the linear combination `(-1 / 2 * r) * hab - 1 / 2 * s * hcf - 1 / 2 * w0 D * hrs`. Establish `h6 : ¬ (Even (r - (r * a + s * c)) ∧ Even (s - (r * b + s * f)))`. Rewrite using `[← half_mem_iff L, ← hL]`. Introduce `h`. Apply `ht3` to reduce the goal to its premises.
+
+Use `h using 1` and compare the differences between its conclusion and the goal. Establish `e1 : (1 - Complex.I * (Real.sqrt D.host.d : ℂ)) / 2 = 1 - w0 D` using `by rw [w0]; ring`. Rewrite using `[e1]`. Use `push_cast`. Take the linear combination `(1 / 2 * r) * hab + 1 / 2 * s * hcf - 1 / 2 * (1 - w0 D) * hrs`.
+
+Establish `hw : w0 D * ((p : ℂ) * L.ω₁ + q * L.ω₂) = ((p * a + q * c : ℤ) : ℂ) * L.ω₁ + ((p * b + q * f : ℤ) : ℂ) * L.ω₂`. Use `push_cast`. Take the linear combination `-p * hab - q * hcf`. Use `⟨e * ((p * b + q * f) * p - (p * a + q * c) * q), e * (q * r - p * s), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cmQuadraticForm_eq_alternatingForm, hw, hE]`.
+
+Rewrite using `[← hrs, hE]`. Rewrite using `[hL, half_mem_iff]`. Conclude with `int_two a b c f r s p q n e he h12.1 h12.2 h34.1 h34.2 h5 h6`.
+-/
 theorem even_im_hermitian_sub : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ t0, GL3Theta.IsTwoTorsionPointUnkilled D (lamOf D cc δ) t0 → t0 ∉ (lamOf D cc δ) ∧ ∀ ω ∈ (lamOf D cc δ), ∃ m k : ℤ, q1 D (lamOf D cc δ) ω = m ∧ gl3FieldFirst (lamOf D cc δ) ω (2 * t0) = k ∧ (Even (m + k) ↔ ω / 2 ∈ (lamOf D cc δ)) := by
   intro D _ cc δ hc t0 ht
   obtain ⟨L, hL⟩ := GlobalTheory.CurveLattice.exists_periodPair_lamOf D cc δ hc

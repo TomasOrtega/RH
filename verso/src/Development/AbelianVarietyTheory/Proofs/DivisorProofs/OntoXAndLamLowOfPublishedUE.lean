@@ -9,6 +9,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.HypothesisBundleCon
 
 namespace GlobalTheory.Fc.S0
 
+/- English proof (translation)
+Introduce `P`. Conclude with `⟨GlobalTheory.BigOn.ontoX_of_classicalTheorems P.greenCuspidal P.clozelCohomological P.cohomologicalCsdTempered P.heckeLAdicCharacter P.chebotarevDegreeOne P.discreteSpectrumGL P.galoisRepOfPolarizedCuspidal P.baseChangeDefiniteUnitary P.bhattScholzeCrystallineLattices P.heckeLAd …`.
+-/
 theorem ontoX_and_lamLow_of_classicalTheoremsUE :
     S0.HypothesesUE → GlobalTheory.BigOn.OntoX ∧ GlobalTheory.BigTop.LamLow := by
   intro P

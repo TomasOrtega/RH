@@ -17,17 +17,29 @@ section Gen
 
 variable {R : Type} {κ κ' κ₁ : Type}
 
+/- English proof (translation)
+Apply the tactic sequence `funext k; simp only [glue, GlobalTheory.ThK.AdaptEv.ext0]; cases eq k <;> rfl`.
+-/
 theorem glue_zero_eq_ext_zero [CommRing R] (eq : κ ≃ κ' ⊕ κ₁) (x : κ₁ → R) :
     glue eq (0 : κ' → R) x = GlobalTheory.ThK.AdaptEv.ext0 eq x := by
   funext k; simp only [glue, GlobalTheory.ThK.AdaptEv.ext0]; cases eq k <;> rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restr_apply [CommRing R] (eq : κ ≃ κ' ⊕ κ₁) (Φ : (κ → R) → ℂ) (x : κ₁ → R) :
     restr eq Φ x = Φ (glue eq 0 x) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `funext k; simp only [glue, Pi.add_apply]; cases eq k <;> simp`.
+-/
 theorem glue_add_zero [CommRing R] (eq : κ ≃ κ' ⊕ κ₁) (x y : κ₁ → R) :
     glue eq (0 : κ' → R) x + glue eq 0 y = glue eq 0 (x + y) := by
   funext k; simp only [glue, Pi.add_apply]; cases eq k <;> simp
 
+/- English proof (translation)
+Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [glue]`. Break down `eq k with i | j` into its components or cases. Conclude with `continuous_const`. Conclude with `continuous_apply j`.
+-/
 theorem continuous_glue_zero [CommRing R] [TopologicalSpace R] (eq : κ ≃ κ' ⊕ κ₁) :
     Continuous (fun x : κ₁ → R => glue eq 0 x) := by
   refine continuous_pi fun k => ?_
@@ -36,6 +48,11 @@ theorem continuous_glue_zero [CommRing R] [TopologicalSpace R] (eq : κ ≃ κ' 
   · exact continuous_const
   · exact continuous_apply j
 
+/- English proof (translation)
+Establish `hc` using `continuous_glue_zero (R := R) eq`. Establish `hr : Continuous (fun y : κ → R => fun j => y (eq.symm (Sum.inr j)))` using `by fun_prop`. Establish `hl : ∀ x : κ₁ → R, (fun j => glue eq 0 x (eq.symm (Sum.inr j))) = x` using `fun x => by`. Use function extensionality and compare the values at `j`. Simplify using `[glue]`.
+
+Use `⟨hg.1.comp_continuous hc, ?_⟩` and prove the remaining obligations. Use `(hg.2.image hr).of_isClosed_subset (isClosed_tsupport _) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨glue eq 0 x, tsupport_comp_subset_preimage g hc hx, hl x⟩`.
+-/
 theorem restr_mem_SB [CommRing R] [TopologicalSpace R] (eq : κ ≃ κ' ⊕ κ₁) (g : (κ → R) → ℂ)
     (hg : g ∈ SB (κ → R)) : restr eq g ∈ SB (κ₁ → R) := by
   have hc := continuous_glue_zero (R := R) eq
@@ -47,6 +64,9 @@ theorem restr_mem_SB [CommRing R] [TopologicalSpace R] (eq : κ ≃ κ' ⊕ κ�
   intro x hx
   exact ⟨glue eq 0 x, tsupport_comp_subset_preimage g hc hx, hl x⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [restr_apply, vacGlue, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `congr 2 <;> funext k <;> simp [glue]`.
+-/
 theorem restr_vacGlue [CommRing R] (eq : κ ≃ κ' ⊕ κ₁) (l : (κ' → R) → ℂ) (φ : (κ₁ → R) → ℂ) :
     restr eq (vacGlue eq l φ) = l 0 • φ := by
   funext x
@@ -63,6 +83,13 @@ section Adelic
 
 variable {F : Type} [Field F] [NumberField F] {κ κ' κ₁ : Type} [Fintype κ] [Fintype κ'] [Fintype κ₁]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [restr_apply, pureA, GlobalTheory.ThK.AdaptEv.Restr.restrS_apply]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← glue_zero_eq_ext_zero]`. Simplify using `only [glue]`. Break down `eq k with i | j` into its components or cases. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0`. Conclude with `map_zero _`.
+
+Both sides reduce to the same expression. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `only [glue]`. Apply the tactic sequence `rcases eq k with i | j <;> rfl`.
+-/
 theorem restr_pureA (eq : κ ≃ κ' ⊕ κ₁) (f : SInf F κ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     restr eq (pureA F f g) = pureA F (GlobalTheory.ThK.AdaptEv.Restr.restrS F eq f) (restr eq g) := by
   funext x
@@ -81,6 +108,11 @@ theorem restr_pureA (eq : κ ≃ κ' ⊕ κ₁) (f : SInf F κ) (g : (κ → Fin
     simp only [glue]
     rcases eq k with i | j <;> rfl
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Rewrite using `[restr_pureA]`. Conclude with `Submodule.subset_span ⟨_, _, restr_mem_SB eq g hg, rfl⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem restr_mem_schA (eq : κ ≃ κ' ⊕ κ₁) (Φ : (κ → AF F) → ℂ) (hΦ : Φ ∈ schA F κ) : restr eq Φ ∈ schA F κ₁ := by
   induction hΦ using Submodule.span_induction with
   | mem x hx =>
@@ -91,6 +123,15 @@ theorem restr_mem_schA (eq : κ ≃ κ' ⊕ κ₁) (Φ : (κ → AF F) → ℂ) 
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [restr_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, GlobalTheory.ThK.AdaptEv.Restr.restrS_apply]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[← glue_zero_eq_ext_zero]`. Simplify using `only [glue]`. Break down `eq k with i | j` into its components or cases. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : AF F).1 = 0`. Conclude with `map_zero _`.
+
+Both sides reduce to the same expression. Use `congr 1`. Use function extensionality and compare the values at `v`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [glue]`. Break down `eq k with i | j` into its components or cases. Conclude with `map_zero _`. Both sides reduce to the same expression.
+-/
 theorem restr_pure (eq : κ ≃ κ' ⊕ κ₁) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
     restr eq (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (GlobalTheory.ThK.AdaptEv.Restr.restrS F eq f) (fun v => restr eq (φ v)) := by
   funext x
@@ -119,6 +160,15 @@ end GlobalTheory.ThK.PlaneCo.GlueEv
 
 namespace GlobalTheory.ThK.PlaneCo.GlueEv
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ κ' _ X W X₁ W₁ ι ι' I M₁ eq T hf l μ D hblk hI hl hvac`. Establish `he : ∀ w, (glueDarboux M₁.co eq T hf).e w = (glue eq (T w).1.1 (M₁.co.e (T w).2).1, glue eq (T w).1.2 (M₁.co.e (T w).2).2)` using `glueDarboux_e M₁.co eq T hf`. Use `⟨fun Φ hΦ => restr_mem_schA eq Φ hΦ, fun z Φ _ => ?_, fun u hu Φ _ => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h1` using `he (incM F ι * z * (incM F ι')ᵀ)`.
+
+Rewrite `h1` using `[hblk z]`. Simplify using `only [restr_apply, Darboux.rho, schr, h1, glue_dot, dotProduct_zero, zero_dotProduct, zero_add, glue_add_zero]`. Use function extensionality and compare the values at `x`. Establish `h1` using `he u`. Take `⟨hu1, hu2⟩` from `hI u hu`.
+
+Rewrite `h1` using `[hu1, hu2, map_zero]`. Simplify using `only [restr_apply, Darboux.rho, schr, h1, Prod.fst_zero, Prod.snd_zero, glue_dot, dotProduct_zero, zero_dotProduct, add_zero, mul_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[glue_add_zero, add_zero]`. Use `⟨GlobalTheory.ThK.AdaptEv.Restr.restrS F eq, fun v => restr eq, GlobalTheory.ThK.AdaptEv.Restr.restrS_ne_zero F eq, fun v => ⟨?_, ?_⟩, fun f φ _ _ => restr_pure eq f φ⟩` and prove the remaining obligations. Use `show restr eq (vacGlue eq (l v) (M₁.vac v)) = M₁.vac v`.
+
+Rewrite using `[restr_vacGlue, (hl v).2, one_smul]`. Use `le_antisymm (Submodule.map_le_iff_le_comap.2 fun g hg => restr_mem_SB eq g hg) fun φ hφ => ?_` and prove the remaining obligations. Use `⟨vacGlue eq (l v) φ, (GlobalTheory.ThK.AdaptEv.sb_restrL_prodVac eq).2 (l v) (hl v).1 φ hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[restr_vacGlue, (hl v).2, one_smul]`.
+-/
 theorem restr_isEv : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {n d n₁ d₁ : ℕ} {κ' : Type} [Fintype κ'] (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁)
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))

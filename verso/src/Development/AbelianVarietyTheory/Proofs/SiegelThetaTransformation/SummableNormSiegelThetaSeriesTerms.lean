@@ -7,6 +7,11 @@ open scoped ComplexConjugate Real
 
 namespace GlobalTheory.SW.SiegelSum
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.SummableProdPi.summable_prod_pi`. Consider the case `exact _root_.GlobalTheory.SummableProdPi.summable_prod_pi`. Consider the case `(apply _root_.GlobalTheory.SummableProdPi.summable_prod_pi <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SummableProdPi.summable_prod_pi <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.SummableProdPi.summable_prod_pi <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SummableProdPi.summable_prod_pi ..)`.
+-/
 theorem summable_pi_prod {J A : Type} [Fintype J] (f : J → A → ℝ) (h0 : ∀ j a, 0 ≤ f j a)
     (hs : ∀ j, Summable (f j)) : Summable fun n : J → A => ∏ j, f j (n j) := by
   first
@@ -17,6 +22,19 @@ theorem summable_pi_prod {J A : Type} [Fintype J] (f : J → A → ℝ) (h0 : �
   | (intros; apply @_root_.GlobalTheory.SummableProdPi.summable_prod_pi <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.SummableProdPi.summable_prod_pi ..)
 
+/- English proof (translation)
+Establish `hc : Continuous fun x : ι → ℝ => x ⬝ᵥ (Y *ᵥ x)`. Simplify using `only [dotProduct, mulVec]`. Use `fun_prop`. Take `⟨c, hc0, hcl⟩` from `(isCompact_sphere (0 : ι → ℝ) 1).exists_forall_le' hc.continuousOn (a := 0) (fun q hq => by`. Establish `hx0 : q ≠ 0`.
+
+Introduce `h0`. Simplify using `[h0] at hq`. Simplify using `using hY.dotProduct_mulVec_pos hx0)`. Use `⟨c / (Fintype.card ι + 1), by positivity, fun x => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases.
+
+Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Establish `h1` using `hcl (‖x‖⁻¹ • x) (by simp [norm_smul, hn.ne'])`. Simplify using `only [mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at h1`. Establish `h2 : c * ‖x‖ ^ 2 ≤ x ⬝ᵥ (Y *ᵥ x)`.
+
+Use `mul_le_mul_of_nonneg_right h1 (sq_nonneg ‖x‖)` as an intermediate fact. Use `this.trans_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Establish `h3 : x ⬝ᵥ x ≤ (Fintype.card ι + 1) * ‖x‖ ^ 2`. Establish `: x ⬝ᵥ x ≤ ∑ _i : ι, ‖x‖ ^ 2` using `Finset.sum_le_sum fun i _ => by`.
+
+Use `norm_le_pi_norm x i` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Rewrite using `[← sq, ← sq_abs]`. Use `gcongr`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`.
+
+Use polynomial arithmetic with `[sq_nonneg ‖x‖]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_mul_dotProduct_le {ι : Type} [Fintype ι] {Y : Matrix ι ι ℝ} (hY : Y.PosDef) :
     ∃ c > 0, ∀ x : ι → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (Y *ᵥ x) := by
   have hc : Continuous fun x : ι → ℝ => x ⬝ᵥ (Y *ᵥ x) := by
@@ -51,6 +69,11 @@ theorem exists_mul_dotProduct_le {ι : Type} [Fintype ι] {Y : Matrix ι ι ℝ}
     _ = c * ‖x‖ ^ 2 := by field_simp
     _ ≤ _ := h2
 
+/- English proof (translation)
+Establish `: ∀ k i, ∃ n : ℤ, (n : ℚ) = R * x k i` using `fun k i => by`. Use `IsIntegrallyClosed.isIntegral_iff.1 (hx k i)` as an intermediate fact. Simplify using `using this`. Use `choose n hn using this`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `k i`. Establish `: (R : ℚ) ≠ 0` using `by positivity`. Simplify using `only [of_apply, hn]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_int_of_intM {κ ι : Type} [Fintype κ] [Fintype ι] {R : ℕ} (hR : 0 < R)
     {x : Matrix κ ι ℚ} (hx : IntM ((R : ℚ) • x)) :
     ∃ n : κ → ι → ℤ, x = Matrix.of fun k i => (n k i : ℚ) / R := by
@@ -64,6 +87,19 @@ theorem exists_int_of_intM {κ ι : Type} [Fintype κ] [Fintype ι] {R : ℕ} (h
   simp only [of_apply, hn]
   field_simp
 
+/- English proof (translation)
+Set `g : (κ → ι → Fin (R * R)) → ℝ` to `fun r => ‖φ (Matrix.of fun k i => ((r k i : ℕ) : ℚ) / R)‖`. Use `⟨∑ r, g r, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : φ x = 0`. Rewrite using `[hx, norm_zero]`. Conclude with `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+
+Take `⟨n, rfl⟩` from `exists_int_of_intM hR (h.1 x hx)`. Establish `hRR : (0 : ℤ) < (R : ℤ) * R` using `by positivity`. Set `r : κ → ι → Fin (R * R)` to `fun k i => ⟨(n k i % (R * R)).toNat, by`. Use `Int.emod_lt_of_pos (n k i) hRR` as an intermediate fact. Use `Int.emod_nonneg (n k i) hRR.ne'` as an intermediate fact.
+
+Use `zify`. Rewrite using `[Int.toNat_of_nonneg this]`. Use the proof step `assumption⟩`. Establish `key` using `h.2 (Matrix.of fun k i => ((r k i : ℕ) : ℚ) / R) (Matrix.of fun k i => ((n k i / (R * R) : ℤ) : ℚ)) (fun k i => isIntegral_algebraMap (x := n k i / (R * R)))`. Establish `he : (Matrix.of fun k i => (n k i : ℚ) / R) = (Matrix.of fun k i => ((r k i : ℕ) : ℚ) / R) + (R : ℚ) • (Matrix.of fun k i => ((n k i / (R * R) : ℤ) : ℚ))`.
+
+Use extensionality with `k i`. Establish `h1 : (((r k i : ℕ) : ℤ)) = n k i % (R * R)` using `Int.toNat_of_nonneg (Int.emod_nonneg (n k i) hRR.ne')`. Establish `h2` using `Int.emod_add_mul_ediv (n k i) (R * R)`. Rewrite `h2` using `[← h1]`. Establish `h3 : ((r k i : ℕ) : ℚ) + R * R * ((n k i / (R * R) : ℤ) : ℚ) = n k i`.
+
+Conclude with `h2` after adjusting the coercions. Establish `: (R : ℚ) ≠ 0` using `by positivity`. Simplify using `only [of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← h3]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[he, key]`. Conclude with `Finset.single_le_sum (f := g) (fun _ _ => norm_nonneg _) (Finset.mem_univ r)`.
+-/
 theorem exists_bound {κ ι : Type} [Fintype κ] [Fintype ι] {R : ℕ} (hR : 0 < R)
     {φ : Matrix κ ι ℚ → ℂ} (h : HasLevel R φ) : ∃ M, ∀ x, ‖φ x‖ ≤ M := by
   classical
@@ -96,6 +132,11 @@ theorem exists_bound {κ ι : Type} [Fintype κ] [Fintype ι] {R : ℕ} (hR : 0 
   rw [he, key]
   exact Finset.single_le_sum (f := g) (fun _ _ => norm_nonneg _) (Finset.mem_univ r)
 
+/- English proof (translation)
+Establish `h1 : (qv v ⬝ᵥ τ *ᵥ qv v).im = (fun i => (v i : ℝ)) ⬝ᵥ (τ.map Complex.im *ᵥ fun i => (v i : ℝ))`. Simplify using `[dotProduct, mulVec, qv, Complex.im_sum, Complex.re_sum]`. Establish `h2 : (2 * (qv v ⬝ᵥ ζ)).im = ∑ i, 2 * ((v i : ℝ) * (ζ i).im)`. Simplify using `[dotProduct, qv, Complex.im_sum, Finset.mul_sum]`. Rewrite using `[Complex.add_im, h1, h2, Finset.sum_sub_distrib, sub_eq_add_neg, ← Finset.sum_neg_distrib]`.
+
+Use `add_le_add (le_trans (le_of_eq ?_) (hc _)) (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Simplify using `[dotProduct, Finset.mul_sum, sq]`. Establish `h3` using `neg_abs_le ((v i : ℝ) * (ζ i).im)`. Rewrite `h3` using `[abs_mul]`. Use polynomial arithmetic with `[hS i, abs_nonneg (v i : ℝ)]`.
+-/
 theorem sum_le_im {ι : Type} [Fintype ι] {τ : Matrix ι ι ℂ} {c S : ℝ}
     (hc : ∀ x : ι → ℝ, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ (τ.map Complex.im *ᵥ x)) (ζ : ι → ℂ)
     (hS : ∀ i, |(ζ i).im| ≤ S) (v : ι → ℚ) :
@@ -113,6 +154,21 @@ theorem sum_le_im {ι : Type} [Fintype ι] {τ : Matrix ι ι ℂ} {c S : ℝ}
     rw [abs_mul] at h3
     nlinarith [hS i, abs_nonneg (v i : ℝ)]
 
+/- English proof (translation)
+Introduce `κ ι _ _ _ φ ⟨R, hR, h⟩ τ hτ ζ`. Take `⟨M, hM⟩` from `exists_bound hR h`. Take `⟨c, hc0, hc⟩` from `exists_mul_dotProduct_le hτ.2`. Establish `hR0 : (R : ℝ) ≠ 0` using `by positivity`. Establish `hS : ∀ k i, |(ζ k i).im| ≤ ‖ζ‖` using `fun k i => (Complex.abs_im_le_norm _).trans ((norm_le_pi_norm (ζ k) i).trans (norm_le_pi_norm ζ k))`.
+
+Set `e : (κ → ι → ℤ) → Matrix κ ι ℚ` to `fun n => Matrix.of fun k i => (n k i : ℚ) / R`. Establish `he : Function.Injective e`. Introduce `m n hmn`. Use function extensionality and compare the values at `k i`. Establish `h1 : (m k i : ℚ) / R = (n k i : ℚ) / R` using `congrFun (congrFun hmn k) i`.
+
+Establish `: (R : ℚ) ≠ 0` using `by positivity`. Conclude with `(div_left_inj' this).1 h1` after adjusting the coercions. Use `(he.summable_iff fun x hx => ?_).1 ?_` and prove the remaining obligations. Establish `: φ x = 0`. Assume the negation of the conclusion as `h0`.
+
+Take `⟨n, hn⟩` from `exists_int_of_intM hR (h.1 x h0)`. Conclude with `hx ⟨n, hn.symm⟩`. Simplify using `[this]`. Set `f : ℤ → ℝ` to `fun n => Real.exp (-π * (c / R ^ 2 * n ^ 2 - 2 * (‖ζ‖ / R) * |n|))`. Establish `hf : Summable f`.
+
+Simplify `summable_pow_mul_jacobiTheta₂_term_bound (‖ζ‖ / R) (T := c / R ^ 2) (by positivity) 0` using `[f]`. Establish `hs : Summable fun n : κ → ι → ℤ => ∏ k, ∏ i, f (n k i)` using `summable_pi_prod (fun (_ : κ) (m : ι → ℤ) => ∏ i, f (m i)) (fun _ _ => Finset.prod_nonneg fun _ _ => (Real.exp_pos _).le) fun _ => summable_pi_prod (fun _ => f) (fun _ _ => (Real.exp_pos _).le) fun _ => hf`. Use `(hs.mul_left M).of_nonneg_of_le (fun _ => norm_nonneg _) fun n => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, norm_mul]`. Use `mul_le_mul (hM _) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hM 0))` and prove the remaining obligations.
+
+Simplify using `only [f, ← Real.exp_sum, Complex.norm_exp, Real.exp_le_exp, ← Finset.mul_sum]`. Establish `h1 : ∀ z : ℂ, (π * I * z).re = -π * z.im` using `fun z => by simp`. Rewrite using `[h1, Complex.im_sum]`. Use `mul_le_mul_of_nonpos_left (Finset.sum_le_sum fun k _ => ?_) (by linarith [Real.pi_pos])` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (sum_le_im hc (ζ k) (hS k) (e n k))` and prove the remaining obligations.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [e, of_apply, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast, abs_div, Nat.abs_cast, Int.cast_abs]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem summable_norm_thetaTerm : ∀ (κ ι : Type) [Fintype κ] [Fintype ι] [DecidableEq ι] (φ : Matrix κ ι ℚ → ℂ), IsSB φ → ∀ τ ∈ Siegel ι, ∀ ζ : κ → ι → ℂ, Summable fun x : Matrix κ ι ℚ => ‖φ x * cexp (π * I * ∑ k, (qv (x k) ⬝ᵥ τ *ᵥ qv (x k) + 2 * (qv (x k) ⬝ᵥ ζ k)))‖ := by
   intro κ ι _ _ _ φ ⟨R, hR, h⟩ τ hτ ζ
   obtain ⟨M, hM⟩ := exists_bound hR h

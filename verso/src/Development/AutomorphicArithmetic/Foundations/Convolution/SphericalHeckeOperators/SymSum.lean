@@ -38,6 +38,9 @@ def eR (S : Finset (Fin n × Fin n)) : Fin n → ℤ := ∑ p ∈ pairs n \ S, P
 
 def sgS (S : Finset (Fin n × Fin n)) : ℂ := (-1) ^ (pairs n \ S).card
 
+/- English proof (translation)
+Introduce `_ h` and use `by simp at h`.
+-/
 example : Dom (0 : LaurentRing n) := fun _ h => by simp at h
 
 end Laurent

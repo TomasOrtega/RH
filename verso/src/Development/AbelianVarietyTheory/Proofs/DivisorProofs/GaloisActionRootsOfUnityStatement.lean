@@ -12,6 +12,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (upIdele IsLat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option autoImplicit false
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.cyclotomic_character_of_ringEquiv | exact GlobalTheory.cyclotomic_character_of_ringEquiv | (intros; apply GlobalTheory.cyclotomic_character_of_ringEquiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.galois_action_roots_of_unity : ∀ (g : ℂ ≃+* ℂ) (k : ℕ), 0 < k → ∃ a : ℤ, IsCoprime a (k : ℤ) ∧
     ∀ n : ℤ, g (Complex.exp (2 * Real.pi * Complex.I * n / k)) = Complex.exp (2 * Real.pi * Complex.I * (a * n) / k) := by
   first | exact @GlobalTheory.cyclotomic_character_of_ringEquiv | exact GlobalTheory.cyclotomic_character_of_ringEquiv | (intros; apply GlobalTheory.cyclotomic_character_of_ringEquiv <;> assumption)

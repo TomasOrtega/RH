@@ -17,9 +17,15 @@ abbrev Jf : Matrix (Fin I.n) (Fin I.n) (I.E ⊗[I.F] Af I.F) := I.J.map (Formali
 
 def Bx (N : ℕ) : Set (Af I.F) := (fun u => algebraMap I.F (Af I.F) ((N : I.F)⁻¹) * u) '' Ohat I.F
 
+/- English proof (translation)
+The claim follows from `isCompact_Ohat.image (continuous_const.mul continuous_id)`.
+-/
 theorem isCompact_Bx (N : ℕ) : IsCompact (Bx I N) :=
   isCompact_Ohat.image (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Use `⟨N • a, ha, ?_⟩` and prove the remaining obligations. Establish `hN0 : (N : I.F) ≠ 0` using `by exact_mod_cast hN.ne'`. Simplify using `only`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, ← map_natCast (algebraMap I.F (Af I.F)), ← map_mul, inv_mul_cancel₀ hN0, map_one, one_mul]`.
+-/
 theorem mem_Bx {N : ℕ} (hN : 0 < N) {a : Af I.F} (ha : N • a ∈ Ohat I.F) : a ∈ Bx I N := by
   refine ⟨N • a, ha, ?_⟩
   have hN0 : (N : I.F) ≠ 0 := by exact_mod_cast hN.ne'

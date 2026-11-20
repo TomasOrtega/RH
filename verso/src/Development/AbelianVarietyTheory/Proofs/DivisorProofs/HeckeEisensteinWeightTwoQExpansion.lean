@@ -16,6 +16,13 @@ namespace GlobalTheory.HeckeTwoExp
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Break down `hy.lt_or_gt with h | h` into its components or cases. Establish `e` using `hTrans_zero_neg (-ν) y`. Rewrite `e` using `[neg_neg]`. Rewrite using `[← e, GlobalTheory.T.heckePhiFourierTransform_sigma_zero_eq _ _ (neg_pos.2 h)]`. Distinguish the cases in `hν : 0 < -ν`.
+
+Establish `h2 : 0 < ν * y` using `by nlinarith`. Rewrite using `[if_pos hν, if_pos h2, abs_of_neg (by linarith : ν < 0), show -(2 * Real.pi * -ν * -y) = -(2 * Real.pi * (ν * y)) by ring]`. Establish `h2 : ¬ 0 < ν * y` using `by nlinarith`. Rewrite using `[if_neg hν, if_neg h2]`. Rewrite using `[GlobalTheory.T.heckePhiFourierTransform_sigma_zero_eq _ _ h]`.
+
+Distinguish the cases in `hν : 0 < ν`. Establish `h2 : 0 < ν * y` using `mul_pos hν h`. Rewrite using `[if_pos hν, if_pos h2, abs_of_pos hν, show 2 * Real.pi * ν * y = 2 * Real.pi * (ν * y) by ring]`. Establish `h2 : ¬ 0 < ν * y` using `by nlinarith`. Rewrite using `[if_neg hν, if_neg h2]`.
+-/
 theorem hTrans_zero (ν y : ℝ) (hy : y ≠ 0) :
     hTrans 0 ν y = if 0 < ν * y then
       -4 * (Real.pi : ℂ) ^ 2 * ((|ν| : ℝ) : ℂ) * ((Real.exp (-(2 * Real.pi * (ν * y))) : ℝ) : ℂ) else 0 := by
@@ -36,6 +43,19 @@ theorem hTrans_zero (ν y : ℝ) (hy : y ≠ 0) :
     · have h2 : ¬ 0 < ν * y := by nlinarith
       rw [if_neg hν, if_neg h2]
 
+/- English proof (translation)
+Establish `hyτ : ∀ τ : Emb F, τ b * (z τ).im ≠ 0` using `fun τ => mul_ne_zero ((map_ne_zero τ).2 hb) (hz τ).ne'`. Unfold `fTerm`. Simplify using `only [hTrans_zero _ _ (hyτ _)]`. Use `split_ifs with hc`. Establish `hc' : ∀ τ : Emb F, 0 < τ ν * (τ b * (z τ).im)` using `fun τ => by`.
+
+Use `hc τ` as an intermediate fact. Rewrite `this` using `[map_mul]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_pos this (hz τ)`. Rewrite using `[Finset.prod_congr rfl fun τ _ => by rw [if_pos (hc' τ)]]`.
+
+Rewrite using `[abs_norm_eq_prod, qPow, Finset.mul_sum, Complex.exp_sum]`. Rewrite using `[show ((-4 * (Real.pi : ℂ) ^ 2) ^ Fintype.card (Emb F) * ∏ τ : Emb F, ((|τ ν| : ℝ) : ℂ)) * ∏ x : Emb F, Complex.exp (2 * (Real.pi : ℂ) * I * ((x (ν * b) : ℂ) * z x)) = ∏ τ : Emb F, ((-4 * (Real.pi : ℂ) ^ 2) * ((|τ ν| : ℝ) : ℂ) * Complex.exp (2 * (Real.pi : ℂ) * I * ((τ (ν * b) : …`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_assoc, Complex.ofReal_exp, ← Complex.exp_add]`.
+
+Use `congr 1`. Use `congr 1`. Use `conv_rhs => rw [← Complex.re_add_im (z τ)]`. Simplify using `only [map_mul]`. Use `push_cast`.
+
+Take the linear combination `(-2 * (Real.pi : ℂ) * (τ ν : ℂ) * (τ b : ℂ) * ((z τ).im : ℂ)) * I_sq`. Use `push_neg at hc`. Take `⟨τ, hτ⟩` from `hc`. Establish `: ¬ 0 < τ ν * (τ b * (z τ).im)`. Rewrite `hτ` using `[map_mul]`.
+
+Rewrite using `[← mul_assoc]`. Conclude with `not_lt.2 (mul_nonpos_of_nonpos_of_nonneg hτ (hz τ).le)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ τ) (by rw [if_neg this, mul_zero])`.
+-/
 theorem fTerm_zero [IsTotallyReal F] {z : Emb F → ℂ} (hz : z ∈ upperHalf F) {b ν : F} (hb : b ≠ 0) (hν : ν ≠ 0) :
     fTerm 0 z b ν = if ∀ τ : Emb F, 0 < τ (ν * b) then
       (-4 * (Real.pi : ℂ) ^ 2) ^ Fintype.card (Emb F) * ((|(Algebra.norm ℚ ν : ℝ)| : ℝ) : ℂ) * qPow (ν * b) z
@@ -66,6 +86,17 @@ theorem fTerm_zero [IsTotallyReal F] {z : Emb F → ℂ} (hz : z ∈ upperHalf F
       rw [map_mul] at hτ; rw [← mul_assoc]; exact not_lt.2 (mul_nonpos_of_nonpos_of_nonneg hτ (hz τ).le)
     exact Finset.prod_eq_zero (Finset.mem_univ τ) (by rw [if_neg this, mul_zero])
 
+/- English proof (translation)
+Establish `hS` using `GlobalTheory.T.summable_hilbertEisensteinWeightTwoQSeries F 𝔞 𝔟 z hz`. Use `⟨hS, ?_⟩` and prove the remaining obligations. Establish `hn : (nrm 𝔞 : ℂ) ≠ 0` using `by exact_mod_cast nrm_ne_zero 𝔞`. Establish `hs : ((dF F ^ ((1 : ℝ) / 2) : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.rpow_pos_of_pos (dF_pos (F := F)) _).ne'` after adjusting the coercions.
+
+Establish `hcK : (cK F 2 : ℂ) = ((dF F ^ ((1 : ℝ) / 2) : ℝ) : ℂ)`. Unfold `cK`. Evaluate the numerical expressions. Establish `hL : (cK F 2 : ℂ) * (kFac F 0 * (omegaFactor 𝔞 : ℂ) * bOne 𝔞 𝔟 0 z) / (omegaFactor 𝔞 : ℂ) ^ 2 = (kFac F 0 / (nrm 𝔞 : ℂ)) * bOne 𝔞 𝔟 0 z`. Rewrite using `[hcK, omegaFactor]`.
+
+Use `push_cast`. Move the coercions through the operations in `at hs`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hL, bOne, ← tsum_mul_left, tsum_qClass_eq 𝔞 𝔟 z hS]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations.
+
+Rewrite using `[← tsum_mul_left]`. Use `tsum_congr fun ν => ?_` and prove the remaining obligations. Rewrite using `[fTerm_zero hz c.out.2.2 ν.2.2]`. Use `split_ifs with hc`. Establish `hk` using `kFac_zero_mul (F := F)`.
+
+Unfold `qTerm`. Simplify using `only [show (2:ℕ) - 1 = 1 from rfl, pow_one, Complex.ofReal_div]`. Take the linear combination `(((|(Algebra.norm ℚ ν.1 : ℝ)| : ℝ) : ℂ) / (nrm 𝔞 : ℂ) * qPow (ν.1 * c.out.1) z) * hk`. Rewrite using `[mul_zero]`.
+-/
 theorem bOne_zero_expansion [IsTotallyReal F] (𝔞 𝔟 : Frac F) (z : Emb F → ℂ) (hz : z ∈ upperHalf F) :
     Summable (qClass 𝔞 𝔟 2 z) ∧
       (cK F 2 : ℂ) * (kFac F 0 * (omegaFactor 𝔞 : ℂ) * bOne 𝔞 𝔟 0 z) / (omegaFactor 𝔞 : ℂ) ^ 2 =
@@ -94,6 +125,9 @@ theorem bOne_zero_expansion [IsTotallyReal F] (𝔞 𝔟 : Frac F) (z : Emb F �
     linear_combination (((|(Algebra.norm ℚ ν.1 : ℝ)| : ℝ) : ℂ) / (nrm 𝔞 : ℂ) * qPow (ν.1 * c.out.1) z) * hk
   · rw [mul_zero]
 
+/- English proof (translation)
+Introduce `_ _ _ _ 𝔞 𝔟 z hz` and use `bOne_zero_expansion 𝔞 𝔟 z hz`.
+-/
 theorem bOne_zero_qExpansion : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F]
     (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F), ∀ z ∈ GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.upperHalf F,
     Summable (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.qClass 𝔞 𝔟 2 z) ∧ (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.cK F 2 : ℂ) * (GlobalTheory.HeckeTwo.kFac F 0 *

@@ -28,6 +28,11 @@ open scoped ComplexConjugate Classical InnerProductSpace
 
 namespace UpperTheory.ConvolutionTheory.C.TraceVanishing
 
+/- English proof (translation)
+Take `⟨hf, rfl⟩` from `h`. Establish `key : ∀ (R : Submodule ℂ V) (_ : R = LinearMap.range A) (h1 : ∀ v ∈ R, (b • A) v ∈ R) (h2 : ∀ v ∈ LinearMap.range A, A v ∈ LinearMap.range A), LinearMap.trace ℂ R ((b • A).restrict h1) = b * LinearMap.trace ℂ (LinearMap.range A) (A.restrict h2)`. Introduce `R hR h1 h2`. Substitute `hR` using the available equality. Establish `e : (b • A).restrict h1 = b • A.restrict h2` using `rfl`.
+
+Rewrite using `[e, map_smul, smul_eq_mul]`. Establish `hr : LinearMap.range (b • A) = LinearMap.range A` using `LinearMap.range_smul _ _ hb`. Conclude with `⟨by rw [hr]; exact hf, key _ hr _ _⟩`.
+-/
 private theorem hasFinTrace_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A : V →ₗ[ℂ] V) {c : ℂ} (b : ℂ) (hb : b ≠ 0)
     (h : HasFinTrace A c) : HasFinTrace (b • A) (b * c) := by
   obtain ⟨hf, rfl⟩ := h
@@ -41,12 +46,20 @@ private theorem hasFinTrace_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A :
   have hr : LinearMap.range (b • A) = LinearMap.range A := LinearMap.range_smul _ _ hb
   exact ⟨by rw [hr]; exact hf, key _ hr _ _⟩
 
+/- English proof (translation)
+Introduce `v l` and use `⟨(hA v l).1.smul_measure hdt, by rw [integral_smul_measure, LinearMap.smul_apply, map_smul, (hA v l).2, Complex.real_smul, smul_eq_mul]⟩`.
+-/
 private theorem isInt_smul {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     {m : Measure G} {ρ : Representation ℂ G V} {f : G → ℂ} {A : V →ₗ[ℂ] V} (d : ENNReal) (hdt : d ≠ ⊤)
     (hA : IsIntegralOp m ρ f A) : IsIntegralOp (d • m) ρ f ((d.toReal : ℂ) • A) := fun v l =>
   ⟨(hA v l).1.smul_measure hdt, by
     rw [integral_smul_measure, LinearMap.smul_apply, map_smul, (hA v l).2, Complex.real_smul, smul_eq_mul]⟩
 
+/- English proof (translation)
+Take `⟨B, hB, hF⟩` from `h`. Establish `hb : (d.toReal : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hd0, hdt⟩)`. Use `⟨(d.toReal : ℂ) • B, isInt_smul d hdt hB, ?_⟩` and prove the remaining obligations. Establish `e : ((d.toReal : ℂ) • B) ∘ₗ (I : τ.V →ₗ[ℂ] τ.V) = (d.toReal : ℂ) • (B ∘ₗ (I : τ.V →ₗ[ℂ] τ.V))` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `hasFinTrace_smul _ _ hb hF`.
+-/
 private theorem hasTw_smul {G : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] {m : Measure G} {τ : SmIrr G}
     {I : τ.V ≃ₗ[ℂ] τ.V} {φ : G → ℂ} {t : ℂ} (d : ENNReal) (hd0 : d ≠ 0) (hdt : d ≠ ⊤)
     (h : HasTwTrace m τ I φ t) : HasTwTrace (d • m) τ I φ ((d.toReal : ℂ) * t) := by
@@ -57,6 +70,9 @@ private theorem hasTw_smul {G : Type} [Group G] [TopologicalSpace G] [Measurable
   rw [e]
   exact hasFinTrace_smul _ _ hb hF
 
+/- English proof (translation)
+Use `⟨A.card, fun i => (A.equivFin.symm i).1, Subtype.val_injective.comp A.equivFin.symm.injective, fun v => ⟨fun hv => ⟨A.equivFin ⟨v, hv⟩, by simp⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(A.equivFin.symm i).2`.
+-/
 private theorem exists_enum {α : Type} (A : Finset α) :
     ∃ (r : ℕ) (p : Fin r → α), Function.Injective p ∧ ∀ v, v ∈ A ↔ v ∈ Set.range p := by
   refine ⟨A.card, fun i => (A.equivFin.symm i).1, Subtype.val_injective.comp A.equivFin.symm.injective,
@@ -64,6 +80,11 @@ private theorem exists_enum {α : Type} (A : Finset α) :
   rintro ⟨i, rfl⟩
   exact (A.equivFin.symm i).2
 
+/- English proof (translation)
+Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_, HasCompactSupport.intro hJ.1 fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (J : Set G)`. Use `filter_upwards [hJ.2.mem_nhds hx, (IsLocallyConstant.iff_eventually_eq _).1 hχ.1 x] with y hy hy2`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx, hy2]`. Establish `hcl : IsClosed (J : Set G)` using `Subgroup.isClosed_of_isOpen J hJ.2 filter_upwards [hcl.isOpen_compl.mem_nhds hx] with y hy`.
+
+Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+-/
 private theorem test_ind {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {J : Subgroup G} (hJ : CO J)
     {χ : G → ℂ} (hχ : IsChr J χ) : Test ((J : Set G).indicator fun x => conj (χ x)) := by
   refine ⟨(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_,
@@ -75,6 +96,9 @@ private theorem test_ind {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
     filter_upwards [hcl.isOpen_compl.mem_nhds hx] with y hy
     rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Establish `e : (kerChr J χ h : Set G) = (J : Set G) ∩ χ ⁻¹' {1}` using `rfl`. Establish `ho : IsOpen (χ ⁻¹' {(1 : ℂ)})` using `h.1.isOpen_fiber 1`. Establish `hc : IsClosed (χ ⁻¹' {(1 : ℂ)})` using `isClosed_singleton.preimage h.1.continuous`. Rewrite using `[CO, e]`. Conclude with `⟨hJ.1.inter_right hc, hJ.2.inter ho⟩`.
+-/
 private theorem ker_co {G : Type} [Group G] [TopologicalSpace G] {J : Subgroup G} {χ : G → ℂ} (hJ : CO J) (h : IsChr J χ) :
     CO (kerChr J χ h) := by
   have e : (kerChr J χ h : Set G) = (J : Set G) ∩ χ ⁻¹' {1} := rfl
@@ -83,6 +107,9 @@ private theorem ker_co {G : Type} [Group G] [TopologicalSpace G] {J : Subgroup G
   rw [CO, e]
   exact ⟨hJ.1.inter_right hc, hJ.2.inter ho⟩
 
+/- English proof (translation)
+Take `⟨h1, h2⟩ : u ∈ J ∧ χ u = 1` from `hu`. Distinguish the cases in `hg : g ∈ J`. Rewrite using `[Set.indicator_of_mem (by exact J.mul_mem h1 hg), Set.indicator_of_mem (by exact hg), h.2.2 u h1 g hg, h2, one_mul]`. Establish `: u * g ∉ J` using `fun hh => hg ((Subgroup.mul_mem_cancel_left J h1).1 hh)`. Rewrite using `[Set.indicator_of_notMem (by exact this), Set.indicator_of_notMem (by exact hg)]`.
+-/
 private theorem ker_inv {G : Type} [Group G] [TopologicalSpace G] {J : Subgroup G} {χ : G → ℂ} (h : IsChr J χ)
     (u : G) (hu : u ∈ kerChr J χ h) (g : G) :
     (J : Set G).indicator (fun x => conj (χ x)) (u * g) = (J : Set G).indicator (fun x => conj (χ x)) g := by
@@ -95,18 +122,30 @@ private theorem ker_inv {G : Type} [Group G] [TopologicalSpace G] {J : Subgroup 
 section Hil
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Establish `hc : V.topologicalClosure = V` using `hV.submodule_topologicalClosure_eq`. Establish `h : prj V v ∈ V.topologicalClosure` using `Submodule.starProjection_apply_mem V.topologicalClosure v`. Rewrite `h` using `[hc]`. Then use the resulting hypothesis.
+-/
 private theorem prj_mem' {V : Submodule ℂ H} (hV : IsClosed (V : Set H)) (v : H) : prj V v ∈ V := by
   have hc : V.topologicalClosure = V := hV.submodule_topologicalClosure_eq
   have h : prj V v ∈ V.topologicalClosure := Submodule.starProjection_apply_mem V.topologicalClosure v
   rwa [hc] at h
 
+/- English proof (translation)
+The claim follows from `Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure V hv)`.
+-/
 private theorem prj_self' {V : Submodule ℂ H} {v : H} (hv : v ∈ V) : prj V v = v :=
   Submodule.starProjection_eq_self_iff.2 (Submodule.le_topologicalClosure V hv)
 
+/- English proof (translation)
+Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`.
+-/
 private theorem mem_eigIn' {W : Submodule ℂ H} {A : H →L[ℂ] H} {x : ℝ} {v : H} :
     v ∈ eigIn W A x ↔ v ∈ W ∧ A v = (x : ℂ) • v := by
   simp [eigIn, Module.End.mem_eigenspace_iff]
 
+/- English proof (translation)
+Unfold `trOn`. Use `congr 1`. Use `ext1 v`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[h _ (prj_mem' hY v)]`.
+-/
 private theorem trOn_congr {Y : Submodule ℂ H} (hY : IsClosed (Y : Set H)) {A B : H →L[ℂ] H} (h : ∀ v ∈ Y, A v = B v) :
     trOn Y A = trOn Y B := by
   unfold trOn
@@ -120,6 +159,11 @@ end Hil
 section Ops
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `ContinuousLinearMap.ext fun v => ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Use `show ⟪u, R (Bo v)⟫_ℂ = ⟪u, Bo (R v)⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left R, h, h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ψ g * _ = ψ g * _`.
+
+Use `congr 1`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hR g).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[this]`.
+-/
 private theorem oloc_comm {w : Pl K} [MeasurableSpace (Gw n w)] {m : Measure (Gw n w)} {ψ : Gw n w → ℂ}
     {Bo : LL μ →L[ℂ] LL μ} (h : IsOloc μ w m ψ Bo) (R : LL μ →L[ℂ] LL μ) (hR : ∀ g, Commute R (rhoL μ w g)) :
     Commute R Bo := by
@@ -134,19 +178,31 @@ private theorem oloc_comm {w : Pl K} [MeasurableSpace (Gw n w)] {m : Measure (Gw
   simp only [ContinuousLinearMap.mul_apply] at this
   rw [this]
 
+/- English proof (translation)
+Simplify using `[eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]`.
+-/
 private theorem mem_eigL' {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} {v : LL μ} :
     v ∈ eigL μ w J χ ↔ ∀ x ∈ J, rhoL μ w x v = χ x • v := by
   simp [eigL, Submodule.mem_iInf, LinearMap.mem_eqLocus]
 
+/- English proof (translation)
+Simplify using `only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply, Subgroup.mem_map, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, rhoL]`.
+-/
 private theorem mem_fixL' {w : Pl K} {J : Subgroup (Gw n w)} {v : LL μ} :
     v ∈ fixL μ w J ↔ ∀ x ∈ J, rhoL μ w x v = v := by
   simp only [fixL, fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply,
     Subgroup.mem_map, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, rhoL]
 
+/- English proof (translation)
+Simplify using `only [fixL, fixF, Submodule.coe_iInf]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (rhoF μ u).continuous continuous_id`.
+-/
 private theorem isClosed_fixL (w : Pl K) (J : Subgroup (Gw n w)) : IsClosed (fixL μ w J : Set (LL μ)) := by
   simp only [fixL, fixF, Submodule.coe_iInf]
   exact isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (rhoF μ u).continuous continuous_id
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_eigL']`. Introduce `x hx`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (h x).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[← this, hv x hx, map_smul]`.
+-/
 private theorem eigL_comm {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → ℂ} (O : LL μ →L[ℂ] LL μ)
     (h : ∀ g, Commute O (rhoL μ w g)) {v : LL μ} (hv : v ∈ eigL μ w J χ) : O v ∈ eigL μ w J χ := by
   rw [mem_eigL'] at hv ⊢
@@ -155,6 +211,9 @@ private theorem eigL_comm {w : Pl K} {J : Subgroup (Gw n w)} {χ : Gw n w → �
   simp only [ContinuousLinearMap.mul_apply] at this
   rw [← this, hv x hx, map_smul]
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_fixL']`. Introduce `x hx`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (h x).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Rewrite using `[← this, hv x hx]`.
+-/
 private theorem fixL_comm {w : Pl K} {J : Subgroup (Gw n w)} (O : LL μ →L[ℂ] LL μ)
     (h : ∀ g, Commute O (rhoL μ w g)) {v : LL μ} (hv : v ∈ fixL μ w J) : O v ∈ fixL μ w J := by
   rw [mem_fixL'] at hv ⊢
@@ -163,6 +222,9 @@ private theorem fixL_comm {w : Pl K} {J : Subgroup (Gw n w)} (O : LL μ →L[ℂ
   simp only [ContinuousLinearMap.mul_apply] at this
   rw [← this, hv x hx]
 
+/- English proof (translation)
+Establish `key : C ∘L Oinf μ ν a = Oinf μ ν a ∘L C`. Use `UnitaryRep.comp_integrated_of_mem_intertwiners _ _ ?_ _` and prove the remaining obligations. Introduce `x u`. Conclude with `DFunLike.congr_fun (h x).eq u`. Conclude with `key`.
+-/
 private theorem oinf_comm (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (a : TI K n) (C : LL μ →L[ℂ] LL μ)
     (h : ∀ g, Commute C (rightRegularRep (rationalGLOne K n) μ (archP K n g))) : Commute C (Oinf μ ν a) := by
   have key : C ∘L Oinf μ ν a = Oinf μ ν a ∘L C := by
@@ -171,6 +233,9 @@ private theorem oinf_comm (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (a :
     exact DFunLike.congr_fun (h x).eq u
   exact key
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 private theorem oinf_congr {ν₁ ν₂ : Measure (archGroup K n)} [ν₁.IsHaarMeasure] [ν₂.IsHaarMeasure] (h : ν₁ = ν₂) (β : TI K n) :
     Oinf μ ν₁ β = Oinf μ ν₂ β := by
   subst h; rfl
@@ -180,9 +245,19 @@ end Ops
 section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext w.2.over.symm`.
+-/
 private theorem under_over' {v : Pl F} (w : PlacesOver E v) : w.1.under (𝓞 F) = v :=
   HeightOneSpectrum.ext w.2.over.symm
 
+/- English proof (translation)
+Establish `hev : Function.Bijective (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w)`. Use `letI : Unique (PlacesOver E v) := ⟨⟨w⟩, h⟩`. Prove the components needed by the constructor for the conclusion. Introduce `a b e`. Use function extensionality and compare the values at `u`.
+
+Take `rfl` from `h u`. Conclude with `e`. Introduce `z`. Use `⟨fun u => (h u).symm ▸ z, ?_⟩` and prove the remaining obligations. Use `show ((h w).symm ▸ z : (w.1.adicCompletion E)) = z`.
+
+Both sides reduce to the same expression. Set `e` to `RingEquiv.ofBijective _ hev`. Introduce `y`. Use `⟨mapGL n (e.symm : _ →+* _) y, ?_⟩` and prove the remaining obligations. Conclude with `Units.ext (Matrix.ext fun a b => e.apply_symm_apply _)`.
+-/
 private theorem cmp_surj {v : Pl F} (w : PlacesOver E v) (h : ∀ u : PlacesOver E v, u = w) :
     Function.Surjective (GM.cmp (n := n) w) := by
   have hev : Function.Bijective (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w) := by
@@ -203,11 +278,21 @@ private theorem cmp_surj {v : Pl F} (w : PlacesOver E v) (h : ∀ u : PlacesOver
 
 variable {σ : E ≃ₐ[F] E} {q : Pl F} {w₀ : PlacesOver E q}
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `cmp_surj w h x`. Rewrite using `[← ha, ← hb]`.
+-/
 private theorem gal_eq {v : Pl F} (w : PlacesOver E v) (h : ∀ u : PlacesOver E v, u = w) {a b : Gw n w.1 →* Gw n w.1}
     (ha : IsLocGal σ w a) (hb : IsLocGal σ w b) (x : Gw n w.1) : a x = b x := by
   obtain ⟨g, rfl⟩ := cmp_surj w h x
   rw [← ha, ← hb]
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `cmp_surj (T.mk' v) h x`. Use `letI : Unique (PlacesOver E v) := ⟨⟨T.mk' v⟩, h⟩`. Establish `hall : ∀ u : PlacesOver E v, GM.cmp u g ∈ T.J u.1` using `fun u => by`. Take `rfl` from `h u`. Conclude with `hx`.
+
+Take `⟨h1, h2⟩` from `T.stable v g hall`. Rewrite `h2` using `[finprod_unique, finprod_unique]`. Establish `e : (default : PlacesOver E v) = T.mk' v` using `rfl`. Rewrite `h2` using `[e]`. Rewrite using `[← ha]`.
+
+Conclude with `⟨h1 _, h2⟩`.
+-/
 private theorem stabV (T : Ty σ n q w₀) (v : Pl F) (h : ∀ u : PlacesOver E v, u = T.mk' v)
     {a : Gw n (T.mk' v).1 →* Gw n (T.mk' v).1} (ha : IsLocGal σ (T.mk' v) a) (x : Gw n (T.mk' v).1) (hx : x ∈ T.J (T.mk' v).1) :
     a x ∈ T.J (T.mk' v).1 ∧ T.χ (T.mk' v).1 (a x) = T.χ (T.mk' v).1 x := by
@@ -229,6 +314,95 @@ end UpperTheory.ConvolutionTheory.C.TraceVanishing
 
 open UpperTheory.ConvolutionTheory.C.TraceVanishing in
 set_option maxHeartbeats 3200000 in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hgen k n hk hpr hn μ _ θ hθ D s hs hposition νE _ νF _ b a aE aF harch _ _ m hm q w₀ hq T V hV hVθ hrk τ₀ τ g I hocc₀ hocc hI y hy`. Establish `hprime : (Module.finrank F E).Prime` using `hk ▸ hpr`. Establish `hx : (0 : ℝ) < y ^ (k + 1)` using `pow_pos hy _`. Establish `hns : ∀ v ∈ nsS T, v ∈ T.S ∧ ¬ GM.Split E v` using `fun v hv => Finset.mem_filter.1 hv`. Establish `hU : ∀ v ∈ nsS T, ∀ u : PlacesOver E v, u = T.mk' v` using `fun v hv => (UpperTheory.ConvolutionTheory.C.locGalEx F E σ hprime n v (T.mk' v) (hns v hv).2).1`.
+
+Take `⟨r₁, p₁, hp₁, hpr₁⟩` from `exists_enum T.sp`. Take `⟨r₂, p₂, hp₂, hpr₂⟩` from `exists_enum (nsS T)`. Establish `hm₁ : ∀ i, p₁ i ∈ T.sp` using `fun i => (hpr₁ _).2 ⟨i, rfl⟩`. Establish `hm₂ : ∀ i, p₂ i ∈ nsS T` using `fun i => (hpr₂ _).2 ⟨i, rfl⟩`. Establish `h0 : ∀ u, m u (T.J u) ≠ 0` using `fun u => by haveI := hm u`.
+
+Conclude with `((T.co u).2.measure_pos (m u) ⟨1, Subgroup.one_mem _⟩).ne'`. Establish `ht : ∀ u, m u (T.J u) ≠ ⊤` using `fun u => by haveI := hm u`. Conclude with `(T.co u).1.measure_lt_top.ne`. Establish `hd0 : ∀ u, (m u (T.J u))⁻¹ ≠ 0` using `fun u => ENNReal.inv_ne_zero.2 (ht u)`. Establish `hdt : ∀ u, (m u (T.J u))⁻¹ ≠ ⊤` using `fun u => ENNReal.inv_ne_top.2 (h0 u)`.
+
+Set `mm : ∀ u : Pl E, Measure (Gw n u)` to `fun u => (m u (T.J u))⁻¹ • m u`. Set `bb : Pl E → ℂ` to `fun u => (((m u (T.J u))⁻¹.toReal : ℝ) : ℂ)`. Establish `hmmH : ∀ u, (mm u).IsHaarMeasure` using `fun u => by haveI := hm u`. Conclude with `Measure.IsHaarMeasure.smul _ (hd0 u) (hdt u)`. Establish `hmm1 : ∀ u, mm u (T.J u) = 1` using `fun u => by show ((m u (T.J u))⁻¹ • m u) (T.J u) = 1`.
+
+Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel (h0 u) (ht u)]`. Establish `hbb : ∀ u, bb u ≠ 0` using `fun u => Complex.ofReal_ne_zero.2 (ENNReal.toReal_ne_zero.2 ⟨hd0 u, hdt u⟩)`. Use `set x : ℝ := y ^ (k + 1) with hxd`. Use `set Oa := Oinf μ νE aE with hOa`. Use `set O : Fin (k + 1) → LL μ →L[ℂ] LL μ := fun i => OComponent μ (s i) (hs i) νF a with hO`.
+
+Take `⟨κ, hκ, hK⟩` from `UpperTheory.exists_pos_const_eigenspace_bound_of_split_CMDatum F E σ n hn μ νE aE q w₀ hq T hU`. Take `⟨c₀, hc₀, hTY⟩` from `(UpperTheory.ConvolutionTheory.L1.twistY F E σ hgen k n hk hn μ θ hθ D s hs hposition νE νF b a aE aF harch q w₀ hq T V hV hVθ (fun v hv hs' u => (hrk v hv hs' u).1)).2 y hy`. Take `⟨c₁, hc₁, hval⟩` from `UpperTheory.archimedean_baseChange_trace_comparison F E σ k n hn μ D s hs hposition νF a m hm q w₀ hq T V hV τ₀ τ hocc₀ (fun v hv => hocc v (Finset.mem_filter.1 hv).1) y hy mm (fun _ => rfl) r₁ p₁ hp₁ hpr₁`. Take `⟨hθO, hθP⟩` from `UpperTheory.galoisTwist_commute_archOperator_and_offProjection F E σ hgen k n μ θ hθ D s hs hposition νE νF b a aE aF harch q w₀ T`. Set `w : Fin r₂ → Pl E` to `fun i => (T.mk' (p₂ i)).1`.
+
+Establish `hwinj : Function.Injective w` using `fun i j h => hp₂ (by`. Establish `e : (T.mk' (p₂ i)).1 = (T.mk' (p₂ j)).1` using `h`. Rewrite using `[← under_over' (T.mk' (p₂ i)), e, under_over'])`. Establish `hwm : ∀ i, w i ∉ T.marked`. Introduce and unpack `i (h | ⟨v, hv, h⟩)`.
+
+Establish `h1 : p₂ i = q`. Rewrite using `[← under_over' (T.mk' (p₂ i)), show (T.mk' (p₂ i)).1 = w₀.1 from h, under_over']`. Conclude with `T.q_not (h1 ▸ (hns _ (hm₂ i)).1)`. Establish `h1 : p₂ i = v`. Rewrite using `[← under_over' (T.mk' (p₂ i)), show (T.mk' (p₂ i)).1 = (T.mk' v).1 from h, under_over']`.
+
+Conclude with `(hns _ (hm₂ i)).2 (h1 ▸ (Finset.mem_filter.1 hv).2)`. Take `⟨hZc, hZs, hZa⟩` from `UpperTheory.finiteDimensional_eigenspace_inf_fixed_offN_CMDatum F E σ n hn μ νE aE q w₀ T V hV hU x hx.ne'`. Use `set Z := eigIn (V ⊓ offN μ T) (Oinf μ νE aE) x with hZd`. Establish `hZV : Z ≤ V` using `fun f hf => (mem_eigIn'.1 hf).1.1`. Establish `hZo : Z ≤ offN μ T` using `fun f hf => (mem_eigIn'.1 hf).1.2`.
+
+Establish `hoffc : IsClosed (offN μ T : Set (LL μ))`. Simplify using `only [offN, Submodule.coe_iInf]`. Conclude with `isClosed_iInter fun w => isClosed_iInter fun _ => (UpperTheory.ConvolutionTheory.L1.eigBasic E n μ w _ _ (T.co w) (T.chr w)).1`. Establish `hθV : ∀ f ∈ V, θ.U f ∈ V` using `fun f hf => by`. Rewrite using `[← hVθ]`.
+
+Conclude with `Submodule.mem_map_of_mem hf`. Establish `hθZ : ∀ f ∈ Z, θ.U f ∈ Z` using `fun f hf => by`. Take `⟨⟨h1, h2⟩, h3⟩` from `mem_eigIn'.1 hf`. Use `mem_eigIn'.2 ⟨⟨hθV f h1, ?_⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S f) hθP.eq` as an intermediate fact.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, prj_self' h2] at this`. Rewrite using `[this]`. Conclude with `prj_mem' hoffc _`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S f) hθO.eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`.
+
+Rewrite using `[← this, h3, map_smul]`. Use `choose s' hs1 hs2 using fun i => (UpperTheory.ConvolutionTheory.C.locGalEx F E σ hprime n (p₂ i) (T.mk' (p₂ i)) (hns _ (hm₂ i)).2).2`. Establish `hθs : ∀ i g f, θ.U (rhoL μ (w i) g f) = rhoL μ (w i) (s' i g) (θ.U f)` using `fun i => ((hs2 i) μ θ hθ).1`. Establish `hIs : ∀ i x y, I (p₂ i) ((τ (p₂ i)).ρ x y) = (τ (p₂ i)).ρ (s' i x) (I (p₂ i) y)` using `fun i x y => by`. Establish `hv` using `hns _ (hm₂ i)`.
+
+Establish `h` using `hI _ hv.1 hv.2`. Establish `e` using `gal_eq (T.mk' (p₂ i)) (hU _ (hm₂ i)) h.1 (hs1 i) x`. Establish `e' : (s' i : Gw n (T.mk' (p₂ i)).1 →* Gw n (T.mk' (p₂ i)).1) x = s' i x` using `rfl`. Rewrite using `[h.2 x y, e, e']`. Establish `ht0 : ∀ i, ∃ t : ℂ, t ≠ 0 ∧ HasTwTrace (mm (w i)) (τ (p₂ i)) (I (p₂ i)) ((T.J (w i) : Set (Gw n (w i))).indicator fun x => conj (T.χ (w i) x)) t`.
+
+Introduce `i`. Establish `hv` using `hns _ (hm₂ i)`. Take `⟨h1, h2⟩` from `hrk _ hv.1 hv.2 (T.mk' (p₂ i))`. Use `haveI := hmmH (w i)`. Take `⟨e, he0, he1, he2⟩` from `UpperTheory.exists_unique_eigenline_of_rankOne_occurs E n μ V hV (w i) (τ (p₂ i)) (hocc _ hv.1) (T.J (w i)) (T.χ (w i)) (T.co _) (T.chr _) h1 h2`.
+
+Take `⟨-, -, h3⟩` from `UpperTheory.ConvolutionTheory.C.occursBasics E n μ V (w i) (mm (w i)) hV`. Take `⟨_, A, hA, -⟩` from `h3 (τ (p₂ i)) (hocc _ hv.1) _ (test_ind (T.co (w i)) (T.chr (w i)))`. Conclude with `UpperTheory.integralOp_eigenline_scalar_of_twist (Gw n (w i)) (mm (w i)) (τ (p₂ i)) (I (p₂ i)) (g (p₂ i)) (T.J (w i)) (T.χ (w i)) A e (T.co _) (T.chr _) (hmm1 _) hA he0 he1 he2 (stabV T _ (hU _ (hm₂ i)) (hI _ hv.1 hv.2).1) (hI _ hv.1 hv.2).2`. Use `choose t0 ht0n ht0t using ht0`. Establish `hP0 : ∏ i, t0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => ht0n i`.
+
+Establish `hZ0 : Z ⊓ ⨅ i, eigL μ (w i) (T.J (w i)) (T.χ (w i)) = eigIn (V ⊓ T.typed μ) (Oinf μ νE aE) x`. Use extensionality with `f`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, hZd, mem_eigIn', offN, Ty.typed]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨h1, h2⟩, h3⟩, h4⟩`.
+
+Use `⟨⟨h1, fun u => ?_⟩, h3⟩` and prove the remaining obligations. Distinguish the cases in `hu : u.under (𝓞 F) ∈ (nsS T : Set (Pl F))`. Take `⟨i, hi⟩` from `(hpr₂ _).1 hu`. Establish `e : (⟨u, ⟨rfl⟩⟩ : PlacesOver E (u.under (𝓞 F))) = T.mk' (u.under (𝓞 F))` using `hU _ hu _`. Establish `e2 : u = w i` using `by show u = (T.mk' (p₂ i)).1`.
+
+Rewrite using `[hi]`. Conclude with `congrArg Subtype.val e`. Rewrite using `[e2]`. Conclude with `h4 i`. Conclude with `h2 u hu`.
+
+Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Conclude with `⟨⟨⟨h1, fun u _ => h2 u⟩, h3⟩, fun i => h2 _⟩`. Use `⟨(κ : ℂ) * x * c₀ * c₁ * (∏ i, bb (w i)) * (∏ i, t0 i)⁻¹, fun hz => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (κ : ℂ) ≠ 0` using `by exact_mod_cast hκ.ne'`. Establish `h2 : (x : ℂ) ≠ 0` using `by exact_mod_cast hx.ne'`.
+
+Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero (mul_ne_zero h1 h2) hc₀) (hc₁ hz)) (Finset.prod_ne_zero_iff.2 fun i _ => hbb _)) (inv_ne_zero hP0)`. Introduce `L ψ hfit e l 𝔢 he hsd j sq t hsq htS htN`. Take `⟨hν, ha, -, hUl, hg, hUq⟩` from `hsd`. Establish `hψ₁ : ∀ v ∈ T.sp, Test (ψ v) ∧ ∀ u ∈ T.J (T.mk' v).1, ∀ g, ψ v (u * g) = ψ v g` using `fun v hv => ⟨hfit.test v (Finset.mem_filter.1 hv).1, fun u hu g => (hfit.inv v hv u hu g).1⟩`. Establish `hB₁ : ∀ i, ∃ B, IsOloc μ (T.mk' (p₁ i)).1 (mm _) (ψ (p₁ i)) B` using `fun i => by haveI := hmmH (T.mk' (p₁ i)).1`.
+
+Conclude with `(UpperTheory.ConvolutionTheory.C.olocEx E n μ _ (mm _) (ψ (p₁ i)) (hfit.test _ (Finset.mem_filter.1 (hm₁ i)).1)).exists`. Establish `hB₂ : ∀ i, ∃ B, IsOloc μ (T.mk' (p₂ i)).1 (mm _) (ψ (p₂ i)) B` using `fun i => by haveI := hmmH (T.mk' (p₂ i)).1`. Conclude with `(UpperTheory.ConvolutionTheory.C.olocEx E n μ _ (mm _) (ψ (p₂ i)) (hfit.test _ (hns _ (hm₂ i)).1)).exists`. Use `choose B₁ hB₁ using hB₁`. Use `choose B₂ hB₂ using hB₂`.
+
+Establish `hmmA : ∀ u, (mm u).IsHaarMeasure ∧ mm u (T.J u) = 1` using `fun u => ⟨hmmH u, hmm1 u⟩`. Take `⟨hCa, hCr, hCo, hCV⟩` from `UpperTheory.heckeOperator_summand_weight_CMDatum F E σ n μ q w₀ hq T V hV e j r₁ p₁ hm₁ mm hmmA ψ (fun i => hψ₁ _ (hm₁ i)) B₁ hB₁`. Take `⟨-, hDr, hDo, -⟩` from `UpperTheory.heckeOperator_summand_weight_CMDatum F E σ n μ q w₀ hq T V hV e 0 r₁ p₁ hm₁ mm hmmA ψ (fun i => hψ₁ _ (hm₁ i)) B₁ hB₁`. Establish `hD1 : (Uiw μ w₀.1 e ^ 0) ∘L (List.ofFn B₁).prod = (List.ofFn B₁).prod` using `by ext1 f`. Simplify using the standard rewrite rules.
+
+Rewrite `hDr`, `hDo` using `[hD1]`. Use `set C := (Uiw μ w₀.1 e ^ j) ∘L (List.ofFn B₁).prod with hCd`. Establish `hCO : Commute C (Oinf μ νE aE)` using `oinf_comm μ νE aE C hCa`. Establish `hRZ : ∀ f ∈ Z, (C ∘L θ.U) f ∈ Z` using `fun f hf => by`. Take `⟨⟨h1, h2⟩, h3⟩` from `mem_eigIn'.1 (hθZ f hf)`.
+
+Use `mem_eigIn'.2 ⟨⟨hCV _ h1, hCo _ h2⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S (θ.U f)) hCO.eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Use `show Oinf μ νE aE (C (θ.U f)) = (x : ℂ) • C (θ.U f)`. Rewrite using `[← this, h3, map_smul]`.
+
+Establish `hRs : ∀ i g, ∀ f ∈ Z, (C ∘L θ.U) (rhoL μ (w i) g f) = rhoL μ (w i) (s' i g) ((C ∘L θ.U) f)` using `fun i g f _ => by`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S (θ.U f)) (hCr _ (hwm i) (s' i g)).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Use `show C (θ.U (rhoL μ (w i) g f)) = rhoL μ (w i) (s' i g) (C (θ.U f))`. Rewrite using `[hθs, this]`.
+
+Take `⟨cR, hTF⟩` from `UpperTheory.ConvolutionTheory.C.twistFactor E n μ V Z r₂ w (fun i => τ (p₂ i)) s' (fun i => I (p₂ i)) (C ∘L θ.U) hV hwinj (fun i => hocc _ (hns _ (hm₂ i)).1) hZV hZc (fun i g f hf => hZs _ (hm₂ i) g f hf) (fun U hUc => hZa r₂ p₂ hp₂ hpr₂ U hUc) hRZ hRs hIs`. Establish `hcr : cR * ∏ i, t0 i = c₀ * (c₁ * sq * ∏ v ∈ T.sp, t v)`. Establish `e1` using `hTF (fun i => kerChr (T.J (w i)) (T.χ (w i)) (T.chr _)) (fun i => mm (w i)) (fun i => (T.J (w i) : Set (Gw n (w i))).indicator fun x => conj (T.χ (w i) x)) (fun i => prj (eigL μ (w i) (T.J (w i)) (T.χ (w i)))) t0 (fun i => ker_co (T.co _) (T.chr _)) (fun i => hmmH _) (fun i => te …`. Conclude with `(UpperTheory.ConvolutionTheory.L1.eigBasic E n μ (w i) _ _ (T.co _) (T.chr _)).2.2.1 (mm (w i)) (hmm1 _)) ht0t`. Establish `e2` using `UpperTheory.trOn_prod_eigenProjections_eq_trOn_joint_eigenspace E n μ Z r₂ w hwinj (fun i => T.J (w i)) (fun i => T.χ (w i)) (fun i => T.chr _) (C ∘L θ.U) (fun i => T.co _) hZc (fun i g f hf => hZs _ (hm₂ i) g f hf) hRZ (hZa r₂ p₂ hp₂ hpr₂ _ fun i => ker_co (T.co _) (T.chr _))`.
+
+Establish `e3` using `hTY C hCa hCr`. Establish `e4` using `hval ψ hψ₁ e he j sq t hsq htS B₁ hB₁`. Rewrite using `[← e1, e2, hZ0, e3, e4]`. Establish `hAeq : 𝔢.toAmp.A = Oinf μ νE aE ∘L prj (fixF μ (GM.levE L.UE))` using `by show Oinf μ 𝔢.ν 𝔢.a₀ ∘L prj (fixF μ 𝔢.U) = _`. Rewrite using `[ha, hUl, oinf_congr μ hν]`.
+
+Establish `hpos : 0 ≤ Oinf μ νE aE`. Use `𝔢.pos` as an intermediate fact. Rewrite `this` using `[ha, oinf_congr μ hν]`. Then use the resulting hypothesis. Establish `hOsa : ContinuousLinearMap.adjoint (Oinf μ νE aE) = Oinf μ νE aE` using `(IsSelfAdjoint.of_nonneg hpos).adjoint_eq`. Establish `hOF : ∀ h, Commute (Oinf μ νE aE) (rhoF μ h)` using `fun h => (UpperTheory.ConvolutionTheory.Tf.opAlg E n μ νE MeasureTheory.Measure.haar).2.2.2.2.2.2.2.2 aE h`.
+
+Establish `hcp` using `UpperTheory.ConvolutionTheory.Tf.commPrj E n μ (GM.levE L.UE)`. Establish `hOFx : ∀ v ∈ fixF μ (GM.levE L.UE), Oinf μ νE aE v ∈ fixF μ (GM.levE L.UE)`. Introduce `v hv`. Use `(hcp.2.1 _).2 fun u hu => ?_` and prove the remaining obligations. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hOF u).eq` as an intermediate fact.
+
+Simplify using `only [ContinuousLinearMap.mul_apply, (hcp.2.1 v).1 hv u hu] at this`. Conclude with `this.symm`. Take `⟨hlc, hlψ, hle⟩` from `UpperTheory.eigenspace_factorization_over_nonsplit_places_CMDatum F E σ n q w₀ hq μ T L ψ hfit hU r₂ p₂ hpr₂`. Take `⟨hNf, hNo⟩` from `UpperTheory.prod_localOperators_mem_fixed_and_offN_CMDatum F E σ n μ q w₀ T r₂ p₂ hp₂ hm₂ mm hmmH ψ (fun i => lvN T L (p₂ i)) hlψ B₂ hB₂`. Use `set FN : Submodule ℂ (LL μ) := ⨅ i, fixL μ (T.mk' (p₂ i)).1 (lvN T L (p₂ i)) with hFN`.
+
+Establish `hFNc : IsClosed (FN : Set (LL μ))`. Rewrite using `[hFN, Submodule.coe_iInf]`. Conclude with `isClosed_iInter fun i => isClosed_fixL μ _ _`. Establish `hTc : IsClosed ((offN μ T ⊓ FN : Submodule ℂ (LL μ)) : Set (LL μ))`. Rewrite using `[Submodule.coe_inf]`.
+
+Conclude with `hoffc.inter hFNc`. Establish `hcomm : ∀ O' : LL μ →L[ℂ] LL μ, (∀ u g, Commute O' (rhoL μ u g)) → ∀ f ∈ offN μ T ⊓ FN, O' f ∈ offN μ T ⊓ FN`. Introduce `O' hO' f hf`. Take `⟨a1, a2⟩` from `Submodule.mem_inf.1 hf`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [offN, Submodule.mem_iInf] at a1 ⊢`. Conclude with `fun u hu => eigL_comm μ O' (hO' u) (a1 u hu)`. Rewrite `a2`, the goal using `[hFN, Submodule.mem_iInf]`. Conclude with `fun i => fixL_comm μ O' (hO' _) (a2 i)`. Establish `hmk : ∀ (P : LL μ →L[ℂ] LL μ), (∀ f ∈ offN μ T, P f ∈ offN μ T) → (∀ u ∉ T.marked, ∀ g, Commute P (rhoL μ u g)) → ∀ f ∈ offN μ T ⊓ FN, P f ∈ offN μ T ⊓ FN`.
+
+Introduce `P h1 h2 f hf`. Take `⟨a1, a2⟩` from `Submodule.mem_inf.1 hf`. Use `Submodule.mem_inf.2 ⟨h1 f a1, ?_⟩` and prove the remaining obligations. Rewrite `a2`, the goal using `[hFN, Submodule.mem_iInf]`. Conclude with `fun i => fixL_comm μ P (h2 _ (hwm i)) (a2 i)`.
+
+Establish `hVc : IsClosed (V : Set (LL μ))` using `IsSummandOf.closed hV`. Establish `hS : ∀ f, ((List.ofFn B₁).prod ∘L (List.ofFn B₂).prod ∘L prj (offN μ T)) f ∈ offN μ T ⊓ FN` using `fun f => hmk _ hDo hDr _ ⟨hNo _ (prj_mem' hoffc f), hNf _⟩`. Establish `hUS : ∀ f, (𝔢.Uq 0 ^ j) (((List.ofFn B₁).prod ∘L (List.ofFn B₂).prod ∘L prj (offN μ T)) f) ∈ offN μ T ⊓ FN` using `fun f => by`. Rewrite using `[hUq]`. Conclude with `hmk C hCo hCr _ ⟨hNo _ (prj_mem' hoffc f), hNf _⟩`.
+
+Establish `hY : eigIn (V ⊓ (offN μ T ⊓ FN)) (Oinf μ νE aE) x = Z ⊓ FN`. Use extensionality with `f`. Simplify using `only [Submodule.mem_inf, hZd, mem_eigIn']`. The claim follows by propositional logic. Use `haveI hfd : FiniteDimensional ℂ ↥(eigIn (V ⊓ (offN μ T ⊓ FN)) (Oinf μ νE aE) x) := by`.
+
+Rewrite using `[hY]`. Conclude with `hZa r₂ p₂ hp₂ hpr₂ _ hlc`. Establish `hred` using `UpperTheory.trace_eigenspace_of_selfAdjoint_invariant_subspaces (LL μ) (offN μ T ⊓ FN) (fixF μ (GM.levE L.UE)) V hTc hcp.1 hVc hle (Oinf μ νE aE) hOsa (hcomm _ fun u g => hOF _) hOFx (hcomm _ fun u g => ((UpperTheory.ConvolutionTheory.Tf.innerOps E n μ).2.2.2.1 _ V hVc (IsSummand …`. Use `(𝔢.Uq_amp 0).pow_left j` as an intermediate fact. Rewrite using `[hAeq] at this) hS hUS` and apply the resulting hypothesis.
+
+Establish `hRop` using `hK L ψ hfit r₁ p₁ hp₁ hpr₁ r₂ p₂ hp₂ hpr₂ mm hmmA B₁ B₂ hB₁ hB₂ 𝔢.g hg`. Establish `hCB : Commute C (List.ofFn B₂).prod` using `Commute.list_prod_right _ _ fun Bx hBx => by`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hBx`. Conclude with `oloc_comm μ (hB₂ i) C (fun g => hCr _ (hwm i) g)`. Establish `hZFc : IsClosed ((Z ⊓ FN : Submodule ℂ (LL μ)) : Set (LL μ))`.
+
+Rewrite using `[Submodule.coe_inf]`. Conclude with `hZc.inter hFNc`. Establish `hsw : trOn (Z ⊓ FN) ((𝔢.Uq 0 ^ j) ∘L ((List.ofFn B₁).prod ∘L (List.ofFn B₂).prod ∘L prj (offN μ T)) ∘L θ.U) = trOn (Z ⊓ FN) ((List.ofFn B₂).prod ∘L (C ∘L θ.U))`. Use `trOn_congr hZFc fun f hf => ?_` and prove the remaining obligations. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S (θ.U f)) hCB.eq` as an intermediate fact.
+
+Simplify using `only [ContinuousLinearMap.mul_apply] at this`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[prj_self' (hZo (hθZ f hf.1)), hUq]`. Conclude with `this`. Establish `hTw : ∀ i, HasTwTrace (mm (w i)) (τ (p₂ i)) (I (p₂ i)) (ψ (p₂ i)) (bb (w i) * t (p₂ i))` using `fun i => hasTw_smul _ (hd0 _) (hdt _) (htN _ (hns _ (hm₂ i)).1 (hns _ (hm₂ i)).2)`.
+
+Establish `hfac` using `hTF (fun i => lvN T L (p₂ i)) (fun i => mm (w i)) (fun i => ψ (p₂ i)) B₂ (fun i => bb (w i) * t (p₂ i)) hlc (fun i => hmmH _) (fun i => hfit.test _ (hns _ (hm₂ i)).1) hlψ hB₂ hTw`. Establish `hprod : ∏ v ∈ T.S, t v = (∏ v ∈ T.sp, t v) * ∏ i, t (p₂ i)`. Establish `e2 : nsS T = Finset.univ.image p₂`. Use extensionality with `v`. Simplify using `[hpr₂]`.
+
+Establish `e3 : ∏ v ∈ nsS T, t v = ∏ i, t (p₂ i)`. Rewrite using `[e2, Finset.prod_image (fun _ _ _ _ h => hp₂ h)]`. Rewrite using `[← e3]`. Conclude with `(Finset.prod_filter_mul_prod_filter_not T.S _ t).symm`. Establish `hcR : cR = c₀ * (c₁ * sq * ∏ v ∈ T.sp, t v) * (∏ i, t0 i)⁻¹` using `(eq_mul_inv_iff_mul_eq₀ hP0).2 hcr`.
+
+Rewrite using `[hAeq, hRop, hred, hY, hsw, hfac, hprod, hcR, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.C.termEV :
     UpperTheory.ConvolutionTheory.C.TermEV := by
   classical

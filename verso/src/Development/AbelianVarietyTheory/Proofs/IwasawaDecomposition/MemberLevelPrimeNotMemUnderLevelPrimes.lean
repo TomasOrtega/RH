@@ -8,6 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.LevTwist
 
+/- English proof (translation)
+Introduce `B X I hI u P hP hm`. Establish `hPr` using `(GlobalTheory.BasePrimes.primes_ok B X).1`. Establish `hE : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ P.asIdeal`. Establish `h1 : ((B.T u : ℕ) : 𝓞 B.host.F) ∈ P.asIdeal.under (𝓞 B.host.F)` using `hm`. Rewrite `h1` using `[Ideal.under_def, Ideal.mem_comap, map_natCast]`.
+
+Conclude with `h1`. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Conclude with `T_notMem_vGs hPr u ⟨P, h⟩ hE`. Establish `hg` using `(good_of_mem hI h).2`. Establish `e` using `(ReadTwist.plc_under_eq_iff (F := B.host.F) P (hPr.T_prime u)).2 hE`.
+
+Use `hg.2.2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hI.T_mem u`.
+-/
 theorem T_notMem_under_uSG : ∀ (B : Base) (X : PreX B.toPre) (I : ColIn B X), I.Ok → ∀ (u : B.Word)
     (P : HeightOneSpectrum (𝓞 B.host.E)), P ∈ uSG (B.primes X).vGs I.SQ →
     (B.T u : 𝓞 B.host.F) ∉ (P.under (𝓞 B.host.F)).asIdeal := by

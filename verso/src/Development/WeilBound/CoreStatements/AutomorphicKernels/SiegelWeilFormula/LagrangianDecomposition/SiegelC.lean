@@ -12,27 +12,45 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]`.
+-/
 theorem cancel_l {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix ι κ (AE F E)) :
     incM F (b⁻¹).1 * (incM F b.1 * X) = X := by
   rw [← Matrix.mul_assoc, incM_inv_mul, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]`.
+-/
 theorem cancel_l' {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix ι κ (AE F E)) :
     incM F b.1 * (incM F (b⁻¹).1 * X) = X := by
   rw [← Matrix.mul_assoc, incM_mul_inv, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, incM_inv_mul, Matrix.mul_one]`.
+-/
 theorem cancel_r {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix κ ι (AE F E)) :
     X * incM F (b⁻¹).1 * incM F b.1 = X := by
   rw [Matrix.mul_assoc, incM_inv_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc, incM_mul_inv, Matrix.mul_one]`.
+-/
 theorem cancel_r' {ι κ : Type} [Fintype ι] [DecidableEq ι] (b : GL ι E) (X : Matrix κ ι (AE F E)) :
     X * incM F b.1 * incM F (b⁻¹).1 = X := by
   rw [Matrix.mul_assoc, incM_mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[inFrame_eq]`. Simplify using `only [Matrix.mul_assoc, cancel_l', incM_mul_inv, Matrix.mul_one]`.
+-/
 theorem mat_of_inFrame {n : ℕ} {Y : Spc F E n} (b : GL (Fin n ⊕ Fin n) E) (g : G2 σ Y) :
     g.1.1 = incM F b.1 * inFrame b g * incM F (b⁻¹).1 := by
   rw [inFrame_eq]
   simp only [Matrix.mul_assoc, cancel_l', incM_mul_inv, Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[h, cancel_r']`.
+-/
 theorem diag_of_frame {n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (tb : GL (Fin n) E)
     (h : incM F b.1 * Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (0 : Matrix (Fin n) (Fin n) (AE F E)) =
       (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * incM F tb.1) :
@@ -40,14 +58,39 @@ theorem diag_of_frame {n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (tb : GL (Fin n) E)
       incM F b.1 * Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (0 : Matrix (Fin n) (Fin n) (AE F E)) * incM F (tb⁻¹).1 := by
   rw [h, cancel_r']
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, incM_inv_mul, Matrix.det_one, one_mul]`.
+-/
 theorem det_conj {ι : Type} [Fintype ι] [DecidableEq ι] (t : GL ι E) (X : Matrix ι ι (AE F E)) :
     (incM F t.1 * X * incM F (t⁻¹).1).det = X.det := by
   rw [Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, incM_inv_mul, Matrix.det_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, incM_mul_inv, Matrix.det_one, one_mul]`.
+-/
 theorem det_conj' {ι : Type} [Fintype ι] [DecidableEq ι] (t : GL ι E) (X : Matrix ι ι (AE F E)) :
     (incM F (t⁻¹).1 * X * incM F t.1).det = X.det := by
   rw [Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, incM_mul_inv, Matrix.det_one, one_mul]
 
+/- English proof (translation)
+Take `⟨tb, hTb⟩` from `frame_fromRows hb`. Take `⟨td, hTd⟩` from `frame_fromRows d.ok.frame`. Use `set P := inFrame b p with hPdef`. Use `set R0 := Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (0 : Matrix (Fin n) (Fin n) (AE F E)) with hR0`. Use `set R0N := Matrix.fromRows (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) (0 : Matrix (Fin d.n) (Fin d.n) (AE F E)) with hR0N`.
+
+Use `set A : Matrix (Fin n) (Fin n) (AE F E) := incM F (tb⁻¹).1 * t.1 * incM F tb.1 with hA`. Establish `hDn` using `diag_of_frame b tb hTb`. Establish `hDN` using `diag_of_frame d.b td hTd`. Establish `hp` using `mat_of_inFrame b p`. Establish `hP : P * R0 = R0 * A`.
+
+Establish `e` using `hpt`. Rewrite `e` using `[hp, hDn]`. Establish `e2 : incM F b.1 * (P * R0) * incM F (tb⁻¹).1 = incM F b.1 * (R0 * A) * incM F (tb⁻¹).1`. Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc, cancel_l, incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Use `_ = incM F b.1 * R0 * incM F (tb⁻¹).1 * t.1 := e`. Use `_ = incM F b.1 * (R0 * (incM F (tb⁻¹).1 * t.1 * incM F tb.1)) * incM F (tb⁻¹).1 := by`. Simplify using `only [Matrix.mul_assoc, cancel_l', incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Establish `e3` using `congrArg (fun X => incM F (b⁻¹).1 * X * incM F tb.1) e2`.
+
+Simplify `e3` using `only [Matrix.mul_assoc, cancel_l, cancel_l', incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Establish `hblk` using `blk_fromRows h P A hP`. Establish `hjp : inFrame d.b (j p) = blk h P 1` using `eq_blk h _ _ (hj.2.1 p) (hj.2.2 p)`. Establish `hjm` using `mat_of_inFrame d.b (j p)`. Rewrite `hjm` using `[hjp]`.
+
+Use `set blkA := (Matrix.fromBlocks A 0 0 1 : Matrix (Fin n ⊕ Fin 1) (Fin n ⊕ Fin 1) (AE F E)).submatrix (eI h) (eI h) with hblkA`. Use `set T : Matrix (Fin d.n) (Fin d.n) (AE F E) := incM F td.1 * blkA * incM F (td⁻¹).1 with hT`. Establish `hdet : T.det = t.1.det`. Rewrite using `[hT, det_conj, hblkA, det_blkA, hA, det_conj']`. Establish `hu : IsUnit T.det`.
+
+Rewrite using `[hdet, ← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Use `⟨Matrix.nonsingInvUnit T hu, ?_, ?_⟩` and prove the remaining obligations. Use `show (j p).1.1 * _ = _ * T`. Rewrite using `[hjm, hDN]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT]`. Simplify using `only [Matrix.mul_assoc, cancel_l, incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Conclude with `hdet`.
+-/
 theorem jPar (d : SD σ) {n : ℕ} (h : n + 1 = d.n) {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
     {j : G2 σ Y →* d.G} (hj : IsJ d h b j) (p : G2 σ Y) (t : GL (Fin n) (AE F E))
     (hpt : p.1.1 * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) =

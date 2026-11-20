@@ -18,11 +18,24 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `S.herm.eq x y`.
+-/
 theorem ff_herm (x y : S.V) : starRingEnd E (S.hT x y) = S.hT y x := S.herm.eq x y
 
+/- English proof (translation)
+Rewrite using `[← ff_herm x y, h, map_zero]`.
+-/
 theorem ff_swap {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by
   rw [← ff_herm x y, h, map_zero]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, ∀ z ∈ Submodule.span E (Set.range p), S.hT (p a) z = 0`. Introduce `a z hz`. Establish `hle : Submodule.span E (Set.range p) ≤ LinearMap.ker (S.hT (p a))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+
+Conclude with `LinearMap.mem_ker.2 (hp a b)`. Conclude with `LinearMap.mem_ker.1 (hle hz)`. Establish `hle : Submodule.span E (Set.range p) ≤ LinearMap.ker (S.hT.flip y)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+
+Conclude with `LinearMap.mem_ker.2 (by simpa using h1 a y hy)`. Simplify using `using LinearMap.mem_ker.1 (hle hx)`.
+-/
 theorem ff_iso_span {p : Fin r → S.V} (hp : ∀ a b, S.hT (p a) (p b) = 0) {x y : S.V}
     (hx : x ∈ Submodule.span E (Set.range p)) (hy : y ∈ Submodule.span E (Set.range p)) : S.hT x y = 0 := by
   have h1 : ∀ a, ∀ z ∈ Submodule.span E (Set.range p), S.hT (p a) z = 0 := by
@@ -38,6 +51,9 @@ theorem ff_iso_span {p : Fin r → S.V} (hp : ∀ a b, S.hT (p a) (p b) = 0) {x 
     exact LinearMap.mem_ker.2 (by simpa using h1 a y hy)
   simpa using LinearMap.mem_ker.1 (hle hx)
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hx`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[map_sum, hfe]`.
+-/
 theorem ff_repr {e f : Fin r → S.V} (hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0) {x : S.V}
     (hx : x ∈ Submodule.span E (Set.range e)) : x = ∑ a, S.hT (f a) x • e a := by
   obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun E).1 hx
@@ -47,11 +63,17 @@ theorem ff_repr {e f : Fin r → S.V} (hfe : ∀ a b, S.hT (f a) (e b) = if a = 
 
 def ffP (p q : Fin r → S.V) (c d : Fin r → E) : S.V := ∑ a, c a • p a + ∑ a, d a • q a
 
+/- English proof (translation)
+Unfold `ffP`. Conclude with `H.add_mem (H.sum_mem fun a _ => H.smul_mem _ (hp a)) (H.sum_mem fun a _ => H.smul_mem _ (hq a))`.
+-/
 theorem ffP_mem {p q : Fin r → S.V} {H : Submodule E S.V} (hp : ∀ a, p a ∈ H) (hq : ∀ a, q a ∈ H)
     (c d : Fin r → E) : ffP p q c d ∈ H := by
   unfold ffP
   exact H.add_mem (H.sum_mem fun a _ => H.smul_mem _ (hp a)) (H.sum_mem fun a _ => H.smul_mem _ (hq a))
 
+/- English proof (translation)
+Establish `hqp : ∀ a b, S.hT (q a) (p b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← ff_herm, hpq]`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Ne.symm]`. Simplify using `[ffP, map_sum, LinearMap.sum_apply, hp, hq, hpq, hqp, mul_ite, Finset.sum_add_distrib]`.
+-/
 theorem ff_hyp {p q : Fin r → S.V} (hp : ∀ a b, S.hT (p a) (p b) = 0) (hq : ∀ a b, S.hT (q a) (q b) = 0)
     (hpq : ∀ a b, S.hT (p a) (q b) = if a = b then 1 else 0) (c d c' d' : Fin r → E) :
     S.hT (ffP p q c d) (ffP p q c' d') =
@@ -62,6 +84,9 @@ theorem ff_hyp {p q : Fin r → S.V} (hp : ∀ a b, S.hT (p a) (p b) = 0) (hq : 
     by_cases h : a = b <;> simp [h, Ne.symm]
   simp [ffP, map_sum, LinearMap.sum_apply, hp, hq, hpq, hqp, mul_ite, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `h1 : S.hT w P' = 0` using `ff_swap (mem_orth_iff.1 hw P' hP')`. Establish `h2 : S.hT P w' = 0` using `mem_orth_iff.1 hw' P hP`. Simplify using `only [map_add, LinearMap.add_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ff_split_eval {H : Submodule E S.V} {w w' P P' : S.V} (hw : w ∈ orth S H) (hw' : w' ∈ orth S H)
     (hP : P ∈ H) (hP' : P' ∈ H) : S.hT (w + P) (w' + P') = S.hT w w' + S.hT P P' := by
   have h1 : S.hT w P' = 0 := ff_swap (mem_orth_iff.1 hw P' hP')
@@ -74,10 +99,16 @@ def ffC (f : Fin r → S.V) (v : S.V) : Fin r → E := fun a => S.hT (f a) v
 def ffMu (e f x g : Fin r → S.V) : S.V →ₗ[E] S.V :=
   LinearMap.id + ∑ a, (S.hT (f a)).smulRight (x a - e a) + ∑ a, (S.hT (e a)).smulRight (g a - f a)
 
+/- English proof (translation)
+Simplify using `[ffMu, LinearMap.sum_apply, LinearMap.smulRight_apply]`.
+-/
 theorem ffMu_apply (e f x g : Fin r → S.V) (v : S.V) :
     ffMu e f x g v = v + ∑ a, S.hT (f a) v • (x a - e a) + ∑ a, S.hT (e a) v • (g a - f a) := by
   simp [ffMu, LinearMap.sum_apply, LinearMap.smulRight_apply]
 
+/- English proof (translation)
+Rewrite using `[ffMu_apply]`. Simplify using `only [ffP, ffC, smul_sub, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem ffMu_eq (e f x g : Fin r → S.V) (v : S.V) :
     ffMu e f x g v = (v - ffP e f (ffC f v) (ffC e v)) + ffP x g (ffC f v) (ffC e v) := by
   rw [ffMu_apply]
@@ -88,6 +119,11 @@ variable {e f : Fin r → S.V}
 
 abbrev ffH (e f : Fin r → S.V) : Submodule E S.V := Submodule.span E (Set.range e ∪ Set.range f)
 
+/- English proof (translation)
+Rewrite using `[mem_orth_iff]`. Introduce `y hy`. Establish `key : ffH e f ≤ LinearMap.ker (S.hT.flip (v - ffP e f (ffC f v) (ffC e v)))`. Apply the tactic sequence `refine Submodule.span_le.2 (Set.union_subset ?_ ?_) <;> rintro _ ⟨b, rfl⟩ <;>`. Simplify using `[LinearMap.mem_ker, ffP, ffC, map_sum, LinearMap.sum_apply, hee, hef, hfe, hff, mul_ite]`.
+
+Simplify using `using LinearMap.mem_ker.1 (key hy)`.
+-/
 theorem ff_orth_part (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ a b, S.hT (f a) (f b) = 0)
     (hef : ∀ a b, S.hT (e a) (f b) = if a = b then 1 else 0)
     (hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0) (v : S.V) :
@@ -99,6 +135,11 @@ theorem ff_orth_part (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ a b, S.hT 
       simp [LinearMap.mem_ker, ffP, ffC, map_sum, LinearMap.sum_apply, hee, hef, hfe, hff, mul_ite]
   simpa using LinearMap.mem_ker.1 (key hy)
 
+/- English proof (translation)
+Establish `heH : ∀ a, e a ∈ ffH e f` using `fun a => Submodule.subset_span (Or.inl ⟨a, rfl⟩)`. Establish `hfH : ∀ a, f a ∈ ffH e f` using `fun a => Submodule.subset_span (Or.inr ⟨a, rfl⟩)`. Establish `ho` using `ff_orth_part hee hff hef hfe v`. Establish `ho'` using `ff_orth_part hee hff hef hfe v'`. Establish `key : S.hT v v' = S.hT (v - ffP e f (ffC f v) (ffC e v)) (v' - ffP e f (ffC f v') (ffC e v')) + ∑ a, (starRingEnd E (ffC f v a) * ffC e v' a + starRingEnd E (ffC e v a) * ffC f v' a)` using `by conv_lhs => rw [← sub_add_cancel v (ffP e f (ffC f v) (ffC e v)), ← sub_add_cancel v' (ffP e f (ffC f v') (ffC e v'))]`.
+
+Rewrite using `[ff_split_eval ho ho' (ffP_mem heH hfH _ _) (ffP_mem heH hfH _ _), ff_hyp hee hff hef]`. Rewrite using `[ffMu_eq e f x g v, ffMu_eq e f x g v', ff_split_eval ho ho' (ffP_mem hxH hgH _ _) (ffP_mem hxH hgH _ _), ff_hyp hxx hgg hxg, key]`.
+-/
 theorem ffMu_isom {x g : Fin r → S.V} (hee : ∀ a b, S.hT (e a) (e b) = 0) (hff : ∀ a b, S.hT (f a) (f b) = 0)
     (hef : ∀ a b, S.hT (e a) (f b) = if a = b then 1 else 0)
     (hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0)
@@ -118,31 +159,51 @@ theorem ffMu_isom {x g : Fin r → S.V} (hee : ∀ a b, S.hT (e a) (e b) = 0) (h
   rw [ffMu_eq e f x g v, ffMu_eq e f x g v',
     ff_split_eval ho ho' (ffP_mem hxH hgH _ _) (ffP_mem hxH hgH _ _), ff_hyp hxx hgg hxg, key]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero m).2 fun v hv => S.nondeg.1 v fun y => ?_` and prove the remaining obligations. Rewrite using `[← h v y, hv, map_zero, LinearMap.zero_apply]`.
+-/
 theorem ff_inj_of_isom {m : S.V →ₗ[E] S.V} (h : ∀ v v', S.hT (m v) (m v') = S.hT v v') :
     Function.Injective m := by
   refine (injective_iff_map_eq_zero m).2 fun v hv => S.nondeg.1 v fun y => ?_
   rw [← h v y, hv, map_zero, LinearMap.zero_apply]
 
+/- English proof (translation)
+Rewrite using `[ffMu_apply]`. Simplify using `[hfe, hee]`.
+-/
 theorem ffMu_e {x g : Fin r → S.V} (hee : ∀ a b, S.hT (e a) (e b) = 0)
     (hfe : ∀ a b, S.hT (f a) (e b) = if a = b then 1 else 0) (b : Fin r) : ffMu e f x g (e b) = x b := by
   rw [ffMu_apply]
   simp [hfe, hee]
 
+/- English proof (translation)
+Rewrite using `[ffMu_apply]`. Simplify using `[h1, h2]`.
+-/
 theorem ffMu_fix {x g : Fin r → S.V} {v : S.V} (h1 : ∀ a, S.hT (f a) v = 0) (h2 : ∀ a, S.hT (e a) v = 0) :
     ffMu e f x g v = v := by
   rw [ffMu_apply]
   simp [h1, h2]
 
+/- English proof (translation)
+Rewrite using `[ffMu_apply]`. Simplify using `[h2]`.
+-/
 theorem ffMu_sub_e {x g : Fin r → S.V} {v : S.V} (h2 : ∀ a, S.hT (e a) v = 0) :
     ffMu e f x g v - v = ∑ a, S.hT (f a) v • (x a - e a) := by
   rw [ffMu_apply]
   simp [h2]
 
+/- English proof (translation)
+Rewrite using `[ffMu_apply]`. Simplify using `[h1]`.
+-/
 theorem ffMu_sub_f {x g : Fin r → S.V} {v : S.V} (h1 : ∀ a, S.hT (f a) v = 0) :
     ffMu e f x g v - v = ∑ a, S.hT (e a) v • (g a - f a) := by
   rw [ffMu_apply]
   simp [h1]
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hUT b) a`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply] at h`. Establish `hc : S.hT (x a) (∑ c, starRingEnd E (U b c) • f c) = starRingEnd E (∑ c, U b c * S.hT (f c) (x a))`. Simplify using `[map_sum, ff_herm]`. Rewrite using `[hc, h]`.
+
+Apply the tactic sequence `by_cases hab : a = b <;> simp [hab, Ne.symm]`.
+-/
 theorem ff_dual_pair (x : Fin r → S.V) (U : Matrix (Fin r) (Fin r) E)
     (hUT : U * Matrix.of (fun a b => S.hT (f a) (x b)) = 1) (a b : Fin r) :
     S.hT (x a) (∑ c, starRingEnd E (U b c) • f c) = if a = b then 1 else 0 := by
@@ -154,6 +215,15 @@ theorem ff_dual_pair (x : Fin r → S.V) (U : Matrix (Fin r) (Fin r) E)
   rw [hc, h]
   by_cases hab : a = b <;> simp [hab, Ne.symm]
 
+/- English proof (translation)
+Introduce `hdet`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hw0` to reduce the goal to its premises. Establish `hsum : ∑ b, w b • x b = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [mul_comm]`.
+
+Use `_ = 0 := by`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun hw a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.zero_apply] at h`. Rewrite using `[h, zero_smul]`.
+
+Conclude with `funext (Fintype.linearIndependent_iff.1 hx w hsum)`.
+-/
 theorem ff_det {x : Fin r → S.V} (hx : LinearIndependent E x) (hxe : ∀ b, x b = ∑ a, S.hT (f a) (x b) • e a) :
     (Matrix.of (fun a b => S.hT (f a) (x b))).det ≠ 0 := by
   intro hdet
@@ -175,6 +245,11 @@ theorem ff_det {x : Fin r → S.V} (hx : LinearIndependent E x) (hxe : ∀ b, x 
           rw [h, zero_smul]
   exact funext (Fintype.linearIndependent_iff.1 hx w hsum)
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap Formalism.L2.SG.Saturated.latSpan`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, ⟨a, c, hc, rfl⟩, rfl⟩`. Conclude with `⟨a, c, hc, by simp⟩`. Introduce and unpack `⟨a, c, hc, rfl⟩`. Conclude with `⟨c • v a, ⟨a, c, hc, rfl⟩, by simp⟩`.
+-/
 theorem ff_gmap_latSpan (ν : S.V ≃ₗ[E] S.V) (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (v : Fin r → S.V) : Formalism.HermitianLatticesTheory.gmap ν (latSpan aa v) = latSpan aa (fun a => ν (v a)) := by
   unfold Formalism.HermitianLatticesTheory.gmap Formalism.L2.SG.Saturated.latSpan
@@ -188,17 +263,38 @@ theorem ff_gmap_latSpan (ν : S.V ≃ₗ[E] S.V) (aa : Fin r → FractionalIdeal
   · rintro ⟨a, c, hc, rfl⟩
     exact ⟨c • v a, ⟨a, c, hc, rfl⟩, by simp⟩
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.map_inf _ (by simpa using ν.injective)]`. Use `congr 1`.
+-/
 theorem ff_gmap_inf (ν : S.V ≃ₗ[E] S.V) (A : Submodule (𝓞 E) S.V) (U : Submodule E S.V) :
     Formalism.HermitianLatticesTheory.gmap ν (A ⊓ toO S U) = Formalism.HermitianLatticesTheory.gmap ν A ⊓ toO S (U.map (ν : S.V →ₗ[E] S.V)) := by
   unfold Formalism.HermitianLatticesTheory.gmap
   rw [Submodule.map_inf _ (by simpa using ν.injective)]
   congr 1
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `[Submodule.mem_iInf]`.
+-/
 theorem ff_mem_dual {Λ : Submodule (𝓞 E) S.V} {x : S.V} :
     x ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ ↔ ∀ y ∈ Λ, S.hT y x ∈ (1 : Submodule (𝓞 E) E) := by
   unfold Formalism.HermitianLatticesTheory.dual Formalism.E.hdual
   simp [Submodule.mem_iInf]
 
+/- English proof (translation)
+Substitute `hΛ` using the available equality. Establish `hmem : ∀ z, z ∈ Me ⊔ L ⊔ Mf ↔ ∀ y ∈ Me ⊔ L ⊔ Mf, S.hT y z ∈ (1 : Submodule (𝓞 E) E)`. Introduce `z`. Establish `h` using `ff_mem_dual (Λ := Me ⊔ L ⊔ Mf) (x := z)`. Rewrite `h` using `[hU]`. Then use the resulting hypothesis.
+
+Establish `hMe : Me ≤ Me ⊔ L ⊔ Mf` using `le_sup_left.trans le_sup_left`. Establish `hL : L ≤ Me ⊔ L ⊔ Mf` using `le_sup_right.trans le_sup_left`. Establish `hMf' : Mf ≤ Me ⊔ L ⊔ Mf` using `le_sup_right`. Establish `hsymm : ∀ y w, S.hT y (ν w) = S.hT (ν.symm y) w`. Introduce `y w`.
+
+Rewrite using `[← isom_app hν (ν.symm y) w, LinearEquiv.apply_symm_apply]`. Establish `hn : ∀ n ∈ Mf, ν n ∈ Me ⊔ L ⊔ Mf`. Introduce `n hn`. Establish `hnΛ` using `hMf' hn`. Use `(hmem _).2 fun y hy => ?_` and prove the remaining obligations.
+
+Take `⟨y12, hy12, y3, hy3, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.1 hy12`. Simplify using `only [map_add, LinearMap.add_apply]`. Use `Submodule.add_mem _ (Submodule.add_mem _ ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[hsymm]`.
+
+Conclude with `(hmem n).1 hnΛ _ (hMe (h2 y1 hy1))`. Rewrite using `[← h3 y2 hy2, isom_app hν]`. Conclude with `(hmem n).1 hnΛ _ (hL hy2)`. Rewrite using `[hsymm, hY _ (h4 _ (hMf y3 hy3)) n (hMf n hn)]`. Conclude with `Submodule.zero_mem _`.
+
+Unfold `Formalism.HermitianLatticesTheory.gmap`. Introduce `w hw`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.1 hw`. Take `⟨z12, hz12, n, hn', rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨m, hm, l, hl, rfl⟩` from `Submodule.mem_sup.1 hz12`.
+
+Use `show ν (m + l + n) ∈ Me ⊔ L ⊔ Mf`. Rewrite using `[map_add, map_add, h3 l hl]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (hMe (h1 m hm)) (hL hl)) (hn n hn')`.
+-/
 theorem ff_lat_le {Λ' Me L Mf : Submodule (𝓞 E) S.V} {Yf : Submodule E S.V}
     (hΛ : Λ' = Me ⊔ L ⊔ Mf) (hU : Formalism.HermitianLatticesTheory.dual S.hT Λ' = Λ')
     (hMf : ∀ v ∈ Mf, v ∈ Yf) (hY : ∀ a ∈ Yf, ∀ b ∈ Yf, S.hT a b = 0) (hLY : ∀ l ∈ L, ∀ v ∈ Yf, S.hT l v = 0)
@@ -249,6 +345,63 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D) (Y : Formalism.L2.SG.Full.Full X) (u u' : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `s y β _ _ hP _ _`. Establish `hγi : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `s.rep.2.2.1`. Establish `hγΛ : Formalism.HermitianLatticesTheory.gmap s.lin s.lam' = s.lam` using `s.rep.2.2.2.1`. Establish `hβi : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hP.1.1`. Establish `hβΛ : Formalism.HermitianLatticesTheory.gmap β s.lam = s.lam` using `hP.1.2`.
+
+Establish `hδi : β * s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem hβi hγi`. Establish `hδΛ : Formalism.HermitianLatticesTheory.gmap (β * s.lin) s.lam' = s.lam` using `by rw [gmap_mul', hγΛ, hβΛ]`. Establish `hRL' : IsRowLat D (X.Fu u') s.lam'` using `(Y.rowsOK u').1 s.lam' s.mem'`. Take `⟨f, L, hff, hef, hL, hzL, hΛ'⟩` from `Y.split u' s.lam' s.mem'`. Use `set e := (X.Fu u').e with he_def`.
+
+Establish `hee : ∀ a b, (VS D).hT (e a) (e b) = 0` using `(X.Fu u').e_iso`. Establish `hfe : ∀ a b, (VS D).hT (f a) (e b) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← ff_herm, hef]`. Break down `eq_or_ne a b with rfl | h` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `hA : Xsp (lf D (X.Fu u')) = Submodule.span D.host.E (Set.range e)` using `rfl`. Establish `hX2 : Xsp y.1 = (Xsp (lf D (X.Fu u'))).map ((β * s.lin : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V)`. Rewrite using `[liftT_xsp_eq, ← hP.2.1 D.R.rS, ← liftT_xsp_eq]`.
+
+Use `show (Xsp (mapLF s.lin (lf D (X.Fu u')))).map _ = _`. Rewrite using `[liftT_xsp_mapLF _ hγi, ← liftT_map_mul]`. Use `set δ : (VS D).V ≃ₗ[D.host.E] (VS D).V := β * s.lin with hδ`. Use `set x : Fin D.R.rS → (VS D).V := fun b => δ.symm (y.1.fl.e b) with hx_def`. Establish `hxδ : ∀ b, δ (x b) = y.1.fl.e b` using `fun b => δ.apply_symm_apply _`.
+
+Establish `hxA : ∀ b, x b ∈ Submodule.span D.host.E (Set.range e)`. Introduce `b`. Establish `hm : y.1.fl.e b ∈ Xsp y.1` using `Submodule.subset_span ⟨b, rfl⟩`. Rewrite `hm` using `[hX2]`. Take `⟨w, hw, hwe⟩` from `hm`.
+
+Establish `hxw : x b = w`. Simplify using `only [hx_def]`. Rewrite using `[← hwe]`. Simplify using the standard rewrite rules. Rewrite using `[hxw]`.
+
+Conclude with `hw`. Establish `hxi : LinearIndependent D.host.E x` using `y.1.fl.e_indep.map' (δ.symm : (VS D).V →ₗ[D.host.E] (VS D).V) (LinearEquiv.ker _)`. Establish `hxe : ∀ b, x b = ∑ a, (VS D).hT (f a) (x b) • e a` using `fun b => ff_repr hfe (hxA b)`. Establish `hdet` using `ff_det hxi hxe`. Use `set T := Matrix.of (fun a b => (VS D).hT (f a) (x b)) with hT`.
+
+Establish `hUT : T⁻¹ * T = 1` using `Matrix.nonsing_inv_mul T (isUnit_iff_ne_zero.2 hdet)`. Use `set g : Fin D.R.rS → (VS D).V := fun b => ∑ c, starRingEnd D.host.E (T⁻¹ b c) • f c with hg_def`. Establish `hxx : ∀ a b, (VS D).hT (x a) (x b) = 0`. Introduce `a b`. Rewrite using `[← isom_app hδi (x a) (x b), hxδ, hxδ]`.
+
+Conclude with `y.1.fl.e_iso a b`. Establish `hgg : ∀ a b, (VS D).hT (g a) (g b) = 0`. Introduce `a b`. Simplify using `[hg_def, map_sum, hff]`. Establish `hxg : ∀ a b, (VS D).hT (x a) (g b) = if a = b then 1 else 0` using `ff_dual_pair x T⁻¹ hUT`.
+
+Establish `hxH : ∀ a, x a ∈ ffH e f` using `fun a => Submodule.span_mono Set.subset_union_left (hxA a)`. Establish `hgH : ∀ a, g a ∈ ffH e f` using `fun a => Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨c, rfl⟩))`. Establish `hiso` using `ffMu_isom hee hff hef hfe hxx hgg hxg hxH hgH`. Use `set μ := LinearEquiv.ofInjectiveEndo (ffMu e f x g) (ff_inj_of_isom hiso) with hμ_def`. Establish `hμ : ∀ v, μ v = ffMu e f x g v` using `fun v => rfl`.
+
+Establish `hμi : μ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun a b => by rw [hμ, hμ]; exact hiso a b`. Establish `hμe : ∀ b, μ (e b) = x b` using `fun b => by rw [hμ]; exact ffMu_e hee hfe b`. Establish `hμL : ∀ v ∈ L, μ v = v` using `fun v hv => by`. Rewrite using `[hμ]`. Conclude with `ffMu_fix (fun a => (hL v hv a).2) (fun a => (hL v hv a).1)`.
+
+Establish `hAiso : ∀ v ∈ Submodule.span D.host.E (Set.range e), ∀ w ∈ Submodule.span D.host.E (Set.range e), (VS D).hT v w = 0` using `fun v hv w hw => ff_iso_span hee hv hw`. Establish `hμo : ∀ v ∈ orth (VS D) (Xsp (lf D (X.Fu u'))), μ v - v ∈ Xsp (lf D (X.Fu u'))`. Introduce `v hv`. Establish `h2 : ∀ a, (VS D).hT (e a) v = 0` using `fun a => mem_orth_iff.1 hv (e a) (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[hμ, ffMu_sub_e h2, hA]`.
+
+Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.sub_mem _ (hxA a) (Submodule.subset_span ⟨a, rfl⟩))`. Establish `hμX : ∀ v ∈ Xsp (lf D (X.Fu u')), μ v ∈ Xsp (lf D (X.Fu u'))`. Introduce `v hv`. Establish `ho : v ∈ orth (VS D) (Xsp (lf D (X.Fu u')))` using `mem_orth_iff.2 fun w hw => hAiso w hw v hv`. Use `Submodule.add_mem _ (hμo v ho) hv` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `set Yf := Submodule.span D.host.E (Set.range f) with hYf`. Establish `hYiso : ∀ a ∈ Yf, ∀ b ∈ Yf, (VS D).hT a b = 0` using `fun a ha b hb => ff_iso_span hff ha hb`. Establish `hμY : ∀ v ∈ Yf, μ v ∈ Yf`. Introduce `v hv`.
+
+Establish `h1 : ∀ a, (VS D).hT (f a) v = 0` using `fun a => hYiso _ (Submodule.subset_span ⟨a, rfl⟩) _ hv`. Establish `hd : μ v - v ∈ Yf`. Rewrite using `[hμ, ffMu_sub_f h1]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.sub_mem _ ?_ (Submodule.subset_span ⟨a, rfl⟩))` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+
+Use `Submodule.add_mem _ hd hv` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hYmap : Yf.map (μ : (VS D).V →ₗ[D.host.E] (VS D).V) = Yf` using `liftT_map_eq hμY`. Establish `hμYs : ∀ v ∈ Yf, μ.symm v ∈ Yf`. Introduce `v hv`.
+
+Rewrite `hv` using `[← hYmap]`. Take `⟨w, hw, rfl⟩` from `hv`. Simplify using `using hw`. Establish `hMeXS : XLam s.lam' (lf D (X.Fu u')) = latSpan (aaS D) e` using `hRL'.2.2`. Establish `hy' : XLam s.lam y.1 = latSpan (aaS D) y.1.fl.e` using `y.2.2.2.2`.
+
+Establish `e1 : Formalism.HermitianLatticesTheory.gmap δ (latSpan (aaS D) x) = Formalism.HermitianLatticesTheory.gmap δ (latSpan (aaS D) e)`. Rewrite using `[ff_gmap_latSpan, show (fun b => δ (x b)) = y.1.fl.e from funext hxδ, ← hy', ← hMeXS]`. Unfold `XLam`. Rewrite using `[ff_gmap_inf, hδΛ, hX2]`. Establish `e2 : latSpan (aaS D) x = latSpan (aaS D) e` using `Submodule.map_injective_of_injective (f := ((δ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))) δ.injective e1`.
+
+Establish `hμMe : Formalism.HermitianLatticesTheory.gmap μ (latSpan (aaS D) e) = latSpan (aaS D) e`. Rewrite using `[ff_gmap_latSpan, show (fun b => μ (e b)) = x from funext hμe, e2]`. Establish `h1 : ∀ v ∈ latSpan (aaS D) e, μ v ∈ latSpan (aaS D) e` using `fun v hv => liftT_maps hμMe hv`. Establish `h2 : ∀ v ∈ latSpan (aaS D) e, μ.symm v ∈ latSpan (aaS D) e`. Introduce `v hv`.
+
+Rewrite `hv` using `[← hμMe]`. Take `⟨w, hw, rfl⟩` from `hv`. Simplify using `using hw`. Establish `hU : Formalism.HermitianLatticesTheory.dual (VS D).hT s.lam' = s.lam'` using `hRL'.2.1.2.1`. Establish `hMf : ∀ v ∈ latSpan (fun a => (aaS D a)⁻¹) f, v ∈ Yf`.
+
+Introduce `v hv`. Establish `hle : latSpan (fun a => (aaS D a)⁻¹) f ≤ Yf.restrictScalars (𝓞 D.host.E)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, t, -, rfl⟩`. Conclude with `Yf.smul_mem t (Submodule.subset_span ⟨a, rfl⟩)`.
+
+Conclude with `hle hv`. Establish `hLY : ∀ l ∈ L, ∀ v ∈ Yf, (VS D).hT l v = 0`. Introduce `l hl v hv`. Establish `hle : Yf ≤ LinearMap.ker ((VS D).hT l)` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact LinearMap.mem_ker.2 (ff_swap (hL l hl a).2))`. Conclude with `LinearMap.mem_ker.1 (hle hv)`.
+
+Establish `hle1 : Formalism.HermitianLatticesTheory.gmap μ s.lam' ≤ s.lam'` using `ff_lat_le hΛ' hU hMf hYiso hLY hμi h1 h2 hμL hμYs`. Establish `hμsi : μ.symm ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `fun a b => by`. Rewrite using `[← isom_app hμi (μ.symm a) (μ.symm b)]`. Simplify using the standard rewrite rules. Establish `hle2 : Formalism.HermitianLatticesTheory.gmap μ.symm s.lam' ≤ s.lam'` using `ff_lat_le hΛ' hU hMf hYiso hLY hμsi h2 (by simpa using h1) (fun v hv => (μ.symm_apply_eq).2 (hμL v hv).symm) (by simpa using hμY)`.
+
+Establish `hμΛ : Formalism.HermitianLatticesTheory.gmap μ s.lam' = s.lam'` using `le_antisymm hle1 fun v hv => ⟨μ.symm v, hle2 ⟨v, hv, rfl⟩, μ.apply_symm_apply v⟩`. Establish `hδ'i : δ * μ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem hδi hμi`. Establish `hzs : s.frame.fl.z = s.lin (X.Fu u').z`. Simplify using `[GTerm.frame, mapLF, dif_pos hγi, Formalism.L2.SG.TermOp.mapFlag]`. Establish `hz : (δ * μ) (X.Fu u').z = y.1.fl.z` using `by show β (s.lin (μ (X.Fu u').z)) = _`.
+
+Rewrite using `[hμL _ hzL, ← hzs]`. Conclude with `hP.2.2.1`. Establish `hyz : y.1.zt = y.1.fl.z` using `y.2.1.2`. Use `⟨μ, hμi, hμΛ, hμX, hμo, 1, one_mem_NLam _ _, 1, one_mem_NLam _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Rewrite using `[mapLF, dif_pos hδ'i]`. Use `Fin.lastCases ?_ (fun b => ?_) a` and prove the remaining obligations. Simplify using `only [frame, FlagG.fvec, Fin.snoc_last]`. Conclude with `hz`. Simplify using `only [frame, FlagG.fvec, Fin.snoc_castSucc] show (δ * μ) (e b) = y.1.fl.e b`.
+
+Rewrite using `[show (δ * μ) (e b) = δ (μ (e b)) from rfl, hμe b]`. Conclude with `hxδ b`. Rewrite using `[mapLF, dif_pos hδ'i] show (δ * μ) (X.Fu u').z = y.1.zt`. Rewrite using `[hyz]`. Conclude with `hz`.
+-/
 theorem frameCorrection_holds : FrameFixNeed X Y u u' := by
   intro s y β _ _ hP _ _
   have hγi : s.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT := s.rep.2.2.1

@@ -10,6 +10,13 @@ noncomputable def cycChar (l : ℕ) [Fact l.Prime] : GQ l →* ℚ_[l]ˣ :=
   (Units.map (PadicInt.Coe.ringHom (p := l)).toMonoidHom).comp
     ((cyclotomicCharacter (Om l) l).comp (MulSemiringAction.toRingAut (GQ l) (Om l)))
 
+/- English proof (translation)
+Introduce `g m ζ h`. Use `set x : ℤ_[l] := (cyclotomicCharacter (_root_.Formalism.BasicNotions.Loc.Om l) l (MulSemiringAction.toRingAut _ _ g) : ℤ_[l]) with hx`. Use `⟨(PadicInt.toZModPow m x).val, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : x - ((PadicInt.toZModPow m x).val : ℤ_[l]) ∈ Ideal.span {(l : ℤ_[l]) ^ m}`. Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`.
+
+Establish `h2 : ‖((x - ((PadicInt.toZModPow m x).val : ℤ_[l]) : ℤ_[l]) : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ))` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ m).2 hmem`. Establish `h3 : ((_root_.GlobalTheory.Cyc.cycChar l g : ℚ_[l]ˣ) : ℚ_[l]) = (x : ℚ_[l])` using `rfl`. Rewrite using `[h3]`. Rewrite `h2` using `[PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `h2`.
+
+Conclude with `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut _ _ g) ζ h`.
+-/
 theorem _root_.GlobalTheory.Cyc.isCyc_cycChar (l : ℕ) [Fact l.Prime] :
     _root_.GlobalTheory.Cyc.IsCyc (_root_.GlobalTheory.Cyc.cycChar l) := by
   intro g m ζ h
@@ -28,6 +35,9 @@ theorem _root_.GlobalTheory.Cyc.isCyc_cycChar (l : ℕ) [Fact l.Prime] :
     exact h2
   · exact cyclotomicCharacter.spec l (MulSemiringAction.toRingAut _ _ g) ζ h
 
+/- English proof (translation)
+Introduce `l _` and use `⟨_root_.GlobalTheory.Cyc.cycChar l, _root_.GlobalTheory.Cyc.isCyc_cycChar l⟩`.
+-/
 theorem _root_.GlobalTheory.Cyc.exists_isCyc :
     ∀ (l : ℕ) [Fact l.Prime], ∃ χ : _root_.Formalism.BasicNotions.Loc.GQ l →* ℚ_[l]ˣ, _root_.GlobalTheory.Cyc.IsCyc χ :=
   fun l _ => ⟨_root_.GlobalTheory.Cyc.cycChar l, _root_.GlobalTheory.Cyc.isCyc_cycChar l⟩

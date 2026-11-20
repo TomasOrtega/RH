@@ -12,12 +12,18 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.LN.PelModel
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Use `haveI := h.2.1`. Use `haveI := h.2.2.2`. Conclude with `not_subsingleton R (IsHausdorff.subsingleton (inferInstance : IsHausdorff (⊤ : Ideal R) R))`.
+-/
 theorem ne_top_of_admissibleBase {R : Type} [CommRing R] {I : Ideal R} (h : AdmBase R I) : I ≠ ⊤ := by
   rintro rfl
   haveI := h.2.1
   haveI := h.2.2.2
   exact not_subsingleton R (IsHausdorff.subsingleton (inferInstance : IsHausdorff (⊤ : Ideal R) R))
 
+/- English proof (translation)
+The claim follows from `admissibleBase_powerSeries ℚ`.
+-/
 theorem admissibleBase_powerSeries_span_X : AdmBase (PowerSeries ℚ) (Ideal.span {PowerSeries.X}) := admissibleBase_powerSeries ℚ
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R]
@@ -34,8 +40,14 @@ def zeroTriple : SAB H (Sp R) :=
 def zeroU [IsHausdorff I R] : Unif I (UnifZero.zeroData R I) (Inh.zeroPolAV (Sp (FractionRing R))) (zeroTriple H R I).G :=
   ⟨UnifZero.zeroPre R I, fun k _ => UnifZero.expBij k⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zeroU_LG [IsHausdorff I R] : (zeroU H R I).LG = (zeroTriple H R I).PP := rfl
 
+/- English proof (translation)
+Use `haveI := h.2.2.2`. Conclude with `⟨_, _, _, zeroU H R I, rfl⟩`.
+-/
 theorem exists_hyp (h : AdmBase R I) : ∃ (t : SAB H (Sp R)) (D : DegData R I) (A : PolAV (Sp (FractionRing R)))
     (U : Unif I D A t.G), U.LG = t.PP := by
   haveI := h.2.2.2
@@ -59,6 +71,9 @@ def zeroP [IsHausdorff I R] : PELUnif I (zeroTriple H R I) :=
         (UnifZero.isTerminalPullback (thick R I e)).hom_ext _ _⟩⟩
     w0 := ToricData.psi_weight_zero_linear_combination _ (𝓞 E) _ _ (fun _ => by simp [ToricData.polar]) }
 
+/- English proof (translation)
+Use `haveI : CharZero (PowerSeries ℚ) := algebraRat.charZero _`. Take `⟨t, D, A, U, hU⟩` from `exists_hyp GlobalTheory.HostModel.host _ _ (admissibleBase_powerSeries_span_X)`. Take `⟨P, -, -, -, hP⟩` from `h _ _ _ _ (admissibleBase_powerSeries_span_X) t D A U hU`. Conclude with `⟨t, P, hP⟩`.
+-/
 theorem apply_zero (h : PelSt) : ∃ (t : SAB GlobalTheory.HostModel.host (Sp (PowerSeries ℚ)))
     (P : PELUnif (Ideal.span {PowerSeries.X}) t), P.TorsionIso := by
   haveI : CharZero (PowerSeries ℚ) := algebraRat.charZero _

@@ -11,6 +11,11 @@ noncomputable section
 
 namespace GlobalTheory.TestLat.SlopeModel
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hH.posSemidef.nonneg`. Establish `hu : IsUnit B.det`. Establish `h` using `(Matrix.isUnit_iff_isUnit_det _).1 hH.isUnit`. Rewrite `h` using `[hB, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_right h`.
+
+Use `⟨B⁻¹, Matrix.isUnit_nonsing_inv_det B hu, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.nonsing_inv_nonsing_inv B hu, hB]`. Both sides reduce to the same expression.
+-/
 theorem exists_frame {N : ℕ} {H : Matrix (Fin N) (Fin N) ℂ} (hH : H.PosDef) :
     ∃ X : Matrix (Fin N) (Fin N) ℂ, IsUnit X.det ∧ (X⁻¹)ᴴ * X⁻¹ = H := by
   obtain ⟨B, hB⟩ := CStarAlgebra.nonneg_iff_eq_star_mul_self.1 hH.posSemidef.nonneg
@@ -30,6 +35,39 @@ open scoped Kronecker MatrixOrder in
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n N : ℕ}
   {C : Type} in
 omit [NumberField K] in
+/- English proof (translation)
+Use `choose B hB hBT using fun τ => _root_.Formalism.L2.DIV.ps_factor (hG τ).transpose`. Take `⟨D, hD⟩ : ∃ D : ℂ, D = ∏ τ, ((G τ).map φ).det ^ (lam τ).detShift` from `⟨_, rfl⟩`. Establish `hDpos : 0 < D`. Rewrite using `[hD]`. Conclude with `Finset.prod_pos fun τ _ => zpow_pos (hG τ).det_pos _`.
+
+Establish `hDstar : star D = D` using `Complex.conj_eq_iff_im.mpr (Complex.pos_iff.mp hDpos).2.symm`. Take `⟨w, hw⟩ : ∃ w : _root_.Formalism.L2.DIV.VVIdx lam → MvPolynomial (ι × Fin n × Fin n) ℂ, w = fun i => _root_.Formalism.GradedWeylDivisibility.blockAct ℂ B (MvPolynomial.map φ (_root_.Formalism.L2.DIV.bVVfun K lam i))` from `⟨_, rfl⟩`. Establish `hcoef : ∀ i (m : ι × Fin n × Fin n →₀ ℕ), φ (star (MvPolynomial.coeff m (_root_.Formalism.L2.DIV.bVVfun K lam i))) = star (φ (MvPolynomial.coeff m (_root_.Formalism.L2.DIV.bVVfun K lam i)))`. Introduce `i m`. Take `⟨P, hP⟩` from `_root_.Formalism.L2.DIV.bVVfun_int K lam i`.
+
+Rewrite using `[hP, MvPolynomial.coeff_map]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have hentry : ∀ a b, (_root_.GlobalTheory.TestLat.sumGram lam e G).map φ a b = if (e a).1 = (e b).1 then D * _root_.Formalism.L2.Col.nfL lam (w (e a).2) (w (e b).2) else 0 := by`. Introduce `a b`. Simplify using `only [Matrix.map_apply, _root_.GlobalTheory.TestLat.sumGram, Matrix.of_apply]`.
+
+Use `split_ifs`. Rewrite using `[_root_.Formalism.L2.DIV.pairK_apply, _root_.Formalism.L2.DIV.bVV_coe, _root_.Formalism.L2.DIV.bVV_coe, _root_.Formalism.L2.Col.map_pairP φ lam G B hBT _ _ (hcoef _), _root_.Formalism.L2.Col.nfL_apply, hD, hw]`. Conclude with `map_zero φ`. Rewrite using `[Matrix.posDef_iff_dotProduct_mulVec]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.IsHermitian.ext` to reduce the goal to its premises. Introduce `a b`. Rewrite using `[hentry, hentry]`. Distinguish the cases in `h : (e a).1 = (e b).1`. Rewrite using `[if_pos h.symm, if_pos h, star_mul', hDstar, _root_.Formalism.L2.DIV.ps_nfL_symm]`.
+
+Rewrite using `[if_neg (Ne.symm h), if_neg h, star_zero]`. Introduce `x hx`. Break down `isEmpty_or_nonempty C with hC | hC` into its components or cases. Conclude with `absurd (funext fun a => (hC.false (e a).1).elim) hx`. Take `⟨c0⟩` from `hC`.
+
+Use `haveI : Finite (_root_.Formalism.L2.DIV.VVIdx lam) := Finite.of_injective (fun i => e.symm (c0, i)) (fun i j h => by simpa using h)`. Use `letI := Fintype.ofFinite C`. Use `letI := Fintype.ofFinite (_root_.Formalism.L2.DIV.VVIdx lam)`. Establish `hinv : (_root_.Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => (B τ)⁻¹)).comp (_root_.Formalism.GradedWeylDivisibility.blockAct ℂ B) = AlgHom.id ℂ (MvPolynomial (ι × Fin n × Fin n) ℂ)`. Rewrite using `[_root_.Formalism.L2.DIV.blockAct_comp]`.
+
+Establish `h1 : (fun τ => B τ * (B τ)⁻¹) = fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)`. Use function extensionality and compare the values at `fun τ => Matrix.mul_nonsing_inv _ (hB τ)`. Rewrite using `[h1, _root_.Formalism.L2.DIV.blockAct_one]`. Establish `hUinj : Function.Injective (_root_.Formalism.GradedWeylDivisibility.blockAct ℂ B : MvPolynomial (ι × Fin n × Fin n) ℂ → MvPolynomial (ι × Fin n × Fin n) ℂ)`. Introduce `p q hpq`.
+
+Establish `h2` using `congrArg (_root_.Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => (B τ)⁻¹)) hpq`. Rewrite `h2` using `[← AlgHom.comp_apply, ← AlgHom.comp_apply, hinv]`. Simplify using `using h2`. Establish `hli : LinearIndependent ℂ w`. Establish `h3` using `_root_.Formalism.L2.Col.linearIndependent_map φ (_root_.Formalism.L2.DIV.bVVfun K lam) (_root_.Formalism.L2.DIV.bVVfun_spec K lam).1`.
+
+Rewrite using `[hw]`. Conclude with `h3.map' (_root_.Formalism.GradedWeylDivisibility.blockAct ℂ B).toLinearMap (LinearMap.ker_eq_bot.mpr hUinj)`. Take `⟨W, hW⟩ : ∃ W : C → MvPolynomial (ι × Fin n × Fin n) ℂ, W = fun c => ∑ i, x (e.symm (c, i)) • w i` from `⟨_, rfl⟩`. Establish `key : star x ⬝ᵥ ((_root_.GlobalTheory.TestLat.sumGram lam e G).map φ) *ᵥ x = D * ∑ c, _root_.Formalism.L2.Col.nfL lam (W c) (W c)`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, hentry]`.
+
+Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [Equiv.apply_symm_apply]`. Use `conv_lhs => enter [2, c, 2, i, 2]`. Rewrite using `[← e.symm.sum_comp, Fintype.sum_prod_type]`. Simplify using `only [Equiv.apply_symm_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+
+Rewrite using `[hW, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm (γ := _root_.Formalism.L2.DIV.VVIdx lam) (f := fun i j => D * _)]`. Simplify using `only [Complex.star_def, RingHom.id_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[key]`. Use `mul_pos hDpos (Finset.sum_pos' (fun c _ => ?_) ?_)` and prove the remaining obligations. Distinguish the cases in `hc : W c = 0`. Rewrite using `[hc]`.
+
+Simplify using the standard rewrite rules. Conclude with `(_root_.Formalism.L2.DIV.ps_nfL_pos lam _ hc).le`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, x a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+
+Conclude with `hx (funext h)`. Use `⟨(e a).1, Finset.mem_univ _, _root_.Formalism.L2.DIV.ps_nfL_pos lam _ ?_⟩` and prove the remaining obligations. Introduce `h0`. Rewrite `h0` using `[hW]`. Establish `h4` using `Fintype.linearIndependent_iff.mp hli _ h0 (e a).2`.
+
+Simplify using `at h4`. Conclude with `ha h4`.
+-/
 theorem _root_.GlobalTheory.TestLat.SlopeModel.sumGram_posDef (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) (e : Fin N ≃ C × _root_.Formalism.L2.DIV.VVIdx lam) [Finite C]
     (G : ι → Matrix (Fin n) (Fin n) K) (φ : K →+* ℂ) (hG : ∀ τ, ((G τ).map φ).PosDef) :
     ((_root_.GlobalTheory.TestLat.sumGram lam e G).map φ).PosDef := by
@@ -130,6 +168,11 @@ open scoped Kronecker MatrixOrder in
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n N : ℕ}
   {C : Type} in
 omit [StarRing K] in
+/- English proof (translation)
+Use `choose B hB hT using fun v : InfinitePlace K => _root_.Formalism.L2.DIV.ps_factor (hH v.embedding)`. Establish `hu : ∀ v, IsUnit ((B v)ᴴ).det` using `fun v => by`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `(hB v).star`. Use `⟨fun v => ((B v)ᴴ)⁻¹, fun v => ⟨Matrix.isUnit_nonsing_inv_det _ (hu v), ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (hu v), Matrix.conjTranspose_conjTranspose, ← hT]`.
+-/
 private lemma exists_isMetric_of_posDef_map (H : Matrix (Fin N) (Fin N) K)
     (hH : ∀ φ : K →+* ℂ, (H.map φ).PosDef) : ∃ X, _root_.GlobalTheory.TestLat.IsMetric H X := by
   choose B hB hT using fun v : InfinitePlace K => _root_.Formalism.L2.DIV.ps_factor (hH v.embedding)
@@ -145,6 +188,9 @@ open scoped Kronecker MatrixOrder in
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n N : ℕ}
   {C : Type} in
 omit [StarRing K] in
+/- English proof (translation)
+Use `⟨exists_isMetric_of_posDef_map H hH, exists_isMetric_of_posDef_map _ fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transpose_map, _root_.Formalism.L2.Col.map_inv_matrix]`. Conclude with `(hH φ).inv.transpose`.
+-/
 theorem _root_.GlobalTheory.TestLat.SlopeModel.exists_isMetric (H : Matrix (Fin N) (Fin N) K)
     (hH : ∀ φ : K →+* ℂ, (H.map φ).PosDef) :
     (∃ X, _root_.GlobalTheory.TestLat.IsMetric H X) ∧ ∃ X, _root_.GlobalTheory.TestLat.IsMetric (H⁻¹)ᵀ X := by
@@ -159,6 +205,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype 
   {C : Type} in
 omit [StarRing K] in
 
+/- English proof (translation)
+Establish `h` using `_root_.Formalism.L2.Col.evV_extV_ne_zero (E := ℚ) (K := ℚ) (fun _ : ι => RingHom.id ℚ) (1 : Matrix (Fin n) (Fin n) ℚ) lam (Rat.castHom ℂ) ⟨fun _ => 1, fun _ => by simp⟩`. Establish `hne : _root_.Formalism.L2.Col.extV ℚ lam ≠ 0` using `fun h0 => h (by rw [h0, map_zero])`. Use `haveI : Nontrivial ↥(_root_.Formalism.L2.DIV.VV ℚ lam) := nontrivial_of_ne _ _ hne`. Conclude with `(_root_.Formalism.L2.DIV.bVV ℚ lam).index_nonempty`.
+-/
 theorem _root_.GlobalTheory.TestLat.SlopeModel.nonempty_idx (lam : ι → _root_.Formalism.BasicNotions.DomWeight n) : Nonempty (_root_.Formalism.L2.DIV.VVIdx lam) := by
   have h := _root_.Formalism.L2.Col.evV_extV_ne_zero (E := ℚ) (K := ℚ) (fun _ : ι => RingHom.id ℚ) (1 : Matrix (Fin n) (Fin n) ℚ)
     lam (Rat.castHom ℂ) ⟨fun _ => 1, fun _ => by simp⟩
@@ -169,15 +218,24 @@ theorem _root_.GlobalTheory.TestLat.SlopeModel.nonempty_idx (lam : ι → _root_
 def stdLat (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule (𝓞 E) (Fin n → E) :=
   Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)
 
+/- English proof (translation)
+Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Conclude with `forall_congr' fun i => ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x i, h⟩, rfl⟩⟩`.
+-/
 theorem mem_stdLat {E : Type} [Field E] [NumberField E] {x : Fin n → E} :
     x ∈ stdLat E n ↔ ∀ i, IsIntegral ℤ (x i) := by
   simp only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]
   exact forall_congr' fun i => ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x i, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+-/
 theorem mem_range_iff {E : Type} [Field E] [NumberField E] {x : E} :
     x ∈ (algebraMap (𝓞 E) E).range ↔ IsIntegral ℤ x :=
   ⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Use `mem_stdLat.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[h]`.
+-/
 theorem single_mem_stdLat {E : Type} [Field E] [NumberField E] (i : Fin n) :
     (Pi.single i 1 : Fin n → E) ∈ stdLat E n := by
   refine mem_stdLat.2 fun j => ?_
@@ -185,6 +243,11 @@ theorem single_mem_stdLat {E : Type} [Field E] [NumberField E] (i : Fin n) :
   · subst h; simpa using isIntegral_one
   · simpa [h] using isIntegral_zero
 
+/- English proof (translation)
+Use `⟨Submodule.fg_pi fun _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span (Set.finite_singleton _)`. Rewrite using `[eq_top_iff, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `single_mem_stdLat i`.
+-/
 theorem stdLat_isLattice (E : Type) [Field E] [NumberField E] (n : ℕ) : Submodule.IsLattice E (stdLat E n) := by
   refine ⟨Submodule.fg_pi fun _ => ?_, ?_⟩
   · rw [Submodule.one_eq_span]
@@ -195,6 +258,13 @@ theorem stdLat_isLattice (E : Type) [Field E] [NumberField E] (n : ℕ) : Submod
     rw [Pi.basisFun_apply]
     exact single_mem_stdLat i
 
+/- English proof (translation)
+Establish `hf : ∀ x y : Fin n → E, Formalism.UG.hform cE (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, cE (x i) * y i`. Introduce `x y`. Simplify using `[Formalism.UG.hform, Matrix.one_apply]`. Use `⟨stdLat_isLattice E n, fun y => ⟨fun hy x hx => ?_, fun h => mem_stdLat.2 fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mem_range_iff, hf]`.
+
+Conclude with `IsIntegral.sum _ fun i _ => ((mem_stdLat.1 hx i).map cE.toIntAlgHom).mul (mem_stdLat.1 hy i)`. Use `h _ (single_mem_stdLat i)` as an intermediate fact. Rewrite `this` using `[mem_range_iff, hf, Finset.sum_eq_single i]`. Simplify using `using this`. Introduce `b _ hb`.
+
+Simplify using `[hb]`. Simplify using the standard rewrite rules.
+-/
 theorem stdLat_selfDualE {E : Type} [Field E] [NumberField E] (cE : E →+* E) (n : ℕ) :
     IsSelfDualE cE (1 : Matrix (Fin n) (Fin n) E) (stdLat E n) := by
   have hf : ∀ x y : Fin n → E, Formalism.UG.hform cE (1 : Matrix (Fin n) (Fin n) E) x y = ∑ i, cE (x i) * y i := by
@@ -226,6 +296,19 @@ instance isCyclotomicExtension_four_slopeModelField : IsCyclotomicExtension {4} 
 
 instance isCMField_slopeModelField : IsCMField K4 := IsCyclotomicExtension.Rat.isCMField K4 (S := {4}) ⟨4, rfl, by norm_num⟩
 
+/- English proof (translation)
+Use `letI : StarRing K4 := IsCMField.starRing K4`. Establish `hone : ∀ φ : K4 →+* ℂ, ((1 : Matrix (Fin 2) (Fin 2) K4).map φ).PosDef` using `fun φ => by`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Matrix.PosDef.one`. Set `lam : Unit → DomWeight 2` to `fun _ => wt a`.
+
+Set `e` to `(Fintype.equivFin (Fin (k + 1) × VVIdx lam)).symm`. Establish `g1 : gramK (fun _ : Unit => RingHom.id K4) (1 : Matrix (Fin 2) (Fin 2) K4) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Simplify using `[gramK]`. Establish `g2 : gramKd (fun _ : Unit => RingHom.id K4) (1 : Matrix (Fin 2) (Fin 2) K4) = fun _ => 1`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[gramKd]`. Establish `hm` using `exists_isMetric (sumGram lam e fun _ => (1 : Matrix (Fin 2) (Fin 2) K4)) fun φ => sumGram_posDef lam e _ φ fun _ => hone φ`. Use `haveI := nonempty_idx lam`. Use `⟨Classical.arbitrary _, (IsCMField.complexConj K4 : K4 →+* K4), fun _ => RingHom.id _, lam, 1, fun _ => stdLat K4 2, _, e, inferInstance, fun x => IsCMField.complexEmbedding_complexConj K4 _ x, ?_, fun φ x => IsCMField.complexEmbedding_complexConj K4 φ x, fun _ _ => rfl, by exact …` and prove the remaining obligations.
+
+Introduce `h`. Apply `IsCMField.complexConj_ne_one K4` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `congrArg (fun f : K4 →+* K4 => f x) h`. Apply the tactic sequence `intro τ i j fin_cases i <;> fin_cases j <;> simp [lam, wt]`.
+
+Simplify using `[lam, wt]`. Rewrite using `[g1]`. Conclude with `hm.2`. Rewrite using `[g1]`. Conclude with `hm.1`.
+
+Rewrite using `[g2]`. Conclude with `hm.2`. Rewrite using `[g2]`. Conclude with `hm.1`.
+-/
 theorem hypotheses_inhabited (a : ℕ) (ha : 1 ≤ a) (k : ℕ) :
     letI : StarRing K4 := IsCMField.starRing K4
     ∃ (v₀ : InfinitePlace K4) (cE : K4 →+* K4) (emb : Unit → K4 →+* K4) (lam : Unit → DomWeight 2)
@@ -266,6 +349,15 @@ theorem hypotheses_inhabited (a : ℕ) (ha : 1 ≤ a) (k : ℕ) :
   · rw [g2]; exact hm.2
   · rw [g2]; exact hm.1
 
+/- English proof (translation)
+Use `⟨⟨Matrix.conjTranspose_one, fun a b => ?_, fun φ => ?_⟩, stdLat_isLattice K n, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Conclude with `Matrix.PosDef.one`. Establish `hm : ∀ x : K, x ∈ (1 : Submodule (𝓞 K) K) ↔ IsIntegral ℤ x` using `fun x => by`. Rewrite using `[Submodule.mem_one]`. Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Use extensionality with `x`.
+
+Express the relevant statement in the definitionally equal form `(∀ y ∈ stdLat K n, star y ⬝ᵥ ((1 : Matrix (Fin n) (Fin n) K) *ᵥ x) ∈ (1 : Submodule (𝓞 K) K)) ↔ _`. Simplify using `only [Matrix.one_mulVec, hm]`. Use `⟨fun h => mem_stdLat.2 fun i => ?_, fun hx y hy => ?_⟩` and prove the remaining obligations. Use `h _ (single_mem_stdLat i)` as an intermediate fact. Simplify `this` using `[Pi.star_single]`.
+
+Conclude with `IsIntegral.sum _ fun i _ => ((mem_stdLat.1 hy i).map (starRingEnd K).toIntAlgHom).mul (mem_stdLat.1 hx i)`.
+-/
 theorem hypothesesK (n : ℕ) :
     IsDefGram (1 : Matrix (Fin n) (Fin n) K) ∧ IsSelfDualK (1 : Matrix (Fin n) (Fin n) K) (stdLat K n) := by
   refine ⟨⟨Matrix.conjTranspose_one, fun a b => ?_, fun φ => ?_⟩, stdLat_isLattice K n, ?_⟩
@@ -287,6 +379,17 @@ theorem hypothesesK (n : ℕ) :
     · exact IsIntegral.sum _ fun i _ =>
         ((mem_stdLat.1 hy i).map (starRingEnd K).toIntAlgHom).mul (mem_stdLat.1 hx i)
 
+/- English proof (translation)
+Establish `hX : ∀ v : InfinitePlace K, IsUnit ((fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) v).det` using `fun _ => by simp`. Establish `hne : Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin N))) ≠ ⊥`. Introduce `h`. Use `Submodule.subset_span (R := 𝓞 K) (Set.mem_range_self (f := Pi.basisFun K (Fin N)) ⟨0, hN⟩)` as an intermediate fact. Rewrite `this` using `[h, SetLike.mem_coe, Submodule.mem_bot]`.
+
+Conclude with `(Pi.basisFun K (Fin N)).ne_zero _ this`. Establish `h1` using `(Formalism.HN.sizeMu K (Fin N → K) (Fin N) (Pi.basisFun K (Fin N)) _ hX _ (Submodule.fg_span (Set.finite_range _)) hne).2.1`. Establish `h2` using `(Formalism.HN.htGram K (Fin N → K) (Fin N) (Pi.basisFun K (Fin N)) _ hX N (Pi.basisFun K (Fin N)) (Pi.basisFun K (Fin N)).linearIndependent).1`. Establish `h3 : ∀ v : InfinitePlace K, Formalism.HN.gramPl (Pi.basisFun K (Fin N)) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ)) v (Pi.basisFun K (Fin N)) = 1`. Introduce `v`.
+
+Use extensionality with `a c`. Simplify using `only [Formalism.HN.gramPl, Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt, Matrix.of_apply, inv_one, Matrix.one_mulVec, Module.Basis.repr_self, Finsupp.single_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Distinguish the cases in `h : a = c`. Simplify using `[h]`.
+
+Simplify using `[h, Ne.symm h]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite using `[h1, Formalism.HN.size, h2]`.
+
+Simplify using `[h3]`.
+-/
 theorem muDef_std [IsTotallyComplex K] (hN : 0 < N) :
     Formalism.HN.muDef (Pi.basisFun K (Fin N)) (fun _ => (1 : Matrix (Fin N) (Fin N) ℂ))
       (Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin N)))) = 0 := by
@@ -316,6 +419,9 @@ theorem muDef_std [IsTotallyComplex K] (hN : 0 < N) :
   rw [h1, Formalism.HN.size, h2]
   simp [h3]
 
+/- English proof (translation)
+Simplify using `[bound]`.
+-/
 theorem bound_edges (f ν : ℕ) (R : ℝ) : bound f 0 R = 0 ∧ bound 0 ν R = 0 ∧ bound f 1 1 = 0 := by
   simp [bound]
 

@@ -18,10 +18,16 @@ variable {S S₁ S₂ : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {B'
   {G' : Over S₂} [GrpObj G'] [IsCommMonObj G'] {φ : G'.left ⟶ G.left} {β₂ : (G2 B').left ⟶ (G2 G).left}
   {sq : (G2 G').left ⟶ (G2 B').left} {L : LB G.left} {L' : LB G'.left}
 
+/- English proof (translation)
+The claim follows from `congrArg (fun g => g x) (h I)`.
+-/
 theorem pt_eq (h : ∀ I, sq ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ) (I : ULift.{0} (Finset (Fin 2))) (x : (G2 G').left) :
     lamφ G I (β₂ (sq x)) = φ (lamφ G' I x) :=
   congrArg (fun g => g x) (h I)
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨mem_pull.2 (by have := Set.mem_iInter.1 (mem_pull.1 (mem_pull.1 hx.1)) I show φ (lamφ G' I x) ∈ _ rw [← pt_eq h I x]; exact this), Set.mem_iInter.1 hx.2 I⟩`.
+-/
 theorem iso_le (h : ∀ I, sq ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ)
     (p : (((abelian₂ G L).pull β₂).pull sq).ι × (abelian₂ G' L').ι) (I : ULift.{0} (Finset (Fin 2))) :
     (((abelian₂ G L).pull β₂).pull sq).U p.1 ⊓ (abelian₂ G' L').U p.2 ≤
@@ -36,6 +42,11 @@ def iso2 (h : ∀ I, sq ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ) (v : LB.Iso
   ⟨fun p => ∏ I, (res (iso_le h p I)
     (pullU (lamφ G' I) _ (v.s (fun _ => p.1 PUnit.unit PUnit.unit I, p.2 I)))) ^ lamε I⟩
 
+/- English proof (translation)
+Establish `hm : r y ∈ (((abelian₂ G L).pull β₂).pull sq).U (fun _ => j) ⊓ (abelian₂ G' L').U k` using `⟨mem_pull.2 (mem_pull.2 (Set.mem_iInter.2 fun I => by show lamφ G I (β₂ (sq (r y))) ∈ L.U (j PUnit.unit I)`. Rewrite using `[pt_eq h]`. Conclude with `hj I)), Set.mem_iInter.2 hk⟩`. Unfold `gw`. Simplify using `only [iso2]`.
+
+Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun I _ => (map_zpow _ _ _).trans (congrArg (· ^ lamε I) ?_))` and prove the remaining obligations. Conclude with `(gm_res r y _ hm _).trans (gm_pull r (lamφ G' I) y ((L.pull φ).U (fun _ => j PUnit.unit I) ⊓ L'.U (k I)) ⟨mem_pull.2 (hj I), hk I⟩ _)`.
+-/
 theorem mumfordBundle_pullback_composite_germ_iso (h : ∀ I, sq ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ) (v : LB.Iso L' (L.pull φ)) {Y : Scheme.{0}}
     (r : Y ⟶ (G2 G').left) (y : Y) (j : PUnit → ULift.{0} (Finset (Fin 2)) → L.ι)
     (k : ULift.{0} (Finset (Fin 2)) → L'.ι)
@@ -51,6 +62,15 @@ theorem mumfordBundle_pullback_composite_germ_iso (h : ∀ I, sq ≫ β₂ ≫ l
   exact (gm_res r y _ hm _).trans (gm_pull r (lamφ G' I) y ((L.pull φ).U (fun _ => j PUnit.unit I) ⊓ L'.U (k I))
     ⟨mem_pull.2 (hj I), hk I⟩ _)
 
+/- English proof (translation)
+Introduce `Y r y j j' k k' hj hj' hk hk'`. Establish `bj` using `mem_pull.1 hj`. Establish `bj'` using `mem_pull.1 hj'`. Establish `aj : ∀ I, φ (lamφ G' I (r y)) ∈ L.U (j PUnit.unit I)` using `fun I => by`. Rewrite using `[← pt_eq h I]`.
+
+Conclude with `Set.mem_iInter.1 bj I`. Establish `aj' : ∀ I, φ (lamφ G' I (r y)) ∈ L.U (j' PUnit.unit I)` using `fun I => by`. Rewrite using `[← pt_eq h I]`. Conclude with `Set.mem_iInter.1 bj' I`. Establish `ak : ∀ I, lamφ G' I (r y) ∈ L'.U (k I)` using `fun I => Set.mem_iInter.1 hk I`.
+
+Establish `ak' : ∀ I, lamφ G' I (r y) ∈ L'.U (k' I)` using `fun I => Set.mem_iInter.1 hk' I`. Rewrite using `[mumfordBundle_pullback_composite_germ_iso h v r y j k aj ak, mumfordBundle_pullback_composite_germ_iso h v r y j' k' aj' ak']`. Establish `e₀` using `gm_pull_g (abelian₂ G L) β₂ (r ≫ sq) y j j' hj hj'`. Establish `e₁` using `gm_linComb L (lamφ G) lamε ((r ≫ sq) ≫ β₂) y (j PUnit.unit) (j' PUnit.unit) bj bj'`. Establish `e₂` using `gm_linComb L' (lamφ G') lamε r y k k' hk hk'`.
+
+Use `erw [e₀, e₁, e₂]`. Rewrite using `[← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[hv Y (r ≫ lamφ G' I) y (j PUnit.unit I) (j' PUnit.unit I) (k I) (k' I) (aj I) (aj' I) (ak I) (ak' I), Category.assoc, Category.assoc, Category.assoc, h, mul_zpow, mul_zpow, inv_zpow]`.
+-/
 theorem mumfordBundle_pullback_composite_isGen (h : ∀ I, sq ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ) (v : LB.Iso L' (L.pull φ)) (hv : PGen v) :
     PGen (iso2 h v) := by
   intro Y r y j j' k k' hj hj' hk hk'
@@ -74,6 +94,21 @@ theorem mumfordBundle_pullback_composite_isGen (h : ∀ I, sq ≫ β₂ ≫ lam�
 
 end Iso
 
+/- English proof (translation)
+Introduce `S S₁ S₂ S₀ G _ _ B' _ G' _ _ T _ _ f₁ f₂ β' Φ φ β₂ β₂' L L' M gp' gΦ hsq hΦ hL hL' hM v w₁ hv hw₁`. Establish `gp : IsGrpPullback G' G (f₂ ≫ f₁) φ` using `(IsGrpPullback.comp gΦ gp').congr rfl hΦ`. Establish `e1 : GlobalTheory.HalfBC.sqOf gΦ ≫ β₂ = GlobalTheory.HalfBC.sqOf gp`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show _ ≫ (fst G G).left = _ ≫ (fst G G).left`.
+
+Rewrite using `[Category.assoc, hsq.1, ← Category.assoc]`. Unfold `GlobalTheory.HalfBC.sqOf`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_fst, lift_fst]`. Use `show ((fst G' G').left ≫ Φ) ≫ β' = (fst G' G').left ≫ φ`. Rewrite using `[Category.assoc, hΦ]`.
+
+Use `show _ ≫ (snd G G).left = _ ≫ (snd G G).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc]`. Unfold `GlobalTheory.HalfBC.sqOf`. Rewrite using `[← Over.comp_left, ← Over.comp_left, lift_snd, lift_snd]`. Use `show ((snd G' G').left ≫ Φ) ≫ β' = (snd G' G').left ≫ φ`.
+
+Rewrite using `[Category.assoc, hΦ]`. Establish `h : ∀ I, GlobalTheory.HalfBC.sqOf gΦ ≫ β₂ ≫ lamφ G I = lamφ G' I ≫ φ` using `fun I => by`. Rewrite using `[← Category.assoc, e1, GlobalTheory.HalfBC.sqOf_lamφ]`. Establish `hΛT : (abelian₂ T M).IsLB` using `DVR.linComb_isLB _ hM _ _`. Establish `hΛG : ((abelian₂ G L).pull β₂).IsLB` using `LB.isLB_pull (DVR.linComb_isLB _ hL _ _) _`.
+
+Establish `hΛ' : (abelian₂ G' L').IsLB` using `DVR.linComb_isLB _ hL' _ _`. Take `⟨w, Tw⟩` from `exists_comp hΛG w₁ (iso2 h v) ((isGen_iff _).1 hw₁) (mumfordBundle_pullback_composite_isGen h v ((isGen_iff v).1 hv)) hΛT hΛ'`. Use `⟨w, (isGen_iff _).2 (Tw.pgen_comp hΛG ((isGen_iff _).1 hw₁) (mumfordBundle_pullback_composite_isGen h v ((isGen_iff v).1 hv))), ?_⟩` and prove the remaining obligations. Introduce `Z p z J J₁ J' hJ hJ₁ hJ'`. Establish `t` using `Tw Z p z (fun I => J (p ≫ (GlobalTheory.HalfBC.sqOf gΦ ≫ β₂') ≫ lamφ T I)) (fun _ I => J₁ ((p ≫ lamφ G' I) ≫ φ)) (fun I => J' (p ≫ lamφ G' I)) (Set.mem_iInter.2 fun I => hJ (p ≫ (GlobalTheory.HalfBC.sqOf gΦ ≫ β₂') ≫ lamφ T I)) (mem_pull.2 (Set.mem_iInter.2 fun I => by show lamφ G …`.
+
+Rewrite using `[pt_eq h]`. Conclude with `hJ₁ ((p ≫ lamφ G' I) ≫ φ)))`. Use the proof step `(Set.mem_iInter.2 fun I => hJ' (p ≫ lamφ G' I))`. Use `t.trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Use `show _ = gw w₁ (p ≫ GlobalTheory.HalfBC.sqOf gΦ) z (fun I => J ((p ≫ GlobalTheory.HalfBC.sqOf gΦ) ≫ β₂' ≫ lamφ T I)) (fun _ I => J₁ ((p ≫ GlobalTheory.HalfBC.sqOf gΦ) ≫ β₂ ≫ lamφ G I))`.
+
+Simplify using `only [Category.assoc, h]`. Conclude with `mumfordBundle_pullback_composite_germ_iso h v p z _ _ (fun I => hJ₁ ((p ≫ lamφ G' I) ≫ φ)) (fun I => hJ' (p ≫ lamφ G' I))`.
+-/
 theorem lamIso_comp_pull : ∀ {S S₁ S₂ S₀ : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (B' : Over S₁) [GrpObj B'] (G' : Over S₂) [GrpObj G'] [IsCommMonObj G'] (T : Over S₀) [GrpObj T] [IsCommMonObj T] (f₁ : S₁ ⟶ S) (f₂ : S₂ ⟶ S₁) (β' : B'.left ⟶ G.left) (Φ : G'.left ⟶ B'.left) (φ : G'.left ⟶ G.left) (β₂ : (G2 B').left ⟶ (G2 G).left) (β₂' : (G2 B').left ⟶ (G2 T).left) (L : LB G.left) (L' : LB G'.left) (M : LB T.left) (gp' : IsGrpPullback B' G f₁ β') (gΦ : IsGrpPullback G' B' f₂ Φ), IsSquare β' β₂ → Φ ≫ β' = φ → L.IsLB → L'.IsLB → M.IsLB → ∀ (v : LB.Iso L' (L.pull φ)) (w₁ : LB.Iso ((abelian₂ G L).pull β₂) ((abelian₂ T M).pull β₂')), v.IsGen → w₁.IsGen → ∃ w : LB.Iso (abelian₂ G' L') ((abelian₂ T M).pull (GlobalTheory.HalfBC.sqOf gΦ ≫ β₂')), w.IsGen ∧ ∀ (Z : Scheme.{0}) (p : Z ⟶ (G2 G').left) (z : Z) (J : (Z ⟶ T.left) → M.ι) (J₁ : (Z ⟶ G.left) → L.ι) (J' : (Z ⟶ G'.left) → L'.ι), Good M z J → Good L z J₁ → Good L' z J' → lamVal w p z J J' = isoVal w₁ (p ≫ GlobalTheory.HalfBC.sqOf gΦ) z J J₁ * ∏ I, gw v (p ≫ lamφ G' I) z (J₁ ((p ≫ lamφ G' I) ≫ φ)) (J' (p ≫ lamφ G' I)) ^ lamε I := by
   intro S S₁ S₂ S₀ G _ _ B' _ G' _ _ T _ _ f₁ f₂ β' Φ φ β₂ β₂' L L' M gp' gΦ hsq hΦ hL hL' hM v w₁ hv hw₁
   have gp : IsGrpPullback G' G (f₂ ≫ f₁) φ := (IsGrpPullback.comp gΦ gp').congr rfl hΦ

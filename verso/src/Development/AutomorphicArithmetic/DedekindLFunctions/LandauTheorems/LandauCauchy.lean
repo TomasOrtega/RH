@@ -6,6 +6,15 @@ noncomputable section
 
 namespace Deduction
 
+/- English proof (translation)
+Use `set R : NNReal := ⟨r', h0.le⟩ with hRdef`. Establish `hR : (R : ℝ) = r'` using `rfl`. Use `⟨(2 * Real.pi)⁻¹ * ∫ θ in (0:ℝ)..2 * Real.pi, ‖Φ (circleMap z r' θ)‖, fun k => ?_⟩` and prove the remaining obligations. Establish `hsub : Metric.closedBall z (R : ℝ) ⊆ Metric.ball z r`. Rewrite using `[hR]`.
+
+Conclude with `Metric.closedBall_subset_ball h1`. Establish `hRpos : (0 : NNReal) < R` using `by show (0 : ℝ) < (R : ℝ); rw [hR]; exact h0`. Establish `hp` using `(hd.mono hsub).hasFPowerSeriesOnBall hRpos`. Establish `key` using `hp.factorial_smul (1 : ℂ) k`. Establish `hderiv : iteratedDeriv k Φ z / (k.factorial : ℂ) = cauchyPowerSeries Φ z (R : ℝ) k (fun _ => 1)`.
+
+Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, ← key, nsmul_eq_mul]`. Establish `hk : (k.factorial : ℂ) ≠ 0` using `by exact_mod_cast k.factorial_ne_zero`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hderiv]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hR, abs_of_pos h0, inv_pow, div_eq_mul_inv]`.
+-/
 theorem landau_cauchy {Φ : ℂ → ℂ} {z : ℂ} {r r' : ℝ} (hd : DifferentiableOn ℂ Φ (Metric.ball z r))
     (h0 : 0 < r') (h1 : r' < r) :
     ∃ M : ℝ, ∀ k : ℕ, ‖iteratedDeriv k Φ z / (k.factorial : ℂ)‖ ≤ M / r' ^ k := by

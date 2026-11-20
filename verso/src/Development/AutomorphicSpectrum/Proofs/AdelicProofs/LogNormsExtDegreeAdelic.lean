@@ -6,6 +6,9 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.Xgf.logNorms_ext_degree_adelic`.
+-/
 theorem logNorms_ext_deg_isAdelic : ∀ (k k' : Type) [Field k] [NumberField k] [Field k'] [NumberField k'] (f : k →+* k') (N : LogNorms k), (N.ext f).deg = N.deg ∧ ((N.ext f).IsAdelic ↔ N.IsAdelic) :=
   @PositivityTheory.Xgf.logNorms_ext_degree_adelic
 

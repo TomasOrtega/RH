@@ -7,6 +7,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.JointHarm
 
+/- English proof (translation)
+Introduce `_ _ _ _ μ μ'` and use `(joint_harmonics μ μ').1`.
+-/
 theorem finrank_joint_highest_of_shape :
     ∀ (p q r s : ℕ) (μ : Ix p q → ℚ) (μ' : Ix r s → ℚ), JointShape p q r s μ μ' →
       Module.finrank ℂ ↥(hwSub (fockAct1 p q r s) μ ⊓ hwSub (fockAct2 p q r s) μ' ⊓

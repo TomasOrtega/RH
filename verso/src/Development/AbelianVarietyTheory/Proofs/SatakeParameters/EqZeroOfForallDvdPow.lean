@@ -10,6 +10,15 @@ open Formalism.UG GlobalTheory.Hk3.IntWitt
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `hv0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `key : ∀ N : ℕ, Valued.v x ≤ WithZero.exp (-(N : ℤ))`. Introduce `N`. Take `⟨b, hb, hxb⟩` from `hx N`.
+
+Rewrite using `[hxb, map_mul, map_pow, hϖ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, ← WithZero.exp_nsmul]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ WithZero.exp (-(N : ℤ)) := WithZero.exp_le_exp.2 (by push_cast; omega)`. Take `⟨m, hm⟩ : ∃ m, Valued.v x = WithZero.exp m` from `⟨_, (WithZero.exp_log hv0).symm⟩`. Establish `h1` using `key ((-m).toNat + 1)`. Rewrite `h1` using `[hm, WithZero.exp_le_exp]`.
+
+Use `Int.self_le_toNat (-m)` as an intermediate fact. Move the coercions through the operations in `at h1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_zero_of_forall_dvdPow {ϖ x : L}
     (hϖ : Valued.v ϖ = ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)))
     (hx : ∀ k, DvdPow ϖ (k + 1) x) : x = 0 := by
@@ -39,6 +48,9 @@ open Formalism.UG GlobalTheory.Hk3.IntWitt
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `h`. Use `⟨σ b, ?_, by rw [map_mul, map_pow, hσϖ]⟩` and prove the remaining obligations. Use `show Valued.v (σ b) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hb`.
+-/
 theorem dvdPow_map {ϖ : L} {σ : L →+* L} (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (hσϖ : σ ϖ = ϖ) {m : ℕ} {a : L}
     (h : DvdPow ϖ m a) : DvdPow ϖ m (σ a) := by
   obtain ⟨b, hb, rfl⟩ := h
@@ -47,30 +59,51 @@ theorem dvdPow_map {ϖ : L} {σ : L →+* L} (hσv : ∀ x, Valued.v (σ x) = Va
   rw [hσv]; exact hb
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cT_apply (σ : L →+* L) {n : ℕ} (A : Matrix (Fin n) (Fin n) L) (i j : Fin n) : cT σ A i j = σ (A j i) := rfl
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => mul_mem (hA i l) (hB l j)`.
+-/
 theorem int_mul {n : ℕ} {A B : Matrix (Fin n) (Fin n) L} (hA : ∀ i j, A i j ∈ intL L) (hB : ∀ i j, B i j ∈ intL L) :
     ∀ i j, (A * B) i j ∈ intL L := by
   intro i j; rw [Matrix.mul_apply]; exact Subring.sum_mem _ fun l _ => mul_mem (hA i l) (hB l j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[cT_apply]`. Use `show Valued.v (σ _) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hA j i`.
+-/
 theorem int_cT {σ : L →+* L} (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {n : ℕ} {A : Matrix (Fin n) (Fin n) L}
     (hA : ∀ i j, A i j ∈ intL L) : ∀ i j, cT σ A i j ∈ intL L := by
   intro i j; rw [cT_apply]; show Valued.v (σ _) ≤ 1; rw [hσv]; exact hA j i
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `dvdPow_sum _ _ fun l _ => dvdPow_mul_int (hD l j) (hA i l)`.
+-/
 theorem mc_mul_left {ϖ : L} {n m : ℕ} {A D : Matrix (Fin n) (Fin n) L} (hA : ∀ i j, A i j ∈ intL L)
     (hD : ∀ i j, DvdPow ϖ m (D i j)) : ∀ i j, DvdPow ϖ m ((A * D) i j) := by
   intro i j; rw [Matrix.mul_apply]; exact dvdPow_sum _ _ fun l _ => dvdPow_mul_int (hD l j) (hA i l)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `dvdPow_sum _ _ fun l _ => by rw [mul_comm]; exact dvdPow_mul_int (hD i l) (hB l j)`.
+-/
 theorem mc_mul_right {ϖ : L} {n m : ℕ} {D B : Matrix (Fin n) (Fin n) L} (hD : ∀ i j, DvdPow ϖ m (D i j))
     (hB : ∀ i j, B i j ∈ intL L) : ∀ i j, DvdPow ϖ m ((D * B) i j) := by
   intro i j; rw [Matrix.mul_apply]
   exact dvdPow_sum _ _ fun l _ => by rw [mul_comm]; exact dvdPow_mul_int (hD i l) (hB l j)
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[cT_apply]`. Conclude with `dvdPow_map hσv hσϖ (hD j i)`.
+-/
 theorem mc_cT {ϖ : L} {σ : L →+* L} (hσv : ∀ x, Valued.v (σ x) = Valued.v x) (hσϖ : σ ϖ = ϖ) {n m : ℕ}
     {D : Matrix (Fin n) (Fin n) L} (hD : ∀ i j, DvdPow ϖ m (D i j)) : ∀ i j, DvdPow ϖ m (cT σ D i j) := by
   intro i j; rw [cT_apply]; exact dvdPow_map hσv hσϖ (hD j i)
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[cT_apply]`.
+-/
 theorem cT_sub (σ : L →+* L) {n : ℕ} (A B : Matrix (Fin n) (Fin n) L) : cT σ (A - B) = cT σ A - cT σ B := by
   ext i j; simp [cT_apply]
 

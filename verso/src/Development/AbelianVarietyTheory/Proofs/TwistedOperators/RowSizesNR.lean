@@ -21,6 +21,11 @@ def rowSizes (D : D7) : Sizes where
   s_odd := odd_sLen D
   t_odd := D.R.t_odd
 
+/- English proof (translation)
+Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Simplify using `only [Sizes.nR, rowSizes, rankX, rankP, nRk, sLen, Ranks.r]`. Use `zify [show 1 ≤ D.R.k + D.R.m by omega, show 1 ≤ D.R.k + D.R.m - 1 + 6 by omega] at *`. Use `push_cast`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem rowSizes_nR (D : D7) (j : ℕ) : (rowSizes D).nR j = rankX D j := by
   have h1 := D.R.two_le_m
   have h2 := D.R.m_add_three_le_k
@@ -29,11 +34,17 @@ theorem rowSizes_nR (D : D7) (j : ℕ) : (rowSizes D).nR j = rankX D j := by
   push_cast
   ring_nf
 
+/- English proof (translation)
+Simplify using `only [Sizes.nC, rowSizes, rankV, Ranks.r]`.
+-/
 theorem rowSizes_nC (D : D7) (i : ℕ) : (rowSizes D).nC i = rankV D i D.R.m := by
   simp only [Sizes.nC, rowSizes, rankV, Ranks.r]
 
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Rewrite using `[rowSizes_nR]`. Break down `j with _ | j` into its components or cases. Conclude with `((G.sp.P_is D.R.m le_rfl).rank).trans (by simp [rankX])`. Conclude with `(G.sp.X_is (j + 1) (by omega) hj).rank`.
+-/
 theorem rank_top (G : GridData L sc) {j : ℕ} (hj : j ≤ D.R.m) : (G.V (.top j)).rank = (rowSizes D).nR j := by
   rw [rowSizes_nR]
   rcases j with _ | j
@@ -45,6 +56,11 @@ end GlobalTheory.RowReal
 namespace GlobalTheory.RowReal
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts}
 
+/- English proof (translation)
+Rewrite using `[rowSizes_nC]`. Break down `i with _ | i` into its components or cases. Use `show (columnBlock L D.R.m).sp.rank = _`. Rewrite using `[colY_m]`. Conclude with `D.sp.X'_rank.trans (by simp [rankV, Ranks.rankX'])`.
+
+Conclude with `(G.sp.V_is (i + 1) D.R.m (by omega) hi le_rfl).rank`.
+-/
 theorem rank_gridM (G : GridData L sc) {i : ℕ} (hi : i ≤ D.R.m) : (G.V (.grid i D.R.m)).rank = (rowSizes D).nC i := by
   rw [rowSizes_nC]
   rcases i with _ | i
@@ -81,7 +97,13 @@ def trRow (G : GridData L sc) (i : Fin D.R.m) :
       Pol D.what₂.Tau ((rowSizes D).nC i) ((rowSizes D).nC (i + 1)) :=
   MvPolynomial.rename fun x => (x.1, Fin.cast (rank_gridM G (by omega)) x.2.2, Fin.cast (rank_gridM G i.2.le) x.2.1)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (G : GridData L sc) : PolCol G = ∀ j : Fin D.R.m, PolF D (G.V (.top ((j : ℕ) + 1))).rank (G.V (.top j)).rank := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (G : GridData L sc) : PolRow G = ∀ i : Fin D.R.m, PolF D (G.V (.grid i D.R.m)).rank (G.V (.grid ((i : ℕ) + 1) D.R.m)).rank := rfl
 
 end GlobalTheory.RowReal

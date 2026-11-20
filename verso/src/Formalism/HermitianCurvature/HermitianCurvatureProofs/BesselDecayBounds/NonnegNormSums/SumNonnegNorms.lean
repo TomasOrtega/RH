@@ -22,6 +22,11 @@ def DecayOn (μW μN : Measure (Mt k r)) (σ : Mx k r → (H →L[ℂ] H)) (V : 
       ∫ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ∂(μW.prod μN) ≤
         C * (Ws.map fun W => ‖dsigW σ W w‖).sum
 
+/- English proof (translation)
+Introduce `w hw v hv`. Take `⟨C, Ws, -, hb⟩` from `hD v hv`. Establish `hi` using `(hb w hw).1`. Use `Integrable.mono' hi.norm (beF_aesm z c π μW μN σ w v hM.2.2.2 hi.aestronglyMeasurable) ?_` and prove the remaining obligations. Use `filter_upwards [hM.1] with p hp`.
+
+Conclude with `norm_beF_le z c π σ w v hG hπ p hp.1`.
+-/
 theorem int_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hπ : PiU z π) (hM : MeasF z π μW μN) (hD : DecayOn μW μN σ V) :
@@ -33,6 +38,11 @@ theorem int_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp 
   filter_upwards [hM.1] with p hp
   exact norm_beF_le z c π σ w v hG hπ p hp.1
 
+/- English proof (translation)
+Introduce `v hv x`. Take `⟨C, Ws, hWs, hb⟩` from `hD v hv`. Use `⟨‖x‖ * C, Ws, hWs, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hi` using `(hb w hw).1`. Establish `hI : ‖be z c π μW μN σ w v‖ ≤ ∫ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ∂(μW.prod μN)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `integral_mono_of_nonneg (ae_of_all _ fun _ => norm_nonneg _) hi.norm ?_` and prove the remaining obligations. Use `filter_upwards [hM.1] with p hp`. Conclude with `norm_beF_le z c π σ w v hG hπ p hp.1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cont_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hπ : PiU z π) (hM : MeasF z π μW μN) (hD : DecayOn μW μN σ V) :
@@ -53,6 +63,13 @@ theorem cont_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp
         mul_le_mul_of_nonneg_right (hI.trans (hb w hw).2) (norm_nonneg _)
     _ = ‖x‖ * C * (Ws.map fun W => ‖dsigW σ W w‖).sum := by ring
 
+/- English proof (translation)
+Introduce `h hh m hm w hw v hv`. Establish `hint` using `int_on z c π μW μN σ hG hπ hM hD w hw v hv`. Establish `hT` using `hM.2.1 h hh m hm`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] (Wp →L[ℂ] Wp)` to `ContinuousLinearMap.compL ℂ Wp Wp Wp (psi k r z c m • π h)`. Establish `key : ∀ᵐ p ∂(μW.prod μN), beF z c π σ (σ (h * m) w) v p = L (beF z c π σ w v (tEq h m p))` using `by filter_upwards [hM.1] with p hp`.
+
+Conclude with `beF_tEq z c π σ hG hσ hπ hψ h m hh hm w v p hp`. Establish `hint2 : Integrable (fun p => beF z c π σ w v (tEq h m p)) (μW.prod μN)` using `hT.integrable_comp_of_integrable hint`. Establish `hmap : ∫ p, beF z c π σ w v (tEq h m p) ∂(μW.prod μN) = be z c π μW μN σ w v`. Rewrite using `[← integral_map hT.measurable.aemeasurable (by rw [hT.map_eq]; exact hint.aestronglyMeasurable), hT.map_eq]`. Both sides reduce to the same expression.
+
+Use `show ∫ p, beF z c π σ (σ (h * m) w) v p ∂(μW.prod μN) = L (be z c π μW μN σ w v)`. Rewrite using `[integral_congr_ae key, L.integral_comp_comm hint2, hmap]`.
+-/
 theorem equiv_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -76,6 +93,11 @@ theorem equiv_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (W
   show ∫ p, beF z c π σ (σ (h * m) w) v p ∂(μW.prod μN) = L (be z c π μW μN σ w v)
   rw [integral_congr_ae key, L.integral_comp_comm hint2, hmap]
 
+/- English proof (translation)
+Establish `hT` using `hM.2.2.1`. Establish `key : ∀ᵐ p ∂(μW.prod μN), adjR Wp (beF z c π σ w v p) = beF z c π σ v w (tInv p)` using `by filter_upwards [hM.1] with p hp`. Conclude with `(beF_tInv z c π σ hG hσ hπ hψ w v p hp).symm`. Establish `hmap : ∫ p, beF z c π σ v w (tInv p) ∂(μW.prod μN) = be z c π μW μN σ v w`. Rewrite using `[← integral_map hT.measurable.aemeasurable (by rw [hT.map_eq]; exact hm), hT.map_eq]`.
+
+Both sides reduce to the same expression. Use `show adjR Wp (∫ p, beF z c π σ w v p ∂(μW.prod μN)) = _`. Rewrite using `[← (adjR Wp).integral_comp_comm, integral_congr_ae key, hmap]`.
+-/
 theorem herm_of_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H))
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN) (w v : H)
@@ -91,6 +113,9 @@ theorem herm_of_aesm (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r �
   show adjR Wp (∫ p, beF z c π σ w v p ∂(μW.prod μN)) = _
   rw [← (adjR Wp).integral_comp_comm, integral_congr_ae key, hmap]
 
+/- English proof (translation)
+Introduce `w hw v hv` and use `herm_of_aesm z c π μW μN σ hG hσ hπ hψ hM w v (int_on z c π μW μN σ hG hπ hM hD v hv w hw).aestronglyMeasurable`.
+-/
 theorem herm_on (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) {V : H → Prop}
     (hG : GrpF k r z) (hσ : SigU σ) (hπ : PiU z π) (hψ : PsiF k r z c) (hM : MeasF z π μW μN)
@@ -107,12 +132,20 @@ def PtB (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) (v : H) : Prop :=
 
 def PtDec (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) (V : H → Prop) : Prop := ∀ v : H, V v → PtB σ a v
 
+/- English proof (translation)
+The claim follows from `List.sum_nonneg (fun x hx => by obtain ⟨W, _, rfl⟩ := List.mem_map.mp hx exact norm_nonneg _)`.
+-/
 theorem sum_nonneg_norms (σ : Mx k r → (H →L[ℂ] H)) (Ws : List (List (Mx k r))) (w : H) :
     0 ≤ (Ws.map fun W => ‖dsigW σ W w‖).sum :=
   List.sum_nonneg (fun x hx => by
     obtain ⟨W, _, rfl⟩ := List.mem_map.mp hx
     exact norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨C, Ws, hWs, hb⟩` from `h`. Use `⟨max C 0, Ws, le_max_right _ _, hWs, fun w hw x hx => (hb w hw x hx).trans ?_⟩` and prove the remaining obligations. Establish `h1` using `sum_nonneg_norms σ Ws w`. Establish `h2 : 0 ≤ Formalism.FourierDecayAlt.B.gN x ^ (1 - a)` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.B6.gN_nonneg x) _`. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left C 0) h1) h2` as an intermediate fact.
+
+Conclude with `this`.
+-/
 theorem ptB_nonneg {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} {v : H} (h : PtB σ a v) :
     ∃ (C : ℝ) (Ws : List (List (Mx k r))), 0 ≤ C ∧ (∀ W ∈ Ws, ∀ X ∈ W, InLieHpk k r X) ∧
       ∀ w ∈ smoothVecs (k := k) (r := r) σ, ∀ x ∈ UH (Hpk k r),
@@ -124,16 +157,29 @@ theorem ptB_nonneg {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} {v : H} (h : PtB 
   have := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left C 0) h1) h2
   exact this
 
+/- English proof (translation)
+Establish `hc : Continuous (fun g : Mx k r => gᴴ * Hpk k r * g)` using `((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_eq hc continuous_const`.
+-/
 theorem isClosed_UH : IsClosed (UH (Hpk k r) : Set (Mx k r)) := by
   have hc : Continuous (fun g : Mx k r => gᴴ * Hpk k r * g) :=
     ((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id
   exact isClosed_eq hc continuous_const
 
+/- English proof (translation)
+Establish `h1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r))` using `continuous_fst`. Establish `h2 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mx k r))` using `continuous_snd`. Conclude with `h1.matrix_mul h2`.
+-/
 theorem continuous_matrix_mul : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) := by
   have h1 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.1 : Mx k r)) := continuous_fst
   have h2 : Continuous (fun p : Mt k r × Mt k r => (Matrix.of p.2 : Mx k r)) := continuous_snd
   exact h1.matrix_mul h2
 
+/- English proof (translation)
+Introduce `v hv`. Take `⟨C, Ws, hWs, hb⟩` from `hP v hv`. Use `⟨C * ∫ p, Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (1 - a) ∂(μW.prod μN), Ws, hWs, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ᵐ p ∂(μW.prod μN), p ∈ (fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r)` using `by filter_upwards [hM.1] with p hp`. Conclude with `hG.1 _ hp.1.1 _ hp.2.1`.
+
+Establish `hT : MeasurableSet ((fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r))` using `(isClosed_UH.preimage continuous_matrix_mul).measurableSet`. Establish `hcoT : ContinuousOn (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ) ((fun p : Mt k r × Mt k r => (Matrix.of p.1 * Matrix.of p.2 : Mx k r)) ⁻¹' UH (Hpk k r))` using `continuousOn_const.inner ((hcont w).comp continuous_matrix_mul.continuousOn (fun p hp => hp))`. Establish `hae : AEStronglyMeasurable (fun p : Mt k r × Mt k r => ⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ) (μW.prod μN)`. Establish `h` using `hcoT.aestronglyMeasurable (μ := μW.prod μN) hT`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem hmem]`. Then use the resulting hypothesis.
+
+Establish `hbd : ∀ᵐ p ∂(μW.prod μN), ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ‖ ≤ C * (Ws.map fun W => ‖dsigW σ W w‖).sum * Formalism.FourierDecayAlt.B.gN (Matrix.of p.1 * Matrix.of p.2) ^ (1 - a)` using `by filter_upwards [hmem] with p hp`. Conclude with `hb w hw _ hp`. Establish `hint` using `Integrable.mono' (hgr.const_mul (C * (Ws.map fun W => ‖dsigW σ W w‖).sum)) hae hbd`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decayOn_of_pt (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp))
     (μW μN : Measure (Mt k r)) [SFinite μN] (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) {V : H → Prop}
     (hG : GrpF k r z) (hM : MeasF z π μW μN)
@@ -173,10 +219,20 @@ theorem decayOn_of_pt (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →
         integral_const_mul _ _
     _ = _ := by ring
 
+/- English proof (translation)
+The claim follows from `(LinearMap.norm_map_iff_inner_map_map (σ y)).1 (hσ.2.2 y hy) u u'`.
+-/
 theorem inner_sig {σ : Mx k r → (H →L[ℂ] H)} (hσ : SigU σ) {y : Mx k r} (hy : y ∈ UH (Hpk k r)) (u u' : H) :
     ⟪σ y u, σ y u'⟫_ℂ = ⟪u, u'⟫_ℂ :=
   (LinearMap.norm_map_iff_inner_map_map (σ y)).1 (hσ.2.2 y hy) u u'
 
+/- English proof (translation)
+Establish `py` using `Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hy`. Establish `pyx` using `Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hyx`. Establish `px` using `Formalism.FourierDecayAlt.P.B6.gN_pos (k := k) (r := r) hx`. Establish `hle : Formalism.FourierDecayAlt.B.gN x ≤ Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN (y⁻¹ * x)`. Use `Formalism.FourierDecayAlt.P.B6.gN_mul_le (k := k) (r := r) y (y⁻¹ * x)` as an intermediate fact.
+
+Rewrite `this` using `[he]`. Then use the resulting hypothesis. Establish `h1 : (Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN (y⁻¹ * x)) ^ (1 - a) ≤ Formalism.FourierDecayAlt.B.gN x ^ (1 - a)` using `Real.rpow_le_rpow_of_nonpos px hle (by linarith)`. Rewrite `h1` using `[Real.mul_rpow py.le pyx.le]`. Establish `h2 : Formalism.FourierDecayAlt.B.gN y ^ (a - 1) * Formalism.FourierDecayAlt.B.gN y ^ (1 - a) = 1`. Rewrite using `[← Real.rpow_add py]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : 0 ≤ Formalism.FourierDecayAlt.B.gN y ^ (a - 1)` using `Real.rpow_nonneg py.le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, h2, one_mul]`. Use `_ ≤ Formalism.FourierDecayAlt.B.gN y ^ (a - 1) * Formalism.FourierDecayAlt.B.gN x ^ (1 - a) := mul_le_mul_of_nonneg_left h1 h3`.
+-/
 theorem gN_rpow_trans {a : ℝ} (ha : 1 ≤ a) {x y : Mx k r} (hx : x ∈ UH (Hpk k r)) (hy : y ∈ UH (Hpk k r))
     (hyx : y⁻¹ * x ∈ UH (Hpk k r)) (he : y * (y⁻¹ * x) = x) :
     Formalism.FourierDecayAlt.B.gN (y⁻¹ * x) ^ (1 - a) ≤ Formalism.FourierDecayAlt.B.gN y ^ (a - 1) * Formalism.FourierDecayAlt.B.gN x ^ (1 - a) := by
@@ -197,6 +253,13 @@ theorem gN_rpow_trans {a : ℝ} (ha : 1 ≤ a) {x y : Mx k r} (hx : x ∈ UH (Hp
         rw [← mul_assoc, h2, one_mul]
     _ ≤ Formalism.FourierDecayAlt.B.gN y ^ (a - 1) * Formalism.FourierDecayAlt.B.gN x ^ (1 - a) := mul_le_mul_of_nonneg_left h1 h3
 
+/- English proof (translation)
+Take `⟨C, Ws, hC, hWs, hb⟩` from `ptB_nonneg h0`. Use `⟨C * Formalism.FourierDecayAlt.B.gN y ^ (a - 1), Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations. Take `⟨hyi1, hyi2, hyi⟩` from `hG.2.1 y hy`. Establish `hyx : y⁻¹ * x ∈ UH (Hpk k r)` using `hG.1 _ hyi _ hx`. Establish `he : y * (y⁻¹ * x) = x` using `by rw [← Matrix.mul_assoc, hyi1, Matrix.one_mul]`.
+
+Establish `hsx : σ x w = σ y (σ (y⁻¹ * x) w)` using `by conv_lhs => rw [← he]`. Rewrite using `[hσ.2.1 _ hy _ hyx]`. Both sides reduce to the same expression. Rewrite using `[hsx, inner_sig hσ hy]`. Establish `hS` using `sum_nonneg_norms σ Ws w`.
+
+Establish `hb'` using `hb w hw _ hyx`. Establish `ht` using `gN_rpow_trans ha hx hy hyx he`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ptB_trans {z : Fin (2 * r + k + 1) → ℂ} {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} (hG : GrpF k r z)
     (hσ : SigU σ) (ha : 1 ≤ a) {w0 : H} (h0 : PtB σ a w0) {y : Mx k r} (hy : y ∈ UH (Hpk k r)) :
     PtB σ a (σ y w0) := by
@@ -219,9 +282,17 @@ theorem ptB_trans {z : Fin (2 * r + k + 1) → ℂ} {σ : Mx k r → (H →L[ℂ
     _ = C * Formalism.FourierDecayAlt.B.gN y ^ (a - 1) * (Ws.map fun W => ‖dsigW σ W w‖).sum * Formalism.FourierDecayAlt.B.gN x ^ (1 - a) := by
         ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, [], by simp, fun w _ x _ => by simp⟩`.
+-/
 theorem ptB_zero (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) : PtB σ a (0 : H) :=
   ⟨0, [], by simp, fun w _ x _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨C1, W1, hC1, hW1, hb1⟩` from `ptB_nonneg h1`. Take `⟨C2, W2, hC2, hW2, hb2⟩` from `ptB_nonneg h2`. Use `⟨C1 + C2, W1 ++ W2, fun W hW => (List.mem_append.1 hW).elim (hW1 W) (hW2 W), fun w hw x hx => ?_⟩` and prove the remaining obligations. Establish `s1` using `sum_nonneg_norms σ W1 w`. Establish `s2` using `sum_nonneg_norms σ W2 w`.
+
+Establish `hg : 0 ≤ Formalism.FourierDecayAlt.B.gN x ^ (1 - a)` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.B6.gN_nonneg x) _`. Rewrite using `[List.map_append, List.sum_append, inner_add_left]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ptB_add {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} {v1 v2 : H} (h1 : PtB σ a v1) (h2 : PtB σ a v2) :
     PtB σ a (v1 + v2) := by
   obtain ⟨C1, W1, hC1, hW1, hb1⟩ := ptB_nonneg h1
@@ -238,12 +309,20 @@ theorem ptB_add {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} {v1 v2 : H} (h1 : Pt
     _ ≤ _ := by nlinarith [mul_nonneg hC1 s2, mul_nonneg hC2 s1, mul_nonneg (mul_nonneg hC1 s2) hg,
           mul_nonneg (mul_nonneg hC2 s1) hg]
 
+/- English proof (translation)
+Take `⟨C, Ws, hWs, hb⟩` from `h`. Use `⟨‖c‖ * C, Ws, hWs, fun w hw x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[inner_smul_left, norm_mul, RCLike.norm_conj, mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by rw [← mul_assoc]; exact hb w hw x hx) (norm_nonneg c)`.
+-/
 theorem ptB_smul {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} (c : ℂ) {v : H} (h : PtB σ a v) : PtB σ a (c • v) := by
   obtain ⟨C, Ws, hWs, hb⟩ := h
   refine ⟨‖c‖ * C, Ws, hWs, fun w hw x hx => ?_⟩
   rw [inner_smul_left, norm_mul, RCLike.norm_conj, mul_assoc, mul_assoc]
   exact mul_le_mul_of_nonneg_left (by rw [← mul_assoc]; exact hb w hw x hx) (norm_nonneg c)
 
+/- English proof (translation)
+Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `ptB_trans hG hσ ha h0 hy`.
+
+Consider the case `zero => exact ptB_zero σ a`. Consider the case `add x y _ _ hx hy => exact ptB_add hx hy`. Consider the case `smul c x _ hx => exact ptB_smul c hx`.
+-/
 theorem ptDec_DD {z : Fin (2 * r + k + 1) → ℂ} {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} (hG : GrpF k r z)
     (hσ : SigU σ) (ha : 1 ≤ a) {w0 : H} (h0 : PtB σ a w0) :
     PtDec σ a (fun v => v ∈ Formalism.MainNotions.BridgeLemma₄.DDsp σ w0) := by

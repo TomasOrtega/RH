@@ -15,15 +15,24 @@ namespace ConjugateTransportSingles
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hP, Matrix.mul_assoc]`.
+-/
 theorem inv_conj (P G : Mat k r) (hP : IsUnit P.det) : (P * G * P⁻¹)⁻¹ = P * G⁻¹ * P⁻¹ := by
   rw [Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv P hP, Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `cJd`. Rewrite using `[inv_conj P G hP, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ P⁻¹ P, Matrix.nonsing_inv_mul P hP, Matrix.one_mulVec, Matrix.dotProduct_mulVec]`.
+-/
 theorem cJd_transport (P : Mat k r) (hP : IsUnit P.det) (x1 β : Fin (2 * r + k + 1) → ℂ) (G : Mat k r) :
     cJd (P *ᵥ x1) β (P * G * P⁻¹) = (β ᵥ* P) ⬝ᵥ (G⁻¹ *ᵥ x1) := by
   unfold cJd
   rw [inv_conj P G hP, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ P⁻¹ P,
     Matrix.nonsing_inv_mul P hP, Matrix.one_mulVec, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Unfold `xJ`. Rewrite using `[cJd_transport P hP, cJd_transport P hP]`. Conclude with `((mult k r z hz).1 (0 : Fin (2 * r + k + 1) → ℂ) (β ᵥ* P) s hs x hx).2`.
+-/
 theorem cJd_sinv (P : Mat k r) (hP : IsUnit P.det) (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.QuantumDeterminants.inWb k r z)
     (β : Fin (2 * r + k + 1) → ℂ) (s x : Mat k r) (hs : s ∈ Formalism.QuantumDeterminants.Sset k r z)
     (hx : x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
@@ -32,6 +41,9 @@ theorem cJd_sinv (P : Mat k r) (hP : IsUnit P.det) (z : Fin (2 * r + k + 1) → 
   rw [cJd_transport P hP, cJd_transport P hP]
   exact ((mult k r z hz).1 (0 : Fin (2 * r + k + 1) → ℂ) (β ᵥ* P) s hs x hx).2
 
+/- English proof (translation)
+Unfold `xJ`. Rewrite using `[cJd_transport P hP, ← Matrix.dotProduct_mulVec]`. Simplify using `[dotProduct, Pi.single_apply]`.
+-/
 theorem cJd_single (P : Mat k r) (hP : IsUnit P.det) (z : Fin (2 * r + k + 1) → ℂ) (d : Fin (2 * r + k + 1))
     (x : Mat k r) :
     cJd (xJ P z) (Pi.single d 1) (P * x * P⁻¹) = (P *ᵥ (x⁻¹ *ᵥ xOne k r z)) d := by
@@ -39,6 +51,11 @@ theorem cJd_single (P : Mat k r) (hP : IsUnit P.det) (z : Fin (2 * r + k + 1) �
   rw [cJd_transport P hP, ← Matrix.dotProduct_mulVec]
   simp [dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Unfold `tMapD`. Rewrite using `[Finset.sum_eq_single d]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Pi.single_eq_of_ne hc, coefX]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (x1 : Fin (2 * r + k + 1) → ℂ)
     (x₀ : Mat k r) (w : H) (d : Fin (2 * r + k + 1)) (m : H) (G : Mat k r) :
@@ -50,6 +67,9 @@ theorem tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H
     simp [Pi.single_eq_of_ne hc, coefX]
   · simp
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_congr rfl fun d _ => tMapD_single σ x1 x₀ w d (f d) G]`. Both sides reduce to the same expression.
+-/
 theorem tMapD_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (x1 : Fin (2 * r + k + 1) → ℂ)
     (x₀ : Mat k r) (w : H) (f : Fin (2 * r + k + 1) → H) (G : Mat k r) :
@@ -59,6 +79,9 @@ theorem tMapD_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 variable {Vp : Type*} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp] [CompleteSpace Vp]
 
+/- English proof (translation)
+Use `filter_upwards [CapelliMinorRestriction.ae_S hW hN] with p hp`. Simplify using `only [CapelliMinorRestriction.perI]`. Rewrite using `[tMapD_single, cJd_sinv P hP z hz _ _ g hp hg, cJd_single P hP, mul_smul]`.
+-/
 theorem perI_tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.QuantumDeterminants.inWb k r z) (P : Mat k r)
     (hP : IsUnit P.det) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))
@@ -71,6 +94,9 @@ theorem perI_tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace 
   simp only [CapelliMinorRestriction.perI]
   rw [tMapD_single, cJd_sinv P hP z hz _ _ g hp hg, cJd_single P hP, mul_smul]
 
+/- English proof (translation)
+Rewrite using `[CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, ← integral_smul]`. Conclude with `integral_congr_ae (perI_tMapD_single σ z hz P hP μW μN hW hN ψ π x₀ w d m ξ g hg)`.
+-/
 theorem per_tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mat k r → (H →L[ℂ] H)) (z : Fin (2 * r + k + 1) → ℂ) (hz : Formalism.QuantumDeterminants.inWb k r z) (P : Mat k r)
     (hP : IsUnit P.det) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))
@@ -82,6 +108,9 @@ theorem per_tMapD_single {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   rw [CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, ← integral_smul]
   exact integral_congr_ae (perI_tMapD_single σ z hz P hP μW μN hW hN ψ π x₀ w d m ξ g hg)
 
+/- English proof (translation)
+Rewrite using `[CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, CapelliMinorRestriction.per_eq, ← integral_add h₁ h₂]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Simplify using `[CapelliMinorRestriction.perI, add_smul]`.
+-/
 theorem per_add (P : Mat k r) (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (ψ : Mat k r → ℂ)
     (π : Mat k r → (Vp →L[ℂ] Vp)) (F₁ F₂ : Mat k r → ℂ) (ξ : Vp) (x : Mat k r)
     (h₁ : Integrable (CapelliMinorRestriction.perI P ψ π F₁ ξ x) (μW.prod μN))

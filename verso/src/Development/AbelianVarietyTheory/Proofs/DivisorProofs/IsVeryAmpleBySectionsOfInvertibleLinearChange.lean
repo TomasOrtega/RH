@@ -28,19 +28,31 @@ def lin (f : X ⟶ Sp R) (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (s : Fin (n 
     Fin (n + 1) → H.Sec :=
   fun i => ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • s j
 
+/- English proof (translation)
+Rewrite using `[← baseRingHom_res f (le_top : W ≤ ⊤), baseRingHom_top]`. Both sides reduce to the same expression.
+-/
 theorem cst_eq (f : X ⟶ Sp R) (W : X.Opens) (r : R) :
     GlobalTheory.AbLaw.cst f W r = (baseRingHom f W).hom r := by
   rw [← baseRingHom_res f (le_top : W ≤ ⊤), baseRingHom_top]
   rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.AbLaw.rs_cst f h r`.
+-/
 theorem resG_cst (f : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) (r : R) :
     resG X h (GlobalTheory.AbLaw.cst f U r) = GlobalTheory.AbLaw.cst f V r :=
   GlobalTheory.AbLaw.rs_cst f h r
 
+/- English proof (translation)
+The claim follows from `map_sum ({ toFun := fun s : H.Sec => s.f k, map_zero' := rfl, map_add' := fun _ _ => rfl } : H.Sec →+ Γ(X, H.U k)) s Finset.univ`.
+-/
 theorem sum_f {m : ℕ} (s : Fin m → H.Sec) (k : H.ι) : (∑ j, s j).f k = ∑ j, (s j).f k :=
   map_sum ({ toFun := fun s : H.Sec => s.f k, map_zero' := rfl, map_add' := fun _ _ => rfl } :
     H.Sec →+ Γ(X, H.U k)) s Finset.univ
 
+/- English proof (translation)
+Rewrite using `[lin, sum_f]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.smul_f, resG_cst]`.
+-/
 theorem lin_f (f : X ⟶ Sp R) (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (s : Fin (n + 1) → H.Sec)
     (i : Fin (n + 1)) (k : H.ι) :
     (lin f a s i).f k = ∑ j, GlobalTheory.AbLaw.cst f (H.U k) (a i j) * (s j).f k := by
@@ -48,12 +60,18 @@ theorem lin_f (f : X ⟶ Sp R) (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (s : F
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [GlobalTheory.LB.smul_f, resG_cst]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [lin, Finset.smul_sum, smul_smul, ← map_mul, Matrix.mul_apply, map_sum, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem lin_lin (f : X ⟶ Sp R) (a b : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (s : Fin (n + 1) → H.Sec) :
     lin f b (lin f a s) = lin f (b * a) s := by
   funext i
   simp only [lin, Finset.smul_sum, smul_smul, ← map_mul, Matrix.mul_apply, map_sum, Finset.sum_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[lin, Matrix.one_apply, apply_ite]`.
+-/
 theorem lin_one (f : X ⟶ Sp R) (s : Fin (n + 1) → H.Sec) : lin f 1 s = s := by
   funext i
   simp [lin, Matrix.one_apply, apply_ite]
@@ -71,6 +89,13 @@ open GlobalTheory.ProjSpace (toProj toProj_str toProj_preimage_chart O1 coord co
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {H : LB X} {n : ℕ}
 
+/- English proof (translation)
+Establish `hb : lin f a⁻¹ (lin f a s) = s` using `by rw [lin_lin, Matrix.nonsing_inv_mul a ha, lin_one]`. Use `top_unique fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ y))`. Take `⟨k, hk⟩` from `GlobalTheory.exists_chart_of_mem_nonzeroLocus hi`. Assume the negation of the conclusion as `hne`.
+
+Establish `hnu : ∀ j, ¬ IsUnit (X.presheaf.germ (H.U k) y hk ((lin f a s j).f k))` using `fun j hu => hne (Opens.mem_iSup.2 ⟨j, (GlobalTheory.mem_nonzeroLocus_iff_basicOpen _ hk).2 ((X.mem_basicOpen _ y hk).2 hu)⟩)`. Establish `hu` using `(X.mem_basicOpen _ y hk).1 ((GlobalTheory.mem_nonzeroLocus_iff_basicOpen _ hk).1 hi)`. Rewrite `hu` using `[← hb, lin_f, map_sum]`. Use `(IsLocalRing.mem_maximalIdeal _).1 (Ideal.sum_mem _ fun j _ => ?_) hu` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Conclude with `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hnu j))`.
+-/
 theorem iSup_nonzeroLocus_lin (f : X ⟶ Sp R) {s : Fin (n + 1) → H.Sec} (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     {a : Matrix (Fin (n + 1)) (Fin (n + 1)) R} (ha : IsUnit a.det) :
     ⨆ i, nonzeroLocus (lin f a s i) = ⊤ := by
@@ -87,11 +112,23 @@ theorem iSup_nonzeroLocus_lin (f : X ⟶ Sp R) {s : Fin (n + 1) → H.Sec} (hs :
   rw [map_mul]
   exact Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hnu j))
 
+/- English proof (translation)
+Rewrite using `[cst_eq, cst_eq, ← GlobalTheory.ProjSpace.baseRingHom_appLE p g U W h]`. Both sides reduce to the same expression.
+-/
 theorem appLE_cst {Y : Scheme.{0}} (p : Y ⟶ Sp R) (g : X ⟶ Y) {U : Y.Opens} {W : X.Opens} (h : W ≤ g ⁻¹ᵁ U) (r : R) :
     (g.appLE U W h).hom (GlobalTheory.AbLaw.cst p U r) = GlobalTheory.AbLaw.cst (g ≫ p) W r := by
   rw [cst_eq, cst_eq, ← GlobalTheory.ProjSpace.baseRingHom_appLE p g U W h]
   rfl
 
+/- English proof (translation)
+Establish `e` using `GlobalTheory.ProjSpace.toProj_eq_comp_of_locally (f := PSpace.str R n) hc (toProj f s hs) (t := lin f a s) ht ?_`. Rewrite `e` using `[toProj_str]`. Then use the resulting hypothesis. Introduce `z`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hs.ge (Set.mem_univ z))`. Take `⟨l, hl⟩` from `GlobalTheory.exists_chart_of_mem_nonzeroLocus hi`.
+
+Establish `hW : nonzeroLocus (s i) ⊓ H.U l ≤ toProj f s hs ⁻¹ᵁ chart R n i` using `inf_le_left.trans (toProj_preimage_chart f s hs i).ge`. Use `⟨nonzeroLocus (s i) ⊓ H.U l, ⟨hi, hl⟩, i, hW, l, inf_le_right, resG X inf_le_right ((s i).f l), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[lin_f, lin_f (H := O1 R n) (PSpace.str R n) a (coord R n) j i, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, resG_cst, coord_f]`.
+
+Use `erw [appLE_cst (PSpace.str R n) (toProj f s hs) hW (a j m)]`. Rewrite using `[toProj_str]`. Express the relevant statement in the definitionally equal form `_ = _ * (_ * pullRatio (toProj f s hs) _ i hW m)`. Generalize the expression as in `(GlobalTheory.AbLaw.cst f (nonzeroLocus (s i) ⊓ H.U l)) (a j m) = c`. Rewrite using `[pullRatio_toProj_on, secRatio_on (s i) (s m) l inf_le_left inf_le_right]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem toProj_lin (f : X ⟶ Sp R) {s : Fin (n + 1) → H.Sec} (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (ht : ⨆ i, nonzeroLocus (lin f a s i) = ⊤)
     (hc : ⨆ i, nonzeroLocus (lin (PSpace.str R n) a (coord R n) i) = ⊤) :
@@ -128,6 +165,9 @@ open GlobalTheory.ProjSpace (toProj coord iSup_nonzeroLocus_coord toProj_coord)
 
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {H : LB X} {n : ℕ}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem toProj_congr (f : X ⟶ Sp R) {s t : Fin (n + 1) → H.Sec} (h : s = t) (hs : ⨆ i, nonzeroLocus (s i) = ⊤)
     (ht : ⨆ i, nonzeroLocus (t i) = ⊤) : toProj f s hs = toProj f t ht := by
   subst h
@@ -137,11 +177,17 @@ def linAut (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (ha : IsUnit a.det) : PSpa
   toProj (PSpace.str R n) (lin (PSpace.str R n) a (coord R n))
     (iSup_nonzeroLocus_lin _ (iSup_nonzeroLocus_coord R n) ha)
 
+/- English proof (translation)
+The claim follows from `(toProj_lin (PSpace.str R n) _ b (iSup_nonzeroLocus_lin _ (iSup_nonzeroLocus_lin _ (iSup_nonzeroLocus_coord R n) ha) hb) _).symm.trans (toProj_congr _ (lin_lin _ a b _) _ _)`.
+-/
 theorem linAut_comp (a b : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (ha : IsUnit a.det) (hb : IsUnit b.det)
     (hba : IsUnit (b * a).det) : linAut a ha ≫ linAut b hb = linAut (b * a) hba :=
   (toProj_lin (PSpace.str R n) _ b
     (iSup_nonzeroLocus_lin _ (iSup_nonzeroLocus_lin _ (iSup_nonzeroLocus_coord R n) ha) hb) _).symm.trans (toProj_congr _ (lin_lin _ a b _) _ _)
 
+/- English proof (translation)
+The claim follows from `(toProj_congr _ (lin_one _ _) _ _).trans (toProj_coord R n)`.
+-/
 theorem linAut_one (h : IsUnit (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) R).det) : linAut 1 h = 𝟙 (PSpace R n) :=
   (toProj_congr _ (lin_one _ _) _ _).trans (toProj_coord R n)
 
@@ -157,6 +203,9 @@ instance isIso_linAut (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (ha : IsUnit a.
 
 end GlobalTheory.LinChange
 
+/- English proof (translation)
+Introduce `R _ X f H n s a ha _ hv`. Take `⟨hs, hci⟩` from `(GlobalTheory.ProjSpace.veryAmpleBy_iff f s).1 hv`. Use `(GlobalTheory.ProjSpace.veryAmpleBy_iff f (GlobalTheory.LinChange.lin f a s)).2 ⟨GlobalTheory.LinChange.iSup_nonzeroLocus_lin f hs ha, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LinChange.toProj_lin f hs a _ (GlobalTheory.LinChange.iSup_nonzeroLocus_lin _ (GlobalTheory.ProjSpace.iSup_nonzeroLocus_coord R n) ha)]`. Conclude with `(inferInstance : IsClosedImmersion (GlobalTheory.ProjSpace.toProj f s hs ≫ GlobalTheory.LinChange.linAut a ha))`.
+-/
 theorem GlobalTheory.veryAmpleBy_linChange : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Sp R) (H : LB X) (n : ℕ)
     (s : Fin (n + 1) → H.Sec) (a : Matrix (Fin (n + 1)) (Fin (n + 1)) R), IsUnit a.det → H.IsLB →
     GlobalTheory.AbLaw.VeryAmpleBy f H s → GlobalTheory.AbLaw.VeryAmpleBy f H (fun i => ∑ j, GlobalTheory.AbLaw.cst f ⊤ (a i j) • s j) := by

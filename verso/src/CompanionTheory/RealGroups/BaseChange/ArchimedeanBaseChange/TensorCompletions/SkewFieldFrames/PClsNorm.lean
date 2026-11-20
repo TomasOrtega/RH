@@ -8,19 +8,34 @@ open scoped Classical TensorProduct
 
 namespace CompanionTheory.Rg.BcB.G3.ClsNormP
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thetaGL_val' {k : Type} [CommRing k] (n : ℕ) (c : k →+* k) (g : GL (Fin n) k) :
     (thetaGL n c g).val = GlobalTheory.Tw.Phi n k * ((g⁻¹).val.map c)ᵀ * (GlobalTheory.Tw.Phi n k)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.GramTwistNorm.phi_mul_transpose n`.
+-/
 theorem phi_mul_transpose_eq_one {k : Type} [CommRing k] (n : ℕ) : GlobalTheory.Tw.Phi n k * (GlobalTheory.Tw.Phi n k)ᵀ = 1 :=
   GlobalTheory.GramTwistNorm.phi_mul_transpose n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem units_map_val {k : Type} [Field k] {n : ℕ} {B : Type} [CommRing B]
     (ρ : B →+* Matrix (Fin n) (Fin n) k) (t : Bˣ) : (Units.map ρ.toMonoidHom t).val = ρ t := rfl
 
+/- English proof (translation)
+Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem units_map_inv_val {k : Type} [Field k] {n : ℕ} {B : Type} [CommRing B]
     (ρ : B →+* Matrix (Fin n) (Fin n) k) (t : Bˣ) : ((Units.map ρ.toMonoidHom t)⁻¹).val = ρ (↑t⁻¹ : B) := by
   rw [← map_inv]; rfl
 
+/- English proof (translation)
+Rewrite using `[thetaGL_val', units_map_inv_val]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ρ (↑t⁻¹ : B) * (δ.val * GlobalTheory.Tw.Phi n k) * (GlobalTheory.Tw.Phi n k)ᵀ := by rw [← hF.adj]`. Use `_ = ρ (↑t⁻¹ : B) * δ.val := by rw [Matrix.mul_assoc, Matrix.mul_assoc, phi_mul_transpose_eq_one, Matrix.mul_one]`.
+-/
 theorem delta_theta {k : Type} [Field k] {n : ℕ} {c : k →+* k} {δ : GL (Fin n) k} {s : k} {B : Type} [CommRing B]
     {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} (hF : IsFrame c δ s d ρ) (t : Bˣ) :
     δ.val * (thetaGL n c (Units.map ρ.toMonoidHom t)).val = ρ (↑t⁻¹ : B) * δ.val := by
@@ -35,6 +50,11 @@ end CompanionTheory.Rg.BcB.G3.ClsNormP
 
 namespace CompanionTheory.Rg.BcB.G3
 
+/- English proof (translation)
+Introduce `k _ _ n c _ δ s _ _ B _ d ρ hF t`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [pt, map_mul, Units.val_mul]`. Rewrite using `[ClsNormP.units_map_val]`. Establish `h` using `ClsNormP.delta_theta hF t`.
+
+Establish `h1 : ρ (t : B) * ρ (↑t⁻¹ : B) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = δ.val * (thetaGL n c δ).val := by`. Rewrite using `[h, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem clsNorm_pf : ClsNorm := by
   intro k _ _ n c _ δ s _ _ B _ d ρ hF t
   apply Units.ext

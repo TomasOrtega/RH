@@ -27,6 +27,13 @@ variable {p : SplitPt D k} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {n n' 
   [Fintype n'] [DecidableEq n'] {α : Frame p S n'} {β : Frame p T n} {LS : Lat S} {LT : Lat T} {f₀ f : WO S T → ℂ}
   {Ψ Ψ' : Matrix n n' k → ℂ}
 
+/- English proof (translation)
+Take `⟨hS, hT, hV, hΨ, hex, hall⟩` from `h`. Establish `hsb` using `GlobalTheory.FinPl.OverProof.isSBHalf_extFun D k p n n' S T α β LS LT hS hT Ψ hΨ`. Establish `hfun : extFun α β Ψ' = fun t => extFun α β Ψ (t + x)`. Use function extensionality and compare the values at `t`. Establish `hc : IsHalf p.e (t + x) ↔ IsHalf p.e t` using `forall_congr' fun i => forall_congr' fun j => by`.
+
+Rewrite using `[Matrix.add_apply, mul_add, hx i j, add_left_inj]`. Unfold `extFun`. Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht, if_pos (hc.2 ht), he t ht]`. Rewrite using `[if_neg ht, if_neg (fun h' => ht (hc.1 h'))]`.
+
+Use `⟨hS, hT, hV, hΨ', hex, fun Tm hTm => ?_⟩` and prove the remaining obligations. Use `show heisO ψ S T x f = Tm (extFun α β Ψ')`. Rewrite using `[hall Tm hTm, hfun, hTm.trans _ hsb x hx]`.
+-/
 theorem over_trans (h : Over ψ α β LS LT f₀ Ψ f) {x : WO S T} (hx : IsHalf p.e x) (hΨ' : Ψ' ∈ SB (Matrix n n' k))
     (he : ∀ t, IsHalf p.e t → Ψ' (rd α β t) = Ψ (rd α β (t + x))) : Over ψ α β LS LT f₀ Ψ' (heisO ψ S T x f) := by
   obtain ⟨hS, hT, hV, hΨ, hex, hall⟩ := h
@@ -43,6 +50,13 @@ theorem over_trans (h : Over ψ α β LS LT f₀ Ψ f) {x : WO S T} (hx : IsHalf
   show heisO ψ S T x f = Tm (extFun α β Ψ')
   rw [hall Tm hTm, hfun, hTm.trans _ hsb x hx]
 
+/- English proof (translation)
+Take `⟨hS, hT, hV, hΨ, hex, hall⟩` from `h`. Establish `hsb` using `GlobalTheory.FinPl.OverProof.isSBHalf_extFun D k p n n' S T α β LS LT hS hT Ψ hΨ`. Establish `hfun : extFun α β Ψ' = fun t => ψ (symplO S T t y) * extFun α β Ψ t`. Use function extensionality and compare the values at `t`. Unfold `extFun`.
+
+Distinguish the cases in `ht : IsHalf p.e t`. Rewrite using `[if_pos ht, if_pos ht, he t ht]`. Rewrite using `[if_neg ht, if_neg ht, mul_zero]`. Use `⟨hS, hT, hV, hΨ', hex, fun Tm hTm => ?_⟩` and prove the remaining obligations. Use `show heisO ψ S T y f = Tm (extFun α β Ψ')`.
+
+Rewrite using `[hall Tm hTm, hfun, hTm.modul _ hsb y hy]`.
+-/
 theorem over_modul (h : Over ψ α β LS LT f₀ Ψ f) {y : WO S T} (hy : IsHalf (cA D p.e) y)
     (hΨ' : Ψ' ∈ SB (Matrix n n' k))
     (he : ∀ t, IsHalf p.e t → Ψ' (rd α β t) = ψ (symplO S T t y) * Ψ (rd α β t)) :
@@ -65,6 +79,11 @@ section SBLemmas
 
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n']
 
+/- English proof (translation)
+Establish `e : tensCol Ψ (fun y => g y * a y) = (fun x : Matrix n (n' ⊕ Fin 1) k => g fun i => x i (Sum.inr 0)) * tensCol Ψ a`. Use function extensionality and compare the values at `x`. Simplify using `only [tensCol, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `⟨(hg.comp_continuous (by fun_prop)).mul h.1, h.2.mul_left⟩`.
+-/
 theorem tensCol_mul_mem {Ψ : Matrix n n' k → ℂ} {a g : (n → k) → ℂ} (hg : IsLocallyConstant g)
     (h : tensCol Ψ a ∈ SB (Matrix n (n' ⊕ Fin 1) k)) :
     tensCol Ψ (fun y => g y * a y) ∈ SB (Matrix n (n' ⊕ Fin 1) k) := by
@@ -74,6 +93,11 @@ theorem tensCol_mul_mem {Ψ : Matrix n n' k → ℂ} {a g : (n → k) → ℂ} (
   rw [e]
   exact ⟨(hg.comp_continuous (by fun_prop)).mul h.1, h.2.mul_left⟩
 
+/- English proof (translation)
+Establish `e : tensRow Ψ (fun y => g y * b y) = (fun x : Matrix (n' ⊕ Fin 1) n k => g (x (Sum.inr 0))) * tensRow Ψ b`. Use function extensionality and compare the values at `x`. Simplify using `only [tensRow, Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `⟨(hg.comp_continuous (by fun_prop)).mul h.1, h.2.mul_left⟩`.
+-/
 theorem tensRow_mul_mem {Ψ : Matrix n' n k → ℂ} {b g : (n → k) → ℂ} (hg : IsLocallyConstant g)
     (h : tensRow Ψ b ∈ SB (Matrix (n' ⊕ Fin 1) n k)) :
     tensRow Ψ (fun y => g y * b y) ∈ SB (Matrix (n' ⊕ Fin 1) n k) := by
@@ -83,6 +107,11 @@ theorem tensRow_mul_mem {Ψ : Matrix n' n k → ℂ} {b g : (n → k) → ℂ} (
   rw [e]
   exact ⟨(hg.comp_continuous (by fun_prop)).mul h.1, h.2.mul_left⟩
 
+/- English proof (translation)
+Set `M : Matrix n (n' ⊕ Fin 1) k` to `Matrix.of fun i j => Sum.elim (fun _ => 0) (fun _ => t i) j`. Establish `e : tensCol Ψ (fun y => a (y - t)) = tensCol Ψ a ∘ Homeomorph.subRight M`. Use function extensionality and compare the values at `x`. Simplify using `only [tensCol, Function.comp_apply, Homeomorph.subRight_apply]`. Use `congr 2`.
+
+Apply the tactic sequence `all_goals first | (ext i j; simp [M]) | (funext i; simp [M])`. Rewrite using `[e]`. Conclude with `⟨h.1.comp_continuous (Homeomorph.subRight M).continuous, h.2.comp_homeomorph _⟩`.
+-/
 theorem tensCol_sub_mem {Ψ : Matrix n n' k → ℂ} {a : (n → k) → ℂ} (t : n → k)
     (h : tensCol Ψ a ∈ SB (Matrix n (n' ⊕ Fin 1) k)) :
     tensCol Ψ (fun y => a (y - t)) ∈ SB (Matrix n (n' ⊕ Fin 1) k) := by
@@ -95,6 +124,11 @@ theorem tensCol_sub_mem {Ψ : Matrix n n' k → ℂ} {a : (n → k) → ℂ} (t 
   rw [e]
   exact ⟨h.1.comp_continuous (Homeomorph.subRight M).continuous, h.2.comp_homeomorph _⟩
 
+/- English proof (translation)
+Set `M : Matrix (n' ⊕ Fin 1) n k` to `Matrix.of fun i j => Sum.elim (fun _ => 0) (fun _ => t j) i`. Establish `e : tensRow Ψ (fun y => b (y - t)) = tensRow Ψ b ∘ Homeomorph.subRight M`. Use function extensionality and compare the values at `x`. Simplify using `only [tensRow, Function.comp_apply, Homeomorph.subRight_apply]`. Use `congr 2`.
+
+Apply the tactic sequence `all_goals first | (ext i j; simp [M]) | (funext i; simp [M])`. Rewrite using `[e]`. Conclude with `⟨h.1.comp_continuous (Homeomorph.subRight M).continuous, h.2.comp_homeomorph _⟩`.
+-/
 theorem tensRow_sub_mem {Ψ : Matrix n' n k → ℂ} {b : (n → k) → ℂ} (t : n → k)
     (h : tensRow Ψ b ∈ SB (Matrix (n' ⊕ Fin 1) n k)) :
     tensRow Ψ (fun y => b (y - t)) ∈ SB (Matrix (n' ⊕ Fin 1) n k) := by
@@ -116,6 +150,23 @@ end
 noncomputable section
 namespace GlobalTheory.FinPl.LineAct
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p ψ χ hχ`. Use `⟨-1, Or.inr rfl, ?_⟩` and prove the remaining obligations. Introduce `n n' n'' _ _ _ _ _ _ σ B B' W₀ l α α₀ β γ γ₀ hα hγ hstd t`. Establish `hχc` using `(GlobalTheory.T.splitPlace_stdChar_continuous_nontrivial D k p ψ χ hχ hstd).1`. Establish `hχl` using `GlobalTheory.RootEx.OpenKernel.isLocallyConstant_coe_addChar χ hχc`.
+
+Establish `hlc : IsLocallyConstant fun y : n → k => (χ (-1 * (t ⬝ᵥ y)) : ℂ)` using `hχl.comp_continuous (continuous_const.mul (continuous_const.dotProduct continuous_id))`. Establish `hlc' : IsLocallyConstant fun η : n → k => (χ (-1 * (η ⬝ᵥ t)) : ℂ)` using `hχl.comp_continuous (continuous_const.mul (continuous_id.dotProduct continuous_const))`. Prove the components needed by the constructor for the conclusion. Take `⟨h1h, h1m⟩` from `GlobalTheory.T.kappa_splitHalfPoint_multiplies_by_character D k p ψ χ hχ n n' (σ + 1) B B'.L W₀ B'.ζ l α α₀ β hα t`. Take `⟨h1ah, h1ar⟩` from `GlobalTheory.T.neg_halfPoint_translates_lastFrameRow D k p n n'' B'.V₀ B'.A B'.L W₀ B'.o B'.ζ β γ γ₀ hγ t`.
+
+Use `⟨wRow p B'.ζ β t, fun L₁ L₂ f₁ Ψ₁ a Ξ h => ?_, fun L₂' L₃ f₂ Ψ₂ b Ξ h => ?_⟩` and prove the remaining obligations. Use `over_modul h h1h (tensCol_mul_mem hlc h.2.2.2.1) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[h1m x hx]`. Simplify using `only [tensCol, neg_one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `over_trans h h1ah (tensRow_sub_mem t h.2.2.2.1) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [tensRow, GlobalTheory.FinPl.OverProof.rd_add]`. Use `congr 1`. Use `congr 1`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.add_apply, h1ar]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Matrix.add_apply, h1ar, sub_eq_add_neg]`. Take `⟨h2h, h2r⟩` from `GlobalTheory.T.kappa_conjugateHalfPoint_translates_lastColumn D k p n n' (σ + 1) B B'.L W₀ B'.ζ l B'.line α α₀ β hα t`.
+
+Take `⟨h2bh, h2bm⟩` from `GlobalTheory.T.conjugateHalfPoint_neg_multiplies_by_character D k p ψ χ hχ n n'' B'.V₀ B'.A B'.L W₀ B'.o B'.ζ B'.line β γ γ₀ hγ t`. Use `⟨wCol p B'.ζ β t, fun L₁ L₂ f₁ Ψ₁ a Ξ h => ?_, fun L₂' L₃ f₂ Ψ₂ b Ξ h => ?_⟩` and prove the remaining obligations. Use `over_trans h h2h (tensCol_sub_mem t h.2.2.2.1) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [tensCol, GlobalTheory.FinPl.OverProof.rd_add]`. Use `congr 1`.
+
+Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.add_apply, h2r]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Matrix.add_apply, h2r, sub_eq_add_neg]`. Use `over_modul h h2bh (tensRow_mul_mem hlc' h.2.2.2.1) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[h2bm x hx]`. Simplify using `only [tensRow, neg_one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem line_act : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (ψ : AddChar (AF D.host.F) ℂ) (χ : AddChar k Circle), p.IsChar ψ χ →
     ∃ ε : k, (ε = 1 ∨ ε = -1) ∧ ∀ (n n' n'' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] [Fintype n''] [DecidableEq n''] (σ : ℕ) (B : BesLev D (σ + 1)) (B' : BesLev D σ) (W₀ : HSp D) (l : Link B B'.L B'.ζ) (α : Frame p B.A n') (α₀ : Frame p B.V₀ (n' ⊕ Fin 1)) (β : Frame p W₀ n) (γ : Frame p B'.A n'') (γ₀ : Frame p B'.V₀ (n'' ⊕ Fin 1)), IsSumFrame B.o B.ζ α α₀ → IsSumFrame B'.o B'.ζ γ γ₀ → IsStdChar D ψ (-1) → ∀ t : n → k,
       (∃ w₀ : WO W₀ B'.L,

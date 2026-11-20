@@ -16,6 +16,15 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Dict
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ A v _ hA ι σ g hσ hι hg`. Use `(GlobalTheory.FrobTeich.isFrob_iff_teichmuller F Ω A v hA σ).2 ⟨hσ, fun z m hm hz => ?_⟩` and prove the remaining obligations. Establish `hcard : Nat.card 𝓀[v.adicCompletion F] = normV v`. Rewrite using `[GroundTheory.Global.natCard_residueField_adicCompletion, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+
+Establish `hfrob` using `(unramifiedDegree_eq_ofAdd_one_iff g).1 hg`. Rewrite `hfrob` using `[hcard]`. Establish `hq : 1 < normV v` using `hcard ▸ one_lt_card_residueField (v.adicCompletion F)`. It suffices to establish `h : ι (σ z) = ι (z ^ normV v) from (RingHom.injective ι.toRingHom) h`. Rewrite using `[hι, map_pow]`.
+
+Establish `hξ : (ι z) ^ normV v ^ m = ι z` using `by rw [← map_pow, hz]`. Distinguish the cases in `h0 : ι z = 0`. Rewrite using `[h0, map_zero, zero_pow (by omega)]`. Use `hfrob _ ⟨m, hm.ne', mul_right_cancel₀ h0 ?_⟩` and prove the remaining obligations. Establish `e : normV v ^ m = (normV v ^ m - 1) + 1` using `(Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega))).symm`.
+
+Rewrite using `[hcard, ← pow_succ, ← e, hξ, one_mul]`.
+-/
 theorem isFrob_of_unramifiedDegree_eq_one : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)) [IsSepClosure (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F))], IsPlaceOver A v → ∀ (ι : Ω →ₐ[F] AlgebraicClosure (v.adicCompletion F)) (σ : G F Ω) (g : Gal(AlgebraicClosure (v.adicCompletion F)/v.adicCompletion F)), σ ∈ Dec (F := F) A → (∀ x, ι (σ x) = g (ι x)) → unramifiedDegree (v.adicCompletion F) (AlgebraicClosure (v.adicCompletion F)) g = Multiplicative.ofAdd 1 → IsFrob (F := F) A (normV v) σ := by
   intro F Ω _ _ _ _ _ A v _ hA ι σ g hσ hι hg
   refine (GlobalTheory.FrobTeich.isFrob_iff_teichmuller F Ω A v hA σ).2 ⟨hσ, fun z m hm hz => ?_⟩

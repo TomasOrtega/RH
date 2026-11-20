@@ -11,6 +11,19 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n r w J hJ`. Set `U : Subgroup (AdelicGLn.FiniteAdelicGL K n)` to `{ carrier := {h | h ∈ AdelicGLn.integralFiniteGL K n ∧ ∀ i, finAt (w i) (finEmb K n h) ∈ J i} mul_mem' := by`. Introduce and unpack `a b ⟨ha, ha'⟩ ⟨hb, hb'⟩`. Use `⟨mul_mem ha hb, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, finAt_mul]`.
+
+Conclude with `mul_mem (ha' i) (hb' i)`. Use the proof step `one_mem' := by`. Use `⟨one_mem _, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, finAt_one]`. Conclude with `one_mem _`.
+
+Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha, ha'⟩`. Use `⟨inv_mem ha, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : finAt (w i) (finEmb K n a⁻¹) * finAt (w i) (finEmb K n a) = 1`. Rewrite using `[← finAt_mul, ← map_mul, inv_mul_cancel, map_one, finAt_one]`.
+
+Rewrite using `[eq_inv_of_mul_eq_one_left h1]`. Conclude with `inv_mem (ha' i) }`. Establish `hmem : ∀ h, h ∈ U ↔ h ∈ AdelicGLn.integralFiniteGL K n ∧ ∀ i, finAt (w i) (finEmb K n h) ∈ J i` using `fun h => Iff.rfl`. Establish `hset : (U : Set (AdelicGLn.FiniteAdelicGL K n)) = (AdelicGLn.integralFiniteGL K n : Set (AdelicGLn.FiniteAdelicGL K n)) ∩ ⋂ i, (fun h => finAt (w i) (finEmb K n h)) ⁻¹' (J i : Set (Gw n (w i)))`. Use extensionality with `h`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `hmem h`. Establish `hopen : IsOpen (U : Set (AdelicGLn.FiniteAdelicGL K n))`. Rewrite using `[hset]`. Use `(AdelicGLn.isOpen_integralFiniteGL K n).inter (isOpen_iInter_of_finite fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `(hJ i).2.preimage ((continuous_finAt (w i)).comp continuous_finEmb)`. Use `⟨U, hmem, hopen, ?_⟩` and prove the remaining obligations. Conclude with `(AdelicGLn.isCompact_integralFiniteGL K n).of_isClosed_subset (Subgroup.isClosed_of_isOpen U hopen) fun _ h => h.1`.
+-/
 theorem UpperTheory.exists_open_compact_level_subgroup :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K) (J : ∀ i, Subgroup (Gw n (w i))), (∀ i, CO (J i)) →
           ∃ U : Subgroup (AdelicGLn.FiniteAdelicGL K n), (∀ h, h ∈ U ↔ h ∈ AdelicGLn.integralFiniteGL K n ∧ ∀ i, finAt (w i) (finEmb K n h) ∈ J i) ∧

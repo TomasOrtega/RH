@@ -14,6 +14,9 @@ section General
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Introduce `p hp`. Take `⟨g₁, hg₁, e₁⟩` from `h1 p hp`. Take `⟨g₂, hg₂, e₂⟩` from `h2 p hp`. Use `⟨g₂ * g₁, mul_mem hg₂ hg₁, ?_⟩` and prove the remaining obligations. Rewrite using `[genusBasic_gmap_mul, e₁, e₂]`.
+-/
 theorem sameGenus_trans (h : V →ₗ⋆[K] V →ₗ[K] K) {L M N : Submodule (𝓞 K) V}
     (h1 : SameGenus h L M) (h2 : SameGenus h M N) : SameGenus h L N := by
   intro p hp
@@ -22,9 +25,19 @@ theorem sameGenus_trans (h : V →ₗ⋆[K] V →ₗ[K] K) {L M N : Submodule (�
   refine ⟨g₂ * g₁, mul_mem hg₂ hg₁, ?_⟩
   rw [genusBasic_gmap_mul, e₁, e₂]
 
+/- English proof (translation)
+Introduce `_ _` and use `⟨1, one_mem _, genusBasic_gmap_one _⟩`.
+-/
 theorem sameGenus_refl (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) : SameGenus h L L :=
   fun _ _ => ⟨1, one_mem _, genusBasic_gmap_one _⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[← e]`. Conclude with `⟨hL, sameGenus_refl h L⟩`. Introduce `hLM`.
+
+Use extensionality with `N`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hN, hs⟩`. Conclude with `⟨hN, sameGenus_trans h hLM.2 hs⟩`. Introduce and unpack `⟨hN, hs⟩`.
+
+Conclude with `⟨hN, sameGenus_trans h (genusBasic_symm h _ _ hLM.2) hs⟩`.
+-/
 theorem genus_eq_iff (h : V →ₗ⋆[K] V →ₗ[K] K) {L M : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hM : Submodule.IsLattice K M) :
     genus h L = genus h M ↔ L ∈ genus h M := by
@@ -38,6 +51,9 @@ theorem genus_eq_iff (h : V →ₗ⋆[K] V →ₗ[K] K) {L M : Submodule (𝓞 K
     · rintro ⟨hN, hs⟩
       exact ⟨hN, sameGenus_trans h (genusBasic_symm h _ _ hLM.2) hs⟩
 
+/- English proof (translation)
+Unfold `mass`. Use `split_ifs`. Conclude with `Finset.sum_nonneg fun _ _ => by positivity`. Conclude with `le_rfl`.
+-/
 theorem mass_nonneg (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) : 0 ≤ mass h L := by
   unfold mass
   split_ifs
@@ -52,6 +68,11 @@ section General
 variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Break down `finite_or_infinite X with hX | hX` into its components or cases. Rewrite using `[ENat.card_eq_coe_natCard]`. Establish `hp : 0 < Nat.card X` using `Nat.card_pos`. Rewrite using `[ENNReal.ofReal_inv_of_pos (by exact_mod_cast hp), ENNReal.ofReal_natCast]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[ENat.card_eq_top_of_infinite, Nat.card_eq_zero_of_infinite]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_card_eq (X : Type) [Nonempty X] :
     ((ENat.card X : ℕ∞) : ℝ≥0∞)⁻¹ = ENNReal.ofReal ((Nat.card X : ℝ))⁻¹ := by
   rcases finite_or_infinite X with hX | hX
@@ -69,6 +90,19 @@ def stabEquiv (h : V →ₗ⋆[K] V →ₗ[K] K) (M : Submodule (𝓞 K) V) :
   left_inv g := rfl
   right_inv a := rfl
 
+/- English proof (translation)
+Unfold `mass`. Use `split_ifs with hs`. Use `swap`. Simplify using the standard rewrite rules. Establish `hs' : Formalism.ThetaLiftIndependence.IsClassReps h L hs.choose` using `hs.choose_spec`.
+
+Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun _ _ => by positivity)]`. Establish `hrel : ∀ M : Submodule (𝓞 K) V, MulAction.orbitRel (isom h) (Submodule (𝓞 K) V) (Quotient.out (Quotient.mk'' M : MulAction.orbitRel.Quotient (isom h) (Submodule (𝓞 K) V))) M` using `fun M => Quotient.exact' (Quotient.out_eq' _)`. Establish `hq : ∀ M ∈ hs.choose, Quotient.out (Quotient.mk'' M : MulAction.orbitRel.Quotient (isom h) (Submodule (𝓞 K) V)) ∈ genus h L`. Introduce `M hM`. Take `⟨g, hg⟩` from `hrel M`.
+
+Rewrite using `[← hg]`. Conclude with `GlobalTheory.Mass.Transp.genus_stable L g M (hs'.1 M hM)`. Set `qm : hs.choose → {q : MulAction.orbitRel.Quotient (isom h) (Submodule (𝓞 K) V) // Quotient.out q ∈ genus h L}` to `fun M => ⟨Quotient.mk'' M.1, hq M.1 M.2⟩`. Establish `hinj : Function.Injective qm`. Introduce and unpack `⟨M₁, h₁⟩ ⟨M₂, h₂⟩ e`.
+
+Establish `e' : (Quotient.mk'' M₁ : MulAction.orbitRel.Quotient (isom h) (Submodule (𝓞 K) V)) = Quotient.mk'' M₂` using `congrArg Subtype.val e`. Take `⟨g, hg⟩` from `Quotient.exact' e'`. Establish `hM₁ : M₁ ∈ genus h L` using `hs'.1 M₁ h₁`. Establish `u` using `(hs'.2 M₁ hM₁).unique ⟨h₁, 1, one_mem _, genusBasic_gmap_one _⟩ ⟨h₂, g.1, g.2, hg⟩`. Conclude with `Subtype.ext u`.
+
+Unfold `orbMass orbSum`. Rewrite using `[← Finset.sum_attach]`. Establish `hterm : ∀ M : hs.choose, ENNReal.ofReal (((Nat.card (Formalism.ThetaLiftIndependence.autL h M.1) : ℕ) : ℝ))⁻¹ = ((ENat.card (MulAction.stabilizer (isom h) (Quotient.out (qm M).1)) : ℕ∞) : ℝ≥0∞)⁻¹ * 1`. Introduce `M`. Rewrite using `[mul_one]`.
+
+Establish `e1 : ENat.card (MulAction.stabilizer (isom h) (Quotient.out (qm M).1)) = ENat.card (Formalism.ThetaLiftIndependence.autL h M.1)` using `ENat.card_congr (((MulAction.stabilizerEquivStabilizerOfOrbitRel (hrel M.1)).toEquiv).trans (stabEquiv h M.1))`. Use `haveI : Nonempty (Formalism.ThetaLiftIndependence.autL h M.1) := ⟨stabEquiv h M.1 1⟩`. Rewrite using `[e1, inv_card_eq]`. Repeatedly rewrite using `[hterm]`. Conclude with `(Finset.sum_image (s := hs.choose.attach) (g := qm) (f := fun q : {q : MulAction.orbitRel.Quotient (isom h) (Submodule (𝓞 K) V) // Quotient.out q ∈ genus h L} => ((ENat.card (MulAction.stabilizer (isom h) (Quotient.out q.1)) : ℕ∞) : ℝ≥0∞)⁻¹ * 1) (fun a _ b _ e => hinj e)).symm.le …`.
+-/
 theorem mass_le_orbMass (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) :
     ENNReal.ofReal (mass h L) ≤ orbMass (isom h) (genus h L) := by
   unfold mass
@@ -119,6 +153,11 @@ end GlobalTheory.RowsMean
 
 namespace GlobalTheory.RowsMean
 
+/- English proof (translation)
+Establish `hmap : ∀ i ∈ s, G (L i) ∈ s.image (fun i => G (L i))` using `fun i hi => Finset.mem_image_of_mem _ hi`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmap F, ← Finset.sum_fiberwise_of_maps_to hmap w, Finset.sum_mul]`. Use `Finset.sum_le_sum fun y hy => ?_` and prove the remaining obligations. Take `⟨i₀, hi₀, rfl⟩` from `Finset.mem_image.1 hy`. Establish `e : s.filter (fun i => G (L i) = G (L i₀)) = s.filter (fun i => L i ∈ G (L i₀))` using `Finset.filter_congr fun i hi => hG _ _ (hP i hi) (hP i₀ hi₀)`.
+
+Rewrite using `[e]`. Conclude with `hcl i₀ hi₀`.
+-/
 theorem sum_le_of_classes {ι α : Type} (s : Finset ι) (L : ι → α) (G : α → Set α) (P : α → Prop)
     (hP : ∀ i ∈ s, P (L i)) (hG : ∀ a b, P a → P b → (G a = G b ↔ a ∈ G b))
     (F w : ι → ℝ≥0∞) (b : ℝ≥0∞)
@@ -141,6 +180,15 @@ open Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNotions.S.Lat 
   Formalism.L2.SG.LocWSOf Formalism.MainNotions.S.Cnt Formalism.L2.SG.KappaOffDiagonal Formalism.MainNotions.LatticeGluingRadicals
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D large₂ X Y u hStd W HW hEmb φ B hB hφ hbd`. Establish `hOrb` using `GlobalTheory.T.rowsGenus_weightedSumComparison D large₂ X Y u hStd W HW hEmb`. Establish `hLat` using `GlobalTheory.T.base_lattice_construction_holds D large₂ X Y u hStd W HW hEmb`. Establish `hw : ∀ Λ, 0 ≤ wRow D (X.Fu u) Λ` using `fun Λ => by unfold wRow; positivity`. Establish `hm : 0 ≤ massRows D (X.Fu u) (Y.what₂ u)` using `Finset.sum_nonneg fun Λ _ => hw Λ`.
+
+Rewrite using `[ENNReal.ofReal_mul hm]`. Unfold `massRows`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg fun Λ _ => hw Λ]`. Use `GlobalTheory.RowsMean.sum_le_of_classes (Y.what₂ u) (fun Λ => GlobalTheory.DegAsm.lat0 (F0 X u) W.subtype Λ) (Formalism.HermitianLatticesTheory.genus HW.B.flip) (Submodule.IsLattice D.host.E) (fun Λ hΛ => (hLat Λ hΛ).1.1) (fun a b ha hb => GlobalTheory.RowsMean.genus_eq_iff _ ha …` and prove the remaining obligations. Introduce `Λ₀ hΛ₀`.
+
+Establish `h1` using `hOrb φ hφ Λ₀ hΛ₀`. Establish `h2` using `hOrb (fun _ => 1) (fun _ _ => rfl) Λ₀ hΛ₀`. Simplify using `only [mul_one] at h2`. Rewrite using `[h1, h2, mul_assoc]`. Use `gcongr`.
+
+Use `(hbd Λ₀ hΛ₀).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_mul (GlobalTheory.RowsMean.mass_nonneg _ _)]`. Use `gcongr`. Conclude with `GlobalTheory.RowsMean.mass_le_orbMass _ _`.
+-/
 theorem rowsMean : RowsMeanC := by
   intro D large₂ X Y u hStd W HW hEmb φ B hB hφ hbd
   have hOrb := GlobalTheory.T.rowsGenus_weightedSumComparison D large₂ X Y u hStd W HW hEmb

@@ -15,6 +15,23 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 
 namespace GlobalTheory.Mix
 
+/- English proof (translation)
+Use `set S := hm.toFinset with hS`. Use `set T := hn.toFinset ∪ S.image π with hT`. Establish `hmS : ∀ w, m w ≠ 0 ↔ w ∈ S` using `fun w => by simp [hS]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S) _ (fun w hw => by`. Establish `: m w ≠ 0` using `fun h0 => hw (by simp [h0])`.
+
+Conclude with `Finset.mem_coe.2 ((hmS w).1 this)),`. Use `finsum_eq_sum_of_support_subset (s := T) _ (fun z hz => by`. Establish `: n z ≠ 0` using `fun h0 => hz (by simp [h0])`. Simplify using `[hT, this]),`. Use the proof step `← Finset.sum_fiberwise_of_maps_to (s := S) (t := T) (g := π) (fun w hw => by`.
+
+Simplify using `only [hT, Finset.mem_union]`. Conclude with `Or.inr (Finset.mem_image_of_mem _ hw))]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Distinguish the cases in `hz : P z`. Establish `e : ∑ᶠ (w : A) (_ : π w = z), m w * (d w : ℤ) = ∑ w ∈ S.filter (fun w => π w = z), m w * (d w : ℤ)`.
+
+Use `finsum_mem_eq_sum_of_inter_support_eq (s := {w | π w = z}) _ ?_` and prove the remaining obligations. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, Function.mem_support, Finset.coe_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨⟨(hmS w).1 (left_ne_zero_of_mul h2), h1⟩, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1.2, h2⟩`. Rewrite using `[← hs z hz, e]`. Use `push_cast`.
+
+Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨hw', rfl⟩` from `Finset.mem_filter.1 hw`. Rewrite using `[h₁ w ((hmS w).2 hw') hz, mul_assoc]`. Establish `e : n z = 0`.
+
+Assume the negation of the conclusion as `h'`. Conclude with `hz (hP z h')`. Rewrite using `[e, Int.cast_zero, zero_mul]`. Use `Finset.sum_eq_zero fun w hw => ?_` and prove the remaining obligations. Take `⟨hw', rfl⟩` from `Finset.mem_filter.1 hw`.
+
+Rewrite using `[h₀ w ((hmS w).2 hw') hz, mul_zero]`.
+-/
 theorem finsum_weighted_regroup_along_fibres {A B : Type} (π : A → B) (m : A → ℤ) (n : B → ℤ) (d : A → ℕ) (g : A → ℝ) (h : B → ℝ)
     (P : B → Prop) (hm : (Function.support m).Finite) (hn : (Function.support n).Finite)
     (hP : ∀ z, n z ≠ 0 → P z) (hs : ∀ z, P z → ∑ᶠ (w : A) (_ : π w = z), m w * (d w : ℤ) = n z)
@@ -57,6 +74,11 @@ theorem finsum_weighted_regroup_along_fibres {A B : Type} (π : A → B) (m : A 
     obtain ⟨hw', rfl⟩ := Finset.mem_filter.1 hw
     rw [h₀ w ((hmS w).2 hw') hz, mul_zero]
 
+/- English proof (translation)
+Introduce `F _ X Y _ _ _ _ p q σ e hp hX hq hY π hπ _ Δ Δ' hΔ L f hf`. Establish `hc : ∀ {Z : Scheme.{0}} {s : Z ⟶ Sp F}, IsProjOver s → CompactSpace Z`. Introduce and unpack `Z _ ⟨m, i, hi, rfl⟩`. Use `isProper_str F m` as an intermediate fact. Establish `: IsProper (i ≫ PSpace.str F m)` using `inferInstance`.
+
+Conclude with `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str F m)`. Use `haveI := hc hp`. Use `haveI := hc hq`. Establish `key` using `fun (w : Y) (hw : Δ'.mult w ≠ 0) => GlobalTheory.T.mixedChernIntegral_pointClosure_pullback F X Y p q σ hp hq π hπ e L f hf w ((GlobalTheory.T.coheight_eq_one_iff_closure_dim_projective F Y q e hq hY w).1 (CartierDiv.coheight_eq_one_of_mult_ne_zero (D := Δ') hw))`. Conclude with `finsum_weighted_regroup_along_fibres π Δ'.mult Δ.mult (fun w => π.residueDegree w) _ _ (fun z => Order.coheight z = 1) Δ'.finite_support_mult Δ.finite_support_mult (fun z hz => CartierDiv.coheight_eq_one_of_mult_ne_zero (D := Δ) hz) hΔ (fun w hw h => (key w hw).1 ((GlobalTheory.T …`.
+-/
 theorem finsum_cycInt_push : ∀ (F : Type) [Field F] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp F) (q : Y ⟶ Sp F) (σ : F →+* ℂ) (e : ℕ), IsProjOver p → topologicalKrullDim X = (e + 1 : ℕ) → IsProjOver q → topologicalKrullDim Y = (e + 1 : ℕ) → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q), π (genericPoint Y) = genericPoint X → ∀ (Δ : CartierDiv X) (Δ' : CartierDiv Y), (∀ z : X, Order.coheight z = 1 → ∑ᶠ (w : Y) (_ : π w = z), Δ'.mult w * (π.residueDegree w : ℤ) = Δ.mult z) → ∀ (L : Fin e → MLine p σ) (f : CxPts p σ → ℝ), Measurable f → ∑ᶠ w, (Δ'.mult w : ℝ) * cycInt (fun i => (L i).pull π hπ) (fun y => f (ptMap π hπ σ y)) w = ∑ᶠ z, (Δ.mult z : ℝ) * cycInt L f z := by
   intro F _ X Y _ _ _ _ p q σ e hp hX hq hY π hπ _ Δ Δ' hΔ L f hf
   have hc : ∀ {Z : Scheme.{0}} {s : Z ⟶ Sp F}, IsProjOver s → CompactSpace Z := by

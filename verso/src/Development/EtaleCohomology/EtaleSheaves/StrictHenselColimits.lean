@@ -22,11 +22,29 @@ def Descend : Prop := ∀ (A O : CommRingCat.{0}) (f : A ⟶ O), IE f →
     (∀ (R : Type) [CommRing R] (α β : C →+* R), α.comp (algebraMap O C) = β.comp (algebraMap O C) →
       α.comp c = β.comp c → α = β)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(g ≫ e).hom.Etale`. Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.Etale.stableUnderComposition _ _ hg he`.
+-/
 theorem et_comp {A B C : CommRingCat.{0}} {g : A ⟶ B} {e : B ⟶ C} (hg : Et g) (he : Et e) : Et (g ≫ e) := by
   change (g ≫ e).hom.Etale
   rw [CommRingCat.hom_comp]
   exact RingHom.Etale.stableUnderComposition _ _ hg he
 
+/- English proof (translation)
+Introduce `A Ω _ ι`. Take `⟨O, f, ψ, hIE, hcomp, hloc, habs⟩` from `hA A Ω ι`. Use `⟨O, f, ψ, hIE, hcomp, ?_⟩` and prove the remaining obligations. Introduce `C _ _ _ χ hχ`. Take `⟨B, g, d, C', e, c, hg, he, hgd, hce, hext, hgen⟩` from `hD A O f hIE C`.
+
+Establish `ce : ∀ y, c (e.hom y) = algebraMap O C (d.hom y)` using `fun y => DFunLike.congr_fun hce y`. Establish `cχ : ∀ z, χ (algebraMap O C z) = ψ z` using `fun z => DFunLike.congr_fun hχ z`. Establish `gd : ∀ x, d.hom (g.hom x) = f.hom x` using `fun x => by rw [← hgd]; rfl`. Establish `hpt : (χ.comp c).comp (g ≫ e).hom = ι`. Use extensionality with `x`.
+
+Simplify using `only [RingHom.comp_apply, CommRingCat.hom_comp]`. Rewrite using `[ce, cχ, gd, ← hcomp]`. Both sides reduce to the same expression. Take `⟨h, hh1, hh2⟩` from `habs C' (g ≫ e) (et_comp hg he) (χ.comp c) hpt`. Establish `hed : e ≫ h = d`.
+
+Use `hR A B O Ω ψ g hg hloc (e ≫ h) d ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hh1, hgd]`. Use extensionality with `y`. Use `DFunLike.congr_fun hh2 (e.hom y)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, CommRingCat.hom_comp] at this ⊢`.
+
+Rewrite using `[this, ce, cχ]`. Take `⟨s, hs⟩` from `hext h hed`. Use `⟨s, hgen Ω _ _ ?_ ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`.
+
+Rewrite using `[cχ]`. Both sides reduce to the same expression. Use extensionality with `y`. Establish `h1` using `DFunLike.congr_fun hs y`. Establish `h2` using `DFunLike.congr_fun hh2 y`.
+
+Simplify using `only [RingHom.comp_apply] at h1 h2 ⊢`. Rewrite using `[h1, h2]`.
+-/
 theorem Colim_of (hA : Absorb) (hR : Rigid) (hD : Descend) : Colim := by
   intro A Ω _ ι
   obtain ⟨O, f, ψ, hIE, hcomp, hloc, habs⟩ := hA A Ω ι

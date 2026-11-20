@@ -5,6 +5,11 @@ open scoped TensorProduct NNReal ENNReal
 
 namespace GlobalTheory.GaugeEx
 
+/- English proof (translation)
+Establish `h1 : Summable fun v => |a v - 1| * |a' v - 1|`. Use `Summable.of_nonneg_of_le (fun v => by positivity) (fun v => ?_) (ha.mul_right (∑' w, |a' w - 1|))` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (ha'.le_tsum v fun w _ => abs_nonneg _) (abs_nonneg _)`. Use `Summable.of_nonneg_of_le (fun v => abs_nonneg _) (fun v => ?_) ((h1.add ha).add ha')` and prove the remaining obligations. Establish `: a v * a' v - 1 = (a v - 1) * (a' v - 1) + (a v - 1) + (a' v - 1)` using `by ring`.
+
+Rewrite using `[this, ← abs_mul]`. Conclude with `abs_add_three _ _ _`.
+-/
 theorem summable_abs_mul_sub_one {ι : Type} {a a' : ι → ℝ} (ha : Summable fun v => |a v - 1|)
     (ha' : Summable fun v => |a' v - 1|) : Summable fun v => |a v * a' v - 1| := by
   have h1 : Summable fun v => |a v - 1| * |a' v - 1| := by
@@ -16,6 +21,9 @@ theorem summable_abs_mul_sub_one {ι : Type} {a a' : ι → ℝ} (ha : Summable 
   rw [this, ← abs_mul]
   exact abs_add_three _ _ _
 
+/- English proof (translation)
+Establish `h : Summable fun v : {v // p v} => (a v.1 - 1)` using `(Summable.of_abs ha).comp_injective Subtype.val_injective`. Use `Real.multipliable_one_add_of_summable h` as an intermediate fact. Simplify using `using this`.
+-/
 theorem multipliable_subtype_of_summable_abs {ι : Type} {a : ι → ℝ}
     (ha : Summable fun v => |a v - 1|) (p : ι → Prop) :
     Multipliable fun v : {v // p v} => a v.1 := by
@@ -24,10 +32,20 @@ theorem multipliable_subtype_of_summable_abs {ι : Type} {a : ι → ℝ}
   have := Real.multipliable_one_add_of_summable h
   simpa using this
 
+/- English proof (translation)
+The claim follows from `ge_of_tendsto' ha.hasProd fun _ => Finset.prod_nonneg fun v _ => h0 v`.
+-/
 theorem tprod_nonneg_of_multipliable {ι : Type} {a : ι → ℝ} (ha : Multipliable a)
     (h0 : ∀ v, 0 ≤ a v) : 0 ≤ ∏' v, a v :=
   ge_of_tendsto' ha.hasProd fun _ => Finset.prod_nonneg fun v _ => h0 v
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d b n₁ M₁ n₂ M₂ n₃ M₃ mi mv mi' mv' Nv S₀ h h' hN`. Use `⟨?_, fun S hS => ?_⟩` and prove the remaining obligations. Use `(summable_abs_mul_sub_one h.2.2 h'.2.2).congr_cofinite ?_ filter_upwards [S₀.eventually_cofinite_notMem] with v hv` and prove the remaining obligations. Rewrite using `[hN v hv, ENNReal.toReal_mul]`. Establish `m` using `multipliable_subtype_of_summable_abs h.2.2 (fun v => v ∉ S)`.
+
+Establish `m'` using `multipliable_subtype_of_summable_abs h'.2.2 (fun v => v ∉ S)`. Unfold `tailProd`. Rewrite using `[← ENNReal.ofReal_mul (tprod_nonneg_of_multipliable m fun _ => ENNReal.toReal_nonneg), ← m.tprod_mul m']`. Use `congr 1`. Use `tprod_congr fun v => ?_` and prove the remaining obligations.
+
+Rewrite using `[hN v.1 (fun hv => v.2 (hS hv)), ENNReal.toReal_mul]`.
+-/
 theorem tailProd_mul_of_mass_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ) (b : Module.Basis (Fin d) F E) (n₁ M₁ n₂ M₂ n₃ M₃ : ℕ) (mi : Measure (Fin n₁ → Fin M₁ → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n₁ → Fin M₁ → Fv F v ⊗[F] E)) (mi' : Measure (Fin n₂ → Fin M₂ → Ainf F ⊗[F] E)) (mv' : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n₂ → Fin M₂ → Fv F v ⊗[F] E)) (Nv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n₃ → Fin M₃ → Fv F v ⊗[F] E)) (S₀ : Finset (HeightOneSpectrum (𝓞 F))), Conv b mi mv → Conv b mi' mv' → (∀ v ∉ S₀, Nv v (latV b v) = mv v (latV b v) * mv' v (latV b v)) → (Summable fun v => |(Nv v (latV b v)).toReal - 1|) ∧ ∀ S : Finset (HeightOneSpectrum (𝓞 F)), S₀ ⊆ S → tailProd b Nv S = tailProd b mv S * tailProd b mv' S := by
   intro F E _ _ _ _ _ d b n₁ M₁ n₂ M₂ n₃ M₃ mi mv mi' mv' Nv S₀ h h' hN
   refine ⟨?_, fun S hS => ?_⟩

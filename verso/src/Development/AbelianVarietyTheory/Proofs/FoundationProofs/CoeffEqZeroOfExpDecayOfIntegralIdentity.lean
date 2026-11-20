@@ -6,6 +6,31 @@ open Filter Topology Set MeasureTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `v K c C α β w hw hα hβ hK hbound hdiff`. Use `set g : ℝ → ℝ := fun y => y ^ w * Real.exp (-β * y) with hg`. Establish `gcont : Continuous g` using `by fun_prop`. Establish `hint : ∀ a b : ℝ, (∫ y in a..b, (y : ℂ) ^ w * (Real.exp (-β * y) : ℂ)) = ((∫ y in a..b, g y : ℝ) : ℂ)`. Introduce `a b`.
+
+Rewrite using `[← intervalIntegral.integral_ofReal]`. Use `congr 1`. Use extensionality with `y`. Simplify using `[g]`. Use `set I := ∫ y in (1:ℝ)..2, g y with hIdef`.
+
+Establish `hI : 0 < I` using `intervalIntegral.intervalIntegral_pos_of_pos_on (gcont.intervalIntegrable _ _) (fun x hx => by`. Establish `: 0 < x` using `by linarith [hx.1]`. Simplify using `only [g]; positivity) (by norm_num)`. Establish `key : ∀ a b : ℝ, 0 < a → a ≤ 1 → 2 ≤ b → ‖K * c‖ * I ≤ ‖v b‖ + ‖v a‖`. Introduce `a b ha ha1 hb2`.
+
+Establish `h1` using `hdiff a b ha (by linarith)`. Establish `hmono : I ≤ ∫ y in a..b, g y`. Apply `intervalIntegral.integral_mono_interval ha1 (by norm_num) hb2` to reduce the goal to its premises. Use `filter_upwards [ae_restrict_mem measurableSet_Ioc] with y hy`. Establish `: 0 < y` using `lt_trans ha hy.1`.
+
+Simplify using `only [g, Pi.zero_apply]`. Check the signs of the components of the expression. Conclude with `gcont.intervalIntegrable _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hw2 : (0:ℝ) < (w:ℝ) / 2`.
+
+Establish `: (1:ℝ) ≤ w` using `by exact_mod_cast hw`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0 : Tendsto (fun a => ‖v a‖) (𝓝[>] 0) (𝓝 0)`. Establish `hc : Tendsto (fun a : ℝ => C * a ^ ((w:ℝ)/2) * Real.exp (-α * a)) (𝓝[>] 0) (𝓝 0)`. Establish `hca : ContinuousAt (fun a : ℝ => C * a ^ ((w:ℝ)/2) * Real.exp (-α * a)) 0`.
+
+Apply `ContinuousAt.mul` to reduce the goal to its premises. Conclude with `ContinuousAt.mul continuousAt_const (Real.continuousAt_rpow_const _ _ (Or.inr hw2.le))`. Use `fun_prop`. Establish `h` using `hca.tendsto`. Simplify using `only [Real.zero_rpow hw2.ne', mul_zero, zero_mul] at h`.
+
+Conclude with `tendsto_nhdsWithin_of_tendsto_nhds h`. Apply `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) _ hc` to reduce the goal to its premises. Use `filter_upwards [self_mem_nhdsWithin] with a ha using hbound a ha`. Establish `hinf : Tendsto (fun b => ‖v b‖) atTop (𝓝 0)`. Establish `hc : Tendsto (fun b : ℝ => C * (b ^ ((w:ℝ)/2) * Real.exp (-α * b))) atTop (𝓝 0)`.
+
+Simplify using `using (tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero ((w:ℝ)/2) α hα).const_mul C`. Apply `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) _ hc` to reduce the goal to its premises. Use `filter_upwards [eventually_gt_atTop 0] with b hb`. Rewrite using `[← mul_assoc]`. Conclude with `hbound b hb`.
+
+Establish `step : ∀ b : ℝ, 2 ≤ b → ‖K * c‖ * I ≤ ‖v b‖`. Introduce `b hb`. Establish `ht : Tendsto (fun a => ‖v b‖ + ‖v a‖) (𝓝[>] 0) (𝓝 (‖v b‖ + 0))` using `tendsto_const_nhds.add h0`. Rewrite `ht` using `[add_zero]`. Apply `ge_of_tendsto ht` to reduce the goal to its premises.
+
+Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (Iio_mem_nhds (show (0:ℝ) < 1 by norm_num))] with a ha ha1`. Conclude with `key a b ha (le_of_lt ha1) hb`. Establish `hle : ‖K * c‖ * I ≤ 0` using `ge_of_tendsto hinf (by filter_upwards [eventually_ge_atTop 2] with b hb using step b hb)`. Establish `hKc : ‖K * c‖ = 0` using `le_antisymm (by nlinarith [norm_nonneg (K * c)]) (norm_nonneg _)`. Rewrite `hKc` using `[norm_eq_zero, mul_eq_zero]`.
+
+Conclude with `hKc.resolve_left hK`.
+-/
 theorem ode_coeff_zero_of_decay_ends : ∀ (v : ℝ → ℂ) (K c : ℂ) (C α β : ℝ) (w : ℕ), 1 ≤ w → 0 < α → 0 < β → K ≠ 0 → (∀ y : ℝ, 0 < y → ‖v y‖ ≤ C * y ^ ((w : ℝ) / 2) * Real.exp (-α * y)) → (∀ a b : ℝ, 0 < a → a ≤ b → v b - v a = K * c * ∫ y in a..b, (y : ℂ) ^ w * (Real.exp (-β * y) : ℂ)) → c = 0 := by
   intro v K c C α β w hw hα hβ hK hbound hdiff
   set g : ℝ → ℝ := fun y => y ^ w * Real.exp (-β * y) with hg

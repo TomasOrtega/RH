@@ -10,6 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrepancy GlobalTheory.FieldPair
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.locModel_fracField_algEquiv | exact GlobalTheory.locModel_fracField_algEquiv | (intros; apply GlobalTheory.locModel_fracField_algEquiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_algEquiv_fractionField_of_localRingOfVarietyPoint : ∀ {K κ : Type} [Field K] [Field κ] [Algebra ℂ K] [Algebra ℂ κ]
   (R : Subring K) (π : R →+* κ), IsLocModel (algebraMap ℂ K) R →
   (∀ a (h : algebraMap ℂ K a ∈ R), π ⟨algebraMap ℂ K a, h⟩ = algebraMap ℂ κ a) →

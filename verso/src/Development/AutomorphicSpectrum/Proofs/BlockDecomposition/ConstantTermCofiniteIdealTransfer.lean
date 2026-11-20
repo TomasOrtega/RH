@@ -8,6 +8,27 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 noncomputable section
 namespace GlobalTheory.CompanionTheory.CTFin.Slice1
 
+/- English proof (translation)
+Introduce `E _ _ _ r s L hL W _ _ _ ρ hρ J hJ J₁ hJ₁ H3 t κ`. Use `⟨levelOne s L t, ρ.comp (levK E r s), isOpen_levelOne hL t, fun ℓ w => (hρ ℓ w).comp continuous_levK, ?_⟩` and prove the remaining obligations. Introduce `F hF m₂`. Take `⟨hN, hM, hLv, hC, hG, hZ⟩` from `hF`. Set `h : GA E (r + s)` to `lev (Ad E) r s (1, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)`.
+
+Set `F'` to `rt E (r + s) h F`. Set `G : Sm E r` to `⟨_, GlobalTheory.T.levi_restriction_smooth E r s F'.1 F'.2⟩`. Establish `hGv : ∀ m₁, G.1 m₁ = F.1 (lev (Ad E) r s (m₁, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ))`. Introduce `m₁`. Express the relevant statement in the definitionally equal form `F.1 (lev (Ad E) r s (m₁, 1) * h) = _`.
+
+Establish `e : (m₁, m₂) = ((m₁, 1) * (1, m₂) : GA E r × GA E s)` using `by simp`. Rewrite using `[e, map_mul]`. Simplify using `only [h, mul_assoc]`. Establish `hcoef : ∀ g : GA E r, (fun k : Kinf E r => (cptRep E r k G).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan (ρ.comp (levK E r s))`. Introduce `g`.
+
+Establish `key` using `coeff_comp ρ (levK E r s) κ (hC (lev (Ad E) r s (g, m₂) * finGL E (r + s) t))`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `G.1 (g * infGL E r (Unitary.toUnits k)) = F.1 (lev (Ad E) r s (g, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits (levK E r s k * κ)))`. Rewrite using `[hGv, lev_infGL_right, ← toUnits_levK (s := s), ← map_mul (Unitary.toUnits : _ →* (Matrix (Fin (r + s)) (Fin (r + s)) (Cinf E))ˣ)]`.
+
+Establish `hle : (levelOne s L t : Set (GL (Fin r) (Af E))) ⊆ {k | finRep E r k G = G}`. Introduce `k hk`. Use `Subtype.ext (funext fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.1 (m * finGL E r k) = G.1 m`. Rewrite using `[hGv, hGv]`.
+
+Establish `hk' : F.1 (lev (Ad E) r s (m, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ) * finGL E (r + s) (t⁻¹ * lev (Af E) r s (k, 1) * t)) = F.1 (lev (Ad E) r s (m, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ))` using `congrFun (congrArg Subtype.val (hLv _ (mem_levelOne.1 hk))) _`. Rewrite using `[← hk', lev_finGL_right]`. Establish `hkill : ∀ z ∈ J₁, z G = 0`. Use `H3 F' (fun x g => ?_) (fun z hz => ?_) G (fun m => rfl)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F.1 (unip x * g * h) = F.1 (g * h)`.
+
+Rewrite using `[mul_assoc, hN]`. Express the relevant statement in the definitionally equal form `z (rt E (r + s) h F) = 0`. Rewrite using `[← Module.End.mul_apply, (commute_rt_of_mem_Zalg (hJ.1 hz) h).eq, Module.End.mul_apply, hZ z hz, map_zero]`. Use `⟨G, ⟨⟨fun γ g => ?_, isOpen_stab_of_mem_nhds (finRep E r) G (Filter.mem_of_superset ((isOpen_levelOne hL t).mem_nhds (one_mem _)) hle), kfin_of_coeff _ G hcoef, zfin_of_cofin hJ₁ hkill, fun g => ?_⟩, fun k hk => hle hk, hcoef, hkill⟩, hGv⟩` and prove the remaining obligations. Rewrite using `[hGv, hGv]`.
+
+Establish `e : lev (Ad E) r s (ratGL E r γ * g, m₂) = lev (Ad E) r s (ratGL E r γ, ratGL E s 1) * lev (Ad E) r s (g, m₂)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, map_one, one_mul]`. Simplify using `only [e, mul_assoc]`. Conclude with `hM (γ, 1) _`. Take `⟨C, N, hb⟩` from `hG (lev (Ad E) r s (g, m₂) * finGL E (r + s) t)`.
+
+Take `⟨B, hB0, hB⟩` from `GlobalTheory.T.levi_embedding_height_bound E r s (Unitary.toUnits κ)`. Use `⟨|C| * B ^ N, N, fun y => ?_⟩` and prove the remaining obligations. Establish `e1 : G.1 (g * infGL E r y) = F.1 (lev (Ad E) r s (g, m₂) * finGL E (r + s) t * infGL E (r + s) (lev (Cinf E) r s (y, 1) * Unitary.toUnits κ))`. Rewrite using `[hGv, lev_infGL_right]`. Rewrite using `[e1]`.
+
+Establish `h1` using `hb (lev (Cinf E) r s (y, 1) * Unitary.toUnits κ)`. Establish `h2` using `hB y`. Establish `h0 : 0 ≤ height (lev (Cinf E) r s (y, 1) * Unitary.toUnits κ)` using `zero_le_one.trans (one_le_height _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem slice_mem_genSpace : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r s : ℕ) (L : Subgroup (GL (Fin (r + s)) (Af E))), IsOpen (L : Set (GL (Fin (r + s)) (Af E))) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (ρ : Representation ℂ (Kinf E (r + s)) W), GlobalTheory.Published.AutFin.IsContRep ρ → ∀ J : Set (Module.End ℂ (Sm E (r + s))), Cofin J → ∀ J₁ : Set (Module.End ℂ (Sm E r)), Cofin J₁ → (∀ F : Sm E (r + s), (∀ (x : BlockIx (r + s) r → Ad E) (g : GA E (r + s)), F.1 (unip x * g) = F.1 g) → (∀ z ∈ J, z F = 0) → ∀ G : Sm E r, (∀ m, G.1 m = F.1 (lev (Ad E) r s (m, 1))) → ∀ z ∈ J₁, z G = 0) → ∀ (t : GL (Fin (r + s)) (Af E)) (κ : Kinf E (r + s)), ∃ (L₁ : Subgroup (GL (Fin r) (Af E))) (ρ₁ : Representation ℂ (Kinf E r) W), IsOpen (L₁ : Set (GL (Fin r) (Af E))) ∧ GlobalTheory.Published.AutFin.IsContRep ρ₁ ∧ ∀ F ∈ goodCT L ρ J, ∀ m₂ : GA E s, ∃ G ∈ genSpace L₁ ρ₁ J₁, ∀ m₁ : GA E r, G.1 m₁ = F.1 (lev (Ad E) r s (m₁, m₂) * finGL E (r + s) t * infGL E (r + s) (Unitary.toUnits κ)) := by
   intro E _ _ _ r s L hL W _ _ _ ρ hρ J hJ J₁ hJ₁ H3 t κ
   refine ⟨levelOne s L t, ρ.comp (levK E r s), isOpen_levelOne hL t,

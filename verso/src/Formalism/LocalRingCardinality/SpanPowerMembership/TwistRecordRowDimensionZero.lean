@@ -103,6 +103,9 @@ abbrev twistLevelData (Dst : ℝ)
   secondaryLevelData H.E H.φ₀ (@placesOf H.E _ _ H.cmStar) (Tau2 R) (card_realPlaces_eq_degree R) Dst (shaExample H)
     (shaExample_nonneg H) (exampleClassGroupCard H) (exampleClassGroupCard_pos H) kb ks tw htw
 
+/- English proof (translation)
+Introduce `p _ e _ _` and use `shaExample_eq H p e hcard := rfl hg := hg`.
+-/
 theorem nHyp4 (Dst : ℝ)
     (kb : ∀ j, Tau2 R → Fin (R.sigW j).1 → ℤ) (ks : ∀ j, Tau2 R → Fin (R.sigW j).2 → ℤ)
     (tw : (@placesOf H.E _ _ H.cmStar).Pl → Bool)
@@ -292,57 +295,129 @@ def twistRecord : D7 :=
     gat_d := fun _ _ _ => (gAtPExample_d _).trans (finrank_bot ℂ _).symm
     Y_sigval := spaces_signature_eq R _ _ _ _ _ _ _ }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_host :
     (⟨(twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).R, (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).host⟩ : Σ R : Ranks, Host R) = ⟨R, H⟩ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_ranks :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).R = R := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_word (u : (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Word) :
     u = (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).u₀ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_sign :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).hc = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_weight_sign (u) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).hcW u = hc := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_eta (j w) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.etaJ j w = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_mem_A_T (u) :
     ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.T = T := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_gamma (u) :
     ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.GamP = Gam := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_discriminantLevel (u) :
     ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.duStar = du := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_dimensionBound :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Dstar = Dst := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_delta :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.Del = Del := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_letter (u l) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.letter u l = false := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_cdScale :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).s.cdScale = cdS := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_dsig :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).dsig = dsg := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_etaF :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.etaF = etaF := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_height (u) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.h u = hv := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_volume :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).vol = vol := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_rowDimension_zero :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Drows = 0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_lowerLevel (u) : ((twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.Tstar =
     (Dst / du) ^ ((1 : ℝ) / (R.f * R.k)) * Gam ^ (-(2 : ℝ) / (R.f * R.k)) := rfl
 
 omit kb ks in
 
+/- English proof (translation)
+Take `⟨kb, ks, h⟩` from `DV.exists_blocks (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0) tw htw)`. Conclude with `⟨kb, ks, fun j _ _ τ => h j τ⟩`.
+-/
 theorem twistRecord_weights_defined : ∃ kb ks, DV.KapDef (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) := by
   obtain ⟨kb, ks, h⟩ := DV.exists_blocks (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G (fun _ _ _ => 0) (fun _ _ _ => 0) tw htw)
   exact ⟨kb, ks, fun j _ _ τ => h j τ⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_baseTwist :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.mu0 = false := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_twistAt :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.muAt = tw := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_twist_place (w) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.muTw w = true := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twistRecord_coefficient_zero (j w) :
     (twistRecord H hc Del hDel hgap hlet cdS hcdS dsg hdsg etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Aj j w = 0 := rfl
 

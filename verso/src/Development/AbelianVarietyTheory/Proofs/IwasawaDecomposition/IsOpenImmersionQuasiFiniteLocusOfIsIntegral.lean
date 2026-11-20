@@ -21,6 +21,11 @@ namespace GlobalTheory.HomExtNormal
 
 open GlobalTheory.HomExt
 
+/- English proof (translation)
+Take `⟨z, rfl, rfl⟩` from `Scheme.Pullback.exists_preimage_pullback (f := c₁) (g := c₂) x₁ x₂ h`. Set `Ω` to `AlgebraicClosure ((pullback c₁ c₂).residueField z)`. Set `r : Sp Ω ⟶ Sp ((pullback c₁ c₂).residueField z)` to `spMap (algebraMap ((pullback c₁ c₂).residueField z) Ω)`. Set `y : Sp Ω ⟶ pullback c₁ c₂` to `r ≫ (pullback c₁ c₂).fromSpecResidueField z`. Establish `hy : y default = z` using `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply z _)`.
+
+Use `⟨Ω, inferInstance, inferInstance, y ≫ pullback.fst _ _, y ≫ pullback.snd _ _, by simp [pullback.condition], ⟨default, ?_⟩, ⟨default, ?_⟩⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg _ hy)`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg _ hy)`.
+-/
 theorem exists_common_point {A₁ A₂ Y : Scheme.{0}} (c₁ : A₁ ⟶ Y) (c₂ : A₂ ⟶ Y) (x₁ : A₁) (x₂ : A₂)
     (h : c₁ x₁ = c₂ x₂) :
     ∃ (Ω : Type) (_ : Field Ω) (_ : IsAlgClosed Ω) (e₁ : Sp Ω ⟶ A₁) (e₂ : Sp Ω ⟶ A₂),
@@ -46,13 +51,26 @@ abbrev pullMap (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ τ = τ
   pullback.lift (pullback.fst G.hom τ') (pullback.snd G.hom τ' ≫ r)
     (by rw [pullback.condition, Category.assoc, h])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem pullMap_fst (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ τ = τ') (G : Over X) :
     pullMap r τ τ' h G ≫ pullback.fst G.hom τ = pullback.fst G.hom τ' := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem pullMap_snd (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ τ = τ') (G : Over X) :
     pullMap r τ τ' h G ≫ pullback.snd G.hom τ = pullback.snd G.hom τ' ≫ r :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Establish `w : e.hom.left ≫ pullback.snd (pullback.snd G.hom τ) r = pullback.snd G.hom τ'` using `Over.w e.hom`. Establish `k : e.hom.left ≫ pullback.fst (pullback.snd G.hom τ) r = pullMap r τ τ' h G`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, he, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% w, pullback.lift_snd]`.
+
+Establish `n : e'.inv.left ≫ pullback.fst G'.hom τ' = pullback.fst (pullback.snd G'.hom τ) r ≫ pullback.fst G'.hom τ`. Rewrite using `[← he', ← Over.comp_left_assoc, e'.inv_hom_id]`. Simplify using the standard rewrite rules. Establish `l : ((Over.pullback r).map F).left ≫ pullback.fst (pullback.snd G'.hom τ) r = pullback.fst (pullback.snd G.hom τ) r ≫ F.left` using `pullback.lift_fst _ _ _`. Simplify using `only [Over.comp_left, Category.assoc]`.
+
+Rewrite using `[n, reassoc_of% l, reassoc_of% k]`.
+-/
 theorem pull_left_fst (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ τ = τ') {G G' : Over X}
     (e : (Over.pullback τ').obj G ≅ (Over.pullback r).obj ((Over.pullback τ).obj G))
     (e' : (Over.pullback τ').obj G' ≅ (Over.pullback r).obj ((Over.pullback τ).obj G'))
@@ -77,6 +95,9 @@ theorem pull_left_fst (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ 
   simp only [Over.comp_left, Category.assoc]
   rw [n, reassoc_of% l, reassoc_of% k]
 
+/- English proof (translation)
+Take `⟨e, m, he⟩` from `exists_iso_pullback_pullback r τ τ' h G`. Take `⟨e', m', he'⟩` from `exists_iso_pullback_pullback r τ τ' h G'`. Conclude with `⟨e.hom ≫ (Over.pullback r).map F ≫ e'.inv, inferInstance, pull_left_fst r τ τ' h e e' he he' F⟩`.
+-/
 theorem exists_pull_hom (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r ≫ τ = τ') {G G' : Over X}
     [GrpObj G] [GrpObj G'] (F : (Over.pullback τ).obj G ⟶ (Over.pullback τ).obj G') [IsMonHom F] :
     ∃ F' : (Over.pullback τ').obj G ⟶ (Over.pullback τ').obj G', IsMonHom F' ∧
@@ -86,6 +107,11 @@ theorem exists_pull_hom (r : T' ⟶ T) (τ : T ⟶ X) (τ' : T' ⟶ X) (h : r �
   exact ⟨e.hom ≫ (Over.pullback r).map F ≫ e'.inv, inferInstance,
     pull_left_fst r τ τ' h e e' he he' F⟩
 
+/- English proof (translation)
+Use `set i := spMap (algebraMap T K) with hi`. Take `⟨e₁, m₁, h₁⟩` from `exists_iso_pullback_pullback i t _ rfl G`. Take `⟨e₃, m₃, h₃⟩` from `exists_iso_pullback_pullback i t _ rfl G'`. Take `⟨f', hf', hff⟩` from `exists_pull_hom y j (i ≫ t) hy f`. Take `⟨F, ⟨hF, hFf⟩, -⟩` from `H T K _ _ (IsSemiAbelian.pullback t G hG) (IsSemiAbelian.pullback t G' hG') (e₁.inv ≫ f' ≫ e₃.hom) inferInstance`.
+
+Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Rewrite using `[← hff, ← pull_left_fst i t _ rfl e₁ e₃ h₁ h₃ F, hFf]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_hom_along_trait
     (H : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]
       [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'],
@@ -114,6 +140,17 @@ theorem exists_hom_along_trait
 
 end Pull
 
+/- English proof (translation)
+Use `hB.comm` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨l, hl, hlk⟩ : ∃ l : ℕ, l.Prime ∧ (l : Ω) ≠ 0 := by`. Take `⟨p, hp⟩` from `CharP.exists Ω`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality.
+
+Use `⟨3, Nat.prime_three, fun h3 ↦ ?_⟩` and prove the remaining obligations. Use `(CharP.cast_eq_zero_iff Ω 2 3).mp (by exact_mod_cast h3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨2, Nat.prime_two, fun h3 ↦ ?_⟩` and prove the remaining obligations. Establish `h4` using `(CharP.cast_eq_zero_iff Ω p 2).mp (by exact_mod_cast h3)`.
+
+Break down `(Nat.dvd_prime Nat.prime_two).mp h4 with h5 | h5` into its components or cases. Conclude with `CharP.char_ne_one Ω p h5`. Conclude with `h2 h5`. Establish `hm : IsMonHom (F₁ * F₂⁻¹)` using `{ one_hom := by`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv, IsMonHom.one_hom, IsMonHom.one_hom, mul_inv_cancel, one_eq_one]`.
+
+Use `mul_hom := by`. Establish `e (z : A ⊗ A ⟶ A) : z ≫ (F₁ * F₂⁻¹) = z ≫ F₁ * (z ≫ F₂)⁻¹`. Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Rewrite using `[mul_eq_mul, e, MonObj.mul_comp, MonObj.mul_comp, mul_eq_mul, MonObj.comp_mul, tensorHom_fst, tensorHom_snd, e, e, mul_inv, _root_.mul_mul_mul_comm] }`. Establish `h1` using `GlobalTheory.TorsionDense.eq_one_of_torsion_comp_eq_one Ω A B hA hB l hl hlk (F₁ * F₂⁻¹) hm (fun _ _ y a hy ↦ by`.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Conclude with `mul_inv_eq_one.mpr (h y (l ^ a) (pow_pos hl.pos a) hy))`. Conclude with `mul_inv_eq_one.mp h1`.
+-/
 theorem hom_eq_of_torsion {Ω : Type} [Field Ω] [IsAlgClosed Ω] {A B : Over (Sp Ω)} [GrpObj A]
     [GrpObj B] (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) (F₁ F₂ : A ⟶ B) [IsMonHom F₁]
     [IsMonHom F₂]
@@ -147,6 +184,15 @@ theorem hom_eq_of_torsion {Ω : Type} [Field Ω] [IsAlgClosed Ω] {A B : Over (S
       exact mul_inv_eq_one.mpr (h y (l ^ a) (pow_pos hl.pos a) hy))
   exact mul_inv_eq_one.mp h1
 
+/- English proof (translation)
+Use `finite_torsion_points hG' t hn` as an intermediate fact. Set `l : {c : Sp Ω ⟶ Γ.left // c ≫ p.left = x.left} → (Over.mk t ⟶ Γ)` to `fun c ↦ Over.homMk c.1 (by`. Express the relevant statement in the definitionally equal form `c.1 ≫ Γ.hom = t`. Use `Over.w x` as an intermediate fact. Rewrite using `[← Over.w p, ← Category.assoc, c.2]`.
+
+Conclude with `this)`. Establish `hl (c) : (l c ≫ q) ^ n = 1`. Establish `e : l c ≫ p = x` using `Over.OverMorphism.ext c.2`. Establish `h₁ : l c ≫ p ^ n = l c ≫ (1 : Γ ⟶ G)`. Rewrite using `[SemiAbTorsion.comp_pow_points, e, hx, MonObj.comp_one]`.
+
+Establish `h₂ : l c ≫ q ^ n = l c ≫ (1 : Γ ⟶ G')` using `Over.OverMorphism.ext (key Ω c.1 n (congrArg CommaMorphism.left h₁))`. Rewrite `h₂` using `[SemiAbTorsion.comp_pow_points, MonObj.comp_one]`. Then use the resulting hypothesis. Establish `hfin : Finite {c : Sp Ω ⟶ Γ.left // c ≫ p.left = x.left}`. Use `Finite.of_injective (β := {z : Over.mk t ⟶ G' // z ^ n = 1}) (fun c ↦ ⟨l c ≫ q, hl c⟩) fun a b h ↦ Subtype.ext (hext _ _ (a.2.trans b.2.symm) ?_)` and prove the remaining obligations. Conclude with `congrArg (fun u ↦ u.1.left) h`.
+
+Establish `hf : (p.left ⁻¹' {p.left w}).Finite` using `(finite_preimage_of_finite_lifts p.left x.left hfin).subset (Set.preimage_mono (Set.singleton_subset_iff.mpr hw))`. Establish `: Finite (p.left.fiber (p.left w))` using `(p.left.fiberHomeo (p.left w)).finite_iff.mpr hf`. Conclude with `Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber.mpr (isOpen_discrete _)`.
+-/
 theorem quasiFiniteAt_of_torsion {X : Scheme.{0}} {G G' Γ : Over X} [GrpObj G] [GrpObj G']
     (hG' : IsSemiAbelian G') (p : Γ ⟶ G) (q : Γ ⟶ G') [LocallyOfFiniteType p.left]
     (hext : ∀ {T : Scheme.{0}} (a b : T ⟶ Γ.left), a ≫ p.left = b ≫ p.left →
@@ -180,6 +226,17 @@ theorem quasiFiniteAt_of_torsion {X : Scheme.{0}} {G G' Γ : Over X} [GrpObj G] 
   have : Finite (p.left.fiber (p.left w)) := (p.left.fiberHomeo (p.left w)).finite_iff.mpr hf
   exact Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber.mpr (isOpen_discrete _)
 
+/- English proof (translation)
+Take `⟨w₀, hw₀⟩` from `genericPoints_subset_range_of_isDominant (i ≫ p) (show genericPoint Y ∈ genericPoints Y by simp [genericPoints_eq_singleton])`. Establish `hgen : IsGenericPoint (i w₀) (Set.univ : Set Γ)`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite using `[← i.denseRange.closure_range]`. Use `closure_minimal ?_ isClosed_closure` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨w, rfl⟩`. Establish `h : w₀ ⤳ w`. Rewrite using `[← (i ≫ p).isEmbedding.isInducing.specializes_iff, hw₀]`. Conclude with `genericPoint_specializes _`. Conclude with `specializes_iff_mem_closure.mp (h.map i.continuous)`.
+
+Establish `: IrreducibleSpace Γ` using `(irreducibleSpace_def Γ).mpr hgen.isIrreducible`. Establish `: IsIntegral Γ` using `isIntegral_of_irreducibleSpace_of_isReduced Γ`. Establish `he : i w₀ = genericPoint Γ` using `hgen.eq (genericPoint_spec Γ)`. Establish `: IsIso (p.stalkMap (genericPoint Γ))`. Rewrite using `[← he]`.
+
+Establish `h₁` using `isIso_stalkMap_of_flat_of_surjectiveOnStalks (i ≫ p) w₀`. Establish `h₂` using `isIso_stalkMap_of_flat_of_surjectiveOnStalks i w₀`. Rewrite `h₁` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `@IsIso.of_isIso_comp_right _ _ _ _ _ _ (i.stalkMap w₀) h₂ h₁`. Use `isIso_fromNormalization_of_birational p (fun y ↦ inferInstance)` as an intermediate fact.
+
+Establish `e : p.quasiFiniteLocus.ι ≫ p = (p.quasiFiniteLocus.ι ≫ p.toNormalization) ≫ p.fromNormalization`. Rewrite using `[Category.assoc, p.toNormalization_fromNormalization]`. Rewrite using `[e]`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_quasiFiniteLocus_of_isIntegral {W Γ Y : Scheme.{0}} (i : W ⟶ Γ) (p : Γ ⟶ Y)
     [IsSeparated p] [QuasiCompact p] [LocallyOfFiniteType p] [Surjective p]
     [IsIntegral Y] [IsNormalScheme Y] [IsReduced Γ]
@@ -213,6 +270,21 @@ theorem isOpenImmersion_quasiFiniteLocus_of_isIntegral {W Γ Y : Scheme.{0}} (i 
   rw [e]
   infer_instance
 
+/- English proof (translation)
+Set `V : Y → Y.Opens` to `fun y ↦ ⟨irreducibleComponent y, IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents y)⟩`. Establish `hV : iSup V = ⊤`. Rewrite using `[eq_top_iff]`. Conclude with `fun y _ ↦ TopologicalSpace.Opens.mem_iSup.mpr ⟨y, mem_irreducibleComponent⟩`. Use `(IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := @IsOpenImmersion) V hV).mpr fun y ↦ ?_` and prove the remaining obligations.
+
+Establish `: IrreducibleSpace (V y).toScheme` using `Subtype.irreducibleSpace (isIrreducible_irreducibleComponent (x := y))`. Establish `: IsIntegral (V y).toScheme` using `IsNormalScheme.isIntegral_of_irreducibleSpace _`. Establish `e : (i ≫ p) ∣_ V y = i ∣_ (p ⁻¹ᵁ V y) ≫ p ∣_ V y` using `morphismRestrict_comp _ _ _`. Establish `: IsPreimmersion (i ∣_ (p ⁻¹ᵁ V y))` using `IsZariskiLocalAtTarget.restrict ‹_› _`. Establish `: IsDominant (i ∣_ (p ⁻¹ᵁ V y))` using `IsZariskiLocalAtTarget.restrict ‹_› _`.
+
+Establish `: IsPreimmersion (i ∣_ (p ⁻¹ᵁ V y) ≫ p ∣_ V y)` using `e ▸ IsZariskiLocalAtTarget.restrict ‹_› _`. Establish `: IsDominant (i ∣_ (p ⁻¹ᵁ V y) ≫ p ∣_ V y)` using `e ▸ IsZariskiLocalAtTarget.restrict ‹_› _`. Establish `: Flat (i ∣_ (p ⁻¹ᵁ V y) ≫ p ∣_ V y)` using `e ▸ MorphismProperty.of_isPullback (isPullback_morphismRestrict (i ≫ p) (V y)).flip ‹_›`. Establish `: QuasiCompact (i ∣_ (p ⁻¹ᵁ V y) ≫ p ∣_ V y)` using `e ▸ MorphismProperty.of_isPullback (isPullback_morphismRestrict (i ≫ p) (V y)).flip ‹_›`. Establish `: Surjective (p ∣_ V y)` using `IsZariskiLocalAtTarget.restrict ‹_› _`.
+
+Establish `hint` using `isOpenImmersion_quasiFiniteLocus_of_isIntegral (i ∣_ (p ⁻¹ᵁ V y)) (p ∣_ V y)`. Rewrite using `[morphismRestrict_comp]`. Use `set Q' := (p ∣_ V y).quasiFiniteLocus with hQ'`. Use `set a := p.quasiFiniteLocus.ι ∣_ (p ⁻¹ᵁ V y) with ha`. Establish `hr : Set.range a ⊆ Set.range Q'.ι`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `(p ∣_ V y).QuasiFiniteAt (a x)`. Rewrite using `[← Scheme.Hom.quasiFiniteAt_comp_iff (g := (V y).ι), morphismRestrict_ι, Scheme.Hom.quasiFiniteAt_comp_iff_of_isOpenImmersion]`. Establish `hx : (p ⁻¹ᵁ V y).ι (a x) = p.quasiFiniteLocus.ι ((p.quasiFiniteLocus.ι ⁻¹ᵁ (p ⁻¹ᵁ V y)).ι x)`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, ha, morphismRestrict_ι]`. Rewrite using `[hx]`. Conclude with `(((p.quasiFiniteLocus.ι ⁻¹ᵁ (p ⁻¹ᵁ V y)).ι x)).2`. Set `b` to `IsOpenImmersion.lift Q'.ι a hr`. Establish `hb : b ≫ Q'.ι = a` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `: IsOpenImmersion (b ≫ Q'.ι)` using `by rw [hb]; infer_instance`. Establish `: IsOpenImmersion b` using `IsOpenImmersion.of_comp b Q'.ι`. Rewrite using `[← hb, Category.assoc]`. Conclude with `@IsOpenImmersion.comp _ _ _ b (Q'.ι ≫ p ∣_ V y) _ hint`.
+-/
 theorem isOpenImmersion_quasiFiniteLocus {W Γ Y : Scheme.{0}} (i : W ⟶ Γ) (p : Γ ⟶ Y)
     [IsSeparated p] [QuasiCompact p] [LocallyOfFiniteType p] [Surjective p]
     [IsLocallyNoetherian Y] [IsNormalScheme Y] [IsReduced Γ]
@@ -260,6 +332,107 @@ theorem isOpenImmersion_quasiFiniteLocus {W Γ Y : Scheme.{0}} (i : W ⟶ Γ) (p
   rw [← hb, Category.assoc]
   exact @IsOpenImmersion.comp _ _ _ b (Q'.ι ≫ p ∣_ V y) _ hint
 
+/- English proof (translation)
+Use `hG.smooth` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG'.quasiCompact` as an intermediate fact. Use `hG'.separated` as an intermediate fact.
+
+Establish `: GlobalTheory.IsNormalScheme X` using `(GlobalTheory.isNormalScheme_iff X).mpr hX`. Establish `: GlobalTheory.IsNormalScheme G.left` using `(GlobalTheory.isNormalScheme_iff _).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth G.hom hX)`. Establish `: IsSchemeTheoreticallyDominant j` using `IsSchemeTheoreticallyDominant.of_isDominant j`. Set `u : pullback G.hom j ⟶ G.left` to `pullback.fst G.hom j`. Set `φ : pullback G.hom j ⟶ G'.left` to `f.left ≫ pullback.fst G'.hom j`.
+
+Establish `hw : f.left ≫ pullback.snd G'.hom j = pullback.snd G.hom j` using `Over.w f`. Establish `huφ : u ≫ G.hom = φ ≫ G'.hom`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition, reassoc_of% hw]`. Establish `: IsDominant u` using `isDominant_pullback_fst_of_isOpenMap j G.hom G.hom.isOpenMap`. Establish `: IsPreimmersion u` using `inferInstanceAs (IsPreimmersion (pullback.fst G.hom j))`.
+
+Establish `: Flat u` using `inferInstanceAs (Flat (pullback.fst G.hom j))`. Establish `: QuasiCompact u` using `inferInstanceAs (QuasiCompact (pullback.fst G.hom j))`. Establish `hus` using `isIso_stalkMap_of_flat_of_surjectiveOnStalks u`. Establish `: GlobalTheory.IsNormalScheme (pullback G.hom j)` using `GlobalTheory.IsNormalScheme.of_isIso_stalkMap u`. Set `Γ` to `graphClosure G.hom G'.hom u φ huφ`.
+
+Set `p : Γ ⟶ G.left` to `graphClosure.fst G.hom G'.hom u φ huφ`. Set `q : Γ ⟶ G'.left` to `graphClosure.snd G.hom G'.hom u φ huφ`. Set `i : pullback G.hom j ⟶ Γ` to `graphClosure.incl G.hom G'.hom u φ huφ`. Establish `hip : i ≫ p = u` using `graphClosure.incl_fst ..`. Establish `hiq : i ≫ q = φ` using `graphClosure.incl_snd ..`.
+
+Establish `hpq : p ≫ G.hom = q ≫ G'.hom` using `graphClosure.condition ..`. Establish `hpb` using `graphClosure.isPullback_incl G.hom G'.hom u φ huφ`. Establish `: IsPreimmersion i` using `MorphismProperty.of_isPullback hpb ‹IsPreimmersion u›`. Establish `: Flat i` using `MorphismProperty.of_isPullback hpb ‹Flat u›`. Establish `: QuasiCompact i` using `graphClosure.quasiCompact_incl ..`.
+
+Establish `: IsSchemeTheoreticallyDominant i` using `graphClosure.schemeDominant_incl ..`. Establish `: IsDominant i` using `inferInstance`. Establish `: IsReduced Γ` using `graphClosure.isReduced ..`. Establish `: LocallyOfFiniteType p` using `graphClosure.locallyOfFiniteType_fst ..`. Establish `: QuasiCompact p` using `graphClosure.quasiCompact_fst ..`.
+
+Establish `: IsSeparated p` using `graphClosure.isSeparated_fst ..`. Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian G.hom`. Establish `: IsLocallyNoetherian Γ` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: Surjective p`. Use `⟨fun σ ↦ ?_⟩` and prove the remaining obligations.
+
+Break down `mem_range_or_exists_dvr u σ with ⟨w, rfl⟩ | ⟨T, _, _, _, a, c, hc, rfl⟩` into its components or cases. Conclude with `⟨i w, by rw [← Scheme.Hom.comp_apply, hip]⟩`. Take `⟨F, s, -, -, hs₂, hs⟩` from `exists_hom_along_dvr H j hG hG' f T _ a c hc`. Use `schemeTheoreticallyDominant_fractionField T (FractionRing T)` as an intermediate fact. Establish `hF : F.left ≫ pullback.snd G'.hom (a ≫ G.hom) = pullback.snd G.hom (a ≫ G.hom)` using `Over.w F`.
+
+Take `⟨l, ⟨hl, -⟩, -⟩` from `graphClosure.existsUnique_lift G.hom G'.hom u φ huφ a (s ≫ F.left ≫ pullback.fst G'.hom (a ≫ G.hom)) (by rw [Category.assoc, Category.assoc, pullback.condition, reassoc_of% hF, reassoc_of% hs₂]) (spMap (algebraMap T (FractionRing T))) c hc.symm hs`. Conclude with `⟨l (IsLocalRing.closedPoint T), by rw [← hl]; rfl⟩`. Set `Γ' : Over X` to `Over.mk (p ≫ G.hom)`. Set `p' : Γ' ⟶ G` to `Over.homMk p rfl`. Set `q' : Γ' ⟶ G'` to `Over.homMk q hpq.symm`.
+
+Establish `: LocallyOfFiniteType p'.left` using `‹LocallyOfFiniteType p›`. Establish `key : ∀ (k : Type) [Field k] (x : Sp k ⟶ Γ'.left) (n : ℕ), x ≫ (p' ^ n).left = x ≫ (1 : Γ' ⟶ G).left → x ≫ (q' ^ n).left = x ≫ (1 : Γ' ⟶ G').left`. Introduce `k _ x n hx`. Break down `mem_range_or_exists_dvr i (x default) with hw | ⟨T, _, _, _, a, c, hc, ha⟩` into its components or cases. Take `⟨c, rfl⟩` from `exists_lift_of_range_subset i x (by`.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[Subsingleton.elim t default])` and apply the resulting hypothesis. Conclude with `comp_pow_eq_one_of_pullback_hom j f p' q' _ c (by rw [Category.assoc]; exact congrArg (c ≫ ·) hip.symm) (by rw [Category.assoc]; exact congrArg (c ≫ ·) hiq.symm) n hx`. Take `⟨F, s, _, hs₁, hs₂, hs⟩` from `exists_hom_along_dvr H j hG hG' f T _ (a ≫ p) c (by rw [← reassoc_of% hc, hip])`. Use `schemeTheoreticallyDominant_fractionField T (FractionRing T)` as an intermediate fact.
+
+Establish `hF : F.left ≫ pullback.snd G'.hom ((a ≫ p) ≫ G.hom) = pullback.snd G.hom ((a ≫ p) ≫ G.hom)` using `Over.w F`. Establish `hb : s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom) = a ≫ q`. Use `over_ext_of_schemeTheoreticallyDominant (Y := Over.mk ((a ≫ p) ≫ G.hom)) (X := G') (spMap (algebraMap T (FractionRing T))) (a := Over.homMk (s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom)) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(s ≫ F.left ≫ pullback.fst G'.hom ((a ≫ p) ≫ G.hom)) ≫ G'.hom = (a ≫ p) ≫ G.hom`. Rewrite using `[Category.assoc s, Category.assoc F.left, pullback.condition, reassoc_of% hF, reassoc_of% hs₂]))`.
+
+Use the proof step `(b := Over.homMk (a ≫ q) (by`. Express the relevant statement in the definitionally equal form `(a ≫ q) ≫ G'.hom = (a ≫ p) ≫ G.hom`. Rewrite using `[Category.assoc, Category.assoc, hpq]))`. Use the proof step `(hs.trans (by`. Express the relevant statement in the definitionally equal form `_ = spMap (algebraMap T (FractionRing T)) ≫ a ≫ q`.
+
+Rewrite using `[← reassoc_of% hc, hiq]))`. Conclude with `congrArg CommaMorphism.left this`. Set `r : Sp (IsLocalRing.ResidueField T) ⟶ Sp T` to `spMap (IsLocalRing.residue T)`. Establish `hr : x default ∈ Set.range (r ≫ a)`. Use `⟨IsLocalRing.closedPoint _, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(Scheme.Hom.comp_apply r a _).trans ((congrArg a (IsLocalRing.comap_closedPoint (IsLocalRing.residue T))).trans ha)`. Rewrite `hx`, the goal using `[field_point_comp_eq_iff _ _ x _ ⟨default, rfl⟩, ← field_point_comp_eq_iff (Z := Γ'.left) _ _ (r ≫ a) _ hr]`. Conclude with `comp_pow_eq_one_of_pullback_hom _ F p' q' (r ≫ a) (r ≫ s) (by rw [Category.assoc, hs₁, Category.assoc]; rfl) (by rw [Category.assoc, hb, Category.assoc]; rfl) n hx`. Establish `: IsPreimmersion (i ≫ p)` using `by rwa [hip]`. Establish `: Flat (i ≫ p)` using `by rwa [hip]`.
+
+Establish `: IsDominant (i ≫ p)` using `by rwa [hip]`. Establish `: QuasiCompact (i ≫ p)` using `by rwa [hip]`. Establish `hQ : IsOpenImmersion (p.quasiFiniteLocus.ι ≫ p)` using `isOpenImmersion_quasiFiniteLocus i p`. Establish `hgraph : ∀ w : Γ, ∃ (T : Scheme.{0}) (τ : T ⟶ X) (F : (Over.pullback τ).obj G ⟶ (Over.pullback τ).obj G') (l : pullback G.hom τ ⟶ Γ) (x : ↥(pullback G.hom τ)), IsMonHom F ∧ l ≫ p = pullback.fst G.hom τ ∧ l ≫ q = F.left ≫ pullback.fst G'.hom τ ∧ l x = w`. Introduce `w`.
+
+Break down `mem_range_or_exists_dvr i w with ⟨c, rfl⟩ | ⟨T, _, _, _, a, c, hc, rfl⟩` into its components or cases. Conclude with `⟨U, j, f, i, c, hf, hip, hiq, rfl⟩`. Use `schemeTheoreticallyDominant_fractionField T (FractionRing T)` as an intermediate fact. Use `set iK := spMap (algebraMap T (FractionRing T)) with hiK`. Set `t : Sp T ⟶ X` to `(a ≫ p) ≫ G.hom`.
+
+Set `y : Sp (FractionRing T) ⟶ U` to `c ≫ pullback.snd G.hom j`. Establish `h0 : c ≫ u = iK ≫ a ≫ p` using `by rw [← hip, reassoc_of% hc]`. Establish `hy : y ≫ j = iK ≫ t`. Express the relevant statement in the definitionally equal form `(c ≫ pullback.snd G.hom j) ≫ j = iK ≫ (a ≫ p) ≫ G.hom`. Rewrite using `[Category.assoc, ← pullback.condition]`.
+
+Simplify `congrArg (· ≫ G.hom) h0` using `[u]`. Take `⟨F, hF, hFf⟩` from `exists_hom_along_trait H j hG hG' f T (FractionRing T) t y hy`. Establish `hFw : F.left ≫ pullback.snd G'.hom t = pullback.snd G.hom t` using `Over.w F`. Set `d : pullback (pullback.snd G.hom t) iK ⟶ pullback G.hom t` to `pullback.fst _ _`. Establish `: IsDominant d` using `isDominant_pullback_fst_of_isOpenMap iK (pullback.snd G.hom t) (pullback.snd G.hom t).isOpenMap`.
+
+Establish `: GlobalTheory.IsNormalScheme (pullback G.hom t)` using `(GlobalTheory.isNormalScheme_iff _).mpr (forall_isDomain_and_isIntegrallyClosed_stalk_of_smooth (pullback.snd G.hom t) ((GlobalTheory.isNormalScheme_iff _).mp inferInstance))`. Establish `: IsSchemeTheoreticallyDominant d` using `IsSchemeTheoreticallyDominant.of_isDominant d`. Set `v : pullback (pullback.snd G.hom t) iK ⟶ pullback G.hom (iK ≫ t)` to `pullback.lift (d ≫ pullback.fst G.hom t) (pullback.snd _ iK) (by`. Express the relevant statement in the definitionally equal form `(pullback.fst _ _ ≫ pullback.fst G.hom t) ≫ G.hom = _`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% (pullback.condition (f := pullback.snd G.hom t) (g := iK))])`.
+
+Establish `hv₁ : v ≫ pullback.fst G.hom (iK ≫ t) = d ≫ pullback.fst G.hom t` using `pullback.lift_fst _ _ _`. Establish `hv₂ : v ≫ pullback.snd G.hom (iK ≫ t) = pullback.snd _ iK` using `pullback.lift_snd _ _ _`. Establish `hv : v ≫ pullMap iK t _ rfl G = d`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullMap_fst, hv₁]`.
+
+Rewrite using `[Category.assoc, pullMap_snd, reassoc_of% hv₂]`. Conclude with `pullback.condition.symm`. Set `ρ` to `pullMap y j _ hy G`. Establish `hρ₁ : ρ ≫ pullback.fst G.hom j = pullback.fst G.hom (iK ≫ t)` using `pullMap_fst ..`. Establish `hρ₂ : ρ ≫ pullback.snd G.hom j = pullback.snd G.hom (iK ≫ t) ≫ y` using `pullMap_snd ..`.
+
+Establish `hw₁ : d ≫ pullback.fst G.hom t = (v ≫ ρ) ≫ u`. Express the relevant statement in the definitionally equal form `_ = (v ≫ ρ) ≫ pullback.fst G.hom j`. Rewrite using `[Category.assoc, hρ₁, hv₁]`. Establish `hw₂ : d ≫ F.left ≫ pullback.fst G'.hom t = (v ≫ ρ) ≫ φ`. Rewrite using `[← hv, Category.assoc, Category.assoc, hFf]`.
+
+Establish `hcond : pullback.fst G.hom t ≫ G.hom = (F.left ≫ pullback.fst G'.hom t) ≫ G'.hom`. Rewrite using `[Category.assoc, pullback.condition, pullback.condition, reassoc_of% hFw]`. Take `⟨l, ⟨hl₁, hl₂⟩, -⟩` from `graphClosure.existsUnique_lift G.hom G'.hom u φ huφ (pullback.fst G.hom t) (F.left ≫ pullback.fst G'.hom t) hcond d (v ≫ ρ) hw₁ hw₂`. Set `s : Sp T ⟶ pullback G.hom t` to `pullback.lift (a ≫ p) (𝟙 _) (by simp [t])`. Establish `hs₁ : s ≫ pullback.fst G.hom t = a ≫ p` using `pullback.lift_fst _ _ _`.
+
+Establish `hs₂ : s ≫ pullback.snd G.hom t = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hq : s ≫ F.left ≫ pullback.fst G'.hom t = a ≫ q`. Set `v' : Sp (FractionRing T) ⟶ pullback G.hom (iK ≫ t)` to `pullback.lift (iK ≫ a ≫ p) (𝟙 _) (by simp [t])`. Establish `hv'₁ : v' ≫ pullback.fst G.hom (iK ≫ t) = iK ≫ a ≫ p` using `pullback.lift_fst _ _ _`. Establish `hv'₂ : v' ≫ pullback.snd G.hom (iK ≫ t) = 𝟙 _` using `pullback.lift_snd _ _ _`.
+
+Establish `h₁ : v' ≫ pullMap iK t _ rfl G = iK ≫ s`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullMap_fst, hv'₁, Category.assoc, hs₁]`. Rewrite using `[Category.assoc, pullMap_snd, reassoc_of% hv'₂, Category.assoc, hs₂, Category.comp_id]`. Establish `h₂ : v' ≫ ρ = c`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hρ₁, hv'₁]`. Conclude with `h0.symm`. Rewrite using `[Category.assoc, hρ₂, reassoc_of% hv'₂]`. Establish `h₃ : iK ≫ s ≫ F.left ≫ pullback.fst G'.hom t = iK ≫ a ≫ q`.
+
+Rewrite using `[← reassoc_of% h₁, hFf, reassoc_of% h₂, ← reassoc_of% hc, hiq]`. Use `over_ext_of_schemeTheoreticallyDominant (Y := Over.mk t) (X := G') iK (a := Over.homMk (s ≫ F.left ≫ pullback.fst G'.hom t) (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `(s ≫ F.left ≫ pullback.fst G'.hom t) ≫ G'.hom = t`. Rewrite using `[Category.assoc s, Category.assoc F.left, pullback.condition, reassoc_of% hFw, reassoc_of% hs₂]))`. Use the proof step `(b := Over.homMk (a ≫ q) (by`.
+
+Express the relevant statement in the definitionally equal form `(a ≫ q) ≫ G'.hom = (a ≫ p) ≫ G.hom`. Rewrite using `[Category.assoc, Category.assoc, hpq]))`. Use `h₃`. Conclude with `congrArg CommaMorphism.left this`. Establish `hsl : s ≫ l = a`.
+
+Use `graphClosure.hom_ext G.hom G'.hom u φ huφ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(s ≫ l) ≫ p = a ≫ p`. Rewrite using `[Category.assoc, hl₁, hs₁]`. Express the relevant statement in the definitionally equal form `(s ≫ l) ≫ q = a ≫ q`. Rewrite using `[Category.assoc, hl₂, hq]`.
+
+Conclude with `⟨Sp T, t, F, l, s (IsLocalRing.closedPoint T), hF, hl₁, hl₂, (Scheme.Hom.comp_apply s l _).symm.trans (by rw [hsl])⟩`. Establish `hinj : ∀ w₁ w₂ : Γ, p w₁ = p w₂ → w₁ = w₂`. Introduce `w₁ w₂ hw₁₂`. Take `⟨T₁, τ₁, F₁, l₁, x₁, m₁, a₁, b₁, rfl⟩` from `hgraph w₁`. Take `⟨T₂, τ₂, F₂, l₂, x₂, m₂, a₂, b₂, rfl⟩` from `hgraph w₂`.
+
+Establish `hx : pullback.fst G.hom τ₁ x₁ = pullback.fst G.hom τ₂ x₂`. Rewrite using `[← a₁, ← a₂, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Conclude with `hw₁₂`. Take `⟨Ω, _, _, e₁, e₂, he, ⟨s₁, rfl⟩, ⟨s₂, rfl⟩⟩` from `exists_common_point _ _ x₁ x₂ hx`. Set `τ : Sp Ω ⟶ X` to `e₁ ≫ pullback.fst G.hom τ₁ ≫ G.hom`.
+
+Establish `h₁ : (e₁ ≫ pullback.snd G.hom τ₁) ≫ τ₁ = τ`. Rewrite using `[Category.assoc, ← pullback.condition]`. Establish `h₂ : (e₂ ≫ pullback.snd G.hom τ₂) ≫ τ₂ = τ`. Rewrite using `[Category.assoc, ← pullback.condition, ← reassoc_of% he]`. Take `⟨F₁', m₁', c₁⟩` from `exists_pull_hom _ τ₁ τ h₁ F₁`.
+
+Take `⟨F₂', m₂', c₂⟩` from `exists_pull_hom _ τ₂ τ h₂ F₂`. Set `g₁` to `pullMap _ τ₁ τ h₁ G ≫ l₁`. Set `g₂` to `pullMap _ τ₂ τ h₂ G ≫ l₂`. Establish `hg₁p : g₁ ≫ p = pullback.fst G.hom τ`. Express the relevant statement in the definitionally equal form `(pullMap _ τ₁ τ h₁ G ≫ l₁) ≫ p = _`.
+
+Rewrite using `[Category.assoc, a₁, pullMap_fst]`. Establish `hg₂p : g₂ ≫ p = pullback.fst G.hom τ`. Express the relevant statement in the definitionally equal form `(pullMap _ τ₂ τ h₂ G ≫ l₂) ≫ p = _`. Rewrite using `[Category.assoc, a₂, pullMap_fst]`. Establish `hg₁q : g₁ ≫ q = F₁'.left ≫ pullback.fst G'.hom τ`.
+
+Rewrite using `[c₁, Category.assoc, b₁]`. Establish `hg₂q : g₂ ≫ q = F₂'.left ≫ pullback.fst G'.hom τ`. Rewrite using `[c₂, Category.assoc, b₂]`. Establish `hF : F₁' = F₂'`. Use `hom_eq_of_torsion (IsSemiAbelian.pullback τ G hG) (IsSemiAbelian.pullback τ G' hG') F₁' F₂' fun y n hn hy ↦ ?_` and prove the remaining obligations.
+
+Set `e` to `TorsionLift.ptsEquiv τ G (𝟙_ (Over (Sp Ω))) τ (Category.id_comp _)`. Establish `hx : (e y) ^ n = 1` using `by rw [← map_pow, hy, map_one]`. Establish `hxl : (e y).left = y.left ≫ pullback.fst G.hom τ` using `TorsionLift.ptsEquiv_left ..`. Establish `hqf : ∀ z : Sp Ω ⟶ Γ, z ≫ p = (e y).left → Set.range z ⊆ Set.range p.quasiFiniteLocus.ι`. Introduce and unpack `z hz _ ⟨s, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `quasiFiniteAt_of_torsion hG' p' q' (fun a b ↦ graphClosure.hom_ext G.hom G'.hom u φ huφ) key τ (e y) hn hx (z s) ⟨s, by rw [← hz]; exact (Scheme.Hom.comp_apply _ _ _).symm⟩`. Set `z₁ : Sp Ω ⟶ Γ` to `y.left ≫ g₁`. Set `z₂ : Sp Ω ⟶ Γ` to `y.left ≫ g₂`. Establish `hz₁ : z₁ ≫ p = (e y).left`.
+
+Express the relevant statement in the definitionally equal form `(y.left ≫ g₁) ≫ p = _`. Rewrite using `[Category.assoc, hg₁p, hxl]`. Establish `hz₂ : z₂ ≫ p = (e y).left`. Express the relevant statement in the definitionally equal form `(y.left ≫ g₂) ≫ p = _`. Rewrite using `[Category.assoc, hg₂p, hxl]`.
+
+Set `z₁'` to `IsOpenImmersion.lift p.quasiFiniteLocus.ι z₁ (hqf z₁ hz₁)`. Set `z₂'` to `IsOpenImmersion.lift p.quasiFiniteLocus.ι z₂ (hqf z₂ hz₂)`. Establish `hz₁' : z₁' ≫ p.quasiFiniteLocus.ι = z₁` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hz₂' : z₂' ≫ p.quasiFiniteLocus.ι = z₂` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hz' : z₁' = z₂'`.
+
+Rewrite using `[← cancel_mono (p.quasiFiniteLocus.ι ≫ p), reassoc_of% hz₁', reassoc_of% hz₂', hz₁, hz₂]`. Establish `hz : z₁ = z₂` using `by rw [← hz₁', ← hz₂', hz']`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `y.left ≫ F₁'.left = y.left ≫ F₂'.left`. Establish `hw₁ : F₁'.left ≫ pullback.snd G'.hom τ = pullback.snd G.hom τ` using `Over.w F₁'`.
+
+Establish `hw₂ : F₂'.left ≫ pullback.snd G'.hom τ = pullback.snd G.hom τ` using `Over.w F₂'`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← hg₁q, ← hg₂q]`. Conclude with `congrArg (· ≫ q) (by simpa [z₁, z₂] using hz)`. Rewrite using `[Category.assoc, Category.assoc, hw₁, hw₂]`.
+
+Establish `hg : g₁ = g₂`. Use `graphClosure.hom_ext G.hom G'.hom u φ huφ ?_ ?_` and prove the remaining obligations. Conclude with `hg₁p.trans hg₂p.symm`. Use `hg₁q.trans (hF ▸ hg₂q.symm)` and prove the remaining obligations. Set `b : Sp Ω ⟶ pullback G.hom τ` to `pullback.lift (e₁ ≫ pullback.fst G.hom τ₁) (𝟙 _) (by simp [τ])`.
+
+Establish `hbf : b ≫ pullback.fst G.hom τ = e₁ ≫ pullback.fst G.hom τ₁` using `pullback.lift_fst _ _ _`. Establish `hbs : b ≫ pullback.snd G.hom τ = 𝟙 _` using `pullback.lift_snd _ _ _`. Establish `hb₁ : b ≫ pullMap _ τ₁ τ h₁ G = e₁`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullMap_fst, hbf]`.
+
+Rewrite using `[Category.assoc, pullMap_snd, reassoc_of% hbs]`. Establish `hb₂ : b ≫ pullMap _ τ₂ τ h₂ G = e₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullMap_fst, hbf, he]`. Rewrite using `[Category.assoc, pullMap_snd, reassoc_of% hbs]`.
+
+Establish `hl : e₁ ≫ l₁ = e₂ ≫ l₂`. Rewrite using `[← hb₁, ← hb₂, Category.assoc, Category.assoc]`. Conclude with `congrArg (b ≫ ·) hg`. Rewrite using `[Subsingleton.elim s₂ s₁]`. Simplify using `only [← Scheme.Hom.comp_apply]`.
+
+Rewrite using `[hl]`. Establish `: LocallyQuasiFinite p` using `locallyQuasiFinite_iff_finite_preimage_singleton.mpr fun σ ↦ Set.Subsingleton.finite fun a ha b hb ↦ hinj a b (ha.trans hb.symm)`. Establish `: IsIso p` using `isIso_of_densePart i p`. Take `⟨ψ, hψ, huψ⟩` from `graphClosure.exists_extension_of_isIso_fst G.hom G'.hom u φ huφ`. Set `F : G ⟶ G'` to `Over.homMk ψ hψ.symm`.
+
+Establish `hF : (Over.pullback j).map F = f` using `by ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(pullback.lift_fst _ _ _).trans huψ`. Conclude with `(Over.w _).trans hw.symm`. Use `⟨F, ⟨?_, hF⟩, fun F' hF' ↦ pullback_map_injective_of_flat j (hF'.2.trans hF.symm)⟩` and prove the remaining obligations.
+
+Establish `: IsMonHom ((Over.pullback j).map F)` using `hF ▸ hf`. Conclude with `isMonHom_of_pullback_of_flat j F`.
+-/
 theorem existsUnique_hom_extension_of_dvr
     (H : (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K]
       [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'],
@@ -559,6 +732,9 @@ end GlobalTheory.HomExtNormal
 
 open GlobalTheory.TorRef in
 
+/- English proof (translation)
+The claim follows from `fun X U _ j hX _ _ G G' _ _ hG hG' f hf ↦ GlobalTheory.HomExtNormal.existsUnique_hom_extension_of_dvr GlobalTheory.homExtension_semiAbelian_dvr X U j hX G G' hG hG' f hf`.
+-/
 theorem GlobalTheory.homExtNormal : HomExtNormalSt :=
   fun X U _ j hX _ _ G G' _ _ hG hG' f hf ↦
     GlobalTheory.HomExtNormal.existsUnique_hom_extension_of_dvr GlobalTheory.homExtension_semiAbelian_dvr X U j hX

@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovDet
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.QnCovHat
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.CovariantHatSqOfLin
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.Q.TInvW.qnTInv_of (PI.contractionsCovariant_iff.2 ⟨covariant_det_of_lin covariant_linear, covariant_hat_of_lin covariant_linear, covariant_hat_sq_of_lin covariant_linear⟩) qnEabPres qnEabGl qnMinorLeft`.
+-/
 theorem qnTInv : Formalism.FourierDecayAlt.Q.TInvariant :=
   Formalism.FourierDecayAlt.Q.TInvW.qnTInv_of
     (PI.contractionsCovariant_iff.2

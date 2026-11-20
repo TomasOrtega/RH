@@ -14,12 +14,33 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `Category.id_comp _`.
+-/
 theorem ofAt_left (V : Type) [CommRing V] {G : Over (Sp V)} (f : epsOver V V ⟶ G) :
     (ofAt V ≫ f).left = f.left := Category.id_comp _
 
+/- English proof (translation)
+The claim follows from `Category.id_comp _`.
+-/
 theorem toAt_left (V : Type) [CommRing V] {G : Over (Sp V)} (f : epsAt (𝟙 (Sp V)) ⟶ G) :
     (toAt V ≫ f).left = f.left := Category.id_comp _
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨σV, hσ⟩` from `exists_lift_int T (io.comp (tauIn c τ'))`. Establish `hσa : ∀ a, algebraMap T.V T.Fr (σV a) = io (tauIn c τ' a)` using `fun a => RingHom.congr_fun hσ a`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`. Use `⟨σV, fun i => ofAt T.V ≫ ub i, hσ, ⟨fun i => ⟨?_, fun a => ?_⟩, fun w hw => ?_⟩, fun a => ?_⟩` and prove the remaining obligations.
+
+Use `show _ ≫ (ofAt T.V ≫ ub i).left = _`. Rewrite using `[ofAt_left, one_left_at]`. Conclude with `htan i`. Rewrite using `[Category.assoc, ofAt_left, ofAt_left]`. Conclude with `heig i a (σV a) (hσa a)`.
+
+Establish `htan' : IsTan (toAt T.V ≫ w)` using `by show _ ≫ (toAt T.V ≫ w).left = _`. Rewrite using `[toAt_left, ← one_left_at]`. Conclude with `hw.1`. Establish `heig' : Formalism.L2.Pj.IsEigV c io G τ' (toAt T.V ≫ w)` using `fun a z hz => by`. Establish `hz' : z = σV a` using `hinj (hz.trans (hσa a).symm)`.
+
+Substitute `hz'` using the available equality. Rewrite using `[Category.assoc, toAt_left, toAt_left]`. Conclude with `hw.2 a`. Take `⟨a, ⟨u, hu1, hu2⟩, huniq⟩` from `hbas _ htan' heig'`. Use `⟨a, ⟨fun i => ofAt T.V ≫ u i, fun i => ?_, ?_⟩, fun b hb => huniq b ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ofAt_left, ofAt_left]`. Conclude with `hu1 i`. Rewrite using `[← pre_prod, ← hu2, ← Category.assoc, ofAt_toAt, Category.id_comp]`. Take `⟨u', h1, h2⟩` from `hb`. Use `⟨fun i => toAt T.V ≫ u' i, fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[toAt_left, h1, ofAt_left]`. Both sides reduce to the same expression. Rewrite using `[← pre_prod, ← h2]`. Take `⟨u', h1, h2⟩` from `hv a`. Use `⟨u', h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ofAt_left, h2]`. Both sides reduce to the same expression.
+-/
 theorem isIntFrame_of_basis (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr) (G : SAB H (Sp T.V)) (t' : SAB H (Sp T.Fr))
     {y' : Sp T.Fr ⟶ Xo.XF c} (m : SABMap t' Xo.univ.t (under y'))
     (m2 : SABMap t' G (spMap (algebraMap T.V T.Fr))) (τ' : E →+* ℂ) {N n : ℕ} (hn : N = n)
@@ -65,6 +86,9 @@ theorem isIntFrame_of_basis (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr) (G 
     rw [ofAt_left, h2]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, _, h.choose_spec.choose_spec.choose_spec, by unfold Formalism.L2.Pj.evR Formalism.L2.Pj.evalAt rw [dif_pos h]⟩`.
+-/
 theorem exists_factor (f : Formalism.L2.Pj.Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : Formalism.L2.Pj.FrPt Xo c S)
     (h : Formalism.L2.Pj.FromTest (K := c.F) (fun S _ _ => Formalism.L2.Pj.FrPt Xo c S)
       (fun φ y z => Formalism.L2.Pj.FrMap φ y z) y) :
@@ -74,6 +98,17 @@ theorem exists_factor (f : Formalism.L2.Pj.Rul Xo c) {S : Type} [CommRing S] [Al
     unfold Formalism.L2.Pj.evR Formalism.L2.Pj.evalAt
     rw [dif_pos h]⟩
 
+/- English proof (translation)
+Establish `h0 : la.valuation c.F a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `c1 : la.valuation c.F a ≤ 1 ↔ 0 ≤ Formalism.L2.Pj.vLa la a`. Rewrite using `[← WithZero.log_le_log h0 one_ne_zero, WithZero.log_one, Formalism.L2.Pj.vLa]`. Use linear arithmetic over natural numbers and integers. Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast he`.
+
+Establish `hc : 0 < (e : ℝ) * (-ρ)` using `mul_pos he' (neg_pos.2 hρ)`. Establish `h' : Real.log r = ((e : ℝ) * (-ρ)) * (-(Formalism.L2.Pj.vLa la a : ℝ))`. Rewrite using `[h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[c1]`. Prove the components needed by the constructor for the conclusion. Introduce `hL`. Establish `hL' : (0 : ℝ) ≤ Formalism.L2.Pj.vLa la a` using `by exact_mod_cast hL`. Establish `: Real.log r ≤ 0` using `by rw [h']; nlinarith [mul_nonneg hc.le hL']`.
+
+Assume the negation of the conclusion as `hgt`. Use `Real.log_pos (not_le.1 hgt)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `hr1`. Establish `hl : Real.log r ≤ 0` using `Real.log_nonpos hr.le hr1`.
+
+Assume the negation of the conclusion as `hL`. Establish `hL' : (Formalism.L2.Pj.vLa la a : ℝ) < 0` using `by exact_mod_cast not_le.1 hL`. Use `mul_pos hc (neg_pos.2 hL')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_le_one_iff_log_valuation (la : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F)) (a : c.F) (ha : a ≠ 0)
     {e : ℕ} (he : 0 < e) {ρ r : ℝ} (hρ : ρ < 0) (hr : 0 < r)
     (h : Real.log r = ((e : ℤ) * Formalism.L2.Pj.vLa la a : ℤ) * ρ) :
@@ -105,6 +140,27 @@ end GlobalTheory.CompanionTheory.Ar.Flat.RuleVal
 
 open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c U τ φ s t hτ hφ hs hN la T io e y y' ho halg hy hyo hyU`. Use `letI := io.toAlgebra`. Take `⟨p, j, hj⟩` from `RuleVal.exists_embed T halg`. Take `⟨ρ, hρ, hlog⟩` from `RuleVal.exists_log_norm T j hj`. Establish `hI : Formalism.L2.Pj.Integral T io y.1` using `y.2.2`.
+
+Take `⟨G, t', m1, m2, ⟨ub, htan, heig, hbas, hlift⟩, -⟩` from `hI`. Take `⟨m, hm⟩` from `RuleVal.exists_cast hy.symm m1`. Establish `hp : D.mult τ = D.p` using `if_pos hτ`. Establish `hq : D.mult (ComplexEmbedding.conjugate τ) = D.q` using `RuleVal.mult_conj τ hτ`. Take `⟨v, hv⟩` from `RuleVal.exists_vecs y.1 hy τ hp`.
+
+Take `⟨w, hw⟩` from `RuleVal.exists_vecs y.1 hy (ComplexEmbedding.conjugate τ) hq`. Establish `hfr : IsFramed U τ io y' v w` using `⟨hyo, hyU, RuleVal.isEigFrame_of_frPt y.1 hy τ hp v hv, RuleVal.isEigFrame_of_frPt y.1 hy _ hq w hw⟩`. Establish `hi1 : IsIntFrame m m2 (io.comp (tauIn c τ)) v` using `RuleVal.isIntFrame_of_basis T io G t' m m2 τ hp (ub τ) (htan τ) (heig τ) (hbas τ) v fun i => by`. Take `⟨u', h1, h2⟩` from `hlift τ (i.cast hp.symm)`. Conclude with `⟨u', by rw [hm, h1, hv], h2⟩`.
+
+Establish `hi2 : IsIntFrame m m2 (io.comp (tauIn c (ComplexEmbedding.conjugate τ))) w` using `RuleVal.isIntFrame_of_basis T io G t' m m2 _ hq (ub _) (htan _) (heig _) (hbas _) w fun i => by`. Take `⟨u', h1, h2⟩` from `hlift (ComplexEmbedding.conjugate τ) (i.cast hq.symm)`. Conclude with `⟨u', by rw [hm, h1, hw], h2⟩`. Establish `hval : Real.log ‖j (φ T.Fr y' v w)‖ = t p (j.comp io)` using `hN p (j.comp io) T.V T.Fr j io y' v w G t' m m2 hj rfl hfr hi1 hi2`. Establish `hev : Formalism.L2.Pj.evI y s = φ T.Fr y' v w`.
+
+Take `⟨pz, ψ, z, hm', he⟩` from `RuleVal.exists_factor s y.1 y.2.1`. Establish `hcomp : ψ.toRingHom.comp (algebraMap c.F pz.R) = io` using `ψ.comp_algebraMap`. Use `he.trans (hs pz z T.Fr ψ.toRingHom y' (hy.trans hm'.1) (by rw [hcomp]; exact hyo) hyU v w hp hq (fun i => (hv i).trans (hm'.2.1 τ _)) (fun i => (hw i).trans (hm'.2.1 _ _)))` and prove the remaining obligations. Establish `hne : φ T.Fr y' v w ≠ 0` using `hφ.ne T.Fr io y' v w hfr`. Use `⟨p, j.comp io, fun a => ?_, fun π hπ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hio : io a ≠ 0` using `(map_ne_zero io).2 ha`. Use `RuleVal.norm_le_one_iff_log_valuation la a ha ho.1 hρ (norm_pos_iff.2 ((map_ne_zero j).2 hio)) ?_` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, hlog _ hio, ho.2 a]`. Establish `hπ0 : π ≠ 0`. Introduce `h0`. Rewrite `hπ` using `[h0, map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+
+Establish `hio : io π ≠ 0` using `(map_ne_zero io).2 hπ0`. Establish `hvL : Formalism.L2.Pj.vLa la π = 1`. Rewrite using `[Formalism.L2.Pj.vLa, hπ, WithZero.log_exp]`. Simplify using the standard rewrite rules. Establish `he' : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`.
+
+Establish `h1 : Real.log ‖(j.comp io) π‖ = (e : ℝ) * ρ`. Rewrite using `[RingHom.comp_apply, hlog _ hio, ho.2 π, hvL]`. Simplify using the standard rewrite rules. Rewrite using `[hev, Formalism.L2.Pj.nval_of_ne hne, ← hval, h1, hlog _ hne]`. Use `congr 1`.
+
+Clear denominators, using `[hρ.ne]` for the nonvanishing conditions.
+-/
 theorem GlobalTheory.CompanionTheory.Ar.Flat.nval_flat_rule : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) (s : Formalism.L2.Pj.Rul Xo c) (t : ∀ p : Nat.Primes, (c.F →+* ℂ_[p]) → ℝ), τ (H.rt : E) = H.rt0 → IsLineFn U τ φ → (∀ (p : Formalism.L2.Pj.TRing c.F) (z : Formalism.L2.Pj.FrPt Xo c p.R) (F : Type) [Field F] (ψ : p.R →+* F) (y : Sp F ⟶ Xo.XF c), under y = spMap ψ ≫ z.x → y ≫ pullback.snd _ _ = spMap (ψ.comp (algebraMap c.F p.R)) → Set.range y ⊆ U → ∀ (v : Vecs y D.p) (w : Vecs y D.q) (hp : D.mult τ = D.p) (hq : D.mult (ComplexEmbedding.conjugate τ) = D.q), (∀ i, (v i).left = spMap (Formalism.L2.Pj.dualMap ψ) ≫ z.u τ (i.cast hp.symm)) → (∀ j, (w j).left = spMap (Formalism.L2.Pj.dualMap ψ) ≫ z.u (ComplexEmbedding.conjugate τ) (j.cast hq.symm)) → ψ (s p z) = φ F y v w) → (∀ p κ, HasFinNorm U τ φ p κ (t p κ)) → ∀ (la : IsDedekindDomain.HeightOneSpectrum (𝓞 c.F)) (T : Formalism.L2.Pj.CDVR) (io : c.F →+* T.Fr) (e : ℕ) (y : Formalism.L2.Pj.IntFr Xo c T io) (y' : Sp T.Fr ⟶ Xo.XF c), Formalism.L2.Pj.OverLa la T.V io e → y.IsAlg → under y' = (letI := io.toAlgebra; y.1.x) → y' ≫ pullback.snd _ _ = spMap io → Set.range y' ⊆ U → ∃ (p : Nat.Primes) (κ : c.F →+* ℂ_[p]), (∀ a : c.F, la.valuation c.F a ≤ 1 ↔ ‖κ a‖ ≤ 1) ∧ ∀ π : c.F, la.valuation c.F π = WithZero.exp (-1 : ℤ) → Formalism.L2.Pj.nval T.V e (Formalism.L2.Pj.evI y s) = ((t p κ / Real.log ‖κ π‖ : ℝ) : EReal) := by
   intro E _ _ _ H D l Xo c U τ φ s t hτ hφ hs hN la T io e y y' ho halg hy hyo hyU
   letI := io.toAlgebra

@@ -10,6 +10,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KeyVals.LieRel.lieRel | exact GlobalTheory.KeyVals.LieRel.lieRel | (intros; apply GlobalTheory.KeyVals.LieRel.lieRel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dualTangentVectors_genericFibre_det_eq_detOmegaTrans : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G] (g : ℕ), IsSemiAbelian G →
     SmoothOfRelativeDimension g G.hom → ∀ (c c' : VB.Chart (LieVB.omega G) g)
     (h1 : genericPoint S ∈ (VB.det (LieVB.omega G) g).U c ⊓ (VB.det (LieVB.omega G) g).U c')

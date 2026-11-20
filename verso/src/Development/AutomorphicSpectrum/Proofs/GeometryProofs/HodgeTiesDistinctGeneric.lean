@@ -15,6 +15,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Cmp.PermCpt
 
 open Limits
 
+/- English proof (translation)
+Rewrite using `[SurjectiveOnStalks.Spec_iff]`. Establish `g` using `(GlobalTheory.OneArcCompare.mono_spMap_iff β).1 h`. Use `RingHom.surjectiveOnStalks_iff_forall_maximal'.2 fun I hI s => ?_` and prove the remaining obligations. Establish `hb : I = ⊥` using `(Ideal.eq_bot_or_top I).resolve_right hI.ne_top`. Substitute `hb` using the available equality.
+
+Take `⟨p, q, hq, e⟩` from `g s`. Use `⟨p, q, 1, by simp, by simpa using hq, ?_⟩` and prove the remaining obligations. Simplify `e` using `[mul_comm]`.
+-/
 theorem surjectiveOnStalks_spMap {O F : Type} [CommRing O] [Field F] [CharZero F] [FiniteDimensional ℚ F]
     (β : O →+* F) (h : Mono (spMap β)) : SurjectiveOnStalks (spMap β) := by
   rw [SurjectiveOnStalks.Spec_iff]
@@ -26,6 +31,11 @@ theorem surjectiveOnStalks_spMap {O F : Type} [CommRing O] [Field F] [CharZero F
   refine ⟨p, q, 1, by simp, by simpa using hq, ?_⟩
   simpa [mul_comm] using e
 
+/- English proof (translation)
+Establish `hL` using `SurjectiveOnStalks.isEmbedding_pullback s (spMap β)`. Set `t₀ : Sp F` to `IsLocalRing.closedPoint F`. Establish `e : (fun x => (pullback.fst s (spMap β) x, pullback.snd s (spMap β) x)) = (fun a : X => (a, t₀)) ∘ (pullback.fst s (spMap β))`. Use function extensionality and compare the values at `x`. Conclude with `Prod.ext rfl (Subsingleton.elim (α := PrimeSpectrum F) _ _)`.
+
+Rewrite `hL` using `[e]`. Conclude with `(IsEmbedding.of_comp_iff (isEmbedding_prodMkLeft t₀)).1 hL`.
+-/
 theorem isEmbedding_fst {X : Scheme.{0}} {O F : Type} [CommRing O] [Field F] (s : X ⟶ Sp O) (β : O →+* F)
     [SurjectiveOnStalks (spMap β)] : IsEmbedding (pullback.fst s (spMap β)) := by
   have hL := SurjectiveOnStalks.isEmbedding_pullback s (spMap β)
@@ -37,6 +47,13 @@ theorem isEmbedding_fst {X : Scheme.{0}} {O F : Type} [CommRing O] [Field F] (s 
   rw [e] at hL
   exact (IsEmbedding.of_comp_iff (isEmbedding_prodMkLeft t₀)).1 hL
 
+/- English proof (translation)
+Establish `hCi : IsIrreducible (irreducibleComponent x)` using `isIrreducible_irreducibleComponent`. Establish `hCc : IsClosed (irreducibleComponent x)` using `isClosed_irreducibleComponent`. Establish `hgen` using `hCi.isGenericPoint_genericPoint_closure`. Rewrite `hgen` using `[hCc.closure_eq]`. Use `⟨hCi.genericPoint, hgen.specializes mem_irreducibleComponent, fun m' hm' => ?_⟩` and prove the remaining obligations.
+
+Establish `hmax` using `irreducibleComponent_mem_irreducibleComponents x`. Establish `hsub : irreducibleComponent x ⊆ closure {m'}`. Rewrite using `[← hgen.def]`. Conclude with `closure_minimal (by simpa using specializes_iff_mem_closure.1 hm') isClosed_closure`. Establish `hle` using `hmax.2 (isIrreducible_singleton.closure) hsub`.
+
+Establish `hm'C : m' ∈ irreducibleComponent x` using `hle (subset_closure rfl)`. Conclude with `(hm'.antisymm (hgen.specializes hm'C)).eq`.
+-/
 theorem exists_maximal_generisation {P : Type} [TopologicalSpace P] [T0Space P] [QuasiSober P] (x : P) :
     ∃ m, m ⤳ x ∧ ∀ m', m' ⤳ m → m' = m := by
   have hCi : IsIrreducible (irreducibleComponent x) := isIrreducible_irreducibleComponent
@@ -52,6 +69,15 @@ theorem exists_maximal_generisation {P : Type} [TopologicalSpace P] [T0Space P] 
   have hm'C : m' ∈ irreducibleComponent x := hle (subset_closure rfl)
   exact (hm'.antisymm (hgen.specializes hm'C)).eq
 
+/- English proof (translation)
+Establish `key : ∀ p, genPt x₁ = p → ∃ a : X.presheaf.stalk p ⟶ CommRingCat.of K₁, Function.Bijective a.hom ∧ Spec.map a ≫ X.fromSpecStalk p = x₁`. Introduce and unpack `_ rfl`. Conclude with `⟨_, b₁, Scheme.Spec_stalkClosedPointTo_fromSpecStalk x₁⟩`. Take `⟨a, ha, ea⟩` from `key _ h`. Set `e₁` to `RingEquiv.ofBijective a.hom ha`.
+
+Set `e₂` to `RingEquiv.ofBijective (Scheme.stalkClosedPointTo x₂).hom b₂`. Use `⟨e₂.symm.trans e₁, ?_⟩` and prove the remaining obligations. Establish `e : Scheme.stalkClosedPointTo x₂ ≫ CommRingCat.ofHom (e₂.symm.trans e₁).toRingHom = a`. Use extensionality with `t`. Use `show e₁ (e₂.symm (e₂ t)) = a.hom t`.
+
+Rewrite using `[RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show Spec.map (Scheme.stalkClosedPointTo x₂) ≫ X.fromSpecStalk (genPt x₂) = x₂ from Scheme.Spec_stalkClosedPointTo_fromSpecStalk x₂]`. Use `_ = Spec.map a ≫ X.fromSpecStalk (genPt x₂) := by`.
+
+Use `Eq.trans ?_ (congrArg (· ≫ X.fromSpecStalk (genPt x₂)) (congrArg Spec.map e))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ X.fromSpecStalk (genPt x₂)) (Spec.map_comp _ _).symm)`. Use `_ = x₁ := ea`.
+-/
 theorem exists_equiv_of_pts {X : Scheme.{0}} {K₁ K₂ : Type} [Field K₁] [Field K₂] (x₁ : Sp K₁ ⟶ X) (x₂ : Sp K₂ ⟶ X)
     (h : genPt x₁ = genPt x₂) (b₁ : Function.Bijective (Scheme.stalkClosedPointTo x₁).hom)
     (b₂ : Function.Bijective (Scheme.stalkClosedPointTo x₂).hom) :
@@ -79,6 +105,11 @@ theorem exists_equiv_of_pts {X : Scheme.{0}} {K₁ K₂ : Type} [Field K₁] [Fi
         exact (Category.assoc _ _ _).symm.trans (congrArg (· ≫ X.fromSpecStalk (genPt x₂)) (Spec.map_comp _ _).symm)
     _ = x₁ := ea
 
+/- English proof (translation)
+Establish `e : Scheme.stalkClosedPointTo (x ≫ j) = j.stalkMap _ ≫ Scheme.stalkClosedPointTo x` using `Scheme.stalkClosedPointTo_comp x j`. Rewrite `h` using `[e]`. Use `⟨fun a b hab => ?_, fun t => ?_⟩` and prove the remaining obligations. Take `⟨a', rfl⟩` from `j.stalkMap_surjective _ a`. Take `⟨b', rfl⟩` from `j.stalkMap_surjective _ b`.
+
+Conclude with `congrArg _ (h.1 hab)`. Take `⟨a, rfl⟩` from `h.2 t`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem bijective_of_comp {W X : Scheme.{0}} (j : W ⟶ X) [SurjectiveOnStalks j] {K : Type} [Field K] (x : Sp K ⟶ W)
     (h : Function.Bijective (Scheme.stalkClosedPointTo (x ≫ j)).hom) :
     Function.Bijective (Scheme.stalkClosedPointTo x).hom := by
@@ -92,6 +123,9 @@ theorem bijective_of_comp {W X : Scheme.{0}} (j : W ⟶ X) [SurjectiveOnStalks j
   · obtain ⟨a, rfl⟩ := h.2 t
     exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `e : Scheme.stalkClosedPointTo (x ≫ r) = r.stalkMap _ ≫ Scheme.stalkClosedPointTo x` using `Scheme.stalkClosedPointTo_comp x r`. Rewrite using `[e]`. Conclude with `h.comp (ConcreteCategory.bijective_of_isIso (r.stalkMap _))`.
+-/
 theorem bijective_comp_iso {W W' : Scheme.{0}} (r : W ⟶ W') [IsIso r] {K : Type} [Field K] (x : Sp K ⟶ W)
     (h : Function.Bijective (Scheme.stalkClosedPointTo x).hom) :
     Function.Bijective (Scheme.stalkClosedPointTo (x ≫ r)).hom := by
@@ -100,6 +134,19 @@ theorem bijective_comp_iso {W W' : Scheme.{0}} (r : W ⟶ W') [IsIso r] {K : Typ
   rw [e]
   exact h.comp (ConcreteCategory.bijective_of_isIso (r.stalkMap _))
 
+/- English proof (translation)
+Establish `hi : ∀ w, r.inv (r.hom w) = w` using `fun w => by`. Rewrite using `[← Scheme.Hom.comp_apply, r.hom_inv_id]`. Both sides reduce to the same expression. Establish `hi' : ∀ w, r.hom (r.inv w) = w` using `fun w => by`. Rewrite using `[← Scheme.Hom.comp_apply, r.inv_hom_id]`.
+
+Both sides reduce to the same expression. Establish `hW : ∀ k (u : W), u ⤳ pt k → u = pt k` using `fun k u hu => hj.injective (hmax k _ (hu.map j.continuous))`. Establish `hex : ∀ k, ∃ k', pt k' = r.hom (pt k)`. Introduce `k`. Take `⟨m, hm, hm'⟩` from `exists_maximal_generisation (j (r.hom (pt k)))`.
+
+Take `⟨k', rfl⟩` from `hall m hm'`. Use `⟨k', ?_⟩` and prove the remaining obligations. Establish `h1 : pt k' ⤳ r.hom (pt k)` using `hj.isInducing.specializes_iff.1 hm`. Establish `h2 : r.inv (pt k') ⤳ pt k`. Use `h1.map r.inv.continuous` as an intermediate fact.
+
+Rewrite `this` using `[hi]`. Then use the resulting hypothesis. Establish `h3` using `hW k _ h2`. Rewrite using `[← h3, hi']`. Use `choose π hπ using hex`. Establish `hπi : Function.Injective π`.
+
+Introduce `a b hab`. Establish `h1 : r.hom (pt a) = r.hom (pt b)` using `by rw [← hπ a, ← hπ b, hab]`. Establish `h2 : pt a = pt b`. Use `congrArg r.inv h1` as an intermediate fact. Rewrite `this` using `[hi, hi]`. Then use the resulting hypothesis.
+
+Conclude with `hinj (congrArg j h2)`. Conclude with `⟨Equiv.ofBijective π (Finite.injective_iff_bijective.1 hπi), hπ⟩`.
+-/
 theorem exists_perm {W X : Scheme.{0}} (j : W ⟶ X) (hj : IsEmbedding j) {C : Type} [Finite C] (pt : C → W)
     (hinj : Function.Injective fun k => j (pt k)) (hmax : ∀ k (q : X), q ⤳ j (pt k) → q = j (pt k))
     (hall : ∀ q : X, (∀ q', q' ⤳ q → q' = q) → ∃ k, j (pt k) = q) (r : W ≅ W) :
@@ -133,6 +180,27 @@ theorem exists_perm {W X : Scheme.{0}} (j : W ⟶ X) (hj : IsEmbedding j) {C : T
     exact hinj (congrArg j h2)
   exact ⟨Equiv.ofBijective π (Finite.injective_iff_bijective.1 hπi), hπ⟩
 
+/- English proof (translation)
+Establish `hsurj` using `surjectiveOnStalks_spMap β hβ`. Establish `hgen` using `(GlobalTheory.OneArcCompare.mono_spMap_iff β).1 hβ`. Set `g : O →+* Ω₀` to `(Spec.preimage (ξ₀ ≫ s)).hom`. Establish `hs' : ξ₀ ≫ s = spMap g` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (ξ₀ ≫ s)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
+
+Establish `hcomp : fn.comp g = cst.comp β`. Establish `h1 : spMap (fn.comp g) = spMap (cst.comp β)`. Rewrite using `[← hover, hs']`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h1)`.
+
+Establish `hc : ∀ t, fn (g t) = cst (β t)` using `fun t => RingHom.congr_fun hcomp t`. Establish `hr : ∀ u, cst u ∈ fn.range`. Introduce `u`. Take `⟨p, q, hq, e⟩` from `hgen u`. Establish `hq' : cst (β q) ≠ 0` using `fun h0 => hq (cst.injective (by rw [h0, map_zero]))`.
+
+Use `⟨g p / g q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, hc, hc, ← e, map_mul, mul_div_cancel_right₀ _ hq']`. Set `eq : Ω₀ ≃+* fn.range` to `RingEquiv.ofBijective fn.rangeRestrict ⟨fun a b hab => fn.injective (congrArg Subtype.val hab), fn.rangeRestrict_surjective⟩`. Set `γ : F →+* Ω₀` to `eq.symm.toRingHom.comp (cst.codRestrict fn.range hr)`. Establish `hγ : ∀ u, fn (γ u) = cst u` using `fun u => congrArg Subtype.val (eq.apply_symm_apply (cst.codRestrict fn.range hr u))`.
+
+Establish `hγg : γ.comp β = g` using `RingHom.ext fun t => fn.injective (by show fn (γ (β t)) = fn (g t)`. Rewrite using `[hγ, hc])`. Establish `hγc : fn.comp γ = cst` using `RingHom.ext hγ`. Set `w : Sp Ω₀ ⟶ pullback s (spMap β)` to `pullback.lift ξ₀ (spMap γ) (by`. Rewrite using `[hs', ← hγg]`.
+
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp])`. Establish `hwf : w ≫ pullback.fst _ _ = ξ₀` using `pullback.lift_fst _ _ _`. Establish `hws : w ≫ pullback.snd _ _ = spMap γ` using `pullback.lift_snd _ _ _`. Establish `hemb` using `isEmbedding_fst s β`. Establish `hnoeth` using `HodgeBasic.noetherianSpace_pullback hs β`.
+
+Establish `hran : Set.range w ⊆ Set.range jQ`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `hfw : pullback.fst s (spMap β) (w t) = genPt ξ₀`. Rewrite using `[← Scheme.Hom.comp_apply, hwf]`. Conclude with `congrArg ξ₀ (Subsingleton.elim (α := PrimeSpectrum Ω₀) _ _)`.
+
+Use `HodgeBasic.mem_of_dense_of_maximal jQ.isOpenEmbedding.isOpen_range hd fun y' h' => ?_` and prove the remaining obligations. Establish `h2 : pullback.fst s (spMap β) y' ⤳ genPt ξ₀` using `hfw ▸ h'.map (pullback.fst s (spMap β)).continuous`. Conclude with `hemb.injective ((GlobalTheory.CompanionTheory.Ar.CptInh.nogen ξ₀ h₀ _ h2).trans hfw.symm)`. Establish `hfac : IsOpenImmersion.lift jQ w hran ≫ jQ = w` using `IsOpenImmersion.lift_fac _ _ _`. Establish `e₁ : IsOpenImmersion.lift jQ w hran ≫ jQ ≫ pullback.fst _ _ = ξ₀`.
+
+Rewrite using `[reassoc_of% hfac, hwf]`. Use `⟨IsOpenImmersion.lift jQ w hran, e₁, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% hfac, hws, ← hγc]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hfs : SurjectiveOnStalks (pullback.fst s (spMap β))` using `MorphismProperty.of_isPullback (P := @SurjectiveOnStalks) (IsPullback.of_hasPullback s (spMap β)).flip hsurj`.
+
+Use `bijective_of_comp (jQ ≫ pullback.fst _ _) _ ?_` and prove the remaining obligations. Rewrite using `[e₁]`. Conclude with `h₀.bij`.
+-/
 theorem exists_lift {X : Scheme.{0}} {O F : Type} [CommRing O] [Field F] [CharZero F] [FiniteDimensional ℚ F]
     (s : X ⟶ Sp O) (hs : IsProjOver s) (β : O →+* F) (hβ : Mono (spMap β))
     {W : Scheme.{0}} (jQ : W ⟶ pullback s (spMap β)) [IsOpenImmersion jQ] (hd : Dense (Set.range jQ))
@@ -194,6 +262,31 @@ theorem exists_lift {X : Scheme.{0}} {O F : Type} [CommRing O] [Field F] [CharZe
     rw [e₁]
     exact h₀.bij
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y S n C _ M tie hβ hinj hall Φ hΦ`. Establish `hfin` using `c.fin`. Establish `hopen` using `Y.jQ_open`. Establish `hsurj` using `surjectiveOnStalks_spMap β hβ`. Establish `hfst` using `isEmbedding_fst Y.s β`.
+
+Establish `hlift : ∀ k, ∃ x : Sp (tie k).A.Ω₀ ⟶ Xo.XF c, x ≫ Y.j = (tie k).A.ξ₀ ∧ spMap (tie k).A.fn ≫ x ≫ pullback.snd _ _ = spMap (tie k).A.cst ∧ Function.Bijective (Scheme.stalkClosedPointTo x).hom` using `fun k => by`. Establish `hover : spMap (tie k).A.fn ≫ (tie k).A.ξ₀ ≫ Y.s = spMap ((tie k).A.cst.comp β)`. Establish `h1 : (tie k).A.ξ ≫ (tie k).A.f = spMap (tie k).A.fn ≫ (tie k).A.ξ₀` using `(tie k).A.fn_over`. Rewrite using `[← Category.assoc, ← h1, Category.assoc]`. Conclude with `(tie k).A.cst_over`.
+
+Take `⟨x, h1, h2, h3⟩` from `exists_lift Y.s Y.proj β hβ Y.jQ Y.jQ_dense (tie k).A.ξ₀ (tie k).A.gen₀ (tie k).A.fn (tie k).A.cst hover`. Rewrite `h2` using `[Y.jQ_over]`. Conclude with `⟨x, h1, h2, h3⟩`. Use `choose x hx hcs hb using hlift`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr1, hr2⟩ : ∃ r : Xo.XF c ≅ Xo.XF c, r.hom ≫ pullback.fst _ _ = pullback.fst _ _ ≫ Φ.hom ∧ r.hom ≫ pullback.snd _ _ = pullback.snd _ _ := by`.
+
+Establish `hΦ' : Φ.inv ≫ Xo.s = Xo.s` using `by rw [Iso.inv_comp_eq, hΦ]`. Set `a : Xo.XF c ⟶ Xo.XF c` to `pullback.lift (pullback.fst _ _ ≫ Φ.hom) (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, hΦ, pullback.condition])`. Set `b : Xo.XF c ⟶ Xo.XF c` to `pullback.lift (pullback.fst _ _ ≫ Φ.inv) (pullback.snd _ _) (by`. Rewrite using `[Category.assoc, hΦ', pullback.condition])`.
+
+Establish `a1 : a ≫ pullback.fst _ _ = pullback.fst _ _ ≫ Φ.hom` using `pullback.lift_fst _ _ _`. Establish `a2 : a ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `b1 : b ≫ pullback.fst _ _ = pullback.fst _ _ ≫ Φ.inv` using `pullback.lift_fst _ _ _`. Establish `b2 : b ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Use `⟨⟨a, b, ?_, ?_⟩, a1, a2⟩` and prove the remaining obligations.
+
+Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, b1, reassoc_of% a1, Φ.hom_inv_id, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, b2, a2, Category.id_comp]`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, a1, reassoc_of% b1, Φ.inv_hom_id, Category.comp_id, Category.id_comp]`.
+
+Rewrite using `[Category.assoc, a2, b2, Category.id_comp]`. Establish `hjemb : IsEmbedding Y.j`. Establish `h` using `hfst.comp Y.jQ.isOpenEmbedding.isEmbedding`. Establish `e : (Y.j : Xo.XF c → Y.X) = pullback.fst Y.s (spMap β) ∘ Y.jQ`. Use function extensionality and compare the values at `t`.
+
+Conclude with `Scheme.Hom.comp_apply _ _ _`. Rewrite using `[e]`. Conclude with `h`. Establish `hpt : ∀ k, Y.j (genPt (x k)) = genPt (tie k).A.ξ₀` using `fun k => by show Y.j ((x k) _) = (tie k).A.ξ₀ _`. Rewrite using `[← hx k]`.
+
+Conclude with `(Scheme.Hom.comp_apply _ _ _).symm`. Take `⟨π, hπ⟩` from `exists_perm Y.j hjemb (fun k => genPt (x k)) (fun a b hab => hinj (by simpa only [hpt] using hab)) (fun k q hq => by`. Rewrite `hq`, the goal using `[hpt]`. Conclude with `GlobalTheory.CompanionTheory.Ar.CptInh.nogen _ (tie k).A.gen₀ _ hq)`. Use the proof step `(fun q hq => by`.
+
+Take `⟨k, hk⟩` from `hall q hq`. Conclude with `⟨k, (hpt k).trans hk⟩) r`. Use `⟨π, fun k => ?_⟩` and prove the remaining obligations. Establish `hsame : genPt (x k ≫ r.hom) = genPt (x (π k))`. Use `Eq.trans ?_ (hπ k).symm` and prove the remaining obligations.
+
+Conclude with `Scheme.Hom.comp_apply _ _ _`. Take `⟨ψ, hψ⟩` from `exists_equiv_of_pts (x k ≫ r.hom) (x (π k)) hsame (bijective_comp_iso r.hom (x k) (hb k)) (hb (π k))`. Unfold `IsImageCpt`. Use `⟨x k, x (π k), ψ, (hx k).symm, (hx (π k)).symm, ?_, ?_, hcs k, hcs (π k)⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% hψ, hr1]`.
+
+Rewrite using `[reassoc_of% hψ, hr2]`.
+-/
 theorem exists_perm_isImageCpt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (n : ℕ) (C : Type) [Fintype C] (M : C → Top.RootModel (CMType H) (D.p + D.q)) (tie : ∀ k, HodgeTie Y S n (M k)), Mono (spMap β) → Function.Injective (fun k => genPt (tie k).A.ξ₀) → (∀ q : Y.X, (∀ q' : Y.X, q' ⤳ q → q' = q) → ∃ k, genPt (tie k).A.ξ₀ = q) → ∀ Φ : Xo.X ≅ Xo.X, Φ.hom ≫ Xo.s = Xo.s → ∃ π : Equiv.Perm C, ∀ k, IsImageCpt Φ (tie k).A (tie (π k)).A := by
   intro E _ _ _ H D l Xo c O _ β Y S n C _ M tie hβ hinj hall Φ hΦ
   have hfin := c.fin

@@ -18,12 +18,26 @@ variable {V : Type} [AddCommGroup V] [Module (Fv F v) V] [TopologicalSpace V]
   [IsTopologicalAddGroup V] [ContinuousSMul (Fv F v) V] [LocallyCompactSpace V]
   [SecondCountableTopology V] [T2Space V] [MeasurableSpace V] [BorelSpace V]
 
+/- English proof (translation)
+Set `h` to `Homeomorph.smulOfNeZero (α := V) c hc`. Conclude with `Measure.isAddHaarMeasure_map μ0 (DistribSMul.toAddMonoidHom V c) (continuous_const_smul c) h.surjective h.isClosedEmbedding.tendsto_cocompact`.
+-/
 theorem haar_smul_map (μ0 : Measure V) [μ0.IsAddHaarMeasure] (c : Fv F v) (hc : c ≠ 0) :
     (Measure.map (fun x : V => c • x) μ0).IsAddHaarMeasure := by
   let h := Homeomorph.smulOfNeZero (α := V) c hc
   exact Measure.isAddHaarMeasure_map μ0 (DistribSMul.toAddMonoidHom V c)
     (continuous_const_smul c) h.surjective h.isClosedEmbedding.tendsto_cocompact
 
+/- English proof (translation)
+Use `haar_smul_map v μ0 c hc` as an intermediate fact. Use `haar_smul_map v μ0 c⁻¹ (inv_ne_zero hc)` as an intermediate fact. Establish `hm : Measurable fun x : V => c • x` using `(continuous_const_smul c).measurable`. Establish `hm' : Measurable fun x : V => c⁻¹ • x` using `(continuous_const_smul c⁻¹).measurable`. Take `⟨s1, e1⟩ : ∃ s : NNReal, Measure.map (fun x : V => c • x) μ0 = s • μ0` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ μ0⟩`.
+
+Take `⟨s2, e2⟩ : ∃ s : NNReal, Measure.map (fun x : V => c⁻¹ • x) μ0 = s • μ0` from `⟨_, Measure.isAddLeftInvariant_eq_smul _ μ0⟩`. Establish `hcomp : Measure.map (fun x : V => c⁻¹ • x) (Measure.map (fun x : V => c • x) μ0) = μ0`. Rewrite using `[Measure.map_map hm' hm]`. Establish `: ((fun x : V => c⁻¹ • x) ∘ fun x : V => c • x) = id`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[smul_smul, inv_mul_cancel₀ hc]`. Rewrite using `[this, Measure.map_id]`. Establish `hss : ((s1 : ENNReal) * s2) * μ0 A = 1 * μ0 A`. Establish `h` using `congrArg (fun m : Measure V => m A) hcomp`. Rewrite `h` using `[e1, Measure.map_smul, e2, smul_smul]`.
+
+Rewrite using `[one_mul]`. Use `conv_rhs => rw [← h]`. Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.coe_mul]`. Establish `hs : (s1 : ENNReal) * s2 = 1` using `(ENNReal.mul_left_inj hA0 hAt).1 hss`. Rewrite using `[← Measure.map_apply hm hA, ← Measure.map_apply hm' hB, e1, e2]`.
+
+Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scale_prod (μ0 : Measure V) [μ0.IsAddHaarMeasure] (c : Fv F v) (hc : c ≠ 0)
     (A B : Set V) (hA : MeasurableSet A) (hB : MeasurableSet B) (hA0 : μ0 A ≠ 0) (hAt : μ0 A ≠ ⊤) :
     μ0 ((fun x : V => c • x) ⁻¹' A) * μ0 ((fun x : V => c⁻¹ • x) ⁻¹' B) = μ0 A * μ0 B := by
@@ -60,12 +74,22 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def Mk (ι : Type) (k : ℕ) : AddSubgroup (ι → Fv F v ⊗[F] E) :=
   (ObS (E := E) v ι).comap (DistribSMul.toAddMonoidHom (ι → Fv F v ⊗[F] E) (piu v ^ k))
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[← coe_ObS]`. Both sides reduce to the same expression.
+-/
 theorem coe_Mk (ι : Type) (k : ℕ) : (Mk (E := E) v ι k : Set (ι → Fv F v ⊗[F] E)) =
     (fun x => piu v ^ k • x) ⁻¹' Obox (E := E) v ι := by
   ext x
   rw [← coe_ObS]
   rfl
 
+/- English proof (translation)
+Establish `hpk : piu v ^ k ≠ 0` using `pow_ne_zero k (piu_ne v)`. Rewrite using `[← ann_obox]`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, ann, Set.mem_setOf_eq, coe_Mk]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hy x hx`. Use `hy ((piu v ^ k)⁻¹ • x) (by simpa [smul_smul, mul_inv_cancel₀ hpk] using hx)` as an intermediate fact. Rewrite `this` using `[chi_smul]`. Then use the resulting hypothesis. Introduce `hy x hx`. Use `hy (piu v ^ k • x) hx` as an intermediate fact.
+
+Rewrite `this` using `[chi_smul, smul_smul, mul_inv_cancel₀ hpk, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem ann_Mk (ι : Type) [Fintype ι] (k : ℕ) :
     ann (chi (E := E) v ψ ι) (Mk (E := E) v ι k) =
       (fun y => (piu v ^ k)⁻¹ • y) ⁻¹' Dbox (E := E) v ψ ι := by
@@ -84,13 +108,32 @@ theorem ann_Mk (ι : Type) [Fintype ι] (k : ℕ) :
 variable (hK : OpenKer v ψ) (hnt : ∃ r, psiV F ψ v r ≠ 1)
 include hK hnt
 
+/- English proof (translation)
+The claim follows from `isCompact_univ_pi fun _ => conductor_isCompact v ψ hK hnt`.
+-/
 theorem isCompact_dbox (ι : Type) [Fintype ι] : IsCompact (Dbox (E := E) v ψ ι) :=
   isCompact_univ_pi fun _ => conductor_isCompact v ψ hK hnt
 
 omit hnt in
+/- English proof (translation)
+The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ => conductor_isOpen v ψ hK`.
+-/
 theorem isOpen_dbox (ι : Type) [Fintype ι] : IsOpen (Dbox (E := E) v ψ ι) :=
   isOpen_set_pi Set.finite_univ fun _ _ => conductor_isOpen v ψ hK
 
+/- English proof (translation)
+Establish `hpk : ∀ k : ℕ, piu v ^ k ≠ 0` using `fun k => pow_ne_zero k (piu_ne v)`. Establish `hψc` using `continuous_psiV_of v ψ hK`. Establish `hA : MeasurableSet (Obox (E` using `E) v ι) := (isOpen_obox v ι).measurableSet`. Establish `hB : MeasurableSet (Dbox (E` using `E) v ψ ι) := (isOpen_dbox v ψ hK ι).measurableSet`. Use `set μ0 : Measure (ι → Fv F v ⊗[F] E) := Measure.addHaar`.
+
+Establish `hA0 : μ0 (Obox (E` using `E) v ι) ≠ 0 := (isOpen_obox v ι).measure_ne_zero μ0 ⟨0, zero_mem_obox v ι⟩`. Establish `hAt : μ0 (Obox (E` using `E) v ι) ≠ ⊤ := (isCompact_obox v ι).measure_lt_top.ne`. Use `PI.OmFibreUniq.W.SdCore.selfDual_of_pairs (chi (E := E) v ψ ι) ?_ (chi_add_left v ψ ι) (chi_symm v ψ ι) (fun x y => norm_psiV_of v ψ hK _) (Mk (E := E) v ι) (fun k => ?_) (fun k => ?_) (fun k => ?_) (fun k => ?_) (fun y => ?_) (fun U hU => ?_) μ0 (fun k => ?_)` and prove the remaining obligations. Conclude with `hψc.comp (continuous_finsetSum _ fun i _ => (continuous_tr v).comp (((continuous_apply i).comp continuous_fst).mul ((continuous_apply i).comp continuous_snd)))`. Rewrite using `[coe_Mk]`.
+
+Conclude with `(Homeomorph.smulOfNeZero (α := ι → Fv F v ⊗[F] E) _ (hpk k)).isCompact_preimage.2 (isCompact_obox v ι)`. Rewrite using `[coe_Mk]`. Conclude with `(isOpen_obox v ι).preimage (continuous_const_smul _)`. Rewrite using `[ann_Mk]`. Conclude with `(Homeomorph.smulOfNeZero (α := ι → Fv F v ⊗[F] E) _ (inv_ne_zero (hpk k))).isCompact_preimage.2 (isCompact_dbox v ψ hK hnt ι)`.
+
+Rewrite using `[ann_Mk]`. Conclude with `(isOpen_dbox v ψ hK ι).preimage (continuous_const_smul _)`. Establish `ht : Tendsto (fun k : ℕ => piu v ^ k • y) atTop (𝓝 0)`. Simplify using `using (piu_tendsto v).smul_const y`. Use `filter_upwards [ht ((isOpen_obox v ι).mem_nhds (zero_mem_obox v ι))] with k hk`.
+
+Rewrite using `[← SetLike.mem_coe, coe_Mk]`. Conclude with `hk`. Use `filter_upwards [tube v (isCompact_dbox v ψ hK hnt ι) hU] with k hk`. Rewrite using `[ann_Mk]`. Introduce `y hy`.
+
+Use `hk _ hy` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ (hpk k), one_smul]`. Then use the resulting hypothesis. Rewrite using `[ann_Mk, ann_Mk, coe_Mk, coe_Mk, scale_prod v μ0 _ (hpk k) _ _ hA hB hA0 hAt, scale_prod v μ0 _ (hpk 0) _ _ hA hB hA0 hAt]`.
+-/
 theorem exists_sd (ι : Type) [Fintype ι] :
     ∃ μ : Measure (ι → Fv F v ⊗[F] E), SelfDual μ (chi (E := E) v ψ ι) := by
   have hpk : ∀ k : ℕ, piu v ^ k ≠ 0 := fun k => pow_ne_zero k (piu_ne v)

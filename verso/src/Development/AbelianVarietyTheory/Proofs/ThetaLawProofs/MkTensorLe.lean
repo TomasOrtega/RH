@@ -4,6 +4,13 @@ namespace GlobalTheory.EmbC
 
 open Cardinal TensorProduct
 
+/- English proof (translation)
+Establish `h1 : Function.Surjective (fun l : List (A × B) => (l.map (fun p => p.1 ⊗ₜ[R] p.2)).sum)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨[], by simp⟩`. Consider the case `tmul a b => exact ⟨[(a, b)], by simp⟩`.
+
+Consider the case `add x y hx hy`. Take `⟨l, rfl⟩` from `hx`. Take `⟨m, rfl⟩` from `hy`. Conclude with `⟨l ++ m, by simp⟩`. Use `(Cardinal.mk_le_of_surjective h1).trans ((Cardinal.mk_list_le_max _).trans ?_)` and prove the remaining obligations.
+
+Use `max_le Cardinal.aleph0_le_continuum ?_` and prove the remaining obligations. Rewrite using `[Cardinal.mk_prod, Cardinal.lift_id, Cardinal.lift_id]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem mk_tensor_le (R A B : Type) [CommRing R] [AddCommGroup A] [AddCommGroup B] [Module R A] [Module R B]
     (hA : #A ≤ 𝔠) (hB : #B ≤ 𝔠) : #(A ⊗[R] B) ≤ 𝔠 := by
   have h1 : Function.Surjective (fun l : List (A × B) => (l.map (fun p => p.1 ⊗ₜ[R] p.2)).sum) := by
@@ -21,6 +28,17 @@ theorem mk_tensor_le (R A B : Type) [CommRing R] [AddCommGroup A] [AddCommGroup 
   calc #A * #B ≤ 𝔠 * 𝔠 := mul_le_mul' hA hB
     _ = 𝔠 := Cardinal.continuum_mul_self
 
+/- English proof (translation)
+Use `haveI : Nontrivial (A ⊗[R] B) := Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_isDomain R A B ha hb`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (A ⊗[R] B)`. Use `letI : Field ((A ⊗[R] B) ⧸ m) := Ideal.Quotient.field m`. Set `L` to `(A ⊗[R] B) ⧸ m`. Set `Ω` to `AlgebraicClosure L`.
+
+Set `p : (A ⊗[R] B) →+* Ω` to `(algebraMap L Ω).comp (Ideal.Quotient.mk m)`. Set `i : A →+* Ω` to `p.comp (Algebra.TensorProduct.includeLeftRingHom)`. Set `j : B →+* Ω` to `p.comp (Algebra.TensorProduct.includeRight (R := R) (A := A) (B := B)).toRingHom`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom i.injective`. Establish `hL : #L ≤ 𝔠` using `(Cardinal.mk_le_of_surjective Ideal.Quotient.mk_surjective).trans (mk_tensor_le R A B hA.le hB.le)`.
+
+Establish `hΩ : #Ω = 𝔠`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Algebra.IsAlgebraic.cardinalMk_le_max L Ω).trans (max_le hL Cardinal.aleph0_le_continuum)`. Rewrite using `[← hA]`. Conclude with `Cardinal.mk_le_of_injective i.injective`.
+
+Take `⟨e⟩ : Nonempty (Ω ≃+* ℂ)` from `IsAlgClosed.ringEquiv_of_equiv_of_charZero (by rw [hΩ]; exact Cardinal.aleph0_lt_continuum) (Cardinal.eq.mp (by rw [hΩ, Cardinal.mk_complex]))`. Use `⟨e.toRingHom.comp i, e.toRingHom.comp j, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Establish `: (algebraMap R A r) ⊗ₜ[R] (1 : B) = (1 : A) ⊗ₜ[R] (algebraMap R B r)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Use `show e (p ((algebraMap R A r) ⊗ₜ[R] (1 : B))) = e (p ((1 : A) ⊗ₜ[R] (algebraMap R B r)))`. Rewrite using `[this]`.
+-/
 theorem exists_emb (R A B : Type) [CommRing R] [IsDomain R] [Field A] [Field B] [CharZero A]
     [Algebra R A] [Algebra R B] (hA : #A = 𝔠) (hB : #B = 𝔠)
     (ha : Function.Injective (algebraMap R A)) (hb : Function.Injective (algebraMap R B)) :
@@ -51,6 +69,9 @@ theorem exists_emb (R A B : Type) [CommRing R] [IsDomain R] [Field A] [Field B] 
   show e (p ((algebraMap R A r) ⊗ₜ[R] (1 : B))) = e (p ((1 : A) ⊗ₜ[R] (algebraMap R B r)))
   rw [this]
 
+/- English proof (translation)
+The claim follows from `@exists_emb R ℂ ℂ _ _ _ _ _ f.toAlgebra f'.toAlgebra Cardinal.mk_complex Cardinal.mk_complex hf hf'`.
+-/
 theorem exists_comp_eq (R : Type) [CommRing R] [IsDomain R] (f f' : R →+* ℂ)
     (hf : Function.Injective f) (hf' : Function.Injective f') :
     ∃ σ σ' : ℂ →+* ℂ, σ.comp f = σ'.comp f' :=

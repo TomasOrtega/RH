@@ -30,9 +30,29 @@ def t_pa_cpush_htpy : Prop :=
   ∀ (R : Type) [CommRing R] (E : Spc) {I J : Cx R} (u u' : I ⟶ J), Homotopy u u' →
     ∀ (n : ℤ) (x : CohomologyClass ((chains R).obj E) I n), cpush _ u n x = cpush _ u' n x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pa_sec_map_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (𝟙 F) x = x := rfl
 
+/- English proof (translation)
+Introduce `q _ E i j l k₁ k₂ k e1 e2 e3 μ₁ μ₂ ν₁ ν₂ p1 p2 p3 p4 n m p s₁ s₂ s h₁ h₂ h₃ h₄ a b c`. Take `⟨T, τ, hτ⟩` from `hex (ZMod q) (res _ (tw q i)) (res _ (tw q j))`. Take `⟨T3, τ', hτ'⟩` from `hex (ZMod q) T (res _ (tw q l))`. Take `⟨u, hu⟩` from `huniv (ZMod q) τ hτ μ₁`. Take `⟨ρ, hρ⟩` from `hpre (ZMod q) u μ₂`.
+
+Take `⟨ν, hν⟩` from `htri (ZMod q) τ τ' hτ hτ' ν₁ ν₂`. Take `⟨w₁, hw₁⟩` from `huniv (ZMod q) τ' hτ' ρ`. Take `⟨w₂, hw₂⟩` from `huniv (ZMod q) τ' hτ' ν`. Take `⟨ri, -, -⟩` from `hext q i`. Take `⟨rj, fj, -⟩` from `hext q j`.
+
+Take `⟨rl, fl, -⟩` from `hext q l`. Establish `hT` using `htw q i j k₁ e1 _ _ ri rj fj τ hτ`. Establish `ek : k₁ + l = k` using `by omega`. Establish `hT3` using `htw q k₁ l k ek _ _ hT rl fl τ' hτ'`. Take `⟨-, -, huniq⟩` from `hext q k`.
+
+Take `⟨H⟩` from `(huniq _ hT3).2 w₁ w₂ (by`. Introduce `U ζ`. Rewrite using `[hw₁, hw₂]`. Simplify using `only [HomologicalComplex.id_f, pa_sec_map_id]`. Rewrite using `[hν U 0 0 0 0 0 0 (add_zero 0) (add_zero 0) (add_zero 0) (add_zero 0)]`.
+
+Establish `r1` using `hρ U 0 0 0 (add_zero 0) (τ.mul U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)) (resGen l ζ)`. Simplify using `only [HomologicalComplex.id_f, pa_sec_map_id] at r1`. Establish `r2` using `hu U 0 0 0 (add_zero 0) (resGen i ζ) (resGen j ζ)`. Simplify using `only [HomologicalComplex.id_f, pa_sec_map_id] at r2`. Use `erw [r1, r2, p1, p2, p3, p4])`.
+
+Establish `L1 : μ₁.cup E h₁ a b = cpush _ u s₁ (τ.cup E h₁ a b)`. Rewrite using `[hcc _ τ μ₁ (𝟙 _) (𝟙 _) u hu E h₁ a b, hid, hid]`. Establish `L2 : ∀ y, μ₂.cup E h₂ (cpush _ u s₁ y) c = ρ.cup E h₂ y c`. Introduce `y`. Use `hcc _ ρ μ₂ u (𝟙 _) (𝟙 _) hρ E h₂ y c` as an intermediate fact.
+
+Rewrite `this` using `[hid, hid]`. Conclude with `this.symm`. Establish `L3 : ∀ y, ρ.cup E h₂ y c = cpush _ w₁ s (τ'.cup E h₂ y c)`. Introduce `y`. Rewrite using `[hcc _ τ' ρ (𝟙 _) (𝟙 _) w₁ hw₁ E h₂ y c, hid, hid]`.
+
+Establish `L4 : ∀ y, ν.cup E h₂ y c = cpush _ w₂ s (τ'.cup E h₂ y c)`. Introduce `y`. Rewrite using `[hcc _ τ' ν (𝟙 _) (𝟙 _) w₂ hw₂ E h₂ y c, hid, hid]`. Rewrite using `[← ha0 _ τ ν ν₁ ν₂ hν E h₁ h₂ h₃ h₄ a b c, L1, L2, L3, L4, hhtpy _ E w₁ w₂ H]`.
+-/
 theorem t_pair_assoc_of (htw : EtaleTensorPairTwistResolutionMul) (htri : EtaleTensorPairProductAssociative) (hext : EtaleTwistResolutionUniversalExtension)
     (hcc : EtaleCupProductNaturalInCoefficients) (ha0 : EtaleCochainCupAssociativeOfPairing) (hex : t_pa_tens_ex) (huniv : t_pa_tens_univ)
     (hpre : t_pa_precomp) (hid : t_pa_cpush_id) (hhtpy : t_pa_cpush_htpy) : t_pair_assoc := by

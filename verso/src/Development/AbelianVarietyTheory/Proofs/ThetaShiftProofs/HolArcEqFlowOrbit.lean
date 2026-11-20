@@ -26,6 +26,13 @@ section Frames
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `hemb : ∀ ρ : E →+* ℂ, Data.emb ρ (a • v) = ρ a • Data.emb ρ v` using `fun ρ => by`. Use function extensionality and compare the values at `k`. Simplify using `[Data.emb]`. Unfold `perFr`. Use `split_ifs`.
+
+Rewrite using `[hemb, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[hemb, hermC_smul_right]`. Simplify using `[conjEmb]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 lemma perFr_smul (x : Frame X.Ψ r) (a : E) (v : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x (a • v) τ i = τ a * perFr X x v τ i := by
   have hemb : ∀ ρ : E →+* ℂ, Data.emb ρ (a • v) = ρ a • Data.emb ρ v := fun ρ => by
@@ -38,6 +45,15 @@ lemma perFr_smul (x : Frame X.Ψ r) (a : E) (v : Fin r → E) (τ : E →+* ℂ)
   · simp
   · simp
 
+/- English proof (translation)
+Establish `h1 : ∀ v, hermC τ X.Gm u (Data.emb τ v) = hermC τ X.Gm u' (Data.emb τ v)` using `fun v => by`. Take `⟨d, hd, hv⟩` from `HermitianTraceFormVanishing.exists_smul_mem (R := 𝓞 E) (F := E) X.Λ (x := v) (by rw [X.Λ_span]; trivial)`. Establish `h2` using `h _ hv`. Establish `hemb : Data.emb τ (d • v) = τ d • Data.emb τ v`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[Data.emb, Algebra.smul_def]`. Rewrite `h2` using `[hemb, hermC_smul_right, hermC_smul_right]`. Use `mul_left_cancel₀ ?_ h2` and prove the remaining obligations. Simplify using `using hd`. Establish `hdet : (X.Gm.map τ).det ≠ 0`.
+
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Simplify using `using X.Gm_det`. Rewrite using `[← sub_eq_zero]`. Apply `Matrix.eq_zero_of_vecMul_eq_zero hdet` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+
+Establish `h2` using `h1 (Pi.single b 1)`. Simplify using `only [hermC, Data.emb, Pi.single_apply, apply_ite τ, apply_ite (starRingEnd ℂ), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Simplify using `[Matrix.vecMul, dotProduct, sub_mul, Finset.sum_sub_distrib, h2]`.
+-/
 lemma eq_of_hermC_lattice (τ : E →+* ℂ) (u u' : Fin r → ℂ)
     (h : ∀ v ∈ X.Λ, hermC τ X.Gm u (Data.emb τ v) = hermC τ X.Gm u' (Data.emb τ v)) : u = u' := by
   have h1 : ∀ v, hermC τ X.Gm u (Data.emb τ v) = hermC τ X.Gm u' (Data.emb τ v) := fun v => by
@@ -58,6 +74,13 @@ lemma eq_of_hermC_lattice (τ : E →+* ℂ) (u u' : Fin r → ℂ)
     mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2
   simp [Matrix.vecMul, dotProduct, sub_mul, Finset.sum_sub_distrib, h2]
 
+/- English proof (translation)
+Use `AR.Up.ExF.mem_dom_of_gramPos X fun τ => ⟨?_, ?_⟩` and prove the remaining obligations. Establish `hm : mat (X.flow ξ s x) τ = X.flowMat ξ τ (s τ) * mat x τ` using `rfl`. Rewrite using `[hm, Matrix.det_mul]`. Use `mul_ne_zero (fun h0 => ?_) (hx τ).1` and prove the remaining obligations. Use `congrArg Matrix.det (EmbeddingHermitianPairs.flowMat_mul X hξ τ (s τ) (-s τ))` as an intermediate fact.
+
+Rewrite `this` using `[add_neg_cancel, EmbeddingHermitianPairs.flowMat_zero, Matrix.det_mul, h0]`. Simplify using `at this`. Establish `hg : X.gramPos (X.flow ξ s x) τ = X.gramPos x' τ`. Use extensionality with `a b`. Rewrite using `[Data.gramPos_apply, Data.gramPos_apply]`.
+
+Unfold `Data.colP`. Rewrite using `[h τ _ a.2, h τ _ b.2]`. Rewrite using `[hg]`. Conclude with `X.gramPos_posDef hx' τ`.
+-/
 lemma flow_mem_dom {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (s : X.Ψ → ℂ) {x x' : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hx' : x' ∈ X.dom) (h : ∀ (τ : X.Ψ) (a : Fin r), (a : ℕ) < X.p0 →
       FD.col (mat (X.flow ξ s x) τ) a = FD.col (mat x' τ) a) : X.flow ξ s x ∈ X.dom := by
@@ -78,6 +101,21 @@ lemma flow_mem_dom {ξ : Fin r → E} (hξ : herm X.Gm ξ ξ = 0) (s : X.Ψ → 
 
 end Frames
 
+/- English proof (translation)
+Take `⟨⟨τ, k⟩, rfl⟩` from `e.symm.surjective j`. Rewrite using `[Equiv.apply_symm_apply]`. Simplify using `only`. Set `A : Matrix (Fin (m τ)) (Fin (m τ)) ℂ` to `Matrix.of fun i i' => z τ i (e.symm ⟨τ, i'⟩)`. Establish `hext : ∀ (a : Fin (m τ) → ℂ) (u : Fin g → ℂ), (∀ jj, u jj ≠ 0 → (e jj).1 = τ) → (∀ i', Matrix.vecMul a A i' = u (e.symm ⟨τ, i'⟩)) → ∑ i, a i • z τ i = u`.
+
+Introduce `a u hu h`. Use function extensionality and compare the values at `jj`. Take `⟨⟨τ', k'⟩, rfl⟩` from `e.symm.surjective jj`. Distinguish the cases in `hτ : τ' = τ`. Substitute `hτ` using the available equality.
+
+Rewrite using `[← h]`. Simplify using `[A, Matrix.vecMul, dotProduct, Finset.sum_apply]`. Establish `h1 : u (e.symm ⟨τ', k'⟩) = 0`. Assume the negation of the conclusion as `hh; exact hτ (by simpa using hu _ hh)`. Rewrite using `[h1, Finset.sum_apply]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `h2 : z τ i (e.symm ⟨τ', k'⟩) = 0`. Assume the negation of the conclusion as `hh; exact hτ (by simpa using (hz τ).2 i _ hh)`. Simplify using `[h2]`. Establish `hinj : Function.Injective A.vecMul`.
+
+Introduce `a a' haa`. Establish `h0 : ∑ i, (a - a') i • z τ i = 0` using `hext _ 0 (fun _ h => absurd rfl h) fun i' => by`. Rewrite using `[Matrix.sub_vecMul]`. Simplify using `[show Matrix.vecMul a A = Matrix.vecMul a' A from haa]`. Use `Fintype.linearIndependent_iff.1 (hz τ).1 _ h0` as an intermediate fact.
+
+Conclude with `sub_eq_zero.1 (funext this)`. Take `⟨a, ha⟩` from `Matrix.vecMul_surjective_iff_isUnit.2 (Matrix.vecMul_injective_iff_isUnit.1 hinj) (Pi.single k 1)`. Use `⟨a, hext a _ (fun jj hjj => ?_) fun i' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hjj (Pi.single_eq_of_ne (fun hh => hne (by rw [hh, Equiv.apply_symm_apply])) _)`.
+
+Rewrite using `[show Matrix.vecMul a A = Pi.single k 1 from ha]`. Distinguish the cases in `h : i' = k`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h, Pi.single_eq_of_ne fun hh => h (by simpa using hh)]`.
+-/
 lemma exists_comb_single {T : Type} {m : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ τ : T, Fin (m τ))
     (z : ∀ τ : T, Fin (m τ) → (Fin g → ℂ))
     (hz : ∀ τ, LinearIndependent ℂ (z τ) ∧ ∀ i jj, z τ i jj ≠ 0 → (e jj).1 = τ) (j : Fin g) :
@@ -122,6 +160,15 @@ lemma exists_comb_single {T : Type} {m : T → ℕ} {g : ℕ} (e : Fin g ≃ Σ 
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r} (Uw : UnfWit U)
 
+/- English proof (translation)
+Take `⟨u, -, h2, h3, h4⟩` from `GlobalTheory.LieFrame.exists_eigenbasis E H Dw l Xo c σ Uw.g Uw.e Uw.F i P hP`. Take `⟨g, hg, θ, hθ⟩` from `GlobalTheory.Frames.exists_local_generator hL.secBaseChange E H Dw l Xo ℂ (Uw.F.u i P) (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Establish `hg' : IsUnit ((RingHom.id ℂ) g)` using `isUnit_iff_ne_zero.2 fun h => hg h`. Set `ψ : Localization.Away g →+* ℂ` to `IsLocalization.Away.lift g hg'`. Establish `hψ : ψ.comp (algebraMap ℂ (Localization.Away g)) = RingHom.id ℂ` using `IsLocalization.Away.lift_comp g hg'`.
+
+Establish `hx : Uw.F.u i P = spMap ψ ≫ spMap (algebraMap ℂ (Localization.Away g)) ≫ Uw.F.u i P`. Establish `: spMap ψ ≫ spMap (algebraMap ℂ (Localization.Away g)) = 𝟙 _`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hψ]`. Conclude with `Spec.map_id _`.
+
+Rewrite using `[← Category.assoc, this, Category.id_comp]`. Take `⟨θ', hθ', -⟩` from `GlobalTheory.Frames.SecPull.existsUnique_secBC E H Dw l Xo _ _ ψ 1 _ _ hx θ`. Establish `hgen` using `(hθ ℂ ψ _ θ' hx hθ').1`. Set `y : FrPt Xo c (CAt σ)` to `⟨Uw.F.u i P, Uw.F.over_σ i P hP, u, h2, h3, h4, θ', hgen⟩`. Take `⟨k, x, t, ht⟩` from `hU.2.2.1 y`.
+
+Conclude with `⟨k, Uw.F.disj _ _ _ _ (Uw.period k x) hP ((Uw.lie k x).1.symm.trans ht.1.symm), ⟨x⟩⟩`.
+-/
 lemma exists_comp (hL : Out.Laws) (hU : IsUnf U) (i : Fin Uw.F.n) (P : (Uw.F.Di i).La →+ (Fin Uw.g → ℂ))
     (hP : IsPeriod (Uw.F.Di i) (fun j => relab c σ (Uw.e j).1) P) :
     ∃ k, Uw.ik k = i ∧ Nonempty (U.X k).dom := by
@@ -143,6 +190,17 @@ lemma exists_comp (hL : Out.Laws) (hU : IsUnf U) (i : Fin Uw.F.n) (P : (Uw.F.Di 
   obtain ⟨k, x, t, ht⟩ := hU.2.2.1 y
   exact ⟨k, Uw.F.disj _ _ _ _ (Uw.period k x) hP ((Uw.lie k x).1.symm.trans ht.1.symm), ⟨x⟩⟩
 
+/- English proof (translation)
+Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`. Take `⟨f, hf⟩` from `GlobalTheory.FrameUnif.exists_letter_equiv (U.X k).Ψ (U.X k).cmType Dw.p Dw.q r hU.1 (relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin Uw.g ≃ (U.X k).Ψ × Fin r, ∀ j, (relab c σ (Uw.e j).1 ∈ (U.X k).Ψ ∧ (idx j).1.1 = relab c σ (Uw.e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (Uw.e j).2) ∨ (relab c σ (Uw.e j).1 ∉ (U.X k).Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (relab c σ (Uw.e j).1) ∧ ((idx j).2 …` from `⟨Uw.e.trans f, fun j => hf (Uw.e j)⟩`.
+
+Use `⟨idx, fun j => ?_, fun j hj => ?_, fun x v j => ?_⟩` and prove the remaining obligations. Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), b]`. Rewrite using `[if_pos (by omega), b, hcc]`. Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `d`. Establish `h` using `hi j`. Generalize the expression as in `idx j = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`.
+
+Simplify using `only at h ⊢`. Rewrite `h`, the goal using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`. Unfold `perFr`.
+
+Rewrite using `[dif_pos a, dif_pos hn]`. Rewrite using `[if_pos (by omega)]`. Unfold `perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (relab c σ (Uw.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression.
+-/
 lemma exists_idx (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) :
     ∃ idx : Fin Uw.g ≃ (U.X k).Ψ × Fin r,
       (∀ j, relab c σ (Uw.e j).1 =
@@ -186,6 +244,13 @@ lemma exists_idx (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) :
       rw [dif_neg a, dif_pos (show conjEmb (relab c σ (Uw.e j).1) ∈ (U.X k).Ψ from hτ), dif_pos hn]
       rfl
 
+/- English proof (translation)
+Take `⟨idx, hty, -, hper⟩` from `exists_idx Uw hσ hU k`. Take `⟨hp, hq⟩` from `Uw.F.sig (Uw.ik k)`. Take `⟨hp0, hΨ⟩` from `hU.2.1 k`. Rewrite `hty`, `hper`, `hp0` using `[← hq]`. Set `φ : (Uw.F.Di (Uw.ik k)).La →ₗ[𝓞 E] (Fin r → E)` to `(U.X k).Λ.subtype ∘ₗ (Uw.φ k).toLinearMap`.
+
+Establish `hrange : LinearMap.range φ = (U.X k).Λ`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Take `⟨x, hx, h⟩` from `exists_frame_of_isPeriod E H (Uw.F.Di (Uw.ik k)) r (-(U.X k).ξ0) (U.X k).Gm φ (U.X k).Ψ hΨ Uw.g idx _ hty (by rw [HermitianTraceFormVanishing.cc_neg, (U.X k).ξ0_im]) (fun τ hτ => by`. Use `(U.X k).κ0_sign ⟨τ, hτ⟩` as an intermediate fact. Rewrite `this` using `[hκ, map_mul, map_ofNat]`.
+
+Simplify using `at this ⊢`. Use the proof step `linarith)`. Use the proof step `⟨Subtype.val_injective.comp (Uw.φ k).injective, by rw [← LinearMap.coe_range, hrange]; exact (U.X k).Λ_span, (U.X k).Gm_herm, (U.X k).Gm_det, Uw.iso k⟩ (by rw [hp, hq]; exact hU.1) P hP`. Rewrite `hx` using `[← hp0]`. Conclude with `⟨⟨x, hx⟩, AddMonoidHom.ext fun v => funext fun j => (Uw.Pm_eq k _ v j).trans ((hper x _ j).trans (h v j).symm)⟩`.
+-/
 lemma exists_frame (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (hκ : (U.X k).κ0 = 2 * (U.X k).ξ0)
     (P : (Uw.F.Di (Uw.ik k)).La →+ (Fin Uw.g → ℂ))
     (hP : IsPeriod (Uw.F.Di (Uw.ik k)) (fun j => relab c σ (Uw.e j).1) P) : ∃ x, Uw.Pm k x = P := by
@@ -208,6 +273,19 @@ lemma exists_frame (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (hκ : (U.X 
   exact ⟨⟨x, hx⟩, AddMonoidHom.ext fun v => funext fun j =>
     (Uw.Pm_eq k _ v j).trans ((hper x _ j).trans (h v j).symm)⟩
 
+/- English proof (translation)
+Take `⟨idx, hty, hlt, hper⟩` from `exists_idx Uw hσ hU k`. Take `⟨hp0, -⟩` from `hU.2.1 k`. Establish `hre : ∀ τ : E →+* ℂ, ((τ sE).re : ℂ) = τ sE` using `fun τ => by`. Use `map_cc τ sE` as an intermediate fact. Rewrite `this` using `[hs]`.
+
+Conclude with `Complex.conj_eq_iff_re.1 this.symm`. Establish `key : ∀ v j, perFr (U.X k) ((U.X k).flow ξ' (fun τ => d * ((τ.1 sE).re : ℂ)) x.1) (Uw.φ k v : Fin r → E) (relab c σ (Uw.e j).1) (Uw.e j).2 = P v j`. Introduce `v j`. Rewrite using `[hPx, Pi.add_apply, Pi.smul_apply, Uw.Pm_eq, Uw.Pm_eq, hnn, perFr_smul, hty j]`. Use `split_ifs with hj`.
+
+Establish `h` using `GlobalTheory.PerFlow.flow_conj (U.X k) ξ' (fun τ => d * ((τ.1 sE).re : ℂ)) x.1 (Uw.φ k v : Fin r → E) (idx j).1 (Uw.e j).2 (hp0 ▸ hlt j hj)`. Establish `h2 : conjEmb (idx j).1.1 sE = (((idx j).1.1 sE).re : ℂ)`. Rewrite using `[← hre (conjEmb (idx j).1.1)]`. Simplify using `[conjEmb]`. Express the relevant statement in the definitionally equal form `perFr _ _ _ (conjEmb (idx j).1.1) _ = perFr _ _ _ (conjEmb (idx j).1.1) _ + d • (conjEmb (idx j).1.1 _ * perFr _ _ _ (conjEmb (idx j).1.1) _)`.
+
+Rewrite using `[h, mul_assoc sE, map_neg, map_mul _ sE, h2, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.PerFlow.flow_mem (U.X k) hξ', mul_assoc sE, map_neg, map_mul _ sE, hre, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x', hx'⟩` from `exists_frame Uw hσ hU k hκ P hP`.
+
+Establish `hx : (U.X k).flow ξ' (fun τ => d * ((τ.1 sE).re : ℂ)) x.1 ∈ (U.X k).dom`. Use `flow_mem_dom (U.X k) hξ' _ x.2 x'.2 fun τ a ha => eq_of_hermC_lattice (U.X k) τ.1 _ _ fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `key ((Uw.φ k).symm ⟨w, hw⟩) (idx.symm (τ, a))`. Rewrite `h1` using `[← hx', Uw.Pm_eq, hper, hper]`. Rewrite `ha` using `[hp0]`.
+
+Simplify `h1` using `only [Equiv.apply_symm_apply, if_pos ha, LinearEquiv.apply_symm_apply]`. Conclude with `⟨hx, AddMonoidHom.ext fun v => funext fun j => (Uw.Pm_eq k _ v j).trans (key v j)⟩`.
+-/
 lemma flow_period (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (hκ : (U.X k).κ0 = 2 * (U.X k).ξ0)
     (nn : (Uw.F.Di (Uw.ik k)).La → (Uw.F.Di (Uw.ik k)).La) (ξ' : Fin r → E) (hξ' : herm (U.X k).Gm ξ' ξ' = 0)
     (sE : E) (hs : cc sE = sE)
@@ -247,6 +325,25 @@ lemma flow_period (hσ : GoodEmb c σ) (hU : IsUnf U) (k : U.Comp) (hκ : (U.X k
     simpa only [Equiv.apply_symm_apply, if_pos ha, LinearEquiv.apply_symm_apply] using h1
   exact ⟨hx, AddMonoidHom.ext fun v => funext fun j => (Uw.Pm_eq k _ v j).trans (key v j)⟩
 
+/- English proof (translation)
+Take `⟨k, rfl, ⟨x₀⟩⟩` from `exists_comp Uw hL hU i _ (hPw w₁ hw₁)`. Take `⟨t, ht⟩` from `hrep ξ`. Establish `hyt : y t = 0` using `hker t fun v' hv' => by`. Use `ht v'` as an intermediate fact. Rewrite `this` using `[hv', map_zero]`.
+
+Conclude with `neg_eq_zero.1 this`. Establish `hr : 0 < r`. Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases. Substitute `h` using the available equality. Establish `ht0 : t = 0` using `(Uw.φ k).injective (Subtype.ext (Subsingleton.elim _ _))`.
+
+Use `absurd (LinearMap.ext fun a => ?_) hξ` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hy a`. Rewrite using `[← ht, ht0]`. Simplify using the standard rewrite rules. Conclude with `h`.
+
+Take `⟨-, -, -, -, Hm, hHm⟩` from `Uw.period k x₀`. Establish `hκ` using `(GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x₀ Hm hσ hU hHm).2.1 hr`. Take `⟨sE, hiso, hbe, hsp, hlev, hform⟩` from `rank_one (U.X k) (Uw.φ k) _ (Uw.iso k) y hY hκ hy be hsym hpos nn hnn hrep ξ hξ t ht hyt`. Use `⟨k, _, sE, hiso, hbe, fun τ => hsp τ.1, hlev, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨V, hVu, hVt, hVw⟩` from `GlobalTheory.CoverFrame.exists_inverse_block Uw.e (fun j => z (Uw.e j).1 (Uw.e j).2) (fun j => by`.
+
+Take `⟨a, ha⟩` from `exists_comb_single Uw.e z hz j`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.apply_symm_apply])`.
+
+Establish `hVz : ∀ τ i, V *ᵥ z τ i = Pi.single (Uw.e.symm ⟨τ, i⟩) 1` using `fun τ i => by`. Use `hVw (Uw.e.symm ⟨τ, i⟩)` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Establish `hP' : ∀ w : ℂ, T < w.im → ∃ P', IsPeriod (Uw.F.Di (Uw.ik k)) (fun j => relab c σ (Uw.e j).1) P' ∧ ∀ a, P' a = V *ᵥ Pw w a` using `fun w hw => GlobalTheory.PeriodLin.exists_period_mulVec E H _ _ _ _ V (hPw w hw) hVu (fun j j' h => by rw [hVt j j' h])`. Take `⟨P₁, hP₁, hP₁e⟩` from `hP' w₁ hw₁`.
+
+Take `⟨x, hx⟩` from `exists_frame Uw hσ hU k hκ P₁ hP₁`. Establish `hu : IsUnit V` using `(Matrix.isUnit_iff_isUnit_det V).2 hVu`. Use `⟨x.1, x.2, LinearEquiv.ofBijective V.mulVecLin ⟨Matrix.mulVec_injective_iff_isUnit.2 hu, Matrix.mulVec_surjective_iff_isUnit.2 hu⟩, LinearEquiv.refl _ _, fun _ _ => rfl, hVz, ⟨t, ht, rfl⟩, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨P, hP, hPe⟩` from `hP' w hw`. Take `⟨hxw, hPw'⟩` from `flow_period Uw hσ hU k hκ nn _ hiso.2.1 sE hbe.1 hform x (w - w₁) P hP fun v => by`.
+
+Rewrite using `[hx, hPe, hP₁e, hP₁e, hlin w w₁ v, Matrix.mulVec_add, Matrix.mulVec_smul]`. Take `⟨-, hpt, hex⟩` from `GlobalTheory.FamRigid.ex_eq_of_level_group GlobalTheory.latMinkowski E H Dw l Xo _ _ _ Uw.F _ (Pw w) P (LinearEquiv.refl _ _) V (hPw w hw) hP (fun _ _ => rfl) (fun a _ => ⟨0, by simp⟩) (fun a => ⟨0, by simp⟩) hPe`. Establish `hlie` using `Uw.lie k ⟨_, hxw⟩`. Rewrite `hlie` using `[hPw']`. Use `⟨hxw, fun v => by rw [hPw']; exact hPe v, hlie.1.trans hpt.symm, fun τ i => ?_⟩` and prove the remaining obligations.
+
+Use `(GlobalTheory.ExpChain.isDerivAt0_ex_iff E H Dw l Xo _ _ _ Uw.F _ _ (hPw w hw) _ P (Matrix.mulVecLin V) hP hex _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, hVz]`. Conclude with `hlie.2 τ i`.
+-/
 lemma orbit (hL : Out.Laws) (hσ : GoodEmb c σ) (hU : IsUnf U) {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y]
     [Module.Finite ℤ Y] (hY : Module.finrank (𝓞 E) Y = 1) (be : LinearMap.BilinForm ℤ Y)
     (hsym : ∀ a b, be a b = be b a) (hpos : ∀ a, a ≠ 0 → 0 < be a a) (i : Fin Uw.F.n) (T : ℝ)
@@ -311,6 +408,9 @@ lemma orbit (hL : Out.Laws) (hσ : GoodEmb c σ) (hU : IsUnf U) {Y : Type} [AddC
   rw [Matrix.mulVecLin_apply, hVz]
   exact hlie.2 τ i
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H Dw l Xo c σ r U Uw _ _ O _ β Y a χ W Ha hσ hU hY ξ hξ w₁ hw₁`. Take `⟨nn, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.ArcQ.holArc_nilpotent E H Dw l Xo c σ O β Y a χ W _ _ Uw.F Ha`. Use `orbit Uw hL hσ hU hY a.be a.be_symm a.be_pos Ha.i Ha.T Ha.Pw Ha.y Ha.y_onto Ha.period nn (fun w w₁ v => ?_) h2 h5 (fun η => (h6 η).exists) ξ hξ w₁ hw₁` and prove the remaining obligations. Rewrite using `[Ha.Pw_eq, Ha.Pw_eq, Ha.Pw_eq, h1 (nn v), h4 _ (h3 v), map_zero, smul_zero, add_zero, ← h1, sub_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem holArc_eq_flow_orbit : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (Ha : HolArc Y σ a χ W Uw.F), GoodEmb c σ → IsUnf U → Module.finrank (𝓞 E) a.D₀.X = 1 → ∀ ξ : Module.Dual ℤ a.D₀.X, ξ ≠ 0 → ∀ w₁ : ℂ, Ha.T < w₁.im → ∃ (k : U.Comp) (ξ' : Fin r → E) (sE : E), (U.X k).IsIso ξ' ∧ IsBePar ξ a.be sE ∧ (∀ τ : (U.X k).Ψ, 0 < (τ.1 sE).re) ∧ (∀ (N : ℕ) (s : E), LevelPar ξ N s → ∀ v ∈ (U.X k).Λ, ∃ u ∈ (U.X k).Λ, (transvMat (U.X k).Gm ξ' (s * (U.X k).κ0)).mulVec v - v = (N : E) • u) ∧ ∀ (z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin Uw.g → ℂ)), (∀ τ, LinearIndependent ℂ (z τ) ∧ ∀ i jj, z τ i jj ≠ 0 → (Uw.e jj).1 = τ) → ∃ x ∈ (U.X k).dom, ∃ (L : (Fin Uw.g → ℂ) ≃ₗ[ℂ] (Fin Uw.g → ℂ)) (γ : (Uw.F.Di Ha.i).La ≃ₗ[𝓞 E] (Uw.F.Di (Uw.ik k)).La), (∀ v v', (Uw.F.Di (Uw.ik k)).EF (γ v) (γ v') = (Uw.F.Di Ha.i).EF v v') ∧ (∀ τ i, L (z τ i) = Pi.single (Uw.e.symm ⟨τ, i⟩) 1) ∧ (∃ t, (∀ v', -(Uw.F.Di Ha.i).EF t v' = ξ (Ha.y v')) ∧ (Uw.φ k (γ t) : Fin r → E) = ξ') ∧ ∀ w : ℂ, Ha.T < w.im → ∃ hx : (U.X k).flow ξ' (fun τ => (w - w₁) * ((τ.1 sE).re : ℂ)) x ∈ (U.X k).dom, (∀ v, Uw.Pm k ⟨_, hx⟩ (γ v) = L (Ha.Pw w v)) ∧ AnLie Uw.F Ha.i (Ha.Pw w) (U.un k ⟨_, hx⟩) z := by
   intro hL _ E _ _ _ H Dw l Xo c σ r U Uw _ _ O _ β Y a χ W Ha hσ hU hY ξ hξ w₁ hw₁
   obtain ⟨nn, h1, h2, h3, h4, h5, h6⟩ := GlobalTheory.ArcQ.holArc_nilpotent E H Dw l Xo c σ O β Y a χ W _ _ Uw.F Ha

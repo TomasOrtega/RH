@@ -23,11 +23,17 @@ def signAux {K : Type} [Ring K] (r : ℕ) : ℕ → TB.Pt K → TB.Pt K
 
 def signPt {K : Type} [Ring K] (r : ℕ) (x : TB.Pt K) : TB.Pt K := signAux r 1 x
 
+/- English proof (translation)
+The claim follows from `| _, [] => rfl | b, (s, t) :: rest => by simp [signAux, sign_list_fst r (b + s) rest]`.
+-/
 theorem sign_list_fst {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x : TB.Pt K),
     (signAux r b x).map Prod.fst = x.map Prod.fst
   | _, [] => rfl
   | b, (s, t) :: rest => by simp [signAux, sign_list_fst r (b + s) rest]
 
+/- English proof (translation)
+The claim follows from `| _, [] => by simp [signAux] | b, (s, t) :: rest => by simp only [signAux, List.mem_cons, forall_eq_or_imp, sign_list_mem_nonzero r (b + s) rest] have : (-1 : K) ^ (r + 1 - (b + s - 1)) ≠ 0 := pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) simp [this]`.
+-/
 theorem sign_list_mem_nonzero {K : Type} [Field K] (r : ℕ) : ∀ (b : ℕ) (x : TB.Pt K),
     (∀ c ∈ signAux r b x, 1 ≤ c.1 ∧ c.2 ≠ 0) ↔ (∀ c ∈ x, 1 ≤ c.1 ∧ c.2 ≠ 0)
   | _, [] => by simp [signAux]
@@ -36,6 +42,9 @@ theorem sign_list_mem_nonzero {K : Type} [Field K] (r : ℕ) : ∀ (b : ℕ) (x 
     have : (-1 : K) ^ (r + 1 - (b + s - 1)) ≠ 0 := pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)
     simp [this]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.S.IsPtL, signPt, sign_list_fst, sign_list_mem_nonzero]`.
+-/
 theorem isPtL_signPt {K : Type} [Field K] (r : ℕ) (x : TB.Pt K) (i : ℕ) :
     Formalism.L2.S.IsPtL (signPt r x) i ↔ Formalism.L2.S.IsPtL x i := by
   simp only [Formalism.L2.S.IsPtL, signPt, sign_list_fst, sign_list_mem_nonzero]
@@ -56,6 +65,13 @@ def blockWeightPhi (i : ℕ) : ℕ → TB.Pt D.host.E → ℝ
 
 def phi (i : ℕ) (x : TB.Pt D.host.E) : ℝ := blockWeightPhi i 1 x
 
+/- English proof (translation)
+Establish `hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ)`. Establish `h0` using `(D.host.g_prime 0).pos`. Establish `h1` using `(D.host.g_prime 1).pos`. Simplify using `only [Formalism.MainNotions.S.Lat.gS]`. Conclude with `Nat.mul_pos h0 h1` after adjusting the coercions.
+
+Establish `hr : 0 < D.host.rdE`. Simplify using `only [Formalism.BasicNotions.Host.rdE]`. Conclude with `Real.rpow_pos_of_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero D.host.E)) _`. Establish `hn : (0 : ℝ) < ((|Algebra.norm ℚ t| : ℚ) : ℝ)` using `Rat.cast_pos.mpr (abs_pos.mpr (Algebra.norm_ne_zero_iff.mpr ht))`. Simplify using `only [nrm, gNorm]`.
+
+Conclude with `mul_pos (mul_pos (inv_pos.mpr (pow_pos hg _)) (inv_pos.mpr (pow_pos hr _))) hn`.
+-/
 theorem nrm_pos {t : D.host.E} (ht : t ≠ 0) (ν : ℕ) : 0 < nrm ν t := by
   have hg : (0 : ℝ) < ((Formalism.MainNotions.S.Lat.gS D : ℕ) : ℝ) := by
     have h0 := (D.host.g_prime 0).pos
@@ -70,6 +86,9 @@ theorem nrm_pos {t : D.host.E} (ht : t ≠ 0) (ν : ℕ) : 0 < nrm ν t := by
   simp only [nrm, gNorm]
   exact mul_pos (mul_pos (inv_pos.mpr (pow_pos hg _)) (inv_pos.mpr (pow_pos hr _))) hn
 
+/- English proof (translation)
+The claim follows from `| b, [] => by intro _; simp [blockWeightPhi] | b, (s, t) :: rest => by intro h simp only [blockWeightPhi] exact mul_pos (pow_pos (nrm_pos (h (s, t) (by simp)) _) _) (block_weight_phi_pos i (b + s) rest (fun c hc => h c (by simp [hc])))`.
+-/
 theorem block_weight_phi_pos (i : ℕ) : ∀ (b : ℕ) (x : TB.Pt D.host.E), (∀ c ∈ x, c.2 ≠ 0) → 0 < blockWeightPhi i b x
   | b, [] => by intro _; simp [blockWeightPhi]
   | b, (s, t) :: rest => by
@@ -78,6 +97,9 @@ theorem block_weight_phi_pos (i : ℕ) : ∀ (b : ℕ) (x : TB.Pt D.host.E), (�
     exact mul_pos (pow_pos (nrm_pos (h (s, t) (by simp)) _) _)
       (block_weight_phi_pos i (b + s) rest (fun c hc => h c (by simp [hc])))
 
+/- English proof (translation)
+The claim follows from `block_weight_phi_pos i 1 x (fun c hc => (hx.2 c hc).2)`.
+-/
 theorem phi_pos {i : ℕ} {x : TB.Pt D.host.E} (hx : Formalism.L2.S.IsPtL x i) : 0 < phi i x := block_weight_phi_pos i 1 x (fun c hc => (hx.2 c hc).2)
 
 def KrOf (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
@@ -88,10 +110,16 @@ def KrOf (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
     | some a, some b => Kglob δ M T T' i a b / ((phi i x : ℂ) * (phi i y : ℂ))
     | _, _ => 0
 
+/- English proof (translation)
+Simplify using `[KrOf]`.
+-/
 theorem KrOf_zero (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (T T' : ℕ) : KrOf δ M T T' 0 [] [] = 1 := by
   simp [KrOf]
 
+/- English proof (translation)
+Unfold `ptOfList at hz`. Use `split_ifs at hz with hh`. Conclude with `(isPtL_signPt _ _ _).mp hh`. Conclude with `absurd rfl hz`.
+-/
 private theorem isPtL_of_ptOfList_ne_none {i : ℕ} {z : TB.Pt D.host.E} (hz : ptOfList i z ≠ none) :
     Formalism.L2.S.IsPtL z i := by
   unfold ptOfList at hz
@@ -99,6 +127,11 @@ private theorem isPtL_of_ptOfList_ne_none {i : ℕ} {z : TB.Pt D.host.E} (hz : p
   · exact (isPtL_signPt _ _ _).mp hh
   · exact absurd rfl hz
 
+/- English proof (translation)
+Simplify using `only [KrOf, if_neg hi]`. Use `split_ifs`. Both sides reduce to the same expression. Consider the cases of `hx : ptOfList i x with`. Consider the case `none => rfl`.
+
+Consider the case `some a`. Consider the cases of `hy : ptOfList i y with`. Consider the case `none => rfl`. Consider the case `some b`. Conclude with `absurd ⟨isPtL_of_ptOfList_ne_none (by simp [hx]), isPtL_of_ptOfList_ne_none (by simp [hy])⟩ h`.
+-/
 theorem KrOf_of_not (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (T T' : ℕ) {i : ℕ} (hi : i ≠ 0) {x y : TB.Pt D.host.E}
     (h : ¬ (Formalism.L2.S.IsPtL x i ∧ Formalism.L2.S.IsPtL y i)) : KrOf δ M T T' i x y = 0 := by
@@ -128,24 +161,39 @@ def Compat (S : C.HidaSetting D.host.E Wp Wq) (u u' : D.what₂.Word) : Prop :=
   S.G.r = D.R.rS ∧ S.G.k = D.R.k ∧ S.G.g1 = D.host.g 0 ∧ S.G.g2 = D.host.g 1 ∧
   S.T = ((D.mem u).A.T : ℝ) ∧ S.T' = ((D.mem u').A.T : ℝ) ∧ S.f = D.R.f
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dOf_Kr (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (u u' : D.what₂.Word) :
     (dOf S δ M u u').Kr = KrOf δ M (D.mem u).A.T (D.mem u').A.T := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dOf_e (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (u u' : D.what₂.Word) (i : ℕ) :
     (dOf S δ M u u').e i = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dOf_r (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (u u' : D.what₂.Word) :
     (dOf S δ M u u').r = S.G.r := rfl
 
+/- English proof (translation)
+Conclude with `⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl, fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem inst_dOf (S : C.HidaSetting D.host.E Wp Wq) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (u u' : D.what₂.Word) :
     J.Inst (dOf S δ M u u') S.pl S.G S.CA S.de S.de' S.T S.T' S.l := by
   exact ⟨rfl, rfl, fun _ _ => rfl, S.hv, fun _ _ => rfl, fun _ _ => rfl, fun _ => rfl,
     fun _ _ => rfl, fun _ _ _ => rfl, fun _ _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `MainNotions.LocalModelPeriodLattices.unramE D`.
+-/
 theorem unram_host (D : Formalism.BasicNotions.D7) : S6.Unram D.host.E := MainNotions.LocalModelPeriodLattices.unramE D
 
 def KrFinite (D : Formalism.BasicNotions.D7) : Prop :=
@@ -222,11 +270,19 @@ def rowVec (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u 
       ((Real.sqrt (n0 nc (D.mem u).A.T (D.mem u').A.T w) * Formalism.L2.SG.DataInst.phi (D.R.rS + 1) x : ℝ) : ℂ)
   | none => 0
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `h`. Unfold `TB.IsPt TB.level`. Conclude with `⟨h1, fun k hk => h2 _ (List.getElem_mem ..)⟩`.
+-/
 theorem isPt_of_isPtL {x : TB.Pt D.host.E} {i : ℕ} (h : Formalism.L2.S.IsPtL x i) : TB.IsPt x i := by
   obtain ⟨h1, h2⟩ := h
   unfold TB.IsPt TB.level
   exact ⟨h1, fun k hk => h2 _ (List.getElem_mem ..)⟩
 
+/- English proof (translation)
+Apply `isPt_of_isPtL` to reduce the goal to its premises. Unfold `rowVec at h`. Consider the cases of `hx : ptOfList (D.R.rS + 1) x with`. Consider the case `none => rw [hx] at h`. Conclude with `absurd rfl h`.
+
+Consider the case `some w => exact isPtL_of_ptOfList_ne_none (by simp [hx])`.
+-/
 theorem rowVec_support (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u u' F0 what₂ → ℕ) (nc : ℝ)
     (ρ : ℕ) (x : TB.Pt D.host.E) (h : rowVec vR κ nc ρ x ≠ 0) : TB.IsPt x (D.R.rS + 1) := by
   apply isPt_of_isPtL
@@ -258,6 +314,9 @@ def RowsSum {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
     (Vt : TB.Pt D.host.E → H) : Prop :=
   ∀ ρ, Summable fun p : TB.Pt D.host.E => ‖rowVec vR κ nc ρ p‖ * ‖Vt p‖
 
+/- English proof (translation)
+Use `⟨fun ρ p h => ?_, fun Y hY R => hPSD Y hY R, hSum, h4, hKV, hsd⟩` and prove the remaining obligations. Use `rowVec_support vR κ (nc * α) ρ p h` as an intermediate fact. Rewrite using `[dOf_r, hC.1]`. Conclude with `this`.
+-/
 theorem rowsInput_of {S : C.HidaSetting D.host.E Wp Wq} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {L : CntLocal.LocSp D M} {u u' : D.what₂.Word}
     (hC : Compat S u u') {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}

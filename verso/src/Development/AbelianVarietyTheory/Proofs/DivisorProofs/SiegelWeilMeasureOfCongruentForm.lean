@@ -6,6 +6,9 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.StabFinOver
 
+/- English proof (translation)
+Introduce `p _ G ψ h x`. Conclude with `(GlobalTheory.HTGroupOver.liesOver_or_conj p G ψ).resolve_left h x`.
+-/
 theorem liesOver_comp_complexConj_of_not_liesOver : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p)
     (ψ : G.F →+* PadicAlgCl p), ¬ LiesOver G.Kq G.u ψ →
       LiesOver G.Kq G.u (ψ.comp (IsCMField.complexConj G.F : G.F →+* G.F)) := by
@@ -14,5 +17,8 @@ theorem liesOver_comp_complexConj_of_not_liesOver : ∀ (p : ℕ) [Fact p.Prime]
 
 end GlobalTheory.StabFinOver
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver`.
+-/
 example : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (ψ : G.F →+* PadicAlgCl p), ¬ LiesOver G.Kq G.u ψ → LiesOver G.Kq G.u (ψ.comp (IsCMField.complexConj G.F : G.F →+* G.F)) :=
   GlobalTheory.StabFinOver.liesOver_comp_complexConj_of_not_liesOver

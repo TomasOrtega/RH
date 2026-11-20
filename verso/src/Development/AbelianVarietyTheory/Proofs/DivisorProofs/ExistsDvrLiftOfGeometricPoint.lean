@@ -14,6 +14,21 @@ section Algebra
 
 open IsLocalRing
 
+/- English proof (translation)
+Use `⟨fun {q} hq0 hq => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hqm`. Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing R (Ideal.span {f})`. Establish `hle : q ≤ maximalIdeal R` using `le_maximalIdeal hq.ne_top`. Establish `hns : ¬ ((maximalIdeal R : Set R) ⊆ ⋃ i ∈ (hfin.toFinset : Set (Ideal R)), (id i : Ideal R))`.
+
+Rewrite using `[Ideal.subset_union_prime (f := id) ⊥ ⊥ (fun i hi _ _ => (hfin.mem_toFinset.1 hi).1.1)]`. Introduce and unpack `⟨p, hp, hmp⟩`. Establish `hp'` using `hfin.mem_toFinset.1 hp`. Establish `h1 : p ≤ q` using `hp'.2 ⟨hq, (Ideal.span_singleton_le_iff_mem _).2 (h q hq hq0)⟩ (hle.trans hmp)`. Conclude with `hqm (le_antisymm hle (le_trans hmp h1) ▸ maximalIdeal.isMaximal R)`.
+
+Take `⟨g, hgm, hg⟩` from `Set.not_subset.1 hns`. Establish `hne : Ideal.span {g} ≠ ⊤` using `fun e => hgm (Ideal.span_singleton_eq_top.1 e)`. Take `⟨⟨p, hp⟩⟩` from `Ideal.nonempty_minimalPrimes hne`. Establish `hpp : p.IsPrime` using `hp.1.1`. Establish `hgp : g ∈ p` using `hp.1.2 (Ideal.subset_span rfl)`.
+
+Establish `hht : p.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ p hp`. Establish `hfm : Ideal.span {f} ≠ ⊤` using `fun e => hq.ne_top (q.eq_top_of_isUnit_mem (h q hq hq0) (Ideal.span_singleton_eq_top.1 e))`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`. Take `⟨⟨p', hp'⟩⟩` from `Ideal.nonempty_minimalPrimes hfm`.
+
+Conclude with `hg (Set.mem_iUnion₂.2 ⟨p', hfin.mem_toFinset.2 hp', p'.zero_mem⟩)`. Establish `hp0 : p ≠ ⊥` using `fun e => hg0 (by simpa [e] using hgp)`. Take `⟨p', hp', hp'p⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem _).2 (h p hpp hp0))`. Establish `hp'p' : p'.IsPrime` using `hp'.1.1`. Establish `hp'0 : p' ≠ ⊥` using `fun e => hf (by simpa [e] using hp'.1.2 (Ideal.subset_span rfl))`.
+
+Establish `e : p' = p`. Assume the negation of the conclusion as `hne'`. Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime (lt_of_le_of_ne hp'p hne')`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime (bot_lt_iff_ne_bot.2 hp'0)`. Establish `h3 : (⊥ : Ideal R).height + 1 + 1 ≤ 1` using `((add_le_add_left h2 1).trans h1).trans hht`.
+
+Establish `h4 : (1 : ℕ∞) + 1 ≤ 1` using `le_trans (by gcongr; exact le_add_self) h3`. Conclude with `absurd h4 (by decide)`. Conclude with `hg (Set.mem_iUnion₂.2 ⟨p', hfin.mem_toFinset.2 hp', e ▸ hgp⟩)`.
+-/
 theorem dimensionLEOne_of_forall_mem {R : Type*} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsLocalRing R]
     {f : R} (hf : f ≠ 0) (h : ∀ q : Ideal R, q.IsPrime → q ≠ ⊥ → f ∈ q) : Ring.DimensionLEOne R := by
   classical
@@ -53,6 +68,13 @@ theorem dimensionLEOne_of_forall_mem {R : Type*} [CommRing R] [IsDomain R] [IsNo
     exact absurd h4 (by decide)
   exact hg (Set.mem_iUnion₂.2 ⟨p', hfin.mem_toFinset.2 hp', e ▸ hgp⟩)
 
+/- English proof (translation)
+Take `⟨P, ⟨hP, hfP⟩, hmax⟩` from `set_has_maximal_iff_noetherian.2 (inferInstance : IsNoetherian O O) {P : Ideal O | P.IsPrime ∧ f ∉ P} ⟨p₀, hp₀, hf⟩`. Establish `hl : IsLocalRing (O ⧸ P)` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Use `⟨P, hP, hfP, dimensionLEOne_of_forall_mem (f := Ideal.Quotient.mk P f) (fun e => hfP (Ideal.Quotient.eq_zero_iff_mem.1 e)) fun q hq hq0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Use `hmax (q.comap (Ideal.Quotient.mk P)) ⟨inferInstance, hn⟩ (lt_of_le_of_ne ?_ fun e => hq0 ?_)` and prove the remaining obligations.
+
+Introduce `a ha`. Simplify using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.2 ha]`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Establish `: a ∈ P` using `e ▸ ha`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 this`.
+-/
 theorem exists_prime_dimensionLEOne {O : Type*} [CommRing O] [IsNoetherianRing O] [IsLocalRing O] {f : O}
     (p₀ : Ideal O) (hp₀ : p₀.IsPrime) (hf : f ∉ p₀) :
     ∃ (P : Ideal O) (_ : P.IsPrime), f ∉ P ∧ Ring.DimensionLEOne (O ⧸ P) := by
@@ -71,6 +93,19 @@ theorem exists_prime_dimensionLEOne {O : Type*} [CommRing O] [IsNoetherianRing O
     have : a ∈ P := e ▸ ha
     exact Ideal.Quotient.eq_zero_iff_mem.2 this
 
+/- English proof (translation)
+Take `⟨V, hV, h⟩` from `exists_discreteValuationSubring_dominating R (FractionRing R) (FractionRing R) hR`. Take `⟨h1, h2⟩` from `(localSubring_range_le_valuationSubring_iff_isLocalHom _ _).mp h`. Establish `hi : Function.Injective ((algebraMap R (FractionRing R)).codRestrict V h1)` using `fun a b hab => IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val hab)`. Use `letI : Algebra R V := ((algebraMap R (FractionRing R)).codRestrict V h1).toAlgebra`. Establish `: FaithfulSMul R V` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`.
+
+Establish `hloc : IsLocalHom (algebraMap R V)` using `h2`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (isField_iff_maximalIdeal_eq.not.mp hR)`. Establish `hfin` using `finite_quotient_span_of_birational (A := R) (B := V) (fun x => by`. Take `⟨y, c, hc, hx⟩` from `IsFractionRing.div_surjective (A := R) (x : FractionRing R)`. Use `⟨c, nonZeroDivisors.ne_zero hc, y, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `algebraMap R (FractionRing R) c * x = algebraMap R (FractionRing R) y`. Rewrite using `[← hx]`. Conclude with `mul_div_cancel₀ _ (IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hc)) ha0`. Establish `hle : Ideal.span {algebraMap R V a} ≤ maximalIdeal V` using `(Ideal.span_singleton_le_iff_mem _).2 (map_nonunit _ a ha)`. Establish `hf2 : Module.Finite R (ResidueField V)` using `Module.Finite.of_surjective (Ideal.Quotient.factorₐ R hle).toLinearMap (Ideal.Quotient.factor_surjective hle)`.
+
+Establish `hf3 : Module.Finite (ResidueField R) (ResidueField V)` using `Module.Finite.of_restrictScalars_finite R _ _`. Use `letI : Algebra (ResidueField R) Ω := (ResidueField.lift φ).toAlgebra`. Set `ι₀ : ResidueField V →ₐ[ResidueField R] Ω` to `IsAlgClosed.lift`. Set `W` to `AdicCompletion (maximalIdeal V) V`. Set `e : ResidueField V ≃+* ResidueField W` to `RingEquiv.ofBijective (ResidueField.map (algebraMap V W)) (AdicCompletion.residueField_map_bijective V)`.
+
+Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, (algebraMap V W).comp (algebraMap R V), ι₀.toRingHom.comp e.symm.toRingHom, (algebraMap_adicCompletion_injective_of_dvr V).comp hi, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Establish `h3 : residue W (algebraMap V W (algebraMap R V r)) = e (residue V (algebraMap R V r))` using `rfl`. Express the relevant statement in the definitionally equal form `ι₀ (e.symm (residue W (algebraMap V W (algebraMap R V r)))) = φ r`. Rewrite using `[h3, e.symm_apply_apply]`.
+
+Conclude with `ι₀.commutes (residue R r)`.
+-/
 theorem exists_dvr_of_dimensionLEOne {R Ω : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsLocalRing R]
     [Ring.DimensionLEOne R] (hR : ¬ IsField R) [Field Ω] [IsAlgClosed Ω] (φ : R →+* Ω) [IsLocalHom φ] :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
@@ -108,6 +143,13 @@ theorem exists_dvr_of_dimensionLEOne {R Ω : Type} [CommRing R] [IsDomain R] [Is
   rw [h3, e.symm_apply_apply]
   exact ι₀.commutes (residue R r)
 
+/- English proof (translation)
+Take `⟨P, hP, hfP, hd⟩` from `exists_prime_dimensionLEOne p₀ hp₀ hf`. Establish `hl : IsLocalRing (O ⧸ P)` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `hF : ¬ IsField (O ⧸ P)` using `fun h => hfP (eq_maximalIdeal (Ideal.Quotient.maximal_of_isField P h) ▸ hfm)`. Establish `hk : ∀ a ∈ P, φ a = 0` using `fun a ha => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hP.ne_top (P.eq_top_of_isUnit_mem ha (isUnit_of_map_unit φ a (IsUnit.mk0 _ h)))`. Establish `: IsLocalHom (Ideal.Quotient.lift P φ hk)` using `⟨fun a ha => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `(isUnit_of_map_unit φ a ha).map _⟩`. Take `⟨W, _, _, _, _, ψ, ι, h1, h2⟩` from `exists_dvr_of_dimensionLEOne hF (Ideal.Quotient.lift P φ hk)`.
+
+Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, ψ.comp (Ideal.Quotient.mk P), ι, fun e => hfP (Ideal.Quotient.eq_zero_iff_mem.1 (h1 (e.trans (map_zero ψ).symm))), ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.comp_assoc, h2]`. Both sides reduce to the same expression.
+-/
 theorem exists_dvr {O Ω : Type} [CommRing O] [IsNoetherianRing O] [IsLocalRing O] {f : O} (hfm : f ∈ maximalIdeal O)
     (p₀ : Ideal O) (hp₀ : p₀.IsPrime) (hf : f ∉ p₀) [Field Ω] [IsAlgClosed Ω] (φ : O →+* Ω) [IsLocalHom φ] :
     ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsDiscreteValuationRing W)
@@ -134,6 +176,13 @@ end Algebra
 open CategoryTheory AlgebraicGeometry Limits NumberField IsLocalRing
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory
 
+/- English proof (translation)
+Establish `hs : ∀ q, g q ≤ g (closedPoint O)` using `fun q => (PrimeSpectrum.le_iff_specializes _ _).2 ((specializes_closedPoint q).map hg)`. Distinguish the cases in `h : g (closedPoint O) = ⊥`. Establish `: g ⁻¹' {⊥} = Set.univ` using `Set.eq_univ_of_forall fun q => le_bot_iff.1 (h ▸ hs q)`. Conclude with `this ▸ isOpen_univ`. Establish `hm : ∀ p : PrimeSpectrum A, p ≠ ⊥ → p.asIdeal.IsMaximal` using `fun p hp => Ring.DimensionLEOne.maximalOfPrime (fun e => hp (PrimeSpectrum.ext e)) p.isPrime`.
+
+Establish `: g ⁻¹' {⊥} = g ⁻¹' {g (closedPoint O)}ᶜ`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_compl_iff]`. Use `⟨fun e e' => h (e' ▸ e), fun e => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `e'`.
+
+Conclude with `e (PrimeSpectrum.ext ((hm _ e').eq_of_le (g (closedPoint O)).isPrime.ne_top (hs q)))`. Rewrite using `[this]`. Conclude with `((PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 (hm _ h)).isOpen_compl.preimage hg`.
+-/
 theorem isOpen_preimage_bot {A O : Type} [CommRing A] [IsDedekindDomain A] [CommRing O] [IsLocalRing O]
     (g : PrimeSpectrum O → PrimeSpectrum A) (hg : Continuous g) : IsOpen (g ⁻¹' {⊥}) := by
   have hs : ∀ q, g q ≤ g (closedPoint O) := fun q =>
@@ -155,6 +204,15 @@ theorem isOpen_preimage_bot {A O : Type} [CommRing A] [IsDedekindDomain A] [Comm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
   {Xo : Moduli D l} {c : Coeff l}
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))`. Take `⟨U, hU, hU'⟩` from `(pullback.fst Z.s (spMap (algebraMap (𝓞 c.F) c.F))).isEmbedding.isInducing.isOpen_iff.1 Z.jQ.isOpenEmbedding.isOpen_range`. Establish `hb : Set.range (spMap (algebraMap (𝓞 c.F) c.F)) = {(⊥ : PrimeSpectrum (𝓞 c.F))}`. Establish `h0 : ∀ t, spMap (algebraMap (𝓞 c.F) c.F) t = (⊥ : PrimeSpectrum (𝓞 c.F))` using `fun t => by`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap (𝓞 c.F) c.F) t.asIdeal = ⊥`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`. Use extensionality with `p`.
+
+Conclude with `⟨fun ⟨t, ht⟩ => ht ▸ h0 t, fun hp => ⟨(⊥ : PrimeSpectrum c.F), (h0 _).trans hp.symm⟩⟩`. Establish `hr : Set.range Z.j = U ∩ Z.s ⁻¹' {(⊥ : PrimeSpectrum (𝓞 c.F))}`. Rewrite using `[← hb, ← Scheme.Pullback.range_fst, ← Set.image_preimage_eq_inter_range, hU', ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, Set.preimage_inter]`.
+
+Conclude with `(hU.preimage a.continuous).inter (isOpen_preimage_bot (fun q => Z.s (a q)) (Z.s.continuous.comp a.continuous))`.
+-/
 theorem isOpen_preimage_range (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {O : CommRingCat.{0}} [IsLocalRing O]
     (a : Spec O ⟶ Z.X) : IsOpen (a ⁻¹' Set.range Z.j) := by
   have := Z.jQ_open
@@ -177,6 +235,29 @@ theorem isOpen_preimage_range (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) {O : 
   exact (hU.preimage a.continuous).inter
     (isOpen_preimage_bot (fun q => Z.s (a q)) (Z.s.continuous.comp a.continuous))
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Z Ω _ _ x`. Take `⟨h₁, -, -, _, _, _, _⟩` from `GlobalTheory.ModelRelCompare.densePart Z (GlobalTheory.ModelRelCompare.isDedFrac_in_use c).1`. Distinguish the cases in `hx : x (closedPoint Ω) ∈ Set.range Z.j`. Take `⟨u, hu⟩` from `GlobalTheory.HomExt.exists_lift_of_range_subset Z.j x (by`. Introduce and unpack `_ ⟨t, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim (α := PrimeSpectrum Ω) t (closedPoint Ω)])` and apply the resulting hypothesis. Establish `: CharZero Ω` using `GlobalTheory.TorRef.charZero_of_point (K := .of Ω) u`. Take `⟨h₁, h₂, h₃⟩` from `GlobalTheory.FrameCmp.cDvr_powerSeries Ω`. Establish `: IsLocalHom (PowerSeries.constantCoeff (R` using `Ω)) := ⟨fun a ha => PowerSeries.isUnit_iff_constantCoeff.2 ha⟩`. Use `⟨{ V := PowerSeries Ω }, spMap (PowerSeries.C (R := Ω)) ≫ x, Out.jK _ ≫ spMap (PowerSeries.C (R := Ω)) ≫ u, ResidueField.lift PowerSeries.constantCoeff, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Category.assoc, hu]`. Establish `e : spMap (ResidueField.lift (PowerSeries.constantCoeff (R` using `Ω))) ≫ spMap (residue (PowerSeries Ω)) ≫ spMap (PowerSeries.C (R := Ω)) = 𝟙 _ := by`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Simplify `congrArg (· ≫ x) e` using `only [Category.assoc, Category.id_comp]`.
+
+Set `ξ` to `x (closedPoint Ω)`. Set `O` to `Z.X.presheaf.stalk ξ`. Take `⟨η, hη, hs⟩` from `exists_mem_genericPoints_specializes ξ`. Establish `hη'` using `genericPoints_subset_range_of_isDominant Z.j hη`. Establish `h1 : η ∈ Set.range (Z.X.fromSpecStalk ξ)`.
+
+Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hs`. Take `⟨q, rfl⟩` from `h1`. Take `⟨_, ⟨f, rfl⟩, hqf, hf⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := q) hη' (isOpen_preimage_range Z (Z.X.fromSpecStalk ξ))`. Establish `hfm : f ∈ maximalIdeal O`.
+
+Assume the negation of the conclusion as `hn`. Establish `: Z.X.fromSpecStalk ξ (closedPoint (Z.X.presheaf.stalk ξ)) ∈ Set.range Z.j` using `hf (show closedPoint O ∈ PrimeSpectrum.basicOpen f from hn)`. Rewrite `this` using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hx this`. Take `⟨W, _, _, _, _, ψ, ι, hψ, hι⟩` from `exists_dvr (O := O) (Ω := Ω) hfm q.asIdeal q.isPrime hqf (Scheme.stalkClosedPointTo x).hom`.
+
+Set `a : Sp W ⟶ Z.X` to `Spec.map (CommRingCat.ofHom ψ) ≫ Z.X.fromSpecStalk ξ`. Take `⟨y, hy⟩` from `GlobalTheory.HomExt.exists_lift_of_range_subset Z.j (spMap (algebraMap W (FractionRing W)) ≫ a) (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: spMap (algebraMap W (FractionRing W)) t = (⊥ : PrimeSpectrum W)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Express the relevant statement in the definitionally equal form `Ideal.comap (algebraMap W (FractionRing W)) t.asIdeal = ⊥`. Rewrite using `[@Ideal.eq_bot_of_prime _ _ t.asIdeal t.isPrime]`. Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective _ _)`. Rewrite using `[Scheme.Hom.comp_apply, this]`. Conclude with `hf (a := PrimeSpectrum.comap ψ ⊥) hψ)`.
+
+Establish `hc : CharZero (FractionRing W)` using `GlobalTheory.TorRef.charZero_of_point (K := .of (FractionRing W)) y`. Establish `hc' : CharZero W` using `⟨fun p q e => Nat.cast_injective (R := FractionRing W) (by`. Simplify using `using congrArg (algebraMap W (FractionRing W)) e)⟩`. Use `⟨{ V := W }, a, y, ι, hy, ?_⟩` and prove the remaining obligations. Establish `e : spMap ι ≫ spMap (residue W) ≫ Spec.map (CommRingCat.ofHom ψ) = Spec.map (Scheme.stalkClosedPointTo x)`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext hι`. Use `Eq.trans ?_ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk x)` and prove the remaining obligations. Rewrite using `[← e]`.
+
+Simplify using `only [a, Category.assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_trait_through : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] (x : Sp Ω ⟶ Z.X), ∃ (T : Formalism.L2.Pj.CDVR) (χ : Sp T.V ⟶ Z.X) (y : Sp T.Fr ⟶ Xo.XF c)

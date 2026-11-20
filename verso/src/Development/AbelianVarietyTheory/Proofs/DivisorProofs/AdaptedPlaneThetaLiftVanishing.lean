@@ -12,6 +12,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThKOrthDecay
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hprop Φ Φ' hΦ' hPM hCT N`. Establish `hcm : IsCMExt F E σ` using `hM.triple.base.cm`. Take `⟨c₀, hc₀, hJ⟩` from `GlobalTheory.T.skew_hermitian_twist_to_hermitian F E σ hcm B (a + a') G.W _ _ hM.triple.geo.hW`. Establish `heq` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := G.W.J) (GlobalTheory.SiegelSet.sigma_sigma hcm) hc₀`. Set `f : UA σ G.W.J → ℂ` to `fun h => G.M.I om Φ h - c * G.M'.I om' Φ' h`.
+
+Set `φ' : GAd σ (c₀ • G.W.J.map σ) → ℂ` to `fun g' => f ⟨g'.1, (SetLike.ext_iff.1 heq g'.1).2 g'.2⟩`. Establish `hφ' : ∀ (g : UA σ G.W.J) (g' : GAd σ (c₀ • G.W.J.map σ)), g.1 = g'.1 → φ' g' = G.M.I om Φ g - c * G.M'.I om' Φ' g`. Introduce `g g' e`. Use `show f _ = f g`. Use `congr 1`.
+
+Conclude with `Subtype.ext e.symm`. Conclude with `GlobalTheory.T.siegel_set_smooth_moderate_growth hKP.siegelSetUnitary F E σ hcm _ G.W.J c₀ hc₀ hJ f φ' hφ' (GlobalTheory.T.anisotropic_theta_lift_twist_identity hKP F E σ B a a' G X om om' R Rf hM hq hp c Φ Φ' hΦ' hPM c₀ hc₀ φ' hφ') (GlobalTheory.T.anisotropic_theta_lift_nonvanis …`.
+-/
 theorem decay : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →
     ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ c : ℂ,

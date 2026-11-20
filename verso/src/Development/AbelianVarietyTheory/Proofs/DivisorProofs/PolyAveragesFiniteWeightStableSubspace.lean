@@ -10,6 +10,41 @@ open GlobalTheory.PsCo.Pc1 (Mat Poly ev)
 
 namespace GlobalTheory.PsCo.PcEF
 
+/- English proof (translation)
+Introduce `n ε d`. Use `set Wm : Set (Fin n → ℝ) := wtM '' {m : EntIdx n →₀ ℕ | (m.sum fun _ e => e) ≤ d}`. Use `⟨Wm, (finite_monomials_of_degree_le d).image _, fun H _ _ _ σ hσ u => ?_⟩` and prove the remaining obligations. Establish `hemb : Topology.IsEmbedding (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`. Use `set φ : Formalism.REAL.KG ε → Matrix (Fin n) (Fin n) ℂ := fun k => Formalism.REAL.toMK k with hφdef`.
+
+Establish `hφc : Continuous φ` using `hemb.continuous`. Establish `hφK : ∀ g, φ g ∈ Kset ε` using `fun g => g.2`. Establish `hφ1 : φ 1 = 1` using `rfl`. Establish `hφm : ∀ a b, φ (a * b) = φ a * φ b` using `fun a b => rfl`. Establish `hφs : ∀ m ∈ Kset ε, ∃ g, φ g = m`.
+
+Introduce `m hm`. Establish `: m ∈ Set.range (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)`. Rewrite using `[Formalism.REAL.range_toMK]`. Conclude with `hm`. Take `⟨g, hg⟩` from `this`.
+
+Conclude with `⟨g, hg⟩`. Establish `hinUJ : ∀ g, φ g ∈ UJset ε` using `fun g => smd_inUJ_of_Kset (hφK g)`. Establish `horb : ∀ u : H, Continuous fun k => σ (φ k) u` using `fun u => (hσ.2.2 u).comp_continuous hφc hinUJ`. Establish `hentc : Continuous fun k => entVar (φ k)`. Use `continuous_pi fun i => ?_` and prove the remaining obligations.
+
+Break down `i with x | x` into its components or cases. Conclude with `(continuous_apply x.2).comp ((continuous_apply x.1).comp hφc)`. Conclude with `continuous_star.comp ((continuous_apply x.2).comp ((continuous_apply x.1).comp hφc))`. Establish `hpolyc : ∀ Q : MvPolynomial (EntIdx n) ℂ, Continuous fun k => eval (entVar (φ k)) Q` using `fun Q => (MvPolynomial.continuous_eval Q).comp hentc`. Establish `hint : ∀ (Q : MvPolynomial (EntIdx n) ℂ) (u : H), Integrable (fun k => eval (entVar (φ k)) Q • σ (φ k) u) (muK ε)` using `fun Q u => ((hpolyc Q).smul (horb u)).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+
+Set `Xu : H → MvPolynomial (EntIdx n) ℂ →ₗ[ℂ] H` to `fun u => { toFun := fun Q => ∫ k, eval (entVar (φ k)) Q • σ (φ k) u ∂(muK ε) map_add' := fun Q R => by`. Simplify using `only [map_add, add_smul]`. Conclude with `integral_add (hint Q u) (hint R u)`. Use the proof step `map_smul' := fun c Q => by`. Simplify using `only [smul_eval, mul_smul, RingHom.id_apply]`.
+
+Conclude with `integral_smul c _ }`. Establish `hXu : ∀ u Q, Xu u Q = ∫ k, eval (entVar (φ k)) Q • σ (φ k) u ∂(muK ε)` using `fun _ _ => rfl`. Establish `htr : ∀ u Q g, σ (φ g) (Xu u Q) = Xu u (bind₁ (trF (φ g⁻¹)) Q)`. Introduce `u Q g`. Rewrite using `[hXu, hXu, ← (σ (φ g)).integral_comp_comm (hint Q u)]`.
+
+Establish `e2 : ∫ k, σ (φ g) (eval (entVar (φ k)) Q • σ (φ k) u) ∂(muK ε) = ∫ k, eval (entVar (φ (g⁻¹ * (g * k)))) Q • σ (φ (g * k)) u ∂(muK ε)`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, inv_mul_cancel_left]`. Rewrite using `[hφm g k, hσ.1.2 _ (hinUJ g) _ (hinUJ k)]`. Both sides reduce to the same expression.
+
+Rewrite using `[e2, integral_mul_left_eq_self (fun k => eval (entVar (φ (g⁻¹ * k))) Q • σ (φ k) u) g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [hφm, eval_mul_eq_bind₁]`. Establish `hmono : ∀ (u : H) (m : EntIdx n →₀ ℕ), Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ (wtM m) (Xu u (monomial m 1))`. Introduce `u m θ hθ`.
+
+Rewrite `hθ` using `[mir_Kset_eq]`. Take `⟨g, hg⟩` from `hφs _ hθ`. Establish `hginv : φ g⁻¹ = star (φ g)`. Establish `h1 : φ g * star (φ g) = 1` using `Unitary.mul_star_self_of_mem (hφK g).1`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← hg, htr, hXu, hXu, ← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← eval_mul_eq_bind₁, hginv, hg, show Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I)) = dTor θ from rfl, eval_monomial_tor, mul_smul]`. Set `Sd : Submodule ℂ H` to `(restrictTotalDegree (EntIdx n) ℂ d).map (Xu u)`.
+
+Use `⟨Sd, Module.Finite.map _ _, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk x hx`. Rewrite `hk` using `[mir_Kset_eq]`. Take `⟨g, rfl⟩` from `hφs k hk`. Take `⟨Q, hQ, rfl⟩` from `hx`.
+
+Rewrite using `[htr]`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Rewrite `hQ` using `[SetLike.mem_coe, mem_restrictTotalDegree]`. Rewrite using `[mem_restrictTotalDegree]`. Conclude with `(totalDegree_bind_le_of_linear _ (trF_totalDegree _) Q).trans hQ`.
+
+Introduce `P hP`. Conclude with `Submodule.mem_map_of_mem ((mem_restrictTotalDegree _ _ P).2 hP)`. Introduce and unpack `μ s ⟨Q, hQ, rfl⟩ hs0 hsw`. Assume the negation of the conclusion as `hμ`. Rewrite `hQ` using `[SetLike.mem_coe, mem_restrictTotalDegree]`.
+
+Establish `hsum : Xu u Q = ∑ m ∈ Q.support, coeff m Q • Xu u (monomial m 1)` using `by conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Establish `horth : ∀ m ∈ Q.support, inner ℂ (Xu u Q) (Xu u (monomial m 1)) = 0`.
+
+Introduce `m hm`. Use `kfin_wt_orth hσ hsw (hmono u m) fun h => hμ ?_` and prove the remaining obligations. Conclude with `⟨m, (le_totalDegree hm).trans hQ, h.symm⟩`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[← inner_self_eq_zero (𝕜 := ℂ)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsum]`. Use `_ = 0 := by`. Rewrite using `[inner_sum]`. Conclude with `Finset.sum_eq_zero fun m hm => by rw [inner_smul_right, horth m hm, mul_zero]`.
+-/
 theorem polyAverages_finiteWeightStableSubspace : PolyAvg := by
   classical
   intro n ε d

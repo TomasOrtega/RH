@@ -14,6 +14,13 @@ open GlobalTheory.AbLaw
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ A _ hA hP L hL`. Use `hA.comm` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact. Establish `gi : GeometricallyIntegral A.hom` using `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ hA.smooth hA.geomConnected`. Establish `conn : ConnectedSpace A.left`.
+
+Establish `: Subsingleton (Sp k)` using `inferInstanceAs (Subsingleton (PrimeSpectrum k))`. Establish `x : (Sp k : Scheme.{0})` using `(default : PrimeSpectrum k)`. Establish `h` using `A.hom.isConnected_preimage_singleton x`. Establish `e : A.hom ⁻¹' {x} = Set.univ` using `Set.eq_univ_of_forall fun y => Subsingleton.elim _ _`. Rewrite `h` using `[e]`.
+
+Conclude with `connectedSpace_iff_univ.2 h`. Establish `face : ∀ {Z : Over (Sp k)} (r : Z ⟶ G3 A) (i : Fin 3), r ≫ x3 A i = toUnit Z ≫ η[A] → Triv ((Theta A L).pull r.left)` using `fun {Z} r i h => (CubeGen.triv_pull_iff L (thφ A (x3 A)) thε r.left).2 (CubeGen.trivAt_of_formal hL _ (CubeGen.prod_face _ i (toUnit Z).left (congrArg (fun q => q.left) h)))`. Conclude with `GlobalTheory.T.theorem_of_cube_two_projective_factors k A A A η[A] η[A] η[A] hA.smooth hA.smooth hA.proper hA.proper hP hP gi gi conn (Theta A L) (DVR.linComb_isLB _ hL _ _) (face _ 0 (by simp [x3])) (face _ 1 (by simp [x3])) (face _ 2 (by simp [x3]))`.
+-/
 theorem exists_gen_theta_of_isProjBy :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (A : Over (Sp k)) [GrpObj A], IsAbelianScheme A → IsProjBy A.hom → ∀ L : LB A.left, L.IsLB → ∃ t : LB.Gen (Theta A L), t.IsGen := by
   intro k _ _ A _ hA hP L hL

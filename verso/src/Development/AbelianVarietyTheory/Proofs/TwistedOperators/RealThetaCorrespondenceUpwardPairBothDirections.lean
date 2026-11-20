@@ -26,6 +26,11 @@ noncomputable section
 
 namespace GlobalTheory.EvenOnto
 
+/- English proof (translation)
+Take `⟨al, be, ga, de, hd, -, rfl, rfl⟩` from `hp`. Introduce `ψ θ χS χT ω hω hS hT PS PT MS MT p1 p2 BS BT f hf`. Take `⟨hm, e, u, hk⟩` from `GlobalTheory.ArchRec.tie_small h hd.1 MS τ true false p1`. Take `⟨e', u', hk'⟩` from `GlobalTheory.ArchRec.tie_large h hd.1 MT τ false true p2`. Take `⟨κ, hR⟩` from `GlobalTheory.ArchRec.exists_real hω hS hT (GlobalTheory.ArchRec.isFrameOf_model MS τ) (GlobalTheory.ArchRec.isFrameOf_model MT τ) hf hk.ord.1 hk'.ord.1`.
+
+Conclude with `GlobalTheory.ArchRec.lift_down h h1 h3 hd hm hk hk' hR`.
+-/
 theorem upPair_down {D : D7} {X : ProvA} (h : GlobalTheory.ArchRec.Good D X) (h1 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFirst X) (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X)
     {t : ℕ} {S S' : SPar} {aS aT : ℚ} (hp : UpPair t S S' aS aT) (τ : D.what₂.Tau) (V W : HSp D) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ForAllAt τ V W aS aT S S' fun MS MT A B pt =>
@@ -38,6 +43,13 @@ theorem upPair_down {D : D7} {X : ProvA} (h : GlobalTheory.ArchRec.Good D X) (h1
     hk.ord.1 hk'.ord.1
   exact GlobalTheory.ArchRec.lift_down h h1 h3 hd hm hk hk' hR
 
+/- English proof (translation)
+Take `⟨al, be, ga, de, hd, hfar, rfl, rfl⟩` from `hp`. Establish `hT : GlobalTheory.PairLift.ThetaPar t (GlobalTheory.Chain.signed (al ++ be) (ga ++ de) aT) (GlobalTheory.Chain.signed (al ++ block t ++ de) (ga ++ be) aS) aT aS` using `⟨al, be, ga, de, rfl, Or.inl ⟨hd, rfl⟩⟩`. Establish `hF : GlobalTheory.SignedHC.FarFrom aT (((t : ℚ) + 3) / 2) (GlobalTheory.Chain.signed (al ++ be) (ga ++ de) aT)`. Introduce `x hx`. Take `⟨s, hs⟩` from `GlobalTheory.SignedHC.mem_entries.1 hx`.
+
+Establish `: ∃ y ∈ al ++ be ++ ga ++ de, x = y + aT`. Break down `Finset.mem_union.1 hs with h | h` into its components or cases. Take `⟨y, hy, hy'⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`. Conclude with `⟨y, by simp only [List.mem_append] at hy ⊢; tauto, (congrArg Prod.fst hy').symm⟩`. Take `⟨y, hy, hy'⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`.
+
+Conclude with `⟨y, by simp only [List.mem_append] at hy ⊢; tauto, (congrArg Prod.fst hy').symm⟩`. Take `⟨y, hy, rfl⟩` from `this`. Rewrite using `[add_sub_cancel_right]`. Conclude with `hfar y hy`. Conclude with `⟨⟨t, _, _, rfl, rfl, Or.inl ⟨hT, hF⟩⟩, ⟨t, _, _, rfl, rfl, Or.inr hT⟩⟩`.
+-/
 theorem pairPar_of_upPair {t : ℕ} {S S' : SPar} {aS aT : ℚ} (hp : UpPair t S S' aS aT) :
     GlobalTheory.PairLift.PairPar S S' aS aT ∧ GlobalTheory.PairLift.PairPar S' S aT aS := by
   obtain ⟨al, be, ga, de, hd, hfar, rfl, rfl⟩ := hp
@@ -57,6 +69,11 @@ theorem pairPar_of_upPair {t : ℕ} {S S' : SPar} {aS aT : ℚ} (hp : UpPair t S
     exact hfar y hy
   exact ⟨⟨t, _, _, rfl, rfl, Or.inl ⟨hT, hF⟩⟩, ⟨t, _, _, rfl, rfl, Or.inr hT⟩⟩
 
+/- English proof (translation)
+Introduce `hDS hHC D t S S' aS aT hp`. Use `⟨fun τ V W => ?_, fun X h3 h4 h5 => ?_⟩` and prove the remaining obligations. Take `⟨X, hX, h1, -, h3, -, -⟩` from `GlobalTheory.RealPlaceTheta.exists_record_theta_all hDS hHC`. Establish `h : GlobalTheory.ArchRec.Good D X` using `⟨hX, GlobalTheory.CoverDS.admissibleDiscreteSeries_of_hasParam hDS X hX, hHC.admQ5_of_harishChandraModules X, GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra hDS hHC D⟩`. Establish `down` using `upPair_down h h1 h3 hp τ V W`.
+
+Conclude with `⟨fun ψ θ χS χT ω hω hS hT PS PT MS MT p1 p2 BS BT f hf => (down ψ θ χS χT ω hω hS hT PS PT MS MT p1 p2 BS BT f hf).1, fun ψ θ χS χT ω hω hS hT PS PT MS MT p1 p2 BS BT f hf μ 𝓕 m1 m2 => (down ψ θ χS χT ω hω hS hT PS PT MS MT p1 p2 BS BT f hf).2 _ ⟨μ, 𝓕, m1, m2, rfl⟩⟩`. Take `⟨q1, q2⟩` from `pairPar_of_upPair hp`. Conclude with `⟨GlobalTheory.StepRule.rulePar_of_pairPar h3 h4 h5 q1, GlobalTheory.StepRule.rulePar_of_pairPar h3 h4 h5 q2⟩`.
+-/
 theorem upPair_arch : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ (D : D7) (t : ℕ) (S S' : SPar) (aS aT : ℚ),
     UpPair t S S' aS aT → (∀ (τ : D.what₂.Tau) (V W : HSp D), GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ToSource τ V W aS aT S S' ∧
       GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ZetaSource τ V W aS aT S S') ∧ ∀ X : ProvA, Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X → Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X →

@@ -10,6 +10,19 @@ namespace GlobalTheory
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 
+/- English proof (translation)
+Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero (M : Ω) := ⟨Nat.cast_ne_zero.2 hM.ne'⟩`. Use `haveI : NeZero ((l ^ n : ℕ) : Ω) := ⟨Nat.cast_ne_zero.2 (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)⟩`.
+
+Establish `hcard : Nat.card (rootsOfUnity M Ω) = M` using `HasEnoughRootsOfUnity.natCard_rootsOfUnity Ω M`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Use `set c := modularCyclotomicCharacter Ω hcard s.toRingEquiv with hc`. Establish `hsζ : s ζ = ζ ^ (c : ZMod M).val`. Establish `h` using `modularCyclotomicCharacter.spec Ω hcard s.toRingEquiv hζ.toRootsOfUnity.2`.
+
+Simplify using `using h`. Use `⟨ζ, hζ, (c : ZMod M).val, ZMod.val_coe_unit_coprime c, hsζ, ?_⟩` and prove the remaining obligations. Rewrite using `[cyclotomicCharacter.toZModPow]`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hcard' : Nat.card (rootsOfUnity (l ^ n) Ω) = l ^ n` using `HasEnoughRootsOfUnity.natCard_rootsOfUnity Ω (l ^ n)`.
+
+Use `set c' := modularCyclotomicCharacter Ω hcard' s.toRingEquiv`. Establish `hζ' : IsPrimitiveRoot (ζ ^ (M / l ^ n)) (l ^ n)` using `hζ.pow hM (Nat.div_mul_cancel hn).symm`. Establish `h1 : s (ζ ^ (M / l ^ n)) = (ζ ^ (M / l ^ n)) ^ (c : ZMod M).val`. Rewrite using `[map_pow, hsζ, ← pow_mul, ← pow_mul, mul_comm]`. Establish `h2 : s (ζ ^ (M / l ^ n)) = (ζ ^ (M / l ^ n)) ^ (c' : ZMod (l ^ n)).val`.
+
+Establish `h` using `modularCyclotomicCharacter.spec Ω hcard' s.toRingEquiv hζ'.toRootsOfUnity.2`. Simplify using `using h`. Establish `hfin : IsOfFinOrder (ζ ^ (M / l ^ n))` using `orderOf_pos_iff.1 (by rw [← hζ'.eq_orderOf]; exact Nat.pos_of_ne_zero (NeZero.ne _))`. Establish `h3` using `hfin.pow_eq_pow_iff_modEq.1 (h1.symm.trans h2)`. Rewrite `h3` using `[← hζ'.eq_orderOf]`.
+
+Rewrite using `[← ZMod.natCast_zmod_val (c' : ZMod (l ^ n))]`. Conclude with `(ZMod.natCast_eq_natCast_iff _ _ _).2 h3`.
+-/
 theorem _root_.GlobalTheory.exists_primitiveRoot_pow_cyclotomicCharacter {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (l n M : ℕ) [Fact l.Prime] (hM : 0 < M) (hn : l ^ n ∣ M) (s : Ω ≃ₐ[ℚ] Ω) :
     ∃ ζ : Ω, IsPrimitiveRoot ζ M ∧ ∃ i : ℕ, i.Coprime M ∧ s ζ = ζ ^ i ∧
@@ -48,6 +61,17 @@ theorem _root_.GlobalTheory.exists_primitiveRoot_pow_cyclotomicCharacter {Ω : T
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 
+/- English proof (translation)
+Use `set u : (ZMod M)ˣ := ZMod.unitOfCoprime i hi`. Establish `hu : (u : ZMod M) = i` using `rfl`. Establish `hγdet : (γ : Matrix (Fin 2) (Fin 2) ℤ).det = 1` using `γ.2`. Rewrite `hγdet` using `[Matrix.det_fin_two]`. Use `set m : Matrix (Fin 2) (Fin 2) (ZMod M) := !![((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 0 : ZMod M), ((u⁻¹ : (ZMod M)ˣ) : ZMod M) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 : ZMod M); (i : ZMod M) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ZMod M), ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 1 : ZMod M)] …`.
+
+Establish `hm : m.det = 1`. Rewrite using `[hm_def, Matrix.det_fin_two_of]`. Establish `h1 : ((u⁻¹ : (ZMod M)ˣ) : ZMod M) * (i : ZMod M) = 1` using `by rw [← hu]; exact u.inv_mul`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod M) hγdet`. Move the coercions through the operations in `at h2`.
+
+Take the linear combination `h2 - ((γ : Matrix (Fin 2) (Fin 2) ℤ) 0 1 : ZMod M) * ((γ : Matrix (Fin 2) (Fin 2) ℤ) 1 0 : ZMod M) * h1`. Take `⟨δ, hδ⟩` from `_root_.GlobalTheory.specialLinearGroup_map_intCast_zmod_surjective M ⟨m, hm⟩`. Establish `he : ∀ a b, (((δ : Matrix (Fin 2) (Fin 2) ℤ) a b : ℤ) : ZMod M) = m a b` using `fun a b => by`. Establish `h` using `congrArg (fun g : SL(2, ZMod M) => (g : Matrix (Fin 2) (Fin 2) (ZMod M)) a b) hδ`. Simplify using `using h`.
+
+Apply the tactic sequence `refine ⟨δ, ?_, ?_, ?_, ?_⟩ <;> simp only [_root_.GlobalTheory.KZ.en, he, hm_def]`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`. Rewrite using `[← mul_assoc, ← hu, Units.mul_inv, one_mul]`. Simplify using the standard rewrite rules.
+
+Simplify using the standard rewrite rules.
+-/
 theorem _root_.GlobalTheory.exists_sl2_conj_diag_zmod (M i : ℕ) (hi : i.Coprime M) (γ : SL(2, ℤ)) :
     ∃ δ : SL(2, ℤ), (_root_.GlobalTheory.KZ.en γ 0 0 : ZMod M) = _root_.GlobalTheory.KZ.en δ 0 0 ∧
       (_root_.GlobalTheory.KZ.en γ 0 1 : ZMod M) = (i : ZMod M) * _root_.GlobalTheory.KZ.en δ 0 1 ∧
@@ -81,6 +105,17 @@ theorem _root_.GlobalTheory.exists_sl2_conj_diag_zmod (M i : ℕ) (hi : i.Coprim
   · simp
   · simp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ N l n M _ hM hN hl hn s γ hγ`. Take `⟨ζ, hζ, i, hi, hs, hχ⟩` from `exists_primitiveRoot_pow_cyclotomicCharacter l n M hM hn s`. Take `⟨δ, h00, h01, h10, h11⟩` from `exists_sl2_conj_diag_zmod M i hi γ`. Establish `red : ∀ {K : ℕ}, K ∣ M → ∀ {x y : ℤ}, (x : ZMod M) = y → (x : ZMod K) = y` using `fun {K} hK x y h => by`. Simplify `congrArg (ZMod.castHom hK (ZMod K)) h` using `only [map_intCast]`.
+
+Establish `h10' : (((i : ℤ) * en γ 1 0 : ℤ) : ZMod M) = en δ 1 0` using `by push_cast; exact h10`. Take `⟨hγ1, hγ0⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨a1, a2, a3⟩` from `(CongruenceSubgroup.Gamma1_mem N γ).1 hγ1`. Establish `a4` using `CongruenceSubgroup.Gamma0_mem.1 hγ0`. Use `⟨δ, Subgroup.mem_inf.2 ⟨(CongruenceSubgroup.Gamma1_mem N δ).2 ⟨?_, ?_, ?_⟩, CongruenceSubgroup.Gamma0_mem.2 ?_⟩, ζ, hζ, i, by rw [zpow_natCast, hs], ⟨h00, ?_, ?_, h11⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(red hN h00).symm.trans a1`. Conclude with `(red hN h11).symm.trans a2`. Use `(red hN h10').symm.trans ?_` and prove the remaining obligations. Establish `: (en γ 1 0 : ZMod N) = 0` using `a3`. Rewrite using `[Int.cast_mul, this, mul_zero]`.
+
+Use `(red hl h10').symm.trans ?_` and prove the remaining obligations. Establish `: (en γ 1 0 : ZMod l) = 0` using `a4`. Rewrite using `[Int.cast_mul, this, mul_zero]`. Simplify `h01` using `only [Int.cast_natCast]`. Simplify `h10` using `only [Int.cast_natCast]`.
+
+Simplify `hχ` using `only [Int.cast_natCast]`.
+-/
 theorem exists_conj_level_exponent :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N l n M : ℕ) [Fact l.Prime], 0 < M → N ∣ M → l ∣ M →
       l ^ n ∣ M → ∀ (s : Ω ≃ₐ[ℚ] Ω) (γ : SL(2, ℤ)), γ ∈ Gam N l → ∃ γ'' ∈ Gam N l, ∃ ζ : Ω, IsPrimitiveRoot ζ M ∧

@@ -6,6 +6,11 @@ open scoped Formalism.Per
 set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `h1 : IsAlgebraic ℚ_[l] a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `h2 : IsAlgebraic ℤ_[l] a` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] ↥LL.1).2 h1`. Take `⟨y, hy, hi⟩` from `h2.exists_integral_multiple`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy (PadicInt.irreducible_p (p := l))`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h3` using `hi.smul ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l])`. Rewrite `h3` using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast]`. Conclude with `h3`.
+-/
 private theorem UpperTheory.KN.exists_prime_pow_mul_mem_integers {l : ℕ} [Fact l.Prime] (LL : FinExt l) (a : ↥LL.1) :
     ∃ k : ℕ, (l : ↥LL.1) ^ k * a ∈ OL LL := by
   haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
@@ -19,10 +24,16 @@ private theorem UpperTheory.KN.exists_prime_pow_mul_mem_integers {l : ℕ} [Fact
   rw [smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast] at h3
   exact h3
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LatticePowerSmul.exists_pow_smul_mem_lattice_alt LL T v`.
+-/
 private theorem UpperTheory.KN.exists_pow_smul_mem_lattice_alt {l : ℕ} [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (v : T.V) :
     ∃ n : ℕ, (l : ↥LL.1) ^ n • v ∈ T.L.T :=
   _root_.UpperTheory.Reformulated.B.LatticePowerSmul.exists_pow_smul_mem_lattice_alt LL T v
 
+/- English proof (translation)
+Introduce `l _ LL T v`. Take `⟨n, hn⟩` from `UpperTheory.KN.exists_pow_smul_mem_lattice_alt LL T v`. Use `⟨n, ⟨_, hn⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← algebraMap_smul ↥LL.1 ((l : ℚ_[l]) ^ n) v, map_pow, map_natCast]`.
+-/
 theorem _root_.UpperTheory.KN.exists_prime_pow_smul_mem_lattice :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (v : T.V), ∃ (n : ℕ) (x : ↥T.L.T), (x : T.V) = ((l : ℚ_[l]) ^ n) • v := by
   intro l _ LL T v

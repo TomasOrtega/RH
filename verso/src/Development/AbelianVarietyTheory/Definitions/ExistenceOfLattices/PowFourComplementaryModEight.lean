@@ -11,6 +11,13 @@ open scoped Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Establish `he : ∀ τ : E →+* ℂ, Data.emb τ (v + w) = Data.emb τ v + Data.emb τ w` using `fun τ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Unfold `perFr`. Use `split_ifs`.
+
+Rewrite using `[he, Matrix.mulVec_add]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[he]`. Simplify using `[hermC, mul_add, Finset.sum_add_distrib]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem perFr_add (X : Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E →+* ℂ) (i : ℕ) :
     perFr X x (v + w) τ i = perFr X x v τ i + perFr X x w τ i := by
   have he : ∀ τ : E →+* ℂ, Data.emb τ (v + w) = Data.emb τ v + Data.emb τ w := fun τ => by
@@ -23,18 +30,29 @@ theorem perFr_add (X : Data E r) (x : Frame X.Ψ r) (v w : Fin r → E) (τ : E 
   · simp
   · simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => AddMonoidHom.mk' (fun a j => perFr (M.X k) x (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2) (fun a b => by funext j; simp [perFr_add]), fun _ _ _ => rfl⟩`.
+-/
 theorem exists_isPerFr {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (k : Fin F.n) : ∃ Pf, IsPerFr e F M k Pf :=
   ⟨fun x => AddMonoidHom.mk' (fun a j => perFr (M.X k) x (M.φ k a : Fin r → E) (relab c σ (e j).1) (e j).2)
     (fun a b => by funext j; simp [perFr_add]), fun _ _ _ => rfl⟩
 
+/- English proof (translation)
+Unfold `normConst`. Use `Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))` and prove the remaining obligations. Establish `: ty j ξ₀ ≠ 0` using `(map_ne_zero _).2 h`. Check the signs of the components of the expression.
+-/
 theorem normConst_pos {g : ℕ} (ty : Fin g → (E →+* ℂ)) {ξ₀ : E} (h : ξ₀ ≠ 0) : 0 < normConst ty ξ₀ := by
   unfold normConst
   refine Real.sqrt_pos.2 (div_pos (by positivity) (Finset.prod_pos fun j _ => ?_))
   have : ty j ξ₀ ≠ 0 := (map_ne_zero _).2 h
   positivity
 
+/- English proof (translation)
+Take `⟨κ, h1, h2⟩` from `h x`. Use `⟨κ, fun h0 => ?_, h2⟩` and prove the remaining obligations. Establish `hd` using `(T.norm (T.co.symm x.1) (by simpa using x.2)).1.ne_zero`. Establish `hc` using `normConst_pos (fun j => relab c σ (e j).1) (M.X k).ξ0_ne`. Rewrite `h1` using `[h0]`.
+
+Establish `: (normConst (fun j => relab c σ (e j).1) (M.X k).ξ0 : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Conclude with `mul_ne_zero this hd (by simpa using h1.symm)`.
+-/
 theorem isNormUn_ne {g : ℕ} {e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)}
     {F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)}
     {M : ModelsOf F r} {k : Fin F.n} (T : ThetaData e F M k) (un : (M.X k).dom → FrPt Xo c (CAt σ))
@@ -47,6 +65,13 @@ theorem isNormUn_ne {g : ℕ} {e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult �
   have : (normConst (fun j => relab c σ (e j).1) (M.X k).ξ0 : ℂ) ≠ 0 := by exact_mod_cast hc.ne'
   exact mul_ne_zero this hd (by simpa using h1.symm)
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k : ℕ, H.d = 16 * k + 7` from `⟨H.d / 16, by have := H.d_mod; omega⟩`. Establish `h1` using `H.rt_sq`. Establish `h2` using `H.two_weight_eq_one_add_root`. Rewrite `h1` using `[hk]`. Move the coercions through the operations in `at h1`.
+
+Establish `h4 : (4 : 𝓞 E) * (H.w0 ^ 2 - H.w0 + (4 * k + 2)) = 0`. Establish `: H.rt = 2 * H.w0 - 1` using `by linear_combination -h2`. Rewrite `h1` using `[this]`. Take the linear combination `h1`. Establish `hq : H.w0 ^ 2 - H.w0 + (4 * k + 2) = 0` using `(mul_eq_zero.1 h4).resolve_left (by norm_num)`.
+
+Use `⟨⟨2 * k + 4 * k ^ 2, ?_⟩, ⟨2 * (2 * k + 1) ^ 4, ?_⟩⟩` and prove the remaining obligations. Take the linear combination `(2 * (H.w0 ^ 2 - H.w0) + 4 - 2 * (4 * k + 2)) * hq`. Establish `: H.w0 * (1 - H.w0) = 4 * k + 2` using `by linear_combination -hq`. Rewrite using `[← mul_pow, this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pow_four_complementary_modEight (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     (∃ v : 𝓞 E, H.w0 ^ 4 + (1 - H.w0) ^ 4 = 1 + 8 * v) ∧ ∃ v : 𝓞 E, H.w0 ^ 4 * (1 - H.w0) ^ 4 = 8 * v := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d = 16 * k + 7 := ⟨H.d / 16, by have := H.d_mod; omega⟩
@@ -64,6 +89,9 @@ theorem pow_four_complementary_modEight (H : ReciprocityTheory.ChartRestriction.
   · have : H.w0 * (1 - H.w0) = 4 * k + 2 := by linear_combination -hq
     rw [← mul_pow, this]; ring
 
+/- English proof (translation)
+Simplify using `[hermForm, omegaStd, Matrix.mulVec, dotProduct, ← Complex.ofReal_inv, ht.ne']`.
+-/
 theorem sign_genus_one (t : ℂ) (ht : 0 < t.im) :
     (hermForm (g := 1) (fun _ _ => ((t.im⁻¹ : ℝ) : ℂ)) (fun _ => 1) (fun _ => t)).im =
       -(omegaStd (h := 1) (Pi.single (Sum.inl 0) 1) (Pi.single (Sum.inr 0) 1) : ℤ) := by
@@ -71,6 +99,17 @@ theorem sign_genus_one (t : ℂ) (ht : 0 < t.im) :
 
 open Classical in
 
+/- English proof (translation)
+Use `choose φ0 h1 h2 h3 h4 h5 h6 h7 using hL`. Use `choose den hd1 hd2 using h4`. Use `choose m hm1 hm2 using h7`. Set `X : Fin F.n → Data E r` to `fun i => { Ψ := Ψ, cmType := hcm, Gm := Gm, Gm_herm := hG, Gm_det := hdet, p0 := Dw.q, p0_le := by omega signature := hsig Λ := LinearMap.range (φ0 i) Λ_fg := by`. Use `(F.Di i).fin` as an intermediate fact.
+
+Rewrite using `[LinearMap.range_eq_map]`. Conclude with `(Module.Finite.fg_top).map _`. Use `Λ_span := h3 i, den := den i, den_ne := hd1 i, Λ_int := hd2 i`. Use `Γ := princ l Gm (F.Di i) (φ0 i)`. Use `Γ_stab := fun _ hγ => hγ.1`.
+
+Use `Γ_index := h5 i, Γ_free := h6 i`. Use `χ := fun _ _ => 1`. Use `χ_mul := fun _ _ _ _ _ => (mul_one 1).symm`. Use `χ_add := fun _ _ _ _ => (mul_one 1).symm`. Use `χ_fin := fun _ => ⟨1, one_pos, fun _ _ => one_pow 1⟩`.
+
+Use `ξ0 := ξ₀, ξ0_im := hξ, ξ0_ne := hξ0, κ0 := 2 * ξ₀, κ0_xi := Or.inl rfl`. Use `κ0_sign := fun τ => by`. Use `hneg τ.1 τ.2` as an intermediate fact. Rewrite using `[map_mul, map_ofNat]`. Simplify using the standard rewrite rules.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `m := m i, m_pos := hm1 i`. Use `transv := fun ξ hξ' h0 s hs hsi => hm2 i _ (Or.inl rfl) ξ hξ' h0 s hs hsi }`. Use `⟨⟨X, fun i => LinearEquiv.ofInjective (φ0 i) (h1 i)⟩, ?_, fun _ τ hτ => hneg τ hτ⟩` and prove the remaining obligations. Conclude with `{ rank := hrk type := fun k => ⟨rfl, hΨ⟩ chi := fun _ _ _ => rfl ef := fun k a b => h2 k a b gam := fun k γ => Iff.rfl domStab := fun k _ hx => ⟨fun _ hb => dom_rmul (X k) hx hb, fun _ hγ => dom_lact (X k) hx hγ.1⟩ }`.
+-/
 theorem models_of_latModel {g : ℕ} {ty : Fin g → (E →+* ℂ)} {σ' : KA l →+* ℂ} (F : FamilyUnif Xo σ' ty)
     (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ, τ ∈ Ψ ↔ τ (H.rt : E) = H.rt0)
     (hcm : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ)
@@ -117,6 +156,9 @@ theorem models_of_latModel {g : ℕ} {ty : Fin g → (E →+* ℂ)} {σ' : KA l 
       gam := fun k γ => Iff.rfl
       domStab := fun k _ hx => ⟨fun _ hb => dom_rmul (X k) hx hb, fun _ hγ => dom_lact (X k) hx hγ.1⟩ }
 
+/- English proof (translation)
+Establish `hc' : IsPreconnected (co ⁻¹' (M.X k).dom)` using `co.toHomeomorph.isPreconnected_preimage.2 hc`. Take `⟨c₁, c₂, h1, h2, fr, f1, f2, f3, f4, f5⟩` from `F.theta k m _ (fun b => Pf (co b)) bas (-1) h ta (ho.preimage co.continuous) hc' holPer (fun a b => by simp [sympl]) (fun b hb => ⟨(norm b hb).2.2.1, (norm b hb).2.2.2⟩)`. Conclude with `⟨⟨Pf, per, fun x hx => by simpa using holPer.1 (co.symm x) (by simpa using hx), m, co, holPer, bas, sympl, adapt, h, ta, norm, hol, c₁, c₂, h1, h2, fr, f1, f2, f3, f4, f5⟩⟩`.
+-/
 theorem thetaData_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
     (M : ModelsOf F r) (k : Fin F.n) (Pf : Frame (M.X k).Ψ r → ((F.Di k).La →+ (Fin g → ℂ)))

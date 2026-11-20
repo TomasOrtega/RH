@@ -9,16 +9,29 @@ set_option autoImplicit false
 noncomputable section
 namespace GlobalTheory.FormalAlg
 
+/- English proof (translation)
+Use `Scheme.IdealSheafData.ext (funext fun U => ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_sup, Pi.sup_apply, baseIdeal_ideal, baseIdeal_ideal, baseIdeal_ideal, Ideal.map_sup]`.
+-/
 theorem baseIdeal_sup {R : Type} [CommRing R] {W : Scheme.{0}} (f : W ⟶ Spec (CommRingCat.of R))
     (a b : Ideal R) : baseIdeal f (a ⊔ b) = baseIdeal f a ⊔ baseIdeal f b := by
   refine Scheme.IdealSheafData.ext (funext fun U => ?_)
   rw [Scheme.IdealSheafData.ideal_sup, Pi.sup_apply, baseIdeal_ideal, baseIdeal_ideal, baseIdeal_ideal,
     Ideal.map_sup]
 
+/- English proof (translation)
+The claim follows from `Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := Unit) (fun _ => ⟨⊤, isAffineOpen_top X⟩) iSup_const fun _ => h`.
+-/
 theorem idealSheaf_ext_top {X : Scheme.{0}} [IsAffine X] {I J : X.IdealSheafData}
     (h : I.ideal ⟨⊤, isAffineOpen_top X⟩ = J.ideal ⟨⊤, isAffineOpen_top X⟩) : I = J :=
   Scheme.IdealSheafData.ext_of_iSup_eq_top (ι := Unit) (fun _ => ⟨⊤, isAffineOpen_top X⟩) iSup_const fun _ => h
 
+/- English proof (translation)
+Establish `hfs : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U` using `by rw [hU.fromSpec_preimage_self]`. Establish `m1 : (Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec).appLE U ⊤ h = hU.fromSpec.appLE U ⊤ hfs ≫ (Spec.map (CommRingCat.ofHom φ)).appTop`. Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `m2 : hU.fromSpec.appLE U ⊤ hfs = (Scheme.ΓSpecIso Γ(W, U)).inv`.
+
+Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(W, U)).presheaf.map_id _`. Establish `m3 : (Scheme.ΓSpecIso Γ(W, U)).inv ≫ (Spec.map (CommRingCat.ofHom φ)).appTop = CommRingCat.ofHom φ ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).inv` using `(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ)).symm`. Rewrite using `[m1, m2, m3]`.
+
+Use extensionality with `x`. Simplify using `only [cst, RingHom.comp_apply, rs_self]`. Both sides reduce to the same expression.
+-/
 theorem appLE_specMap_fromSpec {W : Scheme.{0}} (U : W.Opens) (hU : IsAffineOpen U) (C : Type) [CommRing C]
     (φ : Γ(W, U) →+* C) (h : (⊤ : (Spec (CommRingCat.of C)).Opens) ≤
       (Spec.map (CommRingCat.ofHom φ) ≫ hU.fromSpec) ⁻¹ᵁ U) :
@@ -41,6 +54,13 @@ theorem appLE_specMap_fromSpec {W : Scheme.{0}} (U : W.Opens) (hU : IsAffineOpen
   simp only [cst, RingHom.comp_apply, rs_self]
   rfl
 
+/- English proof (translation)
+Use `⟨fun C _ => ⟨⟨fun a b hab => ?_, fun J => ?_⟩, fun a b => baseIdeal_sup _ a b⟩, fun W V C _ φ J => ?_⟩` and prove the remaining obligations. Establish `hb` using `cst_bijective (𝟙 (Spec (CommRingCat.of C))) (W := ⊤) rfl`. Establish `e` using `congrArg (fun I : (Spec (CommRingCat.of C)).IdealSheafData => I.ideal ⟨⊤, isAffineOpen_top _⟩) hab`. Simplify using `only [baseIdeal_ideal] at e`. Rewrite using `[← Ideal.comap_map_of_bijective _ hb (I := a), e, Ideal.comap_map_of_bijective _ hb]`.
+
+Establish `hb` using `cst_bijective (𝟙 (Spec (CommRingCat.of C))) (W := ⊤) rfl`. Use `⟨(J.ideal ⟨⊤, isAffineOpen_top _⟩).comap (cst (𝟙 (Spec (CommRingCat.of C))) ⊤), idealSheaf_ext_top ?_⟩` and prove the remaining obligations. Simplify using `only [baseIdeal_ideal]`. Conclude with `Ideal.map_comap_of_surjective _ hb.2 _`. Establish `h : (⊤ : (Spec (CommRingCat.of C)).Opens) ≤ (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) ⁻¹ᵁ V.1` using `fun x _ => V.2.range_fromSpec.subset ⟨_, rfl⟩`.
+
+Use `idealSheaf_ext_top ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Principalise.comapIdealAffine J _ V ⟨⊤, isAffineOpen_top _⟩ h, baseIdeal_ideal, Ideal.map_map, appLE_specMap_fromSpec V.1 V.2 C φ h]`.
+-/
 theorem specIdeal :
     (∀ (C : Type) [CommRing C], Function.Bijective (fun a : Ideal C => baseIdeal (𝟙 (Spec (CommRingCat.of C))) a) ∧ (∀ a b : Ideal C, baseIdeal (𝟙 (Spec (CommRingCat.of C))) (a ⊔ b) = baseIdeal (𝟙 _) a ⊔ baseIdeal (𝟙 _) b)) ∧ (∀ (W : Scheme.{0}) (V : W.affineOpens) (C : Type) [CommRing C] (φ : Γ(W, V.1) →+* C) (J : W.IdealSheafData), J.comap (Spec.map (CommRingCat.ofHom φ) ≫ V.2.fromSpec) = baseIdeal (𝟙 (Spec (CommRingCat.of C))) ((J.ideal V).map φ)) := by
   refine ⟨fun C _ => ⟨⟨fun a b hab => ?_, fun J => ?_⟩, fun a b => baseIdeal_sup _ a b⟩, fun W V C _ φ J => ?_⟩

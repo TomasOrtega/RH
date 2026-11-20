@@ -15,6 +15,11 @@ open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU ReciprocityTheory.ChartRest
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Introduce `K _ _ Y _ f g M hf hp hs hM κ _ _ D hD hc n hn`. Take `⟨E, hE, hEc⟩` from `GlobalTheory.AffineCover.exists_cover_of_isProjBy K Y f g hf hp`. Take `⟨e⟩` from `GlobalTheory.T.nonempty_cechLB_homology_equiv_of_affine_covers K Y f M κ D (Fin (g + 1)) E hM hs hD hc hE hEc n`. Establish `hz : IsZero ((cechLB f M E).X n)` using `isZero_cechLB_X f M E (by simpa using hn)`. Establish `hE0 : IsZero ((cechLB f M E).homology n)` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).1 (HomologicalComplex.ExactAt.of_isZero hz)`.
+
+Establish `: Subsingleton ((cechLB f M E).homology n)` using `ModuleCat.isZero_iff_subsingleton.1 hE0`. Conclude with `(HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (ModuleCat.isZero_iff_subsingleton.2 e.toEquiv.subsingleton)`.
+-/
 theorem cechLB_exactAt_of_dim_lt :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (Y : Scheme.{0}) [IsIntegral Y] (f : Y ⟶ Spec (CommRingCat.of K)) (g : ℕ) (M : LB Y), SmoothOfRelativeDimension g f → IsProjBy f → IsSeparated f → M.IsLB → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ∀ n, g < n → (cechLB f M D).ExactAt n := by
   intro K _ _ Y _ f g M hf hp hs hM κ _ _ D hD hc n hn

@@ -10,6 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G
 
 variable {ι : Type} [Fintype ι] {n : ι → ℕ}
 
+/- English proof (translation)
+Establish `key : ∀ f : MvPolynomial (Coord n) ℤ, eval c (Geo.mConeMap (ι` using `blockIdx n) z f) = eval (fun p ↦ c p.1 * z p) (map (Int.castRingHom ℂ) f) := by`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C r => simp [Geo.mConeMap]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`.
+
+Consider the case `mul_X f p hf`. Rewrite using `[map_mul, map_mul, map_mul, hf]`. Simplify using `[Geo.mConeMap, mul_comm]`. Rewrite using `[← key, mConeMap_of_isMultiHomog z s a hs, eval_map]`. Simplify using `[map_prod, mul_comm]`.
+-/
 theorem eval_smul_of_isMultiHomog (s : MvPolynomial (Coord n) ℤ) (a : ι → ℕ)
     (hs : Geo.IsMultiHomog (ι := blockIdx n) s a) (c : ι → ℂ) (z : Coord n → ℂ) :
     eval (fun p ↦ c p.1 * z p) (map (Int.castRingHom ℂ) s) =
@@ -27,6 +32,15 @@ theorem eval_smul_of_isMultiHomog (s : MvPolynomial (Coord n) ℤ) (a : ι → �
   rw [← key, mConeMap_of_isMultiHomog z s a hs, eval_map]
   simp [map_prod, mul_comm]
 
+/- English proof (translation)
+Introduce `ι _ _ _ n A x s hx hs`. Take `⟨a, ha, hsa, -⟩` from `hs`. Establish `hinv : ∀ (c : ι → ℂ) (z : Coord n → ℂ), (∀ k, c k ≠ 0) → z ∈ Geo.mcPts (ι` using `blockIdx n) (orbitIdeal x) → Geo.logNorm A.toGeo s (fun p ↦ c p.1 * z p) = Geo.logNorm A.toGeo s z := by`. Introduce `c z hc _`. Rewrite using `[Geo.logNorm, Geo.logNorm, A.toGeo.smul c z hc, eval_smul_of_isMultiHomog s a hsa c z, norm_mul, norm_prod]`.
+
+Simplify using `only [ha, zpow_natCast, norm_pow]`. Rewrite using `[mul_div_mul_left _ _ (Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (norm_ne_zero_iff.mpr (hc k)))]`. Establish `hfin` using `(Nat.card_pos_iff.mp (OrbitDegree.full ι n x hx)).2`. Establish `e0 : (fun j z ↦ Real.log (((Fin.elim0 : Fin 0 → Geo.HermLine (blockIdx n)) j).h z)) = (Fin.elim0 : Fin 0 → (Coord n → ℂ) → ℝ)` using `funext fun j ↦ j.elim0`. Establish `hB'` using `hB ι n x _ hx hinv`.
+
+Rewrite using `[Geo.arInt, e0, hA ι (blockIdx n) _ _ hfin hinv]`. Establish `hterm : ∀ σ : coordField x →+* ℂ, Geo.logNorm A.toGeo s (fun p ↦ σ (coordVec x p.1 p.2)) = Real.log (‖evalCone (fun k i ↦ σ (coordVec x k i)) s‖ / A.metric (fun k i ↦ σ (coordVec x k i)))`. Introduce `σ`. Rewrite using `[Geo.logNorm, ← eval_map_flatCone]`. Rewrite using `[A.toGeo_h_of_blockNonzero (w := fun p ↦ σ (coordVec x p.1 p.2)) (blockNonzero_sigma hx σ)]`.
+
+Both sides reduce to the same expression. Simplify using `only [hterm] at hB'`. Establish `hK : (0 : ℝ) < Module.finrank ℚ (coordField x)` using `Nat.cast_pos.mpr Module.finrank_pos`. Rewrite using `[div_mul_eq_mul_div, hB', mul_div_cancel_left₀ _ hK.ne']`.
+-/
 theorem OrbitArchSum.proof (hA : PtsIntegralPoints.Statement) (hB : OrbitConjSum.Statement) :
     OrbitArchSum.Statement := by
   intro ι _ _ _ n A x s hx hs

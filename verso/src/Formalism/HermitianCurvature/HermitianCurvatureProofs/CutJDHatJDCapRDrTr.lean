@@ -15,20 +15,36 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)}
   {Dc : (Fin P.r → ℂ) → Set (Q.Mx P.k P.r)}
 
+/- English proof (translation)
+Rewrite using `[MA.cbA, actA_sc]`. Both sides reduce to the same expression.
+-/
 theorem drtr_actA_cb (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.cbA P (MA.DQ P) l) f = fun ρ => MA.coordQ (TT := P.TT) (M.vcb l) * f ρ := by
   rw [MA.cbA, actA_sc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[MA.cA, actA_sc]`. Both sides reduce to the same expression.
+-/
 theorem drtr_actA_c (l : Fin P.r) (f : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P (MA.cA P (MA.DQ P) l) f = fun ρ => MA.coordQ (TT := P.TT) (M.vc l) * f ρ := by
   rw [MA.cA, actA_sc]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c g`. Simplify using `[dMul]`.
+-/
 theorem drtr_dMul_one (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) : dMul (fun _ => (1 : ℂ)) Φ = Φ := by
   funext c g
   simp [dMul]
 
+/- English proof (translation)
+Proceed by induction on `ls with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil]`. Rewrite using `[drtr_dMul_one, actA_one]`. Conclude with `⟨hΦ, rfl⟩`.
+
+Consider the case `cons a ls ih`. Take `⟨hF, hT⟩` from `ih`. Establish `eq : dMul (fun c => ((a :: ls).map fun a => star (c a)).prod) Φ = Q.crd (cbOp a) (dMul (fun c => (ls.map fun a => star (c a)).prod) Φ)`. Use function extensionality and compare the values at `c g`. Use `show _ = star (c a) • ((ls.map fun a => star (c a)).prod • Φ c g)`.
+
+Simplify using `only [dMul, List.map_cons, List.prod_cons, mul_smul]`. Establish `hcb : FamR P Bs Dc (Q.crd (cbOp a) (dMul (fun c => (ls.map fun a => star (c a)).prod) Φ))` using `famR_opL hF a 4`. Use `⟨eq ▸ hcb, ?_⟩` and prove the remaining obligations. Rewrite using `[eq, trR_mul hpl hk he hF _ hcb (fun c => star (c a)) (fun _ _ => rfl) (MA.coordQ (TT := P.TT) (M.vcb a)) (fun q => coordE_vcb _ _), List.map_cons, List.prod_cons, actA_mul, drtr_actA_cb, hT]`.
+-/
 theorem drtr_listb (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFrameB P Bs e)
     (ls : List (Fin P.r)) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (hΦ : FamR P Bs Dc Φ) :
     FamR P Bs Dc (dMul (fun c => (ls.map fun a => star (c a)).prod) Φ) ∧
@@ -52,6 +68,13 @@ theorem drtr_listb (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) 
     rw [eq, trR_mul hpl hk he hF _ hcb (fun c => star (c a)) (fun _ _ => rfl) (MA.coordQ (TT := P.TT) (M.vcb a))
       (fun q => coordE_vcb _ _), List.map_cons, List.prod_cons, actA_mul, drtr_actA_cb, hT]
 
+/- English proof (translation)
+Proceed by induction on `ls with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil]`. Rewrite using `[drtr_dMul_one, actA_one]`. Conclude with `⟨hΦ, rfl⟩`.
+
+Consider the case `cons a ls ih`. Take `⟨hF, hT⟩` from `ih`. Establish `eq : dMul (fun c => ((a :: ls).map fun a => c a).prod) Φ = Q.crd (cOp a) (dMul (fun c => (ls.map fun a => c a).prod) Φ)`. Use function extensionality and compare the values at `c g`. Use `show _ = c a • ((ls.map fun a => c a).prod • Φ c g)`.
+
+Simplify using `only [dMul, List.map_cons, List.prod_cons, mul_smul]`. Establish `hc : FamR P Bs Dc (Q.crd (cOp a) (dMul (fun c => (ls.map fun a => c a).prod) Φ))` using `famR_opL hF a 1`. Use `⟨eq ▸ hc, ?_⟩` and prove the remaining obligations. Rewrite using `[eq, trR_mul hpl hk he hF _ hc (fun c => c a) (fun _ _ => rfl) (MA.coordQ (TT := P.TT) (M.vc a)) (fun q => coordE_vc _ _), List.map_cons, List.prod_cons, actA_mul, drtr_actA_c, hT]`.
+-/
 theorem drtr_listc (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFrameB P Bs e)
     (ls : List (Fin P.r)) (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) (hΦ : FamR P Bs Dc Φ) :
     FamR P Bs Dc (dMul (fun c => (ls.map fun a => c a).prod) Φ) ∧
@@ -77,6 +100,15 @@ theorem drtr_listc (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) 
 
 end
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk e he L hL Dc Φ hΦ`. Take `⟨-, -, hc, -, hcb, -⟩` from `hL`. Establish `eb : drbF P.r = fun c => ((List.finRange P.r).map fun a => star (c a)).prod`. Use function extensionality and compare the values at `c`. Rewrite using `[drbF, map_prod, ← List.prod_ofFn, List.ofFn_eq_map]`.
+
+Both sides reduce to the same expression. Establish `ec : drF P.r = fun c => ((List.finRange P.r).map fun a => c a).prod`. Use function extensionality and compare the values at `c`. Rewrite using `[drF, ← List.prod_ofFn, List.ofFn_eq_map]`. Establish `hDrb : L.Drb = ((List.finRange P.r).map fun a => MA.cbA P (MA.DQ P) a).prod`.
+
+Rewrite using `[R.LevelData.Drb, hcb, List.ofFn_eq_map]`. Establish `hDr : L.Dr = ((List.finRange P.r).map fun a => MA.cA P (MA.DQ P) a).prod`. Rewrite using `[R.LevelData.Dr, hc, List.ofFn_eq_map]`. Use `⟨fun ρ => ?_, fun ρ => ?_⟩` and prove the remaining obligations. Establish `h` using `(drtr_listb hpl hk he (List.finRange P.r) Φ hΦ).2`.
+
+Rewrite `h` using `[← eb, ← hDrb]`. Conclude with `congrFun h ρ`. Establish `h` using `(drtr_listc hpl hk he (List.finRange P.r) Φ hΦ).2`. Rewrite `h` using `[← ec, ← hDr]`. Conclude with `congrFun h ρ`.
+-/
 theorem residue_derivative_transition : JDRDrTr := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk e he L hL Dc Φ hΦ
   obtain ⟨-, -, hc, -, hcb, -⟩ := hL

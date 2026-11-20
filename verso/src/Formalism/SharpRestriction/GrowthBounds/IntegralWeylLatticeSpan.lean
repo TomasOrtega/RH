@@ -13,6 +13,9 @@ namespace Formalism.L2.G.RelativeIndexFlags
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.BasicNotions.factResChar
 
+/- English proof (translation)
+Introduce `p O Kf _ _ _ _ _ P Tau _ n LL _ h pos G M embLL lam hW hM`. Conclude with `blockRatReal P.lam0 h pos G M embLL (fun τ => (lam τ).w) (fun τ => (lam τ).anti) hW hM`.
+-/
 theorem blockRationality_holds : Formalism.L2.G.BlockRationalityField := by
   intro p O Kf _ _ _ _ _ P Tau _ n LL _ h pos G M embLL lam hW hM
   exact blockRatReal P.lam0 h pos G M embLL (fun τ => (lam τ).w) (fun τ => (lam τ).anti) hW hM

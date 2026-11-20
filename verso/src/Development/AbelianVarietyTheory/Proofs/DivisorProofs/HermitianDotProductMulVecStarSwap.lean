@@ -6,6 +6,11 @@ open Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `hH.apply j i`. Simplify using `only [Complex.star_def, Complex.conj_conj] at h ⊢`.
+
+Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermitian_dotProduct_mulVec_star_swap {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ)
     (hH : H.IsHermitian) (x y : Fin g → ℂ) :
     y ⬝ᵥ H.mulVec (star x) = (starRingEnd ℂ) (x ⬝ᵥ H.mulVec (star y)) := by
@@ -17,6 +22,11 @@ theorem hermitian_dotProduct_mulVec_star_swap {g : ℕ} (H : Matrix (Fin g) (Fin
   rw [h]
   ring
 
+/- English proof (translation)
+Rewrite using `[hermitian_dotProduct_mulVec_star_swap H hH x y]`. Use `set a := x ⬝ᵥ H.mulVec (star y)`. Establish `h` using `Complex.sub_conj a`. Move the coercions through the operations in `at h`. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`.
+
+Take the linear combination `(-(Real.pi : ℂ)) * h`.
+-/
 theorem pi_mul_hermitian_alternation {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ)
     (hH : H.IsHermitian) (x y : Fin g → ℂ) :
     (Real.pi : ℂ) * (y ⬝ᵥ H.mulVec (star x)) - Real.pi * (x ⬝ᵥ H.mulVec (star y)) =

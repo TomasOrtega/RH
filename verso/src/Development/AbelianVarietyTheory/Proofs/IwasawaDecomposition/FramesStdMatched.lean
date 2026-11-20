@@ -21,6 +21,11 @@ variable {D : D7}
 
 abbrev SI (D : D7) : Subring (Lev.EAf D) := Formalism.L2.Herm.intAf D.host.F D.host.E
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨x, hx⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩)`. Take `⟨o, rfl⟩` from `hx`. Conclude with `Subring.subset_closure (Or.inl ⟨o, rfl⟩)`.
+
+Conclude with `Subring.subset_closure (Or.inr ⟨y, hy, rfl⟩)`. Rewrite using `[ReciprocityTheory.Aut.ALint, Subring.closure_le]`. Introduce and unpack `_ (⟨o, rfl⟩ | ⟨a, ha, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, o, rfl⟩, rfl⟩)`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+-/
 theorem intAf_eq (D : D7) : (SI D : Subring (Lev.EAf D)) = ReciprocityTheory.Aut.ALint D.host.E := by
   apply le_antisymm
   · refine Subring.closure_le.2 ?_
@@ -33,6 +38,9 @@ theorem intAf_eq (D : D7) : (SI D : Subring (Lev.EAf D)) = ReciprocityTheory.Aut
     · exact Subring.subset_closure (Or.inl ⟨⟨_, o, rfl⟩, rfl⟩)
     · exact Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[intAf_eq]`.
+-/
 theorem mem_ALint_iff (x : Lev.EAf D) : x ∈ ReciprocityTheory.Aut.ALint D.host.E ↔ x ∈ SI D := by
   rw [intAf_eq]
 
@@ -44,15 +52,26 @@ def IntM (A : Matrix (Fin n) (Fin n) R) : Prop := ∀ i j, A i j ∈ S
 
 variable {S}
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact S.sum_mem fun k _ => S.mul_mem (hA i k) (hB k j)`.
+-/
 theorem intM_mul {A B : Matrix (Fin n) (Fin n) R} (hA : IntM S A) (hB : IntM S B) : IntM S (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact S.sum_mem fun k _ => S.mul_mem (hA i k) (hB k j)
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec, dotProduct]`. Conclude with `S.sum_mem fun k _ => S.mul_mem (hA i k) (hz k)`.
+-/
 theorem intV {A : Matrix (Fin n) (Fin n) R} (hA : IntM S A) {z : Fin n → R} (hz : ∀ i, z i ∈ S) (i : Fin n) :
     (A *ᵥ z) i ∈ S := by
   rw [Matrix.mulVec, dotProduct]
   exact S.sum_mem fun k _ => S.mul_mem (hA i k) (hz k)
 
+/- English proof (translation)
+Introduce `i j`. Use `h (Pi.single j 1) (fun k => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `S.one_mem`.
+
+Conclude with `S.zero_mem) i`. Rewrite `this` using `[Matrix.mulVec_single_one]`. Conclude with `this`.
+-/
 theorem intM_of {A : Matrix (Fin n) (Fin n) R} (h : ∀ z : Fin n → R, (∀ i, z i ∈ S) → ∀ i, (A *ᵥ z) i ∈ S) : IntM S A := by
   intro i j
   have := h (Pi.single j 1) (fun k => by
@@ -67,15 +86,33 @@ end Int
 
 def kmat {n : ℕ} (κ : Formalism.AUTREP.GAf D.host.E n) : GL (Fin n) (Lev.EAf D) := κ.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kmat_mul {n : ℕ} (a b : Formalism.AUTREP.GAf D.host.E n) : kmat (a * b) = kmat a * kmat b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kmat_inv {n : ℕ} (a : Formalism.AUTREP.GAf D.host.E n) : kmat a⁻¹ = (kmat a)⁻¹ := rfl
 
+/- English proof (translation)
+Use `show (∀ i j, (κ.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j ∈ ReciprocityTheory.Aut.ALint D.host.E) ↔ _`. Conclude with `forall_congr' fun i => forall_congr' fun j => mem_ALint_iff _`.
+-/
 theorem mem_Umax_iff {n : ℕ} (κ : Formalism.AUTREP.GAf D.host.E n) :
     κ ∈ ReciprocityTheory.Aut.Umax D.host.E n ↔ IntM (SI D) (kmat κ).1 := by
   show (∀ i j, (κ.1 : Matrix (Fin n) (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) i j ∈ ReciprocityTheory.Aut.ALint D.host.E) ↔ _
   exact forall_congr' fun i => forall_congr' fun j => mem_ALint_iff _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hκ`. Establish `h1 : IntM (SI D) (γ * kmat κ * γ⁻¹).1`. Rewrite using `[Units.val_mul, Units.val_mul]`. Conclude with `intM_mul (intM_mul hγ ((mem_Umax_iff κ).1 hκ)) hγ'`.
+
+Establish `h2 : IntM (SI D) (γ * kmat κ * γ⁻¹)⁻¹.1`. Establish `e : (γ * kmat κ * γ⁻¹)⁻¹ = γ * kmat κ⁻¹ * γ⁻¹` using `by rw [kmat_inv]; group`. Rewrite using `[e, Units.val_mul, Units.val_mul]`. Conclude with `intM_mul (intM_mul hγ ((mem_Umax_iff _).1 (inv_mem hκ))) hγ'`. Introduce `z`.
+
+Use `⟨fun hz => intV h1 hz, fun hz => ?_⟩` and prove the remaining obligations. Use `intV h2 hz` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `h`. Establish `h1 : IntM (SI D) (γ * kmat κ * γ⁻¹).1` using `intM_of fun z hz => (h z).1 hz`.
+
+Establish `e : kmat κ = γ⁻¹ * (γ * kmat κ * γ⁻¹) * γ` using `by group`. Use `(mem_Umax_iff κ).2 ?_` and prove the remaining obligations. Rewrite using `[e, Units.val_mul, Units.val_mul]`. Conclude with `intM_mul (intM_mul hγ' h1) hγ`.
+-/
 theorem umax_iff {n : ℕ} (γ : GL (Fin n) (Lev.EAf D)) (hγ : IntM (SI D) γ.1) (hγ' : IntM (SI D) (γ⁻¹).1)
     (κ : Formalism.AUTREP.GAf D.host.E n) : κ ∈ ReciprocityTheory.Aut.Umax D.host.E n ↔
       ∀ z : Fin n → Lev.EAf D, (∀ i, z i ∈ SI D) ↔ ∀ i, ((γ * kmat κ * γ⁻¹).1 *ᵥ z) i ∈ SI D := by
@@ -103,19 +140,33 @@ section Lat
 
 variable {V : HSp D}
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inl ⟨⟨_, o, rfl⟩, rfl⟩)`.
+-/
 theorem tmul_one_mem (o : 𝓞 D.host.E) :
     ((algebraMap (𝓞 D.host.E) D.host.E o) ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F) : Lev.EAf D) ∈ SI D :=
   Subring.subset_closure (Or.inl ⟨⟨_, o, rfl⟩, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`.
+-/
 theorem one_tmul_mem {a : Formalism.L2.Herm.Af D.host.F} (ha : a ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F) :
     ((1 : D.host.E) ⊗ₜ[D.host.F] a : Lev.EAf D) ∈ SI D :=
   Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)
 
+/- English proof (translation)
+Introduce `v` and use `by show evalV D.host.F v 1 ∈ _ rw [map_one] exact one_mem _`.
+-/
 theorem one_mem_intAf : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F := fun v => by
   show evalV D.host.F v 1 ∈ _
   rw [map_one]
   exact one_mem _
 
+/- English proof (translation)
+Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`. Conclude with `hc a ha x hx`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [smul_neg]`. Conclude with `neg_mem hy`.
+-/
 theorem smul_gen {M : ℕ} (L : Set (Fin M → D.host.E)) (c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E)
     (hc : ∀ a ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F, ∀ x ∈ L, c • (fun i => a ⊗ₜ[D.host.F] x i) ∈ latHat D.host.F D.host.E L)
     {w : Fin M → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (hw : w ∈ latHat D.host.F D.host.E L) :
@@ -128,6 +179,15 @@ theorem smul_gen {M : ℕ} (L : Set (Fin M → D.host.E)) (c : Formalism.MainNot
   | add y z _ _ hy hz => rw [smul_add]; exact add_mem hy hz
   | neg y _ hy => rw [smul_neg]; exact neg_mem hy
 
+/- English proof (translation)
+Proceed by induction on `hr using Subring.closure_induction with`. Consider the case `mem r hr => exact h r hr`. Consider the case `zero => intro w _`. Rewrite using `[map_zero, zero_smul]`. Conclude with `zero_mem _`.
+
+Consider the case `one => intro w hw`. Rewrite using `[map_one, one_smul]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy => intro w hw`. Rewrite using `[map_add, add_smul]`. Conclude with `add_mem (hx w hw) (hy w hw)`.
+
+Consider the case `neg x _ hx => intro w hw`. Rewrite using `[map_neg, neg_smul]`. Conclude with `neg_mem (hx w hw)`. Consider the case `mul x y _ _ hx hy => intro w hw`. Rewrite using `[map_mul, mul_smul]`.
+
+Conclude with `hx _ (hy w hw)`.
+-/
 theorem smul_closure {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (e : B →+* A) (S : AddSubgroup (Fin M → A)) (T : Set B)
     (h : ∀ t ∈ T, ∀ w ∈ S, e t • w ∈ S) {r : B} (hr : r ∈ Subring.closure T) : ∀ w ∈ S, e r • w ∈ S := by
   induction hr using Subring.closure_induction with
@@ -138,6 +198,15 @@ theorem smul_closure {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (e : B →
   | neg x _ hx => intro w hw; rw [map_neg, neg_smul]; exact neg_mem (hx w hw)
   | mul x y _ _ hx hy => intro w hw; rw [map_mul, mul_smul]; exact hx _ (hy w hw)
 
+/- English proof (translation)
+Use `smul_closure (GlobalTheory.HeckeTrans.unswap D) _ _ (fun r hr w hw => ?_) hr` and prove the remaining obligations. Break down `hr with ⟨⟨_, o, rfl⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩` into its components or cases. Use `smul_gen _ _ (fun a ha x hx => AddSubgroup.subset_closure ⟨a, ha, (algebraMap (𝓞 D.host.E) D.host.E o) • x, ?_, ?_⟩) hw` and prove the remaining obligations. Use `(hV _).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+
+Conclude with `(RingOfIntegers.isIntegral_coe o).mul ((hV x).1 hx i)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (algebraMap (𝓞 D.host.E) D.host.E o)) * (a ⊗ₜ[D.host.F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+
+Use `smul_gen _ _ (fun a ha x hx => AddSubgroup.subset_closure ⟨b * a, fun v => ?_, x, hx, ?_⟩) hw` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (hb v) (ha v)`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((b : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) * (a ⊗ₜ[D.host.F] x i) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+-/
 theorem smul_mem (hV : Seed.FrmC.StdLat V) {r : Lev.EAf D} (hr : r ∈ SI D) :
     ∀ w ∈ latHat D.host.F D.host.E (L0c D V), GlobalTheory.HeckeTrans.unswap D r • w ∈ latHat D.host.F D.host.E (L0c D V) := by
   refine smul_closure (GlobalTheory.HeckeTrans.unswap D) _ _ (fun r hr w hw => ?_) hr
@@ -157,6 +226,11 @@ theorem smul_mem (hV : Seed.FrmC.StdLat V) {r : Lev.EAf D} (hr : r ∈ SI D) :
       change ((b : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) * (a ⊗ₜ[D.host.F] x i) = _
       rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
+/- English proof (translation)
+Use `AddSubgroup.subset_closure ⟨1, one_mem_intAf, Pi.single j 1, (hV _).2 fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[TensorProduct.tmul_zero]`.
+-/
 theorem single_mem (hV : Seed.FrmC.StdLat V) (j : Fin V.rank) :
     (Pi.single j 1 : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) ∈ latHat D.host.F D.host.E (L0c D V) := by
   refine AddSubgroup.subset_closure ⟨1, one_mem_intAf, Pi.single j 1, (hV _).2 fun a => ?_, ?_⟩
@@ -170,6 +244,17 @@ theorem single_mem (hV : Seed.FrmC.StdLat V) (j : Fin V.rank) :
     · rfl
     · rw [TensorProduct.tmul_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hy i`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, x, hx, rfl⟩` from `hy`.
+
+Take `⟨o, ho⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).1 ((hV x).1 hx i)`. Express the relevant statement in the definitionally equal form `(x i ⊗ₜ[D.host.F] a : Lev.EAf D) ∈ SI D`. Rewrite using `[← ho, show ((algebraMap (𝓞 D.host.E) D.host.E o) ⊗ₜ[D.host.F] a : Lev.EAf D) = ((algebraMap (𝓞 D.host.E) D.host.E o) ⊗ₜ[D.host.F] (1 : Formalism.L2.Herm.Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] a) by`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]]`. Conclude with `(SI D).mul_mem (tmul_one_mem o) (one_tmul_mem ha)`.
+
+Consider the case `zero => rw [Pi.zero_apply, map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [Pi.add_apply, map_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Pi.neg_apply, map_neg]`.
+
+Conclude with `neg_mem hy`. Introduce `hy`. Rewrite using `[pi_eq_sum_univ' y]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Use `smul_mem hV (hy i) _ (single_mem hV i)` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.HeckeTrans.unswap_swap]`. Then use the resulting hypothesis.
+-/
 theorem latHat_iff (hV : Seed.FrmC.StdLat V) (y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) :
     y ∈ latHat D.host.F D.host.E (L0c D V) ↔ ∀ i, swapAE D (y i) ∈ SI D := by
   constructor
@@ -192,11 +277,21 @@ theorem latHat_iff (hV : Seed.FrmC.StdLat V) (y : Fin V.rank → Formalism.MainN
     have := smul_mem hV (hy i) _ (single_mem hV i)
     rwa [GlobalTheory.HeckeTrans.unswap_swap] at this
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, GlobalTheory.HeckeTrans.swap_unswap]`.
+-/
 theorem swap_mulVec (Y : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D))
     (y : Fin V.rank → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) (i : Fin V.rank) :
     swapAE D ((Y.map (GlobalTheory.HeckeTrans.unswap D) *ᵥ y) i) = (Y *ᵥ fun j => swapAE D (y j)) i := by
   simp only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, GlobalTheory.HeckeTrans.swap_unswap]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h, -⟩ z`. Use `h (fun j => GlobalTheory.HeckeTrans.unswap D (z j))` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.HeckeTrans.finE_unswap]`. Simplify using `only [latHat_iff hV, swap_mulVec, GlobalTheory.HeckeTrans.swap_unswap] at this`.
+
+Conclude with `this`. Introduce `h`. Use `⟨hg, fun y => ?_, fun v hv => absurd hv (Finset.notMem_empty v)⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HeckeTrans.finE_unswap]`. Simplify using `only [latHat_iff hV, swap_mulVec]`.
+
+Conclude with `h _`.
+-/
 theorem ksph_iff (hV : Seed.FrmC.StdLat V) {g : GA D V} (hg : g ∈ GfC V) :
     g ∈ KsphC V ∅ ↔ ∀ z : Fin V.rank → Lev.EAf D, (∀ i, z i ∈ SI D) ↔ ∀ i, ((finE V g).1 *ᵥ z) i ∈ SI D := by
   constructor
@@ -219,6 +314,9 @@ namespace GlobalTheory.StdFrameExist
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+-/
 theorem unswap_sg (y : Lev.EAf D) : GlobalTheory.HeckeTrans.unswap D (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) y) =
     sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig (GlobalTheory.HeckeTrans.unswap D y) := by
   induction y using TensorProduct.induction_on with
@@ -228,6 +326,13 @@ theorem unswap_sg (y : Lev.EAf D) : GlobalTheory.HeckeTrans.unswap D (Formalism.
 
 variable (V : HSp D)
 
+/- English proof (translation)
+Establish `h : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) x.1 * V.gram.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F)) * x.1 = V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)) := hx`. Establish `h2` using `congrArg (fun M => Matrix.map M (GlobalTheory.HeckeTrans.unswap D)) h`. Simplify using `only [Matrix.map_mul] at h2`. Establish `e1 : (Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) x.1).map (GlobalTheory.HeckeTrans.unswap D) = Formalism.UG.cT (sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig) (x.1.map (GlobalTheory.HeckeTrans.unswap …`. Use extensionality with `i j`.
+
+Conclude with `unswap_sg _`. Establish `e2 : (V.gram.map (Formalism.UG.inclE (F` using `D.host.F) (Formalism.L2.Herm.Af D.host.F))).map (GlobalTheory.HeckeTrans.unswap D) = JR (F := D.host.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) V.gram := by`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `h2` using `[e1, e2]`.
+
+Conclude with `h2`.
+-/
 theorem unswap_mem (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram) :
     Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x ∈ HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram := by
   have h : Formalism.UG.cT (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) x.1 *
@@ -249,9 +354,17 @@ theorem unswap_mem (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DI
 def liftF (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram) : GA D V :=
   (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose
 
+/- English proof (translation)
+The claim follows from `MonoidHom.mem_ker.2 (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose_spec.1`.
+-/
 theorem liftF_mem (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram) : liftF V x hx ∈ GfC V :=
   MonoidHom.mem_ker.2 (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose_spec.1
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose_spec.2`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `show swapAE D ((finHom V (liftF V x hx)).1 i j) = x.1 i j`. Rewrite using `[show liftF V x hx = (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose from rfl, h]`.
+
+Conclude with `GlobalTheory.HeckeTrans.swap_unswap _`.
+-/
 theorem finE_liftF (x : GL (Fin V.rank) (Lev.EAf D)) (hx : x ∈ Formalism.L2.DIV.UA D.sp.cm V.gram) : finE V (liftF V x hx) = x := by
   have h := (GlobalTheory.UnitarySplit.ga_glue V 1 (Formalism.UG.bc (GlobalTheory.HeckeTrans.unswap D) x) (one_mem _) (unswap_mem V x hx)).choose_spec.2
   apply Units.ext
@@ -271,22 +384,34 @@ abbrev sgA (D : D7) : Lev.EAf D →+* Lev.EAf D := Formalism.UG.sigR D.sp.cm.sig
 abbrev gA (V : HSp D) : Matrix (Fin V.rank) (Fin V.rank) (Lev.EAf D) :=
   V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem conjAL_eq (y : ReciprocityTheory.Aut.AL D.host.E) : ReciprocityTheory.Aut.conjAL D.host.E y = sgA D y := by
   induction y using TensorProduct.induction_on with
   | zero => simp
   | tmul x a => rfl
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `conjAL_eq _`.
+-/
 theorem conjT_eq {n : ℕ} (M : Matrix (Fin n) (Fin n) (Lev.EAf D)) :
     ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) M = Formalism.UG.cT (sgA D) M := by
   ext i j
   exact conjAL_eq _
 
+/- English proof (translation)
+Establish `h : (kmat κ).1 * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) (kmat κ).1 = 1` using `κ.2`. Rewrite `h` using `[conjT_eq]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem cT_kmat {n : ℕ} (κ : Formalism.AUTREP.GAf D.host.E n) : Formalism.UG.cT (sgA D) (kmat κ).1 * (kmat κ).1 = 1 := by
   have h : (kmat κ).1 * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) (kmat κ).1 = 1 := κ.2
   rw [conjT_eq] at h
   exact mul_eq_one_comm.1 h
 
+/- English proof (translation)
+Use `show x.1 * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) x.1 = 1`. Rewrite using `[conjT_eq]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem mem_GA {n : ℕ} (x : GL (Fin n) (Lev.EAf D)) (h : Formalism.UG.cT (sgA D) x.1 * x.1 = 1) :
     (x : GL (Fin n) (ReciprocityTheory.Aut.AL D.host.E)) ∈ ReciprocityTheory.Aut.GA D.host.E n := by
   show x.1 * ReciprocityTheory.Aut.conjT (ReciprocityTheory.Aut.conjAL D.host.E) x.1 = 1
@@ -299,6 +424,11 @@ def IsOrthF : Prop := Formalism.UG.cT (sgA D) γ.1 * gA V * γ.1 = 1
 
 variable {V γ}
 
+/- English proof (translation)
+Establish `h1 : Formalism.UG.cT (sgA D) (γ⁻¹).1 * Formalism.UG.cT (sgA D) γ.1 = 1`. Rewrite using `[← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Matrix.mul_one]`. Use `_ = (Formalism.UG.cT (sgA D) (γ⁻¹).1 * Formalism.UG.cT (sgA D) γ.1) * gA V * (γ.1 * (γ⁻¹).1) := by`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = gA V := by rw [h1, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem cT_inv_mul (h : IsOrthF V γ) : Formalism.UG.cT (sgA D) (γ⁻¹).1 * (γ⁻¹).1 = gA V := by
   have h1 : Formalism.UG.cT (sgA D) (γ⁻¹).1 * Formalism.UG.cT (sgA D) γ.1 = 1 := by
     rw [← Formalism.UG.cT_mul, Units.mul_inv, Formalism.UG.cT_one]
@@ -309,6 +439,9 @@ theorem cT_inv_mul (h : IsOrthF V γ) : Formalism.UG.cT (sgA D) (γ⁻¹).1 * (�
         simp only [Matrix.mul_assoc]
     _ = gA V := by rw [h1, Units.mul_inv, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Use `show Formalism.UG.cT (sgA D) (γ * kmat κ * γ⁻¹).1 * gA V * (γ * kmat κ * γ⁻¹).1 = gA V`. Rewrite using `[Units.val_mul, Units.val_mul, Formalism.UG.cT_mul, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mem (h : IsOrthF V γ) (κ : Formalism.AUTREP.GAf D.host.E V.rank) :
     γ * kmat κ * γ⁻¹ ∈ Formalism.L2.DIV.UA D.sp.cm V.gram := by
   show Formalism.UG.cT (sgA D) (γ * kmat κ * γ⁻¹).1 * gA V * (γ * kmat κ * γ⁻¹).1 = gA V
@@ -324,12 +457,21 @@ def psiF (h : IsOrthF V γ) (κ : Formalism.AUTREP.GAf D.host.E V.rank) : GA D V
 
 variable {V γ}
 
+/- English proof (translation)
+The claim follows from `finE_liftF V _ _`.
+-/
 theorem finE_psiF (h : IsOrthF V γ) (κ : Formalism.AUTREP.GAf D.host.E V.rank) : finE V (psiF V γ h κ) = γ * kmat κ * γ⁻¹ :=
   finE_liftF V _ _
 
+/- English proof (translation)
+The claim follows from `liftF_mem V _ _`.
+-/
 theorem psiF_mem (h : IsOrthF V γ) (κ : Formalism.AUTREP.GAf D.host.E V.rank) : psiF V γ h κ ∈ GfC V :=
   liftF_mem V _ _
 
+/- English proof (translation)
+Use `GlobalTheory.UnitarySplit.ga_ext V ((MonoidHom.mem_ker.1 hg).trans (MonoidHom.mem_ker.1 hg').symm) ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Use `congrArg (fun x : GL (Fin V.rank) (Lev.EAf D) => GlobalTheory.HeckeTrans.unswap D (x.1 i j)) e` as an intermediate fact. Conclude with `(GlobalTheory.HeckeTrans.unswap_swap _).symm.trans (this.trans (GlobalTheory.HeckeTrans.unswap_swap _))`.
+-/
 theorem ext_GfC {g g' : GA D V} (hg : g ∈ GfC V) (hg' : g' ∈ GfC V) (e : finE V g = finE V g') : g = g' := by
   refine GlobalTheory.UnitarySplit.ga_ext V ((MonoidHom.mem_ker.1 hg).trans (MonoidHom.mem_ker.1 hg').symm) ?_
   apply Units.ext
@@ -376,6 +518,11 @@ section Std
 
 variable {V : HSp D} {γ : GL (Fin V.rank) (Lev.EAf D)}
 
+/- English proof (translation)
+Use `⟨⟨γ.1.map (GlobalTheory.HeckeTrans.unswap D), (γ⁻¹).1.map (GlobalTheory.HeckeTrans.unswap D), ?_, ?_, fun κ => ?_⟩, fun κ => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← GlobalTheory.HeckeTrans.finE_unswap] show (finE V (psiF V γ h κ)).1.map _ = _`. Rewrite using `[finE_psiF, Units.val_mul, Units.val_mul, Matrix.map_mul, Matrix.map_mul]`.
+
+Both sides reduce to the same expression. Establish `e : (rowPsi V γ h).ψ κ = psiF V γ h κ` using `rfl`. Rewrite using `[e, umax_iff γ hγ hγ' κ, ksph_iff hV (psiF_mem h κ), finE_psiF]`.
+-/
 theorem stdFrame_rowPsi (hF : D.host.F = maximalRealSubfield D.host.E) (hV : Seed.FrmC.StdLat V) (h : IsOrthF V γ)
     (hγ : IntM (SI D) γ.1) (hγ' : IntM (SI D) (γ⁻¹).1) : StdFrame hF (rowPsi V γ h) := by
   refine ⟨⟨γ.1.map (GlobalTheory.HeckeTrans.unswap D), (γ⁻¹).1.map (GlobalTheory.HeckeTrans.unswap D), ?_, ?_, fun κ => ?_⟩, fun κ => ?_⟩
@@ -388,6 +535,11 @@ theorem stdFrame_rowPsi (hF : D.host.F = maximalRealSubfield D.host.E) (hV : See
   · have e : (rowPsi V γ h).ψ κ = psiF V γ h κ := rfl
     rw [e, umax_iff γ hγ hγ' κ, ksph_iff hV (psiF_mem h κ), finE_psiF]
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Take `⟨c, hB⟩` from `Seed.FrmP.isSDFrame_std V hV 1`. Take `⟨u, hu⟩` from `GlobalTheory.AdelicOrthFrame.exists_orthonormal_baseFrame V 1 _ _ hB`. Rewrite `hu` using `[one_mul]`. Use `⟨rowPsi V (intGL D.host.F D.host.E V.rank u) hu, stdFrame_rowPsi hF hV hu (fun i j => (u.1 i j).2) ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_inv]`. Conclude with `fun i j => ((u⁻¹).1 i j).2`.
+-/
 theorem exists_std (hF : D.host.F = maximalRealSubfield D.host.E) (V : HSp D) (hV : Seed.FrmC.StdLat V) (n : ℕ)
     (hn : V.rank = n) : ∃ P : principalLevelFrame.RowPsi V n, StdFrame hF P := by
   subst hn
@@ -402,6 +554,9 @@ end Std
 
 section Match
 
+/- English proof (translation)
+Rewrite using `[show βW * βY' * (βY * K * βY') * (βY * βW') = βW * (βY' * βY) * K * (βY' * βY) * βW' by simp only [Matrix.mul_assoc], h]`. Simplify using `only [Matrix.mul_one]`.
+-/
 theorem block_frame_conjugation_identity {R : Type} [CommRing R] {a b c : ℕ} (βW : Matrix (Fin a) (Fin b) R) (βY' : Matrix (Fin b) (Fin c) R)
     (βY : Matrix (Fin c) (Fin b) R) (βW' : Matrix (Fin b) (Fin a) R) (K : Matrix (Fin b) (Fin b) R) (h : βY' * βY = 1) :
     βW * K * βW' = βW * βY' * (βY * K * βY') * (βY * βW') := by
@@ -416,16 +571,27 @@ def eqvF (P : principalLevelFrame.RowPsi Y n) : Formalism.AUTREP.GAf D.host.E n 
       obtain ⟨h, hh⟩ := P.onto g.1 g.2
       exact ⟨h, Subtype.ext hh⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eqvF_apply (P : principalLevelFrame.RowPsi Y n) (h : Formalism.AUTREP.GAf D.host.E n) : ((eqvF P h : GfC Y) : GA D Y) = P.ψ h := rfl
 
 variable (PY : principalLevelFrame.RowPsi Y n) (PW : principalLevelFrame.RowPsi W n)
 
 def transF : GfC Y →* GfC W := (eqvF PW).toMonoidHom.comp (eqvF PY).symm.toMonoidHom
 
+/- English proof (translation)
+Use `show eqvF PW ((eqvF PY).symm (eqvF PY κ)) = _`. Rewrite using `[MulEquiv.symm_apply_apply]`.
+-/
 theorem transF_eqvF (κ : Formalism.AUTREP.GAf D.host.E n) : transF PY PW (eqvF PY κ) = eqvF PW κ := by
   show eqvF PW ((eqvF PY).symm (eqvF PY κ)) = _
   rw [MulEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Take `⟨⟨βY, βY', hY1, hY2, hYf⟩, hYk⟩` from `hY`. Take `⟨⟨βW, βW', hW1, hW2, hWf⟩, hWk⟩` from `hW`. Use `⟨(eqvF PW).bijective.comp (eqvF PY).symm.bijective, ⟨βW * βY', βY * βW', ?_, ?_, fun g => ?_⟩, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[show βW * βY' * (βY * βW') = βW * (βY' * βY) * βW' by simp only [Matrix.mul_assoc], hY2, Matrix.mul_one, hW1]`. Rewrite using `[show βY * βW' * (βW * βY') = βY * (βW' * βW) * βY' by simp only [Matrix.mul_assoc], hW2, Matrix.mul_one, hY1]`.
+
+Take `⟨κ, rfl⟩` from `(eqvF PY).surjective g`. Rewrite using `[transF_eqvF, eqvF_apply, eqvF_apply, hWf κ, hYf κ]`. Conclude with `block_frame_conjugation_identity _ _ _ _ _ hY2`. Take `⟨κ, rfl⟩` from `(eqvF PY).surjective g`. Rewrite using `[transF_eqvF, eqvF_apply, eqvF_apply, ← hYk κ, hWk κ]`.
+-/
 theorem isIsomFin_transF (hF : D.host.F = maximalRealSubfield D.host.E) (hY : StdFrame hF PY) (hW : StdFrame hF PW) :
     principalLevelFrame.IsIsomFin (transF PY PW) := by
   obtain ⟨⟨βY, βY', hY1, hY2, hYf⟩, hYk⟩ := hY
@@ -439,6 +605,9 @@ theorem isIsomFin_transF (hF : D.host.F = maximalRealSubfield D.host.E) (hY : St
   · obtain ⟨κ, rfl⟩ := (eqvF PY).surjective g
     rw [transF_eqvF, eqvF_apply, eqvF_apply, ← hYk κ, hWk κ]
 
+/- English proof (translation)
+Use `⟨1, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[inv_one, one_mul, mul_one]`. Use `show _ = ((transF PY PW (eqvF PY h) : GfC W) : GA D W)`. Rewrite using `[transF_eqvF]`. Both sides reduce to the same expression.
+-/
 theorem frameMatch_transF : principalLevelFrame.FrameMatch PY PW (transF PY PW) := by
   refine ⟨1, fun h => ?_⟩
   rw [inv_one, one_mul, mul_one]
@@ -448,6 +617,11 @@ theorem frameMatch_transF : principalLevelFrame.FrameMatch PY PW (transF PY PW) 
 
 end Match
 
+/- English proof (translation)
+Introduce `D hF hY hW`. Establish `rY : (Yc D 0).rank = D.R.r` using `by show (D.sp.Y (min 0 D.R.m)).rank = _`. Rewrite using `[Nat.zero_min, D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Formalism.BasicNotions.Ranks.rankY]`. Take `⟨PY, hPY⟩` from `exists_std hF (Yc D 0) hY D.R.r rY`.
+
+Use `choose PW hPW using fun i : Fin D.R.m => exists_std hF (Wc D i) (hW i) D.R.r (D.sp.W_rank _ (by omega) (by omega))`. Conclude with `⟨PY, PW, fun i => transF PY (PW i), hPY, hPW, fun i => isIsomFin_transF PY (PW i) hF hPY (hPW i), fun i => frameMatch_transF PY (PW i)⟩`.
+-/
 theorem frames_std_matched : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E), Seed.FrmC.StdLat (Yc D 0) → (∀ i, Seed.FrmC.StdLat (Wc D i)) → ∃ (PY : principalLevelFrame.RowPsi (Yc D 0) D.R.r) (PW : ∀ i, principalLevelFrame.RowPsi (Wc D i) D.R.r) (ιW : ∀ i, ↥(GfC (Yc D 0)) →* ↥(GfC (Wc D i))), StdFrame hF PY ∧ (∀ i, StdFrame hF (PW i)) ∧ (∀ i, principalLevelFrame.IsIsomFin (ιW i)) ∧ ∀ i, principalLevelFrame.FrameMatch PY (PW i) (ιW i) := by
   intro D hF hY hW
   have rY : (Yc D 0).rank = D.R.r := by

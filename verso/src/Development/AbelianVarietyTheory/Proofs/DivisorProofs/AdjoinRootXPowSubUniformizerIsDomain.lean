@@ -7,6 +7,17 @@ namespace GlobalTheory
 
 open Polynomial in
 
+/- English proof (translation)
+Introduce `R _ _ _ π e hπ he`. Establish `hπp : Prime π` using `hπ.prime`. Establish `hP : (Ideal.span {π}).IsPrime` using `(Ideal.span_singleton_prime hπp.ne_zero).2 hπp`. Establish `hmon : (X ^ e - C π : R[X]).Monic` using `monic_X_pow_sub_C _ he.ne'`. Establish `hdeg : (X ^ e - C π : R[X]).natDegree = e` using `natDegree_X_pow_sub_C`.
+
+Establish `hirr : Irreducible (X ^ e - C π : R[X])`. Use `Polynomial.IsEisensteinAt.irreducible ⟨?_, ?_, ?_⟩ hP hmon.isPrimitive (by rw [hdeg]; exact he)` and prove the remaining obligations. Rewrite using `[hmon.leadingCoeff]`. Conclude with `fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Introduce `n hn`.
+
+Rewrite `hn` using `[hdeg]`. Rewrite using `[coeff_sub, coeff_X_pow, if_neg hn.ne, zero_sub, coeff_C]`. Use `split_ifs`. Conclude with `neg_mem (Ideal.mem_span_singleton_self _)`. Rewrite using `[neg_zero]`.
+
+Conclude with `zero_mem _`. Rewrite using `[coeff_sub, coeff_X_pow, if_neg he.ne, zero_sub, coeff_C_zero, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Introduce and unpack `⟨c, hc⟩`. Establish `h1 : π * (1 + π * c) = 0` using `by linear_combination -hc`. Establish `h2` using `(mul_eq_zero.1 h1).resolve_left hπp.ne_zero`.
+
+Conclude with `hπ.not_isUnit (IsUnit.of_mul_eq_one (-c) (by linear_combination -h2))`. Conclude with `AdjoinRoot.isDomain_of_prime hirr.prime`.
+-/
 theorem adjoinRoot_X_pow_sub_C_uniformizer_isDomain :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (π : R) (e : ℕ),
       Irreducible π → 0 < e → IsDomain (AdjoinRoot (Polynomial.X ^ e - Polynomial.C π : Polynomial R)) := by

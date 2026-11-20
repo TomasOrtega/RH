@@ -6,6 +6,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `O Γ _ _ _ Φ Λ _ _ _ _ a R _ _ _ D W hU hG D' hD' R' _ _ _ τ Q hnil hQ`. Establish `hc : ∀ i j, -((∑ p : Fin 4 × Fin 4, (τ (wt p.1 p.2)).natAbs : ℕ) : ℤ) ≤ τ (wt i j)`. Introduce `i j`. Establish `h1 : (τ (wt i j)).natAbs ≤ ∑ p : Fin 4 × Fin 4, (τ (wt p.1 p.2)).natAbs` using `Finset.single_le_sum (f := fun p : Fin 4 × Fin 4 => (τ (wt p.1 p.2)).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ (i, j))`. Use linear arithmetic over natural numbers and integers.
+
+Generalize the expression as in `(∑ p : Fin 4 × Fin 4, (τ (wt p.1 p.2)).natAbs) = c at hc`. Take `⟨S, _, _, _, e, he⟩` from `sxLaur (Λ := Λ) hnil c`. Take `⟨Q', hQ', hr, hψ⟩` from `sxScaleRD hnil he hc hQ`. Take `⟨F, hF, -⟩` from `hU.2 S Q' hQ'`. Establish `hFr : ∀ g i j, e (F (D.r g i j)) = HahnSeries.single (τ (wt i j)) (Q.r g i j)`.
+
+Introduce `g i j`. Rewrite using `[← hr, ← hF]`. Both sides reduce to the same expression. Establish `hFψ : ∀ v i s, e (F (D.ψ v i s)) = HahnSeries.single 0 (Q.ψ v i s)`. Introduce `v i s`.
+
+Rewrite using `[← hψ, ← hF]`. Both sides reduce to the same expression. Establish `hz : ∀ s, ∃ y, e (F (W.z s)) = HahnSeries.single (τ (W.wt s)) y`. Introduce `s`. Break down `hG.var s with ⟨g, i, j, x, h1, h2, h3⟩ | ⟨v, i, t, x, h1, h2⟩` into its components or cases.
+
+Rewrite using `[h1, h2, map_sub, map_sub, hFr, AlgHom.commutes, he.alg]`. Distinguish the cases in `hij : i = j`. Rewrite using `[(wt_eq_zero i j).2 hij, map_zero]`. Conclude with `⟨_, (HahnSeries.single_sub _ _ _).symm⟩`. Rewrite using `[h3 hij]`.
+
+Conclude with `⟨Q.r g i j, by simp⟩`. Rewrite using `[h1, h2, map_sub, map_sub, hFψ, AlgHom.commutes, he.alg, map_zero]`. Conclude with `⟨_, (HahnSeries.single_sub _ _ _).symm⟩`. Take `⟨f, hf⟩` from `sxLaurDesc W he τ F (sxLaurPart W hG.max he τ F hz)`. Establish `er : ∀ g i j, ((D'.r g i j : W.A) : R) = D.r g i j`.
+
+Introduce `g i j`. Rewrite using `[← hD']`. Both sides reduce to the same expression. Establish `eψ : ∀ v i s, ((D'.ψ v i s : W.A) : R) = D.ψ v i s`. Introduce `v i s`.
+
+Rewrite using `[← hD']`. Both sides reduce to the same expression. Use `⟨f, RD.ext ?_ ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Establish `hm : D'.r g i j ∈ W.gr (wt i j)` using `by show ((D'.r g i j : W.A) : R) ∈ W.part (wt i j)`.
+
+Rewrite using `[er]`. Conclude with `hG.ent g i j`. Establish `h` using `hf _ _ hm`. Rewrite `h` using `[er, hFr]`. Conclude with `(HahnSeries.single_injective _ h).symm`.
+
+Use function extensionality and compare the values at `v i`. Use extensionality with `s`. Establish `hm : D'.ψ v i s ∈ W.gr 0` using `by show ((D'.ψ v i s : W.A) : R) ∈ W.part 0`. Rewrite using `[eψ]`. Conclude with `hG.chr v i s`.
+
+Establish `h` using `hf _ _ hm`. Rewrite `h` using `[eψ, hFψ, map_zero]`. Conclude with `(HahnSeries.single_injective _ h).symm`.
+-/
 theorem UpperTheory.V.Ws.sxNearArt :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] {a : O →+* Λ} {R : Type} [CommRing R] [Algebra Λ R] [IsCO Λ R] {D : RD Φ R} {W : WPres Λ (ℤ × ℤ) R}, Φ.RUniv a D → D.Graded W → ∀ (D' : RD Φ W.A), D'.map (W.A.val : W.A →+* R) = D → ∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (τ : ℤ × ℤ →+ ℤ) (Q : RD Φ R'), IsNilpotent (maximalIdeal R') → Φ.Near a τ Q → ∃ f : W.A →ₐ[Λ] R', D'.map (f : W.A →+* R') = Q := by
   intro O Γ _ _ _ Φ Λ _ _ _ _ a R _ _ _ D W hU hG D' hD' R' _ _ _ τ Q hnil hQ

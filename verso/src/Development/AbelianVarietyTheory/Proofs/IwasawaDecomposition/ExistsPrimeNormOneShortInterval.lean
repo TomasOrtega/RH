@@ -11,6 +11,13 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem.An.ShortWindow
 
+/- English proof (translation)
+Establish `h1` using `(isLittleO_log_rpow_atTop ha).bound (c := k / 2 / D) (by positivity)`. Establish `h2` using `(tendsto_rpow_atTop ha).eventually_ge_atTop (A / (k / 2))`. Use `filter_upwards [h1, h2, eventually_ge_atTop (0 : ℝ)] with x h1 h2 hx`. Establish `hp : 0 ≤ x ^ a` using `Real.rpow_nonneg hx a`. Rewrite `h1` using `[Real.norm_of_nonneg hp]`.
+
+Establish `h3 : Real.log x ≤ k / 2 / D * x ^ a` using `(le_abs_self _).trans h1`. Establish `h4 : D * Real.log x ≤ k / 2 * x ^ a`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : A ≤ k / 2 * x ^ a`. Rewrite `h2` using `[div_le_iff₀ (by positivity)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ev_log_le {a k : ℝ} (ha : 0 < a) (hk : 0 < k) (A D : ℝ) (hD : 0 < D) :
     ∀ᶠ x : ℝ in atTop, A + D * Real.log x ≤ k * x ^ a := by
   have h1 := (isLittleO_log_rpow_atTop ha).bound (c := k / 2 / D) (by positivity)
@@ -27,6 +34,11 @@ theorem ev_log_le {a k : ℝ} (ha : 0 < a) (hk : 0 < k) (A D : ℝ) (hD : 0 < D)
     linarith
   linarith
 
+/- English proof (translation)
+Establish `h1 : 200 * C * W ≤ Real.exp y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_add, Real.exp_log (by positivity), Real.rpow_def_of_pos hx, mul_comm (Real.log x)]`. Use `_ ≤ _ := Real.exp_le_exp.2 hy`. Establish `hW0 : 0 < W` using `by linarith`.
+
+Rewrite using `[Real.exp_neg, ← div_eq_mul_inv, div_div, div_le_div_iff₀ (Real.exp_pos _) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem exp_term_le {C x W y : ℝ} (hC : 0 < C) (hx : 0 < x) (hW : 1 ≤ W) (hWx : W ≤ x ^ (12 : ℝ))
     (hy : Real.log (200 * C) + 12 * Real.log x ≤ y) : C * Real.exp (-y) ≤ 1 / W / 200 := by
   have h1 : 200 * C * W ≤ Real.exp y := by
@@ -38,6 +50,55 @@ theorem exp_term_le {C x W y : ℝ} (hC : 0 < C) (hx : 0 < x) (hW : 1 ≤ W) (hW
   rw [Real.exp_neg, ← div_eq_mul_inv, div_div, div_le_div_iff₀ (Real.exp_pos _) (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Introduce `hTZ eps he _ cs CY hcs hCY`. Take `⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, H⟩` from `GlobalTheory.T.norm_primes_short_interval_lower hTZ`. Use `set CB : ℝ := 8 * CY + 6 with hCB`. Establish `hCB0 : 0 < CB` using `by positivity`. Establish `e1` using `ev_log_le (a := 2 * eps / 5) (k := 1) (by positivity) one_pos 0 1 one_pos`.
+
+Establish `e2` using `ev_log_le (a := 1 / 3) (k := cs) (by positivity) hcs (C₀ * CB) 1 one_pos`. Establish `e3` using `ev_log_le (a := 1 / 3) (k := cr * cs / CB) (by positivity) (by positivity) (Real.log (200 * Cr)) 12 (by norm_num)`. Establish `e4` using `ev_log_le (a := 1 / 6) (k := cr * Real.sqrt cs) (by positivity) (by positivity) (Real.log (200 * Cr)) 12 (by norm_num)`. Establish `e5` using `ev_log_le (a := 1 / 3) (k := cs / 3) (by positivity) (by positivity) (7 * CB) 12 (by norm_num)`. Establish `e6` using `Real.tendsto_log_atTop.eventually_ge_atTop (100 : ℝ)`.
+
+Take `⟨x₀, hx₀⟩` from `eventually_atTop.1 (e1.and (e2.and (e3.and (e4.and (e5.and (e6.and (eventually_ge_atTop (1 : ℝ))))))))`. Use `⟨x₀, fun x hx n q d g₁ g₂ m hn hR hg₁ hg₂ hl₁ hl₂ hm W Ts hW hWx hTs hT => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4, e5, e6, hx1⟩` from `hx₀ x hx`. Take `⟨hq, -, -, -, hd, hd16, hdl, -, -, -, hN⟩` from `hR`. Establish `hx0 : 0 < x` using `by linarith`.
+
+Establish `hW0 : 0 < W` using `by linarith`. Use `set L : ℝ := x ^ eps with hL`. Use `set u : ℝ := x ^ ((1 : ℝ) / 3) with hu`. Establish `hL1 : 1 ≤ L` using `Real.one_le_rpow hx1 he.le`. Establish `hu1 : 1 ≤ u` using `Real.one_le_rpow hx1 (by norm_num)`.
+
+Establish `hlx : 0 ≤ Real.log x` using `by linarith`. Establish `hd100 : 100 ≤ d`. Establish `h1 : 1 ≤ x ^ (eps / 5)` using `Real.one_le_rpow hx1 (by positivity)`. Establish `h2 : (10000 : ℝ) ≤ x ^ (eps / 5) * Real.log x ^ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : (100 : ℝ) ^ 2 ≤ GlobalTheoryTheory.X2 x eps`. Use `Real.add_one_le_exp (x ^ (eps / 5) * Real.log x ^ 2)` as an intermediate fact. Unfold `GlobalTheoryTheory.X2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (100 : ℝ) ≤ Real.sqrt (GlobalTheoryTheory.X2 x eps)` using `Real.le_sqrt_of_sq_le h3`.
+
+Establish `h5 : (100 : ℝ) ≤ d` using `by linarith`. Conclude with `h5` after adjusting the coercions. Establish `hq1 : 1 ≤ q` using `hq.one_lt.le`. Establish `hd1 : 1 ≤ d` using `hd.one_lt.le`. Use `set M : ℕ := 4 * n * q * d * (g₁ * g₂) ^ 2 with hM`.
+
+Establish `hM1 : 1 ≤ M` using `Nat.succ_le_of_lt (by positivity)`. Use `set B : ℝ := 4 * (d : ℝ) * (M : ℝ) ^ 2 with hB`. Establish `hnR : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hqR : (1 : ℝ) ≤ q` using `by exact_mod_cast hq1`. Establish `hdR : (1 : ℝ) ≤ d` using `by exact_mod_cast hd1`.
+
+Establish `hg₁R : (1 : ℝ) ≤ g₁` using `by exact_mod_cast hg₁`. Establish `hg₂R : (1 : ℝ) ≤ g₂` using `by exact_mod_cast hg₂`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM1`. Establish `hB1 : 1 < B`. Establish `: (1 : ℝ) ≤ (M : ℝ) ^ 2` using `one_le_pow₀ hMR`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hB0 : 0 < B` using `by linarith`. Establish `hlB0 : 0 < Real.log B` using `Real.log_pos hB1`. Establish `hNL : Real.log (4 * n * q * d) ≤ 2 * L`. Establish `h1 : Real.log x ^ 2 ≤ (x ^ (2 * eps / 5)) ^ 2` using `by gcongr; linarith`.
+
+Establish `h2 : x ^ (eps / 5) * (x ^ (2 * eps / 5)) ^ 2 = L`. Rewrite using `[hL, sq, ← Real.rpow_add hx0, ← Real.rpow_add hx0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : 0 ≤ x ^ (eps / 5)` using `by positivity`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlB : Real.log B ≤ CB * L`. Establish `h1 : B ≤ (4 * n * q * d : ℝ) ^ 3 * (g₁ : ℝ) ^ 4 * (g₂ : ℝ) ^ 4`. Establish `h0 : (4 * d : ℝ) ≤ 4 * n * q * d`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB, hM]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (4 * n * q * d : ℝ) * ((4 * n * q * d : ℝ) ^ 2 * (g₁ : ℝ) ^ 4 * (g₂ : ℝ) ^ 4) := by gcongr`.
+
+Use `_ = _ := by ring`. Establish `h2` using `Real.log_le_log hB0 h1`. Generalize the expression as in `Real.log B = lB at h2 ⊢`. Rewrite `h2` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_pow, Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at h2`.
+
+Rewrite using `[hCB]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT' : cs * u * L ≤ Real.log Ts` using `le_trans (by gcongr) hT`. Establish `hT0 : 0 < Real.log Ts` using `lt_of_lt_of_le (by positivity) hT'`. Establish `a1 : B ^ C₀ ≤ Ts`.
+
+Rewrite using `[Real.rpow_def_of_pos hB0, ← Real.le_log_iff_exp_le hTs]`. Combine the equalities or inequalities in the displayed calculation. Establish `a2 : 1 / W ≤ 1` using `by rw [div_le_one hW0]; exact hW`. Establish `a3 : Formalism.HermitianLattices.GL2PrimeSums.rhoErr Cr cr B Ts ≤ 1 / W / 100`. Unfold `Formalism.HermitianLattices.GL2PrimeSums.rhoErr`.
+
+Establish `b1 : Cr * Real.exp (-(cr * Real.log Ts / Real.log B)) ≤ 1 / W / 200`. Use `exp_term_le hCr hx0 hW hWx (e3.trans ?_)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hlB0]`. Combine the equalities or inequalities in the displayed calculation. Establish `b2 : Cr * Real.exp (-(cr * Real.sqrt (Real.log Ts))) ≤ 1 / W / 200`.
+
+Use `exp_term_le hCr hx0 hW hWx (e4.trans ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `gcongr`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `: (x ^ ((1 : ℝ) / 6)) ^ 2 = u`.
+
+Rewrite using `[hu, sq, ← Real.rpow_add hx0]`. Use `congr 1`. Evaluate the numerical expressions. Rewrite using `[mul_pow, Real.sq_sqrt hcs.le, this]`. Use `le_trans ?_ hT'` and prove the remaining obligations.
+
+Conclude with `le_mul_of_one_le_right (by positivity) hL1`. Rewrite using `[neg_mul, neg_mul, neg_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a4 : B ^ (7 : ℝ) ≤ 1 / W * Ts ^ ((1 : ℝ) / 3)`. Establish `b1 : Real.log B * 7 + Real.log x * 12 ≤ Real.log Ts * (1 / 3)`.
+
+Establish `c1 : Real.log x * 12 ≤ Real.log x * 12 * L` using `le_mul_of_one_le_right (by positivity) hL1`. Establish `c2 : (7 * CB + 12 * Real.log x) * L ≤ cs / 3 * u * L` using `by gcongr`. Combine the linear relations using `only [c1, c2, hlB, hT']`. Establish `b2` using `Real.exp_le_exp.2 b1`. Rewrite `b2` using `[Real.exp_add, ← Real.rpow_def_of_pos hB0, ← Real.rpow_def_of_pos hx0, ← Real.rpow_def_of_pos hTs]`.
+
+Rewrite using `[one_div, ← div_eq_inv_mul, le_div_iff₀ hW0]`. Use `le_trans ?_ b2` and prove the remaining obligations. Use `gcongr`. Establish `key` using `H d M hd (by omega) hd100 hM1 Ts (1 / W) a1 a2 a3 a4`. Establish `hpos : (0 : ℝ) < ((normPrimes d M Ts (Ts * (1 + 1 / W))).card : ℝ)` using `lt_of_lt_of_le (by positivity) key`.
+
+Take `⟨T, hTm⟩` from `Finset.card_pos.1 (by exact_mod_cast hpos)`. Unfold `normPrimes at hTm`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hTm`. Take `⟨⟨t1, t2⟩, t3, t4⟩` from `hTm`. Use `⟨T, t3, Nat.lt_of_floor_lt t1, ?_, t4⟩` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `(Nat.le_floor_iff (by positivity)).1 t2`.
+-/
 theorem exists_prime_normOne : GlobalTheory.Mem.An.QuadraticHeckeZeroEstimates → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∀ cs CY : ℝ, 0 < cs → 0 < CY → ∃ x₀ : ℝ, ∀ x : ℝ, x₀ ≤ x → ∀ n q d g₁ g₂ m : ℕ, 1 ≤ n → Rowq x eps n q d → 1 ≤ g₁ → 1 ≤ g₂ → Real.log g₁ ≤ CY * x ^ eps → Real.log g₂ ≤ CY * x ^ eps → x ^ ((1 : ℝ) / 3) ≤ m → ∀ W Ts : ℝ, 1 ≤ W → W ≤ x ^ (12 : ℝ) → 0 < Ts → cs * m * x ^ eps ≤ Real.log Ts → ∃ T : ℕ, T.Prime ∧ Ts < T ∧ (T : ℝ) ≤ (1 + 1 / W) * Ts ∧ NormOne d (4 * n * q * d * (g₁ * g₂) ^ 2) T := by
   intro hTZ eps he _ cs CY hcs hCY
   obtain ⟨C₀, Cr, cr, c, hC₀, hCr, hcr, hc, H⟩ := GlobalTheory.T.norm_primes_short_interval_lower hTZ

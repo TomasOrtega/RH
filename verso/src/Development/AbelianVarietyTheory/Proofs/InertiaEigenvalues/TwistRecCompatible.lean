@@ -27,6 +27,9 @@ section Sums
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact ((WD.lpSum_comm _ _).trans (WD.lpSum_zero _)).symm`. Consider the case `cons a l ih`. Establish `key : ∀ m : List (Segment (w.adicCompletion E)), segSum rc (a :: m) = (((rc a.first).lpTw (((a.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h a.len)).lpSum (segSum rc m)` using `fun _ => rfl`. Rewrite using `[List.cons_append, key, key, ih, WD.lpSum_assoc]`.
+-/
 theorem segSum_append_lpSum (rc : IrrGL (w.adicCompletion E) → WD h) (l l' : List (Segment (w.adicCompletion E))) :
     segSum rc (l ++ l') = (segSum rc l).lpSum (segSum rc l') := by
   induction l with
@@ -38,6 +41,11 @@ theorem segSum_append_lpSum (rc : IrrGL (w.adicCompletion E) → WD h) (l l' : L
 
 end Sums
 
+/- English proof (translation)
+Introduce `hX hM hS E Ω _ _ _ _ _ A w h a ha e rc H r t σ τ π hπ`. Establish `: CharZero (w.adicCompletion E)` using `algebraRat.charZero _`. Take `⟨𝔪, h𝔪⟩` from `hX _ (cls σ)`. Take `⟨𝔫, h𝔫⟩` from `hX _ (cls τ)`. Establish `hp` using `GlobalTheory.T.isLanglandsClassification_add_of_irreducible_product hM hS _ r t σ τ π 𝔪 𝔫 (h𝔪.of_equiv (equivRep σ).symm) (h𝔫.of_equiv (equivRep τ).symm) hπ`.
+
+Rewrite using `[H.langlands 𝔪.toList (cls σ) (by rwa [Multiset.coe_toList]), H.langlands 𝔫.toList (cls τ) (by rwa [Multiset.coe_toList]), H.langlands (𝔪.toList ++ 𝔫.toList) (cls π) (by`. Rewrite using `[← Multiset.coe_add, Multiset.coe_toList, Multiset.coe_toList]`. Conclude with `hp.of_equiv (equivRep π)), segSum_append_lpSum]`.
+-/
 theorem lawsLit_prod : LanglandsExhaustionGL → LanglandsMultisegments → StandardCosocleGL → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (a : Weil h →* (w.adicCompletion E)ˣ) (ha : IsLocalArtin h a) (e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ) (rc : IrrGL (w.adicCompletion E) → WD h), LawsLit a ha e rc → ∀ (r t : ℕ) (σ : IrrRep (GL (Fin r) (w.adicCompletion E))) (τ : IrrRep (GL (Fin t) (w.adicCompletion E))) (π : IrrRep (GL (Fin (r + t)) (w.adicCompletion E))), Nonempty (π.ρ.Equiv (prod₂ σ.ρ τ.ρ)) → rc (cls π) = (rc (cls σ)).lpSum (rc (cls τ)) := by
   intro hX hM hS E Ω _ _ _ _ _ A w h a ha e rc H r t σ τ π hπ
   have : CharZero (w.adicCompletion E) := algebraRat.charZero _

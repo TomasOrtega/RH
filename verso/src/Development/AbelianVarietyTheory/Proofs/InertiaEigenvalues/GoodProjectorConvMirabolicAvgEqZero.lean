@@ -22,6 +22,11 @@ namespace GlobalTheory.GoodNoChiTr
 
 open Polynomial
 
+/- English proof (translation)
+Introduce `hr`. Establish `hne : f v ≠ 0` using `(h.1 v).1.ne_zero`. Establish `hmem : algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g) (χ v j : ZMod g) ∈ Formalism.CyclotomicNorms.rootsBar (f v)`. Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.mem_roots (Polynomial.map_ne_zero hne), Polynomial.IsRoot, Polynomial.eval_map, Polynomial.eval₂_hom, hr.eq_zero, map_zero]`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ, hℓg⟩ : ∃ ℓ : ℕ, ℓ.Prime ∧ ℓ ≠ g := by`. Distinguish the cases in `h2 : g = 2`. Conclude with `⟨3, Nat.prime_three, by omega⟩`. Conclude with `⟨2, Nat.prime_two, fun e => h2 e.symm⟩`. Conclude with `h.2.2.2.1 ℓ hℓ hℓg v j _ hmem rfl`.
+-/
 theorem not_root_of_good (N g : ℕ) [Fact g.Prime] {PP J : Type} (f : PP → (ZMod g)[X])
     (χ : PP → J → (ZMod g)ˣ) (h : Formalism.CyclotomicNorms.IsGood N g f χ) (v : PP) (j : J) :
     ¬ (f v).IsRoot (χ v j : ZMod g) := by
@@ -37,6 +42,21 @@ theorem not_root_of_good (N g : ℕ) [Fact g.Prime] {PP J : Type} (f : PP → (Z
     · exact ⟨2, Nat.prime_two, fun e => h2 e.symm⟩
   exact h.2.2.2.1 ℓ hℓ hℓg v j _ hmem rfl
 
+/- English proof (translation)
+Introduce `hS D G _ _ Pl0 T A Ks _ _ _ R F hG i PP a ha b ε hε x`. Take `⟨eR, plg, iso, hcoef, hdiv, hrec⟩` from `hG.core.grp.record`. Take `⟨kv0, rfl⟩` from `plg.surjective PP`. Use `haveI : ∀ k, Fact (D.host.g k).Prime := fun k => ⟨D.host.g_prime k⟩`. Establish `heC : ∀ g, RealDat.eC (A` using `A) (sg0 D A) g = D.ntypes.e0.coeff (eR g) := by`.
+
+Introduce `g`. Rewrite using `[← hcoef g]`. Unfold `RealDat.eC sg0`. Rewrite using `[sgAt_mk _ R.hv0]`. Rewrite using `[Finset.sum_congr rfl (fun y _ => by rw [GlobalTheory.T.mirabolicAverage_eq_coeff_singlePlaceElement D G Pl0 T A Ks R eR plg iso hrec i kv0 a b ε y, heC])]`.
+
+Use `GlobalTheory.T.convolution_singleFactor_goodProjector_eq_zero D G eR kv0 _ ?_ x` and prove the remaining obligations. Introduce `a' hgood`. Take `⟨L, hL, c, hc, hcc⟩` from `GlobalTheory.T.levelCharacter_teichmullerLabel_of_goodTypes D G Pl0 T A Ks R hG.types kv0.1 kv0.2 i (plg kv0).1 (hdiv kv0) (iso kv0) ε hε`. Rewrite using `[← D.ntypes.eSer_central, hL]`. Establish `h1` using `not_root_of_good _ _ _ _ (hgood kv0.1).1 kv0.2 i`.
+
+Establish `h2` using `not_root_of_good _ _ _ _ (hgood kv0.1).2 kv0.2 i`. Establish `ha' : (fun j => (iso kv0).symm (a j)) ≠ 0`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+
+Use `congrArg (iso kv0) (congrFun h j)` as an intermediate fact. Simplify using `using this`. Use `hS _ L _ _ _ c hc ?_ ?_ _ b ha'` and prove the remaining obligations. Break down `hcc with rfl | rfl` into its components or cases. Conclude with `h1`.
+
+Conclude with `h2`. Break down `hcc with rfl | rfl` into its components or cases. Rewrite using `[← Units.val_inv_eq_inv_val]`. Conclude with `h2`. Rewrite using `[Units.val_inv_eq_inv_val, inv_inv]`.
+
+Conclude with `h1`.
+-/
 theorem conv_mirC_eC : GlobalTheory.MirAvg.SeriesKillsAvg → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
     (F : Face D A), GlobalTheory.LiftRows.Given R F → ∀ (i : Fin D.R.m) (PP : R.Pg) (a : Fin D.R.r → kP PP.1), a ≠ 0 →

@@ -21,6 +21,11 @@ namespace GlobalTheory.SeesawSumTarget
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: ((χ * η : (AE D)ˣ →* Circle) : (AE D)ˣ → Circle) = fun x => χ x * η x`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `hχ.1.mul hη.1`. Simplify using `only [MonoidHom.mul_apply, hχ.2 x, hη.2 x, mul_one]`.
+-/
 theorem isHeckeChar_mul {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) (hη : IsHeckeChar D η) :
     IsHeckeChar D (χ * η) := by
   refine ⟨?_, fun x => ?_⟩
@@ -30,6 +35,11 @@ theorem isHeckeChar_mul {χ η : (AE D)ˣ →* Circle} (hχ : IsHeckeChar D χ) 
     exact hχ.1.mul hη.1
   · simp only [MonoidHom.mul_apply, hχ.2 x, hη.2 x, mul_one]
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `GlobalTheory.T.schurLemma_thetaFunctions_orientedPair D ψ H.std S T (om' p⁻¹ * om p) (fun f hf => H'.om_pres _ _ (H.om_pres _ _ hf)) (fun w f hf => by`. Take `⟨g, h⟩` from `p`. Establish `e` using `GlobalTheory.AdelicLatMove.actO_actO_inv S T g⁻¹ h⁻¹ w`. Rewrite `e` using `[inv_inv, inv_inv]`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, H.om_heis g h w f hf, Prod.inv_mk, H'.om_heis _ _ _ _ (H.om_pres _ _ hf), e])`.
+
+Use the proof step `(fun μ 𝓕 hμ h𝓕 f hf => by`. Rewrite using `[Module.End.mul_apply, H'.om_unit μ 𝓕 hμ h𝓕 _ _ (H.om_pres _ _ hf), H.om_unit μ 𝓕 hμ h𝓕 _ _ hf])`. Use `⟨⟨c, mem_sphere_zero_iff_norm.2 hc⟩, fun f hf => ?_⟩` and prove the remaining obligations. Use `congrArg (om' p) (h f hf)` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply, GlobalTheory.WeilUniq.om_om_inv, map_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_scalar {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT χS' χT' : (AE D)ˣ →* Circle}
     {om om' : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (H : IsWeilDatumO ψ S T χS χT om) (H' : IsWeilDatumO ψ S T χS' χT' om') (p : GA D S × GA D T) :
@@ -51,6 +61,11 @@ theorem exists_scalar {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT χ
 section Std
 open GlobalTheory.MixModel
 
+/- English proof (translation)
+Rewrite using `[OrthDec.qA, GlobalTheory.Doubling.gram_hsum, GlobalTheory.Doubling.blkMat]`. Simplify using `only [GlobalTheory.BiTransfer.sumDec, Matrix.conjTranspose_submatrix, conjTranspose_fromRows_eq_fromCols_conjTranspose, conjTranspose_one, conjTranspose_zero, Matrix.submatrix_mul_equiv, fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.one_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, submatrix_apply, id]`.
+
+Break down `finSumFinEquiv.symm j with k | k` into its components or cases. Simplify using `only [fromCols_apply_inl]`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det A)]`. Simplify using `only [fromCols_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem qA_sumDec (A B : HSp D) :
     (GlobalTheory.BiTransfer.sumDec A B).qA = (fromCols (1 : Matrix (Fin A.rank) (Fin A.rank) D.host.E) 0).submatrix id finSumFinEquiv.symm := by
   rw [OrthDec.qA, GlobalTheory.Doubling.gram_hsum, GlobalTheory.Doubling.blkMat]
@@ -64,6 +79,11 @@ theorem qA_sumDec (A B : HSp D) :
     rw [← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det A)]
   · simp only [fromCols_apply_inr, Matrix.zero_apply, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Rewrite using `[OrthDec.qB, GlobalTheory.Doubling.gram_hsum, GlobalTheory.Doubling.blkMat]`. Simplify using `only [GlobalTheory.BiTransfer.sumDec, Matrix.conjTranspose_submatrix, conjTranspose_fromRows_eq_fromCols_conjTranspose, conjTranspose_one, conjTranspose_zero, Matrix.submatrix_mul_equiv, fromCols_mul_fromBlocks]`. Simplify using `only [Matrix.one_mul, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, submatrix_apply, id]`.
+
+Break down `finSumFinEquiv.symm j with k | k` into its components or cases. Simplify using `only [fromCols_apply_inl, Matrix.zero_apply, mul_zero, Finset.sum_const_zero]`. Simplify using `only [fromCols_apply_inr]`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det B)]`.
+-/
 theorem qB_sumDec (A B : HSp D) :
     (GlobalTheory.BiTransfer.sumDec A B).qB = (fromCols (0 : Matrix (Fin B.rank) (Fin A.rank) D.host.E) 1).submatrix id finSumFinEquiv.symm := by
   rw [OrthDec.qB, GlobalTheory.Doubling.gram_hsum, GlobalTheory.Doubling.blkMat]
@@ -77,6 +97,9 @@ theorem qB_sumDec (A B : HSp D) :
   · simp only [fromCols_apply_inr]
     rw [← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (GlobalTheory.MixModel.gram_isUnit_det B)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [OrthDec.pA, rat, qA_sumDec, Matrix.mul_apply, Matrix.map_apply, submatrix_apply, id, Fin.sum_univ_add, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromCols_apply_inl, fromCols_apply_inr, Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, …`. Simplify using `[apply_ite (incA D)]`.
+-/
 theorem pA_sumDec {S A B : HSp D} (x : WO S (GlobalTheory.Doubling.hsum A B)) :
     (GlobalTheory.BiTransfer.sumDec A B).pA ⬝ x = topR (A := A) (B := B) x := by
   ext i j
@@ -85,6 +108,9 @@ theorem pA_sumDec {S A B : HSp D} (x : WO S (GlobalTheory.Doubling.hsum A B)) :
     Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, add_zero, Matrix.one_apply, topR]
   simp [apply_ite (incA D)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [OrthDec.pB, rat, qB_sumDec, Matrix.mul_apply, Matrix.map_apply, submatrix_apply, id, Fin.sum_univ_add, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, fromCols_apply_inl, fromCols_apply_inr, Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, …`. Simplify using `[apply_ite (incA D)]`.
+-/
 theorem pB_sumDec {S A B : HSp D} (x : WO S (GlobalTheory.Doubling.hsum A B)) :
     (GlobalTheory.BiTransfer.sumDec A B).pB ⬝ x = botR (A := A) (B := B) x := by
   ext i j
@@ -93,12 +119,20 @@ theorem pB_sumDec {S A B : HSp D} (x : WO S (GlobalTheory.Doubling.hsum A B)) :
     Matrix.zero_apply, map_zero, zero_mul, Finset.sum_const_zero, zero_add, Matrix.one_apply, botR]
   simp [apply_ite (incA D)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [OrthDec.boxT, OrthDec.resT_apply, box2]`. Rewrite using `[pA_sumDec, pB_sumDec]`.
+-/
 theorem boxT_sumDec (S A B : HSp D) (φ : WO S A → ℂ) (φ' : WO S B → ℂ) :
     (GlobalTheory.BiTransfer.sumDec A B).boxT S φ φ' = box2 φ φ' := by
   funext x
   simp only [OrthDec.boxT, OrthDec.resT_apply, box2]
   rw [pA_sumDec, pB_sumDec]
 
+/- English proof (translation)
+Apply `GlobalTheory.MixModel.mt_injective (GlobalTheory.Doubling.hsum A B)` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.BiTransfer.sumDec A B).mt_emb, GlobalTheory.SquareComm.mt_blk]`. Use extensionality with `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨t, rfl⟩` from `finSumFinEquiv.surjective j`.
+
+Simplify using `only [GlobalTheory.Doubling.blkMat, submatrix_apply, Equiv.symm_apply_apply, Matrix.add_apply, Matrix.mul_apply, OrthDec.jA, OrthDec.jB, OrthDec.pA, OrthDec.pB, rat, qA_sumDec, qB_sumDec, Matrix.map_apply, id]`. Simplify using `only [GlobalTheory.BiTransfer.sumDec, submatrix_apply, Equiv.symm_apply_apply, id]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t <;>`. Simplify using `[Matrix.one_apply, apply_ite (incA D), ite_mul, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem emb_sumDec (A B : HSp D) (g : GA D A) (g₁ : GA D B) :
     (GlobalTheory.BiTransfer.sumDec A B).emb (g, g₁) = GlobalTheory.SquareComm.blk A B (g, g₁) := by
   apply GlobalTheory.MixModel.mt_injective (GlobalTheory.Doubling.hsum A B)
@@ -114,6 +148,13 @@ theorem emb_sumDec (A B : HSp D) (g : GA D A) (g₁ : GA D B) :
 
 end Std
 
+/- English proof (translation)
+Introduce `D ψ hψ S A B χ₁ χ₁' χ₂ χ₂' ω₁ ω₂ H₁ H₂`. Establish `hη` using `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨ω₂', H₂'⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S B χ₁ χ₂' hη H₁.hecS H₂.hecT H₁.resS H₂.resT`. Take `⟨ω, H⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hψ S (GlobalTheory.Doubling.hsum A B) χ₁ (χ₁' * χ₂') hη H₁.hecS (isHeckeChar_mul H₁.hecT H₂.hecT) H₁.resS (resEta_mul H₁.resT H₂.resT)`. Use `choose c hc using fun p => exists_scalar H₂' H₂ p`.
+
+Use `⟨ω, χ₁, χ₁' * χ₂', fun u _ g₁ => (c (u, g₁) : ℂ), H, fun u _ g₁ => Circle.norm_coe _, fun φ φ' hφ hφ' => ⟨?_, fun u g g₁ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← boxT_sumDec]`. Conclude with `(GlobalTheory.BiTransfer.sumDec A B).isThetaFunO_boxT hφ hφ'`. Establish `key` using `(GlobalTheory.TensorTargetRule.tensorTarget D ψ hψ _ A B (GlobalTheory.BiTransfer.sumDec A B) S).om_box χ₁ χ₁' χ₂' ω ω₁ ω₂' H H₁ H₂' u g g₁ φ φ' hφ hφ'`. Simplify using `only [thetaKO]`.
+
+Rewrite using `[← emb_sumDec, ← boxT_sumDec, key, GlobalTheory.MixModel.OrthDec.boxT_zero, hc (u, g₁) φ' hφ', Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem seesaw_sum : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B : HSp D) (χ₁ χ₁' χ₂ χ₂' : (AE D)ˣ →* Circle)
     (ω₁ : GA D S × GA D A →* Module.End ℂ (WO S A → ℂ)) (ω₂ : GA D S × GA D B →* Module.End ℂ (WO S B → ℂ)),
     IsWeilDatumO ψ S A χ₁ χ₁' ω₁ → IsWeilDatumO ψ S B χ₂ χ₂' ω₂ →

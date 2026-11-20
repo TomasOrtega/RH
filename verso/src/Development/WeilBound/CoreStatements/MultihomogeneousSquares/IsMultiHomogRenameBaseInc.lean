@@ -17,6 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {σ : 
 def baseInc : (Σ k, baseIdx ι blk k) → Σ k, ι k := fun q => ⟨q.1.1, q.2⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce and unpack `⟨⟨k, hk⟩, i⟩ ⟨⟨k', hk'⟩, i'⟩ h`. Simplify using `only [baseInc, Sigma.mk.inj_iff] at h`. Take `⟨rfl, h2⟩` from `h`. Consider the cases of `h2`. Both sides reduce to the same expression.
+-/
 theorem baseInc_injective : Function.Injective (baseInc (ι := ι) blk) := by
   rintro ⟨⟨k, hk⟩, i⟩ ⟨⟨k', hk'⟩, i'⟩ h
   simp only [baseInc, Sigma.mk.inj_iff] at h
@@ -28,6 +31,13 @@ open Classical in
 
 def extDeg (b : NonPluckerBlocks blk → ℕ) : K → ℕ := fun k => if h : ∀ p, blk p ≠ some k then b ⟨k, h⟩ else 0
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[support_rename_of_injective (baseInc_injective blk)]`. Take `⟨m₀, hm₀, rfl⟩` from `Finset.mem_image.1 hm`. Distinguish the cases in `h : ∀ p, blk p ≠ some k`. Establish `e : ∀ i : ι k, (Finsupp.mapDomain (baseInc blk) m₀) ⟨k, i⟩ = m₀ ⟨⟨k, h⟩, i⟩` using `fun i => Finsupp.mapDomain_apply (baseInc_injective blk) m₀ (⟨⟨k, h⟩, i⟩ : Σ k, baseIdx ι blk k)`.
+
+Simplify using `only [e, extDeg, dif_pos h]`. Conclude with `hβ m₀ hm₀ ⟨k, h⟩`. Establish `e : ∀ i : ι k, (Finsupp.mapDomain (baseInc blk) m₀) ⟨k, i⟩ = 0` using `fun i => Finsupp.mapDomain_of_notMem_range _ _ (by`. Introduce and unpack `⟨q, hq⟩`. Establish `: q.1.1 = k` using `congrArg Sigma.fst hq`.
+
+Conclude with `h (this ▸ q.1.2))`. Simplify using `only [e, extDeg, dif_neg h, Finset.sum_const_zero]`.
+-/
 theorem isMultiHomog_rename_baseInc {β : MRing (baseIdx ι blk)} {b : NonPluckerBlocks blk → ℕ} (hβ : IsMultiHomog β b) :
     IsMultiHomog (rename (baseInc (ι := ι) blk) β) (extDeg blk b) := by
   classical
@@ -47,6 +57,9 @@ theorem isMultiHomog_rename_baseInc {β : MRing (baseIdx ι blk)} {b : NonPlucke
     simp only [e, extDeg, dif_neg h, Finset.sum_const_zero]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Simplify using `only [Cmp.evC, map_rename, eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem evC_rename_baseInc (z : (Σ k, ι k) → ℂ) (β : MRing (baseIdx ι blk)) :
     Cmp.evC z (rename (baseInc blk) β) = Cmp.evC (basePart blk z) β := by
   simp only [Cmp.evC, map_rename, eval_rename]
@@ -54,6 +67,19 @@ theorem evC_rename_baseInc (z : (Σ k, ι k) → ℂ) (β : MRing (baseIdx ι bl
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `hE hF E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie n d BM FA hH`. Take `⟨β, b, hβ, hβn, hβz⟩` from `hF E H D l Xo c Y S M.Ω (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐`. Establish `hβ'` using `isMultiHomog_rename_baseInc M.blk hβ`. Use `hE K ι (mCoordIdeal y) (d + 1) _ (FA.S.comap some) (FA.Re.comap some) (rename (baseInc M.blk) β) (extDeg M.blk b) FA.J_top FA.deg_one FA.br_empty hβ' ?_ ?_` and prove the remaining obligations. Rewrite using `[form_mem_mCoordIdeal_iff y hβ', aeval_rename]`.
+
+Establish `e : y ∘ baseInc M.blk = algebraMap M.Ω Φ ∘ M.x` using `funext fun q => M.y_base q`. Rewrite using `[e, aeval_algebraMap_apply]`. Introduce `h0`. Apply `hβn` to reduce the goal to its premises. Rewrite using `[form_mem_mCoordIdeal_iff M.x hβ]`.
+
+Conclude with `(algebraMap M.Ω Φ).injective (by rw [h0, map_zero])`. Introduce `x hx`. Establish `hx' : FA.pr (FA.Re.π x) ∈ ReciprocityTheory.AnForm.P.bdry BM.s`. Establish `: FA.S.s (FA.Re.π x) (FA.Re.π x) = 0` using `hx`. Rewrite `this` using `[FA.s_eq]`.
+
+Conclude with `this`. Use `set xb := FA.pr (FA.Re.π x)`. Establish `hmem : BM.Rb.lift xb xb ∈ mcPts (mCoordIdeal M.x)` using `BM.Rb.mem xb xb (BM.Rb.mem_U xb)`. Take `⟨z, -, hz⟩` from `(GlobalTheory.T.complex_points_iff_centres 𝔐.X M.Ω 𝔐.ξ (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐.tie _).1 hmem`. Establish `hnot : ¬ 𝔐.Interior z` using `fun hI => ((hH.interior xb z hz).2 hI) hx'`.
+
+Establish `h0 : Cmp.evC (BM.Rb.lift xb xb) β = 0` using `hβz z _ hz hnot`. Take `⟨c₀, -, hc⟩` from `FA.pr_eq x`. Use `show Cmp.evC (FA.Re.R.lift x x) (rename (baseInc M.blk) β) = 0`. Rewrite using `[evC_rename_baseInc, hc]`. Unfold `Cmp.evC at h0 ⊢`.
+
+Rewrite using `[eval_smul_homog β b hβ c₀, h0, mul_zero]`.
+-/
 theorem alg_of : StEmb → StForm → StAlg := by
   intro hE hF E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie n d BM FA hH
   obtain ⟨β, b, hβ, hβn, hβz⟩ := hF E H D l Xo c Y S M.Ω (NonPluckerBlocks M.blk) (baseIdx ι M.blk) M.x 𝔐

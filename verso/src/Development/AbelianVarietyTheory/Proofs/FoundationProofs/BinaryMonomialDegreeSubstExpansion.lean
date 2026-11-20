@@ -10,25 +10,45 @@ namespace GlobalTheory.KZ.MonExp
 noncomputable def ex (w : ℕ) (i : Fin (w + 1)) : Fin 2 →₀ ℕ :=
   Finsupp.single 0 (i : ℕ) + Finsupp.single 1 (w - (i : ℕ))
 
+/- English proof (translation)
+Simplify using `[ex]`.
+-/
 theorem ex_zero (w : ℕ) (i : Fin (w + 1)) : ex w i 0 = i := by
   simp [ex]
 
+/- English proof (translation)
+Simplify using `[ex]`.
+-/
 theorem ex_one (w : ℕ) (i : Fin (w + 1)) : ex w i 1 = w - i := by
   simp [ex]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg (fun d => d 0) h` as an intermediate fact. Simplify `this` using `[ex_zero]`.
+-/
 theorem ex_inj (w : ℕ) {i j : Fin (w + 1)} (h : ex w i = ex w j) : i = j := by
   apply Fin.ext
   have := congrArg (fun d => d 0) h
   simpa [ex_zero] using this
 
+/- English proof (translation)
+Rewrite using `[mon, ex, MvPolynomial.X_pow_eq_monomial, MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul]`.
+-/
 theorem mon_eq (R : Type) [CommRing R] (w : ℕ) (i : Fin (w + 1)) :
     mon R w i = MvPolynomial.monomial (ex w i) 1 := by
   rw [mon, ex, MvPolynomial.X_pow_eq_monomial, MvPolynomial.X_pow_eq_monomial, MvPolynomial.monomial_mul, one_mul]
 
+/- English proof (translation)
+Rewrite using `[mon_eq, MvPolynomial.C_mul_monomial, mul_one]`.
+-/
 theorem C_mul_mon (R : Type) [CommRing R] (w : ℕ) (i : Fin (w + 1)) (c : R) :
     MvPolynomial.C c * mon R w i = MvPolynomial.monomial (ex w i) c := by
   rw [mon_eq, MvPolynomial.C_mul_monomial, mul_one]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.coeff_sum]`. Repeatedly rewrite using `[C_mul_mon, MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `i _ hij`.
+
+Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hij (ex_inj w h)`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_sum_mon (R : Type) [CommRing R] (w : ℕ) (c : Fin (w + 1) → R) (j : Fin (w + 1)) :
     MvPolynomial.coeff (ex w j) (∑ i, MvPolynomial.C (c i) * mon R w i) = c j := by
   rw [MvPolynomial.coeff_sum]
@@ -40,6 +60,9 @@ theorem coeff_sum_mon (R : Type) [CommRing R] (w : ℕ) (c : Fin (w + 1) → R) 
     intro h; exact hij (ex_inj w h)
   · simp
 
+/- English proof (translation)
+Establish `h` using `(MvPolynomial.isHomogeneous_X_pow (R := R) (0 : Fin 2) (i : ℕ)).mul (MvPolynomial.isHomogeneous_X_pow (R := R) (1 : Fin 2) (w - (i : ℕ)))`. Establish `hi : (i : ℕ) + (w - (i : ℕ)) = w` using `Nat.add_sub_cancel' (Nat.lt_succ_iff.mp i.isLt)`. Rewrite `h` using `[hi]`. Conclude with `h`.
+-/
 theorem mon_hom (R : Type) [CommRing R] (w : ℕ) (i : Fin (w + 1)) : (mon R w i).IsHomogeneous w := by
   have h := (MvPolynomial.isHomogeneous_X_pow (R := R) (0 : Fin 2) (i : ℕ)).mul
     (MvPolynomial.isHomogeneous_X_pow (R := R) (1 : Fin 2) (w - (i : ℕ)))
@@ -47,6 +70,17 @@ theorem mon_hom (R : Type) [CommRing R] (w : ℕ) (i : Fin (w + 1)) : (mon R w i
   rw [hi] at h
   exact h
 
+/- English proof (translation)
+Use extensionality with `d`. Distinguish the cases in `hd : ∃ j : Fin (w + 1), ex w j = d`. Take `⟨j, rfl⟩` from `hd`. Rewrite using `[coeff_sum_mon]`. Establish `h0 : MvPolynomial.coeff d p = 0`.
+
+Apply `hp.coeff_eq_zero` to reduce the goal to its premises. Introduce `hdeg`. Apply `hd` to reduce the goal to its premises. Rewrite `hdeg` using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`. Use `⟨⟨d 0, by omega⟩, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `k`. Use `fin_cases k`. Simplify using `[ex_zero]`. Simplify using `[ex_one]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[h0, MvPolynomial.coeff_sum]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[C_mul_mon, MvPolynomial.coeff_monomial, if_neg]`.
+
+Introduce `h`. Conclude with `hd ⟨i, h⟩`.
+-/
 theorem hom_expand (R : Type) [CommRing R] (w : ℕ) (p : MvPolynomial (Fin 2) R) (hp : p.IsHomogeneous w) :
     p = ∑ i : Fin (w + 1), MvPolynomial.C (MvPolynomial.coeff (ex w i) p) * mon R w i := by
   ext d
@@ -70,6 +104,13 @@ theorem hom_expand (R : Type) [CommRing R] (w : ℕ) (p : MvPolynomial (Fin 2) R
     rw [C_mul_mon, MvPolynomial.coeff_monomial, if_neg]
     intro h; exact hd ⟨i, h⟩
 
+/- English proof (translation)
+Establish `hl : ∀ j : Fin 2, ((m j 0 : ℤ) • (MvPolynomial.X 0 : MvPolynomial (Fin 2) ℤ) + (m j 1 : ℤ) • MvPolynomial.X 1).IsHomogeneous 1`. Introduce `j`. Establish `hs : ∀ (a : ℤ) (v : Fin 2), (a • (MvPolynomial.X v : MvPolynomial (Fin 2) ℤ)).IsHomogeneous 1`. Introduce `a v`. Rewrite using `[MvPolynomial.smul_eq_C_mul]`.
+
+Simplify using `using (MvPolynomial.isHomogeneous_C (Fin 2) a).mul (MvPolynomial.isHomogeneous_X ℤ v)`. Conclude with `(hs _ 0).add (hs _ 1)`. Establish `h` using `((hl 0).pow (k : ℕ)).mul ((hl 1).pow (w - (k : ℕ)))`. Establish `hi : 1 * (k : ℕ) + 1 * (w - (k : ℕ)) = w`. Use `Nat.lt_succ_iff.mp k.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[hi]`. Simplify `h` using `[slP, mon, map_mul, map_pow, MvPolynomial.aeval_X]`.
+-/
 theorem polySlash_monomial_isHomogeneous (w : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) (k : Fin (w + 1)) :
     (slP m (mon ℤ w k)).IsHomogeneous w := by
   have hl : ∀ j : Fin 2, ((m j 0 : ℤ) • (MvPolynomial.X 0 : MvPolynomial (Fin 2) ℤ) +
@@ -86,10 +127,16 @@ theorem polySlash_monomial_isHomogeneous (w : ℕ) (m : Matrix (Fin 2) (Fin 2) �
   rw [hi] at h
   simpa [slP, mon, map_mul, map_pow, MvPolynomial.aeval_X] using h
 
+/- English proof (translation)
+Simplify using `[slP, mon, map_mul, map_pow, MvPolynomial.aeval_X, MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem map₃ (R : Type) [CommRing R] (w : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) (k : Fin (w + 1)) :
     MvPolynomial.map (Int.castRingHom R) (slP m (mon ℤ w k)) = slP m (mon R w k) := by
   simp [slP, mon, map_mul, map_pow, MvPolynomial.aeval_X, MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Simplify using `[mon]`.
+-/
 theorem map_mon (R : Type) [CommRing R] (w : ℕ) (i : Fin (w + 1)) :
     MvPolynomial.map (Int.castRingHom R) (mon ℤ w i) = mon R w i := by
   simp [mon]
@@ -98,6 +145,13 @@ end GlobalTheory.KZ.MonExp
 
 open GlobalTheory.KZ.MonExp in
 
+/- English proof (translation)
+Introduce `R _ w`. Use `⟨?_, fun p hp => hom_expand R w p hp, mon_hom R w, ?_, ?_⟩` and prove the remaining obligations. Introduce `m k`. Establish `hz` using `hom_expand ℤ w _ (polySlash_monomial_isHomogeneous w m k)`. Rewrite using `[← map₃, hz, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.map_C, map_mon]`. Both sides reduce to the same expression. Introduce `u i`. Simplify using `[mon]`.
+
+Introduce `c hc`. Use function extensionality and compare the values at `j`. Use `coeff_sum_mon R w c j` as an intermediate fact. Rewrite `this` using `[hc, MvPolynomial.coeff_zero]`. Conclude with `this.symm`.
+-/
 theorem GlobalTheory.KZ.H3.mon_expand : ∀ (R : Type) [CommRing R] (w : ℕ), (∀ (m : Matrix (Fin 2) (Fin 2) ℤ) (k : Fin (w + 1)), slP m (mon R w k) = ∑ i, MvPolynomial.C ((cf w m i k : ℤ) : R) * mon R w i) ∧ (∀ p : MvPolynomial (Fin 2) R, p.IsHomogeneous w → p = ∑ i : Fin (w + 1), MvPolynomial.C (MvPolynomial.coeff (Finsupp.single 0 (i : ℕ) + Finsupp.single 1 (w - (i : ℕ))) p) * mon R w i) ∧ (∀ i, (mon R w i).IsHomogeneous w) ∧ (∀ (u : Fin 2 → R) (i : Fin (w + 1)), MvPolynomial.eval u (mon R w i) = u 0 ^ (i : ℕ) * u 1 ^ (w - (i : ℕ))) ∧ (∀ c : Fin (w + 1) → R, ∑ i, MvPolynomial.C (c i) * mon R w i = 0 → c = 0) := by
   intro R _ w
   refine ⟨?_, fun p hp => hom_expand R w p hp, mon_hom R w, ?_, ?_⟩

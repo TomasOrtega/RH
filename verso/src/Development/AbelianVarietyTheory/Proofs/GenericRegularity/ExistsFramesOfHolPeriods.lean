@@ -23,6 +23,13 @@ section Matrices
 
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
 
+/- English proof (translation)
+Establish `key : ∀ v ∈ Submodule.span E S, DifferentiableOn ℂ (fun b => ∑ a, u b a * τ (v a)) B`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact hu v hv`. Consider the case `zero => simpa using differentiableOn_const (0 : ℂ)`.
+
+Consider the case `add v w _ _ h1 h2`. Simplify `h1.fun_add h2` using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`. Consider the case `smul s v _ h1`. Use `(h1.const_mul (τ s)).congr fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Use `(key (Pi.single a 1) (hS ▸ Submodule.mem_top)).congr fun b _ => ?_` and prove the remaining obligations. Simplify using `[Pi.single_apply, apply_ite τ]`.
+-/
 theorem differentiableOn_coord_of_pairing_of_span_eq_top {E : Type} [Field E] {r : ℕ} (τ : E →+* ℂ) (S : Set (Fin r → E))
     (hS : Submodule.span E S = ⊤) (B : Set W) (u : W → Fin r → ℂ)
     (hu : ∀ v ∈ S, DifferentiableOn ℂ (fun b => ∑ a, u b a * τ (v a)) B) (a : Fin r) :
@@ -48,10 +55,20 @@ def mixRows {r : ℕ} (q : ℕ) (Y Z : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin
 def mixCols {r : ℕ} (q : ℕ) (Y Z : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.of fun a j => if (j : ℕ) < q then Y a j else Z a j
 
+/- English proof (translation)
+Use extensionality with `i a`. Simplify using `[mixRows]`.
+-/
 theorem mixRows_self {r : ℕ} (q : ℕ) (Y : Matrix (Fin r) (Fin r) ℂ) : mixRows q Y Y = Y := by
   ext i a
   simp [mixRows]
 
+/- English proof (translation)
+Distinguish the cases in `hj : (j : ℕ) < q`. Rewrite using `[← Matrix.nonsing_inv_mul X (isUnit_iff_ne_zero.2 hX)]`. Simplify using `only [Matrix.mul_apply, mixCols, Matrix.of_apply, if_pos hj]`. Establish `hi : ¬ (i : ℕ) < q`. Establish `: (j : ℕ) ≤ i` using `hij`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hN)]`. Simplify using `only [Matrix.mul_apply, mixCols, Matrix.of_apply, if_neg hj]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Simplify using `only [mixRows, Matrix.of_apply, if_neg hi]`.
+-/
 theorem inv_mul_mix {r : ℕ} (q : ℕ) (X Y : Matrix (Fin r) (Fin r) ℂ) (hX : X.det ≠ 0)
     (hN : (mixRows q Y X⁻¹).det ≠ 0) (i j : Fin r) (hij : j ≤ i) :
     (X⁻¹ * mixCols q X (mixRows q Y X⁻¹)⁻¹) i j = (1 : Matrix (Fin r) (Fin r) ℂ) i j := by
@@ -72,6 +89,21 @@ end Matrices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {W : Type} [NormedAddCommGroup W]
   [NormedSpace ℂ W]
 
+/- English proof (translation)
+Set `N : W → Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun b τ => mixRows q (mat (x b₀) τ)⁻¹ (mat (x b) τ)⁻¹`. Establish `hN : ∀ τ i a, DifferentiableOn ℂ (fun b => N b τ i a) B`. Introduce `τ i a`. Distinguish the cases in `hi : (i : ℕ) < q`. Simplify using `only [N, mixRows, Matrix.of_apply, if_pos hi]`.
+
+Conclude with `differentiableOn_const _`. Simplify using `only [N, mixRows, Matrix.of_apply, if_neg hi]`. Conclude with `hrow τ i a hi`. Establish `hD : DifferentiableOn ℂ (fun b => ∏ τ, (N b τ).det) B` using `differentiableOn_finset_prod _ (fun τ b => (N b τ).det) B fun τ => differentiableOn_det _ B (hN τ)`. Establish `hdet : ∀ b ∈ B ∩ (fun b => ∏ τ, (N b τ).det) ⁻¹' {0}ᶜ, ∀ τ, (N b τ).det ≠ 0` using `fun b hb τ => Finset.prod_ne_zero_iff.1 hb.2 τ (Finset.mem_univ _)`.
+
+Use `⟨B ∩ (fun b => ∏ τ, (N b τ).det) ⁻¹' {0}ᶜ, fun b τ => mixCols q (mat (x b) τ) (N b τ)⁻¹, hD.continuousOn.isOpen_inter_preimage hB isOpen_compl_singleton, ⟨hb₀, ?_⟩, Set.inter_subset_left, ?_, fun b hb => ⟨fun τ => ((mat (x b) τ)⁻¹ * mixCols q (mat (x b) τ) (N b τ)⁻¹ : Matrix (Fin …` and prove the remaining obligations. Use `Finset.prod_ne_zero_iff.2 fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [N, mixRows_self]`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.2 (hx b₀ hb₀ τ))).ne_zero`. Use `differentiableOn_pi.2 fun τ => differentiableOn_pi.2 fun a => differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hj : (j : ℕ) < q`. Simplify using `only [mixCols, Matrix.of_apply, if_pos hj]`. Conclude with `(hcol τ a j hj).mono Set.inter_subset_left`. Simplify using `only [mixCols, Matrix.of_apply, if_neg hj]`. Conclude with `differentiableOn_matrix_inv (fun b => N b τ) _ (fun i a => (hN τ i a).mono Set.inter_subset_left) (fun b hb => hdet b hb τ) a j`.
+
+Establish `h` using `inv_mul_mix q (mat (x b) τ) (mat (x b₀) τ)⁻¹ (hx b hb.1 τ) (hdet b hb τ)`. Establish `hlow : ∀ a c : Fin r, c < a → ((mat (x b) τ)⁻¹ * mixCols q (mat (x b) τ) (N b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) a c = 0` using `fun a c hca => (h a c hca.le).trans (Matrix.one_apply_ne hca.ne')`. Use `⟨?_, hlow⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((mat (x b) τ)⁻¹ * mixCols q (mat (x b) τ) (N b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ).det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular (fun a c hca => hlow a c hca)]`.
+
+Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h i i le_rfl, Matrix.one_apply_eq]`. Conclude with `one_ne_zero`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `mixCols q (mat (x b) τ) (N b τ)⁻¹ = mat (x b) τ * ((mat (x b) τ)⁻¹ * mixCols q (mat (x b) τ) (N b τ)⁻¹)`.
+
+Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hx b hb.1 τ))]`.
+-/
 theorem exists_hol_frame (Ψ : Finset (E →+* ℂ)) (q : ℕ) {B : Set W} (hB : IsOpen B) (x : W → Frame Ψ r)
     (hx : ∀ b ∈ B, ∀ τ, (mat (x b) τ).det ≠ 0)
     (hcol : ∀ τ a (j : Fin r), (j : ℕ) < q → DifferentiableOn ℂ (fun b => mat (x b) τ a j) B)
@@ -120,6 +152,19 @@ theorem exists_hol_frame (Ψ : Finset (E →+* ℂ)) (q : ℕ) {B : Set W} (hB :
       mat (x b) τ * ((mat (x b) τ)⁻¹ * mixCols q (mat (x b) τ) (N b τ)⁻¹)
     rw [Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 (hx b hb.1 τ))]
 
+/- English proof (translation)
+Establish `h0 : ∀ τ, IsUnit (mat (x b₀) τ).det` using `fun τ => isUnit_iff_ne_zero.2 (hx b₀ hb₀ τ).1`. Establish `hM : ∀ τ, LUPf.Mx X (x b₀) (x b₀) τ = 1` using `fun τ => Matrix.nonsing_inv_mul _ (h0 τ)`. Establish `hl : ∀ k, lminor (1 : Matrix (Fin r) (Fin r) ℂ) k = 1`. Introduce `k`. Unfold `lminor`.
+
+Rewrite using `[Matrix.submatrix_one _ (Fin.castLE_injective _), Matrix.det_one]`. Establish `hL : LUPf.Lm (1 : Matrix (Fin r) (Fin r) ℂ) = 1` using `(LUPf.Lm_unique 1 1 (fun k => by rw [hl]; exact one_ne_zero) (fun i k h => Matrix.one_apply_ne h.ne) (fun i => Matrix.one_apply_eq i) fun i j h => by rw [mul_one]; exact Matrix.one_apply_ne h.ne').symm`. Establish `hD : DifferentiableOn ℂ (fun b => LUPf.DeltaF X (x b₀) (x b)) B` using `LUPf.Delta_diff.comp_differentiableOn hd`. Use `⟨B ∩ (fun b => LUPf.DeltaF X (x b₀) (x b)) ⁻¹' {0}ᶜ, fun b => LUPf.zF X (x b₀) (x b), hD.continuousOn.isOpen_inter_preimage hB isOpen_compl_singleton, ⟨hb₀, ?_⟩, Set.inter_subset_left, LUPf.zF_diffOn.comp (hd.mono Set.inter_subset_left) fun b hb => ⟨hx b hb.1, hb.2⟩, ?_, fun b hb …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LUPf.DeltaF X (x b₀) (x b₀) ≠ 0`.
+
+Simplify using `only [LUPf.DeltaF, hM, hl, Finset.prod_const_one]`. Conclude with `one_ne_zero`. Use extensionality with `k`. Express the relevant statement in the definitionally equal form `LUPf.nF X (x b₀) (x b₀) _ _ _ = 0`. Simplify using `only [LUPf.nF, hM, hL, inv_one]`.
+
+Conclude with `Matrix.one_apply_ne ((Fintype.equivFin (Ent X)).symm k).2.2.ne'`. Establish `hb'` using `LUPf.bF_mem (hx b hb.1) hb.2`. Establish `hs : x b = rmul (cpt X (x b₀) (LUPf.zF X (x b₀) (x b))) (LUPf.bF X (x b₀) (x b))`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `x b τ = (mat (x b₀) τ * mat (nmat X (LUPf.zF X (x b₀) (x b))) τ * (LUPf.Lm (LUPf.Mx X (x b₀) (x b) τ) * LUPf.Mx X (x b₀) (x b) τ) : Matrix (Fin r) (Fin r) ℂ)`.
+
+Rewrite using `[LUPf.nmat_zF]`. Express the relevant statement in the definitionally equal form `x b τ = (mat (x b₀) τ * (LUPf.Lm (LUPf.Mx X (x b₀) (x b) τ))⁻¹ * (LUPf.Lm (LUPf.Mx X (x b₀) (x b) τ) * ((mat (x b₀) τ)⁻¹ * mat (x b) τ)) : Matrix (Fin r) (Fin r) ℂ)`. Establish `hLu : IsUnit (LUPf.Lm (LUPf.Mx X (x b₀) (x b) τ)).det` using `by rw [LUPf.Lm_det]; exact isUnit_one`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hLu, Matrix.mul_nonsing_inv_cancel_left _ _ (h0 τ)]`. Both sides reduce to the same expression.
+
+Use `⟨?_, _, hb', hs⟩` and prove the remaining obligations. Establish `h` using `OrthogonalFrameDomain.rmul_mem_dom X (Set.mem_of_eq_of_mem hs.symm (hx b hb.1)) (ExtFPf.invF_mem X hb')`. Rewrite `h` using `[ExtFPf.rmul_assoc, ExtFPf.rmul_invF X hb', ExtFPf.rmul_oneF]`. Then use the resulting hypothesis.
+-/
 theorem exists_hol_chart (X : Data E r) {B : Set W} (hB : IsOpen B) (x : W → Frame X.Ψ r)
     (hx : ∀ b ∈ B, x b ∈ X.dom) (hd : DifferentiableOn ℂ x B) {b₀ : W} (hb₀ : b₀ ∈ B) :
     ∃ (B₁ : Set W) (z : W → V (nd X)), IsOpen B₁ ∧ b₀ ∈ B₁ ∧ B₁ ⊆ B ∧ DifferentiableOn ℂ z B₁ ∧ z b₀ = 0 ∧
@@ -165,6 +210,39 @@ section Periods
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.PjFree GlobalTheory.Frames GlobalTheory.FrameUnif
 
+/- English proof (translation)
+Take `⟨hbij, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Establish `hcc : ∀ τ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ` using `fun τ => ComplexEmbedding.involutive_conjugate E τ`. Take `⟨f, hf⟩` from `exists_letter_equiv X.Ψ X.cmType Dw.p Dw.q r hr (Formalism.L2.PjFree.relab c σ) hbij Dw.mult (fun τ h => by unfold Datum.mult; rw [if_pos ((hrt τ).1 ((hty _).1 h))]) (fun τ h => by unfold Datum.mult; rw [if_neg (fun h' => h ((hty _).2 ((hrt τ).2 h')))])`. Take `⟨idx, hi⟩ : ∃ idx : Fin g ≃ X.Ψ × Fin r, ∀ j, (Formalism.L2.PjFree.relab c σ (e j).1 ∈ X.Ψ ∧ (idx j).1.1 = Formalism.L2.PjFree.relab c σ (e j).1 ∧ ((idx j).2 : ℕ) = Dw.q + (e j).2) ∨ (Formalism.L2.PjFree.relab c σ (e j).1 ∉ X.Ψ ∧ (idx j).1.1 = ComplexEmbedding.conjugate (Formalis …` from `⟨e.trans f, fun j => hf (e j)⟩`. Break down `eq_or_ne r 0 with hr0 | hr0` into its components or cases.
+
+Substitute `hr0 haveI : IsEmpty (Fin g) := idx.isEmpty` using the available equality. Take `⟨hx, -⟩` from `(GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular E 0 X.p0 X.Ψ X.Gm X.Gm_herm).2.1 (fun _ a => a.elim0) (fun τ => Subsingleton.elim _ _)`. Conclude with `⟨B, fun _ _ a => a.elim0, hB, hb₀, subset_rfl, differentiableOn_const _, fun b _ => ⟨_, hx, fun _ j => isEmptyElim j, _, ExtFPf.oneF_mem X, (ExtFPf.rmul_oneF X _).symm⟩⟩`. Establish `hpos : ∀ τ ∈ X.Ψ, 0 < (τ (-X.ξ0)).im`. Introduce `τ hτ`.
+
+Use `hneg hr0 τ hτ` as an intermediate fact. Rewrite using `[map_neg, Complex.neg_im]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hξ : cc (-X.ξ0) = -(-X.ξ0)`. Establish `h` using `X.ξ0_im`.
+
+Unfold `cc at h ⊢`. Rewrite using `[map_neg, h]`. Establish `hty' : ∀ j, Formalism.L2.PjFree.relab c σ (e j).1 = if ((idx j).2 : ℕ) < D.q then ComplexEmbedding.conjugate (idx j).1.1 else (idx j).1.1`. Introduce `j`. Rewrite using `[hq]`.
+
+Break down `hi j with ⟨a, b, c'⟩ | ⟨a, b, c', d⟩` into its components or cases. Rewrite using `[if_neg (by omega), b]`. Rewrite using `[if_pos (by omega), b, hcc]`. Establish `hper : ∀ (x : Frame X.Ψ r) (v : Fin r → E) j, Formalism.L2.PjFree.perFr X x v (Formalism.L2.PjFree.relab c σ (e j).1) (e j).2 = if ((idx j).2 : ℕ) < D.q then hermC (idx j).1.1 X.Gm (col (mat x (idx j).1) (idx j).2) (Data.emb (idx j).1.1 v) else ((mat x (idx j).1)⁻¹ *ᵥ Data.emb (i …`. Introduce `x v j`.
+
+Establish `h` using `hi j`. Rewrite using `[hq]`. Generalize the expression as in `idx j = t at h ⊢`. Take `⟨⟨τ, hτ⟩, ⟨n, hn⟩⟩` from `t`. Simplify using `only at h ⊢`.
+
+Rewrite `h`, the goal using `[← hp0]`. Break down `h with ⟨a, rfl, rfl⟩ | ⟨a, rfl, rfl, d⟩` into its components or cases. Rewrite using `[if_neg (by omega)]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_pos a, dif_pos hn]`.
+
+Rewrite using `[if_pos (by omega)]`. Unfold `Formalism.L2.PjFree.perFr`. Rewrite using `[dif_neg a, dif_pos (show conjEmb (Formalism.L2.PjFree.relab c σ (e j).1) ∈ X.Ψ from hτ), dif_pos hn]`. Both sides reduce to the same expression. Set `φ' : D.La →ₗ[𝓞 E] (Fin r → E)` to `X.Λ.subtype.comp φ.toLinearMap`.
+
+Establish `hφ' : Function.Injective φ' ∧ Submodule.span E (Set.range φ') = ⊤ ∧ (∀ a b, cc (X.Gm a b) = X.Gm b a) ∧ X.Gm.det ≠ 0 ∧ ∀ x y, ((D.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (-X.ξ0 * herm X.Gm (φ' x) (φ' y))`. Use `⟨fun a b hab => φ.injective (Subtype.ext hab), ?_, X.Gm_herm, X.Gm_det, hef⟩` and prove the remaining obligations. Establish `hrange : Set.range φ' = X.Λ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, rfl⟩`. Conclude with `(φ a).2`. Introduce `hy`. Conclude with `⟨φ.symm ⟨y, hy⟩, by simp [φ']⟩`. Rewrite using `[hrange]`.
+
+Conclude with `X.Λ_span`. Use `choose! x hx hPx using fun b (hb : b ∈ B) => GlobalTheory.exists_frame_of_isPeriod E H D r (-X.ξ0) X.Gm φ' X.Ψ hty g idx _ hty' hξ hpos hφ' (by rw [hp, hq, hr]) (P b) (hP.1 b hb)`. Establish `hPd : ∀ v (t : X.Ψ × Fin r), DifferentiableOn ℂ (fun b => P b v (idx.symm t)) B` using `fun v t => differentiableOn_pi.1 (hP.2 v) _`. Take `⟨B₁, x', h1, h2, h3, h4, h5⟩` from `exists_hol_frame X.Ψ D.q hB x (fun b hb τ => (hx b hb τ).1) (fun τ a j hj => by`. Establish `hu : ∀ k, DifferentiableOn ℂ (fun b => ∑ i, mat (x b) τ i j * τ.1 (X.Gm i k)) B`.
+
+Use `differentiableOn_coord_of_pairing_of_span_eq_top (ComplexEmbedding.conjugate τ.1) _ hφ'.2.1 B _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `(hPd v (τ, j)).congr fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hPx b hb, Equiv.apply_symm_apply, if_pos hj]`. Simplify using `only [hermC, col, Data.emb, Finset.sum_mul, ComplexEmbedding.conjugate_coe_eq]`.
+
+Conclude with `Finset.sum_comm`. Establish `hG : IsUnit (X.Gm.map τ.1).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero τ.1).2 X.Gm_det)`. Use `(differentiableOn_finset_sum Finset.univ (fun k b => (∑ i, mat (x b) τ i j * τ.1 (X.Gm i k)) * (X.Gm.map τ.1)⁻¹ k a) B fun k => (hu k).mul_const _).congr fun b _ => ?_` and prove the remaining obligations.
+
+Use `congrFun (congrFun (Matrix.mul_nonsing_inv_cancel_right (X.Gm.map τ.1) (mat (x b) τ)ᵀ hG) j) a` as an intermediate fact. Simplify `this.symm)` using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use the proof step `(fun τ i a hi' => by`. Use `differentiableOn_coord_of_pairing_of_span_eq_top τ.1 _ hφ'.2.1 B (fun b => (mat (x b) τ)⁻¹ i) ?_ a` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Use `(hPd v (τ, i)).congr fun b hb => ?_` and prove the remaining obligations. Rewrite using `[hPx b hb, Equiv.apply_symm_apply, if_neg hi']`. Use the proof step `rfl) hb₀`. Use `⟨B₁, x', h1, h2, h3, h4, fun b hb => ⟨x b, ?_, fun a j => ?_, h5 b hb⟩⟩` and prove the remaining obligations. Use `hx b (h3 hb)` as an intermediate fact.
+
+Rewrite `this` using `[hq, ← hp0]`. Then use the resulting hypothesis. Rewrite using `[hper, hPx b (h3 hb)]`. Both sides reduce to the same expression.
+-/
 theorem exists_frames_of_holPeriods {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} (c : Coeff l)
     (σ : c.F →+* ℂ) {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (D : Datum H) (X : Data E r)
     (φ : D.La ≃ₗ[𝓞 E] X.Λ) (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hp : D.p = Dw.p) (hq : D.q = Dw.q)
@@ -286,6 +364,23 @@ end GlobalTheory.HolChartLift
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj
   ReciprocityTheory.ChartRestriction.G.AR.Inst ReciprocityTheory.L2DbarEstimates ReciprocityTheory.ChartRestriction.G.AR.Up in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU A _ _ yA m B φ y hB hφ hy b₀ hb₀ k x₀ t₀ ht₀`. Take `⟨hr, hty, -, hfib, -, g, e, F, ik, ψ, hef, hun⟩` from `hU`. Take `⟨-, hmul, hinv, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c (CAt σ)`. Establish `hmove : ∀ (x x' : (U.X k).dom), ∀ γ ∈ (U.X k).Γ, ∀ β ∈ Bor (U.X k).Ψ r, x'.1 = rmul (lact γ x.1) β → ∃ t, FrBor t (U.un k x) (U.un k x')` using `fun x x' γ hγ β hβ h => (hfib k k x x').2 ⟨γ, hγ, β, hβ, by rw [h]⟩`. Take `⟨B₁, k', P, hB₁, hb₁, hs₁, hP, hyP⟩` from `GlobalTheory.AdaptedPeriods.exists_holPeriods_adapted E H Dw l Xo c σ g e F A yA m B φ y hB hφ hy b₀ hb₀`.
+
+Take `⟨P₁, hP₁, hP₁', hx₁, -⟩` from `hun k x₀`. Take `rfl : ik k = k'` from `F.disj _ _ _ _ hP₁' (hP.1 b₀ hb₁) (hx₁.symm.trans (ht₀.1.symm.trans (hyP b₀ hb₁).1))`. Take `⟨B₂, x', hB₂, hb₂, hs₂, hx'd, hx'⟩` from `GlobalTheory.HolChartLift.exists_frames_of_holPeriods c σ e _ (U.X k) (ψ k) hσ (F.sig _).1 (F.sig _).2 hr (hty k).1 (hty k).2 (hef k) (GlobalTheory.FrameSign.im_neg_of_isPeriod E H Dw l c σ g e _ r (U.X k) (ψ k) hσ hr (hty k).1 (hty k).2 (hef k) x₀.1 x₀.2 P₁ hP₁ hP₁') hB₁ P hP hb …`. Establish `key : ∀ b ∈ B₂, ∃ (h : x' b ∈ (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), FrBor t (U.un k ⟨_, h⟩) (y b)`. Introduce `b hb`.
+
+Take `⟨x, hx, hper, β, hβ, hxβ⟩` from `hx' b hb`. Establish `hd : x' b ∈ (U.X k).dom` using `hxβ ▸ OrthogonalFrameDomain.rmul_mem_dom _ hx hβ`. Take `⟨P₀, hP₀, hP₀', hux, hud, -⟩` from `hun k ⟨x, hx⟩`. Establish `hPS : ∀ a, P₀ a = Matrix.mulVec 1 (P b a)` using `fun a => by`. Rewrite using `[Matrix.one_mulVec]`.
+
+Conclude with `funext fun j => (hP₀ a j).trans (hper a j).symm`. Take `⟨t, ht, -⟩` from `GlobalTheory.FrameNorm.frBor_of_triangular_period E H Dw l Xo c σ g e F _ (P b) P₀ 1 (y b) (U.un k ⟨x, hx⟩) (hP.1 b (hs₂ hb)) hP₀' hPS (fun j j' h => by`. Choose the witnesses or unpack the hypotheses as in `rfl : j = j' := by`. Assume the negation of the conclusion as `hne`. Conclude with `h (Matrix.one_apply_ne hne)`.
+
+Conclude with `⟨rfl, le_rfl⟩)`. Use the proof step `(hyP b (hs₂ hb)).1 hux (hyP b (hs₂ hb)).2 hud`. Take `⟨t', ht'⟩` from `hmove ⟨x, hx⟩ ⟨_, hd⟩ 1 (one_mem _) β hβ (by rw [PairUnfoldPf.lact_one]; exact hxβ)`. Conclude with `⟨hd, _, hmul _ _ _ _ _ (hinv _ _ _ ht') ht⟩`. Take `⟨hd₀, t₁, ht₁⟩` from `key b₀ hb₂`.
+
+Take `⟨γ, hγ, β, hβ, hx₀⟩` from `(hfib k k ⟨_, hd₀⟩ x₀).1 ⟨_, hmul _ _ _ _ _ ht₁ (hinv _ _ _ ht₀)⟩`. Establish `hx₀' : x₀.1 = rmul (lact γ (x' b₀)) β` using `eq_of_heq (Sigma.mk.inj hx₀).2`. Establish `hdom : ∀ b ∈ B₂, rmul (lact γ (x' b)) β ∈ (U.X k).dom` using `fun b hb => OrthogonalFrameDomain.rmul_mem_dom _ ((PairUnfoldPf.lact_mem_dom_iff _ hγ _).2 (key b hb).1) hβ`. Establish `hdiff : DifferentiableOn ℂ (fun b => rmul (lact γ (x' b)) β) B₂`. Use `differentiableOn_pi.2 fun τ => differentiableOn_pi.2 fun a => differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations.
+
+Conclude with `GlobalTheory.TorsionHolomorphic.differentiableOn_matrix_mul (fun b => (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (x' b) τ) (fun _ => mat β τ) B₂ (GlobalTheory.TorsionHolomorphic.differentiableOn_matrix_mul _ (fun b => mat (x' b) τ) B₂ (fun _ _ => differentiableOn_const _) fun p …`. Take `⟨B₃, z, hB₃, hb₃, hs₃, hz, hz₀, hzc⟩` from `GlobalTheory.HolChartLift.exists_hol_chart (U.X k) hB₂ _ hdom hdiff hb₂`. Rewrite `hzc` using `[← hx₀']`. Use `⟨B₃, z, hB₃, hb₃, fun b hb => hs₁ (hs₂ (hs₃ hb)), hz, hz₀, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨hc, β', hβ', hsplit⟩` from `hzc b hb`.
+
+Take `⟨hd, t, ht⟩` from `key b (hs₃ hb)`. Take `⟨s, hs⟩` from `hmove ⟨_, hd⟩ ⟨_, hdom b (hs₃ hb)⟩ γ hγ β hβ rfl`. Take `⟨s', hs'⟩` from `hmove ⟨_, hc⟩ ⟨_, hdom b (hs₃ hb)⟩ 1 (one_mem _) β' hβ' (by rw [PairUnfoldPf.lact_one]; exact hsplit)`. Conclude with `⟨hc, _, hmul _ _ _ _ _ (hmul _ _ _ _ _ hs' (hinv _ _ _ hs)) ht⟩`.
+-/
 theorem GlobalTheory.HolChartLift.exists_hol_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → ∀ (A : Type) [CommRing A] [Algebra c.F A] (yA : FrPt Xo c A) (m : ℕ) (B : Set (Fin m → ℂ)) (φ : (Fin m → ℂ) → (A →ₐ[c.F] CAt σ)) (y : (Fin m → ℂ) → FrPt Xo c (CAt σ)), IsOpen B → (∀ a, DifferentiableOn ℂ (fun b => toC (φ b a)) B) → (∀ b ∈ B, FrMap (φ b) yA (y b)) → ∀ b₀ ∈ B, ∀ (k : U.Comp) (x₀ : (U.X k).dom) (t₀ : Ix Dw → (CAt σ)ˣ), FrBor t₀ (U.un k x₀) (y b₀) → ∃ (B₁ : Set (Fin m → ℂ)) (z : (Fin m → ℂ) → V (nd (U.X k))), IsOpen B₁ ∧ b₀ ∈ B₁ ∧ B₁ ⊆ B ∧ DifferentiableOn ℂ z B₁ ∧ z b₀ = 0 ∧ ∀ b ∈ B₁, ∃ (hb : cpt (U.X k) x₀.1 (z b) ∈ (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), FrBor t (U.un k ⟨_, hb⟩) (y b) := by
   intro E _ _ _ H Dw l Xo c σ r U hσ hU A _ _ yA m B φ y hB hφ hy b₀ hb₀ k x₀ t₀ ht₀
   obtain ⟨hr, hty, -, hfib, -, g, e, F, ik, ψ, hef, hun⟩ := hU

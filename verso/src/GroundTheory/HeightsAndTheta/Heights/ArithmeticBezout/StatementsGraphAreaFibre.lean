@@ -15,16 +15,25 @@ def graphBase {d k n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin k) (y : EuclideanSpace 
     EuclideanSpace ℂ (Fin d) :=
   WithLp.toLp 2 fun i => y (e.symm (Sum.inl i))
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[graphBase, graphPt]`.
+-/
 theorem graphBase_graphPt {d k n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin k)
     (F : EuclideanSpace ℂ (Fin d) → EuclideanSpace ℂ (Fin k)) (x : EuclideanSpace ℂ (Fin d)) :
     graphBase e (graphPt e F x) = x := by
   ext i
   simp [graphBase, graphPt]
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (graphBase_graphPt e F)`.
+-/
 theorem graphPt_injective_of_graphBase {d k n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin k)
     (F : EuclideanSpace ℂ (Fin d) → EuclideanSpace ℂ (Fin k)) : Function.Injective (graphPt e F) :=
   Function.LeftInverse.injective (graphBase_graphPt e F)
 
+/- English proof (translation)
+Use `(PiLp.continuous_toLp 2 _).comp_continuousOn (continuousOn_pi.2 fun j => ?_)` and prove the remaining obligations. Break down `e j with i | i` into its components or cases. Conclude with `((PiLp.continuous_apply 2 _ i)).continuousOn`. Conclude with `(PiLp.continuous_apply 2 _ i).comp_continuousOn hF`.
+-/
 theorem continuousOn_graphPt {d k n : ℕ} (e : Fin n ≃ Fin d ⊕ Fin k)
     {F : EuclideanSpace ℂ (Fin d) → EuclideanSpace ℂ (Fin k)} {Ω : Set (EuclideanSpace ℂ (Fin d))}
     (hF : ContinuousOn F Ω) : ContinuousOn (graphPt e F) Ω := by

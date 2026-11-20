@@ -9,6 +9,27 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp GlobalTheory.HeckeGal UpperTheory.V UpperTheory.V.Af
 open scoped Matrix
 
+/- English proof (translation)
+Use `set N : Matrix (Fin n) (Fin n) ℂ := (M : Matrix (Fin n) (Fin n) k).map f with hN`. Use `set Q : Matrix (Fin n) (Fin n) ℂ := (P : Matrix (Fin n) (Fin n) k).map f with hQ`. Establish `hdet : ∀ U : GL (Fin n) k, ((U : Matrix (Fin n) (Fin n) k).map f).det ≠ 0` using `fun U => by`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero f).2 (Matrix.GeneralLinearGroup.det U).ne_zero`.
+
+Establish `h' : Nᵀ * Q * N = f t • Q`. Use `congrArg (fun Z : Matrix (Fin n) (Fin n) k => Z.map f) h` as an intermediate fact. Simplify using `only [Matrix.map_mul, Matrix.transpose_map] at this`. Rewrite using `[this]`. Use extensionality with `i j`.
+
+Simplify using `[hQ]`. Rewrite `hB` using `[← Matrix.charpoly_map, ← hN]`. Establish `hc : B.card = n`. Use `congrArg natDegree hB` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, natDegree_multiset_prod_X_sub_C_eq_card]`.
+
+Simplify using `using this.symm`. Establish `ev : ∀ x : ℂ, (x • (1 : Matrix (Fin n) (Fin n) ℂ) - N).det = (B.map fun b => x - b).prod` using `fun x => by`. Use `congrArg (eval x) hB` as an intermediate fact. Rewrite `this` using `[Matrix.eval_charpoly, eval_multiset_prod, Multiset.map_map]`. Simplify `this` using `[Matrix.smul_one_eq_diagonal]`.
+
+Establish `e0 : N.det = B.prod`. Use `ev 0` as an intermediate fact. Simplify using `only [zero_smul, zero_sub, Matrix.det_neg, Fintype.card_fin] at this`. Rewrite `this` using `[Multiset.prod_map_neg, hc]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (by simp)) this`.
+
+Establish `hb : ∀ b ∈ B, b ≠ 0` using `fun b hb h0 => hdet M (e0.trans (Multiset.prod_eq_zero (h0 ▸ hb)))`. Establish `key : ∀ x : ℂ, x ≠ 0 → ((B.map fun b => f t * b⁻¹).map fun b => x - b).prod = (B.map fun b => x - b).prod`. Introduce `x hx`. Establish `e1 : Nᵀ * Q * (x • (1 : Matrix (Fin n) (Fin n) ℂ) - N) = (-x) • (((f t / x) • (1 : Matrix (Fin n) (Fin n) ℂ) - N)ᵀ * Q)`. Rewrite using `[mul_sub, h', Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_one, sub_mul, smul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_one, one_mul, neg_mul, mul_div_cancel₀ _ hx, neg_smul, neg_smul]`.
+
+Normalize the expressions using the abelian group laws. Establish `e2` using `congrArg Matrix.det e1`. Rewrite `e2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_smul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_transpose, ev, ev, e0, Fintype.card_fin]`. Establish `e3 : B.prod * ((B.map fun b => f t * b⁻¹).map fun b => x - b).prod = (-x) ^ n * (B.map fun b => f t / x - b).prod`. Rewrite using `[← hc, ← Multiset.prod_replicate, ← Multiset.map_const', ← Multiset.prod_map_mul, Multiset.map_map]`.
+
+Use `conv_lhs => rw [← Multiset.map_id' B, Multiset.map_map, ← Multiset.prod_map_mul]`. Use `congrArg _ (Multiset.map_congr rfl fun b h => ?_)` and prove the remaining obligations. Use `hb b h` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use `mul_left_cancel₀ (mul_ne_zero (e0 ▸ hdet M) (hdet P)) ?_` and prove the remaining obligations. Rewrite using `[← hQ]`. Take the linear combination `Q.det * e3 - e2`. Establish `hp : ((B.map fun b => f t * b⁻¹).map fun b => X - C b).prod = (B.map fun b => X - C b).prod`.
+
+Use `eq_of_infinite_eval_eq _ _ ((Set.finite_singleton (0 : ℂ)).infinite_compl.mono fun x hx => ?_)` and prove the remaining obligations. Use `key x hx` as an intermediate fact. Simplify `this` using `[eval_multiset_prod, Multiset.map_map]`. Use `congrArg roots hp` as an intermediate fact. Rewrite `this` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis.
+-/
 private theorem roots_stable {k : Type} [Field k] {n : ℕ} (f : k →+* ℂ) (M P : GL (Fin n) k) (t : kˣ)
     (h : (M : Matrix (Fin n) (Fin n) k)ᵀ * (P : Matrix (Fin n) (Fin n) k) * (M : Matrix (Fin n) (Fin n) k) =
       (t : k) • (P : Matrix (Fin n) (Fin n) k)) (B : Multiset ℂ)
@@ -69,6 +90,23 @@ private theorem roots_stable {k : Type} [Field k] {n : ℕ} (f : k →+* ℂ) (M
   have := congrArg roots hp
   rwa [roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C] at this
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `exists_isFrob hA`. Take `⟨P, hP⟩` from `hr`. Establish `h1` using `roots_stable ι.toRingHom _ P _ (hP σ⁻¹) _ ((hB A hA).2 σ hσ)`. Establish `h2` using `hχ.frob_unr ha (Or.inl hw) hu hA hσ`.
+
+Establish `h3 : ((cycBar F Ω l σ : (Qbar l)ˣ) : Qbar l) = (normV w : Qbar l)`. Rewrite using `[cycBar, MonoidHom.comp_apply, Units.coe_map, cycZ_of_isFrob hw hA hσ]`. Simplify using the standard rewrite rules. Establish `hq : (0 : ℝ) < normV w`. Establish `: 1 < Ideal.absNorm w.asIdeal` using `NumberField.HeightOneSpectrum.one_lt_absNorm w`.
+
+Establish `h : 0 < normV w` using `zero_lt_one.trans this`. Conclude with `h` after adjusting the coercions. Use `set c : ℂ := (((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hc`. Establish `hc0 : c ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hq _).ne'`. Establish `hcc : c * c = (normV w : ℂ) ^ ((n : ℤ) - 1)`.
+
+Rewrite using `[hc, ← Complex.ofReal_mul, ← Real.rpow_add hq, add_halves, show ((n : ℝ) - 1) = (((n : ℤ) - 1 : ℤ) : ℝ) by push_cast; rfl, Real.rpow_intCast]`. Simplify using the standard rewrite rules. Establish `h4 : ι ((θ σ⁻¹ : (Qbar l)ˣ) : Qbar l) = c * c * (χ.val w : ℂˣ)`. Establish `h5` using `congrArg ι h2`. Rewrite `h5` using `[MonoidHom.mul_apply, MonoidHom.zpow_apply, Units.val_mul, Units.val_zpow_eq_zpow_val, h3, map_mul, map_zpow₀, map_natCast, map_inv₀, ι.apply_symm_apply, ← hcc]`.
+
+Rewrite using `[map_inv, Units.val_inv_eq_inv_val, map_inv₀]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, h5, inv_mul_cancel₀ (Units.ne_zero _)]`. Use `Multiset.map_injective (f := fun α : ℂˣ => c * (α : ℂ)) (fun x y e => Units.ext (mul_left_cancel₀ hc0 e)) ?_` and prove the remaining obligations. Establish `h6 : algSat n (normV w) B = B.map fun α : ℂˣ => c * (α : ℂ)`.
+
+Express the relevant statement in the definitionally equal form `Multiset.map _ (B.bind fun a : ℂˣ => ({(a : ℂ)} : Multiset ℂ)) = _`. Rewrite using `[Multiset.bind_singleton, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h1` using `[h6]`. Use `Eq.trans ?_ h1` and prove the remaining obligations.
+
+Simplify using `only [Multiset.map_map]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c * _ = ι _ * (c * _)⁻¹`. Rewrite using `[h4]`. Simplify using `only [Function.comp_apply, Units.val_mul, Units.val_inv_eq_inv_val]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 private theorem sat_stable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {n : ℕ} {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)} {θ : G F Ω →* (Qbar l)ˣ}
     (hr : DualTw r θ) {art : Ideles F →* Gab F Ω} (ha : IsGlobalArtin art) {χ : HChar F} {a : (F →+* ℂ) → ℤ}
@@ -115,6 +153,13 @@ private theorem sat_stable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   simp only [Function.comp_apply, Units.val_mul, Units.val_inv_eq_inv_val]
   field_simp
 
+/- English proof (translation)
+Introduce `H F Ω _ _ _ _ _ _ l _ ι n hn r π hπ θ χ hr hχ`. Establish `hd : π.IsSelfDualBy χ`. Take `⟨-, art, a, ha, -, h2⟩` from `hχ`. Use `UpperTheory.satakePolarization_of_cuspidalTransfer H.toClassicalTheorems F n hn π χ ?_` and prove the remaining obligations. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hl : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ((l : ℕ) : 𝓞 F) ∉ v.asIdeal` using `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Use `filter_upwards [hπ.2, hl, (GlobalTheory.Mem.UnrAe.unr_ae_and_level F χ).1] with w ⟨S, hS, hE⟩ hw hu`. Use `⟨hu, S, hS, ?_⟩` and prove the remaining obligations.
+
+Use `conv_rhs => rw [← sat_stable hr ha h2 hw hu hE]`. Simplify using `[Multiset.map_map]`. Use `⟨hd, fun hs => ⟨UpperTheory.sign_at_infinity_of_parallel_weight UpperTheory.adelicSolution_parallel F Ω l ι χ _ hχ fun c c' hc hc' => ?_, hd⟩⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, MonoidHom.zpow_apply, hs c c' hc hc', UpperTheory.cyclotomic_char_conj_invariant F Ω l c hc, UpperTheory.cyclotomic_char_conj_invariant F Ω l c' hc']`.
+-/
 theorem UpperTheory.V.Af.selfDualR :
     UpperTheory.V.Af.HypothesesH → UpperTheory.V.Af.SelfDualR := by
   intro H F Ω _ _ _ _ _ _ l _ ι n hn r π hπ θ χ hr hχ

@@ -15,6 +15,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
   {Hp : Type} [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp]
 
+/- English proof (translation)
+Use extensionality with `y`. Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Use `show ⟪u, P (π x (P y))⟫_ℂ = ⟪u, c • P y⟫_ℂ`. Rewrite using `[hP.2 u (π x (P y)), inner_smul_right, hP.2 u y]`. Establish `e1 : ∀ g, φ g * ⟪u, π g (π x (P y))⟫_ℂ = ∫ h, φ g * φ (x⁻¹ * g⁻¹ * h) * ⟪u, π h y⟫_ℂ ∂μ`.
+
+Introduce `g`. Establish `a : ⟪u, π g (π x (P y))⟫_ℂ = ⟪π (g * x)⁻¹ u, P y⟫_ℂ`. Rewrite using `[← inner_map_inv_eq π hU, inv_inv, rep_mul_apply']`. Rewrite using `[a, hP.2]`. Establish `b : ∫ h, φ h * ⟪π (g * x)⁻¹ u, π h y⟫_ℂ ∂μ = ∫ h, φ (x⁻¹ * g⁻¹ * h) * ⟪u, π h y⟫_ℂ ∂μ`.
+
+Rewrite using `[← integral_mul_left_eq_self (fun h => φ (x⁻¹ * g⁻¹ * h) * ⟪u, π h y⟫_ℂ) (g * x)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show φ h * ⟪π (g * x)⁻¹ u, π h y⟫_ℂ = φ (x⁻¹ * g⁻¹ * (g * x * h)) * ⟪u, π (g * x * h) y⟫_ℂ`. Rewrite using `[← inner_map_inv_eq π hU, inv_inv, ← rep_mul_apply']`. Use `congr 2`.
+
+Use `group`. Rewrite using `[b, ← integral_const_mul]`. Simplify using `only [mul_assoc]`. Simplify using `only [e1]`. Rewrite using `[integral_integral_swap (convolution_kernel_prod_integrable μ φ hφc hφi π hU hc x u y), ← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `show ∫ g, φ g * φ (x⁻¹ * g⁻¹ * h) * ⟪u, π h y⟫_ℂ ∂μ = c * (φ h * ⟪u, π h y⟫_ℂ)`. Rewrite using `[integral_mul_const, hB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pj_PxP [μ.IsMulLeftInvariant] [SigmaFinite μ] (φ : G → ℂ) (hφc : Continuous φ) (hφi : Integrable φ μ)
     (x : G) (c : ℂ) (hB : ∀ y : G, ∫ g, φ g * φ (x⁻¹ * g⁻¹ * y) ∂μ = c * φ y)
     (π : G →* (Hp →L[ℂ] Hp)) (hU : ∀ g x, ‖π g x‖ = ‖x‖) (hc : ∀ x, Continuous fun g => π g x)
@@ -44,6 +55,9 @@ theorem pj_PxP [μ.IsMulLeftInvariant] [SigmaFinite μ] (φ : G → ℂ) (hφc :
   rw [integral_mul_const, hB]
   ring
 
+/- English proof (translation)
+Establish `h1` using `pj_PxP μ φ hφc hφi 1 1 (fun y => by simpa using hB y) π hU hc P hP`. Use `⟨?_, (ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric).2 fun x y => convolution_operator_symmetric μ φ hA π hU P hP x y⟩` and prove the remaining obligations. Rewrite `h1` using `[map_one, one_smul]`. Conclude with `h1`.
+-/
 theorem pj_starProj [μ.IsMulLeftInvariant] [μ.IsInvInvariant] [SigmaFinite μ] (φ : G → ℂ) (hφc : Continuous φ)
     (hφi : Integrable φ μ) (hA : ∀ g, star (φ g⁻¹) = φ g) (hB : ∀ y : G, ∫ g, φ g * φ (g⁻¹ * y) ∂μ = φ y)
     (π : G →* (Hp →L[ℂ] Hp)) (hU : ∀ g x, ‖π g x‖ = ‖x‖) (hc : ∀ x, Continuous fun g => π g x)
@@ -61,6 +75,23 @@ variable {G1 G2 : Type} [Group G1] [Group G2] [MeasurableSpace G1] [MeasurableSp
   (μ1 : Measure G1) (μ2 : Measure G2) [SFinite μ1] [SFinite μ2]
   {Hp : Type} [NormedAddCommGroup Hp] [InnerProductSpace ℂ Hp] [CompleteSpace Hp]
 
+/- English proof (translation)
+Establish `hint : ∀ x y : Hp, Integrable (fun p : G1 × G2 => (φ1 p.1 * φ2 p.2) * ⟪x, R p y⟫_ℂ) (μ1.prod μ2)` using `fun x y => hφ.mul_bdd (c := ‖x‖ * ‖y‖) (hmeas x y) (Filter.Eventually.of_forall fun p => by`. Use `le_trans (norm_inner_le_norm _ _) ?_` and prove the remaining obligations. Rewrite using `[hU])`. Prove the components needed by the constructor for the conclusion. Use extensionality with `y`.
+
+Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Use `show ⟪x, T y⟫_ℂ = ⟪x, P1 (P2 y)⟫_ℂ`. Rewrite using `[hT, integral_prod _ (hint x y), hP1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show ∫ k, (φ1 g * φ2 k) * ⟪x, R (g, k) y⟫_ℂ ∂μ2 = φ1 g * ⟪x, R (g, 1) (P2 y)⟫_ℂ`.
+
+Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, hP2, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `show (φ1 g * φ2 k) * ⟪x, R (g, k) y⟫_ℂ = φ1 g * (φ2 k * ⟪ContinuousLinearMap.adjoint (R (g, 1)) x, R (1, k) y⟫_ℂ)`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Establish `: R (g, k) = R (g, 1) ∘L R (1, k)`.
+
+Rewrite using `[← hmul]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use extensionality with `y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Use `show ⟪x, T y⟫_ℂ = ⟪x, P2 (P1 y)⟫_ℂ`. Rewrite using `[hT, integral_prod_symm _ (hint x y), hP2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Use `show ∫ g, (φ1 g * φ2 k) * ⟪x, R (g, k) y⟫_ℂ ∂μ1 = φ2 k * ⟪x, R (1, k) (P1 y)⟫_ℂ`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, hP1, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show (φ1 g * φ2 k) * ⟪x, R (g, k) y⟫_ℂ = φ2 k * (φ1 g * ⟪ContinuousLinearMap.adjoint (R (1, k)) x, R (g, 1) y⟫_ℂ)`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`.
+
+Establish `: R (g, k) = R (1, k) ∘L R (g, 1)`. Rewrite using `[← hmul]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `only [ContinuousLinearMap.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pj_fubini (R : G1 × G2 → (Hp →L[ℂ] Hp)) (hmul : ∀ g h, R (g * h) = R g ∘L R h)
     (hU : ∀ g x, ‖R g x‖ = ‖x‖)
     (hmeas : ∀ x y : Hp, AEStronglyMeasurable (fun g => ⟪x, R g y⟫_ℂ) (μ1.prod μ2))
@@ -106,6 +137,13 @@ theorem pj_fubini (R : G1 × G2 → (Hp →L[ℂ] Hp)) (hmul : ∀ g h, R (g * h
     simp only [ContinuousLinearMap.comp_apply]
     ring
 
+/- English proof (translation)
+Use extensionality with `y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Use `show ⟪x, P2 (R (g, 1) y)⟫_ℂ = ⟪x, R (g, 1) (P2 y)⟫_ℂ`. Rewrite using `[hP2 x (R (g, 1) y), ← ContinuousLinearMap.adjoint_inner_left (R (g, 1)) (P2 y) x, hP2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+
+Use `show φ2 k * ⟪x, R (1, k) (R (g, 1) y)⟫_ℂ = φ2 k * ⟪ContinuousLinearMap.adjoint (R (g, 1)) x, R (1, k) y⟫_ℂ`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Establish `h1 : R (1, k) (R (g, 1) y) = (R (1, k) ∘L R (g, 1)) y` using `rfl`. Establish `h2 : R (g, 1) (R (1, k) y) = (R (g, 1) ∘L R (1, k)) y` using `rfl`. Rewrite using `[h1, h2, ← hmul, ← hmul]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem pj_comm (R : G1 × G2 → (Hp →L[ℂ] Hp)) (hmul : ∀ g h, R (g * h) = R g ∘L R h)
     (φ2 : G2 → ℂ) (P2 : Hp →L[ℂ] Hp)
     (hP2 : ∀ x y : Hp, ⟪x, P2 y⟫_ℂ = ∫ k, φ2 k * ⟪x, R (1, k) y⟫_ℂ ∂μ2) (g : G1) :
@@ -129,6 +167,31 @@ section Three
 variable {G1 : Type} {Hs L : Type} [NormedAddCommGroup Hs] [InnerProductSpace ℂ Hs]
   [NormedAddCommGroup L] [InnerProductSpace ℂ L] [CompleteSpace L]
 
+/- English proof (translation)
+Establish `hcm : Commute P1 Re` using `by show P1 * Re = Re * P1`. Rewrite using `[ContinuousLinearMap.mul_def, ContinuousLinearMap.mul_def, ← hT1, ← hT2]`. Establish `hTP : IsStarProjection T`. Rewrite using `[hT1]`. Conclude with `⟨hP1.1.mul_of_commute hcm hRe.1, (hP1.2.commute_iff hRe.2).1 hcm⟩`.
+
+Use `⟨hTP, ?_⟩` and prove the remaining obligations. Establish `hReRe : ∀ x, Re (Re x) = Re x` using `fun x => by`. Use `hRe.1` as an intermediate fact. Conclude with `congrArg (fun A : L →L[ℂ] L => A x) this`. Use `set E := Hm.map ((ContinuousLinearMap.compL ℂ Hs L L Re) : (Hs →L[ℂ] L) →ₗ[ℂ] (Hs →L[ℂ] L)) with hE`.
+
+Establish `hmem : ∀ Φ : E, (Φ : Hs →L[ℂ] L) w0 ∈ LinearMap.range (T : L →ₗ[ℂ] L)`. Introduce and unpack `⟨Φ, Ψ, hΨ, rfl⟩`. Establish `h1 : Ψ w0 ∈ ((LinearMap.range (P1 : L →ₗ[ℂ] L) : Submodule ℂ L) : Set L)`. Rewrite using `[hrange]`. Conclude with `⟨Ψ, (hHm Ψ).1 hΨ, rfl⟩`.
+
+Take `⟨u, hu⟩` from `h1`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `show T u = Re (Ψ w0)`. Rewrite using `[hT2, ← hu]`. Both sides reduce to the same expression.
+
+Set `f : E →ₗ[ℂ] LinearMap.range (T : L →ₗ[ℂ] L)` to `LinearMap.codRestrict _ (((ContinuousLinearMap.apply ℂ L w0 : (Hs →L[ℂ] L) →L[ℂ] L) : (Hs →L[ℂ] L) →ₗ[ℂ] L).comp E.subtype) hmem`. Establish `hf : ∀ Φ : E, ((f Φ : LinearMap.range (T : L →ₗ[ℂ] L)) : L) = (Φ : Hs →L[ℂ] L) w0` using `fun Φ => rfl`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨Φ, Ψ, hΨ, rfl⟩ h0`.
+
+Establish `h0' : Re (Ψ w0) = 0` using `congrArg Subtype.val h0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (ContinuousLinearMap.compL ℂ Hs L L Re) Ψ = 0`. Use `set Φ : Hs →L[ℂ] L := (ContinuousLinearMap.compL ℂ Hs L L Re) Ψ with hΦ`. Establish `hle : Submodule.span ℂ (Set.range fun g => σs g w0) ≤ LinearMap.ker (Φ : Hs →ₗ[ℂ] L)`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `show Re (Ψ (σs g w0)) = 0`. Establish `a : Ψ (σs g w0) = π1 g (Ψ w0)` using `congrArg (fun A : Hs →L[ℂ] L => A w0) ((hHm Ψ).1 hΨ g)`. Establish `b : Re (π1 g (Ψ w0)) = π1 g (Re (Ψ w0))` using `congrArg (fun A : L →L[ℂ] L => A (Ψ w0)) (hcomm g)`.
+
+Rewrite using `[a, b, h0', map_zero]`. Establish `hcl` using `Submodule.topologicalClosure_minimal _ hle (ContinuousLinearMap.isClosed_ker Φ)`. Rewrite `hcl` using `[hcyc]`. Use extensionality with `x`. Conclude with `hcl (Submodule.mem_top : x ∈ (⊤ : Submodule ℂ Hs))`.
+
+Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨v, u, hu⟩`. Establish `hu' : T u = v` using `hu`. Establish `h1 : v ∈ ((LinearMap.range (P1 : L →ₗ[ℂ] L) : Submodule ℂ L) : Set L)`. Use `⟨Re u, ?_⟩` and prove the remaining obligations.
+
+Use `show P1 (Re u) = v`. Rewrite using `[← hu', hT1]`. Both sides reduce to the same expression. Rewrite `h1` using `[hrange]`. Take `⟨io, hio, hv⟩` from `h1`.
+
+Use `⟨⟨(ContinuousLinearMap.compL ℂ Hs L L Re) io, Submodule.mem_map_of_mem ((hHm io).2 hio)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Re (io w0) = v`. Rewrite using `[← hv, ← hu', hT2]`. Conclude with `hReRe _`.
+
+Conclude with `⟨LinearEquiv.ofBijective f ⟨hinj, hsurj⟩, fun Φ => rfl⟩`.
+-/
 theorem pj_counted (σs : G1 → (Hs →L[ℂ] Hs)) (π1 : G1 → (L →L[ℂ] L)) (w0 : Hs) (P1 Re T : L →L[ℂ] L)
     (hP1 : IsStarProjection P1) (hRe : IsStarProjection Re) (hT1 : T = P1 ∘L Re) (hT2 : T = Re ∘L P1)
     (hrange : ((LinearMap.range (P1 : L →ₗ[ℂ] L) : Submodule ℂ L) : Set L) =

@@ -23,10 +23,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def actZ (Dw : Datum H) : 𝓞 E →+* Module.End ℤ Dw.La := (Algebra.lsmul ℤ ℤ Dw.La).toRingHom
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => rfl`.
+-/
 theorem actZ_apply (Dw : Datum H) (o : 𝓞 E) :
     actZ Dw o = (LinearMap.lsmul (𝓞 E) Dw.La o).restrictScalars ℤ :=
   LinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+Establish `: FaithfulSMul V K` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective V K)`. Establish `: Module.Flat V K` using `EigenSplit.flat_of_valuationRing V K`. Establish `hF` using `EigenSplit.finrank_eigenSub_of_flat (R := V) (R' := K) (ρ := EigenSplit.baseChangeAction V (actZ Dw)) (ρ' := EigenSplit.baseChangeAction K (actZ Dw)) (f := EigenSplit.extendTensor ℤ V K Dw.La) (EigenSplit.extendTensor_equivariant V K (actZ Dw)) (EigenSplit.isBaseChange_extendTens …`. Establish `hC` using `EigenSplit.finrank_eigenSub_of_flat (R := K) (R' := ℂ) (ρ := EigenSplit.baseChangeAction K (actZ Dw)) (ρ' := EigenSplit.baseChangeAction ℂ (actZ Dw)) (f := EigenSplit.extendTensor ℤ K ℂ Dw.La) (EigenSplit.extendTensor_equivariant K ℂ (actZ Dw)) (EigenSplit.isBaseChange_extendTens …`. Establish `hT` using `TensorDet.finrank_eigenSub (E := E) (k := ℂ) (O := ℤ) (M := Dw.La) ((algebraMap K ℂ).comp ((algebraMap V K).comp σ)) (RingHom.ext_int _ _)`.
+
+Establish `e : TensorDet.rightAction ℂ ℤ (𝓞 E) Dw.La = EigenSplit.baseChangeAction ℂ (actZ Dw)` using `rfl`. Rewrite `hT` using `[e, hC, hF, Dw.rank]`. Conclude with `hT`.
+-/
 theorem finrank_eig (Dw : Datum H) [Module.Finite ℤ Dw.La] [Module.Free ℤ Dw.La] {K : Type} [Field K]
     [Algebra K ℂ] (V : ValuationSubring K) (σ : 𝓞 E →+* V) :
     Module.finrank V (EigenSplit.eigenSub (EigenSplit.baseChangeAction V (actZ Dw)) σ) = Dw.p + Dw.q := by
@@ -49,6 +57,37 @@ end GlobalTheory.FlatModel.LatDual
 
 namespace GlobalTheory.FlatModel.LatDual
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c W p hp hW τ`. Take `⟨N, ⟨a⟩⟩ : ∃ k : ℕ, Nonempty (Module.Basis (Fin k) ℤ Dw.La)` from `by haveI := Dw.fin haveI : Module.Finite ℤ Dw.La := Module.Finite.trans (𝓞 E) Dw.La haveI : Module.IsTorsionFree ℤ Dw.La := Function.Injective.moduleIsTorsionFree Dw.EF Dw.unimod.1 (fun r x => map_smul _ r x) haveI : Module.Free ℤ Dw.La := Module.free_of_finite_type_torsion_free'`. Conclude with `⟨_, ⟨Module.finBasis ℤ Dw.La⟩⟩`. Use `haveI : Module.Free ℤ Dw.La := Module.Free.of_basis a`. Use `haveI : Module.Finite ℤ Dw.La := Module.Finite.of_basis a`.
+
+Use `set σ : 𝓞 E →+* c.V W := embV c W (conjEmb τ.1) with hσ`. Use `set K := EigenSplit.eigenSub (EigenSplit.baseChangeAction (c.V W) (actZ Dw)) σ with hK`. Use `haveI : Module.Free (c.V W) K := EigenSplit.free_eigenSub_of_valuationRing _ _`. Use `haveI : Module.Finite (c.V W) K := EigenSplit.finite_eigenSub_of_valuationRing _ _`. Establish `hrk : Fintype.card (Ind Dw τ.1) = Module.finrank (c.V W) K`.
+
+Rewrite using `[hK, finrank_eig, Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, GlobalTheory.ShFam.Pad.AdmExist.mult_add_mult_conj]`. Set `b : Module.Basis (Ind Dw τ.1) (c.V W) K` to `(Module.finBasis (c.V W) K).reindex (Fintype.equivFinOfCardEq hrk).symm`. Take `⟨Q, hQ⟩` from `EigenSplit.exists_isCompl_eigenSub_of_valuationRing (EigenSplit.baseChangeAction (c.V W) (actZ Dw)) σ`. Set `pr` to `Submodule.linearProjOfIsCompl K Q hQ`. Set `f : Ind Dw τ.1 → (c.V W ⊗[ℤ] Dw.La →ₗ[c.V W] c.V W)` to `fun i => (b.coord i).comp pr`.
+
+Establish `hf : ∀ i j, f i (b j) = if i = j then 1 else 0`. Introduce `i j`. Use `show b.coord i (pr (b j)) = _`. Rewrite using `[show pr (b j) = b j from Submodule.linearProjOfIsCompl_apply_left hQ (b j), Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `[eq_comm]`.
+
+Use `choose y hy using fun m' : Fin N => Dw.unimod.2 (a.coord m')`. Set `cc : Fin N → Fin N → ℤ` to `fun m' m => a.repr (y m') m`. Establish `hcc : ∀ m' k, ∑ m, cc m' m * Dw.EF (a m) (a k) = if m' = k then 1 else 0`. Introduce `m' k`. Establish `h0 : Dw.EF (y m') (a k) = ∑ m, cc m' m * Dw.EF (a m) (a k)`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, cc]`. Rewrite using `[← h0, hy, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `[eq_comm]`. Set `tb` to `Algebra.TensorProduct.basis (c.V W) a`.
+
+Set `T : Ind Dw τ.1 → Fin N → c.V W` to `fun j m => tb.repr (b j : c.V W ⊗[ℤ] Dw.La) m`. Set `S : Ind Dw τ.1 → Fin N → c.V W` to `fun i m => ∑ m', f i (1 ⊗ₜ a m') * (cc m' m : c.V W)`. Establish `hT : ∀ j, ∑ m, T j m ⊗ₜ[ℤ] a m = (b j : c.V W ⊗[ℤ] Dw.La)`. Introduce `j`. Use `conv_rhs => rw [← tb.sum_repr (b j : c.V W ⊗[ℤ] Dw.La)]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `hS : ∀ i k, ∑ m, S i m * ((Dw.EF (a m) (a k) : ℤ) : c.V W) = f i (1 ⊗ₜ a k)`. Introduce `i k`. Simplify using `only [S, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ m', ∑ m, f i (1 ⊗ₜ a m') * (cc m' m : c.V W) * ((Dw.EF (a m) (a k) : ℤ) : c.V W) = f i (1 ⊗ₜ a m') * (if m' = k then 1 else 0)`. Introduce `m'`. Establish `h2` using `congrArg (fun z : ℤ => (z : c.V W)) (hcc m' k)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h2`.
+
+Repeatedly rewrite using `[_root_.mul_assoc, ← Finset.mul_sum, h2]`. Apply the tactic sequence `split_ifs <;> simp`. Repeatedly rewrite using `[e, mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `⟨N, a, T, S, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i o`.
+
+Establish `hm` using `EigenSplit.mem_eigenSub.1 (b i).2 o`. Rewrite `hm` using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Establish `e1 : ∑ m, T i m ⊗ₜ[ℤ] (o • a m) = ((LinearMap.lsmul (𝓞 E) Dw.La o).restrictScalars ℤ).baseChange (c.V W) (∑ m, T i m ⊗ₜ[ℤ] a m)`. Simplify using `[map_sum, LinearMap.baseChange_tmul]`. Rewrite using `[e1, hT, hm, ← hT, Finset.smul_sum]`.
+
+Simplify using `[TensorProduct.smul_tmul', smul_eq_mul]`. Introduce `i j`. Establish `e2 : ∑ m, ∑ m', S i m * T j m' * ((Dw.EF (a m) (a m') : ℤ) : c.V W) = f i (b j)`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[mul_comm (S i _) (T j _), _root_.mul_assoc, ← Finset.mul_sum, hS]`.
+
+Rewrite using `[← hT j, map_sum]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `e3 : T j m' ⊗ₜ[ℤ] a m' = T j m' • ((1 : c.V W) ⊗ₜ[ℤ] a m')`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e3, map_smul, smul_eq_mul]`.
+
+Rewrite using `[e2, hf]`. Introduce `x hx`. Establish `hxK : x ∈ K` using `EigenSplit.mem_eigenSub.2 fun o => by`. Rewrite using `[EigenSplit.baseChangeAction_apply, actZ_apply]`. Conclude with `hx o`.
+
+Establish `e' : x = ∑ i, b.repr ⟨x, hxK⟩ i • (b i : c.V W ⊗[ℤ] Dw.La)` using `by conv_lhs => rw [show x = ((⟨x, hxK⟩ : K) : c.V W ⊗[ℤ] Dw.La) from rfl, ← b.sum_repr ⟨x, hxK⟩]`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul]`. Rewrite using `[e']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hT i⟩)`.
+-/
 theorem latSt : LatSt := by
   intro E _ _ _ H Dw l c W p hp hW τ
   classical

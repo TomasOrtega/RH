@@ -19,6 +19,11 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
 variable (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R]
   [LocallyCompactSpace R] [T2Space R]
 
+/- English proof (translation)
+Establish `: (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E))) = ⋂ a, ⋂ b, {S | sigR R σ (S b a) = S a b}`. Use extensionality with `S`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+
+Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ((continuous_sigRP R σ).comp ((continuous_apply a).comp (continuous_apply b))) ((continuous_apply b).comp (continuous_apply a))`.
+-/
 theorem isClosed_HermRP (σ : E →ₐ[F] E) (n : ℕ) :
     IsClosed (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E))) := by
   have : (HermR R σ n : Set (Matrix (Fin n) (Fin n) (R ⊗[F] E))) =
@@ -35,6 +40,9 @@ section Gram
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem sigR_invP (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F] E) :
     sigR R σ (sigR R σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -42,6 +50,11 @@ theorem sigR_invP (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (x : R ⊗[F
   | tmul r e => simp [sigR, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `a b`. Establish `hJR : ∀ i j, sigR R σ (JR R J i j) = JR R J j i`. Introduce `i j`. Simplify using `[JR, inclR, sigR, hJ]`. Simplify using `only [gramR, hR, Formalism.UG.hform, map_sum, map_mul, sigR_invP R σ hσ, hJR]`.
+
+Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem gramR_memP (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)
     (X : Fin n → Fin M → R ⊗[F] E) : gramR R σ J X ∈ HermR R σ n := by
@@ -54,9 +67,15 @@ theorem gramR_memP (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
 
 end Gram
 
+/- English proof (translation)
+The claim follows from `star_star x`.
+-/
 theorem sig_invI {D : D7} (X : HidaSetting D) (x : X.B.I.E) : X.B.I.cm.sig (X.B.I.cm.sig x) = x :=
   star_star x
 
+/- English proof (translation)
+The claim follows from `congrFun (congrFun X.B.I.J_herm i) j`.
+-/
 theorem J_hermI {D : D7} (X : HidaSetting D) (i j : Fin X.B.I.n) : X.B.I.cm.sig (X.B.I.J j i) = X.B.I.J i j :=
   congrFun (congrFun X.B.I.J_herm i) j
 
@@ -64,6 +83,9 @@ def gramHI {D : D7} (X : HidaSetting D) (y : TupI X) : HermR (Ainf X.B.I.F) X.B.
   ⟨gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y,
     gramR_memP (Ainf X.B.I.F) X.B.I.cm.sig (sig_invI X) X.B.I.J (J_hermI X) y⟩
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Conclude with `(continuous_gramRP (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J).subtype_mk _`.
+-/
 theorem continuous_gramHI {D : D7} (X : HidaSetting D) : Continuous (gramHI X) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   exact (continuous_gramRP (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J).subtype_mk _
@@ -76,6 +98,9 @@ def smulH {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I
   continuous_toFun := continuous_smul_tupI X g
   continuous_invFun := continuous_smul_tupI X g⁻¹
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Matrix.mulVecLin ((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)))`. Introduce `x x' h`. Establish `h2` using `congrArg (fun v => (((HA.mat (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g)⁻¹ : GL (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)) *ᵥ v) h`. Simplify `h2` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]`. Conclude with `LinearIndependent.map' hy _ (LinearMap.ker_eq_bot.2 hinj)`.
+-/
 theorem indI_smul {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (y : TupI X)
     (hy : y ∈ IndI X) : g • y ∈ IndI X := by
   have hinj : Function.Injective (Matrix.mulVecLin
@@ -85,10 +110,16 @@ theorem indI_smul {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.s
     simpa [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec] using h2
   exact LinearIndependent.map' hy _ (LinearMap.ker_eq_bot.2 hinj)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by simpa using indI_smul X g⁻¹ _ h, indI_smul X g y⟩`.
+-/
 theorem indI_smul_iff {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (y : TupI X) :
     g • y ∈ IndI X ↔ y ∈ IndI X :=
   ⟨fun h => by simpa using indI_smul X g⁻¹ _ h, indI_smul X g y⟩
 
+/- English proof (translation)
+The claim follows from `gramR_smul (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g y`.
+-/
 theorem gramR_smulI {D : D7} (X : HidaSetting D) (g : HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J) (y : TupI X) :
     gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J (g • y) = gramR (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J y :=
   gramR_smul (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J g y

@@ -22,21 +22,39 @@ def NV {S : Type} (Bs : B.RealPlaceData k ρ Wp Wq) (ε : ℝ) (x : Wd.Ix S → 
 
 variable {S : Type} {Bs : B.RealPlaceData k ρ Wp Wq} {ε : ℝ}
 
+/- English proof (translation)
+Introduce `_` and use `JCx2.mn_nice_zero`.
+-/
 theorem nv_zero : NV (S := S) Bs ε 0 := fun _ => JCx2.mn_nice_zero
 
+/- English proof (translation)
+Introduce `e` and use `JCx2.mn_nice_add (hx e) (hy e)`.
+-/
 theorem nv_add {x y : Wd.Ix S → B.Mat k ρ → (Wq →L[ℂ] Wp)} (hx : NV Bs ε x) (hy : NV Bs ε y) : NV Bs ε (x + y) :=
   fun e => JCx2.mn_nice_add (hx e) (hy e)
 
+/- English proof (translation)
+Introduce `e` and use `JCx2.mn_nice_smul c (hx e)`.
+-/
 theorem nv_smul (c : ℂ) {x : Wd.Ix S → B.Mat k ρ → (Wq →L[ℂ] Wp)} (hx : NV Bs ε x) : NV Bs ε (c • x) :=
   fun e => JCx2.mn_nice_smul c (hx e)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => h'.trans (h.2.2 g hg hne)⟩`.
+-/
 theorem nice_mono {F : B.Mat k ρ → (Wq →L[ℂ] Wp)} {ε ε' : ℝ} (h : JC.NiceCoef Bs ε F) (h' : ε' ≤ ε) :
     JC.NiceCoef Bs ε' F :=
   ⟨h.1, h.2.1, fun g hg hne => h'.trans (h.2.2 g hg hne)⟩
 
+/- English proof (translation)
+Introduce `e` and use `nice_mono (h e) h'`.
+-/
 theorem nv_mono {x : Wd.Ix S → B.Mat k ρ → (Wq →L[ℂ] Wp)} {ε ε' : ℝ} (h : NV Bs ε x) (h' : ε' ≤ ε) : NV Bs ε' x :=
   fun e => nice_mono (h e) h'
 
+/- English proof (translation)
+Take `⟨hs, ⟨R, hR⟩, ⟨ε, hε, hG⟩⟩` from `h`. Use `⟨ε, hε, hs, fun A m => JFxG.cptInCC_G hs (PBE.isCompact_gN_le k ρ R) (fun g hg hgC => ?_) A m, hG⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `hgC (hR g hg h0)`.
+-/
 theorem nice_of_cpt {F : B.Mat k ρ → (Wq →L[ℂ] Wp)} (h : KB.CptCoef Bs F) : ∃ ε, 0 < ε ∧ JC.NiceCoef Bs ε F := by
   obtain ⟨hs, ⟨R, hR⟩, ⟨ε, hε, hG⟩⟩ := h
   refine ⟨ε, hε, hs, fun A m => JFxG.cptInCC_G hs (PBE.isCompact_gN_le k ρ R) (fun g hg hgC => ?_) A m, hG⟩
@@ -50,6 +68,9 @@ section forms
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
+/- English proof (translation)
+Take `⟨ε, hε, hall⟩` from `common_eps (ι := Y) (fun a ε => NV Bs ε (u a)) (fun a ε ε' h h0 h' => nv_mono h h') (fun a => h a a.2)`. Conclude with `⟨ε, hε, fun a ha => hall ⟨a, ha⟩⟩`.
+-/
 theorem nv_common {α S : Type} {k ρ : ℕ} {Bs : B.RealPlaceData k ρ Wp Wq} (Y : Finset α)
     (u : α → Wd.Ix S → B.Mat k ρ → (Wq →L[ℂ] Wp)) (h : ∀ a ∈ Y, ∃ ε, 0 < ε ∧ NV Bs ε (u a)) :
     ∃ ε, 0 < ε ∧ ∀ a ∈ Y, NV Bs ε (u a) := by
@@ -57,6 +78,9 @@ theorem nv_common {α S : Type} {k ρ : ℕ} {Bs : B.RealPlaceData k ρ Wp Wq} (
     (fun a => h a a.2)
   exact ⟨ε, hε, fun a ha => hall ⟨a, ha⟩⟩
 
+/- English proof (translation)
+Establish `h` using `fun e => nice_of_cpt (Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj w a ha hF e)`. Take `⟨ε, hε, hall⟩` from `common_eps (fun e ε => JC.NiceCoef (p.T.bs j) ε (KB.slv p.T F j hj w a ha.2 e)) (fun e ε ε' h h0 h' => nice_mono h h') h`. Conclude with `⟨ε, hε, hall⟩`.
+-/
 theorem slv_nv (p : KB.Pl P Wp Wq) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF : KB.CptCoef p.T.base F) (j : ℕ)
     (hj : j ≤ P.r) (w : List C.Letter) (a : C.LPt) (ha : D.IsLocPt a j) :
     ∃ ε, 0 < ε ∧ NV (p.T.bs j) ε (KB.slv p.T F j hj w a ha.2) := by
@@ -65,9 +89,15 @@ theorem slv_nv (p : KB.Pl P Wp Wq) {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (hF
     (fun e ε ε' h h0 h' => nice_mono h h') h
   exact ⟨ε, hε, hall⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem form_eq' (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) :
     p.form j hj w = D.formLev p.T (M.sgn P p.l0) ⟨j, by omega⟩ w := rfl
 
+/- English proof (translation)
+The claim follows from `PBG.form_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w x₁ x₂ y c (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂) (PBG.decV_of_nice hy)`.
+-/
 theorem form_sl (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) {ε : ℝ}
     (x₁ x₂ y : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (h₁ : NV (p.T.bs j) ε x₁) (h₂ : NV (p.T.bs j) ε x₂) (hy : NV (p.T.bs j) ε y) :
@@ -75,6 +105,9 @@ theorem form_sl (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Lette
   PBG.form_sesq_left P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w x₁ x₂ y c (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)
     (PBG.decV_of_nice hy)
 
+/- English proof (translation)
+The claim follows from `PBG.form_sesq_right P p.T (M.sgn P p.l0) ⟨j, by omega⟩ w x y₁ y₂ c (PBG.decV_of_nice hx) (PBG.decV_of_nice h₁) (PBG.decV_of_nice h₂)`.
+-/
 theorem form_sr (p : KB.Pl P Wp Wq) (j : ℕ) (hj : j ≤ P.r) (w : List C.Letter) {ε : ℝ}
     (x y₁ y₂ : Wd.Ix (Fin w.length) → B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)) (c : ℂ)
     (hx : NV (p.T.bs j) ε x) (h₁ : NV (p.T.bs j) ε y₁) (h₂ : NV (p.T.bs j) ε y₂) :

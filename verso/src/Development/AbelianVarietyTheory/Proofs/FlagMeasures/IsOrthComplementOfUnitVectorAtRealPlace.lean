@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.StabUnfold
 
+/- English proof (translation)
+Unfold `qEps Formalism.REAL.Jm`. Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : star (y i) * y i = ((‖y i‖ : ℝ) : ℂ) ^ 2`.
+
+Rewrite using `[Complex.star_def, Complex.conj_mul']`. Apply the tactic sequence `split_ifs <;> simp [← h]`.
+-/
 theorem ofReal_qEps_eq {n : ℕ} (ε : Fin n → Bool) (y : Fin n → ℂ) :
     ((qEps ε y : ℝ) : ℂ) = star y ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ y) := by
   unfold qEps Formalism.REAL.Jm
@@ -18,6 +23,11 @@ theorem ofReal_qEps_eq {n : ℕ} (ε : Fin n → Bool) (y : Fin n → ℂ) :
     rw [Complex.star_def, Complex.conj_mul']
   split_ifs <;> simp [← h]
 
+/- English proof (translation)
+Establish `hd : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `h1 : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Rewrite using `[← I.P_spec v]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1]; simp`.
+-/
 theorem frame_inv_form (I : AutInst) (v : InfinitePlace I.F) :
     ((I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹ = I.J.map (I.φ v) := by
   have hd : IsUnit (I.P v).det := (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)
@@ -28,6 +38,19 @@ theorem frame_inv_form (I : AutInst) (v : InfinitePlace I.F) :
         rw [Matrix.conjTranspose_mul]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [h1]; simp
 
+/- English proof (translation)
+Take `⟨-, h1, h2, h3, -⟩` from `h`. Establish `hφ : ∀ a : I.E, I.φ v (star a) = star (I.φ v a)` using `fun a => I.cm.cmUnram.2.1 _ a`. Establish `hF` using `frame_inv_form I v`. Establish `hs : star (fun i => I.φ v (x i)) = fun i => I.φ v (star x i)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[hφ]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[ofReal_qEps_eq, infVec, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hF, hs]`. Use `congrArg (I.φ v) h1` as an intermediate fact.
+
+Establish `e : ((sgn ℝ s : ℝ) : ℂ) = I.φ v (sgn I.E s)`. Apply the tactic sequence `unfold sgn; split_ifs <;> simp`. Rewrite using `[e, ← this]`. Simplify using `[dotProduct, mulVec, map_sum]`. Rewrite using `[infVec, infMat, star_mulVec, vecMul_vecMul]`.
+
+Establish `e : ((I.P v)⁻¹)ᴴ * (Formalism.REAL.Jm (I.ε v) * ((I.P v)⁻¹ * A.map (I.φ v) * D.P v)) = (I.J * A).map (I.φ v) * D.P v`. Rewrite using `[Matrix.map_mul, ← hF]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, ← vecMul_vecMul, hs]`. Establish `e2 : (fun i => I.φ v (star x i)) ᵥ* (I.J * A).map (I.φ v) = 0`.
+
+Use function extensionality and compare the values at `j`. Use `congrArg (I.φ v) (congrFun h2 j)` as an intermediate fact. Simplify `this` using `[vecMul, dotProduct, map_sum]`. Rewrite using `[e2, zero_vecMul]`. Rewrite using `[← D.P_spec v, ← h3, Matrix.map_mul, Matrix.map_mul, ← hF, infMat, Matrix.conjTranspose_map (I.φ v) hφ, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem isPerp_at_place (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E)
     (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf) (h : IsPerp D s x A xf) (v : InfinitePlace I.F) :
     qEps (I.ε v) (infVec I v x) = sgn ℝ s ∧

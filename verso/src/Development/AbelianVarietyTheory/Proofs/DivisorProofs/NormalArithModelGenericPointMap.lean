@@ -17,11 +17,17 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 
 namespace GlobalTheory.Mean4O
 
+/- English proof (translation)
+The claim follows from `(mem_pull (F := j' ≫ f)).2 ((mem_pull (F := f)).1 ((mem_pull (F := j')).1 h))`.
+-/
 theorem mem_pull_of_mem_pull_pull {X X' G : Scheme.{0}} (B : LB X) (f : X' ⟶ X) (j' : G ⟶ X') {x : G}
     {i : ((B.pull f).pull j').ι} (h : x ∈ ((B.pull f).pull j').U i) :
     x ∈ (B.pull (j' ≫ f)).U fun _ => i PUnit.unit PUnit.unit :=
   (mem_pull (F := j' ≫ f)).2 ((mem_pull (F := f)).1 ((mem_pull (F := j')).1 h))
 
+/- English proof (translation)
+Introduce `a b h` and use `by have ha := (mem_pull (F := j')).1 h.1 have hb := (mem_pull (F := j')).1 h.2 have ha' := mem_pull_of_mem_pull_pull B f j' h.1 have hb' := mem_pull_of_mem_pull_pull B f j' h.2 have hab : genericPoint G ∈ (B.pull (j' ≫ f)).U (fun _ => a PUnit.unit PUnit.unit) ⊓ (B.pull (j' ≫ f)). …`.
+-/
 theorem isRatSec_pull_pull {X X' G : Scheme.{0}} [IsIntegral G] (B : LB X) (f : X' ⟶ X) (j' : G ⟶ X')
     {r : (B.pull (j' ≫ f)).ι → G.functionFieldˣ} (hr : Cartier.IsRatSec (B.pull (j' ≫ f)) r) :
     Cartier.IsRatSec ((B.pull f).pull j') fun i => r fun _ => i PUnit.unit PUnit.unit := fun a b h => by
@@ -40,6 +46,11 @@ theorem isRatSec_pull_pull {X X' G : Scheme.{0}} [IsIntegral G] (B : LB X) (f : 
     ((gm_pull_g (B.pull f) j' (𝟙 G) _ a b h.1 h.2).trans
       (gm_pull_g B f (𝟙 G ≫ j') _ _ _ ha hb)).symm
 
+/- English proof (translation)
+Introduce `F _ _ C Yv X X' _ _ p p' ar nX ar' nX' f hf G _ j j' hj πG _ _ pb pb' φ φs A L k h`. Substitute `hj` using the available equality. Take `⟨r, hr, h₁, h₂, h₃⟩` from `h`. Use `⟨fun i => r fun _ => i PUnit.unit PUnit.unit, isRatSec_pull_pull L.B f j' hr, fun i x hx => h₁ _ x (mem_pull_of_mem_pull_pull L.B f j' hx), fun σ z y y' i e₁ e₂ hi => ?_, fun v e y z yt i e₁ e₂ hi => ?_⟩` and prove the remaining obligations. Use `(h₂ σ z y (Points.PtsOver.map f hf _ y') (fun _ => i PUnit.unit PUnit.unit) e₁ ((congrArg (· ≫ f) e₂).trans (Category.assoc _ _ _)) (mem_pull_of_mem_pull_pull L.B f j' hi)).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg (fun t => _ * Real.exp (-t)) ((L.φ _).pull_φ f hf (i PUnit.unit) y').symm`. Conclude with `h₃ v e y z (yt ≫ f) (fun _ => i PUnit.unit PUnit.unit) e₁ ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ f) e₂).trans (Category.assoc _ _ _))) fun x hx => (mem_pull (F := f)).1 (hi hx)`.
+-/
 theorem Cover.induces_pull_of_comp : ∀ {F : Type} [Field F] [NumberField F] {C : TrueGeo.CxSt F} (Yv : ProjVar.Var F)
     (X X' : Scheme.{0}) [IsIntegral X] [IsIntegral X'] (p : X ⟶ Sp (𝓞 F)) (p' : X' ⟶ Sp (𝓞 F))
     (ar : IsArithVar p Yv.dim) (nX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X)

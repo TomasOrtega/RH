@@ -15,18 +15,33 @@ noncomputable section
 namespace GlobalTheory.VacMove
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_mul₀ (V : HSp D) (g h : GA D V) : mt V (g * h) = mt V g * mt V h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mt_one₀ (V : HSp D) : mt V 1 = 1 := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]`.
+-/
 theorem mt_mul_inv (V : HSp D) (g : GA D V) (y : Fin V.rank → AE D) : mt V g *ᵥ (mt V g⁻¹ *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec, ← mt_mul₀, mul_inv_cancel, mt_one₀, Matrix.one_mulVec]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)`.
+-/
 theorem mulVec_mem_idAt {n : ℕ} (A : Matrix (Fin n) (Fin n) (AE D)) {P : Pl D → Prop} {y : Fin n → AE D}
     (hy : ∀ i, y i ∈ idAt D P) (i : Fin n) : (A *ᵥ y) i ∈ idAt D P := by
   simp only [Matrix.mulVec, dotProduct]
   exact sum_mem fun j _ => Ideal.mul_mem_left _ _ (hy j)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `e` using `h (mt S g⁻¹ *ᵥ y) (mulVec_mem_idAt _ hy)`. Rewrite `e` using `[mt_mul_inv]`. Conclude with `e.symm`.
+-/
 theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : Pl D → Prop} (h : Moves S g L M P) :
     Moves S g⁻¹ M L P := by
   intro y hy
@@ -34,6 +49,15 @@ theorem moves_inv {S : HSp D} {g : GA D S} {L M : Lat S} {P : Pl D → Prop} (h 
   rw [mt_mul_inv] at e
   exact e.symm
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨β, hβi, hβ, a, ha, x, hx, rfl⟩` from `hy`. Use `set y' : Fin S.rank → AE D := fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (1 * x i) with hy'`. Establish `hy'm : y' ∈ latV S L P` using `AddSubgroup.subset_closure ⟨β, hβi, hβ, 1, rfl, x, hx, rfl⟩`.
+
+Establish `hsplit : (fun i => pairA D.host.F 0 β ⊗ₜ[D.host.F] (a * x i)) = ((1 : AF D.host.F) ⊗ₜ[D.host.F] a) • y'`. Use function extensionality and compare the values at `i`. Simplify using `only [hy', Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hsplit, Matrix.mulVec_smul]`. Conclude with `GlobalTheory.FinPl.MovedVac.smul_mem_latA ha ((h y' (GlobalTheory.FinPl.FrameLat.latV_supp hy'm)).1 hy'm)`.
+
+Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ hz hz' => rw [Matrix.mulVec_add]`. Conclude with `add_mem hz hz'`. Consider the case `neg z _ hz => rw [Matrix.mulVec_neg]`.
+
+Conclude with `neg_mem hz`.
+-/
 theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : Pl D → Prop} (h : Moves S g L M P)
     {z : Fin S.rank → AE D} (hz : z ∈ latA S L P) : mt S g *ᵥ z ∈ latA S M P := by
   induction hz using AddSubgroup.closure_induction with
@@ -50,9 +74,19 @@ theorem mulVec_mem_latA {S : HSp D} {g : GA D S} {L M : Lat S} {P : Pl D → Pro
   | add z z' _ _ hz hz' => rw [Matrix.mulVec_add]; exact add_mem hz hz'
   | neg z _ hz => rw [Matrix.mulVec_neg]; exact neg_mem hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actO_eq (S T : HSp D) (g : GA D S) (h : GA D T) (u : WO S T) :
     actO S T g h u = HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹) := rfl
 
+/- English proof (translation)
+Rewrite `hu` using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T Λ Λ' hΛ hΛ' P]`. Rewrite using `[GlobalTheory.FinPl.LatMem.mem_latO_iff D S T M M' hM hM' P]`. Take `⟨hmx, hmap⟩` from `hu`. Use `⟨fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[actO_eq, Matrix.mul_apply]`.
+
+Use `sum_mem fun l _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => Ideal.mul_mem_left _ _ (hmx k l)`. Express the relevant statement in the definitionally equal form `(HMul.hMul (HMul.hMul (mt T h) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D))) (mt S g⁻¹)) *ᵥ y ∈ _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+
+Establish `h1 : mt S g⁻¹ *ᵥ y ∈ latV S Λ P` using `(moves_inv hg y (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy`. Conclude with `mulVec_mem_latA hh (hmap _ h1)`.
+-/
 theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {P : Pl D → Prop} {g : GA D S} {h : GA D T}
     (hg : Moves S g Λ M P) (hh : Moves T h Λ' M' P) {u : WO S T}
@@ -71,6 +105,9 @@ theorem actO_mem_latO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSel
       (moves_inv hg y (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy
     exact mulVec_mem_latA hh (hmap _ h1)
 
+/- English proof (translation)
+Use `⟨actO_mem_latO hΛ hM hΛ' hM' hg hh, fun hu => ?_⟩` and prove the remaining obligations. Use `actO_mem_latO hM hΛ hM' hΛ' (moves_inv hg) (moves_inv hh) hu` as an intermediate fact. Rewrite `this` using `[GlobalTheory.SplitHecke.actO_inv_actO]`. Then use the resulting hypothesis.
+-/
 theorem mem_latO_iff_actO {S T : HSp D} {Λ M : Lat S} {Λ' M' : Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M)
     (hΛ' : IsSelfDualC T Λ') (hM' : IsSelfDualC T M') {P : Pl D → Prop} {g : GA D S} {h : GA D T}
     (hg : Moves S g Λ M P) (hh : Moves T h Λ' M' P) (u : WO S T) :
@@ -83,6 +120,15 @@ end GlobalTheory.VacMove
 
 namespace GlobalTheory.VacMove
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW Λ M Λ' M' hΛ hM hΛ' hM' b _ b' _ hb hb' e Φ f₀ f hee hinf hf₀ _ hf`. Establish `key` using `mem_latO_iff_actO hΛ hM hΛ' hM' hb hb'`. Establish `key'` using `mem_latO_iff_actO hM hΛ hM' hΛ' (moves_inv hb) (moves_inv hb')`. Establish `omm : ∀ p q (X : WO S T → ℂ), om p (om q X) = om (p * q) X` using `fun p q X => by`. Rewrite using `[map_mul]`.
+
+Both sides reduce to the same expression. Take `⟨⟨T₀, hT₀⟩, hall⟩` from `hf`. Establish `th0` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hW.std S T Λ Λ' hΛ hΛ' e hee hinf f₀ hf₀ T₀ hT₀`. Use `⟨⟨_, GlobalTheory.SplitMove.isPlaceModel_move₂ hW key hT₀ th0⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Establish `th1` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hW.std S T M M' hM hM' e hee hinf _ (hW.om_pres _ _ hf₀) T' hT'`.
+
+Establish `pm` using `GlobalTheory.SplitMove.isPlaceModel_move₂ hW key' hT' th1`. Establish `ev : om (b⁻¹, b'⁻¹) (om (b, b') f₀) = f₀`. Rewrite using `[omm, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression. Rewrite `pm` using `[ev]`.
+
+Establish `hf' : f = om (b⁻¹, b'⁻¹) (T' fun t => Φ (actO S T b⁻¹ b'⁻¹ t))` using `hall _ pm`. Rewrite using `[hf', omm, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+-/
 theorem isThetaAt_moveLat : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ (Λ M : Lat S) (Λ' M' : Lat T), IsSelfDualC S Λ → IsSelfDualC S M → IsSelfDualC T Λ' → IsSelfDualC T M' → ∀ b ∈ GfC S, ∀ b' ∈ GfC T, Moves S b Λ M (fun _ => True) → Moves T b' Λ' M' (fun _ => True) → ∀ e Φ f₀ f, e * e = e → infPart D e = 0 → IsThetaFunO ψ S T f₀ → IsThetaFunO ψ S T f → IsThetaAt ψ (symplO S T) (heisO ψ S T) e (latO S T (Λ : Set _) (Λ' : Set _) fun _ => True) 1 f₀ Φ f → IsThetaAt ψ (symplO S T) (heisO ψ S T) e (latO S T (M : Set _) (M' : Set _) fun _ => True) 1 (om (b, b') f₀) (fun x => Φ (actO S T b⁻¹ b'⁻¹ x)) (om (b, b') f) := by
   intro D ψ S T χS χT om hW Λ M Λ' M' hΛ hM hΛ' hM' b _ b' _ hb hb' e Φ f₀ f hee hinf hf₀ _ hf
   have key := mem_latO_iff_actO hΛ hM hΛ' hM' hb hb'

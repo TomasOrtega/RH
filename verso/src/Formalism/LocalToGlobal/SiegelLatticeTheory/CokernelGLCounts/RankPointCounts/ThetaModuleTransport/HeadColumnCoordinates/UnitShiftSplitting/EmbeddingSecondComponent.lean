@@ -11,8 +11,14 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E} {g : SplitG M.L}
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.comp_mem_O g x.2).1`.
+-/
 theorem fst_mem (g : SplitG M.L) (x : M.L.O) : (g.e (x : E)).1 ∈ 𝒪[F] := (Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.comp_mem_O g x.2).1
 
+/- English proof (translation)
+The claim follows from `(Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.comp_mem_O g x.2).2`.
+-/
 theorem snd_mem (g : SplitG M.L) (x : M.L.O) : (g.e (x : E)).2 ∈ 𝒪[F] := (Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.comp_mem_O g x.2).2
 
 def c1 (g : SplitG M.L) (x : M.L.O) : 𝒪[F] := ⟨_, fst_mem g x⟩
@@ -23,6 +29,9 @@ def rOf (hs : M.split = some g) (a b : 𝒪[F]) : M.R :=
   ⟨g.e.symm ((a : F), (a : F) + (g.q : F) * b),
     mem_R_of hs _ a (a + g.q * b) (-b) (by simp) (by push_cast; ring)⟩
 
+/- English proof (translation)
+Simplify using `[rOf]`.
+-/
 theorem e_rOf (hs : M.split = some g) (a b : 𝒪[F]) :
     g.e ((rOf hs a b : M.R) : E) = ((a : F), (a : F) + (g.q : F) * b) := by
   simp [rOf]
@@ -49,6 +58,9 @@ def cmp2 : (Ix r → M.L.O) →+ (Fin (r + 1) → M.R) where
     simp only [Pi.add_apply, Subring.coe_add, map_add, e_rOf, c2, Prod.snd_add]
     refine Prod.ext ?_ ?_ <;> simp; ring
 
+/- English proof (translation)
+Use `show g.e ((rOf hs _ _ : M.R) : E) = _`. Rewrite using `[e_rOf]`. Both sides reduce to the same expression.
+-/
 theorem embedding_firstComponent (Y : Ix r → M.L.O) (a : Fin (r + 1)) :
     g.e ((cmp1 hs Y a : M.R) : E) = ((g.e (Y (Sum.inl a) : E)).1,
       (g.e (Y (Sum.inl a) : E)).1 + (g.q : F) * (g.e (Y (Sum.inr a) : E)).1) := by
@@ -56,6 +68,9 @@ theorem embedding_firstComponent (Y : Ix r → M.L.O) (a : Fin (r + 1)) :
   rw [e_rOf]
   rfl
 
+/- English proof (translation)
+Use `show g.e ((rOf hs _ _ : M.R) : E) = _`. Rewrite using `[e_rOf]`. Both sides reduce to the same expression.
+-/
 theorem embedding_secondComponent (Y : Ix r → M.L.O) (a : Fin (r + 1)) :
     g.e ((cmp2 hs Y a : M.R) : E) = ((g.e (Y (Sum.inl a) : E)).2,
       (g.e (Y (Sum.inl a) : E)).2 + (g.q : F) * (g.e (Y (Sum.inr a) : E)).2) := by
@@ -63,14 +78,25 @@ theorem embedding_secondComponent (Y : Ix r → M.L.O) (a : Fin (r + 1)) :
   rw [e_rOf]
   rfl
 
+/- English proof (translation)
+Simplify using `[iota1]`.
+-/
 theorem e_iota1_inl (l : Fin (r + 1) → M.R) (a : Fin (r + 1)) :
     g.e ((iota1 hs l (Sum.inl a) : M.L.O) : E) = ((g.e (l a : E)).1, 0) := by
   simp [iota1]
 
+/- English proof (translation)
+Simplify using `[iota1]`.
+-/
 theorem e_iota1_inr (l : Fin (r + 1) → M.R) (a : Fin (r + 1)) :
     g.e ((iota1 hs l (Sum.inr a) : M.L.O) : E) = (((g.e (l a : E)).2 - (g.e (l a : E)).1) / (g.q : F), 0) := by
   simp [iota1]
 
+/- English proof (translation)
+Use `show g.e (M.L.cj (iota1 hs l i : E)) = _`. Rewrite using `[g.e_cj]`. Break down `i with a | a` into its components or cases. Rewrite using `[e_iota1_inl]`. Both sides reduce to the same expression.
+
+Rewrite using `[e_iota1_inr]`. Both sides reduce to the same expression.
+-/
 theorem e_iota2 (l : Fin (r + 1) → M.R) (i : Ix r) :
     g.e ((iota2 hs l i : M.L.O) : E) = (0, (g.e (iota1 hs l i : E)).1) := by
   show g.e (M.L.cj (iota1 hs l i : E)) = _
@@ -81,6 +107,11 @@ theorem e_iota2 (l : Fin (r + 1) → M.R) (i : Ix r) :
   · rw [e_iota1_inr]
     rfl
 
+/- English proof (translation)
+Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))`. Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_firstComponent, e_iota1_inl, e_iota1_inr]`.
+
+Use `ext`. Both sides reduce to the same expression. Simplify using `only`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem firstComponent_iotaOne (l : Fin (r + 1) → M.R) : cmp1 hs (iota1 hs l) = l := by
   have hq : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))
   funext a
@@ -93,6 +124,9 @@ theorem firstComponent_iotaOne (l : Fin (r + 1) → M.R) : cmp1 hs (iota1 hs l) 
     field_simp
     ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_secondComponent, e_iota1_inl, e_iota1_inr]`. Simplify using the standard rewrite rules.
+-/
 theorem secondComponent_iotaOne (l : Fin (r + 1) → M.R) : cmp2 hs (iota1 hs l) = 0 := by
   funext a
   apply Subtype.ext
@@ -100,6 +134,9 @@ theorem secondComponent_iotaOne (l : Fin (r + 1) → M.R) : cmp2 hs (iota1 hs l)
   rw [embedding_secondComponent, e_iota1_inl, e_iota1_inr]
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_firstComponent, e_iota2, e_iota2]`. Simplify using the standard rewrite rules.
+-/
 theorem firstComponent_iotaTwo (l : Fin (r + 1) → M.R) : cmp1 hs (iota2 hs l) = 0 := by
   funext a
   apply Subtype.ext
@@ -107,6 +144,11 @@ theorem firstComponent_iotaTwo (l : Fin (r + 1) → M.R) : cmp1 hs (iota2 hs l) 
   rw [embedding_firstComponent, e_iota2, e_iota2]
   simp
 
+/- English proof (translation)
+Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))`. Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_secondComponent, e_iota2, e_iota2, e_iota1_inl, e_iota1_inr]`.
+
+Use `ext`. Both sides reduce to the same expression. Simplify using `only`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secondComponent_iotaTwo (l : Fin (r + 1) → M.R) : cmp2 hs (iota2 hs l) = l := by
   have hq : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))
   funext a
@@ -119,6 +161,11 @@ theorem secondComponent_iotaTwo (l : Fin (r + 1) → M.R) : cmp2 hs (iota2 hs l)
     field_simp
     ring
 
+/- English proof (translation)
+Establish `hq : (g.q : F) ≠ 0` using `fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, Subring.coe_add, map_add, e_iota2]`.
+
+Break down `i with a | a` into its components or cases. Rewrite using `[e_iota1_inl, e_iota1_inl, embedding_firstComponent, embedding_secondComponent]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e_iota1_inr, e_iota1_inr, embedding_firstComponent, embedding_secondComponent]`. Apply the tactic sequence `ext <;> simp <;> field_simp`.
+-/
 theorem iota_cmp (Y : Ix r → M.L.O) : iota1 hs (cmp1 hs Y) + iota2 hs (cmp2 hs Y) = Y := by
   have hq : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext (by simpa using h))
   funext i
@@ -131,6 +178,11 @@ theorem iota_cmp (Y : Ix r → M.L.O) : iota1 hs (cmp1 hs Y) + iota2 hs (cmp2 hs
   · rw [e_iota1_inr, e_iota1_inr, embedding_firstComponent, embedding_secondComponent]
     ext <;> simp <;> field_simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, Subring.coe_add, map_add]`. Break down `i with a | a` into its components or cases.
+
+Rewrite using `[e_iota1_inl, e_iota1_inl, e_iota1_inl, Pi.add_apply, Subring.coe_add, map_add]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e_iota1_inr, e_iota1_inr, e_iota1_inr, Pi.add_apply, Subring.coe_add, map_add]`. Apply the tactic sequence `ext <;> simp <;> ring`.
+-/
 theorem iotaOne_add (l w : Fin (r + 1) → M.R) : iota1 hs (l + w) = iota1 hs l + iota1 hs w := by
   funext i
   apply Subtype.ext
@@ -142,6 +194,9 @@ theorem iotaOne_add (l w : Fin (r + 1) → M.R) : iota1 hs (l + w) = iota1 hs l 
   · rw [e_iota1_inr, e_iota1_inr, e_iota1_inr, Pi.add_apply, Subring.coe_add, map_add]
     ext <;> simp <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[Pi.add_apply, Subring.coe_add, map_add, e_iota2, e_iota2, e_iota2, iotaOne_add, Pi.add_apply, Subring.coe_add, map_add]`. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem iotaTwo_add (l w : Fin (r + 1) → M.R) : iota2 hs (l + w) = iota2 hs l + iota2 hs w := by
   funext i
   apply Subtype.ext
@@ -158,6 +213,11 @@ def splitE : (Ix r → M.L.O) ≃+ (Fin (r + 1) → M.R) × (Fin (r + 1) → M.R
     simp only [map_add, firstComponent_iotaOne, secondComponent_iotaOne, firstComponent_iotaTwo, secondComponent_iotaTwo, add_zero, zero_add]
   map_add' Y W := by simp only [map_add, Prod.mk_add_mk]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_firstComponent]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Subring.coe_mul, map_mul]`.
+
+Rewrite using `[embedding_firstComponent]`. Simplify using `[dgR, c1, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem firstComponent_smul (c : M.L.O) (Y : Ix r → M.L.O) : cmp1 hs (c • Y) = dgR hs (c1 g c) • cmp1 hs Y := by
   funext a
   apply Subtype.ext
@@ -168,6 +228,11 @@ theorem firstComponent_smul (c : M.L.O) (Y : Ix r → M.L.O) : cmp1 hs (c • Y)
   simp [dgR, c1, AlgEquiv.commutes]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_secondComponent]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Subring.coe_mul, map_mul]`.
+
+Rewrite using `[embedding_secondComponent]`. Simplify using `[dgR, c2, AlgEquiv.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secondComponent_smul (c : M.L.O) (Y : Ix r → M.L.O) : cmp2 hs (c • Y) = dgR hs (c2 g c) • cmp2 hs Y := by
   funext a
   apply Subtype.ext

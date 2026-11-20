@@ -16,6 +16,9 @@ namespace GlobalTheory.Mem.R3.RowStdGrp
 
 open GlobalTheory.Mem.R3.RowAd GlobalTheory.Mem.R3.RowDeco GlobalTheory.Mem.R3.LiftBrg
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptE_eq_castGL (X : Stages) (h : Bridge.Gf X.toD7.sp.X') :
     ptE X h = castGL (rank_X' X) (Formalism.UG.bc (swapAE X.toD7) h.1) := rfl
 
@@ -27,9 +30,15 @@ def ptHom (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok)
     exact mul_left_cancel (a := ptE X 1) (by rw [← ptE_mul, mul_one, mul_one]))
   map_mul' a b := Subtype.ext (ptE_mul X a b)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ptHom_val (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok) (h : Bridge.Gf X.toD7.sp.X') :
     (ptHom X I hI h).1 = ptE X h := rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `h1` using `congrArg Subtype.val hab`. Simplify using `only [ptHom_val, ptE_eq_castGL] at h1`. Establish `h2` using `(castGL (rank_X' X)).injective h1`. Conclude with `Subtype.ext (StdGroups.bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)`.
+-/
 theorem ptHom_injective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok) :
     Function.Injective (ptHom X I hI) := by
   intro a b hab
@@ -38,6 +47,11 @@ theorem ptHom_injective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B p
   have h2 := (castGL (rank_X' X)).injective h1
   exact Subtype.ext (StdGroups.bc_injective _ (Algebra.TensorProduct.comm _ _ _).injective h2)
 
+/- English proof (translation)
+Introduce `x`. Establish `hy : castGL (rank_X' X).symm x.1 ∈ Formalism.L2.DIV.UA X.toD7.sp.cm X.toD7.sp.X'.gram`. Rewrite using `[gram_X'_eq_one X I hI]`. Conclude with `castGL_mem_UA_std _ _ _ x.2`. Use `⟨⟨finHom X.toD7.sp.X' (GlobalTheory.StdFrameExist.liftF X.toD7.sp.X' _ hy), _, rfl⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ptHom_val, ptE_eq_castGL]`. Establish `e` using `GlobalTheory.StdFrameExist.finE_liftF X.toD7.sp.X' _ hy`. Express the relevant statement in the definitionally equal form `castGL (rank_X' X) (finE X.toD7.sp.X' (GlobalTheory.StdFrameExist.liftF X.toD7.sp.X' _ hy)) = _`. Rewrite using `[e, StdGroups.castGL_symm_castGL']`.
+-/
 theorem ptHom_surjective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (hI : I.Ok) :
     Function.Surjective (ptHom X I hI) := by
   intro x
@@ -50,6 +64,9 @@ theorem ptHom_surjective (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B 
   change castGL (rank_X' X) (finE X.toD7.sp.X' (GlobalTheory.StdFrameExist.liftF X.toD7.sp.X' _ hy)) = _
   rw [e, StdGroups.castGL_symm_castGL']
 
+/- English proof (translation)
+Introduce `X px I hI`. Set `e0` to `MulEquiv.ofBijective (ptHom X I hI) ⟨ptHom_injective X I hI, ptHom_surjective X I hI⟩`. Use `⟨e0.symm, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `e0.apply_symm_apply x`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem ptE_equiv : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok →
     ∃ e : Formalism.L2.Col.UAd X.toD7.sp.cm (X.B.R.N X.B.R.m - 1) ≃* Bridge.Gf X.toD7.sp.X',
       ∀ x, RowAd.ptE X (e x) = x.1 := by

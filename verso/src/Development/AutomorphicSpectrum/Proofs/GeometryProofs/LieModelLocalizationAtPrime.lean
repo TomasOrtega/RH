@@ -20,10 +20,16 @@ open LieTangent
 
 section SlopeTestRemainingChoices
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp`.
+-/
 theorem dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (ψ : R' →+* R'') :
     (dualMap ψ).comp (dualMap φ) = dualMap (ψ.comp φ) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp
 
+/- English proof (translation)
+Rewrite using `[← dualMap_comp]`. Conclude with `spec_comp _ _`.
+-/
 theorem spec_dualMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (ψ : R' →+* R'') :
     spMap (dualMap ψ) ≫ spMap (dualMap φ) = spMap (dualMap (ψ.comp φ)) := by
   rw [← dualMap_comp]
@@ -32,6 +38,13 @@ theorem spec_dualMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R'']
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Sp Ω ⟶ X} {E : Type}
   [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Substitute `hz` using the available equality. Take `⟨h1, v, hv, hw0⟩` from `h`. Establish `c` using `centre_specializes φ z`. Establish `h2` using `specializes_of_injective (p := ⟨_, h1⟩) (hξ.inj _) c`. Establish `hσ : Spec.map (CommRingCat.ofHom (X.presheaf.stalkSpecializes c).hom) ≫ X.fromSpecStalk (centre z) = X.fromSpecStalk (centre (spMap φ ≫ z))` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk c`.
+
+Use `⟨h2, epsBase (X.presheaf.stalkSpecializes c).hom hσ ≫ v, ⟨isTanAt_base _ hσ hv.1, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ ≫ spMap (dualMap (X.presheaf.stalkSpecializes c).hom) ≫ v.left`. Establish `e : (genMap ξ ⟨_, h2⟩).comp (X.presheaf.stalkSpecializes c).hom = genMap ξ ⟨_, h1⟩` using `RingHom.ext fun s => genMap_specializes ⟨_, h1⟩ h2 c s`. Rewrite using `[hv.2, ← Category.assoc, spec_dualMap, e]`. Express the relevant statement in the definitionally equal form `_ = _ ≫ spMap (dualMap (X.presheaf.stalkSpecializes c).hom) ≫ v.left`.
+
+Establish `e : (Scheme.stalkClosedPointTo (spMap φ ≫ z)).hom.comp (X.presheaf.stalkSpecializes c).hom = φ.comp (Scheme.stalkClosedPointTo z).hom` using `RingHom.ext fun s => congrArg (fun g => g.hom s) (stalk_base φ z)`. Rewrite using `[hw, hw0, ← Category.assoc, ← Category.assoc, spec_dualMap, spec_dualMap, e]`.
+-/
 theorem lieValAt_base (M : LieModel G ξ E) (hξ : IsCptGen ξ) {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R']
     [IsLocalRing R'] (φ : R →+* R') {z : Sp R ⟶ X} {z' : Sp R' ⟶ X} (hz : spMap φ ≫ z = z') {e : E}
     {w : epsAt z ⟶ G} {w' : epsAt z' ⟶ G} (h : M.ValAt z e w) (hw : w'.left = spMap (dualMap φ) ≫ w.left) :
@@ -54,6 +67,9 @@ theorem lieValAt_base (M : LieModel G ξ E) (hξ : IsCptGen ξ) {R R' : Type} [C
     rw [hw, hw0, ← Category.assoc, ← Category.assoc, spec_dualMap, spec_dualMap, e]
 
 omit [GrpObj G] [Module Ω E] in
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `(GlobalTheory.T.lie_model_existsUnique_semilinear S G R R' c x E E' M M').exists`.
+-/
 theorem exists_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} [CommRing R] [CommRing R'] (c : R →+* R')
     {x : Sp R ⟶ S} {x' : Sp R' ⟶ S} (hx : spMap c ≫ x = x') {E E' : Type} [AddCommGroup E] [Module R E]
     [AddCommGroup E'] [Module R' E'] (M : LieModel G x E) (M' : LieModel G x' E') :
@@ -63,6 +79,9 @@ theorem exists_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {R R' : Type} 
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Take `⟨c', h⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c}))`. Use `⟨_, c', ?_, by rw [← h, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc`.
+-/
 theorem dvd_absNorm {L : Type} [Field L] [NumberField L] (c : 𝓞 L) (hc : c ≠ 0) :
     ∃ (n : ℕ) (c' : 𝓞 L), n ≠ 0 ∧ (n : 𝓞 L) = c * c' := by
   obtain ⟨c', h⟩ := Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c}))
@@ -70,6 +89,43 @@ theorem dvd_absNorm {L : Type} [Field L] [NumberField L] (c : 𝓞 L) (hc : c �
   rw [Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]
   exact hc
 
+/- English proof (translation)
+Introduce `X G _ _ _ Ω _ ξ Li _ _ M L _ _ 𝔭 _ A _ _ _ _ _ _ z B MB f h hξ hreg hreg'`. Establish `hzz : spMap (algebraMap A L) ≫ spMap (algebraMap (𝓞 L) A) ≫ z = spMap (algebraMap (𝓞 L) L) ≫ z`. Rewrite using `[← Category.assoc, spec_comp, ← IsScalarTower.algebraMap_eq]`. Take `⟨EA, _, _, ⟨MA⟩⟩` from `lieModel_exists X G A (spMap (algebraMap (𝓞 L) A) ≫ z)`. Take `⟨EL, _, _, ⟨ML⟩⟩` from `lieModel_exists X G L (spMap (algebraMap (𝓞 L) L) ≫ z)`.
+
+Use `letI : Module (𝓞 L) EA := Module.compHom EA (algebraMap (𝓞 L) A)`. Use `haveI : IsScalarTower (𝓞 L) A EA := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Use `letI : Module (𝓞 L) EL := Module.compHom EL (algebraMap (𝓞 L) L)`. Use `haveI : IsScalarTower (𝓞 L) L EL := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Take `⟨j₀, hj₀⟩` from `exists_transport (algebraMap (𝓞 L) A) rfl MB MA`.
+
+Take `⟨k, hk⟩` from `exists_transport (algebraMap A L) hzz MA ML`. Set `j : B.carrier →ₗ[𝓞 L] EA` to `{ toFun := j₀, map_add' := j₀.map_add, map_smul' := fun c x => j₀.map_smulₛₗ c x }`. Establish `hks : ∀ (c : 𝓞 L) (y : EA), k (c • y) = c • k y` using `fun c y => by`. Establish `e : c • y = algebraMap (𝓞 L) A c • y` using `rfl`. Establish `e' : c • k y = algebraMap (𝓞 L) L c • k y` using `rfl`.
+
+Rewrite using `[e, e', k.map_smulₛₗ, IsScalarTower.algebraMap_apply (𝓞 L) A L]`. Set `jL : B.carrier →ₗ[𝓞 L] EL` to `{ toFun := fun x => k (j x), map_add' := fun x x' => by simp map_smul' := fun c x => by simp [hks] }`. Establish `hj : ∀ x, MB.Lifts (algebraMap (𝓞 L) A) (𝟙 G.left) x (MA.pt (j x))` using `hj₀`. Establish `hjL : ∀ x, MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x (ML.pt (jL x))` using `fun x => by`. Establish `h1` using `hk (j x)`.
+
+Establish `h2` using `hj x`. Unfold `LieModel.Lifts at h1 h2 ⊢`. Rewrite `h1`, `h2`, the goal using `[Category.comp_id]`. Express the relevant statement in the definitionally equal form `(ML.pt (k (j x))).left = _`. Rewrite using `[h1, h2, ← Category.assoc, spec_dualMap, ← IsScalarTower.algebraMap_eq]`.
+
+Establish `hbA : IsBaseChange A j` using `GlobalTheory.T.lie_model_isBaseChange X G (𝓞 L) A z B.carrier EA MB MA j hj`. Establish `hbL : IsBaseChange L jL` using `GlobalTheory.T.lie_model_isBaseChange X G (𝓞 L) L z B.carrier EL MB ML jL hjL`. Use `haveI : IsLocalizedModule 𝔭.primeCompl j := (isLocalizedModule_iff_isBaseChange 𝔭.primeCompl A j).2 hbA`. Use `haveI : IsLocalizedModule (nonZeroDivisors (𝓞 L)) jL := (isLocalizedModule_iff_isBaseChange (nonZeroDivisors (𝓞 L)) L jL).2 hbL`. Establish `hinj : Function.Injective jL` using `fun x y hxy => by`.
+
+Take `⟨c, hc⟩` from `(IsLocalizedModule.eq_iff_exists (nonZeroDivisors (𝓞 L)) jL).1 hxy`. Conclude with `smul_right_injective B.carrier (nonZeroDivisors.ne_zero c.2) hc`. Establish `hL : genPt ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z)` using `specializes_of_injective (p := ⟨_, h⟩) (hξ.inj _) (hzz ▸ centre_specializes (algebraMap A L) (spMap (algebraMap (𝓞 L) A) ≫ z))`. Take `⟨gA, hgA⟩` from `GlobalTheory.T.lattice_regular_at_local_point X G Ω ξ Li M A _ h EA MA f hξ hreg`. Take `⟨gL, hgL⟩` from `GlobalTheory.T.lattice_regular_at_local_point X G Ω ξ Li M L _ hL EL ML f hξ (hreg' hL)`.
+
+Take `⟨ev, hev, -, hspan⟩` from `GlobalTheory.T.lie_lattice_eval_at_local_ring X G Ω ξ Li M A _ h EA MA hξ inferInstance`. Establish `hlift : ∀ (e : Li) (y : EA), M.ValAt (spMap (algebraMap (𝓞 L) A) ≫ z) e (MA.pt y) → M.ValAt (spMap (algebraMap (𝓞 L) L) ≫ z) e (ML.pt (k y))` using `fun e y hv => by`. Use `lieValAt_base M hξ (algebraMap A L) hzz hv ?_` and prove the remaining obligations. Establish `h1` using `hk y`. Unfold `LieModel.Lifts at h1`.
+
+Rewrite `h1` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `hcompat : ∀ y : EA, gL (k y) = algebraMap A L (gA y)` using `fun y => by`. Establish `hy : y ∈ Submodule.span A (Set.range ev)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨⟨e, he⟩, rfl⟩` from `hy`. Establish `hv` using `(hev e _).2 ⟨he, rfl⟩`. Take `⟨s, hs⟩` from `hreg e he`. Establish `hu : ValAt ξ (spMap (algebraMap (𝓞 L) A) ≫ z) (f e) _` using `⟨h, s, hs, rfl⟩`. Establish `hu'` using `valAt_base hξ (algebraMap A L) hu`.
+
+Rewrite `hu'` using `[hzz]`. Rewrite using `[hgA _ _ _ hv hu]`. Conclude with `hgL _ _ _ (hlift _ _ hv) hu'`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`.
+
+Consider the case `smul c y _ hy => simp [k.map_smulₛₗ, hy]`. Use `⟨(gA.restrictScalars (𝓞 L)).comp j, ?_, ?_⟩` and prove the remaining obligations. Introduce `x e v u hv hl hu`. Establish `hvx : v = ML.pt (jL x)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+
+Establish `h4` using `hjL x`. Unfold `LieModel.Lifts at hl h4`. Rewrite `hl`, `h4` using `[Category.comp_id]`. Conclude with `hl.trans h4.symm`. Substitute `hvx` using the available equality.
+
+Conclude with `(hcompat (j x)).symm.trans (hgL _ _ _ hv hu)`. Introduce `e u he hu`. Establish `hv` using `(hev e _).2 ⟨he, rfl⟩`. Establish `hgy` using `hgA _ _ _ hv hu`. Take `⟨⟨x, d⟩, hxd⟩` from `IsLocalizedModule.surj 𝔭.primeCompl j (ev ⟨e, he⟩)`.
+
+Use `replace hxd : (d : 𝓞 L) • ev ⟨e, he⟩ = j x := hxd`. Take `⟨⟨x₀, c⟩, hc⟩` from `IsLocalizedModule.surj (nonZeroDivisors (𝓞 L)) jL (k (ev ⟨e, he⟩))`. Use `replace hc : (c : 𝓞 L) • k (ev ⟨e, he⟩) = jL x₀ := hc`. Take `⟨n, c', hn, hc'⟩` from `dvd_absNorm (c : 𝓞 L) (nonZeroDivisors.ne_zero c.2)`. Establish `hx' : jL (c' • x₀) = (n : 𝓞 L) • k (ev ⟨e, he⟩)`.
+
+Rewrite using `[map_smul, ← hc, hc', mul_comm, mul_smul]`. Use `⟨d, n, x, c' • x₀, ML.pt (jL (c' • x₀)), d.2, hn, ?_, ?_, hjL _, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gA (j x) = _`. Rewrite using `[← hxd, ← algebraMap_smul A (d : 𝓞 L) (ev ⟨e, he⟩), map_smul, hgy, smul_eq_mul]`. Establish `hs` using `(hlift _ _ hv).smul hL (n : X.presheaf.stalk (centre (spMap (algebraMap (𝓞 L) L) ≫ z)))`.
+
+Rewrite `hs` using `[map_natCast, map_natCast]`. Establish `e1 : (n : 𝓞 L) • k (ev ⟨e, he⟩) = (n : L) • k (ev ⟨e, he⟩)`. Rewrite using `[← algebraMap_smul L (n : 𝓞 L), map_natCast]`. Rewrite using `[hx', e1, ML.pt_smul]`. Conclude with `hs`.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_smul, map_smul, hx']`. Express the relevant statement in the definitionally equal form `(n : 𝓞 L) • k (j x) = _`. Rewrite using `[← hxd, hks, smul_comm]`.
+-/
 theorem exists_integral_form : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X)
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : Type) [Field L] [NumberField L]
     (𝔭 : Ideal (𝓞 L)) [𝔭.IsPrime] (A : Type) [CommRing A] [IsLocalRing A] [Algebra (𝓞 L) A]

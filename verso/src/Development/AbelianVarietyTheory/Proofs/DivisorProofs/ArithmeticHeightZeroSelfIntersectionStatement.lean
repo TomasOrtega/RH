@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NontrivialIsomClass
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HermLB GlobalTheory.ArInt
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CurveDegZero.isSelfInter_zero | exact GlobalTheory.CurveDegZero.isSelfInter_zero | (intros; apply GlobalTheory.CurveDegZero.isSelfInter_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_height_zero_self_intersection : GlobalTheory.Published.CycleHeights → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (k' : Type) [CommRing k'] [IsDomain k'] [Algebra k k'] (ρ : X ⟶ Sp k') (hρ : ρ ≫ spMap (algebraMap k k') = p)
     (M : HermLB (spMap (algebraMap k k'))), IsArithVar (spMap (algebraMap k k')) 0 →

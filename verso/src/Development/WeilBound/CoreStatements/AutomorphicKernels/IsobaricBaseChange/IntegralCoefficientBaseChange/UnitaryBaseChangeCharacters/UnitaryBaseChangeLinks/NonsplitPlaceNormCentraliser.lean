@@ -16,9 +16,29 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.NormHasseCent
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_right_inv (by rw [Matrix.mul_assoc, cT_units_left', Units.mul_inv])`.
+-/
 theorem inv_hh {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (k : GL (Fin n) K) : (k.val * cT σ k.val)⁻¹ = cT σ (k⁻¹).val * (k⁻¹).val :=
   Matrix.inv_eq_right_inv (by rw [Matrix.mul_assoc, cT_units_left', Units.mul_inv])
 
+/- English proof (translation)
+Introduce `E _ _ _ hU n γ h hγ hP hconj hloc`. Use `set σ := (IsCMField.complexConj E).toRingEquiv.toRingHom with hσdef`. Establish `hσ : ∀ x, σ (σ x) = x` using `fun x => IsCMField.complexConj_apply_apply E x`. Use `set N := cT σ (h⁻¹).val * (h⁻¹).val with hN`. Establish `hγ' : cT σ γ.val * 1 * γ.val = 1` using `hγ`.
+
+Establish `hinv` using `inv_of_unit σ h γ hconj`. Establish `hγγ : γ.val * cT σ γ.val = 1`. Rewrite `hγ'` using `[Matrix.mul_one]`. Conclude with `mul_eq_one_comm.1 hγ'`. Establish `hcomm : γ.val * N = N * γ.val`.
+
+Use `congrArg (γ.val * ·) hinv` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, hγγ, Matrix.one_mul] at this`. Rewrite using `[hN]`. Simplify `this.symm` using `only [Matrix.mul_assoc]`. Take `⟨m, hm⟩` from `GlobalTheory.BCT.ClsFin.exists_aeval_of_comm γ.val N hP.2.2.1 hcomm`.
+
+Establish `hherm : cT σ (aeval γ.val m) = aeval γ.val m`. Rewrite using `[← hm]`. Conclude with `herm_of σ hσ h`. Establish `hM : (h.val * cT σ h.val)⁻¹ = aeval γ.val m` using `by rw [inv_hh, ← hN, hm]`. Establish `hsr` using `GlobalTheory.T.isConjSelfReciprocal_of_dvd_elliptic_polynomial E n _ hP`.
+
+Establish `hfix` using `GlobalTheory.T.involution_fixes_polynomial_image E n γ hγ hP m hherm`. Establish `hloc' : ∀ w : Pl E, ¬ IsSplitAt w → ∃ c : Matrix (Fin n) (Fin n) (w.adicCompletion E), c * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val = (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val * c ∧ cT (cj w) c * c = (aeval γ.val m).map (algebraM …` using `(fun w hw => by`. Take `⟨c, hc1, hc2⟩` from `hloc w hw`. Use `⟨c, hc1, ?_⟩` and prove the remaining obligations. Rewrite using `[hc2, inv_hh, ← hm, hN, ← map_inv]`.
+
+Rewrite using `[Matrix.map_mul, cT_map hU w hw]`. Use the proof step `rfl)`. Establish `hfin : ∀ (r : ℕ) (Q : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.SelfRecip E r), Q.1 ∣ γ.val.charpoly → GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField.invol Q (AdjoinRoot.mk Q.1 m : GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLoca …`. Introduce `r Q hQ hx v`. Distinguish the cases in `hs : ∃ w w' : Pl E, w ≠ w' ∧ w.under (𝓞 (maximalRealSubfield E)) = v ∧ w'.under (𝓞 (maximalRealSubfield E)) = v`.
+
+Conclude with `GlobalTheory.T.local_norm_at_split_place E r Q _ hx v hs`. Use `GlobalTheory.T.nonsplit_centraliser_norm_element E hU n γ hγ hP m hloc' r Q hQ hx v (fun w w' hw hw' => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hs ⟨w, w', hne, hw, hw'⟩`. Establish `hinf` using `GlobalTheory.T.totally_positive_real_places E n γ hγ hP m (fun τ => by rw [← hm]; exact GlobalTheory.T.conj_transpose_mul_posDef E n h τ)`.
+
+Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.exists_norm_solution_fields E n γ hγ hP hsr m (fun r Q hQ => GlobalTheory.T.global_norm_of_local_norms E r Q _ (hfix r Q hQ) (hfin r Q hQ (hfix r Q hQ)) (hinf r Q hQ (hfix r Q hQ)))`. Conclude with `⟨c, hc1, by rw [hc2, hM]⟩`.
+-/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (γ h : GL (Fin n) E), γ ∈ UE E n → γ.val.charpoly ∈ Ell E n → h⁻¹ * γ * h ∈ UE E n → (∀ w : Pl E, ¬ IsSplitAt w → ∃ c : Matrix (Fin n) (Fin n) (w.adicCompletion E), c * (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val = (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) γ).val * c ∧ cT (cj w) c * c = ((GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h).val * cT (cj w) (GeneralLinearGroup.map (algebraMap E (w.adicCompletion E)) h).val)⁻¹) → ∃ c : Matrix (Fin n) (Fin n) E, c * γ.val = γ.val * c ∧ cT (IsCMField.complexConj E).toRingEquiv.toRingHom c * c = (h.val * cT (IsCMField.complexConj E).toRingEquiv.toRingHom h.val)⁻¹ := by
   intro E _ _ _ hU n γ h hγ hP hconj hloc
   set σ := (IsCMField.complexConj E).toRingEquiv.toRingHom with hσdef

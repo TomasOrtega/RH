@@ -18,12 +18,24 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.InertiaTransfer
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem spMap_comp_of {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {f : A →+* B} {g : B →+* C}
     {h : A →+* C} (e : g.comp f = h) : spMap g ≫ spMap f = spMap h := by
   subst e
   show Spec.map _ ≫ Spec.map _ = Spec.map _
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Set `la : IsDedekindDomain.HeightOneSpectrum (𝓞 K)` to `⟨𝔮, h𝔮.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField h𝔮 (RingOfIntegers.not_isField K)⟩`. Take `⟨T, io, ho, hfin, -⟩` from `GlobalTheory.PlaceCompletion.exists_initial_completion K la`. Take `⟨em, hem⟩` from `GlobalTheory.ComplexEmbedding.exists_embedding_fractionField K σ T hfin io`. Establish `hv : ∀ x : K, Formalism.L2.Pj.valV T.V (io x) = la.valuation K x` using `fun x => by`. Rewrite using `[GlobalTheory.PlaceCompletion.valV_eq_pow_of_overLa ho, pow_one]`.
+
+Establish `hex : ∀ x : 𝓞 K, ∃ v : T.V, algebraMap T.V T.Fr v = io (algebraMap (𝓞 K) K x)` using `fun x => GlobalTheory.PlaceCompletion.exists_algebraMap_eq_of_valV_le_one (by`. Rewrite using `[hv]`. Conclude with `la.valuation_le_one x)`. Use `choose f hf using hex`. Establish `hinj` using `IsFractionRing.injective T.V T.Fr`.
+
+Use `⟨T, { toFun := f map_one' := hinj (by rw [hf, map_one, map_one, map_one]) map_mul' := fun x y => hinj (by rw [map_mul, hf, hf, hf, map_mul, map_mul]) map_zero' := hinj (by rw [hf, map_zero, map_zero, map_zero]) map_add' := fun x y => hinj (by rw [map_add, hf, hf, hf, map_add, map …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `em (algebraMap T.V T.Fr (f x)) = σ (algebraMap (𝓞 K) K x)`. Rewrite using `[hf, ← hem]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `f x ∈ _ ↔ _`.
+
+Rewrite using `[← GlobalTheory.PlaceCompletion.valV_algebraMap_lt_one_iff (K' := T.Fr), hf, hv]`. Conclude with `la.valuation_lt_one_iff_mem x`.
+-/
 theorem exists_completion (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (𝔮 : Ideal (𝓞 K)) (h𝔮 : 𝔮.IsMaximal) :
     ∃ (T : Formalism.L2.Pj.CDVR) (a : 𝓞 K →+* T.V) (j : T.V →+* ℂ), j.comp a = σ.comp (algebraMap (𝓞 K) K) ∧
       ∀ x, a x ∈ IsLocalRing.maximalIdeal T.V ↔ x ∈ 𝔮 := by
@@ -50,6 +62,11 @@ theorem exists_completion (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ
     rw [← GlobalTheory.PlaceCompletion.valV_algebraMap_lt_one_iff (K' := T.Fr), hf, hv]
     exact la.valuation_lt_one_iff_mem x
 
+/- English proof (translation)
+Take `⟨Φ, hΦ⟩` from `GlobalTheory.LamF.exists_mulEquiv_points_of_isGrpPullback S S' f G G' φ h (Over.mk (𝟙 S'))`. Establish `key : ∀ {g : S' ⟶ S} (_ : g = f) (w : Over.mk g ⟶ G), w.left = z.left → (w ^ n = 1 ↔ z ^ n = 1)`. Introduce `g hg w hw`. Substitute `hg` using the available equality. Rewrite using `[Over.OverMorphism.ext hw]`.
+
+Rewrite using `[← key (Category.id_comp f) (Φ y) ((hΦ y).trans e.symm), ← map_pow, MulEquiv.map_eq_one_iff]`.
+-/
 theorem pow_eq_one_iff {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (y : Over.mk (𝟙 S') ⟶ G') (z : Over.mk f ⟶ G)
     (e : z.left = y.left ≫ φ) (n : ℕ) : y ^ n = 1 ↔ z ^ n = 1 := by
@@ -63,10 +80,38 @@ theorem pow_eq_one_iff {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} {G' : Ove
 noncomputable def restrict {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} (y : Over.mk (𝟙 S) ⟶ G) : Over.mk f ⟶ G :=
   (Over.homMk f (Category.comp_id f) : Over.mk f ⟶ Over.mk (𝟙 S)) ≫ y
 
+/- English proof (translation)
+Rewrite using `[restrict, ← MonObj.comp_pow, hy, MonObj.comp_one]`.
+-/
 theorem restrict_pow {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] {y : Over.mk (𝟙 S) ⟶ G} {n : ℕ}
     (hy : y ^ n = 1) : restrict f y ^ n = 1 := by
   rw [restrict, ← MonObj.comp_pow, hy, MonObj.comp_one]
 
+/- English proof (translation)
+Introduce `hFA hGM N _ P W _ r s hW q hq 𝔮 h𝔮 hq𝔮 hrs τ hτ A _ ψ hψ`. Use `set i : 𝓞 N →+* ℂ := (algebraMap N ℂ).comp (algebraMap (𝓞 N) N) with hi`. Establish `hinj : Function.Injective i` using `(algebraMap N ℂ).injective.comp (IsFractionRing.injective (𝓞 N) N)`. Use `choose σ₀ hσ₀ hσ₁ using hτ`. Establish `hσ : ∀ x, i (σ₀ x) = τ (i x)` using `hσ₀`.
+
+Set `σ : 𝓞 N →+* 𝓞 N` to `{ toFun := σ₀ map_one' := hinj (by rw [hσ, map_one, map_one]) map_mul' := fun x y => hinj (by rw [map_mul, hσ, hσ, hσ, map_mul, map_mul]) map_zero' := hinj (by rw [hσ, map_zero, map_zero]) map_add' := fun x y => hinj (by rw [map_add, hσ, hσ, hσ, map_add, map_add]) }`. Take `⟨T, a, j, hj, ha⟩` from `exists_completion N (algebraMap N ℂ) 𝔮 h𝔮`. Set `b : 𝓞 N →+* T.V` to `a.comp σ`. Establish `hab : ∀ x, a x - b x ∈ IsLocalRing.maximalIdeal T.V` using `fun x => by`. Use `(ha _).2 (𝔮.neg_mem (hσ₁ x))` as an intermediate fact.
+
+Rewrite `this` using `[neg_sub, map_sub]`. Then use the resulting hypothesis. Establish `hqT : (q : T.V) ∈ IsLocalRing.maximalIdeal T.V`. Use `(ha _).2 hq𝔮` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hu : IsUnit (a (r - s))`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hrs ((ha _).1 h)`. Take `⟨B, _, φ, hφ⟩ : ∃ (B : Over (Sp T.V)) (_ : GrpObj B) (φ : B.left ⟶ P.A.left), IsGrpPullback B P.A (spMap a) φ` from `⟨_, inferInstance, _, isGrpPullback_pullback P.A (spMap a)⟩`. Take `⟨φ', hφ', hred⟩` from `GlobalTheory.T.exists_iso_baseChanges_of_congruent_maps_pureHodge hFA hGM (𝓞 N) P.A P.g P.isAb P.smoothDim W r s hW T.V T.cpl q hq hqT a b hab hu B φ hφ`. Establish `ea : spMap j ≫ spMap a = spMap i` using `spMap_comp_of hj`.
+
+Establish `eb : spMap j ≫ spMap b = spMap (τ : ℂ →+* ℂ) ≫ spMap i` using `(spMap_comp_of (RingHom.ext fun x => (RingHom.congr_fun hj (σ x)).trans (hσ x))).trans (spMap_comp_of (f := i) (g := (τ : ℂ →+* ℂ)) rfl).symm`. Establish `er : spMap (IsLocalRing.residue T.V) ≫ spMap a = spMap (IsLocalRing.residue T.V) ≫ spMap b` using `(spMap_comp_of (RingHom.ext fun x => Ideal.Quotient.eq.2 (hab x))).trans (spMap_comp_of (f := b) (g := IsLocalRing.residue T.V) rfl).symm`. Establish `w₁ : ψ ≫ P.A.hom = (A.hom ≫ spMap j) ≫ spMap a` using `by rw [Category.assoc, ea, hψ.1.w]`. Take `⟨χ, hχ₁, hχ₂⟩ : ∃ χ : A.left ⟶ B.left, χ ≫ φ = ψ ∧ χ ≫ B.hom = A.hom ≫ spMap j` from `⟨hφ.1.lift _ _ w₁, hφ.1.lift_fst _ _ _, hφ.1.lift_snd _ _ _⟩`. Establish `hχ : IsGrpPullback A B (spMap j) χ` using `hφ.cancel (hψ.congr ea.symm hχ₁.symm) hχ₂`.
+
+Establish `hc` using `(hχ.comp hφ').congr eb rfl`. Establish `w₂ : (χ ≫ φ') ≫ P.A.hom = (A.hom ≫ spMap (τ : ℂ →+* ℂ)) ≫ spMap i` using `by rw [hc.1.w, Category.assoc]`. Take `⟨io, hio₁, hio₂⟩ : ∃ io : A.left ⟶ A.left, io ≫ ψ = χ ≫ φ' ∧ io ≫ A.hom = A.hom ≫ spMap (τ : ℂ →+* ℂ)` from `⟨hψ.1.lift _ _ w₂, hψ.1.lift_fst _ _ _, hψ.1.lift_snd _ _ _⟩`. Use `⟨io, hψ.cancel (hc.congr rfl hio₁.symm) hio₂, fun n hn y hy x hx₁ hx₂ => ?_⟩` and prove the remaining obligations. Establish `hnu : IsUnit (n : T.V)`.
+
+Assume the negation of the conclusion as `h`. Establish `h' : (n : T.V) ∈ IsLocalRing.maximalIdeal T.V` using `h`. Establish `hc : IsCoprime (q : T.V) (n : T.V)`. Simplify using `using (Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hq).2 hn)).map (Int.castRingHom T.V)`. Take `⟨u, v, huv⟩` from `hc`.
+
+Conclude with `(IsLocalRing.maximalIdeal.isMaximal T.V).ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ add_mem (Ideal.mul_mem_left _ u hqT) (Ideal.mul_mem_left _ v h')))`. Establish `hyw : y.left ≫ P.A.hom = 𝟙 (Sp (𝓞 N))` using `Over.w y`. Establish `w₃ : (spMap a ≫ y.left) ≫ P.A.hom = 𝟙 (Sp T.V) ≫ spMap a`. Rewrite using `[Category.assoc, hyw, Category.comp_id, Category.id_comp]`. Take `⟨t, ht₁, ht₂⟩ : ∃ t : Sp T.V ⟶ B.left, t ≫ φ = spMap a ≫ y.left ∧ t ≫ B.hom = 𝟙 _` from `⟨hφ.1.lift _ _ w₃, hφ.1.lift_fst _ _ _, hφ.1.lift_snd _ _ _⟩`.
+
+Set `yT : Over.mk (𝟙 (Sp T.V)) ⟶ B` to `Over.homMk t ht₂`. Establish `hyT : yT ^ n = 1` using `(pow_eq_one_iff hφ yT (restrict (spMap a) y) ht₁.symm n).2 (restrict_pow _ hy)`. Set `z : Over.mk (spMap b) ⟶ P.A` to `Over.homMk (t ≫ φ') (by`. Express the relevant statement in the definitionally equal form `(t ≫ φ') ≫ P.A.hom = spMap b`. Rewrite using `[Category.assoc, hφ'.1.w, reassoc_of% ht₂])`.
+
+Establish `hz : z ^ n = 1` using `(pow_eq_one_iff hφ' yT z rfl n).1 hyT`. Establish `hzy : z = restrict (spMap b) y` using `GlobalTheory.T.torsion_point_eq_of_residue_eq_invertible_order (𝓞 N) P T.V b n hnu z _ hz (restrict_pow _ hy) (by`. Express the relevant statement in the definitionally equal form `spMap (IsLocalRing.residue T.V) ≫ t ≫ φ' = spMap (IsLocalRing.residue T.V) ≫ spMap b ≫ y.left`. Rewrite using `[← Category.assoc, ← hred _ (by rw [Category.assoc, ht₂, Category.comp_id]), Category.assoc, ht₁, reassoc_of% er])`. Establish `hzy' : t ≫ φ' = spMap b ≫ y.left` using `congrArg (fun u => u.left) hzy`.
+
+Establish `hxχ : x ≫ χ = spMap j ≫ t`. Use `hφ.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hχ₁, hx₂, Category.assoc, ht₁, reassoc_of% ea]`. Rewrite using `[Category.assoc, hχ₂, reassoc_of% hx₁, Category.assoc, ht₂, Category.comp_id]`. Use `hψ.1.hom_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, hio₁, reassoc_of% hxχ, hzy', reassoc_of% eb, Category.assoc, hx₂]`. Rewrite using `[Category.assoc, hio₂, reassoc_of% hx₁, Category.assoc, hx₁, Category.comp_id]`.
+-/
 theorem exists_isGrpPullback_of_inertia : GlobalTheory.Published.FormalAlgebraisation → GlobalTheory.Published.GrothendieckMessing → ∀ (N : IntermediateField ℚ ℂ) [NumberField N] (P : Out.PolAV (Sp (𝓞 N))) (W : P.A ⟶ P.A) [IsMonHom W] (r s : 𝓞 N), IsPureBC P.A W r s → ∀ q : ℕ, q.Prime → ∀ 𝔮 : Ideal (𝓞 N), 𝔮.IsMaximal → (q : 𝓞 N) ∈ 𝔮 → r - s ∉ 𝔮 → ∀ τ : ℂ ≃+* ℂ, (∀ x : 𝓞 N, ∃ y : 𝓞 N, ((y : N) : ℂ) = τ ((x : N) : ℂ) ∧ y - x ∈ 𝔮) → ∀ (A : Over (Sp ℂ)) [GrpObj A] (ψ : A.left ⟶ P.A.left), IsGrpPullback A P.A (spMap ((algebraMap N ℂ).comp (algebraMap (𝓞 N) N))) ψ → ∃ io : A.left ⟶ A.left, IsGrpPullback A A (spMap (τ : ℂ →+* ℂ)) io ∧ ∀ n : ℕ, ¬ q ∣ n → ∀ y : Over.mk (𝟙 (Sp (𝓞 N))) ⟶ P.A, y ^ n = 1 → ∀ x : Sp ℂ ⟶ A.left, x ≫ A.hom = 𝟙 _ → x ≫ ψ = spMap ((algebraMap N ℂ).comp (algebraMap (𝓞 N) N)) ≫ y.left → x ≫ io = spMap (τ : ℂ →+* ℂ) ≫ x := by
   intro hFA hGM N _ P W _ r s hW q hq 𝔮 h𝔮 hq𝔮 hrs τ hτ A _ ψ hψ
   set i : 𝓞 N →+* ℂ := (algebraMap N ℂ).comp (algebraMap (𝓞 N) N) with hi

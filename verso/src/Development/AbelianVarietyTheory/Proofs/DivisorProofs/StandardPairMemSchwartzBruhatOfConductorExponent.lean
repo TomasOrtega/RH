@@ -17,6 +17,11 @@ open GlobalTheory.StdPairSB GlobalTheory.StdPairCone ValuativeRel
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `h0 : ∀ (i : Fin m) (j : Fin r), (0 : Matrix (Fin m) (Fin r) k) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ n)`. Introduce `i j`. Simplify using `[GlobalTheory.SplitWeil.cball]`. Unfold `gfun`. Distinguish the cases in `h : A.det ≠ 0 ∧ IsGLO A ∧ ∀ i j, B i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`.
+
+Rewrite using `[dif_pos h, dif_pos h, dif_pos ⟨h.1, h.2.1, h0⟩]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg h, dif_neg h, mul_zero]`.
+-/
 theorem gfun_eq_mul (ν : kˣ →* ℂˣ) (ϖ : kˣ) (n c : ℕ) {m r : ℕ} (A : Matrix (Fin m) (Fin m) k)
     (B : Matrix (Fin m) (Fin r) k) :
     gfun ν ϖ c A B = gfun ν ϖ n A (0 : Matrix (Fin m) (Fin r) k) * gfun 1 ϖ c A B := by
@@ -30,6 +35,11 @@ theorem gfun_eq_mul (ν : kˣ →* ℂˣ) (ϖ : kˣ) (n c : ℕ) {m r : ℕ} (A 
     simp
   · rw [dif_neg h, dif_neg h, mul_zero]
 
+/- English proof (translation)
+Establish `h1` using `(isLocallyConstant_gfun hϖ hν m r).comp_continuous (f := fun q : Matrix (Fin m) (Fin m) k × Matrix (Fin m) (Fin r) k => (q.1, (0 : Matrix (Fin m) (Fin r) k))) (continuous_fst.prodMk continuous_const)`. Establish `h2` using `isLocallyConstant_gfun (ν := (1 : kˣ →* ℂˣ)) (c := c) hϖ (fun _ _ => rfl) m r`. Establish `h3` using `h1.mul h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`.
+
+Conclude with `gfun_eq_mul ν ϖ n c q.1 q.2`.
+-/
 theorem isLocallyConstant_gfun' {ν : kˣ →* ℂˣ} {ϖ : kˣ} {n : ℕ} (c : ℕ) (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ)
     (hν : GlobalTheory.SplitFlip.CondLE ϖ n ν) (m r : ℕ) :
     IsLocallyConstant
@@ -47,6 +57,17 @@ end GlobalTheory.StdPairSBDepth
 
 open GlobalTheory.StdPairCone ValuativeRel in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ν ϖ n c a a' hϖ hν`. Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hc1 : ∀ m : ℕ, Continuous fun X : Matrix (Fin m) (Fin (a + a')) k => blk₁ X`. Introduce `m`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_id.matrix_elem i (Fin.castAdd a' j)`.
+
+Establish `hc2 : ∀ m : ℕ, Continuous fun X : Matrix (Fin m) (Fin (a + a')) k => blk₂ X`. Introduce `m`. Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_id.matrix_elem i (Fin.natAdd a j)`. Establish `hK : ∀ m : ℕ, IsCompact (Set.univ.pi fun _ : Fin m => Set.univ.pi fun _ : Fin (a + a') => (𝒪[k] : Set k) : Set (Matrix (Fin m) (Fin (a + a')) k))` using `fun m => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => GlobalTheory.SplitWeil.isCompact_int k`. Use `⟨⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `: stdA ν ϖ c a a' = (fun q => GlobalTheory.StdPairSB.gfun ν ϖ c q.1 q.2) ∘ fun X => (blk₁ X, blk₂ X)` using `rfl`. Rewrite using `[this]`. Conclude with `(GlobalTheory.StdPairSBDepth.isLocallyConstant_gfun' c hϖ hν a a').comp_continuous ((hc1 a).prodMk (hc2 a))`. Use `HasCompactSupport.intro (hK a) fun X hX => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+
+Take `⟨h1, h2⟩` from `GlobalTheory.StdPairSB.integral_of_ne (A := blk₁ X) (B := blk₂ X) hϖ hne`. Conclude with `hX fun i _ j _ => Fin.addCases (motive := fun j => X i j ∈ 𝒪[k]) (fun j => h1 i j) (fun j => h2 i j) j`. Establish `: stdB ν ϖ c a a' = (fun q => GlobalTheory.StdPairSB.gfun ν ϖ c q.1 q.2) ∘ fun Y => (blk₂ Y, blk₁ Y)` using `rfl`. Rewrite using `[this]`. Conclude with `(GlobalTheory.StdPairSBDepth.isLocallyConstant_gfun' c hϖ hν a' a).comp_continuous ((hc2 a').prodMk (hc1 a'))`.
+
+Use `HasCompactSupport.intro (hK a') fun Y hY => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨h2, h1⟩` from `GlobalTheory.StdPairSB.integral_of_ne (A := blk₂ Y) (B := blk₁ Y) hϖ hne`. Conclude with `hY fun i _ j _ => Fin.addCases (motive := fun j => Y i j ∈ 𝒪[k]) (fun j => h1 i j) (fun j => h2 i j) j`.
+-/
 theorem GlobalTheory.StdPairSBDepth.stdPair_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ν : kˣ →* ℂˣ) (ϖ : kˣ) (n c a a' : ℕ), IsUnif ϖ → CondLE ϖ n ν →
       GlobalTheory.StdPairCone.stdA ν ϖ c a a' ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + a')) k) ∧
         GlobalTheory.StdPairCone.stdB ν ϖ c a a' ∈ GlobalTheory.WeilM.SB (Matrix (Fin a') (Fin (a + a')) k) := by

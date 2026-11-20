@@ -21,6 +21,9 @@ abbrev modulus (N : ℕ) [NeZero N] : ℕ+ := ⟨N, Nat.pos_of_neZero N⟩
 def unitsMod (N : ℕ) [NeZero N] : ℤ̂ˣ →* (ZMod N)ˣ :=
   Units.map (ProfiniteInteger.proj (modulus N)).toMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsMod (u : ℤ̂ˣ) :
     ((unitsMod N u : (ZMod N)ˣ) : ZMod N) = ProfiniteInteger.proj (modulus N) (u : ℤ̂) :=
   rfl
@@ -32,16 +35,25 @@ def toCircle : (ZMod N)ˣ →* Circle where
 
 omit [NeZero N] in
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toCircle (a : (ZMod N)ˣ) : (toCircle χ a : ℂ) = χ a :=
   rfl
 
 def galoisCharacter : Gal(maxCyclotomic/ℚ) →* Circle :=
   (toCircle χ).comp ((unitsMod N).comp cycCharacter.toMonoidHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_galoisCharacter (σ : Gal(maxCyclotomic/ℚ)) :
     (galoisCharacter χ σ : ℂ) = χ (ProfiniteInteger.proj (modulus N) (cycCharacter σ : ℤ̂)) :=
   rfl
 
+/- English proof (translation)
+Establish `h : Continuous fun u : ℤ̂ˣ ↦ (χ (ProfiniteInteger.proj (modulus N) (u : ℤ̂)) : ℂ)` using `continuous_of_discreteTopology.comp ((ProfiniteInteger.continuous_proj _).comp Units.continuous_val)`. Conclude with `continuous_induced_rng.2 h`.
+-/
 theorem continuous_toCircle_unitsMod : Continuous fun u : ℤ̂ˣ ↦ toCircle χ (unitsMod N u) := by
   have h : Continuous fun u : ℤ̂ˣ ↦ (χ (ProfiniteInteger.proj (modulus N) (u : ℤ̂)) : ℂ) :=
     continuous_of_discreteTopology.comp
@@ -59,10 +71,16 @@ def heckeCharacter : HeckeCharacter ℚ where
     rw [h]
     exact (continuous_toCircle_unitsMod χ).comp continuous_unitPart.inv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem heckeCharacter_apply (x : IdeleClassGroup ℚ) :
     heckeCharacter χ x = galoisCharacter χ (reciprocityMap x) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[heckeCharacter_apply, coe_galoisCharacter, cycCharacter_reciprocityMap]`.
+-/
 theorem coe_heckeCharacter_apply (x : IdeleClassGroup ℚ) :
     (heckeCharacter χ x : ℂ) = χ (ProfiniteInteger.proj (modulus N) ((unitPart x)⁻¹ : ℤ̂ˣ)) := by
   rw [heckeCharacter_apply, coe_galoisCharacter, cycCharacter_reciprocityMap]

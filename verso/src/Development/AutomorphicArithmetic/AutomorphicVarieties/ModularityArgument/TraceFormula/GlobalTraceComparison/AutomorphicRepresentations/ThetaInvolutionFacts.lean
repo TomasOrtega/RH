@@ -17,10 +17,18 @@ section Abstract
 
 variable {M ι : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.Qk12.list_eig L c x l h`.
+-/
 private theorem list_eig (L : ι → Module.End ℂ M) (c : ι → ℂ) (x : M) (l : List ι)
     (h : ∀ i ∈ l, L i x = c i • x) : (l.map L).prod x = (l.map c).prod • x :=
   _root_.UpperTheory.Reformulated.B.Qk12.list_eig L c x l h
 
+/- English proof (translation)
+Establish `hp : (I₀ ∪ I₁).toList.Perm (I₀.toList ++ I₁.toList)`. Use `(List.perm_ext_iff_of_nodup (Finset.nodup_toList _) ?_).2 ?_` and prove the remaining obligations. Conclude with `List.nodup_append.2 ⟨Finset.nodup_toList _, Finset.nodup_toList _, fun a ha b hb hab => Finset.disjoint_left.1 hd (Finset.mem_toList.1 ha) (hab ▸ Finset.mem_toList.1 hb)⟩`. Introduce `a`. Simplify using the standard rewrite rules.
+
+Establish `hq` using `hp.map L`. Rewrite using `[hq.prod_eq' ?_, List.map_append, List.prod_append]`. Rewrite using `[List.pairwise_map]`. Conclude with `(Finset.nodup_toList _).imp_of_mem fun ha hb hab => hc _ (Finset.mem_toList.1 ha) _ (Finset.mem_toList.1 hb) hab`.
+-/
 private theorem prod_split [DecidableEq ι] (L : ι → Module.End ℂ M) (I₀ I₁ : Finset ι) (hd : Disjoint I₀ I₁)
     (hc : ∀ i ∈ I₀ ∪ I₁, ∀ k ∈ I₀ ∪ I₁, i ≠ k → Commute (L i) (L k)) :
     ((I₀ ∪ I₁).toList.map L).prod = (I₀.toList.map L).prod * (I₁.toList.map L).prod := by
@@ -40,17 +48,28 @@ end Abstract
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> funext g <;> simp [two, intersection_update_fsHerm_neg_one, hw]`.
+-/
 private theorem two_in {Z T T' : Finset (Pl E)} {w : Pl E} (hw : w ∈ Z) (φ₁ φ₂ : ∀ w : Pl E, LF n 0 w)
     (e₁ e₂ : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))) (b : Bool) :
     two (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T' φ₂ e₂) w b = two φ₁ φ₂ w b := by
   cases b <;> funext g <;> simp [two, intersection_update_fsHerm_neg_one, hw]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> funext g <;> simp [two, intersection_update_fsHerm_neg_one, hw, hT]`.
+-/
 private theorem slot_pair_functions_eq {Z T : Finset (Pl E)} {w : Pl E} (hw : w ∉ Z) (hT : w ∈ T) (φ₁ φ₂ : ∀ w : Pl E, LF n 0 w)
     (e₁ e₂ : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))) :
     two (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T φ₂ e₂) w false = (fun g => fn2 n 0 w (e₁ w) (g, 1)) ∧
     two (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T φ₂ e₂) w true = (fun g => fn2 n 0 w (e₂ w) (g, 1)) := by
   constructor <;> funext g <;> simp [two, intersection_update_fsHerm_neg_one, hw, hT]
 
+/- English proof (translation)
+Establish `key : ∀ g : GLw n w, (K2 n 0 w : Set (GLw n w × GLw 0 w)).indicator (1 : GLw n w × GLw 0 w → ℂ) (g, 1) = (KGL w n : Set (GLw n w)).indicator 1 g`. Introduce `g`. Distinguish the cases in `hg : g ∈ KGL w n`. Apply the tactic sequence `rw [Set.indicator_of_mem, Set.indicator_of_mem] <;> simp [hg, K2, Subgroup.mem_prod]`. Apply the tactic sequence `rw [Set.indicator_of_notMem, Set.indicator_of_notMem] <;> simp [hg, K2, Subgroup.mem_prod]`.
+
+Apply the tactic sequence `cases b <;> funext g <;> simpa [two, intersection_update_fsHerm_neg_one, hw, hT] using key g`.
+-/
 private theorem two_off {Z T : Finset (Pl E)} {w : Pl E} (hw : w ∉ Z) (hT : w ∉ T) (φ₁ φ₂ : ∀ w : Pl E, LF n 0 w)
     (e₁ e₂ : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))) (b : Bool) :
     two (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T φ₂ e₂) w b = (KGL w n : Set (GLw n w)).indicator 1 := by
@@ -65,6 +84,17 @@ private theorem two_off {Z T : Finset (Pl E)} {w : Pl E} (hw : w ∉ Z) (hT : w 
 private def slots (S : Set (Pl E)) (Z T : Finset (Pl E)) : Finset (Pl E × Bool) :=
   Z ×ˢ Finset.univ ∪ (T ×ˢ Finset.univ).filter (Sl S)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i hi`. Break down `Finset.mem_union.1 hi with h | h` into its components or cases. Establish `hw` using `(Finset.mem_product.1 h).1`. Use `⟨⟨(hZ _ hw).1, fun _ => (hZ _ hw).2⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[two_in hw]`. Conclude with `hφ _ hw _`. Take `⟨h1, hs⟩` from `Finset.mem_filter.1 h`. Establish `hwT` using `(Finset.mem_product.1 h1).1`. Establish `hwZ : i.1 ∉ Z` using `Finset.disjoint_left.1 hT hwT`.
+
+Use `⟨hs, ?_⟩` and prove the remaining obligations. Rewrite using `[(hG i.1).2.2.2 hwZ]`. Take `⟨w, b⟩` from `i`. Consider the cases of `b`. Rewrite using `[(slot_pair_functions_eq hwZ hwT φ₁ φ₂ e₁ e₂).1]`.
+
+Conclude with `(hEx E n w (e₁ w)).1`. Rewrite using `[(slot_pair_functions_eq hwZ hwT φ₁ φ₂ e₁ e₂).2]`. Conclude with `(hEx E n w (e₂ w)).1`. Introduce `i hs hi`. Establish `hwZ : i.1 ∉ Z` using `fun h => hi (Finset.mem_union_left _ (Finset.mem_product.2 ⟨h, Finset.mem_univ _⟩))`.
+
+Establish `hwT : i.1 ∉ T` using `fun h => hi (Finset.mem_union_right _ (Finset.mem_filter.2 ⟨Finset.mem_product.2 ⟨h, Finset.mem_univ _⟩, hs⟩))`. Rewrite using `[two_off hwZ hwT, (hG i.1).2.2.2 hwZ]`.
+-/
 private theorem fam_positions (hEx : Ex2Act) {S : Set (Pl E)} {Z : Finset (Pl E)} {N : ∀ w : Pl E, Subgroup (GLw n w)}
     (hZ : SplitIn S Z) (hG : Good Z N) (φ₁ φ₂ : ∀ w : Pl E, LF n 0 w)
     (hφ : ∀ w ∈ Z, ∀ b, IsHecke (N w) (two φ₁ φ₂ w b)) (T : Finset (Pl E)) (hT : Disjoint T Z)
@@ -97,6 +127,13 @@ private theorem fam_positions (hEx : Ex2Act) {S : Set (Pl E)} {Z : Finset (Pl E)
 private def cv (B : Pl E → Multiset ℂˣ) (e₁ e₂ : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))) (i : Pl E × Bool) : ℂ :=
   if i.2 then ev2 n 0 i.1 (e₂ i.1) (inv (B (cPl i.1))) 0 else ev2 n 0 i.1 (e₁ i.1) (B i.1) 0
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_filter, Finset.prod_product, val]`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hS` using `hT.1 w hw`. Rewrite using `[Fintype.prod_bool]`. Distinguish the cases in `hs : IsSplitAt w`.
+
+Establish `h1 : Sl S (w, true)` using `⟨hS, fun _ => hs⟩`. Establish `h2 : Sl S (w, false)` using `⟨hS, by simp⟩`. Simplify using `[h1, h2, cv, inv, mul_comm]`. Establish `h1 : ¬ Sl S (w, true)` using `fun h => hs (h.2 rfl)`. Establish `h2 : Sl S (w, false)` using `⟨hS, by simp⟩`.
+
+Establish `h3 : ev2 n 0 w (e₂ w) (inv (B (cPl w))) (inv ((0 : Pl E → Multiset ℂˣ) (cPl w))) = 1` using `hT.2 w hw hs _`. Simplify using `only [h1, h2, if_true, if_false, cv, one_mul]`. Rewrite using `[h3, mul_one]`. Simplify using the standard rewrite rules.
+-/
 private theorem prod_cv {S : Set (Pl E)} (T : Finset (Pl E)) (B : Pl E → Multiset ℂˣ)
     (e₁ e₂ : Pl E → Ex (Fin (n + 1) × Fin (0 + 1))) (hT : TEv S T e₂) :
     ∏ i ∈ (T ×ˢ Finset.univ).filter (Sl S), cv B e₁ e₂ i = val T e₁ e₂ B 0 := by
@@ -115,6 +152,9 @@ private theorem prod_cv {S : Set (Pl E)} (T : Finset (Pl E)) (B : Pl E → Multi
     rw [h3, mul_one]
     simp
 
+/- English proof (translation)
+Establish `hc : cPl w ∉ Z` using `fun h => by`. Use `((hPl E).2.2.2 S hS w).2 hw (hZ _ h).1` as an intermediate fact. Conclude with `hwZ (this ▸ h)`. Conclude with `⟨⟨hwZ, hc⟩, hc, by rwa [((hPl E).2.1 w).1]⟩`.
+-/
 private theorem off_of (hPl : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Places) {S : Set (Pl E)} {Z : Finset (Pl E)} (hS : IsSection S)
     (hZ : SplitIn S Z) {w : Pl E} (hw : w ∈ S) (hwZ : w ∉ Z) : Off Z w ∧ Off Z (cPl w) := by
   have hc : cPl w ∉ Z := fun h => by
@@ -122,6 +162,27 @@ private theorem off_of (hPl : UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Place
     exact hwZ (this ▸ h)
   exact ⟨⟨hwZ, hc⟩, hc, by rwa [((hPl E).2.1 w).1]⟩
 
+/- English proof (translation)
+Introduce `hPl hPf hPO hLC _ hEx hSat E _ _ _ n S Z N hS hZ hG π y B hB φ₁ φ₂ hφ T hTZ e₁ e₂ hT`. Establish `hF` using `fam_positions hEx hZ hG φ₁ φ₂ hφ T hTZ e₁ e₂`. Establish `hF0 : Fam S N (Z ×ˢ Finset.univ) (two (intersection_update_fsHerm_neg_one Z ∅ φ₁ e₁) (intersection_update_fsHerm_neg_one Z ∅ φ₂ e₂))`. Simplify `fam_positions (S := S) hEx hZ hG φ₁ φ₂ hφ ∅ (Finset.disjoint_empty_left _) e₁ e₂` using `[slots]`. Establish `hH` using `hPf E n S Z N hS hZ hG _ _ hF`.
+
+Establish `hH0` using `hPf E n S Z N hS hZ hG _ _ hF0`. Use `⟨hH, hF0, LinearMap.ext fun x => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hxf` using `y.fix x.2`. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, y.act _ hH x, y.act _ hH0 x, hPO E n S Z N hS hZ hG _ _ hF _ hxf, hPO E n S Z N hS hZ hG _ _ hF0 _ hxf]`. Use `set F := two (intersection_update_fsHerm_neg_one Z T φ₁ e₁) (intersection_update_fsHerm_neg_one Z T φ₂ e₂) with hFdef`.
+
+Use `set L : Pl E × Bool → Module.End ℂ (Sm E n) := fun i => Lw N i.1 i.2 (F i.1 i.2) with hL`. Establish `hd : Disjoint (Z ×ˢ Finset.univ : Finset (Pl E × Bool)) ((T ×ˢ Finset.univ).filter (Sl S))`. Use `Finset.disjoint_left.2 fun i h1 h2 => ?_` and prove the remaining obligations. Conclude with `Finset.disjoint_left.1 hTZ (Finset.mem_product.1 (Finset.mem_filter.1 h2).1).1 (Finset.mem_product.1 h1).1`. Establish `hcomm : ∀ i ∈ (Z ×ˢ Finset.univ : Finset (Pl E × Bool)) ∪ (T ×ˢ Finset.univ).filter (Sl S), ∀ k ∈ (Z ×ˢ Finset.univ : Finset (Pl E × Bool)) ∪ (T ×ˢ Finset.univ).filter (Sl S), i ≠ k → Commute (L i) (L k)`.
+
+Introduce `i hi k hk hik`. Conclude with `(hLC E n S Z N hS hZ hG i (hF.1 i hi).1 _ (hF.1 i hi).2).2 k (hF.1 k hk).1 hik _ (hF.1 k hk).2`. Establish `hsame : ((Z ×ˢ Finset.univ : Finset (Pl E × Bool)).toList.map fun i => Lw N i.1 i.2 (two (intersection_update_fsHerm_neg_one Z ∅ φ₁ e₁) (intersection_update_fsHerm_neg_one Z ∅ φ₂ e₂) i.1 i.2)) = (Z ×ˢ Finset.univ : Finset (Pl E × Bool)).toList.map L`. Use `List.map_congr_left fun i hi => ?_` and prove the remaining obligations. Establish `hw` using `(Finset.mem_product.1 (Finset.mem_toList.1 hi)).1`.
+
+Simplify using `only [hL, hFdef, two_in hw]`. Establish `heig : ∀ i ∈ ((T ×ˢ Finset.univ).filter (Sl S)).toList, L i x.1 = cv B e₁ e₂ i • x.1`. Introduce `i hi`. Take `⟨h1, hs⟩` from `Finset.mem_filter.1 (Finset.mem_toList.1 hi)`. Establish `hwT` using `(Finset.mem_product.1 h1).1`.
+
+Establish `hwZ : i.1 ∉ Z` using `Finset.disjoint_left.1 hTZ hwT`. Distinguish the cases in `hx0 : x.1 = 0`. Simplify using `[hx0]`. Establish `hmem : i ∈ slots S Z T` using `Finset.mem_union_right _ (Finset.mem_filter.2 ⟨h1, hs⟩)`. Establish `hfx` using `((hLC E n S Z N hS hZ hG i hs _ (hF.1 i hmem).2).1 x.1 hxf).1`.
+
+Rewrite `hfx` using `[(hG i.1).2.2.2 hwZ]`. Take `⟨ho, ho'⟩` from `off_of hPl hS hZ hs.1 hwZ`. Take `⟨w, b⟩` from `i`. Establish `hN : N w = KGL w n` using `(hG w).2.2.2 hwZ`. Establish `hxV` using `y.le x.2`.
+
+Consider the cases of `b`. Establish `hv` using `(hSat E n π w (B w) x.1 hxV hx0).1 (hB w ho) hfx`. Use `(hEx E n w (e₁ w)).2 _ _ x.1 (B w) hv` as an intermediate fact. Simplify using `only [hL, hFdef, (slot_pair_functions_eq hwZ hwT φ₁ φ₂ e₁ e₂).1, cv, Lw, hN]`. Simplify using `using this`.
+
+Establish `hv` using `(hSat E n π w (B (cPl w)) x.1 hxV hx0).2 (by`. Use `hB (cPl w) ho'` as an intermediate fact. Conclude with `this) hfx`. Use `(hEx E n w (e₂ w)).2 _ _ x.1 _ hv` as an intermediate fact. Simplify using `only [hL, hFdef, (slot_pair_functions_eq hwZ hwT φ₁ φ₂ e₁ e₂).2, cv, Lw, hN]`.
+
+Simplify using `using this`. Establish `hI : slots S Z T = (Z ×ˢ Finset.univ : Finset (Pl E × Bool)) ∪ (T ×ˢ Finset.univ).filter (Sl S)` using `rfl`. Rewrite using `[hsame, hI, prod_split L _ _ hd hcomm, Module.End.mul_apply, list_eig L (cv B e₁ e₂) x.1 _ heig, Finset.prod_map_toList, prod_cv T B e₁ e₂ hT, map_smul]`.
+-/
 theorem tTr_pf :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.Places → PfHecke → ProdOp → LocComm → YLoc → Ex2Act → SatAll → TTr := by
   intro hPl hPf hPO hLC _ hEx hSat E _ _ _ n S Z N hS hZ hG π y B hB φ₁ φ₂ hφ T hTZ e₁ e₂ hT

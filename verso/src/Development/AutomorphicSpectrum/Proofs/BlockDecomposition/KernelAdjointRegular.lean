@@ -14,6 +14,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 namespace GlobalTheory.CompanionTheory.WaveMult
 
+/- English proof (translation)
+Establish `h : (fun y : Mat n => y⁻¹) = fun y => (y.det)⁻¹ • y.adjugate`. Use function extensionality and compare the values at `y`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Rewrite using `[h]`. Conclude with `((continuous_id.matrix_det).continuousOn.inv₀ (fun y hy => hy)).smul (continuous_id.matrix_adjugate).continuousOn`.
+-/
 theorem continuousOn_inv_GLs {n : ℕ} : ContinuousOn (fun y : Mat n => y⁻¹) (GLs n) := by
   have h : (fun y : Mat n => y⁻¹) = fun y => (y.det)⁻¹ • y.adjugate := by
     funext y
@@ -22,12 +25,22 @@ theorem continuousOn_inv_GLs {n : ℕ} : ContinuousOn (fun y : Mat n => y⁻¹) 
   exact ((continuous_id.matrix_det).continuousOn.inv₀ (fun y hy => hy)).smul
     (continuous_id.matrix_adjugate).continuousOn
 
+/- English proof (translation)
+Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Use `congrArg Subtype.val (inv_mul_cancel k)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem unitary_matrix_inv {n : ℕ} (k : Matrix.unitaryGroup (Fin n) ℂ) :
     (k.1 : Mat n)⁻¹ = (k⁻¹).1 := by
   apply Matrix.inv_eq_left_inv
   have := congrArg Subtype.val (inv_mul_cancel k)
   simpa using this
 
+/- English proof (translation)
+Use `symm`. Rewrite using `[ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`. Set `f : E.V →ₗᵢ[ℂ] E.V` to `⟨(E.ρ k : E.V →L[ℂ] E.V).toLinearMap, E.iso k⟩`. Establish `h1 : E.ρ k (E.ρ k⁻¹ y) = y`.
+
+Establish `: E.ρ k * E.ρ k⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `congrArg (fun T : E.V →L[ℂ] E.V => T y) this`. Establish `h2` using `f.inner_map_map x (E.ρ k⁻¹ y)`. Establish `h3 : f (E.ρ k⁻¹ y) = y` using `h1`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2`.
+-/
 theorem adjoint_rho_inv {n : ℕ} (E : KMod n) [CompleteSpace E.V] (k : Matrix.unitaryGroup (Fin n) ℂ) :
     ContinuousLinearMap.adjoint (E.ρ k⁻¹) = E.ρ k := by
   symm
@@ -42,6 +55,15 @@ theorem adjoint_rho_inv {n : ℕ} (E : KMod n) [CompleteSpace E.V] (k : Matrix.u
   rw [h3] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `hL n E k hk heq`. Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨hc, R, hR⟩` from `hk`. Use `⟨⟨?_, R, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hinv : ContinuousOn (fun y : Mat n => k y⁻¹) (GLs n)` using `hc.comp continuousOn_inv_GLs (fun y hy => inv_mem_GLs hy)`.
+
+Conclude with `(ContinuousLinearMap.adjoint (𝕜 := ℂ) (E := E.V) (F := E.V)).continuous.comp_continuousOn hinv`. Introduce `y hy hlt`. Establish `h1 : lg y⁻¹ = lg y` using `(hL n).2.1 y hy`. Establish `h2 : k y⁻¹ = 0` using `hR _ (inv_mem_GLs hy) (by rw [h1]; exact hlt)`. Simplify using `[h2]`.
+
+Introduce `y hy k₁ k₂`. Establish `h1 : ((k₁.1 : Mat n) * y * k₂.1)⁻¹ = (k₂⁻¹).1 * y⁻¹ * (k₁⁻¹).1`. Rewrite using `[Matrix.mul_inv_rev, Matrix.mul_inv_rev, unitary_matrix_inv, unitary_matrix_inv, mul_assoc]`. Rewrite using `[h1, heq _ (inv_mem_GLs hy)]`. Establish `h2 : ContinuousLinearMap.adjoint (E.ρ k₂⁻¹ * k y⁻¹ * E.ρ k₁⁻¹) = ContinuousLinearMap.adjoint (E.ρ k₁⁻¹) * ContinuousLinearMap.adjoint (k y⁻¹) * ContinuousLinearMap.adjoint (E.ρ k₂⁻¹)`.
+
+Simplify using `only [ContinuousLinearMap.mul_def, ContinuousLinearMap.adjoint_comp]`. Both sides reduce to the same expression. Rewrite using `[h2, adjoint_rho_inv, adjoint_rho_inv]`.
+-/
 theorem adjoint_kernel_reg : LgFacts → ∀ (n : ℕ) (E : KMod n) (k : Mat n → (E.V →L[ℂ] E.V)), KReg k → (∀ y ∈ GLs n, ∀ k₁ k₂ : Matrix.unitaryGroup (Fin n) ℂ, k (k₁.1 * y * k₂.1) = E.ρ k₁ * k y * E.ρ k₂) → (haveI := FiniteDimensional.complete ℂ E.V; KReg (fun y => ContinuousLinearMap.adjoint (k y⁻¹)) ∧ ∀ y ∈ GLs n, ∀ k₁ k₂ : Matrix.unitaryGroup (Fin n) ℂ, ContinuousLinearMap.adjoint (k (k₁.1 * y * k₂.1)⁻¹) = E.ρ k₁ * ContinuousLinearMap.adjoint (k y⁻¹) * E.ρ k₂) := by
   intro hL n E k hk heq
   haveI := FiniteDimensional.complete ℂ E.V

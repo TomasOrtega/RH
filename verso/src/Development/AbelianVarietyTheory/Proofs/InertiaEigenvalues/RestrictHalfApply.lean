@@ -21,6 +21,9 @@ def restrictHalf {m n : ℕ} (a' b : AE D) (Λ : AddSubgroup (Mx D m n)) : (Mx D
   map_smul' c Φ := by funext x; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem restrictHalf_apply {m n : ℕ} (a' b : AE D) (Λ : AddSubgroup (Mx D m n)) (Φ : Mx D m n → ℂ) (x : Mx D m n) :
     restrictHalf a' b Λ Φ x = Φ (a' • x) * halfInd b Λ (b • x) * (if IsHalf (a' + b) x then 1 else 0) := rfl
 

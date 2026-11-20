@@ -15,6 +15,11 @@ def ColW (m : Matrix (Idx r k) (Idx r k) K) : Prop :=
   ∀ i : Fin k, m *ᵥ Pi.single (wI i) 1 - Pi.single (wI i) 1 ∈
     Submodule.span K ((fun j => Pi.single j (1 : K)) '' posW (r := r) i)
 
+/- English proof (translation)
+Unfold `ColW`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_span_single]`. Use `forall_congr' fun j => forall_congr' fun _ => ?_` and prove the remaining obligations. Establish `e : (m *ᵥ Pi.single (wI i) (1 : K)) j = m j (wI i)` using `by rw [Matrix.mulVec_single_one]; rfl`.
+
+Rewrite using `[Pi.sub_apply, sub_eq_zero, e, Pi.single_apply]`.
+-/
 theorem colW_iff (m : Matrix (Idx r k) (Idx r k) K) :
     ColW m ↔ ∀ i : Fin k, ∀ j, j ∉ posW (r := r) i → m j (wI i) = if j = wI i then 1 else 0 := by
   unfold ColW
@@ -24,6 +29,35 @@ theorem colW_iff (m : Matrix (Idx r k) (Idx r k) K) :
   have e : (m *ᵥ Pi.single (wI i) (1 : K)) j = m j (wI i) := by rw [Matrix.mulVec_single_one]; rfl
   rw [Pi.sub_apply, sub_eq_zero, e, Pi.single_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hu : Par (fun h => IsUnit h.det) x`. Take `⟨h11, h33, h21, h31, h32, h, hh, h22⟩` from `hx`. Conclude with `⟨h11, h33, h21, h31, h32, h, uni_unit hh, h22⟩`.
+
+Take `⟨hC, hR⟩` from `(par_iff_flags x y hxy hyx).1 hu`. Use `⟨hC, ?_, hR⟩` and prove the remaining obligations. Take `⟨h11, h33, h21, h31, h32, h, hh, h22⟩` from `hx`. Rewrite using `[colW_iff]`. Introduce `i j hj`.
+
+Break down `j with a | (j | u) | c` into its components or cases. Conclude with `absurd (Or.inl ⟨a, rfl⟩) hj`. Establish `e` using `congrFun (congrFun h22 (Sum.inl j)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Establish `hji : ¬ j < i` using `fun hlt => hj (Or.inr ⟨j, hlt, rfl⟩)`.
+
+Use `show x (wI j) (wI i) = _`. Rewrite using `[show x (wI j) (wI i) = h j i from e]`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[hh.2 j, wI]`.
+
+Establish `hlt : i < j` using `lt_of_le_of_ne (not_lt.1 hji) (Ne.symm hij)`. Rewrite using `[hh.1 hlt]`. Establish `: (wI j : Idx r k) ≠ wI i`. Introduce `e'`. Apply `hij` to reduce the goal to its premises.
+
+Simplify `e'` using `[wI]`. Simplify using `[wI, hij]`. Establish `e` using `congrFun (congrFun h22 (Sum.inr u)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply] at e`. Establish `e' : x (Sum.inr (Sum.inl (Sum.inr u))) (wI i) = 0` using `e`.
+
+Rewrite using `[e']`. Simplify using `[wI]`. Establish `e` using `congrFun (congrFun h32 c) (Sum.inl i)`. Simplify using `only [b32, Matrix.of_apply, Matrix.zero_apply] at e`. Establish `e' : x (Sum.inr (Sum.inr c)) (wI i) = 0` using `e`.
+
+Rewrite using `[e']`. Simplify using `[wI]`. Introduce and unpack `⟨hC, hW, hR⟩`. Take `⟨h11, h33, h21, h31, h32, h, -, h22⟩` from `(par_iff_flags x y hxy hyx).2 ⟨hC, hR⟩`. Use `⟨h11, h33, h21, h31, h32, h, ⟨fun j i hlt => ?_, fun i => ?_⟩, h22⟩` and prove the remaining obligations.
+
+Establish `e` using `congrFun (congrFun h22 (Sum.inl j)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Rewrite using `[← e]`. Establish `hnot : (wI j : Idx r k) ∉ posW (r` using `r) i := by`. Introduce and unpack `(⟨a, ha⟩ | ⟨j', hj', he⟩)`.
+
+Simplify using `[wI] at ha`. Establish `: j' = j` using `by simpa [wI] using he`. Substitute `this` using the available equality. Conclude with `absurd hlt (not_lt.2 (le_of_lt hj'))`. Use `(colW_iff x).1 hW i (wI j) hnot` as an intermediate fact.
+
+Rewrite `this` using `[show x (wI j) (wI i) = x (Sum.inr (Sum.inl (Sum.inl j))) (Sum.inr (Sum.inl (Sum.inl i))) from rfl]`. Rewrite using `[this]`. Establish `hne : (wI j : Idx r k) ≠ wI i`. Introduce `e'; have : j = i := by simpa [wI] using e'`. Conclude with `absurd hlt (by rw [this]; exact lt_irrefl _)`.
+
+Simplify using `[hne]`. Establish `e` using `congrFun (congrFun h22 (Sum.inl i)) (Sum.inl i)`. Simplify using `only [b22, midEmb, Matrix.of_apply, Matrix.fromBlocks_apply₁₁] at e`. Rewrite using `[← e]`. Establish `hnot : (wI i : Idx r k) ∉ posW (r` using `r) i := by`.
+
+Introduce and unpack `(⟨a, ha⟩ | ⟨j', hj', he⟩)`. Simplify using `[wI] at ha`. Establish `: j' = i` using `by simpa [wI] using he`. Substitute `this` using the available equality. Conclude with `lt_irrefl j' hj'`.
+
+Use `(colW_iff x).1 hW i (wI i) hnot` as an intermediate fact. Establish `h1 : x (wI i) (wI i) = 1` using `by simpa using this`. Conclude with `h1`.
+-/
 theorem par_uni_iff_flags (x y : Matrix (Idx r k) (Idx r k) K) (hxy : x * y = 1) (hyx : y * x = 1) :
     Par IsUpUni x ↔ ColC x ∧ ColW x ∧ RowC y := by
   constructor
@@ -91,6 +125,9 @@ theorem par_uni_iff_flags (x y : Matrix (Idx r k) (Idx r k) K) (hxy : x * y = 1)
       have h1 : x (wI i) (wI i) = 1 := by simpa using this
       exact h1
 
+/- English proof (translation)
+Rewrite using `[colFlag_iff, rowFlag_iff]`. Conclude with `par_uni_iff_flags _ _ (by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]) (by rw [← Units.val_mul, inv_mul_cancel, Units.val_one])`.
+-/
 theorem mem_nuG_iff_flags (g : GL (Idx r k) K) :
     g ∈ nuG K r k ↔ ColFlag (g : Matrix (Idx r k) (Idx r k) K) ∧ ColW (g : Matrix (Idx r k) (Idx r k) K) ∧
       RowFlag ((g⁻¹ : GL (Idx r k) K) : Matrix (Idx r k) (Idx r k) K) := by

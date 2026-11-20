@@ -12,6 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel
 
+/- English proof (translation)
+Introduce `hlam hP hG hND hDeg D r V h2r ψ hψ θ hθ μ 𝓕 h𝓕 ν hν φ hφ habs hsum`. Take `⟨lam, 𝓖, hlg⟩` from `hlam D r`. Establish `hyp : Hyp D r V ψ θ μ lam ν φ` using `⟨h2r, hψ, hθ, ⟨𝓕, h𝓕⟩, ⟨𝓖, hlg⟩, hν, hφ, habs⟩`. Establish `h1` using `hP D r V ψ θ μ lam ν φ hyp hsum`. Establish `h2` using `hG D r V θ hθ ν hν φ hφ habs`.
+
+Establish `h3 : (fun β : HermE D r => IfrB V ν φ β) = fun β : HermE D r => W ψ V μ lam φ β`. Use function extensionality and compare the values at `β`. Distinguish the cases in `hβ : β.1.det = 0`. Conclude with `hDeg D r V ψ θ μ lam ν φ hyp β hβ`. Conclude with `hND D r V ψ θ μ lam ν φ hyp β hβ`.
+
+Rewrite `h2` using `[h3]`. Establish `h4` using `h1.unique h2`. Establish `h5` using `hsum.hasSum`. Rewrite `h5` using `[h4]`. Then use the resulting hypothesis.
+-/
 theorem bigCell_of_poisson_siegel :
     (∀ (D : Formalism.BasicNotions.D7) (r : ℕ), ∃ (lam : Measure (PositivityTheory.GramSchwartzFunctions.BC.hermA D r)) (𝓖 : Set (PositivityTheory.GramSchwartzFunctions.BC.hermA D r)), PositivityTheory.GramSchwartzFunctions.BC.IsCovolOneH lam 𝓖) → PositivityTheory.GramSchwartzFunctions.BC.PoissonHerm → (∀ (D : Formalism.BasicNotions.D7) (r : ℕ) (V : Formalism.BasicNotions.TH.HSp D) (θ : InfFam D), IsInfFam θ → ∀ (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ φ : Mx D V.rank r → ℂ, φ ∈ schwartzA θ V.rank r → GlobalTheory.SiegelFormula.absThetaInt V ν φ < ⊤ → HasSum (fun β : PositivityTheory.GramSchwartzFunctions.HermE D r => PositivityTheory.GramSchwartzFunctions.BC.IfrB V ν φ β) (PositivityTheory.GramSchwartzFunctions.Ifr V ν φ)) → PositivityTheory.GramSchwartzFunctions.BC.SiegelND → PositivityTheory.GramSchwartzFunctions.BC.SiegelDeg → PositivityTheory.GramSchwartzFunctions.BigCell := by
   intro hlam hP hG hND hDeg D r V h2r ψ hψ θ hθ μ 𝓕 h𝓕 ν hν φ hφ habs hsum

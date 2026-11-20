@@ -26,8 +26,14 @@ def gC {q : ℕ} (x : CH.Cn (CH.modF A) q) (hx : ∀ s, x s ∈ a.S _) : CH.Cn (
 
 variable {a b}
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+-/
 theorem mk2_eq_zero_iff_mem_S {T : D} (x : (CH.modF A).obj T) : mk2 b T x = 0 ↔ x ∈ b.S T := Ideal.Quotient.eq_zero_iff_mem
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `y`. Establish `h' : y = mk2 b T x` using `h`. Substitute `h'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem map_val {T T' : D} (φ : T ⟶ T') (y : (sq a b).obj T) (x : (CH.modF A).obj T) (h : vl a b T y = mk2 b T x) :
     vl a b T' (((sq a b).map φ).hom y) = mk2 b T' (((CH.modF A).map φ).hom x) := by
   obtain ⟨y, hy⟩ := y
@@ -35,6 +41,9 @@ theorem map_val {T T' : D} (φ : T ⟶ T') (y : (sq a b).obj T) (x : (CH.modF A)
   subst h'
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `vl a b _ (∑ i : Fin (q + 2), (-1 : ℤ) ^ (i : ℕ) • ((sq a b).map (GlobalTheory.CatH.toLast i s)).hom (f (GlobalTheory.CatH.face i s))) = mk2 b _ (∑ i : Fin (q + 2), (-1 : ℤ) ^ (i : ℕ) • ((CH.modF A).map (GlobalTheory.CatH.toLast i s)).hom (x (GlobalTheory.CatH.face i s)))`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, map_val _ _ _ (h _)]`.
+-/
 theorem d_val {q : ℕ} (f : CH.Cn (sq a b) q) (x : CH.Cn (CH.modF A) q)
     (h : ∀ s, vl a b _ (f s) = mk2 b _ (x s)) (s : ComposableArrows D (q + 1)) :
     vl a b _ (CH.d _ q f s) = mk2 b _ (CH.d _ q x s) := by
@@ -44,6 +53,11 @@ theorem d_val {q : ℕ} (f : CH.Cn (sq a b) q) (x : CH.Cn (CH.modF A) q)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [map_zsmul, map_zsmul, map_val _ _ _ (h _)]
 
+/- English proof (translation)
+Establish `h : ∀ s, ∃ y : (CH.modF A).obj (s.obj (Fin.last q)), y ∈ a.S _ ∧ vl a b _ (f s) = mk2 b _ y`. Introduce `s`. Take `⟨y, hy, e⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 (show sqM a b _ from f s).2`. Conclude with `⟨y, hy, e.symm⟩`. Use `choose x hx hx' using h`.
+
+Conclude with `⟨x, hx, hx'⟩`.
+-/
 theorem lift_C {q : ℕ} (f : CH.Cn (sq a b) q) : ∃ x : CH.Cn (CH.modF A) q, (∀ s, x s ∈ a.S _) ∧
     ∀ s, vl a b _ (f s) = mk2 b _ (x s) := by
   have h : ∀ s, ∃ y : (CH.modF A).obj (s.obj (Fin.last q)), y ∈ a.S _ ∧ vl a b _ (f s) = mk2 b _ y := by
@@ -53,8 +67,14 @@ theorem lift_C {q : ℕ} (f : CH.Cn (sq a b) q) : ∃ x : CH.Cn (CH.modF A) q, (
   choose x hx hx' using h
   exact ⟨x, hx, hx'⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext h`.
+-/
 theorem vl_inj {T : D} {y y' : (sq a b).obj T} (h : vl a b T y = vl a b T y') : y = y' := Subtype.ext h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Use `vl_inj ?_` and prove the remaining obligations. Rewrite using `[d_val _ x (fun _ => rfl) s, (mk2_eq_zero_iff_mem_S _).2 (hd s)]`. Conclude with `(map_zero (vl a b _)).symm`.
+-/
 theorem gC_d {q : ℕ} (x : CH.Cn (CH.modF A) q) (hx : ∀ s, x s ∈ a.S _) (hd : ∀ s, CH.d _ q x s ∈ b.S _) :
     CH.d _ q (gC a b x hx) = 0 := by
   funext s
@@ -62,6 +82,9 @@ theorem gC_d {q : ℕ} (x : CH.Cn (CH.modF A) q) (hx : ∀ s, x s ∈ a.S _) (hd
   rw [d_val _ x (fun _ => rfl) s, (mk2_eq_zero_iff_mem_S _).2 (hd s)]
   exact (map_zero (vl a b _)).symm
 
+/- English proof (translation)
+Establish `h0` using `gC_d x hx hd`. Establish `h1 : (CH.cx (sq a b)).cls (gC a b x hx) h0 = 0` using `Subsingleton.elim _ _`. Establish `h2 : gC a b x hx = 0` using `((CrystallineSemistableComparison.P.cls_surj (CH.cx (sq a b)) 0).2.1 _ h0).1 h1`. Establish `h3 : vl a b _ (gC a b x hx s) = 0` using `by rw [h2]; exact map_zero (vl a b _)`. Conclude with `(mk2_eq_zero_iff_mem_S _).1 h3`.
+-/
 theorem ex_zero (hH : Subsingleton (CH.H (sq a b) 0)) (x : CH.Cn (CH.modF A) 0) (hx : ∀ s, x s ∈ a.S _)
     (hd : ∀ s, CH.d _ 0 x s ∈ b.S _) (s) : x s ∈ b.S _ := by
   have h0 := gC_d x hx hd
@@ -70,6 +93,13 @@ theorem ex_zero (hH : Subsingleton (CH.H (sq a b) 0)) (x : CH.Cn (CH.modF A) 0) 
   have h3 : vl a b _ (gC a b x hx s) = 0 := by rw [h2]; exact map_zero (vl a b _)
   exact (mk2_eq_zero_iff_mem_S _).1 h3
 
+/- English proof (translation)
+Establish `h0` using `gC_d x hx hd`. Establish `h1 : (CH.cx (sq a b)).cls (gC a b x hx) h0 = 0` using `Subsingleton.elim _ _`. Take `⟨u, hu⟩` from `((CrystallineSemistableComparison.P.cls_surj (CH.cx (sq a b)) (q + 1)).2.1 _ h0).1 h1`. Take `⟨v, hv, hv'⟩` from `lift_C u`. Use `⟨v, hv, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `d_val u v hv' s`. Establish `h4 : vl a b _ (CH.d _ q u s) = mk2 b _ (x s)` using `congrArg (fun y : CH.Cn (sq a b) (q + 1) => vl a b _ (y s)) hu`. Rewrite `h3` using `[h4]`. Use `(mk2_eq_zero_iff_mem_S _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mk2 b _ (x s - CH.d _ q v s) = 0`.
+
+Rewrite using `[map_sub, h3, sub_self]`.
+-/
 theorem ex_succ {q : ℕ} (hH : Subsingleton (CH.H (sq a b) (q + 1))) (x : CH.Cn (CH.modF A) (q + 1))
     (hx : ∀ s, x s ∈ a.S _) (hd : ∀ s, CH.d _ (q + 1) x s ∈ b.S _) :
     ∃ v : CH.Cn (CH.modF A) q, (∀ s, v s ∈ a.S _) ∧ ∀ s, (x - CH.d _ q v) s ∈ b.S _ := by
@@ -86,6 +116,11 @@ theorem ex_succ {q : ℕ} (hH : Subsingleton (CH.H (sq a b) (q + 1))) (x : CH.Cn
   change mk2 b _ (x s - CH.d _ q v s) = 0
   rw [map_sub, h3, sub_self]
 
+/- English proof (translation)
+Establish `e : (⟨g - ∑ k, Y k, h⟩ : K.Z m) = ⟨g, hg⟩ - ∑ k, (⟨Y k, hY k⟩ : K.Z m)`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_sub, Submodule.coe_sum]`. Express the relevant statement in the definitionally equal form `_ = Submodule.mkQ _ (⟨g - ∑ k, Y k, h⟩ : K.Z m)`. Rewrite using `[e, map_sub, map_sum]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cls_sub_sum {K : Cx.{1} R} {m : ℕ} {ι : Type} [Fintype ι] (g : K.X m) (hg : K.d m g = 0) (Y : ι → K.X m)
     (hY : ∀ k, K.d m (Y k) = 0) (h : K.d m (g - ∑ k, Y k) = 0) :
     K.cls g hg - ∑ k, K.cls (Y k) (hY k) = K.cls (g - ∑ k, Y k) h := by
@@ -96,6 +131,11 @@ theorem cls_sub_sum {K : Cx.{1} R} {m : ℕ} {ι : Type} [Fintype ι] (g : K.X m
   rw [e, map_sub, map_sum]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg, rfl, hgs⟩` from `hc`. Establish `h : CH.d _ m (g - ∑ k, Y k) = 0`. Rewrite using `[map_sub, map_sum, hg]`. Simplify using `[hY]`. Use `⟨g - ∑ k, Y k, h, cls_sub_sum (K := CH.cx (sq a b)) g hg Y hY h, fun s => ?_⟩` and prove the remaining obligations.
+
+Substitute `hE` using the available equality. Express the relevant statement in the definitionally equal form `vl a b _ (g s - (∑ k, Y k) s) = mk2 b _ (Cl s - (∑ k, y k) s)`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, map_sub, map_sub, map_sum, map_sum]`. Conclude with `congrArg₂ (· - ·) (hgs s) (Finset.sum_congr rfl fun k _ => hy k s)`.
+-/
 theorem rep_fin {m : ℕ} {ι : Type} [Fintype ι] {Cl E : CH.Cn (CH.modF A) m} {c : CH.H (sq a b) m} (hc : Rep a b Cl c)
     (Y : ι → CH.Cn (sq a b) m) (y : ι → CH.Cn (CH.modF A) m) (hY : ∀ k, CH.d _ m (Y k) = 0)
     (hy : ∀ k s, vl a b _ (Y k s) = mk2 b _ (y k s)) (hE : Cl - ∑ k, y k = E) :

@@ -28,9 +28,15 @@ def hOneProj : S.X₃.obj.obj (op ⊤) →+ Sheaf.H.{w'} S.X₁ 1 :=
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] [Injective S.X₂] in
 include hU hI in
+/- English proof (translation)
+The claim follows from `(hC.delta_surjective hI 0).comp (globalCocycle_surjective _ U S.X₃.property hU)`.
+-/
 lemma cechOneProj_surjective : Function.Surjective (cechOneProj U hC) :=
   (hC.delta_surjective hI 0).comp (globalCocycle_surjective _ U S.X₃.property hU)
 
+/- English proof (translation)
+Introduce `x`. Take `⟨y, hy⟩` from `H.exact₁ hS rfl x (H.eq_zero_of_injective S.X₂ _)`. Conclude with `⟨Sheaf.H.equiv₀ S.X₃ isTerminalTop y, by simp [hOneProj, hy]⟩`.
+-/
 lemma hOneProj_surjective : Function.Surjective (hOneProj hS) := by
   intro x
   obtain ⟨y, hy⟩ := H.exact₁ hS rfl x (H.eq_zero_of_injective S.X₂ _)
@@ -38,6 +44,17 @@ lemma hOneProj_surjective : Function.Surjective (hOneProj hS) := by
 
 omit [Injective S.X₂] in
 include hU in
+/- English proof (translation)
+Use extensionality with `s`. Rewrite using `[AddMonoidHom.mem_ker, AddMonoidHom.mem_ker]`. Establish `e1 : cechOneProj U hC s = 0 ↔ ∃ t, S.g.hom.app (op ⊤) t = s`. Express the relevant statement in the definitionally equal form `hC.delta 0 (globalCocycle S.X₃.obj U s) = 0 ↔ _`. Rewrite using `[hC.delta_eq_zero_iff]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨κ, hκ, hgκ⟩`. Take `⟨t, ht⟩` from `globalCocycle_surjective _ U S.X₂.property hU ⟨κ, (mem_cocycles κ).2 hκ⟩`. Use `⟨t, globalCocycle_injective _ U S.X₃.property hU (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[← push_globalCocycle, ht]`.
+
+Conclude with `hgκ`. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨(globalCocycle S.X₂.obj U t).1, (mem_cocycles _).1 (globalCocycle _ U t).2, push_globalCocycle U _ t⟩`. Establish `e2 : hOneProj hS s = 0 ↔ ∃ t, S.g.hom.app (op ⊤) t = s`. Express the relevant statement in the definitionally equal form `H.δ hS 0 1 rfl ((Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm s) = 0 ↔ _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, hx⟩` from `H.exact₃ hS rfl _ h`. Use `⟨Sheaf.H.equiv₀ S.X₂ isTerminalTop x, ?_⟩` and prove the remaining obligations. Apply `(Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm.injective` to reduce the goal to its premises.
+
+Rewrite using `[← Sheaf.H.equiv₀_symm_naturality, AddEquiv.symm_apply_apply, hx]`. Introduce and unpack `⟨t, rfl⟩`. Rewrite using `[← Sheaf.H.equiv₀_symm_naturality]`. Conclude with `H.δ_map_g hS rfl _`. Rewrite using `[e1, e2]`.
+-/
 lemma ker_cechOneProj_eq : (cechOneProj U hC).ker = (hOneProj hS).ker := by
   ext s
   rw [AddMonoidHom.mem_ker, AddMonoidHom.mem_ker]
@@ -72,6 +89,9 @@ def cechHOneEquiv : cechH S.X₁.obj U 1 ≃+ Sheaf.H.{w'} S.X₁ 1 :=
     ((QuotientAddGroup.quotientAddEquivOfEq (ker_cechOneProj_eq U hU hS hC)).trans
       (QuotientAddGroup.quotientKerEquivOfSurjective _ (hOneProj_surjective hS)))
 
+/- English proof (translation)
+Establish `h : (QuotientAddGroup.quotientKerEquivOfSurjective _ (cechOneProj_surjective U hU hC hI)).symm (cechOneProj U hC s) = QuotientAddGroup.mk s`. Rewrite using `[AddEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [cechHOneEquiv, AddEquiv.trans_apply, h]`. Both sides reduce to the same expression.
+-/
 lemma cechHOneEquiv_cechOneProj (s : S.X₃.obj.obj (op ⊤)) :
     cechHOneEquiv U hU hS hC hI (cechOneProj U hC s) = hOneProj hS s := by
   have h : (QuotientAddGroup.quotientKerEquivOfSurjective _
@@ -81,6 +101,13 @@ lemma cechHOneEquiv_cechOneProj (s : S.X₃.obj.obj (op ⊤)) :
   simp only [cechHOneEquiv, AddEquiv.trans_apply, h]
   rfl
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `cechOneProj_surjective U hU hC hI x`. Establish `h₁₂ : S.f.hom ≫ α.τ₂.hom = α.τ₁.hom ≫ S'.f.hom` using `(congrArg (fun f => f.hom) α.comm₁₂).symm`. Establish `h₂₃ : S.g.hom ≫ α.τ₃.hom = α.τ₂.hom ≫ S'.g.hom` using `(congrArg (fun f => f.hom) α.comm₂₃).symm`. Establish `hmap : cechHMap U α.τ₁.hom 1 (cechOneProj U hC s) = cechOneProj U hC' (α.τ₃.hom.app (op ⊤) s)`. Express the relevant statement in the definitionally equal form `cechHMap U α.τ₁.hom (0 + 1) (hC.delta 0 (globalCocycle S.X₃.obj U s)) = hC'.delta 0 (globalCocycle S'.X₃.obj U (α.τ₃.hom.app (op ⊤) s))`.
+
+Rewrite using `[← hC.delta_naturality hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ 0]`. Use `congr 1`. Conclude with `Subtype.ext (push_globalCocycle U α.τ₃.hom s)`. Rewrite using `[hmap, cechHOneEquiv_cechOneProj, cechHOneEquiv_cechOneProj]`. Express the relevant statement in the definitionally equal form `H.δ hS' 0 1 rfl ((Sheaf.H.equiv₀ S'.X₃ isTerminalTop).symm (α.τ₃.hom.app (op ⊤) s)) = Sheaf.H.map α.τ₁ 1 (H.δ hS 0 1 rfl ((Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm s))`.
+
+Rewrite using `[← Sheaf.H.equiv₀_symm_naturality, H.δ_naturality hS hS' α]`.
+-/
 lemma cechHOneEquiv_naturality
     {S' : ShortComplex (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})}
     (hS' : S'.ShortExact) [Injective S'.X₂] (hC' : IsCechShortExact U S'.f.hom S'.g.hom)
@@ -114,6 +141,9 @@ def injectiveExtend (φ : F ⟶ G) : Injective.under F ⟶ Injective.under G :=
   haveI : Mono (Injective.ι F) := Injective.ι_mono F
   Injective.factorThru (φ ≫ Injective.ι G) (Injective.ι F)
 
+/- English proof (translation)
+Establish `: Mono (Injective.ι F)` using `Injective.ι_mono F`. Conclude with `Injective.comp_factorThru _ _`.
+-/
 lemma ι_injectiveExtend (φ : F ⟶ G) :
     Injective.ι F ≫ injectiveExtend φ = φ ≫ Injective.ι G := by
   have : Mono (Injective.ι F) := Injective.ι_mono F
@@ -132,6 +162,9 @@ def injectiveSequenceMap (φ : F ⟶ G) : injectiveSequence F ⟶ injectiveSeque
         (injectiveExtend φ) (ι_injectiveExtend φ)
     exact (cokernel.π_desc _ _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma injectiveSequenceMap_τ₁ (φ : F ⟶ G) : (injectiveSequenceMap φ).τ₁ = φ := rfl
 
 end InjectiveMap
@@ -147,6 +180,11 @@ def cechHEquivStep (hS : S.ShortExact) [Injective S.X₂] (hC : IsCechShortExact
     cechH S.X₁.obj U (m + 2) ≃+ Sheaf.H.{w'} S.X₁ (m + 2) :=
   ((hC.deltaEquiv hI m).symm.trans e).trans (hDeltaEquiv hS m)
 
+/- English proof (translation)
+Establish `h₁₂ : S.f.hom ≫ α.τ₂.hom = α.τ₁.hom ≫ S'.f.hom` using `(congrArg (fun f => f.hom) α.comm₁₂).symm`. Establish `h₂₃ : S.g.hom ≫ α.τ₃.hom = α.τ₂.hom ≫ S'.g.hom` using `(congrArg (fun f => f.hom) α.comm₂₃).symm`. Take `⟨y, rfl⟩` from `(hC.deltaEquiv hI m).surjective x`. Establish `hδ : (hC'.deltaEquiv hI' m).symm (cechHMap U α.τ₁.hom (m + 2) (hC.deltaEquiv hI m y)) = cechHMap U α.τ₃.hom (m + 1) y`. Rewrite using `[AddEquiv.symm_apply_eq, hC.deltaEquiv_naturality hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃]`.
+
+Simplify using `only [cechHEquivStep, AddEquiv.trans_apply, AddEquiv.symm_apply_apply, hδ, he]`. Conclude with `hDeltaEquiv_naturality hS hS' α m (e y)`.
+-/
 lemma cechHEquivStep_naturality (hS : S.ShortExact) [Injective S.X₂]
     (hC : IsCechShortExact U S.f.hom S.g.hom) (hI : CechAcyclic S.X₂.obj U)
     (hS' : S'.ShortExact) [Injective S'.X₂] (hC' : IsCechShortExact U S'.f.hom S'.g.hom)
@@ -178,6 +216,9 @@ variable [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] 
   (hUB : ∀ {n : ℕ} (i : Fin (n + 1) → ι), B (inter U i))
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] in
+/- English proof (translation)
+The claim follows from `@cechAcyclic_of_injective X (injectiveSequence G).X₂ (inferInstanceAs (Injective (Injective.under G))) κ V`.
+-/
 lemma injectiveSequence_cechAcyclic (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     {κ : Type w} (V : κ → Opens X) : CechAcyclic (injectiveSequence G).X₂.obj V :=
   @cechAcyclic_of_injective X (injectiveSequence G).X₂
@@ -185,6 +226,9 @@ lemma injectiveSequence_cechAcyclic (G : Sheaf (Opens.grothendieckTopology X) Ad
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] in
 include hC hUB in
+/- English proof (translation)
+The claim follows from `isCechShortExact_of_surjective (injectiveSequence_shortExact G) U fun i => surjective_of_goodAcyclic hC (injectiveSequence_shortExact G) hG _ (hUB i)`.
+-/
 lemma injectiveSequence_isCechShortExact
     (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}) (hG : GoodAcyclic B Good G) :
     IsCechShortExact U (injectiveSequence G).f.hom (injectiveSequence G).g.hom :=
@@ -193,6 +237,9 @@ lemma injectiveSequence_isCechShortExact
 
 omit [HasExt.{w'} (Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})] in
 include hC in
+/- English proof (translation)
+The claim follows from `goodAcyclic_of_shortExact hC (injectiveSequence_shortExact G) hG fun _ V => injectiveSequence_cechAcyclic G V`.
+-/
 lemma injectiveSequence_goodAcyclic (G : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u})
     (hG : GoodAcyclic B Good G) : GoodAcyclic B Good (injectiveSequence G).X₃ :=
   goodAcyclic_of_shortExact hC (injectiveSequence_shortExact G) hG
@@ -207,6 +254,9 @@ def cechHEquiv : ∀ (n : ℕ) (G : Sheaf (Opens.grothendieckTopology X) AddComm
       (injectiveSequence_isCechShortExact hC U hUB G hG) (injectiveSequence_cechAcyclic G U) m
       (cechHEquiv (m + 1) _ (injectiveSequence_goodAcyclic hC G hG))
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _, _, φ, x => cechHZeroEquivH_naturality U φ hU x | 1, G, G', hG, hG', φ, x => cechHOneEquiv_naturality (S := injectiveSequence G) (S' := injectiveSequence G') U hU (injectiveSequence_shortExact G) (injectiveSequence_isCechShortExact hC U hUB G hG) (injectiveSequence_c …`.
+-/
 theorem cechHEquiv_naturality : ∀ (n : ℕ) {G G' : Sheaf (Opens.grothendieckTopology X) AddCommGrpCat.{u}}
     (hG : GoodAcyclic B Good G) (hG' : GoodAcyclic B Good G') (φ : G ⟶ G') (x : cechH G.obj U n),
     cechHEquiv hC U hU hUB n G' hG' (cechHMap U φ.hom n x) =
@@ -240,6 +290,9 @@ def cechHAddEquivH (F : X.Modules) [F.IsQuasicoherent] (n : ℕ) :
   cechHEquiv isCoverSystem_isBasicCover U hU
     (fun i => by rw [inter_eq_iInf]; exact hUaff _ i) n (modulesAb F) (goodAcyclic_modulesAb F)
 
+/- English proof (translation)
+The claim follows from `cechHEquiv_naturality (X := X.toTopCat) isCoverSystem_isBasicCover U hU (fun i => by rw [inter_eq_iInf]; exact hUaff _ i) n (goodAcyclic_modulesAb F) (goodAcyclic_modulesAb G) (modulesAbMap φ) x`.
+-/
 theorem cechHAddEquivH_naturality {F G : X.Modules} [F.IsQuasicoherent] [G.IsQuasicoherent]
     (φ : F ⟶ G) (n : ℕ) (x : cechH (modulesAb F).obj U n) :
     cechHAddEquivH U hU hUaff G n (cechHMap U (modulesAbMap φ).hom n x) =
@@ -254,10 +307,16 @@ def cechHLinearEquivH (F : X.Modules) [F.IsQuasicoherent] (n : ℕ) :
   (cechHAddEquivH U hU hUaff F n).toLinearEquiv fun a x =>
     cechHAddEquivH_naturality U hU hUaff (smulHom F (algebraMap A Γ(X, ⊤) a)) n x
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma cechHLinearEquivH_apply (F : X.Modules) [F.IsQuasicoherent] (n : ℕ)
     (x : cechH (modulesAb F).obj U n) :
     cechHLinearEquivH U hU hUaff A F n x = cechHAddEquivH U hU hUaff F n x := rfl
 
+/- English proof (translation)
+The claim follows from `cechHAddEquivH_naturality U hU hUaff φ n x`.
+-/
 theorem cechHLinearEquivH_naturality {F G : X.Modules} [F.IsQuasicoherent] [G.IsQuasicoherent]
     (φ : F ⟶ G) (n : ℕ) (x : cechH (modulesAb F).obj U n) :
     cechHLinearEquivH U hU hUaff A G n (cechH.linearMap U A φ n x) =

@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.GenPtOpen
 
+/- English proof (translation)
+Introduce `K _ P₀ F _ ψ ξ _ H O hO`. Use `haveI : IsIntegral P₀.A.left := GlobalTheory.isIntegral_left_of_isAbelianScheme_field P₀.A P₀.isAb`. Assume the negation of the conclusion as `hno`. Use `haveI : Subsingleton (Sp F) := inferInstanceAs (Subsingleton (PrimeSpectrum F))`. Take `⟨p⟩ : Nonempty (Sp F)` from `inferInstanceAs (Nonempty (PrimeSpectrum F))`.
+
+Establish `key : ∀ V : P₀.A.left.Opens, ξ p ∈ V → ⊤ ≤ ξ ⁻¹ᵁ V` using `fun V hV y _ => by`. Rewrite using `[Subsingleton.elim y p]`. Conclude with `hV`. Take `⟨U, hU, hxU, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp P₀.A.left.isBasis_affineOpens) (show ξ p ∈ (⊤ : P₀.A.left.Opens) from trivial)`. Take `⟨y, hyU, hyO⟩` from `nonempty_preirreducible_inter U.isOpen O.isOpen ⟨_, hxU⟩ hO`.
+
+Take `⟨f, hfO, hyf⟩` from `(show IsAffineOpen U from hU).exists_basicOpen_le (V := O) ⟨y, hyO⟩ hyU`. Establish `hUt : ⊤ ≤ ξ ⁻¹ᵁ U` using `key U hxU`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Rewrite `hyf` using `[Scheme.basicOpen_zero]`.
+
+Conclude with `hyf`. Use `hf0 (H U f hUt ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Establish `hu : IsUnit (valR ξ U f)` using `isUnit_iff_ne_zero.mpr hv`. Establish `hb` using `(GlobalTheory.ZH.CrdCalc.isUnit_valR_iff ξ U hUt f).mp hu`.
+
+Conclude with `hno (hb.trans (ξ.preimage_mono hfO))`.
+-/
 theorem top_le_preimage_of_valR_injective : ∀ (K : Type) [Field K] (P₀ : Out.PolAV (Sp K)), ∀ (F : Type) [Field F] (ψ : K →+* F) (ξ : Sp F ⟶ P₀.A.left), ξ ≫ P₀.A.hom = spMap ψ → (∀ O (f : Γ(P₀.A.left, O)), ⊤ ≤ ξ ⁻¹ᵁ O → valR ξ O f = 0 → f = 0) → ∀ O : P₀.A.left.Opens, (O : Set P₀.A.left).Nonempty → ⊤ ≤ ξ ⁻¹ᵁ O := by
   intro K _ P₀ F _ ψ ξ _ H O hO
   haveI : IsIntegral P₀.A.left := GlobalTheory.isIntegral_left_of_isAbelianScheme_field P₀.A P₀.isAb

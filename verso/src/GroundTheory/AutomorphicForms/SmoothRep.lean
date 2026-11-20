@@ -17,6 +17,9 @@ noncomputable def stabilizerOf (v : V) : Subgroup G :=
   @_root_.UpperTheory.Reformulated.B.StabilizerOf.stabilizerOf G _ V _ _ ρ v
 
 variable {ρ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_stabilizerOf {v : V} {g : G} : g ∈ stabilizerOf ρ v ↔ ρ g v = v := Iff.rfl
 
 def fixedVectors (H : Subgroup G) : Submodule ℂ V where
@@ -26,18 +29,30 @@ def fixedVectors (H : Subgroup G) : Submodule ℂ V where
   smul_mem' c v hv h hh := by simp [hv h hh]
 
 variable {ρ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedVectors {H : Subgroup G} {v : V} :
     v ∈ fixedVectors ρ H ↔ ∀ h ∈ H, ρ h v = v := Iff.rfl
 
 variable {ρ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_fixedVectors_iff_le {H : Subgroup G} {v : V} :
     v ∈ fixedVectors ρ H ↔ H ≤ stabilizerOf ρ v := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `v`. Simplify using `[mem_fixedVectors, Representation.mem_invariants]`.
+-/
 theorem fixedVectors_eq_invariants (H : Subgroup G) :
     fixedVectors ρ H = Representation.invariants (ρ.comp H.subtype) := by
   ext v
   simp [mem_fixedVectors, Representation.mem_invariants]
 
+/- English proof (translation)
+Introduce `_ hv g hg` and use `hv g (h hg)`.
+-/
 theorem fixedVectors_antitone {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) :
     fixedVectors ρ H₂ ≤ fixedVectors ρ H₁ :=
   fun _ hv g hg => hv g (h hg)
@@ -46,15 +61,24 @@ abbrev coinvariantsKer (H : Subgroup G) : Submodule ℂ V :=
   Representation.Coinvariants.ker (ρ.comp H.subtype)
 
 variable {ρ} in
+/- English proof (translation)
+The claim follows from `Representation.Coinvariants.sub_mem_ker (ρ := ρ.comp H.subtype) ⟨h, hh⟩ v`.
+-/
 theorem sub_mem_coinvariantsKer {H : Subgroup G} {h : G} (hh : h ∈ H) (v : V) :
     ρ h v - v ∈ coinvariantsKer ρ H :=
   Representation.Coinvariants.sub_mem_ker (ρ := ρ.comp H.subtype) ⟨h, hh⟩ v
 
+/- English proof (translation)
+Introduce `h hh` and use `by rw [← f.isIntertwining, hv h hh]`.
+-/
 theorem map_mem_fixedVectors {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} (f : Representation.IntertwiningMap ρ σ) {H : Subgroup G} {v : V}
     (hv : v ∈ fixedVectors ρ H) : f v ∈ fixedVectors σ H := fun h hh => by
   rw [← f.isIntertwining, hv h hh]
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨h, v⟩, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, map_sub, MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, Representation.IntertwiningMap.toLinearMap_apply, f.isIntertwining]`. Conclude with `sub_mem_coinvariantsKer h.2 (f v)`.
+-/
 theorem map_coinvariantsKer_le {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} (f : Representation.IntertwiningMap ρ σ) (H : Subgroup G) :
     coinvariantsKer ρ H ≤ (coinvariantsKer σ H).comap f.toLinearMap := by
@@ -67,6 +91,9 @@ theorem map_coinvariantsKer_le {W : Type*} [AddCommGroup W] [Module ℂ W]
 
 variable {ρ} in
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, v⟩, rfl⟩`. Simplify using `[hf k k.2 v]`.
+-/
 theorem coinvariantsKer_le_ker_of_invariant {W : Type*} [AddCommGroup W] [Module ℂ W]
     {K : Subgroup G} {f : V →ₗ[ℂ] W} (hf : ∀ k ∈ K, ∀ v, f (ρ k v) = f v) :
     coinvariantsKer ρ K ≤ LinearMap.ker f := by
@@ -79,10 +106,16 @@ def fixedMap {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation �
     fixedVectors ρ H →ₗ[ℂ] fixedVectors σ H :=
   f.toLinearMap.restrict fun _ hv => map_mem_fixedVectors ρ f hv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_fixedMap_apply {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} (f : Representation.IntertwiningMap ρ σ) (H : Subgroup G)
     (v : fixedVectors ρ H) : (fixedMap ρ f H v : W) = f v := rfl
 
+/- English proof (translation)
+The claim follows from `sup_le (fixedVectors_antitone ρ inf_le_left) (fixedVectors_antitone ρ inf_le_right)`.
+-/
 theorem fixedVectors_sup_le_inf (K L : Subgroup G) :
     fixedVectors ρ K ⊔ fixedVectors ρ L ≤ fixedVectors ρ (K ⊓ L) :=
   sup_le (fixedVectors_antitone ρ inf_le_left) (fixedVectors_antitone ρ inf_le_right)
@@ -96,10 +129,16 @@ def cosetSum : Module.End ℂ V :=
 
 variable {K N}
 
+/- English proof (translation)
+Rewrite using `[cosetSum, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`.
+-/
 theorem cosetSum_apply [Fintype (K ⧸ N.subgroupOf K)] (v : V) :
     cosetSum ρ K N v = ∑ q : K ⧸ N.subgroupOf K, ρ ((Quotient.out q : K) : G) v := by
   rw [cosetSum, finsum_eq_sum_of_fintype, LinearMap.sum_apply]
 
+/- English proof (translation)
+Rewrite `h` using `[QuotientGroup.eq]`. Establish `hab : ρ ((a⁻¹ * b : K) : G) v = v` using `hv _ (Subgroup.mem_subgroupOf.1 h)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem act_eq_of_mk_eq {v : V} (hv : v ∈ fixedVectors ρ N) {a b : K}
     (h : (a : K ⧸ N.subgroupOf K) = b) : ρ (a : G) v = ρ (b : G) v := by
   rw [QuotientGroup.eq] at h
@@ -109,6 +148,11 @@ theorem act_eq_of_mk_eq {v : V} (hv : v ∈ fixedVectors ρ N) {a b : K}
       rw [← Module.End.mul_apply, ← map_mul]
       simp
 
+/- English proof (translation)
+Establish `: (N.subgroupOf K).Normal` using `⟨fun n hn g => Subgroup.mem_subgroupOf.2 (by simpa using hnorm g g.2 n hn)⟩`. Introduce `k hk`. Rewrite using `[cosetSum_apply, map_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft ((⟨k, hk⟩ : K) : K ⧸ N.subgroupOf K)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+
+Use `act_eq_of_mk_eq ρ hv (a := ⟨k, hk⟩ * Quotient.out q) (b := Quotient.out (((⟨k, hk⟩ : K) : K ⧸ N.subgroupOf K) * q)) (by` as an intermediate fact. Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq'])`. Simplify using `using this`.
+-/
 theorem cosetSum_mem_fixedVectors (hnorm : ∀ k ∈ K, ∀ n ∈ N, k * n * k⁻¹ ∈ N)
     [Fintype (K ⧸ N.subgroupOf K)] {v : V} (hv : v ∈ fixedVectors ρ N) :
     cosetSum ρ K N v ∈ fixedVectors ρ K := by
@@ -123,6 +167,11 @@ theorem cosetSum_mem_fixedVectors (hnorm : ∀ k ∈ K, ∀ n ∈ N, k * n * k�
       rw [QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq'])
   simpa using this
 
+/- English proof (translation)
+Establish `: (N.subgroupOf K).Normal` using `⟨fun n hn g => Subgroup.mem_subgroupOf.2 (by simpa using hnorm g g.2 n hn)⟩`. Rewrite using `[cosetSum_apply, cosetSum_apply]`. Use `Fintype.sum_equiv (Equiv.mulRight ((⟨k, hk⟩ : K) : K ⧸ N.subgroupOf K)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `act_eq_of_mk_eq ρ hu (a := Quotient.out q * ⟨k, hk⟩) (b := Quotient.out (q * ((⟨k, hk⟩ : K) : K ⧸ N.subgroupOf K))) (by` as an intermediate fact.
+
+Rewrite using `[QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq'])`. Simplify using `using this`.
+-/
 theorem cosetSum_apply_act (hnorm : ∀ k ∈ K, ∀ n ∈ N, k * n * k⁻¹ ∈ N)
     [Fintype (K ⧸ N.subgroupOf K)] {u : V} (hu : u ∈ fixedVectors ρ N) {k : G} (hk : k ∈ K) :
     cosetSum ρ K N (ρ k u) = cosetSum ρ K N u := by
@@ -136,6 +185,9 @@ theorem cosetSum_apply_act (hnorm : ∀ k ∈ K, ∀ n ∈ N, k * n * k⁻¹ ∈
       rw [QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq'])
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[cosetSum_apply, Nat.cast_smul_eq_nsmul, ← Finset.card_univ, ← Finset.sum_const]`. Conclude with `Finset.sum_congr rfl fun q _ => hv _ (Quotient.out q).2`.
+-/
 theorem cosetSum_of_mem [Fintype (K ⧸ N.subgroupOf K)] {v : V} (hv : v ∈ fixedVectors ρ K) :
     cosetSum ρ K N v = (Fintype.card (K ⧸ N.subgroupOf K) : ℂ) • v := by
   rw [cosetSum_apply, Nat.cast_smul_eq_nsmul, ← Finset.card_univ, ← Finset.sum_const]
@@ -143,6 +195,9 @@ theorem cosetSum_of_mem [Fintype (K ⧸ N.subgroupOf K)] {v : V} (hv : v ∈ fix
 
 end CosetSum
 
+/- English proof (translation)
+Introduce `x y h` and use `Subtype.ext (hf (by simpa [Subtype.ext_iff, coe_fixedMap_apply] using h))`.
+-/
 theorem fixedMap_injective {W : Type*} [AddCommGroup W] [Module ℂ W]
     {σ : Representation ℂ G W} {K : Subgroup G} {f : Representation.IntertwiningMap ρ σ}
     (hf : Function.Injective f) : Function.Injective (fixedMap ρ f K) :=
@@ -172,13 +227,24 @@ def smoothVectors : Submodule ℂ V where
     (fun g hg => by simp [mem_stabilizerOf, mem_stabilizerOf.1 hg]) hv
 
 variable {ρ} in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smoothVectors {v : V} : v ∈ smoothVectors ρ ↔ IsOpen (stabilizerOf ρ v : Set G) :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Conclude with `⟨fun h v _ => h v, fun h v => h Submodule.mem_top⟩`.
+-/
 theorem isSmooth_iff_smoothVectors_eq_top : IsSmooth ρ ↔ smoothVectors ρ = ⊤ := by
   rw [eq_top_iff]
   exact ⟨fun h v _ => h v, fun h v => h Submodule.mem_top⟩
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_smoothVectors]`. Apply `Subgroup.isOpen_of_mem_nhds (g := 1) _` to reduce the goal to its premises. Establish `hc : Continuous fun x : G => g⁻¹ * x * g` using `by fun_prop`. Establish `h1 : (fun x : G => g⁻¹ * x * g) ⁻¹' (stabilizerOf ρ v : Set G) ∈ 𝓝 (1 : G)` using `(hv.preimage hc).mem_nhds (by simp)`. Use `mem_of_superset h1 fun x hx => ?_` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, SetLike.mem_coe, mem_stabilizerOf] at hx ⊢`. Use `conv_rhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+-/
 theorem smooth_apply_mem {v : V} (hv : v ∈ smoothVectors ρ) (g : G) :
     ρ g v ∈ smoothVectors ρ := by
   rw [mem_smoothVectors] at hv ⊢
@@ -197,9 +263,17 @@ def smoothPart : Representation ℂ G (smoothVectors ρ) :=
   ρ.subrepresentation (smoothVectors ρ) fun g _ hv => smooth_apply_mem ρ hv g
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smoothPart_apply (g : G) (v : smoothVectors ρ) :
     ((smoothPart ρ g v : smoothVectors ρ) : V) = ρ g v := rfl
 
+/- English proof (translation)
+Introduce `v`. Establish `: (stabilizerOf (smoothPart ρ) v : Set G) = stabilizerOf ρ (v : V)`. Use extensionality with `g`. Simplify using `[mem_stabilizerOf, Subtype.ext_iff]`. Rewrite using `[this]`.
+
+Conclude with `v.2`.
+-/
 theorem isSmooth_smoothPart : IsSmooth (smoothPart ρ) := by
   intro v
   have : (stabilizerOf (smoothPart ρ) v : Set G) = stabilizerOf ρ (v : V) := by
@@ -220,6 +294,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
   {V : Type*} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨K, hKc, hKv⟩` from `exists_openSubgroup_isCompact_subset (hv.mem_nhds (one_mem (stabilizerOf ρ v)))`. Conclude with `⟨K, hKc, K.isOpen, fun k hk => hKv hk⟩`. Introduce and unpack `⟨K, -, hKo, hv⟩`.
+
+Conclude with `Subgroup.isOpen_mono (mem_fixedVectors_iff_le.1 hv) hKo`.
+-/
 theorem mem_smoothVectors_iff {v : V} :
     v ∈ smoothVectors ρ ↔ ∃ K : Subgroup G, IsCompact (K : Set G) ∧ IsOpen (K : Set G) ∧
       v ∈ fixedVectors ρ K := by
@@ -231,11 +310,17 @@ theorem mem_smoothVectors_iff {v : V} :
   · rintro ⟨K, -, hKo, hv⟩
     exact Subgroup.isOpen_mono (mem_fixedVectors_iff_le.1 hv) hKo
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun _ => mem_smoothVectors_iff ρ`.
+-/
 theorem isSmooth_iff_forall_exists :
     IsSmooth ρ ↔ ∀ v : V, ∃ K : Subgroup G, IsCompact (K : Set G) ∧ IsOpen (K : Set G) ∧
       v ∈ fixedVectors ρ K :=
   forall_congr' fun _ => mem_smoothVectors_iff ρ
 
+/- English proof (translation)
+Rewrite using `[isSmooth_iff_forall_exists, eq_univ_iff_forall]`. Simplify using `only [mem_iUnion, SetLike.mem_coe, exists_prop]`.
+-/
 theorem isSmooth_iff_iUnion_fixedVectors :
     IsSmooth ρ ↔ ⋃ (K : Subgroup G) (_ : IsCompact (K : Set G)) (_ : IsOpen (K : Set G)),
       (fixedVectors ρ K : Set V) = univ := by
@@ -246,6 +331,11 @@ section Average
 
 variable {K : Subgroup G}
 
+/- English proof (translation)
+Take `⟨N, -, hNU, hnorm⟩` from `exists_compactOpenSubgroup_normalized hKc (inter_mem hU (hKo.mem_nhds (one_mem K)))`. Use `⟨N, N.isOpen, fun x hx => (hNU hx).2, fun x hx => (hNU hx).1, hnorm, ?_⟩` and prove the remaining obligations. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hKc`. Use `Subgroup.quotient_finite_of_isOpen _ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`.
+
+Conclude with `N.isOpen.preimage continuous_subtype_val`.
+-/
 theorem exists_normal_subgroup (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
     {U : Set G} (hU : U ∈ 𝓝 (1 : G)) :
     ∃ N : Subgroup G, IsOpen (N : Set G) ∧ N ≤ K ∧ (N : Set G) ⊆ U ∧
@@ -266,6 +356,15 @@ variable {ρ} {K : Subgroup G}
 
 omit [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [TotallyDisconnectedSpace G] in
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨k, u⟩, rfl⟩` from `hx`. Use `⟨stabilizerOf ρ u, (hρ u).mem_nhds (one_mem _), fun N hNU hnorm _ => ?_⟩` and prove the remaining obligations. Establish `hu : u ∈ fixedVectors ρ N` using `fun n hn => hNU hn`.
+
+Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Subgroup.coe_subtype, map_sub]`. Rewrite using `[cosetSum_apply_act ρ hnorm hu k.2, sub_self]`. Consider the case `zero => exact ⟨univ, univ_mem, fun _ _ _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨U₁, hU₁, h₁⟩` from `hx`.
+
+Take `⟨U₂, hU₂, h₂⟩` from `hy`. Use `⟨U₁ ∩ U₂, inter_mem hU₁ hU₂, fun N hNU hnorm hfin => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, h₁ N (hNU.trans inter_subset_left) hnorm hfin, h₂ N (hNU.trans inter_subset_right) hnorm hfin, add_zero]`. Consider the case `smul c x _ hx`. Take `⟨U, hU, h⟩` from `hx`.
+
+Conclude with `⟨U, hU, fun N hNU hnorm hfin => by rw [map_smul, h N hNU hnorm hfin, smul_zero]⟩`.
+-/
 theorem exists_nhds_cosetSum_eq_zero (hρ : IsSmooth ρ) {x : V} (hx : x ∈ coinvariantsKer ρ K) :
     ∃ U ∈ 𝓝 (1 : G), ∀ N : Subgroup G, (N : Set G) ⊆ U →
       (∀ k ∈ K, ∀ n ∈ N, k * n * k⁻¹ ∈ N) → ∀ _ : Fintype (K ⧸ N.subgroupOf K),
@@ -288,6 +387,11 @@ theorem exists_nhds_cosetSum_eq_zero (hρ : IsSmooth ρ) {x : V} (hx : x ∈ coi
     obtain ⟨U, hU, h⟩ := hx
     exact ⟨U, hU, fun N hNU hnorm hfin => by rw [map_smul, h N hNU hnorm hfin, smul_zero]⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.disjoint_def]`. Introduce `w hw hw'`. Take `⟨U, hU, hUw⟩` from `exists_nhds_cosetSum_eq_zero hρ hw'`. Take `⟨N, -, -, hNU, hnorm, hfin⟩` from `exists_normal_subgroup hKc hKo hU`. Use `Fintype.ofFinite (K ⧸ N.subgroupOf K)` as an intermediate fact.
+
+Establish `h` using `hUw N hNU hnorm inferInstance`. Rewrite `h` using `[cosetSum_of_mem ρ hw]`. Conclude with `(smul_eq_zero.1 h).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+-/
 theorem disjoint_fixedVectors_coinvariantsKer (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) : Disjoint (fixedVectors ρ K) (coinvariantsKer ρ K) := by
   rw [Submodule.disjoint_def]
@@ -299,6 +403,13 @@ theorem disjoint_fixedVectors_coinvariantsKer (hρ : IsSmooth ρ) (hKc : IsCompa
   rw [cosetSum_of_mem ρ hw] at h
   exact (smul_eq_zero.1 h).resolve_left (Nat.cast_ne_zero.2 Fintype.card_ne_zero)
 
+/- English proof (translation)
+Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `v _`. Take `⟨N, -, hNK, hNU, hnorm, hfin⟩` from `exists_normal_subgroup hKc hKo ((hρ v).mem_nhds (one_mem (stabilizerOf ρ v)))`. Use `Fintype.ofFinite (K ⧸ N.subgroupOf K)` as an intermediate fact. Establish `hv : v ∈ fixedVectors ρ N` using `fun n hn => hNU hn`.
+
+Use `set n : ℂ := (Fintype.card (K ⧸ N.subgroupOf K) : ℂ)`. Establish `hn : n ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Use `Submodule.mem_sup.2 ⟨n⁻¹ • cosetSum ρ K N v, Submodule.smul_mem _ _ (cosetSum_mem_fixedVectors ρ hnorm hv), v - n⁻¹ • cosetSum ρ K N v, ?_, add_sub_cancel _ _⟩` and prove the remaining obligations. Establish `heq : v - n⁻¹ • cosetSum ρ K N v = n⁻¹ • ∑ q : K ⧸ N.subgroupOf K, (v - ρ ((Quotient.out q : K) : G) v)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, ← cosetSum_apply, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hn, one_smul]`.
+
+Rewrite using `[heq]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => ?_)` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ (sub_mem_coinvariantsKer (Quotient.out q).2 v)`.
+-/
 theorem codisjoint_fixedVectors_coinvariantsKer (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) : Codisjoint (fixedVectors ρ K) (coinvariantsKer ρ K) := by
   rw [codisjoint_iff, eq_top_iff]
@@ -321,6 +432,9 @@ theorem codisjoint_fixedVectors_coinvariantsKer (hρ : IsSmooth ρ) (hKc : IsCom
   rw [← neg_sub]
   exact Submodule.neg_mem _ (sub_mem_coinvariantsKer (Quotient.out q).2 v)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨disjoint_fixedVectors_coinvariantsKer hρ hKc hKo, codisjoint_fixedVectors_coinvariantsKer hρ hKc hKo⟩`.
+-/
 theorem isCompl_fixedVectors_coinvariantsKer (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) : IsCompl (fixedVectors ρ K) (coinvariantsKer ρ K) :=
   ⟨disjoint_fixedVectors_coinvariantsKer hρ hKc hKo,
@@ -335,21 +449,38 @@ def fixedProj (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K
 variable (hρ : IsSmooth ρ) (hKc : IsCompact (K : Set G)) (hKo : IsOpen (K : Set G))
 include hρ hKc hKo
 
+/- English proof (translation)
+Rewrite using `[fixedProj, Submodule.projectionOnto_apply_of_mem_left _ hv]`.
+-/
 theorem fixedProj_apply_of_mem {v : V} (hv : v ∈ fixedVectors ρ K) :
     (fixedProj ρ hρ hKc hKo v : V) = v := by
   rw [fixedProj, Submodule.projectionOnto_apply_of_mem_left _ hv]
 
+/- English proof (translation)
+The claim follows from `(Submodule.projectionOnto_apply_eq_zero_iff _).2 hv`.
+-/
 theorem fixedProj_apply_of_mem_coinvariantsKer {v : V} (hv : v ∈ coinvariantsKer ρ K) :
     fixedProj ρ hρ hKc hKo v = 0 :=
   (Submodule.projectionOnto_apply_eq_zero_iff _).2 hv
 
+/- English proof (translation)
+The claim follows from `Submodule.ker_projectionOnto _`.
+-/
 theorem ker_fixedProj : LinearMap.ker (fixedProj ρ hρ hKc hKo) = coinvariantsKer ρ K :=
   Submodule.ker_projectionOnto _
 
+/- English proof (translation)
+Use `Submodule.sub_projection_mem (isCompl_fixedVectors_coinvariantsKer hρ hKc hKo) v` as an intermediate fact. Rewrite `this` using `[Submodule.projection_apply]`. Then use the resulting hypothesis.
+-/
 theorem sub_fixedProj_mem (v : V) : v - fixedProj ρ hρ hKc hKo v ∈ coinvariantsKer ρ K := by
   have := Submodule.sub_projection_mem (isCompl_fixedVectors_coinvariantsKer hρ hKc hKo) v
   rwa [Submodule.projection_apply] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `sub_fixedProj_mem hρ hKc hKo v`. Introduce `h`. Establish `h1` using `fixedProj_apply_of_mem_coinvariantsKer hρ hKc hKo h`.
+
+Rewrite `h1` using `[map_sub]`. Rewrite using `[sub_eq_zero.1 h1]`. Conclude with `Subtype.ext (fixedProj_apply_of_mem hρ hKc hKo w.2)`.
+-/
 theorem fixedProj_eq_iff {v : V} {w : fixedVectors ρ K} :
     fixedProj ρ hρ hKc hKo v = w ↔ v - w ∈ coinvariantsKer ρ K := by
   constructor
@@ -361,11 +492,19 @@ theorem fixedProj_eq_iff {v : V} {w : fixedVectors ρ K} :
     rw [sub_eq_zero.1 h1]
     exact Subtype.ext (fixedProj_apply_of_mem hρ hKc hKo w.2)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `fixedProj_apply_of_mem_coinvariantsKer hρ hKc hKo (sub_mem_coinvariantsKer hk v)`.
+-/
 theorem fixedProj_apply_act {k : G} (hk : k ∈ K) (v : V) :
     fixedProj ρ hρ hKc hKo (ρ k v) = fixedProj ρ hρ hKc hKo v := by
   rw [← sub_eq_zero, ← map_sub]
   exact fixedProj_apply_of_mem_coinvariantsKer hρ hKc hKo (sub_mem_coinvariantsKer hk v)
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `hs` using `sub_fixedProj_mem hρ hKc hKo v`. Establish `e1 : f v = f (fixedProj ρ hρ hKc hKo v)`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `coinvariantsKer_le_ker_of_invariant hf hs`.
+
+Establish `e2 : g v = g (fixedProj ρ hρ hKc hKo v)`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `coinvariantsKer_le_ker_of_invariant hg hs`. Rewrite using `[e1, e2, h _ (fixedProj ρ hρ hKc hKo v).2]`.
+-/
 theorem eq_of_invariant_of_eqOn {W : Type*} [AddCommGroup W] [Module ℂ W] {f g : V →ₗ[ℂ] W}
     (hf : ∀ k ∈ K, ∀ v, f (ρ k v) = f v) (hg : ∀ k ∈ K, ∀ v, g (ρ k v) = g v)
     (h : ∀ v ∈ fixedVectors ρ K, f v = g v) : f = g := by
@@ -379,6 +518,9 @@ theorem eq_of_invariant_of_eqOn {W : Type*} [AddCommGroup W] [Module ℂ W] {f g
 
 omit hρ in
 
+/- English proof (translation)
+Rewrite using `[fixedProj_eq_iff, coe_fixedMap_apply, ← map_sub]`. Conclude with `map_coinvariantsKer_le ρ f K (sub_fixedProj_mem hρ hKc hKo v)`.
+-/
 theorem fixedProj_map {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W}
     (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (f : Representation.IntertwiningMap ρ σ) (v : V) :
     fixedProj σ hσ hKc hKo (f v) = fixedMap ρ f K (fixedProj ρ hρ hKc hKo v) := by
@@ -392,6 +534,13 @@ section Exactness
 variable {W X : Type*} [AddCommGroup W] [Module ℂ W] [AddCommGroup X] [Module ℂ X]
   {ρ} {σ : Representation ℂ G W} {τ : Representation ℂ G X} {K : Subgroup G}
 
+/- English proof (translation)
+Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : g (y : W) = 0` using `by simpa [Subtype.ext_iff, coe_fixedMap_apply] using hy`. Take `⟨v, hv⟩` from `(hfg (y : W)).1 hy'`.
+
+Use `⟨fixedProj ρ hρ hKc hKo v, ?_⟩` and prove the remaining obligations. Rewrite using `[← fixedProj_map hKc hKo hρ hσ f, hv]`. Conclude with `Subtype.ext (fixedProj_apply_of_mem hσ hKc hKo y.2)`. Introduce and unpack `⟨x, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [coe_fixedMap_apply, ZeroMemClass.coe_zero]`. Conclude with `(hfg _).2 ⟨x, rfl⟩`.
+-/
 theorem exact_fixedMap (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {f : Representation.IntertwiningMap ρ σ}
     {g : Representation.IntertwiningMap σ τ} (hfg : Function.Exact f g) :
@@ -409,6 +558,9 @@ theorem exact_fixedMap (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (hKc : IsCompact 
     simp only [coe_fixedMap_apply, ZeroMemClass.coe_zero]
     exact (hfg _).2 ⟨x, rfl⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨v, hv⟩` from `hf y`. Use `⟨fixedProj ρ hρ hKc hKo v, ?_⟩` and prove the remaining obligations. Rewrite using `[← fixedProj_map hKc hKo hρ hσ f, hv]`. Conclude with `Subtype.ext (fixedProj_apply_of_mem hσ hKc hKo y.2)`.
+-/
 theorem fixedMap_surjective (hρ : IsSmooth ρ) (hσ : IsSmooth σ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) {f : Representation.IntertwiningMap ρ σ}
     (hf : Function.Surjective f) : Function.Surjective (fixedMap ρ f K) := by

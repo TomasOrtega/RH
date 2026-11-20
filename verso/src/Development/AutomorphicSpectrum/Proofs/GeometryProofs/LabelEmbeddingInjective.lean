@@ -10,6 +10,37 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `E _ _ _ H l c`. Establish `hre : H.rt0.re = 0`. Establish `h : (H.rt0 * H.rt0).re = (-(H.d : ℂ)).re` using `by rw [← pow_two, H.sqrt_neg_disc_sq]`. Rewrite `h` using `[Complex.mul_re, Complex.neg_re, Complex.natCast_re]`. Establish `h' : (H.rt0 * H.rt0).im = (-(H.d : ℂ)).im` using `by rw [← pow_two, H.sqrt_neg_disc_sq]`.
+
+Rewrite `h'` using `[Complex.mul_im, Complex.neg_im, Complex.natCast_im, neg_zero]`. Establish `hd : (0 : ℝ) < (H.d : ℝ)` using `by exact_mod_cast H.d_prime.pos`. Establish `h1 : H.rt0.re * H.rt0.im = 0` using `by linarith`. Establish `h2 : H.rt0.re * H.rt0.re * (H.rt0.re * H.rt0.re + H.d) = 0` using `by nlinarith`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases.
+
+Conclude with `mul_self_eq_zero.1 h3`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Establish `hconj0 : (starRingEnd ℂ) H.rt0 = -H.rt0`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Establish `hne : H.rt0 ≠ 0`.
+
+Introduce `h0`. Establish `h` using `H.sqrt_neg_disc_sq`. Rewrite `h` using `[h0, zero_pow two_ne_zero, eq_comm, neg_eq_zero, Nat.cast_eq_zero]`. Conclude with `H.d_prime.ne_zero h`. Establish `hneg : -H.rt0 ≠ H.rt0`.
+
+Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h2 : (2 : ℂ) * H.rt0 = 0` using `by linear_combination -h`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Evaluate the numerical expressions using `at h3`.
+
+Conclude with `h3`. Establish `hsq : ∀ τ : E →+* ℂ, (τ (H.rt : E)) ^ 2 = H.rt0 ^ 2`. Introduce `τ`. Establish `e1` using `congrArg (fun x : 𝓞 E => τ (algebraMap (𝓞 E) E x)) H.rt_sq`. Simplify using `only [map_pow, map_neg, map_natCast] at e1`.
+
+Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `e1`. Establish `hpm : ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0` using `fun τ => sq_eq_sq_iff_eq_or_eq_neg.1 (hsq τ)`. Establish `hcc : ∀ τ : E →+* ℂ, τ (IsCMField.complexConj E (H.rt : E)) = -τ (H.rt : E)`. Introduce `τ`.
+
+Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Break down `hpm τ with h | h` into its components or cases. Rewrite using `[h, hconj0]`. Rewrite using `[h, map_neg, hconj0]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `k1 : ∀ (τ : CMType H) (x : 𝓞 E), ((labelEmb c (Sum.inl τ) x : ℂ)) = τ.1 (x : E)` using `fun _ _ => rfl`. Establish `k2 : ∀ (τ : CMType H) (x : 𝓞 E), ((labelEmb c (Sum.inr τ) x : ℂ)) = τ.1 ((H.bar x : 𝓞 E) : E)` using `fun _ _ => rfl`. Establish `ext' : ∀ τ τ' : E →+* ℂ, (∀ x : 𝓞 E, τ (x : E) = τ' (x : E)) → τ = τ'`. Introduce `τ τ' h`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext h)`.
+
+Introduce and unpack `(τ | τ) (τ' | τ') h`. Use `congrArg Sum.inl (Subtype.ext (ext' _ _ fun x => ?_))` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (RingHom.congr_fun h x)`. Rewrite `e` using `[k1, k1]`. Then use the resulting hypothesis. It suffices to derive a contradiction.
+
+Establish `e` using `congrArg Subtype.val (RingHom.congr_fun h H.rt)`. Rewrite `e` using `[k1, k2, H.bar_eq, hcc, τ.2, τ'.2]`. Conclude with `hneg e.symm`. It suffices to derive a contradiction. Establish `e` using `congrArg Subtype.val (RingHom.congr_fun h H.rt)`.
+
+Rewrite `e` using `[k2, k1, H.bar_eq, hcc, τ.2, τ'.2]`. Conclude with `hneg e`. Use `congrArg Sum.inr (Subtype.ext (ext' _ _ fun x => ?_))` and prove the remaining obligations. Establish `e` using `congrArg Subtype.val (RingHom.congr_fun h (H.bar.symm x))`. Rewrite `e` using `[k2, k2, RingEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Set `e : {τ : E →+* ℂ // τ (H.rt : E) = H.rt0} ≃ {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0}` to `{ toFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, τ.2, hconj0]`. Conclude with `hneg⟩`. Use `invFun := fun τ => ⟨ComplexEmbedding.conjugate τ.1, by`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`.
+
+Break down `hpm τ.1 with h | h` into its components or cases. Conclude with `absurd h τ.2`. Rewrite using `[h, map_neg, hconj0, neg_neg]⟩`. Use `left_inv := fun τ => Subtype.ext (RingHom.ext fun x => by`. Simplify using `[ComplexEmbedding.conjugate_coe_eq])`.
+
+Use `right_inv := fun τ => Subtype.ext (RingHom.ext fun x => by`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]) }`. Establish `hc : Nat.card (CMType H ⊕ CMType H) = Nat.card (E →+* ℂ)` using `Nat.card_congr ((Equiv.sumCongr (Equiv.refl _) e).trans (Equiv.sumCompl _))`. Rewrite using `[hc, Nat.card_eq_fintype_card, NumberField.Embeddings.card E ℂ]`.
+-/
 theorem labels_all_once : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Geo.Tor.Level H)
     (c : Coeff l), Function.Injective (labelEmb (H := H) c) ∧
       Nat.card (CMType H ⊕ CMType H) = Module.finrank ℚ E := by

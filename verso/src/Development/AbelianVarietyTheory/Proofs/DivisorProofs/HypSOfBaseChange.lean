@@ -12,6 +12,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.SymDescentAlgClosed
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ j A B b h hb hS`. Use `letI := B.isAb.comm`. Use `letI := A.isAb.comm`. Take `⟨w, wd, hw, hwd, hs, hp, ha⟩` from `hS`. Take `⟨w₀, -, e⟩` from `GlobalTheory.T.abelianVariety_hom_descends_algClosed_charZero K Ω j A.A A.A B.A B.A b b A.isAb A.isAb h h w hw`.
+
+Take `⟨wd₀, -, ed⟩` from `GlobalTheory.T.abelianVariety_hom_descends_algClosed_charZero K Ω j A.A A.A B.A B.A b b A.isAb A.isAb h h wd hwd`. Conclude with `GlobalTheory.SymLevelDescent.hypS_descend j A.isAb h A.isLB B.isLB hb e ed hw hwd hs hp ha`.
+-/
 theorem hypS_of_baseChange : ∀ (K Ω : Type) [Field K] [IsAlgClosed K] [CharZero K] [Field Ω] (j : K →+* Ω) (A : PolAV (Sp K)) (B : PolAV (Sp Ω)) (b : B.A.left ⟶ A.A.left), IsGrpPullback B.A A.A (spMap j) b → LBIso B.L (A.L.pull b) → (letI := B.isAb.comm; GlobalTheory.ZH.HypS B.A B.L) → (letI := A.isAb.comm; GlobalTheory.ZH.HypS A.A A.L) := by
   intro K Ω _ _ _ _ j A B b h hb hS
   letI := B.isAb.comm

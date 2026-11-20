@@ -65,8 +65,18 @@ def linCoeff (χ : PS O 1 d) : Fin d → O :=
 def dlogSpan (F : Fin d → PS O 2 d) {s : ℕ} (u : Fin s → Fin d → O) : Submodule O (Fin s → O) :=
   Submodule.span O {l | ∃ χ : PS O 1 d, IsMultSeries F χ ∧ l = fun i => linCoeff χ ⬝ᵥ u i}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+-/
 example (F : Fin d → PS O 2 d) : IsMultSeries F 1 := ⟨by simp, by simp⟩
 
+/- English proof (translation)
+Establish `key : ∀ a : Fin 1 → Pt O 2 1, (∀ i j, MvPowerSeries.constantCoeff (a i j) = 0) → ev a (1 + MvPowerSeries.X (0, 0) : PS O 1 1) = 1 + a 0 0`. Introduce `a ha`. Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin 1 => a q.1 q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => ha q.1 q.2`. Establish `h1` using `ev_one a`. Unfold `ev at h1 ⊢`.
+
+Rewrite using `[MvPowerSeries.subst_add hs, h1, MvPowerSeries.subst_X hs]`. Use `⟨⟨by simp, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[key, key, key]`. Simplify using `only [Matrix.cons_val_fin_one, pt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Apply the tactic sequence `all_goals (intro i j; fin_cases i; simp [pt])`. Simplify using `[linCoeff, MvPowerSeries.coeff_one, MvPowerSeries.coeff_X]`.
+-/
 example :
     IsMultSeries (O := O) (d := 1)
       (fun i => MvPowerSeries.X (0, i) + MvPowerSeries.X (1, i) +

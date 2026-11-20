@@ -55,6 +55,9 @@ def dropPl (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (v : HeightOneSpect
     Finset (HeightOneSpectrum (𝓞 D.host.F)) :=
   Sb.erase v
 
+/- English proof (translation)
+Unfold `dropPl`. Use `Finset.erase_insert hv` and compare the differences between its conclusion and the goal.
+-/
 theorem dropPl_insert [DecidableEq (HeightOneSpectrum (𝓞 D.host.F))] {s : Finset (HeightOneSpectrum (𝓞 D.host.F))}
     {v : HeightOneSpectrum (𝓞 D.host.F)} (hv : v ∉ s) : dropPl (insert v s) v = s := by
   unfold dropPl

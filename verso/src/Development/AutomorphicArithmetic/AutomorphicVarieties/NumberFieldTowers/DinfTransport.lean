@@ -5,12 +5,20 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
+/- English proof (translation)
+Rewrite using `[valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω'), ← hA, ← map_inv₀, ← hA, map_eq_zero_iff _ σ.injective]`.
+-/
 private theorem dt_val_lt_one {Ω Ω' : Type} [Field Ω] [Field Ω'] {σ : Ω ≃+* Ω'} {A : ValuationSubring Ω}
     {A' : ValuationSubring Ω'} (hA : ∀ x, x ∈ A ↔ σ x ∈ A') (x : Ω) :
     A.valuation x < 1 ↔ A'.valuation (σ x) < 1 := by
   rw [valuation_lt_one_iff' (Ω := Ω), valuation_lt_one_iff' (Ω := Ω'), ← hA, ← map_inv₀, ← hA,
     map_eq_zero_iff _ σ.injective]
 
+/- English proof (translation)
+Establish `h' : ∀ x, σ (g⁻¹ x) = g'⁻¹ (σ x)` using `fun x => by show σ (g.symm x) = g'.symm (σ x)`. Rewrite using `[eq_comm, AlgEquiv.symm_apply_eq, ← h, AlgEquiv.apply_symm_apply]`. Rewrite using `[mem_Dec]`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, hA, hA, h']`.
+
+Conclude with `apply_mem_iff_of_mem_Dec ((Dec (F := F') A').inv_mem hg) _`.
+-/
 private theorem dt_dec {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {F' Ω' : Type} [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] {σ : Ω ≃+* Ω'}
     {A : ValuationSubring Ω} {A' : ValuationSubring Ω'} (hA : ∀ x, x ∈ A ↔ σ x ∈ A')
@@ -24,6 +32,9 @@ private theorem dt_dec {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def, hA, hA, h']
   exact apply_mem_iff_of_mem_Dec ((Dec (F := F') A').inv_mem hg) _
 
+/- English proof (translation)
+Use `⟨dt_dec hA h hg.1, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[dt_val_lt_one hA, map_sub, h]`. Conclude with `hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).1 ((A.valuation_le_one_iff _).1 hx)))`.
+-/
 private theorem dt_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {F' Ω' : Type} [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] {σ : Ω ≃+* Ω'}
     {A : ValuationSubring Ω} {A' : ValuationSubring Ω'} (hA : ∀ x, x ∈ A ↔ σ x ∈ A')
@@ -33,6 +44,11 @@ private theorem dt_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   rw [dt_val_lt_one hA, map_sub, h]
   exact hg.2 _ ((A'.valuation_le_one_iff _).2 ((hA x).1 ((A.valuation_le_one_iff _).1 hx)))
 
+/- English proof (translation)
+Establish `hA : ∀ (A' : ValuationSubring Ω') x, x ∈ A'.comap σ.toRingHom ↔ σ x ∈ A'` using `fun _ _ => Iff.rfl`. Take `⟨h1, h2, h3, h4⟩` from `hψ`. Use `⟨h1.comp_continuous he, fun a b => ?_, fun A u hu => ?_, fun A hN u hu => ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_mul, h2]`. Conclude with `h3 (A.comap σ.toRingHom) _ (dt_ine (hA A) (h u) hu)`.
+
+Use `h4 (A.comap σ.toRingHom) ?_ _ (dt_dec (hA A) (h u) hu)` and prove the remaining obligations. Rewrite using `[dt_val_lt_one (hA A), map_natCast]`. Conclude with `hN`.
+-/
 private theorem dt_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {F' Ω' : Type} [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] (σ : Ω ≃+* Ω') (N : ℕ)
     {V : Subgroup (G F Ω)} {V' : Subgroup (G F' Ω')} (e : V' →* V) (he : Continuous e)
@@ -47,6 +63,15 @@ private theorem dt_mem {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
     rw [dt_val_lt_one (hA A), map_natCast]
     exact hN
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ F' Ω' _ _ _ _ _ f σ h φ hφ l _ N U U' hU`. Take `⟨φ₀, hc, hφ₀, -, hi, -⟩` from `galTransport F Ω F' Ω' f σ h`. Take `rfl : φ₀ = φ` from `MonoidHom.ext fun g => AlgEquiv.ext fun x => σ.injective (by rw [hφ, hφ₀])`. Establish `: IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Establish `: IsGalois F' Ω'` using `IsAlgClosure.isGalois F' Ω'`.
+
+Establish `hemb : Topology.IsInducing φ₀` using `(hc.isClosedEmbedding hi).isInducing`. Set `e : cycU l U' ≃* cycU l U` to `((cycU l U').equivMapOfInjective φ₀ hi).trans (MulEquiv.subgroupCongr hU)`. Establish `he : ∀ u, (e u).1 = φ₀ u.1` using `fun _ => rfl`. Establish `he' : ∀ u, φ₀ (e.symm u).1 = u.1` using `fun u => by rw [← he, MulEquiv.apply_symm_apply]`. Establish `c1 : Continuous e.toMonoidHom` using `(hc.comp continuous_subtype_val).subtype_mk _`.
+
+Establish `c2 : Continuous e.symm.toMonoidHom`. Use `continuous_induced_rng.2 (hemb.continuous_iff.2 ?_)` and prove the remaining obligations. Conclude with `continuous_subtype_val.congr fun u => (he' u).symm`. Use `⟨{ toFun := fun ψ => ⟨ψ.1 ∘ e.toMonoidHom, dt_mem σ N e.toMonoidHom c1 (fun u x => hφ u.1 x) ψ.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl invFun := fun ψ => ⟨ψ.1 ∘ e.symm.toMonoidHom, dt_mem σ.symm N e.symm.toMonoidHom c2 (fun u x => ?_) ψ.2⟩ left_inv := fun ψ => S …` and prove the remaining obligations. Use `show σ.symm ((e.symm u).1 x) = u.1 (σ.symm x)`.
+
+Rewrite using `[RingEquiv.symm_apply_eq, ← he' u, hφ, RingEquiv.apply_symm_apply]`. Introduce `ψ u' u hu`. Conclude with `congrArg ψ.1 (Subtype.ext hu.symm)`.
+-/
 theorem UpperTheory.V.Tower.dinfTransport :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (f : F →+* F') (σ : Ω ≃+* Ω'), (∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f x)) →
         ∀ φ : G F' Ω' →* G F Ω, (∀ g x, σ (φ g x) = g (σ x)) → ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) (U : Subgroup (G F Ω)) (U' : Subgroup (G F' Ω')),

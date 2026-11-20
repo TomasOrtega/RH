@@ -17,6 +17,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.LieEigFrame
 variable {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S} {Em : Type}
   [AddCommGroup Em] [Module R Em]
 
+/- English proof (translation)
+Establish `hsum : M.pt (∑ i, cf i • b i) = (List.ofFn fun i => M.pt (cf i • b i)).prod` using `GlobalTheory.CompanionTheory.Ar.CombEig.pt_sum M fun i => cf i • b i`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `hue : u = fun i => M.pt (cf i • b i)`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (by rw [hu i, M.smul])`.
+
+Rewrite using `[hsum, hue]`. Introduce and unpack `rfl`. Conclude with `⟨fun i => M.pt (cf i • b i), fun i => M.smul _ _, hsum⟩`.
+-/
 theorem isComb_pt_iff (M : LieModel G x Em) {n : ℕ} (b : Fin n → Em) (cf : Fin n → R) (w : epsAt x ⟶ G) :
     IsComb cf (fun i => M.pt (b i)) w ↔ w = M.pt (∑ i, cf i • b i) := by
   have hsum : M.pt (∑ i, cf i • b i) = (List.ofFn fun i => M.pt (cf i • b i)).prod :=
@@ -29,6 +34,11 @@ theorem isComb_pt_iff (M : LieModel G x Em) {n : ℕ} (b : Fin n → Em) (cf : F
   · rintro rfl
     exact ⟨fun i => M.pt (cf i • b i), fun i => M.smul _ _, hsum⟩
 
+/- English proof (translation)
+Establish `hmem : e ∈ eigSp ρ τ ↔ ∀ a, ρ a e = τ a • e`. Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+
+Conclude with `M.inj (Over.OverMorphism.ext (by rw [hρ a e, M.smul]; exact h.2 a))`. Introduce `h`. Conclude with `⟨M.tan e, fun a => by rw [← hρ a e, h a, M.smul]⟩`.
+-/
 theorem isEigVec_pt_iff {Oe : Type} [CommRing Oe] (M : LieModel G x Em) (act : OAct Oe G)
     {ρ : Oe →+* Module.End R Em} (τ : Oe →+* R) (hρ : M.IsActOf act.act ρ) (e : Em) :
     IsEigVec act x τ (M.pt e) ↔ e ∈ eigSp ρ τ := by
@@ -41,6 +51,13 @@ theorem isEigVec_pt_iff {Oe : Type} [CommRing Oe] (M : LieModel G x Em) (act : O
   · intro h
     exact ⟨M.tan e, fun a => by rw [← hρ a e, h a, M.smul]⟩
 
+/- English proof (translation)
+Introduce `S R _ G _ _ x Em _ _ M Oe _ act ρ τ n b hρ`. Establish `eig` using `isEigVec_pt_iff M act τ hρ`. Establish `key` using `isComb_pt_iff M b`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨fun i => (eig _).1 (h1 i), fun e he => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hu⟩` from `h2 (M.pt e) ((eig e).2 he)`. Conclude with `⟨c, M.inj ((key c _).1 hc), fun c' hc' => hu c' ((key c' _).2 (congrArg M.pt hc'))⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun i => (eig _).2 (h1 i), fun w hw => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e, rfl⟩` from `M.onto w hw.1`. Take `⟨c, hc, hu⟩` from `h2 e ((eig e).1 hw)`. Conclude with `⟨c, (key c _).2 (congrArg M.pt hc), fun c' hc' => hu c' (M.inj ((key c' _).1 hc'))⟩`.
+-/
 theorem isEigFrame_pt_iff : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (Em : Type)
     [AddCommGroup Em] [Module R Em] (M : LieModel G x Em) (Oe : Type) [CommRing Oe] (act : OAct Oe G)
     (ρ : Oe →+* Module.End R Em) (τ : Oe →+* R) (n : ℕ) (b : Fin n → Em), M.IsActOf act.act ρ →

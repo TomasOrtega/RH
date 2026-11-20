@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.DualCon
 
+/- English proof (translation)
+Use `IsZariskiLocalAtTarget.of_iSup_eq_top U hU fun i => ?_` and prove the remaining obligations. Establish `e` using `(isPullback_morphismRestrict p (U i)).flip`. Rewrite using `[← IsPullback.isoIsPullback_hom_snd _ _ e (h i), MorphismProperty.cancel_left_of_respectsIso Q]`. Conclude with `hq i`.
+-/
 theorem of_isPullback_opens_cover (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget Q]
     {S X : Scheme.{0}} {I : Type} {U : I → S.Opens} (hU : iSup U = ⊤) {Z : I → Scheme.{0}} {p : X ⟶ S}
     {q : ∀ i, Z i ⟶ (U i).toScheme} {ψ : ∀ i, Z i ⟶ X} (h : ∀ i, IsPullback (ψ i) (q i) p (U i).ι)
@@ -20,6 +23,17 @@ theorem of_isPullback_opens_cover (Q : MorphismProperty Scheme.{0}) [IsZariskiLo
   rw [← IsPullback.isoIsPullback_hom_snd _ _ e (h i), MorphismProperty.cancel_left_of_respectsIso Q]
   exact hq i
 
+/- English proof (translation)
+Establish `: IsOpenImmersion (Sigma.ι B i)` using `inferInstance`. Establish `hr : ∀ s : PullbackCone (Sigma.desc fun j => f j ≫ (V j).ι) (V i).ι, Set.range s.fst ⊆ Set.range (Sigma.ι B i)`. Introduce and unpack `s _ ⟨t, rfl⟩`. Take `⟨⟨j, y⟩, hy⟩` from `(sigmaMk B).surjective (s.fst t)`. Rewrite `hy` using `[sigmaMk_mk]`.
+
+Establish `e1 : (Sigma.desc fun j => f j ≫ (V j).ι) (s.fst t) = (V i).ι (s.snd t)` using `congr($(s.condition) t)`. Rewrite `e1` using `[← hy, ← Scheme.Hom.comp_apply, Sigma.ι_desc, Scheme.Hom.comp_apply]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Conclude with `⟨y, hy⟩`.
+
+It suffices to derive a contradiction. Establish `h1 : (V j).ι (f j y) ∈ V j` using `((V j).ι_apply _ ▸ ((f j y).2))`. Establish `h2 : (V i).ι (s.snd t) ∈ V i` using `((V i).ι_apply _ ▸ ((s.snd t).2))`. Rewrite `h1` using `[e1]`. Establish `h3` using `(hd hji).le_bot (show (V i).ι (s.snd t) ∈ V j ⊓ V i from ⟨h1, h2⟩)`.
+
+Simplify using `at h3`. Use `⟨⟨Sigma.ι_desc _ _⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => IsOpenImmersion.lift (Sigma.ι B i) s.fst (hr s)) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Introduce `s`.
+
+Rewrite using `[← cancel_mono (V i).ι, Category.assoc, ← Sigma.ι_desc (fun j => f j ≫ (V j).ι) i, IsOpenImmersion.lift_fac_assoc, s.condition]`. Introduce `s m h1 _`. Rewrite using `[← cancel_mono (Sigma.ι B i), IsOpenImmersion.lift_fac, h1]`.
+-/
 theorem isPullback_sigmaι_desc {X : Scheme.{0}} {κ : Type} (V : κ → X.Opens)
     (hd : Pairwise fun i i' => Disjoint (V i) (V i')) {B : κ → Scheme.{0}} (f : ∀ i, B i ⟶ (V i).toScheme)
     (i : κ) : IsPullback (Sigma.ι B i) (f i) (Sigma.desc fun j => f j ≫ (V j).ι) (V i).ι := by
@@ -50,6 +64,11 @@ theorem isPullback_sigmaι_desc {X : Scheme.{0}} {κ : Type} (V : κ → X.Opens
   · intro s m h1 _
     rw [← cancel_mono (Sigma.ι B i), IsOpenImmersion.lift_fac, h1]
 
+/- English proof (translation)
+Introduce `X κ _ V hU hd B f g hf`. Establish `sq` using `isPullback_sigmaι_desc V hd f`. Establish `hc : IsZariskiLocalAtTarget (@GeometricallyConnected.{0})`. Rewrite using `[GeometricallyConnected.eq_geometrically]`. Use `infer_instance`.
+
+Establish `hs : IsZariskiLocalAtTarget (@SmoothOfRelativeDimension.{0} g)` using `HasRingHomProperty.instIsZariskiLocalAtTarget _`. Conclude with `{ proper := of_isPullback_opens_cover @IsProper hU sq fun i => (hf i).proper smooth := of_isPullback_opens_cover (@SmoothOfRelativeDimension.{0} g) hU sq fun i => (hf i).smooth conn := of_isPullback_opens_cover @GeometricallyConnected hU sq fun i => (hf i).conn }`.
+-/
 theorem good_sigmaDesc_of_disjoint_cover : ∀ {X : Scheme.{0}} {κ : Type} [Finite κ] (V : κ → X.Opens), (⨆ i, V i = ⊤) → (Pairwise fun i i' => Disjoint (V i) (V i')) → ∀ {B : κ → Scheme.{0}} (f : ∀ i, B i ⟶ (V i).toScheme) (g : ℕ), (∀ i, Good g (f i)) → Good g (Sigma.desc fun i => f i ≫ (V i).ι) := by
   intro X κ _ V hU hd B f g hf
   have sq := isPullback_sigmaι_desc V hd f

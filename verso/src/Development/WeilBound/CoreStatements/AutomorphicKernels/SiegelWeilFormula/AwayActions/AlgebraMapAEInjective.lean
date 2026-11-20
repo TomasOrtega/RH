@@ -9,6 +9,9 @@ namespace PositivityTheory.SiegelWeilFormula.KAway
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Conclude with `FaithfulSMul.algebraMap_injective (AF F) (AE F E)`.
+-/
 theorem algebraMap_AE_injective : Function.Injective (algebraMap (AF F) (AE F E)) := by
   exact FaithfulSMul.algebraMap_injective (AF F) (AE F E)
 
@@ -16,6 +19,15 @@ instance isIntegral_AE : Algebra.IsIntegral (AF F) (AE F E) := by
   haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
   infer_instance
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hI`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal _ hI`. Use `haveI := hm`. Establish `hker : RingHom.ker (algebraMap (AF F) (AE F E)) ≤ m`. Introduce `x hx`.
+
+Rewrite `hx` using `[RingHom.mem_ker]`. Establish `hx0 : x = 0` using `algebraMap_AE_injective (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `m.zero_mem`. Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral m hker`.
+
+Use `haveI := hQ`. Use `letI : Field (AE F E ⧸ Q) := Ideal.Quotient.field Q`. Take `⟨g, hg, h1, h2⟩` from `exists_point hcm ε hε X hX (Ideal.Quotient.mk Q)`. Take `⟨a, ha⟩` from `nrm_exists hcm (X.toBlocks₁₁ - incM F g * X.toBlocks₂₁).det`. Establish `haI : a ∈ m` using `hIm (Ideal.subset_span ⟨g, hg, ha⟩)`.
+
+Rewrite `haI` using `[← hQm]`. Establish `h0 : Ideal.Quotient.mk Q (algebraMap (AF F) (AE F E) a) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 haI`. Rewrite `h0` using `[ha, map_mul]`. Conclude with `mul_ne_zero h1 h2 h0`.
+-/
 theorem span_top' (hcm : IsCMExt F E σ) {n : ℕ} (ε : ℤ) (hε : ε * ε = 1)
     (X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (hX : IsUnit X.det) :
     Ideal.span {a : AF F | ∃ g, IsEH σ ε g ∧ algebraMap (AF F) (AE F E) a =

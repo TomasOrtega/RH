@@ -8,6 +8,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.AdmAll
 
+/- English proof (translation)
+Introduce `D N X Y hY i k Q M χ hT`. Use `Finset.Subset.antisymm (admissibleConjugatePairPlaces_subset i Q M) fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Take `⟨A, hA⟩` from `exists_isPlaceOver N.Om v`. Take `⟨σ, hσ, hne⟩` from `(hT.2.2.2.2.2.1 v A hA).2 hv`.
+
+Apply `hne` to reduce the goal to its premises. Establish `h1 : Y.delU i Q M σ = 1`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w.1 ∈ admissibleConjugatePairPlaces X i Q M`.
+
+Rewrite using `[delU_on hY σ w hw]`. Establish `hvp : v ∉ GalChar.pair D.host w.1`. Introduce and unpack `(h | hc)`. Conclude with `hna (h ▸ hw)`. Conclude with `hna (conj_mem_admissibleConjugatePairPlaces hw hc)`.
+
+Rewrite using `[(GalChar.delOf_laws D.host X.cc (X.l i) M _).2.2.2 v hvp A hA σ hσ]`. Both sides reduce to the same expression. Rewrite using `[delU_off hY (twSet_of_twOK hT) σ w hw]`. Both sides reduce to the same expression. Rewrite using `[MonoidHom.comp_apply, h1, map_one]`.
+-/
 theorem admissibleConjugatePairPlaces_eq_of_twist_condition : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} (Y : NExp D.R D.host D.what₂ D.LL0 N X),
   GlobalTheory.UnivChar.IsUnivChar Y → ∀ (i : X.Tw) (k : ℕ) (Q : Finset (Pl D.host.E)) (M : ℕ)
     (χ : Multiplicative (DelQM D.host (X.l i) Q M) →* (X.Ok i k)ˣ),

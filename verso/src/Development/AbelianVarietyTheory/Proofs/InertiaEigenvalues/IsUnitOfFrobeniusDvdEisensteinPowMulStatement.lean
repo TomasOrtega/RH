@@ -6,5 +6,8 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LemZ.isUnit_of_frob_dvd | exact GlobalTheory.LemZ.isUnit_of_frob_dvd | (intros; apply GlobalTheory.LemZ.isUnit_of_frob_dvd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isUnit_of_frobenius_dvd_eisenstein_pow_mul : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), ∀ g : bk.S, ¬ (l : bk.S) ∣ g → ∀ M : ℕ, frobS l bk.a g ∣ bk.E ^ M * g → IsUnit g := by
   first | exact @GlobalTheory.LemZ.isUnit_of_frob_dvd | exact GlobalTheory.LemZ.isUnit_of_frob_dvd | (intros; apply GlobalTheory.LemZ.isUnit_of_frob_dvd <;> assumption)

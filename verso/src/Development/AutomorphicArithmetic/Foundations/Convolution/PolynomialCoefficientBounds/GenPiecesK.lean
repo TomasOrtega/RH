@@ -4,6 +4,19 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PolynomialCoeff
 
 open MvPolynomial Filter Topology PositivityTheory.Rg.Fx
 
+/- English proof (translation)
+Introduce `τ κ _ _ n F hF`. Establish `h : ∀ β : κ →₀ ℕ, ∃ (K : ℝ) (G : ℕ → MvPolynomial (τ × Fin n) ℂ), ∀ k, aeval blockE (G k) = piece k (F.coeff β) ∧ (G k).totalDegree ≤ k ∧ l1 (G k) ≤ K ^ (k + 1) / k.factorial` using `fun β => UpperTheory.ConvolutionTheory.FX.gen_pieces τ n (F.coeff β) (fun w => by`. Use `congrArg (fun P => MvPolynomial.coeff β P) (hF w)` as an intermediate fact. Simplify `this)` using `only [coeff_map]`. Use `choose K G hG using h`.
+
+Establish `hc : ∀ k β, (∑ γ ∈ F.support, monomial γ (G γ k) : MvPolynomial κ (MvPolynomial (τ × Fin n) ℂ)).coeff β = if β ∈ F.support then G β k else 0`. Introduce `k β`. Simplify using `only [coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Establish `hK0 : 0 ≤ ∑ γ ∈ F.support, |K γ|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Use `⟨∑ γ ∈ F.support, |K γ|, fun k => ∑ γ ∈ F.support, monomial γ (G γ k), fun k => ⟨?_, ?_, fun β => ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum, pieceK]`. Use `Finset.sum_congr rfl fun γ _ => ?_` and prove the remaining obligations. Rewrite using `[map_monomial, ← (hG γ k).1]`. Both sides reduce to the same expression. Introduce `β hβ`.
+
+Rewrite `hβ` using `[mem_support_iff, hc]`. Assume the negation of the conclusion as `hn`. Conclude with `hβ (if_neg hn)`. Rewrite using `[hc] split_ifs with hβ`. Use `⟨(hG β k).2.1, (hG β k).2.2.trans ?_⟩` and prove the remaining obligations.
+
+Use `div_le_div_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Establish `: l1 (0 : MvPolynomial (τ × Fin n) ℂ) = 0` using `by simp [l1]`. Rewrite using `[this]`.
+
+Check the signs of the components of the expression.
+-/
 theorem UpperTheory.ConvolutionTheory.FX.gen_piecesK :
     ∀ (τ κ : Type) [Fintype τ] [DecidableEq τ] (n : ℕ) (F : KF (τ × Fin n) κ), (∀ w : τ → Equiv.Perm (Fin n), map (ren (fun ti : τ × Fin n => (ti.1, w ti.1 ti.2))) F = F) → ∃ (K : ℝ) (G : ℕ → MvPolynomial κ (MvPolynomial (τ × Fin n) ℂ)), ∀ k, map (aeval (blockE (τ := τ) (n := n)) : MvPolynomial (τ × Fin n) ℂ →ₐ[ℂ] MvPolynomial (τ × Fin n) ℂ).toRingHom (G k) = pieceK k F ∧ (G k).support ⊆ F.support ∧ ∀ β, ((G k).coeff β).totalDegree ≤ k ∧ l1 ((G k).coeff β) ≤ K ^ (k + 1) / k.factorial := by
   intro τ κ _ _ n F hF

@@ -11,6 +11,9 @@ def PlacesRingQuot.Statement : Prop :=
     ∀ g : placesRing S, g ≠ 0 →
       Real.log (Nat.card (placesRing S ⧸ Ideal.span {g})) = ∑ᶠ w ∈ S, -Real.log (w (g : L))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∅, 1, Set.finite_empty, one_ne_zero⟩`.
+-/
 example : ∃ (S : Set (FinitePlace ℚ)) (g : placesRing S), S.Finite ∧ g ≠ 0 :=
   ⟨∅, 1, Set.finite_empty, one_ne_zero⟩
 

@@ -25,6 +25,11 @@ section Base
 
 open GlobalTheory.Survey.LevelVectorSizeBounds GlobalTheory.BaseScalar
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `(h.lev.Pg PP).1 hP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1` using `R.C.P.pb_over k`. Rewrite `h1` using `[← hk]`. Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ PP.asIdeal` using `h1`.
+
+Simplify using `using h2`.
+-/
 theorem g_mem_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.host.E} (hP : PP ∈ R.Pg) : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal := by
   obtain ⟨k, hk⟩ := (h.lev.Pg PP).1 hP
   refine ⟨k, ?_⟩
@@ -35,6 +40,21 @@ theorem g_mem_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) {PP : Pl D.hos
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨_, _, isGalConj_refl _ _, isGalConj_refl _ _, ⟨(h.thP.ωP i t).hecS, ?_⟩, h.lev.eta, ?_⟩` and prove the remaining obligations. Introduce `P e he k x hx`. Establish `a` using `(h.lev.mu0 i).2 P e he k x hx`. Establish `b` using `(h.lev.xi t).2 P e he k x hx`. Use `show (((R.mu0 ((i : ℕ) + 1) x * R.xi t x : Circle)) : ℂ) = (((R.C.mu0 i).locK P k * (R.xiH t).locK P k : ℂˣ) : ℂ)`.
+
+Rewrite using `[Circle.coe_mul, a, b, Units.val_mul]`. Introduce `PP hPP a k u hk hu`. Establish `ha : a ∉ PP.asIdeal` using `fun ha => u.ne_zero (hu.trans (Ideal.Quotient.eq_zero_iff_mem.2 ha))`. Use `show _ = (R.C.mu0 i).locK PP k * (R.xiH t).locK PP k`. Distinguish the cases in `hg : PP ∈ R.Pg`.
+
+Take `⟨l, hl⟩` from `g_mem_core R h hg`. Establish `hun : (R.xiH t).UnrAt PP`. Assume the negation of the conclusion as `hn`. Break down `(h.lev.Q_ram t PP).1 hn with hq | ⟨PP', hq, hc⟩` into its components or cases. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`.
+
+Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP' hq`. Take `⟨c', hc1, hc2⟩` from `hc _ (q_mem hq2)`. Establish `: c' = (q : 𝓞 D.host.E)`. Apply `NumberField.RingOfIntegers.coe_injective` to reduce the goal to its premises.
+
+Rewrite using `[map_natCast]`. Establish `h3 : (c' : D.host.E) = (q : D.host.E)` using `by simpa using hc2`. Conclude with `h3`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (this ▸ hc1)`. Simplify using `only [if_pos hg]`.
+
+Rewrite using `[locK_eq_one hun a k hk ha, mul_one]`. Conclude with `h.lev.chi i PP hg a k u hk hu`. Establish `hq : PP ∈ R.Q t` using `hPP.resolve_left hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hq`. Establish `hun : (R.C.mu0 i).UnrAt PP` using `(R.C.isMu0 i).unr PP fun l hl => not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`.
+
+Simplify using `only [if_neg hg]`. Rewrite using `[locK_eq_one hun a k hk ha, one_mul]`. Conclude with `h.lev.xiR t PP hq a k u hk hu`.
+-/
 theorem isConjChars_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     IsConjChars R i t (RingEquiv.refl ℂ) (R.toLevCh.mu t ((i : ℕ) + 1)) R.eta
       (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) := by
@@ -75,6 +95,15 @@ theorem isConjChars_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin
 
 open Classical in
 
+/- English proof (translation)
+Establish `h1` using `h.thP.vP i t`. Unfold `Datum.IsThPVecOf at h1`. Unfold `IsLevelVec`. Establish `hQ : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin (Vc D i).rank) (Fin (Wc D i).rank) (kP PP), Datum.omegaQ (R.Q t) (Wc D i).rank (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (-1) y = Datum.omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) y`. Introduce `y`.
+
+Unfold `Datum.omegaQ`. Use `split_ifs with hy`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `hn : PP.1 ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem_core R h hg`.
+
+Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP.1 PP.2`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`. Both sides reduce to the same expression. Simplify using `only [omegaG_triv, hQ]`.
+
+Conclude with `h1`.
+-/
 theorem isLevelVec_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     IsLevelVec R.ψ R.θ (Vc D i) (Wc D i) (cart (R.MW i (sg0 D A))) (R.ΛV i) (R.ΛW i) (R.βV i) (R.βW i) (R.datWp i R.triv) (R.Q t)
       (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.vacP i) (R.vP i t) := by
@@ -99,6 +128,11 @@ theorem isLevelVec_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin 
 
 open Classical in
 
+/- English proof (translation)
+Use `ext1 x`. Use `levFn_congr (R.βV i) D.R.r (r_le_V i) D.R.t 1 R.Pg (R.Q t) R.triv (fun _ PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (fun _ PP => (R.chi ((i : ℕ) + 1) PP)⁻¹) (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.xiR t) ?_ ?_ _` and prove the remaining obligations. Introduce `c PP hP`. Simplify using `only [if_pos hP]`. Introduce `PP hP`.
+
+Establish `hn : PP ∉ R.Pg` using `fun hg => by`. Take `⟨l, hl⟩` from `g_mem_core R h hg`. Take `⟨⟨q, hq1, hq2, -, hq4⟩, -⟩` from `h.lev.Q_pl t PP hP`. Conclude with `not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)`. Simplify using `only [if_neg hn]`.
+-/
 theorem chr_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     chrOf (Vc D i) (R.βV i) (datV i R.Pg (R.Q t) R.triv
       (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP)) = (levEnv _ (R.βV i) (R.datVt i t)).χ := by
@@ -115,11 +149,19 @@ theorem chr_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) 
       exact not_both (D.host.g_prime l) hq1 (hq4 l) hl (q_mem hq2)
     simp only [if_neg hn]
 
+/- English proof (translation)
+The claim follows from `exists_factor (R.HW i (sg0 D A)).e (R.thF i t) (R.Wall i (sg0 D A)) (h.models.HW i (sg0 D A)).1 (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)`.
+-/
 theorem exists_lift_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) :
     ∃ th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H, ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x :=
   exists_factor (R.HW i (sg0 D A)).e (R.thF i t) (R.Wall i (sg0 D A)) (h.models.HW i (sg0 D A)).1
     (h.models.HW i (sg0 D A)).2.1 (h.thP.thF_mem i t)
 
+/- English proof (translation)
+Use `(h.thP.thF i t).elim fun thP hP => ?_` and prove the remaining obligations. Unfold `IsLift`. Introduce `x v g`. Establish `a` using `integrableOn_of_isThetaLift hP.1 x (PiTensorProduct.tprod ℂ v) g`. Establish `c` using `(congrFun (hP.2 x v) g).trans a.2`.
+
+Use `⟨a.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hth x]`. Conclude with `c`.
+-/
 theorem isLift_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T)
     (th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H) (hth : ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x) :
     IsLift R i (sg0 D A) (R.ωP i t) (R.ptP i t) (R.cV i) (R.ioP i) (R.νV i t) (R.fdV i t) (R.HV i t) th := by
@@ -132,6 +174,13 @@ theorem isLift_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.
   rw [hth x]
   exact c
 
+/- English proof (translation)
+Introduce `PP hP`. Rewrite using `[hc, Ideal.absNorm_top, mul_one]`. Break down `hP with hP | hP` into its components or cases. Take `⟨k, hk⟩` from `g_mem_core R h hP`. Establish `h1 : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)`.
+
+Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, D.ntypes.g_cond k, Nat.gcd_one_left]`. Establish `h2 : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)` using `h1`. Introduce `h3`. Take `⟨x, y, hxy⟩ : IsCoprime ((D.host.g k : ℕ) : 𝓞 D.host.E) ((D.host.QS * D.host.q * D.host.d : ℕ) : 𝓞 D.host.E)` from `h2.cast`. Conclude with `PP.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hxy ▸ PP.asIdeal.add_mem (PP.asIdeal.mul_mem_left _ hk) (PP.asIdeal.mul_mem_left _ h3)))`.
+
+Introduce `h3`. Use `(h.lev.Q_off t PP hP).1 ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul _ D.sp.T]`. Conclude with `PP.asIdeal.mul_mem_right _ h3`.
+-/
 theorem primeToHost_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (hc : D.host.ccK = ⊤) (t : T) : PrimeToHost R t := by
   intro PP hP
   rw [hc, Ideal.absNorm_top, mul_one]
@@ -151,6 +200,9 @@ theorem primeToHost_core {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (hc : D.
 
 open Classical in
 
+/- English proof (translation)
+Establish `hσ : IsEmbOverK D (sg0 D A) (RingEquiv.refl ℂ)`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0]`. Conclude with `isEmbOverK_base`. Conclude with `⟨h, primeToHost_core R h hc t, hσ, isLocal_triv R, isConjChars_core R h i t, h.thP.ωP i t, fun ρ => GlobalTheory.IndefiniteRowSideFullHecke.LiftFormsMainTerm.isONBasis_onb _ ρ _ (h.models.order i ρ), isLevelVec_core R h i t, h.thP.pt_theta i t, h.models.cV i, by rw [delta_base R] …`.
+-/
 theorem isLiftDataC_base {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (hc : D.host.ccK = ⊤) (i : Fin D.R.m) (t : T) :
     IsLiftDataC R F i t (sg0 D A) (RingEquiv.refl ℂ) R.triv (R.toLevCh.mu t ((i : ℕ) + 1)) R.eta
       (fun PP => if PP ∈ R.Pg then (R.chi ((i : ℕ) + 1) PP)⁻¹ else R.xiR t PP) (R.ωP i t) (onb (R.MW i (sg0 D A)))
@@ -163,6 +215,15 @@ theorem isLiftDataC_base {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (hc : D.
 
 end Base
 
+/- English proof (translation)
+Establish `hu : ∀ g x y, ⟪R.gW i (sg0 D A) g x, R.gW i (sg0 D A) g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => LinearIsometry.inner_map_map ⟨R.gW i (sg0 D A) g, GlobalTheory.gW_norm_eq R hM.HW hM.gW hM.νW i _ g⟩ x y`. Establish `hc : ∀ g, starRingEnd ℂ (RealDat.eC (A` using `A) (sg0 D A) g) = RealDat.eC (A := A) (sg0 D A) g⁻¹ := by`. Introduce `g`. Unfold `RealDat.eC`. Rewrite using `[coeff_idemOf, coeff_idemOf, map_sum, map_sum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Establish `h1` using `(hX χ hχ).map_inv (sg0 D A) 1`. Establish `h2` using `(hX χ hχ).map_inv (sg0 D A) g⁻¹`. Rewrite `h1` using `[inv_one]`. Simplify using `only [map_mul, map_div₀, map_natCast]`.
+
+Rewrite using `[h2, ← h1]`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Unfold `GlobalTheory.Hk3.eH`.
+
+Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hc]`. Use `Finset.sum_nbij' (fun g => g⁻¹) (fun g => g⁻¹) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_` and prove the remaining obligations. Rewrite using `[← hu g⁻¹, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+-/
 theorem adjoint_eH (hM : R.IsModels) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i : Fin D.R.m) :
     LinearMap.adjoint (GlobalTheory.Hk3.eH R i) = GlobalTheory.Hk3.eH R i := by
   have hu : ∀ g x y, ⟪R.gW i (sg0 D A) g x, R.gW i (sg0 D A) g y⟫_ℂ = ⟪x, y⟫_ℂ := fun g x y =>
@@ -185,6 +246,9 @@ theorem adjoint_eH (hM : R.IsModels) (hX : ∀ χ ∈ A.X, IsAbsIrrChar χ) (i :
   refine Finset.sum_nbij' (fun g => g⁻¹) (fun g => g⁻¹) (by simp) (by simp) (by simp) (by simp) fun g _ => ?_
   rw [← hu g⁻¹, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Unfold `GlobalTheory.Hk3.eH RealDat.eWf gaL`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, hM.gW i]`. Use extensionality with `v g`. Simplify using `[postOn]`. Both sides reduce to the same expression.
+-/
 theorem e_eH (hM : R.IsModels) (i : Fin D.R.m) (x : (R.HW i (sg0 D A)).H) :
     (R.HW i _).e (GlobalTheory.Hk3.eH R i x) = postOn _ (R.eWf i (sg0 D A)) ((R.HW i _).e x) := by
   unfold GlobalTheory.Hk3.eH RealDat.eWf gaL
@@ -193,6 +257,13 @@ theorem e_eH (hM : R.IsModels) (i : Fin D.R.m) (x : (R.HW i (sg0 D A)).H) :
   simp [postOn]
   rfl
 
+/- English proof (translation)
+Establish `h1` using `(Submodule.mem_inf.1 (Submodule.mem_comap.1 hx)).1`. Establish `h2` using `(mem_partFull _ _ _ _ _ _ _).1 (Submodule.mem_inf.1 (Submodule.mem_comap.1 hx)).2`. Prove the components needed by the constructor for the conclusion. Use `Submodule.mem_comap.2 ((mem_partFull _ _ _ _ _ _ _).2 ⟨h2.1, fun P d Rp hR => h2.2 P d Rp ?_⟩)` and prove the remaining obligations. Use `hR.elim fun e hR => hR.elim fun f hR => hR.elim fun ϖ hR => hR.elim fun α hR => ⟨e, f, ϖ, α, fun v hv => hR.1 v ?_, hR.2⟩` and prove the remaining obligations.
+
+Take `⟨PP, hP, e⟩` from `(hSF v).1 hv`. Unfold `finS`. Conclude with `Finset.mem_image.2 ⟨PP, by simp [hP], HeightOneSpectrum.ext e⟩`. Apply `(hM.HW i _).1` to reduce the goal to its premises. Rewrite using `[e_eH R hM]`.
+
+Conclude with `MultilinearMap.ext ((mem_goodPart _ _ _ _ _ _).1 h1).2`.
+-/
 theorem Wcc_spec (hM : R.IsModels) {SF} (hSF : GlobalTheory.Hk3.IsSF R SF) (i : Fin D.R.m) (t : T) (c : Eig D) {x}
     (hx : x ∈ GlobalTheory.Hk3.Wcc R SF i c) : x ∈ typePart R i (sg0 D A) t R.triv c ∧ GlobalTheory.Hk3.eH R i x = x := by
   classical
@@ -208,6 +279,9 @@ theorem Wcc_spec (hM : R.IsModels) {SF} (hSF : GlobalTheory.Hk3.IsSF R SF) (i : 
     rw [e_eH R hM]
     exact MultilinearMap.ext ((mem_goodPart _ _ _ _ _ _).1 h1).2
 
+/- English proof (translation)
+Take `rfl : thG = e ∘ₗ th` from `LinearMap.ext h`. Rewrite using `[LinearMap.adjoint_comp, he, LinearMap.comp_apply, LinearMap.comp_apply, hy, hl, map_smul, hy]`.
+-/
 theorem proj_scalar {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X]
     [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (th thG : X →ₗ[ℂ] Y) (e : Y →ₗ[ℂ] Y)
     (he : LinearMap.adjoint e = e) (h : ∀ x, thG x = e (th x)) {y : Y} (hy : e y = y) {l : ℂ}
@@ -215,12 +289,23 @@ theorem proj_scalar {X Y : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X
   obtain rfl : thG = e ∘ₗ th := LinearMap.ext h
   rw [LinearMap.adjoint_comp, he, LinearMap.comp_apply, LinearMap.comp_apply, hy, hl, map_smul, hy]
 
+/- English proof (translation)
+The claim follows from `(h.models.HW i _).1 ((h.thP.thG i t y).trans ((e_eH R h.models i (th y)).trans (congrArg _ (hth y))).symm)`.
+-/
 theorem thG_eq {F : Face D A} (h : GlobalTheory.Hk3.Core R F) (i : Fin D.R.m) (t : T) (th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H)
     (hth : ∀ x, (R.HW i (sg0 D A)).e (th x) = R.thF i t x) (y : (R.HV i t).H) : R.thG i t y = GlobalTheory.Hk3.eH R i (th y) :=
   (h.models.HW i _).1 ((h.thP.thG i t y).trans ((e_eH R h.models i (th y)).trans (congrArg _ (hth y))).symm)
 
+/- English proof (translation)
+The claim follows from `Subgroup.card_bot`.
+-/
 theorem card_triv : Nat.card (R.triv).H = 1 := Subgroup.card_bot
 
+/- English proof (translation)
+Use `(scalar_of_data R hS hI hFo hZ hL hδ h.models.vpos).elim fun a ha => ?_` and prove the remaining obligations. Use `⟨fun i => a i (sg0 D A) * Module.finrank ℂ (R.cV i).W * Nat.card (R.triv).H, fun i => ?_, fun i t th hth c hne => ?_⟩` and prove the remaining obligations. Use `haveI : Nontrivial (R.cV i).W := (h.models.cV i).2.2.2.1`. Conclude with `mul_pos (mul_pos (ha.1 i _) (by exact_mod_cast Module.finrank_pos)) (by rw [card_triv, Nat.cast_one]; exact one_pos)`. Establish `key` using `ha.2 i t _ _ _ _ _ _ _ _ _ _ _ _ (isLiftDataC_base R h hc i t) (R.νV i t) (R.fdV i t) (h.models.νV i t) _ (R.B.L i t).pres.y (R.B.L i t).pres.reps (R.HV i t) (by rw [chr_core R h]; exact h.models.HV i t) th (isLift_core R h i t th hth) c hne`.
+
+Conclude with `key.elim fun B hB => hB.elim fun z hz => ⟨z, ⟨B, hz.1, hz.2.1, hz.2.2.1, hz.2.2.2.1⟩, hz.2.2.2.2⟩`.
+-/
 theorem scalar_base {F : Face D A} (hS : SourceLevelLawC R F) (hI : InnerProductFormulaC R F) (hFo : FockCoefficientC R F)
     (hZ : FiniteZetaL R F) (hL : LevelIndexNormC R F) (hδ : RealLowestKTypeCoeffSquareIntegrable R) (h : GlobalTheory.Hk3.Core R F) (hc : D.host.ccK = ⊤) :
     ∃ a : Fin D.R.m → ℝ, (∀ i, 0 < a i) ∧ ∀ i t (th : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H),
@@ -236,6 +321,11 @@ theorem scalar_base {F : Face D A} (hS : SourceLevelLawC R F) (hI : InnerProduct
     (isLift_core R h i t th hth) c hne
   exact key.elim fun B hB => hB.elim fun z hz => ⟨z, ⟨B, hz.1, hz.2.1, hz.2.2.1, hz.2.2.2.1⟩, hz.2.2.2.2⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hS hI hFo hZ hL hδ hG hc SF hSF`. Establish `h` using `hG.core`. Use `(scalar_base R hS hI hFo hZ hL hδ h hc).elim fun a ha => ⟨a, ha.1, fun i t c hne => ?_⟩` and prove the remaining obligations. Use `(exists_lift_core R h i t).elim fun th hth => ?_` and prove the remaining obligations. Establish `hle : GlobalTheory.Hk3.Wcc R SF i c ≤ typePart R i (sg0 D A) t R.triv c` using `fun x hx => (Wcc_spec R h.models hSF i t c hx).1`.
+
+Use `(ha.2 i t th hth c fun h0 => hne (le_bot_iff.1 (hle.trans h0.le))).elim fun z hz => ⟨z, hz.1, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `proj_scalar th _ _ (adjoint_eH R h.models hG.irr i) (thG_eq R h i t th hth) (Wcc_spec R h.models hSF i t c hx).2 (hz.2 x (hle hx))`.
+-/
 theorem aForm : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), SourceLevelLawC R F → InnerProductFormulaC R F → FockCoefficientC R F → FiniteZetaL R F → LevelIndexNormC R F → RealLowestKTypeCoeffSquareIntegrable R → Given R F → D.host.ccK = ⊤ → ∀ SF, GlobalTheory.Hk3.IsSF R SF → AForm R SF := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hS hI hFo hZ hL hδ hG hc SF hSF
   have h := hG.core

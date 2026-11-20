@@ -5,6 +5,21 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ I p x y b lam n hx hy hxy hb`. Take `⟨k, hk⟩` from `Polynomial.binomExpansion p x (y - x)`. Establish `hy' : x + (y - x) = y` using `by ring`. Rewrite `hk` using `[hy']`. Take `⟨d, hdd⟩ : ∃ d, d = y - x` from `⟨_, rfl⟩`.
+
+Rewrite `hk` using `[← hdd]`. Establish `hd : d ∈ I`. Establish `e : d = -(x - y)` using `by rw [hdd]; ring`. Rewrite using `[e]`. Conclude with `I.neg_mem hxy`.
+
+Take `⟨h, hh⟩ : ∃ h, h = (Polynomial.derivative p).eval x + k * d` from `⟨_, rfl⟩`. Establish `hdh : d * h ∈ I ^ n`. Establish `e : d * h = p.eval y - p.eval x` using `by rw [hk, hh]; ring`. Rewrite using `[e]`. Conclude with `sub_mem hy hx`.
+
+Take `⟨j, hjj⟩ : ∃ j, j = b * h - lam` from `⟨_, rfl⟩`. Establish `hj : j ∈ I`. Establish `e : j = (b * (Polynomial.derivative p).eval x - lam) + b * k * d`. Rewrite using `[hjj, hh]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `add_mem hb (I.mul_mem_left _ hd)`. Take `⟨q, hq⟩` from `sub_dvd_pow_sub_pow lam (-j) n`. Establish `e : lam ^ n * (x - y) = -(b * q * (d * h)) - (-j) ^ n * d`. Establish `e1 : lam ^ n = (lam - -j) * q + (-j) ^ n` using `by rw [← hq]; ring`.
+
+Establish `e2 : lam - -j = b * h` using `by rw [hjj]; ring`. Establish `e3 : x - y = -d` using `by rw [hdd]; ring`. Rewrite using `[e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `sub_mem (neg_mem (Ideal.mul_mem_left _ _ hdh)) (Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (neg_mem hj) n))`.
+-/
 theorem pow_mul_sub_mem_of_roots_mod_pow :
     ∀ (R : Type) [CommRing R] (I : Ideal R) (p : Polynomial R) (x y b lam : R) (n : ℕ),
       p.eval x ∈ I ^ n → p.eval y ∈ I ^ n → x - y ∈ I →

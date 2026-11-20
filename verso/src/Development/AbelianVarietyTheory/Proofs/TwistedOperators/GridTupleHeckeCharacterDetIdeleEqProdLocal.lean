@@ -14,6 +14,11 @@ open GlobalTheory.TopLevelInv
 
 namespace GlobalTheory.TopLevelInv
 
+/- English proof (translation)
+Introduce `D T L μ₀ hL t j hj`. Establish `hm : ChrEq (L.mu0 (j + 1 + 1)) (muBase L (j + 1 + 1))`. Use `hL.mu0 ⟨j + 1, hj⟩` as an intermediate fact. Simplify `this` using `[muBase, hj]`. Use `⟨GlobalTheory.TowerCharRead.chrEq_mul hm (hL.xi t), fun P => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (muBase L (j + 1 + 1)).TameAt P`. Rewrite using `[muBase, dif_pos hj]`. Conclude with `(L.C.isMu0 ⟨j + 1, hj⟩).tame P`. Conclude with `Formalism.L2.Host.HChar.LevelLe.mul h1 (hL.xi_tame t P)`.
+-/
 theorem chrEq_mu_succ_succ : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}, L.Is μ₀ → ∀ (t : T) (j : ℕ), j + 1 < D.R.m → ChrEq (L.mu t (j + 1 + 1)) (muBase L (j + 1 + 1) * L.xiH t) ∧ ∀ P, (muBase L (j + 1 + 1) * L.xiH t).TameAt P := by
   intro D T L μ₀ hL t j hj
   have hm : ChrEq (L.mu0 (j + 1 + 1)) (muBase L (j + 1 + 1)) := by
@@ -24,6 +29,11 @@ theorem chrEq_mu_succ_succ : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}
     rw [muBase, dif_pos hj]; exact (L.C.isMu0 ⟨j + 1, hj⟩).tame P
   exact Formalism.L2.Host.HChar.LevelLe.mul h1 (hL.xi_tame t P)
 
+/- English proof (translation)
+Introduce `D T L sc G W U S t μ₀ hL ht Φ β j hj k hk e he`. Take `⟨hχ, htame⟩` from `chrEq_mu_succ_succ hL t j hj`. Take `⟨hinf, hin, hout⟩` from `GlobalTheory.T.determinantIdeleAtIdempotent_idempotentPart_components he (G.V (.top (j + 1))) ((((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) : FinPt G (.top (j + 1))) : GA D (G.V (.top (j + 1)))))`. Rewrite using `[GlobalTheory.T.unitaryIdeleChar_eq_prod_loc_of_tameAt hχ (locPl G t) (fun P _ => htame P) (fun P => gdet (kapAt S t j hj k P)) _ hinf (fun P hP => (hin P hP).trans (GlobalTheory.T.det_unitaryConj_atPlace_eq_det_latticeBasisComponent S t j hj k _ P)) hout]`. Rewrite using `[← Finset.prod_coe_sort]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mu_detAt_eq_prod_loc : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T} {μ₀ : T}, L.Is μ₀ → t ∈ U → ∀ {Φ : G.Datum} {β : CosFam G t} (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.top (j + 1))),
     finG (G.V (.top (j + 1))) k ∈ S.levTop t Φ β (j + 1) hj → ∀ (e : AE D) (he : IsIdemSum e (locPl G t)),
     ((L.mu t (j + 1 + 1) (GlobalTheory.VecInv.detAt e (GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum he).idem (G.V (.top (j + 1)))

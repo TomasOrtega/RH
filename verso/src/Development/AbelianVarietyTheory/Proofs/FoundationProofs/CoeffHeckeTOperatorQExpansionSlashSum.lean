@@ -10,6 +10,15 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Take `⟨C₁, A₁, h₁⟩` from `hu`. Take `⟨C₂, A₂, h₂⟩` from `hv`. Establish `hC₁ : 0 ≤ C₁`. Use `h₁ 0` as an intermediate fact. Simplify using `at this`.
+
+Conclude with `le_trans (norm_nonneg _) this`. Establish `hC₂ : 0 ≤ C₂`. Use `h₂ 0` as an intermediate fact. Simplify using `at this`. Conclude with `le_trans (norm_nonneg _) this`.
+
+Use `⟨C₁ + ‖c‖ * C₂, A₁ + A₂, fun n => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (n : ℝ) + 1` using `by linarith [(Nat.cast_nonneg n : (0:ℝ) ≤ n)]`. Establish `e1 : ((n : ℝ) + 1) ^ A₁ ≤ ((n : ℝ) + 1) ^ (A₁ + A₂)` using `pow_le_pow_right₀ h1 (by omega)`. Establish `e2 : ((n : ℝ) + 1) ^ A₂ ≤ ((n : ℝ) + 1) ^ (A₁ + A₂)` using `pow_le_pow_right₀ h1 (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `_ ≤ C₁ * ((n : ℝ) + 1) ^ A₁ + ‖c‖ * (C₂ * ((n : ℝ) + 1) ^ A₂) := by gcongr; exacts [h₁ n, h₂ n]`. Use `_ ≤ C₁ * ((n : ℝ) + 1) ^ (A₁ + A₂) + ‖c‖ * (C₂ * ((n : ℝ) + 1) ^ (A₁ + A₂)) := by gcongr`. Use `_ = (C₁ + ‖c‖ * C₂) * ((n : ℝ) + 1) ^ (A₁ + A₂) := by ring`.
+-/
 theorem polyB_add_smul {u v : ℕ → ℂ} (c : ℂ) (hu : PolyB u) (hv : PolyB v) :
     PolyB (fun n => u n + c * v n) := by
   obtain ⟨C₁, A₁, h₁⟩ := hu
@@ -30,6 +39,23 @@ theorem polyB_add_smul {u v : ℕ → ℂ} (c : ℂ) (hu : PolyB u) (hv : PolyB 
         gcongr
     _ = (C₁ + ‖c‖ * C₂) * ((n : ℝ) + 1) ^ (A₁ + A₂) := by ring
 
+/- English proof (translation)
+Introduce `k q ε a hk hq hε ha`. Take `⟨hU, hUq⟩` from `GlobalTheory.T.qExpansion_heckeU_eq_sum_slash k q a hk hq ha`. Take `⟨hV, hVq⟩` from `GlobalTheory.T.coeffHeckeVOperator_polynomialGrowth_qExpansion q a hq ha`. Establish `hTo : To k (ε q) q a = fun n => Uo q a n + (ε q * (q : ℂ) ^ (k - 1)) * Vo q a n`. Use function extensionality and compare the values at `n`.
+
+Simplify using `only [To, Uo]`. Use `⟨by rw [hTo]; exact polyB_add_smul _ hU hV, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Establish `sU : Summable fun n : ℕ => Uo q a n * cexp (2 * π * Complex.I * n * τ)` using `((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous _ hU).1 τ).of_norm`. Establish `sV : Summable fun n : ℕ => Vo q a n * cexp (2 * π * Complex.I * n * τ)` using `((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous _ hV).1 τ).of_norm`.
+
+Establish `hsplit : qs (To k (ε q) q a) τ = qs (Uo q a) τ + (ε q * (q : ℂ) ^ (k - 1)) * qs (Vo q a) τ`. Rewrite using `[hTo]`. Simplify using `only [qs]`. Rewrite using `[← tsum_mul_left, ← sU.tsum_add (sV.mul_left _)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `n`. Expand and normalize the polynomial expressions, which then agree. Establish `him : 0 < ((q : ℂ) * (τ : ℂ)).im`. Simplify using `only [Complex.mul_im, Complex.natCast_re, Complex.natCast_im, zero_mul, add_zero]`. Conclude with `mul_pos (by exact_mod_cast hq) τ.im_pos`.
+
+Establish `hσ : qs (Vo q a) τ = qs a ⟨(q : ℂ) * τ, him⟩` using `hVq τ ⟨(q : ℂ) * τ, him⟩ rfl`. Rewrite using `[hsplit, hUq τ, hσ, hsum, Fintype.sum_option]`. Establish `hnone : ε (repT q none 0 0) * slz k (repT q none) (qs a) τ = (ε q * (q : ℂ) ^ (k - 1)) * qs a ⟨(q : ℂ) * τ, him⟩`. Establish `: ofComplex ((((q : ℤ) : ℂ) * (τ : ℂ) + ((0 : ℤ) : ℂ)) / (((0 : ℤ) : ℂ) * (τ : ℂ) + ((1 : ℤ) : ℂ))) = ⟨(q : ℂ) * τ, him⟩`. Rewrite using `[show (((q : ℤ) : ℂ) * (τ : ℂ) + ((0 : ℤ) : ℂ)) / (((0 : ℤ) : ℂ) * (τ : ℂ) + ((1 : ℤ) : ℂ)) = (q : ℂ) * τ by push_cast; ring]`.
+
+Conclude with `ofComplex_apply_of_im_pos him`. Simplify using `only [repT, slz, Matrix.det_fin_two_of, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]`. Rewrite using `[this]`. Use `push_cast`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hsome : ∀ j : Fin q, ε (repT q (some j) 0 0) * slz k (repT q (some j)) (qs a) τ = slz k (repU q j) (qs a) τ`. Introduce `j`. Simplify using `only [repT, repU, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.empty_val', Matrix.cons_val_fin_one]`. Rewrite using `[hε, one_mul]`.
+
+Rewrite using `[hnone, Finset.sum_congr rfl (fun j _ => hsome j)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem qs_To_hsum : ∀ (k q : ℕ) (ε : ℤ → ℂ) (a : ℕ → ℂ), 1 ≤ k → 0 < q → ε 1 = 1 → PolyB a →
     PolyB (To k (ε q) q a) ∧ qs (To k (ε q) q a) = hsum k ε (repT q) (qs a) := by
   intro k q ε a hk hq hε ha

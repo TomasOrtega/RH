@@ -17,6 +17,13 @@ open scoped CategoryTheory.Obj RatFunc
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Establish `h : ∃ i, σ.f i ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hσ` to reduce the goal to its premises. Take `⟨f, hf⟩` from `σ`.
+
+Take `rfl : f = fun _ => 0` from `funext h`. Both sides reduce to the same expression. Take `⟨i, hi⟩` from `h`. Establish `hne : ((C.basicOpen (σ.f i) : C.Opens) : Set C).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+
+Introduce `e`. Conclude with `hi ((basicOpen_eq_bot_iff _).1 (Opens.ext e))`. Take `⟨y, hy⟩` from `x.denseRange.exists_mem_open (C.basicOpen (σ.f i)).isOpen hne`. Take `rfl : y = IsLocalRing.closedPoint K` from `Subsingleton.elim _ _`. Conclude with `Opens.mem_iSup.2 ⟨i, hy⟩`.
+-/
 theorem closedPoint_mem_nonzeroLocus {K : Type} [Field K] {C : Scheme.{0}} [IsIntegral C] (x : Sp K ⟶ C)
     [IsDominant x] {L : LB C} {σ : L.Sec} (hσ : σ ≠ 0) : x (IsLocalRing.closedPoint K) ∈ Out.nonzeroLocus σ := by
   have h : ∃ i, σ.f i ≠ 0 := by
@@ -35,6 +42,17 @@ theorem closedPoint_mem_nonzeroLocus {K : Type} [Field K] {C : Scheme.{0}} [IsIn
   obtain rfl : y = IsLocalRing.closedPoint K := Subsingleton.elim _ _
   exact Opens.mem_iSup.2 ⟨i, hy⟩
 
+/- English proof (translation)
+Establish `hne : ∀ v, f * (g v).det ^ m ≠ 0` using `fun v => mul_ne_zero hf (pow_ne_zero _ (hg.1 v))`. Establish `hadd : ∀ v : Place k K, ord v (f * (g v).det ^ m) = ord v f + m * ord v (g v).det` using `fun v => by`. Rewrite using `[(ord_calculus k K v).1 _ _ hf (pow_ne_zero _ (hg.1 v)), ← (ord_calculus k K v).2.1 _ (hg.1 v), zpow_natCast]`. Establish `f₁ : (Function.support fun v : Place k K => ord v f).Finite` using `hfin.subset fun v hv e => hv (((ord_calculus k K v).2.2.2.1 _ hf).1 e)`. Establish `f₂ : (Function.support fun v : Place k K => ord v (g v).det).Finite` using `hg.2.subset fun v hv e => hv (((ord_calculus k K v).2.2.2.1 _ (hg.1 v)).1 e.2)`.
+
+Establish `f₃ : (Function.support fun v : Place k K => (m : ℤ) * ord v (g v).det).Finite` using `f₂.subset fun v hv e => hv (by simp only [e, mul_zero])`. Establish `hs : ∑ᶠ v : Place k K, ord v (f * (g v).det ^ m) = m * deg g`. Simplify using `only [hadd]`. Rewrite using `[finsum_add_distrib f₁ f₃, hsum, zero_add, deg, mul_finsum' _ _ f₂]`. Establish `h0 : ∀ v : Place k K, 0 ≤ ord v (f * (g v).det ^ m)` using `fun v => ((ord_calculus k K v).2.2.1 _ (hne v)).1 (hle v)`.
+
+Establish `hw : 0 < ord w (f * (g w).det ^ m)` using `(h0 w).lt_of_ne fun e => hlt.ne (((ord_calculus k K w).2.2.2.1 _ (hne w)).2 e.symm)`. Establish `f₄ : (Function.support fun v : Place k K => ord v (f * (g v).det ^ m)).Finite`. Use `(f₁.union f₃).subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h`.
+
+Conclude with `hv (by simp only [hadd, h.1, h.2, add_zero])`. Establish `hpos : 0 < (m : ℤ) * deg g`. Rewrite using `[← hs]`. Conclude with `hw.trans_le (single_le_finsum w f₄ h0)`. Assume the negation of the conclusion as `h`.
+
+Conclude with `absurd hpos (not_lt.2 (mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg m) (not_lt.1 h)))`.
+-/
 theorem deg_pos_of_integral {k K : Type} [Field k] [IsAlgClosed k] [Field K] [Algebra k K] {r : ℕ}
     {g : Place k K → Matrix (Fin r) (Fin r) K} (hg : admitted g) {f : K} (hf : f ≠ 0)
     (hfin : {v : Place k K | v.1 f ≠ 1}.Finite) (hsum : ∑ᶠ v : Place k K, ord v f = 0) {m : ℕ}
@@ -67,6 +85,11 @@ theorem deg_pos_of_integral {k K : Type} [Field k] [IsAlgClosed k] [Field K] [Al
   by_contra h
   exact absurd hpos (not_lt.2 (mul_nonpos_of_nonneg_of_nonpos (Int.natCast_nonneg m) (not_lt.1 h)))
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ _ C _ x hx W r hW V₀ s g hV hs hg hloc hdeg`. Assume the negation of the conclusion as `hpos`. Use `LieSemineg.isIntegral_curve hx.1.1 hx.1.2.2` as an intermediate fact. Use `hx.2.1.1` as an intermediate fact. Take `⟨m, σ, c, -, hσ, hc⟩` from `GlobalTheory.T.exists_lineBundle_pow_section_vanishing_degree_pos k C hx.1 (det W r) hW.isLB_det (not_le.1 hpos)`.
+
+Take `⟨w, b, hb, hbc⟩` from `GlobalTheory.T.curve_closedPoint_isCentreOfPlace k K C x hx c fun e => hc (e ▸ closedPoint_mem_nonzeroLocus x hσ)`. Take `⟨f, hf, H⟩` from `GlobalTheory.T.detPowSection_rational_genericPoint k K C x hx W r hW V₀ s hV hs m σ hσ`. Take `⟨hfin, hsum⟩` from `GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k K (GlobalTheory.T.isFunctionFieldOfOneVariable_of_genericPointOfCurve k K C x hx) f hf`. Conclude with `(deg_pos_of_integral hg hf hfin hsum (fun v => (H v _ (hloc v)).1) ((H w _ (hloc w)).2 b hb (hbc ▸ hc))).not_ge hdeg`.
+-/
 theorem interNum_det_nonpos_of_deg_nonpos : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
   ∀ (W : C.Modules) (r : ℕ), IsVB W r → ∀ (V₀ : C.Opens) (s : Fin r → Γ(W, V₀)) (g : Place k K → Matrix (Fin r) (Fin r) K), (V₀ : Set C).Nonempty → IsFrame s → admitted g → (∀ v, LocFrame x s v (g v)) → deg g ≤ 0 → interNum k (GlobalTheory.structureModule C) ![det W r] ≤ 0 := by
   intro k K _ _ _ _ _ C _ x hx W r hW V₀ s g hV hs hg hloc hdeg

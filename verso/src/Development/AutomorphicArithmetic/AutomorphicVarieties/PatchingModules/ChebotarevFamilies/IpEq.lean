@@ -1,6 +1,17 @@
 import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.TaylorWilesObstructionBound
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ n r`. Establish `h1 : ∀ u, (residOf r).Ip u = r.Ip u`. Introduce `u`. Use `le_antisymm (residOf_Ip_le r u) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨⟨γ, hγ, rfl⟩, h2⟩`.
+
+Use `⟨⟨⟨γ, Ine_le_Dec _ hγ⟩, ⟨hγ, ?_⟩, rfl⟩, h2⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.2 fun i => Subgroup.mem_iInf.1 h2 i`. Establish `h2 : ∀ u, (residOf r).Ip u = (globOf r V0).frame.Iu u`. Introduce `u`. Use `le_antisymm inf_le_left (le_inf le_rfl ?_)` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨γ, ⟨-, h⟩, rfl⟩`. Conclude with `Subgroup.mem_iInf.2 fun i => Subgroup.mem_iInf.1 h i`. Use `⟨fun u => ⟨h1 u, h2 u⟩, ?_⟩` and prove the remaining obligations. Introduce `_ B`. Establish `h3 : (pairOf B.u).D.CH ∪ pairGens (pairOf B.u) = B.E0gens`.
+
+Unfold `pairGens UniversalOrdinaryDeterminantRing.E0gens`. Simplify using `only [h1]`. Rewrite using `[Set.union_assoc]`. Both sides reduce to the same expression. Establish `h4 : (pairOf B.u).D.chBar (pairGens (pairOf B.u)) = B.GroupAlgebraKernelIdeal` using `congrArg (closureIdeal (maximalIdeal B.B)) h3`.
+
+Conclude with `congrArg (fun K : TwoSidedIdeal (MonoidAlgebra B.B V0.frame.G₀) => {z | z ∈ K}) h4`.
+-/
 theorem UpperTheory.V.Pa.ipEq :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 : s.Lev) (O : Type) [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n), (∀ u, (residOf r).Ip u = r.Ip u ∧ (residOf r).Ip u = (globOf r V0).frame.Iu u) ∧ ∀ [IsNoetherianRing O] (B : UniversalOrdinaryDeterminantRing r), augmentationIdealKernel (pairOf B.u) = {z | z ∈ B.GroupAlgebraKernelIdeal} := by
   intro l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ n r

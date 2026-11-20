@@ -12,24 +12,41 @@ namespace MatrixActionAdditive
 
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Simplify using `[actM, Matrix.single_apply, ite_and, Finset.sum_ite_eq]`.
+-/
 theorem actM_single {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) :
     actM E (Matrix.single a b 1) = E a b := by
   simp [actM, Matrix.single_apply, ite_and, Finset.sum_ite_eq]
 
+/- English proof (translation)
+Simplify using `[actM, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem actM_add' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M)
     (X Y : Matrix (Fin n) (Fin n) ℂ) : actM E (X + Y) = actM E X + actM E Y := by
   simp [actM, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[actM, Finset.smul_sum, smul_smul]`.
+-/
 theorem actM_smul' {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) (c : ℂ)
     (X : Matrix (Fin n) (Fin n) ℂ) : actM E (c • X) = c • actM E X := by
   simp [actM, Finset.smul_sum, smul_smul]
 
+/- English proof (translation)
+Establish `h : ∀ t : ℝ, ((t : ℂ) • X) = t • X` using `fun t => by`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Simplify using `only [dS, dRep, h]`.
+-/
 theorem dS_eq_dRep (σ : Mx n → (H →L[ℂ] H)) (X : Mx n) (v : H) : dS σ X v = dRep σ X v := by
   have h : ∀ t : ℝ, ((t : ℂ) • X) = t • X := fun t => by
     ext i j
     simp
   simp only [dS, dRep, h]
 
+/- English proof (translation)
+Rewrite using `[smE_apply hσ ⟨v, hv⟩ a b]`. Establish `hX` using `ReciprocityTheory.ChartRestriction.DS.S7.ccb_cpart_sum ε (single a b 1)`. Establish `h1 : E a b = actM E (ReciprocityTheory.ChartRestriction.DS.S7.cpart1 ε (single a b 1)) + Complex.I • actM E (ReciprocityTheory.ChartRestriction.DS.S7.cpart2 ε (single a b 1))`. Rewrite using `[← actM_single E a b, ← actM_smul', ← actM_add', hX]`. Rewrite using `[h1]`.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Submodule.coe_add, Submodule.coe_smul]`. Rewrite using `[hE _ (ReciprocityTheory.ChartRestriction.DS.S7.ccb_inG_cpart1 ε _) v, hE _ (ReciprocityTheory.ChartRestriction.DS.S7.ccb_inG_cpart2 ε _) v, dS_eq_dRep, dS_eq_dRep]`.
+-/
 theorem key {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     (E : Fin n → Fin n → Module.End ℂ (kfin ε σ)) (hE : KDer ε σ E) (v : kfin ε σ) (hv : (v : H) ∈ smD ε σ)
     (a b : Fin n) : ((smE ε σ a b ⟨v, hv⟩ : smD ε σ) : H) = ((E a b v : kfin ε σ) : H) := by
@@ -46,6 +63,15 @@ theorem key {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)} (hσ : IsURepO
 end MatrixActionAdditive
 
 open MatrixActionAdditive in
+/- English proof (translation)
+Introduce `n ε H _ _ _ σ hσ hIrr E hE μ`. Establish `hA` using `CompanionTheory.D.gk.HC.uAdm n ε H σ hσ hIrr μ`. Establish `hsub : (kfin ε σ).subtype '' {v : kfin ε σ | IsKHWVec ε E μ v} ⊆ (smD ε σ).subtype '' {v : smD ε σ | v ∈ CompanionTheory.D.gk.HC.KF ε σ ∧ IsKHWVec ε (smE ε σ) μ v}`. Introduce and unpack `_ ⟨v, hvB, rfl⟩`. Establish `hv : (v : H) ∈ smD ε σ` using `CompanionTheory.D.gk.HC.mem_smD_of_isKFin hσ hIrr v.2`.
+
+Use `⟨⟨v, hv⟩, ⟨v.2, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key hσ E hE v hv a a, hvB.1 a]`. Both sides reduce to the same expression.
+
+Introduce `a b hab he`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key hσ E hE v hv a b, hvB.2 a b hab he]`. Both sides reduce to the same expression. Establish `hle : (Submodule.span ℂ {v : kfin ε σ | IsKHWVec ε E μ v}).map (kfin ε σ).subtype ≤ (Submodule.span ℂ {v : smD ε σ | v ∈ CompanionTheory.D.gk.HC.KF ε σ ∧ IsKHWVec ε (smE ε σ) μ v}).map (smD ε σ).subtype`.
+
+Rewrite using `[Submodule.map_span, Submodule.map_span]`. Conclude with `Submodule.span_mono hsub`. Use `haveI : FiniteDimensional ℂ ((Submodule.span ℂ {v : kfin ε σ | IsKHWVec ε E μ v}).map (kfin ε σ).subtype) := Submodule.finiteDimensional_of_le hle`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ (kfin ε σ).injective_subtype _).symm`.
+-/
 theorem c3a : HighestWeightSpaceFinite := by
   intro n ε H _ _ _ σ hσ hIrr E hE μ
   have hA := CompanionTheory.D.gk.HC.uAdm n ε H σ hσ hIrr μ

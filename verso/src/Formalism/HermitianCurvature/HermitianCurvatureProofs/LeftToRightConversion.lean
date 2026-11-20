@@ -14,11 +14,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Establish `hgU : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hgU, hpk_sq']`.
+-/
 lemma inv_eq_iota {g : Mat k r} (hg : g ∈ GV k r) : g⁻¹ = Hpk k r * gᴴ * Hpk k r := by
   have hgU : gᴴ * Hpk k r * g = Hpk k r := hg
   apply Matrix.inv_eq_left_inv
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, hgU, hpk_sq']
 
+/- English proof (translation)
+Establish `hdu` using `WeylGroupFacts.isUnit_of_uh hg`. Establish `hu : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).2 hdu`. Establish `hgi : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hdu`. Establish `hc : g * (g⁻¹ * X * g) * g⁻¹ = X`. Simplify using `only [Matrix.mul_assoc, hgi, Matrix.mul_one]`.
+
+Rewrite using `[← Matrix.mul_assoc, hgi, Matrix.one_mul]`. Establish `e : g * ((t : ℂ) • -(g⁻¹ * X * g)) * g⁻¹ = -((t : ℂ) • X)`. Rewrite using `[smul_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, hc]`. Use `show NormedSpace.exp (-((t : ℂ) • X)) * g = g * NormedSpace.exp ((t : ℂ) • -(g⁻¹ * X * g))`. Rewrite using `[← e, Matrix.exp_conj _ _ hu, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdu, Matrix.mul_one]`.
+-/
 lemma cv_LR {X g : Mat k r} (hg : g ∈ GV k r) (t : ℝ) :
     cv true X t g = cv false (-(g⁻¹ * X * g)) t g := by
   have hdu := WeylGroupFacts.isUnit_of_uh hg
@@ -34,6 +42,11 @@ lemma cv_LR {X g : Mat k r} (hg : g ∈ GV k r) (t : ℝ) :
 
 def cT (i : J k r) (X : Mat k r) (g : Mat k r) : ℂ := ((kc i (-(Hpk k r * gᴴ * Hpk k r * X * g)) : ℝ) : ℂ)
 
+/- English proof (translation)
+Establish `hY : inLie k r (-(g⁻¹ * X * g))` using `inLie_neg (inLie_conj hg hX)`. Establish `e1 : op true X H g = op false (-(g⁻¹ * X * g)) H g`. Unfold `op`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[cv_LR hg t]`. Rewrite using `[e1, op_expand false hY hH hg, inv_eq_iota hg]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `RCLike.real_smul_eq_coe_smul (K := ℂ) _ _`.
+-/
 lemma L_to_R {H : Mat k r → E} {X g : Mat k r} (hX : inLie k r X) (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H)
     (hg : g ∈ GV k r) : op true X H g = ∑ i, cT i X g • op false (Lt i) H g := by
   have hY : inLie k r (-(g⁻¹ * X * g)) := inLie_neg (inLie_conj hg hX)
@@ -43,9 +56,15 @@ lemma L_to_R {H : Mat k r → E} {X g : Mat k r} (hX : inLie k r X) (hH : CkOn (
   refine Finset.sum_congr rfl fun i _ => ?_
   exact RCLike.real_smul_eq_coe_smul (K := ℂ) _ _
 
+/- English proof (translation)
+Unfold `kc`. Rewrite using `[co_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma kc_add (i : J k r) (Z Z' : Mat k r) : kc i (Z + Z') = kc i Z + kc i Z' := by
   unfold kc; rw [co_add]; ring
 
+/- English proof (translation)
+Unfold `kc`. Rewrite using `[co_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma kc_smul (i : J k r) (c : ℝ) (Z : Mat k r) : kc i (c • Z) = c * kc i Z := by
   unfold kc; rw [co_smul]; ring
 
@@ -65,6 +84,11 @@ def qL (i : J k r) (X : Mat k r) (j : J k r) : Mat k r →ₗ[ℝ] ℂ where
     rw [e, ← smul_neg, kc_smul]
     simp [Complex.real_smul]
 
+/- English proof (translation)
+Establish `hs : -(Hpk k r * gᴴ * Hpk k r * X * g) = ∑ j, co g j • (-(Hpk k r * gᴴ * Hpk k r * X * Eb j))`. Establish `h1 : Hpk k r * gᴴ * Hpk k r * X * g = Hpk k r * gᴴ * Hpk k r * X * Mv (co g)` using `by rw [Mv_co]`. Rewrite using `[h1, Mv_sum, Matrix.mul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, smul_neg]`.
+
+Unfold `cT`. Rewrite using `[hs, kc_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 lemma cT_eq (i : J k r) (X g : Mat k r) : cT i X g = ∑ j, coL j g * qL i X j g := by
   have hs : -(Hpk k r * gᴴ * Hpk k r * X * g) = ∑ j, co g j • (-(Hpk k r * gᴴ * Hpk k r * X * Eb j)) := by
     have h1 : Hpk k r * gᴴ * Hpk k r * X * g = Hpk k r * gᴴ * Hpk k r * X * Mv (co g) := by rw [Mv_co]
@@ -76,11 +100,37 @@ lemma cT_eq (i : J k r) (X g : Mat k r) : cT i X g = ∑ j, coL j g * qL i X j g
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `e : cT i X = fun g => ∑ j, coL j g * qL i X j g` using `funext (cT_eq i X)`. Rewrite using `[e]`. Conclude with `polyClass_sum _ _ _ fun j _ => polyClass_mul (polyClass_lin (coL j)) (polyClass_lin (qL i X j))`.
+-/
 lemma polyClass_cT (i : J k r) (X : Mat k r) : PolyClass 2 (cT i X) := by
   have e : cT i X = fun g => ∑ j, coL j g * qL i X j g := funext (cT_eq i X)
   rw [e]
   exact polyClass_sum _ _ _ fun j _ => polyClass_mul (polyClass_lin (coL j)) (polyClass_lin (qL i X j))
 
+/- English proof (translation)
+Introduce `u`. Proceed by induction on `u with`. Consider the case `nil`. Introduce `_`. Use `⟨[(fun _ => 1, [])], ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `p hp`. Rewrite `hp` using `[List.mem_singleton]`. Substitute `hp` using the available equality. Conclude with `⟨polyClass_const 1, le_rfl, by simp⟩`. Introduce `H _ g _`.
+
+Simplify using `[Rw]`. Consider the case `cons Y u ih`. Introduce `hu`. Establish `hY : inLie k r Y` using `hu Y List.mem_cons_self`. Take `⟨L', hL'1, hL'2⟩` from `ih fun X hX => hu X (List.mem_cons_of_mem _ hX)`.
+
+Use `⟨L'.flatMap fun p => (op true Y p.1, p.2) :: ((Finset.univ.toList : List (J k r)).map fun i => ((fun g => p.1 g * cT i Y g), Lt i :: p.2)), ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Rewrite `hq` using `[List.mem_flatMap]`. Take `⟨p, hp, hq⟩` from `hq`. Take `⟨hp1, hp2, hp3⟩` from `hL'1 p hp`.
+
+Break down `List.mem_cons.1 hq with h | h` into its components or cases. Substitute `h` using the available equality. Use `⟨polyClass_mono (by rw [List.length_cons]; omega) (polyClass_op hp1 true hY), by show p.2.length ≤ (Y :: u).length; rw [List.length_cons]; omega, hp3⟩` and prove the remaining obligations. Rewrite `h` using `[List.mem_map]`. Take `⟨i, -, rfl⟩` from `h`.
+
+Use `⟨?_, by show (Lt i :: p.2).length ≤ (Y :: u).length; rw [List.length_cons, List.length_cons]; omega, ?_⟩` and prove the remaining obligations. Use `polyClass_mul hp1 (polyClass_cT i Y)` as an intermediate fact. Rewrite `this` using `[show 2 * u.length + 2 = 2 * (Y :: u).length by rw [List.length_cons]; ring]`. Then use the resulting hypothesis. Introduce `Z hZ`. Break down `List.mem_cons.1 hZ with h | h` into its components or cases.
+
+Rewrite using `[h]`. Conclude with `Lt_unit i`. Conclude with `hp3 Z h`. Introduce `H hH g hg`. Establish `hH' : CkOn ((u.length : ℕ) : ℕ∞) (GV k r) H` using `ckOn_mono (by simp) hH`.
+
+Establish `hC1 : ∀ p ∈ L', CkOn ((1 : ℕ) : ℕ∞) (GV k r) p.1` using `fun p hp => ckOn_top_nat (hL'1 p hp).1.1 1`. Establish `hC2 : ∀ p ∈ L', CkOn ((1 : ℕ) : ℕ∞) (GV k r) (Rw p.2 H)`. Introduce `p hp`. Take `⟨-, hp2, hp3⟩` from `hL'1 p hp`. Rewrite using `[right_word_eq_word]`.
+
+Conclude with `smooth_on_of_word_derivatives _ (allLie_lr' (by simp) fun X hX => (hp3 X hX).1) 1 (ckOn_mono (by simp [length_lr]; omega) hH)`. Use `show op true Y (u.foldr LdV H) g = _`. Rewrite using `[op_congr true hY (hL'2 H hH') g hg]`. Rewrite using `[op_listSumF hY (fun p g' => p.1 g' • Rw p.2 H g') L' (fun p hp => ckOn_mulF (f := p.1) (H := Rw p.2 H) (hC1 p hp) (hC2 p hp)) g hg]`. Rewrite using `[list_sum_flatMap]`.
+
+Use `congr 1`. Use `List.map_congr_left fun p hp => ?_` and prove the remaining obligations. Rewrite using `[op_smulF true hY (hC1 p hp) (hC2 p hp) hg, L_to_R hY (hC2 p hp) hg]`. Simplify using `only [List.map_cons, List.sum_cons, List.map_map, Function.comp_def]`. Use `congr 1`.
+
+Rewrite using `[Finset.sum_map_toList, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Both sides reduce to the same expression.
+-/
 theorem LtoR : ∀ u : List (Mat k r), (∀ X ∈ u, inLie k r X) →
     ∃ L : List ((Mat k r → ℂ) × List (Mat k r)),
       (∀ p ∈ L, PolyClass (2 * u.length) p.1 ∧ p.2.length ≤ u.length ∧ ∀ Y ∈ p.2, unitLie k r Y) ∧
@@ -144,6 +194,25 @@ theorem LtoR : ∀ u : List (Mat k r), (∀ X ∈ u, inLie k r X) →
       rw [smul_smul]
       rfl
 
+/- English proof (translation)
+Take `⟨L, hL1, hL2⟩` from `LtoR (E := E) u hu`. Establish `hH : CkOn ((u.length : ℕ) : ℕ∞) (GV k r) (Rw v F)`. Rewrite using `[right_word_eq_word]`. Conclude with `smooth_on_of_word_derivatives _ (allLie_lr' (by simp) fun X hX => (hv X hX).1) _ (ckOn_mono (by simp [length_lr]; omega) hF)`. Establish `hexC : ∀ p : (Mat k r → ℂ) × List (Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (PolyClass (2 * u.length) p.1 → ∀ g ∈ GV k r, ‖p.1 g‖ ≤ C * gN g ^ (2 * u.length))`.
+
+Introduce `p`. Distinguish the cases in `hp : PolyClass (2 * u.length) p.1`. Take `⟨C, h0, h⟩` from `hp.2 [] (by simp [AllLie])`. Conclude with `⟨C, h0, fun _ g hg => by simpa [W_nil] using h g hg⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hp⟩`.
+
+Use `choose CP hCP0 hCP using hexC`. Use `⟨(L.map fun p => CP p * max c 0).sum, list_sum_nonneg _ _ fun p _ => mul_nonneg (hCP0 p) (le_max_right _ _), fun g hg => ?_⟩` and prove the remaining obligations. Establish `e : dLR u v F g = (L.map fun p => p.1 g • Rw (p.2 ++ v) F g).sum`. Rewrite using `[show dLR u v F = u.foldr LdV (Rw v F) from rfl, hL2 (Rw v F) hH g hg]`. Use `congr 1`.
+
+Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Rw, List.foldr_append]`. Rewrite using `[e]`. Establish `hgp` using `gN_pos hg`. Establish `hq : 0 ≤ gN g ^ (A - 2 * (m : ℝ))` using `gN_rpow_nonneg g _`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `list_sum_le _ _ _ fun p hp => ?_` and prove the remaining obligations. Take `⟨hpP, hpl, hpu⟩` from `hL1 p hp`. Establish `hunit : ∀ X ∈ p.2 ++ v, unitLie k r X`. Introduce `X hX`.
+
+Break down `List.mem_append.1 hX with h | h` into its components or cases. Conclude with `hpu X h`. Conclude with `hv X h`. Establish `hlen : (p.2 ++ v).length ≤ m` using `by simp; omega`. Establish `hRw` using `(hR (p.2 ++ v) hunit hlen g hg).trans (le_max_left c 0)`.
+
+Establish `hP` using `hCP p hpP g hg`. Establish `hpow : gN g ^ (A - 2 * (m : ℝ)) * gN g ^ (2 * u.length) ≤ gN g ^ A`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hgp]`. Apply `rpow_mono_G hg` to reduce the goal to its premises. Establish `: ((2 * u.length : ℕ) : ℝ) ≤ 2 * (m : ℝ)`.
+
+Establish `h2 : 2 * u.length ≤ 2 * m` using `by omega`. Conclude with `h2` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnR` using `norm_nonneg (Rw (p.2 ++ v) F g)`. Establish `hpw : 0 ≤ gN g ^ (2 * u.length)` using `pow_nonneg hgp.le _`.
+
+Rewrite using `[norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma tw_word {A c : ℝ} {m : ℕ} {F : Mat k r → E} (hF : CkOn ((m : ℕ) : ℕ∞) (GV k r) F)
     (hR : ∀ v : List (Mat k r), (∀ X ∈ v, unitLie k r X) → v.length ≤ m →
       ∀ g ∈ GV k r, gN g ^ A * ‖Rw v F g‖ ≤ c)
@@ -207,6 +276,29 @@ lemma tw_word {A c : ℝ} {m : ℕ} {F : Mat k r → E} (hF : CkOn ((m : ℕ) : 
               mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hpow hnR) (hCP0 p)
           _ ≤ CP p * max c 0 := mul_le_mul_of_nonneg_left hRw (hCP0 p)
 
+/- English proof (translation)
+Introduce `k r E _ _ A m F c hF hR`. Establish `hex : ∀ w' : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (LRt (w'.map Prod.fst) → (∀ y ∈ w', unitLie k r y.2) → w'.length ≤ m → ∀ g ∈ GV k r, gN g ^ (A - 2 * (m : ℝ)) * ‖W w' F g‖ ≤ C)`. Introduce `w'`. Distinguish the cases in `h : LRt (w'.map Prod.fst) ∧ (∀ y ∈ w', unitLie k r y.2) ∧ w'.length ≤ m`. Take `⟨a, b, hab⟩` from `h.1`.
+
+Take `⟨u, v, -, rfl⟩` from `of_tags w' a b hab`. Establish `hu : ∀ X ∈ u, unitLie k r X` using `fun X hX => h.2.1 (true, X) (by simp only [lr, List.mem_append, List.mem_map]; exact Or.inl ⟨X, hX, rfl⟩)`. Establish `hv : ∀ X ∈ v, unitLie k r X` using `fun X hX => h.2.1 (false, X) (by simp only [lr, List.mem_append, List.mem_map]; exact Or.inr ⟨X, hX, rfl⟩)`. Take `⟨C, hC0, hC⟩` from `tw_word hF hR u v (fun X hX => (hu X hX).1) hv (by rw [← length_lr]; exact h.2.2)`. Conclude with `⟨C, hC0, fun _ _ _ g hg => by rw [← dLR_eq]; exact hC g hg⟩`.
+
+Conclude with `⟨0, le_rfl, fun h1 h2 h3 => absurd ⟨h1, h2, h3⟩ h⟩`. Use `choose Cw hCw0 hCw using hex`. Use `set K := Kc k r with hK`. Establish `hK1 : 1 ≤ K` using `one_le_Kc`. Set `pat : ℕ → ℕ → List Bool` to `fun a b => List.replicate a true ++ List.replicate b false`.
+
+Use `⟨∑ a ∈ Finset.range (m + 1), ∑ b ∈ Finset.range (m + 1), K ^ (a + b) * ((bw (k := k) (r := r) (pat a b)).map Cw).sum, hF, ?_⟩` and prove the remaining obligations. Introduce `u v hu hv hl g hg`. Use `set w := lr u v with hwdef`. Use `set n := u.length + v.length with hn`. Establish `hwl : w.length = n` using `length_lr u v`.
+
+Establish `hwu : ∀ y ∈ w, unitLie k r y.2`. Introduce `y hy`. Simplify using `only [hwdef, lr, List.mem_append, List.mem_map] at hy`. Break down `hy with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `hu X hX`.
+
+Conclude with `hv X hX`. Establish `hwL : AllLie w` using `fun y hy => (hwu y hy).1`. Establish `hexp` using `W_expand w hwL F (ckOn_mono (by rw [hwl]; exact hl) hF) g hg`. Rewrite using `[dLR_eq, hexp]`. Establish `hgp : 0 ≤ gN g ^ (A - 2 * (m : ℝ))` using `gN_rpow_nonneg g _`.
+
+Establish `hterm : ∀ p ∈ expW w, gN g ^ (A - 2 * (m : ℝ)) * ‖p.1 • W p.2 F g‖ ≤ K ^ n * Cw p.2`. Introduce `p hp`. Take `⟨h1, h2⟩` from `expW_mem w p hp`. Establish `hc` using `expW_coef w hwu p hp`. Rewrite `hc` using `[hwl]`.
+
+Establish `htag : LRt (p.2.map Prod.fst)`. Establish `e` using `expW_snd w`. Establish `: p.2 ∈ bw (w.map Prod.fst)` using `by rw [← e]; exact List.mem_map_of_mem hp`. Use `⟨u.length, v.length, ?_⟩` and prove the remaining obligations. Rewrite `this` using `[hwdef, lr_tags]`.
+
+Conclude with `bw_tags _ _ this`. Establish `hb` using `hCw p.2 htag h2 (by rw [h1, hwl]; exact hl) g hg`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[list_sum_mul_left]`. Use `congr 1`. Establish `e` using `expW_snd w`. Rewrite `e` using `[hwdef, lr_tags]`. Rewrite using `[← e, List.map_map]`.
+
+Both sides reduce to the same expression. Use `_ ≤ ∑ b ∈ Finset.range (m + 1), K ^ (u.length + b) * ((bw (pat u.length b)).map Cw).sum := by`. Use `Finset.single_le_sum (f := fun b => K ^ (u.length + b) * ((bw (pat u.length b)).map Cw).sum) (fun b _ => mul_nonneg (pow_nonneg (by linarith) _) (list_sum_nonneg _ _ fun w' _ => hCw0 w')) (Finset.mem_range.2 (by omega))` and prove the remaining obligations. Use `_ ≤ _ := by`. Use `Finset.single_le_sum (f := fun a => ∑ b ∈ Finset.range (m + 1), K ^ (a + b) * ((bw (pat a b)).map Cw).sum) (fun a _ => Finset.sum_nonneg fun b _ => mul_nonneg (pow_nonneg (by linarith) _) (list_sum_nonneg _ _ fun w' _ => hCw0 w')) (Finset.mem_range.2 (by omega))` and prove the remaining obligations.
+-/
 theorem twoSided : C2.TwoSided := by
   intro k r E _ _ A m F c hF hR
   have hex : ∀ w' : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (LRt (w'.map Prod.fst) →
@@ -288,6 +380,9 @@ end Formalism.FourierDecayAlt.P.LeftToRightConversion
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `LeftToRightConversion.twoSided`.
+-/
 theorem two_sided_derivative_rule : C2.TwoSided := LeftToRightConversion.twoSided
 
 end Formalism.FourierDecayAlt.P

@@ -5,6 +5,11 @@ open MvPolynomial Formalism.GradedWeylDivisibility
 
 namespace GlobalTheory.FockAdj
 
+/- English proof (translation)
+Introduce `r n w`. Proceed by induction on `w with`. Consider the case `nil => intro F G`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+
+Introduce `F G`. Establish `h1 : applyWord ℚ (x :: w) F = rowDiv ℚ x.1 x.2.1 x.2.2 (applyWord ℚ w F)` using `rfl`. Establish `h2 : applyWord ℚ (transposeWord (x :: w)) G = applyWord ℚ (transposeWord w) (rowDiv ℚ x.2.1 x.1 x.2.2 G)`. Simplify using `[applyWord, transposeWord, List.foldr_append]`. Rewrite using `[h1, h2, fockQRowDivAdj, ih]`.
+-/
 theorem fockQ_applyWord : Formalism.GradedWeylDivisibility.FockQWordAdj := by
   intro r n w
   induction w with
@@ -17,6 +22,11 @@ theorem fockQ_applyWord : Formalism.GradedWeylDivisibility.FockQWordAdj := by
       simp [applyWord, transposeWord, List.foldr_append]
     rw [h1, h2, fockQRowDivAdj, ih]
 
+/- English proof (translation)
+Establish `: (map (Rat.castHom ℂ)).comp (rowAct ℚ (n` using `n) g).toRingHom = (rowAct ℂ (n := n) (g.map (Rat.castHom ℂ))).toRingHom.comp (map (Rat.castHom ℂ)) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[rowAct]`. Introduce `v`.
+
+Simplify using `[rowAct]`. Conclude with `congrArg (fun φ => φ f) this`.
+-/
 theorem map_rowAct {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℚ) (f : MvPolynomial (Fin r × Fin n) ℚ) :
     map (Rat.castHom ℂ) (rowAct ℚ g f) =
       rowAct ℂ (g.map (Rat.castHom ℂ)) (map (Rat.castHom ℂ) f) := by
@@ -29,6 +39,11 @@ theorem map_rowAct {r n : ℕ} (g : Matrix (Fin r) (Fin r) ℚ) (f : MvPolynomia
       simp [rowAct]
   exact congrArg (fun φ => φ f) this
 
+/- English proof (translation)
+Introduce `r n g P Q`. Establish `ht : (g.map (Rat.castHom ℂ)).conjTranspose = g.transpose.map (Rat.castHom ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`. Establish `h : ((fockQ (rowAct ℚ g P) Q : ℚ) : ℂ) = ((fockQ P (rowAct ℚ g.transpose Q) : ℚ) : ℂ)`.
+
+Rewrite using `[lfockq_cast, lfockq_cast, map_rowAct, map_rowAct, fockRowAdj, ht]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem fockQ_rowAct : Formalism.GradedWeylDivisibility.FockQRowAct := by
   intro r n g P Q
   have ht : (g.map (Rat.castHom ℂ)).conjTranspose = g.transpose.map (Rat.castHom ℂ) := by
@@ -38,6 +53,9 @@ theorem fockQ_rowAct : Formalism.GradedWeylDivisibility.FockQRowAct := by
     rw [lfockq_cast, lfockq_cast, map_rowAct, map_rowAct, fockRowAdj, ht]
   exact_mod_cast h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fockQ_applyWord, fockQ_rowAct⟩`.
+-/
 theorem fockQ_word_rowAct_adj : Formalism.GradedWeylDivisibility.FockQWordAdj ∧ Formalism.GradedWeylDivisibility.FockQRowAct :=
   ⟨fockQ_applyWord, fockQ_rowAct⟩
 

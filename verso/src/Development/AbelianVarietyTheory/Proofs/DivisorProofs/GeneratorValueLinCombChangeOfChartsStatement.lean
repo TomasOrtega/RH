@@ -8,6 +8,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.TanGauge
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MBLow.TanGauge.valR_gen_linComb | exact GlobalTheory.MBLow.TanGauge.valR_gen_linComb | (intros; apply GlobalTheory.MBLow.TanGauge.valR_gen_linComb <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.generatorValue_linComb_change_of_charts : ∀ {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)), t.IsGen → ∀ {A : Type} [CommRing A] (y : Sp A ⟶ Y) (j j' : K → L.ι),
     ⊤ ≤ y ⁻¹ᵁ LB.wchart L φ j → ⊤ ≤ y ⁻¹ᵁ LB.wchart L φ j' →

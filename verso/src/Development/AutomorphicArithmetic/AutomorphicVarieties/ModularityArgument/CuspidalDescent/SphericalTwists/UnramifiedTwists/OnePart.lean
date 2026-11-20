@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep UpperTheory.V.Af UpperTheory.V.Af.Gu
 
+/- English proof (translation)
+Introduce `hJS hTw E _ _ _ n c hn a d P π had hw`. Take `⟨s, -⟩` from `hJS E (Σ i : Fin c, Fin (d i)) Unit (fun x => a x.1) (fun _ => n) (fun x => CG.mk ((P x.1).twist (GlobalTheory.HeckeGal.Model.absPow E (-(((x.2 : ℕ) : ℝ) - ((d x.1 : ℝ) - 1) / 2))))) (fun _ => CG.mk π) (fun x => (had x.1).1) (fun _ => hn) (hw.mono fun w ⟨S, h1, h2⟩ => ⟨_, fun _ = …`. Simplify using `only [neg_neg, Finset.univ_unique, Finset.sum_singleton, satTot]`. Conclude with `Fintype.sum_sigma _⟩)`. Establish `hc : ∑ i, d i = 1` using `by simpa using Fintype.card_congr s`.
+
+Establish `hle : c ≤ ∑ i, d i`. Simplify using `using Finset.sum_le_sum (s := Finset.univ) (fun i _ => (had i).2)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hc`.
+
+Use `⟨by omega, fun i => le_antisymm ?_ (had i).2⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Conclude with `Finset.single_le_sum (f := d) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+-/
 theorem UpperTheory.V.Z.Desc.W.onePart :
     UpperTheory.V.Z.Desc.W.OnePart := by
   intro hJS hTw E _ _ _ n c hn a d P π had hw

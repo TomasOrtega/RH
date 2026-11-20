@@ -13,6 +13,11 @@ variable (V) in
 
 abbrev valI : Valuation F (WithZero (Multiplicative ℤ)) := (IsDiscreteValuationRing.maximalIdeal V).valuation F
 
+/- English proof (translation)
+Establish `hall : ∀ w : IsDedekindDomain.HeightOneSpectrum V, w = IsDiscreteValuationRing.maximalIdeal V`. Introduce `w`. Use `first`. Consider the case `exact IsDedekindDomain.HeightOneSpectrum.ext (IsLocalRing.eq_maximalIdeal w.isMaximal)`. Consider the case `(ext1; exact IsLocalRing.eq_maximalIdeal w.isMaximal)`.
+
+Take `⟨a, ha⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one F x (fun w => by rw [hall w]; exact h)`. Conclude with `⟨a, ha⟩`.
+-/
 theorem exists_of_valI_le_one {x : F} (h : valI V x ≤ 1) : ∃ a : V, algebraMap V F a = x := by
   have hall : ∀ w : IsDedekindDomain.HeightOneSpectrum V, w = IsDiscreteValuationRing.maximalIdeal V := by
     intro w
@@ -23,6 +28,31 @@ theorem exists_of_valI_le_one {x : F} (h : valI V x ≤ 1) : ∃ a : V, algebraM
     (fun w => by rw [hall w]; exact h)
   exact ⟨a, ha⟩
 
+/- English proof (translation)
+Take `⟨p, -, hp⟩` from `Finset.exists_max_image Finset.univ (fun r => valI V (A r 0)) Finset.univ_nonempty`. Establish `hcol : ∃ r, A r 0 ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hA (Matrix.det_eq_zero_of_column_eq_zero 0 h)`.
+
+Establish `hp0 : A p 0 ≠ 0`. Take `⟨r, hr⟩` from `hcol`. Introduce `h0`. Use `hp r (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+
+Conclude with `hr ((valI V).zero_iff.1 (le_antisymm this zero_le))`. Set `σ : Equiv.Perm (Fin (n + 1))` to `Equiv.swap 0 p`. Set `P : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `σ.toPEquiv.toMatrix`. Establish `hc : ∀ i, ∃ a : V, algebraMap V F a = A (σ i) 0 / A p 0`. Introduce `i`.
+
+Apply `exists_of_valI_le_one` to reduce the goal to its premises. Rewrite using `[map_div₀]`. Establish `hpos : valI V (A p 0) ≠ 0` using `by simpa using hp0`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 hpos)]`. Conclude with `hp _ (Finset.mem_univ _)`.
+
+Use `choose c hc using hc`. Set `E : Matrix (Fin (n + 1)) (Fin (n + 1)) V` to `Matrix.of fun i j => if i = j then 1 else if j = 0 then -c i else 0`. Use `⟨E * P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Use `IsUnit.mul ?_ ?_` and prove the remaining obligations.
+
+Establish `hE : E.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular E]`. Simplify using `[E]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`.
+
+Establish `hj : j ≠ 0` using `fun h => by subst h; exact Fin.not_lt_zero _ hij'`. Simplify using `only [E, Matrix.of_apply, if_neg (ne_of_lt hij'), if_neg hj]`. Rewrite using `[hE]`. Conclude with `isUnit_one`. Simplify using `only [P, Matrix.det_permutation]`.
+
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> simp [h]`. Introduce `i`. Rewrite using `[Matrix.map_mul, Matrix.mul_assoc, Matrix.mul_apply, Fin.sum_univ_succ]`. Establish `hPA : ∀ r, (P.map (algebraMap V F) * A) r 0 = A (σ r) 0`. Introduce `r`.
+
+Simplify using `[P, Matrix.mul_apply, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply]`. Simplify using `only [hPA, Matrix.map_apply, E, Matrix.of_apply]`. Rewrite using `[if_neg (Fin.succ_ne_zero i)]`. Simplify using `only [if_true, Fin.succ_ne_zero, map_neg, map_one, map_zero, zero_mul]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Simplify using `only [if_true, map_one, one_mul]`. Rewrite using `[hc]`. Establish `: σ 0 = p` using `by simp [σ]`. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hji`. Rewrite using `[if_neg (fun h => hji (Fin.succ_injective _ h).symm)]`. Simplify using the standard rewrite rules. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (hA : A.det ≠ 0) :
     ∃ Q : Matrix (Fin (n + 1)) (Fin (n + 1)) V, IsUnit Q.det ∧
       ∀ i : Fin n, (Q.map (algebraMap V F) * A) i.succ 0 = 0 := by
@@ -82,6 +112,9 @@ theorem exists_clear_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) F) (h
       simp
     · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+The claim follows from `| 0, A, _ => ⟨1, A, by simp, fun i => i.elim0, fun i => i.elim0, by ext i; exact i.elim0⟩ | n + 1, A, hA => by obtain ⟨Q, hQ, hQA⟩ := exists_clear_col (V := V) A hA set B := Q.map (algebraMap V F) * A with hB have hdetB : B.det = B 0 0 * (B.submatrix Fin.succ Fin.succ).det := by …`.
+-/
 theorem iwasawa : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠ 0 →
     ∃ (k : Matrix (Fin n) (Fin n) V) (U : Matrix (Fin n) (Fin n) F), IsUnit k.det ∧ U.BlockTriangular id ∧
       (∀ i, U i i ≠ 0) ∧ A = k.map (algebraMap V F) * U
@@ -137,6 +170,15 @@ theorem iwasawa : ∀ {n : ℕ} (A : Matrix (Fin n) (Fin n) F), A.det ≠ 0 →
     · rw [Matrix.map_mul, Matrix.mul_assoc, hKU, hB, ← Matrix.mul_assoc, ← Matrix.map_mul,
         Matrix.nonsing_inv_mul Q hQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hdet : U.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular hU]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun i _ => hd i`. Establish `hu : IsUnit U.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `letI := Matrix.invertibleOfIsUnitDet U hu`.
+
+Establish `hinv : U⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular hU`. Use `⟨hinv, fun i => ?_, Matrix.mul_nonsing_inv U hu⟩` and prove the remaining obligations. Establish `h1 : (U⁻¹ * U) i i = 1` using `by rw [Matrix.nonsing_inv_mul U hu, Matrix.one_apply_eq]`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with hlt | hgt` into its components or cases. Rewrite using `[hinv hlt, zero_mul]`.
+
+Rewrite using `[hU hgt, mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem upper_inv {m : ℕ} (U : Matrix (Fin m) (Fin m) F) (hU : U.BlockTriangular id) (hd : ∀ i, U i i ≠ 0) :
     U⁻¹.BlockTriangular id ∧ (∀ i, U⁻¹ i i ≠ 0) ∧ U * U⁻¹ = 1 := by
   have hdet : U.det ≠ 0 := by
@@ -158,6 +200,9 @@ theorem upper_inv {m : ℕ} (U : Matrix (Fin m) (Fin m) F) (hU : U.BlockTriangul
   · intro hi
     exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Take `⟨k, U, hk, hU, hd, hA⟩` from `iwasawa (V := V) A hA`. Take `⟨hinv, hdinv, hUU⟩` from `upper_inv U hU hd`. Use `⟨k, U⁻¹, hk, hinv, hdinv, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, Matrix.mul_assoc, hUU, Matrix.mul_one]`.
+-/
 theorem iwasawa' {n : ℕ} (A : Matrix (Fin n) (Fin n) F) (hA : A.det ≠ 0) :
     ∃ (k : Matrix (Fin n) (Fin n) V) (N : Matrix (Fin n) (Fin n) F), IsUnit k.det ∧ N.BlockTriangular id ∧
       (∀ i, N i i ≠ 0) ∧ A * N = k.map (algebraMap V F) := by

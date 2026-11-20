@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.FullMove
 
+/- English proof (translation)
+Use `⟨H.1, H.2.1, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, Q⟩` from `H.2.2 p`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Establish `hk' : ∀ i, (overResι V ≫ x i) ^ (k ^ 2) = 1` using `fun i => by`. Rewrite using `[← MonObj.comp_pow, hk, MonObj.comp_one]`.
+
+Establish `Q'` using `GlobalTheory.ThetaPtUp.isThetaPtOver_up (T := overRes V) (T₀ := overRes V) (𝟙 (overRes V).left) (Geo.Tor.isGrpPullback_of_iso φ) hw ((Category.id_comp _).trans (Category.comp_id _).symm) (x₀ := fun i => overResι V ≫ x i ≫ φ.hom) (fun i => (Category.id_comp _).trans (by rw [← Cate …`. Rewrite `Q'` using `[IsIso.inv_id]`. Conclude with `Q'`.
+-/
 theorem isThetaPt_iso {S : Scheme.{0}} {P P' : PolAV S} (φ : P.A ≅ P'.A) [IsMonHom φ.hom]
     (hw : LBIso P.L (P'.L.pull φ.hom.left)) {T : Over S} {k : ℕ} {I : Type} {x : I → (T ⟶ P.A)}
     (hk : ∀ i, x i ^ (k ^ 2) = 1) {v : I → Γ(T.left, ⊤)} (H : IsThetaPt P k x v) :
@@ -56,6 +61,11 @@ def ptEquiv {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [GrpObj A'] (φ : A ≅ 
   right_inv y := by simp
   map_mul' := map_mul (IsMonHom.monoidHom φ.hom T)
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H D K _ _ o o' φ ⟨hφ, t⟩ hact`. Use `letI := H.starRing`. Take `⟨w, hw⟩` from `LBIso.symm t`. Use `⟨tateMap o.I (ptEquiv φ _) (fun c x => ?_) (fun n x y c hx hy h => ?_), rfl, fun _ _ => rfl, fun m v h => ?_⟩` and prove the remaining obligations. Use `show (x ≫ o.oa.act c) ≫ φ.hom = (x ≫ φ.hom) ≫ o'.oa.act c`.
+
+Rewrite using `[Category.assoc, hact, Category.assoc]`. Conclude with `(weilIs_iso_iff hL.globalFns hL.cube o.P o'.P φ w hw n x y hx hy _).2 h`. Conclude with `isThetaPt_iso φ ⟨w, hw⟩ (fun a => (o.I.onto _ (pow_pos h.1.pos 2) _).2 ⟨a, rfl⟩) h`.
+-/
 theorem exists_tateIso_move : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∀ (K : Type) [Field K] [IsAlgClosed K] (o o' : Full D K) (φ : o.P.A ≅ o'.P.A), IsPolIso o.P o'.P φ → (letI := H.starRing; ∀ x, o.oa.act x ≫ φ.hom = φ.hom ≫ o'.oa.act x) → ∃ I' : (letI := H.starRing; TateIso D K (baseOver (Sp K) ⟶ o'.P.A) (fun a g => g ≫ o'.oa.act a) (fun n g g' c => WeilIs o'.P.A o'.P.L n g g' (unitOn c))), I'.ζ = o.I.ζ ∧ (∀ M a, I'.ev M a = o.I.ev M a ≫ φ.hom) ∧ ∀ m v, o.Theta m v → Full.Theta { o' with I := I' } m v := by
   intro hL E _ _ _ H D K _ _ o o' φ ⟨hφ, t⟩ hact
   letI := H.starRing

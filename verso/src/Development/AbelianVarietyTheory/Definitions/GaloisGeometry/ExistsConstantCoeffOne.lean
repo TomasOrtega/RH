@@ -43,6 +43,9 @@ def HostAt {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Formalism.L2.Ke
         LocBasis D p (YYl D L L') b ∧ TaylorLogMetric.Orthonormal D b ∧
         ∀ G, IsComb D B.tor (B.eNat χ) lam L L' G → HostLog p g2 g3 s2 ε (thOrth D lam c b G)
 
+/- English proof (translation)
+Take `⟨ι⟩` from `Formalism.L2.Th1.F.iotaExists l`. Take `⟨g2, g3, ε, hg, hε, hth⟩` from `Formalism.L2.Th1.D.FAux.model l h2 h3 d L hsq hd4 hcm h5 hd hin ι`. Take `⟨s2, -, -, hN⟩` from `Formalism.L2.Th1.D.nrcmOfCM4 h4 d L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨σ, hσ, ⟨F, hF⟩, -⟩` from `Formalism.L2.Th1.D.fieldDataCM l h5`. Conclude with `⟨g2, g3, s2, ε, σ, F, ⟨h5, hg.2.2.1, hg.2.2.2.1, hε, hth, hσ, hF, hN σ hσ⟩, hg.2.2.2.2.1⟩`.
+-/
 theorem CurveData.exists_of_cm (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.CM3) (h4 : Formalism.L2.Th1.CM.CM4)
     (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3)
     (hcm : Formalism.L2.Th1.CM.HasCMBy d L)
@@ -55,6 +58,11 @@ theorem CurveData.exists_of_cm (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2
   obtain ⟨σ, hσ, ⟨F, hF⟩, -⟩ := Formalism.L2.Th1.D.fieldDataCM l h5
   exact ⟨g2, g3, s2, ε, σ, F, ⟨h5, hg.2.2.1, hg.2.2.2.1, hε, hth, hσ, hF, hN σ hσ⟩, hg.2.2.2.2.1⟩
 
+/- English proof (translation)
+Establish `h0 : ∀ a : Fin 5, a * a + 2 ≠ 0` using `by decide`. Use `CurveData.exists_of_cm h2 h3 h4 7 _ (by norm_num : Nat.Prime 7).prime.squarefree (by norm_num) (Formalism.L2.Th1.F.cmPairHasCMBy 1 1 2 7 (by norm_num) (by norm_num) (by norm_num) (by decide)) 5 le_rfl (by decide) ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`. Establish `h5 : ((5 : ℕ) : ZMod 5) = 0` using `ZMod.natCast_self 5`. Establish `h1 : a * a + 2 = 0`.
+
+Move the coercions through the operations in `at ha h5`. Take the linear combination `ha - h5`. Conclude with `h0 a h1`.
+-/
 theorem CurveData.exists_five [Fact (Nat.Prime 5)] (h2 : Formalism.L2.Th1.CM.CM2) (h3 : Formalism.L2.Th1.CM.CM3) (h4 : Formalism.L2.Th1.CM.CM4) :
     ∃ (g2 g3 s2 ε : MaximalUnramifiedExtension 5) (σ : MaximalUnramifiedExtension 5 →+* MaximalUnramifiedExtension 5) (F : MvPowerSeries (Fin 2) (MaximalUnramifiedExtension 5)),
       CurveData 5 g2 g3 s2 ε σ F ∧ ‖(g2 : ℂ_[5]) ^ 3 - 27 * (g3 : ℂ_[5]) ^ 2‖ = 1 := by
@@ -68,17 +76,30 @@ theorem CurveData.exists_five [Fact (Nat.Prime 5)] (h2 : Formalism.L2.Th1.CM.CM2
     linear_combination ha - h5
   exact h0 a h1
 
+/- English proof (translation)
+Take `⟨σ₀, -, -, hz⟩` from `Formalism.L2.Th1.D.fieldDataCM l h5`. Take `⟨ζ, -, -, hζ, -⟩` from `hz 2 (by decide)`. Conclude with `Formalism.L2.Th1.Top.InhA.hyp_of_gram l σ hσ ⟨ζ, hζ⟩ E`.
+-/
 theorem HypPair.exists_unramified (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) (σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l) (hσ : UnrOK (MaximalUnramifiedExtension l) l σ)
     (E : Type) [Fintype E] [DecidableEq E] : ∃ f f' : E → (Bool × E) → MaximalUnramifiedExtension l, HypPair σ f f' := by
   obtain ⟨σ₀, -, -, hz⟩ := Formalism.L2.Th1.D.fieldDataCM l h5
   obtain ⟨ζ, -, -, hζ, -⟩ := hz 2 (by decide)
   exact Formalism.L2.Th1.Top.InhA.hyp_of_gram l σ hσ ⟨ζ, hζ⟩ E
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `Formalism.L2.Th1.D.fieldDataCM l h5`. Conclude with `⟨σ, hσ, HypPair.exists_unramified l h5 σ hσ E⟩`.
+-/
 theorem HypPair.exists_lift (l : ℕ) [Fact l.Prime] (h5 : 5 ≤ l) (E : Type) [Fintype E] [DecidableEq E] :
     ∃ σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l, UnrOK (MaximalUnramifiedExtension l) l σ ∧ ∃ f f' : E → (Bool × E) → MaximalUnramifiedExtension l, HypPair σ f f' := by
   obtain ⟨σ, hσ, -⟩ := Formalism.L2.Th1.D.fieldDataCM l h5
   exact ⟨σ, hσ, HypPair.exists_unramified l h5 σ hσ E⟩
 
+/- English proof (translation)
+Take `⟨a, b, c, d, e⟩` from `h`. Use `⟨b, a, d, c, fun x y => ?_⟩` and prove the remaining obligations. Use `congrArg σ (e y x)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify using `only [map_mul, (a _ _).2] at this`.
+
+Rewrite using `[show (∑ i, σ (f' x i) * f y i) = ∑ i, f y i * σ (f' x i) from Finset.sum_congr rfl fun i _ => mul_comm _ _, this]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Simplify using the standard rewrite rules. Establish `h' : ¬ y = x` using `fun q => hxy q.symm`.
+
+Simplify using `[hxy, h']`.
+-/
 theorem HypPair.symm {K : Type} [NormedField K] {σ : K →+* K} {E n : Type} [DecidableEq E] [Fintype n] {f f' : E → n → K}
     (h : HypPair σ f f') : HypPair σ f' f := by
   obtain ⟨a, b, c, d, e⟩ := h
@@ -92,6 +113,11 @@ theorem HypPair.symm {K : Type} [NormedField K] {σ : K →+* K} {E n : Type} [D
   · have h' : ¬ y = x := fun q => hxy q.symm
     simp [hxy, h']
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, c, -, e⟩`. Establish `h1` using `c () ()`. Establish `h2` using `e () ()`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, if_true, mul_eq_zero, map_eq_zero, or_self] at h1 h2`. Rewrite `h2` using `[h1]`.
+
+Simplify using `at h2`.
+-/
 example {K : Type} [NormedField K] (σ : K →+* K) (f f' : Unit → Unit → K) : ¬ HypPair σ f f' := by
   rintro ⟨-, -, c, -, e⟩
   have h1 := c () ()
@@ -100,12 +126,18 @@ example {K : Type} [NormedField K] (σ : K →+* K) (f f' : Unit → Unit → K)
   rw [h1] at h2
   simp at h2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem HostLog.iff_phSum (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension l) {n : Type} [Fintype n] (Θ : MvPowerSeries n ℂ_[l]) :
     HostLog l g2 g3 s2 ε Θ ↔ Formalism.DworkPowerSeriesWeights.Integral
       (Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum (Formalism.L2.Th1.Top.phL l g2 g3 s2 ε) : MvPowerSeries n ℂ_[l]) *
         (MvPowerSeries.subst (fun i : n => (at1 i (lgF ℂ_[l] l) : MvPowerSeries n ℂ_[l])) Θ : MvPowerSeries n ℂ_[l])) :=
   Iff.rfl
 
+/- English proof (translation)
+Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Establish `e : f = (f - MvPowerSeries.C (MvPowerSeries.constantCoeff f)) + MvPowerSeries.C (MvPowerSeries.constantCoeff f)` using `by ring`. Use `conv_lhs => rw [e]`. Rewrite using `[MvPowerSeries.subst_add hs, map_add, MvPowerSeries.constantCoeff_subst_eq_zero hs ha (by simp), zero_add, MvPowerSeries.subst_C]`. Simplify using the standard rewrite rules.
+-/
 theorem HostLog.constantCoeff_subst {K σ τ : Type} [Field K] [Finite σ] {a : σ → MvPowerSeries τ K}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : MvPowerSeries σ K) :
     MvPowerSeries.constantCoeff (MvPowerSeries.subst a f : MvPowerSeries τ K) = MvPowerSeries.constantCoeff f := by
@@ -116,6 +148,11 @@ theorem HostLog.constantCoeff_subst {K σ τ : Type} [Field K] [Finite σ] {a : 
     MvPowerSeries.subst_C]
   simp
 
+/- English proof (translation)
+Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `key : ∀ {a : MvPowerSeries n ℂ_[l]} (_ : MvPowerSeries.constantCoeff a = 0) (f : PowerSeries ℂ_[l]), MvPowerSeries.constantCoeff (PowerSeries.subst a f : MvPowerSeries n ℂ_[l]) = PowerSeries.constantCoeff f` using `fun {a} ha f => HostLog.constantCoeff_subst (σ := Unit) (a := fun _ => a) (fun _ => ha) f`. Rewrite using `[Formalism.DworkPowerSeriesWeights.mvExp, key]`. Simplify using the standard rewrite rules. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[at1, key (by simp), ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.L2.Th1.D.FAux.cc_phFF hl, map_zero]`.
+-/
 theorem HostLog.constantCoeff_factor (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension l) (n : Type) [Fintype n] :
     MvPowerSeries.constantCoeff
       (Formalism.DworkPowerSeriesWeights.mvExp (∑ i : n, at1 i (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) : MvPowerSeries n ℂ_[l])) = 1 := by
@@ -130,6 +167,9 @@ theorem HostLog.constantCoeff_factor (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε : Max
     rw [at1, key (by simp), ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map,
       PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.L2.Th1.D.FAux.cc_phFF hl, map_zero]
 
+/- English proof (translation)
+Establish `hp` using `Formalism.L2.Th1.D.BrC.logPair (K := ℂ_[l]) (Fact.out : l.Prime).two_le`. Establish `h0` using `h 0`. Rewrite `h0` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, HostLog.constantCoeff_factor, one_mul, HostLog.constantCoeff_subst]`. Conclude with `h0`. Conclude with `fun i => Formalism.L2.Th1.C.Pts.constantCoeff_subst_l hp (MvPowerSeries.constantCoeff_X i)`.
+-/
 theorem HostLog.norm_constantCoeff_le {l : ℕ} [Fact l.Prime] {g2 g3 s2 ε : MaximalUnramifiedExtension l} {n : Type} [Fintype n]
     {Θ : MvPowerSeries n ℂ_[l]} (h : HostLog l g2 g3 s2 ε Θ) : ‖MvPowerSeries.constantCoeff Θ‖ ≤ 1 := by
   have hp := Formalism.L2.Th1.D.BrC.logPair (K := ℂ_[l]) (Fact.out : l.Prime).two_le
@@ -139,6 +179,15 @@ theorem HostLog.norm_constantCoeff_le {l : ℕ} [Fact l.Prime] {g2 g3 s2 ε : Ma
   · exact h0
   · exact fun i => Formalism.L2.Th1.C.Pts.constantCoeff_subst_l hp (MvPowerSeries.constantCoeff_X i)
 
+/- English proof (translation)
+Establish `hp` using `Formalism.L2.Th1.D.BrC.logPair (K := ℂ_[l]) (Fact.out : l.Prime).two_le`. Establish `hE1` using `HostLog.constantCoeff_factor l g2 g3 s2 ε n`. Use `set E : MvPowerSeries n ℂ_[l] := Formalism.DworkPowerSeriesWeights.mvExp (∑ i : n, at1 i (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) : MvPowerSeries n ℂ_[l]) with hE`. Establish `ha : ∀ i : n, MvPowerSeries.constantCoeff (at1 i (Formalism.L2.Th1.D.expF ℂ_[l] l) : MvPowerSeries n ℂ_[l]) = 0` using `fun i => Formalism.L2.Th1.C.Pts.constantCoeff_subst_linv hp (MvPowerSeries.constantCoeff_X i)`. Establish `hb : ∀ i : n, MvPowerSeries.constantCoeff (at1 i (lgF ℂ_[l] l) : MvPowerSeries n ℂ_[l]) = 0` using `fun i => Formalism.L2.Th1.C.Pts.constantCoeff_subst_l hp (MvPowerSeries.constantCoeff_X i)`.
+
+Use `⟨MvPowerSeries.subst (fun i : n => (at1 i (Formalism.L2.Th1.D.expF ℂ_[l] l) : MvPowerSeries n ℂ_[l])) E⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HostLog.constantCoeff_subst ha, MvPowerSeries.constantCoeff_inv, hE1, inv_one]`. Unfold `HostLog`. Rewrite using `[← hE, MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) (MvPowerSeries.hasSubst_of_constantCoeff_zero hb)]`. Establish `: (fun i : n => MvPowerSeries.subst (fun i : n => (at1 i (lgF ℂ_[l] l) : MvPowerSeries n ℂ_[l])) (at1 i (Formalism.L2.Th1.D.expF ℂ_[l] l) : MvPowerSeries n ℂ_[l])) = MvPowerSeries.X`.
+
+Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [at1]`. Rewrite using `[Formalism.L2.Th1.C.Pts.substMv_subst (MvPowerSeries.constantCoeff_X i) hb, MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero hb)]`. Conclude with `Formalism.L2.Th1.C.Pts.subst_linv_l hp (MvPowerSeries.constantCoeff_X i)`. Rewrite using `[this, MvPowerSeries.subst_self, id, MvPowerSeries.mul_inv_cancel _ (by rw [hE1]; exact one_ne_zero)]`.
+
+Introduce `m`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem HostLog.exists_constantCoeff_one (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε : MaximalUnramifiedExtension l) (n : Type) [Fintype n] :
     ∃ Θ : MvPowerSeries n ℂ_[l], MvPowerSeries.constantCoeff Θ = 1 ∧ HostLog l g2 g3 s2 ε Θ := by
   classical
@@ -167,18 +216,27 @@ theorem HostLog.exists_constantCoeff_one (l : ℕ) [Fact l.Prime] (g2 g3 s2 ε :
     rw [MvPowerSeries.coeff_one]
     split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`.
+-/
 theorem thOrth.hasSubst (D : D7) {N N' r : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p])
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) :
     MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N =>
       (∑ i, MvPowerSeries.C (c * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p])) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.subst_X (thOrth.hasSubst D lam c b) k`.
+-/
 theorem thOrth.apply_X (D : D7) {N N' r : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p])
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (k : D.what₂.Tau × Fin N' × Fin N) :
     thOrth D lam c b (MvPowerSeries.X k) =
       ∑ i, MvPowerSeries.C (c * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * MvPowerSeries.X i :=
   MvPowerSeries.subst_X (thOrth.hasSubst D lam c b) k
 
+/- English proof (translation)
+The claim follows from `HostLog.constantCoeff_subst (fun k => by simp) G`.
+-/
 theorem thOrth.constantCoeff_eq (D : D7) {N N' r : ℕ} {p : ℕ} [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p])
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (G : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
     MvPowerSeries.constantCoeff (thOrth D lam c b G) = MvPowerSeries.constantCoeff G :=

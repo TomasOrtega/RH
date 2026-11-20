@@ -36,6 +36,9 @@ def secGroup : AddSubgroup (∀ p : {p : ι × X.Opens // p.2 ≤ V ∧ p.2 ≤ 
     fun i j T h hi hj b => by
       simp only [Pi.neg_apply, mul_neg, Finset.sum_neg_distrib, ← hs.2 i j T h hi hj]⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext fun p => funext fun b => e p.1.1 p.1.2 p.2.1 p.2.2 b)`.
+-/
 theorem sec_ext {s t : secGroup A V}
     (e : ∀ i T h hi b, s.1 ⟨(i, T), h, hi⟩ b = t.1 ⟨(i, T), h, hi⟩ b) : s = t :=
   Subtype.ext (funext fun p => funext fun b => e p.1.1 p.1.2 p.2.1 p.2.2 b)
@@ -76,6 +79,19 @@ def presheaf : TopCat.Presheaf Ab.{0} X where
   map_id _ := rfl
   map_comp _ _ := rfl
 
+/- English proof (translation)
+Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `κ W sf hsf`. Establish `hc {T : X.Opens} (h : T ≤ iSup W) : T ≤ ⨆ k, T ⊓ W k`. Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl h`.
+
+Establish `hsf' (k l : κ) (i : ι) (T : X.Opens) (hk : T ≤ W k) (hl : T ≤ W l) (hi : T ≤ U i) : (sf k).1 ⟨(i, T), hk, hi⟩ = (sf l).1 ⟨(i, T), hl, hi⟩` using `congrFun (congrArg Subtype.val (hsf k l)) ⟨(i, T), le_inf hk hl, hi⟩`. Establish `H (i : ι) (T : X.Opens) (h : T ≤ iSup W) (hi : T ≤ U i) (b : Fin r) : ∃ t : Γ(X, T), ∀ k, resG X inf_le_left t = (sf k).1 ⟨(i, T ⊓ W k), inf_le_right, inf_le_left.trans hi⟩ b`. Use `exists_fun_of_cover (fun k => T ⊓ W k) (fun _ => inf_le_left) (hc h) _ fun k l => ?_` and prove the remaining obligations. Conclude with `((sf k).2.1 i _ _ inf_le_right (inf_le_left.trans hi) inf_le_left b).symm.trans ((congrFun (hsf' k l i _ (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right) (inf_le_left.trans (inf_le_left.trans hi))) b).trans ((sf l).2.1 i _ _ inf_le_right (inf_le_left.trans hi) i …`. Use `choose t ht using H`.
+
+Establish `ht' (i : ι) (T : X.Opens) (h : T ≤ iSup W) (hi : T ≤ U i) (b : Fin r) (k : κ) (T' : X.Opens) (h₁ : T' ≤ T) (h₂ : T' ≤ W k) : resG X h₁ (t i T h hi b) = (sf k).1 ⟨(i, T'), h₂, h₁.trans hi⟩ b`. Use `congrArg (resG X (le_inf h₁ h₂)) (ht i T h hi b k)` as an intermediate fact. Rewrite `this` using `[← (sf k).2.1 i _ _ inf_le_right (inf_le_left.trans hi), resG_resG]`. Then use the resulting hypothesis. Establish `ext {T : X.Opens} (h : T ≤ iSup W) {a b : Γ(X, T)} (e : ∀ k, resG X (inf_le_left : T ⊓ W k ≤ T) a = resG X inf_le_left b) : a = b` using `fun_ext_of_cover (fun k => T ⊓ W k) (fun _ => inf_le_left) (hc h) e`. Use `⟨⟨fun p => t p.1.1 p.1.2 p.2.1 p.2.2, fun i T T' h hi h' b => ?_, fun i j T h hi hj b => ?_⟩, fun k => sec_ext A fun i T h hi b => ?_, fun u hu => sec_ext A fun i T h hi b => ext h fun k => ?_⟩` and prove the remaining obligations.
+
+Use `ext (h'.trans h) fun k => ?_ dsimp only` and prove the remaining obligations. Rewrite using `[ht, resG_resG, ht' i T h hi b k _ _ inf_le_right]`. Use `ext h fun k => ?_ dsimp only` and prove the remaining obligations. Rewrite using `[ht, (sf k).2.2 i j _ inf_le_right (inf_le_left.trans hi) (inf_le_left.trans hj), map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, resG_resG, ht]`. Use `ht' i T (h.trans (le_iSup W k)) hi b k T le_rfl h` as an intermediate fact. Rewrite `this` using `[resG_self]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `_ = resG X _ (t i T h hi b)`. Rewrite using `[ht, ← u.2.1 i T _ h hi, ← hu k]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isSheaf_presheaf : (presheaf A).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
   intro κ W sf hsf
@@ -135,6 +151,9 @@ def frame (j : ι) (a : Fin r) : Γ(mod A, U j) :=
     fun i k T h hi hk b => (congrFun (congrFun (hA i k j T (le_inf hi hk) (le_inf hk h) (le_inf hi h)) b) a).symm⟩ :
     secGroup A (U j))
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearCombination_apply]`. Use `(map_sum (AddMonoidHom.mk' (fun s : Γ(mod A, V) => comp A s i h hi b) fun _ _ => rfl) _ _).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+-/
 theorem comp_linearCombination (j : ι) (hV : V ≤ U j) (x : Fin r → Γ(X, V)) (i : ι) {T : X.Opens} (h : T ≤ V)
     (hi : T ≤ U i) (b : Fin r) :
     comp A (Fintype.linearCombination Γ(X, V) (fun a => Twist.resM (mod A) hV (frame A hA j a)) x) i h hi b =
@@ -143,12 +162,18 @@ theorem comp_linearCombination (j : ι) (hV : V ≤ U j) (x : Fin r → Γ(X, V)
   refine (map_sum (AddMonoidHom.mk' (fun s : Γ(mod A, V) => comp A s i h hi b) fun _ _ => rfl) _ _).trans ?_
   exact Finset.sum_congr rfl fun a _ => mul_comm _ _
 
+/- English proof (translation)
+Rewrite using `[comp_linearCombination, h1]`. Simplify using `[Matrix.one_apply, resG_self, apply_ite (resG X _)]`.
+-/
 theorem comp_linearCombination_self (h1 : ∀ i, A i i = 1) (j : ι) (hV : V ≤ U j) (x : Fin r → Γ(X, V)) (b : Fin r) :
     comp A (Fintype.linearCombination Γ(X, V) (fun a => Twist.resM (mod A) hV (frame A hA j a)) x) j le_rfl hV b =
       x b := by
   rw [comp_linearCombination, h1]
   simp [Matrix.one_apply, resG_self, apply_ite (resG X _)]
 
+/- English proof (translation)
+Introduce `V hV` and use `by refine ⟨fun x y hxy => funext fun b => ?_, fun s => ⟨fun b => comp A s j le_rfl hV b, ?_⟩⟩ · rw [← comp_linearCombination_self A hA h1 j hV x, hxy, comp_linearCombination_self A hA h1] · refine sec_ext A fun i T h hi b => (comp_linearCombination A hA j hV _ i h hi b).trans ?_ …`.
+-/
 theorem isFrame_frame (h1 : ∀ i, A i i = 1) (j : ι) : VB.IsFrame (frame A hA j) := fun V hV => by
   refine ⟨fun x y hxy => funext fun b => ?_, fun s => ⟨fun b => comp A s j le_rfl hV b, ?_⟩⟩
   · rw [← comp_linearCombination_self A hA h1 j hV x, hxy, comp_linearCombination_self A hA h1]
@@ -157,11 +182,17 @@ theorem isFrame_frame (h1 : ∀ i, A i i = 1) (j : ι) : VB.IsFrame (frame A hA 
     exact Finset.sum_congr rfl fun c _ =>
       congrArg _ ((show secGroup A V from s).2.1 j V T le_rfl hV h c).symm
 
+/- English proof (translation)
+Use `conv_rhs => rw [← ((isFrame_frame A hA h1 j).basis hV).sum_repr s, VB.IsFrame.coe_basis]`. Conclude with `(comp_linearCombination_self A hA h1 j hV _ b).symm`.
+-/
 theorem repr_frame (h1 : ∀ i, A i i = 1) (j : ι) (hV : V ≤ U j) (s : Γ(mod A, V)) (b : Fin r) :
     ((isFrame_frame A hA h1 j).basis hV).repr s b = comp A s j le_rfl hV b := by
   conv_rhs => rw [← ((isFrame_frame A hA h1 j).basis hV).sum_repr s, VB.IsFrame.coe_basis]
   exact (comp_linearCombination_self A hA h1 j hV _ b).symm
 
+/- English proof (translation)
+Introduce `X r ι U A _ h1 hA`. Use `⟨mod A, frame A hA, isFrame_frame A hA h1, fun i j b a => ?_⟩` and prove the remaining obligations. Rewrite using `[trCo, repr_frame A hA h1]`. Conclude with `resG_self _ _`.
+-/
 theorem exists_frames : ∀ (X : Scheme.{0}) (r : ℕ) (ι : Type) (U : ι → X.Opens) (A : ∀ i j, Matrix (Fin r) (Fin r) Γ(X, U i ⊓ U j)), (∀ x : X, ∃ i, x ∈ U i) → (∀ i, A i i = 1) → (∀ (i j k : ι) (V : X.Opens) (hij : V ≤ U i ⊓ U j) (hjk : V ≤ U j ⊓ U k) (hik : V ≤ U i ⊓ U k), (A i j).map (resG X hij) * (A j k).map (resG X hjk) = (A i k).map (resG X hik)) → ∃ (M : X.Modules) (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)), ∀ i j b a, trCo (hf i) (f j) b a = A i j b a := by
   intro X r ι U A _ h1 hA
   refine ⟨mod A, frame A hA, isFrame_frame A hA h1, fun i j b a => ?_⟩

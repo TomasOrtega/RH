@@ -99,11 +99,17 @@ def blockMat (a b : ℕ) (A : Type) [CommRing A] :
 def blockGL (a b : ℕ) (A : Type) [CommRing A] (g : GL (Fin a) A) (h : GL (Fin b) A) : GL (Fin (a + b)) A :=
   Units.map (blockMat a b A) (MulEquiv.prodUnits.symm (g, h))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blockGL_val (a b : ℕ) (A : Type) [CommRing A] (g : GL (Fin a) A) (h : GL (Fin b) A) :
     Units.val (blockGL a b A g h) =
       Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks g.val 0 0 h.val) := rfl
 
 open CategoryTheory Limits AlgebraicGeometry Opposite in
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [_root_.GlobalTheory.EtC.blockGL_val, Matrix.GeneralLinearGroup.map_apply, Matrix.reindex_apply, Matrix.submatrix_apply, RingHom.mapMatrix_apply, Matrix.map_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp`.
+-/
 theorem _root_.GlobalTheory.EtC.blockGL_map (a b : ℕ) {A B : Type} [CommRing A] [CommRing B]
     (f : A →+* B) (g : GL (Fin a) A) (h : GL (Fin b) A) :
     _root_.GlobalTheory.EtC.blockGL a b B (Matrix.GeneralLinearGroup.map f g)

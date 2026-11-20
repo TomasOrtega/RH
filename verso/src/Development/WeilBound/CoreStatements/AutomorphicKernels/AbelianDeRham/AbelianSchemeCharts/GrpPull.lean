@@ -23,10 +23,16 @@ namespace MainStatements.Hodge.Sh
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`.
+-/
 theorem isAbelianScheme_tensor' (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (hA : IsAbelianScheme A)
     (hB : IsAbelianScheme B) : IsAbelianScheme (A ⊗ B) :=
   ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB
 
+/- English proof (translation)
+Establish `e : (A ⊗ B).hom = Limits.pullback.fst A.hom B.hom ≫ A.hom` using `rfl`. Use `haveI := hA`. Use `haveI : SmoothOfRelativeDimension g' (Limits.pullback.fst A.hom B.hom) := (smoothOfRelativeDimension_isStableUnderBaseChange (n := g')).of_isPullback (IsPullback.of_hasPullback A.hom B.hom).flip hB`. Rewrite using `[e, add_comm]`. Use `infer_instance`.
+-/
 theorem smooth_tensor {A B : Over (Sp R)} {g g' : ℕ} (hA : SmoothOfRelativeDimension g A.hom)
     (hB : SmoothOfRelativeDimension g' B.hom) : SmoothOfRelativeDimension (g + g') (A ⊗ B).hom := by
   have e : (A ⊗ B).hom = Limits.pullback.fst A.hom B.hom ≫ A.hom := rfl

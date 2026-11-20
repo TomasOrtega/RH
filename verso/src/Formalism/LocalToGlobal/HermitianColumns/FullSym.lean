@@ -88,12 +88,18 @@ def toErrXS {D : D7} (X : FullTiedS D) : ErrX D where
   vPl_inj := fun u a b h => (X.base.vT u).injective (Subtype.ext h)
   norm_mem_place_ideal := fun u v => (X.base.vT u v).2
 
+/- English proof (translation)
+Introduce `u i v h`. Establish `h1` using `(X.levelZeroCompatibility u).splitG_pi i v h`. Rewrite `h1` using `[X.piG u D.u₀]`. Simplify `h1` using `[toErrXS, inclE, star_conj]`.
+-/
 theorem piGLevelS {D : D7} (X : FullTiedS D) : PiGLevel D X.base.lev0 (toErrXS X) := by
   intro u i v h
   have h1 := (X.levelZeroCompatibility u).splitG_pi i v h
   rw [X.piG u D.u₀] at h1
   simpa [toErrXS, inclE, star_conj] using h1
 
+/- English proof (translation)
+Introduce `u v z hz y`. Apply the tactic sequence `exact (X.levelZeroCompatibility u).fM_pi _ _ z (by first | exact hz | (simp only [toErrXS] at hz; exact hz)) y`.
+-/
 theorem piTLevelS {D : D7} (X : FullTiedS D) : PiTLevel D X.base.lev0 (toErrXS X) := by
   intro u v z hz y
   exact (X.levelZeroCompatibility u).fM_pi _ _ z (by first | exact hz | (simp only [toErrXS] at hz; exact hz)) y
@@ -129,11 +135,17 @@ structure SymmetricExtraCompatibility {D : D7} (X : FullTiedS D) {L : SizeData�
     haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
     GIwPos u w h (ex.ker u w h)
 
+/- English proof (translation)
+Take `⟨rfl, rfl, _⟩` from `J`. Conclude with `piGLevelS X`.
+-/
 theorem JoinTiedS.piG_lev {D : D7} {X : FullTiedS D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTiedS X lev eX Gt) : PiGLevel D lev eX := by
   obtain ⟨rfl, rfl, _⟩ := J
   exact piGLevelS X
 
+/- English proof (translation)
+Take `⟨rfl, rfl, _⟩` from `J`. Conclude with `piTLevelS X`.
+-/
 theorem JoinTiedS.piT_lev {D : D7} {X : FullTiedS D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTiedS X lev eX Gt) : PiTLevel D lev eX := by
   obtain ⟨rfl, rfl, _⟩ := J
@@ -205,8 +217,14 @@ def FullTied.toS {D : D7} (X : FullTied D) : FullTiedS D where
   vpos := X.vpos
   baseL := fun u pb h => ⟨(X.baseL u pb h).1, fun i h1 hm _ => (X.baseL u pb h).2 i h1 hm⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTied.one_chart_model_base_level_eq {D : D7} (X : FullTied D) : X.toS.base.lev0 = X.base.lev0 := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.join.lev_eq, h.join.errX_eq, h.join.gpl⟩, h.iw, h.iw_pos⟩`.
+-/
 theorem ExtraTied.toS {D : D7} {X : FullTied D} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L}
     {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC}
     {ex : Extra D L hT Gi Gl K Y cX} (h : ExtraTied X ex) : SymmetricExtraCompatibility X.toS ex :=
@@ -214,10 +232,19 @@ theorem ExtraTied.toS {D : D7} {X : FullTied D} {L : SizeData₂ D} {hT : GatTie
 
 def FullTiedS.to0 {D : D7} (X : FullTiedS D) : Herm0 D := ⟨X.base.lev0, X.g⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTiedS.base_model_level_eq {D : D7} (X : FullTiedS D) : X.to0.lev0 = X.base.lev0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTiedS.base_model_g_eq {D : D7} (X : FullTiedS D) : X.to0.g = X.g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTied.one_chart_model_base_eq {D : D7} (X : FullTied D) : X.toS.to0 = X.to0 := rfl
 
 end Formalism.L2.Herm

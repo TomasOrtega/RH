@@ -26,6 +26,11 @@ def IotaEx : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Numbe
       (∀ w w' y, w' ≠ w → d.cw w' (inFrame d.b (ι w y)) = 1) ∧
       ∀ w y, finOne F • inFrame d.b (ι w y) = finOne F • (1 : Matrix _ _ (AE F E))
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d`. Take `⟨ε, hε, hs⟩` from `h1 F E σ d`. Break down `hs with ⟨hA, rfl⟩ | ⟨hA, rfl⟩` into its components or cases. Take `⟨fr, sg, hfr⟩` from `(h2 F E σ d).1 hA`. Take `⟨ι, hc, ha, ho, hf⟩` from `h3 F E σ d (-1) 1 hε (Or.inl ⟨rfl, rfl⟩)`.
+
+Conclude with `⟨⟨-1, 1, fr, sg, ι, hε, Or.inl ⟨rfl, rfl⟩, hfr, hc, ha, ho, hf⟩⟩`. Take `⟨fr, sg, hfr⟩` from `(h2 F E σ d).2 hA`. Take `⟨ι, hc, ha, ho, hf⟩` from `h3 F E σ d 1 Complex.I hε (Or.inr ⟨rfl, rfl⟩)`. Conclude with `⟨⟨1, Complex.I, fr, sg, ι, hε, Or.inr ⟨rfl, rfl⟩, hfr, hc, ha, ho, hf⟩⟩`.
+-/
 theorem rdEx_of (h1 : EpsEx) (h2 : FrEx) (h3 : IotaEx) : RDEx := by
   intro F E _ _ _ _ _ σ d
   obtain ⟨ε, hε, hs⟩ := h1 F E σ d

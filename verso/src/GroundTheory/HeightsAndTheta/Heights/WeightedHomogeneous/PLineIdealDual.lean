@@ -11,21 +11,57 @@ noncomputable section
 
 namespace LineIdealDual
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom (algebraMap K K') y, rfl⟩`.
+-/
 theorem algebraMap_mem_range_ringOfIntegers {K K' : Type*} [Field K] [Field K'] [Algebra K K'] (y : 𝓞 K) :
     algebraMap K K' (algebraMap (𝓞 K) K y) ∈ Set.range (algebraMap (𝓞 K') K') :=
   ⟨RingOfIntegers.mapRingHom (algebraMap K K') y, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [latticeValue, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring`.
+-/
 theorem latticeValue_smul {K K' : Type*} [Field K] [Field K'] [Algebra K K'] {m N : ℕ}
     (φ : Fin (N + 1) → Fin m → K) (a : K') (v : Fin m → K') (b : Fin (N + 1)) :
     latticeValue φ (a • v) b = a * latticeValue φ v b := by
   simp only [latticeValue, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun j _ ↦ by ring
 
+/- English proof (translation)
+Simplify using `[latticeValue, dotProduct, map_sum, map_mul]`.
+-/
 theorem latticeValue_algebraMap {K K' : Type*} [Field K] [Field K'] [Algebra K K'] {m N : ℕ}
     (φ : Fin (N + 1) → Fin m → K) (w : Fin m → K) (b : Fin (N + 1)) :
     latticeValue φ (fun j ↦ algebraMap K K' (w j)) b = algebraMap K K' (φ b ⬝ᵥ w) := by
   simp [latticeValue, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+Introduce `K _ _ r N F φ hφ K' _ _ _ v a`. Establish `hdual : ∀ ψ ∈ Submodule.span ℤ (Set.range φ), ψ ∈ latticeDual F.lattice`. Introduce `ψ hψ`. Rewrite `hψ` using `[hφ.span_eq]`. Conclude with `hψ`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv b`. Set `Φ : (Fin (r + 1) → K') →ₗ[𝓞 K'] K'` to `{ toFun := fun x ↦ latticeValue φ x b map_add' := fun x y ↦ by`. Simplify using `only [latticeValue, Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := fun c x ↦ by`.
+
+Simplify using `only [latticeValue, Pi.smul_apply, Algebra.smul_def, RingHom.id_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ ↦ by ring }`. Establish `hle : latticeExtend K' F.lattice ≤ (1 : Submodule (𝓞 K') K').comap Φ`. Rewrite using `[latticeExtend, Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+
+Take `⟨y, hy⟩` from `hdual (φ b) (Submodule.subset_span ⟨b, rfl⟩) w hw`. Express the relevant statement in the definitionally equal form `latticeValue φ (fun j ↦ algebraMap K K' (w j)) b ∈ (1 : Submodule (𝓞 K') K')`. Rewrite using `[latticeValue_algebraMap, ← hy, Submodule.mem_one]`. Conclude with `algebraMap_mem_range_ringOfIntegers y`. Establish `h1 : latticeValue φ (a • v) b ∈ (1 : Submodule (𝓞 K') K')` using `hle hv`.
+
+Rewrite `h1` using `[latticeValue_smul, Submodule.mem_one]`. Conclude with `h1`. Introduce `h`. Take `⟨n, f, σ, hfF, hσF, hid⟩` from `GroundTheory.Heights₂.Theta.UnitaryReduction.DualHomPf.exists_dualBasis F.lattice F.fg`. Establish `hgex : ∀ i, ∃ gi : Fin (r + 1) → K, ∀ w, σ i w = gi ⬝ᵥ w` using `fun i ↦ ⟨fun j ↦ σ i (fun l ↦ if j = l then 1 else 0), fun w ↦ by`.
+
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ (σ i) w]`. Simplify using `[dotProduct, mul_comm]⟩`. Use `choose g hg using hgex`. Establish `hgmem : ∀ i, g i ∈ Submodule.span ℤ (Set.range φ)`. Introduce `i`.
+
+Rewrite using `[hφ.span_eq]`. Introduce `w hw`. Rewrite using `[← hg]`. Conclude with `hσF i w hw`. Use `choose c hc using fun i ↦ (Submodule.mem_span_range_iff_exists_fun ℤ).mp (hgmem i)`.
+
+Establish `hKid : ∀ j k : Fin (r + 1), ∑ i, g i j * f i k = if j = k then 1 else 0`. Introduce `j k`. Establish `hmem : (fun l : Fin (r + 1) ↦ if j = l then (1 : K) else 0) ∈ Submodule.span K (F.lattice : Set (Fin (r + 1) → K))`. Rewrite using `[F.span_eq]`. Conclude with `Submodule.mem_top`.
+
+Use `congrFun (hid _ hmem) k` as an intermediate fact. Simplify `this.symm` using `[Finset.sum_apply, hg, dotProduct]`. Establish `hid' : ∀ x : Fin (r + 1) → K', x = ∑ i, (∑ j, algebraMap K K' (g i j) * x j) • fun k ↦ algebraMap K K' (f i k)`. Introduce `x`. Use function extensionality and compare the values at `k`.
+
+Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `e : ∀ j, ∑ i, algebraMap K K' (g i j) * x j * algebraMap K K' (f i k) = x j * algebraMap K K' (if j = k then 1 else 0)`. Introduce `j`. Rewrite using `[← hKid j k, map_sum, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ ↦ by rw [map_mul]; ring`. Simplify using `only [e, apply_ite (algebraMap K K'), map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `choose y hy using h`. Rewrite using `[hid' (a • v)]`. Use `Submodule.sum_mem _ fun i _ ↦ ?_` and prove the remaining obligations.
+
+Establish `hcoef : ∑ j, algebraMap K K' (g i j) * (a • v) j = algebraMap (𝓞 K') K' (∑ b, (c i b : 𝓞 K') * y b)`. Rewrite using `[← hc i]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, zsmul_eq_mul, map_sum, map_mul, map_intCast, hy, latticeValue, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ ↦ Finset.sum_congr rfl fun j _ ↦ by`.
+
+Simplify using `only [Pi.mul_apply, Pi.intCast_apply, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcoef, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f i, hfF i, rfl⟩)`.
+-/
 theorem proof : LineIdealDual.Statement := by
   intro K _ _ r N F φ hφ K' _ _ _ v a
   classical

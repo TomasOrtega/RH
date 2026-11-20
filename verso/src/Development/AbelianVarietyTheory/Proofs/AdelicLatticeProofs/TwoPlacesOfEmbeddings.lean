@@ -6,6 +6,31 @@ open scoped WithZero TensorProduct
 
 namespace GlobalTheory.CNorm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v ψ ψ' hne`. Set `V : Valuation (v.adicCompletion F) ℤᵐ⁰` to `Valued.v`. Set `u : Valuation E ℤᵐ⁰` to `V.comap (ψ : E →+* v.adicCompletion F)`. Set `u' : Valuation E ℤᵐ⁰` to `V.comap (ψ' : E →+* v.adicCompletion F)`. Establish `hu : ∀ a : F, u (algebraMap F E a) = v.valuation F a`.
+
+Introduce `a`. Express the relevant statement in the definitionally equal form `Valued.v (ψ _) = _`. Rewrite using `[AlgHom.commutes]`. Conclude with `v.valuedAdicCompletion_eq_valuation' a`. Establish `hu' : ∀ a : F, u' (algebraMap F E a) = v.valuation F a`.
+
+Introduce `a`. Express the relevant statement in the definitionally equal form `Valued.v (ψ' _) = _`. Rewrite using `[AlgHom.commutes]`. Conclude with `v.valuedAdicCompletion_eq_valuation' a`. Take `⟨w, hw, hwm⟩` from `exists_centre_over v u hu`.
+
+Take `⟨w', hw', hwm'⟩` from `exists_centre_over v u' hu'`. Use `⟨w, w', ?_, hw, hw'⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, ψ z ≠ ψ' z := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hne (AlgHom.ext hc)`. Take `⟨d, hd⟩ : ∃ d, d = ψ z - ψ' z` from `⟨_, rfl⟩`. Establish `hd0 : d ≠ 0` using `by rw [hd]; exact sub_ne_zero.2 hz`. Establish `hVd : V d ≠ 0` using `(Valuation.ne_zero_iff _).2 hd0`.
+
+Take `⟨ρ, hρ⟩` from `exists_val_sub_mul_lt_one _ (HeightOneSpectrum.denseRange_algebraMap F v) (ψ z) d⁻¹`. Take `⟨c, hc⟩` from `exists_val_sub_mul_lt_one _ (HeightOneSpectrum.denseRange_algebraMap F v) d d⁻¹`. Use `set t := (ψ z - algebraMap F (v.adicCompletion F) ρ) * d⁻¹ with ht`. Use `set s := (d - algebraMap F (v.adicCompletion F) c) * d⁻¹ with hs`. Establish `e1 : ψ z - algebraMap F (v.adicCompletion F) ρ = d * t`.
+
+Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : ψ' z - algebraMap F (v.adicCompletion F) ρ = -(d * (1 - t))`. Take the linear combination `e1 + hd`. Establish `e3 : algebraMap F (v.adicCompletion F) c = d * (1 - s)`.
+
+Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hy⟩ : ∃ y, y = (z - algebraMap F E ρ) / algebraMap F E c` from `⟨_, rfl⟩`. Establish `huy : u y < 1`.
+
+Express the relevant statement in the definitionally equal form `V (ψ y) < 1`. Rewrite using `[hy, map_div₀, map_sub, AlgHom.commutes, AlgHom.commutes, e1, e3, map_div₀, map_mul _ _ t, map_mul _ _ (1 - s), Valuation.map_one_sub_of_lt _ hc, mul_one, mul_div_cancel_left₀ _ hVd]`. Conclude with `hρ`. Establish `huy' : u' y = 1`. Express the relevant statement in the definitionally equal form `V (ψ' y) = 1`.
+
+Rewrite using `[hy, map_div₀, map_sub, AlgHom.commutes, AlgHom.commutes, e2, e3, map_div₀, Valuation.map_neg, map_mul _ _ (1 - t), map_mul _ _ (1 - s), Valuation.map_one_sub_of_lt _ hc, Valuation.map_one_sub_of_lt _ hρ, div_self]`. Rewrite using `[mul_one]` and apply the resulting hypothesis. Take `⟨n, ⟨m, hm⟩, hnd | hnd⟩` from `w.exists_primeCompl_mul_eq_or_mul_eq (K := E) y`. Establish `hd1 : 1 ≤ u' (algebraMap (𝓞 E) E m)` using `not_lt.1 fun a => hm ((hwm' m).2 a)`. Establish `h1 : u (algebraMap (𝓞 E) E n) < 1`.
+
+Rewrite using `[← hnd, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (val_integer_le_one u m)) huy`. Establish `h2` using `(hwm' n).1 ((hwm n).2 h1)`. Rewrite `h2` using `[← hnd, map_mul, huy', one_mul]`. Conclude with `absurd h2 (not_lt.2 hd1)`.
+
+Establish `hd1 : 1 ≤ u (algebraMap (𝓞 E) E m)` using `not_lt.1 fun a => hm ((hwm m).2 a)`. Rewrite `hd1` using `[← hnd, map_mul]`. Conclude with `absurd (lt_of_le_of_lt (mul_le_of_le_one_right' (val_integer_le_one u n)) huy) (not_lt.2 hd1)`.
+-/
 theorem two_places_of_embeddings : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F)) (ψ ψ' : E →ₐ[F] v.adicCompletion F), ψ ≠ ψ' → ∃ w w' : HeightOneSpectrum (𝓞 E), w ≠ w' ∧ w.under (𝓞 F) = v ∧ w'.under (𝓞 F) = v := by
   intro F E _ _ _ _ _ v ψ ψ' hne
   let V : Valuation (v.adicCompletion F) ℤᵐ⁰ := Valued.v

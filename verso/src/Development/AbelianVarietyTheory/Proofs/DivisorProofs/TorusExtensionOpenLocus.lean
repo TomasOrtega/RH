@@ -17,11 +17,23 @@ open GlobalTheory GlobalTheory.CubeFib GlobalTheory.LieMet GlobalTheory.LieHt Gl
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.BdFib.GenRk
 
+/- English proof (translation)
+Rewrite using `[(addMonoidHomLequivInt (B := ℤ) ℤ).finrank_eq]`. Conclude with `(Module.finrank_eq_card_basis (Module.finBasis ℤ Y).dualBasis).trans (Fintype.card_fin _)`.
+-/
 theorem finrank_addMonoidHom_int (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] :
     Module.finrank ℤ (Y →+ ℤ) = Module.finrank ℤ Y := by
   rw [(addMonoidHomLequivInt (B := ℤ) ℤ).finrank_eq]
   exact (Module.finrank_eq_card_basis (Module.finBasis ℤ Y).dualBasis).trans (Fintype.card_fin _)
 
+/- English proof (translation)
+Introduce `K _ G _ T₁ T₂`. Use `haveI := GlobalTheory.SemiAbelianCompare.isCommMonObj_of_torusExtension T₁`. Use `letI := T₁.addCommGroup`. Use `letI := T₂.addCommGroup`. Use `haveI := T₁.free`.
+
+Use `haveI := T₁.finite`. Use `haveI := T₂.free`. Use `haveI := T₂.finite`. Use `haveI := T₁.i_hom`. Use `haveI := T₂.i_hom`.
+
+Establish `h₁` using `GlobalTheory.TorusPart.ofTorus_bijective_of_torusExtension T₁`. Establish `h₂` using `GlobalTheory.TorusPart.ofTorus_bijective_of_torusExtension T₂`. Set `e : (T₁.X →+ ℤ) ≃+ (T₂.X →+ ℤ)` to `(AddEquiv.ofBijective _ h₁).trans (AddEquiv.ofBijective _ h₂).symm`. Use `show Module.finrank ℤ T₁.X = Module.finrank ℤ T₂.X`. Rewrite using `[← finrank_addMonoidHom_int T₁.X, ← finrank_addMonoidHom_int T₂.X]`.
+
+Conclude with `e.toIntLinearEquiv.finrank_eq`.
+-/
 theorem finrank_eq_of_torusExtension : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] (T₁ T₂ : TorusExtension G), @Module.finrank ℤ T₁.X _ T₁.addCommGroup.toAddCommMonoid _ = @Module.finrank ℤ T₂.X _ T₂.addCommGroup.toAddCommMonoid _ := by
   intro K _ G _ T₁ T₂
   haveI := GlobalTheory.SemiAbelianCompare.isCommMonObj_of_torusExtension T₁
@@ -35,6 +47,13 @@ theorem finrank_eq_of_torusExtension : ∀ (K : Type) [Field K] (G : Over (Sp K)
   rw [← finrank_addMonoidHom_int T₁.X, ← finrank_addMonoidHom_int T₂.X]
   exact e.toIntLinearEquiv.finrank_eq
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t F _ _ Y p f hp k _ g T`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨V, π, v, rfl, hπ, hT⟩` from `GlobalTheory.T.torus_extension_spreads_out E H X t Y f k g T`. Take `⟨U, hU, hsp⟩` from `GlobalTheory.T.proper_specialization_locally_lifts F Y p hp V π hπ (v (IsLocalRing.closedPoint k))`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy hgy`. Take `⟨u, hu⟩` from `hsp _ hy hgy`. Take `⟨w, rfl⟩` from `GlobalTheory.T.algebraic_point_lifts_finite_type V Y π hπ Qb y u hu`. Take `⟨T', hT'⟩` from `hT Qb w`. Introduce `T''`.
+
+Rewrite using `[← hT']`. Conclude with `finrank_eq_of_torusExtension Qb _ T'' (by rw [← Category.assoc] at T'; exact T')`.
+-/
 theorem exists_open_torRk_of_specializes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) (p : Y ⟶ Sp F) (f : Y ⟶ X), IsProper p → ∀ (k : Type) [Field k] (g : Sp k ⟶ Y) (T : TorusExtension ((Over.pullback (g ≫ f)).obj t.G)), ∃ U : Y.Opens, g (IsLocalRing.closedPoint k) ∈ U ∧ ∀ y : Sp Qb ⟶ Y, y (IsLocalRing.closedPoint Qb) ∈ U → g (IsLocalRing.closedPoint k) ⤳ y (IsLocalRing.closedPoint Qb) → TorRk t (y ≫ f) (@Module.finrank ℤ T.X _ T.addCommGroup.toAddCommMonoid _) := by
   intro E _ _ _ H X t F _ _ Y p f hp k _ g T
   haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed

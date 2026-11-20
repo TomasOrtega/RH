@@ -19,6 +19,17 @@ noncomputable section
 
 namespace MainStatements.Tam.V
 
+/- English proof (translation)
+Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`. Take `⟨-, hsc, hbo, -⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`.
+
+Use `haveI := hsc`. Use `haveI := hbo`. Use `haveI : ∀ ρ : D.what₂.Tau, SigmaFinite (D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) := fun ρ => by haveI := D.cd.haar (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 infer_instance`. Establish `hφm : Measurable rp` using `hc.measurable`. Take `⟨-, -, H⟩` from `hμ1`.
+
+Take `⟨-, H1⟩` from `H θ hθ`. Establish `H2` using `H1 A hA`. Use `Measure.pi_eq fun B hB => ?_` and prove the remaining obligations. Establish `hm : MeasurableSet (rp ⁻¹' Set.univ.pi B)` using `hφm (MeasurableSet.univ_pi hB)`. Rewrite using `[Measure.map_apply hφm (MeasurableSet.univ_pi hB), Measure.restrict_apply hm]`.
+
+Use `Eq.trans ?_ (H2 B hB)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_univ_pi, Set.mem_setOf_eq]`. Rewrite using `[and_comm]`.
+
+Use `and_congr Iff.rfl (forall_congr' fun ρ => ⟨fun hb => ⟨rp h ρ, hb, hrp h ρ⟩, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨b, hb, hbe⟩`. Rewrite `hb` using `[GlobalTheory.RealBoxMeasure.mat_cancel V hV A hA ρ (hbe.trans (hrp h ρ).symm)]`. Then use the resulting hypothesis.
+-/
 theorem pi_cd_eq_map (D : D7) (V : HSp D) (hV : V.SigOK) (μ1 : Measure (GA D V))
     (hμ1 : IsVolMeasG D V (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) μ1)
     (θ : InfFam D) (A : Frames V) (rp : GA D V →* (∀ ρ, Upq V ρ))
@@ -55,6 +66,29 @@ end MainStatements.Tam.V
 
 namespace MainStatements.Tam
 
+/- English proof (translation)
+Introduce `D V P Q hV hs μ _ 𝓕 h𝓕 θ A m rp hθ hA hm hc hrp B hB`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`.
+
+Take `⟨hlc, hsc, hbo, -⟩` from `GlobalTheory.TwistAdelicTop.locallyCompact_secondCountable_borel_countable V`. Use `haveI := hlc`. Use `haveI := hsc`. Use `haveI := hbo`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+
+Establish `hTG : VolTieG (GlobalTheory.Mem.retie D)` using `(GlobalTheory.Mem.retie_volTieG_and_cdScaleTie D).1`. Establish `hT : VolTie (GlobalTheory.Mem.retie D)` using `VolTieG.volTie hTG`. Establish `h2 : Conclusion2 (GlobalTheory.Mem.retie D)` using `volumeMass_of_unfolding _ (CompanionTheory.HU.mass_ratio_under_volume _ hT)`. Establish `hrk : V.rank = P + Q`. Use `Formalism.BasicNotions.sig_sum V hV D.host.φ₀` as an intermediate fact.
+
+Rewrite `this` using `[hs D.host.φ₀]`. Conclude with `this.symm`. Establish `hvol : (GlobalTheory.Mem.retie D).vol V = massI D V.rank`. Rewrite using `[hrk]`. Conclude with `GlobalTheory.Glob.vol_eq_massI_all_sig (GlobalTheory.Mem.retie D) hT h2 V P Q hV hs`.
+
+Establish `hTG' : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AllSome (IsVolMeasG D V (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2)) fun μ1 : Measure (GA D V) => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AllSome (fun 𝓕 : Set (GA D V) => IsFund …` using `hTG V hV`. Take `⟨⟨μ1, hμ1'⟩, Hvol⟩` from `hTG'`. Use `haveI := hμ1'.1`. Establish `hscale : μ = Measure.haarScalarFactor μ μ1 • μ1` using `Measure.isMulLeftInvariant_eq_smul μ μ1`. Establish `hc0 : ((Measure.haarScalarFactor μ μ1 : ℝ≥0) : ℝ≥0∞) ≠ 0` using `ENNReal.coe_ne_zero.2 (Measure.haarScalarFactor_pos_of_isHaarMeasure μ μ1).ne'`.
+
+Establish `hμX : ∀ X, μ X = (Measure.haarScalarFactor μ μ1 : ℝ≥0∞) * μ1 X` using `fun X => by conv_lhs => rw [hscale] first`. Consider the case `rw [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Consider the case `simp only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Consider the case `simp [Measure.smul_apply]`. Establish `hac : μ1 ≪ μ` using `fun X hX => by`.
+
+Rewrite `hX` using `[hμX]`. Conclude with `(mul_eq_zero.1 hX).resolve_left hc0`. Establish `h𝓕1 : IsFundamentalDomain (GQ V) 𝓕 μ1` using `h𝓕.mono hac`. Establish `hF1 : μ1 𝓕 = ENNReal.ofReal ((GlobalTheory.Mem.retie D).vol V)` using `(Hvol μ1 hμ1').2 𝓕 h𝓕1`. Establish `hpi` using `MainStatements.Tam.V.pi_cd_eq_map D V hV μ1 hμ1' θ A rp hθ hA hc hrp`.
+
+Establish `hSet : μ {h | h ∈ Stab V ∧ rp h ∈ B} = (Measure.haarScalarFactor μ μ1 : ℝ≥0∞) * Measure.pi (fun ρ : D.what₂.Tau => D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) B`. Rewrite using `[hμX, hpi, Measure.map_apply hc.measurable hB, Measure.restrict_apply (hc.measurable hB)]`. Use `congr 2`. Use extensionality with `h`. Conclude with `and_comm`.
+
+Establish `hVpos : 0 < ReciprocityTheory.ChartRestriction.DS.volU V.rank` using `ReciprocityTheory.ChartRestriction.DS.PolarCoordinateComparison.volU_pos V.rank`. Establish `hmeq : ∀ ρ, m ρ = ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank) • D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2` using `fun ρ => by`. Establish `e` using `GlobalTheory.LowRow.CompactDualScale.isMinf_eq_volU_smul_cd D.cd _ _ (m ρ) (hm ρ)`. Rewrite `e` using `[Formalism.BasicNotions.sig_sum V hV (tauE D ρ)]`. Conclude with `e`.
+
+Use `haveI : ∀ ρ : D.what₂.Tau, SigmaFinite (D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2) := fun ρ => by haveI := D.cd.haar (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2 infer_instance`. Use `haveI : ∀ ρ, SigmaFinite (m ρ) := fun ρ => by haveI := (hm ρ).1 infer_instance`. Establish `hpim : Measure.pi m = ENNReal.ofReal (ReciprocityTheory.ChartRestriction.DS.volU V.rank) ^ D.R.f • Measure.pi (fun ρ : D.what₂.Tau => D.cd.cd (V.sig (tauE D ρ)).1 (V.sig (tauE D ρ)).2)`. Use `Measure.pi_eq fun C hC => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi, smul_eq_mul]`.
+
+Repeatedly rewrite using `[hmeq, Measure.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, D.what₂.card_Tau]`. Rewrite using `[hpim, hSet, hμX 𝓕, hF1, hvol, Measure.smul_apply, smul_eq_mul, ENNReal.ofReal_mul (pow_nonneg hVpos.le _), ENNReal.ofReal_pow hVpos.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vol : VolSt := by
   intro D V P Q hV hs μ _ 𝓕 h𝓕 θ A m rp hθ hA hm hc hrp B hB
   haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1

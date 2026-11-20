@@ -33,11 +33,17 @@ structure AdmPNAlt [IsCMField F] [IsAlgClosure F Ω] (ι : Qbar l ≃+* ℂ) (M 
   unl : _root_.UpperTheory.V.Z.Win.WitA ι r
   level : Lev.LevelF l M m r
   safe : _root_.UpperTheory.V.Z.Win.A4.SafePA l M m r
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem csdN'_alt [IsCMField F] [IsAlgClosure F Ω] (_ : _root_.UpperTheory.V.Af.Hypotheses') (_ : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G F Ω →* GL (Fin n) (Qbar l)}
     (h : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι r) : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι r := h
 end
 section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem autQN'_alt (_ : _root_.UpperTheory.V.Af.Hypotheses') (_ : 1 ≤ n) {ι : Qbar l ≃+* ℂ} {r : G ℚ Ω →* GL (Fin n) (Qbar l)} {wt : ℤ}
     (_ : ∃ θ, IsCycWt l wt θ ∧ DualTw r θ) (h : _root_.UpperTheory.V.Z.Win.IsAutQA ι r) : _root_.UpperTheory.V.Z.Win.IsAutQA ι r := h
 variable {K : Type} [Field K] [NumberField K] [Algebra K Ω] [IsScalarTower ℚ K Ω]

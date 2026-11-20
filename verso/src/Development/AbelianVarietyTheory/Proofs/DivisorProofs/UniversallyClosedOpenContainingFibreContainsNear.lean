@@ -11,12 +11,26 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `a ∉ (PrimeSpectrum.comap χ t).asIdeal`. Introduce `h`. Conclude with `t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ha)`.
+-/
 theorem spMap_base_mem_basicOpen {R T : Type} [CommRing R] [CommRing T] (χ : R →+* T) (a : R)
     (ha : IsUnit (χ a)) (t : Sp T) : (spMap χ).base t ∈ (PrimeSpectrum.basicOpen a : (Sp R).Opens) := by
   change a ∉ (PrimeSpectrum.comap χ t).asIdeal
   intro h
   exact t.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h ha)
 
+/- English proof (translation)
+Introduce `R k _ _ φ X X' f f' π _ W H hW`. Establish `hc : IsClosed (f.base '' (W : Set X)ᶜ)` using `f.isClosedMap _ W.isOpen.isClosed_compl`. Set `t : Sp k` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hx : (spMap φ).base t ∈ (f.base '' (W : Set X)ᶜ)ᶜ`. Introduce and unpack `⟨x, hx, e⟩`.
+
+Take `⟨z, rfl, -⟩` from `Scheme.exists_preimage_of_isPullback H x t e`. Conclude with `hx (hW.ge (Set.mem_univ z))`. Take `⟨_, ⟨a, rfl⟩, ha, hle⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hx hc.isOpen_compl`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Apply `ha` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ a ∈ (⊥ : Ideal k)`. Conclude with `h0`. Introduce `T _ χ hχ Z g ρ H'`. Use `top_le_iff.1 fun z _ => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hz`. Establish `hm` using `spMap_base_mem_basicOpen χ a hχ (g.base z)`. Establish `e : f.base (ρ.base z) = (spMap χ).base (g.base z)`. Use `congrArg (fun h : Z ⟶ Sp R => h.base z) H'.w` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `hle (e ▸ hm : f.base (ρ.base z) ∈ _) ⟨ρ.base z, hz, rfl⟩`.
+-/
 theorem tube_of_universallyClosed : ∀ (R k : Type) [CommRing R] [Field k] (φ : R →+* k) (X X' : Scheme.{0})
     (f : X ⟶ Sp R) (f' : X' ⟶ Sp k) (π : X' ⟶ X) [UniversallyClosed f] (W : X.Opens),
     IsPullback π f' f (spMap φ) → π ⁻¹ᵁ W = ⊤ → ∃ a : R, φ a ≠ 0 ∧ ∀ (T : Type) [CommRing T] (χ : R →+* T),

@@ -9,6 +9,9 @@ noncomputable section
 
 namespace GlobalTheory.PullAlong
 
+/- English proof (translation)
+Introduce `X Y π J R _ _ ξ`. Unfold `idlAlong`. Rewrite using `[GlobalTheory.VanStalk.stalkId_comap, Ideal.map_map, Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression.
+-/
 theorem idlAlong_comap_eq : ∀ {X Y : Scheme.{0}} (π : Y ⟶ X) (J : X.IdealSheafData) {R : Type} [CommRing R]
     [IsLocalRing R] (ξ : Sp R ⟶ Y), idlAlong (J.comap π) ξ = idlAlong J (ξ ≫ π) := by
   intro X Y π J R _ _ ξ

@@ -19,15 +19,48 @@ open scoped CategoryTheory.Obj RatFunc
 
 namespace GlobalTheory.Nef
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem evAt_congr' {R : Type} [CommRing R] {X : Scheme.{0}} {ξ ξ' : Sp R ⟶ X} (e : ξ = ξ') {U : X.Opens}
     (h : ⊤ ≤ ξ ⁻¹ᵁ U) (h' : ⊤ ≤ ξ' ⁻¹ᵁ U) (f : Γ(X, U)) : evAt ξ h f = evAt ξ' h' f := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `z _`. Conclude with `h (Set.mem_univ (f z))`.
+-/
 theorem top_le_preimage_comp' {X Y Z : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ g ⁻¹ᵁ U) :
     ⊤ ≤ (f ≫ g) ⁻¹ᵁ U := by
   intro z _
   exact h (Set.mem_univ (f z))
 
+/- English proof (translation)
+Establish `hC` using `hx.1`. Use `haveI : IsIntegral C := GlobalTheory.LieSemineg.isIntegral_curve hC.1 hC.2.2`. Take `⟨z, hz⟩` from `hV`. Take `⟨V', hV'a, hzV', hV'V⟩` from `Opens.isBasis_iff_nbhd.1 C.isBasis_affineOpens hz`. Establish `hV'a : IsAffineOpen V'` using `hV'a`.
+
+Take `⟨hxV', -, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_generic_injective_fraction K C x hx.2.1 V' ⟨z, hzV'⟩`. Take `⟨ev1, ev2, -, -, ev5, ev6, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk`. Set `f : Γ(C, V') →+* E` to `(algebraMap K E).comp (evAt x hxV')`. Use `haveI := hC.1`. Use `haveI : Smooth (strHom k C) := SmoothOfRelativeDimension.smooth 1 _`.
+
+Establish `eV : V' ≤ strHom k C ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Set `ψ` to `((strHom k C).appLE ⊤ V' eV).hom`. Establish `hft : ψ.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) (strHom k C) inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨V', hV'a⟩ eV`. Use `letI := ψ.toAlgebra`. Take `⟨s, hs⟩` from `hft.out`.
+
+Establish `hconst : ∀ (p : Place k E) (c : Γ(Sp k, ⊤)), p.1 (f (ψ c)) ≤ 1`. Introduce `p c`. Establish `hxs : ⊤ ≤ (x ≫ strHom k C) ⁻¹ᵁ (⊤ : (Sp k).Opens)` using `top_le_preimage_comp' x (strHom k C) ⊤ (fun _ _ => trivial)`. Establish `htop : ⊤ ≤ (𝟙 (Sp k)) ⁻¹ᵁ (⊤ : (Sp k).Opens)` using `fun _ _ => trivial`. Establish `h1 : evAt x hxV' (ψ c) = evAt (x ≫ strHom k C) hxs c` using `(ev2 K C (Sp k) x (strHom k C) V' ⊤ hxV' _ eV c).symm`.
+
+Establish `h2 : evAt (x ≫ strHom k C) hxs c = evAt (spMap (algebraMap k K) ≫ 𝟙 (Sp k)) (top_le_preimage_comp' _ _ _ htop) c` using `evAt_congr' (by rw [Category.comp_id]; exact hx.2.2) _ _ c`. Establish `h3` using `ev1 k K (Sp k) (algebraMap k K) (𝟙 (Sp k)) ⊤ htop (top_le_preimage_comp' _ _ _ htop) c`. Establish `hf : f (ψ c) = algebraMap k E (evAt (𝟙 (Sp k)) htop c)`. Simplify using `only [f, RingHom.comp_apply]`. Rewrite using `[h1, h2, h3, ← IsScalarTower.algebraMap_apply]`.
+
+Rewrite using `[hf]`. Distinguish the cases in `hd : evAt (𝟙 (Sp k)) htop c = 0`. Rewrite using `[hd, map_zero, map_zero]`. Conclude with `zero_le'`. Conclude with `(p.2.2 _ hd).le`.
+
+Establish `key : ∀ p : Place k E, (∀ a ∈ s, p.1 (f a) ≤ 1) → ∀ g, p.1 (f g) ≤ 1`. Introduce `p hp g`. Establish `hg : g ∈ Algebra.adjoin Γ(Sp k, ⊤) (s : Set Γ(C, V'))` using `by rw [hs]; trivial`. Proceed by induction on `hg using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact hp a ha`.
+
+Consider the case `algebraMap c => exact hconst p c`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `(p.1.map_add _ _).trans (max_le ha hb)`. Consider the case `mul a b _ _ ha hb => rw [map_mul, map_mul]`. Conclude with `mul_le_one' ha hb`.
+
+Establish `hE : IsFF k E` using `(GlobalTheory.T.functionFieldOneVariable_transcendental_finite_and_ext k K (GlobalTheory.T.isFunctionFieldOfOneVariable_of_genericPointOfCurve k K C x hx)).2 E`. Use `((s.finite_toSet.biUnion fun a _ => (?_ : {p : Place k E | ¬ p.1 (f a) ≤ 1}.Finite))).subset ?_` and prove the remaining obligations. Distinguish the cases in `h0 : f a = 0`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal. Use extensionality with `p`.
+
+Simplify using `[h0]`. Conclude with `(GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k E hE (f a) h0).1.subset fun p hp h1 => hp h1.le`. Introduce and unpack `p ⟨b, hb1, hb2⟩`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`. Assume the negation of the conclusion as `hno`.
+
+Use `push_neg at hno`. Establish `hall` using `key p fun a ha => hno a ha`. Establish `hmem : ∀ g, f g ∈ p.O` using `fun g => (Valuation.mem_valuationSubring_iff _ _).2 (hall g)`. Set `φ : Γ(C, V') →+* p.O` to `f.codRestrict p.O hmem`. Take `⟨b', hb', hev⟩` from `ev6 p.O C V' hV'a φ`.
+
+Establish `hc` using `top_le_preimage_comp' (spMap p.O.subtype) b' V' hb'`. Establish `hd` using `top_le_preimage_comp' (spMap (algebraMap K E)) x V' hxV'`. Establish `hcd : spMap p.O.subtype ≫ b' = spMap (algebraMap K E) ≫ x`. Use `ev5 E C _ _ V' hV'a hc hd ?_` and prove the remaining obligations. Use extensionality with `g`.
+
+Rewrite using `[ev1 p.O E C p.O.subtype b' V' hb' hc g, ev1 K E C (algebraMap K E) x V' hxV' hd g, hev]`. Both sides reduce to the same expression. Establish `hbb` using `(GlobalTheory.T.existsUnique_centre_functionFieldPlace_curve k K E C x hx p).unique hb1 hcd`. Substitute `hbb` using the available equality. Conclude with `hb2 fun w hw => hV'V (hb' hw)`.
+-/
 theorem finite_centre_not_mem (k K E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] [Field E]
     [Algebra k E] [Algebra K E] [IsScalarTower k K E] [FiniteDimensional K E] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)]
     (x : Sp K ⟶ C) (hx : IsGenOver k x) (V : C.Opens) (hV : (V : Set C).Nonempty) :

@@ -26,6 +26,9 @@ def refGroup (k : Type*) [Field k] (n : Type*) [Fintype n] [DecidableEq n] (c p 
   mul_mem' := fun ha hb => GlobalTheory.RootEx.Radical.Uni.mul ha hb
   inv_mem' := fun ha => GlobalTheory.RootEx.Radical.Uni.inv ha
 
+/- English proof (translation)
+Introduce `g hg r s hrs`. Use `(GlobalTheory.RootEx.Radical.mem_N_iff g).1 hg r s ?_` and prove the remaining obligations. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s <;>`. Apply the tactic sequence `simp only [refLev, Sum.elim_inl, Sum.elim_inr] at hrs <;>`. Apply the tactic sequence `simp only [GlobalTheory.RootEx.lev, Sum.elim_inl, Sum.elim_inr] <;> omega`.
+-/
 theorem N_le_refGroup {p q : ℕ} (h₁ : p ≤ q) (h₂ : q ≤ p + 1) :
     GlobalTheory.RootEx.N k n c q ≤ refGroup k n c p := by
   intro g hg r s hrs
@@ -34,9 +37,15 @@ theorem N_le_refGroup {p q : ℕ} (h₁ : p ≤ q) (h₂ : q ≤ p + 1) :
     simp only [refLev, Sum.elim_inl, Sum.elim_inr] at hrs <;>
     simp only [GlobalTheory.RootEx.lev, Sum.elim_inl, Sum.elim_inr] <;> omega
 
+/- English proof (translation)
+The claim follows from `sup_le (N_le_refGroup le_rfl (by omega)) (N_le_refGroup (by omega) (by omega))`.
+-/
 theorem symN_le_refGroup : symN k n c ≤ refGroup k n c ((c + 1) / 2) :=
   sup_le (N_le_refGroup le_rfl (by omega)) (N_le_refGroup (by omega) (by omega))
 
+/- English proof (translation)
+Establish `h : GlobalTheory.RootEx.Radical.Uni (refLev ((c + 1) / 2)) u.val` using `symN_le_refGroup hu`. Use extensionality with `r s`. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply]`. Rewrite using `[h _ _ (by simp [refLev])]`. Simplify using `[Matrix.one_apply]`.
+-/
 theorem toBlocks₁₁_of_mem_symN {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n c) : u.val.toBlocks₁₁ = 1 := by
   have h : GlobalTheory.RootEx.Radical.Uni (refLev ((c + 1) / 2)) u.val := symN_le_refGroup hu
   ext r s
@@ -44,6 +53,9 @@ theorem toBlocks₁₁_of_mem_symN {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n
   rw [h _ _ (by simp [refLev])]
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Establish `h` using `toBlocks₁₁_of_mem_symN hu`. Rewrite using `[Units.val_mul, GlobalTheory.RootEx.Radical.embX_val]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks u.val]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁, h]`. Simplify using the standard rewrite rules.
+-/
 theorem toBlocks₁₁_mul_embX {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n c) (g : GL n k) :
     (u * GlobalTheory.RootEx.embX c g).val.toBlocks₁₁ = g.val := by
   have h := toBlocks₁₁_of_mem_symN hu
@@ -52,6 +64,9 @@ theorem toBlocks₁₁_mul_embX {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n c)
   rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁, h]
   simp
 
+/- English proof (translation)
+Establish `h` using `toBlocks₁₁_of_mem_symN (inv_mem hu)`. Rewrite using `[_root_.mul_inv_rev, ← map_inv, Units.val_mul, GlobalTheory.RootEx.Radical.embX_val]`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks (u⁻¹).val]`. Rewrite using `[Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁, h]`. Simplify using the standard rewrite rules.
+-/
 theorem toBlocks₁₁_inv_mul_embX {u : GL (n ⊕ Fin c) k} (hu : u ∈ symN k n c) (g : GL n k) :
     ((u * GlobalTheory.RootEx.embX c g)⁻¹).val.toBlocks₁₁ = (g⁻¹).val := by
   have h := toBlocks₁₁_of_mem_symN (inv_mem hu)
@@ -64,6 +79,15 @@ end GlobalTheory.FunObj.SymImageC
 
 open GlobalTheory.FunObj.SymImageC in
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Prove the components needed by the constructor for the conclusion. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `ho` using `hC.preimage (GlobalTheory.RootEx.QuotLinear.continuous_embX (k := k) (n := n) (c := c))`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp [one_mem])) fun g hg => ?_` and prove the remaining obligations.
+
+Conclude with `⟨1, one_mem _, by simpa using hg⟩`. Take `⟨A, hA, hCA⟩` from `hb`. Set `φ : GL (n ⊕ Fin c) k → Matrix n n k × (Matrix n n k)ᵐᵒᵖ` to `fun g => (g.val.toBlocks₁₁, MulOpposite.op (g⁻¹).val.toBlocks₁₁)`. Establish `hbl : Continuous fun M : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k => M.toBlocks₁₁` using `continuous_matrix fun i j => continuous_id.matrix_elem _ _`. Establish `hφ : Continuous φ` using `(hbl.comp Units.continuous_val).prodMk (MulOpposite.continuous_op.comp (hbl.comp Units.continuous_coe_inv))`.
+
+Use `⟨_, (Units.isClosedEmbedding_embedProduct (α := Matrix n n k)).isCompact_preimage (hA.image hφ), ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨u, hu, h⟩`. Use `⟨_, hCA h, ?_⟩` and prove the remaining obligations. Simplify using `only [φ]`. Rewrite using `[toBlocks₁₁_mul_embX hu, toBlocks₁₁_inv_mul_embX hu]`.
+
+Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.FunObj.SymImageC.symPr_open_bounded {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
     (C : Subgroup (GL (n ⊕ Fin c) k)) (hC : IsOpen (C : Set (GL (n ⊕ Fin c) k)))

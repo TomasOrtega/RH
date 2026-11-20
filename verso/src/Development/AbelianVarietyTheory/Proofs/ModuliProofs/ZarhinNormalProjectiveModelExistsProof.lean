@@ -14,6 +14,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.zarhinProjectiveModel_of_semistableReduction GlobalTheory.T.semistableReduction_ppav_padicField`.
+-/
 theorem zhSt_holds : GlobalTheory.ZH.ZHSt :=
   GlobalTheory.T.zarhinProjectiveModel_of_semistableReduction GlobalTheory.T.semistableReduction_ppav_padicField
 

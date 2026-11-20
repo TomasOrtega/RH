@@ -8,6 +8,11 @@ namespace GlobalTheory.CompanionTheory.GE.Dich
 
 open TopologicalSpace Scheme.IdealSheafData
 
+/- English proof (translation)
+Establish `: ∀ U, IsReduced (J.subschemeCover.openCover.X U)` using `fun U => by`. Use `(affine_isReduced_iff (.of (Γ(X, U.1) ⧸ J.ideal U))).mpr ?_` and prove the remaining obligations. Use `(Ideal.isRadical_iff_quotient_reduced _).mp ?_` and prove the remaining obligations. Establish `e : (J.ideal U).radical = J.ideal U` using `congr($(h).ideal U)`. Conclude with `Ideal.radical_eq_iff.mp e`.
+
+Conclude with `IsReduced.of_openCover _ J.subschemeCover.openCover`.
+-/
 theorem isReduced_subscheme_of_radical_eq {X : Scheme.{0}} (J : X.IdealSheafData)
     (h : J.radical = J) : IsReduced J.subscheme := by
   have : ∀ U, IsReduced (J.subschemeCover.openCover.X U) := fun U => by
@@ -17,6 +22,9 @@ theorem isReduced_subscheme_of_radical_eq {X : Scheme.{0}} (J : X.IdealSheafData
     exact Ideal.radical_eq_iff.mp e
   exact IsReduced.of_openCover _ J.subschemeCover.openCover
 
+/- English proof (translation)
+Establish `hr : Set.range J.subschemeι = (J.support : Set X)` using `J.range_subschemeι`. Establish `hirr : IsIrreducible (Set.range J.subschemeι)` using `hr ▸ h`. Establish `: IrreducibleSpace (Set.range J.subschemeι)` using `{ toPreirreducibleSpace := Subtype.preirreducibleSpace hirr.2 toNonempty := hirr.1.to_subtype }`. Conclude with `J.subschemeι.isEmbedding.toHomeomorph.irreducibleSpace_iff.mpr this`.
+-/
 theorem irreducibleSpace_subscheme {X : Scheme.{0}} (J : X.IdealSheafData)
     (h : IsIrreducible (J.support : Set X)) : IrreducibleSpace J.subscheme := by
   have hr : Set.range J.subschemeι = (J.support : Set X) := J.range_subschemeι
@@ -26,6 +34,13 @@ theorem irreducibleSpace_subscheme {X : Scheme.{0}} (J : X.IdealSheafData)
       toNonempty := hirr.1.to_subtype }
   exact J.subschemeι.isEmbedding.toHomeomorph.irreducibleSpace_iff.mpr this
 
+/- English proof (translation)
+Establish `hU : ∀ U : X.affineOpens, ∃ k : ℕ, (J.ideal U).radical ^ k ≤ J.ideal U` using `fun U => by haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian U`. Conclude with `Ideal.exists_radical_pow_le_of_fg _ (IsNoetherian.noetherian _)`. Use `choose k hk using hU`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => (U.1 : Set X)) (fun U => U.1.2) (fun x _ => by`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`.
+
+Conclude with `Set.mem_iUnion.mpr ⟨⟨U, hU⟩, hxU⟩)`. Use `⟨t.sup k, le_of_iSup_eq_top (fun i : t => i.1) ?_ fun i => ?_⟩` and prove the remaining obligations. Use `top_le_iff.mp fun x _ => ?_` and prove the remaining obligations. Take `⟨U, hU, hx⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `Opens.mem_iSup.mpr ⟨⟨U, hU⟩, hx⟩`.
+
+Express the relevant statement in the definitionally equal form `(J.ideal i.1).radical ^ t.sup k ≤ J.ideal i.1`. Conclude with `(Ideal.pow_le_pow_right (Finset.le_sup i.2)).trans (hk i.1)`.
+-/
 theorem exists_radical_pow_le {X : Scheme.{0}} [IsNoetherian X] (J : X.IdealSheafData) :
     ∃ k : ℕ, J.radical ^ k ≤ J := by
   have hU : ∀ U : X.affineOpens, ∃ k : ℕ, (J.ideal U).radical ^ k ≤ J.ideal U := fun U => by
@@ -44,6 +59,15 @@ theorem exists_radical_pow_le {X : Scheme.{0}} [IsNoetherian X] (J : X.IdealShea
   · change (J.ideal i.1).radical ^ t.sup k ≤ J.ideal i.1
     exact (Ideal.pow_le_pow_right (Finset.le_sup i.2)).trans (hk i.1)
 
+/- English proof (translation)
+Establish `hex` using `exists_radical_pow_le J`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm₁, hm₂⟩ : ∃ m, J.radical ^ (m + 1) ≤ J ∧ ¬ J.radical ^ m ≤ J := by`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with hk | hk` into its components or cases. Establish `hs` using `Nat.find_spec hex`. Rewrite `hs` using `[hk, pow_zero]`.
+
+Conclude with `absurd (top_le_iff.mp hs) hJ`. Use `⟨Nat.find hex - 1, ?_, Nat.find_min hex (by omega)⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_add_cancel hk]`. Conclude with `Nat.find_spec hex`. Use `⟨J.radical, J ⊔ J.radical ^ m, lt_of_le_of_ne J.le_radical hr.symm, left_lt_sup.mpr hm₂, fun U a b ha hb => ?_⟩` and prove the remaining obligations.
+
+Establish `hle : J.radical.ideal U * (J ⊔ J.radical ^ m).ideal U ≤ J.ideal U`. Express the relevant statement in the definitionally equal form `J.radical.ideal U * (J.ideal U ⊔ (J.radical.ideal U) ^ m) ≤ J.ideal U`. Rewrite using `[Ideal.mul_sup]`. Use `sup_le Ideal.mul_le_right ?_` and prove the remaining obligations. Rewrite using `[← pow_succ']`.
+
+Conclude with `hm₁ U`. Conclude with `hle (Ideal.mul_mem_mul ha hb)`.
+-/
 theorem exists_of_radical_ne {X : Scheme.{0}} [IsNoetherian X] (J : X.IdealSheafData)
     (hJ : J ≠ ⊤) (hr : J.radical ≠ J) :
     ∃ J₁ J₂ : X.IdealSheafData, J < J₁ ∧ J < J₂ ∧ ∀ (U : X.affineOpens) (a b : Γ(X, U)),
@@ -68,6 +92,17 @@ theorem exists_of_radical_ne {X : Scheme.{0}} [IsNoetherian X] (J : X.IdealSheaf
     exact hm₁ U
   exact hle (Ideal.mul_mem_mul ha hb)
 
+/- English proof (translation)
+Rewrite `hirr` using `[isPreirreducible_iff_isClosed_union_isClosed]`. Use `push_neg at hirr`. Take `⟨Z₁, Z₂, h₁, h₂, hcov, hn₁, hn₂⟩` from `hirr`. Set `C₁ : Closeds X` to `J.support ⊓ ⟨Z₁, h₁⟩`. Set `C₂ : Closeds X` to `J.support ⊓ ⟨Z₂, h₂⟩`.
+
+Establish `hsup : C₁ ⊔ C₂ = J.support`. Apply `le_antisymm (sup_le inf_le_left inf_le_left)` to reduce the goal to its premises. Introduce `x hx`. Break down `hcov hx with h | h` into its components or cases. Conclude with `Or.inl ⟨hx, h⟩`.
+
+Conclude with `Or.inr ⟨hx, h⟩`. Establish `hlt : ∀ (C : Closeds X) (Z : Set X), C ≤ J.support → (C : Set X) ⊆ Z → ¬ (J.support : Set X) ⊆ Z → J < vanishingIdeal C`. Introduce `C Z hC hCZ hn`. Use `lt_of_le_not_ge (le_support_iff_le_vanishingIdeal.mp hC) fun hle => hn ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Establish `hx' : x ∈ ((vanishingIdeal C).support : Set X)` using `support_antitone hle hx`. Rewrite `hx'` using `[coe_support_vanishingIdeal]`. Conclude with `hCZ hx'`. Use `⟨vanishingIdeal C₁, vanishingIdeal C₂, hlt C₁ Z₁ inf_le_left (fun x hx => hx.2) hn₁, hlt C₂ Z₂ inf_le_left (fun x hx => hx.2) hn₂, fun U a b ha hb => ?_⟩` and prove the remaining obligations. Establish `e : vanishingIdeal C₁ ⊓ vanishingIdeal C₂ = J`.
+
+Rewrite using `[← vanishingIdeal_sup, hsup, vanishingIdeal_support, hr]`. Establish `hm : a * b ∈ (vanishingIdeal C₁ ⊓ vanishingIdeal C₂).ideal U` using `⟨Ideal.mul_mem_right _ _ ha, Ideal.mul_mem_left _ _ hb⟩`. Rewrite `hm` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem exists_of_not_preirreducible {X : Scheme.{0}} (J : X.IdealSheafData)
     (hr : J.radical = J) (hirr : ¬ IsPreirreducible (J.support : Set X)) :
     ∃ J₁ J₂ : X.IdealSheafData, J < J₁ ∧ J < J₂ ∧ ∀ (U : X.affineOpens) (a b : Γ(X, U)),
@@ -99,6 +134,13 @@ theorem exists_of_not_preirreducible {X : Scheme.{0}} (J : X.IdealSheafData)
     ⟨Ideal.mul_mem_right _ _ ha, Ideal.mul_mem_left _ _ hb⟩
   rwa [e] at hm
 
+/- English proof (translation)
+Introduce `X _ J hJ`. Distinguish the cases in `hr : J.radical = J`. Distinguish the cases in `hirr : IsPreirreducible (J.support : Set X)`. Use `left`. Establish `hne : (J.support : Set X).Nonempty`.
+
+Rewrite using `[Set.nonempty_iff_ne_empty]`. Introduce `h`. Conclude with `hJ (J.support_eq_bot_iff.mp (SetLike.coe_injective h))`. Use `haveI := isReduced_subscheme_of_radical_eq J hr`. Use `haveI := irreducibleSpace_subscheme J ⟨hne, hirr⟩`.
+
+Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`. Conclude with `Or.inr (exists_of_not_preirreducible J hr hirr)`. Conclude with `Or.inr (exists_of_radical_ne J hJ hr)`.
+-/
 theorem isIntegral_or_exists_mul_mem : ∀ {X : Scheme.{0}} [IsNoetherian X] (J : X.IdealSheafData),
     J ≠ ⊤ → IsIntegral J.subscheme ∨ ∃ J₁ J₂ : X.IdealSheafData, J < J₁ ∧ J < J₂ ∧
       ∀ (U : X.affineOpens) (a b : Γ(X, U)), a ∈ J₁.ideal U → b ∈ J₂.ideal U →

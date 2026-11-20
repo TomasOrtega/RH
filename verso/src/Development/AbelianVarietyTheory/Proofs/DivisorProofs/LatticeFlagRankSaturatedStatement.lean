@@ -9,5 +9,8 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieSmooth.inf_span_castLE_lineHt | exact GlobalTheory.LieSmooth.inf_span_castLE_lineHt | (intros; apply GlobalTheory.LieSmooth.inf_span_castLE_lineHt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_flag_rank_saturated : ∀ (K : Type) [Field K] [NumberField K] (V : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : HermFam K V) (E : Submodule (𝓞 K) V) (r : ℕ) (v : Fin r → V) (k : ℕ) (hk : k ≤ r), E.FG → LinearIndependent K v → Submodule.span K (Set.range v) ≤ Submodule.span K (E : Set V) → latRank K (E ⊓ (Submodule.span K (Set.range (v ∘ Fin.castLE hk))).restrictScalars (𝓞 K)) = k ∧ (E ⊓ (Submodule.span K (Set.range (v ∘ Fin.castLE hk))).restrictScalars (𝓞 K)).FG ∧ Submodule.span K ((E ⊓ (Submodule.span K (Set.range (v ∘ Fin.castLE hk))).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) = Submodule.span K (Set.range (v ∘ Fin.castLE hk)) ∧ ∀ i, lineHt h (E ⊓ (Submodule.span K (Set.range (v ∘ Fin.castLE hk))).restrictScalars (𝓞 K)) (v ∘ Fin.castLE hk) i = lineHt h E v (Fin.castLE hk i) := by
   first | exact @GlobalTheory.LieSmooth.inf_span_castLE_lineHt | exact GlobalTheory.LieSmooth.inf_span_castLE_lineHt | (intros; apply GlobalTheory.LieSmooth.inf_span_castLE_lineHt <;> assumption)

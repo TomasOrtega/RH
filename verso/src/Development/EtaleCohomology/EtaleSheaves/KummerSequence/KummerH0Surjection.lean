@@ -6,6 +6,9 @@ open CochainComplex CochainComplex.HomComplex
 
 namespace LateralTheory.E.H2CurveOrder.KummerH0Surjection
 
+/- English proof (translation)
+Use `⟨?_⟩` and prove the remaining obligations. Establish `H : Homotopy (InjectiveResolution.desc (f ≫ g) (injectiveResolution L) (injectiveResolution F)) (InjectiveResolution.desc f (injectiveResolution G) (injectiveResolution F) ≫ InjectiveResolution.desc g (injectiveResolution L) (injectiveResolution G))` using `InjectiveResolution.descHomotopy (f ≫ g) _ _ (by simp) (by simp)`. Conclude with `(H.extend ComplexShape.embeddingUpNat).trans (Homotopy.ofEq (HomologicalComplex.extendMap_comp _ _ _))`.
+-/
 theorem resMap_comp_homotopy (R : Type) [CommRing R] {F G L : Shv R} (f : F ⟶ G) (g : G ⟶ L) :
     Nonempty (Homotopy (resMap R (f ≫ g)) (resMap R f ≫ resMap R g)) := by
   refine ⟨?_⟩
@@ -16,6 +19,11 @@ theorem resMap_comp_homotopy (R : Type) [CommRing R] {F G L : Shv R} (f : F ⟶ 
   exact (H.extend ComplexShape.embeddingUpNat).trans
     (Homotopy.ofEq (HomologicalComplex.extendMap_comp _ _ _))
 
+/- English proof (translation)
+Take `⟨H⟩` from `resMap_comp_homotopy R f g`. Take `⟨a, rfl⟩` from `CohomologyClass.mk_surjective x`. Use `show CohomologyClass.mk _ = CohomologyClass.mk _`. Rewrite using `[← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨a.1.comp (Cochain.ofHomotopy H) (by omega), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) rfl (by omega), δ_ofHomotopy, Cocycle.δ_eq_zero]`. Simplify using `[zcomp, Cochain.comp_sub, Cochain.ofHom_comp]`.
+-/
 theorem post_comp (R : Type) [CommRing R] (K : Cx R) {F G L : Shv R} (f : F ⟶ G) (g : G ⟶ L) (n : ℤ)
     (x : HK R K F n) : HK.post R K (f ≫ g) n x = HK.post R K g n (HK.post R K f n x) := by
   obtain ⟨H⟩ := resMap_comp_homotopy R f g
@@ -32,6 +40,9 @@ def kumM (q : ℕ) : (kumSC q).X₃ ⟶ Gm := cokernel.desc (kernel.ι (powGm q)
 instance kumM_mono (q : ℕ) : Mono (kumM q) :=
   inferInstanceAs (Mono (Abelian.factorThruCoimage (powGm q)))
 
+/- English proof (translation)
+Establish `h1 : Mono φ.hom` using `(sheafToPresheaf _ _).map_mono φ`. Establish `h2 : Mono (φ.hom.app (op U))` using `(NatTrans.mono_iff_mono_app _).mp h1 (op U)`. Conclude with `(ModuleCat.mono_iff_injective _).mp h2`.
+-/
 theorem sec_injective {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) [Mono φ] (U : Scheme.{0}) :
     Function.Injective (Sec.map φ (U := U)) := by
   have h1 : Mono φ.hom := (sheafToPresheaf _ _).map_mono φ
@@ -44,6 +55,11 @@ def LeafKumSecSurj : Prop := ∀ (q : ℕ) [NeZero q] (U : Scheme.{0}), IsUnit (
 def LeafKumBij : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (B : Type) [CommRing B], IsUnit (q : B) →
   Function.Bijective (HK.post ℤ ((chains ℤ).obj (sp B)) (kumM q) 0)
 
+/- English proof (translation)
+Introduce `hy q _ B _ hq`. Establish `hA10 : A10` using `hy.2.2.2.2.2.2.2.2.1`. Use `hA10 ℤ (sp B) (kumM q) ?_ 0` and prove the remaining obligations. Introduce `U ⟨x⟩`. Use `⟨sec_injective _ U, hS q U ?_⟩` and prove the remaining obligations.
+
+Establish `x' : U ⟶ Spec (CommRingCat.of B)` using `x`. Establish `h1 : IsUnit ((q : ℕ) : Γ(Spec (CommRingCat.of B), ⊤))`. Use `hq.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom` as an intermediate fact. Simplify using `using this`. Simplify using `using h1.map x'.appTop.hom`.
+-/
 theorem LeafKumBij_of (hS : LeafKumSecSurj) : LeafKumBij := by
   intro hy q _ B _ hq
   have hA10 : A10 := hy.2.2.2.2.2.2.2.2.1
@@ -66,6 +82,9 @@ def unitsToSec (U : Scheme.{0}) : Additive (Γ(U, ⊤))ˣ →+ Sec Gm U where
       (⟨x⟩ : ULift (Additive (Γ(U, ⊤))ˣ)) ⟨y⟩
     exact this
 
+/- English proof (translation)
+Establish `h` using `toSheafify_naturality Scheme.etaleTopology (Functor.whiskerLeft Scheme.Γ (powNat q))`. Establish `h2` using `congrArg (fun η => (η.app (op U)).hom (⟨x⟩ : ULift (Additive (Γ(U, ⊤))ˣ))) h`. Conclude with `h2.symm`.
+-/
 theorem pow_unitsToSec (q : ℕ) (U : Scheme.{0}) (x : Additive (Γ(U, ⊤))ˣ) :
     Sec.map (powGm q) (unitsToSec U x) = unitsToSec U (q • x) := by
   have h := toSheafify_naturality Scheme.etaleTopology (Functor.whiskerLeft Scheme.Γ (powNat q))
@@ -83,6 +102,15 @@ def EtaleUnitsDegreeZeroCohomologySurjectiveFromRingUnits : Prop := Hyps → ∀
   ∃ u : Additive Bˣ →+ H ℤ (sp B) Gm 0, Function.Surjective u ∧
     ∀ x : Additive Bˣ, HK.post ℤ ((chains ℤ).obj (sp B)) (powGm q) 0 (u x) = u (q • x)
 
+/- English proof (translation)
+Introduce `hy q _ B _`. Take `⟨e, he⟩` from `hN hy`. Set `ψ : Bˣ →* (Γ(Spec (CommRingCat.of B), ⊤))ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom.toMonoidHom`. Establish `hψ : Function.Surjective ψ`. Introduce `v`.
+
+Use `⟨Units.map (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom.toMonoidHom v, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[ψ]`. Set `u : Additive Bˣ →+ H ℤ (sp B) Gm 0` to `((e Gm (Spec (CommRingCat.of B))).toAddMonoidHom.comp (unitsToSec _)).comp (MonoidHom.toAdditive ψ)`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y`. Take `⟨s, rfl⟩` from `(e Gm (Spec (CommRingCat.of B))).surjective y`. Take `⟨v, rfl⟩` from `hS B s`. Take `⟨w, hw⟩` from `hψ (Additive.toMul v)`. Conclude with `⟨Additive.ofMul w, by simp [u, hw]⟩`.
+
+Introduce `x`. Simplify using `only [u, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom]`. Rewrite using `[he, pow_unitsToSec, ← map_nsmul (MonoidHom.toAdditive ψ)]`.
+-/
 theorem etale_units_degree_zero_cohomology_of_natural_iso_and_surjective (hN : EtaleDegreeZeroCohomologyNaturallyIsoToSections) (hS : LeafGmSecSurj) : EtaleUnitsDegreeZeroCohomologySurjectiveFromRingUnits := by
   intro hy q _ B _
   obtain ⟨e, he⟩ := hN hy
@@ -105,8 +133,18 @@ theorem etale_units_degree_zero_cohomology_of_natural_iso_and_surjective (hN : E
     simp only [u, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom]
     rw [he, pow_unitsToSec, ← map_nsmul (MonoidHom.toAdditive ψ)]
 
+/- English proof (translation)
+The claim follows from `cokernel.π_desc _ _ _`.
+-/
 theorem kumSC_g_kumM (q : ℕ) : (kumSC q).g ≫ kumM q = powGm q := cokernel.π_desc _ _ _
 
+/- English proof (translation)
+Introduce `hy q _ B _ hq`. Take `⟨u, hus, hu⟩` from `etale_units_degree_zero_cohomology_of_natural_iso_and_surjective hN hG hy q B`. Set `e` to `AddEquiv.ofBijective (HK.post ℤ ((chains ℤ).obj (sp B)) (kumM q) 0) (LeafKumBij_of hS hy q B hq)`. Use `⟨e.symm.toAddMonoidHom.comp u, e.symm.surjective.comp hus, ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Use `⟨u x, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Use `show HK.post ℤ ((chains ℤ).obj (sp B)) (kumM q) 0 (HK.post ℤ ((chains ℤ).obj (sp B)) (kumSC q).g 0 (u x)) = e (e.symm (u (q • x)))`. Rewrite using `[AddEquiv.apply_symm_apply, ← hu]`. Establish `h` using `post_comp ℤ ((chains ℤ).obj (sp B)) (kumSC q).g (kumM q) 0 (u x)`.
+
+Establish `h2 : HK.post ℤ ((chains ℤ).obj (sp B)) ((kumSC q).g ≫ kumM q) 0 (u x) = HK.post ℤ ((chains ℤ).obj (sp B)) (powGm q) 0 (u x)` using `by erw [kumSC_g_kumM]; rfl`. Conclude with `h.symm.trans h2`.
+-/
 theorem etale_kummer_degree_zero_cohomology_of_sections_and_units_surjective (hS : LeafKumSecSurj) (hN : EtaleDegreeZeroCohomologyNaturallyIsoToSections) (hG : LeafGmSecSurj) :
     LateralTheory.E.H2CurveOrder.LeafKumSeqPf.KummerUnitsSurjectH0 := by
   intro hy q _ B _ hq

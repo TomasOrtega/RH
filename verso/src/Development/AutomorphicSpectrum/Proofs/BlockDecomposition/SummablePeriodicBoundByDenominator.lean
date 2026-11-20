@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Compare
 
+/- English proof (translation)
+Establish `h1 : Summable (fun p : Y × Q => d p.1 * (fun _ : Q => (1 : ℝ)) p.2)` using `Summable.mul_of_nonneg hs (Summable.of_finite) hd (fun _ => zero_le_one)`. Establish `h2` using `h1.comp_injective hinj`. Simplify `h2` using `[Function.comp_def]`.
+-/
 theorem summable_comp_of_injective_prod {X Y Q : Type*} [Finite Q] {d : Y → ℝ}
     (hd : ∀ y, 0 ≤ d y) (hs : Summable d) (y : X → Y) (q : X → Q)
     (hinj : Function.Injective fun x => (y x, q x)) : Summable fun x => d (y x) := by
@@ -25,6 +28,13 @@ theorem summable_comp_of_injective_prod {X Y Q : Type*} [Finite Q] {d : Y → �
   have h2 := h1.comp_injective hinj
   simpa [Function.comp_def] using h2
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ (M ⧸ (nsmulAddMonoidHom τ : M →+ M).range) := Module.Finite.of_surjective (QuotientAddGroup.mk' _).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `x`. Proceed by induction on `x using QuotientAddGroup.induction_on with`. Consider the case `H m`.
+
+Use `⟨⟨(τ : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hτ.ne')⟩, ?_⟩` and prove the remaining obligations. Establish `: ((τ : ℤ) • (m : M ⧸ (nsmulAddMonoidHom τ : M →+ M).range)) = ((τ • m : M) : M ⧸ (nsmulAddMonoidHom τ : M →+ M).range)`. Rewrite using `[natCast_zsmul]`. Both sides reduce to the same expression. Use `show ((τ : ℤ) • (m : M ⧸ (nsmulAddMonoidHom τ : M →+ M).range)) = 0`.
+
+Rewrite using `[this, QuotientAddGroup.eq_zero_iff]`. Conclude with `⟨m, rfl⟩`.
+-/
 theorem finite_quot_nsmul {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] {τ : ℕ} (hτ : 0 < τ) :
     Finite (M ⧸ (nsmulAddMonoidHom τ : M →+ M).range) := by
   haveI : Module.Finite ℤ (M ⧸ (nsmulAddMonoidHom τ : M →+ M).range) :=
@@ -44,6 +54,9 @@ theorem finite_quot_nsmul {M : Type*} [AddCommGroup M] [Module.Finite ℤ M] {τ
 
 variable {F E : Type} [Field F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_hermO_iff (σ : E →ₐ[F] E) (n : ℕ) (c : hermE σ n) :
     c ∈ hermO σ n ↔ ∀ a b, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = c.1 a b := Iff.rfl
 
@@ -67,10 +80,16 @@ def toInt (σ : E →ₐ[F] E) (n : ℕ) : hermO σ n →+ Matrix (Fin n) (Fin n
     rw [map_add]
     exact Eq.trans rfl (Eq.symm (Eq.trans (congrArg₂ (· + ·) h2 h3) rfl))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec ((mem_hermO_iff σ n c.1).1 c.2 a b)`.
+-/
 theorem algebraMap_toInt (σ : E →ₐ[F] E) (n : ℕ) (c : hermO σ n) (a b : Fin n) :
     algebraMap (𝓞 E) E (toInt σ n c a b) = c.1.1 a b :=
   Classical.choose_spec ((mem_hermO_iff σ n c.1).1 c.2 a b)
 
+/- English proof (translation)
+Introduce `c d h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[← algebraMap_toInt σ n c a b, ← algebraMap_toInt σ n d a b, h]`.
+-/
 theorem toInt_injective (σ : E →ₐ[F] E) (n : ℕ) : Function.Injective (toInt σ n) := by
   intro c d h
   apply Subtype.ext
@@ -78,9 +97,17 @@ theorem toInt_injective (σ : E →ₐ[F] E) (n : ℕ) : Function.Injective (toI
   ext a b
   rw [← algebraMap_toInt σ n c a b, ← algebraMap_toInt σ n d a b, h]
 
+/- English proof (translation)
+The claim follows from `Module.Finite.of_injective (toInt σ n).toIntLinearMap (toInt_injective σ n)`.
+-/
 theorem finite_hermO (σ : E →ₐ[F] E) (n : ℕ) : Module.Finite ℤ (hermO σ n) :=
   Module.Finite.of_injective (toInt σ n).toIntLinearMap (toInt_injective σ n)
 
+/- English proof (translation)
+Introduce `y hy i`. Take `⟨o, ho⟩` from `hy i`. Use `choose m hm using hl`. Use `⟨o + ∑ j, m i j * y j, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_mulVec, Pi.add_apply, map_add, ho]`.
+
+Use `congr 1`. Simplify using `[Matrix.mulVec, dotProduct, hm]`.
+-/
 theorem Kc_le_add {n : ℕ} (c l : Matrix (Fin n) (Fin n) E)
     (hl : ∀ a b, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = l a b) : Kc c ≤ Kc (c + l) := by
   intro y hy i
@@ -91,6 +118,11 @@ theorem Kc_le_add {n : ℕ} (c l : Matrix (Fin n) (Fin n) E)
   congr 1
   simp [Matrix.mulVec, dotProduct, hm]
 
+/- English proof (translation)
+Establish `h1` using `Kc_le_add c l hl`. Establish `h2` using `Kc_le_add (c + l) (-l) (fun a b => by`. Take `⟨o, ho⟩` from `hl a b`. Conclude with `⟨-o, by simp [ho]⟩)`. Rewrite `h2` using `[add_neg_cancel_right]`.
+
+Unfold `delta`. Rewrite using `[le_antisymm h2 h1]`.
+-/
 theorem delta_add {n : ℕ} (c l : Matrix (Fin n) (Fin n) E)
     (hl : ∀ a b, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = l a b) : delta (c + l) = delta c := by
   have h1 := Kc_le_add c l hl
@@ -107,6 +139,23 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Integ.Hua
 
 open GlobalTheory.CompanionTheory.SiegelND.Integ.Hua.Compare in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n Λ t ht τ hτ hΛ g hg hper C s hb hsum`. Use `haveI : Module.Finite ℤ (hermO σ n) := finite_hermO σ n`. Use `haveI := finite_quot_nsmul (M := hermO σ n) hτ`. Set `y : hermE σ n ⧸ Λ → hermE σ n ⧸ hermO σ n` to `fun x => QuotientAddGroup.mk (t • Quotient.out x)`. Establish `hmem : ∀ x, t • Quotient.out x - Quotient.out (y x) ∈ hermO σ n`.
+
+Introduce `x`. Establish `h : (QuotientAddGroup.mk (Quotient.out (y x)) : hermE σ n ⧸ hermO σ n) = QuotientAddGroup.mk (t • Quotient.out x)` using `QuotientAddGroup.out_eq' (y x)`. Use `QuotientAddGroup.eq.1 h` as an intermediate fact. Rewrite `this` using `[neg_add_eq_sub]`. Then use the resulting hypothesis. Set `w : hermE σ n ⧸ Λ → hermO σ n` to `fun x => ⟨_, hmem x⟩`.
+
+Set `q : hermE σ n ⧸ Λ → hermO σ n ⧸ (nsmulAddMonoidHom τ : hermO σ n →+ hermO σ n).range` to `fun x => QuotientAddGroup.mk (w x)`. Establish `hinj : Function.Injective fun x => (y x, q x)`. Introduce `x x' h`. Establish `hy : y x = y x'` using `congrArg Prod.fst h`. Establish `hq : q x = q x'` using `congrArg Prod.snd h`.
+
+Take `⟨c, hc⟩` from `QuotientAddGroup.eq.1 hq`. Establish `hc' : τ • (c.1 : hermE σ n) = t • (Quotient.out x' - Quotient.out x)`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [nsmulAddMonoidHom_apply, AddSubgroup.coe_add, AddSubgroup.coe_neg, AddSubgroup.coe_nsmul] at this`. Rewrite using `[this]`.
+
+Simplify using `only [w, hy, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hd : Quotient.out x' - Quotient.out x = ((τ : F) / t) • (c.1 : hermE σ n)`. Rewrite using `[div_eq_inv_mul, mul_smul, Nat.cast_smul_eq_nsmul F τ, hc', smul_smul, inv_mul_cancel₀ ht, one_smul]`. Establish `hmemΛ : Quotient.out x' - Quotient.out x ∈ Λ` using `hd ▸ hΛ _ c.2`.
+
+Rewrite using `[← QuotientAddGroup.out_eq' x, ← QuotientAddGroup.out_eq' x']`. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises. Rewrite using `[neg_add_eq_sub]` and apply the resulting hypothesis. Establish `hdnn : ∀ z : hermE σ n ⧸ hermO σ n, 0 ≤ (delta (Quotient.out z).1 : ℝ) ^ (-s)` using `fun z => Real.rpow_nonneg (Nat.cast_nonneg _) _`. Establish `hs` using `summable_comp_of_injective_prod hdnn hsum y q hinj`.
+
+Use `Summable.of_nonneg_of_le (fun x => hg _) (fun x => ?_) (hs.mul_left |C|)` and prove the remaining obligations. Establish `hdelta : delta (t • Quotient.out x).1 = delta (Quotient.out (y x)).1`. Establish `hl : ∀ a b, ∃ o : 𝓞 E, algebraMap (𝓞 E) E o = (w x).1.1 a b` using `(w x).2`. Rewrite using `[← delta_add (Quotient.out (y x)).1 (w x).1.1 hl]`. Use `congr 1`.
+
+Simplify using `[w]`. Use `(hb _).trans ?_` and prove the remaining obligations. Rewrite using `[hdelta]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (hdnn _)`.
+-/
 theorem summable_quot_of_le_delta_rpow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (Λ : AddSubgroup (hermE σ n)) (t : F), t ≠ 0 → ∀ τ : ℕ, 0 < τ →
     (∀ c ∈ hermO σ n, ((τ : F) / t) • c ∈ Λ) →

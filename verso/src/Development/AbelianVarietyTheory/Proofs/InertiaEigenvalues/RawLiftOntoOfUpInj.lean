@@ -15,6 +15,13 @@ namespace GlobalTheory
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF hS hU i`. Take `⟨th, hth⟩` from `hL.exists_isRaw i A.μ0`. Establish `hsurj` using `(GlobalTheory.adjoint_injective_surjective_and_positive_scalar _ _ th).1 (hU i th hth)`. Rewrite using `[hS i A.μ0, Submodule.map_top]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `hL.thP.thF_mem i A.μ0 x`. Introduce `w hw`. Rewrite `hw` using `[← (hL.models.HW i (sg0 D A)).2.1]`. Take `⟨y, rfl⟩` from `hw`.
+
+Take `⟨x, rfl⟩` from `hsurj y`. Conclude with `⟨x, (hth x).symm⟩`.
+-/
 theorem rawLift_onto_of_upInj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → RatSpan R → (∀ i, UpInj R i A.μ0) → ThOnto R := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF hS hU i
   obtain ⟨th, hth⟩ := hL.exists_isRaw i A.μ0

@@ -20,6 +20,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isContRep_zero`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`.
+-/
 private theorem repSum {μ : Measure (G1 K (2 + 2))} [μ.IsHaarMeasure] {ι : Type} (s : Finset ι) (φ : ι → L2 μ)
     (F : ι → G1 K (2 + 2) → ℂ) (h : ∀ i, IsContRep μ (φ i) (F i)) : IsContRep μ (∑ i ∈ s, φ i) (∑ i ∈ s, F i) := by
   classical
@@ -27,6 +30,13 @@ private theorem repSum {μ : Measure (G1 K (2 + 2))} [μ.IsHaarMeasure] {ι : Ty
   | empty => simpa using isContRep_zero
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]; exact (h i).add ih
 
+/- English proof (translation)
+Establish `e : (fun x => ∫ t, β (x + t) • κ t v) = MeasureTheory.convolution β (fun t => κ (-t) v) (ContinuousLinearMap.lsmul ℝ ℂ) volume`. Use function extensionality and compare the values at `x`. Rewrite using `[MeasureTheory.convolution]`. Use `Eq.trans ?_ (integral_add_left_eq_self _ x)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Establish `c1 : Continuous fun t => κ (-t) v` using `(hk.1.comp continuous_neg).clm_apply continuous_const`. Establish `c2 : HasCompactSupport fun t => κ (-t) v` using `(hk.2.comp_homeomorph (Homeomorph.neg ℝ)).mono fun t ht h0 => ht (by`. Establish `: κ (-t) = 0` using `h0`. Simplify using `[this])`. Rewrite using `[e]`.
+
+Conclude with `⟨c2.continuous_convolution_right _ hβ.locallyIntegrable c1, hβc.convolution _ c2⟩`.
+-/
 private theorem kerConv {d : ℕ} (κ : ℝ → Eu d →L[ℂ] Eu d) (hk : Ker κ) (β : ℝ → ℂ) (v : Eu d) (hβ : Continuous β)
     (hβc : HasCompactSupport β) :
     Continuous (fun x => ∫ t, β (x + t) • κ t v) ∧ HasCompactSupport (fun x => ∫ t, β (x + t) • κ t v) := by
@@ -44,6 +54,39 @@ private theorem kerConv {d : ℕ} (κ : ℝ → Eu d →L[ℂ] Eu d) (hk : Ker �
   rw [e]
   exact ⟨c2.continuous_convolution_right _ hβ.locallyIntegrable c1, hβc.convolution _ c2⟩
 
+/- English proof (translation)
+Take `⟨w, hw, hwc, hwe⟩ : ∃ w : ℝ → Eu d, Continuous w ∧ HasCompactSupport w ∧ ∀ x, w x = ∫ t, β (x + t) • κ t v` from `⟨_, (kerConv κ hk β v hβ hβc).1, (kerConv κ hk β v hβ hβc).2, fun _ => rfl⟩`. Set `e` to `EuclideanSpace.basisFun (Fin d) ℂ`. Establish `hci : ∀ i, Continuous fun x => w x i` using `fun i => by fun_prop`. Establish `hcc : ∀ i, HasCompactSupport fun x => w x i` using `fun i => hwc.mono fun x hx h0 => hx (by simp only [h0]; rfl)`. Establish `hsum : ∀ x, w x = ∑ i, w x i • e i` using `fun x => (e.sum_repr (w x)).symm`.
+
+Use `choose U hU using fun i => (denseCc d).2.1 (fun x => w x i) (e i) (hci i) (hcc i)`. Establish `hJ : Rop μ a (A.J u) = A.J (∑ i, U i)`. Use `hc u _ ?_` and prove the remaining obligations. Use `filter_upwards [MeasureTheory.Lp.coeFn_finsetSum Finset.univ U, ae_all_iff.2 hU] with x h2 h3`. Rewrite using `[h2]`.
+
+Simplify using `only [Finset.sum_apply, h3]`. Rewrite using `[← hsum x, hwe]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [(measurePreserving_add_left volume x).quasiMeasurePreserving.ae hu] with t ht`. Rewrite using `[ht, map_smul]`.
+
+Take `⟨F, hFd⟩ : ∃ F : Fin d → G1 K (2 + 2) → ℂ, F = fun i => bf (fun x => w x i) (A.sec (e i))` from `⟨_, rfl⟩`. Establish `hsec` using `fun i => (A.onto (A.sec (e i))).1 ⟨_, rfl⟩`. Establish `hS` using `fun i => secFun μ₂ τ₁ τ₂ D h₁ h₂ _ (hsec i).1 (hsec i).2`. Establish `hB : ∀ i, PFun (F i) ∧ InBand (F i)` using `fun i => by`. Establish `h'` using `bfFun _ _ (hS i) (hci i) (hcc i)`.
+
+Rewrite using `[hFd]`. Conclude with `⟨h'.1, h'.2.1⟩`. Establish `hT` using `fun i => thBasic μ (F i) (hB i).1.cont (hB i).1.rat (hB i).2`. Establish `hR : IsContRep μ (A.J (∑ i, U i)) (∑ i, th (F i))`. Rewrite using `[map_sum]`.
+
+Use `repSum Finset.univ (fun i => A.J (U i)) (fun i => th (F i)) fun i => ⟨(hT i).2.1, (hT i).2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hFd]`. Conclude with `A.spec _ _ _ (hci i) (hcc i) (hU i)`. Establish `heq : rc μ a (A.J u) = ∑ i, th (F i)`. Take `⟨c1, -, r1⟩ : IsContRep μ (Rop μ a (A.J u)) (rc μ a (A.J u))` from `isContRep_rconv μ a (A.J u)`.
+
+Take `⟨c2, -, r2⟩` from `hR`. Rewrite `r1` using `[hJ]`. Use `(Continuous.ae_eq_iff_eq μ c1 c2).1 ?_` and prove the remaining obligations. Use `filter_upwards [r1, r2] with y y1 y2`. Conclude with `y1.symm.trans y2`.
+
+Establish `hct : ∀ z, ct 2 (rc μ a (A.J u)) z = ∑ i, (volN K * F i z + ∫ X, F i (w0 K * nn X * z) ∂unipMeasure K (2 + 2) 2)`. Introduce `z`. Simplify using `only [← fun i => (thCt (F i) (hB i).1 (hB i).2 z).2.2.2]`. Rewrite using `[ct, heq]`. Simplify using `only [Finset.sum_apply]`.
+
+Use `integral_finset_sum _ fun i _ => ?_` and prove the remaining obligations. Take `⟨-, -, C, hC, hsub, -⟩` from `volOne (K := K) (2 + 2) 2`. Establish `hcont : Continuous fun X => th (F i) (unipOne K (2 + 2) 2 X * z)` using `(hT i).2.1.comp ((continuous_unipOne 2).mul continuous_const)`. Conclude with `(hcont.continuousOn.integrableOn_compact hC).mono_set hsub`. Take `⟨h1, -, -, -, -⟩` from `hpSpec (K := K)`.
+
+Take `⟨-, -, hl, -⟩` from `blkLaws (K := K)`. Establish `hz : ∀ g : G1 K (2 + 2), HP 2 2 (lv 1 1 (s - HH g) * g) = s` using `fun g => by`. Establish `hn : ∀ (X : UPos (2 + 2) 2 → 𝔸[K]) (g : G1 K (2 + 2)), HH (nn X * g) = HH g` using `fun X g => by`. Use `h1 X 1 1 0 g` as an intermediate fact. Rewrite `this` using `[hl, mul_one, zero_add]`. Then use the resulting hypothesis.
+
+Use `h1 0 1 1 (s - HH g) g` as an intermediate fact. Rewrite `this` using `[mul_assoc, hn]`. Express the relevant statement in the definitionally equal form `HH _ = s`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hF : ∀ (g : G1 K (2 + 2)) (i : Fin d), F i (lv 1 1 (s - HH g) * g) = w s i * Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * s : ℝ) : ℂ) * A.sec (e i) g` using `fun g i => by`. Rewrite using `[hFd]`. Simplify using `only [bf]`. Rewrite using `[hz g, (hS i).ray]`. Establish `hq : ∀ i, ∃ q : Eu d', B.sec q = fun g => ∫ X, F i (w0 K * nn X * (lv 1 1 (s - HH g) * g)) ∂unipMeasure K (2 + 2) 2` using `fun i => by`.
+
+Establish `h` using `intertw μ₂ τ₁ τ₂ D h₁ h₂ (A.sec (e i)) (fun x => w x i) s (hsec i).1 (hsec i).2 (hci i) (hcc i)`. Rewrite using `[hFd]`. Conclude with `(B.onto _).2 h`. Use `choose q hq using hq`. Use `⟨Complex.exp ((((2 + 2 : ℕ) : ℝ) / 2 * s : ℝ) : ℂ) • w s, ∑ i, q i, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hct, Finset.sum_add_distrib]`. Use `congr 1`. Establish `hs : A.sec (w s) g = ∑ i, w s i * A.sec (e i) g` using `by conv_lhs => rw [hsum s]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[map_smul, Pi.smul_apply, hs, smul_eq_mul, Finset.mul_sum, (volOne (K := K) 0 0).2.1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hF, Complex.ofReal_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hq]`.
+-/
 private theorem lineTerm [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] {μ₂ : Measure (G1 K 2)}
     [μ₂.IsHaarMeasure] {τ₁ τ₂ : Submodule ℂ (L2 μ₂)} (h₁ : CuspIrr μ₂ τ₁) (h₂ : CuspIrr μ₂ τ₂) {D : TypeDat K (2 + 2)}
     {d d' : ℕ} (A : Line μ τ₁ τ₂ D d) (B : Line μ τ₂ τ₁ D d') (a : CC K (2 + 2)) (κ : ℝ → Eu d →L[ℂ] Eu d) (hk : Ker κ)
@@ -136,6 +179,11 @@ private theorem lineTerm [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [hq]
 
+/- English proof (translation)
+Establish `hcl : IsClosed {u : L (Eu d) | J u ∈ C}` using `hC.preimage J.continuous`. Establish `hle : (Submodule.span ℂ {u : L (Eu d) | ∃ (β : ℝ → ℂ) (v : Eu d), Continuous β ∧ HasCompactSupport β ∧ ∀ᵐ x : ℝ, u x = β x • v} : Set (L (Eu d))) ⊆ {u : L (Eu d) | J u ∈ C}`. Establish `: Submodule.span ℂ {u : L (Eu d) | ∃ (β : ℝ → ℂ) (v : Eu d), Continuous β ∧ HasCompactSupport β ∧ ∀ᵐ x : ℝ, u x = β x • v} ≤ C.comap J.toLinearMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `u ⟨β, v, h1, h2, h3⟩`.
+
+Conclude with `h β v u h1 h2 h3`. Conclude with `this`. Conclude with `closure_minimal hle hcl ((denseCc d).1 u)`.
+-/
 private theorem lineIn [IsTotallyComplex K] {μ : Measure (G1 K (2 + 2))} [μ.IsHaarMeasure] {d : ℕ}
     (J : L (Eu d) →ₗᵢ[ℂ] L2 μ) (C : Submodule ℂ (L2 μ)) (hC : IsClosed (C : Set (L2 μ)))
     (h : ∀ (β : ℝ → ℂ) (v : Eu d) (u : L (Eu d)), Continuous β → HasCompactSupport β → (∀ᵐ x : ℝ, u x = β x • v) → J u ∈ C)
@@ -151,6 +199,23 @@ private theorem lineIn [IsTotallyComplex K] {μ : Measure (G1 K (2 + 2))} [μ.Is
     exact this
   exact closure_minimal hle hcl ((denseCc d).1 u)
 
+/- English proof (translation)
+Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hP D d d' A A' a P hP0 ha φ hφ s`. Establish `hPs : Pair μ₂ τ₂ τ₁` using `⟨hP.irr₂, hP.irr₁, hP.orth.symm⟩`. Take `⟨κ, hk, hc, -⟩` from `convR K μ μ₂ τ₁ τ₂ hP D d d' A A' a ha`. Take `⟨κ', hk', hc', -⟩` from `convR K μ μ₂ τ₂ τ₁ hPs D d' d A' A a ha`. Take `⟨kc, -, hin⟩` from `(ctKv μ a).1 2`.
+
+Take `⟨z, hzd⟩ : ∃ z : G1 K (2 + 2) → G1 K (2 + 2), z = fun g => lv 1 1 (s - HH g) * g` from `⟨_, rfl⟩`. Set `Tm : L2 μ →ₗ[ℂ] (G1 K (2 + 2) → ℂ)` to `{ toFun := fun φ g => ⟪kc (z g), φ⟫_ℂ map_add' := fun x y => by funext g; simp [inner_add_right] map_smul' := fun c x => by funext g; simp [inner_smul_right] }`. Establish `hTc : Continuous Tm` using `continuous_pi fun g => (innerSL ℂ (kc (z g))).continuous`. Establish `hTm : ∀ (ψ : L2 μ) g, Tm ψ g = ct 2 (rc μ a ψ) (lv 1 1 (s - HH g) * g)` using `fun ψ g => by`. Rewrite using `[← hin, show lv 1 1 (s - HH g) * g = z g by rw [hzd]]`.
+
+Both sides reduce to the same expression. Set `S : Submodule ℂ (G1 K (2 + 2) → ℂ)` to `LinearMap.range A.sec ⊔ LinearMap.range A'.sec`. Establish `hS : IsClosed (S : Set (G1 K (2 + 2) → ℂ))` using `Submodule.closed_of_finiteDimensional S`. Set `C : Submodule ℂ (L2 μ)` to `S.comap Tm`. Establish `hC : IsClosed (C : Set (L2 μ))` using `hS.preimage hTc`.
+
+Establish `hA : ∀ u, A.J u ∈ C` using `lineIn A.J C hC fun β v u h1 h2 h3 => by`. Take `⟨p, q, h⟩` from `lineTerm μ hP.irr₁ hP.irr₂ A A' a κ hk hc s β v u h1 h2 h3`. Establish `e : Tm (A.J u) = A.sec p + A'.sec q` using `funext fun g => by rw [hTm, h]; rfl`. Express the relevant statement in the definitionally equal form `Tm (A.J u) ∈ S`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem_sup ⟨p, rfl⟩ ⟨q, rfl⟩`. Establish `hA' : ∀ u, A'.J u ∈ C` using `lineIn A'.J C hC fun β v u h1 h2 h3 => by`. Take `⟨p, q, h⟩` from `lineTerm μ hP.irr₂ hP.irr₁ A' A a κ' hk' hc' s β v u h1 h2 h3`. Establish `e : Tm (A'.J u) = A.sec q + A'.sec p` using `funext fun g => by rw [hTm, h, add_comm]; rfl`. Express the relevant statement in the definitionally equal form `Tm (A'.J u) ∈ S`.
+
+Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup ⟨q, rfl⟩ ⟨p, rfl⟩`. Set `W : Submodule ℂ (L2 μ)` to `LinearMap.range A.J.toLinearMap ⊔ LinearMap.range A'.J.toLinearMap`. Establish `hWC : W ≤ C` using `sup_le (by rintro _ ⟨u, rfl⟩; exact hA u) (by rintro _ ⟨u, rfl⟩; exact hA' u)`. Establish `hφW : φ ∈ W.topologicalClosure`.
+
+Rewrite using `[← Submodule.orthogonal_orthogonal_eq_closure, Submodule.mem_orthogonal]`. Introduce `h hh`. Establish `h0 : P h = 0` using `(hP0.2.2 h).2 ⟨fun u => (Submodule.mem_orthogonal _ _).1 hh _ (Submodule.mem_sup_left ⟨u, rfl⟩), fun u => (Submodule.mem_orthogonal _ _).1 hh _ (Submodule.mem_sup_right ⟨u, rfl⟩)⟩`. Establish `e : ⟪P h, φ⟫_ℂ = ⟪h, P φ⟫_ℂ` using `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.1 hP0.1 h φ`. Rewrite using `[← hφ, ← e, h0, inner_zero_left]`.
+
+Establish `hφC : Tm φ ∈ S` using `Submodule.topologicalClosure_minimal W hWC hC hφW`. Take `⟨_, ⟨v, rfl⟩, _, ⟨v', rfl⟩, h⟩` from `Submodule.mem_sup.1 hφC`. Conclude with `⟨v, v', fun g => by rw [← hTm, ← h]; rfl⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctMem :
     ForAllC fun K _ _ μ _ _ _ _ _ D _ _ A A' => ∀ (a : CC K (2 + 2)) (P : L2 μ →L[ℂ] L2 μ), IsOrthogonalProjectionTwoLines A.J A'.J P → D.Hecke a → ∀ φ, P φ = φ → ∀ s : ℝ,
       ∃ v v', ∀ g, ct 2 (rc μ a φ) (lv 1 1 (s - HH g) * g) = A.sec v g + A'.sec v' g := by

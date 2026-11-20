@@ -11,6 +11,15 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Establish `h1 : (q ⁻¹ᵁ U).ι ≫ a = q ∣_ U`. Rewrite using `[← cancel_mono U.ι, Category.assoc, ha, morphismRestrict_ι]`. Establish `hrange : Set.range (𝟙 W : W ⟶ W) ⊆ Set.range (q ⁻¹ᵁ U).ι`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Establish `hw : U.ι (a w) ∈ Set.range U.ι` using `⟨_, rfl⟩`. Rewrite `hw` using `[Scheme.Opens.range_ι, ← Scheme.Hom.comp_apply, ha]`. Conclude with `hw`. Set `s : W ⟶ (q ⁻¹ᵁ U).toScheme` to `IsOpenImmersion.lift (q ⁻¹ᵁ U).ι (𝟙 W) hrange`. Establish `hs : s ≫ (q ⁻¹ᵁ U).ι = 𝟙 W` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `h2 : s ≫ q ∣_ U = a`. Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hs, Category.id_comp, ha]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ⟩`. Conclude with `⟨GroundTheory.Heights₂.Heights.Model.pullbackCompIso h1 γ⟩`.
+
+Introduce and unpack `⟨δ⟩`. Conclude with `⟨GroundTheory.Heights₂.Heights.Model.pullbackCompIso h2 δ ≪≫ (GroundTheory.Heights₂.Heights.Model.pullbackCompIso hs (Iso.refl _)).symm ≪≫ (Scheme.Modules.pullbackId W).app E⟩`.
+-/
 theorem nonempty_pullback_iso_iff {W X : Scheme.{u}} (q : W ⟶ X) (U : X.Opens)
     (a : W ⟶ U.toScheme) (ha : a ≫ U.ι = q) (E' : U.toScheme.Modules) (E : W.Modules) :
     Nonempty ((Scheme.Modules.pullback a).obj E' ≅ E) ↔
@@ -45,12 +54,20 @@ def SpreadBundle.Along (X : Scheme.{0}) (p : Nat.Primes)
         Nonempty ((Scheme.Modules.pullback (pullback.fst (toSpecZ X) g ∣_ invOpen X m')).obj E' ≅
           (Scheme.Modules.pullback (pullback.fst (toSpecZ X) g ⁻¹ᵁ invOpen X m').ι).obj E)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem SpreadBundle.along_congr (X : Scheme.{0}) (p : Nat.Primes)
     {g g' : Spec (.of (ZLoc p)) ⟶ Spec (.of ℤ)} (h : g = g') :
     SpreadBundle.Along X p g ↔ SpreadBundle.Along X p g' := by
   subst h
   rfl
 
+/- English proof (translation)
+Use `forall_congr' fun E => imp_congr_right fun _ => exists_congr fun m => and_congr_right fun _ => and_congr_right fun _ => forall_congr' fun n => imp_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hdvd : ¬ ((p : ℕ) : ℤ) ∣ (n : ℤ) ↔ ¬ (p : ℕ) ∣ n`. Rewrite using `[Int.natCast_dvd_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h hn`.
+
+Take `⟨E', hE', hiso⟩` from `h (hdvd.2 hn)`. Conclude with `⟨E', hE', (nonempty_pullback_iso_iff _ _ _ (GroundTheory.Heights₂.Heights.Model.toInvOpen_ι _ _ _ _) E' E).1 hiso⟩`. Introduce `h hn`. Take `⟨E', hE', hiso⟩` from `h (hdvd.1 hn)`. Conclude with `⟨E', hE', (nonempty_pullback_iso_iff _ _ _ (GroundTheory.Heights₂.Heights.Model.toInvOpen_ι _ _ _ _) E' E).2 hiso⟩`.
+-/
 theorem SpreadBundle.model_iff_along (X : Scheme.{0}) (p : Nat.Primes) :
     (∀ E : (GroundTheory.Heights₂.Heights.Model.baseChange (toSpecZ X) (ZLoc p)).Modules,
       GroundTheory.Heights₂.Heights.Model.IsVectorBundle E →
@@ -75,6 +92,11 @@ theorem SpreadBundle.model_iff_along (X : Scheme.{0}) (p : Nat.Primes) :
     exact ⟨E', hE', (nonempty_pullback_iso_iff _ _ _
       (GroundTheory.Heights₂.Heights.Model.toInvOpen_ι _ _ _ _) E' E).2 hiso⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h X hX p`. Take `⟨h1, h2⟩` from `hX`. Conclude with `(SpreadBundle.along_congr X p (specZ_hom_ext _ _)).1 ((SpreadBundle.model_iff_along X p).1 (h X (toSpecZ X) p))`. Introduce `h X f _ _ p`.
+
+Take `rfl` from `specZ_hom_ext f (toSpecZ X)`. Conclude with `(SpreadBundle.model_iff_along X p).2 ((SpreadBundle.along_congr X p (specZ_hom_ext _ _)).2 (h X ⟨‹_›, ‹_›⟩ p))`.
+-/
 theorem SpreadBundle.equiv :
     GroundTheory.Heights₂.Heights.Model.SpreadBundle.Statement ↔ SpreadBundle.Statement := by
   constructor

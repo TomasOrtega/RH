@@ -14,6 +14,9 @@ section Base
 variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+-/
 theorem repr_map (f : R →ₐ[F] R') (y : R ⊗[F] E) (i) : (Algebra.TensorProduct.basis R' (Module.finBasis F E)).repr
     (Algebra.TensorProduct.map f (AlgHom.id F E) y) i =
       f ((Algebra.TensorProduct.basis R (Module.finBasis F E)).repr y i) := by
@@ -22,6 +25,9 @@ theorem repr_map (f : R →ₐ[F] R') (y : R ⊗[F] E) (i) : (Algebra.TensorProd
   | tmul a e => simp [Algebra.TensorProduct.basis_repr_tmul]
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, ← repr_map, map_mul (Algebra.TensorProduct.map f (AlgHom.id F E))]`. Simplify using `[Algebra.TensorProduct.basis_apply]`.
+-/
 theorem lmm_map (f : R →ₐ[F] R') (y : R ⊗[F] E) :
     Algebra.leftMulMatrix (Algebra.TensorProduct.basis R' (Module.finBasis F E))
       (Algebra.TensorProduct.map f (AlgHom.id F E) y) =
@@ -31,12 +37,18 @@ theorem lmm_map (f : R →ₐ[F] R') (y : R ⊗[F] E) :
     map_mul (Algebra.TensorProduct.map f (AlgHom.id F E))]
   simp [Algebra.TensorProduct.basis_apply]
 
+/- English proof (translation)
+Rewrite using `[Algebra.norm_eq_matrix_det (Algebra.TensorProduct.basis R' (Module.finBasis F E)), Algebra.norm_eq_matrix_det (Algebra.TensorProduct.basis R (Module.finBasis F E)), AlgHom.map_det, lmm_map]`. Both sides reduce to the same expression.
+-/
 theorem norm_map' (f : R →ₐ[F] R') (y : R ⊗[F] E) :
     Algebra.norm R' (Algebra.TensorProduct.map f (AlgHom.id F E) y) = f (Algebra.norm R y) := by
   rw [Algebra.norm_eq_matrix_det (Algebra.TensorProduct.basis R' (Module.finBasis F E)),
     Algebra.norm_eq_matrix_det (Algebra.TensorProduct.basis R (Module.finBasis F E)), AlgHom.map_det, lmm_map]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R' (Module.finBasis F E)), Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R (Module.finBasis F E)), lmm_map]`. Simplify using `[Matrix.trace]`.
+-/
 theorem trace_map' (f : R →ₐ[F] R') (y : R ⊗[F] E) :
     Algebra.trace R' _ (Algebra.TensorProduct.map f (AlgHom.id F E) y) = f (Algebra.trace R _ y) := by
   rw [Algebra.trace_eq_matrix_trace (Algebra.TensorProduct.basis R' (Module.finBasis F E)),
@@ -55,9 +67,15 @@ variable (E) in
 
 def aw : AE F E →+* Qv v ⊗[F] E := (Algebra.TensorProduct.map (awF v) (AlgHom.id F E)).toRingHom
 
+/- English proof (translation)
+The claim follows from `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 ⟨_, (idem_at v a).symm⟩)`.
+-/
 theorem awF_at (a : Fv F v) : awF v (atPlace v a) = 0 :=
   Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton.2 ⟨_, (idem_at v a).symm⟩)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h2)`. Establish `h3` using `congrArg (evFin F v) hc`. Rewrite `h3` using `[map_sub, h1, sub_self, map_mul, evFin_atPlace, one_mul]`. Rewrite `hc` using `[atPlace_mul_right, ← h3, mul_zero, map_zero, sub_eq_zero]`. Conclude with `hc`.
+-/
 theorem extF {a b : AF F} (h1 : evFin F v a = evFin F v b) (h2 : awF v a = awF v b) : a = b := by
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h2)
   have h3 := congrArg (evFin F v) hc
@@ -65,6 +83,9 @@ theorem extF {a b : AF F} (h1 : evFin F v a = evFin F v b) (h2 : awF v a = awF v
   rw [atPlace_mul_right, ← h3, mul_zero, map_zero, sub_eq_zero] at hc
   exact hc
 
+/- English proof (translation)
+Use `(Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).repr.injective (Finsupp.ext fun i => extF v ?_ ?_)` and prove the remaining obligations. Rewrite using `[← repr_map, ← repr_map]`. Conclude with `congrArg (fun y => (Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E)).repr y i) h1`. Rewrite using `[← repr_map, ← repr_map]`. Conclude with `congrArg (fun y => (Algebra.TensorProduct.basis (Qv v) (Module.finBasis F E)).repr y i) h2`.
+-/
 theorem extE {a b : AE F E} (h1 : compFin F E v a = compFin F E v b) (h2 : aw E v a = aw E v b) : a = b := by
   refine (Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)).repr.injective (Finsupp.ext fun i => extF v ?_ ?_)
   · rw [← repr_map, ← repr_map]
@@ -73,6 +94,11 @@ theorem extE {a b : AE F E} (h1 : compFin F E v a = compFin F E v b) (h2 : aw E 
     exact congrArg (fun y => (Algebra.TensorProduct.basis (Qv v) (Module.finBasis F E)).repr y i) h2
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `awF v (atPlace v a) ⊗ₜ[F] x = 0`.
+
+Rewrite using `[awF_at, TensorProduct.zero_tmul]`.
+-/
 theorem aw_tensAt (y : Ev E v) : aw E v (tensAt E v y) = 0 := by
   induction y using TensorProduct.induction_on with
   | zero => simp
@@ -82,6 +108,9 @@ theorem aw_tensAt (y : Ev E v) : aw E v (tensAt E v y) = 0 := by
     rw [awF_at, TensorProduct.zero_tmul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul b x`. Rewrite using `[TensorProduct.smul_tmul', tensAt_tmul, tensAt_tmul, TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, atPlace_mul_right, evFin_atPlace]`.
+-/
 theorem smul_tensAt (a : Fv F v) (y : Ev E v) : tensAt E v (a • y) = atPlace v a • tensAt E v y := by
   induction y using TensorProduct.induction_on with
   | zero => simp
@@ -91,6 +120,11 @@ theorem smul_tensAt (a : Fv F v) (y : Ev E v) : tensAt E v (a • y) = atPlace v
       atPlace_mul_right, evFin_atPlace]
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul b x`. Express the relevant statement in the definitionally equal form `atPlace v (evFin F v b) ⊗ₜ[F] x = _`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, atPlace_mul_right, one_mul]`.
+-/
 theorem tensAt_comp (z : AE F E) : tensAt E v (compFin F E v z) = atPlace v (1 : Fv F v) • z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -100,18 +134,30 @@ theorem tensAt_comp (z : AE F E) : tensAt E v (compFin F E v z) = atPlace v (1 :
     rw [TensorProduct.smul_tmul', smul_eq_mul, atPlace_mul_right, one_mul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← idem_smul h, ← tensAt_comp, aw_tensAt]`.
+-/
 theorem aw_of_at {z : AE F E} (h : At (evFin F v) z) : aw E v z = 0 := by
   rw [← idem_smul h, ← tensAt_comp, aw_tensAt]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_smul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero, zero_smul]`.
+-/
 theorem at_smul_idem {M : Type} [AddCommGroup M] [Module (AF F) M] (z : M) :
     At (evFin F v) (atPlace v (1 : Fv F v) • z) := fun u hu => by
   rw [smul_smul, mul_comm, atPlace_mul_right, hu, mul_zero, map_zero, zero_smul]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← compFin_tensAt v y, tensAt_comp]`. Conclude with `at_smul_idem v _`.
+-/
 theorem at_tensAt (y : Ev E v) : At (evFin F v) (tensAt E v y) := by
   rw [← compFin_tensAt v y, tensAt_comp]; exact at_smul_idem v _
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b x => rfl`.
+-/
 theorem comp_cA (z : AE F E) : compFin F E v (cA σ z) = cV σ v (compFin F E v z) := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -123,6 +169,9 @@ variable (σ) in
 def cQ : Qv v ⊗[F] E →ₐ[Qv v] Qv v ⊗[F] E := Algebra.TensorProduct.map (AlgHom.id _ _) σ
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul b x => rfl`.
+-/
 theorem aw_cA (z : AE F E) : aw E v (cA σ z) = cQ σ v (aw E v z) := by
   induction z using TensorProduct.induction_on with
   | zero => simp
@@ -136,14 +185,25 @@ def liftE : Ev E v →* AE F E where
   map_one' := by simp
   map_mul' a b := extE v (by simp [compFin_tensAt, -map_sub]) (by simp [aw_tensAt, -map_sub])
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `compFin F E v (1 + _) = y`. Simplify using `[compFin_tensAt, -map_sub]`.
+-/
 theorem comp_liftE (y : Ev E v) : compFin F E v (liftE E v y) = y := by
   change compFin F E v (1 + _) = y
   simp [compFin_tensAt, -map_sub]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `aw E v (1 + _) = 1`. Simplify using `[aw_tensAt, -map_sub]`.
+-/
 theorem aw_liftE (y : Ev E v) : aw E v (liftE E v y) = 1 := by
   change aw E v (1 + _) = 1
   simp [aw_tensAt, -map_sub]
 
+/- English proof (translation)
+Use `extF v ?_ ?_` and prove the remaining obligations. Rewrite using `[← norm_map']`. Express the relevant statement in the definitionally equal form `Algebra.norm _ (compFin F E v _) = _`. Simplify using `[comp_liftE, evFin_atPlace]`. Rewrite using `[← norm_map']`.
+
+Express the relevant statement in the definitionally equal form `Algebra.norm _ (aw E v _) = _`. Simplify using `[aw_liftE, awF_at]`.
+-/
 theorem norm_liftE (y : Ev E v) :
     Algebra.norm (AF F) (liftE E v y) = 1 - atPlace v 1 + atPlace v (Algebra.norm (Fv F v) y) := by
   refine extF v ?_ ?_
@@ -156,6 +216,9 @@ theorem norm_liftE (y : Ev E v) :
 
 def locChr (χ : Chr F E) : (Ev E v)ˣ →* Circle := χ.comp (Units.map (liftE E v))
 
+/- English proof (translation)
+Introduce `z hz` and use `by refine congrArg χ (Units.ext (extE v (comp_liftE v _) ?_)) have := aw_of_at v hz rw [map_sub, map_one (aw E v), sub_eq_zero] at this exact (aw_liftE v _).trans this.symm`.
+-/
 theorem isLocChar (χ : Chr F E) : IsLocChar χ v (locChr v χ) := fun z hz => by
   refine congrArg χ (Units.ext (extE v (comp_liftE v _) ?_))
   have := aw_of_at v hz
@@ -166,49 +229,82 @@ section Mat
 
 variable {α β ν κ : Type}
 
+/- English proof (translation)
+The claim follows from `Matrix.ext fun i j => extE v (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+-/
 theorem extM {a b : Matrix α β (AE F E)} (h1 : a.map (compFin F E v) = b.map (compFin F E v))
     (h2 : a.map (aw E v) = b.map (aw E v)) : a = b :=
   Matrix.ext fun i j => extE v (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => compFin_tensAt v _`.
+-/
 theorem comp_up (w : Matrix α β (Ev E v)) : (w.map (tensAt E v)).map (compFin F E v) = w :=
   Matrix.ext fun _ _ => compFin_tensAt v _
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => aw_tensAt v _`.
+-/
 theorem aw_up (w : Matrix α β (Ev E v)) : (w.map (tensAt E v)).map (aw E v) = 0 :=
   Matrix.ext fun _ _ => aw_tensAt v _
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => tensAt_comp v _`.
+-/
 theorem up_comp (u : Matrix α β (AE F E)) : (u.map (compFin F E v)).map (tensAt E v) = atPlace v (1 : Fv F v) • u :=
   Matrix.ext fun _ _ => tensAt_comp v _
 
 omit [NumberField E] in
+/- English proof (translation)
+Introduce `u hu` and use `Matrix.ext fun _ _ => at_tensAt v _ u hu`.
+-/
 theorem at_up (w : Matrix α β (Ev E v)) : At (evFin F v) (w.map (tensAt E v)) := fun u hu =>
   Matrix.ext fun _ _ => at_tensAt v _ u hu
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← idem_smul h, ← up_comp, aw_up]`.
+-/
 theorem awM_of_at {u : Matrix α β (AE F E)} (h : At (evFin F v) u) : u.map (aw E v) = 0 := by
   rw [← idem_smul h, ← up_comp, aw_up]
 
 omit [NumberField E] in
+/- English proof (translation)
+Rewrite using `[← comp_up v (u.map _), up_comp, h, Matrix.map_zero _ (map_zero _)]`.
+-/
 theorem compM_of_away {u : Matrix α β (AE F E)} (h : atPlace v (1 : Fv F v) • u = 0) : u.map (compFin F E v) = 0 := by
   rw [← comp_up v (u.map _), up_comp, h, Matrix.map_zero _ (map_zero _)]
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => comp_cA v _`.
+-/
 theorem compM_cA (u : Matrix α β (AE F E)) :
     (u.map (cA σ)).map (compFin F E v) = (u.map (compFin F E v)).map (cV σ v) := Matrix.ext fun _ _ => comp_cA v _
 
 omit [NumberField E] in
+/- English proof (translation)
+The claim follows from `Matrix.ext fun _ _ => aw_cA v _`.
+-/
 theorem awM_cA (u : Matrix α β (AE F E)) : (u.map (cA σ)).map (aw E v) = (u.map (aw E v)).map (cQ σ v) :=
   Matrix.ext fun _ _ => aw_cA v _
 
 variable [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ]
 
 omit [NumberField E] [Fintype β] in
+/- English proof (translation)
+Rewrite using `[Matrix.map_add _ (map_add _), comp_up, Matrix.map_one _ (map_zero _) (map_one _), add_sub_cancel]`.
+-/
 theorem comp_lift' (m : Matrix β β (Ev E v)) : (1 + (m - 1).map (tensAt E v)).map (compFin F E v) = m := by
   rw [Matrix.map_add _ (map_add _), comp_up, Matrix.map_one _ (map_zero _) (map_one _), add_sub_cancel]
 
 omit [NumberField E] [Fintype β] in
+/- English proof (translation)
+Rewrite using `[Matrix.map_add _ (map_add _), aw_up, Matrix.map_one _ (map_zero _) (map_one _), add_zero]`.
+-/
 theorem aw_lift' (m : Matrix β β (Ev E v)) : (1 + (m - 1).map (tensAt E v)).map (aw E v) = 1 := by
   rw [Matrix.map_add _ (map_add _), aw_up, Matrix.map_one _ (map_zero _) (map_one _), add_zero]
 
@@ -219,15 +315,27 @@ def liftM : Matrix β β (Ev E v) →* Matrix β β (AE F E) where
   map_one' := by rw [sub_self, Matrix.map_zero _ (map_zero _), add_zero]
   map_mul' a b := extM v (by simp only [Matrix.map_mul, comp_lift']) (by simp only [Matrix.map_mul, aw_lift', one_mul])
 
+/- English proof (translation)
+The claim follows from `comp_lift' v m`.
+-/
 theorem comp_liftM (m : Matrix β β (Ev E v)) : (liftM E v β m).map (compFin F E v) = m := comp_lift' v m
 
+/- English proof (translation)
+The claim follows from `aw_lift' v m`.
+-/
 theorem aw_liftM (m : Matrix β β (Ev E v)) : (liftM E v β m).map (aw E v) = 1 := aw_lift' v m
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `At (evFin F v) (1 + (m - 1).map (tensAt E v) - 1)`. Rewrite using `[add_sub_cancel_left]`. Conclude with `at_up v _`.
+-/
 theorem at_liftM (m : Matrix β β (Ev E v)) : At (evFin F v) (liftM E v β m - 1) := by
   change At (evFin F v) (1 + (m - 1).map (tensAt E v) - 1)
   rw [add_sub_cancel_left]
   exact at_up v _
 
+/- English proof (translation)
+The claim follows from `extE v (by rw [RingHom.map_det, RingHom.mapMatrix_apply, comp_liftM, comp_liftE]) (by rw [RingHom.map_det, RingHom.mapMatrix_apply, aw_liftM, aw_liftE, Matrix.det_one])`.
+-/
 theorem det_liftM (m : Matrix β β (Ev E v)) : (liftM E v β m).det = liftE E v m.det :=
   extE v (by rw [RingHom.map_det, RingHom.mapMatrix_apply, comp_liftM, comp_liftE])
     (by rw [RingHom.map_det, RingHom.mapMatrix_apply, aw_liftM, aw_liftE, Matrix.det_one])
@@ -244,9 +352,17 @@ def liftU {J : Matrix β β (AE F E)} {Jv : Matrix β β (Ev E v)} (h : J.map (c
     · rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, awM_cA, aw_liftM, Matrix.transpose_one,
         Matrix.map_one _ (map_zero _) (map_one _), one_mul, mul_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftU_val {J : Matrix β β (AE F E)} {Jv : Matrix β β (Ev E v)} (h : J.map (compFin F E v) = Jv)
     (g : UG (cV σ v) Jv) : ((liftU h g).1 : Matrix β β (AE F E)) = liftM E v β g.1.1 := rfl
 
+/- English proof (translation)
+Use `⟨⟨Matrix.GeneralLinearGroup.map (compFin F E v) g.1, ?_⟩, Subtype.ext (Units.ext (extM v (comp_liftM v _) ?_))⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g.1.1.map (compFin F E v))ᵀ * Jv * (g.1.1.map (compFin F E v)).map (cV σ v) = Jv`. Rewrite using `[← h, ← compM_cA, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `congrArg (·.map (compFin F E v)) g.2`. Use `awM_of_at v hg` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), sub_eq_zero]`. Conclude with `(aw_liftM v _).trans this.symm`.
+-/
 theorem exists_liftU {J : Matrix β β (AE F E)} {Jv : Matrix β β (Ev E v)} (h : J.map (compFin F E v) = Jv)
     (g : UG (cA σ) J) (hg : At (evFin F v) ((g.1 : Matrix β β (AE F E)) - 1)) : ∃ gv, liftU h gv = g := by
   refine ⟨⟨Matrix.GeneralLinearGroup.map (compFin F E v) g.1, ?_⟩, Subtype.ext (Units.ext (extM v (comp_liftM v _) ?_))⟩
@@ -262,6 +378,9 @@ variable (v) in
 def locW (w : (κ → AF F) × (κ → AF F)) : (κ → Fv F v) × (κ → Fv F v) := (evA κ v w.1, evA κ v w.2)
 
 omit [Fintype κ] in
+/- English proof (translation)
+Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evFin F v (atPlace v a * w.1 i) = a * evFin F v (w.1 i)`. Rewrite using `[map_mul, evFin_atPlace]`. Express the relevant statement in the definitionally equal form `evFin F v (atPlace v a * w.2 i) = a * evFin F v (w.2 i)`. Rewrite using `[map_mul, evFin_atPlace]`.
+-/
 theorem locW_smul (a : Fv F v) (w : (κ → AF F) × (κ → AF F)) : locW v (atPlace v a • w) = a • locW v w := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_)
   · change evFin F v (atPlace v a * w.1 i) = a * evFin F v (w.1 i)
@@ -270,6 +389,9 @@ theorem locW_smul (a : Fv F v) (w : (κ → AF F) × (κ → AF F)) : locW v (at
     rw [map_mul, evFin_atPlace]
 
 omit [Fintype κ] in
+/- English proof (translation)
+Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `atPlace v (evFin F v (w.1 i)) = atPlace v 1 * w.1 i`. Rewrite using `[atPlace_mul_right, one_mul]`. Express the relevant statement in the definitionally equal form `atPlace v (evFin F v (w.2 i)) = atPlace v 1 * w.2 i`. Rewrite using `[atPlace_mul_right, one_mul]`.
+-/
 theorem in_locW (w : (κ → AF F) × (κ → AF F)) :
     (inA κ v (locW v w).1, inA κ v (locW v w).2) = atPlace v (1 : Fv F v) • w := by
   refine Prod.ext (funext fun i => ?_) (funext fun i => ?_)
@@ -278,6 +400,9 @@ theorem in_locW (w : (κ → AF F) × (κ → AF F)) :
   · change atPlace v (evFin F v (w.2 i)) = atPlace v 1 * w.2 i
     rw [atPlace_mul_right, one_mul]
 
+/- English proof (translation)
+Simplify using `only [dotProduct, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem ev_dot (a b : κ → AF F) : evFin F v (a ⬝ᵥ b) = evA κ v a ⬝ᵥ evA κ v b := by
   simp only [dotProduct, map_sum, map_mul]; rfl
 
@@ -288,6 +413,9 @@ def IsLocD (co : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ)
   ∀ u, dv.e (u.map (compFin F E v)) = locW v (co.e u)
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Substitute `hA hB` using the available equality. Rewrite using `[symp, symp, ← trace_map']`. Express the relevant statement in the definitionally equal form `_ = Algebra.trace _ _ (compFin F E v _)`. Simplify using `only [hTens, map_mul, map_sum, map_neg, map_one, comp_cA, Matrix.map_apply]`.
+-/
 theorem ev_symp (hA : JA.map (compFin F E v) = JAv) (hB : JB.map (compFin F E v) = JBv) (u u' : Matrix α β (AE F E)) :
     symp (R := Fv F v) (cV σ v) (-1) JAv JBv (u.map (compFin F E v)) (u'.map (compFin F E v)) =
       evFin F v (symp (R := AF F) (cA σ) (-1) JA JB u u') := by
@@ -297,6 +425,13 @@ theorem ev_symp (hA : JA.map (compFin F E v) = JAv) (hB : JB.map (compFin F E v)
   simp only [hTens, map_mul, map_sum, map_neg, map_one, comp_cA, Matrix.map_apply]
 
 omit [DecidableEq α] [DecidableEq β] in
+/- English proof (translation)
+Establish `key : ∀ u, locW v (co.e ((u.map (compFin F E v)).map (tensAt E v))) = locW v (co.e u)` using `fun u => by`. Rewrite using `[up_comp, map_smul, locW_smul, one_smul]`. Use `⟨⟨{ toFun := fun w => locW v (co.e (w.map (tensAt E v))) map_add' := fun a b => ?_ map_smul' := fun a w => ?_ invFun := fun p => (co.e.symm (inA κ v p.1, inA κ v p.2)).map (compFin F E v) left_inv := fun w => ?_ right_inv := fun p => ?_ }, fun w w' => ?_⟩, key⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_add _ (map_add _), map_add]`. Conclude with `Prod.ext (map_add _ _ _) (map_add _ _ _)`.
+
+Rewrite using `[show (a • w).map (tensAt E v) = atPlace v a • w.map (tensAt E v) from Matrix.ext fun _ _ => smul_tensAt v _ _, map_smul, locW_smul]`. Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[in_locW, ← map_smul, LinearEquiv.symm_apply_apply, idem_smul (at_up v w), comp_up]`. Simplify using `only`.
+
+Rewrite using `[key, LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (evA_inA v _) (evA_inA v _)`. Use `conv_lhs => rw [← comp_up v w, ← comp_up v w', ev_symp hA hB, co.form, map_sub, ev_dot, ev_dot]`. Both sides reduce to the same expression.
+-/
 theorem exists_locD (hA : JA.map (compFin F E v) = JAv) (hB : JB.map (compFin F E v) = JBv)
     (co : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ) :
     ∃ dv : Darboux (symp (R := Fv F v) (cV σ v) (-1) JAv JBv) κ, IsLocD co dv := by

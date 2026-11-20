@@ -9,6 +9,11 @@ open Matrix
 
 namespace GlobalTheory.HeightInt
 
+/- English proof (translation)
+Introduce `l _ κ _ x c h j`. Set `Z : Matrix Unit κ (WCb l)` to `Matrix.of fun _ i => x i`. Establish `hZ : Z.map (frobW l) = (1 : Matrix Unit Unit (Ainf l)).map (inclW l) * Z * (Matrix.of c).map (inclW l) + (0 : Matrix Unit κ (Ainf l)).map (inclW l)` using `by ext1 u k`. Simplify using `only [Matrix.map_apply, Matrix.map_one (inclW l) (map_zero _) (map_one _), Matrix.one_mul, Matrix.map_zero (inclW l) (map_zero _), add_zero, Matrix.mul_apply, Matrix.of_apply, Z]`. Conclude with `h k`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.FrobInt.frobenius_integrality l Unit κ Z 1 (Matrix.of c) 0 hZ () j`. Conclude with `⟨a, ha.symm⟩`.
+-/
 theorem frob_row_integral : ∀ (l : ℕ) [Fact l.Prime] (κ : Type) [Fintype κ] (x : κ → WCb l)
     (c : κ → κ → Ainf l), (∀ j, frobW l (x j) = ∑ i, x i * inclW l (c i j)) →
     ∀ j, ∃ a : Ainf l, x j = inclW l a := by

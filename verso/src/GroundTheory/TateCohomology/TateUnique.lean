@@ -13,6 +13,15 @@ variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 omit [Fintype G] in
 
+/- English proof (translation)
+Establish `up : ∀ m : ℤ, α m = β m → α (m + 1) = β (m + 1)`. Introduce `m hm`. Use `NatTrans.ext (funext fun A => ?_)` and prove the remaining obligations. Establish `hX` using `coindSES_shortExact A`. Establish `: IsIso (TateCohomology.δ (hE hX) m)` using `isIso_δ_of_tateAcyclic (hE hX) (hEc A) m`.
+
+Use `(cancel_epi (TateCohomology.δ (hE hX) m)).1 ?_` and prove the remaining obligations. Conclude with `(hα hX m).trans ((congrArg (fun t => t.app _ ≫ _) hm).trans (hβ hX m).symm)`. Establish `down : ∀ m : ℤ, α (m + 1) = β (m + 1) → α m = β m`. Introduce `m hm`. Use `NatTrans.ext (funext fun A => ?_)` and prove the remaining obligations.
+
+Establish `hX` using `indSES_shortExact A`. Establish `: IsIso (TateCohomology.δ (hE' hX) m)` using `isIso_δ_of_tateAcyclic (hE' hX) (hEi A) m`. Use `(cancel_mono (TateCohomology.δ (hE' hX) m)).1 ?_` and prove the remaining obligations. Conclude with `(hα hX m).symm.trans ((congrArg (fun t => _ ≫ t.app _) hm).trans (hβ hX m))`. Proceed by induction on `n using Int.induction_on with`.
+
+Consider the case `zero => exact h0`. Consider the case `succ i ih => exact up _ ih`. Consider the case `pred i ih => exact down _ (by rwa [sub_add_cancel])`.
+-/
 theorem tate_natTrans_eq_of_eq_zero {U V : Type u} [Group U] [Group V] [Fintype U] [Fintype V]
     (E : Rep.{u} k G ⥤ Rep.{u} k U) (E' : Rep.{u} k G ⥤ Rep.{u} k V)
     [E.PreservesZeroMorphisms] [E'.PreservesZeroMorphisms]
@@ -49,10 +58,16 @@ theorem tate_natTrans_eq_of_eq_zero {U V : Type u} [Group U] [Group V] [Fintype 
   | succ i ih => exact up _ ih
   | pred i ih => exact down _ (by rwa [sub_add_cancel])
 
+/- English proof (translation)
+The claim follows from `cohTrivial_coind_bot _ U`.
+-/
 theorem tateAcyclic_res_coindSES_X₂ (U : Subgroup G) [Fintype U] (A : Rep.{u} k G) :
     TateAcyclic ((resFunctor U.subtype).obj (coindSES.obj A).X₂) :=
   cohTrivial_coind_bot _ U
 
+/- English proof (translation)
+The claim follows from `cohTrivial_ind_bot _ U`.
+-/
 theorem tateAcyclic_res_indSES_X₂ (U : Subgroup G) [Fintype U] (A : Rep.{u} k G) :
     TateAcyclic ((resFunctor U.subtype).obj (indSES.obj A).X₂) :=
   cohTrivial_ind_bot _ U

@@ -17,10 +17,16 @@ noncomputable section
 namespace GlobalTheory.WeilL2Words
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z w) (add_zero (0 : FiniteAdeleRing (𝓞 F) F)).symm`.
+-/
 theorem adeleOfMixedSpaceComponent_add (F : Type) [Field F] [NumberField F] (z w : mixedEmbedding.mixedSpace F) :
     arch1 F (z + w) = arch1 F z + arch1 F w :=
   Prod.ext (map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z w) (add_zero (0 : FiniteAdeleRing (𝓞 F) F)).symm
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1 * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm _`. Rewrite using `[map_mul, RingEquiv.symm_apply_apply]`. Conclude with `mul_zero (a.2 : FiniteAdeleRing (𝓞 F) F)`.
+-/
 theorem mul_arch1' (F : Type) [Field F] [NumberField F] (a : AdeleRing (𝓞 F) F) (z : mixedEmbedding.mixedSpace F) :
     a * arch1 F z = arch1 F (InfiniteAdeleRing.ringEquiv_mixedSpace F a.1 * z) := by
   refine Prod.ext ?_ ?_
@@ -28,9 +34,15 @@ theorem mul_arch1' (F : Type) [Field F] [NumberField F] (a : AdeleRing (𝓞 F) 
     rw [map_mul, RingEquiv.symm_apply_apply]
   · exact mul_zero (a.2 : FiniteAdeleRing (𝓞 F) F)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm) rfl`.
+-/
 theorem adeleOfMixedSpaceComponent_zero (F : Type) [Field F] [NumberField F] : arch1 F 0 = 0 :=
   Prod.ext (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm) rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (a.1 + (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm z) = _`. Rewrite using `[map_add, RingEquiv.apply_symm_apply]`. Conclude with `add_zero (a.2 : FiniteAdeleRing (𝓞 F) F)`.
+-/
 theorem add_arch1' (F : Type) [Field F] [NumberField F] (a : AdeleRing (𝓞 F) F) (z : mixedEmbedding.mixedSpace F) :
     InfiniteAdeleRing.ringEquiv_mixedSpace F (a + arch1 F z).1 = InfiniteAdeleRing.ringEquiv_mixedSpace F a.1 + z ∧
     (a + arch1 F z).2 = a.2 := by
@@ -44,20 +56,52 @@ def arch1Hom (F : Type) [Field F] [NumberField F] : mixedEmbedding.mixedSpace F 
   map_zero' := adeleOfMixedSpaceComponent_zero F
   map_add' := adeleOfMixedSpaceComponent_add F
 
+/- English proof (translation)
+The claim follows from `map_sum (arch1Hom F) z s`.
+-/
 theorem adeleOfMixedSpaceComponent_finsetSum (F : Type) [Field F] [NumberField F] {ι : Type} (s : Finset ι) (z : ι → mixedEmbedding.mixedSpace F) :
     arch1 F (∑ i ∈ s, z i) = ∑ i ∈ s, arch1 F (z i) :=
   map_sum (arch1Hom F) z s
 
+/- English proof (translation)
+Rewrite using `[adeleOfMixedSpaceComponent_finsetSum]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_arch1' F (a k) (y k)`.
+-/
 theorem dotProduct_arch (F : Type) [Field F] [NumberField F] {κ : Type} [Fintype κ] (a : κ → AdeleRing (𝓞 F) F)
     (y : κ → mixedEmbedding.mixedSpace F) :
     a ⬝ᵥ arch F y = arch1 F (∑ k, InfiniteAdeleRing.ringEquiv_mixedSpace F (a k).1 * y k) := by
   rw [adeleOfMixedSpaceComponent_finsetSum]
   exact Finset.sum_congr rfl fun k _ => mul_arch1' F (a k) (y k)
 
+/- English proof (translation)
+The claim follows from `RingEquiv.apply_symm_apply _ z`.
+-/
 theorem fst_arch1 (F : Type) [Field F] [NumberField F] (z : mixedEmbedding.mixedSpace F) :
     InfiniteAdeleRing.ringEquiv_mixedSpace F (arch1 F z).1 = z :=
   RingEquiv.apply_symm_apply _ z
 
+/- English proof (translation)
+Introduce `F _ _ _ κ _ ψ hψ m g f h`. Take `⟨ℓ, -, hℓ⟩` from `hψ`. Set `M : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] mixedEmbedding.mixedSpace F` to `∑ k, (LinearMap.mulRight ℝ (h.2 k)).comp (LinearMap.proj k)`. Set `L : (κ → mixedEmbedding.mixedSpace F) →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Complex.ofRealCLM.toLinearMap.comp (ℓ.comp M))`. Establish `hL : ∀ X, L X = ((ℓ (∑ k, X k * h.2 k) : ℝ) : ℂ)`.
+
+Introduce `X`. Simplify using `[L, M]`. Establish `hg : (fun X => (2 * Real.pi * Complex.I) * L X).HasTemperateGrowth` using `((2 * Real.pi * Complex.I) • L).hasTemperateGrowth`. Use `⟨fun i => SchwartzMap.smulLeftCLM ℂ (fun X => (2 * Real.pi * Complex.I) * L X) (f i) + LineDeriv.lineDerivOp h.1 (f i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+
+Use `set X : κ → mixedEmbedding.mixedSpace F := fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (a k).1 with hX`. Use `set Y : κ → FiniteAdeleRing (𝓞 F) F := fun k => (a k).2 with hY`. Use `set c : mixedEmbedding.mixedSpace F := InfiniteAdeleRing.ringEquiv_mixedSpace F (⅟(2 : AdeleRing (𝓞 F) F)).1 with hc`. Use `set A : ℝ := ℓ (∑ k, X k * h.2 k) with hA`. Use `set B : ℝ := ℓ (c * ∑ k, h.1 k * h.2 k) with hB`.
+
+Establish `key : (fun t : ℝ => GlobalTheory.WeilM.schr ψ (archPair F (t • h)) (∑ i, GlobalTheory.WeilM.pureA F (f i) (g i)) a) = fun t : ℝ => Complex.exp (2 * Real.pi * Complex.I * ((t * A + t ^ 2 * B : ℝ) : ℂ)) * ∑ i, f i (X + t • h.1) * g i Y`. Use function extensionality and compare the values at `t`. Unfold `GlobalTheory.WeilM.schr`. Use `congr 1`. Establish `e0 : (archPair F (t • h)).1 ⬝ᵥ (archPair F (t • h)).2 = arch1 F (∑ k, (t • h.1) k * (t • h.2) k)`.
+
+Rewrite using `[archPair, dotProduct_arch]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg (· * (t • h).2 k) (fst_arch1 F ((t • h).1 k))`. Establish `e1 : a ⬝ᵥ (archPair F (t • h)).2 + ⅟(2 : AdeleRing (𝓞 F) F) * ((archPair F (t • h)).1 ⬝ᵥ (archPair F (t • h)).2) = arch1 F (t • (∑ k, X k * h.2 k) + t ^ 2 • (c * ∑ k, h.1 k * h.2 k))`.
+
+Rewrite using `[e0, mul_arch1', archPair, dotProduct_arch, ← adeleOfMixedSpaceComponent_add]`. Use `congr 1`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, mul_smul_comm, smul_mul_assoc, Finset.smul_sum, Finset.mul_sum, smul_smul, pow_two]`. Both sides reduce to the same expression. Rewrite using `[e1, hℓ, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+
+Rewrite using `[Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hx : (fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F ((a + (archPair F (t • h)).1) k).1) = X + t • h.1`. Use function extensionality and compare the values at `fun k => (add_arch1' F (a k) ((t • h.1) k)).1`. Establish `hy : (fun k => ((a + (archPair F (t • h)).1) k).2) = Y`.
+
+Use function extensionality and compare the values at `fun k => (add_arch1' F (a k) ((t • h.1) k)).2`. Unfold `GlobalTheory.WeilM.pureA`. Rewrite using `[hx, hy]`. Establish `hφ` using `((((hasDerivAt_id (0:ℝ)).mul_const A).fun_add ((hasDerivAt_pow 2 (0:ℝ)).mul_const B)).ofReal_comp).const_mul (2 * (Real.pi : ℂ) * Complex.I)`. Establish `hS` using `HasDerivAt.fun_sum (u := Finset.univ) (fun i _ => (((f i).hasFDerivAt (X + (0:ℝ) • h.1)).comp_hasDerivAt (0:ℝ) (((hasDerivAt_id (0:ℝ)).smul_const h.1).const_add X)).mul_const (g i Y))`.
+
+Establish `hT` using `hφ.cexp.fun_mul hS`. Unfold `dS`. Rewrite using `[key]`. Use `(HasDerivAt.deriv hT).trans ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_apply, GlobalTheory.WeilM.pureA, SchwartzMap.add_apply, SchwartzMap.smulLeftCLM_apply_apply hg, SchwartzMap.lineDerivOp_apply_eq_fderiv, smul_eq_mul]`.
+
+Simplify using `only [hL, ← hA]`. Simplify using `only [← hX, ← hY, ← hA, id, zero_smul, add_zero, one_smul, mul_zero, zero_mul, Complex.ofReal_zero, Complex.exp_zero, one_mul, Function.comp, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Complex.ofReal_add, Complex.ofReal_mul, Complex.ofReal_one]`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [show ((0:ℝ) ^ (2 - 1)) = 0 by norm_num, Complex.ofReal_zero, mul_zero, zero_mul, add_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dS_sum_pureA : ∀ (F : Type) [Field F] [NumberField F] [Invertible (2 : AdeleRing (𝓞 F) F)] (κ : Type) [Fintype κ]
     (ψ : AddChar (AdeleRing (𝓞 F) F) ℂ), GlobalTheory.WeilL2Words.IsStdInf F ψ →
     ∀ (m : ℕ) (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (f : Fin m → SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (h : (κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F)),

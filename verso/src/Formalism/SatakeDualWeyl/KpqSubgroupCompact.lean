@@ -42,6 +42,11 @@ import Formalism.SatakeDualWeyl.DualWeylRepApply
 
 namespace Formalism.UG.Final
 
+/- English proof (translation)
+Rewrite using `[DoubleCoset.mem_doubleCoset]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, c, hc, rfl⟩`. Simplify using `using K.mul_mem hh hc`. Introduce `hy`.
+
+Conclude with `⟨y, hy, 1, K.one_mem, by simp⟩`.
+-/
 private theorem mem_doubleCoset_one_iff_mem {G : Type} [Group G] (K : Subgroup G) (y : G) :
     y ∈ DoubleCoset.doubleCoset (1 : G) (K : Set G) (K : Set G) ↔ y ∈ K := by
   rw [DoubleCoset.mem_doubleCoset]
@@ -51,6 +56,11 @@ private theorem mem_doubleCoset_one_iff_mem {G : Type} [Group G] (K : Subgroup G
   · intro hy
     exact ⟨y, hy, 1, K.one_mem, by simp⟩
 
+/- English proof (translation)
+Establish `hx : (QuotientGroup.mk x.out : G ⧸ K) = x` using `by first`. Consider the case `exact QuotientGroup.out_eq' x`. Consider the case `exact Quotient.out_eq x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[← hx]`. Conclude with `QuotientGroup.eq.mpr (by simpa using h)`. Introduce `h`. Establish `h2 : (QuotientGroup.mk x.out : G ⧸ K) = QuotientGroup.mk 1` using `hx.trans h`. Simplify using `using QuotientGroup.eq.mp h2`.
+-/
 private theorem quotient_out_mem_iff_eq_one {G : Type} [Group G] (K : Subgroup G) (x : G ⧸ K) :
     x.out ∈ K ↔ x = (QuotientGroup.mk (1 : G) : G ⧸ K) := by
   have hx : (QuotientGroup.mk x.out : G ⧸ K) = x := by
@@ -65,11 +75,31 @@ private theorem quotient_out_mem_iff_eq_one {G : Type} [Group G] (K : Subgroup G
     have h2 : (QuotientGroup.mk x.out : G ⧸ K) = QuotientGroup.mk 1 := hx.trans h
     simpa using QuotientGroup.eq.mp h2
 
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.hecke_act_mem`.
+-/
 theorem HeckeActMem : Formalism.UG.HeckeActMem := Formalism.UG.P.hecke_act_mem
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.hecke_act_mul`.
+-/
 theorem HeckeActMul : Formalism.UG.HeckeActMul := Formalism.UG.P.hecke_act_mul
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.adelic_stabilizer_finite_holds`.
+-/
 theorem AdelicStabFinite : Formalism.UG.AdelicStabFinite := Formalism.UG.P.adelic_stabilizer_finite_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.adelic_stabilizer_finite_lattice_holds`.
+-/
 theorem AdelicStabFiniteL : Formalism.UG.AdelicStabFiniteL := Formalism.UG.P.adelic_stabilizer_finite_lattice_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.hecke_assoc`.
+-/
 theorem HeckeAssoc : Formalism.UG.HeckeAssoc := Formalism.UG.P.hecke_assoc
+/- English proof (translation)
+Introduce `A B _ _ n _ _ σ σ' φ hφ J g hg`. Establish `hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J` using `hg`. Use `show cT σ' ((bc φ g : GL n B) : Matrix n n B) * J.map φ * ((bc φ g : GL n B) : Matrix n n B) = J.map φ`. Establish `hb : ((bc φ g : GL n B) : Matrix n n B) = (g : Matrix n n A).map φ` using `rfl`. Establish `hc : cT σ' ((g : Matrix n n A).map φ) = (cT σ (g : Matrix n n A)).map φ`.
+
+Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `(RingHom.congr_fun hφ _).symm`. Rewrite using `[hb, hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+-/
 theorem BCMem : Formalism.UG.BCMem := by
   intro A B _ _ n _ _ σ σ' φ hφ J g hg
   have hg' : cT σ (g : Matrix n n A) * J * (g : Matrix n n A) = J := hg
@@ -80,16 +110,29 @@ theorem BCMem : Formalism.UG.BCMem := by
     simp only [cT, Matrix.transpose_apply, Matrix.map_apply]
     exact (RingHom.congr_fun hφ _).symm
   rw [hb, hc, ← Matrix.map_mul, ← Matrix.map_mul, hg']
+/- English proof (translation)
+Introduce `F E _ _ _ n _ _ σ J R _ _ x hx`. Take `⟨g, hg, rfl⟩` from `Subgroup.mem_map.mp hx`. Conclude with `Formalism.UG.Final.BCMem E _ n (σ : E →+* E) (sigR σ R) (inclE (F := F) R) (RingHom.ext fun e => by simp [inclE, sigR]) J g hg`.
+-/
 theorem RatPtsLe : Formalism.UG.RatPtsLe := by
   intro F E _ _ _ n _ _ σ J R _ _ x hx
   obtain ⟨g, hg, rfl⟩ := Subgroup.mem_map.mp hx
   exact Formalism.UG.Final.BCMem E _ n (σ : E →+* E) (sigR σ R) (inclE (F := F) R)
     (RingHom.ext fun e => by simp [inclE, sigR]) J g hg
+/- English proof (translation)
+Introduce `K _ n _ _ g x`. Use `first`. Consider the case `rfl`. Consider the case `simp [glEquiv, Matrix.GeneralLinearGroup.coe_toLin, Matrix.toLin'_apply]`.
+-/
 theorem GlEquivApply : Formalism.UG.GlEquivApply := by
   intro K _ n _ _ g x
   first
     | rfl
     | simp [glEquiv, Matrix.GeneralLinearGroup.coe_toLin, Matrix.toLin'_apply]
+/- English proof (translation)
+Introduce `K _ _ n _ _ h x y`. Establish `hx : x = ∑ i, x i • Pi.single i 1`. Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Establish `hy : y = ∑ j, y j • Pi.single j 1`.
+
+Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Use `conv_lhs => rw [hx, hy]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum, hform, gram]`. Rewrite using `[Finset.sum_comm]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HformGram : Formalism.UG.HformGram := by
   intro K _ _ n _ _ h x y
   have hx : x = ∑ i, x i • Pi.single i 1 := by
@@ -107,6 +150,19 @@ theorem HformGram : Formalism.UG.HformGram := by
   apply Finset.sum_congr rfl
   intro j _
   ring
+/- English proof (translation)
+Introduce `K _ _ n _ _ h g`. Establish `hgl : ∀ x, glEquiv g x = Matrix.mulVec (g : Matrix n n K) x` using `fun x => Formalism.UG.Final.GlEquivApply K n g x`. Establish `hent : ∀ i j, (cT (starRingEnd K) (g : Matrix n n K) * gram h * (g : Matrix n n K)) i j = h (glEquiv g (Pi.single i 1)) (glEquiv g (Pi.single j 1))`. Introduce `i j`. Rewrite using `[Formalism.UG.Final.HformGram K n h, hgl, hgl]`.
+
+Simplify using `only [hform, Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `l _`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hu' : cT (starRingEnd K) (g : Matrix n n K) * gram h * (g : Matrix n n K) = gram h` using `hu`.
+
+Set `h' : (n → K) →ₗ⋆[K] (n → K) →ₗ[K] K` to `(h.comp ((glEquiv g : (n → K) ≃ₗ[K] (n → K)) : (n → K) →ₗ[K] (n → K))).compl₂ ((glEquiv g : (n → K) ≃ₗ[K] (n → K)) : (n → K) →ₗ[K] (n → K))`. Establish `hh' : ∀ x y, h' x y = h (glEquiv g x) (glEquiv g y)` using `fun x y => rfl`. Establish `hgram : gram h' = gram h`. Use extensionality with `i j`. Use `show h' (Pi.single i 1) (Pi.single j 1) = h (Pi.single i 1) (Pi.single j 1)`.
+
+Rewrite using `[hh', ← hent, hu']`. Apply the tactic sequence `try rfl`. Introduce `x y`. Use `show h (glEquiv g x) (glEquiv g y) = h x y`. Rewrite using `[← hh', Formalism.UG.Final.HformGram K n h', hgram, ← Formalism.UG.Final.HformGram K n h]`.
+
+Introduce `hB show cT (starRingEnd K) (g : Matrix n n K) * gram h * (g : Matrix n n K) = gram h`. Use extensionality with `i j`. Rewrite using `[hent]`. Conclude with `hB _ _`.
+-/
 theorem HermBridge : Formalism.UG.HermBridge := by
   intro K _ _ n _ _ h g
   have hgl : ∀ x, glEquiv g x = Matrix.mulVec (g : Matrix n n K) x := fun x => Formalism.UG.Final.GlEquivApply K n g x
@@ -141,24 +197,80 @@ theorem HermBridge : Formalism.UG.HermBridge := by
     ext i j
     rw [hent]
     exact hB _ _
+/- English proof (translation)
+Introduce `K _ _ n _ _ h u _`. Use `⟨Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv K (n → K)).symm u), ?_⟩` and prove the remaining obligations. Simplify using `[glEquiv]`.
+-/
 theorem HermBridgeSurj : Formalism.UG.HermBridgeSurj := by
   intro K _ _ n _ _ h u _
   refine ⟨Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv K (n → K)).symm u), ?_⟩
   simp [glEquiv]
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.cartan_decomposition_holds`.
+-/
 theorem CartanDecomp : Formalism.UG.CartanDecomp := Formalism.UG.P.cartan_decomposition_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.cartan_decomposition_unique_holds`.
+-/
 theorem CartanUnique : Formalism.UG.CartanUnique := Formalism.UG.P.cartan_decomposition_unique_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.lattice_class_set_finite_local_holds`.
+-/
 theorem ClassSetFiniteL : Formalism.UG.ClassSetFiniteL := Formalism.UG.P.lattice_class_set_finite_local_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.lattice_class_set_finite_holds`.
+-/
 theorem ClassSetFinite : Formalism.UG.ClassSetFinite := Formalism.UG.P.lattice_class_set_finite_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.hecke_convolution_mem_holds`.
+-/
 theorem HeckeConvMem : Formalism.UG.HeckeConvMem := Formalism.UG.P.hecke_convolution_mem_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.convolution_count_holds`.
+-/
 theorem ConvCount : Formalism.UG.ConvCount := Formalism.UG.P.convolution_count_holds
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.level_subgroup_finite_adelic_standard`.
+-/
 theorem LevelAfLStd : Formalism.UG.LevelAfLStd := Formalism.UG.P.level_subgroup_finite_adelic_standard
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.hecke_algebra_GL_commutative`.
+-/
 theorem HeckeCommGL : Formalism.UG.HeckeCommGL := Formalism.UG.P.hecke_algebra_GL_commutative
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.satake_transform_hecke_operator_Tj`.
+-/
 theorem SatakeTj : Formalism.UG.SatakeTj := Formalism.UG.P.satake_transform_hecke_operator_Tj
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.satake_inert`.
+-/
 theorem SatakeInert : Formalism.UG.SatakeInert := Formalism.UG.P.satake_inert
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.satake_mul`.
+-/
 theorem SatMul : Formalism.UG.SatMul := Formalism.UG.P.satake_mul
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.exists_spherical_function_unitary`.
+-/
 theorem SphericalExistsU : Formalism.UG.SphericalExistsU := Formalism.UG.P.exists_spherical_function_unitary
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.GL_integral_hecke_commute`.
+-/
 theorem GLintComm : Formalism.UG.GLintComm := Formalism.UG.P.GL_integral_hecke_commute
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.local_algebra_inert_prime`.
+-/
 theorem LocInert : Formalism.UG.LocInert := Formalism.UG.P.local_algebra_inert_prime
+/- English proof (translation)
+Introduce `G _ K k _ g`. Use `show (∀ a b : K, ∀ x : G, dosetInd k K g ((a : G) * x * b) = dosetInd k K g x) ∧ ∃ S : Finset G, ∀ x : G, dosetInd k K g x ≠ 0 → ∃ s ∈ S, ∃ a b : K, x = (a : G) * s * b`. Use `⟨fun a b x => ?_, ⟨{g}, fun x hx => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Establish `hm : (a : G) * x * b ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`.
+
+Take `⟨h, hh, c, hc, rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hx`. Conclude with `DoubleCoset.mem_doubleCoset.mpr ⟨(a : G) * h, K.mul_mem a.2 hh, c * b, K.mul_mem hc b.2, by simp only [mul_assoc]⟩`. Simplify using `[dosetInd, Set.indicator_apply, hx, hm]`. Establish `hm : (a : G) * x * b ∉ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Introduce `hm`.
+
+Apply `hx` to reduce the goal to its premises. Take `⟨h, hh, c, hc, he⟩` from `DoubleCoset.mem_doubleCoset.mp hm`. Use `DoubleCoset.mem_doubleCoset.mpr ⟨(a : G)⁻¹ * h, K.mul_mem (K.inv_mem a.2) hh, c * (b : G)⁻¹, K.mul_mem hc (K.inv_mem b.2), ?_⟩` and prove the remaining obligations. Establish `hx' : x = (a : G)⁻¹ * ((a : G) * x * b) * (b : G)⁻¹` using `by group`. Rewrite using `[hx', he]`.
+
+Simplify using `only [mul_assoc]`. Simplify using `[dosetInd, Set.indicator_apply, hx, hm]`. Establish `hm : x ∈ DoubleCoset.doubleCoset g (K : Set G) (K : Set G)`. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises.
+
+Simplify using `[dosetInd, Set.indicator_apply, h]`. Take `⟨h, hh, c, hc, rfl⟩` from `DoubleCoset.mem_doubleCoset.mp hm`. Conclude with `⟨g, Finset.mem_singleton_self g, ⟨h, hh⟩, ⟨c, hc⟩, rfl⟩`.
+-/
 theorem DosetIndMem : Formalism.UG.DosetIndMem := by
   intro G _ K k _ g
   show (∀ a b : K, ∀ x : G, dosetInd k K g ((a : G) * x * b) = dosetInd k K g x) ∧
@@ -186,6 +298,25 @@ theorem DosetIndMem : Formalism.UG.DosetIndMem := by
       simp [dosetInd, Set.indicator_apply, h]
     obtain ⟨h, hh, c, hc, rfl⟩ := DoubleCoset.mem_doubleCoset.mp hm
     exact ⟨g, Finset.mem_singleton_self g, ⟨h, hh⟩, ⟨c, hc⟩, rfl⟩
+/- English proof (translation)
+Introduce `G _ K k _ f hf`. Take `⟨hbi, -⟩` from `hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Unfold `conv`.
+
+Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : G ⧸ K)]`. Establish `hmem : (QuotientGroup.mk 1 : G ⧸ K).out ∈ K` using `(quotient_out_mem_iff_eq_one K _).mpr rfl`. Establish `h1 : dosetInd k K 1 (QuotientGroup.mk 1 : G ⧸ K).out = 1`. Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).mpr hmem]`. Simplify using `only [h1, one_mul]`.
+
+Establish `h2` using `hbi ⟨_, K.inv_mem hmem⟩ 1 g`. Simplify using `using h2`. Introduce `x hx`. Establish `hn : x.out ∉ K` using `fun h => hx ((quotient_out_mem_iff_eq_one K x).mp h)`. Establish `h0 : dosetInd k K 1 x.out = 0`.
+
+Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).not.mpr hn]`. Simplify using `only [h0, zero_mul]`. Use function extensionality and compare the values at `g`. Unfold `conv`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk g : G ⧸ K)]`.
+
+Establish `hq : (QuotientGroup.mk ((QuotientGroup.mk g : G ⧸ K).out) : G ⧸ K) = QuotientGroup.mk g` using `by first`. Consider the case `exact QuotientGroup.out_eq' _`. Consider the case `exact Quotient.out_eq _`. Establish `hk : ((QuotientGroup.mk g : G ⧸ K).out)⁻¹ * g ∈ K` using `QuotientGroup.eq.mp hq`. Establish `h1 : dosetInd k K 1 (((QuotientGroup.mk g : G ⧸ K).out)⁻¹ * g) = 1`.
+
+Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).mpr hk]`. Simplify using `only [h1, mul_one]`. Establish `h2` using `hbi 1 ⟨_, K.inv_mem hk⟩ g`. Simplify using `using h2`. Introduce `x hx`.
+
+Establish `hn : x.out⁻¹ * g ∉ K`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `hq : (QuotientGroup.mk x.out : G ⧸ K) = QuotientGroup.mk g` using `QuotientGroup.eq.mpr h`. Rewrite using `[← hq]`.
+
+Use `first`. Consider the case `exact (QuotientGroup.out_eq' x).symm`. Consider the case `exact (Quotient.out_eq x).symm`. Establish `h0 : dosetInd k K 1 (x.out⁻¹ * g) = 0`. Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).not.mpr hn]`.
+
+Simplify using `only [h0, mul_zero]`.
+-/
 theorem HeckeUnit : Formalism.UG.HeckeUnit := by
   intro G _ K k _ f hf
   obtain ⟨hbi, -⟩ := hf
@@ -229,6 +360,15 @@ theorem HeckeUnit : Formalism.UG.HeckeUnit := by
       have h0 : dosetInd k K 1 (x.out⁻¹ * g) = 0 := by
         simp [dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).not.mpr hn]
       simp only [h0, mul_zero]
+/- English proof (translation)
+Introduce `G _ Γ K k _ W _ _ ρ φ hφ`. Use function extensionality and compare the values at `g`. Establish `hright : ∀ c : K, φ (g * c) = φ g`. Introduce `c`. Establish `h2` using `hφ 1 g c`.
+
+Simplify using `using h2`. Unfold `hAct`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : G ⧸ K)]`. Establish `hmem : (QuotientGroup.mk 1 : G ⧸ K).out ∈ K` using `(quotient_out_mem_iff_eq_one K _).mpr rfl`. Establish `h1 : dosetInd k K 1 (QuotientGroup.mk 1 : G ⧸ K).out = 1`.
+
+Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).mpr hmem]`. Simplify using `only [h1, one_smul]`. Conclude with `hright ⟨_, hmem⟩`. Introduce `x hx`. Establish `hn : x.out ∉ K` using `fun h => hx ((quotient_out_mem_iff_eq_one K x).mp h)`.
+
+Establish `h0 : dosetInd k K 1 x.out = 0`. Simplify using `[dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).not.mpr hn]`. Simplify using `only [h0, zero_smul]`.
+-/
 theorem HeckeActOne : Formalism.UG.HeckeActOne := by
   intro G _ Γ K k _ W _ _ ρ φ hφ
   funext g
@@ -248,6 +388,27 @@ theorem HeckeActOne : Formalism.UG.HeckeActOne := by
     have h0 : dosetInd k K 1 x.out = 0 := by
       simp [dosetInd, Set.indicator_apply, (mem_doubleCoset_one_iff_mem K _).not.mpr hn]
     simp only [h0, zero_smul]
+/- English proof (translation)
+Introduce `G _ K k _`. Establish `hout : ∀ f ∈ Hecke k K, ∀ g : G, (f : G → k) (Quotient.out (DoubleCoset.mk K K g)) = f g`. Introduce `f hf g`. Take `⟨hbi, -⟩` from `hf`. Take `⟨h, hh, c, hc, he⟩` from `(DoubleCoset.eq K K g (Quotient.out (DoubleCoset.mk K K g))).mp (Quotient.out_eq _).symm`.
+
+Rewrite using `[he]`. Conclude with `hbi ⟨h, hh⟩ ⟨c, hc⟩ g`. Establish `hfin : ∀ f : Hecke k K, (Function.support fun c : ClassSet K K => (f : G → k) (Quotient.out c)).Finite`. Introduce `f`. Take `⟨-, S, hS⟩` from `f.2`.
+
+Apply `(S.finite_toSet.image (DoubleCoset.mk K K)).subset` to reduce the goal to its premises. Introduce `c hc`. Take `⟨s, hs, a, b, he⟩` from `hS _ hc`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `h1 : DoubleCoset.mk K K s = DoubleCoset.mk K K (Quotient.out c)` using `(DoubleCoset.eq K K s _).mpr ⟨a, a.2, b, b.2, he⟩`.
+
+Rewrite using `[h1]`. Conclude with `Quotient.out_eq c`. Establish `hinv : ∀ φ : ClassSet K K →₀ k, (fun g => φ (DoubleCoset.mk K K g)) ∈ Hecke k K`. Introduce `φ`. Use `show (∀ a b : K, ∀ g : G, φ (DoubleCoset.mk K K ((a : G) * g * b)) = φ (DoubleCoset.mk K K g)) ∧ ∃ S : Finset G, ∀ g : G, φ (DoubleCoset.mk K K g) ≠ 0 → ∃ s ∈ S, ∃ a b : K, g = (a : G) * s * b`.
+
+Use `⟨fun a b g => ?_, ⟨φ.support.image Quotient.out, fun g hg => ?_⟩⟩` and prove the remaining obligations. Use `congr 1`. Conclude with `((DoubleCoset.eq K K g _).mpr ⟨a, a.2, b, b.2, rfl⟩).symm`. Use `⟨Quotient.out (DoubleCoset.mk K K g), Finset.mem_image_of_mem _ (Finsupp.mem_support_iff.mpr hg), ?_⟩` and prove the remaining obligations. Take `⟨h, hh, c, hc, he⟩` from `(DoubleCoset.eq K K g (Quotient.out (DoubleCoset.mk K K g))).mp (Quotient.out_eq _).symm`.
+
+Use `⟨⟨h⁻¹, K.inv_mem hh⟩, ⟨c⁻¹, K.inv_mem hc⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `group`. Use `⟨{ toFun := fun f => Finsupp.ofSupportFinite (fun c => (f : G → k) (Quotient.out c)) (hfin f) map_add' := ?_ map_smul' := ?_ invFun := fun φ => ⟨fun g => φ (DoubleCoset.mk K K g), hinv φ⟩ left_inv := ?_ right_inv := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `f₁ f₂`.
+
+Use extensionality with `c`. Simplify using `[Finsupp.ofSupportFinite_coe]`. Introduce `r f`. Use extensionality with `c`. Simplify using `[Finsupp.ofSupportFinite_coe]`.
+
+Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (f : G → k) (Quotient.out (DoubleCoset.mk K K g)) = (f : G → k) g`. Conclude with `hout f f.2 g`.
+
+Introduce `φ`. Use extensionality with `c`. Use `show φ (DoubleCoset.mk K K (Quotient.out c)) = φ c`. Rewrite using `[show DoubleCoset.mk K K (Quotient.out c) = c from Quotient.out_eq c]`. Introduce `f g show (f : G → k) (Quotient.out (DoubleCoset.mk K K g)) = (f : G → k) g`.
+
+Conclude with `hout f f.2 g`.
+-/
 theorem HeckeBasis : Formalism.UG.HeckeBasis := by
   intro G _ K k _
   classical
@@ -307,6 +468,11 @@ theorem HeckeBasis : Formalism.UG.HeckeBasis := by
   · intro f g
     show (f : G → k) (Quotient.out (DoubleCoset.mk K K g)) = (f : G → k) g
     exact hout f f.2 g
+/- English proof (translation)
+Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, h⟩`. Conclude with `⟨a, ha, b, hb, Units.ext (by simp [h, hd])⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `⟨a, ha, b, hb, by simp [hd]⟩`.
+-/
 private theorem Tj_eq_dosetInd_diagJ {L : Type} [Field L] (O : Subring L) (ϖ : L) (k : Type) [CommRing k]
     (n j : ℕ) (d : GL (Fin n) L) (hd : (d : Matrix (Fin n) (Fin n) L) = diagJ n ϖ j) :
     Tj k n O ϖ j = dosetInd k (GLint (Fin n) O) d := by
@@ -320,6 +486,11 @@ private theorem Tj_eq_dosetInd_diagJ {L : Type} [Field L] (O : Subring L) (ϖ : 
   · rintro ⟨a, ha, b, hb, rfl⟩
     exact ⟨a, ha, b, hb, by simp [hd]⟩
 
+/- English proof (translation)
+Introduce `L _ O ϖ k _ n j hϖ`. Establish `hdet : (diagJ n ϖ j).det ≠ 0`. Simplify using `only [diagJ, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.mpr fun i _ => by split_ifs <;> simp [hϖ]`. Rewrite using `[Tj_eq_dosetInd_diagJ O ϖ k n j (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) rfl]`.
+
+Conclude with `Formalism.UG.Final.DosetIndMem _ _ k _`.
+-/
 theorem TjMem : Formalism.UG.TjMem := by
   intro L _ O ϖ k _ n j hϖ
   have hdet : (diagJ n ϖ j).det ≠ 0 := by
@@ -327,6 +498,11 @@ theorem TjMem : Formalism.UG.TjMem := by
     exact Finset.prod_ne_zero_iff.mpr fun i _ => by split_ifs <;> simp [hϖ]
   rw [Tj_eq_dosetInd_diagJ O ϖ k n j (Matrix.GeneralLinearGroup.mkOfDetNeZero _ hdet) rfl]
   exact Formalism.UG.Final.DosetIndMem _ _ k _
+/- English proof (translation)
+Introduce `F E _ _ _ n _ _ R _ _ hR`. Establish `hinj : Function.Injective (inclE (F` using `F) (E := E) R) := by first`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (S := F) (algebraMap F R).injective`. Consider the case `exact Algebra.TensorProduct.includeLeft_injective (R := F) (A := E) (B := R) (algebraMap F R).injective`. Introduce `g h hgh`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Conclude with `congrArg (fun u : GL n (TensorProduct F E R) => (u : Matrix n n (TensorProduct F E R)) i j) hgh`.
+-/
 theorem InclInj : Formalism.UG.InclInj := by
   intro F E _ _ _ n _ _ R _ _ hR
   have hinj : Function.Injective (inclE (F := F) (E := E) R) := by
@@ -338,7 +514,21 @@ theorem InclInj : Formalism.UG.InclInj := by
   ext i j
   apply hinj
   exact congrArg (fun u : GL n (TensorProduct F E R) => (u : Matrix n n (TensorProduct F E R)) i j) hgh
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.signature_exists`.
+-/
 theorem SigExists : Formalism.UG.SigExists := Formalism.UG.P.signature_exists
+/- English proof (translation)
+Introduce `n _ _ J p q e P hP g`. Establish `hmul : ∀ A B : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ, cT (starRingEnd ℂ) (A * B) = cT (starRingEnd ℂ) B * cT (starRingEnd ℂ) A`. Introduce `A B`. Use extensionality with `i j`. Simplify using `[cT, Matrix.mul_apply, mul_comm]`.
+
+Establish `hone : cT (starRingEnd ℂ) (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1`. Simplify using `only [cT]`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hPPi : (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1` using `Units.mul_inv P`. Establish `hCiC : cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = 1`.
+
+Rewrite using `[← hmul, hPPi, hone]`. Use `show cT (starRingEnd ℂ) (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * J.reindex e e * (g : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) = J.reindex e e ↔ cT (starRingEnd ℂ) ((P⁻¹ * g * P : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * Jpq p q * ((P⁻¹ * g * P …`. Rewrite using `[← hP]`. Simplify using `only [Units.val_mul, hmul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) (cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)), hCiC, Matrix.one_mul, ← Matrix.mul_assoc (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) ((P⁻¹ : …`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg (fun Z => cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * (Z * (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ))) h`. Simplify `h2` using `only [Matrix.mul_assoc]`. Introduce `h`.
+
+Establish `h2` using `congrArg (fun Z => cT (starRingEnd ℂ) ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * Z * ((P⁻¹ : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)) h`. Simplify using `only [← Matrix.mul_assoc, hCiC, Matrix.one_mul] at h2`. Simplify using `only [Matrix.mul_assoc, hPPi, Matrix.mul_one] at h2`. Conclude with `h2`.
+-/
 theorem SigConj : Formalism.UG.SigConj := by
   intro n _ _ J p q e P hP g
   have hmul : ∀ A B : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ,
@@ -369,9 +559,41 @@ theorem SigConj : Formalism.UG.SigConj := by
     simp only [← Matrix.mul_assoc, hCiC, Matrix.one_mul] at h2
     simp only [Matrix.mul_assoc, hPPi, Matrix.mul_one] at h2
     exact h2
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.exists_spherical_function`.
+-/
 theorem SphericalExists : Formalism.UG.SphericalExists := Formalism.UG.P.exists_spherical_function
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.split_unitary_group_iso`.
+-/
 theorem SplitIso : Formalism.UG.SplitIso := Formalism.UG.P.split_unitary_group_iso
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.UG_stabilizer_finite`.
+-/
 theorem StabFinite : Formalism.UG.StabFinite := Formalism.UG.P.UG_stabilizer_finite
+/- English proof (translation)
+Introduce `A R _ _ _ n _ _ hι`. Establish `hL : ∀ x : n → A, x ∈ stdLat (n` using `n) (A := A) R ↔ ∀ i, ∃ r : R, algebraMap R A r = x i := by`. Introduce `x`. Simplify using `[stdLat, Submodule.mem_pi]`. Establish `hfwd : ∀ g0 : GL n R, ∀ x : n → A, x ∈ stdLat (n` using `n) (A := A) R → Matrix.mulVec ((bc (algebraMap R A) g0 : GL n A) : Matrix n n A) x ∈ stdLat (n := n) (A := A) R := by`.
+
+Introduce `g0 x hx`. Rewrite `hx`, the goal using `[hL]`. Use `choose r hr using hx`. Introduce `i`. Use `⟨∑ j, (g0 : Matrix n n R) i j * r j, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Matrix.mulVec, dotProduct, bc, hr]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Establish `hginv : g⁻¹ ∈ stabGL (stdLat (n` using `n) (A := A) R) := (stabGL _).inv_mem hg`. Establish `hcol : ∀ h : GL n A, h ∈ stabGL (stdLat (n` using `n) (A := A) R) → ∀ i j, ∃ r : R, algebraMap R A r = (h : Matrix n n A) i j := by`.
+
+Introduce `h hh i j`. Establish `he : (Pi.single j 1 : n → A) ∈ stdLat (n` using `n) (A := A) R := by`. Rewrite using `[hL]`. Introduce `k`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [hk]⟩`. Establish `h2` using `(hh _).1 he`. Rewrite `h2` using `[hL]`.
+
+Take `⟨r, hr⟩` from `h2 i`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Use `choose M hM using hcol g hg`.
+
+Use `choose N hN using hcol g⁻¹ hginv`. Establish `hinj : ∀ X Y : Matrix n n R, X.map (algebraMap R A) = Y.map (algebraMap R A) → X = Y`. Introduce `X Y hXY`. Use extensionality with `i j`. Conclude with `hι (congrFun (congrFun hXY i) j)`.
+
+Establish `hMg : (Matrix.of M).map (algebraMap R A) = (g : Matrix n n A)`. Use extensionality with `i j`. Simplify using `[hM]`. Establish `hNg : (Matrix.of N).map (algebraMap R A) = ((g⁻¹ : GL n A) : Matrix n n A)`. Use extensionality with `i j`.
+
+Simplify using `[hN]`. Use `MonoidHom.mem_range.mpr ⟨⟨Matrix.of M, Matrix.of N, hinj _ _ ?_, hinj _ _ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hMg, hNg, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Matrix.map_mul, hMg, hNg, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Apply `Units.ext` to reduce the goal to its premises.
+
+Conclude with `hMg`. Introduce `g hg`. Take `⟨g0, rfl⟩` from `MonoidHom.mem_range.mp hg`. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+
+Conclude with `hfwd g0 x`. Introduce `hx`. Establish `h2` using `hfwd g0⁻¹ _ hx`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul]`. Simplify using `using h2`.
+-/
 theorem StabStd : Formalism.UG.StabStd := by
   intro A R _ _ _ n _ _ hι
   have hL : ∀ x : n → A, x ∈ stdLat (n := n) (A := A) R ↔ ∀ i, ∃ r : R, algebraMap R A r = x i := by
@@ -430,12 +652,41 @@ theorem StabStd : Formalism.UG.StabStd := by
       have h2 := hfwd g0⁻¹ _ hx
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul] at h2
       simpa using h2
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.definite_form_signature`.
+-/
 theorem DefSig : Formalism.UG.DefSig := Formalism.UG.P.definite_form_signature
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.standard_hermitian_form_definite`.
+-/
 theorem StdFormDef : Formalism.UG.StdFormDef := Formalism.UG.P.standard_hermitian_form_definite
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.Tj_double_coset_decomposition`.
+-/
 theorem TjCosets : Formalism.UG.TjCosets := Formalism.UG.P.Tj_double_coset_decomposition
+/- English proof (translation)
+Introduce `L _ O ϖ k _ n j d hd`. Conclude with `Tj_eq_dosetInd_diagJ O ϖ k n j d hd`.
+-/
 theorem TjEq : Formalism.UG.TjEq := by
   intro L _ O ϖ k _ n j d hd
   exact Tj_eq_dosetInd_diagJ O ϖ k n j d hd
+/- English proof (translation)
+Introduce `L _ O ϖ u k _ n j hu hu' hu0`. Set `d : Fin n → O` to `fun i => if (i : ℕ) < j then ⟨u, hu⟩ else 1`. Set `d' : Fin n → O` to `fun i => if (i : ℕ) < j then ⟨u⁻¹, hu'⟩ else 1`. Establish `hdd : ∀ i, d i * d' i = 1`. Introduce `i`.
+
+Simplify using `only [d, d']`. Use `split_ifs`. Conclude with `Subtype.ext (mul_inv_cancel₀ hu0)`. Conclude with `mul_one 1`. Establish `hd'd : ∀ i, d' i * d i = 1` using `fun i => by rw [mul_comm]; exact hdd i`.
+
+Set `D0 : GL (Fin n) O` to `⟨Matrix.diagonal d, Matrix.diagonal d', by rw [Matrix.diagonal_mul_diagonal]; simp only [hdd]; exact Matrix.diagonal_one, by rw [Matrix.diagonal_mul_diagonal]; simp only [hd'd]; exact Matrix.diagonal_one⟩`. Set `Dg : GL (Fin n) L` to `bc O.subtype D0`. Establish `hD : (Dg : Matrix (Fin n) (Fin n) L) = Matrix.diagonal (fun i : Fin n => if (i : ℕ) < j then u else 1)`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Apply the tactic sequence `by_cases ha : (a : ℕ) < j <;> simp [Dg, D0, d, bc, ha]`. Simplify using `[Dg, D0, bc, hab]`. Establish `hdiag : diagJ n (u * ϖ) j = diagJ n ϖ j * (Dg : Matrix (Fin n) (Fin n) L)`. Rewrite using `[hD]`.
+
+Simplify using `only [diagJ, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hDmem : Dg ∈ GLint (Fin n) O` using `MonoidHom.mem_range.mpr ⟨D0, rfl⟩`.
+
+Unfold `Tj`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨a, ha, b, hb, h⟩`. Use `⟨a, ha, Dg * b, (GLint (Fin n) O).mul_mem hDmem hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h, hdiag, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Introduce and unpack `⟨a, ha, b, hb, h⟩`.
+
+Use `⟨a, ha, Dg⁻¹ * b, (GLint (Fin n) O).mul_mem ((GLint (Fin n) O).inv_mem hDmem) hb, ?_⟩` and prove the remaining obligations. Rewrite using `[h, hdiag, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Dg : Matrix (Fin n) (Fin n) L), Units.mul_inv, Matrix.one_mul]`.
+-/
 theorem TjIndep : Formalism.UG.TjIndep := by
   intro L _ O ϖ u k _ n j hu hu' hu0
   let d : Fin n → O := fun i => if (i : ℕ) < j then ⟨u, hu⟩ else 1
@@ -478,6 +729,19 @@ theorem TjIndep : Formalism.UG.TjIndep := by
     rw [h, hdiag, Units.val_mul]
     simp only [Matrix.mul_assoc]
     rw [← Matrix.mul_assoc (Dg : Matrix (Fin n) (Fin n) L), Units.mul_inv, Matrix.one_mul]
+/- English proof (translation)
+Introduce `A B _ _ n _ _ σ σ' φ hφ J`. Establish `hmem : ∀ g : GL n A, g ∈ UJ σ J → bc (φ : A →+* B) g ∈ UJ σ' (J.map φ)` using `fun g hg => Formalism.UG.Final.BCMem A B n σ σ' (φ : A →+* B) hφ J g hg`. Establish `hψ : ((φ.symm : B ≃+* A) : B →+* A).comp σ' = σ.comp ((φ.symm : B ≃+* A) : B →+* A)`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `b`.
+
+Apply `φ.injective` to reduce the goal to its premises. Establish `h1` using `RingHom.congr_fun hφ (φ.symm b)`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, RingEquiv.apply_symm_apply] at h1 ⊢`. Rewrite using `[h1]`. Establish `hmem' : ∀ h : GL n B, h ∈ UJ σ' (J.map φ) → bc ((φ.symm : B ≃+* A) : B →+* A) h ∈ UJ σ J`.
+
+Introduce `h hh`. Use `Formalism.UG.Final.BCMem B A n σ' σ ((φ.symm : B ≃+* A) : B →+* A) hψ (J.map φ) h hh` as an intermediate fact. Establish `hJ : (J.map φ).map ((φ.symm : B ≃+* A) : B →+* A) = J`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+
+Rewrite `this` using `[hJ]`. Conclude with `this`. Use `⟨{ toFun := fun g => ⟨bc (φ : A →+* B) g, hmem g g.2⟩ invFun := fun h => ⟨bc ((φ.symm : B ≃+* A) : B →+* A) h, hmem' h h.2⟩ left_inv := fun g => ?_ right_inv := fun h => ?_ map_mul' := fun g h => ?_ }, fun g => rfl⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Simplify using `[bc]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Simplify using `[bc]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem UJTransport : Formalism.UG.UJTransport := by
   intro A B _ _ n _ _ σ σ' φ hφ J
   have hmem : ∀ g : GL n A, g ∈ UJ σ J → bc (φ : A →+* B) g ∈ UJ σ' (J.map φ) :=
@@ -512,8 +776,19 @@ theorem UJTransport : Formalism.UG.UJTransport := by
     simp [bc]
   · apply Subtype.ext
     simp
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.split_group_points`.
+-/
 theorem SplitPts : Formalism.UG.SplitPts := Formalism.UG.P.split_group_points
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.maximal_compact_subgroup_compact`.
+-/
 theorem KpqSubgroupCompact : Formalism.UG.KpqSubgroupCompact := Formalism.UG.P.maximal_compact_subgroup_compact
+/- English proof (translation)
+Introduce `R _ r n g h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [dwAct, Formalism.GradedWeylDivisibility.rowAct, AlgHom.comp_apply, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, mul_inv_rev, Units.val_mul, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+
+Rewrite using `[Finset.sum_comm]`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[dwAct, Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite MvPolynomial.C, ite_mul]`.
+-/
 theorem DwActMul : Formalism.UG.DwActMul := by
   intro R _ r n g h
   refine ⟨?_, ?_⟩
@@ -526,7 +801,13 @@ theorem DwActMul : Formalism.UG.DwActMul := by
   · apply MvPolynomial.algHom_ext
     intro i
     simp [dwAct, Formalism.GradedWeylDivisibility.rowAct, Matrix.one_apply, apply_ite MvPolynomial.C, ite_mul]
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.weyl_module_GL_stable_local`.
+-/
 theorem WeylGLStableLocal : Formalism.UG.WeylGLStableLocal := Formalism.UG.P.weyl_module_GL_stable_local
+/- English proof (translation)
+The claim follows from `Formalism.UG.P.weyl_module_GL_stable`.
+-/
 theorem WeylGLStable : Formalism.UG.WeylGLStable := Formalism.UG.P.weyl_module_GL_stable
 
 end Formalism.UG.Final

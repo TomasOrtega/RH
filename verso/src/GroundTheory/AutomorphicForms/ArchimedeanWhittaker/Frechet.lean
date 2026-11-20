@@ -36,6 +36,9 @@ noncomputable def smoothSeminormFamily : SeminormFamily ℂ (h.SmoothFrechet π)
 noncomputable instance : TopologicalSpace (h.SmoothFrechet π) :=
   (h.smoothSeminormFamily π).moduleFilterBasis.topology
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem withSeminorms_smoothFrechet : WithSeminorms (h.smoothSeminormFamily π) := ⟨rfl⟩
 
 instance : IsTopologicalAddGroup (h.SmoothFrechet π) :=
@@ -47,6 +50,11 @@ instance : ContinuousSMul ℂ (h.SmoothFrechet π) :=
 def IsSmoothContinuous (l : h.smoothVectors π →ₗ[ℂ] ℂ) : Prop :=
   ∃ (s : Finset (Σ k, Fin k → 𝔤)) (C : ℝ), ∀ v, ‖l v‖ ≤ C * ∑ Y ∈ s, ‖h.wordOp π Y.2 (v : E)‖
 
+/- English proof (translation)
+Use `set q : Seminorm ℂ (h.SmoothFrechet π) := (normSeminorm ℂ ℂ).comp l.toLinearMap with hq`. Establish `hqc : Continuous q` using `continuous_norm.comp l.continuous`. Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (h.withSeminorms_smoothFrechet π) q hqc`. Use `⟨s, C, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : q v ≤ (C • s.sup (h.smoothSeminormFamily π)) v` using `hC v`.
+
+Establish `h2 : (s.sup (h.smoothSeminormFamily π)) v ≤ ∑ Y ∈ s, ‖h.wordOp π Y.2 (v : E)‖`. Use `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun Y hY => ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun Y : (Σ k, Fin k → 𝔤) => ‖h.wordOp π Y.2 (v : E)‖) (fun _ _ => norm_nonneg _) hY`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isSmoothContinuous_of_continuous (l : h.SmoothFrechet π →L[ℂ] ℂ) :
     h.IsSmoothContinuous π (l.toLinearMap : h.smoothVectors π →ₗ[ℂ] ℂ) := by
   set q : Seminorm ℂ (h.SmoothFrechet π) := (normSeminorm ℂ ℂ).comp l.toLinearMap with hq
@@ -80,6 +88,15 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep 
 
 variable {h π}
 
+/- English proof (translation)
+Take `⟨s, C, hC⟩` from `hl`. Rewrite using `[hasDerivAt_iff_isLittleO]`. Establish `hY : ∀ Y ∈ s, (fun t : ℝ => ‖h.wordOp π Y.2 (u t : E) - h.wordOp π Y.2 (u 0 : E) - (t - 0) • h.wordOp π Y.2 (d : E)‖) =o[𝓝 0] fun t => t - 0` using `fun Y _ => (hasDerivAt_iff_isLittleO.1 (hu Y)).norm_left`. Establish `hS` using `IsLittleO.sum hY`. Use `IsBigO.trans_isLittleO (IsBigO.of_bound |C| (Eventually.of_forall fun t => ?_)) hS` and prove the remaining obligations.
+
+Establish `e : l (u t) - l (u 0) - (t - 0) • l d = l (u t - u 0 - ((t : ℂ) • d))`. Rewrite using `[map_sub, map_sub, map_smul, smul_eq_mul, Complex.real_smul, sub_zero]`. Establish `e2 : ∀ Y : (Σ k, Fin k → 𝔤), h.wordOp π Y.2 ((u t - u 0 - ((t : ℂ) • d) : h.smoothVectors π) : E) = h.wordOp π Y.2 (u t : E) - h.wordOp π Y.2 (u 0 : E) - (t - 0) • h.wordOp π Y.2 (d : E)`. Introduce `Y`. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul]`.
+
+Rewrite using `[h.wordOp_sub π ((h.smoothVectors π).sub_mem (u t).2 (u 0).2) ((h.smoothVectors π).smul_mem _ d.2), h.wordOp_sub π (u t).2 (u 0).2, h.wordOp_smul π d.2, sub_zero, Complex.coe_smul]`. Rewrite using `[e]`. Use `(hC _).trans ?_` and prove the remaining obligations. Repeatedly rewrite using `[e2]`. Rewrite using `[Finset.sum_apply, Real.norm_of_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _)]`.
+
+Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+-/
 theorem IsSmoothContinuous.hasDerivAt {l : h.smoothVectors π →ₗ[ℂ] ℂ}
     (hl : h.IsSmoothContinuous π l) {u : ℝ → h.smoothVectors π} {d : h.smoothVectors π}
     (hu : ∀ Y : (Σ k, Fin k → 𝔤),
@@ -112,9 +129,15 @@ variable (h π) in
 def smoothMap {v : E} (hv : h.IsSmoothVector π v) (g : G) : h.smoothVectors π :=
   ⟨π g v, h.isSmoothVector_map π hv g⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_smoothMap {v : E} (hv : h.IsSmoothVector π v) (g : G) :
     (h.smoothMap π hv g : E) = π g v := rfl
 
+/- English proof (translation)
+Use `hl.hasDerivAt fun Y => ?_` and prove the remaining obligations. Simplify using `only [coe_smoothMap, BanachRep.map_mul_apply]`. Conclude with `h.hasDerivAt_wordOp_map_expG π hπ hv X g Y.2`.
+-/
 theorem IsSmoothContinuous.hasDerivAt_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1)
     {l : h.smoothVectors π →ₗ[ℂ] ℂ} (hl : h.IsSmoothContinuous π l) {v : E}
     (hv : h.IsSmoothVector π v) (g : G) (X : 𝔤) :
@@ -124,6 +147,13 @@ theorem IsSmoothContinuous.hasDerivAt_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1)
   simp only [coe_smoothMap, BanachRep.map_mul_apply]
   exact h.hasDerivAt_wordOp_map_expG π hπ hv X g Y.2
 
+/- English proof (translation)
+Take `⟨s, C, hC⟩` from `hl`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `hY : ∀ Y ∈ s, Tendsto (fun g : G => ‖h.wordOp π Y.2 (π g v) - h.wordOp π Y.2 (π g₀ v)‖) (𝓝 g₀) (𝓝 0)` using `fun Y _ => tendsto_iff_norm_sub_tendsto_zero.1 ((h.continuous_wordOp_map π hπ hv Y.2).tendsto g₀)`.
+
+Establish `hS` using `tendsto_finsetSum s hY`. Simplify using `only [Finset.sum_const_zero] at hS`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun g => ?_) (by simpa using hS.const_mul |C|)` and prove the remaining obligations. Rewrite using `[← map_sub]`. Use `(hC _).trans ?_` and prove the remaining obligations.
+
+Establish `e : ∀ Y : (Σ k, Fin k → 𝔤), h.wordOp π Y.2 ((h.smoothMap π hv g - h.smoothMap π hv g₀ : h.smoothVectors π) : E) = h.wordOp π Y.2 (π g v) - h.wordOp π Y.2 (π g₀ v)` using `fun Y => by`. Simplify using `only [Submodule.coe_sub, coe_smoothMap]`. Conclude with `h.wordOp_sub π (h.isSmoothVector_map π hv g) (h.isSmoothVector_map π hv g₀) Y.2`. Repeatedly rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self C) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`.
+-/
 theorem IsSmoothContinuous.continuous_map (hπ : ∀ g, ‖π g‖ ≤ 1)
     {l : h.smoothVectors π →ₗ[ℂ] ℂ} (hl : h.IsSmoothContinuous π l) {v : E}
     (hv : h.IsSmoothVector π v) : Continuous fun g : G => l (h.smoothMap π hv g) := by
@@ -147,6 +177,13 @@ theorem IsSmoothContinuous.continuous_map (hπ : ∀ g, ‖π g‖ ≤ 1)
   simp_rw [e]
   exact mul_le_mul_of_nonneg_right (le_abs_self C) (Finset.sum_nonneg fun _ _ => norm_nonneg _)
 
+/- English proof (translation)
+Take `⟨s, C, hC⟩` from `hl`. Use `choose D hD using fun Y : (Σ k, Fin k → 𝔤) => h.exists_norm_wordOp_map_le π hπ hv Y.2`. Use `set N := s.sup fun Y => Y.1`. Use `⟨|C| * ∑ Y ∈ s, |D Y|, N, fun g => ?_⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ 1 + ‖h.AdL g⁻¹‖` using `le_add_of_nonneg_right (by positivity)`.
+
+Establish `hterm : ∀ Y ∈ s, ‖h.wordOp π Y.2 (π g v)‖ ≤ |D Y| * (1 + ‖h.AdL g⁻¹‖) ^ N`. Introduce `Y hY`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.le_sup (f := fun Y : (Σ k, Fin k → 𝔤) => Y.1) hY`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `hterm Y hY`. Use `_ = |C| * (∑ Y ∈ s, |D Y|) * (1 + ‖h.AdL g⁻¹‖) ^ N := by`. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsSmoothContinuous.exists_norm_map_le (hπ : ∀ g, ‖π g‖ ≤ 1)
     {l : h.smoothVectors π →ₗ[ℂ] ℂ} (hl : h.IsSmoothContinuous π l) {v : E}
     (hv : h.IsSmoothVector π v) :

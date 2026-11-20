@@ -14,6 +14,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 def gramH {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) D.host.E :=
   Matrix.of fun i j => (VS D).hT (wF X u' i) (wF X u' j)
 
+/- English proof (translation)
+Establish `h1 : ∀ b : Fin D.R.rS, Fin.last D.R.rS ≠ b.castSucc` using `fun b h => (Fin.castSucc_lt_last b).ne' h`. Establish `h1' : ∀ b : Fin D.R.rS, b.castSucc ≠ Fin.last D.R.rS` using `fun b h => (Fin.castSucc_lt_last b).ne h`. Establish `h2 : ∀ (x : Fin (D.R.rS + 1)) (y : Fin D.R.rS), Fin.castAdd D.R.rS x ≠ Fin.natAdd (D.R.rS + 1) y`. Introduce `x y h`. Use `congrArg Fin.val h` as an intermediate fact.
+
+Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd] at this`. Use linear arithmetic over natural numbers and integers. Establish `h2' : ∀ (x : Fin (D.R.rS + 1)) (y : Fin D.R.rS), Fin.natAdd (D.R.rS + 1) y ≠ Fin.castAdd D.R.rS x` using `fun x y h => h2 x y h.symm`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_add, Fin.sum_univ_castSucc]`.
+
+Apply the tactic sequence `refine Fin.addCases (fun i1 => ?_) (fun i2 => ?_) i <;> refine Fin.addCases (fun j1 => ?_) (fun j2 => ?_) j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) i1 <;> refine Fin.lastCases ?_ (fun b => ?_) j1 <;>`. Simplify using `[gramH, wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ff, X.ef, hT_fe, hT_ze, hT_zf, (X.zu_orth u' _).1, (X.zu_orth u' _).2, X.zu_norm, Matrix.diagonal_apply, h1, h1', h2, h2', eq_comm]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) i1 <;>`. Simplify using `[gramH, wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ff, X.ef, hT_fe, hT_ze, hT_zf, (X.zu_orth u' _).1, (X.zu_orth u' _).2, X.zu_norm, Matrix.diagonal_apply, h1, h1', h2, h2', eq_comm]`.
+
+Apply the tactic sequence `refine Fin.lastCases ?_ (fun b => ?_) j1 <;>`. Simplify using `[gramH, wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ff, X.ef, hT_fe, hT_ze, hT_zf, (X.zu_orth u' _).1, (X.zu_orth u' _).2, X.zu_norm, Matrix.diagonal_apply, h1, h1', h2, h2', eq_comm]`. Simplify using `[gramH, wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ff, X.ef, hT_fe, hT_ze, hT_zf, (X.zu_orth u' _).1, (X.zu_orth u' _).2, X.zu_norm, Matrix.diagonal_apply, h1, h1', h2, h2', eq_comm]`.
+-/
 theorem gram_sq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) :
     gramH X u' * gramH X u' =
     Matrix.diagonal (Fin.append (Fin.snoc (fun _ : Fin D.R.rS => (1 : D.host.E))
@@ -42,6 +51,15 @@ theorem gram_sq {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) :
   · simp [gramH, wF, Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, X.ee, X.ff, X.ef,
       hT_fe, hT_ze, hT_zf, (X.zu_orth u' _).1, (X.zu_orth u' _).2, X.zu_norm, Matrix.diagonal_apply, h1, h1', h2, h2', eq_comm]
 
+/- English proof (translation)
+Introduce `D X u' ψ hT μinf νinf fibInf hP v`. Establish `hGH : gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) = (gramH X u').map X.ιE.symm`. Use extensionality with `i j`. Rewrite using `[gram_eq]`. Both sides reduce to the same expression.
+
+Establish `hdet : (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det = X.ιE.symm (gramH X u').det`. Rewrite using `[hGH]`. Conclude with `(RingHom.map_det (X.ιE.symm : D.host.E →+* X.B.I.E) _).symm`. Establish `hsq : (gramH X u').det ^ 2 = (((D.mem u').A.T : ℕ) : D.host.E) ^ 2`. Establish `h` using `congrArg Matrix.det (gram_sq X u')`.
+
+Rewrite `h` using `[Matrix.det_mul, Matrix.det_diagonal, Fin.prod_univ_add, Fin.prod_univ_castSucc]`. Simplify using `only [Fin.append_left, Fin.append_right, Fin.snoc_castSucc, Fin.snoc_last, Finset.prod_const_one, one_mul, mul_one] at h`. Rewrite using `[sq, sq]`. Conclude with `h`. Establish `hz : (X.B.I.φ v (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det) ^ 2 = ((((D.mem u').A.T : ℕ) : ℂ)) ^ 2`.
+
+Rewrite using `[hdet, ← map_pow, ← map_pow, hsq, map_pow, map_pow, map_natCast, map_natCast]`. Establish `hn : ‖X.B.I.φ v (gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).det‖ ^ 2 = (Tw u') ^ 2`. Rewrite using `[← norm_pow, hz, norm_pow, Complex.norm_natCast]`. Both sides reduce to the same expression. Conclude with `(sq_eq_sq₀ (norm_nonneg _) (by unfold Tw; positivity)).1 hn`.
+-/
 theorem detT_holds : DetT := by
   intro D X u' ψ hT μinf νinf fibInf hP v
   have hGH : gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u')) = (gramH X u').map X.ιE.symm := by

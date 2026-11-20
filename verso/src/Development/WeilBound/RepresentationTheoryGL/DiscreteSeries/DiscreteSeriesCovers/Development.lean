@@ -12,6 +12,9 @@ namespace PositivityTheory.RgDs
 
 open ReciprocityTheory.ChartRestriction.DS
 
+/- English proof (translation)
+Take `⟨T⟩` from `HW.kType_exists ε lam hl`. Take `⟨μ, hμ⟩` from `S7.exists_mu hl`. Establish `hP : IsPsiFor ε lam T (S7.PsiM T μ)` using `⟨fun k₁ k₂ g hg => S7.psiM_equiv T μ k₁ k₂ hg, S7.psiM_one T μ, S7.psiM_smooth T μ hμ, fun g hg => S7.psiM_casimir T μ hμ hg, hL n ε lam T μ hl hμ⟩`. Conclude with `⟨_, inferInstance, inferInstance, _, hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)⟩`.
+-/
 theorem model_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) {n : ℕ} (ε : Fin n → Bool) (lam : Fin n → ℝ)
     (hl : Formalism.QuantumDeterminants.IsHCParam lam) :
     ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H)
@@ -24,11 +27,17 @@ theorem model_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) 
       fun g hg => S7.psiM_casimir T μ hμ hg, hL n ε lam T μ hl hμ⟩
   exact ⟨_, inferInstance, inferInstance, _, hH n ε lam T _ hl hP (hK n ε lam T μ hl hμ hP)⟩
 
+/- English proof (translation)
+Introduce `n ε lam hl`. Take `⟨H, _, _, σ, h, -⟩` from `model_of hL hK hH ε lam hl`. Conclude with `⟨H, _, _, σ, h⟩`.
+-/
 theorem dsExists_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) : GlobalTheory.Dec.DSExists := by
   intro n ε lam hl
   obtain ⟨H, _, _, σ, h, -⟩ := model_of hL hK hH ε lam hl
   exact ⟨H, _, _, σ, h⟩
 
+/- English proof (translation)
+Introduce `n ε lam H _ _ σ hl hσ μ S hS`. Take `⟨G, _, _, π, hπ, hc⟩` from `model_of hL hK hH ε lam hl`. Take `⟨S', hS'⟩` from `GlobalTheory.LowestKTypeDetermines.exists_ktype_of_uEquiv (PositivityTheory.DiscreteSeriesGap.GapInv.dsUnique_dec n ε lam H σ G π hl hσ hπ) ⟨S, hS⟩`. Conclude with `hc μ S' hS'`.
+-/
 theorem kTypesAbove_of (hL : ExplicitFunctionSquareIntegrable) (hK : Key) (hH : Hilb) : GlobalTheory.Dec.KTypesAbove := by
   intro n ε lam H _ _ σ hl hσ μ S hS
   obtain ⟨G, _, _, π, hπ, hc⟩ := model_of hL hK hH ε lam hl

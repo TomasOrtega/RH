@@ -61,6 +61,9 @@ section Form
 
 variable {L : LB G.left} {z : Spec (CommRingCat.of ℂ) ⟶ X} {v w : epsAt z ⟶ G} {c : ℂ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩`. Conclude with `⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, rfl⟩`. Introduce and unpack `⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩`. Conclude with `⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, rfl⟩`.
+-/
 theorem hodgeInnerProduct_iff_hodgeForm : HodgeIP G L z v w c ↔ HodgeForm G L z w v c := by
   constructor
   · rintro ⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩
@@ -68,6 +71,9 @@ theorem hodgeInnerProduct_iff_hodgeForm : HodgeIP G L z v w c ↔ HodgeForm G L 
   · rintro ⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩
     exact ⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, rfl⟩
 
+/- English proof (translation)
+Establish `hH : ∀ i j, (starRingEnd ℂ) (Hm i j) = Hm j i` using `fun i j => h.apply j i`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Pi.star_apply, RCLike.star_def, Complex.conj_conj, hH]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem conj_hermForm {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHermitian) (a b : Fin g → ℂ) :
     (starRingEnd ℂ) (hermForm Hm a b) = hermForm Hm b a := by
   have hH : ∀ i j, (starRingEnd ℂ) (Hm i j) = Hm j i := fun i j => h.apply j i
@@ -76,23 +82,44 @@ theorem conj_hermForm {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h : Hm.IsHerm
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Take `⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩` from `h`. Use `⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Complex.conj_ofReal, conj_hermForm h2.1]`.
+-/
 theorem HodgeForm.conj (h : HodgeForm G L z v w c) : HodgeForm G L z w v ((starRingEnd ℂ) c) := by
   obtain ⟨hL, hv, hw, A, _, φ, g, u, Hm, χ, v', w', a, b, h1, h2, h3, h4, h5, h6, rfl⟩ := h
   refine ⟨hL, hw, hv, A, inferInstance, φ, g, u, Hm, χ, w', v', b, a, h1, h2, h4, h3, h6, h5, ?_⟩
   rw [map_mul, Complex.conj_ofReal, conj_hermForm h2.1]
 
+/- English proof (translation)
+The claim follows from `hodgeInnerProduct_iff_hodgeForm.2 (hodgeInnerProduct_iff_hodgeForm.1 h).conj`.
+-/
 theorem HodgeIP.conj (h : HodgeIP G L z v w c) : HodgeIP G L z w v ((starRingEnd ℂ) c) :=
   hodgeInnerProduct_iff_hodgeForm.2 (hodgeInnerProduct_iff_hodgeForm.1 h).conj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => (hodgeInnerProduct_iff_hodgeForm.1 h).conj, fun h => hodgeInnerProduct_iff_hodgeForm.2 (by simpa using h.conj)⟩`.
+-/
 theorem hodgeInnerProduct_iff_hodgeForm_conj : HodgeIP G L z v w c ↔ HodgeForm G L z v w ((starRingEnd ℂ) c) :=
   ⟨fun h => (hodgeInnerProduct_iff_hodgeForm.1 h).conj, fun h => hodgeInnerProduct_iff_hodgeForm.2 (by simpa using h.conj)⟩
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem HodgeIP.isLB (h : HodgeIP G L z v w c) : L.IsLB := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem HodgeIP.isTanAt_left (h : HodgeIP G L z v w c) : IsTanAt G z v := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.1`.
+-/
 theorem HodgeIP.isTanAt_right (h : HodgeIP G L z v w c) : IsTanAt G z w := h.2.2.1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨v, hv, h⟩ => ⟨v, hv, fun p q => hodgeInnerProduct_iff_hodgeForm.1 (h q p)⟩, fun ⟨v, hv, h⟩ => ⟨v, hv, fun p q => hodgeInnerProduct_iff_hodgeForm.2 (h q p)⟩⟩`.
+-/
 theorem LieModel.gramAt_iff_formGramAt (M : LieModel G ξ E) {r : ℕ} {b : Fin r → E} {Γ : Matrix (Fin r) (Fin r) ℂ} :
     M.GramAt L z b Γ ↔ M.FormGramAt L z b Γ.transpose :=
   ⟨fun ⟨v, hv, h⟩ => ⟨v, hv, fun p q => hodgeInnerProduct_iff_hodgeForm.1 (h q p)⟩,
@@ -104,25 +131,43 @@ section Minor
 
 variable {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ}
 
+/- English proof (translation)
+Simplify using `[leadMinor]`.
+-/
 theorem leadMinor_size_zero (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ 0 = 1 := by simp [leadMinor]
 
+/- English proof (translation)
+Simplify using `[leadMinor]`.
+-/
 theorem leadMinor_size_one (Γ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : leadMinor Γ 1 = (Γ 0 0).re := by
   simp [leadMinor]
 
+/- English proof (translation)
+Simplify using `[leadMinor]`.
+-/
 theorem leadMinor_size_self (Γ : Matrix (Fin r) (Fin r) ℂ) : leadMinor Γ r = Γ.det.re := by
   simp [leadMinor]
 
+/- English proof (translation)
+Unfold `leadMinor`. Use `split_ifs with h`. Rewrite using `[← Matrix.transpose_submatrix, Matrix.det_transpose]`. Both sides reduce to the same expression.
+-/
 theorem leadMinor_transpose (Γ : Matrix (Fin r) (Fin r) ℂ) (s : ℕ) : leadMinor Γ.transpose s = leadMinor Γ s := by
   unfold leadMinor
   split_ifs with h
   · rw [← Matrix.transpose_submatrix, Matrix.det_transpose]
   · rfl
 
+/- English proof (translation)
+Unfold `leadMinor`. Rewrite using `[dif_pos h]`. Conclude with `(Complex.pos_iff.1 (hΓ.submatrix (Fin.castLE_injective h)).det_pos).1`.
+-/
 theorem leadMinor_pos_of_posDef (hΓ : Γ.PosDef) {s : ℕ} (h : s ≤ r) : 0 < leadMinor Γ s := by
   unfold leadMinor
   rw [dif_pos h]
   exact (Complex.pos_iff.1 (hΓ.submatrix (Fin.castLE_injective h)).det_pos).1
 
+/- English proof (translation)
+Rewrite using `[leadMinor_size_one]`. Simplify using `[leadMinor, Matrix.det_fin_two, Complex.normSq_apply]`. Clear the denominators using the available nonvanishing facts.
+-/
 example (a d : ℝ) (ha : a ≠ 0) (b : ℂ) :
     leadMinor !![(a : ℂ), b; (starRingEnd ℂ) b, d] 2 / leadMinor !![(a : ℂ), b; (starRingEnd ℂ) b, d] 1 =
       d - Complex.normSq b / a := by
@@ -130,6 +175,9 @@ example (a d : ℝ) (ha : a ≠ 0) (b : ℂ) :
   simp [leadMinor, Matrix.det_fin_two, Complex.normSq_apply]
   field_simp
 
+/- English proof (translation)
+Simplify using `[hermForm, ← Pi.single_star]`.
+-/
 example {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (p q : Fin g) :
     hermForm Hm (Pi.single p 1) (Pi.single q 1) = Hm p q := by
   simp [hermForm, ← Pi.single_star]
@@ -141,10 +189,18 @@ section Gr
 variable {M : LieModel G ξ E} {L : LB G.left} {V : Lat ξ E} {r : ℕ} {b₀ : Fin r → E} {i : Fin r}
   {z : Spec (CommRingCat.of ℂ) ⟶ X} {t : Ω} {ν : ℝ}
 
+/- English proof (translation)
+Take `⟨_, _, Γ, -, -, -, -, hΓ, rfl⟩` from `h`. Conclude with `Real.sqrt_pos.2 (div_pos (leadMinor_pos_of_posDef hΓ i.2) (leadMinor_pos_of_posDef hΓ i.2.le))`.
+-/
 theorem LieModel.IsGrNorm.pos (h : M.IsGrNorm L V b₀ i z t ν) : 0 < ν := by
   obtain ⟨_, _, Γ, -, -, -, -, hΓ, rfl⟩ := h
   exact Real.sqrt_pos.2 (div_pos (leadMinor_pos_of_posDef hΓ i.2) (leadMinor_pos_of_posDef hΓ i.2.le))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, b, Γ, h1, h2, h3, h4, h5, rfl⟩`. Conclude with `⟨h, b, Γ.transpose, h1, h2, h3, M.gramAt_iff_formGramAt.1 h4, h5.transpose, by`. Rewrite using `[leadMinor_transpose, leadMinor_transpose]⟩`. Introduce and unpack `⟨h, b, Γ, h1, h2, h3, h4, h5, rfl⟩`.
+
+Conclude with `⟨h, b, Γ.transpose, h1, h2, h3, M.gramAt_iff_formGramAt.2 h4, h5.transpose, by`. Rewrite using `[leadMinor_transpose, leadMinor_transpose]⟩`.
+-/
 theorem LieModel.isGrNorm_iff_formGramAt : M.IsGrNorm L V b₀ i z t ν ↔
     ∃ (h : genPt ξ ⤳ centre z) (b : Fin r → E) (Γ : Matrix (Fin r) (Fin r) ℂ),
       (∀ s, flagStep Ω b s = flagStep Ω b₀ s) ∧ V.IsFrameAt b ⟨centre z, h⟩ ∧ b i - t • b₀ i ∈ flagStep Ω b₀ i ∧
@@ -165,21 +221,38 @@ variable {z : Spec (CommRingCat.of ℂ) ⟶ X}
 
 namespace CxVal
 
+/- English proof (translation)
+Take `⟨h, x, rfl, rfl⟩` from `h`. Take `⟨_, y, rfl, rfl⟩` from `h'`. Conclude with `⟨h, x * y, map_mul _ _ _, map_mul _ _ _⟩`.
+-/
 theorem mul {a b : Ω} {r s : ℂ} (h : ValAt ξ z a r) (h' : ValAt ξ z b s) : ValAt ξ z (a * b) (r * s) := by
   obtain ⟨h, x, rfl, rfl⟩ := h
   obtain ⟨_, y, rfl, rfl⟩ := h'
   exact ⟨h, x * y, map_mul _ _ _, map_mul _ _ _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h, 1, map_one _, map_one _⟩`.
+-/
 theorem one (h : genPt ξ ⤳ centre z) : ValAt ξ z 1 1 := ⟨h, 1, map_one _, map_one _⟩
 
+/- English proof (translation)
+The claim follows from `(inferInstance : IsLocalHom (Scheme.stalkClosedPointTo z).hom).map_nonunit x (IsUnit.mk0 _ h)`.
+-/
 theorem isUnit (x : X.presheaf.stalk (centre z)) (h : (Scheme.stalkClosedPointTo z).hom x ≠ 0) : IsUnit x :=
   (inferInstance : IsLocalHom (Scheme.stalkClosedPointTo z).hom).map_nonunit x (IsUnit.mk0 _ h)
 
+/- English proof (translation)
+Take `⟨h, x, rfl, rfl⟩` from `h`. Take `⟨x, rfl⟩ : IsUnit x` from `isUnit x hr`. Conclude with `⟨h, x⁻¹.val, map_units_inv _ x, map_units_inv _ x⟩`.
+-/
 theorem inv {a : Ω} {r : ℂ} (h : ValAt ξ z a r) (hr : r ≠ 0) : ValAt ξ z a⁻¹ r⁻¹ := by
   obtain ⟨h, x, rfl, rfl⟩ := h
   obtain ⟨x, rfl⟩ : IsUnit x := isUnit x hr
   exact ⟨h, x⁻¹.val, map_units_inv _ x, map_units_inv _ x⟩
 
+/- English proof (translation)
+Establish `hn : ∀ n : ℕ, ValAt ξ z (a ^ n) (r ^ n)` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using one h.1`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `mul ih h`.
+
+Take `⟨n, rfl | rfl⟩` from `n.eq_nat_or_neg`. Simplify using `using hn n`. Simplify using `using inv (hn n) (pow_ne_zero _ hr)`.
+-/
 theorem zpow {a : Ω} {r : ℂ} (h : ValAt ξ z a r) (hr : r ≠ 0) (n : ℤ) : ValAt ξ z (a ^ n) (r ^ n) := by
   have hn : ∀ n : ℕ, ValAt ξ z (a ^ n) (r ^ n) := fun n => by
     induction n with
@@ -189,6 +262,11 @@ theorem zpow {a : Ω} {r : ℂ} (h : ValAt ξ z a r) (hr : r ≠ 0) (n : ℤ) : 
   · simpa using hn n
   · simpa using inv (hn n) (pow_ne_zero _ hr)
 
+/- English proof (translation)
+Proceed by induction on `s using MvPolynomial.induction_on with`. Consider the case `C n => exact ⟨hz, n, by simp, (map_intCast (Scheme.stalkClosedPointTo z).hom n).trans (by simp)⟩`. Consider the case `add p q hp hq`. Take `⟨_, x, hx, hx'⟩` from `hp`. Take `⟨_, y, hy, hy'⟩` from `hq`.
+
+Conclude with `⟨hz, x + y, by rw [map_add, map_add, hx, hy], (map_add (Scheme.stalkClosedPointTo z).hom x y).trans (by rw [map_add, ← hx', ← hy']; rfl)⟩`. Consider the case `mul_X p i hp => simpa using mul hp (h i)`.
+-/
 theorem aeval {σ : Type} {a : σ → Ω} {r : σ → ℂ} (hz : genPt ξ ⤳ centre z) (h : ∀ p, ValAt ξ z (a p) (r p))
     (s : MvPolynomial σ ℤ) : ValAt ξ z (MvPolynomial.aeval a s) (MvPolynomial.aeval r s) := by
   induction s using MvPolynomial.induction_on with
@@ -200,6 +278,11 @@ theorem aeval {σ : Type} {a : σ → Ω} {r : σ → ℂ} (hz : genPt ξ ⤳ ce
       (map_add (Scheme.stalkClosedPointTo z).hom x y).trans (by rw [map_add, ← hx', ← hy']; rfl)⟩
   | mul_X p i hp => simpa using mul hp (h i)
 
+/- English proof (translation)
+Take `⟨h, x, hx, rfl⟩` from `h`. Take `⟨_, y, hy, rfl⟩` from `h'`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (x - y)` using `isUnit _ fun h0 => hne (sub_eq_zero.1 ((map_sub (Scheme.stalkClosedPointTo z).hom x y).symm.trans h0))`. Use `hu.map (genMap ξ ⟨centre z, h⟩)` as an intermediate fact.
+
+Rewrite `this` using `[map_sub, hx, hy, sub_self]`. Conclude with `not_isUnit_zero this`.
+-/
 theorem unique {a : Ω} {r s : ℂ} (h : ValAt ξ z a r) (h' : ValAt ξ z a s) : r = s := by
   obtain ⟨h, x, hx, rfl⟩ := h
   obtain ⟨_, y, hy, rfl⟩ := h'
@@ -215,6 +298,17 @@ end CxVal
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω} {A : HermLine J} {e₀ : Ω}
   {w : (Σ k, J k) → ℂ} {t : Ω} {ν ν' : ℝ}
 
+/- English proof (translation)
+Use `⟨fun h => h.2.2 c hc, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, hu, hν⟩`. Use `⟨he, hw, fun c' hc' => ?_⟩` and prove the remaining obligations. Use `choose r hr hr' using fun k => (hw.2 k (c' k) (IsUnit.mk0 _ (hc' k))).2 (c k)`. Establish `hr0 : ∀ k, r k ≠ 0` using `fun k h => hc k (by rw [hr', h, zero_mul])`.
+
+Establish `hp : ∀ s : Finset K, ValAt ξ z (∏ k ∈ s, (y ⟨k, c k⟩ / y ⟨k, c' k⟩) ^ A.a k) (∏ k ∈ s, r k ^ A.a k)` using `by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CxVal.one hu.1`. Consider the case `insert k s hk ih`.
+
+Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Conclude with `CxVal.mul (CxVal.zpow (hr k) (hr0 k) _) ih`. Establish `hy : (∏ k, y ⟨k, c k⟩ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw.2 k (c k) (IsUnit.mk0 _ (hc k))).1`. Use `⟨u * ∏ k, r k ^ A.a k, ?_, ?_⟩` and prove the remaining obligations. Use `CxVal.mul hu (hp Finset.univ) using 1` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [div_zpow, Finset.prod_div_distrib]`. Simplify using `only [div_eq_mul_inv, mul_inv]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hν, norm_mul, norm_prod, _root_.mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hr' k, norm_mul, mul_zpow, norm_zpow]`.
+-/
 theorem secNorm_iff_chart (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) (c : (k : K) → J k) (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
     SecNorm ξ y A e₀ z w t ν ↔ ∃ u : ℂ, ValAt ξ z (t / ((∏ k, y ⟨k, c k⟩ ^ A.a k) * e₀)) u ∧
       ν * A.h w = ‖u‖ * ∏ k, ‖w ⟨k, c k⟩‖ ^ A.a k := by
@@ -243,10 +337,16 @@ theorem secNorm_iff_chart (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) (c : (k : K
     refine Finset.prod_congr rfl fun k _ => ?_
     rw [hr' k, norm_mul, mul_zpow, norm_zpow]
 
+/- English proof (translation)
+Use `choose c hc using h.2.1.1`. Conclude with `⟨c, fun k => (hc k).ne_zero⟩`.
+-/
 theorem SecNorm.exists_chart (h : SecNorm ξ y A e₀ z w t ν) : ∃ c : (k : K) → J k, ∀ k, w ⟨k, c k⟩ ≠ 0 := by
   choose c hc using h.2.1.1
   exact ⟨c, fun k => (hc k).ne_zero⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.exists_chart`. Take `⟨u, hu, e⟩` from `h.2.2 c hc`. Take `⟨u', hu', e'⟩` from `h'.2.2 c hc`. Rewrite `e` using `[CxVal.unique hu hu', ← e']`. Conclude with `mul_right_cancel₀ (A.pos w fun k => ⟨c k, hc k⟩).ne' e`.
+-/
 theorem SecNorm.unique (h : SecNorm ξ y A e₀ z w t ν) (h' : SecNorm ξ y A e₀ z w t ν') : ν = ν' := by
   obtain ⟨c, hc⟩ := h.exists_chart
   obtain ⟨u, hu, e⟩ := h.2.2 c hc
@@ -254,6 +354,9 @@ theorem SecNorm.unique (h : SecNorm ξ y A e₀ z w t ν) (h' : SecNorm ξ y A e
   rw [CxVal.unique hu hu', ← e'] at e
   exact mul_right_cancel₀ (A.pos w fun k => ⟨c k, hc k⟩).ne' e
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.exists_chart`. Take `⟨u, -, e⟩` from `h.2.2 c hc`. Use `nonneg_of_mul_nonneg_left ?_ (A.pos w fun k => ⟨c k, hc k⟩)` and prove the remaining obligations. Rewrite using `[e]`. Check the signs of the components of the expression.
+-/
 theorem SecNorm.nonneg (h : SecNorm ξ y A e₀ z w t ν) : 0 ≤ ν := by
   obtain ⟨c, hc⟩ := h.exists_chart
   obtain ⟨u, -, e⟩ := h.2.2 c hc
@@ -261,11 +364,19 @@ theorem SecNorm.nonneg (h : SecNorm ξ y A e₀ z w t ν) : 0 ≤ ν := by
   rw [e]
   positivity
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `h.exists_chart`. Take `⟨u, hu, -⟩` from `h.2.2 c hc`. Conclude with `hu.1`.
+-/
 theorem SecNorm.specializes (h : SecNorm ξ y A e₀ z w t ν) : genPt ξ ⤳ centre z := by
   obtain ⟨c, hc⟩ := h.exists_chart
   obtain ⟨u, hu, -⟩ := h.2.2 c hc
   exact hu.1
 
+/- English proof (translation)
+Use `⟨h.1, h.2.1, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, e⟩` from `h.2.2 c hc`. Use `⟨s * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`. Conclude with `CxVal.mul hf hu`.
+
+Rewrite using `[_root_.mul_assoc, e, norm_mul, _root_.mul_assoc]`.
+-/
 theorem SecNorm.mul (h : SecNorm ξ y A e₀ z w t ν) {f : Ω} {s : ℂ} (hf : ValAt ξ z f s) :
     SecNorm ξ y A e₀ z w (f * t) (‖s‖ * ν) := by
   refine ⟨h.1, h.2.1, fun c hc => ?_⟩
@@ -275,6 +386,11 @@ theorem SecNorm.mul (h : SecNorm ξ y A e₀ z w t ν) {f : Ω} {s : ℂ} (hf : 
     exact CxVal.mul hf hu
   · rw [_root_.mul_assoc, e, norm_mul, _root_.mul_assoc]
 
+/- English proof (translation)
+Establish `hy : (∏ k, y ⟨k, c k⟩ ^ A.a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hw.2 k (c k) (IsUnit.mk0 _ (hc k))).1`. Use `(secNorm_iff_chart he hw c hc).2 ⟨1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_self (mul_ne_zero hy he)]`. Conclude with `CxVal.one hz`. Rewrite using `[div_mul_cancel₀ _ (A.pos w fun k => ⟨c k, hc k⟩).ne']`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem secNorm_chartMonomial (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) (c : (k : K) → J k)
     (hc : ∀ k, w ⟨k, c k⟩ ≠ 0) :
     SecNorm ξ y A e₀ z w ((∏ k, y ⟨k, c k⟩ ^ A.a k) * e₀) ((∏ k, ‖w ⟨k, c k⟩‖ ^ A.a k) / A.h w) := by
@@ -286,6 +402,11 @@ theorem secNorm_chartMonomial (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw
   · rw [div_mul_cancel₀ _ (A.pos w fun k => ⟨c k, hc k⟩).ne']
     simp
 
+/- English proof (translation)
+Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[Fintype.prod_sigma (fun p : Σ k, J k => κ p.1 ^ m p)]`. Simplify using `only [Finset.prod_pow_eq_pow_sum, hs m hm]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aeval_blockScale {R : Type} [CommRing R] {s : MRing J} {b : K → ℕ} (hs : IsMultiHomog s b) (κ : K → R)
     (x : (Σ k, J k) → R) :
     MvPolynomial.aeval (fun p => κ p.1 * x p) s = (∏ k, κ k ^ b k) * MvPolynomial.aeval x s := by
@@ -296,6 +417,15 @@ theorem aeval_blockScale {R : Type} [CommRing R] {s : MRing J} {b : K → ℕ} (
   simp only [Finset.prod_pow_eq_pow_sum, hs m hm]
   ring
 
+/- English proof (translation)
+Use `choose c hc using hw.1`. Establish `hy` using `fun k => (hw.2 k (c k) (hc k)).1`. Use `choose r hr hr' using fun p : Σ k, J k => (hw.2 p.1 (c p.1) (hc p.1)).2 p.2`. Use `(secNorm_iff_chart he hw c fun k => (hc k).ne_zero).2 ⟨MvPolynomial.aeval r s, ?_, ?_⟩` and prove the remaining obligations. Use `CxVal.aeval hz hr s using 1` and compare the differences between its conclusion and the goal.
+
+Establish `e : y = fun p => y ⟨p.1, c p.1⟩ * (y ⟨p.1, p.2⟩ / y ⟨p.1, c p.1⟩)`. Use function extensionality and compare the values at `fun p => (mul_div_cancel₀ _ (hy p.1)).symm`. Establish `e'` using `aeval_blockScale hs (fun k => y ⟨k, c k⟩) fun p => y ⟨p.1, p.2⟩ / y ⟨p.1, c p.1⟩`. Rewrite `e'` using `[← e]`. Establish `h0 : (∏ k, y ⟨k, c k⟩ ^ b k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hy k)`.
+
+Simplify using `only [hb, zpow_natCast]`. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts. Establish `e : w = fun p => w ⟨p.1, c p.1⟩ * r p` using `funext fun p => (hr' p).trans (mul_comm _ _)`. Establish `e'` using `aeval_blockScale hs (fun k => w ⟨k, c k⟩) r`.
+
+Rewrite `e'` using `[← e]`. Rewrite using `[div_mul_cancel₀ _ (A.pos w fun k => ⟨c k, (hc k).ne_zero⟩).ne', e']`. Simplify using `only [hb, zpow_natCast, norm_mul, norm_prod, norm_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secNorm_form (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw : CoordsAt ξ y z w) {s : MRing J} {b : K → ℕ}
     (hs : IsMultiHomog s b) (hb : ∀ k, A.a k = b k) :
     SecNorm ξ y A e₀ z w (MvPolynomial.aeval y s * e₀) (‖MvPolynomial.aeval w s‖ / A.h w) := by
@@ -319,6 +449,9 @@ theorem secNorm_form (hz : genPt ξ ⤳ centre z) (he : e₀ ≠ 0) (hw : Coords
     simp only [hb, zpow_natCast, norm_mul, norm_prod, norm_pow]
     ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => let ⟨c, hc⟩ := h.exists_chart; hc k (hk (c k)), fun h => h.1 rfl⟩`.
+-/
 example (k : K) (hk : ∀ i, w ⟨k, i⟩ = 0) : ¬ SecNorm ξ y A e₀ z w t ν ∧ ¬ SecNorm ξ y A 0 z w t ν :=
   ⟨fun h => let ⟨c, hc⟩ := h.exists_chart; hc k (hk (c k)), fun h => h.1 rfl⟩
 

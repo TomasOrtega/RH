@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.IdeleGenerators.Ho
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Nf UpperTheory.V.Sd Matrix
 open GlobalTheory.CuspRep (finId locGL finGL)
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.CuspRep.finId_det_locGL w (GeneralLinearGroup.scalar (Fin 1) x)`. Rewrite `h`, the goal using `[locGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Rewrite using `[finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Use `congr 1`. Conclude with `(congrArg (finId F) (GlobalTheory.CuspRep.CG.det_oneByOne _)).symm.trans (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))`.
+-/
 private theorem fin_scalar {F : Type} [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (x : (w.adicCompletion F)ˣ) :
     finGL F 2 (locGL F 2 w (GeneralLinearGroup.scalar (Fin 2) x)) = GeneralLinearGroup.scalar (Fin 2) (localIdele F w x) := by
   have h := GlobalTheory.CuspRep.finId_det_locGL w (GeneralLinearGroup.scalar (Fin 1) x)
@@ -19,6 +22,25 @@ private theorem fin_scalar {F : Type} [Field F] [NumberField F] (w : HeightOneSp
   exact (congrArg (finId F) (GlobalTheory.CuspRep.CG.det_oneByOne _)).symm.trans
     (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))
 
+/- English proof (translation)
+Take `⟨hp, hspan, hN, hlev⟩` from `UpperTheory.V.Af.Nf.places w`. Establish `hl : lev N w = 0` using `hlev N hN1 hM`. Establish `hchi : chiI ω (lev N) w.asIdeal = ((ω.val w : ℂˣ) : ℂ)`. Unfold `chiI`. Rewrite using `[finprod_eq_single _ w]`.
+
+Rewrite using `[if_pos hl]`. Establish `: ordI w w.asIdeal = 1`. Unfold `ordI`. Conclude with `Associates.count_self w.associates_irreducible`. Rewrite using `[this, pow_one]`.
+
+Introduce `v hv`. Establish `: ordI v w.asIdeal = 0`. Unfold `ordI`. Use `Associates.count_eq_zero_of_ne v.associates_irreducible w.associates_irreducible ?_` and prove the remaining obligations. Introduce `h`.
+
+Conclude with `hv (HeightOneSpectrum.ext (associated_iff_eq.mp (Associates.mk_eq_mk_iff_associated.mp h)))`. Rewrite using `[this, pow_zero]`. Establish `hdiv : coefDiv (icoef f) w.asIdeal 𝔪 = if normV w ∣ Ideal.absNorm 𝔪 then coef f (Ideal.absNorm 𝔪 / normV w) else 0`. Unfold `coefDiv`. Use `split_ifs with h1 h2 h2`.
+
+Establish `h3` using `congrArg Ideal.absNorm h1.choose_spec`. Rewrite `h3` using `[map_mul, hN]`. Unfold `icoef`. Use `congr 1`. Conclude with `(Nat.div_eq_of_eq_mul_right hp.pos h3).symm`.
+
+It suffices to derive a contradiction. Take `⟨𝔫, h⟩` from `h1`. Conclude with `h2 ⟨Ideal.absNorm 𝔫, by rw [h, map_mul, hN]⟩`. It suffices to derive a contradiction. Take `⟨P, hP, hu, hd⟩` from `Ideal.exists_isMaximal_dvd_of_dvd_absNorm' hp 𝔪 h2`.
+
+Establish `hmem : ((normV w : ℕ) : 𝓞 ℚ) ∈ P`. Establish `: ((normV w : ℕ) : ℤ) ∈ P.under ℤ`. Rewrite using `[hu]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using (Ideal.mem_comap.mp this)`.
+
+Establish `hle : w.asIdeal ≤ P`. Rewrite using `[hspan, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hmem`. Establish `heq : w.asIdeal = P` using `w.isMaximal.eq_of_le hP.ne_top hle`. Conclude with `h1 (heq ▸ hd)`.
+
+Both sides reduce to the same expression. Unfold `Sd.hkCoef`. Rewrite using `[hchi, hdiv]`. Unfold `icoef`. Rewrite using `[map_mul, hN]`.
+-/
 private theorem hk_read (k N : ℕ) (hN1 : 1 ≤ N) (f : UpperHalfPlane → ℂ) (ω : HChar ℚ) (w : Pl ℚ) (hM : ¬ normV w ∣ N)
     (𝔪 : Ideal (𝓞 ℚ)) :
     Sd.hkCoef k (lev N) ω w (icoef f) 𝔪 = coef f (normV w * Ideal.absNorm 𝔪) + ((ω.val w : ℂˣ) : ℂ) * (normV w : ℂ) ^ (k - 1) *
@@ -68,10 +90,30 @@ private theorem hk_read (k N : ℕ) (hN1 : 1 ≤ N) (f : UpperHalfPlane → ℂ)
   unfold icoef
   rw [map_mul, hN]
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Simplify using the standard rewrite rules.
+-/
 private theorem norm_span (n : ℕ) : Ideal.absNorm (Ideal.span {(n : 𝓞 ℚ)}) = n := by
   rw [Ideal.absNorm_span_natCast, RingOfIntegers.rank]
   simp
 
+/- English proof (translation)
+Introduce `k N hk1 hN χ ω hd f φ hL hφ w α β hM hS`. Take `⟨hU, hZ⟩` from `UpperTheory.V.Br.uOfSat ℚ w _ _ φ α β hS`. Take `⟨hfin, hval⟩` from `UpperTheory.V.Af.Nf.charVal N hN χ ω hd`. Establish `hω` using `hval w hM`. Establish `hl : lev N w = 0` using `(UpperTheory.V.Af.Nf.places w).2.2.2 N hN hM`.
+
+Establish `hq : (0 : ℝ) < normV w` using `Nat.cast_pos.2 (zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm w))`. Prove the components needed by the constructor for the conclusion. Use `set lam : ℂ := (((normV w : ℝ) ^ (((k : ℝ) - 1) / 2) : ℝ) : ℂ) * ((α : ℂ) + β) with hlam`. Establish `hH : hk k w (lev N w) φ = lam • φ`. Rewrite using `[hl]`.
+
+Express the relevant statement in the definitionally equal form `(((normV w : ℝ) ^ ((k : ℝ) / 2 - 1) : ℝ) : ℂ) • Uop w (locSm ℚ w) 0 φ = _`. Rewrite using `[hU, smul_smul, ← mul_assoc, ← Complex.ofReal_mul, ← Real.rpow_add hq, hlam]`. Use `congr 4`. Expand and normalize the polynomial expressions, which then agree. Establish `hE` using `UpperTheory.V.Af.Nf.liftExp k N hN f φ.1 hL`.
+
+Take `⟨c₀', hE'⟩` from `(UpperTheory.V.Sd.holHk ℚ k hk1 (lev N) ω hfin φ hφ w).2.2 _ _ hE`. Take `⟨-, h0, -, hlin, -⟩` from `UpperTheory.V.Sd.holLin ℚ k (lev N) ω`. Establish `hE2` using `hlin 0 φ.1 lam _ _ _ _ h0 hE`. Rewrite `hE'` using `[hH]`. Rewrite `hE2` using `[zero_add]`.
+
+Introduce `n hn`. Establish `hne : Ideal.span {(n : 𝓞 ℚ)} ≠ ⊥`. Introduce `h`. Use `norm_span n` as an intermediate fact. Rewrite `this` using `[h, Ideal.absNorm_bot]`.
+
+Use linear arithmetic over natural numbers and integers. Use `(UpperTheory.V.Sd.expUnique ℚ _ k _ _ _ _ hE' hE2).2 _ hne` as an intermediate fact. Rewrite `this` using `[hk_read k N hN f ω w hM, hω]`. Simplify `this` using `only [Pi.add_apply, Pi.zero_apply, zero_add, Pi.smul_apply, smul_eq_mul, icoef, norm_span]`. Rewrite using `[← hω]`.
+
+Establish `h2 : locSm ℚ w (GeneralLinearGroup.scalar (Fin 2) (atFin w (unif w))) φ = ((ω.val w : ℂˣ) : ℂ) • φ`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL ℚ 2 (locGL ℚ 2 w _)) = _`. Rewrite using `[fin_scalar, ← GlobalTheory.CuspRep.scalar_comm, hφ.cent]`. Both sides reduce to the same expression.
+
+Conclude with `smul_left_injective ℂ hS.1 (hZ.symm.trans h2)`.
+-/
 theorem UpperTheory.V.Br.eigOf :
     UpperTheory.V.Br.EigOf := by
   intro k N hk1 hN χ ω hd f φ hL hφ w α β hM hS

@@ -10,6 +10,49 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Establish `hz : F.z ∈ Asp F F'`. Simplify `fvec_mem_Asp F F' (Fin.last r)` using `[FlagG.fvec, Fin.snoc_last]`. Establish `hom : omp F F' ∈ Asp F F'`. Unfold `omp`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (fvec'_mem_Asp F F' b)`.
+
+Establish `homX : ∀ x ∈ F.X, S.hT x (omp F F') = 0`. Introduce `x hx`. Establish `hle : F.X ≤ LinearMap.ker (S.hT.flip (omp F F'))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Simplify `brS_omp_e F F' i` using `[brS]`. Simplify using `using hle hx`. Establish `hzX : ∀ x ∈ F.X, S.hT x F.z = 0`. Introduce `x hx`. Establish `h` using `brS_swap (S := S) x F.z`.
+
+Simplify using `only [brS] at h`. Rewrite using `[h, hT_z_X F hx, star_zero]`. Establish `hzz : S.hT F.z F.z = -T` using `F.z_norm`. Establish `hzo : S.hT F.z (omp F F') = Dl F F' (r + 1)` using `by simpa [brS] using pairing_omegaPrime_z F F'`. Establish `hoz : S.hT (omp F F') F.z = star (Dl F F' (r + 1))`.
+
+Establish `h` using `brS_swap (S := S) (omp F F') F.z`. Simplify using `only [brS] at h`. Rewrite using `[h, hzo]`. Establish `hoo : S.hT (omp F F') (omp F F') = -T' * (Dl F F' r * star (Dl F F' r))`. Simplify `brS_omp_omp F F'` using `[brS]`.
+
+Take `⟨y0, hy0⟩ : ∃ y0 : S.V, y0 = T • omp F F' + Dl F F' (r + 1) • F.z` from `⟨_, rfl⟩`. Establish `hy0A : y0 ∈ Asp F F'`. Rewrite using `[hy0]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ hom) (Submodule.smul_mem _ _ hz)`. Establish `hXy0 : ∀ x ∈ F.X, S.hT x y0 = 0`.
+
+Introduce `x hx`. Rewrite using `[hy0]`. Simplify using `[homX x hx, hzX x hx]`. Establish `hzy0 : S.hT F.z y0 = 0`. Rewrite using `[hy0]`.
+
+Simplify using `only [map_add, map_smul, smul_eq_mul, hzo, hzz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy0z : S.hT y0 F.z = 0`. Rewrite using `[hy0]`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hoz, hzz, hTs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hy0o : S.hT y0 (omp F F') = T * (-T' * (Dl F F' r * star (Dl F F' r))) + star (Dl F F' (r + 1)) * Dl F F' (r + 1)`. Rewrite using `[hy0]`. Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, hoo, hzo, hTs]`. Establish `hy0y0 : S.hT y0 y0 = T * Gflag F F'`.
+
+Establish `e : S.hT y0 y0 = T * S.hT y0 (omp F F') + Dl F F' (r + 1) * S.hT y0 F.z` using `by conv_lhs => rw [show S.hT y0 y0 = S.hT y0 (T • omp F F' + Dl F F' (r + 1) • F.z) by rw [← hy0]]`. Simplify using `only [map_add, map_smul, smul_eq_mul]`. Rewrite using `[e, hy0o, hy0z]`. Simplify using `only [Gflag]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hy0ne : S.hT y0 y0 ≠ 0`. Rewrite using `[hy0y0]`. Conclude with `mul_ne_zero hT hG`. Establish `horth : ∀ u : S.V, (∀ x ∈ F.X, S.hT x u = 0) → S.hT F.z u = 0 → u ∈ Asp F F' → u ∈ Qsp F (Hsp F F')`. Introduce `u h1 h2 h3`.
+
+Establish `hle : F.X ⊔ E ∙ F.z ⊔ Hsp F F' ≤ LinearMap.ker (S.hT.flip u)`. Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `using h1 x hx`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Simplify using `using h2`. Introduce `x hx`. Simplify using `using hT_H_A h3 hx`. Simplify using `only [Qsp, Lat.orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`.
+
+Simplify using `using hle hx`. Take `⟨v, hv⟩ : ∃ v : S.V, v = a - (-(S.hT F.z a) / T) • F.z - (S.hT y0 a / (T * Gflag F F')) • y0` from `⟨_, rfl⟩`. Establish `hvA : v ∈ Asp F F'`. Rewrite using `[hv]`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ ha (Submodule.smul_mem _ _ hz)) (Submodule.smul_mem _ _ hy0A)`.
+
+Establish `hvXo : ∀ x ∈ F.X, S.hT x v = 0`. Introduce `x hx`. Rewrite using `[hv]`. Simplify using `[hX x hx, hzX x hx, hXy0 x hx]`. Establish `hzv : S.hT F.z v = 0`.
+
+Rewrite using `[hv]`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hzz, hzy0]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hy0v : S.hT y0 v = 0`.
+
+Rewrite using `[hv]`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hy0z, hy0y0]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hy0Q : y0 ∈ Qsp F (Hsp F F')` using `horth y0 hXy0 hzy0 hy0A`.
+
+Establish `hvQ : v ∈ Qsp F (Hsp F F')` using `horth v hvXo hzv hvA`. Establish `hvX : v ∈ F.X` using `line F hT (Hsp F F') (fun x hx h hh => hT_A_H (X_le_Asp F F' hx) hh) (fun h hh => hT_A_H hz hh) (fun x hx hxH => by`. Establish `hm : x ∈ Asp F F' ⊓ Hsp F F'` using `⟨X_le_Asp F F' hx, hxH⟩`. Rewrite using `[Asp_inf_Hsp F F' hG, Submodule.mem_bot] at hm)` and apply the resulting hypothesis. Use the proof step `(by have := finrank_Hsp F F' hG; omega)`.
+
+Use `hy0Q (by simpa [brS] using hy0ne) hvQ (by simpa [brS] using hy0v)`. Establish `hW : ∀ u, u ∈ F.X.comap (σ - LinearMap.id) ↔ σ u - u ∈ F.X` using `fun u => by simp`. Establish `hy0W : σ y0 - y0 ∈ F.X`. Establish `e : σ y0 - y0 = T • (σ (omp F F') - omp F F') + Dl F F' (r + 1) • (σ F.z - F.z)`. Rewrite using `[hy0]`.
+
+Simplify using `only [map_add, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ hσω) (Submodule.smul_mem _ _ hσz)`. Establish `hav : a = v + (-(S.hT F.z a) / T) • F.z + (S.hT y0 a / (T * Gflag F F')) • y0`.
+
+Rewrite using `[hv]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hW, hav]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ ((hW v).2 (hσf v hvX)) (Submodule.smul_mem _ _ ((hW _).2 hσz))) (Submodule.smul_mem _ _ ((hW _).2 hy0W))`.
+-/
 private theorem sub_mem_X_of_mem_Asp_of_hT_orth {F : FlagG S r T} {F' : FlagG S r T'} (hG : Gflag F F' ≠ 0) (hT : T ≠ 0)
     (hTs : star T = T) (σ : S.V →ₗ[E] S.V) (hσf : ∀ x ∈ F.X, σ x - x ∈ F.X) (hσz : σ F.z - F.z ∈ F.X)
     (hσω : σ (omp F F') - omp F F' ∈ F.X) {a : S.V} (ha : a ∈ Asp F F')
@@ -129,6 +172,49 @@ private theorem sub_mem_X_of_mem_Asp_of_hT_orth {F : FlagG S r T} {F' : FlagG S 
   exact Submodule.add_mem _ (Submodule.add_mem _ ((hW v).2 (hσf v hvX))
     (Submodule.smul_mem _ _ ((hW _).2 hσz))) (Submodule.smul_mem _ _ ((hW _).2 hy0W))
 
+/- English proof (translation)
+Establish `hc` using `isCompl_AH F F1 hG`. Establish `hσ : ∀ x y, S.hT (σ x) (σ y) = S.hT x y` using `hσi`. Use `choose p hpH hpσ hpς using fun w : Hsp F F1 => h3 w.1 w.2`. Establish `huniq : ∀ (w : Hsp F F1) (u : S.V), u ∈ Hsp F F1 → σ w - u ∈ F.X → p w = u`. Introduce `w u hu hσu`.
+
+Establish `hd : p w - u ∈ Asp F F1 ⊓ Hsp F F1`. Use `⟨X_le_Asp F F1 ?_, Submodule.sub_mem _ (hpH w) hu⟩` and prove the remaining obligations. Establish `h` using `Submodule.sub_mem _ hσu (hpσ w)`. Rewrite `h` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Rewrite `hd` using `[Asp_inf_Hsp F F1 hG, Submodule.mem_bot]`.
+
+Conclude with `sub_eq_zero.mp hd`. Set `Pl : Hsp F F1 →ₗ[E] S.V` to `{ toFun := p map_add' := fun w1 w2 => huniq (w1 + w2) (p w1 + p w2) (Submodule.add_mem _ (hpH w1) (hpH w2)) (by`. Establish `h` using `Submodule.add_mem _ (hpσ w1) (hpσ w2)`. Rewrite using `[Submodule.coe_add, map_add]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Use the proof step `abel)`. Use the proof step `map_smul' := fun c w => huniq (c • w) (c • p w) (Submodule.smul_mem _ c (hpH w)) (by`. Establish `h` using `Submodule.smul_mem _ c (hpσ w)`. Rewrite using `[Submodule.coe_smul, map_smul]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[smul_sub]) }`. Establish `hp0 : p 0 = 0` using `map_zero Pl`. Set `τl : S.V →ₗ[E] S.V` to `(Asp F F1).subtype ∘ₗ (Asp F F1).projectionOnto (Hsp F F1) hc + Pl ∘ₗ (Hsp F F1).projectionOnto (Asp F F1) hc.symm`. Establish `hsplit : ∀ y, ∃ a ∈ Asp F F1, ∃ w : Hsp F F1, y = a + w ∧ τl y = a + p w` using `fun y => ⟨_, Submodule.projection_apply_mem hc y, (Hsp F F1).projectionOnto (Asp F F1) hc.symm y, (Submodule.projection_add_projection_eq_self hc y).symm, rfl⟩`. Establish `hσXH : ∀ x ∈ F.X, ∀ w : Hsp F F1, S.hT (σ w) x = 0 ∧ S.hT x (σ w) = 0`.
+
+Introduce `x hx w`. Establish `hx' : σ.symm x ∈ Asp F F1` using `X_le_Asp F F1 (hσX x hx)`. Establish `e : x = σ (σ.symm x)` using `(σ.apply_symm_apply x).symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e, hσ]`.
+
+Conclude with `hT_H_A hx' w.2`. Rewrite using `[e, hσ]`. Conclude with `hT_A_H hx' w.2`. Establish `hpp : ∀ w w' : Hsp F F1, S.hT (p w) (p w') = S.hT (w : S.V) w'`. Introduce `w w'`.
+
+Take `⟨x, hx, hxe⟩ : ∃ x ∈ F.X, p w = σ w - x` from `⟨σ w - p w, hpσ w, by abel⟩`. Take `⟨x', hx', hxe'⟩ : ∃ x' ∈ F.X, p w' = σ w' - x'` from `⟨σ w' - p w', hpσ w', by abel⟩`. Rewrite using `[hxe, hxe']`. Simplify using `only [map_sub, LinearMap.sub_apply, hσ, (hσXH x hx w').2, (hσXH x' hx' w).1, hT_X_X F hx hx', sub_zero]`. Establish `hiso : ∀ x y, S.hT (τl x) (τl y) = S.hT x y`.
+
+Introduce `x y`. Take `⟨a, ha, w, hx, hτx⟩` from `hsplit x`. Take `⟨a', ha', w', hy, hτy⟩` from `hsplit y`. Rewrite using `[hτx, hτy, hx, hy]`. Simplify using `only [map_add, LinearMap.add_apply, hT_A_H ha (hpH w'), hT_H_A ha' (hpH w), hT_A_H ha w'.2, hT_H_A ha' w.2, hpp, add_zero, zero_add]`.
+
+Establish `hinj : Function.Injective τl`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use `S.nondeg.1 x fun y => ?_` and prove the remaining obligations. Rewrite using `[← hiso x y, hx, map_zero, LinearMap.zero_apply]`.
+
+Use `⟨LinearEquiv.ofInjectiveEndo τl hinj, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show ∀ x y, S.hT (LinearEquiv.ofInjectiveEndo τl hinj x) (LinearEquiv.ofInjectiveEndo τl hinj y) = S.hT x y`. Introduce `x y`. Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`. Conclude with `hiso x y`.
+
+Introduce `a ha`. Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`. Take `⟨a', ha', w, hs, hτa⟩` from `hsplit a`. Establish `hw0 : (w : S.V) = 0`. Establish `hwA : (w : S.V) ∈ Asp F F1`.
+
+Establish `e : (w : S.V) = a - a'` using `by rw [hs]; abel`. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ ha ha'`. Establish `hm : (w : S.V) ∈ Asp F F1 ⊓ Hsp F F1` using `⟨hwA, w.2⟩`. Rewrite `hm` using `[Asp_inf_Hsp F F1 hG, Submodule.mem_bot]`. Then use the resulting hypothesis.
+
+Establish `hw : w = 0` using `Subtype.ext hw0`. Rewrite using `[hτa, hw, hp0, add_zero]`. Rewrite using `[hs, hw0, add_zero]`. Introduce `y hy`. Establish `hyo : ∀ x ∈ F.X, S.hT x y = 0`.
+
+Simplify `hy` using `[Lat.orth, Submodule.mem_iInf]`. Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`. Take `⟨a, ha, w, hs, hτy⟩` from `hsplit y`. Establish `hX : ∀ x ∈ F.X, S.hT x a = 0`. Introduce `x hx`.
+
+Establish `e : a = y - w` using `by rw [hs]; abel`. Rewrite using `[e, map_sub, hyo x hx, hT_A_H (X_le_Asp F F1 hx) w.2, sub_zero]`. Establish `key` using `sub_mem_X_of_mem_Asp_of_hT_orth hG hT hTs σ.toLinearMap hσf hσz hσω ha hX`. Rewrite using `[hτy, hs, map_add]`. Establish `e : a + p w - (σ a + σ w) = -(σ.toLinearMap a - a) - (σ w - p w)`.
+
+Simplify using `only [LinearEquiv.coe_coe]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.neg_mem _ key) (hpσ w)`. Introduce `y hy`.
+
+Establish `hyo : ∀ x ∈ F1.X, S.hT x y = 0`. Simplify `hy` using `[Lat.orth, Submodule.mem_iInf]`. Simplify using `only [LinearEquiv.coe_ofInjectiveEndo]`. Take `⟨a, ha, w, hs, hτy⟩` from `hsplit y`. Establish `hX : ∀ x ∈ F1.X, S.hT x a = 0`.
+
+Introduce `x hx`. Establish `hxA : x ∈ Asp F F1`. Rewrite using `[← Asp_symm F F1]`. Conclude with `X_le_Asp F1 F hx`. Establish `e : a = y - w` using `by rw [hs]; abel`.
+
+Rewrite using `[e, map_sub, hyo x hx, hT_A_H hxA w.2, sub_zero]`. Establish `hG' : Gflag F1 F ≠ 0` using `by rw [Gflag_swap]; exact hG`. Establish `ha' : a ∈ Asp F1 F` using `by rw [Asp_symm]; exact ha`. Establish `key` using `sub_mem_X_of_mem_Asp_of_hT_orth hG' hT' hTs' ς.toLinearMap hςf hςz hςω ha' hX`. Rewrite using `[hτy, hs, map_add]`.
+
+Establish `e : a + p w - (ς a + ς w) = -(ς.toLinearMap a - a) - (ς w - p w)`. Simplify using `only [LinearEquiv.coe_coe]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.sub_mem _ (Submodule.neg_mem _ key) (hpς w)`.
+-/
 theorem tau_exists (F : FlagG S r T) (F1 : FlagG S r T') (hG : Gflag F F1 ≠ 0) (hT : T ≠ 0) (hTs : star T = T)
     (hT' : T' ≠ 0) (hTs' : star T' = T') (σ ς : S.V ≃ₗ[E] S.V) (hσi : σ ∈ Formalism.HermitianLatticesTheory.isom S.hT)
     (hσf : ∀ x ∈ F.X, σ x - x ∈ F.X) (hσX : ∀ x ∈ F.X, σ.symm x ∈ F.X) (hσz : σ F.z - F.z ∈ F.X)

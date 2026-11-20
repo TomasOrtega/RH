@@ -87,6 +87,15 @@ namespace RetractionModules
 
 variable {X : Fields} {n : ℕ}
 
+/- English proof (translation)
+Use `set M : Matrix (Fin n) (Fin n) E := LinearMap.toMatrix' (γ.1 : Sp E n →ₗ[E] Sp E n) with hM`. Establish `hd : ((LinearEquiv.det γ.1 : Eˣ) : E) = M.det`. Rewrite using `[LinearEquiv.coe_det, hM, LinearMap.det_toMatrix']`. Establish `hu : M.conjTranspose * M = 1`. Use extensionality with `i j`.
+
+Establish `h` using `γ.2 (Pi.single i 1) (Pi.single j 1)`. Simplify using `only [hStd, LinearMap.mk₂'ₛₗ_apply] at h`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.conjTranspose_apply, hM, LinearMap.toMatrix'_apply, LinearEquiv.coe_coe]`. Use `h.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`.
+
+Rewrite using `[hd, ← Matrix.det_conjTranspose, ← Matrix.det_mul, hu, Matrix.det_one]`.
+-/
 theorem star_det_mul {E : Type} [Field E] [StarRing E] (γ : UF E n) :
     star ((LinearEquiv.det γ.1 : Eˣ) : E) * ((LinearEquiv.det γ.1 : Eˣ) : E) = 1 := by
   set M : Matrix (Fin n) (Fin n) E := LinearMap.toMatrix' (γ.1 : Sp E n →ₗ[E] Sp E n) with hM
@@ -107,6 +116,11 @@ theorem star_det_mul {E : Type} [Field E] [StarRing E] (γ : UF E n) :
 
 variable {P : Places p O Kf}
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => exact ⟨x, rfl⟩`. Consider the case `succ s ih`. Take `⟨y, hy⟩` from `ih`. Take `⟨z, hz⟩` from `(P.setting v).frob y`.
+
+Use `⟨y ^ p + (p : P.W v) * z, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ']`. Express the relevant statement in the definitionally equal form `P.σ v ((P.σ v ^ s) _) = _`. Rewrite using `[hy, hz]`.
+-/
 theorem sigma_pow_mem (v : Fin P.nV) (s : ℕ) (x : P.W v) :
     ∃ y : P.W v, (P.σ v ^ s) (algebraMap (P.W v) (P.Qq v) x) = algebraMap (P.W v) (P.Qq v) y := by
   induction s with
@@ -119,6 +133,23 @@ theorem sigma_pow_mem (v : Fin P.nV) (s : ℕ) (x : P.W v) :
     change P.σ v ((P.σ v ^ s) _) = _
     rw [hy, hz]
 
+/- English proof (translation)
+Rewrite using `[← Equiv.prod_comp T.pos, Fintype.prod_sigma]`. Use `Subring.prod_mem _ fun v _ => ?_` and prove the remaining obligations. Establish `hS` using `P.setting v`. Use `haveI := hS.frac_alt`. Use `haveI := hS.frac_O`.
+
+Establish `hδ0 : δ ≠ 0` using `by rintro rfl; simp at hδ`. Establish `hst : star δ⁻¹ = δ`. Rewrite using `[star_inv₀]`. Conclude with `(eq_inv_of_mul_eq_one_right hδ).symm`. Take `⟨a, u, hu⟩` from `IsDiscreteValuationRing.exists_units_eq_smul_zpow_of_irreducible (K := P.Qq v) hS.p_unif ((map_ne_zero (T.iw v)).2 hδ0)`.
+
+Establish `hp0 : (p : Kf) ≠ 0`. Establish `h1 : algebraMap (P.W v) (P.Qq v) (p : P.W v) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hS.p_unif.ne_zero`. Establish `h2` using `(map_ne_zero (P.ι v)).2 h1`. Simplify using `using h2`. Establish `key : ∀ s : Fin (P.n' v), ∃ t : O, T.eK (X.emb (T.pos ⟨v, s⟩) δ) = algebraMap O Kf t * (p : Kf) ^ (a * (-1) ^ s.val)`.
+
+Introduce `s`. Distinguish the cases in `hs : Even s.val`. Take `⟨y, hy⟩` from `sigma_pow_mem v s.val (u : P.W v)`. Use `⟨P.j v y, ?_⟩` and prove the remaining obligations. Rewrite using `[T.even v s hs, hu, Units.smul_def, Algebra.smul_def, map_mul, map_mul, hy, hS.ι_comp, hs.neg_one_pow]`.
+
+Simplify using the standard rewrite rules. Take `⟨y, hy⟩` from `sigma_pow_mem v s.val ((u⁻¹ : (P.W v)ˣ) : P.W v)`. Use `⟨P.j v y, ?_⟩` and prove the remaining obligations. Establish `h1` using `T.odd v s hs δ⁻¹`. Establish `h2 : X.embBar (T.pos ⟨v, s⟩) δ⁻¹ = X.emb (T.pos ⟨v, s⟩) δ`.
+
+Simplify using `only [Fields.embBar, RingHom.comp_apply, starRingEnd_apply, hst]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, map_inv₀, hu, Units.smul_def, Algebra.smul_def, mul_inv, ← map_units_inv, map_mul, map_mul, hy, hS.ι_comp, (Nat.not_even_iff_odd.1 hs).neg_one_pow]`. Simplify using the standard rewrite rules. Use `choose t ht using key`.
+
+Rewrite using `[Finset.prod_congr rfl fun s _ => ht s, Finset.prod_mul_distrib, ← map_prod]`. Establish `hsum : ∑ s : Fin (P.n' v), (a * (-1) ^ s.val : ℤ) = 0`. Rewrite using `[← Finset.mul_sum, Fin.sum_univ_eq_sum_range (fun i => (-1 : ℤ) ^ i), neg_one_geom_sum, if_pos hS.even, mul_zero]`. Establish `hprod : ∀ (S : Finset (Fin (P.n' v))), ∏ s ∈ S, (p : Kf) ^ (a * (-1) ^ s.val : ℤ) = (p : Kf) ^ (∑ s ∈ S, (a * (-1) ^ s.val : ℤ))`. Introduce `S`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert s S hs ih => rw [Finset.prod_insert hs, Finset.sum_insert hs, zpow_add₀ hp0, ih]`. Rewrite using `[hprod, hsum, zpow_zero, mul_one]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem prod_mem (T : PlTie X P) {δ : X.E} (hδ : star δ * δ = 1) :
     (∏ τ, T.eK (X.emb τ δ)) ∈ (algebraMap O Kf).range := by
   rw [← Equiv.prod_comp T.pos, Fintype.prod_sigma]
@@ -166,6 +197,13 @@ theorem prod_mem (T : PlTie X P) {δ : X.E} (hδ : star δ * δ = 1) :
   rw [hprod, hsum, zpow_zero, mul_one]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Establish `h` using `star_det_mul γ`. Establish `h1` using `prod_mem T h`. Use `set δ := ((LinearEquiv.det γ.1 : X.Eˣ) : X.E)`. Establish `h' : star δ⁻¹ * δ⁻¹ = 1` using `by rw [star_inv₀, ← mul_inv, h, inv_one]`. Establish `h2` using `prod_mem T h'`.
+
+Simplify using `only [map_inv₀, Finset.prod_inv_distrib] at h2`. Unfold `PlTie.detTw`. Take `⟨k, rfl | rfl⟩` from `Int.eq_nat_or_neg c`. Rewrite using `[zpow_natCast]`. Conclude with `Subring.pow_mem _ h1 k`.
+
+Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `Subring.pow_mem _ h2 k`.
+-/
 theorem detTw_mem (T : PlTie X P) (c : ℤ) (γ : UF X.E n) : T.detTw c γ ∈ (algebraMap O Kf).range := by
   have h := star_det_mul γ
   have h1 := prod_mem T h
@@ -178,6 +216,13 @@ theorem detTw_mem (T : PlTie X P) (c : ℤ) (γ : UF X.E n) : T.detTw c γ ∈ (
   · rw [zpow_natCast]; exact Subring.pow_mem _ h1 k
   · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact Subring.pow_mem _ h2 k
 
+/- English proof (translation)
+Establish `hnu : ¬ IsUnit ((p : ℕ) : 𝓞 X.E)`. Introduce `h`. Establish `h1` using `h.map (Algebra.norm ℤ)`. Establish `h2 : Algebra.norm ℤ ((p : ℕ) : 𝓞 X.E) = (p : ℤ) ^ Module.finrank ℤ (𝓞 X.E)`. Use `Algebra.norm_algebraMap (R := ℤ) (S := 𝓞 X.E) (p : ℤ)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite `h1` using `[h2, isUnit_pow_iff Module.finrank_pos.ne', Int.ofNat_isUnit]`. Conclude with `hp.not_isUnit h1`. Establish `hp0 : ((p : ℕ) : 𝓞 X.E) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Take `⟨M, hM, hpM⟩` from `exists_max_ideal_of_mem_nonunits hnu`.
+
+Take `⟨v, -⟩` from `(T.pr_all ⟨M, hM.isPrime, fun h => hp0 (by simpa [h] using hpM)⟩).1 hpM`. Conclude with `v.pos`.
+-/
 theorem nV_pos (T : PlTie X P) (hp : p.Prime) : 0 < P.nV := by
   have hnu : ¬ IsUnit ((p : ℕ) : 𝓞 X.E) := by
     intro h
@@ -194,20 +239,32 @@ theorem nV_pos (T : PlTie X P) (hp : p.Prime) : 0 < P.nV := by
 
 end RetractionModules
 
+/- English proof (translation)
+The claim follows from `RetractionModules.nV_pos T hp`.
+-/
 theorem PlTie.nV_pos_of_prime {X : Fields} {P : Places p O Kf} (T : PlTie X P) (hp : p.Prime) : 0 < P.nV :=
   RetractionModules.nV_pos T hp
 
+/- English proof (translation)
+Establish `v : Fin P.nV` using `⟨0, T.nV_pos_of_prime hp⟩`. Establish `s : Fin (P.n' v)` using `⟨0, lt_of_lt_of_le two_pos (P.setting v).two_le⟩`. Conclude with `add_left_cancel ((h v s 0).symm.trans (h' v s 0))`.
+-/
 theorem PlTie.WtEq.unique {X : Fields} {P : Places p O Kf} {T : PlTie X P} (hp : p.Prime) {n : ℕ} {hn : n = P.m + 1}
     {lam : X.Tau → DomWeight n} {c c' : ℤ} (h : T.WtEq hn lam c) (h' : T.WtEq hn lam c') : c = c' := by
   have v : Fin P.nV := ⟨0, T.nV_pos_of_prime hp⟩
   have s : Fin (P.n' v) := ⟨0, lt_of_lt_of_le two_pos (P.setting v).two_le⟩
   exact add_left_cancel ((h v s 0).symm.trans (h' v s 0))
 
+/- English proof (translation)
+Introduce `_ _ _` and use `rfl`.
+-/
 theorem PlTie.wtEq_withWt {X : Fields} {P : Places p O Kf} (T : PlTie X P) (m' : ℕ) (lam : X.Tau → DomWeight (m' + 1)) (c : ℤ)
     (dom' : ∀ v, IsDominant fun s i => (lam (T.pos ⟨v, s⟩)).w i + c) :
     (T.withWt m' (fun v s i => (lam (T.pos ⟨v, s⟩)).w i + c) dom').WtEq (n := m' + 1) rfl lam c :=
   fun _ _ _ => rfl
 
+/- English proof (translation)
+The claim follows from `zpow_zero _`.
+-/
 example {X : Fields} {P : Places p O Kf} (T : PlTie X P) {n : ℕ} (γ : UF X.E n) : T.detTw 0 γ = 1 := zpow_zero _
 
 namespace PSys
@@ -218,6 +275,11 @@ def Comp : Type := Quot fun d d' : S.D => ∃ g : S.G, Y.Aw (g • d) d'
 
 def rep (a : Y.Comp) : S.D := Quot.out a
 
+/- English proof (translation)
+Establish `he : Equivalence fun d d' : S.D => ∃ g : S.G, Y.Aw (g • d) d'` using `⟨fun d => ⟨1, by rw [one_smul]; exact Y.aw_equiv.refl d⟩, fun ⟨g, h⟩ => ⟨g⁻¹, by`. Establish `h1` using `Y.aw_smul g⁻¹ _ _ h`. Rewrite `h1` using `[inv_smul_smul]`. Conclude with `Y.aw_equiv.symm h1⟩,`. Use `fun ⟨g, h⟩ ⟨g', h'⟩ => ⟨g' * g, by`.
+
+Rewrite using `[mul_smul]`. Conclude with `Y.aw_equiv.trans (Y.aw_smul g' _ _ h) h'⟩⟩`. Conclude with `Quot.eq.trans he.eqvGen_iff`.
+-/
 theorem comp_mk_eq_iff (d d' : S.D) :
     (Quot.mk _ d : Y.Comp) = Quot.mk _ d' ↔ ∃ g : S.G, Y.Aw (g • d) d' := by
   have he : Equivalence fun d d' : S.D => ∃ g : S.G, Y.Aw (g • d) d' :=
@@ -231,6 +293,9 @@ theorem comp_mk_eq_iff (d d' : S.D) :
         exact Y.aw_equiv.trans (Y.aw_smul g' _ _ h) h'⟩⟩
   exact Quot.eq.trans he.eqvGen_iff
 
+/- English proof (translation)
+The claim follows from `(Y.comp_mk_eq_iff _ _).1 (Quot.out_eq (Quot.mk _ d : Y.Comp)).symm`.
+-/
 theorem exists_aw_rep (d : S.D) : ∃ g : S.G, Y.Aw (g • d) (Y.rep (Quot.mk _ d)) :=
   (Y.comp_mk_eq_iff _ _).1 (Quot.out_eq (Quot.mk _ d : Y.Comp)).symm
 
@@ -250,6 +315,11 @@ def Gam (d : S.D) : Subgroup S.G where
     rw [inv_smul_smul] at h
     exact Y.aw_equiv.symm h
 
+/- English proof (translation)
+Use `h.fin_orb` as an intermediate fact. Use `Finite.of_surjective (fun c : S.Cl => (Quot.mk _ (S.outSec.rep c) : Y.Comp)) ?_` and prove the remaining obligations. Introduce and unpack `⟨d⟩`. Use `⟨S.cls d, Quot.sound ⟨S.outSec.mv d, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[S.outSec.mv_smul]`.
+
+Conclude with `Y.aw_equiv.refl d`.
+-/
 theorem finite_comp (h : S.Ok) : Finite Y.Comp := by
   have := h.fin_orb
   refine Finite.of_surjective (fun c : S.Cl => (Quot.mk _ (S.outSec.rep c) : Y.Comp)) ?_
@@ -264,6 +334,15 @@ structure ChiLift (c : ℤ) where
   χ : ∀ d : S.D, Y.Gam d →* Oˣ
   spec : ∀ d (g : Y.Gam d), algebraMap O Kf (χ d g : O) = T.eK ((Y.chr g.1 : X.Kˣ) : X.K) * T.detTw c (Y.u g.1)
 
+/- English proof (translation)
+Use `haveI := (P.setting ⟨0, T.nV_pos_of_prime hp⟩).frac_O`. Establish `hinj` using `IsFractionRing.injective O Kf`. Establish `hmem : ∀ g : S.G, ∃ y : O, algebraMap O Kf y = T.eK ((Y.chr g : X.Kˣ) : X.K) * T.detTw c (Y.u g)`. Introduce `g`. Take `⟨k, hk, hc⟩` from `Y.chr_root g`.
+
+Establish `h1 : T.eK ((Y.chr g : X.Kˣ) : X.K) ^ k = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, hc, Units.val_one, map_one]`. Establish `h2 : IsIntegral O (T.eK ((Y.chr g : X.Kˣ) : X.K))` using `⟨Polynomial.X ^ k - 1, Polynomial.monic_X_pow_sub_C 1 hk.ne', by simp [h1]⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Take `⟨z, hz⟩` from `RetractionModules.detTw_mem T c (Y.u g)`.
+
+Conclude with `⟨y * z, by rw [map_mul, hy, hz]⟩`. Use `choose f hf using hmem`. Set `F : S.G →* O` to `{ toFun := f map_one' := hinj (by simp [hf, PlTie.detTw]) map_mul' := fun a b => hinj (by`. Rewrite using `[map_mul, hf, hf, hf]`. Simplify using `only [PlTie.detTw, map_mul, Units.val_mul, Subgroup.coe_mul, Finset.prod_mul_distrib, mul_zpow]`.
+
+Use the proof step `ring) }`. Conclude with `⟨F.toHomUnits, hf⟩`.
+-/
 theorem exists_chi (hp : p.Prime) (c : ℤ) : ∃ χ : S.G →* Oˣ,
     ∀ g, algebraMap O Kf (χ g : O) = T.eK ((Y.chr g : X.Kˣ) : X.K) * T.detTw c (Y.u g) := by
   haveI := (P.setting ⟨0, T.nV_pos_of_prime hp⟩).frac_O
@@ -292,6 +371,11 @@ def chiLift (hp : p.Prime) (c : ℤ) : Y.ChiLift T c where
   χ d := (Y.exists_chi T hp c).choose.comp (Y.Gam d).subtype
   spec _ g := (Y.exists_chi T hp c).choose_spec g.1
 
+/- English proof (translation)
+Use `haveI := (P.setting ⟨0, T.nV_pos_of_prime hp⟩).frac_O`. Establish `h : x.χ = (Y.chiLift T hp c).χ`. Use function extensionality and compare the values at `d`. Use extensionality with `g`. Conclude with `IsFractionRing.injective O Kf ((x.spec d g).trans ((Y.chiLift T hp c).spec d g).symm)`.
+
+Consider the cases of `x`. Consider the cases of `h`. Both sides reduce to the same expression.
+-/
 theorem ChiLift.eq_chiLift (hp : p.Prime) {c : ℤ} (x : Y.ChiLift T c) : x = Y.chiLift T hp c := by
   haveI := (P.setting ⟨0, T.nV_pos_of_prime hp⟩).frac_O
   have h : x.χ = (Y.chiLift T hp c).χ := by
@@ -312,12 +396,18 @@ open Classical in
 def glob (a : Y.Comp) (L : P.Tup) : S.D :=
   if h : ∃ d, Y.Aw (Y.rep a) d ∧ T.tup hn (Y.N d) = L then h.choose else Y.rep a
 
+/- English proof (translation)
+Unfold `glob`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem glob_spec_of_exists (a : Y.Comp) (L : P.Tup) (h : ∃ d, Y.Aw (Y.rep a) d ∧ T.tup hn (Y.N d) = L) :
     Y.Aw (Y.rep a) (Y.glob T hn a L) ∧ T.tup hn (Y.N (Y.glob T hn a L)) = L := by
   unfold glob
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ d, Y.Aw (Y.rep a) d ∧ T.tup hn (Y.N d) = L`. Conclude with `(Y.glob_spec_of_exists T hn a L h).1`. Unfold `glob`. Rewrite using `[dif_neg h]`. Conclude with `Y.aw_equiv.refl _`.
+-/
 theorem aw_glob (a : Y.Comp) (L : P.Tup) : Y.Aw (Y.rep a) (Y.glob T hn a L) := by
   by_cases h : ∃ d, Y.Aw (Y.rep a) d ∧ T.tup hn (Y.N d) = L
   · exact (Y.glob_spec_of_exists T hn a L h).1
@@ -335,6 +425,11 @@ def nbr (Q : HeightOneSpectrum (𝓞 X.E)) (i : ℕ) (d : S.D) : Set S.D :=
 
 def nbrAt (v : Fin P.nV) (i : ℕ) (d : S.D) : Set S.D := Y.nbr (conjPrime₂ (T.pr v)) i d
 
+/- English proof (translation)
+Use `⟨h.2.1, ?_⟩` and prove the remaining obligations. Establish `h2` using `h.2.2.1`. Rewrite `h2` using `[conjIdeal_asIdeal]`. Use `le_trans (Submodule.smul_mono (fun r hr => ?_) le_rfl) h2` and prove the remaining obligations. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+
+Conclude with `hr`.
+-/
 theorem nbrAt_le {v : Fin P.nV} {i : ℕ} {d d' : S.D} (h : d' ∈ Y.nbrAt T v i d) :
     (conjPrime₂ (T.pr v)).asIdeal • Y.N d' ≤ Y.N d ∧ (T.pr v).asIdeal • Y.N d ≤ Y.N d' := by
   refine ⟨h.2.1, ?_⟩
@@ -344,6 +439,13 @@ theorem nbrAt_le {v : Fin P.nV} {i : ℕ} {d d' : S.D} (h : d' ∈ Y.nbrAt T v i
   rw [mem_conjP, mem_conjP, cO_cO]
   exact hr
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use function extensionality and compare the values at `v`. Rewrite using `[Y.N_smul]`. Unfold `Level.smul PlTie.tup gmap`. Rewrite using `[Submodule.map_span, Submodule.map_coe, Set.image_image, Set.image_image]`.
+
+Use `congr 1`. Use `Set.image_congr fun y _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h : (Y.u g.1).1 y = Matrix.mulVec ((ufGL X.E _ (Y.u g.1) : GL _ X.E) : Matrix _ _ X.E) y`. Express the relevant statement in the definitionally equal form `_ = Matrix.mulVec (LinearMap.toMatrix' ((Y.u g.1).1 : Sp X.E (P.m + 1) →ₗ[X.E] Sp X.E (P.m + 1))) y`.
+
+Rewrite using `[LinearMap.toMatrix'_mulVec]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `T.iw v ((Y.u g.1).1 y i) = ∑ k, T.iw v (((ufGL X.E _ (Y.u g.1) : GL _ X.E) : Matrix _ _ X.E) i k) * T.iw v (y k)`. Rewrite using `[h]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem tup_lev_smul {c : ℤ}
     (x : Y.ChiLift T c) (a : Y.Comp) (g : Y.Gam (Y.rep a)) (d : S.D) :
     T.tup hn (Y.N (g.1 • d)) = (Y.lev T hn x a).smul g (T.tup hn (Y.N d)) := by
@@ -362,6 +464,9 @@ theorem tup_lev_smul {c : ℤ}
   rw [h]
   simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[φ.2, Y.rho, map_smulₛₗ, V.equiv, smul_smul, ← x.spec, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem theta_lev_smul {c : ℤ}
     (x : Y.ChiLift T c) (V : ValTie T hn lam c) (φ : S.EqFun) (a : Y.Comp) (g : Y.Gam (Y.rep a)) (d : S.D) :
     V.θ (Y.eV (φ.1 (g.1 • d))) =
@@ -406,6 +511,9 @@ def cmpFamL {X : Fields} {n : ℕ} {lam : X.Tau → DomWeight n} {P : Places p O
     · rw [← map_smulₛₗ, ← map_smul]; rfl
     · simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example {X : Fields} {n : ℕ} {lam : X.Tau → DomWeight n} {P : Places p O Kf} (T : PlTie X P) (hn : n = P.m + 1)
     (F : GFam X.K) (hF : F.Ok) (Y : ∀ b, PSys X n p lam (F.mem b)) {c : ℤ} (hw : T.WtEq hn lam c) (hp : p.Prime) (e : ℕ) :
     (gatOf T hn F hF Y hw hp e).Fn = ((Σ b, (Y b).Comp) → P.Tup → P.Xsp) := rfl

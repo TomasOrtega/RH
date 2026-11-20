@@ -14,6 +14,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.KeyTwDeep
+/- English proof (translation)
+Introduce `_ D T hT j hp _ _ hj Y e o hG _ _ Z`. Establish `hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p` using `Formalism.L2.Pj.goodAt_of_two_primes hT.pins.2.1.1 (D.host.g_prime 0) (D.host.g_prime 1) D.host.g_ne`. Establish `hg : ∀ p : ℕ, p.Prime → Y.d.l₂.GoodAt p` using `GlobalTheory.LawsDeep.goodAt_of_mul _ _ _ hG.lev.1.2.1 hg0`. Conclude with `twSec_keyRoot _ _ _ _ _ _ _ _ _ hG.unf hG.xiAbs hG.geo (le_add_right hp) hg Z`.
+-/
 theorem exists_twisted_section_root_of_depth : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, Nonempty (GlobalTheory.FlatTw.TwSec Y.U (xiR D) Z (wtOf (T.Q.Dw j) 0 1)) := by
   intro _ D T hT j hp _ _ hj Y e o hG _ _ Z
   have hg0 : ∀ p : ℕ, p.Prime → T.Q.l.GoodAt p :=
@@ -34,6 +37,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth | exact _root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth | (intros; apply _root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_twisted_section_with_deep_root : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → 2 < Module.finrank ℚ D.host.E / 2 → InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ c₁ : ℝ, GlobalTheory.FlatLine.FlatExistsAt Y.U (xiR D) c₁ → ∀ Z : Comp Y.d.Xo₂ Y.d.c₂, Nonempty (GlobalTheory.FlatTw.TwSec Y.U (xiR D) Z (wtOf (T.Q.Dw j) 0 1)) := by
   first | exact @_root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth | exact _root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth | (intros; apply _root_.GlobalTheory.KeyTwDeep.exists_twisted_section_root_of_depth <;> assumption)
 end

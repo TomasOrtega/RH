@@ -11,9 +11,17 @@ namespace GlobalTheory.CompanionTheory.LocVan.TNorm
 
 variable {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Units.ext (by simp)`.
+-/
 theorem uOf_zero' (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) : uOf (0 : nilrad W₁ W₂) = 1 :=
   Units.ext (by simp)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Y, c, hc, h⟩`. Use `⟨nmul hW (ninv hW X) Y, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[uOf_nmul, uOf_ninv, mul_assoc, h, inv_mul_cancel_left]`. Introduce and unpack `⟨Y, c, hc, rfl⟩`.
+
+Conclude with `⟨nmul hW X Y, c, hc, by rw [uOf_nmul, mul_assoc]⟩`.
+-/
 theorem uOf_mul_mem_nSet {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂)
     (C : Set (GL (Fin n) ℂ)) (X : nilrad W₁ W₂) (x : GL (Fin n) ℂ) :
     uOf X * x ∈ nSet W₁ W₂ C ↔ x ∈ nSet W₁ W₂ C := by
@@ -24,11 +32,19 @@ theorem uOf_mul_mem_nSet {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ 
   · rintro ⟨Y, c, hc, rfl⟩
     exact ⟨nmul hW X Y, c, hc, by rw [uOf_nmul, mul_assoc]⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨X, c, hc, rfl⟩`. Conclude with `⟨X, c, h hc, rfl⟩`.
+-/
 theorem nSet_mono (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {C C' : Set (GL (Fin n) ℂ)} (h : C ⊆ C') :
     nSet W₁ W₂ C ⊆ nSet W₁ W₂ C' := by
   rintro _ ⟨X, c, hc, rfl⟩
   exact ⟨X, c, h hc, rfl⟩
 
+/- English proof (translation)
+Establish `e : nSet W₁ W₂ U = ⋃ X : nilrad W₁ W₂, (fun g => (uOf X)⁻¹ * g) ⁻¹' U`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, c, hc, rfl⟩`.
+
+Conclude with `⟨X, by simpa using hc⟩`. Introduce and unpack `⟨X, hX⟩`. Conclude with `⟨X, _, hX, by simp⟩`. Rewrite using `[e]`. Conclude with `isOpen_iUnion fun X => hU.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem isOpen_nSet (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {U : Set (GL (Fin n) ℂ)} (hU : IsOpen U) :
     IsOpen (nSet W₁ W₂ U) := by
   have e : nSet W₁ W₂ U = ⋃ X : nilrad W₁ W₂, (fun g => (uOf X)⁻¹ * g) ⁻¹' U := by
@@ -42,6 +58,13 @@ theorem isOpen_nSet (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {U : Set (GL (Fi
   rw [e]
   exact isOpen_iUnion fun X => hU.preimage (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Use `haveI := locallyCompact_nilrad W₁ W₂`. Use `haveI := secondCountable_nilrad W₁ W₂`. Set `K` to `CompactExhaustion.choice (nilrad W₁ W₂)`. Establish `hcont : Continuous fun p : nilrad W₁ W₂ × GL (Fin n) ℂ => uOf p.1 * p.2` using `(continuous_uOf.comp continuous_fst).mul continuous_snd`. Establish `e : nSet W₁ W₂ C = ⋃ k, (fun p : nilrad W₁ W₂ × GL (Fin n) ℂ => uOf p.1 * p.2) '' (K k ×ˢ C)`.
+
+Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_image, Set.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, c, hc, rfl⟩`. Take `⟨k, hk⟩` from `K.exists_mem X`.
+
+Conclude with `⟨k, (X, c), ⟨hk, hc⟩, rfl⟩`. Introduce and unpack `⟨k, ⟨X, c⟩, ⟨_, hc⟩, rfl⟩`. Conclude with `⟨X, c, hc, rfl⟩`. Rewrite using `[e]`. Conclude with `MeasurableSet.iUnion fun k => (((K.isCompact k).prod hC).image hcont).measurableSet`.
+-/
 theorem measurableSet_nSet [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
     (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {C : Set (GL (Fin n) ℂ)} (hC : IsCompact C) :
     MeasurableSet (nSet W₁ W₂ C) := by
@@ -67,6 +90,11 @@ def zSet (T : Subgroup (GL (Fin n) ℂ)) (W₁ W₂ : Submodule ℂ (Fin n → �
     (U : Set (GL (Fin n) ℂ)) : Set (GL (Fin n) ℂ) :=
   {g | ∃ t ∈ T, ∃ X : nilrad W₁ W₂, ∃ c ∈ U, t * uOf X * c = g}
 
+/- English proof (translation)
+Establish `e : zSet T W₁ W₂ U = ⋃ t : T, ⋃ X : nilrad W₁ W₂, (fun g => ((t : GL (Fin n) ℂ) * uOf X)⁻¹ * g) ⁻¹' U`. Use extensionality with `g`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, X, c, hc, rfl⟩`.
+
+Conclude with `⟨⟨t, ht⟩, X, by rwa [inv_mul_cancel_left]⟩`. Introduce and unpack `⟨t, X, hX⟩`. Conclude with `⟨t, t.2, X, _, hX, mul_inv_cancel_left _ _⟩`. Rewrite using `[e]`. Conclude with `isOpen_iUnion fun t => isOpen_iUnion fun X => hU.preimage (continuous_const.mul continuous_id)`.
+-/
 theorem isOpen_zSet (T : Subgroup (GL (Fin n) ℂ)) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     {U : Set (GL (Fin n) ℂ)} (hU : IsOpen U) : IsOpen (zSet T W₁ W₂ U) := by
   have e : zSet T W₁ W₂ U =
@@ -82,6 +110,11 @@ theorem isOpen_zSet (T : Subgroup (GL (Fin n) ℂ)) (W₁ W₂ : Submodule ℂ (
   exact isOpen_iUnion fun t => isOpen_iUnion fun X =>
     hU.preimage (continuous_const.mul continuous_id)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, X, c, hc, e⟩`. Use `⟨h⁻¹ * t, T.mul_mem (T.inv_mem hh) ht, X, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc t, e, inv_mul_cancel_left]`. Introduce and unpack `⟨t, ht, X, c, hc, rfl⟩`.
+
+Conclude with `⟨h * t, T.mul_mem hh ht, X, c, hc, by simp only [mul_assoc]⟩`.
+-/
 theorem mul_mem_zSet {T : Subgroup (GL (Fin n) ℂ)} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)}
     {U : Set (GL (Fin n) ℂ)} {h : GL (Fin n) ℂ} (hh : h ∈ T) (x : GL (Fin n) ℂ) :
     h * x ∈ zSet T W₁ W₂ U ↔ x ∈ zSet T W₁ W₂ U := by
@@ -92,6 +125,9 @@ theorem mul_mem_zSet {T : Subgroup (GL (Fin n) ℂ)} {W₁ W₂ : Submodule ℂ 
   · rintro ⟨t, ht, X, c, hc, rfl⟩
     exact ⟨h * t, T.mul_mem hh ht, X, c, hc, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Use `⟨⟨t.val * X.1 * (t⁻¹ : GL (Fin n) ℂ).val, hconj t ht X.1 X.2⟩, Units.ext ?_⟩` and prove the remaining obligations. Establish `h1 : t.val * (t⁻¹ : GL (Fin n) ℂ).val = 1` using `by rw [← Units.val_mul]; simp`. Simplify using `only [uOf_val, Units.val_mul, mul_add, add_mul, mul_one, h1]`.
+-/
 theorem exists_conj {T : Subgroup (GL (Fin n) ℂ)} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)}
     (hconj : ∀ t ∈ T, ∀ X ∈ nilrad W₁ W₂, t.val * X * (t⁻¹ : GL (Fin n) ℂ).val ∈ nilrad W₁ W₂)
     {t : GL (Fin n) ℂ} (ht : t ∈ T) (X : nilrad W₁ W₂) :
@@ -100,6 +136,11 @@ theorem exists_conj {T : Subgroup (GL (Fin n) ℂ)} {W₁ W₂ : Submodule ℂ (
   have h1 : t.val * (t⁻¹ : GL (Fin n) ℂ).val = 1 := by rw [← Units.val_mul]; simp
   simp only [uOf_val, Units.val_mul, mul_add, add_mul, mul_one, h1]
 
+/- English proof (translation)
+Establish `fwd : ∀ (X : nilrad W₁ W₂) (x : GL (Fin n) ℂ), x ∈ zSet T W₁ W₂ U → uOf X * x ∈ zSet T W₁ W₂ U`. Introduce and unpack `X _ ⟨t, ht, Y, c, hc, rfl⟩`. Take `⟨X', hX'⟩` from `exists_conj hconj (T.inv_mem ht) X`. Use `⟨t, ht, nmul hW X' Y, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[uOf_nmul, hX', inv_inv]`.
+
+Use `group`. Use `⟨fun h => ?_, fwd X x⟩` and prove the remaining obligations. Use `fwd (ninv hW X) _ h` as an intermediate fact. Rewrite `this` using `[uOf_ninv, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem uOf_mul_mem_zSet {T : Subgroup (GL (Fin n) ℂ)} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)}
     (hW : W₁ ≤ W₂)
     (hconj : ∀ t ∈ T, ∀ X ∈ nilrad W₁ W₂, t.val * X * (t⁻¹ : GL (Fin n) ℂ).val ∈ nilrad W₁ W₂)
@@ -122,6 +163,23 @@ namespace GlobalTheory.CompanionTheory.LocVan
 
 open TNorm in
 
+/- English proof (translation)
+Introduce `n _ _ d μd _ W₁ W₂ hW hc hconj hfin`. Use `haveI := secondCountable_GL n`. Use `haveI := locallyCompact_GL n`. Use `haveI : SecondCountableTopology (twCent (thC n) d) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : SFinite μd := by haveI := sigmaFinite_twCent d μd infer_instance`.
+
+Take `⟨U, hUo, hUc, hUcov⟩` from `exists_open_cover n`. Establish `hact : Measurable fun p : twCent (thC n) d × GL (Fin n) ℂ => (p.1 : GL (Fin n) ℂ) * p.2` using `(measurable_subtype_coe.comp measurable_fst).mul measurable_snd`. Establish `hr : ∀ h₀ : twCent (thC n) d, MeasurePreserving (fun t : twCent (thC n) d => t * h₀) μd μd`. Introduce `h₀`. Establish `e : (fun t : twCent (thC n) d => t * h₀) = fun t => h₀ * t`.
+
+Use function extensionality and compare the values at `fun t => Subtype.ext (hc t t.2 h₀ h₀.2)`. Rewrite using `[e]`. Conclude with `measurePreserving_mul_left μd h₀`. Take `⟨ρ, hρm, hρ1, hρS⟩` from `GlobalTheory.T.integral_fiber_decomposition_invariant μd (fun (t : twCent (thC n) d) (x : GL (Fin n) ℂ) => (t : GL (Fin n) ℂ) * x) hact (fun t₀ t => t * t₀) hr (fun h₀ h x => by simp only [Subgroup.coe_mul, mul_assoc]) (fun i => nSet W₁ W₂ (closure (U i))) (fun i => zSet (twCent …`. Take `⟨i, hi⟩` from `hUcov x`.
+
+Conclude with `⟨i, 1, one_mem _, 0, x, hi, by simp [uOf_zero']⟩)`. Use the proof step `(fun i x => hfin _ (hUc i) x)`. Use the proof step `(fun i x hx => by`. Take `⟨t₀, ht₀, X, c, hcU, rfl⟩` from `hx`. Establish `hopen : IsOpen {t : twCent (thC n) d | (t : GL (Fin n) ℂ) * (t₀ * uOf X * c) ∈ nSet W₁ W₂ (U i)}` using `(isOpen_nSet W₁ W₂ (hUo i)).preimage (continuous_subtype_val.mul continuous_const)`.
+
+Establish `hne : {t : twCent (thC n) d | (t : GL (Fin n) ℂ) * (t₀ * uOf X * c) ∈ nSet W₁ W₂ (U i)}.Nonempty` using `⟨⟨t₀⁻¹, inv_mem ht₀⟩, X, c, hcU, by simp [mul_assoc]⟩`. Establish `hpos` using `hopen.measure_ne_zero μd hne`. Introduce `h0`. Conclude with `hpos (measure_mono_null (fun t ht => nSet_mono W₁ W₂ subset_closure ht) h0))`. Use the proof step `{s | ∃ X : nilrad W₁ W₂, s = fun g => uOf X * g}`.
+
+Use the proof step `(by`. Introduce and unpack `_ ⟨X, rfl⟩ i x`. Conclude with `uOf_mul_mem_nSet hW _ X x)`. Use the proof step `(by`. Introduce and unpack `_ ⟨X, rfl⟩ i x`.
+
+Conclude with `uOf_mul_mem_zSet hW hconj _ X x)`. Use the proof step `(by`. Introduce and unpack `_ ⟨X, rfl⟩ h`. Take `⟨X', hX'⟩` from `exists_conj hconj h.2 X`. Use `⟨_, ⟨X', rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hX']`. Use the proof step `group)`. Conclude with `⟨ρ, ⟨hρm, hρ1⟩, fun X g => hρS _ ⟨X, rfl⟩ g⟩`.
+-/
 theorem tNormaliser : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)] (d : GL (Fin n) ℂ)
   (μd : Measure (twCent (thC n) d)) [μd.IsHaarMeasure] (W₁ W₂ : Submodule ℂ (Fin n → ℂ)), W₁ ≤ W₂ →
   (∀ a ∈ twCent (thC n) d, ∀ b ∈ twCent (thC n) d, a * b = b * a) →

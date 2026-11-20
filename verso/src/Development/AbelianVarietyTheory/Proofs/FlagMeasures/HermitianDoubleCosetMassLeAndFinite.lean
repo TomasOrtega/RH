@@ -21,6 +21,11 @@ variable {L : LocE F E} {r k : ℕ}
 
 omit [IsNonarchimedeanLocalField F] [CharZero F] in
 
+/- English proof (translation)
+Unfold `Frames.sumCls`. Rewrite using `[← ENNReal.tsum_mul_right]`. Use `ENNReal.tsum_le_tsum fun o => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[mul_one] gcongr`.
+
+Conclude with `h _`. Simplify using the standard rewrite rules.
+-/
 theorem sumCls_le (S : Frames L r k) (φ : Set S.FrP → ℝ≥0∞) (c : ℝ≥0∞) (h : ∀ C, φ C ≤ c) :
     S.sumCls φ ≤ (S.sumCls fun _ => 1) * c := by
   unfold Frames.sumCls
@@ -32,6 +37,15 @@ theorem sumCls_le (S : Frames L r k) (φ : Set S.FrP → ℝ≥0∞) (c : ℝ≥
     exact h _
   · simp
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ Λ, S.IsTerm d Λ`. Take `⟨Λ₀, h₀⟩` from `hex`. Establish `hH : 1 ≤ S.Hp` using `(GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ₀ h₀).2.2.2.2.1`. Rewrite using `[GlobalTheory.T.hermitianMass_eq_sum_frameClasses L r k S d _ (fun h hh Λ hT hP => by`. Rewrite using `[(GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d Λ hT h hh).2.2.2.2.2.2.1]`.
+
+Conclude with `hP)]`. Use `(sumCls_le S _ _ fun C => GlobalTheory.T.hermitianTermCount_frameClass_le L r k S d C j).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_left (GlobalTheory.T.hermitianFrameClasses_total_weight_le L r k S ⟨d, Λ₀, h₀⟩) _).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, ← pow_add]`. Use `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ hH ?_) (by positivity)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `: (S.mass d fun Λ => S.cardI d Λ = j) = 0`. Unfold `Frames.mass`.
+
+Use `ENNReal.tsum_eq_zero.2 fun o => if_neg fun h => hex ⟨_, h.1⟩` and prove the remaining obligations. Rewrite using `[this]`. Conclude with `zero_le`.
+-/
 theorem mass_le (S : Frames L r k) (d : S.Datum) (j : ℕ) :
     (S.mass d fun Λ => S.cardI d Λ = j) ≤
       ENNReal.ofReal (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (j : ℝ) ^ (k - 1)) := by
@@ -53,6 +67,13 @@ theorem mass_le (S : Frames L r k) (d : S.Datum) (j : ℕ) :
     rw [this]
     exact zero_le
 
+/- English proof (translation)
+Establish `h1 : ∀ j : ℕ, {Λ | S.IsTerm d Λ ∧ S.cardI d Λ = j ∧ S.Fr d Λ = C}.Finite` using `fun j => by`. Establish `h` using `(GlobalTheory.T.hermitianTermCount_frameClass_le L r k S d C j).trans_lt ENNReal.ofReal_lt_top`. Unfold `Frames.nT at h`. Rewrite using `[← Set.encard_lt_top_iff]`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[not_lt, top_le_iff]`. Rewrite `h` using `[hc]`. Simplify using `at h`. Use `((Set.finite_Iic S.a.toNat).biUnion fun i _ => (Set.finite_Iic (S.q ^ i)).biUnion fun j _ => h1 j).subset ?_` and prove the remaining obligations. Introduce and unpack `Λ ⟨hT, hC⟩`.
+
+Take `⟨i, hi, hb⟩` from `(GlobalTheory.T.term_exponents_nonneg_and_defect_group_bound L r k S d Λ hT).2.2.2.2.2.1`. Establish `h2` using `(GlobalTheory.T.gluingImage_card_pow_le_defectGroup_card L r k S d Λ hT).2.1`. Simplify using `only [Set.mem_iUnion, Set.mem_Iic, Set.mem_setOf_eq]`. Conclude with `⟨i, by omega, S.cardI d Λ, hb ▸ h2, hT, rfl, hC⟩`.
+-/
 theorem finite_fibre (S : Frames L r k) (d : S.Datum) (C : Set S.FrP) :
     {Λ | S.IsTerm d Λ ∧ S.Fr d Λ = C}.Finite := by
   have h1 : ∀ j : ℕ, {Λ | S.IsTerm d Λ ∧ S.cardI d Λ = j ∧ S.Fr d Λ = C}.Finite := fun j => by
@@ -71,6 +92,11 @@ theorem finite_fibre (S : Frames L r k) (d : S.Datum) (C : Set S.FrP) :
   simp only [Set.mem_iUnion, Set.mem_Iic, Set.mem_setOf_eq]
   exact ⟨i, by omega, S.cardI d Λ, hb ▸ h2, hT, rfl, hC⟩
 
+/- English proof (translation)
+Establish `h1` using `((GlobalTheory.T.hermitianFrameClasses_total_weight_le L r k S h).trans_lt ENNReal.ofReal_lt_top).ne`. Unfold `Frames.sumCls at h1`. Use `(ENNReal.finite_const_le_of_tsum_ne_top h1 (ε := 1) one_ne_zero).subset fun o ho => ?_` and prove the remaining obligations. Establish `ho' : S.IsIntCls o.out` using `ho`. Simplify using `only [Set.mem_setOf_eq, if_pos ho', mul_one]`.
+
+Conclude with `ENNReal.one_le_ofReal.2 ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).2 _ ho'.1).2.2.1`.
+-/
 theorem finite_cls (S : Frames L r k) (h : ∃ d Λ, S.IsTerm d Λ) :
     {o : MulAction.orbitRel.Quotient S.St (Set S.FrP) | S.IsIntCls o.out}.Finite := by
   have h1 := ((GlobalTheory.T.hermitianFrameClasses_total_weight_le L r k S h).trans_lt ENNReal.ofReal_lt_top).ne
@@ -80,6 +106,13 @@ theorem finite_cls (S : Frames L r k) (h : ∃ d Λ, S.IsTerm d Λ) :
   simp only [Set.mem_setOf_eq, if_pos ho', mul_one]
   exact ENNReal.one_le_ofReal.2 ((GlobalTheory.T.commonStabilizer_stabilizers_commensurable_volume L r k S).2 _ ho'.1).2.2.1
 
+/- English proof (translation)
+Distinguish the cases in `hex : ∃ Λ, S.IsTerm d Λ`. Take `⟨Λ₀, h₀⟩` from `hex`. Use `(((finite_cls S ⟨d, Λ₀, h₀⟩).biUnion fun o _ => finite_fibre S d o.out).image (fun Λ => (Quotient.mk _ Λ : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V)))).subset ?_` and prove the remaining obligations. Introduce `o ho`. Establish `hT : S.IsTerm d o.out` using `ho`.
+
+Set `o' : MulAction.orbitRel.Quotient S.St (Set S.FrP)` to `Quotient.mk _ (S.Fr d o.out)`. Take `⟨h, hh⟩ : o'.out ∈ MulAction.orbit S.St (S.Fr d o.out)` from `MulAction.orbitRel_apply.1 (Quotient.mk_out (s := MulAction.orbitRel S.St (Set S.FrP)) _)`. Establish `hA` using `GlobalTheory.T.hermitianFrames_stabilizer_acts_on_terms L r k S d _ hT h.1 h.2`. Establish `hF : S.Fr d (h.1 • o.out) = o'.out` using `hA.2.2.2.2.1.trans hh`. Use `⟨h.1 • o.out, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq]`. Conclude with `⟨o', hF ▸ (GlobalTheory.HL.TermBasic.term_basic L r k S d _ hA.1).2.2.2.2.2.2.1, hA.1, hF⟩`. Use `Eq.trans ?_ (Quotient.out_eq o)` and prove the remaining obligations. Conclude with `Quotient.sound (MulAction.orbitRel_apply.2 ⟨h, rfl⟩)`. Use `Set.finite_empty.subset fun o ho => hex ⟨_, ho⟩` and prove the remaining obligations.
+-/
 theorem finite_orbits (S : Frames L r k) (d : S.Datum) :
     {o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V) | S.IsTerm d o.out}.Finite := by
   by_cases hex : ∃ Λ, S.IsTerm d Λ
@@ -102,6 +135,9 @@ theorem finite_orbits (S : Frames L r k) (d : S.Datum) :
 
 end GlobalTheory.HL.MassGlue
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S _ d`. Conclude with `⟨GlobalTheory.HL.MassGlue.mass_le S d, GlobalTheory.HL.MassGlue.finite_orbits S d⟩`.
+-/
 theorem GlobalTheory.HL.MassGlue.mass_le_and_finite : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 1 ≤ k → ∀ d : S.Datum, (∀ j : ℕ, (S.mass d fun Λ => S.cardI d Λ = j) ≤ ENNReal.ofReal (S.Hp ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) * (j : ℝ) ^ (k - 1))) ∧ {o : MulAction.orbitRel.Quotient S.St (Submodule L.O S.V) | S.IsTerm d o.out}.Finite := by
   intro F _ _ _ _ _ E _ _ _ L r k S _ d
   exact ⟨GlobalTheory.HL.MassGlue.mass_le S d, GlobalTheory.HL.MassGlue.finite_orbits S d⟩

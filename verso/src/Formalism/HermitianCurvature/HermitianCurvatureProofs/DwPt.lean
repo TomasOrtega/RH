@@ -17,11 +17,35 @@ section
 variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
+/- English proof (translation)
+Rewrite using `[← map_pow, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal]`.
+-/
 private lemma scalar_pow_mul_diagonal {A S : Type} [Ring A] [Fintype S] [DecidableEq S] (a : A) (n : ℕ)
     (D : Ix S → A) :
     (Matrix.scalar (Ix S) a) ^ n * Matrix.diagonal D = Matrix.diagonal (fun e => a ^ n * D e) := by
   rw [← map_pow, Matrix.scalar_apply, Matrix.diagonal_mul_diagonal]
 
+/- English proof (translation)
+Establish `hD'` using `hD`. Take `⟨hPl, -, hAL, hQQ, hq, -, -, hLS⟩` from `hD'`. Take `⟨-, -, -, -, -, -, -, -, -, -, hGG, hGGi, -⟩` from `id hAL`. Take `⟨κ, hκx, hκxi, -⟩` from `Formalism.FourierDecayAlt.P5.xKappaOfNF Formalism.FourierDecayAlt.P.normal_form_actual Formalism.FourierDecayAlt.P5.kappaFibrePos Wp Wq P z z' π π' X μ L st l0 hD`. Set `st' : Fr.Start (Pr (RadSp P.k P.r z z' π π'))` to `{ st with xi := fun Y => κ fun ρ => (M.x0 P l0 ρ Y)⁻¹ }`.
+
+Establish `hxiw : ∀ l ∈ ws, st'.xi (l.pt + 1) = st.xi (l.pt + 1) ∧ st'.xi (l.pt - 1) = st.xi (l.pt - 1)`. Introduce `l hl`. Take `⟨-, h1, h2, -⟩` from `hw.1.2.2.1 l hl`. Conclude with `⟨(hκxi _ h1).symm, (hκxi _ h2).symm⟩`. Establish `hc : (Fr.ofWord L st ws).c = Matrix.diagonal fun e => κ fun ρ => Fr.cs (M.x0 P l0 ρ) (M.qC P) ws e`.
+
+Rewrite using `[← Formalism.FourierDecayAlt.P5.WordTransvectionCongruences.ofWord_c_congr L st st' rfl rfl ws hxiw, (Formalism.FourierDecayAlt.P.c_diagonal _ S P.r L st' (M.Ty P) κ (M.x0 P l0) (fun Y => hκx Y) (fun Y => rfl) ws).2.2, ← hq]`. Establish `hd : (Fr.ofWord L st ws).d L = Matrix.diagonal (fun e => (L.ζ * L.ζb * L.GGi) ^ ws.length * κ (fun ρ => Fr.cs (M.x0 P l0 ρ) (M.qC P) ws e))`. Rewrite using `[Fr.FrameData.d, Formalism.FourierDecayAlt.P5.WordTransvectionCongruences.ofWord_N, hc]`. Conclude with `scalar_pow_mul_diagonal _ _ _`. Use `set K := κ (fun ρ => M.xC P ρ (Y₀ : ℂ)) with hKdef`.
+
+Establish `hs : M.sgn P l0 ≠ 0` using `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)`. Establish `hK : K.1 = X.fn 5 * X.t (Y₀ : ℂ) 1 1`. Establish `t` using `hLS.tau (Y₀ : ℂ)`. Rewrite `t` using `[hQQ, hκx, Formalism.FourierDecayAlt.P5.signed_coordinate_eq_sign_smul, map_smul]`. Establish `t1` using `congrArg (Formalism.FourierDecayAlt.P5.Kfp.fstAlg _) t`.
+
+Rewrite `t1` using `[map_mul, map_smul, Matrix.smul_apply, map_smul]`. Express the relevant statement in the definitionally equal form `M.sgn P l0 • X.t (Y₀ : ℂ) 1 1 = L.GG.1 * (M.sgn P l0 • K.1) at t1`. Rewrite `t1` using `[hGG, mul_smul_comm]`. Establish `h4 : X.fn 4 * K.1 = X.t (Y₀ : ℂ) 1 1` using `(smul_right_injective _ hs t1).symm`. Establish `h54 : X.fn 5 * X.fn 4 = 1`.
+
+Use `congrArg Prod.fst L.GGi_GG` as an intermediate fact. Rewrite `this` using `[hGGi, hGG]`. Conclude with `this`. Rewrite using `[← h4, ← mul_assoc, h54, one_mul]`. Establish `hκf : κ (fun ρ => Fr.cs (M.x0 P l0 ρ) (M.qC P) ws e) = Polynomial.aeval K p` using `Formalism.FourierDecayAlt.P5.Kfp.kappa_aeval (NFData.mk L κ (fun _ => 0)) (Y₀ : ℂ) p _ hp`.
+
+Establish `hκf1 : (κ (fun ρ => Fr.cs (M.x0 P l0 ρ) (M.qC P) ws e)).1 = Polynomial.aeval K.1 p`. Rewrite using `[hκf]`. Conclude with `(Polynomial.aeval_algHom_apply (Formalism.FourierDecayAlt.P5.Kfp.fstAlg _) K p).symm`. Establish `hT : ∀ (Ψ : RadSp P.k P.r z z' π π') (w : Wq), ((K.1 Ψ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c g w = (Ψ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g (qdet (Qr.EB π' Bs) ((Y₀ : ℂ) + ((P.k : ℂ) - 2) / 2) w)`. Introduce `Ψ w`.
+
+Rewrite using `[hK]`. Conclude with `Formalism.FourierDecayAlt.P5.Kfp.diagonal_transfer_action X hPl.2.1 hPl.2.2.1 hPl.2.2.2.2.2.2.2.1 hPl.2.2.2.2.2.2.2.2.1 hx Bs hBs _ Ψ w`. Establish `hA` using `Formalism.FourierDecayAlt.P5.Kfp.aeval_act K.1 _ hT p`. Establish `hpow` using `Formalism.FourierDecayAlt.P5.WordTransvectionCongruences.pow_apply X L hAL ws.length ((κ (fun ρ => Fr.cs (M.x0 P l0 ρ) (M.qC P) ws e)).1 (y e)) (c, g) hx`. Establish `hmul : ∀ a b : Pr (RadSp P.k P.r z z' π π'), (a * b).1 = a.1 * b.1` using `fun _ _ => rfl`.
+
+Rewrite using `[hd, Formalism.FourierDecayAlt.P5.WordTransvectionCongruences.act_diagonal, hmul, Module.End.mul_apply, hpow, _root_.smul_apply, hκf1, hA]`. Use `congr 1`. Simplify using `only [fnVal]`. Use `congr 1`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_inv, ← Complex.mul_conj]`.
+
+Both sides reduce to the same expression.
+-/
 theorem dw_pt (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
     (L : R.LevelData (Pr (RadSp P.k P.r z z' π π')) P.r) (st : Fr.Start (Pr (RadSp P.k P.r z z' π π'))) (l0 : ℕ)

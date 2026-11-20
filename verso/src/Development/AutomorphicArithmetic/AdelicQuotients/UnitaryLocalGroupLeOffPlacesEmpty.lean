@@ -9,12 +9,20 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.ThK.Dbl GlobalTheory.PRep Formalism.BasicNotions UpperTheory.TP
 
+/- English proof (translation)
+Apply `(InfinitePlace.Completion.extensionEmbedding w).injective` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.RealAdeleComponent.extensionEmbedding_evInf_realAd, map_one]`. Simplify using the standard rewrite rules.
+-/
 private theorem evInf_realAd_one {F : Type} [Field F] [NumberField F] (w : InfinitePlace F) :
     evInf F w (realAd F 1) = 1 := by
   apply (InfinitePlace.Completion.extensionEmbedding w).injective
   rw [GlobalTheory.CompanionTheory.RealAdeleComponent.extensionEmbedding_evInf_realAd, map_one]
   simp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X v`. Use `(Subgroup.closure_le _).2 fun g hg => Subgroup.subset_closure ⟨fun w => ?_, by simp⟩` and prove the remaining obligations. Establish `h0 : realAd F 1 • (mat g - 1) = 0` using `hg _ (GlobalTheory.ThKTorus.IntegralOfAdic.evFin_realAd F v 1)`. Use extensionality with `i j`. Establish `e` using `congrArg (fun M : Matrix (Fin n) (Fin n) (AE F E) => compInf F E w (M i j)) h0`.
+
+Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.zero_apply, map_zero] at e`. Rewrite `e` using `[GlobalTheory.AwayFix.Chart.compInf_smul_away, evInf_realAd_one, one_smul, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem UpperTheory.unitaryLocalGroup_le_offPlaces_empty :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} (v : Pl F), locGrp σ X v ≤ gOff σ X ∅ := by
   intro F E _ _ _ _ _ σ n X v

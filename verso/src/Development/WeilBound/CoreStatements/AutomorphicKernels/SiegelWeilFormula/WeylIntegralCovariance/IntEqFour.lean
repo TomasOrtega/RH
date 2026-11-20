@@ -14,6 +14,9 @@ open PositivityTheory.SiegelWeilFormula.TBij.Adp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Rewrite using `[integral_cov d ν hν, GroundTheory.Automorphic.GJMatrix.adelicFourierPi]`. Use `congr 1`. Use function extensionality and compare the values at `c`. Rewrite using `[pair_eq d ε Y (d.cmb c), crd_cmb, GlobalTheory.AdelicSvN.Weyl.isStd_eq d.ok.good.std, mul_comm]`.
+-/
 theorem int_eq_four (d : SD σ) (ν : Measure (Mx F E d.m d.n)) (hν : d.IsCov ν) (ε : ℤˣ) (f : Mx F E d.m d.n → ℂ)
     (Y : Matrix (Fin d.m) (Fin d.n) E) :
     ∫ Z, d.B.ψ (((ε : ℤ) : AF F) * d.tt (d.gram (incM F Y) Z)) * f Z ∂ν =
@@ -24,6 +27,15 @@ theorem int_eq_four (d : SD σ) (ν : Measure (Mx F E d.m d.n)) (hν : d.IsCov �
   funext c
   rw [pair_eq d ε Y (d.cmb c), crd_cmb, GlobalTheory.AdelicSvN.Weyl.isStd_eq d.ok.good.std, mul_comm]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d ν hν ε f hf`. Establish `hg : (fun c => f (d.cmb c)) ∈ schA F (Ix d)` using `Submodule.mem_comap.1 hf`. Establish `hθ` using `GlobalTheory.TowU.FourWeyl.theta_four hg`. Use `(tsum_congr fun X => int_eq_four d ν hν ε f X).trans ?_` and prove the remaining obligations. Use `((rc d).toEquiv.tsum_eq (fun a => GroundTheory.Automorphic.GJMatrix.adelicFourierPi F (fun c => f (d.cmb c)) (fun q => algebraMap F (AF F) (Lm d ε a q)))).trans ?_` and prove the remaining obligations.
+
+Use `((LinearEquiv.ofInjectiveEndo (Lm d ε) (Lm_inj d ε)).toEquiv.tsum_eq (fun a => GroundTheory.Automorphic.GJMatrix.adelicFourierPi F (fun c => f (d.cmb c)) (fun q => algebraMap F (AF F) (a q)))).trans ?_` and prove the remaining obligations. Use `hθ.trans ?_` and prove the remaining obligations. Use `show ∑' ξ : Ix d → F, f (d.cmb fun q => algebraMap F (AF F) (ξ q)) = _`. Establish `e : ∀ X : Matrix (Fin d.m) (Fin d.n) E, f (incM F X) = f (d.cmb fun q => algebraMap F (AF F) (rc d X q))`. Introduce `X`.
+
+Use `congr 1`. Rewrite using `[← cmb_crd d (incM F X)]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Rewrite using `[crd_incM]`.
+
+Both sides reduce to the same expression. Repeatedly rewrite using `[e]`. Conclude with `((rc d).toEquiv.tsum_eq (fun a => f (d.cmb fun q => algebraMap F (AF F) (a q)))).symm`.
+-/
 theorem poisson : Poisson := by
   intro F E _ _ _ _ _ σ d ν hν ε f hf
   have hg : (fun c => f (d.cmb c)) ∈ schA F (Ix d) := Submodule.mem_comap.1 hf

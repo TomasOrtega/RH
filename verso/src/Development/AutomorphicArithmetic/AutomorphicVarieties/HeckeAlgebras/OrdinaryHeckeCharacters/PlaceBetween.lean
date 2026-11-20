@@ -11,11 +11,23 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+-/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
+/- English proof (translation)
+Establish `hint : ∀ x : 𝓞 L, algebraMap L Ω (x : L) ∈ A` using `fun x => by`. Establish `h : IsIntegral A (algebraMap L Ω (x : L))` using `(x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+
+Set `f : 𝓞 L →+* A` to `((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A hint`. Set `P : Ideal (𝓞 L)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 L, A.valuation (algebraMap L Ω (x : L)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Establish `hu : v.asIdeal = P.under (𝓞 K)`. Use extensionality with `x`.
+
+Rewrite using `[← hA x, Ideal.under, Ideal.mem_comap, ← hP, IsScalarTower.algebraMap_apply K L Ω]`. Both sides reduce to the same expression. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+
+Rewrite using `[hu, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩`.
+-/
 private theorem place_between {K L Ω : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Field Ω]
     [Algebra K L] [Algebra L Ω] [Algebra K Ω] [IsScalarTower K L Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} (hA : IsPlaceOver A v) :
@@ -42,6 +54,9 @@ private theorem place_between {K L Ω : Type} [Field K] [NumberField K] [Field L
   exact ⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩
 
 open scoped Pointwise in
+/- English proof (translation)
+Introduce `x` and use `by have e : ∀ y : Ω, (g • A).valuation (g y) < 1 ↔ A.valuation y < 1 := UpperTheory.V.val_lt_one (σ := g.toRingEquiv) (fun _ => ValuationSubring.smul_mem_pointwise_smul_iff (g := g)) rw [← h x, ← e, AlgEquiv.commutes]`.
+-/
 private theorem place_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] (g : G F Ω) {A : ValuationSubring Ω}
     {v : W.Plc F} (h : IsPlaceOver A v) : IsPlaceOver (g • A) v := fun x => by
   have e : ∀ y : Ω, (g • A).valuation (g y) < 1 ↔ A.valuation y < 1 :=
@@ -49,6 +64,15 @@ private theorem place_smul {F Ω : Type} [Field F] [NumberField F] [Field Ω] [A
   rw [← h x, ← e, AlgEquiv.commutes]
 
 open scoped Pointwise in
+/- English proof (translation)
+Establish `hc : s.c ∉ (W.resP L Ω).range` using `fun h => by`. Establish `h1` using `(V.hη _).2 h`. Rewrite `h1` using `[V.η_c]`. Conclude with `absurd h1 (by decide)`. Take `⟨u, hu, hu'⟩` from `place_between (L := L) (place_smul s.c (s.hA v.1))`.
+
+Distinguish the cases in `h : u = s.w v.1`. It suffices to derive a contradiction. Substitute `h` using the available equality. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (s.hw v.1) hu`. Establish `h2 : s.c⁻¹ * W.resP L Ω σ ∈ Dec (F` using `Lp L) (s.A v.1) := by`.
+
+Express the relevant statement in the definitionally equal form `(s.c⁻¹ * W.resP L Ω σ) • s.A v.1 = s.A v.1`. Establish `h3 : W.resP L Ω σ • s.A v.1 = s.c • s.A v.1` using `hσ`. Rewrite using `[mul_smul, h3, inv_smul_smul]`. Establish `h4` using `s.split v.1 (Or.inl v.2) h2`. Establish `h5` using `mul_mem h4 (inv_mem (⟨σ, rfl⟩ : W.resP L Ω σ ∈ (W.resP L Ω).range))`.
+
+Rewrite `h5` using `[mul_inv_cancel_right]`. Conclude with `hc (inv_mem_iff.1 h5)`. Conclude with `⟨u, h, hu'.trans (w_under s v.1).symm⟩`.
+-/
 private theorem w_split {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} (V : s.Lev) (v : Vl l L) : IsSplitAt (s.w v.1) := by
   have hc : s.c ∉ (W.resP L Ω).range := fun h => by
@@ -74,6 +98,9 @@ section Grp
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
+/- English proof (translation)
+Establish `h2 : GlobalTheory.DefU.LocRet.ret w n x = 1` using `GlobalTheory.SplitPts.eq_one_of_cLoc hw _ ((GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_eq rfl x).trans h1)`. Establish `h3 : cLoc u (GlobalTheory.DefU.LocRet.ret w n x : UA L n) = cLoc u x` using `GlobalTheory.DefU.LocRet.localProj_unitaryAdelicLocalRetractionEnd_of_under_eq hu x`. Rewrite using `[← h3, h2]`. Conclude with `map_one _`.
+-/
 private theorem cLoc_conj {w u : Plc L} (hw : IsSplitAt w)
     (x : UA L n) (h1 : cLoc w x = 1) (hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) : cLoc u x = 1 := by
   have h2 : GlobalTheory.DefU.LocRet.ret w n x = 1 :=
@@ -82,6 +109,9 @@ private theorem cLoc_conj {w u : Plc L} (hw : IsSplitAt w)
   rw [← h3, h2]
   exact map_one _
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext L fun u => by have := congrArg (fun g : GL (Fin n) (u.adicCompletion L) => g.val i j) (h u) simp only [Units.val_one, Matrix.one_apply] at this refine this.trans ?_ by_cases hij : i = j <;> simp [hij])`.
+-/
 private theorem mem_inf_of {x : UA L n} (h : ∀ u, cLoc u x = 1) : x ∈ infU L n :=
   Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext L fun u => by
     have := congrArg (fun g : GL (Fin n) (u.adicCompletion L) => g.val i j) (h u)
@@ -89,11 +119,19 @@ private theorem mem_inf_of {x : UA L n} (h : ∀ u, cLoc u x = 1) : x ∈ infU L
     refine this.trans ?_
     by_cases hij : i = j <;> simp [hij])
 
+/- English proof (translation)
+Establish `h1 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `h`. Establish `e : cLoc u x = Matrix.GeneralLinearGroup.map (pLoc L u) (Matrix.GeneralLinearGroup.map (pFin L) x.1)` using `Units.ext rfl`. Rewrite using `[e, h1, map_one]`.
+-/
 private theorem cLoc_inf {x : UA L n} (h : x ∈ infU L n) (u : Plc L) : cLoc u x = 1 := by
   have h1 : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1 := h
   have e : cLoc u x = Matrix.GeneralLinearGroup.map (pLoc L u) (Matrix.GeneralLinearGroup.map (pFin L) x.1) := Units.ext rfl
   rw [e, h1, map_one]
 
+/- English proof (translation)
+Establish `hfin : Continuous (finGL L n)` using `Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map (continuous_const.prodMk continuous_id : Continuous fun x : Af L => ((0, x) : InfiniteAdeleRing L × Af L))))`. Use `⟨fun x => ⟨⟨finGL L n (Matrix.GeneralLinearGroup.map (pFin L) x.1), GlobalTheory.SplitPts.finGL_mem_UA _ fun u => GlobalTheory.SplitPts.comp_eq x u⟩, MonoidHom.mem_ker.2 (pInf_finGL _)⟩, Continuous.subtype_mk (Continuous.subtype_mk (hfin.comp (GlobalTheory.DefU.continuous_map_pFi …` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finGL L n (Matrix.GeneralLinearGroup.map (pFin L) 1) = 1`. Rewrite using `[map_one, map_one]`.
+
+Conclude with `(GlobalTheory.SplitPts.cLoc_finGL u _ _).trans (Units.ext rfl)`.
+-/
 private theorem exists_fin : ∃ p : UA L n → finU L n, Continuous p ∧ p 1 = 1 ∧ ∀ x u, cLoc u (p x : UA L n) = cLoc u x := by
   have hfin : Continuous (finGL L n) :=
     Continuous.units_map _ (continuous_const.add (continuous_id.matrix_map
@@ -107,6 +145,13 @@ private theorem exists_fin : ∃ p : UA L n → finU L n, Continuous p ∧ p 1 =
     rw [map_one, map_one]
   · exact (GlobalTheory.SplitPts.cLoc_finGL u _ _).trans (Units.ext rfl)
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Take `⟨p, -, -, hp⟩` from `exists_fin (L := L) (n := n)`. Conclude with `⟨p x, fun u _ => hp x u, fun v hv => absurd hv (Finset.notMem_empty v)⟩`. Consider the case `insert a t ha ih`.
+
+Take `⟨k, h1, h2⟩` from `ih`. Set `z` to `GlobalTheory.SplitPts.locPt (hw a) ((cLoc (w a) (k : UA L n))⁻¹ * b a)`. Establish `hz : ∀ u : Plc L, u.under (𝓞 (Lp L)) ≠ (w a).under (𝓞 (Lp L)) → cLoc u z.1 = 1` using `fun u hu => GlobalTheory.DefU.LocRet.mem_locU_ne z.2 hu`. Use `⟨k * ⟨z.1, (Subgroup.mem_inf.1 z.2).1⟩, fun u hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, map_mul, hz u (hu a), mul_one, h1 u hu]`.
+
+Rewrite using `[Subgroup.coe_mul, map_mul]`. Distinguish the cases in `hva : v = a`. Substitute `hva` using the available equality. Rewrite using `[GlobalTheory.SplitPts.cLoc_locPt, mul_inv_cancel_left]`. Rewrite using `[hz _ fun h => hva (hi h), mul_one, h2 v ((Finset.mem_insert.1 hv).resolve_left hva)]`.
+-/
 private theorem exists_adjust {V : Type} (w : V → Plc L) (hw : ∀ v, IsSplitAt (w v))
     (hi : Function.Injective fun v => (w v).under (𝓞 (Lp L))) (x : UA L n) (b : ∀ v, GLw n (w v)) (t : Finset V) :
     ∃ k : finU L n, (∀ u : Plc L, (∀ v, u.under (𝓞 (Lp L)) ≠ (w v).under (𝓞 (Lp L))) → cLoc u (k : UA L n) = cLoc u x) ∧
@@ -129,6 +174,11 @@ private theorem exists_adjust {V : Type} (w : V → Plc L) (hw : ∀ v, IsSplitA
         rw [GlobalTheory.SplitPts.cLoc_locPt, mul_inv_cancel_left]
       · rw [hz _ fun h => hva (hi h), mul_one, h2 v ((Finset.mem_insert.1 hv).resolve_left hva)]
 
+/- English proof (translation)
+Take `⟨δ, hδ⟩` from `h`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Establish `e : γ.1.val a b = algebraMap L (Ad L) (δ.val a b)` using `(congrArg (fun g : GA L n => g.val a b) hδ).symm`. Express the relevant statement in the definitionally equal form `coord _ (pInf L (γ.1.val a b)) = ι (j (pLoc L w (pFin L (γ.1.val a b))))`. Rewrite using `[e, coord_algebraMap]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem cEmb_rat {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : Plc L) (j : w.adicCompletion L →+* Qbar l)
     {γ : UA L n} (h : γ ∈ ratU L n) :
     cEmb (ι.toRingHom.comp (j.comp (algebraMap L _))) γ = Matrix.GeneralLinearGroup.map (ι.toRingHom.comp j) (cLoc w γ) := by
@@ -142,6 +192,11 @@ private theorem cEmb_rat {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (w : P
 
 end Grp
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite ι`. Set `b` to `fun i => Module.finBasis ℂ (M i)`. Establish `e : (fun x => m fun i => y i x) = fun x => ∑ r : ∀ i, Fin (Module.finrank ℂ (M i)), (∏ i, (b i).coord (r i) (y i x)) • m fun i => b i (r i)`. Use function extensionality and compare the values at `x`. Establish `h1 : (fun i => y i x) = fun i => ∑ j, (b i).coord j (y i x) • b i j`.
+
+Use function extensionality and compare the values at `fun i => ((b i).sum_repr (y i x)).symm`. Rewrite using `[h1, m.map_sum]`. Conclude with `Finset.sum_congr rfl fun r _ => m.map_smul_univ _ _`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun r _ => (continuous_finset_prod _ fun i _ => hy i _).smul continuous_const`.
+-/
 private theorem cont_multi {ι X : Type} [Finite ι] [TopologicalSpace X] {M : ι → Type} [∀ i, AddCommGroup (M i)]
     [∀ i, Module ℂ (M i)] [∀ i, FiniteDimensional ℂ (M i)] (m : MultilinearMap ℂ M ℂ) (y : ∀ i, X → M i)
     (hy : ∀ i (ℓ : Module.Dual ℂ (M i)), Continuous fun x => ℓ (y i x)) : Continuous fun x => m fun i => y i x := by
@@ -158,6 +213,9 @@ private theorem cont_multi {ι X : Type} [Finite ι] [TopologicalSpace X] {M : �
   rw [e]
   exact continuous_finset_sum _ fun r _ => (continuous_finset_prod _ fun i _ => hy i _).smul continuous_const
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `GlobalTheory.Branching.exists_coef_sqRep n mu f ℓ`. Simplify using `only [hP]`. Use `(Units.continuous_val.matrix_det.zpow₀ _ fun g : GL (Fin n) ℂ => Or.inl (Matrix.GeneralLinearGroup.det g).ne_zero).mul ((MvPolynomial.continuous_eval P).comp (continuous_pi fun x => Units.continuous_val.matrix_elem x.1 x.2))` and prove the remaining obligations.
+-/
 private theorem cont_sq (n : ℕ) (mu : DomWeight n) (f : nablaSq ℂ n mu) (ℓ : Module.Dual ℂ (nablaSq ℂ n mu)) :
     Continuous fun g : GL (Fin n) ℂ => ℓ (GlobalTheory.Branching.sqRep ℂ n mu g f) := by
   obtain ⟨P, hP⟩ := GlobalTheory.Branching.exists_coef_sqRep n mu f ℓ
@@ -165,11 +223,19 @@ private theorem cont_sq (n : ℕ) (mu : DomWeight n) (f : nablaSq ℂ n mu) (ℓ
   refine (Units.continuous_val.matrix_det.zpow₀ _ fun g : GL (Fin n) ℂ => Or.inl (Matrix.GeneralLinearGroup.det g).ne_zero).mul
     ((MvPolynomial.continuous_eval P).comp (continuous_pi fun x => Units.continuous_val.matrix_elem x.1 x.2))
 
+/- English proof (translation)
+The claim follows from `haveI : Finite (Formalism.GradedWeylDivisibility.ssIdx n n mu.natW) := (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype Module.Finite.of_basis ((Module.Basis.span (Formalism.GradedWeylDivisibility.sSBasis ℂ n n mu.natW).choose_spec.1.1).map (LinearEquiv.ofEq _ _ (F …`.
+-/
 private theorem fd_sq (n : ℕ) (mu : DomWeight n) : FiniteDimensional ℂ (nablaSq ℂ n mu) :=
   haveI : Finite (Formalism.GradedWeylDivisibility.ssIdx n n mu.natW) := (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype
   Module.Finite.of_basis ((Module.Basis.span (Formalism.GradedWeylDivisibility.sSBasis ℂ n n mu.natW).choose_spec.1.1).map
     (LinearEquiv.ofEq _ _ (Formalism.GradedWeylDivisibility.sSBasis ℂ n n mu.natW).choose_spec.1.2.1))
 
+/- English proof (translation)
+Establish `h1 : Continuous (coord (E` using `E) τ) := by`. Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
+
+Establish `h2 : Continuous (pInf E)` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`. Conclude with `(Continuous.units_map _ (continuous_id.matrix_map h1)).comp ((Continuous.units_map _ (continuous_id.matrix_map h2)).comp continuous_subtype_val)`.
+-/
 private theorem cont_cEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) :
     Continuous (cEmb (E := E) (n := n) τ) := by
   have h1 : Continuous (coord (E := E) τ) := by
@@ -183,6 +249,17 @@ private theorem cont_cEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   exact (Continuous.units_map _ (continuous_id.matrix_map h1)).comp
     ((Continuous.units_map _ (continuous_id.matrix_map h2)).comp continuous_subtype_val)
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_iff_continuousAt.2 fun g0 => ?_` and prove the remaining obligations. Establish `hc : Continuous fun g : UA E n => ℓ (R g⁻¹ (F g0))` using `(hcont (F g0) ℓ).comp continuous_inv`. Use `hc.continuousAt.congr ?_` and prove the remaining obligations. Establish `ht : Filter.Tendsto (fun g : UA E n => g0⁻¹ * g) (nhds g0) (nhds 1)`.
+
+Establish `: Continuous fun g : UA E n => g0⁻¹ * g` using `continuous_const.mul continuous_id`. Simplify `this.tendsto g0` using `only [inv_mul_cancel]`. Use `filter_upwards [ht.eventually hsm] with g hg`. Establish `e` using `hg g0`. Rewrite `e` using `[mul_inv_cancel_left]`.
+
+Rewrite using `[e]`. Introduce `γ hγ g`. Rewrite using `[hrat γ hγ g, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, inv_mul_cancel_right]`. Use `GlobalTheory.CuspRep.isOpen_stab_of_mem_nhds ((RU E n).comp (finU E n).subtype) _ ?_ filter_upwards [(continuous_subtype_val.tendsto (1 : finU E n)).eventually hsm] with k hk` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Express the relevant statement in the definitionally equal form `ℓ (R (g * (k : UA E n))⁻¹ (F (g * k))) = ℓ (R g⁻¹ (F g))`. Rewrite using `[hk g, mul_inv_rev, map_mul, hfin _ ((finU E n).inv_mem k.2), one_mul]`. Set `C : Module.Dual ℂ X →ₗ[ℂ] (UA E n → ℂ)` to `{ toFun := fun μ g => μ (R g⁻¹ (F g)) map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range C) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `⟨ℓ ∘ₗ R (k : UA E n)⁻¹, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `ℓ (R (k : UA E n)⁻¹ (R g⁻¹ (F g))) = ℓ (R (g * (k : UA E n))⁻¹ (F (g * k)))`. Rewrite using `[hinf _ k.2 g, mul_inv_rev, map_mul, Module.End.mul_apply]`.
+-/
 private theorem aut_coef {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {X : Type} [AddCommGroup X]
     [Module ℂ X] [FiniteDimensional ℂ X] (R : UA E n →* Module.End ℂ X) (F : UA E n → X)
     (hfin : ∀ k ∈ finU E n, R k = 1) (hcont : ∀ (u : X) (ℓ : Module.Dual ℂ X), Continuous fun g => ℓ (R g u))
@@ -218,6 +295,23 @@ private theorem aut_coef {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
     change ℓ (R (k : UA E n)⁻¹ (R g⁻¹ (F g))) = ℓ (R (g * (k : UA E n))⁻¹ (F (g * k)))
     rw [hinf _ k.2 g, mul_inv_rev, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hRR : ∀ g u, R g (R g⁻¹ u) = u` using `fun g u => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `hRR' : ∀ g u, R g⁻¹ (R g u) = u` using `fun g u => by simpa using hRR g⁻¹ u`. Use `⟨fun F h => funext fun y => ?_, fun F hF ho ℓ => ?_, fun Φ h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hs y`.
+
+Establish `h0 : R g⁻¹ (F (J g)) = 0` using `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => h ℓ g`. Rewrite using `[← hRR g (F (J g)), h0, map_zero]`. Both sides reduce to the same expression. Use `aut_coef R (fun g => F (J g)) hfin hcont (fun y hy g => ?_) (fun γ hγ g => ?_) ?_ ℓ` and prove the remaining obligations. Simplify using `only [map_mul, (hker y).2 hy, mul_one]`.
+
+Simplify using `only [map_mul, hF γ hγ]`. Take `⟨p, hp, hp1, hp2⟩` from `exists_fin (L := E) (n := n)`. Establish `hn : {k : finU E n | ∀ g, F (g * J k) = F g} ∈ nhds (p 1)` using `ho.mem_nhds (by`. Introduce `g`. Rewrite using `[hp1]`.
+
+Use the proof step `simp)`. Use `filter_upwards [(hp.tendsto 1).eventually hn] with y hy g`. Establish `e : J ((p y : UA E n)⁻¹ * y) = 1` using `(hker _).2 (mem_inf_of fun u => by`. Rewrite using `[map_mul, map_inv, hp2, inv_mul_cancel])`. Rewrite `e` using `[map_mul, map_inv, inv_mul_eq_one]`.
+
+Rewrite using `[map_mul, ← e]`. Conclude with `hy _`. Set `Ψ : UA E n → X` to `fun g => (Module.evalEquiv ℂ X).symm ((LinearMap.proj g).comp Φ)`. Establish `hΨ : ∀ g (ℓ : Module.Dual ℂ X), ℓ (Ψ g) = Φ ℓ g` using `fun g ℓ => Module.apply_evalEquiv_symm_apply ℂ X ℓ _`. Establish `ext : ∀ u v : X, (∀ ℓ : Module.Dual ℂ X, ℓ u = ℓ v) → u = v` using `fun u v h => sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun ℓ => by rw [map_sub, h, sub_self])`.
+
+Establish `key : ∀ g g', J g = J g' → R g (Ψ g) = R g' (Ψ g')` using `fun g g' h => by`. Establish `hx : g⁻¹ * g' ∈ infU E n` using `(hker _).1 (by rw [map_mul, map_inv, h, inv_mul_cancel])`. Take `⟨x, rfl⟩ : ∃ x, g' = g * x` from `⟨g⁻¹ * g', (mul_inv_cancel_left _ _).symm⟩`. Rewrite `hx` using `[inv_mul_cancel_left]`. Establish `e : Ψ (g * x) = R x⁻¹ (Ψ g)` using `ext _ _ fun ℓ => by`.
+
+Rewrite using `[hΨ]`. Conclude with `(congrFun (h2 ℓ x hx) g).trans (hΨ g (ℓ ∘ₗ R x⁻¹)).symm`. Rewrite using `[e, map_mul, Module.End.mul_apply, hRR]`. Use `choose σ hσ using hs`. Use `⟨fun y => R (σ y) (Ψ (σ y)), fun γ hγ y => ?_, fun ℓ g => ?_⟩` and prove the remaining obligations.
+
+Establish `e : Ψ (γ * σ y) = Ψ (σ y)` using `ext _ _ fun ℓ => by rw [hΨ, hΨ, (h1 ℓ).left γ hγ]`. Simplify using `only`. Rewrite using `[key (σ (J γ * y)) (γ * σ y) (by rw [hσ, map_mul, hσ]), e, map_mul, Module.End.mul_apply]`. Simplify using `only`. Rewrite using `[key (σ (J g)) g (hσ _), hRR', hΨ]`.
+-/
 private theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {X H : Type} [AddCommGroup X]
     [Module ℂ X] [FiniteDimensional ℂ X] [Group H] (R : UA E n →* Module.End ℂ X) (J : UA E n →* H)
     (hfin : ∀ k ∈ finU E n, R k = 1) (hcont : ∀ (u : X) (ℓ : Module.Dual ℂ X), Continuous fun g => ℓ (R g u))
@@ -270,6 +364,33 @@ private theorem core {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ
     · simp only
       rw [key (σ (J g)) g (hσ _), hRR', hΨ]
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n _ V Q c m τ₀ ι lam d e ξ hξ J hJ`. Set `J' : UA L n →* Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1)` to `MonoidHom.prod (away l L n).rangeRestrict (Pi.monoidHom fun v : V.frame.Vl => cLoc (s.w v.1))`. Take `rfl : J = J'` from `funext hJ`. Use `haveI : FiniteDimensional ℂ (⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) := e.finiteDimensional`. Use `haveI : Finite V.frame.Vl := @Finite.of_fintype _ V.frame.finV`.
+
+Use `haveI : ∀ v : V.frame.Vl, Finite (W.Emb l (s.w v.1)) := fun v => GlobalTheory.HeckeGal.finite_contEmb _`. Establish `hsp : ∀ v : V.frame.Vl, IsSplitAt (s.w v.1)` using `fun v => w_split V v`. Establish `hl : ∀ u : Plc L, ((l : ℕ) : 𝓞 L) ∈ u.asIdeal ↔ ((l : ℕ) : 𝓞 (Lp L)) ∈ (u.under (𝓞 (Lp L))).asIdeal` using `fun u => by`. Express the relevant statement in the definitionally equal form `_ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.asIdeal`. Rewrite using `[map_natCast]`.
+
+Establish `hsurj : Function.Surjective fun k : finU L n => J' k`. Introduce and unpack `⟨a, b⟩`. Take `⟨x, rfl⟩` from `(away l L n).rangeRestrict_surjective a`. Use `haveI := V.frame.finV`. Take `⟨k, h1, h2⟩` from `exists_adjust (fun v : V.frame.Vl => s.w v.1) hsp (fun v v' h => Subtype.ext ((w_under s v.1).symm.trans (h.trans (w_under s v'.1)))) x b Finset.univ`.
+
+Use `⟨k, Prod.ext (Subtype.ext (funext fun u => h1 u.1 fun v h => u.2 ?_)) (funext fun v => h2 v (Finset.mem_univ v))⟩` and prove the remaining obligations. Rewrite using `[hl, h, w_under]`. Conclude with `v.2`. Establish `hker : ∀ x, J' x = 1 ↔ x ∈ infU L n` using `fun x => by`. Use `⟨fun h => mem_inf_of fun u => ?_, fun h => Prod.ext (Subtype.ext (funext fun u => cLoc_inf h u.1)) (funext fun v => cLoc_inf h _)⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hu : ((l : ℕ) : 𝓞 L) ∈ u.asIdeal`. Set `v : V.frame.Vl` to `⟨u.under (𝓞 (Lp L)), (hl u).1 hu⟩`. Conclude with `cLoc_conj (hsp v) x (congrFun (congrArg Prod.snd h) v) (w_under s v.1).symm`. Conclude with `congrFun (congrArg (fun y => y.1.1) h) ⟨u, hu⟩`. Establish `hfin : ∀ k ∈ finU L n, infRep (V` using `V) ι lam k = 1 := fun k hk => by`.
+
+Establish `h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.mapMonoidHom (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) k)) = 1`. Simplify using `only [h1, map_one]`.
+
+Conclude with `map_one _`. Establish `hcont : ∀ u (ℓ : Module.Dual ℂ _), Continuous fun g => ℓ (infRep (V` using `V) ι lam g u) := fun u ℓ => by`. Proceed by induction on `u using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`.
+
+Conclude with `hx.add hy`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul]`. Use `Continuous.const_smul ?_ r` and prove the remaining obligations. Use `haveI := fd_sq n`.
+
+Establish `h` using `cont_multi (ℓ.compMultilinearMap (PiTensorProduct.tprod ℂ)) (fun (y : Emb l (fun v : V.frame.Vl => s.w v.1)) (g : UA L n) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) g) (f y)) fun y μ => (cont_sq n _ (f y) μ).comp (cont_cEmb _)`. Use `h.congr fun g => congrArg ℓ ?_` and prove the remaining obligations. Conclude with `(PiTensorProduct.map_tprod _ _).symm`. Establish `hrat : ∀ γ ∈ ratU L n, infRep (V` using `V) ι lam γ = algRep _ ι lam (J' γ).2 := fun γ hγ => congrArg PiTensorProduct.mapMonoidHom (funext fun y => congrArg (GlobalTheory.Branching.sqRep ℂ n (lam y.res)) (cEmb_rat ι _ y.2.1 hγ))`. Establish `hAF : ∀ F : Ga l L n × GV n (fun v : V.frame.Vl => s.w v.1) → Fin d → ℂ, F ∈ (hset Q τ₀).X.AF ξ ↔ ∀ γ ∈ ratU L n, ∀ g, e (F (J' γ * g)) = infRep (V` using `V) ι lam γ (e (F g)) := fun F => by`.
+
+Use `⟨fun h γ hγ g => ?_, fun h γ g => e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hrat γ hγ, ← hξ]`. Conclude with `congrArg e (h ⟨γ, hγ⟩ g)`. Use `(h γ.1 γ.2 g).trans ?_` and prove the remaining obligations. Rewrite using `[hrat γ.1 γ.2, ← hξ]`.
+
+Both sides reduce to the same expression. Take `⟨c1, c2, c3⟩` from `core (infRep (V := V) ι lam) J' hfin hcont hker fun y => (hsurj y).elim fun k hk => ⟨k, hk⟩`. Use `⟨fun F _ h => ?_, fun F hF ho ℓ => ?_, fun F ℓ x => funext fun g => ?_, hsurj, fun Φ h1 h2 => ?_⟩` and prove the remaining obligations. Establish `h0` using `c1 (fun y => e (F y)) fun ℓ g => congrFun (h ℓ) g`. Conclude with `funext fun y => e.map_eq_zero_iff.1 (congrFun h0 y)`.
+
+Use `c2 (fun y => e (F y)) ((hAF F).1 hF) ?_ ℓ` and prove the remaining obligations. Simplify `ho` using `only [e.injective.eq_iff]`. Express the relevant statement in the definitionally equal form `ℓ (infRep ι lam (g * x)⁻¹ (e (F (J' (g * x))))) = ℓ (infRep ι lam x⁻¹ (infRep ι lam g⁻¹ (e (F (J' g * J' x)))))`. Rewrite using `[mul_inv_rev, map_mul, map_mul, Module.End.mul_apply]`. Take `⟨F, hF, hF'⟩` from `c3 Φ h1 h2`.
+
+Use `⟨fun y => e.symm (F y), (hAF _).2 fun γ hγ g => ?_, fun ℓ => funext fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [e.apply_symm_apply, hF γ hγ]`. Express the relevant statement in the definitionally equal form `ℓ (infRep ι lam g⁻¹ (e (e.symm (F (J' g))))) = _`. Rewrite using `[e.apply_symm_apply, hF']`.
+-/
 theorem UpperTheory.V.Hi.formU :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l), ∀ (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O), ∀ ι : Qbar l ≃+* ℂ, ∀ (lam : Wt L l n) (d : ℕ) (e : (Fin d → ℂ) ≃ₗ[ℂ] ⨂[ℂ] e : Emb l (fun v : V.frame.Vl => s.w v.1), nablaSq ℂ n (lam e.res)) (ξ : GV n (fun v : V.frame.Vl => s.w v.1) →* GL (Fin d) ℂ), IsBasis ι e ξ →

@@ -4,6 +4,27 @@ namespace Formalism.MainNotions.Pf14
 
 open Module
 
+/- English proof (translation)
+Take `⟨n, snf⟩` from `S.smithNormalForm (Pi.basisFun O I)`. Establish `key : ∀ j, a • snf.bM j ∈ S`. Introduce `j`. Use `set φ : I → O := fun i => snf.bM.coord j (Pi.single i 1) with hφdef`. Establish `hφ : ∀ y : I → O, ∑ i, φ i * y i = snf.bM.coord j y`.
+
+Introduce `y`. Use `conv_rhs => rw [show y = ∑ i, y i • Pi.single i (1 : O) by`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, hφdef, mul_comm]`.
+
+Establish `hprim : ∃ i, IsUnit (φ i)`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1 : snf.bM.coord j (snf.bM j) = 1` using `by simp`. Rewrite `h1` using `[← hφ]`.
+
+Establish `hmem : ∑ i, φ i * snf.bM j i ∈ IsLocalRing.maximalIdeal O` using `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).2 (hne i))`. Rewrite `hmem` using `[h1]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 hmem)`. Take `⟨s, hs, hsd⟩` from `h φ hprim`. Rewrite `hsd` using `[hφ]`.
+
+Establish `hs' : s = ∑ k, snf.bN.repr ⟨s, hs⟩ k • snf.a k • snf.bM (snf.f k)`. Use `congrArg Subtype.val (snf.bN.sum_repr ⟨s, hs⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, snf.snf] at this`. Conclude with `this.symm`. Establish `hc : snf.bM.coord j s = ∑ k, snf.bN.repr ⟨s, hs⟩ k * snf.a k * (if snf.f k = j then 1 else 0)` using `by conv_lhs => rw [hs']`.
+
+Simplify using `[map_sum, map_smul, Finsupp.single_apply, mul_assoc]`. Distinguish the cases in `hj : ∃ k, snf.f k = j`. Take `⟨k0, rfl⟩` from `hj`. Establish `hc0 : snf.bM.coord (snf.f k0) s = snf.bN.repr ⟨s, hs⟩ k0 * snf.a k0`. Rewrite using `[hc, Finset.sum_eq_single k0]`.
+
+Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[snf.f.injective.ne hk]`. Simplify using the standard rewrite rules. Rewrite `hsd` using `[hc0]`.
+
+Take `⟨t, ht⟩` from `(Dvd.intro_left _ rfl : snf.a k0 ∣ snf.bN.repr ⟨s, hs⟩ k0 * snf.a k0).trans hsd`. Rewrite using `[ht, mul_comm, mul_smul, ← snf.snf k0]`. Conclude with `S.smul_mem t (snf.bN k0).2`. Use `push_neg at hj`. Establish `hc0 : snf.bM.coord j s = 0`.
+
+Rewrite using `[hc]`. Conclude with `Finset.sum_eq_zero fun k _ => by simp [hj k]`. Rewrite `hsd` using `[hc0, zero_dvd_iff]`. Simplify using `[hsd]`. Rewrite using `[← snf.bM.sum_repr x, Finset.smul_sum]`.
+
+Use `S.sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `S.smul_mem _ (key j)`.
+-/
 theorem smith_mem {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [IsLocalRing O]
     {I : Type*} [Fintype I] (S : Submodule O (I → O)) (a : O)
     (h : ∀ φ : I → O, (∃ i, IsUnit (φ i)) → ∃ s ∈ S, (∑ i, φ i * s i) ∣ a) (x : I → O) : a • x ∈ S := by
@@ -60,6 +81,13 @@ theorem smith_mem {O : Type*} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
   rw [smul_comm]
   exact S.smul_mem _ (key j)
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `ha`. Establish `hu : IsUnit (1 + π * c * z)`. Assume the negation of the conclusion as `h1`. Establish `hm : π * c * z ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).2 hπ))`. Establish `h2 : 1 + π * c * z ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 h1`.
+
+Establish `h3 : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Simplify using `using Ideal.sub_mem _ h2 hm`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Establish `hx : a + π ^ (D + 1) * z = a * (1 + π * c * z)`. Rewrite using `[pow_succ, hc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx, hu.mul_right_dvd]`. Conclude with `⟨c, hc⟩`.
+-/
 theorem dvd_of_add {O : Type*} [CommRing O] [IsLocalRing O] (π : O) (hπ : ¬ IsUnit π) (D : ℕ) (a z : O)
     (ha : a ∣ π ^ D) : (a + π ^ (D + 1) * z) ∣ π ^ D := by
   obtain ⟨c, hc⟩ := ha

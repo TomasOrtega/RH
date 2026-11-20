@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.PrincipalRows
 
+/- English proof (translation)
+Take `⟨N, ψ, hψ, hr⟩` from `hRT`. Establish `hspan : Submodule.span ℂ ((X.jR t) '' (X.Z t : Set (A.FR t))) = LinearMap.range (LinearMap.adjoint (X.Θ t))` using `Formalism.IndefR.Rat.range_adjoint_rat Bs.v0.embedding (X.jR t) (cv.hR t) (CxData.bR t) (hKR t).1 (hKR t).2 (hJR t) (X.Θ t) ψ hψ (fun i x => hr t i x)`. Establish `hsub : LinearMap.range (LinearMap.adjoint (X.Θ t)) ≤ S.comap (X.Θ t)`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Conclude with `hZ z hz`. Conclude with `hsub ⟨e, rfl⟩`.
+-/
 theorem theta_adjoint_mem {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     (cv : CrdV A) (hKR : X.KFormR) (hJR : X.JIsoR cv) (hRT : Formalism.IndefR.Rat.RowTest X) (t : Bs.Tup) (S : Submodule ℂ X.EE)
     (hZ : ∀ z ∈ X.Z t, X.Θ t (X.jR t z) ∈ S) (e : X.EE) : X.Θ t (LinearMap.adjoint (X.Θ t) e) ∈ S := by
@@ -34,6 +39,11 @@ end GlobalTheory.PrincipalRows
 
 namespace GlobalTheory.PrincipalRows
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.OneForm.range_toF]`. Use `⟨hz, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hg`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, Formalism.L2.DIV.CSD.gaOp, GlobalTheory.OneForm.asAlg_eq_sum, LinearMap.sum_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mem_range_toF_full {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 : Type}
     (B : BlockDat K G Pl0) (Xc : Finset (G → K)) (Z : Submodule K B.S.Forms) (z : B.S.Forms) (hz : z ∈ Z)
     (hg : z ∈ B.goodF Xc) : z ∈ LinearMap.range (B.toF ⟨Xc, ⊥, 1⟩ Z) := by
@@ -44,6 +54,11 @@ theorem mem_range_toF_full {K : Type} [Field K] [NumberField K] [StarRing K] {G 
   rw [← hw, Formalism.L2.DIV.CSD.gaOp, GlobalTheory.OneForm.asAlg_eq_sum, LinearMap.sum_apply]
   rfl
 
+/- English proof (translation)
+Introduce `z hz`. Establish `h1 : z ∈ (A3.A.fam.R A3.A.fam.μ0).ZHg A3.A.fam.X` using `hIB.1 A3.A.fam.μ0 hz`. Take `⟨x, hx⟩` from `mem_range_toF_full (A3.A.fam.R A3.A.fam.μ0) A3.A.fam.X (X.zs.Z A3.A.fam.μ0) z hz h1.2`. Use `⟨cpt A3.A.v0.embedding x, ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.OneForm.iC_cpt X (crdOf3 A3 ⊥ 1 P1 ψ1 Dc Sp Zsc) false A3.A.fam.μ0 x`.
+
+Use `h3.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => X.Θ A3.A.fam.μ0 (X.jR A3.A.fam.μ0 y)) hx`.
+-/
 theorem theta_base_forms_mem_principal_good_part {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type}
     {m : ℕ} (A3 : FamIn3 K G Pl0 I0 Ty T m) (X : CxData A3.fam3.amb3) {P1 : Subgroup G} {ψ1 : P1 →* Kˣ}
     {Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs)} {Sp : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dc Zs)}
@@ -64,6 +79,19 @@ namespace GlobalTheory.PrincipalRows
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC hTop hPos hB hRT hIB`. Establish `hKR : (R.toCx3 F).KFormR` using `RealDat3.kFormR_of hC.base.models`. Establish `hJR : (R.toCx3 F).JIsoR F.cv` using `RealDat3.jIsoR_of hC.base.models`. Establish `hmem` using `theta_adjoint_mem (R.toCx3 F) F.cv hKR hJR hRT A3.A.fam.μ0 (EEg3 A3 (R.toCx3 F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc)) (theta_base_forms_mem_principal_good_part A3 (R.toCx3 F) hIB)`. Establish `hpart : ∀ p, ∀ y ∈ R.EEp3 p, (Tw.mk (twAt D.what₂.embLL A3.A.v0) y : (R.toCx3 F).EE) ∈ EEg3 A3 (R.toCx3 F) (P1` using `F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) := by`.
+
+Introduce `p y hy`. Establish `hc : (0 : ℝ) < R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p`. Use `mul_pos hPos.1 (Finset.prod_pos fun j _ => ?_)` and prove the remaining obligations. Unfold `RealDat3.lamN`. Use `split_ifs`.
+
+Conclude with `hPos.2 _ _ _`. Conclude with `one_pos`. Establish `hne : ((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hce : ((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p : ℝ) : ℂ)⁻¹ • y ∈ R.EEp3 p` using `(R.EEp3 p).smul_mem _ hy`. Establish `key : R.Th A3.A.fam.μ0 (LinearMap.adjoint (R.Th A3.A.fam.μ0) (((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p : ℝ) : ℂ)⁻¹ • y)) = y`.
+
+Use `(hB A3.A.fam.μ0 p _ hce).trans ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_inv_cancel₀ hne, one_smul]`. Establish `h3` using `hmem (Tw.mk (twAt D.what₂.embLL A3.A.v0) (((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p : ℝ) : ℂ)⁻¹ • y))`. Establish `h4 : (R.toCx3 F).Θ A3.A.fam.μ0 (LinearMap.adjoint ((R.toCx3 F).Θ A3.A.fam.μ0) (Tw.mk (twAt D.what₂.embLL A3.A.v0) (((R.kap * ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN A3.A.fam.μ0 j p : ℝ) : ℂ)⁻¹ • y))) = Tw.mk (twAt D.what₂.embLL A3.A.v0) y` using `by show Tw.map _ (R.Th A3.A.fam.μ0) (LinearMap.adjoint (Tw.map _ (R.Th A3.A.fam.μ0)) _) = _`. Rewrite using `[Tw.adjoint_map]`.
+
+Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) key`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Rewrite using `[eq_top_iff]`. Introduce `e0 _`.
+
+Establish `hx : Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) e0 ∈ ⨆ p, R.EEp3 p := by rw [hTop]; exact Submodule.mem_top`. Establish `hall : ∀ y ∈ ⨆ p, R.EEp3 p, (Tw.mk (twAt D.what₂.embLL A3.A.v0) y : (R.toCx3 F).EE) ∈ EEg3 A3 (R.toCx3 F) (P1` using `F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) := by`. Introduce `y hy`. Conclude with `Submodule.iSup_induction R.EEp3 (motive := fun y => (Tw.mk (twAt D.what₂.embLL A3.A.v0) y : (R.toCx3 F).EE) ∈ EEg3 A3 (R.toCx3 F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc)) hy hpart (Submodule.zero_mem _) (fun a b ha hb => Submodule.add_mem _ ha hb)`. Conclude with `hall _ hx`.
+-/
 theorem principal_level_rows_eq_top : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → (⨆ p, R.EEp3 p) = ⊤ → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → Formalism.IndefR.Rat.RowTest (R.toCx3 F) → (R.toCx3 F).zs.InBlock → EEg3 A3 (R.toCx3 F) (P1 := F.P1) (ψ1 := F.ψ1) (Dc := F.Dc) (Sp := F.Sp) (Zsc := F.Zsc) = ⊤ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s _hOk hC hTop hPos hB hRT hIB
   have hKR : (R.toCx3 F).KFormR := RealDat3.kFormR_of hC.base.models

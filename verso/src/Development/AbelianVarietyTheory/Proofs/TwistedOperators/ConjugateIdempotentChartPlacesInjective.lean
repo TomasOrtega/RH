@@ -27,6 +27,11 @@ namespace GlobalTheory.ChartPlaces
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `(GlobalTheory.PlaceModelSum.eq_or_mul_eq_zero (hes Q hQ).1 (hes Q' hQ').1).resolve_left fun h => hne ?_` and prove the remaining obligations. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `iff_of_true (zero_mem _) (zero_mem _)`.
+
+Rewrite using `[(hes Q hQ).2 x hx, (hes Q' hQ').2 x hx, h]`.
+-/
 theorem mul_eq_zero_of_ne {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {es : Formalism.L2.DIV.Pl D.host.E → AE D}
     (hes : ∀ Q ∈ P, Formalism.L2.NTheta.IsIdemAt (es Q) Q) {Q Q' : Formalism.L2.DIV.Pl D.host.E} (hQ : Q ∈ P) (hQ' : Q' ∈ P)
     (hne : Q ≠ Q') : es Q * es Q' = 0 := by
@@ -36,6 +41,25 @@ theorem mul_eq_zero_of_ne {P : Finset (Formalism.L2.DIV.Pl D.host.E)} {es : Form
   · rw [hx]; exact iff_of_true (zero_mem _) (zero_mem _)
   · rw [(hes Q hQ).2 x hx, (hes Q' hQ').2 x hx, h]
 
+/- English proof (translation)
+Introduce `D e P es hes hsum hec v hπ`. Establish `hsplit : ∀ Q ∈ P, Formalism.L2.Theta.IsSplitIdem D (es Q)` using `fun Q hQ => (hes Q hQ).1`. Establish `horth : ∀ Q ∈ P, ∀ Q' ∈ P, Q' ≠ Q → es Q * es Q' = 0` using `fun Q hQ Q' hQ' hne => mul_eq_zero_of_ne hes hQ hQ' (Ne.symm hne)`. Establish `habs : ∀ Q ∈ P, es Q * e = es Q` using `fun Q hQ => by`. Rewrite using `[hsum]`.
+
+Conclude with `GlobalTheory.PlaceModelSum.mul_sum_orth hsplit horth hQ`. Establish `hcross : ∀ Q ∈ P, ∀ Q' ∈ P, es Q' * cA D (es Q) = 0` using `fun Q hQ Q' hQ' => by`. Establish `h1 : cA D (es Q) * cA D e = cA D (es Q)` using `by rw [← map_mul, habs Q hQ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[habs Q' hQ', mul_comm (cA D e), h1]`.
+
+Use `_ = es Q' * (e * cA D e) * cA D (es Q) := by ring`. Use `_ = 0 := by rw [hec, mul_zero, zero_mul]`. Introduce `Q Q' hvv`. Assume the negation of the conclusion as `hne`. Establish `hne' : (Q : Formalism.L2.DIV.Pl D.host.E) ≠ Q'` using `fun h => hne (Subtype.ext h)`.
+
+Take `⟨π, hπc⟩` from `hπ Q`. Take `⟨π', hπc'⟩` from `hπ Q'`. Establish `hs' : Formalism.L2.Theta.IsSplitIdem D (cA D (es Q'))` using `GlobalTheory.PlaceModelSum.isSplitIdem_cA (hsplit Q' Q'.2)`. Take `⟨hid', hort', v', ε', ⟨α', rfl, hα1, hα0⟩, hsum'⟩` from `hs'`. Establish `hπ'1 : π' (cA D (es Q')) = 1`.
+
+Use `(hπc'.2.1 (1 - cA D (es Q'))).2 (by rw [mul_sub, mul_one, hid', sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero, eq_comm]`. Then use the resulting hypothesis. Establish `hπ'0 : π' (cA D (cA D (es Q'))) = 0` using `(hπc'.2.1 _).2 hort'`. Establish `hw1 : evalV D.host.F (v Q') α' = 1`. Use `hπc'.2.2.1 (pairA D.host.F 0 α')` as an intermediate fact.
+
+Rewrite `this` using `[← hsum', map_add, hπ'1, hπ'0, add_zero]`. Conclude with `this.symm`. Establish `hwv : v Q' = v'`. Assume the negation of the conclusion as `h`. Rewrite `hw1` using `[hα0 _ h]`.
+
+Conclude with `zero_ne_one hw1`. Establish `hA : π (cA D (es Q')) = 0` using `(hπc.2.1 _).2 (by`. Rewrite using `[← map_mul, mul_eq_zero_of_ne hes Q.2 Q'.2 hne', map_zero])`. Establish `hB : π (cA D (cA D (es Q'))) = 0` using `(hπc.2.1 _).2 (by`. Rewrite using `[cA_cA, mul_comm]`.
+
+Conclude with `hcross Q Q.2 Q' Q'.2)`. Establish `hC` using `hπc.2.2.1 (pairA D.host.F 0 α')`. Rewrite `hC` using `[← hsum', map_add, hA, hB, add_zero]`. Establish `h0 : evalV D.host.F (v Q) α' = 0` using `hC.symm`. Rewrite `h0` using `[hvv.trans hwv, hα1]`.
+
+Conclude with `one_ne_zero h0`.
+-/
 theorem chart_places_injective : ∀ {D : D7} (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (es : Formalism.L2.DIV.Pl D.host.E → AE D), (∀ Q ∈ P, Formalism.L2.NTheta.IsIdemAt (es Q) Q) → e = ∑ Q ∈ P, es Q → e * cA D e = 0 → ∀ v : ↥P → HeightOneSpectrum (𝓞 D.host.F), (∀ Q : ↥P, ∃ π : AE D →+* Fv D.host.F (v Q), GlobalTheory.SplitHecke.Chart (cA D (es Q)) (v Q) π) → Function.Injective v := by
   intro D e P es hes hsum hec v hπ
   have hsplit : ∀ Q ∈ P, Formalism.L2.Theta.IsSplitIdem D (es Q) := fun Q hQ => (hes Q hQ).1

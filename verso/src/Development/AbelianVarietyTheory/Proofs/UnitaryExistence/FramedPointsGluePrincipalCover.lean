@@ -20,19 +20,31 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.Frames.Glue
 
+/- English proof (translation)
+Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap]`.
+-/
 theorem dual_comp {S T U : Type} [CommRing S] [CommRing T] [CommRing U] (φ : S →+* T) (ψ : T →+* U) :
     (dualMap ψ).comp (dualMap φ) = dualMap (ψ.comp φ) :=
   RingHom.ext fun x => by ext <;> simp [dualMap]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun x => by ext <;> simp [dualMap, epsMul, mul_comm]`.
+-/
 theorem dual_eps {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (a : S) :
     (dualMap φ).comp (epsMul a) = (epsMul (φ a)).comp (dualMap φ) :=
   RingHom.ext fun x => by
     ext <;> simp [dualMap, epsMul, mul_comm]
 
+/- English proof (translation)
+Use `GlobalTheory.T.existsUnique_glue_dualNumber S Y n h hh (fun i => spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ g) (by` as an intermediate fact. Introduce `i j α β hα hβ`. Rewrite using `[← Category.assoc, ← Category.assoc, sp_comp, sp_comp, dual_comp, dual_comp, hα, hβ])`. Conclude with `this.unique e fun _ => rfl`.
+-/
 theorem dual_ext {S : Type} [CommRing S] {Y : Scheme.{0}} {n : ℕ} {h : Fin n → S}
     (hh : Ideal.span (Set.range h) = ⊤) (f g : Sp (DualNumber S) ⟶ Y)
     (e : ∀ i, spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ f =
@@ -42,6 +54,13 @@ theorem dual_ext {S : Type} [CommRing S] {Y : Scheme.{0}} {n : ℕ} {h : Fin n �
     rw [← Category.assoc, ← Category.assoc, sp_comp, sp_comp, dual_comp, dual_comp, hα, hβ])
   exact this.unique e fun _ => rfl
 
+/- English proof (translation)
+Establish `hp : ∃ i, h i ∉ (show PrimeSpectrum S from p).asIdeal`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `(show PrimeSpectrum S from p).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hh, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hc i`. Take `⟨i, hi⟩` from `hp`. Establish `hr` using `PrimeSpectrum.localization_away_comap_range (Localization.Away (h i)) (h i)`. Establish `: (show PrimeSpectrum S from p) ∈ Set.range (PrimeSpectrum.comap (algebraMap S (Localization.Away (h i))))`.
+
+Rewrite using `[hr]`. Conclude with `hi`. Take `⟨p', hp'⟩` from `this`. Conclude with `⟨i, p', hp'⟩`.
+-/
 theorem exists_lift {S : Type} [CommRing S] {n : ℕ} {h : Fin n → S}
     (hh : Ideal.span (Set.range h) = ⊤) (p : Sp S) :
     ∃ (i : Fin n) (p' : Sp (Localization.Away (h i))), spMap (algebraMap S (Localization.Away (h i))) p' = p := by
@@ -62,6 +81,11 @@ theorem exists_lift {S : Type} [CommRing S] {n : ℕ} {h : Fin n → S}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l}
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hp' : ∀ k, p ∈ (snd (Over.mk x') Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)` using `Set.mem_iInter.1 hp`. Establish `e` using `congrArg (fun f : Gx x' ⟶ Xo.univ.t.G.left => f.base p) hs`. Use `show pm.base p ∈ ⋂ k, (snd (Over.mk x) Xo.univ.t.G).left.base ⁻¹' (Xo.univ.t.PP.L.U (i k) : Set _)`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations.
+
+Use `show (pm ≫ (snd (Over.mk x) Xo.univ.t.G).left).base p ∈ (Xo.univ.t.PP.L.U (i k) : Set _)`. Rewrite using `[e]`. Conclude with `hp' k`.
+-/
 theorem chart_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)
     (hs : pm ≫ (snd (Over.mk x) Xo.univ.t.G).left = (snd (Over.mk x') Xo.univ.t.G).left)
@@ -76,6 +100,13 @@ theorem chart_le {S T : Type} [CommRing S] [CommRing T] {x : Sp S ⟶ Xo.X} {x' 
   rw [e]
   exact hp' k
 
+/- English proof (translation)
+Take `⟨p₁, s₁, f₁, a₁⟩` from `h₁`. Take `⟨p₂, s₂, f₂, a₂⟩` from `h₂`. Establish `e : p₁ = p₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `f₁.trans f₂.symm`.
+
+Conclude with `s₁.trans s₂.symm`. Substitute `e` using the available equality. Take `⟨t, ht⟩` from `t`. Take `⟨t', ht'⟩` from `t'`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(a₁ i (chart_le p₁ s₁ i)).symm.trans (a₂ i (chart_le p₁ s₁ i))`.
+-/
 theorem secBC_unique {S T : Type} [CommRing S] [CommRing T] {φ : S →+* T} {a : S} {x : Sp S ⟶ Xo.X}
     {x' : Sp T ⟶ Xo.X} {s : LB.Sec (PPx x)} {t t' : LB.Sec (PPx x')} (h₁ : SecBC φ a x x' s t)
     (h₂ : SecBC φ a x x' s t') : t = t' := by
@@ -92,6 +123,9 @@ theorem secBC_unique {S T : Type} [CommRing S] [CommRing T] {φ : S →+* T} {a 
   funext i
   exact (a₁ i (chart_le p₁ s₁ i)).symm.trans (a₂ i (chart_le p₁ s₁ i))
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Rewrite using `[secBC_unique ht h₁]`. Conclude with `h₂`.
+-/
 theorem secBC_transport {S S' T : Type} [CommRing S] [CommRing S'] [CommRing T] {φ : S →+* T} {ψ : S' →+* T}
     {x : Sp S ⟶ Xo.X} {x' : Sp S' ⟶ Xo.X} {s : LB.Sec (PPx x)} {s' : LB.Sec (PPx x')} {w w' : Sp T ⟶ Xo.X}
     (hw : w = w') {r : LB.Sec (PPx w)} (h₁ : SecBC φ 1 x w s r) (h₂ : SecBC ψ 1 x' w s' r)
@@ -112,6 +146,29 @@ end GlobalTheory.Frames.Glue
 
 open GlobalTheory.Frames.Glue in
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H Dw l Xo c S _ _ x hx n h hh y hy hov`. Establish `ovl : ∀ i j (α : Localization.Away (h i) →+* Localization.Away (h i * h j)) (β : Localization.Away (h j) →+* Localization.Away (h i * h j)), α.comp (algebraMap S (Localization.Away (h i))) = (algebraMap S (Localization.Away (h i * h j))) → β.comp (algebraMap S (Localization.Away …`. Introduce `i j α β hα hβ`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ (algOf (K := c.F) α hα) (y i)`. Establish `hz'` using `hov i j (algOf α hα) (algOf β hβ) hα hβ z hz`.
+
+Establish `e₁` using `((GlobalTheory.T.framedPoint_baseChange_unique_refl_iff E H Dw l Xo c _ _ _ (y i)).2.2 z).1 hz`. Establish `e₂` using `((GlobalTheory.T.framedPoint_baseChange_unique_refl_iff E H Dw l Xo c _ _ _ (y j)).2.2 z).1 hz'`. Use `⟨z, ?_, e₁.2.1, e₂.2.1, e₁.2.2, e₂.2.2⟩` and prove the remaining obligations. Rewrite using `[e₁.1, hy i, ← Category.assoc, sp_comp, ← hα]`. Both sides reduce to the same expression.
+
+Establish `nf : ∀ i, ∃ ov u tan eig basis s gen, y i = ⟨spMap (algebraMap S (Localization.Away (h i))) ≫ x, ov, u, tan, eig, basis, s, gen⟩`. Introduce `i`. Establish `hi` using `hy i`. Generalize the expression as in `y i = w at hi`. Take `⟨wx, ov, u, tan, eig, basis, s, gen⟩` from `w`.
+
+Simplify using `only at hi`. Substitute `hi` using the available equality. Conclude with `⟨ov, u, tan, eig, basis, s, gen, rfl⟩`. Use `choose ov u tan eig basis s gen hyy using nf`. Take `rfl : y = fun i => ⟨_, ov i, u i, tan i, eig i, basis i, s i, gen i⟩` from `funext hyy`.
+
+Simplify using `only at ovl`. Establish `hu : ∀ τ k, ∃ w₀ : Sp (DualNumber S) ⟶ Xo.univ.t.G.left, ∀ i, spMap (dualMap (algebraMap S (Localization.Away (h i)))) ≫ w₀ = u i τ k`. Introduce `τ k`. Use `(GlobalTheory.T.existsUnique_glue_dualNumber S _ n h hh (fun i => u i τ k) ?_).exists` and prove the remaining obligations. Introduce `i j α β hα hβ`.
+
+Take `⟨z, -, h₁, h₂, -⟩` from `ovl i j α β hα hβ`. Conclude with `(h₁ τ k).symm.trans (h₂ τ k)`. Use `choose u₀ hu₀ using hu`. Establish `eig₀ : ∀ τ k, IsEigAt c τ (u₀ τ k)`. Introduce `τ k a`.
+
+Use `dual_ext hh _ _ fun i => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hu₀, eig i τ k a, ← hu₀ τ k i, ← Category.assoc, ← Category.assoc, sp_comp, sp_comp, dual_eps, ← IsScalarTower.algebraMap_apply]`. Set `e : Fin (Fintype.card (Σ τ : E →+* ℂ, Fin (Dw.mult τ))) ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)` to `(Fintype.equivFin _).symm`. Establish `tb : TanBasis x (fun j => u₀ (e j).1 (e j).2)`. Use `GlobalTheory.T.tanBasis_of_local_tanBasis E H Dw l Xo S x n h hh _ _ fun i => ?_` and prove the remaining obligations.
+
+Use `(GlobalTheory.T.eigenBasis_iff_tangentBasis E H Dw l Xo c _ _ (u i) _ e (tan i) (eig i)).1 (basis i)` as an intermediate fact. Simplify `this` using `only [hu₀]`. Establish `tan₀ : ∀ τ k, IsTanAt x (u₀ τ k)`. Introduce `τ k`. Use `tb.1 (e.symm ⟨τ, k⟩)` as an intermediate fact.
+
+Simplify using `only at this`. Rewrite `this` using `[e.apply_symm_apply]`. Conclude with `this`. Establish `basis₀` using `(GlobalTheory.T.eigenBasis_iff_tangentBasis E H Dw l Xo c S x u₀ _ e tan₀ eig₀).2 tb`. Take `⟨s₀, hs₀⟩` from `(GlobalTheory.T.existsUnique_glue_sections_principal_cover E H Dw l Xo S x n h hh s (by`.
+
+Introduce `i j α β hα hβ t ht`. Take `⟨z, hz, -, -, h₁, h₂⟩` from `ovl i j α β hα hβ`. Conclude with `secBC_transport hz h₁ h₂ t ht)).exists`. Establish `nz : SecNZ x s₀`. Introduce `p`.
+
+Take `⟨i, p', rfl⟩` from `exists_lift hh p`. Conclude with `(GlobalTheory.Frames.secBC_nonvanishing_iff E H Dw l Xo S _ _ x _ rfl s₀ (s i) (hs₀ i) p').1 (GlobalTheory.T.fibreSectionNowhereZero_of_generates hB E H Dw l Xo _ _ (s i) (gen i) p')`. Use `⟨⟨x, hx, u₀, tan₀, eig₀, basis₀, s₀, GlobalTheory.T.fibreSectionGenerates_of_nowhereZero hB E H Dw l Xo S x s₀ nz⟩, rfl, fun i => ?_⟩` and prove the remaining obligations. Use `((GlobalTheory.T.framedPoint_baseChange_unique_refl_iff E H Dw l Xo c _ _ _ _).2.2 _).2 ⟨rfl, fun τ k => (hu₀ τ k i).symm, hs₀ i⟩` and prove the remaining obligations.
+-/
 theorem GlobalTheory.Frames.frPt_glue : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (x : Sp S ⟶ Xo.X), x ≫ Xo.s = sOf c S → ∀ (n : ℕ) (h : Fin n → S), Ideal.span (Set.range h) = ⊤ → ∀ y : ∀ i, FrPt Xo c (Localization.Away (h i)), (∀ i, (y i).x = spMap (algebraMap S (Localization.Away (h i))) ≫ x) → (∀ i j (α : Localization.Away (h i) →ₐ[c.F] Localization.Away (h i * h j)) (β : Localization.Away (h j) →ₐ[c.F] Localization.Away (h i * h j)), α.toRingHom.comp (algebraMap S (Localization.Away (h i))) = (algebraMap S (Localization.Away (h i * h j))) → β.toRingHom.comp (algebraMap S (Localization.Away (h j))) = (algebraMap S (Localization.Away (h i * h j))) → ∀ z, FrMap α (y i) z → FrMap β (y j) z) → ∃ y₀ : FrPt Xo c S, y₀.x = x ∧ ∀ i, FrMap (IsScalarTower.toAlgHom c.F S (Localization.Away (h i))) y₀ (y i) := by
   intro hB E _ _ _ H Dw l Xo c S _ _ x hx n h hh y hy hov
   classical

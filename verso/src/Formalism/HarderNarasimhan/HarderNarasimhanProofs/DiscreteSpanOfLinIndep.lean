@@ -14,16 +14,31 @@ namespace PlaceLattice
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `[Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]`.
+-/
 theorem realize_apply0 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V)
     (v : InfinitePlace K) (i : ι) :
     (Formalism.HermitianLatticesTheory.realize b X x) (v, i, 0) = (Formalism.HermitianLatticesTheory.fcoord b X v x i).re := by
   simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]
 
+/- English proof (translation)
+Simplify using `[Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]`.
+-/
 theorem realize_apply1 (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (x : V)
     (v : InfinitePlace K) (i : ι) :
     (Formalism.HermitianLatticesTheory.realize b X x) (v, i, 1) = (Formalism.HermitianLatticesTheory.fcoord b X v x i).im := by
   simp [Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hf : ∀ v i, Formalism.HermitianLatticesTheory.fcoord b X v x i = 0`. Introduce `v i`. Apply `Complex.ext` to reduce the goal to its premises.
+
+Rewrite using `[← realize_apply0, hx]`. Both sides reduce to the same expression. Rewrite using `[← realize_apply1, hx]`. Both sides reduce to the same expression. Establish `hv : ∀ v, Formalism.HermitianLatticesTheory.vecAt b v x = 0`.
+
+Introduce `v`. Establish `h0 : (X v)⁻¹.mulVec (Formalism.HermitianLatticesTheory.vecAt b v x) = 0` using `funext (hf v)`. Establish `h1` using `congrArg (X v).mulVec h0`. Rewrite `h1` using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (hX v), Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis. Take `⟨v⟩ : Nonempty (InfinitePlace K)` from `inferInstance`.
+
+Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun (hv v) i` as an intermediate fact. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, Pi.zero_apply, map_eq_zero] at this`. Simplify using `using this`.
+-/
 theorem realize_injective (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) : Function.Injective (Formalism.HermitianLatticesTheory.realize b X) := by
   rw [injective_iff_map_eq_zero]
@@ -48,6 +63,13 @@ theorem realize_injective (b : Basis ι K V) (X : InfinitePlace K → Matrix ι 
   simp only [Formalism.HermitianLatticesTheory.vecAt, Pi.zero_apply, map_eq_zero] at this
   simpa using this
 
+/- English proof (translation)
+Establish `hφ : ∀ φ : K →+* ℂ, ∑ k, (t k : ℂ) * φ (integralBasis K k) = 0`. Introduce `φ`. Break down `InfinitePlace.embedding_mk_eq φ with hφ | hφ` into its components or cases. Simplify `h (InfinitePlace.mk φ)` using `[hφ]`. Establish `h2` using `congrArg (starRingEnd ℂ) (h (InfinitePlace.mk φ))`.
+
+Simplify `h2` using `[hφ, map_sum, map_mul, Complex.conj_ofReal]`. Establish `hli` using `(canonicalEmbedding.latticeBasis K).linearIndependent`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`. Establish `hz` using `hli (fun k => (t k : ℂ)) (by`. Use function extensionality and compare the values at `φ`.
+
+Simplify `hφ φ)` using `[canonicalEmbedding.latticeBasis_apply, Finset.sum_apply, smul_eq_mul]`. Use function extensionality and compare the values at `k`. Conclude with `hz k` after adjusting the coercions.
+-/
 theorem sum_embedding_eq_zero {t : Free.ChooseBasisIndex ℤ (𝓞 K) → ℝ}
     (h : ∀ v : InfinitePlace K, ∑ k, (t k : ℂ) * v.embedding (integralBasis K k) = 0) : t = 0 := by
   have hφ : ∀ φ : K →+* ℂ, ∑ k, (t k : ℂ) * φ (integralBasis K k) = 0 := by
@@ -64,6 +86,11 @@ theorem sum_embedding_eq_zero {t : Free.ChooseBasisIndex ℤ (𝓞 K) → ℝ}
   funext k
   exact_mod_cast hz k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i'`. Simplify using `only [Formalism.HermitianLatticesTheory.vecAt, map_smul, Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : i = i'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h, Ne.symm h]`.
+-/
 theorem vecAt_smul_basis (b : Basis ι K V) (v : InfinitePlace K) (a : K) (i : ι) :
     Formalism.HermitianLatticesTheory.vecAt b v (a • b i) = Pi.single i (v.embedding a) := by
   funext i'
@@ -82,6 +109,23 @@ namespace PlaceLattice
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
   {V ι : Type} [AddCommGroup V] [Module K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `t ht p`. Establish `hcoord : ∀ v i r, ∑ q, t q * (Formalism.HermitianLatticesTheory.realize b X (integralBasis K q.1 • c • b q.2)) (v, i, r) = 0`. Introduce `v i r`. Use `congrArg (fun z => z (v, i, r)) ht` as an intermediate fact.
+
+Simplify using `using this`. Establish `hC : ∀ v i, ∑ q, (t q : ℂ) * Formalism.HermitianLatticesTheory.fcoord b X v (integralBasis K q.1 • c • b q.2) i = 0`. Introduce `v i`. Apply `Complex.ext` to reduce the goal to its premises. Use `hcoord v i 0` as an intermediate fact.
+
+Simplify using `only [realize_apply0] at this`. Simplify `this` using `[Complex.re_sum]`. Use `hcoord v i 1` as an intermediate fact. Simplify using `only [realize_apply1] at this`. Simplify `this` using `[Complex.im_sum]`.
+
+Establish `hV : ∀ v, ∑ q, (t q : ℂ) • Formalism.HermitianLatticesTheory.vecAt b v (integralBasis K q.1 • c • b q.2) = 0`. Introduce `v`. Establish `h0 : Matrix.mulVec (X v)⁻¹ (∑ q, (t q : ℂ) • Formalism.HermitianLatticesTheory.vecAt b v (integralBasis K q.1 • c • b q.2)) = 0`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_sum]`.
+
+Simplify using `only [Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Simplify `hC v i` using `[Formalism.HermitianLatticesTheory.fcoord]`. Establish `hinv : X v * (X v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (hX v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv, Matrix.one_mulVec]`.
+
+Use `_ = 0 := by rw [← Matrix.mulVec_mulVec, h0, Matrix.mulVec_zero]`. Establish `hS : ∀ v : InfinitePlace K, ∑ k, ((t (k, p.2) : ℝ) : ℂ) * v.embedding (integralBasis K k) = 0`. Introduce `v`. Establish `h1` using `congrFun (hV v) p.2`. Simplify using `only [smul_smul, vecAt_smul_basis, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Fintype.sum_prod_type, Pi.single_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_mul] at h1`.
+
+Establish `hc' : v.embedding c ≠ 0` using `by simpa using hc`. Establish `h2 : (∑ k, (t (k, p.2) : ℂ) * v.embedding (integralBasis K k)) * v.embedding c = 0`. Rewrite using `[Finset.sum_mul]`. Simplify `h1` using `[mul_assoc]`. Conclude with `(mul_eq_zero.mp h2).resolve_right hc'`.
+
+Use `sum_embedding_eq_zero hS` as an intermediate fact. Conclude with `congrFun this p.1`.
+-/
 theorem linIndep_real (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (c : K) (hc : c ≠ 0) :
     LinearIndependent ℝ (fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι =>
@@ -126,6 +170,19 @@ theorem linIndep_real (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι �
   have := sum_embedding_eq_zero hS
   exact congrFun this p.1
 
+/- English proof (translation)
+Use `haveI : Finite ι' := hf.finite`. Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend (Basis.span hf).equivFun.toLinearMap`. Establish `hψW : ∀ w : Submodule.span ℝ (Set.range f), ψ w = (Basis.span hf).equivFun w` using `fun w => LinearMap.congr_fun hψ w`. Establish `hψf : ∀ i, ψ (f i) = Pi.basisFun ℝ ι' i`. Introduce `i`.
+
+Establish `h : ψ (f i) = (Basis.span hf).equivFun (Basis.span hf i)`. Rewrite using `[Basis.span_apply]`. Conclude with `hψW ⟨f i, Submodule.subset_span ⟨i, rfl⟩⟩`. Rewrite using `[h]`. Use extensionality with `j`.
+
+Simplify using `[Basis.equivFun_self, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Establish `hmem : ∀ x ∈ Submodule.span ℤ (Set.range f), ψ x ∈ Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι'))`. Introduce `x hx`. Establish `hle : Submodule.map (ψ.restrictScalars ℤ) (Submodule.span ℤ (Set.range f)) ≤ Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι'))`. Rewrite using `[Submodule.map_span, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `Submodule.subset_span ⟨i, (hψf i).symm⟩`. Conclude with `hle ⟨x, hx, rfl⟩`. Establish `hW : ∀ z ∈ Submodule.span ℤ (Set.range f), z ∈ Submodule.span ℝ (Set.range f)` using `fun z hz => Submodule.span_le_restrictScalars ℤ ℝ _ hz`. Use `haveI := ZSpan.discreteTopology_pi_basisFun (ι := ι')`.
+
+Use `DiscreteTopology.of_continuous_injective (f := fun x : Submodule.span ℤ (Set.range f) => (⟨ψ x, hmem x x.2⟩ : Submodule.span ℤ (Set.range (Pi.basisFun ℝ ι')))) ?_ ?_` and prove the remaining obligations. Use `fun_prop`. Introduce `x y hxy`. Establish `h1 : ψ x = ψ y` using `congrArg Subtype.val hxy`. Establish `h2 : (⟨(x : E), hW _ x.2⟩ : Submodule.span ℝ (Set.range f)) = ⟨y, hW _ y.2⟩` using `(Basis.span hf).equivFun.injective (by rw [← hψW, ← hψW]; exact h1)`.
+
+Conclude with `Subtype.ext (Subtype.mk.inj h2)`.
+-/
 theorem discrete_span_of_linIndep {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] {ι' : Type*} {f : ι' → E} (hf : LinearIndependent ℝ f) :
     DiscreteTopology (Submodule.span ℤ (Set.range f)) := by
@@ -173,6 +230,15 @@ namespace PlaceLattice
 variable {K : Type} [Field K] [NumberField K]
   {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hs : Submodule.span ℤ (Set.range (RingOfIntegers.basis K)) = ⊤` using `(RingOfIntegers.basis K).span_eq`. Establish `h1` using `Submodule.span_smul_of_span_eq_top hs (Set.range e)`. Use `open Pointwise in`. Establish `hset : Set.range (RingOfIntegers.basis K) • Set.range e = Set.range fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => integralBasis K p.1 • e p.2`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_smul, Set.mem_range, Prod.exists, integralBasis_apply, algebraMap_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨i, rfl⟩, _, ⟨j, rfl⟩, rfl⟩`. Conclude with `⟨i, j, rfl⟩`. Introduce and unpack `⟨i, j, rfl⟩`.
+
+Conclude with `⟨_, ⟨i, rfl⟩, _, ⟨j, rfl⟩, rfl⟩`. Rewrite `h1` using `[hset]`. Establish `h2 : Submodule.span ℤ (Set.range fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => ρ (integralBasis K p.1 • e p.2)) = (Submodule.span ℤ (Set.range fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => integralBasis K p.1 • e p.2)).map ρ.toIntLinearMap`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[h2, h1]`. Use extensionality with `x`. Conclude with `Iff.rfl`.
+-/
 theorem zl_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) {ι' : Type} [Fintype ι'] (e : ι' → V) :
     zl ρ (Submodule.span (𝓞 K) (Set.range e)) =
@@ -201,6 +267,9 @@ theorem zl_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   ext x
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `hb : LinearIndependent ℤ (integralBasis K)` using `(integralBasis K).linearIndependent.restrict_scalars' ℤ`. Establish `hc : LinearIndependent ℤ fun p : Free.ChooseBasisIndex ℤ (𝓞 K) × ι' => integralBasis K p.1 • e p.2` using `linearIndependent_smul hb he`. Conclude with `hc.map' ρ.toIntLinearMap (LinearMap.ker_eq_bot.mpr hρ)`.
+-/
 theorem linIndep_int {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) (hρ : Function.Injective ρ) {ι' : Type} [Fintype ι']
     (e : ι' → V) (he : LinearIndependent K e) :
@@ -213,6 +282,9 @@ theorem linIndep_int {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E
     linearIndependent_smul hb he
   exact hc.map' ρ.toIntLinearMap (LinearMap.ker_eq_bot.mpr hρ)
 
+/- English proof (translation)
+Unfold `rk Formalism.F.rk`. Rewrite using `[zl_span_eq, finrank_span_eq_card (linIndep_int ρ hρ e he), Fintype.card_prod, ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`.
+-/
 theorem rk_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     [FiniteDimensional ℝ E] (ρ : V →+ E) (hρ : Function.Injective ρ) {ι' : Type} [Fintype ι']
     (e : ι' → V) (he : LinearIndependent K e) :
@@ -221,6 +293,15 @@ theorem rk_span_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   rw [zl_span_eq, finrank_span_eq_card (linIndep_int ρ hρ e he), Fintype.card_prod,
     ← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `hN`. Establish `hc : ∀ x : S, ∃ c : ι' → K, ∑ j, c j • e j = (x : V)` using `fun x => (Submodule.mem_span_range_iff_exists_fun K).1 (hsub x (Submodule.subset_span x.2))`. Use `choose c hc using hc`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.biUnion fun x : S => Finset.univ.image (c x))`. Use `⟨y, hy0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `hyK : (y : K) ≠ 0` using `Int.cast_ne_zero.2 hy0`. It suffices to establish `h : ∑ j, c ⟨x, hx⟩ j • e j ∈ Submodule.span (𝓞 K) (Set.range fun a => ((y : K)⁻¹) • e a) by`. Rewrite `h` using `[hc ⟨x, hx⟩]`. Then use the resulting hypothesis.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `(IsIntegralClosure.isIntegral_iff (A := 𝓞 K)).1 (hy (c ⟨x, hx⟩ j) (Finset.mem_biUnion.2 ⟨⟨x, hx⟩, Finset.mem_univ _, Finset.mem_image_of_mem _ (Finset.mem_univ j)⟩))`. Establish `: c ⟨x, hx⟩ j • e j = r • ((y : K)⁻¹ • e j)`. Rewrite using `[← algebraMap_smul K r, hr, smul_smul, zsmul_eq_mul, mul_assoc, mul_comm (c _ _), ← mul_assoc, mul_inv_cancel₀ hyK, one_mul]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem exists_denom {ι' : Type} [Fintype ι'] (e : ι' → V) (N : Submodule (𝓞 K) V) (hN : N.FG)
     (hsub : ∀ x ∈ N, x ∈ Submodule.span K (Set.range e)) :
     ∃ y : ℤ, y ≠ 0 ∧ N ≤ Submodule.span (𝓞 K) (Set.range fun a => ((y : K)⁻¹) • e a) := by
@@ -252,10 +333,16 @@ end Formalism.HN
 
 namespace Formalism.HN
 
+/- English proof (translation)
+The claim follows from `LinearMap.finrank_le_finrank_of_injective (f := Submodule.inclusion h) (Submodule.inclusion_injective h)`.
+-/
 private theorem place_lattice_structure_lemma {E : Type*} [NormedAddCommGroup E] {A B : Submodule ℤ E}
     (h : A ≤ B) [Module.Finite ℤ B] : Module.finrank ℤ A ≤ Module.finrank ℤ B :=
   LinearMap.finrank_le_finrank_of_injective (f := Submodule.inclusion h) (Submodule.inclusion_injective h)
 
+/- English proof (translation)
+Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ AddSubgroup.map ρ N₁.toAddSubgroup at hx`. Express the relevant statement in the definitionally equal form `x ∈ AddSubgroup.map ρ N₂.toAddSubgroup`. Take `⟨a, ha, rfl⟩` from `AddSubgroup.mem_map.mp hx`. Conclude with `AddSubgroup.mem_map.mpr ⟨a, h ha, rfl⟩`.
+-/
 private theorem place_lattice_structure_lemma_2 {R : Type*} [Ring R] {V : Type*} [AddCommGroup V] [Module R V]
     {E : Type*} [NormedAddCommGroup E] (ρ : V →+ E) {N₁ N₂ : Submodule R V} (h : N₁ ≤ N₂) :
     zl ρ N₁ ≤ zl ρ N₂ := by
@@ -266,6 +353,25 @@ private theorem place_lattice_structure_lemma_2 {R : Type*} [Ring R] {V : Type*}
   exact AddSubgroup.mem_map.mpr ⟨a, h ha, rfl⟩
 
 open PlaceLattice in
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ b X hX L hL`. Use `set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ`. Establish `hinj : Function.Injective ρ` using `realize_injective b X hX`. Take `⟨y, hy0, hyL⟩` from `exists_denom (K := K) (⇑b) L hL (fun x _ => by rw [b.span_eq]; trivial)`. Establish `hyK : ((y : K))⁻¹ ≠ 0` using `inv_ne_zero (Int.cast_ne_zero.mpr hy0)`.
+
+Establish `hdM : DiscreteTopology (zl ρ (Submodule.span (𝓞 K) (Set.range fun a => ((y : K))⁻¹ • b a)))`. Rewrite using `[zl_span_eq]`. Conclude with `discrete_span_of_linIndep (linIndep_real b X hX _ hyK)`. Establish `hdL : DiscreteTopology (zl ρ L)` using `DiscreteTopology.of_continuous_injective (continuous_inclusion (place_lattice_structure_lemma_2 ρ hyL)) (Set.inclusion_injective (place_lattice_structure_lemma_2 ρ hyL))`. Use `⟨⟨hinj.injOn, hdL⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨t, htL, hspan, hli⟩` from `exists_linearIndependent K (L : Set V) haveI : Module.Finite K V := Module.Finite.of_basis b`. Establish `htf : t.Finite` using `hli.setFinite`. Use `haveI : Fintype t := htf.fintype`. Establish `hcard : rkK L = Fintype.card t`. Establish `hc` using `finrank_span_eq_card hli`.
+
+Rewrite `hc` using `[Subtype.range_coe]`. Unfold `rkK`. Rewrite using `[← hspan]`. Conclude with `hc`. Establish `hsub : ∀ x ∈ L, x ∈ Submodule.span K (Set.range ((↑) : t → V))`.
+
+Introduce `x hx`. Rewrite using `[Subtype.range_coe, hspan]`. Conclude with `Submodule.subset_span hx`. Take `⟨z, hz0, hzL⟩` from `exists_denom (K := K) ((↑) : t → V) L hL hsub`. Establish `hzK : ((z : K))⁻¹ ≠ 0` using `inv_ne_zero (Int.cast_ne_zero.mpr hz0)`.
+
+Establish `hli' : LinearIndependent K (fun a : t => ((z : K))⁻¹ • (a : V))` using `hli.units_smul (fun _ => Units.mk0 _ hzK)`. Establish `hlow : Submodule.span (𝓞 K) (Set.range ((↑) : t → V)) ≤ L`. Rewrite using `[Submodule.span_le, Subtype.range_coe]`. Conclude with `htL`. Establish `h1 : rk ρ (Submodule.span (𝓞 K) (Set.range ((↑) : t → V))) = Module.finrank ℚ K * Fintype.card t` using `(rk_span_eq ρ hinj _ hli).trans (congrArg _ (Fintype.card_congr (Equiv.refl _)))`.
+
+Establish `h2 : rk ρ (Submodule.span (𝓞 K) (Set.range fun a : t => ((z : K))⁻¹ • (a : V))) = Module.finrank ℚ K * Fintype.card t` using `(rk_span_eq ρ hinj _ hli').trans (congrArg _ (Fintype.card_congr (Equiv.refl _)))`. Use `haveI : Module.Finite ℤ (zl ρ (Submodule.span (𝓞 K) (Set.range fun a : t => ((z : K))⁻¹ • (a : V)))) := by`. Rewrite using `[zl_span_eq]`. Conclude with `Module.Finite.span_of_finite ℤ (Set.finite_range _)`. Use `haveI : Module.Finite ℤ (zl ρ L) := Module.Finite.of_injective (Submodule.inclusion (place_lattice_structure_lemma_2 ρ hzL)) (Submodule.inclusion_injective _)`.
+
+Establish `hA : Module.finrank ℤ (zl ρ (Submodule.span (𝓞 K) (Set.range ((↑) : t → V)))) ≤ Module.finrank ℤ (zl ρ L)` using `place_lattice_structure_lemma (place_lattice_structure_lemma_2 ρ hlow)`. Establish `hB : Module.finrank ℤ (zl ρ L) ≤ Module.finrank ℤ (zl ρ (Submodule.span (𝓞 K) (Set.range fun a : t => ((z : K))⁻¹ • (a : V))))` using `place_lattice_structure_lemma (place_lattice_structure_lemma_2 ρ hzL)`. Rewrite using `[hcard]`. Conclude with `le_antisymm (hB.trans h2.le) (h1.symm.le.trans hA)`. Unfold `ht haveI := hdL`.
+
+Establish `hd : (0 : ℝ) < |((discr K : ℤ) : ℝ)|` using `abs_pos.mpr (Int.cast_ne_zero.mpr (discr_ne_zero K))`. Conclude with `mul_pos (mul_pos (pow_pos two_pos _) (Real.rpow_pos_of_pos hd _)) (F.covol_pos _)`.
+-/
 theorem place_lattice_structure : PlLat := by
   intro K V ι _ _ _ _ _ _ _ _ _ b X hX L hL
   set ρ := Formalism.HermitianLatticesTheory.realize b X with hρ

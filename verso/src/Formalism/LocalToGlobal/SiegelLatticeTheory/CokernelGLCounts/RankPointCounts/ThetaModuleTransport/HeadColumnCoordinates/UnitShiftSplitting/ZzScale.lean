@@ -11,6 +11,21 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ} (hs : M.split = some g)
 
 include hs in
+/- English proof (translation)
+Use extensionality with `a b`. Establish `hZab : ((Z a b : M.R) : E) = HermSp.ZZplusOf M Zh T T' a b`. Rewrite using `[← hZ]`. Both sides reduce to the same expression. Establish `hq : ((g.q : F)) ≠ 0`.
+
+Introduce `h`. Conclude with `g.q_irr.ne_zero (Subtype.ext h)`. Simplify using `only [HermSp.ZZplusOf, hs, Matrix.of_apply] at hZab`. Simplify using `only [HermSp.ZZplusOf, hs, Matrix.map_apply, Matrix.of_apply, dlast, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.add_apply, Subring.coe_subtype]`. Apply `g.e.injective` to reduce the goal to its premises.
+
+Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using `only [and_self, if_true] at hZab ⊢`. Use `push_cast`.
+
+Rewrite using `[map_sub, map_mul, map_add, map_mul, hZab]`. Simplify using `only [map_sub, AlgEquiv.apply_symm_apply, he1, he2, hcc, hα, map_mul]`. Apply the tactic sequence `ext <;> simp <;> field_simp <;> ring`. Simplify using `only [ha, hb, and_false, if_false, if_true, and_true] at hZab ⊢`. Use `push_cast`.
+
+Simplify using `only [sub_zero, add_zero] at hZab ⊢`. Rewrite using `[map_mul, map_mul, hZab]`. Simplify using `only [AlgEquiv.apply_symm_apply, he2, hα, map_mul]`. Apply the tactic sequence `ext <;> simp <;> field_simp`. Simplify using `only [ha, hb, false_and, if_false, if_true] at hZab ⊢`.
+
+Use `push_cast`. Simplify using `only [sub_zero, add_zero, one_mul] at hZab ⊢`. Rewrite using `[map_mul, hZab]`. Simplify using `only [AlgEquiv.apply_symm_apply, he1, hα, map_mul]`. Apply the tactic sequence `ext <;> simp <;> field_simp`.
+
+Simplify using `only [ha, hb, false_and, and_false, if_false] at hZab ⊢`. Use `push_cast`. Simplify using `only [sub_zero, add_zero, one_mul, mul_one] at hZab ⊢`. Rewrite using `[hZab]`.
+-/
 theorem zz_scale (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) M.R) (hZ : Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T')
     (u : F) (hu0 : u ≠ 0) (δ₁ δ₂ cc : M.R) (α : E) (he1 : g.e (δ₁ : E) = (u, 1))

@@ -16,6 +16,13 @@ namespace GlobalTheory.FinPl.LocProd
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply, Units.ext_iff]`. Simplify using `only [Matrix.GeneralLinearGroup.map, Units.coe_map, Units.val_one]`. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`.
+
+Express the relevant statement in the definitionally equal form `((matHom V g).1.map (Ideal.Quotient.mk I)) i j = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D ⧸ I)) i j ↔ _`. Rewrite using `[Matrix.map_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.one_apply_eq, map_one]`.
+
+Both sides reduce to the same expression. Simplify using `only [Matrix.one_apply_ne hij, map_zero]`. Both sides reduce to the same expression.
+-/
 theorem mem_congGrp_entries (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     g ∈ congGrp V I ↔ ∀ i j, (Formalism.L2.Theta.mt V g - 1) i j ∈ I := by
   rw [congGrp, MonoidHom.mem_ker, MonoidHom.comp_apply, Units.ext_iff]
@@ -32,9 +39,17 @@ theorem mem_congGrp_entries (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
   · simp only [Matrix.one_apply_ne hij, map_zero]
     rfl
 
+/- English proof (translation)
+Introduce `g hg` and use `(mem_congGrp_entries V J g).2 fun i j => h ((mem_congGrp_entries V I g).1 hg i j)`.
+-/
 theorem congGrp_mono (V : HSp D) {I J : Ideal (AE D)} (h : I ≤ J) : congGrp V I ≤ congGrp V J := fun g hg =>
   (mem_congGrp_entries V J g).2 fun i j => h ((mem_congGrp_entries V I g).1 hg i j)
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h2` using `(Submodule.mem_inf.1 ha).2`. Rewrite `h2` using `[Submodule.mem_iInf]`. Simplify using `only [idOff, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall]`. Introduce `w hw`.
+
+Conclude with `h2 ⟨w, fun h' => h w h' hw⟩`.
+-/
 theorem idAt_le_idOff (P P' : Pl D → Prop) (h : ∀ w, P w → ¬ P' w) : idAt D P ≤ idOff D P' := by
   intro a ha
   have h2 := (Submodule.mem_inf.1 ha).2
@@ -43,14 +58,23 @@ theorem idAt_le_idOff (P P' : Pl D → Prop) (h : ∀ w, P w → ¬ P' w) : idAt
   intro w hw
   exact h2 ⟨w, fun h' => h w h' hw⟩
 
+/- English proof (translation)
+The claim follows from `congGrp_mono V (idAt_le_idOff P P' h)`.
+-/
 theorem grpAt_le_grpOff' (V : HSp D) (P P' : Pl D → Prop) (h : ∀ w, P w → ¬ P' w) : grpAt V P ≤ grpOff V P' :=
   congGrp_mono V (idAt_le_idOff P P' h)
 
+/- English proof (translation)
+Simplify using `only [idOff, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall] at h ⊢`. Introduce `w hw`. Conclude with `h w hw w rfl`.
+-/
 theorem mem_idOff_of_forall (P : Pl D → Prop) (a : AE D) (h : ∀ w, P w → a ∈ idOff D (· = w)) : a ∈ idOff D P := by
   simp only [idOff, Submodule.mem_iInf, RingHom.mem_ker, Subtype.forall] at h ⊢
   intro w hw
   exact h w hw w rfl
 
+/- English proof (translation)
+Unfold `grpOff`. Rewrite using `[mem_congGrp_entries]`. Introduce `i j`. Conclude with `mem_idOff_of_forall P _ fun w hw => (mem_congGrp_entries V _ g).1 (h w hw) i j`.
+-/
 theorem mem_grpOff_of_forall (V : HSp D) (P : Pl D → Prop) (g : GA D V) (h : ∀ w, P w → g ∈ grpOff V (· = w)) :
     g ∈ grpOff V P := by
   unfold grpOff
@@ -58,6 +82,9 @@ theorem mem_grpOff_of_forall (V : HSp D) (P : Pl D → Prop) (g : GA D V) (h : �
   intro i j
   exact mem_idOff_of_forall P _ fun w hw => (mem_congGrp_entries V _ g).1 (h w hw) i j
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp | a :: J, h => by rw [List.map_cons, List.prod_cons, map_mul, h a List.mem_cons_self, map_list_prod_eq_one φ f J fun i hi => h i (List.mem_cons_of_mem a hi), one_mul]`.
+-/
 theorem map_list_prod_eq_one {ι G H : Type*} [Monoid G] [Monoid H] (φ : G →* H) (f : ι → G) :
     ∀ J : List ι, (∀ i ∈ J, φ (f i) = 1) → φ (J.map f).prod = 1
   | [], _ => by simp
@@ -65,6 +92,9 @@ theorem map_list_prod_eq_one {ι G H : Type*} [Monoid G] [Monoid H] (φ : G →*
     rw [List.map_cons, List.prod_cons, map_mul, h a List.mem_cons_self,
       map_list_prod_eq_one φ f J fun i hi => h i (List.mem_cons_of_mem a hi), one_mul]
 
+/- English proof (translation)
+The claim follows from `| [], _, hj => absurd hj List.not_mem_nil | a :: J, hn, hj => by obtain ⟨ha, hn'⟩ := List.nodup_cons.1 hn rw [List.map_cons, List.prod_cons, map_mul] by_cases haj : a = j · subst haj rw [map_list_prod_eq_one φ f J fun i hi => h1 i fun e => ha (e ▸ hi), mul_one] · have hjJ : j ∈ J …`.
+-/
 theorem map_list_prod_single {ι G H : Type*} [Monoid G] [Monoid H] (φ : G →* H) (f : ι → G) (j : ι)
     (h1 : ∀ i, i ≠ j → φ (f i) = 1) : ∀ J : List ι, J.Nodup → j ∈ J → φ (J.map f).prod = φ (f j)
   | [], _, hj => absurd hj List.not_mem_nil
@@ -80,6 +110,17 @@ theorem map_list_prod_single {ι G H : Type*} [Monoid G] [Monoid H] (φ : G →*
         · exact e
       rw [h1 a haj, one_mul, map_list_prod_single φ f j h1 J hn' hjJ]
 
+/- English proof (translation)
+Introduce `D S k _ _ _ _ ι p n _ _ β hinj J hJ hall κ`. Establish `hloc` using `fun i => ((GlobalTheory.FinPl.localComponents D (· = (p i).v)).2 S).1 κ`. Establish `hcomm` using `fun i => ((GlobalTheory.FinPl.localComponents D (· = (p i).v)).2 S).2.1`. Use `choose x hx y hy hxy using hloc`. Establish `hfr` using `fun i => ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k (p i) S n (β i)).1 (x i)).1 (hx i)`.
+
+Use `choose g hg using hfr`. Establish `hglAt : ∀ i, (β i).gl (g i) ∈ grpAt S (· = (p i).v)` using `fun i => ((GlobalTheory.T.splitPlaceHermitianFrame_properties D k (p i) S n (β i)).1 _).2 ⟨g i, rfl⟩`. Establish `key : ∀ i, κ * ((β i).gl (g i))⁻¹ ∈ grpOff S (· = (p i).v)`. Introduce `i`. Rewrite using `[← hg i, hxy i, hcomm i (x i) (hx i) (y i) (hy i), mul_assoc, mul_inv_cancel, mul_one]`.
+
+Conclude with `hy i`. Use `⟨g, key, (J.map fun i => (β i).gl (g i)).prod⁻¹ * κ, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Apply `mem_grpOff_of_forall` to reduce the goal to its premises. Introduce and unpack `w ⟨j, rfl⟩`. Set `φ` to `(Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk (idOff D (· = (p j).v)))).comp (matHom S)`.
+
+Establish `hker : ∀ h, h ∈ grpOff S (· = (p j).v) ↔ φ h = 1` using `fun h => MonoidHom.mem_ker`. Establish `hκ : φ κ = φ ((β j).gl (g j))`. Use `(hker _).1 (key j)` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `this`.
+
+Establish `h1 : ∀ i, i ≠ j → φ ((β i).gl (g i)) = 1` using `fun i hij => (hker _).1 (grpAt_le_grpOff' S _ _ (fun w hw hw' => hij (hinj (hw.symm.trans hw'))) (hglAt i))`. Rewrite using `[hker, map_mul, map_inv, map_list_prod_single φ (fun i => (β i).gl (g i)) j h1 J hJ (hall j), hκ, inv_mul_cancel]`.
+-/
 theorem eq_prod_gl_mul_off : ∀ (D : D7) (S : HSp D) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (β : ∀ i, Frame (p i) S n), Function.Injective (fun i => (p i).v) → ∀ J : List ι, J.Nodup → (∀ i, i ∈ J) → ∀ κ : GA D S, ∃ g : ι → GL n k, (∀ i, κ * ((β i).gl (g i))⁻¹ ∈ grpOff S (· = (p i).v)) ∧ ∃ κ' ∈ grpOff S (fun x => ∃ i, x = (p i).v), κ = (J.map fun i => (β i).gl (g i)).prod * κ' := by
   intro D S k _ _ _ _ ι p n _ _ β hinj J hJ hall κ
   have hloc := fun i => ((GlobalTheory.FinPl.localComponents D (· = (p i).v)).2 S).1 κ

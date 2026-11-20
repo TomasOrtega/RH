@@ -6,6 +6,11 @@ open Classical
 
 namespace GlobalTheory.BaseVacuum
 
+/- English proof (translation)
+Rewrite using `[B.gC_spec]`. Use function extensionality and compare the values at `w'`. Simplify using `only [xv, LinearEquiv.apply_symm_apply]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem gC_xv {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (w : Fin 4 × D.what₂.Tau) :
     B.gC (fun w' => TaylorLogMetric.embT D w'.2 (xv B w w'.1)) = Pi.single w 1 := by
   rw [B.gC_spec]
@@ -15,6 +20,9 @@ theorem gC_xv {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [blk, TaylorLogMetric.embV, TaylorLogMetric.tor0, putB, Prod.mk.eta, Equiv.symm_apply_apply]`. Distinguish the cases in `h : k' = k`. Simplify using `[h]`. Simplify using `[h]`.
+-/
 theorem blk_embV_putB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {n n' : ℕ} (k k' : Fin n' × Fin n)
     (x : Fin 4 → D.host.E) :
     blk D k' (TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (putB D k x) : TaylorLogMetric.VC D (n * 2) (n' * 2)) =
@@ -25,6 +33,13 @@ theorem blk_embV_putB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {n n' : �
   · simp [h]
   · simp [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[phi_apply, bas, blk_embV_putB]`. Distinguish the cases in `h : p.1 = (ixE D n n' j).1`. Rewrite using `[if_pos h, gC_xv]`. Distinguish the cases in `h2 : p.2 = (ixE D n n' j).2`.
+
+Establish `: p = ixE D n n' j` using `Prod.ext h h2`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Establish `: p ≠ ixE D n n' j` using `fun e => h2 (by rw [e])`. Simplify using `[h2, this]`.
+
+Rewrite using `[if_neg h, B.gC.map_zero]`. Establish `: p ≠ ixE D n n' j` using `fun e => h (by rw [e])`. Simplify using `[this]`.
+-/
 theorem phi_embV_bas {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (n n' : ℕ)
     (j : Fin (TaylorLogMetric.fF D * (n * 2) * (n' * 2))) :
     phi B n n' (TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (bas B n n' j)) = Pi.single (ixE D n n' j) 1 := by
@@ -41,6 +56,21 @@ theorem phi_embV_bas {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base 
     have : p ≠ ixE D n n' j := fun e => h (by rw [e])
     simp [this]
 
+/- English proof (translation)
+Introduce `D cc δ B n n'`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `StandardLatticesGL3.LaB`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `z ⟨w, hw, j, rfl⟩`.
+
+Use `show phi B n n' (w • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (bas B n n' j)) ∈ stdLat B.L (Ix D n n')`. Rewrite using `[map_smul, phi_embV_bas]`. Establish `hw' : w ∈ B.L.lattice.toAddSubgroup` using `by rw [B.lat]; exact hw`. Simplify using `only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, true_implies]`. Introduce `p`.
+
+Distinguish the cases in `h : p = ixE D n n' j`. Substitute `h` using the available equality. Simplify using `using hw'`. Simplify using `[h]`. Introduce `x hx`.
+
+Establish `hx' : phi B n n' x ∈ stdLat B.L (Ix D n n')` using `hx`. Simplify using `only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, true_implies] at hx'`. Establish `hsum : phi B n n' x = ∑ p, phi B n n' x p • (Pi.single p 1 : Ix D n n' → ℂ)`. Use function extensionality and compare the values at `q`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Establish `hsing : ∀ p, (phi B n n').symm (Pi.single p 1) = TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (bas B n n' ((ixE D n n').symm p))`. Introduce `p`. Rewrite using `[LinearEquiv.symm_apply_eq, phi_embV_bas, Equiv.apply_symm_apply]`. Establish `hxe : x = ∑ p, phi B n n' x p • TaylorLogMetric.embV D (TaylorLogMetric.tor0 D cc δ) (bas B n n' ((ixE D n n').symm p))` using `by conv_lhs => rw [← (phi B n n').symm_apply_apply x, hsum]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hsing]`. Rewrite using `[hxe]`. Use `AddSubgroup.sum_mem _ fun p _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨phi B n n' x p, ?_, (ixE D n n').symm p, rfl⟩` and prove the remaining obligations.
+
+Use `hx' p` as an intermediate fact. Rewrite `this` using `[B.lat]`. Conclude with `this`.
+-/
 theorem laB_eq_comap : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (n n' : ℕ),
     StandardLatticesGL3.LaB D (TaylorLogMetric.tor0 D cc δ) (bas B n n') =
       (stdLat B.L (Ix D n n')).comap (phi B n n' : TaylorLogMetric.VC D (n * 2) (n' * 2) →ₗ[ℂ] (Ix D n n' → ℂ)).toAddMonoidHom := by

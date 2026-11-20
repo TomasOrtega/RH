@@ -10,6 +10,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory.BKReal.OfCrystal
 
+/- English proof (translation)
+Establish `hN : IsNoetherianRing O` using `IsNoetherianRing.of_finite ℤ_[l] O`. Establish `key : ∀ x y : O, ‖algebraMap O K y‖ ≤ ‖algebraMap O K x‖ → x ∣ y` using `fun x y h => by`. Break down `eq_or_ne (algebraMap O K x) 0 with h0 | h0` into its components or cases. Rewrite `h` using `[h0, norm_zero, norm_le_zero_iff, ← map_zero (algebraMap O K)]`. Rewrite using `[IsUnitBall.inj h]`.
+
+Conclude with `dvd_zero _`. Take `⟨c, hc⟩` from `(IsUnitBall.mem_range_iff (O := O) (algebraMap O K y / algebraMap O K x)).2 (by rw [norm_div]; exact div_le_one_of_le₀ h (norm_nonneg _))`. Conclude with `⟨c, IsUnitBall.inj (K := K) (by rw [map_mul, hc, mul_div_cancel₀ _ h0])⟩`. Establish `hV : ValuationRing O` using `ValuationRing.iff_dvd_total.2 ⟨fun x y => (le_total ‖algebraMap O K y‖ ‖algebraMap O K x‖).imp (key x y) (key y x)⟩`. Establish `hl1 : ‖(l : K)‖ < 1`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ_[l] K), norm_algebraMap']`. Conclude with `Padic.norm_p_lt_one`. Establish `hF : ¬ IsField O` using `fun h => by`. Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Take `⟨y, hy⟩` from `h.mul_inv_cancel (a := (l : O)) fun h0 => by`.
+
+Use `congrArg (algebraMap O K) h0` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Conclude with `Nat.cast_ne_zero.2 hl.out.ne_zero this`. Establish `h1` using `congrArg (fun z => ‖algebraMap O K z‖) hy`. Simplify using `only [map_mul, map_natCast, map_one, norm_mul, norm_one] at h1`.
+
+Establish `h2` using `norm_algebraMap_le (K := K) y`. Use polynomial arithmetic with `[norm_nonneg (l : K), norm_nonneg (algebraMap O K y)]`. Conclude with `((IsDiscreteValuationRing.TFAE O hF).out 0 1).2 hV`.
+-/
 theorem isDVR (l : ℕ) [hl : Fact l.Prime] (O K : Type) [CommRing O] [IsDomain O] [Algebra ℤ_[l] O]
     [Module.Finite ℤ_[l] O] [NormedField K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] :
     IsDiscreteValuationRing O := by
@@ -39,6 +50,29 @@ theorem isDVR (l : ℕ) [hl : Fact l.Prime] (O K : Type) [CommRing O] [IsDomain 
     nlinarith [norm_nonneg (l : K), norm_nonneg (algebraMap O K y)]
   exact ((IsDiscreteValuationRing.TFAE O hF).out 0 1).2 hV
 
+/- English proof (translation)
+Use `letI : Algebra W R := ω.toAlgebra`. Establish `hm : ∀ x ∈ N, ε • x ∈ M` using `fun x hx => (hM _).2 ⟨hεN x hx, by rw [smul_smul, hε]⟩`. Establish `hc : ∀ i, c i ∈ N` using `fun i => (hN _).2 ⟨Pi.single i 1, by`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [hk]) (by simp)]; simp⟩`. Set `ν : Fin m → V →ₗ[W] R` to `fun j => c.constr W fun i => ε * g (β.repr ⟨_, hm _ (hc i)⟩ j)`.
+
+Establish `hν : ∀ j x (hx : x ∈ N), ν j x = ε * g (β.repr ⟨_, hm x hx⟩ j)` using `fun j x hx => by`. Take `⟨s, hs⟩` from `(hN x).1 hx`. Use `choose f hf using fun i => hψ (s i)`. Establish `h1 : (⟨_, hm x hx⟩ : M) = ∑ i, f i • (⟨_, hm _ (hc i)⟩ : M)` using `Subtype.ext (by`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`.
+
+Express the relevant statement in the definitionally equal form `ε • x = _`. Rewrite using `[hs, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = f i • ε • c i`. Rewrite using `[hW, hA, smul_smul, smul_smul, hf, mul_comm])`.
+
+Rewrite using `[h1, hs, map_sum, map_sum, Finset.sum_apply', map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, ← mul_assoc, ← hf]`. Simplify using `only [ν, Module.Basis.constr_basis]`. Express the relevant statement in the definitionally equal form `ω _ * _ = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hνW : ∀ j w x, ν j (ω w • x) = ω w * ν j x` using `fun j w x => by rw [← hW, map_smul]; rfl`. Establish `hνA : ∀ j f x, ν j (g f • x) = g f * ν j x` using `fun j f x => by`. Rewrite using `[← c.sum_repr x, Finset.smul_sum, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hW, smul_comm, hνW, hνW, hν _ _ (hg f _ (hc i)), hν _ _ (hc i)]`. Establish `h1 : (⟨_, hm _ (hg f _ (hc i))⟩ : M) = f • (⟨_, hm _ (hc i)⟩ : M)` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `ε • g f • c i = f • ε • c i`. Rewrite using `[hA, smul_comm])`. Rewrite using `[h1, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Set `μ : Fin m → V →ₗ[R] R` to `fun j => { toFun := ν j map_add' := map_add _ map_smul' := fun r x => by`. Use `hgen (fun r => ν j (r • x) = r * ν j x) (by simp) (fun w f => ?_) (fun r r' h h' => ?_) r` and prove the remaining obligations. Simplify using `only [mul_smul, hνW, hνA, mul_assoc]`. Simplify using `only [add_smul, map_add, add_mul, h, h'] }`.
+
+Establish `hμ : ∀ j x, μ j x = ν j x` using `fun _ _ => rfl`. Use `⟨fun k => β k, μ, fun k => ((hM _).1 (β k).2).1, fun j k => ?_, fun x => ?_, fun x hx j => ⟨_, hν j x hx⟩⟩` and prove the remaining obligations. Rewrite using `[hμ, hν _ _ ((hM _).1 (β k).2).1]`. Establish `h1 : (⟨_, hm _ ((hM _).1 (β k).2).1⟩ : M) = β k` using `Subtype.ext ((hM _).1 (β k).2).2`. Rewrite using `[h1, β.repr_self, Finsupp.single_apply]`.
+
+Distinguish the cases in `h : j = k`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Establish `h0 : ∀ i, ∑ j, μ j (c i) • (β j : V) = ε • c i` using `fun i => by`. Establish `h1` using `congrArg (fun y : M => ε • (y : V)) (β.sum_repr ⟨_, hm _ (hc i)⟩)`.
+
+Simplify using `only [AddSubmonoidClass.coe_finsetSum, Finset.smul_sum, smul_smul, hε] at h1`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hμ, hν _ _ (hc i), mul_smul, ← hA]`. Both sides reduce to the same expression.
+
+Rewrite using `[← c.sum_repr x]`. Simplify using `only [hW, map_sum, map_smul, Finset.sum_smul, Finset.smul_sum, smul_eq_mul, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, h0, smul_comm]`.
+-/
 theorem exists_dual_pair {A S W R V ι : Type} [CommRing A] [CommRing S] [CommRing W] [CommRing R]
     [AddCommGroup V] [Module R V] [Module W V] [Module A V] [Fintype ι] (ω : W →+* R) (g : A →+* R)
     (hW : ∀ (w : W) (v : V), w • v = ω w • v) (hA : ∀ (f : A) (v : V), f • v = g f • v) (ψ : S →+* W)
@@ -112,6 +146,27 @@ theorem exists_dual_pair {A S W R V ι : Type} [CommRing A] [CommRing S] [CommRi
     refine Finset.sum_congr rfl fun i _ => ?_
     rw [← Finset.smul_sum, h0, smul_comm]
 
+/- English proof (translation)
+Establish `h' : ∀ τ, ∃ (b : Fin n → V) (μ : Fin n → V →ₗ[R] R), (∀ k, b k ∈ N) ∧ (∀ j k, μ j (b k) = if j = k then ε τ else 0) ∧ (∀ x, ∑ j, μ j x • b j = ε τ • x) ∧ ∀ x ∈ N, ∀ j, ∃ f, μ j x = ε τ * g f` using `fun τ => by`. Take `⟨m, b, μ, hb, hd, hs, hf⟩` from `h τ`. Choose the witnesses or unpack the hypotheses as in `rfl : m = n := by`. Use `hch τ _ _ ?_` and prove the remaining obligations. Establish `e1 : ∑ j, μ j (b j) = m • ε τ` using `by simp [hd]`.
+
+Establish `e2 : ∑ i, v.repr (∑ j, μ j (v i) • b j) i = n • ε τ` using `by simp [hs]`. Rewrite using `[← e1, ← e2]`. Simplify using `only [map_sum, map_smul, Finset.sum_apply', Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← v.sum_repr (b j)]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, mul_comm]`. Conclude with `⟨b, μ, hb, hd, hs, hf⟩`. Use `choose b μ hb hd hs hf using h'`. Establish `key : ∀ {Y : Type} [AddCommGroup Y] [Module R Y] (y : I → Y) (τ : I), ε τ • ∑ σ, ε σ • y σ = ε τ • y τ` using `fun y τ => by`.
+
+Rewrite using `[Finset.smul_sum, Finset.sum_eq_single τ (fun σ _ hσ => by`. Rewrite using `[smul_smul, h2 _ _ hσ.symm, zero_smul]) (by simp), smul_smul, h1]`. Set `B : Fin n → V` to `fun k => ∑ τ, ε τ • b τ k`. Set `F : V →ₗ[R] (Fin n → R)` to `LinearMap.pi fun j => ∑ τ, ε τ • μ τ j`. Establish `hF : ∀ x j, F x j = ∑ τ, ε τ • μ τ j x` using `fun x j => by simp [F]`.
+
+Establish `hFB : ∀ k j, F (B k) j = if j = k then 1 else 0` using `fun k j => by`. Rewrite using `[hF]`. Simplify using `only [← map_smul, B, key]`. Simplify using `only [map_smul, hd, smul_eq_mul, mul_ite, h1, mul_zero]`. Use `split_ifs`.
+
+Conclude with `h3`. Simplify using the standard rewrite rules. Establish `hBF : ∀ x, ∑ j, F x j • B j = x` using `fun x => by`. Simplify using `only [hF, Finset.sum_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `conv_rhs => rw [← one_smul R x, ← h3, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[show ε τ • x = ε τ • ε τ • x by rw [smul_smul, h1], ← hs τ x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul, key, smul_comm]`.
+
+Set `G : V ≃ₗ[R] (Fin n → R)` to `LinearEquiv.ofLinear F (Fintype.linearCombination R B) ((Pi.basisFun R (Fin n)).ext fun k => funext fun j => by`. Simplify using `[hFB, Pi.single_apply])`. Use the proof step `(LinearMap.ext fun x => by simpa [Fintype.linearCombination_apply] using hBF x)`. Use `⟨Module.Basis.ofEquivFun G, fun k => ?_, fun x hx j => ?_⟩` and prove the remaining obligations. Establish `: Module.Basis.ofEquivFun G k = B k`.
+
+Simplify using `[G]`. Rewrite using `[this]`. Conclude with `sum_mem fun τ _ => hεN τ _ (hb τ k)`. Use `choose f hf using fun τ => hf τ x hx j`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.ofEquivFun_repr_apply]`. Express the relevant statement in the definitionally equal form `F x j = _`. Simplify using `only [hF, hf, smul_eq_mul, ← mul_assoc, h1]`.
+-/
 theorem exists_basis_of_dual_pairs {A R V I : Type} [CommRing R] [AddCommGroup V] [Module R V] [Fintype I]
     (g : A → R) (ε : I → R) (h1 : ∀ τ, ε τ * ε τ = ε τ) (h2 : ∀ τ σ, τ ≠ σ → ε τ * ε σ = 0)
     (h3 : ∑ τ, ε τ = 1) (hch : ∀ τ (m m' : ℕ), m • ε τ = m' • ε τ → m = m') {n : ℕ}
@@ -184,23 +239,40 @@ def iR : (ZMod a → A O K) →ₐ[O] OW l O := (inclO l O).comp (ϖ.iTot t K)
 
 omit [NeZero e] [NormedAlgebra ℚ_[l] K] in
 
+/- English proof (translation)
+The claim follows from `congrArg (inclO l O) (ϖ.iTot_toAc t K s)`.
+-/
 theorem iR_toAc (s : (Wq l a)⟦X⟧) : iR K t ϖ (toAc t K s) = 1 ⊗ₜ inclW l (ϖ.ev a s) :=
   congrArg (inclO l O) (ϖ.iTot_toAc t K s)
 
 omit [NeZero e] [NormedAlgebra ℚ_[l] K] in
 
+/- English proof (translation)
+The claim follows from `congrArg (inclO l O) (ϖ.iTot_E t K)`.
+-/
 theorem iR_E : iR K t ϖ (fun _ => EIn l e _) = 1 ⊗ₜ inclW l (ϖ.ev a (eis l a e)) :=
   congrArg (inclO l O) (ϖ.iTot_E t K)
 
+/- English proof (translation)
+The claim follows from `inclO_injective.comp (ϖ.iTot_injective t K)`.
+-/
 theorem iR_injective : Function.Injective (iR K t ϖ) := inclO_injective.comp (ϖ.iTot_injective t K)
 
 omit [NeZero e] [NormedAlgebra ℚ_[l] K] in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `inclO l O (∑ τ, _) = _`. Simplify using `only [map_sum, map_mul, inclO_idem]`.
+-/
 theorem iR_apply (f : ZMod a → A O K) :
     iR K t ϖ f = ∑ τ, idem (constW t) τ * inclO l O (ϖ.iA O K (f τ)) := by
   change inclO l O (∑ τ, _) = _
   simp only [map_sum, map_mul, inclO_idem]
 
+/- English proof (translation)
+Set `u` to `Eunit O K l e`. Establish `h1 : ϖ.iW t K (fun _ => (u : invE l e (A O K))) = iR K t ϖ (fun _ => EIn l e _)` using `ϖ.iW_of_mem t K fun _ => EIn l e _`. Establish `h2 : ϖ.iW t K (fun _ => ((u⁻¹ : (invE l e (A O K))ˣ) : invE l e (A O K))) * iR K t ϖ (fun _ => EIn l e _) = 1`. Rewrite using `[← h1, ← map_mul, ← map_one (ϖ.iW t K)]`. Conclude with `congrArg _ (funext fun _ => u.inv_mul)`.
+
+Use `⟨(fun _ => ((u⁻¹ : (invE l e (A O K))ˣ) : invE l e (A O K))) ^ k * fun τ => ⟨f τ, le_away _ _ (f τ).2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, ϖ.iW_of_mem t K f]`. Express the relevant statement in the definitionally equal form `_ * iR K t ϖ f = _`. Rewrite using `[← h, ← mul_assoc, ← mul_pow, h2, one_pow, one_mul]`.
+-/
 theorem exists_iW_eq {k : ℕ} {r : OW l O} {f : ZMod a → A O K}
     (h : iR K t ϖ (fun _ => EIn l e _) ^ k * r = iR K t ϖ f) : ∃ y, ϖ.iW t K y = r := by
   let u := Eunit O K l e
@@ -220,6 +292,9 @@ variable {K}
 
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w x`. Simplify using `only [TWmap, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem TWmap_smul {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (r : OW l O)
     (x : TW (OW l O) T) : TWmap (frobOW l O) T (r • x) = frobOW l O r • TWmap (frobOW l O) T x := by
   induction x using TensorProduct.induction_on with
@@ -228,6 +303,11 @@ theorem TWmap_smul {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[
     simp only [TWmap, smul_tmul', TensorProduct.map_tmul, AlgHom.toLinearMap_apply, smul_eq_mul, map_mul]
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Establish `hτ : ∀ τ, (Matrix.of fun i j => X i j τ) * (Matrix.of fun i j => Y i j τ) = 1` using `fun τ => by ext1 i j`. Establish `h1 : ∑ m, X i m * Y m j = if i = j then 1 else 0` using `ϖ.iW_injective t K (by`. Rewrite using `[map_sum, apply_ite (ϖ.iW t K), map_one, map_zero, ← h]`. Simplify using `only [map_mul])`. Establish `h2` using `congrFun h1 τ`.
+
+Rewrite `h2` using `[Finset.sum_apply, ite_apply]`. Conclude with `h2`. Conclude with `⟨⟨fun τ => ⟨_, _, hτ τ, mul_eq_one_comm.1 (hτ τ)⟩⟩, fun _ _ => rfl⟩`.
+-/
 theorem exists_frobMat_eq {n : ℕ} (X Y : Fin n → Fin n → ZMod a → invE l e (A O K))
     (h : ∀ i j, ∑ m, ϖ.iW t K (X i m) * ϖ.iW t K (Y m j) = if i = j then 1 else 0) :
     ∃ P : PhiMod O K l e a (Fin n), ∀ i j, frobMat t ϖ P i j = ϖ.iW t K (X i j) := by
@@ -241,6 +321,27 @@ theorem exists_frobMat_eq {n : ℕ} (X Y : Fin n → Fin n → ZMod a → invE l
     exact h2
   exact ⟨⟨fun τ => ⟨_, _, hτ τ, mul_eq_one_comm.1 (hτ τ)⟩⟩, fun _ _ => rfl⟩
 
+/- English proof (translation)
+Establish `hX : ∀ i j, ∃ y, ϖ.iW t K y = b.repr (F (b j)) i` using `fun i j => by`. Take `⟨k, hk⟩` from `h1 _ (hb j)`. Take `⟨f, hf⟩` from `hN _ hk i`. Rewrite `hf` using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `exists_iW_eq K t ϖ hf`.
+
+Use `choose X hX using hX`. Establish `hY : ∀ j, ∃ y : Fin n → ZMod a → invE l e (A O K), b j = ∑ m, ϖ.iW t K (y m) • F (b m)` using `fun j => by`. Take `⟨k, s, hk⟩` from `h2 _ (hb j)`. Use `choose f hf using fun i m => hN _ (hc i) m`. Establish `hu : IsUnit (iR K t ϖ (fun _ => EIn l e _) ^ k)`.
+
+Rewrite using `[iR_E]`. Conclude with `((ϖ.isUnit_inclW_ev_eis a).map (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] OW l O)).pow k`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h3 : ∀ m, ∃ y, ϖ.iW t K y = v * iR K t ϖ (∑ i, s i * frobAc l (f i m))` using `fun m => exists_iW_eq K t ϖ (k := k) (by rw [← mul_assoc, hv, one_mul])`. Use `choose y hy using h3`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h4 : ∀ i, F (c i) = ∑ m, iR K t ϖ (frobAc l (f i m)) • F (b m)` using `fun i => by conv_lhs => rw [← b.sum_repr (c i), map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hF, hf]`. Use `congr 1`.
+
+Conclude with `(frobOW_inclO _).trans (congrArg (inclO l O) (ϖ.iTot_frob t K _).symm)`. Rewrite using `[← one_smul (OW l O) (b j), ← hv, mul_comm, mul_smul, hk]`. Simplify using `only [hy, h4, map_sum, map_mul, mul_smul, Finset.sum_smul, ← Finset.smul_sum]`. Simplify using `only [Finset.smul_sum]`. Conclude with `Finset.sum_comm`.
+
+Use `choose Y hY using hY`. Take `⟨P, hP⟩` from `exists_frobMat_eq t ϖ X (fun m j => Y j m) fun i j => by`. Establish `h3` using `congrArg (b.repr · i) (hY j)`. Simplify using `only [map_sum, map_smul, Finset.sum_apply', Finsupp.smul_apply, smul_eq_mul, ← hX, b.repr_self, Finsupp.single_apply] at h3`. Simplify `h3.symm` using `only [mul_comm, eq_comm (a := j)]`.
+
+Simplify using `only [hX] at hP`. Establish `hj : ∀ v, b.equivFun.symm (phiW t ϖ P v) = F (b.equivFun.symm v)` using `fun v => by`. Rewrite using `[b.equivFun_symm_apply, b.equivFun_symm_apply, map_sum]`. Establish `h0 : ∀ i, phiW t ϖ P v i = ∑ j, frobMat t ϖ P i j * frobOW l O (v j)` using `fun _ => rfl`. Simplify using `only [h0, hP, Finset.sum_smul, hF]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr (F (b j)), Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_smul, mul_comm]`. Establish `hW : ∀ (m : Vec K a (Fin n)) (hm : m ∈ P.M) i, toW t ϖ P ⟨m, mem_ME_of_mem_M hm⟩ i = iR K t ϖ fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩` using `fun m hm i => ϖ.iW_of_mem t K fun τ => ⟨m τ i, mem_tot.1 hm τ i⟩`.
+
+Use `⟨P, hj, fun y => ⟨fun hy => ?_, ?_⟩⟩` and prove the remaining obligations. Use `choose f hf using hN y hy`. Use `⟨fun τ i => f i τ, mem_tot.2 fun τ i => (f i τ).2, ?_⟩` and prove the remaining obligations. Rewrite using `[b.equivFun_symm_apply]`. Use `conv_lhs => rw [← b.sum_repr y]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [hW _ (mem_tot.2 fun τ i => (f i τ).2), hf]`. Introduce and unpack `⟨m, hm, rfl⟩`. Rewrite using `[b.equivFun_symm_apply]`. Conclude with `sum_mem fun i _ => by rw [hW m hm]; exact hs _ _ (hb i)`.
+-/
 theorem exists_ident {V : Type} [AddCommGroup V] [Module (OW l O) V] (F : V →+ V)
     (hF : ∀ (r : OW l O) (x : V), F (r • x) = frobOW l O r • F x) {n q : ℕ}
     (b : Module.Basis (Fin n) (OW l O) V) (N : AddSubgroup V)
@@ -311,6 +412,11 @@ theorem exists_ident {V : Type} [AddCommGroup V] [Module (OW l O) V] (F : V →+
     rw [b.equivFun_symm_apply]
     exact sum_mem fun i _ => by rw [hW m hm]; exact hs _ _ (hb i)
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Use `(injective_iff_map_eq_zero _).2 fun s hs => PowerSeries.ext fun n => ?_` and prove the remaining obligations. Establish `h1 : toAc t K s = 0` using `iR_injective K t ϖ (by`. Rewrite using `[iR_toAc, map_zero, show inclW l (ϖ.ev a s) = 0 from hs, tmul_zero])`. Establish `h2` using `coeff_toAc t K s 0 n`.
+
+Rewrite `h2` using `[h1, emb_zero]`. Assume the negation of the conclusion as `h0`. Take `⟨m, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' _ h0`. Rewrite `h2` using `[hu, map_mul, map_mul, map_pow, map_pow, map_natCast, map_natCast]`. Conclude with `mul_ne_zero (pow_ne_zero m (Nat.cast_ne_zero.2 hl.out.ne_zero)) ((u.isUnit.map t).map (algebraMap O K)).ne_zero h2.symm`.
+-/
 theorem ev_injective (t : Wq l a →ₐ[ℤ_[l]] O) (K : Type) [NormedField K] [IsUltrametricDist K] [Algebra O K]
     [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] : Function.Injective ((inclW l).comp (ϖ.ev a)) := by
   have : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective
@@ -325,6 +431,41 @@ theorem ev_injective (t : Wq l a →ₐ[ℤ_[l]] O) (K : Type) [NormedField K] [
   exact mul_ne_zero (pow_ne_zero m (Nat.cast_ne_zero.2 hl.out.ne_zero))
     ((u.isUnit.map t).map (algebraMap O K)).ne_zero h2.symm
 
+/- English proof (translation)
+Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `: IsDomain O` using `Function.Injective.isDomain (algebraMap O K) IsUnitBall.inj`. Use `isDVR l O K` as an intermediate fact. Set `g : O⟦X⟧ →+* OW l O` to `((inclO l O).comp (ϖ.evO O)).toRingHom`. Establish `hg : ∀ f, g f = iR K t ϖ fun _ => equivA O K f` using `fun f => congrArg (inclO l O) ((glue_const _ _ _).trans (ϖ.iA_equivA O K f)).symm`.
+
+Establish `hg' : ∀ f, g f = inclO l O (ϖ.iA O K (equivA O K f))` using `fun f => congrArg (inclO l O) (ϖ.iA_equivA O K f).symm`. Set `ε` to `idem (constW t)`. Establish `hε : ∀ τ, ε τ = iR K t ϖ (Pi.single τ 1)` using `fun τ => by`. Rewrite using `[iR_apply, Finset.sum_eq_single τ (fun σ _ h => by simp [h]) (by simp)]`. Simplify using `[ε]`.
+
+Establish `hεi : ∀ τ f, ε τ * iR K t ϖ f = ε τ * g ((equivA O K).symm (f τ))` using `fun τ f => by`. Rewrite using `[iR_apply, idem_mul_sum, hg', AlgEquiv.apply_symm_apply]`. Establish `hεN : ∀ τ, ∀ x ∈ N, ε τ • x ∈ N` using `fun τ x hx => hε τ ▸ hs _ x hx`. Establish `hgN : ∀ f, ∀ x ∈ N, g f • x ∈ N` using `fun f x hx => hg f ▸ hs _ x hx`. Establish `hX : g X = (1 : O) ⊗ₜ[ℤ_[l]] inclW l (ϖ.ev a X)`.
+
+Rewrite using `[PiSys.ev_X]`. Conclude with `congrArg (inclO l O) (ϖ.evO_X O)`. Establish `hXu : IsUnit (g X)`. Rewrite using `[hX, PiSys.ev_X]`. Conclude with `ϖ.isUnit_inclO_teichR O`.
+
+Establish `hψ : ∀ τ s, ∃ f, ε τ * ((1 : O) ⊗ₜ[ℤ_[l]] inclW l (ϖ.ev a s)) = ε τ * g f` using `fun τ s => ⟨_, by rw [← iR_toAc K t, hεi]⟩`. Establish `htf : ∀ (k : ℕ), ∀ x ∈ N, ∀ y ∈ N, (l : OW l O) ^ k • x = g X • y → ∃ z ∈ N, x = g X • z`. Introduce `k x hx y hy h`. Take `⟨s, rfl⟩` from `(hN x).1 hx`. Take `⟨s', rfl⟩` from `(hN y).1 hy`.
+
+Establish `h0 : (l : OW l O) ^ k = (1 : O) ⊗ₜ[ℤ_[l]] inclW l (ϖ.ev a (l ^ k))`. Rewrite using `[← iR_toAc K t, map_pow, map_pow, map_natCast, map_natCast]`. Rewrite `h` using `[hX, h0, ← hW, ← hW]`. Simplify using `only [Finset.smul_sum, smul_smul, ← map_mul] at h`. Establish `h1 : ∀ i, ∃ r, s i = X * r` using `fun i => by`.
+
+Establish `h2` using `congrArg (c.repr · i) h`. Simplify using `only [c.repr_sum_self] at h2`. Establish `h3` using `congrArg constantCoeff (ev_injective ϖ t K h2)`. Rewrite `h3` using `[map_mul, map_mul, constantCoeff_X, zero_mul, map_pow, map_natCast]`. Conclude with `X_dvd_iff.2 ((mul_eq_zero.1 h3).resolve_left (pow_ne_zero _ (WittVector.p_nonzero l _)))`.
+
+Use `choose r hr using h1`. Use `⟨_, (hN _).2 ⟨r, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hX, ← hW]`. Simplify using `only [Finset.smul_sum, smul_smul, ← map_mul, hr]`. Take `⟨b, hb, hb'⟩` from `exists_basis_of_dual_pairs g ε (idem_mul_self (constW t)) (fun _ _ => idem_mul_of_ne (constW t)) (sum_idem (constW t)) (fun τ m m' h => by`.
+
+Rewrite `h` using `[hε, ← map_nsmul, ← map_nsmul]`. Establish `h1` using `congrArg (fun f : ZMod a → A O K => constantCoeff (f τ : K⟦X⟧)) (iR_injective K t ϖ h)`. Simplify using `using h1) v N hεN fun τ => by`. Use `letI : Module O⟦X⟧ V := Module.compHom V g`. Set `M : Submodule O⟦X⟧ V` to `{ carrier := {x | x ∈ N ∧ ε τ • x = x} add_mem' := fun hx hy => ⟨add_mem hx.1 hy.1, by rw [smul_add, hx.2, hy.2]⟩ zero_mem' := ⟨zero_mem _, smul_zero _⟩ smul_mem' := fun f x hx => ⟨hgN f x hx.1, by`.
+
+Express the relevant statement in the definitionally equal form `ε τ • g f • x = g f • x`. Rewrite using `[smul_comm, hx.2]⟩ }`. Establish `hm : ∀ x ∈ N, ε τ • x ∈ M` using `fun x hx => ⟨hεN τ x hx, by rw [smul_smul, idem_mul_self]⟩`. Establish `hc : ∀ i, c i ∈ N` using `fun i => (hN _).2 ⟨Pi.single i 1, by`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [hk]) (by simp)]; simp⟩`.
+
+Establish `: Module.Finite O⟦X⟧ M`. Use `Module.Finite.iff_fg.2 ⟨Finset.univ.image fun i => ε τ • c i, le_antisymm ?_ fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Finset.coe_image]`. Introduce and unpack `_ ⟨i, -, rfl⟩`. Conclude with `hm _ (hc i)`.
+
+Take `⟨s, hs⟩` from `(hN x).1 hx.1`. Rewrite using `[← hx.2, hs, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨f, hf⟩` from `hψ τ (s i)`. Rewrite using `[hW, smul_smul, hf, mul_comm, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ f (Submodule.subset_span (by simp))`. Establish `: Module.Free O⟦X⟧ M` using `free_of_X_regular_of_quotient_torsionFree O M (fun x hx => Subtype.ext (hXu.smul_eq_zero.1 (congrArg Subtype.val hx))) fun o x ho hy => by`. Take `⟨y, hy⟩` from `hy`. Take `⟨k, o', h⟩` from `exists_pow_mul_mem (O := O) l (algebraMap O K o)⁻¹`. Establish `h1 : (l : O) ^ k = o' * o` using `IsUnitBall.inj (K := K) (by`.
+
+Rewrite using `[map_mul, ← h, map_pow, map_natCast, inv_mul_cancel_right₀ fun h0 => ho (IsUnitBall.inj (K := K) (h0.trans (map_zero _).symm))])`. Establish `h2 : g (C o) • (x : V) = g X • (y : V)` using `congrArg Subtype.val hy`. Take `⟨z, hz, h3⟩` from `htf k x x.2.1 _ (hgN (C o') _ y.2.1) (by`. Rewrite using `[smul_comm, ← h2, smul_smul, ← map_mul, ← map_mul, ← h1, map_pow, map_pow, map_natCast, map_natCast])`. Use `⟨⟨_, hm z hz⟩, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(x : V) = g X • ε τ • z`. Rewrite using `[smul_comm, ← h3, x.2.2]`. Use `⟨_, exists_dual_pair (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] OW l O).toRingHom g hW (fun _ _ => rfl) ((inclW l).comp (ϖ.ev a)) c (ε τ) (idem_mul_self (constW t) τ) N hN (hεN τ) (hψ τ) (fun p h0 h1 h2 r => ?_) hgN M (fun _ => Iff.rfl) (Module.finBasis O⟦X⟧ M)⟩` and prove the remaining obligations. Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => exact h0`.
+
+Consider the case `tmul o w`. Use `h1 w (C o)` and compare the differences between its conclusion and the goal. Rewrite using `[show g (C o) = o ⊗ₜ 1 from ((inclO l O).comp (ϖ.evO O)).commutes o]`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy => exact h2 _ _ hx hy`.
+
+Use `⟨b, hb, fun x hx j => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `hb' x hx j`. Conclude with `⟨fun τ => equivA O K (f τ), by simp only [hf, iR_apply, hg', ε]⟩`.
+-/
 theorem exists_basis {V : Type} [AddCommGroup V] [Module (OW l O) V] [Module (WCb l) V]
     (hW : ∀ (w : WCb l) (x : V), w • x = ((1 : O) ⊗ₜ[ℤ_[l]] w) • x) {n q : ℕ}
     (v : Module.Basis (Fin n) (OW l O) V) (c : Module.Basis (Fin q) (WCb l) V) (N : AddSubgroup V)
@@ -432,6 +573,11 @@ theorem exists_basis {V : Type} [AddCommGroup V] [Module (OW l O) V] [Module (WC
 
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w' x`.
+
+Rewrite using `[smul_tmul', kappa_tmul, kappa_tmul, smul_tmul', smul_eq_mul, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem kappa_smul {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (w : WCb l) :
     letI := zlLat T
     ∀ y : WCb l ⊗[ℤ_[l]] ↥T.L.T, kappa T (w • y) = ((1 : O) ⊗ₜ[ℤ_[l]] w) • kappa T y := by
@@ -446,6 +592,11 @@ theorem kappa_smul {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[
 
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul w' x => rfl`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem kappa_frob {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) :
     letI := zlLat T
     ∀ y : WCb l ⊗[ℤ_[l]] ↥T.L.T, kappa T (TensorProduct.map (frobW l).toLinearMap LinearMap.id y) =
@@ -467,6 +618,11 @@ def mulZ {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (c
 
 omit [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsUltrametricDist K] [IsUnitBall O K] in
 
+/- English proof (translation)
+Use `letI := zlLat T`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul w' x => exact tmul_smul c _ x`.
+
+Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+-/
 theorem kappa_mulZ {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (c : O) :
     letI := zlLat T
     ∀ y : WCb l ⊗[ℤ_[l]] ↥T.L.T, kappa T ((mulZ T c).lTensor (WCb l) y) = c • kappa T y := by
@@ -477,6 +633,25 @@ theorem kappa_mulZ {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[
   | tmul w' x => exact tmul_smul c _ x
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
+/- English proof (translation)
+Use `letI := zlLat T`. Introduce `J₀ c₀ hJ₀ hc₀ hφ hφ' hO₀`. Use `letI : Module (WCb l) (TW (OW l O) T) := Module.compHom _ (Algebra.TensorProduct.includeRight : WCb l →ₐ[ℤ_[l]] OW l O).toRingHom`. Establish `hW : ∀ (w : WCb l) (x : TW (OW l O) T), w • x = ((1 : O) ⊗ₜ[ℤ_[l]] w) • x` using `fun _ _ => rfl`. Take `⟨c, hc⟩ : ∃ c : Module.Basis (Fin q) (WCb l) (TW (OW l O) T), ∀ i, c i = kappa T (c₀ i)` from `⟨c₀.map (LinearEquiv.ofBijective { toFun := kappa T, map_add' := map_add _, map_smul' := kappa_smul T } (kappa_bijective T)), fun _ => rfl⟩`.
+
+Take `⟨J, hJ⟩ : ∃ J : M →+ TW (OW l O) T, ∀ x, J x = kappa T (J₀ x)` from `⟨(kappa T).comp J₀, fun _ => rfl⟩`. Establish `hJs : ∀ (s : (Wq l a)⟦X⟧) x, J (s • x) = iR K t ϖ (toAc t K s) • J x` using `fun s x => by`. Rewrite using `[hJ, hJ, hJ₀, kappa_smul, iR_toAc]`. Establish `hc' : ∀ i, c i = J (β i)` using `fun i => by rw [hc, hc₀, hJ]`. Establish `hN : ∀ x, x ∈ J.range ↔ ∃ s : Fin q → (Wq l a)⟦X⟧, x = ∑ i, inclW l (ϖ.ev a (s i)) • c i`.
+
+Introduce `x`. Simplify using `only [hc', hW, ← iR_toAc K t, ← hJs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨β.repr y, by rw [← map_sum, β.sum_repr]⟩`.
+
+Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, map_sum _ _ _⟩`. Establish `hs : ∀ f, ∀ x ∈ J.range, iR K t ϖ f • x ∈ J.range`. Introduce and unpack `f _ ⟨y, rfl⟩`. Take `⟨s, rfl⟩` from `exists_eq_sum_toAc t K (Module.Free.chooseBasis ℤ_[l] O) f`.
+
+Rewrite using `[map_sum, Finset.sum_smul]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hO₀ (Module.Free.chooseBasis ℤ_[l] O i) (s i • y)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, hz, kappa_mulZ, ← hJ, hJs, map_smul, smul_assoc]`.
+
+Establish `hE : ∀ (k : ℕ) (x : WCb l ⊗[ℤ_[l]] ↥T.L.T), iR K t ϖ (fun _ => EIn l e _) ^ k • kappa T x = kappa T (inclW l (ϖ.ev a (eis l a e)) ^ k • x)` using `fun k x => by`. Rewrite using `[kappa_smul, iR_E, Algebra.TensorProduct.tmul_pow, one_pow]`. Take `⟨b, hb, hb'⟩` from `exists_basis t ϖ hW ((latBasis T).baseChange (OW l O)) c J.range hN hs`. Take `⟨P, hP, hP'⟩` from `exists_ident t ϖ (TWmap (frobOW l O) T).toAddMonoidHom (TWmap_smul T) b J.range hb hb' hs (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Take `⟨k, m, hm⟩` from `hφ y`. Use `⟨k, m, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, hJ, ← hm, ← hE, kappa_frob]`. Use the proof step `rfl) c (fun i => ⟨_, (hc' i).symm⟩) (by`. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Take `⟨k, s, hm⟩` from `hφ' y`. Use `⟨k, fun i => toAc t K (s i), ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, hE, hm, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[kappa_smul, kappa_frob, iR_toAc, hc]`.
+
+Use the proof step `rfl)`. Conclude with `⟨_, P, ⟨b.equivFun.symm, hP⟩, fun y => Iff.trans (exists_congr fun x => by rw [hJ, eq_comm]) (hP' y)⟩`.
+-/
 theorem exists_ident_of_basis {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) {M : Type}
     [AddCommGroup M] [Module (Wq l a)⟦X⟧ M] {q : ℕ} (β : Module.Basis (Fin q) (Wq l a)⟦X⟧ M) :
     letI := zlLat T
@@ -539,6 +714,11 @@ theorem exists_ident_of_basis {G : Type} [Group G] [TopologicalSpace G] (T : Loc
   exact ⟨_, P, ⟨b.equivFun.symm, hP⟩, fun y =>
     Iff.trans (exists_congr fun x => by rw [hJ, eq_comm]) (hP' y)⟩
 
+/- English proof (translation)
+Use `letI := zlLat T`. Take `⟨E, j, H⟩` from `h`. Establish `: IsLocalRing (ϖ.prism a).A` using `inferInstanceAs (IsLocalRing (Wq l a)⟦X⟧)`. Take `⟨q, β, c₀, hc₀, hφ, hφ'⟩` from `LocalValue.general (ϖ.toAinf a) E H.bc (fun y => TensorProduct.map (frobW l).toLinearMap LinearMap.id y) H.j_φ (Q := eis l a e) (Ideal.mem_span_singleton_self _) ((inclW l).comp (ϖ.ev a)) (fun _ => rfl) (ϖ.isUnit_inclW_ev_eis a).ne_zero`. Use `letI : Module (Wq l a)⟦X⟧ (E.M (ϖ.prism a)) := E.mod (ϖ.prism a)`.
+
+Take `⟨n, P, I, hI⟩` from `exists_ident_of_basis t ϖ T (M := E.M (ϖ.prism a)) β (j.toAddMonoidHom.comp (E.tr (ϖ.toAinf a)).toAddMonoidHom) c₀ (fun s x => (congrArg j ((E.tr (ϖ.toAinf a)).map_smulₛₗ s x)).trans (j.map_smulₛₗ _ _)) hc₀ hφ hφ' fun o y => by`. Take `⟨u, hu, -⟩` from `(BS l _ _ _ H.ainf).2 _ _ _ _ E E j j H H (mulZ T o) fun g x => ((T.actT g).map_smul o x).symm`. Conclude with `⟨u.u _ y, (congrArg j (u.u_tr (ϖ.toAinf a) y).symm).trans (hu _)⟩`. Conclude with `⟨⟨n, P, I, E, j, H, hI⟩⟩`.
+-/
 theorem nonempty_bkMod (BS : GlobalTheory.Published.BhattScholzeCrystallineLattices) (T : Lat a O K ϖ)
     (h : letI := zlLat T; ∃ E : FCrys l ↥(OL (ϖ.field a)), IsRealisation (ϖ.field a) E ↥T.L.T (actZ T)) :
     Nonempty (BKMod t ϖ T) := by
@@ -559,6 +739,9 @@ theorem nonempty_bkMod (BS : GlobalTheory.Published.BhattScholzeCrystallineLatti
       exact ⟨u.u _ y, (congrArg j (u.u_tr (ϖ.toAinf a) y).symm).trans (hu _)⟩
   exact ⟨⟨n, P, I, E, j, H, hI⟩⟩
 
+/- English proof (translation)
+Introduce `BS _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ t ϖ T h` and use `nonempty_bkMod t ϖ BS T h`.
+-/
 theorem main : GlobalTheory.Published.BhattScholzeCrystallineLattices → ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (T : Lat a O K ϖ), (letI := zlLat T; ∃ E : FCrys l ↥(OL (ϖ.field a)), IsRealisation (ϖ.field a) E ↥T.L.T (actZ T)) → Nonempty (BKMod t ϖ T) :=
   fun BS _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ t ϖ T h => nonempty_bkMod t ϖ BS T h
 

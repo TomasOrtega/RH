@@ -20,6 +20,11 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `i k k' hkk' hl r ρ hr hdec eta s S sg U h1 h2 h3 h4 h5 h6 h7 h8`. Establish `hQ` using `hl5 i k k' hkk' hl r ρ hr hdec eta s S sg U h1 h2 h3 h4 h5 h6 h7 h8`. Establish `hc` using `hcut i k hl`. Use `choose! Xs β b hcb using hc`. Use `⟨Xs, β, b, fun π hπ => ⟨(hcb π hπ).1, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `hQ π hπ (Xs π) (hcb π hπ).1.1 (hcb π hπ).2`.
+-/
 theorem conclusion_of_typeLocus {D : D7} (P : Pend D) (CT : ℕ)
     (hcut : ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∀ π ∈ D.nd.Zgood i,
       ∃ (Xs : Set (D.nd.X i)) (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i),
@@ -34,6 +39,11 @@ theorem conclusion_of_typeLocus {D : D7} (P : Pend D) (CT : ℕ)
   refine ⟨Xs, β, b, fun π hπ => ⟨(hcb π hπ).1, ?_⟩⟩
   exact hQ π hπ (Xs π) (hcb π hπ).1.1 (hcb π hπ).2
 
+/- English proof (translation)
+Introduce `hGAR D P HW F C CT hC hadm5 hEig hTie hT hLOC hRbar hN5g hDZ hG14 hG5 hG6 hSer hTB hBK hBC hLGC htie0 htieChi`. Establish `hSteps : StepsNoCut` using `GlobalTheory.T.steps_of_artin_reciprocity hGAR`. Establish `hCent : CentralElt D` using `hSteps.2.1 hSteps.1 D P`. Establish `hl5` using `GlobalTheory.Pass.cutBound_of_steps hSteps D P HW F CT hadm5 (GlobalTheory.Per.ResFinite.adm12_elementDenominator D) hTie hT hLOC hRbar hN5g hDZ hG14 hG5 hG6 hTB hBK hBC hLGC (GlobalTheory.FontaineAdmissible.fontaineProperties_all_places D) htie0 htieChi`. Establish `hcut` using `GlobalTheory.T.exists_type_locus D P hSer hBC hLGC htie0 hadm5 hEig hCent`.
+
+Establish `h3 : CongruenceAtTypePrimes (D` using `D) CT (CongruenceLocalDecomposition CT) := conclusion_of_typeLocus P CT hcut hl5`. Establish `h4 : CongruenceAtTypePrimes (D` using `D) CT (EtaBound CT) := by`. Introduce `i k k' hkk' hl r ρ hr hdec eta s S sg U h1 h2 h3' h4 h5 h6 h7 h8`. Conclude with `GlobalTheory.EtaFromCut.etaBound_of_cut D CT i k ρ eta (h3 i k k' hkk' hl r ρ hr hdec eta s S sg U h1 h2 h3' h4 h5 h6 h7 h8)`. Conclude with `GlobalTheory.typePrimeBound_of_etaBound D C CT hC h4`.
+-/
 theorem conclusion_of_admissibles : GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (P : Pend D) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (C : ℝ) (CT : ℕ), 8 * (CT : ℝ) ≤ C → SumRepresentations.adm5 D → EigSpan P → TieInePoly D → admT (D := D) CT → LocalPushoutProposition (D := D) → ResidualAbsIrreducible (D := D) → TypePrimeChoiceLemmas (D := D) → admDZ P → GaloisFamilyConditions (D := D) → admG5 (D := D) → admG6 (D := D) → GlobalTheory.TypeLeaf.SerLoc D → admTB (D := D) HW F → admBK (D := D) → admBC (D := D) → LocalGlobalCompatibilityAlt (D := D) → SumRepresentations.tie0 D → tieChi (D := D) → PairedCharacterCondition.aux₃ (D := D) C CT := by
   intro hGAR D P HW F C CT hC hadm5 hEig hTie hT hLOC hRbar hN5g hDZ hG14 hG5 hG6 hSer hTB hBK hBC hLGC htie0 htieChi
   have hSteps : StepsNoCut := GlobalTheory.T.steps_of_artin_reciprocity hGAR

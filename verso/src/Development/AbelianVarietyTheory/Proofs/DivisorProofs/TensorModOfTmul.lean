@@ -27,6 +27,9 @@ def crysAct (κ : DividedPowers I) (t : S ⟶ Sp R') {A : Over S} [GrpObj A] {O 
       haveI : IsMonHom (a.act x * a.act y) := a.add x y ▸ a.hom _
       exact (push_congr κ t (a.add x y)).trans (push_mul κ t _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem crysAct_apply (κ : DividedPowers I) (t : S ⟶ Sp R') {A : Over S} [GrpObj A] {O : Type} [Ring O]
     (a : GlobalTheory.UPel.HT.OActN O A) (x : O) (h : Crys κ t A) :
     crysAct κ t a x h = (haveI := a.hom x; push κ t (a.act x) h) := rfl
@@ -36,6 +39,9 @@ theorem crysAct_apply (κ : DividedPowers I) (t : S ⟶ Sp R') {A : Over S} [Grp
   Module.compHom H (Algebra.TensorProduct.lift (Algebra.ofId C (Module.End C H)) ρ.toIntAlgHom
     fun r _ ↦ Algebra.commutes r _).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tensorModOf_tmul {C H B : Type*} [CommRing C] [AddCommGroup H] [Module C H] [CommRing B]
     (ρ : B →+* Module.End C H) (r : C) (x : B) (h : H) :
     (letI := tensorModOf ρ; (r ⊗ₜ[ℤ] x : C ⊗[ℤ] B) • h) = r • ρ x h := rfl

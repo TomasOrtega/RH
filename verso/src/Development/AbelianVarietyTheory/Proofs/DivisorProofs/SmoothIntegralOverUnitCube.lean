@@ -4,6 +4,23 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E ι _ _ _ O F hO hF`. Set `χ : ContDiffBump (0 : ι → ℝ)` to `⟨1, 2, one_pos, one_lt_two⟩`. Set `g : E → (ι → ℝ) → ℂ` to `fun p y => χ (-y) • F (p, -y)`. Establish `hf : LocallyIntegrable ((Icc (0 : ι → ℝ) 1).indicator (fun _ => (1 : ℝ))) volume` using `((integrable_indicator_iff measurableSet_Icc).2 (integrableOn_const (by simp [Real.volume_Icc_pi]) )).locallyIntegrable`. Establish `hgs : ∀ p, ∀ y, p ∈ O → y ∉ Metric.closedBall (0 : ι → ℝ) 2 → g p y = 0`.
+
+Introduce `p y _ hy`. Establish `h2 : χ (-y) = 0`. Apply `Function.notMem_support.1` to reduce the goal to its premises. Rewrite using `[χ.support_eq]`. Simplify using `only [Metric.mem_ball, dist_zero_right, norm_neg]`.
+
+Simplify using `only [Metric.mem_closedBall, dist_zero_right, not_le] at hy`. Conclude with `fun h => lt_asymm h hy`. Simplify using `[g, h2]`. Establish `hg : ContDiffOn ℝ (⊤ : ℕ∞) (↿g) (O ×ˢ Set.univ)`. Establish `h1 : ContDiff ℝ ∞ (fun p : E × (ι → ℝ) => (p.1, -p.2))` using `contDiff_fst.prodMk contDiff_snd.neg`.
+
+Establish `hF' : ContDiffOn ℝ ∞ (fun p : E × (ι → ℝ) => F (p.1, -p.2)) (O ×ˢ Set.univ)`. Use `hF.comp h1.contDiffOn ?_` and prove the remaining obligations. Introduce and unpack `⟨p, x⟩ ⟨hp, -⟩`. Conclude with `⟨hp, Set.mem_univ _⟩`. Establish `hχ : ContDiffOn ℝ ∞ (fun p : E × (ι → ℝ) => χ (-p.2)) (O ×ˢ Set.univ)` using `(χ.contDiff.comp contDiff_snd.neg).contDiffOn`.
+
+Conclude with `hχ.smul hF'`. Establish `hv : ContDiffOn ℝ (⊤ : ℕ∞) (fun _ : E => (0 : ι → ℝ)) O` using `contDiffOn_const`. Establish `main` using `contDiffOn_convolution_right_with_param_comp (μ := volume) (ContinuousLinearMap.lsmul ℝ ℝ : ℝ →L[ℝ] ℂ →L[ℝ] ℂ) hv hO (isCompact_closedBall 0 2) hgs hf hg`. Use `main.congr ?_` and prove the remaining obligations. Introduce `v _`.
+
+Rewrite using `[← integral_indicator measurableSet_Icc]`. Simplify using `only [convolution_def, ContinuousLinearMap.lsmul_apply, zero_sub, neg_neg, g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Distinguish the cases in `ht : t ∈ Icc (0 : ι → ℝ) 1`. Establish `hχt : χ t = 1`.
+
+Apply `χ.one_of_mem_closedBall` to reduce the goal to its premises. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Establish `h0 : (0 : ℝ) ≤ t i` using `ht.1 i`.
+
+Conclude with `⟨by linarith, ht.2 i⟩`. Simplify using `[Set.indicator_of_mem ht, hχt]`. Simplify using `[Set.indicator_of_notMem ht]`.
+-/
 theorem contDiffOn_setIntegral_Icc_of_contDiffOn_param :
     ∀ (E ι : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [Fintype ι] (O : Set E)
       (F : E × (ι → ℝ) → ℂ), IsOpen O → ContDiffOn ℝ ∞ F (O ×ˢ Set.univ) →

@@ -13,6 +13,11 @@ namespace ReciprocityTheory.ChartRestriction.G.H1.CanonicalLiftFrobenius
 
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Unfold `sval`. Use `erw [hs (fun k => J (r ≫ φ k))]`. Unfold `gs`. Use `split_ifs`. Use `erw [map_zero, map_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sval_zero {X Y Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s : LB.Sec (LB.LinComb L φ ε)) (hs : ∀ j, s.f j = 0) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) :
     sval s r z J = 0 := by
@@ -27,6 +32,21 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {D : DegData V (maximalIdeal V)} {F : Type} [Field F] [Algebra (FractionRing V) F]
   {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
+/- English proof (translation)
+Rewrite using `[phiRel_iff hG p w hw θα θα]`. Introduce `a' β hβ T ρ z' J hJ`. Distinguish the cases in `ha : ∃ χ, a' = star a • χ`. Take `⟨χ, rfl⟩` from `ha`. Substitute `hβ` using the available equality.
+
+Establish `e3 : star a • χ + p.y = star a • (χ - z)` using `by rw [hy, smul_sub, sub_eq_add_neg]`. Establish `e4 : χ + 1 • -z = χ - z` using `by rw [one_smul, sub_eq_add_neg]`. Rewrite using `[e3]`. Take `⟨uχz, huχz, hcz, hsz⟩` from `hpull.1 (χ - z)`. Take `⟨uχ, huχ, hc, hs⟩` from `hpull.1 χ`.
+
+Take `⟨⟨fe, hfe, hcfe⟩, -⟩` from `gen_fe (D := D.toPre) (F := F) hG 1 (-z) χ`. Take `⟨⟨Φ, hΦ, hcΦ⟩, hΦv⟩` from `gen_phi hG p w hw (star a • χ)`. Establish `s1` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ uχz).1 hsz _ ρ.left z' J hJ`. Establish `s2` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ fe).1 (θ.fe (-z) χ fe hfe hcfe) _ (ρ.left ≫ (aF D F oa a).left) z' J hJ`. Rewrite `s2` using `[e4]`.
+
+Establish `s3` using `(secRel_iff D.toPre.P.isLB _ _ _ _ _ _ _ _ _ uχ).1 hs _ (ρ ≫ DegPre.trPt D.toPre F p.g.b).left z' J hJ`. Establish `pt : (ρ ≫ DegPre.trPt D.toPre F p.g.b).left ≫ (aF D F oa a).left = (ρ.left ≫ (aF D F oa a).left) ≫ (DegPre.trF D.toPre F (-z)).left`. Rewrite using `[← Over.comp_left, Category.assoc, CanonicalLiftEigen.tr_aF oa a p.g.b z hb, ← Category.assoc, Over.comp_left, Over.comp_left]`. Establish `eig` using `CanonicalLiftEigen.eigen_of_origin hG oa a N p z hy hb χ uχ huχ uχz huχz fe hfe Φ hΦ (fun y J hJ => CanonicalLiftOrigin.origin hG oa a N p z r hr hr0 hrel u0 hu0 hc0 w hw hwv χ uχ huχ hc uχz hcz fe hcfe Φ hΦ hcΦ y J hJ) _ ρ.left z' J hJ`. Establish `hΦρ` using `hΦv Φ hΦ hcΦ T ρ z' J hJ`.
+
+Establish `eig' : (val fe (ρ.left ≫ (aF D F oa a).left) z' J).val * (val uχz ρ.left z' J).val = (val uχ (ρ ≫ DegPre.trPt D.toPre F p.g.b).left z' J).val * (val Φ ρ.left z' J).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul, _root_.mul_comm]`. Conclude with `congrArg Units.val eig.symm`. Rewrite using `[s1, s2, s3, pt, ← hΦρ, _root_.mul_assoc, _root_.mul_assoc, eig']`. Establish `hβn : ∀ χ, β ≠ star a • χ`.
+
+Introduce `χ h`. Apply `ha` to reduce the goal to its premises. Use `⟨χ + z, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, ← h, ← hβ, hy]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[sval_zero _ (hpull.2 β hβn), sval_zero _ (hpull.2 a' (fun χ h => ha ⟨χ, h⟩)), MulZeroClass.zero_mul]`.
+-/
 theorem phi_fixes (hG : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (N : ℕ) (p : QkPt D.toPre F (1 * N))
     (z : D.toPre.X) (hy : p.y = -(star a • z)) (hb : p.g.b ≫ oa.onB.act a = cP D.toPre _ (-z))
     (r : LB.Gen (LB.LinComb D.toPre.P.L (rosatiφ D.toPre.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε))

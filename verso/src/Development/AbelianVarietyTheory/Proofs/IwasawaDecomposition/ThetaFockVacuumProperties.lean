@@ -18,6 +18,15 @@ namespace GlobalTheory.OneMapRef.VecP
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨ε, hε, hB, -⟩` from `h`. Establish `hε1 : ∀ a, ε a = 1` using `fun a => ((hε a).resolve_right fun h' => absurd h'.2 (not_le.mpr a.2)).1`. Establish `hB1 : Bᴴ * G * B = 1` using `by simpa [hε1] using hB`. Establish `hBC : B * (Bᴴ * G) = 1` using `mul_eq_one_comm.mp hB1`. Establish `hGB : G * B = (Bᴴ * G)ᴴ`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hG : G = (Bᴴ * G)ᴴ * (Bᴴ * G)`. Combine the equalities or inequalities in the displayed calculation. Establish `hinj : Function.Injective (Bᴴ * G).mulVec`. Introduce `v w hvw`.
+
+Establish `h2` using `congrArg (fun x => B *ᵥ x) hvw`. Simplify `h2` using `only [Matrix.mulVec_mulVec, hBC, Matrix.one_mulVec]`. Unfold `IsCartanInv`. Use `⟨by simp, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_one, hG]`.
+
+Conclude with `Matrix.PosDef.conjTranspose_mul_self _ hinj`.
+-/
 theorem isCartanInv_one_of_onb {k : ℕ} {G B : Matrix (Fin k) (Fin k) ℂ} (h : IsONBasis G 1 B k) : IsCartanInv G 1 := by
   obtain ⟨ε, hε, hB, -⟩ := h
   have hε1 : ∀ a, ε a = 1 := fun a =>

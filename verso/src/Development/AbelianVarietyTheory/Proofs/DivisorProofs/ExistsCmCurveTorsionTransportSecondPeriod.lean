@@ -15,17 +15,28 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport (IsLatOf IsInv
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[IsLatOf, Set.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem isLatOf_iff {ι : K →+* ℂ} {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {Λ : PeriodPair} :
     IsLatOf ι 𝔞 Λ ↔ ∀ z, z ∈ Λ.lattice ↔ ∃ x ∈ 𝔞, ι x = z := by
   rw [IsLatOf, Set.ext_iff]
   rfl
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← algebraMap_mem_adelicIdeal (GlobalTheory.Idele.smul_ne_zero _ (one_ne_zero : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0)), ← mem_adelicIdeal_one_iff, ← mul_mem_adelicIdeal_smul t⁻¹ 1 ((t : Af K) * algebraMap K _ x), Units.inv_mul_cancel_left]`.
+-/
 theorem isInvIdealOf_inv_smul_one (t : (Af K)ˣ) :
     IsInvIdealOf t (t⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K)) := by
   intro x
   rw [← algebraMap_mem_adelicIdeal (GlobalTheory.Idele.smul_ne_zero _ (one_ne_zero : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0)), ← mem_adelicIdeal_one_iff,
     ← mul_mem_adelicIdeal_smul t⁻¹ 1 ((t : Af K) * algebraMap K _ x), Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[mulEquiv_mk_eq_mk_iff_adelic]`. Establish `e : ((t⁻¹ : (Af K)ˣ) : Af K) * algebraMap K (Af K) x - algebraMap K (Af K) x' = ((t⁻¹ : (Af K)ˣ) : Af K) * -((t : Af K) * algebraMap K (Af K) x' - algebraMap K (Af K) x)`. Rewrite using `[mul_neg, mul_sub, Units.inv_mul_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_mem_adelicIdeal_smul]`.
+
+Conclude with `neg_mem (mem_adelicIdeal_one_iff.2 h)`.
+-/
 theorem mulEquiv_inv_mk (t : (Af K)ˣ) {x x' : K}
     (h : ∀ v : HeightOneSpectrum (𝓞 K),
       Valued.v (((t : Af K) * algebraMap K (Af K) x' - algebraMap K (Af K) x) v) ≤ 1) :
@@ -39,6 +50,27 @@ theorem mulEquiv_inv_mk (t : (Af K)ˣ) {x x' : K}
   rw [e, mul_mem_adelicIdeal_smul]
   exact neg_mem (mem_adelicIdeal_one_iff.2 h)
 
+/- English proof (translation)
+Introduce `K _ _ _ _ ι Λ₀ Ω₀ hΛ₀ hΩ₀`. Use `letI : Algebra K ℂ := ι.toAlgebra`. Establish `hAlg : ∀ y : K, algebraMap K ℂ y = ι y` using `fun _ => rfl`. Establish `hsubIff : ∀ {𝔞 : FractionalIdeal (𝓞 K)⁰ K} {Λ : PeriodPair}, (IsLatOf ι 𝔞 Λ ↔ ∀ z, z ∈ idealSub 𝔞 ↔ z ∈ Λ.lattice)` using `fun {𝔞 Λ} => by`. Rewrite using `[isLatOf_iff]`.
+
+Conclude with `forall_congr' fun z => by rw [mem_idealSub]; exact Iff.comm`. Set `M` to `GlobalTheory.scalePeriods Λ₀ Ω₀ hΩ₀`. Establish `hM : GlobalTheory.IsHomothetic Ω₀ Λ₀ M` using `GlobalTheory.isHomothetic_scalePeriods Λ₀ Ω₀ hΩ₀`. Establish `hsub : ∀ z, z ∈ idealSub (1 : FractionalIdeal (𝓞 K)⁰ K) ↔ Ω₀ * z ∈ M.lattice` using `fun z => by`. Rewrite using `[hM z]`.
+
+Conclude with `hsubIff.1 hΛ₀ z`. Take `⟨ξ, hξ, hξz⟩` from `exists_isAnalyticIso (X := latticeCurve M) (C := 1) (one_smul _ _) hΩ₀ hsub`. Use `⟨latticeCurve M, inferInstance, ξ, hξ, fun σ t ht => ?_⟩` and prove the remaining obligations. Take `⟨η, ⟨hη, hηx⟩, -⟩` from `ht`. Take `⟨L', g2, g3⟩` from `GlobalTheory.CMRam.exists_conj_lattice σ.toRingEquiv M`.
+
+Establish `h' : (1 : VariableChange ℂ) • (latticeCurve M).map (σ : ℂ →+* ℂ) = latticeCurve L'`. Rewrite using `[one_smul]`. Simplify using `[latticeCurve, WeierstrassCurve.map, g2, g3, map_ofNat]`. Take `⟨α, hα0, hα, hηα⟩` from `hη.exists_mul h'`. Set `Λ₁` to `GlobalTheory.scalePeriods L' α⁻¹ (inv_ne_zero hα0)`.
+
+Establish `hΛ₁ : GlobalTheory.IsHomothetic α⁻¹ L' Λ₁` using `GlobalTheory.isHomothetic_scalePeriods L' α⁻¹ (inv_ne_zero hα0)`. Establish `hΛ₁' : GlobalTheory.IsHomothetic α Λ₁ L'` using `fun z => by`. Rewrite using `[← hΛ₁ (α * z), ← mul_assoc, inv_mul_cancel₀ hα0, one_mul]`. Establish `hlat1 : IsLatOf ι (t⁻¹ • 1) Λ₁` using `hsubIff.2 fun z => by rw [hα, hΛ₁' z]`. Use `⟨Λ₁, α, hΩ₀, hα0, fun x => σ.commutes x, hΛ₀, ⟨_, isInvIdealOf_inv_smul_one t, hlat1⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[div_eq_inv_mul, ← hM.g₂_eq, ← g2, hΛ₁'.g₂_eq, div_eq_inv_mul]`. Rewrite using `[div_eq_inv_mul, ← hM.g₃_eq, ← g3, hΛ₁'.g₃_eq, div_eq_inv_mul]`. Introduce `x x' hx hint`. Establish `e` using `hηx (Submodule.Quotient.mk x)`. Rewrite `e` using `[mulEquiv_inv_mk t hint, torsionIncl_mk, torsionIncl_mk, hξz, hηα, hAlg, hAlg]`.
+
+Establish `hxM : Ω₀ * ι x ∉ M.lattice` using `fun h => hx ((hM _).1 h)`. Rewrite `e` using `[latticePoint_of_notMem M hxM]`. Establish `hx' : α * ι x' ∉ L'.lattice`. Introduce `h`. Rewrite `e` using `[latticePoint_of_mem L' h, map_zero, variableChangePoint_some]`.
+
+Conclude with `Affine.Point.some_ne_zero _ e`. Rewrite `e` using `[latticePoint_of_notMem L' hx', variableChangePoint_some, variableChangePoint_some]`. Express the relevant statement in the definitionally equal form `Affine.Point.some _ _ _ = _ at e`. Rewrite `e` using `[Affine.Point.some.injEq]`. Simplify using `[VariableChange.one_def] at e`.
+
+Take `⟨e1, e2⟩` from `e`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul, ← hM.weierstrassP_mul, div_eq_inv_mul, ← hΛ₁'.weierstrassP_mul]`. Conclude with `e1`. Rewrite using `[div_eq_inv_mul, ← hM.derivWeierstrassP_mul, div_eq_inv_mul, ← hΛ₁'.derivWeierstrassP_mul]`.
+
+Rewrite `e2` using `[map_ofNat σ 2, div_left_inj' two_ne_zero]`. Conclude with `e2`.
+-/
 theorem exists_curve_torsTransport : ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K],
     Module.finrank ℚ K = 2 → ∀ (ι : K →+* ℂ) (Λ₀ : PeriodPair) (Ω₀ : ℂ), GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf ι 1 Λ₀ →
     Ω₀ ≠ 0 → letI : Algebra K ℂ := ι.toAlgebra;

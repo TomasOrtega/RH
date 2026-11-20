@@ -28,10 +28,18 @@ def projL (χ : MulChar F R) : (N → C) →ₗ[R] (N → C) where
       Finset.mul_sum]
     exact Finset.sum_congr rfl fun a _ => by ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma projL_apply (χ : MulChar F R) (g : N → C) (x : N) :
     projL χ g x = (Fintype.card Fˣ : C)⁻¹ *
       ∑ a : Fˣ, algebraMap R C (χ⁻¹ (a : F)) * g ((a : F) • x) := rfl
 
+/- English proof (translation)
+Take `⟨n, -, hn⟩` from `FiniteField.card F p`. Establish `hq : v ((Fintype.card F : ℕ) : C) < 1`. Rewrite using `[hn, Nat.cast_pow, map_pow]`. Conclude with `pow_lt_one₀ zero_le hvp n.ne_zero`. Establish `h1 : v (Fintype.card Fˣ : C) = 1`.
+
+Rewrite using `[Fintype.card_units, Nat.cast_sub Fintype.card_pos, Nat.cast_one, Valuation.map_sub_swap]`. Conclude with `v.map_one_sub_of_lt hq`. Conclude with `hv.exists_of_le_one (by rw [map_inv₀, h1, inv_one])`.
+-/
 lemma exists_inv_card {v : Valuation C NNReal} (hv : v.Integers R) (p : ℕ) [Fact p.Prime]
     (hvp : v (p : C) < 1) [CharP F p] :
     ∃ u : R, algebraMap R C u = (Fintype.card Fˣ : C)⁻¹ := by
@@ -44,6 +52,11 @@ lemma exists_inv_card {v : Valuation C NNReal} (hv : v.Integers R) (p : ℕ) [Fa
     exact v.map_one_sub_of_lt hq
   exact hv.exists_of_le_one (by rw [map_inv₀, h1, inv_one])
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hu`. Establish `: projL χ g = u • ∑ a : Fˣ, χ⁻¹ (a : F) • (fun x => g ((a : F) • x))`. Use function extensionality and compare the values at `x`. Rewrite using `[projL_apply, Pi.smul_apply, Finset.sum_apply, Algebra.smul_def, hu]`. Conclude with `congrArg _ (Finset.sum_congr rfl fun a _ => (Algebra.smul_def _ _).symm)`.
+
+Rewrite using `[this]`. Conclude with `S.smul_mem _ (S.sum_mem fun a _ => S.smul_mem _ (hS _ g hg))`.
+-/
 lemma projL_mem (hu : ∃ u : R, algebraMap R C u = (Fintype.card Fˣ : C)⁻¹) (χ : MulChar F R)
     (S : Submodule R (N → C)) (hS : FStable F S) {g : N → C} (hg : g ∈ S) : projL χ g ∈ S := by
   obtain ⟨u, hu⟩ := hu
@@ -55,15 +68,24 @@ lemma projL_mem (hu : ∃ u : R, algebraMap R C u = (Fintype.card Fˣ : C)⁻¹)
   exact S.smul_mem _ (S.sum_mem fun a _ => S.smul_mem _ (hS _ g hg))
 
 omit [Fintype F] [DecidableEq F] in
+/- English proof (translation)
+Introduce `a _ hg` and use `sq_pull (LinearMap.lsmul F N a).toAddMonoidHom M M (hM a) hg`.
+-/
 lemma fstable_sq {M : Submodule R (N → C)} (hM : FStable F M) :
     FStable F (sqIdeal (augIdeal M)) :=
   fun a _ hg => sq_pull (LinearMap.lsmul F N a).toAddMonoidHom M M (hM a) hg
 
 omit [Fintype F] [DecidableEq F] in
+/- English proof (translation)
+Rewrite using `[← MulChar.mul_apply, mul_inv_cancel, MulChar.one_apply_coe]`.
+-/
 lemma mul_inv_unit (χ : MulChar F R) (a : Fˣ) : χ (a : F) * χ⁻¹ (a : F) = 1 := by
   rw [← MulChar.mul_apply, mul_inv_cancel, MulChar.one_apply_coe]
 
 omit [Fintype F] [DecidableEq F] in
+/- English proof (translation)
+Introduce `g hg`. Rewrite using `[mem_aug]`. Use `⟨hg.1, ?_⟩` and prove the remaining obligations. Use `hg.2 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, MulChar.map_zero, map_zero, zero_mul]`. Then use the resulting hypothesis.
+-/
 lemma eig_le_aug (M : Submodule R (N → C)) (χ : MulChar F R) : eig M χ ≤ augIdeal M := by
   intro g hg
   rw [mem_aug]
@@ -71,6 +93,11 @@ lemma eig_le_aug (M : Submodule R (N → C)) (χ : MulChar F R) : eig M χ ≤ a
   have := hg.2 0 0
   rwa [zero_smul, MulChar.map_zero, map_zero, zero_mul] at this
 
+/- English proof (translation)
+Rewrite `hg` using `[mem_aug]`. Use `⟨projL_mem hu χ M hM hg.1, fun a x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`. Rewrite using `[ha, zero_smul, MulChar.map_zero, map_zero, zero_mul, projL_apply]`. Simplify using `only [smul_zero, hg.2, mul_zero, Finset.sum_const_zero]`.
+
+Take `⟨a, rfl⟩` from `(isUnit_iff_ne_zero.2 ha)`. Rewrite using `[projL_apply, projL_apply, mul_left_comm, Finset.mul_sum Finset.univ _ (algebraMap R C _), ← Equiv.sum_comp (Equiv.mulRight a) (fun b : Fˣ => algebraMap R C (χ (a : F)) * (algebraMap R C (χ⁻¹ (b : F)) * g ((b : F) • x)))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulRight, Units.val_mul, mul_smul, ← mul_assoc, ← map_mul, map_mul χ⁻¹, mul_left_comm, mul_inv_unit, mul_one]`.
+-/
 lemma projL_eig (hu : ∃ u : R, algebraMap R C u = (Fintype.card Fˣ : C)⁻¹) (χ : MulChar F R)
     {M : Submodule R (N → C)} (hM : FStable F M) {g : N → C} (hg : g ∈ augIdeal M) :
     projL χ g ∈ eig M χ := by
@@ -88,6 +115,11 @@ lemma projL_eig (hu : ∃ u : R, algebraMap R C u = (Fintype.card Fˣ : C)⁻¹)
     rw [Equiv.coe_mulRight, Units.val_mul, mul_smul, ← mul_assoc, ← map_mul, map_mul χ⁻¹,
       mul_left_comm, mul_inv_unit, mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h : ∀ a : Fˣ, algebraMap R C (χ⁻¹ (a : F)) * g ((a : F) • x) = g x` using `fun a => by`. Rewrite using `[hg.2, ← mul_assoc, ← map_mul, mul_comm (χ⁻¹ _), mul_inv_unit, map_one, one_mul]`. Rewrite using `[projL_apply]`. Simplify using `only [h]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 Fintype.card_ne_zero), one_mul]`.
+-/
 lemma projL_self [CharZero C] (χ : MulChar F R) {M : Submodule R (N → C)} {g : N → C}
     (hg : g ∈ eig M χ) : projL χ g = g := by
   funext x
@@ -98,6 +130,13 @@ lemma projL_self [CharZero C] (χ : MulChar F R) {M : Submodule R (N → C)} {g 
   rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← mul_assoc,
     inv_mul_cancel₀ (Nat.cast_ne_zero.2 Fintype.card_ne_zero), one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h : ∀ a : Fˣ, algebraMap R C (χ⁻¹ (a : F)) * g ((a : F) • x) = algebraMap R C ((χ⁻¹ * χ') (a : F)) * g x` using `fun a => by`. Rewrite using `[hg.2, ← mul_assoc, ← map_mul, MulChar.mul_apply]`. Establish `h0 : ∑ a : Fˣ, (χ⁻¹ * χ') (a : F) = 0`. Use `sum_hom_units_eq_zero ((χ⁻¹ * χ').toMonoidHom.comp (Units.coeHom F)) fun h1 => hne ?_` and prove the remaining obligations.
+
+Rewrite using `[← inv_mul_eq_one]`. Use `MulChar.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[MulChar.one_apply_coe]`. Conclude with `DFunLike.congr_fun h1 a`. Rewrite using `[projL_apply]`.
+
+Simplify using `only [h]`. Rewrite using `[← Finset.sum_mul, ← map_sum, h0, map_zero, zero_mul, mul_zero, Pi.zero_apply]`.
+-/
 lemma projL_ne [IsDomain R] {χ χ' : MulChar F R} (hne : χ ≠ χ') {M : Submodule R (N → C)}
     {g : N → C} (hg : g ∈ eig M χ') : projL χ g = 0 := by
   funext x
@@ -114,6 +153,17 @@ lemma projL_ne [IsDomain R] {χ χ' : MulChar F R} (hne : χ ≠ χ') {M : Submo
   simp only [h]
   rw [← Finset.sum_mul, ← map_sum, h0, map_zero, zero_mul, mul_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h : ∀ a : Fˣ, ∑ i : Fin (Fintype.card Fˣ), (σ ^ ((i : ℕ) + 1))⁻¹ (a : F) = if a = 1 then (Fintype.card Fˣ : R) else 0`. Introduce `a`. Use `split_ifs with ha`. Simplify using `[ha]`.
+
+Establish `hp : ∀ i : ℕ, (σ ^ (i + 1))⁻¹ (a : F) = σ⁻¹ (a : F) ^ i * σ⁻¹ (a : F)` using `fun i => by`. Rewrite using `[← inv_pow, MulChar.pow_apply_coe, pow_succ]`. Simplify using `only [hp]`. Rewrite using `[← Finset.sum_mul, Fin.sum_univ_eq_sum_range (fun i => σ⁻¹ (a : F) ^ i)]`. Establish `h1` using `geom_sum_mul (σ⁻¹ (a : F)) (Fintype.card Fˣ)`.
+
+Rewrite `h1` using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one, sub_self]`. Establish `h2 : σ⁻¹ (a : F) - 1 ≠ 0` using `fun h => ha (hσ a (by`. Use `mul_inv_unit σ a` as an intermediate fact. Rewrite using `[sub_eq_zero.1 h, mul_one] at this))` and apply the resulting hypothesis. Rewrite using `[(mul_eq_zero.1 h1).resolve_right h2, zero_mul]`.
+
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [projL_apply]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [← Finset.sum_mul, ← map_sum, h]`. Rewrite using `[Finset.sum_eq_single 1 (fun a _ ha => by simp [ha]) (by simp)]`.
+
+Rewrite using `[if_pos rfl, map_natCast, Units.val_one, one_smul, ← mul_assoc, inv_mul_cancel₀ (Nat.cast_ne_zero.2 Fintype.card_ne_zero), one_mul]`.
+-/
 lemma sum_projL [CharZero C] [IsDomain R] (σ : MulChar F R)
     (hσ : ∀ a : Fˣ, σ (a : F) = 1 → a = 1) (g : N → C) :
     ∑ i : Fin (Fintype.card Fˣ), projL (σ ^ ((i : ℕ) + 1)) g = g := by
@@ -142,12 +192,18 @@ lemma sum_projL [CharZero C] [IsDomain R] (σ : MulChar F R)
   rw [if_pos rfl, map_natCast, Units.val_one, one_smul, ← mul_assoc,
     inv_mul_cancel₀ (Nat.cast_ne_zero.2 Fintype.card_ne_zero), one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [projL_apply, LinearMap.funLeft_apply, map_smul]`.
+-/
 lemma projL_funLeft (χ : MulChar F R) (φ : X →ₗ[F] N) (g : N → C) :
     projL χ (LinearMap.funLeft R C φ g) = LinearMap.funLeft R C φ (projL χ g) := by
   funext x
   simp only [projL_apply, LinearMap.funLeft_apply, map_smul]
 
 omit [Fintype F] [DecidableEq F] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h g hg.1, fun a x => by simp only [LinearMap.funLeft_apply, map_smul, hg.2]⟩`.
+-/
 lemma eig_pull (χ : MulChar F R) (φ : X →ₗ[F] N) (M : Submodule R (N → C))
     (M' : Submodule R (X → C)) (h : ∀ g ∈ M, LinearMap.funLeft R C φ g ∈ M') {g : N → C}
     (hg : g ∈ eig M χ) : LinearMap.funLeft R C φ g ∈ eig M' χ :=

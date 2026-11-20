@@ -24,11 +24,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_NcS]`. Conclude with `⟨W.map_N F h1 h2 x hx.1, univLinkPf_map_DelS W F hx.2.1, by rw [← map_letA_smul, hx.2.2]⟩`.
+-/
 theorem u3downPf_map_NcS {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (h1 : IsCrys PD T₁.ρ)
     (h2 : IsCrys PD T₂.ρ) (c : ZMod n) {x : W.DD T₁} (hx : x ∈ NcS W T₁ c) : W.map F x ∈ NcS W T₂ c := by
   rw [mem_NcS] at hx ⊢
   exact ⟨W.map_N F h1 h2 x hx.1, univLinkPf_map_DelS W F hx.2.1, by rw [← map_letA_smul, hx.2.2]⟩
 
+/- English proof (translation)
+Unfold `mkL`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap]`. Simplify using `using h`.
+-/
 theorem u3downPf_mkL_eq (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n) {x z : W.DD T}
     (hx : x ∈ NcS W T (c - 1)) (hz : z ∈ NcS W T (c - 1)) (r : O) (h : z - r • x ∈ PiNS W T π' 1) :
     mkL W T π' c z hz = r • mkL W T π' c x hx := by
@@ -36,6 +42,15 @@ theorem u3downPf_mkL_eq (T : LocLat G Qp LL O) (π' : LetA O n) (c : ZMod n) {x 
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, Submodule.mem_comap]
   simpa using h
 
+/- English proof (translation)
+Introduce `f hf x hx _ h1 y hy hα`. Take `⟨x₁, hx₁, hdiff⟩` from `hK x hx`. Establish `hyI : y ∈ InvS W T₂ π' Eπ h' 1 c` using `hMF2.2.2.2.1 _ h1 y hy hα (hC2 x hx f hf)`. Establish `hI1` using `hC1 x₁ hx₁ f hf`. Establish `hL1 : f ⊗ₜ mkL W T₁ π' c x₁ hx₁ ∈ LamLA W T₁ π' Eπ h' c ⊤` using `(Submodule.mem_inf.1 hI1).1`.
+
+Take `⟨w₁, hw₁⟩` from `Submodule.Quotient.mk_surjective _ (α T₁ ⟨_, hL1⟩)`. Establish `hw₁I : (w₁ : W.DD T₁) ∈ InvS W T₁ π' Eπ h' 1 c` using `hMF1.2.2.2.1 _ hL1 w₁ w₁.2 hw₁.symm hI1`. Establish `hmx : W.map F x₁ ∈ NcS W T₂ (c - 1)` using `u3downPf_map_NcS W F hc1 hc2 (c - 1) hx₁`. Establish `hL2 : f ⊗ₜ mkL W T₂ π' c (W.map F x₁) hmx ∈ LamLA W T₂ π' Eπ h' c ⊤` using `(Submodule.mem_inf.1 (hC2 _ hmx f hf)).1`. Establish `hy₂ : W.map F (w₁ : W.DD T₁) ∈ LamPS W T₂ Eπ h' c` using `univLinkPf_map_LamPS W F hc1 hc2 Eπ h' c w₁.2`.
+
+Establish `hnat` using `(hfr.2 T₁ T₂ F hc1 hc2 hj1 hj2).1 _ hL1 _ hL2 _ w₁.2 hy₂ ⟨1, fun _ => f, fun _ => x₁, fun _ => hx₁, fun _ => hmx, by simp, by simp⟩ hw₁.symm`. Establish `heq : mkL W T₂ π' c (W.map F x₁) hmx = ((PD.p : ℕ) : O) ^ ρ • mkL W T₂ π' c x hx` using `u3downPf_mkL_eq W T₂ π' c hx hmx _ hdiff`. Establish `hsub : (⟨_, hL2⟩ : ↥(LamLA W T₂ π' Eπ h' c ⊤)) = ((PD.p : ℕ) : O) ^ ρ • ⟨_, h1⟩` using `Subtype.ext (by simp [heq, TensorProduct.tmul_smul])`. Rewrite `hnat` using `[hsub, map_smul, hα]`. Establish `hJ : Submodule.Quotient.mk (((PD.p : ℕ) : O) ^ ρ • (⟨y, hy⟩ : ↥(LamPS W T₂ Eπ h' c)) - ⟨_, hy₂⟩) = (0 : QLamP W T₂ π' Eπ h' M c)`.
+
+Rewrite using `[Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul, sub_eq_zero]`. Conclude with `hnat`. Establish `hP` using `univLinkPf_PiNS_anti W T₂ π' hM (univLinkPf_JP W T₂ hMF2 hM _ hJ)`. Use `⟨hyI, w₁, hw₁I, ?_⟩` and prove the remaining obligations. Simplify using `using hP`.
+-/
 theorem u3downPf_core {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     {Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop} {π' Eπ : LetA O n} {h' M σ S ρ : ℕ}
     {up : (K →ₐ[Qp] LL) → Bool} {b : (K →ₐ[Qp] LL) → ℕ} {c : ZMod n}
@@ -76,6 +91,9 @@ theorem u3downPf_core {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
   refine ⟨hyI, w₁, hw₁I, ?_⟩
   simpa using hP
 
+/- English proof (translation)
+Introduce `a ha`. Establish `h` using `hj a ha`. Unfold `deep at h`. Apply the tactic sequence `split_ifs at h <;> simp only [Set.mem_union, Set.mem_Icc] at h ⊢ <;> omega`.
+-/
 theorem u3downPf_jumps (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (u : Bool) (bt S η h' : ℕ)
     (hj : JumpsInV PD T.ρ τ (deep u bt S ∪ Set.Icc (-(η : ℤ)) η)) (hηb : η < bt) (hbS : bt + S ≤ h') :
     JumpsInV PD T.ρ τ (Set.Icc (-(h' : ℤ)) h') := by
@@ -88,6 +106,11 @@ end Local
 
 section Record
 
+/- English proof (translation)
+Establish `hd` using `Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG`. Establish `hl1 : 0 < l - 1` using `by have := (Fact.out : l.Prime).two_le; omega`. Establish `he : 0 < eK K`. Break down `Nat.eq_zero_or_pos (eK K) with h | h` into its components or cases. Rewrite `hd` using `[h, zero_dvd_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `h`. Conclude with `Nat.div_pos (Nat.le_of_dvd hl1 hd) he`.
+-/
 theorem u3downPf_sK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l) (hG : Good K 1 LL) :
     1 ≤ sK l K := by
   have hd := Formalism.MainNotions.N.Ln34.DvdPf.dvdCondition l hl K LL hG
@@ -98,11 +121,31 @@ theorem u3downPf_sK_pos {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) (K LL : FinExt l
     · exact h
   exact Nat.div_pos (Nat.le_of_dvd hl1 hd) he
 
+/- English proof (translation)
+Introduce `l _ hl K LL hG π' E hp T₁ T₂ F h' _ hc1 hc2 hon hj1 c y hy`. Take `⟨x, hx, hxy⟩` from `hW l hl K LL hG π' E hp T₁ T₂ F h' hc1 hc2 hon hj1 (c - 1) y hy`. Conclude with `⟨x, hx, by rw [hxy, sub_self]; exact Submodule.zero_mem _⟩`.
+-/
 theorem u3downPf_modelK_of_wKill (D : D7) (HW : HWOf D.loc) (hW : wKillR D HW) : modelKR D HW := by
   intro l _ hl K LL hG π' E hp T₁ T₂ F h' _ hc1 hc2 hon hj1 c y hy
   obtain ⟨x, hx, hxy⟩ := hW l hl K LL hG π' E hp T₁ T₂ F h' hc1 hc2 hon hj1 (c - 1) y hy
   exact ⟨x, hx, by rw [hxy, sub_self]; exact Submodule.zero_mem _⟩
 
+/- English proof (translation)
+Introduce `x hx _ f hf`. Take `⟨-, -, ⟨w, hw⟩, -, ⟨w', hw'⟩, -⟩` from `hp`. Establish `hprim : ∀ τ ζ, Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG c ζ τ → IsPrimitiveRoot ζ ((D.loc l).PD K).p`. Introduce `τ ζ hpt`. Rewrite using `[(D.loc l).PD_p K]`.
+
+Conclude with `framepf_pt_prim D HW hG c ζ τ hpt`. Establish `hdown' : ∀ τ ζ, Formalism.MainNotions.DeltaInvariantLattices.ptK D.loc HW hG c ζ τ → up τ = false` using `fun τ ζ hpt => hdown τ (u3upPf_pt_over D HW hG c ζ τ hpt)`. Establish `hs : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hgk : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs (by rw [(D.loc l).PD_p K]; exact hl)`. Use `u3downPf_lemC ((HW l).W K 1 LL hG) T _ π' _ h' S up b c ?_ ?_ hdown' ?_ ?_ ?_ ?_ ?_ x hx f hf` and prove the remaining obligations.
+
+Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (((HW l).W K 1 LL hG).EE_π.pow _)`. Establish `hq` using `Formalism.MainNotions.LiftingTheory.liftb_q_unit ((HW l).W K 1 LL hG)`. Rewrite `hq` using `[hw', map_mul]`. Conclude with `isUnit_of_mul_isUnit_right hq`.
+
+Introduce `τ ζ hpt`. Conclude with `u3downPf_cc_π' _ c ζ (hprim τ ζ hpt) π' _ w hw`. Introduce `τ ζ hpt`. Conclude with `u3downPf_lev_E _ c ζ (hprim τ ζ hpt) _ w' hw'`. Introduce `τ ζ hpt`.
+
+Use `⟨algebraMap ↥(OL LL) ↥LL.1 (((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gamK : ↥(OL LL)), (((((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gamK).isUnit.map (algebraMap ↥(OL LL) ↥LL.1)).ne_zero), fun a => ?_⟩` and prove the remaining obligations. Establish `hv : ((1 : ℕ) : WithTop ℚ) ≤ (D.loc l).v LL (algebraMap ↥(OL LL) ↥LL.1 (((HW l).W K 1 LL hG).χΓ ((HW l).W K 1 LL hG).gamK : ↥(OL LL)) - ((1 : ℕ) : ↥LL.1))`. Rewrite using `[hgk, Nat.cast_one, Nat.cast_one, ((HW l).W K 1 LL hG).gam_gen, hs, Nat.cast_one]`. Establish `h1' : IsPrimitiveRoot ζ (((D.loc l).PD K).p ^ 1)` using `by rw [pow_one]; exact hprim τ ζ hpt`. Use `((Cm l).C K 1 LL hG).tie.lev_Γ ((HW l).W K 1 LL hG).gamK c ζ ζ 1 1 h1' hv (by rw [pow_one]) a` as an intermediate fact.
+
+Conclude with `this`. Introduce `x' hx' τ ζ hpt`. Conclude with `u3downPf_valAt_fil _ T c ζ τ (((h1 l K 1 LL hG).2.2.2.1 T hc).2 c ζ τ hpt).2.1 x' hx'`. Introduce `τ ζ hpt a hJ`. Establish `h` using `hj τ a hJ`.
+
+Establish `hd` using `hdown' τ ζ hpt`. Establish `hb` using `hηb τ`. Unfold `deep at h`. Rewrite `h` using `[if_neg (by simp [hd])]`. Simplify using `only [Set.mem_union, Set.mem_Icc] at h`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem u3downPf_lemC_rec (D : D7) (HW : HWOf D.loc) (Fo : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW Fo) (h1 : adm1 D HW Fo Cm) {l : ℕ} [Fact l.Prime] (hl : l ≠ 2)
     (K LL : FinExt l) (hG : Good K 1 LL) (π' : LetA ↥(OL LL) (finrank ℚ_[l] ↥(K0 K)))
@@ -157,6 +200,13 @@ theorem u3downPf_lemC_rec (D : D7) (HW : HWOf D.loc) (Fo : FonOf D.loc D.locA HW
     simp only [Set.mem_union, Set.mem_Icc] at h
     omega
 
+/- English proof (translation)
+Introduce `D HW Fo Cm CA CB CK hA hMF l _ hl K LL hG π' E hp T₁ T₂ F S η m h' up b c α β hfr hN hdown`. Take `⟨hc1, hc2, hon, hj1, hj2, hηb, hbS, hh', -, -⟩` from `hN`. Establish `hJ1 : ∀ τ, JumpsInV ((D.loc l).PD K) T₁.ρ τ (Set.Icc (-(h' : ℤ)) h')` using `fun τ => u3downPf_jumps T₁ τ (up τ) (b τ) S η h' (hj1 τ) (hηb τ) (hbS τ)`. Establish `hJ2 : ∀ τ, JumpsInV ((D.loc l).PD K) T₂.ρ τ (Set.Icc (-(h' : ℤ)) h')` using `fun τ => u3downPf_jumps T₂ τ (up τ) (b τ) S η h' (hj2 τ) (hηb τ) (hbS τ)`. Establish `hM : 1 ≤ MK l K h'` using `Formalism.MainNotions.N.Ln34.ClassMapPf.classMapPf_MK_pos K h' hh' (u3downPf_sK_pos hl K LL hG)`.
+
+Establish `hF'` using `hMF l hl K LL hG π' E hp h' hh' c α β hfr`. Establish `hK'` using `u3downPf_modelK_of_wKill D HW (hW D HW Fo Cm CA CB CK hA) l hl K LL hG π' E hp T₁ T₂ F h' hh' hc1 hc2 hon hJ1 c`. Use `u3downPf_core ((HW l).W K 1 LL hG) F hfr hc1 hc2 hJ1 hJ2 (hF' T₁ hc1 hJ1) (hF' T₂ hc2 hJ2) hM hK' ?_ ?_` and prove the remaining obligations. Introduce `x hx f hf`. Conclude with `u3downPf_lemC_rec D HW Fo Cm hA.1 hl K LL hG π' E hp T₁ S η h' up b c hc1 hj1 hηb hdown x hx (fun τ hτ hup => by simp [hdown τ hτ] at hup) f hf`.
+
+Introduce `x hx f hf`. Conclude with `u3downPf_lemC_rec D HW Fo Cm hA.1 hl K LL hG π' E hp T₂ S η h' up b c hc2 hj2 hηb hdown x hx (fun τ hτ hup => by simp [hdown τ hτ] at hup) f hf`.
+-/
 theorem u3downPf_link (hW : WStep) : DownSlotOfModels := by
   intro D HW Fo Cm CA CB CK hA hMF l _ hl K LL hG π' E hp T₁ T₂ F S η m h' up b c α β hfr hN hdown
   obtain ⟨hc1, hc2, hon, hj1, hj2, hηb, hbS, hh', -, -⟩ := hN
@@ -180,6 +230,9 @@ theorem u3downPf_link (hW : WStep) : DownSlotOfModels := by
 
 end Record
 
+/- English proof (translation)
+The claim follows from `u3downPf_link Formalism.MainNotions.N.Ln34.w_pf`.
+-/
 theorem down_of_models : Formalism.MainNotions.N.Ln34.DownSlotOfModels := u3downPf_link Formalism.MainNotions.N.Ln34.w_pf
 
 end Formalism.MainNotions.N.Ln34.DescentValuation

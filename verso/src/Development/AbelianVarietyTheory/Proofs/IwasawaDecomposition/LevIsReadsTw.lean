@@ -15,11 +15,19 @@ namespace GlobalTheory.SeeSaw.TwLev
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r at *`. Use the proof step `omega⟩`.
+
+Conclude with `⟨⟨(), Quotient.mk _ ⟨(DecoF.base _ _ _ _ _, ∅), Set.mem_singleton _⟩⟩⟩`.
+-/
 theorem cl_nonempty {B : Base} {X : PreX B.toPre} (I : TC B X) (a : I.ι) : Nonempty (I.stX a).Cl := by
   haveI : NeZero (B.R.N B.R.m - 1) := ⟨by
     have := Formalism.L2.Col.rank_X'_eq B.R; have := B.R.m_add_three_le_k; unfold Ranks.r at *; omega⟩
   exact ⟨⟨(), Quotient.mk _ ⟨(DecoF.base _ _ _ _ _, ∅), Set.mem_singleton _⟩⟩⟩
 
+/- English proof (translation)
+Introduce `P P' e`. Break down `(GlobalTheory.Mem.Col2.under_eq_iff B.host P.1 P'.1).1 (HeightOneSpectrum.ext (congrArg HeightOneSpectrum.asIdeal e.symm)) with h | h` into its components or cases. Conclude with `Subtype.ext h.symm`. Conclude with `absurd (h ▸ Finset.mem_union_right _ (GlobalTheory.Mem.Col2.ChEx.q_sub_SQ I a P'.2)) ((GlobalTheory.Mem.LevTwist.levOk_twists B X I hOk).1.split P.1 (Finset.mem_union_right _ (GlobalTheory.Mem.Col2.ChEx.q_sub_SQ I a P.2)))`.
+-/
 theorem q_inj {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι) :
     ∀ P P' : I.Q a, underPl B.host.F P.1 = underPl B.host.F P'.1 → P = P' := by
   classical
@@ -31,6 +39,17 @@ theorem q_inj {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (a : I.ι)
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I hOk hPins l Z a ha bad S y lat st hO hK P' hH hchi cg hcg ξ hξ hr`. Take `⟨-, gP, -, -⟩` from `GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hOk hPins l Z`. Establish `gX : (I.rec7 l Z).sp.X'.gram = 1`. Use `congrArg (Matrix.reindex (finCongr (rankP (I.rec7 l Z))) (finCongr (rankP (I.rec7 l Z)))).symm gP` as an intermediate fact. Rewrite `this` using `[gramP, Equiv.symm_apply_apply]`.
+
+Rewrite using `[this, Matrix.reindex_symm, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`. Use `haveI : NeZero (B.R.N B.R.m - 1) := ⟨by`. Use `Formalism.L2.Col.rank_X'_eq B.R` as an intermediate fact. Use `B.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.r at *`.
+
+Use the proof step `omega⟩`. Establish `hLb : S.Lb = Formalism.L2.Col.stdLat B.fields.E (B.R.N B.R.m - 1)`. Use extensionality with `x`. Use `(hK.lb x).trans (Iff.trans ?_ (Formalism.L2.Col.mem_stdLat x).symm)` and prove the remaining obligations. Conclude with `forall_congr' fun j => ⟨fun ⟨r, h, _⟩ => ⟨r, h.symm⟩, fun ⟨r, h⟩ => ⟨r, h.symm, fun _ => one_dvd _⟩⟩`.
+
+Take `⟨c⟩` from `cl_nonempty I a`. Establish `hR` using `GlobalTheory.T.levelReading_rationalAtTwist_extends_integralUnitary (Q := I.Q a) B.sp.cm gP S (rowTyG I.Ch I.Ps) B.embLL _ _ (GlobalTheory.Mem.Col2.ChEx.q_conj I hOk a) (q_inj I hOk a) hO (GlobalTheory.T.twistedTuple_reading_level_character I hOk hPins l Z a S hK c ξ hξ)`. Establish `key` using `@GlobalTheory.T.twistPrimeLevel_iff_reductionLevel_conjugateCharacter B.fields.F B.fields.E B.fields.K _ _ _ _ (GlobalTheory.Mem.Col2.starE B) _ _ B.sp.cm (B.R.N B.R.m - 1) _ (rankP (I.rec7 l Z)) _ _ _ gX gP _ _ _ S hLb B.R.r B.R.t B.R.m (Formalism.L2.Col.r_le_X' B.R) hr (Formali …`. Use `show (∀ h, h ∈ levS _ 1 _ ↔ _) ∧ _`. Use `⟨fun h => ⟨fun hh => ?_, fun ⟨κ, h1, h2⟩ => ⟨h1, (key _ κ.1 h2).1.2 κ.2⟩⟩, fun h κ hκ => (key _ κ.1 hκ.2).2 κ.2⟩` and prove the remaining obligations.
+
+Take `⟨y, hy⟩` from `exists_copy (rankP (I.rec7 l Z)) (Lev.finE (I.rec7 l Z).sp.X' h)`. Conclude with `⟨⟨y, (key _ y hy).1.1 hh.2⟩, hh.1, hy⟩`.
+-/
 theorem levIs_reads_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hOk : I.Ok) (hPins : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (a : I.ι) (ha : a ≠ I.mu0) {bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))}
     (S : StepLevel (I.rec7 l Z).host.F (I.rec7 l Z).host.E (sigD (I.rec7 l Z)) (gramP (I.rec7 l Z)) 1 (I.rec7 l Z).R.f bad)

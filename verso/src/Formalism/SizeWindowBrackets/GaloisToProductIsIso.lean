@@ -48,9 +48,18 @@ def sgn2 : ℤˣ →* Multiplicative (ZMod 2) where
 def legU (N ℓ : ℕ) [Fact ℓ.Prime] (h : ℓ ∣ N) : (ZMod N)ˣ →* ℤˣ :=
   (quadraticChar (ZMod ℓ)).toUnitHom.comp (ZMod.unitsMap h)
 
+/- English proof (translation)
+The claim follows from `dvd_mul_left d _`.
+-/
 theorem d_dvd_hostN (e q d : ℕ) : d ∣ hostN e q d := dvd_mul_left d _
+/- English proof (translation)
+The claim follows from `dvd_mul_of_dvd_left (dvd_mul_left q _) d`.
+-/
 theorem q_dvd_hostN (e q d : ℕ) : q ∣ hostN e q d :=
   dvd_mul_of_dvd_left (dvd_mul_left q _) d
+/- English proof (translation)
+The claim follows from `dvd_mul_of_dvd_left (dvd_mul_right _ q) d`.
+-/
 theorem two_dvd_hostN (e q d : ℕ) : 2 ^ (e + 2) ∣ hostN e q d :=
   dvd_mul_of_dvd_left (dvd_mul_right _ q) d
 

@@ -7,5 +7,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | exact GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | (intros; apply GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nonempty_perfectSectionsComplex_of_smooth_proj : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)), Smooth f → IsProjBy f → ∀ M : LB X, M.IsLB → Nonempty (Perf f M) := by
   first | exact @GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | exact GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy | (intros; apply GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy <;> assumption)

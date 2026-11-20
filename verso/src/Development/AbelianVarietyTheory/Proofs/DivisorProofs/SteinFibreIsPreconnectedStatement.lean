@@ -17,6 +17,9 @@ open MvPolynomial GlobalTheory.ArInt
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.Mean4O GlobalTheory.HermLB
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SteinFibreConn.isPreconnected_setOf_under_eq | exact GlobalTheory.SteinFibreConn.isPreconnected_setOf_under_eq | (intros; apply GlobalTheory.SteinFibreConn.isPreconnected_setOf_under_eq <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stein_fibre_isPreconnected : GlobalTheory.CovTop.Hypotheses2 → ∀ (F : Type) [Field F] [NumberField F] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [IsDedekindDomain Γ(X, ⊤)] (p : X ⟶ Sp (𝓞 F)) (e : ℕ), IsArithVar p e → IsArithVar (spMap (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p ⊤)) 0 →
     ∀ P : Ideal Γ(X, ⊤), _root_.IsPreconnected {z : X | GlobalTheory.SteinFibre.under z = P} := by

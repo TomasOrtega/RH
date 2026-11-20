@@ -14,6 +14,15 @@ noncomputable section
 
 namespace GlobalTheory.SplitHeckeComm
 
+/- English proof (translation)
+Set `f : G ⧸ J → W` to `fun c => ρ c.out x`. Establish `hf : ∀ g : G, f (g : G ⧸ J) = ρ g x` using `fun g => by`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul J g`. Simplify using `only [f, hk, map_mul, Module.End.mul_apply, hx k k.2]`. Establish `key : ∀ A B : Finset G, ∑ γ ∈ A, ρ γ (∑ δ ∈ B, ρ δ x) = ∑ p ∈ A ×ˢ B, f ((p.1 * p.2 : G) : G ⧸ J)` using `fun A B => by`.
+
+Rewrite using `[Finset.sum_product]`. Simplify using `only [hf, map_sum, map_mul, Module.End.mul_apply]`. Rewrite using `[key, key]`. Set `T : Finset (G ⧸ J)` to `(R ×ˢ S).image (fun p => ((p.1 * p.2 : G) : G ⧸ J)) ∪ (S ×ˢ R).image (fun p => ((p.1 * p.2 : G) : G ⧸ J))`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to' (s := R ×ˢ S) (t := T) (g := fun p => ((p.1 * p.2 : G) : G ⧸ J)) (fun p hp => Finset.mem_union_left _ (Finset.mem_image_of_mem _ hp)) f, ← Finset.sum_fiberwise_of_maps_to' (s := S ×ˢ R) (t := T) (g := fun p => ((p.1 * p.2 : G) : G ⧸ J)) (fun p …`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.sum_const]`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ α β R S hR hR' hS hS' c` and compare the differences between its conclusion and the goal.
+
+Use `GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ β α S R hS hS' hR hR' c` and compare the differences between its conclusion and the goal.
+-/
 theorem gelfand {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (J : Subgroup G)
     (τ : G → G) (hmul : ∀ a b, τ (a * b) = τ b * τ a) (hinv : ∀ a, τ (τ a) = a)
     (hdc : ∀ g : G, ∃ k₁ ∈ J, ∃ k₂ ∈ J, τ g = k₁ * g * k₂) (hJ : ∀ k ∈ J, τ k ∈ J) (α β : G) (R S : Finset G)
@@ -48,6 +57,15 @@ theorem gelfand {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : Rep
   · convert GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ α β R S hR hR' hS hS' c
   · convert GelfandTrick.card_pairs_le J τ hmul hinv hdc hJ β α S R hS hS' hR hR' c
 
+/- English proof (translation)
+Establish `hmem : ∀ (a : G) (A : Finset G), a ∈ H → (∀ γ ∈ A, ∃ k₁ ∈ U, ∃ k₂ ∈ U, k₁ ∈ H ∧ k₂ ∈ H ∧ γ = k₁ * a * k₂) → ∀ γ ∈ A, γ ∈ H`. Introduce `a A ha h γ hγ`. Take `⟨k₁, -, k₂, -, h₁, h₂, rfl⟩` from `h γ hγ`. Conclude with `H.mul_mem (H.mul_mem h₁ ha) h₂`. Establish `hsum : ∀ A : Finset G, (∀ γ ∈ A, γ ∈ H) → ∀ y : W, ∑ γ ∈ A, ρ γ y = ∑ γ ∈ A.subtype (· ∈ H), ρ (γ : G) y` using `fun A hA y => (Finset.sum_subtype_of_mem (fun γ => ρ γ y) hA).symm`.
+
+Establish `h1 : ∀ (a : G) (ha : a ∈ H) (A : Finset G), (∀ γ ∈ A, ∃ k₁ ∈ U, ∃ k₂ ∈ U, k₁ ∈ H ∧ k₂ ∈ H ∧ γ = k₁ * a * k₂) → ∀ γ ∈ (A.subtype (· ∈ H) : Finset H), ∃ k₁ ∈ U.subgroupOf H, ∃ k₂ ∈ U.subgroupOf H, γ = k₁ * ⟨a, ha⟩ * k₂`. Introduce `a ha A h γ hγ`. Take `⟨k₁, u₁, k₂, u₂, h₁, h₂, e⟩` from `h γ (Finset.mem_subtype.1 hγ)`. Conclude with `⟨⟨k₁, h₁⟩, u₁, ⟨k₂, h₂⟩, u₂, Subtype.ext e⟩`. Establish `h2 : ∀ (a : G) (ha : a ∈ H) (A : Finset G), (∀ γ ∈ A, γ ∈ H) → (∀ x : G, (∃ k₁ ∈ U, ∃ k₂ ∈ U, k₁ ∈ H ∧ k₂ ∈ H ∧ x = k₁ * a * k₂) → ∃! γ, γ ∈ A ∧ γ⁻¹ * x ∈ U) → ∀ x : H, (∃ k₁ ∈ U.subgroupOf H, ∃ k₂ ∈ U.subgroupOf H, x = k₁ * ⟨a, ha⟩ * k₂) → ∃! γ, γ ∈ (A.subtype (· ∈ H) : Finset H …`.
+
+Introduce and unpack `a ha A hA h x ⟨k₁, u₁, k₂, u₂, e⟩`. Take `⟨γ, ⟨hγ, hu⟩, huniq⟩` from `h x ⟨k₁, u₁, k₂, u₂, k₁.2, k₂.2, congrArg Subtype.val e⟩`. Use `⟨⟨γ, hA γ hγ⟩, ⟨Finset.mem_subtype.2 hγ, hu⟩, fun δ hδ => Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `huniq δ ⟨Finset.mem_subtype.1 hδ.1, hδ.2⟩`. Establish `hRH` using `hmem α R hα hR`.
+
+Establish `hSH` using `hmem β S hβ hS`. Rewrite using `[hsum R hRH, hsum S hSH x, hsum S hSH, hsum R hRH x]`. Use `gelfand (ρ.comp H.subtype) (U.subgroupOf H) (fun g => ⟨τ g, hH g g.2⟩) (fun a b => Subtype.ext (hmul a b)) (fun a => Subtype.ext (hinv a)) (fun g => ?_) (fun k hk => hU k hk) ⟨α, hα⟩ ⟨β, hβ⟩ _ _ (h1 α hα R hR) (h2 α hα R hRH hR') (h1 β hβ S hS) (h2 β hβ S hSH hS') x (fun k hk => …` and prove the remaining obligations. Take `⟨k₁, u₁, k₂, u₂, h₁, h₂, e⟩` from `hdc g g.2`. Conclude with `⟨⟨k₁, h₁⟩, u₁, ⟨k₂, h₂⟩, u₂, Subtype.ext e⟩`.
+-/
 theorem gelfand_sub {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ G W) (H U : Subgroup G)
     (τ : G → G) (hmul : ∀ a b, τ (a * b) = τ b * τ a) (hinv : ∀ a, τ (τ a) = a) (hH : ∀ k ∈ H, τ k ∈ H)
     (hU : ∀ k ∈ U, τ k ∈ U)
@@ -124,9 +142,25 @@ def tr (x : GAf L n) : GAf L n :=
     rw [Matrix.transpose_mul, Matrix.transpose_one] at h
     exact h⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext rfl`.
+-/
 theorem loc_tr (s : SplitPlace L) (x : GAf L n) : s.loc n (tr x) = Formalism.UG.P.heckecomm_tr (s.loc n x) :=
   Units.ext rfl
 
+/- English proof (translation)
+Establish `hint : ∀ a ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov L⁺ s.v), ∀ i j, Valued.v ((a : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j) ≤ 1`. Introduce and unpack `_ ⟨g, rfl⟩ i j`. Conclude with `((g : Matrix (Fin n) (Fin n) (Formalism.UG.Ov L⁺ s.v)) i j).2`. Establish `h1` using `hint _ h`. Establish `h2` using `hint _ (inv_mem h)`.
+
+Rewrite `h2` using `[← map_inv]`. Take `⟨e, he, he'⟩` from `GlobalTheory.SplitSep.exists_sep L s`. Introduce `i j`. Establish `hconj : conjAL L ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = (((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i`. Establish `hm : (x.1 : Matrix (Fin n) (Fin n) (AL L)) * conjT (conjAL L) x.1 = 1` using `x.2`.
+
+Establish `h1 : ((x.1⁻¹ : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) = conjT (conjAL L) x.1` using `Units.inv_eq_of_mul_eq_one_right hm`. Simplify using `only [InvMemClass.coe_inv, h1, conjT, Matrix.transpose_apply, Matrix.map_apply]`. Establish `hz : (x.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L`. Apply `GlobalTheory.mem_ALint_of_supported_at_split L s e he he'` to reduce the goal to its premises. Introduce `w hw`.
+
+Use `congrFun (congrFun (hx w (by simpa using hw)) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply] at this`. Rewrite using `[map_sub, this]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((x.1 : Matrix (Fin n) (Fin n) (AL L)) i j) = ((s.loc n x : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) i j` using `rfl`.
+
+Rewrite using `[map_sub, e1]`. Use `(Valuation.map_sub _ _ _).trans (max_le (h1 i j) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `e1 : s.proj ((((x⁻¹ : GA L n).1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)) j i) = ((s.loc n x⁻¹ : GL (Fin n) (s.v.adicCompletion L⁺)) : Matrix (Fin n) (Fin n) (s.v.adicCompletion L⁺)) j i` using `rfl`. Rewrite using `[map_sub, map_sub, hconj, e1]`.
+
+Use `(Valuation.map_sub _ _ _).trans (max_le (h2 j i) ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Use `add_mem hz (show (1 : Matrix (Fin n) (Fin n) (AL L)) i j ∈ ALint L by` as an intermediate fact. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Subring.one_mem, Subring.zero_mem])`. Simplify using `using this`.
+-/
 theorem mem_Umax_of_loc (s : SplitPlace L) (x : GAf L n) (hx : TrivOutside {s.v} x)
     (h : s.loc n x ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov L⁺ s.v)) : x ∈ Umax L n := by
   have hint : ∀ a ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.Ov L⁺ s.v), ∀ i j,
@@ -165,6 +199,9 @@ theorem mem_Umax_of_loc (s : SplitPlace L) (x : GAf L n) (hx : TrivOutside {s.v}
     by_cases hij : i = j <;> simp [Matrix.one_apply, hij, Subring.one_mem, Subring.zero_mem])
   simpa using this
 
+/- English proof (translation)
+Introduce `w hw`. Establish `h` using `congrArg Matrix.transpose (hx w hw)`. Rewrite `h` using `[Matrix.transpose_one]`. Conclude with `h`.
+-/
 theorem tr_mem_trivSub (T : Set (HeightOneSpectrum (𝓞 L⁺))) (x : GAf L n) (hx : x ∈ trivSub n T) :
     tr x ∈ trivSub n T := by
   intro w hw
@@ -172,6 +209,11 @@ theorem tr_mem_trivSub (T : Set (HeightOneSpectrum (𝓞 L⁺))) (x : GAf L n) (
   rw [Matrix.transpose_one] at h
   exact h
 
+/- English proof (translation)
+Take `⟨a, b, e⟩` from `Formalism.UG.P.heckecomm_tr_dc Formalism.UG.Final.CartanDecomp L⁺ s.v n (s.loc n g)`. Take `⟨k, hk, ek⟩` from `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s a.1`. Establish `hk' : k ∈ trivSub n {s.v}` using `hk`. Establish `ht : (k * g)⁻¹ * tr g ∈ trivSub n {s.v}` using `mul_mem (inv_mem (mul_mem hk' hg)) (tr_mem_trivSub _ g hg)`. Use `⟨k, mem_Umax_of_loc s k hk (ek ▸ a.2), (k * g)⁻¹ * tr g, mem_Umax_of_loc s _ ht ?_, hk', ht, by group⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_inv, map_mul, loc_tr, e, ek, inv_mul_cancel_left]`. Conclude with `b.2`.
+-/
 theorem tr_doubleCoset (s : SplitPlace L) (g : GAf L n) (hg : g ∈ trivSub n {s.v}) :
     ∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, k₁ ∈ trivSub n {s.v} ∧ k₂ ∈ trivSub n {s.v} ∧ tr g = k₁ * g * k₂ := by
   obtain ⟨a, b, e⟩ := Formalism.UG.P.heckecomm_tr_dc Formalism.UG.Final.CartanDecomp L⁺ s.v n (s.loc n g)
@@ -188,6 +230,9 @@ def rtRep (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (W : Type
   map_one' := LinearMap.ext fun f => funext fun g => congrArg f (mul_one g)
   map_mul' x y := LinearMap.ext fun f => funext fun g => congrArg f (mul_assoc g x y).symm
 
+/- English proof (translation)
+Introduce `L _ _ _ n W _ _ s α β Ra Rb hα hβ hR' hR hS' hS f hf`. Conclude with `gelfand_sub (rtRep L n W) (trivSub n {s.v}) (Umax L n) tr (fun a b => Subtype.ext (Formalism.UG.P.heckecomm_tr_mul a.1 b.1)) (fun a => Subtype.ext (Formalism.UG.P.heckecomm_tr_tr a.1)) (tr_mem_trivSub _) (fun k hk i j => hk j i) (tr_doubleCoset s) α β Ra Rb hα hβ hR' hR hS' hS f …`.
+-/
 theorem doubleCoset_comm : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (s : SplitPlace L) (α β : GAf L n) (Ra Rb : Finset (GAf L n)), TrivOutside {s.v} α → TrivOutside {s.v} β → (∀ x : GAf L n, (∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ x = k₁ * α * k₂) → ∃! γ, γ ∈ Ra ∧ γ⁻¹ * x ∈ Umax L n) → (∀ γ ∈ Ra, ∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ γ = k₁ * α * k₂) → (∀ x : GAf L n, (∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ x = k₁ * β * k₂) → ∃! γ, γ ∈ Rb ∧ γ⁻¹ * x ∈ Umax L n) → (∀ γ ∈ Rb, ∃ k₁ ∈ Umax L n, ∃ k₂ ∈ Umax L n, TrivOutside {s.v} k₁ ∧ TrivOutside {s.v} k₂ ∧ γ = k₁ * β * k₂) → ∀ f : GAf L n → W, (∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ f = f) → ∑ γ ∈ Ra, NG.rt L n γ (∑ δ ∈ Rb, NG.rt L n δ f) = ∑ δ ∈ Rb, NG.rt L n δ (∑ γ ∈ Ra, NG.rt L n γ f) := by
   intro L _ _ _ n W _ _ s α β Ra Rb hα hβ hR' hR hS' hS f hf
   exact gelfand_sub (rtRep L n W) (trivSub n {s.v}) (Umax L n) tr

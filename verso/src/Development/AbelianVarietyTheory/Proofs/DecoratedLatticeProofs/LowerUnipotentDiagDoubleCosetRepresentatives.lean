@@ -8,6 +8,25 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 
 namespace GlobalTheory.LowerHecke
 
+/- English proof (translation)
+Introduce `k _ _ _ _ A D _ _ _ _ ϖ hϖ s R hR κ κ' hκ N hN`. Use `set t : GL (A ⊕ D) k := mtor ϖ (indic s) with ht`. Set `f : (Σ _ : GL D k, Matrix D A k) → GL (A ⊕ D) k` to `fun x => lowU x.2 * emb₂ k (Equiv.refl (A ⊕ D)) (1, κ x.1)`. Establish `key : ∀ g₁ ∈ R, ∀ ν₁ ∈ N g₁, ∀ g₂ ∈ R, ∀ ν₂ ∈ N g₂, (f ⟨g₁, ν₁⟩ * t)⁻¹ * (f ⟨g₂, ν₂⟩ * t) ∈ parahoric k A D → g₁ = g₂ ∧ ν₁ = ν₂`. Introduce `g₁ hg₁ ν₁ hν₁ g₂ hg₂ ν₂ hν₂ h`.
+
+Take `⟨rfl, μ, hμ, hdiff⟩` from `GlobalTheory.T.lowerUnipotent_blockDiag_cosets_distinct k A D ϖ hϖ s R hR κ κ' hκ g₁ hg₁ g₂ hg₂ ν₁ ν₂ h`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Take `⟨hsmall, huniq⟩` from `hN g₁ hg₁`. Take `⟨ν', _, hν'⟩` from `huniq ν₂ (hsmall ν₂ hν₂)`. Establish `e2 : ν₂ = ν'` using `hν' ν₂ ⟨hν₂, 0, fun i a => by simp, by simp⟩`.
+
+Establish `e1 : ν₁ = ν'` using `hν' ν₁ ⟨hν₁, μ, hμ, hdiff⟩`. Rewrite using `[e1, e2]`. Use `⟨(R.sigma N).image f, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Take `⟨⟨g, ν⟩, hx, rfl⟩` from `Finset.mem_image.1 hj`.
+
+Rewrite `hx` using `[Finset.mem_sigma]`. Take `⟨hg, hν⟩` from `hx`. Use `⟨Subgroup.mul_mem _ (lowU_mem ((hN g hg).1 ν hν)) (emb_mem (hκ g hg).1), ?_⟩` and prove the remaining obligations. Establish `h22 : (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, κ g)).1.toBlocks₂₂ = (κ g).1`. Rewrite using `[Units.val_mul, val_emb_one, val_lowU, fromBlocks_multiply]`.
+
+Simplify using the standard rewrite rules. Use `show ((blockDet (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, κ g)) : kˣ) : k) = _`. Rewrite using `[blockDet_lowU_emb, h22, GeneralLinearGroup.val_det_apply]`. Introduce `j hj`. Take `⟨g, hg, ν₀, hν₀, hall⟩` from `GlobalTheory.T.exists_lowerUnipotent_blockDiag_coset_rep k A D ϖ hϖ s R hR κ κ' hκ j hj`.
+
+Take `⟨ν', ⟨hν'N, μ, hμ, hdiff⟩, -⟩` from `(hN g hg).2 ν₀ hν₀`. Use `⟨f ⟨g, ν'⟩, ⟨Finset.mem_image.2 ⟨(⟨g, ν'⟩ : Σ _ : GL D k, Matrix D A k), Finset.mem_sigma.2 ⟨hg, hν'N⟩, rfl⟩, hall ν' ⟨μ, hμ, hdiff⟩⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `j' ⟨hj', hmem⟩`. Take `⟨⟨g₂, ν₂⟩, hx, rfl⟩` from `Finset.mem_image.1 hj'`. Rewrite `hx` using `[Finset.mem_sigma]`.
+
+Establish `hmem' : (f ⟨g, ν'⟩ * t)⁻¹ * (j * t) ∈ parahoric k A D` using `hall ν' ⟨μ, hμ, hdiff⟩`. Establish `hc : (f ⟨g₂, ν₂⟩ * t)⁻¹ * (f ⟨g, ν'⟩ * t) ∈ parahoric k A D`. Use `Subgroup.mul_mem _ hmem (Subgroup.inv_mem _ hmem')` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨rfl, rfl⟩` from `key g₂ hx.1 ν₂ hx.2 g hg ν' hν'N hc`.
+
+Both sides reduce to the same expression. Introduce `F`. Rewrite using `[Finset.sum_image, Finset.sum_sigma]`. Introduce and unpack `⟨g₁, ν₁⟩ h₁ ⟨g₂, ν₂⟩ h₂ heq`. Rewrite `h₁`, `h₂` using `[Finset.coe_sigma, Set.mem_sigma_iff]`.
+
+Establish `hc : (f ⟨g₁, ν₁⟩ * t)⁻¹ * (f ⟨g₂, ν₂⟩ * t) ∈ parahoric k A D`. Rewrite using `[show f ⟨g₁, ν₁⟩ = f ⟨g₂, ν₂⟩ from heq, inv_mul_cancel]`. Conclude with `Subgroup.one_mem _`. Take `⟨rfl, rfl⟩` from `key g₁ h₁.1 ν₁ h₁.2 g₂ h₂.1 ν₂ h₂.2 hc`. Both sides reduce to the same expression.
+-/
 theorem repsBuild : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k → ∀ (s : Finset D) (R : Finset (GL D k)), IsRepsK (torusElt k D ϖ (indic s)) R → ∀ (κ κ' : GL D k → GL D k), (∀ g ∈ R, κ g ∈ KO k D ∧ κ' g ∈ KO k D ∧ g = κ g * torusElt k D ϖ (indic s) * κ' g) → ∀ N : GL D k → Finset (Matrix D A k), (∀ g ∈ R, (∀ ν ∈ N g, ∀ i a, valuation k (ν i a) < 1) ∧ ∀ ν : Matrix D A k, (∀ i a, valuation k (ν i a) < 1) → ∃! ν', ν' ∈ N g ∧ ∃ μ : Matrix D A k, (∀ i a, valuation k (μ i a) < 1) ∧ ν - ν' = g.1 * μ) → ∃ R' : Finset (GL (A ⊕ D) k), IsReps (mtor ϖ (indic s)) R' blockDet ∧ ∀ F : GL (A ⊕ D) k → ℂ, ∑ j ∈ R', F j = ∑ g ∈ R, ∑ ν ∈ N g, F (lowU ν * emb₂ k (Equiv.refl (A ⊕ D)) (1, κ g)) := by
   intro k _ _ _ _ A D _ _ _ _ ϖ hϖ s R hR κ κ' hκ N hN
   classical

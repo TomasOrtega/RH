@@ -12,6 +12,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.Per.ExactMult
 
+/- English proof (translation)
+Establish `e` using `LinearMap.finrank_range_add_finrank_ker (p.domRestrict S₁)`. Rewrite `e` using `[LinearMap.range_domRestrict, h2, LinearMap.ker_domRestrict, ← hk]`. Establish `e1 : finrank L ((LinearMap.range i).comap S₁.subtype) = finrank L S₀`. Rewrite using `[← Submodule.finrank_map_subtype_eq, Submodule.map_comap_subtype, h0, (Submodule.equivMapOfInjective i hi (S₁.comap i)).finrank_eq, Submodule.map_comap_eq, inf_comm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_add_of_exact {L A₀ A₁ A₂ : Type} [Field L] [AddCommGroup A₀] [Module L A₀]
     [AddCommGroup A₁] [Module L A₁] [AddCommGroup A₂] [Module L A₂] (i : A₀ →ₗ[L] A₁) (p : A₁ →ₗ[L] A₂)
     (hi : Function.Injective i) (hk : LinearMap.range i = LinearMap.ker p)
@@ -37,12 +40,18 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Simplify using `only [FildR, DdRE, DdR, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero]`.
+-/
 theorem mem_fil (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (a : ℤ) (x : V ⊗[Qp] BdR) :
     x ∈ FildR PD ρ τ a ↔ ((∀ g, actVdR PD ρ g x = x) ∧
       ∀ c : K, mulVdR (LL := LL) (V := V) c x = τ c • x) ∧ x ∈ FilV PD (LL := LL) (V := V) a := by
   simp only [FildR, DdRE, DdR, Submodule.mem_inf, Submodule.mem_iInf,
     LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.smul_apply, sub_eq_zero]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [mulVdR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem map_mul (f : V →ₗ[LL] V') (c : K) (x : V ⊗[Qp] BdR) :
     AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) (mulVdR (LL := LL) (V := V) c x) =
       mulVdR (LL := LL) (V := V') c (AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) x) := by
@@ -51,6 +60,9 @@ theorem map_mul (f : V →ₗ[LL] V') (c : K) (x : V ⊗[Qp] BdR) :
   | tmul v b => simp [mulVdR]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVdR, he]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem map_act (ρ : Representation LL G V) (ρ' : Representation LL G V') (f : V →ₗ[LL] V')
     (he : ∀ g v, f (ρ g v) = ρ' g (f v)) (g : G) (x : V ⊗[Qp] BdR) :
     AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR) (actVdR PD ρ g x) =
@@ -60,6 +72,9 @@ theorem map_act (ρ : Representation LL G V) (ρ' : Representation LL G V') (f :
   | tmul v b => simp [actVdR, he]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVdR, mulVdR]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem act_mul (ρ : Representation LL G V) (g : G) (c : K) (x : V ⊗[Qp] BdR) :
     actVdR PD ρ g (mulVdR (LL := LL) (V := V) c x) =
       mulVdR (LL := LL) (V := V) c (actVdR PD ρ g x) := by
@@ -68,6 +83,11 @@ theorem act_mul (ρ : Representation LL G V) (g : G) (c : K) (x : V ⊗[Qp] BdR)
   | tmul v b => simp [actVdR, mulVdR]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Use `⟨v ⊗ₜ ⟨c • b.1, (PD.Fil a).smul_mem c b.2⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[mulVdR, Algebra.smul_def]`. Consider the case `add y z hy hz => rw [map_add, map_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+-/
 theorem mul_mem_filV (a : ℤ) (c : K) (x : V ⊗[Qp] BdR) (hx : x ∈ FilV PD (LL := LL) (V := V) a) :
     mulVdR (LL := LL) (V := V) c x ∈ FilV PD (LL := LL) (V := V) a := by
   obtain ⟨y, rfl⟩ := hx
@@ -100,9 +120,15 @@ noncomputable def ev (x : V ⊗[Qp] BdR) : LL ⊗[Qp] K →ₗ[Qp] V ⊗[Qp] BdR
           tmul_smul]
       | add y z hy hz => simp only [map_add, hy, hz, smul_add]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_tmul (x : V ⊗[Qp] BdR) (c : LL) (k : K) :
     ev (LL := LL) (K := K) x (c ⊗ₜ k) = c • mulVdR (LL := LL) (V := V) k x := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [mulVdR, mul_assoc]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+-/
 theorem mul_mul (y k : K) (x : V ⊗[Qp] BdR) :
     mulVdR (LL := LL) (V := V) (y * k) x = mulVdR (LL := LL) (V := V) y (mulVdR (LL := LL) (V := V) k x) := by
   induction x using TensorProduct.induction_on with
@@ -110,6 +136,15 @@ theorem mul_mul (y k : K) (x : V ⊗[Qp] BdR) :
   | tmul v b => simp [mulVdR, mul_assoc]
   | add y z hy hz => simp only [map_add, hy, hz]
 
+/- English proof (translation)
+Use `haveI := PD.finK`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨⟨h1, h2⟩, h3⟩` from `(mem_fil PD ρ τ a x).1 hx`. Use `(mem_fil PD ρ' τ a _).2 ⟨⟨fun g => ?_, fun c => ?_⟩, GlobalTheory.HTW.map_mem_FilV PD f a x h3⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_act PD ρ ρ' f he, h1]`. Rewrite using `[← map_mul, h2, map_smul]`. Introduce `y hy`. Take `⟨x, ⟨hx1, hx2⟩, rfl⟩` from `hs y ⟨hy.1.1, hy.2⟩`. Take `⟨⟨-, h2⟩, -⟩` from `(mem_fil PD ρ' τ a _).1 hy`.
+
+Establish `h1 : ∀ g, actVdR PD ρ g x = x`. Simplify `hx1` using `only [DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Take `⟨m, c, k, hc, hk⟩` from `GlobalTheory.exists_embedding_idempotent_tensor Qp K LL τ`. Use `⟨∑ j, c j • mulVdR (LL := LL) (V := V) (k j) x, (mem_fil PD ρ τ a _).2 ⟨⟨fun g => ?_, fun y => ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_smul, act_mul, h1]`.
+
+Use `congrArg (ev (LL := LL) (K := K) x) (hk y)` as an intermediate fact. Simplify using `only [map_sum, ev_tmul, mul_mul] at this`. Simplify using `only [map_sum, map_smul, this, Finset.smul_sum, mul_smul]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (mul_mem_filV PD a _ x hx2)`. Simplify using `only [map_sum, map_smul, map_mul, h2, ← mul_smul, ← Finset.sum_smul, hc, one_smul]`.
+-/
 theorem map_fildR_eq [CharZero Qp] (ρ : Representation LL G V) (ρ' : Representation LL G V')
     (f : V →ₗ[LL] V') (he : ∀ g v, f (ρ g v) = ρ' g (f v)) (τ : K →ₐ[Qp] LL) (a : ℤ)
     (hs : ∀ y ∈ DdR PD ρ' ⊓ FilV PD (LL := LL) (V := V') a,
@@ -142,6 +177,17 @@ theorem map_fildR_eq [CharZero Qp] (ρ : Representation LL G V) (ρ' : Represent
 
 variable {V₀ : Type} [AddCommGroup V₀] [Module LL V₀] [Module Qp V₀] [IsScalarTower Qp LL V₀]
 
+/- English proof (translation)
+Establish `e1 : ∀ x, AlgebraTensorModule.map ι (LinearMap.id : BdR →ₗ[Qp] BdR) x = (ι.restrictScalars Qp).rTensor BdR x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`.
+
+Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `e2 : ∀ x, AlgebraTensorModule.map π (LinearMap.id : BdR →ₗ[Qp] BdR) x = (π.restrictScalars Qp).rTensor BdR x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul v b => simp`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hex : Function.Exact (ι.restrictScalars Qp) (π.restrictScalars Qp)` using `(LinearMap.exact_iff.2 hk.symm : Function.Exact ι π)`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`.
+
+Rewrite `h` using `[e1, e1]`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap (M := BdR) (ι.restrictScalars Qp) hι h`. Use extensionality with `x`. Use `rTensor_exact BdR hex hπ x` as an intermediate fact. Simplify using `only [LinearMap.mem_range, LinearMap.mem_ker, e1, e2]`.
+
+Conclude with `this.symm`.
+-/
 theorem tensor_exact (ι : V₀ →ₗ[LL] V) (π : V →ₗ[LL] V') (hι : Function.Injective ι)
     (hπ : Function.Surjective π) (hk : LinearMap.range ι = LinearMap.ker π) :
     Function.Injective (AlgebraTensorModule.map ι (LinearMap.id : BdR →ₗ[Qp] BdR)) ∧
@@ -174,6 +220,15 @@ theorem tensor_exact (ι : V₀ →ₗ[LL] V) (π : V →ₗ[LL] V') (hι : Func
 
 end General
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hi hs hk hd`. Take `⟨d2, hst⟩` from `(GlobalTheory.T.deRham_subrep_quotient_and_strictness l P AI T K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hs hd`. Take `⟨t1, t2⟩` from `tensor_exact (Qp := ℚ_[l]) (BdR := P.R.BdR) ι π hi hs hk`. Establish `hf : ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), finrank ↥LL.1 ↥(FildR (P.PD K) ρ₁ τ a) = finrank ↥LL.1 ↥(FildR (P.PD K) ρ₀ τ a) + finrank ↥LL.1 ↥(FildR (P.PD K) ρ₂ τ a)`. Introduce `τ a`.
+
+Use `haveI := (GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l P AI T K LL V₁ ρ₁ τ a).1`. Conclude with `finrank_add_of_exact _ _ t1 t2 _ _ _ (GlobalTheory.HTW.FildR_eq_comap (P.PD K) ρ₀ ρ₁ ι hi hι τ a) (map_fildR_eq (P.PD K) ρ₁ ρ₂ π hπ τ a (hst a))`. Use `⟨(GlobalTheory.T.deRham_subrep_quotient_and_strictness l P AI T K LL V₀ ρ₀ V₁ ρ₁ ι hι).1 hi hd, d2, fun τ a => ?_⟩` and prove the remaining obligations. Establish `hm : multV (P.PD K) ρ₁ τ a = multV (P.PD K) ρ₀ τ a + multV (P.PD K) ρ₂ τ a`. Unfold `multV`.
+
+Rewrite using `[hf τ a, hf τ (a + 1)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨hf τ a, hm, ?_⟩` and prove the remaining obligations. Take `⟨-, n0, j0⟩` from `GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l P AI T K LL V₀ ρ₀ τ a`.
+
+Take `⟨-, -, j1⟩` from `GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l P AI T K LL V₁ ρ₁ τ a`. Take `⟨-, n2, j2⟩` from `GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l P AI T K LL V₂ ρ₂ τ a`. Rewrite using `[j0, j1, j2, hm]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exact_hodge_add : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V₀ : Type) [AddCommGroup V₀] [Module ↥LL.1 V₀] [Module ℚ_[l] V₀] [IsScalarTower ℚ_[l] ↥LL.1 V₀] [FiniteDimensional ↥LL.1 V₀] (ρ₀ : Representation ↥LL.1 ↥(GK K) V₀) (V₁ : Type) [AddCommGroup V₁] [Module ↥LL.1 V₁] [Module ℚ_[l] V₁] [IsScalarTower ℚ_[l] ↥LL.1 V₁] [FiniteDimensional ↥LL.1 V₁] (ρ₁ : Representation ↥LL.1 ↥(GK K) V₁) (V₂ : Type) [AddCommGroup V₂] [Module ↥LL.1 V₂] [Module ℚ_[l] V₂] [IsScalarTower ℚ_[l] ↥LL.1 V₂] [FiniteDimensional ↥LL.1 V₂] (ρ₂ : Representation ↥LL.1 ↥(GK K) V₂) (ι : V₀ →ₗ[↥LL.1] V₁) (π : V₁ →ₗ[↥LL.1] V₂), (∀ g x, ι (ρ₀ g x) = ρ₁ g (ι x)) → (∀ g x, π (ρ₁ g x) = ρ₂ g (π x)) → Function.Injective ι → Function.Surjective π → LinearMap.range ι = LinearMap.ker π → IsDR (P.PD K) ρ₁ → IsDR (P.PD K) ρ₀ ∧ IsDR (P.PD K) ρ₂ ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), finrank ↥LL.1 ↥(FildR (P.PD K) ρ₁ τ a) = finrank ↥LL.1 ↥(FildR (P.PD K) ρ₀ τ a) + finrank ↥LL.1 ↥(FildR (P.PD K) ρ₂ τ a) ∧ multV (P.PD K) ρ₁ τ a = multV (P.PD K) ρ₀ τ a + multV (P.PD K) ρ₂ τ a ∧ (IsJumpV (P.PD K) ρ₁ τ a ↔ IsJumpV (P.PD K) ρ₀ τ a ∨ IsJumpV (P.PD K) ρ₂ τ a) := by
   intro l _ P AI T K LL V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ ι π hι hπ hi hs hk hd
   obtain ⟨d2, hst⟩ := (GlobalTheory.T.deRham_subrep_quotient_and_strictness l P AI T K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hs hd

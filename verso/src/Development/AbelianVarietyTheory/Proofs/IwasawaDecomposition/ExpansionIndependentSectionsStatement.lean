@@ -7,6 +7,9 @@ open GlobalTheory.LN GlobalTheory.TorRef GlobalTheory.IntegralCombination
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GenBasis.main | exact GlobalTheory.GenBasis.main | (intros; apply GlobalTheory.GenBasis.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.expansion_independent_sections : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R →
     ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G]
       [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (N : ℕ), 1 ≤ N →

@@ -12,6 +12,11 @@ namespace GlobalTheory.ZhStable
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   (Xo : Moduli Dw l) {n : ℕ} (Λ : GenLat E n) (N : ℕ)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Establish `h` using `Xo.univ.t.act.add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero]`.
+
+Conclude with `mul_eq_left.1 h.symm`. Consider the case `succ m ih => rw [Nat.cast_succ, Xo.univ.t.act.add, ih, Xo.univ.t.act.one, pow_succ]`.
+-/
 theorem act_natCast (m : ℕ) : Xo.univ.t.act.act m = 𝟙 Xo.univ.t.G ^ m := by
   induction m with
   | zero =>
@@ -20,12 +25,18 @@ theorem act_natCast (m : ℕ) : Xo.univ.t.act.act m = 𝟙 Xo.univ.t.G ^ m := by
     rw [Nat.cast_zero, pow_zero]; exact mul_eq_left.1 h.symm
   | succ m ih => rw [Nat.cast_succ, Xo.univ.t.act.add, ih, Xo.univ.t.act.one, pow_succ]
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => rw [List.map_nil, List.prod_nil, List.prod_nil, MonObj.comp_one]`. Consider the case `cons x L ih => rw [List.map_cons, List.prod_cons, List.prod_cons, MonObj.comp_mul, ih]`.
+-/
 theorem comp_list_prod {T T' : Over Xo.X} (h : T' ⟶ T) (L : List (T ⟶ Xo.univ.t.G)) :
     (L.map fun x => h ≫ x).prod = h ≫ L.prod := by
   induction L with
   | nil => rw [List.map_nil, List.prod_nil, List.prod_nil, MonObj.comp_one]
   | cons x L ih => rw [List.map_cons, List.prod_cons, List.prod_cons, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Use `⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, ha.1 b, MonObj.comp_one]`. Establish `h1` using `comp_list_prod Xo h (List.ofFn fun j => a j ≫ Xo.univ.t.act.act (cm i j))`. Rewrite `h1` using `[ha.2 mu hmu cm hcm i, MonObj.comp_one, List.map_ofFn]`. Simplify `h1` using `only [Function.comp_def, Category.assoc]`.
+-/
 theorem inZh_comp {T T' : Over Xo.X} (h : T' ⟶ T) (a : Fin n → (T ⟶ Xo.univ.t.G)) (ha : InZh Xo Λ N a) :
     InZh Xo Λ N (fun b => h ≫ a b) := by
   refine ⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩
@@ -34,6 +45,11 @@ theorem inZh_comp {T T' : Over Xo.X} (h : T' ⟶ T) (a : Fin n → (T ⟶ Xo.uni
     rw [ha.2 mu hmu cm hcm i, MonObj.comp_one, List.map_ofFn] at h1
     simpa only [Function.comp_def, Category.assoc] using h1
 
+/- English proof (translation)
+Use `⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ha.1 b, ha'.1 b, _root_.mul_one]`. Establish `h1` using `ha.2 mu hmu cm hcm i`. Establish `h2` using `ha'.2 mu hmu cm hcm i`. Rewrite `h1`, `h2`, the goal using `[List.prod_ofFn]`.
+
+Establish `h3 : ∀ j, (a j * a' j) ≫ Xo.univ.t.act.act (cm i j) = (a j ≫ Xo.univ.t.act.act (cm i j)) * (a' j ≫ Xo.univ.t.act.act (cm i j))` using `fun j => by`. Use `Xo.univ.t.act.hom (cm i j)` as an intermediate fact. Conclude with `MonObj.mul_comp _ _ _`. Simplify using `only [h3]`. Rewrite using `[Finset.prod_mul_distrib, h1, h2, _root_.mul_one]`.
+-/
 theorem inZh_mul {T : Over Xo.X} (a a' : Fin n → (T ⟶ Xo.univ.t.G)) (ha : InZh Xo Λ N a)
     (ha' : InZh Xo Λ N a') : InZh Xo Λ N (fun b => a b * a' b) := by
   refine ⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩
@@ -48,6 +64,11 @@ theorem inZh_mul {T : Over Xo.X} (a a' : Fin n → (T ⟶ Xo.univ.t.G)) (ha : In
     simp only [h3]
     rw [Finset.prod_mul_distrib, h1, h2, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `k _ χ g hg i j hij`. Set `g' : ptO Xo (spMap (χ.comp ψ) ≫ x0) ⟶ ptO Xo x0` to `Over.homMk (spMap (χ.comp ψ)) rfl`. Establish `hc : spMap (χ.comp ψ) = g.left ≫ h.left`. Rewrite using `[hg, hh]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `hz k (χ.comp ψ) g' rfl (funext fun b => Over.OverMorphism.ext ?_)` and prove the remaining obligations. Establish `h1` using `congrArg (fun f => f.left) (congrFun hij b)`. Express the relevant statement in the definitionally equal form `spMap (χ.comp ψ) ≫ (z i b).left = spMap (χ.comp ψ) ≫ (z j b).left`. Rewrite using `[hc]`. Simplify `h1` using `only [Over.comp_left, Category.assoc]`.
+-/
 theorem geoInj_comp {S T : Type} [CommRing S] [CommRing T] (x0 : Sp S ⟶ Xo.X) (x1 : Sp T ⟶ Xo.X)
     (ψ : S →+* T) (h : ptO Xo x1 ⟶ ptO Xo x0) (hh : h.left = spMap ψ) {J : Type}
     (z : J → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)) (hz : GeoInj Xo x0 z) :
@@ -63,6 +84,25 @@ theorem geoInj_comp {S T : Type} [CommRing S] [CommRing T] (x0 : Sp S ⟶ Xo.X) 
   rw [hc]
   simpa only [Over.comp_left, Category.assoc] using h1
 
+/- English proof (translation)
+Use `⟨fun b => ?_, fun mu hmu cm hcm i => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, pow_mul, (hu b).1, one_pow]`. Take `⟨k, hk, -, hk2⟩` from `hΛ`. Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hx`.
+
+Take `⟨hN, e, he⟩` from `hu j`. Establish `hv : (k : 𝓞 E) • (Pi.single j (1 : E) : Fin n → E) ∈ Λ.La`. Use `hk2 (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) ?_)` and prove the remaining obligations. Introduce `b _`. Distinguish the cases in `hb : b = j`.
+
+Substitute `hb` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.one_le.1 le_rfl`. Rewrite using `[Pi.single_eq_of_ne hb]`. Conclude with `Submodule.zero_mem _`.
+
+Take `⟨m, hm⟩` from `Submodule.mem_one.1 (hmu _ hv i (Set.mem_univ i))`. Establish `hm' : (m : E) = (k : E) * mu i j`. Establish `: (k : 𝓞 E) • (Pi.single j (1 : E) : Fin n → E) = (k : E) • (Pi.single j (1 : E) : Fin n → E)`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Rewrite `hm` using `[this, Matrix.mulVec_smul, Matrix.mulVec_single_one]`.
+
+Conclude with `hm`. Establish `hcmk : cm i j * k = N * m`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1 : ((cm i j * k : 𝓞 E) : E) = (cm i j : E) * (k : E)`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_natCast]`.
+
+Establish `h2 : ((N * m : 𝓞 E) : E) = (N : E) * (m : E)`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, map_natCast]`. Rewrite using `[h1, h2, hcm, hm']`. Expand and normalize the polynomial expressions, which then agree. Establish `hM : (l.M : 𝓞 E) ∈ l.Mb`.
+
+Establish `h1 : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `(Ideal.mul_le_inf h1).1`. Establish `hcop : IsCoprime (k : 𝓞 E) ((l.M : 𝓞 E) ^ e)` using `(Nat.Coprime.cast hk).pow_right`.
+
+Take `⟨p, q, hpq⟩` from `hcop`. Establish `hsplit : cm i j = N * (m * p) + (cm i j * q) * (l.M : 𝓞 E) ^ e`. Take the linear combination `(-cm i j) * hpq + p * hcmk`. Use `Xo.univ.t.act.hom (m * p)` as an intermediate fact. Use `show u j ≫ Xo.univ.t.act.act (cm i j) = 1`.
+
+Rewrite using `[hsplit, Xo.univ.t.act.add, MonObj.comp_mul, he _ (Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hM e)), _root_.mul_one, Xo.univ.t.act.mul, ← Category.assoc, act_natCast, MonObj.comp_pow, Category.comp_id, hN, MonObj.one_comp]`.
+-/
 theorem inZh_of_killedBy (hΛ : Λ.TrivAt l.M) {T : Over Xo.X} (u : Fin n → (T ⟶ Xo.univ.t.G))
     (hu : ∀ b, u b ^ N = 1 ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (u b)) : InZh Xo Λ N u := by
   classical
@@ -109,6 +149,9 @@ end GlobalTheory.ZhStable
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ Xo _ Λ N` and use `⟨fun _ _ h a => ZhStable.inZh_comp Xo Λ N h a, fun _ a a' => ZhStable.inZh_mul Xo Λ N a a', fun _ _ _ _ x0 x1 ψ h hh _ z => ZhStable.geoInj_comp Xo x0 x1 ψ h hh z, fun hΛ _ u => ZhStable.inZh_of_killedBy Xo Λ N hΛ u⟩`.
+-/
 theorem inZh_geoInj_stable :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (n : ℕ) (Λ : GenLat E n) (N : ℕ), (∀ (T T' : Over Xo.X) (h : T' ⟶ T) (a : Fin n → (T ⟶ Xo.univ.t.G)), InZh Xo Λ N a → InZh Xo Λ N (fun b => h ≫ a b)) ∧ (∀ (T : Over Xo.X) (a a' : Fin n → (T ⟶ Xo.univ.t.G)), InZh Xo Λ N a → InZh Xo Λ N a' → InZh Xo Λ N (fun b => a b * a' b)) ∧ (∀ (S T : Type) [CommRing S] [CommRing T] (x0 : Sp S ⟶ Xo.X) (x1 : Sp T ⟶ Xo.X) (ψ : S →+* T) (h : ptO Xo x1 ⟶ ptO Xo x0), h.left = spMap ψ → ∀ (J : Type) (z : J → Fin n → (ptO Xo x0 ⟶ Xo.univ.t.G)), GeoInj Xo x0 z → GeoInj Xo x1 (fun i b => h ≫ z i b)) ∧ (Λ.TrivAt l.M → ∀ (T : Over Xo.X) (u : Fin n → (T ⟶ Xo.univ.t.G)), (∀ b, u b ^ N = 1 ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (u b)) → InZh Xo Λ N u) :=
   fun _ _ _ _ _ _ _ Xo _ Λ N =>

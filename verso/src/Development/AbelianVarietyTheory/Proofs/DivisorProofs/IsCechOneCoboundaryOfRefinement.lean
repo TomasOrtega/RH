@@ -8,6 +8,17 @@ namespace GlobalTheory.KS.Refine
 local macro "opens_le" : tactic =>
   `(tactic| (rw [SetLike.le_def]; intro y hy; simp only [TopologicalSpace.Opens.mem_inf] at hy ⊢; aesop))
 
+/- English proof (translation)
+Introduce `Y I J Uc c hc V σ hV hVt B hB`. Establish `hV' : ∀ p y, y ∈ V p → y ∈ Uc (σ p)` using `fun p y h => hV p h`. Establish `cov : ∀ O : Y.Opens, O ≤ ⨆ p, O ⊓ V p`. Introduce `O x hx`. Establish `: x ∈ ⨆ p, V p` using `by rw [hVt]; trivial`.
+
+Take `⟨p, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, hx, hp⟩`. Establish `glue : ∀ i, ∃ t : Γ(Y, Uc i), ∀ p, rsT t (Uc i ⊓ V p) = rsT (B p) (Uc i ⊓ V p) + rsT (c (σ p) i) (Uc i ⊓ V p)`. Introduce `i`. Use `exists_rsT_eq (fun p => Uc i ⊓ V p) (fun p => inf_le_left) (cov _) _ fun p p' => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hB p p')`. Establish `h2` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hc (σ p) (σ p') i)`. Simplify using `only [rsT_add, rsT_sub] at h1 h2 ⊢`. Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 ⊢`. Take the linear combination `h1 - h2`.
+
+Use `choose t ht using glue`. Use `⟨t, fun i j => ?_⟩` and prove the remaining obligations. Use `eq_of_rsT_eq (fun p => Uc i ⊓ Uc j ⊓ V p) (fun p => inf_le_left) (cov _) _ _ fun p => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht i p)`. Establish `h2` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht j p)`.
+
+Establish `h3` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (hc (σ p) i j)`. Simplify using `only [rsT_add, rsT_sub] at h1 h2 h3 ⊢`. Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 h3 ⊢`. Take the linear combination `h1 - h2 + h3`.
+-/
 theorem isCob_of_refine : ∀ {Y : Scheme.{0}} {I J : Type} (Uc : I → Y.Opens) (c : GlobalTheory.KS.C1 Uc),
     GlobalTheory.KS.IsCoc Uc c → ∀ (V : J → Y.Opens) (σ : J → I), (∀ p, V p ≤ Uc (σ p)) → (⨆ p, V p = ⊤) →
     ∀ (B : ∀ p, Γ(Y, V p)), (∀ p p', GlobalTheory.KS.rsT (c (σ p) (σ p')) (V p ⊓ V p') =

@@ -6,6 +6,11 @@ open scoped Pointwise
 
 namespace GlobalTheory.DecompCard
 
+/- English proof (translation)
+Introduce `l _ E _ _ _ v w hv hw`. Establish `hpz : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp Fact.out`. Establish `: IsGaloisGroup (E ≃ₐ[ℚ] E) ℤ (𝓞 E)` using `IsGaloisGroup.of_isFractionRing _ _ _ ℚ E`. Establish `: (Ideal.span {(l : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hpz.ne_zero).2 hpz`. Use `v.isPrime` as an intermediate fact.
+
+Use `w.isPrime` as an intermediate fact. Establish `hover : ∀ R : HeightOneSpectrum (𝓞 E), R ∈ placesOver E l → R.asIdeal.LiesOver (Ideal.span {(l : ℤ)})` using `fun R hR => (Ideal.liesOver_span_iff R.isPrime.ne_top hpz).mpr (by simpa [placesOver] using hR)`. Use `hover v hv` as an intermediate fact. Use `hover w hw` as an intermediate fact. Rewrite using `[Ideal.card_stabilizer_eq (G := E ≃ₐ[ℚ] E) (Ideal.span {(l : ℤ)}) v.asIdeal, Ideal.ramificationIdxIn_eq_ramificationIdx (Ideal.span {(l : ℤ)}) w.asIdeal (E ≃ₐ[ℚ] E), Ideal.inertiaDegIn_eq_inertiaDeg (Ideal.span {(l : ℤ)}) w.asIdeal (E ≃ₐ[ℚ] E), locDeg]`.
+-/
 theorem card_stabilizer_eq_locDeg : ∀ (l : ℕ) [Fact l.Prime] (E : Type) [Field E] [NumberField E] [IsGalois ℚ E]
     (v w : HeightOneSpectrum (𝓞 E)), v ∈ placesOver E l → w ∈ placesOver E l →
     Nat.card (MulAction.stabilizer (E ≃ₐ[ℚ] E) v.asIdeal) = locDeg E w := by

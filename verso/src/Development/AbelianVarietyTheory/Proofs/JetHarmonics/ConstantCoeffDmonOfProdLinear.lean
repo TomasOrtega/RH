@@ -16,6 +16,11 @@ section Abstract
 
 variable {k A : Type} [CommRing k] [CommRing A] [Algebra k A]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ`. Consider the case `exact _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ`. Consider the case `(apply _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DerivationMemPow.derivation_mem_pow_of_mem_pow_succ ..)`.
+-/
 theorem deriv_mem_pow (D : Derivation k A A) (I : Ideal A) (n : ℕ) (x : A) (hx : x ∈ I ^ (n + 1)) :
     D x ∈ I ^ n := by
   first
@@ -28,18 +33,27 @@ theorem deriv_mem_pow (D : Derivation k A A) (I : Ideal A) (n : ℕ) (x : A) (hx
 
 variable {ι : Type}
 
+/- English proof (translation)
+Proceed by induction on `w generalizing x with`. Consider the case `nil => simpa using hx`. Consider the case `cons l w ih => exact ih _ (deriv_mem_pow _ _ _ _ hx)`.
+-/
 theorem word_mem (D : ι → Derivation k A A) (I : Ideal A) (w : List ι) (x : A)
     (hx : x ∈ I ^ (w.length + 1)) : w.foldl (fun g l => D l g) x ∈ I := by
   induction w generalizing x with
   | nil => simpa using hx
   | cons l w ih => exact ih _ (deriv_mem_pow _ _ _ _ hx)
 
+/- English proof (translation)
+Proceed by induction on `w generalizing x y with`. Consider the case `nil => rfl`. Consider the case `cons l w ih => simp only [List.foldl_cons, map_add, ih]`.
+-/
 theorem word_add (D : ι → Derivation k A A) (w : List ι) (x y : A) :
     w.foldl (fun g l => D l g) (x + y) = w.foldl (fun g l => D l g) x + w.foldl (fun g l => D l g) y := by
   induction w generalizing x y with
   | nil => rfl
   | cons l w ih => simp only [List.foldl_cons, map_add, ih]
 
+/- English proof (translation)
+Proceed by induction on `w generalizing x with`. Consider the case `nil => rfl`. Consider the case `cons l w ih => simp only [List.foldl_cons, Derivation.map_smul, ih]`.
+-/
 theorem word_smul (D : ι → Derivation k A A) (w : List ι) (r : k) (x : A) :
     w.foldl (fun g l => D l g) (r • x) = r • w.foldl (fun g l => D l g) x := by
   induction w generalizing x with
@@ -48,11 +62,17 @@ theorem word_smul (D : ι → Derivation k A A) (w : List ι) (r : k) (x : A) :
 
 variable [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Ideal.prod_mem_prod fun l _ => Ideal.pow_mem_pow (hlam l) _`.
+-/
 theorem prod_pow_mem (I : Ideal A) (lam : ι → A) (hlam : ∀ l, lam l ∈ I) (a : ι → ℕ) :
     ∏ l, lam l ^ a l ∈ I ^ (∑ l, a l) := by
   rw [← Finset.prod_pow_eq_pow_sum]
   exact Ideal.prod_mem_prod fun l _ => Ideal.pow_mem_pow (hlam l) _
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_update_of_mem (Finset.mem_univ j), ← Finset.add_sum_erase _ a (Finset.mem_univ j), Finset.sdiff_singleton_eq_erase]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sum_update_pred (a : ι → ℕ) (j : ι) (h : a j ≠ 0) :
     ∑ l, Function.update a j (a j - 1) l + 1 = ∑ l, a l := by
   rw [Finset.sum_update_of_mem (Finset.mem_univ j), ← Finset.add_sum_erase _ a (Finset.mem_univ j),
@@ -60,6 +80,11 @@ theorem sum_update_pred (a : ι → ℕ) (j : ι) (h : a j ≠ 0) :
   omega
 
 omit [Fintype ι] in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, Derivation.leibniz, ih, Finset.erase_insert hi, smul_eq_mul, smul_eq_mul, add_comm, Finset.mul_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hij : i ≠ j` using `fun h => hi (h ▸ hj)`. Rewrite using `[Finset.erase_insert_of_ne hij, Finset.prod_insert (fun h => hi (Finset.mem_of_mem_erase h)), mul_assoc]`.
+-/
 theorem deriv_prod (D : Derivation k A A) (f : ι → A) (s : Finset ι) :
     D (∏ l ∈ s, f l) = ∑ j ∈ s, (∏ l ∈ s.erase j, f l) * D (f j) := by
   induction s using Finset.induction_on with
@@ -73,6 +98,11 @@ theorem deriv_prod (D : Derivation k A A) (f : ι → A) (s : Finset ι) :
     rw [Finset.erase_insert_of_ne hij, Finset.prod_insert (fun h => hi (Finset.mem_of_mem_erase h)),
       mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[deriv_prod]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz_pow, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j), Function.update_self]`. Establish `: ∏ l ∈ Finset.univ.erase j, lam l ^ Function.update a j (a j - 1) l = ∏ l ∈ Finset.univ.erase j, lam l ^ a l` using `Finset.prod_congr rfl fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)]`. Rewrite using `[this]`.
+
+Simplify using `only [smul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_prod_pow (D : Derivation k A A) (lam : ι → A) (a : ι → ℕ) :
     D (∏ l, lam l ^ a l) =
       ∑ j, (a j : A) * (∏ l, lam l ^ Function.update a j (a j - 1) l) * D (lam j) := by
@@ -86,6 +116,15 @@ theorem deriv_prod_pow (D : Derivation k A A) (lam : ι → A) (a : ι → ℕ) 
   simp only [smul_eq_mul, nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∑ j, (a j : A) * (∏ l, lam l ^ Function.update a j (a j - 1) l) * (D (lam j) - algebraMap k A (if j = l₀ then r else 0)) ∈ I ^ (∑ l, a l)`. Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : a j = 0`. Simplify using `[hj]`. Rewrite using `[← sum_update_pred a j hj, pow_succ, mul_assoc]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_mul (prod_pow_mem I lam hlam _) (hD j hj))`. Establish `h2 : ∑ j, (a j : A) * (∏ l, lam l ^ Function.update a j (a j - 1) l) * algebraMap k A (if j = l₀ then r else 0) = (a l₀ : A) * (∏ l, lam l ^ Function.update a l₀ (a l₀ - 1) l) * algebraMap k A r`. Rewrite using `[Finset.sum_eq_single l₀]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+
+Simplify using `[hj]`. Simplify using the standard rewrite rules. Simplify using `only [mul_sub, Finset.sum_sub_distrib] at h1`. Rewrite `h1` using `[h2, ← deriv_prod_pow]`. Establish `h3` using `add_mem (Ideal.mul_mem_right (D E) _ (prod_pow_mem I lam hlam a)) (Ideal.mul_mem_right E _ h1)`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Derivation.leibniz, Algebra.smul_def (_ * r)]`. Simplify using `only [smul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deriv_prod_pow_mul (D : Derivation k A A) (I : Ideal A) (lam : ι → A) (hlam : ∀ l, lam l ∈ I)
     (a : ι → ℕ) (l₀ : ι) (r : k)
     (hD : ∀ l, a l ≠ 0 → D (lam l) - algebraMap k A (if l = l₀ then r else 0) ∈ I) (E : A) :
@@ -114,6 +153,29 @@ theorem deriv_prod_pow_mul (D : Derivation k A A) (I : Ideal A) (lam : ι → A)
   simp only [smul_eq_mul, map_mul, map_natCast]
   ring
 
+/- English proof (translation)
+Proceed by induction on `w generalizing a with`. Consider the case `nil`. Simplify using `only [List.foldl_nil, map_mul, map_prod, map_pow, hlam]`. Distinguish the cases in `h : ∀ l, ([] : List ι).count l = a l`. Rewrite using `[if_pos h]`.
+
+Simplify using `[← h]`. Rewrite using `[if_neg h]`. Simplify using `only [List.count_nil] at h`. Use `push Not at h`. Take `⟨l, hl⟩` from `h`.
+
+Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ l) (zero_pow hl.symm), zero_mul]`. Consider the case `cons l₀ w ih => set I : Ideal A := RingHom.ker π`. Establish `key` using `deriv_prod_pow_mul (D l₀) I lam hlam a l₀ (α l₀) (fun l hl => by`. Rewrite using `[RingHom.mem_ker, map_sub, hD l l₀ hl List.mem_cons_self, AlgHom.commutes]`. Use `split_ifs with h`.
+
+Simplify using `[h]`. Use the proof step `simp) E`. Establish `key2` using `word_mem D I w _ (Ideal.pow_le_pow_right (by simpa using hw) key)`. Rewrite `key2` using `[RingHom.mem_ker]`. Rewrite using `[List.foldl_cons, ← sub_add_cancel (D l₀ _) (((a l₀ : k) * α l₀) • ((∏ l, lam l ^ Function.update a l₀ (a l₀ - 1) l) * E)), word_add, map_add, key2, zero_add, word_smul, map_smul]`.
+
+Distinguish the cases in `h0 : a l₀ = 0`. Rewrite using `[if_neg]`. Simplify using `[h0]`. Introduce `h`. Use `h l₀` as an intermediate fact.
+
+Simplify using `[h0] at this`. Establish `hs` using `sum_update_pred a l₀ h0`. Rewrite using `[ih (Function.update a l₀ (a l₀ - 1))]`. Establish `hiff : (∀ l, w.count l = Function.update a l₀ (a l₀ - 1) l) ↔ ∀ l, (l₀ :: w).count l = a l`. Use `forall_congr' fun l => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hl : l = l₀`. Substitute `hl` using the available equality. Simplify using `only [Function.update_self, List.count_cons_self]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hl, List.count_cons_of_ne (Ne.symm hl)]`.
+
+Simplify using `only [hiff]`. Use `split_ifs with h`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ l₀), ← Finset.mul_prod_erase _ (fun l => ((a l).factorial : k) * α l ^ a l) (Finset.mem_univ l₀), Function.update_self]`. Establish `: ∏ l ∈ Finset.univ.erase l₀, (((Function.update a l₀ (a l₀ - 1) l).factorial : k) * α l ^ Function.update a l₀ (a l₀ - 1) l) = ∏ l ∈ Finset.univ.erase l₀, (((a l).factorial : k) * α l ^ a l)` using `Finset.prod_congr rfl fun l hl => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)]`. Rewrite using `[this]`.
+
+Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Rewrite using `[hn, smul_eq_mul]`. Simplify using `only [Nat.succ_eq_add_one, Nat.add_sub_cancel, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using the standard rewrite rules. Introduce `l l' hl hl'`. Use `hD l l' ?_ (List.mem_cons_of_mem _ hl')` and prove the remaining obligations. Distinguish the cases in `h : l = l₀`. Rewrite using `[h]`.
+
+Conclude with `h0`. Rewrite `hl` using `[Function.update_of_ne h]`. Then use the resulting hypothesis. Simplify using `only [List.length_cons] at hw`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem word_value (π : A →ₐ[k] k) (D : ι → Derivation k A A) (lam : ι → A)
     (hlam : ∀ l, π (lam l) = 0) (α : ι → k) (w : List ι) (a : ι → ℕ) (E : A)
     (hD : ∀ l l', a l ≠ 0 → l' ∈ w → π (D l' (lam l)) = if l = l' then α l else 0)
@@ -185,6 +247,15 @@ theorem word_value (π : A →ₐ[k] k) (D : ι → Derivation k A A) (lam : ι 
 
 end Abstract
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨[], by simp, fun _ => rfl⟩`. Consider the case `cons j L ih`. Take `⟨w, h1, h2⟩` from `ih`. Use `⟨w ++ List.replicate (m j) j, fun l => ?_, fun f => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[List.count_append, h1, List.count_replicate, List.count_cons]`. Distinguish the cases in `h : j = l`. Substitute `h` using the available equality. Simplify using `[add_mul]`. Simplify using `[h]`.
+
+Rewrite using `[List.foldr_cons, List.foldl_append, h2]`. Generalize the expression as in `w.foldl (fun g l => D l g) f = x`. Generalize the expression as in `m j = n`. Proceed by induction on `n generalizing x with`. Consider the case `zero => rfl`.
+
+Consider the case `succ n ih => rw [List.replicate_succ, List.foldl_cons, Function.iterate_succ_apply, ih]`.
+-/
 theorem exists_word {ι A : Type} [DecidableEq ι] (D : ι → A → A) (m : ι → ℕ) (L : List ι) :
     ∃ w : List ι, (∀ l, w.count l = L.count l * m l) ∧
       ∀ f, L.foldr (fun l g => (D l)^[m l] g) f = w.foldl (fun g l => D l g) f := by
@@ -204,6 +275,11 @@ theorem exists_word {ι A : Type} [DecidableEq ι] (D : ι → A → A) (m : ι 
       | zero => rfl
       | succ n ih => rw [List.replicate_succ, List.foldl_cons, Function.iterate_succ_apply, ih]
 
+/- English proof (translation)
+Establish `h` using `WickVanishing.coeff_ev_zero_left (G.F j) (Finsupp.single ((0 : Fin 1), i) 1)`. Rewrite `h` using `[G.unit, Finsupp.embDomain_single, coeff_X]`. Express the relevant statement in the definitionally equal form `_ = coeff (Finsupp.single ((1 : Fin 2), i) 1) (G.F j) at h`. Rewrite using `[← h]`. Distinguish the cases in `hij : j = i`.
+
+Simplify using `[hij]`. Rewrite using `[if_neg hij, if_neg]`. Introduce `h'`. Rewrite `h'` using `[Finsupp.single_left_inj one_ne_zero]`. Conclude with `hij (congrArg Prod.snd h').symm`.
+-/
 theorem coeff_law {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (i j : Fin d) :
     coeff (Finsupp.single ((1 : Fin 2), i) 1) (G.F j) = if j = i then 1 else 0 := by
   have h := WickVanishing.coeff_ev_zero_left (G.F j) (Finsupp.single ((0 : Fin 1), i) 1)
@@ -217,6 +293,13 @@ theorem coeff_law {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (i j : Fin d
     rw [Finsupp.single_left_inj one_ne_zero] at h'
     exact hij (congrArg Prod.snd h').symm
 
+/- English proof (translation)
+Establish `h : ∀ i j : Fin d, constantCoeff (ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) (G.mapF φ j))) = if j = i then 1 else 0 := by`. Introduce `i j`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, WickVanishing.coeff_ev_zero_right, Finsupp.embDomain_zero, coeff_pderiv, FGLaw.mapF, coeff_map, zero_add, coeff_law]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `Dof`.
+
+Simplify using `only [map_sum, map_mul, h, constantCoeff_C]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ hj`. Rewrite using `[pderiv_X_of_ne, map_zero, mul_zero]`.
+
+Introduce `h'`. Conclude with `hj (by simpa using h'.symm)`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_dof_X {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {d : ℕ}
     (G : FGLaw R d) (v : Fin d → k) (j : Fin d) :
     constantCoeff (Dof (G.mapF φ) v (X ((0 : Fin 1), j))) = v j := by
@@ -242,6 +325,15 @@ namespace GlobalTheory
 
 open SymbolOne in
 
+/- English proof (translation)
+Introduce `R k _ _ φ d G ι _ _ u lam α al m E hpair hdeg`. Take `⟨w, hw1, hw2⟩` from `exists_word (fun l => Dof (G.mapF φ) (u l)) m (Finset.univ : Finset ι).toList`. Establish `hc : ∀ l, w.count l = m l` using `fun l => by`. Rewrite using `[hw1, List.count_eq_one_of_mem (Finset.nodup_toList _) (by simp), one_mul]`. Set `π : PS k 1 d →ₐ[k] k` to `{ (constantCoeff : PS k 1 d →+* k) with commutes' := fun r => constantCoeff_C r }`.
+
+Establish `hπ : ∀ f, π f = constantCoeff f` using `fun _ => rfl`. Establish `hlen : w.length = ∑ l, m l`. Rewrite using `[← Finset.sum_congr rfl fun l _ => hc l]`. Use `Multiset.sum_count_eq_card (s := Finset.univ) (m := (w : Multiset ι)) (by simp)` as an intermediate fact. Simplify using `using this.symm`.
+
+Establish `key` using `word_value π (fun l => GE.dofD (G.mapF φ) (u l)) (fun l => ∑ i, C (lam l i) * (X ((0 : Fin 1), i) : PS k 1 d)) (fun l => by simp [hπ]) α w al E (fun l l' hl hl' => by`. Rewrite using `[hπ, GE.dofD_apply, GE.dof_sum, map_sum]`. Simplify using `only [GE.dof_C_mul, map_mul, constantCoeff_C, constantCoeff_dof_X]`. Conclude with `hpair l l' hl (by rw [← hc]; exact (List.count_pos_iff.2 hl').ne'))`. Use the proof step `(by rw [hlen]; simpa [Finsupp.degree_eq_sum] using hdeg)`.
+
+Simplify using `only [GE.dofD_apply, hπ, hc] at key`. Unfold `DmonOf`. Rewrite using `[hw2, key]`. Simplify using `only [Finsupp.ext_iff]`.
+-/
 theorem constantCoeff_dmonOf_prod_linear :
     ∀ (R k : Type) [CommRing R] [CommRing k] (φ : R →+* k) (d : ℕ) (G : FGLaw R d) (ι : Type) [Fintype ι] [DecidableEq ι] (u lam : ι → Fin d → k) (α : ι → k) (al m : ι →₀ ℕ) (E : PS k 1 d), (∀ l l', al l ≠ 0 → m l' ≠ 0 → ∑ i, lam l i * u l' i = if l = l' then α l else 0) → m.degree ≤ al.degree → constantCoeff (DmonOf (G.mapF φ) u m ((∏ l, (∑ i, C (lam l i) * (X ((0 : Fin 1), i) : PS k 1 d)) ^ al l) * E)) = if m = al then (∏ l, ((al l).factorial : k) * α l ^ al l) * constantCoeff E else 0 := by
   intro R k _ _ φ d G ι _ _ u lam α al m E hpair hdeg

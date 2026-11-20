@@ -19,14 +19,25 @@ namespace GlobalTheory.PoincareLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Matrix.map_injective GlobalTheory.MixModel.incA_injective h`.
+-/
 theorem ratW_inj (A T : HSp D) : Function.Injective (ratW T A) :=
   fun _ _ h => Matrix.map_injective GlobalTheory.MixModel.incA_injective h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[ratW, map_sub]`.
+-/
 theorem ratW_sub (A T : HSp D) (γ γ₀ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) :
     ratW T A (γ - γ₀) = ratW T A γ - ratW T A γ₀ := by
   ext i j
   simp [ratW, map_sub]
 
+/- English proof (translation)
+Take `⟨hg, hlc, hsc, ht2, hdisc, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T A`. Establish `hcl : IsClosed (ratL T A : Set (WA T A))` using `AddSubgroup.isClosed_of_discrete`. Establish `hS : IsCompact ((Subtype.val : ratL T A → WA T A) ⁻¹' K)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `hfin` using `(hS.finite_of_discrete.image Subtype.val).preimage (ratW_inj A T).injOn`. Use `hfin.subset fun γ hγ => ?_` and prove the remaining obligations.
+
+Conclude with `⟨⟨ratW T A γ, γ, rfl⟩, hγ, rfl⟩`.
+-/
 theorem finite_ratW_mem (A T : HSp D) (K : Set (WO A T)) (hK : IsCompact K) :
     {γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E | ratW T A γ ∈ K}.Finite := by
   obtain ⟨hg, hlc, hsc, ht2, hdisc, -⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T A
@@ -37,6 +48,11 @@ theorem finite_ratW_mem (A T : HSp D) (K : Set (WO A T)) (hK : IsCompact K) :
   refine hfin.subset fun γ hγ => ?_
   exact ⟨⟨ratW T A γ, γ, rfl⟩, hγ, rfl⟩
 
+/- English proof (translation)
+Establish `hadd` using `(GlobalTheory.OrientedFormLaws.symplOH_laws D A T).1`. Establish `h0 : symplOH A T 0 z = 0`. Use `hadd 0 0 z` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.1 this`.
+
+Use `hadd y (-y) z` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, h0]`. Conclude with `(eq_neg_of_add_eq_zero_right this.symm)`.
+-/
 theorem symplOH_neg_left (A T : HSp D) (y z : WO A T) : symplOH A T (-y) z = -symplOH A T y z := by
   have hadd := (GlobalTheory.OrientedFormLaws.symplOH_laws D A T).1
   have h0 : symplOH A T 0 z = 0 := by
@@ -47,6 +63,21 @@ theorem symplOH_neg_left (A T : HSp D) (y z : WO A T) : symplOH A T (-y) z = -sy
   rw [add_neg_cancel, h0] at this
   exact (eq_neg_of_add_eq_zero_right this.symm)
 
+/- English proof (translation)
+Introduce `D ψ hψ A T h hc hs`. Take `⟨hg, hlc, -, -, -, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T A`. Use `haveI : IsTopologicalAddGroup (WO A T) := hg`. Use `haveI : LocallyCompactSpace (WO A T) := hlc`. Use `haveI : ContinuousSub (WO A T) := @IsTopologicalAddGroup.to_continuousSub _ _ _ hg`.
+
+Establish `laws` using `GlobalTheory.OrientedFormLaws.symplOH_laws D A T`. Establish `vanish : ∀ (U : Set (WO A T)) (u : WO A T), u ∈ U → ∀ γ, γ ∉ {γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E | ratW T A γ ∈ (fun p : WO A T × WO A T => p.1 - p.2) '' (tsupport h ×ˢ U)} → h (ratW T A γ + u) = 0`. Introduce `U u hu γ hγ`. Assume the negation of the conclusion as `hne`. Conclude with `hγ ⟨(ratW T A γ + u, u), ⟨subset_tsupport h hne, hu⟩, add_sub_cancel_right _ _⟩`.
+
+Use `⟨fun u => ?_, ?_, fun γ₀ u => ?_⟩` and prove the remaining obligations. Use `(finite_ratW_mem A T _ ((hs.isCompact.prod (isCompact_singleton (x := u))).image continuous_sub)).subset fun γ hγ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hγ (vanish {u} u rfl γ hn)`. Use `continuous_iff_continuousAt.2 fun u₀ => ?_` and prove the remaining obligations.
+
+Take `⟨U, hU, hUn⟩` from `exists_compact_mem_nhds u₀`. Establish `hF` using `finite_ratW_mem A T _ ((hs.isCompact.prod hU).image continuous_sub)`. Establish `hcont : Continuous fun u => ∑ γ ∈ hF.toFinset, ψ (symplOH A T (ratW T A γ) u) * h (ratW T A γ + u)` using `continuous_finset_sum _ fun γ _ => (hψ.1.1.comp (laws.2.2.2.2.1.comp (continuous_const.prodMk continuous_id))).mul (hc.comp (continuous_add_left (ratW T A γ)))`. Use `hcont.continuousAt.congr (Filter.eventually_of_mem hUn fun u hu => ?_)` and prove the remaining obligations. Use `(tsum_eq_sum fun γ hγ => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[vanish U u hu γ (fun h' => hγ (hF.mem_toFinset.2 h')), mul_zero]`. Rewrite using `[← (Equiv.subRight γ₀).tsum_eq, ← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `γ`. Simplify using `only [Equiv.subRight_apply]`.
+
+Rewrite using `[ratW_sub]`. Establish `e1 : ratW T A γ - ratW T A γ₀ + (ratW T A γ₀ + u) = ratW T A γ + u` using `by abel`. Establish `e2 : symplOH A T (ratW T A γ - ratW T A γ₀) (ratW T A γ₀ + u) = symplOH A T (ratW T A γ) (ratW T A γ₀) + symplOH A T (ratW T A γ) u + -(symplOH A T (ratW T A γ₀) u)`. Rewrite using `[sub_eq_add_neg, laws.1, laws.2.1, laws.2.1, symplOH_neg_left, symplOH_neg_left, laws.2.2.1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨c, hc'⟩` from `laws.2.2.2.2.2.1 (ratW T A γ) ⟨γ, rfl⟩ (ratW T A γ₀) ⟨γ₀, rfl⟩`. Rewrite using `[e1, e2, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hc', hψ.1.2.2.1 c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem poincare_law : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A T : HSp D) (h : WO A T → ℂ), Continuous h → HasCompactSupport h → (∀ u, {γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E | h (ratW T A γ + u) ≠ 0}.Finite) ∧ Continuous (fun u => ∑' γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E, ψ (symplOH A T (ratW T A γ) u) * h (ratW T A γ + u)) ∧ ∀ (γ₀ : Matrix (Fin T.rank) (Fin A.rank) D.host.E) (u : WO A T), (∑' γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E, ψ (symplOH A T (ratW T A γ) (ratW T A γ₀ + u)) * h (ratW T A γ + (ratW T A γ₀ + u))) = ψ (-(symplOH A T (ratW T A γ₀) u)) * ∑' γ : Matrix (Fin T.rank) (Fin A.rank) D.host.E, ψ (symplOH A T (ratW T A γ) u) * h (ratW T A γ + u) := by
   intro D ψ hψ A T h hc hs
   obtain ⟨hg, hlc, -, -, -, -⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T A

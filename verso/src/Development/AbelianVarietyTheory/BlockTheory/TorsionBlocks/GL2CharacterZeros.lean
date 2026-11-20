@@ -15,6 +15,9 @@ def uMat (ν : Matrix v ρ k) (ν' : Matrix ρ v k) (b : Matrix ρ ρ k) :
     Matrix (ρ ⊕ v ⊕ ρ) (ρ ⊕ v ⊕ ρ) k :=
   fromBlocks 1 (fromCols ν' b) 0 (fromBlocks 1 ν 0 1)
 
+/- English proof (translation)
+Simplify using `[uMat, det_fromBlocks_zero₂₁]`.
+-/
 theorem det_uMat (ν : Matrix v ρ k) (ν' : Matrix ρ v k) (b : Matrix ρ ρ k) :
     (uMat ν ν' b).det = 1 := by
   simp [uMat, det_fromBlocks_zero₂₁]
@@ -135,6 +138,9 @@ section Basic₂
 variable {k : Type} [Field k]
 variable {ρ v W : Type} [Fintype ρ] [DecidableEq ρ] [Fintype v] [DecidableEq v]
 
+/- English proof (translation)
+Simplify using `only [glueCols, uMat, fromCols_mul_fromBlocks, mul_fromCols, Matrix.mul_one, Matrix.mul_zero, add_zero]`. Apply the tactic sequence `ext i (j | j | j) <;> simp [add_comm, add_left_comm, add_assoc]`.
+-/
 theorem glueCols_mul_uMat (ξ : Matrix W ρ k) (x₀ : Matrix W v k) (c : Matrix W ρ k)
     (ν : Matrix v ρ k) (ν' : Matrix ρ v k) (b : Matrix ρ ρ k) :
     glueCols ξ x₀ c * uMat ν ν' b = glueCols ξ (x₀ + ξ * ν') (c + ξ * b + x₀ * ν) := by
@@ -142,6 +148,9 @@ theorem glueCols_mul_uMat (ξ : Matrix W ρ k) (x₀ : Matrix W v k) (c : Matrix
     add_zero]
   ext i (j | j | j) <;> simp [add_comm, add_left_comm, add_assoc]
 
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.det (uGL ν ν' b) = 1` using `by ext; simp [uGL, det_uMat]`. Establish `h2 : (uGL ν ν' b).val = uMat ν ν' b` using `rfl`. Simplify using `[om, h, h2, nabs]`.
+-/
 theorem om_uGL [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Fintype W] [DecidableEq W] (μ : kˣ →* ℂˣ) (ν : Matrix v ρ k) (ν' : Matrix ρ v k)
     (b : Matrix ρ ρ k) (Φ : Matrix W (ρ ⊕ v ⊕ ρ) k → ℂ) (x : Matrix W (ρ ⊕ v ⊕ ρ) k) :

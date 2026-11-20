@@ -17,6 +17,9 @@ def ConePolar.Statement : Prop :=
       coneIntegral h J e g =
         κ * varInt (J ⊔ Ideal.span {linForm ℓ - 1}) e g (fun _ x => Real.log (h.dualNorm x))
 
+/- English proof (translation)
+The claim follows from `Ideal.isPrime_bot isHomog f hf d := by rw [Ideal.mem_bot] at hf ⊢ rw [hf, map_zero] isRelevant := ⟨0, fun hX => X_ne_zero (0 : Fin (n + 1)) (Ideal.mem_bot.mp hX)⟩`.
+-/
 theorem isProjPrime_bot_space (n : ℕ) : IsProjPrime (⊥ : Ideal (MvPolynomial (Fin (n + 1)) ℂ)) where
   isPrime := Ideal.isPrime_bot
   isHomog f hf d := by

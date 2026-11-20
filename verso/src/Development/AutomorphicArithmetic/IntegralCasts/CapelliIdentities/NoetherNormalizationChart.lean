@@ -12,13 +12,24 @@ private noncomputable def shear (b : ℕ) (c : A) :
     MvPolynomial (Fin (n + 1)) A →ₐ[A] MvPolynomial (Fin (n + 1)) A :=
   aeval (Fin.cases (X 0) (fun i : Fin n => X i.succ + C c * X 0 ^ (b ^ (i.succ : ℕ))))
 
+/- English proof (translation)
+Simplify using `[shear]`.
+-/
 private lemma shear_zero (b : ℕ) (c : A) : shear (n := n) b c (X 0) = X 0 := by
   simp [shear]
 
+/- English proof (translation)
+Simplify using `[shear]`.
+-/
 private lemma shear_succ (b : ℕ) (c : A) (i : Fin n) :
     shear (n := n) b c (X i.succ) = X i.succ + C c * X 0 ^ (b ^ (i.succ : ℕ)) := by
   simp [shear]
 
+/- English proof (translation)
+Use `MvPolynomial.algHom_ext fun i => ?_` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [shear_zero]`. Consider the case `succ i`. Rewrite using `[AlgHom.comp_apply, shear_succ, map_add, map_mul, map_pow, shear_zero, shear_succ, algHom_C, algebraMap_eq, add_assoc, ← add_mul, ← C_add, h]`.
+
+Simplify using the standard rewrite rules.
+-/
 private lemma shear_comp (b : ℕ) (c d : A) (h : c + d = 0) :
     (shear (n := n) b c).comp (shear b d) = AlgHom.id _ _ := by
   refine MvPolynomial.algHom_ext fun i => ?_
@@ -34,6 +45,13 @@ private noncomputable def chart (A : Type u) [CommRing A] (n b : ℕ) :
   (AlgEquiv.ofAlgHom (shear b 1) (shear b (-1)) (shear_comp b 1 (-1) (by simp))
     (shear_comp b (-1) 1 (by simp))).trans (finSuccEquiv A n)
 
+/- English proof (translation)
+Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Establish `: chart A n b (X 0) = Polynomial.X`. Simplify using `[chart, shear_zero, finSuccEquiv_X_zero]`. Rewrite using `[this]`.
+
+Conclude with `⟨by simp, Polynomial.monic_X⟩`. Consider the case `succ i`. Establish `: chart A n b (X i.succ) = Polynomial.X ^ (b ^ (i.succ : ℕ)) + Polynomial.C (X i)`. Simplify using `[chart, shear_succ, finSuccEquiv_X_zero, finSuccEquiv_X_succ, add_comm]`. Rewrite using `[this]`.
+
+Conclude with `⟨Polynomial.natDegree_X_pow_add_C, Polynomial.monic_X_pow_add_C _ (pow_ne_zero _ hb)⟩`.
+-/
 private lemma chart_X [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (i : Fin (n + 1)) :
     (chart A n b (X i)).IsMonicOfDegree (b ^ (i : ℕ)) := by
   cases i using Fin.cases with
@@ -49,9 +67,17 @@ private lemma chart_X [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (i : Fin (n + 1)) 
     rw [this]
     exact ⟨Polynomial.natDegree_X_pow_add_C, Polynomial.monic_X_pow_add_C _ (pow_ne_zero _ hb)⟩
 
+/- English proof (translation)
+The claim follows from `(chart A n b).commutes a`.
+-/
 private lemma chart_C (b : ℕ) (a : A) : chart A n b (C a) = Polynomial.C (C a) :=
   (chart A n b).commutes a
 
+/- English proof (translation)
+Establish `h : chart A n b (monomial v 1) = ∏ i, chart A n b (X i) ^ v i`. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using the standard rewrite rules. Establish `hm : ∀ i ∈ Finset.univ, (chart A n b (X i) ^ v i).Monic` using `fun i _ => (chart_X hb i).monic.pow _`. Rewrite using `[h]`.
+
+Use `⟨?_, Polynomial.monic_prod_of_monic _ _ hm⟩` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_prod_of_monic _ _ hm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[(chart_X hb i).monic.natDegree_pow, (chart_X hb i).natDegree_eq]`.
+-/
 private lemma chart_monomial [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (v : Fin (n + 1) →₀ ℕ) :
     (chart A n b (monomial v 1)).IsMonicOfDegree (∑ i, v i * b ^ (i : ℕ)) := by
   have h : chart A n b (monomial v 1) = ∏ i, chart A n b (X i) ^ v i := by
@@ -65,6 +91,11 @@ private lemma chart_monomial [Nontrivial A] {b : ℕ} (hb : b ≠ 0) (v : Fin (n
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [(chart_X hb i).monic.natDegree_pow, (chart_X hb i).natDegree_eq]
 
+/- English proof (translation)
+Establish `key : (fun i => (⟨v i, hv i⟩ : Fin b)) = fun i => ⟨w i, hw i⟩`. Apply `finFunctionFinEquiv.injective` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finFunctionFinEquiv_apply, finFunctionFinEquiv_apply]`. Conclude with `h`.
+
+Use function extensionality and compare the values at `i`. Conclude with `congrArg Fin.val (congrFun key i)`.
+-/
 private lemma weight_inj {m b : ℕ} (v w : Fin m → ℕ) (hv : ∀ i, v i < b) (hw : ∀ i, w i < b)
     (h : ∑ i, v i * b ^ (i : ℕ) = ∑ i, w i * b ^ (i : ℕ)) : v = w := by
   have key : (fun i => (⟨v i, hv i⟩ : Fin b)) = fun i => ⟨w i, hw i⟩ := by
@@ -78,6 +109,21 @@ private lemma weight_inj {m b : ℕ} (v w : Fin m → ℕ) (hv : ∀ i, v i < b)
 end UpperTheory.NoetherNormalizationChart
 
 open UpperTheory.NoetherNormalizationChart in
+/- English proof (translation)
+Introduce `A _ _ n f hf`. Use `set b := f.totalDegree + 1 with hbdef`. Establish `hb : b ≠ 0` using `Nat.succ_ne_zero _`. Set `wt : (Fin (n + 1) →₀ ℕ) → ℕ` to `fun v => ∑ i, v i * b ^ (i : ℕ)`. Establish `hlt : ∀ v ∈ f.support, ∀ i, v i < b` using `fun v hv i => Nat.lt_succ_of_le ((MvPolynomial.monomial_le_degreeOf i hv).trans (MvPolynomial.degreeOf_le_totalDegree f i))`.
+
+Take `⟨v, hv, hmax⟩` from `Finset.exists_max_image f.support wt (MvPolynomial.support_nonempty.mpr hf)`. Establish `ha : f.coeff v ≠ 0` using `MvPolynomial.mem_support_iff.mp hv`. Establish `hsum : chart A n b f = ∑ w ∈ f.support, Polynomial.C (MvPolynomial.C (f.coeff w)) * chart A n b (MvPolynomial.monomial w 1)` using `by conv_lhs => rw [← f.support_sum_monomial_coeff, map_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← chart_C b, ← map_mul, MvPolynomial.C_mul_monomial, mul_one]`.
+
+Establish `hdeg : (chart A n b f).natDegree ≤ wt v`. Rewrite using `[hsum]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun w hw => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[(chart_monomial hb w).natDegree_eq]`.
+
+Conclude with `hmax w hw`. Establish `hcoeff : (chart A n b f).coeff (wt v) = MvPolynomial.C (f.coeff v)`. Rewrite using `[hsum, Polynomial.finset_sum_coeff, Finset.sum_eq_single_of_mem v hv]`. Establish `h1` using `(chart_monomial (A := A) hb v).monic.coeff_natDegree`. Rewrite `h1` using `[(chart_monomial hb v).natDegree_eq]`.
+
+Rewrite using `[Polynomial.coeff_C_mul, h1, mul_one]`. Introduce `w hw hne`. Rewrite using `[Polynomial.coeff_C_mul, Polynomial.coeff_eq_zero_of_natDegree_lt, mul_zero]`. Rewrite using `[(chart_monomial hb w).natDegree_eq]`. Use `lt_of_le_of_ne (hmax w hw) fun h => hne ?_` and prove the remaining obligations.
+
+Conclude with `DFunLike.coe_injective (weight_inj w v (hlt w hw) (hlt v hv) h)`. Use `⟨chart A n b, f.coeff v, ha, ?_⟩` and prove the remaining obligations. Establish `hne : (chart A n b f).coeff (wt v) ≠ 0`. Rewrite using `[hcoeff]`. Simplify using `using ha`.
+
+Rewrite using `[Polynomial.leadingCoeff, Polynomial.natDegree_eq_of_le_of_coeff_ne_zero hdeg hne, hcoeff]`.
+-/
 theorem UpperTheory.exists_monic_change_of_variables :
     ∀ (A : Type u) [CommRing A] [IsDomain A] (n : ℕ) (f : MvPolynomial (Fin (n + 1)) A), f ≠ 0 → ∃ (e : MvPolynomial (Fin (n + 1)) A ≃ₐ[A] Polynomial (MvPolynomial (Fin n) A)) (a : A), a ≠ 0 ∧ (e f).leadingCoeff = MvPolynomial.C a := by
   intro A _ _ n f hf

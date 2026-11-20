@@ -22,30 +22,59 @@ def sn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 e
 
 def M (k r : ℕ) (f : Fin (2 * r + k + 1) → ℂ) : Mat k r := fun x z => if x = sg k r z then f z else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sg_val (i : Fin (2 * r + k + 1)) :
     (sg k r i).val = if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `apply Fin.ext; have := i.isLt; rw [sg_val, sg_val]; split_ifs <;> omega`.
+-/
 theorem sg_sg (i : Fin (2 * r + k + 1)) : sg k r (sg k r i) = i := by
   apply Fin.ext; have := i.isLt; rw [sg_val, sg_val]; split_ifs <;> omega
 
+/- English proof (translation)
+Rewrite using `[← sg_sg i, h, sg_sg]`.
+-/
 theorem sg_inj {i j : Fin (2 * r + k + 1)} (h : sg k r i = sg k r j) : i = j := by
   rw [← sg_sg i, h, sg_sg]
 
+/- English proof (translation)
+Apply the tactic sequence `have := i.isLt; unfold lv; rw [sg_val]; split_ifs <;> omega`.
+-/
 theorem lv_sg (i : Fin (2 * r + k + 1)) : lv k r (sg k r i) = 2 * r - lv k r i := by
   have := i.isLt; unfold lv; rw [sg_val]; split_ifs <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `have := i.isLt; unfold lv; split_ifs <;> omega`.
+-/
 theorem lv_le (i : Fin (2 * r + k + 1)) : lv k r i ≤ 2 * r := by
   have := i.isLt; unfold lv; split_ifs <;> omega
 
+/- English proof (translation)
+Apply the tactic sequence `have := i.isLt; unfold sn; rw [sg_val]; split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem sn_sg (i : Fin (2 * r + k + 1)) : sn k r (sg k r i) = sn k r i := by
   have := i.isLt; unfold sn; rw [sg_val]; split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sn; split_ifs <;> norm_num`.
+-/
 theorem sn_mul_self (i : Fin (2 * r + k + 1)) : sn k r i * sn k r i = 1 := by
   unfold sn; split_ifs <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sn; split_ifs <;> norm_num`.
+-/
 theorem sn_ne_zero (i : Fin (2 * r + k + 1)) : sn k r i ≠ 0 := by
   unfold sn; split_ifs <;> norm_num
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (sg k r x)]`. Simplify using `[M, sg_sg]`. Introduce `z _ hz`. Establish `: x ≠ sg k r z` using `by rintro rfl; exact hz (sg_sg z).symm`. Simplify using `[M, this]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem M_mul_apply (f : Fin (2 * r + k + 1) → ℂ) (A : Mat k r) (x y : Fin (2 * r + k + 1)) :
     (M k r f * A) x y = f (sg k r x) * A (sg k r x) y := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (sg k r x)]
@@ -55,6 +84,11 @@ theorem M_mul_apply (f : Fin (2 * r + k + 1) → ℂ) (A : Mat k r) (x y : Fin (
     simp [M, this]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (sg k r y)]`. Simplify using `[M]`. Introduce `z _ hz`. Simplify using `[M, hz]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mul_M_apply (A : Mat k r) (g : Fin (2 * r + k + 1) → ℂ) (x y : Fin (2 * r + k + 1)) :
     (A * M k r g) x y = A x (sg k r y) * g y := by
   rw [Matrix.mul_apply, Finset.sum_eq_single (sg k r y)]
@@ -62,6 +96,11 @@ theorem mul_M_apply (A : Mat k r) (g : Fin (2 * r + k + 1) → ℂ) (x y : Fin (
   · intro z _ hz; simp [M, hz]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `x y`. Rewrite using `[mul_M_apply, diagonal_apply]`. Simplify using `only [M]`. Distinguish the cases in `h : x = y`. Substitute `h` using the available equality.
+
+Simplify using `[sg_sg]`. Establish `: x ≠ sg k r (sg k r y)` using `by rw [sg_sg]; exact h`. Simplify using `[h, this]`.
+-/
 theorem M_mul (f g : Fin (2 * r + k + 1) → ℂ) :
     M k r f * M k r g = diagonal (fun y => f (sg k r y) * g y) := by
   ext x y
@@ -72,12 +111,20 @@ theorem M_mul (f g : Fin (2 * r + k + 1) → ℂ) :
   · have : x ≠ sg k r (sg k r y) := by rw [sg_sg]; exact h
     simp [h, this]
 
+/- English proof (translation)
+Use extensionality with `x z`. Use `x.isLt` as an intermediate fact. Use `z.isLt` as an intermediate fact. Simplify using `only [Hpk, M, Fin.ext_iff, sg_val, sn]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem Hpk_eq : Hpk k r = M k r (sn k r) := by
   ext x z
   have := x.isLt; have := z.isLt
   simp only [Hpk, M, Fin.ext_iff, sg_val, sn]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Use extensionality with `x z`. Use `x.isLt` as an intermediate fact. Use `z.isLt` as an intermediate fact. Unfold `bigCell M tv`. Simplify using `only [esI, Fin.ext_iff, sg_val, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem bigCell_eq (c : Fin r → ℂ) : bigCell k r c 1 = M k r (tv k r c) := by
   ext x z
   have := x.isLt; have := z.isLt
@@ -85,15 +132,26 @@ theorem bigCell_eq (c : Fin r → ℂ) : bigCell k r c 1 = M k r (tv k r c) := b
   simp only [esI, Fin.ext_iff, sg_val, Matrix.one_apply]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Rewrite using `[Hpk_eq, M_mul, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[sn_sg, sn_mul_self]`.
+-/
 theorem Hpk_sq : Hpk k r * Hpk k r = 1 := by
   rw [Hpk_eq, M_mul, ← diagonal_one]; congr 1; funext y; rw [sn_sg, sn_mul_self]
 
+/- English proof (translation)
+Unfold `tv`. Use `split_ifs`. Conclude with `hc _`. Conclude with `one_ne_zero`. Conclude with `inv_ne_zero (star_ne_zero.mpr (hc _))`.
+-/
 theorem tv_ne_zero {c : Fin r → ℂ} (hc : ∀ a, c a ≠ 0) (i : Fin (2 * r + k + 1)) : tv k r c i ≠ 0 := by
   unfold tv; split_ifs
   · exact hc _
   · exact one_ne_zero
   · exact inv_ne_zero (star_ne_zero.mpr (hc _))
 
+/- English proof (translation)
+Establish `h1 : bigCell k r c 1 * M k r (fun y => (tv k r c (sg k r y))⁻¹) = 1`. Rewrite using `[bigCell_eq, M_mul, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Conclude with `mul_inv_cancel₀ (tv_ne_zero hc _)`.
+
+Establish `h2` using `Matrix.inv_eq_right_inv h1`. Use `⟨h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h2]`. Conclude with `mul_eq_one_comm.mp h1`.
+-/
 theorem bigCell_inv {c : Fin r → ℂ} (hc : ∀ a, c a ≠ 0) :
     (bigCell k r c 1)⁻¹ = M k r (fun y => (tv k r c (sg k r y))⁻¹) ∧
     (bigCell k r c 1)⁻¹ * bigCell k r c 1 = 1 := by
@@ -104,6 +162,13 @@ theorem bigCell_inv {c : Fin r → ℂ} (hc : ∀ a, c a ≠ 0) :
   refine ⟨h2, ?_⟩
   rw [h2]; exact mul_eq_one_comm.mp h1
 
+/- English proof (translation)
+Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `h1 : Hpk k r * gᴴ * Hpk k r * g = 1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hU, Hpk_sq]`.
+
+Establish `hinv` using `Matrix.inv_eq_left_inv h1`. Use `⟨hinv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hinv]`. Conclude with `h1`. Rewrite using `[hinv]`.
+
+Conclude with `mul_eq_one_comm.mp h1`.
+-/
 theorem inv_of_UH {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
     g⁻¹ = Hpk k r * gᴴ * Hpk k r ∧ g⁻¹ * g = 1 ∧ g * g⁻¹ = 1 := by
   have hU : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -116,11 +181,17 @@ theorem inv_of_UH {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
   · rw [hinv]; exact h1
   · rw [hinv]; exact mul_eq_one_comm.mp h1
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`.
+-/
 theorem cL {A B X : Mat k r} (h : A * B = 1) : A * (B * X) = X := by
   rw [← Matrix.mul_assoc, h, Matrix.one_mul]
 
 def Supp (A : Mat k r) (R : ℕ → ℕ → Prop) : Prop := ∀ x y, A x y ≠ 0 → R (lv k r x) (lv k r y)
 
+/- English proof (translation)
+Introduce `x y h`. Rewrite `h` using `[Matrix.mul_apply]`. Take `⟨z, _, hz⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h`. Conclude with `hT _ _ _ (hA x z (left_ne_zero_of_mul hz)) (hB z y (right_ne_zero_of_mul hz))`.
+-/
 theorem Supp.mul' {A B : Mat k r} {R S T : ℕ → ℕ → Prop} (hA : Supp A R) (hB : Supp B S)
     (hT : ∀ a b c, R a b → S b c → T a c) : Supp (A * B) T := by
   intro x y h
@@ -128,10 +199,18 @@ theorem Supp.mul' {A B : Mat k r} {R S T : ℕ → ℕ → Prop} (hA : Supp A R)
   obtain ⟨z, _, hz⟩ := Finset.exists_ne_zero_of_sum_ne_zero h
   exact hT _ _ _ (hA x z (left_ne_zero_of_mul hz)) (hB z y (right_ne_zero_of_mul hz))
 
+/- English proof (translation)
+Introduce `x y hxy`. Conclude with `h y x (fun h0 => hxy (by rw [conjTranspose_apply, h0, star_zero]))`.
+-/
 theorem Supp.conjT {A : Mat k r} {R : ℕ → ℕ → Prop} (h : Supp A R) : Supp Aᴴ (fun a b => R b a) := by
   intro x y hxy
   exact h y x (fun h0 => hxy (by rw [conjTranspose_apply, h0, star_zero]))
 
+/- English proof (translation)
+Introduce `x y h`. Simplify using `only [M] at h`. Use `split_ifs at h with hx`. Substitute `hx` using the available equality. Use `lv_sg (k := k) (r := r) y` as an intermediate fact.
+
+Use `lv_le (k := k) (r := r) y` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `absurd rfl h`.
+-/
 theorem supp_M (f : Fin (2 * r + k + 1) → ℂ) : Supp (M k r f) (fun a b => a + b = 2 * r) := by
   intro x y h
   simp only [M] at h
@@ -141,6 +220,11 @@ theorem supp_M (f : Fin (2 * r + k + 1) → ℂ) : Supp (M k r f) (fun a b => a 
 
 def NU (A : Mat k r) : Prop := ∀ x y, lv k r y ≤ lv k r x → A x y = (1 : Mat k r) x y
 
+/- English proof (translation)
+Introduce `x y hxy`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single x]`. Rewrite using `[hA x x le_rfl, hB x y hxy, Matrix.one_apply_eq, one_mul]`. Introduce `z _ hzx`. Distinguish the cases in `hz : lv k r z ≤ lv k r x`.
+
+Rewrite using `[hA x z hz, Matrix.one_apply_ne (Ne.symm hzx), zero_mul]`. Establish `hzy : z ≠ y` using `by rintro rfl; omega`. Rewrite using `[hB z y (by omega), Matrix.one_apply_ne hzy, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem NU.mul {A B : Mat k r} (hA : NU A) (hB : NU B) : NU (A * B) := by
   intro x y hxy
   rw [Matrix.mul_apply, Finset.sum_eq_single x]
@@ -152,6 +236,11 @@ theorem NU.mul {A B : Mat k r} (hA : NU A) (hB : NU B) : NU (A * B) := by
       rw [hB z y (by omega), Matrix.one_apply_ne hzy, mul_zero]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Introduce `x y hxy`. Rewrite using `[(inv_of_UH hg).1, Hpk_eq, mul_M_apply, M_mul_apply, conjTranspose_apply]`. Establish `h` using `hN (sg k r y) (sg k r x) (by rw [lv_sg, lv_sg]; omega)`. Rewrite using `[h]`. Distinguish the cases in `hxy' : x = y`.
+
+Substitute `hxy'` using the available equality. Rewrite using `[Matrix.one_apply_eq, Matrix.one_apply_eq, star_one, mul_one, sn_sg, sn_mul_self]`. Establish `: sg k r y ≠ sg k r x` using `fun e => hxy' (sg_inj e).symm`. Rewrite using `[Matrix.one_apply_ne this, Matrix.one_apply_ne hxy', star_zero, mul_zero, zero_mul]`.
+-/
 theorem NU.inv {g : Mat k r} (hg : g ∈ UH (Hpk k r)) (hN : NU g) : NU g⁻¹ := by
   intro x y hxy
   rw [(inv_of_UH hg).1, Hpk_eq, mul_M_apply, M_mul_apply, conjTranspose_apply]
@@ -163,6 +252,11 @@ theorem NU.inv {g : Mat k r} (hg : g ∈ UH (Hpk k r)) (hN : NU g) : NU g⁻¹ :
   · have : sg k r y ≠ sg k r x := fun e => hxy' (sg_inj e).symm
     rw [Matrix.one_apply_ne this, Matrix.one_apply_ne hxy', star_zero, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `x y hxy`. Assume the negation of the conclusion as `hc`. Apply `hxy` to reduce the goal to its premises. Rewrite using `[h x y (by omega), Matrix.one_apply_ne]`. Introduce and unpack `rfl`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem NU_supp {A : Mat k r} (h : NU A) : Supp A (fun a b => a ≤ b) := by
   intro x y hxy
   by_contra hc
@@ -170,6 +264,11 @@ theorem NU_supp {A : Mat k r} (h : NU A) : Supp A (fun a b => a ≤ b) := by
   rw [h x y (by omega), Matrix.one_apply_ne]
   rintro rfl; omega
 
+/- English proof (translation)
+Use extensionality with `x y`. Distinguish the cases in `hxy : lv k r y ≤ lv k r x`. Conclude with `h x y hxy`. Establish `hne : x ≠ y` using `by rintro rfl; exact hxy le_rfl`. Rewrite using `[Matrix.one_apply_ne hne]`.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hxy (hs x y h0)`.
+-/
 theorem NU_eq_one {A : Mat k r} (h : NU A) (hs : Supp A (fun a b => b ≤ a)) : A = 1 := by
   ext x y
   by_cases hxy : lv k r y ≤ lv k r x
@@ -179,6 +278,29 @@ theorem NU_eq_one {A : Mat k r} (h : NU A) (hs : Supp A (fun a b => b ≤ a)) : 
     by_contra h0
     exact hxy (hs x y h0)
 
+/- English proof (translation)
+Take `⟨hU, hA, hB⟩` from `hn`. Establish `hU' : nᴴ * (M k r (sn k r) * n) = M k r (sn k r)`. Rewrite using `[← Matrix.mul_assoc, ← Hpk_eq]`. Conclude with `hU`. Establish `colA : ∀ (a z : Fin (2 * r + k + 1)), a.val < r → a.val ≤ z.val → n z a = if z = a then 1 else 0`.
+
+Introduce `a z ha hz`. Establish `h` using `hA ⟨a.val, ha⟩ z hz`. Establish `e : eI k r ⟨a.val, ha⟩ = a` using `Fin.ext rfl`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `key : ∀ (b : ℕ) (bb : Fin (2 * r + k + 1)), bb.val = b → b < r → ∀ y : Fin (2 * r + k + 1), r + k < y.val → lv k r y ≤ 2 * r - b → n (sg k r bb) y = (1 : Mat k r) (sg k r bb) y`.
+
+Introduce `b`. Proceed by induction on `b using Nat.strong_induction_on with`. Consider the case `_ b ih`. Introduce `bb hbb hb y hy hly`. Establish `e` using `congrFun (congrFun hU' bb) y`.
+
+Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single bb]`. Rewrite `e` using `[conjTranspose_apply, colA bb bb (by omega) le_rfl, if_pos rfl, star_one, one_mul, M_mul_apply]`. Establish `hs : sn k r (sg k r bb) = 1`. Use `bb.isLt` as an intermediate fact. Apply the tactic sequence `simp only [sn, sg_val]; split_ifs <;> first | rfl | (exfalso; omega)`.
+
+Rewrite `e` using `[hs, one_mul]`. Rewrite using `[e]`. Distinguish the cases in `hyb : y = sg k r bb`. Substitute `hyb` using the available equality. Simplify using `[M, sg_sg, hs]`.
+
+Establish `h1 : bb ≠ sg k r y` using `fun h => hyb (by rw [h, sg_sg])`. Establish `h2 : sg k r bb ≠ y` using `fun h => hyb h.symm`. Rewrite using `[Matrix.one_apply_ne h2]`. Simplify using `only [M, if_neg h1]`. Introduce `z _ hz`.
+
+Rewrite using `[conjTranspose_apply, M_mul_apply]`. Distinguish the cases in `hzb : b ≤ z.val`. Rewrite using `[colA bb z (by omega) (by omega), if_neg hz, star_zero, zero_mul]`. Establish `hz' : z.val < b` using `by omega`. Use `ih z.val hz' z rfl (by omega) y hy (by omega)` as an intermediate fact.
+
+Rewrite using `[this, Matrix.one_apply_ne, mul_zero, mul_zero]`. Introduce `hzy`. Establish `h1` using `lv_sg (k := k) (r := r) z`. Rewrite `h1` using `[hzy]`. Establish `h2 : lv k r z = z.val` using `by unfold lv; rw [if_pos (by omega)]`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `x y hxy`. Establish `hx` using `x.isLt`.
+
+Establish `hy` using `y.isLt`. Distinguish the cases in `h1 : y.val < r`. Apply the tactic sequence `have hyx : y.val ≤ x.val := by unfold lv at hxy; split_ifs at hxy <;> omega`. Rewrite using `[colA y x h1 hyx, Matrix.one_apply]`. Distinguish the cases in `h2 : y.val ≤ r + k`.
+
+Apply the tactic sequence `have hrx : r ≤ x.val := by unfold lv at hxy; split_ifs at hxy <;> omega`. Rewrite using `[hB x y (by omega) h2 hrx, Matrix.one_apply]`. Apply the tactic sequence `have hx2 : r + k < x.val := by unfold lv at hxy; split_ifs at hxy <;> omega`. Apply the tactic sequence `have := key (sg k r x).val (sg k r x) rfl (by rw [sg_val]; split_ifs <;> omega) y (by omega) (by rw [sg_val]; unfold lv at hxy ⊢; split_ifs at hxy ⊢ <;> omega)`. Rewrite `this` using `[sg_sg]`. Then use the resulting hypothesis.
+-/
 theorem NU_of_Nset {n : Mat k r} (hn : n ∈ Nset k r) : NU n := by
   obtain ⟨hU, hA, hB⟩ := hn
   have hU' : nᴴ * (M k r (sn k r) * n) = M k r (sn k r) := by

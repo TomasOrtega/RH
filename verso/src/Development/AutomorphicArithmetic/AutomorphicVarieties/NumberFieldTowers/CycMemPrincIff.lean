@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `haveI hE : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Establish `e : cycZ F Ω l g = cyclotomicCharacter Ω l g.toRingEquiv` using `rfl`.
+
+Establish `h1 : cycZ F Ω l g ∈ KStar.TotallyRealRoots.princ l n ↔ (cyclotomicCharacter Ω l g.toRingEquiv).val.toZModPow n = 1`. Rewrite using `[KStar.TotallyRealRoots.princ, MonoidHom.mem_ker, Units.ext_iff, e]`. Both sides reduce to the same expression. Establish `hpow : ∀ t : Ω, t ^ l ^ n = 1 → t ^ (1 : ZMod (l ^ n)).val = t`. Introduce `t ht`.
+
+Rewrite using `[ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod _ ht, pow_one]`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `h t ht`. Use `cyclotomicCharacter.spec l g.toRingEquiv t ht` as an intermediate fact.
+
+Rewrite `this` using `[h, hpow t ht]`. Conclude with `this`. Introduce `h`. Rewrite using `[cyclotomicCharacter.toZModPow]`. Use `(modularCyclotomicCharacter.unique Ω _ _ fun t ht => ?_).symm` and prove the remaining obligations.
+
+Establish `ht' : (t : Ω) ^ l ^ n = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 ht, Units.val_one]`. Rewrite using `[hpow _ ht']`. Conclude with `h _ ht'`.
+-/
 private theorem cyc_mem_princ_iff (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     (l : ℕ) [Fact l.Prime] (n : ℕ) (g : G F Ω) :
     cycZ F Ω l g ∈ KStar.TotallyRealRoots.princ l n ↔ ∀ t : Ω, t ^ l ^ n = 1 → g t = t := by
@@ -33,6 +44,13 @@ private theorem cyc_mem_princ_iff (F Ω : Type) [Field F] [NumberField F] [Field
     rw [hpow _ ht']
     exact h _ ht'
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Take `⟨ζ, hζ⟩` from `h`. Establish `h1 : (l ^ c).totient ≤ Module.finrank ℚ L`. Rewrite using `[← Polynomial.natDegree_cyclotomic (l ^ c) ℚ, Polynomial.cyclotomic_eq_minpoly_rat hζ (pow_pos hl.pos c)]`. Conclude with `minpoly.natDegree_le ζ`.
+
+Break down `c with _ | c` into its components or cases. Conclude with `Nat.zero_le _`. Rewrite `h1` using `[Nat.totient_prime_pow_succ hl]`. Establish `h2 : c < l ^ c` using `Nat.lt_pow_self hl.one_lt`. Establish `h3 : 1 ≤ l - 1` using `by have := hl.two_le; omega`.
+
+Establish `h4 : l ^ c * 1 ≤ l ^ c * (l - 1)` using `Nat.mul_le_mul_left _ h3`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem le_finrank (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact l.Prime] (c : ℕ)
     (h : ∃ ζ : L, IsPrimitiveRoot ζ (l ^ c)) : c ≤ Module.finrank ℚ L := by
   have hl : l.Prime := Fact.out
@@ -48,6 +66,11 @@ private theorem le_finrank (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact 
     have h4 : l ^ c * 1 ≤ l ^ c * (l - 1) := Nat.mul_le_mul_left _ h3
     omega
 
+/- English proof (translation)
+Establish `hl : l.Prime` using `Fact.out`. Establish `hb : BddAbove {c : ℕ | ∃ ζ : L, IsPrimitiveRoot ζ (l ^ c)}` using `⟨_, fun c hc => le_finrank L l c hc⟩`. Use `⟨fun h => le_csSup hb h, fun h => ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ⟩ : ∃ ζ : L, IsPrimitiveRoot ζ (l ^ cZero l L)` from `Nat.sSup_mem (s := {c : ℕ | ∃ ζ : L, IsPrimitiveRoot ζ (l ^ c)}) ⟨0, 1, by simp⟩ hb`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le h`.
+
+Conclude with `⟨ζ ^ l ^ d, hζ.pow (pow_pos hl.pos _) (by rw [hd, pow_add, mul_comm])⟩`.
+-/
 private theorem ex_iff (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact l.Prime] (c : ℕ) :
     (∃ ζ : L, IsPrimitiveRoot ζ (l ^ c)) ↔ c ≤ cZero l L := by
   have hl : l.Prime := Fact.out
@@ -58,6 +81,13 @@ private theorem ex_iff (L : Type) [Field L] [NumberField L] (l : ℕ) [Fact l.Pr
   obtain ⟨d, hd⟩ := Nat.exists_eq_add_of_le h
   exact ⟨ζ ^ l ^ d, hζ.pow (pow_pos hl.pos _) (by rw [hd, pow_add, mul_comm])⟩
 
+/- English proof (translation)
+Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed L`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Use `haveI : IsGalois L Ω := IsGalois.mk`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ c)`. Take `⟨ζ, rfl⟩ : ξ ∈ Set.range (algebraMap L Ω)` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed ξ).2 fun g => (cyc_mem_princ_iff L Ω l c g).1 (h g) ξ hξ.pow_eq_one`. Conclude with `⟨ζ, hξ.of_map_of_injective (algebraMap L Ω).injective⟩`. Introduce and unpack `⟨ζ, hζ⟩ g`.
+
+Establish `hζ' : IsPrimitiveRoot (algebraMap L Ω ζ) (l ^ c)` using `hζ.map_of_injective (algebraMap L Ω).injective`. Use `(cyc_mem_princ_iff L Ω l c g).2 fun t ht => ?_` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `hζ'.eq_pow_of_pow_eq_one ht`. Rewrite using `[map_pow, g.commutes]`.
+-/
 private theorem all_iff (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     (l : ℕ) [Fact l.Prime] (c : ℕ) :
     (∀ g, cycZ L Ω l g ∈ KStar.TotallyRealRoots.princ l c) ↔ ∃ ζ : L, IsPrimitiveRoot ζ (l ^ c) := by
@@ -78,6 +108,17 @@ private theorem all_iff (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Alge
     obtain ⟨i, -, rfl⟩ := hζ'.eq_pow_of_pow_eq_one ht
     rw [map_pow, g.commutes]
 
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ l _`. Establish `hl : l.Prime` using `Fact.out`. Establish `hq : (if l = 2 then 4 else l) = l ^ qExp l`. Unfold `qExp`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[pow_one]`. Establish `hP : Procyc L Ω l ↔ l ≠ 2 ∨ HasMuQ l L`. Distinguish the cases in `h : l = 2`.
+
+Establish `h2 : qExp l = 2` using `if_pos h`. Rewrite using `[Procyc, HasMuQ, hq, h2, ← all_iff L Ω l 2]`. Both sides reduce to the same expression. Conclude with `⟨fun _ => Or.inl h, fun _ => Or.inl h⟩`. Use `⟨ex_iff L l, fun c => ?_, ?_, fun h => ⟨?_, hP.2 (Or.inr h)⟩, hP⟩` and prove the remaining obligations.
+
+Rewrite using `[← ex_iff, ← all_iff L Ω, Subgroup.eq_top_iff']`. Conclude with `forall_congr' fun g => ⟨fun h => h.2, fun h => ⟨trivial, h⟩⟩`. Rewrite using `[HasMuQ, hq, ex_iff]`. Take `⟨ζ, hζ⟩` from `h`. Use `nrRealPlaces_eq_zero_iff.1 (NumberField.InfinitePlace.IsPrimitiveRoot.nrRealPlaces_eq_zero_of_two_lt ?_ hζ)` and prove the remaining obligations.
+
+Use `hl.two_le` as an intermediate fact. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem UpperTheory.V.Tower.muQ :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime], (∀ c : ℕ, (∃ ζ : L, IsPrimitiveRoot ζ (l ^ c)) ↔ c ≤ cZero l L) ∧ (∀ c : ℕ, Un L Ω l c = ⊤ ↔ c ≤ cZero l L) ∧
         (HasMuQ l L ↔ qExp l ≤ cZero l L) ∧ (HasMuQ l L → IsTotallyComplex L ∧ Procyc L Ω l) ∧ (Procyc L Ω l ↔ l ≠ 2 ∨ HasMuQ l L) := by

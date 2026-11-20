@@ -4,6 +4,39 @@ open Polynomial
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ c hc a Φ hΦ`. Establish `hpm : ∀ n : ℕ, (-1 : E) ^ n * (-1 : E) ^ n = 1`. Introduce `n`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules.
+
+Establish `hss : (-1 : E) ^ (a - 1) * (-1 : E) ^ (a - 1) = 1` using `hpm _`. Establish `hsign : ∀ i : Fin a, (-1 : E) ^ (i.rev : ℕ) = (-1 : E) ^ (a - 1) * (-1 : E) ^ (i : ℕ)`. Introduce `i`. Establish `hi` using `i.isLt`. Rewrite using `[Fin.val_rev, ← pow_add]`.
+
+Establish `: a - 1 + (i:ℕ) = (a - ((i:ℕ) + 1)) + 2 * (i:ℕ)` using `by omega`. Rewrite using `[this, pow_add, pow_mul, neg_one_sq, one_pow, mul_one]`. Establish `hT : Φ.transpose = (-1 : E) ^ (a - 1) • Φ`. Substitute `hΦ` using the available equality. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.transpose_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : j = i.rev`. Substitute `h` using the available equality. Simplify using `only [Fin.rev_rev, if_true]`. Conclude with `hsign i`.
+
+Establish `h' : ¬ i = j.rev`. Introduce `h2`. Apply `h` to reduce the goal to its premises. Rewrite using `[h2, Fin.rev_rev]`. Simplify using `[h, h']`.
+
+Establish `hsq : Φ * Φ = (-1 : E) ^ (a - 1) • (1 : Matrix (Fin a) (Fin a) E)`. Substitute `hΦ` using the available equality. Use extensionality with `i k`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i.rev]`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `only [Fin.rev_rev, if_true, hsign]`. Rewrite using `[mul_one, mul_left_comm, hpm, mul_one]`. Establish `: ¬ k = i.rev.rev` using `by rwa [Fin.rev_rev]`.
+
+Simplify using `[this, h, Ne.symm h]`. Introduce `j _ hj`. Simplify using `[hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+
+Establish `hright : Φ * Φ.transpose = 1`. Rewrite using `[hT, Matrix.mul_smul, hsq, smul_smul, hss, one_smul]`. Establish `hleft : Φ.transpose * Φ = 1`. Rewrite using `[hT, Matrix.smul_mul, hsq, smul_smul, hss, one_smul]`. Establish `hinv : Φ⁻¹ = Φ.transpose` using `Matrix.inv_eq_left_inv hleft`.
+
+Establish `hTinv : (Φ.transpose)⁻¹ = Φ` using `Matrix.inv_eq_left_inv hright`. Establish `hdet : IsUnit Φ.det` using `Matrix.isUnit_det_of_left_inverse hleft`. Establish `hΦc : Φ.map c = Φ`. Substitute `hΦ` using the available equality. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hmapmul : ∀ A B : Matrix (Fin a) (Fin a) E, (A * B).map c = A.map c * B.map c` using `fun A B => Matrix.map_mul (f := (c : E →+* E))`. Establish `hmapinv : ∀ A : Matrix (Fin a) (Fin a) E, IsUnit A.det → (A⁻¹).map c = (A.map c)⁻¹`. Introduce `A hA`.
+
+Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← hmapmul, Matrix.nonsing_inv_mul _ hA, Matrix.map_one _ c.map_zero c.map_one]`. Establish `hcc : ∀ A : Matrix (Fin a) (Fin a) E, (A.map c).map c = A`. Introduce `A`. Use extensionality with `i j`.
+
+Simplify using `[hc]`. Use `⟨hT, hdet, fun δ hδ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hmapmul, hΦc, Matrix.transpose_mul, Matrix.mul_inv_rev, hTinv, hinv, hT]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Establish `hYd : IsUnit ((δ.map c).transpose).det`.
+
+Rewrite using `[Matrix.det_transpose]`. Establish `h1` using `RingHom.map_det (c : E →+* E) δ`. Rewrite `h1` using `[RingHom.mapMatrix_apply]`. Establish `h2 : (δ.map c).det = c δ.det` using `h1.symm`. Rewrite using `[h2]`.
+
+Conclude with `hδ.map c`. Establish `hΦTc : (Φ.transpose).map c = Φ.transpose` using `by rw [Matrix.transpose_map, hΦc]`. Rewrite using `[hinv, hmapmul, hmapmul, hΦc, hΦTc, hmapinv _ hYd, Matrix.transpose_map, hcc, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_nonsing_inv, Matrix.transpose_transpose, Matrix.mul_inv_rev, Matrix.mul_inv_rev, hTinv, Matrix.nonsing_inv_nonsin …`. Establish `e : Φ * (Φ * δ * Φ.transpose) * Φ.transpose = (Φ * Φ) * δ * (Φ.transpose * Φ.transpose)`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[e, ← Matrix.transpose_mul, hsq, Matrix.transpose_smul, Matrix.transpose_one, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, hss, one_smul]`.
+-/
 theorem antidiag_twisted_norm : ∀ (E : Type) [Field E] (c : E ≃+* E), (∀ x, c (c x) = x) → ∀ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) E), Φ = Matrix.of (fun i j : Fin a => if j = i.rev then (-1 : E) ^ (i : ℕ) else 0) → Φ.transpose = (-1 : E) ^ (a - 1) • Φ ∧ IsUnit Φ.det ∧ ∀ δ : Matrix (Fin a) (Fin a) E, IsUnit δ.det → δ * (Φ * ((δ.map c).transpose)⁻¹ * Φ⁻¹) = (-1 : E) ^ (a - 1) • ((δ * Φ) * (((δ * Φ).map c).transpose)⁻¹) ∧ Φ * (((Φ * ((δ.map c).transpose)⁻¹ * Φ⁻¹).map c).transpose)⁻¹ * Φ⁻¹ = δ := by
   intro E _ c hc a Φ hΦ
   have hpm : ∀ n : ℕ, (-1 : E) ^ n * (-1 : E) ^ n = 1 := by

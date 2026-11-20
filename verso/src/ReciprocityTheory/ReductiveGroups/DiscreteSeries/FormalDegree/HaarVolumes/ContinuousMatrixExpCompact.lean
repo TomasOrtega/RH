@@ -12,12 +12,22 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hab : a ≠ b` using `fun e => h (e ▸ rfl)`. Unfold `kMat`. Rewrite using `[if_neg hab, dif_neg (fun h' => h h'.2), dif_neg (fun h' => h h'.2.symm)]`.
+-/
 theorem compactMatrix_off_block {ε : Fin n → Bool} (w : KCo ε) {a b : Fin n} (h : ε a ≠ ε b) :
     kMat w a b = 0 := by
   have hab : a ≠ b := fun e => h (e ▸ rfl)
   unfold kMat
   rw [if_neg hab, dif_neg (fun h' => h h'.2), dif_neg (fun h' => h h'.2.symm)]
 
+/- English proof (translation)
+Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `star (kMat w b a) = -(kMat w a b)`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [kMat, if_true]`.
+
+Simplify using `[Complex.ext_iff]`. Establish `hba : b ≠ a` using `Ne.symm hab`. Distinguish the cases in `h1 : b < a ∧ ε a = ε b`. Establish `h2 : ¬ (a < b ∧ ε b = ε a)` using `fun h => lt_asymm h.1 h1.1`. Simplify using `only [kMat, if_neg hab, if_neg hba, dif_pos h1, dif_neg h2, star_neg, star_star]`.
+
+Distinguish the cases in `h2 : a < b ∧ ε b = ε a`. Simplify using `only [kMat, if_neg hab, if_neg hba, dif_pos h2, dif_neg h1, neg_neg]`. Simplify using `only [kMat, if_neg hab, if_neg hba, dif_neg h2, dif_neg h1, star_zero, neg_zero]`.
+-/
 theorem compactMatrix_conjTranspose {ε : Fin n → Bool} (w : KCo ε) : (kMat w)ᴴ = -kMat w := by
   ext a b
   change star (kMat w b a) = -(kMat w a b)
@@ -33,6 +43,11 @@ theorem compactMatrix_conjTranspose {ε : Fin n → Bool} (w : KCo ε) : (kMat w
       · simp only [kMat, if_neg hab, if_neg hba, dif_pos h2, dif_neg h1, neg_neg]
       · simp only [kMat, if_neg hab, if_neg hba, dif_neg h2, dif_neg h1, star_zero, neg_zero]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [Jm, mul_diagonal, diagonal_mul]`. Distinguish the cases in `h : ε a = ε b`. Rewrite using `[h, mul_comm]`. Rewrite using `[compactMatrix_off_block w h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem compactMatrix_comm_signature {ε : Fin n → Bool} (w : KCo ε) : kMat w * Jm ε = Jm ε * kMat w := by
   ext a b
   simp only [Jm, mul_diagonal, diagonal_mul]
@@ -40,15 +55,26 @@ theorem compactMatrix_comm_signature {ε : Fin n → Bool} (w : KCo ε) : kMat w
   · rw [h, mul_comm]
   · rw [compactMatrix_off_block w h]; simp
 
+/- English proof (translation)
+Use `⟨?_, compactMatrix_comm_signature w⟩` and prove the remaining obligations. Unfold `inG`. Rewrite using `[compactMatrix_conjTranspose, Matrix.neg_mul, compactMatrix_comm_signature, neg_add_cancel]`.
+-/
 theorem compactMatrix_inK {ε : Fin n → Bool} (w : KCo ε) : inK ε (kMat w) := by
   refine ⟨?_, compactMatrix_comm_signature w⟩
   unfold inG
   rw [compactMatrix_conjTranspose, Matrix.neg_mul, compactMatrix_comm_signature, neg_add_cancel]
 
+/- English proof (translation)
+The claim follows from `exists_toMK (exp_mem_Kset (compactMatrix_inK w))`.
+-/
 theorem exists_compact_exp {ε : Fin n → Bool} (w : KCo ε) :
     ∃ k : KG ε, toMK k = NormedSpace.exp (kMat w) :=
   exists_toMK (exp_mem_Kset (compactMatrix_inK w))
 
+/- English proof (translation)
+Introduce `w w' h`. Establish `h1 : ∀ a b, kMat w a b = kMat w' a b` using `fun a b => by rw [h]`. Use `Prod.ext (funext fun a => ?_) (funext fun ab => ?_)` and prove the remaining obligations. Establish `h2` using `congrArg Complex.im (h1 a a)`. Simplify `h2` using `[kMat]`.
+
+Establish `h2` using `h1 ab.1.1 ab.1.2`. Establish `hne : ab.1.1 ≠ ab.1.2` using `ne_of_gt ab.2.1`. Simplify using `only [kMat, if_neg hne, dif_pos ab.2] at h2`. Conclude with `h2`.
+-/
 theorem compactMatrix_injective (ε : Fin n → Bool) : Function.Injective (kMat (ε := ε)) := by
   intro w w' h
   have h1 : ∀ a b, kMat w a b = kMat w' a b := fun a b => by rw [h]
@@ -60,6 +86,13 @@ theorem compactMatrix_injective (ε : Fin n → Bool) : Function.Injective (kMat
     simp only [kMat, if_neg hne, dif_pos ab.2] at h2
     exact h2
 
+/- English proof (translation)
+Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Unfold `kMat`. Distinguish the cases in `h0 : a = b`. Simplify using `only [h0, if_true]`. Use `fun_prop`.
+
+Simplify using `only [if_neg h0]`. Distinguish the cases in `h1 : b < a ∧ ε a = ε b`. Simplify using `only [dif_pos h1]`. Use `fun_prop`. Simplify using `only [dif_neg h1]`.
+
+Distinguish the cases in `h2 : a < b ∧ ε b = ε a`. Simplify using `only [dif_pos h2]`. Use `fun_prop`. Simplify using `only [dif_neg h2]`. Use `fun_prop`.
+-/
 theorem compactMatrix_continuous (ε : Fin n → Bool) :
     Continuous (fun w : KCo ε => (kMat w : Matrix (Fin n) (Fin n) ℂ)) := by
   refine continuous_pi fun a => continuous_pi fun b => ?_
@@ -74,16 +107,27 @@ theorem compactMatrix_continuous (ε : Fin n → Bool) :
       · simp only [dif_pos h2]; fun_prop
       · simp only [dif_neg h2]; fun_prop
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [kMat]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem compactMatrix_zero (ε : Fin n → Bool) : kMat (0 : KCo ε) = 0 := by
   ext a b
   simp only [kMat]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Conclude with `continuous_iff_continuousAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℂ) x).continuousAt`.
+-/
 theorem continuous_matrix_exp_compact : Continuous (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) := by
   letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing
   letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra
   exact continuous_iff_continuousAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℂ) x).continuousAt
 
+/- English proof (translation)
+Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Establish `h : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) ((ContinuousLinearEquiv.refl ℂ (Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℂ] _)) 0`. Rewrite using `[ContinuousLinearEquiv.coe_refl]`. Conclude with `hasStrictFDerivAt_exp_zero (𝕂 := ℂ)`.
+
+Conclude with `⟨_, (h.toOpenPartialHomeomorph _).open_source, h.mem_toOpenPartialHomeomorph_source, (h.toOpenPartialHomeomorph _).injOn⟩`.
+-/
 theorem exists_exp_injOn_nhds_zero : ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), IsOpen U ∧ (0 : Matrix (Fin n) (Fin n) ℂ) ∈ U ∧
     Set.InjOn (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _) U := by
   letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing
@@ -98,9 +142,17 @@ theorem exists_exp_injOn_nhds_zero : ∃ U : Set (Matrix (Fin n) (Fin n) ℂ), I
 def expCompactMatrix {ε : Fin n → Bool} (w : KCo ε) : Fin n → Fin n → ℂ :=
   (NormedSpace.exp (kMat w) : Matrix (Fin n) (Fin n) ℂ)
 
+/- English proof (translation)
+The claim follows from `continuous_matrix_exp_compact.comp (compactMatrix_continuous ε)`.
+-/
 theorem continuous_exp_compactMatrix (ε : Fin n → Bool) : Continuous (expCompactMatrix (ε := ε)) :=
   continuous_matrix_exp_compact.comp (compactMatrix_continuous ε)
 
+/- English proof (translation)
+Take `⟨U, hU, h0, hinj⟩` from `(exists_exp_injOn_nhds_zero (n := n))`. Establish `hV : IsOpen ((fun w : KCo ε => (kMat w : Matrix (Fin n) (Fin n) ℂ)) ⁻¹' U)` using `hU.preimage (compactMatrix_continuous ε)`. Establish `h0V : (0 : KCo ε) ∈ (fun w : KCo ε => (kMat w : Matrix (Fin n) (Fin n) ℂ)) ⁻¹' U` using `by show kMat (0 : KCo ε) ∈ U`. Rewrite using `[compactMatrix_zero]`. Conclude with `h0`.
+
+Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.1 hV 0 h0V`. Use `⟨δ, hδ, fun w hw w' hw' h => compactMatrix_injective ε (hinj ?_ ?_ h)⟩` and prove the remaining obligations. Conclude with `hball (by simpa using hw)`. Conclude with `hball (by simpa using hw')`.
+-/
 theorem exp_compact_injOn (ε : Fin n → Bool) : ∃ δ > 0, Set.InjOn (expCompactMatrix (ε := ε)) {w | ‖w‖ < δ} := by
   obtain ⟨U, hU, h0, hinj⟩ := (exists_exp_injOn_nhds_zero (n := n))
   have hV : IsOpen ((fun w : KCo ε => (kMat w : Matrix (Fin n) (Fin n) ℂ)) ⁻¹' U) :=
@@ -118,6 +170,13 @@ def expImageOfCompact {ε : Fin n → Bool} (B : Set (KCo ε)) : Set (KG ε) :=
 
 def compactToMatrixEntries (ε : Fin n → Bool) : KG ε → (Fin n → Fin n → ℂ) := fun k => toMK k
 
+/- English proof (translation)
+Establish `hI : MeasurableSet (expCompactMatrix (ε` using `ε) '' B) := hB.image_of_continuousOn_injOn (continuous_exp_compactMatrix ε).continuousOn hinj`. Establish `hc : Continuous (compactToMatrixEntries ε)` using `(continuous_toM ε).comp continuous_subtype_val`. Establish `hm : Measurable (compactToMatrixEntries ε)` using `hc.measurable`. Establish `e : expImageOfCompact B = compactToMatrixEntries ε ⁻¹' (expCompactMatrix (ε` using `ε) '' B) := by`. Use extensionality with `k`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, h⟩`. Conclude with `⟨w, hw, h.symm⟩`. Introduce and unpack `⟨w, hw, h⟩`. Conclude with `⟨w, hw, h.symm⟩`.
+
+Rewrite using `[e]`. Conclude with `hm hI`.
+-/
 theorem measurableSet_exp_image {ε : Fin n → Bool} {B : Set (KCo ε)} (hB : MeasurableSet B)
     (hinj : Set.InjOn (expCompactMatrix (ε := ε)) B) : MeasurableSet (expImageOfCompact B) := by
   have hI : MeasurableSet (expCompactMatrix (ε := ε) '' B) :=
@@ -134,6 +193,13 @@ theorem measurableSet_exp_image {ε : Fin n → Bool} {B : Set (KCo ε)} (hB : M
   rw [e]
   exact hm hI
 
+/- English proof (translation)
+Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hg⟩`. Take `⟨k, hk⟩` from `exists_compact_exp s.1`. Use `⟨(k, s.2), ⟨⟨s.1, hs.1, hk⟩, hs.2⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show toMK k * NormedSpace.exp (pmat s.2) = toM g`. Rewrite using `[hk, hg]`. Introduce and unpack `⟨⟨k, z⟩, ⟨⟨w, hw, hk⟩, hz⟩, hg⟩`. Use `⟨(w, z), ⟨hw, hz⟩, ?_⟩` and prove the remaining obligations. Establish `hg' : toMK k * NormedSpace.exp (pmat z) = toM g` using `hg`.
+
+Rewrite using `[← hg', hk]`.
+-/
 theorem polarSet_product_eq {ε : Fin n → Bool} (B : Set (KCo ε)) (C : Set (PCoord ε → ℂ)) :
     polSet (B ×ˢ C) =
       (intMuCD_eM ε) ⁻¹' (intMuCD_pM ε '' (expImageOfCompact B ×ˢ C)) := by
@@ -149,6 +215,19 @@ theorem polarSet_product_eq {ε : Fin n → Bool} (B : Set (KCo ε)) (C : Set (P
     have hg' : toMK k * NormedSpace.exp (pmat z) = toM g := hg
     rw [← hg', hk]
 
+/- English proof (translation)
+Establish `hemb : MeasurableEmbedding (intMuCD_pM ε)` using `(show Topology.IsClosedEmbedding (intMuCD_pM ε) from polarM_isClosedEmbedding ε).measurableEmbedding`. Use `set T := intMuCD_pM ε '' (expImageOfCompact B ×ˢ C) with hTdef`. Establish `hT : MeasurableSet T` using `hemb.measurableSet_image.2 (hA.prod hC)`. Establish `hc : Continuous (intMuCD_eM ε)` using `continuous_toM ε`. Establish `hm : Measurable (intMuCD_eM ε)` using `hc.measurable`.
+
+Establish `hmem : ∀ k z, intMuCD_pM ε (k, z) ∈ T ↔ k ∈ expImageOfCompact B ∧ z ∈ C` using `fun k z => (show Function.Injective (intMuCD_pM ε) from polarM_injective ε).mem_set_image`. Establish `hJ : Measurable (fun z : PCoord ε → ℂ => ENNReal.ofReal (Jac z))` using `ENNReal.measurable_ofReal.comp (jac_continuous ε).measurable`. Rewrite using `[polarSet_product_eq, ← lintegral_indicator_one (hm hT)]`. Establish `e1 : ∀ g : UJ ε, ((intMuCD_eM ε) ⁻¹' T).indicator 1 g = T.indicator (1 : (Fin n → Fin n → ℂ) → ENNReal) (toM g)` using `fun g => rfl`. Repeatedly rewrite using `[e1]`.
+
+Rewrite using `[lintegral_muPolar ε _ (measurable_one.indicator hT)]`. Establish `e2 : ∀ k : KG ε, (∫⁻ z, T.indicator (1 : (Fin n → Fin n → ℂ) → ENNReal) (intMuCD_pM ε (k, z)) * ENNReal.ofReal (Jac z)) = (expImageOfCompact B).indicator (fun _ => ∫⁻ z in C, ENNReal.ofReal (Jac z)) k`. Introduce `k`. Distinguish the cases in `hk : k ∈ expImageOfCompact B`. Rewrite using `[Set.indicator_of_mem hk, ← lintegral_indicator hC]`.
+
+Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ C`. Establish `: intMuCD_pM ε (k, z) ∈ T` using `(hmem k z).2 ⟨hk, hz⟩`. Rewrite using `[Set.indicator_of_mem this, Set.indicator_of_mem hz, Pi.one_apply, one_mul]`. Establish `: intMuCD_pM ε (k, z) ∉ T` using `fun h => hz ((hmem k z).1 h).2`.
+
+Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hz, zero_mul]`. Rewrite using `[Set.indicator_of_notMem hk]`. Use `(lintegral_congr fun z => ?_).trans lintegral_zero` and prove the remaining obligations. Establish `: intMuCD_pM ε (k, z) ∉ T` using `fun h => hk ((hmem k z).1 h).1`. Rewrite using `[Set.indicator_of_notMem this, zero_mul]`.
+
+Conclude with `(lintegral_congr fun k => e2 k).trans (lintegral_indicator_const hA _)`.
+-/
 theorem polar_measure_product_eq {ε : Fin n → Bool} {B : Set (KCo ε)} {C : Set (PCoord ε → ℂ)}
     (hA : MeasurableSet (expImageOfCompact B)) (hC : MeasurableSet C) :
     muPolar ε (polSet (B ×ˢ C)) = (∫⁻ z in C, ENNReal.ofReal (Jac z)) * dk ε (expImageOfCompact B) := by

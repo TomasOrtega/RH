@@ -18,6 +18,9 @@ open CubeValues SymmetricSemicharacter EigenNorm FrameValue TwistedTheta ConstFa
 
 variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
+/- English proof (translation)
+Establish `e : toF (R` using `ℂ) ℂ = RingHom.id ℂ := RingHom.ext fun x => (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm`. Rewrite using `[TF_hom, e]`. Conclude with `Spec.map_id _`.
+-/
 theorem tf_hom : (TF (R := ℂ) ℂ).hom = 𝟙 (Sp ℂ) := by
   have e : toF (R := ℂ) ℂ = RingHom.id ℂ :=
     RingHom.ext fun x => (IsScalarTower.algebraMap_apply ℂ (FractionRing ℂ) ℂ x).symm
@@ -32,9 +35,15 @@ def sect : D.P.A ⟶ DegPre.BF D ℂ := lift (toUnit _ ≫ basePt) (𝟙 _)
 
 variable {D} {g : ℕ} {u : HolUnif D.P.A D.P.L g}
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left, Category.assoc, sect, lift_snd, Category.comp_id]`.
+-/
 theorem pt_pr (x : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A) : (x.left ≫ (sect D).left) ≫ (DegPre.prB D ℂ).left = x.left := by
   rw [← Over.comp_left, ← Over.comp_left, Category.assoc, sect, lift_snd, Category.comp_id]
 
+/- English proof (translation)
+Establish `e : basePt ≫ b = u.ex bt` using `Over.OverMorphism.ext ((Category.id_comp _).trans hb)`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ← Over.comp_left, Category.assoc, tr_pr, MonObj.comp_mul, u.ex_add, Category.assoc, Category.assoc, sect, lift_snd, lift_fst_assoc, Category.comp_id, Category.assoc, comp_const, e]`.
+-/
 theorem pt_tr {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fin g → ℂ} (hb : (show Sp ℂ ⟶ _ from b.left) = (u.ex bt).left)
     (z : Fin g → ℂ) : (((u.ex z).left ≫ (sect D).left) ≫ (DegPre.trPt D ℂ b).left) ≫ (DegPre.prB D ℂ).left =
       (u.ex (z + bt)).left := by
@@ -42,6 +51,9 @@ theorem pt_tr {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fin g → ℂ} (hb : (show
   rw [← Over.comp_left, ← Over.comp_left, ← Over.comp_left, Category.assoc, tr_pr, MonObj.comp_mul, u.ex_add,
     Category.assoc, Category.assoc, sect, lift_snd, lift_fst_assoc, Category.comp_id, Category.assoc, comp_const, e]
 
+/- English proof (translation)
+Establish `: u.ex 0 ≫ sect D = basePt ≫ DegPre.zF D ℂ`. Rewrite using `[sect, DegPre.zF, comp_lift, comp_lift, ← Category.assoc, Subsingleton.elim (_ ≫ toUnit _) (𝟙 _), Category.id_comp, Category.comp_id, Category.comp_id, ex_zero]`. Conclude with `congrArg _ (MonObj.comp_one _).symm`. Conclude with `congrArg (fun m => m.left) this`.
+-/
 theorem pt_zero : (u.ex 0).left ≫ (sect D).left = (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ≫ (DegPre.zF D ℂ).left := by
   have : u.ex 0 ≫ sect D = basePt ≫ DegPre.zF D ℂ := by
     rw [sect, DegPre.zF, comp_lift, comp_lift, ← Category.assoc, Subsingleton.elim (_ ≫ toUnit _) (𝟙 _),
@@ -49,6 +61,9 @@ theorem pt_zero : (u.ex 0).left ≫ (sect D).left = (show Sp ℂ ⟶ _ from 𝟙
     exact congrArg _ (MonObj.comp_one _).symm
   exact congrArg (fun m => m.left) this
 
+/- English proof (translation)
+Introduce `i` and use `by rw [GC.famφ_eq, ← Category.assoc, hZ] exact isLift_fam hc z i`.
+-/
 theorem isLift_famF {Z : Sp ℂ ⟶ (DegPre.BF D ℂ).left} {α : D.X} {c z : Fin g → ℂ} (hc : u.ex c = D.c α)
     (hZ : Z ≫ (DegPre.prB D ℂ).left = (u.ex z).left) : IsLift u (DegPre.famφ D ℂ α) Z ![z, z + c, c, 0] := fun i => by
   rw [GC.famφ_eq, ← Category.assoc, hZ]
@@ -57,6 +72,9 @@ theorem isLift_famF {Z : Sp ℂ ⟶ (DegPre.BF D ℂ).left} {α : D.X} {c z : Fi
 def phiLift (c c' bt z : Fin g → ℂ) : Fin 4 ⊕ Fin 4 → Fin g → ℂ :=
   Sum.elim ![z, z + c', c', 0] ![z + bt, z + bt + c, c, 0]
 
+/- English proof (translation)
+Introduce and unpack `(i | i)`. Conclude with `isLift_famF hc' (pt_pr _) i`. Conclude with `(Category.assoc _ _ _).symm.trans (isLift_famF hc (pt_tr hb z) i)`.
+-/
 theorem isLift_phi {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fin g → ℂ} (hb : (show Sp ℂ ⟶ _ from b.left) = (u.ex bt).left)
     {α y : D.X} {c c' : Fin g → ℂ} (hc : u.ex c = D.c α) (hc' : u.ex c' = D.c (α + y)) (z : Fin g → ℂ) :
     IsLift u (DegPre.phiφ D ℂ y α b) ((u.ex z).left ≫ (sect D).left) (phiLift c c' bt z) := by
@@ -66,6 +84,19 @@ theorem isLift_phi {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fin g → ℂ} (hb : 
 
 variable {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
+/- English proof (translation)
+Take `⟨U, hU⟩ : ∃ U : (Fin g → ℂ) → ℂ, ∀ z, U z = genVal u D.P.isLB w ((u.ex z).left ≫ (sect D).left) (phiLift c c' bt z)` from `⟨_, fun _ => rfl⟩`. Establish `hd : Differentiable ℂ U`. Apply the tactic sequence `have := differentiable_genVal D.P.isLB hw (sect D).left (q := id) differentiable_id (z := fun z => phiLift c c' bt z) (by rintro (i | i) <;> fin_cases i <;> simp [phiLift] <;> fun_prop) (fun z => isLift_phi hb hc hc' z)`. Simplify `this` using `only [id, ← hU]`. Establish `hper : ∀ (m : u.Λ) z, U (z + m) = Complex.exp (-(Real.pi * hermForm Hm l m)) * U z` using `fun m z => by`.
+
+Establish `e : phiLift c c' bt (z + m) = fun i => phiLift c c' bt z i + ((Sum.elim ![m, m, 0, 0] ![m, m, 0, 0] : Fin 4 ⊕ Fin 4 → u.Λ) i : Fin g → ℂ)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> fin_cases i <;> simp [phiLift] <;> abel`. Rewrite using `[hU, hU, ex_add_period u z m m.2, e, genVal_add_period D.P.isLB h w (isLift_phi hb hc hc' z)]`. Use `congr 1`.
+
+Establish `n` using `ahFactor_ne_zero h m z`. Establish `n'` using `Complex.exp_ne_zero (Real.pi * hermForm Hm bt m)`. Establish `e'` using `congrArg (fun x => Complex.exp (Real.pi * hermForm Hm x m)) hl`. Simplify using `only [hermForm_add_left, mul_add, Complex.exp_add, exp_nsmul] at e'`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, DegPre.deltaε, DegPre.famε, phiLift, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val, ahFactor_zero D.P.isLB h, ahFactor_translate, zpow_neg, mul_zpow, zpow_one, one_zpow, _root_.mul_one, zpow_sub₀ n, zpow_sub₀ n', zpow_natCast, Comple …`.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `-e'`. Establish `dH : Differentiable ℂ fun z => hermForm Hm z l`. Simplify using `only [hermForm, dotProduct]`. Use `fun_prop`.
+
+Establish `hc` using `const_of_norm_periodic u (F := fun z => U z * Complex.exp (Real.pi * hermForm Hm z l)) (hd.mul (dH.const_mul _).cexp) (fun m z => by`. Simplify using `only [hper, hermForm_add_left, norm_mul, Complex.norm_exp]`. Rewrite using `[mul_comm (Real.exp _), _root_.mul_assoc, ← Real.exp_add, hermForm_conj Hm h.1 l m]`. Use `congr 2`. Simplify using the standard rewrite rules.
+
+Use the proof step `ring) z 0`. Simplify using `only [hermForm_zero_left, mul_zero, Complex.exp_zero, _root_.mul_one] at hc`. Rewrite using `[← hU, ← hU, ← hc, Complex.exp_neg]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem genVal_phi (h : u.IsAH Hm χ) {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fin g → ℂ}
     (hb : (show Sp ℂ ⟶ _ from b.left) = (u.ex bt).left)
     {α y : D.X} {c c' : Fin g → ℂ} (hc : u.ex c = D.c α) (hc' : u.ex c' = D.c (α + y)) {k : ℕ} {l : Fin g → ℂ}
@@ -111,6 +142,15 @@ theorem genVal_phi (h : u.IsAH Hm χ) {b : TF (R := ℂ) ℂ ⟶ D.P.A} {bt : Fi
   rw [← hU, ← hU, ← hc, Complex.exp_neg]
   field_simp
 
+/- English proof (translation)
+Establish `hz` using `isLift_phi hb hc hc' 0`. Rewrite `hz`, the goal using `[pt_zero]`. Rewrite using `[← genVal_pull]`. Establish `e : basePt ≫ p.b = u.ex bt` using `Over.OverMorphism.ext ((Category.id_comp _).trans hb)`. Establish `a : ∀ (q : TF (R` using `ℂ) ℂ ⟶ D.P.A) x, basePt ≫ q = u.ex x → (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ≫ q.left = (u.ex x).left := fun q x hq => congrArg (fun m => m.left) hq`.
+
+Establish `e₁ : basePt ≫ DegPre.cF D ℂ α = u.ex c`. Rewrite using `[← Category.assoc, Subsingleton.elim (basePt ≫ toUnit _) (𝟙 _), Category.id_comp, hc]`. Establish `e₀ : basePt ≫ DegPre.zeroF D ℂ = u.ex 0` using `(MonObj.comp_one _).trans (ex_zero u).symm`. Use `(genVal_corr D.P.isLB hw (z' := Sum.elim ![c + bt, c, bt, 0] ![0, bt]) (fun i => (Category.assoc _ _ _).symm.trans (hz i)) ?_ fun f => ?_).trans (genVal_mul _ _ _ _ _)` and prove the remaining obligations. Apply the tactic sequence `rintro (i | i) <;> fin_cases i`.
+
+Conclude with `a _ (c + bt) ((MonObj.comp_mul _ _ _).trans (by rw [e, e₁, u.ex_add]))`. Conclude with `a _ _ e₁`. Conclude with `a _ _ e`. Conclude with `a _ _ e₀`. Conclude with `a _ _ e₀`.
+
+Conclude with `a _ _ e`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, Fin.prod_univ_two, DegPre.deltaε, DegPre.famε, phiLift, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val, DegPre.gtε, DegPre.lineε, zero_add, add_comm bt c]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use `module`.
+-/
 theorem genVal_phi_zero {p : GtPtF D ℂ} {bt : Fin g → ℂ}
     (hb : (show Sp ℂ ⟶ _ from p.b.left) = (u.ex bt).left)
     {α y : D.X} {c c' : Fin g → ℂ} (hc : u.ex c = D.c α) (hc' : u.ex c' = D.c (α + y)) {k : ℕ}
@@ -147,6 +187,9 @@ theorem genVal_phi_zero {p : GtPtF D ℂ} {bt : Fin g → ℂ}
 
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
+/- English proof (translation)
+Use `congrArg₂ (· / ·) (toStalk.injective ?_) ?_` and prove the remaining obligations. Conclude with `(gs_eq_toStalk _ _ (le_wchart_chartAt hL φ y) _).symm.trans (h.trans (gs_eq_toStalk _ _ (le_wchart_chartAt hL φ' y') _))`. Simplify using `only [hz _, hz' _]`.
+-/
 theorem secVal_congr {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {u : HolUnif A L g} (hL : L.IsLB)
     {Y Y' : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ A.left)} {φ' : K → (Y' ⟶ A.left)} {ε : K → ℤ}
     {s : LB.Sec (LB.LinComb L φ ε)} {s' : LB.Sec (LB.LinComb L φ' ε)} {y : Sp ℂ ⟶ Y} {y' : Sp ℂ ⟶ Y'}
@@ -158,6 +201,13 @@ theorem secVal_congr {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {u : HolUnif
       (h.trans (gs_eq_toStalk _ _ (le_wchart_chartAt hL φ' y') _))
   · simp only [hz _, hz' _]
 
+/- English proof (translation)
+Substitute `hα` using the available equality. Take `rfl` from `eq_of_heq ht`. Take `⟨⟨w, hw, hw₀⟩, -⟩` from `gen_phi hG q v hv α`. Rewrite using `[← genVal_phi_zero hb hc hc' hw₀, ← genVal_phi h hb hc hc' hl w hw]`. Establish `hJ` using `good_chartAt (L := D.P.L) D.P.isLB`.
+
+Establish `e` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ w).1 (hst w hw hw₀) _ ((u.ex z).left ≫ (sect D).left) pt _ hJ`. Rewrite `e` using `[sval_resF D ℂ s _ hJ, pt_tr hb]`. Establish `e₁` using `secVal_eq_mul D.P.isLB e (isLift_famF hc' (pt_pr _)) (isLift_fam hc (z + bt)) (isLift_phi hb hc hc' z) fun f => by`. Use `Eq.symm ((congrArg (_ * ·) (Fintype.prod_sum_type _)).trans ?_)` and prove the remaining obligations. Simplify using `only [DegPre.deltaε, phiLift, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`.
+
+Conclude with `(mul_left_comm _ _ _).trans (by rw [mul_inv_cancel, _root_.mul_one])`. Use `Eq.trans ?_ e₁` and prove the remaining obligations. Use `secVal_congr D.P.isLB ?_ (isLift_fam hc' z) (isLift_famF hc' (pt_pr _))` and prove the remaining obligations. Rewrite using `[sval_resF D ℂ t _ hJ, pt_pr]`.
+-/
 theorem secVal_translate (hG : GlobalFnsSt) (h : u.IsAH Hm χ) {k : ℕ} {q : QkPt D ℂ k} {bt : Fin g → ℂ}
     (hb : (show Sp ℂ ⟶ _ from q.g.b.left) = (u.ex bt).left)
     {v : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D ℂ q.g.b) (DegPre.lineε k))} (hv : v.IsGen)
@@ -187,6 +237,15 @@ theorem secVal_translate (hG : GlobalFnsSt) (h : u.IsAH Hm χ) {k : ℕ} {q : Qk
 
 omit [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
+/- English proof (translation)
+Introduce `hL _ E _ _ _ H _ D l c O _ β _ _ b a Λ k _ la q v hy hg hv`. Establish `hk : (k : ℂ) ≠ 0` using `NeZero.ne _`. Establish `hb : (show Sp ℂ ⟶ _ from q.g.b.left) = (Λ.u.ex ((k : ℂ)⁻¹ • (Λ.A.P0 la).2)).left`. Rewrite using `[hg]`. Conclude with `Λ.ex0_b _`.
+
+Establish `hs : ∀ α, genVal Λ.u a.D₀.P.isLB (q.g.s (Λ.ε α)) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![Λ.A.ct α + (k : ℂ)⁻¹ • (Λ.A.P0 la).2, Λ.A.ct α, (k : ℂ)⁻¹ • (Λ.A.P0 la).2, 0] = eTwoPi ((Λ.A.P0 la).1 α / k)` using `fun α => by`. Rewrite using `[hg]`. Use `(Λ.arcDict_expZero_section _ α).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[div_eq_inv_mul]`. Both sides reduce to the same expression.
+
+Use `⟨genVal Λ.u a.D₀.P.isLB v (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![0, (k : ℂ)⁻¹ • (Λ.A.P0 la).2], genVal_ne_zero _ _ fun i => ?_, fun α s t t' hst ht => funext fun z => ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Conclude with `congrArg (fun m => m.left) ((MonObj.comp_one _).trans (ex_zero Λ.u).symm : basePt ≫ DegPre.zeroF a.D₀ ℂ = Λ.u.ex 0)`. Conclude with `(Category.id_comp _).trans hb`. Use `(secVal_translate hL.globalFns Λ.ah hb hv (by rw [map_add, hy]) (Λ.ct α) (Λ.ct (α + la.y)) (l := la.l) ?_ hst ht z).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hk, AnArc.degeneratingTori_basePeriodMap_snd, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[hs, Pi.smul_apply, smul_eq_mul, AnArc.shift_apply', GtAn.fn, AnArc.H_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fn_translate : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (Λ : GtAn a) (k : ℕ) [NeZero k] (la : Λ.A.La) (q : Out.QkPt a.D₀ ℂ k) (v : LB.Gen (LB.LinComb a.D₀.P.L (Out.DegPre.lineφ a.D₀ ℂ q.g.b) (Out.DegPre.lineε k))), q.y = Λ.ε la.y → q.g = Λ.ex0 ((k : ℂ)⁻¹ • Λ.A.P0 la) → v.IsGen → ∃ κ : ℂ, κ ≠ 0 ∧ ∀ (α : Λ.A.X) (s : a.D₀.SecB k (Λ.ε α)) (t : a.D₀.SecB k (Λ.ε α + q.y)) (t' : a.D₀.SecB k (Λ.ε (α + la.y))), ThetaTranslate.IsPhiTranslate a.D₀ ℂ k q v (Λ.ε α) s t → HEq t t' → Λ.fn k (α + la.y) t' = κ • Λ.A.shift k la α (Λ.fn k α s) := by
   intro hL _ E _ _ _ H _ D l c O _ β _ _ b a Λ k _ la q v hy hg hv
   have hk : (k : ℂ) ≠ 0 := NeZero.ne _

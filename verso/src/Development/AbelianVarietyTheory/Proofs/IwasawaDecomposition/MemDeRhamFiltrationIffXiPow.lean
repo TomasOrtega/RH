@@ -10,6 +10,15 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.MemLoc
 
+/- English proof (translation)
+Introduce `l _ e he a x`. Establish `h` using `(GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he).1`. Establish `hg : ∀ (n : ℕ) (x : Per.BdR l), x ∈ Per.FilD l (-(n : ℤ)) ↔ ∃ y : Per.BdRp l, x * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi e)) ^ n = algebraMap (Per.BdRp l) (Per.BdR l) y` using `GlobalTheory.CrisLoc.mem_fil_neg l _ (GlobalTheory.T.kerThetaLocalized_eq_span_fontaineXiElement l e he)`. Generalize the expression as in `aDp l (xi e) = ξ at h hg ⊢`. Establish `hn : ∀ (n : ℕ) (w : Per.BdR l), w ∈ Per.FilD l (n : ℤ) ↔ ∃ y : Per.BdRp l, w = algebraMap (Per.BdRp l) (Per.BdR l) (ξ ^ n * y)`.
+
+Introduce `n w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨z, hz, ez⟩` from `GlobalTheory.RingIface.exists_of_mem_FilD_nat l hw`. Take `⟨y, rfl⟩` from `(h _ _).1 hz`.
+
+Conclude with `⟨y, ez.symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `GlobalTheory.RingIface.alg_mem_FilD_nat l ((h _ _).2 (dvd_mul_right _ _))`. Break down `le_total 0 a with ha | ha` into its components or cases. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le ha`.
+
+Rewrite using `[hn, Int.toNat_neg_natCast, Int.toNat_natCast, pow_zero, mul_one]`. Take `⟨n, rfl⟩` from `Int.exists_eq_neg_ofNat ha`. Rewrite using `[hg, neg_neg, Int.toNat_neg_natCast, Int.toNat_natCast]`. Simplify using `only [pow_zero, one_mul]`.
+-/
 theorem mem_FilD_iff_xi_pow : ∀ (l : ℕ) [Fact l.Prime], ∀ e : Per.Fl l, IsEps e → ∀ (a : ℤ) (x : Per.BdR l), x ∈ Per.FilD l a ↔ ∃ y : Per.BdRp l, x * algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi e)) ^ (-a).toNat = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (xi e) ^ a.toNat * y) := by
   intro l _ e he a x
   have h := (GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l e he).1

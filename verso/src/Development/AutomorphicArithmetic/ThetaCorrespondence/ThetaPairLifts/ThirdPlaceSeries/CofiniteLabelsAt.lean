@@ -12,6 +12,9 @@ open Formalism.CohomologicalDescent.ShortWeightBounds (Wts)
 open GlobalTheory.ExpFrame GlobalTheory.ExpTie GlobalTheory.UnitaryBC GlobalTheory.CuspRep GlobalTheory.SmGL GlobalTheory.FrameAut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameAutCof
+/- English proof (translation)
+Introduce `p _ _ j _ _ _ _ w _ _ hs` and use `cofinite_labels p j (p.R.mu w) hs.1.ne_zero`.
+-/
 theorem cofinite_labels_at_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), _root_.GlobalTheory.BigTop.PtAt.PointConditions' p → More p →
     ∀ (j : Fin D.R.m) (P : Par) (W : Wts D.what₂.Tau), Dict L j P W → NumOk P W →

@@ -17,6 +17,15 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 end Point
+/- English proof (translation)
+Take `⟨a, ha, H⟩` from `(hE.and hG).and hK`. Use `⟨a, ha, fun e he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK'⟩` from `H e he hle`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨x1, E1⟩, ⟨c1, G1⟩⟩, ⟨c2, K1⟩⟩` from `hK' Fm CH hc hL`.
+
+Take `⟨x0, T0⟩` from `hc.2.2.2.2.2.2.2.2.2.2.1`. Use `⟨max c1 c2, fun c hcC hb => ?_⟩` and prove the remaining obligations. Take `⟨x2, G2⟩` from `G1 c ((le_max_left _ _).trans hcC) hb`. Take `⟨x3, K2⟩` from `K1 c ((le_max_right _ _).trans hcC) hb`. Use `⟨max (max x0 x1) (max x2 x3), fun x hx hle i p hp hM r O hR => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : x0 ≤ x` using `(le_max_left _ _).trans ((le_max_left _ _).trans hle)`. Establish `h1 : x1 ≤ x` using `(le_max_right _ _).trans ((le_max_left _ _).trans hle)`. Establish `h2 : x2 ≤ x` using `(le_max_left _ _).trans ((le_max_right _ _).trans hle)`. Establish `h3 : x3 ≤ x` using `(le_max_right _ _).trans ((le_max_right _ _).trans hle)`. Take `⟨-, N0, S, hTG⟩` from `T0 x h0 hx i`.
+
+Conclude with `hasTwistBound_at p hR (E1 x hx h1 i p hp hM) (G2 x hx h2 i p hp hM r O hR).1 (K2 x hx h3 i p hp hM r O hR) hTG`.
+-/
 theorem twistSt_of_alt (hE : _root_.GlobalTheory.BigOn.ExportedStatement) (hG : _root_.GlobalTheory.BigOn.GeometricStatement')
     (hK : _root_.GlobalTheory.BigOn.ForallRecordObjects fun _ _ _ _ _ _ O => GlobalTheory.TraceClassRank.RankAtPlaces O) : _root_.GlobalTheory.BigOn.TwistStatement' := by
   obtain ⟨a, ha, H⟩ := (hE.and hG).and hK

@@ -11,11 +11,22 @@ open Matrix
 
 namespace Formalism.HermitianLatticeCounting.P
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 lemma hs_nonneg {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) : 0 ≤ hs Y := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `hs; exact Real.sq_sqrt (by positivity)`.
+-/
 lemma hs_sq {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) : hs Y ^ 2 = ∑ a, ∑ b, ‖Y a b‖ ^ 2 := by
   unfold hs; exact Real.sq_sqrt (by positivity)
 
+/- English proof (translation)
+Rewrite using `[hs_sq, Matrix.trace]`. Simplify using `only [Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+-/
 lemma hs_sq_trace {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) :
     ((hs Y ^ 2 : ℝ) : ℂ) = (Yᴴ * Y).trace := by
   rw [hs_sq, Matrix.trace]
@@ -26,28 +37,43 @@ lemma hs_sq_trace {N : ℕ} (Y : Matrix (Fin N) (Fin N) ℂ) :
   apply Finset.sum_congr rfl; intro b _
   rw [Complex.star_def, Complex.conj_mul']
 
+/- English proof (translation)
+Rewrite `h` using `[← hs_sq_trace, ← hs_sq_trace]`. Establish `h2 : hs Y ^ 2 = hs Z ^ 2` using `by exact_mod_cast h`. Conclude with `(sq_eq_sq₀ (hs_nonneg _) (hs_nonneg _)).mp h2`.
+-/
 lemma hs_of_gram_eq {N : ℕ} {Y Z : Matrix (Fin N) (Fin N) ℂ}
     (h : (Yᴴ * Y).trace = (Zᴴ * Z).trace) : hs Y = hs Z := by
   rw [← hs_sq_trace, ← hs_sq_trace] at h
   have h2 : hs Y ^ 2 = hs Z ^ 2 := by exact_mod_cast h
   exact (sq_eq_sq₀ (hs_nonneg _) (hs_nonneg _)).mp h2
 
+/- English proof (translation)
+Use `Matrix.mem_unitaryGroup_iff'.mp hk` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 lemma unitary_left {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin N) ℂ) :
     kᴴ * k = 1 := by
   have := Matrix.mem_unitaryGroup_iff'.mp hk
   rwa [Matrix.star_eq_conjTranspose] at this
 
+/- English proof (translation)
+Use `Matrix.mem_unitaryGroup_iff.mp hk` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 lemma unitary_right {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin N) ℂ) :
     k * kᴴ = 1 := by
   have := Matrix.mem_unitaryGroup_iff.mp hk
   rwa [Matrix.star_eq_conjTranspose] at this
 
+/- English proof (translation)
+Apply `hs_of_gram_eq` to reduce the goal to its premises. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc kᴴ, unitary_left hk, Matrix.one_mul]`.
+-/
 lemma hs_unitary_mul {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ}
     (hk : k ∈ Matrix.unitaryGroup (Fin N) ℂ) (Y : Matrix (Fin N) (Fin N) ℂ) : hs (k * Y) = hs Y := by
   apply hs_of_gram_eq
   rw [Matrix.conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc kᴴ, unitary_left hk,
     Matrix.one_mul]
 
+/- English proof (translation)
+Apply `hs_of_gram_eq` to reduce the goal to its premises. Rewrite using `[Matrix.conjTranspose_mul, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, unitary_right hk, Matrix.mul_one]`.
+-/
 lemma hs_mul_unitary {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ}
     (hk : k ∈ Matrix.unitaryGroup (Fin N) ℂ) (Y : Matrix (Fin N) (Fin N) ℂ) : hs (Y * k) = hs Y := by
   apply hs_of_gram_eq
@@ -57,6 +83,13 @@ lemma hs_mul_unitary {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ}
 section Frob
 open scoped Matrix.Norms.Frobenius
 
+/- English proof (translation)
+Establish `h1 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • x ^ n) (NormedSpace.exp x)` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) x`. Establish `h2 : HasSum (fun n : ℕ => ‖x‖ ^ n / (n.factorial : ℝ)) (Real.exp ‖x‖)`. Rewrite using `[Real.exp_eq_exp_ℝ]`. Conclude with `NormedSpace.expSeries_div_hasSum_exp ‖x‖`. Establish `h1'` using `(hasSum_nat_add_iff' 1).mpr h1`.
+
+Establish `h2'` using `(hasSum_nat_add_iff' 1).mpr h2`. Simplify using `only [Finset.sum_range_one, pow_zero, Nat.factorial_zero, Nat.cast_one, inv_one, one_smul, div_one] at h1' h2'`. Use `h1'.norm_le_of_bounded h2' (fun n => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast, div_eq_inv_mul]`. Use `gcongr`.
+
+Conclude with `norm_pow_le' x (Nat.succ_pos n)`.
+-/
 lemma norm_exp_sub_one_le {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A] (x : A) :
     ‖NormedSpace.exp x - 1‖ ≤ Real.exp ‖x‖ - 1 := by
   have h1 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • x ^ n) (NormedSpace.exp x) :=
@@ -75,11 +108,23 @@ lemma norm_exp_sub_one_le {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [Comp
 
 end Frob
 
+/- English proof (translation)
+Rewrite using `[Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Conclude with `unitary_left hk`.
+-/
 lemma unitary_conj {N : ℕ} {k : Matrix (Fin N) (Fin N) ℂ} (hk : k ∈ Matrix.unitaryGroup (Fin N) ℂ) :
     kᴴ ∈ Matrix.unitaryGroup (Fin N) ℂ := by
   rw [Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]
   exact unitary_left hk
 
+/- English proof (translation)
+Introduce `N ep k X hk hkb hX hXb`. Establish `hu : IsUnit k` using `⟨⟨k, kᴴ, unitary_right hk, unitary_left hk⟩, rfl⟩`. Establish `hinv : k⁻¹ = kᴴ` using `Matrix.inv_eq_left_inv (unitary_left hk)`. Use `⟨Matrix.isHermitian_conjTranspose_mul_mul k hX, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `d _`. Distinguish the cases in `hd : ep d = ep b`. Establish `: ∑ c, star (k c a) * X c d = 0`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Distinguish the cases in `hc : ep c = ep a`. Rewrite using `[hXb c d (by rw [hc, hab, hd]), mul_zero]`. Rewrite using `[hkb c a hc, star_zero, zero_mul]`.
+
+Rewrite using `[this, zero_mul]`. Rewrite using `[hkb d b hd, mul_zero]`. Rewrite using `[hs_mul_unitary hk, hs_unitary_mul (unitary_conj hk)]`. Rewrite using `[← hinv]`. Conclude with `(Matrix.exp_conj' k X hu).symm`.
+-/
 theorem conjugation_invariant_measure : ConjInv := by
   intro N ep k X hk hkb hX hXb
   have hu : IsUnit k := ⟨⟨k, kᴴ, unitary_right hk, unitary_left hk⟩, rfl⟩
@@ -99,6 +144,25 @@ theorem conjugation_invariant_measure : ConjInv := by
   · rw [hs_mul_unitary hk, hs_unitary_mul (unitary_conj hk)]
   · rw [← hinv]; exact (Matrix.exp_conj' k X hu).symm
 
+/- English proof (translation)
+Introduce `hDecay hRes hConj hGap N ep lam h Ω T _ μ _ _ κ v X A hlam hgap hκ hX hXb hres hA`. Apply `hRes Ω T μ v (fun k => ∏ i ∈ Ico 1 N, (lead ((κ k).conjTranspose * NormedSpace.exp X * κ k) i).re ^ (-(lam i - lam (i + 1) + 1))) _ A (Real.exp_pos _).le hres ?_ hA` to reduce the goal to its premises. Introduce `k`. Take `⟨hY, hYb, hYs, hYe⟩` from `hConj N ep (κ k) X (hκ k).1 (hκ k).2 hX hXb`. Simplify using `only [hYe]`.
+
+Generalize the expression as in `(κ k).conjTranspose * X * κ k = Y at *`. Establish `hpos : ∀ i, 0 ≤ (lead (NormedSpace.exp Y) i).re`. Introduce `i`. Distinguish the cases in `hi : i ≤ N`. Take `⟨w, hw0, _, hlead, _⟩` from `Formalism.NuclearRankWeightBounds.P.cb_weights N Y hY i hi`.
+
+Rewrite using `[hlead, Complex.ofReal_re]`. Conclude with `Finset.sum_nonneg fun J _ => mul_nonneg (hw0 J) (Real.exp_pos _).le`. Simplify using `[lead, hi]`. Rewrite using `[abs_of_nonneg (Finset.prod_nonneg fun i _ => Real.rpow_nonneg (hpos i) _)]`. Establish `hs0 : ∀ i, 0 ≤ (if 1 ≤ i ∧ i < N then lam i - lam (i+1) + 1 else 0)`.
+
+Introduce `i`. Use `split_ifs with hi`. Use `hlam i hi.1 hi.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_rfl`.
+
+Establish `hD` using `hDecay N (fun i => if 1 ≤ i ∧ i < N then lam i - lam (i+1) + 1 else 0) ep h Y hs0 hY hYb (by`. Introduce `a b hba hab`. Establish `hba' : b.val < a.val` using `hba`. Establish `hsum : ∑ i ∈ Ico (b.val+1) (a.val+1), (if 1 ≤ i ∧ i < N then lam i - lam (i+1) + 1 else 0) = ∑ i ∈ Ico (b.val+1) (a.val+1), (lam i - lam (i+1) + 1)`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `i hi`. Use `Finset.mem_Ico.mp hi` as an intermediate fact. Rewrite using `[if_pos ⟨by omega, by have := a.isLt; omega⟩]`. Rewrite using `[hsum, hGap lam (a.val+1) (b.val+1) (by omega)]`. Establish `h1` using `hgap a b hba hab`.
+
+Establish `h2 : (b.val:ℝ) < a.val` using `by exact_mod_cast hba'`. Use `push_cast`. Use the proof step `linarith)`. Establish `hprod : ∏ i ∈ Ico 1 N, (lead (NormedSpace.exp Y) i).re ^ (-(lam i - lam (i+1) + 1)) = ∏ i ∈ Ico 1 N, (lead (NormedSpace.exp Y) i).re ^ (-(if 1 ≤ i ∧ i < N then lam i - lam (i+1) + 1 else 0))`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+
+Introduce `i hi`. Use `Finset.mem_Ico.mp hi` as an intermediate fact. Rewrite using `[if_pos ⟨this.1, this.2⟩]`. Rewrite using `[hprod]`. Use `hD.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Rewrite using `[hYs]`. Unfold `decExp`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem decay_assembly_holds : DecAssembly := by
   intro hDecay hRes hConj hGap N ep lam h Ω T _ μ _ _ κ v X A hlam hgap hκ hX hXb hres hA
   apply hRes Ω T μ v (fun k => ∏ i ∈ Ico 1 N,
@@ -143,11 +207,29 @@ theorem decay_assembly_holds : DecAssembly := by
   refine hD.trans (le_of_eq ?_)
   rw [hYs]; unfold decExp; congr 1; ring
 
+/- English proof (translation)
+The claim follows from `decay_assembly_holds Formalism.NuclearRankWeightBounds.Top.decay resolution_norm_bound conjugation_invariant_measure gap_sum_bound`.
+-/
 theorem decay_right_side_bound : DecayRightSide :=
   decay_assembly_holds Formalism.NuclearRankWeightBounds.Top.decay resolution_norm_bound conjugation_invariant_measure gap_sum_bound
 
 noncomputable def n2 {N : ℕ} (v : Fin N → ℂ) : ℝ := Real.sqrt (∑ i, ‖v i‖ ^ 2)
 
+/- English proof (translation)
+Use `hMd` as an intermediate fact. Take `⟨b, t, hbM, hli, ht0, -, hWs, hcov⟩` from `Formalism.HadamardInequality.P.tr_chain M hspan (Module.finrank ℝ V) le_rfl`. Establish `hbspan : Submodule.span ℝ (Set.range b) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by simp)`. Take `⟨z, hz, hzx⟩` from `hcov x (by rw [hbspan]; trivial)`. Establish `hzM : z ∈ M` using `(Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hbM i)) hz`.
+
+Use `⟨z, hzM, ?_⟩` and prove the remaining obligations. Establish `ht : ∀ i, t i ≤ (Module.finrank ℝ V : ℝ) ^ ((3:ℝ)/2) / κ`. Introduce `i`. Take `⟨W, hWr, hWm⟩` from `hWs i`. Take `⟨y, hyD, hyli, hyn⟩` from `Formalism.HadamardInequality.P.tr_dual M hspan W (ht0 i) hWm`.
+
+Establish `hfr : Module.finrank ℝ W + Module.finrank ℝ Wᗮ = Module.finrank ℝ V` using `Submodule.finrank_add_finrank_orthogonal W`. Establish `hpos : 0 < Module.finrank ℝ Wᗮ` using `by have := i.2; omega`. Establish `hy0 : y ⟨0, hpos⟩ ≠ 0` using `hyli.ne_zero _`. Establish `h1` using `hdual _ (hyD ⟨0, hpos⟩) hy0`. Establish `h2` using `hyn ⟨0, hpos⟩`.
+
+Establish `h3 : (Module.finrank ℝ Wᗮ : ℝ) ^ ((3:ℝ)/2) ≤ (Module.finrank ℝ V : ℝ) ^ ((3:ℝ)/2)` using `Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast (by omega : Module.finrank ℝ Wᗮ ≤ Module.finrank ℝ V)) (by norm_num)`. Establish `h4 : κ ≤ (Module.finrank ℝ V : ℝ) ^ ((3:ℝ)/2) / t i` using `h1.trans (h2.trans (div_le_div_of_nonneg_right h3 (ht0 i).le))`. Rewrite `h4` using `[le_div_iff₀ (ht0 i)]`. Rewrite using `[le_div_iff₀ hκ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Generalize the expression as in `Module.finrank ℝ V = N at *`. Establish `hN0 : (0:ℝ) ≤ N` using `Nat.cast_nonneg _`. Establish `h32 : ((N:ℝ) ^ ((3:ℝ)/2)) ^ 2 = (N:ℝ) ^ 3`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hN0]`. Evaluate the numerical expressions.
+
+Establish `hsum : ∑ l, t l ^ 2 ≤ (N:ℝ) * ((N:ℝ) ^ 3 / κ ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Apply `(sq_le_sq₀ (norm_nonneg _) (by positivity)).mp` to reduce the goal to its premises. Establish `e : ((N:ℝ) ^ 2 / (2 * κ)) ^ 2 = (N:ℝ) ^ 4 / κ ^ 2 / 4` using `by field_simp; ring`. Establish `e2 : (N:ℝ) * ((N:ℝ) ^ 3 / κ ^ 2) = (N:ℝ) ^ 4 / κ ^ 2` using `by ring`.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem coverRadius_sq (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] (M : Submodule ℤ V) (hMd : DiscreteTopology M)
     (hspan : Submodule.span ℝ (M : Set V) = ⊤) (κ : ℝ) (hκ : 0 < κ)
@@ -194,6 +276,11 @@ theorem coverRadius_sq (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ 
   rw [e]
   linarith
 
+/- English proof (translation)
+Introduce `V _ _ _ M hMd hspan κ hκ hdual x`. Take `⟨y, hy, hxy⟩` from `coverRadius_sq V M hMd hspan κ hκ hdual x`. Use `⟨y, hy, hxy.trans ?_⟩` and prove the remaining obligations. Establish `h23 : (Module.finrank ℝ V : ℝ) ^ 2 ≤ (Module.finrank ℝ V : ℝ) ^ 3`. Break down `Nat.eq_zero_or_pos (Module.finrank ℝ V) with h0 | hN` into its components or cases.
+
+Rewrite using `[h0]`. Simplify using the standard rewrite rules. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hN) (by norm_num)`. Use `gcongr`.
+-/
 theorem covering_radius_bound : CoverRadius := by
   intro V _ _ _ M hMd hspan κ hκ hdual x
   obtain ⟨y, hy, hxy⟩ := coverRadius_sq V M hMd hspan κ hκ hdual x
@@ -204,11 +291,20 @@ theorem covering_radius_bound : CoverRadius := by
     · exact pow_le_pow_right₀ (by exact_mod_cast hN) (by norm_num)
   gcongr
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 lemma hsG_nonneg {ι : Type} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℂ) : 0 ≤ hsG Y := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `hsG; exact Real.sq_sqrt (by positivity)`.
+-/
 lemma hsG_sq {ι : Type} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℂ) : hsG Y ^ 2 = ∑ a, ∑ b, ‖Y a b‖ ^ 2 := by
   unfold hsG; exact Real.sq_sqrt (by positivity)
 
+/- English proof (translation)
+Use `Matrix.mem_unitaryGroup_iff'.mp hk` as an intermediate fact. Rewrite `this` using `[Matrix.star_eq_conjTranspose]`. Then use the resulting hypothesis.
+-/
 lemma unitary_leftG {ι : Type} [Fintype ι] [DecidableEq ι] {k : Matrix ι ι ℂ} (hk : k ∈ Matrix.unitaryGroup ι ℂ) :
     kᴴ * k = 1 := by
   have := Matrix.mem_unitaryGroup_iff'.mp hk
@@ -217,10 +313,16 @@ lemma unitary_leftG {ι : Type} [Fintype ι] [DecidableEq ι] {k : Matrix ι ι 
 section FrobG
 open scoped Matrix.Norms.Frobenius
 
+/- English proof (translation)
+Rewrite using `[Matrix.frobenius_norm_def, hsG, Real.sqrt_eq_rpow]`. Simplify using `only [Real.rpow_two]`.
+-/
 lemma hsG_eq_norm {ι : Type} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℂ) : hsG Y = ‖Y‖ := by
   rw [Matrix.frobenius_norm_def, hsG, Real.sqrt_eq_rpow]
   simp only [Real.rpow_two]
 
+/- English proof (translation)
+Rewrite using `[hsG_eq_norm, hsG_eq_norm]`. Conclude with `norm_exp_sub_one_le X`.
+-/
 lemma hsG_exp_sub_one_le {ι : Type} [Fintype ι] [DecidableEq ι] (X : Matrix ι ι ℂ) :
     hsG (NormedSpace.exp X - 1) ≤ Real.exp (hsG X) - 1 := by
   rw [hsG_eq_norm, hsG_eq_norm]
@@ -230,24 +332,44 @@ end FrobG
 
 noncomputable def n2G {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → ℂ) : ℝ := Real.sqrt (∑ i, ‖v i‖ ^ 2)
 
+/- English proof (translation)
+The claim follows from `Real.sqrt_nonneg _`.
+-/
 lemma euclNorm_nonneg {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → ℂ) : 0 ≤ n2G v := Real.sqrt_nonneg _
 
+/- English proof (translation)
+Unfold `n2G; exact Real.sq_sqrt (by positivity)`.
+-/
 lemma euclNorm_sq_eq_sum_sq {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → ℂ) : n2G v ^ 2 = ∑ i, ‖v i‖ ^ 2 := by
   unfold n2G; exact Real.sq_sqrt (by positivity)
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_eq]`. Both sides reduce to the same expression.
+-/
 lemma euclNorm_eq_euclideanSpace_norm {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → ℂ) :
     n2G v = ‖(WithLp.toLp 2 v : EuclideanSpace ℂ ι)‖ := by
   rw [EuclideanSpace.norm_eq]; rfl
 
+/- English proof (translation)
+Simplify using `only [euclNorm_eq_euclideanSpace_norm, WithLp.toLp_add]`. Conclude with `norm_add_le _ _`.
+-/
 lemma euclNorm_add_le {ι : Type} [Fintype ι] [DecidableEq ι] (v w : ι → ℂ) : n2G (v + w) ≤ n2G v + n2G w := by
   simp only [euclNorm_eq_euclideanSpace_norm, WithLp.toLp_add]; exact norm_add_le _ _
 
+/- English proof (translation)
+Rewrite using `[euclNorm_sq_eq_sum_sq, dotProduct]`. Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`.
+-/
 lemma euclNorm_sq_eq_star_dotProduct {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → ℂ) : ((n2G v ^ 2 : ℝ) : ℂ) = star v ⬝ᵥ v := by
   rw [euclNorm_sq_eq_sum_sq, dotProduct]
   push_cast
   apply Finset.sum_congr rfl; intro i _
   rw [Pi.star_apply, Complex.star_def, Complex.conj_mul']
 
+/- English proof (translation)
+Apply `(sq_le_sq₀ (euclNorm_nonneg _) (mul_nonneg (hsG_nonneg _) (euclNorm_nonneg _))).mp` to reduce the goal to its premises. Rewrite using `[mul_pow, euclNorm_sq_eq_sum_sq, hsG_sq, euclNorm_sq_eq_sum_sq, Finset.sum_mul]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a _`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Repeatedly rewrite using `[norm_mul]`. Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+-/
 lemma euclNorm_mulVec_le_frobenius {ι : Type} [Fintype ι] [DecidableEq ι] (A : Matrix ι ι ℂ) (v : ι → ℂ) :
     n2G (A *ᵥ v) ≤ hsG A * n2G v := by
   apply (sq_le_sq₀ (euclNorm_nonneg _) (mul_nonneg (hsG_nonneg _) (euclNorm_nonneg _))).mp
@@ -260,6 +382,9 @@ lemma euclNorm_mulVec_le_frobenius {ι : Type} [Fintype ι] [DecidableEq ι] (A 
         simp_rw [norm_mul]
     _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
+/- English proof (translation)
+Establish `h : ((n2G (k *ᵥ v) ^ 2 : ℝ) : ℂ) = ((n2G v ^ 2 : ℝ) : ℂ)`. Rewrite using `[euclNorm_sq_eq_star_dotProduct, euclNorm_sq_eq_star_dotProduct, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, unitary_leftG hk, Matrix.one_mulVec]`. Establish `h2 : n2G (k *ᵥ v) ^ 2 = n2G v ^ 2` using `by exact_mod_cast h`. Conclude with `(sq_eq_sq₀ (euclNorm_nonneg _) (euclNorm_nonneg _)).mp h2`.
+-/
 lemma euclNorm_unitary_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] {k : Matrix ι ι ℂ} (hk : k ∈ Matrix.unitaryGroup ι ℂ)
     (v : ι → ℂ) : n2G (k *ᵥ v) = n2G v := by
   have h : ((n2G (k *ᵥ v) ^ 2 : ℝ) : ℂ) = ((n2G v ^ 2 : ℝ) : ℂ) := by
@@ -268,6 +393,13 @@ lemma euclNorm_unitary_mulVec {ι : Type} [Fintype ι] [DecidableEq ι] {k : Mat
   have h2 : n2G (k *ᵥ v) ^ 2 = n2G v ^ 2 := by exact_mod_cast h
   exact (sq_eq_sq₀ (euclNorm_nonneg _) (euclNorm_nonneg _)).mp h2
 
+/- English proof (translation)
+Apply `ContinuousLinearMap.opNorm_le_bound _ (Real.exp_pos _).le` to reduce the goal to its premises. Introduce `w`. Establish `e1 : (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (k * NormedSpace.exp Y))) w = WithLp.toLp 2 ((k * NormedSpace.exp Y) *ᵥ WithLp.ofLp w)` using `rfl`. Establish `e2 : ‖w‖ = n2G (WithLp.ofLp w)` using `by rw [euclNorm_eq_euclideanSpace_norm]`. Rewrite using `[e1, ← euclNorm_eq_euclideanSpace_norm, e2]`.
+
+Generalize the expression as in `WithLp.ofLp w = v`. Rewrite using `[← Matrix.mulVec_mulVec, euclNorm_unitary_mulVec hk]`. Establish `e : NormedSpace.exp Y *ᵥ v = v + (NormedSpace.exp Y - 1) *ᵥ v`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `(euclNorm_mulVec_le_frobenius _ _).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (hsG_exp_sub_one_le Y) (euclNorm_nonneg _)`. Use `_ = _ := by ring`.
+-/
 lemma opnorm_unitary_exp_le {ι : Type} [Fintype ι] [DecidableEq ι] {k : Matrix ι ι ℂ}
     (hk : k ∈ Matrix.unitaryGroup ι ℂ) (Y : Matrix ι ι ℂ) :
     ‖LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin (k * NormedSpace.exp Y))‖
@@ -292,6 +424,27 @@ lemma opnorm_unitary_exp_le {ι : Type} [Fintype ι] [DecidableEq ι] {k : Matri
     _ = _ := by ring
 
 open NumberField in
+/- English proof (translation)
+Introduce `K V ι _ _ _ _ _ _ _ _ _ _ b X k Y hX hk hY L hL hL0`. Establish `hX'u : ∀ v, IsUnit (X v * (k v * NormedSpace.exp (Y v))).det`. Introduce `v`. Rewrite using `[Matrix.det_mul, Matrix.det_mul]`. Use `(hX v).mul (IsUnit.mul ?_ ?_)` and prove the remaining obligations.
+
+Establish `h1` using `unitary_leftG (hk v)`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact h2)`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.isUnit_exp _)`.
+
+Establish `hop : ∀ v, Formalism.HN.opNormAt b (fun v => X v * (k v * NormedSpace.exp (Y v))) b X v (LinearMap.id : V →ₗ[K] V) ≤ Real.exp (hsG (Y v))`. Introduce `v`. Unfold `Formalism.HN.opNormAt`. Establish `e : (X v)⁻¹ * (LinearMap.toMatrix b b (LinearMap.id : V →ₗ[K] V)).map v.embedding * (X v * (k v * NormedSpace.exp (Y v))) = k v * NormedSpace.exp (Y v)`. Rewrite using `[LinearMap.toMatrix_id, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hX v), Matrix.one_mul]`.
+
+Rewrite using `[e]`. Conclude with `opnorm_unitary_exp_le (hk v) (Y v)`. Establish `hop0 : ∀ v, 0 ≤ Formalism.HN.opNormAt b (fun v => X v * (k v * NormedSpace.exp (Y v))) b X v (LinearMap.id : V →ₗ[K] V)` using `fun v => norm_nonneg _`. Establish `hht : Formalism.HN.htMap b (fun v => X v * (k v * NormedSpace.exp (Y v))) b X (LinearMap.id : V →ₗ[K] V) ≤ 2 * ((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, hsG (Y v))`. Unfold `Formalism.HN.htMap`.
+
+Rewrite using `[show 2 * ((1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, hsG (Y v)) = (1 / (Formalism.HN.nPl K : ℝ)) * ∑ v, 2 * hsG (Y v) by rw [← Finset.mul_sum]; ring]`. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Establish `h1` using `hop v`.
+
+Establish `h0` using `hop0 v`. Generalize the expression as in `Formalism.HN.opNormAt b (fun v => X v * (k v * NormedSpace.exp (Y v))) b X v (LinearMap.id : V →ₗ[K] V) = o at *`. Break down `h0.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Simplify using the standard rewrite rules.
+
+Conclude with `hsG_nonneg _`. Rewrite using `[Real.log_le_iff_le_exp (by positivity), two_mul, Real.exp_add, sq]`. Conclude with `mul_le_mul h1 h1 h0 (Real.exp_pos _).le`. Establish `s1` using `Formalism.HN.sizeMu K V ι b X hX L hL hL0`. Establish `s2` using `Formalism.HN.sizeMu K V ι b (fun v => X v * (k v * NormedSpace.exp (Y v))) hX'u L hL hL0`.
+
+Simplify using `only at s1 s2`. Take `⟨-, -, -, hl, -, -⟩` from `s1`. Take `⟨-, -, -, hl', -, -⟩` from `s2`. Establish `hmap : L.map ((LinearMap.id : V →ₗ[K] V).restrictScalars (𝓞 K)) = L`. Use extensionality with `x`.
+
+Simplify using the standard rewrite rules. Take `⟨-, hB⟩` from `Formalism.HN.slopeIneqMean K V ι V ι b (fun v => X v * (k v * NormedSpace.exp (Y v))) b X hX'u hX LinearMap.id L hL (by rw [hmap]; exact hL0)`. Establish `h3` using `(hB L hL (by rw [hmap])).2 (fun x _ y _ h => h)`. Unfold `Formalism.HN.muMaxDef at h3`. Rewrite using `[hl, hl', ← Real.exp_add]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem tau_lipschitz_bound : TauLip := by
   intro K V ι _ _ _ _ _ _ _ _ _ _ b X k Y hX hk hY L hL hL0
   have hX'u : ∀ v, IsUnit (X v * (k v * NormedSpace.exp (Y v))).det := by

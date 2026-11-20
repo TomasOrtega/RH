@@ -7,6 +7,21 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Introduce `n b`. Use `letI : NontriviallyNormedField (v.adicCompletion K) := Valued.toNontriviallyNormedField _ _`. Use `set S := Submodule.span (v.adicCompletion K) (Set.range fun i => algebraMap L (v'.adicCompletion L) (b i)) with hS`. Use `haveI : ContinuousSMul (v.adicCompletion K) (v'.adicCompletion L) := by`.
+
+Prove the components needed by the constructor for the conclusion. Establish `: (fun p : v.adicCompletion K × v'.adicCompletion L => p.1 • p.2) = fun p => f p.1 * p.2`. Use function extensionality and compare the values at `p`. Conclude with `Algebra.smul_def _ _`. Rewrite using `[this]`.
+
+Conclude with `(hfc.comp continuous_fst).mul continuous_snd`. Use `haveI : FiniteDimensional (v.adicCompletion K) S := FiniteDimensional.span_of_finite _ (Set.finite_range _)`. Establish `hclosed : IsClosed (S : Set (v'.adicCompletion L))` using `S.closed_of_finiteDimensional`. Establish `hmem : ∀ z : L, algebraMap L (v'.adicCompletion L) z ∈ S`. Introduce `z`.
+
+Rewrite using `[← b.sum_repr z, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `: algebraMap L (v'.adicCompletion L) (b.repr z i • b i) = (algebraMap K (v.adicCompletion K) (b.repr z i)) • algebraMap L (v'.adicCompletion L) (b i)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, RingHom.algebraMap_toAlgebra, hf]`. Rewrite using `[this]`.
+
+Conclude with `S.smul_mem _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hdense` using `HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 L) L v'`. Establish `hsub : Set.range (algebraMap L (v'.adicCompletion L)) ⊆ (S : Set _)`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hmem z`.
+
+Establish `huniv : (S : Set (v'.adicCompletion L)) = Set.univ`. Use `closure_minimal hsub hclosed` as an intermediate fact. Rewrite `this` using `[hdense.closure_range]`. Conclude with `Set.univ_subset_iff.mp this`. Conclude with `eq_top_iff.mpr fun x _ => by`.
+
+Establish `: x ∈ (S : Set (v'.adicCompletion L))` using `huniv ▸ Set.mem_univ x`. Conclude with `this`.
+-/
 theorem span_basis_image_adicCompletion_eq_top
     (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L))

@@ -7,6 +7,11 @@ open IsLocalRing Matrix NumberField Formalism.ConjugateSelfDual ReciprocityTheor
 
 namespace UpperTheory.V.Th.Nm
 
+/- English proof (translation)
+Use `haveI := c.fin`. Establish `hx : IsIntegral ℤ_[l] (x : PadicAlgCl l)` using `(Algebra.IsIntegral.isIntegral x).map c.O.val`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hx, spectralValue_le_one_iff ((minpoly.monic hx).map _)]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`.
+
+Conclude with `((minpoly ℤ_[l] (x : PadicAlgCl l)).coeff n).2`.
+-/
 private theorem sd_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) : ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   haveI := c.fin
   have hx : IsIntegral ℤ_[l] (x : PadicAlgCl l) := (Algebra.IsIntegral.isIntegral x).map c.O.val
@@ -16,6 +21,9 @@ private theorem sd_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) : ‖(x 
   rw [Polynomial.coeff_map]
   exact ((minpoly ℤ_[l] (x : PadicAlgCl l)).coeff n).2
 
+/- English proof (translation)
+Establish `h1 : ‖((F.eps c.O (Qbar l) g : (Qbar l)ˣ) : Qbar l)‖ = 1`. Simplify using `only [GFrame.eps, pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l)]`. Conclude with `(PadicAlgCl.norm_extends l _).trans (PadicInt.norm_units _)`. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow, h1, _root_.one_zpow]`.
+-/
 private theorem sd_eps {l : ℕ} [Fact l.Prime] (F : GFrame l) (c : Coef l) (g : F.G₀) (z : ℤ) :
     ‖((F.eps c.O (Qbar l) g ^ z : (Qbar l)ˣ) : Qbar l)‖ ≤ 1 := by
   have h1 : ‖((F.eps c.O (Qbar l) g : (Qbar l)ˣ) : Qbar l)‖ = 1 := by
@@ -25,11 +33,19 @@ private theorem sd_eps {l : ℕ} [Fact l.Prime] (F : GFrame l) (c : Coef l) (g :
     exact (PadicAlgCl.norm_extends l _).trans (PadicInt.norm_units _)
   rw [Units.val_zpow_eq_zpow_val, norm_zpow, h1, _root_.one_zpow]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show F.c * (F.c * (g : F.Γ) * F.c⁻¹) * F.c⁻¹ = g`. Rewrite using `[inv_eq_of_mul_eq_one_right F.c_sq, mul_assoc, mul_assoc, mul_assoc, F.c_sq, mul_one, ← mul_assoc, F.c_sq, one_mul]`.
+-/
 private theorem sd_conj_conj {l : ℕ} [Fact l.Prime] (F : GFrame l) (g : F.G₀) : F.conj (F.conj g) = g := by
   apply Subtype.ext
   show F.c * (F.c * (g : F.Γ) * F.c⁻¹) * F.c⁻¹ = g
   rw [inv_eq_of_mul_eq_one_right F.c_sq, mul_assoc, mul_assoc, mul_assoc, F.c_sq, mul_one, ← mul_assoc, F.c_sq, one_mul]
 
+/- English proof (translation)
+Establish `e : (Qᵀ * P * Q)ᵀ = Qᵀ * Pᵀ * Q`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Break down `h with h | h` into its components or cases. Use `left`. Rewrite using `[e, h]`.
+
+Use `right`. Rewrite using `[e, h, Matrix.mul_neg, Matrix.neg_mul]`.
+-/
 private theorem sd_sgn {K : Type} [CommRing K] {n : ℕ} (P Q : Matrix (Fin n) (Fin n) K) (h : Pᵀ = P ∨ Pᵀ = -P) :
     (Qᵀ * P * Q)ᵀ = Qᵀ * P * Q ∨ (Qᵀ * P * Q)ᵀ = -(Qᵀ * P * Q) := by
   have e : (Qᵀ * P * Q)ᵀ = Qᵀ * Pᵀ * Q := by
@@ -40,6 +56,15 @@ private theorem sd_sgn {K : Type} [CommRing K] {n : ℕ} (P Q : Matrix (Fin n) (
   · right
     rw [e, h, Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Establish `hPB : (P : Matrix (Fin n) (Fin n) K) * B = e • ((↑A⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ * P)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`. Use `_ = (↑A⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ * ((A : Matrix (Fin n) (Fin n) K)ᵀ * P * B) := by`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = e • ((↑A⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ * P) := by`. Rewrite using `[h, Matrix.mul_smul]`. Establish `hQ : ∀ X : Matrix (Fin n) (Fin n) K, (↑Q⁻¹ : Matrix (Fin n) (Fin n) K)ᵀ * ((Q : Matrix (Fin n) (Fin n) K)ᵀ * X) = X`. Introduce `X`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one, Matrix.one_mul]`.
+
+Establish `key : (P₀ : Matrix (Fin n) (Fin n) K) * ((↑Q⁻¹ : Matrix (Fin n) (Fin n) K) * (B : Matrix (Fin n) (Fin n) K) * (Q : Matrix (Fin n) (Fin n) K)) = (e • ((↑Q⁻¹ : Matrix (Fin n) (Fin n) K) * (↑A⁻¹ : Matrix (Fin n) (Fin n) K) * (Q : Matrix (Fin n) (Fin n) K))ᵀ) * (P₀ : Matrix (Fin n) ( …`. Rewrite using `[hP, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.smul_mul]`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left, hQ]`. Rewrite using `[← Matrix.mul_assoc (P : Matrix (Fin n) (Fin n) K) (B : Matrix (Fin n) (Fin n) K), hPB]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_assoc]`.
+
+Simplify using `only [Units.val_mul]`. Rewrite using `[key, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+-/
 private theorem sd_form {K : Type} [CommRing K] {n : ℕ} (A B P Q P₀ : GL (Fin n) K) (e : K)
     (hP : (P₀ : Matrix (Fin n) (Fin n) K) = (Q : Matrix (Fin n) (Fin n) K)ᵀ * P * Q)
     (h : (A : Matrix (Fin n) (Fin n) K)ᵀ * P * B = e • (P : Matrix (Fin n) (Fin n) K)) :
@@ -70,6 +95,23 @@ private theorem sd_form {K : Type} [CommRing K] {n : ℕ} (A B P Q P₀ : GL (Fi
 
 end UpperTheory.V.Th.Nm
 
+/- English proof (translation)
+Introduce `l hl n F c ρ P hρ hspan hform`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Take `⟨c', Q₀, ρ₀, -, hQ₀, -⟩` from `Ws.Eb.intModel c ρ hρ`. Establish `hint : ∀ g, IntM ((cj Q₀ ρ g : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))`. Introduce `g i j`.
+
+Rewrite using `[cj_apply, mul_assoc, hQ₀ g, inv_mul_cancel_left]`. Conclude with `sd_norm c' ((ρ₀ g : Matrix (Fin n) (Fin n) c'.O) i j)`. Set `Qt : GL (Fin n) (Qbar l)` to `⟨(Q₀ : Matrix (Fin n) (Fin n) (Qbar l))ᵀ, (↑Q₀⁻¹ : Matrix (Fin n) (Fin n) (Qbar l))ᵀ, by rw [← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one], by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]⟩`. Take `⟨P₁, hP₁⟩ : ∃ P₁ : GL (Fin n) (Qbar l), (P₁ : Matrix (Fin n) (Fin n) (Qbar l)) = (Q₀ : Matrix (Fin n) (Fin n) (Qbar l))ᵀ * P * Q₀` from `⟨Qt * P * Q₀, rfl⟩`. Establish `hsP₁ : (P₁ : Matrix (Fin n) (Fin n) (Qbar l))ᵀ = P₁ ∨ (P₁ : Matrix (Fin n) (Fin n) (Qbar l))ᵀ = -(P₁ : Matrix (Fin n) (Fin n) (Qbar l))`.
+
+Rewrite using `[hP₁]`. Conclude with `sd_sgn _ _ (sign F c ρ P hspan hform)`. Establish `hconj : ∀ g, IntM ((P₁ * cj Q₀ ρ (F.conj g) * P₁⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))`. Introduce `g`. Establish `key` using `sd_form (ρ g) (ρ (F.conj g)) P Q₀ P₁ _ hP₁ (hform g)`.
+
+Rewrite using `[cj_apply, key]`. Introduce `i j`. Establish `hinv : (Q₀⁻¹ * (ρ g)⁻¹ * Q₀ : GL (Fin n) (Qbar l)) = cj Q₀ ρ g⁻¹`. Rewrite using `[cj_apply, map_inv]`. Rewrite using `[hinv, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, norm_mul]`.
+
+Conclude with `mul_le_one₀ (sd_eps F c g _) (norm_nonneg _) (hint _ j i)`. Take `⟨Q₂, P', hP', hP'int, hP'inv, hQ₂⟩` from `midpoint (Set.range (cj Q₀ ρ)) P₁ hsP₁ (by`. Introduce and unpack `_ ⟨h, rfl⟩`. Use `⟨hint h, ?_⟩` and prove the remaining obligations. Use `hconj (F.conj h)` as an intermediate fact.
+
+Rewrite using `[sd_conj_conj] at this)` and apply the resulting hypothesis. Use `⟨Q₀ * Q₂, P', ?_, ?_, hP'int, hP'inv, ?_⟩` and prove the remaining obligations. Rewrite using `[hP', hP₁]`. Simplify using `only [Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[hP']`.
+
+Conclude with `sd_sgn _ _ hsP₁`. Introduce `g`. Use `hQ₂ _ ⟨g, rfl⟩` as an intermediate fact. Rewrite `this` using `[cj_apply]`. Use `show IntM ((cj (Q₀ * Q₂) ρ g : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l))`.
+
+Rewrite using `[cj_apply, _root_.mul_inv_rev]`. Simplify `this` using `only [mul_assoc]`.
+-/
 theorem UpperTheory.V.Th.Nm.selfDual :
     ∀ {l : ℕ} [Fact l.Prime] {n : ℕ} (F : GFrame l) (c : Coef l) (ρ : F.G₀ →* GL (Fin n) (Qbar l)) (P : GL (Fin n) (Qbar l)), Continuous ρ → Submodule.span (Qbar l) (Set.range (mat ρ)) = ⊤ → F.IsForm c.O n ρ P → ∃ Q P' : GL (Fin n) (Qbar l), (P' : Matrix (Fin n) (Fin n) (Qbar l)) = (Q : Matrix (Fin n) (Fin n) (Qbar l))ᵀ * P * Q ∧ ((P' : Matrix (Fin n) (Fin n) (Qbar l))ᵀ = P' ∨ (P' : Matrix (Fin n) (Fin n) (Qbar l))ᵀ = -P') ∧ IntM (P' : Matrix (Fin n) (Fin n) (Qbar l)) ∧ IntM ((P'⁻¹ : GL (Fin n) (Qbar l)) : Matrix (Fin n) (Fin n) (Qbar l)) ∧ ∀ g, IntM (mat (cj Q ρ) g) := by
   intro l hl n F c ρ P hρ hspan hform

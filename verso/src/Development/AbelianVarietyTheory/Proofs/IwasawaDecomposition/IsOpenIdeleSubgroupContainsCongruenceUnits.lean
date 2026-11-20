@@ -10,6 +10,13 @@ namespace GlobalTheory.OpenIdeleCongr
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite using `[Valued.mem_nhds]`. Introduce and unpack `⟨γ, hγ⟩`. Take `⟨c, hc⟩` from `MonoidWithZeroHom.ValueGroup₀.restrict₀_surjective (.ofClass (Valued.v : Valuation K Γ)) γ.1`. Establish `hc' : (Valued.v : Valuation K Γ).restrict c = γ.1` using `hc`. Use `⟨c, ?_, fun y hy => hγ ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `rfl`. Rewrite `hc'` using `[map_zero]`. Conclude with `γ.ne_zero hc'.symm`. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation K Γ).restrict (y - x) < γ.1`. Rewrite using `[← hc', Valuation.restrict_lt_iff]`.
+
+Conclude with `hy`.
+-/
 theorem exists_ne_zero_lt_val_subset_of_mem_nhds {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] [Valued K Γ] {s : Set K} {x : K} :
     s ∈ nhds x → ∃ c : K, c ≠ 0 ∧ {y | Valued.v (y - x) < Valued.v c} ⊆ s := by
   rw [Valued.mem_nhds]
@@ -24,6 +31,13 @@ theorem exists_ne_zero_lt_val_subset_of_mem_nhds {K Γ : Type} [Field K] [Linear
     rw [← hc', Valuation.restrict_lt_iff]
     exact hy
 
+/- English proof (translation)
+Take `⟨c, hc, hsub⟩` from `exists_ne_zero_lt_val_subset_of_mem_nhds hu`. Establish `h0 : Valued.v c ≠ 0` using `by simpa using hc`. Use `set k := WithZero.log (Valued.v c) with hkdef`. Establish `hk : Valued.v c = WithZero.exp k` using `(WithZero.exp_log h0).symm`. Use `⟨(-k).toNat + 1, fun y hy => hsub ?_⟩` and prove the remaining obligations.
+
+Use `show Valued.v (y - 1) < Valued.v c`. Use `lt_of_le_of_lt hy ?_` and prove the remaining obligations. Rewrite using `[hk, WithZero.exp_lt_exp]`. Use `Int.self_le_toNat (-k)` as an intermediate fact. Use `push_cast`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_exp_of_nhds (v : HeightOneSpectrum (𝓞 F)) (u : Set (v.adicCompletion F)) (hu : u ∈ nhds 1) :
     ∃ M : ℕ, ∀ y : v.adicCompletion F, Valued.v (y - 1) ≤ WithZero.exp (-(M : ℤ)) → y ∈ u := by
   obtain ⟨c, hc, hsub⟩ := exists_ne_zero_lt_val_subset_of_mem_nhds hu
@@ -44,10 +58,30 @@ namespace GlobalTheory.OpenIdeleCongr
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+The claim follows from `Valued.isOpen_valuationSubring _`.
+-/
 theorem isOpen_adicIntegers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen ((v.adicCompletionIntegers F : Set (v.adicCompletion F))) :=
   Valued.isOpen_valuationSubring _
 
+/- English proof (translation)
+Establish `hσ` using `RestrictedProduct.isOpenEmbedding_structureMap (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) isOpen_adicIntegers`. Establish `h1 : RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite 1 = 1` using `RestrictedProduct.ext _ _ fun i => rfl`. Establish `h2 : RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite ⁻¹' Vf ∈ nhds 1`. Apply `hσ.continuous.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[h1]`.
+
+Conclude with `hV`. Rewrite `h2` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `h2`. Establish `hM : ∀ i : HeightOneSpectrum (𝓞 F), ∃ M : ℕ, ∀ (y : i.adicCompletion F) (hy : y ∈ i.adicCompletionIntegers F), Valued.v (y - 1) ≤ WithZero.exp (-(M : ℤ)) → (⟨y, hy⟩ : ((i.adicCompletionIntegers F : Set (i.adicCompletion F)))) ∈ t i`. Introduce `i`.
+
+Take `⟨u, hu, hut⟩` from `(mem_nhds_subtype _ _ _).mp (ht i)`. Take `⟨M, hM⟩` from `exists_exp_of_nhds i u hu`. Conclude with `⟨M, fun y hy h => hut (hM y h)⟩`. Use `choose M hMs using hM`. Use `⟨I, hI.toFinset.sup M, hI, fun v y hy hS => ?_⟩` and prove the remaining obligations.
+
+Establish `hmem : (Pi.mulSingle v (⟨y, hy⟩ : ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))) : (i : HeightOneSpectrum (𝓞 F)) → ((i.adicCompletionIntegers F : Set (i.adicCompletion F)))) ∈ I.pi t`. Introduce `i hi`. Distinguish the cases in `hne : i = v`. Substitute `hne` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`.
+
+Use `hMs i y hy ((hS hi).trans ?_)` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp, neg_le_neg_iff, Nat.cast_le]`. Conclude with `Finset.le_sup (hI.mem_toFinset.2 hi)`. Rewrite using `[Pi.mulSingle_eq_of_ne hne]`. Conclude with `mem_of_mem_nhds (ht i)`.
+
+Establish `hg` using `hsub hmem`. Establish `e : RestrictedProduct.structureMap (fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Filter.cofinite (Pi.mulSingle v ⟨y, hy⟩) = finiteSingle F v y`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[RestrictedProduct.structureMap_apply]`.
+
+Use `show _ = Pi.mulSingle v y i`. Distinguish the cases in `hi : i = v`. Substitute `hi` using the available equality. Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne hi, Pi.mulSingle_eq_of_ne hi]`.
+
+Both sides reduce to the same expression. Rewrite using `[← e]`. Conclude with `hg`.
+-/
 theorem finiteSingle_mem_of_nhds (Vf : Set (FiniteAdeleRing (𝓞 F) F)) (hV : Vf ∈ nhds (1 : FiniteAdeleRing (𝓞 F) F)) :
     ∃ (S : Set (HeightOneSpectrum (𝓞 F))) (M : ℕ), S.Finite ∧ ∀ v (y : v.adicCompletion F),
       y ∈ v.adicCompletionIntegers F → (v ∈ S → Valued.v (y - 1) ≤ WithZero.exp (-(M : ℤ))) →
@@ -106,6 +140,19 @@ namespace GlobalTheory.OpenIdeleCongr
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Take `⟨W, hWo, hWU⟩` from `Units.isInducing_embedProduct.isOpen_iff.mp hV`. Establish `hW1 : Units.embedProduct _ (1 : Ideles F) ∈ W`. Rewrite using `[← Set.mem_preimage, hWU]`. Conclude with `V.one_mem`. Rewrite `hW1` using `[map_one]`.
+
+Take `⟨W1, hW1n, W2, hW2n, hprod⟩` from `mem_nhds_prod_iff.mp (hWo.mem_nhds hW1)`. Establish `hW2' : MulOpposite.op ⁻¹' W2 ∈ nhds (1 : AdeleRing (𝓞 F) F)` using `MulOpposite.continuous_op.continuousAt.preimage_mem_nhds hW2n`. Establish `hN : W1 ∩ MulOpposite.op ⁻¹' W2 ∈ nhds ((1 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))` using `Filter.inter_mem hW1n hW2'`. Take `⟨Vi, hVi, Vf, hVf, hVprod⟩` from `mem_nhds_prod_iff.mp hN`. Take `⟨S, M, hS, hSV⟩` from `finiteSingle_mem_of_nhds Vf hVf`.
+
+Use `⟨S, M, hS, fun v x hx hxS => ?_⟩` and prove the remaining obligations. Establish `hin : ∀ y : (v.adicCompletion F)ˣ, Valued.v (y : v.adicCompletion F) = 1 → (v ∈ S → Valued.v ((y : v.adicCompletion F) - 1) ≤ WithZero.exp (-(M : ℤ))) → ((localIdele F v y : Ideles F) : AdeleRing (𝓞 F) F) ∈ W1 ∩ MulOpposite.op ⁻¹' W2` using `fun y hy hyS => hVprod ⟨mem_of_mem_nhds hVi, hSV v _ (by rw [HeightOneSpectrum.mem_adicCompletionIntegers]; exact hy.le) hyS⟩`. Establish `hxi : Valued.v ((x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) = 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one]`. Establish `hxiS : v ∈ S → Valued.v (((x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) - 1) ≤ WithZero.exp (-(M : ℤ))`.
+
+Introduce `hv`. Establish `e : ((x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) - 1 = ((x⁻¹ : (v.adicCompletion F)ˣ) : v.adicCompletion F) * -((x : v.adicCompletion F) - 1)`. Rewrite using `[mul_neg, mul_sub, Units.inv_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, Valuation.map_neg, hxi, one_mul]`.
+
+Conclude with `hxS hv`. Establish `h1` using `hin x hx hxS`. Establish `h2` using `hin x⁻¹ hxi hxiS`. Rewrite using `[← SetLike.mem_coe, ← hWU, Set.mem_preimage, Units.embedProduct_apply]`. Use `hprod ⟨h1.1, ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `h2.2`. Rewrite `h3` using `[map_inv]`. Conclude with `h3`.
+-/
 theorem localIdele_mem_of_isOpen (V : Subgroup (Ideles F)) (hV : IsOpen (V : Set (Ideles F))) :
     ∃ (S : Set (HeightOneSpectrum (𝓞 F))) (M : ℕ), S.Finite ∧ ∀ v (x : (v.adicCompletion F)ˣ),
       Valued.v (x : v.adicCompletion F) = 1 →
@@ -145,6 +192,19 @@ theorem localIdele_mem_of_isOpen (V : Subgroup (Ideles F)) (hV : IsOpen (V : Set
   rw [map_inv] at h3
   exact h3
 
+/- English proof (translation)
+Introduce `F _ _ V hV S₀`. Take `⟨S₁, M₁, hS₁, key⟩` from `localIdele_mem_of_isOpen V hV`. Use `⟨S₀ ∪ hS₁.toFinset, M₁ + 1, Finset.subset_union_left, fun v hv x hx => ?_, fun v _ a ha => ?_⟩` and prove the remaining obligations. Use `key v x hx fun hv' => absurd (Finset.mem_union_right _ (hS₁.mem_toFinset.2 hv')) hv` and prove the remaining obligations. Rewrite using `[locUnit_apply] set x := Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom a with hxdef`.
+
+Establish `hxv : (x : v.adicCompletion F) = ((a : F) : v.adicCompletion F)` using `rfl`. Establish `hsub : Valued.v ((x : v.adicCompletion F) - 1) = v.valuation F ((a : F) - 1)`. Establish `e : (x : v.adicCompletion F) - 1 = (((a : F) - 1 : F) : v.adicCompletion F)` using `by show algebraMap F (v.adicCompletion F) (a : F) - 1 = _`. Rewrite using `[← map_one (algebraMap F (v.adicCompletion F)), ← map_sub]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Establish `hle : Valued.v ((x : v.adicCompletion F) - 1) ≤ WithZero.exp (-(M₁ : ℤ))`. Rewrite using `[hsub]`. Use `ha.trans ?_` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hlt : Valued.v ((x : v.adicCompletion F) - 1) < 1`. Rewrite using `[hsub]`. Use `lt_of_le_of_lt ha ?_` and prove the remaining obligations.
+
+Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hunit : Valued.v (x : v.adicCompletion F) = 1`. Use `Valuation.map_one_add_of_lt _ hlt` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Conclude with `key v x hunit fun _ => hle`.
+-/
 theorem open_subgroup_contains_congr : ∀ (F : Type) [Field F] [NumberField F] (V : Subgroup (Ideles F)),
     IsOpen (V : Set (Ideles F)) → ∀ S₀ : Finset (HeightOneSpectrum (𝓞 F)),
     ∃ (S : Finset (HeightOneSpectrum (𝓞 F))) (M : ℕ), S₀ ⊆ S ∧

@@ -12,6 +12,31 @@ open UpperTheory.HF
 open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `h2` using `Nat.prime_two`. Establish `hN` using `H.condN_ne_zero`. Establish `he` using `H.two_le_e`. Establish `hev : φ.e + 2 ≤ H.condN.factorization 2` using `(h2.pow_dvd_iff_le_factorization hN).1 H.tower_dvd_condN`. Establish `hodd : ¬ 2 ∣ H.condN / 2 ^ H.condN.factorization 2` using `Nat.not_dvd_ordCompl h2 hN`.
+
+Establish `haN : H.condN / 2 ^ H.condN.factorization 2 * 2 ^ H.condN.factorization 2 = H.condN` using `Nat.div_mul_cancel (Nat.ordProj_dvd _ _)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hbot` using `((layer_bot H h2 (j := φ.e + 1) (by omega)).1).2 (by omega)`. Generalize the expression as in `ha : H.condN / 2 ^ H.condN.factorization 2 = a at hbot hodd haN`.
+
+Establish `hf : a * 2 ^ (φ.e + 1) ∣ H.condN`. Rewrite using `[← haN]`. Conclude with `Nat.mul_dvd_mul_left _ (pow_dvd_pow _ (by omega))`. Establish `hall` using `(H.imgOne_eq_bot_iff hf).1 hbot`. Establish `hk : 2 ∣ a * 2 ^ (φ.e + 1)` using `Dvd.dvd.mul_left (dvd_pow_self 2 (by omega)) a`.
+
+Establish `hp1 : 1 + a * 2 ^ (φ.e + 1) ≡ 1 [MOD a * 2 ^ (φ.e + 1)]`. Simplify using `[Nat.ModEq]`. Establish `hcop : Nat.Coprime (1 + a * 2 ^ (φ.e + 1)) H.condN`. Rewrite using `[← haN]`. Use `Nat.Coprime.mul_right ?_ (Nat.Coprime.pow_right _ ?_)` and prove the remaining obligations.
+
+Rewrite using `[Nat.Coprime, Nat.ModEq.gcd_eq (hp1.of_mul_right _), Nat.gcd_one_left]`. Rewrite using `[Nat.coprime_comm, h2.coprime_iff_not_dvd, Nat.dvd_add_left hk]`. Evaluate the numerical expressions. Use `set u := ZMod.unitOfCoprime _ hcop`. Establish `hu` using `H.val_unitOfCoprime hcop`.
+
+Establish `h1` using `hall u (hu.of_dvd hf |>.trans hp1)`. Establish `hh` using `Der.Rd.hH_art H u`. Rewrite `hh` using `[h1]`. Simplify using `only [Prod.snd_one, map_one] at hh`. Establish `hM : (((u : ZMod H.condN).val : ℕ) : ZMod (2 ^ (φ.e + 2))) = ((1 + a * 2 ^ (φ.e + 1) : ℕ) : ZMod (2 ^ (φ.e + 2)))` using `(ZMod.natCast_eq_natCast_iff _ _ _).2 (hu.of_dvd H.tower_dvd_condN)`.
+
+Rewrite `hM` using `[ZMod.natCast_val]`. Break down `Der.Rd.hcl_eq_one hh.symm with hv | hv` into its components or cases. Use `congrArg Units.val hv` as an intermediate fact. Rewrite `this` using `[ZMod.unitsMap_val, hM, Units.val_one]`. Establish `h'` using `(ZMod.natCast_eq_natCast_iff _ _ _).1 (this.trans Nat.cast_one.symm)`.
+
+Establish `hd` using `(Nat.modEq_iff_dvd' (by omega)).1 h'.symm`. Rewrite `hd` using `[Nat.add_sub_cancel_left, pow_succ 2 (φ.e + 1), mul_comm a]`. Conclude with `hodd (Nat.dvd_of_mul_dvd_mul_left (by positivity) hd)`. Use `congrArg Units.val hv` as an intermediate fact. Rewrite `this` using `[ZMod.unitsMap_val, hM, Units.val_neg, Units.val_one, eq_neg_iff_add_eq_zero]`.
+
+Establish `h0 : ((1 + a * 2 ^ (φ.e + 1) + 1 : ℕ) : ZMod (2 ^ (φ.e + 2))) = 0`. Use `push_cast`. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hd` using `(ZMod.natCast_eq_zero_iff _ _).1 h0`.
+
+Establish `h4M : 4 ∣ 2 ^ (φ.e + 2)`. Establish `: (4 : ℕ) = 2 ^ 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `pow_dvd_pow 2 (by omega)`. Establish `h4X : 4 ∣ a * 2 ^ (φ.e + 1)`.
+
+Establish `: (4 : ℕ) = 2 ^ 2` using `by norm_num`. Rewrite using `[this]`. Conclude with `Dvd.dvd.mul_left (pow_dvd_pow 2 (by omega)) a`. Establish `h42` using `h4M.trans hd`. Rewrite `h42` using `[show 1 + a * 2 ^ (φ.e + 1) + 1 = 2 + a * 2 ^ (φ.e + 1) by ring, Nat.dvd_add_left h4X]`.
+
+Evaluate the numerical expressions using `at h42`.
+-/
 private theorem tower_le {φ : Frame} (H : HostRaw φ) : φ.e + 2 ≤ H.condE.factorization 2 := by
   have h2 := Nat.prime_two
   have hN := H.condN_ne_zero
@@ -73,6 +98,45 @@ private theorem tower_le {φ : Frame} (H : HostRaw φ) : φ.e + 2 ≤ H.condE.fa
     rw [show 1 + a * 2 ^ (φ.e + 1) + 1 = 2 + a * 2 ^ (φ.e + 1) by ring, Nat.dvd_add_left h4X] at h42
     norm_num at h42
 
+/- English proof (translation)
+Introduce `φ H`. Establish `hd` using `H.d_prime`. Establish `hq` using `H.q_prime`. Establish `hID` using `inert_d H`. Establish `hIQ` using `inert_q H`.
+
+Establish `hEpos` using `(condE_spec H.toHostRaw).2.1`. Establish `hEN` using `(condE_spec H.toHostRaw).1`. Establish `hsub` using `(log_rd_sum H).2.2.1`. Establish `hprime : ∀ l ∈ H.ram, Nat.Prime l` using `fun l hl => Nat.prime_of_mem_primeFactors hl`. Establish `hS : ∀ l, l ∈ H.smallR ↔ l ∈ H.small ∧ l ∈ H.ram` using `fun l => Finset.mem_inter`.
+
+Establish `hA : ∀ l, l ∈ H.ram ↔ l ∈ H.smallR ∨ (l = H.q ∧ H.q ∈ H.ram) ∨ l = H.d`. Introduce `l`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Establish `hlN` using `Nat.dvd_of_mem_primeFactors (hsub hl)`.
+
+Break down `(H.dvd_condN_iff_small (hprime l hl)).1 hlN with h | h | h` into its components or cases. Conclude with `Or.inl ((hS l).2 ⟨h, hl⟩)`. Conclude with `Or.inr (Or.inl ⟨h, h ▸ hl⟩)`. Conclude with `Or.inr (Or.inr h)`. Introduce and unpack `(h | ⟨rfl, h⟩ | rfl)`.
+
+Conclude with `((hS l).1 h).2`. Conclude with `h`. Conclude with `hID.2.2.2.2.1`. Establish `h2S : 2 ∈ H.smallR` using `(hS 2).2 ⟨H.two_mem_small, hID.2.2.2.2.2.1⟩`. Establish `hC : H.ram = H.condE.primeFactors`.
+
+Use extensionality with `l`. Rewrite using `[Nat.mem_primeFactors]`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Conclude with `⟨hprime l hl, (mem_ram H (hprime l hl)).2.1.1 hl, hEpos.ne'⟩`.
+
+Introduce and unpack `⟨hp, hdv, -⟩`. Conclude with `(mem_ram H hp).2.1.2 hdv`. Establish `hG : ∀ l ∈ H.smallR, H.sl l = H.condE.factorization l`. Introduce `l hl`. Establish `hr` using `((hS l).1 hl).2`.
+
+Establish `hdv` using `(mem_ram H (hprime l hr)).2.1.1 hr`. Establish `h1` using `((hprime l hr).dvd_iff_one_le_factorization hEpos.ne').1 hdv`. Use `show max 1 (H.condE.factorization l) = H.condE.factorization l`. Conclude with `max_eq_right h1`. Establish `hprod : H.condE = ∏ l ∈ H.ram, l ^ H.condE.factorization l` using `by nth_rewrite 1 [← Nat.factorization_prod_pow_eq_self hEpos.ne']`.
+
+Rewrite using `[Finsupp.prod, Nat.support_factorization, hC]`. Establish `hQSc : H.QSc = ∏ l ∈ H.smallR, l ^ H.condE.factorization l` using `by show ∏ l ∈ H.smallR, l ^ H.sl l = _`. Conclude with `Finset.prod_congr rfl (fun l hl => by rw [hG l hl])`. Establish `hdS : H.d ∉ H.smallR` using `fun h => H.d_notMem_small ((hS _).1 h).1`. Establish `hqS : H.q ∉ H.smallR` using `fun h => H.q_notMem_small ((hS _).1 h).1`.
+
+Establish `hD : H.condE = H.QSc * (if H.q ∈ H.ram then H.q else 1) * H.d`. Distinguish the cases in `hqr : H.q ∈ H.ram`. Establish `hset : H.ram = insert H.d (insert H.q H.smallR)`. Use extensionality with `l`. Rewrite using `[hA l, Finset.mem_insert, Finset.mem_insert]`.
+
+The claim follows by propositional logic. Establish `hdn : H.d ∉ insert H.q H.smallR`. Rewrite using `[Finset.mem_insert]`. Conclude with `fun h => h.elim (fun h => H.q_ne_d h.symm) hdS`. Rewrite using `[if_pos hqr, hprod, hset, Finset.prod_insert hdn, Finset.prod_insert hqS, hQSc, hID.2.2.2.2.2.2, (hIQ.2.2.1 hqr).2.2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hset : H.ram = insert H.d H.smallR`. Use extensionality with `l`. Rewrite using `[hA l, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `(h | ⟨rfl, h⟩ | h)`. Conclude with `Or.inr h`. Conclude with `absurd h hqr`. Conclude with `Or.inl h`. Introduce and unpack `(h | h)`.
+
+Conclude with `Or.inr (Or.inr h)`. Conclude with `Or.inl h`. Rewrite using `[if_neg hqr, hprod, hset, Finset.prod_insert hdS, hQSc, hID.2.2.2.2.2.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcopQ : Nat.Coprime H.QSc (H.q * H.d)` using `by show Nat.Coprime (∏ l ∈ H.smallR, l ^ H.sl l) (H.q * H.d)`.
+
+Use `Nat.Coprime.prod_left (fun l hl => Nat.Coprime.pow_left _ ?_)` and prove the remaining obligations. Establish `hr` using `(hS l).1 hl`. Establish `hl'` using `hprime l hr.2`. Use `Nat.Coprime.mul_right ((Nat.coprime_primes hl' hq).2 ?_) ((Nat.coprime_primes hl' hd).2 ?_)` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `H.q_notMem_small hr.1`. Introduce and unpack `rfl`. Conclude with `H.d_notMem_small hr.1`. Establish `hQN : H.QSc ∣ H.QS * (H.q * H.d)`. Establish `h1 : H.QSc ∣ H.condE` using `⟨(if H.q ∈ H.ram then H.q else 1) * H.d, by rw [hD]; ring⟩`.
+
+Establish `h2` using `h1.trans hEN`. Rewrite using `[← mul_assoc]`. Conclude with `h2`. Use `⟨hA, h2S, hC, hD, hcopQ.dvd_of_dvd_mul_right hQN, ?_, hG, ?_⟩` and prove the remaining obligations. Establish `hle : φ.e + 2 ≤ H.sl 2`.
+
+Rewrite using `[hG 2 h2S]`. Conclude with `tower_le H.toHostRaw`. Conclude with `(pow_dvd_pow 2 hle).trans (Finset.dvd_prod_of_mem (fun l => l ^ H.sl l) h2S)`. Introduce `l hl`. Establish `hl2 : l ≠ H.d ∧ l ∈ H.ram` using `Finset.mem_erase.1 hl`.
+
+Establish `hlp` using `hprime l hl2.2`. Establish `hlN : l ∣ H.QS * H.q * H.d` using `Nat.dvd_of_mem_primeFactors (hsub hl2.2)`. Conclude with `((Nat.coprime_primes hlp hd).2 hl2.1).dvd_of_dvd_mul_right hlN`.
+-/
 theorem UpperTheory.HF.ram_eq :
     ∀ {φ : Frame} (H : HostAx φ), (∀ l, l ∈ H.ram ↔ l ∈ H.smallR ∨ (l = H.q ∧ H.q ∈ H.ram) ∨ l = H.d) ∧ 2 ∈ H.smallR ∧ H.ram = H.condE.primeFactors ∧ H.condE = H.QSc * (if H.q ∈ H.ram then H.q else 1) * H.d ∧ H.QSc ∣ H.QS ∧ 2 ^ (φ.e + 2) ∣ H.QSc ∧ (∀ l ∈ H.smallR, H.sl l = H.condE.factorization l) ∧ (∀ l ∈ H.ramI, l ∣ H.QS * H.q) := by
   intro φ H

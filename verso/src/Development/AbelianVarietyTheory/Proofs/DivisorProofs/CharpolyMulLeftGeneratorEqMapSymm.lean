@@ -7,6 +7,11 @@ open scoped Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hint : IsIntegral F u` using `⟨P, hP, hu⟩`. Set `pb` to `PowerBasis.ofAdjoinEqTop hint hadj`. Establish `hgen : pb.gen = u` using `PowerBasis.ofAdjoinEqTop_gen hint hadj`. Establish `hmin : minpoly F u = P`. Use `(Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hP (minpoly.dvd F u hu) ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[← hdim, pb.finrank, PowerBasis.ofAdjoinEqTop_dim]`. Establish `h1` using `charpoly_leftMulMatrix pb`. Rewrite `h1` using `[Algebra.leftMulMatrix_apply, LinearMap.charpoly_toMatrix, hgen, hmin]`. Conclude with `h1`.
+-/
 theorem charpoly_mulLeft_eq_of_adjoin_eq_top {F A : Type*} [Field F] [CommRing A] [Algebra F A]
     [Module.Finite F A] (u : A) (P : F[X]) (hP : P.Monic) (hadj : Algebra.adjoin F {u} = ⊤)
     (hu : aeval u P = 0) (hdim : Module.finrank F A = P.natDegree) :
@@ -21,6 +26,9 @@ theorem charpoly_mulLeft_eq_of_adjoin_eq_top {F A : Type*} [Field F] [CommRing A
   rw [Algebra.leftMulMatrix_apply, LinearMap.charpoly_toMatrix, hgen, hmin] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `K B R _ e u Q hQ hadj hu hdim`. Conclude with `charpoly_mulLeft_eq_of_adjoin_eq_top u _ (hQ.map _) hadj hu (by rw [hdim, hQ.natDegree_map])`.
+-/
 theorem charpoly_mulLeft_eq_map_symm : ∀ (K : GlobalTheory.UnitLemma.UQ) (B : GlobalTheory.UnitLemma.InvAlg K) (R : Type) [Field R] (e : K.E ≃+* R) (u : B.A) (Q : R[X]), Q.Monic → Algebra.adjoin K.E {u} = ⊤ → aeval u (Q.map e.symm.toRingHom) = 0 → Module.finrank K.E B.A = Q.natDegree → (LinearMap.mulLeft K.E u).charpoly = Q.map e.symm.toRingHom := by
   intro K B R _ e u Q hQ hadj hu hdim
   exact charpoly_mulLeft_eq_of_adjoin_eq_top u _ (hQ.map _) hadj hu (by rw [hdim, hQ.natDegree_map])

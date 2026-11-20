@@ -9,5 +9,8 @@ open GlobalTheory.Twist (resM)
 open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.OmegaHT.RankForms.basisSt | exact GlobalTheory.OmegaHT.RankForms.basisSt | (intros; apply GlobalTheory.OmegaHT.RankForms.basisSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.OmegaBasisStatement : GlobalTheory.OmegaHT.BasisSt := by
   first | exact @GlobalTheory.OmegaHT.RankForms.basisSt | exact GlobalTheory.OmegaHT.RankForms.basisSt | (intros; apply GlobalTheory.OmegaHT.RankForms.basisSt <;> assumption)

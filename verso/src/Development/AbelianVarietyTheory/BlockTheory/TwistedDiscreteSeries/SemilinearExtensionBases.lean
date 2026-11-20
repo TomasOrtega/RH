@@ -43,6 +43,11 @@ def SemilinearExtension : Prop :=
     (∀ (a : Ks) (m : Fm),
       emb (algebraMap Ks LL a) ⊗ₜ[O] m = (1 : K'') ⊗ₜ[O] (algebraMap Ks K a • m))
 
+/- English proof (translation)
+Use `⟨1, fun _ => 1, fun _ => Submodule.subset_span rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_unique_iff.2 one_ne_zero`. Simplify using the standard rewrite rules. Conclude with `linearIndependent_unique_iff.2 one_ne_zero`. Rewrite using `[eq_top_iff]`.
+
+Introduce `z _`. Establish `: z = z • (1 : ℂ)` using `by simp`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)`.
+-/
 example : IsForm ℂ (Submodule.span ℝ {(1 : ℂ)}) := by
   refine ⟨1, fun _ => 1, fun _ => Submodule.subset_span rfl, ?_, ?_, ?_, ?_⟩
   · exact linearIndependent_unique_iff.2 one_ne_zero
@@ -52,6 +57,9 @@ example : IsForm ℂ (Submodule.span ℝ {(1 : ℂ)}) := by
     have : z = z • (1 : ℂ) := by simp
     rw [this]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)
 
+/- English proof (translation)
+Introduce and unpack `⟨n, b, -, h1, h2, h3, h4⟩`. Establish `e1` using `finrank_eq_card_basis (Basis.mk h1 h2.ge)`. Establish `e2` using `finrank_eq_card_basis (Basis.mk h3 h4.ge)`. Simplify using `at e1 e2`. Use linear arithmetic over natural numbers and integers.
+-/
 example : ¬ IsForm ℂ (⊤ : Submodule ℝ ℂ) := by
   rintro ⟨n, b, -, h1, h2, h3, h4⟩
   have e1 := finrank_eq_card_basis (Basis.mk h1 h2.ge)
@@ -59,6 +67,9 @@ example : ¬ IsForm ℂ (⊤ : Submodule ℝ ℂ) := by
   simp at e1 e2
   omega
 
+/- English proof (translation)
+Simplify using `using h Unit (fun _ => 1) (fun _ => f)`.
+-/
 theorem IsExt.apply_coe {Ks LL WL : Type} [Field Ks] [Field LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL]
     {WK : Submodule Ks WL} {O K K'' : Type} [CommRing O] [Field K] [Algebra Ks K] [Field K''] [Algebra O K'']
     {Fm : Type} [AddCommGroup Fm] [Module K Fm] [Module O Fm]

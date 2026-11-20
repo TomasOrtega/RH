@@ -23,9 +23,31 @@ variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 def step1Kill_roots (c : ZMod n) (M h a : ℕ) : Finset ℤ :=
   ((jumpSetL W T c M h) ×ˢ Finset.Icc (((0 : ℕ) : ℤ) + 1) (a : ℤ)).image (fun p : ℤ × ℤ => p.1 + p.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem step1Kill_xList (c : ZMod n) (M h a : ℕ) :
     xListL W T c M h 0 a = (step1Kill_roots W T c M h a).sort (· ≤ ·) := rfl
 
+/- English proof (translation)
+Establish `hc : ∀ j : ℤ, ((PD.p : ℕ) : LL) = 0 → Formalism.MainNotions.CrystallineLiftingInputs.cR W j = 0`. Introduce `j h0`. Unfold `Formalism.MainNotions.CrystallineLiftingInputs.cR`. Simplify using `[h0]`. Establish `hp0 : ((PD.p : ℕ) : LL) ≠ 0`.
+
+Introduce `h0`. Establish `h1` using `hRN.2 1 0 (by norm_num)`. Rewrite `h1` using `[hc 1 h0, hc 0 h0, sub_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe h1`. Establish `hnn : ∀ x : ℤ, 0 ≤ v (Formalism.MainNotions.CrystallineLiftingInputs.cR W x)`.
+
+Introduce `x`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, hRN.1, AddValuation.map_zero]`. Conclude with `le_top`. Establish `h` using `hRN.2 x 0 hx`.
+
+Rewrite `h` using `[hRN.1, sub_zero]`. Rewrite using `[h]`. Use `first`. Consider the case `exact WithTop.coe_nonneg.mpr (by positivity)`. Consider the case `(rw [← WithTop.coe_zero]; exact WithTop.coe_le_coe.mpr (by positivity))`.
+
+Establish `hex : ∀ x : ℤ, ∃ o : O, algebraMap O LL o = Formalism.MainNotions.CrystallineLiftingInputs.cR W x` using `fun x => hV.2.1 _ (hnn x)`. Use `⟨fun x => Classical.choose (hex x), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Apply `hV.1` to reduce the goal to its premises. Rewrite using `[map_mul, map_natCast, Classical.choose_spec (hex x), map_sub, map_one]`.
+
+Unfold `Formalism.MainNotions.CrystallineLiftingInputs.cR`. Use `first`. Consider the case `(rw [div_neg, mul_neg, mul_div_assoc', mul_div_cancel_left₀ _ hp0, neg_sub])`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+
+Apply `hV.1` to reduce the goal to its premises. Rewrite using `[Classical.choose_spec (hex 0), hRN.1, map_zero]`. Introduce `x hx`. Establish `h` using `hRN.2 x 0 hx`. Rewrite `h` using `[hRN.1, sub_zero]`.
+
+Rewrite using `[Classical.choose_spec (hex x), h]`. Use `first`. Consider the case `exact WithTop.coe_natCast _`. Consider the case `(norm_cast; done)`. Consider the case `(simp; done)`.
+
+Consider the case `(push_cast; rfl)`.
+-/
 theorem step1Kill_cO (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing O v) (hRN : Formalism.MainNotions.CrystallineLiftingInputs.RToolNum W) :
     ∃ cO : ℤ → O, (∀ x : ℤ, ((PD.p : ℕ) : O) * cO x = 1 - (((W.χΓ W.gam) ^ (-x) : Oˣ) : O)) ∧
       cO 0 = 0 ∧ ∀ x : ℤ, x ≠ 0 → v (algebraMap O LL (cO x)) = ((padicValInt PD.p x : ℕ) : WithTop ℚ) := by
@@ -72,6 +94,23 @@ theorem step1Kill_cO (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing O v)
       | (simp; done)
       | (push_cast; rfl)
 
+/- English proof (translation)
+Establish `hU` using `hR.πU`. Establish `hπΔ` using `hR.πΔ`. Establish `hv : v (algebraMap O LL (((W.χΓ W.gam : Oˣ) : O) - 1)) = 1`. Rewrite using `[map_sub, map_one, W.gam_gen, hA.2.1]`. Simplify using the standard rewrite rules.
+
+Establish `hyNl : Formalism.MainNotions.LiftingTheory.qp W ^ a • y₀ ∈ W.Nl T c`. Establish `h1 : Formalism.MainNotions.LiftingTheory.qp W ^ a • y₀ = (letE c : LetA O n) • (Formalism.MainNotions.LiftingTheory.qp W ^ a • y₀)`. Rewrite using `[smul_smul, mul_comm, ← smul_smul, hy.1.1]`. Rewrite using `[h1]`. Conclude with `Formalism.MainNotions.LiftingTheory.liftb_letE_mem W T c hy.2`.
+
+Take `⟨seq, h0, hstep, hN⟩` from `hD hA T Mi hi hT hJ (W.χΓ W.gam) rfl hv cO hcO c 0 a y₀ (Nat.zero_le a) hyNl hy.1.2`. Establish `hseq` using `Formalism.MainNotions.LiftingTheory.lifta_seq W T (uniformizerInverse W) (algebraMap_uniformizer_mul_inverse hU) cO _ seq hstep`. Rewrite `hseq` using `[h0]`. Establish `hNs : seq (xListL W T c (Mi c) (hi c) 0 a).length ∈ W.N T` using `Formalism.MainNotions.LiftingTheory.liftb_Nl_le W T c (by simpa using hN)`. Rewrite `hNs` using `[hseq]`.
+
+Establish `hprod : ((xListL W T c (Mi c) (hi c) 0 a).map fun x => (X - C (cO x) : Polynomial O)).prod = ∏ x ∈ step1Kill_roots W T c (Mi c) (hi c) a, (X - C (cO x))`. Rewrite using `[step1Kill_xList, ← List.prod_toFinset _ (Finset.sort_nodup _ _), Finset.sort_toFinset]`. Rewrite `hNs` using `[hprod, ← Finset.prod_filter_mul_prod_filter_not _ (fun x => x ≠ 0)]`. Distinguish the cases in `h0m : (0 : ℤ) ∈ step1Kill_roots W T c (Mi c) (hi c) a`. Establish `hf : (step1Kill_roots W T c (Mi c) (hi c) a).filter (fun x => ¬ x ≠ 0) = {0}`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton, not_not]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce and unpack `rfl`.
+
+Conclude with `⟨h0m, rfl⟩`. Rewrite `hNs` using `[hf, Finset.prod_singleton, hc0, map_zero, sub_zero, mul_comm]`. Conclude with `hNs`. Establish `hf : (step1Kill_roots W T c (Mi c) (hi c) a).filter (fun x => ¬ x ≠ 0) = ∅`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_filter, Finset.notMem_empty, not_not, iff_false, not_and]`. Introduce and unpack `hx rfl`. Conclude with `h0m hx`. Rewrite `hNs` using `[hf, Finset.prod_empty, mul_one]`. Rewrite using `[map_mul, Module.End.mul_apply, Polynomial.aeval_X]`.
+
+Establish `hQ : QLattice W T c 0 (Polynomial.aeval (derivationOnWachModule W T) (∏ x ∈ (step1Kill_roots W T c (Mi c) (hi c) a).filter (· ≠ 0), (X - C (cO x))) y₀)` using `⟨invariantLetter_polynomial_derivation W T hπΔ hU _ hy.1, by simpa [derivationOnWachModule] using hNs⟩`. Simplify using `using (qLattice_derivation W T hDS hA hT c 0 hQ).2`.
+-/
 theorem step1Kill_kill [NeZero n] (hR : Formalism.MainNotions.LiftingTheory.lifta_Ring W) (hDS : DerivationPreservesQLattice W)
     (hD : Formalism.MainNotions.RamifiedCoefficientChains.DssLet W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hT : IsCrys PD T.ρ) (Mi hi : ZMod n → ℕ)
     (hJ : Formalism.MainNotions.LiftingTheory.JumpsLet W T Mi hi) (c : ZMod n) (cO : ℤ → O)
@@ -122,6 +161,23 @@ theorem step1Kill_kill [NeZero n] (hR : Formalism.MainNotions.LiftingTheory.lift
       ⟨invariantLetter_polynomial_derivation W T hπΔ hU _ hy.1, by simpa [derivationOnWachModule] using hNs⟩
     simpa using (qLattice_derivation W T hDS hA hT c 0 hQ).2
 
+/- English proof (translation)
+Establish `hcoef : ∀ w : O, (C w * ∏ x ∈ Sx, (X - C (cO x))).coeff 0 = w * ∏ x ∈ Sx, -(cO x)`. Introduce `w`. Rewrite using `[Polynomial.mul_coeff_zero, Polynomial.coeff_C_zero, Polynomial.coeff_zero_eq_eval_zero, Polynomial.eval_prod]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C, zero_sub]`. Establish `hval : ∀ S : Finset ℤ, (0 : ℤ) ∉ S → v (algebraMap O LL (∏ x ∈ S, -(cO x))) = ((∑ x ∈ S, padicValInt PD.p x : ℕ) : WithTop ℚ)`.
+
+Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using the standard rewrite rules. Introduce `a S ha ih h0`.
+
+Establish `ha0 : a ≠ 0` using `fun h => h0 (by rw [← h]; exact Finset.mem_insert_self a S)`. Establish `hS0' : (0 : ℤ) ∉ S` using `fun h => h0 (Finset.mem_insert_of_mem h)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, map_mul, AddValuation.map_mul, map_neg, AddValuation.map_neg, hcv a ha0, ih hS0', Nat.cast_add]`. Establish `hvc` using `hval Sx hS0`. Establish `hc0 : algebraMap O LL (∏ x ∈ Sx, -(cO x)) ≠ 0`.
+
+Introduce `h`. Rewrite `hvc` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.natCast_ne_top _ hvc.symm`. Establish `hvps : v (((PD.p : ℕ) : LL) ^ s) = ((s : ℕ) : WithTop ℚ)`. Rewrite using `[AddValuation.map_pow, hvp, nsmul_one]`.
+
+Establish `aux : ∀ r : WithTop ℚ, r + ((∑ x ∈ Sx, padicValInt PD.p x : ℕ) : WithTop ℚ) = ((s : ℕ) : WithTop ℚ) → 0 ≤ r`. Introduce `r hr`. Proceed by induction on `r using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe q`.
+
+Rewrite `hr` using `[← WithTop.coe_natCast, ← WithTop.coe_natCast, ← WithTop.coe_add, WithTop.coe_inj]`. Establish `hq : ((∑ x ∈ Sx, padicValInt PD.p x : ℕ) : ℚ) ≤ (s : ℚ)` using `by exact_mod_cast hs`. Use `first`. Consider the case `exact WithTop.coe_nonneg.mpr (by linarith)`. Consider the case `(rw [← WithTop.coe_zero]; exact WithTop.coe_le_coe.mpr (by linarith))`.
+
+Establish `hw'0 : 0 ≤ v (((PD.p : ℕ) : LL) ^ s / algebraMap O LL (∏ x ∈ Sx, -(cO x)))`. Apply `aux` to reduce the goal to its premises. Rewrite using `[← hvc, ← AddValuation.map_mul, div_mul_cancel₀ _ hc0, hvps]`. Take `⟨w, hw⟩` from `hV.2.1 _ hw'0`. Use `⟨w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcoef]`. Apply `hV.1` to reduce the goal to its premises. Rewrite using `[map_mul, hw, div_mul_cancel₀ _ hc0, map_pow, map_natCast]`.
+-/
 theorem step1Kill_norm (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing O v) (hvp : v (PD.p : LL) = 1) (cO : ℤ → O)
     (hcv : ∀ x : ℤ, x ≠ 0 → v (algebraMap O LL (cO x)) = ((padicValInt PD.p x : ℕ) : WithTop ℚ))
     (Sx : Finset ℤ) (hS0 : (0 : ℤ) ∉ Sx) (s : ℕ) (hs : ∑ x ∈ Sx, padicValInt PD.p x ≤ s) :

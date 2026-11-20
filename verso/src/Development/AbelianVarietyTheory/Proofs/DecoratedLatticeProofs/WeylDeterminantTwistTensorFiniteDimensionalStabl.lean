@@ -9,6 +9,9 @@ namespace GlobalTheory.KJInf.VnStable
 
 variable {ι : Type} [Fintype ι] {a : ℕ}
 
+/- English proof (translation)
+Establish `: (lft g).comp (rename (Prod.mk τ)) = (rename (Prod.mk τ)).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n` using `a) (g τ)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[lft, Formalism.GradedWeylDivisibility.rowAct, rename_X, aeval_X, map_sum]`. Conclude with `congrArg (fun φ : MvPolynomial (Fin a × Fin a) ℂ →ₐ[ℂ] PY ι a => φ p) this`.
+-/
 theorem lft_rename (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) (p : MvPolynomial (Fin a × Fin a) ℂ) :
     lft g (rename (Prod.mk τ) p) = rename (Prod.mk τ) (Formalism.GradedWeylDivisibility.rowAct ℂ (g τ) p) := by
   have : (lft g).comp (rename (Prod.mk τ)) = (rename (Prod.mk τ)).comp (Formalism.GradedWeylDivisibility.rowAct ℂ (n := a) (g τ)) := by
@@ -17,10 +20,18 @@ theorem lft_rename (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) (p : MvPoly
     simp [lft, Formalism.GradedWeylDivisibility.rowAct, rename_X, aeval_X, map_sum]
   exact congrArg (fun φ : MvPolynomial (Fin a × Fin a) ℂ →ₐ[ℂ] PY ι a => φ p) this
 
+/- English proof (translation)
+Simplify using `only [ten, map_prod, lft_rename]`.
+-/
 theorem lft_ten (g : ι → Matrix (Fin a) (Fin a) ℂ) (f : ι → MvPolynomial (Fin a × Fin a) ℂ) :
     lft g (ten f) = ten (fun τ => Formalism.GradedWeylDivisibility.rowAct ℂ (g τ) (f τ)) := by
   simp only [ten, map_prod, lft_rename]
 
+/- English proof (translation)
+Unfold `frDet`. Rewrite using `[AlgHom.map_det]`. Establish `hM : (lft g).mapMatrix (Matrix.of fun α s : Fin a => (X (τ, α, s) : PY ι a)) = (g τ).map C * Matrix.of fun α s : Fin a => (X (τ, α, s) : PY ι a)`. Use extensionality with `α s`. Simplify using `[lft, Matrix.mul_apply]`.
+
+Rewrite using `[hM, Matrix.det_mul, smul_eq_C_mul]`. Use `congr 1`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+-/
 theorem lft_frDet (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) :
     lft g (frDet ℂ a τ : PY ι a) = (g τ).det • (frDet ℂ a τ : PY ι a) := by
   unfold frDet
@@ -33,6 +44,11 @@ theorem lft_frDet (g : ι → Matrix (Fin a) (Fin a) ℂ) (τ : ι) :
   congr 1
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Conclude with `Submodule.one_le.mp le_rfl`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`.
+
+Conclude with `Submodule.mul_mem_mul (h i (Finset.mem_insert_self _ _)) (ih fun τ hτ => h τ (Finset.mem_insert_of_mem hτ))`.
+-/
 theorem prod_mem_prodS {A : Type} [CommRing A] [Algebra ℂ A] (s : Finset ι) (M : ι → Submodule ℂ A) (x : ι → A)
     (h : ∀ τ ∈ s, x τ ∈ M τ) : ∏ τ ∈ s, x τ ∈ ∏ τ ∈ s, M τ := by
   classical
@@ -43,6 +59,11 @@ theorem prod_mem_prodS {A : Type} [CommRing A] [Algebra ℂ A] (s : Finset ι) (
     exact Submodule.mul_mem_mul (h i (Finset.mem_insert_self _ _))
       (ih fun τ hτ => h τ (Finset.mem_insert_of_mem hτ))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.prod_empty]`. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi]`.
+
+Conclude with `(h i).mul ih`.
+-/
 theorem fg_prodS {A : Type} [CommRing A] [Algebra ℂ A] (s : Finset ι) (M : ι → Submodule ℂ A)
     (h : ∀ τ, (M τ).FG) : (∏ τ ∈ s, M τ).FG := by
   classical
@@ -50,12 +71,22 @@ theorem fg_prodS {A : Type} [CommRing A] [Algebra ℂ A] (s : Finset ι) (M : ι
   | empty => simp only [Finset.prod_empty]; rw [Submodule.one_eq_span]; exact Submodule.fg_span_singleton _
   | insert i s hi ih => rw [Finset.prod_insert hi]; exact (h i).mul ih
 
+/- English proof (translation)
+Unfold `ten`. Conclude with `prod_mem_prodS _ _ _ (fun τ _ => Submodule.mem_map_of_mem (hf τ))`.
+-/
 theorem ten_mem_prod (lam : ι → DomWeight a) (f : ι → MvPolynomial (Fin a × Fin a) ℂ)
     (hf : ∀ τ, f τ ∈ delSq ℂ a (lam τ)) :
     ten f ∈ ∏ τ, (delSq ℂ a (lam τ)).map (rename (Prod.mk τ)).toLinearMap := by
   unfold ten
   exact prod_mem_prodS _ _ _ (fun τ _ => Submodule.mem_map_of_mem (hf τ))
 
+/- English proof (translation)
+Establish `hP : (∏ τ, (delSq ℂ a (lam τ)).map (rename (Prod.mk τ)).toLinearMap).FG`. Apply `fg_prodS` to reduce the goal to its premises. Introduce `τ`. Apply `Submodule.FG.map` to reduce the goal to its premises. Use `haveI := (GlobalTheory.WeylUnitary.delSq_irreducible_unitary a (lam τ)).1`.
+
+Conclude with `(Submodule.fg_iff_finiteDimensional _).mpr inferInstance`. Establish `hle : CSpan lam ≤ ∏ τ, (delSq ℂ a (lam τ)).map (rename (Prod.mk τ)).toLinearMap`. Unfold `CSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `p ⟨f, hf, rfl⟩`.
+
+Conclude with `ten_mem_prod lam f hf`. Use `haveI : FiniteDimensional ℂ ↥(∏ τ, ((delSq ℂ a (lam τ)).map (rename (Prod.mk τ)).toLinearMap : Submodule ℂ (PY ι a))) := (Submodule.fg_iff_finiteDimensional _).mp hP`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem cspan_fd (lam : ι → DomWeight a) : FiniteDimensional ℂ (CSpan lam) := by
   have hP : (∏ τ, (delSq ℂ a (lam τ)).map (rename (Prod.mk τ)).toLinearMap).FG := by
     apply fg_prodS
@@ -72,6 +103,13 @@ theorem cspan_fd (lam : ι → DomWeight a) : FiniteDimensional ℂ (CSpan lam) 
     (Submodule.fg_iff_finiteDimensional _).mp hP
   exact Submodule.finiteDimensional_of_le hle
 
+/- English proof (translation)
+Introduce `p hp`. Unfold `CSpan at hp ⊢`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`.
+
+Rewrite using `[lft_ten]`. Conclude with `Submodule.subset_span ⟨_, fun τ => (GlobalTheory.WeylUnitary.delSq_irreducible_unitary a (lam τ)).2.2.1 (g τ) (f τ) (hf τ), rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem lft_cspan (lam : ι → DomWeight a) (g : ι → Matrix (Fin a) (Fin a) ℂ) :
     ∀ p ∈ CSpan lam, lft g p ∈ CSpan lam := by
   intro p hp
@@ -89,6 +127,13 @@ end GlobalTheory.KJInf.VnStable
 
 open GlobalTheory.KJInf.VnStable in
 
+/- English proof (translation)
+Introduce `ι _ a lam n`. Use `haveI := cspan_fd lam`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Vn`. Use `infer_instance`.
+
+Introduce `g F hF`. Unfold `Vn at hF ⊢`. Take `⟨p, hp, rfl⟩` from `hF`. Establish `hD : lft g (∏ τ, (frDet ℂ a τ : PY ι a) ^ n τ) = C (∏ τ, (g τ).det ^ n τ) * ∏ τ, (frDet ℂ a τ : PY ι a) ^ n τ`. Rewrite using `[map_prod, map_prod, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, lft_frDet, smul_eq_C_mul, mul_pow, map_pow]`. Use `⟨(∏ τ, (g τ).det ^ n τ) • lft g p, Submodule.smul_mem _ _ (lft_cspan lam g p hp), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulRight_apply, map_mul, hD, smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.KJInf.vn_finiteDimensional_and_lft_mem : ∀ (ι : Type) [Fintype ι] (a : ℕ) (lam : ι → DomWeight a) (n : ι → ℕ),
     FiniteDimensional ℂ (Vn lam n) ∧ ∀ (g : ι → Matrix (Fin a) (Fin a) ℂ), ∀ F ∈ Vn lam n, lft g F ∈ Vn lam n := by
   intro ι _ a lam n

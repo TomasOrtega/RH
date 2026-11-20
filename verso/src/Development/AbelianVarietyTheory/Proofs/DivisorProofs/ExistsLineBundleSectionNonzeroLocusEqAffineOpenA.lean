@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ _ _ _ A _ hA V hV hs`. Take `⟨c, L, hL, s, -, e⟩` from `GlobalTheory.T.affineOpen_meeting_fibres_is_nonvanishingLocus R A hA V hV hs`. Conclude with `⟨L, hL, s, e⟩`.
+-/
 theorem exists_lineBundle_section_nonzeroLocus_eq_affineOpen :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsDomain R] [IsIntegrallyClosed R]
       (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ V : A.left.Opens, IsAffineOpen V →

@@ -16,6 +16,13 @@ namespace GlobalTheory.VacLocEig
 
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Use `set z : κ → AF F := fun i => GlobalTheory.LatVac.liftV v (y i - evFin F v (x₀ i)) with hz`. Establish `hza : At (evFin F v) z` using `GlobalTheory.VacAny.at_pi fun i => GlobalTheory.LatVac.at_liftV v _`. Establish `hrx : r (x₀ + z) = r x₀` using `hr.1 x₀ z hza`. Establish `hy : (fun i => evFin F v ((x₀ + z) i)) = y`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hz, Pi.add_apply, map_add, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel]`. Establish `e` using `congrFun ((h1 r hr).symm.trans (h2 r hr)) (x₀ + z)`. Simplify using `only [tens] at e`. Rewrite `e` using `[hrx, hy]`.
+
+Conclude with `mul_right_cancel₀ hx₀ e`.
+-/
 theorem acts_eq_of_rest {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Type} [Fintype κ]
     {φ : (κ → Fv F v) → ℂ} {r : (κ → AF F) → ℂ} (hr : Rest (evFin F v) φ r) {x₀ : κ → AF F} (hx₀ : r x₀ ≠ 0)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ) (φ₁ φ₂ : (κ → Fv F v) → ℂ)
@@ -32,6 +39,13 @@ theorem acts_eq_of_rest {F : Type} [Field F] [NumberField F] (v : Pl F) {κ : Ty
   rw [hrx, hy] at e
   exact mul_right_cancel₀ hx₀ e
 
+/- English proof (translation)
+Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`. Unfold `Model.IsVac`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hSB, hne, θ, hθ, h⟩`. Use `⟨hSB, hne, θ, hθ, fun γ hγ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v φ hSB`. Conclude with `acts_eq_of_rest v hr hx₀ _ _ _ (GlobalTheory.VacBridge.rho_acts_locCo M.co ψ v γ (hat γ hγ) φ) (h γ hγ)`. Introduce and unpack `⟨hSB, hne, θ, hθ, h⟩`. Use `⟨hSB, hne, θ, hθ, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h γ hγ]`.
+
+Conclude with `GlobalTheory.VacBridge.rho_acts_locCo M.co ψ v γ (hat γ hγ) φ`.
+-/
 theorem isVac_iff_loc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (v : Pl F) (φ : (Fin n × Fin d → Fv F v) → ℂ) :
     M.IsVac ψ v φ ↔ φ ∈ SB _ ∧ φ ≠ 0 ∧ ∃ θ : 𝓞 E, (θ : E) + σ θ = 1 ∧ ∀ γ ∈ latAtV X W v,

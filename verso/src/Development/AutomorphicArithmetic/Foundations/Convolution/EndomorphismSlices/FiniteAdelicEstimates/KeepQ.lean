@@ -21,6 +21,19 @@ section AlgExPf
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/- English proof (translation)
+Proceed by induction on `hy using StarAlgebra.adjoin_induction with`. Consider the case `mem x h`. Take `⟨a, rfl⟩` from `h`. Conclude with `⟨fun f hf => (hQ a f hf).1, fun f hf => (hQ a f hf).2⟩`. Consider the case `algebraMap r`.
+
+Establish `h1 : (algebraMap ℂ ((H →L[ℂ] H) × ℂ) r).1 = r • (1 : H →L[ℂ] H)`. Rewrite using `[Prod.algebraMap_apply, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[h1]`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Simplify using `using Q.smul_mem r hf`.
+
+Simplify `Q.smul_mem (star r) hf` using `[star_smul]`. Consider the case `add x y _ _ hx hy`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `Q.add_mem (hx.1 f hf) (hy.1 f hf)`. Rewrite using `[Prod.fst_add, star_add]`.
+
+Conclude with `Q.add_mem (hx.2 f hf) (hy.2 f hf)`. Consider the case `mul x y _ _ hx hy`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `hx.1 _ (hy.1 f hf)`. Rewrite using `[Prod.fst_mul, star_mul]`.
+
+Conclude with `hy.2 _ (hx.2 f hf)`. Consider the case `star x _ hx`. Use `⟨fun f hf => hx.2 f hf, fun f hf => ?_⟩` and prove the remaining obligations. Establish `: (star (star x).1) = x.1` using `by rw [Prod.fst_star, star_star]`. Rewrite using `[this]`.
+
+Conclude with `hx.1 f hf`.
+-/
 private theorem keepQ {Q : Submodule ℂ H} {Γ : Type} {op : Γ → (H →L[ℂ] H)} {v : Γ → ℂ}
     (hQ : ∀ x, ∀ f ∈ Q, op x f ∈ Q ∧ star (op x) f ∈ Q) {y : (H →L[ℂ] H) × ℂ}
     (hy : y ∈ StarAlgebra.adjoin ℂ (Set.range fun x => (op x, v x))) :
@@ -56,6 +69,23 @@ end AlgExPf
 
 end UpperTheory.Zero.ConvolutionTheory.EB
 
+/- English proof (translation)
+Introduce `H _ _ _ Q _ Γ op v hc hs hQ`. Set `s : Set ((H →L[ℂ] H) × ℂ)` to `Set.range fun x => (op x, v x)`. Establish `hcomm : ∀ a ∈ s, ∀ b ∈ s, a * b = b * a`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Conclude with `Prod.ext (hc x y).eq (mul_comm _ _)`.
+
+Establish `hcs : ∀ a ∈ s, ∀ b ∈ s, a * star b = star b * a`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`. Conclude with `Prod.ext (hs x y).eq (mul_comm _ _)`. Use `letI : CommRing (StarAlgebra.adjoin ℂ s) := StarAlgebra.adjoinCommRingOfComm ℂ hcomm hcs`. Establish `keep : ∀ y : StarAlgebra.adjoin ℂ s, (∀ f ∈ Q, y.1.1 f ∈ Q) ∧ ∀ f ∈ Q, (star y.1.1) f ∈ Q` using `fun y => UpperTheory.Zero.ConvolutionTheory.EB.keepQ hQ y.2`.
+
+Set `res : StarAlgebra.adjoin ℂ s → (Q →L[ℂ] Q)` to `fun y => (y.1.1 ∘L Q.subtypeL).codRestrict Q fun q => (keep y).1 q q.2`. Set `R : StarAlgebra.adjoin ℂ s →⋆ₐ[ℂ] (Q →L[ℂ] Q)` to `{ toFun := res map_one' := by ext q; rfl map_mul' := fun a b => by ext q; rfl map_zero' := by ext q; rfl map_add' := fun a b => by ext q; rfl commutes' := fun r => by`. Use extensionality with `q`. Establish `h1 : ((algebraMap ℂ (StarAlgebra.adjoin ℂ s) r).1).1 = r • (1 : H →L[ℂ] H)` using `by show (algebraMap ℂ ((H →L[ℂ] H) × ℂ) r).1 = _`. Rewrite using `[Prod.algebraMap_apply, Algebra.algebraMap_eq_smul_one]`.
+
+Establish `h2 : algebraMap ℂ (Q →L[ℂ] Q) r = r • (1 : Q →L[ℂ] Q)` using `Algebra.algebraMap_eq_smul_one r`. Use `show ((algebraMap ℂ (StarAlgebra.adjoin ℂ s) r).1).1 (q : H) = _`. Rewrite using `[h1, h2]`. Simplify using the standard rewrite rules. Use the proof step `map_star' := fun y => by show res (star y) = star (res y)`.
+
+Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `p q`. Use `show inner ℂ (star y.1.1 (p : H)) (q : H) = inner ℂ (p : H) (y.1.1 (q : H))`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left] }`. Set `ι : Γ → StarAlgebra.adjoin ℂ s` to `fun x => ⟨(op x, v x), StarAlgebra.subset_adjoin ℂ s ⟨x, rfl⟩⟩`.
+
+Establish `all : ∀ y : StarAlgebra.adjoin ℂ s, y ∈ StarAlgebra.adjoin ℂ (Set.range ι)`. Introduce `y`. Proceed by induction on `y using StarAlgebra.adjoin_induction_subtype with`. Consider the case `mem x h`. Take `⟨a, rfl⟩` from `h`.
+
+Conclude with `StarAlgebra.subset_adjoin ℂ _ ⟨a, rfl⟩`. Consider the case `algebraMap r => exact algebraMap_mem _ r`. Consider the case `add x y hx hy => exact add_mem hx hy`. Consider the case `mul x y hx hy => exact mul_mem hx hy`. Consider the case `star x hx => exact star_mem hx`.
+
+Establish `top : StarAlgebra.adjoin ℂ (Set.range ι) = ⊤` using `eq_top_iff.2 fun y _ => all y`. Conclude with `⟨{ B := StarAlgebra.adjoin ℂ s R := R P := (StarAlgHom.snd ℂ (H →L[ℂ] H) ℂ).comp (StarSubalgebra.subtype _) F := (StarAlgHom.fst ℂ (H →L[ℂ] H) ℂ).comp (StarSubalgebra.subtype _) ι := ι hF := fun _ => rfl hP := fun _ => rfl hR := fun _ _ => rfl top := top }⟩`.
+-/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.algEx :
     UpperTheory.Zero.ConvolutionTheory.EB.AlgEx := by
   intro H _ _ _ Q _ Γ op v hc hs hQ

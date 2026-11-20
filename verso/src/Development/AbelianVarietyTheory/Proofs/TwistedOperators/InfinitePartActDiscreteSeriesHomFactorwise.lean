@@ -20,16 +20,29 @@ noncomputable def partAt {D : D7} (V : HSp D) (g : GA D V) (s : Finset D.what₂
     if w ∈ s.image (placeOf D) then projArch D.sp.cm.sig V.gram w g else 1)
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[partAt, projArch_ofInf, projInfArch_embArchPi]`.
+-/
 theorem projArch_partAt {D : D7} (V : HSp D) (g : GA D V) (s : Finset D.what₂.Tau) (w : InfinitePlace D.host.F) :
     projArch D.sp.cm.sig V.gram w (partAt V g s) =
       if w ∈ s.image (placeOf D) then projArch D.sp.cm.sig V.gram w g else 1 := by
   rw [partAt, projArch_ofInf, projInfArch_embArchPi]
 
+/- English proof (translation)
+Rewrite using `[partAt, proj_ofInf]`.
+-/
 theorem proj_partAt {D : D7} (V : HSp D) (g : GA D V) (s : Finset D.what₂.Tau) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     proj D.sp.cm.sig V.gram v (partAt V g s) = 1 := by
   rw [partAt, proj_ofInf]
 
 open Classical in
+/- English proof (translation)
+Use `GAd_ext D.sp.cm.sig V.gram (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, projArch_partAt, projArch_partAt]`. Distinguish the cases in `hw : w = placeOf D τ`. Substitute `hw` using the available equality. Establish `h1 : placeOf D τ ∈ (insert τ s).image (placeOf D)` using `Finset.mem_image_of_mem _ (Finset.mem_insert_self τ s)`.
+
+Establish `h2 : placeOf D τ ∉ s.image (placeOf D)` using `fun h => by`. Take `⟨ρ, hρ, e⟩` from `Finset.mem_image.1 h`. Conclude with `hτ ((placeOf_bijective D).1 e ▸ hρ)`. Rewrite using `[if_pos h1, if_neg h2, mul_one]`. Conclude with `(projArch_embArch_self _ _ _ _).symm`.
+
+Rewrite using `[projArch_embArch_ne _ _ hw, one_mul]`. Use `congr 1`. Simplify using `only [Finset.image_insert, Finset.mem_insert, hw, false_or]`. Rewrite using `[map_mul, proj_partAt, proj_partAt, proj_embArch, one_mul]`.
+-/
 theorem partAt_insert {D : D7} (V : HSp D) (g : GA D V) {s : Finset D.what₂.Tau} {τ : D.what₂.Tau} (hτ : τ ∉ s) :
     partAt V g (insert τ s) =
       embW V (placeOf D τ) (projArch D.sp.cm.sig V.gram (placeOf D τ) g) * partAt V g s := by
@@ -48,6 +61,11 @@ theorem partAt_insert {D : D7} (V : HSp D) (g : GA D V) {s : Finset D.what₂.Ta
       simp only [Finset.image_insert, Finset.mem_insert, hw, false_or]
   · rw [map_mul, proj_partAt, proj_partAt, proj_embArch, one_mul]
 
+/- English proof (translation)
+Use `GAd_ext D.sp.cm.sig V.gram (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Rewrite using `[projArch_partAt, if_pos]`. Use `show _ = projArch D.sp.cm.sig V.gram w (ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram g))`. Rewrite using `[projArch_ofInf, projInfArch_projInf]`. Take `⟨τ, rfl⟩` from `(placeOf_bijective D).2 w`.
+
+Conclude with `Finset.mem_image_of_mem _ (Finset.mem_univ τ)`. Rewrite using `[proj_partAt] show _ = proj D.sp.cm.sig V.gram v (ofInf D.sp.cm.sig V.gram (projInf D.sp.cm.sig V.gram g))`. Rewrite using `[proj_ofInf]`.
+-/
 theorem partAt_univ {D : D7} (V : HSp D) (g : GA D V) [Fintype D.what₂.Tau] :
     partAt V g Finset.univ = (toInf V g : GA D V) := by
   classical
@@ -65,6 +83,19 @@ end GlobalTheory.TrAct
 
 open GlobalTheory.TrAct in
 
+/- English proof (translation)
+Introduce `D V S M H _ _ _ ρ U Φ hΦ g y`. Use `haveI : Finite D.what₂.Tau := Finite.of_injective _ (placeOf_bijective D).1`. Use `haveI : Fintype D.what₂.Tau := Fintype.ofFinite _`. Establish `key : ∀ s : Finset D.what₂.Tau, ρ (partAt V g s) (Φ y) = Φ fun τ => if τ ∈ s then dsRep M τ (projArch D.sp.cm.sig V.gram (placeOf D τ) g) (y τ) else y τ`. Introduce `s`.
+
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: partAt V g ∅ = 1`. Rewrite using `[partAt]`. Establish `: (fun w => if w ∈ (∅ : Finset D.what₂.Tau).image (placeOf D) then projArch D.sp.cm.sig V.gram w g else (1 : GArch D.sp.cm.sig V.gram w)) = 1`.
+
+Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules. Rewrite using `[this, map_one, map_one]`. Simplify using `[this]`. Consider the case `insert τ s hτ ih`.
+
+Rewrite using `[partAt_insert V g hτ, map_mul, ContinuousLinearMap.mul_apply, ih, ← (mem_homPi.1 hΦ).2 τ]`. Use `congr 1`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality.
+
+Simplify using `[hτ]`. Rewrite using `[Function.update_of_ne e]`. Simplify using `[e]`. Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[partAt_univ]`.
+
+Simplify using `using this`.
+-/
 theorem GlobalTheory.TrAct.toInf_apply_homDS : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (ρ : GA D V →* (H →L[ℂ] H)) (U : Submodule ℂ H), ∀ Φ ∈ homDS M ρ U, ∀ (g : GA D V) y, ρ (toInf V g : GA D V) (Φ y) = Φ fun τ => dsRep M τ (projArch D.sp.cm.sig V.gram (placeOf D τ) g) (y τ) := by
   intro D V S M H _ _ _ ρ U Φ hΦ g y
   classical

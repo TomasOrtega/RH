@@ -15,6 +15,9 @@ def dlogQ (d : ℕ) (hd : d.Prime) : ℝ :=
     DirichletCharacter.LFunction
       ((quadraticChar (ZMod d)).ringHomComp (Int.castRingHom ℂ) : DirichletCharacter ℂ d) 1).re
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dlogL_one (D : D7) : dlogL D 1 = dlogQ D.host.d D.host.hyp.2.1 := rfl
 
 def ProgAt (C : ℝ) : Prop :=

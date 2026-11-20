@@ -20,15 +20,24 @@ noncomputable def weightedDeriv (k n : ℕ) (f : SchwartzMap V ℂ) :
       rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
       exact f.le_seminorm ℂ k n x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem weightedDeriv_apply (k n : ℕ) (f : SchwartzMap V ℂ) (x : V) :
     weightedDeriv k n f x = (‖x‖ ^ k : ℝ) • GlobalTheory.SchwInt.iterEvalCLM n x f := rfl
 
+/- English proof (translation)
+The claim follows from `(BoundedContinuousFunction.norm_le (apply_nonneg _ _)).2 fun x => by rw [weightedDeriv_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)] exact f.le_seminorm ℂ k n x`.
+-/
 theorem norm_weightedDeriv_le (k n : ℕ) (f : SchwartzMap V ℂ) :
     ‖weightedDeriv k n f‖ ≤ SchwartzMap.seminorm ℂ k n f :=
   (BoundedContinuousFunction.norm_le (apply_nonneg _ _)).2 fun x => by
     rw [weightedDeriv_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)]
     exact f.le_seminorm ℂ k n x
 
+/- English proof (translation)
+The claim follows from `SchwartzMap.seminorm_le_bound ℂ k n f (norm_nonneg _) fun x => by have h := (weightedDeriv k n f).norm_coe_le_norm x rw [weightedDeriv_apply, norm_smul, Real.norm_eq_abs, abs_of_nonneg (by positivity)] at h exact h`.
+-/
 theorem seminorm_le_norm_weightedDeriv (k n : ℕ) (f : SchwartzMap V ℂ) :
     SchwartzMap.seminorm ℂ k n f ≤ ‖weightedDeriv k n f‖ :=
   SchwartzMap.seminorm_le_bound ℂ k n f (norm_nonneg _) fun x => by
@@ -56,9 +65,15 @@ noncomputable def toWeighted (s : Finset (ℕ × ℕ)) : SchwartzMap V ℂ →L[
       have := Seminorm.le_finset_sup_apply (p := schwartzSeminormFamily ℂ V ℂ) (x := f) i.2
       exact this⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toWeighted_apply (s : Finset (ℕ × ℕ)) (f : SchwartzMap V ℂ) (i : s) :
     toWeighted s f i = weightedDeriv i.1.1 i.1.2 f := rfl
 
+/- English proof (translation)
+Use `Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.schwartzSeminormFamily_apply]`. Conclude with `(seminorm_le_norm_weightedDeriv i.1 i.2 f).trans (norm_le_pi_norm (toWeighted s f) ⟨i, hi⟩)`.
+-/
 theorem finset_sup_le_norm_toWeighted (s : Finset (ℕ × ℕ)) (f : SchwartzMap V ℂ) :
     s.sup (schwartzSeminormFamily ℂ V ℂ) f ≤ ‖toWeighted s f‖ := by
   refine Seminorm.finset_sup_apply_le (norm_nonneg _) fun i hi => ?_
@@ -70,6 +85,25 @@ end GlobalTheory.SchwClm
 
 namespace GlobalTheory.SchwClm
 
+/- English proof (translation)
+Take `⟨s, c, -, hc⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp l.toLinearMap) (continuous_norm.comp l.continuous)`. Use `set T : SchwartzMap V ℂ →L[ℂ] WeightedTarget V s := toWeighted s with hTdef`. Establish `hlT : ∀ f, ‖l f‖ ≤ (c : ℝ) * ‖T f‖`. Introduce `f`. Establish `h1` using `hc f`.
+
+Rewrite `h1` using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_left (finset_sup_le_norm_toWeighted s f) c.2)`. Use `set T' : SchwartzMap V ℂ →ₗ[ℂ] WeightedTarget V s := T.toLinearMap`. Establish `hker : LinearMap.ker T' ≤ LinearMap.ker l.toLinearMap`. Introduce `f hf`.
+
+Rewrite `hf`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `hlT f`. Establish `hf' : T f = 0` using `hf`. Rewrite `h` using `[hf', norm_zero, mul_zero]`. Conclude with `norm_le_zero_iff.1 h`.
+
+Set `l₀ : LinearMap.range T' →ₗ[ℂ] ℂ` to `(LinearMap.ker T').liftQ l.toLinearMap hker ∘ₗ T'.quotKerEquivRange.symm.toLinearMap`. Establish `hl₀ : ∀ f, l₀ ⟨T f, f, rfl⟩ = l f`. Introduce `f`. Establish `e : T'.quotKerEquivRange (Submodule.Quotient.mk f) = ⟨T f, f, rfl⟩` using `Subtype.ext (LinearMap.quotKerEquivRange_apply_mk T' f)`. Simplify using `only [l₀, LinearMap.comp_apply, LinearEquiv.coe_coe, ← e, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply, ContinuousLinearMap.coe_coe]`.
+
+Establish `hbd : ∀ y : LinearMap.range T', ‖l₀ y‖ ≤ (c : ℝ) * ‖y‖`. Introduce `y`. Take `⟨f, hf⟩` from `y.2`. Establish `hy : y = ⟨T f, f, rfl⟩` using `Subtype.ext hf.symm`. Rewrite using `[hy, hl₀ f]`.
+
+Conclude with `hlT f`. Take `⟨L, hL, -⟩` from `exists_extension_norm_eq (LinearMap.range T') (l₀.mkContinuous c hbd)`. Establish `hLT : ∀ f, L (T f) = l f`. Introduce `f`. Rewrite using `[hL ⟨T f, f, rfl⟩, LinearMap.mkContinuous_apply, hl₀]`.
+
+Establish `hint : Integrable (fun p => T (G p)) μ` using `GlobalTheory.SchwInt.integrable_of_zero_outside μ (T.continuous.comp hG) hCc (fun p hp => by simp [h0 p hp])`. Establish `hTS : T S = ∫ p, T (G p) ∂μ`. Use function extensionality and compare the values at `i`. Establish `hi : (∫ p, T (G p) ∂μ) i = ∫ p, T (G p) i ∂μ` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun j : s => BoundedContinuousFunction V (ContinuousMultilinearMap ℝ (fun _ : Fin j.1.2 => V) ℂ)) i).integral_comp_comm hint).symm`. Establish `hint_i : Integrable (fun p => T (G p) i) μ` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun j : s => BoundedContinuousFunction V (ContinuousMultilinearMap ℝ (fun _ : Fin j.1.2 => V) ℂ)) i).integrable_comp hint`.
+
+Rewrite using `[hi]`. Use `ext1 x`. Rewrite using `[← BoundedContinuousFunction.evalCLM_apply ℂ x (∫ p, T (G p) i ∂μ), ← ContinuousLinearMap.integral_comp_comm _ hint_i]`. Simplify using `only [BoundedContinuousFunction.evalCLM_apply, hTdef, toWeighted_apply, weightedDeriv_apply, GlobalTheory.SchwInt.iterEvalCLM_apply]`. Rewrite using `[integral_smul, hS]`.
+
+Rewrite using `[← hLT S, hTS, ← ContinuousLinearMap.integral_comp_comm L hint]`. Repeatedly rewrite using `[hLT]`.
+-/
 theorem clm_integral_eq {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {P : Type} [TopologicalSpace P] [MeasurableSpace P] [BorelSpace P] [SecondCountableTopology P]
     (μ : Measure P) [IsFiniteMeasureOnCompacts μ]

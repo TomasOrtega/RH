@@ -21,6 +21,9 @@ def mfact (m : σ →₀ ℕ) : ℕ := ∏ k ∈ m.support, (m k).factorial
 def fockS (f g : MvPolynomial σ K) : K :=
   ∑ m ∈ f.support, star (f.coeff m) * g.coeff m * (mfact m : K)
 
+/- English proof (translation)
+Use `Finset.sum_subset hs ?_` and prove the remaining obligations. Introduce `m _ hm`. Rewrite using `[notMem_support_iff.mp hm]`. Simplify using the standard rewrite rules.
+-/
 theorem fockS_eq_sum (f g : MvPolynomial σ K) (s : Finset (σ →₀ ℕ)) (hs : f.support ⊆ s) :
     fockS f g = ∑ m ∈ s, star (f.coeff m) * g.coeff m * (mfact m : K) := by
   refine Finset.sum_subset hs ?_
@@ -52,6 +55,9 @@ def fockL : MvPolynomial σ K →ₗ⋆[K] MvPolynomial σ K →ₗ[K] K :=
       refine Finset.sum_congr rfl fun m _ => ?_
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockL_apply (f g : MvPolynomial σ K) : fockL f g = fockS f g := rfl
 
 end Fock
@@ -75,6 +81,11 @@ def trAct (g : ι → GL (Fin n) K) : Pol K ι n →ₐ[K] Pol K ι n :=
 def actP (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) : Pol K ι n →ₗ[K] Pol K ι n :=
   detTwK lam g • (trAct g).toLinearMap
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, Formalism.GradedWeylDivisibility.blockAct, aeval_X, map_sum, map_mul, algHom_C, Matrix.mul_apply]`. Simplify using `only [algebraMap_eq, Finset.mul_sum, Finset.sum_mul, ← C_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `[C_mul, mul_assoc]`.
+-/
 theorem blockAct_comp (g h : ι → Matrix (Fin n) (Fin n) K) :
     (Formalism.GradedWeylDivisibility.blockAct K (n := n) g).comp (Formalism.GradedWeylDivisibility.blockAct K h) = Formalism.GradedWeylDivisibility.blockAct K fun τ => h τ * g τ := by
   apply MvPolynomial.algHom_ext
@@ -84,6 +95,11 @@ theorem blockAct_comp (g h : ι → Matrix (Fin n) (Fin n) K) :
   rw [Finset.sum_comm]
   simp [C_mul, mul_assoc]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Formalism.GradedWeylDivisibility.blockAct, aeval_X, Matrix.one_apply, AlgHom.id_apply]`. Rewrite using `[Finset.sum_eq_single v.2.1]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem blockAct_one : Formalism.GradedWeylDivisibility.blockAct K (n := n) (fun _ : ι => (1 : Matrix (Fin n) (Fin n) K)) = AlgHom.id K _ := by
   apply MvPolynomial.algHom_ext
   intro v
@@ -94,6 +110,9 @@ theorem blockAct_one : Formalism.GradedWeylDivisibility.blockAct K (n := n) (fun
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Unfold `trAct`. Rewrite using `[blockAct_comp]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[Matrix.transpose_mul]`.
+-/
 theorem trAct_mul (g h : ι → GL (Fin n) K) : trAct (g * h) = (trAct g).comp (trAct h) := by
   unfold trAct
   rw [blockAct_comp]
@@ -101,6 +120,9 @@ theorem trAct_mul (g h : ι → GL (Fin n) K) : trAct (g * h) = (trAct g).comp (
   funext τ
   simp [Matrix.transpose_mul]
 
+/- English proof (translation)
+Unfold `trAct`. Rewrite using `[← blockAct_one]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules.
+-/
 theorem trAct_one : trAct (1 : ι → GL (Fin n) K) = AlgHom.id K _ := by
   unfold trAct
   rw [← blockAct_one]
@@ -108,6 +130,9 @@ theorem trAct_one : trAct (1 : ι → GL (Fin n) K) = AlgHom.id K _ := by
   funext τ
   simp
 
+/- English proof (translation)
+Unfold `detTwK`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[detPow, mul_zpow]`.
+-/
 theorem detTwK_mul (lam : ι → DomWeight n) (g h : ι → GL (Fin n) K) :
     detTwK lam (g * h) = detTwK lam g * detTwK lam h := by
   unfold detTwK
@@ -115,6 +140,9 @@ theorem detTwK_mul (lam : ι → DomWeight n) (g h : ι → GL (Fin n) K) :
   refine Finset.prod_congr rfl fun τ _ => ?_
   simp [detPow, mul_zpow]
 
+/- English proof (translation)
+Unfold `detTwK`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Simplify using `[detPow]`.
+-/
 theorem detTwK_one (lam : ι → DomWeight n) : detTwK lam (1 : ι → GL (Fin n) K) = 1 := by
   unfold detTwK
   refine Finset.prod_eq_one fun τ _ => ?_
@@ -132,6 +160,9 @@ def rhoP (lam : ι → DomWeight n) : (ι → GL (Fin n) K) →* Module.End K (P
     simp only [actP, detTwK_mul, trAct_mul, Module.End.mul_apply, mul_comm (detTwK lam g), LinearMap.smul_apply, AlgHom.toLinearMap_apply,
       AlgHom.comp_apply, map_smul, smul_smul]
 
+/- English proof (translation)
+Establish `h` using `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ)).2 (fun τ => nablaSq K n (lam τ)) (fun τ => nablaSq K n (lam τ)) (fun τ f hf => Formalism.GradedWeylDivisibility.dualWeylRowStable K n n _ _ f hf) F hF`. Conclude with `(VV K lam).smul_mem (detTwK lam g) h`.
+-/
 theorem polyAction_mem_VV (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) {F : Pol K ι n} (hF : F ∈ VV K lam) :
     actP lam g F ∈ VV K lam := by
   have h := (Formalism.GradedWeylDivisibility.blockActTensor K K ι n n
@@ -264,6 +295,9 @@ instance (lam : ι → DomWeight n) : Fintype (VVIdx lam) := Fintype.ofFinite _
 def bVVfun (K : Type) [Field K] (lam : ι → DomWeight n) (i : VVIdx lam) : Pol K ι n :=
   ten fun τ => ssB K (lam τ).natW (i τ)
 
+/- English proof (translation)
+Conclude with `Formalism.GradedWeylDivisibility.tensorBasis K K ι n n (fun τ => Formalism.GradedWeylDivisibility.ssIdx n n (lam τ).natW) (fun τ => nablaSq K n (lam τ)) (fun τ => ssB K (lam τ).natW) (fun τ => (Formalism.GradedWeylDivisibility.sSBasis K n n (lam τ).natW).choose_spec.1.1) (fun τ = …`.
+-/
 theorem bVVfun_spec (K : Type) [Field K] (lam : ι → DomWeight n) :
     LinearIndependent K (bVVfun K lam) ∧ Submodule.span K (Set.range (bVVfun K lam)) = VV K lam := by
   classical
@@ -275,6 +309,9 @@ theorem bVVfun_spec (K : Type) [Field K] (lam : ι → DomWeight n) :
 def bVV (K : Type) [Field K] (lam : ι → DomWeight n) : Module.Basis (VVIdx lam) K (VV K lam) :=
   (Module.Basis.span (bVVfun_spec K lam).1).map (LinearEquiv.ofEq _ _ (bVVfun_spec K lam).2)
 
+/- English proof (translation)
+Simplify using `[bVV, Module.Basis.span_apply]`.
+-/
 theorem bVV_coe (K : Type) [Field K] (lam : ι → DomWeight n) (i : VVIdx lam) :
     ((bVV K lam i : VV K lam) : Pol K ι n) = bVVfun K lam i := by
   simp [bVV, Module.Basis.span_apply]

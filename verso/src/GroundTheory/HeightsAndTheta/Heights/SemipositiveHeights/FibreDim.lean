@@ -13,6 +13,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace FibreTranscendenceDegree
 
+/- English proof (translation)
+Use `⟨fun m => ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, hb, hb0, rfl⟩` from `h m`. Use `⟨Polynomial.C (⟨b, hb⟩ : B) * Polynomial.X - Polynomial.C (⟨a, ha⟩ : B), fun h0 => hb0 ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun p : Polynomial B => p.coeff 1) h0`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_C_mul_X, Polynomial.coeff_C, if_neg one_ne_zero, sub_zero, Polynomial.coeff_zero] at h1`.
+
+Conclude with `congrArg Subtype.val h1`. Simplify using `only [map_sub, map_mul, Polynomial.aeval_C, Polynomial.aeval_X] show b * (a / b) - a = 0`. Rewrite using `[mul_div_cancel₀ _ hb0, sub_self]`.
+-/
 theorem isAlgebraic_of_forall_div {M : Type} [Field M] (B : Subalgebra ℤ M)
     (h : ∀ m : M, ∃ a b : M, a ∈ B ∧ b ∈ B ∧ b ≠ 0 ∧ m = a / b) : Algebra.IsAlgebraic B M := by
   refine ⟨fun m => ?_⟩
@@ -26,6 +31,11 @@ theorem isAlgebraic_of_forall_div {M : Type} [Field M] (B : Subalgebra ℤ M)
     show b * (a / b) - a = 0
     rw [mul_div_cancel₀ _ hb0, sub_self]
 
+/- English proof (translation)
+Use `isAlgebraic_of_forall_div B h` as an intermediate fact. Establish `: FaithfulSMul ℤ B` using `(faithfulSMul_iff_algebraMap_injective ℤ B).mpr fun a b hab => hZ (by simpa using congrArg Subtype.val hab)`. Establish `: FaithfulSMul B M` using `(faithfulSMul_iff_algebraMap_injective B M).mpr Subtype.val_injective`. Establish `h0` using `trdeg_add_eq ℤ B (A := M)`. Rewrite `h0` using `[trdeg_eq_zero (R := B) (A := M), add_zero]`.
+
+Conclude with `h0.symm`.
+-/
 theorem trdeg_eq_of_forall_div {M : Type} [Field M] (B : Subalgebra ℤ M)
     (hZ : Function.Injective (algebraMap ℤ M))
     (h : ∀ m : M, ∃ a b : M, a ∈ B ∧ b ∈ B ∧ b ≠ 0 ∧ m = a / b) :
@@ -38,6 +48,9 @@ theorem trdeg_eq_of_forall_div {M : Type} [Field M] (B : Subalgebra ℤ M)
   rw [trdeg_eq_zero (R := B) (A := M), add_zero] at h0
   exact h0.symm
 
+/- English proof (translation)
+Establish `hker : RingHom.ker (aeval y : MvPolynomial σ ℤ →ₐ[ℤ] M) = RingHom.ker (aeval y : MvPolynomial σ ℤ →ₐ[ℤ] M).rangeRestrict`. Use extensionality with `p`. Simplify using `[RingHom.mem_ker, Subtype.ext_iff]`. Conclude with `((Ideal.quotientEquivAlgOfEq ℤ hker).trans (Ideal.quotientKerAlgEquivOfSurjective (AlgHom.rangeRestrict_surjective _))).trdeg_eq`.
+-/
 theorem trdeg_quot_ker {σ : Type} {M : Type} [CommRing M] [IsDomain M] (y : σ → M) :
     Algebra.trdeg ℤ (MvPolynomial σ ℤ ⧸ RingHom.ker (aeval y : MvPolynomial σ ℤ →ₐ[ℤ] M)) =
       Algebra.trdeg ℤ (aeval y : MvPolynomial σ ℤ →ₐ[ℤ] M).range := by
@@ -48,6 +61,13 @@ theorem trdeg_quot_ker {σ : Type} {M : Type} [CommRing M] [IsDomain M] (y : σ 
   exact ((Ideal.quotientEquivAlgOfEq ℤ hker).trans
     (Ideal.quotientKerAlgEquivOfSurjective (AlgHom.rangeRestrict_surjective _))).trdeg_eq
 
+/- English proof (translation)
+Take `⟨-, ⟨hprime, -, -⟩, hhor, hdim⟩` from `h`. Use `hprime` as an intermediate fact. Establish `hA` using `IntDomainDim.proof (MRing ι ⧸ J) (CoordinateConeArithVar.algebraMap_injective J hhor)`. Rewrite `hA` using `[hdim]`. Establish `hA' : ((n + Fintype.card K : ℕ) : ℕ∞) = Cardinal.toENat (Algebra.trdeg ℤ (MRing ι ⧸ J)) + 1`.
+
+Conclude with `hA` after adjusting the coercions. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℕ, Cardinal.toENat (Algebra.trdeg ℤ (MRing ι ⧸ J)) = t := by`. Use `ENat.ne_top_iff_exists.mp (fun htop => ?_) |>.imp fun _ h => h.symm` and prove the remaining obligations. Rewrite `hA'` using `[htop]`. Simplify using `at hA'`.
+
+Rewrite `hA'` using `[ht]`. Use `⟨t, Cardinal.toENat_eq_natCast.mp ht, ?_⟩` and prove the remaining obligations. Conclude with `hA'.symm` after adjusting the coercions.
+-/
 theorem trdeg_of_isArithVar {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Ideal (MRing ι)}
     {n : ℕ} (h : IsArithVar J n) :
     ∃ t : ℕ, Algebra.trdeg ℤ (MRing ι ⧸ J) = t ∧ t + 1 = n + Fintype.card K := by
@@ -65,6 +85,9 @@ theorem trdeg_of_isArithVar {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   refine ⟨t, Cardinal.toENat_eq_natCast.mp ht, ?_⟩
   exact_mod_cast hA'.symm
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [intCast_mem]`. Consider the case `add f g hf hg => simpa using add_mem hf hg`. Consider the case `mul_X f i hf => simpa using mul_mem hf (Subfield.subset_closure ⟨i, rfl⟩)`.
+-/
 theorem aeval_mem_closure {σ : Type} {L : Type} [Field L] (y : σ → L) (f : MvPolynomial σ ℤ) :
     aeval y f ∈ Subfield.closure (Set.range y) := by
   induction f using MvPolynomial.induction_on with
@@ -76,6 +99,53 @@ end FibreTranscendenceDegree
 
 open FibreTranscendenceDegree in
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' d r G hv hP' hP`. Use `⟨⟨RingHom.ker_isPrime _, Targets.FibreMultiHomog.proof K ι K' ι' κ v P' G hv hP'.2.1.2.1, fun k => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hP'.2.1.2.2 k.1`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Rewrite `h` using `[fibreIdeal, RingHom.mem_ker, aeval_X]`.
+
+Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker, aeval_X]`. Conclude with `h`. Rewrite using `[fibreIdeal, Inter.EvalKerKrullDim.proof (FibreBlock κ) (fibreIdx ι' κ) G.Φ G.Φ']`. Use `set E := IntermediateField.adjoin G.Φ (Set.range fun q : (Σ k : FibreBlock κ, ι' k.1) => G.x' ⟨q.1.1, q.2⟩) with hEdef`. Establish `hZ : Function.Injective (algebraMap ℤ G.Φ)`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hmem : (C a : MRing ι) ∈ imageZ v P'`. Rewrite using `[← G.ker_x, RingHom.mem_ker, aeval_C]`. Conclude with `ha`.
+
+Establish `h' : a ∈ (imageZ v P').comap (C : ℤ →+* MRing ι)` using `hmem`. Rewrite `h'` using `[show (imageZ v P').comap (C : ℤ →+* MRing ι) = ⊥ from hP.2.2.1]`. Conclude with `(Submodule.mem_bot ℤ).mp h'`. Take `⟨t, ht, htd⟩` from `trdeg_of_isArithVar hP`. Establish `hΦ : Algebra.trdeg ℤ G.Φ = t`.
+
+Rewrite using `[trdeg_eq_of_forall_div (aeval G.x : MRing ι →ₐ[ℤ] G.Φ).range hZ, ← trdeg_quot_ker, G.ker_x, ht]`. Introduce `c`. Take `⟨f, g, hg, rfl⟩` from `G.gen c`. Conclude with `⟨_, _, ⟨f, rfl⟩, ⟨g, rfl⟩, hg, rfl⟩`. Establish `hxE : ∀ q, G.x' q ∈ E`.
+
+Introduce `q`. Distinguish the cases in `hq : q.1 ∈ Set.range κ`. Take `⟨p, rfl⟩` from `hv.2.2.2 q hq`. Rewrite using `[G.compat]`. Conclude with `E.algebraMap_mem _`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨⟨q.1, hq⟩, q.2⟩, rfl⟩`. Use `set xE : (Σ k', ι' k') → E := fun q => ⟨G.x' q, hxE q⟩ with hxEdef`. Establish `hval : ∀ f : MRing ι', ((aeval xE f : E) : G.Φ') = aeval G.x' f`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp`. Consider the case `add f g hf hg => simp only [map_add, IntermediateField.coe_add, hf, hg]`. Consider the case `mul_X f i hf`. Simplify using `only [map_mul, IntermediateField.coe_mul, hf, aeval_X]`. Both sides reduce to the same expression.
+
+Establish `hkerE : RingHom.ker (aeval xE : MRing ι' →ₐ[ℤ] E) = P'`. Use extensionality with `f`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Establish `h2 : f ∈ RingHom.ker (aeval G.x' : MRing ι' →ₐ[ℤ] G.Φ')`. Rewrite using `[RingHom.mem_ker, ← hval f, h]`. Both sides reduce to the same expression. Rewrite `h2` using `[G.genericFibre_ker_target]`. Then use the resulting hypothesis. Introduce `h`.
+
+Establish `h2` using `h`. Rewrite `h2` using `[← G.genericFibre_ker_target, RingHom.mem_ker, ← hval f]`. Conclude with `Subtype.ext h2`. Take `⟨t', ht', htd'⟩` from `trdeg_of_isArithVar hP'`. Establish `hZE : Function.Injective (algebraMap ℤ E)`.
+
+Introduce `a b hab`. Apply `hZ` to reduce the goal to its premises. Apply `(algebraMap G.Φ E).injective` to reduce the goal to its premises. Simplify using `using hab`. Establish `hE : Algebra.trdeg ℤ E = t'`.
+
+Rewrite using `[trdeg_eq_of_forall_div (aeval xE : MRing ι' →ₐ[ℤ] E).range hZE, ← trdeg_quot_ker, hkerE, ht']`. Introduce `e`. Establish `hle : E.toSubfield ≤ Subfield.closure (Set.range G.x')`. Rewrite using `[hEdef, IntermediateField.adjoin_toSubfield]`. Use `Subfield.closure_le.2 (Set.union_subset ?_ ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨c, rfl⟩`. Take `⟨f, g, -, rfl⟩` from `G.gen c`. Establish `key : ∀ f : MRing ι, algebraMap G.Φ G.Φ' (aeval G.x f) = aeval G.x' (rename v f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f i hf => simp only [map_mul, hf, aeval_X, rename_X, G.compat]`. Rewrite using `[map_div₀, key, key]`. Conclude with `div_mem (aeval_mem_closure _ _) (aeval_mem_closure _ _)`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `Subfield.subset_closure ⟨_, rfl⟩`. Take `⟨a, ha, b, hb, hab⟩` from `Subfield.mem_closure_iff.mp (hle e.2)`. Establish `hsub : Subring.closure (Set.range G.x') ≤ (aeval G.x' : MRing ι' →ₐ[ℤ] G.Φ').range.toSubring`. Rewrite using `[Subring.closure_le]`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨X q, aeval_X _ _⟩`. Take `⟨f, rfl⟩` from `hsub ha`. Take `⟨g, rfl⟩` from `hsub hb`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at hab`.
+
+Distinguish the cases in `hg : aeval xE g = 0`. Use `⟨0, 1, zero_mem _, one_mem _, one_ne_zero, ?_⟩` and prove the remaining obligations. Establish `hg' : (aeval G.x' g : G.Φ') = 0` using `by rw [← hval, hg]; rfl`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hab, hg', div_zero]`.
+
+Simplify using the standard rewrite rules. Use `⟨aeval xE f, aeval xE g, ⟨f, rfl⟩, ⟨g, rfl⟩, hg, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[IntermediateField.coe_div, hval, hval]`. Conclude with `hab.symm`.
+
+Establish `: FaithfulSMul ℤ G.Φ` using `(faithfulSMul_iff_algebraMap_injective ℤ G.Φ).mpr hZ`. Establish `: FaithfulSMul G.Φ E` using `(faithfulSMul_iff_algebraMap_injective G.Φ E).mpr (algebraMap G.Φ E).injective`. Establish `hadd` using `trdeg_add_eq ℤ G.Φ (A := E)`. Rewrite `hadd` using `[hΦ, hE]`. Establish `hc : Fintype.card (FibreBlock κ) + Fintype.card K = Fintype.card K'`.
+
+Simplify using `only [← Nat.card_eq_fintype_card]`. Establish `h1` using `Set.ncard_add_ncard_compl (Set.range κ)`. Rewrite `h1` using `[Set.ncard_range_of_injective hv.1, add_comm]`. Conclude with `h1`. Establish `hlt : Algebra.trdeg G.Φ E < Cardinal.aleph0` using `lt_of_le_of_lt (le_add_self.trans_eq hadd) Cardinal.natCast_lt_aleph0`.
+
+Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 hlt`. Rewrite `hadd` using `[hm]`. Establish `hm' : t + m = t'` using `by exact_mod_cast hadd`. Establish `hmr : m = r + Fintype.card (FibreBlock κ)` using `by omega`. Rewrite using `[hm, hmr, Cardinal.toENat_nat]`.
+
+Both sides reduce to the same expression.
+-/
 theorem FibreDim.proof : FibreDimStatement := by
   intro K _ ι _ K' _ ι' _ κ v P' d r G hv hP' hP
   classical

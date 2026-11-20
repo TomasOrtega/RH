@@ -21,6 +21,11 @@ namespace GlobalTheory
 
 open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCategory MonObj AlgebraicGeometry NumberField in
 
+/- English proof (translation)
+Establish `hLaws` using `_root_.GlobalTheory.allSixLaws`. Establish `hU : _root_.ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt` using `_root_.GlobalTheory.laws_without_cohomology.1`. Establish `hS : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBaseChangeStatement` using `_root_.GlobalTheory.twistBaseChange`. Establish `hR : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBCSpanStatement` using `_root_.ReciprocityTheory.ChartRestriction.G.DVR.twistBCSpan_of hS`. Establish `hA : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.VRatioGtStatement` using `_root_.GlobalTheory.RatioVal.main`.
+
+Use `⟨?_, hR, hA, _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.tw_of hU hR hA, _root_.GlobalTheory.UnitBallFree.main hU hS⟩` and prove the remaining obligations. Unfold `_root_.GlobalTheory.UT.LL`. Conclude with `⟨hLaws.1, hLaws.2.1, hLaws.2.2.1, hLaws.2.2.2.1, hLaws.2.2.2.2.1⟩`.
+-/
 theorem _root_.GlobalTheory.lawsAndExpansions :
     _root_.GlobalTheory.UT.LL ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBCSpanStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.VRatioGtStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.UUStatement := by
   have hLaws := _root_.GlobalTheory.allSixLaws

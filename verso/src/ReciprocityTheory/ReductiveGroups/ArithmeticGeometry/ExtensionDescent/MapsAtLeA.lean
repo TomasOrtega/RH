@@ -27,6 +27,9 @@ def finProdGen {J : Type} [Fintype J] (φ : J → K → (Y ⟶ X)) (ε : J → K
 
 variable {X' : Scheme.{0}} (L' : LB X') {J : Type} [Fintype J]
 
+/- English proof (translation)
+Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun i => Set.mem_iInter.1 hx.2 i`. Consider the case `exact Set.mem_iInter.2 fun i => Set.mem_iInter.1 hx.1 i`.
+-/
 lemma mapsAt_le_b (pr : J → (X' ⟶ X)) (p : Y ⟶ X') (jN : J → L.ι) (jL : L'.ι) :
     p ⁻¹ᵁ (LB.div (LB.LinComb L pr (fun _ => 1)) L').U (jN, jL) ≤
       LB.wchart L (fun i => p ≫ pr i) jN := by
@@ -35,6 +38,9 @@ lemma mapsAt_le_b (pr : J → (X' ⟶ X)) (p : Y ⟶ X') (jN : J → L.ι) (jL :
   | exact Set.mem_iInter.2 fun i => Set.mem_iInter.1 hx.2 i
   | exact Set.mem_iInter.2 fun i => Set.mem_iInter.1 hx.1 i
 
+/- English proof (translation)
+Introduce `x hx`. Use `first`. Consider the case `exact Set.mem_iInter.2 fun _ => hx.1`. Consider the case `exact Set.mem_iInter.2 fun _ => hx.2`.
+-/
 lemma mapsAt_le_a (pr : J → (X' ⟶ X)) (p : Y ⟶ X') (jN : J → L.ι) (jL : L'.ι) :
     p ⁻¹ᵁ (LB.div (LB.LinComb L pr (fun _ => 1)) L').U (jN, jL) ≤
       LB.wchart L' (fun _ : PUnit => p) (fun _ => jL) := by

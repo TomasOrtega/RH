@@ -82,6 +82,9 @@ structure SL (actO : G →* (OC ≃ₐ[ℤ_[ℓ]] OC)) (r : ℕ) where
 
 variable {actO : G →* (OC ≃ₐ[ℤ_[ℓ]] OC)} {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.vecMul, dotProduct, map_sum, map_mul, Matrix.map_apply]`.
+-/
 lemma map_vecMul' (e : OC ≃ₐ[ℤ_[ℓ]] OC) (v : Fin r → OC) (A : Matrix (Fin r) (Fin r) OC) :
     (fun k => e ((v ᵥ* A) k)) = (fun k => e (v k)) ᵥ* A.map e := by
   funext k

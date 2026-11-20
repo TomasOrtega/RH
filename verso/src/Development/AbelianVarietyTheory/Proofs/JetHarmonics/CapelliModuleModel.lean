@@ -20,9 +20,17 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ} {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.1.1, fun h => ⟨⟨h, fun a ha => absurd ha (by simp)⟩, trivial⟩⟩`.
+-/
 theorem mem_lev {g : B.Mat k r} : g ∈ Q.Glev k r 0 ∩ Set.univ ↔ g ∈ B.GV k r :=
   ⟨fun h => h.1.1, fun h => ⟨⟨h, fun a ha => absurd ha (by simp)⟩, trivial⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h g₀ hg₀`. Take `⟨U, f', hU, hg, hf, he⟩` from `h g₀ (mem_lev.2 hg₀)`. Conclude with `⟨U, f', hU, hg, hf, fun g hgU hgG => he g hgU (mem_lev.2 hgG).1⟩`. Introduce `h g₀ hg₀`.
+
+Take `⟨U, f', hU, hg, hf, he⟩` from `h g₀ (mem_lev.1 hg₀)`. Conclude with `⟨U, f', hU, hg, hf, fun g hgU hgG => he g hgU hgG.1⟩`.
+-/
 theorem smooth_iff {f : B.Mat k r → F} :
     Q.SmoothLev k r 0 Set.univ f ↔ B.CkOn ⊤ (B.GV k r) f := by
   constructor
@@ -33,6 +41,15 @@ theorem smooth_iff {f : B.Mat k r → F} :
     obtain ⟨U, f', hU, hg, hf, he⟩ := h g₀ (mem_lev.1 hg₀)
     exact ⟨U, f', hU, hg, hf, fun g hgU hgG => he g hgU hgG.1⟩
 
+/- English proof (translation)
+Establish `h1 : B.Rw v (0 : B.Mat k r → F) = 0`. Unfold `B.Rw`. Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih`.
+
+Rewrite using `[List.foldr_cons, ih]`. Use function extensionality and compare the values at `g`. Simplify using `[RdV]`. Unfold `B.dLR`. Rewrite using `[h1]`.
+
+Proceed by induction on `u with`. Consider the case `nil => rfl`. Consider the case `cons X u ih`. Rewrite using `[List.foldr_cons, ih]`. Use function extensionality and compare the values at `g`.
+
+Simplify using `[B.LdV]`.
+-/
 theorem dLR_zero (u v : List (B.Mat k r)) : B.dLR u v (0 : B.Mat k r → F) = 0 := by
   have h1 : B.Rw v (0 : B.Mat k r → F) = 0 := by
     unfold B.Rw
@@ -51,6 +68,9 @@ theorem dLR_zero (u v : List (B.Mat k r)) : B.dLR u v (0 : B.Mat k r → F) = 0 
     funext g
     simp [B.LdV]
 
+/- English proof (translation)
+Use `⟨0, fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `u v _ _ _ g _`. Simplify using `[dLR_zero]`.
+-/
 theorem inCC_zero (A : ℝ) (m : ℕ) : B.InCC A m (0 : B.Mat k r → F) := by
   refine ⟨0, fun g₀ _ => ⟨Set.univ, 0, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩
   intro u v _ _ _ g _
@@ -61,6 +81,9 @@ abbrev Sm (k r : ℕ) (F : Type) [NormedAddCommGroup F] [NormedSpace ℂ F] := V
 abbrev Eu (k r : ℕ) (F : Type) [NormedAddCommGroup F] [NormedSpace ℂ F] (a b : Fin (2 * r + k + 1)) :
     Module.End ℂ (Sm k r F) := E0 isOpen_univ a b
 
+/- English proof (translation)
+Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ Q.Glev k r 0 ∩ Set.univ`. Conclude with `h g (mem_lev.1 hg)`. Rewrite using `[v.2.2 g hg, v'.2.2 g hg]`.
+-/
 theorem sm_ext (v v' : Sm k r F) (h : ∀ g ∈ B.GV k r, (v : B.Mat k r → F) g = (v' : B.Mat k r → F) g) :
     v = v' := by
   refine Subtype.ext (funext fun g => ?_)
@@ -68,11 +91,17 @@ theorem sm_ext (v v' : Sm k r F) (h : ∀ g ∈ B.GV k r, (v : B.Mat k r → F) 
   · exact h g (mem_lev.1 hg)
   · rw [v.2.2 g hg, v'.2.2 g hg]
 
+/- English proof (translation)
+Use `ev_E (i := 0) isOpen_univ (c0 a) (c0 b) v (mem_lev.2 hg)` as an intermediate fact. Rewrite `this` using `[position_level_zero_coord, position_level_zero_coord]`. Then use the resulting hypothesis.
+-/
 theorem ev_Eu (a b : Fin (2 * r + k + 1)) (v : Sm k r F) (g : B.Mat k r) (hg : g ∈ B.GV k r) :
     (Eu k r F a b v : B.Mat k r → F) g = Q.EH k r a b (v : B.Mat k r → F) g := by
   have := ev_E (i := 0) isOpen_univ (c0 a) (c0 b) v (mem_lev.2 hg)
   rwa [position_level_zero_coord, position_level_zero_coord] at this
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: a' = a` using `funext ha`. Rewrite using `[this]`.
+-/
 theorem qminorOp_cast {n t t' : ℕ} (h : t = t')
     (Eop : Fin n → Fin n → (Matrix (Fin n) (Fin n) ℂ → F) → (Matrix (Fin n) (Fin n) ℂ → F))
     (a : Fin t' → Fin n) (a' : Fin t → Fin n) (ha : ∀ j, a' j = a (Fin.cast h j)) (u : ℂ)
@@ -81,12 +110,18 @@ theorem qminorOp_cast {n t t' : ℕ} (h : t = t')
   have : a' = a := funext ha
   rw [this]
 
+/- English proof (translation)
+Establish `hm : Q.mdim k r 0 = 2 * r + k + 1` using `by simp [Q.mdim]`. Unfold `Q.CV Q.capL Q.uC`. Rewrite using `[qminorOp_cast hm _ id _ (fun j => by ext; simp [Q.posL]), hm]`.
+-/
 theorem CV_eq (Y : ℂ) (f : B.Mat k r → F) :
     Q.CV k r Y f = qminorOp (Q.EH k r) id id (Y + (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2) f := by
   have hm : Q.mdim k r 0 = 2 * r + k + 1 := by simp [Q.mdim]
   unfold Q.CV Q.capL Q.uC
   rw [qminorOp_cast hm _ id _ (fun j => by ext; simp [Q.posL]), hm]
 
+/- English proof (translation)
+Rewrite using `[CV_eq]`. Conclude with `quantum_minor_level_eq_hat isOpen_univ id id _ v g (mem_lev.2 hg)`.
+-/
 theorem ev_qdet (Y : ℂ) (v : Sm k r F) (g : B.Mat k r) (hg : g ∈ B.GV k r) :
     (qdet (Eu k r F) (Y + (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2) v : B.Mat k r → F) g =
       Q.CV k r Y (v : B.Mat k r → F) g := by
@@ -115,6 +150,11 @@ def mulOp (k r : ℕ) (F : Type) [NormedAddCommGroup F] [NormedSpace ℂ F] (c :
     Module.End ℂ (Sm k r F) :=
   if h : B.CkOn ⊤ (B.GV k r) c then Mh isOpen_univ c (smooth_iff.2 h) else 0
 
+/- English proof (translation)
+Introduce `a b c d`. Use `LinearMap.ext fun w => hι ?_` and prove the remaining obligations. Use `LinearMap.congr_fun (hE a b c d) (ι w)` as an intermediate fact. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub, h] at this ⊢`. Rewrite using `[this]`.
+
+Apply the tactic sequence `congr 1 <;> split_ifs <;> simp [h]`.
+-/
 theorem glRel_of_intertwine {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {n : ℕ}
     (E : Fin n → Fin n → Module.End ℂ V) (E' : Fin n → Fin n → Module.End ℂ W) (ι : W →ₗ[ℂ] V)
     (hι : Function.Injective ι) (h : ∀ a b w, ι (E' a b w) = E a b (ι w)) (hE : GlRel E) : GlRel E' := by
@@ -129,6 +169,21 @@ end CapelliModel
 
 open CapelliModel Formalism.FourierDecayAlt.P.Qx5 Formalism.FourierDecayAlt.P.PBG in
 
+/- English proof (translation)
+Introduce `k r Wp Wq _ _ _ _ _ _ lam A`. Set `χ : ℂ → ℂ` to `fun u => ∏ s, (u + ((lam s : ℂ) - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2))`. Establish `hgl : GlRel (Eu k r (Wq →L[ℂ] Wp))` using `level_zero_derivation_relation isOpen_univ`. Establish `hst : ∀ a b, ∀ v ∈ eig k r (Wq →L[ℂ] Wp) χ A, Eu k r (Wq →L[ℂ] Wp) a b v ∈ eig k r (Wq →L[ℂ] Wp) χ A`. Introduce and unpack `a b v ⟨hv, hv'⟩`.
+
+Use `⟨fun m => ?_, fun u => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ckOn_inCC_congr_on_group k r _ A _ _ (fun g hg => (ev_Eu a b v g hg).symm)).2 m ((GlobalTheory.T.operatorEab_preserves_smooth_classCC k r Wp Wq A a b _ ⟨smooth_iff.1 v.2.1, hv⟩).2 m)`. Use `LinearMap.congr_fun (qDetCentral _ _ _ hgl u a b) v` as an intermediate fact. Rewrite `this` using `[Module.End.mul_apply, Module.End.mul_apply, hv', map_smul]`. Conclude with `this`.
+
+Establish `hint : ∀ a b (w : eig k r (Wq →L[ℂ] Wp) χ A), (eig k r (Wq →L[ℂ] Wp) χ A).subtype ((Eu k r (Wq →L[ℂ] Wp) a b).restrict (hst a b) w) = Eu k r (Wq →L[ℂ] Wp) a b ((eig k r (Wq →L[ℂ] Wp) χ A).subtype w)` using `fun _ _ _ => rfl`. Use `⟨Sm k r (Wq →L[ℂ] Wp), eig k r (Wq →L[ℂ] Wp) χ A, inferInstance, inferInstance, inferInstance, inferInstance, Eu k r (Wq →L[ℂ] Wp), fun a b => (Eu k r (Wq →L[ℂ] Wp) a b).restrict (hst a b), (eig k r (Wq →L[ℂ] Wp) χ A).subtype, (Sm k r (Wq →L[ℂ] Wp)).subtype, mulOp k r _, hgl, glR …` and prove the remaining obligations. Introduce `u w`. Apply `Submodule.subtype_injective` to reduce the goal to its premises. Unfold `qdet`.
+
+Rewrite using `[qminor_intertwine _ _ _ _ _ _ _ hint, map_smul]`. Conclude with `w.2.2 u`. Introduce and unpack `f ⟨hf, hfc⟩ hY`. Establish `hcut : ∀ g ∈ B.GV k r, f g = (vK isOpen_univ f (smooth_iff.2 hf) : B.Mat k r → (Wq →L[ℂ] Wp)) g` using `fun g hg => (cut_of_mem f (mem_lev.2 hg)).symm`. Use `⟨⟨vK isOpen_univ f (smooth_iff.2 hf), fun m => (GlobalTheory.ckOn_inCC_congr_on_group k r _ A _ _ hcut).2 m (hfc m), fun u => ?_⟩, fun g hg => (hcut g hg).symm⟩` and prove the remaining obligations.
+
+Use `sm_ext _ _ fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `ev_qdet (u - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2) (vK isOpen_univ f (smooth_iff.2 hf)) g hg`. Rewrite `h1` using `[sub_add_cancel]`. Establish `h2` using `GlobalTheory.capelli_eigen_real_to_complex k r Wp Wq lam f hf hY (u - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2) g hg`. Rewrite `h1`, `h2` using `[CV_eq]`.
+
+Rewrite using `[h1, ← qminorOp_loc isOpen_univ id id _ f _ (fun x hx => hcut x (mem_lev.1 hx)) g (mem_lev.2 hg), h2, Submodule.coe_smul, Pi.smul_apply, ← hcut g hg]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun s _ => by ring`. Introduce `c hc`. Simplify using `only [mulOp, dif_pos hc]`.
+
+Use `⟨fun v g hg => ev_M isOpen_univ (smooth_iff.2 hc) v (mem_lev.2 hg), fun a b v g hg => ?_⟩` and prove the remaining obligations. Use `ev_EM (i := 0) isOpen_univ (c0 a) (c0 b) (smooth_iff.2 hc) v (mem_lev.2 hg)` as an intermediate fact. Rewrite `this` using `[position_level_zero_coord, position_level_zero_coord, ← ev_Eu a b v g hg]`. Conclude with `this`.
+-/
 theorem capelli_module_model : ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (lam : Fin (2 * r + k + 1) → ℝ) (A : ℝ), ∃ (V W : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (_ : AddCommGroup W) (_ : Module ℂ W) (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ V) (E' : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ W) (ι : W →ₗ[ℂ] V) (ev : V →ₗ[ℂ] (B.Mat k r → (Wq →L[ℂ] Wp))) (mul : (B.Mat k r → ℂ) → Module.End ℂ V), GlRel E ∧ GlRel E' ∧ (∀ a b w, ι (E' a b w) = E a b (ι w)) ∧ (∀ (u : ℂ) (w : W), qdet E' u w = (∏ s, (u + ((lam s : ℂ) - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2))) • w) ∧ (∀ v, B.CkOn ⊤ (B.GV k r) (ev v)) ∧ (∀ v v', (∀ g ∈ B.GV k r, ev v g = ev v' g) → v = v') ∧ (∀ w, ∀ m : ℕ, B.InCC A m (ev (ι w))) ∧ (∀ f : B.Mat k r → (Wq →L[ℂ] Wp), (B.CkOn ⊤ (B.GV k r) (f) ∧ ∀ m : ℕ, B.InCC (A) m (f)) → (∀ Y : ℝ, ∀ g ∈ B.GV k r, Q.CV k r (Y : ℂ) (f) g = ((∏ s, (Y + lam s) : ℝ) : ℂ) • (f) g) → ∃ w, ∀ g ∈ B.GV k r, ev (ι w) g = f g) ∧ (∀ a b v, ∀ g ∈ B.GV k r, ev (E a b v) g = Q.EH k r a b (ev v) g) ∧ (∀ (Y : ℂ) v, ∀ g ∈ B.GV k r, ev (qdet E (Y + (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2) v) g = Q.CV k r Y (ev v) g) ∧ (∀ c : B.Mat k r → ℂ, B.CkOn ⊤ (B.GV k r) c → (∀ v, ∀ g ∈ B.GV k r, ev (mul c v) g = c g • ev v g) ∧ ∀ a b v, ∀ g ∈ B.GV k r, ev (E a b (mul c v)) g = c g • ev (E a b v) g + Q.EH k r a b c g • ev v g) := by
   intro k r Wp Wq _ _ _ _ _ _ lam A
   let χ : ℂ → ℂ := fun u => ∏ s, (u + ((lam s : ℂ) - (((2 * r + k + 1) : ℕ) - 1 : ℂ) / 2))

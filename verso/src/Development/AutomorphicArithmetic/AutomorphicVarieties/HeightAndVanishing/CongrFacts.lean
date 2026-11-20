@@ -7,10 +7,18 @@ section Loc
 
 variable {O : Type} [CommRing O] [IsLocalRing O]
 
+/- English proof (translation)
+Conclude with `(Ideal.Quotient.eq).symm`.
+-/
 private theorem sub_mem_iff (x y : O) :
     x - y ∈ IsLocalRing.maximalIdeal O ↔ IsLocalRing.residue O x = IsLocalRing.residue O y := by
   exact (Ideal.Quotient.eq).symm
 
+/- English proof (translation)
+Establish `h0 : (l : IsLocalRing.ResidueField O) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `h`. Use `haveI : CharP (IsLocalRing.ResidueField O) l := (CharP.charP_iff_prime_eq_zero hl.out).2 h0`. Establish `h1 : (IsLocalRing.residue O x - 1) ^ l ^ s = 0`.
+
+Rewrite using `[sub_pow_char_pow, ← map_pow, hx, map_one, one_pow, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero s hl.out.ne_zero) |>.1 h1)`.
+-/
 private theorem res_eq_one (l : ℕ) [hl : Fact l.Prime] (h : ¬ IsUnit (l : O)) (x : O) (s : ℕ) (hx : x ^ l ^ s = 1) :
     IsLocalRing.residue O x = 1 := by
   have h0 : (l : IsLocalRing.ResidueField O) = 0 := by
@@ -21,6 +29,13 @@ private theorem res_eq_one (l : ℕ) [hl : Fact l.Prime] (h : ¬ IsUnit (l : O))
     rw [sub_pow_char_pow, ← map_pow, hx, map_one, one_pow, sub_self]
   exact sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero s hl.out.ne_zero) |>.1 h1)
 
+/- English proof (translation)
+Establish `hw : (x * y⁻¹) ^ m = 1` using `by rw [mul_pow, inv_pow, hx, hy, inv_one, mul_one]`. Establish `hr : IsLocalRing.residue O ((x * y⁻¹ : Oˣ) : O) = 1`. Rewrite using `[Units.val_mul, map_mul, h, ← map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, map_one]`. Establish `hzm : ((x * y⁻¹ : Oˣ) : O) ^ m = 1` using `by rw [← Units.val_pow_eq_pow_val, hw, Units.val_one]`. Establish `hs : IsUnit (∑ i ∈ Finset.range m, ((x * y⁻¹ : Oˣ) : O) ^ i)`.
+
+Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_sum]`. Simplify using `only [map_pow, hr, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]`. Rewrite using `[← map_natCast (IsLocalRing.residue O) m]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).mpr hm`. Establish `e` using `geom_sum_mul ((x * y⁻¹ : Oˣ) : O) m`.
+
+Rewrite `e` using `[hzm, sub_self]`. Establish `hz1` using `(hs.mul_right_eq_zero).mp e`. Establish `h1 : x * y⁻¹ = 1` using `Units.ext (by rw [Units.val_one]; exact sub_eq_zero.mp hz1)`. Conclude with `mul_inv_eq_one.mp h1`.
+-/
 private theorem eq_of_res_eq [IsDomain O] (x y : Oˣ) (m : ℕ) (hm : IsUnit (m : O)) (hx : x ^ m = 1) (hy : y ^ m = 1)
     (h : IsLocalRing.residue O x = IsLocalRing.residue O y) : x = y := by
   have hw : (x * y⁻¹) ^ m = 1 := by rw [mul_pow, inv_pow, hx, hy, inv_one, mul_one]
@@ -38,11 +53,31 @@ private theorem eq_of_res_eq [IsDomain O] (x y : Oˣ) (m : ℕ) (hm : IsUnit (m 
   have h1 : x * y⁻¹ = 1 := Units.ext (by rw [Units.val_one]; exact sub_eq_zero.mp hz1)
   exact mul_inv_eq_one.mp h1
 
+/- English proof (translation)
+Conclude with `map_units_inv (IsLocalRing.residue O) x`.
+-/
 private theorem res_inv (x : Oˣ) : IsLocalRing.residue O ((x⁻¹ : Oˣ) : O) = (IsLocalRing.residue O x)⁻¹ := by
   exact map_units_inv (IsLocalRing.residue O) x
 
 end Loc
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c`. Use `haveI := c.dvr`. Use `haveI := c.fin`. Establish `hF` using `dvrFacts l c.O`. Establish `hlu : ¬ IsUnit ((l : ℕ) : c.O)`.
+
+Introduce `hu`. Establish `hu' : IsUnit (algebraMap ℤ_[l] c.O ((l : ℕ) : ℤ_[l]))` using `by rwa [map_natCast]`. Use `haveI := hF.2.2.1`. Conclude with `PadicInt.p_nonunit (IsLocalHom.map_nonunit _ hu')`. Establish `cr : ∀ a b : G ℚ Ω →* c.Oˣ, Congr c a b ↔ ∀ σ, IsLocalRing.residue c.O (a σ : c.O) = IsLocalRing.residue c.O (b σ : c.O)` using `fun a b => forall_congr' fun σ => sub_mem_iff _ _`.
+
+Establish `p4 : ∀ (x y : c.Oˣ) (m : ℕ), ¬ l ∣ m → x ^ m = 1 → y ^ m = 1 → (x : c.O) - y ∈ IsLocalRing.maximalIdeal c.O → x = y` using `fun x y m hm hx hy hxy => eq_of_res_eq x y m (hF.2.2.2.2.2.2.2.2 m hm) hx hy ((sub_mem_iff _ _).mp hxy)`. Establish `papp : ∀ (a : G ℚ Ω →* c.Oˣ) (n : ℕ), a ^ n = 1 → ∀ σ, (a σ) ^ n = 1`. Introduce `a n ha σ`. Rewrite using `[← MonoidHom.pow_apply, ha, MonoidHom.one_apply]`. Use `⟨⟨fun a => ?_, fun {a b} h => ?_, fun {a b d} h1 h2 => ?_⟩, fun a a' b b' ha hb => ⟨?_, ?_⟩, fun a s ha => ?_, p4, fun a b m hm ha hb hab => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cr]`. Introduce `σ`. Both sides reduce to the same expression. Rewrite `h`, the goal using `[cr]`. Introduce `σ`.
+
+Conclude with `(h σ).symm`. Rewrite `h1`, `h2`, the goal using `[cr]`. Introduce `σ`. Conclude with `(h1 σ).trans (h2 σ)`. Rewrite `ha`, `hb`, the goal using `[cr]`.
+
+Introduce `σ`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, map_mul, ha σ, hb σ]`. Rewrite `ha`, the goal using `[cr]`. Introduce `σ`. Simplify using `only [MonoidHom.inv_apply, res_inv, ha σ]`.
+
+Rewrite using `[cr]`. Introduce `σ`. Establish `e' : ((a σ : c.O)) ^ l ^ s = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, papp a _ ha σ, Units.val_one]`. Rewrite using `[res_eq_one l hlu _ s e', MonoidHom.one_apply, Units.val_one, map_one]`.
+
+Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `σ`. Conclude with `p4 _ _ m hm (papp a m ha σ) (papp b m hb σ) (hab σ)`.
+-/
 theorem UpperTheory.V.HV.congrFacts :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l), Equivalence (Congr (Ω := Ω) c) ∧
       (∀ a a' b b' : G ℚ Ω →* c.Oˣ, Congr c a a' → Congr c b b' → Congr c (a * b) (a' * b') ∧ Congr c a⁻¹ a'⁻¹) ∧

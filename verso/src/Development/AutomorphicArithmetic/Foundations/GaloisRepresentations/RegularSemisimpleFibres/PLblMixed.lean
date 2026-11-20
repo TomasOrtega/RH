@@ -6,6 +6,17 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Proceed by induction on `h with`. Consider the case `nil => intro l hl`. Conclude with `⟨l, .refl _, hl⟩`. Consider the case `cons b _ ih`. Introduce `l hl`.
+
+Consider the cases of `l with`. Consider the case `nil => simp at hl`. Consider the case `cons a l`. Simplify using `only [List.map_cons, List.cons.injEq] at hl`. Take `⟨l', hp, hm⟩` from `ih l hl.2`.
+
+Conclude with `⟨a :: l', hp.cons a, by simp [hm, hl.1]⟩`. Consider the case `swap a b t`. Introduce `l hl`. Use `match l, hl with`. Consider the case `u :: v :: l, hl`.
+
+Simplify using `only [List.map_cons, List.cons.injEq] at hl`. Conclude with `⟨v :: u :: l, .swap _ _ _, by simp [hl.1, hl.2.1, hl.2.2]⟩`. Consider the case `trans _ _ ih₁ ih₂`. Introduce `l hl`. Take `⟨l₂, hp₂, hm₂⟩` from `ih₂ l hl`.
+
+Take `⟨l₁, hp₁, hm₁⟩` from `ih₁ l₂ hm₂`. Conclude with `⟨l₁, hp₁.trans hp₂, hm₁⟩`.
+-/
 private theorem perm_lift {α β : Type*} (f : α → β) {m m' : List β} (h : m.Perm m') :
     ∀ l : List α, l.map f = m' → ∃ l' : List α, l'.Perm l ∧ l'.map f = m := by
   induction h with
@@ -30,6 +41,9 @@ private theorem perm_lift {α β : Type*} (f : α → β) {m m' : List β} (h : 
     obtain ⟨l₁, hp₁, hm₁⟩ := ih₁ l₂ hm₂
     exact ⟨l₁, hp₁.trans hp₂, hm₁⟩
 
+/- English proof (translation)
+Take `⟨l', hl', hp⟩` from `h`. Rewrite `hl'` using `[Multiset.filter_coe, Multiset.coe_eq_coe]`. Conclude with `(List.Perm.pairwise_iff (fun h => h.symm) hl').2 (hp.imp Or.inl)`.
+-/
 private theorem pairwise_filter_sym {α : Type*} (r : α → α → Prop) (p : α → Prop) [DecidablePred p] (l : List α)
     (h : (Multiset.filter p (l : Multiset α)).Pairwise r) :
     (l.filter fun b => decide (p b)).Pairwise fun y z => r y z ∨ r z y := by
@@ -37,6 +51,11 @@ private theorem pairwise_filter_sym {α : Type*} (r : α → α → Prop) (p : �
   rw [Multiset.filter_coe, Multiset.coe_eq_coe] at hl'
   exact (List.Perm.pairwise_iff (fun h => h.symm) hl').2 (hp.imp Or.inl)
 
+/- English proof (translation)
+Take `⟨m, X⟩` from `y`. Take `⟨m', Y⟩` from `z`. Take `rfl : m = m'` from `h`. Establish `e : ∀ γ, LinearMap.trace ℂ _ (levelZero X.rep.ρ γ) = LinearMap.trace ℂ _ (levelZero Y.rep.ρ γ)` using `fun γ => by`. Establish `h1` using `ty γ`.
+
+Establish `h2` using `tz γ`. Conclude with `h1.trans ((congrFun hc γ).symm.trans h2.symm)`. Conclude with `⟨hIn m X Y hy hz hy' hz' e, hIn m Y X hz hy hz' hy' fun γ => (e γ).symm⟩`.
+-/
 private theorem inert_both {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (hIn : ∀ (m : ℕ) (x y : IrrCl (GL (Fin m) k)), IrrGL.IsCusp ⟨m, x⟩ → IrrGL.IsCusp ⟨m, y⟩ →
       UpperTheory.Zero.LLC.DZ ⟨m, x⟩ → UpperTheory.Zero.LLC.DZ ⟨m, y⟩ →
@@ -56,6 +75,57 @@ private theorem inert_both {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
     exact h1.trans ((congrFun hc γ).symm.trans h2.symm)
   exact ⟨hIn m X Y hy hz hy' hz' e, hIn m Y X hz hy hz' hy' fun γ => (e γ).symm⟩
 
+/- English proof (translation)
+Take `⟨⟨hq2, -, hOk⟩, -, hn, -⟩` from `hL`. Establish `hpos : ∀ a, 0 < (x a).1` using `fun a => (hOk _ (List.mem_ofFn.2 ⟨a, rfl⟩)).1`. Use `set q := Nat.card 𝓀[k] with hq`. Set `c₁ : Fin m → ℕ` to `fun a => if (x a).1 = 1 then c a % (q - 1) else c a`. Establish `hc₁ : ∀ a, cusp θ (x a).1 (c₁ a) = cusp θ (x a).1 (c a)`.
+
+Introduce `a`. Distinguish the cases in `h : (x a).1 = 1`. Use `hCF 𝓀[k] θ hθ (x a).1 (c a) (c₁ a) 0 (hpos a) ?_` and prove the remaining obligations. Simplify using `only [c₁, if_pos h, h, ← hq, pow_one, pow_zero, mul_one]`. Conclude with `Nat.mod_modEq _ _`.
+
+Simplify using `only [c₁, if_neg h]`. Establish `hreg : ∀ a, Reg q (x a).1 (c₁ a)`. Introduce `a`. Distinguish the cases in `h : (x a).1 = 1`. Introduce `i h0 h1`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [c₁, if_neg h]`. Conclude with `(hx a).2.2.1`. Set `f : IrrGL k × ℕ → ℕ × ℕ` to `fun t => (t.1.1, t.2)`. Set `T₀ : List (IrrGL k × ℕ)` to `List.ofFn fun a => (x a, c₁ a)`.
+
+Establish `hmem : ∀ t ∈ T₀, ∃ a, t = (x a, c₁ a)` using `fun t ht => by`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 ht`. Conclude with `⟨a, rfl⟩`. Establish `hmemL : ∀ p ∈ T₀.map f, ∃ a, p = ((x a).1, c₁ a)` using `fun p hp => by`. Take `⟨t, ht, rfl⟩` from `List.mem_map.1 hp`.
+
+Take `⟨a, rfl⟩` from `hmem t ht`. Conclude with `⟨a, rfl⟩`. Take `⟨D, hD, hDn, hDp⟩` from `hG (T₀.map f) (fun p hp => by`. Take `⟨a, rfl⟩` from `hmemL p hp`. Conclude with `hpos a)`.
+
+Take `⟨T, hTp, hTm⟩` from `perm_lift f hDp T₀ rfl`. Set `x' : Fin T.length → IrrGL k` to `fun a => (T.get a).1`. Set `c' : Fin T.length → ℕ` to `fun a => (T.get a).2`. Establish `hmap : Finset.univ.val.map x' = s`. Rewrite using `[← hxs, Fin.univ_val_map, Fin.univ_val_map, Multiset.coe_eq_coe]`.
+
+Establish `e1 : List.ofFn x' = T.map Prod.fst` using `by conv_rhs => rw [← List.ofFn_get T, List.map_ofFn]`. Both sides reduce to the same expression. Establish `e2 : List.ofFn x = T₀.map Prod.fst`. Simplify using `only [T₀, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2]`. Conclude with `hTp.map _`. Establish `hofn : List.ofFn (fun a => ((x' a).1, c' a)) = expand D ++ (T₀.map f).filter fun p => 2 ≤ p.1`. Rewrite using `[← hTm]`. Use `conv_rhs => rw [← List.ofFn_get T, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Establish `hdegP : GlobalTheory.Shin.deg (expand D ++ (T₀.map f).filter fun p => 2 ≤ p.1) = GlobalTheory.Shin.deg (T₀.map f)`. Unfold `GlobalTheory.Shin.deg`. Conclude with `(hDp.map _).sum_eq`. Establish `hdeg₀ : GlobalTheory.Shin.deg (T₀.map f) = n`.
+
+Rewrite using `[hn]`. Use `show _ = GlobalTheory.Shin.deg [] + GlobalTheory.Shin.deg _`. Simplify using `only [GlobalTheory.Shin.deg, T₀, List.map_ofFn, List.map_nil, List.sum_nil, zero_add]`. Both sides reduce to the same expression. Establish `hd' : ∑ a, (x' a).1 = n`.
+
+Rewrite using `[← hdeg₀, ← hdegP, ← hofn]`. Simplify using `only [GlobalTheory.Shin.deg, List.map_ofFn, List.sum_ofFn]`. Both sides reduce to the same expression. Establish `heq` using `hUF k n V π T.length x' hd' (by rw [hmap]; exact hs) (by rw [hmap]; exact hU)`. Establish `key : ∀ t ∈ T, ∀ γ, LinearMap.trace ℂ _ (levelZero t.1.rep γ) = cusp θ t.1.1 t.2 γ`.
+
+Introduce `t ht`. Take `⟨b, rfl⟩` from `hmem t (hTp.mem_iff.1 ht)`. Introduce `γ`. Conclude with `((hx b).2.2.2 γ).trans (congrFun (hc₁ b) γ).symm`. Establish `htr : ∀ a γ, LinearMap.trace ℂ _ (levelZero (x' a).rep γ) = cusp θ (x' a).1 (c' a) γ` using `fun a => key (T.get a) (List.get_mem _ _)`.
+
+Establish `hLm : ∀ p ∈ (T₀.map f).filter (fun p => 2 ≤ p.1), ∃ a, p = ((x a).1, c a) ∧ 2 ≤ (x a).1`. Introduce `p hp`. Take `⟨hp1, hp2⟩` from `List.mem_filter.1 hp`. Take `⟨a, rfl⟩` from `hmemL p hp1`. Establish `h2 : 2 ≤ (x a).1` using `by simpa using hp2`.
+
+Use `⟨a, ?_, h2⟩` and prove the remaining obligations. Establish `: (x a).1 ≠ 1` using `by omega`. Simplify using `only [c₁, if_neg this]`. Set `a₀ : Lbl` to `⟨q, D, (T₀.map f).filter fun p => 2 ≤ p.1⟩`. Establish `hOk₀ : a₀.Ok`.
+
+Use `⟨hq2, fun p hp => (hD p hp).1, fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl, -⟩` from `hLm p hp`. Conclude with `⟨hpos a, (hx a).2.2.1⟩`. Take `⟨hJ1, hJ2⟩` from `hJP 𝓀[k] θ hθ a₀ hOk₀ rfl`. Establish `hrk : n = a₀.rk`.
+
+Rewrite using `[← hJ1]`. Conclude with `(hdegP.trans hdeg₀).symm`. Establish `hch` using `(hJC 𝓀[k] θ hθ).2 a₀ hOk₀ rfl`. Rewrite `hJ2`, `hch` using `[← hrk]`. Establish `hMeets : Meets (levelZero π) (JD θ a₀.D a₀.L n)` using `hLF k θ n V π hsm hirr T.length x' c' hd' heq htr _ hch (by rw [hofn]; exact hJ2)`.
+
+Use `⟨a₀, ⟨hOk₀, rfl, hrk, hMeets⟩, ⟨?_, hDn, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨a, ha⟩` from `hmemL _ (hD p hp).2`. Establish `h1 : (x a).1 = 1` using `(Prod.ext_iff.1 ha).1.symm`. Establish `h2 : p.2 = c₁ a` using `(Prod.ext_iff.1 ha).2`.
+
+Use `show p.2 < q - 1`. Rewrite using `[h2]`. Simplify using `only [c₁, if_pos h1]`. Conclude with `Nat.mod_lt _ (by have : 2 ≤ q := hq2; omega)`. Introduce `p hp`.
+
+Take `⟨a, rfl, h2⟩` from `hLm p hp`. Conclude with `h2`. Establish `hs₀ : s = ((T₀.map Prod.fst : List _) : Multiset _)`. Rewrite using `[← hxs, Fin.univ_val_map]`. Simplify using `only [T₀, List.map_ofFn]`.
+
+Both sides reduce to the same expression. Rewrite `hP` using `[hs₀]`. Establish `h1` using `pairwise_filter_sym _ _ _ hP`. Rewrite `h1` using `[List.filter_map, List.pairwise_map]`. Use `show ((T₀.map f).filter _).Pairwise _`.
+
+Rewrite using `[List.filter_map, List.pairwise_map]`. Use `List.Pairwise.imp_of_mem ?_ h1` and prove the remaining obligations. Introduce `t₁ t₂ m₁ m₂ hh heq i hcong`. Take `⟨m₁, r₁⟩` from `List.mem_filter.1 m₁`. Take `⟨m₂, r₂⟩` from `List.mem_filter.1 m₂`.
+
+Take `⟨a, rfl⟩` from `hmem t₁ m₁`. Take `⟨b, rfl⟩` from `hmem t₂ m₂`. Establish `ra : 2 ≤ (x a).1` using `by simpa using r₁`. Establish `rb : 2 ≤ (x b).1` using `by simpa using r₂`. Establish `na : (x a).1 ≠ 1` using `by omega`.
+
+Establish `nb : (x b).1 ≠ 1` using `by omega`. Establish `hcong' : c b ≡ c a * q ^ i [MOD q ^ (x a).1 - 1]`. Establish `: c₁ b ≡ c₁ a * q ^ i [MOD q ^ (x a).1 - 1]` using `hcong`. Simplify `this` using `only [c₁, if_neg na, if_neg nb]`. Use `inert_both hIn θ (x a) (x b) (hx a).1 (hx b).1 (hx a).2.1 (hx b).2.1 (c a) (c b) (hx a).2.2.2 (hx b).2.2.2 heq (hCF 𝓀[k] θ hθ (x a).1 (c a) (c b) i (hpos a) hcong')` as an intermediate fact.
+
+Conclude with `hh.elim (· this.1) (· this.2)`. Introduce `p hp`. Take `⟨a, rfl, -⟩` from `hLm p hp`. Conclude with `⟨x a, by rw [← hxs]; exact Multiset.mem_map_of_mem _ (Finset.mem_univ a), rfl⟩`.
+-/
 private theorem core {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (hG : Group1) (hCF : CuspFrob) (hUF : UnlFull) (hJP : JDPair) (hJC : JDChar) (hLF : LblFull)
     (hIn : ∀ (m : ℕ) (x y : IrrCl (GL (Fin m) k)), IrrGL.IsCusp ⟨m, x⟩ → IrrGL.IsCusp ⟨m, y⟩ →
@@ -201,6 +271,11 @@ private theorem core {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] 
     obtain ⟨a, rfl, -⟩ := hLm p hp
     exact ⟨x a, by rw [← hxs]; exact Multiset.mem_map_of_mem _ (Finset.mem_univ a), rfl⟩
 
+/- English proof (translation)
+Introduce `hOf hG hCF hIn hUF hJP hJC hLF E Ω _ _ _ _ _ A v hv g _ i hi θ hθ n τ hM`. Use `haveI : CharZero (v.adicCompletion E) := charZero_of_injective_algebraMap (R := E) (algebraMap E (v.adicCompletion E)).injective`. Take `⟨hDZ, s, hs, hU, hP⟩` from `hM`. Establish `e₀` using `IrrGL.equivOf τ.ρ τ.smooth τ.irred`. Establish `hs' : HasSupport τ.ρ s` using `hs.of_equiv e₀.symm`.
+
+Establish `hfix : fixed τ.ρ (KOne (v.adicCompletion E) (Fin n)) ≠ ⊥` using `GlobalTheory.LocLanglands.fixed_ne_bot_of_equiv e₀.symm hDZ`. Take `⟨m, x, c, hxs, hx, hL⟩` from `hOf (v.adicCompletion E) θ hθ n τ.V τ.ρ s hs' hfix`. Take `⟨a, h1, h2, h3⟩` from `core hG hCF hUF hJP hJC hLF (hIn E Ω A v hv g i hi) θ hθ n τ.ρ τ.smooth τ.irred s hs' hU hP m x c hxs hx hL`. Conclude with `⟨a, s, h1, h2, hs', h3⟩`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.lblMixed :
     LblOf → Group1 → CuspFrob → InertOf → UnlFull → JDPair → JDChar → LblFull → LblMixed := by
   intro hOf hG hCF hIn hUF hJP hJC hLF E Ω _ _ _ _ _ A v hv g _ i hi θ hθ n τ hM

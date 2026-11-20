@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ContinuousAtPlace
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.KFinLoc
 open scoped TensorProduct Matrix GlobalTheory.VacAny
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HermLocDualBasis.exists_locDualBasis | exact GlobalTheory.HermLocDualBasis.exists_locDualBasis | (intros; apply GlobalTheory.HermLocDualBasis.exists_locDualBasis <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_basis_with_dual_basis_in_hermitian_lattice_away_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n r s : ℕ} (X : Spc F E n), X.IsHerm σ B r s → ∀ v : Pl F,
     ∃ f p : Fin n → Fin n → E, (∀ k, ∃ t : 𝓞 F, t ∉ v.asIdeal ∧ algebraMap F E (t : F) • f k ∈ X.L) ∧

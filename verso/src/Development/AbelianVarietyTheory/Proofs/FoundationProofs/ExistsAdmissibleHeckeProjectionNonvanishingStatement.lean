@@ -10,6 +10,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped TensorProduct MatrixGroups Matrix
 open GlobalTheory.LambdaValuationPowers
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.AdmProj.exists_admissible_hecke_projection_nonvanishing_alt) | (exact GlobalTheory.AdmProj.exists_admissible_hecke_projection_nonvanishing_alt) | (intros; apply GlobalTheory.AdmProj.exists_admissible_hecke_projection_nonvanishing_alt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_admissible_hecke_projection_nonvanishing : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ)
   [Fact l.Prime] (e : ℕ) (S : Finset Pl) (W : R2 Ω l) (ψ : ZMod l → Qbar l) (ι : Qbar l ≃+* ℂ) (gN : Newform (2 * e + 1))
   (j : Ω →+* Qbar l),

@@ -24,6 +24,9 @@ variable (T : Thick (nlFun γ 0 X q κ)) {l s : ℕ} (hT : TF l s T)
 
 include hT in
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.SiteTr.tr_tf T.δ l s (trD T s) (trD_spec T s).1 hT.1 hT.2`.
+-/
 theorem tr_facts : fil (trD T s) s = ⊥ ∧
     (∀ (r : ℕ) (x : trB T s), (l : trB T s) * x ∈ fil (trD T s) r → x ∈ fil (trD T s) r) ∧
     IsNilpotent (trJ T s) :=
@@ -34,15 +37,27 @@ abbrev pT : Thick (nlFun γ 0 X q κ) :=
 
 abbrev jT : T ⟶ pT T hT := homOf _ _ _ _ _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(tr_facts T hT).1, (tr_facts T hT).2.1⟩`.
+-/
 theorem pT_tf : TF l s (pT T hT) := ⟨(tr_facts T hT).1, (tr_facts T hT).2.1⟩
 
 abbrev xT : trB T s := Ideal.Quotient.mk (trI T s) ((pq T.B).e 1)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`.
+-/
 theorem e_mem (B : Type) [CommRing B] (J : Ideal B) : (pq B).e 1 ∈ (pq B).ext J :=
   Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_map_of_mem _ (e_mem _ _)`.
+-/
 theorem xT_mem : xT (s := s) T ∈ trJ T s := Ideal.mem_map_of_mem _ (e_mem _ _)
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (trD_spec T s).1.dpow_comp _ (e_mem _ _)]`. Both sides reduce to the same expression.
+-/
 theorem sum_eq (b : ℕ →₀ T.B) :
     (b.sum fun k c => trF T s c * (trD T s).dpow k (xT (s := s) T)) =
       Ideal.Quotient.mk (trI T s) (b.sum fun k c => algebraMap T.B (pq T.B).P c * (eta T.δ).dpow k ((pq T.B).e 1)) := by
@@ -51,8 +66,14 @@ theorem sum_eq (b : ℕ →₀ T.B) :
   rw [map_mul, (trD_spec T s).1.dpow_comp _ (e_mem _ _)]
   rfl
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem toNat_sub (r : ℤ) (k : ℕ) : (r - k).toNat = r.toNat - k := by omega
 
+/- English proof (translation)
+Rewrite using `[sum_eq]`. Simplify `(GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.δ s (trD T s) (trD_spec T s).1 b r.toNat (by omega) 0).1` using `only [toNat_sub]`.
+-/
 theorem fil_coeff (b : ℕ →₀ T.B) (r : ℤ) (hr : r ≤ s) :
     (b.sum fun k c => trF T s c * (trD T s).dpow k (xT (s := s) T)) ∈ fil (trD T s) r.toNat ↔
       ∀ k : ℕ, b k ∈ fil T.δ (r - k).toNat := by
@@ -60,6 +81,9 @@ theorem fil_coeff (b : ℕ →₀ T.B) (r : ℤ) (hr : r ≤ s) :
   simpa only [toNat_sub] using
     (GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.δ s (trD T s) (trD_spec T s).1 b r.toNat (by omega) 0).1
 
+/- English proof (translation)
+Rewrite using `[sum_eq]`. Simplify `(GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.δ s (trD T s) (trD_spec T s).1 b r.toNat (by omega) (T.i c)).2` using `only [toNat_sub]`.
+-/
 theorem std_coeff (b : ℕ →₀ T.B) (r : ℤ) (hr : r ≤ s) (c : R) :
     (b.sum fun k c => trF T s c * (trD T s).dpow k (xT (s := s) T)) ∈
         fil (trD T s) r.toNat ⊔ Ideal.span {Ideal.Quotient.mk (trI T s) (algebraMap T.B (pq T.B).P (T.i c))} ↔
@@ -68,6 +92,19 @@ theorem std_coeff (b : ℕ →₀ T.B) (r : ℤ) (hr : r ≤ s) (c : R) :
   simpa only [toNat_sub] using
     (GlobalTheory.CompanionTheory.SiteTrCrit.tr_crit T.δ s (trD T s) (trD_spec T s).1 b r.toNat (by omega) (T.i c)).2
 
+/- English proof (translation)
+Take `⟨F, ⟨hF1, hF2, hF3⟩, hFu⟩` from `GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal T.δ T'.δ φ.φ φ.dp x hx`. Establish `hk : trI T s ≤ RingHom.ker F`. Introduce `z hz`. Establish `h1 : F z ∈ fil T'.δ (max s 1)` using `FubiniStudyChowHeightFormula₂.Adr.Fil.map_fil_le _ _ F hF3 _ (Ideal.mem_map_of_mem F hz)`. Establish `h2 : fil T'.δ (max s 1) ≤ fil T'.δ s` using `GlobalTheory.Cris.ExpBij.dpFil_anti T'.δ (le_max_left _ _)`.
+
+Establish `h3 : F z ∈ T'.pdPow s` using `h2 h1`. Rewrite `h3` using `[hT']`. Conclude with `h3`. Set `g : trB T s →+* T'.B` to `Ideal.Quotient.lift (trI T s) F fun a ha => hk ha`. Establish `hgF : g.comp (Ideal.Quotient.mk (trI T s)) = F`.
+
+Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.lift_mk (trI T s) F fun a ha => hk ha`. Establish `hg : g.comp (trF T s) = φ.φ`. Rewrite using `[← RingHom.comp_assoc, hgF, hF1]`. Establish `hdp : IsDPMorphism (trD T s) T'.δ g` using `(trD_spec T s).2 _ _ _ g (by rw [hgF]; exact hF3)`.
+
+Establish `hle : trJ T s ≤ T'.J.comap g` using `Ideal.map_le_iff_le_comap.1 hdp.1`. Use `⟨descOf φ g hg hdp hle, ⟨hom_ext hg, (Ideal.Quotient.lift_mk (trI T s) F fun a ha => hk ha).trans hF2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `ψ ⟨h1, h2⟩`. Use `hom_ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ.φ = g`.
+
+Establish `e` using `hFu (ψ.φ.comp (Ideal.Quotient.mk (trI T s))) ⟨?_, h2, ?_⟩`. Use `Ideal.Quotient.ringHom_ext ?_` and prove the remaining obligations. Rewrite using `[e, hgF]`. Use `congrArg Thick.Hom.φ h1` as an intermediate fact. Conclude with `this`.
+
+Conclude with `IsDPMorphism.comp _ ψ.dp (trD_spec T s).1`.
+-/
 theorem univ_tr {T' : Thick (nlFun γ 0 X q κ)} (hT' : T'.pdPow s = ⊥) (φ : T ⟶ T') (x : T'.B) (hx : x ∈ T'.J) :
     ∃! ψ : pT T hT ⟶ T', jT T hT ≫ ψ = φ ∧ ψ.φ (xT (s := s) T) = x := by
   obtain ⟨F, ⟨hF1, hF2, hF3⟩, hFu⟩ := GlobalTheory.CompanionTheory.PDUniv.pdPoly_universal T.δ T'.δ φ.φ φ.dp x hx
@@ -107,6 +144,9 @@ abbrev Qc : ObjectProperty (Thick (nlFun γ 0 X q κ)) := St (TF l s) 𝒱
 
 variable {l s 𝒱}
 
+/- English proof (translation)
+Take `⟨V, hV, h⟩` from `T.property.2`. Conclude with `⟨pT_tf _ _, V, hV, inU_hom (jT T.obj T.property.1) h⟩`.
+-/
 theorem pT_mem (T : (Qc (γ := γ) (q := q) (κ := κ) l s 𝒱).FullSubcategory) : Qc l s 𝒱 (pT T.obj T.property.1) := by
   obtain ⟨V, hV, h⟩ := T.property.2
   exact ⟨pT_tf _ _, V, hV, inU_hom (jT T.obj T.property.1) h⟩
@@ -128,15 +168,24 @@ def polyQ : Poly (sP (Qc (γ := γ) (q := q) (κ := κ) l s 𝒱)) where
     obtain ⟨b, rfl⟩ := GlobalTheory.CompanionTheory.PDSpanning.exists_sum_dpow T.obj.δ w
     exact ⟨b, (sum_eq T.obj b).symm⟩
 
+/- English proof (translation)
+Introduce `T b` and use `fil_coeff T.obj b r hr`.
+-/
 theorem crit_fil (r : ℤ) (hr : r ≤ s) : (polyQ (γ := γ) (q := q) (κ := κ) l s 𝒱).Crit (sFil _) r :=
   fun T b => fil_coeff T.obj b r hr
 
+/- English proof (translation)
+Introduce `T b` and use `std_coeff T.obj b r hr c`.
+-/
 theorem crit_std (r : ℤ) (hr : r ≤ s) (c : R) :
     (polyQ (γ := γ) (q := q) (κ := κ) l s 𝒱).Crit (fun r => stdI _ (some r) c) r :=
   fun T b => std_coeff T.obj b r hr c
 
 end Site
 
+/- English proof (translation)
+Introduce `O R _ _ I γ X q κ l s 𝒱`. Conclude with `⟨polyQ l s 𝒱, fun r hr => ⟨crit_fil l s 𝒱 r hr, crit_std l s 𝒱 r hr⟩⟩`.
+-/
 theorem polyTf : KH.PolyTf := by
   intro O R _ _ I γ X q κ l s 𝒱
   exact ⟨polyQ l s 𝒱, fun r hr => ⟨crit_fil l s 𝒱 r hr, crit_std l s 𝒱 r hr⟩⟩

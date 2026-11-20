@@ -123,6 +123,11 @@ def ShortInCuspCanonical (cusp : ((E →+* ℂ) × ℕ → ℕ) → ℕ → Subm
   ∀ [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (Δ : DeltaDatum Xo c nab) (hK : ReflexLe Dw c) (nV : ℕ),
     ShortInCusp Δ hK nV cusp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p y`. Take `⟨⟨S', _, _, φ, y₂, hff, hl⟩, hf2⟩` from `hf p y`. Take `⟨v, hv, hfv⟩` from `hf2 S' φ y₂ hl`. Take `⟨w, hw, hgw⟩` from `(hg p y).2 S' φ y₂ hl`. Take `⟨u, -, hu⟩` from `h n N Λ β x₀ a P hd S' y₂`.
+
+Establish `hvw : v = w` using `(hu v hv).trans (hu w hw).symm`. Apply `hff.injective` to reduce the goal to its premises. Rewrite using `[hfv, hgw, hvw]`.
+-/
 theorem IsShortRule.unique (h : CoverTot Δ) {n N : ℕ} {Λ : Lat E n} {β : c.F} {x₀ : Fin n → ConjCl Dw l}
     {a : (E →+* ℂ) × ℕ → ℕ} {P : MvPolynomial (LtN Dw n) c.F} (hd : IsSeriesData Δ Λ N β a P) {f g : Rul Xo c}
     (hf : IsShortRule Δ Λ N β x₀ a P f) (hg : IsShortRule Δ Λ N β x₀ a P g) : f = g := by
@@ -135,10 +140,18 @@ theorem IsShortRule.unique (h : CoverTot Δ) {n N : ℕ} {Λ : Lat E n} {β : c.
   apply hff.injective
   rw [hfv, hgw, hvw]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x hx => ⟨1, hp.not_dvd_one, by simpa using hx⟩, fun x hx => ⟨1, hp.not_dvd_one, by simpa using hx⟩⟩`.
+-/
 private theorem eqAtPrime_refl {n : ℕ} (p : ℕ) (hp : p.Prime) (L : Submodule (𝓞 E) (Fin n → E)) :
     EqAtPrime p L L :=
   ⟨fun x hx => ⟨1, hp.not_dvd_one, by simpa using hx⟩, fun x hx => ⟨1, hp.not_dvd_one, by simpa using hx⟩⟩
 
+/- English proof (translation)
+Use `⟨fun p hp => ⟨LinearEquiv.refl E _, fun x y => rfl, ?_⟩, fun p hp _ => eqAtPrime_refl p hp _⟩` and prove the remaining obligations. Establish `hm : ((Lat.std E n).map (LinearEquiv.refl E _)).L = (Lat.std E n).L`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `hy`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Rewrite using `[hm]`. Conclude with `eqAtPrime_refl p hp _`.
+-/
 theorem std_mem_reps (n : ℕ) (s : ℕ+) : Lat.std E n ∈ reps Δ n s := by
   refine ⟨fun p hp => ⟨LinearEquiv.refl E _, fun x y => rfl, ?_⟩, fun p hp _ => eqAtPrime_refl p hp _⟩
   have hm : ((Lat.std E n).map (LinearEquiv.refl E _)).L = (Lat.std E n).L := by
@@ -151,6 +164,15 @@ theorem std_mem_reps (n : ℕ) (s : ℕ+) : Lat.std E n ∈ reps Δ n s := by
   rw [hm]
   exact eqAtPrime_refl p hp _
 
+/- English proof (translation)
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Establish `e : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ)`. Establish `h0` using `congrArg (fun x : 𝓞 E => τ (x : E)) H.rt_sq`. Simplify using `using h0`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 (e.trans H.sqrt_neg_disc_sq.symm) with h | h` into its components or cases.
+
+Conclude with `⟨τ, h⟩`. Use `⟨(starRingEnd ℂ).comp τ, ?_⟩ show starRingEnd ℂ (τ (H.rt : E)) = H.rt0` and prove the remaining obligations. Rewrite using `[h, map_neg]`. Establish `hs` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`.
+
+Establish `h1` using `congrArg Complex.re hs`. Establish `h2` using `congrArg Complex.im hs`. Simplify using `[sq] at h1 h2`. Establish `hre : H.rt0.re = 0`. Break down `mul_eq_zero.1 (show H.rt0.re * H.rt0.im = 0 by nlinarith [h2]) with h3 | h3` into its components or cases.
+
+Conclude with `h3`. Rewrite `h1` using `[h3]`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`.
+-/
 theorem exists_inPsi (H : Host E) : ∃ τ : E →+* ℂ, InPsi H τ := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   have e : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ) := by

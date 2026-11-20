@@ -36,6 +36,9 @@ def FontCore (W : LocWach PD LL O v n) : Prop :=
   ∀ T : LocLat G Qp LL O, ∃ ψ : W.DD T →ₗ[O] W.DD T, (∀ x, ψ (W.φD T x) = x) ∧
     (∀ (a : W.EE) x, ψ (W.φE a • x) = a • ψ x) ∧ ∀ g x, ψ (W.γD T g x) = W.γD T g (ψ x)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem herrLat_iff (W : LocWach PD LL O v n) : HerrLat W ↔
     (∀ T : LocLat G Qp LL O, Function.Surjective (W.clK T) ∧
       ∀ p, W.clK T p = 0 ↔ ∃ m : W.DD T, (∀ δ ∈ W.DelF, W.γD T δ m = m) ∧
@@ -60,6 +63,9 @@ def HerrLatticeHypotheses (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
 
 def HerrLatticeTheorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := HerrLatticeHypotheses D HW F → HerrLatticeDescription D HW F
 
+/- English proof (translation)
+Introduce and unpack `⟨h, h0, hF⟩ l _ K LL hA`. Establish `h1` using `(h l K 1 LL hA.2.2).1 (fun h2 => absurd (((D.loc l).PD_p K).symm.trans h2) hA.2.1)`. Use `(herrLat_iff _).2 ⟨fun T => ⟨(h1 T).1, (h1 T).2.1⟩, ?_, h0 l K LL hA, hF l K LL hA⟩` and prove the remaining obligations. Introduce `T T' f pr pr' hp`. Conclude with `((h1 T).2.2 T' f pr pr' hp).symm`.
+-/
 theorem herr_lattice_of_fon (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrLatticeTheorem D HW F := by
   rintro ⟨h, h0, hF⟩ l _ K LL hA
   have h1 := (h l K 1 LL hA.2.2).1 (fun h2 => absurd (((D.loc l).PD_p K).symm.trans h2) hA.2.1)
@@ -80,6 +86,9 @@ def HerrExtensionEtaleTheorem (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA
 
 def HerrLatticeFurtherConditions (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : Prop := Formalism.MainNotions.tableLineDegreeTwo.adm17 D HW F
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun H => ⟨fun l _ K LL hA => (H l K LL hA).1, fun l _ K LL hA => (H l K LL hA).2⟩, fun H l _ K LL hA => ⟨H.1 l K LL hA, H.2 l K LL hA⟩⟩`.
+-/
 theorem herr_lattice_rest_iff (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) : HerrLatticeFurtherConditions D HW F ↔ LitSub D HW F ∧ HerrExtensionEtale D HW F :=
   ⟨fun H => ⟨fun l _ K LL hA => (H l K LL hA).1, fun l _ K LL hA => (H l K LL hA).2⟩,
     fun H l _ K LL hA => ⟨H.1 l K LL hA, H.2 l K LL hA⟩⟩

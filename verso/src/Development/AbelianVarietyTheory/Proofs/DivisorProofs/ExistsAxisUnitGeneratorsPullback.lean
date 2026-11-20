@@ -5,12 +5,38 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 noncomputable section
 namespace GlobalTheory.UPel.HT.Hecke.PullInj
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mul_inv_axis_comm_identity {G : Type*} [CommGroup G] (a b W R₁ R₂ : G) :
     a * b⁻¹ * W * (b * R₁) * (a * R₂)⁻¹ = W * R₁ * R₂⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Introduce `A₀ A₀' X X' ψ e e' π h Q₁ Q₂ hQ₁ hQ₂ w hw ρ₁ ρ₂ hρ₁ hρ₂`. Establish `hpt : ∀ x : A₀, π (e x) = e' (ψ x)` using `fun x => by`. Use `congrArg (fun f : A₀ ⟶ X' => f x) h` as an intermediate fact. Simplify using `using this`. Use `set D := LB.div (Q₂.pull π) (Q₁.pull π)`.
+
+Set `W : D.ι → A₀.Opens` to `fun k => e ⁻¹ᵁ D.U k`. Establish `h₁ : ∀ k : D.ι, W k ≤ ψ ⁻¹ᵁ (Q₁.pull e').U k.2` using `fun k x hx => by`. Establish `hb` using `(mem_divPull.1 (show e x ∈ D.U k from hx)).2`. Rewrite `hb` using `[hpt]`. Conclude with `mem_pull.2 hb`.
+
+Establish `h₂ : ∀ k : D.ι, W k ≤ ψ ⁻¹ᵁ (Q₂.pull e').U k.1` using `fun k x hx => by`. Establish `hb` using `(mem_divPull.1 (show e x ∈ D.U k from hx)).1`. Rewrite `hb` using `[hpt]`. Conclude with `mem_pull.2 hb`. Set `u : ∀ k, Γ(A₀, W k)ˣ` to `fun k => pullU e _ (w.s k) * res (h₁ k) (pullU ψ _ (ρ₁.s k.2)) * (res (h₂ k) (pullU ψ _ (ρ₂.s k.1)))⁻¹`.
+
+Establish `hu : ∀ (Z : Scheme.{0}) (r : Z ⟶ A₀) (z : Z) (k : D.ι) (hz : r z ∈ W k), gm r z (W k) (u k) = gm (r ≫ e) z _ (w.s k) * gm (r ≫ ψ) z _ (ρ₁.s k.2) * (gm (r ≫ ψ) z _ (ρ₂.s k.1))⁻¹`. Introduce `Z r z k hz`. Simplify using `only [u, map_mul, map_inv]`. Rewrite using `[gm_res r z (h₁ k) hz, gm_res r z (h₂ k) hz, gm_pull r e z _ hz, gm_pull r ψ z _ (h₁ k hz), gm_pull r ψ z _ (h₂ k hz)]`. Establish `hcov : (⊤ : A₀.Opens) ≤ iSup W` using `fun x _ => by`.
+
+Take `⟨i, hi⟩` from `exists_chart hQ₂ (π (e x))`. Take `⟨j, hj⟩` from `exists_chart hQ₁ (π (e x))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨((fun _ => i), (fun _ => j)), mem_divPull.2 ⟨hi, hj⟩⟩`. Establish `hcomp : ∀ k l, ∀ x ∈ W k ⊓ W l, gm (𝟙 A₀) x (W k) (u k) = gm (𝟙 A₀) x (W l) (u l)`. Introduce `k l x hx`.
+
+Rewrite using `[hu _ _ x k hx.1, hu _ _ x l hx.2]`. Simplify using `only [Category.id_comp]`. Establish `hk : e x ∈ D.U k` using `hx.1`. Establish `hl : e x ∈ D.U l` using `hx.2`. Establish `hk'` using `mem_divPull.1 hk`.
+
+Establish `hl'` using `mem_divPull.1 hl`. Establish `hk₁ : ψ x ∈ (Q₁.pull e').U k.2` using `h₁ k hx.1`. Establish `hl₁ : ψ x ∈ (Q₁.pull e').U l.2` using `h₁ l hx.2`. Establish `hk₂ : ψ x ∈ (Q₂.pull e').U k.1` using `h₂ k hx.1`. Establish `hl₂ : ψ x ∈ (Q₂.pull e').U l.1` using `h₂ l hx.2`.
+
+Establish `E` using `gen_germ hw e x hk hl`. Rewrite `E` using `[germ_div_g _ _ e x hk hl]`. Rewrite `E` using `[show e = 𝟙 A₀ ≫ e from (Category.id_comp e).symm]`. Rewrite `E` using `[gm_pull_g Q₂ π (𝟙 A₀ ≫ e) x hk'.1 hl'.1, gm_pull_g Q₁ π (𝟙 A₀ ≫ e) x hk'.2 hl'.2]`. Simplify using `only [Category.id_comp] at E`.
+
+Establish `R₁` using `gen_germ hρ₁ ψ x hk₁ hl₁`. Establish `R₂` using `gen_germ hρ₂ ψ x hk₂ hl₂`. Rewrite `R₁`, `R₂` using `[show ψ = 𝟙 A₀ ≫ ψ from (Category.id_comp ψ).symm]`. Rewrite `R₁` using `[gm_pull_g Q₁ e' (𝟙 A₀ ≫ ψ) x (mem_pull.1 hk₁) (mem_pull.1 hl₁)]`. Rewrite `R₂` using `[gm_pull_g Q₂ e' (𝟙 A₀ ≫ ψ) x (mem_pull.1 hk₂) (mem_pull.1 hl₂)]`.
+
+Simplify using `only [Category.id_comp, ← h] at E R₁ R₂`. Rewrite using `[E, R₁, R₂]`. Conclude with `mul_inv_axis_comm_identity _ _ _ _ _`. Take `⟨g, hg⟩` from `glue_unit (⊤ : A₀.Opens) W (fun _ => le_top) hcov u hcomp`. Use `⟨g, fun Z r z k hk => ?_⟩` and prove the remaining obligations.
+
+Establish `hz : r z ∈ W k` using `hk`. Establish `e₁ : gm r z ⊤ g = gm r z (W k) (u k)` using `by rw [← hg k, gm_res r z le_top hz]`. Rewrite using `[e₁, hu Z r z k hz, inv_mul_cancel_right]`.
+-/
 theorem axis_unit : ∀ (A₀ A₀' X X' : Scheme.{0}) (ψ : A₀ ⟶ A₀') (e : A₀ ⟶ X) (e' : A₀' ⟶ X') (π : X ⟶ X'),
     e ≫ π = ψ ≫ e' → ∀ (Q₁ Q₂ : LB X'), Q₁.IsLB → Q₂.IsLB → ∀ (w : LB.Iso (Q₁.pull π) (Q₂.pull π)), w.IsGen →
     ∀ (ρ₁ : LB.Gen (Q₁.pull e')) (ρ₂ : LB.Gen (Q₂.pull e')), ρ₁.IsGen → ρ₂.IsGen →

@@ -6,6 +6,17 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ Γ _ μ _ _ ψ hψ hψs F`. Use `set f : G → ℂ := fun y => ψ y⁻¹ with hfdef`. Establish `hfi : Integrable f μ` using `(hψ.comp continuous_inv).integrable_of_hasCompactSupport (hψs.comp_homeomorph (Homeomorph.inv G))`. Establish `hconv : cv ψ F = GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift Γ ↑↑F)`. Use function extensionality and compare the values at `x`.
+
+Use `show ∫ y, GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F) y * ψ (y⁻¹ * x) ∂μ = ∫ y, f y * GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F) (x * y) ∂μ`. Rewrite using `[← MeasureTheory.integral_mul_left_eq_self (fun y => GlobalTheory.AutomorphicL2Unitary.lift Γ (↑↑F) y * ψ (y⁻¹ * x)) x]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hfdef, _root_.mul_inv_rev, inv_mul_cancel_right]`. Conclude with `mul_comm _ _`.
+
+Take `⟨-, hae⟩` from `GlobalTheory.AutomorphicL2Pointwise.lift_Rop_eq_convR G Γ μ f hfi F`. Rewrite using `[hconv]`. Establish `hinv : GlobalTheory.AutomorphicL2Unitary.LeftInv Γ (GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift Γ ↑↑F))` using `(GlobalTheory.AutomorphicL2Unitary.leftInv_lift _).convR f`. Establish `hdesc : GlobalTheory.AutomorphicL2Unitary.descend Γ (GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift Γ ↑↑F)) =ᵐ[GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ] ↑↑(GlobalTheory.AutomorphicL2Unitary.Rop Γ μ f F)`. Use `GlobalTheory.AutomorphicL2Unitary.ae_quotMeasure_iff.2 ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hae] with g hg`. Establish `hl` using `congrFun hinv.lift_descend g`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.lift] at hg hl`. Rewrite using `[hl, hg]`. Establish `hm : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient Γ μ (GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift Γ ↑↑F))` using `⟨hinv, (MeasureTheory.Lp.memLp _).ae_eq hdesc.symm⟩`.
+
+Conclude with `⟨hm, GlobalTheory.AutomorphicL2Unitary.l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (hm.lift_toL2_ae_eq.trans hae.symm)⟩`.
+-/
 theorem UpperTheory.V.Cj.H.convolution_L2_class :
     UpperTheory.V.Cj.H.ConvolutionL2Class := by
   intro G _ _ _ _ _ _ _ _ Γ _ μ _ _ ψ hψ hψs F

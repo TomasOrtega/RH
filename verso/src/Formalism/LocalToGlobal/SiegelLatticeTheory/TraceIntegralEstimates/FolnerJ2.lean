@@ -19,9 +19,15 @@ open Formalism.MainNotions.S (uMat)
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {e f : Fin r → Fin (2 * r + k + 1) → ℂ}
   {wf : Fin k → Fin (2 * r + k + 1) → ℂ} {z0 : Fin (2 * r + k + 1) → ℂ}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (Units.ext h)`.
+-/
 theorem uMat_ext {a b : Formalism.REAL.UJ ε} (h : uMat a = uMat b) : a = b :=
   Subtype.ext (Units.ext h)
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_uMat : Continuous (uMat : Formalism.REAL.UJ ε → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :=
   Units.continuous_val.comp continuous_subtype_val
 
@@ -29,6 +35,9 @@ def ofM (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hg : g ∈
     GH k r :=
   mk (PI.QuotSetU.UnitaryGroupMassFormula.unitary_hermitian_group k r) g hg
 
+/- English proof (translation)
+The claim follows from `toM_mk g hg`.
+-/
 theorem toM_ofM (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) :
     (ofM g hg).toM = g := toM_mk g hg
 
@@ -52,11 +61,19 @@ def psiF (hF : IsFrameJ ε e f wf z0) : GH k r ≃* Formalism.REAL.UJ ε where
           rw [Qi_mul_Qm hF, Matrix.mul_one]; simp only [Matrix.mul_assoc]
       _ = _ := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[(Formalism.REAL.isClosedEmbeddingMatrix _ ε).1.isEmbedding.continuous_iff]`. Use `show Continuous (fun g : GH k r => Qm e f wf z0 * g.toM * Qi ε e f wf z0)`. Conclude with `(continuous_const.matrix_mul continuous_toM).matrix_mul continuous_const`.
+-/
 theorem continuous_psiF (hF : IsFrameJ ε e f wf z0) : Continuous (psiF hF) := by
   rw [(Formalism.REAL.isClosedEmbeddingMatrix _ ε).1.isEmbedding.continuous_iff]
   show Continuous (fun g : GH k r => Qm e f wf z0 * g.toM * Qi ε e f wf z0)
   exact (continuous_const.matrix_mul continuous_toM).matrix_mul continuous_const
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_toM]`. Establish `e1 : (fun s : Formalism.REAL.UJ ε => ((psiF hF).symm s).toM) = fun s => Qi ε e f wf z0 * uMat s * Qm e f wf z0`. Use function extensionality and compare the values at `s`. Conclude with `toM_ofM _ (conj_mem_UH hF (uMat_mem s))`. Rewrite using `[e1]`.
+
+Conclude with `(continuous_const.matrix_mul continuous_uMat).matrix_mul continuous_const`.
+-/
 theorem continuous_psiF_symm (hF : IsFrameJ ε e f wf z0) : Continuous (psiF hF).symm := by
   rw [continuous_iff_toM]
   have e1 : (fun s : Formalism.REAL.UJ ε => ((psiF hF).symm s).toM) = fun s => Qi ε e f wf z0 * uMat s * Qm e f wf z0 := by
@@ -64,6 +81,11 @@ theorem continuous_psiF_symm (hF : IsFrameJ ε e f wf z0) : Continuous (psiF hF)
   rw [e1]
   exact (continuous_const.matrix_mul continuous_uMat).matrix_mul continuous_const
 
+/- English proof (translation)
+Establish `hz` using `Qm_zB (e := e) (f := f) (wf := wf) hT z`. Establish `key : psiF hF g ∈ HNset ε e f wf (z0v T z) (zBv k r T) ↔ g.toM ∈ Formalism.QuantumDeterminants.Sset k r (zBv k r T)` using `by show Qi ε e f wf (z0v T z) * uMat (psiF hF g) * Qm e f wf (z0v T z) ∈ Formalism.QuantumDeterminants.Sset k r (zBv k r T) ↔ _ show Qi ε e f wf (z0v T z) * (Qm e f wf (z0v T z) * g.toM * Qi ε e f wf (z0v T z)) * Qm e f wf (z0v T z) ∈ _ ↔ _`. Rewrite using `[Qi_Qm_conj hF]`. Rewrite using `[← key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hs`. Conclude with `HNset_of_inS (fun k r T hT s hs h1 h2 => bessel_levi_formula k r T hT s hs h1 h2) hF hT hz hs`. Introduce `hs`. Conclude with `inS_of_HNset hF hz (inWb_zB T) ⟨_, rfl⟩ hs`.
+-/
 theorem inS_psiF_iff {T : ℝ} {z : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ ε e f wf (z0v T z)) (hT : 0 < T) (g : GH k r) :
     InS e z (uMat (psiF hF g)) ↔ g.toM ∈ Formalism.QuantumDeterminants.Sset k r (zBv k r T) := by
   have hz := Qm_zB (e := e) (f := f) (wf := wf) hT z
@@ -78,6 +100,13 @@ theorem inS_psiF_iff {T : ℝ} {z : Fin (2 * r + k + 1) → ℂ} (hF : IsFrameJ 
   · intro hs
     exact inS_of_HNset hF hz (inWb_zB T) ⟨_, rfl⟩ hs
 
+/- English proof (translation)
+Set `Φ : (ι → GH k r) ≃* (∀ v, Formalism.REAL.UJ (εv v))` to `MulEquiv.piCongrRight fun v => psiF (hF v)`. Establish `hΦ : Continuous Φ` using `continuous_pi fun v => (continuous_psiF (hF v)).comp (continuous_apply v)`. Establish `hΦ' : Continuous Φ.symm` using `continuous_pi fun v => (continuous_psiF_symm (hF v)).comp (continuous_apply v)`. Establish `hset : Φ ⁻¹' {s : ∀ v, Formalism.REAL.UJ (εv v) | ∀ v, InS (ev v) (zv v) (uMat (s v))} = SP (fun v => zBv k r (T v))`. Use extensionality with `x`.
+
+Use `show (∀ v, InS (ev v) (zv v) (uMat (psiF (hF v) (x v)))) ↔ ∀ v, (x v).toM ∈ PI.QuotSetU.Sset k r (zBv k r (T v))`. Conclude with `forall_congr' fun v => inS_psiF_iff (hF v) (hT v) (x v)`. Use `isFolner_of_equiv Φ hΦ hΦ' hμ ?_` and prove the remaining obligations. Establish `hμ'` using `isHaarSub_comap Φ hΦ hΦ' hμ`. Rewrite `hμ'`, the goal using `[hset]`.
+
+Conclude with `isFolner_pi (z := fun v => zBv k r (T v)) (fun v => inWb_zB (T v)) (fun v => by show 0 < Formalism.QuantumDeterminants.Tz k r (zBv k r (T v)); rw [Tz_zB (hT v).le]; exact hT v) _ hμ'`.
+-/
 theorem isFolner_Sinf {ι : Type} [Fintype ι] {εv : ι → Fin (2 * r + k + 1) → Bool}
     (ev fv : ι → Fin r → Fin (2 * r + k + 1) → ℂ) (wv : ι → Fin k → Fin (2 * r + k + 1) → ℂ)
     (zv : ι → Fin (2 * r + k + 1) → ℂ) (T : ι → ℝ) (hT : ∀ v, 0 < T v)

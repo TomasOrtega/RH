@@ -5,6 +5,15 @@ open scoped Matrix.Norms.L2Operator ComplexOrder
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `h1 : ‖μ - 1‖ < 1` using `hμ.trans_lt ht`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at h1`. Establish `h` using `Complex.norm_log_one_add_sub_self_le h1`.
+
+Rewrite `h` using `[add_sub_cancel]`. Establish `h2 : Real.log ‖μ‖ - (μ - 1).re = (Complex.log μ - (μ - 1)).re`. Rewrite using `[Complex.sub_re (Complex.log μ), Complex.log_re]`. Rewrite using `[h2]`. Use `(Complex.abs_re_le_norm _).trans (h.trans ?_)` and prove the remaining obligations.
+
+Establish `h0` using `norm_nonneg (μ - 1)`. Establish `h3 : (1 - ‖μ - 1‖)⁻¹ ≤ (1 - t)⁻¹` using `inv_anti₀ (by linarith) (by linarith)`. Establish `h4 : ‖μ - 1‖ ^ 2 ≤ t ^ 2` using `by gcongr`. Establish `h5 : 0 ≤ (1 - ‖μ - 1‖)⁻¹` using `inv_nonneg.2 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: (1 - t) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem abs_log_norm_sub_re_sub_one_le {μ : ℂ} {t : ℝ} (hμ : ‖μ - 1‖ ≤ t) (ht : t < 1) :
     μ ≠ 0 ∧ |Real.log ‖μ‖ - (μ - 1).re| ≤ t ^ 2 / (2 * (1 - t)) := by
   have h1 : ‖μ - 1‖ < 1 := hμ.trans_lt ht
@@ -26,6 +35,13 @@ theorem abs_log_norm_sub_re_sub_one_le {μ : ℂ} {t : ℝ} (hμ : ‖μ - 1‖ 
         have : (1 - t) ≠ 0 := by linarith
         field_simp
 
+/- English proof (translation)
+Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Take `⟨h0, h1⟩` from `ih fun μ hμ => hs μ (Multiset.mem_cons_of_mem hμ)`. Take `⟨h2, h3⟩` from `abs_log_norm_sub_re_sub_one_le (hs a (Multiset.mem_cons_self a s)) ht`.
+
+Use `⟨by simp [h0, h2], ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.prod_cons, Multiset.sum_cons, Multiset.card_cons, norm_mul, Real.log_mul (norm_ne_zero_iff.2 h2) (norm_ne_zero_iff.2 h0)]`. Establish `: Real.log ‖a‖ + Real.log ‖s.prod‖ - (a + s.sum - ((s.card + 1 : ℕ) : ℂ)).re = (Real.log ‖a‖ - (a - 1).re) + (Real.log ‖s.prod‖ - (s.sum - s.card).re)`. Simplify using `only [Complex.sub_re, Complex.add_re, Nat.cast_add, Nat.cast_one, Complex.one_re]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Use `(abs_add_le _ _).trans ?_` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem abs_log_norm_multisetProd_sub_le (s : Multiset ℂ) {t : ℝ} (ht : t < 1)
     (hs : ∀ μ ∈ s, ‖μ - 1‖ ≤ t) :
     s.prod ≠ 0 ∧ |Real.log ‖s.prod‖ - (s.sum - s.card).re| ≤
@@ -51,18 +67,33 @@ section OpNorm
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[l2_opNorm_diagonal]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun k => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hj k with h | h <;> simp [h]`.
+-/
 theorem l2_opNorm_diagonal_sign_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1) :
     ‖(diagonal j : Matrix n n ℂ)‖ ≤ 1 := by
   rw [l2_opNorm_diagonal]
   refine (pi_norm_le_iff_of_nonneg zero_le_one).2 fun k => ?_
   rcases hj k with h | h <;> simp [h]
 
+/- English proof (translation)
+Rewrite using `[← diagonal_one]`. Conclude with `l2_opNorm_diagonal_sign_le fun _ => Or.inl rfl`.
+-/
 theorem l2_opNorm_one_le : ‖(1 : Matrix n n ℂ)‖ ≤ 1 := by
   rw [← diagonal_one]
   exact l2_opNorm_diagonal_sign_le fun _ => Or.inl rfl
 
 omit [DecidableEq m] in
 
+/- English proof (translation)
+Establish `key : ∀ B : Matrix m n ℂ, ‖B.map star‖ ≤ ‖B‖`. Introduce `B`. Rewrite using `[l2_opNorm_def (B.map star)]`. Use `ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_` and prove the remaining obligations. Establish `h` using `l2_opNorm_mulVec B (WithLp.toLp 2 (star x.ofLp))`.
+
+Establish `h1 : ‖(WithLp.toLp 2 (star x.ofLp) : EuclideanSpace ℂ n)‖ = ‖x‖`. Simplify using `[EuclideanSpace.norm_eq]`. Rewrite `h` using `[h1]`. Use `le_trans (le_of_eq ?_) h` and prove the remaining obligations. Simplify using `only [EuclideanSpace.norm_eq]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← norm_star]`. Use `congr 1`.
+
+Simplify using `[toEuclideanLin, mulVec, dotProduct]`. Use `le_antisymm (key A) ?_` and prove the remaining obligations. Use `key (A.map star)` as an intermediate fact. Rewrite `this` using `[show (A.map star).map star = A by ext; simp]`. Then use the resulting hypothesis.
+-/
 theorem l2_opNorm_map_star (A : Matrix m n ℂ) : ‖A.map star‖ = ‖A‖ := by
   have key : ∀ B : Matrix m n ℂ, ‖B.map star‖ ≤ ‖B‖ := by
     intro B
@@ -84,10 +115,22 @@ theorem l2_opNorm_map_star (A : Matrix m n ℂ) : ‖A.map star‖ = ‖A‖ := 
   have := key (A.map star)
   rwa [show (A.map star).map star = A by ext; simp] at this
 
+/- English proof (translation)
+Rewrite using `[← l2_opNorm_conjTranspose A, ← l2_opNorm_map_star Aᵀ]`. Both sides reduce to the same expression.
+-/
 theorem l2_opNorm_transpose (A : Matrix m n ℂ) : ‖Aᵀ‖ = ‖A‖ := by
   rw [← l2_opNorm_conjTranspose A, ← l2_opNorm_map_star Aᵀ]
   rfl
 
+/- English proof (translation)
+Use `set P : Matrix n m ℂ := (1 : Matrix n n ℂ).submatrix id e with hP`. Establish `hPP : Pᴴ * P = 1`. Use extensionality with `a b`. Simplify using `[hP, mul_apply, one_apply, he.eq_iff]`. Establish `hA : A.submatrix e e = Pᴴ * A * P`.
+
+Use extensionality with `a b`. Simplify using `[hP, mul_apply, one_apply]`. Establish `hn : ‖P‖ ≤ 1`. Use `l2_opNorm_conjTranspose_mul_self P` as an intermediate fact. Rewrite `this` using `[hPP]`.
+
+Establish `h1` using `l2_opNorm_one_le (n := m)`. Use polynomial arithmetic with `[norm_nonneg P]`. Rewrite using `[hA]`. Establish `h1` using `l2_opNorm_mul (Pᴴ * A) P`. Establish `h2` using `l2_opNorm_mul Pᴴ A`.
+
+Rewrite `h2` using `[l2_opNorm_conjTranspose]`. Establish `h3` using `norm_nonneg A`. Establish `h4` using `norm_nonneg (Pᴴ * A)`. Use polynomial arithmetic with `[norm_nonneg P]`.
+-/
 theorem l2_opNorm_submatrix_le (A : Matrix n n ℂ) {e : m → n} (he : Function.Injective e) :
     ‖A.submatrix e e‖ ≤ ‖A‖ := by
   set P : Matrix n m ℂ := (1 : Matrix n n ℂ).submatrix id e with hP
@@ -110,6 +153,11 @@ theorem l2_opNorm_submatrix_le (A : Matrix n n ℂ) {e : m → n} (he : Function
   have h4 := norm_nonneg (Pᴴ * A)
   nlinarith [norm_nonneg P]
 
+/- English proof (translation)
+Use `set y : EuclideanSpace ℂ n := WithLp.toLp 2 (star x) with hy`. Establish `h` using `l2_opNorm_mulVec A y`. Establish `h1` using `norm_inner_le_norm (𝕜 := ℂ) y ((EuclideanSpace.equiv n ℂ).symm (A *ᵥ y))`. Establish `h2 : ‖y‖ ^ 2 = ∑ k, ‖x k‖ ^ 2` using `by simp [hy, EuclideanSpace.norm_sq_eq]`. Establish `h3 : inner ℂ y ((EuclideanSpace.equiv n ℂ).symm (A *ᵥ y)) = x ⬝ᵥ A *ᵥ star x`.
+
+Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]`. Simplify using `[hy]`. Rewrite using `[← h3, ← h2]`. Use `h1.trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg y]`.
+-/
 theorem norm_dotProduct_mulVec_star_le (A : Matrix n n ℂ) (x : n → ℂ) :
     ‖x ⬝ᵥ A *ᵥ star x‖ ≤ ‖A‖ * ∑ k, ‖x k‖ ^ 2 := by
   set y : EuclideanSpace ℂ n := WithLp.toLp 2 (star x) with hy
@@ -123,6 +171,9 @@ theorem norm_dotProduct_mulVec_star_le (A : Matrix n n ℂ) (x : n → ℂ) :
   refine h1.trans ?_
   nlinarith [norm_nonneg y]
 
+/- English proof (translation)
+Establish `h` using `norm_dotProduct_mulVec_star_le A (Pi.single k 1)`. Establish `h1 : ∑ l, ‖(Pi.single k 1 : n → ℂ) l‖ ^ 2 = 1`. Apply the tactic sequence `rw [Finset.sum_eq_single k] <;> simp +contextual [Pi.single_apply]`. Rewrite `h` using `[h1]`. Simplify `h` using `[← Pi.single_star]`.
+-/
 theorem norm_diag_le_l2_opNorm (A : Matrix n n ℂ) (k : n) : ‖A k k‖ ≤ ‖A‖ := by
   have h := norm_dotProduct_mulVec_star_le A (Pi.single k 1)
   have h1 : ∑ l, ‖(Pi.single k 1 : n → ℂ) l‖ ^ 2 = 1 := by
@@ -130,6 +181,9 @@ theorem norm_diag_le_l2_opNorm (A : Matrix n n ℂ) (k : n) : ‖A k k‖ ≤ �
   rw [h1] at h
   simpa [← Pi.single_star] using h
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_card_nsmul _ _ ‖A‖ fun k _ => norm_diag_le_l2_opNorm A k).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem norm_trace_le_card_mul_l2_opNorm (A : Matrix n n ℂ) :
     ‖A.trace‖ ≤ Fintype.card n * ‖A‖ := by
   refine (norm_sum_le _ _).trans ?_
@@ -142,6 +196,15 @@ section LogDet
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Establish `hs : ∀ μ ∈ (1 + M).charpoly.roots, ‖μ - 1‖ ≤ t`. Introduce `μ hμ`. Establish `h1 : μ ∈ spectrum ℂ (1 + M)` using `mem_spectrum_of_isRoot_charpoly (Polynomial.isRoot_of_mem_roots hμ)`. Establish `h2 : μ - 1 ∈ spectrum ℂ M`. Rewrite `h1`, the goal using `[spectrum.mem_iff]`.
+
+Use `h1 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_one]`. Normalize the expressions using the abelian group laws. Establish `h3` using `spectrum.norm_le_norm_mul_of_mem h2`. Establish `h4` using `l2_opNorm_one_le (n := n)`.
+
+Use polynomial arithmetic with `[norm_nonneg M]`. Establish `hc : (1 + M).charpoly.roots.card = Fintype.card n`. Rewrite using `[← charpoly_natDegree_eq_dim (1 + M)]`. Conclude with `(IsAlgClosed.splits _).natDegree_eq_card_roots.symm`. Establish `h` using `abs_log_norm_multisetProd_sub_le _ ht hs`.
+
+Rewrite `h` using `[← det_eq_prod_roots_charpoly, ← trace_eq_sum_roots_charpoly, hc, trace_add, trace_one, add_sub_cancel_left, ← mul_div_assoc]`. Conclude with `h`.
+-/
 theorem abs_log_norm_det_one_add_sub_re_trace_le {M : Matrix n n ℂ} {t : ℝ} (hM : ‖M‖ ≤ t)
     (ht : t < 1) :
     (1 + M).det ≠ 0 ∧ |Real.log ‖(1 + M).det‖ - M.trace.re| ≤
@@ -166,6 +229,9 @@ theorem abs_log_norm_det_one_add_sub_re_trace_le {M : Matrix n n ℂ} {t : ℝ} 
     add_sub_cancel_left, ← mul_div_assoc] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `|Real.log ‖(diagonal j + E).det‖ - (diagonal j * E).trace.re| ≤ Fintype.card n * t ^ 2 / (2 * (1 - t)) := by have hJ : diagonal j * diagonal j = (1 : Matrix n n ℂ) := by rw [diagonal_mul_diagonal, ← diagonal_one] congr 1 ext k rcases hj k with h | h <;> simp [h] have h1 : diagona …`.
+-/
 theorem abs_log_norm_det_sign_add_sub_re_trace_le_of_le {j : n → ℂ}
     (hj : ∀ k, j k = 1 ∨ j k = -1) {E : Matrix n n ℂ} {t : ℝ} (hE : ‖E‖ ≤ t) (ht : t < 1) :
     (diagonal j + E).det ≠ 0 ∧
@@ -190,6 +256,9 @@ theorem abs_log_norm_det_sign_add_sub_re_trace_le_of_le {j : n → ℂ}
   rw [h1, det_mul, norm_mul, h2, one_mul]
   exact ⟨mul_ne_zero (norm_ne_zero_iff.1 (by rw [h2]; exact one_ne_zero)) h4, h5⟩
 
+/- English proof (translation)
+The claim follows from `|Real.log ‖(diagonal j + E).det‖ - (diagonal j * E).trace.re| ≤ Fintype.card n * ‖E‖ ^ 2 / (2 * (1 - ‖E‖)) := abs_log_norm_det_sign_add_sub_re_trace_le_of_le hj le_rfl hE`.
+-/
 theorem abs_log_norm_det_sign_add_sub_re_trace_le {j : n → ℂ}
     (hj : ∀ k, j k = 1 ∨ j k = -1) {E : Matrix n n ℂ} (hE : ‖E‖ < 1) :
     (diagonal j + E).det ≠ 0 ∧
@@ -204,6 +273,9 @@ section Inertia
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
 omit [DecidableEq m] in
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dotProduct_diagonal_mulVec_star (d x : n → ℂ) :
     x ⬝ᵥ diagonal d *ᵥ star x = ∑ k, d k * ((‖x k‖ ^ 2 : ℝ) : ℂ) := by
   simp only [dotProduct, mulVec_diagonal, Pi.star_apply]
@@ -212,6 +284,11 @@ theorem dotProduct_diagonal_mulVec_star (d x : n → ℂ) :
   simp only [Complex.star_def]
   ring
 
+/- English proof (translation)
+Establish `h1 : (x ⬝ᵥ diagonal j *ᵥ star x).re = ∑ k, ‖x k‖ ^ 2`. Rewrite using `[dotProduct_diagonal_mulVec_star, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : x k = 0`. Simplify using `[h]`.
+
+Rewrite using `[hx k h, one_mul, Complex.ofReal_re]`. Establish `h2` using `norm_dotProduct_mulVec_star_le E x`. Establish `h3` using `abs_le.1 (Complex.abs_re_le_norm (x ⬝ᵥ E *ᵥ star x))`. Rewrite using `[add_mulVec, dotProduct_add, Complex.add_re, h1]`. Combine the linear relations using `[h3.1]`.
+-/
 theorem le_re_dotProduct_diagonal_add_of_support {j : n → ℂ} (E : Matrix n n ℂ) {x : n → ℂ}
     (hx : ∀ k, x k ≠ 0 → j k = 1) :
     (1 - ‖E‖) * ∑ k, ‖x k‖ ^ 2 ≤ (x ⬝ᵥ (diagonal j + E) *ᵥ star x).re := by
@@ -226,17 +303,28 @@ theorem le_re_dotProduct_diagonal_add_of_support {j : n → ℂ} (E : Matrix n n
   rw [add_mulVec, dotProduct_add, Complex.add_re, h1]
   linarith [h3.1]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `Function.ne_iff.1 hx`. Conclude with `Finset.sum_pos' (fun _ _ => by positivity) ⟨k, Finset.mem_univ k, by have : x k ≠ 0 := hk; positivity⟩`.
+-/
 theorem sum_norm_sq_pos {x : n → ℂ} (hx : x ≠ 0) : 0 < ∑ k, ‖x k‖ ^ 2 := by
   obtain ⟨k, hk⟩ := Function.ne_iff.1 hx
   exact Finset.sum_pos' (fun _ _ => by positivity)
     ⟨k, Finset.mem_univ k, by have : x k ≠ 0 := hk; positivity⟩
 
+/- English proof (translation)
+The claim follows from `(mul_pos (by linarith) (sum_norm_sq_pos hx0)).trans_le (le_re_dotProduct_diagonal_add_of_support E hx)`.
+-/
 theorem re_dotProduct_diagonal_add_pos_of_support {j : n → ℂ} {E : Matrix n n ℂ} (hE : ‖E‖ < 1)
     {x : n → ℂ} (hx0 : x ≠ 0) (hx : ∀ k, x k ≠ 0 → j k = 1) :
     0 < (x ⬝ᵥ (diagonal j + E) *ᵥ star x).re :=
   (mul_pos (by linarith) (sum_norm_sq_pos hx0)).trans_le
     (le_re_dotProduct_diagonal_add_of_support E hx)
 
+/- English proof (translation)
+Establish `h` using `re_dotProduct_diagonal_add_pos_of_support (j := -j) (E := -E) (by rwa [norm_neg]) hx0 fun k hk => by simp [hx k hk]`. Establish `h1 : diagonal (-j) + -E = -(diagonal j + E)`. Rewrite using `[neg_add, diagonal_neg]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, neg_mulVec, dotProduct_neg, Complex.neg_re]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem re_dotProduct_diagonal_add_neg_of_support {j : n → ℂ} {E : Matrix n n ℂ} (hE : ‖E‖ < 1)
     {x : n → ℂ} (hx0 : x ≠ 0) (hx : ∀ k, x k ≠ 0 → j k = -1) :
     (x ⬝ᵥ (diagonal j + E) *ᵥ star x).re < 0 := by
@@ -248,6 +336,11 @@ theorem re_dotProduct_diagonal_add_neg_of_support {j : n → ℂ} {E : Matrix n 
   rw [h1, neg_mulVec, dotProduct_neg, Complex.neg_re] at h
   linarith
 
+/- English proof (translation)
+Establish `hH : (1 + E).IsHermitian` using `isHermitian_one.add hE`. Use `PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations. Establish `h` using `re_dotProduct_diagonal_add_pos_of_support (j := fun _ => 1) hE1 (star_ne_zero.2 hx) fun _ _ => rfl`. Rewrite `h` using `[star_star, diagonal_one]`. Rewrite using `[Complex.pos_iff]`.
+
+Conclude with `⟨h, (hH.im_star_dotProduct_mulVec_self x).symm⟩`.
+-/
 theorem posDef_one_add {E : Matrix n n ℂ} (hE : E.IsHermitian) (hE1 : ‖E‖ < 1) :
     (1 + E).PosDef := by
   have hH : (1 + E).IsHermitian := isHermitian_one.add hE
@@ -258,6 +351,9 @@ theorem posDef_one_add {E : Matrix n n ℂ} (hE : E.IsHermitian) (hE1 : ‖E‖ 
   rw [Complex.pos_iff]
   exact ⟨h, (hH.im_star_dotProduct_mulVec_self x).symm⟩
 
+/- English proof (translation)
+Establish `: (diagonal j + E).submatrix e e = 1 + E.submatrix e e`. Use extensionality with `a b`. Simplify using `[diagonal_apply, one_apply, he.eq_iff, hj]`. Rewrite using `[this]`. Conclude with `posDef_one_add (hE.submatrix e) ((l2_opNorm_submatrix_le E he).trans_lt hE1)`.
+-/
 theorem posDef_submatrix_diagonal_add {j : n → ℂ} {E : Matrix n n ℂ} (hE : E.IsHermitian)
     (hE1 : ‖E‖ < 1) {e : m → n} (he : Function.Injective e) (hj : ∀ a, j (e a) = 1) :
     ((diagonal j + E).submatrix e e).PosDef := by
@@ -267,6 +363,9 @@ theorem posDef_submatrix_diagonal_add {j : n → ℂ} {E : Matrix n n ℂ} (hE :
   rw [this]
   exact posDef_one_add (hE.submatrix e) ((l2_opNorm_submatrix_le E he).trans_lt hE1)
 
+/- English proof (translation)
+Establish `h` using `posDef_submatrix_diagonal_add (j := -j) hE.neg (by rwa [norm_neg]) he fun a => by simp [hj]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Apply the tactic sequence `by_cases hab : e a = e b <;> simp [diagonal_apply, hab, add_comm]`.
+-/
 theorem posDef_neg_submatrix_diagonal_add {j : n → ℂ} {E : Matrix n n ℂ} (hE : E.IsHermitian)
     (hE1 : ‖E‖ < 1) {e : m → n} (he : Function.Injective e) (hj : ∀ a, j (e a) = -1) :
     (-(diagonal j + E).submatrix e e).PosDef := by
@@ -278,6 +377,11 @@ theorem posDef_neg_submatrix_diagonal_add {j : n → ℂ} {E : Matrix n n ℂ} (
 
 omit [DecidableEq n] in
 
+/- English proof (translation)
+Set `f : W →ₗ[ℂ] (S → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Subtype.val : S → n)).comp W.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Conclude with `Subtype.ext (h x x.2 fun k hk => congrFun hx ⟨k, hk⟩)`.
+
+Simplify using `using LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem finrank_le_card_of_eq_zero (S : Finset n) (W : Submodule ℂ (n → ℂ))
     (h : ∀ x ∈ W, (∀ k ∈ S, x k = 0) → x = 0) : Module.finrank ℂ W ≤ S.card := by
   let f : W →ₗ[ℂ] (S → ℂ) := (LinearMap.funLeft ℂ ℂ (Subtype.val : S → n)).comp W.subtype
@@ -287,6 +391,13 @@ theorem finrank_le_card_of_eq_zero (S : Finset n) (W : Submodule ℂ (n → ℂ)
     exact Subtype.ext (h x x.2 fun k hk => congrFun hx ⟨k, hk⟩)
   simpa using LinearMap.finrank_le_finrank_of_injective hf
 
+/- English proof (translation)
+Use `⟨⟨Pi.spanSubset ℂ {k | j k = 1}, ?_, fun x hx hx0 => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.dim_spanSubset, Set.ncard_eq_toFinset_card']`. Simplify using the standard rewrite rules. Use `re_dotProduct_diagonal_add_pos_of_support hE hx0 fun k hk => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hk (Pi.mem_spanSubset_iff.1 hx k h)`. Introduce and unpack `d ⟨W, rfl, hW⟩`. Use `finrank_le_card_of_eq_zero _ W fun x hx h0 => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hx0`. Use `(hW x hx hx0).not_gt (re_dotProduct_diagonal_add_neg_of_support hE hx0 fun k hk => ?_)` and prove the remaining obligations.
+
+Conclude with `(hj k).resolve_left fun h => hk (h0 k (by simpa using h))`.
+-/
 theorem isGreatest_finrank_pos_sign_add {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {E : Matrix n n ℂ} (hE : ‖E‖ < 1) :
     IsGreatest {d : ℕ | ∃ W : Submodule ℂ (n → ℂ), Module.finrank ℂ W = d ∧
@@ -304,6 +415,9 @@ theorem isGreatest_finrank_pos_sign_add {j : n → ℂ} (hj : ∀ k, j k = 1 ∨
     refine (hW x hx hx0).not_gt (re_dotProduct_diagonal_add_neg_of_support hE hx0 fun k hk => ?_)
     exact (hj k).resolve_left fun h => hk (h0 k (by simpa using h))
 
+/- English proof (translation)
+Apply the tactic sequence `have h := isGreatest_finrank_pos_sign_add (j := -j) (E := -E) (fun k => by rcases hj k with h | h <;> simp [h]) (by rwa [norm_neg])`. Establish `h1 : diagonal (-j) + -E = -(diagonal j + E)`. Rewrite using `[neg_add, diagonal_neg]`. Both sides reduce to the same expression. Simplify `h` using `only [h1, neg_mulVec, dotProduct_neg, Complex.neg_re, Left.neg_pos_iff, Pi.neg_apply, neg_eq_iff_eq_neg]`.
+-/
 theorem isGreatest_finrank_neg_sign_add {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {E : Matrix n n ℂ} (hE : ‖E‖ < 1) :
     IsGreatest {d : ℕ | ∃ W : Submodule ℂ (n → ℂ), Module.finrank ℂ W = d ∧
@@ -317,6 +431,15 @@ theorem isGreatest_finrank_neg_sign_add {j : n → ℂ} (hj : ∀ k, j k = 1 ∨
   simpa only [h1, neg_mulVec, dotProduct_neg, Complex.neg_re, Left.neg_pos_iff, Pi.neg_apply,
     neg_eq_iff_eq_neg] using h
 
+/- English proof (translation)
+Use `set S := Finset.univ.filter fun k => 0 < d k with hS`. Set `f : (m → ℂ) →ₗ[ℂ] (S → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Subtype.val : S → n)).comp Q.mulVecLin`. Establish `hf : Function.Injective f`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+
+Assume the negation of the conclusion as `hx0`. Establish `h1` using `(Complex.pos_iff.1 (h.dotProduct_mulVec_pos hx0)).1`. Establish `h2 : star x ⬝ᵥ (Qᴴ * diagonal (fun k => (d k : ℂ)) * Q) *ᵥ x = star (Q *ᵥ x) ⬝ᵥ diagonal (fun k => (d k : ℂ)) *ᵥ star (star (Q *ᵥ x))`. Rewrite using `[star_star, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, star_mulVec]`. Rewrite `h1` using `[h2, dotProduct_diagonal_mulVec_star, Complex.re_sum]`.
+
+Use `h1.not_ge (Finset.sum_nonpos fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[← Complex.ofReal_mul, Complex.ofReal_re]`. Distinguish the cases in `hk : 0 < d k`. Establish `: (Q *ᵥ x) k = 0` using `congrFun hx ⟨k, by simpa [hS] using hk⟩`. Simplify using `[this]`.
+
+Conclude with `mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hk) (by positivity)`. Simplify using `using LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem card_le_card_pos_of_posDef (d : n → ℝ) (Q : Matrix n m ℂ)
     (h : (Qᴴ * diagonal (fun k => (d k : ℂ)) * Q).PosDef) :
     Fintype.card m ≤ (Finset.univ.filter fun k => 0 < d k).card := by
@@ -339,6 +462,9 @@ theorem card_le_card_pos_of_posDef (d : n → ℝ) (Q : Matrix n m ℂ)
     · exact mul_nonpos_of_nonpos_of_nonneg (not_lt.1 hk) (by positivity)
   simpa using LinearMap.finrank_le_finrank_of_injective hf
 
+/- English proof (translation)
+Use `⟨(star (hA.eigenvectorUnitary : Matrix n n ℂ)).submatrix id e, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hA.spectral_theorem, Unitary.conjStarAlgAut_apply]`. Rewrite using `[submatrix_mul _ _ e id e Function.bijective_id, submatrix_mul _ _ e id id Function.bijective_id]`. Simplify using `[star_eq_conjTranspose, Function.comp_def]`.
+-/
 theorem submatrix_eq_eigenvalues {A : Matrix n n ℂ} (hA : A.IsHermitian) (e : m → n) :
     ∃ Q : Matrix n m ℂ,
       A.submatrix e e = Qᴴ * diagonal (fun k => (hA.eigenvalues k : ℂ)) * Q := by
@@ -348,6 +474,17 @@ theorem submatrix_eq_eigenvalues {A : Matrix n n ℂ} (hA : A.IsHermitian) (e : 
     submatrix_mul _ _ e id id Function.bijective_id]
   simp [star_eq_conjTranspose, Function.comp_def]
 
+/- English proof (translation)
+Establish `hJ : (diagonal j).IsHermitian` using `isHermitian_diagonal_of_self_adjoint _ (by`. Use extensionality with `k`. Apply the tactic sequence `rcases hj k with h | h <;> simp [h])`. Establish `hEH : E.IsHermitian` using `by simpa using hH.sub hJ`. Establish `hp : (Finset.univ.filter fun k => j k = 1).card ≤ (Finset.univ.filter fun k => 0 < hH.eigenvalues k).card`.
+
+Take `⟨Q, hQ⟩` from `submatrix_eq_eigenvalues hH (Subtype.val : {k // j k = 1} → n)`. Establish `h` using `posDef_submatrix_diagonal_add hEH hE (Subtype.val_injective (p := fun k => j k = 1)) fun a => a.2`. Rewrite `h` using `[hQ]`. Simplify `card_le_card_pos_of_posDef _ Q h` using `[Fintype.card_subtype]`. Establish `hq : (Finset.univ.filter fun k => j k = -1).card ≤ (Finset.univ.filter fun k => hH.eigenvalues k < 0).card`.
+
+Take `⟨Q, hQ⟩` from `submatrix_eq_eigenvalues hH (Subtype.val : {k // j k = -1} → n)`. Establish `h` using `posDef_neg_submatrix_diagonal_add hEH hE (Subtype.val_injective (p := fun k => j k = -1)) fun a => a.2`. Rewrite `h` using `[hQ, ← Matrix.neg_mul, ← Matrix.mul_neg, diagonal_neg]`. Establish `h'` using `card_le_card_pos_of_posDef (fun k => -hH.eigenvalues k) Q (by simpa using h)`. Simplify `h'` using `[Fintype.card_subtype]`.
+
+Establish `h1 : (Finset.univ.filter fun k => 0 < hH.eigenvalues k).card + (Finset.univ.filter fun k => hH.eigenvalues k < 0).card ≤ Fintype.card n`. Rewrite using `[← Finset.card_union_of_disjoint]`. Conclude with `Finset.card_le_univ _`. Conclude with `Finset.disjoint_filter.2 fun k _ h => h.le.not_gt`. Establish `h2 : Fintype.card n ≤ (Finset.univ.filter fun k => j k = 1).card + (Finset.univ.filter fun k => j k = -1).card`.
+
+Use `le_trans (Finset.card_le_card fun k _ => ?_) (Finset.card_union_le _ _)` and prove the remaining obligations. Simplify using `using hj k`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_eigenvalues_sign_add {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {E : Matrix n n ℂ} (hE : ‖E‖ < 1) (hH : (diagonal j + E).IsHermitian) :
     (Finset.univ.filter fun k => 0 < hH.eigenvalues k).card =
@@ -391,6 +528,11 @@ section Exp
 
 open NormedSpace
 
+/- English proof (translation)
+Establish `h1` using `(hasSum_nat_add_iff' 2).2 (exp_series_hasSum_exp' (𝕂 := ℂ) x)`. Establish `h2` using `(hasSum_nat_add_iff' 2).2 (exp_series_hasSum_exp' (𝕂 := ℝ) ‖x‖)`. Simplify using `only [Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty, Nat.factorial_zero, Nat.factorial_one, Nat.cast_one, inv_one, pow_zero, pow_one, one_smul, zero_add, ← sub_sub] at h1 h2`. Rewrite `h2` using `[← Real.exp_eq_exp_ℝ]`. Use `h1.norm_le_of_bounded h2 fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, norm_inv, Complex.norm_natCast, smul_eq_mul]`. Use `gcongr`. Conclude with `norm_pow_le' x (by omega)`.
+-/
 theorem norm_exp_sub_one_sub_le {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
     (x : A) : ‖exp x - 1 - x‖ ≤ Real.exp ‖x‖ - 1 - ‖x‖ := by
   have h1 := (hasSum_nat_add_iff' 2).2 (exp_series_hasSum_exp' (𝕂 := ℂ) x)
@@ -404,6 +546,11 @@ theorem norm_exp_sub_one_sub_le {A : Type*} [NormedRing A] [NormedAlgebra ℂ A]
   gcongr
   exact norm_pow_le' x (by omega)
 
+/- English proof (translation)
+Establish `h0` using `norm_nonneg x`. Establish `h` using `Real.exp_bound' h0 (by linarith) (n := 3) (by norm_num)`. Simplify using `only [Finset.sum_range_succ, Finset.range_zero, Finset.sum_empty, Nat.factorial] at h`. Evaluate the numerical expressions using `at h`. Establish `h1` using `norm_exp_sub_one_sub_le x`.
+
+Establish `h2 : ‖x‖ ^ 2 ≤ ρ ^ 2` using `by gcongr`. Establish `h3 : ‖x‖ ^ 3 ≤ ‖x‖ ^ 2 / 10` using `by nlinarith [sq_nonneg ‖x‖]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_exp_sub_one_sub_le_of_le {A : Type*} [NormedRing A] [NormedAlgebra ℂ A]
     [CompleteSpace A] {x : A} {ρ : ℝ} (hx : ‖x‖ ≤ ρ) (hρ : ρ ≤ 1 / 10) :
     ‖exp x - 1 - x‖ ≤ 0.53 * ρ ^ 2 := by
@@ -418,6 +565,9 @@ theorem norm_exp_sub_one_sub_le_of_le {A : Type*} [NormedRing A] [NormedAlgebra 
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+/- English proof (translation)
+Rewrite using `[mul_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_diagonal, transpose_apply, map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem transpose_mul_diagonal_mul_map_star_apply (j : n → ℂ) (g : Matrix n m ℂ) (k l : m) :
     (gᵀ * diagonal j * g.map star) k l = ∑ a, j a * (g a k * star (g a l)) := by
   rw [mul_apply]
@@ -427,12 +577,20 @@ theorem transpose_mul_diagonal_mul_map_star_apply (j : n → ℂ) (g : Matrix n 
 
 omit [Fintype m] [DecidableEq m] in
 
+/- English proof (translation)
+Rewrite using `[transpose_mul, transpose_mul, transpose_transpose, diagonal_transpose, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem conjTranspose_mul_diagonal_mul_eq_transpose (j : n → ℂ) (g : Matrix n m ℂ) :
     gᴴ * diagonal j * g = (gᵀ * diagonal j * g.map star)ᵀ := by
   rw [transpose_mul, transpose_mul, transpose_transpose, diagonal_transpose, Matrix.mul_assoc]
   rfl
 
 omit [Fintype m] [DecidableEq m] in
+/- English proof (translation)
+Establish `hJ : (diagonal j).IsHermitian` using `isHermitian_diagonal_of_self_adjoint _ (by`. Use extensionality with `k`. Apply the tactic sequence `rcases hj k with h | h <;> simp [h])`. Establish `: gᵀ = (g.map star)ᴴ` using `by ext; simp`. Rewrite using `[this]`.
+
+Conclude with `isHermitian_conjTranspose_mul_mul _ hJ`.
+-/
 theorem isHermitian_transpose_mul_sign_mul_map_star {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     (g : Matrix n m ℂ) : (gᵀ * diagonal j * g.map star).IsHermitian := by
   have hJ : (diagonal j).IsHermitian :=
@@ -443,6 +601,21 @@ theorem isHermitian_transpose_mul_sign_mul_map_star {j : n → ℂ} (hj : ∀ k,
   rw [this]
   exact isHermitian_conjTranspose_mul_mul _ hJ
 
+/- English proof (translation)
+Establish `hv` using `norm_exp_sub_one_sub_le_of_le hu hρ`. Establish `hρ0 : 0 ≤ ρ` using `(norm_nonneg u).trans hu`. Take `⟨v, hvdef⟩ : ∃ v, v = exp u - 1 - u` from `⟨_, rfl⟩`. Rewrite `hv` using `[← hvdef]`. Establish `hexp : exp u = 1 + (u + v)` using `by rw [hvdef]; abel`.
+
+Establish `hJ` using `l2_opNorm_diagonal_sign_le hj`. Establish `hX : ‖u + v‖ ≤ 1.053 * ρ`. Use `(norm_add_le u v).trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hstar : (1 + (u + v) : Matrix n n ℂ).map star = 1 + (u.map star + v.map star)`.
+
+Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [one_apply, h]`. Establish `hstar' : (u + v : Matrix n n ℂ).map star = u.map star + v.map star`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+
+Establish `heq : (exp u)ᵀ * diagonal j * (exp u).map star - diagonal j - (uᵀ * diagonal j + diagonal j * u.map star) = vᵀ * diagonal j + diagonal j * v.map star + (u + v)ᵀ * diagonal j * (u + v).map star`. Rewrite using `[hexp, hstar, hstar']`. Simplify using `only [transpose_add, transpose_one]`. Use `noncomm_ring`. Establish `hl : ∀ A : Matrix n n ℂ, ‖Aᵀ * diagonal j‖ ≤ ‖A‖` using `fun A => by`.
+
+Use `l2_opNorm_mul Aᵀ (diagonal j)` as an intermediate fact. Rewrite `this` using `[l2_opNorm_transpose]`. Use polynomial arithmetic with `[norm_nonneg A]`. Establish `hr : ‖diagonal j * v.map star‖ ≤ ‖v‖`. Use `l2_opNorm_mul (diagonal j) (v.map star)` as an intermediate fact.
+
+Rewrite `this` using `[l2_opNorm_map_star]`. Use polynomial arithmetic with `[norm_nonneg v]`. Establish `h3 : ‖(u + v)ᵀ * diagonal j * (u + v).map star‖ ≤ (1.053 * ρ) * (1.053 * ρ)`. Use `(l2_opNorm_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[l2_opNorm_map_star]`.
+
+Conclude with `mul_le_mul ((hl _).trans hX) hX (norm_nonneg _) (by positivity)`. Rewrite using `[heq]`. Use `norm_add₃_le.trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[hl v, sq_nonneg ρ]`.
+-/
 theorem l2_opNorm_gram_exp_sub_sub_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {u : Matrix n n ℂ} {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10) :
     ‖(exp u)ᵀ * diagonal j * (exp u).map star - diagonal j -
@@ -484,6 +657,13 @@ theorem l2_opNorm_gram_exp_sub_sub_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j
   refine norm_add₃_le.trans ?_
   nlinarith [hl v, sq_nonneg ρ]
 
+/- English proof (translation)
+Establish `h` using `l2_opNorm_gram_exp_sub_sub_le hj hu hρ`. Establish `hρ0 : 0 ≤ ρ` using `(norm_nonneg u).trans hu`. Establish `hJ` using `l2_opNorm_diagonal_sign_le hj`. Establish `hl : ‖uᵀ * diagonal j‖ ≤ ‖u‖`. Use `l2_opNorm_mul uᵀ (diagonal j)` as an intermediate fact.
+
+Rewrite `this` using `[l2_opNorm_transpose]`. Use polynomial arithmetic with `[norm_nonneg u]`. Establish `hr : ‖diagonal j * u.map star‖ ≤ ‖u‖`. Use `l2_opNorm_mul (diagonal j) (u.map star)` as an intermediate fact. Rewrite `this` using `[l2_opNorm_map_star]`.
+
+Use polynomial arithmetic with `[norm_nonneg u]`. Establish `h1` using `norm_add_le (uᵀ * diagonal j) (diagonal j * u.map star)`. Establish `h2` using `norm_le_insert' ((exp u)ᵀ * diagonal j * (exp u).map star - diagonal j) (uᵀ * diagonal j + diagonal j * u.map star)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem l2_opNorm_gram_exp_sub_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {u : Matrix n n ℂ} {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10) :
     ‖(exp u)ᵀ * diagonal j * (exp u).map star - diagonal j‖ ≤ 2.3 * ρ := by
@@ -503,6 +683,9 @@ theorem l2_opNorm_gram_exp_sub_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k =
     (uᵀ * diagonal j + diagonal j * u.map star)
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_mul_diagonal_mul_eq_transpose, ← l2_opNorm_transpose, transpose_sub, transpose_transpose, diagonal_transpose]`. Conclude with `l2_opNorm_gram_exp_sub_le hj hu hρ`.
+-/
 theorem l2_opNorm_conjTranspose_exp_mul_sign_mul_exp_sub_le {j : n → ℂ}
     (hj : ∀ k, j k = 1 ∨ j k = -1) {u : Matrix n n ℂ} {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10) :
     ‖(exp u)ᴴ * diagonal j * exp u - diagonal j‖ ≤ 2.3 * ρ := by
@@ -511,12 +694,18 @@ theorem l2_opNorm_conjTranspose_exp_mul_sign_mul_exp_sub_le {j : n → ℂ}
   exact l2_opNorm_gram_exp_sub_le hj hu hρ
 
 omit [Fintype m] [Fintype n] in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[diagonal_apply, he.eq_iff]`.
+-/
 theorem submatrix_eq_diagonal_add (j : n → ℂ) (G : Matrix n n ℂ) {e : m → n}
     (he : Function.Injective e) :
     G.submatrix e e = diagonal (j ∘ e) + (G - diagonal j).submatrix e e := by
   ext a b
   simp [diagonal_apply, he.eq_iff]
 
+/- English proof (translation)
+The claim follows from `|Real.log ‖(((exp u)ᵀ * diagonal j * (exp u).map star).submatrix e e).det‖| ≤ 5.7 * Fintype.card m * ρ ^ 2 := by have hρ0 : 0 ≤ ρ := (norm_nonneg u).trans hu have h1 := l2_opNorm_gram_exp_sub_le hj hu hρ have h2 := l2_opNorm_gram_exp_sub_sub_le hj hu hρ set G := (exp u)ᵀ * diagon …`.
+-/
 theorem abs_log_norm_det_gram_exp_submatrix_le {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {u : Matrix n n ℂ} (hu0 : ∀ k, u k k = 0) {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10)
     {e : m → n} (he : Function.Injective e) :
@@ -559,6 +748,13 @@ theorem abs_log_norm_det_gram_exp_submatrix_le {j : n → ℂ} (hj : ∀ k, j k 
     (diagonal (j ∘ e) * (G - diagonal j).submatrix e e).trace.re
   linarith
 
+/- English proof (translation)
+Establish `hj' : ∀ a, (j ∘ e) a = 1 ∨ (j ∘ e) a = -1` using `fun a => hj (e a)`. Establish `h1` using `(l2_opNorm_submatrix_le _ he).trans_lt h`. Establish `hJ : (diagonal j).IsHermitian` using `isHermitian_diagonal_of_self_adjoint _ (by`. Use extensionality with `k`. Apply the tactic sequence `rcases hj k with h | h <;> simp [h])`.
+
+Establish `h2` using `fun h' => posDef_submatrix_diagonal_add (j := j) (hG.sub hJ) h he h'`. Establish `h3` using `fun h' => posDef_neg_submatrix_diagonal_add (j := j) (hG.sub hJ) h he h'`. Rewrite `h2`, `h3` using `[add_sub_cancel]`. Establish `h4` using `isGreatest_finrank_pos_sign_add hj' h1`. Establish `h5` using `isGreatest_finrank_neg_sign_add hj' h1`.
+
+Establish `h6` using `card_eigenvalues_sign_add hj' h1`. Rewrite `h4`, `h5`, `h6` using `[← submatrix_eq_diagonal_add j G he]`. Conclude with `⟨h4, h5, (h6 _).1, (h6 _).2, h2, h3⟩`.
+-/
 theorem signature_submatrix_of_norm_sub_sign_lt_one {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {G : Matrix n n ℂ} (hG : G.IsHermitian) (h : ‖G - diagonal j‖ < 1)
     {e : m → n} (he : Function.Injective e) :
@@ -589,6 +785,11 @@ theorem signature_submatrix_of_norm_sub_sign_lt_one {j : n → ℂ} (hj : ∀ k,
   rw [← submatrix_eq_diagonal_add j G he] at h4 h5 h6
   exact ⟨h4, h5, (h6 _).1, (h6 _).2, h2, h3⟩
 
+/- English proof (translation)
+Substitute `hB` using the available equality. Take `⟨h1, h2⟩` from `abs_log_norm_det_gram_exp_submatrix_le hj hu0 hu hρ he`. Take `⟨h3, h4, h5, h6, h7, h8⟩` from `signature_submatrix_of_norm_sub_sign_lt_one hj (isHermitian_transpose_mul_sign_mul_map_star hj (exp u)) ((l2_opNorm_gram_exp_sub_le hj hu hρ).trans_lt (by linarith)) he`. Use `⟨h1, h2.trans ?_, h3, h4, ⟨_, h5, h6⟩, h7, h8⟩` and prove the remaining obligations. Establish `: (Fintype.card m : ℝ) ≤ Fintype.card n`.
+
+Conclude with `Fintype.card_le_of_injective e he` after adjusting the coercions. Use `gcongr`. Evaluate the numerical expressions.
+-/
 theorem gram_exp_submatrix_logDet_and_signature {j : n → ℂ} (hj : ∀ k, j k = 1 ∨ j k = -1)
     {u : Matrix n n ℂ} (hu0 : ∀ k, u k k = 0) {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10)
     {e : m → n} (he : Function.Injective e) {B : Matrix m m ℂ}
@@ -617,6 +818,11 @@ theorem gram_exp_submatrix_logDet_and_signature {j : n → ℂ} (hj : ∀ k, j k
   gcongr
   norm_num
 
+/- English proof (translation)
+Substitute `hB` using the available equality. Take `⟨h1, h2, -⟩` from `gram_exp_submatrix_logDet_and_signature hj hu0 hu hρ he rfl`. Establish `hH : ((exp u)ᴴ * diagonal j * exp u).IsHermitian`. Rewrite using `[conjTranspose_mul_diagonal_mul_eq_transpose]`. Conclude with `(isHermitian_transpose_mul_sign_mul_map_star hj _).transpose`.
+
+Take `⟨-, -, h5, h6, h7, h8⟩` from `signature_submatrix_of_norm_sub_sign_lt_one hj hH ((l2_opNorm_conjTranspose_exp_mul_sign_mul_exp_sub_le hj hu hρ).trans_lt (by linarith)) he`. Establish `hd : (((exp u)ᴴ * diagonal j * exp u).submatrix e e).det = (((exp u)ᵀ * diagonal j * (exp u).map star).submatrix e e).det`. Rewrite using `[conjTranspose_mul_diagonal_mul_eq_transpose, ← transpose_submatrix, det_transpose]`. Rewrite using `[hd]`. Conclude with `⟨h1, h2, ⟨_, h5, h6⟩, h7, h8⟩`.
+-/
 theorem conjTranspose_exp_mul_sign_mul_exp_submatrix_logDet_and_signature {j : n → ℂ}
     (hj : ∀ k, j k = 1 ∨ j k = -1)
     {u : Matrix n n ℂ} (hu0 : ∀ k, u k k = 0) {ρ : ℝ} (hu : ‖u‖ ≤ ρ) (hρ : ρ ≤ 1 / 10)
@@ -642,6 +848,9 @@ theorem conjTranspose_exp_mul_sign_mul_exp_submatrix_logDet_and_signature {j : n
   rw [hd]
   exact ⟨h1, h2, ⟨_, h5, h6⟩, h7, h8⟩
 
+/- English proof (translation)
+Establish `h` using `gram_exp_submatrix_logDet_and_signature hj (fun k => hu0.elim (fun h => h k k le_rfl) fun h => h k k le_rfl) hu hρ (Fin.castLE_injective hi) hB`. Rewrite `h` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+-/
 theorem gram_exp_leadingBlock_logDet_and_signature {r i : ℕ} (hi : i ≤ r) {j : Fin r → ℂ}
     (hj : ∀ k, j k = 1 ∨ j k = -1) {u : Matrix (Fin r) (Fin r) ℂ}
     (hu0 : (∀ k l, k ≤ l → u k l = 0) ∨ ∀ k l, l ≤ k → u k l = 0)

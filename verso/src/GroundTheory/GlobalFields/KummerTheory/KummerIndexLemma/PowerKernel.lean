@@ -20,6 +20,9 @@ section LocalNorms
 
 variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberField L] [Algebra K L]
 
+/- English proof (translation)
+Establish `hx` using `(IdeleGroup.ord_eq_zero_iff v x).1 h`. Rewrite using `[localUnits, Submonoid.mem_units_iff]`. Establish `h2 : ((IdeleGroup.finiteProj v x)⁻¹ : (v.adicCompletion K)ˣ) = IdeleGroup.finiteProj v x⁻¹` using `(map_inv _ _).symm`. Rewrite using `[h2, IdeleGroup.coe_finiteProj, IdeleGroup.coe_finiteProj]`. Conclude with `hx`.
+-/
 theorem finiteProj_mem_localUnits {v : HeightOneSpectrum (𝓞 K)} {x : IdeleGroup K}
     (h : IdeleGroup.ord v x = 0) : IdeleGroup.finiteProj v x ∈ localUnits v := by
   have hx := (IdeleGroup.ord_eq_zero_iff v x).1 h
@@ -29,6 +32,9 @@ theorem finiteProj_mem_localUnits {v : HeightOneSpectrum (𝓞 K)} {x : IdeleGro
   rw [h2, IdeleGroup.coe_finiteProj, IdeleGroup.coe_finiteProj]
   exact hx
 
+/- English proof (translation)
+Set `y : (w : PlacesOver L v) → (w.1.adicCompletion L)ˣ` to `fun w ↦ Units.map (algebraMap (v.adicCompletion K) (w.1.adicCompletion L) : v.adicCompletion K →* w.1.adicCompletion L) b`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.univ_prod_mulSingle y, map_prod]`. Repeatedly rewrite using `[y, finiteLocalNorm_mulSingle_algebraMap]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, sum_finrank_eq]`.
+-/
 theorem pow_finrank_mem_range_finiteLocalNorm (v : HeightOneSpectrum (𝓞 K))
     (b : (v.adicCompletion K)ˣ) : b ^ finrank K L ∈ (finiteLocalNorm L v).range := by
   classical
@@ -40,6 +46,11 @@ theorem pow_finrank_mem_range_finiteLocalNorm (v : HeightOneSpectrum (𝓞 K))
   simp_rw [y, finiteLocalNorm_mulSingle_algebraMap]
   rw [Finset.prod_pow_eq_pow_sum, sum_finrank_eq]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `u _`. Take `⟨w'⟩` from `nonempty_infinitePlacesOver L w`. Establish `hd` using `(InfinitePlace.splitsCompletely_iff_forall_finrank w).1 h w'`. Use `⟨Pi.mulSingle w' (Units.map (algebraMap w.Completion (w' : InfinitePlace L).Completion : w.Completion →* (w' : InfinitePlace L).Completion) u), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[infiniteLocalNorm_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[LocalField.normUnits, Algebra.norm_algebraMap, hd]`.
+-/
 theorem range_infiniteLocalNorm_eq_top_of_splitsCompletely (w : InfinitePlace K)
     (h : InfinitePlace.SplitsCompletely L w) : (infiniteLocalNorm L w).range = ⊤ := by
   classical
@@ -59,6 +70,37 @@ universe u
 
 variable {K : Type u} [Field K] [NumberField K] {p : ℕ} [Fact p.Prime] [HasEnoughRootsOfUnity K p]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hy`. Set `Ω` to `AlgebraicClosure K`. Set `F` to `kummerExtension K p Ω (radicalGroup K p y)`. Establish `hfinF : finrank K F = p` using `finrank_kummerExtension_radicalGroup Ω hy`. Establish `: IsCyclic Gal(F/K)` using `isCyclic_kummerExtension_radicalGroup Ω hy`.
+
+Take `⟨α, hα⟩` from `exists_pow_eq_kummerExtension_radicalGroup (p := p) Ω y`. Establish `hgen : IntermediateField.adjoin K {α} = ⊤`. Establish `hdvd : finrank K (IntermediateField.adjoin K {α}) ∣ p`. Use `IntermediateField.finrank_dvd_of_le_right (K := K) (le_top : IntermediateField.adjoin K {α} ≤ ⊤)` as an intermediate fact. Rewrite `this` using `[IntermediateField.finrank_top', hfinF]`. Then use the resulting hypothesis.
+
+Break down `(Nat.dvd_prime (Fact.out : p.Prime)).1 hdvd with h1 | hpp` into its components or cases. It suffices to derive a contradiction. Rewrite `h1` using `[IntermediateField.finrank_eq_one_iff]`. Establish `hmem : α ∈ (⊥ : IntermediateField K F)` using `h1 ▸ IntermediateField.mem_adjoin_simple_self K α`. Take `⟨c, hc⟩` from `IntermediateField.mem_bot.1 hmem`.
+
+Establish `hcp : c ^ p = (y : K)`. Apply `(algebraMap K F).injective` to reduce the goal to its premises. Rewrite using `[map_pow, hc, hα]`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hcp` using `[zero_pow (Fact.out : p.Prime).ne_zero]`. Conclude with `y.ne_zero hcp.symm`. Conclude with `hy (mem_unitsPow.2 ⟨Units.mk0 c hc0, Units.ext (by simp [hcp])⟩)`. Conclude with `IntermediateField.eq_of_le_of_finrank_eq le_top (by rw [hpp, IntermediateField.finrank_top', hfinF])`. It suffices to establish `h : (ideleNorm K F).range ⊔ (IdeleGroup.diagonal K).range = ⊤ by`.
+
+Establish `h1` using `hFI.finrank_eq_one_of_sup_eq_top h`. Rewrite `h1` using `[hfinF]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' h1`. Establish `hsplit : ∀ v ∈ S, (finiteLocalNorm F v).range = ⊤` using `fun v hv ↦ range_finiteLocalNorm_eq_top_of_isFiniteSplit v ((splitsCompletely_iff_isFiniteSplit v).1 ((splitsCompletely_kummerExtension_iff v).2 fun c hc ↦ mem_unitsPowIn.1 (radicalGroup_le (hyS v hv) (unitsPow_le_unitsPowIn K p _) hc)))`. Establish `hinf : ∀ w, (infiniteLocalNorm F w).range = ⊤` using `fun w ↦ range_infiniteLocalNorm_eq_top_of_splitsCompletely w ((InfinitePlace.splitsCompletely_kummerExtension_iff w).2 fun c hc ↦ mem_unitsPowIn.1 (radicalGroup_le (hyinf w) (unitsPow_le_unitsPowIn K p _) hc))`.
+
+Establish `hunr : ∀ v, v ∉ S → v ∉ T → (integerUnitsOver F v).map (finiteLocalNorm F v) = localUnits v`. Introduce `v hvS hvT`. Take `⟨w⟩` from `nonempty_placesOver F v`. Use `w.1.isPrime` as an intermediate fact. Use `map_integerUnitsOver_eq_of_ramificationIdx_eq_one v w ?_` and prove the remaining obligations.
+
+Use `Kummer.ramificationIdx_eq_one_of_pow_eq y hα hgen v (fun h ↦ hvS (hpS v h)) ?_ w.1.asIdeal` and prove the remaining obligations. Rewrite using `[valuation_eq_one_of_mem_unit hyE (by simp [hvS, hvT]), WithZero.log_one]`. Conclude with `dvd_zero _`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+
+Take `⟨a, s, hs, rfl⟩` from `IdeleGroup.exists_diagonal_mul_of_sup_eq_top _ hS x`. Establish `hsv : ∀ v ∉ S, IdeleGroup.finiteProj v s ∈ localUnits v` using `fun v hv ↦ finiteProj_mem_localUnits ((IdeleGroup.mem_sIdeles _).1 hs v (by simpa using hv))`. Take `⟨δ, hδ, hδT⟩` from `hsurj (fun v ↦ IdeleGroup.finiteProj v s) (fun v hv ↦ hsv v (Finset.disjoint_right.1 hST hv))`. Use `set t := IdeleGroup.diagonal K δ⁻¹ * s with ht_def`. Establish `hloc : ∀ v, v ∉ S → IdeleGroup.finiteProj v t ∈ localUnits v`.
+
+Introduce `v hvS`. Rewrite using `[ht_def, map_mul, IdeleGroup.finiteProj_diagonal]`. Conclude with `mul_mem (units_map_mem_localUnits v (valuation_eq_one_of_mem_unit (inv_mem hδ) (by simpa using hvS))) (hsv v hvS)`. Establish `ht : t ∈ (ideleNorm K F).range`. Rewrite using `[mem_range_ideleNorm_iff]`.
+
+Use `⟨fun v ↦ ?_, fun w ↦ by rw [hinf w]; exact Subgroup.mem_top _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hvS : v ∈ S`. Rewrite using `[hsplit v hvS]`. Conclude with `Subgroup.mem_top _`. Distinguish the cases in `hvT : v ∈ T`.
+
+Establish `hpow : IdeleGroup.finiteProj v t ∈ unitsPow (v.adicCompletion K) p`. Rewrite using `[ht_def, map_mul, IdeleGroup.finiteProj_diagonal, map_inv]`. Conclude with `QuotientGroup.eq.1 (hδT v hvT)`. Take `⟨b, hb⟩` from `mem_unitsPow.1 hpow`. Establish `hnorm` using `pow_finrank_mem_range_finiteLocalNorm (L := F) v b`.
+
+Rewrite `hnorm` using `[hfinF, hb]`. Conclude with `hnorm`. Conclude with `Subgroup.map_le_range _ _ (hunr v hvS hvT ▸ hloc v hvS)`. Use `filter_upwards [(S.finite_toSet.union T.finite_toSet).eventually_cofinite_notMem] with v hv`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hv`.
+
+Rewrite using `[hunr v hv.1 hv.2]`. Conclude with `hloc v hv.1`. Establish `hs_eq : s = t * IdeleGroup.diagonal K δ`. Rewrite using `[ht_def, map_inv, mul_comm, mul_inv_cancel_left]`. Rewrite using `[hs_eq]`.
+
+Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_right ⟨a, rfl⟩) (Subgroup.mul_mem _ (Subgroup.mem_sup_left ht) (Subgroup.mem_sup_right ⟨δ, rfl⟩))`.
+-/
 theorem _root_.GroundTheory.Global.FirstInequality.mem_unitsPow_of_forall_mem_unitsPowIn
     (hFI : FirstInequality.{u}) (S T : Finset (HeightOneSpectrum (𝓞 K))) (hST : Disjoint S T)
     (hpS : ∀ v, (p : 𝓞 K) ∈ v.asIdeal → v ∈ S)

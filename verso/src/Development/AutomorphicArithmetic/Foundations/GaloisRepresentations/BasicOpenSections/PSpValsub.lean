@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.MonicPolynomialsHav
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IsAlgClosedResidueFieldOfAic
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
+/- English proof (translation)
+Introduce `Ω _ _ V`. Establish `hclosed : IsAlgClosed (FractionRing V)` using `IsAlgClosed.of_ringEquiv Ω (FractionRing V) (IsLocalization.algEquiv (nonZeroDivisors V) Ω (FractionRing V)).toRingEquiv`. Establish `hA : AIC V` using `(GlobalTheory.T.monicPolynomialsHaveRoots_iff_integrallyClosed_algClosed V).2 ⟨inferInstance, hclosed⟩`. Conclude with `⟨hA, GlobalTheory.GenusTwoPureComparison.Cmp.sh_of_aic hA⟩`.
+-/
 theorem UpperTheory.Gal.Mod.spValsub :
     ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (V : ValuationSubring Ω), AIC V ∧ SH V := by
   intro Ω _ _ V

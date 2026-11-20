@@ -11,6 +11,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.HolomorphicRootNormBound
 
+/- English proof (translation)
+Introduce `n ε lam hanti hch a b ha hb`. Establish `hA1 : CompanionTheory.D.DSIC.A1 ε = ∅`. Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `i hi`. Rewrite `hi` using `[CompanionTheory.D.DSIC.A1, Finset.mem_filter]`.
+
+Conclude with `absurd (hch.lt hanti i.2.1 i.2.2) (not_lt.2 hi.2.le)`. Set `i : CompanionTheory.D.DSIC.NC ε` to `⟨(a, b), ha, hb⟩`. Establish `hne : ({i} : Finset (CompanionTheory.D.DSIC.NC ε)) ≠ CompanionTheory.D.DSIC.A1 ε`. Rewrite using `[hA1]`. Conclude with `Finset.singleton_ne_empty i`.
+
+Establish `h` using `CompanionTheory.D.DSIC.hNormLt n ε lam hanti {i} hne`. Establish `hgam : CompanionTheory.D.DSIC.gam ε lam = lowK ε lam`. Use function extensionality and compare the values at `c`. Simplify using `[CompanionTheory.D.DSIC.gam, hA1, CompanionTheory.D.DSIC.wtA]`. Both sides reduce to the same expression.
+
+Establish `hw : CompanionTheory.D.DSIC.wtA ({i} : Finset (CompanionTheory.D.DSIC.NC ε)) = root a b`. Use function extensionality and compare the values at `c`. Simplify using `only [CompanionTheory.D.DSIC.wtA, Finset.filter_singleton, root, Pi.sub_apply, Pi.single_apply, i]`. Apply the tactic sequence `by_cases h1 : a = c <;> by_cases h2 : b = c <;> simp [h1, h2, eq_comm]`. Rewrite `h` using `[hgam, hw]`.
+
+Conclude with `h`.
+-/
 theorem vNormSq_lt_of_root :
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), StrictAnti lam → IsHolChamber ε lam → ∀ a b : Fin n, ε a = true → ε b = false → vNormSq ε (lowK ε lam - root a b) < vNormSq ε (lowK ε lam) := by
   intro n ε lam hanti hch a b ha hb

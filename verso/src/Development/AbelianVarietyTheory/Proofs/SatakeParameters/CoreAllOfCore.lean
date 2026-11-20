@@ -21,6 +21,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.RoadU
 
+/- English proof (translation)
+Introduce `hI hC`. Take `⟨hex, hh⟩` from `hC`. Establish `exg : Ex .good` using `GlobalTheory.GalCut.ex_good_of_ex_csd GlobalTheory.automorphicFormsFiniteGL hex`. Establish `unrg : SphericalLevelCondition .good .unr` using `GlobalTheory.T.unramified_good_of_self_dual hI (hh .unr)`. Establish `crysg : SphericalLevelCondition .good .crys` using `holdsS_good_crys hI (hh .crys)`.
+
+Use `⟨ex_all_of_good hI exg unrg, ?_⟩` and prove the remaining obligations. Introduce `c`. Consider the cases of `c with`. Consider the case `unr => exact GlobalTheory.UnrDescent.main hI unrg`. Consider the case `dR => exact holdsS_dR_all_of_good hI (holdsS_good_dR_of_csd hI (hh .dR))`.
+
+Consider the case `crys => exact GlobalTheory.T.crystalline_all_of_good hI crysg`. Consider the case `phi => exact GlobalTheory.T.frobenius_all_of_good hI crysg (GlobalTheory.T.frobenius_good_of_self_dual hI (hh .crys) (hh .phi))`.
+-/
 theorem coreAll_of_core : Inputs → Core → CoreAll := by
   intro hI hC
   obtain ⟨hex, hh⟩ := hC
@@ -35,6 +42,9 @@ theorem coreAll_of_core : Inputs → Core → CoreAll := by
   | crys => exact GlobalTheory.T.crystalline_all_of_good hI crysg
   | phi => exact GlobalTheory.T.frobenius_all_of_good hI crysg (GlobalTheory.T.frobenius_good_of_self_dual hI (hh .crys) (hh .phi))
 
+/- English proof (translation)
+The claim follows from `coreAll_of_core`.
+-/
 example : Inputs → Core → CoreAll := coreAll_of_core
 
 end GlobalTheory.RoadU

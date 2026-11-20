@@ -22,5 +22,8 @@ open scoped ContDiff
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.isDatum_twistFactor | exact GlobalTheory.isDatum_twistFactor | (intros; apply GlobalTheory.isDatum_twistFactor <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.datum_twist_by_character : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] (g : ℕ) (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (M M' : Submodule ℤ (Fl g)) (j : Fl g → Pt E g → ℂ) (h : Pt E g → ℝ), IsDatum B τ M' j h → IsLat M → M ≤ M' → ∀ χ : AddChar (M' ⧸ M.submoduleOf M') ℂ, IsDatum B τ M' (twistFactor M M' χ j) h := by
   first | exact @GlobalTheory.isDatum_twistFactor | exact GlobalTheory.isDatum_twistFactor | (intros; apply GlobalTheory.isDatum_twistFactor <;> assumption)

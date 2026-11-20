@@ -6,6 +6,31 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 
 namespace GlobalTheory.SubLen
 
+/- English proof (translation)
+Use `haveI tfX : Module.IsTorsionFree (Int0 v) X := Module.isTorsionFree_iff_smul_eq_zero.mpr fun r x h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `Or.inr (Subtype.ext ?_)` and prove the remaining obligations. Establish `h' : r • (x : M) = 0` using `by rw [← Submodule.coe_smul, h, Submodule.coe_zero]`.
+
+Conclude with `htf r _ hr h'`. Use `haveI tfX' : Module.IsTorsionFree (Int0 v) X' := Module.isTorsionFree_iff_smul_eq_zero.mpr fun r x h => by`. Distinguish the cases in `hr : r = 0`. Conclude with `Or.inl hr`. Use `Or.inr (Subtype.ext ?_)` and prove the remaining obligations.
+
+Establish `h' : r • (x : M) = 0` using `by rw [← Submodule.coe_smul, h, Submodule.coe_zero]`. Conclude with `htf r _ hr h'`. Use `haveI := hX`. Use `haveI := hX'`. Use `haveI := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing (Int0 v) X`.
+
+Use `haveI := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing (Int0 v) X'`. Set `ι : X' →ₗ[Int0 v] X` to `Submodule.inclusion hle`. Establish `hι : Function.Injective ι` using `Submodule.inclusion_injective hle`. Set `μ : X →ₗ[Int0 v] X'` to `{ toFun := fun x => ⟨c • (x : M), hcX x x.2⟩ map_add' := fun x y => Subtype.ext (smul_add c (x : M) y) map_smul' := fun r x => Subtype.ext (by`. Express the relevant statement in the definitionally equal form `c • (r • (x : M)) = r • (c • (x : M))`.
+
+Conclude with `smul_comm c r (x : M)) }`. Establish `hμ : Function.Injective μ`. Introduce `x y hxy`. Establish `: c • ((x : M) - y) = 0`. Establish `h3 : c • (x : M) = c • (y : M)` using `congrArg Subtype.val hxy`.
+
+Rewrite using `[smul_sub, h3, sub_self]`. Conclude with `Subtype.ext (sub_eq_zero.1 (htf c _ hc this))`. Establish `h1 : finrank (Int0 v) X' ≤ finrank (Int0 v) X` using `LinearMap.finrank_le_finrank_of_injective hι`. Establish `h2 : finrank (Int0 v) X ≤ finrank (Int0 v) X'` using `LinearMap.finrank_le_finrank_of_injective hμ`. Establish `heq : finrank (Int0 v) X' = finrank (Int0 v) X` using `le_antisymm h1 h2`.
+
+Set `b` to `Module.finBasis (Int0 v) X`. Set `b'` to `Module.finBasisOfFinrankEq (Int0 v) X' heq`. Set `A` to `LinearMap.toMatrix b' b ι`. Establish `hA : ∀ k, (b' k : M) = ∑ i, A i k • (b i : M)`. Introduce `k`.
+
+Establish `e` using `b.sum_repr (ι (b' k))`. Establish `e2` using `congrArg (Submodule.subtype X) e`. Rewrite `e2` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at e2`. Simplify `e2.symm` using `[A, LinearMap.toMatrix_apply, ι]`.
+
+Establish `hdet : A.det ≠ 0`. Introduce `h0`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hw0` to reduce the goal to its premises. Establish `: ι (b'.equivFun.symm w) = 0`.
+
+Use `Matrix.toLin_toMatrix b' b ι` as an intermediate fact. Rewrite using `[← this, Matrix.toLin_apply]`. Simplify using `only [Basis.equivFun_symm_apply, Basis.repr_sum_self]`. Express the relevant statement in the definitionally equal form `∑ x, (A.mulVec w) x • b x = 0`. Simplify using `[hw]`.
+
+Establish `h4` using `hι (this.trans (map_zero ι).symm)`. Establish `h5` using `congrArg b'.equivFun h4`. Rewrite `h5` using `[LinearEquiv.apply_symm_apply, map_zero]`. Conclude with `h5`. Establish `hv : v (A.det : C) ≠ ⊤`.
+
+Rewrite using `[Ne, AddValuation.top_iff]`. Conclude with `hdet` after adjusting the coercions. Conclude with `⟨(v (A.det : C)).untop hv, _, b, b', A, hA, (WithTop.coe_untop _ hv).symm⟩`.
+-/
 theorem exists_relLen_of_smul_le (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (M : Type)
     [AddCommGroup M] [Module (Int0 v) M]
     (htf : ∀ (c : Int0 v) (x : M), c ≠ 0 → c • x = 0 → x = 0)

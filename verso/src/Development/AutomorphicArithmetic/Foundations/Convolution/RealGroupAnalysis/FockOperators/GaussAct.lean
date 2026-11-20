@@ -16,17 +16,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 private noncomputable def cwH (w : InfinitePlace F) : A F →+* ℂ :=
   Complex.ofRealHom.comp ((Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp (TR.pInf F))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cw_eq (w : InfinitePlace F) (a : A F) : cw w a = cwH w a := rfl
 
+/- English proof (translation)
+The claim follows from `Complex.conj_ofReal _`.
+-/
 private theorem conj_cw (w : InfinitePlace F) (a : A F) : starRingEnd ℂ (cw w a) = cw w a :=
   Complex.conj_ofReal _
 
 private noncomputable def cE (τ : E →+* ℂ) : A E →+* ℂ := (coord τ).comp (pInf E)
 
+/- English proof (translation)
+The claim follows from `(coordMk F E D).1 τ u t`.
+-/
 private theorem cE_mk (D : Dat F E) (τ : E →+* ℂ) (u t : A F) :
     cE τ (D.mkE u t) = cw (pl F τ) u + τ D.θ * cw (pl F τ) t :=
   (coordMk F E D).1 τ u t
 
+/- English proof (translation)
+Take `⟨-, hbar, hmk, -⟩` from `hermAct F E D`. Establish `hθ` using `((coordMk F E D).2.1 τ).2.1`. Establish `hz` using `hmk z`. Generalize the expression as in `D.co z 0 = u at hz`. Generalize the expression as in `D.co z 1 = t at hz`.
+
+Substitute `hz` using the available equality. Rewrite using `[hbar, cE_mk, cE_mk, map_add, map_mul, hθ, conj_cw, conj_cw, cw_eq _ (-t), map_neg, ← cw_eq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem cE_bar (D : Dat F E) (τ : E →+* ℂ) (z : A E) :
     cE τ (D.bar z) = starRingEnd ℂ (cE τ z) := by
   obtain ⟨-, hbar, hmk, -⟩ := hermAct F E D
@@ -38,6 +52,11 @@ private theorem cE_bar (D : Dat F E) (τ : E →+* ℂ) (z : A E) :
   rw [hbar, cE_mk, cE_mk, map_add, map_mul, hθ, conj_cw, conj_cw, cw_eq _ (-t), map_neg, ← cw_eq]
   ring
 
+/- English proof (translation)
+Establish `hθ` using `((coordMk F E D).2.1 τ).1`. Establish `h0 : cw (pl F τ) (0 : A F) = 0` using `by rw [cw_eq, map_zero]`. Establish `hn : cw (pl F τ) (-v 3) = -cw (pl F τ) (v 3)` using `by rw [cw_eq, map_neg, ← cw_eq]`. Establish `hR : cw (pl F τ) (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt D.δ * v 3 ^ 2)) = cw (pl F τ) (v 0) ^ 2 + cw (pl F τ) (v 1) ^ 2 + 2 * (cw (pl F τ) (v 2) ^ 2 - cw (pl F τ) (rt D.δ) * cw (pl F τ) (v 3) ^ 2)`. Simplify using `only [cw_eq, map_add, map_mul, map_pow, map_sub, map_ofNat]`.
+
+Rewrite using `[hR, ← hθ]`. Simplify using `only [Matrix.trace_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.map_apply, Dat.herm, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, cE_mk, h0, hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem trace_herm (D : Dat F E) (τ : E →+* ℂ) (v : V4 F) :
     Matrix.trace (((D.herm v).map (cE τ)) * ((D.herm v).map (cE τ))) =
       cw (pl F τ) (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt D.δ * v 3 ^ 2)) := by
@@ -54,6 +73,17 @@ private theorem trace_herm (D : Dat F E) (τ : E →+* ℂ) (v : V4 F) :
     cE_mk, h0, hn]
   ring
 
+/- English proof (translation)
+Use `set K : Matrix (Fin 2) (Fin 2) ℂ := h.val.map (cE τ) with hK`. Use `set X : Matrix (Fin 2) (Fin 2) ℂ := (D.herm v).map (cE τ) with hX`. Establish `hKK : Kᴴ * K = 1`. Establish `h1` using `Matrix.mem_unitaryGroup_iff'.1 hu`. Establish `h2` using `congrArg (fun M : Matrix (Fin 2) (Fin 2) (Cinf E) => M.map (coord τ)) h1`.
+
+Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_apply, map_sum, map_mul, UpperTheory.V.FieldIso.coord_star] at h3`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hK, Matrix.conjTranspose_apply, Matrix.map_apply]`.
+
+Use `h3.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hY : (D.herm (D.act h v)).map (cE τ) = K * X * Kᴴ`. Rewrite using `[((hermAct F E D).1 h v)]`.
+
+Establish `hm : ((h.val.map D.bar)ᵀ).map (cE τ) = Kᴴ`. Use extensionality with `i j`. Simplify using `only [hK, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, cE_bar]`. Both sides reduce to the same expression. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hm]`.
+
+Rewrite using `[hY]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem pres (D : Dat F E) (h : GL (Fin 2) (A E))
     (hu : (Matrix.GeneralLinearGroup.map (pInf E) h).val ∈ Matrix.unitaryGroup (Fin 2) (Cinf E))
     (τ : E →+* ℂ) (v : V4 F) :
@@ -91,6 +121,11 @@ end
 
 end UpperTheory.ConvolutionTheory.R2.Fo
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D h hu v`. Establish `key : ∀ w : InfinitePlace F, TR.pInf F ((D.act h v) 0 ^ 2 + (D.act h v) 1 ^ 2 + 2 * ((D.act h v) 2 ^ 2 - rt D.δ * (D.act h v) 3 ^ 2)) w = TR.pInf F (v 0 ^ 2 + v 1 ^ 2 + 2 * (v 2 ^ 2 - rt D.δ * v 3 ^ 2)) w`. Introduce `w`. Take `⟨τ, rfl⟩` from `(coordMk F E D).2.2.2 w`. Establish `h1` using `pres D h hu τ v`.
+
+Rewrite `h1` using `[trace_herm, trace_herm]`. Conclude with `Complex.ofReal_injective h1`. Unfold `gauss`. Rewrite using `[Finset.sum_congr rfl fun w _ => key w]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.gaussAct :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (h : GL (Fin 2) (A E)), (Matrix.GeneralLinearGroup.map (pInf E) h).val ∈ Matrix.unitaryGroup (Fin 2) (Cinf E) →
     ∀ v, gauss D.δ (D.act h v) = gauss D.δ v := by

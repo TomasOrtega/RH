@@ -5,6 +5,25 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ G β y y₀ c hyc`. Use `haveI : Module.Finite ℚ G.C := Module.Finite.trans G.F G.C`. Use `haveI : Nontrivial G.C := inferInstance`. Use `set d : G.C → ℚ := fun a => LinearMap.det (LinearMap.mulLeft ℚ a) with hd`. Establish `dmul : ∀ a b, d (a * b) = d a * d b`.
+
+Introduce `a b`. Simplify using `only [hd, LinearMap.mulLeft_mul, LinearMap.det_comp]`. Establish `done : d 1 = 1` using `by simp [hd, LinearMap.mulLeft_one]`. Establish `dsc : ∀ s : ℚ, d (algebraMap ℚ G.C s) = s ^ Module.finrank ℚ G.C`. Introduce `s`.
+
+Establish `: LinearMap.mulLeft ℚ (algebraMap ℚ G.C s) = s • LinearMap.id`. Use extensionality with `x`. Simplify using `[Algebra.smul_def]`. Simplify using `only [hd, this, LinearMap.det_smul, LinearMap.det_id, mul_one]`. Establish `dunit : ∀ u : G.Cˣ, d (u : G.C) * d ((u⁻¹ : G.Cˣ) : G.C) = 1`.
+
+Introduce `u`. Rewrite using `[← dmul, Units.mul_inv, done]`. Establish `shmul : ∀ a b : G.C, sh G (a * b) = sh G b * sh G a`. Introduce `a b`. Simplify using `only [sh, map_mul, MulOpposite.unop_mul]`.
+
+Establish `shone : sh G 1 = 1` using `by simp [sh]`. Establish `dsh_conj : d (sh G (c * (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((c⁻¹ : G.Cˣ) : G.C))) = d (sh G (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C))`. Establish `e : d (sh G ((c⁻¹ : G.Cˣ) : G.C)) * d (sh G (c : G.C)) = 1`. Rewrite using `[← dmul, ← shmul, Units.mul_inv, shone, done]`. Rewrite using `[shmul, shmul, dmul, dmul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `d_conj : d (c * (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((c⁻¹ : G.Cˣ) : G.C)) = d (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)`. Rewrite using `[dmul, dmul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hy, hs⟩` from `y.2`.
+
+Take `⟨hy₀, hs₀⟩` from `y₀.2`. Establish `ey` using `congrArg d hy`. Establish `ey₀` using `congrArg d hy₀`. Rewrite `ey`, `ey₀` using `[dmul, dmul, dmul, dsc]`. Rewrite `ey` using `[hyc, d_conj, dsh_conj, ey₀]`.
+
+Establish `hβ : d (β : G.C) ≠ 0`. Introduce `h`. Use `dunit β` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`.
+
+Establish `hN : Module.finrank ℚ G.C ≠ 0` using `Module.finrank_pos.ne'`. Establish `hpow : ((y : G.Cˣ × ℚˣ).2 : ℚ) ^ Module.finrank ℚ G.C = ((y₀ : G.Cˣ × ℚˣ).2 : ℚ) ^ Module.finrank ℚ G.C` using `(mul_right_cancel₀ hβ ey).symm`. Conclude with `Units.ext ((pow_left_inj₀ hs.le hs₀.le hN).1 hpow)`.
+-/
 theorem grp_factor_eq_of_conj : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β : G.Cˣ) (y y₀ : grp G β) (c : G.Cˣ),
     (((y : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = c * (((y₀ : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) * ((c⁻¹ : G.Cˣ) : G.C) →
     (y : G.Cˣ × ℚˣ).2 = (y₀ : G.Cˣ × ℚˣ).2 := by

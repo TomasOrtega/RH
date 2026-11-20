@@ -13,6 +13,9 @@ namespace GlobalTheory.RSnmUnf
 
 def padNat {m n : ℕ} (l : Fin m → ℕ) : Fin n → ℕ := fun i => if h : (i : ℕ) < m then l ⟨i, h⟩ else 0
 
+/- English proof (translation)
+Apply the tactic sequence `funext i; simp only [padNat, Pi.zero_apply]; split_ifs <;> rfl`.
+-/
 theorem padNat_zero {m n : ℕ} : padNat (m := m) (n := n) 0 = 0 := by
   funext i; simp only [padNat, Pi.zero_apply]; split_ifs <;> rfl
 

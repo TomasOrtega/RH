@@ -6,6 +6,13 @@ open GlobalTheory.FinGL Formalism.L2.DIV Module
 
 namespace GlobalTheory.FinGL
 
+/- English proof (translation)
+Use `⟨Subgroup.inclusion (GlobalTheory.Parabolic.levi_le_blockTri b) (GlobalTheory.Parabolic.leviProj b p), ?_, fun i k => GlobalTheory.Parabolic.leviProj_apply b p i k⟩` and prove the remaining obligations. Use `set m := Subgroup.inclusion (GlobalTheory.Parabolic.levi_le_blockTri b) (GlobalTheory.Parabolic.leviProj b p) with hm`. Establish `h1 : GlobalTheory.Parabolic.leviProj b (m⁻¹ * p) = 1`. Rewrite using `[map_mul, map_inv, hm, GlobalTheory.Parabolic.leviProj_inclusion, inv_mul_cancel]`. Establish `h2 : σ (m⁻¹ * p) = 1`.
+
+Use `hσ.infl _ fun i j hij => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.Parabolic.leviProj_apply b (m⁻¹ * p) i j`. Rewrite `e` using `[h1, if_pos hij]`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem IsCuspDatum.exists_blockDiag_act_eq (F : Type) [Field F] (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V) (hσ : IsCuspDatum b σ)
     (p : blockTri (κ := F) b) :

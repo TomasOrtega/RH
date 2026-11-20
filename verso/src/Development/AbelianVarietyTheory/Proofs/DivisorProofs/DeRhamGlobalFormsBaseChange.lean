@@ -20,6 +20,9 @@ set_option autoImplicit false
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Rewrite using `[LinearMap.exact_iff]`. Express the relevant statement in the definitionally equal form `Fil1 (OAff s) = _`. Rewrite using `[Fil1_eq_range, clAll, LinearMap.range_comp_of_range_eq_top]`. Conclude with `LinearEquiv.range _`.
+-/
 theorem exact_clAll_toHO1 {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) (hc : Closed1 (OAff s) = ⊤) :
     Function.Exact (clAll (OAff s) hc) (toHO1 s) := by
   rw [LinearMap.exact_iff]
@@ -27,10 +30,22 @@ theorem exact_clAll_toHO1 {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp
   rw [Fil1_eq_range, clAll, LinearMap.range_comp_of_range_eq_top]
   exact LinearEquiv.range _
 
+/- English proof (translation)
+Establish `: Surjective (e ≫ f)` using `by rw [he]; infer_instance`. Conclude with `Surjective.of_comp e f`.
+-/
 theorem surjective_of_section {X Y : Scheme.{0}} (f : X ⟶ Y) (e : Y ⟶ X) (he : e ≫ f = 𝟙 Y) : Surjective f := by
   have : Surjective (e ≫ f) := by rw [he]; infer_instance
   exact Surjective.of_comp e f
 
+/- English proof (translation)
+Introduce `R _ A _ g hab hsm R' _ _ X' s' φ h`. Take `⟨inst', hab', hsm'⟩` from `GlobalTheory.T.exists_grpObj_isAbelianScheme_of_isPullback_spMap' R A g hab hsm R' (algebraMap R R') X' s' φ h`. Take `⟨hfr, h0, -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hab hsm`. Take `⟨hfr', h0', -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R' (Over.mk s') g hab' hsm'`. Establish `hc` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R A g hab hsm`.
+
+Establish `hc'` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R' (Over.mk s') g hab' hsm'`. Establish `hflat : Flat s'` using `by haveI := hsm' haveI : Smooth s' := SmoothOfRelativeDimension.smooth g s' infer_instance`. Establish `hsurj : Surjective s'`. Use `surjective_of_section s' (η[Over.mk s']).left ?_` and prove the remaining obligations. Use `Over.w (η[Over.mk s'])` as an intermediate fact.
+
+Simplify using `using this`. Establish `hW` using `GlobalTheory.T.exists_equiv_globalOneForms_baseChange R R' A.left X' A.hom s' φ h hfr h0 hfr' h0' hflat hsurj`. Use `⟨?_, hW⟩` and prove the remaining obligations. Establish `hH` using `(GlobalTheory.T.abelian_structure_cohomology_statement R A g hab hsm).2.2.1 R' X' s' φ h`. Use `GlobalTheory.T.semilinear_short_exact_compatible R R' (GlobForm A.hom) (HH1 A.hom) (HO1 A.hom) (GlobForm s') (HH1 s') (HO1 s') (clAll (OAff A.hom) hc) (toHO1 A.hom) (clAll (OAff s') hc') (toHO1 s') (pullForm h.w) (pullHH1 h.w) (pullHO1 h.w) (GlobalTheory.T.de_rham_to_structure_h1 …` and prove the remaining obligations.
+
+Conclude with `(ofForm_injective_of_H0Const R' _ (OAff s') h0').comp (LinearEquiv.injective _)`. Introduce `x`. Conclude with `GlobalTheory.T.pull_closed_form_class R R' A.left X' A.hom s' (algebraMap R R') φ h.w hc hc' x`. Introduce `x`. Conclude with `toHO1_pullHH1 h.w x`.
+-/
 theorem baseChange_HH1_globForm : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] [Algebra R R'] (X' : Scheme.{0}) (s' : X' ⟶ Sp R') (φ : X' ⟶ A.left) (h : IsPullback φ s' A.hom (spMap (algebraMap R R'))), (∃ e : R' ⊗[R] HH1 A.hom ≃ₗ[R'] HH1 s', ∀ c, e (1 ⊗ₜ c) = pullHH1 h.w c) ∧ ∃ e : R' ⊗[R] GlobForm A.hom ≃ₗ[R'] GlobForm s', ∀ c, e (1 ⊗ₜ c) = GlobalTheory.CechDR.pullForm h.w c := by
   intro R _ A _ g hab hsm R' _ _ X' s' φ h
   obtain ⟨inst', hab', hsm'⟩ := GlobalTheory.T.exists_grpObj_isAbelianScheme_of_isPullback_spMap' R A g hab hsm R' (algebraMap R R') X' s' φ h

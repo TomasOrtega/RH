@@ -13,6 +13,9 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.SS
 
+/- English proof (translation)
+Introduce `X _ _ _ _ h W hW hne` and use `GlobalTheory.AffineComplement.exists_nonzeroLocus_eq X W hW hne h`.
+-/
 theorem exists_nonzeroLocus_eq_of_isAffineOpen : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [CompactSpace X] [X.IsSeparated], (∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x)) → ∀ W : X.Opens, IsAffineOpen W → (W : Set X).Nonempty → ∃ (L : LB X) (s : LB.Sec L), L.IsLB ∧ Out.nonzeroLocus s = W :=
   fun X _ _ _ _ h W hW hne => GlobalTheory.AffineComplement.exists_nonzeroLocus_eq X W hW hne h
 

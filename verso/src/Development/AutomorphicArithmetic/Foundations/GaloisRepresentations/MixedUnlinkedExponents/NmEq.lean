@@ -9,6 +9,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
+/- English proof (translation)
+Introduce `K L _ _ _ _ _ v w`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Gal.GamX.nmEq :
     UpperTheory.Gal.GamX.NmEq := by
   intro K L _ _ _ _ _ v w

@@ -10,6 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D A G _ _ hG U b h g g' hg hg' H H'`. Establish `: IsNoetherianRing R` using `hR.1.1`. Establish `: Smooth G.hom` using `hG.smooth`. Establish `: GeometricallyConnected G.hom` using `hG.geomConnected`. Establish `: IsSeparated G.hom` using `hG.separated`.
+
+Use `GlobalTheory.AbelianPartIso.hom_eq_of_map_eq (IsLocalRing.maximalIdeal_le_jacobson _) G g g' fun e => ?_` and prove the remaining obligations. Take `⟨q1, t, ht, i1⟩` from `H e`. Take `⟨q2, t', ht', i2⟩` from `H' e`. Establish `htt : t = t'` using `GlobalTheory.LinearUnifCheck.torusEndOf_unique ht ht'`. Use `(U.gt e).i_hom` as an intermediate fact.
+
+Conclude with `GlobalTheory.LinearUnifIso.hom_ext_torus (U.gt e) (U.gt e) GlobalTheory.globalFns_holds _ _ (q1.trans q2.symm) (i1.trans (htt ▸ i2.symm))`.
+-/
 theorem actsAs_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (b : D.toPre.P.A ⟶ D.toPre.P.A) (h : D.toPre.X → D.toPre.X) (g g' : G ⟶ G), IsMonHom g → IsMonHom g' → ActsAs U.toUnifPre b h g → ActsAs U.toUnifPre b h g' → g = g' := by
   intro R _ _ _ hR D A G _ _ hG U b h g g' hg hg' H H'
   have : IsNoetherianRing R := hR.1.1

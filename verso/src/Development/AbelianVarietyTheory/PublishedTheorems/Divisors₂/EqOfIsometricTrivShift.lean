@@ -16,6 +16,9 @@ def Isometric (L M : HermLB p) : Prop :=
   ∃ w : LB.Iso L.B M.B, w.IsGen ∧ ∀ (σ : k →+* ℂ) (a : M.B.ι) (b : L.B.ι) (y : CxPts p σ),
     y ∈ ptsIn p σ (M.B.U a) → y ∈ ptsIn p σ (L.B.U b) →
       (M.φ σ).φ a y = (L.φ σ).φ b y + Real.log (‖ev p σ _ (w.s (a, b)).val y‖ ^ 2)
+/- English proof (translation)
+Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h').op).hom ((X.presheaf.map (homOfLE h).op).hom a.val) = (X.presheaf.map (homOfLE (h'.trans h)).op).hom a.val`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_res_lemma {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a := by
   ext
@@ -23,6 +26,11 @@ private theorem res_res_lemma {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a 
     (X.presheaf.map (homOfLE (h'.trans h)).op).hom a.val
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]
   rfl
+/- English proof (translation)
+Take `⟨-, -, hc⟩` from `hB`. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩`. Establish `e1` using `congrArg (res (fun x hx => by simp only [Opens.mem_inf] at hx ⊢; tauto : (B.U a ⊓ B.U b) ⊓ (B.U a' ⊓ B.U b') ≤ _)) (hc a a' b')`. Establish `e2` using `congrArg (res (fun x hx => by simp only [Opens.mem_inf] at hx ⊢; tauto : (B.U a ⊓ B.U b) ⊓ (B.U a' ⊓ B.U b') ≤ _)) (hc a b b')`. Simplify using `only [map_mul, res_res_lemma] at e1 e2`.
+
+Simplify using `only [LB.div]`. Use `(eq_mul_inv_of_mul_eq e2).trans ?_` and prove the remaining obligations. Rewrite using `[← e1]`. Conclude with `mul_right_comm _ _ _`.
+-/
 private theorem isGen_iso_self_of_isLB (B : LB X) (hB : B.IsLB) :
     (⟨fun c => B.g c.1 c.2⟩ : LB.Iso B B).IsGen := by
   obtain ⟨-, -, hc⟩ := hB
@@ -36,6 +44,9 @@ private theorem isGen_iso_self_of_isLB (B : LB X) (hB : B.IsLB) :
   refine (eq_mul_inv_of_mul_eq e2).trans ?_
   rw [← e1]
   exact mul_right_comm _ _ _
+/- English proof (translation)
+Rewrite using `[h σ a y ha, (φ σ).trans a b y ha hb]`. Conclude with `(sub_add_cancel _ _).symm`.
+-/
 private theorem iso_phi_eq_add_log_normSq_transition {B : LB X} (hB : B.IsLB) (φ ψ : ∀ σ : k →+* ℂ, Weight p σ B)
     (h : ∀ σ a, ∀ y ∈ ptsIn p σ (B.U a), (ψ σ).φ a y = (φ σ).φ a y) (σ : k →+* ℂ) (a b : B.ι)
     (y : CxPts p σ) (ha : y ∈ ptsIn p σ (B.U a)) (hb : y ∈ ptsIn p σ (B.U b)) :
@@ -43,11 +54,17 @@ private theorem iso_phi_eq_add_log_normSq_transition {B : LB X} (hB : B.IsLB) (�
   rw [h σ a y ha, (φ σ).trans a b y ha hb]
   exact (sub_add_cancel _ _).symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun c => B.g c.1 c.2⟩, isGen_iso_self_of_isLB B hB, fun σ a b y ha hb => iso_phi_eq_add_log_normSq_transition hB φ ψ h σ a b y ha hb⟩`.
+-/
 theorem isometric_of_eqOn {B : LB X} {hB : B.IsLB} {φ ψ : ∀ σ : k →+* ℂ, Weight p σ B} {h₁ h₂ h₃ h₄}
     (h : ∀ σ a, ∀ y ∈ ptsIn p σ (B.U a), (ψ σ).φ a y = (φ σ).φ a y) :
     Isometric (p := p) ⟨B, hB, φ, h₁, h₂⟩ ⟨B, hB, ψ, h₃, h₄⟩ :=
   ⟨⟨fun c => B.g c.1 c.2⟩, isGen_iso_self_of_isLB B hB, fun σ a b y ha hb => iso_phi_eq_add_log_normSq_transition hB φ ψ h σ a b y ha hb⟩
 
+/- English proof (translation)
+Take `⟨B, hB, φ, h₁, h₂⟩` from `L`. Conclude with `isometric_of_eqOn fun _ _ _ _ => rfl`.
+-/
 theorem Isometric.refl (L : HermLB p) : L.Isometric L := by
   obtain ⟨B, hB, φ, h₁, h₂⟩ := L
   exact isometric_of_eqOn fun _ _ _ _ => rfl
@@ -61,10 +78,20 @@ def raise (M : HermLB p) (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : �
   conj σ σ' c y y' h hy := congrArg₂ (· + ·) (M.conj σ σ' c y y' h hy)
     (hc σ σ' PUnit.unit y y' h mem_ptsIn_top)
 
+/- English proof (translation)
+The claim follows from `isometric_of_eqOn fun σ _ y _ => zero_add (u σ y)`.
+-/
 theorem isometric_raise_triv (u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ) (hu : ∀ σ y, CInfAt (u σ) y)
     (hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))) :
     (fnB u hu hc).Isometric ((triv p).raise u hu hc) :=
   isometric_of_eqOn fun σ _ y _ => zero_add (u σ y)
+/- English proof (translation)
+Substitute `hU` using the available equality. Use `haveI := ArithBase.isArithVar_int.charZero`. Take `⟨n, hn⟩` from `ArithBase.surjective_intCast (𝟙 (Sp ℤ)) (u : Γ(Sp ℤ, ⊤))`. Take `⟨m, hm⟩` from `ArithBase.surjective_intCast (𝟙 (Sp ℤ)) ((u⁻¹ : Γ(Sp ℤ, ⊤)ˣ) : Γ(Sp ℤ, ⊤))`. Simplify using `only [Int.coe_castRingHom] at hn hm`.
+
+Establish `h1 : n * m = 1`. Establish `e` using `u.mul_inv`. Rewrite `e` using `[← hn, ← hm]`. Conclude with `e` after adjusting the coercions. Use `ext`.
+
+Rewrite using `[← hn, ← hm]`. Apply the tactic sequence `rcases Int.eq_one_or_neg_one_of_mul_eq_one' h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rfl`.
+-/
 private theorem inv_eq_self_units_sections_spec_int_top (U : (Sp ℤ).Opens) (hU : U = ⊤) (u : Γ(Sp ℤ, U)ˣ) : u⁻¹ = u := by
   subst hU
   haveI := ArithBase.isArithVar_int.charZero
@@ -79,6 +106,17 @@ private theorem inv_eq_self_units_sections_spec_int_top (U : (Sp ℤ).Opens) (hU
   rw [← hn, ← hm]
   rcases Int.eq_one_or_neg_one_of_mul_eq_one' h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rfl
 
+/- English proof (translation)
+Take `⟨w, -, hw⟩` from `h`. Take `⟨y⟩ : Nonempty (CxPts (𝟙 (Sp ℤ)) (Int.castRingHom ℂ))` from `⟨⟨spMap (Int.castRingHom ℂ), by simp⟩⟩`. Establish `hy : y ∈ ptsIn (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) ⊤` using `mem_ptsIn_top`. Establish `e : (0 : ℝ) + 2 * t = 0 + 2 * s + Real.log (‖ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y‖ ^ 2)` using `hw (Int.castRingHom ℂ) PUnit.unit PUnit.unit y hy hy`. Establish `hne : ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y ≠ 0` using `ev_iso_ne_zero w hy hy`.
+
+Establish `hinv` using `ev_inv (mem_ptsIn_inf.2 ⟨hy, hy⟩ : y ∈ ptsIn (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤)) (w.s (PUnit.unit, PUnit.unit))`. Establish `hu` using `inv_eq_self_units_sections_spec_int_top _ (inf_idem _) (w.s (PUnit.unit, PUnit.unit))`. Establish `hc` using `congrArg (fun v : Γ(Sp ℤ, ⊤ ⊓ ⊤)ˣ => ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) v.val y) hu`. Establish `key : ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y = (ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y)⁻¹` using `hc.symm.trans hinv`. Use `set x := ev (𝟙 (Sp ℤ)) (Int.castRingHom ℂ) (⊤ ⊓ ⊤) (w.s (PUnit.unit, PUnit.unit)).val y`.
+
+Establish `hxx : x * x = 1`. Establish `h2 : x * x⁻¹ = 1` using `mul_inv_cancel₀ hne`. Rewrite `h2` using `[← key]`. Then use the resulting hypothesis. Establish `hn : ‖x‖ * ‖x‖ = 1` using `by rw [← norm_mul, hxx, norm_one]`. Establish `hx : ‖x‖ = 1`.
+
+Break down `mul_self_eq_one_iff.mp hn with h | h` into its components or cases. Conclude with `h`. Combine the linear relations using `[norm_nonneg x]`. Rewrite `e` using `[hx]`. Simplify using `at e`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem eq_of_isometric_trivShift {s t : ℝ} (h : (ArithBase.trivShift s).Isometric (ArithBase.trivShift t)) : s = t := by
   obtain ⟨w, -, hw⟩ := h
   obtain ⟨y⟩ : Nonempty (CxPts (𝟙 (Sp ℤ)) (Int.castRingHom ℂ)) := ⟨⟨spMap (Int.castRingHom ℂ), by simp⟩⟩
@@ -160,22 +198,51 @@ def ArMetric : Prop := ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral 
 
 def ArCalc : Prop := ArExists ∧ ArChange ∧ ArShift ∧ ArMix ∧ ArProj ∧ ArIso ∧ ArMetric
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem ArCalc.arExists (h : ArCalc) : ArExists := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem ArCalc.arChange (h : ArCalc) : ArChange := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.1`.
+-/
 theorem ArCalc.arShift (h : ArCalc) : ArShift := h.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.1`.
+-/
 theorem ArCalc.arMix (h : ArCalc) : ArMix := h.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.1`.
+-/
 theorem ArCalc.arProj (h : ArCalc) : ArProj := h.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2.2.2.2.1`.
+-/
 theorem ArCalc.arIso (h : ArCalc) : ArIso := h.2.2.2.2.2.1
 
 section Consequences
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ} {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨h, hh⟩` from `(HE k X p D hX).1 (comb L n)`. Take `⟨-, he⟩` from `H k X p D hX ι M L Φ hΦ n h hh r hr`. Establish `hA : (comb L n).archInt M D hr = 0`. Unfold `HermLB.archInt`.
+
+Use `finsum_eq_zero_of_forall_eq_zero fun σ => ?_` and prove the remaining obligations. Simplify using `only [Weight.chernInt]`. Rewrite using `[MeasureTheory.setIntegral_eq_zero_of_forall_eq_zero (h1 σ), MeasureTheory.setIntegral_eq_zero_of_forall_eq_zero (h1 σ), sub_zero]`. Rewrite using `[he, hA, sub_zero, finsum_mul]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hz : (M.div hr).mult z = 0`. Simplify using `[hz]`. Take `⟨Z, i, hi, hZ, alg, rfl, hdim, hdz⟩` from `hd z hz`. Use `haveI := hi`. Use `haveI := hZ`.
+
+Use `letI := alg`. Rewrite using `[hh.vertical Z i (ZMod l) D hdim, hdz, Nat.card_zmod]`. Use `first`. Consider the case `(push_cast; ring)`. Consider the case `push_cast`.
+
+Consider the case `ring`.
+-/
 theorem ArMix.vertical (H : ArMix) (HE : ArExists) [IsLocallyNoetherian X] (hX : IsArithVar p D) {M : HermLB p}
     {L : ι → HermLB p} {Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun (fun o : Option ι => o.elim M L) D Φ)
     (n : ι → ℤ) {r : M.B.ι → X.functionFieldˣ} (hr : IsRatSec M.B r)
@@ -209,6 +276,21 @@ theorem ArMix.vertical (H : ArMix) (HE : ArExists) [IsLocallyNoetherian X] (hX :
     | push_cast
     | ring
 
+/- English proof (translation)
+Use `haveI : IsLocallyNoetherian X := hX.isLocallyNoetherian`. Use `haveI : Finite (k →+* ℂ) := hX.finite_emb`. Take `⟨h, hh⟩` from `(HE k X p D hX).1 (comb L n)`. Establish `hr1 : IsRatSec (LB.triv X) (fun _ => 1)`. Introduce `i j hij`.
+
+Express the relevant statement in the definitionally equal form `(1 : X.functionField) = fnOf _ hij ((1 : Γ(X, ⊤ ⊓ ⊤)ˣ) : Γ(X, ⊤ ⊓ ⊤)) * 1`. Simplify using the standard rewrite rules. Take `⟨hI, he⟩` from `H k X p D hX ι (ArInt.fnB u hu hc) L Φ hΦ n h hh _ hr1`. Establish `hE : ∀ x, ((ArInt.fnB u hu hc).div hr1).IsEqn x 1` using `fun x => (presents_divOfRatSec (LB.isLB_triv X) hr1).isEqn PUnit.unit x trivial`. Establish `hmult : ∀ z, ((ArInt.fnB u hu hc).div hr1).mult z = 0` using `fun z => by`.
+
+Rewrite using `[(hE z).mult_eq]`. Use `first`. Consider the case `exact UnitAt.ord_eq_zero (unitAt_one z)`. Consider the case `simpa using UnitAt.ord_eq_zero (unitAt_one z)`. Establish `hoff : ∀ σ, offSupp p σ ((ArInt.fnB u hu hc).div hr1) = Set.univ` using `fun σ => Set.eq_univ_of_forall fun y => mem_offSupp.2 fun hy => hy (hE _)`.
+
+Establish `hlog : ∀ σ, logNorm ((ArInt.fnB u hu hc).φ σ) (fun _ : (LB.triv X).ι => 1) = fun y => (-1 / 2 : ℝ) * u σ y`. Introduce `σ`. Use function extensionality and compare the values at `y`. Establish `hv : ratVal (1 : X.functionField) y = 1`. Establish `e` using `ratVal_fnOf (mem_ptsIn_top : y ∈ ptsIn p σ ⊤) trivial (1 : Γ(X, ⊤))`.
+
+Rewrite `e` using `[map_one, ev_one (mem_ptsIn_top : y ∈ ptsIn p σ ⊤)]`. Then use the resulting hypothesis. Simplify using `only [logNorm, Units.val_one, hv, norm_one, Real.log_one, zero_sub]`. Express the relevant statement in the definitionally equal form `-(u σ y / 2) = (-1 / 2 : ℝ) * u σ y`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun σ => ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hi` using `hI σ`. Rewrite `hi` using `[hoff σ, hlog σ]`. Conclude with `⟨(MeasureTheory.Integrable.const_mul hi.1 (-2)).congr (Filter.Eventually.of_forall fun y => by dsimp only; ring), (MeasureTheory.Integrable.const_mul hi.2 (-2)).congr (Filter.Eventually.of_forall fun y => by dsimp only; ring)⟩`. Rewrite using `[he]`. Simplify using `only [hmult, Int.cast_zero, zero_mul, finsum_zero, zero_sub]`.
+
+Unfold `HermLB.archInt chInt`. Simplify using `only [hoff, hlog, Weight.chernInt_const_mul]`. Rewrite using `[← mul_finsum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ArMix.fnB (H : ArMix) (HE : ArExists) (hX : IsArithVar p D) {L : ι → HermLB p}
     {u : ∀ σ : k →+* ℂ, CxPts p σ → ℝ} {hu : ∀ σ y, CInfAt (u σ) y}
     {hc : ∀ σ σ', (Weight.ofFun (u σ)).IsConj (Weight.ofFun (u σ'))} {Φ : MvPolynomial (Option ι) ℝ →ₗ[ℝ] ℝ}
@@ -258,6 +340,9 @@ theorem ArMix.fnB (H : ArMix) (HE : ArExists) (hX : IsArithVar p D) {L : ι → 
 
 end Consequences
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX ι _ L u hu hc Φ hΦ n`. Conclude with `(ArMix.fnB H HE hX hΦ n).2`.
+-/
 theorem arChange_of_arMix (HE : ArExists) (H : ArMix) : ArChange := by
   intro k _ X _ p D hX ι _ L u hu hc Φ hΦ n
   exact (ArMix.fnB H HE hX hΦ n).2

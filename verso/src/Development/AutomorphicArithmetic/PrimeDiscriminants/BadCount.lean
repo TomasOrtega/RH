@@ -10,11 +10,21 @@ namespace Formalism.BasicNotions.Host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `h` using `H.log_n_le_two_log_rdE`. Use `Real.log_natCast_nonneg R.n` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_rdE_nonneg' : 0 ≤ Real.log H.rdE := by
   have h := H.log_n_le_two_log_rdE
   have := Real.log_natCast_nonneg R.n
   linarith
 
+/- English proof (translation)
+Establish `hB0 : (0:ℝ) < B` using `by exact_mod_cast hB`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Establish `hBp : B < p` using `(hT p hp).2`.
+
+Establish `hBp' : (B:ℝ) ≤ (p:ℝ) - 1`. Establish `: ((B + 1 : ℕ) : ℝ) ≤ p` using `by exact_mod_cast hBp`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `div_le_div_of_nonneg_left (Real.log_natCast_nonneg p) hB0 hBp'`.
+
+Use `_ = (∑ p ∈ T, Real.log (p:ℝ)) / B := (Finset.sum_div _ _ _).symm`. Use `_ ≤ (∑ p ∈ H.small, Real.log (p:ℝ)) / B := by`. Apply `div_le_div_of_nonneg_right _ hB0.le` to reduce the goal to its premises. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (fun p hp => (hT p hp).1) (fun p _ _ => Real.log_natCast_nonneg p)`. Use `_ ≤ 4 * Real.log H.rdE / B := div_le_div_of_nonneg_right (sum_small_log_le H) hB0.le`.
+-/
 theorem sum_small_gt_log_div_le {B : ℕ} (hB : 1 ≤ B) (T : Finset ℕ) (hT : ∀ p ∈ T, p ∈ H.small ∧ B < p) :
     ∑ p ∈ T, Real.log p / ((p : ℝ) - 1) ≤ 4 * Real.log H.rdE / B := by
   have hB0 : (0:ℝ) < B := by exact_mod_cast hB
@@ -34,6 +44,17 @@ theorem sum_small_gt_log_div_le {B : ℕ} (hB : 1 ≤ B) (T : Finset ℕ) (hT : 
           (fun p _ _ => Real.log_natCast_nonneg p)
     _ ≤ 4 * Real.log H.rdE / B := div_le_div_of_nonneg_right (sum_small_log_le H) hB0.le
 
+/- English proof (translation)
+Use `set U := Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S with hU`. Establish `hprime : ∀ p ∈ U, p.Prime`. Introduce `p hp`. Break down `Finset.mem_union.mp hp with h | h` into its components or cases. Conclude with `Nat.prime_of_mem_primeFactors h`.
+
+Conclude with `hS p h`. Establish `hterm1 : ∀ p ∈ U, Real.log p / ((p:ℝ) - 1) ≤ 1`. Introduce `p hp`. Establish `h2 : (2:ℝ) ≤ p` using `by exact_mod_cast (hprime p hp).two_le`. Rewrite using `[div_le_one (by linarith)]`.
+
+Conclude with `Real.log_le_sub_one_of_pos (by linarith)`. Establish `hterm2 : ∀ p ∈ U, Real.log p / ((p:ℝ) - 1) ≤ Real.log p`. Introduce `p hp`. Establish `h2 : (2:ℝ) ≤ p` using `by exact_mod_cast (hprime p hp).two_le`. Conclude with `div_le_self (Real.log_natCast_nonneg p) (by linarith)`.
+
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not U (· ∈ H.small)]`. Establish `hA : ∑ p ∈ U.filter (· ∈ H.small), Real.log p / ((p:ℝ) - 1) ≤ 4 * Real.log H.rdE`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∑ p ∈ U.filter (· ∉ H.small), Real.log p / ((p:ℝ) - 1) ≤ S.card + 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_bad_log_div_le (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∑ p ∈ Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S, Real.log p / ((p : ℝ) - 1) ≤
       S.card + 2 + 4 * Real.log H.rdE := by
@@ -67,6 +88,11 @@ theorem sum_bad_log_div_le (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
       _ ≤ _ := by exact_mod_cast card_bad_sdiff_le H S
   linarith
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not T (fun p => p ∈ H.small ∧ B < p)]`. Establish `h1` using `H.sum_small_gt_log_div_le (B := B) (by omega) (T.filter fun p => p ∈ H.small ∧ B < p) fun p h => (Finset.mem_filter.1 h).2`. Establish `h2` using `GlobalTheory.sum_log_div_sub_one_le_three_mul_log_add_one B (T.filter fun p => ¬ (p ∈ H.small ∧ B < p)) hB (fun p h => hp p (Finset.mem_filter.1 h).1) (by`. Use `((Finset.card_le_card fun p h => ?_).trans (H.card_bad_sdiff_le S)).trans hS` and prove the remaining obligations. Take `⟨h, hb⟩` from `Finset.mem_filter.1 h`.
+
+Take `⟨h, hn⟩` from `Finset.mem_filter.1 h`. Conclude with `Finset.mem_sdiff.2 ⟨hT p h hb, fun hs => hn ⟨hs, hb⟩⟩)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_log_div_le_of_bad (B : ℕ) (S T : Finset ℕ) (hB : 3 ≤ B) (hS : S.card + 2 ≤ B) (hp : ∀ p ∈ T, p.Prime)
     (hT : ∀ p ∈ T, B < p → p ∈ Nat.primeFactors (2 * (discr H.E).natAbs) ∪ S) :
     ∑ p ∈ T, Real.log p / ((p : ℝ) - 1) ≤ 3 * Real.log B + 1 + 4 * Real.log H.rdE / B := by

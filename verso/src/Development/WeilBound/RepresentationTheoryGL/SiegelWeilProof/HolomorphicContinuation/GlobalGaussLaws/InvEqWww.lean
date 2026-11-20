@@ -17,6 +17,11 @@ open Classical
 
 variable {D : D7} {n m : ℕ}
 
+/- English proof (translation)
+Establish `e : Bw ψ V θ τ fr Ψ x = Bw ψ V θ τ fr Ψ x'`. Use function extensionality and compare the values at `y`. Unfold `Bw`. Rewrite using `[inner_away hθ x x' _ hx hf (compAt_sub_sIns hθ hdet y)]`. Unfold `Aw`.
+
+Rewrite using `[e]`.
+-/
 theorem Aw_away {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hdet : IsUnit fr.det) (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D V.rank n)) (Ψ : Mx D V.rank n → ℂ) (x x' : Mx D V.rank n)
@@ -30,11 +35,17 @@ theorem Aw_away {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.
   rw [e]
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Rewrite using `[mat_mul', hw, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem mat_ww (w : G D n) (hw : mat w = blk4 0 1 (-1) 0) : mat (w * w) = blk4 (-1) 0 0 (-1) := by
   rw [mat_mul', hw, submatrix_fromBlocks_mul]
   simp
 
 set_option maxHeartbeats 800000 in
+/- English proof (translation)
+Apply `mat_inj` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.EisCovar.Weyl.mat_inv_eq w hw, mat_mul', mat_ww w hw, hw, submatrix_fromBlocks_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem inv_eq_www (w : G D n) (hw : mat w = blk4 0 1 (-1) 0) : w⁻¹ = w * w * w := by
   apply mat_inj
   rw [GlobalTheory.CompanionTheory.EisCovar.Weyl.mat_inv_eq w hw, mat_mul', mat_ww w hw, hw, submatrix_fromBlocks_mul]

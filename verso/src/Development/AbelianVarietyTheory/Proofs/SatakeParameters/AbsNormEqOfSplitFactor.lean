@@ -11,6 +11,23 @@ section Split
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hq, hq2⟩` from `hv`. Prove the components needed by the constructor for the conclusion. Establish `hr : Module.finrank (𝓞 F) (𝓞 E) = 2`. Rewrite using `[← h2]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`.
+
+Establish `h1` using `Ideal.absNorm_algebraMap (𝓞 F) (𝓞 E) v.asIdeal`. Rewrite `h1` using `[hm, hr, map_mul]`. Establish `hP : Ideal.absNorm P.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `P.isPrime.ne_top`.
+
+Establish `hP' : Ideal.absNorm P'.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `P'.isPrime.ne_top`. Take `⟨k, hk, e⟩` from `(Nat.dvd_prime_pow hq).1 (Dvd.intro _ h1)`. Use `interval_cases k`.
+
+Conclude with `absurd (by simpa using e) hP`. Simplify using `using e`. Rewrite `h1` using `[e]`. Conclude with `absurd ((Nat.mul_eq_left (pow_pos hq.pos 2).ne').1 h1) hP'`. Introduce `hmem`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : v.asIdeal ∣ Ideal.span {((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)} := by`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.absNorm_mem _`. Establish `h3` using `congrArg (Ideal.map (algebraMap (𝓞 F) (𝓞 E))) hI`. Rewrite `h3` using `[Ideal.map_span, Set.image_singleton, map_natCast, Ideal.map_mul, hm, mul_assoc]`.
+
+Establish `h4 : P.asIdeal * P.asIdeal ∣ P.asIdeal * (P'.asIdeal * I.map (algebraMap (𝓞 F) (𝓞 E)))`. Rewrite using `[← h3, ← sq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hmem`. Establish `h5` using `(mul_dvd_mul_iff_left P.ne_bot).1 h4`. Break down `P.prime.dvd_or_dvd h5 with h6 | h6` into its components or cases.
+
+Rewrite `h6` using `[Ideal.dvd_iff_le]`. Conclude with `hne (HeightOneSpectrum.ext (P'.isMaximal.eq_of_le P.isPrime.ne_top h6).symm)`. Rewrite `h6` using `[Ideal.dvd_iff_le, Ideal.map_le_iff_le_comap]`. Establish `h7 : v.asIdeal ≤ P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`. Rewrite using `[← Ideal.map_le_iff_le_comap, hm]`.
+
+Conclude with `(Ideal.mul_le_inf).trans inf_le_left`. Rewrite `h6` using `[← v.isMaximal.eq_of_le (Ideal.comap_ne_top _ P.isPrime.ne_top) h7]`. Apply `hq2` to reduce the goal to its premises. Rewrite using `[← Ideal.span_singleton_le_iff_mem, hI, sq]`. Conclude with `Ideal.mul_mono_right h6`.
+-/
 theorem absNorm_eq_of_split_factor (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} (hv : DegOne v)
     {P P' : HeightOneSpectrum (𝓞 E)} (hne : P ≠ P')
     (hm : v.asIdeal.map (algebraMap (𝓞 F) (𝓞 E)) = P.asIdeal * P'.asIdeal) :
@@ -54,6 +71,11 @@ theorem absNorm_eq_of_split_factor (h2 : Module.finrank F E = 2) {v : HeightOneS
       rw [← Ideal.span_singleton_le_iff_mem, hI, sq]
       exact Ideal.mul_mono_right h6
 
+/- English proof (translation)
+Take `⟨P, P', hne, hm⟩` from `hs`. Establish `h1 : P.asIdeal * P'.asIdeal ≤ Q.asIdeal`. Rewrite using `[← hm, Ideal.map_le_iff_le_comap, ← hQ]`. Break down `Q.isPrime.mul_le.1 h1 with h | h` into its components or cases. Take `rfl : P = Q` from `HeightOneSpectrum.ext (P.isMaximal.eq_of_le Q.isPrime.ne_top h)`.
+
+Conclude with `absNorm_eq_of_split_factor h2 hv hne hm`. Take `rfl : P' = Q` from `HeightOneSpectrum.ext (P'.isMaximal.eq_of_le Q.isPrime.ne_top h)`. Conclude with `absNorm_eq_of_split_factor h2 hv hne.symm (hm.trans (mul_comm _ _))`.
+-/
 theorem absNorm_eq_of_splitAt (h2 : Module.finrank F E = 2) {v : HeightOneSpectrum (𝓞 F)} (hs : SplitAt E v)
     (hv : DegOne v) {Q : HeightOneSpectrum (𝓞 E)} (hQ : Q.asIdeal.under (𝓞 F) = v.asIdeal) :
     Ideal.absNorm Q.asIdeal = Ideal.absNorm v.asIdeal ∧ ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 E) ∉ Q.asIdeal ^ 2 := by
@@ -68,6 +90,11 @@ theorem absNorm_eq_of_splitAt (h2 : Module.finrank F E = 2) {v : HeightOneSpectr
 
 omit [NumberField E] [Field E] [Algebra F E] in
 
+/- English proof (translation)
+Establish `h6 : ringChar (𝓞 F ⧸ v.asIdeal) ∣ Ideal.absNorm v.asIdeal`. Rewrite using `[← ringChar.spec, ← map_natCast (Ideal.Quotient.mk v.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.absNorm_mem _`. Use `v.isPrime` as an intermediate fact. Break down `(Nat.dvd_prime hq).1 h6 with h7 | h7` into its components or cases.
+
+Conclude with `absurd h7 CharP.ringChar_ne_one`. Conclude with `h7`.
+-/
 theorem plc_eq_absNorm {v : HeightOneSpectrum (𝓞 F)} (hq : (Ideal.absNorm v.asIdeal).Prime) :
     Formalism.EigenvalueLevelCeiling.plc v = Ideal.absNorm v.asIdeal := by
   have h6 : ringChar (𝓞 F ⧸ v.asIdeal) ∣ Ideal.absNorm v.asIdeal := by
@@ -80,6 +107,13 @@ theorem plc_eq_absNorm {v : HeightOneSpectrum (𝓞 F)} (hq : (Ideal.absNorm v.a
 
 end Split
 
+/- English proof (translation)
+Establish `hcc : ∀ x, X.conjO (X.conjO x) = x` using `fun x => RingOfIntegers.ext (star_star (x : X.E))`. Establish `hE : Module.finrank ℚ X.E = 2 * X.f`. Rewrite using `[← Module.finrank_mul_finrank ℚ X.F X.E, hX.rankE, ← hX.card_Tau, mul_comm]`. Both sides reduce to the same expression. Establish `hn : qOf P = Pr.g i` using `hPr.vG_norm i P hP`.
+
+Use `⟨hn ▸ hPr.g_prime i, ?_⟩` and prove the remaining obligations. Rewrite using `[hn]`. Use `GlobalTheory.SplitUnram.natCast_notMem_sq X.E X.conjO (X.conjO (Pr.piG i)) (Pr.g i) hcc (hPr.g_prime i) ?_ ?_ ?_ (hPr.vG_norm i) P hP` and prove the remaining obligations. Rewrite using `[hcc, mul_comm]`. Conclude with `hPr.piG_norm i`.
+
+Rewrite using `[hcc]`. Conclude with `(hPr.piG_cop i).symm`. Rewrite using `[hE, ← hPr.vG_card i]`. Both sides reduce to the same expression.
+-/
 theorem degOneUnram_of_mem_vG {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr.Ok) (i : Fin 2)
     {P : HeightOneSpectrum (𝓞 X.E)} (hP : P ∈ Pr.vG i) : DegOneUnram P := by
   have hcc : ∀ x, X.conjO (X.conjO x) = x := fun x => RingOfIntegers.ext (star_star (x : X.E))
@@ -95,6 +129,17 @@ theorem degOneUnram_of_mem_vG {X : Fields} {Pr : Primes X} (hX : X.Ok) (hPr : Pr
   · rw [hcc]; exact (hPr.piG_cop i).symm
   · rw [hE, ← hPr.vG_card i]; rfl
 
+/- English proof (translation)
+Introduce `X Pr sel S mu hX hPr hsel P`. Distinguish the cases in `hP : P.1 ∈ Pr.vGs`. Use `⟨?_, fun h => absurd hP h⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hP with h | h` into its components or cases. Use `exacts [degOneUnram_of_mem_vG hX hPr 0 h, degOneUnram_of_mem_vG hX hPr 1 h]`.
+
+Break down `Finset.mem_union.1 P.2 with h1 | h1` into its components or cases. Conclude with `absurd h1 hP`. Unfold `QE at h1`. Use `split_ifs at h1 with h2`. Take `⟨v0, hv0, e⟩` from `Finset.mem_image.1 h1`.
+
+Establish `hv1 : v0 ∈ Qprime (mu : Chr X.F X.E X.K)` using `by simpa using hv0`. Establish `hgood : GoodPl X.E S v0`. Assume the negation of the conclusion as `hn`. Establish `h4` using `(Subgroup.mem_inf.1 mu.2).2`. Conclude with `hv1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h4 v0) hn)`.
+
+Take `⟨h3, h4⟩` from `absNorm_eq_of_splitAt hX.rankE hgood.1 hgood.2.1 (Q := P.1) (e ▸ hsel v0)`. Establish `h5 : qOf P.1 = Ideal.absNorm v0.asIdeal` using `h3`. Use `⟨⟨h5 ▸ hgood.2.1.1, h5 ▸ h4⟩, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[h5, ← plc_eq_absNorm hgood.2.1.1]`. Conclude with `hgood.2.2`.
+
+Simplify using `at h1`.
+-/
 theorem levelPrimes : LevelPrimes := by
   classical
   intro X Pr sel S mu hX hPr hsel P

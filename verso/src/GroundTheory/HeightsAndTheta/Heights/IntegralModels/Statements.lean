@@ -27,6 +27,11 @@ variable (X) in
 
 def structureModule : X.Modules := SheafOfModules.unit X.ringCatSheaf
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, hU, hxU, -⟩` from `Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show x ∈ (⊤ : X.Opens) from trivial)`. Use `⟨U, hU, hxU, 1, fun _ => (1 : Γ(X, U)), ?_⟩` and prove the remaining obligations. Introduce `V h`. Express the relevant statement in the definitionally equal form `Function.Bijective (fun r : Fin 1 → Γ(X, V) => ∑ i, r i * (X.presheaf.map (homOfLE h).op).hom 1)`.
+
+Simplify using `only [map_one, mul_one, Fin.sum_univ_one]`. Conclude with `(Equiv.funUnique (Fin 1) Γ(X, V)).bijective`.
+-/
 theorem isVectorBundle_structureModule : IsVectorBundle (structureModule X) := by
   intro x
   obtain ⟨U, hU, hxU, -⟩ := Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens
@@ -49,9 +54,15 @@ variable {X : Scheme.{0}}
 def invOpen (f : X ⟶ SpecZ) (m : ℤ) : X.Opens :=
   f ⁻¹ᵁ PrimeSpectrum.basicOpen (m : CommRingCat.of ℤ)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_invOpen (f : X ⟶ SpecZ) (m : ℤ) (x : X) :
     x ∈ invOpen f m ↔ (m : ℤ) ∉ (f.base x).asIdeal := Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_invOpen]`. Conclude with `fun h => hx (Ideal.mul_mem_right _ _ h)`.
+-/
 lemma invOpen_mul_le_left (f : X ⟶ SpecZ) (a b : ℤ) : invOpen f (a * b) ≤ invOpen f a := by
   intro x hx
   rw [mem_invOpen] at hx ⊢
@@ -68,6 +79,11 @@ abbrev baseChange (f : X ⟶ SpecZ) (R : Type) [CommRing R] : Scheme.{0} :=
 abbrev baseChangeMap (f : X ⟶ SpecZ) (R : Type) [CommRing R] : baseChange f R ⟶ X :=
   pullback.fst _ _
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `(m : ℤ) ∉ (f.base ((pullback.fst _ _ : baseChange f R ⟶ X).base y)).asIdeal`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Introduce `hz`.
+
+Establish `hz' : (m : R) ∈ ((pullback.snd f (Spec.map (CommRingCat.ofHom (Int.castRingHom R)))).base y).asIdeal` using `hz`. Conclude with `(PrimeSpectrum.isPrime _).ne_top (Ideal.eq_top_of_isUnit_mem _ hz' hm)`.
+-/
 lemma range_baseChangeMap_subset (f : X ⟶ SpecZ) (R : Type) [CommRing R] (m : ℤ)
     (hm : IsUnit (m : R)) :
     Set.range (baseChangeMap f R) ⊆ Set.range (invOpen f m).ι := by
@@ -85,6 +101,9 @@ def toInvOpen (f : X ⟶ SpecZ) (R : Type) [CommRing R] (m : ℤ) (hm : IsUnit (
   IsOpenImmersion.lift (invOpen f m).ι (baseChangeMap f R) (range_baseChangeMap_subset f R m hm)
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.lift_fac _ _ _`.
+-/
 lemma toInvOpen_ι (f : X ⟶ SpecZ) (R : Type) [CommRing R] (m : ℤ)
     (hm : IsUnit (m : R)) : toInvOpen f R m hm ≫ (invOpen f m).ι = baseChangeMap f R :=
   IsOpenImmersion.lift_fac _ _ _
@@ -95,12 +114,18 @@ section Maps
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Use `IsLocalization.map_units (M := (Ideal.span {((p : ℕ) : ℤ)}).primeCompl) (ZLoc p) ⟨m, fun h => hm (Ideal.mem_span_singleton.mp h)⟩` as an intermediate fact. Rewrite `this` using `[eq_intCast]`. Then use the resulting hypothesis.
+-/
 lemma isUnit_intCast_zLoc (p : Nat.Primes) (m : ℤ) (hm : ¬ ((p : ℕ) : ℤ) ∣ m) :
     IsUnit (m : ZLoc p) := by
   have := IsLocalization.map_units (M := (Ideal.span {((p : ℕ) : ℤ)}).primeCompl) (ZLoc p)
     ⟨m, fun h => hm (Ideal.mem_span_singleton.mp h)⟩
   rwa [eq_intCast] at this
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_ne_zero]`. Conclude with `hm` after adjusting the coercions.
+-/
 lemma isUnit_intCast_rat (m : ℤ) (hm : m ≠ 0) : IsUnit (m : ℚ) := by
   rw [isUnit_iff_ne_zero]
   exact_mod_cast hm
@@ -118,6 +143,9 @@ def ratToLoc (f : X ⟶ SpecZ) (p : Nat.Primes) : baseChange f ℚ ⟶ baseChang
       (RingHom.ext_int _ _))
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 lemma ratToLoc_baseChangeMap (f : X ⟶ SpecZ) (p : Nat.Primes) :
     ratToLoc f p ≫ baseChangeMap f (ZLoc p) = baseChangeMap f ℚ :=
   pullback.lift_fst _ _ _
@@ -184,6 +212,9 @@ section More
 variable {X : Scheme.{0}}
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+Rewrite using `[← cancel_mono (invOpen f m').ι]`. Simplify using `[Scheme.homOfLE_ι]`.
+-/
 lemma toInvOpen_homOfLE (f : X ⟶ SpecZ) (R : Type) [CommRing R] {m m' : ℤ} (hm : IsUnit (m : R))
     (hm' : IsUnit (m' : R)) (h : invOpen f m ≤ invOpen f m') :
     toInvOpen f R m hm ≫ X.homOfLE h = toInvOpen f R m' hm' := by
@@ -198,6 +229,9 @@ def pullbackIsoAlong {T Y Z : Scheme.{0}} {g : T ⟶ Y} {h : Y ⟶ Z} {k : T ⟶
 
 def primeProd (S : Finset Nat.Primes) : ℤ := ∏ p ∈ S, ((p : ℕ) : ℤ)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.mpr fun p _ => by exact_mod_cast p.2.ne_zero`.
+-/
 lemma primeProd_ne_zero (S : Finset Nat.Primes) : primeProd S ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun p _ => by exact_mod_cast p.2.ne_zero
 
@@ -229,6 +263,9 @@ structure IsRegularSection {K : Type*} [DecidableEq K] {ι : K → Type*} {F : T
   regular : ∀ W : Ideal (MRing ι F), IsMultiProjPrime W → P ≤ W →
     ∃ u v : MRing ι F, u ∉ W ∧ u * f - v * g ∈ P
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨a, 0, hs, MvPolynomial.isWeightedHomogeneous_one _ _, by funext k; simp⟩ num_not_mem := hsP den_not_mem := fun h => hP.ne_top ((Ideal.eq_top_iff_one _).2 h) regular := fun W hW _ => ⟨1, s, fun h => hW.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`.
+-/
 theorem isRegularSection_form {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
     {P : Ideal (MRing ι F)} (hP : P.IsPrime) {a : K → ℕ} {s : MRing ι F} (hs : IsMultiHomog s a)
     (hsP : s ∉ P) : IsRegularSection P (fun k => (a k : ℤ)) s 1 where
@@ -380,6 +417,9 @@ def SectionNefGenerated.Statement : Prop :=
         ∃ u v : MRing ι F, u ∉ W ∧ v ∉ W ∧ u * f - v * g ∈ P) →
       0 ≤ intNum F P ![b]
 
+/- English proof (translation)
+Introduce `K _ _ ι _ F _ P hP hd b hb`. Take `⟨f, g, hs, -⟩` from `hb P hP le_rfl`. Conclude with `h K ι F P hP hd b f g hs`.
+-/
 theorem SectionNefGenerated.of_sectionNef (h : SectionNef.Statement) :
     SectionNefGenerated.Statement := by
   intro K _ _ ι _ F _ P hP hd b hb
@@ -412,12 +452,20 @@ universe u
 
 variable {X Y : Scheme.{u}}
 
+/- English proof (translation)
+Use `congr(($(φ.mapPresheaf.naturality (homOfLE i).op)).hom x)` as an intermediate fact. Simplify using `using this`.
+-/
 lemma app_map_apply {M N : X.Modules} (φ : M ⟶ N) {U V : X.Opens} (i : V ≤ U) (x : Γ(M, U)) :
     (φ.app V).hom ((M.presheaf.map (homOfLE i).op).hom x) =
       (N.presheaf.map (homOfLE i).op).hom ((φ.app U).hom x) := by
   have := congr(($(φ.mapPresheaf.naturality (homOfLE i).op)).hom x)
   simpa using this
 
+/- English proof (translation)
+Introduce `V h`. Establish `key : (fun r : Fin n → Γ(X, V) => ∑ i, r i • (N.presheaf.map (homOfLE h).op).hom ((e.hom.app U).hom (s i))) = (e.hom.app V).hom ∘ (fun r => ∑ i, r i • (M.presheaf.map (homOfLE h).op).hom (s i))`. Use function extensionality and compare the values at `r`. Simplify using `only [Function.comp_apply, map_sum, Scheme.Modules.Hom.app_smul, app_map_apply]`. Rewrite using `[key]`.
+
+Establish `: IsIso (e.hom.app V)` using `inferInstance`. Conclude with `(ConcreteCategory.bijective_of_isIso (e.hom.app V)).comp (hs V h)`.
+-/
 theorem IsBasisOn.of_iso {M N : X.Modules} (e : M ≅ N) {U : X.Opens} {n : ℕ}
     {s : Fin n → Γ(M, U)} (hs : IsBasisOn M U s) :
     IsBasisOn N U (fun i => (e.hom.app U).hom (s i)) := by
@@ -431,6 +479,9 @@ theorem IsBasisOn.of_iso {M N : X.Modules} (e : M ≅ N) {U : X.Opens} {n : ℕ}
   have : IsIso (e.hom.app V) := inferInstance
   exact (ConcreteCategory.bijective_of_isIso (e.hom.app V)).comp (hs V h)
 
+/- English proof (translation)
+Introduce `x`. Take `⟨U, hU, hx, n, s, hs⟩` from `hM x`. Conclude with `⟨U, hU, hx, n, _, hs.of_iso e⟩`.
+-/
 theorem IsVectorBundle.of_iso {M N : X.Modules} (e : M ≅ N) (hM : IsVectorBundle M) :
     IsVectorBundle N := by
   intro x
@@ -454,12 +505,20 @@ end Transport
 
 section Inhabitants
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, IsDiscreteValuationRing.not_isField _, inferInstance⟩`.
+-/
 theorem DominatingDVR.hypotheses_inhabited :
     IsDomain ℤ_[2] ∧ IsNoetherianRing ℤ_[2] ∧ IsLocalRing ℤ_[2] ∧ ¬ IsField ℤ_[2] ∧
       IsFractionRing ℤ_[2] ℚ_[2] :=
   ⟨inferInstance, inferInstance, inferInstance, IsDiscreteValuationRing.not_isField _,
     inferInstance⟩
 
+/- English proof (translation)
+Use `⟨inferInstance, inferInstance, ⟨⟨Ideal.span {(2 : ℤ)}, isPrime_span_prime ⟨2, Nat.prime_two⟩⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[genericPoint_eq_bot_of_affine]`. Introduce `h`. Use `congrArg PrimeSpectrum.asIdeal h` as an intermediate fact. Simplify using `only [PrimeSpectrum.asIdeal_bot, Ideal.span_singleton_eq_bot] at this`.
+
+Evaluate the numerical expressions using `at this`.
+-/
 theorem DominatingDVRScheme.hypotheses_inhabited :
     IsIntegral SpecZ ∧ IsLocallyNoetherian SpecZ ∧ ∃ z : SpecZ, z ≠ genericPoint SpecZ := by
   refine ⟨inferInstance, inferInstance, ⟨⟨Ideal.span {(2 : ℤ)}, isPrime_span_prime ⟨2, Nat.prime_two⟩⟩, ?_⟩⟩
@@ -469,6 +528,9 @@ theorem DominatingDVRScheme.hypotheses_inhabited :
   simp only [PrimeSpectrum.asIdeal_bot, Ideal.span_singleton_eq_bot] at this
   norm_num at this
 
+/- English proof (translation)
+Use `⟨?_, ⟨0, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Simplify using the standard rewrite rules.
+-/
 theorem BlowUpChart.hypotheses_inhabited :
     Ideal.span (Set.range ![(2 : ℤ_[2])]) = IsLocalRing.maximalIdeal ℤ_[2] ∧
       ∃ j, ![(2 : ℤ_[2])] j ≠ 0 := by
@@ -476,16 +538,27 @@ theorem BlowUpChart.hypotheses_inhabited :
   rw [PadicInt.maximalIdeal_eq_span_p]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem KrullAkizuki.hypotheses_inhabited :
     IsNoetherianRing ℤ ∧ ringKrullDim ℤ = 1 ∧ IsFractionRing ℤ ℚ ∧ FiniteDimensional ℚ ℚ ∧
       IsScalarTower ℤ ℚ ℚ :=
   ⟨inferInstance, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, inferInstance,
     inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem HeightOneIntersection.hypotheses_inhabited :
     IsNoetherianRing ℤ ∧ IsIntegrallyClosed ℤ ∧ IsFractionRing ℤ ℚ :=
   ⟨inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Use `⟨inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h1 : (1 : ℚ) ∈ Submodule.span ℚ ((Submodule.span ℤ {(1 : ℚ)} : Submodule ℤ ℚ) : Set ℚ)` using `Submodule.subset_span (Submodule.subset_span rfl)`. Establish `h2` using `Submodule.smul_mem _ v h1`.
+
+Rewrite `h2` using `[smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem LatticesAgree.hypotheses_inhabited :
     Module.Finite ℤ (Submodule.span ℤ {(1 : ℚ)}) ∧
       Module.Projective ℤ (Submodule.span ℤ {(1 : ℚ)}) ∧
@@ -498,6 +571,9 @@ theorem LatticesAgree.hypotheses_inhabited :
   have h2 := Submodule.smul_mem _ v h1
   rwa [smul_eq_mul, mul_one] at h2
 
+/- English proof (translation)
+Introduce `x`. Establish `hx : x.asIdeal.IsPrime` using `PrimeSpectrum.isPrime x`. Set `_ : Algebra ℤ (SpecZ.presheaf.stalk x)` to `StructureSheaf.stalkAlgebra (CommRingCat.of ℤ) x`. Establish `: IsLocalization.AtPrime (SpecZ.presheaf.stalk x) x.asIdeal` using `StructureSheaf.IsLocalization.to_stalk (CommRingCat.of ℤ) x`. Conclude with `isIntegrallyClosed_of_isLocalization _ x.asIdeal.primeCompl (Ideal.primeCompl_le_nonZeroDivisors _)`.
+-/
 theorem isNormalScheme_specZ : IsNormalScheme SpecZ := by
   intro x
   have hx : x.asIdeal.IsPrime := PrimeSpectrum.isPrime x
@@ -507,6 +583,9 @@ theorem isNormalScheme_specZ : IsNormalScheme SpecZ := by
   exact isIntegrallyClosed_of_isLocalization _ x.asIdeal.primeCompl
     (Ideal.primeCompl_le_nonZeroDivisors _)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, isNormalScheme_specZ, isVectorBundle_structureModule, fun _ _ => AddSubgroup.map_id _⟩`.
+-/
 theorem BundlesAgree.hypotheses_inhabited :
     IsIntegral SpecZ ∧ IsLocallyNoetherian SpecZ ∧ IsNormalScheme SpecZ ∧
       IsVectorBundle (structureModule SpecZ) ∧
@@ -518,10 +597,16 @@ theorem BundlesAgree.hypotheses_inhabited :
   ⟨inferInstance, inferInstance, isNormalScheme_specZ, isVectorBundle_structureModule,
     fun _ _ => AddSubgroup.map_id _⟩
 
+/- English proof (translation)
+The claim follows from `isVectorBundle_structureModule`.
+-/
 theorem SpreadBundle.hypotheses_inhabited :
     IsVectorBundle (structureModule (baseChange (𝟙 SpecZ) (ZLoc ⟨2, Nat.prime_two⟩))) :=
   isVectorBundle_structureModule
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isVectorBundle_structureModule, ⟨Iso.refl _⟩⟩`.
+-/
 theorem SpreadIso.hypotheses_inhabited :
     IsVectorBundle (structureModule (invOpen (𝟙 SpecZ) (1 : ℕ) : Scheme.{0})) ∧
       Nonempty ((Scheme.Modules.pullback (toInvOpen (𝟙 SpecZ) ℚ (1 : ℕ)
@@ -530,6 +615,15 @@ theorem SpreadIso.hypotheses_inhabited :
         (isUnit_intCast_rat 1 one_ne_zero))).obj (structureModule _)) :=
   ⟨isVectorBundle_structureModule, ⟨Iso.refl _⟩⟩
 
+/- English proof (translation)
+Establish `mem : ∀ p ∈ ({⟨2, Nat.prime_two⟩, ⟨3, Nat.prime_three⟩} : Finset Nat.Primes), (p : ℕ) = 2 ∨ (p : ℕ) = 3`. Introduce `p hp`. Break down `Finset.mem_insert.mp hp with rfl | hp` into its components or cases. Conclude with `Or.inl rfl`. Rewrite using `[Finset.mem_singleton.mp hp]`.
+
+Conclude with `Or.inr rfl`. Use `⟨fun p hp => ?_, fun p hp q hq hne => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases mem p hp with h | h <;> rw [h] <;> norm_num`. Establish `hne' : (q : ℕ) ≠ p` using `fun h => hne (Subtype.ext h)`. Apply the tactic sequence `rcases mem p hp with h | h <;> rcases mem q hq with h' | h'`.
+
+Conclude with `absurd (h'.trans h.symm) hne'`. Rewrite using `[h, h']`. Evaluate the numerical expressions. Rewrite using `[h, h']`. Evaluate the numerical expressions.
+
+Conclude with `absurd (h'.trans h.symm) hne'`.
+-/
 theorem PrimeOpensCover.hypotheses_inhabited :
     (∀ p ∈ ({⟨2, Nat.prime_two⟩, ⟨3, Nat.prime_three⟩} : Finset Nat.Primes),
       ¬ ((p : ℕ) : ℤ) ∣ (if (p : ℕ) = 2 then 3 else 2)) ∧
@@ -554,6 +648,9 @@ theorem PrimeOpensCover.hypotheses_inhabited :
       norm_num
     · exact absurd (h'.trans h.symm) hne'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isVectorBundle_structureModule, fun _ => isVectorBundle_structureModule, fun _ => ⟨pullbackStructureIso _ ≪≫ (pullbackStructureIso _).symm⟩⟩`.
+-/
 theorem GlueBundles.hypotheses_inhabited :
     let S : Finset Nat.Primes := {⟨2, Nat.prime_two⟩}
     IsVectorBundle (structureModule (invOpen (𝟙 SpecZ) (primeProd S) : Scheme.{0})) ∧
@@ -565,11 +662,19 @@ theorem GlueBundles.hypotheses_inhabited :
   ⟨isVectorBundle_structureModule, fun _ => isVectorBundle_structureModule,
     fun _ => ⟨pullbackStructureIso _ ≪≫ (pullbackStructureIso _).symm⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, isVectorBundle_structureModule⟩`.
+-/
 theorem ClearDenominators.hypotheses_inhabited :
     Flat (𝟙 SpecZ) ∧ CompactSpace SpecZ ∧ QuasiSeparatedSpace SpecZ ∧
       IsVectorBundle (structureModule SpecZ) :=
   ⟨inferInstance, inferInstance, inferInstance, isVectorBundle_structureModule⟩
 
+/- English proof (translation)
+Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot (MRing (fun _ : Unit => Fin 2) ℚ)), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field ℚ]`. Establish `hc : Nat.card ((_ : Unit) × Fin 2) = 2`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules. Rewrite using `[hc, Fintype.card_unit]`.
+
+Evaluate the numerical expressions.
+-/
 lemma projectiveLine_dim :
     ringKrullDim (MRing (fun _ : Unit => Fin 2) ℚ ⧸ (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ))) =
       ((1 + Fintype.card Unit : ℕ) : WithBot ℕ∞) := by
@@ -581,6 +686,11 @@ lemma projectiveLine_dim :
   rw [hc, Fintype.card_unit]
   norm_num
 
+/- English proof (translation)
+Use `MvPolynomial.isWeightedHomogeneous_X ℚ (blockWeight (fun _ : Unit => Fin 2)) ⟨(), 0⟩` as an intermediate fact. Establish `h : blockWeight (fun _ : Unit => Fin 2) ⟨(), 0⟩ = fun _ => 1`. Use function extensionality and compare the values at `k`. Simplify using `[blockWeight]`. Unfold `IsMultiHomog`.
+
+Rewrite using `[← h]`. Conclude with `this`.
+-/
 lemma isMultiHomog_X_zero :
     IsMultiHomog (MvPolynomial.X ⟨(), 0⟩ : MRing (fun _ : Unit => Fin 2) ℚ) (fun _ => 1) := by
   have := MvPolynomial.isWeightedHomogeneous_X ℚ (blockWeight (fun _ : Unit => Fin 2)) ⟨(), 0⟩
@@ -591,6 +701,9 @@ lemma isMultiHomog_X_zero :
   rw [← h]
   exact this
 
+/- English proof (translation)
+Use `⟨isMultiProjPrime_bot, projectiveLine_dim, isRegularSection_form Ideal.isPrime_bot isMultiHomog_X_zero ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `MvPolynomial.X_ne_zero _`.
+-/
 theorem SectionNef.hypotheses_inhabited :
     IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) ∧
       ringKrullDim (MRing (fun _ : Unit => Fin 2) ℚ ⧸ (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ))) =
@@ -602,6 +715,13 @@ theorem SectionNef.hypotheses_inhabited :
   rw [Ideal.mem_bot]
   exact MvPolynomial.X_ne_zero _
 
+/- English proof (translation)
+Use `⟨isMultiProjPrime_bot, projectiveLine_dim, fun W hW _ => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hW.relevant ()`. Establish `hdeg : IsMultiHomog (MvPolynomial.X ⟨(), i⟩ : MRing (fun _ : Unit => Fin 2) ℚ) (fun _ => 1)`. Use `MvPolynomial.isWeightedHomogeneous_X ℚ (blockWeight (fun _ : Unit => Fin 2)) ⟨(), i⟩` as an intermediate fact. Establish `h : blockWeight (fun _ : Unit => Fin 2) ⟨(), i⟩ = fun _ => 1`.
+
+Use function extensionality and compare the values at `k`. Simplify using `[blockWeight]`. Unfold `IsMultiHomog`. Rewrite using `[← h]`. Conclude with `this`.
+
+Use `⟨MvPolynomial.X ⟨(), i⟩, 1, isRegularSection_form Ideal.isPrime_bot hdeg ?_, 1, MvPolynomial.X ⟨(), i⟩, fun h => hW.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), hi, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `MvPolynomial.X_ne_zero _`. Simplify using the standard rewrite rules.
+-/
 theorem SectionNefGenerated.hypotheses_inhabited :
     IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) ∧
       ringKrullDim (MRing (fun _ : Unit => Fin 2) ℚ ⧸ (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ))) =
@@ -626,8 +746,16 @@ theorem SectionNefGenerated.hypotheses_inhabited :
     exact MvPolynomial.X_ne_zero _
   · simp
 
+/- English proof (translation)
+The claim follows from `le_rfl`.
+-/
 theorem MertensUpper.hypotheses_inhabited : (2 : ℝ) ≤ 2 := le_rfl
 
+/- English proof (translation)
+Use `⟨by norm_num, le_rfl, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Break down `Finset.mem_insert.mp hp with rfl | hp` into its components or cases. Conclude with `⟨Nat.prime_two, Or.inl (by norm_num)⟩`. Rewrite using `[Finset.mem_singleton.mp hp]`.
+
+Conclude with `⟨Nat.prime_three, Or.inr (by norm_num)⟩`.
+-/
 theorem SumCp.hypotheses_inhabited :
     (6 : ℤ) ≠ 0 ∧ (2 : ℝ) ≤ 2 ∧
       ∀ p ∈ ({2, 3} : Finset ℕ), p.Prime ∧ ((p : ℝ) ≤ 2 ∨ (p : ℤ) ∣ 6) := by
@@ -638,11 +766,17 @@ theorem SumCp.hypotheses_inhabited :
   · rw [Finset.mem_singleton.mp hp]
     exact ⟨Nat.prime_three, Or.inr (by norm_num)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem FiniteIntegralClosure.hypotheses_inhabited :
     IsDomain ℤ ∧ Algebra.FiniteType ℤ ℤ ∧ IsFractionRing ℤ ℚ ∧
       FiniteDimensional ℚ (CyclotomicField 3 ℚ) ∧ IsScalarTower ℤ ℚ (CyclotomicField 3 ℚ) :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem FiniteNormalization.hypotheses_inhabited :
     IsIntegral SpecZ ∧ LocallyOfFiniteType (𝟙 SpecZ) ∧ QuasiCompact (𝟙 SpecZ) ∧
       FiniteDimensional SpecZ.functionField SpecZ.functionField :=
@@ -650,6 +784,9 @@ theorem FiniteNormalization.hypotheses_inhabited :
 
 abbrev onePoint : Unit → ℚ := fun _ => 1
 
+/- English proof (translation)
+Establish `h : Set.range (fun j : Unit => onePoint j / onePoint ()) = {1}`. Use extensionality with `y`. Simplify using `[onePoint, eq_comm]`. Rewrite using `[chartRing, h]`. Conclude with `Algebra.adjoin_singleton_one _ _`.
+-/
 lemma chartRing_onePoint (o : Type) [CommRing o] [Algebra o ℚ] :
     chartRing o onePoint () = ⊥ := by
   have h : Set.range (fun j : Unit => onePoint j / onePoint ()) = {1} := by
@@ -658,6 +795,9 @@ lemma chartRing_onePoint (o : Type) [CommRing o] [Algebra o ℚ] :
   rw [chartRing, h]
   exact Algebra.adjoin_singleton_one _ _
 
+/- English proof (translation)
+Establish `e : ℤ ≃+* chartRing ℤ onePoint ()` using `(Algebra.botEquivOfInjective (R := ℤ) (A := ℚ) Int.cast_injective).symm.toRingEquiv.trans (Subalgebra.equivOfEq _ _ (chartRing_onePoint ℤ).symm).toRingEquiv`. Conclude with `⟨isNoetherianRing_of_ringEquiv ℤ e, (IsIntegrallyClosed.of_equiv e)⟩`.
+-/
 lemma chartRing_onePoint_normal :
     IsNoetherianRing (chartRing ℤ onePoint ()) ∧ IsIntegrallyClosed (chartRing ℤ onePoint ()) := by
   have e : ℤ ≃+* chartRing ℤ onePoint () :=
@@ -665,6 +805,9 @@ lemma chartRing_onePoint_normal :
       (Subalgebra.equivOfEq _ _ (chartRing_onePoint ℤ).symm).toRingEquiv
   exact ⟨isNoetherianRing_of_ringEquiv ℤ e, (IsIntegrallyClosed.of_equiv e)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨chartRing_onePoint_normal.1, chartRing_onePoint_normal.2, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`.
+-/
 theorem ChartBundlesAgree.hypotheses_inhabited :
     IsNoetherianRing (chartRing ℤ onePoint ()) ∧ IsIntegrallyClosed (chartRing ℤ onePoint ()) ∧
       ∀ v ∈ (scaledTrivBundle ℤ onePoint 1 (one_ne_zero (α := ℚ))).lat (),
@@ -673,6 +816,13 @@ theorem ChartBundlesAgree.hypotheses_inhabited :
   ⟨chartRing_onePoint_normal.1, chartRing_onePoint_normal.2,
     fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩
 
+/- English proof (translation)
+Establish `key : ∀ (o o' : Type) [CommRing o] [CommRing o'] [Algebra o ℚ] [Algebra o' ℚ], (∀ a : o, ∃ N : ℕ, 0 < N ∧ ∃ z : ℤ, (N : ℚ) * algebraMap o ℚ a = z) → ∀ v ∈ (scaledTrivBundle o onePoint 1 (one_ne_zero (α` using `ℚ))).lat (), ∃ N : ℕ, 0 < N ∧ N • v ∈ (scaledTrivBundle o' onePoint 1 (one_ne_zero (α := ℚ))).lat () := by`. Introduce `o o' _ _ _ _ h v hv`. Establish `hv' : v ∈ scaledTrivLat o onePoint 1 1 ()` using `hv`. Take `⟨a, ha, hva⟩` from `mem_scaledTrivLat.1 hv' 0`. Rewrite `ha` using `[chartRing_onePoint o]`.
+
+Take `⟨c, rfl⟩` from `Algebra.mem_bot.1 ha`. Take `⟨N, hN, z, hz⟩` from `h c`. Use `⟨N, hN, (mem_scaledTrivLat (R := o')).2 fun q => ⟨(z : ℚ), ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `intCast_mem _ z`. Establish `hq : q = 0` using `Subsingleton.elim _ _`.
+
+Substitute `hq` using the available equality. Simplify using `only [Pi.smul_apply, hva, one_mul, nsmul_eq_mul, hz]`. Conclude with `⟨key o o' h, key o' o h'⟩`.
+-/
 lemma sameRationalSpan_onePoint (o o' : Type) [CommRing o] [CommRing o'] [Algebra o ℚ] [Algebra o' ℚ]
     (h : ∀ a : o, ∃ N : ℕ, 0 < N ∧ ∃ z : ℤ, (N : ℚ) * algebraMap o ℚ a = z)
     (h' : ∀ a : o', ∃ N : ℕ, 0 < N ∧ ∃ z : ℤ, (N : ℚ) * algebraMap o' ℚ a = z) :
@@ -698,6 +848,11 @@ lemma sameRationalSpan_onePoint (o o' : Type) [CommRing o] [CommRing o'] [Algebr
 def awayToRat (m : ℤ) (hm : m ≠ 0) : Localization.Away m →+* ℚ :=
   IsLocalization.Away.lift m (g := Int.castRingHom ℚ) (isUnit_intCast_rat m hm)
 
+/- English proof (translation)
+Take `⟨⟨z, s⟩, hs⟩` from `IsLocalization.surj M a`. Establish `hs0 : (s : ℤ) ≠ 0` using `fun h => hM (h ▸ s.2)`. Establish `hφ : φ a * ((s : ℤ) : ℚ) = z`. Use `congrArg φ hs` as an intermediate fact. Simplify `this` using `only [map_mul, eq_intCast (algebraMap ℤ o), map_intCast]`.
+
+Use `⟨(s : ℤ).natAbs, Int.natAbs_pos.2 hs0, (Int.sign (s : ℤ)) * z, ?_⟩` and prove the remaining obligations. Establish `hab : (((s : ℤ).natAbs : ℕ) : ℤ) = Int.sign (s : ℤ) * (s : ℤ)`. Rewrite using `[Int.sign_mul_self]`. Rewrite using `[show (((s : ℤ).natAbs : ℕ) : ℚ) = ((((s : ℤ).natAbs : ℕ) : ℤ) : ℚ) from (Int.cast_natCast _).symm, hab, Int.cast_mul, Int.cast_mul, ← hφ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma exists_multiple_int (M : Submonoid ℤ) (hM : (0 : ℤ) ∉ M) (o : Type) [CommRing o]
     [Algebra ℤ o] [IsLocalization M o] (φ : o →+* ℚ) (a : o) :
     ∃ N : ℕ, 0 < N ∧ ∃ z : ℤ, (N : ℚ) * φ a = z := by
@@ -713,6 +868,9 @@ lemma exists_multiple_int (M : Submonoid ℤ) (hM : (0 : ℤ) ∉ M) (o : Type) 
     (Int.cast_natCast _).symm, hab, Int.cast_mul, Int.cast_mul, ← hφ]
   ring
 
+/- English proof (translation)
+Use `sameRationalSpan_onePoint _ _ (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Use `exists_multiple_int (Submonoid.powers (primeProd S)) ?_ _ (algebraMap _ ℚ) a` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩`. Conclude with `pow_ne_zero n (primeProd_ne_zero S) hn`. Conclude with `exists_multiple_int (Ideal.span {((p : ℕ) : ℤ)}).primeCompl (fun h => h (Ideal.zero_mem _)) _ (algebraMap _ ℚ) a`.
+-/
 theorem ChartGlue.hypotheses_inhabited (S : Finset Nat.Primes) (p : Nat.Primes)
     [Algebra (Localization.Away (primeProd S)) ℚ] [Algebra (ZLoc p) ℚ] :
     SameRationalSpan
@@ -725,6 +883,9 @@ theorem ChartGlue.hypotheses_inhabited (S : Finset Nat.Primes) (p : Nat.Primes)
   · exact exists_multiple_int (Ideal.span {((p : ℕ) : ℤ)}).primeCompl
       (fun h => h (Ideal.zero_mem _)) _ (algebraMap _ ℚ) a
 
+/- English proof (translation)
+Set `S : Finset Nat.Primes` to `{⟨2, Nat.prime_two⟩}`. Set `_ : Algebra (Localization.Away (primeProd S)) ℚ` to `(awayToRat (primeProd S) (primeProd_ne_zero S)).toAlgebra`. Set `_ : ∀ p : S, Algebra (ZLoc p) ℚ` to `fun p => (zLocToRat p).toAlgebra`. Take `⟨B, -⟩` from `h ℚ Unit onePoint 1 (Fin 1 → ℚ) S (Localization.Away (primeProd S)) (fun p => ZLoc p) (scaledTrivBundle _ onePoint 1 one_ne_zero) (fun p => scaledTrivBundle _ onePoint 1 one_ne_zero) (fun p i _ => ChartGlue.hypotheses_inhabited S p)`. Conclude with `⟨B⟩`.
+-/
 theorem ChartGlue.applies (h : ChartGlue.Statement) :
     Nonempty (ChartBundle ℤ onePoint 1 (Fin 1 → ℚ)) := by
   let S : Finset Nat.Primes := {⟨2, Nat.prime_two⟩}

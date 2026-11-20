@@ -12,17 +12,34 @@ open Complex Matrix ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.
 
 namespace GlobalTheory.KeyPow
 
+/- English proof (translation)
+Rewrite using `[theta_sq_red k k', theta_sq_red m m', funext h, funext h']`.
+-/
 theorem theta_sq_congr_mod_two {g : ℕ} {k k' m m' : Fin g → ℤ} (h : ∀ i, k i % 2 = m i % 2)
     (h' : ∀ i, k' i % 2 = m' i % 2) (z : Fin g → ℂ) (τ : Matrix (Fin g) (Fin g) ℂ) :
     theta (halfVec k) (halfVec k') z τ ^ 2 = theta (halfVec m) (halfVec m') z τ ^ 2 := by
   rw [theta_sq_red k k', theta_sq_red m m', funext h, funext h']
 
+/- English proof (translation)
+Take `⟨c, hc, hlaw⟩` from `hl`. Conclude with `⟨c, hc, fun τ hτ z => by rw [theta_sq_congr_mod_two h h']; exact hlaw τ hτ z⟩`.
+-/
 theorem ThetaLaw.congr_target {g : ℕ} {sp : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     {n n' k k' m m' : Fin g → ℤ} (hl : ThetaLaw g sp n n' k k') (h : ∀ i, m i % 2 = k i % 2)
     (h' : ∀ i, m' i % 2 = k' i % 2) : ThetaLaw g sp n n' m m' := by
   obtain ⟨c, hc, hlaw⟩ := hl
   exact ⟨c, hc, fun τ hτ z => by rw [theta_sq_congr_mod_two h h']; exact hlaw τ hτ z⟩
 
+/- English proof (translation)
+Use `set X : ℂ := -(ofRealVec (halfVec n) ⬝ᵥ (S.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec (halfVec n))) / 2 - ofRealVec (halfVec n) ⬝ᵥ (fun i => ((S i i : ℤ) : ℂ) / 2) with hX`. Use `⟨eC X ^ 2, ?_, fun τ _ z => ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, eC_pow]`. Establish `h8 : ((2 * 4 : ℕ) : ℂ) * X = ((-(n ⬝ᵥ (S *ᵥ n)) - 2 * (n ⬝ᵥ fun i => S i i) : ℤ) : ℂ)`. Establish `hd : ofIntVec n ⬝ᵥ (fun i => ((S i i : ℤ) : ℂ)) = ((n ⬝ᵥ fun i => S i i : ℤ) : ℂ)`.
+
+Simplify using `[dotProduct, ofIntVec]`. Establish `hd2 : (fun i => ((S i i : ℤ) : ℂ) / 2) = (1 / 2 : ℂ) • fun i => ((S i i : ℤ) : ℂ)`. Use extensionality with `i`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hX, ofRealVec_halfVec, Matrix.mulVec_smul, ← ofIntVec_mulVec, smul_dotProduct, dotProduct_smul, ofIntVec_dot, hd2, smul_dotProduct, dotProduct_smul, hd]`. Simplify using `only [smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h8, eC_int]`.
+
+Establish `hb : halfVec (n' - S *ᵥ n - fun i => S i i) + S.map (fun x : ℤ => (x : ℝ)) *ᵥ halfVec n + (fun i => ((S i i : ℤ) : ℝ) / 2) = halfVec n'`. Rewrite using `[mulVec_halfVec]`. Use extensionality with `i`. Simplify using `only [halfVec, Pi.add_apply, Pi.sub_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hz : zAct (spTransl S) τ z = z` using `by simp [zAct, jAut_spTransl]`. Establish `he : expArg (spTransl S) τ z = 0` using `by simp [expArg, jAut_spTransl, cMat_spTransl]`. Rewrite using `[hz, he, spAct_spTransl, jAut_spTransl, thetaTranslTau_holds (Fin g) _ _ _ _ S hS, hb, mul_pow, det_one, eC_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaLaw_spTransl {g : ℕ} (S : Matrix (Fin g) (Fin g) ℤ) (hS : S.IsSymm) (n n' : Fin g → ℤ) :
     ThetaLaw g (spTransl S) n n' n (n' - S *ᵥ n - fun i => S i i) := by
   set X : ℂ := -(ofRealVec (halfVec n) ⬝ᵥ (S.map (fun x : ℤ => (x : ℂ)) *ᵥ ofRealVec (halfVec n))) / 2 -
@@ -49,6 +66,17 @@ theorem thetaLaw_spTransl {g : ℕ} (S : Matrix (Fin g) (Fin g) ℤ) (hS : S.IsS
       mul_pow, det_one, eC_zero]
     ring
 
+/- English proof (translation)
+Use `set F : ℂ := 2 * (ofRealVec (halfVec (-n')) ⬝ᵥ ofRealVec (halfVec n))`. Use `⟨(-I) ^ g * eC F, ?_, fun τ hτ z => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, mul_comm g 4, pow_mul, eC_pow]`. Establish `hI : (-I : ℂ) ^ 4 = 1`. Rewrite using `[show (4 : ℕ) = 2 * 2 from rfl, pow_mul]`.
+
+Simplify using the standard rewrite rules. Establish `hF : ((4 : ℕ) : ℂ) * F = ((-(2 * (n' ⬝ᵥ n)) : ℤ) : ℂ)`. Simplify using `only [F, ofRealVec_halfVec, smul_dotProduct, dotProduct_smul, ofIntVec_dot, smul_eq_mul]`. Simplify using `[dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hI, one_pow, one_mul, hF, eC_int]`. Establish `hsym : τ.IsSymm` using `hτ.1`. Establish `hs : spAct (Matrix.J (Fin g) ℤ) τ = -τ⁻¹`. Rewrite using `[spAct_eq, jAut_J, nAut_eq, cMat_J]`. Simplify using `[Matrix.J]`.
+
+Establish `htinv : (τ⁻¹)ᵀ = τ⁻¹` using `by rw [Matrix.transpose_nonsing_inv, hsym.eq]`. Establish `hz : zAct (Matrix.J (Fin g) ℤ) τ z = τ⁻¹ *ᵥ z` using `by rw [zAct, jAut_J, htinv]`. Establish `he : expArg (Matrix.J (Fin g) ℤ) τ z = z ⬝ᵥ (τ⁻¹ *ᵥ z)`. Rewrite using `[expArg, jAut_J, cMat_J]`. Simplify using `[Matrix.J]`.
+
+Establish `hneg : -halfVec (-n') = halfVec n'` using `by ext i; simp [halfVec]; ring`. Rewrite using `[hs, hz, he, jAut_J, hInv g _ _ τ hτ z, hneg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaLaw_J {g : ℕ} (hInv : InversionStatement) (n n' : Fin g → ℤ) :
     ThetaLaw g (Matrix.J (Fin g) ℤ) n n' (-n') n := by
   set F : ℂ := 2 * (ofRealVec (halfVec (-n')) ⬝ᵥ ofRealVec (halfVec n))
@@ -71,6 +99,11 @@ theorem thetaLaw_J {g : ℕ} (hInv : InversionStatement) (n n' : Fin g → ℤ) 
     rw [hs, hz, he, jAut_J, hInv g _ _ τ hτ z, hneg]
     ring
 
+/- English proof (translation)
+Use `⟨fun S n' hS hd => (thetaLaw_spTransl S hS k n').congr_target (fun _ => rfl) fun i => ?_, (thetaLaw_J hInv k' k).congr_target (fun i => ?_) fun _ => rfl⟩` and prove the remaining obligations. Use `hd i` as an intermediate fact. Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.neg_apply]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem thetaLaw_generators (hInv : InversionStatement) (g : ℕ) (k k' : Fin g → ℤ) :
     (∀ (S : Matrix (Fin g) (Fin g) ℤ) (n' : Fin g → ℤ), S.IsSymm →
       (∀ i, (2 : ℤ) ∣ (S.mulVec k) i + S i i + k' i - n' i) → ThetaLaw g (spTransl S) k n' k k') ∧

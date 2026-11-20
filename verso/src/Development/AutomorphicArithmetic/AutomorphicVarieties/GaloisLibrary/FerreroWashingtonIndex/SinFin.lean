@@ -2,6 +2,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 
 open UpperTheory.V.FW
 
+/- English proof (translation)
+Introduce `k ι _ _ _ m _ η N P α hα hsum`. Establish `hsingSum : ∀ (z : ZMod m) (t : Finset ℕ) (g : ℕ → k), AddMonoidAlgebra.single z (∑ s ∈ t, g s) = ∑ s ∈ t, AddMonoidAlgebra.single z (g s)` using `fun z t g => map_sum (AddMonoidAlgebra.singleAddHom z) g t`. Establish `hsingSumι : ∀ (z : ZMod m) (g : ι → k), AddMonoidAlgebra.single z (∑ i, g i) = ∑ i, AddMonoidAlgebra.single z (g i)` using `fun z g => map_sum (AddMonoidAlgebra.singleAddHom z) g Finset.univ`. Establish `hsingSub : ∀ (z : ZMod m) (a b : k), AddMonoidAlgebra.single z (a - b) = AddMonoidAlgebra.single z a - AddMonoidAlgebra.single z b` using `fun z a b => map_sub (AddMonoidAlgebra.singleAddHom z) a b`. Use `set A : ι → AddMonoidAlgebra k (ZMod m) := fun i => ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * y) (α y) with hA`.
+
+Establish `hS : ∀ i, (∑ s ∈ Finset.range N, AddMonoidAlgebra.single (s • (η i : ZMod m)) (P s)) = (1 - AddMonoidAlgebra.single (N • (η i : ZMod m)) 1) * A i`. Introduce `i`. Establish `hone : ∀ s : ℕ, ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * y) (if (s : ZMod m) = y then P s else 0) = AddMonoidAlgebra.single (s • (η i : ZMod m)) (P s)`. Introduce `s`. Rewrite using `[Finset.sum_eq_single (s : ZMod m)]`.
+
+Simplify using `[nsmul_eq_mul, mul_comm]`. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Establish `e1 : ∑ s ∈ Finset.range N, AddMonoidAlgebra.single (s • (η i : ZMod m)) (P s) = ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * y) (α y - α (y - N))`.
+
+Repeatedly rewrite using `[hα, hsingSum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun s _ => (hone s).symm`. Establish `e2 : ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * y) (α (y - N)) = ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * (y + N)) (α y)`. Rewrite using `[← Equiv.sum_comp (Equiv.addRight (N : ZMod m))]`.
+
+Simplify using the standard rewrite rules. Establish `e3 : AddMonoidAlgebra.single (N • (η i : ZMod m)) (1 : k) * A i = ∑ y : ZMod m, AddMonoidAlgebra.single ((η i : ZMod m) * (y + N)) (α y)`. Rewrite using `[hA, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[AddMonoidAlgebra.single_mul_single, one_mul, nsmul_eq_mul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, sub_mul, one_mul, e3, ← e2, ← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun y _ => hsingSub _ _ _`. Establish `hA0 : ∑ i, A i = 0`.
+
+Establish `hre : ∀ i, A i = ∑ z : ZMod m, AddMonoidAlgebra.single z (α (((η i)⁻¹ : (ZMod m)ˣ) * z))`. Introduce `i`. Rewrite using `[hA, ← Equiv.sum_comp (Units.mulLeft (η i))]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Repeatedly rewrite using `[hre]`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← hsingSumι, hsum]`. Simplify using the standard rewrite rules. Unfold `sinE`.
+
+Simplify using `only`. Rewrite using `[Finset.sum_congr rfl (fun i _ => by`. Rewrite using `[hS i, mul_assoc, mul_left_comm, Finset.mul_prod_erase Finset.univ (fun j => 1 - AddMonoidAlgebra.single (N • (η j : ZMod m)) (1 : k)) (Finset.mem_univ i)])]`. Rewrite using `[← Finset.sum_mul, hA0, zero_mul]`.
+-/
 theorem UpperTheory.V.FW.sinFin :
     ∀ (k ι : Type) [CommRing k] [Fintype ι] [DecidableEq ι] (m : ℕ) [NeZero m] (η : ι → (ZMod m)ˣ) (N : ℕ) (P : ℕ → k) (α : ZMod m → k), (∀ y, α y - α (y - N) = ∑ s ∈ Finset.range N, if (s : ZMod m) = y then P s else 0) → (∀ y, ∑ i, α (((η i)⁻¹ : (ZMod m)ˣ) * y) = 0) → sinE (fun i => (η i : ZMod m)) N P = 0 := by
   intro k ι _ _ _ m _ η N P α hα hsum

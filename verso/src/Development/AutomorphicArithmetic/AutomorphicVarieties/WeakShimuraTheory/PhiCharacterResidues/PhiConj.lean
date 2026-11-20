@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ c D T s`. Take `⟨j, hj⟩` from `s.hc`. Establish `hfixF : ∀ x : T.F, s.c (x : Ω) = x`. Introduce `x`. Establish `hr` using `IsTotallyReal.complexEmbedding_isReal (j.comp (algebraMap T.F Ω))`.
+
+Use `RingHom.congr_fun (NumberField.ComplexEmbedding.isReal_iff.1 hr) x` as an intermediate fact. Simplify using `only [NumberField.ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply] at this`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `this`.
+
+Establish `hstab : ∀ (τ : G (W.Lp T.L) Ω) (x : T.L), ∃ y : T.L, τ (x : Ω) = y`. Introduce `τ x`. Conclude with `⟨τ.restrictNormal T.L x, (AlgEquiv.restrictNormal_commutes τ T.L x).symm⟩`. Set `cF : G T.F Ω` to `AlgEquiv.ofRingEquiv (f := s.c.toRingEquiv) (fun x => hfixF x)`. Use `⟨cF, fun g => ?_⟩` and prove the remaining obligations.
+
+Set `σ : G (W.Lp T.L) Ω` to `s.c * W.resP T.L Ω g * s.c⁻¹`. Establish `hσ : ∀ x : T.L, σ (x : Ω) = x`. Introduce `x`. Take `⟨y, hy⟩` from `hstab s.c⁻¹ x`. Establish `h1 : g (y : Ω) = y` using `g.commutes y`.
+
+Establish `h2 : s.c (y : Ω) = x`. Rewrite using `[← hy]`. Conclude with `mul_inv_apply (σ := s.c) (x : Ω)`. Use `show s.c (g (s.c⁻¹ (x : Ω))) = x`. Rewrite using `[hy, h1, h2]`.
+
+Set `g' : G T.L Ω` to `AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) (fun x => hσ x)`. Use `⟨g', ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Both sides reduce to the same expression. Use extensionality with `x`.
+
+Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.phiConj :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} (T : Tower D) (s : W.HidaSetting l T.L Ω), ∃ cF : G T.F Ω, ∀ g : G T.L Ω, ∃ g' : G T.L Ω, W.resP T.L Ω g' = s.c * W.resP T.L Ω g * s.c⁻¹ ∧ resLe T.F_le g' = cF * resLe T.F_le g * cF⁻¹ := by
   intro Ω _ _ _ l _ c D T s

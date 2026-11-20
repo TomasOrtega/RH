@@ -15,6 +15,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.GoodDepth
 
+/- English proof (translation)
+Establish `hS` using `L.Sc_pos`. Establish `hE` using `L.Sc_eq`. Establish `he` using `L.etaSz_pos`. Establish `hDel : (0 : ℝ) ≤ (D.s.Del : ℝ)`. Assume the negation of the conclusion as `hneg`.
+
+Use `push Not at hneg`. Establish `: (D.R.k : ℝ) * (4 * (D.s.Del : ℝ)) < 0` using `mul_neg_of_pos_of_neg (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (numOf D L).Sc ≤ L.Sc` using `by show (D.R.k : ℝ) * (4 * ((⌊(D.s.Del : ℝ)⌋₊ : ℕ) : ℝ)) ≤ L.Sc`. Rewrite using `[hE]`.
+
+Use `Nat.floor_le hDel` as an intermediate fact. Conclude with `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Establish `h2 : (numOf D L).eta ≤ L.etaSz` using `by show (D.R.m : ℝ) * ((⌊LevelStarExponents.h0 L⌋₊ : ℕ) : ℝ) ≤ L.etaSz`. Establish `hm0 : (0 : ℝ) < D.R.m` using `by linarith`. Establish `e : L.etaSz = D.R.m * LevelStarExponents.h0 L` using `by unfold LevelStarExponents.h0; field_simp`.
+
+Establish `h0 : 0 ≤ LevelStarExponents.h0 L` using `by unfold LevelStarExponents.h0; positivity`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (Nat.floor_le h0) hm0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem numOf_sizes_le (D : D7) (L : SizeData₂ D) (hk : (1 : ℝ) ≤ D.R.k) (hm : (1 : ℝ) ≤ D.R.m) :
     (numOf D L).Sc + (numOf D L).eta ≤ L.Sc + L.etaSz := by
   have hS := L.Sc_pos
@@ -39,11 +48,31 @@ theorem numOf_sizes_le (D : D7) (L : SizeData₂ D) (hk : (1 : ℝ) ≤ D.R.k) (
     exact mul_le_mul_of_nonneg_left (Nat.floor_le h0) hm0.le
   linarith
 
+/- English proof (translation)
+Simplify using `[RPl, Ranks.f, Ranks.n, R.card_A]`.
+-/
 theorem card_RPl (R : Ranks) : Fintype.card (RPl R) = R.f := by
   simp [RPl, Ranks.f, Ranks.n, R.card_A]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨C0, hC0⟩` from `GlobalTheory.T.depthTable_goodPrimeLeaf 100 (by norm_num)`. Use `⟨C0, ?_⟩` and prove the remaining obligations. Introduce `D L Pm Tp hK T hT EX _ K _ _ _ _ _ _ Bs Df S P _ _ oc O ι Nm R hPk hC hPg hSz hCn hx5 hx hkb tF`. Establish `hb : O.b = L.sc.b`. Unfold `OnObj.b OnObj.xe Scale.b Scale.L`.
+
+Rewrite using `[R.x_eq, R.eps_eq]`. Establish `hL : O.L = L.sc.L`. Unfold `OnObj.L`. Rewrite using `[hb, Scale.b, Real.log_exp]`. Establish `hb0 : 0 < L.sc.b` using `Real.exp_pos _`.
+
+Establish `hk1 : (1 : ℝ) ≤ D.R.k` using `R.k_eq ▸ hPg.2.1`. Establish `hm1 : (1 : ℝ) ≤ D.R.m` using `R.m_eq ▸ hPg.2.2.1`. Establish `hf8 : (8 : ℝ) ≤ D.R.f` using `R.f_eq ▸ hPg.2.2.2.1`. Establish `hlog : Real.log D.R.k ≤ L.sc.L`. Use `hSz.2.2.2.2.2.2.1` as an intermediate fact.
+
+Rewrite `this` using `[R.k_eq, hL]`. Then use the resulting hypothesis. Use `hC0 D.host.E T.Q.H T.Q.l T.Q.Dw T.Q.Xo T.Q.c (depOf T EX Tp hK) K Bs Df S P oc O ι Nm (numOf D L) (fun z => DV.tauEmb D (plOf D z)) hC R.E_eq R.σ_eq R.T_eq ⟨R.jets_eq_fact, R.g2_eq, R.cmQuadraticForm_eq_alternatingForm, R.dd_eq, R.sm_eq⟩ (piSplit_depDataOf ..) (levelQ_depDataOf _ …` and prove the remaining obligations. Establish `hj` using `R.inR j`. Establish `hd` using `hT.pins.2.2.2 _ hj`. Use `⟨hj.1, hj.2, hd.1, hd.2.1, fun τ i i' h => (dom_wtA (lR Tp hK (ι j))).1 τ h, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb, hL]`. Conclude with `GlobalTheory.T.goodPrimeWeightHypotheses_of_depthParameters D L Pm Tp hK T hT.pins hCn hx5 hx hkb hlog _ hj`. Use `⟨R.k_eq, R.m_eq, R.f_eq, ?_, R.depthNumbers_threshold_eq, R.th_eq, R.ad_eq, fun j => ?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Unfold `OnObj.Se`. Rewrite using `[R.Sc_eq, R.eta_eq]`.
+
+Conclude with `numOf_sizes_le D L hk1 hm1`. Rewrite using `[R.wt_eq]`. Establish `h` using `(GlobalTheory.T.firstRows_bound_and_sizes_bounds D L Pm Tp hK (ι j) (R.inR j) hx hkb).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, card_RPl, nsmul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[R.wt_eq, hb]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `(GlobalTheory.T.weightExponents_embeddings_degree D T.Q hT.pins (ι j) (R.inR j) (lR Tp hK (ι j))).1`. Establish `h2` using `R.DF_ge j`.
+
+Rewrite `h2` using `[← h]`. Conclude with `h2`.
+-/
 theorem leafGood_run : ∃ C0 : ℝ, ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Core D), LawsM T → ∀ (EX : ErrX D) [StarRing (𝓞 D.host.E)] (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra (𝓞 T.Q.c.F) (𝓞 K)] [Algebra.IsIntegral (𝓞 T.Q.c.F) (𝓞 K)] [Algebra (𝓞 D.host.E) K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (ι : Bs.J → ℕ) (Nm : IndefNum Bs),
   RunTie T EX Tp hK O ι → (∀ j, PkgSt (T.Q.Xo (ι j)) T.Q.c) → C0 ≤ oc.C → LeafPage O → LeafSizes O → 10 ≤ Pm.CnW → 3 ≤ L.sc.x ^ (L.sc.ez / 5) → 3 ≤ L.sc.x → (D.R.k : ℝ) * L.sc.b' ≤ L.sc.b →
   DepthCond.ContentEqualsDatumContent Nm (numOf D L) ι → LeafDepthGood Nm O := by

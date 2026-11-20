@@ -26,6 +26,9 @@ variable (F) in
 
 def sgnAd : AF F := ((-1 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (-1 : InfiniteAdeleRing F) * (-1) = 1`. Expand and normalize the polynomial expressions, which then agree. Use `show (1 : FiniteAdeleRing (𝓞 F) F) * 1 = 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sgnAd_mul_self : sgnAd F * sgnAd F = 1 := by
   refine Prod.ext ?_ ?_
   · show (-1 : InfiniteAdeleRing F) * (-1) = 1
@@ -33,6 +36,11 @@ theorem sgnAd_mul_self : sgnAd F * sgnAd F = 1 := by
   · show (1 : FiniteAdeleRing (𝓞 F) F) * 1 = 1
     ring
 
+/- English proof (translation)
+Establish `h0 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show u.1 * (-1 : InfiniteAdeleRing F) = u.1`. Rewrite using `[h0, zero_mul]`. Use `show u.2 * (1 : FiniteAdeleRing (𝓞 F) F) = u.2`.
+
+Rewrite using `[mul_one]`.
+-/
 theorem mul_sgnAd {u : AF F} (hu : evI F u = 0) : u * sgnAd F = u := by
   have h0 : u.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)
   refine Prod.ext ?_ ?_
@@ -41,13 +49,30 @@ theorem mul_sgnAd {u : AF F} (hu : evI F u = 0) : u * sgnAd F = u := by
   · show u.2 * (1 : FiniteAdeleRing (𝓞 F) F) = u.2
     rw [mul_one]
 
+/- English proof (translation)
+Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((-1 : InfiniteAdeleRing F) + 1) = 0`. Rewrite using `[neg_add_cancel, map_zero]`.
+-/
 theorem evI_sgnAd_add_one : evI F (sgnAd F + 1) = 0 := by
   show InfiniteAdeleRing.ringEquiv_mixedSpace F ((-1 : InfiniteAdeleRing F) + 1) = 0
   rw [neg_add_cancel, map_zero]
 
+/- English proof (translation)
+The claim follows from `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1`.
+-/
 theorem evI_neg' (a : AF F) : evI F (-a) = -evI F a :=
   map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1
 
+/- English proof (translation)
+Establish `hss : (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))) * (sgnAd F • 1) = 1`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, sgnAd_mul_self, one_smul, Matrix.one_mul]`. Establish `hmap : (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (cA σ) = sgnAd F • 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+
+Use `⟨⟨⟨sgnAd F • 1, sgnAd F • 1, hss, hss⟩, ?_⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E)))ᵀ * incM F Y.J * (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (cA σ) = incM F Y.J`. Rewrite using `[hmap, Matrix.transpose_smul, Matrix.transpose_one, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, sgnAd_mul_self, one_smul, Matrix.one_mul, Matrix.mul_one]`. Introduce `u hu show u • (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E)) - 1) = 0`. Rewrite using `[smul_sub, smul_smul, mul_sgnAd hu, sub_self]`.
+
+Introduce `w`. Establish `e : (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (piInf (τ w)) = piInf (τ w) (sgnAd F • (1 : AE F E)) • (1 : Matrix (Fin n) (Fin n) ℂ)`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Use `show Commute ((sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))).map (piInf (τ w))) (Y.θ w)`.
+
+Rewrite using `[e]`. Conclude with `(Commute.one_left _).smul_left _`. Introduce `u hu show (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))) * u = -u`. Establish `h` using `hu _ evI_sgnAd_add_one`. Rewrite `h` using `[add_smul, one_smul]`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.one_mul]`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+-/
 theorem exists_neg_one_kInf (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ k ∈ KInf σ Y τ, ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → mat k * u = -u := by
   have hss : (sgnAd F • (1 : Matrix (Fin n) (Fin n) (AE F E))) * (sgnAd F • 1) = 1 := by
@@ -77,6 +102,13 @@ theorem exists_neg_one_kInf (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     rw [Matrix.smul_mul, Matrix.one_mul]
     exact eq_neg_of_add_eq_zero_left h
 
+/- English proof (translation)
+Establish `hS` using `IsUWeilPair.isUSplitting hw`. Introduce `r hr l hl`. Establish `h1` using `hD r hr _ (hS.adm (k, 1) l hl)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[sa_of_acts hf₁ r hr]`.
+
+Use `h1.congr_of_eventuallyEq (.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h2` using `hS.impl (k, 1) (realAd F t • u) (pureA F f r) (Submodule.subset_span ⟨f, r, hr, rfl⟩)`. Establish `h3 : actAB (cA σ) ((k, 1) : UA σ Y.J × UA σ W.J) (realAd F t • u) = realAd F t • (mat k * u)`. Express the relevant statement in the definitionally equal form `mat k * (realAd F t • u) * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ = _`. Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Matrix.mul_smul]`.
+
+Rewrite `h2` using `[h3, sa_of_acts hf r hr]`. Conclude with `congrArg l h2.symm`.
+-/
 theorem sd_intertwine_left {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} {χ₁ χ₂ : Chr F E} {om : Rep σ Y W}
     (hw : M.IsWeil ψ χ₁ χ₂ om) (k : UA σ Y.J) {f f₁ g g₁ : SInf F (Fin n × Fin d)}
     (hf : Acts (evI F) (om (k, 1)) f g) (hf₁ : Acts (evI F) (om (k, 1)) f₁ g₁) {u : Matrix (Fin n) (Fin d) (AE F E)}
@@ -99,12 +131,54 @@ def fockLt (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePl
   | 0 => ⊥
   | k + 1 => fockDeg M ψ τ k
 
+/- English proof (translation)
+Consider the cases of `k with`. Consider the case `zero => exact bot_le`. Consider the case `succ k => exact fockDeg_mono M ψ τ (Nat.le_succ k)`.
+-/
 theorem fockLt_le (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (k : ℕ) :
     fockLt M ψ τ k ≤ fockDeg M ψ τ k := by
   cases k with
   | zero => exact bot_le
   | succ k => exact fockDeg_mono M ψ τ (Nat.le_succ k)
 
+/- English proof (translation)
+Take `⟨k, hk, hku⟩` from `exists_neg_one_kInf (σ := σ) (Y := Y) (d := d) τ`. Establish `h1 : (1 : UA σ W.J) ∈ UAt σ W (evI F)`. Introduce `u _`. Simplify using `[mat]`. Take `⟨A, hA⟩` from `exists_op_of_UAt hψ hw (k, 1) hk.1 h1`.
+
+Take `⟨D, hD⟩` from `GlobalTheory.HeisDer.derEx F E σ _ _ _ ψ _ _ M.co hψ`. Establish `hL` using `actsLaws F (Fin n × Fin d)`. Establish `hSD : ∀ u, At (evI F) u → ∀ φ, SD (M.heisLine ψ u) φ (D u φ)` using `fun u hu φ => (hD u hu φ).1`. Establish `hAD : ∀ u, At (evI F) u → ∀ φ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) φ (D u φ)` using `fun u hu φ => (hL φ _ φ).1 _ (heisLine_zero M ψ u) (hSD u hu φ)`. Establish `hneg : ∀ u : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → At (evI F) (-u)` using `fun u hu v hv => by`.
+
+Rewrite using `[smul_neg, hu v hv, neg_zero]`. Establish `hDneg : ∀ u, At (evI F) u → ∀ φ, D (-u) φ = -D u φ`. Introduce `u hu φ`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Rewrite using `[SchwartzMap.neg_apply, (hD _ (hneg u hu) φ).2 x, (hD u hu φ).2 x, map_neg]`.
+
+Establish `e1 : (fun i => evI F ((-M.co.e u).1 i)) = -fun i => evI F ((M.co.e u).1 i)`. Use function extensionality and compare the values at `i`. Conclude with `evI_neg' _`. Establish `e2 : ∑ i, x i * evI F ((-M.co.e u).2 i) = -∑ i, x i * evI F ((M.co.e u).2 i)`. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_neg, ← evI_neg']`. Both sides reduce to the same expression. Rewrite using `[e1, e2, map_neg, map_neg]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hanti : ∀ u, At (evI F) u → ∀ φ, A (D u φ) = -D u (A φ)`. Introduce `u hu φ`. Establish `h` using `sd_intertwine_left hw k (hA φ) (hA _) (hSD u hu φ)`. Rewrite `h` using `[hku u hu]`.
+
+Rewrite using `[← hDneg u hu]`. Conclude with `(hL _ _ _).2.2.2.2 _ h (hSD _ (hneg u hu) _)`. Establish `hgauss : ∀ f₀, M.IsGauss ψ τ f₀ → M.IsGauss ψ τ (A f₀)`. Introduce and unpack `f₀ ⟨ε, hε⟩`. Use `⟨ε, fun u u' hu hu' huu g g' hg hg' => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `(hL _ _ _).2.2.1 _ hg (hAD u hu _)`. Establish `e2` using `(hL _ _ _).2.2.1 _ hg' (hAD u' hu' _)`. Establish `key` using `hε u u' hu hu' huu _ _ (hAD u hu f₀) (hAD u' hu' f₀)`. Establish `a1` using `hanti u hu f₀`. Establish `a2` using `hanti u' hu' f₀`.
+
+Rewrite `a2` using `[key, map_smul, a1, smul_neg, neg_inj]`. Rewrite using `[e1, e2, a2]`. Establish `hc : ∃ c : ℂ, ∀ f₀, M.IsGauss ψ τ f₀ → A f₀ = c • f₀`. Distinguish the cases in `h0 : ∃ f₀, f₀ ≠ 0 ∧ M.IsGauss ψ τ f₀`. Take `⟨f₀, hne, hg⟩` from `h0`.
+
+Take `⟨c, hc⟩` from `hline f₀ hne hg _ (hgauss f₀ hg)`. Use `⟨c, fun g hg' => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hline f₀ hne hg g hg'`. Rewrite using `[map_smul, hc, smul_comm]`. Use `⟨0, fun g hg => ?_⟩` and prove the remaining obligations.
+
+Establish `: g = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h0 ⟨g, hne, hg⟩`. Rewrite using `[this, map_zero, smul_zero]`. Take `⟨c, hc⟩` from `hc`.
+
+Establish `hDdeg : ∀ m u, At (evI F) u → ∀ φ ∈ fockDeg M ψ τ m, D u φ ∈ fockDeg M ψ τ (m + 1)` using `fun m u hu φ hφ => Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, φ, hφ, hAD u hu φ⟩)`. Establish `hDlt : ∀ m u, At (evI F) u → ∀ φ ∈ fockLt M ψ τ m, D u φ ∈ fockLt M ψ τ (m + 1)`. Introduce `m u hu φ hφ`. Consider the cases of `m with`. Consider the case `zero`.
+
+Establish `: φ = 0` using `(Submodule.mem_bot ℂ).1 hφ`. Rewrite using `[this, map_zero]`. Conclude with `zero_mem _`. Consider the case `succ m => exact hDdeg m u hu φ hφ`. Use `⟨k, hk, A, hA, c, fun m => ?_⟩` and prove the remaining obligations.
+
+It suffices to establish `h : fockDeg M ψ τ m ≤ (fockLt M ψ τ m).comap (A - (c * (-1) ^ m) • LinearMap.id) from fun f hf => h hf`. Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[fockDeg_zero]`. Use `Submodule.span_le.2 fun f₀ hf₀ => ?_` and prove the remaining obligations.
+
+Use `show A f₀ - (c * (-1) ^ 0) • f₀ ∈ (⊥ : Submodule ℂ _)`. Rewrite using `[hc f₀ hf₀, pow_zero, mul_one, sub_self]`. Conclude with `zero_mem _`. Consider the case `succ m ih`. Rewrite using `[fockDeg_succ]`.
+
+Use `sup_le (fun f hf => ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Use `show A f - (c * (-1) ^ (m + 1)) • f ∈ fockDeg M ψ τ m`. Establish `h2 : A f - (c * (-1) ^ m) • f ∈ fockDeg M ψ τ m` using `fockLt_le M ψ τ m (ih hf)`. Establish `e : A f - (c * (-1) ^ (m + 1)) • f = (A f - (c * (-1) ^ m) • f) + (c * (-1) ^ m - c * (-1) ^ (m + 1)) • f`. Rewrite using `[sub_smul]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem h2 (Submodule.smul_mem _ _ hf)`. Introduce and unpack `φ₁ ⟨u, hu, φ, hφ, hd⟩`. Establish `e : φ₁ = D u φ` using `(hL _ _ _).2.2.1 _ hd (hAD u hu φ)`.
+
+Substitute `e` using the available equality. Use `show A (D u φ) - (c * (-1) ^ (m + 1)) • D u φ ∈ fockLt M ψ τ (m + 1)`. Establish `h2 : A φ - (c * (-1) ^ m) • φ ∈ fockLt M ψ τ m` using `ih hφ`. Establish `h3` using `neg_mem (hDlt m u hu _ h2)`. Establish `e : A (D u φ) - (c * (-1) ^ (m + 1)) • D u φ = -D u (A φ - (c * (-1) ^ m) • φ)`.
+
+Rewrite using `[hanti u hu, map_sub, map_smul, pow_succ, ← mul_assoc, mul_neg_one, neg_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem exists_parity_op {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} {χ₁ χ₂ : Chr F E} {om : Rep σ Y W}
     (hψ : IsStd ψ) (hw : M.IsWeil ψ χ₁ χ₂ om) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     (hline : ∀ f₀, f₀ ≠ 0 → M.IsGauss ψ τ f₀ → ∀ g, M.IsGauss ψ τ g → ∃ c : ℂ, g = c • f₀) :
@@ -207,6 +281,19 @@ theorem exists_parity_op {M : Model σ Y W} {ψ : AddChar (AF F) ℂ} {χ₁ χ�
       rw [e]
       exact h3
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' R Rf hM j`. Take `⟨k, hk, A, hA, c, hc⟩` from `exists_parity_op hM.triple.base.std hM.triple.weil B.emb (GlobalTheory.GaussLine.gauss_eq_smul B G X om om' hM.triple)`. Establish `hp : ∀ m, ∀ f ∈ fockDeg G.M B.ψ B.emb m, (1 - c * (-1) ^ m) • R.p f ∈ (fockLt G.M B.ψ B.emb m).map R.p`. Introduce `m f hf`. Use `⟨_, hc m f hf, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sub, map_smul, hM.real.quot.cpt k hk f (fockDeg_le_pol _ _ _ _ hf) _ (hA f), sub_smul, one_smul]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Distinguish the cases in `hf0 : R.p f = 0`. Rewrite using `[hf0]`. Conclude with `zero_mem _`.
+
+Establish `hne : {m | ∃ f ∈ fockDeg G.M B.ψ B.emb m, R.p f ≠ 0}.Nonempty` using `⟨_, f, hf, hf0⟩`. Take `⟨g, hg, hpg⟩ : ∃ g ∈ fockDeg G.M B.ψ B.emb (lowDegInf B G.M R.p), R.p g ≠ 0` from `Nat.sInf_mem hne`. Establish `hlow : ∀ m, m ≤ lowDegInf B G.M R.p → ∀ φ ∈ fockLt G.M B.ψ B.emb m, R.p φ = 0`. Introduce `m hm φ hφ`. Consider the cases of `m with`.
+
+Consider the case `zero => rw [(Submodule.mem_bot ℂ).1 hφ, map_zero]`. Consider the case `succ m`. Assume the negation of the conclusion as `h`. Conclude with `Nat.notMem_of_lt_sInf (s := {m | ∃ f ∈ fockDeg G.M B.ψ B.emb m, R.p f ≠ 0}) (Nat.lt_of_succ_le hm) ⟨φ, hφ, h⟩`. Establish `hone : c * (-1) ^ lowDegInf B G.M R.p = 1`.
+
+Take `⟨φ, hφ, e⟩` from `hp _ g hg`. Rewrite `e` using `[hlow _ le_rfl φ hφ]`. Conclude with `(sub_eq_zero.1 ((smul_eq_zero.1 e.symm).resolve_right hpg)).symm`. Establish `h2` using `hp _ f hf`. Establish `e : (1 - c * (-1) ^ (lowDegInf B G.M R.p + 2 * j + 1) : ℂ) = 2`.
+
+Rewrite using `[pow_succ, pow_add, pow_mul, ← mul_assoc, ← mul_assoc, hone]`. Evaluate the numerical expressions. Rewrite `h2` using `[e]`. Conclude with `(Submodule.smul_mem_iff _ two_ne_zero).1 h2`.
+-/
 theorem map_fockDeg_odd_le : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

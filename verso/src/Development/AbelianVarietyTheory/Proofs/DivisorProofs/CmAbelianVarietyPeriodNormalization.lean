@@ -26,6 +26,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CMModel
 
+/- English proof (translation)
+Take `⟨x, hx, -⟩` from `q.univ B P hP a`. Take `⟨x', hx', -⟩` from `q.univ B P' hP' a'`. Establish `ex : cls P hP = evc q.isLB (fst A B) (snd A B ≫ x)` using `(cls_eq_iff hP (pull_isLB q.isLB _)).2 hx`. Establish `ex' : cls P' hP' = evc q.isLB (fst A B) (snd A B ≫ x')` using `(cls_eq_iff hP' (pull_isLB q.isLB _)).2 hx'`. Establish `ly : ∀ y : B ⟶ D, ∃ y' : B' ⟶ D', g ≫ y.left = y'.left ≫ d` using `fun y ↦ ⟨_, (liftPt_left hd B'.hom (g ≫ y.left) (by rw [Category.assoc, Over.w y, hg.w])).symm⟩`.
+
+Take `⟨y, ey⟩` from `ly x`. Take `⟨y', ey'⟩` from `ly x'`. Take `rfl : y = y'` from `dual_ext q' <| by`. Rewrite using `[← pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q'.isLB ey, ← pull_evc_eq l₁ l₂ m₁ m₂ q.isLB q'.isLB ey', ← ex, ← ex', e]`. Take `rfl : x = x'` from `ActDescent.over_hom_ext hg (ey.trans ey'.symm)`.
+
+Conclude with `ex.trans ex'.symm`.
+-/
 theorem cls_eq_of_pull {S S' : Scheme.{0}} {b : S' ⟶ S} [Flat b] [Surjective b] {A B D : Over S} [GrpObj A] [GrpObj D]
     {A' B' D' : Over S'} [GrpObj A'] [GrpObj D'] {f : A'.left ⟶ A.left} {g : B'.left ⟶ B.left} {d : D'.left ⟶ D.left}
     {l : (A' ⊗ B').left ⟶ (A ⊗ B).left} {m : (A' ⊗ D').left ⟶ (A ⊗ D).left}
@@ -48,6 +55,39 @@ theorem cls_eq_of_pull {S S' : Scheme.{0}} {b : S' ⟶ S} [Flat b] [Surjective b
   obtain rfl : x = x' := ActDescent.over_hom_ext hg (ey.trans ey'.symm)
   exact ex.trans ex'.symm
 
+/- English proof (translation)
+Use `haveI : Flat (spMap (algebraMap Qb ℂ)) := Flat.SpecMap_iff.2 (by`. Use `letI := (algebraMap Qb ℂ).toAlgebra`. Conclude with `(inferInstance : Module.Flat Qb ℂ))`. Use `haveI : Surjective (spMap (algebraMap Qb ℂ)) := ⟨fun x ↦ ⟨(inferInstance : Nonempty (PrimeSpectrum ℂ)).some, Subsingleton.elim (α := PrimeSpectrum Qb) _ _⟩⟩`. Use `haveI := hA₀.comm`.
+
+Take `⟨rm, hrm⟩` from `ActDescent.exists_oAct hp X.rm fun a ↦ by`. Take `⟨f, -, hf⟩` from `GlobalTheory.T.homomorphism_descends_to_algebraic A₀ A₀ X.A X.A p p _ _ hA₀ gA₀ hA₀ gA₀ hp hp (X.rm.act a) (X.rm.hom a)`. Conclude with `⟨f, hf⟩`. Take `⟨D₀, _, Q, D, _, d, m, hD₀, gD₀, q₀, q₀', hd, m₁, m₂, q, q'⟩` from `exists_dual_pair HD hA₀ gA₀ hp`. Take `⟨l, l₁, l₂⟩` from `exists_prod_pullback hp hp`.
+
+Take `⟨H, hH, aH⟩` from `exists_relAmple_prod X.ab X.ab (pull_isLB (X.isLB c₀) _) (X.pos c₀ hc₀) (pull_isLB (X.isLB c₀) _) (X.pos c₀ hc₀)`. Establish `hx : ∀ c : 𝔠.elt, ∃ P₀ : LB (A₀ ⊗ A₀).left, ∃ h : P₀.IsLB, IsAdditive P₀ ∧ IsAdditive (swap P₀) ∧ CechPic.pull l (cls P₀ h) = cls (X.P c) (X.isLB c)` using `fun c ↦ by`. Take `⟨a₁, a₂⟩` from `additive_of_triv X.ab X.ab hH aH (X.isLB c) (X.rig₁ c) (X.rig₂ c)`. Take `⟨x, hx, ex⟩` from `exists_hom q q' (X.isLB c) a₁ a₂`. Take `⟨x₀, hx₀, e₀⟩` from `GlobalTheory.T.homomorphism_descends_to_algebraic A₀ D₀ X.A D p d _ _ hA₀ gA₀ hD₀ gD₀ hp hd x hx`.
+
+Take `⟨b₁, b₂⟩` from `additive_ev q₀.isLB q₀.additive q₀'.additive x₀`. Use `⟨_, pull_isLB q₀.isLB _, b₁, b₂, ?_⟩` and prove the remaining obligations. Rewrite using `[cls_ev q₀.isLB, ex]`. Conclude with `pull_evc_eq l₁ l₂ m₁ m₂ q₀.isLB q.isLB e₀.symm`. Use `choose P₀ hP₀ a₁ a₂ eP using hx`.
+
+Establish `inj : ∀ {P P' : LB (A₀ ⊗ A₀).left} (hP : P.IsLB) (hP' : P'.IsLB), IsAdditive P → IsAdditive P' → CechPic.pull l (cls P hP) = CechPic.pull l (cls P' hP') → LBIso P P'` using `fun hP hP' a a' e ↦ (cls_eq_iff hP hP').1 (cls_eq_of_pull hp.1 hd l₁ l₂ m₁ m₂ q₀ q hP hP' a a' e)`. Establish `iso : ∀ c, LBIso ((P₀ c).pull l) (X.P c)` using `fun c ↦ (cls_eq_iff (pull_isLB (hP₀ c) _) (X.isLB c)).1 (by rw [cls_pull (hP₀ c)]; exact eP c)`. Establish `val : ∀ (c : 𝔠.elt) {Y₀ : Over (Sp Qb)} {Y : Over (Sp ℂ)} (r : Y.left ⟶ Y₀.left) (a₀ t₀ : Y₀ ⟶ A₀) (a t : Y ⟶ X.A), a.left ≫ p = r ≫ a₀.left → t.left ≫ p = r ≫ t₀.left → CechPic.pull r (evc (hP₀ c) a₀ t₀) = evc (X.isLB c) a t` using `fun c Y₀ Y r a₀ t₀ a t ha ht ↦ by`. Rewrite using `[evc, evc, ← eP, ← pull_comp, ← pull_comp]`. Use `congr 2`.
+
+Apply `left_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, lift_left_fst, l₁, lift_left_fst_assoc, ha]`. Rewrite using `[Category.assoc, Category.assoc, lift_left_snd, l₂, lift_left_snd_assoc, ht]`. Use `⟨{ A := A₀ ab := hA₀ dim := gA₀ rm := rm P := P₀ isLB := hP₀ rig₁ := fun c ↦ triv_left (hP₀ c) (a₁ c) rig₂ := fun c ↦ triv_right (hP₀ c) (a₂ c)` and prove the remaining obligations. Use symmetry as in `:= fun c ↦ ?_`.
+
+Use `add := fun c c' ↦ ?_`. Use `smul := fun a c ↦ ?_`. Use `pos := fun c hc ↦ ?_`. Use `ker := fun c T₀ x hx a ha ↦ ?_ }, p, hp, hrm, l, ⟨l₁, l₂⟩, fun c ↦ ?_⟩`. Use `inj (hP₀ c) (pull_isLB (hP₀ c) _) (a₁ c) (a₂ c) ?_` and prove the remaining obligations.
+
+Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ _ _ l₂.symm l₁.symm]`. Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.symm c)`. Establish `hq` using `LB.isLB_div (hP₀ (c + c')) (hP₀ c)`. Establish `ev' : ∀ (Y : Over (Sp Qb)) (a t : Y ⟶ A₀), evc hq a t = evc (hP₀ (c + c')) a t - evc (hP₀ c) a t` using `fun Y a t ↦ by rw [evc, cls_div (hP₀ (c + c')) (hP₀ c), map_sub]; rfl`. Use `inj (hP₀ c') hq (a₁ c') ((isAdditive_iff hq).2 fun Y a a' t ↦ ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[ev', ev', ev', (isAdditive_iff (hP₀ _)).1 (a₁ _), (isAdditive_iff (hP₀ _)).1 (a₁ _)]`. Normalize the expressions using the abelian group laws. Rewrite using `[cls_div (hP₀ (c + c')) (hP₀ c), map_sub, eP, eP, eP, ← cls_div (X.isLB (c + c')) (X.isLB c) (LB.isLB_div (X.isLB (c + c')) (X.isLB c))]`. Conclude with `(cls_eq_iff _ _).2 (X.add c c')`. Establish `hq : (ev (P₀ c) (fst A₀ A₀) (snd A₀ A₀ ≫ rm.act a)).IsLB` using `pull_isLB (hP₀ c) _`.
+
+Use `inj (hP₀ _) hq (a₁ _) ((isAdditive_iff hq).2 fun Y u u' t ↦ ?_) ?_` and prove the remaining obligations. Simplify using `only [evc_ev (hP₀ c), lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff (hP₀ c)).1 (a₁ c) _ _ _ _`. Rewrite using `[eP, cls_ev (hP₀ c), val c l _ _ (fst X.A X.A) (snd X.A X.A ≫ X.rm.act a) l₁.symm (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hrm, ← Category.assoc, ← Category.assoc, l₂])]`.
+
+Conclude with `(cls_eq_iff _ (pull_isLB (X.isLB c) _)).2 (X.smul a c)`. Use `AmpleDescent.relAmple_of_fieldExtension Qb ℂ _ A₀ X.A p _ _ hA₀ hp (pull_isLB (hP₀ c) _) (pull_isLB (X.isLB c) _) ((cls_eq_iff (pull_isLB (X.isLB c) _) (pull_isLB (pull_isLB (hP₀ c) _) _)).1 ?_) (X.pos c hc)` and prove the remaining obligations. Rewrite using `[cls_pull (pull_isLB (hP₀ c) _), cls_ev (hP₀ c), cls_ev (X.isLB c)]`. Conclude with `(val c p _ _ _ _ (by simp) (by simp)).symm`. Set `T : Over (Sp ℂ)` to `(Over.pullback (spMap (algebraMap Qb ℂ))).obj T₀`.
+
+Set `r : T.left ⟶ T₀.left` to `Limits.pullback.fst _ _`. Establish `hr : IsPullback r T.hom T₀.hom (spMap (algebraMap Qb ℂ))` using `IsPullback.of_hasPullback _ _`. Establish `w : (r ≫ x.left) ≫ A₀.hom = T.hom ≫ spMap (algebraMap Qb ℂ)` using `by rw [Category.assoc, Over.w x, hr.w]`. Set `x' : T ⟶ X.A` to `liftPt hp T.hom _ w`. Establish `ex : x'.left ≫ p = r ≫ x.left` using `liftPt_left hp _ _ w`.
+
+Set `u : Over.mk ((X.A ⊗ T).hom ≫ spMap (algebraMap Qb ℂ)) ⟶ T₀` to `Over.homMk ((snd X.A T).left ≫ r) (by`. Express the relevant statement in the definitionally equal form `((snd X.A T).left ≫ r) ≫ T₀.hom = _`. Rewrite using `[Category.assoc, hr.w, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `s : (X.A ⊗ T).left ⟶ (A₀ ⊗ T₀).left` to `(lift (pushP hp (s := (X.A ⊗ T).hom) rfl (fst X.A T)) u).left`.
+
+Establish `s₁ : s ≫ (fst A₀ T₀).left = (fst X.A T).left ≫ p` using `lift_left_fst _ _`. Establish `s₂ : s ≫ (snd A₀ T₀).left = (snd X.A T).left ≫ r` using `lift_left_snd _ _`. Establish `z : evc (X.isLB c) (fst X.A T) (snd X.A T ≫ x') = 0`. Rewrite using `[← val c s (fst A₀ T₀) (snd A₀ T₀ ≫ x) _ _ s₁.symm (by`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ex, ← Category.assoc, ← Category.assoc, s₂]),`.
+
+Use the proof step `(triv_ev_iff (hP₀ c) _ _).1 hx, map_zero]`. Establish `k` using `X.ker c T x' ((triv_ev_iff (X.isLB c) _ _).2 z) a ha`. Use `ActDescent.over_hom_ext hr ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, ← Category.assoc, ← ex, Category.assoc, ← hrm, ← Category.assoc, ← Over.comp_left, k]`. Use `(one_left_comp hp (s := T.hom) rfl).trans ?_` and prove the remaining obligations.
+
+Set `r' : Over.mk (T.hom ≫ spMap (algebraMap Qb ℂ)) ⟶ T₀` to `Over.homMk r hr.w`. Conclude with `congrArg (fun y ↦ y.left) (MonObj.comp_one (M := A₀) r').symm`. Conclude with `(cls_eq_iff (X.isLB c) (pull_isLB (hP₀ c) _)).1 (by rw [cls_pull (hP₀ c)]; exact (eP c).symm)`.
+-/
 theorem exists_obj_of_isGrpPullback (HD : GlobalTheory.Published.DualAbelianScheme) {F : Type} [Field F] [NumberField F]
     {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ)) (c₀ : 𝔠.elt) (hc₀ : IsTotPos (c₀ : F)) (A₀ : Over (Sp Qb)) [GrpObj A₀]
     (p : X.A.left ⟶ A₀.left) (hA₀ : IsAbelianScheme A₀) (gA₀ : SmoothOfRelativeDimension (Module.finrank ℚ F) A₀.hom)
@@ -152,6 +192,15 @@ theorem exists_obj_of_isGrpPullback (HD : GlobalTheory.Published.DualAbelianSche
     exact congrArg (fun y ↦ y.left) (MonObj.comp_one (M := A₀) r').symm
   · exact (cls_eq_iff (X.isLB c) (pull_isLB (hP₀ c) _)).1 (by rw [cls_pull (hP₀ c)]; exact (eP c).symm)
 
+/- English proof (translation)
+Introduce `_ _ HD K _ _ d δ io h2 hd hδ E _ _ _ _ I _ φ hφ hio c y hc 𝔠 X U`. Take `⟨C₀, _, C, _, p, L, u, s, hC₀, gC₀, hp, hL, hs, hu⟩` from `GlobalTheory.T.elliptic_curve_lattice_period_form d (io δ) hd (by`. Rewrite using `[← map_pow, hδ, map_neg, map_natCast])`. Take `⟨B₀, _, B, _, q, M, v, hB₀, gB₀, hB, gB, hq, hv⟩` from `GlobalTheory.T.abelian_scheme_descent_with_uniformization Qb _ C₀ C p L u hC₀ gC₀ hp hL (Module.finrank ℚ (FR E))`. Take `⟨T, hT, hTΛ⟩` from `GlobalTheory.T.cm_period_matrix_exists K d δ io h2 hd hδ E I φ hφ hio c y hc U.e`.
+
+Take `⟨ψ, hψ, eψ⟩` from `GlobalTheory.T.lattice_map_gives_homomorphism B X.A _ hB X.ab gB X.dim M _ v U.u (s⁻¹ • T) fun z hz ↦ by`. Take `⟨x, hx, ex⟩` from `hTΛ (s⁻¹ • z) fun j ↦ by`. Take `⟨a, b, e⟩` from `hu _ (hv z hz j)`. Conclude with `⟨a, b, by rw [Pi.smul_apply, e, smul_eq_mul, inv_mul_cancel_left₀ hs]⟩`. Use `(U.lat _).2 ⟨x, hx, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, ← map_smul, ex]`. Use function extensionality and compare the values at `j`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]`. Take `⟨A₀, _, r, hA₀, gA₀, hr⟩` from `GlobalTheory.T.quotient_abelian_scheme_descends B₀ B X.A q _ hB₀ gB₀ hq X.ab X.dim ψ hψ fun w ↦ by`. Take `⟨z, rfl⟩` from `U.u.ex_onto w`.
+
+Take `⟨z', rfl⟩` from `hT z`. Use `⟨v.ex (s • z'), ?_⟩` and prove the remaining obligations. Rewrite using `[← eψ, LinearMap.smul_apply, map_smul, inv_smul_smul₀ hs]`. Conclude with `exists_obj_of_isGrpPullback HD.1 X U.c U.pos A₀ r hA₀ gA₀ hr`.
+-/
 theorem exists_model : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
   ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),

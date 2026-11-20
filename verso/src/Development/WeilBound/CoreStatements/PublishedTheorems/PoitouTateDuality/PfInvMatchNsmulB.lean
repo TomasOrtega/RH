@@ -15,6 +15,15 @@ attribute [local instance 2000] Rep.hV2
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hζN : ζ ^ (l ^ r) = 1` using `hζ.pow_eq_one`. Establish `hmod : ∀ k : ℕ, ζ ^ (k % (l ^ r)) = ζ ^ k` using `fun k => by conv_rhs => rw [← Nat.mod_add_div k (l ^ r), pow_add, pow_mul, hζN, one_pow, mul_one]`. Establish `hτ : ((ev σ : Dec (F` using `Kf.1) A) : G Kf.1 (AlgebraicClosure ℚ)) ζ = ζ ^ ((cycMod Kf.1 (AlgebraicClosure ℚ) l r (ev σ : Dec (F := Kf.1) A) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)).val := cyclotomicCharacter.spec (L := AlgebraicClosure ℚ) l (MulSemiringAction.toRingAut (G Kf.1 (AlgebraicClosure ℚ)) (AlgebraicCl …`. Establish `hact : ∀ y : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S, ((gsFinFamily S ιs v σ y : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) : AlgebraicClosure ℚ) = ((ev σ : Dec (F` using `Kf.1) A) : G Kf.1 (AlgebraicClosure ℚ)) (y : AlgebraicClosure ℚ) := by`. Introduce `y`.
+
+Apply `(ιs v).toRingHom.injective` to reduce the goal to its premises. Use `show ιs v _ = ιs v _`. Rewrite using `[gsFinFamily_apply, hev]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((gsFinFamily S ιs v σ ((((w ^ c.val : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) : A …`. Rewrite using `[hact]`. Simplify using `only [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwQ, map_pow, hτ]`.
+
+Rewrite using `[← pow_mul, ZMod.val_mul, hmod]`.
+-/
 theorem loc_act_rootOf (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] [NeZero (l ^ r)]
     (ζ : AlgebraicClosure ℚ) (hζ : IsPrimitiveRoot ζ (l ^ r))
@@ -60,6 +69,11 @@ theorem loc_act_rootOf (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf
   simp only [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwQ, map_pow, hτ]
   rw [← pow_mul, ZMod.val_mul, hmod]
 
+/- English proof (translation)
+Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h]`.
+
+Use `show ζ ^ c.val = ((((w ^ c.val : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) : AlgebraicClosure ℚ)`. Rewrite using `[SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwQ]`.
+-/
 theorem eq_rootOf_of_coe {Kf : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞 Kf.1))} {l r : ℕ}
     [NeZero (l ^ r)] {ζ : AlgebraicClosure ℚ} {w : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)}
     (hwQ : ((((w : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : AlgebraicClosure ℚ) = ζ)
@@ -74,6 +88,9 @@ theorem eq_rootOf_of_coe {Kf : FiniteSubfield} {S : Set (HeightOneSpectrum (𝓞
   show ζ ^ c.val = ((((w ^ c.val : rootsOfUnity (l ^ r) (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) : AlgebraicClosure ℚ)
   rw [SubgroupClass.coe_pow, Units.val_pow_eq_pow_val, IntermediateField.coe_pow, hwQ]
 
+/- English proof (translation)
+Take `⟨e2, -, hchar⟩` from `PositivityTheory.LocalTateOrthogonality.Gcoh.gc2 L R M (rho0.comp ψ) A e he`. Establish `h' : resH2 rho0 ψ hψ (Submodule.Quotient.mk z) = n • resH2 rho0 ψ hψ (Submodule.Quotient.mk z')`. Rewrite using `[h, map_nsmul]`. Rewrite using `[← hchar (restrictCocycles2 rho0 ψ hψ z) x hzx, ← hchar (restrictCocycles2 rho0 ψ hψ z') x' hzx']`. Conclude with `(congrArg e2 h').trans (map_nsmul e2 n _)`.
+-/
 theorem cls_nsmul_of_match {L D : Type} [Group L] [TopologicalSpace L] [IsTopologicalGroup L]
     [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (ψ : L →* D) (hψ : Continuous ψ)
     {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] [TopologicalSpace M] [DiscreteTopology M]
@@ -91,6 +108,15 @@ theorem cls_nsmul_of_match {L D : Type} [Group L] [TopologicalSpace L] [IsTopolo
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Establish `hmem : ζ ∈ maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S` using `by haveI : IsGalois Kf.1 (AlgebraicClosure ℚ) := IsAlgClosure.isGalois _ _`. Use `mem_maxUnramifiedOutside_of_pow_eq_one S (pow_ne_zero r (Fact.out : l.Prime).ne_zero) ?_ hζ.pow_eq_one` and prove the remaining obligations. Introduce `w hw hm`. Apply `hw` to reduce the goal to its premises.
+
+Apply `hS` to reduce the goal to its premises. Establish `h' : ((l : 𝓞 Kf.1)) ^ r ∈ w.asIdeal` using `by simpa [Nat.cast_pow] using hm`. Conclude with `w.isPrime.mem_of_pow_mem r h'`. Establish `hζK : IsPrimitiveRoot (⟨ζ, hmem⟩ : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S) (l ^ r)` using `IsPrimitiveRoot.of_map_of_injective (f := (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S).val) hζ (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S).val.toRingHom.injective`. Establish `hex` using `exists_root_of_primitive (L := ↥(maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) (N := l ^ r) (pow_ne_zero r (Fact.out : l.Prime).ne_zero) hζK`.
+
+Take `⟨w, hwv⟩` from `hex`. Establish `hw : IsPrimitiveRoot (((w : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) (l ^ r)`. Rewrite using `[hwv]`. Conclude with `hζK`. Establish `hwQ : ((((w : (maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)ˣ) : maxUnramifiedOutside Kf.1 (AlgebraicClosure ℚ) S)) : AlgebraicClosure ℚ) = ζ` using `congrArg Subtype.val hwv`.
+
+Set `eA : ZMod (l ^ r) ≃+ (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))).V` to `AddEquiv.ofBijective (rootOf w) (rootOf_bijective w hw)`. Establish `hM : ∀ g m, eA (((muLoc Kf.1 l r A).comp ev.toMonoidHom) g m) = (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))).ρ g (eA m)` using `fun g m => by show rootOf w (((cycMod Kf.1 (AlgebraicClosure ℚ) l r (ev g : Dec (F := Kf.1) A) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * m) = (gsRoots S (l ^ r)).ρ (gsFinFamily S ιs v g) (rootOf w m)`. Conclude with `(loc_act_rootOf Kf S ζ hζ ιs v A ev hev w hwQ g m).symm`. Conclude with `cls_nsmul_of_match ev.toMonoidHom hevc (muLoc Kf.1 l r A) (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S (l ^ r))) eA hM z z' x x' (fun s => eq_rootOf_of_coe hwQ _ _ (hzx s)) (fun s => eq_rootOf_of_coe hwQ _ _ (hzx' s)) n h`.
+-/
 theorem invMatch_nsmul_B (Kf : FiniteSubfield) [NumberField Kf.1] [IsAlgClosure Kf.1 (AlgebraicClosure ℚ)]
     (S : Set (HeightOneSpectrum (𝓞 Kf.1))) [Fintype S] {l r : ℕ} [Fact l.Prime] (hr : 0 < r)
     (hS : ∀ v : HeightOneSpectrum (𝓞 Kf.1), ((l : ℕ) : 𝓞 Kf.1) ∈ v.asIdeal → v ∈ S)

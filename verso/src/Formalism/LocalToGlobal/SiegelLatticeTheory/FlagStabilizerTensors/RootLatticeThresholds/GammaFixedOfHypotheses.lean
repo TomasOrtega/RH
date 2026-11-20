@@ -18,6 +18,11 @@ section ZsC1e
 
 variable {D : D7} {X : HidaSetting D}
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.SG.GGMirabolic.gamProd Y.TR.psi0 (1 : Iof Y.TR) = ((∏ v, ((Fintype.card (GL (Fin D.R.k) (Y.TR.Fq v)) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU (Y.TR.Fq v) D.R.k : ℝ)) : ℝ) : ℂ)`. Simplify using `only [Formalism.L2.SG.GGMirabolic.gamProd, Pi.one_apply, Formalism.L2.SG.GGMirabolic.gam_one]`. Use `push_cast`. Both sides reduce to the same expression. Use `show (Formalism.L2.SG.GGMirabolic.gamProd Y.TR.psi0 (1 : Iof Y.TR)).re = _`.
+
+Rewrite using `[h1, Complex.ofReal_re]`.
+-/
 theorem gamma_one_eq_prod (Y : Full X) (u u' : D.what₂.Word) :
     (Y.tO u u').Gam1 = ∏ v, ((Fintype.card (GL (Fin D.R.k) (Y.TR.Fq v)) : ℝ) /
       (Formalism.L2.SG.GGMirabolic.cardU (Y.TR.Fq v) D.R.k : ℝ)) := by
@@ -30,6 +35,15 @@ theorem gamma_one_eq_prod (Y : Full X) (u u' : D.what₂.Word) :
   show (Formalism.L2.SG.GGMirabolic.gamProd Y.TR.psi0 (1 : Iof Y.TR)).re = _
   rw [h1, Complex.ofReal_re]
 
+/- English proof (translation)
+Establish `hU : Formalism.L2.SG.GGMirabolic.cardU K k = Nat.card (Formalism.DoubleCosetMeasures.upUniG K k)`. Unfold `Formalism.L2.SG.GGMirabolic.cardU`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun x => ?_)` and prove the remaining obligations. Use `show Formalism.L2.SG.GGMirabolic.IsUni k x ↔ Formalism.DoubleCosetMeasures.IsUpUni (x : Matrix (Fin k) (Fin k) K)`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨?_, h.1⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `h.2 i j hij`. Introduce `h`.
+
+Use `⟨h.2, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Conclude with `h.1 hij`. Establish `hG` using `Formalism.FourierDecayAlt.P.gamma_factor_product K k`. Establish `hq : 1 ≤ Fintype.card K` using `Fintype.card_pos`.
+
+Establish `hpos : 0 < Nat.card (Formalism.DoubleCosetMeasures.upUniG K k)` using `Nat.card_pos`. Rewrite using `[hU, ← Nat.card_eq_fintype_card, hG, Nat.cast_mul, mul_div_cancel_left₀ _ (by exact_mod_cast hpos.ne'), Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ hq), Nat.cast_pow, Nat.cast_one]`.
+-/
 theorem card_gl_div_unipotent (K : Type) [Field K] [Fintype K] (k : ℕ) :
     (Fintype.card (GL (Fin k) K) : ℝ) / (Formalism.L2.SG.GGMirabolic.cardU K k : ℝ) =
       ∏ i ∈ Finset.Icc 1 k, ((Fintype.card K : ℝ) ^ i - 1) := by
@@ -54,6 +68,9 @@ theorem card_gl_div_unipotent (K : Type) [Field K] [Fintype K] (k : ℕ) :
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [Nat.cast_sub (Nat.one_le_pow _ _ hq), Nat.cast_pow, Nat.cast_one]
 
+/- English proof (translation)
+Introduce `u u'`. Rewrite using `[gamma_one_eq_prod, Formalism.MainNotions.BridgeLemma.gaG_eq D h0 h1]`. Repeatedly rewrite using `[card_gl_div_unipotent]`. Rewrite using `[Formalism.L2.SG.Pf.SatGram.prod_two (fun v => Fintype.card (Y.TR.Fq v)) (D.host.g 0) (D.host.g 1) D.host.g_ne (fun v => Y.TR.card_q v) (fun n : ℕ => ∏ i ∈ Finset.Icc 1 D.R.k, ((n : ℝ) ^ i - 1)), Formalism.L2.SG.Pf.typed_count_holds X Y.TR 0, Formalism.L2.SG.Pf.typed_count_holds …`.
+-/
 theorem GamPin_of_split (Y : Full X) (h0 : Formalism.MainNotions.S.SplitsE D (D.host.g 0)) (h1 : Formalism.MainNotions.S.SplitsE D (D.host.g 1)) :
     GamPin Y := by
   intro u u'
@@ -64,9 +81,15 @@ theorem GamPin_of_split (Y : Full X) (h0 : Formalism.MainNotions.S.SplitsE D (D.
     Formalism.L2.SG.Pf.typed_count_holds X Y.TR 0, Formalism.L2.SG.Pf.typed_count_holds X Y.TR 1,
     Formalism.L2.SG.KappaOffDiagonal.PgLe.finrank_F]
 
+/- English proof (translation)
+The claim follows from `GamPin_of_split Y h.2.2.2.2.2.2.2.2.2.2.1 h.2.2.2.2.2.2.2.2.2.2.2.1`.
+-/
 theorem GamPin_of_data (Y : Full X) {C0 : ℝ} (h : StandingNumericalData D C0) : GamPin Y :=
   GamPin_of_split Y h.2.2.2.2.2.2.2.2.2.2.1 h.2.2.2.2.2.2.2.2.2.2.2.1
 
+/- English proof (translation)
+The claim follows from `GamPin_of_data Y h.2.1`.
+-/
 theorem gammaFixed_of_hypotheses (Y : Full X) {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (h : Formalism.MainNotions.S.Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) : GamPin Y :=
   GamPin_of_data Y h.2.1

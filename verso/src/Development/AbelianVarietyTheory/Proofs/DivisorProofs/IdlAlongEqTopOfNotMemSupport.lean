@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 
 namespace GlobalTheory.LocM
 
+/- English proof (translation)
+Establish `e : FinalTheorems.stalkId I (ξ (closedPoint R)) = ⊤` using `not_not.1 fun h' => h ((mem_support_iff_stalkId I _).2 h')`. Rewrite using `[idlAlong, e, Ideal.map_top]`.
+-/
 theorem idlAlong_eq_top_of_notMem_support (X : Scheme.{0}) (I : X.IdealSheafData) (R : Type) [CommRing R]
     [IsLocalRing R] (ξ : Sp R ⟶ X) (h : ξ (closedPoint R) ∉ I.support) : idlAlong I ξ = ⊤ := by
   have e : FinalTheorems.stalkId I (ξ (closedPoint R)) = ⊤ :=

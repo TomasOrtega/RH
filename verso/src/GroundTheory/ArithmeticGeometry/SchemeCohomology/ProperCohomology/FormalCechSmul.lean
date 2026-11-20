@@ -17,6 +17,11 @@ section Sum
 variable {T : TopCat.{u}} {ι : Type u} (𝔘 : ι → Opens T) {P : (Opens T)ᵒᵖ ⥤ AddCommGrpCat.{u}}
   {p : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => conv_rhs => rw [Finset.sum_empty]`. Conclude with `(cls_congr 𝔘 (Finset.sum_empty) h (map_zero _)).trans cls_zero`. Consider the case `insert a s ha ih`. Establish `hs : d P 𝔘 p (∑ b ∈ s, f b) = 0`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun b _ => hf b`. Use `conv_rhs => rw [Finset.sum_insert ha, ← ih hs]`. Conclude with `(cls_congr 𝔘 (Finset.sum_insert ha) h (by rw [map_add, hf a, hs, add_zero])).trans (cls_add _ _ (hf a) hs _)`.
+-/
 lemma cls_sum {α : Type*} (s : Finset α) (f : α → Cochain P 𝔘 p) (hf : ∀ a, d P 𝔘 p (f a) = 0)
     (h : d P 𝔘 p (∑ a ∈ s, f a) = 0) : cls (∑ a ∈ s, f a) h = ∑ a ∈ s, cls (f a) (hf a) := by
   classical
@@ -37,6 +42,9 @@ end Sum
 variable {A : Type u} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{u}}
   [X.Over (Spec (.of A))] {F : X.Modules} [F.IsQuasicoherent] (hF : IsCoherent F)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(reesSectionsMap I hF hV (reesInr I V r • s)).coeff N = _`. Rewrite using `[reesSectionsMap_smul]`. Conclude with `PolynomialModule.smul_apply (r : Polynomial A) (reesSectionsMap I hF hV s) N`.
+-/
 lemma reesCoef_reesInr_smul {V : X.Opens} (hV : IsAffineOpen V) (r : reesAlgebra I) (N : ℕ)
     (s : Γ(reesSheaf I F, reesPr I X ⁻¹ᵁ V)) :
     reesCoef I hF hV N (reesInr I V r • s) =
@@ -50,6 +58,11 @@ variable {ι : Type u} (𝔘 : ι → X.Opens)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Establish `hterm : ∀ ij : ℕ × ℕ, ((r : Polynomial A).coeff ij.1) • (reesCoefFam I hF 𝔘 hU ij.2).cechH p (cls σ hσ) = cls (push 𝔘 (smulAbRingHom F (algebraMap A Γ(X, ⊤) ((r : Polynomial A).coeff ij.1))).hom p ((reesCoefFam I hF 𝔘 hU ij.2).cochain p σ)) (by rw [← push_d, ← CechFamily.cochain_ …` using `fun ij => rfl`. Rewrite using `[Finset.sum_congr rfl (fun ij _ => hterm ij), ← cls_sum]`. Rewrite using `[cechHMap_cls, CechFamily.cechH_cls]`. Use `cls_congr 𝔘 (funext fun t => ?_) _ _` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_apply]`. Conclude with `reesCoef_reesInr_smul I hF (isAffineOpen_inter 𝔘 hU t) r N (σ t)`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun ij _ => by`. Rewrite using `[← push_d, ← CechFamily.cochain_d, hσ, map_zero, map_zero]`.
+-/
 lemma reesCoefFam_reesMul (r : reesAlgebra I) (N : ℕ) (x : cechH (reesPre I F) 𝔘 p) :
     (reesCoefFam I hF 𝔘 hU N).cechH p (cechHMap 𝔘 (modulesAbMap (reesMul I F r)).hom p x) =
       ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal N,

@@ -11,6 +11,25 @@ universe u v w
 
 namespace Cech
 
+/- English proof (translation)
+Introduce `n U R _ G _ _ G' _ _ ρ ρ' deg deg' φ hφ hdeg hinj hmap i`. Establish `minj : ∀ i, Function.Injective (mapC (G` using `G) (G' := G') φ i) := fun i s t h => funext fun I => hinj I.1 (congrFun h I)`. Establish `lift : ∀ (i : ℕ) (w' : Cochain G' i), w' ∈ Cdeg G' deg' i → ∃ w ∈ Cdeg G deg i, mapC φ i w = w'`. Introduce `i w' hw'`. Establish `h : ∀ I : Idx U i, ∃ x ∈ deg I.1, φ I.1 x = w' I` using `fun I => by`.
+
+Establish `hI : w' I ∈ deg' I.1` using `hw' I (Set.mem_univ _)`. Rewrite `hI` using `[← hmap I.1]`. Conclude with `Submodule.mem_map.mp hI`. Use `choose w hw hφw using h`. Conclude with `⟨w, fun I _ => hw I, funext fun I => hφw I⟩`.
+
+Establish `bdry : ∀ (i : ℕ) (z : Cochain G i), mapC φ i z ∈ bdryDeg G' deg' ρ' i → z ∈ bdryDeg G deg ρ i`. Introduce `i z h`. Consider the cases of `i with`. Consider the case `zero`. Express the relevant statement in the definitionally equal form `mapC φ 0 z ∈ (⊥ : Submodule R _) at h`.
+
+Express the relevant statement in the definitionally equal form `z ∈ (⊥ : Submodule R _)`. Rewrite `h`, the goal using `[Submodule.mem_bot]`. Conclude with `minj 0 (h.trans (map_zero _).symm)`. Consider the case `succ i`. Express the relevant statement in the definitionally equal form `mapC φ (i + 1) z ∈ (Cdeg G' deg' i).map (d G' ρ' i) at h`.
+
+Express the relevant statement in the definitionally equal form `z ∈ (Cdeg G deg i).map (d G ρ i)`. Take `⟨w', hw', hd⟩` from `Submodule.mem_map.mp h`. Take `⟨w, hw, rfl⟩` from `lift i w' hw'`. Use `Submodule.mem_map.mpr ⟨w, hw, minj (i + 1) ?_⟩` and prove the remaining obligations. Rewrite using `[mapC_d φ hφ]`.
+
+Conclude with `hd`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 at hx`. Establish `hx'` using `(Submodule.Quotient.mk_eq_zero _).mp hx`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr (bdry i z hx')`. Introduce `y`. Take `⟨z', rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Take `⟨w, hw, hwz⟩` from `lift i z' z'.2.2`. Establish `hdw : d G ρ i w = 0`. Apply `minj (i + 1)` to reduce the goal to its premises. Rewrite using `[mapC_d φ hφ, hwz, map_zero]`. Conclude with `z'.2.1`.
+
+Use `⟨Submodule.Quotient.mk ⟨w, hdw, hw⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = _`. Use `congr 1`. Conclude with `Subtype.ext hwz`.
+-/
 theorem Transport.proof : Transport.Statement.{u, v, w} := by
   intro n U R _ G _ _ G' _ _ ρ ρ' deg deg' φ hφ hdeg hinj hmap i
 

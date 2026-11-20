@@ -14,6 +14,13 @@ namespace GlobalTheory.LocMod.IntFrameStd
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hm : ∀ x : Fin S.rank → D.host.E, x ∈ Examples₂.stdLat _ ↔ ∀ i, IsIntegral ℤ (x i)` using `fun x => by`. Rewrite using `[Examples₂.stdLat, Module.Basis.mem_span_iff_repr_mem]`. Conclude with `forall_congr' fun i => ⟨fun ⟨b, hb⟩ => by rw [← show _ = x i from hb]; exact b.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`. Establish `hLe : L = Examples₂.stdLat _`. Use extensionality with `z`.
+
+Rewrite using `[hL z, hm]`. Both sides reduce to the same expression. Substitute `hLe` using the available equality. Use `⟨Examples₂.stdLat_isLattice _, fun y => GlobalTheory.Ker.Inhab.selfDual_diag (fun _ => false) _ (fun i k => ?_) y⟩` and prove the remaining obligations. Rewrite using `[hG, Matrix.one_apply]`.
+
+Simplify using `[Examples₂.sgn]`.
+-/
 theorem isSelfDualC_of_gram_one {S : HSp D} (hG : S.gram = 1) (L : Lat S)
     (hL : ∀ z, z ∈ L ↔ z ∈ intVec D S.rank) : IsSelfDualC S L := by
   have hm : ∀ x : Fin S.rank → D.host.E, x ∈ Examples₂.stdLat _ ↔ ∀ i, IsIntegral ℤ (x i) := fun x => by

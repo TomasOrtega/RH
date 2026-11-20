@@ -62,9 +62,15 @@ variable {h hp l Z ht hJ hX U Xg tr} {hOk : (famC I hX U Xg tr).fam3.Ok3 1} {T :
   {Sp : ∀ Zs, SPer ((colRecK h hp l Z ht hJ hX U Xg tr T.ker).face Zs)}
   {R : Member.ExtendedDataRemainder ex (famC I hX U Xg tr) (lev0 I) (chr0 I) (lev1 I) (chr1 I) (colRecK h hp l Z ht hJ hX U Xg tr T.ker).face Sp}
   {htup : R.I.tup = ixOf I U} {hw : ∀ u, R.I.wU u = u}
+/- English proof (translation)
+Use function extensionality and compare the values at `u i τ`. Conclude with `congrArg (B.wts.lamTrue u i) (eq_of_heq ((cast_heq _ _).trans (iT_heq l Z hS τ)))`.
+-/
 theorem lamOfCol_colK_eq_lamTrue : _root_.Formalism.L2.DIV.lamOfCol_alt (_root_.GlobalTheory.Mem.R3.SelC.squareIntegrableColumnsOfKernel h hp l Z ht hJ hX U Xg tr hOk T hS Sp R htup hw) = fun u i τ => B.wts.lamTrue u i τ := by
   funext u i τ
   exact congrArg (B.wts.lamTrue u i) (eq_of_heq ((cast_heq _ _).trans (iT_heq l Z hS τ)))
+/- English proof (translation)
+The claim follows from `HEq.rfl psTie := ⟨HEq.rfl, HEq.rfl⟩ pointCharacterEq := ⟨HEq.rfl, HEq.rfl⟩ wOk := (base_fields_primes_ok B X).2.2.1 chOk := h.ch_ok hcTie := fun u τ => heq_of_eq (congrArg (B.hcW u) (eq_of_heq ((cast_heq _ _).trans (iT_heq l Z hS τ)))) wtTie := by rw [_root_.GlobalTheory.Mem.R3.S …`.
+-/
 theorem colPins_colK' : _root_.Formalism.L2.DIV.ColumnCharactersCompatible (_root_.GlobalTheory.Mem.R3.SelC.squareIntegrableColumnsOfKernel h hp l Z ht hJ hX U Xg tr hOk T hS Sp R htup hw) where
   grpTie := HEq.rfl
   psTie := ⟨HEq.rfl, HEq.rfl⟩
@@ -86,6 +92,15 @@ theorem colPins_colK' : _root_.Formalism.L2.DIV.ColumnCharactersCompatible (_roo
 end Pins
 end Main
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `B X I h hp l Z ht hJ hX U Xg tr L hT Gi Gl Kc Y cX ex hOk T hS Sp P`. Take `@⟨Gp, grp, fin, Pl0, I0, Tt, A3, P0, ψ0, Ps, ψs, Zs', S0, S1, Dc, Sp', C, NuC, J, JA, JM, tied⟩` from `P`. Introduce `e1 e2 e3 e4 e5 e6 e7 e8 e9 e10 e11 e12 Zs e13 e14 e15`. Simplify using `only at e1 e2 e3 e4 e5 e6 e7 e8 e9 e10 e11 e12 e13 e14 e15`. Substitute `e1 e3 e4 e5` using the available equality.
+
+Take `rfl` from `eq_of_heq e2`. Take `rfl : fin = fintype_GLs B.fields.E (B.primes X).vGs B.R.r` from `Subsingleton.elim _ _`. Consider the cases of `e6`. Consider the cases of `e7`. Consider the cases of `e8`.
+
+Consider the cases of `e9`. Consider the cases of `e10`. Consider the cases of `e13`. Consider the cases of `e14`. Consider the cases of `e15`.
+
+Conclude with `⟨_root_.GlobalTheory.Mem.R3.SelC.squareIntegrableColumnsOfKernel h hp l Z ht hJ hX U Xg tr hOk T hS Sp ⟨Zs, S0, S1, C, NuC, J, JA, JM, tied⟩ (eq_of_heq e11) fun u => eq_of_heq (e12 u), _root_.GlobalTheory.Mem.R3.SelC.colPins_colK', HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl⟩`.
+-/
 theorem exists_rowsKC_colPins_alt : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (hp : TC.Pins B X) (l : I.Laws)
     (Z : TC.Later B (I.cols l)) (ht : I.IsTw) (hJ : ColIn.JetsIn I) (hX : B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc B X → B.LL))
     (tr : TrI B X) (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z))
@@ -125,6 +140,11 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.R3.SelC
 variable {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨z, ⟨F', hF', e1, e2⟩, e3⟩` from `r.crd a ((rV0 (w.st Z).toD7 (famT t).A (lev1 w.I) (chr1 w.I) ⟨w.I.tup a, ha⟩).mulVec F)`. Establish `e4` using `evC_res_lvl (X := B.fields) (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel t.hX (InfinitePlace.mk B.embLL) (tuOf w.I (usedOf w.I T Wt)) t.r.z.Xg ∅ (xiValOf w.I) t.r.z.tr (TC.Ps w.I) t.r.intersectionNumber_baseChange.ok.ok2 Zs ⟨w.I.tup a, ha⟩ F`. Establish `e5` using `LinearEquiv.injective _ (eq_of_heq (e1.trans (heq_of_eq e4.symm)))`. Use `⟨z, ?_, (hj.2 _ _ fun i i' e => congrArg _ (Fin.ext e)).symm.trans e3⟩` and prove the remaining obligations. Rewrite using `[e2]`.
+
+Conclude with `congrArg Subtype.val e5`.
+-/
 theorem jA_row_alt {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) (r : RXs t) (pin : ColPin w)
     (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ) (hχ : ∀ 𝔞, TaylorLogMetric.N1 (w.D Z) 𝔞 → χ 𝔞 = w.I.chi 𝔞) (a : w.I.ι) (ha)
     (j : (Fin (rDim (w.st Z).toD7 (famT t).A (lev1 w.I) (chr1 w.I) ⟨w.I.tup a, ha⟩) → B.LL) → Z.W.Amb a)
@@ -143,6 +163,11 @@ theorem jA_row_alt {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) (r : 
 variable {L : SizeData₂ (w.st Z).toD7} {hT : GatTies (w.st Z).toD7} {Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L} {Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7}
   {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (w.st Z).toD7} {cX : ExtraC} {ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX}
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Use `choose e he hn using exists_eNu w.ok w.l Z t.hX w.l0`. Use `⟨{ wU := fun u => u bij := Function.bijective_id eNu := e NuC := fun u => (Z.V.div.Nu u).L.comap ((e u).toLinearMap.restrictScalars (𝓞 B.LL)) nu := fun u => ⟨(Submodule.map_comap_eq_of_surjective (f := (e u).toLinearMap.restrictScalars (𝓞 B.LL)) (e u).surjective _).symm, he u⟩ pt …` and prove the remaining obligations. Establish `key : ∀ (a : w.I.ι) (s : TupU w.I (usedOf w.I T Wt)) (_ : w.I.tup a = s.1) (j : (Fin (rDim (w.st Z).toD7 (famT t).A (lev1 w.I) (chr1 w.I) s) → B.LL) → Z.W.Amb a) (_ : SameOn (r.all.jA a) j) (Zs : DefSub (famT t).fam3.amb3) (F : Fin (((famT t).side3 (lev1 w.I) (chr1 w.I) Zs).nV s) …`. Introduce and unpack `a ⟨τ, ha⟩ (rfl : w.I.tup a = τ) j hj Zs F`. Take `⟨z, hz, e1⟩` from `_root_.GlobalTheory.Mem.R3.SelC.jA_row_alt t r pin k.χ (ker_chi_eq w.I w.l Z k) a ha j hj Zs F`.
+
+Rewrite using `[e1]`. Conclude with `face_pt w.ok w.pins w.l Z pin.isTw pin.jets k.χ (ker_chi_eq w.I w.l Z k) t.hX w.l0 r.e r.eMt0 r.eMtTw _ _ _ Zs u a ha x _ (hn u x) F z hz`. Conclude with `key (t.r.Y.tup s) s ((congrArg w.I.tup (t.r.tup_ix s)).trans (tup_ixOf w.I s)) (t.r.Y.jA s) (r.jA_use s) _ F`.
+-/
 theorem exists_readC_wU_eq_id (t : RowsT K w Z Wt ex.p0) (r : RXs t) (pin : ColPin w) (k : Formalism.L2.Ker.KerEntTied ex) (Sp Zsc) :
     ∃ C : ReadC t.r.z.R (reFace t.r.z.F
       (colRecK w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr k).face Sp Zsc) ex.p0 t.r.Y,
@@ -166,6 +191,9 @@ theorem exists_readC_wU_eq_id (t : RowsT K w Z Wt ex.p0) (r : RXs t) (pin : ColP
       (hn u x) F z hz
   exact key (t.r.Y.tup s) s ((congrArg w.I.tup (t.r.tup_ix s)).trans (tup_ixOf w.I s)) (t.r.Y.jA s) (r.jA_use s) _ F
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by kexactB (@pack_heq (w.st Z).toD7 _ _ a.pack).1, by kexactB (@pack_heq (w.st Z).toD7 _ _ a.pack).2.1, zsOf ((t.r.z.R.updS t.r.z.R.kap a.lam).withErr a.err) (reFace t.r.z.F a.Dc a.Sp a.Zsc), by kexactB (@pack_heq (w.st Z).toD7 _ _ a.pack).2.2⟩`.
+-/
 theorem args_pinned_heq_zsOf_mem_eq (t : RowsT K w Z Wt ex.p0) (a : TwArgs ex t) :
     (a.x.G = Gc B w.px ∧ HEq a.x.grp (inferInstance : Group (Gc B w.px)) ∧ a.x.Pl0 = PlS B w.px ∧ a.x.I0 = PlI B w.px ∧
       a.x.T = TupU w.I (usedOf w.I T Wt) ∧ HEq a.x.A3 (famC w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr)) ∧
@@ -177,6 +205,17 @@ theorem args_pinned_heq_zsOf_mem_eq (t : RowsT K w Z Wt ex.p0) (a : TwArgs ex t)
     zsOf ((t.r.z.R.updS t.r.z.R.kap a.lam).withErr a.err) (reFace t.r.z.F a.Dc a.Sp a.Zsc),
     by kexactB (@pack_heq (w.st Z).toD7 _ _ a.pack).2.2⟩
 set_option maxHeartbeats 400000 in
+/- English proof (translation)
+Take `⟨⟨h1, h2, h3, h4, h5, h6⟩, ⟨h7, h8, h9, h10, g11, g12⟩, Zs, g13, g14, g15, g16⟩` from `_root_.GlobalTheory.Mem.R3.SelC.args_pinned_heq_zsOf_mem_eq t a`. Choose the witnesses or unpack the hypotheses as in `⟨Sp, hSp⟩ : ∃ Sp : ∀ Zs, SPer ((colRecK w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr S.ker).face Zs), HEq a.Sp Sp ∧ ∀ Zs, HEq (a.Sp Zs) (Sp Zs) := by`. Establish `key : ∀ Dc : type_of% a.Dc, a.Dc = Dc → ∃ Sp : ∀ Zs, SPer (Dc Zs), HEq a.Sp Sp ∧ ∀ Zs, HEq (a.Sp Zs) (Sp Zs)`. Introduce and unpack `_ rfl`. Conclude with `⟨a.Sp, HEq.rfl, fun _ => HEq.rfl⟩`.
+
+Conclude with `(key (colRecK w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr S.ker).face hD)`. Establish `e1` using `congrFun hD Zs`. Establish `e2 : (a.x.F.Dc (zsOf a.x.R a.x.F)).Mem = B.Word` using `by kexactB g16.trans (congrArg DefCols.Mem e1)`. Establish `e3 : HEq a.x.Y.tup (ixOf w.I (usedOf w.I T Wt))` using `by kexactB a.tup.trans (heq_of_eq (funext t.r.tup_ix))`. Establish `e4 : ∀ u, HEq (a.x.C.wU u) u` using `fun u => heq_app e2 hw u`.
+
+Establish `e5` using `g14.trans (heq_of_eq e1)`. Establish `e6` using `g15.trans (hSp.2 Zs)`. Take `⟨C, c1, -, c3, c4, c5, c6⟩` from `_root_.GlobalTheory.Mem.R3.SelC.exists_rowsKC_colPins_alt w.I w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr L hT Gi Gl Kc Yd cX ex t.r.intersectionNumber_baseChange.ok S hS Sp (divisionPairOfAdelicFormsFaceColumnsData a.x) ((h1)) ((h2)) ((h3)) ((h4) …`. Establish `d1` using `(heq_of_eq hD.symm).trans g11.symm`. Use `⟨_root_.GlobalTheory.Cp.SquareIntegrableColumns.ofS C, HEq.trans (b := (colRecK w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr S.ker).face) ?_ ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(c5)`. Conclude with `(d1)`. Use `kexactB c3.trans (hSp.1.symm.trans g12.symm)`. Conclude with `(c4)`. Conclude with `(c6)`.
+
+Conclude with `(c1)`.
+-/
 theorem exists_square_integrable_columns_of_data (t : RowsT K w Z Wt ex.p0) (pin : ColPin w) (S : _root_.Formalism.L2.TiedDataSKAlt ex) (hS : TC.StdKer w.I w.l Z S.ker)
     (a : TwArgs ex t) (hD : a.Dc = (colRecK w.ok w.pins w.l Z pin.isTw pin.jets t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr S.ker).face)
     (hw : HEq a.x.C.wU fun u : B.Word => u) :
@@ -210,6 +249,11 @@ theorem exists_square_integrable_columns_of_data (t : RowsT K w Z Wt ex.p0) (pin
   · exact (c1)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `𝒮 K q t hk ⟨r⟩`. Take `⟨C₀, hC⟩` from `_root_.GlobalTheory.Mem.R3.SelC.exists_readC_wU_eq_id (ex := q.O.ex) q.x.what₂ r q.x.pin t (fun _ => ⟨ℂ, inferInstance, inferInstance, fun _ => 0, ⊥⟩) q.x.what₂.r.z.F.Zsc`. Use `⟨_, _, _, C₀, fun S hS a x hx hD hw _ => ?_⟩` and prove the remaining obligations. Substitute `hS` using the available equality. Consider the cases of `hx`.
+
+Conclude with `_root_.GlobalTheory.Mem.R3.SelC.exists_square_integrable_columns_of_data (ex := q.O.ex) q.x.what₂ q.x.pin S hk.std a hD (hw.trans (heq_of_eq hC))`.
+-/
 theorem square_integrable_columns_of_witnesses : ∀ (𝒮 : Slots) (K : Ctx) (q : WPt 𝒮 K) (t : Formalism.L2.Ker.KerEntTied q.O.ex), KPin q t → Nonempty (RXs q.x.what₂) → ∃ Dc Sp₀ Zsc₀, ∃ C₀ : ReadC q.x.what₂.r.z.R (reFace q.x.what₂.r.z.F Dc Sp₀ Zsc₀) q.O.ex.p0 ((q.x.what₂.r.Y)), ∀ (T : _root_.Formalism.L2.TiedDataSKAlt q.O.ex), T.ker = t → ∀ (a : TwArgs q.O.ex q.x.what₂) (x : TwIn q.O.ex), HEq a.x x → a.Dc = Dc → HEq x.C.wU C₀.wU → HEq x.C.eNu C₀.eNu → ∃ C : _root_.GlobalTheory.Cp.SquareIntegrableColumns T (divisionPairOfAdelicFormsFaceColumnsData x), HEq (fun Zs => C.c.face Zs) x.F.Dc ∧ HEq C.Sp x.F.Sp ∧ HEq C.c.W q.B.wts ∧ HEq C.c.Xg q.x.what₂.r.z.Xg ∧ _root_.Formalism.L2.DIV.ColumnCharactersCompatible C.toS := by
   intro 𝒮 K q t hk ⟨r⟩
   obtain ⟨C₀, hC⟩ := _root_.GlobalTheory.Mem.R3.SelC.exists_readC_wU_eq_id (ex := q.O.ex) q.x.what₂ r q.x.pin t (fun _ => ⟨ℂ, inferInstance, inferInstance, fun _ => 0, ⊥⟩)

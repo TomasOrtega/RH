@@ -11,6 +11,35 @@ namespace GlobalTheory.ClassFin
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `ι _ _ m d v U δ hmin hU hδ hone s`. Take `⟨act1, actmul, -⟩` from `(_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v`. Establish `hUH : Uᴴ * Uᴴᴴ = 1`. Rewrite using `[conjTranspose_conjTranspose]`. Conclude with `mul_eq_one_comm.mp hU`.
+
+Establish `hnormU` using `(_root_.GlobalTheory.ClassFin.ActNorm.act_norm_continuity ι m d).1`. Use `set u := _root_.GlobalTheory.ClassFin.act d v U with hu`. Use `set lam : _root_.GlobalTheory.ClassFin.TIdx ι d → ℝ := fun k => ∑ j, δ (k.2 j) with hlam`. Establish `hdiag : ∀ r : ℝ, _root_.GlobalTheory.ClassFin.act d u (diagonal fun i => (Real.exp (r * δ i) : ℂ)) = fun k => u k * (Real.exp (r * lam k) : ℂ)`. Introduce `r`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[((_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d u).2.2.1]`. Simplify using `only [hlam, Finset.mul_sum, Real.exp_sum, Complex.ofReal_prod]`. Establish `hsplit : ∀ r : ℝ, _root_.GlobalTheory.ClassFin.act d v (U * diagonal (fun i => (Real.exp (r * δ i) : ℂ)) * Uᴴ) = _root_.GlobalTheory.ClassFin.act d (fun k => u k * (Real.exp (r * lam k) : ℂ)) Uᴴ`. Introduce `r`.
+
+Rewrite using `[actmul, actmul, hdiag]`. Establish `hF : ∀ r : ℝ, _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v (U * diagonal (fun i => (Real.exp (r * δ i) : ℂ)) * Uᴴ)) = ∑ k, ‖u k‖ ^ 2 * Real.exp (r * lam k) ^ 2`. Introduce `r`. Rewrite using `[hsplit, hnormU _ _ hUH]`. Unfold `_root_.GlobalTheory.ClassFin.nsq`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, mul_pow]`. Establish `hdet : ∀ r : ℝ, (U * diagonal (fun i => (Real.exp (r * δ i) : ℂ)) * Uᴴ).det = 1`. Introduce `r`. Establish `h1 : U.det * Uᴴ.det = 1` using `by rw [← det_mul, hU, det_one]`.
+
+Rewrite using `[det_mul, det_mul, det_diagonal, ← Complex.ofReal_prod, ← Real.exp_sum, ← Finset.mul_sum, hδ, mul_zero, Real.exp_zero, Complex.ofReal_one, mul_one, h1]`. Establish `hmin' : ∀ r : ℝ, _root_.GlobalTheory.ClassFin.nsq v ≤ ∑ k, ‖u k‖ ^ 2 * Real.exp (r * lam k) ^ 2`. Introduce `r`. Rewrite using `[← hF r]`. Conclude with `hmin _ ⟨_, hdet r, rfl⟩`.
+
+Establish `h0 : ∑ k, ‖u k‖ ^ 2 * Real.exp (0 * lam k) ^ 2 = _root_.GlobalTheory.ClassFin.nsq v`. Simplify using `only [zero_mul, Real.exp_zero, one_pow, mul_one]`. Conclude with `hnormU v U hU`. Establish `h1 : ∑ k, ‖u k‖ ^ 2 * Real.exp (1 * lam k) ^ 2 = _root_.GlobalTheory.ClassFin.nsq v`. Rewrite using `[← hF 1]`.
+
+Simplify `hone` using `only [one_mul]`. Establish `hhalf` using `hmin' (1 / 2)`. Establish `hsq : ∀ k, Real.exp (1 * lam k) ^ 2 = (Real.exp (1 / 2 * lam k) ^ 2) ^ 2`. Introduce `k`. Establish `e : Real.exp (1 * lam k) = Real.exp (1 / 2 * lam k) ^ 2`.
+
+Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Establish `hterm : ∀ k ∈ Finset.univ, 0 ≤ ‖u k‖ ^ 2 * (Real.exp (1 / 2 * lam k) ^ 2 - 1) ^ 2` using `fun k _ => by positivity`. Establish `hsum : ∑ k, ‖u k‖ ^ 2 * (Real.exp (1 / 2 * lam k) ^ 2 - 1) ^ 2 = 0`.
+
+Establish `e : ∑ k, ‖u k‖ ^ 2 * (Real.exp (1 / 2 * lam k) ^ 2 - 1) ^ 2 = ∑ k, ‖u k‖ ^ 2 * Real.exp (1 * lam k) ^ 2 + ∑ k, ‖u k‖ ^ 2 * Real.exp (0 * lam k) ^ 2 - 2 * ∑ k, ‖u k‖ ^ 2 * Real.exp (1 / 2 * lam k) ^ 2`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hsq]`. Simplify using `only [zero_mul, Real.exp_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `le_antisymm ?_ (Finset.sum_nonneg hterm)` and prove the remaining obligations. Rewrite using `[e, h0, h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfix : ∀ k, u k * (Real.exp (s * lam k) : ℂ) = u k`.
+
+Introduce `k`. Establish `hk` using `(Finset.sum_eq_zero_iff_of_nonneg hterm).mp hsum k (Finset.mem_univ k)`. Break down `mul_eq_zero.mp hk with ha | hb` into its components or cases. Establish `hz : u k = 0` using `by simpa using ha`. Simplify using `[hz]`.
+
+Establish `ht : Real.exp (1 / 2 * lam k) ^ 2 = 1`. Use `(pow_eq_zero_iff (n := 2) two_ne_zero).mp hb` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : lam k = 0`. Rewrite `ht` using `[← Real.exp_nat_mul]`.
+
+Simplify using `using (Real.exp_eq_one_iff _).mp ht`. Simplify using `[hl]`. Rewrite using `[hsplit s]`. Simplify using `only [hfix]`. Rewrite using `[← actmul, hU, act1]`.
+-/
 theorem _root_.GlobalTheory.ClassFin.act_exp_eq_of_isMinVec : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (v : _root_.GlobalTheory.ClassFin.TIdx ι d → ℂ) (U : Matrix ι ι ℂ) (δ : ι → ℝ), _root_.GlobalTheory.ClassFin.IsMinVec d v → U * Uᴴ = 1 → ∑ i, δ i = 0 → _root_.GlobalTheory.ClassFin.nsq (_root_.GlobalTheory.ClassFin.act d v (U * diagonal (fun i => (Real.exp (δ i) : ℂ)) * Uᴴ)) = _root_.GlobalTheory.ClassFin.nsq v → ∀ s : ℝ, _root_.GlobalTheory.ClassFin.act d v (U * diagonal (fun i => (Real.exp (s * δ i) : ℂ)) * Uᴴ) = v := by
   intro ι _ _ m d v U δ hmin hU hδ hone s
   obtain ⟨act1, actmul, -⟩ := (_root_.GlobalTheory.ClassFin.tpow_act_algebra ι ℂ).2 m d v

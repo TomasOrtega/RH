@@ -4,6 +4,9 @@ import Development.WeilBound.ThetaLifts.Reductions.SiegelOfCore
 
 namespace GlobalTheory.CompanionTheory.WTC
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.theta_convergence_of_siegel_set (PositivityTheory.ThKR.siegel_of_core h)`.
+-/
 theorem weilThetaConvergence_of_core (h : PositivityTheory.ThKR.SiegelCore) : GlobalTheory.Published.WeilThetaConvergence :=
   GlobalTheory.T.theta_convergence_of_siegel_set (PositivityTheory.ThKR.siegel_of_core h)
 

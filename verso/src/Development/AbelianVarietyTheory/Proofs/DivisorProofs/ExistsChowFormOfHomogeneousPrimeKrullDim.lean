@@ -13,6 +13,27 @@ namespace GlobalTheory.ChowHt
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Establish `hI : P.IsHomogeneous (homogeneousSubmodule (Fin N) K)`. Introduce `n g hg`. Establish `h1 : (DirectSum.decompose (homogeneousSubmodule (Fin N) K) g n : MvPolynomial (Fin N) K) = homogeneousComponent n g` using `MvPolynomial.decomposition.decompose'_apply g n`. Rewrite using `[h1]`. Conclude with `hh g hg n`.
+
+Establish `hX : ∃ j, X j ∉ P`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `h0` using `GlobalTheory.ringKrullDim_quotient_le_zero_of_forall_X_mem hc`. Rewrite `h0` using `[hdim]`.
+
+Establish `h1 : ((D + 1 : ℕ) : WithBot ℕ∞) ≤ ((0 : ℕ) : WithBot ℕ∞)` using `by simpa using h0`. Establish `h2 : D + 1 ≤ 0` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers. Establish `hdim' : ringKrullDim (MvPolynomial (Fin N) K ⧸ P) = (Fintype.card (Fin (D + 1)) : ℕ)`. Rewrite using `[Fintype.card_fin]`.
+
+Conclude with `hdim`. Establish `hprime : (GlobalTheory.Chow.elimIdeal (Fin (D + 1)) P).IsPrime` using `GlobalTheory.Chow.isPrime_elimIdeal hX`. Establish `hne : GlobalTheory.Chow.elimIdeal (Fin (D + 1)) P ≠ ⊥` using `GlobalTheory.Chow.elimIdeal_ne_bot hI hX hdim'.le`. Take `⟨f, hf⟩` from `(GlobalTheory.Chow.isPrincipal_elimIdeal hdim').principal`. Establish `hf' : GlobalTheory.Chow.elimIdeal (Fin (D + 1)) P = Ideal.span {f}` using `hf`.
+
+Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (by rw [hf', Ideal.span_singleton_eq_bot])`. Establish `hfmem : f ∈ GlobalTheory.Chow.elimIdeal (Fin (D + 1)) P` using `hf' ▸ Ideal.subset_span rfl`. Establish `hfp : Prime f` using `(Ideal.span_singleton_prime hf0).1 (hf' ▸ hprime)`.
+
+Take `⟨a, ha⟩` from `GlobalTheory.Chow.exists_isWeightedHomogeneous_of_dvd (GlobalTheory.Chow.blockWeight : Fin (D + 1) × Fin N → Fin (D + 1) → ℕ) (f := f) (fun a => by`. Rewrite using `[← Ideal.mem_span_singleton, ← hf']`. Conclude with `GlobalTheory.Chow.weightedHomogeneousComponent_mem_elimIdeal hfmem a)`. Establish `ha' : GlobalTheory.Chow.IsBlockHomogeneous f a` using `ha`. Establish `hconst : ∀ i, a i = a 0`.
+
+Introduce `i`. Establish `h1` using `GlobalTheory.Chow.map_rename_elimIdeal (Equiv.swap i 0) P`. Rewrite `h1` using `[hf', Ideal.map_span, Set.image_singleton]`. Take `⟨c, hc, hcf⟩` from `GlobalTheory.Chow.exists_eq_C_mul_of_span_eq h1`. Establish `h2 : GlobalTheory.Chow.IsBlockHomogeneous f (a ∘ (Equiv.swap i 0).symm)`.
+
+Rewrite using `[hcf]`. Conclude with `IsWeightedHomogeneous.C_mul (ha'.rename (Equiv.swap i 0)) c`. Establish `h3` using `congrFun (GlobalTheory.Chow.IsBlockHomogeneous.unique hf0 ha' h2) i`. Simplify using `using h3`. Use `⟨a 0, f, ?_, hfp.irreducible, fun u => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[isMultiHomogeneous_iff_block, ← (funext hconst : a = fun _ => a 0)]`. Conclude with `ha'`. Rewrite using `[← GlobalTheory.Chow.forall_aeval_eq_zero_iff hI u, hf']`. Use `⟨fun hu p hp => ?_, fun hu => hu f (Ideal.subset_span rfl)⟩` and prove the remaining obligations. Take `⟨q, rfl⟩` from `Ideal.mem_span_singleton'.1 hp`.
+
+Rewrite using `[map_mul, hu, mul_zero]`.
+-/
 theorem exists_isChowFormInt_of_ringKrullDim_eq (K : Type) [Field K] (N D : ℕ)
     (P : Ideal (MvPolynomial (Fin N) K)) (hP : P.IsPrime)
     (hh : ∀ g ∈ P, ∀ n : ℕ, homogeneousComponent n g ∈ P)

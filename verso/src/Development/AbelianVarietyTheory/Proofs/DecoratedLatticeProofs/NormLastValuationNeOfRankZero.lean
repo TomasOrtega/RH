@@ -13,6 +13,17 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p q S A L o hpos hS ζ π hv h1 h2`. Establish `key : star ζ ⬝ᵥ L.gram *ᵥ ζ = star π * π`. Establish `hB` using `o.isoB`. Rewrite `hB` using `[hS, Matrix.mul_one]`. Rewrite using `[← hB, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
+
+Establish `hfun : o.iB *ᵥ ζ = fun r : Fin S.rank => if r.1 + 1 = S.rank then π else 0`. Use function extensionality and compare the values at `r`. Conclude with `hv r`. Rewrite using `[hfun]`. Set `r0 : Fin S.rank` to `⟨S.rank - 1, by omega⟩`.
+
+Establish `hr : ∀ r : Fin S.rank, (r.1 + 1 = S.rank) ↔ r = r0`. Introduce `r`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext`.
+
+Simplify using `[r0]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Substitute `h` using the available equality. Simplify using `[r0]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [dotProduct, Pi.star_apply, hr]`. Simplify using `[apply_ite star]`. Rewrite using `[key, map_mul, map_mul, map_mul, h2, h1, one_mul]`.
+-/
 theorem GlobalTheory.MiStar.normLast_valuation : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k) (q : GlobalTheory.LatPair.Unif k) (S A L : HSp D) (o : OrthDec S A L), 0 < S.rank → S.gram = 1 → ∀ (ζ : Fin L.rank → D.host.E) (π : D.host.E), (∀ r : Fin S.rank, vecB o ζ r = if r.1 + 1 = S.rank then π else 0) → valuation k (p.pr (incA D π)) = valuation k ((q.1 : 𝒪[k]) : k) → valuation k (p.pr (incA D (star π))) = 1 → valuation k (p.pr (incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ))) = valuation k ((q.1 : 𝒪[k]) : k) := by
   intro D k _ _ _ _ p q S A L o hpos hS ζ π hv h1 h2
   have key : star ζ ⬝ᵥ L.gram *ᵥ ζ = star π * π := by

@@ -13,6 +13,9 @@ namespace GlobalTheory.CompanionTheory.EisUnfold.ProdCovol
 
 open scoped Pointwise
 
+/- English proof (translation)
+The claim follows from `hs.nullMeasurableSet.prod ht.nullMeasurableSet ae_covers := by have h1 := (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hs.ae_covers have h2 := (Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae ht.ae_covers filter_upwards [h1, h2] with p hp hq obtain ⟨g, hg⟩ : …`.
+-/
 theorem isAddFundamentalDomain_prod {A B : Type*} [AddGroup A] [AddGroup B] [MeasurableSpace A]
     [MeasurableSpace B] {Γ : AddSubgroup A} {Δ : AddSubgroup B} {μ : Measure A} {ν : Measure B} [SFinite μ]
     [SFinite ν] {s : Set A} {t : Set B} (hs : IsAddFundamentalDomain Γ s μ) (ht : IsAddFundamentalDomain Δ t ν) :
@@ -56,8 +59,16 @@ variable {D : D7} {m r s : ℕ}
 def joinAdd (D : D7) (m r s : ℕ) : Mx D m r × Mx D m s ≃+ Mx D m (r + s) :=
   { joinEquiv with map_add' := fun a b => colJoin_add a.1 b.1 a.2 b.2 }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem joinAdd_apply (z : Mx D m r × Mx D m s) : joinAdd D m r s z = colJoin z.1 z.2 := rfl
 
+/- English proof (translation)
+Use `continuous_matrix fun i k => ?_` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations. Establish `: (fun z : Mx D m r × Mx D m s => joinAdd D m r s z i (Fin.castAdd s j)) = fun z => z.1 i j`. Use function extensionality and compare the values at `fun z => colJoin_castAdd z.1 z.2 i j`. Rewrite using `[this]`.
+
+Conclude with `(continuous_apply_apply i j).comp continuous_fst`. Establish `: (fun z : Mx D m r × Mx D m s => joinAdd D m r s z i (Fin.natAdd r j)) = fun z => z.2 i j`. Use function extensionality and compare the values at `fun z => colJoin_natAdd z.1 z.2 i j`. Rewrite using `[this]`. Conclude with `(continuous_apply_apply i j).comp continuous_snd`.
+-/
 theorem continuous_joinAdd : Continuous (joinAdd D m r s) := by
   refine continuous_matrix fun i k => ?_
   refine Fin.addCases (fun j => ?_) (fun j => ?_) k
@@ -70,11 +81,23 @@ theorem continuous_joinAdd : Continuous (joinAdd D m r s) := by
     rw [this]
     exact (continuous_apply_apply i j).comp continuous_snd
 
+/- English proof (translation)
+Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Conclude with `continuous_matrix fun i j => continuous_apply_apply i (Fin.castAdd s j)`. Conclude with `continuous_matrix fun i j => continuous_apply_apply i (Fin.natAdd r j)`.
+-/
 theorem continuous_joinAdd_symm : Continuous (joinAdd D m r s).symm := by
   refine Continuous.prodMk ?_ ?_
   · exact continuous_matrix fun i j => continuous_apply_apply i (Fin.castAdd s j)
   · exact continuous_matrix fun i j => continuous_apply_apply i (Fin.natAdd r j)
 
+/- English proof (translation)
+Rewrite using `[AddSubgroup.mem_prod]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h`. Take `⟨γ, hγ⟩` from `mem_ratMx.1 h`. Use `⟨mem_ratMx.2 ⟨colL γ, ?_⟩, mem_ratMx.2 ⟨colR γ, ?_⟩⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Use `congrFun (congrFun hγ i) (Fin.castAdd s j)` as an intermediate fact. Rewrite `this` using `[joinAdd_apply, colJoin_castAdd]`. Conclude with `this`. Use extensionality with `i j`.
+
+Use `congrFun (congrFun hγ i) (Fin.natAdd r j)` as an intermediate fact. Rewrite `this` using `[joinAdd_apply, colJoin_natAdd]`. Conclude with `this`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨p, hp⟩` from `mem_ratMx.1 h1`.
+
+Take `⟨q, hq⟩` from `mem_ratMx.1 h2`. Conclude with `mem_ratMx.2 ⟨colJoin p q, by rw [rat_colJoin, hp, hq, joinAdd_apply]⟩`.
+-/
 theorem joinAdd_mem_iff (z : Mx D m r × Mx D m s) :
     joinAdd D m r s z ∈ ratMx D m (r + s) ↔ z ∈ (ratMx D m r).prod (ratMx D m s) := by
   rw [AddSubgroup.mem_prod]
@@ -95,6 +118,23 @@ theorem joinAdd_mem_iff (z : Mx D m r × Mx D m s) :
     obtain ⟨q, hq⟩ := mem_ratMx.1 h2
     exact mem_ratMx.2 ⟨colJoin p q, by rw [rat_colJoin, hp, hq, joinAdd_apply]⟩
 
+/- English proof (translation)
+Introduce `D m r s μr 𝓕r μs 𝓕s hr hs`. Take `⟨a1, a2, a3, a4, a5, -⟩` from `lattice_Mx D m r`. Take `⟨b1, b2, b3, b4, b5, -⟩` from `lattice_Mx D m s`. Take `⟨c1, c2, c3, c4, c5, -⟩` from `lattice_Mx D m (r + s)`. Use `haveI : BorelSpace (Mx D m r) := ⟨rfl⟩`.
+
+Use `haveI : BorelSpace (Mx D m s) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D m (r + s)) := ⟨rfl⟩`. Take `⟨hHr, hFr, h1r⟩` from `hr`. Take `⟨hHs, hFs, h1s⟩` from `hs`. Use `haveI := hHr`.
+
+Use `haveI := hHs`. Set `e` to `joinAdd D m r s`. Establish `he : Continuous e` using `continuous_joinAdd`. Establish `he' : Continuous e.symm` using `continuous_joinAdd_symm`. Set `f : (Mx D m r × Mx D m s) ≃ₜ Mx D m (r + s)` to `{ e.toEquiv with continuous_toFun := he, continuous_invFun := he' }`.
+
+Establish `hemb : MeasurableEmbedding e` using `f.measurableEmbedding`. Establish `hfun : (fun z : Mx D m r × Mx D m s => colJoin z.1 z.2) = e` using `rfl`. Rewrite using `[hfun]`. Use `⟨e.isAddHaarMeasure_map _ he he', ?_, ?_⟩` and prove the remaining obligations. Set `g : ratMx D m (r + s) ≃ (ratMx D m r).prod (ratMx D m s)` to `{ toFun := fun γ => ⟨e.symm γ, (joinAdd_mem_iff _).1 (by`.
+
+Express the relevant statement in the definitionally equal form `e (e.symm γ) ∈ _`. Rewrite using `[e.apply_symm_apply]`. Conclude with `γ.2)⟩`. Use `invFun := fun γ => ⟨e γ, (joinAdd_mem_iff _).2 γ.2⟩`. Use `left_inv := fun γ => Subtype.ext (e.apply_symm_apply _)`.
+
+Use `right_inv := fun γ => Subtype.ext (e.symm_apply_apply _) }`. Use `(isAddFundamentalDomain_prod hFr hFs).image_of_equiv e.toEquiv ?_ g fun γ x => ?_` and prove the remaining obligations. Use `⟨he'.measurable, ?_⟩` and prove the remaining obligations. Establish `: ((μr.prod μs).map e).map e.symm = μr.prod μs`. Rewrite using `[Measure.map_map he'.measurable he.measurable]`.
+
+Establish `: (e.symm ∘ e : Mx D m r × Mx D m s → Mx D m r × Mx D m s) = id` using `funext e.symm_apply_apply`. Rewrite using `[this, Measure.map_id]`. Conclude with `this.absolutelyContinuous`. Express the relevant statement in the definitionally equal form `e (e.symm γ + x) = γ + e x`. Rewrite using `[map_add, e.apply_symm_apply]`.
+
+Rewrite using `[hemb.map_apply, Set.preimage_image_eq _ e.injective, Measure.prod_prod, h1r, h1s, one_mul]`.
+-/
 theorem isCovolOne_colJoin : ∀ (D : D7) (m r s : ℕ) (μr : Measure (Mx D m r)) (𝓕r : Set (Mx D m r))
     (μs : Measure (Mx D m s)) (𝓕s : Set (Mx D m s)), IsCovolOne (ratMx D m r) μr 𝓕r → IsCovolOne (ratMx D m s) μs 𝓕s →
     IsCovolOne (ratMx D m (r + s)) ((μr.prod μs).map fun z => colJoin z.1 z.2)

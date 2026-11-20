@@ -16,18 +16,39 @@ noncomputable section
 
 namespace GlobalTheory.OmegaHT
 
+/- English proof (translation)
+Introduce `y hy`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, hUV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (a := f y) hy V.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨U, hU, ⟨⟨f y, hyU⟩⟩⟩, hUV⟩, hyU⟩`.
+-/
 theorem preimage_le_iSup_affOp {X Y : Scheme.{0}} [IsIntegral X] (f : Y ⟶ X) (V : X.Opens) :
     f ⁻¹ᵁ V ≤ ⨆ U : {U : AffOp X // U.1 ≤ V}, f ⁻¹ᵁ U.1.1 := by
   intro y hy
   obtain ⟨_, ⟨U, hU, rfl⟩, hyU, hUV⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open (a := f y) hy V.isOpen
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨U, hU, ⟨⟨f y, hyU⟩⟩⟩, hUV⟩, hyU⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom a = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_resG_root {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)) :
     resG X h' (resG X h a) = resG X (h'.trans h) a := by
   change (X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom a = _
   rw [← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `O _ _ _ _ B hB p _ a ha`. Take `⟨ρ, hρ⟩` from `IsAlgClosed.exists_pow_nat_eq (p : Kbar B.X) ha`. Set `K' : IntermediateField B.X.functionField (Kbar B.X)` to `IntermediateField.adjoin B.X.functionField {ρ}`. Establish `hK : FiniteDimensional B.X.functionField K'` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ρ)`. Take `⟨B', f, γ, hN, hd, -, hinj, -, hres, hrange⟩` from `exists_normalization_in O B hB K' hK`.
+
+Establish `hex : ∀ U : AffOp B.X, ∃ x : Γ(B'.X, f.f ⁻¹ᵁ U.1), (γ U x : Kbar B.X) = ρ` using `fun U => by`. Establish `hm : ρ ∈ integralClosure Γ(B.X, U.1) (Kbar B.X)` using `mem_of_pow_mem ha (hρ ▸ natCast_mem _ p)`. Establish `h1 : (⟨ρ, hm⟩ : U.Bp) ∈ (γ U).range`. Rewrite using `[hrange, mem_ringOver]`. Conclude with `IntermediateField.mem_adjoin_simple_self _ ρ`.
+
+Take `⟨x, hx⟩` from `h1`. Conclude with `⟨x, congrArg Subtype.val hx⟩`. Use `choose x hx using hex`. Establish `hxres : ∀ (U U' : AffOp B.X) (hle : U'.1 ≤ U.1), resG B'.X (f.f.preimage_mono hle) (x U) = x U'`. Introduce `U U' hle`.
+
+Apply `hinj U'` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx U', ← hx U]`. Conclude with `congrArg Subtype.val (hres U U' hle (x U))`. Establish `hcov : (⊤ : B'.X.Opens) ≤ ⨆ U : {U : AffOp B.X // U.1 ≤ ⊤}, f.f ⁻¹ᵁ U.1.1` using `preimage_le_iSup_affOp f.f ⊤`.
+
+Take `⟨π, hπ⟩` from `GlobalTheory.LB.exists_fun_of_cover (V := ⊤) (fun U : {U : AffOp B.X // U.1 ≤ ⊤} => f.f ⁻¹ᵁ U.1.1) (fun _ => le_top) hcov (fun U => x U.1) (fun U U' => by`. Use `GlobalTheory.LB.fun_ext_of_cover (fun W : {W : AffOp B.X // W.1 ≤ U.1.1 ⊓ U'.1.1} => f.f ⁻¹ᵁ W.1.1) (fun W => f.f.preimage_mono W.2) (preimage_le_iSup_affOp f.f (U.1.1 ⊓ U'.1.1)) fun W => ?_` and prove the remaining obligations. Conclude with `((resG_resG_root _ _ _).trans (hxres U.1 W.1 (W.2.trans inf_le_left))).trans ((resG_resG_root _ _ _).trans (hxres U'.1 W.1 (W.2.trans inf_le_right))).symm)`. Use `⟨B', f, π, hN, hd, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, one_mul]`.
+
+Use `GlobalTheory.LB.fun_ext_of_cover (V := ⊤) (fun U : {U : AffOp B.X // U.1 ≤ ⊤} => f.f ⁻¹ᵁ U.1.1) (fun _ => le_top) hcov fun U => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_natCast, hπ U]`. Apply `hinj U.1` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_pow, map_natCast, SubmonoidClass.coe_pow, hx, hρ]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_cover_root : RootSt := by
   intro O _ _ _ _ B hB p _ a ha
   obtain ⟨ρ, hρ⟩ := IsAlgClosed.exists_pow_nat_eq (p : Kbar B.X) ha

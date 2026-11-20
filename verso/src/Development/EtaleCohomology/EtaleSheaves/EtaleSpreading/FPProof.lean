@@ -5,6 +5,45 @@ open CategoryTheory Limits
 
 namespace LateralTheory.E.SpreadPf.FPProof
 
+/- English proof (translation)
+Set `_` to `f.hom.toAlgebra`. Take `⟨n, π, hπ, hker⟩` from `(hf : Algebra.FinitePresentation c.pt T).out`. Take `⟨s, hs⟩` from `hker`. Set `p : Fin s.card → MvPolynomial (Fin n) c.pt` to `fun i => (s.equivFin.symm i).1`. Take `⟨j, q, hq⟩` from `LateralTheory.E.SpreadPf.Lift.lift_polys hc s.card p`.
+
+Set `I : Ideal (MvPolynomial (Fin n) (D.obj j))` to `Ideal.span (Set.range q)`. Establish `hpker : ∀ i, π (p i) = 0`. Introduce `i`. Establish `: p i ∈ RingHom.ker π.toRingHom`. Rewrite using `[← hs]`.
+
+Conclude with `Ideal.subset_span (s.equivFin.symm i).2`. Simplify using `using this`. Set `φ : MvPolynomial (Fin n) (D.obj j) →+* T` to `π.toRingHom.comp (MvPolynomial.map (c.ι.app j).hom)`. Establish `hφ : ∀ a ∈ I, φ a = 0`. Introduce `a ha`.
+
+Establish `: I ≤ RingHom.ker φ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[φ, hq i, hpker i]`. Simplify using `using this ha`.
+
+Set `T' : CommRingCat.{0}` to `CommRingCat.of (MvPolynomial (Fin n) (D.obj j) ⧸ I)`. Set `f' : D.obj j ⟶ T'` to `CommRingCat.ofHom ((Ideal.Quotient.mk I).comp MvPolynomial.C)`. Set `g : T' ⟶ T` to `CommRingCat.ofHom (Ideal.Quotient.lift I φ hφ)`. Establish `hfa : ∀ a : c.pt, f a = π (MvPolynomial.C a)` using `fun a => (π.commutes a).symm`. Establish `hw : c.ι.app j ≫ f = f' ≫ g`.
+
+Use extensionality with `x`. Express the relevant statement in the definitionally equal form `f.hom (c.ι.app j x) = Ideal.Quotient.lift I φ hφ (Ideal.Quotient.mk I (MvPolynomial.C x))`. Rewrite using `[Ideal.Quotient.lift_mk, hfa]`. Simplify using `[φ]`. Establish `hfp : LateralTheory.E.SpreadPf.Cut.FP f'`.
+
+Establish `hI : I.FG` using `⟨(Set.finite_range q).toFinset, by simp [I]⟩`. Establish `: Algebra.FinitePresentation (D.obj j) (MvPolynomial (Fin n) (D.obj j) ⧸ I)` using `Algebra.FinitePresentation.quotient hI`. Conclude with `RingHom.finitePresentation_algebraMap.mpr this`. Use `⟨j, T', f', g, IsPushout.of_isColimit (c := PushoutCocone.mk f g hw) ?_, hfp⟩` and prove the remaining obligations. Set `e` to `Ideal.quotientKerAlgEquivOfSurjective hπ`.
+
+Establish `he : ∀ y, e.symm (π y) = Ideal.Quotient.mk _ y` using `fun y => by`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Set `Ψ : ∀ S : PushoutCocone (c.ι.app j) f', MvPolynomial (Fin n) c.pt →+* S.pt` to `fun S => MvPolynomial.eval₂Hom S.inl.hom (fun i => S.inr (Ideal.Quotient.mk I (MvPolynomial.X i)))`. Establish `key : ∀ S : PushoutCocone (c.ι.app j) f', (Ψ S).comp (MvPolynomial.map (c.ι.app j).hom) = S.inr.hom.comp (Ideal.Quotient.mk I)`.
+
+Introduce `S`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`. Use `congrArg (fun h => h.hom x) S.condition` as an intermediate fact. Simplify `this` using `[Ψ, f']`.
+
+Introduce `i`. Simplify using `[Ψ]`. Establish `hΨ : ∀ S : PushoutCocone (c.ι.app j) f', ∀ a ∈ RingHom.ker π, Ψ S a = 0`. Introduce `S a ha`. Establish `: RingHom.ker π.toRingHom ≤ RingHom.ker (Ψ S)`.
+
+Rewrite using `[← hs, Ideal.span_le]`. Introduce `x hx`. Establish `hx' : x = p (s.equivFin (⟨x, Finset.mem_coe.mp hx⟩ : {y // y ∈ s}))` using `by simp [p]`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, hx', ← hq, ← RingHom.comp_apply, key S]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply]`.
+
+Establish `hmem : q (s.equivFin (⟨x, Finset.mem_coe.mp hx⟩ : {y // y ∈ s})) ∈ I` using `Ideal.subset_span (Set.mem_range_self _)`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hmem, map_zero]`. Conclude with `this (RingHom.mem_ker.mpr (by simpa using RingHom.mem_ker.mp ha))`. Set `desc : ∀ S : PushoutCocone (c.ι.app j) f', T ⟶ S.pt` to `fun S => CommRingCat.ofHom ((Ideal.Quotient.lift (RingHom.ker π) (Ψ S) (hΨ S)).comp e.symm.toRingHom)`. Establish `hdesc : ∀ S y, desc S (π y) = Ψ S y`.
+
+Introduce `S y`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.lift _ (Ψ S) (hΨ S) (e.symm (π y)) = _`. Rewrite using `[he, Ideal.Quotient.lift_mk]`. Use `PushoutCocone.IsColimit.mk _ desc ?_ ?_ ?_` and prove the remaining obligations. Introduce `S`.
+
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `desc S (f.hom a) = S.inl a`. Rewrite using `[hfa, hdesc]`. Simplify using `[Ψ]`. Introduce `S`.
+
+Use `CommRingCat.hom_ext (Ideal.Quotient.ringHom_ext (RingHom.ext fun y => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `desc S (Ideal.Quotient.lift I φ hφ (Ideal.Quotient.mk I y)) = S.inr (Ideal.Quotient.mk I y)`. Rewrite using `[Ideal.Quotient.lift_mk]`. Express the relevant statement in the definitionally equal form `desc S (π _) = _`. Rewrite using `[hdesc, ← RingHom.comp_apply, key S]`.
+
+Both sides reduce to the same expression. Introduce `S m h1 h2`. Use extensionality with `t`. Take `⟨y, rfl⟩` from `hπ t`. Rewrite using `[show (desc S).hom (π y) = Ψ S y from hdesc S y]`.
+
+Establish `: m.hom.comp π.toRingHom = Ψ S`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Use `congrArg (fun h => h.hom a) h1` as an intermediate fact. Simplify `this` using `[Ψ, hfa]`.
+
+Introduce `i`. Use `congrArg (fun h => h.hom (Ideal.Quotient.mk I (MvPolynomial.X i))) h2` as an intermediate fact. Express the relevant statement in the definitionally equal form `m.hom (Ideal.Quotient.lift I φ hφ (Ideal.Quotient.mk I (MvPolynomial.X i))) = S.inr.hom (Ideal.Quotient.mk I (MvPolynomial.X i)) at this`. Rewrite `this` using `[Ideal.Quotient.lift_mk]`. Simplify `this` using `[Ψ, φ]`.
+
+Conclude with `congrArg (fun h => h y) this`.
+-/
 theorem finite_presentation_ring_maps_pre_ind_spread : LateralTheory.E.SpreadPf.Cut.FPSpreads where
   exists_isPushout {J} _ _ {D} {c} hc {T} f hf := by
     classical

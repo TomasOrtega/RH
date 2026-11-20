@@ -33,6 +33,27 @@ noncomputable section
 namespace PositivityTheory.UnitarySelfGeneration
 
 open AlgebraicGeometry CategoryTheory Limits in
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y T o _`. Establish `hb₁ : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F)) (S := c.F)`. Establish `hb₂ : AlgebraicGeometry.Flat (spMap (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @AlgebraicGeometry.Flat)]`. Establish `hf : Module.Flat (𝓞 c.F) c.F` using `IsLocalization.flat c.F (nonZeroDivisors (𝓞 c.F))`.
+
+Conclude with `RingHom.flat_algebraMap_iff.2 hf`. Use `Y.jQ_open` as an intermediate fact. Establish `hpre : IsPreimmersion Y.j` using `by unfold Model.j; infer_instance`. Establish `hfl : AlgebraicGeometry.Flat Y.j` using `by unfold Model.j; infer_instance`. Establish `hg : ∀ Z : Comp Xo c, IsGenericPoint (Formalism.L2.Pj.genPt Z) (Z : Set (Xo.XF c))` using `fun Z => Z.2.1.isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)`.
+
+Establish `hmax : ∀ Z : Comp Xo c, ∀ x' : Y.X, x' ⤳ Y.j (Formalism.L2.Pj.genPt Z) → x' = Y.j (Formalism.L2.Pj.genPt Z)`. Introduce `Z y hy`. Take `⟨a, ha, rfl⟩` from `AlgebraicGeometry.Flat.generalizingMap Y.j hy`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Flat.eq_genericPoint_of_specializes Z.2 (hg Z) a ha]`. Use `choose k hk using fun Z => o.comp_onto _ (hmax Z)`.
+
+Establish `hinj : Function.Injective k`. Introduce `Z Z' h`. Establish `h1 : Y.j (Formalism.L2.Pj.genPt Z) = Y.j (Formalism.L2.Pj.genPt Z')` using `by rw [← hk, ← hk, h]`. Establish `h2` using `Y.j.isEmbedding.injective h1`. Conclude with `Subtype.ext ((hg Z).def.symm.trans (h2 ▸ (hg Z').def))`.
+
+Establish `hsurj : Function.Surjective k`. Introduce `a`. Set `Or` to `o.Or 0 a`. Establish `e₂ : Or.𝔐.f (GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ) = GlobalTheory.CompanionTheory.Ar.genPt (o.Fx a).ξf` using `RegAtDom.map_genPt Or.g_over`. Establish `e₃ : Or.𝔐.f (GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ) = GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ₀` using `RegAtDom.map_genPt Or.𝔐.fn_over`.
+
+Set `η : Sp (T.M 0 a).Ω ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F))` to `pullback.lift (Or.𝔐.ξ ≫ Or.𝔐.f) (spMap Or.𝔐.cst) (by`. Rewrite using `[Category.assoc, Or.𝔐.cst_over, KapEquiv.spMap_comp_eq])`. Establish `hη : pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F)) (GlobalTheory.CompanionTheory.Ar.genPt η) = GlobalTheory.CompanionTheory.Ar.genPt Or.𝔐.ξ₀`. Rewrite using `[← e₃]`. Use `(Scheme.Hom.comp_apply η _ _).symm.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[show η ≫ pullback.fst _ _ = Or.𝔐.ξ ≫ Or.𝔐.f from pullback.lift_fst _ _ _]`. Conclude with `Scheme.Hom.comp_apply _ _ _`. Establish `hfin : Finite (Comp Xo c)` using `Formalism.L2.Pj.CompFin.finite_comp Xo c`. Establish `hcl : IsClosed (⋃ Z : Comp Xo c, closure {Y.jQ (Formalism.L2.Pj.genPt Z)})` using `isClosed_iUnion_of_finite fun _ => isClosed_closure`. Establish `hsub : Set.range Y.jQ ⊆ ⋃ Z : Comp Xo c, closure {Y.jQ (Formalism.L2.Pj.genPt Z)}`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Use `Set.mem_iUnion.2 ⟨⟨irreducibleComponent p, irreducibleComponent_mem_irreducibleComponents p⟩, ?_⟩` and prove the remaining obligations. Conclude with `specializes_iff_mem_closure.1 (((hg _).specializes mem_irreducibleComponent).map Y.jQ.continuous)`. Take `⟨Z, hZ⟩` from `Set.mem_iUnion.1 (closure_minimal hsub hcl (Y.jQ_dense (GlobalTheory.CompanionTheory.Ar.genPt η)))`. Establish `h1` using `(specializes_iff_mem_closure.2 hZ).map (pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))).continuous`.
+
+Rewrite `h1` using `[hη]`. Establish `h2` using `GlobalTheory.CompanionTheory.Ar.CmpHodgeDiag.eq_of_specializes Or.𝔐.gen₀ h1`. Use `⟨Z, o.comp_inj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hk, ← e₂, e₃, ← h2]`. Conclude with `Scheme.Hom.comp_apply _ _ _`.
+
+Conclude with `⟨Equiv.ofBijective k ⟨hinj, hsurj⟩, hk⟩`.
+-/
 theorem exists_component_equiv_of_tower : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : TowerOrigin Y T), Top.Given → ∃ κ : Comp Xo c ≃ T.Comp, CompOf o κ := by
   intro E _ _ _ H Dw l Xo c Y T o _
   have hb₁ : IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F)) :=
@@ -86,6 +107,9 @@ theorem exists_component_equiv_of_tower : ∀ (E : Type) [Field E] [NumberField 
     exact Scheme.Hom.comp_apply _ _ _
   exact ⟨Equiv.ofBijective k ⟨hinj, hsurj⟩, hk⟩
 
+/- English proof (translation)
+The claim follows from `exists_component_equiv_of_tower`.
+-/
 theorem y_comp_of : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (T : Top.RootTower (CMType H) (Dw.p + Dw.q)) (o : TowerOrigin Y T), Top.Given → ∃ κ : Comp Xo c ≃ T.Comp, CompOf o κ := exists_component_equiv_of_tower
 
 end PositivityTheory.UnitarySelfGeneration

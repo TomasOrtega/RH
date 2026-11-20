@@ -18,6 +18,11 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   {Ω : Type*} [Field Ω] [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω]
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
 
+/- English proof (translation)
+Use `t2Space_of_isValuativeTopology Ω` as an intermediate fact. Establish `h` using `(hasSum_psEval' F x hx).add (hasSum_psEval' G x hx)`. Establish `e : (fun d => psTerm F x d + psTerm G x d) = psTerm (F + G) x`. Use function extensionality and compare the values at `d`. Simplify using `[psTerm, add_mul]`.
+
+Rewrite `h` using `[e]`. Conclude with `h.tsum_eq`.
+-/
 theorem psEval_add' {σ : Type*} [Finite σ] (F G : MvPowerSeries σ 𝒪[K]) (x : σ → Ω)
     (hx : ∀ i, valuation Ω (x i) < 1) :
     psEval (F + G) x = psEval F x + psEval G x := by
@@ -29,6 +34,15 @@ theorem psEval_add' {σ : Type*} [Finite σ] (F G : MvPowerSeries σ 𝒪[K]) (x
   rw [e] at h
   exact h.tsum_eq
 
+/- English proof (translation)
+Set `E` to `IntermediateField.adjoin K (Set.range x)`. Use `finiteDimensional_adjoin_range (K := K) x` as an intermediate fact. Set `xE : σ → E` to `fun i => ⟨x i, IntermediateField.subset_adjoin K _ ⟨i, rfl⟩⟩`. Set `a : σ → 𝒪[E]` to `fun i => ⟨xE i, ((valuation_coe_lt_one_iff E (xE i)).mp (hx i)).le⟩`. Establish `ha : ∀ i, a i ∈ 𝓂[E]` using `fun i => mem_maximalIdeal_integer_iff.mpr ((valuation_coe_lt_one_iff E (xE i)).mp (hx i))`.
+
+Establish `h1 : psEval (F * G) x = _` using `psEval_coe E (F * G) xE hx`. Establish `h2 : psEval F x = _` using `psEval_coe E F xE hx`. Establish `h3 : psEval G x = _` using `psEval_coe E G xE hx`. Rewrite using `[h1, h2, h3]`. Express the relevant statement in the definitionally equal form `((psEval (F * G) fun i => (a i : E) : E) : Ω) = ((psEval F fun i => (a i : E) : E) : Ω) * ((psEval G fun i => (a i : E) : E) : Ω)`.
+
+Set `_ : UniformSpace E` to `IsTopologicalAddGroup.rightUniformSpace E`. Establish `_ : IsUniformAddGroup E` using `isUniformAddGroup_of_addCommGroup`. Set `_ : UniformSpace 𝒪[K]` to `⊥`. Establish `_ : DiscreteUniformity 𝒪[K]` using `⟨rfl⟩`. Establish `hφ : Continuous[(⊥ : UniformSpace 𝒪[K]).toTopologicalSpace, _] (algebraMap 𝒪[K] 𝒪[E])`.
+
+Rewrite using `[UniformSpace.toTopologicalSpace_bot]`. Conclude with `continuous_bot`. Rewrite using `[psEval_eq_eval₂ _ a ha, psEval_eq_eval₂ _ a ha, psEval_eq_eval₂ _ a ha, ← MvPowerSeries.coe_eval₂Hom hφ (hasEval_of_mem_maximalIdeal ha), map_mul]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem psEval_mul' {σ : Type*} [Finite σ] (F G : MvPowerSeries σ 𝒪[K]) (x : σ → Ω)
     (hx : ∀ i, valuation Ω (x i) < 1) :
     psEval (F * G) x = psEval F x * psEval G x := by
@@ -57,6 +71,9 @@ theorem psEval_mul' {σ : Type*} [Finite σ] (F G : MvPowerSeries σ 𝒪[K]) (x
   push_cast
   rfl
 
+/- English proof (translation)
+Use `t2Space_of_isValuativeTopology Ω` as an intermediate fact. Take `⟨D, hD⟩` from `Ideal.mem_span_singleton'.mp hG`. Establish `hGe : G = (h : 𝒪[K]⟦X⟧) + D * (P : 𝒪[K]⟦X⟧)` using `by rw [hD]; ring`. Rewrite using `[hGe, psEval_add' _ _ _ fun _ => hx, psEval_mul' _ _ _ fun _ => hx, psEval_polynomial, psEval_polynomial, hP, mul_zero, add_zero]`.
+-/
 theorem psEval_eq_aeval_of_sub_mem {P h : Polynomial 𝒪[K]} {G : 𝒪[K]⟦X⟧}
     (hG : G - (h : 𝒪[K]⟦X⟧) ∈ Ideal.span {(P : 𝒪[K]⟦X⟧)}) {x : Ω} (hx : valuation Ω x < 1)
     (hP : Polynomial.aeval x (P.map (algebraMap 𝒪[K] K)) = 0) :
@@ -76,11 +93,17 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 include hπ in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun hn => (isEisensteinAt_ltEisenstein hπ m).mem hn⟩, (ltEisenstein_monic π m).1⟩`.
+-/
 theorem isDistinguishedAt_ltEisenstein : (ltEisenstein π m).IsDistinguishedAt 𝓂[K] :=
   ⟨⟨fun hn => (isEisensteinAt_ltEisenstein hπ m).mem hn⟩, (ltEisenstein_monic π m).1⟩
 
 include hπ in
 
+/- English proof (translation)
+Use `isAdicComplete_integer K` as an intermediate fact. Establish `hP` using `isDistinguishedAt_ltEisenstein hπ m`. Take `⟨h, hh⟩` from `AdjoinRoot.mk_surjective (rootEval hP G)`. Conclude with `⟨h, (rootEval_eq_rootEval_iff hP G h).mp (by rw [rootEval_coe, hh])⟩`.
+-/
 theorem exists_sub_coe_mem_span_ltEisenstein (G : 𝒪[K]⟦X⟧) :
     ∃ h : Polynomial 𝒪[K], G - (h : 𝒪[K]⟦X⟧) ∈ Ideal.span {((ltEisenstein π m : Polynomial 𝒪[K]) :
       𝒪[K]⟦X⟧)} := by
@@ -93,6 +116,13 @@ variable {L : Type*} [Field L] [Algebra K L]
 
 include hπ in
 
+/- English proof (translation)
+Establish `hmon` using `(ltEisenstein_monic π m).1`. Establish `hq` using `one_lt_card_residueField' K`. Establish `hdeg : 0 < (ltEisenstein π m).natDegree`. Rewrite using `[(ltEisenstein_monic π m).2]`. Conclude with `Nat.mul_pos (by omega) (pow_pos (by omega) m)`.
+
+Establish `hirr` using `irreducible_map_of_isEisensteinAt (isEisensteinAt_ltEisenstein hπ m) hdeg`. Establish `hint : IsIntegral K x` using `⟨_, hmon.map _, hx⟩`. Establish `hmin : minpoly K x = (ltEisenstein π m).map (algebraMap 𝒪[K] K)` using `(minpoly.eq_of_irreducible_of_monic hirr hx (hmon.map _)).symm`. Establish `hdvd : (ltEisenstein π m).map (algebraMap 𝒪[K] K) ∣ p.map (algebraMap 𝒪[K] K)` using `hmin ▸ minpoly.dvd K x hp`. Rewrite using `[← Polynomial.modByMonic_eq_zero_iff_dvd hmon]`.
+
+Apply `Polynomial.map_injective (algebraMap 𝒪[K] K) (IsFractionRing.injective 𝒪[K] K)` to reduce the goal to its premises. Rewrite using `[Polynomial.map_modByMonic _ hmon, Polynomial.map_zero, Polynomial.modByMonic_eq_zero_iff_dvd (hmon.map _)]`. Conclude with `hdvd`.
+-/
 theorem ltEisenstein_dvd_of_aeval_eq_zero {x : L}
     (hx : Polynomial.aeval x ((ltEisenstein π m).map (algebraMap 𝒪[K] K)) = 0) {p : Polynomial 𝒪[K]}
     (hp : Polynomial.aeval x (p.map (algebraMap 𝒪[K] K)) = 0) : ltEisenstein π m ∣ p := by
@@ -122,6 +152,11 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω]
   {π : 𝒪[K]} (hπ : Irreducible π)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, lubinTateHom_self_one, Hom.toPowerSeries_id, AlgEquiv.one_apply]`. Conclude with `(psEval_X (K := K) (fun _ : Unit => x) ()).symm`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ', AlgEquiv.mul_apply, ih, algEquiv_psEval σ _ _ fun _ => hx, hσ, pow_succ, lubinTateHom_mul hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π), Hom.toPowerSeries_comp, PowerSeries.subst_def, psEval_subst' (fun _ => Hom.constantCoef …`.
+-/
 theorem pow_apply_eq_psEval (σ : Ω ≃ₐ[K] Ω) (a : 𝒪[K]) {x : Ω} (hx : valuation Ω x < 1)
     (hσ : σ x = psEval (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π)
       a).toPowerSeries fun _ => x) (k : ℕ) :
@@ -140,6 +175,9 @@ theorem pow_apply_eq_psEval (σ : Ω ≃ₐ[K] Ω) (a : 𝒪[K]) {x : Ω} (hx : 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ω]
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] in
 
+/- English proof (translation)
+The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_pow_apply_eq_self_of_aeval_eq_zero σ hp hx`.
+-/
 theorem exists_pow_apply_eq_self (σ : Ω ≃ₐ[K] Ω) {p : Polynomial K} (hp : p ≠ 0) {x : Ω}
     (hx : Polynomial.aeval x p = 0) : ∃ N : ℕ, 0 < N ∧ (σ ^ N) x = x :=
   _root_.GroundTheory.Variant₂.N1.exists_pow_apply_eq_self_of_aeval_eq_zero σ hp hx
@@ -153,6 +191,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 
 omit [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 
+/- English proof (translation)
+Use `Ideal.mem_map_of_mem (PowerSeries.map (algebraMap 𝒪[K] B)) hG` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_sub, map_coe_polynomial, map_coe_polynomial]`. Then use the resulting hypothesis.
+-/
 theorem map_sub_coe_mem_span {P h : Polynomial 𝒪[K]} {G : 𝒪[K]⟦X⟧}
     (hG : G - (h : 𝒪[K]⟦X⟧) ∈ Ideal.span {(P : 𝒪[K]⟦X⟧)}) :
     PowerSeries.map (algebraMap 𝒪[K] B) G - ((h.map (algebraMap 𝒪[K] B) : Polynomial B) : B⟦X⟧) ∈
@@ -160,6 +201,9 @@ theorem map_sub_coe_mem_span {P h : Polynomial 𝒪[K]} {G : 𝒪[K]⟦X⟧}
   have := Ideal.mem_map_of_mem (PowerSeries.map (algebraMap 𝒪[K] B)) hG
   rwa [Ideal.map_span, Set.image_singleton, map_sub, map_coe_polynomial, map_coe_polynomial] at this
 
+/- English proof (translation)
+Apply `Ideal.Quotient.ringHom_ext` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Conclude with `hof r`. Conclude with `hroot`.
+-/
 theorem adjoinRoot_ringHom_ext {R S : Type*} [CommRing R] [CommRing S] {p : Polynomial R}
     {f g : AdjoinRoot p →+* S} (hof : ∀ r : R, f (AdjoinRoot.of p r) = g (AdjoinRoot.of p r))
     (hroot : f (AdjoinRoot.root p) = g (AdjoinRoot.root p)) : f = g := by
@@ -178,6 +222,9 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K Ω] [ValuativeExtension K Ω] [Algebra.IsAlgebraic K Ω] [HasUnramifiedRoots K Ω]
   [IsGalois K Ω]
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Establish `hr` using `(restrictNormal_eq_maximalUnramifiedExtensionFrobenius_iff σ).mpr hσ`. Rewrite using `[← maximalUnramifiedExtensionFrobenius_inclusion hL y, ← hr]`. Conclude with `(AlgEquiv.restrictNormal_commutes σ (maximalUnramifiedExtension K Ω) (IntermediateField.inclusion hL.le_maximalUnramifiedExtension y)).symm`.
+-/
 theorem apply_coe_eq_frobenius (σ : Ω ≃ₐ[K] Ω) (hσ : unramifiedDegree K Ω σ = Multiplicative.ofAdd 1)
     {L : IntermediateField K Ω} (hL : IsUnramifiedSubextension L) (y : L) :
     letI := hL.1
@@ -188,6 +235,9 @@ theorem apply_coe_eq_frobenius (σ : Ω ≃ₐ[K] Ω) (hσ : unramifiedDegree K 
   exact (AlgEquiv.restrictNormal_commutes σ (maximalUnramifiedExtension K Ω)
     (IntermediateField.inclusion hL.le_maximalUnramifiedExtension y)).symm
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Proceed by induction on `k with`. Consider the case `zero => rw [Function.iterate_zero, id, pow_zero, map_one, AlgEquiv.one_apply]`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', ih, completedFrobenius_integerToCompleted hL, pow_succ', map_mul, AlgEquiv.mul_apply]`.
+-/
 theorem completedFrobenius_iterate_integerToCompleted {L : IntermediateField K Ω}
     (hL : IsUnramifiedSubextension L) (k : ℕ) (c : 𝒪[L]) :
     letI := hL.1
@@ -201,6 +251,9 @@ theorem completedFrobenius_iterate_integerToCompleted {L : IntermediateField K �
     rw [Function.iterate_succ_apply', ih, completedFrobenius_integerToCompleted hL, pow_succ',
       map_mul, AlgEquiv.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => rw [Function.iterate_zero, id, pow_zero, pow_one]`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply', residue_completedFrobenius, ih, ← pow_mul, ← pow_succ]`.
+-/
 theorem residue_completedFrobenius_iterate (k : ℕ) (x : CompletedUnramifiedIntegers K Ω) :
     residue _ ((completedFrobenius K Ω)^[k] x) = residue _ x ^ (Nat.card 𝓀[K] ^ k) := by
   induction k with
@@ -208,6 +261,21 @@ theorem residue_completedFrobenius_iterate (k : ℕ) (x : CompletedUnramifiedInt
   | succ k ih =>
     rw [Function.iterate_succ_apply', residue_completedFrobenius, ih, ← pow_mul, ← pow_succ]
 
+/- English proof (translation)
+Use `hL.1` as an intermediate fact. Establish `h` using `hL.ramificationIndex_eq_one`. Use `isAdicComplete_integer L` as an intermediate fact. Use `set ι := integerToCompleted K Ω hL.le_maximalUnramifiedExtension with hι`. Set `_ : Algebra 𝒪[L] (CompletedUnramifiedIntegers K Ω)` to `ι.toRingHom.toAlgebra`.
+
+Establish `hιa : ∀ c : 𝒪[L], algebraMap 𝒪[L] (CompletedUnramifiedIntegers K Ω) c = ι c` using `fun _ => rfl`. Use `set N := Module.finrank K L with hN`. Establish `hfrobN : frobenius K L h ^ N = 1`. Rewrite using `[hN, ← orderOf_frobenius K L h]`. Conclude with `pow_orderOf_eq_one _`.
+
+Set `T : CompletedUnramifiedIntegers K Ω →+* CompletedUnramifiedIntegers K Ω` to `(completedFrobenius K Ω).toAlgHom.toRingHom ^ N`. Establish `hT : ∀ x, T x = (completedFrobenius K Ω)^[N] x` using `fun x => by`. Rewrite using `[RingHom.coe_pow]`. Both sides reduce to the same expression. Establish `hTc : ∀ c : 𝒪[L], T (algebraMap 𝒪[L] (CompletedUnramifiedIntegers K Ω) c) = algebraMap 𝒪[L] (CompletedUnramifiedIntegers K Ω) c` using `fun c => by`.
+
+Rewrite using `[hT, hιa, hι, completedFrobenius_iterate_integerToCompleted hL, hfrobN, map_one, AlgEquiv.one_apply]`. Set `σN : CompletedUnramifiedIntegers K Ω →ₐ[𝒪[L]] CompletedUnramifiedIntegers K Ω` to `{ toRingHom := T, commutes' := hTc }`. Establish `hσN : ∀ x, σN x = (completedFrobenius K Ω)^[N] x` using `hT`. Establish `hres : ∀ x, residue _ (σN x) = residue _ x ^ Nat.card (ResidueField 𝒪[L])` using `fun x => by`. Rewrite using `[hσN, residue_completedFrobenius_iterate, card_residueField_of_unramified K L h]`.
+
+Establish `hunrL : (maximalIdeal 𝒪[L]).map (algebraMap 𝒪[L] (CompletedUnramifiedIntegers K Ω)) = maximalIdeal (CompletedUnramifiedIntegers K Ω)`. Use `le_antisymm (Ideal.map_le_iff_le_comap.mpr fun x hx => ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, hιa, hι, integerToCompleted_apply, mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Conclude with `(mem_maximalIdeal x).mp hx (isUnit_of_map_unit _ _ (isUnit_of_map_unit _ _ hu))`.
+
+Rewrite using `[← map_maximalIdeal_completedUnramifiedIntegers K Ω]`. Establish `hcomp : algebraMap 𝒪[K] (CompletedUnramifiedIntegers K Ω) = (algebraMap 𝒪[L] (CompletedUnramifiedIntegers K Ω)).comp (algebraMap 𝒪[K] 𝒪[L])` using `(ι.comp_algebraMap).symm`. Rewrite using `[hcomp, ← Ideal.map_map]`. Conclude with `Ideal.map_mono (Ideal.map_le_iff_le_comap.mpr fun x hx => map_nonunit (algebraMap 𝒪[K] 𝒪[L]) x hx)`. Take `⟨c, hc⟩` from `(mem_range_algebraMap_iff_fixed hunrL σN hres b).mpr (by rw [hσN]; exact hb)`.
+
+Conclude with `⟨c, hc⟩`.
+-/
 theorem exists_integerToCompleted_eq_of_iterate {L : IntermediateField K Ω}
     (hL : IsUnramifiedSubextension L) {b : CompletedUnramifiedIntegers K Ω}
     (hb : (completedFrobenius K Ω)^[Module.finrank K L] b = b) :
@@ -258,10 +326,18 @@ section Descent
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `(Polynomial.hom_eval₂ p Polynomial.C (AdjoinRoot.mk f) q).symm`.
+-/
 theorem eval₂_of_mk (f p q : Polynomial R) :
     Polynomial.eval₂ (AdjoinRoot.of f) (AdjoinRoot.mk f q) p = AdjoinRoot.mk f (p.comp q) :=
   (Polynomial.hom_eval₂ p Polynomial.C (AdjoinRoot.mk f) q).symm
 
+/- English proof (translation)
+Establish `key : (AdjoinRoot.map ι p q h).comp (AdjoinRoot.mk p) = (AdjoinRoot.mk q).comp (Polynomial.mapRingHom ι)`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+
+Conclude with `congrArg (fun F : Polynomial R →+* AdjoinRoot q => F g) key`.
+-/
 theorem adjoinRoot_map_mk {S : Type*} [CommRing S] (ι : R →+* S) (p : Polynomial R) (q : Polynomial S)
     (h : q ∣ p.map ι) (g : Polynomial R) :
     AdjoinRoot.map ι p q h (AdjoinRoot.mk p g) = AdjoinRoot.mk q (g.map ι) := by
@@ -273,6 +349,11 @@ theorem adjoinRoot_map_mk {S : Type*} [CommRing S] (ι : R →+* S) (p : Polynom
     · simp
   exact congrArg (fun F : Polynomial R →+* AdjoinRoot q => F g) key
 
+/- English proof (translation)
+Substitute `hpq` using the available equality. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Take `⟨g, rfl⟩` from `AdjoinRoot.mk_surjective w`. Rewrite `hw` using `[adjoinRoot_map_mk, AdjoinRoot.mk_eq_zero, ← Polynomial.modByMonic_eq_zero_iff_dvd (hp.map ι), ← Polynomial.map_modByMonic ι hp]`.
+
+Rewrite using `[AdjoinRoot.mk_eq_zero, ← Polynomial.modByMonic_eq_zero_iff_dvd hp]`. Conclude with `Polynomial.map_injective ι hι (by rw [hw, Polynomial.map_zero])`.
+-/
 theorem adjoinRoot_map_injective {S : Type*} [CommRing S] {ι : R →+* S} (hι : Function.Injective ι)
     {p : Polynomial R} (hp : p.Monic) {q : Polynomial S} (hq : q ∣ p.map ι) (hpq : p.map ι = q) :
     Function.Injective (AdjoinRoot.map ι p q hq) := by
@@ -285,6 +366,9 @@ theorem adjoinRoot_map_injective {S : Type*} [CommRing S] {ι : R →+* S} (hι 
   rw [AdjoinRoot.mk_eq_zero, ← Polynomial.modByMonic_eq_zero_iff_dvd hp]
   exact Polynomial.map_injective ι hι (by rw [hw, Polynomial.map_zero])
 
+/- English proof (translation)
+Use `⟨AdjoinRoot.lift ((AdjoinRoot.of p).comp ψ) (AdjoinRoot.mk p g) ?_, fun c => AdjoinRoot.lift_of _, AdjoinRoot.lift_root _⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval₂_map, hψ, eval₂_of_mk, AdjoinRoot.mk_eq_zero]`. Conclude with `hg`.
+-/
 theorem exists_adjoinRoot_twist (p : Polynomial R) (ψ : R →+* R) (hψ : p.map ψ = p) (g : Polynomial R)
     (hg : p ∣ p.comp g) :
     ∃ τ : AdjoinRoot p →+* AdjoinRoot p, (∀ c, τ (AdjoinRoot.of p c) = AdjoinRoot.of p (ψ c)) ∧
@@ -294,6 +378,9 @@ theorem exists_adjoinRoot_twist (p : Polynomial R) (ψ : R →+* R) (hψ : p.map
   rw [← Polynomial.eval₂_map, hψ, eval₂_of_mk, AdjoinRoot.mk_eq_zero]
   exact hg
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨AdjoinRoot.lift jc x hx, fun _ => AdjoinRoot.lift_of _, AdjoinRoot.lift_root _, fun _ => AdjoinRoot.lift_mk _ _⟩`.
+-/
 theorem exists_adjoinRoot_lift {S : Type*} [CommRing S] (p : Polynomial R) (jc : R →+* S) (x : S)
     (hx : p.eval₂ jc x = 0) :
     ∃ j : AdjoinRoot p →+* S, (∀ c, j (AdjoinRoot.of p c) = jc c) ∧ j (AdjoinRoot.root p) = x ∧
@@ -301,6 +388,9 @@ theorem exists_adjoinRoot_lift {S : Type*} [CommRing S] (p : Polynomial R) (jc :
   ⟨AdjoinRoot.lift jc x hx, fun _ => AdjoinRoot.lift_of _, AdjoinRoot.lift_root _,
     fun _ => AdjoinRoot.lift_mk _ _⟩
 
+/- English proof (translation)
+Use `⟨∑ i, AdjoinRoot.of p (d i) * AdjoinRoot.root p ^ (i : ℕ), ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← (AdjoinRoot.powerBasis' hqm).basis.sum_repr z]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, AdjoinRoot.map_of, AdjoinRoot.map_root, hd, Algebra.smul_def, PowerBasis.coe_basis, AdjoinRoot.powerBasis'_gen, AdjoinRoot.algebraMap_eq]`.
+-/
 theorem exists_adjoinRoot_map_eq {S : Type*} [CommRing S] (ι : R →+* S) (p : Polynomial R)
     {q : Polynomial S} (hq : q ∣ p.map ι) (hqm : q.Monic) (z : AdjoinRoot q)
     (d : Fin (AdjoinRoot.powerBasis' hqm).dim → R)
@@ -322,6 +412,55 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 set_option maxHeartbeats 1000000 in
 include hπ in
 
+/- English proof (translation)
+Establish `hPmon : (ltEisenstein π m).Monic` using `(ltEisenstein_monic π m).1`. Establish `hlv : valuation Ω l < 1`. Use `valuation_lt_one_of_aeval_ltPolyIter_eq_zero hπ (m + 1) ?_` and prove the remaining obligations. Rewrite using `[ltPolyIter_succ_eq_mul, Polynomial.map_mul, map_mul, hl, mul_zero]`. Take `⟨h, hh⟩` from `exists_sub_coe_mem_span_ltEisenstein hπ m (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) ((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K])).toPowerSeries`.
+
+Establish `hσl' : σ l = Polynomial.aeval l (h.map (algebraMap 𝒪[K] K))` using `hσl.trans (psEval_eq_aeval_of_sub_mem hh hlv hl)`. Take `⟨N, hN0, hNl⟩` from `exists_pow_apply_eq_self σ ((hPmon.map (algebraMap 𝒪[K] K)).ne_zero) hl`. Take `⟨hN', hhN'⟩` from `exists_sub_coe_mem_span_ltEisenstein hπ m (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) ^ N)).toPowerSeries`. Establish `haevalN : Polynomial.aeval l (hN'.map (algebraMap 𝒪[K] K)) = l`. Rewrite using `[← psEval_eq_aeval_of_sub_mem hhN' hlv hl, ← pow_apply_eq_psEval hπ σ _ hlv hσl N, hNl]`.
+
+Establish `hdvdN : (ltEisenstein π m) ∣ hN' - Polynomial.X`. Use `ltEisenstein_dvd_of_aeval_eq_zero hπ m hl ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_sub, Polynomial.map_X, map_sub, haevalN, Polynomial.aeval_X, sub_self]`. Establish `hGN : (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) ^ N)).toPowerSeries - ((Polynomial.X : Polynomial 𝒪[K]) : 𝒪[K]⟦X⟧) ∈ Ideal.span {((ltEisenstein π m) : 𝒪[K]⟦X⟧)}`. Take `⟨q, hq⟩` from `hdvdN`.
+
+Establish `e : (lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) ^ N)).toPowerSeries - ((Polynomial.X : Polynomial 𝒪[K]) : 𝒪[K]⟦X⟧) = ((lubinTateHom hπ (isLubinTateSeries_ltPoly π) (isLubinTateSeries_ltPoly π) (((u⁻¹ : 𝒪[K]ˣ) : 𝒪[K]) ^ N)).to …`. Rewrite using `[← Polynomial.coe_mul, ← hq, Polynomial.coe_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem hhN' (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _))`.
+
+Establish `hunr` using `map_maximalIdeal_completedUnramifiedIntegers K Ω`. Take `⟨z, hzfix, hzroot⟩` from `exists_twistFrob_fixed_root hπ hunr m (completedFrobenius K Ω).toAlgHom residue_completedFrobenius u`. Use `set T := twistFrob hπ hunr m (completedFrobenius K Ω).toAlgHom u with hT`. Establish `hP` using `isDistinguishedAt_ltEisB hπ hunr m`. Establish `hTN : T^[N] (AdjoinRoot.root (ltEisB π (CompletedUnramifiedIntegers K Ω) m)) = AdjoinRoot.root (ltEisB π (CompletedUnramifiedIntegers K Ω) m)`.
+
+Rewrite using `[hT, twistFrob_iterate_root, ← rootEval_X hP, rootEval_eq_rootEval_iff]`. Use `map_sub_coe_mem_span (B := CompletedUnramifiedIntegers K Ω) hGN` as an intermediate fact. Rewrite `this` using `[Polynomial.map_X, Polynomial.coe_X]`. Then use the resulting hypothesis. Establish `hzN : T^[N] z = z` using `Function.iterate_fixed hzfix N`. Take `⟨L, ⟨hL, hLN⟩, -⟩` from `existsUnique_isUnramifiedSubextension (K := K) (Ksep := Ω) hN0.ne'`.
+
+Use `hL.1` as an intermediate fact. Establish `hcoord : ∀ i, ∃ d : 𝒪[L], integerToCompleted K Ω hL.le_maximalUnramifiedExtension d = (AdjoinRoot.powerBasis' (monic_ltEisB π (CompletedUnramifiedIntegers K Ω) m)).basis.repr z i` using `fun i => by`. Use `exists_integerToCompleted_eq_of_iterate hL ?_` and prove the remaining obligations. Rewrite using `[hLN]`. Use `repr_twistFrob_iterate hπ hunr m (completedFrobenius K Ω).toAlgHom u hTN z i` as an intermediate fact.
+
+Rewrite `this` using `[← hT, hzN]`. Conclude with `this.symm`. Use `choose d hd using hcoord`. Establish `hPLmap : ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])).map (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* _) = ltEisB π (CompletedUnramifiedIntegers K Ω) m`. Rewrite using `[Polynomial.map_map, AlgHom.comp_algebraMap]`.
+
+Establish `hdvd : ltEisB π (CompletedUnramifiedIntegers K Ω) m ∣ ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])).map (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* _)` using `hPLmap ▸ dvd_rfl`. Establish `hιinj : Function.Injective (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* CompletedUnramifiedIntegers K Ω)` using `integerToCompleted_injective _`. Establish `hinj` using `adjoinRoot_map_injective hιinj (hPmon.map (algebraMap 𝒪[K] 𝒪[L])) hdvd hPLmap`. Take `⟨y, hy⟩` from `exists_adjoinRoot_map_eq (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* CompletedUnramifiedIntegers K Ω) ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])) hdvd (monic_ltEisB π (CompletedUnramifiedIntegers K Ω) m) z d hd`. Generalize the expression as in `hiM : AdjoinRoot.map (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* CompletedUnramifiedIntegers K Ω) ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])) (ltEisB π (CompletedUnramifiedIntegers K Ω) m) hdvd = iM at hinj hy`.
+
+Establish `hiMof : ∀ c : 𝒪[L], iM (AdjoinRoot.of _ c) = AdjoinRoot.of _ (integerToCompleted K Ω hL.le_maximalUnramifiedExtension c)` using `fun c => by`. Rewrite using `[← hiM, AdjoinRoot.map_of]`. Both sides reduce to the same expression. Establish `hiMroot : iM (AdjoinRoot.root _) = AdjoinRoot.root _`. Rewrite using `[← hiM, AdjoinRoot.map_root]`.
+
+Establish `hiMmk : ∀ g : Polynomial 𝒪[L], iM (AdjoinRoot.mk _ g) = AdjoinRoot.mk _ (g.map (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* _))` using `fun g => by`. Rewrite using `[← hiM, adjoinRoot_map_mk]`. Establish `hPcomp : (ltEisenstein π m) ∣ (ltEisenstein π m).comp h`. Use `ltEisenstein_dvd_of_aeval_eq_zero hπ m hl ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_comp, Polynomial.aeval_comp, ← hσl']`.
+
+Establish `e` using `Polynomial.aeval_algHom_apply (σ : Ω →ₐ[K] Ω) l ((ltEisenstein π m).map (algebraMap 𝒪[K] K))`. Express the relevant statement in the definitionally equal form `Polynomial.aeval (σ l) _ = 0`. Rewrite `e` using `[show ((σ : Ω →ₐ[K] Ω) l) = σ l from rfl]`. Rewrite using `[e, hl, map_zero]`. Establish `hfrPL : ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])).map (integerAlgEquiv K L (frobenius K L hL.ramificationIndex_eq_one)).toAlgHom.toRingHom = (ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])`.
+
+Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun c => (integerAlgEquiv K L (frobenius K L hL.ramificationIndex_eq_one)).commutes c`. Establish `hPcompL : (ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L]) ∣ ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])).comp (h.map (algebraMap 𝒪[K] 𝒪[L]))`. Rewrite using `[← Polynomial.map_comp (f := algebraMap 𝒪[K] 𝒪[L])]`.
+
+Conclude with `Polynomial.map_dvd _ hPcomp`. Take `⟨σL, hσLof, hσLroot⟩` from `exists_adjoinRoot_twist ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])) (integerAlgEquiv K L (frobenius K L hL.ramificationIndex_eq_one)).toAlgHom.toRingHom hfrPL (h.map (algebraMap 𝒪[K] 𝒪[L])) hPcompL`. Establish `hφι : ∀ c : 𝒪[L], (completedFrobenius K Ω).toAlgHom (integerToCompleted K Ω hL.le_maximalUnramifiedExtension c) = integerToCompleted K Ω hL.le_maximalUnramifiedExtension ((integerAlgEquiv K L (frobenius K L hL.ramificationIndex_eq_one)).toAlgHom.toRingHom c)` using `fun c => completedFrobenius_integerToCompleted hL c`. Establish `hsq1 : iM.comp σL = T.comp iM`. Use `adjoinRoot_ringHom_ext (fun c => ?_) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `iM (σL _) = T (iM _)`. Rewrite using `[hσLof, hiMof, hiMof, hT, twistFrob_of, hφι]`. Express the relevant statement in the definitionally equal form `iM (σL _) = T (iM _)`. Rewrite using `[hσLroot, hiMmk, hiMroot, hT, twistFrob_root, Polynomial.map_map, AlgHom.comp_algebraMap, ← rootEval_coe hP]`. Conclude with `((rootEval_eq_rootEval_iff hP _ _).mpr (map_sub_coe_mem_span hh)).symm`.
+
+Establish `hσLy : σL y = y`. Apply `hinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(iM.comp σL) y = iM y`. Rewrite using `[hsq1]`. Express the relevant statement in the definitionally equal form `T (iM y) = iM y`.
+
+Rewrite using `[hy, hzfix]`. Establish `hiMofc : iM.comp (AdjoinRoot.of ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L]))) = (AdjoinRoot.of (ltEisB π (CompletedUnramifiedIntegers K Ω) m)).comp (integerToCompleted K Ω hL.le_maximalUnramifiedExtension : 𝒪[L] →+* _)` using `RingHom.ext hiMof`. Establish `hy' : Polynomial.eval₂ (AdjoinRoot.of ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L]))) y ((ltEisenstein ((u : 𝒪[K]) * π) m).map (algebraMap 𝒪[K] 𝒪[L])) = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, Polynomial.hom_eval₂, hiMofc, hy, ← Polynomial.eval₂_map, Polynomial.map_map, AlgHom.comp_algebraMap]`.
+
+Conclude with `hzroot`. Establish `hjc : ((algebraMap L Ω).comp (algebraMap 𝒪[L] L)).comp (algebraMap 𝒪[K] 𝒪[L]) = (algebraMap K Ω).comp (algebraMap 𝒪[K] K)`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap L Ω (algebraMap K L (c : K)) = algebraMap K Ω (c : K)`. Conclude with `(IsScalarTower.algebraMap_apply K L Ω (c : K)).symm`.
+
+Take `⟨j, hjof, hjroot, hjmk⟩` from `exists_adjoinRoot_lift ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L])) ((algebraMap L Ω).comp (algebraMap 𝒪[L] L)) l (by rw [Polynomial.eval₂_map, hjc, ← Polynomial.eval₂_map]; exact hl)`. Establish `hjc' : j.comp (AdjoinRoot.of ((ltEisenstein π m).map (algebraMap 𝒪[K] 𝒪[L]))) = (algebraMap L Ω).comp (algebraMap 𝒪[L] L)` using `RingHom.ext hjof`. Establish `hsq2 : (σ : Ω →+* Ω).comp j = j.comp σL`. Use `adjoinRoot_ringHom_ext (fun c => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (j _) = j (σL _)`.
+
+Rewrite using `[hσLof, hjof, hjof]`. Express the relevant statement in the definitionally equal form `σ ((c : L) : Ω) = (((integerAlgEquiv K L (frobenius K L hL.ramificationIndex_eq_one) c : 𝒪[L]) : L) : Ω)`. Rewrite using `[coe_integerAlgEquiv_apply]`. Conclude with `apply_coe_eq_frobenius σ hσ hL (c : L)`. Express the relevant statement in the definitionally equal form `σ (j _) = j (σL _)`.
+
+Rewrite using `[hσLroot, hjmk, hjroot, hσl', Polynomial.eval₂_map, hjc, ← Polynomial.eval₂_map]`. Both sides reduce to the same expression. Use `⟨j y, ?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (algebraMap K Ω) (j y) ((ltEisenstein ((u : 𝒪[K]) * π) m).map (algebraMap 𝒪[K] K)) = 0`. Rewrite using `[Polynomial.eval₂_map, ← hjc, ← Polynomial.eval₂_map, ← hjc', ← Polynomial.hom_eval₂, hy', map_zero]`.
+
+Express the relevant statement in the definitionally equal form `((σ : Ω →+* Ω).comp j) y = j y`. Rewrite using `[hsq2]`. Express the relevant statement in the definitionally equal form `j (σL y) = j y`. Rewrite using `[hσLy]`. Introduce `τ hτ hτl`.
+
+Establish `hτj : (τ : Ω →+* Ω).comp j = j`. Use `adjoinRoot_ringHom_ext (fun c => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ (j _) = j _`. Rewrite using `[hjof]`. Conclude with `hτ _ (hL.le_maximalUnramifiedExtension (c : L).2)`.
+
+Express the relevant statement in the definitionally equal form `τ (j _) = j _`. Rewrite using `[hjroot]`. Conclude with `hτl`. Express the relevant statement in the definitionally equal form `((τ : Ω →+* Ω).comp j) y = j y`. Rewrite using `[hτj]`.
+-/
 theorem exists_fixed_root_ltEisenstein (σ : Ω ≃ₐ[K] Ω)
     (hσ : unramifiedDegree K Ω σ = Multiplicative.ofAdd 1) {l : Ω}
     (hl : Polynomial.aeval l ((ltEisenstein π m).map (algebraMap 𝒪[K] K)) = 0)

@@ -13,6 +13,11 @@ section
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+Unfold `defTot`. Rewrite using `[Finsupp.sum_smul_index (by intro P; simp), Finsupp.mul_sum]`. Use `Finset.sum_congr rfl fun P _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defTot_smul {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) (t : T)
     (M : Vol G) (c : ℂ) (σ : PolCol G × PolRow G →₀ ℂ) (τ : PureDat G t →₀ ℂ) (φ : Fn G (.top 0)) (F : Fn G (.grid 0 D.R.m)) :
     defTot t S M (c • σ) τ φ F = c * defTot t S M σ τ φ F := by
@@ -26,6 +31,25 @@ theorem defTot_smul {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Wei
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Take `⟨z1, hz1, hFl⟩` from `hFl`. Take `⟨z2, hz2, hFo⟩` from `hFo`. Take `⟨hBa, hBf, hBM, hBM', hBgood, hBgood', hBc⟩` from `hB`. Use `⟨fun t => z1 t * z2 t, fun t => Subgroup.mul_mem _ (hz1 t) (hz2 t), ?_⟩` and prove the remaining obligations. Introduce `ρ μ hρμ P p hp`.
+
+Take `⟨c0, hc0⟩` from `hW ρ μ hρμ`. Take `⟨C, hCr, hC⟩` from `hFl P.2 p hp`. Take `⟨σ₀, hσ₀⟩` from `hFo C hCr P.1`. Use `⟨c0 • σ₀, ?_⟩` and prove the remaining obligations. Introduce `t a τ hτ M hM β hβ b hb M' τ' hM' hτ' y`.
+
+Take `⟨cc, hcc⟩` from `hBc t (ch.Phi a) β τ' hτ'`. Take `⟨ζ, hζ, hid⟩` from `hC t (ch.Phi a) τ hτ M hM β b hb τ' cc hτ' hcc`. Establish `hζ' : ζ = ((z1 t : ℂˣ) : ℂ)⁻¹` using `hζ (hO t _ β hβ)`. Take `⟨sc, hsc, hwx⟩` from `hc0 t (ch.Phi a) β b hb M M' hM hM'`. Establish `hgood : ∀ d ∈ τ'.support, Good ch.W (combC ch.W (cc d) C) (combR ch.rm (cc d))` using `fun d hd => hBgood' C hCr (cc d) (fun j hj => ((hcc d hd).1 ⟨j, hj⟩).1)`.
+
+Establish `h1 : tot ch.W hM P τ (colFn ch a) (formTop ch t y) (p * b) = ζ * τ'.sum fun d x => x * per ch.W M t (combC ch.W (cc d) C) (combR ch.rm (cc d)) P.1 (colFn ch a) (formTop ch t y)`. Establish `key` using `hT t M (hBM t M hM) (colFn ch a) (formTop ch t y) (hBa a) (hBf t y) ((SchRow ch.G × SchDown ch.G t) ⊕ PureDat ch.G t) (τ.support.disjSum τ'.support) (Sum.elim (fun d => τ d) (fun d => -ζ * τ' d)) (Sum.elim (fun d => conAt ch.W hM (fockD ch.W t d.2 P.2) (p * b)) (fun d => combC ch …`. Rewrite `key` using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, mul_assoc, Finset.sum_neg_distrib] at key`. Unfold `tot`.
+
+Rewrite using `[Finsupp.sum, Finsupp.sum, Finset.mul_sum]`. Take the linear combination `key`. Introduce and unpack `(d | d) hd`. Conclude with `hBgood t (ch.Phi a) τ hτ M hM d (Finset.inl_mem_disjSum.1 hd) P.2 (p * b)`. Conclude with `hgood d (Finset.inr_mem_disjSum.1 hd)`.
+
+Introduce `u y'`. Establish `e` using `hid u y'`. Rewrite `e` using `[Finsupp.sum, Finsupp.sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_disjSum]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, neg_mul, mul_assoc, Finset.sum_neg_distrib]`.
+
+Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (τ'.sum fun d x => x * per ch.W M t (combC ch.W (cc d) C) (combR ch.rm (cc d)) P.1 (colFn ch a) (formTop ch t y)) = sProd D sc * τ'.sum fun d x => x * per ch.W M' t (combC ch.W (cc d) C) (combR ch.rm (cc d)) P.1 (colFn ch a) (formTop ch t y)`. Rewrite using `[Finsupp.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[hV t M M' sc (hBM t M hM) (hBM' t _ β M' hM') hsc (colFn ch a) (formTop ch t y) (hBa a) (hBf t y) _ _ (hgood d hd) P.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `hσ₀ t a β M' (hBM' t _ β M' hM') (hS t a) τ' cc hτ' hcc y`. Rewrite using `[h1, h2, h3, defTot_smul, hζ', Units.val_mul, mul_inv]`.
+
+Take the linear combination `(((z1 t : ℂˣ) : ℂ)⁻¹ * ((z2 t : ℂˣ) : ℂ)⁻¹ * defTot t ch.S.toGridChoice M' σ₀ τ' (colFn ch a) (formTop ch t y)) * hwx`.
+-/
 theorem valAt_of_steps (ch : Choice R) (s : ℤˣ) (hFl : FlatAt ch s) (hT : TensAt ch) (hV : VolAt ch) (hW : WtAt ch s)
     (hFo : FockAt ch) (hB : BasicAt ch) (hO : OneAt ch) (hS : ∀ t a, ch.S.SumOK t (ch.Phi a)) : ValAt ch s := by
   obtain ⟨z1, hz1, hFl⟩ := hFl
@@ -80,6 +104,9 @@ theorem valAt_of_steps (ch : Choice R) (s : ℤˣ) (hFl : FlatAt ch s) (hT : Ten
 
 end
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ s => valAt_of_steps ch s⟩⟩`.
+-/
 theorem valAt_big : Big fun ch => ∀ s, FlatAt ch s → TensAt ch → VolAt ch → WtAt ch s → FockAt ch → BasicAt ch → OneAt ch →
     (∀ t a, ch.S.SumOK t (ch.Phi a)) → ValAt ch s :=
   ⟨0, fun _ _ _ => ⟨0, fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ch _ _ s => valAt_of_steps ch s⟩⟩

@@ -8,6 +8,15 @@ namespace GlobalTheory.ThK.SoKInf
 
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM k hk Φ hΦ`. Establish `h1 : At (evI F) (mat (1 : UA σ G.V'.J) - 1)`. Introduce `u _`. Simplify using `[mat]`. Establish `hloc` using `GlobalTheory.T.archimedean_theta_local_action hK.base F E σ B a a' G X om om' hM.triple 1 k h1 hk.1`.
+
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, hSB, hvac, hv₁, rfl⟩` from `hx`. Take `⟨f₂, e⟩` from `hloc f φ hSB hvac`. Rewrite using `[e]`.
+
+Conclude with `Submodule.subset_span ⟨f₂, φ, hSB, hvac, hv₁, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
+
+Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem so_stable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W)

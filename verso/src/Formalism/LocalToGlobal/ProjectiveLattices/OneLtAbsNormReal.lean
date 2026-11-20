@@ -29,13 +29,24 @@ def vV (x : K') : ℤ := -WithZero.log (valV V x)
 
 variable {V}
 
+/- English proof (translation)
+Simplify `hx` using `[valV]`.
+-/
 lemma valV_ne_zero {x : K'} (hx : x ≠ 0) : valV V x ≠ 0 := by
   simpa [valV] using hx
 
+/- English proof (translation)
+Simplify using `only [vV, map_mul, WithZero.log_mul (valV_ne_zero hx) (valV_ne_zero hy)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vV_mul {x y : K'} (hx : x ≠ 0) (hy : y ≠ 0) : vV V (x * y) = vV V x + vV V y := by
   simp only [vV, map_mul, WithZero.log_mul (valV_ne_zero hx) (valV_ne_zero hy)]
   ring
 
+/- English proof (translation)
+Establish `h` using `(valV V).map_add x y`. Apply the tactic sequence `rcases max_choice (valV V x) (valV V y) with hm | hm <;> rw [hm] at h`. Use `(WithZero.log_le_log (valV_ne_zero hxy) (valV_ne_zero hx)).2 h` as an intermediate fact. Conclude with `(min_le_left _ _).trans (by simp only [vV]; omega)`. Use `(WithZero.log_le_log (valV_ne_zero hxy) (valV_ne_zero hy)).2 h` as an intermediate fact.
+
+Conclude with `(min_le_right _ _).trans (by simp only [vV]; omega)`.
+-/
 lemma min_le_vV_add {x y : K'} (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x + y ≠ 0) :
     min (vV V x) (vV V y) ≤ vV V (x + y) := by
   have h := (valV V).map_add x y
@@ -52,15 +63,31 @@ def nval (e : ℕ) (x : K') : EReal :=
 
 variable {V}
 
+/- English proof (translation)
+Simplify using `[nval]`.
+-/
 lemma nval_zero (e : ℕ) : nval V e (0 : K') = ⊤ := by simp [nval]
 
+/- English proof (translation)
+Simplify using `[nval, hx]`.
+-/
 lemma nval_of_ne {e : ℕ} {x : K'} (hx : x ≠ 0) :
     nval V e x = (((vV V x : ℝ) / e : ℝ) : EReal) := by
   simp [nval, hx]
 
+/- English proof (translation)
+Apply the tactic sequence `unfold nval; split_ifs <;> simp`.
+-/
 lemma nval_ne_bot (e : ℕ) (x : K') : nval V e x ≠ ⊥ := by
   unfold nval; split_ifs <;> simp
 
+/- English proof (translation)
+Distinguish the cases in `hxy : x + y = 0`. Rewrite using `[hxy, nval_zero]`. Conclude with `le_top`. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+
+Simplify using the standard rewrite rules. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[nval_of_ne hx, nval_of_ne hy, nval_of_ne hxy]`.
+
+Break down `min_le_iff.1 (min_le_vV_add (V := V) hx hy hxy) with h | h` into its components or cases. Conclude with `min_le_iff.2 (Or.inl (EReal.coe_le_coe_iff.2 (div_le_div_of_nonneg_right (by exact_mod_cast h) (Nat.cast_nonneg e))))`. Conclude with `min_le_iff.2 (Or.inr (EReal.coe_le_coe_iff.2 (div_le_div_of_nonneg_right (by exact_mod_cast h) (Nat.cast_nonneg e))))`.
+-/
 lemma nval_add (e : ℕ) (x y : K') : min (nval V e x) (nval V e y) ≤ nval V e (x + y) := by
   by_cases hxy : x + y = 0
   · rw [hxy, nval_zero]; exact le_top
@@ -75,6 +102,11 @@ lemma nval_add (e : ℕ) (x y : K') : min (nval V e x) (nval V e y) ≤ nval V e
   · exact min_le_iff.2 (Or.inr (EReal.coe_le_coe_iff.2
       (div_le_div_of_nonneg_right (by exact_mod_cast h) (Nat.cast_nonneg e))))
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[zero_mul, nval_zero, EReal.top_add_of_ne_bot (nval_ne_bot e y)]`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+
+Rewrite using `[mul_zero, nval_zero, EReal.add_top_of_ne_bot (nval_ne_bot e x)]`. Rewrite using `[nval_of_ne hx, nval_of_ne hy, nval_of_ne (mul_ne_zero hx hy), vV_mul hx hy, Int.cast_add, add_div, EReal.coe_add]`.
+-/
 lemma nval_mul (e : ℕ) (x y : K') : nval V e (x * y) = nval V e x + nval V e y := by
   by_cases hx : x = 0
   · subst hx; rw [zero_mul, nval_zero, EReal.top_add_of_ne_bot (nval_ne_bot e y)]
@@ -83,10 +115,18 @@ lemma nval_mul (e : ℕ) (x y : K') : nval V e (x * y) = nval V e x + nval V e y
   rw [nval_of_ne hx, nval_of_ne hy, nval_of_ne (mul_ne_zero hx hy), vV_mul hx hy,
     Int.cast_add, add_div, EReal.coe_add]
 
+/- English proof (translation)
+Rewrite using `[nval_mul, nval_of_ne hu, hu0]`. Simplify using the standard rewrite rules.
+-/
 lemma nval_mul_unit (e : ℕ) {u : K'} (hu : u ≠ 0) (hu0 : vV V u = 0) (x : K') :
     nval V e (u * x) = nval V e x := by
   rw [nval_mul, nval_of_ne hu, hu0]; simp
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite using `[map_zero, nval_zero, nval_zero]`. Rewrite using `[nval_of_ne ((map_ne_zero i).2 hx), nval_of_ne hx, hi]`. Establish `hr' : (r : ℝ) ≠ 0` using `by exact_mod_cast hr.ne'`.
+
+Use `congr 1`. Use `push_cast`. Conclude with `mul_div_mul_left _ _ hr'`.
+-/
 lemma nval_bc {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K'']
     [Algebra V' K''] [IsFractionRing V' K''] (i : K' →+* K'') {r : ℕ} (hr : 0 < r)
     (hi : ∀ x, vV V' (i x) = (r : ℤ) * vV V x) (e : ℕ) (x : K') :
@@ -127,6 +167,11 @@ def OverLa (la : HeightOneSpectrum R) (V : Type) {K' : Type} [CommRing V] [IsDom
 variable {la : HeightOneSpectrum R} {V : Type} {K' : Type} [CommRing V] [IsDomain V]
   [IsDiscreteValuationRing V] [Field K'] [Algebra V K'] [IsFractionRing V K']
 
+/- English proof (translation)
+Rewrite using `[nval_mul, nval_of_ne ((map_ne_zero ι).2 ha), ho.2 a]`. Use `congr 1`. Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`. Use `congr 1`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 lemma nval_smul {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {a : K} (ha : a ≠ 0) (x : K') :
     nval V e (ι a * x) = (((vLa la a : ℤ) : ℝ) : EReal) + nval V e x := by
   rw [nval_mul, nval_of_ne ((map_ne_zero ι).2 ha), ho.2 a]
@@ -134,6 +179,9 @@ lemma nval_smul {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {a : K} (ha 
   have he : (e : ℝ) ≠ 0 := by exact_mod_cast ho.1.ne'
   congr 1; push_cast; field_simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Nat.mul_pos hr ho.1, fun a => by rw [RingHom.comp_apply, hi, ho.2 a]; push_cast; ring⟩`.
+-/
 lemma OverLa.bc {ι : K →+* K'} {e : ℕ} (ho : OverLa la V ι e) {V' K'' : Type} [CommRing V']
     [IsDomain V'] [IsDiscreteValuationRing V'] [Field K''] [Algebra V' K''] [IsFractionRing V' K'']
     (i : K' →+* K'') {r : ℕ} (hr : 0 < r) (hi : ∀ x, vV V' (i x) = (r : ℤ) * vV V x) :
@@ -147,6 +195,9 @@ structure IsEval {W : Type} {Cusp : W → Type} [∀ w, AddCommGroup (Cusp w)] [
   smul : ∀ w (a : K) f, ev w (a • f) = ι a * ev w f
   mul : ∀ w w' f g, ev (wadd w w') (mulC w w' f g) = ev w f * ev w' g
 
+/- English proof (translation)
+Use `h.smul w 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, map_zero, zero_mul]`. Then use the resulting hypothesis.
+-/
 lemma IsEval.zero {W : Type} {Cusp : W → Type} [∀ w, AddCommGroup (Cusp w)] [∀ w, Module K (Cusp w)]
     {wadd : W → W → W} {mulC : ∀ w w', Cusp w → Cusp w' → Cusp (wadd w w')} {F : Type} [Field F]
     {ι : K →+* F} {ev : ∀ w, Cusp w → F} (h : IsEval wadd mulC ι ev) (w : W) : ev w 0 = 0 := by
@@ -159,6 +210,9 @@ section Norm
 
 variable {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Rewrite using `[FinitePlace.mk_apply, FinitePlace.norm_embedding', WithZeroMulInt.toNNReal_neg_apply _ ((la.valuation K).ne_zero_iff.2 ha)]`. Simplify using `[vLa, WithZero.toAdd_unzero_eq_log]`.
+-/
 lemma finitePlace_eq_zpow {a : K} (ha : a ≠ 0) :
     FinitePlace.mk la a = (Ideal.absNorm la.asIdeal : ℝ) ^ (-(vLa la a)) := by
   rw [FinitePlace.mk_apply, FinitePlace.norm_embedding',
@@ -168,9 +222,17 @@ lemma finitePlace_eq_zpow {a : K} (ha : a ≠ 0) :
 def nrmOf (v : EReal) : ℝ :=
   open Classical in if v = ⊤ then 0 else (Ideal.absNorm la.asIdeal : ℝ) ^ (-v.toReal)
 
+/- English proof (translation)
+Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm la` after adjusting the coercions.
+-/
 lemma one_lt_absNorm_real : (1 : ℝ) < (Ideal.absNorm la.asIdeal : ℝ) := by
   exact_mod_cast NumberField.HeightOneSpectrum.one_lt_absNorm la
 
+/- English proof (translation)
+Distinguish the cases in `ht : v = ⊤`. Substitute `ht` using the available equality. Simplify using `[nrmOf]`. Use `lift v to ℝ using ⟨ht, hv⟩`. Simplify using `only [nrmOf, EReal.coe_ne_top, if_false, EReal.toReal_coe, EReal.coe_nonneg]`.
+
+Rewrite using `[← Real.rpow_zero (Ideal.absNorm la.asIdeal : ℝ), Real.rpow_le_rpow_left_iff (one_lt_absNorm_real la)]`. Apply the tactic sequence `constructor <;> intro h <;> linarith`.
+-/
 lemma nrmOf_le_one_iff {v : EReal} (hv : v ≠ ⊥) : nrmOf la v ≤ 1 ↔ 0 ≤ v := by
   by_cases ht : v = ⊤
   · subst ht; simp [nrmOf]
@@ -180,6 +242,11 @@ lemma nrmOf_le_one_iff {v : EReal} (hv : v ≠ ⊥) : nrmOf la v ≤ 1 ↔ 0 ≤
     Real.rpow_le_rpow_left_iff (one_lt_absNorm_real la)]
   constructor <;> intro h <;> linarith
 
+/- English proof (translation)
+Rewrite using `[finitePlace_eq_zpow la ha]`. Distinguish the cases in `ht : v = ⊤`. Substitute `ht` using the available equality. Simplify using `[nrmOf]`. Use `lift v to ℝ using ⟨ht, hv⟩`.
+
+Simplify using `only [nrmOf, ← EReal.coe_add, EReal.coe_ne_top, if_false, EReal.toReal_coe]`. Rewrite using `[neg_add, Real.rpow_add (by linarith [one_lt_absNorm_real la]), ← Real.rpow_intCast]`. Use `push_cast`. Put the polynomial expressions in normal form.
+-/
 lemma nrmOf_smul {a : K} (ha : a ≠ 0) {v : EReal} (hv : v ≠ ⊥) :
     nrmOf la ((((vLa la a : ℤ) : ℝ) : EReal) + v) = FinitePlace.mk la a * nrmOf la v := by
   rw [finitePlace_eq_zpow la ha]

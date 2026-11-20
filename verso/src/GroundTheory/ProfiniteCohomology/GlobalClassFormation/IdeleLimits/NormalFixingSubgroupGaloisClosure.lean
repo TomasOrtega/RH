@@ -19,6 +19,9 @@ abbrev GLevel : Type := {F : FiniteSubfield // K ≤ F ∧ F.1.fixingSubgroup.No
 
 instance isGalois_rat_algebraicClosure : IsGalois ℚ ℚ̄ := IsAlgClosure.isGalois ℚ ℚ̄
 
+/- English proof (translation)
+Use `show (normalClosure ℚ S.1 ℚ̄).fixingSubgroup.Normal`. Use `haveI : IsGalois ℚ (normalClosure ℚ S.1 ℚ̄) := IsGalois.normalClosure ℚ S.1 ℚ̄`. Conclude with `IsGalois.fixingSubgroup_normal_of_isGalois _`.
+-/
 theorem normal_fixingSubgroup_galoisClosure (S : FiniteSubfield) :
     (galoisClosure S).1.fixingSubgroup.Normal := by
   show (normalClosure ℚ S.1 ℚ̄).fixingSubgroup.Normal
@@ -33,6 +36,9 @@ instance (p : GLevel K) : Fact (K ≤ p.1) := ⟨p.2.1⟩
 
 instance (p : GLevel K) : p.1.1.fixingSubgroup.Normal := p.2.2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem le_def {p q : GLevel K} : p ≤ q ↔ p.1 ≤ q.1 := Iff.rfl
 
 instance : IsDirectedOrder (GLevel K) where
@@ -43,6 +49,9 @@ instance : IsDirectedOrder (GLevel K) where
     · exact (show p.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_left).trans (le_galoisClosure S)
     · exact (show q.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_right).trans (le_galoisClosure S)
 
+/- English proof (translation)
+Set `S : FiniteSubfield` to `⟨p.1.1 ⊔ q.1.1, inferInstance⟩`. Use `⟨⟨galoisClosure S, p.2.1.trans ((show p.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_left).trans (le_galoisClosure S)), normal_fixingSubgroup_galoisClosure S⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(show p.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_left).trans (le_galoisClosure S)`. Conclude with `(show q.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_right).trans (le_galoisClosure S)`.
+-/
 theorem exists_ge (p q : GLevel K) : ∃ r : GLevel K, p ≤ r ∧ q ≤ r := by
   let S : FiniteSubfield := ⟨p.1.1 ⊔ q.1.1, inferInstance⟩
   refine ⟨⟨galoisClosure S, p.2.1.trans ((show p.1.1 ≤ p.1.1 ⊔ q.1.1 from le_sup_left).trans
@@ -53,6 +62,9 @@ theorem exists_ge (p q : GLevel K) : ∃ r : GLevel K, p ≤ r ∧ q ≤ r := by
 instance : Nonempty (GLevel K) :=
   ⟨⟨galoisClosure K, le_galoisClosure K, normal_fixingSubgroup_galoisClosure K⟩⟩
 
+/- English proof (translation)
+Set `S : FiniteSubfield` to `⟨K.1 ⊔ E.1, inferInstance⟩`. Conclude with `⟨⟨galoisClosure S, (show K.1 ≤ K.1 ⊔ E.1 from le_sup_left).trans (le_galoisClosure S), normal_fixingSubgroup_galoisClosure S⟩, (show E.1 ≤ K.1 ⊔ E.1 from le_sup_right).trans (le_galoisClosure S)⟩`.
+-/
 theorem exists_le (E : FiniteSubfield) : ∃ p : GLevel K, E ≤ p.1 := by
   let S : FiniteSubfield := ⟨K.1 ⊔ E.1, inferInstance⟩
   exact ⟨⟨galoisClosure S, (show K.1 ≤ K.1 ⊔ E.1 from le_sup_left).trans (le_galoisClosure S),
@@ -75,6 +87,13 @@ instance normal_subgroupOf [F.1.fixingSubgroup.Normal] :
 
 instance [F.1.fixingSubgroup.Normal] : IsGalois K.1 F.1 := isGalois_of_normal
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, Filter.tendsto_def]`. Introduce `s hs`. Establish `hopen : IsOpen ((F.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup : Subgroup _) : Set K.1.fixingSubgroup)` using `F.1.fixingSubgroup_isOpen.preimage continuous_subtype_val`. Use `filter_upwards [hopen.mem_nhds (one_mem _)] with g hg`.
+
+Establish `hg' : restrictHom (E` using `F) g = 1 := by`. Rewrite using `[← MonoidHom.mem_ker, ker_restrictHom]`. Conclude with `hg`. Express the relevant statement in the definitionally equal form `restrictHom (E := F) g ∈ s`. Rewrite using `[hg', ← map_one (restrictHom (F := K) (E := F))]`.
+
+Conclude with `mem_of_mem_nhds hs`.
+-/
 theorem continuous_restrictHom [F.1.fixingSubgroup.Normal] :
     Continuous (restrictHom : K.1.fixingSubgroup →* (F.1 ≃ₐ[K.1] F.1)) := by
   refine continuous_of_continuousAt_one _ ?_
@@ -91,6 +110,9 @@ theorem continuous_restrictHom [F.1.fixingSubgroup.Normal] :
   rw [hg', ← map_one (restrictHom (F := K) (E := F))]
   exact mem_of_mem_nhds hs
 
+/- English proof (translation)
+Rewrite using `[smul_idele_eq_ideleEquiv]`. Conclude with `smul_of_eq_of_ideleEquiv _ _ (fun _ ↦ rfl) x`.
+-/
 theorem smul_of_restrictHom [F.1.fixingSubgroup.Normal] (g : K.1.fixingSubgroup) (x : IdeleGroup F.1) :
     (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) • of F x = of F (restrictHom (E := F) g • x) := by
   rw [smul_idele_eq_ideleEquiv]
@@ -103,6 +125,9 @@ def levelMor [F.1.fixingSubgroup.Normal] : Rep.res (restrictHom (F := K) (E := F
     congrArg Additive.ofMul (smul_of_restrictHom g x.toMul).symm⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levelMor_hom_apply [F.1.fixingSubgroup.Normal] (x : Additive (IdeleGroup F.1)) :
     (levelMor K F).hom x = Additive.ofMul (of F x.toMul) :=
   rfl

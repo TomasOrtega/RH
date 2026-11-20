@@ -7,6 +7,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 
 namespace GlobalTheory.Published.PoitouTate.Model
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `Nat.cast_ne_zero.mpr hl.out.ne_zero`. Use `⟨(Ideal.finite_factors h0).toFinset, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `Ideal.dvd_span_singleton.2 hv`.
+-/
 theorem exists_containsAbove (F : Type) [Field F] [NumberField F] (l : ℕ) [hl : Fact l.Prime] :
     ∃ S : Finset (HeightOneSpectrum (𝓞 F)), ContainsAbove S l := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 F)} ≠ 0 := by
@@ -16,6 +21,11 @@ theorem exists_containsAbove (F : Type) [Field F] [NumberField F] (l : ℕ) [hl 
   rw [Set.Finite.mem_toFinset]
   exact Ideal.dvd_span_singleton.2 hv
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ r)`. Take `⟨S, hS⟩` from `exists_containsAbove F l`.
+
+Take `⟨μ, hμ⟩` from `exists_lift_cycMod (Ω := Ω) (r := r) hS`. Conclude with `⟨ζ, hζ, S, hS, fun v => placeOf Ω v.1, fun v => isPlaceOver_placeOf Ω v.1, μ, hμ, contAction_charRep hμ⟩`.
+-/
 theorem exists_data (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] (l : ℕ) [hl : Fact l.Prime] (r : ℕ) :
     ∃ ζ : Ω, IsPrimitiveRoot ζ (l ^ r) ∧
@@ -38,6 +48,9 @@ instance : IsTotallyComplex Qi :=
   haveI : IsCyclotomicExtension {4} ℚ Qi := CyclotomicField.isCyclotomicExtension 4 ℚ
   IsCyclotomicExtension.Rat.isTotallyComplex (n := 4) Qi (by norm_num)
 
+/- English proof (translation)
+Take `⟨ζ, hζ, -⟩` from `exists_data Qi (AlgebraicClosure Qi) 2 2`. Take `⟨inv, hinv, -⟩` from `h Qi (AlgebraicClosure Qi) 2 2 (by norm_num) ζ hζ`. Rewrite using `[Nat.card_eq_of_bijective _ (hinv.1 _ v (isPlaceOver_placeOf _ v)).1]`. Simplify using the standard rewrite rules.
+-/
 theorem card_H2_gaussian_field (h : PoitouTateTotallyComplex) (v : HeightOneSpectrum (𝓞 Qi)) :
     Nat.card (H2 (muLoc Qi 2 2 (placeOf (AlgebraicClosure Qi) v))) = 4 := by
   obtain ⟨ζ, hζ, -⟩ := exists_data Qi (AlgebraicClosure Qi) 2 2
@@ -45,6 +58,29 @@ theorem card_H2_gaussian_field (h : PoitouTateTotallyComplex) (v : HeightOneSpec
   rw [Nat.card_eq_of_bijective _ (hinv.1 _ v (isPlaceOver_placeOf _ v)).1]
   simp
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero ((l : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hl.out.ne_zero⟩`. Establish `hN : 0 < l ^ r` using `pow_pos hl.out.pos r`. Establish `: NeZero (l ^ r)` using `⟨hN.ne'⟩`.
+
+Take `⟨ϖ, h1, h2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ v.asIdeal v.ne_bot v.isPrime.ne_top 1`. Rewrite `h1` using `[pow_one]`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap F Ω (ϖ : F)) hN`. Establish `hϖ : (ϖ : F) ≠ 0` using `fun e => h2 (by`. Establish `: ϖ = 0` using `by exact_mod_cast e`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _)`. Establish `hy0 : y ≠ 0` using `fun e => hϖ (by`. Rewrite `hy` using `[e, zero_pow hN.ne']`. Conclude with `(map_eq_zero _).1 hy.symm)`.
+
+Establish `inj : ∀ a b : ZMod (l ^ r), ζ ^ a.val = ζ ^ b.val → a = b` using `fun a b e => ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt a) (ZMod.val_lt b) e)`. Establish `hval : ∀ n : ℕ, ζ ^ (n : ZMod (l ^ r)).val = ζ ^ n` using `fun n => by`. Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.mod_add_div n (l ^ r), pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Establish `ex : ∀ g : G F Ω, ∃ k : ZMod (l ^ r), g y = ζ ^ k.val * y` using `fun g => by`.
+
+Establish `e : (g y / y) ^ (l ^ r) = 1`. Rewrite using `[div_pow, ← map_pow, hy, AlgEquiv.commutes, div_self]`. Rewrite using `[← hy]`. Conclude with `pow_ne_zero _ hy0`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one e`.
+
+Conclude with `⟨i, by rw [hval, hi, div_mul_cancel₀ _ hy0]⟩`. Use `choose κ hκ using ex`. Establish `hcyc : ∀ g : G F Ω, g ζ = ζ ^ ((cycMod F Ω l r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)).val` using `fun g => cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G F Ω) Ω g) ζ hζ.pow_eq_one`. Establish `hmul : ∀ g h : G F Ω, κ (g * h) = κ g + (cycMod F Ω l r g : ZMod (l ^ r)) * κ h`. Introduce `g h`.
+
+Apply `inj` to reduce the goal to its premises. Apply `mul_right_cancel₀ hy0` to reduce the goal to its premises. Rewrite using `[← hκ, AlgEquiv.mul_apply, hκ h, map_mul, map_pow, hκ g, hcyc, ← pow_mul, ← mul_assoc, ← pow_add, ← hval (_ + _)]`. Use `congr 3`. Use `push_cast`.
+
+Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id]`. Expand and normalize the polynomial expressions, which then agree. Establish `hκc : Continuous κ`. Use `(IsLocallyConstant.iff_eventually_eq κ).2 (fun g => ?_) |>.continuous` and prove the remaining obligations. Establish `ho : IsOpen {σ : G F Ω | σ y = g y}`.
+
+Establish `h0 : IsOpen ((MulAction.stabilizer (G F Ω) y : Subgroup (G F Ω)) : Set (G F Ω))` using `stabilizer_isOpen_of_isIntegral y`. Use `h0.preimage (continuous_const_mul g⁻¹)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `σ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, MulAction.mem_stabilizer_iff, mul_smul, inv_smul_eq_iff]`.
+
+Both sides reduce to the same expression. Use `filter_upwards [ho.mem_nhds rfl] with σ hσ`. Apply `inj` to reduce the goal to its premises. Apply `mul_right_cancel₀ hy0` to reduce the goal to its premises. Rewrite using `[← hκ, ← hκ]`.
+
+Conclude with `hσ`. Use `⟨ϖ, y, fun g => κ g, ⟨fun p => κ p.1 * χ p.2, ((hκc.comp continuous_subtype_val).comp continuous_fst).mul (hc.comp continuous_snd), fun g h k => ?_⟩, h1, h2, hy, fun g => hκ g, fun _ _ => rfl⟩` and prove the remaining obligations. Use `show (cycMod F Ω l r g : ZMod (l ^ r)) * (κ h * χ k) - κ ((g : G F Ω) * h) * χ k + κ g * χ (h * k) - κ g * χ h = 0`. Rewrite using `[hmul, hχ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_kummer {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} {ζ : Ω} (hζ : IsPrimitiveRoot ζ (l ^ r))
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F))
@@ -114,6 +150,13 @@ theorem exists_kummer {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebr
     + κ g * χ (h * k) - κ g * χ h = 0
   rw [hmul, hχ]; ring
 
+/- English proof (translation)
+Set `L` to `IntermediateField.adjoin k ({x} : Set K)`. Use `haveI : FiniteDimensional k L := IntermediateField.adjoin.finiteDimensional hx`. Use `haveI : Finite L := Module.finite_of_finite k`. Use `haveI : IsGalois k L := inferInstance`. Take `⟨i, hi⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow k L).2 (σ.restrictNormal' L)`.
+
+Use `⟨i.1, ?_⟩` and prove the remaining obligations. Establish `e` using `σ.restrictNormal_commutes L ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩`. Establish `e2 : σ.restrictNormal L ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩ = (σ.restrictNormal' L) ⟨x, IntermediateField.mem_adjoin_simple_self k x⟩` using `rfl`. Rewrite `e` using `[e2, ← hi]`. Simplify using `only [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate, map_pow] at e`.
+
+Conclude with `e.symm`.
+-/
 theorem exists_pow_card {k K : Type} [Field k] [Fintype k] [Field K] [Algebra k K]
     (σ : K →ₐ[k] K) (x : K) (hx : IsIntegral k x) : ∃ i, σ x = x ^ (Fintype.card k ^ i) := by
   let L := IntermediateField.adjoin k ({x} : Set K)
@@ -130,6 +173,21 @@ theorem exists_pow_card {k K : Type} [Field k] [Fintype k] [Field K] [Algebra k 
   simp only [AlgEquiv.coe_pow, FiniteField.coe_frobeniusAlgEquivOfAlgebraic_iterate, map_pow] at e
   exact e.symm
 
+/- English proof (translation)
+Establish `hmem : ∀ x : 𝓞 F, algebraMap F Ω (x : F) ∈ A` using `fun x => by`. Establish `h : IsIntegral ℤ (algebraMap F Ω (x : F))` using `x.isIntegral_coe.map (algebraMap F Ω).toIntAlgHom`. Establish `h' : IsIntegral A (algebraMap F Ω (x : F))` using `h.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h'`. Rewrite using `[← hy]`.
+
+Conclude with `y.2`. Set `f : 𝓞 F →+* A` to `((algebraMap F Ω).comp (algebraMap (𝓞 F) F)).codRestrict A.toSubring hmem`. Use `haveI := v.isMaximal`. Use `letI : Field (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`.
+
+Use `letI : Fintype (𝓞 F ⧸ v.asIdeal) := Fintype.ofFinite _`. Use `letI : Algebra (𝓞 F ⧸ v.asIdeal) (IsLocalRing.ResidueField A) := (Ideal.Quotient.lift v.asIdeal ((IsLocalRing.residue A).comp f) fun a ha => by`. Rewrite using `[RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `(hA a).2 ha).toAlgebra`. Set `g' : A.decompositionSubgroup F` to `g`.
+
+Set `σ : IsLocalRing.ResidueField A →ₐ[𝓞 F ⧸ v.asIdeal] IsLocalRing.ResidueField A` to `{ MulSemiringAction.toRingHom (A.decompositionSubgroup F) (IsLocalRing.ResidueField A) g' with commutes' := fun a => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Use `show g' • IsLocalRing.residue A (f a) = IsLocalRing.residue A (f a)`. Rewrite using `[← IsLocalRing.ResidueField.residue_smul]`. Use `congr 1`.
+
+Conclude with `Subtype.ext ((g : G F Ω).commutes _) }`. Establish `hξA : ξ ∈ A` using `(A.valuation_le_one_iff ξ).1 (valuation_eq_one_of_pow_eq_one A hN hξ).le`. Establish `hp : IsLocalRing.residue A ⟨ξ, hξA⟩ ^ N = 1`. Rewrite using `[← map_pow, ← map_one (IsLocalRing.residue A)]`. Use `congr 1`.
+
+Conclude with `Subtype.ext hξ`. Take `⟨i, hi⟩` from `exists_pow_card σ (IsLocalRing.residue A ⟨ξ, hξA⟩) (IsIntegral.of_pow (Nat.pos_of_ne_zero hN) (by rw [hp]; exact isIntegral_one))`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `hi' : IsLocalRing.residue A (g' • ⟨ξ, hξA⟩ - ⟨ξ, hξA⟩ ^ (normV v ^ i)) = 0`. Rewrite using `[map_sub, map_pow, IsLocalRing.ResidueField.residue_smul, sub_eq_zero]`.
+
+Establish `: normV v = Fintype.card (𝓞 F ⧸ v.asIdeal)` using `Nat.card_eq_fintype_card`. Rewrite using `[this]`. Conclude with `hi`. Rewrite `hi'` using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Conclude with `hi'`.
+-/
 theorem exists_pow_normV {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v)
     (g : Dec (F := F) A) {N : ℕ} (hN : N ≠ 0) {ξ : Ω} (hξ : ξ ^ N = 1) :
@@ -172,6 +230,37 @@ theorem exists_pow_normV {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
   rw [IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff] at hi'
   exact hi'
 
+/- English proof (translation)
+Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero n` using `⟨by omega⟩`. Use `haveI : Finite (𝓞 F ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `haveI : Nontrivial (𝓞 F ⧸ v.asIdeal) := Ideal.Quotient.nontrivial_iff.2 v.isPrime.ne_top`.
+
+Use `set q := normV v with hq`. Establish `hq2 : 2 ≤ q` using `Finite.one_lt_card (α := 𝓞 F ⧸ v.asIdeal)`. Establish `hqv : A.valuation (q : Ω) < 1`. Establish `: ((q : ℕ) : 𝓞 F) ∈ v.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`.
+
+Use `letI : Fintype (𝓞 F ⧸ v.asIdeal) := Fintype.ofFinite _`. Establish `: q = Fintype.card (𝓞 F ⧸ v.asIdeal)` using `Nat.card_eq_fintype_card`. Rewrite using `[this]`. Conclude with `Nat.cast_card_eq_zero _`. Simplify using `using (hA _).2 this`.
+
+Establish `hlt : ∀ i < n, q ^ i < q ^ n - 1` using `fun i hi => by`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `h1 : q ^ i ≤ q ^ m` using `Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h2 : q ^ 1 ≤ q ^ m` using `Nat.pow_le_pow_right (by omega) (by omega)`. Establish `h3 : q ^ m * 2 ≤ q ^ (m + 1)` using `by rw [pow_succ]; exact Nat.mul_le_mul_left _ hq2`.
+
+Rewrite `h2` using `[pow_one]`. Use linear arithmetic over natural numbers and integers. Take `⟨N, hN⟩ : ∃ N, q ^ n = N + 1` from `⟨q ^ n - 1, by have := hlt 0 (by omega); omega⟩`. Establish `hN0 : N ≠ 0` using `by have := hlt 0 (by omega); omega`. Establish `hNv : ¬ A.valuation (N : Ω) < 1` using `fun h => by`.
+
+Establish `e : (1 : Ω) = (q : Ω) ^ n - N`. Rewrite using `[← Nat.cast_pow, hN]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : A.valuation ((q : Ω) ^ n) < 1`.
+
+Rewrite using `[map_pow]; exact pow_lt_one₀ zero_le hqv (by omega)`. Use `Valuation.map_sub_lt _ h2 h` as an intermediate fact. Rewrite `this` using `[← e, map_one]`. Conclude with `lt_irrefl _ this`. Establish `: NeZero N` using `⟨hN0⟩`.
+
+Establish `: NeZero ((N : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hN0⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω N`. Establish `hpw : ∀ m : ℕ, (ξ ^ m) ^ N = 1` using `fun m => by`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hξ.pow_eq_one, one_pow]`. Establish `hg : ∀ g : G F Ω, g ξ ^ N = 1` using `fun g => by rw [← map_pow, hξ.pow_eq_one, map_one]`.
+
+Establish `hper : ∀ a : ℕ, ξ ^ (q ^ (n * a)) = ξ` using `fun a => by`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hN, pow_succ, hξ.pow_eq_one, one_mul]`. Establish `hval : ∀ m : ℕ, ξ ^ (q ^ (m : ZMod n).val) = ξ ^ (q ^ m)` using `fun m => by`.
+
+Rewrite using `[ZMod.val_natCast]`. Use `conv_rhs => rw [← Nat.div_add_mod m n, pow_add, pow_mul, hper]`. Establish `inj : ∀ a b : ZMod n, ξ ^ (q ^ a.val) = ξ ^ (q ^ b.val) → a = b` using `fun a b e => by`. Establish `ha` using `hlt _ (ZMod.val_lt a)`. Establish `hb` using `hlt _ (ZMod.val_lt b)`.
+
+Conclude with `ZMod.val_injective _ (Nat.pow_right_injective hq2 (hξ.pow_inj (show q ^ a.val < N by omega) (show q ^ b.val < N by omega) e))`. Establish `ex : ∀ g : Dec (F` using `F) A, ∃ k : ZMod n, (g : G F Ω) ξ = ξ ^ (q ^ k.val) := fun g => by`. Take `⟨i, hi⟩` from `exists_pow_normV hA g hN0 hξ.pow_eq_one`. Conclude with `⟨i, by rw [hval]; exact eq_of_pow_eq_one A hNv (hg _) (hpw _) hi⟩`. Use `choose χ hχ using ex`.
+
+Establish `hξA : A.valuation ξ ≤ 1` using `(valuation_eq_one_of_pow_eq_one A hN0 hξ.pow_eq_one).le`. Use `⟨χ, fun g h => inj _ _ ?_, ?_, fun g hg' => inj _ _ ?_, fun g hg' => inj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← hχ, Subgroup.coe_mul, AlgEquiv.mul_apply, hχ h, map_pow, hχ g, ← pow_mul, ← pow_add, ← hval (_ + _)]`. Use `congr 3`. Use `push_cast`.
+
+Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id]`. Use `(IsLocallyConstant.iff_eventually_eq χ).2 (fun g => ?_) |>.continuous` and prove the remaining obligations. Establish `ho` using `(isOpen_setOf_apply (F := F) ξ (fun t => t = (g : G F Ω) ξ)).preimage (continuous_subtype_val (p := fun σ => σ ∈ Dec (F := F) A))`. Use `filter_upwards [ho.mem_nhds (x := g) rfl] with σ hσ`. Apply `inj` to reduce the goal to its premises.
+
+Rewrite using `[← hχ, ← hχ]`. Conclude with `hσ`. Rewrite using `[← hχ, ZMod.val_zero, pow_zero, pow_one]`. Conclude with `eq_of_pow_eq_one A hNv (hg _) hξ.pow_eq_one (hg'.2 ξ hξA)`. Rewrite using `[← hχ, ← Nat.cast_one, hval, pow_one]`.
+
+Conclude with `eq_of_pow_eq_one A hNv (hg _) (hpw _) (hg'.2 ξ hξA)`.
+-/
 theorem exists_unramified {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
     (hA : IsPlaceOver A v) {n : ℕ} (hn : 2 ≤ n) :
@@ -248,6 +337,9 @@ theorem exists_unramified {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Al
   · rw [← hχ, ← Nat.cast_one, hval, pow_one]
     exact eq_of_pow_eq_one A hNv (hg _) (hpw _) (hg'.2 ξ hξA)
 
+/- English proof (translation)
+Take `⟨χ, h1, h2, h3, h4⟩` from `exists_unramified hA (n := l ^ r) (Nat.one_lt_pow hr.ne' hl.out.one_lt)`. Take `⟨ϖ, y, κ, z, a, b, c, d, e⟩` from `exists_kummer hζ A v χ h1 h2`. Conclude with `⟨Submodule.Quotient.mk z, fun inv h => h ϖ y κ χ z a b c d h1 h3 h4 e⟩`.
+-/
 theorem exists_eq_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} (hr : 0 < r) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ (l ^ r)) {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)}
@@ -257,6 +349,9 @@ theorem exists_eq_one {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebr
   obtain ⟨ϖ, y, κ, z, a, b, c, d, e⟩ := exists_kummer hζ A v χ h1 h2
   exact ⟨Submodule.Quotient.mk z, fun inv h => h ϖ y κ χ z a b c d h1 h3 h4 e⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_eq_one hr hζ hA`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `e : w = inv A w • x` using `(h.1 A v hA).1.1 (by`. Rewrite using `[map_smul, hx _ (h.1 A v hA).2, smul_eq_mul, mul_one])`. Use `conv_rhs => rw [e, map_smul, hx _ (h'.1 A v hA).2, smul_eq_mul, mul_one]`.
+-/
 theorem inv_unique {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {l : ℕ} [hl : Fact l.Prime] {r : ℕ} (hr : 0 < r) {ζ : Ω}
     (hζ : IsPrimitiveRoot ζ (l ^ r)) {inv inv' : InvFam F Ω l r} (h : IsLocalInvariants ζ inv)

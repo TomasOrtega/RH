@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `t ht N`. Establish `h1 : (1 : ℝ) + t ≤ 2 * max 1 t`. Combine the linear relations using `[le_max_left (1 : ℝ) t, le_max_right (1 : ℝ) t]`. Establish `h2 : ((1 : ℝ) + t) ^ N ≤ (2 * max 1 t) ^ N` using `pow_le_pow_left₀ (by linarith) h1 N`. Rewrite `h2` using `[mul_pow]`.
+
+Establish `h3 : (max (1 : ℝ) t) ^ N ≤ 1 + t ^ N`. Break down `le_total t 1 with h | h` into its components or cases. Rewrite using `[max_eq_left h, one_pow]`. Establish `: (0 : ℝ) ≤ t ^ N` using `pow_nonneg ht N`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.Reformulated.B.OneAddPowLeTwoPowMul.main :
     ∀ (t : ℝ), (0 : ℝ) ≤ t → ∀ (N : ℕ), ((1 : ℝ) + t) ^ N ≤ (2 : ℝ) ^ N * ((1 : ℝ) + t ^ N) := by
   intro t ht N

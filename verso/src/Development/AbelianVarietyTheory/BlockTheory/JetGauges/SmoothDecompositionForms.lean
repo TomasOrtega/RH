@@ -147,24 +147,39 @@ section Checks
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Simplify using `[flat, herm, Matrix.dotProduct_mulVec]`.
+-/
 theorem flat_dotProduct (A : Matrix ι ι ℂ) (y a : ι → ℂ) : flat A y ⬝ᵥ a = herm A a y := by
   simp [flat, herm, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Simplify using `only [tensForm, pureT, herm, dotProduct, Matrix.mulVec, inner_smul_left, inner_smul_right, Finset.sum_mul, Finset.mul_sum, Pi.star_apply, Complex.star_def]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`.
+-/
 theorem tensForm_pure (A : Matrix ι ι ℂ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (a b : ι → ℂ) (v w : H) : tensForm A (pureT a v) (pureT b w) = herm A a b * ⟪w, v⟫_ℂ := by
   simp only [tensForm, pureT, herm, dotProduct, Matrix.mulVec, inner_smul_left, inner_smul_right, Finset.sum_mul,
     Finset.mul_sum, Pi.star_apply, Complex.star_def]
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
+/- English proof (translation)
+Simplify using `only [contr, pureT, smul_smul, ← Finset.sum_smul, ← flat_dotProduct, dotProduct]`.
+-/
 theorem contr_pure (A : Matrix ι ι ℂ) (ω a : ι → ℂ) {E : Type} [AddCommGroup E] [Module ℂ E] (v : E) :
     contr A ω (pureT a v) = herm A a ω • v := by
   simp only [contr, pureT, smul_smul, ← Finset.sum_smul, ← flat_dotProduct, dotProduct]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Simplify using `only [tensAct, pureT, map_smul, smul_smul, ← Finset.sum_smul, Matrix.mulVec, dotProduct]`.
+-/
 theorem tensAct_pure (ρ : Mx k r → Matrix ι ι ℂ) (R : HRep k r) (g : Mx k r) (a : ι → ℂ) (v : R.H) :
     tensAct ρ R g (pureT a v) = pureT (ρ g *ᵥ a) (R.σ g v) := by
   funext c
   simp only [tensAct, pureT, map_smul, smul_smul, ← Finset.sum_smul, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Establish `hinv : A⁻¹ = A` using `Matrix.inv_eq_left_inv h2`. Establish `h1 : star (star y' ᵥ* A) = A *ᵥ y'`. Rewrite using `[Matrix.star_vecMul, hA, star_star]`. Unfold `herm dualGram flat`. Rewrite using `[hinv, h1, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one, dotProduct_comm]`.
+-/
 theorem herm_dualGram_flat [DecidableEq ι] {A : Matrix ι ι ℂ} (hA : Aᴴ = A) (h2 : A * A = 1) (y y' : ι → ℂ) :
     herm (dualGram A) (flat A y) (flat A y') = herm A y' y := by
   have hinv : A⁻¹ = A := Matrix.inv_eq_left_inv h2
@@ -173,6 +188,13 @@ theorem herm_dualGram_flat [DecidableEq ι] {A : Matrix ι ι ℂ} (hA : Aᴴ = 
   unfold herm dualGram flat
   rw [hinv, h1, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one, dotProduct_comm]
 
+/- English proof (translation)
+Establish `h0 : (Hpk k r).det ≠ 0`. Introduce `h`. Use `congrArg Matrix.det (PI.HwUniqW.Hpk_mul_self (k := k) (r := r))` as an intermediate fact. Simplify using `[h] at this`. Establish `h1` using `congrArg Matrix.det (show gᴴ * Hpk k r * g = Hpk k r from hg)`.
+
+Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h2 : star g.det * g.det = 1`. Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Take the linear combination `h1`. Establish `h3` using `congrArg norm h2`.
+
+Rewrite `h3` using `[norm_mul, norm_star, norm_one]`. Use polynomial arithmetic with `[norm_nonneg g.det]`.
+-/
 theorem norm_det_of_mem {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : ‖g.det‖ = 1 := by
   have h0 : (Hpk k r).det ≠ 0 := by
     intro h
@@ -201,6 +223,9 @@ def detRep (k r : ℕ) : HRep k r where
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
+/- English proof (translation)
+The claim follows from `rfl map_mul _ _ _ _ := rfl smooth c d g₀ _ := ⟨Set.univ, fun g => g c d, isOpen_univ, Set.mem_univ _, (contDiff_pi.1 (contDiff_pi.1 (contDiff_id (E := Ix k r → Ix k r → ℂ)) c) d).contDiffOn, fun _ _ _ => rfl⟩ herm := PI.HwUniqW.Hpk_conjTranspose sq := PI.HwUniqW.Hpk_mul_self inv …`.
+-/
 theorem isFormRep_std (k r : ℕ) : IsFormRep k r (stdRep k r) (Hpk k r) 1 where
   map_one := rfl
   map_mul _ _ _ _ := rfl
@@ -218,15 +243,36 @@ theorem isFormRep_std (k r : ℕ) : IsFormRep k r (stdRep k r) (Hpk k r) 1 where
           Finset.single_le_sum (f := fun j => ‖g c j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ d)
       _ ≤ _ := Finset.single_le_sum (f := fun i => ∑ j, ‖g i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ c)⟩
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons X w ih => simp [dsigW, ih, dsig]`.
+-/
 theorem dsigW_zero (R : HRep k r) (w : List (Mx k r)) : dsigW (k := k) (r := r) R.σ w 0 = 0 := by
   induction w with
   | nil => rfl
   | cons X w ih => simp [dsigW, ih, dsig]
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+Introduce `g₀ _` and use `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => by simp⟩`.
+-/
 theorem zero_mem_smooth (R : HRep k r) : (0 : R.H) ∈ R.smooth := fun g₀ _ =>
   ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => by simp⟩
 
+/- English proof (translation)
+Establish `hact : ∀ g (x : ι → R.H), tensAct (fun _ => (1 : Matrix ι ι ℂ)) R g x = fun c => R.σ g (x c)`. Introduce `g x`. Use function extensionality and compare the values at `c`. Simplify using `[tensAct, Matrix.one_apply]`. Establish `hform : ∀ x y : ι → R.H, tensForm (Matrix.diagonal fun c => (ep c : ℂ)) x y = ∑ c, (ep c : ℂ) * ⟪y c, x c⟫_ℂ`.
+
+Introduce `x y`. Simplify using `[tensForm, Matrix.diagonal_apply]`. Use `⟨⟨fun j c => ?_, fun j => ⟨fun x hx => hx j, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun w hw => ?_⟩, fun j g _ v _ => ?_, fun j g _ x _ => by rw [hact], fun j v _ => by simp, fun i j h v _ => by simp [h], fun x _ => Finset.univ_sum_single x⟩, hep, fun j x _ y _ => ?_, fun i j h x …` and prove the remaining obligations. Distinguish the cases in `h : c = j`. Substitute `h` using the available equality.
+
+Simplify using `only [Pi.single_eq_same]`. Conclude with `⟨fun _ hv => hv, fun _ _ _ _ => rfl, fun _ _ _ => rfl, fun w hw => ⟨1, [w], by simpa using hw, fun v _ => by simp [HRep.semi]⟩⟩`. Simplify using `only [Pi.single_eq_of_ne h]`. Conclude with `⟨fun _ _ => zero_mem_smooth R, fun _ _ _ _ => by simp, fun _ _ _ => by simp, fun w _ => ⟨0, [], by simp, fun v _ => by simp [dsigW_zero]⟩⟩`. Use `⟨1, [w], by simpa using hw, fun x _ => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [HRep.semi, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, one_mul]`. Conclude with `Finset.single_le_sum (f := fun c => ‖dsigW (k := k) (r := r) R.σ w (x c)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Rewrite using `[hact]`. Use function extensionality and compare the values at `c`. Distinguish the cases in `h : c = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`. Rewrite using `[hform, Finset.sum_eq_single j (fun c _ h => by simp [Pi.single_eq_of_ne h]) (by simp)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hform]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = i`. Substitute `hc` using the available equality. Simplify using `[Pi.single_eq_of_ne h]`.
+
+Simplify using `[Pi.single_eq_of_ne hc]`.
+-/
 theorem isSignedDecomp_trivial [DecidableEq ι] (R : HRep k r) (ep : ι → ℝ) (hep : ∀ c, ep c = 1 ∨ ep c = -1) :
     IsSignedDecomp (fun _ => (1 : Matrix ι ι ℂ)) (Matrix.diagonal fun c => (ep c : ℂ)) R (fun _ : ι => R)
       (fun j v => Pi.single j v) (fun j x => x j) ep := by

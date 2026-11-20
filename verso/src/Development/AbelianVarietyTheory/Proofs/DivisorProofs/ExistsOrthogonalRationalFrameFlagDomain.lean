@@ -12,6 +12,9 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [herm]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, HermitianTraceFormVanishing.herm_add_left, HermitianTraceFormVanishing.herm_smul_left, ih]`.
+-/
 theorem herm_sum_left (G : Matrix (Fin r) (Fin r) E) (s : Finset (Fin r)) (f : Fin r → E)
     (w : Fin r → Fin r → E) (y : Fin r → E) :
     herm G (∑ j ∈ s, f j • w j) y = ∑ j ∈ s, f j * herm G (w j) y := by
@@ -20,12 +23,20 @@ theorem herm_sum_left (G : Matrix (Fin r) (Fin r) E) (s : Finset (Fin r)) (f : F
   | insert a s ha ih =>
     rw [Finset.sum_insert ha, Finset.sum_insert ha, HermitianTraceFormVanishing.herm_add_left, HermitianTraceFormVanishing.herm_smul_left, ih]
 
+/- English proof (translation)
+Set `τ0 : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Distinguish the cases in `h : τ0 ∈ X.Ψ`. Conclude with `⟨τ0, h⟩`. Conclude with `⟨_, not_not.mp (mt (X.cmType τ0).2 h)⟩`.
+-/
 theorem psi_nonempty (X : Data E r) : ∃ τ, τ ∈ X.Ψ := by
   let τ0 : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
   by_cases h : τ0 ∈ X.Ψ
   · exact ⟨τ0, h⟩
   · exact ⟨_, not_not.mp (mt (X.cmType τ0).2 h)⟩
 
+/- English proof (translation)
+Unfold `dmin lminor`. Establish `: (gram τ.1 G (mat (frm Ψ u) τ)).submatrix (Fin.castLE (Nat.le_of_lt_succ i.isLt)) (Fin.castLE (Nat.le_of_lt_succ i.isLt)) = Matrix.diagonal (fun k => τ.1 (herm G (u (Fin.castLE (Nat.le_of_lt_succ i.isLt) k)) (u (Fin.castLE (Nat.le_of_lt_succ i.isLt) k))))`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, gram, Matrix.of_apply, col_frm, hermC_emb, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[ho _ _ (by rw [Fin.coe_castLE]; exact a.isLt) (by rw [Fin.coe_castLE]; exact b.isLt) (fun e => h (Fin.castLE_injective _ e)), map_zero]`. Rewrite using `[this, Matrix.det_diagonal]`.
+-/
 theorem dmin_frm_of_lt (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (u : Fin r → Fin r → E) (i : Fin (r + 1))
     (ho : ∀ j k : Fin r, (j : ℕ) < i → (k : ℕ) < i → j ≠ k → herm G (u j) (u k) = 0) (τ : Ψ) :
@@ -43,6 +54,13 @@ theorem dmin_frm_of_lt (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E
         (fun e => h (Fin.castLE_injective _ e)), map_zero]
   rw [this, Matrix.det_diagonal]
 
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `psi_nonempty X`. Establish `h1` using `(hv ⟨τ, hτ⟩).2 j.succ`. Establish `hd : dmin X.Gm (frm X.Ψ v) ⟨τ, hτ⟩ j.succ ≠ 0`. Introduce `h0`. Rewrite `h1` using `[h0, Complex.zero_re, mul_zero]`.
+
+Conclude with `lt_irrefl _ h1`. Rewrite `hd` using `[dmin_frm_of_lt X.Ψ X.Gm v j.succ (fun a b ha hb hab => ho a b (by simp only [Fin.val_succ] at ha; omega) (by simp only [Fin.val_succ] at hb; omega) hab)]`. Establish `hf` using `Finset.prod_ne_zero_iff.mp hd ⟨j, by simp⟩ (Finset.mem_univ _)`. Establish `he : (Fin.castLE (Nat.le_of_lt_succ j.succ.isLt) ⟨(j : ℕ), by simp⟩ : Fin r) = j` using `Fin.ext rfl`. Rewrite `hf` using `[he]`.
+
+Introduce `h0`. Conclude with `hf (by rw [h0, map_zero])`.
+-/
 theorem herm_self_ne (X : Data E r) (v : Fin r → Fin r → E) (hv : frm X.Ψ v ∈ X.dom) (m : ℕ)
     (ho : ∀ j k : Fin r, (j : ℕ) < m → (k : ℕ) < m → j ≠ k → herm X.Gm (v j) (v k) = 0)
     (j : Fin r) (hj : (j : ℕ) < m) : herm X.Gm (v j) (v j) ≠ 0 := by
@@ -69,11 +87,17 @@ def gsStep (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E) (m : Fin r
     Fin r → Fin r → E :=
   fun a k => ∑ j, v j k * gsMat G v m j a
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[gsStep, gsMat, h]`.
+-/
 theorem gsStep_ne (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E) (m a : Fin r)
     (h : a ≠ m) : gsStep G v m a = v a := by
   funext k
   simp [gsStep, gsMat, h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [gsStep, gsMat, true_and, mul_sub, Finset.sum_sub_distrib, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem gsStep_self (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E) (m : Fin r) :
     gsStep G v m m = v m - ∑ j, (if j < m then herm G (v m) (v j) / herm G (v j) (v j) else 0) • v j := by
   funext k
@@ -84,11 +108,21 @@ theorem gsStep_self (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E) (
   refine Finset.sum_congr rfl fun j _ => ?_
   split_ifs <;> ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ k a`. Simplify using `[frm, rmul, mat, Matrix.mul_apply, gsStep, map_sum, map_mul]`.
+-/
 theorem frm_gsStep (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E)
     (m : Fin r) : frm Ψ (gsStep G v m) = rmul (frm Ψ v) (fun τ j a => τ.1 (gsMat G v m j a)) := by
   funext τ k a
   simp [frm, rmul, mat, Matrix.mul_apply, gsStep, map_sum, map_mul]
 
+/- English proof (translation)
+Establish `hlow : ∀ a c : Fin r, c < a → gsMat G v m a c = 0`. Introduce `a c hca`. Establish `h1 : a ≠ c` using `fun h => lt_irrefl _ (h ▸ hca)`. Establish `h2 : ¬ (c = m ∧ a < m)` using `fun h => lt_asymm hca (h.1 ▸ h.2)`. Simplify using `[gsMat, h1, h2]`.
+
+Introduce `τ`. Use `⟨?_, fun a c hca => by simp [hlow a c hca]⟩` and prove the remaining obligations. Establish `ht : (mat (fun (τ : Ψ) j a => τ.1 (gsMat G v m j a)) τ).BlockTriangular id`. Introduce `a c hca`. Simplify using `[mat, hlow a c hca]`.
+
+Rewrite using `[Matrix.det_of_upperTriangular ht]`. Use `Finset.prod_ne_zero_iff.2 fun a _ => ?_` and prove the remaining obligations. Establish `hn : ¬ (a = m ∧ a < m)` using `by rintro ⟨rfl, h⟩; exact lt_irrefl _ h`. Simplify using `[mat, gsMat, hn]`.
+-/
 theorem gsB_mem (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (v : Fin r → Fin r → E)
     (m : Fin r) : (fun (τ : Ψ) j a => τ.1 (gsMat G v m j a)) ∈ Bor Ψ r := by
   have hlow : ∀ a c : Fin r, c < a → gsMat G v m a c = 0 := by
@@ -106,6 +140,11 @@ theorem gsB_mem (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (v : 
   have hn : ¬ (a = m ∧ a < m) := by rintro ⟨rfl, h⟩; exact lt_irrefl _ h
   simp [mat, gsMat, hn]
 
+/- English proof (translation)
+Establish `hkm : (k : ℕ) < m` using `hk`. Establish `hne` using `herm_self_ne X v hv m ho k hkm`. Rewrite using `[gsStep_self, HermitianTraceFormVanishing.herm_sub_left, herm_sum_left, Finset.sum_eq_single k (fun i _ hik => ?_) (fun h => absurd (Finset.mem_univ k) h), if_pos hk, div_mul_cancel₀ _ hne, sub_self]`. Use `split_ifs with him`. Rewrite using `[ho i k him hkm hik, mul_zero]`.
+
+Rewrite using `[zero_mul]`.
+-/
 theorem herm_gsStep_self (X : Data E r) (v : Fin r → Fin r → E) (hv : frm X.Ψ v ∈ X.dom) (m : Fin r)
     (ho : ∀ j k : Fin r, (j : ℕ) < m → (k : ℕ) < m → j ≠ k → herm X.Gm (v j) (v k) = 0)
     (k : Fin r) (hk : k < m) : herm X.Gm (gsStep X.Gm v m m) (v k) = 0 := by
@@ -118,6 +157,21 @@ theorem herm_gsStep_self (X : Data E r) (v : Fin r → Fin r → E) (hv : frm X.
   · rw [ho i k him hkm hik, mul_zero]
   · rw [zero_mul]
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`. Conclude with `⟨u, hu, fun j k hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ m ih`.
+
+Introduce `hm`. Take `⟨v, hv, ho⟩` from `ih (Nat.le_of_succ_le hm)`. Set `mf : Fin r` to `⟨m, hm⟩`. Use `⟨gsStep X.Gm v mf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[frm_gsStep]`.
+
+Conclude with `OrthogonalFrameDomain.rmul_mem_dom X hv (gsB_mem X.Ψ X.Gm v mf)`. Introduce `j k hj hk hjk`. Distinguish the cases in `hjm : j = mf`. Establish `hkm : k ≠ mf` using `fun h => hjk (hjm.trans h.symm)`. Establish `hk' : k < mf`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Establish `: (k : ℕ) ≠ m` using `fun h => hkm (Fin.ext h)`. Use `show (k : ℕ) < m`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hjm, gsStep_ne X.Gm v mf k hkm]`.
+
+Conclude with `herm_gsStep_self X v hv mf ho k hk'`. Distinguish the cases in `hkm : k = mf`. Establish `hj' : j < mf`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Establish `: (j : ℕ) ≠ m` using `fun h => hjm (Fin.ext h)`.
+
+Use `show (j : ℕ) < m`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hkm, gsStep_ne X.Gm v mf j hjm, ← HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm, herm_gsStep_self X v hv mf ho j hj', HermitianTraceFormVanishing.cc_zero]`. Rewrite using `[gsStep_ne X.Gm v mf j hjm, gsStep_ne X.Gm v mf k hkm]`. Establish `hj' : (j : ℕ) ≠ m` using `fun h => hjm (Fin.ext h)`.
+
+Establish `hk' : (k : ℕ) ≠ m` using `fun h => hkm (Fin.ext h)`. Conclude with `ho j k (by omega) (by omega) hjk`.
+-/
 theorem exists_ortho_lt (X : Data E r) (u : Fin r → Fin r → E) (hu : frm X.Ψ u ∈ X.dom) :
     ∀ m ≤ r, ∃ v : Fin r → Fin r → E, frm X.Ψ v ∈ X.dom ∧
       ∀ j k : Fin r, (j : ℕ) < m → (k : ℕ) < m → j ≠ k → herm X.Gm (v j) (v k) = 0 := by
@@ -154,6 +208,9 @@ theorem exists_ortho_lt (X : Data E r) (u : Fin r → Fin r → E) (hu : frm X.�
           have hk' : (k : ℕ) ≠ m := fun h => hkm (Fin.ext h)
           exact ho j k (by omega) (by omega) hjk
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨v, hv, ho⟩` from `exists_ortho_lt X u hu r le_rfl`. Conclude with `⟨v, fun j k hjk => ho j k j.isLt k.isLt hjk, hv⟩`.
+-/
 theorem exists_ortho_frm (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) (u : Fin r → Fin r → E) :
     GlobalTheory.OrthoFrame.frm X.Ψ u ∈ X.dom → ∃ v : Fin r → Fin r → E,

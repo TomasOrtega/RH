@@ -12,6 +12,27 @@ open scoped NNReal
 
 namespace GlobalTheory.CompHt
 
+/- English proof (translation)
+Introduce `K _ _ la ℓ _ _ hℓ T io e ho k hk hm b`. Establish `hnv : ∀ x : ℂ_[ℓ], ‖x‖ = ((Valued.v x : ℝ≥0) : ℝ)` using `fun x => by`. Rewrite using `[PadicComplex.norm_eq_norm, Valuation.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hpos : ∀ x : K, x ≠ 0 → (0 < vLa la x ↔ la.valuation K x < 1)` using `fun x hx => by`. Establish `h0 : la.valuation K x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Use `WithZero.log_lt_log h0 (one_ne_zero)` as an intermediate fact. Rewrite `this` using `[WithZero.log_one]`.
+
+Simplify using `only [vLa]`. Prove the components needed by the constructor for the conclusion. Introduce `h; exact this.1 (by omega)`. Introduce `h`. Use `this.2 h` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hℓK : (ℓ : K) ≠ 0` using `by exact_mod_cast (Fact.out : ℓ.Prime).ne_zero`. Establish `hcpos : (0 : ℝ) < vLa la (ℓ : K)`. Establish `h1 : la.valuation K (ℓ : K) < 1`. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := K) la (ℓ : 𝓞 K)).2 hℓ` as an intermediate fact.
+
+Simplify using `using this`. Conclude with `(hpos _ hℓK).2 h1` after adjusting the coercions. Establish `ha : algebraMap K ℂ_[ℓ] b ≠ 0` using `(map_ne_zero _).2 hb`. Establish `hio : io b ≠ 0` using `(map_ne_zero _).2 hb`. Establish `h` using `hm (io b)`.
+
+Rewrite `h` using `[hk, val_vw_of_ne la ℓ _ ha, nval_of_ne hio, ho.2 b]`. Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`. Establish `h' : (vLa la (ℓ : K) : ℝ) * (Real.log ((Valued.v : Valuation ℂ_[ℓ] ℝ≥0) (algebraMap K ℂ_[ℓ] b) : ℝ) / Real.log ((Valued.v : Valuation ℂ_[ℓ] ℝ≥0) (ℓ : ℂ_[ℓ]) : ℝ)) = vLa la b`. Rewrite `h` using `[EReal.coe_eq_coe_iff]`. Rewrite using `[h]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hL : Real.log ((Valued.v : Valuation ℂ_[ℓ] ℝ≥0) (ℓ : ℂ_[ℓ]) : ℝ) < 0`. Rewrite using `[PadicComplex.valuation_p]`. Establish `: (1 : ℝ) < ℓ` using `by exact_mod_cast (Fact.out : ℓ.Prime).one_lt`.
+
+Use `push_cast`. Conclude with `Real.log_neg (by positivity) (by rw [one_div]; exact inv_lt_one_of_one_lt₀ this)`. Establish `hva : (0 : ℝ) < ((Valued.v : Valuation ℂ_[ℓ] ℝ≥0) (algebraMap K ℂ_[ℓ] b) : ℝ)`. Establish `: (Valued.v : Valuation ℂ_[ℓ] ℝ≥0) (algebraMap K ℂ_[ℓ] b) ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions.
+
+Rewrite using `[hnv, ← hpos b hb, ← Int.cast_pos (R := ℝ), ← h', mul_pos_iff_of_pos_left hcpos, ← Real.log_neg_iff hva]`. Prove the components needed by the constructor for the conclusion. Introduce `hA`. Conclude with `div_pos_of_neg_of_neg hA hL`. Introduce `hq`.
+
+Assume the negation of the conclusion as `hA`. Use `push_neg at hA`. Conclude with `absurd hq (not_lt.2 (div_nonpos_of_nonneg_of_nonpos hA hL.le))`.
+-/
 theorem norm_algebraMap_lt_one_iff_valuation_lt_one : ∀ (K : Type) [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (ℓ : ℕ) [Fact ℓ.Prime]
     [Algebra K ℂ_[ℓ]], (ℓ : 𝓞 K) ∈ la.asIdeal → ∀ (T : CDVR) (io : K →+* T.Fr) (e : ℕ), OverLa la T.V io e →
     ∀ (k : T.Fr →+* ℂ_[ℓ]), (∀ b, k (io b) = algebraMap K ℂ_[ℓ] b) →

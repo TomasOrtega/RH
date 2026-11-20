@@ -19,9 +19,15 @@ def orthIn (U : Submodule ℂ V) : Submodule ℂ V where
 
 variable {ι}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_orthIn {U : Submodule ℂ V} {v : V} :
     v ∈ orthIn ι U ↔ ∀ u ∈ U, inner ℂ (ι u) (ι v) = 0 := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[Submodule.disjoint_def]`. Introduce `v hvU hvO`. Establish `h` using `hvO v hvU`. Rewrite `h` using `[inner_self_eq_zero]`. Conclude with `hι (h.trans (map_zero ι).symm)`.
+-/
 theorem disjoint_orthIn (hι : Function.Injective ι) (U : Submodule ℂ V) : Disjoint U (orthIn ι U) := by
   rw [Submodule.disjoint_def]
   intro v hvU hvO
@@ -29,6 +35,13 @@ theorem disjoint_orthIn (hι : Function.Injective ι) (U : Submodule ℂ V) : Di
   rw [inner_self_eq_zero] at h
   exact hι (h.trans (map_zero ι).symm)
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun v _ => ?_` and prove the remaining obligations. Take `⟨W, hWf, hvW, hW⟩` from `h v`. Use `set M : Submodule ℂ H := (U ⊓ W).map ι with hM`. Establish `: FiniteDimensional ℂ (U ⊓ W : Submodule ℂ V)` using `Submodule.finiteDimensional_of_le (inf_le_right : U ⊓ W ≤ W)`. Establish `: FiniteDimensional ℂ M` using `by rw [hM]; infer_instance`.
+
+Establish `hp : M.starProjection (ι v) ∈ M` using `Submodule.starProjection_apply_mem M (ι v)`. Take `⟨a, haUW, hax⟩` from `Submodule.mem_map.1 hp`. Establish `horth : ι v - M.starProjection (ι v) ∈ Mᗮ` using `Submodule.sub_starProjection_mem_orthogonal _`. Use `Submodule.mem_sup.2 ⟨a, haUW.1, v - a, fun u hu => ?_, add_sub_cancel _ _⟩` and prove the remaining obligations. Take `⟨u', hu'UW, hu'⟩` from `hW u hu`.
+
+Rewrite using `[hu' (v - a) (W.sub_mem hvW haUW.2), map_sub, hax]`. Conclude with `Submodule.inner_right_of_mem_orthogonal (Submodule.mem_map_of_mem hu'UW) horth`.
+-/
 theorem sup_orthIn_eq_top (U : Submodule ℂ V)
     (h : ∀ v : V, ∃ W : Submodule ℂ V, FiniteDimensional ℂ W ∧ v ∈ W ∧
       ∀ u ∈ U, ∃ u' ∈ U ⊓ W, ∀ w ∈ W, inner ℂ (ι u) (ι w) = inner ℂ (ι u') (ι w)) :
@@ -47,6 +60,15 @@ theorem sup_orthIn_eq_top (U : Submodule ℂ V)
   rw [hu' (v - a) (W.sub_mem hvW haUW.2), map_sub, hax]
   exact Submodule.inner_right_of_mem_orthogonal (Submodule.mem_map_of_mem hu'UW) horth
 
+/- English proof (translation)
+Establish `hcomm : ∀ q : ℂ[X], ∀ z, T (aeval T q z) = aeval T q (T z)`. Introduce `q z`. Establish `h` using `(Commute.all (X : ℂ[X]) q).map (aeval T)`. Rewrite `h` using `[aeval_X]`. Conclude with `congrArg (fun L : Module.End ℂ V => L z) h.eq`.
+
+Use `revert x y`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C a`. Introduce `x y`. Simplify using `only [Polynomial.map_C, aeval_C, Module.algebraMap_end_apply, map_smul, inner_smul_left, inner_smul_right, Complex.coe_algebraMap, Complex.conj_ofReal]`.
+
+Consider the case `add p q hp hq`. Introduce `x y`. Simplify using `only [Polynomial.map_add, map_add, LinearMap.add_apply, inner_add_left, inner_add_right, hp, hq]`. Consider the case `monomial k a ih`. Introduce `x y`.
+
+Establish `e : ((C a * X ^ (k + 1) : ℝ[X]).map (algebraMap ℝ ℂ)) = (C a * X ^ k : ℝ[X]).map (algebraMap ℝ ℂ) * X`. Rewrite using `[pow_succ, ← mul_assoc, Polynomial.map_mul, Polynomial.map_X]`. Rewrite using `[e, map_mul, aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih (T x) y, hT, hcomm]`.
+-/
 theorem inner_aeval_map_left {T : Module.End ℂ V}
     (hT : ∀ x y, inner ℂ (ι (T x)) (ι y) = inner ℂ (ι x) (ι (T y))) (p : ℝ[X]) (x y : V) :
     inner ℂ (ι (aeval T (p.map (algebraMap ℝ ℂ)) x)) (ι y) =
@@ -72,6 +94,13 @@ theorem inner_aeval_map_left {T : Module.End ℂ V}
       rw [pow_succ, ← mul_assoc, Polynomial.map_mul, Polynomial.map_X]
     rw [e, map_mul, aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih (T x) y, hT, hcomm]
 
+/- English proof (translation)
+Proceed by induction on `q using Polynomial.induction_on with`. Consider the case `C a`. Introduce `z hz`. Rewrite using `[aeval_C, Module.algebraMap_end_apply]`. Conclude with `Z.smul_mem a hz`.
+
+Consider the case `add p q hp hq`. Introduce `z hz`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Z.add_mem (hp z hz) (hq z hz)`. Consider the case `monomial k a ih`.
+
+Introduce `z hz`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, aeval_X, Module.End.mul_apply]`. Conclude with `ih _ (hZ z hz)`.
+-/
 theorem aeval_mem {T : Module.End ℂ V} {Z : Submodule ℂ V} (hZ : ∀ z ∈ Z, T z ∈ Z) (q : ℂ[X]) :
     ∀ z ∈ Z, aeval T q z ∈ Z := by
   induction q using Polynomial.induction_on with
@@ -88,6 +117,15 @@ theorem aeval_mem {T : Module.End ℂ V} {Z : Submodule ℂ V} (hZ : ∀ z ∈ Z
     rw [pow_succ, ← mul_assoc, map_mul, aeval_X, Module.End.mul_apply]
     exact ih _ (hZ z hz)
 
+/- English proof (translation)
+Use `set S := aeval T (p.map (algebraMap ℝ ℂ)) with hS`. Establish `hSym : ∀ a b, inner ℂ (ι (S a)) (ι b) = inner ℂ (ι a) (ι (S b))` using `inner_aeval_map_left hT p`. Establish `hSZ : ∀ z ∈ Z, S z ∈ Z` using `aeval_mem hZ _`. Use `set S' : Z →ₗ[ℂ] Z := S.restrict hSZ with hS'`. Establish `hdisj : Disjoint (LinearMap.ker S') (LinearMap.range S')`.
+
+Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `y hyk ⟨z, rfl⟩`. Establish `h1 : S (S z) = 0` using `congrArg Subtype.val (LinearMap.mem_ker.1 hyk)`. Establish `h2 : inner ℂ (ι (S z)) (ι (S z)) = 0` using `by rw [hSym, h1, map_zero, inner_zero_right]`. Rewrite `h2` using `[inner_self_eq_zero, ← map_zero ι]`.
+
+Conclude with `Subtype.ext (hι h2)`. Establish `hcompl : IsCompl (LinearMap.ker S') (LinearMap.range S')` using `(Submodule.isCompl_iff_disjoint _ _ (by`. Rewrite using `[add_comm, LinearMap.finrank_range_add_finrank_ker])).2 hdisj`. Take `⟨m, hm, r, ⟨z, rfl⟩, hmr⟩` from `Submodule.mem_sup.1 (hcompl.sup_eq_top ▸ Submodule.mem_top : (⟨x, hx⟩ : Z) ∈ _)`. Use `⟨m, m.2, congrArg Subtype.val (LinearMap.mem_ker.1 hm), fun w hw => ?_⟩` and prove the remaining obligations.
+
+Establish `hxe : x = (m : V) + S z` using `congrArg Subtype.val hmr.symm`. Rewrite using `[hxe, map_add, inner_add_left, hSym, hw, map_zero, inner_zero_right, add_zero]`.
+-/
 theorem exists_apply_eq_zero_inner_eq (hι : Function.Injective ι) {T : Module.End ℂ V}
     (hT : ∀ x y, inner ℂ (ι (T x)) (ι y) = inner ℂ (ι x) (ι (T y))) (p : ℝ[X])
     (Z : Submodule ℂ V) [FiniteDimensional ℂ Z] (hZ : ∀ z ∈ Z, T z ∈ Z) {x : V} (hx : x ∈ Z) :
@@ -115,11 +153,21 @@ theorem exists_apply_eq_zero_inner_eq (hι : Function.Injective ι) {T : Module.
   have hxe : x = (m : V) + S z := congrArg Subtype.val hmr.symm
   rw [hxe, map_add, inner_add_left, hSym, hw, map_zero, inner_zero_right, add_zero]
 
+/- English proof (translation)
+Establish `h` using `(Commute.all (X : ℂ[X]) q).map (aeval T)`. Rewrite `h` using `[aeval_X]`. Conclude with `congrArg (fun L : Module.End ℂ V => L z) h.eq`.
+-/
 theorem apply_aeval_comm (T : Module.End ℂ V) (q : ℂ[X]) (z : V) : T (aeval T q z) = aeval T q (T z) := by
   have h := (Commute.all (X : ℂ[X]) q).map (aeval T)
   rw [aeval_X] at h
   exact congrArg (fun L : Module.End ℂ V => L z) h.eq
 
+/- English proof (translation)
+Use `sup_orthIn_eq_top U fun v => ?_` and prove the remaining obligations. Take `⟨V₀, hv, hV₀T, hfin, havg⟩` from `h v`. Take `⟨p, hpv, hpfin⟩` from `hfin v hv`. Use `⟨V₀ ⊓ LinearMap.ker (aeval T (p.map (algebraMap ℝ ℂ))), hpfin, ⟨hv, hpv⟩, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨e, ⟨heU, heV₀⟩, he⟩` from `havg u hu`.
+
+Take `⟨q, hqe, hqfin⟩` from `hfin e heV₀`. Use `set Z : Submodule ℂ V := U ⊓ (V₀ ⊓ LinearMap.ker (aeval T (q.map (algebraMap ℝ ℂ)))) with hZ`. Establish `: FiniteDimensional ℂ Z` using `Submodule.finiteDimensional_of_le (inf_le_right : Z ≤ _)`. Establish `hZT : ∀ z ∈ Z, T z ∈ Z`. Introduce and unpack `z ⟨hzU, hzV₀, hzk⟩`.
+
+Use `⟨hUT z hzU, hV₀T z hzV₀, ?_⟩` and prove the remaining obligations. Use `show T z ∈ LinearMap.ker _`. Rewrite using `[LinearMap.mem_ker, ← apply_aeval_comm, LinearMap.mem_ker.1 (hzk : z ∈ LinearMap.ker _), map_zero]`. Take `⟨m, ⟨hmU, hmV₀, -⟩, hmk, hm⟩` from `exists_apply_eq_zero_inner_eq hι hT p Z hZT (⟨heU, heV₀, hqe⟩ : e ∈ Z)`. Conclude with `⟨m, ⟨hmU, hmV₀, hmk⟩, fun w ⟨hwV₀, hwk⟩ => (he w hwV₀).trans (hm w hwk)⟩`.
+-/
 theorem sup_orthIn_eq_top_of_symmetric (U : Submodule ℂ V) (hι : Function.Injective ι)
     {T : Module.End ℂ V} (hT : ∀ x y, inner ℂ (ι (T x)) (ι y) = inner ℂ (ι x) (ι (T y)))
     (hUT : ∀ u ∈ U, T u ∈ U)
@@ -145,6 +193,9 @@ theorem sup_orthIn_eq_top_of_symmetric (U : Submodule ℂ V) (hι : Function.Inj
     exists_apply_eq_zero_inner_eq hι hT p Z hZT (⟨heU, heV₀, hqe⟩ : e ∈ Z)
   exact ⟨m, ⟨hmU, hmV₀, hmk⟩, fun w ⟨hwV₀, hwk⟩ => (he w hwV₀).trans (hm w hwk)⟩
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← hA] exact hv _ (hU u hu)`.
+-/
 theorem map_mem_orthIn {U : Submodule ℂ V} {A A' : V → V}
     (hA : ∀ x y, inner ℂ (ι (A' x)) (ι y) = inner ℂ (ι x) (ι (A y))) (hU : ∀ u ∈ U, A' u ∈ U)
     {v : V} (hv : v ∈ orthIn ι U) : A v ∈ orthIn ι U := fun u hu => by

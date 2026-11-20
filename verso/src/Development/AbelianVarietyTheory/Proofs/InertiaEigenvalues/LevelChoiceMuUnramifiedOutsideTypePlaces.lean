@@ -26,9 +26,37 @@ namespace GlobalTheory.TypePlaceUnram
 
 open GlobalTheory.IdemSupport GlobalTheory.LevelPlaces GlobalTheory.SplitOffPlaces
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])`.
+-/
 theorem cP_cP {D : D7} (P : HeightOneSpectrum (𝓞 D.host.E)) : cP (cP P) = P :=
   HeightOneSpectrum.ext (Ideal.ext fun x => by rw [mem_cP, mem_cP, cO_cO])
 
+/- English proof (translation)
+Introduce `D T0 L μ0 hL hS j x hinf h1 h2 hx`. Take `⟨Φ, hΦ⟩` from `exists_comp D`. Establish `hk : ∀ PP ∈ L.Pg, idemAt PP * idem L.Pg = idemAt PP` using `fun l hl => GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (hS.isIdemAt ha).1) (fun a ha b hb hab => hS.mul_eq_zero ha hb hab) hl`. Establish `hc0 : ∀ PP ∈ L.Pg, idemAt PP * cA D (idem L.Pg) = 0` using `fun PP hPP => by`. Rewrite using `[idem, map_sum, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_eq_zero fun i hi => hS.mul_conj hPP hi`. Establish `hc1 : ∀ PP ∈ L.Pg, cA D (idemAt PP) * idem L.Pg = 0` using `fun PP hPP => by`. Rewrite using `[idem, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => by rw [mul_comm]; exact hS.mul_conj hi hPP`. Establish `hx1 : ∀ PP ∈ L.Pg, Φ (x : AE D) PP = 1 ∧ Φ (x : AE D) (cP PP) = 1` using `fun PP hPP => by`.
+
+Establish `hd` using `delta_of_isIdemAt hΦ (hS.isIdemAt hPP)`. Establish `hd'` using `delta_conj hΦ hd`. Establish `a : idemAt PP * (x : AE D) = idemAt PP`. Establish `e : idemAt PP * (idem L.Pg + cA D (idem L.Pg)) = idemAt PP` using `by rw [mul_add, hk PP hPP, hc0 PP hPP, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `b : cA D (idemAt PP) * (x : AE D) = cA D (idemAt PP)`. Establish `e : cA D (idemAt PP) * (idem L.Pg + cA D (idem L.Pg)) = cA D (idemAt PP)`. Rewrite using `[mul_add, hc1 PP hPP, zero_add, ← map_mul, hk PP hPP]`. Combine the equalities or inequalities in the displayed calculation. Prove the components needed by the constructor for the conclusion.
+
+Establish `h` using `congrArg (fun z => Φ z PP) a`. Rewrite `h` using `[ev_mul, hd.2.1, one_mul]`. Then use the resulting hypothesis. Establish `h` using `congrArg (fun z => Φ z (cP PP)) b`. Rewrite `h` using `[ev_mul, hd'.2.1, one_mul]`. Then use the resulting hypothesis. Establish `hg : ∀ k, (D.host.g k : D.host.E) ≠ 0` using `fun k => Nat.cast_ne_zero.2 (D.host.g_prime k).ne_zero`.
+
+Use `set m : ℕ := D.host.g 0 * D.host.g 1 with hmdef`. Establish `hm0 : (m : D.host.E) ≠ 0` using `by rw [hmdef, Nat.cast_mul]; exact mul_ne_zero (hg 0) (hg 1)`. Establish `hunr : ∀ P : HeightOneSpectrum (𝓞 D.host.E), (m : 𝓞 D.host.E) ∉ P.asIdeal → (L.C.mu0 j).UnrAt P` using `fun P hP => (L.C.isMu0 j).unr P fun k hk => hP (by`. Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `hk`. Rewrite using `[hmdef, Nat.cast_mul]`.
+
+Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk'`. Conclude with `Ideal.mul_mem_left _ _ hk')`. Use `GlobalTheory.tame_heckeChar_eq_one_of_finUnit D _ (L.C.mu0 j) (hL.mu0 j) (L.C.isMu0 j).tame m hunr x ⟨hinf, h1, h2⟩ ⟨finPart D (((x : AE D) - 1) * incA D ((m : D.host.E)⁻¹)), (hΦ.int _).2 fun Q => ?_, ?_⟩` and prove the remaining obligations. Establish `e : Φ (((x : AE D) - 1) * incA D ((m : D.host.E)⁻¹)) Q = (Φ (x : AE D) Q - 1) * algebraMap D.host.E (Q.adicCompletion D.host.E) ((m : D.host.E)⁻¹)`.
+
+Rewrite using `[ev_mul, hΦ.inc, map_sub, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Distinguish the cases in `hQ : (m : 𝓞 D.host.E) ∈ Q.asIdeal`. Establish `hq : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ Q.asIdeal`.
+
+Rewrite `hQ` using `[hmdef, Nat.cast_mul]`. Break down `Q.isPrime.mem_or_mem hQ with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`. Take `⟨k, hk⟩` from `hq`.
+
+Establish `h1Q : Φ (x : AE D) Q = 1`. Break down `div_or_div_conj L.C.P k Q hk with h | h` into its components or cases. Conclude with `(hx1 Q ((hL.Pg Q).2 ⟨k, h⟩)).1`. Establish `e2 : conjSpec Q = cP Q` using `(isConjPl_iff _ _).1 (isConjPl_conjSpec Q)`. Rewrite `h` using `[e2]`.
+
+Use `(hx1 (cP Q) ((hL.Pg _).2 ⟨k, h⟩)).2` as an intermediate fact. Rewrite `this` using `[cP_cP]`. Then use the resulting hypothesis. Rewrite using `[h1Q, sub_self, zero_mul]`. Conclude with `zero_mem _`. Use `mul_mem (sub_mem ((hΦ.int _).1 h1 Q) (one_mem _)) ?_` and prove the remaining obligations.
+
+Establish `hm' : (m : 𝓞 D.host.E) ≠ 0` using `fun h => hm0 (by exact_mod_cast congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) h)`. Use `(inv_mem_iff Q hm').2 hQ` as an intermediate fact. Simplify using `using this`. Rewrite using `[nsmul_eq_mul, ← map_natCast (finPart D) m, ← map_mul, ← map_natCast (incA D) m, ← mul_assoc, mul_comm _ ((x : AE D) - 1), mul_assoc, ← map_mul, mul_inv_cancel₀ hm0, map_one, mul_one, map_sub, map_one]`.
+-/
 theorem unramOutside_mu0_of_splitSet : ∀ (D : D7) (T0 : Type) (L : LevCh D T0) (μ0 : T0), L.Is μ0 → SplitSet L.Pg → ∀ j : Fin D.R.m, UnramOutside (L.mu0 ((j : ℕ) + 1)) L.Pg := by
   intro D T0 L μ0 hL hS j x hinf h1 h2 hx
   obtain ⟨Φ, hΦ⟩ := exists_comp D

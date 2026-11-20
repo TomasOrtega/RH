@@ -11,6 +11,13 @@ open scoped TensorProduct Pointwise
 
 namespace GlobalTheory.RingChain
 
+/- English proof (translation)
+Set `F : (Fin m → A) →ₗ[A] Qt P Q` to `(Q.comap P.subtype).mkQ ∘ₗ Fintype.linearCombination A u`. Establish `hF : ∀ x, F x = Submodule.Quotient.mk (∑ i, x i • u i)` using `fun _ => rfl`. Establish `surj : Function.Surjective F` using `fun y => by`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨x, rfl⟩` from `hs p`.
+
+Conclude with `⟨x, rfl⟩`. Establish `ker : LinearMap.range (Matrix.mulVecLin R) = LinearMap.ker F`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, hF, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, LinearMap.mem_range]`. Conclude with `(hk x).symm`.
+
+Conclude with `⟨(Submodule.quotEquivOfEq _ _ ker).trans (F.quotKerEquivOfSurjective surj), fun x => rfl⟩`.
+-/
 theorem exists_presentation_equiv {A X : Type} [CommRing A] [AddCommGroup X] [Module A X] (P Q : Submodule A X) {m r : ℕ}
     (u : Fin m → P) (R : Matrix (Fin m) (Fin r) A) (hs : ∀ p : P, ∃ x : Fin m → A, ∑ i, x i • u i = p)
     (hk : ∀ x : Fin m → A, ((∑ i, x i • u i : P) : X) ∈ Q ↔ ∃ c, R.mulVec c = x) :
@@ -28,6 +35,13 @@ theorem exists_presentation_equiv {A X : Type} [CommRing A] [AddCommGroup X] [Mo
     exact (hk x).symm
   exact ⟨(Submodule.quotEquivOfEq _ _ ker).trans (F.quotKerEquivOfSurjective surj), fun x => rfl⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hϖ`. Use `choose z hz using hf`. Establish `ha : a ≠ 0` using `fun e => h0 (by rw [e, map_zero])`. Establish `h1 : g a • y = ∑ k, g (y' k) • b k` using `Subtype.ext (funext fun j => by`. Rewrite using `[Submodule.coe_smul, ← hy, Submodule.coe_sum, Finset.sum_apply]`.
+
+Simplify using `[hb, Pi.single_apply, mul_comm])`. Establish `h2 : g (∑ k, y' k * z k) = g a * f y`. Rewrite using `[← smul_eq_mul, ← map_smul, h1, map_sum, map_sum]`. Simplify using `[hz]`. Take `⟨w, hw⟩` from `(dvd_descends_of_isIntegral A' B g hi hg).1 a _ ha ⟨_, h2⟩`.
+
+Rewrite `h2` using `[hw, map_mul]`. Conclude with `⟨w, mul_left_cancel₀ h0 h2⟩`.
+-/
 theorem functional_mem_range {A' B : Type} [CommRing A'] [IsDomain A'] [IsIntegrallyClosed A'] [CommRing B] [IsDomain B]
     (g : A' →+* B) (hi : Function.Injective g) (hg : g.IsIntegral) {h : ℕ} {ϖ : B} (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ Set.range g)
     (P : Submodule B (Fin h → B)) (b : Fin h → P) (hb : ∀ k, (b k).1 = ϖ • Pi.single k 1) (f : P →ₗ[B] B)
@@ -45,6 +59,33 @@ theorem functional_mem_range {A' B : Type} [CommRing A'] [IsDomain A'] [IsIntegr
   rw [hw, map_mul] at h2
   exact ⟨w, mul_left_cancel₀ h0 h2⟩
 
+/- English proof (translation)
+Take `⟨m, f, s, -, -, hfs⟩` from `Module.Finite.exists_comp_eq_id_of_projective B P`. Take `⟨n, f', s', -, -, hfs'⟩` from `Module.Finite.exists_comp_eq_id_of_projective B Q`. Establish `e1 : ∀ p, f (s p) = p` using `fun p => LinearMap.congr_fun hfs p`. Establish `e2 : ∀ p, f' (s' p) = p` using `fun p => LinearMap.congr_fun hfs' p`. Take `⟨u, hu⟩ : ∃ u : Fin m → P, ∀ x, ∑ i, x i • u i = f x` from `⟨fun i => f (Pi.single i 1), fun x => by`.
+
+Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 2`. Conclude with `congrArg f (funext fun j => by simp [Pi.single_apply, eq_comm])⟩`. Take `⟨R, hR⟩ : ∃ R : Matrix (Fin m) (Fin (m + n)) B, ∀ a c, R.mulVec (Sum.elim a c ∘ finSumFinEquiv.symm) = a - s (f a) + s (Submodule.inclusion hQP (f' c))` from `⟨(Matrix.fromCols (LinearMap.toMatrix' (LinearMap.id - s ∘ₗ f)) (LinearMap.toMatrix' (s ∘ₗ Submodule.inclusion hQP ∘ₗ f'))).submatrix id finSumFinEquiv.symm, fun a c => by`.
+
+Rewrite using `[Matrix.submatrix_mulVec_equiv, Function.comp_assoc, Equiv.symm_symm, Equiv.symm_comp_self, Function.comp_id, Function.comp_id, Matrix.fromCols_mulVec_sumElim, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Use the proof step `rfl⟩`. Establish `k1 : ∀ x (hx : (f x).1 ∈ Q), R.mulVec (Sum.elim x (s' ⟨_, hx⟩) ∘ finSumFinEquiv.symm) = x` using `fun x hx => by`. Rewrite using `[hR, e2]`. Conclude with `sub_add_cancel _ _`.
+
+Establish `k2 : ∀ c, (f (R.mulVec c)).1 ∈ Q` using `fun c => by`. Establish `: c = Sum.elim (c ∘ finSumFinEquiv ∘ Sum.inl) (c ∘ finSumFinEquiv ∘ Sum.inr) ∘ finSumFinEquiv.symm`. Use extensionality with `j`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[Function.comp_apply, Equiv.symm_apply_apply]`.
+
+Apply the tactic sequence `cases j <;> rfl`. Rewrite using `[this, hR, map_add, map_sub, e1, e1, sub_self, zero_add]`. Conclude with `(f' _).2`. Take `⟨e, he⟩` from `exists_presentation_equiv P Q u R (fun p => ⟨s p, by rw [hu, e1]⟩) fun x => by`. Rewrite using `[hu]`.
+
+Conclude with `⟨fun hx => ⟨_, k1 x hx⟩, fun ⟨c, hc⟩ => hc ▸ k2 c⟩`. Set `b : Fin h → Q` to `fun k => ⟨ϖ • Pi.single k 1, hQ (Submodule.smul_mem_pointwise_smul _ _ _ trivial)⟩`. Use `⟨m, m + n, u, R, e, {ϖ} ∪ Set.range (fun ij : Fin m × Fin h => (u ij.1).1 ij.2) ∪ Set.range (fun ij : Fin m × Fin (m + n) => R ij.1 ij.2) ∪ Set.range (fun ij : Fin m × Fin h => s (Submodule.inclusion hQP (b ij.2)) ij.1) ∪ Set.range (fun ij : Fin n × Fin h => s' (b ij.2) ij.1), he …` and prove the remaining obligations. Conclude with `((((Set.finite_singleton _).union (Set.finite_range _)).union (Set.finite_range _)).union (Set.finite_range _)).union (Set.finite_range _)`. Introduce `A' _ _ _ g hi hg hT P' Q' hP' hQ'`.
+
+Simplify using `only [Set.union_subset_iff, Set.singleton_subset_iff, Set.range_subset_iff, Prod.forall] at hT`. Take `⟨⟨⟨⟨t1, t2⟩, t3⟩, t4⟩, t5⟩` from `hT`. Use `choose v hv using t2`. Use `choose R' hR' using t3`. Establish `hv' : ∀ i, piMap g (Fin h) (v i) = (u i).1` using `fun i => funext (hv i)`.
+
+Set `u' : Fin m → P'` to `fun i => ⟨v i, (hP' _).2 (hv' i ▸ (u i).2)⟩`. Establish `hRm : (Matrix.of R').map g = R` using `by ext i j; exact hR' i j`. Establish `hsum : ∀ x : Fin m → A', piMap g (Fin h) (∑ i, x i • u' i : P').1 = (f (g ∘ x)).1` using `fun x => by`. Rewrite using `[← hu, Submodule.coe_sum, Submodule.coe_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_smul, Submodule.coe_smul, map_smulₛₗ, hv']`. Both sides reduce to the same expression. Establish `hmv : ∀ c, g ∘ (Matrix.of R').mulVec c = R.mulVec (g ∘ c)` using `fun c => by`. Use extensionality with `i`. Rewrite using `[← hRm, Function.comp_apply, RingHom.map_mulVec]`.
+
+Take `⟨e', he'⟩` from `exists_presentation_equiv P' Q' u' (Matrix.of R') (fun p => by`. Use `fun i => functional_mem_range g hi hg h0 t1 P (fun k => Submodule.inclusion hQP (b k)) (fun _ => rfl) (LinearMap.proj i ∘ₗ s) (t4 i) ⟨_, (hP' _).1 p.2⟩ p.1 rfl` as an intermediate fact. Use `choose x hx using this`. Use `⟨x, Subtype.ext (funext fun j => hi ?_)⟩` and prove the remaining obligations. Establish `h3 : g ∘ x = s ⟨_, (hP' _).1 p.2⟩` using `funext hx`.
+
+Establish `h4` using `hsum x`. Rewrite `h4` using `[h3, e1]`. Conclude with `congrFun h4 j) fun x => by`. Rewrite using `[hQ', hsum]`. Use `⟨fun hx => ?_, fun ⟨c, hc⟩ => by rw [← hc, hmv]; exact k2 _⟩` and prove the remaining obligations.
+
+Use `fun i => functional_mem_range g hi hg h0 t1 Q b (fun _ => rfl) (LinearMap.proj i ∘ₗ s') (t5 i) ⟨_, hx⟩ _ (hsum x)` as an intermediate fact. Use `choose c hc using this`. Use `⟨Sum.elim x c ∘ finSumFinEquiv.symm, funext fun j => hi ?_⟩` and prove the remaining obligations. Establish `h3 : g ∘ c = s' ⟨_, hx⟩` using `funext hc`. Establish `h4` using `hmv (Sum.elim x c ∘ finSumFinEquiv.symm)`.
+
+Rewrite `h4` using `[← Function.comp_assoc g, Sum.comp_elim, h3, k1]`. Conclude with `congrFun h4 j`. Conclude with `⟨u', Matrix.of R', e', hv', hRm, he'⟩`.
+-/
 theorem exists_presentation_descends (B : Type) [CommRing B] [IsDomain B] (h : ℕ) (ϖ : B) (P Q : Submodule B (Fin h → B))
     [Module.Finite B P] [Module.Projective B P] [Module.Finite B Q] [Module.Projective B Q] (h0 : ϖ ≠ 0)
     (hQ : baseOf ϖ h ≤ Q) (hQP : Q ≤ P) :

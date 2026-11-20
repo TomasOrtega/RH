@@ -27,6 +27,49 @@ open GlobalTheory.Doubling (absE)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₂ H H' i₀ i₁ j₀ j₁ hB hXW hM hM₂ hH hH' v T T' hT hT' hTs hT's hv hv'`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hB.std.1 v`. Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hB.std v`.
+
+Establish `hsb : ∀ {κ : Type} [Fintype κ] (w : (κ → Fv F v) × (κ → Fv F v)), ∀ φ ∈ SB (κ → Fv F v), schr (GlobalTheory.LatVac.psiAt B.ψ v) w φ ∈ SB (κ → Fv F v)` using `fun w φ hφ => GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v w φ hφ`. Establish `hAtι : ∀ z : Matrix (Fin n₁) (Fin d₁) (AE F E), At (evFin F v) z → At (evFin F v) (incM F H.ι * z * (incM F H'.ι)ᵀ)`. Introduce `z hz c hc`. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, hz c hc, Matrix.mul_zero, Matrix.zero_mul]`. Establish `loc : ∀ T : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n₁ × Fin d₁ → Fv F v) → ℂ, GlobalTheory.ThK.EvUniqB.FinRel B M M₂ H.ι H'.ι (isoA H H') v T → (SB _).map T = SB _ → (∀ z, At (evFin F v) z → ∀ φ ∈ SB (Fin n × Fin d → Fv F v), T (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTh …` using `F) H H', At (evFin F v) u → ∀ φ ∈ SB (Fin n × Fin d → Fv F v), T (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u) φ) = T φ) := by`.
+
+Introduce `T hT hTs`. Use `⟨fun z hz φ hφ => ?_, fun u hu hat φ hφ => ?_⟩` and prove the remaining obligations. Establish `hTφ : T φ ∈ SB (Fin n₁ × Fin d₁ → Fv F v)` using `hTs ▸ Submodule.mem_map_of_mem hφ`. Conclude with `hT.1 z hz φ hφ _ (hsb _ φ hφ) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v _ (hAtι z hz) φ) _ (hsb _ _ hTφ) (GlobalTheory.VacBridge.rho_acts_locCo M₂.co B.ψ v z hz (T φ))`. Conclude with `hT.2 u hu hat φ hφ _ (hsb _ φ hφ) (GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hat φ)`.
+
+Take `⟨l1, l2⟩` from `loc T hT hTs`. Take `⟨l1', l2'⟩` from `loc T' hT' hT's`. Establish `hiso` using `fun u hu hat u' hu' hat' => GlobalTheory.T.herm_skew_adapted_local_model F E σ B n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ X X₁ W W₁ H H' M hB hX hW hH hH' v u hu hat u' hu' hat'`. Establish `hperp` using `GlobalTheory.T.herm_skew_adapted_local_model_two F E σ B n n₁ d d₁ r s r' s' i₀ i₁ j₀ j₁ X X₁ W W₁ H H' M hB hX hW hH hH' v`. Establish `m1 : ∀ z, Matrix.vecMulVec z (incV F H'.x) ∈ isoA (F` using `F) H H' := fun z => Or.inl ⟨z, rfl⟩`.
+
+Establish `m2 : ∀ y, Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ y) ∈ isoA (F` using `F) H H' := fun y => Or.inr ⟨y, rfl⟩`. Establish `at0 : At (evFin F v) (0 : Matrix (Fin n) (Fin d) (AE F E))` using `fun c _ => smul_zero c`. Establish `vz0 : Matrix.vecMulVec (0 : Fin n → AE F E) (incV F H'.x) = 0`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`.
+
+Establish `vz : ∀ x : Fin n → AE F E, Matrix.vecMulVec x (0 : Fin d → AE F E) = 0` using `fun x => by`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply]`. Establish `vz1 : Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ (0 : Fin d₁ → AE F E)) = 0`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply]`. Establish `atAdd : ∀ {A B' : Matrix (Fin n) (Fin d) (AE F E)}, At (evFin F v) A → At (evFin F v) B' → At (evFin F v) (A + B')` using `fun hA hB' c hc => by rw [smul_add, hA c hc, hB' c hc, add_zero]`. Set `U : Submodule (Fv F v) ((Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v))` to `{ carrier := {w | ∃ z y, At (evFin F v) (Matrix.vecMulVec z (incV F H'.x)) ∧ At (evFin F v) (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ y)) ∧ w = GlobalTheory.LatVac.locCo M.co v (Matrix.vecMulVec z (incV F H'.x)) + GlobalTheory.LatVac.locCo M.co v (Matrix.vecMulVec (incV F H. …`. Introduce and unpack `_ _ ⟨z, y, hz, hy, rfl⟩ ⟨z', y', hz', hy', rfl⟩`. Use `⟨z + z', y + y', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.add_vecMulVec]`. Conclude with `atAdd hz hz'`. Rewrite using `[Matrix.mulVec_add, Matrix.vecMulVec_add]`. Conclude with `atAdd hy hy'`. Rewrite using `[Matrix.add_vecMulVec, Matrix.mulVec_add, Matrix.vecMulVec_add, map_add, map_add]`.
+
+Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := ⟨0, 0, by simpa [vz0, vz1, vz] using at0, by simpa [vz0, vz1, vz] using at0, by simp [vz0, vz1, vz]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨z, y, hz, hy, rfl⟩`. Use `⟨GlobalTheory.LatVac.liftV v c • z, GlobalTheory.LatVac.liftV v c • y, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.smul_vecMulVec]`. Introduce `e he`. Rewrite using `[smul_comm, hz e he, smul_zero]`. Rewrite using `[Matrix.mulVec_smul, Matrix.vecMulVec_smul]`. Introduce `e he`.
+
+Rewrite using `[smul_comm, hy e he, smul_zero]`. Rewrite using `[Matrix.smul_vecMulVec, Matrix.mulVec_smul, Matrix.vecMulVec_smul, smul_add, GlobalTheory.LatOpenCpt.locCo_smul, GlobalTheory.LatOpenCpt.locCo_smul, GlobalTheory.LatVac.evFin_liftV] }`. Establish `hne : ∀ x, GlobalTheory.LatVac.psiAt B.ψ v x ≠ 0` using `fun x h => by`. Use `AddChar.map_add_eq_mul (GlobalTheory.LatVac.psiAt B.ψ v) x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`.
+
+Conclude with `one_ne_zero this`. Establish `e' : ∀ (a' b' : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)) φ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (a' + b') φ = (GlobalTheory.LatVac.psiAt B.ψ v (⅟(2 : Fv F v) * (a'.1 ⬝ᵥ b'.2 - b'.1 ⬝ᵥ a'.2)))⁻¹ • schr (GlobalTheory.LatVac.psiAt B.ψ v) a' (schr (GlobalTheory.LatVac. …` using `fun a' b' φ => by`. Rewrite using `[GlobalTheory.WeilM.schr_schr, smul_smul, inv_mul_cancel₀ (hne _), one_smul]`. Establish `hUiso : ∀ w ∈ U, ∀ w' ∈ U, w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2 = 0`. Introduce and unpack `_ ⟨z, y, hz, hy, rfl⟩ _ ⟨z', y', hz', hy', rfl⟩`.
+
+Establish `h11` using `hiso _ (m1 z) hz _ (m1 z') hz'`. Establish `h12` using `hiso _ (m1 z) hz _ (m2 y') hy'`. Establish `h21` using `hiso _ (m2 y) hy _ (m1 z') hz'`. Establish `h22` using `hiso _ (m2 y) hy _ (m2 y') hy'`. Simplify using `only [Prod.fst_add, Prod.snd_add, add_dotProduct, dotProduct_add]`.
+
+Take the linear combination `h11 + h12 + h21 + h22`. Establish `hU : ∀ T : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Fin n₁ × Fin d₁ → Fv F v) → ℂ, (∀ u ∈ isoA (F` using `F) H H', At (evFin F v) u → ∀ φ ∈ SB (Fin n × Fin d → Fv F v), T (schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u) φ) = T φ) → ∀ w ∈ U, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), T (schr (GlobalTheory.LatVac.psiAt B.ψ v) w φ) = T φ := by`. Introduce and unpack `T h2 _ ⟨z, y, hz, hy, rfl⟩ φ hφ`. Rewrite using `[e', hiso _ (m1 z) hz _ (m2 y) hy, mul_zero, AddChar.map_zero_eq_one, inv_one, one_smul, h2 _ (m1 z) hz _ (hsb _ φ hφ), h2 _ (m2 y) hy φ hφ]`. Set `S : Submodule ℂ ((Fin n × Fin d → Fv F v) → ℂ)` to `SB _ ⊓ LinearMap.ker (T' - T)`.
+
+Establish `hmem : ∀ φ, φ ∈ S ↔ φ ∈ SB (Fin n × Fin d → Fv F v) ∧ T' φ = T φ`. Introduce `φ`. Simplify using `[S, sub_eq_zero]`. Establish `hkill : Submodule.span ℂ {f | ∃ u ∈ U, ∃ φ ∈ SB (Fin n × Fin d → Fv F v), f = schr (GlobalTheory.LatVac.psiAt B.ψ v) u φ - φ} ≤ LinearMap.ker T`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨u, hu, φ, hφ, rfl⟩`. Simplify using `[map_sub, hU T l2 u hu φ hφ]`. Establish `key` using `GlobalTheory.T.isotropic_subspace_invariant_schwartz (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 U hUiso S inf_le_left (by`. Introduce `u hu φ hφ`. Rewrite using `[hmem]`.
+
+Use `⟨sub_mem (hsb _ φ hφ) hφ, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, hU T l2 u hu φ hφ, hU T' l2' u hu φ hφ, sub_self, sub_self])`. Use the proof step `(by`. Introduce `w hw φ hφ`. Rewrite `hφ`, the goal using `[hmem]`.
+
+Establish `hw' : ∀ u ∈ isoA (F` using `F) H H', At (evFin F v) u → (GlobalTheory.LatVac.locCo M.co v u).1 ⬝ᵥ w.2 - w.1 ⬝ᵥ (GlobalTheory.LatVac.locCo M.co v u).2 = 0 := by`. Introduce and unpack `u (⟨z, rfl⟩ | ⟨y, rfl⟩) hat`. Use `hw _ ⟨z, 0, hat, ?_, ?_⟩` and prove the remaining obligations. Simplify `at0` using `[vz0, vz1, vz]`. Simplify using `[vz0, vz1, vz]`.
+
+Use `hw _ ⟨0, y, ?_, hat, ?_⟩` and prove the remaining obligations. Simplify `at0` using `[vz0, vz1, vz]`. Simplify using `[vz0, vz1, vz]`. Take `⟨z₀, hz₀, y₀, hy₀, z, hz, rfl⟩` from `hperp w hw'`. Establish `hu : GlobalTheory.LatVac.locCo M.co v (Matrix.vecMulVec z₀ (incV F H'.x)) + GlobalTheory.LatVac.locCo M.co v (Matrix.vecMulVec (incV F H.x) (incM F H'.ι *ᵥ y₀)) ∈ U` using `⟨z₀, y₀, hz₀, hy₀, rfl⟩`.
+
+Use `⟨hsb _ φ hφ.1, ?_⟩` and prove the remaining obligations. Rewrite using `[e', map_smul, map_smul, hU T l2 _ hu _ (hsb _ φ hφ.1), hU T' l2' _ hu _ (hsb _ φ hφ.1), l1 z hz φ hφ.1, l1' z hz φ hφ.1, hφ.2])`. Use the proof step `(M.vac v) ((hmem _).2 ⟨(hM.vac v).1, by rw [hv, hv']⟩)`. Use the proof step `(fun h => (hM₂.vac v).2.1 (by rw [← hv]; exact hkill h))`. Introduce `φ hφ`.
+
+Rewrite `hφ` using `[← key]`. Conclude with `((hmem φ).1 hφ).2`.
+-/
 theorem GlobalTheory.ThK.IsoUniq.finRel_unique : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₂ : Model σ X₁ W₁)
     (H : Plane E n n₁) (H' : Plane E d d₁) (i₀ i₁ j₀ j₁ : ℕ), B.IsGood σ → (∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s') →
@@ -160,6 +203,15 @@ theorem GlobalTheory.ThK.IsoUniq.finRel_unique : GlobalTheory.ThK.KP → ∀ (F 
   rw [← key] at hφ
   exact ((hmem φ).1 hφ).2
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₂ H H' i₀ i₁ j₀ j₁ hB hXW hM hM₂ hH hH' e e₂ he he₂`. Take `⟨ei, ev, hei, hev, hloc⟩` from `he.loc`. Take `⟨ei', ev', hei', hev', hloc'⟩` from `he₂.loc`. Establish `hfin : ∀ v, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ev' v φ = ev v φ` using `fun v φ hφ => GlobalTheory.ThK.IsoUniq.finRel_unique hKP F E σ B n d n₁ d₁ X W X₁ W₁ M M₂ H H' i₀ i₁ j₀ j₁ hB hXW hM hM₂ hH hH' v (ev v) (ev' v) (GlobalTheory.ThK.IsoUniq.finRel_of_ev hM hM₂ e he ei ev hei hev hloc v) (GlobalTheory.ThK.IsoUniq.finRel_of_ev hM hM₂ e₂ he₂ ei' ev' h …`. Take `⟨c, hc⟩` from `GlobalTheory.T.good_models_adapted_planes_pair hKP F E σ B n d n₁ d₁ X W X₁ W₁ M M₂ H H' i₀ i₁ j₀ j₁ hB hXW hM hM₂ hH hH' ei ei' hei (GlobalTheory.ThK.IsoUniq.infRel_of_ev hM hM₂ e he ei ev hev hloc) (GlobalTheory.ThK.IsoUniq.infRel_of_ev hM hM₂ e₂ he₂ ei' ev' hev' hloc')`.
+
+Use `⟨c, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨T, m, f, φ, hφ, hT, rfl⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F (Fin n × Fin d) Ψ hΨ`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hv : ∀ᶠ v in cofinite, φ i v = M.vac v` using `by filter_upwards [hM.std, (Set.Finite.compl_mem_cofinite T.finite_toSet : (↑T : Set (Pl F))ᶜ ∈ cofinite)] with v h1 h2`.
+
+Rewrite using `[h1, hT i v h2]`. Rewrite using `[hloc' (f i) (φ i) (hφ i) hv, hloc (f i) (φ i) (hφ i) hv, hc]`. Establish `hfe : (fun v => ev' v (φ i v)) = fun v => ev v (φ i v)` using `funext fun v => hfin v _ (hφ i v)`. Rewrite using `[hfe]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, smul_eq_mul, ContinuousLinearMap.smul_apply, SchwartzMap.smul_apply, mul_assoc]`.
+-/
 theorem GlobalTheory.ThK.IsoUniq.main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₂ : Model σ X₁ W₁)
     (H : Plane E n n₁) (H' : Plane E d d₁) (i₀ i₁ j₀ j₁ : ℕ), B.IsGood σ → (∃ r s r' s' : ℕ, X.IsHerm σ B r s ∧ W.IsSkew σ B r' s') →

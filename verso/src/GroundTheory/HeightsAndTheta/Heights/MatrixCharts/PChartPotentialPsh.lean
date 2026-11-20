@@ -10,19 +10,41 @@ open Matrix Metric Real MCPsh
 
 noncomputable section
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [splitCoord]`.
+-/
 theorem splitCoord_add_smul (n m : ℕ) (z w : Fin (n + m) → ℂ) (ζ : ℂ) :
     splitCoord n m (z + ζ • w) = splitCoord n m z + ζ • splitCoord n m w := by
   ext <;> simp [splitCoord]
 
+/- English proof (translation)
+The claim follows from `Continuous.prodMk (continuous_pi fun _ => continuous_apply _) (continuous_pi fun _ => continuous_apply _)`.
+-/
 theorem continuous_splitCoord (n m : ℕ) : Continuous (splitCoord n m) :=
   Continuous.prodMk (continuous_pi fun _ => continuous_apply _)
     (continuous_pi fun _ => continuous_apply _)
 
+/- English proof (translation)
+Establish `h` using `Matrix.PosDef.posSemidef_add (D.Y_ge z hz) (PosDef.one.smul D.c_pos)`. Simplify `h` using `[PeriodChartData.Y]`.
+-/
 theorem PeriodChartData.Y_posDef (D : PeriodChartData) {z : Fin D.n → ℂ} (hz : z ∈ D.Ustar) :
     (D.Y z).PosDef := by
   have h := Matrix.PosDef.posSemidef_add (D.Y_ge z hz) (PosDef.one.smul D.c_pos)
   simpa [PeriodChartData.Y] using h
 
+/- English proof (translation)
+Introduce `D`. Use `set S := splitCoord D.n D.m ⁻¹' (D.Ustar ×ˢ D.V) with hS`. Establish `hUs : ∀ x ∈ S, splitCoord D.n D.m x ∈ D.U ×ˢ D.V` using `fun x hx => ⟨hx.1.1, hx.2⟩`. Establish `hYS : ContinuousOn (fun x => D.Y (splitCoord D.n D.m x).1) S` using `(hYc D).comp (continuous_fst.comp (continuous_splitCoord _ _)).continuousOn (fun x hx => hx.1)`. Establish `hFS : ContinuousOn (fun x => D.f (splitCoord D.n D.m x)) S` using `continuousOn_pi.mpr fun j => continuousOn_pi.mpr fun k => (D.f_analytic j k).continuousOn.comp (continuous_splitCoord _ _).continuousOn hUs`.
+
+Establish `hc` using `hcont (Fin (D.n + D.m) → ℂ) S D.g D.rk (fun x => D.Y (splitCoord D.n D.m x).1) (fun x => D.f (splitCoord D.n D.m x)) hYS hFS (fun x hx => D.Y_posDef hx.1) (fun x hx => D.f_rank _ (hUs x hx))`. Use `⟨hc.upperSemicontinuousOn, ?_⟩` and prove the remaining obligations. Introduce `z w hdisc`. Use `set z' := splitCoord D.n D.m z`. Use `set w' := splitCoord D.n D.m w`.
+
+Establish `hline : ∀ ζ ∈ closedBall (0:ℂ) 1, z' + ζ • w' ∈ D.Ustar ×ˢ D.V` using `fun ζ hζ => by`. Use `hdisc ζ (by simpa using hζ)` as an intermediate fact. Rewrite `this` using `[Set.mem_preimage, splitCoord_add_smul]`. Then use the resulting hypothesis. Establish `hline1 : ∀ ζ : ℂ, ‖ζ‖ ≤ 1 → z'.1 + ζ • w'.1 ∈ D.Ustar` using `fun ζ hζ => (hline ζ (by simpa using hζ)).1`. Establish `haff : ∀ ζ : ℂ, AnalyticAt ℂ (fun ζ : ℂ => z' + ζ • w') ζ` using `fun ζ => analyticAt_const.add (analyticAt_id.smul analyticAt_const)`.
+
+Establish `hf : ∀ j k, AnalyticOnNhd ℂ (fun ζ : ℂ => D.f (z' + ζ • w') j k) (closedBall 0 1)` using `fun j k ζ hζ => AnalyticAt.comp (g := fun p => D.f p j k) (f := fun ζ : ℂ => z' + ζ • w') (D.f_analytic j k _ ⟨(hline ζ hζ).1.1, (hline ζ hζ).2⟩) (haff ζ)`. Establish `hYd : ContinuousOn (fun ζ : ℂ => D.Y (z'.1 + ζ • w'.1)) (closedBall 0 1)` using `(hYc D).comp ((continuous_const.add (continuous_id.smul continuous_const)).continuousOn) (fun ζ hζ => (hline ζ hζ).1)`. Establish `hm : ∀ j k, circleAverage (fun ζ : ℂ => D.Y (z'.1 + ζ • w'.1) j k) 0 1 = D.Y (z'.1 + (0:ℂ) • w'.1) j k` using `fun j k => by`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hmean D z'.1 w'.1 hline1 j k`.
+
+Take `⟨hint, hle⟩` from `hsub D.g D.rk (fun ζ => D.Y (z'.1 + ζ • w'.1)) (fun ζ => D.f (z' + ζ • w')) (fun ζ hζ => D.Y_posDef (hline ζ hζ).1) hYd hm hf (fun ζ hζ => D.f_rank _ ⟨(hline ζ hζ).1.1, (hline ζ hζ).2⟩)`. Establish `hfun : (fun ζ : ℂ => (D.u ∘ splitCoord D.n D.m) (z + ζ • w)) = fun ζ => logDetGram (D.Y (z'.1 + ζ • w'.1)) (D.f (z' + ζ • w'))`. Use function extensionality and compare the values at `ζ`. Simplify using `only [Function.comp_apply, PeriodChartData.u, splitCoord_add_smul, z', w', Prod.fst_add, Prod.smul_fst]`. Rewrite using `[hfun]`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `e : (D.u ∘ splitCoord D.n D.m) z = logDetGram (D.Y (z'.1 + (0:ℂ) • w'.1)) (D.f (z' + (0:ℂ) • w'))`. Simplify using `[PeriodChartData.u, z']`. Rewrite using `[e]`. Conclude with `hle`.
+-/
 theorem ChartPotentialPsh.proof (hcont : LogDetGramContinuous.Statement)
     (hsub : LogDetGramSubmean.Statement) (hYc : ChartImagContinuous.Statement)
     (hmean : ChartImagMean.Statement) : ChartPotentialPsh.Statement := by

@@ -20,8 +20,14 @@ def IsRat (F : GA D (Wc D i) → ℂ) : Prop :=
     F h = ∑ k, D.what₂.embLL (a k) *
       ((lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * O.phi cc (f k : C.R ((i : ℕ) + 1)) h)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun _ => by simp⟩`.
+-/
 theorem IsRat.zero : IsRat O κ cc 0 := ⟨0, Fin.elim0, Fin.elim0, fun _ => by simp⟩
 
+/- English proof (translation)
+Take `⟨n, a, f, hf⟩` from `h`. Take `⟨n', a', f', hf'⟩` from `h'`. Use `⟨n + n', Fin.append a a', Fin.append f f', fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.add_apply, hf x, hf' x]`.
+-/
 theorem IsRat.add {F F' : GA D (Wc D i) → ℂ} (h : IsRat O κ cc F) (h' : IsRat O κ cc F') : IsRat O κ cc (F + F') := by
   obtain ⟨n, a, f, hf⟩ := h
   obtain ⟨n', a', f', hf'⟩ := h'
@@ -29,6 +35,11 @@ theorem IsRat.add {F F' : GA D (Wc D i) → ℂ} (h : IsRat O κ cc F) (h' : IsR
   rw [Fin.sum_univ_add]
   simp only [Fin.append_left, Fin.append_right, Pi.add_apply, hf x, hf' x]
 
+/- English proof (translation)
+Take `⟨n, a, f, hf⟩` from `h`. Use `⟨n, fun k => b * a k, f, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, hf x, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsRat.mul (b : D.what₂.LL) {F : GA D (Wc D i) → ℂ} (h : IsRat O κ cc F) : IsRat O κ cc (D.what₂.embLL b • F) := by
   obtain ⟨n, a, f, hf⟩ := h
   refine ⟨n, fun k => b * a k, f, fun x => ?_⟩
@@ -36,6 +47,11 @@ theorem IsRat.mul (b : D.what₂.LL) {F : GA D (Wc D i) → ℂ} (h : IsRat O κ
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_mul]; ring
 
+/- English proof (translation)
+Unfold `Formalism.IndefR.Lev.levChi levFn`. Establish `h1 : ∀ x, ext1 (Formalism.IndefR.Lev.flagL (R.datWp i R.triv)).P.H (Formalism.IndefR.Lev.flagL (R.datWp i R.triv)).P.chi x = 1`. Introduce `x`. Unfold `ext1`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Rewrite using `[h1, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul, Units.val_one]`. Introduce `PP hP`. Conclude with `absurd hP (Finset.notMem_empty _)`. Introduce `PP _`. Conclude with `Finset.prod_eq_one fun c hc => absurd hc (Finset.notMem_empty _)`.
+-/
 theorem levChi_flag (k : GA D (Wc D i)) :
     Formalism.IndefR.Lev.levChi (Wc D i) (R.βW i) (Formalism.IndefR.Lev.flagL (R.datWp i R.triv)) k = 1 := by
   unfold Formalism.IndefR.Lev.levChi levFn
@@ -47,6 +63,15 @@ theorem levChi_flag (k : GA D (Wc D i)) :
   · intro PP hP; exact absurd hP (Finset.notMem_empty _)
   · intro PP _; exact Finset.prod_eq_one fun c hc => absurd hc (Finset.notMem_empty _)
 
+/- English proof (translation)
+Use `show IsRat O κ cc (Formalism.IndefR.Lev.actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F)`. Unfold `Formalism.IndefR.Lev.actG0`. Use `split_ifs with hk`. Take `⟨n, a, f, hf⟩` from `h`. Establish `e` using `hE g _ hk.choose_spec`.
+
+Use `⟨n, fun k => a k * ((((R.FW i).chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL), fun k => ⟨_, (e _ (f k).2).1⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[levChi_flag, inv_one]`. Use `beta_reduce`. Rewrite using `[one_mul, hf]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Establish `e2` using `(e _ (f k).2).2 x`. Rewrite `e2` using `[← hχ i g]`. Establish `e3 : D.what₂.embLL ((((R.FW i).chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) * D.what₂.embLL (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Use `show _ = _ * (_ * O.phi cc (actLev C.Q.c O.lev2 g (f k : C.R ((i : ℕ) + 1))) x)`.
+
+Rewrite using `[e2, map_mul]`. Take the linear combination `(-(D.what₂.embLL (a k) * (lieFac (C.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * O.phi cc (f k : C.R ((i : ℕ) + 1)) (x * hk.choose))) * e3`. Conclude with `IsRat.zero O κ cc`.
+-/
 theorem IsRat.act (hE : O.EquivAt κ cc) (hχ : R.grp_chiW) (g : G) {F : GA D (Wc D i) → ℂ} (h : IsRat O κ cc F) :
     IsRat O κ cc (Formalism.IndefR.Links.actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F) := by
   show IsRat O κ cc (Formalism.IndefR.Lev.actG0 (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) F)
@@ -73,6 +98,13 @@ theorem IsRat.act (hE : O.EquivAt κ cc) (hχ : R.grp_chiW) (g : G) {F : GA D (W
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `x`. Establish `key : IsRat O κ cc (R.eWf i (sg0 D A) (ph • R.thF i A.μ0 (jVx R i A.μ0 x) v₀))`. Unfold `RealDat.eWf gaL`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_induction _ (IsRat O κ cc) (fun _ _ => IsRat.add O κ cc) (IsRat.zero O κ cc) fun g _ => ?_` and prove the remaining obligations.
+
+Establish `hs : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `: RealDat.eC (A` using `A) (sg0 D A) g = D.what₂.embLL ((idemOf A.X).coeff g) := RingHom.congr_fun hs ((idemOf A.X).coeff g)`. Establish `h2` using `IsRat.mul O κ cc ((idemOf A.X).coeff g) (IsRat.act O κ cc hE hχ g (h x))`. Rewrite `h2` using `[← this]`. Conclude with `h2`.
+
+Take `⟨n, a, f, hf⟩` from `key`. Use `⟨n, a, f, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf y, hG i A.μ0, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem of_before_projector (hE : O.EquivAt κ cc) (hχ : R.grp_chiW) (hG : R.thP_thG) (ph : ℂ)
     (h : ∀ x : A.fam.amb.FL i A.μ0, IsRat O κ cc (ph • R.thF i A.μ0 (jVx R i A.μ0 x) v₀)) : O.PhRat κ v₀ cc ph := by
   intro x

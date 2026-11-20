@@ -4,6 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.X
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `k Ω _ _ _ _ _ O _ θ z hz v A A' hA hA' hcob`. Take `⟨a, ha, m, hm⟩` from `hcob`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_over hA hA'`. Use `⟨a, ha, (θ g : O) * m - a * z g, ?_⟩` and prove the remaining obligations. Introduce `h hh`.
+
+Take `⟨h0, hh0, rfl⟩ : ∃ h0 ∈ Dec (F` from `k) A, h = g * h0 * g⁻¹ := by`. Use `⟨g⁻¹ * h * g, ?_, by group⟩` and prove the remaining obligations. Rewrite `hh`, the goal using `[mem_Dec]`. Rewrite using `[mul_smul, mul_smul, hh, inv_smul_smul]`. Establish `e` using `hm h0 hh0`.
+
+Establish `hz1 : z 1 = 0`. Establish `h11` using `hz 1 1`. Rewrite `h11` using `[one_mul, map_one, Units.val_one, one_mul]`. Take the linear combination `-h11`. Establish `hinv : (θ g : O) * z g⁻¹ = - z g`.
+
+Establish `h2` using `hz g g⁻¹`. Rewrite `h2` using `[mul_inv_cancel, hz1]`. Take the linear combination `-h2`. Establish `hθ : θ (g * h0 * g⁻¹) = θ h0`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (θ g), mul_inv_cancel_right]`.
+
+Rewrite using `[hθ, hz (g * h0) g⁻¹, hz g h0, map_mul, Units.val_mul]`. Take the linear combination `(θ g : O) * e + a * (θ h0 : O) * hinv`.
+-/
 theorem UpperTheory.V.X.So.cobPlace :
     ∀ (k Ω : Type) [Field k] [NumberField k] [Field Ω] [Algebra k Ω] [IsAlgClosure k Ω] (O : Type) [CommRing O] (θ : G k Ω →* Oˣ) (z : G k Ω → O), Coc θ z → ∀ (v : HeightOneSpectrum (𝓞 k)) (A A' : ValuationSubring Ω), IsPlaceOver A v → IsPlaceOver A' v → CobOn θ z (Dec (F := k) A) → CobOn θ z (Dec (F := k) A') := by
   intro k Ω _ _ _ _ _ O _ θ z hz v A A' hA hA' hcob

@@ -15,11 +15,20 @@ variable {p : ℕ}
 def foldY (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) : G.Fn → G.Fn :=
   l.foldr (fun v f => (G.yv v)^[m] ∘ f) id
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem foldY_nil (G : GAtP p) (m : ℕ) (x : G.Fn) : foldY G m [] x = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem foldY_cons (G : GAtP p) (m : ℕ) (v : Fin G.P.nV) (l : List (Fin G.P.nV)) (x : G.Fn) :
     foldY G m (v :: l) x = (G.yv v)^[m] (foldY G m l x) := rfl
 
+/- English proof (translation)
+Proceed by induction on `l generalizing x with`. Consider the case `nil => simp [foldY_nil]`. Consider the case `cons v l ih`. Rewrite using `[foldY_cons, ih, List.map_cons, List.prod_cons, Module.End.mul_apply, yEnd_pow_apply]`.
+-/
 private theorem foldY_eq_list_prod_yEnd_pow (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) (x : G.Fn) :
     foldY G m l x = ((l.map fun v => yEnd G v ^ m).prod) x := by
   induction l generalizing x with
@@ -27,10 +36,18 @@ private theorem foldY_eq_list_prod_yEnd_pow (G : GAtP p) (m : ℕ) (l : List (Fi
   | cons v l ih =>
     rw [foldY_cons, ih, List.map_cons, List.prod_cons, Module.End.mul_apply, yEnd_pow_apply]
 
+/- English proof (translation)
+Conclude with `⟨(l.map fun v => yEnd G v ^ m).prod, fun x => foldY_eq_list_prod_yEnd_pow G m l x⟩`.
+-/
 theorem foldY_lin (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) :
     ∃ φ : Module.End G.O G.Fn, ∀ x, foldY G m l x = φ x := by
   exact ⟨(l.map fun v => yEnd G v ^ m).prod, fun x => foldY_eq_list_prod_yEnd_pow G m l x⟩
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `m with`. Consider the case `zero => simpa using hx`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply']`.
+
+Conclude with `hB v _ ih`.
+-/
 theorem iter_mem (G : GAtP p) (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B, G.yv v F ∈ B) (v : Fin G.P.nV)
     (m : ℕ) : ∀ x ∈ B, (G.yv v)^[m] x ∈ B := by
   intro x hx
@@ -40,6 +57,11 @@ theorem iter_mem (G : GAtP p) (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B,
     rw [Function.iterate_succ_apply']
     exact hB v _ ih
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => intro x hx`. Rewrite using `[foldY_nil]`. Conclude with `hx`. Consider the case `cons v l ih`.
+
+Introduce `x hx`. Rewrite using `[foldY_cons]`. Conclude with `iter_mem G B hB v m _ (ih x hx)`.
+-/
 theorem foldY_mem (G : GAtP p) (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B, G.yv v F ∈ B) (m : ℕ)
     (l : List (Fin G.P.nV)) : ∀ x ∈ B, foldY G m l x ∈ B := by
   induction l with
@@ -49,13 +71,24 @@ theorem foldY_mem (G : GAtP p) (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B
     rw [foldY_cons]
     exact iter_mem G B hB v m _ (ih x hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem monoN_eq (G : GAtP p) (VV B : Finset (Fin G.P.nV)) (m : ℕ) (Sv : Fin G.P.nV → ℕ) (x : G.Fn) :
     monoN G VV B m Sv x = ((p : G.O) ^ (∑ v ∈ VV \ B, Sv v)) • foldY G m (B.sort (· ≤ ·)) x := rfl
 
+/- English proof (translation)
+Rewrite using `[monoN_eq, monoN_eq, foldY_eq_list_prod_yEnd_pow, foldY_eq_list_prod_yEnd_pow, map_smul, smul_smul, smul_smul, mul_comm]`.
+-/
 theorem monoN_smul (G : GAtP p) (VV B : Finset (Fin G.P.nV)) (m : ℕ) (Sv : Fin G.P.nV → ℕ) (c : G.O)
     (x : G.Fn) : monoN G VV B m Sv (c • x) = c • monoN G VV B m Sv x := by
   rw [monoN_eq, monoN_eq, foldY_eq_list_prod_yEnd_pow, foldY_eq_list_prod_yEnd_pow, map_smul, smul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Unfold `prodIdeal`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Simplify using `only [Set.mem_iUnion, Set.mem_image] at hy`. Take `⟨C, _, x, hx, rfl⟩` from `hy`.
+
+Rewrite using `[monoN_eq]`. Conclude with `B.smul_mem _ (foldY_mem G B hB m _ x hx)`.
+-/
 theorem prodIdeal_le (G : GAtP p) (VV : Finset (Fin G.P.nV)) (m : ℕ) (Sv : Fin G.P.nV → ℕ)
     (B : Submodule G.O G.Fn) (hB : ∀ v, ∀ F ∈ B, G.yv v F ∈ B) : prodIdeal G VV m Sv B ≤ B := by
   unfold prodIdeal
@@ -66,6 +99,13 @@ theorem prodIdeal_le (G : GAtP p) (VV : Finset (Fin G.P.nV)) (m : ℕ) (Sv : Fin
   rw [monoN_eq]
   exact B.smul_mem _ (foldY_mem G B hB m _ x hx)
 
+/- English proof (translation)
+Establish `key : prodIdeal G VV m Sv A ≤ (prodIdeal G VV m Sv B).comap (c • LinearMap.id)`. Unfold `prodIdeal`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Simplify using `only [Set.mem_iUnion, Set.mem_image] at hy`.
+
+Take `⟨C, hC, x, hx, rfl⟩` from `hy`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply, ← monoN_smul]`. Conclude with `Submodule.subset_span (Set.mem_iUnion.2 ⟨C, Set.mem_iUnion.2 ⟨hC, ⟨c • x, h x hx, rfl⟩⟩⟩)`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy`.
+
+Conclude with `key hz`.
+-/
 theorem prodIdeal_shift (G : GAtP p) (VV : Finset (Fin G.P.nV)) (m : ℕ) (Sv : Fin G.P.nV → ℕ)
     (A B : Submodule G.O G.Fn) (c : G.O) (h : ∀ x ∈ A, c • x ∈ B) :
     c • prodIdeal G VV m Sv A ≤ prodIdeal G VV m Sv B := by
@@ -81,10 +121,18 @@ theorem prodIdeal_shift (G : GAtP p) (VV : Finset (Fin G.P.nV)) (m : ℕ) (Sv : 
   obtain ⟨z, hz, rfl⟩ := (Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hy
   exact key hz
 
+/- English proof (translation)
+Use `haveI := mna_finite G h2`. Conclude with `Module.Finite.of_injective (Submodule.inclusion hs2) (Submodule.inclusion_injective hs2)`.
+-/
 theorem m_finite (G : GAtP p) (h2 : G.FinClasses) (hs2 : G.M ≤ G.Mna) : Module.Finite G.O G.M := by
   haveI := mna_finite G h2
   exact Module.Finite.of_injective (Submodule.inclusion hs2) (Submodule.inclusion_injective hs2)
 
+/- English proof (translation)
+Use `haveI := (G.P.setting v).frac_O`. Establish `hr0 : algebraMap G.O G.Kf r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective G.O G.Kf)).2 hr`. Use function extensionality and compare the values at `i L`. Use extensionality with `n`. Establish `h'` using `congrArg (fun F : G.Fn => MvPolynomial.coeff n (F i L)) h`.
+
+Simplify using `only [Pi.smul_apply, Algebra.smul_def, MvPolynomial.algebraMap_apply, MvPolynomial.coeff_C_mul] at h'`. Conclude with `mul_left_cancel₀ hr0 h'`.
+-/
 private theorem smul_left_cancel_of_ne_zero (G : GAtP p) (v : Fin G.P.nV) (r : G.O) (hr : r ≠ 0) (x y : G.Fn)
     (h : r • x = r • y) : x = y := by
   haveI := (G.P.setting v).frac_O
@@ -96,6 +144,9 @@ private theorem smul_left_cancel_of_ne_zero (G : GAtP p) (v : Fin G.P.nV) (r : G
   simp only [Pi.smul_apply, Algebra.smul_def, MvPolynomial.algebraMap_apply, MvPolynomial.coeff_C_mul] at h'
   exact mul_left_cancel₀ hr0 h'
 
+/- English proof (translation)
+Use `haveI : Module.IsTorsionFree G.O G.M := by`. Prove the components needed by the constructor for the conclusion. Introduce `r hr x y hxy`. Conclude with `Subtype.ext (smul_left_cancel_of_ne_zero G v r hr.ne_zero x y (congrArg Subtype.val hxy))`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+-/
 theorem m_free (G : GAtP p) (v : Fin G.P.nV) [Module.Finite G.O G.M] : Module.Free G.O G.M := by
   haveI : Module.IsTorsionFree G.O G.M := by
     constructor
@@ -103,6 +154,13 @@ theorem m_free (G : GAtP p) (v : Fin G.P.nV) [Module.Finite G.O G.M] : Module.Fr
     exact Subtype.ext (smul_left_cancel_of_ne_zero G v r hr.ne_zero x y (congrArg Subtype.val hxy))
   exact Module.free_of_finite_type_torsion_free'
 
+/- English proof (translation)
+Establish `hS` using `G.P.setting v`. Use `haveI := hS.frac_alt`. Establish `hW : (p : G.P.W v) ≠ 0` using `hS.p_unif.ne_zero`. Establish `hQ : (p : G.P.Qq v) ≠ 0`. Rewrite using `[← map_natCast (algebraMap (G.P.W v) (G.P.Qq v))]`.
+
+Conclude with `fun h0 => hW (IsFractionRing.injective (G.P.W v) (G.P.Qq v) (h0.trans (map_zero _).symm))`. Establish `hK : (p : G.Kf) ≠ 0`. Rewrite using `[← map_natCast (G.P.ι v)]`. Conclude with `(map_ne_zero (G.P.ι v)).2 hQ`. Introduce `h`.
+
+Apply `hK` to reduce the goal to its premises. Rewrite using `[← map_natCast (algebraMap G.O G.Kf), h, map_zero]`.
+-/
 theorem svc_p_ne_zero (G : GAtP p) (v : Fin G.P.nV) : (p : G.O) ≠ 0 := by
   have hS := G.P.setting v
   haveI := hS.frac_alt
@@ -117,6 +175,11 @@ theorem svc_p_ne_zero (G : GAtP p) (v : Fin G.P.nV) : (p : G.O) ≠ 0 := by
   apply hK
   rw [← map_natCast (algebraMap G.O G.Kf), h, map_zero]
 
+/- English proof (translation)
+Establish `hp : ((p : G.O) ^ e) ≠ 0` using `pow_ne_zero _ (svc_p_ne_zero G v)`. Set `f : G.Mna →ₗ[G.O] G.M` to `(((p : G.O) ^ e) • G.Mna.subtype).codRestrict G.M (fun x => hs1 (Submodule.mem_map_of_mem x.2))`. Establish `hf : Function.Injective f`. Introduce `x y hxy`. Establish `h1 : ((p : G.O) ^ e) • (x : G.Fn) = ((p : G.O) ^ e) • (y : G.Fn)` using `congrArg Subtype.val hxy`.
+
+Conclude with `Subtype.ext (smul_left_cancel_of_ne_zero G v _ hp _ _ h1)`. Conclude with `LinearMap.finrank_le_finrank_of_injective hf`.
+-/
 theorem dna_le_d (G : GAtP p) (v : Fin G.P.nV) (e : ℕ) [Module.Finite G.O G.M]
     (hs1 : G.Mna.map (((p : G.O) ^ e) • LinearMap.id) ≤ G.M) : G.dna ≤ G.d := by
   have hp : ((p : G.O) ^ e) ≠ 0 := pow_ne_zero _ (svc_p_ne_zero G v)
@@ -128,6 +191,27 @@ theorem dna_le_d (G : GAtP p) (v : Fin G.P.nV) (e : ℕ) [Module.Finite G.O G.M]
     exact Subtype.ext (smul_left_cancel_of_ne_zero G v _ hp _ _ h1)
   exact LinearMap.finrank_le_finrank_of_injective hf
 
+/- English proof (translation)
+Take `⟨⟨hthm, -⟩, -⟩` from `h9 VV t Sv Dd cStar S m κ hm hS hLP`. Establish `hκ : ∀ v ∈ VV, 0 ≤ κ v` using `fun v hv => kappa_nonneg' G v (t v) Dd cStar (κ v) (hLP v hv)`. Establish `hs0 : 0 ≤ (m : ℝ) * ∑ v ∈ VV, κ v` using `mul_nonneg (Nat.cast_nonneg m) (Finset.sum_nonneg hκ)`. Establish `hp0` using `svc_p_ne_zero G v0`. Establish `hfin : Module.Finite G.O G.M` using `m_finite G h13 hs2`.
+
+Establish `hfree : Module.Free G.O G.M` using `m_free G v0`. Establish `hd : G.dna ≤ G.d` using `dna_le_d G v0 e hs1`. Use `set τ := tau VV m Dd t with hτ`. Use `set N := prodIdeal G VV m Sv G.M with hN`. Use `set Sig : ℝ := (m : ℝ) * ∑ v ∈ VV, κ v with hSigd`.
+
+Establish `hshift : ∀ β : ℕ, AllButLE (p : G.O) G.M N ⌊(G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1)⌋₊ ((τ + β * S) + e)` using `fun β => Formalism.InvariantFactorPaths.G0.inverse_shift (p : G.O) G.Mna G.M (prodIdeal G VV m Sv G.Mna) N _ _ e hs2 (prodIdeal_le G VV m Sv G.Mna h12a) (prodIdeal_shift G VV m Sv G.Mna G.M _ (fun x hx => hs1 ⟨x, hx, rfl⟩)) (prodIdeal_le G VV m Sv G.M h12b) (hthm β)`. Take `⟨ℓ, hℓ, hb⟩` from `lengthFromAllBut (p : G.O) hp0 G.M N G.d rfl (e + τ) S VV.card Sig hs0 hSig (by`. Introduce `β _`. Take `⟨C, hCM, hcard, hx⟩` from `hshift β`. Use `⟨C, hCM, ?_, fun x hxM => ?_⟩` and prove the remaining obligations.
+
+Establish `h0 : (0 : ℝ) ≤ (G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1)` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg (Nat.cast_nonneg _) _)) (esymmOn_nonneg VV κ hκ _)`. Establish `hf : (1 : ℝ) ≤ (β + 1).factorial`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Nat.factorial_ne_zero _)` after adjusting the coercions. Establish `hpw2 : 0 ≤ Sig ^ (β + 1)` using `pow_nonneg hs0 _`. Establish `hpw : 0 ≤ (G.dna : ℝ) * Sig ^ (β + 1)` using `mul_nonneg (Nat.cast_nonneg _) hpw2`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `hcard` after adjusting the coercions. Use `_ ≤ (G.dna : ℝ) * (m : ℝ) ^ (β + 1) * esymmOn VV κ (β + 1) := Nat.floor_le h0`. Use `_ ≤ (G.dna : ℝ) * Sig ^ (β + 1) / ((β + 1).factorial : ℝ) := esymm_clause VV κ hκ m G.dna (β + 1)`. Use `_ ≤ (G.dna : ℝ) * Sig ^ (β + 1) := div_le_self hpw hf`.
+
+Use `_ ≤ (G.d : ℝ) * Sig ^ (β + 1) := mul_le_mul_of_nonneg_right (by exact_mod_cast hd) hpw2`. Establish `he : e + τ + β * S = τ + β * S + e` using `by ring`. Rewrite using `[he]`. Conclude with `hx x hxM)`. Use the proof step `(by`.
+
+Use `ManyOrbitsP.allBut_mono (allLE G VV m Sv G.M) le_rfl ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `sat_clause _ N G.M (G.M ⊓ V') hsat ⟨hx.1, ?_, hx.2⟩` and prove the remaining obligations.
+
+Conclude with `Submodule.smul_le_right hx.1.2`. Establish `hcomap : Submodule.comap (G.M ⊓ V').subtype (N ⊓ (Ideal.span {(p : G.O) ^ (e + τ)}) • G.M ⊓ V') = Submodule.comap (G.M ⊓ V').subtype (N ⊓ (Ideal.span {(p : G.O) ^ (e + τ)}) • G.M)`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, hx.2⟩⟩`.
+
+Establish `hinj` using `inj_clause (N ⊓ (Ideal.span {(p : G.O) ^ (e + τ)}) • G.M) G.M (G.M ⊓ V') inf_le_left`. Establish `hle` using `Module.length_le_of_injective _ hinj`. Rewrite `hle` using `[hℓ]`. Take `⟨ℓ', hℓ', hll⟩` from `ENat.le_natCast_iff.1 hle`. Use `⟨ℓ', by rw [hcomap]; exact hℓ', ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem core (D : Formalism.BasicNotions.D7) (G : GAtP p) (v0 : Fin G.P.nV) (e : ℕ)
     (hs1 : G.Mna.map (((p : G.O) ^ e) • LinearMap.id) ≤ G.M) (hs2 : G.M ≤ G.Mna)
     (h9 : Formalism.MainNotions.SelectionLemmas.Conclusion1 D G) (h12a : ∀ v, ∀ F ∈ G.Mna, G.yv v F ∈ G.Mna)
@@ -202,6 +286,9 @@ theorem core (D : Formalism.BasicNotions.D7) (G : GAtP p) (v0 : Fin G.P.nV) (e :
       _ ≤ _ := hb
       _ = _ := by push_cast; ring
 
+/- English proof (translation)
+Take `⟨h9, h10, h12, h13, h3⟩` from `hA`. Take `⟨hs1, hs2⟩` from `h10`. Take `⟨h12a, h12b⟩` from `h12`. Introduce `VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig`. Conclude with `core D G ⟨0, h0⟩ G.e hs1 hs2 h9 h12a h12b h13 VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig`.
+-/
 theorem lattice_service_of_place (D : Formalism.BasicNotions.D7) (G : GAtP p) (h0 : 0 < G.P.nV) (hA : Adm6 D G) : Conclusion6 D G := by
   obtain ⟨h9, h10, h12, h13, h3⟩ := hA
   obtain ⟨hs1, hs2⟩ := h10
@@ -209,16 +296,33 @@ theorem lattice_service_of_place (D : Formalism.BasicNotions.D7) (G : GAtP p) (h
   intro VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig
   exact core D G ⟨0, h0⟩ G.e hs1 hs2 h9 h12a h12b h13 VV t Sv Dd cStar S m κ V' hm hS hLP hsat hSig
 
+/- English proof (translation)
+Introduce `_ G h0 hA` and use `lattice_service_of_place D G h0 hA`.
+-/
 theorem stmt6Loc (D : Formalism.BasicNotions.D7) : LocalServiceStatement D := fun _ G h0 hA => lattice_service_of_place D G h0 hA
 
+/- English proof (translation)
+Introduce `_ _ _ h0 hA` and use `lattice_service_of_place D _ h0 hA`.
+-/
 theorem stmt6 (D : Formalism.BasicNotions.D7) : ShareFromInputs D := fun _ _ _ h0 hA => lattice_service_of_place D _ h0 hA
 
+/- English proof (translation)
+Introduce `_ _` and use `stmt6 _`.
+-/
 theorem stmt6F {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : ShareFromInputsFamily Fm := fun _ _ => stmt6 _
 
+/- English proof (translation)
+Conclude with `foldY_eq_list_prod_yEnd_pow G m l x`.
+-/
 theorem foldY_prod (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) (x : G.Fn) :
     foldY G m l x = ((l.map fun v => yEnd G v ^ m).prod) x := by
   exact foldY_eq_list_prod_yEnd_pow G m l x
 
+/- English proof (translation)
+Proceed by induction on `h generalizing x with`. Consider the case `nil => rfl`. Consider the case `cons v _ ih => rw [foldY_cons, foldY_cons, ih]`. Consider the case `swap a b l`. Simplify using `only [foldY_cons, ← yEnd_pow_apply]`.
+
+Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ((yEnd_commute G b a).pow_pow m m).eq]`. Consider the case `trans _ _ ih1 ih2 => rw [ih1, ih2]`.
+-/
 theorem foldY_perm (G : GAtP p) (m : ℕ) {l l' : List (Fin G.P.nV)} (h : l.Perm l') (x : G.Fn) :
     foldY G m l x = foldY G m l' x := by
   induction h generalizing x with
@@ -229,16 +333,27 @@ theorem foldY_perm (G : GAtP p) (m : ℕ) {l l' : List (Fin G.P.nV)} (h : l.Perm
     rw [← Module.End.mul_apply, ← Module.End.mul_apply, ((yEnd_commute G b a).pow_pow m m).eq]
   | trans _ _ ih1 ih2 => rw [ih1, ih2]
 
+/- English proof (translation)
+Rewrite using `[foldY_eq_list_prod_yEnd_pow, foldY_eq_list_prod_yEnd_pow, map_smul]`.
+-/
 theorem foldY_smul (G : GAtP p) (m : ℕ) (l : List (Fin G.P.nV)) (c : G.O) (x : G.Fn) :
     foldY G m l (c • x) = c • foldY G m l x := by
   rw [foldY_eq_list_prod_yEnd_pow, foldY_eq_list_prod_yEnd_pow, map_smul]
 
+/- English proof (translation)
+Rewrite using `[Submodule.ideal_span_singleton_smul]`. Use extensionality with `x`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists]`.
+-/
 theorem map_smul_id (G : GAtP p) (a : G.O) (M : Submodule G.O G.Fn) :
     M.map (a • LinearMap.id) = Ideal.span {a} • M := by
   rw [Submodule.ideal_span_singleton_smul]
   ext x
   simp [Submodule.mem_smul_pointwise_iff_exists]
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible G.O`. Take `⟨e, u, hau⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `hlen : Module.length G.O (G.O ⧸ Ideal.span {(p : G.O)}) = e`. Rewrite using `[hau, Ideal.span_singleton_mul_left_unit u.isUnit]`. Conclude with `ln_length_pow ϖ hϖ e`.
+
+Establish `hv : IsDiscreteValuationRing.addVal G.O (p : G.O) = e` using `IsDiscreteValuationRing.addVal_def _ u hϖ e hau`. Unfold `vUnit`. Rewrite using `[hlen, hv]`.
+-/
 theorem vUnit_eq (G : GAtP p) (hp0 : (p : G.O) ≠ 0) :
     vUnit G = ((Module.length G.O (G.O ⧸ Ideal.span {(p : G.O)})).toNat : ℝ) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible G.O
@@ -251,6 +366,41 @@ theorem vUnit_eq (G : GAtP p) (hp0 : (p : G.O) ≠ 0) :
   unfold vUnit
   rw [hlen, hv]
 
+/- English proof (translation)
+Take `⟨tt⟩` from `‹Nonempty T›`. Establish `v0 : Fin G.P.nV` using `vOf tt`. Set `g : Fin G.P.nV → T` to `Function.invFunOn vOf (VVp : Set T)`. Establish `hg : ∀ t0 ∈ VVp, g (vOf t0) = t0` using `fun t0 h => hinj.leftInvOn_invFunOn h`. Establish `hsumN : ∀ f : T → ℕ, ∑ v ∈ VVp.image vOf, f (g v) = ∑ t0 ∈ VVp, f t0`.
+
+Introduce `f`. Rewrite using `[Finset.sum_image hinj]`. Conclude with `Finset.sum_congr rfl (fun t0 h => by rw [hg t0 h])`. Establish `hsumR : ∀ f : T → ℝ, ∑ v ∈ VVp.image vOf, f (g v) = ∑ t0 ∈ VVp, f t0`. Introduce `f`.
+
+Rewrite using `[Finset.sum_image hinj]`. Conclude with `Finset.sum_congr rfl (fun t0 h => by rw [hg t0 h])`. Establish `htau : e + tau (VVp.image vOf) m Dd (fun v => tN (g v)) = τ`. Rewrite using `[hτ]`. Unfold `tau`.
+
+Rewrite using `[hsumN (fun t0 => m * (tN t0 + Dd + 1))]`. Take `⟨-, ℓ, hℓ, hb⟩` from `core D G v0 e hs1 hs2 h9 h12a h12b h13 (VVp.image vOf) (fun v => tN (g v)) (fun v => SN (g v)) Dd cStar (VVp.sup SN) m (fun v => kap (g v)) Vr hm (by`. Introduce `v hv`. Take `⟨t0, ht0, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hg t0 ht0]`.
+
+Conclude with `Finset.le_sup (f := SN) ht0)`. Use the proof step `(by`. Introduce `v hv`. Take `⟨t0, ht0, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hg t0 ht0]`.
+
+Conclude with `hLP t0 ht0)`. Use `hsat (by rw [hsumR kap]; exact hSig)`. Rewrite `hb` using `[htau, hsumR kap]`. Rewrite `hℓ` using `[htau]`. Rewrite using `[map_smul_id, map_smul_id]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `sat_clause _ NPf G.M (G.M ⊓ Vr) hsat ⟨hx.1, ?_, hx.2⟩` and prove the remaining obligations. Conclude with `Submodule.smul_le_right hx.1.2`. Establish `hle : prodIdeal G (VVp.image vOf) m (fun v => SN (g v)) G.M ≤ NPf`.
+
+Rewrite using `[hNPf]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `only [Set.mem_iUnion] at hy`. Take `⟨B, hB, x, hx, rfl⟩` from `hy`.
+
+Establish `hB' : B ⊆ VVp.image vOf` using `Finset.mem_powerset.1 hB`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨VVp.filter (fun t0 => vOf t0 ∈ B), Finset.filter_subset _ _, x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[monoN_eq, foldY_smul]`. Use `congr 1`.
+
+Use `congr 1`. Use `Finset.sum_nbij' g vOf ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv`. Take `⟨hv1, hv2⟩` from `Finset.mem_sdiff.1 hv`. Take `⟨t0, ht0, rfl⟩` from `Finset.mem_image.1 hv1`.
+
+Rewrite using `[hg t0 ht0]`. Use `Finset.mem_sdiff.2 ⟨ht0, fun h => hv2 (Finset.mem_filter.1 h).2⟩` and prove the remaining obligations. Introduce `t0 ht0`. Take `⟨h1, h2⟩` from `Finset.mem_sdiff.1 ht0`. Conclude with `Finset.mem_sdiff.2 ⟨Finset.mem_image_of_mem _ h1, fun h => h2 (Finset.mem_filter.2 ⟨h1, h⟩)⟩`.
+
+Introduce `v hv`. Take `⟨hv1, -⟩` from `Finset.mem_sdiff.1 hv`. Take `⟨t0, ht0, rfl⟩` from `Finset.mem_image.1 hv1`. Rewrite using `[hg t0 ht0]`. Introduce `t0 ht0`.
+
+Conclude with `hg t0 (Finset.mem_sdiff.1 ht0).1`. Introduce `v _`. Both sides reduce to the same expression. Use `foldY_perm G m ?_ x` and prove the remaining obligations. Use `(List.perm_ext_iff_of_nodup (Finset.sort_nodup _ _) ?_).2 ?_` and prove the remaining obligations.
+
+Use `List.Nodup.map_on ?_ (Finset.nodup_toList _)` and prove the remaining obligations. Introduce `a ha b hb hab`. Conclude with `hinj (Finset.mem_filter.1 (Finset.mem_toList.1 ha)).1 (Finset.mem_filter.1 (Finset.mem_toList.1 hb)).1 hab`. Introduce `v`. Rewrite using `[Finset.mem_sort, List.mem_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Take `⟨t0, ht0, rfl⟩` from `Finset.mem_image.1 (hB' hv)`. Conclude with `⟨t0, Finset.mem_toList.2 (Finset.mem_filter.2 ⟨ht0, hv⟩), rfl⟩`. Introduce and unpack `⟨t0, ht0, rfl⟩`.
+
+Conclude with `(Finset.mem_filter.1 (Finset.mem_toList.1 ht0)).2`. Establish `hle2 : Submodule.comap (G.M ⊓ Vr).subtype (prodIdeal G (VVp.image vOf) m (fun v => SN (g v)) G.M ⊓ (Ideal.span {(p : G.O) ^ τ}) • G.M ⊓ Vr) ≤ Submodule.comap (G.M ⊓ Vr).subtype (NPf ⊓ (Ideal.span {(p : G.O) ^ τ}) • G.M ⊓ Vr)` using `Submodule.comap_mono (inf_le_inf_right _ (inf_le_inf_right _ hle))`. Establish `hlen` using `Module.length_le_of_surjective _ (Submodule.factor_surjective hle2)`. Rewrite `hlen` using `[hℓ]`. Take `⟨ℓ', hℓ', hll⟩` from `ENat.le_natCast_iff.1 hlen`.
+
+Conclude with `⟨ℓ', hℓ', le_trans (by exact_mod_cast hll) hb⟩`.
+-/
 theorem coreT (D : Formalism.BasicNotions.D7) (G : GAtP p) {T : Type} [DecidableEq T] [Nonempty T] (vOf : T → Fin G.P.nV)
     (VVp : Finset T) (e m Dd cStar : ℕ) (tN SN : T → ℕ) (kap : T → ℝ) (Vr : Submodule G.O G.Fn)
     (hs1 : G.Mna.map (((p : G.O) ^ e) • LinearMap.id) ≤ G.M) (hs2 : G.M ≤ G.Mna)
@@ -363,6 +513,11 @@ open Formalism.BasicNotions
 
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.yProd`. Generalize the expression as in `VV'.toList = l`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`.
+
+Simplify using `only [List.map_cons, List.foldr_cons, Function.comp_apply, foldY_cons, ih]`.
+-/
 theorem yProd_eq (Y : LatInst D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (VV' : Finset (HH D)) (F : (D.gat u w hg).Fn) :
     yProd Y u w hg VV' F = foldY (D.gat u w hg) D.R.m (VV'.toList.map (Y.vOf u w hg)) F := by
@@ -373,6 +528,9 @@ theorem yProd_eq (Y : LatInst D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
   | cons a l ih =>
     simp only [List.map_cons, List.foldr_cons, Function.comp_apply, foldY_cons, ih]
 
+/- English proof (translation)
+Establish `key : ∀ s : ℝ, 0 ≤ s → (((⌈((⌈s⌉ : ℤ) : ℝ)⌉).toNat : ℕ) : ℝ) = ((⌈s⌉ : ℤ) : ℝ)`. Introduce `s hs`. Rewrite using `[Int.ceil_intCast, ← Int.cast_natCast, Int.toNat_of_nonneg (Int.ceil_nonneg hs)]`. Unfold `Formalism.MainNotions.G.Sv`. Conclude with `key _ (Finset.sum_nonneg fun j _ => le_max_left _ _)`.
+-/
 theorem SvG_cast (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (q : ℕ) (t0 : HH D) :
     ((⌈Formalism.MainNotions.G.Sv X K a b q t0⌉.toNat : ℕ) : ℝ) = Formalism.MainNotions.G.Sv X K a b q t0 := by
   have key : ∀ s : ℝ, 0 ≤ s → (((⌈((⌈s⌉ : ℤ) : ℝ)⌉).toNat : ℕ) : ℝ) = ((⌈s⌉ : ℤ) : ℝ) := by
@@ -381,6 +539,37 @@ theorem SvG_cast (X : Inst D L) (K : Consts) (a b : HH D → ℤ) (q : ℕ) (t0 
   unfold Formalism.MainNotions.G.Sv
   exact key _ (Finset.sum_nonneg fun j _ => le_max_left _ _)
 
+/- English proof (translation)
+Introduce `hA u w hg cStar`. Take `⟨h9, h12, h13, -⟩` from `hA u w hg`. Simplify using `only`. Introduce `hsand hm hinj hLP hsat hSig`. Establish `v0 : Fin (D.gat u w hg).P.nV` using `Y.vOf u w hg 0`.
+
+Establish `hp0` using `svc_p_ne_zero (D.gat u w hg) v0`. Distinguish the cases in `hE : Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w) = ∅`. Establish `htau : tauP X K (aL L) (bL L) (D.what₂.places.resChar w) = 0`. Unfold `tauP`. Rewrite using `[if_pos hE]`.
+
+Establish `hio : ioP X K (aL L) (bL L) (D.what₂.places.resChar w) = 0`. Unfold `ioP`. Rewrite using `[dif_neg]`. Rewrite using `[hE]`. Simplify using the standard rewrite rules.
+
+Establish `hNP : NP X Y K u w hg = (D.gat u w hg).M ⊓ Y.Vram u w hg`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Establish `h1` using `hx.1.2`.
+
+Rewrite `h1` using `[map_smul_id]`. Conclude with `Submodule.smul_le_right h1`. Introduce `x hx`. Use `⟨⟨?_, ?_⟩, hx.2⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises.
+
+Use `⟨∅, Finset.empty_subset _, x, hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[yProd_eq, hE]`. Simplify using `[foldY_nil]`. Rewrite using `[htau]`. Conclude with `⟨x, hx.1, by simp⟩`.
+
+Rewrite using `[hNP, htau, hio]`. Use `⟨?_, 0, ?_, by simp⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨x, hx, by simp⟩`. Establish `htop : Submodule.comap ((D.gat u w hg).M ⊓ Y.Vram u w hg).subtype ((D.gat u w hg).M ⊓ Y.Vram u w hg) = ⊤`.
+
+Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Conclude with `hx`. Rewrite using `[htop]`. Simplify using the standard rewrite rules.
+
+Establish `hne : (Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w)).Nonempty` using `Finset.nonempty_iff_ne_empty.2 hE`. Establish `hVV : Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w) = goodReps X (D.what₂.places.resChar w)`. Unfold `Formalism.MainNotions.G.VV at hE ⊢`. Use `split_ifs at hE ⊢ with h`. Both sides reduce to the same expression.
+
+Conclude with `absurd rfl hE`. Establish `hSigEq : Sig X K (aL L) (bL L) (D.what₂.places.resChar w) = (D.R.m : ℝ) * ∑ t0 ∈ Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w), kapv X K (aL L) (bL L) (D.what₂.places.resChar w) t0`. Rewrite using `[hVV]`. Both sides reduce to the same expression. Establish `htauN : tauP X K (aL L) (bL L) (D.what₂.places.resChar w) = ((X.ep (D.what₂.places.resChar w) + ∑ t0 ∈ Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w), D.R.m * (⌈tv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉₊ + Dp K L (D.what₂.places.resChar w) + 1) …`.
+
+Unfold `tauP`. Rewrite using `[if_neg hE]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hτ : ⌈tauP X K (aL L) (bL L) (D.what₂.places.resChar w)⌉.toNat = X.ep (D.what₂.places.resChar w) + ∑ t0 ∈ Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w), D.R.m * (⌈tv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉₊ + Dp K L (D.what₂.places.resChar w) + …`.
+
+Rewrite using `[htauN, Int.ceil_natCast, Int.toNat_natCast]`. Establish `hκ : ∀ t0 ∈ Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w), 0 ≤ kapv X K (aL L) (bL L) (D.what₂.places.resChar w) t0` using `fun t0 ht0 => kappa_nonneg' (D.gat u w hg) _ _ _ cStar _ (hLP t0 ht0)`. Take `⟨hincl, l, hl, hb⟩` from `coreT D (D.gat u w hg) (Y.vOf u w hg) (Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w)) (X.ep (D.what₂.places.resChar w)) D.R.m (Dp K L (D.what₂.places.resChar w)) cStar (fun t0 => ⌈tv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉₊) (fun t0 => ⌈Formalis …`. Use `⟨hincl, l, hl, hb.trans ?_⟩` and prove the remaining obligations. Rewrite using `[vUnit_eq _ hp0, hτ, ← htauN]`.
+
+Establish `hio : ioP X K (aL L) (bL L) (D.what₂.places.resChar w) = 2 * Sig X K (aL L) (bL L) (D.what₂.places.resChar w) * (Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w)).sup' hne (fun t0 => Formalism.MainNotions.G.Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0 …`. Unfold `ioP`. Rewrite using `[dif_pos hne]`. Establish `hsup : (((Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w)).sup (fun t0 => ⌈Formalism.MainNotions.G.Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat) : ℕ) : ℝ) ≤ (Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w)).sup' hne (fu …`. Take `⟨t1, ht1, hs⟩` from `Finset.exists_mem_eq_sup _ hne (fun t0 => ⌈Formalism.MainNotions.G.Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0⌉.toNat)`.
+
+Rewrite using `[hs, SvG_cast]`. Conclude with `Finset.le_sup' (fun t0 => Formalism.MainNotions.G.Sv X K (aL L) (bL L) (D.what₂.places.resChar w) t0) ht1`. Rewrite using `[hio, hSigEq]`. Establish `hs0 : 0 ≤ (D.R.m : ℝ) * ∑ t0 ∈ Formalism.MainNotions.G.VV X K (aL L) (bL L) (D.what₂.places.resChar w), kapv X K (aL L) (bL L) (D.what₂.places.resChar w) t0` using `mul_nonneg (Nat.cast_nonneg _) (Finset.sum_nonneg hκ)`. Establish `hmul` using `mul_le_mul_of_nonneg_left hsup hs0`.
+
+Use `le_trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (b := _) (c := _) ?_ (Nat.cast_nonneg (α := ℝ) _)) (Nat.cast_nonneg (α := ℝ) _)) (le_of_eq (mul_assoc _ _ _).symm)` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem stmt6G (D : Formalism.BasicNotions.D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) :
     RamifiedSublatticeVolumeOfAdmissible D L X Y K := by
   intro hA u w hg cStar

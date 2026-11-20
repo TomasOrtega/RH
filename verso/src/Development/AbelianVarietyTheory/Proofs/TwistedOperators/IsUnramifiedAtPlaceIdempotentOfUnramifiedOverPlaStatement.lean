@@ -19,5 +19,8 @@ open GlobalTheory.RouteSeesaw GlobalTheory.ChainFr
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all | exact GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all | (intros; apply GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isUnramifiedAtPlaceIdempotent_of_unramified_over_place : ∀ {D : D7} {χ : (AE D)ˣ →* Circle} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}, IsPlaceIdem D v ε → (∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt χ w) → GlobalTheory.WeilParts.UnramAt ε χ := by
   first | exact @GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all | exact GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all | (intros; apply GlobalTheory.UnrOverPlaceConv.unramAt_of_unrAt_all <;> assumption)

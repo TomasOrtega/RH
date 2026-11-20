@@ -14,6 +14,17 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.CrysFormalism
 
+/- English proof (translation)
+Introduce `D l _ K LL _`. Establish `T` using `D.locT l`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ a _ hμ hm`. Use `⟨GlobalTheory.Adopt.isCrys_inv_and_hodgeTate_jumps_neg l (D.loc l) (D.locA l) T K LL μ a hμ hm, ?_⟩` and prove the remaining obligations.
+
+Introduce `V _ _ _ _ _ _ _ ρ ρ' _ hρ hρ'`. Establish `htw : IsTwistRep μ ρ ρ'` using `⟨LinearEquiv.refl _ _, fun g x => by simp [hρ']⟩`. Take `⟨hc, hmult⟩` from `GlobalTheory.TwistRepCrys.isCrys_and_multV_twist l (D.loc l) (D.locA l) T K LL V ρ V ρ' μ htw hμ hρ`. Use `⟨hc, fun τ b => ?_⟩` and prove the remaining obligations. Establish `hj : IsJumpV ((D.loc l).PD K) (charRep μ) τ (a τ)`.
+
+Rewrite using `[(GlobalTheory.Per.JumpMult.jump_iff_mult_ne_zero l (D.loc l) (D.locA l) T K LL _ (charRep μ) τ (a τ)).2.2, hm]`. Simplify using the standard rewrite rules. Use `hmult τ (b - a τ) (a τ) hj` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `V₀ V₁ V₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ ρ₀ ρ₁ ρ₂ ι π _ _ _ hι hπ hinj hsurj hex h1`.
+
+Establish `h0` using `(GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) T K LL V₀ ρ₀ V₁ ρ₁ ι hι).1 hinj h1`. Establish `h2` using `((GlobalTheory.Per.CrysSubQuot.crys_sub_quot l (D.loc l) (D.locA l) T K LL V₁ ρ₁ V₂ ρ₂ π hπ).2 hsurj h1).1`. Establish `hdr` using `GlobalTheory.Per.CrisDR.isDR_of_isCrys l (D.loc l) (D.locA l) T K LL V₁ ρ₁ h1`. Use `⟨h0, h2, fun τ a => ?_⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.Per.ExactMult.exact_hodge_add l (D.loc l) (D.locA l) T K LL V₀ ρ₀ V₁ ρ₁ V₂ ρ₂ ι π hι hπ hinj hsurj hex hdr.1).2.2 τ a).2.1`.
+
+Introduce `V _ _ _ _ _ _ _ ρ _ τ`. Take `⟨h1, _⟩` from `GlobalTheory.Per.Components.components_finrank l (D.loc l) (D.locA l) T K LL V ρ`. Conclude with `⟨(h1 τ).1, (h1 τ).2.1⟩`.
+-/
 theorem crysLit_all : ∀ D : D7, Formalism.MainNotions.tableLineDegreeTwo.adm22 D := by
   intro D l _ K LL _
   have T := D.locT l

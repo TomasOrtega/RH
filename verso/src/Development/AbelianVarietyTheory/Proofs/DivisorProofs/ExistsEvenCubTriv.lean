@@ -16,6 +16,19 @@ namespace GlobalTheory.EvenGenTorus
 
 open TorusCube
 
+/- English proof (translation)
+Set `p₀` to `x3 H 0`. Set `p₁` to `x3 H 1`. Set `p₂` to `x3 H 2`. Establish `P : ∀ p : G3 H ⟶ H, HasVal L.L (fun _ _ h => h (p.left ≫ i.left)) (fun _ r z J => val τ (r ≫ p.left) z J)` using `fun p => ⟨PUnit, inferInstance, _, _, LB.pullGen L.L (fun _ : PUnit => i.left) (fun _ => 1) τ p.left, DVR.pullGen_isGen _ _ _ _ hτ p.left, fun V _ k => by simp, fun Z r z J hJ => val_pull hJ _ _ _⟩`. Set `M` to `(lift (p₀ ≫ i) (lift (p₁ ≫ i) (p₂ ≫ i))).left`.
+
+Establish `em : ∀ a b : G3 H ⟶ H, (a ≫ i) * (b ≫ i) = (a * b) ≫ i` using `fun a b => (MonObj.mul_comp _ _ _).symm`. Establish `e1 : (1 : G3 H ⟶ G) = (1 : G3 H ⟶ H) ≫ i` using `(MonObj.one_comp _).symm`. Establish `C : HasVal L.L (fun _ _ h => h ((p₀ * p₁ * p₂).left ≫ i.left) * (h ((p₀ * p₁).left ≫ i.left))⁻¹ * (h ((p₀ * p₂).left ≫ i.left))⁻¹ * (h ((p₁ * p₂).left ≫ i.left))⁻¹ * h (p₀.left ≫ i.left) * h (p₁.left ≫ i.left) * h (p₂.left ≫ i.left) * (h ((1 : G3 H ⟶ H).left ≫ i.left))⁻¹) (fun _ …` using `L.L) (φ := thφ G (x3 G)) (ε := thε) c.t (r ≫ M) z J) := ⟨thK, inferInstance, _, _, LB.pullGen L.L (thφ G (x3 G)) thε c.t M, DVR.pullGen_isGen _ _ _ _ c.isGen M, fun V _ h => by`. Use `prod_cub (p₀ ≫ i) (p₁ ≫ i) (p₂ ≫ i) h` as an intermediate fact. Rewrite `this` using `[e1]`.
+
+Simplify using `only [em] at this`. Simplify `this,` using `only [Over.comp_left]`. Use `fun Z r z J hJ => val_pull hJ _ _ _⟩`. Take `⟨w, hw⟩` from `(((((P (p₀ * p₁ * p₂)).mul (P p₀)).mul (P p₁)).mul (P p₂)).mul ((((C.mul (P (p₀ * p₁))).mul (P (p₀ * p₂))).mul (P (p₁ * p₂))).mul (P 1)).inv).exists_unit L.isLB (fun V _ k => by`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Use the proof step `abel)`. Use `⟨w, fun T x y u z J hJ v hv => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hw _ (lift x (lift y u)).left z J hJ)` and prove the remaining obligations. Establish `r₀ : lift x (lift y u) ≫ p₀ = x` using `by simp [p₀, x3]`.
+
+Establish `r₁ : lift x (lift y u) ≫ p₁ = y` using `by simp [p₁, x3]`. Establish `r₂ : lift x (lift y u) ≫ p₂ = u` using `by simp [p₂, x3]`. Establish `hM : (lift x (lift y u)).left ≫ M = (lift (x ≫ i) (lift (y ≫ i) (u ≫ i))).left`. Simplify using `only [M, ← Over.comp_left, comp_lift, ← Category.assoc, r₀, r₁, r₂]`. Simplify using `only [← Over.comp_left, MonObj.comp_mul, MonObj.comp_one, r₀, r₁, r₂, hv]`.
+
+Rewrite using `[hM]`. Both sides reduce to the same expression.
+-/
 theorem exists_ratio {S : Scheme.{0}} {H G : Over S} [GrpObj H] [IsCommMonObj H] [GrpObj G] [IsCommMonObj G]
     (i : H ⟶ G) [IsMonHom i] (L : RigLB G) (c : CubicalStr G L)
     (τ : LB.Gen (LB.LinComb L.L (K := PUnit) (fun _ => i.left) (fun _ => 1))) (hτ : τ.IsGen) :
@@ -63,6 +76,17 @@ theorem exists_ratio {S : Scheme.{0}} {H G : Over S} [GrpObj H] [IsCommMonObj H]
   rw [hM]
   rfl
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_ratio i L c τ hτ`. Establish `hT : TwoUniqueSums (X × X × X)` using `inferInstance`. Establish `face : ∀ (Z : Over (Spec (CommRingCat.of k))) (a b d : Z ⟶ splitTorus (Spec (CommRingCat.of k)) X), (a = 1 ∨ b = 1 ∨ d = 1) → (lift a (lift b d)).left.appTop.hom w.val = 1`. Introduce `Z a b d h`. Use `fn_ext fun q _ => ?_` and prove the remaining obligations.
+
+Use `choose I hI using fun χ : Z.left ⟶ G.left => exists_chart L.isLB (χ q)`. Establish `C` using `isCub_cubV c (show Good L.L q I from hI)`. Rewrite using `[← hw Z a b d q I hI (fun a => val τ a.left q I) (fun _ => rfl), gs_eq _ q ⊤ trivial, map_one, map_one, Units.val_eq_one, mul_inv_eq_one]`. Break down `h with rfl | rfl | rfl` into its components or cases. Rewrite using `[MonObj.one_comp, C.face]`.
+
+Simplify using `only [_root_.one_mul, _root_.mul_one]`. Apply the tactic sequence `try ac_rfl`. Rewrite using `[MonObj.one_comp, C.face₂]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`. Apply the tactic sequence `try ac_rfl`.
+
+Rewrite using `[MonObj.one_comp, C.face₃]`. Simplify using `only [_root_.one_mul, _root_.mul_one]`. Apply the tactic sequence `try ac_rfl`. Establish `key` using `unit_eq_one k X w.val w.isUnit (face _ _ _ _ (Or.inr (Or.inl rfl))) (face _ _ _ _ (Or.inl rfl)) (face _ _ _ _ (Or.inl rfl)) T x y u`. Use `hw T x y u z J hJ _ (fun _ => rfl)` as an intermediate fact.
+
+Rewrite `this` using `[key, gs_eq _ z ⊤ trivial, map_one, map_one, Units.val_eq_one, mul_inv_eq_one]`. Conclude with `this`.
+-/
 theorem cube (k : Type) [Field k] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (G : Over (Spec (CommRingCat.of k))) [GrpObj G] [IsCommMonObj G] (i : splitTorus (Spec (CommRingCat.of k)) X ⟶ G)
     [IsMonHom i] (L : RigLB G) (c : CubicalStr G L)

@@ -18,22 +18,37 @@ section dom
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `G.detM`. Conclude with `Matrix.det_isEmpty`.
+-/
 theorem detM_zero (Z : G.Mat 0) : G.detM Z = 1 := by
   unfold G.detM; exact Matrix.det_isEmpty
 
+/- English proof (translation)
+Rewrite using `[U.hMat, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (Dx2.SL.isUnit_wP σ).ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => hd i)`.
+-/
 theorem hMat_det_ne (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) : (U.hMat σ d).det ≠ 0 := by
   rw [U.hMat, Matrix.det_mul, Matrix.det_diagonal]
   exact mul_ne_zero (Dx2.SL.isUnit_wP σ).ne_zero (Finset.prod_ne_zero_iff.2 fun i _ => hd i)
 
+/- English proof (translation)
+Rewrite using `[Formalism.FourierDecayAlt.P.level_determinant_z r 0 σ d η (fun a => a.elim0), detM_zero, mul_one]`.
+-/
 theorem zjH_det (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (η : U.XiH r 0 σ) :
     (U.ZjH σ d η (fun a => a.elim0)).det = (U.hMat σ d).det := by
   rw [Formalism.FourierDecayAlt.P.level_determinant_z r 0 σ d η (fun a => a.elim0), detM_zero, mul_one]
 
+/- English proof (translation)
+Establish `h` using `(Formalism.FourierDecayAlt.P.radical_parametrisation k r 0).2.1`. Establish `: U.Rn k r 0 x ∈ U.Rset k r 0` using `by rw [← h]; exact ⟨x, rfl⟩`. Conclude with `this.1`.
+-/
 theorem rn_mem_GV (x : U.RC k r 0) : U.Rn k r 0 x ∈ B.GV k (r + 0) := by
   have h := (Formalism.FourierDecayAlt.P.radical_parametrisation k r 0).2.1
   have : U.Rn k r 0 x ∈ U.Rset k r 0 := by rw [← h]; exact ⟨x, rfl⟩
   exact this.1
 
+/- English proof (translation)
+Establish `hG` using `Formalism.FourierDecayAlt.P.unitary_group_closed k (r + 0)`. Establish `hm` using `(Formalism.FourierDecayAlt.P.slice_membership k r 0).1 (U.ZjH σ d ξ.2 (fun a => a.elim0)) γ (by rw [zjH_det]; exact hMat_det_ne σ d hd) hγ`. Unfold `U.gaXi`. Conclude with `hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ (rn_mem_GV _)) _ hm) _ (rn_mem_GV _)`.
+-/
 theorem gaXi_mem_GV (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) (ξ : U.Xi k r 0 0 σ)
     (γ : B.Mat k 0) (hγ : γ ∈ B.GV k 0) : U.gaXi k 0 σ d ξ (fun a => a.elim0) γ ∈ B.GV k r := by
   have hG := Formalism.FourierDecayAlt.P.unitary_group_closed k (r + 0)
@@ -42,6 +57,41 @@ theorem gaXi_mem_GV (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d
   unfold U.gaXi
   exact hG.mul_mem _ (hG.mul_mem _ (hG.inv_mem _ (rn_mem_GV _)) _ hm) _ (rn_mem_GV _)
 
+/- English proof (translation)
+Establish `hK : IsCompact {g : B.Mat k r | g ∈ B.GV k r ∧ B.gN g ≤ R}`. Establish `h1` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k r R`. Establish `h2` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).closed`. Establish `: {g : B.Mat k r | g ∈ B.GV k r ∧ B.gN g ≤ R} = B.GV k r ∩ {g | B.gN g ≤ R}` using `rfl`. Rewrite using `[this]`.
+
+Conclude with `h1.inter_left h2`. Take `⟨M0, hM0⟩` from `hK.exists_bound_of_continuousOn (hFc.mono fun g hg => hg.1)`. Take `⟨C1, hC1⟩` from `Formalism.FourierDecayAlt.P.block3_apply_embedding k r 0 hr`. Take `⟨C2, hC2⟩` from `Formalism.FourierDecayAlt.P.aux_statement_17 r 0 σ d hd`. Use `set δ := ‖(U.hMat σ d).det‖ with hδ`.
+
+Establish `hδ0 : 0 < δ` using `norm_pos_iff.2 (hMat_det_ne σ d hd)`. Use `set R0 := max R 0`. Use `set C1' := max C1 0`. Use `set C2' := max C2 0`. Use `set K1 := C1' * R0 ^ r / min 1 δ`.
+
+Use `set K2 := C2' * (C1' * R0) ^ r`. Use `set K := max (max K1 K2) 0`. Use `set B1 : Set (U.RC k (r + 0) 0) := Metric.closedBall (0 : Fin (2 * 0 + k + 1) → Fin (r + 0) → ℂ) K ×ˢ (Metric.closedBall (0 : G.UT (r + 0) → ℂ) K ×ˢ Metric.closedBall (0 : Fin (r + 0) → ℝ) K) with hB1`. Use `set Bs : Set (U.Xi k r 0 0 σ) := (B1 ×ˢ B1) ×ˢ ((Metric.closedBall (0 : Fin 0 → Fin r → ℂ) K ×ˢ Metric.closedBall (0 : Fin r → Fin 0 → ℂ) K) ×ˢ (Metric.closedBall (0 : U.LW σ → ℂ) K ×ˢ Metric.closedBall (0 : G.UT r → ℂ) K)) with hBs`. Establish `hB1m : MeasurableSet B1` using `Metric.isClosed_closedBall.measurableSet.prod (Metric.isClosed_closedBall.measurableSet.prod Metric.isClosed_closedBall.measurableSet)`.
+
+Establish `hprod : ∀ {α β : Type} [MeasurableSpace α] [MeasurableSpace β] (μ : Measure α) (ν : Measure β) [SFinite ν] {s : Set α} {t : Set β}, μ s < ⊤ → ν t < ⊤ → (μ.prod ν) (s ×ˢ t) < ⊤`. Introduce `α β _ _ μ ν _ s t hs ht`. Rewrite using `[Measure.prod_prod]`. Conclude with `ENNReal.mul_lt_top hs ht`. Establish `hRC : U.muRC k (r + 0) 0 B1 < ⊤`.
+
+Unfold `U.muRC`. Conclude with `hprod volume volume measure_closedBall_lt_top (hprod volume volume measure_closedBall_lt_top measure_closedBall_lt_top)`. Use `⟨max M0 0, Bs, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(hB1m.prod hB1m).prod ((Metric.isClosed_closedBall.measurableSet.prod Metric.isClosed_closedBall.measurableSet).prod (Metric.isClosed_closedBall.measurableSet.prod Metric.isClosed_closedBall.measurableSet))`. Unfold `U.muXi U.muXiH`.
+
+Establish `h1 : SFinite (volume : Measure ((G.UT (r + 0) → ℂ) × (Fin (r + 0) → ℝ)))` using `(inferInstance : SFinite ((volume : Measure (G.UT (r + 0) → ℂ)).prod (volume : Measure (Fin (r + 0) → ℝ))))`. Establish `: SFinite (U.muRC k (r + 0) 0)` using `(inferInstance : SFinite ((volume : Measure (Fin (2 * 0 + k + 1) → Fin (r + 0) → ℂ)).prod (volume : Measure ((G.UT (r + 0) → ℂ) × (Fin (r + 0) → ℝ)))))`. Conclude with `hprod _ volume (hprod _ _ hRC hRC) (hprod volume volume (hprod volume volume measure_closedBall_lt_top measure_closedBall_lt_top) (hprod volume volume measure_closedBall_lt_top measure_closedBall_lt_top))`. Introduce `ξ γ hγ set g := U.gaXi k 0 σ d ξ (fun a => a.elim0) γ with hg`. Distinguish the cases in `hF : F g = 0`.
+
+Rewrite using `[hF, norm_zero]`. Conclude with `Set.indicator_nonneg (fun _ _ => le_max_right _ _) ξ`. Establish `hgG : g ∈ B.GV k r` using `gaXi_mem_GV σ d hd ξ γ hγ`. Establish `hgR` using `hFs g hgG hF`. Establish `hgn : 0 ≤ B.gN g` using `Real.sqrt_nonneg _`.
+
+Establish `hgR0 : B.gN g ≤ R0` using `hgR.trans (le_max_left _ _)`. Establish `hdet : (U.ZjH σ d ξ.2 (fun a => a.elim0)).det ≠ 0` using `by rw [zjH_det]; exact hMat_det_ne σ d hd`. Take `⟨h1, h2, h3, -, -⟩` from `hC1 ξ.1.1 ξ.1.2 (U.ZjH σ d ξ.2 (fun a => a.elim0)) γ hdet hγ`. Establish `hdetn : ‖(U.ZjH σ d ξ.2 (fun a => a.elim0)).det‖ = δ` using `by rw [zjH_det]`. Rewrite `h1`, `h2` using `[hdetn]`.
+
+Establish `hmin : 0 < min 1 δ` using `lt_min one_pos hδ0`. Establish `hC1n : 0 ≤ C1'` using `le_max_right _ _`. Establish `hpow : B.gN g ^ r ≤ R0 ^ r` using `pow_le_pow_left₀ hgn hgR0 r`. Establish `hpow0 : 0 ≤ B.gN g ^ r` using `pow_nonneg hgn r`. Establish `hb1 : ‖ξ.1.1‖ ≤ K1`.
+
+Use `(Formalism.FourierDecayAlt.P.Ux6.norm_le_gN_Rn ξ.1.1).trans (h1.trans ?_)` and prove the remaining obligations. Use `div_le_div_of_nonneg_right ?_ hmin.le` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_max_left _ _) hpow0).trans (mul_le_mul_of_nonneg_left hpow hC1n)`. Establish `hb2 : ‖ξ.1.2‖ ≤ K1`. Use `(Formalism.FourierDecayAlt.P.Ux6.norm_le_gN_Rn ξ.1.2).trans (h2.trans ?_)` and prove the remaining obligations.
+
+Use `div_le_div_of_nonneg_right ?_ hmin.le` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_max_left _ _) hpow0).trans (mul_le_mul_of_nonneg_left hpow hC1n)`. Establish `hmx : U.mx (U.ZjH σ d ξ.2 (fun a => a.elim0)) ≤ C1' * R0` using `h3.trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) hgn).trans (mul_le_mul_of_nonneg_left hgR0 hC1n))`. Establish `hmx0 : 0 ≤ U.mx (U.ZjH σ d ξ.2 (fun a => a.elim0))` using `norm_nonneg _`. Take `⟨e1, e2, e3, e4, -, -⟩` from `hC2 ξ.2 (fun a => a.elim0)`.
+
+Establish `hC2n : 0 ≤ C2'` using `le_max_right _ _`. Establish `hpm : U.mx (U.ZjH σ d ξ.2 (fun a => a.elim0)) ^ r ≤ (C1' * R0) ^ r` using `pow_le_pow_left₀ hmx0 hmx r`. Establish `hpm0 : 0 ≤ U.mx (U.ZjH σ d ξ.2 (fun a => a.elim0)) ^ r` using `pow_nonneg hmx0 r`. Establish `hK2 : ∀ t : ℝ, t ≤ C2 * U.mx (U.ZjH σ d ξ.2 (fun a => a.elim0)) ^ r → t ≤ K2` using `fun t ht => ht.trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) hpm0).trans (mul_le_mul_of_nonneg_left hpm hC2n))`. Establish `hξ : ‖ξ‖ ≤ K`.
+
+Establish `k1 : K1 ≤ K` using `le_max_left _ _ |>.trans (le_max_left _ _)`. Establish `k2 : K2 ≤ K` using `le_max_right _ _ |>.trans (le_max_left _ _)`. Conclude with `norm_prod_le_iff.2 ⟨norm_prod_le_iff.2 ⟨hb1.trans k1, hb2.trans k1⟩, norm_prod_le_iff.2 ⟨norm_prod_le_iff.2 ⟨(hK2 _ e1).trans k2, (hK2 _ e2).trans k2⟩, norm_prod_le_iff.2 ⟨(hK2 _ e3).trans k2, (hK2 _ e4).trans k2⟩⟩⟩`. Establish `hmem : ξ ∈ Bs`. Establish `hb` using `fun {α : Type} [SeminormedAddCommGroup α] (x : α) (h : ‖x‖ ≤ K) => (show x ∈ Metric.closedBall (0 : α) K by rw [Metric.mem_closedBall, dist_zero_right]; exact h)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨⟨h11, h12⟩, ⟨h21, h22⟩, h23, h24⟩ : (‖ξ.1.1‖ ≤ K ∧ ‖ξ.1.2‖ ≤ K) ∧ (‖ξ.2.1.1‖ ≤ K ∧ ‖ξ.2.1.2‖ ≤ K) ∧ ‖ξ.2.2.1‖ ≤ K ∧ ‖ξ.2.2.2‖ ≤ K := by`. Take `⟨ha, hb'⟩` from `norm_prod_le_iff.1 hξ`. Take `⟨ha1, ha2⟩` from `norm_prod_le_iff.1 ha`. Take `⟨hb1', hb2'⟩` from `norm_prod_le_iff.1 hb'`. Conclude with `⟨⟨ha1, ha2⟩, norm_prod_le_iff.1 hb1', norm_prod_le_iff.1 hb2'⟩`.
+
+Establish `hrc : ∀ x : U.RC k (r + 0) 0, ‖x‖ ≤ K → x ∈ B1`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `norm_prod_le_iff.1 hx`. Take `⟨hx21, hx22⟩` from `norm_prod_le_iff.1 hx2`. Conclude with `⟨hb _ hx1, hb _ hx21, hb _ hx22⟩`.
+
+Conclude with `⟨⟨hrc _ h11, hrc _ h12⟩, ⟨hb _ h21, hb _ h22⟩, hb _ h23, hb _ h24⟩`. Rewrite using `[Set.indicator_of_mem hmem]`. Conclude with `(hM0 g ⟨hgG, hgR⟩).trans (le_max_left _ _)`.
+-/
 theorem slice_dom (k r : ℕ) (hr : 1 ≤ r) (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0)
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (F : B.Mat k r → E)
     (hFc : ContinuousOn F (B.GV k r)) (R : ℝ) (hFs : ∀ g ∈ B.GV k r, F g ≠ 0 → B.gN g ≤ R) :
@@ -152,20 +202,38 @@ theorem slice_dom (k r : ℕ) (hr : 1 ≤ r) (σ : Equiv.Perm (Fin r)) (d : Fin 
       rw [Set.indicator_of_mem hmem]
       exact (hM0 g ⟨hgG, hgR⟩).trans (le_max_left _ _)
 
+/- English proof (translation)
+Unfold `U.ZjH`. Conclude with `Dx2.SL.zj_zero _ _ _ _`.
+-/
 theorem zjH_eq (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (η : U.XiH r 0 σ) :
     U.ZjH σ d η (fun a => a.elim0) = U.headH σ d η.2.1 η.2.2 := by
   unfold U.ZjH; exact Dx2.SL.zj_zero _ _ _ _
 
+/- English proof (translation)
+Rewrite using `[← zjH_eq, zjH_det]`.
+-/
 theorem headH_det (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (η : U.XiH r 0 σ) :
     (U.headH σ d η.2.1 η.2.2).det = (U.hMat σ d).det := by
   rw [← zjH_eq, zjH_det]
 
+/- English proof (translation)
+Unfold `U.headH`. Conclude with `((continuous_const.matrix_mul ((Dx2.SL.cont_lowW σ).comp (continuous_fst.comp continuous_snd))).matrix_mul continuous_const).matrix_mul (Dx2.SL.cont_upper.comp (continuous_snd.comp continuous_snd))`.
+-/
 theorem headH_cont (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) :
     Continuous (fun η : U.XiH r 0 σ => U.headH σ d η.2.1 η.2.2) := by
   unfold U.headH
   exact ((continuous_const.matrix_mul ((Dx2.SL.cont_lowW σ).comp (continuous_fst.comp continuous_snd))).matrix_mul
     continuous_const).matrix_mul (Dx2.SL.cont_upper.comp (continuous_snd.comp continuous_snd))
 
+/- English proof (translation)
+Use `set c := (U.hMat σ d).det with hc`. Establish `hc0 : star c ≠ 0` using `star_ne_zero.2 (hMat_det_ne σ d hd)`. Establish `hinv : ∀ η : U.XiH r 0 σ, (U.headH σ d η.2.1 η.2.2)ᴴ⁻¹ = (star c)⁻¹ • (U.headH σ d η.2.1 η.2.2)ᴴ.adjugate`. Introduce `η`. Rewrite using `[Formalism.FourierDecayAlt.P.B2x2.inv_eq, Matrix.det_conjTranspose, headH_det]`.
+
+Establish `hH : Continuous (fun p : U.Xi k r 0 0 σ × B.Mat k 0 => U.headH σ d p.1.2.2.1 p.1.2.2.2)` using `(headH_cont σ d).comp (continuous_snd.comp continuous_fst)`. Establish `hm : Continuous (fun p : U.Xi k r 0 0 σ × B.Mat k 0 => U.mMap k r 0 (U.headH σ d p.1.2.2.1 p.1.2.2.2) p.2)`. Unfold `U.mMap`. Simplify using `only [hinv]`. Use `Dx2.SplitF.continuous_block3_matrix continuous_const continuous_const ?_ continuous_const continuous_snd continuous_const (continuous_const.matrix_mul hH) continuous_const continuous_const` and prove the remaining obligations.
+
+Conclude with `(hH.matrix_conjTranspose.matrix_adjugate.const_smul ((star c)⁻¹ : ℂ)).matrix_mul continuous_const`. Establish `e : (fun p : U.Xi k r 0 0 σ × B.Mat k 0 => U.gaXi k 0 σ d p.1 (fun a => a.elim0) p.2) = fun p => U.Rn k r 0 (-p.1.1.1) * U.mMap k r 0 (U.headH σ d p.1.2.2.1 p.1.2.2.2) p.2 * U.Rn k r 0 p.1.1.2`. Use function extensionality and compare the values at `p`. Unfold `U.gaXi`. Rewrite using `[rn_inv, zjH_eq]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(((Dx2.SplitF.rn_cont r 0).comp (continuous_fst.comp (continuous_fst.comp continuous_fst)).neg).matrix_mul hm).matrix_mul ((Dx2.SplitF.rn_cont r 0).comp (continuous_snd.comp (continuous_fst.comp continuous_fst)))`.
+-/
 theorem gaXi_cont (σ : Equiv.Perm (Fin r)) (d : Fin r → ℂ) (hd : ∀ i, d i ≠ 0) :
     Continuous (fun p : U.Xi k r 0 0 σ × B.Mat k 0 => U.gaXi k 0 σ d p.1 (fun a => a.elim0) p.2) := by
   set c := (U.hMat σ d).det with hc

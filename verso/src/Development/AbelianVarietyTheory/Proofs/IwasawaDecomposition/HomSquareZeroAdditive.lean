@@ -17,6 +17,9 @@ namespace GlobalTheory.SqZeroAdd
 
 variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing C]
     [Algebra S C] (f : A →ₐ[S] B) (g : B →ₐ[S] C) :
     Formalism.L2.Pj.homAt x0 (g.comp f) = Formalism.L2.Pj.homAt x0 g ≫ Formalism.L2.Pj.homAt x0 f := by
@@ -25,12 +28,18 @@ theorem homAt_comp {A B C : Type} [CommRing A] [Algebra S A] [CommRing B] [Algeb
   rw [← Spec.map_comp]
   rfl
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map _ = 𝟙 _`. Conclude with `Spec.map_id _`.
+-/
 theorem homAt_id {A : Type} [CommRing A] [Algebra S A] :
     Formalism.L2.Pj.homAt x0 (AlgHom.id S A) = 𝟙 _ := by
   apply Over.OverMorphism.ext
   show Spec.map _ = 𝟙 _
   exact Spec.map_id _
 
+/- English proof (translation)
+Rewrite using `[Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]`.
+-/
 theorem comp_one' {Y Z M : Over X} [GrpObj M] (f : Y ⟶ Z) : f ≫ (1 : Z ⟶ M) = 1 := by
   rw [Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (f ≫ toUnit Z) (toUnit Y)]
 
@@ -38,6 +47,9 @@ variable {G : Over X} [GrpObj G]
 variable {V W : Type} [AddCommGroup V] [Module S V] [Module Sᵐᵒᵖ V] [IsCentralScalar S V]
     [AddCommGroup W] [Module S W] [Module Sᵐᵒᵖ W] [IsCentralScalar S W]
 
+/- English proof (translation)
+Rewrite using `[← homAt_comp]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem map_comp_map {U : Type} [AddCommGroup U] [Module S U] [Module Sᵐᵒᵖ U] [IsCentralScalar S U]
     (f : W →ₗ[S] V) (g : V →ₗ[S] U) :
     Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (g ∘ₗ f)) =
@@ -47,12 +59,18 @@ theorem map_comp_map {U : Type} [AddCommGroup U] [Module S U] [Module Sᵐᵒᵖ
   refine AlgHom.ext fun x => ?_
   ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[← homAt_id]`. Use `congr 1`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+-/
 theorem map_id_homAt : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.id : W →ₗ[S] W)) = 𝟙 _ := by
   rw [← homAt_id]
   congr 1
   refine AlgHom.ext fun x => ?_
   ext <;> simp
 
+/- English proof (translation)
+Establish `e : (TrivSqZeroExt.map (0 : W →ₗ[S] V)) = (TrivSqZeroExt.inlAlgHom S S V).comp (TrivSqZeroExt.fstHom S S W)`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e, homAt_comp, Category.assoc, hy, comp_one']`.
+-/
 theorem map_zero_comp (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     (hy : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.fstHom S S W) ≫ y = 1) :
     Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (0 : W →ₗ[S] V)) ≫ y = 1 := by
@@ -70,6 +88,17 @@ variable {X : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
 variable {G : Over X} [GrpObj G]
 variable {W : Type} [AddCommGroup W] [Module S W] [Module Sᵐᵒᵖ W] [IsCentralScalar S W]
 
+/- English proof (translation)
+Use `ext1`. Use `GlobalTheory.TangentCrit.hom_ext_of_ker_inf (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.fst S W W)).toRingHom) (CommRingCat.ofHom (TrivSqZeroExt.map (LinearMap.snd S W W)).toRingHom) ?_ ?_ ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `refine (PrimeSpectrum.isHomeomorph_comap (TrivSqZeroExt.map (LinearMap.fst S W W)).toRingHom (fun x => ⟨1, one_pos, TrivSqZeroExt.map (LinearMap.inl S W W) x, by ext <;> simp⟩) fun d hd => ?_).surjective`. Establish `h : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hd`. Apply the tactic sequence `exact ⟨2, by ext1 <;> simp [pow_two, h]⟩`.
+
+Introduce `d h₁ h₂`. Establish `h₃ : d.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst h₁`. Establish `h₄ : d.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₁`. Establish `h₅ : d.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd h₂`. Conclude with `TrivSqZeroExt.ext h₃ (Prod.ext h₄ h₅)`.
+
+Use `congrArg Over.Hom.left (?_ : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.fst S W W)) ≫ _ = Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.fst S W W)) ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, ← map_comp_map]`. Establish `e₁ : LinearMap.fst S W W ∘ₗ (LinearMap.inl S W W + LinearMap.inr S W W) = LinearMap.id` using `by ext; simp`. Establish `e₂ : LinearMap.fst S W W ∘ₗ LinearMap.inl S W W = LinearMap.id` using `by ext; simp`.
+
+Establish `e₃ : LinearMap.fst S W W ∘ₗ LinearMap.inr S W W = 0` using `by ext; simp`. Rewrite using `[e₁, e₂, e₃, map_id_homAt, map_zero_comp x0 y hy, Category.id_comp, _root_.mul_one]`. Use `congrArg Over.Hom.left (?_ : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.snd S W W)) ≫ _ = Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.snd S W W)) ≫ _)` and prove the remaining obligations. Rewrite using `[comp_mul]`. Simplify using `only [← Category.assoc, ← map_comp_map]`.
+
+Establish `e₁ : LinearMap.snd S W W ∘ₗ (LinearMap.inl S W W + LinearMap.inr S W W) = LinearMap.id` using `by ext; simp`. Establish `e₂ : LinearMap.snd S W W ∘ₗ LinearMap.inl S W W = 0` using `by ext; simp`. Establish `e₃ : LinearMap.snd S W W ∘ₗ LinearMap.inr S W W = LinearMap.id` using `by ext; simp`. Rewrite using `[e₁, e₂, e₃, map_id_homAt, map_zero_comp x0 y hy, Category.id_comp, _root_.one_mul]`.
+-/
 theorem key (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     (hy : Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.fstHom S S W) ≫ y = 1) :
     Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (LinearMap.inl S W W + LinearMap.inr S W W)) ≫ y =
@@ -110,6 +139,11 @@ theorem key (y : overAt x0 (TrivSqZeroExt S W) ⟶ G)
     have e₃ : LinearMap.snd S W W ∘ₗ LinearMap.inr S W W = LinearMap.id := by ext; simp
     rw [e₁, e₂, e₃, map_id_homAt, map_zero_comp x0 y hy, Category.id_comp, _root_.one_mul]
 
+/- English proof (translation)
+Introduce `X G _ S _ x0 V W _ _ _ _ _ _ _ _ y hy f g`. Establish `h` using `congrArg (Formalism.L2.Pj.homAt x0 (TrivSqZeroExt.map (f.coprod g)) ≫ ·) (key x0 y hy)`. Simplify using `only [comp_mul, ← Category.assoc, ← map_comp_map] at h`. Establish `e₁ : f.coprod g ∘ₗ (LinearMap.inl S W W + LinearMap.inr S W W) = f + g` using `by ext; simp`. Establish `e₂ : f.coprod g ∘ₗ LinearMap.inl S W W = f` using `by ext; simp`.
+
+Establish `e₃ : f.coprod g ∘ₗ LinearMap.inr S W W = g` using `by ext; simp`. Rewrite `h` using `[e₁, e₂, e₃]`. Then use the resulting hypothesis.
+-/
 theorem map_add_comp :
     ∀ {X : Scheme.{0}} {G : Over X} [GrpObj G] {S : Type} [CommRing S] (x0 : Sp S ⟶ X)
     {V W : Type} [AddCommGroup V] [Module S V] [Module Sᵐᵒᵖ V] [IsCentralScalar S V]

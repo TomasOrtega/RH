@@ -24,6 +24,47 @@ open scoped GlobalTheory.GaugeEx
 noncomputable section
 namespace GlobalTheory.RallisCusp
 
+/- English proof (translation)
+Introduce `D hEis hMove hInv hKill hcont ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ ha₁ hc₁ ha₂ hc₂`. Use `haveI : Countable (Lag W) := lag_countable D W`. Use `haveI : Countable D.host.E := countable_numberField_type D.host.E`. Use `haveI := hS.haarW`. Establish `hw` using `hS.weil`.
+
+Establish `hpres : ∀ p f, IsThetaFunO ψ V W f → IsThetaFunO ψ V W (om p f)` using `hw.om_pres`. Establish `hom : ∀ (g h : GA D W) f, om (1, g) (om (1, h) f) = om (1, g * h) f`. Introduce `g h f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hmove : ∀ (γ : GQ W) (Y : Lag W) (g : GA D W) (F₂ : WO V W → ℂ), IsThetaFunO ψ V W F₂ → lagTerm μ 𝓕 (fr (lagAct W γ Y)) (om (1, g) f₁) F₂ = lagTerm μ 𝓕 (fr Y) (om (1, (γ : GA D W)⁻¹ * g) f₁) F₂`.
+
+Introduce `γ Y g F₂ hF₂`. Establish `h1` using `(hMove ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS (om (1, g) f₁) F₂ (hpres _ _ hf₁) hF₂).1 (lagAct W γ Y) _ (isLagFrame_lagAct W γ Y (fr Y) (hS.frame Y))`. Establish `h2` using `((hMove ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS (om (1, (γ : GA D W)⁻¹ * g) f₁) F₂ (hpres _ _ hf₁) hF₂).2 γ γ.2 (gqMat W γ) (gqMat_map W γ).symm).1 (fr Y)`. Rewrite using `[← h1, ← h2, hom, mul_inv_cancel_left]`. Establish `hslice : ∀ g₂ : GA D W, ∑' Y : NGLag W, ∫⁻ g in 𝓖, ‖star (φ₁ g) * lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂)‖ₑ ∂νW ≠ ⊤ → ∑' Y : NGLag W, ∫ g in 𝓖, star (φ₁ g) * lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) ∂νW = 0`.
+
+Introduce `g₂ hfin`. Establish `hF₂` using `hpres (1, g₂) f₂ hf₂`. Establish `hGQ : Countable (GQ W)` using `by haveI : Countable (Matrix (Fin W.rank) (Fin W.rank) D.host.E) := inferInstanceAs (Countable (Fin W.rank → Fin W.rank → D.host.E))`. Use `Function.Injective.countable (f := fun γ : GQ W => gqMat W γ) ?_` and prove the remaining obligations. Introduce `γ δ h`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `GlobalTheory.MixModel.mt_injective W` to reduce the goal to its premises. Use `congrArg (fun c => c.map (incA D)) h` as an intermediate fact. Simplify `this` using `only [gqMat_map]`. Use `GlobalTheory.T.tsum_setIntegral_eq_zero_of_stabilizer_integrals νW inferInstance (GQ W) hGQ 𝓖 hS.fdW (ngAct W) (ngAct_one W) (ngAct_mul W) (fun Y g => star (φ₁ g) * lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂)) ?_ ?_ hfin ?_` and prove the remaining obligations.
+
+Introduce `γ Y g show star (φ₁ g) * lagTerm μ 𝓕 (fr (lagAct W γ Y.1)) _ _ = _`. Rewrite using `[hmove γ Y.1 g _ hF₂, ha₁.left _ (inv_mem γ.2) g]`. Introduce `Y`. Conclude with `((continuous_star.comp ha₁.cont).mul (hcont ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS f₁ _ hf₁ hF₂ Y.1 Y.2)).aestronglyMeasurable`. Introduce `Y Γ hΓ 𝓓 h𝓓 hint`.
+
+Take `⟨s, I, hI, hspan⟩` from `GlobalTheory.T.exists_isotropicFrame_lagrangian_first_summand D W Y.1 Y.2`. Establish `hle : Γ ≤ GQ W` using `fun g hg => ((hΓ g).1 hg).1`. Establish `hfix : ∀ g (hg : g ∈ Γ), lagAct W ⟨g, hle hg⟩ Y.1 = Y.1`. Introduce `g hg`. Take `⟨h, e⟩` from `(hΓ g).1 hg`.
+
+Conclude with `congrArg Subtype.val e`. Establish `key` using `hKill W νW hS.haarW s I hI Γ hle (fun n hn => (hΓ n).2 ⟨hn.2, Subtype.ext (GlobalTheory.T.rationalUnitaryLagrangianAction_eq_of_mem_frameUnipotent D W Y.1 s I hI hspan ⟨n, hn.2⟩ hn.1)⟩) (fun γ hγ n hn => GlobalTheory.T.lagrangianStabilizer_normalizes_frameUnipotent D W Y.1 s I hI …`. Rewrite using `[← key]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `γ hγ g show lagTerm μ 𝓕 (fr Y.1) (om (1, γ * g) f₁) (om (1, g₂) f₂) = lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂)`. Use `hmove ⟨γ, hle hγ⟩ Y.1 (γ * g) _ hF₂` as an intermediate fact. Rewrite `this` using `[hfix γ hγ]`. Rewrite using `[this]`.
+
+Use `congr 3`. Conclude with `congrArg (Prod.mk 1) (inv_mul_cancel_left γ g)`. Introduce `n hn g show lagTerm μ 𝓕 (fr Y.1) (om (1, n * g) f₁) (om (1, g₂) f₂) = lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂)`. Rewrite using `[← hom]`. Conclude with `hInv ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS Y.1 s I hI hspan n hn _ _ (hpres _ _ hf₁) hF₂`.
+
+Conclude with `⟨fun γ hγ g => by show star (φ₁ (γ * g)) = star (φ₁ g); rw [ha₁.left γ hγ g], by`. Take `⟨U, hU, hk⟩` from `ha₁.level`. Conclude with `⟨U, hU, fun k hk1 hk2 g => by show star (φ₁ (g * k)) = star (φ₁ g); rw [hk k hk1 hk2 g]⟩,`. Use the proof step `continuous_star.comp ha₁.cont⟩`. Introduce `r C hC μ' 𝓕' hμ' h𝓕' g`.
+
+Use `hc₁ r C hC μ' 𝓕' hμ' h𝓕' g` as an intermediate fact. Use `show ∫ n in 𝓕', (starRingEnd ℂ) (φ₁ ((n : GA D W) * g)) ∂μ' = 0`. Rewrite using `[integral_conj, this, map_zero]`. Establish `e : (fun g => lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) * star (φ₁ g)) = fun g => star (φ₁ g) * lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂)` using `funext fun g => mul_comm _ _ show IntegrableOn (fun g => lagTerm μ 𝓕 (fr Y.1) (om (1, g) f₁) (om (1, g₂) f₂) * star (φ₁ g)) 𝓓 νW`. Rewrite using `[e]`.
+
+Conclude with `hint`. Establish `hφ₁c : Continuous φ₁` using `ha₁.cont`. Use `GlobalTheory.T.tsum_setIntegral_prod_eq_zero_of_inner' (X := NGLag W) inferInstance νW inferInstance 𝓖 (fun Y p => star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y.1) (om (1, p.1) f₁) (om (1, p.2) f₂)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `Y`. Establish `hm` using `GlobalTheory.RallisMeas.lagTerm_stronglyMeasurable D ψ V W χV χW om μ 𝓕 hw hS.covol f₁ f₂ hf₁ hf₂ (fr Y.1)`.
+
+Conclude with `(((continuous_star.comp hφ₁c).comp continuous_fst).mul (ha₂.cont.comp continuous_snd)).aestronglyMeasurable.mul hm.aestronglyMeasurable`. Establish `h0` using `hEis ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ hf₁ hf₂ φ₁ φ₂ ha₁ hc₁ ha₂ hc₂`. Use `ne_top_of_le_ne_top h0 (lintegral_mono fun g₁ => lintegral_mono fun g₂ => ?_)` and prove the remaining obligations. Establish `e : ∀ Y : NGLag W, ‖star (φ₁ g₁) * φ₂ g₂ * lagTerm μ 𝓕 (fr Y.1) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ = (fun Y : Lag W => ‖lagTerm μ 𝓕 (fr Y) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ * ‖φ₁ g₁‖ₑ * ‖φ₂ g₂‖ₑ) Y.1`. Introduce `Y`.
+
+Establish `hs : ‖star (φ₁ g₁)‖ₑ = ‖φ₁ g₁‖ₑ` using `by simp [enorm_eq_nnnorm]`. Simplify using `only`. Rewrite using `[enorm_mul, enorm_mul, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[tsum_congr e]`.
+
+Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective _`. Introduce `g₂ hfin`. Distinguish the cases in `h0 : φ₂ g₂ = 0`. Simplify using `[h0]`. Establish `e1 : ∀ Y : NGLag W, ∫ g₁ in 𝓖, star (φ₁ g₁) * φ₂ g₂ * lagTerm μ 𝓕 (fr Y.1) (om (1, g₁) f₁) (om (1, g₂) f₂) ∂νW = φ₂ g₂ * ∫ g₁ in 𝓖, star (φ₁ g₁) * lagTerm μ 𝓕 (fr Y.1) (om (1, g₁) f₁) (om (1, g₂) f₂) ∂νW`.
+
+Introduce `Y`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g₁`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `e2 : ∀ Y : NGLag W, ∫⁻ g₁ in 𝓖, ‖star (φ₁ g₁) * φ₂ g₂ * lagTerm μ 𝓕 (fr Y.1) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ ∂νW = ‖φ₂ g₂‖ₑ * ∫⁻ g₁ in 𝓖, ‖star (φ₁ g₁) * lagTerm μ 𝓕 (fr Y.1) (om (1, g₁) f₁) (om (1, g₂) f₂)‖ₑ ∂νW`. Introduce `Y`. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Use `congr 1`. Use function extensionality and compare the values at `g₁`.
+
+Rewrite using `[enorm_mul, enorm_mul, enorm_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only at hfin ⊢`. Rewrite `hfin` using `[tsum_congr e2, ENNReal.tsum_mul_left]`. Rewrite using `[tsum_congr e1, tsum_mul_left, hslice g₂ ?_, mul_zero]`.
+
+Introduce `htop`. Rewrite `hfin` using `[htop, ENNReal.mul_top (enorm_ne_zero.2 h0)]`. Conclude with `hfin rfl`.
+-/
 theorem nonGraph_sum_eq_zero : ∀ D : D7, EisAbs D → TermMove D → TermInv D → CuspKill D → (∀ ψ (V W : HSp D) χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr, SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ f₁ f₂, IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → ∀ Y : Lag W, Y.1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥ → Continuous fun g : GA D W => lagTerm μ 𝓕 (fr Y) (om (1, g) f₁) f₂) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (νV : Measure (GA D V)) (𝓗 : Set (GA D V)) (νW : Measure (GA D W)) (𝓖 : Set (GA D W)) (μ : Measure (WO V W)) (𝓕 : Set (WO V W)) (fr : Lag W → Matrix (Fin W.rank) (Fin W.rank) D.host.E × Matrix (Fin W.rank) (Fin W.rank) D.host.E), SWSetup ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr → ∀ (θ : InfFam D), IsInfFam θ → ∀ (f₁ f₂ : WO V W → ℂ) (φ₁ φ₂ : GA D W → ℂ), IsThetaFunO ψ V W f₁ → IsThetaFunO ψ V W f₂ → IsAutFunSm θ W φ₁ → IsCuspFun W φ₁ → IsAutFunSm θ W φ₂ → IsCuspFun W φ₂ → ∑' Y : {Y : Lag W // Y.1.comap (LinearMap.inl D.host.E _ _) ≠ ⊥}, ∫ p in 𝓖 ×ˢ 𝓖, star (φ₁ p.1) * φ₂ p.2 * lagTerm μ 𝓕 (fr Y.1) (om (1, p.1) f₁) (om (1, p.2) f₂) ∂(νW.prod νW) = 0 := by
   intro D hEis hMove hInv hKill hcont ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS θ hθ f₁ f₂ φ₁ φ₂ hf₁ hf₂ ha₁ hc₁ ha₂ hc₂
   haveI : Countable (Lag W) := lag_countable D W

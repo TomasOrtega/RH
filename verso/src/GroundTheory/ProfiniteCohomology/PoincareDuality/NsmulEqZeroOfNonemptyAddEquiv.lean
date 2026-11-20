@@ -21,9 +21,15 @@ variable {k G : Type u} [CommRing k] [Group G]
 abbrev dualRep (D M : Rep.{u} k G) : Rep.{u} k G :=
   Rep.of (Representation.linHom M.ρ D.ρ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualRep_eq_ihom (D M : Rep.{u} k G) : dualRep D M = (Rep.ihom M).obj D :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualRep_ρ_apply (D M : Rep.{u} k G) (σ : G) (f : M →ₗ[k] D) (m : M) :
     ((dualRep D M).ρ σ f : M →ₗ[k] D) m = D.ρ σ (f (M.ρ σ⁻¹ m)) :=
   rfl
@@ -37,13 +43,22 @@ def dualMap (D : Rep.{u} k G) {A B : Rep.{u} k G} (φ : A ⟶ B) : dualRep D B �
     rw [Rep.hom_comm_apply]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMap_hom_apply (D : Rep.{u} k G) {A B : Rep.{u} k G} (φ : A ⟶ B) (f : B →ₗ[k] D)
     (a : A) : ((dualMap D φ).hom f : A →ₗ[k] D) a = f (φ.hom a) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMap_id (D A : Rep.{u} k G) : dualMap D (𝟙 A) = 𝟙 (dualRep D A) :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualMap_comp (D : Rep.{u} k G) {A B C : Rep.{u} k G} (φ : A ⟶ B) (ψ : B ⟶ C) :
     dualMap D (φ ≫ ψ) = dualMap D ψ ≫ dualMap D φ :=
   rfl
@@ -62,10 +77,16 @@ def evalPairing (D M : Rep.{u} k G) : M ⊗ dualRep D M ⟶ D :=
     rw [Representation.inv_self_apply]
 
 @[simp]
+/- English proof (translation)
+The claim follows from `pairingHom_tmul (A := M) (B := dualRep D M) (dualEvalBilin D M) _ m f`.
+-/
 theorem evalPairing_tmul (D M : Rep.{u} k G) (m : M) (f : M →ₗ[k] D) :
     (evalPairing D M).hom (m ⊗ₜ[k] (f : dualRep D M) : (M ⊗ dualRep D M : Rep k G)) = f m :=
   pairingHom_tmul (A := M) (B := dualRep D M) (dualEvalBilin D M) _ m f
 
+/- English proof (translation)
+Use extensionality with `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a f => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensorHom_evalPairing (D : Rep.{u} k G) {A B : Rep.{u} k G} (φ : A ⟶ B) :
     (φ ⊗ₘ 𝟙 (dualRep D B)) ≫ evalPairing D B = (𝟙 A ⊗ₘ dualMap D φ) ≫ evalPairing D A := by
   ext x
@@ -81,6 +102,9 @@ def toDualDual (D M : Rep.{u} k G) : M ⟶ dualRep D (dualRep D M) :=
     rw [inv_inv, Representation.self_inv_apply]⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toDualDual_hom_apply (D M : Rep.{u} k G) (m : M) (f : M →ₗ[k] D) :
     ((toDualDual D M).hom m : (M →ₗ[k] D) →ₗ[k] D) f = f m :=
   rfl
@@ -119,6 +143,9 @@ def bilinAddHom {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup 
   map_add' x y := by ext; simp
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bilinAddHom_apply {X Y Z : Type*} [AddCommGroup X] [AddCommGroup Y] [AddCommGroup Z]
     [Module k X] [Module k Y] [Module k Z] (β : X →ₗ[k] Y →ₗ[k] Z) (x : X) (y : Y) :
     bilinAddHom β x y = β x y :=
@@ -139,6 +166,9 @@ def dualityMap (D : Rep.{u} k G) [IsDiscreteRep D] {n m r s : ℕ} (h : r + s = 
   map_zero' := by ext; simp
   map_add' x y := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualityMap_apply (D : Rep.{u} k G) [IsDiscreteRep D] {n m r s : ℕ} (h : r + s = m)
     (t : cohomology D m →+ ZMod n) (M : Rep.{u} k G) [IsDiscreteRep M]
     [IsDiscreteRep (dualRep D M)] (x : cohomology M r) (y : cohomology (dualRep D M) s) :
@@ -151,12 +181,18 @@ section ZModMul
 
 variable {G : Type u} [Group G]
 
+/- English proof (translation)
+Take `⟨e⟩` from `h`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+-/
 theorem nsmul_eq_zero_of_nonempty_addEquiv {n : ℕ} {D : Type*} [AddCommGroup D]
     (h : Nonempty (D ≃+ ZMod n)) (d : D) : n • d = 0 := by
   obtain ⟨e⟩ := h
   apply e.injective
   rw [map_nsmul, map_zero, nsmul_eq_mul, ZMod.natCast_self, zero_mul]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `(ZMod.intCast_eq_intCast_iff_dvd_sub b a n).1 h.symm`. Establish `h0 : (a - b) • d = 0`. Rewrite using `[hc, mul_comm, mul_zsmul, natCast_zsmul, hD, zsmul_zero]`. Rewrite `h0` using `[sub_smul, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem zsmul_eq_zsmul_of_intCast_eq {n : ℕ} {D : Type*} [AddCommGroup D]
     (hD : ∀ d : D, n • d = 0) {a b : ℤ} (h : (a : ZMod n) = b) (d : D) : a • d = b • d := by
   obtain ⟨c, hc⟩ := (ZMod.intCast_eq_intCast_iff_dvd_sub b a n).1 h.symm
@@ -178,6 +214,9 @@ def zmodMulAddHom (n : ℕ) {D : Type*} [AddCommGroup D] (hD : ∀ d : D, n • 
     simp only [AddMonoidHom.coe_mk, ZeroHom.coe_mk, AddMonoidHom.add_apply, ← add_zsmul]
     exact zsmul_eq_zsmul_of_intCast_eq hD (by push_cast; simp) d
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zmodMulAddHom_apply (n : ℕ) {D : Type*} [AddCommGroup D] (hD : ∀ d : D, n • d = 0)
     (a : ZMod n) (d : D) : zmodMulAddHom n hD a d = (ZMod.cast a : ℤ) • d :=
   rfl
@@ -214,6 +253,9 @@ def zmodMulPairing (n : ℕ) (D : Rep.{u} (ULift.{u} ℤ) G) (hD : ∀ d : D, n 
       rw [zmodMulAddHom_apply, zmodMulAddHom_apply, map_zsmul]
 
 @[simp]
+/- English proof (translation)
+Rewrite using `[zmodMulPairing, pairingHom_tmul]`. Both sides reduce to the same expression.
+-/
 theorem zmodMulPairing_tmul (n : ℕ) (D : Rep.{u} (ULift.{u} ℤ) G) (hD : ∀ d : D, n • d = 0)
     (a : ZMod n) (d : D) :
     (zmodMulPairing n D hD).hom ((ULift.up a : zmodRep.{u} G n) ⊗ₜ[ULift.{u} ℤ] d :

@@ -11,6 +11,15 @@ namespace GlobalTheory.QLog.OpLin
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `hsum` using `h`. Rewrite `hsum` using `[Finsupp.degree_eq_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, D s ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Simplify using `[hc] at hsum`. Use `⟨s, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ t, t ≠ s → D s + D t ≤ 1` using `fun t ht => by`. Rewrite using `[← hsum, ← Finset.sum_pair (Ne.symm ht)]`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ _)`.
+
+Use extensionality with `t`. Distinguish the cases in `ht : t = s`. Substitute `ht` using the available equality. Establish `: D t ≤ 1` using `h ▸ Finsupp.le_degree t D`. Simplify using `only [Finsupp.single_eq_same]`.
+
+Use linear arithmetic over natural numbers and integers. Use `hle t ht` as an intermediate fact. Simplify using `only [Finsupp.single_apply, if_neg (Ne.symm ht)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem degree_eq_one {σ : Type} [Fintype σ] {D : σ →₀ ℕ} (h : D.degree = 1) :
     ∃ s, D = Finsupp.single s 1 := by
   classical
@@ -34,6 +43,9 @@ theorem degree_eq_one {σ : Type} [Fintype σ] {D : σ →₀ ℕ} (h : D.degree
     simp only [Finsupp.single_apply, if_neg (Ne.symm ht)]
     omega
 
+/- English proof (translation)
+Use `le_trans ?_ (le_order_prod _ _)` and prove the remaining obligations. Rewrite using `[Finsupp.degree_apply, Nat.cast_sum]`. Conclude with `Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (ha s)`.
+-/
 theorem le_order_prod_pow {σ τ : Type} {a : σ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) (D : σ →₀ ℕ) :
     (D.degree : ℕ∞) ≤ (D.prod fun s e => a s ^ e).order := by
@@ -41,6 +53,17 @@ theorem le_order_prod_pow {σ τ : Type} {a : σ → MvPowerSeries τ R}
   rw [Finsupp.degree_apply, Nat.cast_sum]
   exact Finset.sum_le_sum fun s _ => le_order_pow_of_constantCoeff_eq_zero _ (ha s)
 
+/- English proof (translation)
+Establish `hs : HasSubst a` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[coeff_subst hs]`. Establish `hsupp : (Function.support fun D : σ →₀ ℕ => coeff D f • coeff β (D.prod fun s e => a s ^ e)) ⊆ ((Finset.univ.image fun s : σ => Finsupp.single s 1 : Finset (σ →₀ ℕ)) : Set (σ →₀ ℕ))`. Introduce `D hD`. Rewrite `hD` using `[Function.mem_support]`.
+
+Establish `h0 : D ≠ 0`. Introduce and unpack `rfl`. Apply `hD` to reduce the goal to its premises. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`. Establish `h1 : D.degree ≤ 1`.
+
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hD` to reduce the goal to its premises. Rewrite using `[coeff_of_lt_order (lt_of_lt_of_le ?_ (le_order_prod_pow ha D)), smul_zero]`. Conclude with `lt_of_le_of_lt hβ hlt` after adjusting the coercions.
+
+Establish `h2 : D.degree = 1`. Establish `: D.degree ≠ 0` using `fun h => h0 ((Finsupp.degree_eq_zero_iff D).1 h)`. Use linear arithmetic over natural numbers and integers. Take `⟨s, rfl⟩` from `degree_eq_one h2`. Simplify using the standard rewrite rules.
+
+Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp, Finset.sum_image (fun s _ t _ h => Finsupp.single_left_injective one_ne_zero h)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.prod_single_index (by simp), pow_one, smul_eq_mul]`.
+-/
 theorem coeff_subst_of_degree_le_one {σ τ : Type} [Fintype σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ s, constantCoeff (a s) = 0) {f : MvPowerSeries σ R} (hf : constantCoeff f = 0)
     {β : τ →₀ ℕ} (hβ : β.degree ≤ 1) :
@@ -79,6 +102,9 @@ namespace GlobalTheory.QLog.OpLin
 
 variable {B O : Type} [CommRing B] [CommRing O] {d : ℕ}
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff (Finsupp.single j 1)) (congrFun hμ.unit i)`. Simplify using `only [op, at2] at h`. Apply the tactic sequence `rw [coeff_subst_of_degree_le_one (by rintro (s | s) <;> simp) (hμ.const i) (by simp), Fintype.sum_sum_type] at h`. Simplify `h` using `[coeff_X, Finsupp.single_left_inj one_ne_zero, eq_comm]`.
+-/
 theorem coeff_inl {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : IsLift θ μ)
     (i j : Fin d) : coeff (Finsupp.single (Sum.inl j) 1) (μ i) = if j = i then 1 else 0 := by
   classical
@@ -88,6 +114,9 @@ theorem coeff_inl {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin 
     (by simp), Fintype.sum_sum_type] at h
   simpa [coeff_X, Finsupp.single_left_inj one_ne_zero, eq_comm] using h
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff (Finsupp.single (Sum.inr j) 1)) (hμ.comm i)`. Simplify using `only [swap, at2] at h`. Apply the tactic sequence `rw [coeff_subst_of_degree_le_one (by rintro (s | s) <;> simp) (hμ.const i) (by simp), Fintype.sum_sum_type] at h`. Rewrite using `[← h, ← coeff_inl hμ i j]`. Simplify using `[coeff_X, Finsupp.single_left_inj one_ne_zero]`.
+-/
 theorem coeff_inr {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B} (hμ : IsLift θ μ)
     (i j : Fin d) : coeff (Finsupp.single (Sum.inr j) 1) (μ i) = if j = i then 1 else 0 := by
   classical
@@ -98,6 +127,9 @@ theorem coeff_inr {θ : B →+* O} {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin 
   rw [← h, ← coeff_inl hμ i j]
   simp [coeff_X, Finsupp.single_left_inj one_ne_zero]
 
+/- English proof (translation)
+Introduce `B O _ _ θ d μ hμ τ u v hu hv i β hβ`. Simplify using `only [op, at2]`. Rewrite using `[coeff_subst_of_degree_le_one (by rintro (s | s); exacts [hu s, hv s]) (hμ.const i) hβ, Fintype.sum_sum_type, map_add]`. Simplify using `[coeff_inl hμ, coeff_inr hμ]`.
+-/
 theorem coeff_op_of_degree_le_one : ∀ {B O : Type} [CommRing B] [CommRing O] (θ : B →+* O) {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B}, IsLift θ μ → ∀ {τ : Type}
     (u v : Fin d → MvPowerSeries τ B), (∀ j, constantCoeff (u j) = 0) →

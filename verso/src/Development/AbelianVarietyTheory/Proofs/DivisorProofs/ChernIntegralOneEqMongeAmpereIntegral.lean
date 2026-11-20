@@ -10,6 +10,11 @@ open ReciprocityTheory.AnForm.M
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ProjVar
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Y L φ h`. Use `haveI : CompactSpace (CxPts Y.str (RingHom.id ℂ)) := CxPts.compactSpace _ Y.isProjOver`. Use `haveI : T2Space (CxPts Y.str (RingHom.id ℂ)) := t2Space_cxPts_of_isProjOver _ Y.isProjOver`. Use `haveI : SecondCountableTopology (CxPts Y.str (RingHom.id ℂ)) := secondCountableTopology_of_isProjOver _ Y.isProjOver`. Establish `hA₀` using `AnRead.isAlgAtlas_finAtlas (AnRead.all Y.str (RingHom.id ℂ) Y.dim)`.
+
+Establish `hi : φ.ChernIntegrableOn Y.dim Set.univ (fun _ => 1)` using `(h.chernInt_eq_mInt_of_isAlgAtlas hA₀ measurable_const).1.2 (mIntegrableCont _ _ (fun _ => ((Weight.isCInf_iff_isSmooth hA₀.anRead).1 h).isPotential hA₀) _ continuous_const)`. Conclude with `⟨hi, fun A hA => (h.chernInt_eq_mInt_of_isAlgAtlas hA measurable_const).2 hi⟩`.
+-/
 theorem chernInt_one_eq_mInt : ∀ (Y : Var ℂ) (L : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L), φ.IsCInf → φ.ChernIntegrableOn Y.dim Set.univ (fun _ => 1) ∧ ∀ A : FinHolAtlas Y.dim (CxPts Y.str (RingHom.id ℂ)), IsAlgAtlas A → Weight.chernInt φ Y.dim Set.univ (fun _ => 1) = mInt A (fun _ => φ.locPot) (fun _ => 1) := by
   intro Y L φ h
   haveI : CompactSpace (CxPts Y.str (RingHom.id ℂ)) := CxPts.compactSpace _ Y.isProjOver

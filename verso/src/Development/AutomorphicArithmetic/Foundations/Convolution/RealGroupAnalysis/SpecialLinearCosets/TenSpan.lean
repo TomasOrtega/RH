@@ -16,16 +16,30 @@ variable {F : Type} [Field F] [NumberField F] (v : P F)
 
 private def sf (x : Kv v) : Af F := (sg v x).2
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd v x v = x`. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd_apply, Pi.single_eq_same]`.
+-/
 private theorem sf_self (x : Kv v) : sf v x v = x := by
   change GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd v x v = x
   rw [GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd_apply, Pi.single_eq_same]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd v x w = 0`. Rewrite using `[GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd_apply, Pi.single_eq_of_ne h]`.
+-/
 private theorem sf_ne (x : Kv v) {w : P F} (h : w ≠ v) : sf v x w = 0 := by
   change GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd v x w = 0
   rw [GroundTheory.Automorphic.AdelicGLn.finiteAdeleSingleAdd_apply, Pi.single_eq_of_ne h]
 
+/- English proof (translation)
+The claim follows from `FiniteAdeleRing.ext F h`.
+-/
 private theorem extF {a b : Af F} (h : ∀ w : P F, a w = b w) : a = b := FiniteAdeleRing.ext F h
 
+/- English proof (translation)
+Use `extF fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = sf v x w - sf v y w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using `only [sf_self]`.
+
+Simplify using `only [sf_ne _ _ h, sub_zero]`.
+-/
 private theorem sf_sub (x y : Kv v) : sf v (x - y) = sf v x - sf v y := by
   refine extF fun w => ?_
   change _ = sf v x w - sf v y w
@@ -34,21 +48,40 @@ private theorem sf_sub (x y : Kv v) : sf v (x - y) = sf v x - sf v y := by
     simp only [sf_self]
   · simp only [sf_ne _ _ h, sub_zero]
 
+/- English proof (translation)
+The claim follows from `continuous_snd.comp (continuous_const.prodMk (GroundTheory.Global.continuous_finiteAdeleSingleAdd (K := F) v))`.
+-/
 private theorem cont_sf : Continuous (sf v) :=
   continuous_snd.comp (continuous_const.prodMk (GroundTheory.Global.continuous_finiteAdeleSingleAdd (K := F) v))
 
+/- English proof (translation)
+The claim follows from `RestrictedProduct.continuous_eval v`.
+-/
 private theorem cont_ev : Continuous fun x : Af F => x v :=
   RestrictedProduct.continuous_eval v
 
 private def rm (x : Af F) : Af F := x - sf v (x v)
 
+/- English proof (translation)
+The claim follows from `continuous_id.sub ((cont_sf v).comp (cont_ev v))`.
+-/
 private theorem cont_rm : Continuous (rm v) :=
   continuous_id.sub ((cont_sf v).comp (cont_ev v))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x v - sf v (x v) v = 0`. Rewrite using `[sf_self, sub_self]`.
+-/
 private theorem rm_self (x : Af F) : rm v x v = 0 := by
   change x v - sf v (x v) v = 0
   rw [sf_self, sub_self]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : sf v (z v) ∈ idealFiniteAdeles J`. Rewrite `h`, the goal using `[mem_idealFiniteAdeles]`. Introduce `w`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[sf_self]`. Conclude with `h w`. Rewrite using `[sf_ne _ _ hw, map_zero]`.
+
+Conclude with `zero_le`. Conclude with `⟨sub_mem h h2, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `add_mem h1 h2` as an intermediate fact. Rewrite `this` using `[rm, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 private theorem mem_split (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (z : Af F) :
     z ∈ idealFiniteAdeles J ↔ rm v z ∈ idealFiniteAdeles J ∧ sf v (z v) ∈ idealFiniteAdeles J := by
   constructor
@@ -75,11 +108,19 @@ private def mF (y : Fin 4 → Af F) : M2 v :=
 private def co (m : M2 v) : Fin 4 → Kv v :=
   ![m 1 1, m 0 0, (m 0 1 + m 1 0) / 2, (m 0 1 - m 1 0) / (2 * θ)]
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : algebraMap F (Kv v) 2 = 0` using `by rw [map_ofNat]; exact h`. Conclude with `two_ne_zero ((map_eq_zero _).1 h2)`.
+-/
 private theorem two_ne : (2 : Kv v) ≠ 0 := by
   intro h
   have h2 : algebraMap F (Kv v) 2 = 0 := by rw [map_ofNat]; exact h
   exact two_ne_zero ((map_eq_zero _).1 h2)
 
+/- English proof (translation)
+Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `e : ∀ k : Fin 4, Continuous fun y : Fin 4 → Af F => y k v` using `fun k => (cont_ev v).comp (continuous_apply k)`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `e 1`. Conclude with `(e 2).add ((e 3).mul continuous_const)`.
+
+Conclude with `(e 2).sub ((e 3).mul continuous_const)`. Conclude with `e 0`.
+-/
 private theorem cont_mF : Continuous (mF v θ) := by
   refine continuous_matrix fun i j => ?_
   have e : ∀ k : Fin 4, Continuous fun y : Fin 4 → Af F => y k v := fun k =>
@@ -90,6 +131,11 @@ private theorem cont_mF : Continuous (mF v θ) := by
   · exact (e 2).sub ((e 3).mul continuous_const)
   · exact e 0
 
+/- English proof (translation)
+Use `continuous_pi fun i => ?_` and prove the remaining obligations. Establish `e : ∀ a b : Fin 2, Continuous fun m : M2 v => m a b` using `fun a b => continuous_id.matrix_elem a b`. Use `fin_cases i`. Conclude with `e 1 1`. Conclude with `e 0 0`.
+
+Conclude with `((e 0 1).add (e 1 0)).div_const _`. Conclude with `((e 0 1).sub (e 1 0)).div_const _`.
+-/
 private theorem cont_co : Continuous (co v θ) := by
   refine continuous_pi fun i => ?_
   have e : ∀ a b : Fin 2, Continuous fun m : M2 v => m a b := fun a b => continuous_id.matrix_elem a b
@@ -99,6 +145,11 @@ private theorem cont_co : Continuous (co v θ) := by
   · exact ((e 0 1).add (e 1 0)).div_const _
   · exact ((e 0 1).sub (e 1 0)).div_const _
 
+/- English proof (translation)
+Establish `h2` using `two_ne v`. Use `fin_cases i`. Both sides reduce to the same expression. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(y 2 v + y 3 v * θ + (y 2 v - y 3 v * θ)) / 2 = y 2 v`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(y 2 v + y 3 v * θ - (y 2 v - y 3 v * θ)) / (2 * θ) = y 3 v`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem co_mF (hθ : θ ≠ 0) (y : Fin 4 → Af F) (i : Fin 4) : co v θ (mF v θ y) i = y i v := by
   have h2 := two_ne v
   fin_cases i
@@ -111,6 +162,13 @@ private theorem co_mF (hθ : θ ≠ 0) (y : Fin 4 → Af F) (i : Fin 4) : co v �
     field_simp
     ring
 
+/- English proof (translation)
+Establish `h2` using `two_ne v`. Establish `e : ∀ i, (rm v (a i) + sf v (co v θ m i)) v = co v θ m i` using `fun i => by`. Express the relevant statement in the definitionally equal form `rm v (a i) v + sf v (co v θ m i) v = _`. Rewrite using `[rm_self, sf_self, zero_add]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+
+Simplify using `only [mF, e]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(m 0 1 + m 1 0) / 2 + (m 0 1 - m 1 0) / (2 * θ) * θ = m 0 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(m 0 1 + m 1 0) / 2 - (m 0 1 - m 1 0) / (2 * θ) * θ = m 1 0`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+-/
 private theorem mF_co (hθ : θ ≠ 0) (m : M2 v) (a : Fin 4 → Af F) :
     mF v θ (fun i => rm v (a i) + sf v (co v θ m i)) = m := by
   have h2 := two_ne v
@@ -129,6 +187,13 @@ private theorem mF_co (hθ : θ ≠ 0) (m : M2 v) (a : Fin 4 → Af F) :
     ring
   · rfl
 
+/- English proof (translation)
+Establish `hb'` using `GroundTheory.LocalField.mem_schwartzBruhat.1 hb`. Establish `hrm : Continuous fun y : Fin 4 → Af F => fun i => rm v (y i)` using `continuous_pi fun i => (cont_rm v).comp (continuous_apply i)`. Use `⟨(hg.1.comp_continuous hrm).mul (hb'.1.comp_continuous (cont_mF v θ)), ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun p : (Fin 4 → Af F) × M2 v => fun i => p.1 i + sf v (co v θ p.2 i)` using `continuous_pi fun i => ((continuous_apply i).comp continuous_fst).add ((cont_sf v).comp ((continuous_apply i).comp ((cont_co v θ).comp continuous_snd)))`. Use `HasCompactSupport.intro (((show IsCompact (tsupport g) from hg.2).prod (show IsCompact (tsupport b) from hb'.2)).image hc) fun y hy => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Use `hy ⟨((fun i => rm v (y i)), mF v θ y), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `subset_tsupport _ (left_ne_zero_of_mul hne)`. Conclude with `subset_tsupport _ (right_ne_zero_of_mul hne)`. Use function extensionality and compare the values at `i`.
+
+Express the relevant statement in the definitionally equal form `rm v (y i) + sf v (co v θ (mF v θ y) i) = y i`. Rewrite using `[co_mF v θ hθ, rm, sub_add_cancel]`.
+-/
 private theorem ten_mem (hθ : θ ≠ 0) {g : (Fin 4 → Af F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F)
     {b : M2 v → ℂ} (hb : b ∈ SB (M2 v)) :
     (fun y : Fin 4 → Af F => g (fun i => rm v (y i)) * b (mF v θ y)) ∈ finiteSchwartzBruhatPi F := by
@@ -149,6 +214,19 @@ private theorem ten_mem (hθ : θ ≠ 0) {g : (Fin 4 → Af F) → ℂ} (hg : g 
     change rm v (y i) + sf v (co v θ (mF v θ y) i) = y i
     rw [co_mF v θ hθ, rm, sub_add_cancel]
 
+/- English proof (translation)
+Establish `hG : finiteTensor (fun i => cosetIndicator J (a i)) ∈ finiteSchwartzBruhatPi F` using `finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J (a i)`. Use `⟨finiteTensor fun i => cosetIndicator J (rm v (a i)), finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J _, fun m => finiteTensor (fun i => cosetIndicator J (a i)) fun i => rm v (a i) + sf v (co v θ m i), ?_, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun m : M2 v => fun i => rm v (a i) + sf v (co v θ m i)` using `continuous_pi fun i => continuous_const.add ((cont_sf v).comp ((continuous_apply i).comp (cont_co v θ)))`. Establish `hcl : IsClosedEmbedding fun m : M2 v => fun i => rm v (a i) + sf v (co v θ m i)` using `Function.LeftInverse.isClosedEmbedding (f := mF v θ) (fun m => mF_co v θ hθ m a) (cont_mF v θ) hc`. Conclude with `GroundTheory.LocalField.mem_schwartzBruhat.2 ⟨hG.1.comp_continuous hc, hG.2.comp_isClosedEmbedding hcl⟩`.
+
+Introduce `y`. Simplify using `only [finiteTensor, co_mF v θ hθ]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e1 : rm v (y i) - rm v (a i) = rm v (y i - a i)`.
+
+Simplify using `only [rm]`. Express the relevant statement in the definitionally equal form `_ = y i - a i - sf v (y i v - a i v)`. Rewrite using `[sf_sub]`. Normalize the expressions using the abelian group laws. Establish `e2 : rm v (a i) + sf v (y i v) - a i = sf v ((y i - a i) v)`.
+
+Simplify using `only [rm]`. Express the relevant statement in the definitionally equal form `_ = sf v (y i v - a i v)`. Rewrite using `[sf_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[cosetIndicator_apply, cosetIndicator_apply, cosetIndicator_apply, e1, e2]`.
+
+Establish `hm` using `mem_split v J (y i - a i)`. Distinguish the cases in `h : y i - a i ∈ idealFiniteAdeles J`. Take `⟨h1, h2⟩` from `hm.1 h`. Rewrite using `[if_pos h, if_pos h1, if_pos h2, one_mul]`. Rewrite using `[if_neg h]`.
+
+Distinguish the cases in `h1 : rm v (y i - a i) ∈ idealFiniteAdeles J`. Rewrite using `[if_pos h1, one_mul, if_neg fun h2 => h (hm.2 ⟨h1, h2⟩)]`. Rewrite using `[if_neg h1, zero_mul]`.
+-/
 private theorem coset_ten (hθ : θ ≠ 0) (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (a : Fin 4 → Af F) :
     ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), ∃ b ∈ SB (M2 v), ∀ y : Fin 4 → Af F,
       finiteTensor (fun i => cosetIndicator J (a i)) y = g (fun i => rm v (y i)) * b (mF v θ y) := by
@@ -193,12 +271,20 @@ section Main
 
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (v : P F)
 
+/- English proof (translation)
+Establish `h0 : TR.pInf F (sg v (cp v (X i))) = 0`. Express the relevant statement in the definitionally equal form `(TR.infEq F).symm 0 = 0`. Conclude with `map_zero _`. Simplify using `only [away, map_sub, h0, sub_zero]`.
+-/
 private theorem pInf_away (X : V4 F) (i : Fin 4) : TR.pInf F (away v X i) = TR.pInf F (X i) := by
   have h0 : TR.pInf F (sg v (cp v (X i))) = 0 := by
     change (TR.infEq F).symm 0 = 0
     exact map_zero _
   simp only [away, map_sub, h0, sub_zero]
 
+/- English proof (translation)
+Use `Algebra.adjoin_induction (p := fun p _ => p (away v X) = p X) ?_ ?_ ?_ ?_ hp` and prove the remaining obligations. Introduce and unpack `_ ⟨i, w, rfl⟩`. Simplify using `only [pInf_away]`. Introduce `c`. Both sides reduce to the same expression.
+
+Introduce `f g _ _ hf hg`. Simplify using `only [Pi.add_apply, hf, hg]`. Introduce `f g _ _ hf hg`. Simplify using `only [Pi.mul_apply, hf, hg]`.
+-/
 private theorem poly_away {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) (X : V4 F) : p (away v X) = p X := by
   refine Algebra.adjoin_induction (p := fun p _ => p (away v X) = p X) ?_ ?_ ?_ ?_ hp
   · rintro _ ⟨i, w, rfl⟩
@@ -210,9 +296,15 @@ private theorem poly_away {p : V4 F → ℂ} (hp : p ∈ polyFn (F := F)) (X : V
   · intro f g _ _ hf hg
     simp only [Pi.mul_apply, hf, hg]
 
+/- English proof (translation)
+Simplify using `only [gauss, map_add, map_sub, map_mul, map_pow, pInf_away]`.
+-/
 private theorem gauss_away (δ : F) (X : V4 F) : gauss δ (away v X) = gauss δ X := by
   simp only [gauss, map_add, map_sub, map_mul, map_pow, pInf_away]
 
+/- English proof (translation)
+Simplify using `only [ten, poly_away v hp, gauss_away]`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+-/
 private theorem ten_eq (θ : Kv v) (δ : F) (p : V4 F → ℂ) (hp : p ∈ polyFn (F := F))
     (g : (Fin 4 → Af F) → ℂ) (b : M2 v → ℂ) (X : V4 F) :
     ten v θ (fun Y => p Y * gauss δ Y * g (finPartPi Y)) b X =
@@ -221,6 +313,9 @@ private theorem ten_eq (θ : Kv v) (δ : F) (p : V4 F → ℂ) (hp : p ∈ polyF
   rw [mul_assoc]
   rfl
 
+/- English proof (translation)
+Introduce `b hb`. Establish `hG` using `ten_mem v θ hθ hg hb`. Use `⟨⟨_, fockGen F δ hδ p hp _ hG⟩, Submodule.subset_span ⟨p, hp, _, hG, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`. Conclude with `(ten_eq v θ δ p hp g b X).symm`.
+-/
 private theorem good (θ : Kv v) (hθ : θ ≠ 0) (δ : F) (hδ : ∀ φ : F →+* ℝ, φ δ < 0) (p : V4 F → ℂ)
     (hp : p ∈ polyFn (F := F)) {g : (Fin 4 → Af F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F) :
     GoodU v δ θ fun Y => p Y * gauss δ Y * g (finPartPi Y) := by
@@ -236,6 +331,23 @@ end UpperTheory.ConvolutionTheory.R2.I
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ v δ θ hδ hθ φ hφ`. Use `set T := Submodule.span ℂ {φ : S4 F | ∃ u b, GoodU v δ θ u ∧ b ∈ SB (M2 v) ∧ φ.1 = ten v θ u b} with hT`. Establish `key : ∀ p ∈ polyFn (F` using `F), ∀ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), (fun X => p X * gauss δ X * g (finPartPi X)) ∈ T.map (schwartzBruhatPi F (Fin 4)).subtype := by`. Introduce `p hp g hg`. Rewrite `hg` using `[finiteSchwartzBruhatPi_eq_span]`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨⟨J, a⟩, rfl⟩` from `hx`. Take `⟨g1, hg1, b, hb, he⟩` from `coset_ten v θ hθ J a`. Take `⟨φ1, -, hφ1⟩` from `good v θ hθ δ hδ p hp hg1 b hb`.
+
+Use `⟨φ1, Submodule.subset_span ⟨_, b, good v θ hθ δ hδ p hp hg1, hb, hφ1⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`. Express the relevant statement in the definitionally equal form `φ1.1 X = _`. Rewrite using `[hφ1, ten_eq v θ δ p hp g1 b X]`. Simplify using `only [he]`.
+
+Consider the case `zero`. Establish `: (fun X : V4 F => p X * gauss δ X * (0 : (Fin 4 → Af F) → ℂ) (finPartPi X)) = 0`. Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Establish `: (fun X : V4 F => p X * gauss δ X * (x + y) (finPartPi X)) = (fun X => p X * gauss δ X * x (finPartPi X)) + fun X => p X * gauss δ X * y (finPartPi X)`. Use function extensionality and compare the values at `X`. Simplify using `only [Pi.add_apply, mul_add]`.
+
+Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: (fun X : V4 F => p X * gauss δ X * (c • x) (finPartPi X)) = c • fun X => p X * gauss δ X * x (finPartPi X)`. Use function extensionality and compare the values at `X`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hle : Submodule.span ℂ {φ : V4 F → ℂ | ∃ p ∈ polyFn (F` using `F), ∃ g ∈ finiteSchwartzBruhatPi F (ι := Fin 4), φ = fun v => p v * gauss δ v * g (finPartPi v)} ≤ T.map (schwartzBruhatPi F (Fin 4)).subtype := Submodule.span_le.2 (by`.
+
+Introduce and unpack `_ ⟨p, hp, g, hg, rfl⟩`. Conclude with `key p hp g hg)`. Take `⟨ψ', hψ, he⟩` from `hle hφ`. Establish `: ψ' = φ` using `Subtype.ext he`. Conclude with `this ▸ hψ`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.I.tenSpan :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (v : P F) (δ : F) (θ : Kv v), (∀ φ : F →+* ℝ, φ δ < 0) → θ ≠ 0 →
       Fock δ ≤ Submodule.span ℂ {φ : S4 F | ∃ u b, GoodU v δ θ u ∧ b ∈ SB (M2 v) ∧ φ.1 = ten v θ u b} := by

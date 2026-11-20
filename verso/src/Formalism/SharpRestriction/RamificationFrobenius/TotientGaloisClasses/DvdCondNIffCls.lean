@@ -5,6 +5,11 @@ namespace Formalism.BasicNotions.Host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Establish `key : H.cls p = .ram2 ∨ H.cls p = .ramQ ∨ H.cls p = .ramD ↔ p ∈ H.small ∨ p = H.q ∨ p = H.d`. Unfold `Host.cls primeClass`. Apply the tactic sequence `split_ifs <;> simp_all`. Take `⟨hqp, hdp, -, -, -⟩` from `H.hyp`. Establish `hQS : H.QS ≠ 0` using `H.QS_pos.ne'`.
+
+Establish `hs : p ∣ H.QS ↔ p ∈ H.small` using `by show p ∣ H.QS ↔ p ∈ H.QS.primeFactors`. Rewrite using `[Nat.mem_primeFactors]`. Conclude with `⟨fun h => ⟨hp, h, hQS⟩, fun h => h.2.1⟩`. Rewrite using `[key, show H.condN = H.QS * H.q * H.d from rfl, hp.dvd_mul, hp.dvd_mul, Nat.prime_dvd_prime_iff_eq hp hqp, Nat.prime_dvd_prime_iff_eq hp hdp, hs, or_assoc]`.
+-/
 theorem dvd_condN_iff_cls {p : ℕ} (hp : p.Prime) :
     p ∣ H.condN ↔ H.cls p = .ram2 ∨ H.cls p = .ramQ ∨ H.cls p = .ramD := by
   have key : H.cls p = .ram2 ∨ H.cls p = .ramQ ∨ H.cls p = .ramD ↔ p ∈ H.small ∨ p = H.q ∨ p = H.d := by
@@ -19,6 +24,9 @@ theorem dvd_condN_iff_cls {p : ℕ} (hp : p.Prime) :
   rw [key, show H.condN = H.QS * H.q * H.d from rfl, hp.dvd_mul, hp.dvd_mul, Nat.prime_dvd_prime_iff_eq hp hqp,
     Nat.prime_dvd_prime_iff_eq hp hdp, hs, or_assoc]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases (dvd_condN_iff_cls H hp).mp h with h1 | h1 | h1 <;> rw [h1] <;> simp`.
+-/
 theorem not_inert_of_dvd {p : ℕ} (hp : p.Prime) (h : p ∣ H.condN) :
     ¬ (H.cls p = .inertClass ∨ H.cls p = .signal) := by
   rcases (dvd_condN_iff_cls H hp).mp h with h1 | h1 | h1 <;> rw [h1] <;> simp

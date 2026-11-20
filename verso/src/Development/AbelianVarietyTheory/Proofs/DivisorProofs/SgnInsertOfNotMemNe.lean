@@ -5,6 +5,9 @@ open scoped Real ContDiff
 
 namespace GlobalTheory.TorsionForm
 
+/- English proof (translation)
+Unfold `sgn`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (by simp [hi]), pow_succ]`. Simplify using the standard rewrite rules.
+-/
 theorem sgn_insert_of_notMem_ne {m : ℕ} {i : Fin m} (k : Fin m) {S : Finset (Fin m)} (hi : i ∉ S) :
     sgn k (insert i S) = sgn k S * (if i < k then -1 else 1) := by
   unfold sgn
@@ -13,6 +16,9 @@ theorem sgn_insert_of_notMem_ne {m : ℕ} {i : Fin m} (k : Fin m) {S : Finset (F
   · rw [Finset.card_insert_of_notMem (by simp [hi]), pow_succ]
   · simp
 
+/- English proof (translation)
+Establish `h` using `sgn_insert_of_notMem_ne i (S := S.erase k) (Finset.notMem_erase k S)`. Rewrite `h` using `[Finset.insert_erase hk]`. Use `split_ifs at h ⊢`. Take the linear combination `h`. Take the linear combination `-h`.
+-/
 theorem sgn_erase_of_mem_ne {m : ℕ} (i : Fin m) {k : Fin m} {S : Finset (Fin m)} (hk : k ∈ S) :
     sgn i (S.erase k) = sgn i S * (if k < i then -1 else 1) := by
   have h := sgn_insert_of_notMem_ne i (S := S.erase k) (Finset.notMem_erase k S)
@@ -21,6 +27,15 @@ theorem sgn_erase_of_mem_ne {m : ℕ} (i : Fin m) {k : Fin m} {S : Finset (Fin m
   · linear_combination h
   · linear_combination -h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `S`. Distinguish the cases in `hiS : i ∈ S`. Establish `h1 : i ∈ S.erase k` using `Finset.mem_erase.2 ⟨hik, hiS⟩`. Simplify using `[contr, wedge, hiS, h1]`. Establish `hkS : k ∈ insert i S ↔ k ∈ S` using `by simp [Ne.symm hik]`.
+
+Distinguish the cases in `hk : k ∈ S`. Establish `h1 : i ∉ S.erase k` using `fun h => hiS (Finset.mem_of_mem_erase h)`. Establish `hX : (insert i S).erase k = insert i (S.erase k)` using `Finset.erase_insert_of_ne hik`. Simplify using `only [contr, wedge, Pi.neg_apply, hiS, h1, hk, hkS.2 hk, if_true, if_false, hX, sgn_insert_of_notMem_ne k hiS, sgn_erase_of_mem_ne i hk]`. Break down `lt_or_gt_of_ne hik with h | h` into its components or cases.
+
+Simplify using `[h, not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, not_lt.2 h.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `: k ∉ insert i S` using `fun h => hk (hkS.1 h)`.
+
+Simplify using `[contr, wedge, hiS, hk, this]`.
+-/
 theorem contr_wedge_of_ne {m : ℕ} {i k : Fin m} (hik : i ≠ k) (w : Ext m) :
     contr i (wedge k w) = -wedge k (contr i w) := by
   funext S

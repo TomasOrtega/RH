@@ -13,6 +13,25 @@ namespace GlobalTheory.LocalH2Injective
 
 open GlobalTheory.TateTop in
 
+/- English proof (translation)
+Establish `hfinS : (Set.range c ∪ Set.range f).Finite` using `hc.range_finite.union (Set.finite_range f)`. Take `⟨r, hfin, hkill⟩` from `finite_span (l := l) htor hfinS`. Use `set M := Submodule.span ℤ_[l] (Set.range c ∪ Set.range f) with hMdef`. Establish `: Finite M` using `hfin`. Establish `hM : ∀ m : M, (l : ℤ_[l]) ^ (r + 1) • m = 0` using `fun m => by`.
+
+Rewrite using `[pow_succ', mul_smul, hkill m, smul_zero]`. Set `fM : B' →ₗ[ℤ_[l]] M` to `f.codRestrict M (fun b => Submodule.subset_span (Or.inr ⟨b, rfl⟩))`. Establish `hfM : Function.Injective fM` using `fun a b hab => hf (congrArg Subtype.val hab)`. Set `cM : Γ → M` to `fun g => ⟨c g, Submodule.subset_span (Or.inl ⟨g, rfl⟩)⟩`. Establish `hcM : IsLocallyConstant cM` using `IsLocallyConstant.desc cM Subtype.val hc Subtype.val_injective`.
+
+Establish `hB' : ∀ b : B', (l : ℤ_[l]) ^ (r + 1) • b = 0`. Introduce `b`. Apply `hfM` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero, hM]`. Establish `hfz : (fun p => fM (z p)) = cob χ cM`.
+
+Use function extensionality and compare the values at `p`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[fM, cM, cob, hz p]`. Establish `hcoc` using `isCoc_cob hχ hM hcM`. Establish `hzc : IsCoc χ z`.
+
+Use `⟨IsLocallyConstant.desc z fM (by rw [show ⇑fM ∘ z = fun p => fM (z p) from rfl, hfz]; exact hcoc.1) hfM, ?_⟩` and prove the remaining obligations. Introduce `g h k`. Apply `hfM` to reduce the goal to its premises. Establish `e` using `hcoc.2 g h k`. Rewrite `e` using `[← hfz]`.
+
+Simplify `e` using `only [map_sub, map_add, map_smul, map_zero]`. Take `⟨g0, hg0⟩` from `hG r`. Take `⟨x, b, hb, hzb⟩` from `(hg0 B' hB').2.1 z hzc`. Establish `hx : fM x = 0`. Use `(hg0 M hM).2.2 (fM x) (fun g => cM g - fM (b g)) (hcM.comp₂ (hb.comp fM) (· - ·)) ?_` and prove the remaining obligations.
+
+Introduce `p`. Establish `h2 : fM (z p) = cob χ cM p` using `congrFun hfz p`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hzb p, map_add, map_smul, add_sub_cancel_right]`. Use `_ = cob χ cM p - cob χ (fun g => fM (b g)) p := by`.
+
+Rewrite using `[h2]`. Simplify using `only [cob, map_add, map_sub, map_smul]`. Use `_ = cob χ (fun g => cM g - fM (b g)) p := by`. Simplify using `only [cob, smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hx0 : x = 0` using `hfM (by rw [hx, map_zero])`. Conclude with `⟨b, hb, fun p => by rw [hzb p, hx0, smul_zero, zero_add]⟩`.
+-/
 theorem cob_of_gen {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalSpace Γ]
     [ContinuousMul Γ] [CompactSpace Γ] {χ : Γ →* ℤ_[l]ˣ} (hχ : Continuous fun g => (χ g : ℤ_[l]))
     (hG : ∀ r, ∃ c, GlobalTheory.TateTop.Gen χ (r + 1) c)
@@ -65,6 +84,19 @@ theorem cob_of_gen {l : ℕ} [Fact l.Prime] {Γ : Type} [Group Γ] [TopologicalS
   have hx0 : x = 0 := hfM (by rw [hx, map_zero])
   exact ⟨b, hb, fun p => by rw [hzb p, hx0, smul_zero, zero_add]⟩
 
+/- English proof (translation)
+Introduce `hT F Ω _ _ _ _ _ l _ A v hA O _ _ B' B _ _ _ _ _ f hf htor z c hc hzc`. Establish `: CompactSpace (Dec (F` using `F) A) := isCompact_iff_compactSpace.mp (isClosed_Dec (F := F) A).isCompact`. Set `: Module ℤ_[l] B'` to `Module.compHom B' (algebraMap ℤ_[l] O)`. Set `: Module ℤ_[l] B` to `Module.compHom B (algebraMap ℤ_[l] O)`. Set `fZ : B' →ₗ[ℤ_[l]] B` to `{ toFun := f map_add' := f.map_add map_smul' := fun a x => f.map_smul (algebraMap ℤ_[l] O a) x }`.
+
+Set `χ : Dec (F` to `F) A →* ℤ_[l]ˣ := (cycZ F Ω l).comp (Dec (F := F) A).subtype`. Establish `hχ : Continuous fun g => (χ g : ℤ_[l])` using `Units.continuous_val.comp ((continuous_cycZ F Ω l).comp continuous_subtype_val)`. Establish `htorZ : ∀ b : B, ∃ n : ℕ, (l : ℤ_[l]) ^ n • b = 0`. Introduce `b`. Take `⟨n, hn⟩` from `htor b`.
+
+Use `⟨n, ?_⟩` and prove the remaining obligations. Use `show algebraMap ℤ_[l] O ((l : ℤ_[l]) ^ n) • b = 0`. Rewrite using `[map_pow, map_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, hn]`. Establish `hG : ∀ r, ∃ c, GlobalTheory.TateTop.Gen χ (r + 1) c`. Introduce `r`.
+
+Establish `: NeZero (l ^ (r + 1))` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Set `: TopologicalSpace (ZMod (l ^ (r + 1)))` to `⊥`. Establish `: DiscreteTopology (ZMod (l ^ (r + 1)))` using `⟨rfl⟩`. Use `GlobalTheory.TateTop.exists_gen hχ ((hT F Ω l (r + 1) (ZMod (l ^ (r + 1))) A (Representation.trivial (ZMod (l ^ (r + 1))) (Dec (F := F) A) (ZMod (l ^ (r + 1)))) v (Nat.succ_pos r) hA ?_).1) ?_` and prove the remaining obligations. Establish `htr : (fun p : Dec (F` using `F) A × ZMod (l ^ (r + 1)) => Representation.trivial (ZMod (l ^ (r + 1))) (Dec (F := F) A) (ZMod (l ^ (r + 1))) p.1 p.2) = Prod.snd := by`.
+
+Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Use `show Continuous _`. Rewrite using `[htr]`. Conclude with `continuous_snd`.
+
+Introduce `M _ _ _ _ _ rho hrho`. Conclude with `(hT F Ω l (r + 1) M A rho v (Nat.succ_pos r) hA hrho).2.2.2.2`. Take `⟨c', hc', hzc'⟩` from `cob_of_gen hχ hG fZ hf htorZ (fun p => z p.1 p.2) c hc (fun p => hzc p.1 p.2)`. Conclude with `⟨c', hc', fun g h => hzc' (g, h)⟩`.
+-/
 theorem h2_inj : LocalTateDuality → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] (B' B : Type) [AddCommGroup B'] [Module O B'] [Finite B'] [AddCommGroup B] [Module O B] (f : B' →ₗ[O] B), Function.Injective f → (∀ b : B, ∃ n : ℕ, l ^ n • b = 0) → ∀ (z : Dec (F := F) A → Dec (F := F) A → B') (c : Dec (F := F) A → B), IsLocallyConstant c → (∀ g h, f (z g h) = algebraMap ℤ_[l] O ((cycZ F Ω l g.1 : ℤ_[l]ˣ) : ℤ_[l]) • c h - c (g * h) + c g) → ∃ c' : Dec (F := F) A → B', IsLocallyConstant c' ∧ ∀ g h, z g h = algebraMap ℤ_[l] O ((cycZ F Ω l g.1 : ℤ_[l]ˣ) : ℤ_[l]) • c' h - c' (g * h) + c' g := by
   intro hT F Ω _ _ _ _ _ l _ A v hA O _ _ B' B _ _ _ _ _ f hf htor z c hc hzc
   have : CompactSpace (Dec (F := F) A) :=

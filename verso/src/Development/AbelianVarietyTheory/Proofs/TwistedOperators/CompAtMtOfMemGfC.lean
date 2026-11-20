@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.OrientedHeis
 
+/- English proof (translation)
+Rewrite `hk` using `[GfC, MonoidHom.mem_ker]`. Unfold `compAt Formalism.L2.Theta.mt`. Unfold `infHom at hk`. Unfold `infPart`. Rewrite `hk` using `[MonoidHom.comp_apply]`.
+
+Establish `e` using `congrArg (fun g => (Units.val g).map (θ τ)) hk`. Simplify using `only [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)] at e`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+-/
 theorem compAt_mt_of_mem_GfC {D : D7} (θ : InfFam D) (V : HSp D) {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) :
     compAt θ τ (Formalism.L2.Theta.mt V k) = 1 := by
   rw [GfC, MonoidHom.mem_ker] at hk
@@ -23,6 +28,9 @@ theorem compAt_mt_of_mem_GfC {D : D7} (θ : InfFam D) (V : HSp D) {k : GA D V} (
   rw [← e]
   rfl
 
+/- English proof (translation)
+Introduce `D ψ S T χS χT om hW θ hθ κ hκ κ' hκ' sS sT BS BT f P hf`. Establish `h1` using `fun τ => compAt_mt_of_mem_GfC θ S hκ τ`. Establish `h2` using `fun τ => compAt_mt_of_mem_GfC θ T hκ' τ`. Use `(om_pureTensorO D ψ θ S T χS χT om hW hθ sS sS BS BS sT sT BT BT κ κ' (fun τ => by rw [h1 τ, one_mul, mul_one]) (fun τ => by rw [h2 τ, one_mul, mul_one]) (fun τ => by rw [h1 τ, one_mul]) (fun τ => by rw [h2 τ, one_mul]) f hf P).2` as an intermediate fact. Conclude with `this`.
+-/
 theorem om_fin_pureTensorO : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ θ : InfFam D, IsInfFam θ → ∀ κ ∈ GfC S, ∀ κ' ∈ GfC T, ∀ sS sT BS BT f P, IsThetaFunO ψ S T f → om (κ, κ') (pureTensorO ψ θ S T sS sT BS BT f P) = pureTensorO ψ θ S T sS sT BS BT (om (κ, κ') f) P := by
   intro D ψ S T χS χT om hW θ hθ κ hκ κ' hκ' sS sT BS BT f P hf
   have h1 := fun τ => compAt_mt_of_mem_GfC θ S hκ τ

@@ -26,6 +26,11 @@ def fb {M n : ℕ} (d : Fin M → ℕ) (h : ∑ i, d i = n) (Y : ℂ) : FreeAlge
   (List.ofFn fun i : Fin M => qdet (fun p q : Fin (d i) => lt (stdBlocks d h ⟨i, p⟩) (stdBlocks d h ⟨i, q⟩))
     (Y + shift d i)).prod
 
+/- English proof (translation)
+Unfold `qdet qminor`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_list_prod, List.map_ofFn]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `[Function.comp, Tm]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_qdet {A B : Type} [Ring A] [Algebra ℂ A] [Ring B] [Algebra ℂ B] (ψ : A →ₐ[ℂ] B) {n : ℕ}
     (X : Fin n → Fin n → A) (u : ℂ) : ψ (qdet X u) = qdet (fun p q => ψ (X p q)) u := by
   unfold qdet qminor

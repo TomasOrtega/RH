@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KerPoincare.exists_pow_eq_one_of_kernel | exact GlobalTheory.KerPoincare.exists_pow_eq_one_of_kernel | (intros; apply GlobalTheory.KerPoincare.exists_pow_eq_one_of_kernel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_pow_eq_one_of_poincareKernel_complex : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → ∀ P : LB (G2 A).left, P.IsLB →
     (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) →

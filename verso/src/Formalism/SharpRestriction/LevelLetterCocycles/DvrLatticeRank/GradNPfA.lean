@@ -17,6 +17,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(W.γ₀ g) ((letE c : LetA O n) i) = (letE c : LetA O n) i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`.
+
+Simplify using `[letE, h]`.
+-/
 private theorem gammaA_letE_eq_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) = (letE c : LetA O n) := by
   funext i
   change (W.γ₀ g) ((letE c : LetA O n) i) = (letE c : LetA O n) i
@@ -24,6 +29,9 @@ private theorem gammaA_letE_eq_letE (g : W.Gam) (c : ZMod n) : W.γA g (letE c) 
   · subst h; simp [letE]
   · simp [letE, h]
 
+/- English proof (translation)
+Establish `h` using `W.γD_smul T g (algebraMap (LetA O n) W.EE a) x`. Rewrite `h` using `[algebraMap_smul, W.γE_ext, algebraMap_smul]`. Use `first`. Consider the case `exact h`. Consider the case `simpa [Formalism.BasicNotions.LocWach.γA] using h`.
+-/
 theorem gradNPf_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   have h := W.γD_smul T g (algebraMap (LetA O n) W.EE a) x
@@ -32,6 +40,9 @@ theorem gradNPf_γD_smul (g : W.Gam) (a : LetA O n) (x : W.DD T) :
   | exact h
   | simpa [Formalism.BasicNotions.LocWach.γA] using h
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `ha`. Establish `h1 : (algebraMap (LetA O n) W.EE a) • x = 0` using `by rw [algebraMap_smul]; exact hx`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gradNPf_tf (a : LetA O n) (ha : IsUnit (algebraMap (LetA O n) W.EE a)) (x : W.DD T)
     (hx : a • x = 0) : x = 0 := by
   obtain ⟨u, hu⟩ := ha
@@ -39,17 +50,26 @@ theorem gradNPf_tf (a : LetA O n) (ha : IsUnit (algebraMap (LetA O n) W.EE a)) (
   calc x = (↑(u⁻¹) : W.EE) • ((↑u : W.EE) • x) := by rw [smul_smul, Units.inv_mul, one_smul]
     _ = 0 := by rw [hu, h1, smul_zero]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact mem_DelS W T x`. Consider the case `simp only [DelS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 private theorem mem_DelS_iff_forall_gammaD_fixed {x : W.DD T} : x ∈ DelS W T ↔ ∀ δ ∈ W.DelF, W.γD T δ x = x := by
   first
   | exact mem_DelS W T x
   | simp only [DelS, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply,
       sub_eq_zero]
 
+/- English proof (translation)
+Establish `hx'` using `(mem_DelS_iff_forall_gammaD_fixed W T).mp hx`. Use `(mem_DelS_iff_forall_gammaD_fixed W T).mpr fun δ hδ => ?_` and prove the remaining obligations. Rewrite using `[← W.γD_mul, mul_comm, W.γD_mul, hx' δ hδ]`.
+-/
 theorem gradNPf_DelS_γ (g : W.Gam) {x : W.DD T} (hx : x ∈ DelS W T) : W.γD T g x ∈ DelS W T := by
   have hx' := (mem_DelS_iff_forall_gammaD_fixed W T).mp hx
   refine (mem_DelS_iff_forall_gammaD_fixed W T).mpr fun δ hδ => ?_
   rw [← W.γD_mul, mul_comm, W.γD_mul, hx' δ hδ]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact mem_letS W T c x`. Consider the case `simp only [letS, LinearMap.mem_ker, LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 private theorem mem_letS_iff_letE_smul_eq (c : ZMod n) {x : W.DD T} :
     x ∈ letS W T c ↔ (letE c : LetA O n) • x = x := by
   first
@@ -57,18 +77,27 @@ private theorem mem_letS_iff_letE_smul_eq (c : ZMod n) {x : W.DD T} :
   | simp only [letS, LinearMap.mem_ker, LinearMap.restrictScalars_apply, LinearMap.coe_restrictScalars,
       LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Establish `hx'` using `(mem_letS_iff_letE_smul_eq W T c).mp hx`. Use `(mem_letS_iff_letE_smul_eq W T c).mpr ?_` and prove the remaining obligations. Rewrite using `[← gammaA_letE_eq_letE W g c, ← gradNPf_γD_smul W T g (letE c) x, hx']`.
+-/
 theorem gradNPf_letS_γ (g : W.Gam) (c : ZMod n) {x : W.DD T} (hx : x ∈ letS W T c) :
     W.γD T g x ∈ letS W T c := by
   have hx' := (mem_letS_iff_letE_smul_eq W T c).mp hx
   refine (mem_letS_iff_letE_smul_eq W T c).mpr ?_
   rw [← gammaA_letE_eq_letE W g c, ← gradNPf_γD_smul W T g (letE c) x, hx']
 
+/- English proof (translation)
+Use `first`. Consider the case `exact (Submodule.mem_inf.mp hx).2`. Consider the case `(simp only [PiNS, Submodule.mem_inf] at hx; exact hx.2)`.
+-/
 theorem gradNPf_PiNS_DelS (π' : LetA O n) (k : ℕ) {x : W.DD T} (hx : x ∈ PiNS W T π' k) :
     x ∈ DelS W T := by
   first
   | exact (Submodule.mem_inf.mp hx).2
   | (simp only [PiNS, Submodule.mem_inf] at hx; exact hx.2)
 
+/- English proof (translation)
+Simplify using `only [PiNS, Formalism.MainNotions.DeltaInvariantLattices.aN, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_map] at hx ⊢`. Take `⟨⟨y, hy, rfl⟩, h2⟩` from `hx`. Use `⟨⟨π' ^ (k - j) • y, Submodule.smul_mem _ _ hy, ?_⟩, h2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π' ^ j • (π' ^ (k - j) • y) = π' ^ k • y`. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_of_le h]`.
+-/
 theorem gradNPf_PiNS_anti (π' : LetA O n) {j k : ℕ} (h : j ≤ k) {x : W.DD T}
     (hx : x ∈ PiNS W T π' k) : x ∈ PiNS W T π' j := by
   simp only [PiNS, Formalism.MainNotions.DeltaInvariantLattices.aN, Submodule.mem_inf, Submodule.restrictScalars_mem,
@@ -78,6 +107,15 @@ theorem gradNPf_PiNS_anti (π' : LetA O n) {j k : ℕ} (h : j ≤ k) {x : W.DD T
   change π' ^ j • (π' ^ (k - j) • y) = π' ^ k • y
   rw [smul_smul, ← pow_add, Nat.add_sub_of_le h]
 
+/- English proof (translation)
+Establish `hr₀N : r₀ ∈ W.N T` using `hr₀.1`. Take `⟨d, hdN, hd⟩` from `hγN r₀ hr₀`. Establish `hd' : W.γD T W.gam r₀ = r₀ + π' • d` using `sub_eq_iff_eq_add'.mp hd`. Take `⟨e, he⟩` from `sub_dvd_pow_sub_pow f (algebraMap O (LetA O n) c₀) y`. Rewrite `he` using `[ht]`.
+
+Establish `hs : f ^ y = algebraMap O (LetA O n) c₀ ^ y + π' * (t * e)` using `by linear_combination he`. Use `⟨(t * e) • r₀ + f ^ y • d, Submodule.add_mem _ (Submodule.smul_mem _ _ hr₀N) (Submodule.smul_mem _ _ hdN), ?_⟩` and prove the remaining obligations. Rewrite using `[gradNPf_γD_smul, map_pow, hf, mul_pow, hd', ← algebraMap_smul (LetA O n) (c₀ ^ y - 1)]`. Simplify using `only [map_sub, map_pow, map_one]`. Simplify using `only [smul_add, smul_smul]`.
+
+Establish `c2 : π' ^ y * f ^ y * π' = π' ^ (y + 1) * f ^ y` using `by ring`. Establish `c1 : π' ^ (y + 1) * (t * e) = π' ^ y * f ^ y - π' ^ y - (algebraMap O (LetA O n) c₀ ^ y - 1) * π' ^ y`. Rewrite using `[hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[c2, c1, sub_smul, sub_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_gam_pow_smul_sub_eq (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π' * f)
     (ht : f - algebraMap O (LetA O n) c₀ = π' * t)
     (hγN : ∀ x ∈ W.NΔ T, ∃ d ∈ W.N T, W.γD T W.gam x - x = π' • d)
@@ -102,6 +140,29 @@ theorem exists_gam_pow_smul_sub_eq (π' f t : LetA O n) (c₀ : O) (hf : W.γA W
   rw [c2, c1, sub_smul, sub_smul]
   abel
 
+/- English proof (translation)
+Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.Ico_self, Finset.prod_empty, one_smul, map_zero, sub_zero]`. Conclude with `hz`.
+
+Consider the case `succ k hk ih`. Take `⟨xk, hxk, hr⟩` from `ih`. Use `set R := (∏ y ∈ Finset.Ico 1 k, (c₀ ^ y - 1)) • z - (W.γD T W.gam xk - xk) with hR`. Establish `hrP` using `(Submodule.mem_inf.mp hr).1`. Establish `hrL` using `(Submodule.mem_inf.mp hr).2`.
+
+Establish `hrP'` using `hrP`. Simplify using `only [PiNS, Formalism.MainNotions.DeltaInvariantLattices.aN, Submodule.mem_inf, Submodule.restrictScalars_mem, Submodule.mem_map] at hrP'`. Take `⟨⟨r', hr'N, hr'eq⟩, hrΔ⟩` from `hrP'`. Establish `hr'eq' : π' ^ k • r' = R` using `hr'eq`. Establish `hΔr` using `(mem_DelS_iff_forall_gammaD_fixed W T).mp hrΔ`.
+
+Establish `hr'Δ : r' ∈ W.NΔ T` using `by show r' ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ r' = r'`. Use `⟨hr'N, fun δ hδ => ?_⟩` and prove the remaining obligations. Establish `h2 : W.γA δ (π' ^ k) = π' ^ k` using `by rw [map_pow, hπΔ δ hδ]`. Establish `h1 : π' ^ k • (W.γD T δ r' - r') = 0`. Rewrite using `[smul_sub, ← h2, ← gradNPf_γD_smul, h2, hr'eq', hΔr δ hδ, sub_self]`.
+
+Establish `hu' : IsUnit (algebraMap (LetA O n) W.EE (π' ^ k))`. Rewrite using `[map_pow]`. Conclude with `hu.pow k`. Conclude with `sub_eq_zero.mp (gradNPf_tf W T (π' ^ k) hu' _ h1)`. Take `⟨w, hwN, hw⟩` from `exists_gam_pow_smul_sub_eq W T π' f t c₀ hf ht hγN k r' hr'Δ`.
+
+Rewrite `hw` using `[hr'eq']`. Establish `hxkP` using `(Submodule.mem_inf.mp hxk).1`. Establish `hxkL` using `(Submodule.mem_inf.mp hxk).2`. Establish `hzP` using `(Submodule.mem_inf.mp hz).1`. Establish `hzL` using `(Submodule.mem_inf.mp hz).2`.
+
+Establish `hRP1 : R ∈ PiNS W T π' 1` using `gradNPf_PiNS_anti W T π' hk hrP`. Establish `hxP : (c₀ ^ k - 1) • xk + R ∈ PiNS W T π' 1` using `Submodule.add_mem _ (Submodule.smul_mem _ _ hxkP) hRP1`. Establish `hxL : (c₀ ^ k - 1) • xk + R ∈ letS W T c` using `Submodule.add_mem _ (Submodule.smul_mem _ _ hxkL) hrL`. Use `⟨(c₀ ^ k - 1) • xk + R, Submodule.mem_inf.mpr ⟨hxP, hxL⟩, ?_⟩` and prove the remaining obligations. Establish `hPz : (∏ y ∈ Finset.Ico 1 k, (c₀ ^ y - 1)) • z = R + (W.γD T W.gam xk - xk)`.
+
+Rewrite using `[hR]`. Normalize the expressions using the abelian group laws. Establish `hE : (∏ y ∈ Finset.Ico 1 (k + 1), (c₀ ^ y - 1)) • z - (W.γD T W.gam ((c₀ ^ k - 1) • xk + R) - ((c₀ ^ k - 1) • xk + R)) = π' ^ (k + 1) • (-w)`. Rewrite using `[Finset.prod_Ico_succ_top hk, mul_comm, mul_smul, hPz, map_add, map_smul, smul_neg, ← hw]`. Simplify using `only [smul_add, smul_sub]`.
+
+Normalize the expressions using the abelian group laws. Establish `hγxP : W.γD T W.gam ((c₀ ^ k - 1) • xk + R) ∈ DelS W T` using `gradNPf_DelS_γ W T W.gam (gradNPf_PiNS_DelS W T π' 1 hxP)`. Establish `hγxL` using `gradNPf_letS_γ W T W.gam c hxL`. Establish `hzΔ` using `gradNPf_PiNS_DelS W T π' 1 hzP`. Establish `hxΔ` using `gradNPf_PiNS_DelS W T π' 1 hxP`.
+
+Rewrite using `[PiNS]`. Use `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`. Conclude with `(Submodule.restrictScalars_mem _ _ _).mpr (Submodule.mem_map.mpr ⟨-w, Submodule.neg_mem _ hwN, rfl⟩)`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hzΔ) (Submodule.sub_mem _ hγxP hxΔ)`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ hzL) (Submodule.sub_mem _ hγxL hxL)`.
+-/
 theorem gradNPf_coker (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π' * f)
     (ht : f - algebraMap O (LetA O n) c₀ = π' * t)
     (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
@@ -168,6 +229,11 @@ theorem gradNPf_coker (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
     · exact Submodule.sub_mem _ (Submodule.smul_mem _ _ hzΔ) (Submodule.sub_mem _ hγxP hxΔ)
     · exact Submodule.sub_mem _ (Submodule.smul_mem _ _ hzL) (Submodule.sub_mem _ hγxL hxL)
 
+/- English proof (translation)
+Introduce `c z hz`. Take `⟨x, hx, hr⟩` from `gradNPf_coker W T π' f t c₀ hf ht hu hπΔ hγN c z hz M hM`. Use `⟨a • x, Submodule.smul_mem _ _ hx, ?_⟩` and prove the remaining obligations. Establish `e : ((PD.p : ℕ) : O) ^ σ • z - (W.γD T W.gamK (a • x) - a • x) = a • ((∏ y ∈ Finset.Ico 1 M, (c₀ ^ y - 1)) • z - (W.γD T W.gam x - x))`. Rewrite using `[hK, ha, map_smul, mul_smul, smul_sub, smul_sub]`.
+
+Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_inf.1 hr).1`.
+-/
 theorem gradNPf_local (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π' * f)
     (ht : f - algebraMap O (LetA O n) c₀ = π' * t)
     (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
@@ -185,6 +251,9 @@ theorem gradNPf_local (π' f t : LetA O n) (c₀ : O) (hf : W.γA W.gam π' = π
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.mem_inf.1 hr).1
 
+/- English proof (translation)
+Unfold `GradN`. Introduce `c z hz`. Use `⟨0, Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using `only [map_zero, sub_zero]`. Conclude with `gradNPf_PiNS_anti W T π' hM (Submodule.smul_mem _ _ (Submodule.mem_inf.mp hz).1)`.
+-/
 theorem gradNPf_small (π' : LetA O n) (σ M : ℕ) (hM : M ≤ 1) : GradN W T π' σ M := by
   unfold GradN
   intro c z hz

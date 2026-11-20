@@ -27,6 +27,9 @@ structure c3eqv_Carry (Λ : Submodule (𝓞 E) S.V) (φ : S.V ≃ₗ[E] S.V) (F�
 
 variable {Λ : Submodule (𝓞 E) S.V} {φ ψ : S.V ≃ₗ[E] S.V} {F₁ F₂ F₃ : LFlag S r T'}
 
+/- English proof (translation)
+The claim follows from `c3eqv_isom_symm h.iso lam := h.lam' lam' := by simpa using h.lam X := h.X' X' := by simpa using h.X z := by have h1 := h.X' _ h.z have : φ.symm F₂.fl.z - F₁.fl.z = -(φ.symm (φ F₁.fl.z - F₂.fl.z)) := by simp rw [this] exact Submodule.neg_mem _ h1`.
+-/
 theorem c3eqv_Carry.symm (h : c3eqv_Carry Λ φ F₁ F₂) : c3eqv_Carry Λ φ.symm F₂ F₁ where
   iso := c3eqv_isom_symm h.iso
   lam := h.lam'
@@ -39,6 +42,9 @@ theorem c3eqv_Carry.symm (h : c3eqv_Carry Λ φ F₁ F₂) : c3eqv_Carry Λ φ.s
     rw [this]
     exact Submodule.neg_mem _ h1
 
+/- English proof (translation)
+The claim follows from `c3eqv_isom_trans h.iso h'.iso lam := fun y hy => h'.lam _ (h.lam y hy) lam' := fun y hy => h.lam' _ (h'.lam' y hy) X := fun x hx => h'.X _ (h.X x hx) X' := fun x hx => h.X' _ (h'.X' x hx) z := by have h1 := h'.X _ h.z have : (φ.trans ψ) F₁.fl.z - F₃.fl.z = ψ (φ F₁.fl.z - F₂.fl.z) …`.
+-/
 theorem c3eqv_Carry.trans (h : c3eqv_Carry Λ φ F₁ F₂) (h' : c3eqv_Carry Λ ψ F₂ F₃) :
     c3eqv_Carry Λ (φ.trans ψ) F₁ F₃ where
   iso := c3eqv_isom_trans h.iso h'.iso

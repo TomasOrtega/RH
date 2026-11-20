@@ -22,6 +22,19 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.WType
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hU i`. Take `⟨hC, -⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Establish `hI` using `(GlobalTheory.T.goodProjector_unitaryFormsModel_laws R.toRealDat F.lv2 hC hX i).1`. Establish `hs : ∀ a, cj (twAt D.what₂.embLL A3.A.v0) (A3.A.fam.v0.embedding a) = sg0 D A3.A a` using `fun a => by show cj _ (A3.A.v0.embedding a) = _`.
+
+Rewrite using `[emb_eq D.what₂.embLL A3.A.v0 a, cj_cj]`. Rewrite using `[GlobalTheory.T.range_complex_points_level_forms_eq_good_forms R F hOk hW hU false i]`. Use extensionality with `x`. Establish `hw` using `GlobalTheory.WatType.wat_iff_type R.toRealDat F.lv2 hOk.ok2 hC false i (Tw.out x)`. Establish `hL : x ∈ Tw.sub (twAt D.what₂.embLL A3.A.v0) ((R.toRealDat.Wat i (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))).comap (R.HW i (sg0 D A3.A)).e) ↔ (R.HW i (sg0 D A3.A)).e (Tw.out x) ∈ R.toRealDat.Wat i (sg0 D A3.A) (R.toRealDat.levL F.lv2 false (sg0 D A3.A))` using `Iff.rfl`.
+
+Establish `hR : Tw.out x ∈ LinearMap.range (eH R.toRealDat i) ↔ eH R.toRealDat i (Tw.out x) = Tw.out x`. Use `⟨?_, fun h => ⟨_, h⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Rewrite using `[← hy, ← Module.End.mul_apply, hI]`. Establish `hT : x ∈ typeSubspace A3 (R.toCx3 F) i (R.gWx F i) F.P0 F.ψ0⁻¹ ↔ ∀ p : (F.lv2.lvl false).P, R.gW i (sg0 D A3.A) (p : G) (Tw.out x) = sg0 D A3.A ((((F.lv2.lvl false).ψ⁻¹ p : D.what₂.LLˣ)) : D.what₂.LL) • Tw.out x`.
+
+Unfold `typeSubspace`. Use `(Submodule.mem_iInf (R := ℂ) (M := (R.toCx3 F).W i) _).trans (forall_congr' fun p => ?_)` and prove the remaining obligations. Use `show R.gW i (sg0 D A3.A) (p : G) (Tw.out x) - cj (twAt D.what₂.embLL A3.A.v0) (A3.A.fam.v0.embedding ((F.ψ0⁻¹ p : D.what₂.LLˣ) : D.what₂.LL)) • Tw.out x = 0 ↔ _`. Rewrite using `[sub_eq_zero, hs]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[hL, hw]`. Conclude with `⟨hR.2 h.1, hT.2 h.2⟩`. Introduce `h`.
+
+Rewrite using `[hL, hw]`. Conclude with `⟨hR.1 h.1, hT.1 h.2⟩`.
+-/
 theorem range_w0C_type : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → R.toRealDat.LUnif → ∀ i, LinearMap.range ((R.toCx3 F).w0C false i) = Tw.sub (twAt D.what₂.embLL A3.A.v0) (LinearMap.range (eH R.toRealDat i)) ⊓ typeSubspace A3 (R.toCx3 F) i (R.gWx F i) F.P0 F.ψ0⁻¹ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hU i
   obtain ⟨hC, -⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx

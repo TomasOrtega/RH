@@ -10,6 +10,13 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 
 namespace GlobalTheory.DenseClosedAffineSubsets
 
+/- English proof (translation)
+Establish `: IsClosedImmersion e` using `IsClosedImmersion.of_comp e p`. Establish `hk : e.ker ≤ ι.ker`. Establish `h1 : (j ≫ ι).ker = ι.ker`. Rewrite using `[Scheme.Hom.ker_comp, j.ker_eq_bot, Scheme.IdealSheafData.map_bot]`. Rewrite using `[← h1, ← hv]`.
+
+Conclude with `Scheme.Hom.le_ker_comp v e`. Establish `hl` using `IsClosedImmersion.lift_fac e ι hk`. Establish `: IsClosedImmersion (IsClosedImmersion.lift e ι hk ≫ e)` using `by rw [hl]; infer_instance`. Establish `: IsClosedImmersion (IsClosedImmersion.lift e ι hk)` using `IsClosedImmersion.of_comp_isClosedImmersion _ e`. Rewrite using `[← hl, Category.assoc]`.
+
+Use `infer_instance`.
+-/
 theorem closed_of_dense {V X T D Y : Scheme.{0}} (p : T ⟶ D) [IsSeparated p] (ι : X ⟶ T)
     [IsClosedImmersion ι] (j : V ⟶ X) [IsSchemeTheoreticallyDominant j] (e : Y ⟶ T)
     [IsClosedImmersion (e ≫ p)] (v : V ⟶ Y) (hv : v ≫ e = j ≫ ι) :
@@ -31,6 +38,15 @@ instance dominant_restrict {V X : Scheme.{0}} (j : V ⟶ X) [IsSchemeTheoretical
     [QuasiCompact j] (O : X.Opens) : IsSchemeTheoreticallyDominant (j ∣_ O) :=
   IsSchemeTheoreticallyDominant.of_isPullback (isPullback_morphismRestrict j O).flip
 
+/- English proof (translation)
+Establish `hr : Set.range e ⊆ Set.range (p ⁻¹ᵁ D).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `p (e z) ∈ D`. Rewrite using `[← Scheme.Hom.comp_apply, he, Scheme.Hom.comp_apply]`.
+
+Conclude with `(y z).2`. Set `e' : Y ⟶ (p ⁻¹ᵁ D).toScheme` to `IsOpenImmersion.lift (p ⁻¹ᵁ D).ι e hr`. Establish `he' : e' ≫ (p ⁻¹ᵁ D).ι = e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hy : e' ≫ p ∣_ D = y`. Rewrite using `[← cancel_mono D.ι, Category.assoc, morphismRestrict_ι, reassoc_of% he', he]`.
+
+Establish `: IsClosedImmersion (e' ≫ p ∣_ D)` using `by rw [hy]; infer_instance`. Take `⟨v, hv⟩` from `hv _ (j ⁻¹ᵁ ι ⁻¹ᵁ p ⁻¹ᵁ D).ι (j ∣_ (ι ⁻¹ᵁ p ⁻¹ᵁ D) ≫ ι ∣_ (p ⁻¹ᵁ D) ≫ p ∣_ D) (by simp)`. Use `closed_of_dense (p ∣_ D) (ι ∣_ (p ⁻¹ᵁ D)) (j ∣_ (ι ⁻¹ᵁ p ⁻¹ᵁ D)) e' v (by` as an intermediate fact. Rewrite using `[← cancel_mono (p ⁻¹ᵁ D).ι]`. Simplify using `[he', hv])`.
+
+Rewrite using `[morphismRestrict_comp]`. Conclude with `this`.
+-/
 theorem closed_restrict_of_dense {V X T P Y : Scheme.{0}} (p : T ⟶ P) [IsSeparated p] (ι : X ⟶ T)
     [IsClosedImmersion ι] (j : V ⟶ X) [IsSchemeTheoreticallyDominant j] [QuasiCompact j]
     (D : P.Opens) (y : Y ⟶ D) [IsClosedImmersion y] (e : Y ⟶ T) (he : e ≫ p = y ≫ D.ι)
@@ -56,6 +72,15 @@ theorem closed_restrict_of_dense {V X T P Y : Scheme.{0}} (p : T ⟶ P) [IsSepar
   rw [morphismRestrict_comp]
   exact this
 
+/- English proof (translation)
+Establish `h : u.appTop.hom.FiniteType` using `(HasRingHomProperty.iff_of_isAffine (P := @LocallyOfFiniteType)).mp inferInstance`. Use `letI := u.appTop.hom.toAlgebra`. Take `⟨t, ht⟩` from `h.out`. Use `⟨t, inferInstance, fun a ↦ a.1, IsClosedImmersion.of_surjective_of_isAffine _ ?_⟩` and prove the remaining obligations. Introduce `x`.
+
+Establish `hx : x ∈ Algebra.adjoin Γ(S, ⊤) (t : Set Γ(U, ⊤))` using `ht ▸ trivial`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨_, AffineSpace.homOfVector_appTop_coord u (fun a : t ↦ a.1) ⟨x, hx⟩⟩`. Consider the case `algebraMap r`. Use `⟨(𝔸(t; S) ↘ S).appTop r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, AffineSpace.homOfVector_over]`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+
+Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a * b, map_mul _ _ _⟩`.
+-/
 theorem exists_closed_affineSpace {U S : Scheme.{0}} [IsAffine U] [IsAffine S] (u : U ⟶ S)
     [LocallyOfFiniteType u] :
     ∃ (σ : Type) (_ : Fintype σ) (g : σ → Γ(U, ⊤)),
@@ -82,6 +107,15 @@ theorem exists_closed_affineSpace {U S : Scheme.{0}} [IsAffine U] [IsAffine S] (
     obtain ⟨b, rfl⟩ := hy
     exact ⟨a * b, map_mul _ _ _⟩
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Take `⟨x⟩` from `‹Nonempty W›`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `⟨U, hU, ⟨x, hx⟩, by simp⟩`.
+
+Consider the case `insert O t _ ih`. Take `⟨U, hU, hne, h⟩` from `ih`. Distinguish the cases in `hd : Disjoint (U : Set W) O`. Use `⟨U, hU, hne, fun O' hO' ↦ ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hO' with rfl | hO'` into its components or cases.
+
+Conclude with `.inr hd`. Conclude with `h _ hO'`. Take `⟨x, hx⟩` from `Set.not_disjoint_iff.mp hd`. Take `⟨_, ⟨U', hU', rfl⟩, hx', hle⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ (U : Set W) ∩ O from hx) (U.isOpen.inter O.isOpen)`. Use `⟨U', hU', ⟨x, hx'⟩, fun O' hO' ↦ ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.mp hO' with rfl | hO'` into its components or cases. Conclude with `.inl fun z hz ↦ (hle hz).2`. Break down `h _ hO' with h | h` into its components or cases. Conclude with `.inl fun z hz ↦ h (hle hz).1`. Conclude with `.inr (h.mono_left fun z hz ↦ (hle hz).1)`.
+-/
 theorem exists_affine_le_or_disjoint {W : Scheme.{0}} [Nonempty W] (t : Finset W.Opens) :
     ∃ U : W.Opens, IsAffineOpen U ∧ (U : Set W).Nonempty ∧
       ∀ O ∈ t, U ≤ O ∨ Disjoint (U : Set W) O := by
@@ -124,6 +158,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Introduce and unpack `⟨p, hp⟩`. Rewrite `hp` using `[MvPolynomial.mem_homogeneousSubmodule, ← MvPolynomial.totalDegree_zero_iff_isHomogeneous, MvPolynomial.totalDegree_eq_zero_iff_eq_C]`. Conclude with `⟨p.coeff 0, Subtype.ext hp.symm⟩`.
+-/
 theorem surjective_algebraMap_zero (R : Type) [CommRing R] (N : ℕ) :
     Function.Surjective
       (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0)) := by
@@ -132,6 +169,11 @@ theorem surjective_algebraMap_zero (R : Type) [CommRing R] (N : ℕ) :
     MvPolynomial.totalDegree_eq_zero_iff_eq_C] at hp
   exact ⟨p.coeff 0, Subtype.ext hp.symm⟩
 
+/- English proof (translation)
+Use `top_le_iff.mp fun p _ ↦ ?_` and prove the remaining obligations. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Conclude with `Subalgebra.algebraMap_mem _ (algebraMap R ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0) a)`. Consider the case `add p q hp hq => exact add_mem (hp trivial) (hq trivial)`.
+
+Consider the case `mul_X p i hp => exact mul_mem (hp trivial) (Algebra.subset_adjoin ⟨i, rfl⟩)`.
+-/
 theorem adjoin_X (R : Type) [CommRing R] (N : ℕ) :
     Algebra.adjoin ↥(MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0)
       (Set.range (MvPolynomial.X : Fin (N + 1) → MvPolynomial (Fin (N + 1)) R)) = ⊤ := by
@@ -159,6 +201,9 @@ def sec {A : Type} [CommRing A] {σ : Type} [SetLike σ A] [AddSubgroupClass σ 
     Γ((Proj.basicOpen 𝒜 t).toScheme, ⊤) :=
   (Proj.basicOpenToSpec 𝒜 t).appTop ((Scheme.ΓSpecIso (.of (HomogeneousLocalization.Away 𝒜 t))).inv z)
 
+/- English proof (translation)
+Establish `h : (Proj.basicOpen 𝒜 t).ι = Proj.basicOpenToSpec 𝒜 t ≫ Proj.awayι 𝒜 t ht one_pos`. Rewrite using `[← Proj.basicOpenIsoSpec_hom 𝒜 t ht one_pos, Proj.awayι, Iso.hom_inv_id_assoc]`. Rewrite using `[sec, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine, h, Scheme.Hom.comp_preimage, Proj.awayι_preimage_basicOpen 𝒜 ht one_pos ht' one_pos]`.
+-/
 theorem basicOpen_sec {A : Type} [CommRing A] {σ : Type} [SetLike σ A] [AddSubgroupClass σ A]
     (𝒜 : ℕ → σ) [GradedRing 𝒜] {t t' : A} (ht : t ∈ 𝒜 1) (ht' : t' ∈ 𝒜 1) :
     (Proj.basicOpen 𝒜 t).toScheme.basicOpen
@@ -171,6 +216,17 @@ theorem basicOpen_sec {A : Type} [CommRing A] {σ : Type} [SetLike σ A] [AddSub
     Proj.awayι_preimage_basicOpen 𝒜 ht one_pos ht' one_pos]
 
 set_option backward.isDefEq.respectTransparency false in
+/- English proof (translation)
+Set `e : (U.basicOpen (F t)).toScheme ⟶ Spec (.of (Localization.Away (F t)))` to `(U.isoOfEq (U.toSpecΓ_preimage_basicOpen (F t))).inv ≫ U.toSpecΓ ∣_ _ ≫ (basicOpenIsoSpecAway (F t)).hom`. Establish `he : e ≫ Spec.map (CommRingCat.ofHom (algebraMap Γ(U, ⊤) (Localization.Away (F t)))) = (U.basicOpen (F t)).ι ≫ U.toSpecΓ`. Simplify using `only [e, Category.assoc, basicOpenIsoSpecAway_hom_SpecMap, morphismRestrict_ι, Scheme.isoOfEq_inv_ι_assoc]`. Set `ε : Localization.Away (F t) →+* Γ((U.basicOpen (F t)).toScheme, ⊤)` to `((Scheme.ΓSpecIso (.of (Localization.Away (F t)))).inv ≫ e.appTop).hom`. Establish `hε (y : Γ(U, ⊤)) : ε (algebraMap _ _ y) = (U.basicOpen (F t)).ι.appTop y`.
+
+Establish `h1` using `congrArg (fun φ ↦ ((Scheme.ΓSpecIso Γ(U, ⊤)).inv ≫ Scheme.Hom.appTop φ) y) he`. Simplify using `only [Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, Iso.inv_hom_id_assoc, ← Scheme.ΓSpecIso_inv_naturality_assoc] at h1`. Conclude with `h1`. Set `G : Localization.Away t →+* Localization.Away (F t)` to `IsLocalization.map (M := .powers t) (T := .powers (F t)) _ F (by`. Rewrite using `[← Submonoid.map_le_iff_le_comap, Submonoid.map_powers])`.
+
+Establish `h2 : Proj.toBasicOpenOfGlobalSections 𝒜 F rfl one_pos ht ≫ Proj.basicOpenToSpec 𝒜 t = e ≫ Spec.map (CommRingCat.ofHom (G.comp (algebraMap (HomogeneousLocalization.Away 𝒜 t) (Localization.Away t))))`. Rewrite using `[← Proj.basicOpenIsoSpec_hom 𝒜 t ht one_pos, Proj.toBasicOpenOfGlobalSections]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id, e, G]`. Establish `h3 (z : HomogeneousLocalization.Away 𝒜 t) : (Proj.toBasicOpenOfGlobalSections 𝒜 F rfl one_pos ht).appTop (sec 𝒜 t z) = ε (G z.val)`. Establish `h1` using `congrArg (fun φ ↦ ((Scheme.ΓSpecIso _).inv ≫ Scheme.Hom.appTop φ) z) h2`.
+
+Simplify using `only [Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc] at h1`. Conclude with `h1`. Rewrite using `[h3, ← hε, ← hε, ← map_mul]`. Use `congr 1`. Simplify using `only [G, HomogeneousLocalization.Away.val_mk, Localization.mk_eq_mk', IsLocalization.map_mk', pow_one]`.
+
+Conclude with `IsLocalization.mk'_spec _ _ _`.
+-/
 theorem sec_mul {A : Type} [CommRing A] {σ : Type} [SetLike σ A] [AddSubgroupClass σ A]
     (𝒜 : ℕ → σ) [GradedRing 𝒜] {t t' : A} (ht : t ∈ 𝒜 1) (ht' : t' ∈ 𝒜 1)
     {U : Scheme.{0}} (F : A →+* Γ(U, ⊤)) :
@@ -210,6 +266,23 @@ theorem sec_mul {A : Type} [CommRing A] {σ : Type} [SetLike σ A] [AddSubgroupC
     pow_one]
   exact IsLocalization.mk'_spec _ _ _
 
+/- English proof (translation)
+Establish `hX (K : Fin (N + 1)) : (MvPolynomial.X K : MvPolynomial (Fin (N + 1)) R) ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 1` using `MvPolynomial.isHomogeneous_X R K`. Use `⟨fun K ↦ Proj.basicOpen _ (MvPolynomial.X K), fun J K ↦ sec _ _ (HomogeneousLocalization.Away.isLocalizationElem (hX K) (hX J)), Proj.iSup_basicOpen_eq_top' _ _ (fun K ↦ ⟨1, hX K⟩) (adjoin_X R N), fun J K ↦ (basicOpen_sec _ (hX K) (hX J)).le, ?_⟩` and prove the remaining obligations. Introduce `U u m K₀ hm`. Set `F : MvPolynomial (Fin (N + 1)) R →+* Γ(U, ⊤)` to `MvPolynomial.eval₂Hom ((Scheme.ΓSpecIso (.of R)).inv ≫ u.appTop).hom m`. Establish `hF (K) : F (MvPolynomial.X K) = m K` using `MvPolynomial.eval₂Hom_X' _ _ _`.
+
+Establish `hirr : (HomogeneousIdeal.irrelevant (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R)).toIdeal.map F = ⊤`. Use `Ideal.eq_top_of_isUnit_mem _ ?_ hm` and prove the remaining obligations. Rewrite using `[← hF]`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Use `(HomogeneousIdeal.mem_irrelevant_iff _ _).mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[GradedRing.proj_apply, DirectSum.decompose_of_mem_ne _ (hX K₀) one_ne_zero]`. Use `⟨Proj.fromOfGlobalSections _ F hirr, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PSpace.str, Proj.fromOfGlobalSections_toSpecZero_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `: (F.comp (algebraMap (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 0) _)).comp (algebraMap R _) = ((Scheme.ΓSpecIso (.of R)).inv ≫ u.appTop).hom`. Use extensionality with `x`.
+
+Conclude with `MvPolynomial.eval₂Hom_C _ _ x`. Rewrite using `[this, CommRingCat.ofHom_hom, Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc]`. Simplify using the standard rewrite rules. Introduce `K V a b hab`. Establish `hpre` using `Proj.fromOfGlobalSections_preimage_basicOpen _ F hirr one_pos (hX K)`.
+
+Establish `hr : Set.range a ⊆ Set.range (U.basicOpen (F (MvPolynomial.X K))).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, ← hpre]`. Express the relevant statement in the definitionally equal form `Proj.fromOfGlobalSections _ F hirr (a z) ∈ Proj.basicOpen _ (MvPolynomial.X K)`. Rewrite using `[← Scheme.Hom.comp_apply, hab, Scheme.Hom.comp_apply]`.
+
+Conclude with `(b z).2`. Take `⟨a', rfl⟩ : ∃ a' : V ⟶ (U.basicOpen (F (MvPolynomial.X K))).toScheme, a' ≫ (U.basicOpen (F (MvPolynomial.X K))).ι = a` from `⟨_, IsOpenImmersion.lift_fac _ a hr⟩`. Choose the witnesses or unpack the hypotheses as in `rfl : b = a' ≫ Proj.toBasicOpenOfGlobalSections _ F rfl one_pos (hX K) := by`. Rewrite using `[← cancel_mono (Scheme.Opens.ι _), ← hab, ← Proj.fromOfGlobalSections_resLE _ F hirr one_pos (hX K), Category.assoc, Category.assoc, Scheme.Hom.resLE_comp_ι]`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← hF]`.
+
+Use `⟨IsUnit.map _ ?_, fun J ↦ ?_⟩` and prove the remaining obligations. Apply `RingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[← Scheme.mem_basicOpen, ← Scheme.preimage_basicOpen_top]`. Conclude with `x.2`.
+
+Rewrite using `[← map_mul, sec_mul _ (hX K) (hX J)]`.
+-/
 theorem exists_charts (R : Type) [CommRing R] (N : ℕ) :
     ∃ (D : Fin (N + 1) → (PSpace R N).Opens) (r : ∀ _ K, Γ((D K).toScheme, ⊤)),
       ⨆ K, D K = ⊤ ∧ (∀ J K, (D K).toScheme.basicOpen (r J K) ≤ (D K).ι ⁻¹ᵁ D J) ∧
@@ -267,6 +340,17 @@ theorem exists_charts (R : Type) [CommRing R] (N : ℕ) :
       exact x.2
     · rw [← map_mul, sec_mul _ (hX K) (hX J)]
 
+/- English proof (translation)
+Set `c` to `AffineSpace.homOfVector (O.ι ≫ f) g`. Set `h` to `AffineSpace.homOfVector (D.ι ≫ s) r`. Establish `hc : c ≫ 𝔸(σ; S) ↘ S = O.ι ≫ f` using `AffineSpace.homOfVector_over _ _`. Establish `hh : h ≫ 𝔸(σ; S) ↘ S = D.ι ≫ s` using `AffineSpace.homOfVector_over _ _`. Establish `hφ : φ ≫ s = U.ι ≫ f`.
+
+Rewrite using `[← h₁, ← h₂]`. Simplify using `[pullback.condition]`. Use `closed_restrict_of_dense (pullback.snd f s) ι j D (pullback.snd c h) (pullback.lift (pullback.fst c h ≫ O.ι) (pullback.snd c h ≫ D.ι) (by` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← hc, ← hh, pullback.condition_assoc]))`. Use the proof step `(pullback.lift_snd _ _ _) ?_`.
+
+Introduce `Z a b hab`. Rewrite `hab` using `[h₂]`. Use `⟨pullback.lift (a ≫ W.homOfLE hUO) b ?_, ?_⟩` and prove the remaining obligations. Apply `AffineSpace.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, Category.assoc, hc, hh, Scheme.homOfLE_ι_assoc, ← reassoc_of% hab, hφ]`.
+
+Introduce `i`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.comp_apply, c, h, AffineSpace.homOfVector_appTop_coord]`. Conclude with `(hr Z a b hab i).symm`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[h₁, pullback.lift_fst, pullback.lift_fst_assoc]`.
+
+Simplify using `[h₂, hab, pullback.lift_snd, pullback.lift_snd_assoc]`.
+-/
 theorem closed_on_chart {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSeparated f]
     (U O : W.Opens) (hUO : U ≤ O) (φ : U.toScheme ⟶ P) (ι : X ⟶ pullback f s)
     [IsClosedImmersion ι] (j : U.toScheme ⟶ X) [IsSchemeTheoreticallyDominant j] [QuasiCompact j]
@@ -301,6 +385,11 @@ theorem closed_on_chart {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSe
     · simp [h₁, pullback.lift_fst, pullback.lift_fst_assoc]
     · simp [h₂, hab, pullback.lift_snd, pullback.lift_snd_assoc]
 
+/- English proof (translation)
+Establish `: IsClosedImmersion ((ι ≫ pullback.fst f s) ∣_ U)` using `closed_restrict_of_dense (pullback.fst f s) ι j U (𝟙 _) (j ≫ ι) (by simp [h₁]) fun Z a _ _ ↦ ⟨a, rfl⟩`. Establish `hr : Set.range j ⊆ Set.range ((ι ≫ pullback.fst f s) ⁻¹ᵁ U).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `(ι ≫ pullback.fst f s) (j z) ∈ U`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, h₁]`. Conclude with `z.2`. Establish `: IsSplitEpi ((ι ≫ pullback.fst f s) ∣_ U)` using `⟨⟨IsOpenImmersion.lift _ j hr, by`. Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, IsOpenImmersion.lift_fac_assoc, h₁, Category.id_comp]⟩⟩`. Conclude with `isIso_of_mono_of_isSplitEpi _`.
+-/
 theorem isIso_on_open {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSeparated s]
     (U : W.Opens) (ι : X ⟶ pullback f s)
     [IsClosedImmersion ι] (j : U.toScheme ⟶ X) [IsSchemeTheoreticallyDominant j] [QuasiCompact j]
@@ -321,6 +410,15 @@ theorem isIso_on_open {S W P X : Scheme.{0}} (f : W ⟶ S) (s : P ⟶ S) [IsSepa
         IsOpenImmersion.lift_fac_assoc, h₁, Category.id_comp]⟩⟩
   exact isIso_of_mono_of_isSplitEpi _
 
+/- English proof (translation)
+Set `V : X.Opens` to `π ⁻¹ᵁ O ⊓ q ⁻¹ᵁ D`. Set `α : V.toScheme ⟶ O` to `π.resLE O V inf_le_left`. Set `β : V.toScheme ⟶ D` to `q.resLE D V inf_le_right`. Establish `hα : α ≫ O.ι = V.ι ≫ π` using `Scheme.Hom.resLE_comp_ι _ _`. Establish `hβ : β ≫ D.ι = V.ι ≫ q` using `Scheme.Hom.resLE_comp_ι _ _`.
+
+Establish `e₁ : j ∣_ V ≫ α = (j ⁻¹ᵁ V).ι ≫ W.homOfLE hUO`. Rewrite using `[← cancel_mono O.ι, Category.assoc, hα, morphismRestrict_ι_assoc, h₁, Category.assoc, Scheme.homOfLE_ι]`. Establish `e₂` using `hr _ (j ⁻¹ᵁ V).ι (j ∣_ V ≫ β) (by`. Rewrite using `[Category.assoc, hβ, morphismRestrict_ι_assoc, h₂])`. Establish `e₃ : β.appTop r * α.appTop g = 1`.
+
+Apply `(j ∣_ V).app_injective ⊤` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(j ∣_ V).appTop _ = (j ∣_ V).appTop _`. Rewrite using `[map_mul, map_one, ← e₂, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, e₁, Scheme.Hom.comp_appTop (j ⁻¹ᵁ V).ι, CommRingCat.comp_apply]`. Establish `e₄ : β ⁻¹ᵁ D.toScheme.basicOpen r = ⊤`. Rewrite using `[Scheme.preimage_basicOpen_top]`.
+
+Conclude with `Scheme.basicOpen_of_isUnit _ (IsUnit.of_mul_eq_one _ e₃)`. Use `⟨β ⟨x, hO, hD⟩, e₄.ge (Set.mem_univ (⟨x, hO, hD⟩ : V.toScheme)), ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply β D.ι _).symm.trans congr($hβ ⟨x, hO, hD⟩)`.
+-/
 theorem mem_basicOpen_of_mul_eq_one {W P X : Scheme.{0}} (U O : W.Opens) (hUO : U ≤ O)
     (φ : U.toScheme ⟶ P) (π : X ⟶ W) (q : X ⟶ P)
     (j : U.toScheme ⟶ X) [IsSchemeTheoreticallyDominant j] [QuasiCompact j]
@@ -352,6 +450,39 @@ theorem mem_basicOpen_of_mul_eq_one {W P X : Scheme.{0}} (U O : W.Opens) (hUO : 
   refine ⟨β ⟨x, hO, hD⟩, e₄.ge (Set.mem_univ (⟨x, hO, hD⟩ : V.toScheme)), ?_⟩
   exact (Scheme.Hom.comp_apply β D.ι _).symm.trans congr($hβ ⟨x, hO, hD⟩)
 
+/- English proof (translation)
+Establish `: CompactSpace W` using `QuasiCompact.compactSpace_of_compactSpace f`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht, hcov⟩ : ∃ t : Finset W.Opens, (∀ O ∈ t, IsAffineOpen O) ∧ ∀ x : W, ∃ O ∈ t, x ∈ O := by`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun O : W.affineOpens ↦ (O.1 : Set W)) (fun O ↦ O.1.isOpen) (fun x _ ↦ by`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `W.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `Set.mem_iUnion.mpr ⟨⟨U, hU⟩, hx⟩)`.
+
+Use `⟨t.image Subtype.val, ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Introduce `O hO`. Take `⟨O, -, rfl⟩` from `Finset.mem_image.mp hO`. Conclude with `O.2`. Take `⟨O, hO, hx⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`.
+
+Conclude with `⟨O.1, Finset.mem_image_of_mem _ hO, hx⟩`. Take `⟨U, hU, hUne, hdich⟩` from `exists_affine_le_or_disjoint t`. Set `I : Type` to `{O : t // U ≤ O.1}`. Establish `hgen (i : I) : ∃ (σ : Type) (_ : Fintype σ) (g : σ → Γ(i.1.1.toScheme, ⊤)), IsClosedImmersion (AffineSpace.homOfVector (i.1.1.ι ≫ f) g)`. Establish `: IsAffine i.1.1.toScheme` using `ht _ i.1.2`.
+
+Conclude with `exists_closed_affineSpace _`. Use `choose σ hσ g hg using hgen`. Set `x (i : I) (a : Option (σ i)) : Γ(U.toScheme, ⊤)` to `(W.homOfLE i.2).appTop (a.elim 1 (g i))`. Set `m (K : ∀ i, Option (σ i)) : Γ(U.toScheme, ⊤)` to `∏ i, x i (K i)`. Establish `hx0 (i : I) : x i none = 1` using `map_one _`.
+
+Establish `hm0 : m (fun _ ↦ none) = 1` using `Finset.prod_eq_one fun i _ ↦ hx0 i`. Establish `hm (K : ∀ i, Option (σ i)) (i : I) (hK : K i = none) (a : Option (σ i)) : m (Function.update K i a) = x i a * m K`. Simplify using `only [m]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), Function.update_self, ← Finset.mul_prod_erase _ (fun i ↦ x i (K i)) (Finset.mem_univ i), hK, hx0, one_mul]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun k hk ↦ by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hk)]`. Take `⟨N, hN⟩ : ∃ N, Fintype.card (∀ i, Option (σ i)) = N + 1` from `Nat.exists_eq_succ_of_ne_zero Fintype.card_ne_zero`. Set `e` to `Fintype.equivFinOfCardEq hN`. Take `⟨D, r, hD, hr, hφ⟩` from `exists_charts R N`.
+
+Take `⟨φ, hφs, hφ⟩` from `hφ U (U.ι ≫ f) (fun K ↦ m (e.symm K)) (e fun _ ↦ none) (by rw [e.symm_apply_apply, hm0]; exact isUnit_one)`. Set `s` to `PSpace.str R N`. Set `γ : U.toScheme ⟶ pullback f s` to `pullback.lift U.ι φ hφs.symm`. Establish `: IsAffine U.toScheme` using `hU`. Establish `: QuasiCompact (γ ≫ pullback.fst f s ≫ f)` using `inferInstance`.
+
+Establish `: QuasiCompact γ` using `QuasiCompact.of_comp γ (pullback.fst f s ≫ f)`. Establish `h₁ : γ.toImage ≫ γ.imageι ≫ pullback.fst f s = U.ι`. Rewrite using `[γ.toImage_imageι_assoc, pullback.lift_fst]`. Establish `h₂ : γ.toImage ≫ γ.imageι ≫ pullback.snd f s = φ`. Rewrite using `[γ.toImage_imageι_assoc, pullback.lift_snd]`.
+
+Use `⟨γ.image, PSpace R N, γ.imageι ≫ pullback.fst f s, γ.imageι ≫ pullback.snd f s, s, U, inferInstance, hUne, isIso_on_open f s U _ γ.toImage h₁, ⟨N, 𝟙 _, inferInstance, Category.id_comp _⟩, ?_, by simp [pullback.condition]⟩` and prove the remaining obligations. Establish `: MorphismProperty.RespectsRight @IsImmersion @IsOpenImmersion` using `⟨fun _ _ _ _ ↦ inferInstance⟩`. Use `IsZariskiLocalAtTarget.of_range_subset_iSup (P := @IsImmersion) (fun K : {K : ∀ i, Option (σ i) // ∃ i, K i = none} ↦ D (e K.1)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨O, hOt, hzO⟩` from `hcov ((γ.imageι ≫ pullback.fst f s) z)`.
+
+Establish `hUO : U ≤ O`. Use `(hdich O hOt).resolve_right fun hdis ↦ ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `γ.toImage.denseRange.exists_mem_open ((γ.imageι ≫ pullback.fst f s) ⁻¹ᵁ O).isOpen ⟨z, hzO⟩`. Express the relevant statement in the definitionally equal form `(γ.imageι ≫ pullback.fst f s) (γ.toImage w) ∈ O at hw`. Rewrite `hw` using `[← Scheme.Hom.comp_apply, h₁]`.
+
+Conclude with `Set.disjoint_left.mp hdis w.2 hw`. Set `i : I` to `⟨⟨O, hOt⟩, hUO⟩`. Take `⟨K, hK⟩` from `TopologicalSpace.Opens.mem_iSup.mp (hD.ge (Set.mem_univ ((γ.imageι ≫ pullback.snd f s) z)))`. Take `⟨K, rfl⟩` from `e.surjective K`. Take `⟨w, hw, hwz⟩` from `mem_basicOpen_of_mul_eq_one U O hUO φ _ _ γ.toImage h₁ h₂ ((K i).elim 1 (g i)) (D (e K)) (r (e (Function.update K i none)) (e K)) (by`.
+
+Introduce `V a b hab`. Take `⟨hu, hb⟩` from `hφ (e K) V a b hab`. Establish `hb'` using `hb (e (Function.update K i none))`. Simplify using `only [e.symm_apply_apply] at hu hb'`. Establish `hK'` using `hm (Function.update K i none) i (Function.update_self _ _ _) (K i)`.
+
+Rewrite `hK'` using `[Function.update_idem, Function.update_eq_self]`. Use `hu.mul_left_inj.mp ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, hb', one_mul, ← map_mul, mul_comm, hK']) z hzO hK`. Use `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨Function.update K i none, i, Function.update_self _ _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hwz]`.
+
+Conclude with `hr _ _ hw`. Introduce and unpack `⟨K, i, hK⟩`. Use `hg i` as an intermediate fact. Use `closed_on_chart f s U i.1.1 i.2 φ γ.imageι γ.toImage h₁ h₂ (g i) (D (e K)) (fun a ↦ r (e (Function.update K i (some a))) (e K)) (by` as an intermediate fact. Introduce `V a b hab c`.
+
+Take `⟨hu, hb⟩` from `hφ (e K) V a b hab`. Establish `hb'` using `hb (e (Function.update K i (some c)))`. Simplify using `only [e.symm_apply_apply] at hu hb'`. Use `hu.mul_left_inj.mp ?_` and prove the remaining obligations. Rewrite using `[hb', hm K i hK, map_mul]`.
+
+Use the proof step `rfl)`. Conclude with `inferInstanceAs (IsImmersion ((γ.imageι ≫ pullback.snd f s) ∣_ D (e K)))`.
+-/
 theorem chow (R : Type) [CommRing R] [IsNoetherianRing R] (W : Scheme)
     (f : W ⟶ Spec (CommRingCat.of R)) (hsep : IsSeparated f) (hft : LocallyOfFiniteType f)
     (hqc : QuasiCompact f) (hne : Nonempty W) :

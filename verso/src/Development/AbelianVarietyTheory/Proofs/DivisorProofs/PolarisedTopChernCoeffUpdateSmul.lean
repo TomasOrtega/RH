@@ -7,6 +7,13 @@ open GlobalTheory.GoodTop
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Establish `key : ∀ (M : EndValuedForm11Coeffs n r) (p : Fin n → r) (π u : Equiv.Perm (Fin n)), (Matrix.of fun i b => Function.update K j M i (u i) b (p i) (p (π i))) = (Matrix.of fun i b => K i (u i) b (p i) (p (π i))).updateRow j (fun b => M (u j) b (p j) (p (π j)))`. Introduce `M p π u`. Use extensionality with `i b`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.updateRow_ne h, Function.update_of_ne h]`. Establish `h2 : ∀ (p : Fin n → r) (π u : Equiv.Perm (Fin n)), (Matrix.of fun i b => Function.update K j (t • L) i (u i) b (p i) (p (π i))).det = t * (Matrix.of fun i b => Function.update K j L i (u i) b (p i) (p (π i))).det`. Introduce `p π u`. Rewrite using `[key, key, ← Matrix.det_updateRow_smul]`.
+
+Both sides reduce to the same expression. Unfold `mixTop`. Simplify using `only [h2, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun π _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mixTop_update_smul {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K : Fin n → EndValuedForm11Coeffs n r) (j : Fin n)
     (t : ℂ) (L : EndValuedForm11Coeffs n r) :
     mixTop (Function.update K j (t • L)) = t * mixTop (Function.update K j L) := by

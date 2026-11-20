@@ -14,6 +14,9 @@ namespace GlobalTheory.CovDom
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use `rank_base_space D.R` as an intermediate fact. Simplify using `only [Ranks.N, zero_mul, add_zero] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rank_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   have := rank_base_space D.R
   simp only [Ranks.N, zero_mul, add_zero] at this

@@ -9,6 +9,9 @@ namespace GlobalTheory.IneAway
 
 open GlobalTheory.TypeLeaf Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun w hw => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hw`.
+-/
 theorem placesOver_finite_of_prime (E : Type) [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) :
     (placesOver E p).Finite := by
   have h0 : Ideal.span {((p : ℕ) : 𝓞 E)} ≠ 0 := by
@@ -17,10 +20,24 @@ theorem placesOver_finite_of_prime (E : Type) [Field E] [NumberField E] {p : ℕ
   refine (Ideal.finite_factors h0).subset fun w hw => ?_
   exact Ideal.dvd_span_singleton.2 hw
 
+/- English proof (translation)
+Simplify using `[isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+-/
 theorem isoLoc_cusp (D : D7) {a : ℕ} (π : D.naut.CG a) (w : PlE D.host) :
     isoLoc D.nd D.naut [⟨a, π, 1⟩] w = D.naut.locG π w := by
   simp [isoLoc, spehLoc, D.naut.lpSum_zero, D.naut.lpTw_zero]
 
+/- English proof (translation)
+Introduce `D hG hF i π ρ hc ha hρ w hw s hs`. Establish `hr1 : 1 ≤ D.R.r`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨r, hrc, hr⟩` from `hG i D.R.r hr1 π hc ha`. Take `⟨hιc, -⟩` from `GlobalTheory.TypeLeaf.iotaOQ_continuous_injective D i`. Take `⟨hρc, -, hρf⟩` from `hρ`. Establish `hcomp : iotaO D.nd D.naut i = (D.naut.iotaQC i).toRingHom.comp (iotaOQ D.nd D.naut i)` using `rfl`. Establish `hinj : Function.Injective (Polynomial.map (D.naut.iotaQC i).toRingHom)` using `Polynomial.map_injective _ (D.naut.iotaQC i).injective`.
+
+Establish `hfin` using `placesOver_finite_of_prime D.host.E (D.nd.lPrime i).out`. Establish `hall` using `(hfin.eventually_cofinite_notMem.and (D.naut.locG_unr_ae π)).and hρf`. Establish `hd` using `hF _ (Filter.eventually_cofinite.1 hall)`. Establish `key` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense _ (Qbar (D.nd.l i)) D.R.r (fun g => ((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (iotaOQ D.nd D.naut i)) (fun g => ((r g : GL (Fin D.R.r) (Qbar (D.nd.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.nd.l i)))) _ hd (h …`. Introduce and unpack `g ⟨v, hv, -, B, hB, hg⟩`.
+
+Take `⟨⟨h1, h2⟩, h3⟩` from `not_not.1 hv`. Apply `hinj` to reduce the goal to its premises. Establish `hu : D.naut.unr (D.naut.wdOf i r v)`. Rewrite using `[hr v h1]`. Conclude with `(D.naut.unr_tw _ _).2 h2`.
+
+Rewrite using `[Matrix.charpoly_map, Polynomial.map_map, ← hcomp, h3 B g hB hg, isoLoc_cusp, D.naut.wdOf_frob i r v h1 hrc hu B g hB hg, hr v h1]`. Use the proof step `rfl) s`. Rewrite using `[hcomp, ← Polynomial.map_map, ← Matrix.charpoly_map, key, D.naut.wdOf_ine i r w hw hrc s hs, hr w hw, D.naut.inePol_tw _ _ _ hs]`.
+-/
 theorem charpoly_inertia : ∀ D : D7, GalAway D → FrobDense D → ∀ (i : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)), D.naut.csd π → D.naut.ralg π → IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ → ∀ w, w ∉ placesOver D.host.E (D.nd.l i) → ∀ s ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), ((ρ s : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map (iotaO D.nd D.naut i) = D.naut.inePol (D.naut.locG π w) s := by
   intro D hG hF i π ρ hc ha hρ w hw s hs
   have hr1 : 1 ≤ D.R.r := by

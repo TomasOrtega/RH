@@ -16,6 +16,11 @@ namespace GlobalTheory.AboveL.AbSub
 
 open Polynomial Module
 
+/- English proof (translation)
+Establish `h1 : (f - algebraMap ℂ (Module.End ℂ V) 1).IsSemisimple` using `Module.End.isSemisimple_sub_algebraMap_iff.mpr hs`. Establish `h2 : IsNilpotent (f - algebraMap ℂ (Module.End ℂ V) 1)`. Use `⟨finrank ℂ V, ?_⟩` and prove the remaining obligations. Use `LinearMap.aeval_self_charpoly f` as an intermediate fact. Rewrite `this` using `[hc]`.
+
+Simplify `this` using `[map_pow, map_sub, aeval_X, map_one]`. Use `Module.End.eq_zero_of_isNilpotent_isSemisimple h2 h1` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `sub_eq_zero.mp this`.
+-/
 theorem eq_one_of_charpoly {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (f : Module.End ℂ V) (hs : f.IsSemisimple) (hc : f.charpoly = (X - 1) ^ finrank ℂ V) : f = 1 := by
   have h1 : (f - algebraMap ℂ (Module.End ℂ V) 1).IsSemisimple :=
@@ -33,6 +38,73 @@ end GlobalTheory.AboveL.AbSub
 
 namespace GlobalTheory.AboveL.AbSub
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ _ A v h y hy σ hσ`. Use `haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω`. Use `haveI : CompactSpace (Dec (F := K) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Take `⟨n0, a, rfl⟩` from `WD.exists_rep y`. Establish `hcomm : ∀ g g' : Weil h, a.ρ (g * g' * g⁻¹ * g'⁻¹) = 1` using `fun g g' => by`.
+
+Use `hy g g'` as an intermediate fact. Rewrite `this` using `[WD.charPol_mk, WD.lpDim_mk]`. Conclude with `eq_one_of_charpoly _ (a.semisimple _) this`. Establish `hconj : ∀ w x : Weil h, a.ρ x = 1 → a.ρ (w * x * w⁻¹) = 1` using `fun w x hx => by`. Rewrite using `[map_mul, map_mul, hx, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
+
+Set `J : Subgroup (Dec (F` to `K) A) := { carrier := {d | (d : G K Ω) ∈ Ine (F := K) A ∧ ∀ hw : (d : G K Ω) ∈ Weil h, a.ρ ⟨d, hw⟩ = 1} one_mem' := ⟨(Ine (F := K) A).one_mem, fun _ => map_one a.ρ⟩ mul_mem' := by`. Introduce and unpack `d1 d2 ⟨h1, h1'⟩ ⟨h2, h2'⟩`. Use `⟨(Ine (F := K) A).mul_mem h1 h2, fun hw => ?_⟩` and prove the remaining obligations. Establish `e` using `map_mul a.ρ ⟨(d1 : G K Ω), Ine_le_Weil h h1⟩ ⟨(d2 : G K Ω), Ine_le_Weil h h2⟩`. Rewrite `e` using `[h1', h2', one_mul]`.
+
+Conclude with `e`. Use the proof step `inv_mem' := by`. Introduce and unpack `d ⟨h1, h1'⟩`. Use `⟨(Ine (F := K) A).inv_mem h1, fun hw => ?_⟩` and prove the remaining obligations. Establish `e` using `map_mul a.ρ ⟨((d⁻¹ : Dec (F := K) A) : G K Ω), hw⟩ ⟨(d : G K Ω), Ine_le_Weil h h1⟩`.
+
+Rewrite `e` using `[h1' (Ine_le_Weil h h1), mul_one]`. Establish `e1 : (⟨((d⁻¹ : Dec (F` using `K) A) : G K Ω), hw⟩ * ⟨(d : G K Ω), Ine_le_Weil h h1⟩ : Weil h) = 1 := Subtype.ext (inv_mul_cancel (d : G K Ω))`. Rewrite `e` using `[e1, map_one]`. Conclude with `e.symm }`. Establish `memJ : ∀ d : Dec (F` using `K) A, d ∈ J ↔ ((d : G K Ω) ∈ Ine (F := K) A ∧ ∀ hw : (d : G K Ω) ∈ Weil h, a.ρ ⟨d, hw⟩ = 1) := fun _ => Iff.rfl`.
+
+Take `⟨O, hO, hOS⟩` from `isOpen_induced_iff.mp a.smooth`. Establish `hO1 : (1 : G K Ω) ∈ O`. Establish `: (1 : Ine (F` using `K) A) ∈ Subtype.val ⁻¹' O := by`. Rewrite using `[hOS]`. Conclude with `map_one a.ρ`.
+
+Conclude with `this`. Establish `hPW : ∀ d : Dec (F` using `K) A, (d : G K Ω) ∈ O → (d : G K Ω) ∈ Ine (F := K) A → d ∈ J := by`. Introduce `d hd hI`. Use `⟨hI, fun hw => ?_⟩` and prove the remaining obligations. Establish `: (⟨(d : G K Ω), hI⟩ : Ine (F` using `K) A) ∈ Subtype.val ⁻¹' O := hd`.
+
+Rewrite `this` using `[hOS]`. Conclude with `this`. Establish `hW0 : IsOpen (Subtype.val ⁻¹' O : Set (Dec (F` using `K) A)) := hO.preimage continuous_subtype_val`. Take `⟨U0, hU0⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hW0 hO1`. Use `haveI := U0.toSubgroup.quotient_finite_of_isOpen U0.isOpen`.
+
+Set `ι : Weil h →* Dec (F` to `K) A := Subgroup.inclusion (Weil_le_Dec h)`. Take `⟨n, hn, -, hσn⟩` from `Subgroup.exists_pow_mem_of_index_ne_zero (Subgroup.index_ne_zero_of_finite (H := U0.toSubgroup)) (ι σ)`. Establish `hm : 0 < n * (deg σ).natAbs` using `Nat.mul_pos hn (Int.natAbs_pos.mpr hσ)`. Take `⟨ζ, hζ⟩` from `GlobalTheory.exists_fixed_dvd_deg K Ω A v h _ hm`. Establish `hW1 : IsOpen ((U0 : Set (Dec (F` using `K) A)) ∩ {d | (d : G K Ω) ζ = ζ}) := by`.
+
+Use `U0.isOpen.inter ?_` and prove the remaining obligations. Use `(stabilizer_isOpen_of_isIntegral (K := K) ζ).preimage (continuous_subtype_val (p := fun x => x ∈ Dec (F := K) A))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `d`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, MulAction.mem_stabilizer_iff, AlgEquiv.smul_def]`.
+
+Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hW1 ⟨U0.toSubgroup.one_mem, AlgEquiv.one_apply ζ⟩`. Use `haveI : U.toSubgroup.Normal := U.isNormal'`. Establish `hdense : ∀ d : Dec (F` using `K) A, ∃ w : Weil h, ∃ u ∈ U.toSubgroup, d = ι w * u := by`. Introduce `d`. Establish `h1` using `GlobalTheory.TameQuot.closure_frob_sup_Ine K Ω A v h (ι (frob h)) (isFrob_frob (h := h))`.
+
+Establish `h2 : Subgroup.zpowers (ι (frob h)) ⊔ (Ine (F` using `K) A).subgroupOf (Dec (F := K) A) ≤ ι.range := by`. Use `sup_le ?_ fun x hx => ⟨⟨x, Ine_le_Weil h hx⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Subgroup.zpowers_le]`. Conclude with `⟨_, rfl⟩`. Establish `hd : Dense (ι.range : Set (Dec (F` using `K) A)) := by`.
+
+Introduce `x`. Establish `hx : x ∈ (⊤ : Subgroup (Dec (F` using `K) A)) := trivial`. Rewrite `hx` using `[← h1]`. Conclude with `closure_mono h2 hx`. Establish `hopen : IsOpen {x : Dec (F` using `K) A | d⁻¹ * x ∈ U.toSubgroup} := U.isOpen.preimage (continuous_mul_left d⁻¹)`.
+
+Take `⟨x, hxU, w, rfl⟩` from `hd.inter_open_nonempty _ hopen ⟨d, by simp⟩`. Conclude with `⟨w, (d⁻¹ * ι w)⁻¹, U.toSubgroup.inv_mem hxU, by group⟩`. Establish `hJW : ∀ (w : Weil h) (j : Dec (F` using `K) A), j ∈ J → ι w * j * (ι w)⁻¹ ∈ J := by`. Introduce and unpack `w j ⟨hjI, hjρ⟩`. Use `⟨conj_mem_Ine (Weil_le_Dec h w.2) hjI, fun hw => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hconj w ⟨j, Ine_le_Weil h hjI⟩ (hjρ _)`. Establish `hU0J : ∀ d : Dec (F` using `K) A, d ∈ U0.toSubgroup → (d : G K Ω) ∈ Ine (F := K) A → d ∈ J := fun d hd hI => hPW d (hU0 hd) hI`. Establish `hUU0 : ∀ d : Dec (F` using `K) A, d ∈ U.toSubgroup → d ∈ U0.toSubgroup := fun d hd => (hU hd).1`. Establish `hUζ : ∀ d : Dec (F` using `K) A, d ∈ U.toSubgroup → (d : G K Ω) ζ = ζ := fun d hd => (hU hd).2`. Establish `hJI : ∀ j ∈ J, (j : G K Ω) ∈ Ine (F` using `K) A := fun j hj => hj.1`.
+
+Use `haveI hJn : J.Normal := ⟨fun j hj d => by`. Take `⟨w, u, hu, rfl⟩` from `hdense d`. Establish `h1 : u * j * u⁻¹ ∈ J`. Establish `hc : u * j * u⁻¹ * j⁻¹ ∈ J`. Use `hU0J _ (hUU0 _ ?_) ?_` and prove the remaining obligations.
+
+Establish `h3 : j * u⁻¹ * j⁻¹ ∈ U.toSubgroup` using `(inferInstance : U.toSubgroup.Normal).conj_mem _ (U.toSubgroup.inv_mem hu) j`. Establish `h4` using `U.toSubgroup.mul_mem hu h3`. Establish `e : u * (j * u⁻¹ * j⁻¹) = u * j * u⁻¹ * j⁻¹` using `by group`. Rewrite `h4` using `[e]`. Then use the resulting hypothesis. Conclude with `(Ine (F := K) A).mul_mem (conj_mem_Ine u.2 (hJI j hj)) ((Ine (F := K) A).inv_mem (hJI j hj))`.
+
+Establish `h5` using `J.mul_mem hc hj`. Establish `e : u * j * u⁻¹ * j⁻¹ * j = u * j * u⁻¹` using `by group`. Rewrite `h5` using `[e]`. Then use the resulting hypothesis. Establish `h6` using `hJW w _ h1`. Establish `e : ι w * (u * j * u⁻¹) * (ι w)⁻¹ = ι w * u * j * (ι w * u)⁻¹` using `by group`.
+
+Rewrite using `[e] at h6⟩` and apply the resulting hypothesis. Set `N : Subgroup (Dec (F` to `K) A) := J ⊔ U.toSubgroup`. Establish `hNmem : ∀ x ∈ N, ∃ j ∈ J, ∃ u ∈ U.toSubgroup, j * u = x`. Introduce `x hx`. Establish `h1 : x ∈ ((J ⊔ U.toSubgroup : Subgroup _) : Set (Dec (F` using `K) A)) := hx`.
+
+Rewrite `h1` using `[Subgroup.mul_normal]`. Take `⟨j, hj, u, hu, e⟩` from `h1`. Conclude with `⟨j, hj, u, hu, e⟩`. Use `haveI hNn : N.Normal := Subgroup.sup_normal J U.toSubgroup`. Establish `hk : ∀ x ∈ N, QuotientGroup.mk' N x = 1` using `fun x hx => by`.
+
+Rewrite using `[← MonoidHom.mem_ker, QuotientGroup.ker_mk']` and apply the resulting hypothesis. Establish `hcN : commutator (Dec (F` using `K) A) ≤ N := by`. Rewrite using `[commutator_def, Subgroup.commutator_le]`. Introduce `d1 _ d2 _`. Take `⟨w1, u1, hu1, rfl⟩` from `hdense d1`.
+
+Take `⟨w2, u2, hu2, rfl⟩` from `hdense d2`. Rewrite using `[← QuotientGroup.ker_mk' N, MonoidHom.mem_ker]`. Rewrite using `[map_commutatorElement, map_mul, map_mul, hk u1 (Subgroup.mem_sup_right hu1), hk u2 (Subgroup.mem_sup_right hu2), mul_one, mul_one, ← map_commutatorElement, ← map_commutatorElement]`. Apply `hk` to reduce the goal to its premises. Apply `Subgroup.mem_sup_left` to reduce the goal to its premises.
+
+Rewrite using `[commutatorElement_def]`. Establish `hd0 : deg (w1 * w2 * w1⁻¹ * w2⁻¹) = 0`. Rewrite using `[deg_mul, deg_mul, deg_mul, deg_inv, deg_inv]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨deg_eq_zero_iff.mp hd0, fun _ => hcomm w1 w2⟩`.
+
+Use `⟨Subgroup.zpowers (ι σ) ⊔ N, ?_, le_trans hcN le_sup_right, Subgroup.mem_sup_left (Subgroup.mem_zpowers (ι σ)), ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.isOpen_mono (le_trans (le_sup_right : U.toSubgroup ≤ N) le_sup_right) U.isOpen`. Introduce `τ g hg hgτ`. Establish `hgI : (g : G K Ω) ∈ Ine (F` using `K) A := hgτ ▸ τ.2`. Establish `hg' : g ∈ ((Subgroup.zpowers (ι σ) ⊔ N : Subgroup _) : Set (Dec (F` using `K) A)) := hg`.
+
+Rewrite `hg'` using `[Subgroup.mul_normal]`. Take `⟨s, hs, x, hx, rfl⟩` from `hg'`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hs`. Take `⟨j, hj, u, hu, rfl⟩` from `hNmem x hx`. Establish `hkW : ((ι σ ^ k : Dec (F` using `K) A) : G K Ω) ∈ Weil h := by`.
+
+Rewrite using `[Subgroup.coe_zpow]`. Conclude with `zpow_mem σ.2 k`. Establish `huW : (u : G K Ω) ∈ Weil h`. Establish `e : u = (ι σ ^ k * j)⁻¹ * (ι σ ^ k * (j * u))` using `by group`. Rewrite using `[e]`.
+
+Conclude with `(Weil h).mul_mem ((Weil h).inv_mem ((Weil h).mul_mem hkW (Ine_le_Weil h (hJI j hj)))) (Ine_le_Weil h hgI)`. Establish `hdeg : deg (⟨(u : G K Ω), huW⟩ : Weil h) = -(k * deg σ)`. Establish `e : (⟨((ι σ ^ k * (j * u) : Dec (F` using `K) A) : G K Ω), Ine_le_Weil h hgI⟩ : Weil h) = σ ^ k * (⟨(j : G K Ω), Ine_le_Weil h (hJI j hj)⟩ * ⟨(u : G K Ω), huW⟩) := by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Subgroup.coe_zpow, ι]`.
+
+Establish `h0` using `(deg_eq_zero_iff (σ := ⟨_, Ine_le_Weil h hgI⟩)).mpr hgI`. Rewrite `h0` using `[e, deg_mul, deg_mul, deg_zpow, (deg_eq_zero_iff (σ := ⟨_, Ine_le_Weil h (hJI j hj)⟩)).mpr (hJI j hj)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnk : (n : ℤ) ∣ k`. Establish `h1` using `hζ ⟨(u : G K Ω), huW⟩ (hUζ u hu)`.
+
+Rewrite `h1` using `[hdeg, dvd_neg, Nat.cast_mul, Int.natCast_natAbs, show (n : ℤ) * |deg σ| = |(n : ℤ) * deg σ| by rw [abs_mul, abs_of_nonneg (Int.natCast_nonneg n)], abs_dvd]`. Conclude with `(mul_dvd_mul_iff_right hσ).mp h1`. Take `⟨t, ht⟩` from `hnk`. Establish `hk0 : ι σ ^ k ∈ U0.toSubgroup`. Rewrite using `[ht, zpow_mul, zpow_natCast]`.
+
+Conclude with `U0.toSubgroup.zpow_mem hσn t`. Establish `hgJ : ι σ ^ k * (j * u) ∈ J`. Establish `hj' : ι σ ^ k * j * (ι σ ^ k)⁻¹ ∈ J`. Establish `h1` using `hJW (σ ^ k) j hj`. Rewrite `h1` using `[map_zpow]`. Then use the resulting hypothesis.
+
+Establish `hc0 : ι σ ^ k * u ∈ U0.toSubgroup` using `U0.toSubgroup.mul_mem hk0 (hUU0 u hu)`. Establish `hcI : ((ι σ ^ k * u : Dec (F` using `K) A) : G K Ω) ∈ Ine (F := K) A := by`. Establish `e2 : ι σ ^ k * u = (ι σ ^ k * j * (ι σ ^ k)⁻¹)⁻¹ * (ι σ ^ k * (j * u))` using `by group`. Rewrite using `[e2]`. Conclude with `(Ine (F := K) A).mul_mem ((Ine (F := K) A).inv_mem (hJI _ hj')) hgI`.
+
+Establish `e : ι σ ^ k * (j * u) = (ι σ ^ k * j * (ι σ ^ k)⁻¹) * (ι σ ^ k * u)` using `by group`. Rewrite using `[e]`. Conclude with `J.mul_mem hj' (hU0J _ hc0 hcI)`. Take `⟨hgI', hgρ⟩` from `hgJ`. Rewrite using `[WD.charPol_mk, WD.lpDim_mk]`.
+
+Establish `e : ineIncl h τ = ⟨((ι σ ^ k * (j * u) : Dec (F` using `K) A) : G K Ω), Ine_le_Weil h hgI'⟩ := Subtype.ext hgτ.symm`. Rewrite using `[e, hgρ, LinearMap.charpoly_one]`.
+-/
 theorem exists_open_sub : ∀ (K Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (h : IsPlaceOver A v) (y : WD h), AbW y → ∀ σ : Weil h, deg σ ≠ 0 → ∃ V : Subgroup (Dec (F := K) A), IsOpen (V : Set (Dec (F := K) A)) ∧ commutator (Dec (F := K) A) ≤ V ∧ (⟨(σ : G K Ω), Weil_le_Dec h σ.2⟩ : Dec (F := K) A) ∈ V ∧ ∀ τ : Ine (F := K) A, ∀ g ∈ V, (g : G K Ω) = τ → y.charPol (ineIncl h τ) = (Polynomial.X - 1) ^ y.lpDim := by
   intro K Ω _ _ _ _ _ A v h y hy σ hσ
   haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω

@@ -14,6 +14,13 @@ open GlobalTheory GlobalTheory.Vert GlobalTheory.MixedLocalChains GlobalTheory.F
 
 namespace GlobalTheory.FrobFilt
 
+/- English proof (translation)
+Introduce `O _ _ _ B A C φ hA hφ`. Use `QCoh.mono_of_locally_app_injective _ fun U x hx => ⟨U, hx, le_rfl, fun s t e => ?_⟩` and prove the remaining obligations. Establish `H : ∀ η : {η : B.X // η ∈ U ∧ IsGenSpecial B η}, ∃ (W : B.X.Opens) (h : W ≤ U), η.1 ∈ W ∧ A.presheaf.map (homOfLE h).op s = A.presheaf.map (homOfLE h).op t`. Introduce and unpack `⟨η, hη, hg⟩`. Establish `h1 : A.presheaf.germ U η hη s = A.presheaf.germ U η hη t`.
+
+Apply `hφ η hg` to reduce the goal to its premises. Rewrite using `[QCoh.stalkLinear_germ, QCoh.stalkLinear_germ, e]`. Take `⟨W, hW, i, j, hij⟩` from `A.presheaf.germ_eq η hη hη s t h1`. Conclude with `⟨W, i.le, hW, hij⟩`. Use `choose W hWU hW hst using H`.
+
+Establish `hV : iSup W ≤ U` using `iSup_le hWU`. Use `hA U (iSup W) hV (fun η hη hg => le_iSup W ⟨η, hη, hg⟩ (hW ⟨η, hη, hg⟩)) ?_` and prove the remaining obligations. Use `QCoh.section_eq_of_cover A W (le_iSup W) le_rfl _ _ fun η => ?_` and prove the remaining obligations. Rewrite using `[QCoh.res_res, QCoh.res_res]`. Conclude with `hst η`.
+-/
 theorem mono_of_noEmb_of_injective_genSpecial : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B : GlobalTheory.Vert.Model O) (A C : B.X.Modules) (φ : A ⟶ C), NoEmb B A → (∀ η : B.X, IsGenSpecial B η → Function.Injective (GlobalTheory.QCoh.stalkLinear φ η)) → Mono φ := by
   intro O _ _ _ B A C φ hA hφ
   refine QCoh.mono_of_locally_app_injective _ fun U x hx => ⟨U, hx, le_rfl, fun s t e => ?_⟩

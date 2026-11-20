@@ -12,6 +12,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 
 namespace GlobalTheory.FramedBaseChange
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ p y ψ` and use `exists_frMap GlobalTheory.firstFiveLaws.1 E H Dw l Xo c p.R (CAt σ) ψ y`.
+-/
 theorem bcEx_all : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ σ : c.F →+* ℂ, BCEx Xo c σ :=
   fun E _ _ _ H Dw l Xo c σ p y ψ =>

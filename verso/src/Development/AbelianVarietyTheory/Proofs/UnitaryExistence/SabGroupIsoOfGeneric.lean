@@ -15,6 +15,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `inj : ∀ (s s' : SAB H (Sp T)) (F F' : s.G ⟶ s'.G), IsMonHom F → IsMonHom F' → (Over.pullback (spMap (algebraMap T K))).map F = (Over.pullback (spMap (algebraMap T K))).map F' → F = F'`. Introduce `s s' F F' hF hF' h`. Conclude with `(hx T K s.G s'.G s.semi s'.semi _ inferInstance).unique ⟨hF, rfl⟩ ⟨hF', h.symm⟩`. Establish `A : ∀ {X Y : Over (Sp T)} (a : X ⟶ Y), ((Over.pullback (spMap (algebraMap T K))).map a).left ≫ pullback.fst Y.hom _ = pullback.fst X.hom _ ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Take `⟨e, he, hφ⟩` from `grpPullback_iso m.cart (isGrpPullback_pullback t.G _)`.
+
+Take `⟨e', he', hφ'⟩` from `grpPullback_iso m'.cart (isGrpPullback_pullback t'.G _)`. Take `⟨F, ⟨hF, hFf⟩, -⟩` from `hx T K t.G t'.G t.semi t'.semi (e.inv ≫ e'.hom) inferInstance`. Take `⟨F', ⟨hF', hFf'⟩, -⟩` from `hx T K t'.G t.G t'.semi t.semi (e'.inv ≫ e.hom) inferInstance`. Establish `key : m.cm.F ≫ F.left = m'.cm.F`. Rewrite using `[← hφ, Category.assoc, ← A, hFf, ← Category.assoc, ← Over.comp_left, e.hom_inv_id_assoc, hφ']`.
+
+Use `⟨⟨F, F', inj _ _ _ _ inferInstance inferInstance ?_, inj _ _ _ _ inferInstance inferInstance ?_⟩, hF, key, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp, hFf, hFf']`. Simplify using the standard rewrite rules. Rewrite using `[Functor.map_comp, hFf, hFf']`. Simplify using the standard rewrite rules.
+
+Use `show t.act.act a ≫ F = F ≫ t'.act.act a`. Use `t.act.hom a` as an intermediate fact. Use `t'.act.hom a` as an intermediate fact. Use `inj _ _ _ _ inferInstance inferInstance ?_` and prove the remaining obligations. Rewrite using `[← cancel_epi e.hom]`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Category.assoc, A]`. Rewrite using `[reassoc_of% hφ, reassoc_of% hφ, ← reassoc_of% m.act a, reassoc_of% key, key, m'.act]`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+-/
 theorem sab_group_iso_of_generic
     (hx : ∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K]
       [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' →

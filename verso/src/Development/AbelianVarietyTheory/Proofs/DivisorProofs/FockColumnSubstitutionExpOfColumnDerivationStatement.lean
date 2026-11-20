@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FockColumnSubstitut
 import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ColDerApply
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ColLie.colSub_exp_of_colDer | exact GlobalTheory.ColLie.colSub_exp_of_colDer | (intros; apply GlobalTheory.ColLie.colSub_exp_of_colDer <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fockColumnSubstitution_exp_of_columnDerivation : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (d a : ℕ) (τ : ι) (c : ℕ) (Q : Type) [AddCommGroup Q] [Module ℂ Q]
     (q : GlobalTheory.MinorFrame.Pol ι d a →ₗ[ℂ] Q),
     (∀ (S : Matrix (Fin a) (Fin a) ℂ) (R : GlobalTheory.MinorFrame.Pol ι d a) (m : GlobalTheory.MinorFrame.Var ι d a →₀ ℕ),

@@ -20,6 +20,11 @@ open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.RS PositivityTheory.Rg.
 def dimI {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ} (Pa : Pre E a) (Pb : Pre E b) (w : Pl E) : ℕ :=
   Module.finrank ℂ (fixed (pairAt Pa Pb w) (I2 a b w))
 
+/- English proof (translation)
+Establish `h0 : ∀ x : Fin kA × Fin kB, ∃ (Z : Set ((Fin a → ℂˣ) × (Fin b → ℂˣ))) (m : ℕ), Z.Finite ∧ ∀ (Pa : Pre E a) (Pb : Pre E b), Strict Pa (PA x.1) → Strict Pb (PB x.2) → dimI Pa Pb w ≤ m ∧ ∀ ξa ξb, JEig Pa Pb w ϖ ξa ξb → (ξa, ξb) ∈ Z` using `fun x => eig_one hII hSPr (PA x.1) (PB x.2) w ϖ`. Use `choose Z mZ hZ using h0`. Use `⟨⋃ x, Z x, Finset.univ.sup mZ, Set.finite_iUnion fun x => (hZ x).1, ?_⟩` and prove the remaining obligations. Introduce and unpack `Pa Pb ⟨ja, ha⟩ ⟨jb, hb⟩`. Establish `h` using `(hZ (ja, jb)).2 Pa Pb ha hb`.
+
+Conclude with `⟨le_trans h.1 (Finset.le_sup (Finset.mem_univ (ja, jb))), fun ξa ξb hj => Set.mem_iUnion.2 ⟨(ja, jb), h.2 ξa ξb hj⟩⟩`.
+-/
 theorem eig_fin (hII : IsoInv) (hSPr : StrictProd) {E : Type} [Field E] [NumberField E] [IsCMField E] {a b kA kB : ℕ}
     (PA : Fin kA → Pre E a) (PB : Fin kB → Pre E b) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) :
     ∃ (Z : Set ((Fin a → ℂˣ) × (Fin b → ℂˣ))) (m : ℕ), Z.Finite ∧ ∀ (Pa : Pre E a) (Pb : Pre E b),

@@ -7,6 +7,11 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 
 namespace GlobalTheory.PsType
 
+/- English proof (translation)
+Establish `h1 : π (y * j * y⁻¹) (π y u) = θ j • π y u`. Establish `: π (y * j * y⁻¹) (π y u) = π y (π j u)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[this, hu j hj, map_smul]`.
+
+Establish `h2 : (θ j - θ (y * j * y⁻¹)) • π y u ∈ aug π J θ`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨_, hc, π y u, by rw [h1, sub_smul]⟩`. Conclude with `(Submodule.smul_mem_iff _ (sub_ne_zero.mpr hne)).mp h2`.
+-/
 theorem translate_mem_aug_of_not_intertwine {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V)
     (J : Set G) (θ : G → ℂ) (u : V) (hu : IsEig π J θ u) (y j : G) (hj : j ∈ J) (hc : y * j * y⁻¹ ∈ J)
     (hne : θ j ≠ θ (y * j * y⁻¹)) : π y u ∈ aug π J θ := by
@@ -20,6 +25,15 @@ theorem translate_mem_aug_of_not_intertwine {G V : Type} [Group G] [AddCommGroup
     exact ⟨_, hc, π y u, by rw [h1, sub_smul]⟩
   exact (Submodule.smul_mem_iff _ (sub_ne_zero.mpr hne)).mp h2
 
+/- English proof (translation)
+Introduce `G V _ _ _ _ _ π hπ J N θ hJ hN hy u hu he`. Take `⟨R, h1, hR, hs⟩` from `GlobalTheory.T.character_average_twistedSpan_eq_zero G V π hπ N _ hN u hu`. Simplify using `only [inv_one, one_smul] at hs`. Use `(GlobalTheory.T.characterEigenspace_isCompl_principalSeriesTwistedSpan G V π hπ J θ hJ).1 u ?_ he` and prove the remaining obligations. Rewrite `hs` using `[← Finset.sum_filter_add_sum_filter_not R (fun y => y ∈ J ∧ θ y = 1)]`.
+
+Establish `hA : ∑ y ∈ R.filter (fun y => y ∈ J ∧ θ y = 1), π y u = ((R.filter (fun y => y ∈ J ∧ θ y = 1)).card : ℂ) • u`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => u), Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Introduce `y hy'`. Take `⟨_, a, b⟩` from `Finset.mem_filter.mp hy'`. Rewrite using `[he y a, b, one_smul]`.
+
+Establish `hB : ∑ y ∈ R.filter (fun y => ¬ (y ∈ J ∧ θ y = 1)), π y u ∈ aug π J θ`. Use `Submodule.sum_mem _ fun y hy' => ?_` and prove the remaining obligations. Take `⟨a, b⟩` from `Finset.mem_filter.mp hy'`. Take `⟨j, hj, hc, hne⟩` from `(hy y (hR y a)).resolve_left b`. Conclude with `translate_mem_aug_of_not_intertwine π J θ u he y j hj hc hne`.
+
+Establish `hc : ((R.filter (fun y => y ∈ J ∧ θ y = 1)).card : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Finset.card_ne_zero]`. Conclude with `⟨1, Finset.mem_filter.mpr ⟨h1, hJ.one, hJ.val_one⟩⟩`. Rewrite using `[← Submodule.smul_mem_iff _ hc, ← hA, eq_neg_of_add_eq_zero_left hs]`. Conclude with `Submodule.neg_mem _ hB`.
+-/
 theorem eig_eq_zero_of_mem_aug_of_not_intertwine : ∀ (G V : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), IsSmooth π → ∀ (J N : Set G) (θ : G → ℂ), Datum J θ →
     Datum N (fun _ => 1) → (∀ y ∈ N, (y ∈ J ∧ θ y = 1) ∨ ∃ j ∈ J, y * j * y⁻¹ ∈ J ∧ θ j ≠ θ (y * j * y⁻¹)) →

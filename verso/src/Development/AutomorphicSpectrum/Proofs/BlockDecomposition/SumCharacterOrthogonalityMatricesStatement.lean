@@ -11,5 +11,8 @@ open PositivityTheory.Rg.Rsw PositivityTheory.Rg.Rsw.L
 open GlobalTheory.CompanionTheory.Jp
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero | exact GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero | (intros; apply GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sum_character_orthogonality_matrices : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (ψ₀ : AddChar k ℂ), ψ₀ ≠ 1 → ∀ β T : Matrix (Fin n) (Fin n) k, T ≠ β → ∑ Y : Matrix (Fin n) (Fin n) k, coY ψ₀ β Y * ψ₀ (Matrix.trace (Y * T)) = 0 := by
   first | exact @GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero | exact GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero | (intros; apply GlobalTheory.CompanionTheory.Jp.coY_sum_mul_eq_zero <;> assumption)

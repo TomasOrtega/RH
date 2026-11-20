@@ -17,6 +17,19 @@ noncomputable section
 
 namespace GlobalTheory.LieLocalBasis
 
+/- English proof (translation)
+Introduce `R _ _ B _ _ hs`. Use `haveI := hs`. Take `⟨C⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_chart B`. Take `⟨g, hg, n, v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_lieBasis_away C (IsLocalRing.maximalIdeal R)`. Establish `hu : IsUnit g`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hg ((IsLocalRing.mem_maximalIdeal g).2 h)`. Set `L` to `Localization.Away g`. Set `f' : L →+* R` to `IsLocalization.Away.lift (g := RingHom.id R) g hu`. Establish `hf' : f'.comp (algebraMap R L) = RingHom.id R` using `RingHom.ext fun r => IsLocalization.Away.lift_eq (g := RingHom.id R) g hu r`.
+
+Set `G'` to `ReciprocityTheory.ChartRestriction.G.Chart.Gs B g`. Establish `hpb : IsGrpPullback G' B (ReciprocityTheory.ChartRestriction.G.Chart.fB R L) (pullback.fst B.hom _)` using `isGrpPullback_pullback B _`. Establish `hcomp : spMap f' ≫ ReciprocityTheory.ChartRestriction.G.Chart.fB R L = 𝟙 (Sp R)`. Simplify using `only [spMap, ReciprocityTheory.ChartRestriction.G.Chart.fB]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hf']`.
+
+Conclude with `Spec.map_id _`. Set `φ' : B.left ⟶ G'.left` to `pullback.lift (𝟙 _) (B.hom ≫ spMap f') (by rw [Category.assoc, hcomp]; simp)`. Establish `hφ : φ' ≫ pullback.fst _ _ = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `hw : φ' ≫ G'.hom = B.hom ≫ spMap f'` using `pullback.lift_snd _ _ _`. Use `haveI : IsMonHom (Iso.refl B).hom := inferInstanceAs (IsMonHom (𝟙 B))`.
+
+Establish `hid : IsGrpPullback B B (𝟙 (Sp R)) (𝟙 B.left)` using `(isGrpPullback_of_iso (Iso.refl B)).congr rfl rfl`. Establish `hn : IsGrpPullback B B (spMap f' ≫ ReciprocityTheory.ChartRestriction.G.Chart.fB R L) (φ' ≫ pullback.fst _ _)` using `hid.congr hcomp.symm hφ.symm`. Establish `hB : IsGrpPullback B G' (spMap f') φ'` using `hpb.cancel hn hw`. Establish `hs' : Smooth G'.hom` using `by show Smooth (pullback.snd B.hom _) infer_instance`. Take `⟨v', hv', -⟩` from `GlobalTheory.exists_isLieBasis_baseChange L R f' G' B φ' hB hs' n v hv`.
+
+Conclude with `⟨n, v', hv'⟩`.
+-/
 theorem exists_isLieBasis_of_isLocalRing : ∀ (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B]
     [IsCommMonObj B], Smooth B.hom → ∃ (n : ℕ) (y : Fin n → (epsR R ⟶ B)), IsLieBasis y := by
   intro R _ _ B _ _ hs

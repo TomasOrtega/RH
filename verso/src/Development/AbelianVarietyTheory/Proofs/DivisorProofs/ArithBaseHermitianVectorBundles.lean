@@ -18,6 +18,13 @@ open CategoryTheory.Limits
 set_option autoImplicit false
 noncomputable section
 
+/- English proof (translation)
+Introduce `P2 PH RA SW D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀`. Use `haveI hGi : IsIntegral (GlobalTheory.FlagGenFib.Gf q π₀) := GlobalTheory.T.flag_generic_fibre_integral q π₀ _ ar₀`. Take `⟨πG, hs, hbase, hfin, hgen, hrest⟩` from `GlobalTheory.T.flag_bundle_arithmetic_metric_setup P2 PH RA SW D O hO B hB R hR c Bs q arq nBs E h H Bg jB πB u Gm hL Y₀ π₀ fl₀ hfb ar₀ n₀`. Use `haveI := hfin`. Take `⟨φ, hφ⟩` from `GlobalTheory.FlagGenFib.exists_ringHom_of_generic πG hgen`.
+
+Establish `hsur : Surjective πG` using `GlobalTheory.FlagGenFib.surjective_of_generic πG hgen`. Establish `hpb : IsPullback (GlobalTheory.FlagGenFib.jf q π₀) (πG ≫ (O.var c).str) (π₀ ≫ q) (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL))`. Rewrite using `[hs]`. Conclude with `GlobalTheory.FlagGenFib.isPullback_f q π₀`. Set `r : ∀ a i, (((fl₀ a).root i).pull (GlobalTheory.FlagGenFib.jf q π₀)).ι → (GlobalTheory.FlagGenFib.Gf q π₀).functionFieldˣ` to `fun a i => if hr : rkB D.what₂.Tau O.N O.j a = O.S.Dw.mult (embB D a) then Classical.choose (hrest φ hφ a i hr) else fun _ => 1`.
+
+Use `⟨GlobalTheory.FlagGenFib.Gf q π₀, hGi, GlobalTheory.FlagGenFib.jf q π₀, πG, hpb, hfin, hsur, φ, hφ, GlobalTheory.FlagGenFib.jGf q π₀ jB _ hL.1, r, GlobalTheory.FlagGenFib.jGf_jB q π₀ jB _ hL.1, hbase, ?_⟩` and prove the remaining obligations. Introduce `a i hr`. Establish `e : r a i = Classical.choose (hrest φ hφ a i hr)` using `by simp only [r, dif_pos hr]`. Rewrite using `[e]`. Conclude with `Classical.choose_spec (hrest φ hφ a i hr)`.
+-/
 theorem GlobalTheory.FlagGenFib.flagCover_exists : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)
     (Bs : Scheme.{0}) [IsIntegral Bs] (q : Bs ⟶ Sp (𝓞 D.what₂.LL)) (arq : IsArithVar q (dimGr D.what₂.Tau O.N O.j))

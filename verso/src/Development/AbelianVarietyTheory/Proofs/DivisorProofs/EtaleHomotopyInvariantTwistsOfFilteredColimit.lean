@@ -36,6 +36,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
+/- English proof (translation)
+Take `⟨k, f, g, hfg⟩` from `Concrete.isColimit_exists_of_rep_eq D hc x 0 (by simpa using h)`. Conclude with `⟨k, f, by simpa using hfg⟩`.
+-/
 private lemma exists_map_eq_zero_of_isColimit_lemma {c : Cocone D} (hc : IsColimit c) {j : J}
     (x : D.obj j) (h : (c.ι.app j).hom x = 0) : ∃ (k : J) (f : j ⟶ k), (D.map f).hom x = 0 := by
   obtain ⟨k, f, g, hfg⟩ := Concrete.isColimit_exists_of_rep_eq D hc x 0 (by simpa using h)
@@ -45,6 +48,15 @@ open CategoryTheory Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
+/- English proof (translation)
+Establish `key : ∀ s : Finset ℕ, ∃ (k : J) (f : j ⟶ k), ∀ n ∈ s, (D.map f).hom (p.coeff n) = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨j, 𝟙 j, by simp⟩`. Consider the case `insert a s _ ih`.
+
+Take `⟨k, f, hf⟩` from `ih`. Establish `ha : (c.ι.app k).hom ((D.map f).hom (p.coeff a)) = 0`. Rewrite using `[← CommRingCat.comp_apply, c.w f, ← Polynomial.coeff_map, h, Polynomial.coeff_zero]`. Take `⟨k', f', hf'⟩` from `exists_map_eq_zero_of_isColimit_lemma hc _ ha`. Use `⟨k', f ≫ f', fun n hn => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[D.map_comp, CommRingCat.comp_apply]`. Break down `Finset.mem_insert.mp hn with rfl | hn` into its components or cases. Conclude with `hf'`. Rewrite using `[hf n hn, map_zero]`. Take `⟨k, f, hf⟩` from `key p.support`.
+
+Use `⟨k, f, Polynomial.ext fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero]`. Distinguish the cases in `hn : n ∈ p.support`. Conclude with `hf n hn`. Rewrite using `[Polynomial.notMem_support_iff.mp hn, map_zero]`.
+-/
 theorem _root_.GlobalTheory.EtC.PolyColim.poly_exists_map_eq_zero {c : Cocone D} (hc : IsColimit c) {j : J}
     (p : Polynomial (D.obj j))
     (h : p.map (c.ι.app j).hom = 0) : ∃ (k : J) (f : j ⟶ k), p.map (D.map f).hom = 0 := by
@@ -73,6 +85,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
+/- English proof (translation)
+Take `⟨j, y, hy⟩` from `Concrete.isColimit_exists_rep D hc x`. Conclude with `⟨j, y, hy⟩`.
+-/
 private lemma exists_rep_of_isColimit_lemma_2 {c : Cocone D} (hc : IsColimit c) (x : c.pt) :
     ∃ (j : J) (y : D.obj j), (c.ι.app j).hom y = x := by
   obtain ⟨j, y, hy⟩ := Concrete.isColimit_exists_rep D hc x
@@ -82,6 +97,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable {J : Type} [SmallCategory J] (D : J ⥤ CommRingCat.{0}) in
 variable {D} [IsFiltered J] in
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨i, y, hy⟩` from `hp`. Take `⟨j, z, hz⟩` from `hq`. Use `⟨IsFiltered.max i j, y.map (D.map (IsFiltered.leftToMax i j)).hom + z.map (D.map (IsFiltered.rightToMax i j)).hom, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.map_add, Polynomial.map_map, Polynomial.map_map, ← CommRingCat.hom_comp, ← CommRingCat.hom_comp, c.w, c.w, hy, hz]`. Consider the case `monomial n a`. Take `⟨j, y, hy⟩` from `exists_rep_of_isColimit_lemma_2 hc a`. Conclude with `⟨j, Polynomial.monomial n y, by rw [Polynomial.map_monomial, hy]⟩`.
+-/
 theorem _root_.GlobalTheory.EtC.PolyColim.poly_exists_rep {c : Cocone D} (hc : IsColimit c)
     (p : Polynomial c.pt) :
     ∃ (j : J) (y : Polynomial (D.obj j)), y.map (c.ι.app j).hom = p := by
@@ -122,17 +142,38 @@ end GlobalTheory.EtC.PolyColim
 
 namespace GlobalTheory.EtC
 
+/- English proof (translation)
+Use `show pull R (sch.map _) F n x = _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp, pull_comp]`.
+-/
 theorem pull_spMap_comp (R : Type) [CommRing R] {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) (F : Shv R) (n : ℤ) (x : H R (sp A) F n) :
     pull R (spMap (g.comp f)) F n x = pull R (spMap g) F n (pull R (spMap f) F n x) := by
   show pull R (sch.map _) F n x = _
   rw [CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp, pull_comp]
 
+/- English proof (translation)
+Use `show sch.map _ = sch.map _ ≫ sch.map _`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show sch.map _ = sch.map _ ≫ sch.map _
   rw [CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
 
+/- English proof (translation)
+Introduce `q _ J _ _ D c hc hq hH i n`. Establish `hB : B1` using `pairingProperties`. Set `D'` to `PolyColim.polyDiag D`. Set `c'` to `PolyColim.polyCocone D c`. Establish `hc' : IsColimit c'` using `PolyColim.polyCoconeIsColimit hc`.
+
+Take `⟨j0⟩ : Nonempty J` from `IsFiltered.nonempty`. Establish `hqc : IsUnit (q : c.pt)`. Use `(hq j0).map (c.ι.app j0).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hqP : ∀ j, IsUnit (q : D'.obj j)` using `fun j => by`.
+
+Use `(hq j).map (Polynomial.C : D.obj j →+* Polynomial (D.obj j))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hqc' : IsUnit (q : c'.pt)`. Use `hqc.map (Polynomial.C : c.pt →+* Polynomial c.pt)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Establish `sq : ∀ j, (c'.ι.app j).hom.comp (Polynomial.C : D.obj j →+* Polynomial (D.obj j)) = (Polynomial.C : c.pt →+* Polynomial c.pt).comp (c.ι.app j).hom` using `fun j => RingHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `Polynomial.map (c.ι.app j).hom (Polynomial.C a) = Polynomial.C ((c.ι.app j).hom a)`. Conclude with `Polynomial.map_C _`. Establish `sqD : ∀ {j k : J} (f : j ⟶ k), (D'.map f).hom.comp (Polynomial.C : D.obj j →+* Polynomial (D.obj j)) = (Polynomial.C : D.obj k →+* Polynomial (D.obj k)).comp (D.map f).hom` using `@fun j k f => RingHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `Polynomial.map (D.map f).hom (Polynomial.C a) = Polynomial.C ((D.map f).hom a)`.
+
+Conclude with `Polynomial.map_C _`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨j, y, rfl⟩` from `(hB q D c hc n i).1 x hqc`.
+
+Establish `e1 : pull _ (spMap (c'.ι.app j).hom) _ _ (pull _ (spMap (Polynomial.C : D.obj j →+* Polynomial (D.obj j))) _ _ y) = 0` using `(pull_spMap_comp (ZMod q) Polynomial.C (c'.ι.app j).hom (tw q i) n y).symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y) (sq j)).trans ((pull_spMap_comp (ZMod q) (c.ι.app j).hom Polynomial.C (tw q i) n y).trans hx))`. Take `⟨k, f, hf⟩` from `(hB q D' c' hc' n i).2 j _ (hqP j) e1`. Establish `e2 : pull _ (spMap (Polynomial.C : D.obj k →+* Polynomial (D.obj k))) _ _ (pull _ (spMap (D.map f).hom) _ _ y) = 0` using `(pull_spMap_comp (ZMod q) (D.map f).hom Polynomial.C (tw q i) n y).symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y) (sqD f).symm).trans ((pull_spMap_comp (ZMod q) Polynomial.C (D'.map f).hom (tw q i) n y).trans hf))`. Establish `e3` using `(hH k i n).1 (e2.trans (map_zero _).symm)`. Rewrite using `[← c.w f, CommRingCat.hom_comp, spMap_comp', pull_comp, e3, map_zero]`.
+
+Introduce `x`. Take `⟨j, y, rfl⟩` from `(hB q D' c' hc' n i).1 x hqc'`. Take `⟨y', rfl⟩` from `(hH j i n).2 y`. Use `⟨pull _ (spMap (c.ι.app j).hom) _ _ y', ?_⟩` and prove the remaining obligations. Conclude with `(pull_spMap_comp (ZMod q) (c.ι.app j).hom Polynomial.C (tw q i) n y').symm.trans ((congrArg (fun g => pull (ZMod q) (spMap g) (tw q i) n y') (sq j).symm).trans (pull_spMap_comp (ZMod q) Polynomial.C (c'.ι.app j).hom (tw q i) n y'))`.
+-/
 theorem hInv_of_filtered_colimit : ∀ (q : ℕ) [NeZero q] (J : Type) [SmallCategory J] [IsFiltered J]
     (D : J ⥤ CommRingCat.{0}) (c : Cocone D), IsColimit c → (∀ j, IsUnit (q : D.obj j)) →
     (∀ j, HInv q (D.obj j)) → HInv q c.pt := by

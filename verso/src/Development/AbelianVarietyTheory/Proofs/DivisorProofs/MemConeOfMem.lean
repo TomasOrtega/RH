@@ -31,6 +31,11 @@ def rad (num : Form E D) : Submodule ℝ E where
   zero_mem' v j := num.map_update_zero v j
   smul_mem' c x hx v j := by rw [num.map_update_smul, hx v j, smul_zero]
 
+/- English proof (translation)
+Establish `key (S : Finset (Fin (D + 1))) : num (S.piecewise v w) = num w`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.piecewise_empty]`. Consider the case `insert j S hj ih`. Establish `e : v j = (v j - w j) + w j` using `by abel`.
+
+Rewrite using `[Finset.piecewise_insert, e, num.map_update_add, h j, zero_add, ← Finset.piecewise_eq_of_notMem S v w hj, Function.update_eq_self, ih]`. Rewrite using `[← key Finset.univ, Finset.piecewise_univ]`.
+-/
 theorem map_congr_rad (num : Form E D) {v w : Fin (D + 1) → E} (h : ∀ j, v j - w j ∈ rad num) : num v = num w := by
   classical
   have key (S : Finset (Fin (D + 1))) : num (S.piecewise v w) = num w := by
@@ -46,23 +51,41 @@ def cone (num : Form E D) (G : Set E) : Set E := {x | ∃ z ∈ Submodule.span �
 
 variable {num : Form E D} {G : Set E}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨x, Submodule.subset_span h, by simp⟩`.
+-/
 theorem mem_cone_of_mem {x : E} (h : x ∈ G) : x ∈ cone num G := ⟨x, Submodule.subset_span h, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, zero_mem _, by simp⟩`.
+-/
 theorem zero_mem_cone : (0 : E) ∈ cone num G := ⟨0, zero_mem _, by simp⟩
 
+/- English proof (translation)
+Take `⟨z, hz, h⟩` from `hx`. Take `⟨w, hw, h'⟩` from `hy`. Conclude with `⟨z + w, add_mem hz hw, by rw [add_sub_add_comm]; exact add_mem h h'⟩`.
+-/
 theorem add_mem_cone {x y : E} (hx : x ∈ cone num G) (hy : y ∈ cone num G) : x + y ∈ cone num G := by
   obtain ⟨z, hz, h⟩ := hx
   obtain ⟨w, hw, h'⟩ := hy
   exact ⟨z + w, add_mem hz hw, by rw [add_sub_add_comm]; exact add_mem h h'⟩
 
+/- English proof (translation)
+Take `⟨z, hz, h⟩` from `hx`. Conclude with `⟨c • z, Submodule.smul_mem _ (⟨c, hc⟩ : ℝ≥0) hz, by rw [← smul_sub]; exact Submodule.smul_mem _ c h⟩`.
+-/
 theorem smul_mem_cone {x : E} {c : ℝ} (hc : 0 ≤ c) (hx : x ∈ cone num G) : c • x ∈ cone num G := by
   obtain ⟨z, hz, h⟩ := hx
   exact ⟨c • z, Submodule.smul_mem _ (⟨c, hc⟩ : ℝ≥0) hz, by rw [← smul_sub]; exact Submodule.smul_mem _ c h⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction x (· ∈ cone num G) (fun _ _ => add_mem_cone) zero_mem_cone h`.
+-/
 theorem sum_mem_cone {ι : Type*} (s : Finset ι) {x : ι → E} (h : ∀ i ∈ s, x i ∈ cone num G) :
     ∑ i ∈ s, x i ∈ cone num G :=
   Finset.sum_induction x (· ∈ cone num G) (fun _ _ => add_mem_cone) zero_mem_cone h
 
+/- English proof (translation)
+Take `⟨z, hz, h'⟩` from `hy`. Conclude with `⟨z, hz, by rw [← sub_add_sub_cancel x y z]; exact add_mem h h'⟩`.
+-/
 theorem mem_cone_of_rad {x y : E} (hy : y ∈ cone num G) (h : x - y ∈ rad num) : x ∈ cone num G := by
   obtain ⟨z, hz, h'⟩ := hy
   exact ⟨z, hz, by rw [← sub_add_sub_cancel x y z]; exact add_mem h h'⟩
@@ -81,6 +104,9 @@ def cl (L : HermLB p) : Cl p := Finsupp.single L 1
 
 def pullCl (π : X' ⟶ X) (hπ : π ≫ p = q) : Cl p →ₗ[ℝ] Cl q := Finsupp.lmapDomain ℝ ℝ fun L => L.pull π hπ
 
+/- English proof (translation)
+The claim follows from `Finsupp.mapDomain_single`.
+-/
 theorem pullCl_cl (π : X' ⟶ X) (hπ : π ≫ p = q) (L : HermLB p) : pullCl π hπ (cl L) = cl (L.pull π hπ) :=
   Finsupp.mapDomain_single
 
@@ -96,6 +122,9 @@ def NefOver (L : HermLB p) (l : ℕ) : Prop :=
   ∀ (Z : Scheme.{0}) (i : Z ⟶ X) [IsClosedImmersion i] [IsIntegral Z] (κ : Type)
     [Field κ] [Finite κ] [CharP κ l] [Algebra κ Γ(Z, ⊤)], topologicalKrullDim Z = 1 → 0 ≤ topSelfIntersection κ (L.B.pull i) 1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h _ _ Z i _ _ κ _ _ _ _ hZ => h Z i κ hZ, fun h Z i _ _ κ _ _ _ hZ => h (ringChar κ) (CharP.char_is_prime κ _) Z i κ hZ⟩`.
+-/
 theorem nefFib_iff (L : HermLB p) : NefFib L ↔ ∀ l : ℕ, l.Prime → NefOver L l :=
   ⟨fun h _ _ Z i _ _ κ _ _ _ _ hZ => h Z i κ hZ, fun h Z i _ _ κ _ _ _ hZ =>
     h (ringChar κ) (CharP.char_is_prime κ _) Z i κ hZ⟩
@@ -108,6 +137,9 @@ variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
 def Lies (V' V : Cover Y) (π : V'.X ⟶ V.X) : Prop := ∃ g : V'.G ⟶ V.G, g ≫ V.j = V'.j ≫ π ∧ g ≫ V.π = V'.π
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨𝟙 _, by simp, by simp⟩`.
+-/
 theorem lies_id (V : Cover Y) : Lies V V (𝟙 _) := ⟨𝟙 _, by simp, by simp⟩
 
 end Covers

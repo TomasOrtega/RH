@@ -32,14 +32,23 @@ def FullTiedNoG.ofFull {D : D7} (X : FullTied D) : FullTiedNoG D := { X with }
 
 def FullTiedNoG.toFull {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : FullTied D := { X with g := g }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTiedNoG.toFull_base {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : (X.toFull g).base = X.base := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem FullTiedNoG.toFull_g {D : D7} (X : FullTiedNoG D) (g : GTied D X.base) : (X.toFull g).g = g := rfl
 
 def colsSet (H : HermCols D) : HermCols (setGat D g' hd') := { H with }
 
 def hermSet (H : HermTied D) : HermTied (setGat D g' hd') := { H with }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermitian_setting_level_zero (H : HermTied D) : (hermSet D g' hd' H).lev0 = H.lev0 := rfl
 
 set_option maxHeartbeats 4000000 in
@@ -56,6 +65,9 @@ def allSet (H : AllTied D) : AllTied (setGat D g' hd') where
   vol := H.vol
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+The claim follows from `{ h with }`.
+-/
 theorem adSet (H : HermCols D) (aT : ∀ u, AtT D u (H.vT u) (H.Fv u)) (h : AdTied D H aT) :
     AdTied (setGat D g' hd') (colsSet D g' hd' H) (fun u => atTSet D g' hd' (aT u)) :=
   { h with }
@@ -75,6 +87,9 @@ def fullSet (H : FullTiedNoG D) : FullTiedNoG (setGat D g' hd') where
   vpos := H.vpos
   baseL := H.baseL
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem full_setting_level_zero (H : FullTiedNoG D) : (fullSet D g' hd' H).base.lev0 = H.base.lev0 := rfl
 
 end Formalism.L2.G

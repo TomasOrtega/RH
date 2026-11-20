@@ -9,6 +9,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Core.Deg
+/- English proof (translation)
+Introduce `hS C hC D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hCl hH`. Establish `he : (1 : ℝ) ≤ Real.exp 1 * Real.pi`. Establish `h1 : (1 : ℝ) ≤ Real.exp 1` using `Real.one_le_exp (by norm_num)`. Establish `h2 : (3 : ℝ) ≤ Real.pi` using `Real.pi_gt_three.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hmax : max 1 (1 / Cl) ≤ 1` using `max_le le_rfl (by rw [div_le_one (by linarith)]; exact hCl)`. Establish `hM2` using `Formalism.MainNotions.BridgeLemma₂.plane_mass_bound_parameters D large₂ u u' C' Cl Cg cb Cu cT CT C0 A 8 (le_trans (mul_le_mul_of_nonneg_left hmax (by norm_num)) (by norm_num))`. Establish `hX` using `Formalism.MainNotions.BridgeLemma.first_bound_of_mass_ratio D large₂ u u' C' Cl Cg cb Cu cT CT C0 A 8 408 (Formalism.MainNotions.BridgeLemma.lattice_count_first_of_siegel hS D) hM2 (by norm_num) le_rfl hCl`. Establish `hCX : |(408 : ℝ)| * max 1 |Real.exp 1 * Real.pi| ≤ C`. Rewrite using `[abs_of_pos (by norm_num : (0 : ℝ) < 408), abs_of_pos (by positivity), max_eq_right he]; exact hC`.
+
+Establish `hXi` using `Formalism.MainNotions.BridgeLemma.xiHyp_of_stX D large₂ hH hX hCX (by linarith)`. Rewrite using `[← Formalism.MainNotions.BridgeLemma.d_m_eq D]`. Conclude with `hXi`.
+-/
 theorem xiSizes_explicit : Formalism.HermitianLatticesTheory.SiegelMassRatio → ∀ C : ℝ, 408 * (Real.exp 1 * Real.pi) ≤ C → ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl Cg cb Cu cT CT C0 A : ℝ), 1 ≤ Cl → Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → Formalism.HermitianLatticeCounting.LatticeSumBounds.XiHyp C D.R.k (2 * D.R.rS + 2) D.R.f large₂.sc.b D.host.v (Cnt.NT D u) (BridgeLemma.XiB D large₂ u C) := by
   intro hS C hC D large₂ u u' C' Cl Cg cb Cu cT CT C0 A hCl hH
   have he : (1 : ℝ) ≤ Real.exp 1 * Real.pi := by

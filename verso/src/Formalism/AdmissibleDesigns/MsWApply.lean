@@ -17,6 +17,9 @@ section EmbRow
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
   (Dd : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingData (D.nd.O i) (D.nd.X i) (Fin D.R.nV) (GE D.nd) D.R.t (Formalism.MainNotions.N.RepresentationBoundsCohomology.blk D.R))
 
+/- English proof (translation)
+Rewrite using `[msW_entry]`. Use `first`. Consider the case `rfl`. Consider the case `simp [Matrix.map_apply]`.
+-/
 theorem msW_apply {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver D.host.E (D.nd.l i)) (x : D.nd.X i)
     (g : Br.G D.nbr i w hw) (a b : Fin D.R.nV) :
     MsW i r hw x g a b = eS i hw (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))
@@ -29,6 +32,31 @@ theorem msW_apply {w : HeightOneSpectrum (𝓞 D.host.E)} (hw : w ∈ placesOver
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨hr', hsm, hχ⟩` from `ringDef_lift i r Dd hD`. Use `nzsd_R' i Dd` as an intermediate fact. Establish `: Module.Free (D.nd.O i) Dd.R'` using `Module.free_of_finite_type_torsion_free'`. Use `set ρP := resRep (lRep (D.nd.O i) Dd.r Dd.χ) (Dw i dc (idx i dc w)) with hρP`. Use `set e := eS i hw`.
+
+Set `κ : Dd.R' →ₗ[D.nd.O i] (Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i)))` to `(Dd.R').val.toLinearMap`. Establish `hκ : Function.Injective κ` using `Subtype.val_injective`. Set `Λ` to `liftK (V := Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) κ`. Establish `hΛs : ∀ m (s : nonZeroDivisors (D.nd.O i)), (s : D.nd.O i) • Λ (LocalizedModule.mk m s) = κ m`. Introduce `m s`.
+
+Rewrite using `[← map_smul, smul_mk, liftK_mkK]`. Establish `hΛi : ∀ v, Λ v = 0 → v = 0`. Introduce `v hv`. Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`.
+
+Establish `h1` using `hΛs m s`. Rewrite `h1` using `[hv, smul_zero]`. Rewrite using `[hκ (h1.symm.trans (map_zero κ).symm), LocalizedModule.zero_mk]`. Establish `hΛe : ∀ (γ : ↥(Dw i dc (idx i dc w))) v, Λ (locRep ρP γ v) = ((Formalism.NG.uElt Dd.r Dd.χ (γ : GE D.nd) : Dd.R') : Dd.X' → Matrix (Fin D.R.nV) (Fin D.R.nV) (FractionRing (D.nd.O i))) * Λ v`. Introduce `γ v`.
+
+Proceed by induction on `v using LocalizedModule.induction_on with`. Consider the case `h m s`. Establish `h0 : locRep ρP γ (LocalizedModule.mk m s) = LocalizedModule.mk (ρP γ m) s` using `LocalizedModule.map_mk _ _ _ _`. Rewrite using `[h0]`. Apply `smul_cancel s` to reduce the goal to its premises.
+
+Rewrite using `[hΛs, ← mul_smul_comm, hΛs]`. Both sides reduce to the same expression. Set `Ψ : Dd.X' × Fin D.R.nV → TrV e (MK (O` to `D.nd.O i) Dd.R') →ₗ[↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1] (Fin D.R.nV → ↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1) := fun q => { toFun := fun v a => e ((Λ (untr e v)) q.1 a q.2) map_add' := fun v v₂ => funext fun a => by show e ((Λ (un …`. Rewrite using `[map_add]`. Simplify using `[map_add]`.
+
+Use the proof step `map_smul' := fun c v => funext fun a => by show e ((Λ (e.symm c • untr e v)) q.1 a q.2) = c * e ((Λ (untr e v)) q.1 a q.2)`. Rewrite using `[smulK]`. Simplify using `[Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, map_mul] }`. Use `haveI : FiniteDimensional (↥(TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL.1) (TrV e (MK (O := D.nd.O i) Dd.R')) := finDim_of_lat (Ow := ↥(OL (TruncatedSeriesCountingIdentities.CoefExt.self i w hw).LL)) (Qp := ℚ_[D.nd.l i]) (latOf e (selfO i hw) mkK (eW i dc hw).symm. …`. Establish `hinj : ∀ v, (∀ q, Ψ q v = 0) → v = 0`.
+
+Introduce `v hv`. Establish `h0 : Λ (untr e v) = 0`. Use function extensionality and compare the values at `x'`. Use extensionality with `a b`. Use `congrFun (hv (x', b)) a` as an intermediate fact.
+
+Simplify `this` using `[Ψ]`. Conclude with `hΛi _ h0`. Take `⟨m, xs, hxs⟩` from `fin_sel Ψ hinj`. Use `⟨m, fun a => Dd.p (xs a).1, LinearMap.pi fun a => Ψ (xs a), fun v v' hvv => ?_, fun g v => funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
+
+Use `hxs _ fun a => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrFun hvv a`. Establish `key : ∀ (q : Dd.X' × Fin D.R.nV) (γ : ↥(Dw i dc (idx i dc w))), (γ : GE D.nd) = ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) → ∀ b, e ((Λ (locRep ρP γ (untr e v))) q.1 b q.2) = (MsW i r hw (Dd.p q.1) g).mulVec (Ψ q v) b`. Introduce `q γ hγ b`.
+
+Rewrite using `[hΛe, Pi.mul_apply, hγ, uElt_at i r Dd hr' hsm hχ, Matrix.mul_apply, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, msW_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[Ψ, Matrix.map_apply, map_mul]`. Conclude with `Or.inl rfl`.
+
+Use function extensionality and compare the values at `b`. Conclude with `key (xs a) ((eW i dc hw).symm g) rfl b`.
+-/
 theorem embRW_of {T : Subalgebra (D.nd.O i) (D.nd.X i → D.nd.O i)} {π : D.nd.X i} {ε : GE D.nd →* (D.nd.O i)ˣ}
     {g0 : GE D.nd} {eB e₁ s : D.nd.X i → Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)}
     (hD : Formalism.RepresentationBoundsCohomology.ringDataObjects.RingDef (D.nd.O i) T (Formalism.MainNotions.N.RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) ε g0 eB e₁ s Dd)

@@ -11,6 +11,11 @@ namespace GlobalTheory.HodgeSub
 
 open MonoidalCategory MonObj
 
+/- English proof (translation)
+Establish `h1 : pullback.fst (𝟙_ (Over S)).hom f ≫ (𝟙_ (Over S)).hom = pullback.snd (𝟙_ (Over S)).hom f ≫ f` using `pullback.condition`. Establish `h2` using `Over.w (Functor.LaxMonoidal.ε (Over.pullback f))`. Establish `h3 : (𝟙_ (Over S)).hom = 𝟙 S` using `rfl`. Establish `h4 : (𝟙_ (Over S')).hom = 𝟙 S'` using `rfl`. Rewrite `h1` using `[h3]`.
+
+Use `erw [Category.comp_id] at h1`. Use `erw [h1, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ ((Over.pullback f).obj (𝟙_ (Over S))).hom ≫ f = f`. Rewrite using `[← Category.assoc, h2, h4]`. Use `erw [Category.id_comp]`.
+-/
 theorem unit_base_change_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
     (Functor.LaxMonoidal.ε (Over.pullback f)).left ≫ pullback.fst (𝟙_ (Over S)).hom f = f := by
   have h1 : pullback.fst (𝟙_ (Over S)).hom f ≫ (𝟙_ (Over S)).hom =
@@ -26,6 +31,9 @@ theorem unit_base_change_fst {S S' : Scheme.{0}} (f : S' ⟶ S) :
   rw [← Category.assoc, h2, h4]
   erw [Category.id_comp]
 
+/- English proof (translation)
+Use `set f := hV.fromSpec`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec, Functor.obj.η_def, Over.comp_left, Category.assoc]`. Rewrite using `[show ((Over.pullback f).map η[A]).left ≫ pullback.fst A.hom f = pullback.fst (𝟙_ (Over T)).hom f ≫ η[A].left from pullback.lift_fst _ _ _]`. Rewrite using `[← Category.assoc, unit_base_change_fst]`.
+-/
 theorem unit_section_affine_fst {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.Opens} (hV : IsAffineOpen V) :
     η[onAff A hV].left ≫ pullback.fst A.hom hV.fromSpec =
       hV.fromSpec ≫ GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec A := by
@@ -35,6 +43,15 @@ theorem unit_section_affine_fst {T : Scheme.{0}} (A : Over T) [GrpObj A] {V : T.
       pullback.fst (𝟙_ (Over T)).hom f ≫ η[A].left from pullback.lift_fst _ _ _]
   rw [← Category.assoc, unit_base_change_fst]
 
+/- English proof (translation)
+Introduce `P T A _ g hA hg V hV s c c' hc hc'`. Establish `hA' : IsAbelianScheme (onAff A hV)` using `GlobalTheory.isAbelianScheme_pullback_obj _ A hA`. Establish `hg' : SmoothOfRelativeDimension g (onAff A hV).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback _ _) hg`. Take `⟨hL, -⟩` from `P.p5.2.1 Γ(T, V) (onAff A hV) g hA' hg'`. Take `⟨-, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim P.p5.1 hA' hg'`.
+
+Establish `key : ∀ h : HdR (onAff A hV), h c = h c'`. Introduce `h`. Take `⟨v, hv, -⟩` from `hL.1 h`. Establish `w : (v.left ≫ pullback.fst A.hom hV.fromSpec) ≫ A.hom = (Pdiv.specO Γ(T, V) (DualNumber Γ(T, V))).hom ≫ hV.fromSpec`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`.
+
+Conclude with `congrArg (· ≫ hV.fromSpec) (Over.w v)`. Establish `we : sec (epsZero Γ(T, V)) ≫ v.left ≫ pullback.fst A.hom hV.fromSpec = hV.fromSpec ≫ GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.zeroSec A`. Rewrite using `[← Category.assoc]`. Establish `ht` using `hv.1`. Unfold `IsTangent at ht`.
+
+Use `erw [ht]`. Conclude with `unit_section_affine_fst A hV`. Rewrite using `[hc v h hv w we, hc' v h hv w we]`. Establish `h0` using `(Module.forall_dual_apply_eq_zero_iff Γ(T, V) (c - c')).1 (fun h => by rw [map_sub, key, sub_self])`. Conclude with `sub_eq_zero.1 h0`.
+-/
 theorem corr_unique : GlobalTheory.CovTop.Hypotheses2 → ∀ (T : Scheme.{0}) (A : Over T) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →
     ∀ (V : T.Opens) (hV : IsAffineOpen V) (s : Γ(GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.hodge A, V)) (c c' : primDR (onAff A hV)),

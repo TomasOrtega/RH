@@ -13,11 +13,19 @@ namespace GlobalTheory.BotTransfer
 
 variable {D : D7} {T : Type} {A A' WW : HSp D}
 
+/- English proof (translation)
+Simplify using `only [Tri.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem ker_smul (X : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (t : T) (κ : ℂ)
     (P : PolF D WW.rank A.rank) (h : GA D WW) (g : GA D A) :
     X.ker ψ θ t (κ • P) h g = κ * X.ker ψ θ t P h g := by
   simp only [Tri.ker, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨⟨t₁, h₁⟩, P, P', H⟩` from `h`. Use `⟨⟨t₁, mul_ne_zero hκ h₁⟩, κ • P, P', fun t => ⟨fun g => ⟨?_, ((H t).1 g).2⟩, (H t).2.1, fun g => ?_⟩⟩` and prove the remaining obligations. Use `((H t).1 g).1.const_mul κ` as an intermediate fact. Establish `e : X.ker ψ θ t (κ • P) g = fun x => κ * X.ker ψ θ t P g x` using `funext fun x => ker_smul X ψ θ t κ P g x`. Rewrite using `[IntegrableOn, e]`.
+
+Conclude with `this`. Establish `e : X.I ψ θ t (κ • P) g = κ * X.I ψ θ t P g`. Simplify using `only [Tri.I, ker_smul, MeasureTheory.integral_const_mul]`. Rewrite using `[e, (H t).2.2 g, mul_assoc]`.
+-/
 theorem isConst_smul {X : Tri T A A' WW} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {c : T → ℂ}
     (h : X.IsConst ψ θ c) {κ : ℂ} (hκ : κ ≠ 0) : X.IsConst ψ θ fun t => κ * c t := by
   obtain ⟨⟨t₁, h₁⟩, P, P', H⟩ := h

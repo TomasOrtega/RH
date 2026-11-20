@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.DenseSum
 
+/- English proof (translation)
+Introduce `D ψ hψ S A B T o f hf ε hε`. Take `⟨n, P, g, hPc, hPl, hg, hfg⟩` from `GlobalTheory.T.theta_function_orthogonal_sum_approx_finite_sums D ψ hψ S A B T o f hf (ε / 2) (by positivity)`. Establish `hb : ∀ i, ∃ C : ℝ, ∀ v, ‖g i v‖ ≤ C` using `fun i => GlobalTheory.IsoMean.isThetaFunO_bounded B T ψ hψ (g i) (hg i)`. Use `choose C hC using hb`. Use `set M : ℝ := 1 + ∑ i, |C i| with hMdef`.
+
+Establish `hM : 0 < M`. Establish `: 0 ≤ ∑ i, |C i|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ : 0 < ε / (2 * M)` using `by positivity`. Establish `hφ : ∀ i, ∃ φ : WO A T → ℂ, IsThetaFunO ψ A T φ ∧ ∀ u, ‖P i u - φ u‖ ≤ ε / (2 * M)` using `fun i => GlobalTheory.T.theta_functions_dense_continuous_theta_law D ψ hψ A T (P i) (hPc i) (hPl i) _ hδ`.
+
+Use `choose φ hφt hφa using hφ`. Use `⟨∑ i, fun w => φ i ((o.resS T) w).1 * g i ((o.resS T) w).2, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨φ i, g i, hφt i, hg i, rfl⟩`. Introduce `w`. Establish `key : ‖∑ i, P i ((o.resS T) w).1 * g i ((o.resS T) w).2 - ∑ i, φ i ((o.resS T) w).1 * g i ((o.resS T) w).2‖ ≤ ε / 2`.
+
+Rewrite using `[← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, norm_mul]`. Conclude with `mul_le_mul (hφa i _) ((hC i _).trans (le_abs_self _)) (norm_nonneg _) hδ.le`.
+
+Use `_ = ε / (2 * M) * ∑ i, |C i| := by rw [Finset.mul_sum]`. Use `_ ≤ ε / (2 * M) * M := by`. Use `mul_le_mul_of_nonneg_left ?_ hδ.le` and prove the remaining obligations. Rewrite using `[hMdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = ε / 2 := by field_simp`. Establish `hsum : (∑ i, fun w => φ i ((o.resS T) w).1 * g i ((o.resS T) w).2) w = ∑ i, φ i ((o.resS T) w).1 * g i ((o.resS T) w).2`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ε / 2 + ε / 2 := (norm_add_le _ _).trans (add_le_add (hfg w) key)`. Use `_ = ε := by ring`.
+-/
 theorem unifLimit_prodSpan : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A B T : HSp D) (o : OrthDec S A B), ∀ f, IsThetaFunO ψ S T f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.prodSpan (o.resS T) (IsThetaFunO ψ A T) (IsThetaFunO ψ B T)) f := by
   intro D ψ hψ S A B T o f hf ε hε
   obtain ⟨n, P, g, hPc, hPl, hg, hfg⟩ := GlobalTheory.T.theta_function_orthogonal_sum_approx_finite_sums D ψ hψ S A B T o f hf (ε / 2) (by positivity)

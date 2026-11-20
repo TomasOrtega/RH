@@ -15,6 +15,17 @@ open GlobalTheory.SobClass GlobalTheory.ArchUniq.Coord
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Use `set T : ℝ := Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (z i) * e) with hT`. Use `set a : κ → AF F := archInc F (Pi.single i e) with ha`. Establish `key : (fun t : ℝ => schr ψ (realAd F t • ((0, a) : (κ → AF F) × (κ → AF F))) Φ z) = fun t : ℝ => Complex.exp (-(2 * Real.pi * Complex.I) * T * t) * Φ z`. Use function extensionality and compare the values at `t`. Simplify using `only [schr, Prod.smul_fst, Prod.smul_snd, smul_zero, zero_dotProduct, mul_zero, add_zero]`.
+
+Establish `hA : At (evI F) (z ⬝ᵥ (realAd F t • a))`. Introduce `u hu`. Simplify using `only [dotProduct, smul_eq_mul, Pi.smul_apply, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `at_archInc (Pi.single i e) j u hu` as an intermediate fact.
+
+Simplify using `only [smul_eq_mul] at this`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : evI F (z ⬝ᵥ (realAd F t • a)) = t • (evI F (z i) * e)`. Rewrite using `[evI_eq]`. Simplify using `only [dotProduct, smul_eq_mul, Pi.smul_apply, map_sum, map_mul, ← evI_eq, evI_realAd, ha, evI_archInc]`.
+
+Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [hj]) (by simp), Pi.single_eq_same, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hψ.2.2 _ hA, hE, map_smul, ← hT, smul_eq_mul]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : HasDerivAt (fun t : ℝ => Complex.exp (-(2 * Real.pi * Complex.I) * T * t) * Φ z) (Complex.exp (-(2 * Real.pi * Complex.I) * T * ((0 : ℝ) : ℂ)) * (-(2 * Real.pi * Complex.I) * T * 1) * Φ z) 0` using `(((Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).const_mul (-(2 * Real.pi * Complex.I) * T)).cexp).mul_const (Φ z)`. Unfold `dH`. Rewrite using `[key, hd.deriv]`. Simplify using `[abs_of_pos Real.pi_pos]`.
+-/
 theorem norm_dH_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (i : κ) (e : mixedEmbedding.mixedSpace F)
     (Φ : (κ → AF F) → ℂ) (z : κ → AF F) :
     ‖dH ψ ((0, archInc F (Pi.single i e)) : (κ → AF F) × (κ → AF F)) Φ z‖ =
@@ -50,6 +61,17 @@ theorem norm_dH_mul {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (i : κ) (e : mix
   simp [abs_of_pos Real.pi_pos]
 
 variable (F) in
+/- English proof (translation)
+Set `b` to `Module.finBasis ℝ (mixedEmbedding.mixedSpace F)`. Set `e : Fin _ → mixedEmbedding.mixedSpace F` to `fun j => (1 + ‖b j‖)⁻¹ • b j`. Establish `hp : ∀ j, 0 < 1 + ‖b j‖` using `fun j => by positivity`. Set `f : mixedEmbedding.mixedSpace F →ₗ[ℝ] (Fin _ → ℝ)` to `LinearMap.pi fun j => Algebra.trace ℝ (mixedEmbedding.mixedSpace F) ∘ₗ LinearMap.mulRight ℝ (e j)`. Establish `hf : ∀ x j, f x j = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * e j)` using `fun x j => rfl`.
+
+Establish `hker : LinearMap.ker f = ⊥`. Use `LinearMap.ker_eq_bot'.2 fun x hx => eq_zero_of_trace x fun y => ?_` and prove the remaining obligations. Establish `h1 : ∀ j, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * b j) = 0`. Introduce `j`. Use `hf x j` as an intermediate fact.
+
+Rewrite `this` using `[hx, Pi.zero_apply, mul_smul_comm, map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left (inv_pos.2 (hp j)).ne'`. Rewrite using `[← b.sum_repr y, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, h1, smul_zero]`.
+
+Take `⟨K, -, hK⟩` from `f.exists_antilipschitzWith hker`. Use `⟨_, e, K, K.2, fun j => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [e]`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.2 (hp j)), inv_mul_le_iff₀ (hp j)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `(ZeroHomClass.bound_of_antilipschitz f hK x).trans (mul_le_mul_of_nonneg_left ?_ K.2)` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Finset.sum_nonneg fun j _ => abs_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[hf, Real.norm_eq_abs]`. Conclude with `Finset.single_le_sum (f := fun j => |Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * e j)|) (fun j _ => abs_nonneg _) (Finset.mem_univ j)`.
+-/
 theorem exists_family : ∃ (n : ℕ) (e : Fin n → mixedEmbedding.mixedSpace F) (c : ℝ), 0 ≤ c ∧ (∀ j, ‖e j‖ ≤ 1) ∧
     ∀ x : mixedEmbedding.mixedSpace F, ‖x‖ ≤ c * ∑ j, |Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * e j)| := by
   let b := Module.finBasis ℝ (mixedEmbedding.mixedSpace F)
@@ -79,6 +101,29 @@ theorem exists_family : ∃ (n : ℕ) (e : Fin n → mixedEmbedding.mixedSpace F
     exact Finset.single_le_sum (f := fun j => |Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x * e j)|)
       (fun j _ => abs_nonneg _) (Finset.mem_univ j)
 
+/- English proof (translation)
+Introduce `F _ _ κ _ ψ hψ N`. Take `⟨n, e, c, hc, he, hx⟩` from `exists_family F`. Set `m : κ × Fin n → (κ → AF F) × (κ → AF F)` to `fun p => (0, archInc F (Pi.single p.1 (e p.2)))`. Establish `hm : ∀ p, IsArchUnit (m p)` using `fun p => isArchUnit_mul _ fun i => by`. Distinguish the cases in `h : i = p.1`.
+
+Substitute `h` using the available equality. Simplify using `using he p.2`. Simplify using `[h]`. Establish `hw : ∀ (Φ : (κ → AF F) → ℂ) (z : κ → AF F), ‖Φ z‖ * ∑ i, ‖evI F (z i)‖ ≤ c * ∑ p, ‖dH ψ (m p) Φ z‖`. Introduce `Φ z`.
+
+Rewrite using `[Fintype.sum_prod_type, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (hx _) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Finset.mul_sum]`. Use `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun j _ => ?_) hc` and prove the remaining obligations.
+
+Simplify using `only [m]`. Rewrite using `[norm_dH_mul hψ]`. Establish `h1` using `mul_nonneg (norm_nonneg (Φ z)) (abs_nonneg (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (z i) * e j)))`. Use polynomial arithmetic with `[Real.two_le_pi]`. It suffices to establish `h : ∃ (L : Finset (List ((κ → AF F) × (κ → AF F)))) (K : ℝ), 0 ≤ K ∧ (∀ l ∈ L, l.length ≤ N ∧ ∀ w ∈ l, IsArchUnit w) ∧ ∀ (Φ : (κ → AF F) → ℂ) (z : κ → AF F), ‖Φ z‖ * (1 + ∑ i, ‖evI F (z i)‖) ^ N ≤ K * ∑ l ∈ L, ‖wordH ψ l Φ z‖ by`.
+
+Take `⟨L, K, -, h⟩` from `h`. Conclude with `⟨L, K, h⟩`. Proceed by induction on `N with`. Consider the case `zero => exact ⟨{[]}, 1, zero_le_one, by simp, by simp⟩`. Consider the case `succ N ih`.
+
+Take `⟨L, K, hK, hL, h⟩` from `ih`. Set `L'` to `L ∪ Finset.univ.biUnion fun p => L.image (List.cons (m p))`. Use `⟨L', K * (1 + c * Fintype.card (κ × Fin n)), by positivity, fun l hl => ?_, fun Φ z => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hl with hl | hl` into its components or cases. Conclude with `⟨(hL l hl).1.trans (Nat.le_succ _), (hL l hl).2⟩`.
+
+Take `⟨p, -, hl⟩` from `Finset.mem_biUnion.1 hl`. Take `⟨l, hl', rfl⟩` from `Finset.mem_image.1 hl`. Use `⟨by simpa using (hL l hl').1, fun w hw => ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hw with rfl | hw` into its components or cases. Conclude with `hm p`.
+
+Conclude with `(hL l hl').2 w hw`. Use `set S := ∑ l ∈ L', ‖wordH ψ l Φ z‖ with hS`. Establish `h1 : ∑ l ∈ L, ‖wordH ψ l Φ z‖ ≤ S` using `Finset.sum_le_sum_of_subset_of_nonneg Finset.subset_union_left fun _ _ _ => norm_nonneg _`. Establish `h2 : ∀ p, ∑ l ∈ L, ‖dH ψ (m p) (wordH ψ l Φ) z‖ ≤ S`. Introduce `p`.
+
+Use `Finset.sum_image (s := L) (g := List.cons (m p)) (f := fun l => ‖wordH ψ l Φ z‖) (fun _ _ _ _ h => List.cons_injective h)` as an intermediate fact. Simplify using `only [wordH_cons] at this`. Rewrite using `[← this]`. Use `Finset.sum_le_sum_of_subset_of_nonneg (fun l hl => Finset.mem_union_right _ ?_) fun _ _ _ => norm_nonneg _` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨p, Finset.mem_univ _, hl⟩`.
+
+Establish `h3 : (∑ l ∈ L, ‖wordH ψ l Φ z‖) * ∑ i, ‖evI F (z i)‖ ≤ c * (Fintype.card (κ × Fin n) * S)`. Rewrite using `[Finset.sum_mul]`. Use `(Finset.sum_le_sum fun l _ => hw (wordH ψ l Φ) z).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `mul_le_mul_of_nonneg_left ((Finset.sum_le_sum fun p _ => h2 p).trans ?_) hc` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `h0 : 0 ≤ 1 + ∑ i, ‖evI F (z i)‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem weight_le_words : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ N : ℕ, ∃ (L : Finset (List ((κ → AF F) × (κ → AF F)))) (K : ℝ), (∀ l ∈ L, l.length ≤ N ∧ ∀ w ∈ l, IsArchUnit w) ∧ ∀ (Φ : (κ → AF F) → ℂ) (z : κ → AF F), ‖Φ z‖ * (1 + ∑ i, ‖evI F (z i)‖) ^ N ≤ K * ∑ l ∈ L, ‖wordH ψ l Φ z‖ := by
   intro F _ _ κ _ ψ hψ N
   obtain ⟨n, e, c, hc, he, hx⟩ := exists_family F

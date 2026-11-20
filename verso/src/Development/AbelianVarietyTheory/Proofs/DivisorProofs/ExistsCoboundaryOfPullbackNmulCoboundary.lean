@@ -12,6 +12,17 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `p _ k _ d G c μ hμ κ B hκ hB h1`. Establish `hcoc : ∀ s, IsCoc μ s ↔ (fun n => c.ev₂ n s) ∈ G.cocycles` using `GlobalTheory.T.isSymmetricFormalGroupCocycle_iff_mem_cocycles p k d G c μ hμ`. Establish `hlaw` using `(GlobalTheory.T.connectedPDivGroup_formalLaw_coordinates p k d G c).2 μ hμ`. Establish `hfun` using `GlobalTheory.T.functions_eq_series_in_chart p k d G c`. Establish `hsq` using `(GlobalTheory.T.chart_square_coordinates_present_levels p k d G c).2`.
+
+Establish `hmap` using `((GlobalTheory.T.connectedPDivGroupHom_coordinates_existsUnique p k d d G G c c ((p : ℤ_[p]) • 𝟙 G)).2 (nmul μ p) (GlobalTheory.T.isMapOf_natMultiple_formalGroupLaw p k d G c μ hμ p)).2`. Set `cz : G.cocycles` to `⟨fun n => c.ev₂ n κ, (hcoc κ).1 hκ⟩`. Set `bB : G.funs` to `⟨fun n => c.ev n B, fun n => hfun.1 n B⟩`. Establish `key : G.cob bB = cocyclesMap ((p : ℤ_[p]) • 𝟙 G) cz`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `n`. Express the relevant statement in the definitionally equal form `cobOne k _ (c.ev n B) = pullbackTwo (((p : ℤ_[p]) • 𝟙 G).app n) (c.ev₂ n κ)`. Rewrite using `[← (hlaw.2 n B).2, hB, (hmap n).2 κ]`. Take `⟨b', hb'⟩` from `GlobalTheory.T.pDivCocycle_mem_range_cob_of_pullback_mulP G cz bB key h1`. Take `⟨s, hs, -⟩` from `hfun.2.2 b'.1 b'.2`.
+
+Use `⟨s, ?_⟩` and prove the remaining obligations. Take `⟨t, -, ht⟩` from `hsq (fun n => c.ev₂ n κ) (fun n => hfun.2.1 n κ)`. Establish `e1` using `ht κ (fun n => rfl)`. Establish `e2` using `ht (cob1 μ s) (fun n => by`. Rewrite using `[(hlaw.2 n s).2, hs n]`.
+
+Conclude with `congrArg (fun x : G.cocycles => x.1 n) hb')`. Conclude with `e1.trans e2.symm`.
+-/
 theorem GlobalTheory.Katz.exists_coboundary_of_pullback_nmul_coboundary' : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k) (c : Katz.Chart G d) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ → ∀ (κ : MvPowerSeries (Fin d ⊕ Fin d) k) (B : MvPowerSeries (Fin d) k), IsCoc μ κ → cob1 μ B = pull2 (nmul μ p) κ → c.ev 1 B = 0 → ∃ s, κ = cob1 μ s := by
   intro p _ k _ d G c μ hμ κ B hκ hB h1
   have hcoc : ∀ s, IsCoc μ s ↔ (fun n => c.ev₂ n s) ∈ G.cocycles := GlobalTheory.T.isSymmetricFormalGroupCocycle_iff_mem_cocycles p k d G c μ hμ

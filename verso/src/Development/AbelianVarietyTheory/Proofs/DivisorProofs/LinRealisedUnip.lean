@@ -20,11 +20,21 @@ def LinRealised (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] (g : Matrix (
     (∀ l ∈ (adeleClass F).adm κ, ∃ l' ∈ (adeleClass F).adm κ, ∀ φ ∈ schA F κ, l' φ = l (S φ)) ∧
     ∀ w, ∀ φ ∈ schA F κ, S (schr ψ w φ) = schr ψ (act g w) (S φ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨LinearMap.id, fun φ h => h, fun φ h => ⟨φ, h, rfl⟩, fun l hl => ⟨l, hl, fun _ _ => rfl⟩, fun w φ _ => by rw [act_one]; rfl⟩`.
+-/
 theorem linRealised_one (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] [DecidableEq κ] :
     LinRealised ψ (1 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) :=
   ⟨LinearMap.id, fun φ h => h, fun φ h => ⟨φ, h, rfl⟩, fun l hl => ⟨l, hl, fun _ _ => rfl⟩,
     fun w φ _ => by rw [act_one]; rfl⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hSs, hSa, hSi⟩` from `hg`. Take `⟨T, hT, hTs, hTa, hTi⟩` from `hh`. Use `⟨S ∘ₗ T, fun φ hφ => hS _ (hT φ hφ), fun φ hφ => ?_, fun l hl => ?_, fun w φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ₁, h₁, rfl⟩` from `hSs φ hφ`. Take `⟨φ₂, h₂, rfl⟩` from `hTs φ₁ h₁`.
+
+Conclude with `⟨φ₂, h₂, rfl⟩`. Take `⟨l₁, hl₁, e₁⟩` from `hSa l hl`. Take `⟨l₂, hl₂, e₂⟩` from `hTa l₁ hl₁`. Conclude with `⟨l₂, hl₂, fun φ hφ => (e₂ φ hφ).trans (e₁ _ (hT φ hφ))⟩`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[hTi w φ hφ, hSi _ _ (hT φ hφ), act_mul]`.
+-/
 theorem LinRealised.mul {ψ : AddChar (AF F) ℂ} {κ : Type} [Fintype κ] {g h : Matrix (κ ⊕ κ) (κ ⊕ κ) F}
     (hg : LinRealised ψ g) (hh : LinRealised ψ h) : LinRealised ψ (g * h) := by
   obtain ⟨S, hS, hSs, hSa, hSi⟩ := hg
@@ -41,6 +51,15 @@ theorem LinRealised.mul {ψ : AddChar (AF F) ℂ} {κ : Type} [Fintype κ] {g h 
 
 open scoped Classical in
 open GlobalTheory.AdelicSvNLevi in
+/- English proof (translation)
+Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Set `Am : Matrix κ κ (AdeleRing (𝓞 F) F)` to `A.map (algebraMap F (AdeleRing (𝓞 F) F))`. Set `Aim : Matrix κ κ (AdeleRing (𝓞 F) F)` to `A⁻¹.map (algebraMap F (AdeleRing (𝓞 F) F))`. Establish `e1 : Am * Aim = 1`.
+
+Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : Aim * Am = 1`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨compM A⁻¹, comp_mem A⁻¹ A h2 h1, fun φ hφ => ⟨compM A φ, comp_mem A A⁻¹ h1 h2 φ hφ, ?_⟩, fun l hl => ⟨l ∘ₗ compM A⁻¹, fun g hg => ?_, fun _ _ => rfl⟩, fun w φ _ => funext fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Express the relevant statement in the definitionally equal form `φ (Am *ᵥ (Aim *ᵥ x)) = φ x`. Rewrite using `[Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Take `⟨T, hT⟩` from `hl _ ⟨hg.1.comp_continuous (finHomeo A⁻¹ A h2 h1).continuous, hg.2.comp_homeomorph (finHomeo A⁻¹ A h2 h1)⟩`. Use `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (archEquiv A⁻¹ A h2 h1)), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, comp_pureA A⁻¹ A h2 h1, hT]`.
+
+Both sides reduce to the same expression. Rewrite using `[act_levi, Matrix.transpose_map]`. Express the relevant statement in the definitionally equal form `ψ ((Aim *ᵥ x) ⬝ᵥ w.2 + ⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)) * φ (Aim *ᵥ x + w.1) = ψ (x ⬝ᵥ (Aimᵀ *ᵥ w.2) + ⅟(2 : AdeleRing (𝓞 F) F) * ((Am *ᵥ w.1) ⬝ᵥ (Aimᵀ *ᵥ w.2))) * φ (Aim *ᵥ (x + Am *ᵥ w.1))`. Rewrite using `[dot_transpose, dot_transpose, Matrix.mulVec_add, Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`.
+-/
 theorem linRealised_levi (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] [DecidableEq κ] (A : Matrix κ κ F)
     (hA : IsUnit A.det) : LinRealised ψ (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ) := by
   have h1 : A * A⁻¹ = 1 := Matrix.mul_nonsing_inv A hA
@@ -68,6 +87,13 @@ theorem linRealised_levi (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ] [Dec
     rw [dot_transpose, dot_transpose, Matrix.mulVec_add, Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]
 
 open GlobalTheory.AdelicSvNQuad in
+/- English proof (translation)
+Set `A : Matrix κ κ (AF F)` to `C.map (algebraMap F (AF F))`. Establish `hA : Aᵀ = A` using `by rw [← Matrix.transpose_map, hC]`. Use `⟨mulQ ψ (⅟2) A, mulQ_mem ψ hψ _ A, fun φ hφ => ⟨mulQ ψ (⅟2) (-A) φ, mulQ_mem ψ hψ _ _ φ hφ, ?_⟩, fun l hl => ⟨l ∘ₗ mulQ ψ (⅟2) A, fun g hg => ?_, fun _ _ => rfl⟩, fun w φ _ => funext fun x => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Rewrite using `[mulQ_apply, mulQ_apply, ← mul_assoc, ← AddChar.map_add_eq_mul, quad_neg, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`.
+
+Take `⟨g', hg', M, hM⟩` from `mulQ_pureA ψ hψ (⅟2) A hg`. Take `⟨T, hT⟩` from `hl g' hg'`. Conclude with `⟨T.comp M, fun f => (congrArg l (hM f)).trans (hT (M f))⟩`. Rewrite using `[act_unip, mulQ_apply]`. Simplify using `only [schr]`.
+
+Rewrite using `[mulQ_apply, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad_add A hA]`.
+-/
 theorem linRealised_unip (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ] [DecidableEq κ]
     (C : Matrix κ κ F) (hC : Cᵀ = C) : LinRealised ψ (Matrix.fromBlocks 1 0 (-C) 1) := by
   let A : Matrix κ κ (AF F) := C.map (algebraMap F (AF F))
@@ -85,6 +111,15 @@ theorem linRealised_unip (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} 
     rw [mulQ_apply, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, quad_add A hA]
 
 open GlobalTheory.AdelicSvN.Weyl MeasureTheory GroundTheory.Global GroundTheory.Automorphic.GJMatrix in
+/- English proof (translation)
+Establish `hk : ∀ φ ∈ schA F κ, adelicFourierPi F φ ∈ schA F κ` using `fun φ hφ => by`. Rewrite `hφ`, the goal using `[schA_eq]`. Conclude with `adelicFourierPi_mem_schwartzBruhatPi hφ`. Establish `hinv : ∀ φ ∈ schA F κ, adelicFourierPi F (adelicFourierPi F φ) = fun x => φ (-x)` using `fun φ hφ => by`. Rewrite `hφ` using `[schA_eq]`.
+
+Conclude with `adelicFourierPi_adelicFourierPi hφ`. Take `⟨T, hT⟩` from `LinearMap.exists_extend (fourierLin (F := F) (κ := κ))`. Establish `hT' : ∀ φ ∈ schA F κ, T φ = adelicFourierPi F φ` using `fun φ hφ => LinearMap.congr_fun hT ⟨φ, hφ⟩`. Use `⟨T, fun φ hφ => by rw [hT' φ hφ]; exact hk φ hφ, fun φ hφ => ⟨_, hk _ (hk _ (hk _ hφ)), ?_⟩, fun l hl => ?_, fun w φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hT' _ (hk _ (hk _ (hk _ hφ))), hinv _ (hk _ (hk _ hφ)), hinv _ hφ]`.
+
+Simplify using `only [neg_neg]`. Use `⟨l ∘ₗ T, fun g hg => ?_, fun φ hφ => rfl⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `hl (finiteFourierPi F g) ((mem_SB_iff _).2 (finiteFourierPi_mem ((mem_SB_iff g).1 hg)))`. Use `⟨U.comp (mixedFourierPiSchwartz F), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hT' _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), ContinuousLinearMap.comp_apply, ← hU, pureA_eq, pureA_eq, adelicFourierPi_schwartzBruhatTensorPi]`.
+
+Rewrite using `[hT' _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ w φ hφ), hT' φ hφ, act_weyl, fourier_schr hψ]`.
+-/
 theorem linRealised_weyl (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} [Fintype κ] [DecidableEq κ] :
     LinRealised ψ (Matrix.fromBlocks (0 : Matrix κ κ F) 1 (-1) 0) := by
   have hk : ∀ φ ∈ schA F κ, adelicFourierPi F φ ∈ schA F κ := fun φ hφ => by
@@ -106,6 +141,11 @@ theorem linRealised_weyl (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {κ : Type} 
       pureA_eq, pureA_eq, adelicFourierPi_schwartzBruhatTensorPi]
   · rw [hT' _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ w φ hφ), hT' φ hφ, act_weyl, fourier_schr hψ]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ _ g hg`. It suffices to establish `h : LinRealised ψ g from h`. Proceed by induction on `hg using Submonoid.closure_induction with`. Consider the case `mem g hg`. Break down `hg with (⟨A, hA, rfl⟩ | ⟨C, hC, rfl⟩) | rfl` into its components or cases.
+
+Conclude with `linRealised_levi ψ A hA`. Conclude with `linRealised_unip ψ hψ C hC`. Conclude with `linRealised_weyl ψ hψ`. Consider the case `one => exact linRealised_one ψ`. Consider the case `mul g h _ _ hg hh => exact hg.mul hh`.
+-/
 theorem lin_realised : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ →
   ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F), g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) →
   ∃ S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ),

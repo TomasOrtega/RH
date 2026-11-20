@@ -14,10 +14,18 @@ namespace GlobalTheory.LevelLower
 def idx (l : ℕ) [NeZero l] (b d : ℤ) (j : Fin l) : Fin l :=
   ⟨(((b + ((j : ℕ) : ℤ) * d) * d : ℤ) : ZMod l).val, ZMod.val_lt _⟩
 
+/- English proof (translation)
+Simplify using `[idx, ZMod.natCast_zmod_val]`.
+-/
 lemma idx_cast (l : ℕ) [NeZero l] (b d : ℤ) (j : Fin l) :
     ((idx l b d j : ℕ) : ZMod l) = (((b + ((j : ℕ) : ℤ) * d) * d : ℤ) : ZMod l) := by
   simp [idx, ZMod.natCast_zmod_val]
 
+/- English proof (translation)
+Introduce `j₁ j₂ h`. Establish `h'` using `congrArg (fun x : Fin l => ((x : ℕ) : ZMod l)) h`. Simplify using `only [idx_cast] at h'`. Move the coercions through the operations in `at h' had`. Establish `e : ((j₁ : ℕ) : ZMod l) = ((j₂ : ℕ) : ZMod l)`.
+
+Take the linear combination `(a : ZMod l) ^ 2 * h' - (((j₁ : ℕ) : ZMod l) - ((j₂ : ℕ) : ZMod l)) * (1 + (a : ZMod l) * d) * had`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite `e` using `[ZMod.natCast_eq_natCast_iff']`. Simplify `e` using `[Nat.mod_eq_of_lt j₁.2, Nat.mod_eq_of_lt j₂.2]`.
+-/
 lemma idx_inj (l : ℕ) [NeZero l] (a b d : ℤ) (had : ((a * d : ℤ) : ZMod l) = 1) :
     Function.Injective (idx l b d) := by
   intro j₁ j₂ h
@@ -31,6 +39,19 @@ lemma idx_inj (l : ℕ) [NeZero l] (a b d : ℤ) (had : ((a * d : ℤ) : ZMod l)
   rw [ZMod.natCast_eq_natCast_iff'] at e
   simpa [Nat.mod_eq_of_lt j₁.2, Nat.mod_eq_of_lt j₂.2] using e
 
+/- English proof (translation)
+Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `hlc : (l : ℤ) ∣ γ 1 0` using `(Int.natCast_dvd_natCast.mpr hlL).trans hc`.
+
+Establish `hdiv : (l : ℤ) ∣ γ 0 1 + ((j : ℕ) : ℤ) * γ 1 1 - (γ 0 0 + ((j : ℕ) : ℤ) * γ 1 0) * ((idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Establish `hc0 : ((γ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr hlc`. Establish `hj'` using `idx_cast l (γ 0 1) (γ 1 1) j`. Establish `hd1 : ((γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 : ℤ) : ZMod l) = 1` using `by rw [hdet]; simp`.
+
+Move the coercions through the operations in `at hj' hd1 ⊢`. Rewrite using `[hj']`. Take the linear combination `(-((γ 0 1 : ZMod l) + ((j : ℕ) : ZMod l) * (γ 1 1 : ZMod l))) * hd1 - ((γ 0 1 : ZMod l) + ((j : ℕ) : ZMod l) * (γ 1 1 : ZMod l)) * ((γ 0 1 : ZMod l) + ((j : ℕ) : ZMod l) * (γ 1 1 : ZMod l)) * hc0`. Take `⟨B, hB⟩` from `hdiv`. Take `⟨m, hm⟩` from `hc`.
+
+Use `⟨⟨!![γ 0 0 + ((j : ℕ) : ℤ) * γ 1 0, B; (l : ℤ) * γ 1 0, γ 1 1 - γ 1 0 * ((idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ)], ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `hdet + γ 1 0 * hB`. Use `⟨m, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_one, Matrix.cons_val_zero, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons]`.
+
+Rewrite using `[hm]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Apply the tactic sequence `ext i k fin_cases i <;> fin_cases k <;>`.
+
+Apply the tactic sequence `simp [repU, Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination hB | linear_combination -hB`.
+-/
 lemma coset (L l : ℕ) [NeZero l] (hlL : l ∣ L) (γ : SL(2, ℤ)) (hc : (L : ℤ) ∣ γ 1 0) (j : Fin l) :
     ∃ γ' : SL(2, ℤ), ((L * l : ℕ) : ℤ) ∣ γ' 1 0 ∧
       γ' 1 1 = γ 1 1 - γ 1 0 * ((idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ) ∧
@@ -70,14 +91,25 @@ end GlobalTheory.LevelLower
 
 namespace GlobalTheory.LevelLower
 
+/- English proof (translation)
+Simplify using `only [slz, Finset.mul_sum]`.
+-/
 lemma slz_sum (k : ℕ) (δ : M2) {ι : Type} [Fintype ι] (F : ι → ℍ → ℂ) (τ : ℍ) :
     slz k δ (fun τ => ∑ i, F i τ) τ = ∑ i, slz k δ (F i) τ := by
   simp only [slz, Finset.mul_sum]
 
+/- English proof (translation)
+Simplify using `only [slz]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma slz_smul (k : ℕ) (δ : M2) (c : ℂ) (f : ℍ → ℂ) (τ : ℍ) :
     slz k δ (fun τ => c * f τ) τ = c * slz k δ f τ := by
   simp only [slz]; ring
 
+/- English proof (translation)
+Use `Int.induction_on m ?_ ?_ ?_` and prove the remaining obligations. Introduce `d`. Simplify using the standard rewrite rules. Introduce `i ih d`. Rewrite using `[show d + ((i : ℤ) + 1) * (L : ℤ) = (d + (i : ℤ) * L) + L by ring, hχ, ih]`.
+
+Introduce `i ih d`. Use `hχ (d + (-(i : ℤ) - 1) * L)` as an intermediate fact. Rewrite `this` using `[show d + (-(i : ℤ) - 1) * (L : ℤ) + L = d + -(i : ℤ) * L by ring, ih]`. Conclude with `this.symm`.
+-/
 lemma per (L : ℕ) (χ : ℤ → ℂ) (hχ : ∀ d, χ (d + L) = χ d) (m : ℤ) : ∀ d : ℤ, χ (d + m * L) = χ d := by
   refine Int.induction_on m ?_ ?_ ?_
   · intro d; simp
@@ -90,6 +122,25 @@ lemma per (L : ℕ) (χ : ℤ → ℂ) (hχ : ∀ d, χ (d + L) = χ d) (m : ℤ
 
 end GlobalTheory.LevelLower
 
+/- English proof (translation)
+Introduce `k L l χ a hk hl hlL hχ hMF`. Take `⟨hP, hI⟩` from `hMF`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`. Take `⟨hPU, hqs⟩` from `GlobalTheory.T.qExpansion_heckeU_eq_sum_slash k l a hk hl.pos hP`. Take `⟨hcoc, -, hinv, -, -⟩` from `GlobalTheory.T.slashIntMatrixPosDet_properties k (qs a) hk`.
+
+Establish `hI'` using `(hinv (L * l) χ).mp hI`. Use `⟨hPU, ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.slashIntMatrixPosDet_properties k (qs (Uo l a)) hk).2.2.1]`. Introduce `γ hc`. Establish `hg : qs (Uo l a) = fun τ => ∑ j : Fin l, slz k (repU l j) (qs a) τ` using `funext hqs`.
+
+Establish `hdU : ∀ j : Fin l, 0 < (repU l j).det`. Introduce `j`. Simplify using `[repU, Matrix.det_fin_two_of]`. Conclude with `hl.pos`. Establish `hdγ : ∀ γ : SL(2, ℤ), 0 < (γ : M2).det`.
+
+Introduce `γ`. Rewrite using `[Matrix.SpecialLinearGroup.det_coe]`. Conclude with `one_pos`. Establish `had : ((γ 0 0 * γ 1 1 : ℤ) : ZMod l) = 1`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`.
+
+Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Establish `hlc : (l : ℤ) ∣ γ 1 0` using `(Int.natCast_dvd_natCast.mpr hlL).trans hc`. Establish `hc0 : ((γ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr hlc`.
+
+Establish `h1 : ((γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 : ℤ) : ZMod l) = 1` using `by rw [hdet]; simp`. Move the coercions through the operations in `at h1 hc0 ⊢`. Rewrite `h1` using `[hc0, mul_zero, sub_zero]`. Conclude with `h1`. Set `e : Fin l ≃ Fin l` to `Equiv.ofBijective (GlobalTheory.LevelLower.idx l (γ 0 1) (γ 1 1)) (Finite.injective_iff_bijective.mp (GlobalTheory.LevelLower.idx_inj l _ _ _ had))`.
+
+Establish `key : ∀ (τ : ℍ) (j : Fin l), slz k (γ : M2) (slz k (repU l j) (qs a)) τ = χ (γ 1 1) * slz k (repU l (e j)) (qs a) τ`. Introduce `τ j`. Take `⟨γ', h1, h2, h3⟩` from `GlobalTheory.LevelLower.coset L l hlL γ hc j`. Rewrite using `[← hcoc _ _ (hdU j) (hdγ γ), h3, hcoc _ _ (hdγ γ') (hdU _), hI' γ' h1, GlobalTheory.LevelLower.slz_smul, h2]`. Take `⟨m, hm⟩` from `hc`.
+
+Establish `: χ (γ 1 1 - γ 1 0 * ((GlobalTheory.LevelLower.idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ)) = χ (γ 1 1)`. Rewrite using `[hm, show γ 1 1 - (L : ℤ) * m * ((GlobalTheory.LevelLower.idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ) = γ 1 1 + (-(m * ((GlobalTheory.LevelLower.idx l (γ 0 1) (γ 1 1) j : ℕ) : ℤ))) * L by ring, GlobalTheory.LevelLower.per L χ hχ]`. Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite using `[hg]`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[GlobalTheory.LevelLower.slz_sum]`. Repeatedly rewrite using `[key τ]`. Rewrite using `[← Finset.mul_sum, Equiv.sum_comp e (fun j => slz k (repU l j) (qs a) τ)]`.
+-/
 theorem GlobalTheory.Uo_lowers_level : ∀ (k L l : ℕ) (χ : ℤ → ℂ) (a : ℕ → ℂ), 1 ≤ k → l.Prime → l ∣ L →
     (∀ d, χ (d + L) = χ d) → MF k (L * l) χ a → MF k L χ (Uo l a) := by
   intro k L l χ a hk hl hlL hχ hMF

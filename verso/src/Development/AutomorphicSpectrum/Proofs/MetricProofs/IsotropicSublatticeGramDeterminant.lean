@@ -18,6 +18,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.IsoCovol
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
+/- English proof (translation)
+Take `⟨-, -, h3, h4, h5⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Establish `ex : ∀ (a : 𝓞 E) (x : Fin g → ℂ), R.B a x = ∑ s : E →+* ℂ, (s.comp (algebraMap (𝓞 E) E)) a • eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x` using `fun a x => by conv_lhs => rw [← h4 (R.B a x)]`. Conclude with `Finset.sum_congr rfl fun s _ => (h3 _).2.2.2 a x`. Rewrite using `[ex ω x, ex ω' y, ip_sum_left]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[ip_sum_right, Finset.sum_eq_single s]`. Rewrite using `[ip_smul_left, ip_smul_right]`. Simplify using `only [RingHom.comp_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s' _ hs`.
+
+Rewrite using `[ip_smul_left, ip_smul_right, h5 _ _ (comp_ne hs.symm) _ ((h3 _).1 x) _ ((h3 _).1 y)]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+-/
 theorem ip_act_act (R : RiemLat E g Λ) (ω ω' : 𝓞 E) (x y : Fin g → ℂ) :
     R.ip (R.B ω x) (R.B ω' y) = ∑ s : E →+* ℂ, star (s (algebraMap (𝓞 E) E ω)) *
       R.ip (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) x) (eigComp R.B (s.comp (algebraMap (𝓞 E) E)) y) *
@@ -39,12 +46,22 @@ theorem ip_act_act (R : RiemLat E g Λ) (ω ω' : 𝓞 E) (x y : Fin g → ℂ) 
     simp
   · simp
 
+/- English proof (translation)
+Establish `h` using `R.im y x`. Rewrite `h` using `[hI y hy x hx]`. Simplify `h` using `[RiemLat.ip]`.
+-/
 theorem ip_im_eq_zero (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} (hI : IsIsoSub R.form I) {x y : Λ}
     (hx : x ∈ I) (hy : y ∈ I) : (R.ip (R.P x) (R.P y)).im = 0 := by
   have h := R.im y x
   rw [hI y hy x hx] at h
   simpa [RiemLat.ip] using h
 
+/- English proof (translation)
+Establish `hJI : Submodule.span (𝓞 E) (Set.range v) ≤ I` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hv a)`. Use extensionality with `⟨a, τ⟩ ⟨b, τ'⟩`. Establish `hre : ((R.ip (R.P (towerZBasis hli (a, τ) : Λ)) (R.P (towerZBasis hli (b, τ') : Λ))).re : ℂ) = R.ip (R.P (towerZBasis hli (a, τ) : Λ)) (R.P (towerZBasis hli (b, τ') : Λ))`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Simplify using `using (ip_im_eq_zero R hI (hJI (towerZBasis hli (a, τ)).2) (hJI (towerZBasis hli (b, τ')).2)).symm`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Complex.ofRealHom_eq_coe, hre]`. Simplify using `only [towerZBasis_apply, R.act]`. Rewrite using `[ip_act_act]`. Simplify using `only [mul_apply, conjTranspose_apply, kroneckerMap_apply, one_apply, transpose_apply, blockDiagonal_apply, Fintype.sum_prod_type, basisMatrix_apply']`.
+
+Simplify using `only [ite_mul, one_mul, zero_mul, mul_ite, mul_zero, star_zero, apply_ite star, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fintype.sum_eq_single b fun x hx ↦ by simp [hx]]`. Simplify using `only [if_true]`. Both sides reduce to the same expression.
+-/
 theorem gram_tower (R : RiemLat E g Λ) {I : Submodule (𝓞 E) Λ} (hI : IsIsoSub R.form I) {ρ : ℕ} {v : Fin ρ → Λ}
     (hv : ∀ a, v a ∈ I) (hli : LinearIndependent (𝓞 E) v) [DecidableEq (E →+* ℂ)] :
     Complex.ofRealHom.mapMatrix (Matrix.of fun p q =>
@@ -76,11 +93,17 @@ section CM
 variable {Ψ : Type} [Fintype Ψ]
 
 omit [IsCMField E] in
+/- English proof (translation)
+Assume the negation of the conclusion as `hs`. Conclude with `comp_ne hs h`.
+-/
 theorem emb_ext {s s' : E →+* ℂ} (h : s.comp (algebraMap (𝓞 E) E) = s'.comp (algebraMap (𝓞 E) E)) : s = s' := by
   by_contra hs
   exact comp_ne hs h
 
 omit [IsCMField E] in
+/- English proof (translation)
+Rewrite using `[RingHom.comp_assoc, extEmb_comp]`.
+-/
 theorem conj_extEmb_comp (t : 𝓞 E →+* ℂ) :
     ((starRingEnd ℂ).comp (extEmb t)).comp (algebraMap (𝓞 E) E) = (starRingEnd ℂ).comp t := by
   rw [RingHom.comp_assoc, extEmb_comp]
@@ -88,6 +111,19 @@ theorem conj_extEmb_comp (t : 𝓞 E →+* ℂ) :
 def cmSum (σ : Ψ → (𝓞 E →+* ℂ)) : Ψ ⊕ Ψ → (E →+* ℂ) :=
   Sum.elim (fun τ => extEmb (σ τ)) fun τ => (starRingEnd ℂ).comp (extEmb (σ τ))
 
+/- English proof (translation)
+Establish `cross : ∀ a b, (extEmb (σ a) : E →+* ℂ) ≠ (starRingEnd ℂ).comp (extEmb (σ b))`. Introduce `a b h`. Establish `h1` using `congrArg (fun φ : E →+* ℂ => φ.comp (algebraMap (𝓞 E) E)) h`. Simplify using `only [extEmb_comp, conj_extEmb_comp] at h1`. Conclude with `(hσ.2 (σ b)).1 ⟨b, rfl⟩ ⟨a, h1⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `(a | a) (b | b) h`. Establish `h1` using `congrArg (fun φ : E →+* ℂ => φ.comp (algebraMap (𝓞 E) E)) h`. Simplify using `only [cmSum, Sum.elim_inl, extEmb_comp] at h1`. Conclude with `congrArg Sum.inl (hσ.1 h1)`.
+
+Conclude with `absurd h (cross a b)`. Conclude with `absurd h.symm (cross b a)`. Establish `h1 : σ a = σ b` using `RingHom.ext fun x => by`. Establish `h2` using `congrArg (fun φ : E →+* ℂ => starRingEnd ℂ (φ (algebraMap (𝓞 E) E x))) h`. Simplify `h2` using `[cmSum, extEmb_apply]`.
+
+Conclude with `congrArg Sum.inr (hσ.1 h1)`. Introduce `s`. Distinguish the cases in `h : ∃ τ, σ τ = s.comp (algebraMap (𝓞 E) E)`. Take `⟨τ, hτ⟩` from `h`. Conclude with `⟨Sum.inl τ, emb_ext (by simp only [cmSum, Sum.elim_inl, extEmb_comp, hτ])⟩`.
+
+Establish `h' : ∃ τ, σ τ = (starRingEnd ℂ).comp (s.comp (algebraMap (𝓞 E) E))`. Assume the negation of the conclusion as `h''`. Conclude with `h ((hσ.2 _).2 h'')`. Take `⟨τ, hτ⟩` from `h'`. Use `⟨Sum.inr τ, emb_ext ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [cmSum, Sum.elim_inr, conj_extEmb_comp, hτ]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem cmSum_bijective {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) : Function.Bijective (cmSum σ) := by
   have cross : ∀ a b, (extEmb (σ a) : E →+* ℂ) ≠ (starRingEnd ℂ).comp (extEmb (σ b)) := by
     intro a b h
@@ -118,12 +154,24 @@ theorem cmSum_bijective {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) : Fu
       ext x
       simp
 
+/- English proof (translation)
+Rewrite using `[← NumberField.Embeddings.card E ℂ, ← Fintype.card_of_bijective (cmSum_bijective hσ), Fintype.card_sum]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_eq_two_card {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
     Module.finrank ℚ E = 2 * Fintype.card Ψ := by
   classical
   rw [← NumberField.Embeddings.card E ℂ, ← Fintype.card_of_bijective (cmSum_bijective hσ), Fintype.card_sum]
   ring
 
+/- English proof (translation)
+Rewrite using `[← (Equiv.ofBijective _ (cmSum_bijective hσ)).prod_comp, Fintype.prod_sum_type, ← Finset.prod_mul_distrib]`. Use `push_cast`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.ofBijective_apply, cmSum, Sum.elim_inl, Sum.elim_inr, extEmb_comp, conj_extEmb_comp]`. Use `set G := R.gram fun a => eigComp R.B (σ τ) (R.P (v a)) with hGdef`.
+
+Establish `hconj : (R.gram fun a => eigComp R.B ((starRingEnd ℂ).comp (σ τ)) (R.P (v a))) = G.map (starRingEnd ℂ)`. Use extensionality with `a b`. Conclude with `(GlobalTheory.T.isotropic_eigencomponent_conjugate_form E g Λ Ψ R I hI (σ τ)).1 _ (hv a) _ (hv b)`. Establish `htr : G.map (starRingEnd ℂ) = Gᵀ`. Use extensionality with `a b`.
+
+Conclude with `ip_conj R _ _`. Establish `hdet : starRingEnd ℂ G.det = G.det`. Establish `h1` using `RingHom.map_det (starRingEnd ℂ) G`. Rewrite `h1` using `[RingHom.mapMatrix_apply, htr, det_transpose]`. Conclude with `h1`.
+
+Establish `hre : (G.det.re : ℂ) = G.det` using `Complex.conj_eq_iff_re.1 hdet`. Rewrite using `[hconj, htr, det_transpose, hre]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_det_gram (R : RiemLat E g Λ) {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule (𝓞 E) Λ}
     (hI : IsIsoSub R.form I) {ρ : ℕ} {v : Fin ρ → Λ} (hv : ∀ a, v a ∈ I) :
     ∏ s : E →+* ℂ, (R.gram fun a => eigComp R.B (s.comp (algebraMap (𝓞 E) E)) (R.P (v a))).det =
@@ -157,6 +205,9 @@ variable {Ψ : Type} [Fintype Ψ]
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `|(discr E : ℝ)| ^ ρ * ∏ τ, ((R.gram fun a => eigComp R.B (σ τ) (R.P (v a))).det.re) ^ 2 := by classical apply Complex.ofReal_injective have hG := congrArg Matrix.det (gram_tower R hI hv hli) rw [← RingHom.map_det, Complex.ofRealHom_eq_coe] at hG rw [hG, det_mul, det_mul, det_conj …`.
+-/
 theorem det_gram_tower (R : RiemLat E g Λ) {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule (𝓞 E) Λ}
     (hI : IsIsoSub R.form I) {ρ : ℕ} {v : Fin ρ → Λ} (hv : ∀ a, v a ∈ I) (hli : LinearIndependent (𝓞 E) v) :
     (Matrix.of fun p q => (R.ip (R.P (towerZBasis hli p : Λ)) (R.P (towerZBasis hli q : Λ))).re).det =
@@ -180,6 +231,17 @@ theorem det_gram_tower (R : RiemLat E g Λ) {σ : Ψ → (𝓞 E →+* ℂ)} (h�
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨-, hvI, hli, hidx⟩` from `hv`. Use `set J := Submodule.span (𝓞 E) (Set.range v) with hJdef`. Establish `hJI : J ≤ I` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hvI a)`. Set `B` to `towerZBasis hli`. Use `haveI : Module.Finite ℤ J := Module.Finite.of_basis B`.
+
+Use `haveI : Module.Finite ℤ I := Module.Finite.of_basis b`. Establish `hJ : Module.finrank ℤ J = ρ * Module.finrank ℚ E`. Rewrite using `[Module.finrank_eq_card_basis B, Fintype.card_prod, Fintype.card_fin, NumberField.Embeddings.card]`. Establish `hIr : Module.finrank ℤ I = m`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+
+Set `i1 : J →+ I` to `{ toFun := fun x => ⟨x, hJI x.2⟩, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Set `i2 : I →+ J` to `{ toFun := fun x => ⟨J.toAddSubgroup.relIndex I.toAddSubgroup • (x : Λ), AddSubgroup.nsmul_relIndex_mem J.toAddSubgroup (K := I.toAddSubgroup) x.2⟩ map_zero' := by ext; simp map_add' := fun x y => by ext; simp [smul_add] }`. Establish `h1 : Function.Injective i1.toIntLinearMap` using `fun x y h => Subtype.ext (congrArg (fun z : I => (z : Λ)) h)`. Establish `h2 : Function.Injective i2.toIntLinearMap`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Establish `hx' : J.toAddSubgroup.relIndex I.toAddSubgroup • (x : Λ) = 0` using `congrArg (fun z : J => (z : Λ)) hx`. Conclude with `Subtype.ext (htf _ _ hidx hx')`. Establish `l1` using `LinearMap.finrank_le_finrank_of_injective h1`. Establish `l2` using `LinearMap.finrank_le_finrank_of_injective h2`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_basis_eq (htf : ∀ (n : ℕ) (x : Λ), n ≠ 0 → n • x = 0 → x = 0) {I : Submodule (𝓞 E) Λ} {ρ : ℕ}
     {v : Fin ρ → Λ} (hv : IsNzFamily I ρ v) {m : ℕ} (b : Module.Basis (Fin m) ℤ I) :
     m = ρ * Module.finrank ℚ E := by
@@ -214,6 +276,23 @@ theorem card_basis_eq (htf : ∀ (n : ℕ) (x : Λ), n ≠ 0 → n • x = 0 →
 omit [IsCMField E] in
 open Classical in
 
+/- English proof (translation)
+Establish `hli` using `hv.2.2.1`. Use `set J := Submodule.span (𝓞 E) (Set.range v)`. Establish `hJI : J.toAddSubgroup ≤ I.toAddSubgroup` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hv.2.1 a)`. Establish `hc : Fintype.card (Fin m) = Fintype.card (Fin ρ × (E →+* ℂ))`. Rewrite using `[Fintype.card_fin, hm, Fintype.card_prod, Fintype.card_fin, NumberField.Embeddings.card]`.
+
+Set `e : Fin m ≃ Fin ρ × (E →+* ℂ)` to `Fintype.equivOfCardEq hc`. Set `eI : I ≃+ I.toAddSubgroup.toIntSubmodule` to `{ toFun := fun x => ⟨x, x.2⟩, invFun := fun x => ⟨x, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl }`. Set `B₂ : Module.Basis (Fin ρ × (E →+* ℂ)) ℤ I.toAddSubgroup.toIntSubmodule` to `(b.map eI.toIntLinearEquiv).reindex e`. Establish `hB₂ : ∀ k, (B₂ k : Λ) = b (e.symm k)`. Introduce `k`.
+
+Simplify using `only [B₂, Module.Basis.reindex_apply, Module.Basis.map_apply]`. Both sides reduce to the same expression. Set `eJ : J ≃+ J.toAddSubgroup.toIntSubmodule` to `{ toFun := fun x => ⟨x, x.2⟩, invFun := fun x => ⟨x, x.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl }`. Set `B₁ : Module.Basis (Fin ρ × (E →+* ℂ)) ℤ J.toAddSubgroup.toIntSubmodule` to `(towerZBasis hli).map eJ.toIntLinearEquiv`. Establish `hidx` using `AddSubgroup.relIndex_eq_natAbs_det J.toAddSubgroup I.toAddSubgroup hJI B₁ B₂`.
+
+Rewrite `hidx` using `[Module.Basis.det_apply]`. Use `set M := B₂.toMatrix fun i => (⟨B₁ i, hJI (SetLike.coe_mem _)⟩ : I.toAddSubgroup.toIntSubmodule)`. Establish `hexp : ∀ p, (towerZBasis hli p : Λ) = ∑ k, M k p • (b (e.symm k) : Λ)`. Introduce `p`. Establish `h` using `congrArg Subtype.val (B₂.sum_repr ⟨B₁ p, hJI (SetLike.coe_mem _)⟩)`.
+
+Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hB₂] at h`. Establish `hB₁ : (B₁ p : Λ) = towerZBasis hli p` using `rfl`. Rewrite using `[← hB₁, ← h]`. Both sides reduce to the same expression. Establish `hgram : (Matrix.of fun p q => f (towerZBasis hli p : Λ) (towerZBasis hli q : Λ)) = (M.map (Int.cast : ℤ → ℝ))ᵀ * (Matrix.of fun k l => f (b k : Λ) (b l : Λ)).submatrix e.symm e.symm * M.map (Int.cast : ℤ → ℝ)`.
+
+Use extensionality with `p q`. Rewrite using `[Matrix.of_apply, hexp p, hexp q]`. Simplify using `only [map_sum, map_zsmul, AddMonoidHom.finset_sum_apply, AddMonoidHom.coe_smul, Pi.smul_apply]`. Simplify using `only [zsmul_eq_mul, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Matrix.submatrix_apply, Matrix.of_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hc' : (M.map (Int.cast : ℤ → ℝ)).det = (M.det : ℝ)`. Use `(Int.castRingHom ℝ).map_det M` as an intermediate fact. Simplify using `using this.symm`. Rewrite using `[hgram, det_mul, det_mul, det_transpose, det_submatrix_equiv_self, hidx, Nat.cast_natAbs, Int.cast_abs, sq_abs, hc']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_gram_index (f : Λ →+ Λ →+ ℝ) {I : Submodule (𝓞 E) Λ} {ρ : ℕ} {v : Fin ρ → Λ}
     (hv : IsNzFamily I ρ v) {m : ℕ} (b : Module.Basis (Fin m) ℤ I) (hm : m = ρ * Module.finrank ℚ E) :
     (Matrix.of fun p q => f (towerZBasis hv.2.2.1 p : Λ) (towerZBasis hv.2.2.1 q : Λ)).det =
@@ -273,14 +352,31 @@ def reForm (R : RiemLat E g Λ) : Λ →+ Λ →+ ℝ :=
   AddMonoidHom.mk' (fun x => AddMonoidHom.mk' (fun y => (R.ip (R.P x) (R.P y)).re)
     (fun a b => by simp [map_add, ip_add_right])) (fun a b => by ext y; simp [map_add, ip_add_left])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem reForm_apply (R : RiemLat E g Λ) (x y : Λ) : reForm R x y = (R.ip (R.P x) (R.P y)).re := rfl
 
+/- English proof (translation)
+Establish `hpos : Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`. Establish `h` using `Real.rpow_inv_natCast_pow (abs_nonneg (discr E : ℝ)) hpos`. Rewrite using `[one_div, ← pow_mul, show f * ρ * 2 = Module.finrank ℚ E * ρ by rw [hn]; ring, pow_mul, h]`.
+-/
 theorem rd_sq {f : ℕ} (hn : Module.finrank ℚ E = 2 * f) (ρ : ℕ) :
     ((|(discr E : ℝ)| ^ (1 / (Module.finrank ℚ E : ℝ))) ^ (f * ρ)) ^ 2 = |(discr E : ℝ)| ^ ρ := by
   have hpos : Module.finrank ℚ E ≠ 0 := Module.finrank_pos.ne'
   have h := Real.rpow_inv_natCast_pow (abs_nonneg (discr E : ℝ)) hpos
   rw [one_div, ← pow_mul, show f * ρ * 2 = Module.finrank ℚ E * ρ by rw [hn]; ring, pow_mul, h]
 
+/- English proof (translation)
+Introduce `E _ _ _ g Λ _ _ Ψ _ R σ I hσ hI hne m b`. Take `⟨⟨r, v, hv⟩, hall⟩` from `GlobalTheory.T.isotropic_sublattice_covolume_positive E g Λ Ψ R σ I hσ hI hne`. Take `⟨hnz, -, hr⟩` from `hall r v hv`. Establish `hf` using `finrank_eq_two_card hσ`. Establish `htf : ∀ (n : ℕ) (x : Λ), n ≠ 0 → n • x = 0 → x = 0`.
+
+Introduce `n x hn hx`. Take `⟨hinj, -⟩` from `GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R`. Apply `hinj` to reduce the goal to its premises. Establish `h1 : n • R.P x = 0` using `by rw [← map_nsmul, hx, map_zero]`. Rewrite using `[map_zero]`.
+
+Conclude with `(smul_eq_zero.1 (by rw [← Nat.cast_smul_eq_nsmul ℂ] at h1; exact h1)).resolve_left (by exact_mod_cast hn)`. Establish `hm` using `card_basis_eq htf hv b`. Use `⟨by rw [hm, hf, ← hr]; ring, ?_⟩` and prove the remaining obligations. Establish `h1` using `det_gram_index (reForm R) hv b hm`. Simplify using `only [reForm_apply] at h1`.
+
+Rewrite `h1` using `[det_gram_tower R hσ hI hv.2.1 hv.2.2.1]`. Establish `hidx : ((Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup.relIndex I.toAddSubgroup : ℝ) ≠ 0`. Conclude with `hv.2.2.2` after adjusting the coercions. Rewrite using `[hnz, ← hr, mul_pow, rd_sq hf, RiemLat.nzOf, div_pow, ← Finset.prod_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Combine the linear relations using `[h1]`.
+-/
 theorem det_re_gram_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (Ψ : Type) [Fintype Ψ] (R : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (I : Submodule (𝓞 E) Λ),
     IsCMFam σ → IsIsoSub R.form I → I ≠ ⊥ → ∀ (m : ℕ) (b : Module.Basis (Fin m) ℤ I),

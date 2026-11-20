@@ -18,8 +18,14 @@ open PAlg H2
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (ht : TFil l) (hs : CrisSurj l)
   {S : ∀ m, Lv (cb K ht hs) (m + 1)} (H : Hyp S)
 
+/- English proof (translation)
+The claim follows from `(toY_comp ht hs x).2 h`.
+-/
 theorem cY {M : Model l K} {r j : ℕ} {x : Fam M r j} (h : Comp x) : CB.Comp (toY ht hs x) := (toY_comp ht hs x).2 h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toY_pull {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) {r j : ℕ} (x : Fam N r j) (n : ℕ) :
     toY ht hs (pullS u hu x) n = (pdOm (c := (cb K ht hs).c n) (c' := (cb K ht hs).c n) (pullM (cb K ht hs) u hu n)
       (RingHom.id (cb K ht hs).Λ) (fun _ => rfl) r).pull j (toY ht hs x n) := rfl
@@ -28,15 +34,24 @@ def galY (M : Model l K) (σ : K.fixingSubgroup) (n : ℕ) : GlobalTheory.LogCri
     (galBase (IntermediateField.fixingSubgroupEquiv K σ) n) :=
   CrystallineSemistableComparison.SH.galM (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n
 
+/- English proof (translation)
+The claim follows from `CrystallineSemistableComparison.SH.base_snd (B.schFn M.p) (B.gal_κb (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n) B₀ y`.
+-/
 theorem galY_pt (M : Model l K) (σ : K.fixingSubgroup) (n : ℕ) (B₀ : CommRingCat.{0}) (y : ((cb K ht hs).L M n).Pt.obj B₀) :
     ((galY ht hs M σ n).pt.app B₀ y).1.2 = y.1.2 :=
   CrystallineSemistableComparison.SH.base_snd (B.schFn M.p) (B.gal_κb (okToOC l K) (IntermediateField.fixingSubgroupEquiv K σ) (galOC_okToOC _) false n) B₀ y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toY_gal {M : Model l K} (σ : K.fixingSubgroup) {r j : ℕ} (x : Fam M r j) (n : ℕ) :
     toY ht hs (galS σ x) n = (pdOm (c := (cb K ht hs).c n) (c' := (cb K ht hs).c n) (galY ht hs M σ n)
       (ACris.galCris (IntermediateField.fixingSubgroupEquiv K σ)) (galBase_cris _ n) r).pull j (toY ht hs x n) := rfl
 
 include H in
+/- English proof (translation)
+The claim follows from `H.add hM (cY ht hs hx) (cY ht hs hy) (cY ht hs (comp_add hx hy)) a lin hM _ _ c x hx a φ := H.lin hM c (cY ht hs hx) (cY ht hs (comp_smul c hx)) a φ lin' hM _ _ x hx a k φ := H.lin' hM (cY ht hs hx) a k φ sh hM _ _ _ k h x hx a := H.sh hM k h (cY ht hs hx) (cY ht hs (comp_sh ht k …`.
+-/
 theorem half_galois_of_compatible (hg : ∀ (m : ℕ) (σ : K.fixingSubgroup), Nonempty (LHom (S m) (S m)
     (ACris.galCris (IntermediateField.fixingSubgroupEquiv K σ)) (galBase (IntermediateField.fixingSubgroupEquiv K σ))
     (period_ring_base.σC σ.1).toRingHom (qC l (period_ring_base.χ σ.1)))) :
@@ -53,6 +68,9 @@ theorem half_galois_of_compatible (hg : ∀ (m : ℕ) (σ : K.fixingSubgroup), N
   c1 hM D hD x c hx h1 h2 := H.c1' hM D hD _ c (cY ht hs hx) ((toY_isFirstChern_iff ht hs D x).2 h1) h2
 
 variable (l K) in
+/- English proof (translation)
+Introduce `ht hs hL h1 h2 h3 h4 h5 h6 h7 _` and use `(hL ht hs).elim fun S => ⟨_, half_galois_of_compatible ht hs (S := S.L) ⟨h1, h2, h3, h4, h5, h6, h7, fun m => ⟨S.dn m⟩⟩ fun m σ => ⟨S.gal m σ⟩⟩`.
+-/
 theorem half2Of : Half2Of l K := fun ht hs hL h1 h2 h3 h4 h5 h6 h7 _ =>
   (hL ht hs).elim fun S => ⟨_, half_galois_of_compatible ht hs (S := S.L) ⟨h1, h2, h3, h4, h5, h6, h7, fun m => ⟨S.dn m⟩⟩ fun m σ => ⟨S.gal m σ⟩⟩
 

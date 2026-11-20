@@ -6,6 +6,9 @@ noncomputable def UpperTheory.Reformulated.B.StandardLattice.pZ :
       @Ideal.span Int Int.instSemiring
         (@Singleton.singleton Int (Set Int) (@Set.instSingletonSet Int) (@Nat.cast Int instNatCastInt l))
 
+/- English proof (translation)
+Introduce `l hl`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Conclude with `(Ideal.span_singleton_prime hp.ne_zero).mpr hp`.
+-/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux2 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)], @Ideal.IsPrime Int Int.instSemiring (UpperTheory.Reformulated.B.StandardLattice.pZ l) := by
   intro l hl
@@ -38,6 +41,9 @@ theorem UpperTheory.Reformulated.B.StandardLattice.aux2 :
         (@CommRing.toCommMonoid (@NumberField.RingOfIntegers K inst) (@NumberField.instCommRingRingOfIntegers K inst))
         (@UpperTheory.Reformulated.B.StandardLattice.Ml l hl K inst)
 
+/- English proof (translation)
+Introduce `l hl K inst`. Conclude with `Localization.isLocalization`.
+-/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux5 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K],
       @IsLocalization (@NumberField.RingOfIntegers K inst)
@@ -74,6 +80,11 @@ theorem UpperTheory.Reformulated.B.StandardLattice.aux5 :
   intro l hl K inst
   exact Localization.isLocalization
 
+/- English proof (translation)
+Introduce `l hl K inst _ y`. Take `⟨y, n, hn, rfl⟩` from `y`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (Ideal.zero_mem _)`.
+
+Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Simplify using `using hn0`.
+-/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux6 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K] [@NumberField K inst]
       (y : ↥(@UpperTheory.Reformulated.B.StandardLattice.Ml l hl K inst)),
@@ -334,6 +345,15 @@ noncomputable def UpperTheory.Reformulated.B.StandardLattice.atL :
             (@AddCommGroup.toAddCommMonoid V inst_2) inst_4)
           L)
 
+/- English proof (translation)
+Introduce `l hl K inst inst_1 V inst_2 inst_3 inst_4 tower L x`. Use `letI := UpperTheory.Reformulated.B.StandardLattice.rlModule l K V`. Establish `hact : ∀ (r : NumberField.RingOfIntegers K) (v : V), (algebraMap (NumberField.RingOfIntegers K) (UpperTheory.Reformulated.B.StandardLattice.Rl l K) r) • v = r • v`. Introduce `r v`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.StandardLattice.rlToK l K (algebraMap _ _ r) • v = r • v`.
+
+Unfold `UpperTheory.Reformulated.B.StandardLattice.rlToK`. Rewrite using `[IsLocalization.lift_eq, algebraMap_smul]`. Use `haveI : IsScalarTower (NumberField.RingOfIntegers K) (UpperTheory.Reformulated.B.StandardLattice.Rl l K) V := IsScalarTower.of_algebraMap_smul hact`. Unfold `UpperTheory.Reformulated.B.StandardLattice.atL`. Rewrite using `[IsLocalization.mem_span_iff (UpperTheory.Reformulated.B.StandardLattice.Ml l K), Submodule.span_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, z, rfl⟩`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hact, smul_smul, IsLocalization.mk'_spec', map_one, one_smul]`. Conclude with `hy`.
+
+Introduce and unpack `⟨s, hs, hx⟩`. Use `⟨s • x, hx, ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hact, smul_smul]`. Use `IsLocalization.mk'_spec (UpperTheory.Reformulated.B.StandardLattice.Rl l K) (1 : NumberField.RingOfIntegers K) (⟨s, hs⟩ : UpperTheory.Reformulated.B.StandardLattice.Ml l K)` as an intermediate fact. Rewrite using `[this, map_one, one_smul]`.
+-/
 theorem UpperTheory.Reformulated.B.StandardLattice.mem_atL_iff :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K] [inst_1 : @NumberField K inst] {V : Type}
       [inst_2 : AddCommGroup V]

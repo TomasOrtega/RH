@@ -14,14 +14,33 @@ namespace GlobalTheory.OrthDual
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨t, h⟩, rfl⟩`.
+-/
 theorem int_mem_range {t : E} (h : IsIntegral ℤ t) : t ∈ (algebraMap (𝓞 E) E).range :=
   ⟨⟨t, h⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨r, rfl⟩` from `h`. Conclude with `int_mem_range (IsIntegral.map τ.toIntAlgHom r.isIntegral_coe)`.
+-/
 theorem ringHom_mem_range (τ : E →+* E) {t : E} (h : t ∈ (algebraMap (𝓞 E) E).range) :
     τ t ∈ (algebraMap (𝓞 E) E).range := by
   obtain ⟨r, rfl⟩ := h
   exact int_mem_range (IsIntegral.map τ.toIntAlgHom r.isIntegral_coe)
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n₁, h₁, hx⟩` from `hx`.
+
+Take `⟨n₂, h₂, hy⟩` from `hy`. Use `⟨n₁ * n₂, mul_ne_zero h₁ h₂, ?_⟩` and prove the remaining obligations. Establish `e : ((n₁ * n₂ : ℤ) : E) • (x + y) = n₂ • ((n₁ : E) • x) + n₁ • ((n₂ : E) • y)`. Rewrite using `[← Int.cast_smul_eq_zsmul E, ← Int.cast_smul_eq_zsmul E, smul_smul, smul_smul, smul_add]`. Use `push_cast`.
+
+Rewrite using `[mul_comm (n₂ : E)]`. Rewrite using `[e]`. Conclude with `add_mem (zsmul_mem hx _) (zsmul_mem hy _)`. Consider the case `smul e x _ hx`. Take `⟨n, hn, hx⟩` from `hx`.
+
+Take `⟨k, hk, hki⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e}`. Establish `hke` using `hki e (Finset.mem_singleton_self e)`. Use `⟨k * n, mul_ne_zero hk hn, ?_⟩` and prove the remaining obligations. Establish `e1 : ((k * n : ℤ) : E) • (e • x) = (⟨k • e, hke⟩ : 𝓞 E) • ((n : E) • x)`. Rewrite using `[← algebraMap_smul E (⟨k • e, hke⟩ : 𝓞 E), smul_smul, smul_smul]`.
+
+Use `congr 1`. Use `show ((k * n : ℤ) : E) * e = (k • e) * n`. Use `push_cast`. Rewrite using `[zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1]`. Conclude with `M.smul_mem _ hx`.
+-/
 theorem exists_int_smul_mem (M : Submodule (𝓞 E) (Fin N → E)) {v : Fin N → E}
     (hv : v ∈ Submodule.span E (M : Set (Fin N → E))) : ∃ n : ℤ, n ≠ 0 ∧ (n : E) • v ∈ M := by
   induction hv using Submodule.span_induction with
@@ -52,6 +71,39 @@ theorem exists_int_smul_mem (M : Submodule (𝓞 E) (Fin N → E)) {v : Fin N �
     rw [e1]
     exact M.smul_mem _ hx
 
+/- English proof (translation)
+Use `set v : Fin N → Fin N → E := fun a => co.symm (Pi.single a 1) with hv`. Establish `key : ∀ x y, Formalism.UG.hform (σ : E →+* E) J x y = ∑ b, (σ : E →+* E) (co x b) * co y b` using `fun x y => (hc x y).symm`. Establish `hsingle : ∀ (a : Fin N) (c : E), Pi.single a c = c • (Pi.single a (1 : E) : Fin N → E)`. Introduce `a c`. Use extensionality with `j`.
+
+Simplify using `[Pi.single_apply]`. Establish `hexp : ∀ z : Fin N → E, z = ∑ a, co z a • v a`. Introduce `z`. Use `conv_lhs => rw [← co.symm_apply_apply z, ← Finset.univ_sum_single (co z)]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hsingle, map_smul]`. Establish `hcv : ∀ (c : E) a b, co (c • v a) b = if b = a then c else 0`. Introduce `c a b`. Simplify using `[v, Pi.single_apply]`.
+
+Establish `hform_v : ∀ (c : E) a x, Formalism.UG.hform (σ : E →+* E) J x (c • v a) = (σ : E →+* E) (co x a) * c`. Introduce `c a x`. Rewrite using `[key]`. Simplify using `[hcv]`. Establish `hex : ∀ a, ∃ n : ℤ, n ≠ 0 ∧ (n : E) • v a ∈ M` using `fun a => exists_int_smul_mem M (by rw [hM.2]; trivial)`.
+
+Use `choose n hn0 hnM using hex`. Establish `hle : Formalism.L2.GlobalTheoryTheory.Comp.dl σ J M ≤ Submodule.span (𝓞 E) (Set.range fun a => ((n a : E))⁻¹ • v a)`. Introduce `y hy`. Rewrite `hy` using `[Formalism.L2.GlobalTheoryTheory.Comp.mem_dl]`. Establish `hr : ∀ a, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = (n a : E) * co y a`.
+
+Introduce `a`. Take `⟨r, hr⟩` from `hy _ (hnM a)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, key, Finset.sum_eq_single a]`. Rewrite using `[hcv, if_pos rfl, map_intCast]`.
+
+Introduce `b _ hb`. Rewrite using `[hcv, if_neg hb, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Use `choose r hr using hr`.
+
+Rewrite using `[hexp y]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `e3 : co y a • v a = r a • (((n a : E))⁻¹ • v a)`. Rewrite using `[← algebraMap_smul E (r a), smul_smul, hr a, mul_comm (n a : E), mul_assoc, mul_inv_cancel₀ (Int.cast_ne_zero.2 (hn0 a)), mul_one]`. Rewrite using `[e3]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `haveI : Module.Finite (𝓞 E) (Submodule.span (𝓞 E) (Set.range fun a => ((n a : E))⁻¹ • v a)) := Module.Finite.span_of_finite _ (Set.finite_range _)`. Use `⟨Module.Finite.of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle), ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `Module.Finite.iff_fg.1 hM.1`. Take `⟨m, hm0, hmi⟩` from `exists_integral_multiples ℤ ℚ (L := E) (s.biUnion fun x => Finset.univ.image fun b => co x b)`.
+
+Establish `hint : ∀ a, ∀ x ∈ M, (m : E) * co x a ∈ (algebraMap (𝓞 E) E).range`. Introduce `a x hx`. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Apply `int_mem_range` to reduce the goal to its premises. Use `hmi (co x a) (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩⟩)` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, Pi.add_apply, mul_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul t x _ hx`. Rewrite using `[← algebraMap_smul E t x, map_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Conclude with `mul_mem ⟨t, rfl⟩ hx`. Establish `hmem : ∀ a, (m : E) • v a ∈ Formalism.L2.GlobalTheoryTheory.Comp.dl σ J M`.
+
+Introduce `a`. Rewrite using `[Formalism.L2.GlobalTheoryTheory.Comp.mem_dl]`. Introduce `x hx`. Rewrite using `[hform_v]`. Establish `e4 : (σ : E →+* E) (co x a) * (m : E) = (σ : E →+* E) ((m : E) * co x a)`.
+
+Rewrite using `[map_mul, map_intCast, mul_comm]`. Rewrite using `[e4]`. Conclude with `ringHom_mem_range _ (hint a x hx)`. Rewrite using `[eq_top_iff]`. Introduce `z _`.
+
+Rewrite using `[hexp z]`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `e5 : v a = ((m : E))⁻¹ • ((m : E) • v a)`. Rewrite using `[smul_smul, inv_mul_cancel₀ (Int.cast_ne_zero.2 hm0), one_smul]`. Rewrite using `[e5]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hmem a))`.
+-/
 theorem isLat_dl (σ : E →ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (co : (Fin N → E) ≃ₗ[E] (Fin N → E))
     (hc : Formalism.L2.PairingIndexBounds.F.IsOrthCo (σ : E →+* E) J co) (M : Submodule (𝓞 E) (Fin N → E))
     (hM : Formalism.L2.GlobalTheoryTheory.Comp.IsLat M) : Formalism.L2.GlobalTheoryTheory.Comp.IsLat (Formalism.L2.GlobalTheoryTheory.Comp.dl σ J M) := by
@@ -136,6 +188,9 @@ theorem isLat_dl (σ : E →ₐ[F] E) (J : Matrix (Fin N) (Fin N) E) (co : (Fin 
 
 end GlobalTheory.OrthDual
 
+/- English proof (translation)
+Introduce and unpack `R F E _ _ _ _ _ _ sp N J ⟨co, hc⟩ M hM`. Conclude with `GlobalTheory.OrthDual.isLat_dl sp.cm.sig J co hc M hM`.
+-/
 theorem GlobalTheory.isLat_dl_of_isOrthCo : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (sp : Spaces R F E) {N : ℕ} (J : Matrix (Fin N) (Fin N) E), (∃ co, IsOrthCo (sp.cm.sig : E →+* E) J co) → ∀ M : Submodule (𝓞 E) (Fin N → E), Formalism.L2.GlobalTheoryTheory.Comp.IsLat M → Formalism.L2.GlobalTheoryTheory.Comp.IsLat (Formalism.L2.GlobalTheoryTheory.Comp.dl sp.cm.sig J M) := by
   rintro R F E _ _ _ _ _ _ sp N J ⟨co, hc⟩ M hM
   exact GlobalTheory.OrthDual.isLat_dl sp.cm.sig J co hc M hM

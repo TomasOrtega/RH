@@ -10,6 +10,11 @@ private def subEq {R R' X : Type} [CommRing R] [CommRing R'] [AddCommGroup X] [M
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use `⟨QuotientAddGroup.congr (B.comap Z.subtype).toAddSubgroup (B'.comap Z'.subtype).toAddSubgroup (subEq Z Z' hZ) ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+
+Conclude with `(hB _).1 hy`. Introduce `hx`. Conclude with `⟨⟨x.1, (hZ _).2 x.2⟩, (hB _).2 hx, rfl⟩`.
+-/
 private theorem quotEq {R R' X : Type} [CommRing R] [CommRing R'] [AddCommGroup X] [Module R X] [Module R' X]
     (Z B : Submodule R X) (Z' B' : Submodule R' X)
     (hZ : ∀ x, x ∈ Z ↔ x ∈ Z') (hB : ∀ x, x ∈ B ↔ x ∈ B') :
@@ -23,6 +28,13 @@ private theorem quotEq {R R' X : Type} [CommRing R] [CommRing R'] [AddCommGroup 
   · intro hx
     exact ⟨⟨x.1, (hZ _).2 x.2⟩, (hB _).2 hx, rfl⟩
 
+/- English proof (translation)
+Introduce `R R' _ _ Γ _ _ M _ _ _ _ _ ρ ρ' h`. Establish `hd : ∀ c, d1 ρ c = d1 ρ' c`. Introduce `c`. Use function extensionality and compare the values at `p`. Take `⟨g, k⟩` from `p`.
+
+Rewrite using `[d1_apply, d1_apply, h]`. Use `⟨⟨subEq _ _ fun x => ?_⟩, quotEq _ _ _ _ (fun x => ?_) (fun x => ?_), quotEq _ _ _ _ (fun x => ?_) (fun x => ?_)⟩` and prove the remaining obligations. Simplify using `only [mem_riemannRochSpace_iff_regularAt_everywhere, h]`. Simplify using `only [mem_Z1_iff_cocycle, h]`. Simplify using `only [mem_coboundaries1, h]`.
+
+Simplify using `only [mem_cocycles2, h]`. Simplify using `only [separated_dvr_second_cohomology_mem, hd]`.
+-/
 theorem UpperTheory.V.X.So.scal :
     ∀ (R R' : Type) [CommRing R] [CommRing R'] (Γ : Type) [Group Γ] [TopologicalSpace Γ] (M : Type) [AddCommGroup M] [Module R M] [Module R' M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation R Γ M) (ρ' : Representation R' Γ M), (∀ g m, ρ g m = ρ' g m) → Nonempty (H0 ρ ≃+ H0 ρ') ∧ Nonempty (H1 ρ ≃+ H1 ρ') ∧ Nonempty (H2 ρ ≃+ H2 ρ') := by
   intro R R' _ _ Γ _ _ M _ _ _ _ _ ρ ρ' h

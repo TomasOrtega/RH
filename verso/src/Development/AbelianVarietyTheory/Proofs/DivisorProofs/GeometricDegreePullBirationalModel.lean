@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+The claim follows from `HermLB.isometric_of_eqOn fun σ a y _ => by exact (congrArg (· + 2 * t) (Weight.pull_φ (L.φ σ) π hπ a y)).trans (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t) π hπ a y).symm`.
+-/
 theorem isometric_pull_shiftC {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
     (L : HermLB p) (t : ℝ) (π : Y ⟶ X) (hπ : π ≫ p = q) :
     ((L.shift (fun _ => t) fun _ => rfl).pull π hπ).Isometric ((L.pull π hπ).shift (fun _ => t) fun _ => rfl) :=
@@ -21,6 +24,17 @@ theorem isometric_pull_shiftC {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X 
     exact (congrArg (· + 2 * t) (Weight.pull_φ (L.φ σ) π hπ a y)).trans
       (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t) π hπ a y).symm
 
+/- English proof (translation)
+Introduce `hC k _ X Y _ _ p q D hX hY π hπ φ hM L`. Establish `hdeg : π.residueDegree (genericPoint Y) ≠ 0` using `by rw [hM.deg]; exact one_ne_zero`. Establish `hP` using `((hC.arProj k X Y p q D hX hY π hπ hM.gen hdeg).1)`. Establish `hP1 : ∀ (M : HermLB p) (a : ℝ), M.IsSelfInter a → (M.pull π hπ).IsSelfInter a` using `fun M a h => by`. Use `hP M a h` as an intermediate fact.
+
+Rewrite `this` using `[hM.deg, Nat.cast_one, one_mul]`. Then use the resulting hypothesis. Establish `hS` using `hC.arShift`. Establish `hg : gdeg (L.pull π hπ) D = gdeg L D`. Take `⟨h, hh⟩` from `((hC.arExists k X p D hX).1 L)`. Establish `ha : L.IsSelfInter (h (genericPoint X))` using `⟨h, hh, rfl⟩`.
+
+Use `set a := h (genericPoint X)`. Establish `h1` using `hP1 _ _ (hS k X p D hX L a 1 ha)`. Establish `h1'` using `(isometric_pull_shiftC L 1 π hπ).isSelfInter hY h1`. Establish `h2` using `hS k Y q D hY (L.pull π hπ) a 1 (hP1 L a ha)`. Establish `e` using `HermLB.IsSelfInter.unique hY h1' h2`.
+
+Establish `hD : ((D : ℝ) + 1) ≠ 0` using `by positivity`. Establish `: ((D : ℝ) + 1) * gdeg L D = ((D : ℝ) + 1) * gdeg (L.pull π hπ) D` using `by linarith`. Conclude with `(mul_left_cancel₀ hD this).symm`. Use `⟨hg, fun a t ha => ?_⟩` and prove the remaining obligations. Use `hS k Y q D hY (L.pull π hπ) a t (hP1 L a ha)` as an intermediate fact.
+
+Rewrite `this` using `[hg]`. Then use the resulting hypothesis.
+-/
 theorem gdeg_pull_model : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y]
     (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (D : ℕ), IsArithVar p D → IsArithVar q D → ∀ (π : Y ⟶ X) (hπ : π ≫ p = q)
     (φ : X.functionField →+* Y.functionField), IsModel π φ → ∀ L : HermLB p, gdeg (L.pull π hπ) D = gdeg L D ∧

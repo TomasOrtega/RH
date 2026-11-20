@@ -4,6 +4,9 @@ import Mathlib
 open SchwartzMap Filter Topology
 open scoped Nat
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.taylorPoly_iteratedFDeriv_le | exact GlobalTheory.taylorPoly_iteratedFDeriv_le | (intros; apply GlobalTheory.taylorPoly_iteratedFDeriv_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_taylor_partial_sum_deriv_bound : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (ψ : SchwartzMap V ℂ) (A ρ : ℝ), (∀ (j : ℕ) (y : V), ‖iteratedFDeriv ℝ j ψ y‖ ≤ A * ρ ^ j) →
     ∀ (m a : ℕ) (x : V), ‖iteratedFDeriv ℝ a (fun y => ∑ j ∈ Finset.range (m + 1),

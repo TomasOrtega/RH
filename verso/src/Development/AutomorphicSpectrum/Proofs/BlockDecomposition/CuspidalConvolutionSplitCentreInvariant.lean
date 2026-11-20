@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SmoothRep
 
+/- English proof (translation)
+Establish `hR` using `R_splitCentre (μ := μ) t hF`. Establish `h1` using `GlobalTheory.AutomorphicL2Unitary.lift_R (Γ := latticeGL E a) (μ := μ) (splitCentre E a t) F`. Rewrite `h1` using `[hR]`. Establish `h2` using `(measurePreserving_mul_left μ x).quasiMeasurePreserving.ae_eq h1`. Unfold `convR`.
+
+Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2] with y hy`. Establish `e : splitCentre E a t * x * y = x * y * splitCentre E a t`. Rewrite using `[splitCentre_comm t x, mul_assoc, splitCentre_comm t y, ← mul_assoc]`. Rewrite using `[e]`.
+
+Conclude with `congrArg (f y * ·) hy.symm`.
+-/
 theorem convR_lift_splitCentre_mul (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (μ : Measure (GA E a)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (f : GA E a → ℂ)
     (F : L2 (latticeGL E a) μ) (hF : F ∈ L2cusp μ) (t : ℝ) (x : GA E a) :

@@ -20,6 +20,21 @@ def CutTail2 : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n
     IsROp D Φ (T₁ * U * T₂) → IsPiPart D π U Uπ → D4.IsTest2J (trM Φ M) (r₀ + k * r₁) →
     ‖∫ x, lInt D k₁ k₂ (C' * ((1 + k) * (1 + r₀ + r₁))) Uπ x ∂D.ν - ∫ x, lInt0 D k₁ k₂ Uπ x ∂D.ν‖ ≤ C * ‖U‖ * ε ^ k
 
+/- English proof (translation)
+Introduce `E _ _ _ _ n hn _ _ _ _ μ₁ _ μ₂ _`. Take `⟨F₁, F₂, D, h₁, h₂, hcut, hmu⟩` from `hD E n μ₁ μ₂`. Use `⟨D, hmu, ?_⟩` and prove the remaining obligations. Introduce `π hπ ι _ Φ₁ Φ₂ T₁ T₂ M r₀ r₁ ε a1 a2 hfin b1 b2 hr₀ hr₁ hε`. Take `⟨C₀, hC₀, hell⟩` from `hE E n 0`.
+
+Take `⟨k₁, k₂, hv, C, N, hb⟩` from `hS E n 0 D ι Φ₁ Φ₂ T₁ T₂ M a1 a2 b1 b2`. Take `⟨C'₀, hT'⟩` from `hT E n hn D π hπ ι Φ₁ Φ₂ T₁ T₂ M k₁ k₂ r₀ r₁ ε a1 a2 hfin b1 b2 hv hr₀ hr₁ hε`. Take `⟨Ct, hCt⟩` from `hT' (max C₀ C'₀) (le_max_right _ _)`. Establish `hC'0 : 0 ≤ max C₀ C'₀` using `le_trans hC₀ (le_max_left _ _)`. Use `⟨max (|C| * (1 + max C₀ C'₀ * (1 + r₀ + r₁)) ^ N) |Ct|, N, fun k U Φ t c1 c2 hU1 hU2 c3 ht => ?_⟩` and prove the remaining obligations.
+
+Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Establish `hr : 0 ≤ r₀ + k * r₁` using `by positivity`. Establish `hg : 1 + (r₀ + k * r₁) ≤ (1 + k) * (1 + r₀ + r₁)`. Use polynomial arithmetic with `[mul_nonneg hk hr₀, mul_nonneg hk hr₁]`. Establish `hτ0 : 0 ≤ max C₀ C'₀ * ((1 + k) * (1 + r₀ + r₁))` using `by positivity`.
+
+Establish `hτC : C₀ * (1 + (r₀ + k * r₁)) ≤ max C₀ C'₀ * ((1 + k) * (1 + r₀ + r₁))` using `mul_le_mul (le_max_left _ _) hg (by positivity) hC'0`. Establish `e1 : ellSum2 μ₁ μ₂ (trM Φ M) = ∫ x, lInt D k₁ k₂ (max C₀ C'₀ * ((1 + k) * (1 + r₀ + r₁))) U x ∂D.ν`. Rewrite using `[← hell μ₁ μ₂ F₁ F₂ _ _ _ h₁ h₂ c3 hr hτC, ← hcut]`. Conclude with `(hb _ hτ0 U).2.2 Φ c1 c2`. Take `⟨Uπ, hpi, -, hsplit⟩` from `hK E n D π ι k₁ k₂ _ C N (fun V => ⟨(hb _ hτ0 V).1, (hb _ hτ0 V).2.1⟩) U hU1 hU2`.
+
+Take `⟨-, hhalf⟩` from `hU E n hn D π hπ ι Φ₁ Φ₂ T₁ T₂ M k₁ k₂ a1 a2 hfin b1 b2 hv U Uπ Φ t c1 c2 hpi ht`. Establish `htail` using `hCt k U Uπ Φ c1 c2 hpi c3`. Rewrite using `[e1, ← hhalf]`. Use `(norm_sub_le_norm_sub_add_norm_sub _ _ _).trans ((add_le_add hsplit htail).trans (add_le_add ?_ ?_))` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ N) (abs_nonneg C)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hC'0 hk]`. Use `_ = |C| * (1 + max C₀ C'₀ * (1 + r₀ + r₁)) ^ N * (1 + k) ^ N := by rw [mul_pow, mul_assoc]`. Use `_ ≤ max (|C| * (1 + max C₀ C'₀ * (1 + r₀ + r₁)) ^ N) |Ct| * (1 + k) ^ N := mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`.
+
+Establish `h1 : Ct ≤ max (|C| * (1 + max C₀ C'₀ * (1 + r₀ + r₁)) ^ N) |Ct|` using `(le_abs_self Ct).trans (le_max_right _ _)`. Establish `h0 : 0 ≤ ‖U‖ * ε ^ k` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem growth_of_ellipticFormula (hE : D4.EllFormula2J) (hS : SFun) (hD : DomOne) (hK : KerSplit) (hU : UncutHalf)
     (hT : CutTail2) : GrowthPiJ := by
   intro E _ _ _ _ n hn _ _ _ _ μ₁ _ μ₂ _

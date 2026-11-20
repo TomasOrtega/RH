@@ -22,6 +22,15 @@ open GlobalTheory.CosetOrth
 
 namespace GlobalTheory.CosetOrth
 
+/- English proof (translation)
+Introduce `D 𝔪 h𝔪 x hx`. Establish `hI : (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 h𝔪`. Establish `hN : 0 < Ideal.absNorm 𝔪` using `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact h𝔪)`. Take `⟨a, s, hs, e⟩` from `GlobalTheory.Mem.Col2.SplitChar.exists_approx x hN`. Establish `hNm : ((Ideal.absNorm 𝔪 : ℕ) : D.host.E) ∈ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨_, Ideal.absNorm_mem 𝔪, map_natCast _ _⟩`.
+
+Establish `ha : a ∈ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)`. Use `(GlobalTheory.NumeratorIdeal.mem_iff_valuation D.host.E hI a).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.Mem.Col2.SplitChar.vl_inc, eq_sub_of_add_eq e.symm]`. Use `Valuation.map_sub_le _ ?_ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Mem.Col2.SplitChar.vl_apply, GlobalTheory.NormRatio.ChrFin.adEquiv_eq]`.
+
+Conclude with `hx w`. Rewrite using `[map_mul, GlobalTheory.Mem.Col2.SplitChar.vl_nat]`. Conclude with `(mul_le_of_le_one_right' (GlobalTheory.Mem.Col2.SplitChar.vl_le hs w)).trans ((GlobalTheory.NumeratorIdeal.mem_iff_valuation D.host.E hI _).1 hNm w)`. Take `⟨b, hb, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 ha`. Rewrite using `[e]`.
+
+Use `add_mem (AddSubgroup.subset_closure ⟨b, hb, 1, one_mem _, (mul_one _).symm⟩) (AddSubgroup.subset_closure ⟨_, Ideal.absNorm_mem 𝔪, s, hs, ?_⟩)` and prove the remaining obligations. Conclude with `congrArg (· * s) (map_natCast ((Formalism.MainNotions.StandardLatticesGL3.inc D).comp (algebraMap (𝓞 D.host.E) D.host.E)) _).symm`.
+-/
 theorem mem_hatId_of_inHat : ∀ {D : D7} (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ x : Formalism.MainNotions.StandardLatticesGL3.AE D,
   InHat (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (GlobalTheory.BotFormula.toFinE D x) → x ∈ hatId D 𝔪 := by
   intro D 𝔪 h𝔪 x hx

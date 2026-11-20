@@ -16,6 +16,37 @@ open scoped Matrix
 
 namespace GlobalTheory.HilbertThetaSeries
 
+/- English proof (translation)
+Introduce `F _ _ _ p _ ι hp2 δ hδ κ _ _ G S t hL γ hγ`. Establish `hPos : ∀ g : GL (Fin 2) F, TP g.val.det → Pos (toInf g)` using `fun g hg => ((GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash F (p - 1) (th G oneL)).2.1 g).1.2 hg`. Establish `hTP1 : TP (1 : F)` using `fun v => by simp [reAt]`. Establish `hdetw : ∀ c : Fˣ, (wm c).val.det = 1` using `fun c => by`. Simplify using `[wm, Matrix.det_fin_two]`.
+
+Establish `hdeta : ∀ (e : Fˣ) (b : F), (aff e b).val.det = e` using `fun e b => by`. Simplify using `[aff, Matrix.det_fin_two]`. Establish `hPw : ∀ c : Fˣ, Pos (toInf (wm c))` using `fun c => hPos _ (by rw [hdetw]; exact hTP1)`. Establish `hPa : ∀ b : F, Pos (toInf (aff 1 b))` using `fun b => hPos _ (by rw [hdeta]; simpa using hTP1)`. Establish `haL1 : ∀ x : κ → F, x ∈ aL κ (1 : F) ↔ x ∈ LL F κ` using `fun x => by`.
+
+Simplify using `[aL, AddSubgroup.mem_map]`. Establish `hone : ∀ x y : κ → F, (x ∈ LL F κ ↔ y ∈ LL F κ) → oneL x = oneL y` using `fun x y h => by`. Distinguish the cases in `hy : y ∈ LL F κ`. Rewrite using `[oneL, oneL, if_pos hy, if_pos (h.2 hy)]`. Rewrite using `[oneL, oneL, if_neg hy, if_neg fun hx => hy (h.1 hx)]`.
+
+Establish `hgood1 : Good ι S (oneL (F` using `F) (κ := κ)) := by`. Establish `hS` using `(GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p F p Fact.out κ G S t hL).2.1`. Use `⟨⟨1, one_pos, Nat.coprime_one_left p, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : x ∈ LL F κ`.
+
+Assume the negation of the conclusion as `h; exact hx (by simp [oneL, h])`. Simplify `hx'` using `[haL1]`. Introduce `x l hl`. Establish `hl' : l ∈ LL F κ` using `by simpa [haL1] using hl`. Conclude with `hone _ _ ((LL F κ).add_mem_cancel_right hl')`.
+
+Introduce `x`. Establish `h1` using `((hS x).2.2.2 1)`. Rewrite `h1` using `[haL1, haL1]`. Conclude with `hone _ _ h1`. Introduce `x`.
+
+Apply the tactic sequence `unfold oneL; split_ifs <;> simp`. Establish `h0 : (0 : κ → F) ∈ LL F κ` using `(LL F κ).zero_mem`. Simplify using `only [oneL, h0, if_true, map_one, sub_self, norm_zero]`. Check the signs of the components of the expression. Establish `hW : ∀ (c : Fˣ) (Φ : (κ → F) → ℂ), Good ι S Φ → PUnit p ((c : F) / δ) → ∃ Ψ, Good ι S Ψ ∧ sl0 (p - 1) (toInf (wm c)) (th G Φ) = th G Ψ`.
+
+Introduce `c Φ hΦ hc`. Take `⟨N, hN, hNp, hSB⟩` from `hΦ.1`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `hint : IsIntegral ℤ ((N : F) / (N : F)⁻¹)`. Rewrite using `[div_inv_eq_mul, ← Nat.cast_mul]`.
+
+Simplify using `using isIntegral_algebraMap (R := ℤ) (A := F) (x := ((N * N : ℕ) : ℤ))`. Take `⟨T, hT, h0T, hle, -⟩` from `GlobalTheory.HilbertThetaSeries.exists_isReps_aL F κ (N : F) (N : F)⁻¹ hNF (inv_ne_zero hNF) hint`. Use `⟨_, GlobalTheory.T.integral_test_function_finite_fourier_transform_of_odd_prime F p ι hp2 δ hδ κ G S t hL Φ N T c hΦ hN hNp hSB hT h0T hc, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.hilbertThetaSeries_periodic_inversion_formula F κ G hL.pos t hL.det (p - 1) hL.card (N : F) (N : F)⁻¹ c T Φ hNF (inv_ne_zero hNF) hle hT hSB.1 hSB.2`. Establish `hA : ∀ (b : F) (Φ : (κ → F) → ℂ), Good ι S Φ → PInt p (δ * b) → ∃ Ψ, Good ι S Ψ ∧ sl0 (p - 1) (toInf (aff 1 b)) (th G Φ) = th G Ψ` using `fun b Φ hΦ hb => ⟨_, GlobalTheory.T.integral_test_function_mul_trace_character_quad_form_of_delta_integral F p ι δ hδ κ G S t hL Φ hΦ b hb, GlobalTheory.HilbertThetaSeries.th_translate F κ G (p - 1) b Φ⟩`.
+
+Set `P : GL (Fin 2) F → Prop` to `fun g => Pos (toInf g) ∧ ∃ Ψ, Good ι S Ψ ∧ sl0 (p - 1) (toInf g) (th G oneL) = th G Ψ`. Establish `step : ∀ g g' : GL (Fin 2) F, P g → Pos (toInf g') → (∀ Ψ, Good ι S Ψ → ∃ Ψ', Good ι S Ψ' ∧ sl0 (p - 1) (toInf g') (th G Ψ) = th G Ψ') → P (g * g')`. Introduce `g g' ⟨hg, Ψ, hΨ, he⟩ hg' hstep`. Establish `hc` using `SlashCocycle.slash_cocycle F (p - 1) (toInf g) (toInf g') (th G oneL) hg hg'`. Take `⟨Ψ', hΨ', he'⟩` from `hstep Ψ hΨ`.
+
+Use `⟨by rw [map_mul]; exact hc.1, Ψ', hΨ', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc.2.2.1, he, he']`. Take `⟨b₁, b₂, b₃, c₁, c₂, c₃, ε, hb₁, hb₂, hb₃, hc₁, hc₂, hc₃, hε, hγe⟩` from `GlobalTheory.HilbertThetaSeries.gen_by_translations_inversions F p Fact.out δ hδ γ hγ`. Establish `P1 : P (wm c₁)`. Use `⟨hPw c₁, ?_⟩` and prove the remaining obligations.
+
+Conclude with `hW c₁ oneL hgood1 hc₁`. Establish `P6` using `step _ _ (step _ _ (step _ _ (step _ _ (step _ _ P1 (hPa b₁) (fun Ψ h => hA b₁ Ψ h hb₁)) (hPw c₂) (fun Ψ h => hW c₂ Ψ h hc₂)) (hPa b₂) (fun Ψ h => hA b₂ Ψ h hb₂)) (hPw c₃) (fun Ψ h => hW c₃ Ψ h hc₃)) (hPa b₃) (fun Ψ h => hA b₃ Ψ h hb₃)`. Take `⟨hX, Ψ, hΨ, hXe⟩` from `P6`. Establish `hE : Pos (toInf (aff ε 0))` using `hPos _ (by rw [hdeta]; exact hε)`. Establish `hc` using `SlashCocycle.slash_cocycle F (p - 1) (toInf (wm c₁ * aff 1 b₁ * wm c₂ * aff 1 b₂ * wm c₃ * aff 1 b₃)) (toInf (aff ε 0)) (th G oneL) hX hE`.
+
+Rewrite using `[hγe, map_mul, hc.2.2.1, hXe]`. Establish `hden : ∀ z : Hn F, (∏ v, UpperHalfPlane.denom (cmp v (toInf (aff ε 0))) (z v)) = 1`. Introduce `z`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Simplify using `[UpperHalfPlane.denom, cmp, toInf, aff, Matrix.GeneralLinearGroup.map]`.
+
+Establish `hsub : sl0 (p - 1) (toInf (aff ε 0)) (th G Ψ - 1) = sl0 (p - 1) (toInf (aff ε 0)) (th G Ψ) - 1`. Use function extensionality and compare the values at `z`. Simplify using `[sl0, hden]`. Rewrite using `[← hsub]`. Apply the tactic sequence `obtain ⟨a, hQ, hbd⟩ := GlobalTheory.T.thetaSeries_congr_one_mod_p_of_isometry F p ι κ G S t hL Ψ hΨ`.
+
+Use `⟨_, GlobalTheory.T.hasQExpansion_affineTranslate_coeff F (p - 1) (th G Ψ - 1) a ε 0 hε hQ, fun ξ => ?_⟩` and prove the remaining obligations. Simplify `hbd (ξ / ε)` using `[et]`.
+-/
 theorem theta_translates_integral_one : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ γ : GL (Fin 2) F, InG p δ γ → Small ι (p : ℝ)⁻¹ (sl0 (p - 1) (toInf γ) (th G oneL) - 1) := by
   intro F _ _ _ p _ ι hp2 δ hδ κ _ _ G S t hL γ hγ
 
@@ -110,5 +141,8 @@ end GlobalTheory.HilbertThetaSeries
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Af UpperTheory.V.Sd GlobalTheory.HilbertThetaSeries
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.theta_translates_integral_one | exact GlobalTheory.HilbertThetaSeries.theta_translates_integral_one | (intros; apply GlobalTheory.HilbertThetaSeries.theta_translates_integral_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_translate_integral_congruent_one_mod_prime : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → ∀ γ : GL (Fin 2) F, InG p δ γ → Small ι (p : ℝ)⁻¹ (sl0 (p - 1) (toInf γ) (th G oneL) - 1) := by
   first | exact @GlobalTheory.HilbertThetaSeries.theta_translates_integral_one | exact GlobalTheory.HilbertThetaSeries.theta_translates_integral_one | (intros; apply GlobalTheory.HilbertThetaSeries.theta_translates_integral_one <;> assumption)

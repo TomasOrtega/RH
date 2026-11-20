@@ -29,5 +29,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open scoped InnerProductSpace
 open Formalism.MainNotions.KudlaSiegelWeil (Restr)
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TrFinDense.span_values_dense | exact GlobalTheory.TrFinDense.span_values_dense | (intros; apply GlobalTheory.TrFinDense.span_values_dense <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.span_values_dense_finitePartSubrep : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → ∀ hU : IsSubrep π ⊤, ∀ N : Subrepresentation (finPartDSSm M hU), N ≠ ⊥ → (Submodule.span ℂ {z | ∃ Φ ∈ N.toSubmodule, ∃ y, z = ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y}).topologicalClosure = ⊤ := by
   first | exact @GlobalTheory.TrFinDense.span_values_dense | exact GlobalTheory.TrFinDense.span_values_dense | (intros; apply GlobalTheory.TrFinDense.span_values_dense <;> assumption)

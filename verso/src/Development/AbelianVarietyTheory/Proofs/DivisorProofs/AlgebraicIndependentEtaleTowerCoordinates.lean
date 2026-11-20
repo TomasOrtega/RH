@@ -11,6 +11,21 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Introduce `h hx hinj`. Use `letI := cL.toAlgebra`. Set `c0 : ℂ →+* R` to `cK.codRestrict R h.base.const_mem`. Set `φ : MvPolynomial (Fin n) ℂ →+* R` to `MvPolynomial.eval₂Hom c0 x`. Establish `hφinj : Function.Injective φ`.
+
+Establish `hxK : Function.Injective (MvPolynomial.eval₂Hom cK (fun i => (x i : K)))`. Use `letI := cK.toAlgebra`. Establish `h1` using `hx.1`. Rewrite `h1` using `[algebraicIndependent_iff_injective_aeval]`. Conclude with `h1`.
+
+Establish `hcomp : R.subtype.comp φ = MvPolynomial.eval₂Hom cK (fun i => (x i : K))`. Apply the tactic sequence `ext <;> simp [φ, c0]`. Introduce `a b e`. Apply `hxK` to reduce the goal to its premises. Rewrite using `[← hcomp, RingHom.comp_apply, RingHom.comp_apply, e]`.
+
+Establish `key : (T.subtype.comp ((MvPolynomial.eval₂Hom ι τ).comp ((MvPolynomial.map φ).comp (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).toRingEquiv.toRingHom))) = (MvPolynomial.aeval (Sum.elim (fun i => (τ i : L)) (fun i => (ι (x i) : L)))).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Use `h.const a` as an intermediate fact. Simplify using `[φ, c0, MvPolynomial.sumAlgEquiv_C_inl]`.
+
+Conclude with `this`. Apply the tactic sequence `rintro (i | j) <;> simp [φ, MvPolynomial.sumAlgEquiv_X_inl, MvPolynomial.sumAlgEquiv_X_inr]`. Establish `hy : Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L)) ∘ finSumFinEquiv = Sum.elim (fun i => (τ i : L)) (fun i => (ι (x i) : L))`. Apply the tactic sequence `ext (i | j) <;> simp`. Rewrite using `[← algebraicIndependent_equiv finSumFinEquiv, hy, algebraicIndependent_iff_injective_aeval, injective_iff_map_eq_zero]`.
+
+Introduce `P hP`. Establish `hP' : T.subtype.comp ((MvPolynomial.eval₂Hom ι τ).comp ((MvPolynomial.map φ).comp (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).toRingEquiv.toRingHom)) P = 0`. Rewrite using `[key]`. Conclude with `hP`. Establish `h1 : MvPolynomial.eval₂Hom ι τ (MvPolynomial.map φ (MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n) P)) = 0` using `Subtype.ext hP'`.
+
+Establish `h2` using `(injective_iff_map_eq_zero _).1 hinj _ h1`. Establish `h3` using `(injective_iff_map_eq_zero _).1 (MvPolynomial.map_injective φ hφinj) _ h2`. Conclude with `(MvPolynomial.sumAlgEquiv ℂ (Fin r) (Fin n)).map_eq_zero_iff.1 h3`.
+-/
 theorem etTower_coords_algebraicIndependent {K L : Type} [Field K] [Field L] (cK : ℂ →+* K)
     (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R) :

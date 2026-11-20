@@ -10,6 +10,11 @@ open DividedPowers GlobalTheory.Cris GlobalTheory.PDA
 
 namespace GlobalTheory.PDA
 
+/- English proof (translation)
+Introduce `B _ J δ Q`. Take `⟨η, hη⟩` from `GlobalTheory.T.exists_dividedPowers_dividedPowerPolyAlgebra_augIdeal B Q`. Take `⟨ε, hε⟩` from `(GlobalTheory.T.exists_lift_and_augmentation_map B Q).2`. Take `⟨θ, hθ, hθη⟩` from `GlobalTheory.T.exists_dividedPowers_split_augmentation_extension B J δ Q.P ε Q.aug η hε`. Use `⟨θ, ⟨hθ, fun n ↦ ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[hθη n _ (Q.e_succ_mem_aug 0), hη]`.
+-/
 theorem PDPoly.exists_isStd : ∀ (B : Type) [CommRing B] (J : Ideal B) (δ : DividedPowers J) (Q : PDPoly B),
     ∃ η : DividedPowers (Q.ext J), Q.IsStd δ η := by
   intro B _ J δ Q

@@ -19,6 +19,9 @@ open GlobalTheory.CompanionTheory.Ar.Pub.CxChart (chartSet chartComponents chart
 open GroundTheory.Heights₂.Heights (chartProjMatrix chartWeight chartPot chartDens chartAbsDens)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim | exact GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxChart.chartComponents_dim <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ringKrullDim_chartComponents : ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e m : ℕ) (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k),
     IsCxVar Q e → ∀ J ∈ chartComponents (conePts Q) σ i,

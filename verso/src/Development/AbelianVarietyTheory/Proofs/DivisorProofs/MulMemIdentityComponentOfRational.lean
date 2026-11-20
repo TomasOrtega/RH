@@ -2,6 +2,15 @@ import Mathlib
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj TopologicalSpace TensorProduct
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Introduce `k _ G _ x y hx hy`. Use `set T : G ⟶ G := (toUnit G ≫ x) * 𝟙 G with hT`. Establish `hyT : y ≫ T = x * y`. Rewrite using `[hT, comp_mul, ← Category.assoc, toUnit_unique (y ≫ toUnit G) (𝟙 _), Category.id_comp, Category.comp_id]`. Establish `hηT : η[G] ≫ T = x`.
+
+Rewrite using `[hT, comp_mul, ← Category.assoc, toUnit_unique (η[G] ≫ toUnit G) (𝟙 _), Category.id_comp, Category.comp_id]`. Establish `: (η[G] : 𝟙_ _ ⟶ G) = 1`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Rewrite using `[this, _root_.mul_one]`. Establish `hsub` using `T.left.continuous.image_connectedComponent_subset ((η[G]).left (IsLocalRing.closedPoint k))`.
+
+Establish `h1 : (x * y).left (IsLocalRing.closedPoint k) = T.left (y.left (IsLocalRing.closedPoint k))`. Rewrite using `[← hyT, Over.comp_left]`. Conclude with `Scheme.Hom.comp_apply y.left T.left _`. Establish `h2 : T.left ((η[G]).left (IsLocalRing.closedPoint k)) = x.left (IsLocalRing.closedPoint k)`. Rewrite using `[← hηT, Over.comp_left]`.
+
+Conclude with `(Scheme.Hom.comp_apply (η[G]).left T.left _).symm`. Rewrite using `[h1, connectedComponent_eq hx]`. Use `hsub ⟨_, hy, rfl⟩` as an intermediate fact. Rewrite `this` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem GlobalTheory.mul_mem_identityComponent_of_rational : ∀ (k : Type) [Field k] (G : Over (Spec (CommRingCat.of k))) [GrpObj G] (x y : 𝟙_ (Over (Spec (CommRingCat.of k))) ⟶ G), x.left (IsLocalRing.closedPoint k) ∈ connectedComponent ((η[G]).left (IsLocalRing.closedPoint k)) → y.left (IsLocalRing.closedPoint k) ∈ connectedComponent ((η[G]).left (IsLocalRing.closedPoint k)) → (x * y).left (IsLocalRing.closedPoint k) ∈ connectedComponent ((η[G]).left (IsLocalRing.closedPoint k)) := by
   intro k _ G _ x y hx hy
   set T : G ⟶ G := (toUnit G ≫ x) * 𝟙 G with hT

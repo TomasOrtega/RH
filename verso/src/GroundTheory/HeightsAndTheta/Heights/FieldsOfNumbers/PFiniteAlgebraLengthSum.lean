@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.FieldNumbers
 
 open Module
 
+/- English proof (translation)
+Introduce `A B _ _ _ _ _ ι _ 𝔪 h𝔪 hinj hall C _ _ hC α`. Establish `: ∀ i, (𝔪 i).IsMaximal` using `h𝔪`. Establish `: ∀ i, IsLocalization.AtPrime (C i) (𝔪 i)` using `hC`. Establish `hrange : LinearMap.range (LinearMap.lsmul A B α) = (Ideal.span {algebraMap A B α}).restrictScalars A`. Use extensionality with `b`.
+
+Simplify using `only [LinearMap.mem_range, LinearMap.lsmul_apply, Submodule.restrictScalars_mem, Ideal.mem_span_singleton', Algebra.smul_def, mul_comm]`. Rewrite using `[(Submodule.quotEquivOfEq _ _ hrange).length_eq, (Submodule.Quotient.restrictScalarsEquiv A (Ideal.span {algebraMap A B α})).length_eq, LengthSumLocalizations.length_eq_sum 𝔪 C hinj hall A]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ring.ord, ← (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (C i) (Ideal.span {algebraMap A B α})).toLinearEquiv.length_eq, Ideal.map_span, Set.image_singleton]`.
+-/
 theorem FiniteAlgebraLengthSum.proof : FiniteAlgebraLengthSum.Statement := by
   classical
   intro A B _ _ _ _ _ ι _ 𝔪 h𝔪 hinj hall C _ _ hC α

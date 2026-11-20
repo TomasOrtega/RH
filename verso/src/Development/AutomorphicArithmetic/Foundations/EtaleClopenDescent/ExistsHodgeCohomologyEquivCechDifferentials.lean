@@ -7,6 +7,9 @@ import Development.AutomorphicArithmetic.GenericGermInjectivity.GermInjRangePre
 import Development.AutomorphicArithmetic.CommutativeAlgebra.IsAffCoverProdCechOpen
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
+/- English proof (translation)
+Use `⟨fun d Z _ p _ inst ι _ _ U B hinst hU a b => UpperTheory.GenericCoverClass.cmp d p hinst hU a b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.isAffCover_prod_cechOpen`. Introduce `d Z _ p _ inst Y _ p' _ inst' _ _ c hc _ _ ι _ _ U B B' hinst hinst' hU hU' hg a b hm z`. Conclude with `UpperTheory.GenericCoverClass.cmp_trace d Z p Y p' c hc ι U B B' hinst hinst' hU hU' hg a b hm z`.
+-/
 theorem UpperTheory.Cb.exists_hodge_cohomology_equiv_cech_differentials :
     ∃ e : ∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField] (ι : Type) [LinearOrder ι] [Fintype ι] (U : ι → Z.Opens) (B : Finset ι → Subalgebra ℂ Z.functionField) (hinst : inst = ffAlg p) (hU : IsAffCover p U B) (a b : ℕ), hodgeH p a b ≃ₗ[ℂ] (cech fun I => omB ℂ Z.functionField (B I) a).H b,
       (∀ (d : ℕ) (Z : Scheme.{0}) [IsIntegral Z] (p : Z ⟶ Sp ℂ) [SmoothOfRelativeDimension d p] [inst : Algebra ℂ Z.functionField] (ι : Type) [LinearOrder ι] [Fintype ι] (U : ι → Z.Opens) (B : Finset ι → Subalgebra ℂ Z.functionField) (hinst : inst = ffAlg p) (hU : IsAffCover p U B)

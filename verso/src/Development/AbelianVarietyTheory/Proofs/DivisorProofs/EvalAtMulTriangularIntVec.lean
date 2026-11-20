@@ -7,6 +7,9 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.DefPt
 
+/- English proof (translation)
+Establish `h` using `(Formalism.GradedWeylDivisibility.sSBasis ℤ n n la).choose_spec.1.2.1`. Rewrite using `[nabla, ← h]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+-/
 theorem intVec_mem_nabla {n : ℕ} (la : Fin n → ℕ) (i : Idx la) : intVec la i ∈ nabla la ℤ := by
   have h := (Formalism.GradedWeylDivisibility.sSBasis ℤ n n la).choose_spec.1.2.1
   rw [nabla, ← h]
@@ -15,11 +18,21 @@ theorem intVec_mem_nabla {n : ℕ} (la : Fin n → ℕ) (i : Idx la) : intVec la
 def genUpperTri (n : ℕ) : Matrix (Fin n) (Fin n) (MvPolynomial (Fin n × Fin n) ℤ) :=
   Matrix.of fun i j => if i ≤ j then X (i, j) else 0
 
+/- English proof (translation)
+Introduce `i j hij`. Simplify using `only [genUpperTri, Matrix.of_apply]`. Rewrite using `[if_neg (not_le.mpr (show j < i from hij))]`.
+-/
 theorem genUpperTri_blockTriangular (n : ℕ) : (genUpperTri n).BlockTriangular id := by
   intro i j hij
   simp only [genUpperTri, Matrix.of_apply]
   rw [if_neg (not_le.mpr (show j < i from hij))]
 
+/- English proof (translation)
+Set `ψ : MvPolynomial (Fin n × Fin n) ℤ →+* S` to `(aeval (R := ℤ) fun v : Fin n × Fin n => b v.1 v.2).toRingHom`. Establish `hB : (genUpperTri n).map ψ = b`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, genUpperTri, Matrix.of_apply]`. Use `split_ifs with h`.
+
+Simplify using `[ψ]`. Rewrite using `[map_zero, hb (show id j < id i from not_le.mp h)]`. Establish `hgen` using `colAct_map_of_mem (Int.castRingHom (MvPolynomial (Fin n × Fin n) ℤ)) hf (genUpperTri n) (genUpperTri_blockTriangular n)`. Establish `h2` using `congrArg (map ψ) hgen`. Rewrite `h2` using `[map_colAct, hB, map_map]`.
+
+Establish `hc : ψ.comp (Int.castRingHom (MvPolynomial (Fin n × Fin n) ℤ)) = Int.castRingHom S` using `RingHom.ext_int _ _`. Rewrite `h2` using `[hc]`. Rewrite using `[h2, smul_eq_C_mul, map_mul, map_C, map_map, hc, smul_eq_C_mul]`. Use `congr 2`. Simplify using `only [diagChar, map_prod, map_pow, ← hB, Matrix.map_apply]`.
+-/
 theorem colAct_intCast_of_mem {n : ℕ} {la : Fin n → ℕ} {f : Pol n ℤ} (hf : f ∈ nabla la ℤ)
     {S : Type} [CommRing S] (b : Matrix (Fin n) (Fin n) S) (hb : b.BlockTriangular id) :
     colAct b (map (Int.castRingHom S) f) = diagChar la b • map (Int.castRingHom S) f := by
@@ -41,6 +54,9 @@ theorem colAct_intCast_of_mem {n : ℕ} {la : Fin n → ℕ} {f : Pol n ℤ} (hf
   congr 2
   simp only [diagChar, map_prod, map_pow, ← hB, Matrix.map_apply]
 
+/- English proof (translation)
+Rewrite using `[← evalAt_colAct, colAct_intCast_of_mem (intVec_mem_nabla la i) b hb, smul_eq_C_mul, map_mul]`. Simplify using `[DualWeyl.evalAt]`.
+-/
 theorem evalAt_mul_triangular_intVec {n : ℕ} (la : Fin n → ℕ) (i : Idx la) {S : Type} [CommRing S]
     (y b : Matrix (Fin n) (Fin n) S) (hb : b.BlockTriangular id) :
     DualWeyl.evalAt (y * b) (map (Int.castRingHom S) (intVec la i)) =
@@ -48,6 +64,11 @@ theorem evalAt_mul_triangular_intVec {n : ℕ} (la : Fin n → ℕ) (i : Idx la)
   rw [← evalAt_colAct, colAct_intCast_of_mem (intVec_mem_nabla la i) b hb, smul_eq_C_mul, map_mul]
   simp [DualWeyl.evalAt]
 
+/- English proof (translation)
+Introduce `T _ _ N la S _ x y b hb`. Unfold `tval`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `only [evalAt_mul_triangular_intVec _ _ _ _ (hb _), Finset.prod_mul_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tval_mul_triangular : ∀ (T : Type) [Fintype T] [DecidableEq T] (N : T → ℕ) (la : ∀ t, Fin (N t) → ℕ) (S : Type) [CommRing S] (x : TIdx la → S) (y b : ∀ t, Matrix (Fin (N t)) (Fin (N t)) S), (∀ t, (b t).BlockTriangular id) → tval la x (fun t => y t * b t) = (∏ t, diagChar (la t) (b t)) * tval la x y := by
   intro T _ _ N la S _ x y b hb
   unfold tval

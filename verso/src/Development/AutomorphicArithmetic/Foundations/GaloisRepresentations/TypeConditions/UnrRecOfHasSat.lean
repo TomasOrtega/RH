@@ -18,6 +18,9 @@ variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algeb
   {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
   {HT : (E →+* Qbar l) → Multiset ℤ} {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Rewrite using `[ParLaws.locPar_mk hL hσ h]`. Conclude with `H.aw hl (ParLaws.isRec_locRec hL h) hσ`.
+-/
 theorem IsGalU.aw_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (H : IsGalU π χ ι r wt HT) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (h : IsPlaceOver A w) :
     Aw (wdOf h hl ι r) ((ParLaws.locPar hL (CG.mk π) h).lpTw ((1 - (a : ℝ)) / 2)) := by
@@ -26,8 +29,14 @@ theorem IsGalU.aw_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Gl
   exact H.aw hl (ParLaws.isRec_locRec hL h) hσ
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `k.unr hy`.
+-/
 theorem Aw.eq_unr {h : IsPlaceOver A w} {x y : WD h} (k : Aw x y) (hy : y.unr) : x = y := k.unr hy
 
+/- English proof (translation)
+The claim follows from `(H.aw_locPar hL hF hl h).eq_unr ((WD.unr_tw _ _).2 hu)`.
+-/
 theorem IsGalU.eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (H : IsGalU π χ ι r wt HT) (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (h : IsPlaceOver A w)
     (hu : (ParLaws.locPar hL (CG.mk π) h).unr) :
@@ -36,6 +45,9 @@ theorem IsGalU.eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Gl
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨α, rfl, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ S).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hS⟩)`. Establish `e` using `ParLaws.rec_eq_diag hrc (σ := ParLaws.toRep σ) hα`. Establish `e' : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `e`. Rewrite using `[e', WD.unr_mk]`. Conclude with `WDRep.unr_diag _`.
+-/
 theorem unr_rec_of_hasSat {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc)
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (S : Multiset ℂˣ) (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) :
     (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).unr := by
@@ -46,6 +58,9 @@ theorem unr_rec_of_hasSat {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E)
   rw [e', WD.unr_mk]
   exact WDRep.unr_diag _
 
+/- English proof (translation)
+Proceed by induction on `π using Quotient.inductionOn with | _ π =>`. Take `⟨r, wt, HT, H⟩` from `hG.of_isCsd Ω ι ha (π := π) hr hc`. Conclude with `⟨r, Units.continuous_val.comp H.cont, H.ss, fun w hl A h => H.aw_locPar hL hF hl h⟩`.
+-/
 theorem exists_aw (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : CuspU) {E : Type} (Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (ha : 1 ≤ a) (π : CG E a)
@@ -57,6 +72,9 @@ theorem exists_aw (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalThe
   obtain ⟨r, wt, HT, H⟩ := hG.of_isCsd Ω ι ha (π := π) hr hc
   exact ⟨r, Units.continuous_val.comp H.cont, H.ss, fun w hl A h => H.aw_locPar hL hF hl h⟩
 
+/- English proof (translation)
+Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Use `⟨σ, hσ, _, ParLaws.isRec_locRec hL h, ?_⟩` and prove the remaining obligations. Rewrite using `[rec_algNorm (ParLaws.isRec_locRec hL h) σ]`. Rewrite `k` using `[ParLaws.locPar_mk hL hσ h]`. Then use the resulting hypothesis.
+-/
 theorem nice_of_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (h : IsPlaceOver A w)
     (k : NcW ((ParLaws.locPar hL (CG.mk π) h).lpTw ((1 - (a : ℝ)) / 2))) : Nice π h := by
   obtain ⟨σ, hσ, -⟩ := LocEx.exists_isLocComp hF E a π w
@@ -64,6 +82,9 @@ theorem nice_of_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Glob
   rw [rec_algNorm (ParLaws.isRec_locRec hL h) σ]
   rwa [ParLaws.locPar_mk hL hσ h] at k
 
+/- English proof (translation)
+Use `⟨σ, hσ, rc, hrc, NcW.of_unr ?_⟩` and prove the remaining obligations. Rewrite using `[rec_algNorm hrc, WD.unr_tw]`. Conclude with `(ParLaws.unr_iff hrc (ParLaws.toRep σ)).2 hs`.
+-/
 theorem nice_of_spherical {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc)
     {σ : SmIrr (GL (Fin a) (w.adicCompletion E))} (hσ : π.IsLocComp w σ) (hs : SmGL.IsSpherical σ.ρ) : Nice π h := by
   refine ⟨σ, hσ, rc, hrc, NcW.of_unr ?_⟩

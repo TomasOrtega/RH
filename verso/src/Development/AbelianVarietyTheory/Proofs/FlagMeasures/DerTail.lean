@@ -8,6 +8,9 @@ open scoped Classical
 
 namespace GlobalTheory.GLm.DerTail
 
+/- English proof (translation)
+Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `succ b ih`. Rewrite using `[← add_assoc, Nat.triangle_succ, Nat.triangle_succ, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tri_add (a b : ℕ) : (a + b) * (a + b - 1) / 2 = a * (a - 1) / 2 + b * (b - 1) / 2 + a * b := by
   induction b with
   | zero => simp
@@ -17,13 +20,30 @@ theorem tri_add (a b : ℕ) : (a + b) * (a + b - 1) / 2 = a * (a - 1) / 2 + b * 
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Rewrite using `[entN, dif_pos ⟨ha, hb⟩]`. Both sides reduce to the same expression.
+-/
 theorem entN_tl (m : ℕ) {n : ℕ} (M : Mt g n) {a b : ℕ} (ha : a < m) (hb : b < m) :
     entN (tl m M) a b = entN M a b := by
   rw [entN, dif_pos ⟨ha, hb⟩]; rfl
 
+/- English proof (translation)
+Rewrite using `[entN, dif_pos ⟨a.2, b.2⟩]`.
+-/
 theorem entN_fin {n : ℕ} (M : Mt g n) (a b : Fin n) : entN M a b = M a b := by
   rw [entN, dif_pos ⟨a.2, b.2⟩]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a hia han`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hbi : b < i`. Use `h1 ⟨a, han⟩ ⟨b, by omega⟩ hbi hia` as an intermediate fact.
+
+Conclude with `(entN_fin M ⟨a, han⟩ ⟨b, by omega⟩).trans this`. Use `(h2 ⟨a - i, by omega⟩ ⟨b - i, by omega⟩).1 (by simp only [Fin.mk_lt_mk]; omega)` as an intermediate fact. Simplify using `only [br] at this`. Rewrite `this` using `[show i + (a - i) = a by omega, show i + (b - i) = b by omega]`. Then use the resulting hypothesis. Use `(h2 ⟨a - i, by omega⟩ ⟨a - i, by omega⟩).2 rfl` as an intermediate fact.
+
+Simplify using `only [br] at this`. Rewrite `this` using `[show i + (a - i) = a by omega]`. Then use the resulting hypothesis. Introduce `h`. Use `⟨fun a b hb ha => ?_, fun a b => ⟨fun hab => ?_, fun hab => ?_⟩⟩` and prove the remaining obligations. Conclude with `(entN_fin M a b).symm.trans ((h a ha a.2).1 b (by omega))`.
+
+Use `a.2` as an intermediate fact. Establish `hab' : (b : ℕ) < a` using `hab`. Conclude with `(h (i + a) (by omega) (by omega)).1 (i + b) (by omega)`. Substitute `hab` using the available equality. Use `a.2` as an intermediate fact.
+
+Conclude with `(h (i + a) (by omega) (by omega)).2`.
+-/
 theorem inR_iff (i : ℕ) {n : ℕ} (M : Mt g n) :
     InR i M ↔ ∀ a : ℕ, i ≤ a → a < n → (∀ b, b < a → entN M a b = 0) ∧ entN M a a = 1 := by
   constructor
@@ -48,6 +68,15 @@ theorem inR_iff (i : ℕ) {n : ℕ} (M : Mt g n) :
       have := a.2
       exact (h (i + a) (by omega) (by omega)).2
 
+/- English proof (translation)
+Simplify using `only [inR_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun a ha han => h a (by omega) han, fun a ha ham => ⟨fun b hb => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[entN_tl m M ham (by omega)]`.
+
+Conclude with `(h a ha (by omega)).1 b hb`. Rewrite using `[entN_tl m M ham ham]`. Conclude with `(h a ha (by omega)).2`. Introduce and unpack `⟨h1, h2⟩ a ha han`. Distinguish the cases in `ham : a < m`.
+
+Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← entN_tl m M ham (by omega)]`. Conclude with `(h2 a ha ham).1 b hb`. Rewrite using `[← entN_tl m M ham ham]`. Conclude with `(h2 a ha ham).2`.
+
+Conclude with `h1 a (by omega) han`.
+-/
 theorem inR_split {i m n : ℕ} (him : i ≤ m) (hmn : m ≤ n) (M : Mt g n) :
     InR i M ↔ InR m M ∧ InR i (tl m M) := by
   simp only [inR_iff]
@@ -67,12 +96,20 @@ theorem inR_split {i m n : ℕ} (him : i ≤ m) (hmn : m ≤ n) (M : Mt g n) :
         exact (h2 a ha ham).2
     · exact h1 a (by omega) han
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Use `a.2` as an intermediate fact. Use `b.2` as an intermediate fact. Conclude with `entN_tl m M (by omega) (by omega)`.
+-/
 theorem tl_tl {i m n : ℕ} (him : i ≤ m) (M : Mt g n) : tl i (tl m M) = tl i M := by
   funext a b
   have := a.2
   have := b.2
   exact entN_tl m M (by omega) (by omega)
 
+/- English proof (translation)
+Unfold `supFrom`. Rewrite using `[add_comm, ← Finset.sum_Ico_consecutive _ (show i ≤ m - 1 by omega) (show m - 1 ≤ n - 1 by omega)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite `hj` using `[Finset.mem_Ico]`.
+
+Conclude with `(entN_tl m M (by omega) (by omega)).symm`.
+-/
 theorem supFrom_split {i m n : ℕ} (him : i < m) (hmn : m ≤ n) (M : Mt g n) :
     supFrom i M = supFrom (m - 1) M + supFrom i (tl m M) := by
   unfold supFrom
@@ -82,6 +119,29 @@ theorem supFrom_split {i m n : ℕ} (him : i < m) (hmn : m ≤ n) (M : Mt g n) :
   rw [Finset.mem_Ico] at hj
   exact (entN_tl m M (by omega) (by omega)).symm
 
+/- English proof (translation)
+Introduce `g _ ψ i m n F him hmn`. Use function extensionality and compare the values at `h`. Rewrite using `[GlobalTheory.T.bernsteinZelevinskyDerivativeGLn_eq_twisted_sum g ψ i m _ h him.le, GlobalTheory.T.bernsteinZelevinskyDerivativeGLn_eq_twisted_sum g ψ i n _ h (by omega)]`. Establish `he : i * (n - i) + (n - i) * (n - i - 1) / 2 = (i * (m - i) + (m - i) * (m - i - 1) / 2) + (m * (n - m) + (n - m) * (n - m - 1) / 2)`. Take `⟨a, rfl⟩` from `Nat.exists_eq_add_of_le him.le`.
+
+Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le hmn`. Rewrite using `[show i + a + b - i = a + b by omega, show i + a - i = a by omega, show i + a + b - (i + a) = b by omega, tri_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he, pow_add _ _ (m * (n - m) + (n - m) * (n - m - 1) / 2), mul_inv _ ((g : ℂ) ^ (m * (n - m) + (n - m) * (n - m - 1) / 2)), mul_assoc]`. Use `congr 1`.
+
+Unfold `tail`. Use `set c : ℂ := ((g : ℂ) ^ (m * (n - m) + (n - m) * (n - m - 1) / 2))⁻¹`. Establish `h1 : ∀ p : Gn g m, (if InR i (p : Mt g m) ∧ tl i (p : Mt g m) = (h : Mt g i) then (c * ∑ x : Gn g n, if InR m (x : Mt g n) ∧ tl m (x : Mt g n) = (p : Mt g m) then F x * (ψ (supFrom (m - 1) (x : Mt g n)))⁻¹ else 0) * (ψ (supFrom i (p : Mt g m)))⁻¹ else 0) = c * ∑ x : Gn g n, if tl …`. Introduce `p`. Use `split_ifs with hp`.
+
+Rewrite using `[mul_assoc, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : tl m (x : Mt g n) = (p : Mt g m)`. Rewrite using `[if_pos hx]`.
+
+Rewrite `hp` using `[← hx]`. Rewrite `hp` using `[tl_tl him.le]`. Rewrite using `[inR_split him.le hmn (x : Mt g n), supFrom_split him hmn (x : Mt g n), AddChar.map_add_eq_mul, mul_inv, ← hx]`. Distinguish the cases in `hR : InR m (x : Mt g n)`. Rewrite using `[if_pos ⟨hR, rfl⟩, if_pos ⟨⟨hR, hp.1⟩, hp.2⟩, mul_assoc]`.
+
+Rewrite using `[if_neg (fun hh => hR hh.1), if_neg (fun hh => hR hh.1.1), zero_mul]`. Rewrite using `[if_neg hx, if_neg (fun hh => hx hh.2), zero_mul]`. Use `symm`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : tl m (x : Mt g n) = (p : Mt g m)`. Rewrite using `[if_pos hx, if_neg]`. Introduce and unpack `⟨ha, hb⟩`. Apply `hp` to reduce the goal to its premises. Rewrite using `[← hx, tl_tl him.le]`.
+
+Conclude with `⟨((inR_split him.le hmn _).1 ha).2, hb⟩`. Rewrite using `[if_neg hx]`. Rewrite using `[Finset.sum_congr rfl fun p _ => h1 p, ← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hx : InR i (x : Mt g n) ∧ tl i (x : Mt g n) = (h : Mt g i)`. Establish `hu : IsUnit (tl m (x : Mt g n))` using `((GlobalTheory.T.blockParabolic_unitriangular_subgroups_GLnPrimeField g m (n - m) n (by omega)).2.2.1 x ((inR_split him.le hmn _).1 hx.1).1.1).1`. Take `⟨p, hp⟩` from `hu`. Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[if_pos hp.symm]`.
+
+Introduce `q _ hq`. Rewrite using `[if_neg]`. Introduce `hh`. Conclude with `hq (Units.ext (hp.trans hh).symm)`. Introduce `hh`.
+
+Conclude with `absurd (Finset.mem_univ p) hh`. Simplify using `[hx]`.
+-/
 theorem der_tail : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (i m n : ℕ) (F : Gn g n → ℂ),
     i < m → m ≤ n → der ψ i (tail ψ m F) = der ψ i F := by
   intro g _ ψ i m n F him hmn

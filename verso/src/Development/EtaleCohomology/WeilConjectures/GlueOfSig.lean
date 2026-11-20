@@ -5,6 +5,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 
 namespace LateralTheory.EWeil.Gys.LV.GluePf
 
+/- English proof (translation)
+Introduce `R _ F T Y c hc`. Set `G : Scheme.{0}ᵒᵖ ⥤ Type 1` to `F.obj ⋙ forget _`. Establish `hG : Presieve.IsSheaf Scheme.zariskiTopology G` using `Presieve.isSheaf_of_le G Scheme.zariskiTopology_le_etaleTopology ((isSheaf_iff_isSheaf_of_type _ G).1 ((Presheaf.isSheaf_iff_isSheaf_forget _ F.obj (forget _)).1 F.property))`. Establish `: PreservesLimitsOfShape (Discrete T) G` using `preservesLimitsOfShape_discrete_of_isSheaf_zariskiTopology hG`. Set `hL : IsLimit (G.mapCone c.op)` to `isLimitOfPreserves G (Cofan.IsColimit.op hc)`.
+
+Set `e` to `Types.isLimitEquivSections hL`. Establish `he : ∀ s t, (e s).1 ⟨t⟩ = GlobalTheory.EtC.Sec.res (c.inj t) s` using `fun s t => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `s₁ s₂ h`. Apply `e.injective` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `⟨t⟩`. Rewrite using `[he, he]`. Conclude with `congrFun h t`. Introduce `y`.
+
+Set `sec : (Discrete.functor (fun a => op (Y a)) ⋙ G).sections` to `⟨fun j => y j.as, by`. Introduce and unpack `⟨j⟩ ⟨j'⟩ ⟨⟨h⟩⟩`. Consider the cases of `h`. Use `show G.map (𝟙 _) _ = _`. Rewrite using `[G.map_id]`.
+
+Use the proof step `rfl⟩`. Use `⟨e.symm sec, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `t`. Use `show GlobalTheory.EtC.Sec.res (c.inj t) (e.symm sec) = y t`. Rewrite using `[← he, e.apply_symm_apply]`.
+-/
 theorem shvSigma : ShvSigma := by
   intro R _ F T Y c hc
   let G : Scheme.{0}ᵒᵖ ⥤ Type 1 := F.obj ⋙ forget _

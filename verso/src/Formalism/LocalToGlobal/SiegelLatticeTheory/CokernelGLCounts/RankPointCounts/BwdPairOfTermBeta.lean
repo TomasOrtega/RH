@@ -32,6 +32,11 @@ def BwdTerm' : Prop :=
 
 variable {u u' F0 what₂}
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg`. Take `⟨hT, hA, hG, hO⟩` from `h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩`. Establish `hE` using `mem_EZ_of hn γ.lam Λ₂ (gmap_eq_of_image himg) (liftF F'₂) Z hT hA hG hO hS.1`. Take `⟨x, hx, hGx, β, hP, hs0, hsc⟩` from `h4 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg`. Establish `hPD : PD D γ.lam (lf D F0) u' (mapL n (isom_of_N0F hn) (liftF F'₂))` using `⟨hE.1.1, hE.1.2.1, hE.2.2.2.1⟩`.
+
+Set `pr : Corank.Pair D u u' F0 what₂` to `⟨γ.lam, γ.mem, x, ⟨_, hPD⟩, hGx, hE.1.2.2, β, hP⟩`. Use `⟨⟨γ.lam, γ.mem, TermDef.mk _ _ _ ⟨_, hPD⟩⟩, ⟨pr, ?_, rfl, hs0, hsc⟩, hPD, rfl⟩` and prove the remaining obligations. Conclude with `congrArg (fun c => (⟨γ.lam, γ.mem, c⟩ : TermDef.Term D u u' F0 what₂)) hx`.
+-/
 theorem bwdPair_of_term_beta (h2 : BwdTerm' Zd u u' F0 what₂) (h4 : BwdBeta Zd u u' F0 what₂) : BwdPair Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg
   obtain ⟨hT, hA, hG, hO⟩ := h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩
@@ -43,6 +48,9 @@ theorem bwdPair_of_term_beta (h2 : BwdTerm' Zd u u' F0 what₂) (h4 : BwdBeta Zd
   refine ⟨⟨γ.lam, γ.mem, TermDef.mk _ _ _ ⟨_, hPD⟩⟩, ⟨pr, ?_, rfl, hs0, hsc⟩, hPD, rfl⟩
   exact congrArg (fun c => (⟨γ.lam, γ.mem, c⟩ : TermDef.Term D u u' F0 what₂)) hx
 
+/- English proof (translation)
+Introduce `γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨n, hn, himg⟩` from `h1 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨hT, hA, hG, hO⟩` from `h2 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ ⟨n, hn, himg⟩`. Use `⟨mapL n (isom_of_N0F hn) (liftF F'₂), ⟨?_, bwdPair_of_term_beta Zd h2 h4 hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂ n hn himg⟩, n, hn, ⟨fun a => rfl, rfl⟩, himg⟩` and prove the remaining obligations. Conclude with `mem_EZ_of hn γ.lam Λ₂ (gmap_eq_of_image himg) (liftF F'₂) Z hT hA hG hO hS.1`.
+-/
 theorem bwdC_of_ctx (hC : CtxP u u' F0 what₂) (h1 : BwdN Zd u u' F0 what₂) (h2 : BwdTerm' Zd u u' F0 what₂)
     (h4 : BwdBeta Zd u u' F0 what₂) : BwdC Zd u u' F0 what₂ := by
   intro γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂

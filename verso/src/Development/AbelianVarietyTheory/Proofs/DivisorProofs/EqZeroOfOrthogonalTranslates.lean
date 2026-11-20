@@ -14,6 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeisTotal
 
+/- English proof (translation)
+Establish `h1 : ψ (-x) * ψ x = 1` using `by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `h2 : star (ψ (-x)) * ψ (-x) = 1`. Rewrite using `[Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, h]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem star_char {R : Type} [CommRing R] (ψ : AddChar R ℂ) (h : ∀ x, ‖ψ x‖ = 1) (x : R) :
     star (ψ (-x)) = ψ x := by
   have h1 : ψ (-x) * ψ x = 1 := by rw [← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]
@@ -22,6 +25,33 @@ theorem star_char {R : Type} [CommRing R] (ψ : AddChar R ℂ) (h : ∀ x, ‖ψ
   calc star (ψ (-x)) = star (ψ (-x)) * (ψ (-x) * ψ x) := by rw [h1, mul_one]
     _ = ψ x := by rw [← mul_assoc, h2, one_mul]
 
+/- English proof (translation)
+Establish `hskew : ∀ x y : G, H y x = -H x y`. Introduce `x y`. Establish `h` using `halt (x + y)`. Rewrite `h` using `[hl, hr, hr, halt x, halt y]`. Take the linear combination `h`.
+
+Establish `hz : ∀ x : G, H x 0 = 0`. Introduce `x`. Establish `h` using `hr x 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`.
+
+Establish `hcy : ∀ y : G, Continuous fun x : G => H x y` using `fun y => hcont.comp (continuous_id.prodMk continuous_const)`. Establish `key : ∀ a : G, (fun x => ψ (H x a) * f₀ (x + a) * star (f x)) = 0`. Introduce `a`. Use `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero G Γ K hK hcov Γ (fun γ x => ψ (H x γ + H x γ)) ?_ ?_ ?_ ?_ ?_ ?_ μ 𝓕 hμ h𝓕 _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `γ`.
+
+Conclude with `hψc.comp ((hcy _).add (hcy _))`. Introduce `γ x y`. Rewrite using `[← AddChar.map_add_eq_mul, hl]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `γ γ' x`. Rewrite using `[← AddChar.map_add_eq_mul, AddSubgroup.coe_add, hr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`.
+
+Rewrite using `[AddSubgroup.coe_zero, hz, add_zero, AddChar.map_zero_eq_one]`. Introduce `γ x`. Conclude with `hψn _`. Introduce `x`. Rewrite using `[← hann x]`.
+
+Conclude with `⟨fun h γ hγ => h ⟨γ, hγ⟩, fun h γ => h γ γ.2⟩`. Conclude with `((hψc.comp (hcy a)).mul (c₀.comp (continuous_id.add continuous_const))).mul c.star`. Introduce `γ hγ x`. Rewrite using `[add_assoc, q₀ γ hγ, q γ hγ, star_mul', star_char ψ hψn]`. Establish `e : ψ (H (γ + x) a) * ψ (-(H γ (x + a))) * ψ (H γ x) = ψ (H x a)`.
+
+Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, hl, hr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(f₀ (x + a) * star (f x)) * e`. Introduce `γ`.
+
+Establish `h` using `horth ((γ : G) + a)`. Establish `e : ∀ x : G, ψ (H x γ + H x γ) * (ψ (H x a) * f₀ (x + a) * star (f x)) = ψ (H γ a) * (ψ (H x (γ + a)) * f₀ (x + (γ + a)) * star (f x))`. Introduce `x`. Rewrite using `[add_left_comm x, q₀ γ γ.2]`. Establish `e' : ψ (H x γ + H x γ) * ψ (H x a) = ψ (H γ a) * ψ (H x (γ + a)) * ψ (-(H γ (x + a)))`.
+
+Rewrite using `[← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, hr, hr, hskew x γ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(f₀ (x + a) * star (f x)) * e'`. Simplify using `only [e]`.
+
+Rewrite using `[integral_const_mul, h, mul_zero]`. Take `⟨y, hy⟩` from `Function.ne_iff.mp hne`. Use function extensionality and compare the values at `x`. Establish `h` using `congrFun (key (y - x)) x`. Simplify using `only [add_sub_cancel, Pi.zero_apply, mul_eq_zero, star_eq_zero] at h`.
+
+Break down `h with (h | h) | h` into its components or cases. Use `hψn (H x (y - x))` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`. Conclude with `absurd h hy`.
+
+Conclude with `h`.
+-/
 theorem eq_zero_abstract {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G)
     [DiscreteTopology Γ] (K : Set G) (hK : IsCompact K) (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K)
@@ -96,11 +126,19 @@ theorem eq_zero_abstract {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTop
   · exact absurd h hy
   · exact h
 
+/- English proof (translation)
+Take `⟨γ', rfl⟩` from `hγ`. Conclude with `hg.quasi γ' w`.
+-/
 theorem quasi_of_mem {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     (γ : WO S T) (hγ : γ ∈ ratL T S) (w : WO S T) : g (γ + w) = ψ (-(symplOH S T γ w)) * g w := by
   obtain ⟨γ', rfl⟩ := hγ
   exact hg.quasi γ' w
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Take `⟨hl, hr, halt, hdbl, hcont, -⟩` from `GlobalTheory.OrientedFormLaws.symplOH_laws D S T`. Take `⟨hψc, hψn, -, -⟩` from `hψ.1`. Establish `hann : ∀ x : WO S T, (∀ γ ∈ ratL T S, ψ (symplOH S T x γ + symplOH S T x γ) = 1) ↔ x ∈ ratL T S`.
+
+Introduce `x`. Simplify using `only [hdbl]`. Conclude with `GlobalTheory.T.rationalSymplecticPoints_self_annihilator D ψ hψ S T x`. Conclude with `eq_zero_abstract (G := WO S T) (ratL T S) K hK hcov ψ hψc hψn (symplOH S T) hl hr halt hcont hann f₀ f h₀.cont hf.cont (quasi_of_mem h₀) (quasi_of_mem hf) hne μ 𝓕 hμ h𝓕 horth`.
+-/
 theorem eq_zero_of_orthogonal_translates (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1))
     (S T : HSp D) (f₀ f : WO S T → ℂ) (h₀ : IsThetaFunO ψ S T f₀) (hne : f₀ ≠ 0) (hf : IsThetaFunO ψ S T f)
     (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (hμ : μ.IsAddHaarMeasure)

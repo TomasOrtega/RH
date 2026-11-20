@@ -27,16 +27,33 @@ def blkPoly (N n : ℕ) (v : Fin N × Fin N) : MvPolynomial (Fin n × Fin n) ℂ
   if hi : v.1.1 < n then (if hj : v.2.1 < n then MvPolynomial.X (⟨v.1.1, hi⟩, ⟨v.2.1, hj⟩) else 0)
     else (if v.2.1 < n then 0 else 1)
 
+/- English proof (translation)
+Simplify using `only [blkPoly, blkMat, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem eval_blkPoly (N n : ℕ) (h : Matrix (Fin n) (Fin n) ℂ) (v : Fin N × Fin N) :
     MvPolynomial.eval (fun x : Fin n × Fin n => h x.1 x.2) (blkPoly N n v) = blkMat N n h v.1 v.2 := by
   simp only [blkPoly, blkMat, Matrix.of_apply]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;>`. Simplify using `[blkMat, Formalism.L2.Col.Br.iC, Formalism.L2.Col.Br.iL]`.
+-/
 theorem isBlock_blkMat {N n : ℕ} (hN : N = n + 1) (h : Matrix (Fin n) (Fin n) ℂ) :
     GlobalTheory.BranchFormula.IsBlock hN (blkMat N n h) h 1 := by
   refine ⟨fun a b => ?_, fun a => ⟨?_, ?_⟩, ?_⟩ <;>
     simp [blkMat, Formalism.L2.Col.Br.iC, Formalism.L2.Col.Br.iL]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [blkMat, Matrix.of_apply]`. Apply the tactic sequence `by_cases hi : i.1 < n <;> by_cases hj : j.1 < n`. Rewrite using `[dif_pos hi, dif_pos hj]`. Use `H.1 ⟨i.1, hi⟩ ⟨j.1, hj⟩` as an intermediate fact.
+
+Simplify `this` using `[Formalism.L2.Col.Br.iC]`. Rewrite using `[dif_pos hi, dif_neg hj]`. Establish `ej : j = Formalism.L2.Col.Br.iL hN` using `Fin.ext (by simp [Formalism.L2.Col.Br.iL]; omega)`. Use `(H.2.1 ⟨i.1, hi⟩).1` as an intermediate fact. Rewrite using `[ej]`.
+
+Simplify `this` using `[Formalism.L2.Col.Br.iC]`. Rewrite using `[dif_neg hi, if_pos hj]`. Establish `ei : i = Formalism.L2.Col.Br.iL hN` using `Fin.ext (by simp [Formalism.L2.Col.Br.iL]; omega)`. Use `(H.2.1 ⟨j.1, hj⟩).2` as an intermediate fact. Rewrite using `[ei]`.
+
+Simplify `this` using `[Formalism.L2.Col.Br.iC]`. Rewrite using `[dif_neg hi, if_neg hj]`. Establish `ei : i = Formalism.L2.Col.Br.iL hN` using `Fin.ext (by simp [Formalism.L2.Col.Br.iL]; omega)`. Establish `ej : j = Formalism.L2.Col.Br.iL hN` using `Fin.ext (by simp [Formalism.L2.Col.Br.iL]; omega)`. Rewrite using `[ei, ej]`.
+
+Conclude with `H.2.2`.
+-/
 theorem eq_blkMat_of_isBlock {N n : ℕ} (hN : N = n + 1) {kt : Matrix (Fin N) (Fin N) ℂ}
     {k : Matrix (Fin n) (Fin n) ℂ} (H : GlobalTheory.BranchFormula.IsBlock hN kt k 1) : kt = blkMat N n k := by
   ext i j
@@ -61,10 +78,16 @@ theorem eq_blkMat_of_isBlock {N n : ℕ} (hN : N = n + 1) {kt : Matrix (Fin N) (
     rw [ei, ej]
     exact H.2.2
 
+/- English proof (translation)
+Rewrite using `[← zpow_natCast, Int.toNat_of_nonneg hc, zpow_add₀ hx, mul_comm]`.
+-/
 theorem pow_toNat_eq (x : ℂ) (hx : x ≠ 0) (c m : ℤ) (hc : 0 ≤ c + m) :
     x ^ (c + m).toNat = x ^ m * x ^ c := by
   rw [← zpow_natCast, Int.toNat_of_nonneg hc, zpow_add₀ hx, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.mvPolynomialX]`.
+-/
 theorem det_eval_mvPolynomialX (n : ℕ) (h : Matrix (Fin n) (Fin n) ℂ) :
     MvPolynomial.eval (fun x : Fin n × Fin n => h x.1 x.2) (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det = h.det := by
   rw [RingHom.map_det]
@@ -72,6 +95,9 @@ theorem det_eval_mvPolynomialX (n : ℕ) (h : Matrix (Fin n) (Fin n) ℂ) :
   ext i j
   simp [Matrix.mvPolynomialX]
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det (Matrix.mem_unitaryGroup_iff'.1 hu)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `right_ne_zero_of_mul_eq_one h`.
+-/
 theorem det_ne_zero_of_unitary {n : ℕ} {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ Matrix.unitaryGroup (Fin n) ℂ) :
     u.det ≠ 0 := by
   have h := congrArg Matrix.det (Matrix.mem_unitaryGroup_iff'.1 hu)
@@ -84,6 +110,23 @@ namespace GlobalTheory.BranchMultOne
 
 open Formalism.BasicNotions
 
+/- English proof (translation)
+Use `set a := lam.detShift`. Use `set b := sg.detShift`. Use `set m : ℤ := |a| + |b|`. Establish `ha : 0 ≤ a + m`. Use `neg_abs_le a` as an intermediate fact.
+
+Use `abs_nonneg b` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hb : 0 ≤ b + m`. Use `neg_abs_le b` as an intermediate fact. Use `abs_nonneg a` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `poly : ∀ g' : Matrix (Fin n) (Fin n) ℂ, g'.det ^ (a + m).toNat • E (Formalism.GradedWeylDivisibility.rowAct ℂ (blkMat N n g') f) = g'.det ^ (b + m).toNat • Formalism.GradedWeylDivisibility.rowAct ℂ g' (E f)`. Introduce `g'`. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => ?_` and prove the remaining obligations.
+
+Take `⟨P₁, hP₁⟩` from `GlobalTheory.Branching.exists_poly_rowAct_coef N N f (l ∘ₗ E)`. Take `⟨P₂, hP₂⟩` from `GlobalTheory.Branching.exists_poly_rowAct_coef n n (E f) l`. Set `D` to `(Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det`. Set `Q` to `D ^ (a + m).toNat * MvPolynomial.bind₁ (blkPoly N n) P₁ - D ^ (b + m).toNat * P₂`. Establish `hQ : ∀ h : Matrix (Fin n) (Fin n) ℂ, MvPolynomial.eval (fun x => h x.1 x.2) Q = l (h.det ^ (a + m).toNat • E (Formalism.GradedWeylDivisibility.rowAct ℂ (blkMat N n h) f) - h.det ^ (b + m).toNat • Formalism.GradedWeylDivisibility.rowAct ℂ h (E f))`.
+
+Introduce `h`. Establish `hbind : MvPolynomial.eval (fun x : Fin n × Fin n => h x.1 x.2) (MvPolynomial.bind₁ (blkPoly N n) P₁) = MvPolynomial.eval (fun v => MvPolynomial.eval (fun x : Fin n × Fin n => h x.1 x.2) (blkPoly N n v)) P₁` using `MvPolynomial.eval₂Hom_bind₁ _ _ _ P₁`. Simplify using `only [Q, D, map_sub, map_mul, map_pow, det_eval_mvPolynomialX, map_smul, smul_eq_mul, hbind, eval_blkPoly]`. Rewrite using `[← hP₁ (blkMat N n h), ← hP₂ h]`. Both sides reduce to the same expression.
+
+Establish `Q0 : Q = 0`. Use `GlobalTheory.Branching.eq_zero_of_vanish_unitaryGroup n Q fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hQ]`. Establish `hv0` using `det_ne_zero_of_unitary hv`. Establish `key` using `hu v hv (blkMat N n v) (isBlock_blkMat hN v) ⟨f, hf⟩ ⟨Formalism.GradedWeylDivisibility.rowAct ℂ (blkMat N n v) f, GlobalTheory.ValueSpaceCoordinates.rowAct_mem_delSq lam _ f hf⟩ rfl`.
+
+Rewrite `key` using `[← hE, ← hE]`. Rewrite using `[pow_toNat_eq _ hv0 a m ha, pow_toNat_eq _ hv0 b m hb, mul_smul, mul_smul, ← smul_sub]`. Simplify using `only at key`. Rewrite using `[key, sub_self, smul_zero, map_zero]`. Use `hQ g'` as an intermediate fact.
+
+Rewrite `this` using `[Q0, map_zero]`. Conclude with `this.symm`. Establish `h` using `poly g`. Rewrite `h` using `[pow_toNat_eq _ hg a m ha, pow_toNat_eq _ hg b m hb, mul_smul, mul_smul]`. Conclude with `smul_right_injective _ (zpow_ne_zero m hg) h`.
+-/
 theorem unitary_to_all {N n : ℕ} (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n)
     (u : delSq ℂ N lam →ₗ[ℂ] delSq ℂ n sg)
     (E : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ)
@@ -142,6 +185,25 @@ end GlobalTheory.BranchMultOne
 
 namespace GlobalTheory.BranchMultOne
 
+/- English proof (translation)
+Introduce `N n hN lam sg hI t t₀ H h0`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (delSq ℂ N lam)`. Set `π` to `(delSq ℂ N lam).linearProjOfIsCompl C hC`. Set `E : (delSq ℂ N lam →ₗ[ℂ] delSq ℂ n sg) → MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ` to `fun u => (delSq ℂ n sg).subtype ∘ₗ u ∘ₗ π`. Establish `hE : ∀ u (f : delSq ℂ N lam), E u f.1 = (u f).1` using `fun u f => by show (u (π f.1)).1 = (u f).1`.
+
+Conclude with `congrArg (fun x => (u x).1) (Submodule.linearProjOfIsCompl_apply_left hC f)`. Establish `hN' : Formalism.BasicNotions.nablaSq ℂ N lam = delSq ℂ N lam` using `Formalism.L2.Col.nablaSq_eq_delSq ℂ lam`. Establish `hn' : Formalism.BasicNotions.nablaSq ℂ n sg = delSq ℂ n sg` using `Formalism.L2.Col.nablaSq_eq_delSq ℂ sg`. Establish `key : ∀ s, s = E t ∨ s = E t₀ → (∀ f ∈ Formalism.BasicNotions.nablaSq ℂ N lam, s f ∈ Formalism.BasicNotions.nablaSq ℂ n sg) ∧ ∀ (g : GL (Fin n) ℂ), ∀ f ∈ Formalism.BasicNotions.nablaSq ℂ N lam, s (Formalism.BasicNotions.sqAct ℂ N lam (Formalism.MainNotions.PrimeDegreeVariant.embG …`. Introduce `s hs`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨u, hu, rfl⟩ : ∃ u, (u = t ∨ u = t₀) ∧ s = E u := by`. Break down `hs with hs | hs` into its components or cases. Conclude with `⟨t, Or.inl rfl, hs⟩`. Conclude with `⟨t₀, Or.inr rfl, hs⟩`. Use `⟨fun f hf => ?_, fun g f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hf` using `[hN']`. Rewrite using `[hn', hE u ⟨f, hf⟩]`. Conclude with `(u _).2`. Rewrite `hf` using `[hN']`. Establish `hb` using `(GlobalTheory.BranchFormula.isBlock_embGL ℂ hN g).transpose`.
+
+Establish `hdet : (Formalism.MainNotions.PrimeDegreeVariant.embGL ℂ n N hN.symm g : Matrix (Fin N) (Fin N) ℂ).det = (g : Matrix (Fin n) (Fin n) ℂ).det`. Rewrite using `[(GlobalTheory.BranchFormula.isBlock_embGL ℂ hN g).det, mul_one]`. Establish `hg0 : (g : Matrix (Fin n) (Fin n) ℂ).transpose.det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Use `(Matrix.GeneralLinearGroup.det g).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Then use the resulting hypothesis. Establish `main` using `unitary_to_all hN lam sg u (E u) (hE u) (H u hu) _ hg0 f hf`. Rewrite `main` using `[← eq_blkMat_of_isBlock hN hb, Matrix.det_transpose]`. Simplify using `only [Formalism.BasicNotions.sqAct, Formalism.BasicNotions.detPow, map_smul, Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, hdet]`. Conclude with `main`.
+
+Establish `hne : ∃ f ∈ Formalism.BasicNotions.nablaSq ℂ N lam, E t₀ f ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h0` to reduce the goal to its premises. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations.
+
+Use `hc f.1 (by rw [hN']; exact f.2)` as an intermediate fact. Rewrite `this` using `[hE]`. Simplify using `using this`. Take `⟨c, hc⟩` from `GlobalTheory.Branching.equivariant_map_eq_smul n N hN.symm lam sg ((GlobalTheory.IndefiniteRowSideFullHecke.InterlacingEquivariance.interlace_iff hN lam sg).1 hI) (E t) (E t₀) key hne`. Use `⟨c, LinearMap.ext fun f => Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Use `hc f.1 (by rw [hN']; exact f.2)` as an intermediate fact. Rewrite `this` using `[hE, hE]`. Simplify using `using this`.
+-/
 theorem eq_smul_of_unitary_equivariant : ∀ (N n : ℕ) (hN : N = n + 1) (lam : DomWeight N) (sg : DomWeight n), Formalism.L2.Col.Br.Interlace hN lam sg → ∀ t t₀ : delSq ℂ N lam →ₗ[ℂ] delSq ℂ n sg, (∀ s, s = t ∨ s = t₀ → ∀ k ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ kt : Matrix (Fin N) (Fin N) ℂ, GlobalTheory.BranchFormula.IsBlock hN kt k 1 → ∀ f f' : delSq ℂ N lam, f'.1 = Formalism.GradedWeylDivisibility.rowAct ℂ kt f.1 → k.det ^ lam.detShift • (s f').1 = k.det ^ sg.detShift • Formalism.GradedWeylDivisibility.rowAct ℂ k (s f).1) → t₀ ≠ 0 → ∃ c : ℂ, t = c • t₀ := by
   intro N n hN lam sg hI t t₀ H h0
   obtain ⟨C, hC⟩ := Submodule.exists_isCompl (delSq ℂ N lam)

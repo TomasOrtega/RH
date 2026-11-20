@@ -6,24 +6,55 @@ noncomputable section
 
 namespace Formalism.REAL
 
+/- English proof (translation)
+Unfold `Tm`. Apply the tactic sequence `split_ifs <;> simp [Algebra.algebraMap_eq_smul_one]`.
+-/
 lemma shiftedGenerator_eq_ite_smul_add {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (x : ℂ)
     (a b : Fin n) : Tm E x a b = (if a = b then x else 0) • (1 : A) + E a b := by
   unfold Tm
   split_ifs <;> simp [Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma ite_zero_eq_mul_ite (P : Prop) [Decidable P] (x : ℂ) :
     (if P then x else 0) = x * (if P then 1 else 0) := by
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma ite_zero_eq_ite_smul {A : Type*} [Ring A] [Algebra ℂ A] (P : Prop) [Decidable P] (X : A) :
     (if P then X else 0) = (if P then (1 : ℂ) else 0) • X := by
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[shiftedGenerator_eq_ite_smul_add, ite_zero_eq_mul_ite]`.
+-/
 private theorem Tm_eq_smul_one_add {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ}
     (E : Fin n → Fin n → A) (x : ℂ) (a b : Fin n) :
     Tm E x a b = (x * (if a = b then (1 : ℂ) else 0)) • (1 : A) + E a b := by
   rw [shiftedGenerator_eq_ite_smul_add, ite_zero_eq_mul_ite]
 
+/- English proof (translation)
+Establish `hx : x = y + 1` using `eq_add_of_sub_eq' hxy`. Substitute `hx` using the available equality. Establish `h1 : E p c * E q d = E q d * E p c + ((if q = c then (1 : ℂ) else 0) • E p d - (if p = d then (1 : ℂ) else 0) • E q c)`. Rewrite using `[eq_add_of_sub_eq' (hE p c q d)]`. Use `congr 1`.
+
+Break down `eq_or_ne c q with h | h` into its components or cases. Substitute `h` using the available equality. Break down `eq_or_ne d p with h' | h'` into its components or cases. Substitute `h'` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h', h'.symm]`. Break down `eq_or_ne d p with h' | h'` into its components or cases. Substitute `h'` using the available equality. Simplify using `[h, h.symm]`. Simplify using `[h, h.symm, h', h'.symm]`.
+
+Establish `h2 : E p d * E q c = E q c * E p d + ((if q = d then (1 : ℂ) else 0) • E p c - (if p = c then (1 : ℂ) else 0) • E q d)`. Rewrite using `[eq_add_of_sub_eq' (hE p d q c)]`. Use `congr 1`. Break down `eq_or_ne d q with h | h` into its components or cases. Substitute `h` using the available equality.
+
+Break down `eq_or_ne c p with h' | h'` into its components or cases. Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h', h'.symm]`. Break down `eq_or_ne c p with h' | h'` into its components or cases.
+
+Substitute `h'` using the available equality. Simplify using `[h, h.symm]`. Simplify using `[h, h.symm, h', h'.symm]`. Simplify using `only [Tm_eq_smul_one_add]`. Generalize the expression as in `(if p = c then (1 : ℂ) else 0) = δpc at h2 ⊢`.
+
+Generalize the expression as in `(if q = d then (1 : ℂ) else 0) = δqd at h2 ⊢`. Generalize the expression as in `(if q = c then (1 : ℂ) else 0) = δqc at h1 ⊢`. Generalize the expression as in `(if p = d then (1 : ℂ) else 0) = δpd at h1 ⊢`. Generalize the expression as in `E p c = Epc at h1 h2 ⊢`. Generalize the expression as in `E q d = Eqd at h1 h2 ⊢`.
+
+Generalize the expression as in `E q c = Eqc at h1 h2 ⊢`. Generalize the expression as in `E p d = Epd at h1 h2 ⊢`. Simplify using `only [add_mul, mul_add]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, one_mul, mul_one, smul_smul]`. Rewrite using `[h1, h2]`.
+
+Use `module`.
+-/
 lemma shiftedGenerator_quadratic {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (x y : ℂ) (hxy : x - y = 1) (p q c d : Fin n) :
     Tm E x p c * Tm E y q d - Tm E x q c * Tm E y p d + Tm E x p d * Tm E y q c
@@ -68,6 +99,9 @@ lemma shiftedGenerator_quadratic {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} 
   rw [h1, h2]
   module
 
+/- English proof (translation)
+Establish `h0 : i < (List.ofFn f).length` using `by simp; omega`. Establish `h1 : i + 1 < (List.ofFn f).length` using `by simp; omega`. Use `conv_lhs => rw [← List.take_append_drop i (List.ofFn f)]`. Rewrite using `[List.prod_append, List.drop_eq_getElem_cons h0, List.drop_eq_getElem_cons h1, show i + 2 = i + 1 + 1 from rfl]`. Simplify using `only [List.prod_cons, List.getElem_ofFn, mul_assoc]`.
+-/
 lemma prod_ofFn_split_pair {M : Type*} [Monoid M] {t : ℕ} (f : Fin t → M) (i : ℕ) (hi : i + 1 < t) :
     (List.ofFn f).prod = ((List.ofFn f).take i).prod * (f ⟨i, by omega⟩ * f ⟨i + 1, hi⟩) *
       ((List.ofFn f).drop (i + 2)).prod := by
@@ -78,6 +112,11 @@ lemma prod_ofFn_split_pair {M : Type*} [Monoid M] {t : ℕ} (f : Fin t → M) (i
     show i + 2 = i + 1 + 1 from rfl]
   simp only [List.prod_cons, List.getElem_ofFn, mul_assoc]
 
+/- English proof (translation)
+Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `k hk₁ hk₂`. Simplify using `only [List.getElem_take, List.getElem_ofFn]`. Apply `h` to reduce the goal to its premises.
+
+Simplify using `only [List.length_take, List.length_ofFn] at hk₁`. Use `show k < i`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma take_ofFn_congr {α : Type*} {t : ℕ} (f g : Fin t → α) (i : ℕ)
     (h : ∀ k : Fin t, (k : ℕ) < i → f k = g k) :
     (List.ofFn f).take i = (List.ofFn g).take i := by
@@ -90,6 +129,11 @@ lemma take_ofFn_congr {α : Type*} {t : ℕ} (f g : Fin t → α) (i : ℕ)
     show k < i
     omega
 
+/- English proof (translation)
+Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `k hk₁ hk₂`. Simplify using `only [List.getElem_drop, List.getElem_ofFn]`. Apply `h` to reduce the goal to its premises.
+
+Conclude with `Nat.le_add_right _ _`.
+-/
 lemma drop_ofFn_congr {α : Type*} {t : ℕ} (f g : Fin t → α) (i : ℕ)
     (h : ∀ k : Fin t, i ≤ (k : ℕ) → f k = g k) :
     (List.ofFn f).drop i = (List.ofFn g).drop i := by
@@ -100,10 +144,16 @@ lemma drop_ofFn_congr {α : Type*} {t : ℕ} (f g : Fin t → α) (i : ℕ)
     apply h
     exact Nat.le_add_right _ _
 
+/- English proof (translation)
+Simplify using `only [mul_sub, mul_add, sub_mul, add_mul]`.
+-/
 lemma sandwich_alternating_sum {A : Type*} [Ring A] (L R a1 a2 a3 a4 : A) :
     L * a1 * R - L * a2 * R + L * a3 * R - L * a4 * R = L * (a1 - a2 + a3 - a4) * R := by
   simp only [mul_sub, mul_add, sub_mul, add_mul]
 
+/- English proof (translation)
+Rewrite using `[prod_ofFn_split_pair f₁ i hi, prod_ofFn_split_pair f₂ i hi, prod_ofFn_split_pair f₃ i hi, prod_ofFn_split_pair f₄ i hi, take_ofFn_congr f₂ f₁ i (fun k hk => h₂ k (by omega) (by omega)), take_ofFn_congr f₃ f₁ i (fun k hk => h₃ k (by omega) (by omega)), take_ofFn_congr f₄ f₁ i (fu …`.
+-/
 lemma prod_ofFn_alternating_sum {A : Type*} [Ring A] {t : ℕ} (f₁ f₂ f₃ f₄ : Fin t → A) (i : ℕ) (hi : i + 1 < t)
     (h₂ : ∀ k : Fin t, (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → f₂ k = f₁ k)
     (h₃ : ∀ k : Fin t, (k : ℕ) ≠ i → (k : ℕ) ≠ i + 1 → f₃ k = f₁ k)
@@ -125,10 +175,22 @@ def exchangeTwo_self_eq_one {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E 
     (a b : Fin t → Fin n) (u : ℂ) (σ : Equiv.Perm (Fin t)) : A :=
   (List.ofFn fun k : Fin t => Tm E (u - (k : ℂ)) (a (σ k)) (b k)).prod
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma quantumMinor_eq_sum_term {A : Type*} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A)
     (a b : Fin t → Fin n) (u : ℂ) :
     qminor E a b u = ∑ σ : Equiv.Perm (Fin t), ((Equiv.Perm.sign σ : ℤ) : A) * exchangeTwo_self_eq_one E a b u σ := rfl
 
+/- English proof (translation)
+Unfold `exchangeTwo_self_eq_one`. Establish `hi : (i : ℕ) + 1 < m + 1` using `by omega`. Establish `hfix : ∀ k : Fin (m + 1), (k : ℕ) ≠ i → (k : ℕ) ≠ (i : ℕ) + 1 → Equiv.swap i.castSucc i.succ k = k`. Introduce `k hk₁ hk₂`. Conclude with `Equiv.swap_apply_of_ne_of_ne (fun h => hk₁ (by rw [h, Fin.val_castSucc])) (fun h => hk₂ (by rw [h, Fin.val_succ]))`.
+
+Use `prod_ofFn_alternating_sum _ _ _ _ (i : ℕ) hi ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `k hk₁ hk₂`. Simplify using `only [Equiv.Perm.mul_apply, hfix k hk₁ hk₂]`. Introduce `k hk₁ hk₂`. Simplify using `only [Function.comp_apply, hfix k hk₁ hk₂]`.
+
+Introduce `k hk₁ hk₂`. Simplify using `only [Equiv.Perm.mul_apply, Function.comp_apply, hfix k hk₁ hk₂]`. Establish `key` using `shiftedGenerator_quadratic E hE (u - ((i : ℕ) : ℂ)) (u - (((i : ℕ) + 1 : ℕ) : ℂ)) (by push_cast; ring) (a (σ i.castSucc)) (a (σ i.succ)) (b i.castSucc) (b i.succ)`. Establish `e0 : (⟨(i : ℕ), by omega⟩ : Fin (m + 1)) = i.castSucc` using `rfl`. Establish `e1 : (⟨(i : ℕ) + 1, hi⟩ : Fin (m + 1)) = i.succ` using `rfl`.
+
+Simplify using `only [e0, e1, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.swap_apply_left, Equiv.swap_apply_right]`. Conclude with `key`.
+-/
 lemma quantumMinorTerm_adjacent_swap {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (a b : Fin (m + 1) → Fin n) (i : Fin m) (u : ℂ) (σ : Equiv.Perm (Fin (m + 1))) :
     exchangeTwo_self_eq_one E a b u σ - exchangeTwo_self_eq_one E a b u (σ * Equiv.swap i.castSucc i.succ)
@@ -156,11 +218,23 @@ lemma quantumMinorTerm_adjacent_swap {A : Type*} [Ring A] [Algebra ℂ A] {n m :
       Equiv.swap_apply_right]
     exact key
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma eq_zero_of_add_self_eq_zero {A : Type*} [Ring A] [Algebra ℂ A] (X : A) (h : X + X = 0) : X = 0 := by
   calc X = ((2 : ℂ)⁻¹ * 2) • X := by rw [inv_mul_cancel₀ two_ne_zero, one_smul]
     _ = (2 : ℂ)⁻¹ • (X + X) := by rw [mul_smul, two_smul]
     _ = 0 := by rw [h, smul_zero]
 
+/- English proof (translation)
+Establish `hsgn : Equiv.Perm.sign (Equiv.swap i.castSucc i.succ) = -1` using `Equiv.Perm.sign_swap (ne_of_lt Fin.castSucc_lt_succ)`. Establish `reindex : ∀ bb : Fin (m + 1) → Fin n, ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : A) * exchangeTwo_self_eq_one E a bb u (σ * Equiv.swap i.castSucc i.succ) = - qminor E a bb u`. Introduce `bb`. Rewrite using `[quantumMinor_eq_sum_term, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv (Equiv.mulRight (Equiv.swap i.castSucc i.succ)) _ _ (fun σ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Equiv.coe_mulRight, Equiv.Perm.sign_mul, hsgn, Units.val_neg, Int.cast_neg, mul_neg, mul_one, neg_mul, neg_neg]`. Establish `hsum : ∑ σ : Equiv.Perm (Fin (m + 1)), ((Equiv.Perm.sign σ : ℤ) : A) * (exchangeTwo_self_eq_one E a b u σ - exchangeTwo_self_eq_one E a b u (σ * Equiv.swap i.castSucc i.succ) + exchangeTwo_self_eq_one E a (b ∘ Equiv.swap i.castSucc i.succ) u σ - exchangeTwo_self_eq_one E a (b ∘ E …`. Use `Finset.sum_eq_zero (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[quantumMinorTerm_adjacent_swap E hE a b i u σ, mul_zero]`. Simplify using `only [mul_sub, mul_add, Finset.sum_sub_distrib, Finset.sum_add_distrib] at hsum`.
+
+Rewrite `hsum` using `[reindex, reindex, ← quantumMinor_eq_sum_term, ← quantumMinor_eq_sum_term]`. Establish `hX : qminor E a b u + qminor E a (b ∘ Equiv.swap i.castSucc i.succ) u = 0`. Apply `eq_zero_of_add_self_eq_zero` to reduce the goal to its premises. Use `hsum using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`. Conclude with `hX`.
+-/
 lemma quantumMinor_adjacent_col_swap {A : Type*} [Ring A] [Algebra ℂ A] {n m : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E)
     (a b : Fin (m + 1) → Fin n) (i : Fin m) (u : ℂ) :
     qminor E a (b ∘ Equiv.swap i.castSucc i.succ) u = - qminor E a b u := by
@@ -189,6 +263,17 @@ lemma quantumMinor_adjacent_col_swap {A : Type*} [Ring A] [Algebra ℂ A] {n m :
   rw [eq_neg_iff_add_eq_zero, add_comm]
   exact hX
 
+/- English proof (translation)
+Introduce `A _ _ n t E hE a b τ u`. Consider the cases of `t with`. Consider the case `zero`. Establish `hτ : τ = 1` using `Subsingleton.elim _ _`. Substitute `hτ` using the available equality.
+
+Simplify using the standard rewrite rules. Consider the case `succ m`. Establish `hτ : τ ∈ Submonoid.closure (Set.range fun i : Fin m => Equiv.swap i.castSucc i.succ)`. Rewrite using `[Equiv.Perm.mclosure_swap_castSucc_succ]`. Conclude with `Submonoid.mem_top τ`.
+
+Use `revert b`. Proceed by induction on `hτ using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `b`.
+
+Establish `hs : i.castSucc ≠ i.succ` using `ne_of_lt Fin.castSucc_lt_succ`. Rewrite using `[quantumMinor_adjacent_col_swap E hE a b i u, Equiv.Perm.sign_swap hs]`. Simplify using the standard rewrite rules. Consider the case `one`. Introduce `b`.
+
+Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `b`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hy (b ∘ ⇑x), hx b, ← mul_assoc, Equiv.Perm.sign_mul, mul_comm (Equiv.Perm.sign x), Units.val_mul, Int.cast_mul]`.
+-/
 theorem quantumMinorColSkew_holds : QSkewCol := by
   intro A _ _ n t E hE a b τ u
   cases t with

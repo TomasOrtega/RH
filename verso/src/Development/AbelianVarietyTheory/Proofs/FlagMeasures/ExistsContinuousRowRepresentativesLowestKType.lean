@@ -20,6 +20,15 @@ namespace GlobalTheory.SmoothRepsType
 
 open GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalPlaceBasis
 
+/- English proof (translation)
+Take `⟨hT, -, -, hKc, -, -, hK⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨ho, ⟨K, hKe⟩, -⟩` from `hK B.g hg`. Establish `hcl : IsClosed (B.I.Kg B.g)`. Rewrite `ho`, the goal using `[← hKe]`. Conclude with `K.isClosed_of_isOpen ho`.
+
+Establish `hc : IsCompact (B.I.Kg B.g)` using `hKc.of_isClosed_subset hcl fun x hx => hx.1`. Establish `hne : (B.I.Kg B.g).Nonempty`. Rewrite using `[← hKe]`. Conclude with `⟨1, K.one_mem⟩`. Establish `hpos : 0 < B.μf.real (B.I.Kg B.g)` using `ENNReal.toReal_pos (ho.measure_pos B.μf hne).ne' hc.measure_lt_top.ne`.
+
+Use `⟨(B.I.Kg B.g).indicator fun _ => (((B.μf.real (B.I.Kg B.g))⁻¹ : ℝ) : ℂ), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsClopen.continuous_indicator ⟨hcl, ho⟩ continuous_const`. Conclude with `HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _`. Introduce `k hk`. Conclude with `Set.mem_of_indicator_ne_zero hk`.
+
+Rewrite using `[integral_indicator_const _ ho.measurableSet, Complex.real_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hpos.ne', Complex.ofReal_one]`.
+-/
 theorem exists_level_bump (B : RowsAut) (hg : 1 ≤ B.g) :
     ∃ χ : B.I.Gf → ℂ, Continuous χ ∧ HasCompactSupport χ ∧ (∀ k, χ k ≠ 0 → k ∈ B.I.Kg B.g) ∧
       ∫ k, χ k ∂B.μf = 1 := by
@@ -41,6 +50,13 @@ theorem exists_level_bump (B : RowsAut) (hg : 1 ≤ B.g) :
   · rw [integral_indicator_const _ ho.measurableSet, Complex.real_smul, ← Complex.ofReal_mul,
       mul_inv_cancel₀ hpos.ne', Complex.ofReal_one]
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, χ k ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at h1`. Establish `hac : Continuous a`.
+
+Establish `h2 : Continuous fun g : B.I.Ginf => a g * χ k` using `hc.comp (f := fun g : B.I.Ginf => ((g, k) : B.I.GA)) (Continuous.prodMk_left k)`. Establish `h3` using `h2.mul_const (χ k)⁻¹`. Simplify `h3` using `[mul_assoc, mul_inv_cancel₀ hk]`. Establish `has : HasCompactSupport a`. Use `HasCompactSupport.intro (hs.isCompact.image continuous_fst) fun g hg => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h0`. Conclude with `hg ⟨(g, k), subset_tsupport _ (mul_ne_zero h0 hk), rfl⟩`. Establish `: IsFiniteMeasureOnCompacts (muInf B.I)` using `by unfold muInf; infer_instance`. Conclude with `(hac.smul (hσ.2.2.2 w)).integrable_of_hasCompactSupport has.smul_right`.
+-/
 theorem integrable_of_prod (B : RowsAut) (hσ : IsURep B.σs) (a : B.I.Ginf → ℂ) (χ : B.I.Gf → ℂ)
     (h1 : ∫ k, χ k ∂B.μf = 1) (hc : Continuous fun y : B.I.GA => a y.1 * χ y.2)
     (hs : HasCompactSupport fun y : B.I.GA => a y.1 * χ y.2) (w : B.Hs) :
@@ -61,6 +77,15 @@ theorem integrable_of_prod (B : RowsAut) (hσ : IsURep B.σs) (a : B.I.Ginf → 
   have : IsFiniteMeasureOnCompacts (muInf B.I) := by unfold muInf; infer_instance
   exact (hac.smul (hσ.2.2.2 w)).integrable_of_hasCompactSupport has.smul_right
 
+/- English proof (translation)
+Establish `: SigmaFinite (muInf B.I)` using `by unfold muInf; infer_instance`. Take `⟨-, hmul, -⟩` from `GlobalTheory.RightRegFund.rightReg_unitary_continuous B`. Establish `hpt : ∀ y : B.I.GA, (a y.1 * χ y.2) • B.R y (T w) = χ y.2 • T (a y.1 • B.σs y.1 w)`. Introduce and unpack `⟨g, k⟩`. Distinguish the cases in `h0 : χ k = 0`.
+
+Simplify using `[h0]`. Establish `e1 : B.R (g, k) (T w) = T (B.σs g w)`. Establish `: ((g, k) : B.I.GA) = (g, 1) * (1, k)` using `by simp`. Rewrite using `[this, hmul, ContinuousLinearMap.mul_apply, hk w k (hχ k h0)]`. Conclude with `(congrArg (fun S : B.Hs →L[ℂ] B.I.L2 B.μf B.fund => S w) (hT g)).symm`.
+
+Simplify using `only [e1, map_smul, smul_smul, mul_comm]`. Repeatedly rewrite using `[hpt]`. Express the relevant statement in the definitionally equal form `∫ y : B.I.Ginf × B.I.Gf, χ y.2 • T (a y.1 • B.σs y.1 w) ∂((muInf B.I).prod B.μf) = _`. Rewrite using `[← integral_prod_swap]`. Use `integral_prod_smul (μ := B.μf) (ν := muInf B.I) χ (fun g => T (a g • B.σs g w))` as an intermediate fact.
+
+Simplify using `only [Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[this, h1, one_smul, T.integral_comp_comm hint]`.
+-/
 theorem conv_avg (B : RowsAut) (T : B.Hs →L[ℂ] B.I.L2 B.μf B.fund)
     (hT : T ∈ B.I.HomS B.σs B.μf B.fund B.R) (hk : ∀ u, ∀ k ∈ B.I.Kg B.g, B.R (1, k) (T u) = T u)
     (a : B.I.Ginf → ℂ) (χ : B.I.Gf → ℂ) (hχ : ∀ k, χ k ≠ 0 → k ∈ B.I.Kg B.g) (h1 : ∫ k, χ k ∂B.μf = 1)
@@ -84,6 +109,25 @@ theorem conv_avg (B : RowsAut) (T : B.Hs →L[ℂ] B.I.L2 B.μf B.fund)
   simp only [Prod.fst_swap, Prod.snd_swap]
   rw [this, h1, one_smul, T.integral_comp_comm hint]
 
+/- English proof (translation)
+Introduce `B d hd h1 hg T hT hk`. Take `⟨χ, hχc, hχs, hχK, hχ1⟩` from `exists_level_bump B hg`. Take `⟨huniq, -, htr, -⟩` from `GlobalTheory.ContRepUniq.contRep_unique_linear B`. Establish `hσ : IsURep B.σs` using `(GlobalTheory.Dec.tensorRep B d hd).1`. Set `Fr : B.Hs → B.I.GA → ℂ` to `fun u => if h : ∃ f, IsContRep B (T u) f then h.choose else 0`.
+
+Establish `hFr : ∀ u f, IsContRep B (T u) f → Fr u = f`. Introduce `u f hf`. Establish `h : ∃ f, IsContRep B (T u) f` using `⟨f, hf⟩`. Establish `: Fr u = h.choose` using `dif_pos h`. Rewrite using `[this]`.
+
+Conclude with `huniq _ _ _ h.choose_spec hf`. Use `⟨Fr, fun P u hu => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, hAs, hfix⟩` from `GlobalTheory.T.exists_smooth_average_lowest_KType B d hd h1 P u hu`. Set `ψ : B.I.GA → ℂ` to `fun y => A (fun v i j => uMat (y.1 v) i j) * χ y.2`. Establish `hder` using `fun E => GlobalTheory.T.hasDerivAt_convolution_archimedeanUnitaryLieAlgebra B A χ ψ E hA hAs hχc hχs (fun _ => rfl)`.
+
+Establish `hψ : ∫ y, ψ y • B.R y (T (B.tens B.w)) ∂(B.I.muA B.μf) = T u`. Rewrite using `[hfix]`. Conclude with `conv_avg B T hT hk (fun g => A (fun v i j => uMat (g v) i j)) χ hχK hχ1 _ (integrable_of_prod B hσ (fun g => A (fun v i j => uMat (g v) i j)) χ hχ1 (hder 0).1 (hder 0).2.1 _)`. Establish `hrep` using `GlobalTheory.ConvContRep.conv_isContRep B ψ (T (B.tens B.w)) (hder 0).1 (hder 0).2.1`. Rewrite `hrep` using `[hψ]`.
+
+Establish `hFu` using `hFr u _ hrep`. Establish `hrep' : IsContRep B (T u) (Fr u)` using `by rw [hFu]; exact hrep`. Use `⟨hrep', fun k hkK y => ?_, fun E y => ?_⟩` and prove the remaining obligations. Use `htr _ _ (1, k) hrep'` as an intermediate fact. Rewrite `this` using `[hk u k hkK]`.
+
+Conclude with `congrFun (huniq _ _ _ this hrep') y`. Take `⟨-, -, ψ', hc', hs', hd'⟩` from `hder E`. Take `⟨hd1, hd2⟩` from `hd' (T (B.tens B.w))`. Rewrite `hd1` using `[hψ]`. Take `⟨A', -, -, hA'⟩` from `GlobalTheory.AverageDeriv.hasDerivAt_orbit_average B A E (B.tens B.w) hσ hA hAs`.
+
+Rewrite `hA'` using `[← hfix]`. Establish `hdiff : HasDerivAt (orbit B E u) (dAct B E u) 0` using `hA'.differentiableAt.hasDerivAt`. Establish `hd3 : HasDerivAt (fun t : ℝ => T (orbit B E u t)) (T (dAct B E u)) 0` using `(T.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hdiff`. Establish `hfun : (fun t : ℝ => T (orbit B E u t)) = fun t : ℝ => B.R ((fun v => expU (t • E v)), 1) (T u)`. Use function extensionality and compare the values at `t`.
+
+Conclude with `congrArg (fun S : B.Hs →L[ℂ] B.I.L2 B.μf B.fund => S u) (hT _)`. Rewrite `hd3` using `[hfun]`. Establish `heq` using `hd3.unique hd1`. Establish `hrep2` using `GlobalTheory.ConvContRep.conv_isContRep B ψ' (T (B.tens B.w)) hc' hs'`. Rewrite `hrep2` using `[← heq]`.
+
+Rewrite using `[hFr _ _ hrep2, hFu]`. Conclude with `hd2 y`.
+-/
 theorem repsExist : ∀ (B : RowsAut) (d : InfinitePlace B.I.F → ℝ), IsDSData B d →
     (∀ v, Formalism.MainNotions.S.IsKTypeOf (B.I.ε v) (B.σ v) (Formalism.QuantumDeterminants.lowK (B.I.ε v) (B.lam v))
       (Formalism.MainNotions.S.lowKSub (B.I.ε v) (B.lam v) (B.σ v))) → 1 ≤ B.g →

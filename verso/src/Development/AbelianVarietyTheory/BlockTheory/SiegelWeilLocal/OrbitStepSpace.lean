@@ -36,6 +36,11 @@ def IsONFamily (ε : Fin n → Bool) (E : Fin (n ^ 2) → Matrix (Fin n) (Fin n)
 def stepConst (n : ℕ) (b : ℝ) (P : ℕ) : ℝ :=
   (n : ℝ) ^ (1 / 2 : ℝ) * b ^ 2 + 3 / 2 * (n : ℝ) ^ (3 / 2 : ℝ) + 3 * (P : ℝ)
 
+/- English proof (translation)
+Establish `: {v | ∃ (l : List (Matrix (Fin n) (Fin n) ℂ)) (u : H), l.length ≤ 0 ∧ (∀ X ∈ l, Formalism.REAL.inG ε X) ∧ u ∈ lowKSub ε lam σ ∧ v = dWord σ l u} = (lowKSub ε lam σ : Set H)`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, u, hl, -, hu, rfl⟩`. Establish `: l = []` using `List.eq_nil_of_length_eq_zero (Nat.le_zero.mp hl)`.
+
+Substitute `this` using the available equality. Conclude with `hu`. Introduce `hv`. Conclude with `⟨[], v, le_rfl, by simp, hv, rfl⟩`. Rewrite using `[stepSpace, this, Submodule.span_eq]`.
+-/
 theorem stepSpace_zero (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     stepSpace ε lam σ 0 = lowKSub ε lam σ := by
   have : {v | ∃ (l : List (Matrix (Fin n) (Fin n) ℂ)) (u : H), l.length ≤ 0 ∧
@@ -50,6 +55,9 @@ theorem stepSpace_zero (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix 
       exact ⟨[], v, le_rfl, by simp, hv, rfl⟩
   rw [stepSpace, this, Submodule.span_eq]
 
+/- English proof (translation)
+Introduce `P Q h`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨l, u, hl, h1, h2, h3⟩`. Conclude with `⟨l, u, hl.trans h, h1, h2, h3⟩`.
+-/
 theorem stepSpace_mono (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
     Monotone (stepSpace ε lam σ) := by
   intro P Q h
@@ -59,6 +67,9 @@ theorem stepSpace_mono (ε : Fin n → Bool) (lam : Fin n → ℝ) (σ : Matrix 
 
 end Defs
 
+/- English proof (translation)
+Use `⟨fun _ => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.REAL.inG, Matrix.conjTranspose_smul]`. Establish `: i = j` using `Subsingleton.elim (α := Fin 1) i j`. Simplify using `[this, Matrix.conjTranspose_smul, smul_smul]`.
+-/
 example (ε : Fin 1 → Bool) : IsONFamily ε (fun _ => Complex.I • (1 : Matrix (Fin 1) (Fin 1) ℂ)) := by
   refine ⟨fun _ => ?_, fun i j => ?_⟩
   · simp [Formalism.REAL.inG, Matrix.conjTranspose_smul]

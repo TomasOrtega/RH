@@ -14,6 +14,9 @@ def SecMod (_p : Y ⟶ Sp R) (M : LB Y) : Type := M.Sec
 
 variable {p : Y ⟶ Sp R} {M : LB Y}
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `s`. Take `⟨g, hg⟩` from `t`. Take `rfl : f = g` from `funext h`. Both sides reduce to the same expression.
+-/
 theorem SecMod.ext {s t : SecMod p M} (h : ∀ i, LB.Sec.f s i = LB.Sec.f t i) : s = t := by
   obtain ⟨f, hf⟩ := s
   obtain ⟨g, hg⟩ := t
@@ -23,8 +26,14 @@ theorem SecMod.ext {s t : SecMod p M} (h : ∀ i, LB.Sec.f s i = LB.Sec.f t i) :
 def constHom (p : Y ⟶ Sp R) (U : Y.Opens) : R →+* Γ(Y, U) :=
   (p.appLE ⊤ U (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem constHom_apply (U : Y.Opens) (a : R) : constHom p U a = constFn p U a := rfl
 
+/- English proof (translation)
+Establish `e : p.appLE ⊤ U (fun _ _ => trivial) ≫ Y.presheaf.map (homOfLE h).op = p.appLE ⊤ V (fun _ _ => trivial)` using `Scheme.Hom.appLE_map p _ _`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) e`.
+-/
 theorem res_constFn {U V : Y.Opens} (h : V ≤ U) (a : R) :
     (Y.presheaf.map (homOfLE h).op).hom (constFn p U a) = constFn p V a := by
   have e : p.appLE ⊤ U (fun _ _ => trivial) ≫ Y.presheaf.map (homOfLE h).op = p.appLE ⊤ V (fun _ _ => trivial) :=
@@ -50,8 +59,14 @@ instance : AddCommGroup (SecMod p M) where
   neg_add_cancel a := SecMod.ext fun i => neg_add_cancel _
   add_comm a b := SecMod.ext fun i => add_comm _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem add_f (s t : SecMod p M) (i : M.ι) : LB.Sec.f (s + t : SecMod p M) i = LB.Sec.f s i + LB.Sec.f t i := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zero_f (i : M.ι) : LB.Sec.f (0 : SecMod p M) i = 0 := rfl
 
 instance : Module R (SecMod p M) where
@@ -72,9 +87,17 @@ instance : Module R (SecMod p M) where
     show constFn p _ 0 * _ = 0
     rw [← constHom_apply, map_zero, MulZeroClass.zero_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_f (a : R) (s : SecMod p M) (i : M.ι) :
     LB.Sec.f (a • s : SecMod p M) i = constFn p _ a * LB.Sec.f s i := rfl
 
+/- English proof (translation)
+Use `SecMod.ext fun i => fn_ext fun y hy => cst_regular p y ha ?_` and prove the remaining obligations. Establish `e` using `congrArg (gs (𝟙 Y) y (M.U i)) (congrArg (fun s : SecMod p M => LB.Sec.f s i) h)`. Simplify using `only [smul_f, zero_f] at e`. Rewrite `e` using `[gs_mul _ y _ hy, gs_constFn p _ _ y hy, Category.id_comp]`. Establish `z : gs (𝟙 Y) y (M.U i) (0 : Γ(Y, M.U i)) = 0`.
+
+Rewrite using `[gs_eq _ y _ hy]`. Conclude with `map_zero (CommRingCat.Hom.hom (Y.presheaf.germ (𝟙 Y ⁻¹ᵁ M.U i) y hy))`. Use `show cst p y a * _ = cst p y a * gs (𝟙 Y) y (M.U i) (0 : Γ(Y, M.U i))`. Rewrite using `[z, MulZeroClass.mul_zero]`. Conclude with `e.trans z`.
+-/
 theorem eq_zero_of_smul_eq_zero [IsDomain R] [Flat p] {a : R} (ha : a ≠ 0) {s : SecMod p M}
     (h : a • s = 0) : s = 0 := by
   refine SecMod.ext fun i => fn_ext fun y hy => cst_regular p y ha ?_

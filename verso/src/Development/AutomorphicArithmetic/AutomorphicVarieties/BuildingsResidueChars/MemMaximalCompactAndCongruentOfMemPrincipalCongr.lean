@@ -7,6 +7,19 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `F _ _ w n M g hg`. Take `⟨k, hk, hkg⟩` from `hg`. Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `hint : ∀ x : UpperTheory.V.Af.Ohat F, valuation (w.adicCompletion F) (GlobalTheory.CuspRep.pLoc F w x.1) ≤ 1` using `fun x => by`. Establish `h1 : Valued.v (GlobalTheory.CuspRep.pLoc F w x.1) ≤ 1` using `Subring.mem_iInf.1 x.2 w`.
+
+Rewrite using `[← map_one (valuation (w.adicCompletion F)), ← Valuation.Compatible.vle_iff_le, Valuation.Compatible.vle_iff_le (v := (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))), map_one]`. Conclude with `h1`. Set `φ : UpperTheory.V.Af.Ohat F →+* w.adicCompletion F` to `(GlobalTheory.CuspRep.pLoc F w).comp (UpperTheory.V.Af.Ohat F).subtype`. Set `ψ : UpperTheory.V.Af.Ohat F →+* 𝒪[w.adicCompletion F]` to `φ.codRestrict _ fun x => hint x`. Establish `hent : ∀ i j, g.val i j = φ (k.val i j)` using `fun i j => by`.
+
+Establish `h1` using `GlobalTheory.CuspRep.pLoc_locGL w g`. Rewrite `h1` using `[← hkg]`. Rewrite using `[← h1]`. Both sides reduce to the same expression. Use `⟨⟨Matrix.GeneralLinearGroup.map ψ k, ?_⟩, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `i j`. Rewrite using `[hent]`. Both sides reduce to the same expression. Establish `h1 : Ideal.Quotient.mk (Ideal.span {(M : UpperTheory.V.Af.Ohat F)}) (k.val i j) = (1 : Matrix (Fin n) (Fin n) _) i j` using `congrArg (fun u : GL (Fin n) (UpperTheory.V.Af.Ohat F ⧸ Ideal.span {(M : UpperTheory.V.Af.Ohat F)}) => u.val i j) (MonoidHom.mem_ker.1 hk)`. Establish `h2 : (k.val - 1) i j ∈ Ideal.span {(M : UpperTheory.V.Af.Ohat F)}`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, Matrix.sub_apply, map_sub, h1, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h2`. Establish `h3 : (g.val - 1) i j = φ y * M`. Rewrite using `[← map_natCast φ, ← map_mul, hy, Matrix.sub_apply, Matrix.sub_apply, map_sub, hent, Matrix.one_apply, Matrix.one_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[h3, map_mul]`. Conclude with `mul_le_of_le_one_left' (hint y)`.
+-/
 theorem UpperTheory.mem_maximalCompact_and_congruent_of_mem_principalCongruence :
     ∀ (F : Type) [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (n M : ℕ), ∀ g ∈ UpperTheory.V.Af.KLoc F w n M,
     g ∈ GlobalTheory.SplitWeil.KO (w.adicCompletion F) (Fin n) ∧

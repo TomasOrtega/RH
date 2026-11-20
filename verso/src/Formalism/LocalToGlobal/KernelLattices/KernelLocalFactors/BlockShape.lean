@@ -20,6 +20,11 @@ def jetCoef (m : DVar ι a b →₀ ℕ) : MvPolynomial ((ι × Fin b × Fin b) 
 def dPart (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) : DVar ι a b →₀ ℕ :=
   s.comapDomain Sum.inr Sum.inr_injective.injOn
 
+/- English proof (translation)
+Establish `h1 : MvPolynomial.monomial s r = r • MvPolynomial.monomial s (1 : K)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h1, LinearMap.map_smul]`. Use `congr 1`. Unfold `jetLin`.
+
+Rewrite using `[show (MvPolynomial.monomial s (1 : K)) = MvPolynomial.basisMonomials _ K s by`. Simplify using `[MvPolynomial.coe_basisMonomials], Module.Basis.constr_basis]`. Apply the tactic sequence `all_goals rfl`.
+-/
 private theorem jetLin_monomial' (J : (DVar ι a b →₀ ℕ) → K)
     (s : ((ι × Fin b × Fin b) ⊕ DVar ι a b) →₀ ℕ) (r : K) :
     jetLin J (MvPolynomial.monomial s r) =
@@ -33,6 +38,9 @@ private theorem jetLin_monomial' (J : (DVar ι a b →₀ ℕ) → K)
     simp [MvPolynomial.coe_basisMonomials], Module.Basis.constr_basis]
   all_goals rfl
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' Q (fun s r => ?_) (fun p q hp hq => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, jetLin_monomial', jetLin_monomial', MvPolynomial.smul_monomial, MvPolynomial.smul_monomial, MvPolynomial.map_monomial, smul_eq_mul, smul_eq_mul, map_mul]`. Rewrite using `[map_add, map_add, map_add, map_add, hp, hq]`.
+-/
 theorem map_jetLin {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K)
     (Q : MvPolynomial ((ι × Fin b × Fin b) ⊕ DVar ι a b) K) :
     MvPolynomial.map σ (jetLin J Q) = jetLin (fun m => σ (J m)) (MvPolynomial.map σ Q) := by
@@ -41,6 +49,9 @@ theorem map_jetLin {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →�
       MvPolynomial.smul_monomial, MvPolynomial.map_monomial, smul_eq_mul, smul_eq_mul, map_mul]
   · rw [map_add, map_add, map_add, map_add, hp, hq]
 
+/- English proof (translation)
+Unfold `frDet`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `α s`. Simplify using `[RingHom.mapMatrix_apply, MvPolynomial.map_X]`.
+-/
 theorem map_frDet {L : Type} [Field L] (σ : K →+* L) (τ : ι) :
     MvPolynomial.map σ (frDet K a τ) = frDet L a τ := by
   unfold frDet
@@ -49,6 +60,11 @@ theorem map_frDet {L : Type} [Field L] (σ : K →+* L) (τ : ι) :
   ext α s
   simp [RingHom.mapMatrix_apply, MvPolynomial.map_X]
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.map σ).comp (subD K ι a b).toRingHom = (subD L ι a b).toRingHom.comp (MvPolynomial.map σ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[subD]`. Introduce `v show MvPolynomial.map σ (subD K ι a b (MvPolynomial.X v)) = subD L ι a b (MvPolynomial.map σ (MvPolynomial.X v))`.
+
+Rewrite using `[MvPolynomial.map_X]`. Simplify using `only [subD, MvPolynomial.aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `RingHom.congr_fun h P`.
+-/
 theorem map_subD {L : Type} [Field L] (σ : K →+* L) (P : Pol K ι a) :
     MvPolynomial.map σ (subD K ι a b P) = subD L ι a b (MvPolynomial.map σ P) := by
   have h : (MvPolynomial.map σ).comp (subD K ι a b).toRingHom =
@@ -63,6 +79,9 @@ theorem map_subD {L : Type} [Field L] (σ : K →+* L) (P : Pol K ι a) :
       split_ifs <;> simp
   exact RingHom.congr_fun h P
 
+/- English proof (translation)
+Simplify using `only [jetMap, LinearMap.coe_comp, Function.comp_apply, AlgHom.toLinearMap_apply, LinearMap.mulRight_apply]`. Rewrite using `[map_jetLin, map_subD, map_mul, map_prod]`. Simplify using `only [map_pow, map_frDet]`.
+-/
 theorem map_jetMap {L : Type} [Field L] (σ : K →+* L) (J : (DVar ι a b →₀ ℕ) → K) (n : ι → ℕ) (P : Pol K ι a) :
     MvPolynomial.map σ (jetMap J n P) =
       jetLin (fun m => σ (J m)) (subD L ι a b (MvPolynomial.map σ P * ∏ τ, frDet L a τ ^ n τ)) := by

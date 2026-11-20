@@ -20,8 +20,14 @@ def headL (n : ℕ) : V (n + 1) →L[ℂ] V n :=
 def fibL (n : ℕ) : V 1 →L[ℂ] V (n + 1) :=
   (EuclideanSpace.proj (0 : Fin 1) : V 1 →L[ℂ] ℂ).smulRight (EuclideanSpace.single (Fin.last n) (1 : ℂ))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem headL_apply {n : ℕ} (v : V (n + 1)) (a : Fin n) : headL n v a = v (Fin.castSucc a) := rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[fibL, EuclideanSpace.single_apply]`.
+-/
 theorem fibL_apply {n : ℕ} (v : V 1) : fibL n v = EuclideanSpace.single (Fin.last n) (v 0) := by
   ext a; simp [fibL, EuclideanSpace.single_apply]
 

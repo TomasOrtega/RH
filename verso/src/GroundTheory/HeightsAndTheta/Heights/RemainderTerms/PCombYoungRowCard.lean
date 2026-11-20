@@ -6,6 +6,15 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 
 open Finset
 
+/- English proof (translation)
+Introduce `m lam i`. Rewrite using `[← Finset.card_range (lam i)]`. Use `Finset.card_bij (fun p _ => p.1.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Establish `hp' : p.1.1 = i` using `(mem_filter.1 hp).2`.
+
+Establish `hc : p.1.2 < lam p.1.1` using `(mem_filter.1 p.2).2`. Rewrite `hc` using `[hp']`. Conclude with `mem_range.2 hc`. Introduce `p hp q hq h`. Establish `hp' : p.1.1 = i` using `(mem_filter.1 hp).2`.
+
+Establish `hq' : q.1.1 = i` using `(mem_filter.1 hq).2`. Conclude with `Subtype.ext (Prod.ext (hp'.trans hq'.symm) h)`. Introduce `c hc`. Establish `hc' : c < lam i` using `mem_range.1 hc`. Establish `hmem : ((i, c) : Fin m × ℕ) ∈ youngCells lam`.
+
+Unfold `youngCells`. Use `mem_filter.2 ⟨mem_product.2 ⟨mem_univ _, mem_range.2 ?_⟩, hc'⟩` and prove the remaining obligations. Conclude with `lt_of_lt_of_le hc' (Finset.single_le_sum (fun j _ => Nat.zero_le (lam j)) (mem_univ i))`. Conclude with `⟨⟨(i, c), hmem⟩, mem_filter.2 ⟨mem_univ _, rfl⟩, rfl⟩`.
+-/
 theorem CombYoungRowCard.proof : CombYoungRowCard.Statement := by
   intro m lam i
   rw [← Finset.card_range (lam i)]

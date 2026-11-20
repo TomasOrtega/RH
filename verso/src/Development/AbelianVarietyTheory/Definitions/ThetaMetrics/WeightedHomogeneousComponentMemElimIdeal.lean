@@ -16,6 +16,9 @@ variable (K σ) in
 def genericForm (i : β) : MvPolynomial (β × σ) (MvPolynomial σ K) :=
   linForm (X : σ → MvPolynomial σ K) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem genericForm_eq (i : β) :
     genericForm K σ i = ∑ j, C (X j) * X (i, j) := rfl
 
@@ -25,14 +28,23 @@ def incidenceIdeal (p : Ideal (MvPolynomial σ K)) :
     Ideal (MvPolynomial (β × σ) (MvPolynomial σ K)) :=
   p.map C ⊔ Ideal.span (Set.range (genericForm K σ : β → _))
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg)`.
+-/
 theorem C_mem_incidenceIdeal {p : Ideal (MvPolynomial σ K)} {g : MvPolynomial σ K} (hg : g ∈ p) :
     C g ∈ incidenceIdeal β p :=
   Ideal.mem_sup_left (Ideal.mem_map_of_mem _ hg)
 
+/- English proof (translation)
+The claim follows from `Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 theorem genericForm_mem_incidenceIdeal (p : Ideal (MvPolynomial σ K)) (i : β) :
     genericForm K σ i ∈ incidenceIdeal β p :=
   Ideal.mem_sup_right (Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[incidenceIdeal, sup_le_iff, Ideal.map_le_iff_le_comap, Ideal.span_le, Set.range_subset_iff]`. Both sides reduce to the same expression.
+-/
 theorem incidenceIdeal_le {p : Ideal (MvPolynomial σ K)}
     {J : Ideal (MvPolynomial (β × σ) (MvPolynomial σ K))} :
     incidenceIdeal β p ≤ J ↔ (∀ g ∈ p, C g ∈ J) ∧ ∀ i, genericForm K σ i ∈ J := by
@@ -58,6 +70,11 @@ def elimIdeal (p : Ideal (MvPolynomial σ K)) : Ideal (MvPolynomial (β × σ) K
     rw [smul_eq_mul, map_mul, mul_assoc]
     exact Ideal.mul_mem_left _ _ (hm j)
 
+/- English proof (translation)
+Use `⟨fun ⟨m, hm⟩ j => ⟨m, hm j⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose m hm using h`. Use `⟨∑ j, m j, fun j => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := m) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j))`. Rewrite using `[hk, pow_add, C_mul, ← mul_assoc]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (hm j)`.
+-/
 theorem mem_elimIdeal_iff_forall {p : Ideal (MvPolynomial σ K)} {f : MvPolynomial (β × σ) K} :
     f ∈ elimIdeal β p ↔ ∀ j, ∃ m : ℕ, map C f * C (X j ^ m) ∈ incidenceIdeal β p := by
   refine ⟨fun ⟨m, hm⟩ j => ⟨m, hm j⟩, fun h => ?_⟩
@@ -68,6 +85,15 @@ theorem mem_elimIdeal_iff_forall {p : Ideal (MvPolynomial σ K)} {f : MvPolynomi
   rw [hk, pow_add, C_mul, ← mul_assoc]
   exact Ideal.mul_mem_right _ _ (hm j)
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hf`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`. Set `ev : MvPolynomial (β × σ) (MvPolynomial σ K) →+* G` to `eval₂Hom (aeval ξ : MvPolynomial σ K →ₐ[K] G).toRingHom t`. Establish `hle : incidenceIdeal β p ≤ RingHom.ker ev`. Use `incidenceIdeal_le.2 ⟨fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Simplify `hξ g hg` using `[ev, RingHom.mem_ker]`. Rewrite using `[RingHom.mem_ker, genericForm_eq, map_sum, ← ht i]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [ev, mul_comm]`. Establish `h` using `hle (hm j)`. Establish `h2 : ev (map C f) = aeval t f`.
+
+Establish `: ev.comp (map C) = (aeval t : _ →ₐ[K] G).toRingHom`. Apply the tactic sequence `ext <;> simp [ev]`. Conclude with `DFunLike.congr_fun this f`. Rewrite `h` using `[RingHom.mem_ker, map_mul, h2]`. Use `(mul_eq_zero.1 h).resolve_right ?_` and prove the remaining obligations.
+
+Simplify `fun h0 => absurd h0 hj` using `[ev]`.
+-/
 theorem aeval_eq_zero_of_mem_elimIdeal {G : Type*} [CommRing G] [IsDomain G] [Algebra K G]
     {p : Ideal (MvPolynomial σ K)} {ξ : σ → G} (hξ : ∀ g ∈ p, aeval ξ g = 0) (hne : ξ ≠ 0)
     {t : β × σ → G} (ht : ∀ i, ∑ j, t (i, j) * ξ j = 0)
@@ -90,6 +116,11 @@ theorem aeval_eq_zero_of_mem_elimIdeal {G : Type*} [CommRing G] [IsDomain G] [Al
   refine (mul_eq_zero.1 h).resolve_right ?_
   simpa [ev] using fun h0 => absurd h0 hj
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hf`. Use `⟨m, fun j => ?_⟩` and prove the remaining obligations. Establish `hle : incidenceIdeal β p ≤ (incidenceIdeal β' p).comap (rename (Prod.map e id : β × σ → β' × σ) : _ →ₐ[MvPolynomial σ K] _)`. Use `incidenceIdeal_le.2 ⟨fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify `C_mem_incidenceIdeal hg` using `[Ideal.mem_comap]`.
+
+Use `genericForm_mem_incidenceIdeal p (e i)` as an intermediate fact. Simplify `this` using `[Ideal.mem_comap, genericForm_eq]`. Use `hle (hm j)` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_mul, rename_C, ← map_rename]`. Then use the resulting hypothesis.
+-/
 theorem rename_mem_elimIdeal (e : β → β') {p : Ideal (MvPolynomial σ K)}
     {f : MvPolynomial (β × σ) K} (hf : f ∈ elimIdeal β p) :
     rename (Prod.map e id) f ∈ elimIdeal β' p := by
@@ -104,6 +135,9 @@ theorem rename_mem_elimIdeal (e : β → β') {p : Ideal (MvPolynomial σ K)}
   have := hle (hm j)
   rwa [Ideal.mem_comap, map_mul, rename_C, ← map_rename] at this
 
+/- English proof (translation)
+Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun f hf => rename_mem_elimIdeal e hf) ?_` and prove the remaining obligations. Introduce `f hf`. Use `Ideal.mem_map_of_mem (rename (Prod.map e id : β × σ → β' × σ) : _ →ₐ[K] _) (rename_mem_elimIdeal e.symm hf)` as an intermediate fact. Rewrite `this` using `[rename_rename, Prod.map_comp_map, e.self_comp_symm, Function.id_comp, Prod.map_id, rename_id_apply]`. Then use the resulting hypothesis.
+-/
 theorem map_rename_elimIdeal (e : β ≃ β') (p : Ideal (MvPolynomial σ K)) :
     (elimIdeal β p).map (rename (Prod.map e id) : _ →ₐ[K] _) = elimIdeal β' p := by
   refine le_antisymm (Ideal.map_le_iff_le_comap.2 fun f hf => rename_mem_elimIdeal e hf) ?_
@@ -119,6 +153,19 @@ section Prime
 
 variable {σ β : Type*} [Fintype σ]
 
+/- English proof (translation)
+Proceed by induction on `h using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, C a, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨m, f', hf⟩` from `hf`. Take `⟨n, g', hg⟩` from `hg`.
+
+Use `⟨m + n, f' * C (u j ^ n) + g' * C (u j ^ m), ?_⟩` and prove the remaining obligations. Use `Ideal.add_mem _ (Ideal.mul_mem_right (C (u j ^ n)) _ hf) (Ideal.mul_mem_right (C (u j ^ m)) _ hg)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, map_mul, map_pow, rename_C]`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `mul_X f v hf`. Take `⟨m, f', hf⟩` from `hf`. Distinguish the cases in `hv : v ∈ elimIndices Set.univ j`. Take `⟨i, k⟩` from `v`. Take `rfl : k = j` from `hv.2`.
+
+Set `r : MvPolynomial {v : β × σ // v ∉ elimIndices Set.univ k} R` to `∑ l : {l : σ // l ≠ k}, C (u l) * X ⟨(i, l.1), fun h => l.2 h.2⟩`. Establish `hr : linForm u i = C (u k) * X (i, k) + rename Subtype.val r`. Rewrite using `[linForm_eq u i k, Finset.sum_subtype (p := fun l => l ≠ k) (F := inferInstance) _ (by simp)]`. Simplify using `[r]`. Use `⟨m + 1, -(f' * r), ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.add_mem _ (Ideal.mul_mem_right (C (u k) * X (i, k)) _ hf) (Ideal.mul_mem_left _ (rename Subtype.val f') (Ideal.subset_span ⟨i, rfl⟩))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [hr, map_neg, map_mul, map_pow, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨m, f' * X ⟨v, hv⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Ideal.mul_mem_right (X v) _ hf` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_sub_rename_mem {R : Type*} [CommRing R] (u : σ → R) (j : σ)
     (h : MvPolynomial (β × σ) R) :
     ∃ (m : ℕ) (g : MvPolynomial {v : β × σ // v ∉ elimIndices Set.univ j} R),
@@ -158,10 +205,16 @@ theorem exists_pow_mul_sub_rename_mem {R : Type*} [CommRing R] (u : σ → R) (j
       simp only [map_mul, rename_X]
       ring
 
+/- English proof (translation)
+Simplify using `[linForm]`.
+-/
 theorem map_linForm {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) (u : σ → R) (i : β) :
     map φ (linForm u i) = linForm (fun j => φ (u j)) i := by
   simp [linForm]
 
+/- English proof (translation)
+Establish `hle : Ideal.span (Set.range (linForm u : β → _)) ≤ (Ideal.span (Set.range (linForm (fun j => φ (u j)) : β → _))).comap (map φ)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Ideal.subset_span ⟨i, (map_linForm φ u i).symm⟩`. Conclude with `hle hh`.
+-/
 theorem map_mem_span_linForm {R S : Type*} [CommRing R] [CommRing S] (φ : R →+* S) {u : σ → R}
     {h : MvPolynomial (β × σ) R} (hh : h ∈ Ideal.span (Set.range (linForm u : β → _))) :
     map φ h ∈ Ideal.span (Set.range (linForm (fun j => φ (u j)) : β → _)) := by
@@ -174,6 +227,23 @@ theorem map_mem_span_linForm {R S : Type*} [CommRing R] [CommRing S] (φ : R →
 
 variable {K : Type*} [CommRing K]
 
+/- English proof (translation)
+Set `φ : MvPolynomial σ K →+* F` to `(aeval ξ : MvPolynomial σ K →ₐ[K] F).toRingHom`. Establish `hφ : (fun j => φ (X j)) = ξ` using `by ext j; simp [φ]`. Establish `hφj (j) : φ (X j) = ξ j` using `congrFun hφ j`. Establish `hC : φ.comp C = algebraMap K F` using `by ext; simp [φ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨m, hm⟩`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`. Establish `hle : incidenceIdeal β p ≤ (Ideal.span (Set.range (linForm ξ : β → _))).comap (map φ)`. Use `incidenceIdeal_le.2 ⟨fun g hg => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `: φ g = 0` using `(hξ g).2 hg`.
+
+Simplify using `[Ideal.mem_comap, this]`. Rewrite using `[Ideal.mem_comap, genericForm, map_linForm, hφ]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`. Use `hle (hm j)` as an intermediate fact. Rewrite `this` using `[Ideal.mem_comap, map_mul, map_map, hC, map_C, map_pow, hφj]`.
+
+Conclude with `(Ideal.mul_unit_mem_iff_mem _ ((pow_ne_zero m hj).isUnit.map C)).1 this`. Introduce `hf`. Use `mem_elimIdeal_iff_forall.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ξ j = 0`. Conclude with `⟨1, Ideal.mul_mem_left _ _ (C_mem_incidenceIdeal (by`.
+
+Rewrite using `[pow_one, ← hξ, aeval_X, hj]))⟩`. Take `⟨m, g, hg⟩` from `exists_pow_mul_sub_rename_mem (X : σ → MvPolynomial σ K) j (map C f)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h1` using `map_mem_span_linForm φ hg`. Rewrite `h1` using `[hφ, map_sub, map_mul, map_map, hC, map_rename]`.
+
+Establish `h2 : rename Subtype.val (map φ g) ∈ Ideal.span (Set.range (linForm ξ : β → _))`. Use `Ideal.sub_mem _ (Ideal.mul_mem_right (map φ (C (X j ^ m))) _ hf) h1` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `h2` using `[← Set.image_univ, ← ker_linFormElim ξ (Ne.isUnit hj), RingHom.mem_ker, linFormElim_rename, ← RingHom.mem_ker, MvPolynomial.ker_map]`. Establish `hker : RingHom.ker φ = p` using `Ideal.ext fun g => hξ g`.
+
+Rewrite `h2` using `[hker]`. Establish `h3 : rename Subtype.val g ∈ p.map (C : _ →+* MvPolynomial (β × σ) (MvPolynomial σ K))`. Rewrite using `[← Ideal.mem_comap (f := (rename Subtype.val : _ →ₐ[MvPolynomial σ K] _))]`. Use `Ideal.map_le_iff_le_comap.2 (fun a ha => ?_) h2` and prove the remaining obligations. Simplify `Ideal.mem_map_of_mem _ ha` using `[Ideal.mem_comap]`.
+
+Use `Ideal.add_mem _ (Ideal.mem_sup_right (S := p.map C) hg) (Ideal.mem_sup_left h3)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_elimIdeal_iff_of_generic {F : Type*} [Field F] [Algebra K F]
     {p : Ideal (MvPolynomial σ K)} {ξ : σ → F} (hξ : ∀ g, aeval ξ g = 0 ↔ g ∈ p) (hne : ξ ≠ 0)
     {f : MvPolynomial (β × σ) K} :
@@ -223,6 +293,9 @@ def genericPoint (p : Ideal (MvPolynomial σ K)) (j : σ) : FractionRing (MvPoly
   algebraMap (MvPolynomial σ K ⧸ p) _ (Ideal.Quotient.mk p (X j))
 
 omit [Fintype σ] in
+/- English proof (translation)
+Establish `: (aeval (genericPoint p) : _ →ₐ[K] _) = (IsScalarTower.toAlgHom K (MvPolynomial σ K ⧸ p) _).comp (Ideal.Quotient.mkₐ K p)`. Use extensionality with `j`. Simplify using `[genericPoint]`. Conclude with `DFunLike.congr_fun this g`.
+-/
 theorem aeval_genericPoint (p : Ideal (MvPolynomial σ K)) (g : MvPolynomial σ K) :
     aeval (genericPoint p) g = algebraMap (MvPolynomial σ K ⧸ p) _ (Ideal.Quotient.mk p g) := by
   have : (aeval (genericPoint p) : _ →ₐ[K] _) =
@@ -231,17 +304,28 @@ theorem aeval_genericPoint (p : Ideal (MvPolynomial σ K)) (g : MvPolynomial σ 
   exact DFunLike.congr_fun this g
 
 omit [Fintype σ] in
+/- English proof (translation)
+Rewrite using `[aeval_genericPoint, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem aeval_genericPoint_eq_zero_iff (p : Ideal (MvPolynomial σ K)) (g : MvPolynomial σ K) :
     aeval (genericPoint p) g = 0 ↔ g ∈ p := by
   rw [aeval_genericPoint, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
 
 omit [Fintype σ] in
+/- English proof (translation)
+Take `⟨j, hj⟩` from `hp`. Introduce `h`. Conclude with `hj ((aeval_genericPoint_eq_zero_iff p _).1 (by rw [aeval_X, h]; rfl))`.
+-/
 theorem genericPoint_ne_zero {p : Ideal (MvPolynomial σ K)} (hp : ∃ j, X j ∉ p) :
     genericPoint p ≠ 0 := by
   obtain ⟨j, hj⟩ := hp
   intro h
   exact hj ((aeval_genericPoint_eq_zero_iff p _).1 (by rw [aeval_X, h]; rfl))
 
+/- English proof (translation)
+Establish `hne` using `genericPoint_ne_zero hp`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`. Establish `h` using `isPrime_span_linForm (ι := β) (genericPoint p) (Ne.isUnit hj) Set.univ`. Rewrite `h` using `[Set.image_univ]`. Establish `: elimIdeal β p = (Ideal.span (Set.range (linForm (genericPoint p) : β → _))).comap (map (algebraMap K _))` using `Ideal.ext fun f => mem_elimIdeal_iff_of_generic (aeval_genericPoint_eq_zero_iff p) hne`.
+
+Rewrite using `[this]`. Conclude with `Ideal.comap_isPrime _ _`.
+-/
 theorem isPrime_elimIdeal {p : Ideal (MvPolynomial σ K)} [p.IsPrime] (hp : ∃ j, X j ∉ p) :
     (elimIdeal β p).IsPrime := by
   have hne := genericPoint_ne_zero hp
@@ -267,6 +351,11 @@ def IsBlockHomogeneous [DecidableEq β] (f : MvPolynomial (β × σ) K) (a : β 
 
 variable [DecidableEq β] [DecidableEq β']
 
+/- English proof (translation)
+Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add d e hd he => simp [hd, he, Finset.sum_add_distrib]`. Consider the case `single v n`. Take `⟨k, l⟩` from `v`.
+
+Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[Finsupp.weight_single, blockWeight, Finsupp.single_apply]`. Simplify using `[Finsupp.weight_single, blockWeight, Finsupp.single_apply, h, Ne.symm h]`.
+-/
 theorem weight_blockWeight [Fintype σ] (d : β × σ →₀ ℕ) (i : β) :
     Finsupp.weight blockWeight d i = ∑ j, d (i, j) := by
   classical
@@ -280,19 +369,31 @@ theorem weight_blockWeight [Fintype σ] (d : β × σ →₀ ℕ) (i : β) :
       simp [Finsupp.weight_single, blockWeight, Finsupp.single_apply]
     · simp [Finsupp.weight_single, blockWeight, Finsupp.single_apply, h, Ne.symm h]
 
+/- English proof (translation)
+Simplify using `only [IsBlockHomogeneous, IsWeightedHomogeneous, mem_support_iff, funext_iff, weight_blockWeight]`.
+-/
 theorem isBlockHomogeneous_iff [Fintype σ] {f : MvPolynomial (β × σ) K} {a : β → ℕ} :
     IsBlockHomogeneous f a ↔ ∀ d ∈ f.support, ∀ i, ∑ j, d (i, j) = a i := by
   simp only [IsBlockHomogeneous, IsWeightedHomogeneous, mem_support_iff, funext_iff,
     weight_blockWeight]
 
+/- English proof (translation)
+The claim follows from `IsWeightedHomogeneous.mul hf hg`.
+-/
 theorem IsBlockHomogeneous.mul {f g : MvPolynomial (β × σ) K} {a b : β → ℕ}
     (hf : IsBlockHomogeneous f a) (hg : IsBlockHomogeneous g b) :
     IsBlockHomogeneous (f * g) (a + b) := IsWeightedHomogeneous.mul hf hg
 
+/- English proof (translation)
+The claim follows from `IsWeightedHomogeneous.inj_right h ha hb`.
+-/
 theorem IsBlockHomogeneous.unique {f : MvPolynomial (β × σ) K} {a b : β → ℕ} (h : f ≠ 0)
     (ha : IsBlockHomogeneous f a) (hb : IsBlockHomogeneous f b) : a = b :=
   IsWeightedHomogeneous.inj_right h ha hb
 
+/- English proof (translation)
+Introduce `d hd`. Use `isBlockHomogeneous_iff.1 h d (mem_support_iff.2 hd)` as an intermediate fact. Express the relevant statement in the definitionally equal form `Finsupp.weight (fun _ => 1) d = _`. Rewrite using `[← Finsupp.degree_eq_weight_one, Finsupp.degree_eq_sum, Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => this i`.
+-/
 theorem IsBlockHomogeneous.isHomogeneous [Fintype σ] [Fintype β] {f : MvPolynomial (β × σ) K}
     {a : β → ℕ} (h : IsBlockHomogeneous f a) : f.IsHomogeneous (∑ i, a i) := by
   intro d hd
@@ -301,6 +402,11 @@ theorem IsBlockHomogeneous.isHomogeneous [Fintype σ] [Fintype β] {f : MvPolyno
   rw [← Finsupp.degree_eq_weight_one, Finsupp.degree_eq_sum, Fintype.sum_prod_type]
   exact Finset.sum_congr rfl fun i _ => this i
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[isBlockHomogeneous_iff]`. Introduce `d hd i`. Establish `hinj : Function.Injective (Prod.map e id : β × σ → β' × σ)` using `e.injective.prodMap Function.injective_id`. Rewrite `hd` using `[support_rename_of_injective hinj, Finset.mem_image]`. Take `⟨c, hc, rfl⟩` from `hd`.
+
+Rewrite using `[Function.comp_apply, ← h c hc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finsupp.mapDomain_apply hinj c (e.symm i, j)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem IsBlockHomogeneous.rename [Fintype σ] (e : β ≃ β') {f : MvPolynomial (β × σ) K}
     {a : β → ℕ} (h : IsBlockHomogeneous f a) :
     IsBlockHomogeneous (rename (Prod.map e id) f) (a ∘ e.symm) := by
@@ -316,6 +422,9 @@ theorem IsBlockHomogeneous.rename [Fintype σ] (e : β ≃ β') {f : MvPolynomia
   have := Finsupp.mapDomain_apply hinj c (e.symm i, j)
   simpa using this
 
+/- English proof (translation)
+Rewrite `h` using `[isBlockHomogeneous_iff]`. Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Fintype.prod_prod_type, Finset.prod_pow_eq_pow_sum, h d hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsBlockHomogeneous.aeval_smul [Fintype σ] [Fintype β] {G : Type*} [CommRing G]
     [Algebra K G] {f : MvPolynomial (β × σ) K} {a : β → ℕ} (h : IsBlockHomogeneous f a)
     (c : β → G) (t : β × σ → G) :
@@ -327,11 +436,17 @@ theorem IsBlockHomogeneous.aeval_smul [Fintype σ] [Fintype β] {G : Type*} [Com
     Finset.prod_pow_eq_pow_sum, h d hd]
   ring
 
+/- English proof (translation)
+The claim follows from `IsWeightedHomogeneous.sum _ _ _ fun j _ => (isWeightedHomogeneous_X K blockWeight (i, j)).C_mul _`.
+-/
 theorem isBlockHomogeneous_linForm [Fintype σ] (u : σ → K) (i : β) :
     IsBlockHomogeneous (linForm u i) (Pi.single i 1) :=
   IsWeightedHomogeneous.sum _ _ _ fun j _ =>
     (isWeightedHomogeneous_X K blockWeight (i, j)).C_mul _
 
+/- English proof (translation)
+Use extensionality with `d`. Simplify using `only [coeff_map, coeff_weightedHomogeneousComponent]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_weightedHomogeneousComponent {S τ M : Type*} [CommRing S] [AddCommMonoid M]
     (φ : K →+* S) (w : τ → M) (a : M) (f : MvPolynomial τ K) :
     map φ (weightedHomogeneousComponent w a f) = weightedHomogeneousComponent w a (map φ f) := by
@@ -340,6 +455,13 @@ theorem map_weightedHomogeneousComponent {S τ M : Type*} [CommRing S] [AddCommM
   simp only [coeff_map, coeff_weightedHomogeneousComponent]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `letI := weightedGradedAlgebra (MvPolynomial σ K) (blockWeight : β × σ → β → ℕ)`. Establish `hI : (incidenceIdeal β p).IsHomogeneous (weightedHomogeneousSubmodule (MvPolynomial σ K) (blockWeight : β × σ → β → ℕ))`. Use `Ideal.IsHomogeneous.sup (Ideal.homogeneous_span _ _ ?_) (Ideal.homogeneous_span _ _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, -, rfl⟩`. Conclude with `⟨0, isWeightedHomogeneous_C _ _⟩`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, isBlockHomogeneous_linForm _ i⟩`. Take `⟨m, hm⟩` from `hf`. Use `⟨m, fun j => ?_⟩` and prove the remaining obligations. Use `weightedHomogeneousComponent_mem_of_mem _ _ hI (hm j) a` as an intermediate fact.
+
+Rewrite `this` using `[mul_comm, weightedHomogeneousComponent_C_mul, ← map_weightedHomogeneousComponent, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem weightedHomogeneousComponent_mem_elimIdeal [Fintype σ] [Finite β]
     {p : Ideal (MvPolynomial σ K)}
     {f : MvPolynomial (β × σ) K} (hf : f ∈ elimIdeal β p) (a : β → ℕ) :
@@ -365,6 +487,11 @@ section Generator
 
 variable {K : Type*} [Field K] {τ M : Type*} [AddCommMonoid M]
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `h`. Establish `hf` using `left_ne_zero_of_mul hg`. Establish `hq` using `right_ne_zero_of_mul hg`. Rewrite `hd` using `[totalDegree_mul_of_isDomain hf hq]`. Establish `h0 : q.totalDegree = 0` using `by omega`.
+
+Rewrite `h0` using `[totalDegree_eq_zero_iff_eq_C]`. Use `⟨coeff 0 q, fun hc => hq ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h0, hc, C_0]`. Rewrite using `[← h0, mul_comm]`.
+-/
 theorem exists_eq_C_mul_of_dvd {f g : MvPolynomial τ K} (hg : g ≠ 0) (h : f ∣ g)
     (hd : g.totalDegree ≤ f.totalDegree) : ∃ c : K, c ≠ 0 ∧ g = C c * f := by
   obtain ⟨q, rfl⟩ := h
@@ -377,6 +504,15 @@ theorem exists_eq_C_mul_of_dvd {f g : MvPolynomial τ K} (hg : g ≠ 0) (h : f �
   · rw [h0, hc, C_0]
   · rw [← h0, mul_comm]
 
+/- English proof (translation)
+Distinguish the cases in `hf : f = 0`. Conclude with `⟨0, hf ▸ isWeightedHomogeneous_zero K w 0⟩`. Take `⟨d, hd⟩` from `exists_coeff_ne_zero hf`. Establish `hne : weightedHomogeneousComponent w (Finsupp.weight w d) f ≠ 0`. Introduce `h0`.
+
+Use `coeff_weightedHomogeneousComponent (w := w) (Finsupp.weight w d) f d` as an intermediate fact. Rewrite `this` using `[h0, if_pos rfl, coeff_zero]`. Conclude with `hd this.symm`. Establish `hle : (weightedHomogeneousComponent w (Finsupp.weight w d) f).totalDegree ≤ f.totalDegree`. Use `totalDegree_le_of_support_subset fun e he => ?_` and prove the remaining obligations.
+
+Rewrite `he` using `[mem_support_iff, coeff_weightedHomogeneousComponent]`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Simplify using `[h0] at he`. Take `⟨c, hc, hcf⟩` from `exists_eq_C_mul_of_dvd hne (h _) hle`.
+
+Use `⟨Finsupp.weight w d, ?_⟩` and prove the remaining obligations. Use `(weightedHomogeneousComponent_isWeightedHomogeneous (w := w) (Finsupp.weight w d) f).C_mul c⁻¹` as an intermediate fact. Rewrite `this` using `[hcf, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hc, C_1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem exists_isWeightedHomogeneous_of_dvd (w : τ → M) {f : MvPolynomial τ K}
     (h : ∀ a, f ∣ weightedHomogeneousComponent w a f) : ∃ a, IsWeightedHomogeneous w f a := by
   classical
@@ -401,6 +537,9 @@ theorem exists_isWeightedHomogeneous_of_dvd (w : τ → M) {f : MvPolynomial τ 
     (Finsupp.weight w d) f).C_mul c⁻¹
   rwa [hcf, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hc, C_1, one_mul] at this
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Ideal.span_singleton_eq_span_singleton.1 h`. Take `⟨c, hc, hu⟩` from `isUnit_iff_eq_C_of_isReduced.1 u.isUnit`. Conclude with `⟨c, hc.ne_zero, by rw [hu, mul_comm]⟩`.
+-/
 theorem exists_eq_C_mul_of_span_eq {f g : MvPolynomial τ K}
     (h : Ideal.span {f} = Ideal.span {g}) : ∃ c : K, c ≠ 0 ∧ g = C c * f := by
   obtain ⟨u, rfl⟩ := Ideal.span_singleton_eq_span_singleton.1 h

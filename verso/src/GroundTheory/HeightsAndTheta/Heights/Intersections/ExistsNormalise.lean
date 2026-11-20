@@ -21,6 +21,17 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 open Classical in
 
+/- English proof (translation)
+Take `⟨s, hs, hzs⟩` from `hzz`. Set `d : K' → ℂ` to `fun k' => if h : k' ∈ Set.range κ then c h.choose / s h.choose else (z' ⟨k', j ⟨k', h⟩⟩)⁻¹`. Establish `hdk : ∀ k, d (κ k) = c k / s k`. Introduce `k`. Establish `h : κ k ∈ Set.range κ` using `⟨k, rfl⟩`.
+
+Establish `hk : h.choose = k` using `hv.1 h.choose_spec`. Simplify using `only [d, dif_pos h, hk]`. Establish `hd : ∀ k, d k ≠ 0`. Introduce `k'`. Distinguish the cases in `h : k' ∈ Set.range κ`.
+
+Take `⟨k, rfl⟩` from `h`. Rewrite using `[hdk]`. Conclude with `div_ne_zero (hc k) (hs k)`. Simplify using `only [d, dif_neg h]`. Conclude with `inv_ne_zero (hj ⟨k', h⟩)`.
+
+Use `⟨d, hd, mcPts_smul hP' d hd hz', fun p => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `h1 : z' (v p) = s p.1 * z p` using `congrFun hzs p`. Rewrite using `[hv.2.2.1 p, hdk, h1]`. Clear denominators, using `[hs p.1]` for the nonvanishing conditions. Establish `h : k.1 ∉ Set.range κ` using `k.2`.
+
+Simplify using `only [d, dif_neg h]`. Conclude with `inv_mul_cancel₀ (hj k)`.
+-/
 theorem exists_normalise {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {P' : Ideal (MRing ι')} (hP' : IsMultiHomogIdeal P') {j : ∀ k : FibreBlock κ, ι' k.1}
     {z : (Σ k, ι k) → ℂ} {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z' : (Σ k', ι' k') → ℂ} (hz' : z' ∈ mcPts P')
@@ -53,6 +64,15 @@ theorem exists_normalise {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} 
 
 omit [∀ k, Fintype (ι k)] [Fintype K'] [∀ k, Fintype (ι' k)] in
 
+/- English proof (translation)
+Take `⟨t, -, ht⟩` from `h`. Establish `ht1 : ∀ k', t k' = 1`. Introduce `k'`. Distinguish the cases in `hk : k' ∈ Set.range κ`. Take `⟨k, rfl⟩` from `hk`.
+
+Take `⟨i, hi⟩` from `hw k`. Establish `e` using `congrFun ht (v ⟨k, i⟩)`. Simplify using `only [h₁v, h₂v, hv.2.2.1] at e`. Establish `e' : (t (κ k) - 1) * w ⟨k, i⟩ = 0` using `by rw [sub_mul, ← e]; ring`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp e').resolve_right hi)`.
+
+Establish `e` using `congrFun ht ⟨k', j ⟨k', hk⟩⟩`. Establish `e1 : z₁ ⟨k', j ⟨k', hk⟩⟩ = 1` using `h₁j ⟨k', hk⟩`. Establish `e2 : z₂ ⟨k', j ⟨k', hk⟩⟩ = 1` using `h₂j ⟨k', hk⟩`. Simplify using `only [e1, e2, mul_one] at e`. Conclude with `e.symm`.
+
+Rewrite using `[ht]`. Use function extensionality and compare the values at `q`. Simplify using `[ht1]`.
+-/
 theorem eq_of_normalised {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {j : ∀ k : FibreBlock κ, ι' k.1} {w : (Σ k, ι k) → ℂ} (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0)
     {z₁ z₂ : (Σ k', ι' k') → ℂ} (h₁v : ∀ p, z₁ (v p) = w p) (h₁j : ∀ k : FibreBlock κ, z₁ ⟨k.1, j k⟩ = 1)
@@ -81,6 +101,21 @@ end GenericPointsInAffineChart
 
 open GenericPointsInAffineChart PullbackDegreeCount in
 
+/- English proof (translation)
+Introduce `K _ ι _ K' _ ι' _ κ v P' n G j hv hP' hP hj`. Take `⟨E, hE, hEw⟩` from `hNorm K ι K' ι' κ v P' n G j hv hP' hP hj (hFin K ι K' ι' κ v P' n G j hv hP' hP hj)`. Establish `hPh : IsMultiHomogIdeal (imageZ v P')` using `hP.2.1.2.1`. Establish `hP'h : IsMultiHomogIdeal P'` using `hP'.2.1.2.1`. Take `⟨D, a, hD, hDP, hDz⟩` from `hOrb K ι (imageZ v P') E hPh hE`.
+
+Use `⟨D, a, hD, hDP, fun z hz hDz0 => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hEc⟩` from `hDz z hDz0`. Establish `hw : (fun p => c p.1 * z p) ∈ mcPts (imageZ v P')` using `mcPts_smul hPh c hc hz`. Take `⟨hfin, hcard, hnz⟩` from `hEw _ hw hEc`. Use `set N := {z' | z' ∈ mcPts P' ∧ (∀ p, z' (v p) = c p.1 * z p) ∧ ∀ k : FibreBlock κ, z' ⟨k.1, j k⟩ = 1} with hN`.
+
+Set `orb : ((Σ k', ι' k') → ℂ) → Set ((Σ k', ι' k') → ℂ)` to `fun z' => {z'' | SameOrbit z'' z'}`. Establish `himg : ptsOverChart P' κ v j z = orb '' N`. Use extensionality with `O`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z', hz', rfl, hzz, hjz⟩`.
+
+Take `⟨d, hd, hm, hdv, hdj⟩` from `exists_normalise hv hP'h hc hz' hzz hjz`. Establish `hs : SameOrbit (fun q => d q.1 * z' q) z'` using `⟨d, hd, rfl⟩`. Use `⟨_, ⟨hm, hdv, hdj⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Conclude with `⟨fun h => sameOrbit_comp h hs, fun h => sameOrbit_comp h (sameOrbit_flip hs)⟩`.
+
+Introduce and unpack `⟨z', ⟨hz', hzv, hzj⟩, rfl⟩`. Use `⟨z', hz', rfl, ⟨c, hc, funext hzv⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[hzj k]`. Conclude with `one_ne_zero`. Establish `hinj : Set.InjOn orb N`.
+
+Introduce `z₁ h₁ z₂ h₂ h12`. Establish `hmem : z₁ ∈ orb z₁` using `sameOrbit_self z₁`. Rewrite `hmem` using `[h12]`. Conclude with `eq_of_normalised hv hw.1 h₁.2.1 h₁.2.2 h₂.2.1 h₂.2.2 hmem`. Use `⟨himg ▸ hfin.image orb, ?_, fun z' hz' hzz hjz q hq => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[himg, hinj.ncard_image, hcard]`. Take `⟨d, hd, hm, hdv, hdj⟩` from `exists_normalise hv hP'h hc hz' hzz hjz`. Establish `h` using `hnz _ hm hdv hdj q hq`. Conclude with `right_ne_zero_of_mul h`.
+-/
 theorem GenericPointsInAffineChart.proof (hFin : ArithmeticIntersectionChartFinite.Statement) (hNorm : ChartNormCount.Statement)
     (hOrb : OrbitCompNonvanish.Statement) : GenericPointsInAffineChart.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n G j hv hP' hP hj

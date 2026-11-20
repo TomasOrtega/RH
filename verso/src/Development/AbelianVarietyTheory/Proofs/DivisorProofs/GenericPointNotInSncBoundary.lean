@@ -9,6 +9,13 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Take `⟨-, U, hy, n, f, J, ⟨-, hn⟩, hI⟩` from `h (genericPoint Y)`. Establish `hdim : ringKrullDim (Y.presheaf.stalk (genericPoint Y)) = 0` using `ringKrullDim_eq_zero_of_field Y.functionField`. Rewrite `hn` using `[hdim]`. Establish `hn0 : n = 0` using `by exact_mod_cast hn`. Substitute `hn0` using the available equality.
+
+Establish `hJ : J = ∅` using `Finset.eq_empty_of_isEmpty J`. Substitute `hJ` using the available equality. Introduce `hB`. Establish `hs : genericPoint Y ∈ (Scheme.IdealSheafData.vanishingIdeal B).support`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.coe_support_vanishingIdeal]`.
+
+Conclude with `hB`. Rewrite `hs` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hy, hI, Scheme.mem_zeroLocus_iff]`. Use `hs 1 (Ideal.subset_span (by simp)) ?_` and prove the remaining obligations. Simplify using `using hy`.
+-/
 theorem genericPoint_notMem_of_snc (Y : Scheme.{0}) [IsIntegral Y] (B : Closeds Y)
     (h : FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal B)) : genericPoint Y ∉ B := by
   obtain ⟨-, U, hy, n, f, J, ⟨-, hn⟩, hI⟩ := h (genericPoint Y)

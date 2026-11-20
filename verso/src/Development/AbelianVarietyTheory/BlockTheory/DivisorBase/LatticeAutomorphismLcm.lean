@@ -70,13 +70,22 @@ def RowObjects : Prop :=
   ∀ (eps : ℝ) (Fm : FamP eps), TuSize Fm →
     ∃ x0 : ℝ, ∀ x ≥ x0, ∀ (i : Fm.Ix x) (n : ℕ), IsAutLcm (Fm.D x i) n → PrimeToLevel (Fm.D x i) n
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨one_dvd _, fun p hp h => absurd (Nat.dvd_one.1 h) hp.one_lt.ne', Nat.coprime_one_left _, Nat.coprime_one_left _, fun _ => Nat.coprime_one_left _, fun _ => Nat.coprime_one_left _⟩`.
+-/
 example (D : D7) : PrimeToLevel D 1 :=
   ⟨one_dvd _, fun p hp h => absurd (Nat.dvd_one.1 h) hp.one_lt.ne', Nat.coprime_one_left _,
     Nat.coprime_one_left _, fun _ => Nat.coprime_one_left _, fun _ => Nat.coprime_one_left _⟩
 
+/- English proof (translation)
+Introduce `h` and use `(D.host.g_prime 0).one_lt.ne' ((Nat.coprime_self _).1 (h.2.2.2.2.1 0))`.
+-/
 example (D : D7) : ¬ PrimeToLevel D (D.host.g 0) := fun h =>
   (D.host.g_prime 0).one_lt.ne' ((Nat.coprime_self _).1 (h.2.2.2.2.1 0))
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 example : minkM 2 = 24 := by decide
 
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticeAutomorphismLcm

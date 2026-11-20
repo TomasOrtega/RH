@@ -30,8 +30,14 @@ def resQ : Representation ℚ_[l] ↥(GK K) V where
   map_one' := by ext; simp
   map_mul' g h := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem resQ_apply (g : ↥(GK K)) (v : V) : resQ ρ g v = ρ g v := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVdR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem actVdR_resQ (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.BdR) :
     actVdR (P.PD K) (resQ ρ) g x = actVdR (P.PD K) ρ g x := by
   induction x using TensorProduct.induction_on with
@@ -39,10 +45,16 @@ theorem actVdR_resQ (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.BdR) :
   | tmul v b => simp [actVdR]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[DdR, sub_eq_zero, actVdR_resQ]`.
+-/
 theorem DdR_resQ : DdR (P.PD K) (resQ ρ) = (DdR (P.PD K) ρ).restrictScalars ℚ_[l] := by
   ext x
   simp [DdR, sub_eq_zero, actVdR_resQ]
 
+/- English proof (translation)
+Establish `e : finrank ℚ_[l] ↥(DdR (P.PD K) (resQ ρ)) = finrank ℚ_[l] LL * finrank LL ↥(DdR (P.PD K) ρ)`. Rewrite using `[DdR_resQ, finrank_mul_finrank]`. Both sides reduce to the same expression. Rewrite using `[IsDR, IsDR, e, ← finrank_mul_finrank ℚ_[l] LL V, mul_left_comm]`. Conclude with `Nat.mul_right_inj finrank_pos.ne'`.
+-/
 theorem isDR_resQ_iff [FiniteDimensional ℚ_[l] LL] : IsDR (P.PD K) (resQ ρ) ↔ IsDR (P.PD K) ρ := by
   have e : finrank ℚ_[l] ↥(DdR (P.PD K) (resQ ρ)) = finrank ℚ_[l] LL * finrank LL ↥(DdR (P.PD K) ρ) := by
     rw [DdR_resQ, finrank_mul_finrank]
@@ -50,15 +62,24 @@ theorem isDR_resQ_iff [FiniteDimensional ℚ_[l] LL] : IsDR (P.PD K) (resQ ρ) �
   rw [IsDR, IsDR, e, ← finrank_mul_finrank ℚ_[l] LL V, mul_left_comm]
   exact Nat.mul_right_inj finrank_pos.ne'
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem stRep_resQ (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] Bst P) : stRep P (resQ ρ) g x = stRep P ρ g x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
   | tmul v b => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `only [mem_Dpst, stRep_resQ]`.
+-/
 theorem mem_Dpst_resQ (x : V ⊗[ℚ_[l]] Bst P) : x ∈ Dpst P (resQ ρ) ↔ x ∈ Dpst P ρ := by
   simp only [mem_Dpst, stRep_resQ]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mulV_resQ (c : ↥(MaximalUnramifiedExtension l)) (x : V ⊗[ℚ_[l]] Bst P) : mulV P ℚ_[l] V c x = mulV P LL V c x := by
   induction x using TensorProduct.induction_on with
   | zero => simp
@@ -73,6 +94,9 @@ def dpstUrEquiv : DpstUr P (resQ ρ) ≃ₗ[↥(MaximalUnramifiedExtension l)] D
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Rewrite using `[IsPst, IsPst, (dpstUrEquiv P ρ).rank_eq]`.
+-/
 theorem isPst_resQ_iff : IsPst P (resQ ρ) ↔ IsPst P ρ := by
   rw [IsPst, IsPst, (dpstUrEquiv P ρ).rank_eq]
 
@@ -86,6 +110,9 @@ variable (h : DeRhamPotSemistable) {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI
   (T : LocTied l P AI) {K : FinExt l}
 include h T
 
+/- English proof (translation)
+The claim follows from `haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans LL V (isPst_resQ_iff P ρ).mp (h l P AI ⟨T⟩ K V (resQ ρ) hc ((isDR_resQ_iff P ρ).mpr hV))`.
+-/
 theorem coeff {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
     [FiniteDimensional LL V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V]
@@ -94,6 +121,11 @@ theorem coeff {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ
   haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans LL V
   (isPst_resQ_iff P ρ).mp (h l P AI ⟨T⟩ K V (resQ ρ) hc ((isDR_resQ_iff P ρ).mpr hV))
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℚ_[l] V := Module.Finite.trans LL V`. Use `letI : TopologicalSpace V := moduleTopology ℚ_[l] V`. Use `haveI : IsModuleTopology ℚ_[l] V := ⟨rfl⟩`. Use `haveI : ContinuousAdd V := IsModuleTopology.toContinuousAdd ℚ_[l] V`. Use `h.coeff T ρ (fun v => ?_) hV` and prove the remaining obligations.
+
+Set `b` to `finBasis ℚ_[l] V`. Establish `e : (fun g => ρ g v) = fun g => ∑ i, b.coord i (ρ g v) • b i`. Use function extensionality and compare the values at `fun g => (b.sum_repr _).symm`. Rewrite using `[e]`. Conclude with `continuous_finset_sum _ fun i _ => (hc v _).smul continuous_const`.
+-/
 theorem of_coords {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional ℚ_[l] LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V]
     [FiniteDimensional LL V] (ρ : Representation LL ↥(GK K) V)
@@ -110,6 +142,9 @@ theorem of_coords {LL : Type} [Field LL] [Algebra ℚ_[l] LL] [FiniteDimensional
   rw [e]
   exact continuous_finset_sum _ fun i _ => (hc v _).smul continuous_const
 
+/- English proof (translation)
+The claim follows from `haveI := LL.2 h.of_coords T ρ (fun v f => (LinearMap.continuous_of_finiteDimensional f).comp (hc v)) hV`.
+-/
 theorem pi {LL : FinExt l} {m : ℕ} (ρ : Representation ↥LL.1 ↥(GK K) (Fin m → ↥LL.1))
     (hc : ∀ v, Continuous fun g => ρ g v) (hV : IsDR (P.PD K) ρ) : IsPst P ρ :=
   haveI := LL.2
@@ -117,6 +152,11 @@ theorem pi {LL : FinExt l} {m : ℕ} (ρ : Representation ↥LL.1 ↥(GK K) (Fin
 
 omit K in
 
+/- English proof (translation)
+Take `⟨LL', r', hm, hd⟩` from `hr`. Use `⟨LL', r', hm, h.pi T _ (fun v => ?_) (by rw [IsDR, finrank_fin_fun]; exact hd)⟩` and prove the remaining obligations. Establish `hc' : Continuous fun g => ((r' g : GL (Fin a) ↥LL'.1) : Matrix (Fin a) (Fin a) ↥LL'.1)`. Use `continuous_matrix fun i j => continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `hc.matrix_elem i j` as an intermediate fact.
+
+Rewrite `this` using `[← hm.2]`. Conclude with `this`. Conclude with `(hc'.comp Bw.e_symm_cont).matrix_mulVec continuous_const`.
+-/
 theorem isPstAt {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] {Gw : Subgroup (Ω ≃ₐ[E] Ω)}
     {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) {a : ℕ}
     (r : ↥Gw →* GL (Fin a) (Om l))

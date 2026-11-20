@@ -15,6 +15,11 @@ namespace GlobalTheory.LiftSys
 
 open TensorProduct in
 
+/- English proof (translation)
+Use `letI := π.toAlgebra`. Substitute `hk` using the available equality. Set `f : (R ⧸ RingHom.ker π) ≃ₐ[R] R₀` to `Ideal.quotientKerAlgEquivOfSurjective (f := (Algebra.ofId R R₀)) hπ`. Set `E : R₀ ⊗[R] M ≃ₗ[R] M ⧸ (RingHom.ker π • (⊤ : Submodule R M))` to `(TensorProduct.congr f.toLinearEquiv.symm (LinearEquiv.refl R M)) ≪≫ₗ quotTensorEquivQuotSMul M (RingHom.ker π)`. Establish `hE : ∀ m : M, E (1 ⊗ₜ m) = Submodule.Quotient.mk m` using `fun m ↦ by`.
+
+Simplify using `[E, map_one]`. Use `⟨fun t ↦ ?_, fun m ↦ ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Submodule.Quotient.mk_surjective _ (E t)`. Conclude with `⟨m, E.injective (by rw [← hm]; exact hE m)⟩`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← hE, LinearEquiv.map_eq_zero_iff]`.
+-/
 theorem oneTmul_surjective_ker {R R₀ : Type} [CommRing R] [CommRing R₀] (I : Ideal R) (π : R →+* R₀)
     (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (M : Type*) [AddCommGroup M] [Module R M] :
     letI := π.toAlgebra
@@ -32,6 +37,9 @@ theorem oneTmul_surjective_ker {R R₀ : Type} [CommRing R] [CommRing R₀] (I :
     exact ⟨m, E.injective (by rw [← hm]; exact hE m)⟩
   · rw [← Submodule.Quotient.mk_eq_zero, ← hE, LinearEquiv.map_eq_zero_iff]
 
+/- English proof (translation)
+Establish `e : (I • ⊤ : Submodule R N) = (I • ⊤ : Submodule R M).map (L : M →ₗ[R] N)`. Rewrite using `[Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 L.surjective]`. Rewrite using `[e, Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply]`.
+-/
 theorem mem_smul_top_of_equiv {R : Type} [CommRing R] (I : Ideal R) {M N : Type*} [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] (L : M ≃ₗ[R] N) (x : M) :
     L x ∈ I • (⊤ : Submodule R N) ↔ x ∈ I • (⊤ : Submodule R M) := by
@@ -39,6 +47,19 @@ theorem mem_smul_top_of_equiv {R : Type} [CommRing R] (I : Ideal R) {M N : Type*
     rw [Submodule.map_smul'', Submodule.map_top, LinearMap.range_eq_top.2 L.surjective]
   rw [e, Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Introduce `H1 H2 R R₀ _ _ I hI π hπ hk g A₀ _ A' _ i' h' hA hg`. Use `letI := π.toAlgebra`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `haveI : Smooth A₀.hom := MorphismProperty.of_isPullback (P := @Smooth) h'.1 hA.smooth`.
+
+Use `haveI : IsProper A₀.hom := MorphismProperty.of_isPullback (P := @IsProper) h'.1 hA.proper`. Establish `w : i' ≫ A'.hom = A₀.hom ≫ spMap π` using `h'.1.w`. Establish `hm : IsMor (dp0 R) A'.hom (divided₂ hI) (A₀.hom ≫ spMap π) (RingHom.id R) i'` using `IsMor.of_dividedPowersZeroIdeal _ (by rw [Cris.spMap_id, Category.comp_id]; exact w)`. Establish `hn : IsMor (dp0 R) A'.hom (dp0 R₀) A₀.hom π i'` using `IsMor.of_dividedPowersZeroIdeal _ w`. Establish `bm : Function.Bijective hm.pull1` using `(H1.toCrystallineDeRham R I (divided₂ hI) (isDPNilpotent_squareZero hI) R₀ π hπ hk A'.left A₀.left A'.hom A₀.hom i' inferInstance inferInstance inferInstance h'.1 hm).1`.
+
+Establish `comp : ∀ c, rho hI hk A₀.hom (hm.pull1 c) = hn.pull1 c` using `fun c ↦ IsMor.pullback1_comp hm (redMor hI hk A₀.hom) hn (fun _ ↦ rfl) (Category.id_comp _) c`. Establish `b'` using `H1.bijective_cechDeRhamComparison_degreeOne A'.hom inferInstance inferInstance inferInstance`. Establish `b₀` using `H1.bijective_cechDeRhamComparison_degreeOne A₀.hom inferInstance inferInstance inferInstance`. Take `⟨⟨e, he⟩, -, -⟩` from `(H2 R A' g hA hg).2.2.2.2.2 R₀ A₀.left A₀.hom i' h'.1`. Establish `key : ∀ c, cmp1 A₀.hom (hn.pull1 c) = e (1 ⊗ₜ cmp1 A'.hom c)` using `fun c ↦ (pairRes_injective i' A₀.hom).2.2 ((comparison_pullback hn c).symm.trans (he _))`.
+
+Take `⟨hsurj, hker⟩` from `oneTmul_surjective_ker I π hπ hk (HH1 A'.hom)`. Set `L` to `LinearEquiv.ofBijective hm.pull1 bm`. Set `C` to `LinearEquiv.ofBijective (cmp1 A'.hom) b'`. Use `⟨fun y ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `e.surjective (cmp1 A₀.hom y)`.
+
+Take `⟨m, rfl⟩` from `hsurj t`. Take `⟨c', rfl⟩` from `b'.2 m`. Conclude with `⟨hm.pull1 c', by rw [comp]; exact b₀.1 ((key c').trans ht)⟩`. Take `⟨c', rfl⟩` from `bm.2 c`. Rewrite using `[comp, show hm.pull1 c' = L c' from rfl, mem_smul_top_of_equiv I L c', ← mem_smul_top_of_equiv I C c', ← hker]`.
+
+Express the relevant statement in the definitionally equal form `_ ↔ (1 : R₀) ⊗ₜ cmp1 A'.hom c' = 0`. Rewrite using `[← LinearEquiv.map_eq_zero_iff e, ← key, ← map_zero (cmp1 A₀.hom)]`. Conclude with `⟨fun h ↦ by rw [h], fun h ↦ b₀.1 h⟩`.
+-/
 theorem rhoBC_of_abelianLift : CrystallineSmoothLift → AbelianHodgeDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀]
     (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀) (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (g : ℕ)
     (A₀ : Over (Sp R₀)) [GrpObj A₀] (A' : Over (Sp R)) [GrpObj A'] (i' : A₀.left ⟶ A'.left)

@@ -33,6 +33,25 @@ def apowUnits {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNona
   map_one' := Units.ext (by simp)
   map_mul' x y := Units.ext (by simp [apow_mul])
 
+/- English proof (translation)
+Introduce `k _ _ _ _ h2 d m κ hnorm hint`. Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Use `⟨1, fun _ _ => rfl, fun _ => by simp, fun g => ?_⟩` and prove the remaining obligations. Establish `hg : g = 1` using `Subsingleton.elim _ _`. Substitute `hg` using the available equality.
+
+Simplify using the standard rewrite rules. Take `⟨χ, hχ⟩` from `GlobalTheory.T.glCharacter_factors_through_det_of_two_ne_zero h2 κ.toHomUnits`. Establish `hκχ : ∀ g, κ g = (χ (gdet g) : ℂ)` using `fun g => by`. Use `congrArg Units.val (hχ g)` as an intermediate fact. Simplify using `using this`.
+
+Set `i0 : Fin d` to `⟨0, hd⟩`. Set `D : kˣ → GL (Fin d) k` to `fun x => diagGL (fun i => if i = i0 then x else 1)`. Establish `hD : ∀ x, gdet (D x) = x` using `fun x => by`. Simplify using `only [gdet, D, det_diagGL]`. Rewrite using `[Finset.prod_eq_single i0 (fun b _ hb => if_neg hb) (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Simplify using the standard rewrite rules. Establish `hχx : ∀ x, (χ x : ℂ) = κ (D x)` using `fun x => by rw [hκχ, hD]`. Use `⟨χ * apowUnits (-((m : ℂ) / 2)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hint' : κ (D x) = 1`.
+
+Apply `hint` to reduce the goal to its premises. Introduce `i j`. Simplify using `only [D, diagGL_val, Matrix.diagonal_apply]`. Use `split_ifs with h1 h3`. Rewrite using `[hx]`.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use `congrArg Units.val (hD x)` as an intermediate fact. Simplify using `only [gdet, Matrix.GeneralLinearGroup.val_det_apply] at this`. Rewrite using `[this, hx]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, apowUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, Units.val_one]`. Rewrite using `[hχx, hint', apow_of_valuation_eq_one hx]`. Simplify using the standard rewrite rules. Introduce `y`.
+
+Simplify using `only [MonoidHom.mul_apply, Units.val_mul, apowUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0, norm_mul]`. Rewrite using `[hχx, hnorm, hD, ← norm_mul, ← apow_add]`. Simplify using the standard rewrite rules. Introduce `g`. Simplify using `only [MonoidHom.mul_apply, Units.val_mul, apowUnits, MonoidHom.coe_mk, OneHom.coe_mk, Units.val_mk0]`.
+
+Rewrite using `[hκχ, mul_assoc, ← apow_add]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_unram_unitary_of_abs_eq : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], (2 : k) ≠ 0 →
     ∀ (d m : ℕ) (κ : GL (Fin d) k →* ℂ),
     (∀ g, ‖κ g‖ = ‖GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) ((m : ℂ) / 2)‖) →

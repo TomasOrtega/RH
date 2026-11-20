@@ -11,6 +11,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
+/- English proof (translation)
+Use `haveI : IsProper Y.s := projProper _ _ _ Y.proj`. Establish `hE : ValuativeCriterion.Existence Y.s`. Establish `h1 : UniversallyClosed Y.s` using `inferInstance`. Rewrite `h1` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h1.1`.
+
+Set `S : ValuativeCommSq Y.s` to `{ R := T.V, K := FractionRing T.V, i₁ := x ≫ Y.j, i₂ := spMap b, commSq := ⟨by rw [Category.assoc]; exact hx⟩ }`. Take `⟨⟨⟨l, hl1, hl2⟩⟩⟩` from `hE S`. Conclude with `⟨l, hl1, hl2⟩`.
+-/
 theorem extPt (Y : Model Xo c β) (T : CDVR) (b : O →+* T.V) (x : Sp T.Fr ⟶ Xo.XF c)
     (hx : x ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b) :
     ∃ yt : Sp T.V ⟶ Y.X, Out.jK T.V ≫ yt = x ≫ Y.j ∧ yt ≫ Y.s = spMap b := by

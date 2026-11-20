@@ -22,6 +22,21 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TensPol
 
+/- English proof (translation)
+Introduce `R _ _ _ Q D' r W pr xe w hpsi k hk ga' a' h' y`. Take `⟨z⟩ : Nonempty (TK R).left` from `inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))`. Use `haveI := Q.isAb.proper`. Take `⟨J, hJ, iJ⟩` from `GlobalTheory.Mum.TensPol.exists_int Q.B Q.M.L Q.M.isLB z`. Take `⟨J', hJ', iJ'⟩` from `GlobalTheory.Mum.TensPos.exists_int D'.P z`.
+
+Set `E : (FractionRing R)ˣ →* ((TK R).left.presheaf.stalk z)ˣ` to `Units.map (ev z).toMonoidHom`. Establish `hE : Function.Injective E` using `Units.map_injective (ev_inj z)`. Establish `hψ' : val (D'.psi y) (𝟙 _) z J' = E (a' y) * val (ga' y) (toUnit (TK R)).left z J'` using `Units.ext (((h' y).2 (TK R) (𝟙 _) z J' hJ').trans (congrArg₂ (· * ·) (ev_eq z _) rfl))`. Establish `mg' : val (ga' y) (toUnit (TK R)).left z J' ∈ unitsS z` using `GlobalTheory.Mum.TensPos.val_mem D'.P z iJ' _ _ _`. Establish `mτ : ∀ b c : Q.X, ∃ u ∈ unitsS z, val (Q.tau b c) (𝟙 _) z J = u * E (k b c)` using `fun b c => by`.
+
+Take `⟨u, -, hu⟩` from `hk b c`. Use `⟨_, GlobalTheory.Mum.TensPol.val_mem z iJ (lamPts (Q.c b) (Q.c c)) (fun i => ?_) negε u, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> exact Over.w _`. Rewrite using `[hu z J hJ, gm_unitOn, _root_.mul_comm]`. Use `choose u hu eu using mτ`.
+
+Establish `e` using `hpsi y z J J' hJ hJ'`. Establish `hφ : ∀ k, tensφ pr k ≫ Q.B.hom = D'.P.A.hom`. Introduce and unpack `⟨⟨i, j⟩, k⟩`. Apply the tactic sequence `fin_cases k <;> exact Over.w _`. Establish `mw : gm (D'.xK y) z _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y))) ∈ unitsS z`.
+
+Use `gm_mem z (D'.c y).left (LB.wchart Q.M.L (tensφ pr) (fun k => J (D'.xK y ≫ tensφ pr k)) ⊓ D'.P.L.U (J' (D'.xK y))) ⟨Set.mem_iInter.2 fun k => ?_, iJ' _ (Over.w _)⟩ _` and prove the remaining obligations. Use `iJ ((D'.c y).left ≫ tensφ pr k) (by rw [Category.assoc, hφ]; exact Over.w _)` as an intermediate fact. Rewrite `this` using `[← Category.assoc]`. Conclude with `this`. Rewrite `e` using `[hψ']`.
+
+Simplify using `only [eu, mul_zpow, Finset.prod_mul_distrib] at e`. Take `⟨v, hv, ev'⟩` from `mul_mem (mul_mem (inv_mem mg') mw) (prod_mem fun i (_ : i ∈ Finset.univ) => prod_mem fun j (_ : j ∈ Finset.univ) => zpow_mem (hu (xe y i) (xe y j)) (W i j))`. Use `⟨v, hv, hE ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_prod]`. Simplify using `only [map_prod, map_zpow]`.
+
+Rewrite using `[show E v = _ from ev', eq_mul_inv_of_mul_eq e]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem scalar_tens : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (Q : GlobalTheory.PolDeg.Data R) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (pr : Fin r → (D'.P.A ⟶ Q.B)) (xe : D'.X ≃+ (Fin r → Q.X)) (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W))), (∀ y z J J', Good Q.M.L z J → Good D'.P.L z J' → val (D'.psi y) (𝟙 _) z J' = gm (D'.xK y) z _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y))) * ∏ i, ∏ j, val (Q.tau (xe y i) (xe y j)) (𝟙 _) z J ^ W i j) → ∀ (k : Q.X → Q.X → (FractionRing R)ˣ), (∀ a b, Q.TauCoord a b (k a b)) → ∀ (ga' : ∀ χ : D'.X, LB.Gen (LB.LinComb D'.P.L (K := PUnit) (fun _ => (D'.c χ).left) (fun _ => -1))) (a' : D'.X → (FractionRing R)ˣ), GlobalTheory.UU.PsiScal D' ga' a' → ∀ y : D'.X, ∃ u ∈ unitsK R, a' y = u * ∏ i, ∏ j, k (xe y i) (xe y j) ^ W i j := by
   intro R _ _ _ Q D' r W pr xe w hpsi k hk ga' a' h' y
   obtain ⟨z⟩ : Nonempty (TK R).left := inferInstanceAs (Nonempty (PrimeSpectrum (FractionRing R)))

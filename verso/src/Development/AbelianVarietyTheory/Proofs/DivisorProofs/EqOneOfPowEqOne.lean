@@ -16,6 +16,15 @@ namespace GlobalTheory.TowerWeil
 
 open GlobalTheory.CechPic GlobalTheory.DiagPairing
 
+/- English proof (translation)
+Establish `hs : (∑ i ∈ Finset.range n, w ^ i) - n ∈ J`. Establish `e : (∑ i ∈ Finset.range n, w ^ i) - n = ∑ i ∈ Finset.range n, (w ^ i - 1)`. Simplify using `[Finset.sum_sub_distrib]`. Rewrite using `[e]`. Use `Ideal.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Take `⟨q, hq⟩` from `sub_dvd_pow_sub_pow w 1 i`. Rewrite `hq` using `[one_pow]`. Rewrite using `[hq]`. Conclude with `J.mul_mem_right _ h`. Take `⟨v, hv⟩` from `hn`.
+
+Establish `hu : IsUnit (∑ i ∈ Finset.range n, w ^ i)`. Establish `e : (∑ i ∈ Finset.range n, w ^ i) = (v : R) * (((∑ i ∈ Finset.range n, w ^ i) - n) * (↑v⁻¹ : R) + 1)`. Rewrite using `[mul_add, mul_comm ((∑ i ∈ Finset.range n, w ^ i) - n), ← _root_.mul_assoc, Units.mul_inv, _root_.one_mul, _root_.mul_one, hv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `v.isUnit.mul ((Ideal.mem_jacobson_bot.1 (hJ hs)) _)`. Establish `h0 : (∑ i ∈ Finset.range n, w ^ i) * (w - 1) = 0` using `by rw [geom_sum_mul, hw, sub_self]`. Conclude with `sub_eq_zero.1 ((hu.mul_right_eq_zero).1 h0)`.
+-/
 theorem eq_one_of_pow_eq_one {R : Type} [CommRing R] {J : Ideal R} (hJ : J ≤ Ideal.jacobson ⊥) {n : ℕ}
     (hn : IsUnit (n : R)) {w : R} (hw : w ^ n = 1) (h : w - 1 ∈ J) : w = 1 := by
   have hs : (∑ i ∈ Finset.range n, w ^ i) - n ∈ J := by
@@ -37,13 +46,36 @@ theorem eq_one_of_pow_eq_one {R : Type} [CommRing R] {J : Ideal R} (hJ : J ≤ I
   have h0 : (∑ i ∈ Finset.range n, w ^ i) * (w - 1) = 0 := by rw [geom_sum_mul, hw, sub_self]
   exact sub_eq_zero.1 ((hu.mul_right_eq_zero).1 h0)
 
+/- English proof (translation)
+The claim follows from `Units.ext (congrArg (fun q => q.hom (c : R)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm`.
+-/
 theorem map_unitOn {R R' : Type} [CommRing R] [CommRing R'] (j : R →+* R') (c : Rˣ) :
     Units.map (spMap j).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map j.toMonoidHom c) :=
   Units.ext (congrArg (fun q => q.hom (c : R)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom j))).symm
 
+/- English proof (translation)
+The claim follows from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective`.
+-/
 theorem unitOn_bijective {R : Type} [CommRing R] : Function.Bijective (unitOn (R := R)) :=
   (Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).bijective
 
+/- English proof (translation)
+Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Establish `hB : ∀ (T : Over S) (x x' y : T ⟶ A), pc hP (x * x') y = pc hP x y + pc hP x' y` using `fun T x x' y => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP r₁ r₂ T x x' y).1`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`.
+
+Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`. Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws.
+
+Establish `hB' : ∀ (T : Over S) (x y y' : T ⟶ A), pc hP x (y * y') = pc hP x y + pc hP x y'` using `fun T x y y' => by`. Take `⟨t, ht⟩` from `(GlobalTheory.Biadditive.biadditive_of_triv_axes hG S A _ hA hD hamp P hP r₁ r₂ T y y' x).2`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, one_smul, neg_smul] at e`.
+
+Unfold `pc`. Rewrite using `[← sub_eq_zero, ← e]`. Normalize the expressions using the abelian group laws. Establish `lifts : ∀ z : T ⟶ A, z ^ N = 1 → ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz p => by`. Take `⟨θ, hθ⟩` from `exists_theta_diag hP hB hB' (k := N) (Out.overResι ⊤ ≫ z) (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`.
+
+Conclude with `⟨⊤, trivial, θ, hθ⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG hA hD (lifts x hx) (lifts y hy)`. Take `⟨c₁, hc₁⟩` from `CommutatorPairing.exists_weilIs hG hA hD (lifts 1 (one_pow N)) (lifts y hy)`. Establish `h11` using `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD hc₁ hc₁`. Rewrite `h11` using `[_root_.mul_one]`.
+
+Establish `e₁ : c₁ * c₁ = c₁` using `CommutatorPairing.weilIs_unique hG hA hD h11 hc₁`. Establish `e₁' : c₁ = 1` using `mul_eq_left.1 e₁`. Establish `pw : ∀ m : ℕ, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) N (x ^ (m + 1)) y (c₀ ^ (m + 1))`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => simpa using hc₀`. Consider the case `succ m ih`. Rewrite using `[pow_succ x (m + 1), pow_succ c₀ (m + 1)]`. Conclude with `GlobalTheory.DiagPairing.weilIs_mul_left hG hA hD ih hc₀`. Establish `hp` using `pw (N - 1)`.
+
+Rewrite `hp` using `[Nat.sub_add_cancel hN, hx]`. Conclude with `⟨c₀, CommutatorPairing.weilIs_unique hG hA hD hp (e₁' ▸ hc₁), hc₀⟩`.
+-/
 theorem exists_weilIs_root {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A)
     (P : LB (G2 A).left) (hP : P.IsLB)
     (r₁ : ∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen)
@@ -96,22 +128,64 @@ theorem exists_weilIs_root {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonOb
   rw [Nat.sub_add_cancel hN, hx] at hp
   exact ⟨c₀, CommutatorPairing.weilIs_unique hG hA hD hp (e₁' ▸ hc₁), hc₀⟩
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_pow _ u m`.
+-/
 theorem unitOn_pow' {R : Type} [CommRing R] (u : Rˣ) (m : ℕ) : unitOn (u ^ m) = unitOn u ^ m := by
   unfold unitOn; exact map_pow _ u m
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_zpow _ u m`.
+-/
 theorem unitOn_zpow' {R : Type} [CommRing R] (u : Rˣ) (m : ℤ) : unitOn (u ^ m) = unitOn u ^ m := by
   unfold unitOn; exact map_zpow _ u m
 
+/- English proof (translation)
+Unfold `unitOn`. Conclude with `map_one _`.
+-/
 theorem unitOn_one' {R : Type} [CommRing R] : unitOn (1 : Rˣ) = 1 := by
   unfold unitOn; exact map_one _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Spec.preimage x).hom, by simp [spMap]⟩`.
+-/
 theorem exists_spMap {R K : Type} [CommRing R] [CommRing K] (x : Sp K ⟶ Sp R) : ∃ f : R →+* K, spMap f = x :=
   ⟨(Spec.preimage x).hom, by simp [spMap]⟩
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (f' : R' →+* R'') :
     spMap f' ≫ spMap f = spMap (f'.comp f) := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `g n hn3 hodd R _ _ I hI β A _ _ hA P hP r₁ r₂ hsym hamp lev ladd ltors c₀ hc₀ φ φ₂ hpb hsq hiso hlev k _ _ x ψ z hx hz a b`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `hn0 : n ≠ 0` using `by omega`. Establish `hD : (P.pull (lift (𝟙 A) (𝟙 A)).left).IsLB` using `pull_isLB hP _`. Take `⟨u, hun, hu⟩` from `exists_weilIs_root hA P hP r₁ r₂ hamp n (by omega) (ltors a) (ltors b)`.
+
+Take `⟨uR, rfl⟩ : ∃ uR : Rˣ, unitOn uR = u` from `unitOn_bijective.2 u`. Establish `hz1 : zetaAway n ^ n = 1` using `Subtype.ext (Complex.isPrimitiveRoot_exp n hn0).pow_eq_one`. Set `ζR : Rˣ` to `Units.map β.toMonoidHom (cycBase hn0).ζ`. Establish `hζR : (ζR : R) = β (zetaAway n)` using `rfl`. Establish `hζn : ζR ^ n = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val, hζR, ← map_pow, hz1, map_one, Units.val_one])`.
+
+Establish `huR : uR ^ n = 1` using `unitOn_bijective.1 (by rw [unitOn_pow', hun, unitOn_one'])`. Establish `hnR : IsUnit (n : R)` using `by simpa using (isUnit_natCast hn0).map β`. Use `set e : ℤ := 2 * omegaStd a b with he`. Establish `key : uR = ζR ^ e`. Set `w : Rˣ` to `uR * (ζR ^ e)⁻¹`.
+
+Establish `hw : w ^ n = 1`. Establish `h1 : (ζR ^ e) ^ n = 1`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hζn, one_zpow]`. Rewrite using `[mul_pow, inv_pow, h1, huR, inv_one, _root_.mul_one]`. Set `mk` to `Ideal.Quotient.mk (I ^ (0 + 1))`.
+
+Establish `hmk : Units.map mk.toMonoidHom w = 1`. Use `unitOn_bijective.1 ?_` and prove the remaining obligations. Rewrite using `[unitOn_one']`. Use `GlobalTheory.ObjTheta.root_ext (n := n) ?_ (by rw [← unitOn_pow', ← map_pow, hw, map_one, unitOn_one']) (one_pow n) ?_` and prove the remaining obligations. Use `(hnR.map mk).map (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ I ^ (0 + 1)))).inv.hom` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Introduce `K _ _ x₀`. Take `⟨φ₀, rfl⟩` from `exists_spMap x₀`. Rewrite using `[map_unitOn, map_one, ← unitOn_one']`. Use `congr 1`.
+
+Set `z₀ : Kˣ` to `Units.map (φ₀.comp mk).toMonoidHom ζR`. Take `⟨-, -, g₃⟩` from `c₀.geom K (spMap φ₀) (φ₀.comp (mk.comp β)) z₀ (spMap_comp' _ _) rfl`. Establish `W₀` using `g₃ a b`. Establish `W₁` using `(GlobalTheory.weilIs_grpPullback_of_comm (Sp R) (Sp (R ⧸ I ^ (0 + 1))) A c₀.A (spMap mk) φ (P.pull (lift (𝟙 A) (𝟙 A)).left) (c₀.P.pull (lift (𝟙 c₀.A) (𝟙 c₀.A)).left) hD (pull_isLB c₀.isLB _) hpb (SiegelPull.diag_iso hsq hiso) (Over.mk (spMap φ₀)) n _ _ (toUnit (Over.mk (spMap φ₀ …`. Establish `W₂` using `CommPairing.weilIs_pull hG hA hD (toUnit (Over.mk (spMap φ₀ ≫ spMap mk))) hu`.
+
+Establish `E` using `CommutatorPairing.weilIs_unique hG hA hD W₂ W₁`. Establish `h₁ : (toUnit (Over.mk (spMap φ₀ ≫ spMap mk))).left = spMap (φ₀.comp mk)` using `by simp [spMap_comp']`. Rewrite `E` using `[h₁, map_unitOn]`. Establish `E'` using `unitOn_bijective.1 E`. Establish `h₂ : Units.map φ₀.toMonoidHom (Units.map mk.toMonoidHom w) = Units.map (φ₀.comp mk).toMonoidHom w` using `by ext; rfl`.
+
+Rewrite using `[h₂, map_mul, map_inv, map_zpow, show Units.map (φ₀.comp mk).toMonoidHom uR = z₀ ^ e from E']`. Conclude with `mul_inv_cancel _`. Establish `hmem : (w : R) - 1 ∈ I`. Establish `e₁` using `congrArg (fun q : (R ⧸ I ^ (0 + 1))ˣ => (q : R ⧸ I ^ (0 + 1))) hmk`. Simplify using `only [Units.coe_map, Units.val_one, MonoidHom.coe_coe] at e₁`.
+
+Establish `e₂ : mk (w : R) = mk 1` using `by rw [map_one]; exact e₁`. Use `Ideal.Quotient.eq.1 e₂` as an intermediate fact. Simplify using `using this`. Establish `hw1 : (w : R) = 1` using `eq_one_of_pow_eq_one (IsAdicComplete.le_jacobson_bot I) hnR (by rw [← Units.val_pow_eq_pow_val, hw, Units.val_one]) hmem`. Conclude with `mul_inv_eq_one.1 (Units.ext hw1)`.
+
+Establish `hpull` using `CommPairing.weilIs_pull hG hA hD (toUnit (Over.mk x)) hu`. Take `⟨φx, rfl⟩` from `exists_spMap x`. Establish `hφ : φx.comp β = ψ`. Rewrite `hx` using `[spMap_comp']`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_inj.1 hx)`.
+
+Establish `hval : Units.map (toUnit (Over.mk (spMap φx))).left.appTop.hom.toMonoidHom (unitOn uR) = unitOn (z ^ e)`. Establish `h₁ : (toUnit (Over.mk (spMap φx))).left = spMap φx` using `by simp`. Rewrite using `[h₁, map_unitOn, key, map_zpow]`. Use `congr 2`. Use `ext`.
+
+Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, hz, ← hφ, hζR, RingHom.comp_apply]`. Rewrite using `[← hval]`. Conclude with `hpull`.
+-/
 theorem weil_geom : ∀ g n : ℕ, 3 ≤ n → Odd n → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (β : cycAway n →+* R) (A : Over (Sp R)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (P : LB (G2 A).left), P.IsLB → (∃ t : (P.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (P.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (P.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (lev : (Fin g ⊕ Fin g → ℤ) → (𝟙_ (Over (Sp R)) ⟶ A)), (∀ a a', lev (a + a') = lev a * lev a') → (∀ a, lev a ^ n = 1) → ∀ (c₀ : SiegPre g n (zetaAway n) (spMap ((Ideal.Quotient.mk (I ^ (0 + 1))).comp β))), c₀.Principal → ∀ (φ : c₀.A.left ⟶ A.left) (φ₂ : (G2 c₀.A).left ⟶ (G2 A).left), IsGrpPullback c₀.A A (spMap (Ideal.Quotient.mk (I ^ (0 + 1)))) φ → IsSquare φ φ₂ → LBIso c₀.P (P.pull φ₂) → (∀ a, (c₀.lev a).left ≫ φ = spMap (Ideal.Quotient.mk (I ^ (0 + 1))) ≫ (lev a).left) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ Sp R) (ψ : cycAway n →+* k) (z : kˣ), x ≫ spMap β = spMap ψ → (z : k) = ψ (zetaAway n) → ∀ a b, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) n (toUnit (Over.mk x) ≫ lev a) (toUnit _ ≫ lev b) (unitOn (z ^ (2 * omegaStd a b))) := by
   intro g n hn3 hodd R _ _ I hI β A _ _ hA P hP r₁ r₂ hsym hamp lev ladd ltors c₀ hc₀ φ φ₂ hpb hsq hiso hlev k _ _ x ψ z hx hz a b
   have hG : Out.GlobalFnsSt := GlobalTheory.globalFns_holds

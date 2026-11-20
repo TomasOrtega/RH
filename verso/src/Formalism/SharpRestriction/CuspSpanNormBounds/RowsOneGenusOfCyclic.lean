@@ -18,11 +18,19 @@ def IsCycT (h : V →ₗ⋆[E] V →ₗ[E] E) (T : ℕ) (L : Submodule (𝓞 E) 
     ∃ w₁ ∈ dual h L, (∀ w ∈ dual h L, ∃ a : 𝓞 E, w + a • w₁ ∈ L) ∧
       ∀ a : 𝓞 E, a • w₁ ∈ L ↔ ((T : ℕ) : 𝓞 E) ∣ a
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (starRingEnd E (algebraMap (𝓞 E) E o))` using `(RingOfIntegers.isIntegral_coe o).map (starRingEnd E).toIntAlgHom`. Conclude with `⟨⟨_, h⟩, rfl⟩`.
+-/
 theorem cyc_star_int (o : 𝓞 E) : star (algebraMap (𝓞 E) E o) ∈ Set.range (algebraMap (𝓞 E) E) := by
   have h : IsIntegral ℤ (starRingEnd E (algebraMap (𝓞 E) E o)) :=
     (RingOfIntegers.isIntegral_coe o).map (starRingEnd E).toIntAlgHom
   exact ⟨⟨_, h⟩, rfl⟩
 
+/- English proof (translation)
+Unfold `hcompl`. Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨hT, fun t ht => ?_⟩` and prove the remaining obligations. Establish `e : t = ((T : ℕ) : 𝓞 E)`. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises.
+
+Rewrite using `[ht, map_natCast, star_natCast]`. Rewrite using `[e]`. Conclude with `hT`.
+-/
 theorem cyc_natCast_mem_hcompl (p : Ideal (𝓞 E)) (T : ℕ) (hT : ((T : ℕ) : 𝓞 E) ∉ p) :
     ((T : ℕ) : 𝓞 E) ∈ hcompl (K := E) p := by
   unfold hcompl
@@ -34,6 +42,17 @@ theorem cyc_natCast_mem_hcompl (p : Ideal (𝓞 E)) (T : ℕ) (hT : ((T : ℕ) :
   rw [e]
   exact hT
 
+/- English proof (translation)
+Take `⟨hlat, hint, w₁, _, hgen, hann⟩` from `hL`. Establish `hinj : Function.Injective (algebraMap (𝓞 E) E)` using `IsFractionRing.injective (𝓞 E) E`. Unfold `IsUnimodularAt`. Rewrite using `[locDual_dualAt_loc h hinj cyc_star_int p L]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Use `le_trans (locDual_dualAt_le h cyc_star_int p L hlat.fg) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`. Take `⟨a, ha⟩` from `hgen _ hsx`. Use `locBasic_mem_locS.mpr ⟨((T : ℕ) : 𝓞 E) * s, (hcompl (K := E) p).mul_mem (cyc_natCast_mem_hcompl p T hTp) hs, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : (((T : ℕ) : 𝓞 E) * a) • w₁ ∈ L` using `(hann _).2 (dvd_mul_right _ _)`. Establish `h2 : ((T : ℕ) : 𝓞 E) • (s • x + a • w₁) ∈ L` using `L.smul_mem _ ha`. Establish `e : (((T : ℕ) : 𝓞 E) * s) • x = ((T : ℕ) : 𝓞 E) • (s • x + a • w₁) - (((T : ℕ) : 𝓞 E) * a) • w₁`. Rewrite using `[smul_add, mul_smul, mul_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `L.sub_mem h2 h1`. Use `le_trans ?_ (locDual_loc_dual_le h p L)` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `locBasic_mem_locS.mp hx`.
+
+Conclude with `locBasic_mem_locS.mpr ⟨s, hs, (dualBasic_mem_dual h L _).2 fun y hy => hint y hy _ hsx⟩`.
+-/
 theorem cyc_unimodAt (h : V →ₗ⋆[E] V →ₗ[E] E) (T : ℕ) (L : Submodule (𝓞 E) V) (hL : IsCycT h T L)
     (p : Ideal (𝓞 E)) (hTp : ((T : ℕ) : 𝓞 E) ∉ p) : IsUnimodularAt h p L := by
   obtain ⟨hlat, hint, w₁, _, hgen, hann⟩ := hL
@@ -72,6 +91,11 @@ def CycSplitAt : Prop :=
     ∀ L : Submodule (𝓞 E) S.V, IsCycT S.hT T L →
     ∀ p : Ideal (𝓞 E), p.IsMaximal → ((T : ℕ) : 𝓞 E) ∈ p → conjIdeal (K := E) p ≠ p ∧ LocTypeAt S.hT p L
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ hc S T hT hT3 hsp L M hL hM`. Use `⟨hM.1, fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hTp : ((T : ℕ) : 𝓞 E) ∈ p`. Establish `a` using `hC F E hc S T hT hT3 hsp L hL p hp hTp`. Establish `b` using `hC F E hc S T hT hT3 hsp M hM p hp hTp`.
+
+Conclude with `hS F E hc S L M hL.1 hM.1 hL.2.1 hM.2.1 p hp a.1 a.2 b.2`. Conclude with `hU F E hc S L M hL.1 hM.1 p hp (cyc_unimodAt S.hT T L hL p hTp) (cyc_unimodAt S.hT T M hM p hTp)`.
+-/
 theorem cycGenus_of (hC : CycSplitAt) (hU : LocUnimod) (hS : LocSplitType) : CycGenus := by
   intro F E _ _ _ _ _ _ hc S T hT hT3 hsp L M hL hM
   refine ⟨hM.1, fun p hp => ?_⟩
@@ -87,6 +111,9 @@ open Module Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Take `⟨hΛ, hu, hlift, hconv⟩` from `hΛr.2.1`. Take `⟨w₁, hw₁, hgen, hann⟩` from `dual_orthLattice_quotient_cyclic F0 he hz Λ hΛ hu hlift.1 hconv.2 hT.ne_zero`. Conclude with `⟨orthLattice_isLattice F0 he hz Λ hΛ hu, orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu, w₁, hw₁, hgen, hann⟩`.
+-/
 theorem row_lattice_cyclic_type (D : D7) (u : D.what₂.Word) (hT : (Tu D u).Prime)
     (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (he : F0.e = D.sp.hypE) (hz : F0.z = D.zmOf u)
     (Λ : LatV D) (hΛr : IsRowLat D F0 Λ) :
@@ -95,11 +122,17 @@ theorem row_lattice_cyclic_type (D : D7) (u : D.what₂.Word) (hT : (Tu D u).Pri
   obtain ⟨w₁, hw₁, hgen, hann⟩ := dual_orthLattice_quotient_cyclic F0 he hz Λ hΛ hu hlift.1 hconv.2 hT.ne_zero
   exact ⟨orthLattice_isLattice F0 he hz Λ hΛ hu, orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu, w₁, hw₁, hgen, hann⟩
 
+/- English proof (translation)
+Introduce `hT hT3 hsp F0 he hz Λ hΛ Λ' hΛ'`. Conclude with `H D.host.F D.host.E D.sp.cm (D.sp.X 0) (Tu D u) hT hT3 hsp _ _ (row_lattice_cyclic_type D u hT F0 he hz Λ hΛ) (row_lattice_cyclic_type D u hT F0 he hz Λ' hΛ')`.
+-/
 theorem rows_one_genus_of_cyclic (H : CycGenus) (D : D7) (u : D.what₂.Word) : OrthLatticesOneGenus D u := by
   intro hT hT3 hsp F0 he hz Λ hΛ Λ' hΛ'
   exact H D.host.F D.host.E D.sp.cm (D.sp.X 0) (Tu D u) hT hT3 hsp _ _
     (row_lattice_cyclic_type D u hT F0 he hz Λ hΛ) (row_lattice_cyclic_type D u hT F0 he hz Λ' hΛ')
 
+/- English proof (translation)
+The claim follows from `rows_one_genus_of_cyclic (cycGenus_of hC hU hS) D u`.
+-/
 theorem rows_one_genus_of_local (hC : CycSplitAt) (hU : LocUnimod) (hS : LocSplitType) (D : D7) (u : D.what₂.Word) :
     OrthLatticesOneGenus D u :=
   rows_one_genus_of_cyclic (cycGenus_of hC hU hS) D u

@@ -9,12 +9,20 @@ open NumberField
 
 namespace Formalism.FourierDecayAlt.P.CutMP.En
 
+/- English proof (translation)
+Take `⟨hG, hD, hGf⟩` from `hg`. Use `⟨⟨hG, fun a ha => by simp at ha⟩, hGf, fun a => hD _ (by show (a : ℕ) + 1 ≤ r; omega)⟩` and prove the remaining obligations.
+-/
 theorem om_sub' {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {g : B.Mat k r} (hg : g ∈ JF.Om k r z z') :
     g ∈ Q.Glev k r 0 ∩ {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧
       ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0} := by
   obtain ⟨hG, hD, hGf⟩ := hg
   refine ⟨⟨hG, fun a ha => by simp at ha⟩, hGf, fun a => hD _ (by show (a : ℕ) + 1 ≤ r; omega)⟩
 
+/- English proof (translation)
+Take `⟨h1, -, h3⟩` from `hp`. Take `⟨-, hsub, hcomm⟩` from `Formalism.FourierDecayAlt.P.TwoByOneBlock.uWbFacts k r`. Establish `hc` using `hcomm q.1 p.1 (hsub z h1)`. Establish `hf` using `(Formalism.FourierDecayAlt.P.TwoByOneBlock.bigCellFactor k r q.1 (μsec q.2)).1`. Establish `h3' : p.1 * B2.embWb k r (μsec q.2) * p.2 = B2.embWb k r (μsec q.2)` using `h3`.
+
+Rewrite using `[hf]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem stab_fix_gq {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ)
     (q : (Fin r → ℂ) × ℂ) {p : Q.Mx k r × Q.Mx k r} (hp : p ∈ NF.Stab k r z z' μsec q.2) :
     p.1 * bigCell k r q.1 (μsec q.2) * p.2 = bigCell k r q.1 (μsec q.2) := by
@@ -29,6 +37,13 @@ theorem stab_fix_gq {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (μsec : �
     _ = bigCell k r q.1 1 * (p.1 * B2.embWb k r (μsec q.2) * p.2) := by rw [hc]; simp only [Matrix.mul_assoc]
     _ = bigCell k r q.1 1 * B2.embWb k r (μsec q.2) := by rw [h3']
 
+/- English proof (translation)
+Unfold `FibMem`. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v hP J hJ q hq`. Simplify using `only [NF.Fib, Set.mem_setOf_eq]`. Introduce `p hp`. Establish `hdom : q ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'`.
+
+Take `⟨hq1, hq2⟩` from `hq`. Use `⟨hq1, ?_⟩` and prove the remaining obligations. Rewrite using `[hP.2.2.2.1, hP.2.2.2.2.1]`. Conclude with `hq2`. Establish `hg` using `om_sub' (Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hdom)`.
+
+Establish `hfix` using `stab_fix_gq (T v).base.μsec q hp`. Establish `hJe` using `hJ.2.2.2 (B.gq (T v).base q) ⟨hg.1, hg.2⟩ p.1 hp.1 p.2 hp.2.1`. Conclude with `hJe.symm.trans (congrArg J hfix)`.
+-/
 theorem fibre_membership_holds : FibMem := by
   unfold FibMem
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v hP J hJ q hq

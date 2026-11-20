@@ -8,6 +8,39 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 
 namespace GlobalTheory.EX
 
+/- English proof (translation)
+Introduce `eps he0 he1 C _`. Use `⟨0, fun cD _ => ⟨401, fun ch hch => ?_⟩⟩` and prove the remaining obligations. Take `⟨x1, h1⟩` from `GlobalTheory.T.scale_polynomial_quantities_comparison eps (ch + (1224 : ℕ)) (1 / 2) he0 (by norm_num)`. Take `⟨x2, h2⟩` from `GlobalTheory.T.explicitRanks_basic_bounds_large_scale eps he0 he1`. Take `⟨x3, h3⟩` from `GlobalTheory.log_add_rpow_mul_log_pow_le_rpow 0 (eps / 4) (ch + (3 : ℕ)) 0 1 0 le_rfl (by positivity) one_pos`.
+
+Use `⟨max (max x1 x2) (max x3 2), fun D L hE hx V => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨hx1, hx2⟩, hx3, hx4⟩` from `hx`. Take `⟨-, -, s3, -, -, s6, -⟩` from `h1 L.sc hE hx1`. Take `⟨rf, rm, rr, rk, -, -, -, -, -, -, -, -, -, rt, -⟩` from `h2 L.sc D.R hE hx2 V.ranks`.
+
+Establish `h3'` using `h3 L.sc.x hx3`. Establish `heta` using `V.eta_eq`. Establish `hpos` using `L.etaSz_pos`. Unfold `h0v at heta`. Move the coercions through the operations in `at heta`.
+
+Establish `hb1 : 1 ≤ L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Establish `hX1 : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg (by linarith) _)`. Establish `hn1 : 1 ≤ D.R.n` using `D.R.ord_pos`. Establish `hfn : (D.R.f : ℝ) = 2 * D.R.n` using `by unfold Ranks.f; push_cast; ring`. Establish `hn1' : (1 : ℝ) ≤ D.R.n` using `by exact_mod_cast hn1`.
+
+Take `⟨s7, -⟩` from `s6 D.R.n hn1 (by linarith)`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions.
+
+Establish `ht1 : (1 : ℝ) ≤ D.R.t`. Use `D.R.three_m_lt_t` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.t)` after adjusting the coercions. Establish `rk' : (D.R.k : ℝ) ≤ L.sc.x ^ (5 : ℝ)` using `le_trans (by exact_mod_cast rk) rr`. Rewrite using `[hE]`.
+
+Generalize the expression as in `L.sc.x = x at *`. Generalize the expression as in `L.sc.b = b at *`. Generalize the expression as in `L.sc.X' = X at *`. Generalize the expression as in `L.sc.w'' D.R.n = w at *`. Generalize the expression as in `L.etaSz = η at *`.
+
+Generalize the expression as in `(D.R.t : ℝ) = t at *`. Generalize the expression as in `(D.R.m : ℝ) = m at *`. Generalize the expression as in `(D.R.f : ℝ) = f at *`. Generalize the expression as in `(D.R.k : ℝ) = k at *`. Establish `hx0 : 0 < x` using `by linarith`.
+
+Establish `hx1' : 1 ≤ x` using `by linarith`. Establish `hty : t ≤ x ^ ch` using `rt.trans (Real.rpow_le_rpow_of_exponent_le hx1' hch)`. Establish `e3 : x ^ (ch + (3 : ℕ)) = x ^ ch * x ^ 3` using `by rw [Real.rpow_add hx0, Real.rpow_natCast]`. Establish `eB : x ^ (ch + (1224 : ℕ)) = x ^ ch * x ^ 1224` using `by rw [Real.rpow_add hx0, Real.rpow_natCast]`. Establish `rf' : f ≤ x ^ 3` using `by rw [← Real.rpow_natCast]; exact_mod_cast rf`.
+
+Establish `rk'' : k ≤ x ^ 5` using `by rw [← Real.rpow_natCast]; exact_mod_cast rk'`. Establish `rt' : t ≤ x ^ 401` using `by rw [← Real.rpow_natCast]; exact_mod_cast rt`. Establish `hy1 : 1 ≤ x ^ ch` using `ht1.trans hty`. Establish `hc1 : x ^ ch ≤ (⌈x ^ ch⌉₊ : ℝ)` using `Nat.le_ceil _`. Establish `hc2 : (⌈x ^ ch⌉₊ : ℝ) ≤ x ^ ch + 1` using `(Nat.ceil_lt_add_one (by linarith)).le`.
+
+Establish `hup : η ≤ x ^ ch * x ^ 3`. Rewrite using `[heta]`. Establish `a1 : 2 * (⌈x ^ ch⌉₊ : ℝ) ≤ x ^ ch * x ^ 2`. Establish `: 4 ≤ x ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlo : t ≤ η` using `by rw [heta]; nlinarith`. Establish `hlog : Real.log η ≤ x ^ (eps / 4)`. Establish `a1 : Real.log η ≤ (ch + (3 : ℕ)) * Real.log x`. Rewrite using `[← Real.log_rpow hx0, e3]`.
+
+Conclude with `Real.log_le_log hpos hup`. Simplify using `only [zero_mul, add_zero, one_mul] at h3'`. Conclude with `a1.trans h3'`. Rewrite `s3`, `s7` using `[eB]`. Generalize the expression as in `x ^ ch = y at *`.
+
+Establish `hB0 : 0 ≤ y * x ^ 1224` using `by positivity`. Establish `hBb : y * x ^ 1224 ≤ b`. Establish `a1 : b ^ (1 / 2 : ℝ) ≤ b ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hb1 (by norm_num)`. Rewrite `a1` using `[Real.rpow_one]`. Conclude with `(le_mul_of_one_le_right hB0 hX1).trans (s3.trans a1)`.
+
+Establish `hBw : y * x ^ 1224 ≤ w` using `(le_mul_of_one_le_left hB0 (Real.one_le_rpow hb1 (by norm_num))).trans s7`. Establish `hf0 : 0 < f` using `by linarith`. Use `⟨?_, hlog, hlo, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[le_div_iff₀ hx0]`. Combine the equalities or inequalities in the displayed calculation. Establish `a1 : t + 1 ≤ x * x ^ 401`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem szRow_eta_bounds : SzRow (fun C D L => (L.etaSz ≤ L.sc.b / ((D.R.t : ℝ) ^ 3 * D.R.f * (D.R.k : ℝ) ^ 3)) ∧ (Real.log L.etaSz ≤ L.sc.x ^ (L.sc.eps / 4)) ∧ ((D.R.t : ℝ) ≤ L.etaSz) ∧ ((D.R.t : ℝ) * L.etaSz ≤ L.sc.w'' D.R.n / L.sc.x) ∧ ((D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz ≤ L.sc.w'' D.R.n)) := by
   intro eps he0 he1 C _
   refine ⟨0, fun cD _ => ⟨401, fun ch hch => ?_⟩⟩

@@ -37,8 +37,18 @@ abbrev EFMod (D : Datum F) (N₁ : ℕ) : LinearMap.BilinForm (ZMod N₁) (LaMod
 def toLaMod (D : Datum F) (N₁ : ℕ) : D.La →+ LaMod D N₁ :=
   (TensorProduct.mk ℤ (ZMod N₁) D.La 1).toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toLaMod_apply (D : Datum F) (N₁ : ℕ) (a : D.La) : toLaMod D N₁ a = (1 : ZMod N₁) ⊗ₜ a := rfl
 
+/- English proof (translation)
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul r a`. Take `⟨n, rfl⟩` from `ZMod.intCast_surjective r`.
+
+Use `⟨n • a, ?_⟩` and prove the remaining obligations. Rewrite using `[toLaMod_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul', zsmul_eq_mul, _root_.mul_one]`. Consider the case `add x y hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+
+Conclude with `⟨a + b, map_add _ _ _⟩`.
+-/
 theorem toLaMod_surjective (D : Datum F) (N₁ : ℕ) : Function.Surjective (toLaMod D N₁) := by
   intro x
   induction x using TensorProduct.induction_on with

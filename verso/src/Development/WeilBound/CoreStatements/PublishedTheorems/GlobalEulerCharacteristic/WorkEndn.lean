@@ -8,6 +8,15 @@ open PositivityTheory.Lit1.GEN.W_killed_a PositivityTheory.Lit1.GEN.W_endx
 
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
+/- English proof (translation)
+Introduce `K' _ hK' hle _ hcop ιr'`. Establish `hKL : K' ≤ L`. Introduce `x hx`. Use `mem_of_forall_gsOpenSubgroup_fixes S hL ⟨x, hK' ⟨x, hx⟩⟩ fun σ hσ => ?_` and prove the remaining obligations. Establish `h1` using `(mem_gsOpenSubgroup_iff S hK' σ).1 (hle hσ) ⟨x, hx⟩`.
+
+Conclude with `h1`. Establish `: Fact (K' ≤ L)` using `⟨hKL⟩`. Establish `hL'' : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K'.1 ℚ̄ (placesOver S)` using `fun x => mem_of_restrictScalars_eq' (restrictScalars_maxUnramifiedOutside_eq S hK') (hL x)`. Establish `hcomap : (gsOpenSubgroup (placesOver S) hL'' : Subgroup (galUnramifiedOutside K'.1 ℚ̄ (placesOver S))) = ((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hK' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).comap (gsBaseChange S hK').symm …`. Use extensionality with `τ`.
+
+Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Conclude with `mem_gsOpenSubgroup_placesOver_iff S K' L hK' hL hL'' τ`. Establish `hidx : Module.finrank K'.1 L.1 = ((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hK' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).index`. Rewrite using `[← index_gsOpenSubgroup (placesOver S) hL'', hcomap, Subgroup.index_comap_of_surjective _ (MulEquiv.surjective _)]`. Establish `hodd : Odd (Module.finrank K'.1 L.1)`.
+
+Rewrite using `[hidx]`. Conclude with `Nat.coprime_two_right.1 hcop`. Establish `htc' : NumberField.IsTotallyComplex K'.1` using `TotallyComplexOfOdd.isTotallyComplex_of_odd K' L hodd htc`. Use `haveI hfin : Finite (resTo S K' hK' M) := (inferInstanceAs (Finite M))`. Conclude with `H K' (placesOver S) (placesOver_finite hS) (fun w hw => mem_placesOver_of_natCast_mem hS2 hw) htc' ιr' (resTo S K' hK' M) ⟨1, fun m => by rw [pow_one]; exact h2 m⟩`.
+-/
 theorem ending_narrow (H : RatioOne 2 (fun K => NumberField.IsTotallyComplex K.1)) (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
     (hS2 : ∀ v : HeightOneSpectrum (𝓞 K.1), ((2 : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)

@@ -4,6 +4,15 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite (↥Z₁ ⧸ Z₀.comap Z₁.subtype)`. Use `set Z : AddSubgroup H := Z₀.toAddSubgroup ⊔ C with hZ`. Set `s : (↥Z₁ ⧸ Z₀.comap Z₁.subtype) → ↥Z₁` to `Function.surjInv (Submodule.Quotient.mk_surjective (Z₀.comap Z₁.subtype))`. Establish `hs : ∀ z, Submodule.Quotient.mk (s z) = z` using `fun z => Function.surjInv_eq (Submodule.Quotient.mk_surjective (Z₀.comap Z₁.subtype)) z`. Set `T : Finset (H ⧸ Z)` to `Finset.univ.image fun z => QuotientAddGroup.mk (s z : H)`.
+
+Establish `hsurj : (Z₁ : Set H).SurjOn (QuotientAddGroup.mk : H → H ⧸ Z) T`. Introduce `t ht`. Take `⟨z, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 ht)`. Conclude with `⟨s z, (s z).2, rfl⟩`. Take `⟨R, hR, hinj, him⟩` from `Finset.exists_subset_injOn_image_eq_of_surjOn _ _ hsurj`.
+
+Use `⟨R, fun x hx => hR hx, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Conclude with `hinj hx hy (QuotientAddGroup.eq_iff_sub_mem.2 hxy)`. Introduce `y hy`. Establish `h1 : (⟨y, hy⟩ : ↥Z₁) - s (Submodule.Quotient.mk ⟨y, hy⟩) ∈ Z₀.comap Z₁.subtype` using `(Submodule.Quotient.eq _).1 (hs _).symm`.
+
+Establish `h2 : y - (s (Submodule.Quotient.mk ⟨y, hy⟩) : H) ∈ Z` using `AddSubgroup.mem_sup_left (by simpa using h1)`. Establish `h3 : (QuotientAddGroup.mk y : H ⧸ Z) ∈ T` using `Finset.mem_image.2 ⟨_, Finset.mem_univ _, (QuotientAddGroup.eq_iff_sub_mem.2 h2).symm⟩`. Rewrite `h3` using `[← him]`. Take `⟨x, hx, hxy⟩` from `Finset.mem_image.1 h3`. Conclude with `⟨x, hx, QuotientAddGroup.eq_iff_sub_mem.1 hxy.symm⟩`.
+-/
 theorem exists_reps_sup_of_finite_quot (E : Type) [Field E] (H : Type) [AddCommGroup H]
     [Module (𝓞 E) H] (Z₁ Z₀ : Submodule (𝓞 E) H) (C : AddSubgroup H)
     (hfin : Finite (↥Z₁ ⧸ Z₀.comap Z₁.subtype)) :
@@ -37,6 +46,27 @@ theorem exists_reps_sup_of_finite_quot (E : Type) [Field E] (H : Type) [AddCommG
     obtain ⟨x, hx, hxy⟩ := Finset.mem_image.1 h3
     exact ⟨x, hx, QuotientAddGroup.eq_iff_sub_mem.1 hxy.symm⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H _ _ Z₁ Z₀ C J h01 hC hfin hJ`. Take `⟨R, hR, hRinj, hRsurj⟩` from `exists_reps_sup_of_finite_quot E H Z₁ Z₀ C hfin`. Take `⟨hJC, hJinj, hJsurj⟩` from `hJ`. Use `⟨R, hR, ?_⟩` and prove the remaining obligations. Introduce `M _ f hf`.
+
+Use `letI := Fintype.ofFinite (↥Z₁ ⧸ Z₀.comap Z₁.subtype)`. Establish `hmem : ∀ p ∈ R ×ˢ J, p.1 + p.2 ∈ Z₁` using `fun p hp => Z₁.add_mem (hR _ (Finset.mem_product.1 hp).1) (hC (hJC _ (Finset.mem_product.1 hp).2))`. Unfold `latSum`. Rewrite using `[finsum_eq_sum_of_fintype, ← Finset.sum_product']`. Use `symm`.
+
+Use `Finset.sum_bij (fun p hp => (Submodule.Quotient.mk ⟨p.1 + p.2, hmem p hp⟩ : ↥Z₁ ⧸ Z₀.comap Z₁.subtype)) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨x, j⟩ hp ⟨x', j'⟩ hp' h`. Take `⟨hx, hj⟩` from `Finset.mem_product.1 hp`. Take `⟨hx', hj'⟩` from `Finset.mem_product.1 hp'`. Establish `h1 : x + j - (x' + j') ∈ Z₀`.
+
+Simplify using `using (Submodule.Quotient.eq _).1 h`. Establish `h2 : x = x'`. Use `hRinj x hx x' hx' ?_` and prove the remaining obligations. Establish `: x - x' = (x + j - (x' + j')) + (j' - j)` using `by abel`. Rewrite using `[this]`.
+
+Conclude with `AddSubgroup.add_mem_sup h1 (C.sub_mem (hJC _ hj') (hJC _ hj))`. Substitute `h2` using the available equality. Establish `h3 : j = j'`. Use `hJinj j hj j' hj' ?_` and prove the remaining obligations. Establish `: j - j' = x + j - (x + j')` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `h1`. Rewrite using `[h3]`. Introduce `z _`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+
+Take `⟨x, hx, hyx⟩` from `hRsurj y hy`. Take `⟨a, ha, c, hc, hac⟩` from `AddSubgroup.mem_sup.1 hyx`. Take `⟨j, hj, hcj⟩` from `hJsurj c hc`. Use `⟨(x, j), Finset.mem_product.2 ⟨hx, hj⟩, (Submodule.Quotient.eq _).2 ?_⟩` and prove the remaining obligations. Establish `h1 : x + j - y = -(a + (c - j))`.
+
+Establish `: y = x + (a + c)` using `by rw [hac]; abel`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Establish `h2 : x + j - y ∈ Z₀`. Rewrite using `[h1]`.
+
+Conclude with `Z₀.neg_mem (Z₀.add_mem ha hcj)`. Simplify using `using h2`. Introduce `p hp set w := Function.surjInv (Submodule.Quotient.mk_surjective (Z₀.comap Z₁.subtype)) (Submodule.Quotient.mk ⟨p.1 + p.2, hmem p hp⟩) with hw`. Establish `h0 : Submodule.Quotient.mk w = (Submodule.Quotient.mk ⟨p.1 + p.2, hmem p hp⟩ : ↥Z₁ ⧸ Z₀.comap Z₁.subtype)` using `Function.surjInv_eq _ _`. Establish `h1 : (w : H) - (p.1 + p.2) ∈ Z₀`.
+
+Simplify using `using (Submodule.Quotient.eq _).1 h0`. Establish `h2` using `hf _ (hmem p hp) _ h1`. Rewrite using `[← h2]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem latSum_eq_sum_sum_reps : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (H : Type) [AddCommGroup H] [Module (𝓞 E) H] (Z₁ Z₀ : Submodule (𝓞 E) H) (C : AddSubgroup H) (J : Finset H), Z₀ ≤ Z₁ → C ≤ Z₁.toAddSubgroup → Finite (↥Z₁ ⧸ Z₀.comap Z₁.subtype) → IsReps Z₀.toAddSubgroup C J → ∃ R : Finset H, (∀ x ∈ R, x ∈ Z₁) ∧ ∀ (M : Type) [AddCommMonoid M] (f : H → M), (∀ x ∈ Z₁, ∀ y ∈ Z₀, f (x + y) = f x) → latSum Z₁ Z₀ f = ∑ x ∈ R, ∑ j ∈ J, f (x + j) := by
   intro E _ _ _ H _ _ Z₁ Z₀ C J h01 hC hfin hJ
   classical

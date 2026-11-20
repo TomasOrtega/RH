@@ -43,15 +43,26 @@ def QSc : ℕ := ∏ l ∈ H.smallR, l ^ H.sl l
 
 def eL : ℕ := sInf {m : ℕ | 0 < m ∧ (m : NumberField.RingOfIntegers H.E) ∈ differentIdeal ℤ (NumberField.RingOfIntegers H.E)}
 
+/- English proof (translation)
+Rewrite using `[unitsOne, MonoidHom.mem_ker, ← Units.val_eq_one, ZMod.unitsMap_val, ZMod.cast_eq_val, ← Nat.cast_one, ZMod.natCast_eq_natCast_iff, Nat.gcd_eq_left hf]`.
+-/
 theorem mem_unitsOne {f : ℕ} (hf : f ∣ H.condN) (u : (ZMod H.condN)ˣ) :
     u ∈ H.unitsOne f ↔ (u : ZMod H.condN).val ≡ 1 [MOD f] := by
   rw [unitsOne, MonoidHom.mem_ker, ← Units.val_eq_one, ZMod.unitsMap_val, ZMod.cast_eq_val,
     ← Nat.cast_one, ZMod.natCast_eq_natCast_iff, Nat.gcd_eq_left hf]
 
+/- English proof (translation)
+Simplify using `only [imgOne, Subgroup.mem_map, H.mem_unitsOne hf, eq_comm]`.
+-/
 theorem mem_imgOne {f : ℕ} (hf : f ∣ H.condN) (g : φ.GG) :
     g ∈ H.imgOne f ↔ ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD f] ∧ g = H.art u := by
   simp only [imgOne, Subgroup.mem_map, H.mem_unitsOne hf, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.eq_bot_iff_forall]`. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Conclude with `h _ ((H.mem_imgOne hf _).2 ⟨u, hu, rfl⟩)`. Introduce `h g hg`.
+
+Take `⟨u, hu, rfl⟩` from `(H.mem_imgOne hf _).1 hg`. Conclude with `h u hu`.
+-/
 theorem imgOne_eq_bot_iff {f : ℕ} (hf : f ∣ H.condN) :
     H.imgOne f = ⊥ ↔ ∀ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD f] → H.art u = 1 := by
   rw [Subgroup.eq_bot_iff_forall]
@@ -59,14 +70,23 @@ theorem imgOne_eq_bot_iff {f : ℕ} (hf : f ∣ H.condN) :
   · intro h u hu; exact h _ ((H.mem_imgOne hf _).2 ⟨u, hu, rfl⟩)
   · intro h g hg; obtain ⟨u, hu, rfl⟩ := (H.mem_imgOne hf _).1 hg; exact h u hu
 
+/- English proof (translation)
+The claim follows from `H.mem_imgOne (Nat.ordCompl_dvd _ _) g`.
+-/
 theorem mem_inertG (l : ℕ) (g : φ.GG) :
     g ∈ H.inertG l ↔ ∃ u : (ZMod H.condN)ˣ, (u : ZMod H.condN).val ≡ 1 [MOD ordCompl[l] H.condN] ∧ g = H.art u :=
   H.mem_imgOne (Nat.ordCompl_dvd _ _) g
 
+/- English proof (translation)
+Introduce `x hx` and use `by obtain ⟨u, hu, rfl⟩ := (H.mem_imgOne hg _).1 hx exact (H.mem_imgOne (hfg.trans hg) _).2 ⟨u, hu.of_dvd hfg, rfl⟩`.
+-/
 theorem imgOne_anti {f g : ℕ} (hfg : f ∣ g) (hg : g ∣ H.condN) : H.imgOne g ≤ H.imgOne f := fun x hx => by
   obtain ⟨u, hu, rfl⟩ := (H.mem_imgOne hg _).1 hx
   exact (H.mem_imgOne (hfg.trans hg) _).2 ⟨u, hu.of_dvd hfg, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Nat.card_pos`.
+-/
 theorem el_pos (l : ℕ) : 0 < H.el l := Nat.card_pos
 
 end UpperTheory.HF.Formalism.HC.HostRaw

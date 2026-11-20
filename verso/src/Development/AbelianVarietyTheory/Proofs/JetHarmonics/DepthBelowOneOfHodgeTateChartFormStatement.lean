@@ -16,5 +16,8 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 open IsDedekindDomain
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart | exact GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart | (intros; apply GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.depthBelowOne_of_hodgeTate_chart_form : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.HTFSt p) → LemmaBT := by
   first | exact @GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart | exact GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart | (intros; apply GlobalTheory.PowGerm.lemmaBT_of_hodgeTate_chart <;> assumption)

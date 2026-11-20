@@ -23,8 +23,14 @@ abbrev UB {n : ℕ} (J : Matrix (Fin n) (Fin n) D.host.E) : Type := WeilTensorMo
 
 abbrev incM {m n : Type} (J : Matrix m n D.host.E) : Matrix m n (AE D) := WeilTensorModels.incM D.host.F J
 
+/- English proof (translation)
+The claim follows from `g.2`.
+-/
 theorem mt_gram (V : HSp D) (g : GA D V) : ((mt V g).map (cA D))ᵀ * incM V.gram * mt V g = incM V.gram := g.2
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [incM, WeilTensorModels.incM, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]`.
+-/
 theorem incM_smul {m n : Type} (c : D.host.E) (J : Matrix m n D.host.E) : incM (c • J) = incA D c • incM J := by
   ext a b
   simp only [incM, WeilTensorModels.incM, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul]
@@ -36,6 +42,11 @@ def conjU (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.hos
     show ((mt V g).map (cA D))ᵀ * incM J * ((mt V g).map (cA D)).map (cA D) = incM J
     rw [e, h, incM_smul, Matrix.mul_smul, Matrix.smul_mul, mt_gram]⟩
 
+/- English proof (translation)
+Set `f : AE D →ₗ[AF D.host.F] AE D` to `TensorProduct.AlgebraTensorModule.map LinearMap.id D.sp.cm.sig.toLinearMap`. Establish `hf : ⇑(cA D) = ⇑f`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul a b => simp [cA, sigR, f]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[hf]`. Conclude with `IsModuleTopology.continuous_of_linearMap f`.
+-/
 theorem continuous_conj (D : D7) : Continuous (cA D) := by
   let f : AE D →ₗ[AF D.host.F] AE D :=
     TensorProduct.AlgebraTensorModule.map LinearMap.id D.sp.cm.sig.toLinearMap
@@ -48,6 +59,11 @@ theorem continuous_conj (D : D7) : Continuous (cA D) := by
   rw [hf]
   exact IsModuleTopology.continuous_of_linearMap f
 
+/- English proof (translation)
+Unfold `conjU`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `hv : Continuous fun g : GA D V => ((matHom V g : GL (Fin V.rank) (AE D)) : Matrix (Fin V.rank) (Fin V.rank) (AE D))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hi : Continuous fun g : GA D V => (((matHom V g)⁻¹ : GL (Fin V.rank) (AE D)) : Matrix (Fin V.rank) (Fin V.rank) (AE D))` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Rewrite using `[Units.continuous_iff]`.
+
+Conclude with `⟨hv.matrix_map (continuous_conj D), hi.matrix_map (continuous_conj D)⟩`.
+-/
 theorem continuous_conjU (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (h : J = c • V.gram) :
     Continuous (conjU V c h) := by
   unfold conjU
@@ -64,21 +80,33 @@ theorem continuous_conjU (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.hos
 def blk {R : Type} [Zero R] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (A : Matrix (Fin p) (Fin p) R)
     (B : Matrix (Fin q) (Fin q) R) : Matrix (Fin d) (Fin d) R := reindex e e (fromBlocks A 0 0 B)
 
+/- English proof (translation)
+Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`.
+-/
 theorem blk_mul {R : Type} [CommRing R] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (A A' : Matrix (Fin p) (Fin p) R)
     (B B' : Matrix (Fin q) (Fin q) R) : blk e A B * blk e A' B' = blk e (A * A') (B * B') := by
   simp only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero,
     Matrix.zero_mul, add_zero, zero_add]
 
+/- English proof (translation)
+Simplify using `only [blk, Matrix.fromBlocks_one, Matrix.reindex_apply, Matrix.submatrix_one_equiv]`.
+-/
 theorem blk_one {R : Type} [CommRing R] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) :
     blk e (1 : Matrix (Fin p) (Fin p) R) 1 = 1 := by
   simp only [blk, Matrix.fromBlocks_one, Matrix.reindex_apply, Matrix.submatrix_one_equiv]
 
+/- English proof (translation)
+Unfold `blk`. Rewrite using `[Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map]`. Simplify using `only [Matrix.map_zero _ h]`.
+-/
 theorem blk_map {R R' : Type} [Zero R] [Zero R'] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (A : Matrix (Fin p) (Fin p) R)
     (B : Matrix (Fin q) (Fin q) R) {f : R → R'} (h : f 0 = 0) : (blk e A B).map f = blk e (A.map f) (B.map f) := by
   unfold blk
   rw [Matrix.reindex_apply, Matrix.reindex_apply, ← Matrix.submatrix_map, Matrix.fromBlocks_map]
   simp only [Matrix.map_zero _ h]
 
+/- English proof (translation)
+Simplify using `only [blk, Matrix.reindex_apply, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose, Matrix.transpose_zero]`.
+-/
 theorem blk_transpose {R : Type} [Zero R] {p q d : ℕ} (e : Fin p ⊕ Fin q ≃ Fin d) (A : Matrix (Fin p) (Fin p) R)
     (B : Matrix (Fin q) (Fin q) R) : (blk e A B)ᵀ = blk e Aᵀ Bᵀ := by
   simp only [blk, Matrix.reindex_apply, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose, Matrix.transpose_zero]
@@ -274,9 +302,17 @@ def SquareCommutes : Prop :=
 
 def TwoRoutes : Prop := SquareFubini ∧ SquareCommutes
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (f : Sch G (.right i (j + 1))) (f' : Sch G (.down t (i + 1) j)) (F : Fn G (.grid i (j + 1))) :
     liftP W M (routeA t i j) (((), f), f') F = liftA W M (.down t (i + 1) j) f' (liftA W M (.right i (j + 1)) f F) := rfl
 
+/- English proof (translation)
+Establish `hr : ∀ X : Node, X.InRange D.R.m → (G.V X).rank = X.rank D` using `fun X hX => (node_isV G hL hX).rank`. Apply the tactic sequence `have h1 := hr (.grid i (j + 1)) (by simp only [Node.InRange]; constructor <;> omega)`. Apply the tactic sequence `have h2 := hr (.grid (i + 1) j) (by simp only [Node.InRange]; constructor <;> omega)`. Apply the tactic sequence `have h3 := hr (.grid (i + 1) (j + 1)) (by simp only [Node.InRange]; constructor <;> omega)`. Apply the tactic sequence `have h4 := hr (.grid i j) (by simp only [Node.InRange]; constructor <;> omega)`.
+
+Establish `key : (spV G i j).rank + (spV₁ G i j).rank = (spW G i j).rank + (spW₁ G i j).rank`. Rewrite using `[show (spV G i j).rank = _ from h1, show (spV₁ G i j).rank = _ from h2, show (spW G i j).rank = _ from h3, show (spW₁ G i j).rank = _ from h4]`. Simplify using `only [Node.rank, rankV]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨finSumFinEquiv.trans (finCongr key)⟩`.
+-/
 theorem nonempty_num {μ0 : T} (hL : L.Is μ0) (hi : i + 1 ≤ D.R.m) (hj : j + 1 ≤ D.R.m) : Nonempty (Num G i j) := by
   have hr : ∀ X : Node, X.InRange D.R.m → (G.V X).rank = X.rank D := fun X hX => (node_isV G hL hX).rank
   have h1 := hr (.grid i (j + 1)) (by simp only [Node.InRange]; constructor <;> omega)
@@ -290,6 +326,9 @@ theorem nonempty_num {μ0 : T} (hL : L.Is μ0) (hi : i + 1 ≤ D.R.m) (hj : j + 
     ring
   exact ⟨finSumFinEquiv.trans (finCongr key)⟩
 
+/- English proof (translation)
+The claim follows from `mul_div_mul_right_eq_div _ _ _`.
+-/
 example : alpha G t i j / beta G i j = G.nu t i (j + 1) := mul_div_mul_right_eq_div _ _ _
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation

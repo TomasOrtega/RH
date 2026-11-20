@@ -26,6 +26,13 @@ namespace GlobalTheory.DblRestr
 
 open GlobalTheory.Doubling GlobalTheory.DblSchr GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero Formalism.IndefR.Datum
 
+/- English proof (translation)
+Establish `hg1 : g.1.1 * (g⁻¹).1.1 = 1` using `Units.mul_inv g.1`. Establish `hinv : (gd⁻¹).1.1 = Matrix.fromBlocks (g⁻¹).1.1 0 0 (1 : Matrix (Fin S.rank) (Fin S.rank) _)`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[hgd, Matrix.fromBlocks_multiply, hg1]`. Simplify using `[Matrix.fromBlocks_one]`.
+
+Establish `hr : ((reG _ finSumFinEquiv.symm (incM_JBd S JB) gd)⁻¹).1.1 = (Matrix.fromBlocks (g⁻¹).1.1 0 0 (1 : Matrix (Fin S.rank) (Fin S.rank) _)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← map_inv, reG_val, hinv]`. Establish `hm3 : mt (dblSp S) (io S (gs, 1)) = (Matrix.fromBlocks (mt S gs) 0 0 (1 : Matrix (Fin S.rank) (Fin S.rank) _)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm` using `rfl`. Establish `hm : mt (dblSp S) gdd = mt (dblSp S) (io S (gs, 1))`. Rewrite using `[hgdd, hr, Matrix.transpose_submatrix, Matrix.fromBlocks_transpose, ← hgs, hm3, Matrix.transpose_zero, Matrix.transpose_one]`.
+
+Conclude with `Subtype.ext (Units.ext hm)`.
+-/
 theorem partner_dbl {D : D7} (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) D.host.E)
     (g : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (incM D.host.F JB))
     (gd : GlobalTheory.WeilM.UG (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.WeilM.dbl (incM D.host.F JB)))
@@ -47,6 +54,15 @@ theorem partner_dbl {D : D7} (S : HSp D) (JB : Matrix (Fin S.rank) (Fin S.rank) 
       Matrix.transpose_one]
   exact Subtype.ext (Units.ext hm)
 
+/- English proof (translation)
+Introduce `D ψ hψ S T χS χT hS hT rS rT JA JB ξ hA hB κ _ co hrat ω hω om hom ωd hωd omd₀ homd g gd hgd φ₁ hφ₁ φ₂ hφ₂`. Take `⟨gs, h1, hh1, hgs⟩` from `GlobalTheory.T.unitaryPair_partner_inverse_transpose D S T JA JB ξ hA hB 1 g`. Establish `h1e : h1 = 1` using `Subtype.ext (Units.ext (hh1.trans rfl))`. Take `⟨gdd, h2, hh2, hgdd⟩` from `GlobalTheory.T.unitaryPair_partner_inverse_transpose D (dblSp S) T JA (JBd S JB) ξ hA (dblGram_xi D S JB ξ hB) 1 (reG _ finSumFinEquiv.symm (incM_JBd S JB) gd)`. Establish `h2e : h2 = 1` using `Subtype.ext (Units.ext (hh2.trans rfl))`.
+
+Establish `hgdd' : gdd = io S (gs, 1)` using `partner_dbl S JB g gd hgd gs hgs gdd hgdd`. Substitute `h1e h2e hgdd'` using the available equality. Establish `t1` using `hom 1 g gs 1 hh1 hgs φ₁ hφ₁`. Establish `hΦ` using `GlobalTheory.SchwartzBox.boxFun_mem_schA D.host.F κ κ φ₁ hφ₁ φ₂ hφ₂`. Establish `t2` using `homd 1 (reG _ finSumFinEquiv.symm (incM_JBd S JB) gd) (io S (gs, 1)) 1 hh2 hgdd _ hΦ`.
+
+Establish `hφ₂'` using `GlobalTheory.T.adelicSchwartzSpace_closed_under_conj_reflection D.host.F κ φ₂ hφ₂`. Establish `th₁` using `GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux D ψ hψ S T JA JB ξ hA hB κ co hrat φ₁ hφ₁`. Establish `th₂` using `GlobalTheory.T.isThetaFunction_thetaTransform_rationalDarboux D ψ hψ S T JA JB ξ hA hB κ co hrat _ hφ₂'`. Establish `key` using `t2.2.trans ((congrArg (ωd (io S (gs, 1), 1)) (GlobalTheory.T.doubledCoordsThetaTransform_product_eq_tensor_conj D ψ hψ S T JA JB ξ κ co φ₁ hφ₁ φ₂ hφ₂)).trans ((GlobalTheory.T.doubledWeilDatum_firstFactor_on_doublingTensor D ψ hψ S T χS χT ω hω ωd hωd gs _ _ th₁ th₂).trans ((congr …`. Use `GlobalTheory.T.thetaTransform_injOn_adelicSchwartzSpace D ψ hψ (κ ⊕ κ) _ t2.1 _ (GlobalTheory.SchwartzBox.boxFun_mem_schA D.host.F κ κ _ t1.1 φ₂ hφ₂) fun w => ?_` and prove the remaining obligations.
+
+Use `congrFun key ((ddr co).e.symm w)` as an intermediate fact. Simplify `this` using `only [GlobalTheory.WeilSchrodinger.thetaTr, GlobalTheory.WeilM.Darboux.rho, LinearEquiv.apply_symm_apply]`.
+-/
 theorem restr_boxFun : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (S T : HSp D) (χS χT : (AE D)ˣ →* Circle), IsHeckeChar D χS → IsHeckeChar D χT →
       ResEta D χS S.rank → ResEta D χT T.rank →

@@ -8,6 +8,23 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf
 
+/- English proof (translation)
+Introduce `k r z z' γ hz hz' hT hT' hγ hG`. Establish `hGpos : 0 < Gf k r z z' γ` using `lt_of_le_of_ne (Formalism.QuantumDeterminants.gNonneg k r z z' hz hz' hT hT' γ hγ) (Ne.symm hG)`. Establish `hdet : (gramM k r z z' γ).det ≠ 0`. Introduce `h0`. Apply `hG` to reduce the goal to its premises.
+
+Establish `hg` using `Formalism.QuantumDeterminants.gGram k r z z' hz hz' γ hγ`. Rewrite `hg` using `[h0, mul_zero]`. Conclude with `hg` after adjusting the coercions. Establish `hk : 1 ≤ k`. Assume the negation of the conclusion as `hk0`.
+
+Establish `hk' : k = 0` using `by omega`. Substitute `hk'` using the available equality. Apply `hdet` to reduce the goal to its premises. Establish `hunit : ¬ IsUnit (gramM 0 r z z' γ)`. Introduce `hu`.
+
+Establish `h1` using `Matrix.rank_of_isUnit _ hu`. Rewrite `h1` using `[Formalism.QuantumDeterminants.gn_gramM_eq]`. Establish `h2` using `Matrix.rank_mul_le_right ((Formalism.QuantumDeterminants.gnB 0 r z z' γ)ᴴ * Hpk 0 r) (Formalism.QuantumDeterminants.gnB 0 r z z' γ)`. Establish `h3` using `Matrix.rank_le_card_height (Formalism.QuantumDeterminants.gnB 0 r z z' γ)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at h1 h3`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite `hunit` using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero, not_not]`. Conclude with `hunit`. Use `⟨hGpos, ?_, isUnit_iff_ne_zero.mpr hdet, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Establish `hG'` using `hGpos`. Unfold `Gf at hG'`. Rewrite `hG'` using `[h0, map_zero]`. Establish `hTT` using `mul_pos hT hT'`. Establish `hn` using `Complex.normSq_nonneg (Dmin k r z z' γ ⟨r, by omega⟩)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Introduce `y hy horth`. Establish `hmem : y ∈ Formalism.FourierDecayAlt.C2.Uperp k r z z' γ`. Rewrite using `[Formalism.FourierDecayAlt.C2.Uperp, LinearMap.mem_ker, Matrix.mulVecLin_apply, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.zero_apply, ← horth i]`. Simplify using `[herm, Matrix.mulVec, dotProduct]`. Conclude with `(Formalism.FourierDecayAlt.P.gram_independent_signature' k r z z' γ ⟨hk, ⟨hz, hT⟩, ⟨hz', hT'⟩⟩ ⟨hγ, hGpos⟩).2.2.1 y hmem hy`.
+-/
 theorem regular_pos_compl : ∀ (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r), inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → γ ∈ GG k r → Gf k r z z' γ ≠ 0 → 0 < Gf k r z z' γ ∧ Dmin k r z z' γ (Fin.last (r + 1)) ≠ 0 ∧ IsUnit (gramM k r z z' γ).det ∧ ∀ y : Fin (2 * r + k + 1) → ℂ, y ≠ 0 → (∀ i, herm (Hpk k r) y (gramVec k r z z' γ i) = 0) → 0 < (herm (Hpk k r) y y).re := by
   intro k r z z' γ hz hz' hT hT' hγ hG
 

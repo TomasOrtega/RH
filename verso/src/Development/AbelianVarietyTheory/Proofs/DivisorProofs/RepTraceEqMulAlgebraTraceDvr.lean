@@ -10,6 +10,11 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ N h ρ hρ τ`. Establish `hinj : Function.Injective (algebraMap O C)` using `hv.hom_inj`. Use `haveI : Module.IsTorsionFree ℤ_[p] Λ := Module.isTorsionFree_iff_algebraMap_injective.mpr (FaithfulSMul.algebraMap_injective ℤ_[p] Λ)`. Use `haveI : Module.Free ℤ_[p] Λ := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis ℤ_[p] Λ`.
+
+Take `⟨⟨ρ', hρ'⟩, htr⟩` from `GlobalTheory.T.left_mul_matrix_ring_hom_trace O ℤ_[p] Λ _ b (padicToO p O)`. Establish `key` using `GlobalTheory.T.eigen_decomposition_trace_multiple C O Λ h _ N (⇑ρ) (⇑ρ') hinj (GlobalTheory.T.eigenspaces_of_ring_homs_independent C O Λ h ρ hinj) (GlobalTheory.T.dvr_rep_eigenspaces_span_top p C v O hv Λ h ρ) (GlobalTheory.T.eigenspaces_of_ring_homs_independent C O Λ _ ρ' hinj) …`. Establish `hτ : τ.comp (algebraMap ℤ_[p] Λ) = padicToO p O` using `(GlobalTheory.T.padic_ring_hom_unique_adic_complete p O).1 _`. Establish `one` using `GlobalTheory.T.left_mul_eigenspace_finrank_one C O ℤ_[p] Λ _ b (padicToO p O) τ hτ`. Rewrite using `[key, hρ', one, mul_one]`.
+-/
 theorem finrank_eig_of_trace_eq_mul_trace : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ] (N h : ℕ) (ρ : Λ →+* Matrix (Fin h) (Fin h) O), (∀ a, (ρ a).trace = (N : O) * padicToO p O (Algebra.trace ℤ_[p] Λ a)) → ∀ τ : Λ →+* O, Module.finrank C (eig C (⇑ρ) τ) = N := by
   intro p _ C _ _ _ v O _ _ _ _ hv Λ _ _ _ _ _ _ N h ρ hρ τ
   have hinj : Function.Injective (algebraMap O C) := hv.hom_inj

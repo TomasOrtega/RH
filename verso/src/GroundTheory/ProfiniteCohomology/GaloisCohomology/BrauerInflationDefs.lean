@@ -22,6 +22,9 @@ noncomputable def unitsTowerHom :
     exact AlgEquiv.restrictNormal_commutes σ E ((Additive.toMul (α := Eˣ) x : Eˣ) : E)⟩
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unitsTowerHom_hom_apply (x : Additive Eˣ) :
     ((Additive.toMul (α := Fˣ) ((unitsTowerHom K E F).hom x) : Fˣ) : F) =
       algebraMap E F ((Additive.toMul (α := Eˣ) x : Eˣ) : E) :=
@@ -43,6 +46,9 @@ noncomputable def galRestrictOfLE : Gal(F/K) →* Gal(E/K) :=
   haveI : IsScalarTower K E F := IsScalarTower.of_algebraMap_eq' rfl
   AlgEquiv.restrictNormalHom E
 
+/- English proof (translation)
+Set `: Algebra E F` to `(IntermediateField.inclusion h).toRingHom.toAlgebra`. Establish `: IsScalarTower K E F` using `IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `congrArg (fun y : F => (y : L)) (AlgEquiv.restrictNormal_commutes σ E x)`.
+-/
 theorem coe_galRestrictOfLE_apply (σ : Gal(F/K)) (x : E) :
     ((galRestrictOfLE h σ x : E) : L) = ((σ (IntermediateField.inclusion h x) : F) : L) := by
   let : Algebra E F := (IntermediateField.inclusion h).toRingHom.toAlgebra
@@ -56,6 +62,9 @@ noncomputable def unitsOfLE :
   unitsTowerHom K E F
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unitsOfLE_hom_apply (x : Additive Eˣ) :
     (((Additive.toMul (α := Fˣ) ((unitsOfLE h).hom x) : Fˣ) : F) : L) =
       (((Additive.toMul (α := Eˣ) x : Eˣ) : E) : L) :=

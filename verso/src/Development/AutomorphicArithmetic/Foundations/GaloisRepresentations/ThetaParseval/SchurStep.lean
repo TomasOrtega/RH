@@ -267,6 +267,21 @@ def ReadLift : Prop :=
       ∀ (v : Pl (maximalRealSubfield E)) (t : E →ₐ[maximalRealSubfield E] Fv (maximalRealSubfield E) v) τ τ', CompAt U (splitPrime t) τ → CompAt U' (splitPrime t) τ' →
         LocPair t χX χW τ τ'
 
+/- English proof (translation)
+Introduce `E _ _ _ B hB n hn X hXJ hX`. Take `⟨⟨K, a, hK, ha, -⟩, ε, -, hε⟩` from `hH _ E (cj E) B n X n 0 hB (Or.inl hX)`. Take `⟨t₀, ht₀⟩` from `h2 _ E (cj E) B n X hB hX K a ε hK ha hε`. Take `⟨N, hN⟩` from `exists_nat_gt (2 * t₀)`. Use `⟨max N (2 * n), fun d hd W δ hWJ hW χX χW mX mW hχX hχW rX rW eX eW U lam hU hwt hdom => ?_⟩` and prove the remaining obligations.
+
+Establish `hd1 : 2 * n ≤ d` using `(le_max_right _ _).trans hd`. Establish `hd2 : t₀ < (d : ℝ) / 2`. Establish `: (N : ℝ) ≤ d` using `by exact_mod_cast (le_max_left _ _).trans hd`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ : δ ≠ 0`.
+
+Introduce and unpack `rfl`. Take `⟨w⟩ : Nonempty (InfinitePlace (maximalRealSubfield E))` from `inferInstance`. Take `⟨-, A, hA⟩` from `hW.sig w`. Use `congrFun (congrFun hA (Sum.inl ⟨0, by omega⟩)) (Sum.inl ⟨0, by omega⟩)` as an intermediate fact. Simplify using `[hWJ] at this`.
+
+Take `⟨⟨M, hM⟩, hom⟩` from `T.pairEx _ E (cj E) B hB n d X W n 0 d 0 hX hW`. Take `⟨om, hP⟩` from `hom χX χW hχX hχW rX rW M hM`. Take `⟨e, he⟩` from `h1 E n X 1 one_ne_zero (by rw [hXJ, one_smul])`. Take `⟨e', he'⟩` from `h1 E d W δ hδ hWJ`. Take `⟨f₀, hf₀, hf0, φ, hφ, hφ0, hS, hT⟩` from `h3 E B n d X W M χX χW om hP hn e e' he he' (by omega) δ mX mW hXJ hWJ eX eW U lam hU hwt hdom`.
+
+Take `⟨φf, hfin, hne⟩` from `h4 E B n d X W M χX χW om hP hn e e' he he' hd1 K a ε hK ha hε t₀ (ht₀ M.μ hM.haar) hd2 U hU f₀ hf₀ hf0 φ hφ0 hS`. Take `⟨Θ, hΘ⟩` from `h5 E B n d X W M χX χW om hP hn e e' he he'`. Establish `hmem : pure f₀ φf ∈ PolData B M` using `Submodule.subset_span ⟨f₀, hf₀, φf, hfin.1, hfin.2, rfl⟩`. Take `⟨q1, q2, -⟩` from `hΘ ⟨_, hmem⟩ φ (hU.aut φ hφ)`. Establish `hne' : Θ ⟨_, hmem⟩ φ ≠ 0`.
+
+Rewrite using `[q1]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `h`. Use `congrFun h0 (e'.symm h)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨U', pr, hU', hpr, hp⟩` from `h6 E d _ q2 hne'`. Rewrite `hpr` using `[q1]`. Take `⟨r1, r2⟩` from `h7 E B n d X W M χX χW om hP hn e e' he he' U U' pr hU hU' hp f₀ hf₀ φ hφ φf hfin hpr`. Conclude with `⟨U', hU', fun w => (hT w).imp fun lam' h => ⟨r1 w lam' h.2, h.1⟩, r2⟩`.
+-/
 theorem tLift_of (T : Tools) (hH : HgtEx) (h1 : BrEx) (h2 : HgtFst) (h3 : RealPair) (h4 : NonVan) (h5 : LiftAut) (h6 : ProjEx)
     (h7 : ReadLift) : TLift := by
   intro E _ _ _ B hB n hn X hXJ hX

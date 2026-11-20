@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Ordi
 import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.OrdinaryHeckeCharacters.IwahoriProUnipotentFiniteIndex
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Establish `h1 : x = (t : G)⁻¹ * y⁻¹ * (y' * t' * x')` using `by rw [← h]; group`. Establish `h0` using `(I.uniq (x * x'⁻¹) (I.N_le (mul_mem hx (inv_mem hx'))) ((t' : G)⁻¹ * t) (I.T_le (mul_mem (inv_mem t'.2) t.2)) ((t : G)⁻¹ * (y'⁻¹ * y) * (t : G)⁻¹⁻¹) (I.T_Nm 0 _ (inv_mem t.2) _ (mul_mem (inv_mem hy') hy)) (by rw [h1]; group)).2`. Conclude with `Subtype.ext (inv_mul_eq_one.1 h0)`.
+-/
 private theorem torus_uniq {G : Type} [Group G] (I : Iwa G) {y y' x x' : G} {t t' : I.T} (hy : y ∈ I.Nm 0)
     (hy' : y' ∈ I.Nm 0) (hx : x ∈ I.N) (hx' : x' ∈ I.N) (h : y * t * x = y' * t' * x') : t' = t := by
   have h1 : x = (t : G)⁻¹ * y⁻¹ * (y' * t' * x') := by rw [← h]; group
@@ -10,6 +13,9 @@ private theorem torus_uniq {G : Type} [Group G] (I : Iwa G) {y y' x x' : G} {t t
     (I.T_Nm 0 _ (inv_mem t.2) _ (mul_mem (inv_mem hy') hy)) (by rw [h1]; group)).2
   exact Subtype.ext (inv_mul_eq_one.1 h0)
 
+/- English proof (translation)
+Take `⟨x, hx, t, ht, y, hy, h⟩` from `(UpperTheory.V.Hi.iwMem G I 0 b⁻¹).1.1 (inv_mem hb)`. Use `⟨⟨t⁻¹, inv_mem ht⟩, y⁻¹, inv_mem hy, x⁻¹, inv_mem hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv b, h]`. Use `group`.
+-/
 private theorem torus_ex {G : Type} [Group G] (I : Iwa G) {b : G} (hb : b ∈ I.Iw 0) :
     ∃ t : I.T, ∃ y ∈ I.Nm 0, ∃ x ∈ I.N, b = y * t * x := by
   obtain ⟨x, hx, t, ht, y, hy, h⟩ := (UpperTheory.V.Hi.iwMem G I 0 b⁻¹).1.1 (inv_mem hb)
@@ -17,6 +23,11 @@ private theorem torus_ex {G : Type} [Group G] (I : Iwa G) {b : G} (hb : b ∈ I.
   rw [← inv_inv b, h]
   group
 
+/- English proof (translation)
+Use `⟨fun b => if h : ∃ t : I.T, ∃ y ∈ I.Nm 0, ∃ x ∈ I.N, b = y * t * x then h.choose else 1, ?_⟩` and prove the remaining obligations. Introduce `t y hy x hx`. Establish `h : ∃ t' : I.T, ∃ y' ∈ I.Nm 0, ∃ x' ∈ I.N, y * t * x = y' * t' * x'` using `⟨t, y, hy, x, hx, rfl⟩`. Simplify using `only [dif_pos h]`. Take `⟨y', hy', x', hx', e⟩` from `h.choose_spec`.
+
+Conclude with `torus_uniq I hy hy' hx hx' e`.
+-/
 private theorem torus_fn {G : Type} [Group G] (I : Iwa G) :
     ∃ tt : G → I.T, ∀ (t : I.T), ∀ y ∈ I.Nm 0, ∀ x ∈ I.N, tt (y * t * x) = t := by
   classical
@@ -27,6 +38,17 @@ private theorem torus_fn {G : Type} [Group G] (I : Iwa G) :
   obtain ⟨y', hy', x', hx', e⟩ := h.choose_spec
   exact torus_uniq I hy hy' hx hx' e
 
+/- English proof (translation)
+Introduce `G _ I`. Take `⟨tt, htt⟩` from `torus_fn I`. Use `⟨tt, by simpa using htt 1 1 (one_mem _) 1 (one_mem _), fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨t, y, hy, x, hx, rfl⟩` from `torus_ex I hb`. Rewrite using `[htt t y hy x hx]`.
+
+Use `⟨fun s => ⟨?_, ?_⟩, fun x' hx' => ?_, fun c y' hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[← htt (s * t) _ (I.T_Nm 0 s s.2 y hy) x hx]`. Use `congr 1`. Rewrite using `[Subgroup.coe_mul]`. Use `group`.
+
+Rewrite using `[← htt (t * s) y hy _ (I.T_N _ (inv_mem s.2) x hx)]`. Use `congr 1`. Rewrite using `[Subgroup.coe_mul]`. Use `group`. Rewrite using `[mul_assoc]`.
+
+Conclude with `htt t y hy _ (mul_mem hx hx')`. Take `⟨x2, hx2, s, hs, y2, hy2, h⟩` from `I.swap c y'⁻¹ (inv_mem hy') x⁻¹ (inv_mem hx)`. Use `⟨⟨s⁻¹, inv_mem (I.Tc_le c hs)⟩, inv_mem hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← htt (t * ⟨s⁻¹, inv_mem (I.Tc_le c hs)⟩) _ (mul_mem hy (I.T_Nm 0 t t.2 _ (inv_mem (I.Nm_anti (Nat.zero_le c) hy2)))) _ (inv_mem hx2)]`. Use `congr 1`.
+
+Establish `e : x * y' = (x2 * s * y2)⁻¹` using `by rw [← h]; group`. Rewrite using `[mul_assoc, e, Subgroup.coe_mul]`. Use `group`.
+-/
 theorem UpperTheory.exists_iwahori_torus_projection :
     ∀ (G : Type) [Group G] (I : Iwa G), ∃ tt : G → I.T, tt 1 = 1 ∧ ∀ b ∈ I.Iw 0, (∀ s : I.T, tt (s * b) = s * tt b ∧ tt (b * s) = tt b * s) ∧ (∀ x ∈ I.N, tt (b * x) = tt b) ∧ ∀ c, ∀ y ∈ I.Nm c, ∃ s : I.T, (s : G) ∈ I.Tc c ∧ tt (b * y) = tt b * s := by
   intro G _ I

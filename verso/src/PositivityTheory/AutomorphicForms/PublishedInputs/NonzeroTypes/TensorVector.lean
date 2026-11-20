@@ -11,6 +11,9 @@ namespace UpperTheory.TNZ
 
 namespace TensorVector
 
+/- English proof (translation)
+Use `choose ℓ hℓ using fun a => Module.Projective.exists_dual_eq_one ℂ (hx a)`. Introduce `h`. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap ℓ)) h`. Rewrite `h1` using `[PiTensorProduct.lift.tprod, map_zero, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Simplify using `[hℓ] at h1`.
+-/
 theorem tprod_ne_zero {ι : Type} [Fintype ι] {X : ι → Type} [∀ a, AddCommGroup (X a)]
     [∀ a, Module ℂ (X a)] (x : ∀ a, X a) (hx : ∀ a, x a ≠ 0) :
     PiTensorProduct.tprod ℂ x ≠ 0 := by
@@ -24,6 +27,11 @@ theorem tprod_ne_zero {ι : Type} [Fintype ι] {X : ι → Type} [∀ a, AddComm
 
 end TensorVector
 
+/- English proof (translation)
+Introduce `k _ _ _ _ s d X _ _ σ μ h`. Use `choose x hx0 hx using h`. Use `⟨PiTensorProduct.tprod ℂ x, TensorVector.tprod_ne_zero x hx0, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[piTensor_tprod]`. Establish `: (fun a => σ a (m a) (x a)) = fun a => ((μ a (GeneralLinearGroup.det (m a)) : ℂˣ) : ℂ) • x a`.
+
+Use function extensionality and compare the values at `fun a => hx a (m a) (hm a)`. Rewrite using `[this, MultilinearMap.map_smul_univ]`.
+-/
 theorem step_tensorVec : TensorProductVectors := by
   intro k _ _ _ _ s d X _ _ σ μ h
   choose x hx0 hx using h

@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SiegelWeilAnisotrop
 open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.IndLineGL
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IndLineGL.homLeOne_cellFunctor_leviTgt | exact GlobalTheory.IndLineGL.homLeOne_cellFunctor_leviTgt | (intros; apply GlobalTheory.IndLineGL.homLeOne_cellFunctor_leviTgt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.cell_functor_hom_le_one_of_irreducible : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.ThK.KP → ∀ (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →
     ∀ (P₁ : Type) [AddCommGroup P₁] [Module ℂ P₁] (σ₁ : Representation ℂ (GL (Fin m) k) P₁), σ₁.IsIrreducible →

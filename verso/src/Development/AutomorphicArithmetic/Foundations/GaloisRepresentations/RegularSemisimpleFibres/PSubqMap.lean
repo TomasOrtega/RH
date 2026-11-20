@@ -16,6 +16,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [AddCommGroup V] [Module ℂ V] [AddCommGroup Z] [Module ℂ Z]
   {ρ : Representation ℂ (Levi k fun a => Fin (d a)) W}
 
+/- English proof (translation)
+Introduce `y` and use `by have : {g : GL (Fin N) k | S.toRepresentation g y = y} = {g : GL (Fin N) k | parInd (stdBlocks d hd) ρ g y.1 = y.1} := by ext g; exact Subtype.ext_iff rw [this]; exact isSmooth_parInd _ _ y.1`.
+-/
 private theorem isSmooth_sub (S : Subrepresentation (parInd (stdBlocks d hd) ρ)) :
     IsSmooth S.toRepresentation := fun y => by
   have : {g : GL (Fin N) k | S.toRepresentation g y = y} =
@@ -23,6 +26,11 @@ private theorem isSmooth_sub (S : Subrepresentation (parInd (stdBlocks d hd) ρ)
     ext g; exact Subtype.ext_iff
   rw [this]; exact isSmooth_parInd _ _ y.1
 
+/- English proof (translation)
+Introduce `v`. Take `⟨u0, hu0⟩` from `hf v.1`. Take `⟨u, hu, e⟩` from `IwahoriOnto.exists_fixed_map_eq (isSmooth_sub S) DepthZero.isCompact_KOne₁ f.toLinearMap u0 fun h hh => by show f (S.toRepresentation h u0) = f u0`. Rewrite using `[f.isIntertwining, hu0]`. Conclude with `mem_fixed.1 v.2 h hh`.
+
+Conclude with `⟨⟨u, hu⟩, Subtype.ext (e.trans hu0)⟩`.
+-/
 private theorem levelZeroMap_surjective {S : Subrepresentation (parInd (stdBlocks d hd) ρ)}
     {π : Representation ℂ (GL (Fin N) k) V} (f : S.toRepresentation.IntertwiningMap π)
     (hf : Function.Surjective f) : Function.Surjective (levelZeroMap f) := by
@@ -41,6 +49,9 @@ private def evalOne (S : Subrepresentation (parInd (stdBlocks d hd) ρ)) :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Use `show ((levelZero S.toRepresentation (redK k (Fin N) κ) u).1.1 : IndSp (stdBlocks d hd) ρ).1.1 1 = _`. Rewrite using `[levelZero_apply]`. Use `show ((parInd (stdBlocks d hd) ρ (κ : GL (Fin N) k) u.1.1 : IndSp (stdBlocks d hd) ρ)).1.1 1 = _`. Rewrite using `[parInd_apply, one_mul]`.
+-/
 private theorem evalOne_redK (S : Subrepresentation (parInd (stdBlocks d hd) ρ))
     (κ : KO k (Fin N)) (u : fixed S.toRepresentation (KOne k (Fin N))) :
     evalOne S (levelZero S.toRepresentation (redK k (Fin N) κ) u) =
@@ -50,6 +61,9 @@ private theorem evalOne_redK (S : Subrepresentation (parInd (stdBlocks d hd) ρ)
   show ((parInd (stdBlocks d hd) ρ (κ : GL (Fin N) k) u.1.1 : IndSp (stdBlocks d hd) ρ)).1.1 1 = _
   rw [parInd_apply, one_mul]
 
+/- English proof (translation)
+Establish `h : S.toRepresentation c u.1 = u.1` using `mem_fixed.1 u.2 c hc`. Establish `h2 : parInd (stdBlocks d hd) ρ c u.1.1 = u.1.1` using `congrArg Subtype.val h`. Conclude with `congrArg (fun F : IndSp (stdBlocks d hd) ρ => F.1.1 x) h2`.
+-/
 private theorem val_mul_of_mem (S : Subrepresentation (parInd (stdBlocks d hd) ρ))
     (u : fixed S.toRepresentation (KOne k (Fin N))) (x : GL (Fin N) k) {c : GL (Fin N) k}
     (hc : c ∈ KOne k (Fin N)) :
@@ -58,6 +72,9 @@ private theorem val_mul_of_mem (S : Subrepresentation (parInd (stdBlocks d hd) �
   have h2 : parInd (stdBlocks d hd) ρ c u.1.1 = u.1.1 := congrArg Subtype.val h
   exact congrArg (fun F : IndSp (stdBlocks d hd) ρ => F.1.1 x) h2
 
+/- English proof (translation)
+Introduce `l hl`. Unfold `leviKOne at hl`. Unfold `leviK`. Rewrite `hl`, the goal using `[Subgroup.mem_pi]`. Conclude with `fun a ha => GlobalTheory.StepData.KOne_le_KO (hl a ha)`.
+-/
 private theorem leviKOne_le_leviK {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {s : ℕ} {d : Fin s → ℕ} :
     leviKOne k (fun a => Fin (d a)) ≤ leviK k (fun a => Fin (d a)) := by
@@ -67,6 +84,13 @@ private theorem leviKOne_le_leviK {k : Type} [Field k] [ValuativeRel k] [Topolog
   rw [Subgroup.mem_pi] at hl ⊢
   exact fun a ha => GlobalTheory.StepData.KOne_le_KO (hl a ha)
 
+/- English proof (translation)
+Rewrite using `[mem_fixed]`. Introduce `l hl`. Establish `hpar` using `leviEmb_mem_parab k (stdBlocks d hd) l`. Establish `hlaw` using `parInd_law (stdBlocks d hd) ρ (u.1.1 : IndSp (stdBlocks d hd) ρ) ⟨_, hpar⟩ 1`. Establish `hK : leviEmb k (stdBlocks d hd) l ∈ KOne k (Fin N)` using `jLevi_le_KOne _ ⟨l, hl, rfl⟩`.
+
+Establish `h4` using `val_mul_of_mem S u 1 hK`. Rewrite `h4` using `[one_mul]`. Simplify using `only [mul_one, leviProj_leviEmb, deltaHalf_of_mem_leviK (leviKOne_le_leviK hl)] at hlaw`. Use `show ρ l ((u.1.1 : IndSp (stdBlocks d hd) ρ).1.1 1) = (u.1.1 : IndSp (stdBlocks d hd) ρ).1.1 1`. Rewrite `hlaw` using `[h4]`.
+
+Simplify using `using hlaw.symm`.
+-/
 private theorem evalOne_mem_fixed (S : Subrepresentation (parInd (stdBlocks d hd) ρ))
     (u : fixed S.toRepresentation (KOne k (Fin N))) :
     evalOne S u ∈ fixed ρ (leviKOne k fun a => Fin (d a)) := by
@@ -82,6 +106,11 @@ private theorem evalOne_mem_fixed (S : Subrepresentation (parInd (stdBlocks d hd
   rw [h4] at hlaw
   simpa using hlaw.symm
 
+/- English proof (translation)
+Establish `hg : (κ₀ : GL (Fin N) k) ∈ parahoric k (stdBlocks d hd)` using `(coe_mem_levelPre κ₀).2 hκ`. Take `⟨p, x, -, hpx, hred, c, hc, hgp⟩` from `(hPF k (stdBlocks d hd)).1 ⟨κ₀, hg⟩`. Establish `h3` using `parInd_law (stdBlocks d hd) ρ F p 1`. Rewrite `h3` using `[mul_one, hpx, deltaHalf_of_mem_leviK x.2, Units.val_one, one_smul]`. Establish `h4 : (κ₀ : GL (Fin N) k) = p * c` using `hgp`.
+
+Use `⟨x, hred, ?_⟩` and prove the remaining obligations. Rewrite using `[h4, hF _ c hc]`. Conclude with `h3`.
+-/
 private theorem val_of_redK_mem (hPF : ParaFactor) (F : IndSp (stdBlocks d hd) ρ)
     (hF : ∀ x, ∀ c ∈ KOne k (Fin N), F.1.1 (x * c) = F.1.1 x)
     (κ₀ : KO k (Fin N)) (hκ : redK k (Fin N) κ₀ ∈ parab 𝓀[k] (stdBlocks d hd)) :
@@ -99,6 +128,9 @@ private theorem val_of_redK_mem (hPF : ParaFactor) (F : IndSp (stdBlocks d hd) �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Break down `h with ⟨h, hmem⟩` into its components or cases. Take `⟨κ₀, rfl⟩` from `redK_surjective h`. Take `⟨x, hx1, hx2⟩` from `val_of_redK_mem hPF (u.1.1 : IndSp (stdBlocks d hd) ρ) (fun y c hc => val_mul_of_mem S u y hc) κ₀ hmem`. Conclude with `(congrArg Φ ((evalOne_redK S κ₀ u).trans hx2)).trans ((hΦ x _).trans (congrArg (fun g => κ g (Φ (evalOne S u))) hx1))`.
+-/
 private theorem evalOne_parab (hPF : ParaFactor)
     {κ : Representation ℂ (Levi 𝓀[k] fun a => Fin (d a)) Z} {Φ : W →ₗ[ℂ] Z}
     (hΦ : ∀ (x : leviK k fun a => Fin (d a)) (w : W),
@@ -114,6 +146,9 @@ private theorem evalOne_parab (hPF : ParaFactor)
   exact (congrArg Φ ((evalOne_redK S κ₀ u).trans hx2)).trans
     ((hΦ x _).trans (congrArg (fun g => κ g (Φ (evalOne S u))) hx1))
 
+/- English proof (translation)
+Establish `hF : (u.1.1 : IndSp (stdBlocks d hd) ρ) = 0` using `UpperTheory.TNZ.step_indDetK k s N d hd W ρ _ 0 fun κ hκ => by`. Use `hu (redK k (Fin N) ⟨κ, hκ⟩)` as an intermediate fact. Rewrite `this` using `[evalOne_redK]`. Conclude with `this`. Conclude with `Subtype.ext (Subtype.ext hF)`.
+-/
 private theorem eq_zero_of_evalOne (S : Subrepresentation (parInd (stdBlocks d hd) ρ))
     (u : fixed S.toRepresentation (KOne k (Fin N)))
     (hu : ∀ γ : GL (Fin N) 𝓀[k], evalOne S (levelZero S.toRepresentation γ u) = 0) : u = 0 := by
@@ -124,6 +159,17 @@ private theorem eq_zero_of_evalOne (S : Subrepresentation (parInd (stdBlocks d h
       exact this
   exact Subtype.ext (Subtype.ext hF)
 
+/- English proof (translation)
+Take `⟨x0, hx0mem, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hfix`. Set `y0 : fixed π (KOne k (Fin N))` to `⟨x0, hx0mem⟩`. Establish `hsx : sec y0 ≠ 0`. Introduce `h0`. Apply `hx0` to reduce the goal to its premises.
+
+Establish `h1` using `hinv (h0.trans (map_zero sec).symm)`. Conclude with `congrArg Subtype.val h1`. Establish `hγ : ∃ γ, evalOne S (levelZero S.toRepresentation γ (sec y0)) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hsx (eq_zero_of_evalOne S _ hc)`. Take `⟨γ, hγ⟩` from `hγ`. Use `⟨Φ ∘ₗ (evalOne S ∘ₗ sec), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hγ` to reduce the goal to its premises.
+
+Apply `hinj _ (evalOne_mem_fixed S _)` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun h0 (levelZero π γ y0)`. Rewrite `h1` using `[LinearMap.comp_apply, LinearMap.comp_apply, hs]`. Conclude with `h1`. Introduce `p x`.
+
+Establish `h3` using `evalOne_parab hPF hΦ S p (sec x)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem main (hPF : ParaFactor) {π : Representation ℂ (GL (Fin N) k) V}
     {κ : Representation ℂ (Levi 𝓀[k] fun a => Fin (d a)) Z} {Φ : W →ₗ[ℂ] Z}
     (hΦ : ∀ (x : leviK k fun a => Fin (d a)) (w : W),
@@ -175,6 +221,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 open UpperTheory.Gal.InertialTypesAlt.SubquotientMaps in
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Introduce `hSec hPF k _ _ _ _ N s d hd W V Z _ _ _ _ _ _ ρ π κ Φ hΦ hinj hsq hfix`. Take `⟨S, f, hf⟩` from `hsq`. Establish `: Finite (GL (Fin N) 𝓀[k])` using `inferInstance`. Take `⟨sec, hs, hfs⟩` from `hSec (GL (Fin N) 𝓀[k]) (fixed S.toRepresentation (KOne k (Fin N))) (fixed π (KOne k (Fin N))) (levelZero S.toRepresentation) (levelZero π) (levelZeroMap f).toLinearMap (fun g x => Representation.IntertwiningMap.isIntertwining _ _ (levelZeroMap f) g x) (levelZeroMap_surjective f h …`. Conclude with `main hPF hΦ hinj S sec hs (Function.LeftInverse.injective hfs) hfix`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.subqMap :
     FinSec → UpperTheory.Gal.TypesAndIwahori.ParaFactor → SubqMap := by
   intro hSec hPF k _ _ _ _ N s d hd W V Z _ _ _ _ _ _ ρ π κ Φ hΦ hinj hsq hfix

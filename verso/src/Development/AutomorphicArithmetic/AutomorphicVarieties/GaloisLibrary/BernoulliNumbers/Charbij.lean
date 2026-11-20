@@ -3,6 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern
 
+/- English proof (translation)
+Introduce `N _ K Ω _ _ _ f P`. Establish `hf : Function.Injective f` using `f.injective`. Establish `hker : ∀ χ : DirichletCharacter K N, (MulChar.toUnitHom (χ.ringHomComp f)).ker = (MulChar.toUnitHom χ).ker`. Introduce `χ`. Use extensionality with `u`.
+
+Simplify using `only [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one, MulChar.ringHomComp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `hf (h.trans (map_one f).symm)`. Introduce `h`.
+
+Rewrite using `[h, map_one]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ hχ`. Simplify using `only [charSet, Set.mem_setOf_eq] at hχ ⊢`. Rewrite using `[hker]`.
+
+Conclude with `hχ`. Introduce `χ₁ _ χ₂ _ h`. Use extensionality with `u`. Establish `h'` using `congrArg (fun ψ : DirichletCharacter Ω N => ψ u) h`. Simplify using `only [MulChar.ringHomComp_apply] at h'`.
+
+Conclude with `hf h'`. Introduce `χ' hχ'`. Establish `he : NeZero (Monoid.exponent (ZMod N)ˣ)` using `⟨Monoid.exponent_ne_zero_of_finite⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K (Monoid.exponent (ZMod N)ˣ)`. Establish `hne : (primitiveRoots (Monoid.exponent (ZMod N)ˣ) K).Nonempty` using `⟨ζ, (mem_primitiveRoots (NeZero.pos _)).mpr hζ⟩`.
+
+Establish `hmem : ∀ u, MulChar.toUnitHom χ' u ∈ rootsOfUnity (Monoid.exponent (ZMod N)ˣ) Ω`. Introduce `u`. Rewrite using `[mem_rootsOfUnity, ← map_pow, Monoid.pow_exponent_eq_one, map_one]`. Set `ψ : (ZMod N)ˣ →* Kˣ` to `(rootsOfUnity (Monoid.exponent (ZMod N)ˣ) K).subtype.comp ((rootsOfUnityEquivOfPrimitiveRoots hf hne).symm.toMonoidHom.comp ((MulChar.toUnitHom χ').codRestrict _ hmem))`. Establish `hcomp : (MulChar.ofUnitHom ψ).ringHomComp f = χ'`.
+
+Use extensionality with `u`. Rewrite using `[MulChar.ringHomComp_apply, MulChar.ofUnitHom_coe]`. Use `show f (((rootsOfUnityEquivOfPrimitiveRoots hf hne).symm ⟨MulChar.toUnitHom χ' u, hmem u⟩ : Kˣ) : K) = χ' u`. Rewrite using `[rootsOfUnityEquivOfPrimitiveRoots_symm_apply]`. Simplify using `[MulChar.coe_toUnitHom]`.
+
+Use `⟨MulChar.ofUnitHom ψ, ?_, hcomp⟩` and prove the remaining obligations. Simplify using `only [charSet, Set.mem_setOf_eq] at hχ' ⊢`. Rewrite using `[← hker, hcomp]`. Conclude with `hχ'`.
+-/
 theorem UpperTheory.V.Bern.b_charbij :
     ∀ {N : ℕ} [NeZero N] {K Ω : Type} [Field K] [Field Ω] [HasEnoughRootsOfUnity K (Monoid.exponent (ZMod N)ˣ)] (f : K →+* Ω) (P : Set (Subgroup (ZMod N)ˣ)), Set.BijOn (fun χ : DirichletCharacter K N => (χ.ringHomComp f : DirichletCharacter Ω N)) (charSet K P) (charSet Ω P) := by
   intro N _ K Ω _ _ _ f P

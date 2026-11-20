@@ -5,27 +5,51 @@ namespace PI.UnitaryGroupMassFormula.BridgeRealK
 
 open Matrix
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma jm_eq {n : ℕ} (ε : Fin n → Bool) :
     Formalism.REAL.Jm ε = Matrix.diagonal (fun a => if ε a then (1 : ℂ) else -1) := rfl
 
+/- English proof (translation)
+Apply the tactic sequence `cases ε a <;> simp`.
+-/
 lemma sgn_mul_self {n : ℕ} (ε : Fin n → Bool) (a : Fin n) :
     (if ε a then (1 : ℂ) else -1) * (if ε a then (1 : ℂ) else -1) = 1 := by
   cases ε a <;> simp
 
+/- English proof (translation)
+Rewrite using `[jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `sgn_mul_self ε a`.
+-/
 lemma jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   rw [jm_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1
   funext a
   exact sgn_mul_self ε a
 
+/- English proof (translation)
+Rewrite using `[jm_eq, Matrix.diagonal_mul]`.
+-/
 lemma jm_mul_apply {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (Formalism.REAL.Jm ε * k) a b = (if ε a then (1 : ℂ) else -1) * k a b := by
   rw [jm_eq, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Rewrite using `[jm_eq, Matrix.mul_diagonal]`.
+-/
 lemma mul_jm_apply {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (k * Formalism.REAL.Jm ε) a b = k a b * (if ε b then (1 : ℂ) else -1) := by
   rw [jm_eq, Matrix.mul_diagonal]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b hab`. Establish `e` using `congrFun (congrFun h a) b`. Rewrite `e` using `[jm_mul_apply, mul_jm_apply]`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b`.
+
+Conclude with `absurd (ha.trans hb.symm) hab`. Simplify using `only [ha, hb, Bool.false_eq_true, ↓reduceIte] at e`. Establish `h2 : (2 : ℂ) * k a b = 0` using `by linear_combination -e`. Simplify using `using h2`. Simplify using `only [ha, hb, Bool.false_eq_true, ↓reduceIte] at e`.
+
+Establish `h2 : (2 : ℂ) * k a b = 0` using `by linear_combination e`. Simplify using `using h2`. Conclude with `absurd (ha.trans hb.symm) hab`. Introduce `h`. Use extensionality with `a b`.
+
+Rewrite using `[jm_mul_apply, mul_jm_apply]`. Distinguish the cases in `hab : ε a = ε b`. Rewrite using `[hab, mul_comm]`. Rewrite using `[h a b hab]`. Simplify using the standard rewrite rules.
+-/
 lemma comm_iff {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Jm ε * k = k * Formalism.REAL.Jm ε ↔ ∀ a b, ε a ≠ ε b → k a b = 0 := by
   constructor
@@ -48,6 +72,11 @@ lemma comm_iff {n : ℕ} (ε : Fin n → Bool) (k : Matrix (Fin n) (Fin n) ℂ) 
     · rw [hab, mul_comm]
     · rw [h a b hab]; simp
 
+/- English proof (translation)
+Introduce `n ε k hk`. Unfold `Formalism.REAL.inUJ at hk`. Rewrite using `[← comm_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Establish `hu' : k * kᴴ = 1` using `mul_eq_one_comm.mp hu`. Combine the equalities or inequalities in the displayed calculation. Introduce `hc`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem realK : PI.AdBridgeSteps.RealK := by
   intro n ε k hk
   unfold Formalism.REAL.inUJ at hk

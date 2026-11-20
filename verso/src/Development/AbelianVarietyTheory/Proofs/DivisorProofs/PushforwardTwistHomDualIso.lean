@@ -32,6 +32,11 @@ def homIsoLeft {X : Scheme.{0}} {F F' : X.Modules} (e : F ≅ F') (G : X.Modules
     change homApp φ h ((e.inv ≫ e.hom).app W s) = _
     rw [e.inv_hom_id]; rfl
 
+/- English proof (translation)
+Use `h.isIso_toBidual_of_local_frames` as an intermediate fact. Establish `hθ : IsIso (DualPull.theta ρ (dual E))` using `DualPull.isIso_theta ρ h.dual`. Set `e₁ : (Scheme.Modules.pullback ρ).obj E ≅ homMod ((Scheme.Modules.pullback ρ).obj (dual E)) (structureModule Y)` to `(Scheme.Modules.pullback ρ).mapIso (asIso (cartierDualToBidual E)) ≪≫ @asIso _ _ _ _ (DualPull.theta ρ (dual E)) hθ`. Take `⟨e₂⟩` from `GlobalTheory.T.twist_hom_module_iso Y ((Scheme.Modules.pullback ρ).obj (dual E)) (structureModule Y) M`. Take `⟨e₃⟩` from `GlobalTheory.T.pushforward_hom_adjunction_iso X Y ρ (dual E) (twist (structureModule Y) M)`.
+
+Conclude with `⟨(Scheme.Modules.pushforward ρ).mapIso ((twistFunctor M).mapIso e₁ ≪≫ e₂) ≪≫ e₃⟩`.
+-/
 theorem nonempty_iso_dual (X Y : Scheme.{0}) (ρ : Y ⟶ X) (E : X.Modules) (r : ℕ) (h : IsVB E r)
     (M : LB Y) :
     Nonempty ((Scheme.Modules.pushforward ρ).obj (twist ((Scheme.Modules.pullback ρ).obj E) M) ≅
@@ -46,6 +51,9 @@ theorem nonempty_iso_dual (X Y : Scheme.{0}) (ρ : Y ⟶ X) (E : X.Modules) (r :
   obtain ⟨e₃⟩ := GlobalTheory.T.pushforward_hom_adjunction_iso X Y ρ (dual E) (twist (structureModule Y) M)
   exact ⟨(Scheme.Modules.pushforward ρ).mapIso ((twistFunctor M).mapIso e₁ ≪≫ e₂) ≪≫ e₃⟩
 
+/- English proof (translation)
+Introduce `X Y ρ E r h M _`. Use `⟨nonempty_iso_dual X Y ρ E r h M, ?_⟩` and prove the remaining obligations. Use `h.isIso_toBidual_of_local_frames` as an intermediate fact. Take `⟨e⟩` from `nonempty_iso_dual X Y ρ (dual E) r h.dual M`. Conclude with `⟨e ≪≫ homIsoLeft (asIso (cartierDualToBidual E)).symm _⟩`.
+-/
 theorem projection_formula : ∀ (X Y : Scheme.{0}) (ρ : Y ⟶ X) (E : X.Modules) (r : ℕ), IsVB E r → ∀ (M : LB Y), M.IsLB → Nonempty ((Scheme.Modules.pushforward ρ).obj (twist ((Scheme.Modules.pullback ρ).obj E) M) ≅ homMod (dual E) ((Scheme.Modules.pushforward ρ).obj (twist (structureModule Y) M))) ∧ Nonempty ((Scheme.Modules.pushforward ρ).obj (twist ((Scheme.Modules.pullback ρ).obj (dual E)) M) ≅ homMod E ((Scheme.Modules.pushforward ρ).obj (twist (structureModule Y) M))) := by
   intro X Y ρ E r h M _
   refine ⟨nonempty_iso_dual X Y ρ E r h M, ?_⟩

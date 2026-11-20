@@ -9,10 +9,24 @@ namespace GroundTheory.Heights₂.Heights.StrongApprox
 
 open Matrix NumberField IsDedekindDomain TensorProduct Topology ReciprocityTheory.ChartRestriction.G.SA
 
+/- English proof (translation)
+Simplify using `[sigA, inclA, Algebra.TensorProduct.map_tmul]`.
+-/
 theorem sigA_inclA_apply {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (c : E ≃ₐ[F] E)
     (x : E) : sigA c (inclA F E x) = inclA F E (c x) := by
   simp [sigA, inclA, Algebra.TensorProduct.map_tmul]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `R _ σ hσ N J hJ e f hee hff hef`. Establish `hfe : hf σ J f e = 1` using `by rw [← hf_symm hσ hJ, hef, map_one]`. Establish `perp : ∀ u, hf σ J (perpProj σ J e f u) e = 0 ∧ hf σ J (perpProj σ J e f u) f = 0`. Introduce `u`.
+
+Simplify using `only [perpProj, hf_sub_left, hf_smul_left, hee, hff, hef, hfe]`. Apply the tactic sequence `constructor <;> ring`. Establish `fix : ∀ u, hf σ J u e = 0 → hf σ J u f = 0 → perpProj σ J e f u = u`. Introduce `u h1 h2`. Simplify using `[perpProj, h1, h2]`.
+
+Use `⟨⟨fun u v => ?_, fun a u => ?_⟩, fun u => fix _ (perp u).1 (perp u).2, perp, fix⟩` and prove the remaining obligations. Simplify using `only [perpProj, hf_add_left, add_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [perpProj, hf_smul_left, smul_sub, mul_smul]`. Introduce `F E _ _ _ _ _ c h2 hc N J e f _ _`.
+
+Use `(hT F E c h2 hc).1` as an intermediate fact. Use `⟨?_, fun u => ?_⟩` and prove the remaining obligations. Unfold `perpProj hf fun_prop`. Establish `hmap : ∀ x y : Fin N → E, inclA F E (hf c.toRingHom J x y) = hf (sigA c) (J.map (inclA F E)) (inclA F E ∘ x) (inclA F E ∘ y)`. Introduce `x y`.
+
+Simplify using `[hf, map_sum, map_mul, sigA_inclA_apply]`. Use function extensionality and compare the values at `i`. Simplify using `only [perpProj, Function.comp_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, map_sub, map_mul, hmap]`.
+-/
 theorem OrthProjection.proof (hT : AETopologicalRing.Statement) : OrthProjection.Statement := by
   refine ⟨?_, ?_⟩
   · intro R _ σ hσ N J hJ e f hee hff hef

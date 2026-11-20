@@ -35,20 +35,35 @@ instance : SMulCommClass A[X] A₁[X] (PolyOver f) where
 instance : SMulCommClass A[X] A₁ (PolyOver f) where
   smul_comm a b c := mul_smul_comm (β := A₁[X]) b (Polynomial.map f a) c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_polyOver (p : A[X]) : algebraMap A[X] (PolyOver f) p = Polynomial.map f p := rfl
 
 variable (EA : Type) [CommRing EA] [Algebra A[X] EA]
 
 abbrev Ext : Type := PolyOver f ⊗[A[X]] EA
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra A₁[X] (Ext f EA) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : Algebra A₁ (Ext f EA) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsScalarTower A₁ A₁[X] (Ext f EA) := inferInstance
 instance [Algebra.Etale A[X] EA] : Algebra.Etale A₁[X] (Ext f EA) :=
   inferInstanceAs (Algebra.Etale (PolyOver f) (PolyOver f ⊗[A[X]] EA))
 
 def inclE : EA →+* Ext f EA := (Algebra.TensorProduct.includeRight : EA →ₐ[A[X]] Ext f EA).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inclE_apply (x : EA) : inclE f EA x = (1 : PolyOver f) ⊗ₜ[A[X]] x := rfl
 
 def lift {S : Type} [CommRing S] (u : A₁[X] →+* S) (v : EA →+* S)
@@ -60,12 +75,18 @@ def lift {S : Type} [CommRing S] (u : A₁[X] →+* S) (v : EA →+* S)
         exact congrArg (fun w : A[X] →+* S => w r) huv⟩ : PolyOver f →ₐ[A[X]] S)
     (⟨v, fun _ => rfl⟩ : EA →ₐ[A[X]] S)).toRingHom
 
+/- English proof (translation)
+Simplify using `[lift, Algebra.TensorProduct.productMap_apply_tmul]`. Both sides reduce to the same expression.
+-/
 theorem lift_tmul {S : Type} [CommRing S] (u : A₁[X] →+* S) (v : EA →+* S)
     (huv : u.comp (Polynomial.mapRingHom f) = v.comp (algebraMap A[X] EA)) (p : PolyOver f) (x : EA) :
     lift f EA u v huv (p ⊗ₜ[A[X]] x) = u p * v x := by
   simp [lift, Algebra.TensorProduct.productMap_apply_tmul]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_ext (a : A₁) :
     algebraMap A₁ (Ext f EA) a = ((show PolyOver f from Polynomial.C a) ⊗ₜ[A[X]] (1 : EA) : Ext f EA) := rfl
 
@@ -108,6 +129,9 @@ def bcAct (q : ℕ) (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)) :
 
 def inclD : D →+* BC β D := (Algebra.TensorProduct.includeRight : D →ₐ[B] BC β D).toRingHom
 
+/- English proof (translation)
+Use extensionality with `b`. Simplify using `[inclD, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem inclD_algebraMap :
     (inclD β D).comp (algebraMap B D) = (algebraMap B₁ (BC β D)).comp β := by
   ext b
@@ -140,17 +164,26 @@ variable (hcomp : i₁.comp f = i)
   (hj : jA.comp (algebraMap A[X] (Localization.AtPrime QA)) =
       (algebraMap T[X] O).comp (Polynomial.mapRingHom i))
 
+/- English proof (translation)
+Simplify using `[glue, lift_tmul]`. Both sides reduce to the same expression.
+-/
 theorem glue_tmul (p : PolyOver f) (x : EA) :
     glue f i i₁ EA QA jA hcomp hj (p ⊗ₜ[A[X]] x) =
       algebraMap T[X] O (Polynomial.map i₁ p) * jA (algebraMap EA (Localization.AtPrime QA) x) := by
   simp [glue, lift_tmul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[algebraMap_ext, glue_tmul]`. Simplify using `[IsScalarTower.algebraMap_apply T T[X] O]`.
+-/
 theorem glue_algebraMap (a : A₁) :
     glue f i i₁ EA QA jA hcomp hj (algebraMap A₁ (Ext f EA) a) = algebraMap T O (i₁ a) := by
   rw [algebraMap_ext, glue_tmul]
   simp [IsScalarTower.algebraMap_apply T T[X] O]
 
+/- English proof (translation)
+Rewrite using `[inclE_apply, glue_tmul]`. Express the relevant statement in the definitionally equal form `algebraMap T[X] O (Polynomial.map i₁ (1 : A₁[X])) * _ = _`. Simplify using the standard rewrite rules.
+-/
 theorem glue_inclE (x : EA) :
     glue f i i₁ EA QA jA hcomp hj (inclE f EA x) = jA (algebraMap EA (Localization.AtPrime QA) x) := by
   rw [inclE_apply, glue_tmul]
@@ -169,11 +202,17 @@ def locMap : Loc₁ f i i₁ EA QA jA hcomp hj →+* O :=
       by_contra h
       exact y.2 (IsLocalRing.mem_maximalIdeal _ |>.2 h))
 
+/- English proof (translation)
+Simplify using `[locMap, IsLocalization.lift_eq]`.
+-/
 theorem locMap_algebraMap (x : Ext f EA) :
     locMap f i i₁ EA QA jA hcomp hj (algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) x) =
       glue f i i₁ EA QA jA hcomp hj x := by
   simp [locMap, IsLocalization.lift_eq]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply A₁ (Ext f EA), locMap_algebraMap, glue_algebraMap]`.
+-/
 theorem locMap_algebraMap_base (a : A₁) :
     locMap f i i₁ EA QA jA hcomp hj (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) a) =
       algebraMap T O (i₁ a) := by
@@ -219,11 +258,19 @@ def locBC : Localization.AtPrime QA →+* Loc₁ f i i₁ EA QA jA hcomp hj :=
         fun hy => (IsLocalRing.mem_maximalIdeal _ |>.1 hy) hu
       exact IsLocalization.map_units (Loc₁ f i i₁ EA QA jA hcomp hj) ⟨_, hz⟩)
 
+/- English proof (translation)
+Simplify using `[locBC, IsLocalization.lift_eq]`.
+-/
 theorem locBC_algebraMap (x : EA) :
     locBC f i i₁ EA QA jA hcomp hj (algebraMap EA (Localization.AtPrime QA) x) =
       algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) (inclE f EA x) := by
   simp [locBC, IsLocalization.lift_eq]
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply A A[X] EA]`. Establish `h1 : inclE f EA (algebraMap A[X] EA (algebraMap A A[X] a)) = algebraMap A[X] (Ext f EA) (algebraMap A A[X] a)` using `(Algebra.TensorProduct.includeRight : EA →ₐ[A[X]] Ext f EA).commutes _`. Rewrite using `[h1, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply]`. Use `congr 1`. Use `show Polynomial.map f (Polynomial.C a) = Polynomial.C (f a)`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem inclE_algebraMap_base (a : A) :
     inclE f EA (algebraMap A EA a) = algebraMap A₁ (Ext f EA) (f a) := by
   rw [IsScalarTower.algebraMap_apply A A[X] EA]
@@ -235,6 +282,9 @@ theorem inclE_algebraMap_base (a : A) :
   show Polynomial.map f (Polynomial.C a) = Polynomial.C (f a)
   simp
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply A EA (Localization.AtPrime QA), locBC_algebraMap, inclE_algebraMap_base, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem locBC_algebraMap_base (a : A) :
     locBC f i i₁ EA QA jA hcomp hj (algebraMap A (Localization.AtPrime QA) a) =
       algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) (f a) := by
@@ -274,6 +324,9 @@ def fibBC [Nontrivial A] [IsDomain A₁] (hf : Function.Injective f) :
         (⟨algebraMap A₁ _ (f a), f a, mem_nonZeroDivisors_of_ne_zero h0, rfl⟩ :
           Algebra.algebraMapSubmonoid (Loc₁ f i i₁ EA QA jA hcomp hj) (nonZeroDivisors A₁)))
 
+/- English proof (translation)
+Simplify using `[fibBC, IsLocalization.lift_eq]`.
+-/
 theorem fibBC_algebraMap [Nontrivial A] [IsDomain A₁] (hf : Function.Injective f)
     (r : Localization.AtPrime QA) :
     fibBC f i i₁ EA QA jA hcomp hj hf (algebraMap _ (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) r) =
@@ -299,6 +352,9 @@ def reduce (ρ : Localization.AtPrime QA →+* A)
         rw [← IsScalarTower.algebraMap_apply]
       simp [h1, hρX])
 
+/- English proof (translation)
+Simplify using `[reduce, lift_tmul]`.
+-/
 theorem reduce_tmul (ρ : Localization.AtPrime QA →+* A)
     (hρA : ρ.comp (algebraMap A (Localization.AtPrime QA)) = RingHom.id A)
     (hρX : ρ (algebraMap A[X] (Localization.AtPrime QA) Polynomial.X) = 0) (p : PolyOver f) (x : EA) :
@@ -319,6 +375,9 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Use `haveI : IsLocalHom φ := hsh.2.2.1`. Establish `h1 : (maximalIdeal O).comap φ = maximalIdeal (Localization.AtPrime P)` using `((IsLocalRing.local_hom_TFAE φ).out 0 4).mp this`. Rewrite using `[← hφ, ← Ideal.comap_comap, h1, ← hP]`. Conclude with `Localization.AtPrime.comap_maximalIdeal (I := P)`.
+-/
 theorem comap_maximalIdeal_eq_origin {T O : Type} [CommRing T] [IsLocalRing T] [CommRing O]
     [IsLocalRing O] [Algebra T[X] O] (P : Ideal T[X]) [P.IsPrime] (φ : Localization.AtPrime P →+* O)
     (hφ : φ.comp (algebraMap T[X] _) = algebraMap T[X] O)
@@ -334,6 +393,15 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Introduce `z`. Use `set I := Ideal.span {algebraMap T[X] O Polynomial.X}`. Rewrite using `[← Ideal.Quotient.eq]`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul p x`. Rewrite using `[reduce_tmul, glue_tmul]`. Simplify using `only [map_mul]`. Establish `h2 : Ideal.Quotient.mk I (algebraMap T O (i₁ (f (ρ (algebraMap EA (Localization.AtPrime QA) x))))) = Ideal.Quotient.mk I (jA (algebraMap EA (Localization.AtPrime QA) x))`. Rewrite using `[Ideal.Quotient.eq, ← RingHom.comp_apply i₁ f, hcomp]`.
+
+Conclude with `hρmod _`. Establish `h1 : Ideal.Quotient.mk I (algebraMap T O (i₁ (Polynomial.eval 0 (show A₁[X] from p)))) = Ideal.Quotient.mk I (algebraMap T[X] O (Polynomial.map i₁ p))`. Rewrite using `[Ideal.Quotient.eq]`. Take `⟨r, hr⟩` from `Polynomial.X_dvd_sub_C (p := Polynomial.map i₁ (show A₁[X] from p))`. Establish `he : i₁ (Polynomial.eval 0 (show A₁[X] from p)) = Polynomial.eval 0 (Polynomial.map i₁ (show A₁[X] from p))`.
+
+Rewrite using `[Polynomial.eval_map, ← Polynomial.coeff_zero_eq_eval_zero, Polynomial.eval₂_at_zero]`. Rewrite using `[he, IsScalarTower.algebraMap_apply T T[X] O, Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, ← map_sub, ← neg_sub, ← Polynomial.coeff_zero_eq_eval_zero, hr, map_neg, map_mul]`. Conclude with `I.neg_mem_iff.2 (I.mul_mem_right _ (Ideal.subset_span rfl))`. Rewrite using `[h1, h2]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem reduce_sub_glue_mem {T O : Type} [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)
@@ -375,6 +443,17 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Introduce and unpack `⟨y, hy⟩`. Establish `hX : Ideal.span {algebraMap T[X] O Polynomial.X} ≤ maximalIdeal O`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show Polynomial.X ∈ (maximalIdeal O).comap (algebraMap T[X] O)`. Rewrite using `[hmax]`.
+
+Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Establish `hg : glue f i i₁ EA QA jA hcomp hj y ∉ maximalIdeal O` using `hy`. Establish `hr : algebraMap T O (i₁ (reduce f EA QA ρ hρA hρX y)) ∉ maximalIdeal O`. Introduce `h`. Apply `hg` to reduce the goal to its premises.
+
+Use `hX (hcong y)` as an intermediate fact. Establish `h2` using `(maximalIdeal O).sub_mem h this`. Simplify using `using h2`. Establish `hT : i₁ (reduce f EA QA ρ hρA hρX y) ∉ maximalIdeal T`. Introduce `h`.
+
+Apply `hr` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply T T[X] O]`. Use `show Polynomial.C _ ∈ (maximalIdeal O).comap (algebraMap T[X] O)`. Rewrite using `[hmax]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ h)`.
+
+Establish `hu : IsUnit (i₁ (reduce f EA QA ρ hρA hρX y))`. Assume the negation of the conclusion as `h'`. Conclude with `hT ((IsLocalRing.mem_maximalIdeal _).2 h')`. Conclude with `isUnit_of_map_unit i₁ _ hu`.
+-/
 theorem isUnit_reduce {T O : Type} [CommRing T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)
@@ -415,6 +494,15 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Unfold `GlobalTheory.KeyOriginCut.originIdeal`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 h`. Rewrite using `[Polynomial.coeff_add]`.
+
+Establish `hb0 : b.coeff 0 = 0`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Simplify using the standard rewrite rules. Rewrite using `[hb0, add_zero]`. Conclude with `(Ideal.mem_map_C_iff.1 ha) 0`.
+
+Introduce `h`. Establish `hp : p = Polynomial.C (p.coeff 0) + (p - Polynomial.C (p.coeff 0))` using `by ring`. Rewrite using `[hp]`. Use `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mem_map_of_mem _ h)) (Ideal.mem_sup_right ?_)` and prove the remaining obligations. Take `⟨r, hr⟩` from `Polynomial.X_dvd_sub_C (p := p)`.
+
+Rewrite using `[hr]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`.
+-/
 theorem mem_originIdeal_iff {R : Type} [CommRing R] [IsLocalRing R] (p : R[X]) :
     p ∈ GlobalTheory.KeyOriginCut.originIdeal R ↔ p.coeff 0 ∈ maximalIdeal R := by
   unfold GlobalTheory.KeyOriginCut.originIdeal
@@ -434,6 +522,13 @@ theorem mem_originIdeal_iff {R : Type} [CommRing R] [IsLocalRing R] (p : R[X]) :
     obtain ⟨r, hr⟩ := Polynomial.X_dvd_sub_C (p := p)
     rw [hr]; exact Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)
 
+/- English proof (translation)
+Establish `hg : (glue f i i₁ EA QA jA hcomp hj).comp (algebraMap A₁[X] (Ext f EA)) = (algebraMap T[X] O).comp (Polynomial.mapRingHom i₁)`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[RingHom.comp_apply, Algebra.TensorProduct.algebraMap_apply, glue_tmul]`. Express the relevant statement in the definitionally equal form `algebraMap T[X] O (Polynomial.map i₁ p) * _ = _`.
+
+Simplify using the standard rewrite rules. Unfold `ideal₁`. Rewrite using `[Ideal.comap_comap, hg, ← Ideal.comap_comap, hmax]`. Use extensionality with `p`. Rewrite using `[Ideal.mem_comap, mem_originIdeal_iff, mem_originIdeal_iff, Polynomial.coe_mapRingHom, Polynomial.coeff_map]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h h'`. Conclude with `h (h'.map i₁)`. Introduce `h h'`. Conclude with `h (isUnit_of_map_unit i₁ _ h')`.
+-/
 theorem comap_ideal₁_eq_origin {T O : Type} [CommRing T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] [IsLocalRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)
@@ -466,6 +561,11 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[← Ideal.Quotient.eq]`. Establish `key : ((Ideal.Quotient.mk _).comp ((algebraMap T O).comp (i₁.comp (reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit))) : Loc₁ f i i₁ EA QA jA hcomp hj →+* O ⧸ Ideal.span {algebraMap T[X] O Polynomial.X}) = (Ideal.Quotient.mk _).comp (locMap f i i₁ EA QA jA hcomp hj)`. Apply `IsLocalization.ringHom_ext (ideal₁ f i i₁ EA QA jA hcomp hj).primeCompl` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises.
+
+Introduce `z`. Simplify using `only [RingHom.comp_apply, reduceLoc, IsLocalization.lift_eq, locMap_algebraMap]`. Conclude with `Ideal.Quotient.eq.2 (hcong z)`. Conclude with `congrArg (fun w => w x) key`.
+-/
 theorem reduceLoc_sub_locMap_mem {T O : Type} [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)
@@ -498,6 +598,13 @@ end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
 
+/- English proof (translation)
+Take `⟨act', hact', htor'⟩` from `GlobalTheory.LocAcyc.isZModTorsor_baseChange B (Over β) D q hq act h`. Establish `he : act' = bcAct' β D q act`. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b x => rw [hact']`. Simplify using `[bcAct', Algebra.TensorProduct.congr_apply]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Substitute `he` using the available equality. Conclude with `htor'`.
+-/
 theorem isZTorsor_bc {B B₁ : Type} [CommRing B] [CommRing B₁] (β : B →+* B₁) (D : Type) [CommRing D] [Algebra B D]
     (q : ℕ) (hq : 0 < q) (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D))
     (h : GlobalTheory.KeyOriginCut.IsZTorsor B D q act) :
@@ -515,6 +622,11 @@ theorem isZTorsor_bc {B B₁ : Type} [CommRing B] [CommRing B₁] (β : B →+* 
 end GlobalTheory.KeyOriginBC
 
 namespace GlobalTheory.KeyOriginBC
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext QA.primeCompl` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [RingHom.comp_apply, locBC_algebraMap, reduceLoc, IsLocalization.lift_eq, inclE_apply, reduce_tmul]`. Express the relevant statement in the definitionally equal form `Polynomial.eval 0 (1 : A₁[X]) * _ = _`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem reduceLoc_locBC {T O : Type} [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)
@@ -536,6 +648,11 @@ theorem reduceLoc_locBC {T O : Type} [CommRing T] [CommRing O] [IsLocalRing O] [
   change Polynomial.eval 0 (1 : A₁[X]) * _ = _
   simp
 
+/- English proof (translation)
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply A₁ (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj)]`. Simplify using `only [reduceLoc, IsLocalization.lift_eq, algebraMap_ext, reduce_tmul]`. Express the relevant statement in the definitionally equal form `Polynomial.eval 0 (Polynomial.C x) * _ = _`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem reduceLoc_algebraMap {T O : Type} [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
   [IsScalarTower T T[X] O]
   {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (i : A →+* T) (i₁ : A₁ →+* T)

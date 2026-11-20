@@ -9,6 +9,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J La`. Establish `hr` using `(lev0At J.Gd u w hg).A.rk`. Take `⟨x0, hx0⟩` from `GlobalTheory.TwU.exists_unitary_pt J.one.good La.1 (basesAt (chainAt H hT) std (sysS H X std).vp (sysS H X std).unif (sysS H X std).eO (sysS H X std).eO_spec (sysS H X std).dG (sysS H X std).dG_spec (sysS H X std).om 0 La.2)`. Establish `hs` using `Classical.epsilon_spec (p := fun x => (lev0At J.Gd u w hg).A.IsPt La.1 (basesAt (chainAt H hT) std (sysS H X std).vp (sysS H X std).unif (sysS H X std).eO (sysS H X std).eO_spec (sysS H X std).dG (sysS H X std).dG_spec (sysS H X std).om 0 La.2) x ∧ x ∈ UPts (sigD D) (gramN D 0 (N …`. Establish `hex : ∃ x, J.IsPt std 0 (Nat.zero_le _) La x`.
+
+Use `⟨⟨_, hs.2⟩, hr, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hp` using `Classical.epsilon_spec hex`. Take `⟨hr', he⟩` from `hp`.
+
+Use `⟨⟨hr', he⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (J.pt std 0 (Nat.zero_le _) La).1 = Classical.epsilon (fun x => (lev0At J.Gd u w hg).A.IsPt La.1 (basesAt (chainAt H hT) std (sysS H X std).vp (sysS H X std).unif (sysS H X std).eO (sysS H X std).eO_spec (sysS H X std).dG (sysS H X std).dG_spec (sysS H X std).om 0 La.2) x ∧ …`. Rewrite using `[show (J.pt std 0 (Nat.zero_le _) La).1 = _ from he]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Rewrite using `[h1]`. Conclude with `hs.1`.
+-/
 theorem GlobalTheory.TwV.Joint.isPt_pt_zero : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), ∀ (La : (sysS H X std).Lt 0), J.IsPt std 0 (Nat.zero_le _) La (J.pt std 0 (Nat.zero_le _) La) ∧ (lev0At J.Gd u w hg).A.IsPt La.1 (basesAt (chainAt H hT) std _ (sysS H X std).unif _ (sysS H X std).eO_spec _ (sysS H X std).dG_spec (sysS H X std).om 0 La.2) (J.pt std 0 (Nat.zero_le _) La).1 := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J La
   have hr := (lev0At J.Gd u w hg).A.rk

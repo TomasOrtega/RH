@@ -12,6 +12,13 @@ namespace GlobalTheory.CompanionTheory.TyFin.WhSymProof
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 variable {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
+/- English proof (translation)
+Establish `himg : patSet K Φ' = f '' patSet K Φ`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨f.symm y, (hm _).1 (by simpa using hy), by simp⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(hm x).2 hx`. Unfold `wh`. Rewrite using `[himg, Set.ncard_image_of_injective _ f.injective, ← himg]`. Use `congr 1`.
+
+Use `Fintype.sum_equiv f _ _ fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ patSet K Φ`. Rewrite using `[if_pos hx, if_pos ((hm x).2 hx), hc, hχ]`. Rewrite using `[if_neg hx, if_neg (fun h => hx ((hm x).1 h))]`.
+-/
 theorem wh_eq_of_equiv (f : GL ι K ≃ GL κ K) (Φ : ι → ι → Prop) (Φ' : κ → κ → Prop) (E : ι → ι → K)
     (E' : κ → κ → K) (ψ₀ : AddChar K ℂ) (χ : GL ι K → ℂ) (χ' : GL κ K → ℂ)
     (hm : ∀ x, f x ∈ patSet K Φ' ↔ x ∈ patSet K Φ)
@@ -34,11 +41,21 @@ theorem wh_eq_of_equiv (f : GL ι K ≃ GL κ K) (Φ : ι → ι → Prop) (Φ' 
   · rw [if_pos hx, if_pos ((hm x).2 hx), hc, hχ]
   · rw [if_neg hx, if_neg (fun h => hx ((hm x).1 h))]
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.PT.coe_glEquiv]`. Simplify using the standard rewrite rules.
+-/
 theorem glEquiv_entry (e : ι ≃ κ) (x : GL ι K) (i j : ι) :
     ((glEquiv K e x : GL κ K) : Matrix κ κ K) (e i) (e j) = (x : Matrix ι ι K) i j := by
   rw [Formalism.L2.PT.coe_glEquiv]
   simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h'` using `h (e i) (e j)`. Rewrite `h'` using `[glEquiv_entry]`. Conclude with `⟨fun hij => h'.1 (congrArg e hij), fun hij => h'.2 (fun h2 => hij (e.injective h2))⟩`.
+
+Introduce `h i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Establish `h'` using `h i j`. Rewrite using `[glEquiv_entry]`.
+
+Conclude with `⟨fun hij => h'.1 (e.injective hij), fun hij => h'.2 (fun h2 => hij (congrArg e h2))⟩`.
+-/
 theorem glEquiv_mem_patSet (Φ : κ → κ → Prop) (e : ι ≃ κ) (x : GL ι K) :
     glEquiv K e x ∈ patSet K Φ ↔ x ∈ patSet K (fun i j => Φ (e i) (e j)) := by
   constructor
@@ -53,6 +70,11 @@ theorem glEquiv_mem_patSet (Φ : κ → κ → Prop) (e : ι ≃ κ) (x : GL ι 
     rw [glEquiv_entry]
     exact ⟨fun hij => h'.1 (e.injective hij), fun hij => h'.2 (fun h2 => hij (congrArg e h2))⟩
 
+/- English proof (translation)
+Unfold `patChar`. Use `congr 1`. Rewrite using `[← Equiv.sum_comp e]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp e]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[glEquiv_entry]`.
+-/
 theorem patChar_glEquiv (E : κ → κ → K) (ψ₀ : AddChar K ℂ) (e : ι ≃ κ) (x : GL ι K) :
     patChar E ψ₀ (glEquiv K e x) = patChar (fun i j => E (e i) (e j)) ψ₀ x := by
   unfold patChar
@@ -63,12 +85,20 @@ theorem patChar_glEquiv (E : κ → κ → K) (ψ₀ : AddChar K ℂ) (e : ι �
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [glEquiv_entry]
 
+/- English proof (translation)
+The claim follows from `wh_eq_of_equiv (glEquiv K e).toEquiv _ _ _ _ ψ₀ _ _ (fun x => glEquiv_mem_patSet Φ e x) (fun x => patChar_glEquiv E ψ₀ e x) (fun _ => rfl)`.
+-/
 theorem wh_renumber (Φ : κ → κ → Prop) (E : κ → κ → K) (ψ₀ : AddChar K ℂ) (χ : GL κ K → ℂ) (e : ι ≃ κ) :
     wh (fun i j => Φ (e i) (e j)) (fun i j => E (e i) (e j)) ψ₀ (fun x => χ (glEquiv K e x)) =
       wh Φ E ψ₀ χ :=
   wh_eq_of_equiv (glEquiv K e).toEquiv _ _ _ _ ψ₀ _ _ (fun x => glEquiv_mem_patSet Φ e x)
     (fun x => patChar_glEquiv E ψ₀ e x) (fun _ => rfl)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Take `⟨i, rfl⟩` from `e'.surjective a`. Take `⟨j, rfl⟩` from `e'.surjective b`. Establish `hs : ∀ i, (e.symm.trans e') (e i) = e' i` using `fun i => by simp`.
+
+Apply the tactic sequence `rw [glEquiv_entry e' x i j, ← hs i, ← hs j, glEquiv_entry, glEquiv_entry]`.
+-/
 theorem glEquiv_trans_perm (e e' : ι ≃ κ) (x : GL ι K) :
     glEquiv K e' x = glEquiv K (e.symm.trans e') (glEquiv K e x) := by
   apply Units.ext
@@ -78,6 +108,9 @@ theorem glEquiv_trans_perm (e e' : ι ≃ κ) (x : GL ι K) :
   have hs : ∀ i, (e.symm.trans e') (e i) = e' i := fun i => by simp
   rw [glEquiv_entry e' x i j, ← hs i, ← hs j, glEquiv_entry, glEquiv_entry]
 
+/- English proof (translation)
+Rewrite using `[glEquiv_trans_perm e e' x, GlobalTheory.SerOSys.TranspLabel.glEquiv_perm, hχ]`.
+-/
 theorem class_renumber (χ : GL κ K → ℂ) (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g) (e e' : ι ≃ κ) (x : GL ι K) :
     χ (glEquiv K e x) = χ (glEquiv K e' x) := by
   rw [glEquiv_trans_perm e e' x, GlobalTheory.SerOSys.TranspLabel.glEquiv_perm, hχ]
@@ -88,6 +121,9 @@ def diagGL (t : κ → Kˣ) : GL κ K :=
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Establish `hinv : (((diagGL t)⁻¹ : GL κ K) : Matrix κ κ K) = Matrix.diagonal fun i => (((t i)⁻¹ : Kˣ) : K)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, hinv]`. Use `show ((Matrix.diagonal (fun i => (t i : K)) * (u : Matrix κ κ K)) * Matrix.diagonal (fun i => (((t i)⁻¹ : Kˣ) : K)) : Matrix κ κ K) i j = _`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+-/
 theorem diagGL_conj_entry (t : κ → Kˣ) (u : GL κ K) (i j : κ) :
     ((diagGL t * u * (diagGL t)⁻¹ : GL κ K) : Matrix κ κ K) i j =
       (t i : K) * (u : Matrix κ κ K) i j * ((t j)⁻¹ : Kˣ) := by
@@ -97,6 +133,21 @@ theorem diagGL_conj_entry (t : κ → Kˣ) (u : GL κ K) (i j : κ) :
     Matrix.diagonal (fun i => (((t i)⁻¹ : Kˣ) : K)) : Matrix κ κ K) i j = _
   rw [Matrix.mul_diagonal, Matrix.diagonal_mul]
 
+/- English proof (translation)
+Use `wh_eq_of_equiv (MulAut.conj (diagGL t)).toEquiv _ _ _ _ ψ₀ _ _ (fun x => ?_) (fun x => ?_) (fun x => ?_)` and prove the remaining obligations. Use `show diagGL t * x * (diagGL t)⁻¹ ∈ patSet K Φ ↔ x ∈ patSet K Φ`. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h'` using `h i j`.
+
+Rewrite `h'` using `[diagGL_conj_entry]`. Use `⟨fun hij => ?_, fun hij hn => ?_⟩` and prove the remaining obligations. Substitute `hij` using the available equality. Establish `h1` using `h'.1 rfl`. Establish `h2 : (t i : K) ≠ 0` using `(t i).ne_zero`.
+
+Establish `h3 : (((t i)⁻¹ : Kˣ) : K) = (t i : K)⁻¹` using `by simp`. Rewrite `h1` using `[h3]`. Clear denominators, using `at h1` for the nonvanishing conditions. Conclude with `h1`. Establish `h1` using `h'.2 hij hn`.
+
+Simplify using `using h1`. Introduce `h i j`. Establish `h'` using `h i j`. Rewrite using `[diagGL_conj_entry]`. Use `⟨fun hij => ?_, fun hij hn => ?_⟩` and prove the remaining obligations.
+
+Substitute `hij` using the available equality. Rewrite using `[h'.1 rfl]`. Simplify using the standard rewrite rules. Rewrite using `[h'.2 hij hn]`. Simplify using the standard rewrite rules.
+
+Use `show patChar E ψ₀ (diagGL t * x * (diagGL t)⁻¹) = patChar _ ψ₀ x`. Unfold `patChar`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[diagGL_conj_entry]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `show χ (diagGL t * x * (diagGL t)⁻¹) = χ x`. Conclude with `hχ _ _`.
+-/
 theorem wh_torus (Φ : κ → κ → Prop) (E : κ → κ → K) (ψ₀ : AddChar K ℂ) (χ : GL κ K → ℂ)
     (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g) (t : κ → Kˣ) :
     wh Φ (fun i j => (t i : K) * E i j * ((t j)⁻¹ : Kˣ)) ψ₀ χ = wh Φ E ψ₀ χ := by
@@ -135,6 +186,9 @@ theorem wh_torus (Φ : κ → κ → Prop) (E : κ → κ → K) (ψ₀ : AddCha
   · show χ (diagGL t * x * (diagGL t)⁻¹) = χ x
     exact hχ _ _
 
+/- English proof (translation)
+Introduce `K _ _ _ ι κ _ _ _ _ Φ E ψ₀ χ`. Conclude with `⟨fun e => wh_renumber Φ E ψ₀ χ e, fun hχ => ⟨fun e e' x => class_renumber χ hχ e e' x, fun t => wh_torus Φ E ψ₀ χ hχ t⟩⟩`.
+-/
 theorem whSym : ReciprocityTheory.Ty.Fin.St.WhSym := by
   intro K _ _ _ ι κ _ _ _ _ Φ E ψ₀ χ
   exact ⟨fun e => wh_renumber Φ E ψ₀ χ e, fun hχ =>

@@ -6,8 +6,17 @@ namespace ReciprocityTheory.ChartRestriction.G.Out
 
 open Semi
 
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Out.WeightPf.weightIndep`.
+-/
 theorem proved_WeightIndepSt : WeightIndepSt := ReciprocityTheory.ChartRestriction.G.Out.WeightPf.weightIndep
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Semi.Unr.unramExt`.
+-/
 theorem proved_UnramExtSt : UnramExtSt := ReciprocityTheory.ChartRestriction.G.Semi.Unr.unramExt
+/- English proof (translation)
+The claim follows from `ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull`.
+-/
 theorem proved_CubePullSt : CubePullSt := ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull
 
 end ReciprocityTheory.ChartRestriction.G.Out

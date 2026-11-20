@@ -17,6 +17,19 @@ namespace GlobalTheory.CuspCentre
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r ρ : ℕ}
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span E (X.Λ : Set (Fin r → E))` using `by rw [X.Λ_span]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_pos, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_pos, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨m, hm, hx⟩` from `hx`. Take `⟨n, hn, hy⟩` from `hy`. Use `⟨m * n, mul_pos hm hn, ?_⟩` and prove the remaining obligations. Establish `: (m * n) • (x + y) = n • m • x + m • n • y`. Rewrite using `[smul_add, smul_smul, smul_smul, mul_comm n m]`.
+
+Rewrite using `[this]`. Conclude with `X.Λ.add_mem (nsmul_mem hx _) (nsmul_mem hy _)`. Consider the case `smul c x _ hx`. Take `⟨m, hm, hx⟩` from `hx`. Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic c)`.
+
+Take `⟨k, hk, hki⟩` from `halg.exists_integral_multiple`. Establish `hki' : IsIntegral ℤ ((k * k) • c)`. Rewrite using `[mul_smul]`. Conclude with `hki.smul k`. Use `⟨(k.natAbs * k.natAbs) * m, mul_pos (mul_pos (Int.natAbs_pos.2 hk) (Int.natAbs_pos.2 hk)) hm, ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `X.Λ.smul_mem (⟨(k * k) • c, hki'⟩ : 𝓞 E) hx`. Establish `h2 : ((k.natAbs * k.natAbs : ℕ) : E) = ((k * k : ℤ) : E)`. Rewrite using `[← Int.natAbs_mul_self, Int.cast_natCast]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Use `show ((k.natAbs * k.natAbs) * m) • (c * x i) = ((k * k) • c) * (m • x i)`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul, zsmul_eq_mul, Nat.cast_mul, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pos_nsmul_mem (X : Data E r) (v : Fin r → E) : ∃ n : ℕ, 0 < n ∧ n • v ∈ X.Λ := by
   have hv : v ∈ Submodule.span E (X.Λ : Set (Fin r → E)) := by rw [X.Λ_span]; trivial
   induction hv using Submodule.span_induction with
@@ -47,6 +60,13 @@ theorem exists_pos_nsmul_mem (X : Data E r) (v : Fin r → E) : ∃ n : ℕ, 0 <
     rw [nsmul_eq_mul, nsmul_eq_mul, zsmul_eq_mul, Nat.cast_mul, h2]
     ring
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `X.Λ_fg`. Use `choose n hn0 hn using fun v => exists_pos_nsmul_mem X (N *ᵥ v)`. Use `⟨∏ v ∈ s, n v, Finset.prod_pos fun v _ => hn0 v, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem x hx`. Rewrite using `[← Finset.prod_erase_mul s n hx, mul_smul]`. Conclude with `nsmul_mem (hn x) _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, smul_add]`.
+
+Conclude with `X.Λ.add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, smul_comm]`. Conclude with `X.Λ.smul_mem c hx`.
+-/
 theorem exists_pos_nsmul_mulVec_mem (X : Data E r) (N : Matrix (Fin r) (Fin r) E) :
     ∃ d : ℕ, 0 < d ∧ ∀ x ∈ X.Λ, d • (N *ᵥ x) ∈ X.Λ := by
   classical
@@ -62,6 +82,9 @@ theorem exists_pos_nsmul_mulVec_mem (X : Data E r) (N : Matrix (Fin r) (Fin r) E
   | add x y _ _ hx hy => rw [Matrix.mulVec_add, smul_add]; exact X.Λ.add_mem hx hy
   | smul c x _ hx => rw [Matrix.mulVec_smul, smul_comm]; exact X.Λ.smul_mem c hx
 
+/- English proof (translation)
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, zMatE_mulVec, zMatE_mulVec, add_sub_cancel_left, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc, Finset.smul_sum]`. Simplify using `only [Matrix.smul_apply, smul_mul_assoc]`.
+-/
 theorem zMatE_nsmul_mulVec (X : Data E r) (e : Fin ρ → Fin r → E) (β : Matrix (Fin ρ) (Fin ρ) E)
     (n : ℕ) (v : Fin r → E) :
     FJ.zMatE X e (n • β) *ᵥ v = v + n • ((FJ.zMatE X e β - 1) *ᵥ v) := by
@@ -72,6 +95,9 @@ theorem zMatE_nsmul_mulVec (X : Data E r) (e : Fin ρ → Fin r → E) (β : Mat
   rw [← smul_assoc, Finset.smul_sum]
   simp only [Matrix.smul_apply, smul_mul_assoc]
 
+/- English proof (translation)
+Introduce `a b`. Establish `h : cc ((n : E)) = n` using `by simp [cc]`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, nsmul_eq_mul, nsmul_eq_mul, cc_mul', h, hβ, mul_neg]`.
+-/
 theorem isSkew_nsmul {β : Matrix (Fin ρ) (Fin ρ) E} (hβ : FJ.IsSkew β) (n : ℕ) :
     FJ.IsSkew (n • β) := by
   intro a b
@@ -82,10 +108,20 @@ noncomputable def zUnit (X : Data E r) (cu : FJ.CuspFD X ρ) (β : Matrix (Fin �
   ⟨FJ.zMatE X cu.e β, FJ.zMatE X cu.e (-β), by rw [← zMatE_add, add_neg_cancel, zMatE_zero],
     by rw [← zMatE_add, neg_add_cancel, zMatE_zero]⟩
 
+/- English proof (translation)
+The claim follows from `Units.ext (zMatE_add X cu β β')`.
+-/
 theorem zUnit_add (X : Data E r) (cu : FJ.CuspFD X ρ) (β β' : Matrix (Fin ρ) (Fin ρ) E) :
     zUnit X cu (β + β') = zUnit X cu β * zUnit X cu β' :=
   Units.ext (zMatE_add X cu β β')
 
+/- English proof (translation)
+Take `⟨d, hd, h⟩` from `exists_pos_nsmul_mulVec_mem X (FJ.zMatE X cu.e β - 1)`. Take `⟨d', hd', h'⟩` from `exists_pos_nsmul_mulVec_mem X (FJ.zMatE X cu.e (-β) - 1)`. Use `⟨d * d', mul_pos hd hd', fun j => ⟨zMatE_unitary X cu _ (isSkew_nsmul hβ _), fun x => ?_⟩⟩` and prove the remaining obligations. Use `show x ∈ X.Λ ↔ FJ.zMatE X cu.e ((j * (d * d')) • β) *ᵥ x ∈ X.Λ`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Rewrite using `[zMatE_nsmul_mulVec, mul_comm d, ← mul_assoc, mul_smul]`. Conclude with `X.Λ.add_mem hx (nsmul_mem (h x hx) _)`. Introduce `hx`. Establish `h1 : FJ.zMatE X cu.e ((j * (d * d')) • -β) *ᵥ (FJ.zMatE X cu.e ((j * (d * d')) • β) *ᵥ x) ∈ X.Λ`.
+
+Rewrite using `[zMatE_nsmul_mulVec X cu.e (-β), ← mul_assoc, mul_smul (j * d) d' (_ *ᵥ _)]`. Rewrite `hx` using `[← mul_assoc]`. Conclude with `X.Λ.add_mem hx (nsmul_mem (h' _ hx) _)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, ← zMatE_add, smul_neg, neg_add_cancel, zMatE_zero, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem exists_isUStab_zUnit (X : Data E r) (cu : FJ.CuspFD X ρ) (β : Matrix (Fin ρ) (Fin ρ) E)
     (hβ : FJ.IsSkew β) : ∃ d : ℕ, 0 < d ∧ ∀ j : ℕ, IsUStab X.Gm X.Λ (zUnit X cu ((j * d) • β)) := by
   obtain ⟨d, hd, h⟩ := exists_pos_nsmul_mulVec_mem X (FJ.zMatE X cu.e β - 1)
@@ -105,6 +141,15 @@ theorem exists_isUStab_zUnit (X : Data E r) (cu : FJ.CuspFD X ρ) (β : Matrix (
     rwa [Matrix.mulVec_mulVec, ← zMatE_add, smul_neg, neg_add_cancel, zMatE_zero,
       Matrix.one_mulVec] at h1
 
+/- English proof (translation)
+Introduce `E _ _ _ r ρ X cu β hβ`. Take `⟨d, hd, h⟩` from `exists_isUStab_zUnit X cu β hβ`. Take `⟨S, hS⟩` from `X.Γ_index`. Use `choose s hsS hs using fun j => hS _ (h j)`. Establish `key : ∀ i j, i < j → s i = s j → ∃ n : ℕ, 0 < n ∧ n • β ∈ FJ.zGam X cu`.
+
+Introduce `i j hij e`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hij`. Use `⟨(k + 1) * d, mul_pos k.succ_pos hd, isSkew_nsmul hβ _, zUnit X cu (((k + 1) * d) • β), ?_, rfl⟩` and prove the remaining obligations. Establish `h1` using `X.Γ.mul_mem (X.Γ.inv_mem (hs i)) (hs (i + k + 1))`. Rewrite `h1` using `[← e, add_assoc, add_mul, add_smul, zUnit_add, ← mul_assoc (s i)⁻¹, inv_mul_cancel_left]`.
+
+Conclude with `h1`. Take `⟨i, j, hij, e⟩` from `Finite.exists_ne_map_eq_of_infinite (fun j => (⟨s j, hsS j⟩ : S))`. Establish `e' : s i = s j` using `congrArg Subtype.val e`. Break down `lt_or_gt_of_ne hij with h1 | h1` into its components or cases. Conclude with `key i j h1 e'`.
+
+Conclude with `key j i h1 e'.symm`.
+-/
 theorem exists_nsmul_mem_zGam : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : FJ.CuspFD X ρ) (β : Matrix (Fin ρ) (Fin ρ) E), FJ.IsSkew β → ∃ n : ℕ, 0 < n ∧ n • β ∈ FJ.zGam X cu := by
   intro E _ _ _ r ρ X cu β hβ
   obtain ⟨d, hd, h⟩ := exists_isUStab_zUnit X cu β hβ

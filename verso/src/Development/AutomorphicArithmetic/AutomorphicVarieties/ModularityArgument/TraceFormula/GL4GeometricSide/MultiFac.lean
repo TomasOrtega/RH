@@ -15,6 +15,9 @@ private def Faith (A : Subalgebra ℂ (Module.End ℂ F)) : Prop :=
 private def Simp (A : Subalgebra ℂ (Module.End ℂ F)) (W : Submodule ℂ F) : Prop :=
   W ≠ ⊥ ∧ (∀ a ∈ A, ∀ x ∈ W, a x ∈ W) ∧ ∀ W' ≤ W, (∀ a ∈ A, ∀ x ∈ W', a x ∈ W') → W' = ⊥ ∨ W' = W
 
+/- English proof (translation)
+Take `⟨W, ⟨h1, h2, h3⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ F)).has_min {W | W ≤ G ∧ W ≠ ⊥ ∧ ∀ a ∈ A, ∀ x ∈ W, a x ∈ W} ⟨G, le_rfl, h0, hG⟩`. Use `⟨W, h1, h2, h3, fun W' hle hst => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : W' = ⊥`. Conclude with `Or.inl hb`. Conclude with `Or.inr (by_contra fun hne => hmin W' ⟨hle.trans h1, hb, hst⟩ (lt_of_le_of_ne hle hne))`.
+-/
 private theorem exists_simp (A : Subalgebra ℂ (Module.End ℂ F)) (G : Submodule ℂ F) (h0 : G ≠ ⊥)
     (hG : ∀ a ∈ A, ∀ x ∈ G, a x ∈ G) : ∃ W ≤ G, Simp A W := by
   obtain ⟨W, ⟨h1, h2, h3⟩, hmin⟩ := (wellFounded_lt (α := Submodule ℂ F)).has_min
@@ -24,6 +27,15 @@ private theorem exists_simp (A : Subalgebra ℂ (Module.End ℂ F)) (G : Submodu
   · exact Or.inl hb
   · exact Or.inr (by_contra fun hne => hmin W' ⟨hle.trans h1, hb, hst⟩ (lt_of_le_of_ne hle hne))
 
+/- English proof (translation)
+Set `φ : A →ₐ[ℂ] Module.End ℂ W` to `{ toFun := fun a => a.1.restrict (hW.2.1 a.1 a.2) map_one' := by ext; rfl map_mul' := fun a b => by ext; rfl map_zero' := by ext; rfl map_add' := fun a b => by ext; rfl commutes' := fun c => by ext; rfl }`. Establish `hs : Function.Surjective φ`. Use `GlobalTheory.CompanionTheory.BurnsideU.burnside_surj_of_irred φ fun N hN => ?_` and prove the remaining obligations. Break down `hW.2.2 (N.map W.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `a ha _ ⟨y, hy, rfl⟩`.
+
+Conclude with `⟨_, hN ⟨a, ha⟩ y hy, rfl⟩) with h | h`. Use `left`. Conclude with `Submodule.map_injective_of_injective W.injective_subtype (by rw [h, Submodule.map_bot])`. Use `right`. Conclude with `Submodule.map_injective_of_injective W.injective_subtype (by rw [h, Submodule.map_subtype_top])`.
+
+Establish `hi : Function.Injective φ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `Subtype.ext (hA W hW.1 hW.2.1 a.1 a.2 fun x hx => ?_)` and prove the remaining obligations. Conclude with `congrArg Subtype.val (LinearMap.congr_fun ha ⟨x, hx⟩)`.
+
+Conclude with `⟨AlgEquiv.ofBijective φ ⟨hi, hs⟩, fun a => rfl⟩`.
+-/
 private theorem exists_equiv {A : Subalgebra ℂ (Module.End ℂ F)} (hA : Faith A) {W : Submodule ℂ F} (hW : Simp A W) :
     ∃ ρ : A ≃ₐ[ℂ] Module.End ℂ W, ∀ a : A, ρ a = a.1.restrict (hW.2.1 a.1 a.2) := by
   let φ : A →ₐ[ℂ] Module.End ℂ W :=
@@ -49,6 +61,19 @@ private theorem exists_equiv {A : Subalgebra ℂ (Module.End ℂ F)} (hA : Faith
     exact congrArg Subtype.val (LinearMap.congr_fun ha ⟨x, hx⟩)
   exact ⟨AlgEquiv.ofBijective φ ⟨hi, hs⟩, fun a => rfl⟩
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `f.eq_linearEquivConjAlgEquiv`. Establish `h1 : ∀ x, f x * T.toLinearMap = T.toLinearMap * x` using `fun x => by`. Rewrite using `[hT]`. Use `ext`. Simplify using the standard rewrite rules.
+
+Establish `hc : T.toLinearMap * T.toLinearMap ∈ Subalgebra.center ℂ (Module.End ℂ W)`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `b`. Use `conv_lhs => rw [← hf b]`. Rewrite using `[← mul_assoc, h1, mul_assoc, h1, mul_assoc]`.
+
+Rewrite `hc` using `[Algebra.IsCentral.center_eq_bot, Algebra.mem_bot]`. Take `⟨c, hc⟩` from `hc`. Rewrite `hc` using `[Algebra.algebraMap_eq_smul_one]`. Distinguish the cases in `hW : Subsingleton W`. Conclude with `⟨1, Subsingleton.elim _ _, fun x => Subsingleton.elim _ _⟩`.
+
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Use `hW ⟨fun x y => T.injective (T.injective ?_)⟩` and prove the remaining obligations. Establish `h2` using `fun z => LinearMap.congr_fun hc z`. Simplify using `only [zero_smul, LinearMap.zero_apply, Module.End.mul_apply, LinearEquiv.coe_coe] at h2`.
+
+Rewrite using `[← h2, ← h2]`. Take `⟨d, hd⟩` from `IsAlgClosed.exists_eq_mul_self c⁻¹`. Establish `h3 : (d • T.toLinearMap) * (d • T.toLinearMap) = 1`. Rewrite using `[smul_mul_smul_comm, ← hc, ← hd, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `⟨d • T.toLinearMap, h3, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc d _ x, ← h1, ← smul_mul_assoc, smul_mul_assoc d, ← mul_smul_comm, mul_assoc, h3, mul_one]`.
+-/
 private theorem inner_invol {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (f : Module.End ℂ W ≃ₐ[ℂ] Module.End ℂ W) (hf : ∀ x, f (f x) = x) :
     ∃ t : Module.End ℂ W, t * t = 1 ∧ ∀ x, f x = t * x * t := by
@@ -77,6 +102,13 @@ private theorem inner_invol {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDi
   refine ⟨d • T.toLinearMap, h3, fun x => ?_⟩
   rw [smul_mul_assoc d _ x, ← h1, ← smul_mul_assoc, smul_mul_assoc d, ← mul_smul_comm, mul_assoc, h3, mul_one]
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_ne (0 : W)`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hv`. Use `⟨l.smulRight v, by ext; simp [hl], fun a => ⟨l (a v), by ext; simp [smul_smul, mul_comm]⟩, fun φ hφ a => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ (f : W →ₗ[ℂ] ℂ) (w : W), φ (f.smulRight w) = LinearMap.trace ℂ W (f.smulRight w) * φ (l.smulRight v)`. Introduce `f w`.
+
+Establish `e1 : f.smulRight w = l.smulRight w * f.smulRight v` using `by ext; simp [hl]`. Establish `e2 : f.smulRight v * l.smulRight w = f w • l.smulRight v` using `by ext; simp [smul_smul, mul_comm]`. Rewrite using `[LinearMap.trace_smulRight]`. Rewrite using `[e1, hφ, e2, map_smul, smul_eq_mul]`. Set `b` to `Module.finBasis ℂ W`.
+
+Establish `h2 : a = ∑ i, (b.coord i).smulRight (a (b i))`. Use `b.ext fun j => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply]`. Rewrite using `[h2, map_sum, map_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => h1 _ _`.
+-/
 private theorem trace_form {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W] :
     ∃ e : Module.End ℂ W, e * e = e ∧ (∀ a, ∃ c : ℂ, e * a * e = c • e) ∧
       ∀ φ : Module.End ℂ W →ₗ[ℂ] ℂ, (∀ a b, φ (a * b) = φ (b * a)) → ∀ a, φ a = LinearMap.trace ℂ W a * φ e := by
@@ -96,6 +128,13 @@ private theorem trace_form {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDim
   rw [h2, map_sum, map_sum, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => h1 _ _
 
+/- English proof (translation)
+Take `⟨W, -, hW⟩` from `exists_simp A ⊤ top_ne_bot fun _ _ _ _ => trivial`. Take `⟨ρ, -⟩` from `exists_equiv hA hW`. Establish `hΘ' : ∀ z, Θ * (Θ * z) = z` using `fun z => by rw [← mul_assoc, hΘ, one_mul]`. Set `φ : A →ₐ[ℂ] A` to `{ toFun := fun a => ⟨Θ * a.1 * Θ, hn _ a.2⟩ map_one' := Subtype.ext (by simp [hΘ]) map_mul' := fun a b => Subtype.ext (by simp [mul_assoc, hΘ']) map_zero' := Subtype.ext (by simp) map_add' := fun a b => Subtype.ext (by simp [mul_add, add_mul]) commutes' := fun c => Subtype.ext (b …`. Establish `hφ : ∀ a, φ (φ a) = a` using `fun a => Subtype.ext (by`.
+
+Express the relevant statement in the definitionally equal form `Θ * (Θ * a.1 * Θ) * Θ = a.1`. Simplify using `[mul_assoc, hΘ', hΘ])`. Set `ψ : A ≃ₐ[ℂ] A` to `AlgEquiv.ofBijective φ (Function.Involutive.bijective hφ)`. Take `⟨t, ht, hx⟩` from `inner_invol ((ρ.symm.trans ψ).trans ρ) fun x => by`. Simplify using `[ψ, hφ]`.
+
+Use `⟨ρ.symm t, by rw [← map_mul, ht, map_one], fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : φ a = ρ.symm t * a * ρ.symm t` using `ρ.injective (by simpa [ψ] using hx (ρ a))`. Conclude with `congrArg Subtype.val h1`.
+-/
 private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {A : Subalgebra ℂ (Module.End ℂ F)} [Nontrivial F] (hA : Faith A) {Θ : Module.End ℂ F}
     (hΘ : Θ * Θ = 1) (hn : ∀ a ∈ A, Θ * a * Θ ∈ A) : ∃ t : A, t * t = 1 ∧ ∀ a : A, Θ * a.1 * Θ = t.1 * a.1 * t.1 := by
   obtain ⟨W, -, hW⟩ := exists_simp A ⊤ top_ne_bot fun _ _ _ _ => trivial
@@ -118,6 +157,11 @@ private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {A : Subalgeb
   have h1 : φ a = ρ.symm t * a * ρ.symm t := ρ.injective (by simpa [ψ] using hx (ρ a))
   exact congrArg Subtype.val h1
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `Module.End.exists_eigenvalue u`. Take `⟨v, hv⟩` from `hε.exists_hasEigenvector`. Establish `h1` using `hv.apply_eq_smul`. Use `⟨ε, ?_, (Submodule.ne_bot_iff _).2 ⟨v, by simp [h1], hv.2⟩⟩` and prove the remaining obligations. Establish `h2` using `LinearMap.congr_fun hu v`.
+
+Rewrite `h2` using `[Module.End.mul_apply, h1, map_smul, h1, smul_smul, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hv.2 (by simpa using h2)`.
+-/
 private theorem exists_eig [Nontrivial F] {u : Module.End ℂ F} (hu : u * u = 1) :
     ∃ ε : ℂ, ε * ε = 1 ∧ LinearMap.ker (u - ε • 1) ≠ ⊥ := by
   obtain ⟨ε, hε⟩ := Module.End.exists_eigenvalue u
@@ -128,6 +172,19 @@ private theorem exists_eig [Nontrivial F] {u : Module.End ℂ F} (hu : u * u = 1
   rw [Module.End.mul_apply, h1, map_smul, h1, smul_smul, Module.End.one_apply] at h2
   exact smul_left_injective ℂ hv.2 (by simpa using h2)
 
+/- English proof (translation)
+Take `⟨t, ht, hx⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator hA hΘ hn`. Establish `ht' : t.1 * t.1 = 1` using `congrArg Subtype.val ht`. Establish `hc : ∀ a : A, t.1 * Θ * a.1 = a.1 * (t.1 * Θ)` using `fun a => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : t.1 * Θ * (t.1 * Θ) = 1`.
+
+Rewrite using `[← mul_assoc, hc t, ← mul_assoc, ht', one_mul, hΘ]`. Take `⟨ε, hε, hk⟩` from `exists_eig hu`. Establish `hm : ∀ x, x ∈ LinearMap.ker (t.1 * Θ - ε • 1) ↔ (t.1 * Θ) x = ε • x` using `fun x => by`. Simplify using `[sub_eq_zero]`. Take `⟨W, hle, hW⟩` from `exists_simp A _ hk fun a ha x hx' => by`.
+
+Rewrite `hx'`, the goal using `[hm]`. Rewrite using `[← Module.End.mul_apply, hc ⟨a, ha⟩, Module.End.mul_apply, hx', map_smul]`. Take `⟨ρ, hρ⟩` from `exists_equiv hA hW`. Establish `: Nontrivial W` using `Submodule.nontrivial_iff_ne_bot.2 hW.1`. Take `⟨e, he, hcor, htr⟩` from `trace_form (W := W)`.
+
+Use `⟨W, ε, t, ρ.symm e, hW, hε, ht, hx, fun x hx' => ?_, fun h0 => ?_, by rw [← map_mul, he], fun a => ?_, fun c hc a => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, ← (hm x).1 (hle hx'), ← Module.End.mul_apply, ← mul_assoc, ht', one_mul]`. Establish `h1` using `htr (LinearMap.trace ℂ W) (LinearMap.trace_mul_comm ℂ) 1`. Rewrite `h1` using `[(map_eq_zero_iff _ ρ.symm.injective).1 h0, map_zero, mul_zero, LinearMap.trace_one, Nat.cast_eq_zero]`. Conclude with `Module.finrank_pos.ne' h1`.
+
+Take `⟨c, hc⟩` from `hcor (ρ a)`. Conclude with `⟨c, ρ.injective (by simpa using hc)⟩`. Establish `h1` using `htr (LinearMap.trace ℂ F ∘ₗ LinearMap.mulRight ℂ c ∘ₗ A.val.toLinearMap ∘ₗ ρ.symm.toLinearMap) (fun x y => by`. Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ F ((ρ.symm (x * y)).1 * c) = LinearMap.trace ℂ F ((ρ.symm (y * x)).1 * c)`. Rewrite using `[map_mul ρ.symm, map_mul ρ.symm, MulMemClass.coe_mul, MulMemClass.coe_mul, mul_assoc, LinearMap.trace_mul_comm, mul_assoc, ← (hc _).eq, mul_assoc]) (ρ a)`.
+
+Express the relevant statement in the definitionally equal form `LinearMap.trace ℂ F ((ρ.symm (ρ a)).1 * c) = _ * LinearMap.trace ℂ F ((ρ.symm e).1 * c) at h1`. Rewrite `h1` using `[AlgEquiv.symm_apply_apply]`. Rewrite using `[h1, trOn, dif_pos (hW.2.1 a.1 a.2), hρ]`.
+-/
 private theorem loc {A : Subalgebra ℂ (Module.End ℂ F)} [Nontrivial F] (hA : Faith A) {Θ : Module.End ℂ F}
     (hΘ : Θ * Θ = 1) (hn : ∀ a ∈ A, Θ * a * Θ ∈ A) :
     ∃ (W : Submodule ℂ F) (ε : ℂ) (t e : A), Simp A W ∧ ε * ε = 1 ∧ t * t = 1 ∧ (∀ a : A, Θ * a.1 * Θ = t.1 * a.1 * t.1) ∧
@@ -168,6 +225,11 @@ private theorem loc {A : Subalgebra ℂ (Module.End ℂ F)} [Nontrivial F] (hA :
     rw [AlgEquiv.symm_apply_apply] at h1
     rw [h1, trOn, dif_pos (hW.2.1 a.1 a.2), hρ]
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, Φ a = (∏ i ∈ s, l i (a i)) • Φ (s.piecewise e a)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[ih, h _ i, Finset.prod_insert hi, Finset.piecewise_insert, Finset.piecewise_eq_of_notMem _ _ _ hi, smul_smul, mul_comm]`. Simplify using `using key Finset.univ`.
+-/
 private theorem prod_step {ι X : Type} [Fintype ι] [DecidableEq ι] [AddCommMonoid X] [Module ℂ X] {N : ι → Type}
     (Φ : (∀ i, N i) → X) (l : ∀ i, N i → ℂ) (e : ∀ i, N i)
     (h : ∀ a i, Φ a = l i (a i) • Φ (Function.update a i (e i))) (a : ∀ i, N i) : Φ a = (∏ i, l i (a i)) • Φ e := by
@@ -188,6 +250,11 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {𝔞 : ι → Subalgebra ℂ
 include hP
 
 omit [FiniteDimensional ℂ F] [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[← hP, ← map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 private theorem P_upd (a : ∀ i, 𝔞 i) (i : ι) (y : 𝔞 i) : P (Function.update a i y) = y.1 * P (Function.update a i 1) := by
   rw [← hP, ← map_mul]
   congr 1
@@ -197,6 +264,11 @@ private theorem P_upd (a : ∀ i, 𝔞 i) (i : ι) (y : 𝔞 i) : P (Function.up
   · simp [h]
 
 omit [FiniteDimensional ℂ F] [Fintype ι] in
+/- English proof (translation)
+Rewrite using `[← hP]`. Use `Commute.map ?_ P` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 private theorem P_comm (a : ∀ i, 𝔞 i) (i : ι) (y : 𝔞 i) : Commute y.1 (P (Function.update a i 1)) := by
   rw [← hP]
   refine Commute.map ?_ P
@@ -205,6 +277,25 @@ private theorem P_comm (a : ∀ i, 𝔞 i) (i : ι) (y : 𝔞 i) : Commute y.1 (
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, LinearMap.trace ℂ F (P a) = (∏ i, l i (a i)) • LinearMap.trace ℂ F (P e)` using `prod_step (fun a => LinearMap.trace ℂ F (P a)) l e fun a i => by`. Rewrite using `[P_upd P hP a i (e i), smul_eq_mul, ← htr i _ (P_comm P hP a i), ← P_upd P hP, Function.update_eq_self]`. Establish `hee : e * e = e` using `funext he`. Establish `hE : P e * P e = P e` using `by rw [← map_mul, hee]`. Establish `h2 : ∀ a, ∃ c : ℂ, P e * P a * P e = c • P e` using `fun a => by choose c hc using hcor`.
+
+Use `⟨∏ i, c i (a i), ?_⟩` and prove the remaining obligations. Establish `h3` using `prod_step (fun a => P (e * a * e)) c e (fun a i => by`. Establish `e1 : e * a * e = Function.update (e * a * e) i (c i (a i) • e i)`. Rewrite using `[← hc]`. Conclude with `(Function.update_eq_self i _).symm`.
+
+Establish `e2 : e * Function.update a i (e i) * e = Function.update (e * a * e) i (e i)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[he]`.
+
+Simplify using `[h]`. Rewrite using `[e2, P_upd P hP _ i (e i), ← smul_mul_assoc, ← Subalgebra.coe_smul, ← P_upd P hP, ← e1]) a`. Simplify `h3` using `only [hee, map_mul, hE]`. Establish `h0 : P e ≠ 0` using `fun h => by`. Establish `h4` using `h1 1`.
+
+Rewrite `h4` using `[h, map_zero, smul_zero, map_one, LinearMap.trace_one, Nat.cast_eq_zero]`. Conclude with `Module.finrank_pos.ne' h4`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, P e x ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Conclude with `h0 (LinearMap.ext fun x => by_contra fun h => hcon ⟨x, h⟩)`.
+
+Establish `hspan : Submodule.span ℂ (Set.range fun a => P a (P e x)) = ⊤`. Use `(hs _ fun i b hb y hy => ?_).resolve_left fun h => hx ?_` and prove the remaining obligations. Use `(Submodule.map_span_le b _ _).2 ?_ ⟨y, hy, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Submodule.subset_span ⟨Pi.mulSingle i ⟨b, hb⟩ * a, by simp [hP]⟩`.
+
+Rewrite using `[← Submodule.mem_bot ℂ, ← h]`. Conclude with `Submodule.subset_span ⟨1, by simp⟩`. Establish `hr : LinearMap.range (P e) = Submodule.span ℂ {P e x}`. Use `le_antisymm ?_ ((Submodule.span_singleton_le_iff_mem _ _).2 ⟨x, rfl⟩)` and prove the remaining obligations. Rewrite using `[← Submodule.map_top, ← hspan, Submodule.map_span_le]`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨c, hc⟩` from `h2 a`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, (LinearMap.congr_fun hc x).symm⟩`. Establish `h5 : LinearMap.trace ℂ F (P e) = 1`. Rewrite using `[(LinearMap.IsIdempotentElem.isProj_range (P e) hE).trace, hr, finrank_span_singleton hx, Nat.cast_one]`.
+
+Rewrite using `[h1, h5, smul_eq_mul, mul_one]`.
+-/
 private theorem untw [Nontrivial F]
     (hs : ∀ W : Submodule ℂ F, (∀ i, ∀ a ∈ 𝔞 i, ∀ x ∈ W, a x ∈ W) → W = ⊥ ∨ W = ⊤)
     (l : ∀ i, 𝔞 i → ℂ) (e : ∀ i, 𝔞 i) (he : ∀ i, e i * e i = e i) (hcor : ∀ i a, ∃ c : ℂ, e i * a * e i = c • e i)
@@ -258,6 +349,37 @@ end Glob
 end UpperTheory.V.Z.GSp4Splitting.MF
 
 open UpperTheory.V.Z.GSp4Splitting.MF in
+/- English proof (translation)
+Introduce `ι _ F _ _ _ _ 𝔞 Θ hc hs hΘ hn`. Establish `hF : ∀ i, Faith (𝔞 i)`. Introduce `i W h0 hW a ha hz`. Set `K : Submodule ℂ F` to `⨅ b : {b // b ∈ 𝔞 i ∧ ∀ x ∈ W, b x = 0}, LinearMap.ker b.1`. Establish `hK : ∀ x, x ∈ K ↔ ∀ b ∈ 𝔞 i, (∀ x ∈ W, b x = 0) → b x = 0` using `fun x => by`.
+
+Simplify using `[K, Submodule.mem_iInf]`. Establish `hT : K = ⊤`. Use `(hs K fun j b hb x hx => ?_).resolve_left fun h => h0 (le_bot_iff.1 ?_)` and prove the remaining obligations. Rewrite `hx`, the goal using `[hK]`. Introduce `d hd hdz`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Conclude with `hx (d * b) (mul_mem hd hb) fun y hy => hdz _ (hW b hb y hy)`. Rewrite using `[← Module.End.mul_apply, (hc i j h d hd b hb).eq, Module.End.mul_apply, hx d hd hdz, map_zero]`. Rewrite using `[← h]`.
+
+Conclude with `fun x hx => (hK x).2 fun b _ hb => hb x hx`. Conclude with `LinearMap.ext fun x => (hK x).1 (hT ▸ Submodule.mem_top) a ha hz`. Use `choose W ε t e hW hε ht hx hΘW he0 he hcor htr using fun i => loc (hF i) hΘ (hn i)`. Set `ϕ : ∀ i, 𝔞 i →* Module.End ℂ F` to `fun i => (𝔞 i).val`. Establish `hcomm : Pairwise fun i j => ∀ x y, Commute (ϕ i x) (ϕ j y)` using `fun i j h x y => hc i j h _ x.2 _ y.2`.
+
+Set `P` to `MonoidHom.noncommPiCoprod ϕ hcomm`. Establish `hP : ∀ i (y : 𝔞 i), P (Pi.mulSingle i y) = y.1` using `fun i y => MonoidHom.noncommPiCoprod_mulSingle ϕ i y`. Establish `hL : ∀ a : ∀ i, 𝔞 i, ((Finset.univ : Finset ι).toList.map fun i => (a i).1).prod = P a` using `fun a => by`. Rewrite using `[← Finset.noncommProd_toFinset _ _ (fun i _ j _ h => hc i j h _ (a i).2 _ (a j).2) (Finset.nodup_toList _)]`. Simplify using `only [P, MonoidHom.noncommPiCoprod_apply, Finset.toList_toFinset]`.
+
+Both sides reduce to the same expression. Establish `hun` using `untw P hP hs (fun i a => trOn (W i) a.1) e he hcor htr`. Establish `htt : P t * P t = 1` using `by rw [← map_mul, show t * t = 1 from funext ht, map_one]`. Establish `hu : ∀ i (b : 𝔞 i), Θ * P t * b.1 = b.1 * (Θ * P t)` using `fun i b => by`. Establish `h1 : t * Pi.mulSingle i b = Pi.mulSingle i (t i * b * t i) * t`.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[mul_assoc, ht]`. Simplify using `[h]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hΘt : Commute Θ (P t)`. Establish `h2 : ∀ i, Commute Θ (t i).1` using `fun i => by`. Establish `h3 : (t i).1 * (t i).1 = 1` using `congrArg Subtype.val (ht i)`. Establish `h4` using `hx i (t i)`.
+
+Rewrite `h4` using `[h3, one_mul]`. Express the relevant statement in the definitionally equal form `Θ * _ = _ * Θ`. Use `conv_rhs => rw [← h4]`. Rewrite using `[mul_assoc, hΘ, mul_one]`. Simplify using `only [P, MonoidHom.noncommPiCoprod_apply]`.
+
+Conclude with `Finset.noncommProd_commute _ _ _ _ fun i _ => h2 i`. Establish `hsq : Θ * P t * (Θ * P t) = 1`. Rewrite using `[mul_assoc, ← mul_assoc (P t), ← hΘt.eq, mul_assoc, htt, mul_one, hΘ]`. Take `⟨s, hs2, hk⟩` from `exists_eig hsq`. Establish `hm : ∀ x, x ∈ LinearMap.ker (Θ * P t - s • 1) ↔ (Θ * P t) x = s • x` using `fun x => by`.
+
+Simplify using `[sub_eq_zero]`. Establish `hT` using `(hs _ fun i b hb x hx' => by`. Rewrite `hx'`, the goal using `[hm]`. Rewrite using `[← Module.End.mul_apply, hu i ⟨b, hb⟩, Module.End.mul_apply, hx', map_smul]).resolve_left hk`. Establish `hΘeq : Θ = s • P t`.
+
+Rewrite `hT` using `[LinearMap.ker_eq_top, sub_eq_zero]`. Rewrite using `[← mul_one Θ, ← htt, ← mul_assoc, hT, smul_mul_assoc, one_mul]`. Establish `hst : ∀ i, ∀ x ∈ W i, Θ x ∈ W i` using `fun i x hx' => by`. Rewrite using `[hΘW i x hx']`. Conclude with `Submodule.smul_mem _ _ ((hW i).2.1 _ (t i).2 x hx')`.
+
+Use `⟨W, s * ∏ i, ε i, ?_, fun i => ⟨(hW i).1, (hW i).2.1, hst i, (hW i).2.2⟩, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_self_eq_one_iff, mul_mul_mul_comm, hs2, ← Finset.prod_mul_distrib]`. Simplify using `[hε]`. Establish `h1 : ∀ i, trOn (W i) (a i * (t i).1) = ε i * trOn (W i) (a i * Θ)` using `fun i => by`. Establish `p1 : ∀ x ∈ W i, (a i * (t i).1) x ∈ W i` using `(hW i).2.1 _ (mul_mem (ha i) (t i).2)`.
+
+Establish `p2 : ∀ x ∈ W i, (a i * Θ) x ∈ W i` using `fun x hx' => (hW i).2.1 _ (ha i) _ (hst i x hx')`. Rewrite using `[trOn, trOn, dif_pos p1, dif_pos p2, ← smul_eq_mul (ε i), ← map_smul]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[hΘW i x.1 x.2, smul_smul, hε]`.
+
+Rewrite using `[hL fun i => ⟨a i, ha i⟩]`. Use `conv_lhs => rw [hΘeq, mul_smul_comm, ← map_mul, map_smul, hun]`. Rewrite using `[smul_eq_mul, mul_assoc, ← Finset.prod_mul_distrib]`. Conclude with `congrArg _ (Finset.prod_congr rfl fun i _ => h1 i)`.
+-/
 theorem UpperTheory.V.Z.GSp4Splitting.multiFac :
     MultiFac := by
   intro ι _ F _ _ _ _ 𝔞 Θ hc hs hΘ hn

@@ -14,6 +14,17 @@ noncomputable section
 namespace GlobalTheory.WeilContF
 end GlobalTheory.WeilContF
 namespace GlobalTheory.WeilContF
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hJS hJT ξ₀ hξ₀ hσξ χS χT hS hT hrS hrT ω hω JA JB ξ hJA hJB κ _ co hco om hom Φ hΦ p0`. Take `⟨pres, impl⟩` from `_root_.GlobalTheory.T.weil_representation_pair_continuous F E σ B hB nS nT JS JT hJS hJT ξ₀ hξ₀ hσξ χS χT hS hT hrS hrT ω hω JA JB ξ hJA hJB κ co hco om hom`. Take `⟨L₁, L₂, hL₁, hL₂, hinv⟩` from `GlobalTheory.T.exists_openSubgroups_schroedinger_fix_continuousChar F B.ψ hB.std.1 κ Φ hΦ`. Take `⟨N, hN, L₁', L₂', hL₁', hL₁c, hL₂', hNL⟩` from `GlobalTheory.T.exists_nhds_transportedAction_finitePoint_preimage F E σ nT nS JA JB ξ κ co L₁ L₂ hL₁ hL₂ p0`. Establish `hK` using `GlobalTheory.T.isCompact_annihilator_openSubgroup_finiteAdeles F B.ψ hB.std κ L₂' hL₂'`.
+
+Take `⟨m, g, y, hg, hgy, hrep⟩` from `GlobalTheory.T.periodic_adelicSchwartz_finite_coset_decomposition F κ L₁' hL₁' hL₁c _ hK`. Use `⟨N, hN, m, g, y, hg, hgy, fun p hp => ?_⟩` and prove the remaining obligations. Establish `fix : ∀ x ∈ L₁', ∀ y₁ ∈ L₂', schr B.ψ (GlobalTheory.WeilCont.adeleJoin F 0 x, GlobalTheory.WeilCont.adeleJoin F 0 y₁) (om p Φ) = om p Φ`. Introduce `x hx y₁ hy₁`. Take `⟨x', hx', y', hy', he⟩` from `hNL p hp x hx y₁ hy₁`.
+
+Use `impl p (co.e.symm (GlobalTheory.WeilCont.adeleJoin F 0 x', GlobalTheory.WeilCont.adeleJoin F 0 y')) Φ hΦ` as an intermediate fact. Simplify using `only [Darboux.rho, LinearEquiv.apply_symm_apply, hinv x' hx' y' hy', he] at this`. Conclude with `this.symm`. Use `hrep (om p Φ) (pres p Φ hΦ) ?_ ?_` and prove the remaining obligations. Introduce `x hx z`.
+
+Use `congrFun (fix x hx 0 (zero_mem _)) z` as an intermediate fact. Simplify using `only [schr, GlobalTheory.WeilContF.adeleJoin_zero_zero, dotProduct_zero, mul_zero, add_zero, AddChar.map_zero_eq_one, one_mul] at this`. Conclude with `this`. Introduce `z hz y₁ hy₁`. Use `congrFun (fix 0 (zero_mem _) y₁ hy₁) z` as an intermediate fact.
+
+Simplify using `only [schr, GlobalTheory.WeilContF.adeleJoin_zero_zero, zero_dotProduct, mul_zero, add_zero, GlobalTheory.WeilContF.dotProduct_adeleJoin_zero] at this`. Conclude with `(mul_eq_right₀ hz).mp this`.
+-/
 theorem exists_local_finite_parts_F_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →

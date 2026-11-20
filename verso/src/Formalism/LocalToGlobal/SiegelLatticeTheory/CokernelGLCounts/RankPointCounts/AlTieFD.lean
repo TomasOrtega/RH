@@ -44,13 +44,24 @@ def DifferentGeneratorUnit : Prop := ∀ p : TypX X, absV p.1 (dV p.1) = 1
 
 def TypedGeneratorProduct : Prop := ∏ p : TypX X, (gAt X p.1 : ℝ) = ((Lat.gS D : ℕ) : ℝ) ^ Module.finrank ℚ D.host.F
 
+/- English proof (translation)
+Unfold `DiscriminantAbsEq`. Rewrite using `[NumberField.discr_eq_discr_of_algEquiv X.B.I.F (RingEquiv.toRatAlgEquiv (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X))]`.
+-/
 theorem discriminant_abs_eq : DiscriminantAbsEq X := by
   unfold DiscriminantAbsEq
   rw [NumberField.discr_eq_discr_of_algEquiv X.B.I.F (RingEquiv.toRatAlgEquiv (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X))]
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.toRatAlgEquiv (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X)).toLinearEquiv.finrank_eq`.
+-/
 theorem finrank_eq : Module.finrank ℚ X.B.I.F = Module.finrank ℚ D.host.F :=
   (RingEquiv.toRatAlgEquiv (Formalism.L2.GlobalTheoryTheory.AFTransport.iotaF X)).toLinearEquiv.finrank_eq
 
+/- English proof (translation)
+Unfold `InfinitePlacesCardEq`. Rewrite using `[← finrank_eq X]`. Use `haveI := X.B.I.cm.totReal`. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank X.B.I.F`. Rewrite `h1` using `[NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, mul_zero, add_zero]`.
+
+Rewrite using `[NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, h1]`.
+-/
 theorem infinite_places_card : InfinitePlacesCardEq X := by
   unfold InfinitePlacesCardEq
   rw [← finrank_eq X]
@@ -60,6 +71,9 @@ theorem infinite_places_card : InfinitePlacesCardEq X := by
   rw [NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
     NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, h1]
 
+/- English proof (translation)
+Introduce `hw`. Establish `hc` using `(resChar_eq_iff (plEquiv X p.1) (D.mem w).A.T_prime).2 ((natCast_mem_plEquiv X p.1 _).2 hw)`. Break down `(typAt_iff X p.1).1 p.2 with h | h` into its components or cases. Conclude with `D.T_ne_g w 0 (hc.symm.trans h)`. Conclude with `D.T_ne_g w 1 (hc.symm.trans h)`.
+-/
 theorem T_not_mem (w : D.what₂.Word) (p : TypX X) : ¬ ((((D.mem w).A.T : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal) := by
   intro hw
   have hc := (resChar_eq_iff (plEquiv X p.1) (D.mem w).A.T_prime).2 ((natCast_mem_plEquiv X p.1 _).2 hw)
@@ -67,22 +81,38 @@ theorem T_not_mem (w : D.what₂.Word) (p : TypX X) : ¬ ((((D.mem w).A.T : ℕ)
   · exact D.T_ne_g w 0 (hc.symm.trans h)
   · exact D.T_ne_g w 1 (hc.symm.trans h)
 
+/- English proof (translation)
+Introduce `p`. Unfold `aP Tw`. Rewrite using `[if_neg (T_not_mem X u' p), if_neg (T_not_mem X u p)]`.
+-/
 theorem local_a_factor_symmetric : ∀ p : TypX X,
     aP (E := X.B.I.E) p.1 D.R.k X.B.I.n (Tw u') = aP (E := X.B.I.E) p.1 D.R.k X.B.I.n (Tw u) := by
   intro p
   unfold aP Tw
   rw [if_neg (T_not_mem X u' p), if_neg (T_not_mem X u p)]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.NcVal.FieldDict`. Conclude with `⟨discriminant_abs_eq X, infinite_places_card X, h3, h4, h5, h6, X.n_eq, h8, local_a_factor_symmetric X u u', h10⟩`.
+-/
 theorem fieldDict_of (h3 : EulerProductEta X) (h4 : LocalFactorProduct X u) (h5 : VInvEqHalfRootDiscriminant (D := D)) (h6 : QuadraticInfinitePlaces (D := D)) (h8 : DifferentGeneratorUnit X)
     (h10 : TypedGeneratorProduct X) : Formalism.L2.SG.Pf.NcVal.FieldDict X u u' := by
   unfold Formalism.L2.SG.Pf.NcVal.FieldDict
   exact ⟨discriminant_abs_eq X, infinite_places_card X, h3, h4, h5, h6, X.n_eq, h8, local_a_factor_symmetric X u u', h10⟩
 
+/- English proof (translation)
+Establish `h` using `(mem_typSet X.B.I.F _ _ (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero p.1).1 p.2`. Break down `h with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`.
+-/
 theorem over_g_of_typed (p : TypX X) : ∃ i : Fin 2, ((D.host.g i : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   have h := (mem_typSet X.B.I.F _ _ (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero p.1).1 p.2
   rcases h with h | h
   exacts [⟨0, h⟩, ⟨1, h⟩]
 
+/- English proof (translation)
+Set `_ : Algebra X.B.I.F D.host.E` to `(X.ιE.toRingHom.comp (algebraMap X.B.I.F X.B.I.E)).toAlgebra`. Establish `hp` using `D.host.g_prime i`. Take `⟨he, -⟩` from `Formalism.L2.SG.Pf.TypedLoc.tower_ef X.B.I.F D.host.E hp (D.nd.g_split i) v hv`. Establish `hvq : v.asIdeal ∈ (Ideal.span {((D.host.g i : ℕ) : ℤ)}).primesOver (𝓞 X.B.I.F)`. Rewrite using `[Formalism.L2.SG.Pf.TypedLoc.primesOver_eq X.B.I.F hp]`.
+
+Conclude with `⟨v, hv, rfl⟩`. Establish `: v.asIdeal.LiesOver (Ideal.span {((D.host.g i : ℕ) : ℤ)})` using `hvq.2`. Establish `: v.asIdeal.IsPrime` using `v.isPrime`. Rewrite `he` using `[Ideal.ramificationIdx'_eq_ramificationIdx _ _ (Formalism.L2.SG.Pf.TypedLoc.span_p_ne_bot hp)]`. Rewrite using `[not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]`.
+
+Conclude with `he`.
+-/
 theorem not_dvd_diff (v : HeightOneSpectrum (𝓞 X.B.I.F)) (i : Fin 2)
     (hv : ((D.host.g i : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal) : ¬ v.asIdeal ∣ differentIdeal ℤ (𝓞 X.B.I.F) := by
   let _ : Algebra X.B.I.F D.host.E := (X.ιE.toRingHom.comp (algebraMap X.B.I.F X.B.I.E)).toAlgebra
@@ -96,6 +126,21 @@ theorem not_dvd_diff (v : HeightOneSpectrum (𝓞 X.B.I.F)) (i : Fin 2)
   rw [not_dvd_differentIdeal_iff, Algebra.isUnramifiedAt_iff_of_isDedekindDomain]
   exact he
 
+/- English proof (translation)
+Introduce `p`. Take `⟨i, hi⟩` from `over_g_of_typed X p`. Establish `hnd` using `not_dvd_diff X p.1 i hi`. Establish `hex : ∃ x ∈ differentIdeal ℤ (𝓞 X.B.I.F), x ∉ p.1.asIdeal`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hnd (Ideal.dvd_iff_le.2 hc)`. Establish `hval : ∀ x : 𝓞 X.B.I.F, Valued.v (algebraMap X.B.I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv X.B.I.F p.1) (x : X.B.I.F)) = p.1.intValuation x`. Introduce `x`. Establish `h` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := X.B.I.F) p.1 x`.
+
+Rewrite `h` using `[IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `h`. Establish `hv1 : Valued.v (dV p.1) = 1`. Unfold `dV`. Use `split_ifs with hd`.
+
+Take `⟨-, hle, x0, -, heq⟩` from `hd.choose_spec`. Take `⟨x1, hx1, hx1n⟩` from `hex`. Establish `h1` using `hle x1 hx1`. Rewrite `h1` using `[hval, (IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff).2 hx1n]`. Rewrite `heq` using `[hval]`.
+
+Establish `h2` using `p.1.intValuation_le_one x0`. Rewrite `h2` using `[heq]`. Conclude with `le_antisymm h2 h1`. Conclude with `map_one _`. Unfold `absV`.
+
+Use `split_ifs with h0`. Conclude with `absurd (hv1 ▸ h0) one_ne_zero`. Establish `e2 : WithZero.unzero h0 = 1`. Apply `WithZero.coe_inj.1` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, hv1, WithZero.coe_one]`.
+
+Rewrite using `[e2]`. Simplify using the standard rewrite rules.
+-/
 theorem different_generator_unit : DifferentGeneratorUnit X := by
   intro p
   obtain ⟨i, hi⟩ := over_g_of_typed X p
@@ -131,6 +176,11 @@ theorem different_generator_unit : DifferentGeneratorUnit X := by
     rw [e2]
     simp
 
+/- English proof (translation)
+Establish `hcop : IsCoprime ((D.host.g 0 : ℕ) : ℤ) ((D.host.g 1 : ℕ) : ℤ)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one, Int.gcd_natCast_natCast]`. Conclude with `(Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).mpr D.host.g_ne`. Take `⟨a, b, hab⟩` from `hcop`. Establish `hone : (1 : 𝓞 X.B.I.F) ∈ v.asIdeal`.
+
+Establish `e` using `congrArg (Int.cast : ℤ → 𝓞 X.B.I.F) hab`. Move the coercions through the operations in `at e`. Rewrite using `[← e]`. Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ h0) (v.asIdeal.mul_mem_left _ h1)`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)`.
+-/
 theorem not_both (v : HeightOneSpectrum (𝓞 X.B.I.F)) (h0 : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal)
     (h1 : ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal) : False := by
   have hcop : IsCoprime ((D.host.g 0 : ℕ) : ℤ) ((D.host.g 1 : ℕ) : ℤ) := by
@@ -144,6 +194,15 @@ theorem not_both (v : HeightOneSpectrum (𝓞 X.B.I.F)) (h0 : ((D.host.g 0 : ℕ
     exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ h0) (v.asIdeal.mul_mem_left _ h1)
   exact v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr hone)
 
+/- English proof (translation)
+Set `_ : Algebra X.B.I.F D.host.E` to `(X.ιE.toRingHom.comp (algebraMap X.B.I.F X.B.I.E)).toAlgebra`. Establish `hp` using `D.host.g_prime i`. Use `Formalism.L2.SG.Pf.TypedLoc.span_p_maximal hp` as an intermediate fact. Establish `hq0` using `Formalism.L2.SG.Pf.TypedLoc.span_p_ne_bot hp`. Establish `hsum` using `Ideal.sum_ramification_inertia (𝓞 X.B.I.F) ℚ X.B.I.F hq0`.
+
+Establish `hall : ∀ Q ∈ IsDedekindDomain.primesOverFinset (Ideal.span {((D.host.g i : ℕ) : ℤ)}) (𝓞 X.B.I.F), (Ideal.span {((D.host.g i : ℕ) : ℤ)}).ramificationIdx' Q * (Ideal.span {((D.host.g i : ℕ) : ℤ)}).inertiaDeg' Q = 1`. Introduce `Q hQ`. Rewrite `hQ` using `[IsDedekindDomain.mem_primesOverFinset_iff hq0]`. Establish `hQ' : Q ∈ (Ideal.span {((D.host.g i : ℕ) : ℤ)}).primesOver (𝓞 X.B.I.F)` using `hQ`. Rewrite `hQ'` using `[Formalism.L2.SG.Pf.TypedLoc.primesOver_eq X.B.I.F hp]`.
+
+Take `⟨v, hv, rfl⟩` from `hQ'`. Take `⟨he, hf⟩` from `Formalism.L2.SG.Pf.TypedLoc.tower_ef X.B.I.F D.host.E hp (D.nd.g_split i) v hv`. Rewrite using `[he, hf]`. Rewrite `hsum` using `[Finset.sum_congr rfl hall, Finset.sum_const, smul_eq_mul, mul_one]`. Rewrite using `[← hsum, ← Set.ncard_coe_finset, IsDedekindDomain.coe_primesOverFinset hq0, Formalism.L2.SG.Pf.TypedLoc.primesOver_eq X.B.I.F hp]`.
+
+Conclude with `(Set.ncard_image_of_injective _ (fun v w hvw => HeightOneSpectrum.ext hvw)).symm`.
+-/
 theorem card_over (i : Fin 2) :
     ({v : HeightOneSpectrum (𝓞 X.B.I.F) | ((D.host.g i : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal}).ncard =
       Module.finrank ℚ X.B.I.F := by
@@ -166,6 +225,19 @@ theorem card_over (i : Fin 2) :
     Formalism.L2.SG.Pf.TypedLoc.primesOver_eq X.B.I.F hp]
   exact (Set.ncard_image_of_injective _ (fun v w hvw => HeightOneSpectrum.ext hvw)).symm
 
+/- English proof (translation)
+Unfold `TypedGeneratorProduct`. Establish `hg0` using `(D.host.g_prime 0).ne_zero`. Establish `hg1` using `(D.host.g_prime 1).ne_zero`. Establish `hA0` using `finite_over X.B.I.F (D.host.g 0) hg0`. Establish `hA1` using `finite_over X.B.I.F (D.host.g 1) hg1`.
+
+Establish `hT : typSet X.B.I.F (D.host.g 0) (D.host.g 1) = hA0.toFinset ∪ hA1.toFinset`. Use extensionality with `v`. Rewrite using `[mem_typSet _ _ _ hg0 hg1, Finset.mem_union, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hdisj : Disjoint hA0.toFinset hA1.toFinset` using `Finset.disjoint_left.2 fun v h0 h1 => not_both X v (hA0.mem_toFinset.1 h0) (hA1.mem_toFinset.1 h1)`.
+
+Establish `hc0 : hA0.toFinset.card = Module.finrank ℚ D.host.F`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hA0, card_over X 0, finrank_eq X]`. Establish `hc1 : hA1.toFinset.card = Module.finrank ℚ D.host.F`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hA1, card_over X 1, finrank_eq X]`. Establish `hg0v : ∀ v ∈ hA0.toFinset, (gAt X v : ℝ) = (D.host.g 0 : ℝ)`.
+
+Introduce `v hv`. Rewrite using `[gAt, if_pos (show ((D.host.g 0 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal from hA0.mem_toFinset.1 hv)]`. Establish `hg1v : ∀ v ∈ hA1.toFinset, (gAt X v : ℝ) = (D.host.g 1 : ℝ)`. Introduce `v hv`. Establish `h1 : ((D.host.g 1 : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal` using `hA1.mem_toFinset.1 hv`.
+
+Rewrite using `[gAt, if_neg (fun h0 => not_both X v h0 h1)]`. Use `show ∏ p : ↥(typSet X.B.I.F (D.host.g 0) (D.host.g 1)), (gAt X p.1 : ℝ) = _`. Rewrite using `[Finset.prod_coe_sort (typSet X.B.I.F (D.host.g 0) (D.host.g 1)) (fun v => (gAt X v : ℝ)), hT, Finset.prod_union hdisj, Finset.prod_congr rfl hg0v, Finset.prod_congr rfl hg1v, Finset.prod_const, Finset.prod_const, hc0, hc1, ← mul_pow]`. Unfold `Lat.gS`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem typed_generator_product : TypedGeneratorProduct X := by
   unfold TypedGeneratorProduct
   have hg0 := (D.host.g_prime 0).ne_zero
@@ -198,6 +270,11 @@ theorem typed_generator_product : TypedGeneratorProduct X := by
   push_cast
   rfl
 
+/- English proof (translation)
+Unfold `QuadraticInfinitePlaces Formalism.HermitianLatticesTheory.fDeg`. Establish `: IsTotallyComplex D.host.E` using `(Formalism.L2.SG.Pf.Cnt.field_dictionary_holds D).1.1`. Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces D.host.E`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank D.host.E`. Establish `h3` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero D.host.E`.
+
+Establish `h4` using `Module.finrank_mul_finrank ℚ D.host.F D.host.E`. Rewrite `h4` using `[Formalism.BasicNotions.Examples₂.finrank_FE D.host]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem totally_complex_quadratic : QuadraticInfinitePlaces (D := D) := by
   unfold QuadraticInfinitePlaces Formalism.HermitianLatticesTheory.fDeg
   have : IsTotallyComplex D.host.E := (Formalism.L2.SG.Pf.Cnt.field_dictionary_holds D).1.1
@@ -208,8 +285,16 @@ theorem totally_complex_quadratic : QuadraticInfinitePlaces (D := D) := by
   rw [Formalism.BasicNotions.Examples₂.finrank_FE D.host] at h4
   omega
 
+/- English proof (translation)
+The claim follows from `fieldDict_of X u u' h3 h4 h5 (totally_complex_quadratic (D := D)) (different_generator_unit X) (typed_generator_product X)`.
+-/
 theorem field_dictionary_of_leaves (h3 : EulerProductEta X) (h4 : LocalFactorProduct X u) (h5 : VInvEqHalfRootDiscriminant (D := D)) : Formalism.L2.SG.Pf.NcVal.FieldDict X u u' := fieldDict_of X u u' h3 h4 h5 (totally_complex_quadratic (D := D)) (different_generator_unit X) (typed_generator_product X)
 
+/- English proof (translation)
+Unfold `VInvEqHalfRootDiscriminant Formalism.HermitianLatticesTheory.vInv`. Establish `h6 : Formalism.HermitianLatticesTheory.fDeg D.host.E = Module.finrank ℚ D.host.F` using `totally_complex_quadratic`. Rewrite using `[h6, Formalism.L2.SG.NGCut.LeadingMinorIntegrality.discr_sq]`. Use `congr 1`. Use `push_cast`.
+
+Rewrite using `[abs_pow, ← Real.rpow_natCast, ← Real.rpow_mul (abs_nonneg _)]`. Use `congr 1`. Establish `hf : (0 : ℝ) < Module.finrank ℚ D.host.F` using `by exact_mod_cast Module.finrank_pos`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+-/
 theorem discriminant_sq_relation : VInvEqHalfRootDiscriminant (D := D) := by
   unfold VInvEqHalfRootDiscriminant Formalism.HermitianLatticesTheory.vInv
   have h6 : Formalism.HermitianLatticesTheory.fDeg D.host.E = Module.finrank ℚ D.host.F := totally_complex_quadratic

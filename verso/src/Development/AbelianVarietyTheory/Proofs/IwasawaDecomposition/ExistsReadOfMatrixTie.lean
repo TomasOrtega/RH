@@ -10,11 +10,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Mem.SJ
 
+/- English proof (translation)
+Unfold `RowSide.iota Rows.Data.iota`. Rewrite using `[PrimeDegreeVariant.sharp_downTo]`. Both sides reduce to the same expression.
+-/
 theorem sharp_iota_eq (D : D7) (μ : D.what₂.Tup) : (RowSide.sharp D).iota μ = D.what₂.iota μ := by
   unfold RowSide.iota Rows.Data.iota
   rw [PrimeDegreeVariant.sharp_downTo]
   rfl
 
+/- English proof (translation)
+Substitute `hμ` using the available equality. Use `⟨⟨wU, eNu, eRR, jA.comp V.mulVecLin, hv, fun a => ?_⟩, HEq.rfl, HEq.rfl, HEq.rfl, fun _ => HEq.rfl, ?_, fun y => ?_, hNu, fun h => h, fun h => h⟩` and prove the remaining obligations. Rewrite using `[emb_eq D.what₂.embLL Bs.v0 a, sgAt_mk D.what₂.embLL hv]`. Conclude with `(GlobalTheory.range_op_eq_span_of_formsTie D.what₂.embLL (W := (RowSide.sharp D).Amb D.what₂.mu0) jA H E _ V hF hE).symm`. Establish `h` using `hι y`.
+
+Rewrite `h` using `[sharp_iota_eq]`. Conclude with `h`.
+-/
 theorem exists_read_of_matrix_tie (D : D7) {Bs : DefBase D.what₂.LL} {A : DefAmb Bs} (X : CxData A)
     (fc : DefSub A → DefFace Bs) (cr : Crd A fc) (μ : D.what₂.Tup) (hμ : μ = D.what₂.mu0)
     (hv : Bs.v0 = InfinitePlace.mk D.what₂.embLL) {n : ℕ}

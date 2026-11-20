@@ -10,6 +10,9 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 
 namespace GlobalTheory.CompanionTheory.NuGalSquare
 
+/- English proof (translation)
+Use `haveI t₁ : RingHomCompTriple τa τb (τb.comp τa) := ⟨rfl⟩`. Use `haveI t₂ : RingHomCompTriple τc τd (τb.comp τa) := ⟨hτ.symm⟩`. Rewrite using `[pull_pull (τb.comp τa), pull_pull (τb.comp τa)]`. Conclude with `cr_pull_eq _ _ (fun T => crHom (T := ma.obj (mb.obj T)) (T' := mc.obj (md.obj T)) (RingHom.id T.B) (fun r => congrArg T.i (hσ r)) (DPMorphism.id T.δ).isDPMorphism fun h => (pt_id _ h _).trans (hpt _ _)) (fun _ _ => rfl) (fun _ _ => rfl) j x`.
+-/
 theorem cr_square_semi {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b₁ b₂ b₃ b₄ : Base} {h₁ : b₁.t = 1} {h₂ : b₂.t = 1}
     {h₃ : b₃.t = 1} {h₄ : b₄.t = 1} {κ₁ : O →+* b₁.R ⧸ b₁.I} {κ₂ : O →+* b₂.R ⧸ b₂.I} {κ₃ : O →+* b₃.R ⧸ b₃.I}
     {κ₄ : O →+* b₄.R ⧸ b₄.I} {Λ : Type} [CommRing Λ] {c₁ : Λ →+* b₁.R} {c₂ : Λ →+* b₂.R} {c₃ : Λ →+* b₃.R} {c₄ : Λ →+* b₄.R}
@@ -32,13 +35,22 @@ theorem cr_square_semi {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b
 
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => ACris.phi_gal_smul σ a`.
+-/
 theorem commute_phi_gal (σ : Gal(PadicAlgCl l/K)) : Commute (ACris.phi ℂ_[l] l) (ACris.galCris σ) :=
   RingHom.ext fun a => ACris.phi_gal_smul σ a
 
+/- English proof (translation)
+The claim follows from `((commute_phi_gal σ).pow_left N).eq`.
+-/
 theorem phiA_comp_gal (σ : Gal(PadicAlgCl l/K)) (N : ℕ) :
     (Mid.phiA l N).comp (ACris.galCris σ) = (ACris.galCris σ).comp (Mid.phiA l N) :=
   ((commute_phi_gal σ).pow_left N).eq
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun r => by obtain ⟨a, rfl⟩ := (RL.base_acr (base l) isBase_base).2 n |>.1 r change (base l).phi n (galBase σ n ((base l).cris n a)) = galBase σ n ((base l).phi n ((base l).cris n a)) rw [galBase_cris, (base l).phi_cris, (base l).phi_cris, galBase_cris] exact congrArg …`.
+-/
 theorem commute_phi_galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) : Commute ((base l).phi n) (galBase σ n) :=
   RingHom.ext fun r => by
     obtain ⟨a, rfl⟩ := (RL.base_acr (base l) isBase_base).2 n |>.1 r
@@ -46,10 +58,16 @@ theorem commute_phi_galBase (σ : Gal(PadicAlgCl l/K)) (n : ℕ) : Commute ((bas
     rw [galBase_cris, (base l).phi_cris, (base l).phi_cris, galBase_cris]
     exact congrArg _ (ACris.phi_gal_smul σ a)
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun ((commute_phi_galBase σ n).pow_left N).eq x`.
+-/
 theorem phiP_galBase (σ : Gal(PadicAlgCl l/K)) (n N : ℕ) (x : (base l).Acr n) :
     Mid.phiP l n N (galBase σ n x) = galBase σ n (Mid.phiP l n N x) :=
   RingHom.congr_fun ((commute_phi_galBase σ n).pow_left N).eq x
 
+/- English proof (translation)
+Introduce `l _ K r N hT M σ hσ n j x`. Conclude with `cr_square_semi (B.crMor (F := B.schFn M.p) (F' := B.schFn M.p) (b := B.bs l true n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl) (galBase σ n) rfl (B.dd_gal true σ n) (B.basePt _ _ (B.gal_κb (okToOC l K) σ (galOC_okToOC σ) true n)) fun _ _ _ => rfl) (Mid.mOut r M n hT) (Mid.mOu …`.
+-/
 theorem nu_gal : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (σ : Gal(PadicAlgCl l/K)) (hσ : ∀ w, ACris.galCris σ (r.w w) = r.w w) (n j : ℕ) (x : B.Hc (B.schFn M.p) (okToOC l K) true n j), Mid.nu r M n j hT (B.galHc (B.schFn M.p) (okToOC l K) σ (galOC_okToOC σ) true n j x) = galM r M σ hσ n j (Mid.nu r M n j hT x) := by
   intro l _ K r N hT M σ hσ n j x
   exact cr_square_semi

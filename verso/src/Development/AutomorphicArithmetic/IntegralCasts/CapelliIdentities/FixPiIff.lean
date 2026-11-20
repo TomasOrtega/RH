@@ -10,6 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwThe
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkApply
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.FixedSubgroup
 
+/- English proof (translation)
+Use `⟨fun h j k hk => h _ fun i _ => ?_, fun h k hk => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using `using hk`. Simplify using `[Pi.mulSingle_eq_of_ne hij]`. Set `H : Subgroup (∀ i, G i)` to `{ carrier := {g | ρ g m = m} one_mem' := by simp mul_mem' := fun {a b} (ha : ρ a m = m) (hb : ρ b m = m) => show ρ (a * b) m = m by simp [ha, hb] inv_mem' := fun {a} (ha : ρ a m = m) => show ρ a⁻¹ m = m by conv_lhs => rw [← ha, Representation.inv_self_apply] }`.
+
+Conclude with `Subgroup.pi_mem_of_mulSingle_mem (H := H) k fun i => h i _ (hk i trivial)`.
+-/
 private theorem UpperTheory.Reformulated.B.Gr34.fix_pi_iff {ι : Type} [Finite ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)]
     {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (∀ i, G i) M)
     (K : ∀ i, Subgroup (G i)) (m : M) :
@@ -26,6 +31,9 @@ private theorem UpperTheory.Reformulated.B.Gr34.fix_pi_iff {ι : Type} [Finite �
           conv_lhs => rw [← ha, Representation.inv_self_apply] }
     exact Subgroup.pi_mem_of_mulSingle_mem (H := H) k fun i => h i _ (hk i trivial)
 
+/- English proof (translation)
+Introduce `L _ _ n q w A M _ _ _ ρ C m`. Use `show m ∈ UpperTheory.Reformulated.B.SubgroupFixedSubmodule.fixd _ _ ↔ ∀ j, m ∈ UpperTheory.Reformulated.B.SubgroupFixedSubmodule.fixd _ _`. Conclude with `UpperTheory.Reformulated.B.Gr34.fix_pi_iff (G := fun j => UpperTheory.V.Hi.GLw n (w j)) ρ _ m`.
+-/
 theorem UpperTheory.Reformulated.B.Gr34.mem_UC :
     ∀ {L : Type} [inst : Field L] [inst_1 : @NumberField L inst] {n q : Nat} {w : Fin q → @UpperTheory.V.W.Plc L inst}
       {A M : Type} [inst_2 : CommRing A] [inst_3 : AddCommGroup M]

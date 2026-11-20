@@ -23,6 +23,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatModel.HalfFormUnit
 
+/- English proof (translation)
+Take `⟨a, b, hb, rfl⟩` from `mem_orderC.1 hx`. Use `mem_orderC.2 ⟨a, IsCMField.ringOfIntegersComplexConj E b, ?_, ?_⟩` and prove the remaining obligations. Establish `: c.map (algebraMap (OF E) (𝓞 E)) ≤ (c.map (algebraMap (OF E) (𝓞 E))).comap (IsCMField.ringOfIntegersComplexConj E)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `z hz`.
+
+Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgEquiv.commutes]`. Conclude with `Ideal.mem_map_of_mem _ hz`. Conclude with `this hb`. Rewrite using `[map_add]`. Use `congr 1`.
+
+Conclude with `(IsCMField.complexConj E).commutes (a : FR E)`.
+-/
 theorem conj_mem_orderC {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal (OF E)} {x : E} (hx : x ∈ orderC c) :
     IsCMField.complexConj E x ∈ orderC c := by
   obtain ⟨a, b, hb, rfl⟩ := mem_orderC.1 hx
@@ -38,6 +45,15 @@ theorem conj_mem_orderC {E : Type} [Field E] [NumberField E] [IsCMField E] {c : 
     congr 1
     exact (IsCMField.complexConj E).commutes (a : FR E)
 
+/- English proof (translation)
+Use `haveI : Module.Free R (primDR A) := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.Free.chooseBasis R (primDR A)`. Use `LinearMap.ext fun y ↦ ?_` and prove the remaining obligations. Establish `: y = ∑ k, y (m.pull (b k)) • hm.bcMap (b.coord k)`. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations.
+
+Take `⟨z, rfl⟩` from `hm.2 c`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x c`.
+
+Rewrite using `[liftSemi_tmul, map_smul, map_smul]`. Use `congr 1`. Rewrite using `[LinearMap.sum_apply]`. Use `conv_lhs => rw [← b.sum_repr c, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, hm.corr_iff.2 rfl c, LinearMap.map_smulₛₗ, map_smul, smul_eq_mul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[this, map_sum]`. Simplify using `[h]`.
+-/
 theorem span_bcMap {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [Algebra R R'] {A : Over (Sp R)} [GrpObj A]
     {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left}
     {m : GrpMor (dp0 R) (𝟙 _) A (dp0 R') (𝟙 _) A' (algebraMap R R') (spMap (algebraMap R R')) φ} (hm : m.IsBC)
@@ -65,6 +81,13 @@ theorem span_bcMap {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [Alg
 
 open ReciprocityTheory.ChartRestriction.G.Chart (isTan_iff) in
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u X.dim`. Use `choose D hD hu using fun v : X.Lie ↦ h1 v.hom v.isTangent`. Use `⟨{ toFun := D, map_add' := fun v v' ↦ ?_, map_smul' := fun c v ↦ ?_ }, fun w ↦ ?_, fun v w ↦ ⟨fun h ↦ (hu v w h).symm, fun h ↦ h ▸ hD v⟩⟩` and prove the remaining obligations. Use `(hu _ _ ?_).symm` and prove the remaining obligations. Use `GlobalTheory.UnifLieBasis.isDiff_add u ((isTan_iff _).2 v.isTangent) ((isTan_iff _).2 v'.isTangent) (hD v) (hD v')` as an intermediate fact.
+
+Rewrite using `[Serre.Lie.hom_add]`. Conclude with `this`. Use `(hu _ _ ?_).symm` and prove the remaining obligations. Use `GlobalTheory.UnifLieBasis.isDiff_smul u ((isTan_iff _).2 v.isTangent) (hD v) c` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals rfl`. Take `⟨v, ⟨hv, hw⟩, -⟩` from `h2 w`. Conclude with `⟨Serre.Lie.mk X.rm v hv, (hu (Serre.Lie.mk X.rm v hv) w hw).symm⟩`.
+-/
 theorem exists_coord {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X : Obj F 𝔠 (Sp ℂ)) {L : LB X.A.left}
     (u : HolUnif X.A L (Module.finrank ℚ F)) :
     ∃ D : X.Lie →ₗ[ℂ] (Fin (Module.finrank ℚ F) → ℂ), Function.Surjective D ∧ ∀ v w, u.IsDiff w v.hom ↔ D v = w := by
@@ -83,6 +106,17 @@ theorem exists_coord {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} (X :
   · obtain ⟨v, ⟨hv, hw⟩, -⟩ := h2 w
     exact ⟨Serre.Lie.mk X.rm v hv, (hu (Serre.Lie.mk X.rm v hv) w hw).symm⟩
 
+/- English proof (translation)
+Establish `hφ : IsGrpPullback X.A X₀.A (spMap (algebraMap R ℂ)) p` using `hp.grp`. Take `⟨hm, -⟩` from `P.2.2.1 R X₀.A _ X₀.ab X₀.dim ℂ X.A p hφ`. Establish `hL'` using `(P.2.1 ℂ X.A _ X.ab X.dim).1`. Take `⟨hfin, hproj, -⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim P.1 X₀.ab X₀.dim`. Take `⟨D, hDs, hD⟩` from `exists_coord X U.u`.
+
+Establish `key : ∀ x y, (GlobalTheory.Published.AbelianDeRham.bcMor hφ).Corr x y → (e (hL.toLie X₀.rm x) : ℂ) = a * D (hL'.toLie X.rm y) (U.e.symm i)` using `fun x y hxy ↦ he _ _ _ (Obj.lieCorr_of_isLieImage P R.subtype hp (GlobalTheory.Published.AbelianDeRham.bcMor hφ) hxy ((hL.toLie_eq_iff _).1 rfl) ((hL'.toLie_eq_iff _).1 rfl)) ((hD _ _).2 rfl)`. Use `⟨?_, fun β _ α _ c hαβ hα x ↦ ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0 push_neg at h0`. Use `span_bcMap hm (LinearMap.proj (U.e.symm i) ∘ₗ D ∘ₗ hL'.toLie X.rm) fun x ↦ by` as an intermediate fact. Establish `h1` using `key x _ (hm.corr_iff.2 rfl)`.
+
+Rewrite `h1` using `[h0]`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left ha`. Take `⟨v, hv⟩` from `hDs fun _ ↦ 1`. Take `⟨y, rfl⟩` from `hL'.toLie_surjective X.rm v`. Establish `h2` using `LinearMap.congr_fun this y`.
+
+Simplify using `[hv] at h2`. Establish `hx` using `hm.corr_iff.2 (rfl : hm.bcMap x = _)`. Rewrite using `[key _ _ hx, key _ _ (GrpMor.Corr.push (GlobalTheory.Published.AbelianDeRham.bcMor hφ) β α hαβ.symm hx), hL'.toLie_push hL' X.rm X.rm]`. Set `M : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `{ toFun := fun w j => c j * w j map_add' := fun w w' => by funext j; simp [mul_add] map_smul' := fun r w => by funext j; simp; ring }`. Establish `h3` using `GlobalTheory.UnifLieBasis.isDiff_comp U.u α (LinearMap.toContinuousLinearMap M) hα (hL'.toLie X.rm (hm.bcMap x)).isTangent ((hD _ _).2 rfl)`.
+
+Rewrite using `[(hD (Serre.Lie.map X.rm X.rm α (hL'.toLie X.rm (hm.bcMap x))) _).1 h3]`. Express the relevant statement in the definitionally equal form `a * (c _ * _) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem periodGen_eigen (P : GlobalTheory.Published.AbelianDeRham) {E : Type} [Field E] [NumberField E] {I : Type} {φ : I → E →+* ℂ}
     {𝔠 : FracId (FR E)} {R : Subring ℂ} [IsLocalRing R] {X₀ : Obj (FR E) 𝔠 (Sp R)} {X : Obj (FR E) 𝔠 (Sp ℂ)} {L : Set E}
     {U : Unif φ L 0 X} {p : X.A.left ⟶ X₀.A.left} (hp : X.IsPullBy X₀ (spMap R.subtype) p) (hL : LieExact X₀.A)
@@ -124,6 +158,11 @@ theorem periodGen_eigen (P : GlobalTheory.Published.AbelianDeRham) {E : Type} [F
     change a * (c _ * _) = _
     ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigLat, GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigK, Submodule.mem_comap, Submodule.restrictScalars_mem, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Introduce `a`. Take `⟨s, h2, h1⟩` from `hh a`. Establish `hr0 : algebraMap R K r ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective R _)).2 hr`. Use `smul_right_injective _ hr0 ?_` and prove the remaining obligations.
+
+Establish `h3 : LinearMap.baseChange K ((eH.conjRingEquiv.toRingHom.comp ρ) a) (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK K H' (eH h)) = GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK K H' (eH (ρ a h))`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.inK]`. Simplify using `only`. Rewrite using `[h3, smul_smul, mul_comm, ← h2, algebraMap_smul, algebraMap_smul, ← map_smul, ← map_smul, h1, map_smul, map_smul]`.
+-/
 theorem mem_eigLat {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal (OF E)} {R K : Type} [CommRing R] [Field K]
     [Algebra R K] [IsFractionRing R K] {H : Type*} [AddCommGroup H] [Module R H] {H' : Type} [AddCommGroup H'] [Module R H']
     (eH : H ≃ₗ[R] H') (ρ : orderC c →+* Module.End R H) (σ : E →+* K) (h : H) {r : R} (hr : r ≠ 0)
@@ -141,6 +180,11 @@ theorem mem_eigLat {E : Type} [Field E] [NumberField E] [IsCMField E] {c : Ideal
   dsimp only
   rw [h3, smul_smul, mul_comm, ← h2, algebraMap_smul, algebraMap_smul, ← map_smul, ← map_smul, h1, map_smul, map_smul]
 
+/- English proof (translation)
+Establish `hker : LinearMap.ker π ≤ LinearMap.ker f` using `fun x hx ↦ by`. Use `h x` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.1 hx, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hs`. Use `⟨(LinearMap.ker π).liftQ _ hker ∘ₗ (π.quotKerEquivOfSurjective hπ).symm.toLinearMap, fun x ↦ ?_⟩` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_factor {R : Type} [CommRing R] [IsDomain R] {H M : Type*} [AddCommGroup H] [Module R H] [AddCommGroup M]
     [Module R M] (π : H →ₗ[R] M) (hπ : Function.Surjective π) (f : H →ₗ[R] R) (e : M →ₗ[R] R) {s : R} (hs : s ≠ 0)
     (h : ∀ x, s * f x = e (π x)) : ∃ ℓ : M →ₗ[R] R, ∀ x, ℓ (π x) = f x := by
@@ -153,6 +197,25 @@ theorem exists_factor {R : Type} [CommRing R] [IsDomain R] {H M : Type*} [AddCom
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `_ P _ E _ _ _ _ I _ d φ _ 𝔣 _ l _ Q _ _ y _ lam 𝔠 R _ _ X₀ X U p cm hp _ hcm j hj φK hφK e a he hL n eH c₀ ψ₀ _ _ hψ hadj _ i g hg`. Take `⟨ha, hper, huniq⟩` from `he i`. Take `⟨⟨x₀, hx₀⟩, heig⟩` from `periodGen_eigen P hp hL ha hper`. Take `⟨h, hh⟩` from `hψ.2 (e i ∘ₗ hL.toLie X₀.rm)`. Establish `hh' : ∀ x, ψ₀ h x = e i (hL.toLie X₀.rm x)` using `fun x ↦ LinearMap.congr_fun hh x`.
+
+Establish `heig' : ∀ (b : orderC (condQ 𝔣 Q)) x, (e i (hL.toLie X₀.rm (act (dp0 R) (𝟙 _) cm b x)) : ℂ) = φ i b * e i (hL.toLie X₀.rm x)` using `fun b x ↦ by`. Take `⟨α, hα, h1, h2⟩` from `hcm b`. Use `haveI := cm.hom b`. Use `heig (cm.act b) α (fun j ↦ φ (U.e j) (b : E)) h1 h2 x` as an intermediate fact. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Establish `hmem : eH h ∈ GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.eigLat (eH.conjRingEquiv.toRingHom.comp (act (dp0 R) (𝟙 _) cm)) (GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations.bar (φK i))`. Use `mem_eigLat eH _ _ h hx₀ fun c ↦ ?_` and prove the remaining obligations. Set `b : orderC (condQ 𝔣 Q)` to `⟨_, conj_mem_orderC c.2⟩`. Use `⟨e i (hL.toLie X₀.rm (act (dp0 R) (𝟙 _) cm b x₀)), j.injective ?_, hψ.1 (LinearMap.ext fun x ↦ ?_)⟩` and prove the remaining obligations. Rewrite using `[map_mul, hj, hj, heig', ← hφK i]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, hadj c b rfl, hh', hh']`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [smul_eq_mul, Subring.coe_mul]`. Rewrite using `[heig', heig']`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hmem` using `[hg]`. Take `⟨s, hs⟩` from `Submodule.mem_span_singleton.1 hmem`. Establish `hsg : ∀ x, s * ψ₀ (eH.symm g) x = e i (hL.toLie X₀.rm x)` using `fun x ↦ by`. Establish `h1 : h = s • eH.symm g` using `by rw [← LinearEquiv.map_smul, hs, eH.symm_apply_apply]`.
+
+Rewrite using `[← hh', h1, LinearMap.map_smul₂, smul_eq_mul]`. Establish `hs0 : s ≠ 0` using `fun h0 ↦ hx₀ (by rw [← hsg, h0, zero_mul])`. Take `⟨ℓ, hℓ⟩` from `exists_factor (hL.toLie X₀.rm) (hL.toLie_surjective X₀.rm) (ψ₀ (eH.symm g)) (e i) hs0 hsg`. Establish `hs0' : (s : ℂ) ≠ 0` using `fun h0 ↦ hs0 (Subtype.ext h0)`. Take `⟨t, ht⟩` from `huniq ℓ (a i / s) fun v v' W h1 h2 ↦ by`.
+
+Establish `h3` using `hper v v' W h1 h2`. Take `⟨x, rfl⟩` from `hL.toLie_surjective X₀.rm v`. Rewrite `h3` using `[← hsg, Subring.coe_mul]`. Rewrite using `[hℓ, div_mul_eq_mul_div, ← h3, mul_div_cancel_left₀ _ hs0']`. Establish `hst : t * s = 1`.
+
+Use `hsg x₀` as an intermediate fact. Rewrite `this` using `[← hℓ, ht, LinearMap.smul_apply, smul_eq_mul, ← _root_.mul_assoc]`. Rewrite using `[mul_comm]`. Conclude with `mul_right_cancel₀ hx₀ (this.trans (_root_.one_mul _).symm)`. Use `⟨Units.mkOfMulEqOne t s hst, fun x ↦ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hℓ, ht]`. Both sides reduce to the same expression.
+-/
 theorem halfForm_eq_unit_mul : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (I : Type) [Fintype I] (d : ℕ)
       (φ : I → E →+* ℂ), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData d φ → ∀ (𝔣 : Ideal (OF E)), IsBaseCond 𝔣 →

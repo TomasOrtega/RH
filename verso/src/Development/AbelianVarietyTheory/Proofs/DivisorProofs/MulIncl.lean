@@ -15,6 +15,9 @@ variable {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A]
 
 abbrev sq : A ⟶ A := (𝟙 A) ^ 2
 
+/- English proof (translation)
+Rewrite using `[sq, MonObj.comp_pow, Category.comp_id]`.
+-/
 theorem comp_sq {T : Over S} (x : T ⟶ A) : x ≫ sq A = x ^ 2 := by
   rw [sq, MonObj.comp_pow, Category.comp_id]
 
@@ -24,6 +27,9 @@ abbrev incl : Two A ⟶ A := pullback.fst _ _
 
 variable {A}
 
+/- English proof (translation)
+Rewrite using `[← comp_sq, Category.assoc, pullback.condition, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+-/
 theorem incl_sq {T : Over S} (u : T ⟶ Two A) : (u ≫ incl A) ^ 2 = 1 := by
   rw [← comp_sq, Category.assoc, pullback.condition, ← Category.assoc, Hom.one_def]
   congr 1
@@ -32,9 +38,15 @@ theorem incl_sq {T : Over S} (u : T ⟶ Two A) : (u ≫ incl A) ^ 2 = 1 := by
 def kpt {T : Over S} (x : T ⟶ A) (hx : x ^ 2 = 1) : T ⟶ Two A :=
   pullback.lift x (toUnit _) (by rw [comp_sq, hx, Hom.one_def])
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 @[simp, reassoc] theorem kpt_incl {T : Over S} (x : T ⟶ A) (hx : x ^ 2 = 1) : kpt x hx ≫ incl A = x :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.hom_ext h (toUnit_unique _ _)`.
+-/
 theorem two_ext {T : Over S} {u v : T ⟶ Two A} (h : u ≫ incl A = v ≫ incl A) : u = v :=
   pullback.hom_ext h (toUnit_unique _ _)
 
@@ -63,6 +75,9 @@ instance : CommGrpObj (Two A) := CommGrpObj.ofRepresentableBy _ (twoFun A) (twoR
 
 variable {A}
 
+/- English proof (translation)
+Establish `h` using `((yonedaGrpObjIsoOfRepresentableBy (Two A) (twoFun A ⋙ forget₂ CommGrpCat GrpCat) (twoRep A)).hom.app (Opposite.op T)).hom.map_mul x y`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem mul_incl {T : Over S} (x y : T ⟶ Two A) : (x * y) ≫ incl A = (x ≫ incl A) * (y ≫ incl A) := by
   have h := ((yonedaGrpObjIsoOfRepresentableBy (Two A) (twoFun A ⋙ forget₂ CommGrpCat GrpCat)
     (twoRep A)).hom.app (Opposite.op T)).hom.map_mul x y
@@ -74,6 +89,9 @@ namespace GlobalTheory.TwoTors
 
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A]
 
+/- English proof (translation)
+The claim follows from `Over.w _`.
+-/
 theorem sq_w : (sq A).left ≫ A.hom = A.hom := Over.w _
 
 abbrev pairO : Over S := Over.mk (pullback.fst (sq A).left (sq A).left ≫ A.hom)
@@ -82,6 +100,9 @@ abbrev tripO : Over S :=
   Over.mk (pullback.fst _ _ ≫ pullback.fst (sq A).left (sq A).left ≫ A.hom :
     GlobalTheory.LBDescent.Triple (sq A).left ⟶ S)
 
+/- English proof (translation)
+Rewrite using `[← sq_w A, pullback.condition_assoc]`.
+-/
 theorem snd_w : pullback.snd (sq A).left (sq A).left ≫ A.hom = pullback.fst (sq A).left (sq A).left ≫ A.hom := by
   rw [← sq_w A, pullback.condition_assoc]
 
@@ -89,6 +110,9 @@ def s₁ : pairO A ⟶ A := Over.homMk (pullback.fst _ _) rfl
 
 def s₂ : pairO A ⟶ A := Over.homMk (pullback.snd _ _) (snd_w A)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext pullback.condition`.
+-/
 theorem s_sq : s₁ A ≫ sq A = s₂ A ≫ sq A := Over.OverMorphism.ext pullback.condition
 
 def t₁ : tripO A ⟶ A := Over.homMk (pullback.fst _ _ ≫ pullback.fst _ _) rfl
@@ -101,10 +125,16 @@ def t₃ : tripO A ⟶ A := Over.homMk (pullback.snd _ _ ≫ pullback.snd _ _) (
   show (pullback.snd _ _ ≫ pullback.snd _ _) ≫ A.hom = _
   rw [Category.assoc, snd_w, ← pullback.condition_assoc, snd_w]; rfl)
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by show (pullback.fst _ _ ≫ pullback.fst _ _) ≫ (sq A).left = (pullback.fst _ _ ≫ pullback.snd _ _) ≫ (sq A).left rw [Category.assoc, Category.assoc, pullback.condition])`.
+-/
 theorem t₁₂_sq : t₁ A ≫ sq A = t₂ A ≫ sq A :=
   Over.OverMorphism.ext (by
     show (pullback.fst _ _ ≫ pullback.fst _ _) ≫ (sq A).left = (pullback.fst _ _ ≫ pullback.snd _ _) ≫ (sq A).left
     rw [Category.assoc, Category.assoc, pullback.condition])
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by show (pullback.fst _ _ ≫ pullback.snd _ _) ≫ (sq A).left = (pullback.snd _ _ ≫ pullback.snd _ _) ≫ (sq A).left simp only [Category.assoc] have e := pullback.condition (f := pullback.snd (sq A).left (sq A).left) (g := pullback.fst (sq A).left (sq A).left) …`.
+-/
 theorem t₂₃_sq : t₂ A ≫ sq A = t₃ A ≫ sq A :=
   Over.OverMorphism.ext (by
     show (pullback.fst _ _ ≫ pullback.snd _ _) ≫ (sq A).left = (pullback.snd _ _ ≫ pullback.snd _ _) ≫ (sq A).left
@@ -117,6 +147,9 @@ variable {A}
 def dif {T : Over S} (a b : T ⟶ A) (h : a ≫ sq A = b ≫ sq A) : T ⟶ Two A :=
   kpt (a⁻¹ * b) (by rw [mul_pow, inv_pow, ← comp_sq, ← comp_sq, h, inv_mul_cancel])
 
+/- English proof (translation)
+The claim follows from `kpt_incl _ _`.
+-/
 @[simp, reassoc] theorem dif_incl {T : Over S} (a b : T ⟶ A) (h : a ≫ sq A = b ≫ sq A) :
     dif a b h ≫ incl A = a⁻¹ * b := kpt_incl _ _
 

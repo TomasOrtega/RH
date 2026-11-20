@@ -15,6 +15,13 @@ namespace TateCharpoly
 
 variable {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
+/- English proof (translation)
+Distinguish the cases in `hQ : Q = 0`. Substitute `hQ` using the available equality. Rewrite using `[homComp_zero_right, homPt_zero, homPt_zero, AddMonoidHom.comp_zero]`. Distinguish the cases in `hR : R = 0`. Substitute `hR` using the available equality.
+
+Rewrite using `[homComp_zero_left, homPt_zero, homPt_zero, AddMonoidHom.zero_comp]`. Take `⟨φ, rfl⟩ : ∃ φ : Isogeny E E', φ.toHom = Q` from `⟨isogOfHom Q hQ, rfl⟩`. Take `⟨ψ, rfl⟩ : ∃ ψ : Isogeny E' E'', ψ.toHom = R` from `⟨isogOfHom R hR, rfl⟩`. Rewrite using `[Isogeny.homComp_toHom, homPt_toHom, homPt_toHom, homPt_toHom]`. Use extensionality with `P`.
+
+Rewrite using `[AddMonoidHom.comp_apply, Isogeny.pointHom_apply, Isogeny.pointHom_apply, Isogeny.pointHom_apply, Isogeny.pointMap_comp]`.
+-/
 theorem homPt_homComp (R : isogHom E' E'') (Q : isogHom E E') :
     homPt (homComp R Q) = (homPt R).comp (homPt Q) := by
   by_cases hQ : Q = 0
@@ -30,32 +37,55 @@ theorem homPt_homComp (R : isogHom E' E'') (Q : isogHom E E') :
   rw [AddMonoidHom.comp_apply, Isogeny.pointHom_apply, Isogeny.pointHom_apply,
     Isogeny.pointHom_apply, Isogeny.pointMap_comp]
 
+/- English proof (translation)
+Rewrite using `[mulIsogeny_toHom, one_smul]`.
+-/
 theorem homId_eq_mulIsogeny : (homId : isogEnd E) = (mulIsogeny E 1 one_ne_zero).toHom := by
   rw [mulIsogeny_toHom, one_smul]
 
+/- English proof (translation)
+Rewrite using `[homId_eq_mulIsogeny, homPt_toHom]`. Use extensionality with `P`. Rewrite using `[Isogeny.pointHom_apply, Isogeny.pointMap_mulIsogeny, one_smul, AddMonoidHom.id_apply]`.
+-/
 theorem homPt_homId : homPt (homId : isogEnd E) = AddMonoidHom.id _ := by
   rw [homId_eq_mulIsogeny, homPt_toHom]
   ext P
   rw [Isogeny.pointHom_apply, Isogeny.pointMap_mulIsogeny, one_smul, AddMonoidHom.id_apply]
 
+/- English proof (translation)
+Rewrite using `[← homPointHom_apply, map_zsmul, homPointHom_apply, homPt_homId]`. Both sides reduce to the same expression.
+-/
 theorem homPt_zsmul_homId (n : ℤ) (P : E.toAffine.Point) :
     homPt (n • (homId : isogEnd E)) P = n • P := by
   rw [← homPointHom_apply, map_zsmul, homPointHom_apply, homPt_homId]
   rfl
 
+/- English proof (translation)
+Rewrite using `[homId_eq_mulIsogeny, homDeg_toHom, degree_mulIsogeny]`. Evaluate the numerical expressions.
+-/
 theorem homDeg_homId : homDeg (homId : isogEnd E) = 1 := by
   rw [homId_eq_mulIsogeny, homDeg_toHom, degree_mulIsogeny]
   norm_num
 
+/- English proof (translation)
+Distinguish the cases in `h : Q = 0`. Rewrite using `[h, homDeg_zero]`. Conclude with `(homDeg_pos h).le`.
+-/
 theorem homDeg_nonneg (Q : isogHom E E') : 0 ≤ homDeg Q := by
   by_cases h : Q = 0
   · rw [h, homDeg_zero]
   · exact (homDeg_pos h).le
 
+/- English proof (translation)
+Rewrite using `[← neg_one_zsmul, homDeg_zsmul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homDeg_neg (Q : isogHom E E') : homDeg (-Q) = homDeg Q := by
   rw [← neg_one_zsmul, homDeg_zsmul]
   ring
 
+/- English proof (translation)
+Establish `h` using `degBilin_zsmul_right (-1) a homId`. Rewrite `h` using `[neg_one_zsmul, smul_eq_mul, neg_one_mul]`. Establish `e1 : homDeg (homId - a) = homDeg (a + -homId)`. Rewrite using `[← homDeg_neg, neg_sub, sub_eq_add_neg]`. Establish `e2 : degBilin a (-homId) = homDeg (a + -homId) - homDeg a - homDeg (-homId : isogEnd E)` using `rfl`.
+
+Rewrite `e2` using `[homDeg_neg, homDeg_homId]`. Rewrite using `[e1, ← neg_neg (degBilin a homId), ← h, e2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degBilin_homId (a : isogEnd E) :
     degBilin a homId = 1 + homDeg a - homDeg (homId - a) := by
   have h := degBilin_zsmul_right (-1) a homId
@@ -90,6 +120,9 @@ noncomputable def endTate : isogEnd E →+* Module.End ℤ_[ℓ] (TateModule ℓ
     rw [LinearMap.add_apply, TateModule.map_apply, AddSubgroup.coe_add, Pi.add_apply,
       TateModule.map_apply, TateModule.map_apply, homPt_add, AddMonoidHom.add_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem endTate_apply (a : isogEnd E) (t : TateModule ℓ E.toAffine.Point) (k : ℕ) :
     ((endTate ℓ a t : TateModule ℓ E.toAffine.Point) : ℕ → E.toAffine.Point) k =
       homPt a ((t : ℕ → E.toAffine.Point) k) :=
@@ -97,6 +130,11 @@ theorem endTate_apply (a : isogEnd E) (t : TateModule ℓ E.toAffine.Point) (k :
 
 variable {ℓ}
 
+/- English proof (translation)
+Establish `hQ' : n • homPt a Q = 0` using `by rw [← map_nsmul, hQ, map_zero]`. Rewrite using `[← weilPairing_homDualFun a hn hP hQ']`. Establish `e : homPt (homDualFun a) (homPt a Q) = (homDeg a).toNat • Q`. Establish `h1 : homPt (homDualFun a) (homPt a Q) = homPt (homComp (homDual a) a) Q`. Rewrite using `[homPt_homComp]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, homComp_homDual_self, homPt_zsmul_homId, ← natCast_zsmul, Int.toNat_of_nonneg (homDeg_nonneg a)]`. Rewrite using `[e, weilPairing_nsmul_right hn hP hQ]`.
+-/
 theorem weilPairing_homPt_homPt {n : ℕ} (hn : (n : F) ≠ 0) (a : isogEnd E) {P Q : E.toAffine.Point}
     (hP : n • P = 0) (hQ : n • Q = 0) :
     weilPairing E n (homPt a P) (homPt a Q) = weilPairing E n P Q ^ (homDeg a).toNat := by
@@ -109,6 +147,37 @@ theorem weilPairing_homPt_homPt {n : ℕ} (hn : (n : F) ≠ 0) (a : isogEnd E) {
       Int.toNat_of_nonneg (homDeg_nonneg a)]
   rw [e, weilPairing_nsmul_right hn hP hQ]
 
+/- English proof (translation)
+Establish `hkF : ∀ k : ℕ, ((ℓ ^ k : ℕ) : F) ≠ 0` using `fun k => by push_cast; exact pow_ne_zero k hℓF`. Take `⟨b⟩` from `tateModule_basis E ℓ hℓF`. Establish `hcard` using `card_nsmul_pow_eq_zero E ℓ hℓF`. Use `set A := E.toAffine.Point`. Use `set e : ℕ → A → A → F := fun k => weilPairing E (ℓ ^ k) with he`.
+
+Establish `hl : ∀ k P Q R, ℓ ^ k • P = 0 → ℓ ^ k • Q = 0 → ℓ ^ k • R = 0 → e k (P + Q) R = e k P R * e k Q R` using `fun k _ _ _ hP hQ hR => weilPairing_add_left (hkF k) hP hQ hR`. Establish `hr : ∀ k P Q R, ℓ ^ k • P = 0 → ℓ ^ k • Q = 0 → ℓ ^ k • R = 0 → e k P (Q + R) = e k P Q * e k P R` using `fun k _ _ _ hP hQ hR => weilPairing_add_right (hkF k) hP hQ hR`. Establish `hself : ∀ k P, ℓ ^ k • P = 0 → e k P P = 1` using `fun k _ hP => weilPairing_self (hkF k) hP`. Establish `hpow : ∀ k P Q, ℓ ^ k • P = 0 → ℓ ^ k • Q = 0 → e k P Q ^ ℓ ^ k = 1` using `fun k _ _ hP hQ => weilPairing_pow_eq_one (hkF k) hP hQ`. Establish `hnd : ∀ k P, ℓ ^ k • P = 0 → (∀ Q, ℓ ^ k • Q = 0 → e k P Q = 1) → P = 0` using `fun k _ hP h => eq_zero_of_forall_weilPairing_eq_one' (hkF k) hP h`.
+
+Use `set m := (homDeg a).toNat with hmdef`. Establish `hm : homDeg a = (m : ℤ)` using `(Int.toNat_of_nonneg (homDeg_nonneg a)).symm`. Use `set M := LinearMap.toMatrix b b (endTate ℓ a) with hM`. Rewrite using `[← LinearMap.det_toMatrix b, Matrix.det_fin_two]`. Establish `hcomp : ∀ (x y : ℤ_[ℓ]) k, ((x • b 0 + y • b 1 : TateModule ℓ A) : ℕ → A) k = (toZModPow k x).val • ((b 0 : TateModule ℓ A) : ℕ → A) k + (toZModPow k y).val • ((b 1 : TateModule ℓ A) : ℕ → A) k`.
+
+Introduce `x y k`. Rewrite using `[AddSubgroup.coe_add, Pi.add_apply, TateModule.smul_apply, TateModule.smul_apply]`. Establish `hcol : ∀ j, endTate ℓ a (b j) = M 0 j • b 0 + M 1 j • b 1`. Introduce `j`. Use `conv_lhs => rw [← b.sum_repr (endTate ℓ a (b j))]`.
+
+Rewrite using `[Fin.sum_univ_two, hM, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`. Establish `hgen : ∀ k R, ℓ ^ k • R = 0 → ∃ x y : ℤ_[ℓ], R = (toZModPow k x).val • ((b 0 : TateModule ℓ A) : ℕ → A) k + (toZModPow k y).val • ((b 1 : TateModule ℓ A) : ℕ → A) k`. Introduce `k R hR`. Take `⟨t, ht⟩` from `exists_tateModule_apply_eq hcard k R hR`. Use `⟨b.repr t 0, b.repr t 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ht, ← hcomp]`. Use `conv_lhs => rw [← b.sum_repr t]`. Rewrite using `[Fin.sum_univ_two]`. Use `PadicInt.ext_of_toZModPow.mp fun k => ?_` and prove the remaining obligations. Use `set P := ((b 0 : TateModule ℓ A) : ℕ → A) k with hPdef`.
+
+Use `set Q := ((b 1 : TateModule ℓ A) : ℕ → A) k with hQdef`. Establish `hP : ℓ ^ k • P = 0` using `TateModule.pow_nsmul (b 0) k`. Establish `hQ : ℓ ^ k • Q = 0` using `TateModule.pow_nsmul (b 1) k`. Establish `hN : ℓ ^ k ≠ 0` using `pow_ne_zero k hℓ.out.ne_zero`. Use `set ζ := e k P Q with hζ`.
+
+Establish `hz : ζ ^ ℓ ^ k = 1` using `hpow k P Q hP hQ`. Establish `hφ : ∀ j, homPt a (((b j : TateModule ℓ A) : ℕ → A) k) = (toZModPow k (M 0 j)).val • P + (toZModPow k (M 1 j)).val • Q`. Introduce `j`. Rewrite using `[← endTate_apply ℓ a (b j) k, hcol j, hcomp]`. Establish `hφP` using `hφ 0`.
+
+Establish `hφQ` using `hφ 1`. Establish `hdeg : e k (homPt a P) (homPt a Q) = ζ ^ m` using `weilPairing_homPt_homPt (hkF k) a hP hQ`. Establish `hcomb` using `pairing_comb (ℓ ^ k) (e k) (hl k) (hr k) (hpow k) (hself k) hN hP hQ (toZModPow k (M 0 0)).val (toZModPow k (M 1 0)).val (toZModPow k (M 0 1)).val (toZModPow k (M 1 1)).val`. Rewrite `hcomb` using `[← hφP, ← hφQ, hdeg, ← pow_add]`. Establish `hfin : IsOfFinOrder ζ` using `isOfFinOrder_iff_pow_eq_one.mpr ⟨ℓ ^ k, Nat.pos_of_ne_zero hN, hz⟩`.
+
+Establish `hord : orderOf ζ = ℓ ^ k`. Consider the cases of `k with`. Consider the case `zero => simpa using hz`. Consider the case `succ n`. Use `orderOf_eq_prime_pow ?_ hz` and prove the remaining obligations.
+
+Introduce `hn`. Establish `hX : ℓ ^ (n + 1) • (ℓ ^ n • P) = 0` using `nsmul_nsmul_eq_zero _ hP _`. Establish `hXP : e (n + 1) (ℓ ^ n • P) P = 1`. Rewrite using `[pairing_nsmul_left _ (e (n + 1)) (hl _) (hpow _) hN hP hP, hself _ P hP, one_pow]`. Establish `hXQ : e (n + 1) (ℓ ^ n • P) Q = 1`.
+
+Rewrite using `[pairing_nsmul_left _ (e (n + 1)) (hl _) (hpow _) hN hP hQ]`. Conclude with `hn`. Establish `h0 : ℓ ^ n • P = 0`. Use `hnd (n + 1) _ hX fun R hR => ?_` and prove the remaining obligations. Take `⟨x, y, rfl⟩` from `hgen (n + 1) R hR`.
+
+Rewrite using `[hr _ _ _ _ hX (nsmul_nsmul_eq_zero _ hP _) (nsmul_nsmul_eq_zero _ hQ _), pairing_nsmul_right _ (e (n + 1)) (hr _) (hpow _) hN hX hP, pairing_nsmul_right _ (e (n + 1)) (hr _) (hpow _) hN hX hQ, hXP, hXQ, one_pow, one_pow, one_mul]`. Establish `h1 : ((b 0 : TateModule ℓ A) : ℕ → A) 1 = 0`. Rewrite using `[← TateModule.pow_nsmul_add (b 0) 1 n, add_comm]`. Conclude with `h0`. Conclude with `TateModule.basis_apply_one_ne_zero b 0 h1`.
+
+Establish `hmod` using `(hfin.pow_eq_pow_iff_modEq).mp hcomb`. Rewrite `hmod` using `[hord]`. Establish `hz'` using `(ZMod.natCast_eq_natCast_iff _ _ _).mpr hmod`. Move the coercions through the operations in `[ZMod.natCast_zmod_val] at hz'`. Rewrite using `[map_sub, map_mul, map_mul, hm, Int.cast_natCast, map_natCast]`.
+
+Take the linear combination `-hz'`.
+-/
 theorem det_endTate (hℓF : (ℓ : F) ≠ 0) (a : isogEnd E) :
     LinearMap.det (endTate ℓ a) = ((homDeg a : ℤ) : ℤ_[ℓ]) := by
   classical
@@ -208,6 +277,9 @@ theorem det_endTate (hℓF : (ℓ : F) ≠ 0) (a : isogEnd E) :
 
 namespace TateCharpoly
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_fin_two, Matrix.det_fin_two, Matrix.trace_fin_two]`. Simplify using `only [Matrix.sub_apply, Matrix.one_apply_eq, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide), Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_one_sub_fin_two {R : Type*} [CommRing R] (M : Matrix (Fin 2) (Fin 2) R) :
     (1 - M).det = 1 - M.trace + M.det := by
   rw [Matrix.det_fin_two, Matrix.det_fin_two, Matrix.trace_fin_two]
@@ -215,11 +287,19 @@ theorem det_one_sub_fin_two {R : Type*} [CommRing R] (M : Matrix (Fin 2) (Fin 2)
     Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide)]
   ring
 
+/- English proof (translation)
+The claim follows from `degBilin_homId a`.
+-/
 theorem degBilin_one (a : isogEnd E) : degBilin a 1 = 1 + homDeg a - homDeg (1 - a) :=
   degBilin_homId a
 
 end TateCharpoly
 
+/- English proof (translation)
+Take `⟨b⟩` from `tateModule_basis E ℓ hℓF`. Establish `h1` using `det_endTate hℓF a`. Establish `h2` using `det_endTate hℓF (1 - a)`. Rewrite `h1`, `h2` using `[← LinearMap.det_toMatrix b]`. Rewrite `h2` using `[map_sub, map_one, map_sub, LinearMap.toMatrix_one, det_one_sub_fin_two, h1]`.
+
+Rewrite using `[LinearMap.trace_eq_matrix_trace ℤ_[ℓ] b]`. Use `push_cast`. Take the linear combination `-h2`.
+-/
 theorem trace_endTate (hℓF : (ℓ : F) ≠ 0) (a : isogEnd E) :
     LinearMap.trace ℤ_[ℓ] _ (endTate ℓ a) = ((1 + homDeg a - homDeg (1 - a) : ℤ) : ℤ_[ℓ]) := by
   classical
@@ -232,6 +312,9 @@ theorem trace_endTate (hℓF : (ℓ : F) ≠ 0) (a : isogEnd E) :
   push_cast
   linear_combination -h2
 
+/- English proof (translation)
+Rewrite using `[trace_endTate hℓF, degBilin_one]`.
+-/
 theorem trace_endTate_eq_degBilin (hℓF : (ℓ : F) ≠ 0) (a : isogEnd E) :
     LinearMap.trace ℤ_[ℓ] _ (endTate ℓ a) = ((degBilin a 1 : ℤ) : ℤ_[ℓ]) := by
   rw [trace_endTate hℓF, degBilin_one]
@@ -244,6 +327,9 @@ instance TateCharpoly.instFiniteTateModule [hℓF : Fact ((ℓ : F) ≠ 0)] :
     Module.Finite ℤ_[ℓ] (TateModule ℓ E.toAffine.Point) :=
   Module.Finite.of_basis (tateModule_basis E ℓ hℓF.out).some
 
+/- English proof (translation)
+Take `⟨b⟩` from `tateModule_basis E ℓ hℓF.out`. Rewrite using `[← LinearMap.charpoly_toMatrix (endTate ℓ a) b, Matrix.charpoly_fin_two, ← LinearMap.trace_eq_matrix_trace, LinearMap.det_toMatrix, trace_endTate_eq_degBilin hℓF.out, det_endTate hℓF.out]`.
+-/
 theorem charpoly_endTate [hℓF : Fact ((ℓ : F) ≠ 0)] (a : isogEnd E) :
     (endTate ℓ a).charpoly =
       X ^ 2 - C ((degBilin a 1 : ℤ) : ℤ_[ℓ]) * X + C ((homDeg a : ℤ) : ℤ_[ℓ]) := by

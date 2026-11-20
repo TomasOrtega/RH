@@ -13,6 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `𝒮 K q hE`. Take `⟨B, f, T, w, Z, O, x⟩` from `q`. Take `⟨L, gatT, Gx, Gy, Kc, X, cX, ex⟩` from `O`. Take `⟨lev, th, th_io, cmp, lat, tw, ker, ep_def, ep_tie, kapI_def, fills_all, nu_unserved, idx, kap_def, lam_def, kapR_def, errX, err, nch, nch_tie, xd, p0, rationalRoots_def, amb, amb0, fdef, duStar_def, Dstar_def, gauge, gauge_def⟩` from `ex`. Take `⟨isOver, forced, Wt, pin, coh, vol, col, what₂, rx, hlev, herrX, n, nx, sx, ker0, ker_eq, kT, div, thT, obj, ox, real, dsig_eq, gaugeG, good⟩` from `x`.
+
+Simplify using `only [ofObj, extraObj] at ker_eq`. Consider the cases of `ker_eq`. Take `⟨t1, s1, o1, e1, a1, p1⟩` from `TC.kerEntTied_true_ent w.I w.ok w.pins w.l Z L col.Gt Gx Gy Kc X cX ⟨lev, th, th_io, col.cmp, lat, w.tw Z, ker, ep_def, ep_tie, kapI_def, fills_all, nu_unserved, idx, kap_def, lam_def, kapR_def, errX, err, nch, nch_tie, xd, p0, rationalRoots_def, amb, amb0, fdef, duStar_def, Dsta …`. Take `⟨t, s, r, p, o, e⟩` from `GlobalTheory.Core.DefKer.stdRd_keep w.I w.ok w.l Z t1 ((StdModel.stdKer_iff w.I w.l Z t1).2 s1)`. Establish `ha : t.Adapted`.
+
+Unfold `Formalism.L2.Ker.KerEntTied.Adapted at a1 ⊢`. Rewrite using `[o, e]`. Conclude with `a1`. Establish `hc : GlobalTheory.Pdv.IsEntC t`. Unfold `GlobalTheory.Pdv.IsEntC`.
+
+Rewrite using `[o, e, o1, e1]`. Conclude with `hE`. Conclude with `⟨t, ⟨s, o.trans o1, heq_of_eq (e.trans e1), ha, p⟩, ⟨w.ok, w.pins, pin.isTw, pin.jets, rfl, s, hc, ha, p⟩, r⟩`.
+-/
 theorem GlobalTheory.Mem.Top.Bl.WPt.exists_kerTie : ∀ (𝒮 : Slots) (K : Ctx) (q : WPt 𝒮 K), EntC q.x.ker → ∃ t : Formalism.L2.Ker.KerEntTied q.O.ex, KPin q t ∧ GlobalTheory.Svd.StdAt q.w.I q.w.l q.w.l0 q.Z q.O t ∧ GlobalTheory.Pdv.StdRd q.w.I q.w.l q.Z t := by
   intro 𝒮 K q hE
   obtain ⟨B, f, T, w, Z, O, x⟩ := q

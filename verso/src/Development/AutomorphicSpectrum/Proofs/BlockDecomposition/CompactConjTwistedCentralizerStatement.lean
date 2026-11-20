@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.IntegralFiberDe
 open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc GlobalTheory.CompanionTheory.LocVan
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.tNormaliser | exact GlobalTheory.CompanionTheory.LocVan.tNormaliser | (intros; apply GlobalTheory.CompanionTheory.LocVan.tNormaliser <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.compact_conj_twisted_centralizer : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)] (d : GL (Fin n) ℂ)
   (μd : Measure (twCent (thC n) d)) [μd.IsHaarMeasure] (W₁ W₂ : Submodule ℂ (Fin n → ℂ)), W₁ ≤ W₂ →
   (∀ a ∈ twCent (thC n) d, ∀ b ∈ twCent (thC n) d, a * b = b * a) →

@@ -13,6 +13,9 @@ section Gen
 
 variable {X : Type*} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {N : Type*} [AddCommGroup N] [Module ℂ N]
 
+/- English proof (translation)
+Establish `h1 : f y = j.symm ⟨p, hp⟩`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[hP x y, hH x (j.symm ⟨p, hp⟩), LinearEquiv.apply_symm_apply]`. Conclude with `hip _ (j x).2`. Rewrite using `[h1, LinearEquiv.apply_symm_apply]`.
+-/
 theorem projTie_eq_of_proj {Y : Type*} {C : Submodule ℂ N} {ip : N → N → ℂ} {j : X ≃ₗ[ℂ] C} {f : Y → X} {g : Y → N}
     (hH : HilbTie C ip j) (hP : ProjTie C ip j f g) (y : Y) (p : N) (hp : p ∈ C)
     (hip : ∀ c ∈ C, ip c (g y) = ip c p) : ((j (f y) : C) : N) = p := by
@@ -28,6 +31,9 @@ section Chain
 
 variable {D : D7} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE]
 
+/- English proof (translation)
+Introduce `j h z`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem downTo_succ_cast (S : RowSide D EE) (μ : D.what₂.Tup) (n : ℕ) :
     ∀ (j : ℕ) (h : j = n + 1) (z : S.Mult μ j),
       S.downTo μ j z = S.downTo μ n (S.io μ n (cast (congrArg (S.Mult μ) h) z)) := by
@@ -35,6 +41,9 @@ theorem downTo_succ_cast (S : RowSide D EE) (μ : D.what₂.Tup) (n : ℕ) :
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `n h y`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem dnFrom_zero_cast (C : ChainReal D) (b : Bool) (μ : D.what₂.Tup)
     (io : ∀ k, C.CC b μ (k + 1) →ₗ[ℂ] C.CC b μ k) :
     ∀ (n : ℕ) (h : n = 0) (y : C.CC b μ n),
@@ -43,6 +52,9 @@ theorem dnFrom_zero_cast (C : ChainReal D) (b : Bool) (μ : D.what₂.Tup)
   subst h
   rfl
 
+/- English proof (translation)
+Introduce `n h w hw`. Substitute `h` using the available equality. Conclude with `hw`.
+-/
 theorem mem_CCP_cast (C : ChainReal D) (b : Bool) (μ : D.what₂.Tup) :
     ∀ (n : ℕ) (h : n = 0) (w : C.Amb n), w ∈ C.CCP b μ n → cast (congrArg C.Amb h) w ∈ C.CCP b μ 0 := by
   intro n h w hw
@@ -51,6 +63,31 @@ theorem mem_CCP_cast (C : ChainReal D) (b : Bool) (μ : D.what₂.Tup) :
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `huP : (u : C.AmbX) ∈ C.CCXP b μ` using `hu ▸ (I.jX μ hμ ((X.multTop μ).symm a)).2`. Distinguish the cases in `h1 : D.R.m = 1`. Use `set z := (X.multTop μ).symm a with hz`. Establish `hd : X.downTo μ D.R.m z = X.downTo μ 0 (X.io μ 0 (cast (congrArg (X.Mult μ) h1) z))` using `downTo_succ_cast X μ 0 D.R.m h1 z`. Establish `hP` using `hR.io0X h1 μ hμ hok`.
+
+Use `set x := cast (congrArg (X.Mult μ) h1) z with hx`. Establish `hxz : cast (congrArg (X.Mult μ) h1.symm) x = z` using `by rw [hx]; exact cast_cast _ _ _`. Establish `hincl : Submodule.inclusion (hR.lvlX μ hμ) (I.jX μ hμ (cast (congrArg (X.Mult μ) h1.symm) x)) = u`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hxz]`.
+
+Conclude with `hu`. Establish `hw : cast (congrArg C.Amb (show D.R.m - 1 = 0 by omega)) ((C.ioX b μ (Submodule.inclusion (hR.lvlX μ hμ) (I.jX μ hμ (cast (congrArg (X.Mult μ) h1.symm) x))) : C.CC b μ (D.R.m - 1)) : C.Amb (D.R.m - 1)) ∈ C.CCP b μ 0`. Rewrite using `[hincl]`. Conclude with `mem_CCP_cast C b μ _ (by omega) _ (hLevX u huP)`. Establish `key` using `projTie_eq_of_proj hR.ee hP x _ (hE _ hw).1 (hE _ hw).2`.
+
+Use `show ((I.jE ((X.multZero μ) (X.downTo μ D.R.m z)) : C.EEc b) : C.Amb 0) = _`. Rewrite using `[hd]`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hincl, dnFrom_zero_cast C b μ (C.ioC b μ) (D.R.m - 1) (by omega)]`. Establish `h2 : 2 ≤ D.R.m` using `by omega`.
+
+Establish `claim : ∀ j (hj1 : 1 ≤ j) (hj2 : j ≤ D.R.m - 1) (z : X.Mult μ j) (y : C.CC b μ j), ((I.jM μ hμ j hj1 hj2 z : C.CCP b μ j) : C.Amb j) = y → ((I.jE (X.multZero μ (X.downTo μ j z)) : C.EEc b) : C.Amb 0) = pE ((Lift.dnFrom (C.CC b μ) (C.ioC b μ) j y : C.CC b μ 0) : C.Amb 0)`. Introduce `j hj1`. Proceed by induction on `j, hj1 using Nat.le_induction with`. Consider the case `base`. Introduce `hj2 z y hy`.
+
+Establish `hP` using `hR.io0 h2 μ hμ hok`. Establish `hincl : Submodule.inclusion (hR.lvlP μ hμ 1 le_rfl (by omega)) (I.jM μ hμ 1 le_rfl (by omega) z) = y` using `Subtype.ext hy`. Establish `hyP : (y : C.Amb 1) ∈ C.CCP b μ 1` using `hy ▸ (I.jM μ hμ 1 le_rfl hj2 z).2`. Establish `hw` using `hLev 0 (by omega) y hyP`. Establish `key` using `projTie_eq_of_proj hR.ee hP z _ (hE _ (hincl ▸ hw)).1 (hE _ (hincl ▸ hw)).2`.
+
+Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hincl]`. Both sides reduce to the same expression. Consider the case `succ j hj ih`. Introduce `hj2 z y hy`.
+
+Establish `hP` using `hR.io μ hμ hok j hj hj2`. Establish `hincl : Submodule.inclusion (hR.lvlP μ hμ (j + 1) (by omega) hj2) (I.jM μ hμ (j + 1) (by omega) hj2 z) = y` using `Subtype.ext hy`. Establish `hyP : (y : C.Amb (j + 1)) ∈ C.CCP b μ (j + 1)` using `hy ▸ (I.jM μ hμ (j + 1) (by omega) hj2 z).2`. Establish `hw' : ((C.ioC b μ j (Submodule.inclusion (hR.lvlP μ hμ (j + 1) (by omega) hj2) (I.jM μ hμ (j + 1) (by omega) hj2 z)) : C.CC b μ j) : C.Amb j) ∈ C.CCP b μ j`. Rewrite using `[hincl]`.
+
+Conclude with `hLev j hj2 y hyP`. Establish `key` using `ProjTie.eq_of_mem (hR.mult μ hμ j hj (by omega)) hP z hw'`. Rewrite `key` using `[hincl]`. Conclude with `ih (by omega) (X.io μ j z) (C.ioC b μ j y) key`. Use `set z := (X.multTop μ).symm a with hz`.
+
+Establish `hd : X.downTo μ D.R.m z = X.downTo μ (D.R.m - 1) (X.io μ (D.R.m - 1) (cast (congrArg (X.Mult μ) (show D.R.m = D.R.m - 1 + 1 by omega)) z))` using `downTo_succ_cast X μ (D.R.m - 1) D.R.m (by omega) z`. Establish `hP` using `hR.ioTop h2 μ hμ hok`. Establish `hincl : Submodule.inclusion (hR.lvlX μ hμ) (I.jX μ hμ z) = u` using `Subtype.ext hu`. Establish `hw' : ((C.ioX b μ (Submodule.inclusion (hR.lvlX μ hμ) (I.jX μ hμ z)) : C.CC b μ (D.R.m - 1)) : C.Amb (D.R.m - 1)) ∈ C.CCP b μ (D.R.m - 1)`. Rewrite using `[hincl]`.
+
+Conclude with `hLevX u huP`. Establish `key` using `ProjTie.eq_of_mem (hR.mult μ hμ (D.R.m - 1) (by omega) le_rfl) hP z hw'`. Rewrite `key` using `[hincl]`. Use `show ((I.jE ((X.multZero μ) (X.downTo μ D.R.m z)) : C.EEc b) : C.Amb 0) = _`. Rewrite using `[hd]`.
+
+Conclude with `claim (D.R.m - 1) (by omega) le_rfl _ _ key`.
+-/
 theorem iota_eq_gen (X : RowSide D EE) (C : ChainReal D) (b : Bool) (I : RowIds X C b) {n : ℕ}
     {bs : OrthonormalBasis (Fin n) ℂ EE} {ty : Fin n → D.what₂.FT} (hR : RowSideReal X C b I bs ty)
     (μ : D.what₂.Tup) (hμ : Used0 D μ) (hok : C.IoOK b μ) (hm : 0 < D.R.m)
@@ -145,12 +182,18 @@ section Spec
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Simplify using `only [ChainReal.CC, toChainReal, if_pos hj]`. Both sides reduce to the same expression.
+-/
 theorem cc_eq (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m) :
     (toChainReal R F tupT hm hTop).CC b μ j = R.CC (tupT μ) j := by
   simp only [ChainReal.CC, toChainReal, if_pos hj]
   rfl
 
+/- English proof (translation)
+Simplify using `only [ChainReal.CCP, toChainReal, if_pos hj]`. Both sides reduce to the same expression.
+-/
 theorem ccp_eq (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (j : ℕ) (hj : j < D.R.m) :
     (toChainReal R F tupT hm hTop).CCP b μ j = MultT R.θ (R.MY j) (levS _ (R.βY j) (R.datYt (tupT μ) j (R.levR F b)))
@@ -158,6 +201,9 @@ theorem ccp_eq (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) 
   simp only [ChainReal.CCP, toChainReal, if_pos hj]
   rfl
 
+/- English proof (translation)
+Simplify using `only [toChainReal, dif_pos hk]`. Both sides reduce to the same expression.
+-/
 theorem ioC_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (k : ℕ) (hk : k + 1 < D.R.m) (y : (toChainReal R F tupT hm hTop).CC b μ (k + 1))
     (hy : y.1 ∈ R.CC (tupT μ) (k + 1)) :
@@ -165,6 +211,9 @@ theorem ioC_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T)
   simp only [toChainReal, dif_pos hk]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ioX_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) (u : (toChainReal R F tupT hm hTop).CCX b μ)
     (hu : u.1 ∈ LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)) :
@@ -177,6 +226,11 @@ end GlobalTheory.Mem.R3.DTheta
 
 namespace GlobalTheory.Mem.R3.DTheta
 
+/- English proof (translation)
+Take `⟨F', h1, -⟩` from `hc F`. Rewrite using `[h1]`. Conclude with `h.integ F' φ v g`. Use `eq F φ v g := by`. Take `⟨F', h1, h2⟩` from `hc F`.
+
+Rewrite using `[h1, h2]`. Conclude with `h.eq F' φ v g`.
+-/
 theorem isIo_transfer {G H S Sinf Ds Dt : Type*} [MeasurableSpace H] [AddCommGroup Sinf] [Module ℂ Sinf]
     [AddCommGroup Ds] [Module ℂ Ds] [AddCommGroup Dt] [Module ℂ Dt] {ν : Measure H} {𝓕 : Set H}
     {th : G → H → S → ℂ} {pt : Sinf → S} {T : Sinf →ₗ[ℂ] Ds →ₗ[ℂ] Dt} {CCs CCs' : Submodule ℂ (Ds →ₗ[ℂ] (H → ℂ))}
@@ -197,6 +251,11 @@ section Spec2
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ y y' h`. Conclude with `h`. Consider the case `succ n ih`.
+
+Introduce `hn y y' h`. Establish `hy : y.1 ∈ R.CC (tupT μ) (n + 1)` using `by rw [h]; exact y'.2`. Establish `e : (⟨y.1, hy⟩ : R.CC (tupT μ) (n + 1)) = y'` using `Subtype.ext h`. Use `ih (by omega) _ _ ?_` and prove the remaining obligations. Rewrite using `[ioC_val R F tupT hm hTop b μ n (by omega) y hy, e]`.
+-/
 theorem dnFrom_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (b : Bool) (μ : D.what₂.Tup) : ∀ n, n ≤ D.R.m - 1 → ∀ (y : (toChainReal R F tupT hm hTop).CC b μ n)
       (y' : R.CC (tupT μ) n), y.1 = y'.1 →
@@ -212,6 +271,11 @@ theorem dnFrom_val (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup →
     refine ih (by omega) _ _ ?_
     rw [ioC_val R F tupT hm hTop b μ n (by omega) y hy, e]
 
+/- English proof (translation)
+Use `⟨fun k hk => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `isIo_transfer (hch.ioY (tupT μ) k hk) fun y => ?_` and prove the remaining obligations. Establish `hy : y.1 ∈ R.CC (tupT μ) (k + 1)`. Rewrite using `[← cc_eq R F tupT hm hTop b μ (k + 1) (by omega)]; exact y.2`. Conclude with `⟨⟨y.1, hy⟩, rfl, ioC_val R F tupT hm hTop b μ k (by omega) y hy⟩`.
+
+Use `isIo_transfer (hch.ioX (tupT μ)) fun y => ?_` and prove the remaining obligations. Establish `hy : y.1 ∈ LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)`. Rewrite using `[hTop (tupT μ)]`. Conclude with `y.2`. Conclude with `⟨⟨y.1, hy⟩, rfl, ioX_val R F tupT hm hTop b μ y hy⟩`.
+-/
 theorem ioOK_of_chain (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (hch : R.IsChain) (b : Bool) (μ : D.what₂.Tup) : (toChainReal R F tupT hm hTop).IoOK b μ := by
   refine ⟨fun k hk => ?_, fun _ => ?_⟩
@@ -260,6 +324,11 @@ def RowProj (R : RealDat D A Ks) (F : Face D A) : Prop :=
 def goodProjectorSmallestSpaceForms (R : RealDat D A Ks) (w : AmbT (R.MY 0)) : AmbT (R.MY 0) :=
   PiTensorProduct.lift (postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm w))
 
+/- English proof (translation)
+Introduce `k hk y hy`. Establish `hy' : y.1 ∈ R.CC (tupT μ) (k + 1)`. Rewrite using `[← cc_eq R F tupT hm hTop b μ (k + 1) (by omega)]; exact y.2`. Rewrite `hy` using `[ccp_eq R F tupT hm hTop b μ (k + 1) (by omega)]`. Rewrite using `[ccp_eq R F tupT hm hTop b μ k (by omega), ioC_val R F tupT hm hTop b μ k (by omega) y hy']`.
+
+Conclude with `hS b (tupT μ) k (by omega) ⟨y.1, hy'⟩ hy`.
+-/
 theorem hLev_of (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (hS : StepLev R F) (b : Bool) (μ : D.what₂.Tup) :
     ∀ k (_ : k + 1 ≤ D.R.m - 1) (y : (toChainReal R F tupT hm hTop).CC b μ (k + 1)),
@@ -273,6 +342,11 @@ theorem hLev_of (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T)
   rw [ccp_eq R F tupT hm hTop b μ k (by omega), ioC_val R F tupT hm hTop b μ k (by omega) y hy']
   exact hS b (tupT μ) k (by omega) ⟨y.1, hy'⟩ hy
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hy' : y.1 ∈ LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)`. Rewrite using `[hTop (tupT μ)]`. Conclude with `y.2`. Rewrite using `[ccp_eq R F tupT hm hTop b μ (D.R.m - 1) (by omega), ioX_val R F tupT hm hTop b μ y hy']`.
+
+Conclude with `hT b (tupT μ) ⟨y.1, hy'⟩ hy`.
+-/
 theorem hLevX_of (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (hT : TopLev R F) (b : Bool) (μ : D.what₂.Tup) :
     ∀ y : (toChainReal R F tupT hm hTop).CCX b μ, (y : (toChainReal R F tupT hm hTop).AmbX) ∈
@@ -285,6 +359,13 @@ theorem hLevX_of (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T
   rw [ccp_eq R F tupT hm hTop b μ (D.R.m - 1) (by omega), ioX_val R F tupT hm hTop b μ y hy']
   exact hT b (tupT μ) ⟨y.1, hy'⟩ hy
 
+/- English proof (translation)
+Introduce `w hw`. Rewrite `hw` using `[ccp_eq R F tupT hm hTop b μ 0 hm]`. Take `⟨h1, h2⟩` from `hP b (tupT μ) _ ((mem_multT R.θ (R.MY 0) _ _ w).1 hw)`. Use `⟨⟨_, h1, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c ⟨c', hc', rfl⟩`.
+
+Use `show ipMT _ _ _ _ _ = ipMT _ _ _ _ _`. Unfold `ipMT goodProjectorSmallestSpaceForms`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Establish `e : (PiTensorProduct.lift.symm (PiTensorProduct.lift (postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm w))) : MMap (R.MY 0)) = postOn (R.MY 0) R.e0 (PiTensorProduct.lift.symm w)` using `LinearEquiv.symm_apply_apply _ _`. Use `h2 c' hc' using 2` and compare the differences between its conclusion and the goal.
+
+Apply the tactic sequence `all_goals first | rfl | exact congrArg _ e`.
+-/
 theorem hE_of (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m) (hTop : TopMultH R)
     (hP : RowProj R F) (b : Bool) (μ : D.what₂.Tup) :
     ∀ w : (toChainReal R F tupT hm hTop).Amb 0, w ∈ (toChainReal R F tupT hm hTop).CCP b μ 0 →
@@ -315,6 +396,11 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Establish `hu' : u.1 ∈ LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)` using `⟨y', hu.symm⟩`. Establish `e1 : R.thDn (tupT μ) y' = (Lift.dnFrom (R.CC (tupT μ)) (R.ioY (tupT μ)) (D.R.m - 1) (R.ioX (tupT μ) ((R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y'))).1`. Simplify using `only [RealDat.thDn, Lift.thetaDn, LinearMap.comp_apply, Submodule.subtype_apply]`. Establish `e2 : (⟨u.1, hu'⟩ : LinearMap.range (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e)) = (R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y'` using `Subtype.ext hu`. Rewrite using `[e1]`.
+
+Conclude with `dnFrom_val R F tupT hm hTop b μ (D.R.m - 1) le_rfl ((toChainReal R F tupT hm hTop).ioX b μ u) (R.ioX (tupT μ) ((R.cX.toMap R.prX ∘ₗ (R.HX (tupT μ)).e).rangeRestrict y')) ((ioX_val R F tupT hm hTop b μ u hu').trans (congrArg (fun z => (R.ioX (tupT μ) z).1) e2))`.
+-/
 theorem thDn_eq_dnFrom (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (b : Bool) (μ : D.what₂.Tup) (u : (toChainReal R F tupT hm hTop).CCX b μ)
     (y' : (R.HX (tupT μ)).H) (hu : u.1 = R.cX.toMap R.prX ((R.HX (tupT μ)).e y')) :
@@ -333,6 +419,9 @@ theorem thDn_eq_dnFrom (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨u, hu1⟩ : ∃ u : (toChainReal R F tupT hm hTop).CCX b μ, u.1 = (I.jX μ hμ ((X.multTop μ).symm a)).1` from `⟨⟨_, hR.lvlX μ hμ (I.jX μ hμ ((X.multTop μ).symm a)).2⟩, rfl⟩`. Establish `key` using `iota_eq_gen X (toChainReal R F tupT hm hTop) b I hR μ hμ (ioOK_of_chain R F tupT hm hTop hch b μ) hm (hLev_of R F tupT hm hTop hS b μ) (hLevX_of R F tupT hm hTop hT b μ) (goodProjectorSmallestSpaceForms R) (hE_of R F tupT hm hTop hP b μ) a u hu1.symm`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[hch.Th (tupT μ) y', thDn_eq_dnFrom R F tupT hm hTop b μ u y' (hu1.trans hu)]`. Both sides reduce to the same expression.
+-/
 theorem iota_eq_real (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hch : R.IsChain) (hS : StepLev R F) (hT : TopLev R F) (hP : RowProj R F)
     {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (b : Bool)
@@ -361,6 +450,9 @@ section Spec5
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Conclude with `iota_eq_real R F tupT hm hTop hch hS hT hP X b I hR μ hμ a y' hu`.
+-/
 theorem iota_eq_real' (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup → T) (hm : 0 < D.R.m)
     (hTop : TopMultH R) (hch : R.IsChain) (hS : StepLev R F) (hT : TopLev R F) (hP : RowProj R F)
     {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [FiniteDimensional ℂ EE] (X : RowSide D EE) (b : Bool)
@@ -374,11 +466,17 @@ theorem iota_eq_real' (R : RealDat D A Ks) (F : Face D A) (tupT : D.what₂.Tup 
 
 end Spec5
 
+/- English proof (translation)
+The claim follows from `| 0, _ => rfl | j + 1, z => downTo_sharp D μ j (D.what₂.io μ j z)`.
+-/
 theorem downTo_sharp (D : D7) (μ : D.what₂.Tup) :
     ∀ (j : ℕ) (z : D.what₂.Mult μ j), D.what₂.downTo μ j z = (RowSide.sharp D).downTo μ j z
   | 0, _ => rfl
   | j + 1, z => downTo_sharp D μ j (D.what₂.io μ j z)
 
+/- English proof (translation)
+Use `show D.what₂.multZero μ (D.what₂.downTo μ D.R.m ((D.what₂.multTop μ).symm a)) = D.what₂.multZero μ ((RowSide.sharp D).downTo μ D.R.m ((D.what₂.multTop μ).symm a))`. Rewrite using `[downTo_sharp]`.
+-/
 theorem iota_sharp (D : D7) (μ : D.what₂.Tup) (a : D.what₂.Amb μ) :
     D.what₂.iota μ a = (RowSide.sharp D).iota μ a := by
   show D.what₂.multZero μ (D.what₂.downTo μ D.R.m ((D.what₂.multTop μ).symm a)) =

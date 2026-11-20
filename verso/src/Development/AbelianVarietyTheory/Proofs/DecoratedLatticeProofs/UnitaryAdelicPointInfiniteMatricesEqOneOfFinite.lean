@@ -20,6 +20,9 @@ def conjJAt (tr : Formalism.L2.SG.ColDict.Transport X u F) (z : Formalism.L2.For
 def rieszJ (tr : Formalism.L2.SG.ColDict.Transport X u F) (z : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _)) : X.Vpi u :=
   (InnerProductSpace.toDual ℂ (X.Vpi u)).symm (LinearMap.toContinuousLinearMap (conjJAt tr z))
 
+/- English proof (translation)
+Rewrite using `[← inner_conj_symm]`. Simplify using `[rieszJ, conjJAt]`.
+-/
 theorem inner_rieszJ (tr : Formalism.L2.SG.ColDict.Transport X u F) (z : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _)) (η : X.Vpi u) :
     ⟪η, rieszJ tr z⟫_ℂ = tr.J η z := by
   rw [← inner_conj_symm]
@@ -42,6 +45,9 @@ section Helpers
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdForm.finM Formalism.L2.Theta.mt`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+-/
 theorem unitaryAdelicPointFiniteMatrix_base_space_mul (a b : GA D (D.sp.X 0)) :
     GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (a * b) =
       GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a *
@@ -50,10 +56,16 @@ theorem unitaryAdelicPointFiniteMatrix_base_space_mul (a b : GA D (D.sp.X 0)) :
   rw [map_mul, Units.val_mul, Matrix.map_mul]
   simp [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdForm.finM Formalism.L2.Theta.mt`. Simplify using `[Matrix.reindex_apply]`.
+-/
 theorem unitaryAdelicPointFiniteMatrix_base_space_one : GlobalTheory.AdForm.finM (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (1 : GA D (D.sp.X 0)) = 1 := by
   unfold GlobalTheory.AdForm.finM Formalism.L2.Theta.mt
   simp [Matrix.reindex_apply]
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdForm.infM Formalism.L2.Theta.mt compAt`. Establish `e : ∀ M : Matrix (Fin (D.sp.X 0).rank) (Fin (D.sp.X 0).rank) (AE D), M.map (fun a => θ τ (infPart D a)) = M.map ((θ τ).comp (infPart D))` using `fun M => rfl`. Rewrite using `[e, e, e, map_mul, Units.val_mul, Matrix.map_mul]`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+-/
 theorem unitaryAdelicPointInfiniteMatrices_base_space_mul (θ : InfFam D) (a b : GA D (D.sp.X 0)) (τ : D.what₂.Tau) :
     GlobalTheory.AdForm.infM θ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (a * b) τ =
       GlobalTheory.AdForm.infM θ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a τ *
@@ -64,6 +76,9 @@ theorem unitaryAdelicPointInfiniteMatrices_base_space_mul (θ : InfFam D) (a b :
   rw [e, e, e, map_mul, Units.val_mul, Matrix.map_mul]
   simp [Matrix.reindex_apply, Matrix.submatrix_mul_equiv]
 
+/- English proof (translation)
+Unfold `GlobalTheory.AdForm.infM Formalism.L2.Theta.mt compAt`. Establish `e : ∀ M : Matrix (Fin (D.sp.X 0).rank) (Fin (D.sp.X 0).rank) (AE D), M.map (fun a => θ τ (infPart D a)) = M.map ((θ τ).comp (infPart D))` using `fun M => rfl`. Rewrite using `[e, map_one, Units.val_one]`. Simplify using `[Matrix.reindex_apply]`.
+-/
 theorem unitaryAdelicPointInfiniteMatrices_base_space_one (θ : InfFam D) (τ : D.what₂.Tau) :
     GlobalTheory.AdForm.infM θ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) (1 : GA D (D.sp.X 0)) τ = 1 := by
   unfold GlobalTheory.AdForm.infM Formalism.L2.Theta.mt compAt
@@ -72,6 +87,11 @@ theorem unitaryAdelicPointInfiniteMatrices_base_space_one (θ : InfFam D) (τ : 
   rw [e, map_one, Units.val_one]
   simp [Matrix.reindex_apply]
 
+/- English proof (translation)
+Establish `h1 : Formalism.L2.Theta.infHom (D.sp.X 0) a = 1` using `ha`. Unfold `Formalism.L2.Theta.infHom at h1`. Unfold `GlobalTheory.AdForm.infM Formalism.L2.Theta.mt compAt`. Establish `h2` using `congrArg (fun x : GL (Fin (D.sp.X 0).rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => ((x.1).map (θ τ))) h1`. Simplify using `only [MonoidHom.comp_apply, Units.val_one] at h2`.
+
+Establish `e : ∀ M : Matrix (Fin (D.sp.X 0).rank) (Fin (D.sp.X 0).rank) (AE D), M.map (fun a => θ τ (infPart D a)) = (M.map (infPart D)).map (θ τ)` using `fun M => by ext; rfl`. Rewrite using `[e]`. Establish `h3 : ((Formalism.L2.Theta.matHom (D.sp.X 0)) a).1.map (infPart D) = ((Formalism.UG.bc (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom) ((Formalism.L2.Theta.matHom (D.sp.X 0)) a) : GL _ _).1` using `rfl`. Rewrite using `[h3, h2]`. Simplify using `[Matrix.reindex_apply]`.
+-/
 theorem unitaryAdelicPointInfiniteMatrices_eq_one_of_finite (θ : InfFam D) (a : GA D (D.sp.X 0)) (ha : a ∈ GfC (D.sp.X 0)) (τ : D.what₂.Tau) :
     GlobalTheory.AdForm.infM θ (D.sp.X 0) (Formalism.L2.Forms.rankN D 0 (Nat.zero_le _)) a τ = 1 := by
   have h1 : Formalism.L2.Theta.infHom (D.sp.X 0) a = 1 := ha
@@ -94,12 +114,24 @@ end GlobalTheory.Core.Mi
 
 namespace GlobalTheory.Core.Mi
 
+/- English proof (translation)
+Unfold `SBes.toH`. Apply the tactic sequence `ext <;> simp [map_mul]`.
+-/
 theorem toH_mul {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D}
     {u : D.what₂.Word} {ψ : AddChar (AF D.host.F) ℂ} {A : HSp D} (B : SBes X h u ψ A) (a b : GA D A) :
     B.toH (a * b) = B.toH a * B.toH b := by
   unfold SBes.toH
   ext <;> simp [map_mul]
 
+/- English proof (translation)
+Introduce `j`. Establish `hmul : X.B.I.fmat (h * k) = X.B.I.fmat h * X.B.I.fmat k`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`. Establish `hinv : X.B.I.fmat h⁻¹ * X.B.I.fmat h = 1`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+
+Establish `key : X.B.I.fmat h *ᵥ (X.B.I.fmat k *ᵥ Formalism.L2.SG.ColDict.qA X wt j) = X.B.I.fmat h *ᵥ (∑ l, ιA.symm (M l j) • Formalism.L2.SG.ColDict.qA X wt l)`. Rewrite using `[Matrix.mulVec_mulVec, ← hmul, hAM j, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hA, Matrix.mul_apply, map_sum, map_mul, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hA l, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+
+Use `_ = X.B.I.fmat h⁻¹ *ᵥ (X.B.I.fmat h *ᵥ (∑ l, ιA.symm (M l j) • Formalism.L2.SG.ColDict.qA X wt l)) := by rw [key]`. Use `_ = _ := by rw [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+-/
 theorem RepM_cancel {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {wt : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {ιA : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F}
     {h k : X.B.I.Gf} {A M : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) (GlobalTheory.AdForm.EF D)}
@@ -124,6 +156,11 @@ theorem RepM_cancel {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {wt
     _ = X.B.I.fmat h⁻¹ *ᵥ (X.B.I.fmat h *ᵥ (∑ l, ιA.symm (M l j) • Formalism.L2.SG.ColDict.qA X wt l)) := by rw [key]
     _ = _ := by rw [Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]
 
+/- English proof (translation)
+Take `⟨c, -⟩` from `F.cls0.y_bij.2 (Quotient.mk'' 1)`. Rewrite using `[← Submodule.orthogonal_eq_bot_iff, Submodule.eq_bot_iff]`. Introduce `η hη`. Apply `tr.J_injective c` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use function extensionality and compare the values at `z`. Take `⟨y, rfl⟩` from `F.val0.eY.surjective z`. Rewrite using `[← inner_rieszJ]`. Conclude with `(Submodule.mem_orthogonal' _ _).1 hη _ (Submodule.subset_span ⟨y, rfl⟩)`.
+-/
 theorem span_rieszJ {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u}
     (tr : Formalism.L2.SG.ColDict.Transport X u F) :
     Submodule.span ℂ (Set.range fun y => rieszJ tr (F.val0.eY y)) = ⊤ := by
@@ -141,6 +178,9 @@ end GlobalTheory.Core.Mi
 
 namespace GlobalTheory.Core.Mi
 
+/- English proof (translation)
+Establish `: Formalism.L2.SG.ColDict.colDictL X tr hK T c (F.val0.eY.symm w) = tr.J (Formalism.L2.SG.ColDict.shP X u T.1 (tr.hc c)) (F.val0.eY (F.val0.eY.symm w))` using `rfl`. Rewrite using `[this, Equiv.apply_symm_apply]`.
+-/
 theorem colDictL_eY_symm {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} {u : D.what₂.Word} {F : Formalism.L2.Forms.Forms0 D u}
     (tr : Formalism.L2.SG.ColDict.Transport X u F) (hK : X.LevelSubgroupCharacter) (T : Cu X u hK) (c : (D.mem u).C.cls 0)
     (w : Formalism.L2.Forms.Fr D 0 (Nat.zero_le _)) :

@@ -78,6 +78,15 @@ namespace GlobalTheory.TopVal
 
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
+/- English proof (translation)
+Use `letI := (I.perIn u a).clFin (l.per u a)`. Establish `e : (I.per l u a).period w G = ∑ c' : (I.perIn u a).S'.Cl, (I.perIn u a).wt c' * pairB (K` using `ℂ) (I.perIn u a).sgT (polOf (Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (Formalism.L2.Forms.shiftOf (I.perIn u a).sgT) (fr0 B.fields.emb B.embLL (B.R.N B.R.m - 1)) (w c')) ((I.perIn u a).rd B.fields.emb B.embLL G c') := by show ((∑ c' : (I.perIn u a).S'.Cl, _ : _ →ₗ[ℂ] _ →ₗ[ℂ] ℂ) …`. Rewrite using `[LinearMap.sum_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[e, Finset.sum_eq_single (show (I.perIn u a).S'.Cl from c)]`.
+
+Establish `hs : (I.perIn u a).sgT = B.wts.sgTrue` using `rfl`. Establish `h1 : (I.perIn u a).rd B.fields.emb B.embLL G c = MvPolynomial.map B.embLL (val φ (toRow I.sel (I.tup a) ((I.stX a).rep c).1.1)).1` using `hG _`. Use `haveI : Finite ((I.stX a).Stab c) := (l.per u a).step.fin_stab c.1 _`. Establish `h2 : (Nat.card ((I.stX a).Stab c) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `h3 : (Nat.card ((I.stX a).Stab c) : ℂ) * (I.perIn u a).wt c = 1` using `mul_inv_cancel₀ h2`.
+
+Rewrite using `[← mul_assoc]`. Use `(congrArg (· * _) h3).trans ((one_mul _).trans ?_)` and prove the remaining obligations. Substitute `hw` using the available equality. Conclude with `congrArg _ h1`. Introduce `c' _ hc`.
+
+Rewrite using `[hw' c' hc, map_zero, map_zero, LinearMap.zero_apply, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem period_single (l : I.Laws) (u : B.Word) (a : I.ι) (φ : Frm I a) (G : (I.per l u a).Mt) (hG : HasVal l u φ G)
     (c : (I.stX a).Cl) (z : (GlobalTheory.Mem.Col2.Fr B.fields.emb B.embLL (B.R.N B.R.m - 1)) → ℂ) (w : (I.per l u a).Wrow)
     (hw : w c = z) (hw' : ∀ c', c' ≠ c → w c' = 0) :
@@ -112,6 +121,17 @@ variable {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Introduce `c v g hg`. Establish `s` using `hC u`. Rewrite using `[mul_one, hf g _ _ v hg (s.what₂.pt c)]`.
+
+Establish `e` using `fun c' y => (s.eW ((W.R.T.cols.forms u).valP.eW.symm (Pi.single c (j v))) c' y y rfl).symm`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Use `(period_single l u I.mu0 φ _ (hG.1 rfl) c (j v) _ (funext fun y => (e c y).trans ?_) fun c' hc => funext fun y => (e c' y).trans ?_).symm` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same]`. Rewrite using `[Pi.single_eq_of_ne' (fun e => hc e.symm : ¬ c = c')]`.
+
+Both sides reduce to the same expression. Take `⟨l0, t, he, ht, -, -, s⟩` from `hW`. Establish `key : ∀ (Tw : TwForms (I.rec7 l Z)) (t' : Formalism.L2.Forms.SymmetricTwistedColumnsAtPrimes W.R.T.n.tp W.R.T.cols Tw), Tw = I.tw l l0 Z → HEq t' t → ReadsG (t'.pt.cls u a h) (t'.pt.val u a h).eW j 1 (((I.rec7 l Z).eMtTw u a).symm G) f`. Introduce and unpack `_ t' rfl rfl`. Introduce `c v g hg`.
+
+Rewrite using `[mul_one, hf g _ _ v hg ((s.what₂ u a h).pt c)]`. Establish `e` using `fun c' y => (s.eW u a h ((t'.pt.val u a h).eW.symm (Pi.single c (j v))) c' y y rfl).symm`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Use `(period_single l u a φ _ hG.2 c (j v) _ (funext fun y => (e c y).trans ?_) fun c' hc => funext fun y => (e c' y).trans ?_).symm` and prove the remaining obligations. Rewrite using `[Pi.single_eq_same]`.
+
+Rewrite using `[Pi.single_eq_of_ne' (fun e => hc e.symm : ¬ c = c')]`. Both sides reduce to the same expression. Conclude with `key _ _ he ht`.
+-/
 theorem reads_of_val (hC : I.StdC l Z W.R.T.cols) (hW : GlobalTheory.AdForm.TwStd W) (u : B.Word)
     (j : SmT (pk W).MX →ₗ[ℂ] (Formalism.L2.Forms.FrP (I.rec7 l Z) → ℂ)) (a : (I.rec7 l Z).what₂.Tup) (φ : Frm I a)
     (G : (I.rec7 l Z).what₂.Amb a) (hG : RecVal u a φ G)

@@ -30,10 +30,18 @@ open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 
 namespace GlobalTheory.HCChar
 
+/- English proof (translation)
+Introduce `n ε μ _ V _ _ _ π h` and use `hR n ε μ V π h.2.1 (GlobalTheory.T.irreducible_admissible_finite_length hA n ε V π h).2`.
+-/
 theorem characterRegularity_of_finiteLength (hA : KFiniteCoefficientsAnalytic)
     (hR : CharacterRegularityFiniteLength) : CharacterRegularity :=
   fun n ε μ _ V _ _ _ π h => hR n ε μ V π h.2.1 (GlobalTheory.T.irreducible_admissible_finite_length hA n ε V π h).2
 
+/- English proof (translation)
+Introduce `n ε μ _ a j W hW hj _ V _ _ _ _ σ h1 h2 s X _ _ _ ρ ι hm h`. Take `⟨hadm, hfl⟩` from `hI n ε a j W hW hj V σ h1 h2 s X ρ ι hm`. Take `⟨Θ, hΘ⟩` from `hR n ε μ X ρ hadm hfl`. Take `⟨Θ', h3, h4⟩` from `hV n ε μ a j W hW hj V σ h1 h2 s X ρ ι hm h`. Use `⟨Θ, hΘ, fun g hg hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hΘ.1.unique isInducing_matCoord h3 hg, h4 g hg hx]`.
+-/
 theorem inducedCharacterSupport_of_vanishing (hR : CharacterRegularityFiniteLength)
     (hV : InducedCharacterVanishing) (hI : InducedAdmissibleFiniteLength) : InducedCharacterSupport := by
   intro n ε μ _ a j W hW hj _ V _ _ _ _ σ h1 h2 s X _ _ _ ρ ι hm h
@@ -43,6 +51,9 @@ theorem inducedCharacterSupport_of_vanishing (hR : CharacterRegularityFiniteLeng
   refine ⟨Θ, hΘ, fun g hg hx => ?_⟩
   rw [hΘ.1.unique isInducing_matCoord h3 hg, h4 g hg hx]
 
+/- English proof (translation)
+Introduce `hU hA hC hR hD hW hV hI` and use `⟨characterRegularity_of_finiteLength hA hR, GlobalTheory.T.discrete_series_character_formula hU hA hR hD (GlobalTheory.LowestKTypeDetermines.dsUnique_of_dsClass (GlobalTheory.Published.discreteSeriesClassification_iff.1 hC)), fun n ε => ⟨GlobalTheory.T.exists_cartan_system n ε, G …`.
+-/
 theorem harishChandraCharacters_of_clauses : GlobalTheory.Published.IrreducibleUnitaryAdmissible → GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CharacterRegularityFiniteLength → GlobalTheory.Published.DiscreteSeriesCharacterOfParameter → GlobalTheory.Published.WeylIntegrationSum → GlobalTheory.Published.InducedCharacterVanishing → GlobalTheory.Published.InducedAdmissibleFiniteLength → GlobalTheory.Published.HarishChandraCharacters :=
   fun hU hA hC hR hD hW hV hI =>
     ⟨characterRegularity_of_finiteLength hA hR,

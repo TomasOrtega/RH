@@ -18,6 +18,37 @@ set_option synthInstance.maxHeartbeats 400000
 noncomputable section
 namespace GlobalTheory.FlatUnit
 open GlobalTheory.FlatLine
+/- English proof (translation)
+Introduce `hP D T j Y e o hY hE`. Take `⟨N, hN, hA⟩` from `_root_.GlobalTheory.T.flat_unit_exists_at_every_level hP D T j Y e o hY hE`. Use `⟨N, hN, fun w => ?_⟩` and prove the remaining obligations. Set `G : Psi T.Q.H → WTZ D.host.E` to `fun τ => wtOf (T.Q.Dw j) ((N : ℤ) • flatWt (T.Q.Dw j) τ) 0`. Set `φw : GlobalTheory.AllWt.Weight (T.Q.Dw j) →+ WTZ D.host.E` to `{ toFun := fun la => wtOf (T.Q.Dw j) la 0, map_zero' := GlobalTheory.AllWt.wtOf_zero, map_add' := fun a b => wtOf_add' a b }`.
+
+Establish `hsum : wtOf (T.Q.Dw j) (parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0 = ∑ τ, (-w τ) • G τ`. Rewrite using `[parWt_eq_sum]`. Use `show φw _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr (Finset.eq_univ_of_forall fun x => by simp) fun τ _ => ?_` and prove the remaining obligations.
+
+Use `show φw _ = (-w τ) • φw _`. Rewrite using `[map_zsmul, map_zsmul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hpair : ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) τ, ∃ s t : Rul Y.d.Xo₂ Y.d.c₂, (s ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (Formalism.L2.Pj.exZ (T.Q.Dw j) (G τ)) ∧ t ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (-Formalism.L2.Pj.exZ (T.Q.Dw j) (G τ)) ∧ GlobalTheory.FlatLine.idem Z * s = s ∧ Glob …` using `fun Z τ => by`.
+
+Take `⟨s, i, h⟩` from `hA Z τ`. Conclude with `⟨s, i, h, _root_.GlobalTheory.T.inverse_of_flat_unit_isIntegral hP D T j Y e o hY hE (N : ℤ) Z τ s i h⟩`. Establish `hZ : ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂), ∃ s t : Rul Y.d.Xo₂ Y.d.c₂, (s ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (Formalism.L2.Pj.exZ (T.Q.Dw j) (wtOf (T.Q.Dw j) (parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0)) ∧ t ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (-Formalism.L2.Pj.exZ (T.Q.Dw j) ( …` using `fun Z => by`. Take `⟨s, t, h⟩` from `GlobalTheory.T.exists_boundedUnit_sum_component _ _ _ _ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U (xiR D) Z (Psi T.Q.H) G (fun τ => GlobalTheory.AllWt.even_wtOf _ _) (hpair Z) (fun τ => -w τ)`. Use `⟨s, t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsum]`. Conclude with `h`. Use `choose s t hst using hZ`. Use `haveI := CompFin.finite_comp Y.d.Xo₂ Y.d.c₂`. Use `haveI := Fintype.ofFinite (Comp Y.d.Xo₂ Y.d.c₂)`.
+
+Use `choose m hm hv using fun Z => (hst Z).2`. Establish `hsZ : ∀ Z, s Z ∈ GlobalTheory.AllWt.suppOn Z` using `fun Z => by`. Rewrite using `[← (hst Z).1.2.2.1, mul_comm]`. Conclude with `GlobalTheory.AllWt.mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `htZ : ∀ Z, t Z ∈ GlobalTheory.AllWt.suppOn Z` using `fun Z => by`.
+
+Rewrite using `[← (hst Z).1.2.2.2.1, mul_comm]`. Conclude with `GlobalTheory.AllWt.mul_mem_suppOn _ (idem_mem_suppOn Z)`. Establish `hM0 : ((∏ Z, m Z : ℕ) : Y.d.c₂.F) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun Z _ => (hm Z).ne')`. Use `⟨∑ Z, s Z, ((∏ Z, m Z : ℕ) : Y.d.c₂.F) • ∑ Z, t Z, ((∏ Z, m Z : ℕ) : Y.d.c₂.F), Submodule.sum_mem _ fun Z _ => (hst Z).1.1, hM0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul_comm, Finset.sum_mul_sum]`.
+
+Establish `hd : ∑ Z, ∑ Z', s Z * t Z' = ∑ Z, idem Z` using `Finset.sum_congr rfl fun Z _ => by`. Rewrite using `[Finset.sum_eq_single Z]`. Conclude with `(hst Z).1.2.2.2.2.1`. Introduce `Z' _ hne`. Rewrite using `[← (hst Z).1.2.2.1, ← (hst Z').1.2.2.2.1, mul_mul_mul_comm, idem_mul_idem_of_ne (Ne.symm hne), zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ Z) h`. Rewrite using `[hd, sum_idem]`. Introduce `la' v hv'`. Establish `hV` using `isVal_valSet la' v hv'`.
+
+Rewrite using `[Finset.smul_sum]`. Use `val_sum_nonneg hV _ _ fun Z _ => ?_` and prove the remaining obligations. Break down `mem_valOn_or (Z := Z) hv' with h | h` into its components or cases. Establish `hsplit : ((∏ Z, m Z : ℕ) : Y.d.c₂.F) • t Z = (∏ Z' ∈ Finset.univ.erase Z, m Z') • ((m Z : Y.d.c₂.F) • t Z)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ m (Finset.mem_univ Z), Nat.cast_mul, mul_comm, mul_smul]`.
+
+Conclude with `Nat.cast_smul_eq_nsmul Y.d.c₂.F _ _`. Rewrite using `[hsplit]`. Conclude with `val_nsmul_nonneg hV _ (hv Z la' v h).2`. Rewrite using `[h _ (Submodule.smul_mem _ _ (htZ Z))]`. Conclude with `le_top`.
+
+Introduce `σ hσ kk choose C hC using fun Z => (hst Z).1.2.2.2.2.2 σ hσ`. Establish `hL` using `GlobalTheory.AllWt.lieFacZ_pos (Dw := T.Q.Dw j) (xiR D) (wtOf (T.Q.Dw j) (parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0)`. Use `⟨∑ Z, max (C Z) 0 / GlobalTheory.AllWt.lieFacZ (T.Q.Dw j) (xiR D) (wtOf (T.Q.Dw j) (parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0), fun y hy => ?_⟩` and prove the remaining obligations. Establish `e1 : rdU (Y.U σ) (∑ Z, s Z) kk = ∑ Z, rdU (Y.U σ) (s Z) kk`. Rewrite using `[map_sum, Finset.sum_apply]`.
+
+Rewrite using `[e1]`. Use `(pnorm_sum_le _ _ _ _ y).trans (Finset.sum_le_sum fun Z _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : (⟨kk, y⟩ : Σ k, ReciprocityTheory.ChartRestriction.G.FD.Frame ((Y.U σ).X k).Ψ D.R.r) ∈ framesOn (Y.U σ) Z`. Rewrite using `[le_div_iff₀ hL]`. Establish `h1` using `(hC Z ⟨kk, y⟩ hz).1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h0 : rdU (Y.U σ) (s Z) kk y = 0` using `GlobalTheory.AllWt.rdU_eq_zero (Y.U σ) (hsZ Z) hz`. Establish `: ((Y.U σ).X kk).pnorm (GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) (parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0) kk) (rdU (Y.U σ) (s Z) kk) y = 0`. Unfold `ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm`. Rewrite using `[h0, norm_zero, zero_mul]`.
+
+Rewrite using `[this]`. Conclude with `div_nonneg (le_max_right _ _) hL.le`.
+-/
 theorem exists_flat_unit_section : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∃ N : ℕ, 0 < N ∧ ∀ w : GlobalTheory.AllWt.Psi T.Q.H → ℤ, ∃ (φ φ' : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F), φ ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) (GlobalTheory.FlatLine.parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0) ∧ t ≠ 0 ∧ φ * φ' = t • 1 ∧ (∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v φ') ∧ ∀ σ, GoodEmb Y.d.c₂ σ → ∀ kk, ∃ C : ℝ, ∀ y ∈ ((Y.U σ).X kk).dom, ((Y.U σ).X kk).pnorm (GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) (GlobalTheory.FlatLine.parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0) kk) (rdU (Y.U σ) φ kk) y ≤ C := by
   intro hP D T j Y e o hY hE
   obtain ⟨N, hN, hA⟩ := _root_.GlobalTheory.T.flat_unit_exists_at_every_level hP D T j Y e o hY hE
@@ -116,6 +147,9 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlatUnit.exists_flat_unit_section | exact _root_.GlobalTheory.FlatUnit.exists_flat_unit_section | (intros; apply _root_.GlobalTheory.FlatUnit.exists_flat_unit_section <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.detLine_flat_unit_exists : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∃ N : ℕ, 0 < N ∧ ∀ w : GlobalTheory.AllWt.Psi T.Q.H → ℤ, ∃ (φ φ' : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F), φ ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) (GlobalTheory.FlatLine.parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0) ∧ t ≠ 0 ∧ φ * φ' = t • 1 ∧ (∀ la', ∀ v ∈ valSet Y.d.Xo₂ Y.d.c₂ (algCls Y.d.Xo₂ Y.d.c₂) la', 0 ≤ v φ') ∧ ∀ σ, GoodEmb Y.d.c₂ σ → ∀ kk, ∃ C : ℝ, ∀ y ∈ ((Y.U σ).X kk).dom, ((Y.U σ).X kk).pnorm (GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) (GlobalTheory.FlatLine.parWt (T.Q.Dw j) fun τ => (N : ℤ) * w τ) 0) kk) (rdU (Y.U σ) φ kk) y ≤ C := by
   first | exact @_root_.GlobalTheory.FlatUnit.exists_flat_unit_section | exact _root_.GlobalTheory.FlatUnit.exists_flat_unit_section | (intros; apply _root_.GlobalTheory.FlatUnit.exists_flat_unit_section <;> assumption)
 end

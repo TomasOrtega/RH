@@ -7,6 +7,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ A _ g hA hg R' _ σ X' s' φ h`. Establish `hsm : SmoothOfRelativeDimension g s'`. Use `smoothOfRelativeDimension_isStableUnderBaseChange (n := g)` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h hg`. Set `B` to `(Over.pullback (spMap σ)).obj A`.
+
+Use `letI : GrpObj B := Functor.grpObjObj`. Set `e : B ≅ Over.mk s'` to `Over.isoMk h.isoPullback.symm (by simp [B])`. Use `letI : GrpObj (Over.mk s') := GrpObj.ofIso e`. Use `⟨this, ?_, hsm⟩` and prove the remaining obligations. Establish `hc` using `hA.comm`.
+
+Establish `hcB : IsCommMonObj B` using `Functor.isCommMonObj_obj`. Conclude with `{ comm := by`. Prove the components needed by the constructor for the conclusion. Use `show (β_ _ _).hom ≫ ((e.inv ⊗ₘ e.inv) ≫ μ[B] ≫ e.hom) = (e.inv ⊗ₘ e.inv) ≫ μ[B] ≫ e.hom`. Rewrite using `[← Category.assoc, ← BraidedCategory.braiding_naturality, Category.assoc, ← Category.assoc (β_ B B).hom, IsCommMonObj.mul_comm]`.
+
+Use `smooth := MorphismProperty.of_isPullback (P := @Smooth) h hA.smooth`. Use `proper := MorphismProperty.of_isPullback (P := @IsProper) h hA.proper`. Use `geomConnected := MorphismProperty.of_isPullback (P := @GeometricallyConnected) h hA.geomConnected }`.
+-/
 theorem exists_grpObj_isAbelianScheme_of_isPullback_spMap : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (R' : Type) [CommRing R'] (σ : R →+* R') (X' : Scheme.{0}) (s' : X' ⟶ Sp R') (φ : X' ⟶ A.left), IsPullback φ s' A.hom (spMap σ) → ∃ _ : GrpObj (Over.mk s'), IsAbelianScheme (Over.mk s') ∧ SmoothOfRelativeDimension g s' := by
   intro R _ A _ g hA hg R' _ σ X' s' φ h
   have hsm : SmoothOfRelativeDimension g s' := by

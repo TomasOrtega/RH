@@ -26,6 +26,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (At evI realAd SIn
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 open GlobalTheory.RealDict GlobalTheory.RealDict.FockMap
 
+/- English proof (translation)
+Use `choose ξ hξ using fun v => Function.ne_iff.1 (h0 v)`. Establish `hS` using `Filter.eventually_cofinite.1 hs`. Set `y : Fin n × Fin d → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F` to `fun k => ∑ v ∈ hS.toFinset, singleFin v (ξ v k)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use `finprod_induction (· ≠ (0 : ℂ)) one_ne_zero (fun _ _ => mul_ne_zero) fun v => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hv : v ∈ hS.toFinset`. Establish `: (fun k => evalV F v (y k)) = ξ v` using `funext fun k => by`. Rewrite using `[map_sum, Finset.sum_eq_single_of_mem v hv fun v' _ h => evalV_singleFin_ne h.symm _, evalV_singleFin_self]`. Rewrite using `[this]`. Conclude with `hξ v`.
+
+Establish `: (fun k => evalV F v (y k)) = 0` using `funext fun k => by`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun v' h => evalV_singleFin_ne (fun e : v = v' => hv (e ▸ h)) _`. Rewrite using `[this, of_not_not (mt hS.mem_toFinset.2 hv), Set.indicator_of_mem (by exact fun _ => zero_mem _)]`. Conclude with `one_ne_zero`.
+-/
 private theorem finPart_ne {F : Type} [Field F] [NumberField F] {n d : ℕ}
     (φ : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n × Fin d → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
     (hs : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) :
@@ -49,6 +56,29 @@ private theorem finPart_ne {F : Type} [Field F] [NumberField F] {n d : ℕ}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, -, tinj, tth, -⟩` from `th_laws Mo hψ hθ hX hW hM`. Take `⟨Dr, hD1, hD2, hD3⟩` from `exists_der Mo hStd`. Take `⟨y, hy⟩` from `hy`. Take `⟨Θ, hΘ⟩ : ∃ Θ, Θ = thL Mo hψ hθ hX hW hM hg` from `⟨_, rfl⟩`. Establish `hΘ' : ∀ f : SInf D.host.F (Fin M.rank × Fin X.rank), th ψ ε Mo (pureA D.host.F f g) = Θ f` using `fun f => by rw [hΘ]; rfl`.
+
+Rewrite `hv` using `[hΘ']`. Establish `hd : ∀ t z f, Formalism.IndefR.Datum.dRho (heisO ψ (sgn ε M) X) θ t z (Θ f) = Θ (Dr (dir ε M X θ t z) f)` using `hΘ ▸ dRho_thL Mo hψ hθ hX hW hM hD1 hg`. Establish `hi : Function.Injective Θ` using `fun f f' h => by`. Establish `e` using `tinj _ (pureA_mem f hg) _ (pureA_mem f' hg) (by rw [hΘ] at h; exact h)`. Use `DFunLike.ext _ _ fun a => ?_` and prove the remaining obligations.
+
+Establish `e2` using `congrFun e (GlobalTheory.RealLift.ptAt a y)`. Rewrite `e2` using `[GlobalTheory.RealLift.pureA_ptAt, GlobalTheory.RealLift.pureA_ptAt]`. Conclude with `mul_right_cancel₀ hy e2`. Establish `hg₀ : ∀ t z, Dr (dir ε M X θ t z) g₀ + Complex.I • Dr (dir ε M X θ t (cplxO ((frSgn ε A).cart t) (B.cart t) z)) g₀ = 0` using `fun t z => hi (by`. Establish `h : annih (heisO ψ (sgn ε M) X) θ t (cplxO ((frSgn ε A).cart t) (B.cart t)) z (Θ g₀) = 0` using `hv.2 t z`.
+
+Rewrite `h` using `[annih, hd, hd, ← map_smul, ← map_add]`. Rewrite using `[h, map_zero])`. Set `um : FVar D X.rank M.rank → Matrix (Fin X.rank) (Fin M.rank) ℂ` to `fun k => Formalism.IndefR.Datum.unitMap ((frSgn ε A).onb k.1) (B.onb k.1) k.2.1 k.2.2`. Set `Cr : FVar D X.rank M.rank → SInf D.host.F (Fin M.rank × Fin X.rank) → SInf D.host.F (Fin M.rank × Fin X.rank)` to `fun k f => ((fockScale D k.1 : ℂ)⁻¹) • (Dr (dir ε M X θ k.1 (um k)) f - Complex.I • Dr (dir ε M X θ k.1 (cplxO ((frSgn ε A).cart k.1) (B.cart k.1) (um k))) f)`. Set `Φ : PolF D X.rank M.rank →ₗ[ℂ] SInf D.host.F (Fin M.rank × Fin X.rank)` to `(MvPolynomial.basisMonomials _ ℂ).constr ℂ fun k => (Multiset.toList (Finsupp.toMultiset k)).foldr Cr g₀`.
+
+Establish `hΦ : ∀ Θ : SInf D.host.F (Fin M.rank × Fin X.rank) →ₗ[ℂ] (WO (sgn ε M) X → ℂ), (∀ t z f, Formalism.IndefR.Datum.dRho (heisO ψ (sgn ε M) X) θ t z (Θ f) = Θ (Dr (dir ε M X θ t z) f)) → Θ ∘ₗ Φ = pureTensorO ψ θ (sgn ε M) X (frSgn ε A).cart B.cart (frSgn ε A).onb B.onb (Θ g₀)`. Introduce `Θ hd`. Use `(MvPolynomial.basisMonomials _ ℂ).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, pureTensorO, pureTensorL, Module.Basis.constr_basis, Module.Basis.constr_basis, opPow]`. Proceed by induction on `(Finsupp.toMultiset k).toList with`.
+
+Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ← ih, aPlusAll, Formalism.IndefR.Datum.aPlus, crea, hd, hd, ← map_smul, ← map_sub, ← map_smul]`. Establish `hΦ' : ∀ P, Θ (Φ P) = ptF ψ θ (frSgn ε A) B (Θ g₀) P` using `fun P => LinearMap.congr_fun (hΦ Θ hd) P`. Establish `hsum : ∀ u, At (evI D.host.F) u → ∀ f, Dr u f = ∑ t, Dr (dir ε M X θ t (compAt θ t (toO (sgn ε M).gram u))) f` using `fun u hu f => by`.
+
+Rewrite using `[← hD3 _ _ _ fun t => dir_at hθ t _, ← eq_sum_dir hθ hu]`. Establish `hG : Mo.IsGauss ψ τ g₀` using `⟨fun _ => 1, fun u u' hu hu' hrel f f' hf hf' => by`. Rewrite using `[hD2 u hu _ _ hf, hD2 u' hu' _ _ hf', hsum u hu, hsum u' hu', Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[compAt_cplx hθ A B hc (fun w => by simpa using hrel w) t, eq_neg_of_add_eq_zero_left (hg₀ t (compAt θ t (toO (sgn ε M).gram u))), smul_neg, smul_smul, Complex.I_mul_I, neg_one_smul, neg_neg]⟩`.
+
+Establish `hP : ∀ u, At (evI D.host.F) u → ∀ f ∈ Mo.Pol ψ τ, Dr u f ∈ Mo.Pol ψ τ` using `fun u hu f hf => Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) _ (hD1 u hu f)`. Use `⟨Φ, le_antisymm ?_ (sInf_le ⟨fun f hf => ?_, ?_⟩), fun g' hg' P => LinearMap.congr_fun (hΦ (thL Mo hψ hθ hX hW hM hg') (dRho_thL Mo hψ hθ hX hW hM hD1 hg')) P⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.constr_range, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `beta_reduce`.
+
+Proceed by induction on `(Finsupp.toMultiset k).toList with`. Consider the case `nil => exact Submodule.mem_sInf.2 fun N hN => hN.1 g₀ hG`. Consider the case `cons i l ih`. Conclude with `Submodule.smul_mem _ _ (sub_mem (hP _ (dir_at hθ _ _) _ ih) (Submodule.smul_mem _ _ (hP _ (dir_at hθ _ _) _ ih)))`. Take `⟨z, rfl⟩` from `gauss_line Mo ψ τ hCM hStd h2X h2W f g₀ hG g0 hf`.
+
+Conclude with `Submodule.smul_mem _ z ⟨1, hi ((hΦ' 1).trans (GlobalTheory.LieScalar.ptF_one _ _ _))⟩`. Introduce and unpack `u hu _ ⟨P, rfl⟩ f₁ h1`. Rewrite using `[hD2 u hu _ _ h1, hsum u hu]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Take `⟨Q, hQ⟩` from `dRho_ptF (frSgn ε A) B hψ hθ hv t (compAt θ t (toO (sgn ε M).gram u)) P`.
+
+Conclude with `⟨Q, hi (by rw [← hd, hΦ', hΦ', hQ])⟩`.
+-/
 private theorem fock_of {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {ε : Bool} {M X : HSp D} {Xs : Spc D.host.F D.host.E M.rank}
     {Ws : Spc D.host.F D.host.E X.rank} (Mo : Model D.sp.cm.sig Xs Ws)
     (hψ : IsStdChar D ψ (-1)) {θ : InfFam D} (hθ : IsInfFam θ) (A : Fr M) (B : Fr X)
@@ -144,6 +174,11 @@ open GlobalTheory.BotMatch (evW)
 open GlobalTheory.StageGeo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `D ψ ε S X d hd Bs Vs Ws M hP θ hθ A B hc g g0 φ₀ hφ hφ' hφ0 hv`. Substitute `hd` using the available equality. Take `⟨hBs, hψe, hX, hW, ⟨r, s, hV⟩, ⟨r', s', hWs⟩, hM⟩` from `hP`. Substitute `hψe` using the available equality. Establish `hψ : IsStdChar D Bs.ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D Bs.ψ hBs.std`.
+
+Establish `hF : GlobalTheory.BigNZ.Fam M φ₀` using `⟨hφ, hφ'⟩`. Take `⟨Φ, h1, h2⟩` from `fock_of M hψ hθ A B hBs.cm hBs.std hX hW hM (fun w => (hV.cartan w).1) (fun w => (hWs.cartan w).1) hc g g0 (hF.sb hM) (finPart_ne φ₀ hφ0 (hF.std hM)) hv`. Use `⟨Φ, h1, fun φ hs hs' P => ?_⟩` and prove the remaining obligations. Establish `hF' : GlobalTheory.BigNZ.Fam M φ` using `⟨hs, hs'⟩`. Conclude with `h2 _ (hF'.sb hM) P`.
+-/
 theorem UpperTheory.thetaLift_pure_tensor_of_isFinF :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (S X : HSp D) (d : ℕ) (hd : d = X.rank)
         (Bs : Base D.host.F D.host.E) (Vs : Spc D.host.F D.host.E S.rank) (Ws : Spc D.host.F D.host.E d)

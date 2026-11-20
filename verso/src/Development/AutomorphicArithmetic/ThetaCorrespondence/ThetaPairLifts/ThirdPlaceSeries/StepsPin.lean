@@ -15,6 +15,19 @@ noncomputable section
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 2000000
 namespace GlobalTheory.HeightCounting.UpPin
+/- English proof (translation)
+Introduce `hL cDep`. Use `⟨fun h => h.trans (StepW.of_all ?_), fun h => h.trans (StepW.of_all ?_), fun h => h.trans (StepW.of_all ?_), ?_⟩` and prove the remaining obligations. Introduce `K B f T w _ _ H P x l`. Take `⟨x', hx', -⟩` from `H P x l`. Conclude with `⟨x', hx'⟩`.
+
+Introduce `K B f T w _ _ H P x l`. Take `⟨x', hx', -⟩` from `H P x l`. Conclude with `⟨x', hx'⟩`. Introduce `K B f T w _ _ H P x l`. Take `⟨x', hx', -⟩` from `H P x l`.
+
+Conclude with `⟨x', hx'⟩`. Introduce `hB hA hMt hRat hCu hB0 hB1 hB2 hC hFin S Γ`. Establish `h` using `hB.and (hA.and (hMt.and (hRat.and (hCu.and (hB0.and (hB1.and (hB2.and (hC.and hFin))))))))`. Use `h.trans (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B f T w _ _ H`.
+
+Take `⟨⟨P, x, hLoc, -⟩, a, mt, rat, cu, b0, b1, b2, c, fin⟩` from `H`. Take `⟨x1, ⟨la⟩, -⟩` from `a P x hLoc`. Take `⟨imt⟩` from `mt P x1`. Take `⟨irat⟩` from `rat P x1 la`. Establish `li : _root_.GlobalTheory.HeightCounting.Up.IntermediateLevel hL x1` using `{ toLA := la, mt := imt, rat := irat, cusp := cu P x1 la }`.
+
+Take `⟨x2, ⟨l0⟩, p2⟩` from `b0 P x1 li`. Take `⟨x3, ⟨l1⟩, p3⟩` from `b1 P x2 l0`. Take `⟨x4, ⟨l2⟩, p4⟩` from `b2 P x3 l1`. Take `⟨sc⟩` from `c P x4 l2`. Take `⟨Z, v, -, -⟩` from `fin P x4 { toStrictHenselianAcyclic := l2, c := sc } S Γ (p4 (p3 p2))`.
+
+Conclude with `⟨Z, ⟨v⟩⟩`.
+-/
 theorem steps_pin_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, ∀ cDep : ℝ, (_root_.GlobalTheory.HeightCounting.Up.SettingsFormsExistList' hL cDep → _root_.GlobalTheory.HeightCounting.Up.FirstIntermediateLevelExists hL) ∧ (_root_.GlobalTheory.HeightCounting.Up.SeriesExistList' hL cDep → _root_.GlobalTheory.HeightCounting.Up.SecondIntermediateLevelExists hL) ∧
     (_root_.GlobalTheory.HeightCounting.Up.ModuliPointsExistList' hL cDep → _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevelExists hL) ∧ (StepW Start HasBare → _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevelExists hL → SMt → _root_.GlobalTheory.HeightCounting.Up.RationalityStatementThirdPlaceSeries hL → _root_.GlobalTheory.HeightCounting.Up.CuspStatement' hL → _root_.GlobalTheory.HeightCounting.Up.SettingsFormsExistList' hL cDep → _root_.GlobalTheory.HeightCounting.Up.SeriesExistList' hL cDep →
       _root_.GlobalTheory.HeightCounting.Up.ModuliPointsExistList' hL cDep → _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevelNonempty hL → _root_.GlobalTheory.HeightCounting.Up.FinitenessListStatement hL cDep → ∀ (S : SExt) (Γ : GeoP), StepW Start (Has3 (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension (_root_.GlobalTheory.HeightCounting.Up.extensionWithList hL cDep) S Γ).s)) := by

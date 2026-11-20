@@ -23,6 +23,11 @@ variable {K₀ : Type} [Fintype K₀] {J₀ : K₀ → Type} [∀ k, Fintype (J�
 def blkV (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)) : (Σ k, J₀ k) → Σ k, J k :=
   fun p => ⟨bk p.1, bx p.1 p.2⟩
 
+/- English proof (translation)
+Use `⟨h, ?_, fun _ => rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, a⟩ ⟨k', a'⟩ e`. Establish `e1 : bk k = bk k'` using `congrArg Sigma.fst e`. Take `rfl` from `h e1`. Establish `e2 : bx k a = bx k a'` using `by simpa [blkV] using e`.
+
+Rewrite using `[(bx k).injective e2]`. Introduce and unpack `⟨_, a⟩ ⟨k, rfl⟩`. Conclude with `⟨⟨k, (bx k).symm a⟩, by simp [blkV]⟩`.
+-/
 theorem isBlockMap_blkV {bk : K₀ → K} (bx : ∀ k, J₀ k ≃ J (bk k)) (h : Function.Injective bk) :
     IsBlockMap bk (blkV bk bx) := by
   refine ⟨h, ?_, fun _ => rfl, ?_⟩
@@ -39,6 +44,11 @@ variable {κ : K₀ → K} {v : (Σ k, J₀ k) → Σ k, J k}
 def restr (v : (Σ k, J₀ k) → Σ k, J k) : ((Σ k, J k) → ℂ) →L[ℝ] ((Σ k, J₀ k) → ℂ) :=
   ContinuousLinearMap.pi fun p => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Σ k, J k => ℂ) (v p)
 
+/- English proof (translation)
+Take `⟨i', hi'⟩` from `hz (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`. Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`.
+
+Substitute `h2` using the available equality. Conclude with `⟨pi, by rw [hp]; exact hi'⟩`.
+-/
 theorem restr_ne (hv : IsBlockMap κ v) {z : (Σ k, J k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K₀) :
     ∃ i, z (v ⟨k, i⟩) ≠ 0 := by
   obtain ⟨i', hi'⟩ := hz (κ k)
@@ -49,20 +59,36 @@ theorem restr_ne (hv : IsBlockMap κ v) {z : (Σ k, J k) → ℂ} (hz : ∀ k, �
   subst h2
   exact ⟨pi, by rw [hp]; exact hi'⟩
 
+/- English proof (translation)
+Establish `h` using `ContDiffOn.comp (s := {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) hA (restr v).contDiff.contDiffOn (fun z hz => restr_ne hv hz)`. Conclude with `h`.
+-/
 theorem isSmoothHerm_pull (hv : IsBlockMap κ v) {A : HermLine J₀} (hA : IsSmoothHerm A) :
     IsSmoothHerm (pullHerm hv A) := by
   have h := ContDiffOn.comp (s := {z : (Σ k, J k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) hA
     (restr v).contDiff.contDiffOn (fun z hz => restr_ne hv hz)
   exact h
 
+/- English proof (translation)
+Introduce `z` and use `hA fun p => z (v p)`.
+-/
 theorem isConj_pull (hv : IsBlockMap κ v) {A : HermLine J₀} (hA : IsConjInvariantH A) :
     IsConjInvariantH (pullHerm hv A) := fun z => hA fun p => z (v p)
 
+/- English proof (translation)
+Introduce `z` and use `by show A.h _ * B.h _ = A.h _ * B.h _ rw [hA, hB]`.
+-/
 theorem isConj_tensor {A B : HermLine J} (hA : IsConjInvariantH A) (hB : IsConjInvariantH B) :
     IsConjInvariantH (A.tensor B) := fun z => by
   show A.h _ * B.h _ = A.h _ * B.h _
   rw [hA, hB]
 
+/- English proof (translation)
+Introduce `f hf`. Set `Φ : MvPolynomial K₀ Ω₀ →+* MvPolynomial K Ω` to `MvPolynomial.eval₂Hom (MvPolynomial.C.comp i) fun k => MvPolynomial.X (bk k)`. Establish `key : ∀ f : MRing J₀, mConeMap y (rename (blkV bk bx) f) = Φ (mConeMap y₀ f)`. Introduce `f`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+
+Consider the case `C a => simp [mConeMap, Φ]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp`. Take `⟨k, a⟩` from `n`. Simplify using `only [map_mul, hp, rename_X]`.
+
+Use `congr 1`. Simplify using `[mConeMap, Φ, blkV, hy]`. Establish `hf' : mConeMap y₀ f = 0` using `hf`. Use `show mConeMap y (rename (blkV bk bx) f) = 0`. Rewrite using `[key, hf', map_zero]`.
+-/
 theorem mCoordIdeal_le_imageZ {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (i : Ω₀ →+* Ω) {y₀ : (Σ k, J₀ k) → Ω₀}
     {y : (Σ k, J k) → Ω} {bk : K₀ → K} (bx : ∀ k, J₀ k ≃ J (bk k))
     (hy : ∀ k a, y ⟨bk k, bx k a⟩ = i (y₀ ⟨k, a⟩)) :
@@ -84,6 +110,9 @@ theorem mCoordIdeal_le_imageZ {Ω₀ Ω : Type} [Field Ω₀] [Field Ω] (i : Ω
   show mConeMap y (rename (blkV bk bx) f) = 0
   rw [key, hf', map_zero]
 
+/- English proof (translation)
+Use `⟨restr_ne hv hz.1, fun f hf => ?_⟩` and prove the remaining obligations. Use `hz.2 _ (hP hf)` as an intermediate fact. Establish `e : (rename v : MRing J₀ →ₐ[ℤ] MRing J).toRingHom f = rename v f` using `rfl`. Rewrite `this` using `[e, map_rename, eval_rename]`. Conclude with `this`.
+-/
 theorem mem_mcPts_restr (hv : IsBlockMap κ v) {P₀ : Ideal (MRing J₀)} {P : Ideal (MRing J)}
     (hP : P₀ ≤ imageZ v P) {z : (Σ k, J k) → ℂ} (hz : z ∈ mcPts P) : (fun p => z (v p)) ∈ mcPts P₀ := by
   refine ⟨restr_ne hv hz.1, fun f hf => ?_⟩
@@ -98,6 +127,9 @@ section Lines
 
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
+/- English proof (translation)
+Establish `h1 : ∀ k, ‖c k‖ ≠ 0` using `fun k => norm_ne_zero_iff.mpr (hc k)`. Rewrite using `[A.smul c z hc, Real.log_mul (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (h1 k)) (A.pos z hz).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (h1 k)), add_comm]`. Simplify using `only [Real.log_zpow]`.
+-/
 theorem log_h_smul (A : HermLine J) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z : (Σ k, J k) → ℂ}
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     Real.log (A.h fun p => c p.1 * z p) = Real.log (A.h z) + ∑ k, (A.a k : ℝ) * Real.log ‖c k‖ := by
@@ -106,6 +138,9 @@ theorem log_h_smul (A : HermLine J) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {z :
     Real.log_prod (fun k _ => zpow_ne_zero _ (h1 k)), add_comm]
   simp only [Real.log_zpow]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert x s hx ih => rw [Finset.prod_insert hx, Finset.sum_insert hx, zpow_add₀ hr, ih]`.
+-/
 theorem prod_zpow_sum {R : Type} [Field R] {X : Type} (s : Finset X) {r : R} (hr : r ≠ 0) (a : X → ℤ) :
     ∏ x ∈ s, r ^ a x = r ^ ∑ x ∈ s, a x := by
   classical
@@ -126,6 +161,9 @@ def stepLine {N : ℕ} (T : Fin N → HermLine J) (i : Fin N) : HermLine J where
     refine Finset.prod_congr rfl fun k _ => ?_
     rw [zpow_neg, ← prod_zpow_sum _ (h1 k), Finset.prod_inv_distrib]
 
+/- English proof (translation)
+Use `show Real.log (∏ x ∈ Finset.Iic i, ((T x).h z)⁻¹) = _`. Rewrite using `[Real.log_prod fun x _ => inv_ne_zero ((T x).pos z hz).ne']`. Simplify using `only [Real.log_inv, Finset.sum_neg_distrib]`.
+-/
 theorem log_stepLine {N : ℕ} (T : Fin N → HermLine J) (i : Fin N) {z : (Σ k, J k) → ℂ}
     (hz : ∀ k, ∃ a, z ⟨k, a⟩ ≠ 0) :
     Real.log ((stepLine T i).h z) = -∑ x ∈ Finset.Iic i, Real.log ((T x).h z) := by
@@ -133,6 +171,9 @@ theorem log_stepLine {N : ℕ} (T : Fin N → HermLine J) (i : Fin N) {z : (Σ k
   rw [Real.log_prod fun x _ => inv_ne_zero ((T x).pos z hz).ne']
   simp only [Real.log_inv, Finset.sum_neg_distrib]
 
+/- English proof (translation)
+Use `show ContDiffOn ℝ _ (fun z => ∏ x ∈ Finset.Iic i, ((T x).h z)⁻¹) _`. Conclude with `contDiffOn_prod fun x _ => (hT x).inv fun z hz => ((T x).pos z hz).ne'`.
+-/
 theorem isSmoothHerm_stepLine {N : ℕ} {T : Fin N → HermLine J} (hT : ∀ x, IsSmoothHerm (T x)) (i : Fin N) :
     IsSmoothHerm (stepLine T i) := by
   show ContDiffOn ℝ _ (fun z => ∏ x ∈ Finset.Iic i, ((T x).h z)⁻¹) _
@@ -142,8 +183,14 @@ def corr {Ψ : Type} {N : ℕ} (T : Ψ × Fin N → HermLine J) : Option (Ψ × 
   | none => Top.trivLine J
   | some r => stepLine (fun k => T (r.1, k)) r.2
 
+/- English proof (translation)
+The claim follows from `contDiffOn_const`.
+-/
 theorem isSmoothHerm_trivLine : IsSmoothHerm (Top.trivLine J) := contDiffOn_const
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `none => exact isSmoothHerm_trivLine`. Consider the case `some r => exact isSmoothHerm_stepLine (fun k => hT (r.1, k)) r.2`.
+-/
 theorem isSmoothHerm_corr {Ψ : Type} {N : ℕ} {T : Ψ × Fin N → HermLine J} (hT : ∀ r, IsSmoothHerm (T r))
     (a : Option (Ψ × Fin N)) : IsSmoothHerm (corr T a) := by
   cases a with

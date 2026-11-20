@@ -8,11 +8,21 @@ open GlobalTheory.PRep GlobalTheory.SmGL
 
 namespace GlobalTheory.SmGL.FinitenessModel
 
+/- English proof (translation)
+The claim follows from `haveI := GlobalTheory.SplitWeil.Model.padic_localField p (h ℚ_[p]).1`.
+-/
 theorem padic (h : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (p : ℕ) [Fact p.Prime] :
     IrreducibleAdmissible ℚ_[p] :=
   haveI := GlobalTheory.SplitWeil.Model.padic_localField p
   (h ℚ_[p]).1
 
+/- English proof (translation)
+Use `haveI : IsSimpleOrder (Subrepresentation π) := h`. Establish `hfin : FiniteDimensional ℂ V`. Distinguish the cases in `hV : ∃ v : V, v ≠ 0`. Take `⟨v, hv⟩` from `hV`. Set `S : Subrepresentation π` to `⟨Submodule.span ℂ {v}, fun g w hw => by`.
+
+Rewrite using `[Subsingleton.elim g 1, map_one]`. Conclude with `hw⟩`. Break down `eq_bot_or_eq_top S with hS | hS` into its components or cases. Establish `: v ∈ S.toSubmodule` using `Submodule.mem_span_singleton_self v`. Rewrite `this` using `[hS]`.
+
+Conclude with `absurd this hv`. Establish `h2 : Submodule.span ℂ {v} = ⊤` using `congrArg Subrepresentation.toSubmodule hS`. Conclude with `⟨h2 ▸ Submodule.fg_span_singleton v⟩`. Use `push Not at hV haveI : Subsingleton V := ⟨fun a b => by rw [hV a, hV b]⟩ infer_instance`. Conclude with `⟨hs, fun _ _ _ => inferInstance⟩`.
+-/
 theorem admissible_of_subsingleton {G V : Type} [Group G] [TopologicalSpace G] [Subsingleton G]
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V) (hs : IsSmooth π)
     (h : π.IsIrreducible) : IsAdmissible π := by
@@ -33,6 +43,9 @@ theorem admissible_of_subsingleton {G V : Type} [Group G] [TopologicalSpace G] [
       infer_instance
   exact ⟨hs, fun _ _ _ => inferInstance⟩
 
+/- English proof (translation)
+Set `φ : Subrepresentation π ↪o Submodule ℂ V` to `⟨⟨Subrepresentation.toSubmodule, Subrepresentation.toSubmodule_injective⟩, Iff.rfl⟩`. Conclude with `(hasFiniteLength_iff_wellFounded π).2 ⟨φ.wellFoundedGT, φ.wellFoundedLT⟩`.
+-/
 theorem hasFiniteLength_of_finiteDimensional {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (π : Representation ℂ G V) : HasFiniteLength π := by
   let φ : Subrepresentation π ↪o Submodule ℂ V :=
@@ -43,10 +56,16 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
   [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+The claim follows from `hasFiniteLength_of_finiteDimensional _`.
+-/
 theorem hasFiniteLength_jac (e : (Σ a, m a) ≃ n) {V : Type} [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (π : Representation ℂ (GL n k) V) : HasFiniteLength (jac e π) :=
   hasFiniteLength_of_finiteDimensional _
 
+/- English proof (translation)
+Use `⟨fun v => by simp, fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `((hasFiniteLength_iff_wellFounded _).1 h).1`. Set `φ : Submodule ℂ (ℕ →₀ ℂ) ↪o Subrepresentation (Representation.trivial ℂ (GL n k) (ℕ →₀ ℂ))` to `⟨⟨fun S => ⟨S, fun g v hv => by simpa using hv⟩, fun a b hab => congrArg Subrepresentation.toSubmodule hab⟩, Iff.rfl⟩`. Use `haveI : IsNoetherian ℂ (ℕ →₀ ℂ) := isNoetherian_iff'.2 φ.wellFoundedGT`. Conclude with `Module.not_finite_of_infinite_basis (Finsupp.basisSingleOne (R := ℂ) (ι := ℕ)) inferInstance`.
+-/
 theorem not_hasFiniteLength_trivial :
     IsSmooth (Representation.trivial ℂ (GL n k) (ℕ →₀ ℂ)) ∧
       ¬ HasFiniteLength (Representation.trivial ℂ (GL n k) (ℕ →₀ ℂ)) := by

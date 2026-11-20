@@ -23,6 +23,13 @@ open GlobalTheory.IdemSupport
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Establish `hm : GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E (x : AE D) w * GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E ((x⁻¹ : (AE D)ˣ) : AE D) w = 1`. Rewrite using `[← ev_mul, Units.mul_inv, map_one]`.
+
+Apply the tactic sequence `try rfl`. Set `u : (w.adicCompletion D.host.E)ˣ` to `⟨_, _, hm, by rw [mul_comm]; exact hm⟩`. Establish `hU : Formalism.L2.Host.IsUnitAt w u`. Rewrite using `[GlobalTheory.LFun.EulerTie.isUnitAt_iff]`. Conclude with `⟨(hΦ.int _).1 h1 w, (hΦ.int _).1 h2 w⟩`.
+
+Use `⟨GlobalTheory.LFun.locIdele D.host.F w u, (GlobalTheory.LFun.EulerTie.glue_eq_locIdele hd rfl).symm, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : ℂˣ => (z : ℂ)) (hu u hU)` as an intermediate fact. Conclude with `Circle.ext this`.
+-/
 theorem exists_glue_kill {χ : (AE D)ˣ →* Circle} {w : HeightOneSpectrum (𝓞 D.host.E)} (hu : UnrAt χ w)
     {e : AE D} (hd : GlobalTheory.IdemSupport.IsDelta (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E) w e)
     (x : (AE D)ˣ) (h1 : finPart D (x : AE D) ∈ intAE D) (h2 : finPart D ((x⁻¹ : (AE D)ˣ) : AE D) ∈ intAE D) :
@@ -43,6 +50,15 @@ theorem exists_glue_kill {χ : (AE D)ˣ →* Circle} {w : HeightOneSpectrum (�
   have := congrArg (fun z : ℂˣ => (z : ℂ)) (hu u hU)
   exact Circle.ext this
 
+/- English proof (translation)
+Introduce `D v w hw χ hχ e f hp x hx h1 h2`. Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Establish `hd` using `(of_isPrimeIdem hΦ hp).1`.
+
+Break down `hp with ⟨hi, rfl⟩ | ⟨rfl, -, -⟩` into its components or cases. Establish `hd'` using `delta_conj hΦ hd`. Take `⟨y, hy, hy1⟩` from `exists_glue_kill (hχ w hw) hd x h1 h2`. Take `⟨z, hz, hz1⟩` from `exists_glue_kill (hχ (cP w) ((under_cP w).trans hw)) hd' x h1 h2`. Establish `ho : e * cA D e = 0` using `hi.1.2.1`.
+
+Establish `e1 : x = y * z` using `Units.ext (by`. Rewrite using `[Units.val_mul, hy, hz]`. Take the linear combination `(-1 : AE D) * hx - ((x : AE D) - 1) ^ 2 * ho)`. Rewrite using `[e1, map_mul, hy1, hz1, one_mul]`. Take `⟨y, hy, hy1⟩` from `exists_glue_kill (hχ w hw) hd x h1 h2`.
+
+Establish `e1 : x = y` using `Units.ext (by rw [hy]; linear_combination (-1 : AE D) * hx)`. Rewrite using `[e1, hy1]`.
+-/
 theorem unrPl_of_unrAt : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)),
     w.under (𝓞 D.host.F) = v → ∀ χ : (AE D)ˣ →* Circle,
     (∀ w' : HeightOneSpectrum (𝓞 D.host.E), w'.under (𝓞 D.host.F) = v → UnrAt χ w') → UnrPl w χ := by

@@ -14,12 +14,21 @@ section Topology
 
 variable (K L)
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem galois_compactSpace [IsGalois K L] : CompactSpace Gal(L/K) :=
   inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 theorem galois_t2Space [Algebra.IsIntegral K L] : T2Space Gal(L/K) :=
   inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance⟩`.
+-/
 theorem galois_isProfinite [IsGalois K L] :
     CompactSpace Gal(L/K) ∧ T2Space Gal(L/K) ∧ TotallyDisconnectedSpace Gal(L/K) :=
   ⟨inferInstance, inferInstance, inferInstance⟩
@@ -28,10 +37,16 @@ end Topology
 
 section Open
 
+/- English proof (translation)
+The claim follows from `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x (mem_adjoin_simple_self K x)`.
+-/
 theorem apply_eq_of_mem_fixingSubgroup_adjoin {x : L} {σ : Gal(L/K)}
     (hσ : σ ∈ (K⟮x⟯).fixingSubgroup) : σ x = x :=
   (IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ x (mem_adjoin_simple_self K x)
 
+/- English proof (translation)
+Establish `: FiniteDimensional K K⟮x⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Conclude with `Subgroup.isOpen_mono (fun σ hσ => h σ (apply_eq_of_mem_fixingSubgroup_adjoin hσ)) (fixingSubgroup_isOpen K⟮x⟯)`.
+-/
 theorem isOpen_of_forall_apply_eq_mem [Algebra.IsIntegral K L] (H : Subgroup Gal(L/K)) (x : L)
     (h : ∀ σ : Gal(L/K), σ x = x → σ ∈ H) : IsOpen (H : Set Gal(L/K)) := by
   have : FiniteDimensional K K⟮x⟯ :=
@@ -94,8 +109,17 @@ section Galois
 
 variable (K L) [IsGalois K L]
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsDiscreteRep (galUnits.{u} K L) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (n : ℕ) : IsDiscreteRep (galRootsOfUnity.{u} K L n) := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsDiscreteRep (galAdd K L) := inferInstance
 
 end Galois

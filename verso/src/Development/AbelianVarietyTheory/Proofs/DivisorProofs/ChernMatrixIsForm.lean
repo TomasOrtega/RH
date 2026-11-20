@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.MixDens
 
+/- English proof (translation)
+Introduce `k _ X p σ D B φ hφ`. Use `⟨fun c c' y hy hy' => ?_, fun c => ?_, fun c y hy => ?_⟩` and prove the remaining obligations. Establish `ho` using `ChartGlue.isOpen_over c.e c'.e.open_source`. Establish `hm` using `ChartGlue.mem_over c.e hy hy'`. Establish `e : (fun v => (φ.φ (pick φ.isLB y) (c.e.symm v) : ℂ)) =ᶠ[𝓝 (c.e y)] (fun v => (φ.φ (pick φ.isLB y) (c'.e.symm v) : ℂ)) ∘ c'.e ∘ c.e.symm` using `eventually_of_mem (ho.mem_nhds hm) fun v hv => by`.
+
+Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2]`. Establish `e₂ : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hy)`. Unfold `chernMat AlgChart.hess`. Use `beta_reduce`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, ReciprocityTheory.L2DbarEstimates.Y.cmpa_cHess_comp ho hm (c.holo_trans c') (e₂ ▸ Complex.ofRealCLM.contDiff.contDiffAt.comp _ (hφ.contDiffAt c' hy' (mem_pick _ y))), e₂, chg]`.
+
+Establish `hJ : (Matrix.of fun l j => (fderiv ℂ (c'.e ∘ c.e.symm) (c.e y) (ReciprocityTheory.L2DbarEstimates.bas D j)) l) = transMat c c' y` using `rfl`. Rewrite using `[hJ]`. Use `congr 1`. Introduce `v hv`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U (pick φ.isLB (c.e.symm v))))`.
+
+Establish `hm : v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U (pick φ.isLB (c.e.symm v)))` using `⟨hv, mem_pick φ.isLB _⟩`. Establish `hs : ContDiffOn ℝ ∞ (fun w => ((φ.φ (pick φ.isLB (c.e.symm v)) (c.e.symm w) : ℝ) : ℂ)) (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U (pick φ.isLB (c.e.symm v))))` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_chart (hφ _) c)`. Establish `hc : ContinuousAt (fun w => cHess D (fun w => ((φ.φ (pick φ.isLB (c.e.symm v)) (c.e.symm w) : ℝ) : ℂ)) w) v` using `continuousAt_pi.2 fun a => continuousAt_pi.2 fun b => (ReciprocityTheory.L2DbarEstimates.Y.continuousOn_wd_wdb ho hs a b).continuousAt (ho.mem_nhds hm)`. Use `ContinuousAt.continuousWithinAt (hc.congr ?_)` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hm] with w hw`.
+
+Unfold `chernMat`. Use `beta_reduce`. Rewrite using `[c.hess_eq hφ (c.e.map_target hw.1) hw.2 (mem_pick _ _), AlgChart.hess, c.e.right_inv hw.1]`. Establish `hd` using `hφ.contDiffAt c hy (mem_pick φ.isLB y) set g : V D → ℂ := fun v => ((φ.φ (pick φ.isLB y) (c.e.symm v) : ℝ) : ℂ) with hg`. Establish `hg2 : ContDiffAt ℝ 2 g (c.e y)` using `Complex.ofRealCLM.contDiff.contDiffAt.comp _ hd`.
+
+Establish `hgc : (fun w => (starRingEnd ℂ) (g w)) = g` using `funext fun w => by simp [g]`. Use `show (cHess D g (c.e y)).IsHermitian`. Use extensionality with `j l`. Simplify using `only [Matrix.conjTranspose_apply, cHess, Matrix.of_apply]`. Use `show (starRingEnd ℂ) (ReciprocityTheory.L2DbarEstimates.wd D l (ReciprocityTheory.L2DbarEstimates.wdb D j g) (c.e y)) = ReciprocityTheory.L2DbarEstimates.wd D j (ReciprocityTheory.L2DbarEstimates.wdb D l g) (c.e y)`.
+
+Establish `h1 : (fun w => (starRingEnd ℂ) (ReciprocityTheory.L2DbarEstimates.wdb D j g w)) = ReciprocityTheory.L2DbarEstimates.wd D j g`. Use function extensionality and compare the values at `w`. Rewrite using `[← ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wd_conj' D j g w, hgc]`. Rewrite using `[← ReciprocityTheory.L2DbarEstimates.ChartWirtingerDerivatives.wdb_conj' D l (ReciprocityTheory.L2DbarEstimates.wdb D j g) (c.e y), h1, ReciprocityTheory.L2DbarEstimates.comm_wd_wdb g (c.e y) hg2 j l]`.
+-/
 theorem chernMat_isForm : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (B : LB X) (φ : Weight p σ B), φ.IsCInf → IsForm fun (c : AlgChart p σ D) y => chernMat φ c y := by
   intro k _ X p σ D B φ hφ
   refine ⟨fun c c' y hy hy' => ?_, fun c => ?_, fun c y hy => ?_⟩

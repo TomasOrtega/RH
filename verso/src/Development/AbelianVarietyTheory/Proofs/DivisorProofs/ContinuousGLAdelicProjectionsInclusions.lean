@@ -10,6 +10,11 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTh
 
 namespace GlobalTheory.GLProj
 
+/- English proof (translation)
+Introduce `E _ _ _ a`. Establish `hInf : Continuous (pInf E)` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`. Establish `hFin : Continuous (pFin E)` using `continuous_snd`. Use `⟨Continuous.units_map _ (continuous_id.matrix_map hInf), Continuous.units_map _ (continuous_id.matrix_map hFin), continuous_infGL, ?_⟩` and prove the remaining obligations. Use `Continuous.units_map _ ?_` and prove the remaining obligations.
+
+Establish `hs : Continuous (sFin E : Af E → Ad E)` using `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`. Conclude with `(continuous_const.add (continuous_id.matrix_map hs) : Continuous fun x : Matrix (Fin a) (Fin a) (Af E) => 1 - matN a (sFin E) 1 + x.map (sFin E))`.
+-/
 theorem continuous_proj_incl : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     Continuous (fun g : GA E a => Matrix.GeneralLinearGroup.map (pInf E) g) ∧
     Continuous (fun g : GA E a => Matrix.GeneralLinearGroup.map (pFin E) g) ∧

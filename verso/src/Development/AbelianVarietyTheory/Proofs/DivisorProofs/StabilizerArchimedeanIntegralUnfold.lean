@@ -16,6 +16,9 @@ open GlobalTheory.IwasawaKAvgInt
 
 namespace GlobalTheory.IwasawaKAvgInt
 
+/- English proof (translation)
+Introduce `h`. Use `hH.xy` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `[form] at this`.
+-/
 theorem xne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n₁ : ℕ} {X : Spc F E (n₁ + 2)} {X₁ : Spc F E n₁} {H : Plane E (n₁ + 2) n₁} {i₀ i₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ i₀ i₁) : H.x ≠ 0 := by
@@ -24,6 +27,19 @@ theorem xne {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Al
   rw [h] at this
   simp [form] at this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n₁ X X₁ H i₀ i₁ r s hB hX hH K hK μK hμK Ψ hint hequiv g hg`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (n₁ + 2) X.J`. Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hSC`.
+
+Use `haveI := hT2`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Establish `hGc : IsClosed ((UAtSub σ X (evI F) : Subgroup (UA σ X.J)) : Set (UA σ X.J))` using `isClosed_UAtSub X (evI F)`. Use `haveI : LocallyCompactSpace (UAtSub σ X (evI F)) := hGc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hPc` using `GlobalTheory.T.isClosed_line_stabilizer F E σ (n₁ + 2) X H.x (xne hH)`.
+
+Use `haveI : LocallyCompactSpace (lineStab σ X H.x) := hPc.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `hKc` using `GlobalTheory.T.isCompact_open_compact_at_infinity F E σ B (n₁ + 2) X r s hB hX K hK`. Use `haveI : CompactSpace (KAt K (evI F)) := isCompact_iff_compactSpace.mp hKc`. Set `ι : KAt K (evI F) →* UAtSub σ X (evI F)` to `Subgroup.inclusion inf_le_right`. Establish `hιc : Continuous ι` using `Continuous.subtype_mk continuous_subtype_val _`.
+
+Establish `hιi : Function.Injective ι` using `Subgroup.inclusion_injective _`. Set `δ : lineStab σ X H.x → ℝ≥0` to `fun p => absE F E p.2.choose ^ (n₁ + 1)`. Establish `hδ : ∀ p : lineStab σ X H.x, (Measure.haar : Measure (lineStab σ X H.x)).map (· * p) = δ p • Measure.haar` using `fun p => GlobalTheory.T.line_stabilizer_modulus_haar F E σ B n₁ X X₁ H i₀ i₁ r s hB hX hH _ inferInstance p _ p.2.choose_spec`. Establish `hdec : ∀ x : UAtSub σ X (evI F), ∃ p ∈ lineStab σ X H.x, ∃ k : KAt K (evI F), x = p * ι k`. Introduce `x`.
+
+Take `⟨p, hp, hpt, k, hk, he⟩` from `GlobalTheory.T.parabolic_line_stabilizer_decomposition F E σ B n₁ X X₁ H i₀ i₁ r s hB hX hH K hK x.1 x.2`. Conclude with `⟨⟨p, hp⟩, hpt, ⟨k, hk⟩, Subtype.ext he⟩`. Establish `key` using `GlobalTheory.T.iwasawa_haar_integral_formula (UAtSub σ X (evI F)) (KAt K (evI F)) ι (lineStab σ X H.x) Measure.haar Measure.haar μK δ hιc hιi hPc inferInstance inferInstance hμK (GlobalTheory.T.haar_unitary_right_invariant F E σ B (n₁ + 2) X r s hB hX _ inferInstance) hδ hdec (fu …`. Establish `h` using `hequiv p.1.1 p.1.2 x.1 x.2 _ p.2.choose_spec`. Use `show Ψ (p.1.1 * x.1) = _`.
+
+Rewrite using `[h]`. Simplify using `[δ]) ⟨g, hg⟩`. Conclude with `key`.
+-/
 theorem kInt_right_inv_of_integrable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁) (i₀ i₁ r s : ℕ), B.IsGood σ →
     X.IsHerm σ B r s → H.IsAdapted σ B X X₁ i₀ i₁ → ∀ K : Subgroup (UA σ X.J), IsStab B K →

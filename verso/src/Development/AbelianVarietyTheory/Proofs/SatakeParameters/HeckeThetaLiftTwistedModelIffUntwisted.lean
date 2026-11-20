@@ -29,18 +29,30 @@ section TwEig
 
 variable {s : Bool} {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => rfl`.
+-/
 theorem tw_map_mul (a b : Module.End ℂ E) : (Tw.map s (a * b) : Module.End ℂ (Tw s E)) = Tw.map s a * Tw.map s b :=
   LinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact LinearMap.ext fun _ => rfl`. Consider the case `succ k ih => rw [pow_succ, tw_map_mul, ih, pow_succ]`.
+-/
 theorem tw_map_pow (a : Module.End ℂ E) (k : ℕ) : (Tw.map s (a ^ k) : Module.End ℂ (Tw s E)) = Tw.map s a ^ k := by
   induction k with
   | zero => exact LinearMap.ext fun _ => rfl
   | succ k ih => rw [pow_succ, tw_map_mul, ih, pow_succ]
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun _ => rfl`.
+-/
 theorem tw_map_sub_smul (a : Module.End ℂ E) (μ : ℂ) :
     (Tw.map s a - μ • 1 : Module.End ℂ (Tw s E)) = Tw.map s (a - cj s μ • 1) :=
   LinearMap.ext fun _ => rfl
 
+/- English proof (translation)
+Simplify using `only [Module.End.mem_maxGenEigenspace]`. Rewrite using `[tw_map_sub_smul]`. Use `exists_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[← tw_map_pow]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_maxGen_tw (a : Module.End ℂ E) (μ : ℂ) (v : Tw s E) :
     v ∈ Module.End.maxGenEigenspace (Tw.map s a : Module.End ℂ (Tw s E)) μ ↔ Tw.out v ∈ a.maxGenEigenspace (cj s μ) := by
   simp only [Module.End.mem_maxGenEigenspace]
@@ -49,6 +61,9 @@ theorem mem_maxGen_tw (a : Module.End ℂ E) (μ : ℂ) (v : Tw s E) :
   rw [← tw_map_pow]
   exact Iff.rfl
 
+/- English proof (translation)
+Use `SetLike.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[show v ∈ Tw.sub s (eigAt h fun i => cj s (y i)) ↔ Tw.out v ∈ eigAt h (fun i => cj s (y i)) from Iff.rfl]`. Simplify using `only [eigAt, Submodule.mem_iInf]`. Conclude with `forall_congr' fun i => mem_maxGen_tw (h i) (y i) v`.
+-/
 theorem eigAt_tw {I : Type} (h : I → Module.End ℂ E) (y : I → ℂ) :
     eigAt (fun i => (Tw.map s (h i) : Module.End ℂ (Tw s E))) y = Tw.sub s (eigAt h fun i => cj s (y i)) := by
   refine SetLike.ext fun v => ?_
@@ -56,17 +71,28 @@ theorem eigAt_tw {I : Type} (h : I → Module.End ℂ E) (y : I → ℂ) :
   simp only [eigAt, Submodule.mem_iInf]
   exact forall_congr' fun i => mem_maxGen_tw (h i) (y i) v
 
+/- English proof (translation)
+Use `le_antisymm (fun x hx => ?_) (iSup_le fun c v hv => (le_iSup V c) hv)` and prove the remaining obligations. Conclude with `Submodule.iSup_induction V (motive := fun y => (Tw.mk s y : Tw s E) ∈ ⨆ c, Tw.sub s (V c)) hx (fun c y hy => Submodule.mem_iSup_of_mem c hy) (zero_mem _) (fun a b ha hb => add_mem ha hb)`.
+-/
 theorem sub_iSup {ι : Type} (V : ι → Submodule ℂ E) : Tw.sub s (⨆ c, V c) = ⨆ c, Tw.sub s (V c) := by
   refine le_antisymm (fun x hx => ?_) (iSup_le fun c v hv => (le_iSup V c) hv)
   exact Submodule.iSup_induction V (motive := fun y => (Tw.mk s y : Tw s E) ∈ ⨆ c, Tw.sub s (V c)) hx
     (fun c y hy => Submodule.mem_iSup_of_mem c hy) (zero_mem _) (fun a b ha hb => add_mem ha hb)
 
+/- English proof (translation)
+Distinguish the cases in `hP : P`. Rewrite using `[iSup_pos hP, iSup_pos hP]`. Rewrite using `[iSup_neg hP, iSup_neg hP]`. Both sides reduce to the same expression.
+-/
 theorem sub_iSup_prop {P : Prop} (V : P → Submodule ℂ E) : Tw.sub s (⨆ c, V c) = ⨆ c, Tw.sub s (V c) := by
   by_cases hP : P
   · rw [iSup_pos hP, iSup_pos hP]
   · rw [iSup_neg hP, iSup_neg hP]
     rfl
 
+/- English proof (translation)
+Unfold `eigSum`. Rewrite using `[sub_iSup]`. Simplify using `only [sub_iSup_prop, eigAt_tw]`. Establish `hcc : ∀ y : I → ℂ, (fun i => cj s (cj s (y i))) = y` using `fun y => funext fun i => cj_cj s (y i)`. Use `le_antisymm (iSup₂_le fun y hy => le_iSup₂_of_le (fun i => cj s (y i)) (by rw [hcc]; exact hy) le_rfl) (iSup₂_le fun x hx => le_iSup₂_of_le (fun i => cj s (x i)) hx ?_)` and prove the remaining obligations.
+
+Rewrite using `[hcc]`.
+-/
 theorem eigSum_tw {I : Type} (h : I → Module.End ℂ E) (Q : (I → ℂ) → Prop) :
     eigSum (fun i => (Tw.map s (h i) : Module.End ℂ (Tw s E))) Q = Tw.sub s (eigSum h fun x => Q fun i => cj s (x i)) := by
   unfold eigSum
@@ -92,16 +118,29 @@ def twE (R : RealDat3 D A3 Ks) (F : Face3 D A3) (j : Fin D.R.m) (H : Module.End 
     Module.End ℂ ((R.toCx3 F).W j) :=
   (Tw.map (twAt D.what₂.embLL A3.A.v0) H : Module.End ℂ (Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem theta_jL (j : Fin D.R.m) (t : T) (y : (A3.A.fam.L j t).S.Forms) :
     (R.toCx3 F).θ' j t ((R.toCx3 F).jL j t y) =
       (R.phs j • Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.thG j t (R.jV j t y)) :
         Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H) := rfl
 
+/- English proof (translation)
+The claim follows from `(Tw.map (twAt D.what₂.embLL A3.A.v0) H).map_smul c _`.
+-/
 theorem twE_smul (j : Fin D.R.m) (H : Module.End ℂ (R.HW j (sg0 D A3.A)).H) (c : ℂ) (v : (R.HW j (sg0 D A3.A)).H) :
     twE R F j H (c • Tw.mk (twAt D.what₂.embLL A3.A.v0) v : Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H) =
       (c • Tw.mk (twAt D.what₂.embLL A3.A.v0) (H v) : Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H) :=
   (Tw.map (twAt D.what₂.embLL A3.A.v0) H).map_smul c _
 
+/- English proof (translation)
+Establish `hK` using `RealDat3.kFormL_of (F := F) hM`. Establish `key : ((R.toCx3 F).θ' j t) ∘ₗ ((R.toCx3 F).opLC j t (Sum.inl i)) = (twE R F j H) ∘ₗ ((R.toCx3 F).θ' j t)`. Use `LinearMap.ext_on (hK j t).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e1` using `CxData.jL_opL (R.toCx3 F) hK j t (Sum.inl i) (CxData.bL (A := A3.fam3.amb3) j t k)`.
+
+Simplify using `only [LinearMap.comp_apply]`. Use `(congrArg ((R.toCx3 F).θ' j t) e1.symm).trans ?_` and prove the remaining obligations. Use `(theta_jL j t _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (twE R F j H) (theta_jL j t _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (twE_smul j H _ _).symm` and prove the remaining obligations.
+
+Conclude with `congrArg (fun v => (R.phs j • Tw.mk (twAt D.what₂.embLL A3.A.v0) v : Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H)) (h _)`. Conclude with `LinearMap.congr_fun key u`.
+-/
 theorem intw_of_rat (hM : R.toRealDat.IsModels) (j : Fin D.R.m) (t : T) (i : (A3.liftI j t).OpIx)
     (H : Module.End ℂ (R.HW j (sg0 D A3.A)).H)
     (h : ∀ f, R.thG j t (R.jV j t ((A3.liftI j t).opAll i f)) = H (R.thG j t (R.jV j t f)))
@@ -130,6 +169,11 @@ abbrev SysC (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (j : Fin D.R.
     ((A3.liftI j A3.A.fam.μ0).OpIx → ℂ) → Prop :=
   cxSys D.what₂.embLL ((A3.liftI j A3.A.fam.μ0).HasRes3 (A3.fam3.tr3 j p.1))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Use `fun h => Exists.elim h fun y hy => ⟨y, hy.1, funext fun i => ?_⟩` and prove the remaining obligations. Establish `e : cj (twAt D.what₂.embLL A3.A.v0) (x i) = A3.A.v0.embedding (y i)` using `congrFun hy.2 i`. Rewrite `e` using `[R.toRealDat.emb0]`. Rewrite using `[← cj_cj (twAt D.what₂.embLL A3.A.v0) (x i), e, cj_cj]`.
+
+Use `fun h => Exists.elim h fun y hy => ⟨y, hy.1, funext fun i => ?_⟩` and prove the remaining obligations. Establish `e : x i = D.what₂.embLL (y i)` using `congrFun hy.2 i`. Use `show cj (twAt D.what₂.embLL A3.A.v0) (x i) = A3.A.v0.embedding (y i)`. Rewrite using `[R.toRealDat.emb0, e]`.
+-/
 theorem sysL_cj (R : RealDat3 D A3 Ks) (j : Fin D.R.m) (p : A3.fam3.base3.Ix) (x : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ) :
     SysL A3 j p (fun i => cj (twAt D.what₂.embLL A3.A.v0) (x i)) ↔ SysC A3 j p x := by
   constructor
@@ -152,10 +196,16 @@ def unE (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] (
     show Tw.out (h (Tw.mk s (c • v))) = c • Tw.out (h (Tw.mk s v))
     rw [e, map_smul, Tw.out_smul, cj_cj]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => LinearMap.ext fun v => LinearMap.congr_fun h.eq v, fun h => LinearMap.ext fun v => LinearMap.congr_fun h.eq v⟩`.
+-/
 theorem twE_commute (j : Fin D.R.m) (a b : Module.End ℂ (R.HW j (sg0 D A3.A)).H) :
     Commute (twE R F j a) (twE R F j b) ↔ Commute a b :=
   ⟨fun h => LinearMap.ext fun v => LinearMap.congr_fun h.eq v, fun h => LinearMap.ext fun v => LinearMap.congr_fun h.eq v⟩
 
+/- English proof (translation)
+Establish `hK` using `RealDat3.kFormL_of (F := F) hM`. Establish `e1` using `CxData.jL_opL (R.toCx3 F) hK j t (Sum.inl i) f`. Establish `e2` using `(congrArg ((R.toCx3 F).θ' j t) e1).trans (h _)`. Establish `e3` using `((theta_jL (R := R) (F := F) j t _).symm.trans e2).trans ((congrArg (twE R F j H) (theta_jL j t f)).trans (twE_smul j H _ _))`. Conclude with `smul_right_injective (Tw (twAt D.what₂.embLL A3.A.v0) (R.HW j (sg0 D A3.A)).H) hph e3`.
+-/
 theorem rat_of_intw (hM : R.toRealDat.IsModels) (j : Fin D.R.m) (hph : R.phs j ≠ 0) (t : T) (i : (A3.liftI j t).OpIx)
     (H : Module.End ℂ (R.HW j (sg0 D A3.A)).H)
     (h : ∀ u, (R.toCx3 F).θ' j t ((R.toCx3 F).opLC j t (Sum.inl i) u) = twE R F j H ((R.toCx3 F).θ' j t u))
@@ -173,10 +223,20 @@ structure UntwL (g : ∀ j t, (A3.liftI j t).OpIx → Module.End ℂ (R.HW j (sg
   comm : ∀ j, PairComm (g j A3.A.fam.μ0)
   parts : ∀ j p, R.Wp3 j p = eigSum (g j A3.A.fam.μ0) (SysC A3 j p)
 
+/- English proof (translation)
+The claim follows from `SetLike.ext fun x => SetLike.ext_iff.1 h (Tw.mk s x)`.
+-/
 theorem sub_inj (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] {A B : Submodule ℂ E}
     (h : Tw.sub s A = Tw.sub s B) : A = B :=
   SetLike.ext fun x => SetLike.ext_iff.1 h (Tw.mk s x)
 
+/- English proof (translation)
+Establish `hp : ∀ j p, eigSum (fun i => twE R F j (g j A3.A.fam.μ0 i)) (SysL A3 j p) = Tw.sub (twAt D.what₂.embLL A3.A.v0) (eigSum (g j A3.A.fam.μ0) (SysC A3 j p))` using `fun j p => by`. Establish `e` using `eigSum_tw (s := twAt D.what₂.embLL A3.A.v0) (g j A3.A.fam.μ0) (SysL A3 j p)`. Establish `e' : (fun x : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ => SysL A3 j p fun i => cj (twAt D.what₂.embLL A3.A.v0) (x i)) = SysC A3 j p` using `funext fun x => propext (sysL_cj R j p x)`. Rewrite `e` using `[e']`. Conclude with `e`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun j t i f => rat_of_intw hM j (hph j) t i _ (h.intw j t i) f, fun j i i' => (twE_commute j _ _).1 (h.comm j i i'), fun j p => ?_⟩` and prove the remaining obligations. Use `sub_inj (twAt D.what₂.embLL A3.A.v0) ?_` and prove the remaining obligations. Conclude with `(h.parts j p).trans (hp j p)`.
+
+Introduce `h`. Use `⟨fun j t i u => intw_of_rat hM j t i _ (h.rat j t i) u, fun j i i' => (twE_commute j _ _).2 (h.comm j i i'), fun j p => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hp j p).symm` and prove the remaining obligations. Conclude with `congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (h.parts j p)`.
+-/
 theorem hecke_theta_lift_twisted_model_iff_untwisted (hM : R.toRealDat.IsModels) (hph : ∀ j, R.phs j ≠ 0)
     (g : ∀ j t, (A3.liftI j t).OpIx → Module.End ℂ (R.HW j (sg0 D A3.A)).H) :
     HeckeIntertwiningLifts A3 (R.toCx3 F) (fun j t i => twE R F j (g j t i)) ↔ UntwL (R := R) g := by
@@ -197,6 +257,9 @@ theorem hecke_theta_lift_twisted_model_iff_untwisted (hM : R.toRealDat.IsModels)
     refine Eq.trans ?_ (hp j p).symm
     exact congrArg (Tw.sub (twAt D.what₂.embLL A3.A.v0)) (h.parts j p)
 
+/- English proof (translation)
+The claim follows from `norm_ne_zero_iff.1 (by rw [(hC.phase j).1]; exact one_ne_zero)`.
+-/
 theorem phs_ne_zero (hC : R.WeakCharacterisation F) (j : Fin D.R.m) : R.phs j ≠ 0 :=
   norm_ne_zero_iff.1 (by rw [(hC.phase j).1]; exact one_ne_zero)
 
@@ -204,6 +267,9 @@ def unW (R : RealDat3 D A3 Ks) (F : Face3 D A3) (j : Fin D.R.m) (h : Module.End 
     Module.End ℂ (R.HW j (sg0 D A3.A)).H :=
   unE (E := (R.HW j (sg0 D A3.A)).H) (twAt D.what₂.embLL A3.A.v0) h
 
+/- English proof (translation)
+The claim follows from `(hecke_theta_lift_twisted_model_iff_untwisted (F := F) hC.base.models (phs_ne_zero hC) fun j t i => unW R F j (hW j t i)).1 hH`.
+-/
 theorem untw_of_hH (hC : R.WeakCharacterisation F) {hW : ∀ j t, (A3.liftI j t).OpIx → Module.End ℂ ((R.toCx3 F).W j)}
     (hH : HeckeIntertwiningLifts A3 (R.toCx3 F) hW) : UntwL (R := R) fun j t i => unW R F j (hW j t i) :=
   (hecke_theta_lift_twisted_model_iff_untwisted (F := F) hC.base.models (phs_ne_zero hC) fun j t i => unW R F j (hW j t i)).1 hH

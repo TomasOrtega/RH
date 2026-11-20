@@ -19,6 +19,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.See
 open scoped TensorProduct Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SDLatY
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Yd cX ex W hp j hj`. Establish `hC : W.Q.Rl.Char3 W.Q.F` using `hp.bot.hyp.2.2.2.1`. Conclude with `⟨(_root_.GlobalTheory.Fam.pk_z W).ΛY j, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D (Yc D j) ((_root_.GlobalTheory.Fam.pk_z W).βY j) ((_root_.GlobalTheory.Fam.pk_z W).ΛY j) _ (hC.lev.βY j hj)⟩`.
+-/
 theorem exists_selfDual_latY_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ j, j < D.R.m → ∃ L : GlobalTheory.FinPl.Lat (Yc D j), IsSelfDualC (Yc D j) L := by
   intro D L hT Gi Gl Kc Yd cX ex W hp j hj
   have hC : W.Q.Rl.Char3 W.Q.F := hp.bot.hyp.2.2.2.1

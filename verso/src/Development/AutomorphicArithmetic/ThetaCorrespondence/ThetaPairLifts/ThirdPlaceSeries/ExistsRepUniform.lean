@@ -30,6 +30,13 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GalAllPlaces
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.CuspRep GlobalTheory.WeilDeligne Polynomial
+/- English proof (translation)
+Use `host_isCMField D.host` as an intermediate fact. Establish `hr' : (C.e a π).1.IsRegAlg` using `(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => by`. Use `(D.naut.ralg_def π).1 hr τ` as an intermediate fact. Rewrite `this` using `[C.inf]`. Then use the resulting hypothesis. Take `⟨r, h1, h2, h3⟩` from `_root_.UpperTheory.GalS.exists_aw_alt hL hF hG D.nd.Om ι ha (C.e a π).1 ((C.csd a π).1 hc) hr'`.
+
+Use `⟨r, h1, fun w hl hu B σ hB hσ => ?_⟩` and prove the remaining obligations. Establish `hu'` using `(D.naut.unr_tw _ ((1 - (a : ℝ)) / 2)).2 hu`. Establish `e : T.e w (D.naut.lpTw (D.naut.locG π w) ((1 - (a : ℝ)) / 2)) = wdOf (D.nd.plOm.2 w) hl ι r`. Establish `hu2` using `(T.unr w _).1 hu'`. Rewrite `hu2`, the goal using `[T.tw, C.loc]`.
+
+Conclude with `((h3 w hl _ _).eq_unr hu2).symm`. Rewrite using `[galPol, T.frobEig w _ hu', e]`. Conclude with `frobEig_wdOf hl ι h1 (e ▸ (T.unr w _).1 hu') hB hσ`.
+-/
 theorem exists_rep_uniform_alt_alt (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL)
     (hG : _root_.UpperTheory.GalS.CuspUAlt) {D : D7} {T : GlobalTheory.RowTie.WDTie D.nd D.naut} (C : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T)
     (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ} (ha : 1 ≤ a) (π : D.naut.CG a) (hc : D.naut.csd π)

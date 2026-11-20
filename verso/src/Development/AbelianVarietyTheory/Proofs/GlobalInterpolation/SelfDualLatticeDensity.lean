@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.SelfDualLatti
 
 namespace GlobalTheory.LatticeDensityClosed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocalDensityCompare.localDensity_iff.1 (GlobalTheory.LatticeDensity.localDensity_of_selfDualLatticeLemmas GlobalTheory.UnramSelfDualClosed.selfDualLatticeLemmas)`.
+-/
 theorem selfDualLatticeDensity : GlobalTheory.IndefiniteRowSideFullHecke.PlaceSplittingTypes.SelfDualLatticeDensity :=
   GlobalTheory.LocalDensityCompare.localDensity_iff.1
     (GlobalTheory.LatticeDensity.localDensity_of_selfDualLatticeLemmas

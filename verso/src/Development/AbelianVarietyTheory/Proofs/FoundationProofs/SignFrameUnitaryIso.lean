@@ -14,9 +14,17 @@ namespace GlobalTheory.FrameIsoReal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {w : InfinitePlace F}
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem cT_star (M : Matrix (Fin n) (Fin n) ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j; rfl
 
+/- English proof (translation)
+Establish `h1 : (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) b.1 * JR w.Completion J * b.1).map (infEmb τ) = (Matrix.diagonal fun i => if ε i then (1 : w.Completion ⊗[F] E) else -1).map (infEmb τ)` using `congrArg (fun M => M.map (infEmb τ)) hb`. Rewrite `h1` using `[Matrix.map_mul, Matrix.map_mul, Matrix.diagonal_map (map_zero _)]`. Establish `h2 : (JR w.Completion J).map (infEmb τ) = J.map τ.1` using `by ext r s; simp [JR, inclR]`. Establish `h3 : (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR w.Completion σ) b.1).map (infEmb τ) = (b.1.map (infEmb τ))ᴴ`. Use extensionality with `i j`.
+
+Conclude with `(infEmb_sigR h τ _).symm`. Rewrite `h1` using `[h2, h3]`. Rewrite using `[h1, Formalism.REAL.Jm]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp`.
+-/
 theorem signFrame_map (h : IsCMExt F E σ) (τ : EmbOver E w) {ε : Fin n → Bool}
     {b : GL (Fin n) (w.Completion ⊗[F] E)} (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) :
     (b.1.map (infEmb τ))ᴴ * J.map τ.1 * b.1.map (infEmb τ) = Formalism.REAL.Jm ε := by
@@ -40,18 +48,32 @@ abbrev fB : Matrix (Fin n) (Fin n) ℂ := b.1.map (infEmb τ)
 
 abbrev fBi : Matrix (Fin n) (Fin n) ℂ := (b⁻¹).1.map (infEmb τ)
 
+/- English proof (translation)
+Rewrite using `[fBi, fB, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fBi_mul : fBi τ b * fB τ b = 1 := by
   rw [fBi, fB, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[fBi, fB, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem fB_mul : fB τ b * fBi τ b = 1 := by
   rw [fBi, fB, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Rewrite using `[archEquiv_val]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame, Units.val_mul, Matrix.map_mul]`.
+-/
 theorem inFrame_eq (g : GArch σ J w) :
     GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g = fBi τ b * (archEquiv J h τ g).1.1 * fB τ b := by
   rw [archEquiv_val]
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame, Units.val_mul, Matrix.map_mul]
 
 include h in
+/- English proof (translation)
+Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b = (fun x : Matrix (Fin n) (Fin n) ℂ => fBi τ b * x * fB τ b) ∘ GlobalTheory.Orb.matCoord (GlobalTheory.Orb.archMat σ J τ)`. Use function extensionality and compare the values at `g`. Conclude with `(inFrame_eq σ J h τ b g).trans rfl`. Establish `hc : Topology.IsEmbedding fun x : Matrix (Fin n) (Fin n) ℂ => fBi τ b * x * fB τ b` using `Function.LeftInverse.isEmbedding (f := fun x => fB τ b * x * fBi τ b) (fun x => by`. Simplify using `only [← mul_assoc, fB_mul, one_mul]`.
+
+Rewrite using `[mul_assoc, fB_mul, mul_one])`. Use the proof step `((continuous_const.mul continuous_id).mul continuous_const)`. Use the proof step `((continuous_const.mul continuous_id).mul continuous_const)`. Rewrite using `[e]`. Conclude with `hc.comp (GlobalTheory.Orb.isEmbedding_archMat J h τ)`.
+-/
 theorem isEmbedding_inFrame : Topology.IsEmbedding (GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b) := by
   have e : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b =
       (fun x : Matrix (Fin n) (Fin n) ℂ => fBi τ b * x * fB τ b) ∘ GlobalTheory.Orb.matCoord (GlobalTheory.Orb.archMat σ J τ) := by
@@ -68,6 +90,15 @@ theorem isEmbedding_inFrame : Topology.IsEmbedding (GlobalTheory.IndefiniteRowSi
 variable {ε}
 
 include h in
+/- English proof (translation)
+Establish `hS : (fB τ b)ᴴ * J.map τ.1 * fB τ b = Formalism.REAL.Jm ε` using `signFrame_map h τ hb`. Establish `hA : ((archEquiv J h τ g).1.1)ᴴ * J.map τ.1 * (archEquiv J h τ g).1.1 = J.map τ.1`. Rewrite using `[← cT_star]`. Conclude with `(archEquiv J h τ g).2`. Rewrite using `[Formalism.REAL.inUJ, inFrame_eq σ J h]`.
+
+Use `set A := (archEquiv J h τ g).1.1`. Use `set T := J.map τ.1`. Use `set B := fB τ b`. Use `set Bi := fBi τ b`. Establish `hT : Biᴴ * (Bᴴ * T * B) * Bi = T`.
+
+Establish `: Biᴴ * (Bᴴ * T * B) * Bi = (B * Bi)ᴴ * T * (B * Bi)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, fB_mul, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hS]`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Bᴴ * (Aᴴ * T * A) * B := by rw [hT]; simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hA, hS]`.
+-/
 theorem inFrame_mem (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) (g : GArch σ J w) :
     Formalism.REAL.inUJ ε (GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g) := by
   have hS : (fB τ b)ᴴ * J.map τ.1 * fB τ b = Formalism.REAL.Jm ε := signFrame_map h τ hb
@@ -91,11 +122,27 @@ theorem inFrame_mem (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgro
 def hom0 : GArch σ J w →* (Matrix (Fin n) (Fin n) ℂ)ˣ :=
   (Units.map (infEmb τ).mapMatrix.toMonoidHom).comp ((MulAut.conj b⁻¹).toMonoidHom.comp (matHom _ σ J))
 
+/- English proof (translation)
+Simplify using `[hom0, GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame, MulAut.conj_apply]`.
+-/
 theorem coe_archimedeanFrameConjMatrixHom (g : GArch σ J w) : ((hom0 σ J τ b g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) =
     GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g := by
   simp [hom0, GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame, MulAut.conj_apply]
 
 include h in
+/- English proof (translation)
+Establish `hS : (fB τ b)ᴴ * J.map τ.1 * fB τ b = Formalism.REAL.Jm ε` using `signFrame_map h τ hb`. Set `bU : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `Units.map (infEmb τ).mapMatrix.toMonoidHom b`. Establish `hbU : (bU : Matrix (Fin n) (Fin n) ℂ) = fB τ b` using `rfl`. Establish `hbUi : ((bU⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = fBi τ b`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Set `yU : (Matrix (Fin n) (Fin n) ℂ)ˣ` to `bU * (a : (Matrix (Fin n) (Fin n) ℂ)ˣ) * bU⁻¹`. Use `set x := ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`. Establish `hx : xᴴ * Formalism.REAL.Jm ε * x = Formalism.REAL.Jm ε` using `a.2`. Establish `hy : (yU : Matrix (Fin n) (Fin n) ℂ) = fB τ b * x * fBi τ b`.
+
+Simplify using `only [yU, Units.val_mul, hbU, hbUi, x]`. Use `set T := J.map τ.1`. Use `set B := fB τ b`. Use `set Bi := fBi τ b`. Establish `hT : Biᴴ * (Bᴴ * T * B) * Bi = T`.
+
+Establish `: Biᴴ * (Bᴴ * T * B) * Bi = (B * Bi)ᴴ * T * (B * Bi)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, fB_mul, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hmem : yU ∈ Formalism.UG.UJ (starRingEnd ℂ) T`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (starRingEnd ℂ) (yU : Matrix (Fin n) (Fin n) ℂ) * T * (yU : Matrix (Fin n) (Fin n) ℂ) = T`.
+
+Rewrite using `[cT_star, hy]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = T := by rw [hS, hx, ← hS, hT]`. Use `⟨(archEquiv J h τ).symm ⟨yU, hmem⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inFrame_eq σ J h, MulEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `Bi * (yU : Matrix (Fin n) (Fin n) ℂ) * B = x`. Rewrite using `[hy]`. Simplify using `only [← Matrix.mul_assoc, fBi_mul, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, fBi_mul, Matrix.mul_one, Matrix.one_mul]`.
+-/
 theorem exists_inFrame_eq (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) (a : Formalism.REAL.UJ ε) :
     ∃ g : GArch σ J w, GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g = ((a : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) := by
   have hS : (fB τ b)ᴴ * J.map τ.1 * fB τ b = Formalism.REAL.Jm ε := signFrame_map h τ hb
@@ -133,9 +180,15 @@ def frameHom (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembe
     change Formalism.REAL.inUJ ε _
     rw [coe_archimedeanFrameConjMatrixHom]; exact inFrame_mem σ J h τ b hb g
 
+/- English proof (translation)
+The claim follows from `coe_archimedeanFrameConjMatrixHom σ J τ b g`.
+-/
 theorem frameHom_val (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) (g : GArch σ J w) :
     Formalism.REAL.coeMatrixAlt ε (frameHom σ J h τ b hb g) = GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g := coe_archimedeanFrameConjMatrixHom σ J τ b g
 
+/- English proof (translation)
+Use `⟨fun g g' e => (isEmbedding_inFrame σ J h τ b).injective ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← frameHom_val σ J h τ b hb, ← frameHom_val σ J h τ b hb, e]`. Take `⟨g, hg⟩` from `exists_inFrame_eq σ J h τ b hb a`. Conclude with `⟨g, Formalism.REAL.injective_coeMatrix ε ((frameHom_val σ J h τ b hb g).trans hg)⟩`.
+-/
 theorem frameHom_bijective (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) : Function.Bijective (frameHom σ J h τ b hb) := by
   refine ⟨fun g g' e => (isEmbedding_inFrame σ J h τ b).injective ?_, fun a => ?_⟩
   · rw [← frameHom_val σ J h τ b hb, ← frameHom_val σ J h τ b hb, e]
@@ -151,6 +204,9 @@ def frameEquiv (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMem
       exact (congrArg (Formalism.REAL.coeMatrixAlt ε)
         ((MulEquiv.ofBijective _ (frameHom_bijective σ J h τ b hb)).apply_symm_apply x).symm).trans this) }
 
+/- English proof (translation)
+The claim follows from `frameHom_val σ J h τ b hb g`.
+-/
 theorem frameEquiv_val (hb : GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.IsSignFrame σ J ε b) (g : GArch σ J w) :
     Formalism.REAL.coeMatrixAlt ε (frameEquiv σ J h τ b hb g) = GlobalTheory.IndefiniteRowSideFullHecke.RealRankSubgroupMembership.inFrame σ J τ b g := frameHom_val σ J h τ b hb g
 
@@ -164,6 +220,9 @@ def blockEquiv (ε : Fin n → Bool) :
     continuous_invFun := Formalism.BasicNotions.Examples₂.CD.phi_symm_cont ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε)
       (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε) }
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ h n J w τ ε b hb`. Use `⟨(frameEquiv σ J h τ b hb).trans (blockEquiv ε).symm, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← frameEquiv_val σ J h τ b hb g, ← Formalism.BasicNotions.Examples₂.CD.coe_phi ε (Formalism.BasicNotions.Examples₂.CD.e0 ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inl ε) (Formalism.BasicNotions.Examples₂.CD.sign_split_equiv_inr ε)]`. Conclude with `congrArg (Formalism.REAL.coeMatrixAlt ε) ((blockEquiv ε).apply_symm_apply (frameEquiv σ J h τ b hb g)).symm`.
+-/
 theorem exists_frameIso : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (w : InfinitePlace F)
     (τ : EmbOver E w) (ε : Fin n → Bool) (b : GL (Fin n) (w.Completion ⊗[F] E)),

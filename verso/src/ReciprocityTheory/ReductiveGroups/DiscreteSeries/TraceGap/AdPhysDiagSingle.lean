@@ -9,6 +9,11 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Establish `hb : fockBasis n S = ExteriorAlgebra.ιMulti ℂ S.card (((Pi.basisFun ℂ (Fin n × Fin n)).reindex finProdFinEquiv) ∘ S.orderEmbOfFin rfl)`. Rewrite using `[fockBasis, ExteriorAlgebra.basis_apply]`. Both sides reduce to the same expression. Establish `hv : ((Pi.basisFun ℂ (Fin n × Fin n)).reindex finProdFinEquiv) ∘ S.orderEmbOfFin rfl = fun i => Pi.single (finProdFinEquiv.symm (S.orderEmbOfFin rfl i)) (1 : ℂ)`. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules. Rewrite using `[hb, hv]`.
+-/
 theorem fockBasis_eq (S : Finset (Fin (n * n))) :
     fockBasis n S = ExteriorAlgebra.ιMulti ℂ S.card
       (fun i => Pi.single (finProdFinEquiv.symm (S.orderEmbOfFin rfl i)) (1 : ℂ)) := by
@@ -22,11 +27,19 @@ theorem fockBasis_eq (S : Finset (Fin (n * n))) :
     simp
   rw [hb, hv]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[adPhys, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply]`.
+-/
 theorem adPhys_single (k : Matrix (Fin n) (Fin n) ℂ) (y : Fin n × Fin n) :
     adPhys ε k (Pi.single y 1) = ∑ x, adMat ε k x y • Pi.single x (1 : ℂ) := by
   funext z
   simp [adPhys, Matrix.mulVec, dotProduct, Pi.single_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [adPhys, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `h : y = x`. Substitute `h` using the available equality. Apply the tactic sequence `by_cases hy : IsPhys ε y <;> simp [adMat, modeChar, hy]`.
+
+Simplify using `only [h, if_false]`. Take `⟨y1, y2⟩` from `y`. Take `⟨x1, x2⟩` from `x`. Simplify using `only [adMat, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem adPhys_diag_single (s : Fin n → ℂ) (x : Fin n × Fin n) :
     adPhys ε (Matrix.diagonal s) (Pi.single x 1) = modeChar ε s x • Pi.single x (1 : ℂ) := by
   funext y
@@ -41,6 +54,11 @@ theorem adPhys_diag_single (s : Fin n → ℂ) (x : Fin n × Fin n) :
     simp only [adMat, Matrix.diagonal_apply]
     split_ifs <;> simp_all
 
+/- English proof (translation)
+Rewrite using `[fockBasis_eq, ff, ExteriorAlgebra.map_apply_ιMulti]`. Simplify using `only [Function.comp_def, adPhys_diag_single]`. Rewrite using `[AlternatingMap.map_smul_univ]`. Use `congr 1`. Use `conv_rhs => rw [← S.map_orderEmbOfFin_univ rfl]`.
+
+Rewrite using `[Finset.prod_map]`. Both sides reduce to the same expression.
+-/
 theorem ff_diag (s : Fin n → ℂ) (S : Finset (Fin (n * n))) :
     ff ε (Matrix.diagonal s) (fockBasis n S) =
       (∏ m ∈ S, modeChar ε s (finProdFinEquiv.symm m)) • fockBasis n S := by
@@ -57,12 +75,20 @@ def adPoly (ε : Fin n → Bool) (x y : Fin n × Fin n) : MvPolynomial ((Fin n �
     (if IsPhys ε y then MvPolynomial.X (Sum.inl (x.1, y.1)) * MvPolynomial.X (Sum.inr (x.2, y.2)) else 0)
   else if x = y then 1 else 0
 
+/- English proof (translation)
+Unfold `adPoly adMat`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem eval_adPoly (k : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n × Fin n) :
     MvPolynomial.eval (Sum.elim (fun p => k p.1 p.2) (fun p => star (k p.1 p.2))) (adPoly ε x y) =
       adMat ε k x y := by
   unfold adPoly adMat
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[ffMat, LinearMap.toMatrix_apply, AlgHom.toLinearMap_apply, fockBasis_eq, ff, ExteriorAlgebra.map_apply_ιMulti]`. Simplify using `only [Function.comp_def, adPhys_single]`. Establish `h` using `(ExteriorAlgebra.ιMulti ℂ T.card).toMultilinearMap.map_sum (fun i x => adMat ε k x (finProdFinEquiv.symm (T.orderEmbOfFin rfl i)) • Pi.single x (1 : ℂ))`. Simplify using `only [AlternatingMap.coe_multilinearMap] at h`. Rewrite using `[h, map_sum, Finsupp.finsetSum_apply]`.
+
+Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[AlternatingMap.map_smul_univ, map_smul, Finsupp.smul_apply, smul_eq_mul]`.
+-/
 theorem ffMat_eq (k : Matrix (Fin n) (Fin n) ℂ) (S T : Finset (Fin (n * n))) :
     ffMat ε k S T = ∑ h : Fin T.card → Fin n × Fin n,
       (∏ i, adMat ε k (h i) (finProdFinEquiv.symm (T.orderEmbOfFin rfl i))) *
@@ -77,6 +103,9 @@ theorem ffMat_eq (k : Matrix (Fin n) (Fin n) ℂ) (S T : Finset (Fin (n * n))) :
   refine Finset.sum_congr rfl fun r _ => ?_
   rw [AlternatingMap.map_smul_univ, map_smul, Finsupp.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Use `⟨∑ h : Fin T.card → Fin n × Fin n, (∏ i, adPoly ε (h i) (finProdFinEquiv.symm (T.orderEmbOfFin rfl i))) * MvPolynomial.C ((fockBasis n).repr (ExteriorAlgebra.ιMulti ℂ T.card (fun i => Pi.single (h i) (1 : ℂ))) S), fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[ffMat_eq, map_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_prod, MvPolynomial.eval_C]`. Simplify using `only [eval_adPoly]`.
+-/
 theorem ffMat_poly (S T : Finset (Fin (n * n))) :
     ∃ P : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ, ∀ k : Matrix (Fin n) (Fin n) ℂ,
       ffMat ε k S T = MvPolynomial.eval (Sum.elim (fun p => k p.1 p.2) (fun p => star (k p.1 p.2))) P := by
@@ -89,6 +118,11 @@ theorem ffMat_poly (S T : Finset (Fin (n * n))) :
   rw [map_mul, map_prod, MvPolynomial.eval_C]
   simp only [eval_adPoly]
 
+/- English proof (translation)
+Take `⟨P, hP⟩` from `ffMat_poly (ε := ε) S T`. Simplify using `only [hP]`. Use `(MvPolynomial.continuous_eval P).comp ?_` and prove the remaining obligations. Use `continuous_pi fun p => ?_` and prove the remaining obligations. Break down `p with p | p` into its components or cases.
+
+Conclude with `(continuous_apply p.2).comp (continuous_apply p.1)`. Conclude with `continuous_star.comp ((continuous_apply p.2).comp (continuous_apply p.1))`.
+-/
 theorem ffMat_continuous (S T : Finset (Fin (n * n))) :
     Continuous fun k : Matrix (Fin n) (Fin n) ℂ => ffMat ε k S T := by
   obtain ⟨P, hP⟩ := ffMat_poly (ε := ε) S T

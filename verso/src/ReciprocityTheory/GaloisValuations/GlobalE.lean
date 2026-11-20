@@ -13,6 +13,11 @@ section split
 variable {F L Ω : Type*} [Field F] [NumberField F] [Field L] [NumberField L] [Field Ω] [Algebra F L]
   [Algebra F Ω] [Algebra L Ω] [IsScalarTower F L Ω] {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x`. Establish `h' : σ • B = B` using `h`. Establish `e` using `ValuationSubring.smul_mem_pointwise_smul_iff (g := σ) (S := B) (x := x)`. Rewrite `e` using `[h']`.
+
+Conclude with `e`. Introduce `h show σ • B = B`. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h (σ⁻¹ • x), AlgEquiv.smul_def]`. Rewrite using `[show σ (σ⁻¹ x) = x from AlgEquiv.apply_symm_apply σ x]`.
+-/
 private theorem mem_decompositionSubgroup_iff_galois_valuations {K : Type*} [Field K] [Algebra K Ω] {B : ValuationSubring Ω}
     {σ : Ω ≃ₐ[K] Ω} : σ ∈ B.decompositionSubgroup K ↔ ∀ x, σ x ∈ B ↔ x ∈ B := by
   constructor
@@ -27,6 +32,9 @@ private theorem mem_decompositionSubgroup_iff_galois_valuations {K : Type*} [Fie
     rw [ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← h (σ⁻¹ • x), AlgEquiv.smul_def]
     rw [show σ (σ⁻¹ x) = x from AlgEquiv.apply_symm_apply σ x]
 
+/- English proof (translation)
+Use `show resGal F L Ω σ ∈ A.decompositionSubgroup F ↔ σ ∈ A.decompositionSubgroup L`. Rewrite using `[mem_decompositionSubgroup_iff_galois_valuations, mem_decompositionSubgroup_iff_galois_valuations]`. Simplify using `only [resGal_apply]`.
+-/
 theorem resGal_mem_Dec_iff {σ : G L Ω} :
     resGal F L Ω σ ∈ Dec (F := F) A ↔ σ ∈ Dec (F := L) A := by
   show resGal F L Ω σ ∈ A.decompositionSubgroup F ↔ σ ∈ A.decompositionSubgroup L
@@ -39,8 +47,16 @@ def decRes (A : ValuationSubring Ω) : Dec (F := L) A →* Dec (F := F) A :=
   ((resGal F L Ω).comp (Dec (F := L) A).subtype).codRestrict (Dec (F := F) A)
     (fun σ => resGal_mem_Dec_iff.mpr σ.2)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem decRes_apply (σ : Dec (F := L) A) : (decRes F L A σ : G F Ω) = resGal F L Ω σ := rfl
 
+/- English proof (translation)
+Introduce `σ τ h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Use `congrArg (fun g : Dec (F := F) A => (g : G F Ω) x) h` as an intermediate fact.
+
+Simplify `this` using `[decRes_apply, resGal_apply]`.
+-/
 theorem decRes_injective : Function.Injective (decRes F L A) := by
   intro σ τ h
   apply Subtype.ext
@@ -49,6 +65,11 @@ theorem decRes_injective : Function.Injective (decRes F L A) := by
   have := congrArg (fun g : Dec (F := F) A => (g : G F Ω) x) h
   simpa [decRes_apply, resGal_apply] using this
 
+/- English proof (translation)
+Introduce `τ`. Take `⟨σ, hσ⟩` from `MonoidHom.mem_range.mp (h τ.2)`. Use `⟨⟨σ, resGal_mem_Dec_iff.mp (by rw [hσ]; exact τ.2)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[decRes_apply]`.
+
+Conclude with `hσ`.
+-/
 theorem decRes_surjective (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
     Function.Surjective (decRes F L A) := by
   intro τ
@@ -58,6 +79,11 @@ theorem decRes_surjective (h : Dec (F := F) A ≤ (resGal F L Ω).range) :
   rw [decRes_apply]
   exact hσ
 
+/- English proof (translation)
+Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `hc : Continuous (resGal F L Ω)` using `(isClosedEmbedding_resGal (F := F) (L := L) (Ω := Ω)).continuous`. Establish `e : ((↑) : Dec (F` using `F) A → G F Ω) ∘ decRes F L A = resGal F L Ω ∘ ((↑) : Dec (F := L) A → G L Ω) := by`. Use function extensionality and compare the values at `σ`. Conclude with `decRes_apply σ`.
+
+Rewrite using `[e]`. Conclude with `hc.comp continuous_subtype_val`.
+-/
 theorem continuous_decRes [IsAlgClosure F Ω] : Continuous (decRes F L A) := by
   refine continuous_induced_rng.2 ?_
   have hc : Continuous (resGal F L Ω) :=
@@ -82,6 +108,13 @@ def decEquiv [IsAlgClosure F Ω] (h : Dec (F := F) A ≤ (resGal F L Ω).range) 
     exact congrArg Subtype.val
       ((MulEquiv.ofBijective (decRes F L A) ⟨decRes_injective, decRes_surjective h⟩).apply_symm_apply τ)
 
+/- English proof (translation)
+Establish `e : normV v = Ideal.absNorm v.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`.
+
+Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem one_lt_normV (v : HeightOneSpectrum (𝓞 F)) : 1 < normV v := by
   have e : normV v = Ideal.absNorm v.asIdeal := by
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]

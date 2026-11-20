@@ -13,6 +13,13 @@ def ext {m : ℕ} (a : Fin m → ℤ) (x : ℕ) : ℤ := if h : x < m then a ⟨
 def expo (n m : ℕ) (A : ℕ → ℤ) (x : Fin n) : ℤ :=
   if x.val < m then A x else if n - m ≤ x.val then -A (n - 1 - x.val) else 0
 
+/- English proof (translation)
+Unfold `tMat`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hx` using `x.2`. Unfold `expo ext`.
+
+Distinguish the cases in `h1 : x.val < m`. Simplify using `[h1]`. Distinguish the cases in `h2 : n - m ≤ x.val`. Establish `h3 : n - 1 - x.val < m` using `by omega`. Simplify using `[h1, h2, h3]`.
+
+Simplify using `[h1, h2]`.
+-/
 theorem tMat_eq {L : Type} [Field L] (ϖ : L) {n m : ℕ} (a : Fin m → ℤ) :
     tMat ϖ n m a = Matrix.diagonal fun x => ϖ ^ expo n m (ext a) x := by
   unfold tMat
@@ -27,6 +34,11 @@ theorem tMat_eq {L : Type} [Field L] (ϖ : L) {n m : ℕ} (a : Fin m → ℤ) :
       simp [h1, h2, h3]
     · simp [h1, h2]
 
+/- English proof (translation)
+Unfold `ext`. Distinguish the cases in `h : x = i.val`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Distinguish the cases in `h1 : x < m`.
+
+Establish `: (⟨x, h1⟩ : Fin m) ≠ i` using `fun e => h (congrArg Fin.val e)`. Simplify using `[h, h1, Function.update_of_ne this]`. Simplify using `[h, h1]`.
+-/
 theorem ext_update {m : ℕ} (a : Fin m → ℤ) (i : Fin m) (c : ℤ) (x : ℕ) :
     ext (Function.update a i c) x = if x = i.val then c else ext a x := by
   unfold ext
@@ -38,6 +50,11 @@ theorem ext_update {m : ℕ} (a : Fin m → ℤ) (i : Fin m) (c : ℤ) (x : ℕ)
       simp [h, h1, Function.update_of_ne this]
     · simp [h, h1]
 
+/- English proof (translation)
+Establish `hx` using `x.2`. Establish `hr : (x.rev : ℕ) = n - 1 - x` using `by rw [Fin.val_rev]; omega`. Unfold `expo`. Rewrite using `[hr]`. Establish `e : n - 1 - (n - 1 - x.val) = x.val` using `by omega`.
+
+Rewrite using `[e]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem expo_rev {n m : ℕ} (h : 2 * m ≤ n) (A : ℕ → ℤ) (x : Fin n) :
     expo n m A x.rev = -expo n m A x := by
   have hx := x.2
@@ -50,6 +67,11 @@ theorem expo_rev {n m : ℕ} (h : 2 * m ≤ n) (A : ℕ → ℤ) (x : Fin n) :
 
 def mid {n : ℕ} (k r : ℕ) (h : n = 2 * k + r) (j : Fin r) : Fin n := ⟨k + j.val, by have := j.2; omega⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Use `j.2` as an intermediate fact. Simplify using `only [mid]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x.val - k, by omega⟩, Fin.ext (by simp only [mid]; omega)⟩`.
+-/
 theorem mem_range_mid {n k r : ℕ} (h : n = 2 * k + r) (x : Fin n) :
     x ∈ Set.range (mid k r h) ↔ k ≤ x.val ∧ x.val < k + r := by
   constructor
@@ -60,6 +82,17 @@ theorem mem_range_mid {n k r : ℕ} (h : n = 2 * k + r) (x : Fin n) :
   · rintro ⟨h1, h2⟩
     exact ⟨⟨x.val - k, by omega⟩, Fin.ext (by simp only [mid]; omega)⟩
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_, fun x y hxy => ?_, fun x y hxy => ?_, fun x y hxy => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `: i.val < j.val` using `hij show k + i.val < k + j.val`. Use linear arithmetic over natural numbers and integers. Use `i.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only [mid, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Establish `: x.val ≤ y.val` using `hxy`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Use `x.2` as an intermediate fact. Use `y.2` as an intermediate fact. Simplify using `only [Fin.val_rev] at hxy ⊢`. Apply the tactic sequence `split_ifs at hxy ⊢ <;> omega`. Rewrite using `[mem_range_mid, mem_range_mid, Fin.ext_iff]`.
+
+Simplify using `only at hxy`. Apply the tactic sequence `split_ifs at hxy <;> omega`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Simplify using `only [mid, hγ]`.
+
+Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+-/
 theorem blockDatum {n k r : ℕ} (h : n = 2 * k + r) (γ : Fin r → ℕ) (hγ : ∀ j, γ j = 0) :
     IsBlockDatum (mid k r h) (fun x => if k ≤ x.val ∧ x.val < k + r then k else x.val) γ := by
   refine ⟨fun i j hij => ?_, fun i => ?_, fun x y hxy => ?_, fun x y hxy => ?_, fun x y hxy => ?_, fun i j => ?_⟩
@@ -85,6 +118,31 @@ theorem blockDatum {n k r : ℕ} (h : n = 2 * k + r) (γ : Fin r → ℕ) (hγ :
     simp only [mid, hγ]
     split_ifs <;> first | omega | simp
 
+/- English proof (translation)
+Establish `h0 : ϖ ≠ 0`. Introduce `h`. Use `hU.2.2.2.1` as an intermediate fact. Rewrite `this` using `[h, Valuation.map_zero]`. Conclude with `absurd this WithZero.zero_ne_coe`.
+
+Establish `key : ∀ (c : Fin m → ℤ) (j : Fin r), expo n m (ext c) (mid i.val r hn j) = c i * b j`. Introduce `c j`. Establish `hj` using `j.2`. Establish `hci : ext c i.val = c i` using `by simp [ext]`. Rewrite using `[hb]`.
+
+Unfold `expo`. Simplify using `only [mid]`. Distinguish the cases in `h1 : j.val = 0`. Simplify using `[h1, hci]`. Distinguish the cases in `h2 : j.val + 1 = r`.
+
+Establish `e : n - 1 - (i.val + j.val) = i.val` using `by omega`. Establish `f1 : ¬ i.val + j.val < m` using `by omega`. Establish `f2 : n - m ≤ i.val + j.val` using `by omega`. Simplify using `[f1, f2, e, hci, h1, h2]`. Establish `f1 : ¬ i.val + j.val < m` using `by omega`.
+
+Establish `f2 : ¬ n - m ≤ i.val + j.val` using `by omega`. Rewrite using `[if_neg h1, if_neg h2, mul_zero]`. Simplify using `only [f1, f2, if_false]`. Rewrite `ht`, `ht'` using `[tMat_eq]`. Use `H L ϖ σ q n r (mid i.val r hn) _ γ b _ _ Q (-a i) t t' h hU (blockDatum hn γ hγ) ?_ ?_ (expo_rev hm _) (expo_rev hm _) ?_ ?_ ht ht' hQ hI ?_ hh` as an intermediate fact.
+
+Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis. Introduce `j`. Use `j.2` as an intermediate fact. Rewrite using `[hb, hb, Fin.val_rev]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Introduce `j l hjl _`. Use `l.2` as an intermediate fact. Establish `: j.val < l.val` using `hjl`. Rewrite using `[hb, hb]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Introduce `x hx`. Use `x.2` as an intermediate fact. Rewrite `hx` using `[mem_range_mid]`. Unfold `expo`. Rewrite using `[ext_update, ext_update]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Introduce `j l _`. Rewrite using `[key, key, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s s' hs hs' g _`.
+
+Establish `e : s' = s⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul, hs, hs', Matrix.diagonal_mul_diagonal, mat_one, ← Matrix.diagonal_one]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[key, key, Function.update_self, ← zpow_add₀ h0]`. Simplify using the standard rewrite rules. Take `⟨k₁, hk₁, k₂, hk₂, e'⟩` from `inv_mem_dc hU (s * g)`. Use `⟨k₁, hk₁, k₂, ⟨hk₂, fun x y hxy => absurd ((hγ x).trans (hγ y).symm) hxy⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e', e, mul_inv_rev]`.
+-/
 theorem step (H : LeviStep) {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L]
     {ϖ : L} {σ : L →+* L} {q n m : ℕ} (hU : IsUnramInv ϖ σ q) (hm : 2 * m ≤ n) (hm' : n ≤ 2 * m + 1)
     {h : GU σ n → ℂ} (hh : h ∈ Hecke ℂ (KU σ n)) (a : Fin m → ℤ) (i : Fin m) (hi : i.val + 1 = m)
@@ -151,6 +209,15 @@ theorem step (H : LeviStep) {L : Type} [Field L] [Valued L (WithZero (Multiplica
 
 end GlobalTheory.SatakeWeyl.Neg
 
+/- English proof (translation)
+Introduce `H H2 H3 L _ _ _ ϖ σ q n m hU hm hm' h hh a i hi t t' ht ht'`. Establish `hq : q ≠ 0` using `by have := hU.2.2.2.2.2.1; omega`. Break down `(by omega : n = 2 * i.val + 2 ∨ n = 2 * i.val + 3) with hn | hn` into its components or cases. Rewrite using `[Neg.step H hU hm hm' hh a i hi ht ht' 2 hn ![0, 0] (by decide) ![1, -1] (by decide) (q ^ 2) (pow_ne_zero _ hq) (H2 L ϖ σ q hU)]`. Use `congr 1`.
+
+Rewrite using `[Nat.cast_pow, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Rewrite using `[hn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Neg.step H hU hm hm' hh a i hi ht ht' 3 hn ![0, 0, 0] (by decide) ![1, 0, -1] (by decide) (q ^ 4) (pow_ne_zero _ hq) (H3 L ϖ σ q hU)]`. Use `congr 1`. Rewrite using `[Nat.cast_pow, ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Rewrite using `[hn]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.SatakeWeyl.coeffNeg_of_leviStep : LeviStep → IndexTwo → IndexThree → CoeffNeg := by
   intro H H2 H3 L _ _ _ ϖ σ q n m hU hm hm' h hh a i hi t t' ht ht'
   have hq : q ≠ 0 := by have := hU.2.2.2.2.2.1; omega

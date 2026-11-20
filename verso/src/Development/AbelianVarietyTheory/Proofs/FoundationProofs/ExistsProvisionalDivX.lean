@@ -25,17 +25,31 @@ def formMap : (Fin n → K) →ₛₗ[e] W where
   map_add' x y := by simp [add_smul, Finset.sum_add_distrib]
   map_smul' a x := by simp [Finset.smul_sum, mul_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem formMap_apply (x : Fin n → K) : formMap e c x = ∑ i, e (x i) • c i := rfl
 
+/- English proof (translation)
+Rewrite using `[formMap_apply, c.repr_sum_self]`.
+-/
 theorem repr_formMap (x : Fin n → K) (i : Fin n) : c.repr (formMap e c x) i = e (x i) := by
   rw [formMap_apply, c.repr_sum_self]
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← repr_formMap e c, ← repr_formMap e c, h]`.
+-/
 theorem formMap_injective : Function.Injective (formMap e c) := by
   intro x y h
   funext i
   apply e.injective
   rw [← repr_formMap e c, ← repr_formMap e c, h]
 
+/- English proof (translation)
+Apply `c.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Rewrite using `[repr_formMap, Pi.basisFun_apply, c.repr_self, Finsupp.single_apply, Pi.single_apply]`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun h' => h h'.symm), map_zero]`.
+-/
 theorem formMap_basisFun (i : Fin n) : formMap e c (Pi.basisFun K (Fin n) i) = c i := by
   apply c.repr.injective
   ext k
@@ -44,6 +58,9 @@ theorem formMap_basisFun (i : Fin n) : formMap e c (Pi.basisFun K (Fin n) i) = c
   · subst h; simp
   · rw [if_neg h, if_neg (fun h' => h h'.symm), map_zero]
 
+/- English proof (translation)
+Use `choose x hx using hv`. Use `⟨x, c.repr.injective ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Rewrite using `[repr_formMap, hx]`.
+-/
 theorem mem_range_formMap {v : W} (hv : ∀ i, c.repr v i ∈ Set.range e) :
     v ∈ Set.range (formMap e c) := by
   choose x hx using hv
@@ -51,6 +68,15 @@ theorem mem_range_formMap {v : W} (hv : ∀ i, c.repr v i ∈ Set.range e) :
   ext i
   rw [repr_formMap, hx]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `ψ : W →ₗ[ℂ] ℂ` to `c.constr ℂ (fun i => e (f (Pi.basisFun K (Fin n) i)))`. Establish `hψ : ∀ x, ψ (formMap e c x) = e (f x)`. Introduce `x`.
+
+Rewrite using `[formMap_apply, map_sum]`. Use `conv_rhs => rw [← (Pi.basisFun K (Fin n)).sum_repr x, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[ψ]`. Establish `h0 : ψ = 0`.
+
+Apply `LinearMap.ext_on h` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `: f x = 0` using `hle (Submodule.subset_span hx)`. Rewrite using `[hψ, this, map_zero, LinearMap.zero_apply]`. Apply `hf` to reduce the goal to its premises.
+
+Use extensionality with `x`. Use `hψ (Pi.single x 1)` as an intermediate fact. Rewrite `this` using `[h0, LinearMap.zero_apply]`. Simplify using `using this.symm`.
+-/
 theorem span_eq_top_of_formMap (S : Set (Fin n → K))
     (h : Submodule.span ℂ (formMap e c '' S) = ⊤) : Submodule.span K S = ⊤ := by
   by_contra hne
@@ -75,6 +101,29 @@ theorem span_eq_top_of_formMap (S : Set (Fin n → K))
 
 end Form
 
+/- English proof (translation)
+Take `⟨X, hX, hn⟩` from `GlobalTheory.exists_frames_normAt_eq_norm K e W n c ⊥`. Establish `hpre : ∀ v : W, ∃ x : Fin n → K, v ∈ gen → formMap e c x = v`. Introduce `v`. Distinguish the cases in `hv : v ∈ gen`. Take `⟨x, hx⟩` from `mem_range_formMap e c (hrat v hv)`.
+
+Conclude with `⟨x, fun _ => hx⟩`. Conclude with `⟨0, fun h => absurd h hv⟩`. Use `choose pre hpre using hpre`. Establish `hb : (fun i => formMap e c (Pi.basisFun K (Fin n) i)) = c`. Use function extensionality and compare the values at `(formMap_basisFun e c)`.
+
+Establish `hsum : ∀ a : W → 𝓞 K, formMap e c (∑ v ∈ gen, a v • pre v) = ∑ v ∈ gen, e ((a v : 𝓞 K) : K) • v`. Introduce `a`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[show a v • pre v = ((a v : 𝓞 K) : K) • pre v from rfl, LinearMap.map_smulₛₗ, hpre v hv]`.
+
+Use `⟨HLat.mk (Fin n → K) (Fin n) (Pi.basisFun K (Fin n)) X (Submodule.span (𝓞 K) (pre '' (gen : Set W))), formMap e c, ⟨hX, ?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_, hn⟩` and prove the remaining obligations. Conclude with `Submodule.fg_span (gen.finite_toSet.image pre)`. Apply `span_eq_top_of_formMap e c` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hspan]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Introduce `v hv`. Conclude with `⟨pre v, Submodule.subset_span ⟨v, hv, rfl⟩, hpre v hv⟩`. Use `show LinearIndependent ℂ (fun i => formMap e c (Pi.basisFun K (Fin n) i))`. Rewrite using `[hb]`. Conclude with `c.linearIndependent`.
+
+Use `show Submodule.span ℂ (Set.range (fun i => formMap e c (Pi.basisFun K (Fin n) i))) = ⊤`. Rewrite using `[hb]`. Conclude with `c.span_eq`. Introduce `(x : Fin n → K) show x ∈ Submodule.span (𝓞 K) (pre '' (gen : Set W)) ↔ ∃ a : W → 𝓞 K, formMap e c x = ∑ v ∈ gen, e ((a v : 𝓞 K) : K) • v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Use `⟨fun w => if w = v then 1 else 0, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hpre v hv, Finset.sum_eq_single_of_mem v hv (fun w _ hw => by simp [hw])]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+
+Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by simp [ha, hb, add_smul, Finset.sum_add_distrib]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨fun w => r * a w, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show r • x = (r : K) • x from rfl, LinearMap.map_smulₛₗ, ha, Finset.smul_sum]`. Simplify using `[mul_smul]`. Introduce and unpack `⟨a, ha⟩`. Rewrite `ha` using `[← hsum a, (formMap_injective e c).eq_iff]`. Rewrite using `[ha]`.
+
+Conclude with `Submodule.sum_mem _ fun v hv => Submodule.smul_mem _ _ (Submodule.subset_span ⟨v, hv, rfl⟩)`. Introduce `v hv`. Conclude with `⟨pre v, hpre v hv⟩`.
+-/
 theorem exists_hLat_form (K : Type) [Field K] [NumberField K] [StarRing K] (e : K →+* ℂ) (W : Type)
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] (n : ℕ) (c : Module.Basis (Fin n) ℂ W)
     (gen : Finset W) (hspan : Submodule.span ℂ (gen : Set W) = ⊤)
@@ -157,6 +206,13 @@ structure MjForm (D : D7) (j : ℕ) where
   metric : ∀ x, Formalism.HermitianLatticesTheory.cnorm (Formalism.HermitianLatticesTheory.fcoord H.b H.X
     (InfinitePlace.mk D.what₂.embLL) x) = ‖jm x‖
 
+/- English proof (translation)
+Distinguish the cases in `hj : 1 ≤ j ∧ j ≤ D.R.m`. Take `⟨n, c, hc⟩` from `h hj.1 hj.2`. Take `⟨H, jm, h1, h2, h3, h4, h5⟩` from `exists_hLat_form D.what₂.LL D.what₂.embLL (D.what₂.Mj j) n c _ (D.what₂.MjLat j).span_top hc`. Conclude with `⟨⟨H, jm, h1, h2, fun _ _ => h3, fun _ _ => h4, h5⟩⟩`. Set `c` to `Module.finBasis ℂ (D.what₂.Mj j)`.
+
+Take `⟨H, jm, h1, h2, -, -, h5⟩` from `exists_hLat_form D.what₂.LL D.what₂.embLL (D.what₂.Mj j) _ c (Finset.univ.image c) (by simp) (by`. Introduce `v hv i`. Take `⟨k, -, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[c.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+
+Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩)`. Conclude with `⟨⟨H, jm, h1, h2, fun a b => absurd ⟨a, b⟩ hj, fun a b => absurd ⟨a, b⟩ hj, h5⟩⟩`.
+-/
 theorem nonempty_mjForm (D : D7) (j : ℕ)
     (h : 1 ≤ j → j ≤ D.R.m → ∃ (n : ℕ) (c : Module.Basis (Fin n) ℂ (D.what₂.Mj j)),
       ∀ v ∈ (D.what₂.MjLat j).gen, ∀ i, c.repr v i ∈ Set.range D.what₂.embLL) :
@@ -178,6 +234,13 @@ theorem nonempty_mjForm (D : D7) (j : ℕ)
         · exact ⟨0, map_zero _⟩)
     exact ⟨⟨H, jm, h1, h2, fun a b => absurd ⟨a, b⟩ hj, fun a b => absurd ⟨a, b⟩ hj, h5⟩⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Conclude with `resChar_mem D w`. Introduce `hmem`.
+
+Assume the negation of the conclusion as `hne`. Establish `hcop : Nat.Coprime (D.what₂.places.resChar w) p` using `(Nat.coprime_primes (D.what₂.places.resChar_prime w) hp).mpr hne`. Take `⟨a, b, hab⟩ : IsCoprime ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) (p : 𝓞 D.what₂.LL)` from `hcop.cast`. Apply `(D.plEq w).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+
+Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ (resChar_mem D w)) (Ideal.mul_mem_left _ _ hmem)`.
+-/
 theorem resChar_eq_iff (D : D7) {p : ℕ} (hp : p.Prime) (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w = p ↔ (p : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
   constructor
@@ -196,6 +259,11 @@ def placeEquiv (D : D7) (p : ℕ) [hp : Fact p.Prime] :
     Formalism.L2.Geo.PlL D p ≃ {w : D.what₂.places.Pl // D.what₂.places.resChar w = p} :=
   (D.plEq.subtypeEquiv (resChar_eq_iff D hp.out)).symm
 
+/- English proof (translation)
+Establish `he : D.plEq (placeEquiv D p la).1 = la.1` using `D.plEq.apply_symm_apply _`. Use `liesOver_of_mem p hp.out la.1 la.2` as an intermediate fact. Establish `hN` using `Ideal.pow_inertiaDeg p la.1.asIdeal`. Establish `hlog : Real.log (p : ℝ) ≠ 0` using `(Real.log_pos (by exact_mod_cast hp.out.one_lt)).ne'`. Rewrite using `[D.ram_eq, he, Formalism.L2.Geo.wtL, ← hN, padicValNat.prime_pow]`.
+
+Use `push_cast`. Rewrite using `[Real.log_pow]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem wtL_eq_ramIdx_mul (D : D7) (p : ℕ) [hp : Fact p.Prime] (la : Formalism.L2.Geo.PlL D p) :
     Formalism.L2.Geo.wtL D p la = (D.what₂.places.ramIdx (placeEquiv D p la).1 : ℝ) *
       (padicValNat p (Ideal.absNorm (D.plEq (placeEquiv D p la).1).asIdeal) : ℝ) /
@@ -293,6 +361,9 @@ def provisionalDivX (D : D7) (G : DV.Geo D.what₂.LL) (Y : G.Var)
     SurfFp := Empty
     surfFpCh2 := fun s => s.elim }
 
+/- English proof (translation)
+Introduce `D h`. Take `⟨G, Y, -⟩` from `GlobalTheory.PointGeometry.exists_geo D.what₂.LL`. Conclude with `⟨provisionalDivX D G Y (fun p _ => (GlobalTheory.WittFracComplex.nonempty_ringHom_complex p).some) (fun p _ r => (GlobalTheory.nonempty_admissibleModel D p _ (max r 2) 1 (by omega)).some) (fun j => (nonempty_mjForm D j (h j)).some), rfl⟩`.
+-/
 theorem exists_provisionalDivX : ∀ D : D7, (∀ j, 1 ≤ j → j ≤ D.R.m →
     ∃ (n : ℕ) (c : Module.Basis (Fin n) ℂ (D.what₂.Mj j)),
       ∀ v ∈ (D.what₂.MjLat j).gen, ∀ i, c.repr v i ∈ Set.range D.what₂.embLL) →

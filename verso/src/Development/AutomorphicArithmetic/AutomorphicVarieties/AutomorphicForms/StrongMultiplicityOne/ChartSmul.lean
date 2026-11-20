@@ -9,6 +9,11 @@ open GlobalTheory.CuspRep (Cinf Lie chart infGL pInf sInf toL lmul invSet)
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
+/- English proof (translation)
+Introduce `i hi`. Take `⟨h1, h2⟩` from `hp i hi`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (p.val i i) = 1`. Rewrite using `[h1, map_one]`.
+
+Express the relevant statement in the definitionally equal form `f (p.val i j) = 0`. Rewrite using `[h2 j hj, map_zero]`.
+-/
 private theorem isY_map {R R' : Type} [CommRing R] [CommRing R'] {n m : ℕ} (f : R →+* R') (p : GL (Fin n) R)
     (hp : IsY m p.val) : IsY m (GeneralLinearGroup.map f p).val := by
   intro i hi
@@ -19,6 +24,9 @@ private theorem isY_map {R R' : Type} [CommRing R] [CommRing R'] {n m : ℕ} (f 
   · change f (p.val i j) = 0
     rw [h2 j hj, map_zero]
 
+/- English proof (translation)
+Unfold `chart`. Use `split_ifs with hx`. Conclude with `h _`. Simplify using the standard rewrite rules.
+-/
 private theorem chart_smul {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (f f' : GA E n → ℂ)
     (g g' : GA E n) (a : ℂ) (h : ∀ y, f (g * infGL E n y) = a * f' (g' * infGL E n y)) (x : Lie E n) :
     chart f g x = a * chart f' g' x := by
@@ -27,6 +35,25 @@ private theorem chart_smul {E : Type} [Field E] [NumberField E] [IsTotallyComple
   · exact h _
   · simp
 
+/- English proof (translation)
+Introduce `hA hF hE hP hC E _ _ _ n hn S U`. Take `⟨c, Hf, hf1, hc, hf⟩` from `hF E n hn S U`. Take `⟨Hi, hi1, hi⟩` from `hA E n (n - 1) (by omega)`. Use `⟨c, fun p => Hi (GeneralLinearGroup.map (pInf E) p) * Hf (GeneralLinearGroup.map (pFin E) p), by simp [hi1, hf1], hc, fun α => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ⟩` from `hi α`.
+
+Use `⟨β, fun W hW hb hWh hU p hp => ?_⟩` and prove the remaining obligations. Take `⟨C, hb⟩` from `hb`. Establish `hpi` using `isY_map (pInf E) p hp.1`. Establish `hpf` using `isY_map (pFin E) p hp.1`. Establish `hS` using `hp.2`.
+
+Use `beta_reduce`. Establish `e : p = finGL E n (GeneralLinearGroup.map (pFin E) p) * infGL E n (GeneralLinearGroup.map (pInf E) p)`. Rewrite using `[← GlobalTheory.CuspRep.infGL_comm, GlobalTheory.CuspRep.infGL_mul_finGL]`. Generalize the expression as in `GeneralLinearGroup.map (pInf E) p = a at *`. Generalize the expression as in `GeneralLinearGroup.map (pFin E) p = b at *`.
+
+Establish `h1 : ∀ x, chart (fop c W) (finGL E n b) x = Hf b * chart W 1 x`. Use `chart_smul _ _ _ _ _ fun y => ?_` and prove the remaining obligations. Use `hf (fun k => W (finGL E n k * infGL E n y)) (fun ν _ hν g _ => ?_) (fun g _ u hu _ => ?_) b hS hpf` as an intermediate fact. Simplify using `only [map_one] at this`. Rewrite using `[← this]`.
+
+Unfold `fop comb`. Use `Finsupp.sum_congr fun x _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_mul, mul_assoc, mul_assoc, GlobalTheory.CuspRep.infGL_comm]`. Take `⟨k1, k2⟩` from `(hE E n 0).2.1 ν hν`.
+
+Rewrite using `[map_mul, mul_assoc, hWh _ k1, k2]`. Both sides reduce to the same expression. Rewrite using `[map_mul, mul_assoc, ← GlobalTheory.CuspRep.infGL_comm, ← mul_assoc, hU _ u hu]`. Establish `h2` using `hβ (chart W 1) ((hC E n W hW).2 1) ⟨max C 0, fun x => ?_⟩ (fun ν hν x => ?_) a hpi`. Unfold `conv`.
+
+Rewrite using `[e, GlobalTheory.CuspRep.chart_mul]`. Simplify using `only [Function.comp_apply, h1, mul_assoc]`. Rewrite using `[integral_const_mul, h2]`. Expand and normalize the polynomial expressions, which then agree. Unfold `chart split_ifs`.
+
+Conclude with `(hb _).trans (le_max_left _ _)`. Simplify using the standard rewrite rules. Take `⟨k1, k2⟩` from `(hE E n 0).2.2.1 ν hν`. Use `congrFun (GlobalTheory.CuspRep.chart_mul W 1 ν) x` as an intermediate fact. Rewrite `this` using `[Function.comp_apply]`.
+
+Rewrite using `[← this]`. Use `chart_smul _ _ _ _ _ (fun y => ?_) x` and prove the remaining obligations. Rewrite using `[one_mul, one_mul, hWh _ k1, k2, hP]`.
+-/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.killP :
     UpperTheory.V.Af.StrongMultiplicityOne.ArchKir → UpperTheory.V.Af.StrongMultiplicityOne.FinKir → UpperTheory.V.Af.StrongMultiplicityOne.EmbY → UpperTheory.V.Af.StrongMultiplicityOne.PsiInf → UpperTheory.V.Af.StrongMultiplicityOne.ChartCont → UpperTheory.V.Af.StrongMultiplicityOne.KillP := by
   intro hA hF hE hP hC E _ _ _ n hn S U

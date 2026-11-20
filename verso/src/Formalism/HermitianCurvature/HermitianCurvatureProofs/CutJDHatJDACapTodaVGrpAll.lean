@@ -12,6 +12,21 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg`. Establish `hGG` using `JDAToda.gg_pos Bs hc hg hcg`. Establish `hx : (c, g) ∈ Q.DomR P.k P.r Bs.z Bs.z'` using `⟨hc, hg, hGG⟩`. Take `⟨hf, hLf, hRf, -⟩` from `hJ`. Rewrite `hf`, `hLf`, `hRf` using `[JDAToda.omB_eq]`.
+
+Use `set D := OmPlus P.k P.r Bs.z Bs.z' with hDdef`. Establish `hD : IsOpen D` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus Bs.z Bs.z'`. Establish `h1N : (1 : Mx P.k P.r) ∈ Nlev P.k P.r 0` using `⟨(Formalism.QuantumDeterminants.unipotent_subgroup_holds P.k P.r).1, by simp [Glev, UH]⟩`. Establish `hN : ∀ g ∈ Glev P.k P.r 0 ∩ D, ∀ n ∈ Nlev P.k P.r 0, n * g ∈ D`. Introduce `g hg n hn`.
+
+Establish `hDom` using `Formalism.FourierDecayAlt.P.JCx2.rma_isDom_omPlus (k := P.k) (r := P.r) Bs.z_mem Bs.z'_mem`. Use `hDom.2 g hg n ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z, n, hn, (one_mul n).symm⟩ 1 ⟨1, Formalism.FourierDecayAlt.P.Qx8.uw_one Bs.z', 1, h1N, (one_mul 1).symm⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Use `set v₀ : VS P.k P.r 0 D (Wq →L[ℂ] Wp) := ⟨cut P.k P.r 0 D J, cut_mem hD hf⟩ with hv₀`. Establish `hcellB : ∀ c ∈ OmX P.r, wCell P.k P.r (Fin.last P.r) c * g ∈ C6.bigPos Bs` using `fun c hc => (Formalism.FourierDecayAlt.P.big_cell_values P.k P.r Wp Wq Bs (c, g) ⟨hc, hx.2.1, hx.2.2⟩).1`.
+
+Establish `hcell : ∀ c ∈ OmX P.r, wCell P.k P.r (Fin.last P.r) c * g ∈ Glev P.k P.r 0 ∩ D`. Introduce `c hc`. Establish `h` using `hcellB c hc`. Conclude with `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 h.1, fun l _ => h.2.2 l (by simp), h.2.1⟩`. Establish `hcl` using `claimV hRR hLR hTC hCh hD v₀ g (kvTop P.k P.r y) Bs.z Bs.z' Bs.z_mem Bs.z'_mem hN hf hLf hRf rfl hg hcell P.r le_rfl 1 (Subalgebra.one_mem _) c hc`.
+
+Rewrite `hcl` using `[mul_one]`. Establish `eR : kvC P.r (kvTop P.k P.r y) P.r (fun c' => J (wCell P.k P.r (Fin.last P.r) c' * g)) c = kvC P.r (kvTop P.k P.r y) P.r (fun c' => La hD v₀ (wCell P.k P.r (Fin.last P.r) c' * g) 1) c` using `kvC_loc _ _ _ _ (fun c' hc' => (cut_of_mem _ (hcell c' hc')).symm) hc`. Rewrite using `[eR, ← hcl, La_apply]`. Establish `hγ` using `hcell c hc`. Establish `e1 : ((qminor (EA (E` using `Wq →L[ℂ] Wp) hD) (colsVm P.k P.r P.r) (colsVm P.k P.r P.r) (kvTop P.k P.r y) : SA (Wq →L[ℂ] Wp) hD) : Module.End ℂ (VS P.k P.r 0 D (Wq →L[ℂ] Wp))) = qminor (Eh (E := Wq →L[ℂ] Wp) (i := 0) hD) (cI ∘ colsVm P.k P.r P.r) (cI ∘ colsVm P.k P.r P.r) (kvTop P.k P.r y) := by`.
+
+Use `map_qminor (SA (Wq →L[ℂ] Wp) hD).val (EA hD) (colsVm P.k P.r P.r) (colsVm P.k P.r P.r) (kvTop P.k P.r y)` as an intermediate fact. Rewrite `this` using `[Subalgebra.coe_val]`. Rewrite using `[this]`. Conclude with `qminor_reindex (Eh hD) cI cI_inj _ _ _`. Rewrite using `[e1, rep_qminor hD _ _ _ v₀ _ hγ]`.
+
+Establish `hpos : posL P.k P.r 0 ∘ (cI ∘ colsVm P.k P.r P.r) = colsVm P.k P.r P.r` using `funext fun l => posL_cI _`. Establish `hloc` using `(good_qminor (E := Wq →L[ℂ] Wp) hD (cI ∘ colsVm P.k P.r P.r) (cI ∘ colsVm P.k P.r P.r) (kvTop P.k P.r y)).loc (cut P.k P.r 0 D J) J (fun x' hx' => cut_of_mem _ hx') _ hγ`. Rewrite `hloc` using `[hpos]`. Rewrite using `[hpos]`. Conclude with `hloc.symm`.
+-/
 theorem tVGrp_of (hRR : RightRuleEv) (hLR : LeftRuleCellv) (hTC : TorusCellv) (hCh : MirrorChainExpansion) : TVGrp := by
   intro Wp Wq _ _ _ _ _ _ P Bs hpl hk y J hJ c hc g hg hcg
   have hGG := JDAToda.gg_pos Bs hc hg hcg
@@ -59,6 +74,9 @@ theorem tVGrp_of (hRR : RightRuleEv) (hLR : LeftRuleCellv) (hTC : TorusCellv) (h
   rw [hpos]
   exact hloc.symm
 
+/- English proof (translation)
+The claim follows from `tVGrp_of mirror_right_rule_holds mirror_left_rule_cell_holds mirror_torus_cell_holds mirror_chain_expansion_holds`.
+-/
 theorem toda_group_action_holds : TVGrp :=
   tVGrp_of mirror_right_rule_holds mirror_left_rule_cell_holds mirror_torus_cell_holds mirror_chain_expansion_holds
 

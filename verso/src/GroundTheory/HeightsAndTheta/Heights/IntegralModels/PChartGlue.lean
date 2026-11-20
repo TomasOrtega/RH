@@ -7,6 +7,11 @@ namespace GroundTheory.Heights₂.Heights.Model
 
 open ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Use `exists_frame_cover _ r _ fun Q hQ => ?_` and prove the remaining obligations. Distinguish the cases in `hmQ : ((primeProd S : ℤ) : chartRing ℤ x i) ∈ Q`. Rewrite `hmQ` using `[primeProd, Int.cast_prod]`. Take `⟨p, hp, hpQ⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hQ.isPrime)).1 hmQ`. Conclude with `frame_at_prime hi hSR Q hQ.isPrime ⟨p, hp⟩ hpQ`.
+
+Conclude with `frame_away hi hSR Q hQ.isPrime hmQ`.
+-/
 theorem glueLat_frame {Ω : Type} [Field Ω] [CharZero Ω] {τ : Type} {x : τ → Ω} {r : ℕ}
     {E : Type} [AddCommGroup E] [Module Ω E] {S : Finset Nat.Primes}
     {o₀ : Type} [CommRing o₀] [Algebra ℤ o₀] [IsLocalization.Away (primeProd S) o₀] [Algebra o₀ Ω]
@@ -23,6 +28,9 @@ theorem glueLat_frame {Ω : Type} [Field Ω] [CharZero Ω] {τ : Type} {x : τ �
     exact frame_at_prime hi hSR Q hQ.isPrime ⟨p, hp⟩ hpQ
   · exact frame_away hi hSR Q hQ.isPrime hmQ
 
+/- English proof (translation)
+Introduce `Ω _ _ τ _ x r E _ _ S o₀ _ _ _ _ o _ _ _ _ B₀ Bp hSR`. Use `⟨{ lat := glueLat B₀ Bp stable := glueLat_stable frame := fun i hi => glueLat_frame hi fun p => hSR p i hi overlap := glueLat_overlap }, fun i hi => ⟨mem_B₀_iff fun p => hSR p i hi, fun p v => mem_Bp_iff (fun p => hSR p i hi) p v⟩⟩` and prove the remaining obligations.
+-/
 theorem ChartGlue.proof : ChartGlue.Statement := by
   intro Ω _ _ τ _ x r E _ _ S o₀ _ _ _ _ o _ _ _ _ B₀ Bp hSR
   refine ⟨{ lat := glueLat B₀ Bp

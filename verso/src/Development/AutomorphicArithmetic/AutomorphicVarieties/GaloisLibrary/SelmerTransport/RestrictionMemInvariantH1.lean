@@ -14,11 +14,17 @@ variable {R Q N : Type} [CommRing R] [Group Q] [AddCommGroup N] [Module R N]
 def eig (π : Representation R Q N) (ψ : Q →* Rˣ) : Submodule R N :=
   ⨅ g, LinearMap.ker (π g - ((ψ g : Rˣ) : R) • LinearMap.id)
 
+/- English proof (translation)
+Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+-/
 theorem mem_eig {π : Representation R Q N} {ψ : Q →* Rˣ} {x : N} :
     x ∈ eig π ψ ↔ ∀ g, π g x = ((ψ g : Rˣ) : R) • x := by
   simp only [eig, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_eig, Representation.mem_invariants]`. Simplify using the standard rewrite rules.
+-/
 theorem eig_one (π : Representation R Q N) : eig π 1 = π.invariants := by
   ext x
   rw [mem_eig, Representation.mem_invariants]
@@ -43,22 +49,36 @@ abbrev H0U (ρ : Representation R G M) (U : Subgroup G) : Submodule R M :=
 def resU (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) : H1U ρ U →ₗ[R] H1U ρ U' :=
   pairH1DecompositionMap _ _ (Subgroup.inclusion h) (continuous_inclusion h) LinearMap.id continuous_id fun _ _ => rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+-/
 theorem resU_mk (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (z : Z1U ρ U) :
     ∃ z' : Z1U ρ U', resU ρ h (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' ∧
       ∀ u : U', z'.1 u = z.1 ⟨u.1, h u.2⟩ := ⟨_, rfl, fun _ => rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Conclude with `Iff.rfl`.
+-/
 theorem mk_eq_mk (ρ : Representation R G M) (U : Subgroup G) (z z' : Z1U ρ U) :
     (Submodule.Quotient.mk z : H1U ρ U) = Submodule.Quotient.mk z' ↔
       ∃ m, ∀ u : U, z.1 u - z'.1 u = ρ u m - m := by
   rw [Submodule.Quotient.eq, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]
   exact Iff.rfl
 
+/- English proof (translation)
+Take `⟨z', e, f⟩` from `resU_mk ρ h z`. Rewrite using `[e, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]`. Conclude with `exists_congr fun m => forall_congr' fun u => by rw [f u]; rfl`.
+-/
 theorem resU_mk_eq_zero (ρ : Representation R G M) {U' U : Subgroup G} (h : U' ≤ U) (z : Z1U ρ U) :
     resU ρ h (Submodule.Quotient.mk z) = 0 ↔ ∃ m, ∀ u : U', z.1 ⟨u.1, h u.2⟩ = ρ u m - m := by
   obtain ⟨z', e, f⟩ := resU_mk ρ h z
   rw [e, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.coe_subtype, mem_coboundaries1]
   exact exists_congr fun m => forall_congr' fun u => by rw [f u]; rfl
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `resU_mk ρ h z`. Take `⟨z₂, e₂, f₂⟩` from `resU_mk ρ h' z₁`. Take `⟨z₃, e₃, f₃⟩` from `resU_mk ρ (h'.trans h) z`. Rewrite using `[e₁, e₂, e₃]`.
+
+Use `congr 1`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Rewrite using `[f₂, f₁, f₃]`.
+-/
 theorem resU_resU (ρ : Representation R G M) {U'' U' U : Subgroup G} (h' : U'' ≤ U') (h : U' ≤ U) (x : H1U ρ U) :
     resU ρ h' (resU ρ h x) = resU ρ (h'.trans h) x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -73,10 +93,18 @@ theorem resU_resU (ρ : Representation R G M) {U'' U' U : Subgroup G} (h' : U'' 
 def LocSel (ρ : Representation R G M) (U : Subgroup G) (𝒟 : Set (Subgroup G)) : Submodule R (H1U ρ U) :=
   ⨅ D ∈ 𝒟, LinearMap.ker (resU ρ (inf_le_left : U ⊓ D ≤ U))
 
+/- English proof (translation)
+Simplify using `only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker]`.
+-/
 theorem mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (Subgroup G)} {x : H1U ρ U} :
     x ∈ LocSel ρ U 𝒟 ↔ ∀ D ∈ 𝒟, resU ρ (inf_le_left : U ⊓ D ≤ U) x = 0 := by
   simp only [LocSel, Submodule.mem_iInf, LinearMap.mem_ker]
 
+/- English proof (translation)
+Rewrite using `[mem_locSel]`. Use `forall₂_congr fun D _ => ?_` and prove the remaining obligations. Rewrite using `[resU_mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`.
+
+Conclude with `⟨m, fun u hu => hm ⟨u.1, Subgroup.mem_inf.mpr ⟨u.2, hu⟩⟩⟩`. Introduce and unpack `⟨m, hm⟩`. Conclude with `⟨m, fun u => hm ⟨u.1, (Subgroup.mem_inf.mp u.2).1⟩ (Subgroup.mem_inf.mp u.2).2⟩`.
+-/
 theorem mk_mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (Subgroup G)} {z : Z1U ρ U} :
     Submodule.Quotient.mk z ∈ LocSel ρ U 𝒟 ↔ ∀ D ∈ 𝒟, ∃ m, ∀ u : U, u.1 ∈ D → z.1 u = ρ u m - m := by
   rw [mem_locSel]
@@ -88,6 +116,9 @@ theorem mk_mem_locSel {ρ : Representation R G M} {U : Subgroup G} {𝒟 : Set (
   · rintro ⟨m, hm⟩
     exact ⟨m, fun u => hm ⟨u.1, (Subgroup.mem_inf.mp u.2).1⟩ (Subgroup.mem_inf.mp u.2).2⟩
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_locSel]`. Introduce `D hD`. Establish `hle : U' ⊓ D ≤ U ⊓ D` using `inf_le_inf_right D h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem resU_mem_locSel {ρ : Representation R G M} {U' U : Subgroup G} (h : U' ≤ U) {𝒟 : Set (Subgroup G)}
     {x : H1U ρ U} (hx : x ∈ LocSel ρ U 𝒟) : resU ρ h x ∈ LocSel ρ U' 𝒟 := by
   rw [mem_locSel] at hx ⊢
@@ -117,6 +148,9 @@ def conjHom (U : Subgroup G) [hU : U.Normal] (g : G) : U →* U where
   map_one' := Subtype.ext (by simp)
   map_mul' a b := Subtype.ext (by simp [mul_assoc])
 
+/- English proof (translation)
+Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul continuous_subtype_val).mul continuous_const`.
+-/
 theorem continuous_conjHom (U : Subgroup G) [U.Normal] (g : G) : Continuous (conjHom U g) := by
   refine continuous_induced_rng.2 ?_
   exact (continuous_const.mul continuous_subtype_val).mul continuous_const
@@ -127,6 +161,9 @@ def conjU (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g : G) : H1U 
     rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]
     simp [mul_assoc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, rfl, fun _ => rfl⟩`.
+-/
 theorem conjU_mk (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g : G) (z : Z1U ρ U) :
     ∃ z' : Z1U ρ U, conjU ρ U g (Submodule.Quotient.mk z) = Submodule.Quotient.mk z' ∧
       ∀ u : U, z'.1 u = ρ g (z.1 (conjHom U g u)) := ⟨_, rfl, fun _ => rfl⟩
@@ -152,9 +189,19 @@ def conjRep (ρ : Representation R G M) (U : Subgroup G) [U.Normal] : Representa
     rw [f₃, f₂, f₁, map_mul, Module.End.mul_apply]
     exact congrArg (fun t => ρ g (ρ h (z.1 t))) (Subtype.ext (by simp [conjHom, mul_assoc]))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjRep_apply (ρ : Representation R G M) (U : Subgroup G) [U.Normal] (g : G) :
     conjRep ρ U g = conjU ρ U g := rfl
 
+/- English proof (translation)
+Establish `hz : ∀ a b : U, z.1 (a * b) = z.1 a + ρ a (z.1 b)` using `((mem_Z1_iff_cocycle _ _).mp z.2).2`. Establish `h1 : z.1 1 = 0` using `by simpa using hz 1 1`. Establish `hinv : ρ γ (z.1 γ⁻¹) = - z.1 γ`. Use `hz γ γ⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1]`.
+
+Conclude with `eq_neg_of_add_eq_zero_right this.symm`. Establish `hmul : ∀ w : M, ρ γ (ρ (γ⁻¹ : U) w) = w`. Introduce `w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hz, hz, map_add, hmul, hinv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem cocycle_conj_identity (ρ : Representation R G M) (U : Subgroup G) (z : Z1U ρ U) (γ v : U) :
     ρ γ (z.1 (γ⁻¹ * (v * γ))) - z.1 v = ρ v (z.1 γ) - z.1 γ := by
   have hz : ∀ a b : U, z.1 (a * b) = z.1 a + ρ a (z.1 b) := ((mem_Z1_iff_cocycle _ _).mp z.2).2
@@ -170,6 +217,11 @@ private theorem cocycle_conj_identity (ρ : Representation R G M) (U : Subgroup 
   rw [hz, hz, map_add, hmul, hinv]
   abel
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z', e, f⟩` from `conjU_mk ρ U g z`. Rewrite using `[conjRep_apply, e, mk_eq_mk]`. Use `⟨z.1 ⟨g, hg⟩, fun u => ?_⟩` and prove the remaining obligations. Establish `hc : conjHom U g u = (⟨g, hg⟩ : U)⁻¹ * (u * ⟨g, hg⟩)` using `Subtype.ext (by simp [conjHom, mul_assoc])`.
+
+Rewrite using `[f u, hc]`. Conclude with `cocycle_conj_identity ρ U z ⟨g, hg⟩ u`.
+-/
 theorem conjRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {g : G} (hg : g ∈ U) (x : H1U ρ U) :
     conjRep ρ U g x = x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -181,6 +233,11 @@ theorem conjRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {
   rw [f u, hc]
   exact cocycle_conj_identity ρ U z ⟨g, hg⟩ u
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `conjU_mk ρ U g z`. Take `⟨z₂, e₂, f₂⟩` from `resU_mk ρ h z₁`. Take `⟨z₃, e₃, f₃⟩` from `resU_mk ρ h z`. Take `⟨z₄, e₄, f₄⟩` from `conjU_mk ρ U' g z₃`.
+
+Rewrite using `[conjRep_apply, conjRep_apply, e₁, e₂, e₃, e₄]`. Use `congr 1`. Use `Subtype.ext (funext fun u => ?_)` and prove the remaining obligations. Rewrite using `[f₂, f₁, f₄, f₃]`. Conclude with `congrArg (fun t => ρ g (z.1 t)) (Subtype.ext (by simp [conjHom]))`.
+-/
 theorem resU_conjRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] [U'.Normal] (h : U' ≤ U) (g : G)
     (x : H1U ρ U) : resU ρ h (conjRep ρ U g x) = conjRep ρ U' g (resU ρ h x) := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -194,6 +251,13 @@ theorem resU_conjRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] 
   rw [f₂, f₁, f₄, f₃]
   exact congrArg (fun t => ρ g (z.1 t)) (Subtype.ext (by simp [conjHom]))
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z', e, f⟩` from `conjU_mk ρ U g z`. Rewrite using `[conjRep_apply, e, mk_mem_locSel]`. Rewrite `hx` using `[mk_mem_locSel]`. Introduce `D hD`.
+
+Take `⟨D', hD', hiff⟩` from `h𝒟 D hD g`. Take `⟨m, hm⟩` from `hx D' hD'`. Use `⟨ρ g m, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[f u, hm (conjHom U g u) ((hiff u).mp hu), map_sub]`. Use `congr 1`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Simplify using `[conjHom, mul_assoc]`.
+-/
 theorem conjRep_mem_locSel (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (Subgroup G)}
     (h𝒟 : ConjStable 𝒟) (g : G) {x : H1U ρ U} (hx : x ∈ LocSel ρ U 𝒟) : conjRep ρ U g x ∈ LocSel ρ U 𝒟 := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -214,14 +278,23 @@ def selRep (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (
     Representation R G (LocSel ρ U 𝒟) :=
   (conjRep ρ U).subrepresentation (LocSel ρ U 𝒟) fun g _ hx => conjRep_mem_locSel ρ U h𝒟 g hx
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_selRep (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (Subgroup G)} (h𝒟 : ConjStable 𝒟)
     (g : G) (x : LocSel ρ U 𝒟) : (selRep ρ U h𝒟 g x : H1U ρ U) = conjRep ρ U g x := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_selRep, conjRep_of_mem ρ U hg]`.
+-/
 theorem selRep_of_mem (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Set (Subgroup G)}
     (h𝒟 : ConjStable 𝒟) {g : G} (hg : g ∈ U) (x : LocSel ρ U 𝒟) : selRep ρ U h𝒟 g x = x := by
   apply Subtype.ext
   rw [coe_selRep, conjRep_of_mem ρ U hg]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show resU ρ h (conjRep ρ U g x) = conjRep ρ U' g (resU ρ h x)`. Conclude with `resU_conjRep ρ h g x`.
+-/
 theorem selRes_selRep (ρ : Representation R G M) {U' U : Subgroup G} [U.Normal] [U'.Normal] (h : U' ≤ U)
     {𝒟 : Set (Subgroup G)} (h𝒟 : ConjStable 𝒟) (g : G) (x : LocSel ρ U 𝒟) :
     selRes ρ h 𝒟 (selRep ρ U h𝒟 g x) = selRep ρ U' h𝒟 g (selRes ρ h 𝒟 x) := by
@@ -239,6 +312,13 @@ abbrev selEig (ρ : Representation R G M) (U : Subgroup G) [U.Normal] {𝒟 : Se
 abbrev resCoker (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U) : Type :=
   invariantsUnderSubgroupH1 ρ U U' ⧸ (LinearMap.range (resU ρ h)).comap (invariantsUnderSubgroupH1 ρ U U').subtype
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z₁, e₁, f₁⟩` from `resU_mk ρ h z`. Rewrite using `[e₁, Representation.mem_invariants]`. Introduce `u`. Use `show conjRep ρ U' (u : G) (Submodule.Quotient.mk z₁) = Submodule.Quotient.mk z₁`.
+
+Take `⟨z₂, e₂, f₂⟩` from `conjU_mk ρ U' (u : G) z₁`. Rewrite using `[conjRep_apply, e₂, mk_eq_mk]`. Use `⟨z.1 u, fun v => ?_⟩` and prove the remaining obligations. Establish `hc : (⟨(conjHom U' (u : G) v).1, h (conjHom U' (u : G) v).2⟩ : U) = u⁻¹ * (⟨v.1, h v.2⟩ * u)` using `Subtype.ext (by simp [conjHom, mul_assoc])`. Establish `key` using `cocycle_conj_identity ρ U z u ⟨v.1, h v.2⟩`.
+
+Rewrite `key` using `[← hc]`. Rewrite using `[f₂ v, f₁, f₁ v]`. Conclude with `key`.
+-/
 theorem restriction_mem_invariant_H1 (ρ : Representation R G M) {U' U : Subgroup G} [U'.Normal] (h : U' ≤ U) (x : H1U ρ U) :
     resU ρ h x ∈ invariantsUnderSubgroupH1 ρ U U' := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x

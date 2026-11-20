@@ -17,6 +17,15 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ _ hR A hA`. Take `⟨n, hn, hno, hnu⟩` from `GlobalTheory.T.exists_odd_prime_isUnit_of_completeNormalCharZeroBase R hR`. Take `⟨k, j, hk, hj, hbig⟩` from `GlobalTheory.T.exists_exponents_thetaSystem_big_odd_prime A.g n hn hno`. Establish `hmu : IsUnit (((n ^ j * (n ^ k) ^ 2) ^ 2 : ℕ) : R)` using `by push_cast; exact ((hnu.pow _).mul ((hnu.pow _).pow _)).pow _`. Take `⟨R₁, _, _, _, ρ, A₁, a, ζ, lev, hfin, hfib, hg, hS⟩` from `GlobalTheory.T.exists_symplecticLevel_after_finiteExtension_base R hR A hA _ (Nat.one_le_iff_ne_zero.2 (pow_ne_zero _ (mul_ne_zero (pow_ne_zero _ hn.ne_zero) (pow_ne_zero _ (pow_ne_zero _ hn.ne_zero))))) hmu`.
+
+Use `haveI : CharZero R₁ := ⟨fun x y h => by`. Use `hR.2` as an intermediate fact. Conclude with `Nat.cast_injective (hfin.2.1 (by simpa using h))⟩`. Establish `hnu₁ : IsUnit (n : R₁)` using `by simpa using hnu.map ρ`. Take `⟨o, Ω, _, _, _, _, S, ρS, b, e, φ, hSg, hSN, hSr, hb, hcart, hlb⟩` from `GlobalTheory.T.exists_thetaSystem_spread_of_level_fractionField R₁ A₁ hS n k j hn hno hk hj hnu₁ ζ lev`.
+
+Establish `hB : S.Big` using `hbig o Ω S (hSg.trans hg) hSN hSr`. Take `⟨J₀, _, t₀, ht₀, hfin'⟩` from `GlobalTheory.T.exists_tuple_thetaConstant_ratios_generate_field o Ω S`. Take `⟨M, U₀, EE, hO, -, -, ⟨Z⟩⟩` from `GlobalTheory.zhSt_holds o Ω S ρS hB J₀ t₀ ht₀ hfin'`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_uniformised_cover_pullback_semiAbelian_model R₁ o Ω S ρS M U₀ EE hO Z b e hb A₁ φ hcart hlb`. Substitute `hC` using the available equality.
+
+Conclude with `⟨R₁, _, _, _, ρ, C, a, hfin, hfib⟩`.
+-/
 theorem exists_uCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (A : PolAV (Sp (FractionRing R))), (letI := A.isAb.comm; GlobalTheory.ZH.HypS A.A A.L) → ∃ (R₁ : Type) (_ : CommRing R₁) (_ : IsDomain R₁) (_ : IsLocalRing R₁) (ρ : R →+* R₁) (C : UCover R₁) (a : C.A.A.left ⟶ A.A.left), FinExt ρ ∧ IsFib ρ A C.A a := by
   intro R _ _ _ hR A hA
   obtain ⟨n, hn, hno, hnu⟩ := GlobalTheory.T.exists_odd_prime_isUnit_of_completeNormalCharZeroBase R hR

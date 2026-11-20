@@ -14,6 +14,17 @@ noncomputable section
 
 namespace GlobalTheory.LocAcyc
 
+/- English proof (translation)
+Introduce `T O _ _ _ _ _ P _ φ hφ hind q hq D _ _ act hD`. Take `⟨j, Dj, _, _, actj, hDj, ⟨e⟩⟩` from `GlobalTheory.T.exists_zmodTorsor_model_of_filtered_colimit _ _ _ (GlobalTheory.FiniteTypeColimit.isColimit (CommRingCat.of (GenFib T O))) q hq D act hD`. Set `U` to `(GlobalTheory.FiniteTypeColimit.diagram (CommRingCat.of (GenFib T O))).obj j`. Set `u : U →+* GenFib T O` to `((GlobalTheory.FiniteTypeColimit.inclusions (CommRingCat.of (GenFib T O))).app j).hom`. Use `haveI : Algebra.FiniteType ℤ U := GlobalTheory.FiniteTypeColimit.finiteType _ j`.
+
+Establish `hfact` using `GlobalTheory.T.exists_etale_factorization_of_isIndEtale (Polynomial T) O P φ hφ hind`. Establish `hl` using `GlobalTheory.T.exists_etale_lift_genericFibre_of_factorization T (Polynomial T) O hfact U u`. Take `⟨W, _, _, _, _, _, ψ, uW, hcomp⟩` from `hl`. Use `letI : Algebra U (GenFib T W) := uW.toAlgebra`. Take `⟨actE, hE⟩` from `GlobalTheory.T.torsor_base_change_zmod U (GenFib T W) q Dj actj hq hDj`.
+
+Use `⟨W, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ψ, TensorProduct U (GenFib T W) Dj, inferInstance, inferInstance, actE, hE, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Establish `hs' : s.comp (algebraMap (GenFib T W) (TensorProduct U (GenFib T W) Dj)) = genFibMap (ψ.restrictScalars T)`. Use `genFib_ringHom_ext (fun w => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hs, genFibMap_algebraMap]`.
+
+Both sides reduce to the same expression. Use `letI : Algebra U (GenFib T O) := u.toAlgebra`. Set `σ : Dj →ₐ[U] GenFib T O` to `{ s.comp (Algebra.TensorProduct.includeRight (R := U) (A := GenFib T W) (B := Dj)).toRingHom with commutes' := fun x => by`. Express the relevant statement in the definitionally equal form `s (Algebra.TensorProduct.includeRight (algebraMap U Dj x)) = u x`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply U (GenFib T W)]`.
+
+Rewrite using `[← RingHom.comp_apply s, hs', ← hcomp]`. Use `rfl }`. Set `L : TensorProduct U (GenFib T O) Dj →ₐ[GenFib T O] GenFib T O` to `Algebra.TensorProduct.lift (AlgHom.id (GenFib T O) (GenFib T O)) σ (fun _ _ => Commute.all _ _)`. Conclude with `⟨L.comp e.symm.toAlgHom⟩`.
+-/
 theorem spread_torsor_to_etale : ∀ (T O : Type) [CommRing T] [CommRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O]
     (P : Ideal (Polynomial T)) [P.IsPrime] (φ : Localization.AtPrime P →+* O),

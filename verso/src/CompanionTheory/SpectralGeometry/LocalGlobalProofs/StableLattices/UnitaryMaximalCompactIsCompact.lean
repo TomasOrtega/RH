@@ -7,6 +7,13 @@ open CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.L ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.UGeo
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hU j) j`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.one_apply_eq] at h`. Establish `hre` using `congrArg Complex.re h`. Rewrite `hre` using `[Complex.re_sum, Complex.one_re]`. Establish `hterm : ∀ x, (star (U x j) * U x j).re = ‖U x j‖ ^ 2` using `fun x => by`.
+
+Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Complex.mul_re, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hterm] at hre`. Establish `hle : ‖U i j‖ ^ 2 ≤ 1`. Rewrite using `[← hre]`.
+
+Conclude with `Finset.single_le_sum (f := fun x => ‖U x j‖ ^ 2) (fun x _ => sq_nonneg _) (Finset.mem_univ i)`. Use polynomial arithmetic with `[norm_nonneg (U i j)]`.
+-/
 private theorem norm_apply_le_one_of_conjTranspose_mul_self {n : ℕ} {U : Matrix (Fin n) (Fin n) ℂ} (hU : Uᴴ * U = 1)
     (i j : Fin n) : ‖U i j‖ ≤ 1 := by
   have h := congrFun (congrFun hU j) j
@@ -23,6 +30,15 @@ private theorem norm_apply_le_one_of_conjTranspose_mul_self {n : ℕ} {U : Matri
     exact Finset.single_le_sum (f := fun x => ‖U x j‖ ^ 2) (fun x _ => sq_nonneg _) (Finset.mem_univ i)
   nlinarith [norm_nonneg (U i j)]
 
+/- English proof (translation)
+Establish `hbox : IsCompact (Set.pi Set.univ fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => Metric.closedBall (0 : ℂ) 1 : Set (Matrix (Fin n) (Fin n) ℂ))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hbox.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `h1 : IsClosed {M : Matrix (Fin n) (Fin n) ℂ | Mᴴ * M = 1}` using `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Establish `h2 : IsClosed {M : Matrix (Fin n) (Fin n) ℂ | M * Mᴴ = 1}` using `isClosed_eq (continuous_id.matrix_mul continuous_id.matrix_conjTranspose) continuous_const`. Establish `h3 : IsClosed {M : Matrix (Fin n) (Fin n) ℂ | M * Jm ε = Jm ε * M}` using `isClosed_eq (continuous_id.matrix_mul continuous_const) (continuous_const.matrix_mul continuous_id)`.
+
+Establish `h4 : IsClosed {M : Matrix (Fin n) (Fin n) ℂ | Mᴴ * Jm ε * M = Jm ε}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `e : {M : Matrix (Fin n) (Fin n) ℂ | M ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ M * Jm ε = Jm ε * M ∧ inUJ ε M} = ({M | Mᴴ * M = 1} ∩ {M | M * Mᴴ = 1}) ∩ ({M | M * Jm ε = Jm ε * M} ∩ {M | Mᴴ * Jm ε * M = Jm ε})`. Use extensionality with `M`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Unitary.mem_iff, Matrix.star_eq_conjTranspose, inUJ, and_assoc]`. Rewrite using `[e]`.
+
+Conclude with `(h1.inter h2).inter (h3.inter h4)`. Introduce `M hM`. Rewrite using `[Set.mem_univ_pi]`. Introduce `i`. Rewrite using `[Set.mem_univ_pi]`.
+
+Introduce `j`. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `norm_apply_le_one_of_conjTranspose_mul_self (U := M) (Unitary.star_mul_self_of_mem hM.1) i j`.
+-/
 private theorem isCompact_unitary_commute_Jm_inUJ (n : ℕ) (ε : Fin n → Bool) :
     IsCompact {M : Matrix (Fin n) (Fin n) ℂ |
       M ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ M * Jm ε = Jm ε * M ∧ inUJ ε M} := by
@@ -56,6 +72,15 @@ private theorem isCompact_unitary_commute_Jm_inUJ (n : ℕ) (ε : Fin n → Bool
     exact norm_apply_le_one_of_conjTranspose_mul_self (U := M)
       (Unitary.star_mul_self_of_mem hM.1) i j
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI : CompactSpace {M : Matrix (Fin n) (Fin n) ℂ | M ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ M * Jm ε = Jm ε * M ∧ inUJ ε M} := isCompact_iff_compactSpace.mp (isCompact_unitary_commute_Jm_inUJ n ε)`. Set `φ : {M : Matrix (Fin n) (Fin n) ℂ | M ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ M * Jm ε = Jm ε * M ∧ inUJ ε M} → S7.UJ ε` to `fun M => ⟨⟨M.1, star M.1, Unitary.mul_star_self_of_mem M.2.1, Unitary.star_mul_self_of_mem M.2.1⟩, M.2.2.2⟩`. Establish `hφ : Continuous φ`. Apply `Continuous.subtype_mk` to reduce the goal to its premises.
+
+Rewrite using `[Units.continuous_iff]`. Conclude with `⟨continuous_subtype_val, continuous_subtype_val.matrix_conjTranspose⟩`. Establish `hrange : Set.range φ = ((S7.KG ε : Subgroup (S7.UJ ε)) : Set (S7.UJ ε))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨M, rfl⟩`. Conclude with `And.intro M.2.1 M.2.2.1`. Introduce `hg`. Establish `hg' : ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * Jm ε = Jm ε * ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)` using `hg`. Use `⟨⟨((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ), hg'.1, hg'.2, g.2⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression. Rewrite using `[← hrange]`. Conclude with `isCompact_range hφ`.
+-/
 theorem isCompact_KG_set : ∀ (n : ℕ) (ε : Fin n → Bool),
     IsCompact ((S7.KG ε : Subgroup (S7.UJ ε)) : Set (S7.UJ ε)) := by
   intro n ε

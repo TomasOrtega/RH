@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.SphOne
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h` using `isTrivialOn_addCharConductor hψ.1 hψ.2.1`. Rewrite `h` using `[hψ.2.2]`. Establish `h1 : ψ x = 1` using `h x (mem_valBall_zero_iff.2 hx)`. Use `show ((ψ x : Circle) : ℂ) = 1`.
+
+Rewrite using `[h1, Circle.coe_one]`.
+-/
 theorem coe_eq_one_of_isStd {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     ∀ x ∈ 𝒪[F], (Circle.coeHom.compAddChar ψ) x = 1 := by

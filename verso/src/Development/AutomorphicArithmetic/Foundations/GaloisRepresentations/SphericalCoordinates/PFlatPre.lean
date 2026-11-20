@@ -4,6 +4,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `V _ _ V' _ _ Y B s hs φ φ' v₀ w hφ hB`. Establish `key : ∀ (U : Y.Opens) (f : Γ(Y, U)), ⊤ ≤ s (φ v₀) ⁻¹ᵁ U → fderiv ℂ (fun v => valAt' (s (φ v)) U f) v₀ w = fderiv ℂ (fun b => valAt' (s b) U f) (φ v₀) (φ' w)`. Introduce `U f hU`. Take `⟨hopen, hdiff⟩` from `hs U f`. Establish `hmem : φ v₀ ∈ {b ∈ B | ⊤ ≤ s b ⁻¹ᵁ U}` using `⟨hB, hU⟩`.
+
+Establish `hd : DifferentiableAt ℂ (fun b => valAt' (s b) U f) (φ v₀)` using `(hdiff _ hmem).differentiableAt (hopen.mem_nhds hmem)`. Establish `hc` using `hd.hasFDerivAt.comp v₀ hφ`. Establish `he : fderiv ℂ (fun v => valAt' (s (φ v)) U f) v₀ = _` using `hc.fderiv`. Rewrite using `[he]`. Both sides reduce to the same expression.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h U f hU`. Rewrite using `[← key U f hU]`. Conclude with `h U f hU`. Introduce `h U f hU`.
+
+Rewrite using `[key U f hU]`. Conclude with `h U f hU`.
+-/
 theorem UpperTheory.Gal.W2.flatPre_of :
     UpperTheory.Gal.W2.FlatPre := by
   intro V _ _ V' _ _ Y B s hs φ φ' v₀ w hφ hB

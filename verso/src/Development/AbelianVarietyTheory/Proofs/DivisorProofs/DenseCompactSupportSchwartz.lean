@@ -6,6 +6,13 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `e : (fun y : V => ψ (t • y)) = ψ ∘ (t • ContinuousLinearMap.id ℝ V)`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite using `[e, ContinuousLinearMap.iteratedFDeriv_comp_right _ (ψ.smooth ⊤) x (by exact_mod_cast le_top)]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans ?_` and prove the remaining obligations.
+
+Establish `h1 : ∏ _j : Fin i, ‖(t • ContinuousLinearMap.id ℝ V)‖ ≤ 1` using `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => by`. Use `(norm_smul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Conclude with `mul_le_one₀ ht (norm_nonneg _) ContinuousLinearMap.norm_id_le)`. Use `(mul_le_of_le_one_right (norm_nonneg _) h1).trans ?_` and prove the remaining obligations.
+
+Conclude with `SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ ψ i _`.
+-/
 lemma norm_iteratedFDeriv_comp_smul_le_seminorm {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] (ψ : SchwartzMap V ℂ) {t : ℝ} (ht : |t| ≤ 1) (i : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ i (fun y : V => ψ (t • y)) x‖ ≤ SchwartzMap.seminorm ℝ 0 i ψ := by
@@ -22,6 +29,23 @@ lemma norm_iteratedFDeriv_comp_smul_le_seminorm {V : Type} [NormedAddCommGroup V
   refine (mul_le_of_le_one_right (norm_nonneg _) h1).trans ?_
   exact SchwartzMap.norm_iteratedFDeriv_le_seminorm ℝ ψ i _
 
+/- English proof (translation)
+Introduce `V _ _ _`. Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hbc : HasCompactSupport (fun x : V => (b x : ℂ))` using `b.hasCompactSupport.comp_left Complex.ofReal_zero`. Establish `hbs : ContDiff ℝ ∞ (fun x : V => (b x : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Set `ψ : SchwartzMap V ℂ` to `hbc.toSchwartzMap hbs`.
+
+Establish `hψ : ∀ x, ψ x = (b x : ℂ)` using `fun x => rfl`. Establish `hψ0 : ψ 0 = 1`. Rewrite using `[hψ, b.one_of_mem_closedBall (by simp [b])]; simp`. Establish `hg : ∀ t : ℝ, Function.HasTemperateGrowth (fun x : V => ψ (t • x))` using `fun t => ψ.hasTemperateGrowth.comp (t • ContinuousLinearMap.id ℝ V).hasTemperateGrowth`. Introduce `φ`.
+
+Set `F : ℝ → SchwartzMap V ℂ` to `fun t => SchwartzMap.smulLeftCLM ℂ (fun x : V => ψ (t • x)) φ`. Establish `hF : ∀ t x, F t x = ψ (t • x) * φ x` using `fun t x => by`. Simplify using `only [F, SchwartzMap.smulLeftCLM_apply_apply (hg t), smul_eq_mul]`. Establish `hFf : ∀ t, (⇑(F t) : V → ℂ) = fun x => ψ (t • x) * φ x` using `fun t => funext (hF t)`. Establish `hF0 : F 0 = φ` using `by ext x; rw [hF]; simp [hψ0]`.
+
+Establish `hcs : ∀ t : ℝ, t ≠ 0 → HasCompactSupport (⇑(F t))` using `fun t ht => by`. Rewrite using `[hFf]`. Conclude with `(hbc.comp_homeomorph (Homeomorph.smulOfNeZero t ht)).mul_right`. Establish `hcont : ContinuousAt F 0`. Use `schwartz_continuousAt_of_pointwise_of_bounded F 0 (fun v => ?_) (fun k n => ?_)` and prove the remaining obligations.
+
+Repeatedly rewrite using `[hF]`. Conclude with `((ψ.continuous.comp (continuous_id.smul continuous_const)).mul continuous_const).continuousAt`. Use `⟨∑ i ∈ Finset.range (n + 1), (n.choose i : ℝ) * SchwartzMap.seminorm ℝ 0 i ψ * SchwartzMap.seminorm ℝ k (n - i) φ, ?_⟩` and prove the remaining obligations. Establish `hball : Set.Icc (-1 : ℝ) 1 ∈ 𝓝 (0 : ℝ)` using `Icc_mem_nhds (by norm_num) (by norm_num)`. Use `filter_upwards [hball] with t ht v`.
+
+Establish `ht' : |t| ≤ 1` using `abs_le.2 ht`. Rewrite using `[hFf]`. Establish `hsm1 : ContDiff ℝ ∞ (fun x : V => ψ (t • x))` using `(ψ.smooth ⊤).comp (contDiff_const_smul t)`. Use `(mul_le_mul_of_nonneg_left (norm_iteratedFDeriv_mul_le hsm1 (φ.smooth ⊤) v (by exact_mod_cast le_top)) (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `norm_iteratedFDeriv_comp_smul_le_seminorm ψ ht' i v`. Establish `h2` using `SchwartzMap.le_seminorm ℝ k (n - i) φ v`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : Tendsto F (𝓝[≠] 0) (𝓝 φ)`.
+
+Rewrite using `[← hF0]`. Conclude with `hcont.tendsto.mono_left nhdsWithin_le_nhds`. Conclude with `mem_closure_of_tendsto hT (eventually_nhdsWithin_of_forall fun t ht => hcs t ht)`.
+-/
 theorem dense_hasCompactSupport_schwartz : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V], Dense {φ : SchwartzMap V ℂ | HasCompactSupport (⇑φ)} := by
   intro V _ _ _

@@ -14,6 +14,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PolDim
 
+/- English proof (translation)
+Introduce `K _ S f P P' φ h`. Use `smoothOfRelativeDimension_isStableUnderBaseChange (n := P.g)` as an intermediate fact. Establish `hd : SmoothOfRelativeDimension P.g P'.A.hom` using `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension P.g) h.1 P.smoothDim`. Take `⟨s⟩ : Nonempty (Sp K)` from `inferInstance`. Conclude with `GlobalTheory.PolTest.dim_eq_of_nonempty s P' hd`.
+-/
 theorem g_eq_of_isGrpPullback : ∀ (K : Type) [Field K] (S : Scheme.{0}) (f : Sp K ⟶ S) (P : PolAV S)
     (P' : PolAV (Sp K)) (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ → P'.g = P.g := by
   intro K _ S f P P' φ h

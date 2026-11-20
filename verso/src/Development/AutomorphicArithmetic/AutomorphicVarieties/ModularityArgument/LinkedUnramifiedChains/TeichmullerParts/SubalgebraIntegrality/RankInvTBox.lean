@@ -29,6 +29,9 @@ variable {I : Type} {Gi Wi Wi' : I → Type} {H X X' : Type} [∀ i, Group (Gi i
   [∀ i, AddCommGroup (Wi i)] [∀ i, Module ℂ (Wi i)] [∀ i, AddCommGroup (Wi' i)] [∀ i, Module ℂ (Wi' i)]
   [AddCommGroup X] [Module ℂ X] [AddCommGroup X'] [Module ℂ X']
 
+/- English proof (translation)
+Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [piRep, PiTensorProduct.congr, map_smul, MonoidHom.comp_apply, PiTensorProduct.mapMonoidHom_apply, LinearEquiv.ofLinear_apply, PiTensorProduct.map_tprod]`. Conclude with `congrArg (fun t => r • PiTensorProduct.tprod ℂ t) (funext fun i => h i (f i))`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem congr_piRep (τ : ∀ i, Representation ℂ (Gi i) (Wi i)) (τ' : ∀ i, Representation ℂ (Gi i) (Wi' i))
     (a : ∀ i, Wi i ≃ₗ[ℂ] Wi' i) (g : ∀ i, Gi i) (h : ∀ i x, a i (τ i (g i) x) = τ' i (g i) (a i x))
     (x : ⨂[ℂ] i, Wi i) : PiTensorProduct.congr a (piRep τ g x) = piRep τ' g (PiTensorProduct.congr a x) := by

@@ -3,6 +3,17 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R A _ _ _ _ _ _ hR h`. Establish `hm : maximalIdeal R ≠ ⊥` using `fun hm => hR ((isField_iff_maximalIdeal_eq).mpr hm)`. Take `⟨x, hxm, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`. Take `⟨P, hPmin, -⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem _).mpr hxm)`. Use `haveI hP : P.IsPrime := hPmin.1.1`.
+
+Establish `hxP : x ∈ P` using `(Ideal.span_singleton_le_iff_mem _).mp hPmin.1.2`. Establish `hPne : P ≠ ⊥` using `fun e => hx0 (by simpa [e] using hxP)`. Use `haveI : (Ideal.span {x}).IsPrincipal := ⟨⟨x, rfl⟩⟩`. Establish `h1 : P.height = 1` using `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ P hPmin) (Order.one_le_iff_ne_zero.mpr (fun e => hPne (Ideal.height_eq_zero_iff_eq_bot.mp e)))`. Use `haveI := h P h1`.
+
+Use `set K := Localization.AtPrime (⊥ : Ideal R)`. Establish `hunit : ∀ y : P.primeCompl, IsUnit (algebraMap R K y)`. Introduce `y`. Establish `hy : (y : R) ∈ (⊥ : Ideal R).primeCompl`. Introduce `hb`.
+
+Establish `hb' : (y : R) = 0` using `Ideal.mem_bot.mp hb`. Conclude with `y.2 (by rw [hb']; exact P.zero_mem)`. Conclude with `IsLocalization.map_units K (⟨y, hy⟩ : (⊥ : Ideal R).primeCompl)`. Use `letI : Algebra (Localization.AtPrime P) K := (IsLocalization.lift (M := P.primeCompl) (S := Localization.AtPrime P) hunit).toAlgebra`. Use `haveI : IsScalarTower R (Localization.AtPrime P) K := IsScalarTower.of_algebraMap_eq (fun r => by`.
+
+Express the relevant statement in the definitionally equal form `_ = IsLocalization.lift (M := P.primeCompl) (S := Localization.AtPrime P) hunit _`. Rewrite using `[IsLocalization.lift_eq])`. Conclude with `Algebra.Etale.of_equiv (Algebra.TensorProduct.cancelBaseChange R (Localization.AtPrime P) K K A)`.
+-/
 theorem etale_fractionField_of_etale_height_one :
     ∀ (R A : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsDomain R] [CommRing A]
       [Algebra R A], ¬ IsField R →

@@ -5,6 +5,9 @@ open NumberField Finset
 
 namespace GlobalTheory.IdealBoundedNorm
 
+/- English proof (translation)
+Use `((Finset.range (⌊Y⌋₊ + 1) : Set ℕ).toFinite.biUnion fun n _ => Ideal.finite_setOfPred_absNorm_eq (S := 𝓞 K) n).subset ?_` and prove the remaining obligations. Introduce and unpack `I ⟨-, hI⟩`. Use `Set.mem_biUnion (x := Ideal.absNorm I) ?_ rfl` and prove the remaining obligations. Simplify `Nat.le_floor hI` using `[Nat.lt_succ_iff]`.
+-/
 theorem finite_setOf_absNorm_le (K : Type) [Field K] [NumberField K] (Y : ℝ) :
     {I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y}.Finite := by
   refine ((Finset.range (⌊Y⌋₊ + 1) : Set ℕ).toFinite.biUnion
@@ -13,6 +16,15 @@ theorem finite_setOf_absNorm_le (K : Type) [Field K] [NumberField K] (Y : ℝ) :
   refine Set.mem_biUnion (x := Ideal.absNorm I) ?_ rfl
   simpa [Nat.lt_succ_iff] using Nat.le_floor hI
 
+/- English proof (translation)
+Establish `hS` using `finite_setOf_absNorm_le K Y`. Establish `key : ({I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y}).ncard ≤ ∑ n ∈ Ioc 0 ⌊Y⌋₊, (ArithmeticFunction.zeta ^ Module.finrank ℚ K : ArithmeticFunction ℕ) n`. Rewrite using `[← hS.coe_toFinset, Set.ncard_coe_finset]`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := fun I => Ideal.absNorm I) (t := Ioc 0 ⌊Y⌋₊) ?_]`. Use `Finset.sum_le_sum fun n hn => ?_` and prove the remaining obligations.
+
+Use `le_trans ?_ (GlobalTheory.ncard_ideal_absNorm_eq_le K (Finset.mem_Ioc.1 hn).1.ne')` and prove the remaining obligations. Rewrite using `[← Set.ncard_coe_finset]`. Use `Set.ncard_le_ncard ?_ (Ideal.finite_setOfPred_absNorm_eq n)` and prove the remaining obligations. Introduce `I hI`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hI ⊢`.
+
+Conclude with `hI.2`. Introduce `I hI`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq] at hI`. Simplify using `only [Finset.coe_Ioc, Set.mem_Ioc]`. Conclude with `⟨Nat.pos_of_ne_zero (mt Ideal.absNorm_eq_zero_iff.1 hI.1), Nat.le_floor hI.2⟩`.
+
+Establish `hm : 1 ≤ Module.finrank ℚ K` using `Module.finrank_pos`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key` after adjusting the coercions. Use `_ ≤ Y * (1 + Real.log Y) ^ (Module.finrank ℚ K - 1) := GlobalTheory.sum_zeta_pow_le hm hY`.
+-/
 theorem ncard_absNorm_le_pow_pred (K : Type) [Field K] [NumberField K] (Y : ℝ) (hY : 1 ≤ Y) :
     ((({I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y}).ncard : ℕ) : ℝ)
       ≤ Y * (1 + Real.log Y) ^ (Module.finrank ℚ K - 1) := by
@@ -41,6 +53,9 @@ theorem ncard_absNorm_le_pow_pred (K : Type) [Field K] [NumberField K] (Y : ℝ)
         exact_mod_cast key
     _ ≤ Y * (1 + Real.log Y) ^ (Module.finrank ℚ K - 1) := GlobalTheory.sum_zeta_pow_le hm hY
 
+/- English proof (translation)
+Introduce `K _ _ Y hY`. Use `(ncard_absNorm_le_pow_pred K Y hY).trans ?_` and prove the remaining obligations. Establish `hl : 1 ≤ 1 + Real.log Y` using `by linarith [Real.log_nonneg hY]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hl (Nat.sub_le _ _)) (by linarith)`.
+-/
 theorem ncard_absNorm_le : ∀ (K : Type) [Field K] [NumberField K] (Y : ℝ), 1 ≤ Y →
     ((({I : Ideal (𝓞 K) | I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Y}).ncard : ℕ) : ℝ)
       ≤ Y * (1 + Real.log Y) ^ Module.finrank ℚ K := by

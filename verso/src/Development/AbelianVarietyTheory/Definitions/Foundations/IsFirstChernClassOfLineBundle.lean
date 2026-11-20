@@ -83,6 +83,9 @@ def PropC : Prop :=
       ∀ (γ : Ω) (c : F), c ≠ 0 → γ ^ N = algebraMap F Ω c → algebraMap F K c ∈ FunctionField.ringOfIntegers k K →
         (algebraMap F K c)⁻¹ ∈ FunctionField.ringOfIntegers k K → r γ = γ
 
+/- English proof (translation)
+Unfold `kum`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem kum_choose_spec {N : ℕ} {ζ θ : Ω} {g : Ω ≃ₐ[K] Ω} (h : ∃ i : ZMod N, g θ = ζ ^ i.val * θ) :
     g θ = ζ ^ (kum (N := N) ζ θ g).val * θ := by
   classical
@@ -90,6 +93,9 @@ theorem kum_choose_spec {N : ℕ} {ζ θ : Ω} {g : Ω ≃ₐ[K] Ω} (h : ∃ i 
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Establish `hs` using `kum_choose_spec (N := N) ⟨i, hi⟩`. Rewrite `hs` using `[hi]`. Establish `h2 : ζ ^ i.val = ζ ^ (kum (N` using `N) ζ θ g).val := mul_right_cancel₀ hθ hs`. Conclude with `(ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2)).symm`.
+-/
 theorem kum_eq_of {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0) {g : Ω ≃ₐ[K] Ω}
     (i : ZMod N) (hi : g θ = ζ ^ i.val * θ) : kum (N := N) ζ θ g = i := by
   have hs := kum_choose_spec (N := N) ⟨i, hi⟩
@@ -97,24 +103,45 @@ theorem kum_eq_of {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N)
   have h2 : ζ ^ i.val = ζ ^ (kum (N := N) ζ θ g).val := mul_right_cancel₀ hθ hs
   exact (ZMod.val_injective N (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2)).symm
 
+/- English proof (translation)
+The claim follows from `kum_eq_of hζ hθ 0 (by simp)`.
+-/
 theorem kum_one {N : ℕ} [NeZero N] {ζ θ : Ω} (hζ : IsPrimitiveRoot ζ N) (hθ : θ ≠ 0) :
     kum (N := N) ζ θ (1 : Ω ≃ₐ[K] Ω) = 0 :=
   kum_eq_of hζ hθ 0 (by simp)
 
+/- English proof (translation)
+Introduce `x _`. Simplify using the standard rewrite rules.
+-/
 theorem inert_one (B : ValuationSubring Ω) : Inert B (1 : Ω ≃ₐ[K] Ω) := by
   intro x _
   simp
 
+/- English proof (translation)
+The claim follows from `Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨B, hB, hg⟩)`.
+-/
 theorem mem_RY_of_inert (R : Subring K) {B : ValuationSubring Ω} (hB : Over R B) {g : Ω ≃ₐ[K] Ω} (hg : Inert B g) :
     g ∈ RY R :=
   Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨B, hB, hg⟩)
 
+/- English proof (translation)
+Introduce `_ _` and use `trivial`.
+-/
 theorem over_top (R : Subring K) : Over R (⊤ : ValuationSubring Ω) := fun _ _ => trivial
 
+/- English proof (translation)
+The claim follows from `over_top _`.
+-/
 example : Over (⊤ : Subring ℚ) (⊤ : ValuationSubring ℂ) := over_top _
 
+/- English proof (translation)
+The claim follows from `mem_RY_of_inert _ (over_top _) (inert_one _)`.
+-/
 example : (1 : ℂ ≃ₐ[ℚ] ℂ) ∈ RY (⊤ : Subring ℚ) := mem_RY_of_inert _ (over_top _) (inert_one _)
 
+/- English proof (translation)
+The claim follows from `kum_one (IsPrimitiveRoot.neg_one 0 (by norm_num)) one_ne_zero`.
+-/
 example : kum (N := 2) (-1 : ℂ) 1 (1 : ℂ ≃ₐ[ℚ] ℂ) = 0 :=
   kum_one (IsPrimitiveRoot.neg_one 0 (by norm_num)) one_ne_zero
 

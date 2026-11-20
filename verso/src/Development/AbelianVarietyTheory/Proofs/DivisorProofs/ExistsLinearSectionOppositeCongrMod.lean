@@ -4,6 +4,35 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 
 namespace GlobalTheory.LowFilt
 
+/- English proof (translation)
+Introduce `E _ _ _ H D X _ _ _ y n N hn hN Z Z' h hker hsurj`. Use `haveI := D.proj`. Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Rewrite `hN` using `[zero_dvd_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Set `mulN : X →ₗ[𝓞 E] X` to `N • LinearMap.id`. Establish `hinj : Function.Injective mulN`. Introduce `u v huv`. Establish `h1 : N • u = N • v` using `by simpa [mulN] using huv`.
+
+Establish `h2 : (N : ℤ) • (u - v) = 0`. Rewrite using `[smul_sub, natCast_zsmul, natCast_zsmul, h1, sub_self]`. Break down `smul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (by exact_mod_cast h3) hN0`. Conclude with `sub_eq_zero.1 h3`.
+
+Set `q : D.La →ₗ[𝓞 E] D.La` to `LinearMap.id - Z'.subtype ∘ₗ h.proj`. Establish `hqa : ∀ a, q a = a - (h.proj a : D.La)` using `fun a => rfl`. Establish `hq : ∀ a, q a ∈ perp D Z` using `fun a => by rw [hqa]; exact h.sub_proj_mem a`. Establish `hrange : ∀ a, (y ∘ₗ q) a ∈ LinearMap.range mulN` using `fun a => by`. Take `⟨e, he⟩` from `(hker (q a)).2 ⟨q a, hq a, 0, by simp⟩`.
+
+Conclude with `⟨e, by simp [mulN, he]⟩`. Set `ε : D.La →ₗ[𝓞 E] X` to `(LinearEquiv.ofInjective mulN hinj).symm.toLinearMap ∘ₗ (y ∘ₗ q).codRestrict _ hrange`. Establish `hε : ∀ a, N • ε a = y (q a)`. Introduce `a`. Establish `h2` using `congrArg Subtype.val ((LinearEquiv.ofInjective mulN hinj).apply_symm_apply ⟨(y ∘ₗ q) a, hrange a⟩)`.
+
+Rewrite `h2` using `[LinearEquiv.ofInjective_apply]`. Conclude with `h2`. Set `muln : X →ₗ[𝓞 E] X` to `n • LinearMap.id`. Set `S : Submodule (𝓞 E) X` to `LinearMap.range muln`. Set `g : Z' →ₗ[𝓞 E] X ⧸ S` to `S.mkQ ∘ₗ y ∘ₗ Z'.subtype`.
+
+Establish `hg : Function.Surjective g`. Introduce `x`. Take `⟨x, rfl⟩` from `S.mkQ_surjective x`. Take `⟨b, hb, e, he⟩` from `hsurj x`. Use `⟨⟨b, hb⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [g, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.mkQ_apply, he]`. Rewrite using `[Submodule.Quotient.eq]`. Conclude with `⟨e, by simp [mulN, muln]⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property g (S.mkQ ∘ₗ ε) hg`. Establish `hs' : ∀ a, ∃ e, y (s a) = ε a + n • e`.
+
+Introduce `a`. Establish `h1` using `LinearMap.congr_fun hs a`. Simplify using `only [g, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.subtype_apply] at h1`. Rewrite `h1` using `[Submodule.Quotient.eq]`. Take `⟨e, he⟩` from `h1`.
+
+Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `he' : n • e = y (s a) - ε a` using `by simpa [muln] using he`. Rewrite using `[he']`. Normalize the expressions using the abelian group laws. Use `⟨Z'.subtype ∘ₗ h.proj + N • (Z'.subtype ∘ₗ s ∘ₗ q), fun a => ?_, fun b hb => ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply]`. Conclude with `add_mem (h.proj a).2 (Z'.nsmul_mem (s (q a)).2 N)`. Establish `hqb : q b = 0` using `by rw [hqa, h.proj_of_mem hb, sub_self]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, hqb, map_zero, ZeroMemClass.coe_zero, smul_zero, add_zero]`. Conclude with `h.proj_of_mem hb`.
+
+Take `⟨e, he⟩` from `hs' (q a)`. Use `⟨N • e, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_add, map_nsmul]`. Establish `hy : y (q a) = y a - y (h.proj a)` using `by rw [hqa, map_sub]`. Establish `hqq : q (q a) = q a` using `by rw [hqa (q a), h.proj_of_perp (hq a), sub_zero]`.
+
+Rewrite using `[he, smul_add, hε, hqq, hy, smul_comm N n e]`. Normalize the expressions using the abelian group laws. Use `⟨(h.proj a : D.La) - a, ?_, s (q a), ?_⟩` and prove the remaining obligations. Use `neg_mem (h.sub_proj_mem a)` as an intermediate fact. Rewrite `this` using `[neg_sub]`. Then use the resulting hypothesis.
+
+Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, LinearMap.comp_apply, Submodule.subtype_apply]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_cell_section : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X]
     (y : D.La →ₗ[𝓞 E] X) (n N : ℕ), 0 < n → N ∣ n → ∀ Z Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' →
     (∀ a, (∃ e, y a = N • e) ↔ ∃ b ∈ perp D Z, ∃ e, a = b + N • e) → (∀ x, ∃ b ∈ Z', ∃ e, y b = x + n • e) →

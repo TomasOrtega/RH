@@ -25,6 +25,11 @@ noncomputable section
 
 namespace GlobalTheory.MumLift
 
+/- English proof (translation)
+Rewrite using `[pow_two, eq_bot_iff]`. Use `Ideal.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hx`, `hy` using `[RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Rewrite using `[Ideal.mem_bot, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h` using `Ideal.mul_mem_mul hx hy`. Rewrite `h` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) h`.
+-/
 theorem ker_factor_sq {R : Type} [CommRing R] (J : Ideal R) (e : ℕ) :
     RingHom.ker (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) :
       R ⧸ J ^ (e + 1 + 1) →+* R ⧸ J ^ (e + 1)) ^ 2 = ⊥ := by
@@ -38,6 +43,31 @@ theorem ker_factor_sq {R : Type} [CommRing R] (J : Ideal R) (e : ℕ) :
   rw [← pow_add] at h
   exact Ideal.pow_le_pow_right (by omega) h
 
+/- English proof (translation)
+Introduce `R₁ R _ _ _ _ _ _ _ hc π hπ Q`. Use `set I := RingHom.ker π with hI`. Establish `hItop : I ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : R₁) ∈ I` using `h ▸ Submodule.mem_top`.
+
+Rewrite `h1` using `[hI, RingHom.mem_ker, map_one]`. Conclude with `one_ne_zero h1`. Establish `hIc : IsAdicComplete I R₁` using `GlobalTheory.T.isAdicComplete_of_le_of_isNoetherianRing' R₁ I (maximalIdeal R₁) (le_maximalIdeal hItop) hc`. Establish `hne : ∀ e : ℕ, I ^ (e + 1) ≠ ⊤` using `fun e h => hItop (top_le_iff.1 (h ▸ Ideal.pow_le_self (Nat.succ_ne_zero e)))`. Use `haveI hnt : ∀ e : ℕ, Nontrivial (R₁ ⧸ I ^ (e + 1)) := fun e => Ideal.Quotient.nontrivial_iff.2 (hne e)`.
+
+Use `haveI hloc : ∀ e : ℕ, IsLocalRing (R₁ ⧸ I ^ (e + 1)) := fun e => IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Set `St : ℕ → Type 1` to `fun e => Σ Y : Over (Sp (R₁ ⧸ I ^ (e + 1))), Σ _ : GrpObj Y, {L : LB Y.left // IsAbelianScheme Y ∧ L.IsLB ∧ RelAmple Y L ∧ KTriv Y L}`. Establish `hstep : ∀ (e : ℕ) (y : St e), ∃ (y' : St (e + 1)) (i : y.1.left ⟶ y'.1.left), @IsGrpPullback _ _ y.1 y.2.1 y'.1 y'.2.1 (thickTrans R₁ I e) i ∧ LBIso y.2.2.1 (y'.2.2.1.pull i)`. Introduce and unpack `e ⟨Y, g, L, hA, hL, ha, hK⟩`. Take `⟨Y', g', L', i, hA', hL', ha', hK', hi, hLi⟩` from `step (R₁ ⧸ I ^ (e + 1 + 1)) (R₁ ⧸ I ^ (e + 1)) (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)))) (Ideal.Quotient.factor_surjective _) (ker_factor_sq I e) Y hA L hL ha hK`.
+
+Conclude with `⟨⟨Y', g', L', hA', hL', ha', hK'⟩, i, hi, hLi⟩`. Use `choose nx β hβ hLβ using hstep`. Set `e₀ : R₁ ⧸ I ^ (0 + 1) ≃+* R` to `(Ideal.quotEquivOfEq (by rw [zero_add, pow_one])).trans (RingHom.quotientKerEquivOfSurjective hπ)`. Set `s : Sp (R₁ ⧸ I ^ (0 + 1)) ⟶ Sp R` to `spMap (e₀.symm : R →+* R₁ ⧸ I ^ (0 + 1))`. Set `t : Sp R ⟶ Sp (R₁ ⧸ I ^ (0 + 1))` to `spMap (e₀ : R₁ ⧸ I ^ (0 + 1) →+* R)`.
+
+Establish `hts : t ≫ s = 𝟙 _`. Simplify using `only [t, s, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[RingEquiv.comp_symm]`. Simplify using the standard rewrite rules. Establish `htπ : t ≫ thick R₁ I 0 = spMap π`.
+
+Simplify using `only [t, thick, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Set `Y₀ : Over (Sp (R₁ ⧸ I ^ (0 + 1)))` to `(Over.pullback s).obj Q.B`. Set `g₀ : Y₀.left ⟶ Q.B.left` to `pullback.fst Q.B.hom s`. Establish `G₀ : IsGrpPullback Y₀ Q.B s g₀` using `isGrpPullback_pullback Q.B s`.
+
+Establish `hL₀ : (Q.M.L.pull g₀).IsLB` using `pull_isLB Q.M.isLB g₀`. Establish `hA₀ : IsAbelianScheme Y₀` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback Q.isAb G₀`. Use `haveI := Q.isAb.proper`. Establish `ha₀ : RelAmple Y₀ (Q.M.L.pull g₀)` using `GlobalTheory.AmpleBaseChange.relAmple_of_isPullback Q.M.isLB Q.ample G₀.1`. Establish `hK₀ : KTriv Y₀ (Q.M.L.pull g₀)`.
+
+Take `⟨w, hw⟩ : LBIso (Q.M.L.pull g₀) (Q.M.L.pull g₀)` from `(GlobalTheory.CechPic.cls_eq_iff hL₀ hL₀).1 rfl`. Conclude with `kTriv_pull G₀ Q.M.isLB hL₀ ((isGen_iff w).1 hw) Q.ktriv`. Set `y₀ : St 0` to `⟨Y₀, inferInstance, Q.M.L.pull g₀, hA₀, hL₀, ha₀, hK₀⟩`. Set `Y : ∀ n : ℕ, St n` to `fun n => Nat.rec (motive := fun n => St n) y₀ (fun n y => nx n y) n`. Use `letI : ∀ e, GrpObj (Y e).1 := fun e => (Y e).2.1`.
+
+Take `⟨B, _, M, b, hB, hM, haM, hb, -, hiso⟩` from `GlobalTheory.AlgGroup.exists_abelianScheme_of_tower R₁ I hItop hIc hc (fun e => (Y e).1) (fun e => β e (Y e)) (fun e => (Y e).2.2.2.1) (fun e => hβ e (Y e)) (fun e => (Y e).2.2.1) (fun e => (Y e).2.2.2.2.1) (fun e => hLβ e (Y e)) (Y 0).2.2.2.2.2.1`. Use `haveI : IsCommMonObj B := hB.comm`. Set `φ : Q.B.left ⟶ Y₀.left` to `pullback.lift (𝟙 _) (Q.B.hom ≫ t) (by rw [Category.id_comp, Category.assoc, hts, Category.comp_id])`. Establish `hφ₁ : φ ≫ g₀ = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `hφ₂ : φ ≫ Y₀.hom = Q.B.hom ≫ t` using `pullback.lift_snd _ _ _`.
+
+Use `haveI : IsMonHom (Iso.refl Q.B).hom := inferInstanceAs (IsMonHom (𝟙 Q.B))`. Establish `n₀ : IsGrpPullback Q.B Q.B (t ≫ s) (φ ≫ g₀)` using `(isGrpPullback_of_iso (Iso.refl Q.B)).congr hts.symm hφ₁.symm`. Establish `hcan : IsGrpPullback Q.B Y₀ t φ` using `IsGrpPullback.cancel G₀ n₀ hφ₂`. Establish `hi : IsGrpPullback Q.B B (spMap π) (φ ≫ b 0)` using `(hcan.comp (hb 0)).congr htπ rfl`. Establish `hLi : LBIso Q.M.L (M.pull (φ ≫ b 0))`.
+
+Use `(GlobalTheory.CechPic.cls_eq_iff Q.M.isLB (pull_isLB hM _)).1 ?_` and prove the remaining obligations. Establish `a₂ : GlobalTheory.CechPic.cls _ hL₀ = GlobalTheory.CechPic.cls _ (pull_isLB hM (b 0))` using `(GlobalTheory.CechPic.cls_eq_iff _ _).2 (hiso 0)`. Rewrite using `[GlobalTheory.CechPic.cls_pull hM, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull hM (b 0) (pull_isLB hM (b 0)), ← a₂, GlobalTheory.CechPic.cls_pull Q.M.isLB, ← GlobalTheory.CechPic.pull_comp, hφ₁, GlobalTheory.CechPic.pull_id]`. Establish `hJ : I ^ (0 + 1) ≤ Ideal.jacobson ⊥` using `(Ideal.pow_le_self (Nat.succ_ne_zero 0)).trans (IsAdicComplete.le_jacobson_bot I)`. Establish `hK : KTriv B M` using `GlobalTheory.T.line_bundle_trivial_on_fibre R₁ (I ^ (0 + 1)) hJ B hB M hM haM Y₀ (b 0) (hb 0) _ hL₀ (hiso 0) hK₀`.
+
+Establish `hP` using `GlobalTheory.AbDual.isPerfect_lam hM hK`. Take `⟨H, hH, aH⟩` from `GlobalTheory.BirigidLift.exists_relAmple_prod hB hB hM haM hM haM`. Take `⟨a₁, a₂⟩` from `GlobalTheory.BirigidLift.additive_of_triv hB hB hH aH hP.isLB hP.zero_left hP.zero_right`. Establish `w : (φ ≫ b 0) ≫ B.hom = Q.B.hom ≫ spMap π` using `hi.1.w`. Conclude with `⟨B, inferInstance, hB.comm, φ ≫ b 0, _, abelian₂ B M, hB, hi, GlobalTheory.LamPull.exists_isSquare w, hP.isLB, a₁, a₂, (GlobalTheory.LamPull.lbIso_lam_pull hi hM Q.M.isLB hLi (GlobalTheory.LamPull.exists_isSquare w)).symm⟩`.
+-/
 theorem exists_lift_of_step (step : ∀ (R R₀ : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [CommRing R₀] [IsLocalRing R₀] (π : R →+* R₀), Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → ∀ (Y₀ : Over (Sp R₀)) [GrpObj Y₀], IsAbelianScheme Y₀ → ∀ L₀ : LB Y₀.left, L₀.IsLB → RelAmple Y₀ L₀ → KTriv Y₀ L₀ → ∃ (Y : Over (Sp R)) (_ : GrpObj Y) (L : LB Y.left) (i : Y₀.left ⟶ Y.left), IsAbelianScheme Y ∧ L.IsLB ∧ RelAmple Y L ∧ KTriv Y L ∧ IsGrpPullback Y₀ Y (spMap π) i ∧ LBIso L₀ (L.pull i)) : ∀ (R₁ R : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] [IsNoetherianRing R₁] [CommRing R] [IsDomain R] [IsLocalRing R], IsAdicComplete (maximalIdeal R₁) R₁ → ∀ π : R₁ →+* R, Function.Surjective π → ∀ Q : GlobalTheory.PolDeg.Data R, ∃ (A : Over (Sp R₁)) (_ : GrpObj A) (_ : IsCommMonObj A) (i : Q.B.left ⟶ A.left) (l : (Q.B ⊗ Q.B).left ⟶ (A ⊗ A).left) (N : LB (A ⊗ A).left), IsAbelianScheme A ∧ IsGrpPullback Q.B A (spMap π) i ∧ IsSquare i l ∧ N.IsLB ∧ GlobalTheory.AbDual.IsAdditive N ∧ GlobalTheory.AbDual.IsAdditive (GlobalTheory.AbDual.swap N) ∧ LBIso (N.pull l) (abelian₂ Q.B Q.M.L) := by
   intro R₁ R _ _ _ _ _ _ _ hc π hπ Q
   set I := RingHom.ker π with hI
@@ -115,6 +145,9 @@ theorem exists_lift_of_step (step : ∀ (R R₀ : Type) [CommRing R] [IsLocalRin
   exact ⟨B, inferInstance, hB.comm, φ ≫ b 0, _, abelian₂ B M, hB, hi, GlobalTheory.LamPull.exists_isSquare w, hP.isLB, a₁, a₂,
     (GlobalTheory.LamPull.lbIso_lam_pull hi hM Q.M.isLB hLi (GlobalTheory.LamPull.exists_isSquare w)).symm⟩
 
+/- English proof (translation)
+The claim follows from `exists_lift_of_step GlobalTheory.T.exists_abelian_lift_ample_bundle`.
+-/
 theorem exists_lift : ∀ (R₁ R : Type) [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁] [IsNoetherianRing R₁] [CommRing R] [IsDomain R] [IsLocalRing R], IsAdicComplete (maximalIdeal R₁) R₁ → ∀ π : R₁ →+* R, Function.Surjective π → ∀ Q : GlobalTheory.PolDeg.Data R, ∃ (A : Over (Sp R₁)) (_ : GrpObj A) (_ : IsCommMonObj A) (i : Q.B.left ⟶ A.left) (l : (Q.B ⊗ Q.B).left ⟶ (A ⊗ A).left) (N : LB (A ⊗ A).left), IsAbelianScheme A ∧ IsGrpPullback Q.B A (spMap π) i ∧ IsSquare i l ∧ N.IsLB ∧ GlobalTheory.AbDual.IsAdditive N ∧ GlobalTheory.AbDual.IsAdditive (GlobalTheory.AbDual.swap N) ∧ LBIso (N.pull l) (abelian₂ Q.B Q.M.L) :=
   exists_lift_of_step GlobalTheory.T.exists_abelian_lift_ample_bundle
 

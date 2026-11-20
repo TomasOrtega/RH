@@ -18,6 +18,9 @@ open GlobalTheory.BotClassDict (finQ)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.InertPlace.inertQ_iff_nonSplitAt | exact GlobalTheory.InertPlace.inertQ_iff_nonSplitAt | (intros; apply GlobalTheory.InertPlace.inertQ_iff_nonSplitAt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.inertPrime_iff_nonSplitPlaceIdempotent : ∀ (D : D7) (q : ℕ), q.Prime → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)) (η : AF D.host.F), IsPlaceIdem D v η →
   (q : 𝓞 D.host.F) ∈ v.asIdeal → (Formalism.MainNotions.StandardLatticesGL3.InertQ D q ↔ GlobalTheory.WeilParts.NonSplitAt D v η) := by
   first | exact @GlobalTheory.InertPlace.inertQ_iff_nonSplitAt | exact GlobalTheory.InertPlace.inertQ_iff_nonSplitAt | (intros; apply GlobalTheory.InertPlace.inertQ_iff_nonSplitAt <;> assumption)

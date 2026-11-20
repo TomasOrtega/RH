@@ -25,10 +25,18 @@ def OO (dK : ℕ) (δ : MaximalUnramifiedExtension l) (hδ : δ ^ 2 = -(dK : Max
     rintro _ ⟨a, b, rfl⟩
     exact ⟨-a, -b, by simp only [map_neg]; ring⟩
 
+/- English proof (translation)
+Use `show ‖(x : ℂ_[l]) + y‖ ≤ max ‖(x : ℂ_[l])‖ ‖(y : ℂ_[l])‖`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+-/
 theorem norm_add_le_Kur (x y : MaximalUnramifiedExtension l) : ‖x + y‖ ≤ max ‖x‖ ‖y‖ := by
   show ‖(x : ℂ_[l]) + y‖ ≤ max ‖(x : ℂ_[l])‖ ‖(y : ℂ_[l])‖
   exact IsUltrametricDist.norm_add_le_max _ _
 
+/- English proof (translation)
+Establish `h : ‖δ‖ ^ 2 ≤ 1`. Rewrite using `[← norm_pow, hδ, norm_neg, norm_natCast_Kur]`. Establish `: ((dK : ℤ_[l]) : ℚ_[l]) = (dK : ℚ_[l])` using `by push_cast; rfl`. Rewrite using `[← this]`. Conclude with `PadicInt.norm_le_one _`.
+
+Conclude with `(pow_le_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h`.
+-/
 theorem norm_δ_le {dK : ℕ} {δ : MaximalUnramifiedExtension l} (hδ : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)) : ‖δ‖ ≤ 1 := by
   have h : ‖δ‖ ^ 2 ≤ 1 := by
     rw [← norm_pow, hδ, norm_neg, norm_natCast_Kur]
@@ -36,6 +44,9 @@ theorem norm_δ_le {dK : ℕ} {δ : MaximalUnramifiedExtension l} (hδ : δ ^ 2 
     rw [← this]; exact PadicInt.norm_le_one _
   exact (pow_le_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h
 
+/- English proof (translation)
+Take `⟨a, b, rfl⟩` from `hx`. Use `(norm_add_le_Kur _ _).trans (max_le (norm_ψ_le l a) ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (norm_δ_le hδ) (norm_nonneg _) (norm_ψ_le l b)`.
+-/
 theorem norm_le_one_of_mem {dK : ℕ} {δ : MaximalUnramifiedExtension l} {hδ : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)} {x : MaximalUnramifiedExtension l}
     (hx : x ∈ OO dK δ hδ) : ‖x‖ ≤ 1 := by
   obtain ⟨a, b, rfl⟩ := hx
@@ -43,6 +54,9 @@ theorem norm_le_one_of_mem {dK : ℕ} {δ : MaximalUnramifiedExtension l} {hδ :
   rw [norm_mul]
   exact mul_le_one₀ (norm_δ_le hδ) (norm_nonneg _) (norm_ψ_le l b)
 
+/- English proof (translation)
+Establish `hq' : ‖(q : ℚ_[l])‖ ≤ 1` using `by rw [Padic.eq_padicNorm]; exact_mod_cast hq`. Use `⟨⟨(q : ℚ_[l]), hq'⟩, 0, ?_⟩` and prove the remaining obligations. Simplify using `only [map_zero, mul_zero, add_zero]`. Use `show (q : MaximalUnramifiedExtension l) = φ l (q : ℚ_[l])`. Rewrite using `[map_ratCast]`.
+-/
 theorem ratCast_mem {dK : ℕ} {δ : MaximalUnramifiedExtension l} {hδ : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)} (q : ℚ) (hq : padicNorm l q ≤ 1) :
     (q : MaximalUnramifiedExtension l) ∈ OO dK δ hδ := by
   have hq' : ‖(q : ℚ_[l])‖ ≤ 1 := by rw [Padic.eq_padicNorm]; exact_mod_cast hq
@@ -51,8 +65,18 @@ theorem ratCast_mem {dK : ℕ} {δ : MaximalUnramifiedExtension l} {hδ : δ ^ 2
   show (q : MaximalUnramifiedExtension l) = φ l (q : ℚ_[l])
   rw [map_ratCast]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, 1, by simp⟩`.
+-/
 theorem δ_mem {dK : ℕ} {δ : MaximalUnramifiedExtension l} {hδ : δ ^ 2 = -(dK : MaximalUnramifiedExtension l)} : δ ∈ OO dK δ hδ := ⟨0, 1, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[norm_eq_one_iff]`. Introduce `h0`. Rewrite `h0` using `[map_add, map_mul, map_mul, map_mul, toZMod_natCast]`. Distinguish the cases in `hB : PadicInt.toZMod b = 0`. Establish `hA : PadicInt.toZMod a = 0`.
+
+Rewrite `h0` using `[hB, mul_zero, mul_zero, add_zero]`. Conclude with `mul_self_eq_zero.mp h0`. Break down `h with h | h` into its components or cases. Conclude with `(norm_eq_one_iff l a).mp h hA`. Conclude with `(norm_eq_one_iff l b).mp h hB`.
+
+Conclude with `hin ⟨PadicInt.toZMod a / PadicInt.toZMod b, by field_simp; linear_combination h0⟩`.
+-/
 theorem norm_sq_unit {dK : ℕ} (hin : ¬ ∃ a : ZMod l, a ^ 2 = -(dK : ZMod l)) (a b : ℤ_[l])
     (h : ‖a‖ = 1 ∨ ‖b‖ = 1) : ‖a * a + dK * (b * b)‖ = 1 := by
   rw [norm_eq_one_iff]

@@ -42,16 +42,35 @@ section Pure
 
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianInterpolation GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram
 
+/- English proof (translation)
+Establish `h` using `levi_add_smul c (contDiffAt_const (c := (0 : ℝ))) hf w`. Simplify `h` using `[levi]`.
+-/
 theorem levi_mul {ι : Type} [Fintype ι] {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (hf : ContDiffAt ℝ 2 f z) (w : ι → ℂ) :
     levi (fun y => c * f y) z w = c * levi f z w := by
   have h := levi_add_smul c (contDiffAt_const (c := (0 : ℝ))) hf w
   simpa [levi] using h
 
+/- English proof (translation)
+Establish `: fderiv ℝ (fun y => f y - c) = fderiv ℝ f` using `funext fun y => fderiv_sub_const c`. Simplify using `only [levi, this]`.
+-/
 theorem levi_sub_const {ι : Type} [Fintype ι] {f : (ι → ℂ) → ℝ} {z : ι → ℂ} (c : ℝ) (w : ι → ℂ) :
     levi (fun y => f y - c) z w = levi f z w := by
   have : fderiv ℝ (fun y => f y - c) = fderiv ℝ f := funext fun y => fderiv_sub_const c
   simp only [levi, this]
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `GlobalTheory.T.interpolation_curvature_bound Cμ C₀ C₂ C₃ CP κ χ hκ hχ`. Use `⟨max C 0 / 2, by positivity, fun R hR lam h1 h2 z hz w => ?_⟩` and prove the remaining obligations. Establish `hs : IsWeight χ κ r fun x => 1 * cutWeight χ κ R r x` using `Or.inr ⟨1, ⟨zero_le_one, le_rfl⟩, R, hR, rfl⟩`. Establish `aW` using `fun τ => (hC _ _ U _ _ r G (hW τ)).1 _ hs`. Establish `aω` using `fun τ => (hC _ _ U _ _ r G (hω τ)).1 _ hs`.
+
+Establish `hF : ∀ n : ℕ, IsFlagFamily U U id (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ))` using `fun n => ⟨hU, contDiffOn_id, fun _ h => h, fun _ _ => contDiffOn_const, fun _ _ => by simp⟩`. Establish `key` using `GlobalTheory.T.good_reduction_statement_holds.2.1 (Fin e → ℂ) (Fin e) T p q U _ _ U id (fun _ _ => 1) (fun _ _ => 1) G (max C 0) (fun τ => (aW τ).1) (fun τ => (aω τ).1) (fun _ => hF _) (fun _ => hF _) (fun τ => (aW τ).2.1.mono (le_max_left _ _)) (fun τ => (aω τ).2.1.mono (le_max_ …`. Use `set F := pairWeightNormSq (fun τ => interp (H₀W τ) (HW τ) fun x => 1 * cutWeight χ κ R r x) (fun τ => interp (H₀ω τ) (Hω τ) fun x => 1 * cutWeight χ κ R r x) id (fun _ _ => 1) (fun _ _ => 1) lam with hFdef`. Establish `bW` using `fun τ => GlobalTheory.T.weight_norm_sq_smooth_pos _ _ _ U _ U id _ (aW τ).1 (hF _) z hz fun i => lam τ (Fin.castAdd (q τ) i)`. Establish `bω` using `fun τ => GlobalTheory.T.weight_norm_sq_smooth_pos _ _ _ U _ U id _ (aω τ).1 (hF _) z hz fun i => lam τ (Fin.natAdd (p τ) i)`.
+
+Establish `hF2 : ContDiffAt ℝ 2 F z` using `contDiffAt_prod fun τ _ => (bW τ).1.mul (bω τ).1`. Establish `hF0 : 0 < F z` using `Finset.prod_pos fun τ _ => mul_pos (bW τ).2 (bω τ).2`. Establish `hlog : ContDiffAt ℝ 2 (fun x => Real.log (F x)) z` using `hF2.log hF0.ne'`. Establish `e1 : diagVal (lineChern F z) w = -(levi (fun x => Real.log (F x)) z w / (2 * Real.pi))`. Rewrite using `[← diagVal_ddc hlog w]`.
+
+Simplify using `only [diagVal, lineChern]`. Rewrite using `[chernOne_line (f := F) hF2 hF0.ne' (Filter.Eventually.of_forall fun x => rfl)]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ c : ℝ, diagVal (fun ξ η => (c : ℂ) * pullForm G id z ξ η) w = c * (form (G z) w w).re` using `fun c => by`. Rewrite using `[← diagVal_formOf, diagVal, diagVal, mul_left_comm, Complex.re_ofReal_mul]`.
+
+Simplify using `[pullForm]`. Rewrite `key` using `[e1, e2]`. Rewrite using `[levi_mul _ hlog]`. Establish `hπ` using `Real.pi_pos`. Use `mul_le_mul_of_nonneg_left key hπ.le` as an intermediate fact.
+
+Apply the tactic sequence `refine le_of_eq_of_le ?_ (this.trans_eq ?_) <;> field_simp`.
+-/
 theorem levi_lower_of_data {e : ℕ} {T : Type} [Fintype T] {p q : T → ℕ} {U : Set (Fin e → ℂ)} (hU : IsOpen U)
     {H₀W HW : ∀ τ, (Fin e → ℂ) → Matrix (Fin (p τ)) (Fin (p τ)) ℂ}
     {H₀ω Hω : ∀ τ, (Fin e → ℂ) → Matrix (Fin (q τ)) (Fin (q τ)) ℂ} {r : (Fin e → ℂ) → ℝ}
@@ -95,6 +114,13 @@ theorem levi_lower_of_data {e : ℕ} {T : Type} [Fintype T] {p q : T → ℕ} {U
   have := mul_le_mul_of_nonneg_left key hπ.le
   refine le_of_eq_of_le ?_ (this.trans_eq ?_) <;> field_simp
 
+/- English proof (translation)
+Establish `hd : ∀ v, fderiv ℝ (fun x => (r x : ℂ)) z v = fderiv ℝ r z v` using `fun v => by`. Conclude with `DFunLike.congr_fun (Complex.ofRealCLM.hasFDerivAt.comp z hr.hasFDerivAt).fderiv v`. Establish `h4 : -Complex.I * (gradForm r z ξ ξ / ((r z : ℂ) ^ 2)) = ((1 / Real.pi * (((fderiv ℝ r z ξ) ^ 2 + (fderiv ℝ r z (Complex.I • ξ)) ^ 2) / 4) / r z ^ 2 / 2 : ℝ) : ℂ)`. Rewrite using `[gradForm, del_apply, dbar_apply, hd, hd, kappa]`. Use `push_cast`.
+
+Simplify using `only [smul_eq_mul]`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Generalize the expression as in `((r z : ℝ) : ℂ) ^ 2 = s`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+
+Simplify using `only [Complex.I_sq, Complex.I_pow_four]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[diagVal, h4, Complex.ofReal_re]`.
+-/
 theorem diagVal_gradForm {e : ℕ} {r : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hr : DifferentiableAt ℝ r z) (ξ : Fin e → ℂ) :
     diagVal (fun ξ η => gradForm r z ξ η / ((r z : ℂ) ^ 2)) ξ =
       1 / Real.pi * (((fderiv ℝ r z ξ) ^ 2 + (fderiv ℝ r z (Complex.I • ξ)) ^ 2) / 4) / r z ^ 2 / 2 := by
@@ -121,15 +147,24 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
 
+/- English proof (translation)
+Introduce `k` and use `⟨A.holo k j, A.holo j k⟩`.
+-/
 theorem isCompatChart_chart (A : FinHolAtlas e X) (j : Fin A.n) : IsCompatChart A (A.chart j) :=
   fun k => ⟨A.holo k j, A.holo j k⟩
 
+/- English proof (translation)
+The claim follows from `((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat hψ hU hf).contDiffAt ((ψ.isOpen_inter_preimage_symm hU).mem_nhds ⟨hz, hx⟩)).of_le (WithTop.coe_le_coe.2 le_top)`.
+-/
 theorem contDiffAt_two_compat {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) {U : Set X} (hU : IsOpen U)
     {f : X → ℝ} (hf : A.SmoothOn U f) {z : Fin e → ℂ} (hz : z ∈ ψ.target) (hx : ψ.symm z ∈ U) :
     ContDiffAt ℝ 2 (f ∘ ψ.symm) z :=
   ((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat hψ hU hf).contDiffAt
     ((ψ.isOpen_inter_preimage_symm hU).mem_nhds ⟨hz, hx⟩)).of_le (WithTop.coe_le_coe.2 le_top)
 
+/- English proof (translation)
+Establish `hT : AnalyticAt ℂ (ψ ∘ (A.chart j).symm) y` using `(hψ j).1 y ⟨hy, hx⟩`. Establish `hev : (f ∘ (A.chart j).symm) =ᶠ[𝓝 y] ((f ∘ ψ.symm) ∘ (ψ ∘ (A.chart j).symm))` using `by filter_upwards [((A.chart j).isOpen_inter_preimage_symm ψ.open_source).mem_nhds ⟨hy, hx⟩] with u hu`. Simplify using `[ψ.left_inv hu.2]`. Rewrite using `[levi_congr hev, levi_comp w hT hf]`. Both sides reduce to the same expression.
+-/
 theorem levi_chart_eq {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCompatChart A ψ) {f : X → ℝ} (j : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hx : (A.chart j).symm y ∈ ψ.source)
     (hf : ContDiffAt ℝ 2 (f ∘ ψ.symm) (ψ ((A.chart j).symm y))) (w : Fin e → ℂ) :
@@ -142,6 +177,15 @@ theorem levi_chart_eq {ψ : OpenPartialHomeomorph X (Fin e → ℂ)} (hψ : IsCo
   rw [levi_congr hev, levi_comp w hT hf]
   rfl
 
+/- English proof (translation)
+Use `choose ψ N C hψ hN hx hs hb using hloc`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover N hN fun x _ => Set.mem_iUnion.2 ⟨x, hx x⟩`. Use `⟨∑ x ∈ t, |C x|, fun C' hC' i j y hy hyZ w => ?_⟩` and prove the remaining obligations. Use `set x := (A.chart j).symm y with hxdef`. Take `⟨x₀, hx₀, hxN⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`.
+
+Establish `hCC : C x₀ ≤ C'` using `((le_abs_self _).trans (Finset.single_le_sum (f := fun x => |C x|) (fun _ _ => abs_nonneg _) hx₀)).trans hC'`. Establish `d1 : ∀ {φ : OpenPartialHomeomorph X (Fin e → ℂ)}, IsCompatChart A φ → x ∈ φ.source → ContDiffAt ℝ 2 ((b + LocPot.ofFun p).φ x ∘ φ.symm) (φ x)` using `fun {φ} hφ h => (contDiffAt_two_compat hφ (b.isOpen_U x) (hP.1.1 x) (φ.map_source h) (by rw [φ.left_inv h]; exact b.mem_U x)).add (contDiffAt_two_compat hφ hZ.isOpen_compl hP.2.1 (φ.map_source h) (by rw [φ.left_inv h]; exact hyZ))`. Establish `d2 : ∀ {φ : OpenPartialHomeomorph X (Fin e → ℂ)}, IsCompatChart A φ → x ∈ φ.source → ContDiffAt ℝ 2 ((Θ i + LocPot.ofFun (g i)).φ x ∘ φ.symm) (φ x)` using `fun {φ} hφ h => (contDiffAt_two_compat hφ ((Θ i).isOpen_U x) ((hΘ i).1 x) (φ.map_source h) (by rw [φ.left_inv h]; exact (Θ i).mem_U x)).add (contDiffAt_two_compat hφ isOpen_univ (hg i) (φ.map_source h) trivial)`. Establish `hxj : x ∈ (A.chart j).source` using `(A.chart j).map_target hy`. Establish `hjx : A.chart j x = y` using `(A.chart j).right_inv hy`.
+
+Establish `e1` using `levi_add_smul (C' * ν i) (hjx ▸ d2 (isCompatChart_chart A j) hxj) (hjx ▸ d1 (isCompatChart_chart A j) hxj) w`. Establish `h0 : 0 ≤ levi ((b + LocPot.ofFun p).φ x ∘ (A.chart j).symm) y w` using `hP.2.2.2 j y hy hyZ w`. Establish `h1` using `hb x₀ i x hxN hyZ (fderiv ℂ (ψ x₀ ∘ (A.chart j).symm) y w)`. Rewrite `h1` using `[← levi_chart_eq (hψ x₀) j hy (hs x₀ hxN) (d1 (hψ x₀) (hs x₀ hxN)), ← levi_chart_eq (hψ x₀) j hy (hs x₀ hxN) (d2 (hψ x₀) (hs x₀ hxN))]`. Use `le_of_le_of_eq ?_ e1.symm` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hCC (hν i)) h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_pshOff_of_local [CompactSpace X] {Z : Set X} (hZ : IsClosed Z) {r : X → ℝ} {b : LocPot X} {p : X → ℝ}
     (hP : IsPoin A Z r b p) {ι : Type} (Θ : ι → LocPot X) (g : ι → X → ℝ) (ν : ι → ℝ) (hν : ∀ i, 0 ≤ ν i)
     (hΘ : ∀ i, IsPotential A (Θ i)) (hg : ∀ i, A.Smooth (g i))
@@ -181,6 +225,9 @@ variable {m : ℕ} {L : Fin m → LocPot X} {s : Fin m → X → X → ℂ} {D :
 def poinFun (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (c : ℝ) (y : X) : ℝ :=
   -(c / 2) * ∑ i, Real.log (rComp L s i y) - 1
 
+/- English proof (translation)
+Establish `e1 : (K + LocPot.ofFun (poinFun L s c)).φ (ψ.symm z) ∘ ψ.symm = fun v => ((poincarePot K L s c).φ (ψ.symm z) ∘ ψ.symm) v - 1` using `funext fun v => (add_sub_assoc _ _ _).symm`. Establish `hπ` using `Real.pi_pos`. Rewrite using `[e1, levi_sub_const, formAt]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem levi_poinFun (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (z w : Fin e → ℂ) :
     levi ((K + LocPot.ofFun (poinFun L s c)).φ (ψ.symm z) ∘ ψ.symm) z w =
       Real.pi / 2 * formAt ψ (poincarePot K L s c) z w := by
@@ -190,6 +237,19 @@ theorem levi_poinFun (ψ : OpenPartialHomeomorph X (Fin e → ℂ)) (z w : Fin e
   rw [e1, levi_sub_const, formAt]
   field_simp
 
+/- English proof (translation)
+Substitute `hZ` using the available equality. Establish `hπ` using `Real.pi_pos`. Use `⟨hK, fun j y hy => ?_, ⟨min (c / 2) 1, c / 2 * m + 1, lt_min (half_pos hc) one_pos, fun x hx => ?_⟩, fun j y hy hyZ w => ?_⟩` and prove the remaining obligations. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Use `(contDiffAt_const.mul (ContDiffAt.sum fun i _ => ?_)).sub contDiffAt_const` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.T.boundary_potential_smooth_off_divisor A L s D hB i _ (isCompatChart_chart A j) y hy.1 fun h => hy.2 (Set.mem_iUnion.2 ⟨i, h⟩)).log ((Real.exp_pos 1).trans_le ((hS _ hy.2).1 i)).ne'`. Establish `h1 : 1 ≤ Real.log (r x)` using `(Real.le_log_iff_exp_le ((Real.exp_pos 1).trans_le (he x hx))).2 (he x hx)`. Establish `hm` using `min_le_left (c / 2) 1`. Establish `hm'` using `min_le_right (c / 2) 1`. Establish `hm0` using `lt_min (half_pos hc) one_pos`.
+
+Rewrite using `[poinFun]`. Break down `Nat.eq_zero_or_pos m with rfl | hm1` into its components or cases. Establish `: r x = Real.exp 1` using `(hr x hx).trans (rTot_zero L s x)`. Simplify using `[this]`. Take `⟨h2, h3⟩` from `(hS x hx).2.2.2 hm1`.
+
+Rewrite `h2`, `h3` using `[← hr x hx]`. Apply the tactic sequence `constructor <;> nlinarith`. Establish `h1` using `(hT _ (isCompatChart_chart A j) y hy hyZ w).1`. Establish `h2 : 0 ≤ formAt (A.chart j) K y w`. Use `mul_nonneg (by positivity) ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, levi_zero]`. Conclude with `(hKp _ j y ⟨hy, K.mem_U _⟩ w hw).le`. Establish `h3 : 0 ≤ c * ∑ i, gradSqAt (A.chart j) (rComp L s i) y w / rComp L s i ((A.chart j).symm y) ^ 2` using `mul_nonneg hc.le (Finset.sum_nonneg fun i _ => div_nonneg (gradSqAt_nonneg _ _ _ _) (sq_nonneg _))`. Rewrite using `[leviAt, levi_poinFun]`.
+
+Conclude with `mul_nonneg (by positivity) (by linarith)`.
+-/
 theorem isPoin_poinFun (hB : IsBoundary A L s D) (hK : IsPotential A K) (hKp : IsPosPot A K) (hc : 0 < c)
     (hS : ScalarBounds L s D) (hT : TwoSided A K L s D c) {Z : Set X} {r : X → ℝ} (hZ : Z = ⋃ i, D i)
     (hr : ∀ x, x ∉ Z → r x = rTot L s x) (he : ∀ x, x ∉ Z → Real.exp 1 ≤ r x) : IsPoin A Z r K (poinFun L s c) := by
@@ -231,10 +291,16 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianInt
 
 variable {e m : ℕ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hV, fun a b => (h.smooth a b).mono hVU, fun z hz => h.posDef z (hVU hz)⟩`.
+-/
 theorem isPosFrame_mono {n : Type} [Fintype n] [DecidableEq n] {U V : Set (Fin e → ℂ)} {H : (Fin e → ℂ) → Matrix n n ℂ}
     (h : IsPosFrame U H) (hV : IsOpen V) (hVU : V ⊆ U) : IsPosFrame V H :=
   ⟨hV, fun a b => (h.smooth a b).mono hVU, fun z hz => h.posDef z (hVU hz)⟩
 
+/- English proof (translation)
+Take `⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `h`. Establish `hs` using `Metric.ball_subset_ball (x := (0 : Fin e → ℂ)) hρ`. Conclude with `⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, h1, h2.mono hs, h3, fun z hz => h4 z (hs hz), fun τ i l => (h5 τ i l).mono hs, h6, h7, h8, fun z hz => h9 z (hs hz)⟩`.
+-/
 theorem IsBlockModel.mono {ι : Type} [Fintype ι] {μ : ι → ℕ} {ρ ρ' : ℝ} {U : Set (Fin e → ℂ)}
     {H : ∀ τ, (Fin e → ℂ) → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ} (h : IsBlockModel ρ U H) (hρ : ρ' ≤ ρ) :
     IsBlockModel ρ' U H := by
@@ -243,6 +309,15 @@ theorem IsBlockModel.mono {ι : Type} [Fintype ι] {μ : ι → ℕ} {ρ ρ' : �
   exact ⟨n, k, hk, g, rk, τ₀, B, φ, Q, κ, h1, h2.mono hs, h3, fun z hz => h4 z (hs hz), fun τ i l => (h5 τ i l).mono hs,
     h6, h7, h8, fun z hz => h9 z (hs hz)⟩
 
+/- English proof (translation)
+Distinguish the cases in `hkl : k = l`. Substitute `hkl` using the available equality. Simplify using `only [modelGram, diagonal_apply_eq]`. Distinguish the cases in `h : ∃ i, σ i = some k`. Simplify using `only [if_pos h]`.
+
+Use `Complex.ofRealCLM.contDiff.comp_contDiffOn ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `h`. Introduce `z hz`. Establish `h0 : z k ≠ 0` using `hz.2 i k hi`. Establish `h1 : ‖z k‖ < 1` using `((norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.1 hz.1)).trans_le hρ`.
+
+Establish `hn : ContDiffAt ℝ ∞ (fun x : Fin e → ℂ => ‖x k‖) z` using `(contDiff_apply ℝ ℂ k).contDiffAt.norm ℂ h0`. Establish `ht : 0 < GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.tOf (z k)` using `GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog_pos h0 h1`. Establish `hn0` using `norm_pos_iff.2 h0`. Conclude with `(contDiffAt_const.div ((hn.pow 2).mul (((hn.log hn0.ne').neg.div_const _).pow 2)) (by positivity)).contDiffWithinAt`. Simplify using `only [if_neg h]`.
+
+Conclude with `contDiffOn_const`. Simplify using `only [modelGram, diagonal_apply_ne _ hkl]`. Conclude with `contDiffOn_const`.
+-/
 theorem contDiffOn_modelGram (σ : Fin m → Option (Fin e)) {ρ : ℝ} (hρ : ρ ≤ 1) (k l : Fin e) :
     ContDiffOn ℝ ∞ (fun x => modelGram σ x k l) (punct σ ρ) := by
   classical
@@ -266,6 +341,17 @@ theorem contDiffOn_modelGram (σ : Fin m → Option (Fin e)) {ρ : ℝ} (hρ : �
   · simp only [modelGram, diagonal_apply_ne _ hkl]
     exact contDiffOn_const
 
+/- English proof (translation)
+Take `⟨ρ₁, C₁, h₁, h₁', hb⟩` from `GlobalTheory.T.block_model_pos_frame_bound e m σ ι μ ρ U H hρ hU hH`. Establish `hs` using `Metric.ball_subset_ball (x := (0 : Fin e → ℂ)) h₁'`. Establish `h0` using `fun τ => isPosFrame_mono (hH₀ τ) Metric.isOpen_ball hs`. Establish `d0` using `fun τ => (GlobalTheory.T.one_form_bound_connection_transfer e _ _ _ (h0 τ)).1`. Establish `d1` using `fun τ => GlobalTheory.T.one_form_bound_connection_transfer e _ _ _ (hb τ).1`.
+
+Use `choose ρ₂ C₂ h₂ h₂' b₂ c₂ using fun τ => GlobalTheory.T.one_form_bound_connection_difference e m _ σ ρ₁ C₁ (H₀ τ) (H τ) h₁ (h0 τ) (hb τ).2.1`. Use `choose ρ₃ C₃ h₃ h₃' b₃ c₃ using fun τ => GlobalTheory.T.one_form_bound_connection_difference e m _ σ ρ₁ C₁ _ _ h₁ (d0 τ) ((d1 τ).2.1 _ _ (hb τ).2.1)`. Choose the witnesses or unpack the hypotheses as in `⟨ρ', p0, p1, p2, p3⟩ : ∃ ρ' : ℝ, 0 < ρ' ∧ ρ' ≤ ρ₁ ∧ (∀ τ, ρ' ≤ ρ₂ τ) ∧ ∀ τ, ρ' ≤ ρ₃ τ := by`. Establish `: ∀ᶠ s in 𝓝[>] (0 : ℝ), 0 < s ∧ s ≤ ρ₁ ∧ (∀ τ, s ≤ ρ₂ τ) ∧ ∀ τ, s ≤ ρ₃ τ`. Use `eventually_mem_nhdsWithin.and (Eventually.filter_mono nhdsWithin_le_nhds ?_)` and prove the remaining obligations.
+
+Conclude with `(eventually_le_nhds h₁).and ((eventually_all.2 fun τ => eventually_le_nhds (h₂ τ)).and (eventually_all.2 fun τ => eventually_le_nhds (h₃ τ)))`. Conclude with `this.exists`. Take `⟨C, q1, q2, q3⟩ : ∃ C : ℝ, C₁ ≤ C ∧ (∀ τ, C₂ τ ≤ C) ∧ ∀ τ, C₃ τ ≤ C` from `((eventually_ge_atTop C₁).and ((eventually_all.2 fun τ => eventually_ge_atTop (C₂ τ)).and (eventually_all.2 fun τ => eventually_ge_atTop (C₃ τ)))).exists`. Establish `s1` using `punct_mono σ p1`. Establish `s0` using `punct_mono σ (p1.trans h₁')`.
+
+Establish `sb : punct σ ρ' ⊆ Metric.ball 0 ρ₁` using `fun z hz => (s1 hz).1`. Establish `ho` using `isOpen_punct σ ρ'`. Establish `hG` using `contDiffOn_modelGram σ ((p1.trans h₁').trans hρ1)`. Use `⟨ρ', C, p0, p1.trans h₁', fun τ => ⟨⟨isPosFrame_mono (h0 τ) ho sb, isPosFrame_mono (hb τ).1 ho s1, hr.mono s0, fun z hz => he z (s0 hz), hG, fun z _ => modelGram_posSemidef σ z, fun z hz => hc τ z (s0 hz), fun z hz => (b₂ τ).mono (q2 τ) z (punct_mono σ (p2 τ) hz), fun z hz => (hb …` and prove the remaining obligations. Establish `s2` using `punct_mono σ h₁'`.
+
+Conclude with `(d1 τ).2.2.2 (H₀ τ) r Cμ (fun z hz => (h0 τ).posDef z hz.1) (fun z hz => (Real.exp_pos 1).trans_le (he z (s2 hz))) (fun z hz => hc τ z (s2 hz)) z (s1 hz)`.
+-/
 theorem exists_isData (σ : Fin m → Option (Fin e)) {ι : Type} [Fintype ι] {μ : ι → ℕ} {ρ Cμ CP : ℝ} {U : Set (Fin e → ℂ)}
     {H₀ H : ∀ τ, (Fin e → ℂ) → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ} {r : (Fin e → ℂ) → ℝ} (hρ : 0 < ρ) (hρ1 : ρ ≤ 1)
     (hU : punct σ ρ ⊆ U) (hH : IsBlockModel ρ U H) (hH₀ : ∀ τ, IsPosFrame (Metric.ball 0 ρ) (H₀ τ))
@@ -314,10 +400,18 @@ section Obj
 
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianInterpolation GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms GlobalTheory.GradedNorm
 
+/- English proof (translation)
+Rewrite using `[form, mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]`.
+-/
 theorem form_transpose_self {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) :
     form Mᵀ v v = star v ⬝ᵥ M *ᵥ v := by
   rw [form, mulVec_transpose, dotProduct_comm, ← dotProduct_mulVec]
 
+/- English proof (translation)
+Distinguish the cases in `h : Formalism.L2.PjFree.GoodEmb κ.c σ`. Conclude with `GlobalTheory.T.hodge_local_of_good_embedding D A N j S κ s x σ h`. Use `GlobalTheory.T.hodge_local_conj_of_not_good D A N j S κ s x σ h (GlobalTheory.T.hodge_local_of_good_embedding D A N j S κ s x _ ?_)` and prove the remaining obligations. Establish `h' : ¬ GoodEmb κ.c σ` using `h`. Establish `h1 : GoodEmb κ.c ((starRingEnd ℂ).comp σ)` using `by simpa only [goodOf, if_neg h'] using goodEmb_goodOf κ.c σ`.
+
+Conclude with `h1`.
+-/
 theorem hodgeLocal {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     (σ : κ.c.F →+* ℂ) : HodgeLocal x σ := by
   by_cases h : Formalism.L2.PjFree.GoodEmb κ.c σ
@@ -327,6 +421,11 @@ theorem hodgeLocal {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} 
     have h1 : GoodEmb κ.c ((starRingEnd ℂ).comp σ) := by simpa only [goodOf, if_neg h'] using goodEmb_goodOf κ.c σ
     exact h1
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero => exact fun i => i.elim0`. Consider the case `succ n`. Use `Fin.antitone_iff_succ_le.2 fun i => hu τ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hf, hf]`.
+
+Simplify using `[add_assoc]`. Rewrite using `[hf]; exact hj _ (by simp)`.
+-/
 theorem antitone_of_domL {ι : Type} {N j : ℕ} {u : ι → Fin N → ℝ} (hu : DomL j u) (τ : ι) {n : ℕ} (f : Fin n → Fin N) (a : ℕ)
     (hf : ∀ i, (f i : ℕ) = a + i) (hj : ∀ i : Fin n, 0 < (i : ℕ) → a + i ≠ j) : Antitone fun i => u τ (f i) := by
   cases n with
@@ -336,6 +435,11 @@ theorem antitone_of_domL {ι : Type} {N j : ℕ} {u : ι → Fin N → ℝ} (hu 
     · rw [hf, hf]; simp [add_assoc]
     · rw [hf]; exact hj _ (by simp)
 
+/- English proof (translation)
+Substitute `hw` using the available equality. Prove the components needed by the constructor for the conclusion. Rewrite using `[ToroidalCompactificationData.eigMetAt, EigMet.interp_gram _ (A.cm τ), mix, transpose_add, transpose_smul, transpose_smul]`. Establish `e` using `EigMet.dualGram_interp_gram (hs := x.wt_mem R) (G₀ := x.eigMet σ) (G := x.hodge σ) g (GlobalTheory.RootSum.conj_tau_ne τ)`. Establish `e2 : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ), dualRev Mᵀ = (GlobalTheory.LieMet.dualGram M)ᵀ.submatrix Fin.rev Fin.rev` using `fun M => by rw [dualRev, GlobalTheory.HermFrame.dualGram, GlobalTheory.LieMet.dualGram, ← transpose_nonsing_inv]`.
+
+Rewrite using `[ToroidalCompactificationData.eigMetAt, e2, e, e2, e2, mix, transpose_add, transpose_smul, transpose_smul]`. Both sides reduce to the same expression.
+-/
 theorem interp_gram_eq {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s)
     {σ : κ.c.F →+* ℂ} (R : ℝ) (y : CxPts (genStr s.T.Z) σ) (g : EigFrame s.T.Z σ (y.1 ≫ genι s.T.Z)) (τ : D.what₂.Tau)
     (a : ℝ) (hw : x.wt σ R y = a) :
@@ -358,6 +462,51 @@ end Obj
 
 open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianInterpolation GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms GlobalTheory.GradedNorm in
 
+/- English proof (translation)
+Introduce `hP hH D O hO hN A T H h c a`. Take `⟨x, P, hW⟩` from `id hO`. Establish `hπ` using `GlobalTheory.T.flag_component_projection_smooth D _ _ _ _ _ O.s O.Φ c`. Establish `: Smooth (genStr O.s.T.Z)` using `SmoothOfRelativeDimension.smooth O.S.Dw.dim _`. Establish `: IsLocallyNoetherian (gen O.s.T.Z : Scheme.{0})` using `LocallyOfFiniteType.isLocallyNoetherian (genStr O.s.T.Z)`.
+
+Use `isProper_genStr O.s.T.Z` as an intermediate fact. Establish `: CompactSpace (gen O.s.T.Z : Scheme.{0})` using `QuasiCompact.compactSpace_of_compactSpace (genStr O.s.T.Z)`. Establish `: IsNoetherian (gen O.s.T.Z : Scheme.{0})` using `{}`. Take `⟨L, s, hB, hn⟩` from `GlobalTheory.T.divisor_boundary_potentials_exist _ (O.var c) _ (T.M c) (h.man c) a x.m (fun i => (x.cpt i).preimage (O.Φ.C c).π.continuous) (fun i z => x.nrm _ i ((O.Φ.C c).down z)) (O.dim_eq c) (fun y => GlobalTheory.T.local_snc_pullback_smooth _ _ _ (genStr O.s.T.Z) _ _ _ y (Gl …`. Use `set Dv : Fin x.m → Set ((T.M c).X a) := fun i => {z | under ((h.man c).pt a z) ∈ (x.cpt i).preimage (O.Φ.C c).π.continuous} with hDv`.
+
+Establish `hZi : ∀ z, z ∈ (T.M c).Z a ↔ LiesIn ((O.Φ.C c).down ((h.man c).pt a z)) (genBd O.s.T.Z)` using `(h.an c).Z a`. Establish `hZ : (T.M c).Z a = ⋃ i, Dv i` using `Set.ext fun z => ((hZi z).trans (x.liesIn_genBd_iff _)).trans (Set.mem_iUnion (s := Dv) (x := z)).symm`. Establish `hrx : ∀ z, rTot L s z = x.r _ ((O.Φ.C c).down ((h.man c).pt a z))` using `fun z => by`. Simplify using `only [rTot, hn, OddPrimesWithRootsOfUnity.r]`. Establish `hr : ∀ z, z ∉ (T.M c).Z a → (T.M c).r a z = rTot L s z` using `fun z hz => ((h.an c).r a z hz).trans (by rw [hW.r_eq, hrx]; rfl)`.
+
+Establish `hbd` using `(T.M c).bd a`. Use `letI : MeasurableSpace ((T.M c).X a) := borel _`. Use `haveI : BorelSpace ((T.M c).X a) := ⟨rfl⟩`. Take `⟨cs, hcs, -, hS, hall, hmod⟩` from `GlobalTheory.T.poincare_form_statement _ _ ((T.M c).A a) ((T.M c).Om a) hbd.2.2.1 hbd.2.2.2.1 _ L s Dv hB`. Take `⟨-, hT, ⟨Cg, hCg, hG⟩, -⟩` from `hall cs hcs le_rfl`.
+
+Establish `hPo` using `isPoin_poinFun hB hbd.2.2.1 hbd.2.2.2.1 hcs hS hT hZ hr hbd.2.2.2.2.2.1`. Use `⟨_, _, hPo, ?_⟩` and prove the remaining obligations. It suffices to establish `hs : ∃ C : ℝ, ∀ C' : ℝ, C ≤ C' → ∀ i : {q : (D.what₂.Tau → Fin O.Y.N → ℝ) × ℝ // 2 ≤ q.2 ∧ DomL O.Y.j q.1}, PshOff ((T.M c).A a) ((T.M c).Z a) ((T.F c).th i.1.1 a + LocPot.ofFun ((T.F c).phR i.1.2 i.1.1 a) + ((T.M c).Om a + LocPot.ofFun (poinFun L s cs)).rsmul (C' * ‖i.1.1‖)) fro …`. Use `exists_pshOff_of_local hbd.1 hPo _ _ _ (fun _ => norm_nonneg _) (fun i => T.th_pot c _ a) (fun i => ?_) fun x₀ => ?_` and prove the remaining obligations. Conclude with `GlobalTheory.InterpChgSmooth.smooth_phR hP hH D O hO hN A T H h c _ a _ i.2.1`.
+
+Take `⟨ψ, σ, hψ, hx₀, h0⟩` from `GlobalTheory.T.adapted_polydisc_exists_at _ L s Dv hB x₀`. Take `⟨ρP, hρP, hρP2, -, hcmp⟩` from `hmod ψ σ hψ`. Take `⟨Cm, hCm, hcmp⟩` from `hcmp cs hcs le_rfl`. Take `⟨ρ₁, t, g, hρ₁, hb₁, hAd, hHol, hcont, hsm⟩` from `GlobalTheory.T.toroidal_model_chart_flag _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e (O.Φ.C c) _ (T.M c) (h.man c) a ψ hψ.1 (h0 ▸ ψ.map_source hx₀)`. Take `⟨ρ₂, hρ₂, hb₂, hblk⟩` from `hodgeLocal x _ _ _ _ Metric.isOpen_ball (Metric.mem_ball_self hρ₁) hHol hcont`.
+
+Use `set ρ := min ρ₂ ρP with hρdef`. Establish `hρ : 0 < ρ` using `lt_min hρ₂ hρP`. Establish `hρ1 : ρ ≤ 1` using `(min_le_right _ _).trans (hρP2.trans (by norm_num))`. Establish `hb : Metric.ball (0 : Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) → ℂ) ρ ⊆ Metric.ball 0 ρ₁` using `(Metric.ball_subset_ball (min_le_left _ _)).trans hb₂`. Establish `hpz : ∀ {ρ' : ℝ}, ρ' ≤ 1 → ∀ z ∈ Metric.ball (0 : Fin (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) → ℂ) ρ', (ψ.symm z ∉ (T.M c).Z a ↔ z ∈ punct σ ρ')` using `fun h1 z hz => by`.
+
+Use `hψ.2.2.2 z (Metric.ball_subset_ball h1 hz)` as an intermediate fact. Simplify using `only [hZ, Set.mem_iUnion, this, punct, Set.mem_setOf_eq, hz, true_and, not_exists, not_and, ne_eq]`. Establish `hpZ : ∀ z ∈ punct σ ρ, ψ.symm z ∉ (T.M c).Z a` using `fun z hz => (hpz hρ1 z hz.1).2 hz`. Establish `hpt : ∀ z ∈ punct σ ρ, z ∈ ψ.target` using `fun z hz => hb₁ (hb hz.1)`. Establish `hpD : ∀ z ∈ punct σ ρ, ψ.symm z ∉ ⋃ i, Dv i` using `fun z hz => hZ ▸ hpZ z hz`.
+
+Establish `hfm : ∀ z ∈ punct σ ρ, ∀ w, Cm⁻¹ * modelAt σ z w ≤ formAt ψ (poincarePot ((T.M c).Om a) L s cs) z w ∧ formAt ψ (poincarePot ((T.M c).Om a) L s cs) z w ≤ Cm * modelAt σ z w` using `fun z hz => hcmp z (Metric.ball_subset_ball (min_le_right _ _) hz.1) (hpD z hz)`. Establish `hrs : ContDiffOn ℝ ∞ (rTot L s ∘ ψ.symm) (punct σ ρ)` using `((ReciprocityTheory.AnForm.M.PLAux.contDiffOn_compat hψ.1 hbd.1.isOpen_compl hbd.2.2.2.2.1).mono fun z hz => ⟨hpt z hz, hpZ z hz⟩).congr fun z hz => (hr _ (hpZ z hz)).symm`. Establish `hre : ∀ z ∈ punct σ ρ, Real.exp 1 ≤ (rTot L s ∘ ψ.symm) z` using `fun z _ => by`. Rewrite using `[Function.comp_apply, hrx]`. Conclude with `x.exp_le_r _ _`.
+
+Establish `hr2 : ∀ z ∈ punct σ ρ, ContDiffAt ℝ 2 (rTot L s ∘ ψ.symm) z` using `fun z hz => (hrs.contDiffAt ((isOpen_punct σ ρ).mem_nhds hz)).of_le (WithTop.coe_le_coe.2 le_top)`. Take `⟨-, hmu⟩` from `x.isMuExp_muExp (ToroidalCompactificationData.exists_isMuExp x)`. Take `⟨ρ', C, hρ', hρ'ρ, hdat⟩` from `exists_isData σ (Cμ := x.muExp) (CP := Cg * Cm / 2) (H₀ := fun τ z => ((x.eigMet _).gram ((O.Φ.C c).down ((h.man c).pt a (ψ.symm z))) (g z) τ)ᵀ) hρ hρ1 (fun z hz => (hZi _).not.1 (hpZ z hz)) (hblk.mono (min_le_left _ _)) (fun τ => isPosFrame_mono (hsm _ (x.smoothOn_eigMet _) τ) M …`. Simplify using `only [form_transpose_self, Function.comp_apply, hrx]`. Conclude with `hmu _ _ ((hZi _).not.1 (hpZ z hz)) (g z) τ v)`.
+
+Use the proof step `(fun z hz ξ => by`. Establish `h1` using `(hG ψ hψ.1 z (hpt z hz) (hpD z hz) ξ).1`. Establish `h2` using `mul_le_mul_of_nonneg_left (hfm z hz ξ).2 hCg.le`. Rewrite using `[diagVal_gradForm ((hr2 z hz).differentiableAt two_ne_zero)]`. Establish `e : diagVal (fun ξ η => ((Cg * Cm / 2 : ℝ) : ℂ) * formOf (modelGram σ z) ξ η) ξ = Cg * Cm / 2 * modelAt σ z ξ`.
+
+Rewrite using `[← form_modelGram, ← diagVal_formOf, diagVal, diagVal, mul_left_comm, Complex.re_ofReal_mul]`. Rewrite using `[e]`. Simplify using `only [gradSqAt] at h1`. Simplify using `only [Function.comp_apply]`. Use the proof step `linarith)`.
+
+Use the proof step `(fun z hz => formAbsLe_iff.2 fun ξ => by`. Establish `h1` using `(hG ψ hψ.1 z (hpt z hz) (hpD z hz) ξ).2.1`. Establish `h2` using `mul_le_mul_of_nonneg_left (hfm z hz ξ).2 hCg.le`. Rewrite using `[diagVal_ddc ((hr2 z hz).log ((Real.exp_pos 1).trans_le (hre z hz)).ne'), diagVal_formOf, form_modelGram]`. Establish `e : levi (fun v => Real.log ((rTot L s ∘ ψ.symm) v)) z ξ / (2 * Real.pi) = ddcAt ψ (fun y => Real.log (rTot L s y)) z ξ / 2`.
+
+Rewrite using `[ddcAt]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite using `[e, abs_div, abs_two]`. Use the proof step `linarith)`.
+
+Take `⟨C₁, hC₁, hlow⟩` from `levi_lower_of_data (T := D.what₂.Tau) (isOpen_punct σ ρ') x.lt_kap isCutoff_sq (fun τ => (hdat (DV.tauEmb D τ)).1) fun τ => (hdat (conjEmb (DV.tauEmb D τ))).2`. Establish `hmul : ∀ τ, O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ)) = O.N` using `fun τ => (GlobalTheory.Proof.LetterConjugation.mult_add O.S.Dw _).trans O.S.rank_eq`. Establish `hmj : ∀ τ, O.S.Dw.mult (DV.tauEmb D τ) = O.j` using `fun τ => (GlobalTheory.RootSum.mult_tau O.S τ).trans O.S.p_eq`. Use `⟨ψ, ψ.source ∩ ψ ⁻¹' Metric.ball 0 ρ', C₁ * (Fintype.card D.what₂.Tau * O.N) * Cm * (2 / Real.pi), hψ.1, ψ.isOpen_inter_preimage Metric.isOpen_ball, ⟨hx₀, by simpa [h0] using hρ'⟩, Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨u, R⟩, hR, hu⟩ y ⟨hys, hyb⟩ hyZ w`.
+
+Simplify using `only at hR hu ⊢`. Take `⟨z, rfl, hz⟩ : ∃ z, y = ψ.symm z ∧ z ∈ punct σ ρ'` from `⟨ψ y, (ψ.left_inv hys).symm, (hpz (hρ'ρ.trans hρ1) _ hyb).1 (by rwa [ψ.left_inv hys])⟩`. Establish `hs` using `punct_mono σ hρ'ρ`. Rewrite using `[ψ.right_inv (hpt z (hs hz))]`. Set `lam : ∀ τ : D.what₂.Tau, Fin (O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ))) → ℝ` to `fun τ i => u τ (Fin.cast (hmul τ) i)`.
+
+Establish `hlam : ∀ τ (i : Fin (O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ)))) (i' : Fin O.N), (i : ℕ) = i' → lam τ i = u τ i'` using `fun τ i i' e => congrArg (u τ) (Fin.ext e)`. Establish `key` using `hlow R hR lam (fun τ => antitone_of_domL hu τ (fun i => Fin.cast (hmul τ) (Fin.castAdd _ i)) 0 (fun i => (Nat.zero_add _).symm) fun i _ => by have := i.2; have := hmj τ; change 0 + (i : ℕ) ≠ O.j; omega) (fun τ => antitone_of_domL hu τ (fun i => Fin.cast (hmul τ) (Fin.natAdd _ i)) …`. Establish `hroot` using `fun v (hv : v ∈ punct σ ρ') => GlobalTheory.T.root_generators_generate_adapted D O c _ (x.eigMetAt _ (some R)) _ t (g v) (hAd v (hb (hs hv).1))`. Rewrite using `[GlobalTheory.T.divisor_generates_chart_estimate hP hH D O hO hN A T H h c a ψ hψ.1 z (hpt z (hs hz)) R hR u (rootGen O c t) (hroot z hz).1 w, levi_poinFun]`. Use `le_trans ?_ (key.trans_eq (levi_congr ?_ w))` and prove the remaining obligations.
+
+Establish `h1 : ∑ τ, ∑ i, |lam τ i| ≤ Fintype.card D.what₂.Tau * O.N * ‖u‖`. Establish `: ∀ τ, ∑ i, |lam τ i| ≤ O.N * ‖u‖` using `fun τ => by`. Use `(Finset.sum_le_card_nsmul _ _ ‖u‖ fun i _ => ?_).trans (by simp [hmul τ])` and prove the remaining obligations. Conclude with `(norm_le_pi_norm (u τ) _).trans (norm_le_pi_norm u τ)`. Use `(Finset.sum_le_card_nsmul _ _ _ fun τ _ => this τ).trans_eq ?_` and prove the remaining obligations.
+
+Simplify using `[mul_assoc]`. Rewrite using `[form_modelGram]`. Establish `h2` using `(hfm z (hs hz) w).1`. Rewrite `h2` using `[inv_mul_le_iff₀ hCm]`. Establish `h3 : 0 ≤ modelAt σ z w`.
+
+Rewrite using `[← form_modelGram, ← gnorm_sq (modelGram_posSemidef σ z)]`. Check the signs of the components of the expression. Establish `h4` using `mul_le_mul (mul_le_mul_of_nonneg_left h1 hC₁) h2 h3 (by positivity)`. Establish `hπ` using `Real.pi_pos`. Rewrite using `[neg_mul, neg_mul, neg_le_neg_iff]`.
+
+Use `h4.trans_eq ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `filter_upwards [(isOpen_punct σ ρ').mem_nhds hz] with v hv`. Establish `hvZ` using `(hZi _).not.1 (hpZ v (hs hv))`. Establish `hw : x.wt _ R ((O.Φ.C c).down ((h.man c).pt a (ψ.symm v))) = 1 * cutWeight (fun y => Real.smoothTransition (3 - y) ^ 2) x.kap R (rTot L s ∘ ψ.symm) v`.
+
+Rewrite using `[x.wt_eq hR hvZ, one_mul, ← hrx]`. Both sides reduce to the same expression. Rewrite using `[hW.hm_eq]`. Conclude with `((hroot v hv).2 u lam hlam _ _ _ v (fun τ => (interp_gram_eq x R _ (g v) τ _ hw).1.symm) fun τ => (interp_gram_eq x R _ (g v) τ _ hw).2.symm).symm`.
+-/
 theorem curv_interp_lower : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c σ, ∃ (b : ReciprocityTheory.AnForm.M.LocPot ((T.M c).X σ)) (p : (T.M c).X σ → ℝ), IsPoin ((T.M c).A σ) ((T.M c).Z σ) ((T.M c).r σ) b p ∧ ∃ C : ℝ, ∀ C' : ℝ, C ≤ C' → ∀ u (R : ℝ), 2 ≤ R → DomL O.Y.j u → PshOff ((T.M c).A σ) ((T.M c).Z σ) ((T.F c).th u σ + ReciprocityTheory.AnForm.M.LocPot.ofFun ((T.F c).phR R u σ) + (b + ReciprocityTheory.AnForm.M.LocPot.ofFun p).rsmul (C' * ‖u‖)) := by
   intro hP hH D O hO hN A T H h c a
   obtain ⟨x, P, hW⟩ := id hO

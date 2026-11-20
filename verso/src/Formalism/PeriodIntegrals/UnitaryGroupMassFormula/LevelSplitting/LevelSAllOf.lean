@@ -38,6 +38,25 @@ def MeasKf : Prop :=
 
 variable {F E σ M J}
 
+/- English proof (translation)
+Introduce `hJ r P T hP ΛX ΛW ΛY hA μN hμN μH hμH`. Use `⟨hEx r P T hP μN hμN μH hμH, ?_⟩` and prove the remaining obligations. Introduce and unpack `μS ⟨-, hprod⟩`. Establish `hKm : MeasurableSet (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J))` using `hMe _`. Establish `key` using `hprod ((Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)).indicator 1) (measurable_one.indicator hKm)`.
+
+Establish `hS : {s : Ssub (Af F) σ J P | (s : HA (Af F) σ J) ∈ KS σ J P (ΛX ∪ ΛW ∪ ΛY)} = Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J))`. Use extensionality with `s`. Use `show (s : HA (Af F) σ J) ∈ Ssub (Af F) σ J P ⊓ Kf σ J (ΛX ∪ ΛW ∪ ΛY) ↔ (s : HA (Af F) σ J) ∈ Kf σ J (ΛX ∪ ΛW ∪ ΛY)`. Rewrite using `[Subgroup.mem_inf]`. Conclude with `⟨And.right, fun h => ⟨s.2, h⟩⟩`.
+
+Establish `hN : {m : Nsub (Af F) σ J P | (m : HA (Af F) σ J) ∈ NO σ J P (ΛX ∪ ΛW ∪ ΛY)} = Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J))`. Use extensionality with `s`. Use `show (s : HA (Af F) σ J) ∈ Nsub (Af F) σ J P ⊓ Kf σ J (ΛX ∪ ΛW ∪ ΛY) ↔ (s : HA (Af F) σ J) ∈ Kf σ J (ΛX ∪ ΛW ∪ ΛY)`. Rewrite using `[Subgroup.mem_inf]`. Conclude with `⟨And.right, fun h => ⟨s.2, h⟩⟩`.
+
+Establish `hH : {m : Hsub (Af F) σ J P | (m : HA (Af F) σ J) ∈ KH σ J P (ΛX ∪ ΛW ∪ ΛY)} = Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J))`. Use extensionality with `s`. Use `show (s : HA (Af F) σ J) ∈ Hsub (Af F) σ J P ⊓ Kf σ J (ΛX ∪ ΛW ∪ ΛY) ↔ (s : HA (Af F) σ J) ∈ Kf σ J (ΛX ∪ ΛW ∪ ΛY)`. Rewrite using `[Subgroup.mem_inf]`. Conclude with `⟨And.right, fun h => ⟨s.2, h⟩⟩`.
+
+Rewrite using `[hS, hN, hH]`. Establish `hL : ∫⁻ k, (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)).indicator 1 (k : HA (Af F) σ J) ∂μS = μS (Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)))`. Rewrite using `[← lintegral_indicator_one (measurable_subtype_coe hKm)]`. Use `congr 1`. Establish `inner : ∀ m : Nsub (Af F) σ J P, ∫⁻ h, (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)).indicator 1 ((m : HA (Af F) σ J) * (h : HA (Af F) σ J)) ∂μH = (Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J))).indicator (fun _ => μH (Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set …`.
+
+Introduce `m`. Distinguish the cases in `hm : (m : HA (Af F) σ J) ∈ Kf σ J (ΛX ∪ ΛW ∪ ΛY)`. Rewrite using `[Set.indicator_of_mem (show m ∈ Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)) from hm), ← lintegral_indicator_one (measurable_subtype_coe hKm)]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Distinguish the cases in `hh : (h : HA (Af F) σ J) ∈ Kf σ J (ΛX ∪ ΛW ∪ ΛY)`. Simplify using `only [Set.indicator_of_mem (show (m : HA (Af F) σ J) * (h : HA (Af F) σ J) ∈ (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)) from (Kf σ J _).mul_mem hm hh), Set.indicator_of_mem (show h ∈ Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)) from hh), Pi.one_apply]`. Rewrite using `[Set.indicator_of_notMem (show (m : HA (Af F) σ J) * (h : HA (Af F) σ J) ∉ (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)) from fun hmh => hh (hSp hJ hinv r P T hP ΛX ΛW ΛY hA m h m.2 h.2 hmh)), Set.indicator_of_notMem (show h ∉ Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af …`. Rewrite using `[Set.indicator_of_notMem (show m ∉ Subtype.val ⁻¹' (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)) from hm)]`. Establish `hz : ∀ h : Hsub (Af F) σ J P, (Kf σ J (ΛX ∪ ΛW ∪ ΛY) : Set (HA (Af F) σ J)).indicator 1 ((m : HA (Af F) σ J) * (h : HA (Af F) σ J)) = (0 : ENNReal)`.
+
+Introduce `h`. Use `Set.indicator_of_notMem (fun hmh => hm ?_) _` and prove the remaining obligations. Establish `hh` using `hSp hJ hinv r P T hP ΛX ΛW ΛY hA m h m.2 h.2 hmh`. Establish `h2` using `(Kf σ J (ΛX ∪ ΛW ∪ ΛY)).mul_mem hmh ((Kf σ J (ΛX ∪ ΛW ∪ ΛY)).inv_mem hh)`. Rewrite `h2` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+
+Simplify using `only [hz, lintegral_zero]`. Rewrite `key` using `[hL, lintegral_congr inner, lintegral_indicator_const (measurable_subtype_coe hKm)]`. Rewrite using `[key, mul_comm]`.
+-/
 theorem levelS_of (hinv : ∀ x, σ (σ x) = x) (hEx : ExistS F E σ M J) (hMe : MeasKf F E σ M J) (hSp : SplitK F E σ M J) :
     LevelS F E σ M J := by
   intro hJ r P T hP ΛX ΛW ΛY hA μN hμN μH hμH
@@ -121,12 +140,18 @@ def MeasKfAll : Prop :=
 
 def SplitKAll : Prop := ForAllCM fun F E _ _ _ _ σ M J => SplitK F E σ M J
 
+/- English proof (translation)
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]`.
+-/
 theorem sig_invol {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   apply τ.injective
   rw [hσ.2.2.2 τ, hσ.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Conclude with `levelS_of (sig_invol hσ) (h1 F E σ hσ M J hJ) (h2 F E σ hσ M J hJ) (h3 F E σ hσ M J hJ)`.
+-/
 theorem levelSAll_of (h1 : ExistSAll) (h2 : MeasKfAll) (h3 : SplitKAll) : LevelSAll := by
   intro F E _ _ _ _ _ σ hσ M J hJ
   exact levelS_of (sig_invol hσ) (h1 F E σ hσ M J hJ) (h2 F E σ hσ M J hJ) (h3 F E σ hσ M J hJ)

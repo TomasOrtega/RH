@@ -18,6 +18,17 @@ namespace GlobalTheory.KerVacIp
 
 variable {D : D7} {S T : HSp D} (C : Ctx S T)
 
+/- English proof (translation)
+Unfold `IsONFr`. Introduce `τ`. Establish `h1 : ∀ x y : T.V, star (T.hT x y) = T.hT y x`. Introduce `x y`. Conclude with `T.herm.eq x y`.
+
+Establish `h2 : ∀ x : D.host.E, tauE D (C.m.e.symm τ) (star x) = (starRingEnd ℂ) (tauE D (C.m.e.symm τ) x)`. Introduce `x`. Unfold `tauE`. Simplify using `only [star, Formalism.BasicNotions.Host.cmStar]`. Conclude with `IsCMField.complexEmbedding_complexConj D.host.E (D.host.emb ↑(D.eTau (C.m.e.symm τ))) x`.
+
+Establish `key : ∀ i j, (τ : D.host.E →+* ℂ) (C.X.Gm i j) = tauE D (C.m.e.symm τ) (HSpace.gram T i j)`. Introduce `i j`. Establish `he` using `C.m.e_emb (C.m.e.symm τ)`. Rewrite `he` using `[Equiv.apply_symm_apply]`. Rewrite using `[he, C.m.gT, Matrix.transpose_apply, NumberField.ComplexEmbedding.conjugate_coe_eq, ← h2]`.
+
+Unfold `HSpace.gram`. Rewrite using `[h1]`. Rewrite using `[← hB (C.m.e.symm τ)]`. Use extensionality with `a b`. Unfold `FD.gram mat Ctx.xB hermC FD.col gramAt`.
+
+Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, Complex.star_def, Complex.conj_conj, Finset.sum_mul, key]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem isONFr_xB (B : C.Bas) (hB : C.IsB B) : IsONFr C.X (C.xB B) := by
   unfold IsONFr
   intro τ
@@ -43,11 +54,17 @@ theorem isONFr_xB (B : C.Bas) (hB : C.IsB B) : IsONFr C.X (C.xB B) := by
     Complex.star_def, Complex.conj_conj, Finset.sum_mul, key]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Unfold `Ctx.rho heisO`. Use function extensionality and compare the values at `w`. Simplify using `[symplOH, symplO, hO]`.
+-/
 theorem rho_zero_pt (f : WO S T → ℂ) : C.rho 0 f = f := by
   unfold Ctx.rho heisO
   funext w
   simp [symplOH, symplO, hO]
 
+/- English proof (translation)
+Unfold `Ctx.zOf Ctx.realPt zR`. Use function extensionality and compare the values at `k i`. Simplify using `[compAt, hermC]`. Introduce `_`. Simplify using `only [← Pi.zero_def, Matrix.mulVec_zero, Pi.zero_apply]`.
+-/
 theorem zOf_zero (x : Frame C.X.Ψ T.rank) : C.zOf x 0 = 0 := by
   unfold Ctx.zOf Ctx.realPt zR
   funext k i
@@ -55,6 +72,17 @@ theorem zOf_zero (x : Frame C.X.Ψ T.rank) : C.zOf x 0 = 0 := by
   intro _
   simp only [← Pi.zero_def, Matrix.mulVec_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Introduce `D S T C μ 𝓕 hμ`. Establish `h0 : IsRealPt (0 : WO S T)`. Unfold `IsRealPt`. Simplify using the standard rewrite rules. Establish `hg : ∀ x : Frame C.X.Ψ T.rank, gaussR C.X C.bas C.idx x (0 : Fin S.rank → Fin C.g → ℂ) = 1`.
+
+Introduce `x`. Unfold `gaussR`. Simplify using `[hx]`. Take `⟨a, ha, b, -, hdbl⟩` from `GlobalTheory.SW.dbl_zero_and_norm D.host.E T.rank C.X C.g C.bas C.idx S.rank C.sympl C.even`. Take `⟨⟨κ, hκ, hk⟩, -⟩` from `GlobalTheory.Ker.kZero_onFr_const_entire D.host.E T.rank C.X C.g C.q0 C.hr C.bas C.idx S.rank C.sympl C.even`.
+
+Use `⟨a * κ, mul_ne_zero ha (Complex.ofReal_ne_zero.mpr hκ.ne'), ?_⟩` and prove the remaining obligations. Introduce `B hB φ φ' hφ hφ'`. Take `⟨hdom, hk0⟩` from `hk _ (isONFr_xB C B hB)`. Establish `h` using `GlobalTheory.T.innerProduct_translated_vacua_eq_gaussianKernel D S T C μ 𝓕 hμ _ hdom _ hdom φ φ' hφ hφ' 0 0 h0 h0`. Rewrite `h` using `[rho_zero_pt, rho_zero_pt, zOf_zero, hg]`.
+
+Establish `hz : (fun k i => (starRingEnd ℂ) ((0 : Fin S.rank → Fin C.g → ℂ) k i)) = 0`. Use function extensionality and compare the values at `k i`. Simplify using the standard rewrite rules. Rewrite `h` using `[hz, hk0, (hdbl φ φ' hφ hφ').1]`. Rewrite using `[h]`.
+
+Simplify using `only [map_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ip_vacua : ∀ (D : D7) (S T : HSp D) (C : Ctx S T), ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)),
     IsCovolOne (ratL T S) μ 𝓕 → ∃ a : ℂ, a ≠ 0 ∧ ∀ B, C.IsB B → ∀ φ φ' : TF S.rank C.g, SW.IsSB φ → SW.IsSB φ' →
       ipO μ 𝓕 (C.Th (C.xB B) φ) (C.Th (C.xB B) φ') = a * ip φ φ' := by

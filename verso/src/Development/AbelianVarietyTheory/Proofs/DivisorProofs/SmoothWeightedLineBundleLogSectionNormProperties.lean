@@ -16,6 +16,13 @@ set_option autoImplicit false
 
 namespace GlobalTheory.Mix.SecNorm
 
+/- English proof (translation)
+Introduce `k _ X p σ M s`. Establish `hpos : ∀ y : CxPts p σ, 0 < M.φ.nsq (secVal p σ s) y ↔ y ∈ ptsIn p σ (nonzeroLocus s)` using `fun y => by`. Rewrite using `[← secVal_ne_zero_iff s (mem_pick M.φ.isLB y), Weight.nsq, mul_pos_iff_of_pos_right (Real.exp_pos _), sq_pos_iff, norm_ne_zero_iff]`. Use `⟨?_, hpos, fun y => ?_, fun u hu y hy => ?_⟩` and prove the remaining obligations. Conclude with `(Real.measurable_log.comp (M.cInf.continuous_nsq s).measurable).div_const 2`.
+
+Establish `hi` using `mem_pick M.φ.isLB y`. Establish `ho` using `(isOpen_ptsIn (p := p) (σ := σ) _).mem_nhds hi`. Establish `h1 : CInfAt (fun z => ‖ev p σ (M.B.U (pick M.φ.isLB y)) (s.f _) z‖ ^ 2) y` using `⟨_, Unit, inferInstance, fun _ => s.f _, fun v => ‖v ()‖ ^ 2, univ, hi, isOpen_univ, trivial, ((contDiff_apply ℝ ℂ ()).norm_sq ℂ).contDiffOn, EventuallyEq.rfl⟩`. Use `(h1.comp₂ (M.cInf _ y hi) (G := fun x => x.1 * Real.exp (-x.2)) (contDiff_fst.mul contDiff_snd.neg.exp)).congr ?_` and prove the remaining obligations. Conclude with `eventually_of_mem ho fun z hz => M.φ.nsq_eq (secVal_mem s) hz`.
+
+Establish `h` using `(hpos y).2 hy`. Express the relevant statement in the definitionally equal form `Real.log ((M.φ.addFn u).nsq (secVal p σ s) y) / 2 = Real.log (M.φ.nsq (secVal p σ s) y) / 2 - u y / 2`. Rewrite using `[Weight.nsq_addFn, Real.log_mul h.ne' (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logSec_basic : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (M : MLine p σ) (s : M.B.Sec), Measurable (M.logSec s) ∧ (∀ y : CxPts p σ, 0 < M.φ.nsq (secVal p σ s) y ↔ y ∈ ptsIn p σ (nonzeroLocus s)) ∧ (∀ y, CInfAt (M.φ.nsq (secVal p σ s)) y) ∧ ∀ (u : CxPts p σ → ℝ) (hu : ∀ y, CInfAt u y), ∀ y ∈ ptsIn p σ (nonzeroLocus s), (M.addFn u hu).logSec s y = M.logSec s y - u y / 2 := by
   intro k _ X p σ M s
   have hpos : ∀ y : CxPts p σ, 0 < M.φ.nsq (secVal p σ s) y ↔ y ∈ ptsIn p σ (nonzeroLocus s) := fun y => by

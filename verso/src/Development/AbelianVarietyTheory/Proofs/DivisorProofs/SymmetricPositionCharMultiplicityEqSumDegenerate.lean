@@ -8,10 +8,38 @@ namespace GlobalTheory.FinGL.PosOne
 
 open GlobalTheory.FinGL Formalism.L2.DIV Module Matrix
 
+/- English proof (translation)
+Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+-/
 theorem mem_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V) (S : Set G) (χ : G → ℂ)
     (v : V) : v ∈ eig τ S χ ↔ ∀ g ∈ S, τ g v = χ g • v := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
+/- English proof (translation)
+Set `σ : Representation ℂ Q V` to `{ toFun := fun g => (((χ g)⁻¹ : ℂˣ) : ℂ) • τ g map_one' := by simp map_mul' := fun x y => by`. Simplify using `only [map_mul, Subgroup.coe_mul, mul_inv, Units.val_mul, smul_mul_smul_comm] }`. Establish `hσ : ∀ (g : Q) (v : V), σ g v = (((χ g)⁻¹ : ℂˣ) : ℂ) • τ g v` using `fun g v => rfl`. Set `M : Submodule ℂ V` to `eig σ (ρ.ker : Set Q) fun _ => 1`. Establish `hM : ∀ v, v ∈ M ↔ ∀ g : Q, ρ g = 1 → σ g v = v` using `fun v => by`.
+
+Simplify using `[M, mem_eig]`. Establish `hst : ∀ g : Q, ∀ v ∈ M, σ g v ∈ M`. Introduce `g v hv`. Rewrite `hv`, the goal using `[hM]`. Introduce `n hn`.
+
+Establish `h1` using `hv (g⁻¹ * n * g) (by simp [hn])`. Establish `h2 : n * g = g * (g⁻¹ * n * g)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Set `σM : Q →* Module.End ℂ M` to `{ toFun := fun g => (σ g).restrict (hst g) map_one' := by ext v; simp map_mul' := fun x y => by ext v; simp }`. Establish `hσM : ∀ (g : Q) (v : M), (σM g v : V) = σ g v` using `fun g v => rfl`.
+
+Establish `hker : ∀ x y : Q, ρ x = ρ y → σM x = σM y`. Introduce `x y h`. Use extensionality with `v`. Establish `h1` using `(hM v.1).1 v.2 (y⁻¹ * x) (by simp [h])`. Establish `h2 : x = y * (y⁻¹ * x)` using `by group`.
+
+Rewrite using `[hσM, hσM]`. Use `conv_lhs => rw [h2, map_mul]`. Use `show σ y (σ (y⁻¹ * x) v) = _`. Rewrite using `[h1]`. Take `⟨s, hs⟩` from `hρ.hasRightInverse`.
+
+Set `π : Representation ℂ P M` to `{ toFun := fun p => σM (s p) map_one' := by rw [hker (s 1) 1 (by rw [hs 1, map_one]), map_one] map_mul' := fun x y => by`. Rewrite using `[← map_mul]; exact hker _ _ (by rw [map_mul, hs x, hs y, hs (x * y)]) }`. Establish `hπ : ∀ (g : Q) (v : M), (π (ρ g) v : V) = σ g v` using `fun g v => by show (σM (s (ρ g)) v : V) = _`. Rewrite using `[hker (s (ρ g)) g (hs _), hσM]`. Use `⟨M, π, fun S c T d h1 hc hT hd => ?_⟩` and prove the remaining obligations.
+
+Establish `key : ∀ (g : Q) (v : V), ρ g ∈ S → (σ g v = c (ρ g) • v ↔ τ g v = d g • v)`. Introduce `g v hg`. Rewrite using `[hσ, hd g hg, mul_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[← h, smul_smul]`. Simplify using the standard rewrite rules. Introduce `h`. Rewrite using `[h, smul_smul]`. Simplify using the standard rewrite rules.
+
+Establish `e : (eig π S c).map M.subtype = eig τ T d`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, mem_eig]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ g hg`.
+
+Take `⟨h, hh⟩` from `(hT g).1 hg`. Use `(key ⟨g, h⟩ _ hh).1 ?_` and prove the remaining obligations. Use `congrArg Subtype.val (hw _ hh)` as an intermediate fact. Rewrite `this` using `[hπ]`. Conclude with `this`.
+
+Introduce `hv`. Establish `hv' : ∀ g : Q, ρ g ∈ S → σ g v = c (ρ g) • v` using `fun g hg => (key g v hg).2 (hv g ((hT g).2 ⟨g.2, hg⟩))`. Use `⟨⟨v, (hM v).2 fun g hg => ?_⟩, fun p hp => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hv' g (by rw [hg]; exact h1), hg, hc, one_smul]`. Take `⟨g, rfl⟩` from `hρ p`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπ]`. Conclude with `hv' g hp`. Rewrite using `[← e]`. Conclude with `(Submodule.finrank_map_subtype_eq M _).symm`.
+-/
 theorem exists_descent {G P V : Type} [Group G] [Group P] [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ G V)
     (Q : Subgroup G) (ρ : Q →* P) (hρ : Function.Surjective ρ) (χ : Q →* ℂˣ) :
     ∃ (M : Submodule ℂ V) (π : Representation ℂ P M), ∀ (S : Set P) (c : P → ℂ) (T : Set G) (d : G → ℂ),
@@ -120,6 +148,13 @@ def tailUnip (F : Type) [Field F] (r k : ℕ) : Subgroup (GL (Fin r) F) where
         rw [hi (show tailOnesBlockSizes k i < tailOnesBlockSizes k l by unfold tailOnesBlockSizes; split_ifs <;> omega), mul_zero]
     · intro h; exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hi hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Apply the tactic sequence `rw [h1 (show tailOnesBlockSizes k j < tailOnesBlockSizes k i by unfold tailOnesBlockSizes; split_ifs <;> omega), one_apply_ne (fun e => by rw [e] at h; omega)]`. Take `rfl : j = i` from `Fin.ext h`.
+
+Rewrite using `[h2 j hi, one_apply_eq]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i hi => by rw [h i i hi le_rfl, one_apply_eq]⟩` and prove the remaining obligations. Establish `: k ≤ i.val ∧ j.val < i.val`. Apply the tactic sequence `unfold tailOnesBlockSizes at hij; split_ifs at hij <;> omega`.
+
+Rewrite using `[h i j this.1 this.2.le, one_apply_ne (fun e => by rw [e] at this; omega)]`.
+-/
 theorem mem_tailUnip {k : ℕ} {g : GL (Fin r) F} : g ∈ tailUnip F r k ↔
     ∀ i j : Fin r, k ≤ i.val → j.val ≤ i.val →
       (g : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j := by
@@ -136,6 +171,11 @@ theorem mem_tailUnip {k : ℕ} {g : GL (Fin r) F} : g ∈ tailUnip F r k ↔
       unfold tailOnesBlockSizes at hij; split_ifs at hij <;> omega
     rw [h i j this.1 this.2.le, one_apply_ne (fun e => by rw [e] at this; omega)]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg i j hj`. Break down `hj.lt_or_eq with h | h` into its components or cases. Rewrite using `[unip_lower hg (show j < i from h), one_apply_ne (fun e => by rw [e] at h; omega)]`. Take `rfl : j = i` from `Fin.ext h`.
+
+Rewrite using `[unip_diag hg, one_apply_eq]`. Introduce `h`. Use `⟨fun i j hij => ?_, fun i => by rw [h i i le_rfl, one_apply_eq]⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij`. Rewrite using `[h i j hij'.le, one_apply_ne (fun e => by rw [e] at hij'; omega)]`.
+-/
 theorem mem_unip {g : GL (Fin r) F} : g ∈ unip F r ↔
     ∀ i j : Fin r, j.val ≤ i.val → (g : Matrix (Fin r) (Fin r) F) i j = (1 : Matrix (Fin r) (Fin r) F) i j := by
   constructor
@@ -149,6 +189,11 @@ theorem mem_unip {g : GL (Fin r) F} : g ∈ unip F r ↔
     have hij' : j.val < i.val := hij
     rw [h i j hij'.le, one_apply_ne (fun e => by rw [e] at hij'; omega)]
 
+/- English proof (translation)
+Rewrite using `[mem_tailUnip]`. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Conclude with `h _ j (by simp) (by have := j.2; simp only [Fin.val_last]; omega)`. Introduce `h i j hi _`.
+
+Take `rfl : i = Fin.last k` from `Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)`. Conclude with `h j`.
+-/
 theorem mem_tailUnip_last {k : ℕ} (g : GL (Fin (k + 1)) F) : g ∈ tailUnip F (k + 1) k ↔
     ∀ j, (g : Matrix (Fin (k + 1)) (Fin (k + 1)) F) (Fin.last k) j =
       (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) F) (Fin.last k) j := by
@@ -160,12 +205,18 @@ theorem mem_tailUnip_last {k : ℕ} (g : GL (Fin (k + 1)) F) : g ∈ tailUnip F 
     obtain rfl : i = Fin.last k := Fin.ext (by have := i.2; simp only [Fin.val_last]; omega)
     exact h j
 
+/- English proof (translation)
+Introduce `g hg i j hij`. Establish `: k + 1 ≤ i.val ∧ j.val < k + 1`. Apply the tactic sequence `unfold blk2 at hij; split_ifs at hij <;> omega`. Rewrite using `[mem_tailUnip.1 hg i j (by omega) (by omega), one_apply_ne (fun e => by rw [e] at this; omega)]`.
+-/
 theorem tailUnip_le (k : ℕ) : tailUnip F r k ≤ blockTri (blk2 (k + 1)) := by
   intro g hg i j hij
   have : k + 1 ≤ i.val ∧ j.val < k + 1 := by
     unfold blk2 at hij; split_ifs at hij <;> omega
   rw [mem_tailUnip.1 hg i j (by omega) (by omega), one_apply_ne (fun e => by rw [e] at this; omega)]
 
+/- English proof (translation)
+Simplify using `[one_apply]`.
+-/
 theorem one_castLE {n : ℕ} (h : n ≤ r) (i j : Fin n) :
     (1 : Matrix (Fin r) (Fin r) F) (Fin.castLE h i) (Fin.castLE h j) = (1 : Matrix (Fin n) (Fin n) F) i j := by
   simp [one_apply]
@@ -176,10 +227,24 @@ def corner {k : ℕ} (h : k + 1 ≤ r) : tailUnip F r k →* tailUnip F (k + 1) 
       rw [← one_castLE h]
       exact mem_tailUnip.1 g.2 (Fin.castLE h i) (Fin.castLE h j) hi hj
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem corner_apply {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (i j : Fin (k + 1)) :
     ((corner h g : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F) i j =
       ((g : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) (Fin.castLE h i) (Fin.castLE h j) := rfl
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le h`. Introduce `p`. Set `e : Fin (k + 1) ⊕ Fin c ≃ Fin (k + 1 + c)` to `finSumFinEquiv`. Set `f : GL (Fin (k + 1)) F → Matrix (Fin (k + 1 + c)) (Fin (k + 1 + c)) F` to `fun x => (fromBlocks (x : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F)).submatrix e.symm e.symm`. Establish `hf : ∀ x y, x * y = 1 → f x * f y = 1` using `fun x y hxy => by`.
+
+Simplify using `only [f, submatrix_mul_equiv, fromBlocks_multiply, ← Units.val_mul, hxy]`. Simplify using the standard rewrite rules. Set `g : GL (Fin (k + 1 + c)) F` to `⟨f p, f p⁻¹, hf _ _ (by simp), hf _ _ (by simp)⟩`. Establish `hg : ∀ a b, (g : Matrix _ _ F) (e a) (e b) = fromBlocks ((p : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F) a b` using `fun a b => by simp [g, f]`. Establish `h1 : ∀ a b, (1 : Matrix _ _ F) (e a) (e b) = fromBlocks (1 : Matrix (Fin (k + 1)) (Fin (k + 1)) F) 0 0 (1 : Matrix (Fin c) (Fin c) F) a b` using `fun a b => by rw [fromBlocks_one]; simp [one_apply]`.
+
+Use `⟨⟨g, mem_tailUnip.2 fun i j hi hj => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Rewrite using `[hg, h1]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+
+Conclude with `mem_tailUnip.1 p.2 a b hi hj`. Apply the tactic sequence `all_goals rfl`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+
+Rewrite using `[corner_apply]`. Conclude with `hg (Sum.inl i) (Sum.inl j)`.
+-/
 theorem corner_surj {k : ℕ} (h : k + 1 ≤ r) : Function.Surjective (corner (F := F) h) := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le h
   intro p
@@ -229,6 +294,17 @@ def tailHom (F : Type) [Field F] (r k : ℕ) : tailUnip F r k →* Multiplicativ
       · intro h; exact absurd (Finset.mem_univ i) h
       · intro h; exact absurd (Finset.mem_univ j) h)
 
+/- English proof (translation)
+Establish `e : edgeSum E' (corner h g : GL (Fin (k + 1)) F) = edgeSum (fun a b => E a b ∧ a.val < k) (g : GL (Fin r) F)`. Unfold `edgeSum`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ (fun a ha => ?_) (fun a => ?_)` and prove the remaining obligations. Use `Finset.sum_eq_zero fun b _ => if_neg fun hb => ha ⟨⟨a.val, by omega⟩, rfl⟩` and prove the remaining obligations. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ (fun b hb => ?_) (fun b => ?_)` and prove the remaining obligations.
+
+Use `if_neg fun hE => hb ⟨⟨b.val, by have := h2 _ _ hE.1; have := hE.2; omega⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[corner_apply]`. Use `if_congr ⟨fun hE => ⟨(h1 _ _).1 hE, ?_⟩, fun hE => (h1 _ _).2 hE.1⟩ rfl rfl` and prove the remaining obligations. Use `h2 _ _ ((h1 _ _).1 hE)` as an intermediate fact. Establish `hb` using `b.2`.
+
+Simplify using `only [Fin.val_castLE] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Unfold `edgeSum`. Rewrite using `[← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hE : E a b`. Distinguish the cases in `ha : a.val < k`.
+
+Rewrite using `[if_pos hE, if_neg (fun t : tailEdge k a b => absurd t.2 (by omega)), if_pos ⟨hE, ha⟩, zero_add]`. Rewrite using `[if_pos hE, if_pos (show tailEdge k a b from ⟨h2 _ _ hE, by omega⟩), if_neg (fun t => ha t.2), add_zero]`. Rewrite using `[if_neg hE, if_neg (fun t => hE (h3 _ _ t)), if_neg (fun t => hE t.1), add_zero]`.
+-/
 theorem edgeSum_split {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (E : Fin r → Fin r → Prop) [DecidableRel E]
     (E' : Fin (k + 1) → Fin (k + 1) → Prop) [DecidableRel E']
     (h1 : ∀ a b, E' a b ↔ E (Fin.castLE h a) (Fin.castLE h b))
@@ -260,6 +336,13 @@ theorem edgeSum_split {k : ℕ} (h : k + 1 ≤ r) (g : tailUnip F r k) (E : Fin 
     · rw [if_pos hE, if_pos (show tailEdge k a b from ⟨h2 _ _ hE, by omega⟩), if_neg (fun t => ha t.2), add_zero]
   · rw [if_neg hE, if_neg (fun t => hE (h3 _ _ t)), if_neg (fun t => hE t.1), add_zero]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨mem_tailUnip.2 fun i j _ hj => mem_unip.1 hg i j hj, mem_unip.2 fun i j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[corner_apply, ← one_castLE h]`. Conclude with `mem_unip.1 hg _ _ hj`.
+
+Introduce and unpack `⟨hg, hc⟩`. Use `mem_unip.2 fun i j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hi : k ≤ i.val`. Conclude with `mem_tailUnip.1 hg i j hi hj`. Use `mem_unip.1 hc ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ hj` as an intermediate fact.
+
+Rewrite `this` using `[corner_apply, ← one_castLE h]`. Conclude with `this`.
+-/
 theorem mem_unip_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unip F r ↔
     ∃ hg : g ∈ tailUnip F r k, (corner h ⟨g, hg⟩ : GL (Fin (k + 1)) F) ∈ unip F (k + 1) := by
   constructor
@@ -275,6 +358,11 @@ theorem mem_unip_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unip
       rw [corner_apply, ← one_castLE h] at this
       exact this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, h0⟩`. Take `⟨hg', hc⟩` from `(mem_unip_iff h g).1 hg`. Conclude with `⟨hg', hc, fun i j a b c => h0 (Fin.castLE h i) (Fin.castLE h j) a b c⟩`. Introduce and unpack `⟨hg, hc, h0⟩`.
+
+Conclude with `⟨(mem_unip_iff h g).2 ⟨hg, hc⟩, fun i j a b c => h0 ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ a b c⟩`.
+-/
 theorem mem_unipSym_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ unipSym F r 0 k ↔
     ∃ hg : g ∈ tailUnip F r k, (corner h ⟨g, hg⟩ : GL (Fin (k + 1)) F) ∈ unipSym F (k + 1) 0 k := by
   constructor
@@ -285,6 +373,9 @@ theorem mem_unipSym_iff {k : ℕ} (h : k + 1 ≤ r) (g : GL (Fin r) F) : g ∈ u
     exact ⟨(mem_unip_iff h g).2 ⟨hg, hc⟩, fun i j a b c =>
       h0 ⟨i.val, by omega⟩ ⟨j.val, by omega⟩ a b c⟩
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hE`. Use `h _ _ hE` as an intermediate fact. Rewrite using `[Units.val_one, one_apply_ne (fun e => by rw [e] at this; omega)]`. Both sides reduce to the same expression.
+-/
 theorem edgeSum_one {n : ℕ} (E : Fin n → Fin n → Prop) [DecidableRel E] (h : ∀ a b, E a b → b.val = a.val + 1) :
     edgeSum E (1 : GL (Fin n) F) = 0 := by
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
@@ -293,6 +384,15 @@ theorem edgeSum_one {n : ℕ} (E : Fin n → Fin n → Prop) [DecidableRel E] (h
     rw [Units.val_one, one_apply_ne (fun e => by rw [e] at this; omega)]
   · rfl
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ r V _ _ _ τ k h`. Take `⟨M, π, hπ⟩` from `exists_descent τ (tailUnip F r k) (corner h) (corner_surj h) (addCharHom ψ (tailHom F r k))`. Establish `hχ : ∀ g : tailUnip F r k, ((addCharHom ψ (tailHom F r k) g : ℂˣ) : ℂ) = ψ (edgeSum (tailEdge k) (g : GL (Fin r) F))` using `fun g => rfl`. Establish `main` using `GlobalTheory.T.finrank_mirabolic_whittaker_eigenspace F ψ hψ k (tailUnip F (k + 1) k) mem_tailUnip_last M π`. Establish `hs : ∀ {n : ℕ} (a b : Fin n), symEdge 0 k a b → b.val = a.val + 1` using `fun a b t => by`.
+
+Unfold `symEdge at t`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hπ _ _ (unipSym F r 0 k : Set (GL (Fin r) F)) (fun g => ψ (edgeSum (symEdge 0 k) g)) (Subgroup.one_mem (unipSym F (k + 1) 0 k)) (by simp only [OneMemClass.coe_one]; rw [edgeSum_one _ hs, AddChar.map_zero_eq_one]) (mem_unipSym_iff h) (fun g _ => by`. Rewrite `main` using `[hχ, ← AddChar.map_add_eq_mul, ← edgeSum_split h g (symEdge 0 k) (symEdge 0 k) (fun _ _ => Iff.rfl) hs (fun a b t => by unfold tailEdge at t; unfold symEdge; omega)])]`. Unfold `nPos`.
+
+Rewrite using `[main]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hj'` using `Finset.mem_range.1 hj`. Rewrite using `[hπ _ _ (unip F r : Set (GL (Fin r) F)) (fun g => ψ (edgeSum (cutEdge j) g)) (Subgroup.one_mem (unip F (k + 1))) (by simp only [OneMemClass.coe_one]; rw [edgeSum_one _ (fun _ _ t => t.1), AddChar.map_zero_eq_one]) (mem_unip_iff h) (fun g _ => by`. Rewrite using `[hχ, ← AddChar.map_add_eq_mul, ← edgeSum_split h g (cutEdge j) (cutEdge j) (fun _ _ => Iff.rfl) (fun _ _ t => t.1) (fun a b t => by unfold tailEdge at t; unfold cutEdge; omega)])]`.
+
+Both sides reduce to the same expression.
+-/
 theorem nPos_zero_eq_sum : ∀ (F : Type) [Field F] [Fintype F] (ψ : AddChar F ℂ), ψ ≠ 1 → ∀ (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (τ : Representation ℂ (GL (Fin r) F) V) (k : ℕ), k + 1 ≤ r → nPos ψ τ 0 k = ∑ j ∈ Finset.range (k + 1), gam (Fintype.card F) (k - j) * whCut ψ τ j := by
   intro F _ _ ψ hψ r V _ _ _ τ k h
   obtain ⟨M, π, hπ⟩ := exists_descent τ (tailUnip F r k) (corner h) (corner_surj h) (addCharHom ψ (tailHom F r k))

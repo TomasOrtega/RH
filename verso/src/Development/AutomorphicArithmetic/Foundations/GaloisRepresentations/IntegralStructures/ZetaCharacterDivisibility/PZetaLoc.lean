@@ -11,6 +11,9 @@ open UpperTheory.Gal.crystallineComparison (GenericMul rootPol)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.Int.Div
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.diagonal_apply, h]`.
+-/
 private theorem map_scalar' {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : ℕ) (y : Rˣ) :
     Matrix.GeneralLinearGroup.map f (Matrix.GeneralLinearGroup.scalar (Fin a) y) =
       Matrix.GeneralLinearGroup.scalar (Fin a) (Units.map f.toMonoidHom y) := by
@@ -25,6 +28,11 @@ open GlobalTheory.SplitPts
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Establish `h1 : pInf E ((localIdele E w u : Ideles E) : Ad E) = 1`. Express the relevant statement in the definitionally equal form `(infEq E).symm (1 : InfiniteAdeleRing E) = 1`. Conclude with `map_one _`. Establish `h2 : Units.map (pInf E).toMonoidHom (localIdele E w u) = 1` using `Units.ext h1`. Establish `h3 : Units.map (pInf E).toMonoidHom (cj E (localIdele E w u)) = 1`.
+
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E (conjAd E ((localIdele E w u : Ideles E) : Ad E)) = 1`. Rewrite using `[GlobalTheory.CompanionTheory.OnlyStab.pInf_conj, h1, map_one]`. Rewrite using `[quo_apply, _root_.map_div, h2, h3, div_one]`.
+-/
 private theorem pInf_quo (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion E)ˣ) :
     Units.map (pInf E).toMonoidHom (quo E (localIdele E w u)) = 1 := by
   have h1 : pInf E ((localIdele E w u : Ideles E) : Ad E) = 1 := by
@@ -37,16 +45,25 @@ private theorem pInf_quo (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion
     rw [GlobalTheory.CompanionTheory.OnlyStab.pInf_conj, h1, map_one]
   rw [quo_apply, _root_.map_div, h2, h3, div_one]
 
+/- English proof (translation)
+Rewrite using `[quo_apply, _root_.map_div]`.
+-/
 private theorem loc_quo (w v : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion E)ˣ) :
     Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (quo E (localIdele E w u)) =
       Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (localIdele E w u) /
         Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (cj E (localIdele E w u)) := by
   rw [quo_apply, _root_.map_div]
 
+/- English proof (translation)
+The claim follows from `Units.ext ((Neutral.B1.localIdele_isSupportedAt E w u).2 v h)`.
+-/
 private theorem loc_id_ne {w v : HeightOneSpectrum (𝓞 E)} (h : v ≠ w) (u : (w.adicCompletion E)ˣ) :
     Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (localIdele E w u) = 1 :=
   Units.ext ((Neutral.B1.localIdele_isSupportedAt E w u).2 v h)
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `conjLoc (conjE E) v (((localIdele E w u : Ideles E) : Ad E).2 (conjSrc (conjE E) v)) = 1`. Rewrite using `[(Neutral.B1.localIdele_isSupportedAt E w u).2 _ h, map_one]`.
+-/
 private theorem loc_cj_ne {w v : HeightOneSpectrum (𝓞 E)} (h : conjSrc (conjE E) v ≠ w)
     (u : (w.adicCompletion E)ˣ) :
     Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (cj E (localIdele E w u)) = 1 := by
@@ -54,6 +71,9 @@ private theorem loc_cj_ne {w v : HeightOneSpectrum (𝓞 E)} (h : conjSrc (conjE
   change conjLoc (conjE E) v (((localIdele E w u : Ideles E) : Ad E).2 (conjSrc (conjE E) v)) = 1
   rw [(Neutral.B1.localIdele_isSupportedAt E w u).2 _ h, map_one]
 
+/- English proof (translation)
+The claim follows from `Units.ext (Neutral.B1.localIdele_snd_self E w u)`.
+-/
 private theorem loc_id_self (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicCompletion E)ˣ) :
     Units.map ((pLoc E w).comp (pFin E)).toMonoidHom (localIdele E w u) = u :=
   Units.ext (Neutral.B1.localIdele_snd_self E w u)
@@ -61,6 +81,13 @@ private theorem loc_id_self (w : HeightOneSpectrum (𝓞 E)) (u : (w.adicComplet
 end
 
 open GlobalTheory.SplitPts in
+/- English proof (translation)
+Introduce `E _ _ _ a ζ hζ w hw u`. Take `⟨hne, hund, -⟩` from `over_split hw`. Establish `hc : ∀ v, cLoc v (ζ (localIdele E w u)) = Matrix.GeneralLinearGroup.scalar (Fin a) (Units.map ((pLoc E v).comp (pFin E)).toMonoidHom (quo E (localIdele E w u)))`. Introduce `v`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ ((ζ (localIdele E w u) : UA E a) : GA E a) = _`.
+
+Rewrite using `[hζ, map_scalar']`. Establish `hi : cInf (ζ (localIdele E w u)) = 1`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ ((ζ (localIdele E w u) : UA E a) : GA E a) = _`. Rewrite using `[hζ, map_scalar', pInf_quo, map_one]`. Use `⟨Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 hi, Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => MonoidHom.mem_ker.2 ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : v ≠ w` using `fun e => hv (by rw [e])`. Establish `h2 : conjSrc (conjE E) v ≠ w` using `fun e => hv (by`. Rewrite using `[← hund, ← e, conjSrc_conjSrc_cm])`. Rewrite using `[hc, loc_quo, loc_id_ne h1, loc_cj_ne h2, div_one, map_one]`. Rewrite using `[hc, loc_quo, loc_id_self, loc_cj_ne hne, div_one]`.
+-/
 theorem UpperTheory.Gal.Int.Div.zetaLoc_of :
     ZetaLoc := by
   intro E _ _ _ a ζ hζ w hw u

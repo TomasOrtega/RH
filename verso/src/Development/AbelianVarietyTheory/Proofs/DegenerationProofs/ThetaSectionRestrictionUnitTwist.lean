@@ -15,11 +15,17 @@ noncomputable section
 namespace GlobalTheory.ZH
 open GlobalTheory.Points
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, ← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem resG_trans_apply {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (a : Γ(X, U)) :
     resG X h₂ (resG X h₁ a) = resG X (h₂.trans h₁) a := by
   rw [← CommRingCat.comp_apply, ← X.presheaf.map_comp]
   rfl
 
+/- English proof (translation)
+Introduce `i j`. Establish `e` using `congrArg (resG X (inf_le_inf_right _ (inf_le_inf_right _ h) : V' ⊓ L.U i ⊓ L.U j ≤ V ⊓ L.U i ⊓ L.U j)) (hσ i j)`. Simplify using `only [map_mul, resG_trans_apply] at e ⊢`. Rewrite using `[e, mul_left_comm]`.
+-/
 theorem scale_mem_secOn {X : Scheme.{0}} (L : LB X) {V V' : X.Opens} (h : V' ≤ V) (a : Γ(X, V'))
     {σ : ∀ j, Γ(X, V ⊓ L.U j)} (hσ : σ ∈ secOn L V) :
     (fun j => resG X inf_le_left a * resG X (inf_le_inf_right _ h) (σ j)) ∈ secOn L V' := by
@@ -29,6 +35,9 @@ theorem scale_mem_secOn {X : Scheme.{0}} (L : LB X) {V V' : X.Opens} (h : V' ≤
   simp only [map_mul, resG_trans_apply] at e ⊢
   rw [e, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[valF_eq_valR, valR_mul g _ hg, valR_res g _ hg, valR_res g _ hg, ← valR_comp]`. Both sides reduce to the same expression.
+-/
 theorem valF_scale {X Z : Scheme.{0}} (p : X ⟶ Z) {N N' : Z.Opens} (h : p ⁻¹ᵁ N' ≤ p ⁻¹ᵁ N) (F : Γ(Z, N'))
     (U : X.Opens) (s : Γ(X, p ⁻¹ᵁ N ⊓ U)) {K : Type} [Field K] (g : Sp K ⟶ X)
     (hg : ⊤ ≤ g ⁻¹ᵁ (p ⁻¹ᵁ N' ⊓ U)) :
@@ -37,6 +46,9 @@ theorem valF_scale {X Z : Scheme.{0}} (p : X ⟶ Z) {N N' : Z.Opens} (h : p ⁻�
   rw [valF_eq_valR, valR_mul g _ hg, valR_res g _ hg, valR_res g _ hg, ← valR_comp]
   rfl
 
+/- English proof (translation)
+Distinguish the cases in `hN : (N' : Set M.Z).Nonempty`. Take `⟨F, hF⟩` from `(RatModel.mem_ringOn_iff_exists hN).1 (RatModel.mem_ringOn.2 fun z hz => (hf z hz).2.1)`. Substitute `hF` using the available equality. Conclude with `⟨F, fun z hz => (RatModel.isUnit_valF_iff hz F).1 ((RatModel.isUnit_O_iff _).2 ⟨(hf z hz).1, (hf z hz).2.2⟩), fun _ => rfl⟩`. Conclude with `⟨1, fun z hz => (hN ⟨z, hz⟩).elim, fun h => (hN h).elim⟩`.
+-/
 theorem RatModel.exists_unit_fn {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (N' : M.Z.Opens) (f : Ω) (hf : ∀ z ∈ N', f ≠ 0 ∧ f ∈ M.O z ∧ f⁻¹ ∈ M.O z) :
     ∃ F : Γ(M.Z, N'), (∀ z ∈ N', z ∈ M.Z.basicOpen F) ∧ ((N' : Set M.Z).Nonempty → valF M.pt N' F = f) := by
@@ -47,6 +59,19 @@ theorem RatModel.exists_unit_fn {o Ω : Type} [CommRing o] [Field Ω] [Algebra o
       ((RatModel.isUnit_O_iff _).2 ⟨(hf z hz).1, (hf z hz).2.2⟩), fun _ => rfl⟩
   · exact ⟨1, fun z hz => (hN ⟨z, hz⟩).elim, fun h => (hN h).elim⟩
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ M U₀ Q N N' σ c f hN hf hσ hT hF`. Take `⟨F, hFu, hFv⟩` from `M.exists_unit_fn N' f hf`. Establish `h : Q.G.hom ⁻¹ᵁ N' ≤ Q.G.hom ⁻¹ᵁ N` using `fun _ hz => hN hz`. Use `⟨_, scale_mem_secOn Q.LOne h ((Q.G.hom.app N').hom F) hσ, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ β g r jP jL h1 h2 h3 h4 h5`.
+
+Establish `e` using `hT K β g r jP jL h1 h2 h3 h4 (h5.trans h)`. Establish `hg : ⊤ ≤ (g ≫ Q.φ) ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ N' ⊓ Q.LOne.U (fun _ => jL))` using `fun w _ => ⟨h5 ⟨w, rfl⟩, Set.mem_iInter.2 fun _ => h4 ⟨w, rfl⟩⟩`. Establish `hp : (g ≫ Q.φ) ≫ Q.G.hom = spMap β ≫ M.pt`. Rewrite using `[Category.assoc, Q.cart.1.w, ← h1]`. Both sides reduce to the same expression.
+
+Establish `hne : (N' : Set M.Z).Nonempty` using `⟨_, h5 ⟨IsLocalRing.closedPoint K, rfl⟩⟩`. Establish `hv` using `valF_scale Q.G.hom h F _ (σ fun _ => jL) _ hg`. Rewrite `hv` using `[hp, valF_eq_valR (spMap β ≫ M.pt), valR_spMap_comp β M.pt N' (M.top_le_preimage_pt hne), ← valF_eq_valR, hFv hne]`. Use `Eq.trans ?_ (congrArg (_ * ·) hv.symm)` and prove the remaining obligations. Use `Eq.trans ?_ ((congrArg (β f * ·) e).trans (mul_left_comm _ _ _))` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by rw [map_mul, _root_.mul_assoc]`. Introduce `K _ _ x hx`. Take `⟨g, j, hg, hne⟩` from `hF K x (hx.trans hN)`. Establish `h1 : ⊤ ≤ g ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ N ⊓ Q.LOne.U j)`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hne (dif_neg hc)`. Establish `hx' : ⊤ ≤ x ⁻¹ᵁ N'` using `(top_le_preimage_iff x N').2 hx`. Establish `h2 : ⊤ ≤ g ⁻¹ᵁ (Q.G.hom ⁻¹ᵁ N' ⊓ Q.LOne.U j)` using `fun w hw => ⟨(show ⊤ ≤ (g ≫ Q.G.hom) ⁻¹ᵁ N' from hg ▸ hx') hw, (h1 hw).2⟩`. Use `⟨g, j, hg, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[valF_scale Q.G.hom h F _ (σ j) g h2, hg]`. Conclude with `mul_ne_zero ((le_preimage_basicOpen_iff x hx' F).1 fun w hw => hFu _ (hx' hw)).ne_zero hne`.
+-/
 theorem ZHPre.exists_scale_section : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), ∀ (N N' : M.Z.Opens) (σ : Q.SecFam N) (c f : Ω), N' ≤ N → (∀ z ∈ N', f ≠ 0 ∧ f ∈ M.O z ∧ f⁻¹ ∈ M.O z) → σ ∈ secOn Q.LOne (Q.G.hom ⁻¹ᵁ N) → Q.ThMul c N σ → Q.FibNe N σ → ∃ σ' : Q.SecFam N', σ' ∈ secOn Q.LOne (Q.G.hom ⁻¹ᵁ N') ∧ Q.ThMul (f * c) N' σ' ∧ Q.FibNe N' σ' := by
   intro o Ω _ _ _ _ S ρ M U₀ Q N N' σ c f hN hf hσ hT hF
   obtain ⟨F, hFu, hFv⟩ := M.exists_unit_fn N' f hf

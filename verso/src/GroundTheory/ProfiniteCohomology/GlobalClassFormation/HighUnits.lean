@@ -12,6 +12,11 @@ noncomputable section
 
 variable {K : FiniteSubfield}
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, r = n + 1` from `⟨r - 1, by omega⟩`. Establish `hC : ∀ m, 3 ≤ m → ∀ c : cohomology (classLimitRep K) m, c = 0` using `fun m hm c => (subsingleton_cohomology_classLimitRep_of_three_le K hm).elim c 0`. Use `⟨(injective_iff_map_eq_zero _).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `exists_classesToUnits_eq K n x hx`. Rewrite using `[hC n (by omega) c, map_zero]`.
+
+Conclude with `exists_unitsToIdeles_eq K (n + 1) y (hC _ (by omega) _)`.
+-/
 theorem bijective_unitsToIdeles_of_four_le {r : ℕ} (hr : 4 ≤ r) :
     Function.Bijective (unitsToIdeles K r).hom := by
   obtain ⟨n, rfl⟩ : ∃ n, r = n + 1 := ⟨r - 1, by omega⟩
@@ -22,6 +27,9 @@ theorem bijective_unitsToIdeles_of_four_le {r : ℕ} (hr : 4 ≤ r) :
     rw [hC n (by omega) c, map_zero]
   · exact exists_unitsToIdeles_eq K (n + 1) y (hC _ (by omega) _)
 
+/- English proof (translation)
+The claim follows from `| .inl w, h => subsingleton_localGaloisCohomology_inl_of_isComplex w (h w rfl) (by omega) | .inr v, _ => subsingleton_localGaloisCohomology_inr_of_three_le v hr`.
+-/
 theorem subsingleton_localGaloisCohomology_of_not_isReal {r : ℕ} (hr : 3 ≤ r) :
     ∀ v : Place K.1, (∀ w : InfinitePlace K.1, v = .inl w → w.IsComplex) →
       Subsingleton (localGaloisCohomology K r v)
@@ -41,6 +49,15 @@ def realLocalization (ι : LocalEmbeddings K) {r : ℕ} (hr : 1 ≤ r) :
     simp only [map_add]
     rfl
 
+/- English proof (translation)
+Use `⟨fun ζ ζ' h => ?_, fun f => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Break down `v with w | v` into its components or cases. Distinguish the cases in `hw : w.IsReal`. Conclude with `congrFun h ⟨w, hw⟩`.
+
+Use `subsingleton_localGaloisCohomology_inl_of_isComplex w (InfinitePlace.not_isReal_iff_isComplex.1 hw) (r := r) (by omega)` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `subsingleton_localGaloisCohomology_inr_of_three_le v hr` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `⟨∑ w : {v : InfinitePlace K.1 // v.IsReal}, DirectSum.of (localGaloisCohomology K r) (.inl w.1) (f w), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `(∑ w' : {v : InfinitePlace K.1 // v.IsReal}, DirectSum.of (localGaloisCohomology K r) (.inl w'.1) (f w')) (.inl w.1) = f w`. Rewrite using `[DFinsupp.finsetSum_apply, Finset.sum_eq_single w]`. Conclude with `DirectSum.of_eq_same _ _`. Introduce `b _ hb`.
+
+Conclude with `DirectSum.of_eq_of_ne _ _ _ fun h => hb (Subtype.ext (Sum.inl_injective h)).symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+-/
 theorem bijective_realComponents {r : ℕ} (hr : 3 ≤ r) :
     Function.Bijective (fun (ζ : ⨁ v : Place K.1, localGaloisCohomology K r v)
       (v : {v : InfinitePlace K.1 // v.IsReal}) => ζ (.inl v.1)) := by
@@ -67,12 +84,20 @@ theorem bijective_realComponents {r : ℕ} (hr : 3 ≤ r) :
     · intro h
       exact absurd (Finset.mem_univ w) h
 
+/- English proof (translation)
+The claim follows from `(bijective_realComponents (K := K) (r := r) (by omega)).comp ((idelesLimitCohomologyEquiv ι (n := r) (by omega)).bijective.comp (bijective_unitsToIdeles_of_four_le hr))`.
+-/
 theorem bijective_realLocalization (ι : LocalEmbeddings K) {r : ℕ} (hr : 4 ≤ r) :
     Function.Bijective (realLocalization ι (r := r) (by omega)) :=
   (bijective_realComponents (K := K) (r := r) (by omega)).comp
     ((idelesLimitCohomologyEquiv ι (n := r) (by omega)).bijective.comp
       (bijective_unitsToIdeles_of_four_le hr))
 
+/- English proof (translation)
+Break down `eq_or_lt_of_le hr with rfl | hr4` into its components or cases. Conclude with `subsingleton_cohomology_three_unitsLimitRep K`. Take `⟨ι⟩` from `nonempty_localEmbeddings K`. Establish `hloc : ∀ v : Place K.1, Subsingleton (localGaloisCohomology K r v)` using `fun v => subsingleton_localGaloisCohomology_of_not_isReal hr v fun w _ => hK w`. Establish `: Subsingleton (⨁ v : Place K.1, localGaloisCohomology K r v)` using `⟨fun a b => DFinsupp.ext fun v => Subsingleton.elim _ _⟩`.
+
+Establish `: Subsingleton (cohomology (limitRep K) r)` using `(idelesLimitCohomologyEquiv ι (n := r) (by omega)).injective.subsingleton`. Conclude with `(bijective_unitsToIdeles_of_four_le (K := K) hr4).1.subsingleton`.
+-/
 theorem subsingleton_cohomology_unitsLimitRep_of_three_le (hK : ∀ v : InfinitePlace K.1, v.IsComplex)
     {r : ℕ} (hr : 3 ≤ r) : Subsingleton (cohomology (unitsLimitRep K) r) := by
   rcases eq_or_lt_of_le hr with rfl | hr4

@@ -18,6 +18,25 @@ def FracOf : Prop := ∀ (B C : Type) [CommRing B] [CommRing C] [IsDomain C] (j 
   (∀ z : C, ∃ s y : B, s ≠ 0 ∧ j s * z = j y) →
   @IsFractionRing B _ (FractionRing C) _ ((algebraMap C (FractionRing C)).comp j).toAlgebra
 
+/- English proof (translation)
+Introduce `H q _ i A X h hq hA' hX hh hloc C c _ _ hCa hCr Y' w φ' sq`. Take `⟨B, b, j, hbj, hbint, hjinj, hBloc, hBaic, hfr⟩` from `hI c hA' hCa hCr`. Establish `: IsDomain B` using `Function.Injective.isDomain j.hom hjinj`. Set `K` to `FractionRing C`. Set `l : C ⟶ CommRingCat.of K` to `CommRingCat.ofHom (algebraMap C K)`.
+
+Set `algBK : Algebra B K` to `((algebraMap C K).comp j.hom).toAlgebra`. Establish `: IsFractionRing B K` using `p4 B C j.hom hjinj hfr`. Establish `hKsh : SH K` using `hA K (p3 C K hCa)`. Establish `hBsh : SH B` using `hA B hBaic`. Establish `hCsh : SH C` using `hA C hCa`.
+
+Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map b.hom`. Establish `hqC : IsUnit (q : C)` using `by simpa using hq.map c.hom`. Set `mB : CommRingCat.of (Polynomial A) ⟶ CommRingCat.of (Polynomial B)` to `CommRingCat.ofHom (Polynomial.mapRingHom b.hom)`. Establish `sB : IsPushout h mB (pushout.inl h mB) (pushout.inr h mB)` using `IsPushout.of_hasPushout _ _`. Establish `hBIE : IE (pushout.inr h mB)` using `p2 _ _ _ _ sB hh`.
+
+Establish `sBA : IsPushout (pC A ≫ h) b (pushout.inl h mB) (pC B ≫ pushout.inr h mB)` using `(p1 b).paste_horiz sB`. Set `ZB : CommRingCat.{0}` to `pushout h mB`. Establish `hZBsh : SH ZB` using `hT _ _ _ _ sBA hA' hX hloc hbint hBloc`. Establish `r1 : RE q i (pC B ≫ pushout.inr h mB)` using `hE H q i _ hqB hBsh hZBsh`. Set `bl : B ⟶ CommRingCat.of K` to `CommRingCat.ofHom (algebraMap B K)`.
+
+Establish `sL : IsPushout (pC B ≫ pushout.inr h mB) bl (pushout.inl _ bl) (pushout.inr _ bl)` using `IsPushout.of_hasPushout _ _`. Establish `r2 : RE q i (pushout.inl (pC B ≫ pushout.inr h mB) bl)` using `hC3 H q i B K hBaic hqB (pushout h mB) (pushout.inr h mB) hBIE _ _ _ sL.flip`. Establish `r3 : RE q i bl` using `hE H q i bl hqB hBsh hKsh`. Establish `r4 : RE q i (pushout.inr (pC B ≫ pushout.inr h mB) bl)` using `RE.of_comp_left r3 (by rw [← pushout.condition]; exact r1.comp r2)`. Set `mC : CommRingCat.of (Polynomial A) ⟶ CommRingCat.of (Polynomial C)` to `CommRingCat.ofHom (Polynomial.mapRingHom c.hom)`.
+
+Set `hC : CommRingCat.of (Polynomial C) ⟶ Y'` to `(p1 c).desc (h ≫ w) φ' (by rw [← Category.assoc]; exact sq.w)`. Establish `e1 : mC ≫ hC = h ≫ w` using `(p1 c).inl_desc _ _ _`. Establish `e2 : pC C ≫ hC = φ'` using `(p1 c).inr_desc _ _ _`. Establish `sC : IsPushout h mC w hC` using `IsPushout.of_left (by rw [e2]; exact sq) e1.symm (p1 c)`. Establish `hCIE : IE hC` using `p2 _ _ _ _ sC hh`.
+
+Establish `sq' : IsPushout l (pC C ≫ hC) (pushout.inr φ' l) (pushout.inl φ' l)`. Rewrite using `[e2]`. Conclude with `(IsPushout.of_hasPushout φ' l).flip`. Establish `r5 : RE q i (pushout.inl φ' l)` using `hC3 H q i C K hCa hqC Y' hC hCIE _ _ _ sq'`. Establish `r6 : RE q i l` using `hE H q i l hqC hCsh hKsh`.
+
+Establish `ebl : b ≫ bl = c ≫ l` using `by rw [← hbj]; rfl`. Establish `PZ : IsPushout (pC A ≫ h) (c ≫ l) (pushout.inl h mB ≫ pushout.inl (pC B ≫ pushout.inr h mB) bl) (pushout.inr (pC B ≫ pushout.inr h mB) bl)`. Rewrite using `[← ebl]`. Conclude with `sBA.paste_vert sL`. Establish `PZ' : IsPushout (pC A ≫ h) (c ≫ l) (w ≫ pushout.inl φ' l) (pushout.inr φ' l)` using `sq.paste_vert (IsPushout.of_hasPushout φ' l)`.
+
+Establish `r7 : RE q i (pushout.inr φ' l)`. Rewrite using `[← PZ.inr_isoIsPushout_hom _ _ PZ']`. Conclude with `r4.comp (RE.of_isIso q i _)`. Conclude with `RE.of_comp_right r5 (by rw [pushout.condition]; exact r6.comp r7)`.
+-/
 theorem ULAStalk_of (hI : IntClos) (hT : SHTensor) (hA : AICSH) (hE : SHEqv) (hC3 : EtaleBaseChangeFractionFieldIndEtaleOverPolynomial)
     (p1 : PolyPO) (p2 : IECob) (p3 : FracAIC) (p4 : FracOf) : ULAStalk := by
   intro H q _ i A X h hq hA' hX hh hloc C c _ _ hCa hCr Y' w φ' sq

@@ -8,6 +8,11 @@ noncomputable section
 
 namespace GlobalTheory.TowerLev
 
+/- English proof (translation)
+Set `F : ℕᵒᵖ ⥤ Type` to `Functor.ofOpSequence (X := fun j => ↥(A j)) (fun j => TypeCat.ofHom (fun x => ⟨φ j x.1, hφ j x.1 x.2⟩ : ↥(A (j + 1)) → ↥(A j)))`. Use `haveI : ∀ j : ℕᵒᵖ, Finite (F.obj j) := fun j => (hfin j.unop).to_subtype`. Use `haveI : ∀ j : ℕᵒᵖ, Nonempty (F.obj j) := fun j => (hne j.unop).to_subtype`. Take `⟨s, hs⟩` from `nonempty_sections_of_finite_inverse_system F`. Use `⟨fun j => (s (Opposite.op j)).1, fun j => ⟨(s (Opposite.op j)).2, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `h` using `hs (homOfLE (Nat.le_add_right j 1)).op`. Rewrite `h` using `[Functor.ofOpSequence_map_homOfLE_succ]`. Conclude with `congrArg Subtype.val h`.
+-/
 theorem compat_seq {X : Type} (A : ℕ → Set X) (hfin : ∀ j, (A j).Finite)
     (hne : ∀ j, (A j).Nonempty) (φ : ℕ → X → X) (hφ : ∀ j, ∀ x ∈ A (j + 1), φ j x ∈ A j) :
     ∃ s : ℕ → X, ∀ j, s j ∈ A j ∧ φ j (s (j + 1)) = s j := by
@@ -30,22 +35,44 @@ def IsLev (D : Datum p) (act : D.O → Q → Q) (W : ℕ → Q → Q → kˣ) (�
 
 variable {D : Datum p}
 
+/- English proof (translation)
+Establish `h` using `hf 0 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h.symm`.
+-/
 theorem map_zero_of_add {f : D.La → Q} (hf : ∀ x y, f (x + y) = f x * f y) : f 0 = 1 := by
   have h := hf 0 0
   rw [add_zero] at h
   simpa using h.symm
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [map_zero_of_add hf]`. Consider the case `succ n ih => rw [succ_nsmul, hf, ih, pow_succ]`.
+-/
 theorem map_nsmul_of_add {f : D.La → Q} (hf : ∀ x y, f (x + y) = f x * f y) (n : ℕ) (x : D.La) :
     f (n • x) = f x ^ n := by
   induction n with
   | zero => simp [map_zero_of_add hf]
   | succ n ih => rw [succ_nsmul, hf, ih, pow_succ]
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Establish `h' : (n : ℤ) • a = (n : ℤ) • b` using `by simpa [natCast_zsmul] using h`. Conclude with `smul_right_injective D.La (by exact_mod_cast hn : (n : ℤ) ≠ 0) h'`.
+-/
 theorem cancel_nsmul (D : Datum p) (n : ℕ) (hn : n ≠ 0) {a b : D.La} (h : n • a = n • b) : a = b := by
   haveI := D.freeLa
   have h' : (n : ℤ) • a = (n : ℤ) • b := by simpa [natCast_zsmul] using h
   exact smul_right_injective D.La (by exact_mod_cast hn : (n : ℤ) ≠ 0) h'
 
+/- English proof (translation)
+Take `⟨⟨hadd, hlin, hker, honto⟩, hpair⟩` from `hf`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hkill : ∀ x, f x ^ (p ^ (r + 1)) = 1` using `fun x => (honto _).2 ⟨x, rfl⟩`. Use `⟨⟨fun x y => ?_, fun c x => ?_, fun x => ?_, fun g => ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[hadd, mul_pow]`. Simplify using `only`. Rewrite using `[hlin]`. Conclude with `(map_pow (MonoidHom.mk' (act c) (hact c)) (f x) p).symm`. Simplify using `only`.
+
+Rewrite using `[← map_nsmul_of_add hadd, hker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, cancel_nsmul D p hp0 (by rw [hy, pow_succ', mul_smul])⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨y, by rw [pow_succ', mul_smul]⟩`. Simplify using `only`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hg' : g ^ (p ^ (r + 1)) = 1` using `by rw [pow_succ, pow_mul, hg, one_pow]`.
+
+Take `⟨x, rfl⟩` from `(honto g).1 hg'`. Rewrite `hg` using `[← map_nsmul_of_add hadd, hker]`. Take `⟨y, hy⟩` from `hg`. Establish `hx : x = p • y` using `cancel_nsmul D (p ^ r) (pow_ne_zero _ hp0) (by rw [hy, pow_succ, mul_smul])`. Conclude with `⟨y, by rw [hx, map_nsmul_of_add hadd]⟩`.
+
+Introduce and unpack `⟨x, rfl⟩`. Rewrite using `[← pow_mul, ← pow_succ', hkill]`. Simplify using `only`. Rewrite using `[hW r (f x) (f y) (hkill x) (hkill y), hpair, ← hζ r, ← zpow_natCast (ζ (r + 1) ^ _), ← zpow_natCast (ζ (r + 1)), ← zpow_mul, ← zpow_mul, mul_comm]`.
+-/
 theorem IsLev.step {act : D.O → Q → Q} {W : ℕ → Q → Q → kˣ} {ζ : ℕ → kˣ}
     (hact : ∀ c a b, act c (a * b) = act c a * act c b) (hζ : ∀ r, ζ (r + 1) ^ p = ζ r)
     (hW : ∀ r (a b : Q), a ^ (p ^ (r + 1)) = 1 → b ^ (p ^ (r + 1)) = 1 →
@@ -82,6 +109,13 @@ theorem IsLev.step {act : D.O → Q → Q} {W : ℕ → Q → Q → kˣ} {ζ : �
     rw [hW r (f x) (f y) (hkill x) (hkill y), hpair, ← hζ r, ← zpow_natCast (ζ (r + 1) ^ _),
       ← zpow_natCast (ζ (r + 1)), ← zpow_mul, ← zpow_mul, mul_comm]
 
+/- English proof (translation)
+Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `B` to `Module.Free.chooseBasis ℤ D.La`. Establish `hpos : (0 : ℤ) < (n : ℤ)` using `by exact_mod_cast Nat.pos_of_ne_zero hn`. Use `((Set.Finite.pi (fun _ : Module.Free.ChooseBasisIndex ℤ D.La => Set.finite_Ico (0 : ℤ) n)).image (fun v => f (∑ i, v i • B i))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨fun i => B.repr x i % n, fun i _ => ⟨Int.emod_nonneg _ hpos.ne', Int.emod_lt_of_pos _ hpos⟩, ?_⟩` and prove the remaining obligations. Establish `hx : x = ∑ i, (B.repr x i % n) • B i + n • ∑ i, (B.repr x i / n) • B i`. Rewrite using `[← natCast_zsmul, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `conv_lhs => rw [← B.sum_repr x]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← add_smul, Int.emod_add_mul_ediv]`. Rewrite using `[congrArg f hx, hadd, hker, _root_.mul_one]`.
+-/
 theorem finite_range_of_add {f : D.La → Q} (hadd : ∀ x y, f (x + y) = f x * f y) {n : ℕ} (hn : n ≠ 0)
     (hker : ∀ y, f (n • y) = 1) : (Set.range f).Finite := by
   haveI := D.freeLa
@@ -102,6 +136,15 @@ theorem finite_range_of_add {f : D.La → Q} (hadd : ∀ x y, f (x + y) = f x * 
 def toLin (f : D.La → Q) (hf : ∀ x y, f (x + y) = f x * f y) : D.La →ₗ[ℤ] Additive Q :=
   (AddMonoidHom.mk' (fun x => Additive.ofMul (f x)) (fun x y => by rw [hf]; rfl)).toIntLinearMap
 
+/- English proof (translation)
+Break down `Set.eq_empty_or_nonempty {f | IsLev D act W ζ r f} with h | ⟨f0, hf0⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`.
+
+Set `B` to `Module.Free.chooseBasis ℤ D.La`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hT : (Set.range f0).Finite` using `finite_range_of_add hf0.1.1 (pow_ne_zero r hp0) (fun y => (hf0.1.2.2.1 _).2 ⟨y, rfl⟩)`. Use `Set.Finite.of_finite_image (f := fun f : D.La → Q => fun i => f (B i)) ?_ ?_` and prove the remaining obligations. Use `(Set.Finite.pi (fun _ => hT)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩ i _`. Conclude with `(hf0.1.2.2.2 _).1 ((hf.1.2.2.2 _).2 ⟨B i, rfl⟩)`. Introduce `f hf g hg hfg`. Establish `key : toLin f hf.1.1 = toLin g hg.1.1` using `B.ext (fun i => congrArg Additive.ofMul (congrFun hfg i))`. Use function extensionality and compare the values at `x`.
+
+Conclude with `congrArg Additive.toMul (LinearMap.congr_fun key x)`.
+-/
 theorem finite_isLev {act : D.O → Q → Q} {W : ℕ → Q → Q → kˣ} {ζ : ℕ → kˣ} (r : ℕ) :
     {f | IsLev D act W ζ r f}.Finite := by
   rcases Set.eq_empty_or_nonempty {f | IsLev D act W ζ r f} with h | ⟨f0, hf0⟩
@@ -122,6 +165,9 @@ theorem finite_isLev {act : D.O → Q → Q} {W : ℕ → Q → Q → kˣ} {ζ :
     funext x
     exact congrArg Additive.toMul (LinearMap.congr_fun key x)
 
+/- English proof (translation)
+Introduce `p _ D k _ Q _ act W ζ hact hζ hW hex`. Take `⟨s, hs⟩` from `compat_seq (fun r => {f | IsLev D act W ζ r f}) (fun r => finite_isLev r) hex (fun _ f x => f x ^ p) (fun r f hf => IsLev.step hact hζ hW r f hf)`. Conclude with `⟨s, fun r => (hs r).1, fun r x => congrFun (hs r).2 x⟩`.
+-/
 theorem exists_compatible : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (k : Type) [Field k] (Q : Type) [CommGroup Q]
     (act : D.O → Q → Q) (W : ℕ → Q → Q → kˣ) (ζ : ℕ → kˣ), (∀ c a b, act c (a * b) = act c a * act c b) →
     (∀ r, ζ (r + 1) ^ p = ζ r) →

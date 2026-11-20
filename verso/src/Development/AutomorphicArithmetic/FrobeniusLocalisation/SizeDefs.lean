@@ -37,8 +37,16 @@ def DRC (B : ℝ) : Set ℕ :=
 
 def DRh (B : ℝ) : Set ℕ := {p | H.Inert p ∧ (p : ℝ) ≤ B ∧ φ.hH (H.frobG p).2 = 1}
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem frobG_of_coprime {p : ℕ} (h : Nat.Coprime p H.condN) : H.frobG p = H.art (ZMod.unitOfCoprime p h) := dif_pos h
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Establish `h1` using `h.2`. Establish `h8` using `H.d_mod_eight`. Establish `h2 : jacobiSym (-(H.d : ℤ)) 2 = jacobiSym 1 2`. Apply `jacobiSym.mod_left'` to reduce the goal to its premises.
+
+Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[h2, jacobiSym.one_left]`. Conclude with `absurd h1 (by decide)`.
+-/
 theorem Inert.ne_two {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : p ≠ 2 := by
   rintro rfl
   have h1 := h.2
@@ -50,9 +58,15 @@ theorem Inert.ne_two {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : p ≠ 2 := by
   rw [h2, jacobiSym.one_left] at h1
   exact absurd h1 (by decide)
 
+/- English proof (translation)
+The claim follows from `H.not_dvd_condN_of_inert h.1 h.ne_two h.2`.
+-/
 theorem Inert.not_dvd {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : ¬ p ∣ H.condN :=
   H.not_dvd_condN_of_inert h.1 h.ne_two h.2
 
+/- English proof (translation)
+The claim follows from `h.1.coprime_iff_not_dvd.2 h.not_dvd`.
+-/
 theorem Inert.coprime {H : HostRaw φ} {p : ℕ} (h : H.Inert p) : Nat.Coprime p H.condN :=
   h.1.coprime_iff_not_dvd.2 h.not_dvd
 

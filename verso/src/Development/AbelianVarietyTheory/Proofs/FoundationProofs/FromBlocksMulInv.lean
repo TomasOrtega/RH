@@ -8,6 +8,9 @@ namespace GlobalTheory.SingleBlock
 
 variable {k : Type} [Field k] {r t : ℕ}
 
+/- English proof (translation)
+Rewrite using `[fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul, neg_add_cancel, neg_zero, fromBlocks_one]`.
+-/
 theorem fromBlocks_mul_inv (p : GL (Fin r) k) (b : Matrix (Fin r) (Fin t) k) (d : GL (Fin t) k) :
     fromBlocks (p : Matrix (Fin r) (Fin r) k) b 0 (d : Matrix (Fin t) (Fin t) k) *
       fromBlocks ((p⁻¹ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k)
@@ -38,12 +41,22 @@ def blockPar (t : ℕ) (Q : Subgroup (GL (Fin r) k)) : Subgroup (GL (Fin r ⊕ F
     exact ⟨p⁻¹, Q.inv_mem hp, _, d⁻¹,
       Units.inv_eq_of_mul_eq_one_right (e ▸ fromBlocks_mul_inv p b d)⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_blockPar_iff' (Q : Subgroup (GL (Fin r) k)) (h : GL (Fin r ⊕ Fin t) k) :
     h ∈ blockPar t Q ↔ ∃ p ∈ Q, ∃ (b : Matrix (Fin r) (Fin t) k) (d : GL (Fin t) k),
       (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k) =
         fromBlocks (p : Matrix (Fin r) (Fin r) k) b 0 (d : Matrix (Fin t) (Fin t) k) :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_blockPar_iff']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, b, d, e⟩`. Conclude with `⟨⟨p, hp, by rw [e, toBlocks_fromBlocks₁₁]⟩, by rw [e, toBlocks_fromBlocks₂₁]⟩`. Introduce and unpack `⟨⟨p, hp, h11⟩, h21⟩`.
+
+Establish `hM : (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k) = fromBlocks (p : Matrix (Fin r) (Fin r) k) (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k).toBlocks₁₂ 0 (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k).toBlocks₂₂`. Rewrite using `[← h11, ← h21, fromBlocks_toBlocks]`. Establish `hdet : (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k).toBlocks₂₂.det ≠ 0`. Introduce `h0`. Establish `hu` using `((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit h)).ne_zero`.
+
+Rewrite `hu` using `[hM, det_fromBlocks_zero₂₁, h0, mul_zero]`. Conclude with `hu rfl`. Conclude with `⟨p, hp, _, Matrix.nonsingInvUnit _ (isUnit_iff_ne_zero.mpr hdet), hM⟩`.
+-/
 theorem mem_blockPar_iff (Q : Subgroup (GL (Fin r) k)) (h : GL (Fin r ⊕ Fin t) k) :
     h ∈ blockPar t Q ↔
       (∃ p ∈ Q, (h : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k).toBlocks₁₁ =
@@ -66,6 +79,15 @@ theorem mem_blockPar_iff (Q : Subgroup (GL (Fin r) k)) (h : GL (Fin r ⊕ Fin t)
       exact hu rfl
     exact ⟨p, hp, _, Matrix.nonsingInvUnit _ (isUnit_iff_ne_zero.mpr hdet), hM⟩
 
+/- English proof (translation)
+Set `φ : Q × (Matrix (Fin r) (Fin t) k × GL (Fin t) k) → blockPar t Q` to `fun x => ⟨blockUnit x.1.1 x.2.1 x.2.2, (mem_blockPar_iff' Q _).mpr ⟨x.1.1, x.1.2, x.2.1, x.2.2, rfl⟩⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨p, hp⟩, b, d⟩ ⟨⟨p', hp'⟩, b', d'⟩ h`. Establish `h1 : fromBlocks (p : Matrix (Fin r) (Fin r) k) b 0 (d : Matrix (Fin t) (Fin t) k) = fromBlocks (p' : Matrix (Fin r) (Fin r) k) b' 0 (d' : Matrix (Fin t) (Fin t) k)` using `congrArg (fun z : blockPar t Q => ((z : GL (Fin r ⊕ Fin t) k) : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) k)) h`.
+
+Take `⟨e1, e2, -, e4⟩` from `Matrix.fromBlocks_inj.mp h1`. Establish `hp_eq : p = p'` using `Units.ext e1`. Establish `hd_eq : d = d'` using `Units.ext e4`. Substitute `hp_eq hd_eq e2` using the available equality. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨h, hh⟩`. Take `⟨p, hp, b, d, e⟩` from `(mem_blockPar_iff' Q h).mp hh`. Conclude with `⟨(⟨p, hp⟩, b, d), Subtype.ext (Units.ext e.symm)⟩`. Establish `hM : Nat.card (Matrix (Fin r) (Fin t) k) = Nat.card k ^ (r * t)` using `by show Nat.card (Fin r → Fin t → k) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun]`.
+
+Simplify using `only [Nat.card_eq_fintype_card (α := Fin t), Nat.card_eq_fintype_card (α := Fin r), Fintype.card_fin]`. Rewrite using `[← pow_mul, Nat.mul_comm t r]`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective φ hφ), Nat.card_prod, Nat.card_prod, hM]`.
+-/
 theorem card_blockPar (Q : Subgroup (GL (Fin r) k)) :
     Nat.card (blockPar t Q) =
       Nat.card Q * (Nat.card k ^ (r * t) * Nat.card (GL (Fin t) k)) := by
@@ -94,6 +116,21 @@ theorem card_blockPar (Q : Subgroup (GL (Fin r) k)) :
     rw [← pow_mul, Nat.mul_comm t r]
   rw [← Nat.card_congr (Equiv.ofBijective φ hφ), Nat.card_prod, Nat.card_prod, hM]
 
+/- English proof (translation)
+Use `Fintype.ofFinite k` as an intermediate fact. Establish `hq1 : 1 < Nat.card k` using `Finite.one_lt_card`. Establish `hq : (0 : ℝ) < Nat.card k` using `Nat.cast_pos.mpr (by omega)`. Rewrite using `[Matrix.card_GL_field, ← Nat.card_eq_fintype_card, Nat.cast_prod, Fin.prod_univ_eq_prod_range (fun i => ((Nat.card k ^ n - Nat.card k ^ i : ℕ) : ℝ)) n]`. Establish `step : ∀ i ∈ Finset.range n, ((Nat.card k ^ n - Nat.card k ^ i : ℕ) : ℝ) = (Nat.card k : ℝ) ^ n * (1 - ((Nat.card k : ℝ) ^ (n - i))⁻¹)`.
+
+Introduce `i hi`. Establish `hin : i < n` using `Finset.mem_range.mp hi`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right (by omega) hin.le)]`. Use `push_cast`. Establish `hsplit : (Nat.card k : ℝ) ^ n = (Nat.card k : ℝ) ^ i * (Nat.card k : ℝ) ^ (n - i)`.
+
+Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h2 : (Nat.card k : ℝ) ^ n * ((Nat.card k : ℝ) ^ (n - i))⁻¹ = (Nat.card k : ℝ) ^ i`. Rewrite using `[hsplit, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq.ne'), mul_one]`.
+
+Rewrite using `[mul_sub, mul_one, h2]`. Rewrite using `[Finset.prod_congr rfl step, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, ← pow_mul]`. Use `congr 1`. Apply `Finset.prod_nbij' (fun i => n - i) (fun i => n - i)` to reduce the goal to its premises. Introduce `a ha`.
+
+Simplify using `only [Finset.mem_range, Finset.mem_Ioc] at ha ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Simplify using `only [Finset.mem_range, Finset.mem_Ioc] at ha ⊢`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `a ha`. Simplify using `only [Finset.mem_range] at ha`. Use linear arithmetic over natural numbers and integers. Introduce `a ha`. Simplify using `only [Finset.mem_Ioc] at ha`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `a _`. Both sides reduce to the same expression.
+-/
 theorem card_GL_real [Finite k] (n : ℕ) :
     (Nat.card (GL (Fin n) k) : ℝ) = (Nat.card k : ℝ) ^ (n * n) *
       ∏ i ∈ Finset.Ioc 0 n, (1 - ((Nat.card k : ℝ) ^ i)⁻¹) := by
@@ -135,10 +172,16 @@ theorem card_GL_real [Finite k] (n : ℕ) :
   · intro a _
     rfl
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Units.mapEquiv (Matrix.reindexAlgEquiv k k finSumFinEquiv).toRingEquiv.toMulEquiv).toEquiv`.
+-/
 theorem card_GL_sum : Nat.card (GL (Fin r ⊕ Fin t) k) = Nat.card (GL (Fin (r + t)) k) :=
   Nat.card_congr
     (Units.mapEquiv (Matrix.reindexAlgEquiv k k finSumFinEquiv).toRingEquiv.toMulEquiv).toEquiv
 
+/- English proof (translation)
+Establish `key : I * A = a * b * P'`. Apply `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero hb hc) hP)` to reduce the goal to its premises. Take the linear combination `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem mul_inv_eq_of_mul_eq_mul {I A a b c P P' : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) (hc : c ≠ 0)
     (hP : P ≠ 0) (h : I * (A * (b * (c * P))) = a * b * b * c * (P * P')) :
     I * (A * a⁻¹ * b⁻¹) = P' := by
@@ -149,6 +192,17 @@ private theorem mul_inv_eq_of_mul_eq_mul {I A a b c P P' : ℝ} (ha : a ≠ 0) (
     _ = P' * (a * a⁻¹) * (b * b⁻¹) := by rw [key]; ring
     _ = P' := by rw [mul_inv_cancel₀ ha, mul_inv_cancel₀ hb, mul_one, mul_one]
 
+/- English proof (translation)
+Establish `hq1 : 1 < Nat.card k` using `Finite.one_lt_card`. Establish `hq : (0 : ℝ) < Nat.card k` using `Nat.cast_pos.mpr (by omega)`. Establish `hq' : (1 : ℝ) < Nat.card k` using `by exact_mod_cast hq1`. Establish `hpos : ∀ m : ℕ, 0 < ∏ i ∈ Finset.Ioc 0 m, (1 - ((Nat.card k : ℝ) ^ i)⁻¹)`. Introduce `m`.
+
+Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `i hi`. Establish `hi0 : i ≠ 0`. Simplify using `only [Finset.mem_Ioc] at hi`. Use linear arithmetic over natural numbers and integers.
+
+Establish `: ((Nat.card k : ℝ) ^ i)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hq' hi0)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hidx` using `(blockPar t Q).index_mul_card`. Rewrite `hidx` using `[card_blockPar, card_GL_sum]`. Establish `hR : ((blockPar t Q).index : ℝ) * ((Nat.card Q : ℝ) * ((Nat.card k : ℝ) ^ (r * t) * (Nat.card (GL (Fin t) k) : ℝ))) = (Nat.card (GL (Fin (r + t)) k) : ℝ)`.
+
+Conclude with `hidx` after adjusting the coercions. Rewrite `hR` using `[card_GL_real, card_GL_real, ← Finset.prod_Ioc_consecutive _ (Nat.zero_le t) (Nat.le_add_left t r)]`. Establish `he : (Nat.card k : ℝ) ^ ((r + t) * (r + t)) = (Nat.card k : ℝ) ^ (r ^ 2) * (Nat.card k : ℝ) ^ (r * t) * (Nat.card k : ℝ) ^ (r * t) * (Nat.card k : ℝ) ^ (t * t)`. Rewrite using `[← pow_add, ← pow_add, ← pow_add]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hR` using `[he]`. Conclude with `mul_inv_eq_of_mul_eq_mul (pow_pos hq _).ne' (pow_pos hq _).ne' (pow_pos hq _).ne' (hpos t).ne' hR`.
+-/
 theorem index_blockPar [Finite k] (Q : Subgroup (GL (Fin r) k)) :
     ((blockPar t Q).index : ℝ) * ((Nat.card Q : ℝ) * ((Nat.card k : ℝ) ^ (r ^ 2))⁻¹ *
       ((Nat.card k : ℝ) ^ (r * t))⁻¹) =

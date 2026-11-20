@@ -7,6 +7,9 @@ open scoped ContDiff
 
 namespace GlobalTheory.LeviChern
 
+/- English proof (translation)
+Unfold `levi`. Establish `: fderiv ℝ (fun x => c + f x) = fderiv ℝ f` using `funext fun _ => fderiv_const_add _`. Rewrite using `[this]`.
+-/
 theorem levi_const_add {ι : Type} [Fintype ι] (c : ℝ) (f : (ι → ℂ) → ℝ) (z w : ι → ℂ) :
     levi (fun x => c + f x) z w = levi f z w := by
   unfold levi
@@ -19,6 +22,29 @@ namespace GlobalTheory.LeviChern
 
 open Filter Topology
 
+/- English proof (translation)
+Introduce `e X _ A m L s D hB i ψ hψ z hz hD w`. Take `⟨hpot, hsec, hsnc, -⟩` from `hB i`. Establish `hne : s i (ψ.symm z) (ψ.symm z) ≠ 0`. Take `⟨ψ', -, hy0src, -, σ, -, hDσ, u, -, hu0, hs⟩` from `hsnc (ψ.symm z)`. Rewrite using `[hs _ hy0src]`.
+
+Use `mul_ne_zero (hu0 _ hy0src) ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Break down `hk : σ k with _ | j` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `only [Pi.single_eq_same, pow_one]`. Introduce `h0`.
+
+Apply `hD` to reduce the goal to its premises. Establish `: ψ.symm z ∈ D k ∩ ψ'.source`. Rewrite using `[hDσ k]`. Conclude with `⟨hy0src, j, hk, h0⟩`. Conclude with `this.1`.
+
+Simplify using `[Pi.single_eq_of_ne hki]`. Take `⟨j, hj⟩` from `A.cover (ψ.symm z)`. Establish `hG : AnalyticAt ℂ (A.chart j ∘ ψ.symm) z` using `(hψ j).2 z ⟨hz, hj⟩`. Establish `hF : AnalyticAt ℂ (s i (ψ.symm z) ∘ (A.chart j).symm) (A.chart j (ψ.symm z))` using `hsec.1 (ψ.symm z) j _ ⟨(A.chart j).map_source hj, by`. Simplify using `only [Set.mem_preimage, (A.chart j).left_inv hj]`.
+
+Conclude with `(L i).mem_U _⟩`. Establish `hsymm : ContinuousAt ψ.symm z` using `ψ.continuousAt_symm hz`. Establish `hsrc : ∀ᶠ z' in 𝓝 z, ψ.symm z' ∈ (A.chart j).source` using `hsymm.preimage_mem_nhds ((A.chart j).open_source.mem_nhds hj)`. Establish `hh : AnalyticAt ℂ (fun z' => s i (ψ.symm z) (ψ.symm z')) z` using `(AnalyticAt.comp (g := s i (ψ.symm z) ∘ (A.chart j).symm) (f := A.chart j ∘ ψ.symm) hF hG).congr (hsrc.mono fun z' hz' => by simp [(A.chart j).left_inv hz'])`. Establish `hhz : s i (ψ.symm z) (ψ.symm z) ≠ 0` using `hne`.
+
+Establish `hHa : AnalyticAt ℂ (fun z' => Complex.log (s i (ψ.symm z) (ψ.symm z') / s i (ψ.symm z) (ψ.symm z))) z` using `(hh.div analyticAt_const hhz).clog (by show s i (ψ.symm z) (ψ.symm z) / s i (ψ.symm z) (ψ.symm z) ∈ Complex.slitPlane`. Rewrite using `[div_self hhz]`. Conclude with `Complex.one_mem_slitPlane)`. Establish `hHC : ContDiffAt ℝ 2 (fun z' => Complex.log (s i (ψ.symm z) (ψ.symm z') / s i (ψ.symm z) (ψ.symm z))) z` using `(hHa.contDiffAt (n := 2)).restrict_scalars ℝ`. Establish `hReC : ContDiffAt ℝ 2 (fun z' => (Complex.log (s i (ψ.symm z) (ψ.symm z') / s i (ψ.symm z) (ψ.symm z))).re) z` using `Complex.reCLM.contDiff.contDiffAt.comp z hHC`.
+
+Establish `hφ : ContDiffAt ℝ 2 ((L i).φ (ψ.symm z) ∘ ψ.symm) z` using `(GlobalTheory.isPotential_contDiffAt_compatChart A (L i) hpot ψ hψ z hz).of_le (show (2 : WithTop ℕ∞) ≤ ∞ by norm_cast)`. Establish `hU : ∀ᶠ z' in 𝓝 z, ψ.symm z' ∈ (L i).U (ψ.symm z)` using `hsymm.preimage_mem_nhds (((L i).isOpen_U _).mem_nhds ((L i).mem_U _))`. Establish `hhne : ∀ᶠ z' in 𝓝 z, s i (ψ.symm z) (ψ.symm z') ≠ 0` using `hh.continuousAt.eventually_ne hhz`. Establish `key : rComp L s i ∘ ψ.symm =ᶠ[𝓝 z] fun z' => (Real.exp 1 - 2 * Real.log ‖s i (ψ.symm z) (ψ.symm z)‖) + (2 * ((L i).φ (ψ.symm z) ∘ ψ.symm) z' + (-2) * (Complex.log (s i (ψ.symm z) (ψ.symm z') / s i (ψ.symm z) (ψ.symm z))).re)` using `by filter_upwards [hU, hhne] with z' hz'U hz'ne`. Establish `hglue` using `hsec.2 (ψ.symm z') (ψ.symm z) (ψ.symm z') ⟨(L i).mem_U _, hz'U⟩`.
+
+Establish `hHre : (Complex.log (s i (ψ.symm z) (ψ.symm z') / s i (ψ.symm z) (ψ.symm z))).re = Real.log ‖s i (ψ.symm z) (ψ.symm z')‖ - Real.log ‖s i (ψ.symm z) (ψ.symm z)‖`. Rewrite using `[Complex.log_re, norm_div, Real.log_div (norm_ne_zero_iff.2 hz'ne) (norm_ne_zero_iff.2 hhz)]`. Simplify using `only [Function.comp, rComp, normSec]`. Rewrite using `[hglue, hHre, Real.log_pow, Real.log_mul (norm_ne_zero_iff.2 hz'ne) (Real.exp_pos _).ne', Real.log_exp]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2 : levi (fun z' => 2 * ((L i).φ (ψ.symm z) ∘ ψ.symm) z') z w = 2 * levi ((L i).φ (ψ.symm z) ∘ ψ.symm) z w`. Use `levi_add_smul 1 hφ hφ w` as an intermediate fact. Rewrite using `[show (fun z' => 2 * ((L i).φ (ψ.symm z) ∘ ψ.symm) z') = fun z' => ((L i).φ (ψ.symm z) ∘ ψ.symm) z' + 1 * ((L i).φ (ψ.symm z) ∘ ψ.symm) z' from`. Use function extensionality and compare the values at `fun _ => by ring, this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `levi_add_smul (f := fun z' => 2 * ((L i).φ (ψ.symm z) ∘ ψ.symm) z') (-2) ((contDiffAt_const (c := (2 : ℝ))).mul hφ) hReC w`. Unfold `ddcAt formAt`. Rewrite using `[levi_congr key, levi_const_add, h3, levi_re_analytic hHa, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ddcAt_rComp_eq_formAt : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     {m : ℕ} (L : Fin m → LocPot X) (s : Fin m → X → X → ℂ) (D : Fin m → Set X),
     IsBoundary A L s D → ∀ (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)),

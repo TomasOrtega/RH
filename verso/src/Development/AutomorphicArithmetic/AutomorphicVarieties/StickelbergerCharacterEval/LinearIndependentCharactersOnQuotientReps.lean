@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.StickelbergerChara
 
 open Finset UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5
 
+/- English proof (translation)
+Introduce `Ω _ Γ _ c ε h2`. Establish `hw : LinearIndependent Ω (fun χ : Ch Ω c ε => fun g : Γ => ((χ.1 g : Ωˣ) : Ω))`. Use `(linearIndependent_monoidHom Γ Ω).comp (fun χ : Ch Ω c ε => (Units.coeHom Ω).comp χ.1) (by` as an intermediate fact. Introduce `χ ψ h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use extensionality with `g`. Conclude with `congrArg (fun f : Γ →* Ω => f g) h)`. Conclude with `this`. Rewrite `hw`, the goal using `[linearIndependent_iff']`. Introduce `s a hs`.
+
+Apply `hw s a` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hg` using `(mk_eq_mk h2 (rep (Qc.mk c g)) g).mp (mk_rep _)`. Establish `hi` using `congrFun hs (Qc.mk c g)`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hi ⊢`.
+
+Generalize the expression as in `rep (Qc.mk c g) = r at hg hi`. Break down `hg with rfl | rfl` into its components or cases. Conclude with `hi`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.V.B5.linearIndependent_characters_on_quotientReps :
     ∀ {Ω : Type} [Field Ω] {Γ : Type} [CommGroup Γ] (c : Γ) (ε : ℤ), c * c = 1 → LinearIndependent Ω (fun χ : Ch Ω c ε => fun i : Qc c => ((χ.1 (rep i) : Ωˣ) : Ω)) := by
   intro Ω _ Γ _ c ε h2

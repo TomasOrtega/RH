@@ -25,6 +25,17 @@ open scoped Topology
 
 namespace GlobalTheory.CompanionTheory.WcB
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hΦ A hc g₀ hg₀`. Take `⟨hgA, t₀, ht₀⟩` from `hg₀`. Establish `key : ∀ (g : GL (Fin 2) F) (t : Eˣ), Algebra.norm F (t : E) = (g.val).det → GL2LocalData.Wc χ σ μ lam c Φ g = wS χ σ μ lam c Φ g t`. Introduce `g t ht`. Establish `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det` using `⟨t, ht⟩`.
+
+Rewrite using `[Wc_eq_wS χ σ μ lam c Φ g h]`. Conclude with `GlobalTheory.T.weil_whittaker_measure_independence F E χ σ μ lam c Φ hΦ g _ t (h.choose_spec.trans ht.symm)`. Rewrite using `[ContinuousWithinAt, key g₀ t₀ ht₀]`. Introduce `V hV`. Establish `h2` using `(hc (g₀, t₀) hgA) hV`.
+
+Take `⟨u, hu, hsub⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.1 h2`. Rewrite `hu` using `[nhds_prod_eq]`. Take `⟨U, hU, T, hT, hprod⟩` from `Filter.mem_prod_iff.1 hu`. Establish `hev` using `GlobalTheory.T.norm_image_neighbourhood_eventually F E t₀ T hT`. Rewrite `hev` using `[ht₀]`.
+
+Establish `hdet : Continuous (fun g : GL (Fin 2) F => (g.val).det)` using `Continuous.matrix_det Units.continuous_val`. Establish `hev' : ∀ᶠ g in 𝓝 g₀, ∃ t ∈ T, Algebra.norm F (t : E) = (g.val).det` using `hdet.continuousAt.eventually hev`. Use `Filter.mem_map.2 ?_` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds hU, mem_nhdsWithin_of_mem_nhds hev', self_mem_nhdsWithin] with g hgU hgt hgS`. Take `⟨t, htT, ht⟩` from `hgt`.
+
+Use `show GL2LocalData.Wc χ σ μ lam c Φ g ∈ V`. Rewrite using `[key g t ht]`. Establish `hp : ((g, t) : GL (Fin 2) F × Eˣ) ∈ u ∩ {p | p.1 ∈ A}` using `⟨hprod (Set.mk_mem_prod hgU htT), hgS.1⟩`. Conclude with `hsub hp`.
+-/
 theorem Wc_continuousOn_of_wS : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μ : Measure E) (lam : ℂ) (c : Eˣ →* ℂˣ) (Φ : E → ℂ), Φ ∈ GL2LocalData.SBc F E c → ∀ A : Set (GL (Fin 2) F), ContinuousOn (fun p : GL (Fin 2) F × Eˣ => wS χ σ μ lam c Φ p.1 p.2) {p | p.1 ∈ A} → ContinuousOn (GL2LocalData.Wc χ σ μ lam c Φ) (A ∩ {g | ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det}) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ μ lam c Φ hΦ A hc g₀ hg₀
   obtain ⟨hgA, t₀, ht₀⟩ := hg₀

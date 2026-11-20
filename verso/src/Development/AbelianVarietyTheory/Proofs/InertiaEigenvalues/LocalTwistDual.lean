@@ -15,10 +15,22 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.TwistRead
 
+/- English proof (translation)
+Simplify using `[matRep, Matrix.toLinAlgEquiv'_apply]`.
+-/
 theorem matRep_apply {F Γ : Type} [CommRing F] [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) F)
     (g : Γ) (v : Fin k → F) : matRep M g v = (M g).mulVec v := by
   simp [matRep, Matrix.toLinAlgEquiv'_apply]
 
+/- English proof (translation)
+Establish `hRT : ∀ g x, matRep R g x = χ g • matRep T g x`. Introduce `g x`. Rewrite using `[matRep_apply, matRep_apply, hR, Matrix.smul_mulVec]`. Establish `dT : IsDR (P.PD K) (matRep T)` using `(GlobalTheory.TwistDR.isDR_twist_iff l P AI hT K LL _ (matRep T) (matRep R) ν χ hν hRT dν).2 dR`. Establish `jT : ∀ a : ℤ, multV (P.PD K) (matRep R) τ (a + c) = multV (P.PD K) (matRep T) τ a` using `GlobalTheory.TwistJump.multV_twist_char l P AI hT K LL _ (matRep T) (matRep R) ν χ hν hRT dν τ c hc`.
+
+Establish `hb : Function.Bijective (dotProductBilin ↥LL.1 ↥LL.1 : (Fin n → ↥LL.1) →ₗ[↥LL.1] (Fin n → ↥LL.1) →ₗ[↥LL.1] ↥LL.1)` using `(dotProductEquiv ↥LL.1 (Fin n)).bijective`. Establish `hd` using `GlobalTheory.T.galois_representation_hom_finite_dimensional l P AI hT K LL _ (matRep T) _ (matRep U) _ 1 hb (by`. Introduce `g x y`. Rewrite using `[matRep_apply, matRep_apply, hU, zpow_one]`. Simplify using `only [dotProductBilin_apply_apply, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+
+Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← map_mul, inv_mul_cancel, map_one, Matrix.one_mulVec, dotProduct_comm]) dT`. Use `⟨dT, hd.1, fun a => ⟨(jT a).symm, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hd.2 τ (-a - 1) hs`. Establish `h2` using `jT (-a - 1)`. Rewrite `h1` using `[show -(-a - 1) - 1 = a by ring]`.
+
+Rewrite `h2` using `[show -a - 1 + c = c - a - 1 by ring]`. Rewrite using `[h1, h2]`.
+-/
 theorem local_twist_dual (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K LL : FinExt l) (hs : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = Module.finrank ℚ_[l] ↥K.1) {n : ℕ}
     (R T U : ↥(GK K) →* Matrix (Fin n) (Fin n) ↥LL.1)
@@ -55,6 +67,39 @@ theorem local_twist_dual (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D i w hw hT LL' h τ' τ hτ r x χ c hr hχ dr dχ hc`. Establish `tie` using `D.loc_tie i w hw`. Use `set f : D.nd.O i →+* ↥LL'.1 := (IntermediateField.inclusion h).toRingHom.comp (D.nbr i w hw).toLL with hf`. Establish `hfc : Continuous f`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations.
+
+Conclude with `continuous_subtype_val.comp (continuous_subtype_val.comp (D.nbr i w hw).eO_cont)`. Establish `hmap : ∀ (m : ℕ) (ρ : GE D.nd →* GL (Fin m) (D.nd.O i)), mapRep (algebraMap ↥LL'.1 (Qbar (D.nd.l i))) (mapRep f ρ) = mapRep (iotaOQ D.nd D.naut i) ρ`. Introduce `m ρ`. Use extensionality with `g a b`. Conclude with `(tie.1 _).symm`.
+
+Establish `cr : Continuous (fun g => ((mapRep f (r x) g : GL (Fin D.R.nV) ↥LL'.1) : Matrix (Fin D.R.nV) (Fin D.R.nV) ↥LL'.1))` using `hr.matrix_map hfc`. Establish `cχ : Continuous (fun g => ((mapRep f χ g : GL (Fin 1) ↥LL'.1) : Matrix (Fin 1) (Fin 1) ↥LL'.1))`. Use `Continuous.matrix_map (A := fun g => (χ g : Matrix (Fin 1) (Fin 1) (D.nd.O i))) ?_ hfc` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim a 0, Subsingleton.elim b 0]`.
+
+Simplify using `only [hχ]`. Conclude with `D.nd.chi_cont i 1`. Establish `tr` using `tie.2.2 LL' h _ _ cr`. Establish `tχ` using `tie.2.2 LL' h _ _ cχ`. Rewrite `tr`, `tχ` using `[hmap]`.
+
+Establish `dr'` using `tr.2.1.1 dr`. Establish `dχ'` using `tχ.2.1.1 dχ`. Establish `jr` using `(tr.2.2.2 τ τ' hτ).2 dr'`. Establish `jχ` using `(tχ.2.2.2 τ τ' hτ).2 dχ'`. Establish `hs : Nat.card (↥(D.nbr i w hw).Kw.1 →ₐ[ℚ_[D.nd.l i]] ↥LL'.1) = Module.finrank ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1` using `by haveI : FiniteDimensional ℚ_[D.nd.l i] ↥(D.nbr i w hw).Kw.1 := (D.nbr i w hw).Kw.2`.
+
+Use `(GlobalTheory.splits_of_conjugates_mem _ (D.nbr i w hw).Kw LL' (fun σ y => h ((D.nbr i w hw).LL_split σ y)) inferInstance).2` as an intermediate fact. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `this`. Set `ι : Br.G D.nbr i w hw →* GE D.nd` to `(decS D.nd w).comp (Br.iota D.nbr i w hw)`. Establish `hrep : matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rO D.nd i r x))) = (D.nbr i w hw).repE LL' ((mapRep f (r x)).comp (Dec (F` using `D.host.E) (D.nd.plOm.1 w)).subtype) := by`.
+
+Use `MonoidHom.ext fun g => LinearMap.ext fun v => ?_` and prove the remaining obligations. Rewrite using `[matRep_apply]`. Both sides reduce to the same expression. Establish `key` using `local_twist_dual (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) hT (D.nbr i w hw).Kw LL' hs (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rO D.nd i r x))) (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rTwO D.nd i r x))) (mapM (In …`. Introduce `g v`.
+
+Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `Matrix.mulVec ((χ (ι g) : Matrix (Fin 1) (Fin 1) (D.nd.O i)).map f) v a = _`. Rewrite using `[Subsingleton.elim a 0]`. Simplify using `[Matrix.mulVec, dotProduct, hχ])`. Use the proof step `(by`.
+
+Introduce `g`. Use extensionality with `a b`. Use `congr 1`. Express the relevant statement in the definitionally equal form `f (rO D.nd i r x (ι g) a b) = f (D.nd.chi i 1 (ι g) : (D.nd.O i)ˣ) * f ((((D.nd.chi i 1 (ι g))⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x (ι g) a b)`. Rewrite using `[← map_mul, Units.mul_inv_cancel_left])`.
+
+Use the proof step `(by`. Introduce `g`. Establish `e` using `congrArg Units.val (GlobalTheory.CycBridge.locChi_epsU D i w hw g)`. Establish `e' : f (epsU D.nd i (ι g) : (D.nd.O i)ˣ) = ((cycLL ((D.loc (D.nd.l i)).PD (D.nbr i w hw).Kw) ↥LL'.1 g : (↥LL'.1)ˣ) : ↥LL'.1)`. Establish `e2` using `congrArg (IntermediateField.inclusion h) e`.
+
+Conclude with `e2.trans ((IntermediateField.inclusion h).commutes _)`. Rewrite using `[← e']`. Use extensionality with `a b`. Use `congr 1`. Express the relevant statement in the definitionally equal form `f ((((D.nd.chi i 1 (ι g)) * epsU D.nd i (ι g) : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x ((ι g)⁻¹ : GE D.nd) b a) = f (epsU D.nd i (ι g) : (D.nd.O i)ˣ) * f ((((D.nd.chi i 1 (ι g⁻¹))⁻¹ : (D.nd.O i)ˣ) : D.nd.O i) * rO D.nd i r x (ι g⁻¹) b a)`.
+
+Rewrite using `[← map_mul, map_inv ι g, map_inv (D.nd.chi i 1), inv_inv, Units.val_mul]`. Use `congr 1`. Use the proof step `ring)`. Use the proof step `(by`. Rewrite using `[hrep]`.
+
+Unfold `IsDR`. Rewrite using `[Module.finrank_fin_fun]`. Conclude with `dr')`. Use the proof step `(by`. Unfold `IsDR`.
+
+Rewrite using `[Module.finrank_fin_fun]`. Conclude with `dχ')`. Use the proof step `τ' c`. Use the proof step `(by`. Introduce `a`.
+
+Use `(jχ a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hc, Multiset.count_singleton]`. Apply the tactic sequence `split_ifs <;> rfl)`. Rewrite `key` using `[hrep]`. Use `⟨key.1, key.2.1, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(key.2.2 a).1.trans (jr (a + c)).symm`. Conclude with `(key.2.2 a).2.trans (jr (c - a - 1)).symm`.
+-/
 theorem twist_dual_mult : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)), LocTied (D.nd.l i) (D.loc (D.nd.l i)) (D.locA (D.nd.l i)) → ∀ (LL' : FinExt (D.nd.l i)) (h : (D.nbr i w hw).LL.1 ≤ LL'.1) (τ' : Br.Kw D.nbr i w hw →ₐ[ℚ_[D.nd.l i]] ↥LL'.1) (τ : D.host.E →+* Qbar (D.nd.l i)), (∀ x : D.host.E, τ x = ((τ' (Br.cEw D.nbr i w hw x) : ↥LL'.1) : Om (D.nd.l i))) → ∀ (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (x : D.nd.X i) (χ : GE D.nd →* GL (Fin 1) (D.nd.O i)) (c : ℤ), Continuous (fun g => rO D.nd i r x g) → (∀ g, (χ g : Matrix (Fin 1) (Fin 1) (D.nd.O i)) 0 0 = ((D.nd.chi i 1 g : (D.nd.O i)ˣ) : D.nd.O i)) → D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) (r x)) w → D.naut.IsdRW i (mapRep (iotaOQ D.nd D.naut i) χ) w → D.naut.jumpsW i (mapRep (iotaOQ D.nd D.naut i) χ) τ = {c} → IsDR (Br.PD D.loc D.nbr i w hw) (matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rTwO D.nd i r x)))) ∧ IsDR (Br.PD D.loc D.nbr i w hw) (matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rDuO D.nd i r x)))) ∧ ∀ a : ℤ, multV (Br.PD D.loc D.nbr i w hw) (matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rTwO D.nd i r x)))) τ' a = (((D.naut.jumpsW i (mapRep (iotaOQ D.nd D.naut i) (r x)) τ).count (a + c) : ℕ) : ℤ) ∧ multV (Br.PD D.loc D.nbr i w hw) (matRep (mapM (IntermediateField.inclusion h).toRingHom (Br.loc D.nbr i w hw (rDuO D.nd i r x)))) τ' a = (((D.naut.jumpsW i (mapRep (iotaOQ D.nd D.naut i) (r x)) τ).count (c - a - 1) : ℕ) : ℤ) := by
   intro D i w hw hT LL' h τ' τ hτ r x χ c hr hχ dr dχ hc
   have tie := D.loc_tie i w hw

@@ -11,6 +11,19 @@ noncomputable section
 namespace GlobalTheory.CrysChiOne
 variable {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
   {hw : w ∈ placesOver D.host.E (D.nd.l i)}
+/- English proof (translation)
+Introduce `D i r ρ π h41 hfont hr hρc hd hl0 hl1 w hw C`. Establish `hF` using `hfont w hw C`. Establish `hcA : TruncatedSeriesCountingIdentities.FamilyContinuous (D` using `D) i r := continuous_family_of D i r hr`. Establish `hrx` using `_root_.GlobalTheory.CrysChiOne.rx_crys_alt_alt h41 r hr hl0 hl1 C`. Establish `hchi` using `chi1inv_crys C hF r ρ π hd (hrx π) (hcA π)`.
+
+Establish `hTw : ∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rTwO D.nd i r x)))`. Introduce `x`. Establish `hc'` using `locC_cont' C _ (rTwO_cont D i r hcA x)`. Rewrite `hc'`, the goal using `[locC_rTwO]`. Conclude with `twist_crys C hF _ _ (locC_cont' C _ (hcA x)) hc' hchi (hrx x)`.
+
+Take `⟨B, A, hAB, hint⟩` from `decomp_rho r ρ π hd`. Establish `hrho` using `sub_crys C hF r π (hrx π) (hcA π) (rhoO D.nd i ρ π) hρc B A hAB hint`. Establish `hWc : Continuous fun g => WpO D.nd i ρ π g`. Establish `h1 : Continuous fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)`. Establish `e : (fun g : GE D.nd => ((((chiU D.nd i 1)⁻¹ g : (D.nd.O i)ˣ)) : D.nd.O i)) = fun g => ((D.nd.chi i 1 g⁻¹ : (D.nd.O i)ˣ) : D.nd.O i)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(D.nd.chi_cont i 1).comp continuous_inv`.
+
+Conclude with `h1.smul hρc`. Establish `hW : IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π)))`. Establish `hc'` using `locC_cont' C _ hWc`. Rewrite `hc'`, the goal using `[locC_WpO]`. Conclude with `twist_crys C hF _ _ (locC_cont' C _ hρc) hc' hchi hrho`.
+
+Use `⟨hchi, fun x => ?_, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[locC_rDuO]`. Conclude with `(GlobalTheory.HTW.Rec.tateDual_matRep_crys (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL _ hF.2.2.1 (locC_cont' C _ (rTwO_cont D i r hcA x)) (hTw x)).2`. Rewrite using `[locC_T2O]`. Conclude with `(GlobalTheory.HTW.Rec.tateDual_matRep_crys (D.loc (D.nd.l i)) (D.nbr i w hw).Kw C.LL _ hF.2.2.1 (locC_cont' C _ hWc) hW).2`.
+-/
 theorem main_alt_alt : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i), _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → TruncatedSeriesCountingIdentities.FontaineAtPlacesOverL (D := D) i → GoodR D.nd i r → (Continuous fun g => ((ρ π g : GL (Fin D.R.r) (D.nd.O i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i))) → TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → D.nd.l i ≠ D.host.g 0 → D.nd.l i ≠ D.host.g 1 → ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw), IsCrys (Br.PD D.loc D.nbr i w hw) (Formalism.WeaklyAdmissibleFiltrations.charRep (TruncatedSeriesCountingIdentities.chi1C C)⁻¹) ∧ (∀ x, IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (rDuO D.nd i r x)))) ∧ IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (WpO D.nd i ρ π))) ∧ IsCrys (Br.PD D.loc D.nbr i w hw) (matRep (TruncatedSeriesCountingIdentities.locC C (T2O D.nd i ρ π))) := by
   intro D i r ρ π h41 hfont hr hρc hd hl0 hl1 w hw C
   have hF := hfont w hw C

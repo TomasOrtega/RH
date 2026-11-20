@@ -12,6 +12,11 @@ open scoped GlobalTheory.BKGal.HatVal
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 
+/- English proof (translation)
+Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add v w hv hw => simp only [map_add, hv, hw]`. Consider the case `tmul v c`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [map_zero, AddMonoidHom.zero_apply]`. Consider the case `add x x' hx hx' => simp only [map_add, AddMonoidHom.add_apply, hx, hx']`. Consider the case `tmul o b => rw [hd, hA, hB, hg]`.
+-/
 private theorem actDRG {Z Q O P D V R : Type} [CommRing Z] [CommRing Q] [CommRing O] [Algebra Z O]
     [CommRing P] [Algebra Z P] [CommRing D] [Algebra Z D] [AddCommGroup V] [Module Q V]
     [CommRing R] [Algebra Q R] (s : O → V → V) (g : P → D) (cD : P → R) (e : D → R)
@@ -31,6 +36,13 @@ private theorem actDRG {Z Q O P D V R : Type} [CommRing Z] [CommRing Q] [CommRin
     | add x x' hx hx' => simp only [map_add, AddMonoidHom.add_apply, hx, hx']
     | tmul o b => rw [hd, hA, hB, hg]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `add v w hv hw => simp only [smul_add, map_add, hv, hw]`. Consider the case `tmul u x`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`.
+
+Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_mul, zero_tmul, map_zero, AddMonoidHom.zero_apply]`. Consider the case `add y y' hy hy' => simp only [add_mul, add_tmul, map_add, AddMonoidHom.add_apply, hy, hy']`. Consider the case `tmul o' b'`. Proceed by induction on `u using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp only [mul_zero, zero_tmul, map_zero]`. Consider the case `add y y' hy hy' => simp only [mul_add, add_tmul, map_add, hy, hy']`. Consider the case `tmul o b`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, hY, hY, hd, hB, map_mul, hs, hg b']`.
+-/
 private theorem actCrisG {Z Q O P D M V R : Type} [CommRing Z] [CommRing Q] [CommRing O] [Algebra Z O]
     [CommRing P] [Algebra Z P] [CommRing D] [Algebra Z D] [AddCommGroup V] [Module Q V]
     [AddCommGroup M] [Module O M]
@@ -58,21 +70,36 @@ private theorem actCrisG {Z Q O P D M V R : Type} [CommRing Z] [CommRing Q] [Com
       | tmul o b =>
         rw [Algebra.TensorProduct.tmul_mul_tmul, hY, hY, hd, hB, map_mul, hs, hg b']
 
+/- English proof (translation)
+Establish `e0` using `GlobalTheory.FundSeq.eq_core_of_isCrisDR Td.incl C`. Rewrite using `[← e0]`. Conclude with `(Td.eD.symm_apply_apply _).symm`.
+-/
 private theorem hcB {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
     (C : GlobalTheory.MemLoc.Core l) (β : Per.Bcris l) : GlobalTheory.BKGal.JumpDR.cB Td β = Td.eD.symm (C.ι β) := by
   have e0 := GlobalTheory.FundSeq.eq_core_of_isCrisDR Td.incl C
   rw [← e0]
   exact (Td.eD.symm_apply_apply _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hcD {l : ℕ} [Fact l.Prime] {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
     (β : Per.BdRp l) : GlobalTheory.BKGal.JumpDR.cD Td β = Td.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) β) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hdR {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (o : O) (b : Per.BdRp l) :
     dRO l O (o ⊗ₜ[ℤ_[l]] b) = o ⊗ₜ[ℤ_[l]] algebraMap (Per.BdRp l) (Per.BdR l) b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hio {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [Algebra ℤ_[l] O] (C : GlobalTheory.MemLoc.Core l) (o : O) (b : Per.Bcris l) :
     iotaO O C (o ⊗ₜ[ℤ_[l]] b) = o ⊗ₜ[ℤ_[l]] C.ι b := rfl
 
+/- English proof (translation)
+Establish `h1 : act y (Y z) = B (dRO l O y) (Y z)` using `actDRG s (algebraMap (Per.BdRp l) (Per.BdR l)) (GlobalTheory.BKGal.JumpDR.cD Td) Td.eD.symm (hcD Td) (AddMonoidHom.mk' (dRO l O) (map_add _)) hdR act hact B hB y (Y z)`. Establish `h2 : Y (b • z) = B (iotaO O C b) (Y z)` using `actCrisG s hs j C.ι (GlobalTheory.BKGal.JumpDR.cB Td) Td.eD.symm (hcB Td C) (AddMonoidHom.mk' (iotaO O C) (map_add _)) (hio C) Y hY B hB b z`. Conclude with `h2.trans (hby ▸ h1.symm)`.
+-/
 private theorem mainG {l : ℕ} [Fact l.Prime] {O M V : Type} [CommRing O] [Algebra ℤ_[l] O]
     [AddCommGroup V] [Module ℚ_[l] V] [AddCommGroup M] [Module O M]
     {Pl : LocPrime l} {AI : LocAinf l Pl} (Td : LocTied l Pl AI)
@@ -95,6 +122,9 @@ private theorem mainG {l : ℕ} [Fact l.Prime] {O M V : Type} [CommRing O] [Alge
       (hio C) Y hY B hB b z
   exact h2.trans (hby ▸ h1.symm)
 
+/- English proof (translation)
+Introduce `l _ LL T Pl AI Td Y hY act hact C b y hby z`. Take `⟨B, hB⟩` from `UpperTheory.KN.exists_tensorBdR_action_on_latticeBdR l LL T Pl AI Td`. Conclude with `mainG Td (fun (o : ↥(OL LL)) (v : T.V) => (o : ↥LL.1) • v) (fun o o' v => mul_smul (o : ↥LL.1) (o' : ↥LL.1) v) (fun x : ↥T.L.T => (x : T.V)) Y hY act hact B hB C b y hby z`.
+-/
 theorem _root_.UpperTheory.KN.crysLattice_bdRPlus_action_compat :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (Y : TW (OB l ↥(OL LL)) T →+ T.V ⊗[ℚ_[l]] Pl.R.BdR),
     (∀ (o : ↥(OL LL)) (b : Per.Bcris l) (x : ↥T.L.T), Y ((o ⊗ₜ[ℤ_[l]] b) ⊗ₜ[↥(OL LL)] x) = ((o : ↥LL.1) • (x : T.V)) ⊗ₜ[ℚ_[l]] GlobalTheory.BKGal.JumpDR.cB Td b) →

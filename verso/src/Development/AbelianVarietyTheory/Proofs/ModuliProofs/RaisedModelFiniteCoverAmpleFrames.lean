@@ -27,6 +27,11 @@ open GlobalTheory.Models GlobalTheory.ZM
 
 namespace GlobalTheory.RaisedAmple
 
+/- English proof (translation)
+Take `⟨⟨_, _⟩, _, hfr⟩` from `hβ`. Use `letI := β.toAlgebra`. Use `letI := k.toAlgebra`. Use `letI := (k.comp β).toAlgebra`. Establish `: IsScalarTower O F F'` using `IsScalarTower.of_algebraMap_eq' rfl`.
+
+Establish `: FiniteDimensional F F'` using `hk`. Establish `hD : IsDedekindDomain (integralClosure O F')` using `integralClosure.isDedekindDomain O F F'`. Establish `hF : IsFractionRing (integralClosure O F') F'` using `integralClosure.isFractionRing_of_finite_extension F F'`. Establish `hfin : Module.Finite O (integralClosure O F')` using `IsIntegralClosure.finite O F F' _`. Use `⟨integralClosure O F', inferInstance, algebraMap _ F', algebraMap O _, ⟨⟨inferInstance, hD⟩, inferInstance, hF⟩, rfl, hfin, fun x hx => ⟨⟨x, hx.tower_top⟩, rfl⟩⟩` and prove the remaining obligations.
+-/
 theorem exists_closure {O F F' : Type} [CommRing O] [Field F] [Field F'] [CharZero F] [CharZero F'] (β : O →+* F)
     (k : F →+* F') (hβ : IsDedFrac β) (hk : k.Finite) :
     ∃ (O' : Type) (_ : CommRing O') (β' : O' →+* F') (b : O →+* O'), IsDedFrac β' ∧ β'.comp b = k.comp β ∧ b.Finite ∧
@@ -43,6 +48,11 @@ theorem exists_closure {O F F' : Type} [CommRing O] [Field F] [Field F'] [CharZe
   refine ⟨integralClosure O F', inferInstance, algebraMap _ F', algebraMap O _, ⟨⟨inferInstance, hD⟩, inferInstance, hF⟩,
     rfl, hfin, fun x hx => ⟨⟨x, hx.tower_top⟩, rfl⟩⟩
 
+/- English proof (translation)
+Substitute `hk` using the available equality. Use `⟨(pullbackLeftPullbackSndIso f g g').symm, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.symm_hom, Iso.eq_comp_inv]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullbackLeftPullbackSndIso_hom_fst, pullback.lift_fst_assoc, pullback.lift_fst, h₁]`.
+
+Rewrite using `[Category.assoc, pullbackLeftPullbackSndIso_hom_snd, pullback.lift_snd, pullback.lift_snd]`.
+-/
 theorem lift_lift {T X Y Z W : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (g' : W ⟶ Y) (k : W ⟶ Z) (hk : g' ≫ g = k) (r : T ⟶ X)
     (s : T ⟶ W) (w : r ≫ f = s ≫ k) (r' : T ⟶ pullback f g) (h₁ : r' ≫ pullback.fst _ _ = r)
     (h₂ : r' ≫ pullback.snd _ _ = s ≫ g') :
@@ -56,9 +66,17 @@ theorem lift_lift {T X Y Z W : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) (g' : W �
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+The claim follows from `(Complex.isPrimitiveRoot_exp A hA.ne').isIntegral hA`.
+-/
 theorem isIntegral_zeta {A : ℕ} (hA : 0 < A) : IsIntegral ℤ (zeta A) :=
   (Complex.isPrimitiveRoot_exp A hA.ne').isIntegral hA
 
+/- English proof (translation)
+Use `c.fin` as an intermediate fact. Use `GlobalTheory.BaseRing.finiteDimensional_KA l'` as an intermediate fact. Establish `hM : 0 < l'.M'` using `Nat.lcm_pos (lt_of_lt_of_le (by norm_num) l'.three_le) l'.A_pos`. Establish `: FiniteDimensional ℚ (IntermediateField.adjoin ℚ {zeta l'.M'})` using `IntermediateField.adjoin.finiteDimensional (isIntegral_zeta hM).tower_top`. Use `⟨⟨(c.F ⊔ KA l') ⊔ IntermediateField.adjoin ℚ {zeta l'.M'}, inferInstance, fun τ a => ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `(le_sup_left.trans le_sup_left : c.F ≤ _) (c.conj τ a)`. Conclude with `(le_sup_right : IntermediateField.adjoin ℚ {zeta l'.M'} ≤ _) (IntermediateField.subset_adjoin _ _ rfl)`. Conclude with `le_sup_right.trans le_sup_left`. Conclude with `le_sup_left.trans le_sup_left`.
+-/
 theorem exists_coeff {l : Level H} (c : Coeff l) (l' : Level H) : ∃ c' : Coeff l', c.F ≤ c'.F := by
   have := c.fin
   have := GlobalTheory.BaseRing.finiteDimensional_KA l'
@@ -71,6 +89,9 @@ theorem exists_coeff {l : Level H} (c : Coeff l) (l' : Level H) : ∃ c' : Coeff
   · exact le_sup_right.trans le_sup_left
   · exact le_sup_left.trans le_sup_left
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.div_mul_div hd'.1 hd.1, pow_mul, e, ← Category.assoc, LevelCover.sec_pow ξ _ _ (h'.1 a), Category.assoc, h.1, Category.assoc]`. Rewrite using `[← Nat.div_mul_div hd'.2.2 hd.2.2, pow_mul, e, ← Category.assoc, LevelCover.sec_pow ξ _ _ (h'.2 a), Category.assoc, h.2, Category.assoc]`.
+-/
 theorem levComp_comp {D : Datum H} {l l' l'' : Level H} {B B' B'' : Type} [CommRing B] [CommRing B'] [CommRing B'']
     {b : Base l B} {b' : Base l' B'} {b'' : Base l'' B''} {S S' S'' : Scheme.{0}} {s : S ⟶ Sp B} {s' : S' ⟶ Sp B'}
     {s'' : S'' ⟶ Sp B''} {o'' : Obj D l'' b'' s''} {o' : Obj D l' b' s'} {o : Obj D l b s} {r : S' ⟶ S} {g : S'' ⟶ S'}
@@ -82,6 +103,11 @@ theorem levComp_comp {D : Datum H} {l l' l'' : Level H} {B B' B'' : Type} [CommR
   · rw [← Nat.div_mul_div hd'.2.2 hd.2.2, pow_mul, e, ← Category.assoc, LevelCover.sec_pow ξ _ _ (h'.2 a),
       Category.assoc, h.2, Category.assoc]
 
+/- English proof (translation)
+Establish `hle : RZ H S A ≤ i.range`. Unfold `RZ`. Rewrite using `[Subring.closure_le]`. Apply the tactic sequence `rintro x (rfl | rfl | rfl) <;> assumption`. Set `e : O ≃+* i.range` to `RingEquiv.ofBijective i.rangeRestrict ⟨fun x y h => hi (congrArg Subtype.val h), i.rangeRestrict_surjective⟩`.
+
+Use `⟨e.symm.toRingHom.comp (Subring.inclusion hle), fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply (Subring.inclusion hle x))`.
+-/
 theorem exists_isInc_of_mem {O : Type} [CommRing O] (i : O →+* ℂ) (hi : Function.Injective i) {S A : ℕ}
     (h₁ : (1 + H.rt0) / 2 ∈ i.range) (h₂ : (S : ℂ)⁻¹ ∈ i.range) (h₃ : zeta A ∈ i.range) :
     ∃ b : RZ H S A →+* O, IsInc (RZ H S A).subtype i b := by
@@ -94,6 +120,23 @@ theorem exists_isInc_of_mem {O : Type} [CommRing O] (i : O →+* ℂ) (hi : Func
   refine ⟨e.symm.toRingHom.comp (Subring.inclusion hle), fun x => ?_⟩
   exact congrArg Subtype.val (e.apply_symm_apply (Subring.inclusion hle x))
 
+/- English proof (translation)
+Take `⟨o, ⟨m0⟩⟩` from `GlobalTheory.obj_pull E H D l' (KA l') (KA l') (baseKA l') (baseKA l') (RingHom.id _) _ _ (Xo l').s (pullback.fst (Xo l').s (spMap (IntermediateField.inclusion c'.le).toRingHom) ≫ (Xo l').s) (pullback.fst (Xo l').s (spMap (IntermediateField.inclusion c'.le).toRingHom)) rfl rfl (b …`. Take `⟨k, r, ν, hr, hk, hl, hf, -, hs⟩` from `GlobalTheory.LevelMapField.exists_levelMap L₁ L₂ L₃ E H D Xo hN l l' c' o m0 d`. Establish `hkk : k = (IntermediateField.inclusion hc).toRingHom.comp (IntermediateField.inclusion c.le).toRingHom` using `RingHom.ext fun x => Subtype.ext (hk x)`. Take `⟨r', hr₁, hr₂⟩ : ∃ r' : (Xo l').XF c' ⟶ (Xo l).XF c, r' ≫ pullback.fst _ _ = r ∧ r' ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc).toRingHom` from `⟨pullback.lift r (pullback.snd _ _ ≫ spMap (IntermediateField.inclusion hc).toRingHom) (by rw [hr, hkk, spMap_comp, Category.assoc]), pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨ν', hν'⟩` from `LevelCover.sab_cancel Y.m0.toSABMap ν r' hr₁`.
+
+Establish `hl' : LevComp o Y.oF r' ν'` using `⟨fun x => LevelCover.sec_cancel ν' Y.m0.toSABMap _ _ (by`. Rewrite using `[hν', hl.1, ← hr₁, Category.assoc]`. Conclude with `congrArg _ (Y.m0.eta x).symm),`. Use `fun x => LevelCover.sec_cancel ν' Y.m0.toSABMap _ _ (by`. Rewrite using `[hν', hl.2, ← hr₁, Category.assoc]`.
+
+Conclude with `congrArg _ (Y.m0.etaA x).symm)⟩`. Take `⟨e, he⟩` from `lift_lift (Xo l).s _ _ (spMap k) (by rw [hkk, spMap_comp]) r _ hr r' hr₁ hr₂`. Establish `hf' : IsFinite (pullback.lift r' _ hr₂)` using `by rw [he]; infer_instance`. Establish `hs' : Surjective (pullback.lift r' _ hr₂)` using `by rw [he]; infer_instance`. Establish `hsm : Smooth (pullback.snd (Xo l').s (spMap (IntermediateField.inclusion c'.le).toRingHom))`.
+
+Use `(Xo l').smooth` as an intermediate fact. Establish `: Smooth (Xo l').s` using `SmoothOfRelativeDimension.smooth D.dim _`. Use `infer_instance`. Establish `hnorm` using `(GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ _ _ hsm).2.1`. Take `⟨C, ⟨a⟩⟩` from `GlobalTheory.T.exists_normal_model_above_finite_cover E H _ _ _ _ Y.oF.t β _ _ _ (pullback.snd (Xo l').s (spMap (IntermediateField.inclusion c'.le).toRingHom)) o.t β' (ofModel Y) b _ r' hr₂ ν' hβ hβ' hb hnorm hf'`.
+
+Establish `hπ : IsFinite a.π`. Use `a.fin` as an intermediate fact. Establish `: IsFinite (spMap b)` using `(IsFinite.SpecMap_iff _).2 hfin`. Rewrite using `[← pullback.lift_fst a.π C.s a.π_over]`. Use `infer_instance`.
+
+Establish `hr' : Surjective r'`. Establish `: Surjective (spMap (IntermediateField.inclusion hc).toRingHom)` using `⟨fun x => ⟨default, Subsingleton.elim _ _⟩⟩`. Rewrite using `[← pullback.lift_fst r' _ hr₂]`. Use `infer_instance`. Establish `hj : IsDominant (ofModel Y).j`.
+
+Take `⟨⟨_, _⟩, -, hfr⟩` from `hβ`. Use `letI := β.toAlgebra`. Conclude with `(GlobalTheory.genericPart_dense_proOpen O c.F Y.X _ Y.s Y.jQ Y.flat Y.proj Y.jQ_open Y.jQ_dense).2.2.2.2.2.1`. Establish `hd : IsDominant a.π`. Establish `: IsDominant (C.j ≫ a.π)` using `by rw [a.j_comm]; infer_instance`.
+
+Conclude with `IsDominant.of_comp C.j a.π`. Conclude with `⟨⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, C.t, o, m0, C.m, C.ab_gen⟩, r', ν', a, hl', hπ, surjective_of_isDominant_of_isClosed_range a.π a.π.isClosedMap.isClosed_range⟩`.
+-/
 theorem exists_cover (L₁ : Out.Laws) (L₂ : Out.Laws2) (L₃ : Out.Laws3) {D : Datum H} {Xo : ∀ l : Level H, Moduli D l}
     (hN : ToroidalLevelCompatibility (H := H) (D := D)) {l l' : Level H} {c : Coeff l} {c' : Coeff l'} {O O' : Type} [CommRing O]
     [CommRing O'] {β : O →+* c.F} {β' : O' →+* c'.F} (Y : Model (Xo l) c β) (b : O →+* O') (d : l.Dvd l')
@@ -149,6 +192,27 @@ theorem exists_cover (L₁ : Out.Laws) (L₂ : Out.Laws2) (L₃ : Out.Laws3) {D 
   exact ⟨⟨C.X, C.s, C.normal, C.proj, C.flat, C.jQ, C.jQ_over, C.jQ_open, C.jQ_dense, C.t, o, m0, C.m, C.ab_gen⟩,
     r', ν', a, hl', hπ, surjective_of_isDominant_of_isClosed_range a.π a.π.isClosedMap.isClosed_range⟩
 
+/- English proof (translation)
+Introduce `L₁ L₂ L₃ E _ _ _ H D Xo n N k T hN l₀ l B c O _ β Y hn hodd ⟨e, he⟩ hu hd hβ hR ⟨A⟩`. Establish `hNpos : 0 < N` using `he ▸ pow_pos hn.pos e`. Set `l' : Level H` to `{ l with A := Nat.lcm l.A N, A_pos := Nat.lcm_pos l.A_pos hNpos }`. Establish `d : l.Dvd l'` using `⟨dvd_rfl, le_rfl, Nat.dvd_lcm_left _ _⟩`. Establish `hNA : N ∣ l'.A` using `Nat.dvd_lcm_right _ _`.
+
+Take `⟨c', hc⟩` from `exists_coeff c l'`. Establish `hkfin : (IntermediateField.inclusion hc).toRingHom.Finite`. Use `c'.fin` as an intermediate fact. Use `RingHom.Finite.of_comp_finite (f := algebraMap ℚ c.F) ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (RingHom.comp _ _) (algebraMap ℚ c'.F)]`.
+
+Conclude with `RingHom.finite_algebraMap.2 this`. Take `⟨O', _, β', b, hβ', hb, hfin, hint⟩` from `exists_closure β _ hβ hkfin`. Take `⟨Y', r, ν, a, hl, hf, hs⟩` from `exists_cover L₁ L₂ L₃ hN Y b d hc hβ hβ' hb hfin`. Take `⟨b₁, r₁, ν₁, hb₁, hl₁, ⟨a₁⟩⟩` from `hR`. Establish `hbb : ∀ x, (c'.F.val.toRingHom.comp β') (b x) = (c.F.val.toRingHom.comp β) x` using `fun x => congrArg Subtype.val (RingHom.congr_fun hb x)`.
+
+Take `⟨ν₂, hν₂⟩` from `LevelCover.sab_comp ν ν₁ rfl`. Establish `hR' : Raises B Y'` using `⟨b.comp b₁, r ≫ r₁, ν₂, fun x => (hbb _).trans (hb₁ x), levComp_comp hd d hl hl₁ ν₂ hν₂, ⟨(GlobalTheory.Models.above_comp E H _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ B.C (ofModel Y) (ofModel Y') b₁ b r₁ ν₁ r ν ν₂ a₁ a hν₂).choose⟩⟩`. Establish `hi : Function.Injective (c'.F.val.toRingHom.comp β')`. Use `letI := β'.toAlgebra`. Use `hβ'.2.2` as an intermediate fact.
+
+Conclude with `Subtype.val_injective.comp (IsFractionRing.injective O' c'.F)`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : RZ H n N →+* O', IsInc (RZ H n N).subtype (c'.F.val.toRingHom.comp β') z := by`. Use `exists_isInc_of_mem _ hi ⟨b (b₁ ⟨(1 + H.rt0) / 2, Subring.subset_closure (by simp)⟩), (hbb _).trans (hb₁ _)⟩ ?_ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Use `⟨b u, eq_inv_of_mul_eq_one_right ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_natCast ((c'.F.val.toRingHom.comp β').comp b)]`. Conclude with `(map_mul ((c'.F.val.toRingHom.comp β').comp b) _ _).symm.trans (by rw [hu, map_one])`. Establish `hz : zeta N ∈ c'.F`. Take `⟨m, hm⟩` from `hNA`. Establish `hm0 : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 fun h => l'.A_pos.ne' (by rw [hm, h, mul_zero])`.
+
+Establish `hN0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hNpos.ne'`. Establish `: zeta N = zeta l'.A ^ m`. Rewrite using `[zeta, zeta, ← Complex.exp_nat_mul, hm]`. Use `congr 1`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `pow_mem (c'.le (baseKA l').ζ.2) m`. Take `⟨y, hy⟩` from `hint ⟨zeta N, hz⟩ ((isIntegral_algHom_iff c'.F.val.toRingHom.toIntAlgHom Subtype.val_injective).1 (isIntegral_zeta hNpos))`. Conclude with `⟨y, congrArg Subtype.val hy⟩`.
+
+Take `⟨g, hg, mu, -, hgf, -⟩` from `GlobalTheory.AbelianLocusMap.exists_map_top L₁ L₂ L₃ hN B Y' z ⟨hd.1, hd.2.1, hd.2.2.trans d.2.2⟩ hNA hβ' hz hR'`. Establish `haff : IsAffineHom g`. Establish `: IsAffineHom (spMap z)` using `inferInstance`. Establish `: IsAffineHom (pullback.fst T.s (spMap z))` using `isAffineHom_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip this`. Rewrite using `[← pullback.lift_fst g Y'.s hg]`.
+
+Use `infer_instance`. Take `⟨A', -⟩` from `GlobalTheory.T.ampleDeterminantFrames_pullback_of_isAffineHom E H _ _ T.t Y'.t g mu _ A haff`. Conclude with `⟨n ^ k, Y'.X, a.π, Y'.t, a.mu, hodd.pow, by rw [Nat.cast_pow]; exact hu.pow k, hf, hs, ⟨A'⟩⟩`.
+-/
 theorem amp_of_raises : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (n N k : ℕ) (T : Top Xo n N), ToroidalLevelCompatibility (H := H) (D := D) → ∀ (l₀ l : Level H) (B : BaseModel T l₀) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model (Xo l) c β), n.Prime → Odd n → (∃ e, N = n ^ e) → IsUnit (n : O) → l₀.Dvd l → IsDedFrac β → Raises B Y → Nonempty (GlobalTheory.LN.AmpFrames T.t.G T.t.PP.L ((n ^ k) ^ 2)) → GlobalTheory.LN.Amp Y := by
   intro L₁ L₂ L₃ E _ _ _ H D Xo n N k T hN l₀ l B c O _ β Y hn hodd ⟨e, he⟩ hu hd hβ hR ⟨A⟩
   have hNpos : 0 < N := he ▸ pow_pos hn.pos e

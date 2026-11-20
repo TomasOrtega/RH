@@ -13,6 +13,11 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Establish `h1` using `X.χ_add 0 0 γ hγ`. Rewrite `h1` using `[add_zero]`. Take `⟨n, hn, hpow⟩` from `X.χ_fin 0`. Establish `hne : X.χ 0 γ ≠ 0`. Introduce `h0`.
+
+Use `hpow γ hγ` as an intermediate fact. Rewrite `this` using `[h0, zero_pow hn.ne']`. Conclude with `zero_ne_one this`. Use `mul_left_cancel₀ hne (h1.symm.trans (mul_one _).symm)` as an intermediate fact. Conclude with `this`.
+-/
 theorem chi_zero {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   have h1 := X.χ_add 0 0 γ hγ
   rw [add_zero] at h1
@@ -25,35 +30,59 @@ theorem chi_zero {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) : X.χ 0 γ = 1 := by
   have := mul_left_cancel₀ hne (h1.symm.trans (mul_one _).symm)
   exact this
 
+/- English proof (translation)
+Unfold `bchar`. Simplify using the standard rewrite rules.
+-/
 theorem bchar_zero (b : Frame X.Ψ r) : bchar (0 : Wt X.Ψ r) b = 1 := by
   unfold bchar; simp
 
+/- English proof (translation)
+Use `⟨differentiableOn_const _, fun x _ b _ => by rw [bchar_zero, one_mul], fun γ hγ x _ => by` and prove the remaining obligations. Rewrite using `[chi_zero X hγ, one_mul]⟩`.
+-/
 theorem sec_one : X.IsSec 0 (fun _ => (1 : ℂ)) := by
   refine ⟨differentiableOn_const _, fun x _ b _ => by rw [bchar_zero, one_mul], fun γ hγ x _ => by
     rw [chi_zero X hγ, one_mul]⟩
 
+/- English proof (translation)
+The claim follows from `PeriodLatticeMembership.sec_mul X hP hQ`.
+-/
 theorem sec_mul' {la la' : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hQ : X.IsSec la' Q) :
     X.IsSec (la + la') (fun x => P x * Q x) :=
   PeriodLatticeMembership.sec_mul X hP hQ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨differentiableOn_const _, fun _ _ _ _ => by ring, fun _ _ _ _ => by ring⟩`.
+-/
 theorem sec_zero (la : Wt X.Ψ r) : X.IsSec la (fun _ => (0 : ℂ)) :=
   ⟨differentiableOn_const _, fun _ _ _ _ => by ring, fun _ _ _ _ => by ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1.add hQ.1, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb, hQ.2.1 x hx b hb]; ring, fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx]; ring⟩`.
+-/
 theorem sec_add {la : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hQ : X.IsSec la Q) :
     X.IsSec la (fun x => P x + Q x) :=
   ⟨hP.1.add hQ.1, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb, hQ.2.1 x hx b hb]; ring,
     fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1.sub hQ.1, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb, hQ.2.1 x hx b hb]; ring, fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx]; ring⟩`.
+-/
 theorem sec_sub {la : Wt X.Ψ r} {P Q : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hQ : X.IsSec la Q) :
     X.IsSec la (fun x => P x - Q x) :=
   ⟨hP.1.sub hQ.1, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb, hQ.2.1 x hx b hb]; ring,
     fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx, hQ.2.2 γ hγ x hx]; ring⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.1.const_mul c, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb]; ring, fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx]; ring⟩`.
+-/
 theorem sec_cmul {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (c : ℂ) (hP : X.IsSec la P) :
     X.IsSec la (fun x => c * P x) :=
   ⟨hP.1.const_mul c, fun x hx b hb => by dsimp only; rw [hP.2.1 x hx b hb]; ring,
     fun γ hγ x hx => by dsimp only; rw [hP.2.2 γ hγ x hx]; ring⟩
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using sec_zero X la`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `sec_add X (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sec_sum {ι : Type*} (s : Finset ι) {la : Wt X.Ψ r} {P : ι → Frame X.Ψ r → ℂ}
     (h : ∀ i ∈ s, X.IsSec la (P i)) : X.IsSec la (fun x => ∑ i ∈ s, P i x) := by
   classical
@@ -63,6 +92,13 @@ theorem sec_sum {ι : Type*} (s : Finset ι) {la : Wt X.Ψ r} {P : ι → Frame 
     simp only [Finset.sum_insert ha]
     exact sec_add X (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul]`. Establish `e : (fun x => P x ^ 0) = fun _ => (1 : ℂ)` using `funext fun x => pow_zero _`. Rewrite using `[e]`.
+
+Conclude with `sec_one X`. Consider the case `succ n ih`. Use `sec_mul' X ih hP` as an intermediate fact. Rewrite using `[succ_nsmul]`. Establish `e : (fun x => P x ^ (n + 1)) = fun x => P x ^ n * P x` using `funext fun x => pow_succ _ _`.
+
+Rewrite using `[e]`. Conclude with `this`.
+-/
 theorem sec_pow {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (n : ℕ) :
     X.IsSec (n • la) (fun x => P x ^ n) := by
   induction n with
@@ -76,6 +112,9 @@ theorem sec_pow {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) 
     have e : (fun x => P x ^ (n + 1)) = fun x => P x ^ n * P x := funext fun x => pow_succ _ _
     rw [e]; exact this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using sec_one X`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `sec_mul' X (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem sec_prod {ι : Type*} (s : Finset ι) (la : ι → Wt X.Ψ r) {P : ι → Frame X.Ψ r → ℂ}
     (h : ∀ i ∈ s, X.IsSec (la i) (P i)) : X.IsSec (∑ i ∈ s, la i) (fun x => ∏ i ∈ s, P i x) := by
   classical
@@ -85,6 +124,15 @@ theorem sec_prod {ι : Type*} (s : Finset ι) (la : ι → Wt X.Ψ r) {P : ι �
     simp only [Finset.prod_insert ha, Finset.sum_insert ha]
     exact sec_mul' X (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Unfold `leadM`. Use `sec_sum X _ fun α hα => sec_sum X _ fun k _ => ?_` and prove the remaining obligations. Establish `hα' : ∑ q, α q < a0` using `ReciprocityTheory.ChartRestriction.G.AR.mem_multiLt_iff.mp hα`. Establish `hm : X.IsSec ((∑ q, α q) • Xa.L) (monoM X Fl.s α)`. Use `sec_prod X Finset.univ (fun q => α q • Xa.L) (P := fun q x => Fl.s q x ^ α q) (fun q _ => sec_pow X (hs q) (α q))` as an intermediate fact.
+
+Rewrite `this` using `[← Finset.sum_smul]`. Conclude with `this`. Establish `h1` using `sec_mul' X (sec_mul' X hm (sec_pow X hw (Xa.T - ∑ q, α q))) (ht k)`. Establish `hwt : (∑ q, α q) • Xa.L + (Xa.T - ∑ q, α q) • Xa.L + Xa.Fp = Xa.Fp + Xa.T • Xa.L`. Rewrite using `[← add_smul, Nat.add_sub_cancel' (by omega), add_comm]`.
+
+Rewrite `h1` using `[hwt]`. Establish `h2` using `sec_cmul X (cc α k) h1`. Use `⟨h2.1.congr fun x _ => by simp [mul_assoc], fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Use `h2.2.1 x hx b hb` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`.
+
+Conclude with `this`. Use `h2.2.2 γ hγ x hx` as an intermediate fact. Simplify using `only [mul_assoc] at this ⊢`. Conclude with `this`.
+-/
 theorem sec_lead {Xa : ArchInM X} (Fl : FlatM X Xa) {δ : ℕ} (t : Fin δ → Frame X.Ψ r → ℂ)
     (ht : ∀ k, X.IsSec Xa.Fp (t k)) (hs : ∀ k, X.IsSec Xa.L (Fl.s k)) (hw : X.IsSec Xa.L Fl.w0)
     (a0 : ℕ) (ha0 : a0 ≤ Xa.T) (cc : (Fin (nd X) → ℕ) → Fin δ → ℂ) :
@@ -106,12 +154,25 @@ theorem sec_lead {Xa : ArchInM X} (Fl : FlatM X Xa) {δ : ℕ} (t : Fin δ → F
   · have := h2.2.1 x hx b hb; simp only [mul_assoc] at this ⊢; exact this
   · have := h2.2.2 γ hγ x hx; simp only [mul_assoc] at this ⊢; exact this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pnorm_eq' (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la P x = ‖P x‖ * X.nfac la x := rfl
 
+/- English proof (translation)
+The claim follows from `Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _`.
+-/
 theorem nfac_nonneg' (la : Wt X.Ψ r) (x : Frame X.Ψ r) : 0 ≤ X.nfac la x :=
   Finset.prod_nonneg fun _ _ => Finset.prod_nonneg fun _ _ => Real.rpow_nonneg (norm_nonneg _) _
 
+/- English proof (translation)
+Unfold `Data.nfac`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hpos : 0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖` using `norm_pos_iff.mpr (div_ne_zero (IW.dmin_ne_zero X hx τ _) (IW.dmin_ne_zero X hx τ _))`. Rewrite using `[← Real.rpow_add hpos]`. Use `congr 1`. Simplify using `only [Pi.add_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem nfac_add {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : Wt X.Ψ r) :
     X.nfac (la + la') x = X.nfac la x * X.nfac la' x := by
   unfold Data.nfac
@@ -127,6 +188,9 @@ theorem nfac_add {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la la' : Wt X.Ψ r) :
   push_cast
   ring
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Unfold `Data.nfac`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [succ_nsmul, nfac_add X hx, ih, pow_succ]`.
+-/
 theorem nfac_nsmul {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) (n : ℕ) :
     X.nfac (n • la) x = X.nfac la x ^ n := by
   induction n with
@@ -135,6 +199,23 @@ theorem nfac_nsmul {x : Frame X.Ψ r} (hx : x ∈ X.dom) (la : Wt X.Ψ r) (n : �
     simp
   | succ n ih => rw [succ_nsmul, nfac_add X hx, ih, pow_succ]
 
+/- English proof (translation)
+Use `set nL := X.nfac Xa.L x with hnLdef`. Use `set nF := X.nfac Xa.Fp x with hnFdef`. Establish `hnL : 0 ≤ nL` using `nfac_nonneg' X Xa.L x`. Establish `hnF : 0 ≤ nF` using `nfac_nonneg' X Xa.Fp x`. Rewrite using `[pnorm_eq', nfac_add X hx, nfac_nsmul X hx]`.
+
+Unfold `leadM`. Establish `hterm : ∀ α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt (nd X) a0, ∀ k, ‖cc α k * monoM X Fl.s α x * Fl.w0 x ^ (Xa.T - ∑ q, α q) * t k x‖ * (nF * nL ^ Xa.T) ≤ ‖cc α k‖ * Ct * A ^ Xa.T`. Introduce `α hα k`. Establish `hα' : ∑ q, α q < a0` using `ReciprocityTheory.ChartRestriction.G.AR.mem_multiLt_iff.mp hα`. Establish `hsplit : nL ^ Xa.T = (∏ q, nL ^ α q) * nL ^ (Xa.T - ∑ q, α q)`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, ← pow_add, Nat.add_sub_cancel' (by omega)]`. Establish `hAsplit : A ^ Xa.T = (∏ q, A ^ α q) * A ^ (Xa.T - ∑ q, α q)`. Rewrite using `[Finset.prod_pow_eq_pow_sum, ← pow_add, Nat.add_sub_cancel' (by omega)]`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_pow, monoM, norm_prod, hsplit, hAsplit]`. Simplify using `only [norm_pow]`.
+
+Establish `e : ‖cc α k‖ * (∏ q, ‖Fl.s q x‖ ^ α q) * ‖Fl.w0 x‖ ^ (Xa.T - ∑ q, α q) * ‖t k x‖ * (nF * ((∏ q, nL ^ α q) * nL ^ (Xa.T - ∑ q, α q))) = ‖cc α k‖ * (∏ q, (‖Fl.s q x‖ * nL) ^ α q) * (‖Fl.w0 x‖ * nL) ^ (Xa.T - ∑ q, α q) * (‖t k x‖ * nF)`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h1 : ∏ q, (‖Fl.s q x‖ * nL) ^ α q ≤ ∏ q, A ^ α q` using `Finset.prod_le_prod (fun q _ => pow_nonneg (mul_nonneg (norm_nonneg _) hnL) _) (fun q _ => pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) hnL) (hs q) _)`.
+
+Establish `h2 : (‖Fl.w0 x‖ * nL) ^ (Xa.T - ∑ q, α q) ≤ A ^ (Xa.T - ∑ q, α q)` using `pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) hnL) hw _`. Establish `h3 : ‖t k x‖ * nF ≤ Ct` using `ht k`. Establish `hp1 : 0 ≤ ∏ q, (‖Fl.s q x‖ * nL) ^ α q` using `Finset.prod_nonneg fun q _ => pow_nonneg (mul_nonneg (norm_nonneg _) hnL) _`. Establish `hp2 : 0 ≤ (‖Fl.w0 x‖ * nL) ^ (Xa.T - ∑ q, α q)` using `pow_nonneg (mul_nonneg (norm_nonneg _) hnL) _`. Establish `hA1 : 0 ≤ ∏ q, A ^ α q` using `Finset.prod_nonneg fun q _ => pow_nonneg hA _`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hN : 0 ≤ nF * nL ^ Xa.T` using `mul_nonneg hnF (pow_nonneg hnL _)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun α _ => norm_sum_le _ _)`. Use `_ = ∑ α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt (nd X) a0, ∑ k, ‖cc α k * monoM X Fl.s α x * Fl.w0 x ^ (Xa.T - ∑ q, α q) * t k x‖ * (nF * nL ^ Xa.T) := by`.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun α _ => Finset.sum_mul _ _ _`. Use `_ ≤ ∑ α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt (nd X) a0, ∑ k, ‖cc α k‖ * Ct * A ^ Xa.T := Finset.sum_le_sum fun α hα => Finset.sum_le_sum fun k _ => hterm α hα k`. Use `_ = _ := by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun α _ => by rw [Finset.sum_mul, Finset.sum_mul]`.
+-/
 theorem lead_le {Xa : ArchInM X} (Fl : FlatM X Xa) {δ : ℕ} (t : Fin δ → Frame X.Ψ r → ℂ) (a0 : ℕ)
     (ha0 : a0 ≤ Xa.T) (cc : (Fin (nd X) → ℕ) → Fin δ → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     {A Ct : ℝ} (hA : 0 ≤ A) (hCt : 0 ≤ Ct) (hs : ∀ q, X.pnorm Xa.L (Fl.s q) x ≤ A)
@@ -195,13 +276,24 @@ theorem lead_le {Xa : ArchInM X} (Fl : FlatM X Xa) {δ : ℕ} (t : Fin δ → Fr
         rw [Finset.sum_mul, Finset.sum_mul]
         exact Finset.sum_congr rfl fun α _ => by rw [Finset.sum_mul, Finset.sum_mul]
 
+/- English proof (translation)
+Rewrite using `[pnorm_eq', pnorm_eq', pnorm_eq', ← add_mul]`. Conclude with `mul_le_mul_of_nonneg_right (norm_sub_le _ _) (nfac_nonneg' X la x)`.
+-/
 theorem pnorm_sub_le' (la : Wt X.Ψ r) (f g : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.pnorm la (fun y => f y - g y) x ≤ X.pnorm la f x + X.pnorm la g x := by
   rw [pnorm_eq', pnorm_eq', pnorm_eq', ← add_mul]
   exact mul_le_mul_of_nonneg_right (norm_sub_le _ _) (nfac_nonneg' X la x)
 
+/- English proof (translation)
+Use polynomial arithmetic with `[sq_nonneg (a - b)]`.
+-/
 theorem sq_add_le (a b : ℝ) : (a + b) ^ 2 ≤ 2 * a ^ 2 + 2 * b ^ 2 := by nlinarith [sq_nonneg (a - b)]
 
+/- English proof (translation)
+Establish `hAT : (A ^ T) ^ 2 = K ^ T * W ^ T`. Rewrite using `[← pow_mul, mul_comm T 2, pow_mul, hA, mul_pow, Real.sq_sqrt hK, Real.sq_sqrt hW, mul_pow]`. Establish `h1 : pd ^ 2 ≤ 2 * pf ^ 2 + 2 * pl ^ 2` using `(pow_le_pow_left₀ hpd0 hpd 2).trans (sq_add_le pf pl)`. Establish `h2 : pl ^ 2 ≤ c ^ 2 * (K ^ T * W ^ T)`. Rewrite using `[← hAT]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `h3 : pl ^ 2 * e ≤ c ^ 2 * K ^ T`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem key_real {pd pf pl e W A K c : ℝ} {T : ℕ} (hpd0 : 0 ≤ pd) (hpl0 : 0 ≤ pl) (he : 0 ≤ e)
     (hK : 0 ≤ K) (hW : 0 ≤ W) (hA : A = Real.sqrt K * Real.sqrt W) (hpd : pd ≤ pf + pl)
     (hl : pl ≤ c * A ^ T) (hWe : W ^ T * e ≤ 1) :
@@ -226,6 +318,37 @@ theorem key_real {pd pf pl e W A K c : ℝ} {T : ℕ} (hpd0 : 0 ≤ pd) (hpl0 : 
 end
 
 open DivSt in
+/- English proof (translation)
+Introduce `r X Xa Fl hPD hFin δ t ht x0 ho FF hFF f hf hint cc`. Establish `hsB : ∀ q, X.IsBddSec Xa.L (Fl.s q)` using `fun q => (Fl.s_van q).1.1`. Establish `hwB : X.IsBddSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1`. Establish `hfB : X.IsBddSec (Xa.Fp + Xa.T • Xa.L) f` using `hf.1`. Use `choose Cs hCs using fun q => (hsB q).2`.
+
+Take `⟨Cw, hCw⟩` from `hwB.2`. Use `choose Ct' hCt' using fun k => (ht k).2`. Take `⟨Cf, hCf⟩` from `hfB.2`. Use `set A0 : ℝ := (∑ q, |Cs q|) + |Cw| with hA0`. Use `set Ct : ℝ := ∑ k, |Ct' k| with hCtdef`.
+
+Establish `hA0n : 0 ≤ A0` using `by positivity`. Establish `hCtn : 0 ≤ Ct` using `by positivity`. Establish `hsA0 : ∀ x ∈ X.dom, ∀ q, X.pnorm Xa.L (Fl.s q) x ≤ A0` using `fun x hx q => (hCs q x hx).trans ((le_abs_self _).trans (le_add_of_le_of_nonneg (Finset.single_le_sum (f := fun q => |Cs q|) (fun _ _ => abs_nonneg _) (Finset.mem_univ q)) (abs_nonneg _)))`. Establish `hwA0 : ∀ x ∈ X.dom, X.pnorm Xa.L Fl.w0 x ≤ A0` using `fun x hx => (hCw x hx).trans ((le_abs_self _).trans (le_add_of_nonneg_left (by positivity)))`. Establish `htC : ∀ x ∈ X.dom, ∀ k, X.pnorm Xa.Fp (t k) x ≤ Ct` using `fun x hx k => (hCt' k x hx).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun k => |Ct' k|) (fun _ _ => abs_nonneg _) (Finset.mem_univ k)))`.
+
+Use `set C1 : ℝ := ∑ α ∈ ReciprocityTheory.ChartRestriction.G.AR.multiLt (nd X) (Xa.T - nd X), ∑ k, ‖cc α k‖ with hC1`. Establish `hC1n : 0 ≤ C1` using `by positivity`. Establish `hsec` using `sec_lead X Fl t (fun k => (ht k).1) (fun q => (hsB q).1) hwB.1 (Xa.T - nd X) (Nat.sub_le _ _) cc`. Use `⟨⟨sec_sub X hfB.1 hsec, Cf + C1 * Ct * A0 ^ Xa.T, fun x hx => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(pnorm_sub_le' X _ _ _ x).trans (add_le_add (hCf x hx) (lead_le X Fl t _ (Nat.sub_le _ _) cc hx hA0n hCtn (hsA0 x hx) (hwA0 x hx) (htC x hx)))`.
+
+Take `⟨Ks, hKs⟩` from `Fl.s_le_w`. Take `⟨Kw, hKw⟩` from `Fl.denom_le_family`. Use `set K : ℝ := |Ks| + |Kw| with hKdef`. Establish `hK : 0 ≤ K` using `by positivity`. Establish `hT : 0 < Xa.T` using `lt_of_lt_of_le (Nat.mul_pos (by norm_num) (pow_pos (by have := Xa.n_ge; omega) 2)) Xa.T_ge`.
+
+Use `set B : ℝ := 2 * (C1 * Ct) ^ 2 * K ^ Xa.T with hBdef`. Establish `hB : 0 ≤ B` using `by positivity`. Establish `hpt : ∀ z ∈ FF, ENNReal.ofReal (X.pnorm (Xa.Fp + Xa.T • Xa.L) (fun x => f x - leadM X Fl.s Fl.w0 t Xa.T (Xa.T - nd X) cc x) (cpt X x0 z) ^ 2 * (∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2) ^ (-(Xa.T : ℝ))) ≤ 2 * ENNReal.ofReal (X.pnorm (Xa.Fp + Xa.T • Xa.L) f (cpt X x0 z) ^ 2 * ( …`. Introduce `z hz`. Establish `hx : cpt X x0 z ∈ X.dom` using `(hFF.2.1 hz)`.
+
+Use `set x := cpt X x0 z with hxdef`. Use `clear_value x`. Use `set W := ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2 with hWdef`. Establish `hW : 0 ≤ W` using `by positivity`. Use `set e := W ^ (-(Xa.T : ℝ)) with hedef`.
+
+Establish `he : 0 ≤ e` using `Real.rpow_nonneg hW _`. Establish `hWe : W ^ Xa.T * e ≤ 1`. Break down `eq_or_lt_of_le hW with h0 | h0` into its components or cases. Rewrite using `[hedef, ← h0, Real.zero_rpow (neg_ne_zero.mpr (Nat.cast_ne_zero.mpr hT.ne')), mul_zero]`. Evaluate the numerical expressions.
+
+Rewrite using `[hedef, Real.rpow_neg hW, Real.rpow_natCast, mul_inv_cancel₀ (pow_ne_zero _ h0.ne')]`. Use `set A := Real.sqrt K * Real.sqrt W with hAdef`. Establish `hA : 0 ≤ A` using `by positivity`. Establish `hsA : ∀ q, X.pnorm Xa.L (Fl.s q) x ≤ A`. Introduce `q`.
+
+Establish `h1 : X.pnorm Xa.L (Fl.s q) x ^ 2 ≤ K * W`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hAdef, ← Real.sqrt_mul hK]`. Conclude with `Real.le_sqrt_of_sq_le h1`. Establish `hwA : X.pnorm Xa.L Fl.w0 x ≤ A`.
+
+Establish `h1 : X.pnorm Xa.L Fl.w0 x ^ 2 ≤ K * W` using `(hKw x hx).trans (mul_le_mul_of_nonneg_right ((le_abs_self _).trans (le_add_of_nonneg_left (abs_nonneg _))) hW)`. Rewrite using `[hAdef, ← Real.sqrt_mul hK]`. Conclude with `Real.le_sqrt_of_sq_le h1`. Establish `hl` using `lead_le X Fl t (Xa.T - nd X) (Nat.sub_le Xa.T (nd X)) cc hx hA hCtn hsA hwA (htC x hx)`. Establish `hpf` using `DivSt.pnorm_sub_le' X (Xa.Fp + Xa.T • Xa.L) f (leadM X Fl.s Fl.w0 t Xa.T (Xa.T - nd X) cc) x`.
+
+Use `set pf := X.pnorm (Xa.Fp + Xa.T • Xa.L) f x`. Use `set pl := X.pnorm (Xa.Fp + Xa.T • Xa.L) (leadM X Fl.s Fl.w0 t Xa.T (Xa.T - nd X) cc) x`. Use `set pd := X.pnorm (Xa.Fp + Xa.T • Xa.L) (fun x => f x - leadM X Fl.s Fl.w0 t Xa.T (Xa.T - nd X) cc x) x`. Establish `hpd0 : 0 ≤ pd` using `mul_nonneg (norm_nonneg _) (nfac_nonneg' X _ _)`. Establish `hpf0 : 0 ≤ pf` using `mul_nonneg (norm_nonneg _) (nfac_nonneg' X _ _)`.
+
+Establish `hpl0 : 0 ≤ pl` using `mul_nonneg (norm_nonneg _) (nfac_nonneg' X _ _)`. Use `clear_value pd pf pl`. Establish `hreal : pd ^ 2 * e ≤ 2 * (pf ^ 2 * e) + B`. Use `key_real hpd0 hpl0 he hK hW hAdef hpf hl hWe` as an intermediate fact. Rewrite using `[hBdef]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_ofNat]`. Establish `hmeas : MeasurableSet FF` using `hFF.1`. Establish `hfin` using `hFM r X x0 FF ho hFF hFin`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_right _ measurable_const, lintegral_const_mul' _ _ (by norm_num), setLIntegral_const]`. Use `_ < ⊤ := ENNReal.add_lt_top.mpr ⟨ENNReal.mul_lt_top (by norm_num) hint, ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin⟩`.
+-/
 theorem divStart_of {E : Type} [Field E] [NumberField E] [IsCMField E]
     (hFM : FundSetMeasStatement (E := E)) : DivStartStatement (E := E) := by
   intro r X Xa Fl hPD hFin δ t ht x0 ho FF hFF f hf hint cc

@@ -13,6 +13,15 @@ namespace ModelDimension.Spread
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Establish `hL` using `(GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c).1`. Establish `hc : ∀ a : c.F, algebraMap c.F Ω a ∈ A` using `fun a => by`. Rewrite using `[← φ₁.commutes]`. Conclude with `hA₁ _`. Set `D : Subalgebra c.F Ω` to `{ A with algebraMap_mem' := hc }`.
+
+Set `evD : D →ₐ[c.F] L` to `{ toFun := fun x => ev ⟨x.1, x.2⟩ map_one' := map_one ev map_mul' := fun x y => map_mul ev ⟨x.1, x.2⟩ ⟨y.1, y.2⟩ map_zero' := map_zero ev map_add' := fun x y => map_add ev ⟨x.1, x.2⟩ ⟨y.1, y.2⟩ commutes' := fun a => by`. Rewrite using `[← ψ₁.commutes a, e₁]`. Conclude with `congrArg ev (Subtype.ext (φ₁.commutes a).symm) }`. Set `χ₁ : S₁ →ₐ[c.F] D` to `φ₁.codRestrict D hA₁`. Set `χ₂ : S₂ →ₐ[c.F] D` to `φ₂.codRestrict D hA₂`.
+
+Take `⟨u₁, hu₁⟩` from `hL.bc _ _ χ₁ y₁`. Take `⟨u₂, hu₂⟩` from `hL.bc _ _ χ₂ y₂`. Establish `g₁ : FrMap D.val u₁ z₁` using `frMap_cancel _ _ _ χ₁ D.val y₁ u₁ z₁ hu₁ h₁`. Establish `g₂ : FrMap D.val u₂ z₂` using `frMap_cancel _ _ _ χ₂ D.val y₂ u₂ z₂ hu₂ h₂`. Take `⟨tD, hD, -⟩` from `frBor_descend D.val Subtype.val_injective g₁ g₂ hb (fun k => ⟨⟨_, hAt k⟩, rfl⟩)`.
+
+Establish `m₁ : FrMap evD u₁ w₁` using `frMap_cancel _ _ _ χ₁ evD y₁ u₁ w₁ hu₁ (by rw [show evD.comp χ₁ = ψ₁ from AlgHom.ext fun r => (e₁ r).symm]; exact k₁)`. Establish `m₂ : FrMap evD u₂ w₂` using `frMap_cancel _ _ _ χ₂ evD y₂ u₂ w₂ hu₂ (by rw [show evD.comp χ₂ = ψ₂ from AlgHom.ext fun r => (e₂ r).symm]; exact k₂)`. Conclude with `⟨_, frBorBC _ _ evD _ _ _ _ _ hD m₁ m₂⟩`.
+-/
 theorem spec_bor {Ω : Type} [Field Ω] [Algebra c.F Ω] {S₁ S₂ : Type} [CommRing S₁] [Algebra c.F S₁] [CommRing S₂]
     [Algebra c.F S₂] (φ₁ : S₁ →ₐ[c.F] Ω) (φ₂ : S₂ →ₐ[c.F] Ω) {y₁ : FrPt Xo c S₁} {y₂ : FrPt Xo c S₂}
     {z₁ z₂ : FrPt Xo c Ω} {t : Ix Dw → Ωˣ} (h₁ : FrMap φ₁ y₁ z₁) (h₂ : FrMap φ₂ y₂ z₂) (hb : FrBor t z₁ z₂)
@@ -46,6 +55,11 @@ theorem spec_bor {Ω : Type} [Field Ω] [Algebra c.F Ω] {S₁ S₂ : Type} [Com
     (by rw [show evD.comp χ₂ = ψ₂ from AlgHom.ext fun r => (e₂ r).symm]; exact k₂)
   exact ⟨_, frBorBC _ _ evD _ _ _ _ _ hD m₁ m₂⟩
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `: Ideal.Quotient.mk q.I (MvPolynomial.C a) = algebraMap K q.R a` using `rfl`. Rewrite using `[this, φ.commutes]`.
+
+Conclude with `hc a`. Consider the case `add p p' hp hp' => rw [map_add, map_add]`. Conclude with `A.add_mem hp hp'`. Consider the case `mul_X p i hp => rw [map_mul, map_mul]`. Conclude with `A.mul_mem hp (hx i)`.
+-/
 theorem test_mem {K Ω : Type} [Field K] [CommRing Ω] [Algebra K Ω] (q : TRing K) (φ : q.R →ₐ[K] Ω) (A : Subring Ω)
     (hc : ∀ a : K, algebraMap K Ω a ∈ A) (hx : ∀ i, φ (Ideal.Quotient.mk q.I (MvPolynomial.X i)) ∈ A) (r : q.R) :
     φ r ∈ A := by

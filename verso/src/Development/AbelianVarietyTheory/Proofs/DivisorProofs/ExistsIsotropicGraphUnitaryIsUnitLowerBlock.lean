@@ -5,6 +5,27 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hfield` using `GlobalTheory.T.exists_isotropic_graph_det_ne_zero`. Establish `hlift` using `GlobalTheory.T.exists_skew_lift_mod_maximalIdeal`. Introduce `O _ _ c hc h2 hx0 n J hJ hJdet g hg hgu`. Take `⟨x, hx⟩` from `hx0`. Use `haveI : IsLocalHom c := ⟨fun a ha => by simpa [hc] using ha.map c⟩`.
+
+Use `set π := IsLocalRing.residue O with hπ`. Use `set σ : IsLocalRing.ResidueField O →+* IsLocalRing.ResidueField O := IsLocalRing.ResidueField.map c with hσ`. Establish `hσπ : ∀ a, σ (π a) = π (c a)` using `fun a => IsLocalRing.ResidueField.map_residue c a`. Establish `hσσ : ∀ y, σ (σ y) = y`. Introduce `y`.
+
+Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective y`. Rewrite using `[hσπ, hσπ, hc]`. Establish `hε : ∃ ε, ε ≠ 0 ∧ σ ε = -ε` using `⟨π (c x - x), (IsLocalRing.residue_ne_zero_iff_isUnit _).2 hx, by`. Rewrite using `[hσπ, map_sub, hc, ← neg_sub, map_neg]⟩`. Establish `hmapc : ∀ {m : Type} (M : Matrix m m O), (M.map c).map π = (M.map π).map σ`.
+
+Introduce `m M`. Use extensionality with `i j`. Simplify using `[hσπ]`. Establish `hJ' : ∀ i j, σ (J.map π j i) = J.map π i j` using `by intro i j; simp [hσπ, hJ]`. Establish `hJdet' : (J.map π).det ≠ 0`.
+
+Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 hJdet`. Establish `hg' : (g.map π).det ≠ 0`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).2 hg`.
+
+Establish `hgu' : (g.map π)ᵀ * Matrix.fromBlocks 0 (J.map π) (J.map π) 0 * (g.map π).map σ = Matrix.fromBlocks 0 (J.map π) (J.map π) 0`. Use `congrArg (fun M => M.map π) hgu` as an intermediate fact. Simplify `this` using `only [Matrix.map_mul, Matrix.transpose_map, hmapc, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero π)]`. Take `⟨Zb, hZb, hdet⟩` from `hfield _ σ hσσ hε n _ hJ' hJdet' _ hg' hgu'`. Take `⟨Z₀, hZ₀⟩ : ∃ Z₀ : Matrix (Fin n) (Fin n) O, Z₀.map π = Zb` from `⟨fun i j => (IsLocalRing.residue_surjective (Zb i j)).choose, by`.
+
+Use extensionality with `i j`. Conclude with `(IsLocalRing.residue_surjective (Zb i j)).choose_spec⟩`. Establish `hZ₀m : ∀ i j, (Z₀ᵀ * J + J * Z₀.map c) i j ∈ IsLocalRing.maximalIdeal O`. Introduce `i j`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`.
+
+Use `congrArg (fun M => M i j) hZb` as an intermediate fact. Simplify using `only [Matrix.zero_apply] at this`. Rewrite using `[← this, ← hZ₀, ← hmapc, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add _ (map_add π)]`. Both sides reduce to the same expression. Take `⟨Z, hZ, hZm⟩` from `hlift O c hc h2 n J hJ hJdet Z₀ hZ₀m`.
+
+Use `⟨Z, hZ, ?_⟩` and prove the remaining obligations. Establish `hZπ : Z.map π = Zb`. Rewrite using `[← hZ₀]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`.
+
+Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Conclude with `hZm i j`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, ← hπ, RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_add _ (map_add π), Matrix.map_mul, hZπ]`. Conclude with `hdet`.
+-/
 theorem exists_isotropic_graph_isUnit_lowerRow : ∀ (O : Type) [CommRing O] [IsLocalRing O] (c : O →+* O), (∀ x, c (c x) = x) → IsUnit (2 : O) →
     (∃ x : O, IsUnit (c x - x)) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) O), (∀ i j, c (J j i) = J i j) → IsUnit J.det →
     ∀ g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) O, IsUnit g.det →

@@ -19,6 +19,13 @@ open GlobalTheory.LogDerProj
 
 namespace GlobalTheory.LogDerProj
 
+/- English proof (translation)
+Introduce `k R S _ _ _ _ f _ φ hφ J`. Use `IsLocalizedModule.mk (fun x => ?_) (GlobalTheory.T.exists_pow_smul_eq_logDerivation_extend_localizationAway f φ hφ J) (GlobalTheory.T.exists_pow_smul_eq_of_logDerivation_extend_eq f φ hφ J _ _)` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap R S x)` using `IsLocalization.map_units S x`. Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `n n' h`. Establish `h' : algebraMap R S x • n.1 = algebraMap R S x • n'.1`. Simplify `congrArg Subtype.val h` using `[algebraMap_smul]`. Conclude with `Subtype.ext ((hu.smul_left_cancel).1 h')`. Introduce `n`.
+
+Use `⟨⟨((hu.unit⁻¹ : Sˣ) : S) • n.1, (show _ ∈ logSub ((algebraMap R S).comp φ) (J.map (algebraMap R S)) from Submodule.smul_mem _ _ n.2)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : R) • (((hu.unit⁻¹ : Sˣ) : S) • n.1) = n.1`. Rewrite using `[← algebraMap_smul S (x : R), smul_smul, IsUnit.mul_val_inv, one_smul]`.
+-/
 theorem isLocalizedModule_res : ∀ {k R S : Type} [Field k] [CommRing R] [CommRing S] [Algebra R S] (f : R) [IsLocalization.Away f S] (φ : k →+* R), φ.FiniteType → ∀ J : Ideal R, IsLocalizedModule (Submonoid.powers f) (res (S := S) f φ J) := by
   intro k R S _ _ _ _ f _ φ hφ J
   refine IsLocalizedModule.mk (fun x => ?_) (GlobalTheory.T.exists_pow_smul_eq_logDerivation_extend_localizationAway f φ hφ J) (GlobalTheory.T.exists_pow_smul_eq_of_logDerivation_extend_eq f φ hφ J _ _)
@@ -35,6 +42,13 @@ theorem isLocalizedModule_res : ∀ {k R S : Type} [Field k] [CommRing R] [CommR
     change (x : R) • (((hu.unit⁻¹ : Sˣ) : S) • n.1) = n.1
     rw [← algebraMap_smul S (x : R), smul_smul, IsUnit.mul_val_inv, one_smul]
 
+/- English proof (translation)
+Introduce `R M _ _ _ f d ϕ hϕ m hm hf`. Use `letI := Ideal.Quotient.field m`. Establish `hu : IsUnit (algebraMap R (R ⧸ m) f)`. Rewrite using `[isUnit_iff_ne_zero, Ne, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hf`.
+
+Use `letI : Algebra (Localization.Away f) (R ⧸ m) := (IsLocalization.Away.lift f hu).toAlgebra`. Use `haveI : IsScalarTower R (Localization.Away f) (R ⧸ m) := IsScalarTower.of_algebraMap_eq fun r => by`. Rewrite using `[RingHom.algebraMap_toAlgebra, IsLocalization.Away.lift, IsLocalization.lift_eq]`. Establish `hbc : IsBaseChange (Localization.Away f) ϕ` using `IsLocalizedModule.isBaseChange (Submonoid.powers f) _ ϕ`. Set `e1` to `hbc.equiv`.
+
+Set `e2` to `TensorProduct.AlgebraTensorModule.cancelBaseChange R (Localization.Away f) (R ⧸ m) (R ⧸ m) M`. Set `e3` to `LinearEquiv.baseChange (Localization.Away f) (R ⧸ m) _ _ e1`. Rewrite using `[← e2.finrank_eq, e3.finrank_eq, Module.finrank_eq_card_basis (Algebra.TensorProduct.basis (R ⧸ m) (Pi.basisFun (Localization.Away f) (Fin d))), Fintype.card_fin]`.
+-/
 theorem finrank_fibre : ∀ {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (f : R) (d : ℕ) (ϕ : M →ₗ[R] (Fin d → Localization.Away f)), IsLocalizedModule (Submonoid.powers f) ϕ → ∀ m : Ideal R, m.IsMaximal → f ∉ m → Module.finrank (R ⧸ m) ((R ⧸ m) ⊗[R] M) = d := by
   intro R M _ _ _ f d ϕ hϕ m hm hf
   letI := Ideal.Quotient.field m
@@ -55,6 +69,27 @@ end GlobalTheory.LogDerProj
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y h1 hsm hsnc U`. Use `haveI : SmoothOfRelativeDimension Dw.dim Y.s := smooth_gen_iff.1 hsm`. Use `haveI : Smooth Y.s := SmoothOfRelativeDimension.smooth Dw.dim _`. Use `set I := Scheme.IdealSheafData.vanishingIdeal (interior Y).compl with hI`. Set `φ : c.F →+* Γ(Y.X, U.1)` to `ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX Y.s U.1`.
+
+Establish `hφ : φ.FiniteType`. Establish `h1 : (Y.s.appLE ⊤ U.1 (by simp)).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType Y.s inferInstance ⟨⊤, isAffineOpen_top _⟩ U _`. Conclude with `h1.comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of c.F)).symm.commRingCatIsoToRingEquiv.surjective)`. Establish `hM : logDer Y.s I U = GlobalTheory.LogDerProj.logSub φ (I.ideal U)` using `rfl`. Establish `loc : ∀ q : PrimeSpectrum Γ(Y.X, U.1), ∃ r ∉ q.asIdeal, ∃ ϕ : GlobalTheory.LogDerProj.logSub φ (I.ideal U) →ₗ[Γ(Y.X, U.1)] (Fin Dw.dim → Localization.Away r), IsLocalizedModule (Submonoid.powers r) ϕ`.
+
+Introduce `q`. Establish `hU : IsAffineOpen U.1` using `U.2`. Establish `hxU : hU.fromSpec q ∈ U.1`. Express the relevant statement in the definitionally equal form `_ ∈ (U.1 : Set Y.X)`. Rewrite using `[← hU.range_fromSpec]`.
+
+Conclude with `⟨q, rfl⟩`. Establish `key` using `GlobalTheory.T.exists_logVectorField_basis_toroidalModel_snc E H Dw l Xo c Y h1 hsm hsnc U (hU.fromSpec q) hxU`. Take `⟨f, W, hW, m, t, b, hxW, hWf, -⟩` from `key`. Establish `hq : f ∉ q.asIdeal`. Establish `: q ∈ hU.fromSpec ⁻¹ᵁ Y.X.basicOpen f` using `by rw [← hWf]; exact hxW`.
+
+Rewrite `this` using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `this`. Use `letI : Algebra Γ(Y.X, U.1) Γ(Y.X, W.1) := (Y.X.presheaf.map (homOfLE hW).op).hom.toAlgebra`. Establish `hloc : ∀ (V : Y.X.Opens) (hV : V ≤ U.1), V = Y.X.basicOpen f →`. Use `letI := (Y.X.presheaf.map (homOfLE hV).op).hom.toAlgebra; IsLocalization.Away f Γ(Y.X, V) := by`.
+
+Introduce and unpack `V hV rfl`. Conclude with `U.2.isLocalization_basicOpen f`. Use `haveI : IsLocalization.Away f Γ(Y.X, W.1) := hloc W.1 hW hWf`. Establish `hc : ∀ a, algebraMap Γ(Y.X, U.1) Γ(Y.X, W.1) (φ a) = constFn Y.s W.1 a` using `fun a => congr(($(Scheme.Hom.appLE_map Y.s (U := ⊤) (V := U.1) (fun _ _ => trivial) (homOfLE hW).op)).hom ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom a))`. Establish `hid : (I.ideal U).map (algebraMap Γ(Y.X, U.1) Γ(Y.X, W.1)) = I.ideal W` using `I.map_ideal (U := W) (V := U) hW`.
+
+Establish `hN : logDer Y.s I W = GlobalTheory.LogDerProj.logSub ((algebraMap Γ(Y.X, U.1) Γ(Y.X, W.1)).comp φ) ((I.ideal U).map (algebraMap _ _))`. Use extensionality with `D`. Rewrite using `[GlobalTheory.LogDerProj.mem_logSub, hid]`. Simplify using `only [RingHom.comp_apply, hc]`. Both sides reduce to the same expression.
+
+Set `b'` to `b.map (LinearEquiv.ofEq _ _ hN)`. Set `e` to `(b'.equivFun.restrictScalars Γ(Y.X, U.1)).trans (LinearEquiv.piCongrRight fun _ => (IsLocalization.algEquiv (Submonoid.powers f) Γ(Y.X, W.1) (Localization.Away f)).toLinearEquiv)`. Use `haveI := GlobalTheory.LogDerProj.isLocalizedModule_res (S := Γ(Y.X, W.1)) f φ hφ (I.ideal U)`. Conclude with `⟨f, hq, e.toLinearMap ∘ₗ GlobalTheory.LogDerProj.res (S := Γ(Y.X, W.1)) f φ (I.ideal U), IsLocalizedModule.of_linearEquiv (Submonoid.powers f) (GlobalTheory.LogDerProj.res (S := Γ(Y.X, W.1)) f φ (I.ideal U)) e⟩`. Rewrite using `[hM]`.
+
+Take `⟨hfin, hproj⟩` from `GlobalTheory.LocFreeProj.finite_projective_of_locally_free _ _ fun q => by`. Take `⟨r, hr, ϕ, hϕ⟩` from `loc q`. Conclude with `⟨r, hr, Fin Dw.dim → Localization.Away r, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, ϕ, hϕ⟩`. Use `⟨hfin, hproj, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, ϕ, hϕ⟩` from `loc ⟨m, hm.isPrime⟩`.
+
+Conclude with `GlobalTheory.LogDerProj.finrank_fibre r Dw.dim ϕ hϕ m hm hr`.
+-/
 theorem GlobalTheory.LogDerProj.main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → ∀ U : Y.X.affineOpens, Module.Finite Γ(Y.X, U.1) (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) ∧ Module.Projective Γ(Y.X, U.1) (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) ∧ ∀ m : Ideal Γ(Y.X, U.1), m.IsMaximal → Module.finrank (Γ(Y.X, U.1) ⧸ m) ((Γ(Y.X, U.1) ⧸ m) ⊗[Γ(Y.X, U.1)] (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U)) = Dw.dim := by
   intro E _ _ _ H Dw l Xo c Y h1 hsm hsnc U
   haveI : SmoothOfRelativeDimension Dw.dim Y.s := smooth_gen_iff.1 hsm

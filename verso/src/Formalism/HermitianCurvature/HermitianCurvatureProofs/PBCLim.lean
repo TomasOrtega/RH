@@ -14,12 +14,22 @@ variable {H : Type} {f : ℕ}
 def Hh (Y : Finset H) (κ : H → H → ℂ) (hat : Fin f → ℂ → H → H → ℂ) (σ : crystallineComparison.V f) : ℂ :=
   ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, hat v (σ v) h h'
 
+/- English proof (translation)
+Establish `h : ∀ᶠ x in Filter.comap (fun x : crystallineComparison.V f => ‖x v‖) atTop, a < ‖x v‖` using `(Filter.eventually_gt_atTop a).comap _`. Unfold `crystallineComparison.atInfAll`. Conclude with `Filter.mem_iInf_of_mem v h`.
+-/
 theorem eventually_norm_gt (v : Fin f) (a : ℝ) : ∀ᶠ x in crystallineComparison.atInfAll f, a < ‖x v‖ := by
   have h : ∀ᶠ x in Filter.comap (fun x : crystallineComparison.V f => ‖x v‖) atTop, a < ‖x v‖ :=
     (Filter.eventually_gt_atTop a).comap _
   unfold crystallineComparison.atInfAll
   exact Filter.mem_iInf_of_mem v h
 
+/- English proof (translation)
+Establish `h1 : ∀ v, ∀ᶠ x in crystallineComparison.atInfAll f, x v ≠ 0 ∧ x v + σ v ≠ 0`. Introduce `v`. Use `filter_upwards [eventually_norm_gt v ‖σ v‖] with x hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite `hx` using `[h, norm_zero]`. Conclude with `absurd hx (not_lt.mpr (norm_nonneg _))`. Introduce `h`. Establish `e : x v = -σ v` using `eq_neg_of_add_eq_zero_left h`. Rewrite `hx` using `[e, norm_neg]`.
+
+Conclude with `lt_irrefl _ hx`. Use `filter_upwards [Filter.eventually_all.mpr h1] with x hx`. Conclude with `⟨fun v => (hx v).1, fun v => (hx v).2⟩`.
+-/
 theorem eventually_good (σ : crystallineComparison.V f) : ∀ᶠ x in crystallineComparison.atInfAll f, Good x ∧ Good (x + σ) := by
   have h1 : ∀ v, ∀ᶠ x in crystallineComparison.atInfAll f, x v ≠ 0 ∧ x v + σ v ≠ 0 := by
     intro v
@@ -35,10 +45,18 @@ theorem eventually_good (σ : crystallineComparison.V f) : ∀ᶠ x in crystalli
   filter_upwards [Filter.eventually_all.mpr h1] with x hx
   exact ⟨fun v => (hx v).1, fun v => (hx v).2⟩
 
+/- English proof (translation)
+Rewrite using `[← Metric.cobounded_eq_cocompact, ← comap_norm_atTop, Filter.tendsto_comap_iff]`. Conclude with `Filter.tendsto_comap.mono_left (iInf_le (fun v => Filter.comap (fun x : crystallineComparison.V f => ‖x v‖) atTop) v)`.
+-/
 theorem tendsto_coord (v : Fin f) : Tendsto (fun x : crystallineComparison.V f => x v) (crystallineComparison.atInfAll f) (cocompact ℂ) := by
   rw [← Metric.cobounded_eq_cocompact, ← comap_norm_atTop, Filter.tendsto_comap_iff]
   exact Filter.tendsto_comap.mono_left (iInf_le (fun v => Filter.comap (fun x : crystallineComparison.V f => ‖x v‖) atTop) v)
 
+/- English proof (translation)
+Use `Tendsto.congr' ?_ (?_ : Tendsto (fun x => phi Y κ K x (x + σ)) (crystallineComparison.atInfAll f) (𝓝 (Hh Y κ hat σ)))` and prove the remaining obligations. Use `filter_upwards [eventually_good σ] with x hx`. Rewrite using `[phiG, if_pos hx]`. Unfold `phi Hh`. Use `tendsto_finset_sum _ (fun h hh => tendsto_finset_sum _ (fun h' hh' => ?_))` and prove the remaining obligations.
+
+Use `Tendsto.const_mul _ ?_` and prove the remaining obligations. Use `tendsto_finset_prod _ (fun v _ => ?_)` and prove the remaining obligations. Conclude with `(hlim v h hh h' hh' (σ v)).comp (tendsto_coord v)`.
+-/
 theorem phiG_tendsto (Y : Finset H) (κ : H → H → ℂ) (K : Fin f → H × ℂ → H × ℂ → ℂ)
     (hat : Fin f → ℂ → H → H → ℂ)
     (hlim : ∀ v, ∀ h ∈ Y, ∀ h' ∈ Y, ∀ σ : ℂ,
@@ -53,6 +71,15 @@ theorem phiG_tendsto (Y : Finset H) (κ : H → H → ℂ) (K : Fin f → H × �
     refine tendsto_finset_prod _ (fun v _ => ?_)
     exact (hlim v h hh h' hh' (σ v)).comp (tendsto_coord v)
 
+/- English proof (translation)
+Establish `hherm : ∀ h ∈ Y, ∀ h' ∈ Y, conj (κ h' h) = κ h h'`. Introduce `h hh h' hh'`. Use `hκ.1.apply ⟨h, hh⟩ ⟨h', hh'⟩` as an intermediate fact. Simplify using `only [Matrix.of_apply] at this`. Conclude with `this`.
+
+Use `Tendsto.congr' ?_ (?_ : Tendsto (fun x => ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, conj (K v (h', x v + σ v) (h, x v))) (crystallineComparison.atInfAll f) (𝓝 (Hh Y κ hat σ)))` and prove the remaining obligations. Use `filter_upwards [eventually_good σ] with x hx`. Use `symm`. Rewrite using `[phiG, if_pos ⟨hx.2, hx.1⟩, phi]`. Simplify using `only [map_sum, map_mul, map_prod]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun h hh => Finset.sum_congr rfl (fun h' hh' => ?_))` and prove the remaining obligations. Rewrite using `[hherm h hh h' hh']`. Both sides reduce to the same expression. Unfold `Hh`.
+
+Use `tendsto_finset_sum _ (fun h hh => tendsto_finset_sum _ (fun h' hh' => ?_))` and prove the remaining obligations. Use `Tendsto.const_mul _ ?_` and prove the remaining obligations. Use `tendsto_finset_prod _ (fun v _ => ?_)` and prove the remaining obligations. Conclude with `(hlim v h hh h' hh' (σ v)).comp (tendsto_coord v)`.
+-/
 theorem phiG_conj_tendsto (Y : Finset H) (κ : H → H → ℂ) (hκ : TB.PSDOn Y κ) (K : Fin f → H × ℂ → H × ℂ → ℂ)
     (hat : Fin f → ℂ → H → H → ℂ)
     (hlim : ∀ v, ∀ h ∈ Y, ∀ h' ∈ Y, ∀ σ : ℂ,
@@ -83,11 +110,17 @@ section mean
 
 variable (Λ : AddSubgroup (crystallineComparison.V f)) (LIM : (Λ → ℂ) → ℂ)
 
+/- English proof (translation)
+Take `⟨B1, h1⟩` from `hg`. Take `⟨B2, h2⟩` from `hk`. Conclude with `⟨B1 + B2, fun x => (norm_add_le _ _).trans (add_le_add (h1 x) (h2 x))⟩`.
+-/
 theorem bdd_add {α : Type} {g k : α → ℂ} (hg : crystallineComparison.Bdd g) (hk : crystallineComparison.Bdd k) : crystallineComparison.Bdd (g + k) := by
   obtain ⟨B1, h1⟩ := hg
   obtain ⟨B2, h2⟩ := hk
   exact ⟨B1 + B2, fun x => (norm_add_le _ _).trans (add_le_add (h1 x) (h2 x))⟩
 
+/- English proof (translation)
+Conclude with `hL.2.1 c g hg`.
+-/
 theorem mean_smul (hL : crystallineComparison.IsMean LIM) (c : ℂ) {g : Λ → ℂ} (hg : crystallineComparison.Bdd g) :
     LIM (fun x => c * g x) = c * LIM g := by
   exact hL.2.1 c g hg

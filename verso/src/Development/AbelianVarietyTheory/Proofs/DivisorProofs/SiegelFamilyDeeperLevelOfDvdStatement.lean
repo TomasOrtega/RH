@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SiegLev.sFam_of_dvd | exact GlobalTheory.SiegLev.sFam_of_dvd | (intros; apply GlobalTheory.SiegLev.sFam_of_dvd <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.siegelFamily_deeper_level_of_dvd : ∀ (h n N : ℕ) (o : Type) [CommRing o] [IsNoetherianRing o] (b : TBase o N), 3 ≤ n → Odd N → n ∣ N → Nonempty (SFam h n ((b.ζ : o) ^ (N / n))) → Nonempty (SFam h N (b.ζ : o)) := by
   first | exact @GlobalTheory.SiegLev.sFam_of_dvd | exact GlobalTheory.SiegLev.sFam_of_dvd | (intros; apply GlobalTheory.SiegLev.sFam_of_dvd <;> assumption)

@@ -17,22 +17,37 @@ def idOp (d : ℕ) : SOp d := ⟨0, fun _ _ _ => 1⟩
 
 def zeroOp (d m : ℕ) : SOp d := ⟨m, fun _ _ _ => 0⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ k : Fin 1, ∑ w : Fin k → Fin d, (1 : ℂ) * pdc (List.ofFn w) u x = u x`. Rewrite using `[Fin.sum_univ_one]`. Express the relevant statement in the definitionally equal form `∑ w : Fin 0 → Fin d, (1 : ℂ) * pdc (List.ofFn w) u x = u x`. Simplify using `[pdc]`.
+-/
 lemma idOp_app (u : (Fin d → ℝ) → ℂ) (x : Fin d → ℝ) : (idOp d).app u x = u x := by
   change ∑ k : Fin 1, ∑ w : Fin k → Fin d, (1 : ℂ) * pdc (List.ofFn w) u x = u x
   rw [Fin.sum_univ_one]
   change ∑ w : Fin 0 → Fin d, (1 : ℂ) * pdc (List.ofFn w) u x = u x
   simp [pdc]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ w : Fin 0 → Fin d, (∏ i : Fin 0, (ξ (w i) : ℂ)) * (1 : ℂ) = 1`. Simplify using the standard rewrite rules.
+-/
 lemma idOp_symb (x ξ : Fin d → ℝ) : (idOp d).symb x ξ = 1 := by
   change ∑ w : Fin 0 → Fin d, (∏ i : Fin 0, (ξ (w i) : ℂ)) * (1 : ℂ) = 1
   simp
 
+/- English proof (translation)
+Simplify using `[SOp.app, zeroOp]`.
+-/
 lemma zeroOp_app (m : ℕ) (u : (Fin d → ℝ) → ℂ) (x : Fin d → ℝ) : (zeroOp d m).app u x = 0 := by
   simp [SOp.app, zeroOp]
 
+/- English proof (translation)
+Simplify using `[SOp.symb, zeroOp]`.
+-/
 lemma zeroOp_symb (m : ℕ) (x ξ : Fin d → ℝ) : (zeroOp d m).symb x ξ = 0 := by
   simp [SOp.symb, zeroOp]
 
+/- English proof (translation)
+The claim follows from `| [], _ => ⟨idOp d, rfl, fun _ _ => contDiffOn_const, fun u _ x _ => by simp [idOp_app, vfW], fun x _ ξ => by simp [idOp_symb]⟩ | V :: Vs, hV => by obtain ⟨S, hSo, hSc, hSa, hSs⟩ := word hF O hO Vs (fun W hW => hV W (List.mem_cons_of_mem _ hW)) obtain ⟨S', hS'o, hS'c, hS'a, hS's⟩ …`.
+-/
 lemma word (hF : SOpField) (O : Set (Fin d → ℝ)) (hO : IsOpen O) :
     ∀ Vs : List ((Fin d → ℝ) → (Fin d → ℝ)), (∀ V ∈ Vs, ContDiffOn ℝ ∞ V O) →
     ∃ S : SOp d, S.ord = Vs.length ∧ (∀ i w, ContDiffOn ℝ ∞ (S.a i w) O) ∧
@@ -63,6 +78,15 @@ lemma word (hF : SOpField) (O : Set (Fin d → ℝ)) (hO : IsOpen O) :
 end IdentityZeroOperators
 
 open IdentityZeroOperators in
+/- English proof (translation)
+Introduce `hF hL hLin d m P O hO hP`. Proceed by induction on `P with`. Consider the case `nil`. Conclude with `⟨zeroOp d m, rfl, fun _ _ => contDiffOn_const, fun u _ x _ => by simp [zeroOp_app, WOp.app], fun x _ ξ => by simp [zeroOp_symb, WOp.symb]⟩`. Consider the case `cons t P ih`.
+
+Take `⟨T, hTo, hTc, hTa, hTs⟩` from `ih (fun s hs => hP s (List.mem_cons_of_mem _ hs))`. Take `⟨hlen, hsm⟩` from `hP t List.mem_cons_self`. Take `⟨S, hSo, hSc, hSa, hSs⟩` from `word hF O hO t.2 hsm`. Take `⟨S', hS'o, hS'c, hS'a, hS's⟩` from `hL d S m O (by rw [hSo]; exact hlen) hSc`. Take `⟨R, hRo, hRc, hRa, hRs⟩` from `hLin d S' T t.1 O (hS'o.trans hTo.symm) hS'c hTc`.
+
+Use `⟨R, hRo.trans hS'o, hRc, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu x hx`. Rewrite using `[hRa, hS'a, hSa u (hu.of_le (by exact_mod_cast hlen)) x hx, hTa u hu x hx]`. Simplify using `[WOp.app]`. Introduce `x hx ξ`.
+
+Rewrite using `[hRs, hS's, hSs x hx ξ, hTs x hx ξ, hSo]`. Simplify using `only [WOp.symb, List.map_cons, List.sum_cons]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem vector_to_symbol_operator : VOpToSOpOfSteps := by
   intro hF hL hLin d m P O hO hP
   induction P with

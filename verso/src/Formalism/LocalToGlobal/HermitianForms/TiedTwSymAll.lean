@@ -9,6 +9,9 @@ namespace Formalism.L2.Forms
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `J.Uloc_off u μ i h1 hm β v (fun hQ => (J.Q_off u μ v hQ).2 a hv) (Or.inl hi)`.
+-/
 theorem _root_.Formalism.L2.Herm.TwChJointS.Uloc_g {D : D7} {inQ : D.what₂.Tup → HeightOneSpectrum (𝓞 D.host.F) → Prop}
     {T : Formalism.L2.Herm.TwChTied D inQ} {H : Formalism.L2.Herm.HermColsCh D} (J : Formalism.L2.Herm.TwChJointS T H) (u : D.what₂.Word)
     (μ : D.what₂.Tup) (i : ℕ) (h1 : 1 ≤ i) (hm : i ≤ D.R.m) (β : T.Ch u μ i) (v : HeightOneSpectrum (𝓞 D.host.F)) (a : Fin 2)

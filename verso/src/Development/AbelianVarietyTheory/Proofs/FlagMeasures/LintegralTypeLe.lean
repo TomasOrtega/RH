@@ -9,6 +9,11 @@ namespace GlobalTheory.FlagPush
 
 open GlobalTheory.FlagMeas
 
+/- English proof (translation)
+Establish `h : simplexH a = (⋂ i : Fin a, ⋂ k : Fin a, {τ : Fin a → ℝ | i < k → τ i < τ k}) ∩ ⋂ i : Fin a, ({τ : Fin a → ℝ | 0 < τ i} ∩ {τ | τ i < 1 / 2})`. Use extensionality with `τ`. Simplify using `only [simplexH, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨fun i k hik => h1 hik, fun i => h2 i⟩, fun ⟨h1, h2⟩ => ⟨fun i k hik => h1 i k hik, fun i => h2 i⟩⟩`. Rewrite using `[h]`.
+
+Use `MeasurableSet.inter (MeasurableSet.iInter fun i => MeasurableSet.iInter fun k => ?_) (MeasurableSet.iInter fun i => (measurableSet_lt measurable_const (measurable_pi_apply i)).inter (measurableSet_lt (measurable_pi_apply i) measurable_const))` and prove the remaining obligations. Distinguish the cases in `hik : i < k`. Simplify `measurableSet_lt (measurable_pi_apply i) (measurable_pi_apply k)` using `[hik]`. Simplify using `[hik]`.
+-/
 theorem simplex_meas (a : ℕ) : MeasurableSet (simplexH a) := by
   have h : simplexH a = (⋂ i : Fin a, ⋂ k : Fin a, {τ : Fin a → ℝ | i < k → τ i < τ k}) ∩
       ⋂ i : Fin a, ({τ : Fin a → ℝ | 0 < τ i} ∩ {τ | τ i < 1 / 2}) := by
@@ -24,16 +29,37 @@ theorem simplex_meas (a : ℕ) : MeasurableSet (simplexH a) := by
   · simpa [hik] using measurableSet_lt (measurable_pi_apply i) (measurable_pi_apply k)
   · simp [hik]
 
+/- English proof (translation)
+Use `show Measurable fun τ => FlagMeas.dens n f j τ`. Simplify using `only [FlagMeas.dens, layerProd, id]`. Use `fun_prop`.
+-/
 theorem dens_meas (n f : ℕ) {a : ℕ} (j : Fin a → ℕ) : Measurable (FlagMeas.dens n f j) := by
   show Measurable fun τ => FlagMeas.dens n f j τ
   simp only [FlagMeas.dens, layerProd, id]
   fun_prop
 
+/- English proof (translation)
+Take `⟨S, ⟨-, -, -, hmono, hτ, -⟩, -⟩` from `h`. Conclude with `⟨hmono, fun i => ⟨(hτ i).1, (hτ i).2.1⟩⟩`.
+-/
 theorem mem_simplex {I : AutInst} {x : I.GA} {a : ℕ} {j : Fin a → ℕ} {τ : Fin a → ℝ}
     (h : HasType I x j τ) : τ ∈ simplexH a := by
   obtain ⟨S, ⟨-, -, -, hmono, hτ, -⟩, -⟩ := h
   exact ⟨hmono, fun i => ⟨(hτ i).1, (hτ i).2.1⟩⟩
 
+/- English proof (translation)
+Introduce `hFMB B p q hSig hn a j ha hj hsum G Φ hG hΦ`. Use `B.haar` as an intermediate fact. Use `B.sf` as an intermediate fact. Take `⟨s, hs, hT, hsτ⟩` from `GlobalTheory.FlagMeas.type_measurable B.I a j`. Use `set T : Set B.I.GA := {x | ∃ τ, HasType B.I x j τ} with hTdef`.
+
+Use `set μ := B.I.muA B.μf with hμ`. Use `set K : ENNReal := μ B.fund * ENNReal.ofReal (GlobalTheory.FlagMeas.kapBd B.I.E p q j) with hK`. Use `set ρ : Measure (Fin a → ℝ) := (volume.restrict (GlobalTheory.FlagMeas.simplexH a)).withDensity (fun τ => ENNReal.ofReal (GlobalTheory.FlagMeas.dens B.I.n B.I.f j τ)) with hρ`. Establish `hd : Measurable (fun τ => ENNReal.ofReal (GlobalTheory.FlagMeas.dens B.I.n B.I.f j τ))` using `(dens_meas B.I.n B.I.f j).ennreal_ofReal`. Establish `h1 : ∫⁻ x in T ∩ B.fund, Φ x ∂μ ≤ ∫⁻ x in T ∩ B.fund, G (s x) ∂μ`.
+
+Rewrite using `[← Measure.restrict_restrict hT]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `(ae_restrict_iff' hT).2 (Filter.Eventually.of_forall ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨τ, hx⟩`. Rewrite using `[hsτ x τ hx]`.
+
+Conclude with `hΦ x τ hx`. Establish `h2 : Measure.map s (μ.restrict (T ∩ B.fund)) ≤ K • ρ`. Rewrite using `[Measure.le_iff]`. Introduce `A hA`. Rewrite using `[Measure.map_apply hs hA, Measure.restrict_apply (hs hA), Measure.smul_apply, smul_eq_mul, hρ, withDensity_apply _ hA, Measure.restrict_restrict hA]`.
+
+Establish `hsub : s ⁻¹' A ∩ (T ∩ B.fund) ⊆ GlobalTheory.FlagMeas.typeSet B.I j (A ∩ GlobalTheory.FlagMeas.simplexH a) ∩ B.fund`. Introduce and unpack `x ⟨hxA, ⟨τ, hx⟩, hxf⟩`. Use `⟨⟨τ, ⟨?_, mem_simplex hx⟩, hx⟩, hxf⟩` and prove the remaining obligations. Establish `hxs : s x = τ` using `hsτ x τ hx`. Rewrite using `[← hxs]`.
+
+Conclude with `hxA`. Take `⟨-, h0, htop, hle⟩` from `hFMB B.I B.μf B.fund B.fund_spec p q hSig hn a j ha hj hsum (A ∩ GlobalTheory.FlagMeas.simplexH a) (hA.inter (simplex_meas a)) Set.inter_subset_right`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_smul_measure, hρ, lintegral_withDensity_eq_lintegral_mul _ hd hG, smul_eq_mul]`. Use `congr 1`. Conclude with `lintegral_congr fun τ => mul_comm _ _`.
+-/
 theorem lintegral_type_le : GlobalTheory.FlagMeas.FlagMeasureBound → ∀ (B : RowsAut) (p q : ℕ), SigIs B p q → 2 * q + 2 ≤ B.I.n → ∀ (a : ℕ) (j : Fin a → ℕ), 1 ≤ a → (∀ i, 1 ≤ j i) → ∑ i, j i ≤ q → ∀ (G : (Fin a → ℝ) → ENNReal) (Φ : B.I.GA → ENNReal), Measurable G → (∀ x τ, HasType B.I x j τ → Φ x ≤ G τ) → ∫⁻ x in {x | ∃ τ, HasType B.I x j τ} ∩ B.fund, Φ x ∂(B.I.muA B.μf) ≤ B.I.muA B.μf B.fund * ENNReal.ofReal (GlobalTheory.FlagMeas.kapBd B.I.E p q j) * ∫⁻ τ in GlobalTheory.FlagMeas.simplexH a, G τ * ENNReal.ofReal (GlobalTheory.FlagMeas.dens B.I.n B.I.f j τ) := by
   intro hFMB B p q hSig hn a j ha hj hsum G Φ hG hΦ
   have := B.haar

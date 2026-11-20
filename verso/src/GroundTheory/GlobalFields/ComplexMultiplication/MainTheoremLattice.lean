@@ -17,6 +17,9 @@ section VC
 variable {F : Type*} [Field F] [IsAlgClosed F] [DecidableEq F] {A B : WeierstrassCurve F}
   [A.IsElliptic] [B.IsElliptic]
 
+/- English proof (translation)
+Establish `h0 : vcHom C hC ≠ 0` using `fun h ↦ vcPt_ne_zero C hC (congrArg Subtype.val h)`. Rewrite using `[homPt, dif_neg h0, Isogeny.pointHom_apply]`. Conclude with `pointMap_eq_vcPoint C hC _ (isogOfHom_val _ h0) R`.
+-/
 theorem homPt_vcHom (C : VariableChange F) (hC : C • A = B) (R : A.toAffine.Point) :
     homPt (vcHom C hC) R = vcPoint C hC R := by
   have h0 : vcHom C hC ≠ 0 := fun h ↦ vcPt_ne_zero C hC (congrArg Subtype.val h)
@@ -25,6 +28,15 @@ theorem homPt_vcHom (C : VariableChange F) (hC : C • A = B) (R : A.toAffine.Po
 
 variable {A' B' : WeierstrassCurve F} [A'.IsElliptic] [B'.IsElliptic]
 
+/- English proof (translation)
+Use `set Q := vcHom V hV`. Use `set R := vcHom V'⁻¹ (inv_smul_eq_of_smul_eq V' hV')`. Use `set Q' := vcHom V⁻¹ (inv_smul_eq_of_smul_eq V hV)`. Use `set R' := vcHom V' hV'`. Establish `e1 : homConst B A Q' * homConst A B Q = 1` using `homConst_vcHom_mul_inv V hV`.
+
+Establish `e2 : homConst B' A' R * homConst A' B' R' = 1` using `homConst_vcHom_mul_inv V' hV'`. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Use `⟨homConst A' B' R' * z * homConst B A Q', homConstSet_le_mul Q' R' hz, ?_⟩` and prove the remaining obligations. Take the linear combination `(homConst A B Q * homConst B A Q' * z) * e2 + z * e1`. Introduce and unpack `⟨w, hw, rfl⟩`. Use `homConstSet_le_mul Q R hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem homConstSet_conj (V : VariableChange F) (hV : V • A = B) (V' : VariableChange F)
     (hV' : V' • A' = B') :
     (homConstSet A A' : Set F) =
@@ -54,6 +66,9 @@ section Lattice
 variable {K : Type*} [Field K] [NumberField K] (σ₀ : K →+* ℂ) (hK : finrank ℚ K = 2)
   [IsTotallyComplex K]
 
+/- English proof (translation)
+Use extensionality with `α`. Use `show (∀ l ∈ L.lattice, α * l ∈ L.lattice) ↔ (∀ l ∈ L'.lattice, α * l ∈ L'.lattice)`. Rewrite using `[h]`.
+-/
 theorem latticeEnd_eq_of_lattice_eq {L L' : PeriodPair} (h : L.lattice = L'.lattice) :
     latticeEnd L = latticeEnd L' := by
   ext α
@@ -62,6 +77,9 @@ theorem latticeEnd_eq_of_lattice_eq {L L' : PeriodPair} (h : L.lattice = L'.latt
 
 include hK in
 
+/- English proof (translation)
+Rewrite using `[latticeEnd_eq_of_lattice_eq (L' := idealPeriodPair σ₀ hK 𝔞) (h.trans (lattice_idealPeriodPair σ₀ hK 𝔞).symm), latticeEnd_idealPeriodPair]`.
+-/
 theorem latticeEnd_eq_cmRing_of_lattice_eq {L : PeriodPair} {𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     (h : L.lattice = idealLattice σ₀ 𝔞) : latticeEnd L = cmRing σ₀ := by
   rw [latticeEnd_eq_of_lattice_eq (L' := idealPeriodPair σ₀ hK 𝔞)
@@ -69,6 +87,19 @@ theorem latticeEnd_eq_cmRing_of_lattice_eq {L : PeriodPair} {𝔞 : (FractionalI
 
 include hK in
 
+/- English proof (translation)
+Establish `hP` using `lattice_idealPeriodPair σ₀ hK J`. Establish `hPend` using `latticeEnd_idealPeriodPair σ₀ hK J`. Establish `hne : ∃ z, z ∉ idealLattice σ₀ J`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+
+Establish `h1 : (Real.sqrt 2 : ℂ) * (idealPeriodPair σ₀ hK J).ω₁ ∉ (idealPeriodPair σ₀ hK J).lattice` using `sqrt_two_mul_notMem _`. Rewrite `h1` using `[hP]`. Conclude with `h1 (h _)`. Take `⟨z₀, hz₀⟩` from `hne`. Establish `hc0 : c ≠ 0`.
+
+Introduce and unpack `rfl`. Conclude with `hz₀ ((hc z₀).2 (by rw [zero_mul]; exact zero_mem _))`. Establish `mult : ∀ d : ℂ, (∀ l ∈ idealLattice σ₀ J, d * l ∈ idealLattice σ₀ J) → d ∈ cmRing σ₀`. Introduce `d hd`. Rewrite using `[← hPend]`.
+
+Introduce `l hl`. Rewrite `hl`, the goal using `[hP]`. Conclude with `hd l hl`. Take `⟨a, ha⟩` from `(mem_cmRing σ₀).1 (mult c fun l hl ↦ (hc l).1 hl)`. Take `⟨b, hb⟩` from `(mem_cmRing σ₀).1 (mult c⁻¹ fun l hl ↦ (hc _).2 (by`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`. Conclude with `hl))`. Establish `hinj : Function.Injective (σ₀.comp (algebraMap (𝓞 K) K))` using `σ₀.injective.comp (IsFractionRing.injective (𝓞 K) K)`. Establish `hab : a * b = 1` using `hinj (by`. Simplify using `only [RingHom.comp_apply, map_mul, map_one]`.
+
+Rewrite using `[ha, hb, mul_inv_cancel₀ hc0])`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, ha.symm⟩`.
+-/
 theorem exists_unit_of_forall_mem_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {c : ℂ}
     (hc : ∀ z, z ∈ idealLattice σ₀ J ↔ c * z ∈ idealLattice σ₀ J) :
     ∃ ε : (𝓞 K)ˣ, c = σ₀ (algebraMap (𝓞 K) K ε) := by
@@ -103,6 +134,23 @@ theorem exists_unit_of_forall_mem_iff (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {c
 
 include hK in
 
+/- English proof (translation)
+Use `set Q := vcHom V hV`. Use `set R := vcHom V'⁻¹ (inv_smul_eq_of_smul_eq V' hV')`. Use `set c := homConst A' (weierstrassCurve L') R * homConst (weierstrassCurve L) A Q`. Establish `hset` using `homConstSet_conj V hV V' hV'`. Use `set Φ := homComp R (homComp φ.toHom Q)`.
+
+Establish `hΦ : homConst _ _ Φ = c * invConst φ`. Rewrite using `[homConst_homComp, homConst_homComp, homConst_toHom]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : c ≠ 0`. Introduce `h0`.
+
+Establish `e` using `homConst_vcHom_mul_inv V' hV'`. Establish `e'` using `homConst_vcHom_mul_inv V hV`. Simplify using `only [c, mul_eq_zero] at h0`. Break down `h0 with h0 | h0` into its components or cases. Rewrite `e` using `[h0, zero_mul]`.
+
+Conclude with `zero_ne_one e`. Rewrite `e'` using `[h0, mul_zero]`. Conclude with `zero_ne_one e'`. Establish `hΦ0 : Φ ≠ 0`. Introduce `h`.
+
+Use `congrArg (homConst _ _) h` as an intermediate fact. Rewrite `this` using `[hΦ, map_zero]`. Conclude with `mul_ne_zero hc0 (invConst_ne_zero φ) this`. Use `set ψ := isogOfHom Φ hΦ0`. Establish `hψc : invConst ψ = c * invConst φ`.
+
+Rewrite using `[← homConst_toHom, isogOfHom_toHom, hΦ]`. Establish `hLend` using `latticeEnd_eq_cmRing_of_lattice_eq σ₀ hK hL`. Establish `hL'' : L'.lattice = idealLattice σ₀ ↑(𝔟⁻¹)⁻¹ * L.lattice`. Rewrite using `[hL', inv_inv, hL, Units.val_mul, idealLattice_mul]`. Establish `hψ : (homConstSet (weierstrassCurve L) (weierstrassCurve L') : Set ℂ) = (invConst ψ * ·) '' idealLattice σ₀ ↑(𝔟⁻¹)⁻¹`.
+
+Rewrite using `[inv_inv, hset, hφ, Set.image_image, hψc]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, -, hu⟩` from `exists_unit_of_homConstSet_eq σ₀ hK L L' hLend 𝔟⁻¹ hL'' ψ hψ`.
+
+Use `⟨u, fun z ↦ ?_⟩` and prove the remaining obligations. Establish `h1` using `hu z`. Rewrite `h1` using `[isogOfHom_toHom, TateCharpoly.homPt_homComp, TateCharpoly.homPt_homComp, AddMonoidHom.comp_apply, AddMonoidHom.comp_apply, homPt_vcHom, homPt_vcHom, homPt_toHom, Isogeny.pointHom_apply]`. Establish `h2` using `congrArg (vcPoint V' hV') h1`. Rewrite `h2` using `[vcPoint_vcPoint_of_eq_inv V'⁻¹ V' (inv_inv V').symm]`. Then use the resulting hypothesis.
+-/
 theorem exists_unit_pointMap_vcPoint (𝔞 𝔟 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (L L' : PeriodPair)
     (hL : L.lattice = idealLattice σ₀ 𝔞) (hL' : L'.lattice = idealLattice σ₀ ↑(𝔟 * 𝔞))
     {A A' : WeierstrassCurve ℂ} [A.IsElliptic] [A'.IsElliptic]

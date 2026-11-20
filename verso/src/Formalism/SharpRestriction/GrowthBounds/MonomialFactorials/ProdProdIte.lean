@@ -7,6 +7,11 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open Finset Formalism.GM Formalism.GM.M
 open scoped Nat
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (x i)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+-/
 theorem prod_prod_ite {α ι : Type} [Fintype α] [DecidableEq α] [Fintype ι] (x : ι → α) (n : ι → ℕ) :
     ∏ a : α, ∏ i : ι, (if x i = a then n i else 0)! = ∏ i, (n i)! := by
   rw [Finset.prod_comm]
@@ -17,6 +22,9 @@ theorem prod_prod_ite {α ι : Type} [Fintype α] [DecidableEq α] [Fintype ι] 
     simp [Ne.symm hb]
   · simp
 
+/- English proof (translation)
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem smul_ite_one (n : ℕ) (c : Prop) [Decidable c] : n • (if c then 1 else 0 : ℕ) = if c then n else 0 := by
   split_ifs <;> simp
 
@@ -32,6 +40,11 @@ def fL (j : Fin G.T.t → ℕ) (jp : ℕ) (a : Fin (N + 1)) : ℕ :=
     (∏ a0 : Fin N, (if Fin.castSucc a0 = a then (G.lettersAt j jp).deg a0 else 0)!) *
     (if Fin.last N = a then G.B - jp else 0)!
 
+/- English proof (translation)
+Establish `hfac : ∀ {x y X Y : ℕ}, x ∣ X ! → y ∣ Y ! → x * y ∣ (X + Y)!` using `fun hx hy => (mul_dvd_mul hx hy).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)`. Unfold `fL dLvl chDeg`. Simplify using `only [smul_add, smul_ite_one]`. Use `hfac (hfac (hfac (hfac (hfac ?_ ?_) ?_) dvd_rfl) ?_) dvd_rfl` and prove the remaining obligations. Conclude with `(Finset.prod_dvd_prod_of_dvd _ _ fun i _ => Nat.factorial_mul_factorial_dvd_factorial_add _ _).trans (Nat.prod_factorial_dvd_factorial_sum _ _)`.
+
+Conclude with `Nat.factorial_mul_factorial_dvd_factorial_add _ _`. Conclude with `Nat.prod_factorial_dvd_factorial_sum _ _`. Conclude with `Nat.prod_factorial_dvd_factorial_sum _ _`.
+-/
 theorem fL_dvd (j : Fin G.T.t → ℕ) (jp : ℕ) (a : Fin (N + 1)) : fL G j jp a ∣ (dLvl G j jp a)! := by
   have hfac : ∀ {x y X Y : ℕ}, x ∣ X ! → y ∣ Y ! → x * y ∣ (X + Y)! := fun hx hy =>
     (mul_dvd_mul hx hy).trans (Nat.factorial_mul_factorial_dvd_factorial_add _ _)
@@ -44,6 +57,11 @@ theorem fL_dvd (j : Fin G.T.t → ℕ) (jp : ℕ) (a : Fin (N + 1)) : fL G j jp 
   · exact Nat.prod_factorial_dvd_factorial_sum _ _
   · exact Nat.prod_factorial_dvd_factorial_sum _ _
 
+/- English proof (translation)
+Establish `hsingle : ∀ (b : Fin (N + 1)) (n : ℕ), ∏ a, (if b = a then n else 0)! = n !`. Introduce `b n`. Rewrite using `[Finset.prod_eq_single b]`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+
+Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules. Unfold `fL`. Simplify using `only [Finset.prod_mul_distrib, prod_prod_ite, hsingle]`.
+-/
 theorem prod_fL (j : Fin G.T.t → ℕ) (jp : ℕ) :
     ∏ a, fL G j jp a = (∏ i, (j i)!) * (∏ i, (j i)!) * (jp ! * jp !) * (∏ i, (G.T.z i)!) * G.zPlus ! *
       (∏ a0, ((G.lettersAt j jp).deg a0)!) * (G.B - jp)! := by
@@ -63,6 +81,9 @@ def binT (j : Fin G.T.t → ℕ) (jp : ℕ) (i : Fin G.T.t) : ℕ :=
 
 def binP (jp : ℕ) : ℕ := ((G.LL.deg G.uPos - jp) + (G.B - jp) + r + G.zPlus + 1 + jp - 1).choose jp
 
+/- English proof (translation)
+Rewrite using `[prod_fL]`. Unfold `lvC degFact binT binP`. Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lvC_eq (j : Fin G.T.t → ℕ) (jp : ℕ) :
     lvC (r := r) G j jp * degFact G j jp = (∏ a, fL G j jp a) * ((∏ i, binT (r := r) G j jp i) * binP (r := r) G jp) := by
   rw [prod_fL]
@@ -70,6 +91,15 @@ theorem lvC_eq (j : Fin G.T.t → ℕ) (jp : ℕ) :
   rw [Finset.prod_mul_distrib]
   ring
 
+/- English proof (translation)
+Establish `hp'` using `hp.out`. Rewrite using `[lvC_eq]`. Distinguish the cases in `h0 : (∏ a, fL G j jp a) * ((∏ i, binT (r := r) G j jp i) * binP (r := r) G jp) = 0`. Rewrite using `[h0, padicValNat.zero]`. Conclude with `Nat.zero_le _`.
+
+Take `⟨hA, hB⟩` from `mul_ne_zero_iff.mp h0`. Take `⟨hBt, hBp⟩` from `mul_ne_zero_iff.mp hB`. Establish `hD : (∏ a, (dLvl G j jp a)!) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun a _ => Nat.factorial_ne_zero _`. Rewrite using `[← Nat.factorization_def _ hp', ← Nat.factorization_def _ hp', Nat.factorization_mul hA hB, Nat.factorization_mul hBt hBp]`. Simplify using `only [Finsupp.add_apply]`.
+
+Establish `h1' : (∏ a, fL G j jp a).factorization p ≤ (∏ a, (dLvl G j jp a)!).factorization p` using `(Nat.factorization_le_iff_dvd hA hD).mpr (Finset.prod_dvd_prod_of_dvd _ _ fun a _ => fL_dvd G j jp a) p`. Establish `h2' : (∏ i, binT (r` using `r) G j jp i).factorization p ≤ G.T.t * L := by`. Rewrite using `[Nat.factorization_prod (fun i _ => Finset.prod_ne_zero_iff.mp hBt i (Finset.mem_univ _))]`. Simplify using `only [Finsupp.coe_finset_sum, Finset.sum_apply]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3' : (binP (r` using `r) G jp).factorization p ≤ L := le_trans Nat.factorization_choose_le_log h2`. Rewrite using `[add_mul, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem val_lvC_le (j : Fin G.T.t → ℕ) (jp : ℕ) (L : ℕ)
     (h1 : ∀ i, Nat.log p ((G.lettersAt j jp).deg (G.letterAt (G.T.pos i)) +
       (G.lettersAt j jp).deg (G.letterAt (G.T.pos i + 1)) + r + G.T.z i + 1 + j i - 1) ≤ L)

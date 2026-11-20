@@ -16,6 +16,11 @@ namespace GlobalTheory.ThK.BotFixFin
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `h1 : ε • mat k + (1 - ε) • (1 : Matrix (Fin n) (Fin n) (AE F E)) = 1` using `congrArg mat h`. Establish `h2 : ε • (mat k - 1) = 0`. Rewrite `h1` using `[sub_smul, one_smul]`. Rewrite using `[smul_sub, ← sub_eq_zero.2 h1]`. Normalize the expressions using the abelian group laws.
+
+Conclude with `congrFun (congrFun h2 i) j`.
+-/
 theorem smul_sub_one_eq_zero {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F} {hε : ε * ε = ε} {k : UA σ J}
     (h : idemU σ J ε hε k = 1) (i j : Fin n) : ε • (mat k - 1) i j = 0 := by
   have h1 : ε • mat k + (1 - ε) • (1 : Matrix (Fin n) (Fin n) (AE F E)) = 1 := congrArg mat h
@@ -25,9 +30,19 @@ theorem smul_sub_one_eq_zero {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {ε : AF F
     abel
   exact congrFun (congrFun h2 i) j
 
+/- English proof (translation)
+The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (evI_realAd_one.trans (map_one _).symm)`.
+-/
 theorem fstA_eInf : fstA F (eInf F) = 1 :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (evI_realAd_one.trans (map_one _).symm)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mat k = 1`. Rewrite using `[← sub_eq_zero]`. Use extensionality with `i j`.
+
+Use `GlobalTheory.Doubling.adele_ext (fun w => ?_) fun w => ?_` and prove the remaining obligations. Use `congrArg (compInf F E w) (smul_sub_one_eq_zero h1 i j)` as an intermediate fact. Rewrite `this` using `[compInf_smul, show evInf F w (eInf F) = 1 from congrFun fstA_eInf w, one_smul]`. Conclude with `this`. Use `congrArg (compFin F E w) (smul_sub_one_eq_zero (h2 w) i j)` as an intermediate fact.
+
+Rewrite `this` using `[compFin_smul, eFin, GlobalTheory.LatVac.evFin_liftV, one_smul]`. Conclude with `this`.
+-/
 theorem eq_one_of_components {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} (h1 : compArch σ J k = 1)
     (h2 : ∀ v, compAt σ J v k = 1) : k = 1 := by
   apply Subtype.ext; apply Units.ext
@@ -43,6 +58,9 @@ theorem eq_one_of_components {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ
     exact this
 
 omit [NumberField E] in
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b y => simp [TensorProduct.smul_tmul', fstA_eInf]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add]`.
+-/
 theorem tmap_eInf_smul (x : AE F E) :
     Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (eInf F • x) =
       Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) x := by
@@ -51,6 +69,11 @@ theorem tmap_eInf_smul (x : AE F E) :
   | tmul b y => simp [TensorProduct.smul_tmul', fstA_eInf]
   | add x y hx hy => rw [smul_add, map_add, hx, hy, map_add]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrArg (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) (smul_sub_one_eq_zero h1 i j)` as an intermediate fact. Rewrite `this` using `[tmap_eInf_smul, map_zero, Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[Matrix.map_apply, this, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+
+Use `exacts [map_one _, map_zero _]`.
+-/
 theorem map_fst_eq_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} (h1 : compArch σ J k = 1) :
     (mat k).map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 1 := by
   ext i j
@@ -60,6 +83,13 @@ theorem map_fst_eq_one {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {k : UA σ J} (h
   split_ifs
   exacts [map_one _, map_zero _]
 
+/- English proof (translation)
+Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AE F E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Use `haveI : T2Space (UA σ J) := inferInstance`. Take `⟨S, hS⟩` from `(hC.diff hU).elim_finite_subfamily_closed (fun v : Pl F => {k | compAt σ J v k = 1}) (fun v => isClosed_eq ((continuous_components F E σ n J).1 v) continuous_const) (by`.
+
+Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `k ⟨⟨hk, hkU⟩, hv⟩`. Rewrite `hv` using `[Set.mem_iInter]`. Conclude with `hkU (eq_one_of_components (hA k hk) hv ▸ h1))`. Use `⟨S, fun k hk hv => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hkU`. Conclude with `(Set.eq_empty_iff_forall_notMem.1 hS k) ⟨⟨hk, hkU⟩, Set.mem_iInter₂.2 hv⟩`.
+-/
 theorem exists_finset_subset {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {C U : Set (UA σ J)} (hC : IsCompact C)
     (hA : ∀ k ∈ C, compArch σ J k = 1) (hU : IsOpen U) (h1 : (1 : UA σ J) ∈ U) :
     ∃ S : Finset (Pl F), ∀ k ∈ C, (∀ v ∈ S, compAt σ J v k = 1) → k ∈ U := by
@@ -77,6 +107,9 @@ theorem exists_finset_subset {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {C U : Set
   by_contra hkU
   exact (Set.eq_empty_iff_forall_notMem.1 hS k) ⟨⟨hk, hkU⟩, Set.mem_iInter₂.2 hv⟩
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP K hC Φ hΦ`. Take `⟨U, hUo, hU⟩` from `GlobalTheory.FixLeftSchA.level_left hKP F E σ B n d X W M χX χW om r s' r₁ s₁ hP Φ hΦ`. Take `⟨S, hS⟩` from `exists_finset_subset hC (fun k hk => hk.1) hUo U.one_mem`. Conclude with `⟨S, fun k h1 h2 h3 => hU k (hS k ⟨h1, h2⟩ h3) (map_fst_eq_one h1)⟩`.
+-/
 theorem fix_off_finset : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ →
     ∀ K : Subgroup (UA σ X.J), IsCompact {k : UA σ X.J | compArch σ X.J k = 1 ∧ ∀ v, compAt σ X.J v k ∈ K} →

@@ -11,6 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.CompanionTheory.WSum
 
+/- English proof (translation)
+Introduce `D θ m n q hq φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Use `Submodule.subset_span ⟨SchwartzMap.bilinLeftCLM (ContinuousLinearMap.mul ℝ ℂ) hq f, g, hg, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Conclude with `mul_left_comm _ _ _`. Consider the case `zero`. Use `(schwartzA θ m n).zero_mem using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add Φ₁ Φ₂ _ _ h₁ h₂`. Use `(schwartzA θ m n).add_mem h₁ h₂` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`. Consider the case `smul c Φ _ h`. Use `(schwartzA θ m n).smul_mem c h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `x`. Simplify using `[mul_left_comm]`.
+-/
 theorem mul_mem_schwartzA : ∀ (D : D7) (θ : InfFam D) (m n : ℕ) (q : (D.what₂.Tau → Fin m → Fin n → ℂ) → ℂ), q.HasTemperateGrowth → ∀ φ : Mx D m n → ℂ, φ ∈ schwartzA θ m n → (fun x => q (fun τ i j => compAt θ τ x i j) * φ x) ∈ schwartzA θ m n := by
   intro D θ m n q hq φ hφ
   induction hφ using Submodule.span_induction with

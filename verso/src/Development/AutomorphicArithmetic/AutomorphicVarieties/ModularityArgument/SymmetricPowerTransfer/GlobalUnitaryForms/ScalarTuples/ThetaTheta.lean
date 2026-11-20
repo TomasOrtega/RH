@@ -8,15 +8,24 @@ open Loc
 
 end UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Simplify using `[UpperTheory.V.Z.Sym.Loc.theta]`.
+-/
 private theorem theta_apply_eq_star {K : Type} [Field K] (Δ : K) (g : UpperTheory.V.Z.Sym.Loc.U3 Δ) (i j : Fin 3) :
     (UpperTheory.V.Z.Sym.Loc.theta Δ g : Matrix (Fin 3) (Fin 3) (UpperTheory.V.Z.Sym.Lsq K Δ)) i j = star ((g : Matrix (Fin 3) (Fin 3) (UpperTheory.V.Z.Sym.Lsq K Δ)) i j) := by
   simp [UpperTheory.V.Z.Sym.Loc.theta]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Matrix.ext fun i j => by rw [theta_apply_eq_star, theta_apply_eq_star, star_star]`.
+-/
 private theorem theta_theta' {K : Type} [Field K] (Δ : K) (g : UpperTheory.V.Z.Sym.Loc.U3 Δ) :
     UpperTheory.V.Z.Sym.Loc.theta Δ (UpperTheory.V.Z.Sym.Loc.theta Δ g) = g := by
   apply Subtype.ext
   exact Matrix.ext fun i j => by rw [theta_apply_eq_star, theta_apply_eq_star, star_star]
 
+/- English proof (translation)
+Introduce `i j`. Rewrite using `[theta_apply_eq_star, star_star]`. Conclude with `⟨(hg i j).2, (hg i j).1⟩`.
+-/
 private theorem theta_mem_ku_of_mem_ku (O : Type) [CommRing O] {K : Type} [Field K] [Algebra O K] (Δ : K)
     (g : UpperTheory.V.Z.Sym.Loc.U3 Δ) (hg : g ∈ UpperTheory.V.Z.Sym.Loc.KU O Δ) :
     UpperTheory.V.Z.Sym.Loc.theta Δ g ∈ UpperTheory.V.Z.Sym.Loc.KU O Δ := by
@@ -24,12 +33,30 @@ private theorem theta_mem_ku_of_mem_ku (O : Type) [CommRing O] {K : Type} [Field
   rw [theta_apply_eq_star, star_star]
   exact ⟨(hg i j).2, (hg i j).1⟩
 
+/- English proof (translation)
+Apply the tactic sequence `ext <;> simp [UpperTheory.V.Z.Sym.Glob.lmap]`.
+-/
 private theorem lmap_star_scalar_tuples {K K' : Type} [Field K] [Field K'] (f : K →+* K') (Δ : K)
     (x : UpperTheory.V.Z.Sym.Lsq K Δ) :
     UpperTheory.V.Z.Sym.Glob.lmap f Δ (star x) = star (UpperTheory.V.Z.Sym.Glob.lmap f Δ x) := by
   ext <;> simp [UpperTheory.V.Z.Sym.Glob.lmap]
 
 open UpperTheory.V.Z.Sym.Loc in
+/- English proof (translation)
+Introduce `F _ _ Δ D _ V _ _ W Θ ch hΘ htr`. Take `⟨⟨ι, hι⟩, -, -⟩` from `UpperTheory.V.Z.Sym.Glob.iotaEx F Δ`. Set `tΓ : UpperTheory.V.Z.Sym.Loc.U3 Δ ≃* UpperTheory.V.Z.Sym.Loc.U3 Δ` to `MonoidHom.toMulEquiv (UpperTheory.V.Z.Sym.Loc.theta Δ) (UpperTheory.V.Z.Sym.Loc.theta Δ) (by ext1 g; exact theta_theta' Δ g) (by ext1 g; exact theta_theta' Δ g)`. Set `tG0 : UpperTheory.V.Z.Sym.Glob.GA Δ →* UpperTheory.V.Z.Sym.Glob.GA Δ` to `{ toFun := fun g => ⟨fun v => UpperTheory.V.Z.Sym.Loc.theta (UpperTheory.V.Z.Sym.Glob.cv v Δ) (g.1 v), Filter.Eventually.mono (show ∀ᶠ v in Filter.cofinite, g.1 v ∈ UpperTheory.V.Z.Sym.Loc.KU (UpperTheory.V.Z.Sym.Glob.Ov v) (UpperTheory.V.Z.Sym.Glob.cv v Δ) from g.2) fun v hv => …`. Set `tG : UpperTheory.V.Z.Sym.Glob.GA Δ ≃* UpperTheory.V.Z.Sym.Glob.GA Δ` to `MonoidHom.toMulEquiv tG0 tG0 (by ext1 g; exact Subtype.ext (funext fun v => theta_theta' _ _)) (by ext1 g; exact Subtype.ext (funext fun v => theta_theta' _ _))`.
+
+Set `B : UpperTheory.V.Z.Sym.Base (UpperTheory.V.Z.Sym.Loc.U3 Δ) (UpperTheory.V.Z.Sym.Glob.GA Δ) V` to `{ ι := ι, U := D.UG, ω := 1, W := W, Γ₀ := ⊥ cenΓ := bot_le cenG := by`. Introduce `z hz`. Rewrite using `[Subgroup.mem_bot.mp hz, map_one]`. Conclude with `one_mem _`. Use `memU := by`.
+
+Introduce `z hz`. Rewrite using `[Subgroup.mem_bot.mp hz, map_one]`. Conclude with `one_mem _`. Use `scal := by`. Introduce `z hz v`.
+
+Take `rfl` from `Subgroup.mem_bot.mp hz`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul, map_one]`. Use `rfl }`. Set `s : B.Tw` to `{ θΓ := tΓ, θ := tG, Θ := Θ comm := by`. Introduce `γ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ((UpperTheory.V.Z.Sym.Loc.theta (UpperTheory.V.Z.Sym.Glob.cv v Δ) ((ι γ).1 v)).1) = ((ι (UpperTheory.V.Z.Sym.Loc.theta Δ γ)).1 v).1`. Rewrite using `[hι (UpperTheory.V.Z.Sym.Loc.theta Δ γ) v]`.
+
+Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[theta_apply_eq_star, hι γ v, Matrix.map_apply, Matrix.map_apply, theta_apply_eq_star, lmap_star_scalar_tuples]`. Use `int := hΘ`. Use `fix := by`. Introduce `z hz`.
+
+Rewrite using `[Subgroup.mem_bot.mp hz]`. Conclude with `map_one _ }`. Conclude with `⟨B, s, ⟨hι, rfl, rfl, rfl, fun γ => rfl, fun g v => rfl, htr⟩, rfl, rfl⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.Glob.baseG :
     UpperTheory.V.Z.Sym.Glob.BaseG := by
   intro F _ _ Δ D _ V _ _ W Θ ch hΘ htr

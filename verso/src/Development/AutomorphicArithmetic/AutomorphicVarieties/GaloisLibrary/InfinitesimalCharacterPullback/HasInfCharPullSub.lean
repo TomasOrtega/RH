@@ -13,6 +13,11 @@ namespace UpperTheory.V.FieldIso
 variable {E F : Type} [Field E] [NumberField E] [IsTotallyComplex E] [Field F] [NumberField F] [IsTotallyComplex F] {a : ℕ}
 
 omit [NumberField E] in
+/- English proof (translation)
+Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 h))`. Unfold `coord`. Simplify using `only [InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [InfinitePlace.mk_conjugate_eq, h]; exact hne.symm)]; rfl`.
+
+Rewrite using `[if_pos (by rw [InfinitePlace.mk_conjugate_eq, h]), if_neg (by rw [h]; exact hne)]; simp`.
+-/
 theorem coord_conj (τ : E →+* ℂ) (x : Cinf E) :
     coord (ComplexEmbedding.conjugate τ) x = starRingEnd ℂ (coord τ x) := by
   have hne : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
@@ -25,22 +30,34 @@ theorem coord_conj (τ : E →+* ℂ) (x : Cinf E) :
   · rw [if_pos (by rw [InfinitePlace.mk_conjugate_eq, h]), if_neg (by rw [h]; exact hne)]; simp
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `coord`. Rewrite using `[if_pos (by rw [InfinitePlace.mk_embedding])]`. Simplify using `[InfinitePlace.mk_embedding]`.
+-/
 theorem coord_embedding (w : InfinitePlace E) (x : Cinf E) : coord w.embedding x = x w := by
   unfold coord
   rw [if_pos (by rw [InfinitePlace.mk_embedding])]
   simp [InfinitePlace.mk_embedding]
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coord_smul (τ : E →+* ℂ) (t : ℝ) (x : Cinf E) : coord τ (t • x) = t • coord τ x := by
   unfold coord
   split_ifs <;> simp
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coord_star (τ : E →+* ℂ) (x : Cinf E) : coord τ (star x) = star (coord τ x) := by
   unfold coord
   split_ifs <;> simp
 
 omit [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Conclude with `norm_le_pi_norm x _`. Conclude with `(Complex.norm_conj _).trans_le (norm_le_pi_norm x _)`.
+-/
 theorem norm_coord_le (τ : E →+* ℂ) (x : Cinf E) : ‖coord τ x‖ ≤ ‖x‖ := by
   unfold coord
   split_ifs
@@ -48,6 +65,9 @@ theorem norm_coord_le (τ : E →+* ℂ) (x : Cinf E) : ‖coord τ x‖ ≤ ‖
   · exact (Complex.norm_conj _).trans_le (norm_le_pi_norm x _)
 
 omit [NumberField E] [IsTotallyComplex E] in
+/- English proof (translation)
+Unfold `coord atEmb`. Apply the tactic sequence `split_ifs <;> simp [Pi.single_eq_of_ne h]`.
+-/
 theorem coord_atEmb_of_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ' ≠ InfinitePlace.mk τ) (z : ℂ) :
     coord τ' (atEmb τ z) = 0 := by
   classical
@@ -61,6 +81,11 @@ omit [NumberField E] [IsTotallyComplex E] [NumberField F] [IsTotallyComplex F] i
 def cinf : Cinf E →+* Cinf F := RingHom.pi fun u => coord (u.embedding.comp (j : E →+* F))
 
 omit [NumberField E] [NumberField F] [IsTotallyComplex F] in
+/- English proof (translation)
+Establish `h0 : cinf j x (InfinitePlace.mk τ) = coord ((InfinitePlace.mk τ).embedding.comp (j : E →+* F)) x` using `rfl`. Use `conv_lhs => unfold coord`. Use `split_ifs with h`. Conclude with `h0.trans (by rw [h])`. Establish `h'` using `(InfinitePlace.embedding_mk_eq τ).resolve_left h`.
+
+Express the relevant statement in the definitionally equal form `starRingEnd ℂ (cinf j x _) = _`. Rewrite using `[h0, h']`. Conclude with `(congrArg (starRingEnd ℂ) (coord_conj (τ.comp (j : E →+* F)) x)).trans (starRingEnd_self_apply _)`.
+-/
 theorem coord_cinf (τ : F →+* ℂ) (x : Cinf E) : coord τ (cinf j x) = coord (τ.comp (j : E →+* F)) x := by
   have h0 : cinf j x (InfinitePlace.mk τ) = coord ((InfinitePlace.mk τ).embedding.comp (j : E →+* F)) x := rfl
   conv_lhs => unfold coord
@@ -72,6 +97,11 @@ theorem coord_cinf (τ : F →+* ℂ) (x : Cinf E) : coord τ (cinf j x) = coord
     exact (congrArg (starRingEnd ℂ) (coord_conj (τ.comp (j : E →+* F)) x)).trans (starRingEnd_self_apply _)
 
 omit [NumberField E] [NumberField F] [IsTotallyComplex F] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `coord (w.embedding.comp _) _ = _`. Rewrite using `[coord_cinf, ← coord_embedding w x]`. Use `congr 2`. Use extensionality with `y`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cinf_cinf (x : Cinf E) : cinf j.symm (cinf j x) = x := by
   funext w
   change coord (w.embedding.comp _) _ = _
@@ -81,6 +111,13 @@ theorem cinf_cinf (x : Cinf E) : cinf j.symm (cinf j x) = x := by
   simp
 
 omit [NumberField E] [NumberField F] in
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Rewrite using `[← coord_embedding u (atEmb τ z)]`. Express the relevant statement in the definitionally equal form `coord (u.embedding.comp _) _ = _`. Generalize the expression as in `u.embedding = σ`. Distinguish the cases in `h : InfinitePlace.mk σ = InfinitePlace.mk τ`.
+
+Break down `InfinitePlace.mk_eq_iff.1 h.symm with rfl | rfl` into its components or cases. Rewrite using `[coord_atEmb, coord_atEmb]`. Rewrite using `[coord_conj, coord_atEmb]`. Conclude with `(coord_conj (τ.comp (j : E →+* F)) _).trans (by rw [coord_atEmb])`. Rewrite using `[coord_atEmb_of_ne h, coord_atEmb_of_ne]`.
+
+Introduce `h'`. Apply `h` to reduce the goal to its premises. Use extensionality with `y`. Simplify `congrArg (fun w : InfinitePlace E => w (j.symm y)) h'` using `[InfinitePlace.apply]`.
+-/
 theorem cinf_atEmb (τ : F →+* ℂ) (z : ℂ) : cinf j (atEmb (τ.comp (j : E →+* F)) z) = atEmb τ z := by
   funext u
   rw [← coord_embedding u (atEmb τ z)]
@@ -100,11 +137,20 @@ theorem cinf_atEmb (τ : F →+* ℂ) (z : ℂ) : cinf j (atEmb (τ.comp (j : E 
 def adm : Ad E →+* Ad F :=
   RingHom.prodMap ((infEq F).toRingHom.comp ((cinf j).comp (infEq E).symm.toRingHom)) (finMap j)
 
+/- English proof (translation)
+The claim follows from `(infEq F).symm_apply_apply _`.
+-/
 theorem pInf_adm (x : Ad E) : pInf F (adm j x) = cinf j (pInf E x) := (infEq F).symm_apply_apply _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pFin_adm (x : Ad E) : pFin F (adm j x) = finMap j (pFin E x) := rfl
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+The claim follows from `FiniteAdeleRing.ext _ fun v => by have h := compEquiv_symm_algebraMap j.symm v (j k) rw [RingEquiv.symm_apply_apply] at h exact h`.
+-/
 theorem finMap_algebraMap (k : E) : finMap j (algebraMap E (Af E) k) = algebraMap F (Af F) (j k) :=
   FiniteAdeleRing.ext _ fun v => by
     have h := compEquiv_symm_algebraMap j.symm v (j k)
@@ -112,6 +158,11 @@ theorem finMap_algebraMap (k : E) : finMap j (algebraMap E (Af E) k) = algebraMa
     exact h
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+Establish `key : ∀ (v w : HeightOneSpectrum (𝓞 E)) (_ : w = v) (f : w.adicCompletion E → v.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ k) → f (pLoc E w x) = pLoc E v x`. Introduce and unpack `_ v rfl f hf h`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap (K := E) v).equalizer hf continuous_id (funext h)) _`. Use `FiniteAdeleRing.ext _ fun v => key v _ (plMap_symm_plMap j v) ((compEquiv j v).symm ∘ (compEquiv j.symm (plMap j v)).symm) ((continuous_compEquiv_symm _ _).comp (continuous_compEquiv_symm _ _)) fun k => ?_` and prove the remaining obligations. Establish `h` using `compEquiv_symm_algebraMap j.symm (plMap j v) (j k)`.
+
+Rewrite `h` using `[RingEquiv.symm_apply_apply]`. Rewrite using `[Function.comp_apply, h, compEquiv_symm_algebraMap]`.
+-/
 theorem finMap_finMap (x : Af E) : finMap j.symm (finMap j x) = x := by
   have key : ∀ (v w : HeightOneSpectrum (𝓞 E)) (_ : w = v) (f : w.adicCompletion E → v.adicCompletion E),
       Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ k) → f (pLoc E w x) = pLoc E v x := by
@@ -124,15 +175,24 @@ theorem finMap_finMap (x : Af E) : finMap j.symm (finMap j x) = x := by
   rw [RingEquiv.symm_apply_apply] at h
   rw [Function.comp_apply, h, compEquiv_symm_algebraMap]
 
+/- English proof (translation)
+The claim follows from `ad_ext (by rw [pInf_adm, pInf_adm, cinf_cinf]) (finMap_finMap j _)`.
+-/
 theorem adm_adm (x : Ad E) : adm j.symm (adm j x) = x :=
   ad_ext (by rw [pInf_adm, pInf_adm, cinf_cinf]) (finMap_finMap j _)
 
+/- English proof (translation)
+The claim follows from `ad_ext (funext fun u => by rw [pInf_adm, pInf_algebraMap] exact coord_algebraMap _ k) (finMap_algebraMap j k)`.
+-/
 theorem adm_algebraMap (k : E) : adm j (algebraMap E (Ad E) k) = algebraMap F (Ad F) (j k) :=
   ad_ext (funext fun u => by
     rw [pInf_adm, pInf_algebraMap]
     exact coord_algebraMap _ k) (finMap_algebraMap j k)
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+The claim follows from `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun _ => norm_coord_le _ x`.
+-/
 theorem norm_cinf_le (x : Cinf E) : ‖cinf j x‖ ≤ ‖x‖ :=
   (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun _ => norm_coord_le _ x
 
@@ -146,9 +206,15 @@ def lieMap : Lie E a →L[ℝ] Lie F a :=
       map_smul' := fun t X => funext fun i => funext fun k => funext fun u => coord_smul _ t _ }
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+The claim follows from `AddMonoidHomClass.continuous_of_bound (cinf j) 1 fun x => by simpa using norm_cinf_le j x`.
+-/
 theorem continuous_cinf : Continuous (cinf j) :=
   AddMonoidHomClass.continuous_of_bound (cinf j) 1 fun x => by simpa using norm_cinf_le j x
 
+/- English proof (translation)
+Establish `h : Continuous (infEq E).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Conclude with `((continuous_infEq F).comp ((continuous_cinf j).comp h)).prodMap (continuous_finMap j)`.
+-/
 theorem continuous_adm : Continuous (adm j) := by
   have h : Continuous (infEq E).symm := continuous_pi fun w =>
     (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp
@@ -159,28 +225,49 @@ variable (a) in
 
 def gaMap : GA E a →* GA F a := GeneralLinearGroup.map (adm j)
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun _ _ => adm_adm j _)`.
+-/
 theorem gaMap_gaMap (g : GA E a) : gaMap a j.symm (gaMap a j g) = g :=
   Units.ext (Matrix.ext fun _ _ => adm_adm j _)
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun _ _ => pInf_adm j _)`.
+-/
 theorem pInf_gaMap (g : GA E a) : GeneralLinearGroup.map (pInf F) (gaMap a j g) =
     GeneralLinearGroup.map (cinf j) (GeneralLinearGroup.map (pInf E) g) :=
   Units.ext (Matrix.ext fun _ _ => pInf_adm j _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pFin_gaMap (g : GA E a) : GeneralLinearGroup.map (pFin F) (gaMap a j g) =
     GeneralLinearGroup.map (finMap j) (GeneralLinearGroup.map (pFin E) g) := rfl
 
+/- English proof (translation)
+The claim follows from `ga_ext (by rw [pInf_gaMap, pInf_infGL, pInf_infGL]) (by rw [pFin_gaMap, pFin_infGL, pFin_infGL, map_one])`.
+-/
 theorem gaMap_infGL (y : GL (Fin a) (Cinf E)) :
     gaMap a j (infGL E a y) = infGL F a (GeneralLinearGroup.map (cinf j) y) :=
   ga_ext (by rw [pInf_gaMap, pInf_infGL, pInf_infGL]) (by rw [pFin_gaMap, pFin_infGL, pFin_infGL, map_one])
 
+/- English proof (translation)
+The claim follows from `ga_ext (by rw [pInf_gaMap, pInf_finGL, pInf_finGL, map_one]) (by rw [pFin_gaMap, pFin_finGL, pFin_finGL])`.
+-/
 theorem gaMap_finGL (k : GL (Fin a) (Af E)) :
     gaMap a j (finGL E a k) = finGL F a (GeneralLinearGroup.map (finMap j) k) :=
   ga_ext (by rw [pInf_gaMap, pInf_finGL, pInf_finGL, map_one]) (by rw [pFin_gaMap, pFin_finGL, pFin_finGL])
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun _ _ => adm_algebraMap j _)`.
+-/
 theorem gaMap_ratGL (γ : GL (Fin a) E) :
     gaMap a j (ratGL E a γ) = ratGL F a (GeneralLinearGroup.map (j : E →+* F) γ) :=
   Units.ext (Matrix.ext fun _ _ => adm_algebraMap j _)
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Establish `e : lieMap a j (toL u.val) = toL (GeneralLinearGroup.map (cinf j) u).val` using `rfl`. Rewrite using `[e, chart_val, chart_val, map_mul, gaMap_infGL]`. Conclude with `⟨rfl, val_mem_invSet _⟩`.
+-/
 theorem chart_gaMap (φ : GA F a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     chart (fun g => φ (gaMap a j g)) g x = chart φ (gaMap a j g) (lieMap a j x) ∧ lieMap a j x ∈ invSet F a := by
   obtain ⟨u, hu⟩ := id hx
@@ -189,6 +276,9 @@ theorem chart_gaMap (φ : GA F a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈
   rw [e, chart_val, chart_val, map_mul, gaMap_infGL]
   exact ⟨rfl, val_mem_invSet _⟩
 
+/- English proof (translation)
+Introduce `g` and use `((hφ (gaMap a j g)).comp (lieMap a j).contDiff.contDiffOn fun _ hx => (chart_gaMap j φ g hx).2).congr fun _ hx => (chart_gaMap j φ g hx).1`.
+-/
 theorem gaMap_mem_Sm {φ : GA F a → ℂ} (hφ : φ ∈ Sm F a) : (fun g => φ (gaMap a j g)) ∈ Sm E a := fun g =>
   ((hφ (gaMap a j g)).comp (lieMap a j).contDiff.contDiffOn
     fun _ hx => (chart_gaMap j φ g hx).2).congr fun _ hx => (chart_gaMap j φ g hx).1
@@ -203,13 +293,27 @@ def pull : Sm F a ≃ₗ[ℂ] Sm E a where
   left_inv φ := Subtype.ext <| funext fun g => congrArg φ.1 (gaMap_gaMap j.symm g)
   right_inv φ := Subtype.ext <| funext fun g => congrArg φ.1 (gaMap_gaMap j g)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_apply (φ : Sm F a) (g : GA E a) : (pull a j φ).1 g = φ.1 (gaMap a j g) := rfl
 
+/- English proof (translation)
+The claim follows from `(pull a j).left_inv φ`.
+-/
 theorem pull_pull (φ : Sm F a) : pull a j.symm (pull a j φ) = φ := (pull a j).left_inv φ
 
+/- English proof (translation)
+The claim follows from `Subtype.ext <| funext fun g => congrArg φ.1 (map_mul (gaMap a j) g h)`.
+-/
 theorem rt_pull (h : GA E a) (φ : Sm F a) : rt E a h (pull a j φ) = pull a j (rt F a (gaMap a j h) φ) :=
   Subtype.ext <| funext fun g => congrArg φ.1 (map_mul (gaMap a j) g h)
 
+/- English proof (translation)
+Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Establish `e : chart (pull a j φ).1 g =ᶠ[𝓝 (oneL E a)] chart φ.1 (gaMap a j g) ∘ lieMap a j` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => (chart_gaMap j φ.1 g hx).1`. Establish `h1 : lieMap a j (oneL E a) = oneL F a` using `map_one (cinf j).mapMatrix`. Establish `h2` using `HasFDerivAt.comp (oneL E a) (f := lieMap a j) (by rw [h1]; exact (differentiableAt_chart φ.2 (gaMap a j g)).hasFDerivAt) (lieMap a j).hasFDerivAt`. Express the relevant statement in the definitionally equal form `fderiv ℝ _ _ X = fderiv ℝ _ _ _`.
+
+Rewrite using `[e.fderiv_eq, h2.fderiv]`. Both sides reduce to the same expression.
+-/
 theorem lie_pull (X : Lie E a) (φ : Sm F a) : lie E a X (pull a j φ) = pull a j (lie F a (lieMap a j X) φ) := by
   refine Subtype.ext <| funext fun g => ?_
   have e : chart (pull a j φ).1 g =ᶠ[𝓝 (oneL E a)] chart φ.1 (gaMap a j g) ∘ lieMap a j :=
@@ -231,6 +335,11 @@ def opMap : Op E a → Op F a
       rw [e, ← map_mul, Matrix.mem_unitaryGroup_iff.1 k.2, map_one])⟩
   | .lie X => .lie (lieMap a j X)
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => exact (rt_pull j _ φ).trans (by rw [gaMap_finGL]; rfl)`. Consider the case `cpt k`. Use `(rt_pull j (infGL E a (Unitary.toUnits k)) φ).trans ?_` and prove the remaining obligations. Rewrite using `[gaMap_infGL]`.
+
+Conclude with `congrArg (fun y => pull a j (rt F a (infGL F a y) φ)) (Units.ext rfl)`. Consider the case `lie X => exact lie_pull j X φ`.
+-/
 theorem act_pull (o : Op E a) (φ : Sm F a) : act o (pull a j φ) = pull a j (act (opMap j o) φ) := by
   cases o with
   | fin k => exact (rt_pull j _ φ).trans (by rw [gaMap_finGL]; rfl)
@@ -240,10 +349,16 @@ theorem act_pull (o : Op E a) (φ : Sm F a) : act o (pull a j φ) = pull a j (ac
     exact congrArg (fun y => pull a j (rt F a (infGL F a y) φ)) (Units.ext rfl)
   | lie X => exact lie_pull j X φ
 
+/- English proof (translation)
+Use `conv_lhs => rw [← pull_pull j φ, act_pull]`. Conclude with `pull_pull j.symm _`.
+-/
 theorem pull_act (o : Op F a) (φ : Sm F a) : pull a j (act o φ) = act (opMap j.symm o) (pull a j φ) := by
   conv_lhs => rw [← pull_pull j φ, act_pull]
   exact pull_pull j.symm _
 
+/- English proof (translation)
+Establish `h : ∀ z, lieMap a j (toL (Matrix.single i k (atEmb (τ.comp (j : E →+* F)) z))) = toL (Matrix.single i k (atEmb τ z))` using `fun z => by`. Rewrite using `[← cinf_atEmb j τ z]`. Conclude with `Matrix.map_single i k _ (cinf j)`. Simplify using `only [Eop, lieS_apply, LinearMap.smul_apply, LinearMap.sub_apply, lie_pull, h, map_smul, map_sub]`.
+-/
 theorem Eop_pull (τ : F →+* ℂ) (i k : Fin a) (φ : Sm F a) :
     Eop (τ.comp (j : E →+* F)) i k (pull a j φ) = pull a j (Eop τ i k φ) := by
   have h : ∀ z, lieMap a j (toL (Matrix.single i k (atEmb (τ.comp (j : E →+* F)) z))) =
@@ -252,6 +367,13 @@ theorem Eop_pull (τ : F →+* ℂ) (i k : Fin a) (φ : Sm F a) :
     exact Matrix.map_single i k _ (cinf j)
   simp only [Eop, lieS_apply, LinearMap.smul_apply, LinearMap.sub_apply, lie_pull, h, map_smul, map_sub]
 
+/- English proof (translation)
+Establish `h` using `map_qdet ((pull a j).conjAlgEquiv ℂ).toAlgHom (Eop (a := a) τ) (u + ((a : ℂ) - 1) / 2)`. Establish `e : (fun i k => ((pull a j).conjAlgEquiv ℂ).toAlgHom (Eop τ i k)) = Eop (τ.comp (j : E →+* F))`. Use function extensionality and compare the values at `i k`. Use `LinearMap.ext fun ψ => ?_` and prove the remaining obligations. Take `⟨ψ, rfl⟩` from `(pull a j).surjective ψ`.
+
+Rewrite using `[Eop_pull]`. Express the relevant statement in the definitionally equal form `pull a j (Eop τ i k ((pull a j).symm (pull a j ψ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite `h` using `[e]`. Rewrite using `[cap, ← h, cap]`.
+
+Generalize the expression as in `Formalism.REAL.qdet (Eop (a := a) τ) (u + ((a : ℂ) - 1) / 2) = z`. Express the relevant statement in the definitionally equal form `pull a j (z ((pull a j).symm (pull a j φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem cap_pull (τ : F →+* ℂ) (u : ℂ) (φ : Sm F a) :
     cap (τ.comp (j : E →+* F)) u (pull a j φ) = pull a j (cap τ u φ) := by
   have h := map_qdet ((pull a j).conjAlgEquiv ℂ).toAlgHom (Eop (a := a) τ) (u + ((a : ℂ) - 1) / 2)
@@ -269,9 +391,19 @@ theorem cap_pull (τ : F →+* ℂ) (u : ℂ) (φ : Sm F a) :
   rw [LinearEquiv.symm_apply_apply]
 
 omit [NumberField E] [IsTotallyComplex E] [NumberField F] [IsTotallyComplex F] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨τ.comp (j.symm : F →+* E), RingHom.ext fun x => by simp⟩`.
+-/
 theorem exists_comp (τ : E →+* ℂ) : ∃ σ : F →+* ℂ, σ.comp (j : E →+* F) = τ :=
   ⟨τ.comp (j.symm : F →+* E), RingHom.ext fun x => by simp⟩
 
+/- English proof (translation)
+Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Take `⟨σ, rfl⟩` from `exists_comp j τ`. Conclude with `⟨_, Algebra.subset_adjoin (by exact ⟨_, _, rfl⟩), cap_pull j σ u⟩`.
+
+Consider the case `algebraMap c => exact ⟨_, Subalgebra.algebraMap_mem _ c, fun φ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' + y', add_mem h1 h3, fun φ => by simp [h2, h4]⟩`.
+
+Consider the case `mul x y _ _ hx hy`. Take `⟨x', h1, h2⟩` from `hx`. Take `⟨y', h3, h4⟩` from `hy`. Conclude with `⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩`.
+-/
 theorem Zalg_pull {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     ∃ z' ∈ Zalg F a, ∀ φ, z (pull a j φ) = pull a j (z' φ) := by
   induction hz using Algebra.adjoin_induction with
@@ -290,6 +422,9 @@ theorem Zalg_pull {z : Module.End ℂ (Sm E a)} (hz : z ∈ Zalg E a) :
     exact ⟨x' * y', mul_mem h1 h3, fun φ => by simp [h2, h4]⟩
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+Establish `h1 : ∀ y : GL (Fin a) (Cinf E), ‖toL (GeneralLinearGroup.map (cinf j) y).val‖ ≤ ‖toL y.val‖` using `fun y => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun k => (norm_cinf_le j _).trans ((norm_le_pi_norm _ _).trans (norm_le_pi_norm (toL y.val) _))`. Establish `h3` using `h1 y⁻¹`. Rewrite `h3` using `[map_inv]`. Unfold `height`. Combine the linear relations using `[h1 y]`.
+-/
 theorem height_le (y : GL (Fin a) (Cinf E)) : height (GeneralLinearGroup.map (cinf j) y) ≤ height y := by
   have h1 : ∀ y : GL (Fin a) (Cinf E), ‖toL (GeneralLinearGroup.map (cinf j) y).val‖ ≤ ‖toL y.val‖ := fun y =>
     (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun k =>
@@ -299,6 +434,17 @@ theorem height_le (y : GL (Fin a) (Cinf E)) : height (GeneralLinearGroup.map (ci
   unfold height
   linarith [h1 y]
 
+/- English proof (translation)
+Rewrite using `[pull_apply, map_mul, gaMap_ratGL, h.left, pull_apply] level := by`. Establish `hc : Continuous (GeneralLinearGroup.map (n` using `Fin a) (finMap j)) := Continuous.units_map _ (continuous_id.matrix_map (continuous_finMap j))`. Use `h.level.preimage hc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `(Eq.congr_left (act_pull j (.fin k) φ)).trans (pull a j).injective.eq_iff`.
+
+Use `kfin := by`. Use `h.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep F a k φ)).map (pull a j).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨_, rfl⟩, (act_pull j (.cpt k) φ).symm⟩`.
+
+Use `zfin := by`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm F a) => z φ) '' Zalg F a)).map (pull a j).toLinearMap) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨z', h1, h2⟩` from `Zalg_pull j hz`.
+
+Conclude with `⟨_, Submodule.subset_span ⟨z', h1, rfl⟩, (h2 φ).symm⟩`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `h.growth (gaMap a j g)`. Use `⟨|C|, N, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[pull_apply, map_mul, gaMap_infGL]`.
+
+Establish `h0` using `one_le_height (GeneralLinearGroup.map (cinf j) y)`. Conclude with `(h1 _).trans (mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by linarith) (height_le j y) N) (by positivity) (abs_nonneg C))`.
+-/
 theorem isAutForm_pull {φ : Sm F a} (h : IsAutForm φ) : IsAutForm (pull a j φ) where
   left γ g := by rw [pull_apply, map_mul, gaMap_ratGL, h.left, pull_apply]
   level := by
@@ -328,6 +474,9 @@ theorem isAutForm_pull {φ : Sm F a} (h : IsAutForm φ) : IsAutForm (pull a j φ
     exact (h1 _).trans (mul_le_mul (le_abs_self C) (pow_le_pow_left₀ (by linarith) (height_le j y) N)
       (by positivity) (abs_nonneg C))
 
+/- English proof (translation)
+Use extensionality with `i k`. Express the relevant statement in the definitionally equal form `adm j ((1 + nilM x : Matrix (Fin a) (Fin a) (Ad E)) i k) = (1 + nilM fun p => adm j (x p) : Matrix (Fin a) (Fin a) (Ad F)) i k`. Simplify using `only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem gaMap_unip {r : ℕ} (x : BlockIx a r → Ad E) : gaMap a j (unip x) = unip fun p => adm j (x p) := by
   ext i k
   change adm j ((1 + nilM x : Matrix (Fin a) (Fin a) (Ad E)) i k) =
@@ -335,11 +484,21 @@ theorem gaMap_unip {r : ℕ} (x : BlockIx a r → Ad E) : gaMap a j (unip x) = u
   simp only [nilM, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply, map_add]
   split_ifs <;> simp
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨fun p => j (y p), funext fun p => (adm_algebraMap j _).symm⟩`.
+-/
 theorem mem_ratN {r : ℕ} {x : BlockIx a r → Ad E} (hx : x ∈ ratN E a r) : (fun p => adm j (x p)) ∈ ratN F a r := by
   obtain ⟨y, rfl⟩ := hx
   exact ⟨fun p => j (y p), funext fun p => (adm_algebraMap j _).symm⟩
 
 open MeasureTheory in
+/- English proof (translation)
+Introduce `r h0 h1 _ _ μ 𝓕 hμ hF g`. Set `β : (BlockIx a r → Ad E) ≃ₜ+ (BlockIx a r → Ad F)` to `{ toFun := fun x p => adm j (x p) invFun := fun x p => adm j.symm (x p) left_inv := fun x => funext fun p => adm_adm j _ right_inv := fun x => funext fun p => adm_adm j.symm _ map_add' := fun x y => funext fun p => map_add (adm j) _ _ continuous_toFun := continuous_pi fun p => (c …`. Set `e : ratN F a r ≃ ratN E a r` to `{ toFun := fun y => ⟨β.symm y, mem_ratN j.symm y.2⟩ invFun := fun x => ⟨β x, mem_ratN j x.2⟩ left_inv := fun y => Subtype.ext (β.apply_symm_apply y) right_inv := fun x => Subtype.ext (β.symm_apply_apply x) }`. Use `borelize (BlockIx a r → Ad F)`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`.
+
+Establish `h2` using `hφ r h0 h1 (μ.map m) (m '' 𝓕) (β.isAddHaarMeasure_map μ) (hF.image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving e fun y x => by`. Express the relevant statement in the definitionally equal form `β (β.symm y + x) = y + β x`. Rewrite using `[map_add, β.apply_symm_apply]) (gaMap a j g)`. Rewrite `h2` using `[m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Rewrite using `[← h2]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Use `beta_reduce`. Rewrite using `[map_mul, gaMap_unip]`. Both sides reduce to the same expression.
+-/
 theorem isCuspidal_pull {φ : GA F a → ℂ} (hφ : IsCuspidal φ) : IsCuspidal fun g => φ (gaMap a j g) := by
   intro r h0 h1 _ _ μ 𝓕 hμ hF g
   let β : (BlockIx a r → Ad E) ≃ₜ+ (BlockIx a r → Ad F) :=
@@ -386,6 +545,11 @@ def pullSub (π : CuspSub F a) : CuspSub E a where
     have e := Submodule.map_comap_eq_of_surjective (f := (pull a j).toLinearMap) (pull a j).surjective W
     exact h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]
 
+/- English proof (translation)
+Use `and_congr_right fun _ => forall_congr' fun u => ⟨fun h φ hφ => (pull a j).injective ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cap_pull, map_smul]`. Conclude with `h _ ⟨φ, hφ, rfl⟩`. Introduce and unpack `h _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `cap _ u (pull a j φ) = _ • pull a j φ`.
+
+Rewrite using `[cap_pull, h φ hφ, map_smul]`.
+-/
 theorem hasInfChar_pullSub (π : CuspSub F a) (τ : F →+* ℂ) (m : Multiset ℂ) :
     (pullSub j π).HasInfChar (τ.comp (j : E →+* F)) m ↔ π.HasInfChar τ m := by
   refine and_congr_right fun _ => forall_congr' fun u => ⟨fun h φ hφ => (pull a j).injective ?_, ?_⟩
@@ -395,6 +559,13 @@ theorem hasInfChar_pullSub (π : CuspSub F a) (τ : F →+* ℂ) (m : Multiset �
     change cap _ u (pull a j φ) = _ • pull a j φ
     rw [cap_pull, h φ hφ, map_smul]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[CG.isRegAlg_iff]`. Introduce `τ`. Take `⟨σ, rfl⟩` from `exists_comp j τ`. Establish `e : (CG.mk (pullSub j π)).infChar (σ.comp (j : E →+* F)) = (CG.mk π).infChar σ`. Distinguish the cases in `h1 : ∃ m, (CG.mk π).HasInfChar σ m`.
+
+Take `⟨m, hm⟩` from `h1`. Rewrite using `[hm.infChar_eq]`. Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk (pullSub j π)) ((hasInfChar_pullSub j π σ m).2 hm)`. Rewrite using `[CG.infChar, CG.infChar, dif_neg h1, dif_neg]`. Introduce and unpack `⟨m, hm⟩`.
+
+Conclude with `h1 ⟨m, (hasInfChar_pullSub j π σ m).1 hm⟩`. Rewrite using `[e]`. Conclude with `h σ`.
+-/
 theorem isRegAlg_pullSub {π : CuspSub F a} (h : (CG.mk π).IsRegAlg) : (CG.mk (pullSub j π)).IsRegAlg := by
   rw [CG.isRegAlg_iff] at h ⊢
   intro τ
@@ -420,11 +591,17 @@ variable {K K' : Type} [Field K] [Field K'] (c : K ≃+* K') {O : Subring K} {O'
   (hO : ∀ x, c x ∈ O' ↔ x ∈ O)
 
 include hO in
+/- English proof (translation)
+Rewrite using `[GlobalTheory.AdelicU.mem_GLint_iff, GlobalTheory.AdelicU.mem_GLint_iff]`. Conclude with `(and_congr (forall₂_congr fun _ _ => hO _) (forall₂_congr fun _ _ => hO _)).symm`.
+-/
 theorem mem_iff_mapEquiv (g : GL (Fin a) K) :
     g ∈ GLint (Fin a) O ↔ Units.mapEquiv c.mapMatrix.toMulEquiv g ∈ GLint (Fin a) O' := by
   rw [GlobalTheory.AdelicU.mem_GLint_iff, GlobalTheory.AdelicU.mem_GLint_iff]
   exact (and_congr (forall₂_congr fun _ _ => hO _) (forall₂_congr fun _ _ => hO _)).symm
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun p q => by change c ((dGL a ϖ i).1 p q) = _ simp only [dGL, diagJ, Matrix.diagonal_apply] split_ifs <;> simp)`.
+-/
 theorem mapEquiv_dGL (ϖ : Kˣ) (i : ℕ) :
     Units.mapEquiv c.mapMatrix.toMulEquiv (dGL a ϖ i) = dGL a (Units.map (c : K →* K') ϖ) i :=
   Units.ext (Matrix.ext fun p q => by
@@ -433,6 +610,13 @@ theorem mapEquiv_dGL (ϖ : Kˣ) (i : ℕ) :
     split_ifs <;> simp)
 
 include hO in
+/- English proof (translation)
+Establish `hK` using `mem_iff_mapEquiv (a := a) c hO`. Use `(Tj_apply O' (Units.map (c : K →* K') ϖ) i _).trans ?_` and prove the remaining obligations. Rewrite using `[Tj_apply, ← mapEquiv_dGL]`. Generalize the expression as in `(Units.mapEquiv c.mapMatrix.toMulEquiv : GL (Fin a) K ≃* GL (Fin a) K') = e at hK ⊢`. Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations.
+
+Introduce and unpack `⟨x, hx, y, hy, H⟩`. Take `⟨x, rfl⟩` from `e.surjective x`. Take `⟨y, rfl⟩` from `e.surjective y`. Rewrite `H` using `[← map_mul, ← map_mul, e.apply_eq_iff_eq]`. Conclude with `⟨x, (hK x).2 hx, y, (hK y).2 hy, H⟩`.
+
+Introduce and unpack `⟨x, hx, y, hy, H⟩`. Conclude with `⟨_, (hK x).1 hx, _, (hK y).1 hy, by rw [H, map_mul, map_mul]⟩`.
+-/
 theorem Tj_mapEquiv (ϖ : Kˣ) (i : ℕ) (g : GL (Fin a) K) :
     Tj ℂ a O' (c ϖ) i (Units.mapEquiv c.mapMatrix.toMulEquiv g) = Tj ℂ a O ϖ i g := by
   classical
@@ -452,6 +636,19 @@ theorem Tj_mapEquiv (ϖ : Kˣ) (i : ℕ) (g : GL (Fin a) K) :
 end Doset
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+Use `set e : GL (Fin a) (v.adicCompletion F) ≃* GL (Fin a) (w.adicCompletion E) := Units.mapEquiv c.mapMatrix.toMulEquiv`. Establish `hO : ∀ x, c x ∈ Ov E w ↔ x ∈ Ov F v` using `fun x => by`. Express the relevant statement in the definitionally equal form `Valued.v (c x) ≤ 1 ↔ Valued.v x ≤ 1`. Rewrite using `[hc]`. Establish `hK : ∀ g, g ∈ KGL v a ↔ e g ∈ KGL w a` using `mem_iff_mapEquiv c hO`.
+
+Establish `hTj : ∀ (ϖ : (v.adicCompletion F)ˣ) (i : ℕ) g, Tj ℂ a (Ov E w) (c ϖ) i (e g) = Tj ℂ a (Ov F v) ϖ i g` using `Tj_mapEquiv c hO`. Use `clear_value e`. Establish `h1 : ∀ x, IsSatVecGL v ρ x B → IsSatVecGL w (ρ.comp e.symm.toMonoidHom) x B`. Introduce and unpack `x ⟨h0, hf, hB, hT⟩`. Use `⟨h0, (mem_fixed_comp_symm _ hK).2 hf, hB, fun ϖ' hϖ' i hi => ?_⟩` and prove the remaining obligations.
+
+Take `⟨p, rfl⟩` from `c.surjective ϖ'`. Establish `hp : IsUnifV F v p` using `(hc p).symm.trans hϖ'`. Take `⟨ϖ, rfl⟩ : ∃ ϖ : (v.adicCompletion F)ˣ, ϖ = p` from `⟨Units.mk0 p fun e => by simp [IsUnifV, e] at hp, rfl⟩`. Rewrite using `[heckeVec_comp_symm _ hK (Tj_mem_hecke hϖ' i).1 hf, hq, ← hT _ hp i hi]`. Use `congr 1`.
+
+Conclude with `funext (hTj ϖ i)`. Establish `hf : ∀ g y, T.toLinearMap ((ρ.comp e.symm.toMonoidHom) g y) = ρ' g (T.toLinearMap y)` using `fun g y => by`. Express the relevant statement in the definitionally equal form `T (ρ (e.symm g) y) = ρ' g (T y)`. Rewrite using `[← hT, MulEquiv.apply_symm_apply]`. Establish `key : ∀ x, IsSatVecGL v ρ x B → IsSatVecGL w ρ' (T x) B` using `fun x hx => (h1 x hx).map T.toLinearMap hf ((map_ne_zero_iff T T.injective).2 hx.1)`.
+
+Prove the components needed by the constructor for the conclusion. Take `⟨x, hx⟩` from `h.exists_vec`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, (key x hx).2.1, (key x hx).1⟩`. Introduce `y hy h0`. Take `⟨x, rfl⟩` from `T.surjective y`.
+
+Use `key x (h.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => T.injective ?_) ((map_ne_zero_iff T T.injective).1 h0))` and prove the remaining obligations. Use `GlobalTheory.LGrp.mem_fixed.1 hy _ ((hK k).1 hk)` as an intermediate fact. Rewrite `this` using `[hT]`. Then use the resulting hypothesis.
+-/
 theorem hasSatGL_of_equiv {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)}
     (c : v.adicCompletion F ≃+* w.adicCompletion E) (hc : ∀ x, Valued.v (c x) = Valued.v x)
     (hq : qV E w = qV F v) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -494,6 +691,9 @@ end Sat
 
 open scoped WithZeroTopology in
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+Use `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on (p := fun x => Valued.v (compEquiv j w x) = Valued.v x) x (isClosed_eq ((Valued.continuous_valuation_of_surjective ((plMap j w).valuedAdicCompletion_surjective F)).comp (continuous_compEquiv j w)) (Valued.continuous_valua …` and prove the remaining obligations. Rewrite using `[compEquiv_algebraMap]`. Conclude with `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' _ _).trans ((valuation_plMap j w k).trans (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).symm)`.
+-/
 theorem valued_compEquiv (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion E) :
     Valued.v (compEquiv j w x) = Valued.v x := by
   refine (HeightOneSpectrum.denseRange_algebraMap E w).induction_on
@@ -506,6 +706,11 @@ theorem valued_compEquiv (w : HeightOneSpectrum (𝓞 E)) (x : w.adicCompletion 
     ((valuation_plMap j w k).trans (HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _).symm)
 
 omit [IsTotallyComplex E] [IsTotallyComplex F] in
+/- English proof (translation)
+Establish `key : ∀ u (k : GL (Fin a) (Af E)), GeneralLinearGroup.map (pLoc F u) (GeneralLinearGroup.map (finMap j) k) = GeneralLinearGroup.map (compEquiv j.symm u).symm.toRingHom (GeneralLinearGroup.map (pLoc E (plMap j.symm u)) k)` using `fun u k => rfl`. Establish `key2 : ∀ u, GeneralLinearGroup.map (pLoc F u) (GeneralLinearGroup.map (finMap j) (locGL E a (plMap j.symm v) (Units.mapEquiv (compEquiv j.symm v).mapMatrix.toMulEquiv g))) = GeneralLinearGroup.map (pLoc F u) (locGL F a v g)` using `fun u => by`. Rewrite using `[key]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+
+Rewrite using `[pLoc_locGL, pLoc_locGL]`. Conclude with `Units.ext (Matrix.ext fun _ _ => (compEquiv j.symm u).symm_apply_apply _)`. Rewrite using `[pLoc_locGL_of_ne h, pLoc_locGL_of_ne (fun e => h (plMap_injective _ e)), map_one]`. Use `Units.ext (Matrix.ext fun i k => FiniteAdeleRing.ext _ fun u => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (u.adicCompletion F) => x.val i k) (key2 u)`.
+-/
 theorem finMap_locGL (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin a) (v.adicCompletion F)) :
     GeneralLinearGroup.map (finMap j)
       (locGL E a (plMap j.symm v) (Units.mapEquiv (compEquiv j.symm v).mapMatrix.toMulEquiv g)) = locGL F a v g := by
@@ -524,6 +729,11 @@ theorem finMap_locGL (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin a) (v.adicCom
   refine Units.ext (Matrix.ext fun i k => FiniteAdeleRing.ext _ fun u => ?_)
   exact congrArg (fun x : GL (Fin a) (u.adicCompletion F) => x.val i k) (key2 u)
 
+/- English proof (translation)
+Take `⟨v, rfl⟩ : ∃ v, plMap j.symm v = w` from `⟨_, plMap_symm_plMap j w⟩`. Rewrite `h` using `[plMap_plMap_symm]`. Rewrite `h`, the goal using `[CG.hasSat_mk]`. Use `hasSatGL_of_equiv (compEquiv j.symm v) (valued_compEquiv j.symm v) (absNorm_plMap j.symm v) ((pull a j).submoduleMap π.V) (fun g x => ?_) h` and prove the remaining obligations. Use `Subtype.ext ((act_pull j (.fin _) x.1).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[opMap, finMap_locGL]`. Both sides reduce to the same expression.
+-/
 theorem hasSat_pullSub {π : CuspSub F a} {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : (CG.mk π).HasSat (plMap j w) B) : (CG.mk (pullSub j π)).HasSat w B := by
   obtain ⟨v, rfl⟩ : ∃ v, plMap j.symm v = w := ⟨_, plMap_symm_plMap j w⟩

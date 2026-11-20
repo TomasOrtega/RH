@@ -12,6 +12,23 @@ open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 open GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.Hecke.Comp
 
+/- English proof (translation)
+Introduce `q _ D R _ b f c k N S s o o₁ o₂ ψ₁ ψ₂ h₁ h₂`. Take `⟨m₁, a₁, e₁, g₁, l₁, -⟩` from `h₁`. Take `⟨m₂, a₂, e₂, g₂, l₂, -⟩` from `h₂`. Establish `ep₁` using `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover g₁`. Establish `ep₂` using `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover g₂`.
+
+Establish `kill : ∀ {X : Over S} [GrpObj X] (ψ : o.A ⟶ X), IsMonHom ψ → GlobalTheory.ZM.IsGaloisCover (↥(heckeSubA o f N)) (fun h ↦ Over.Hom.left (transl h.1)) (Over.Hom.left ψ) → ∀ h ∈ heckeSubA o f N, h ≫ ψ = 1`. Introduce `X _ ψ hψ g h hh`. Conclude with `comp_eq_one_of_transl ψ h (g.inv ⟨h, hh⟩)`. Take `⟨φ, hφ, hφc⟩` from `GlobalTheory.HomDescent.exists_desc S o.A o₁.A o₂.A _ ψ₁ m₁ g₁ ψ₂ m₂ (kill ψ₂ m₂ g₂)`. Take `⟨φ', hφ', hφ'c⟩` from `GlobalTheory.HomDescent.exists_desc S o.A o₂.A o₁.A _ ψ₂ m₂ g₂ ψ₁ m₁ (kill ψ₁ m₁ g₁)`.
+
+Establish `canc : ∀ {X Y : Over S} (π : X ⟶ Y) [Epi π.left] {Z : Over S} (u v : Y ⟶ Z), π ≫ u = π ≫ v → u = v`. Introduce `X Y π _ Z u v h`. Use `ext1`. Rewrite using `[← cancel_epi π.left, ← Over.comp_left, h, Over.comp_left]`. Set `e : o₁.A ≅ o₂.A` to `{ hom := φ, inv := φ', hom_inv_id := canc ψ₁ _ _ (by rw [reassoc_of% hφc, hφ'c, Category.comp_id]) inv_hom_id := canc ψ₂ _ _ (by rw [reassoc_of% hφ'c, hφc, Category.comp_id]) }`.
+
+Use `haveI : IsMonHom e.hom := hφ`. Use `haveI : IsMonHom ψ₁ := m₁`. Use `haveI : IsMonHom ψ₂ := m₂`. Establish `hc : ψ₁.left ≫ φ.left = ψ₂.left` using `by rw [← Over.comp_left, hφc]`. Use `⟨⟨φ.left, sq2 φ, isGrpPullback_of_iso e, ⟨grpSchemeSquareProductMap_fst φ, grpSchemeSquareProductMap_snd φ⟩, ?_, ?_, ?_⟩, hc⟩` and prove the remaining obligations.
+
+Introduce `a`. Establish `t₁` using `congrArg Over.Hom.left (a₁ a)`. Establish `t₂` using `congrArg Over.Hom.left (a₂ a)`. Simplify using `only [Over.comp_left] at t₁ t₂`. Rewrite using `[← cancel_epi ψ₁.left, ← Category.assoc, ← t₁, Category.assoc, hc, reassoc_of% hc, ← t₂]`.
+
+Establish `hP` using `o₂.isLB`. Establish `Z : ∀ (u : o₁.A.left ⟶ (G2 o₁.A).left) (v : o₂.A.left ⟶ (G2 o₂.A).left), u ≫ sq2 φ = φ.left ≫ v → (∃ t : (o₂.P.pull v).Gen, t.IsGen) → ∃ t : ((o₂.P.pull (sq2 φ)).pull u).Gen, t.IsGen`. Introduce `u v huv hv`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB (pull_isLB hP _) _), GlobalTheory.CechPic.cls_pull (pull_isLB hP _), GlobalTheory.CechPic.cls_pull hP, ← GlobalTheory.CechPic.pull_comp, huv, GlobalTheory.CechPic.pull_comp, ← GlobalTheory.CechPic.cls_pull hP v (pull_isLB hP v), …`. Take `⟨l₁⟩` from `l₁`.
+
+Take `⟨l₂⟩` from `l₂`. Establish `lA` using `ReciprocityTheory.ChartRestriction.G.Semi.LB.isLB_linComb o.isLB (fun _ : Fin (k ^ 2 / c) ↦ 𝟙 _) (fun _ ↦ (1 : ℤ))`. Establish `Y : LBIso (o₂.P.pull (sq2 ψ₂)) ((o₂.P.pull (sq2 φ)).pull (sq2 ψ₁))`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_iff (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _), GlobalTheory.CechPic.cls_pull hP, GlobalTheory.CechPic.cls_pull (pull_isLB hP _), GlobalTheory.CechPic.cls_pull hP, ← GlobalTheory.CechPic.pull_comp, ← grpSchemeSquareProductMap_comp, hφc]`. Use `GlobalTheory.T.pullback_prod_injective_birigidified_galois_isogeny S o.A o₁.A _ ψ₁ o.ab o₁.ab m₁ g₁ o₁.P (o₂.P.pull (sq2 φ)) o₁.isLB (pull_isLB o₂.isLB _) o₁.rig₁ o₁.rig₂ ?_ ?_ ?_` and prove the remaining obligations.
+
+Conclude with `Z _ _ (lift_one_id_grpSchemeSquareProductMap φ) o₂.rig₁`. Conclude with `Z _ _ (lift_id_one_grpSchemeSquareProductMap φ) o₂.rig₂`. Conclude with `LBIso.trans (pull_isLB o₁.isLB _) lA (pull_isLB (pull_isLB hP _) _) (LBIso.symm l₁) (LBIso.trans lA (pull_isLB hP _) (pull_isLB (pull_isLB hP _) _) l₂ Y)`. Introduce `y`. Rewrite using `[e₁ y, e₂ y, Over.comp_left, Over.comp_left, Category.assoc, hc, Category.id_comp]`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.trSame_holds :
     TrSame := by
   intro q _ D R _ b f c k N S s o o₁ o₂ ψ₁ ψ₂ h₁ h₂

@@ -5,6 +5,15 @@ open PowerSeries IsLocalRing UpperTheory.V.abelian₂
 open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
+/- English proof (translation)
+Introduce `O _ _ _ _ ϖ hϖ f hf`. Establish `htop : mu f ≠ ⊤` using `fun h => hf (mu_eq_top_iff.mp h)`. Establish `hM` using `mu_dvd O ϖ hϖ`. Take `⟨m, hmf⟩ : ∃ m : ℕ, (m : ℕ∞) = mu f` from `⟨(mu f).toNat, ENat.coe_toNat htop⟩`. Take `⟨g, hgf⟩` from `((hM f).1 m).mp hmf.le`.
+
+Substitute `hgf` using the available equality. Take `⟨-, hzero, hlam, hshift⟩` from `hM g`. Take `⟨hmu, hl⟩` from `hshift m`. Establish `hg0 : mu g = 0`. Establish `h1 : (m : ℕ∞) + mu g = (m : ℕ∞) + 0` using `by rw [add_zero, ← hmu, hmf]`.
+
+Conclude with `(WithTop.add_left_cancel (ENat.coe_ne_top m) h1)`. Establish `hmap : (map (residue O)) g ≠ 0` using `hzero.mp hg0`. Take `⟨P, U, H⟩` from `exists_isWeierstrassFactorization hmap`. Use `⟨m, P, U, hmf.symm, H.isDistinguishedAt, ?_, H.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[hl, hlam hg0, H.natDegree_eq_toNat_order_map]`.
+
+Rewrite using `[mul_assoc, ← H.eq_mul]`.
+-/
 theorem UpperTheory.V.abelian₂.weier :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (ϖ : O), Irreducible ϖ → ∀ f : O⟦X⟧, f ≠ 0 →
       ∃ (m : ℕ) (P : Polynomial O) (U : O⟦X⟧), mu f = m ∧ P.IsDistinguishedAt (maximalIdeal O) ∧ P.natDegree = lam f ∧

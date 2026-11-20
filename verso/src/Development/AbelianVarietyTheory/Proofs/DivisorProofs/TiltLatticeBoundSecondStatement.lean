@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.TiltLatticeBoundSec
 import Mathlib
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.SandwichMaps
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IotaDet.iota_existsUnique_bijective | exact GlobalTheory.IotaDet.iota_existsUnique_bijective | (intros; apply GlobalTheory.IotaDet.iota_existsUnique_bijective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tilt_lattice_bound_second : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O →

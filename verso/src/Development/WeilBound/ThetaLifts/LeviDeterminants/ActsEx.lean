@@ -9,6 +9,19 @@ open scoped Matrix GlobalTheory.VacAny
 open NumberField IsDedekindDomain Filter Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes PositivityTheory.ThK
 open PositivityTheory.ThKH.Locrep
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v`. Take `⟨ω, ρ, L⟩` from `locRepEx F E σ n d B X W M om ⟨hP.base, ⟨r, s, hP.herm⟩, ⟨r', s', hP.skew⟩, hP.good, χX, χW, hP.weil⟩ v`. Use `⟨fun g hg h hh φ hφ => ⟨ω (g, h) φ, ⟨L.pres g hg h hh φ hφ, (L.acts g hg h hh φ hφ _).2 rfl⟩, fun φ₁ h₁ => (L.acts g hg h hh φ hφ _).1 h₁.2⟩, fun u hu φ hφ => ⟨ρ u φ, ⟨L.presH u hu φ hφ, (L.actsH u hu φ hφ _).2 rfl⟩, fun φ₁ h₁ => (L.actsH u hu φ hφ _).1 h₁.2⟩, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hs` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨r₀, x₀, h₀, h₁⟩` from `exists_base (Fin n × Fin d) v`.
+
+Set `loc : UA σ X.J × UA σ W.J → Module.End ℂ (Fn F n d v)` to `fun p => res v x₀ ∘ₗ om p ∘ₗ tensL v r₀`. Establish `hloc : ∀ p : UA σ X.J × UA σ W.J, p.1 ∈ UAt σ X (evFin F v) → p.2 ∈ UAt σ W (evFin F v) → ∀ φ ∈ SB _, loc p φ = ω p φ` using `fun p h1 h2 φ hφ => (eq_of_acts v h₁ (h₀ φ hφ) ((L.acts p.1 h1 p.2 h2 φ hφ _).2 rfl)).symm`. Take `⟨K, hK1, hK2, hK3, hK4⟩` from `exists_small_subgroups σ X v`. Take `⟨K', hK1', hK2', hK3', hK4'⟩` from `exists_small_subgroups σ W v`. Take `⟨m, hm⟩` from `smooth_of_weak (SB _) (fun k => (K k).prod (K' k)) (fun a b hab => Subgroup.prod_mono (hK1 hab) (hK1' hab)) (fun U hU => by`.
+
+Take `⟨U₁, h1, U₂, h2, h⟩` from `mem_nhds_prod_iff.1 hU`. Take `⟨a, ha⟩` from `hK2 U₁ h1`. Take `⟨b, hb⟩` from `hK2' U₂ h2`. Conclude with `⟨max a b, fun p hp => h ⟨ha (hK1 (le_max_left a b) hp.1), hb (hK1' (le_max_right a b) hp.2)⟩⟩)`. Use `loc (fun p hp φ hφ => by`.
+
+Rewrite using `[hloc p (hK3 0 hp.1) (hK3' 0 hp.2) φ hφ]`. Conclude with `L.pres p.1 (hK3 0 hp.1) p.2 (hK3' 0 hp.2) φ hφ)`. Use the proof step `(fun φ hφ => by`. Rewrite using `[hloc 1 (one_mem_UAt X v) (one_mem_UAt W v) φ hφ]`. Conclude with `L.one φ hφ)`.
+
+Use the proof step `(fun p hp q hq φ hφ => by`. Rewrite using `[hloc (p * q) (mul_mem_UAt (hK3 0 hp.1) (hK3 0 hq.1)) (mul_mem_UAt (hK3' 0 hp.2) (hK3' 0 hq.2)) φ hφ, hloc q (hK3 0 hq.1) (hK3' 0 hq.2) φ hφ, hloc p (hK3 0 hp.1) (hK3' 0 hp.2) _ (L.pres q.1 (hK3 0 hq.1) q.2 (hK3' 0 hq.2) φ hφ)]`. Conclude with `L.mul p.1 (hK3 0 hp.1) p.2 (hK3' 0 hp.2) q.1 (hK3 0 hq.1) q.2 (hK3' 0 hq.2) φ hφ)`. Use the proof step `(fun l φ hφ => hs.cont _ (res_adm v x₀ l) _ (h₀ φ hφ).2) φ hφ`. Take `⟨U, hU, hUK⟩` from `hK4 m`.
+
+Take `⟨U', hU', hUK'⟩` from `hK4' m`. Use `⟨U ×ˢ U', prod_mem_nhds hU hU', fun x hx h1 h2 => ?_⟩` and prove the remaining obligations. Use `(L.acts x.1 h1 x.2 h2 φ hφ φ).2 ?_` and prove the remaining obligations. Rewrite using `[← hloc x h1 h2 φ hφ]`. Conclude with `(hm x ⟨hUK _ hx.1 h1, hUK' _ hx.2 h2⟩).symm`.
+-/
 theorem actsEx : GlobalTheory.ThK.ActsEx := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v
   obtain ⟨ω, ρ, L⟩ := locRepEx F E σ n d B X W M om ⟨hP.base, ⟨r, s, hP.herm⟩, ⟨r', s', hP.skew⟩, hP.good, χX, χW, hP.weil⟩ v

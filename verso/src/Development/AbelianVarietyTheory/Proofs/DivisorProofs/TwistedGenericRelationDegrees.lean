@@ -9,6 +9,9 @@ namespace GlobalTheory.ShFam.GalCarry
 
 open GlobalTheory.ShFam GlobalTheory.GradedNorm GlobalTheory.ProjVar.Var
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem grSq_submatrix_cast {m m' : ℕ} (h : m = m') (M : Matrix (Fin m') (Fin m') ℂ) (i : Fin m) :
     grSq (M.submatrix (Fin.cast h) (Fin.cast h)) i = grSq M (Fin.cast h i) := by
   subst h
@@ -17,6 +20,9 @@ theorem grSq_submatrix_cast {m m' : ℕ} (h : m = m') (M : Matrix (Fin m') (Fin 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Simplify using `only [hM g g' hp, grSq_submatrix_cast]`. Conclude with `Fintype.prod_equiv T.letter _ _ fun z => by rw [hn]; rfl`.
+-/
 theorem prod_grSq_push (T : Tw Z) {σ : c.F →+* ℂ} (G G' : EigMet Z σ) (n n' : Letter Dw → ℤ)
     (hn : ∀ z, n' (T.letter z) = n z) (y q : CxPts (genStr Z) σ) (hq : q = T.pt y) (hM : T.MetAt y G G')
     (g : EigFrame Z σ (y.1 ≫ genι Z)) (g' : EigFrame Z σ (q.1 ≫ genι Z)) (hp : T.Push g g') :
@@ -25,6 +31,9 @@ theorem prod_grSq_push (T : Tw Z) {σ : c.F →+* ℂ} (G G' : EigMet Z σ) (n n
   simp only [hM g g' hp, grSq_submatrix_cast]
   exact Fintype.prod_equiv T.letter _ _ fun z => by rw [hn]; rfl
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem prodPow_relab (T : Tw Z) {A B : Type} [CommGroup A] [CommGroup B] (h : A →* B)
     (t t₀ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → B) (t' : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → A) (n n' : Letter Dw → ℤ)
     (ht : ∀ τ i, t (T.emb τ) (T.ix i) = h (t' τ i) * t₀ τ i) (hn : ∀ z, n' (T.letter z) = n z) :
@@ -41,6 +50,27 @@ namespace GlobalTheory.ShFam.GalCarry
 
 open GlobalTheory.ShFam GlobalTheory.GradedNorm GlobalTheory.ProjVar.Var
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z T F _ _ e C C' φ ψ t₀ n n' σ G G' hL hn hM p p' hp g hg`. Take `⟨q, -, χ', f', h1, h2⟩` from `C'.exists_adapted p'`. Take `⟨g', hg'⟩` from `f'.exists_isMap (evStalk p') h2.2.1 h2.1`. Establish `hA' : C'.Adapted p' q.1 g' 1` using `⟨χ', f', h1, hg'.tri h2.2.1 h2.1⟩`. Establish `hbase : base p' = φ.hom (base p)` using `by show p'.1 _ = _`.
+
+Rewrite using `[hp]`. Both sides reduce to the same expression. Take `⟨a, χ, f, t, ha1, ha2, ha3, ha4, ha5, ha6⟩` from `hL.2.2 (base p) (base p') χ' f' q.1 hbase h1`. Establish `hev : (evStalk p).comp a = evStalk p'` using `EigLoc.spMap_inj ((cancel_mono (C'.Y.X.fromSpecStalk (base p'))).1 (by show Spec.map (CommRingCat.ofHom a ≫ CommRingCat.ofHom (evStalk p)) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc]`.
+
+Use `(congrArg (_ ≫ ·) ha1.symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc]`. Use `(congrArg (· ≫ φ.hom) (C.spMap_evStalk p)).trans ?_` and prove the remaining obligations. Conclude with `hp.symm.trans (C'.spMap_evStalk p').symm))`. Establish `hφ : embOf e σ = (evStalk p).comp χ`.
+
+Rewrite using `[ha2, ← RingHom.comp_assoc, hev]`. Conclude with `h2.2.1`. Establish `hx : (C.down p).1 ≫ genι Z = spMap (evStalk p) ≫ stalkPt C.Y (base p) ≫ C.π ≫ genι Z`. Rewrite using `[← Category.assoc, C.spMap_evStalk]`. Conclude with `Category.assoc _ _ _`.
+
+Take `⟨k, hk⟩` from `f.exists_isMap (evStalk p) hφ hx`. Establish `hA : C.Adapted p t k 1` using `⟨χ, f, ha4, hk.tri hφ hx⟩`. Establish `hpt : C'.down p' = T.pt (C.down p)` using `Subtype.ext (by show p'.1 ≫ C'.π = (p.1 ≫ C.π) ≫ T.g.hom`. Rewrite using `[hp, Category.assoc, hL.1, Category.assoc])`. Establish `hpush : T.Push k g'` using `⟨rfl, by rw [hpt]; exact T.pt_ι _, fun τ i => by`.
+
+Rewrite using `[hg' τ i, hk (T.emb τ) (T.ix i), ← hev, ← GlobalTheory.GradedPieces.dual_comp, ha6, Category.assoc]⟩`. Establish `hgen : C'.genSq G n g' = C.genSq G' n' k` using `prod_grSq_push T G G' n n' hn (C.down p) (C'.down p') hpt (hM _) k g' hpush`. Establish `he' : p' ∈ eqnSet σ (divOf C' n) (prodPow q.1 n)` using `FlagCpt.prodPow_mem n hA'.mem_eqnSet`. Establish `he : p ∈ eqnSet σ (divOf C n') (prodPow t n')` using `FlagCpt.prodPow_mem n' hA.mem_eqnSet`. Establish `hg0 : p' ∈ eqnSet σ (divOf C' n) g` using `hg`.
+
+Take `⟨z, hz, hzv⟩` from `(CartierDiv.IsEqn.iff_unitAt hg0).1 he'`. Establish `key : prodPow t n' = Units.map (ψ : C'.Y.Fn →* C.Y.Fn) (prodPow q.1 n) * prodPow t₀ n` using `prodPow_relab T _ t t₀ q.1 n n' ha5 hn`. Establish `hratio : ((prodPow t n' : C.Y.Fnˣ) : C.Y.Fn) / ((Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n : C.Y.Fnˣ) : C.Y.Fn) = algebraMap _ C.Y.X.functionField (a z)`. Rewrite using `[key, Units.val_mul, Units.val_mul, mul_div_mul_right _ _ (Units.ne_zero _)]`. Use `show ψ _ / ψ _ = _`.
+
+Rewrite using `[← map_div₀, ← hzv, ha3]`. Establish `hu : p ∈ eqnSet σ (divOf C n') (Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n)`. Use `(CartierDiv.IsEqn.iff_unitAt he).2 ⟨((hz.map a).unit⁻¹ : _ˣ), Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, IsUnit.unit_spec, ← hratio, inv_div]`. Establish `L : (GlobalTheory.TrueGeo.cxSt F).pn C.Y σ (divOf C n') (C.met G' n') ((GlobalTheory.TrueGeo.cxSt F).cx C.Y σ ((Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n)⁻¹ : C.Y.Fnˣ)) p = (C.met G' n').h (Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n) p` using `pn_frame hu`.
+
+Establish `R : (GlobalTheory.TrueGeo.cxSt F).pn C'.Y σ (divOf C' n) (C'.met G n) ((GlobalTheory.TrueGeo.cxSt F).cx C'.Y σ (g⁻¹ : C'.Y.Fnˣ)) p' = (C'.met G n).h g p'` using `pn_frame hg0`. Rewrite using `[L, R, (C.met G' n').trans _ _ p hu he, (C'.met G n).trans _ _ p' hg0 he', FlagCpt.met_h G' n' hA, FlagCpt.met_h G n hA', hgen]`. Establish `v1 : Var.tv (Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n) (prodPow t n') p = evStalk p' z`. Rewrite using `[Var.tv, hratio, (hasVal_cx_stalk _).val_eq, ← hev]`. Both sides reduce to the same expression.
+
+Establish `v2 : Var.tv g (prodPow q.1 n) p' = evStalk p' z`. Rewrite using `[Var.tv, ← hzv, (hasVal_cx_stalk _).val_eq]`. Rewrite using `[v1, v2]`. Simplify using `[prodPow]`.
+-/
 theorem pn_met_carry : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (T : Tw Z) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C C' : FlagCpt Z e) (φ : C.Y.X ≅ C'.Y.X) (ψ : C'.Y.Fn →+* C.Y.Fn) (t₀ : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → C.Y.Fnˣ) (n n' : Letter Dw → ℤ) (σ : F →+* ℂ) (G G' : EigMet Z (embOf e σ)), T.LocRel C C' φ ψ t₀ → (∀ z, n' (T.letter z) = n z) → (∀ y, T.MetAt y G G') → ∀ (p : GlobalTheory.TrueGeo.Pts C.Y σ) (p' : GlobalTheory.TrueGeo.Pts C'.Y σ), p'.1 = p.1 ≫ φ.hom → ∀ g : C'.Y.Fnˣ, (divOf C' n).IsEqn (under p') g → (GlobalTheory.TrueGeo.cxSt F).pn C.Y σ (divOf C n') (C.met G' n') ((GlobalTheory.TrueGeo.cxSt F).cx C.Y σ ((Units.map (ψ : C'.Y.Fn →* C.Y.Fn) g * prodPow t₀ n)⁻¹ : C.Y.Fnˣ)) p = (GlobalTheory.TrueGeo.cxSt F).pn C'.Y σ (divOf C' n) (C'.met G n) ((GlobalTheory.TrueGeo.cxSt F).cx C'.Y σ (g⁻¹ : C'.Y.Fnˣ)) p' := by
   intro E _ _ _ H Dw l Xo c O _ β Z T F _ _ e C C' φ ψ t₀ n n' σ G G' hL hn hM p p' hp g hg
   obtain ⟨q, -, χ', f', h1, h2⟩ := C'.exists_adapted p'

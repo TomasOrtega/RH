@@ -7,6 +7,19 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ d J hJ hdet ξ₀ hξ hσξ`. Establish `hinv : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hdet`. Establish `hmap : (J⁻¹).map σ * J.map σ = 1`. Use `congrArg (fun M => M.map σ) hinv` as an intermediate fact. Simplify `this` using `[Matrix.map_mul, Matrix.map_one]`.
+
+Establish `hT : (J.map σ)ᵀ = -J`. Use extensionality with `i j`. Simplify using `[Matrix.transpose_apply, Matrix.map_apply, hJ]`. Establish `h2 : (-J) * ((J⁻¹).map σ)ᵀ = 1`. Rewrite using `[← hT, ← Matrix.transpose_mul, hmap, Matrix.transpose_one]`.
+
+Establish `hX : ((J⁻¹).map σ)ᵀ = -J⁻¹`. Establish `h3 : J * (-((J⁻¹).map σ)ᵀ) = 1`. Rewrite using `[Matrix.mul_neg, ← Matrix.neg_mul]`. Conclude with `h2`. Establish `h4` using `Matrix.inv_eq_right_inv h3`.
+
+Establish `h5` using `congrArg Neg.neg h4`. Rewrite `h5` using `[neg_neg]`. Conclude with `h5.symm`. Establish `hent : ∀ i j, σ (J⁻¹ j i) = -J⁻¹ i j`. Introduce `i j`.
+
+Use `congrFun (congrFun hX i) j` as an intermediate fact. Simplify `this` using `[Matrix.transpose_apply, Matrix.map_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_neg, hσξ, hent]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr hξ)) (Matrix.isUnit_nonsing_inv_det J hdet).ne_zero`.
+-/
 theorem skew_dual_isHermND : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : ℕ)
     (J : Matrix (Fin d) (Fin d) E), (∀ i j, σ (J j i) = -J i j) → IsUnit J.det → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ →
     IsHermND σ (-ξ₀ • J⁻¹) := by

@@ -23,6 +23,15 @@ variable {D : D7}
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.JoinChr Formalism.L2.Host in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hpos` using `GlobalTheory.CovTop.Inhab.rank_pos T.toCore hT.pins j hj`. Establish `hW : (D.sp.W j).rank = D.R.r` using `D.sp.W_rank j hj.1 hj.2`. Establish `hι` using `(GlobalTheory.TupleCover.iotaOK_and_frame T hT j hj _ T.good_σ₀ _ (hT.spaceW j hj _ T.good_σ₀) hW).1`. Take `⟨Kf, hKf⟩` from `(GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds D (D.sp.W j) l.M).1`. Establish `hpk : ∀ σ, GoodEmb c σ → ∃ (U : Unf Xo c σ D.R.r) (dict : GA D (D.sp.W j) → Σ k, Frame (U.X k).Ψ D.R.r), GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.IsUnifAt U (D.sp.W j) dict (T.iota j) ∧ ∀ k la γ, (U.X k).χ la γ = 1` using `fun σ hσ => by`.
+
+Take `⟨C, hC, hCι⟩` from `(GlobalTheory.Member.exists_ctx D _ _ _ Xo c σ (D.sp.W j) D.R.r hW _ hι hpos hA hσ).1`. Take `⟨un, dict, mu, -, -, hP⟩` from `GlobalTheory.Member.exists_pkgLaws D _ _ _ _ _ _ _ _ C hC Kf hKf 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Rewrite `hP` using `[hCι]`. Take `⟨g, e, F, ik, φ, th, b1, b2, b3⟩` from `hP.dictLaws`. Conclude with `⟨C.unf un, dict, ⟨hP.unf, hW, Kf, th, C.x₀, g, e, F, ik, φ, hP.modelW, hP.familyUniformisationBasePointOrthogonal, hKf, b1, b2, hι.emb, ⟨1, fun x y => by simpa using hι.isom x y⟩, b3⟩, hP.chi1⟩`.
+
+Establish `hall : ∀ σ, ∃ (U : Unf Xo c σ D.R.r) (dict : GA D (D.sp.W j) → Σ k, Frame (U.X k).Ψ D.R.r), GoodEmb c σ → GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.IsUnifAt U (D.sp.W j) dict (T.iota j) ∧ ∀ k la γ, (U.X k).χ la γ = 1` using `fun σ => by`. Distinguish the cases in `hσ : GoodEmb c σ`. Take `⟨U, dict, h⟩` from `hpk σ hσ`. Conclude with `⟨U, dict, fun _ => h⟩`. Take `⟨U, dict, -⟩` from `hpk c.F.val.toRingHom rfl`.
+
+Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex GlobalTheory.closing_of_abelianSchemeLaws GlobalTheory.abelianSchemeLaws_all.2.secTwist _ _ _ _ Xo c hpos σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => U.X (dict 1).1, un := fun _ _ => y }, fun _ => ⟨(), fun _ => 0⟩, fun h => absurd h hσ⟩`. Use `choose U dict hP using hall`. Conclude with `⟨U, dict, fun σ hσ => (hP σ hσ).1, fun σ hσ k la γ _ => (hP σ hσ).2 k la γ⟩`.
+-/
 theorem exists_unif {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) {l : Level T.Q.H} (hA : l.A = 1)
     (Xo : Moduli (T.Q.Dw j) l) (c : Coeff l) :
     ∃ (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r),
@@ -54,6 +63,9 @@ theorem exists_unif {T : CoreJ D} (hT : LawsJ T) {j : ℕ} (hj : InR D j) {l : L
   choose U dict hP using hall
   exact ⟨U, dict, fun σ hσ => (hP σ hσ).1, fun σ hσ k la γ _ => (hP σ hσ).2 k la γ⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `GlobalTheory.CovTop.Inhab.exists_root h5`. Take `⟨I, hK, hp, hI⟩` from `GlobalTheory.CovTop.Inhab.exists_half Q.H s (by rw [hQ.1.1]; exact hs) (expC D L)`. Take `⟨l, l1, l2, -, -, -, l6⟩` from `GlobalTheory.CoverHalf.exists_coverLevel Q.l hQ.2.1.2 (15 ^ expC D L) I (Odd.pow (by decide)) (by rw [hQ.2.1.1]; exact h15.pow_left _) hK hp hI`. Rewrite `l2` using `[hQ.2.1.1]`. Conclude with `⟨l, ⟨by rw [l2, levDeep, ← mul_pow]; norm_num, l6, l1⟩, (isTypeLevel_of_eq l6 l2 (h15.symm.pow_right _)).1⟩`.
+-/
 theorem exists_deepLevel (L : SizeData₂ D) {Q : Par D} (hQ : Q.Pins) (h5 : 5 ≤ D.host.splitBound)
     (h15 : Nat.Coprime 15 (D.host.g 0 * D.host.g 1)) :
     ∃ l : Level Q.H, (l.M = levDeep D L ∧ l.A = 1 ∧ Q.l.Dvd l) ∧ IsTypeLevel l := by
@@ -65,6 +77,15 @@ theorem exists_deepLevel (L : SizeData₂ D) {Q : Par D} (hQ : Q.Pins) (h5 : 5 �
   exact ⟨l, ⟨by rw [l2, levDeep, ← mul_pow]; norm_num, l6, l1⟩,
     (isTypeLevel_of_eq l6 l2 (h15.symm.pow_right _)).1⟩
 
+/- English proof (translation)
+Establish `hζ` using `Complex.isPrimitiveRoot_exp n hn`. Use `haveI := T.Q.c.fin`. Use `haveI := IntermediateField.adjoin.finiteDimensional (K := ℚ) (hζ.isIntegral (Nat.pos_of_ne_zero hn)).tower_top`. Take `⟨c₀, h₀⟩` from `GlobalTheory.TupleCover.exists_coeff_ge l (T.Q.c.F ⊔ IntermediateField.adjoin ℚ {Complex.exp (2 * Real.pi * Complex.I / n)})`. Take `⟨c₁, h₁, hc₁⟩` from `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed _ _ _ _ Xo c₀ hpos).2`.
+
+Take `⟨c₂, h₂, hc₂⟩` from `GlobalTheory.exists_coeff_typeNorms_principal _ _ (T.Q.Dw j) l c₁`. Use `haveI := c₂.fin`. Set `N : IntermediateField ℚ ℂ` to `IntermediateField.normalClosure ℚ c₂.F ℂ`. Establish `hN : c₂.F ≤ N` using `IntermediateField.le_normalClosure c₂.F`. Set `c : Coeff l` to `⟨N, inferInstance, fun τ a => hN (c₂.conj τ a), hN c₂.zeta_mem, c₂.le.trans hN⟩`.
+
+Establish `h0 : c₀.F ≤ N` using `h₁.trans (h₂.trans hN)`. Establish `le : T.Q.c.F ≤ c.F` using `le_sup_left.trans (h₀.trans h0)`. Use `⟨c, le, ?_, hc₁ c (h₂.trans hN), hc₂ c hN, ⟨_, h0 (h₀ (le_sup_right (a := T.Q.c.F) (IntermediateField.mem_adjoin_simple_self ℚ _)))⟩, ?_⟩` and prove the remaining obligations. Use `letI := (GlobalTheory.IndefiniteRowSideFullHecke.HalfLatticeTypes.incl (T := T) le).toAlgebra haveI : IsScalarTower ℚ T.Q.c.F c.F := IsScalarTower.of_algebraMap_eq fun x => by simp haveI : Normal ℚ c.F := by haveI : Algebra.IsAlgebraic ℚ c₂.F := inferInstance`. Conclude with `(Algebra.IsAlgebraic.isNormalClosure_normalClosure (F := ℚ) (K := c₂.F) (L := ℂ) fun x => IsAlgClosed.splits _).normal`.
+
+Use `haveI : IsGalois ℚ c.F := ⟨⟩`. Conclude with `IsGalois.tower_top_of_isGalois ℚ T.Q.c.F c.F`. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := c.F.val) hζ c.F.val.injective`.
+-/
 theorem exists_deepField (T : CoreJ D) {j : ℕ} (hpos : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q) {l : Level T.Q.H}
     (Xo : Moduli (T.Q.Dw j) l) {n : ℕ} (hn : n ≠ 0) :
     ∃ (c : Coeff l) (le : T.Q.c.F ≤ c.F),
@@ -95,6 +116,13 @@ theorem exists_deepField (T : CoreJ D) {j : ℕ} (hpos : 1 ≤ (T.Q.Dw j).p + (T
     exact IsGalois.tower_top_of_isGalois ℚ T.Q.c.F c.F
   · exact IsPrimitiveRoot.of_map_of_injective (f := c.F.val) hζ c.F.val.injective
 
+/- English proof (translation)
+Establish `hg : g.Prime` using `Fact.out`. Establish `h1 : 0 < g - 1` using `Nat.sub_pos_of_lt hg.one_lt`. Establish `hp` using `Nat.mul_pos hg.pos h1`. Prove the components needed by the constructor for the conclusion. Establish `hz : IsPrimitiveRoot (ζ ^ (g - 1)) g` using `h.pow hp (mul_comm _ _)`.
+
+Use `⟨AddChar.zmodChar g hz.pow_eq_one, fun e => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun e ((1 : ℕ) : ZMod g)` as an intermediate fact. Rewrite `this` using `[AddChar.zmodChar_apply', pow_one, AddChar.one_apply]`. Conclude with `hz.ne_one hg.one_lt this`. Establish `hz : IsPrimitiveRoot (ζ ^ g) (g - 1)` using `h.pow hp rfl`.
+
+Establish `hu` using `hz.isUnit_unit h1.ne'`. Establish `hc : Nat.card (ZMod g)ˣ = Nat.card (Subgroup.zpowers (hz.isUnit h1.ne').unit)`. Rewrite using `[Nat.card_zpowers, ← hu.eq_orderOf, Nat.card_eq_fintype_card, ZMod.card_units]`. Conclude with `⟨(Subgroup.subtype _).comp (mulEquivOfCyclicCardEq hc).toMonoidHom, Subtype.val_injective.comp (mulEquivOfCyclicCardEq hc).injective⟩`.
+-/
 theorem exists_chars_prime {K : Type} [Field K] {g : ℕ} [Fact g.Prime] {ζ : K} (h : IsPrimitiveRoot ζ (g * (g - 1))) :
     (∃ ψ : AddChar (ZMod g) K, ψ ≠ 1) ∧ ∃ om : (ZMod g)ˣ →* Kˣ, Function.Injective om := by
   have hg : g.Prime := Fact.out
@@ -113,6 +141,11 @@ theorem exists_chars_prime {K : Type} [Field K] {g : ℕ} [Fact g.Prime] {ζ : K
     exact ⟨(Subgroup.subtype _).comp (mulEquivOfCyclicCardEq hc).toMonoidHom,
       Subtype.val_injective.comp (mulEquivOfCyclicCardEq hc).injective⟩
 
+/- English proof (translation)
+Establish `hk : ∀ k : Fin 2, (∃ ψ : AddChar (ZMod (D.host.g k)) K, ψ ≠ 1) ∧ ∃ om : (ZMod (D.host.g k))ˣ →* Kˣ, Function.Injective om` using `fun k => by`. Take `⟨a, ha⟩` from `Finset.dvd_prod_of_mem (fun k => D.host.g k * (D.host.g k - 1)) (Finset.mem_univ k)`. Conclude with `exists_chars_prime (h.pow (Finset.prod_pos fun k _ => Nat.mul_pos (D.host.g_prime k).pos (Nat.sub_pos_of_lt (D.host.g_prime k).one_lt)) (ha.trans (mul_comm _ _)))`. Use `choose ψ hψ using fun k => (hk k).1`. Use `choose om hom using fun k => (hk k).2`.
+
+Conclude with `⟨⟨fun v => ψ v.1, fun v => hψ v.1⟩, om, hom⟩`.
+-/
 theorem exists_chars {K : Type} [Field K] {ζ : K} (h : IsPrimitiveRoot ζ (∏ k, D.host.g k * (D.host.g k - 1))) :
     (∃ ψ : ∀ v : Sq D.host, AddChar (ZMod (D.host.g v.1)) K, IsGenericFamily ψ) ∧
       ∃ om : ∀ k : Fin 2, (ZMod (D.host.g k))ˣ →* Kˣ, IsGeneratorFamily om := by

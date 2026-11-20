@@ -13,6 +13,13 @@ namespace GlobalTheory.CompanionTheory.MoyPrasadTop
 
 open PositivityTheory.LowerBoundConstant GlobalTheory GlobalTheory.Published GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.SplitRead Topology
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n s d e V _ _ π hπ`. Use `⟨mapsTo_fixed_jacU e π _, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv w hw h`. Establish `h0 : (Submodule.Quotient.mk (v - w) : Jacquet π (unipRad k e)) = 0`. Rewrite using `[Submodule.Quotient.mk_sub]`.
+
+Conclude with `sub_eq_zero.2 h`. Conclude with `sub_eq_zero.1 (GlobalTheory.CompanionTheory.DepthZeroJac.fixed_inj_smooth k n s d e V π hπ.1 (v - w) (sub_mem hv hw) h0)`. Introduce `y hy`. Take `⟨v, hv, hvy⟩` from `GlobalTheory.CompanionTheory.JacquetCentral.exists_fixed_mk_eq_of_commute π hπ (Gx k e) (unipRad k e) (GlobalTheory.CompanionTheory.MoyPrasad.isOpen_Gx k n s d e) (GlobalTheory.T.isCompact_parahoric_subgroup k n s d e) (leviEmb k e) (leviEmb_mem_normalizer k e) ((Gx k e).comap (l …`. Take `⟨t, ht, hc⟩` from `GlobalTheory.T.central_torus_contracts_lower k n s d e U hU`.
+
+Conclude with `⟨t, fun m _ => ht m, hc⟩) y hy`. Conclude with `⟨v, hv, hvy⟩`.
+-/
 theorem moyPrasadJacquetIso : GlobalTheory.Published.MoyPrasadJacquetIso := by
   intro k _ _ _ _ n s d e V _ _ π hπ
   refine ⟨mapsTo_fixed_jacU e π _, ?_, ?_⟩

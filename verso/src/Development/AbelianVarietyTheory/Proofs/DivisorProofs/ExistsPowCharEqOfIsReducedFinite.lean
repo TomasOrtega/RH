@@ -3,6 +3,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RigExtMapRelFrobCom
 import Development.AbelianVarietyTheory.Definitions.Divisors.WittOnFalse
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ A _ _ _ _ a`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `haveI : PerfectField k := PerfectRing.toPerfectField k p`. Set `e` to `IsArtinianRing.equivPi A`. Establish `key : ∀ I : MaximalSpectrum A, ∃ c : A ⧸ I.asIdeal, e a I = c ^ p`.
+
+Introduce `I`. Use `haveI : I.asIdeal.IsMaximal := I.isMaximal`. Use `letI : Field (A ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : Module.Finite k (A ⧸ I.asIdeal) := Module.Finite.trans A (A ⧸ I.asIdeal)`. Use `haveI : Algebra.IsAlgebraic k (A ⧸ I.asIdeal) := Algebra.IsAlgebraic.of_finite k _`.
+
+Use `haveI : PerfectField (A ⧸ I.asIdeal) := Algebra.IsAlgebraic.perfectField k`. Use `haveI : CharP (A ⧸ I.asIdeal) p := charP_of_injective_algebraMap (algebraMap k (A ⧸ I.asIdeal)).injective p`. Use `haveI : PerfectRing (A ⧸ I.asIdeal) p := PerfectField.toPerfectRing p`. Take `⟨c, hc⟩` from `surjective_frobenius (A ⧸ I.asIdeal) p (e a I)`. Conclude with `⟨c, by rw [← hc, frobenius_def]⟩`.
+
+Use `choose c hc using key`. Use `⟨e.symm c, e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, AlgEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `I`. Rewrite using `[hc I, Pi.pow_apply]`.
+-/
 theorem GlobalTheory.exists_pow_char_eq_of_isReduced_finite : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (A : Type) [CommRing A] [Algebra k A] [Module.Finite k A] [IsReduced A], ∀ a : A, ∃ b : A, a = b ^ p := by
   intro p _ k _ _ _ A _ _ _ _ a
   haveI : IsArtinianRing A := IsArtinianRing.of_finite k A

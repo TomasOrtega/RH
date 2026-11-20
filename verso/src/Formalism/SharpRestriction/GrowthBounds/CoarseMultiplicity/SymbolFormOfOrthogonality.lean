@@ -9,6 +9,11 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G MvPolynomial
 
+/- English proof (translation)
+Introduce `X _ O _ _ hD1 hH hc mm β hβ s hs`. Establish `St` using `hstd X hD1 hH hc`. Unfold `Pol`. Rewrite using `[mem_restrictSupport_iff]`. Introduce `μ hμ x`.
+
+Establish `hwh : IsWeightedHomogeneous (wLet X x) (symFam (KK O) X.p C0 CE1 CE2 X β s) (∑ j, TD C0 CE1 CE2 X j (β j) (wLet X x))` using `IsWeightedHomogeneous.prod _ _ _ (fun j _ => ioBlock_wh C0 CE1 CE2 X j O mm (β j) (wLet X x) (fun _ _ _ => rfl) (fun _ => rfl) rfl (s j) (hs j))`. Establish `h1` using `hwh (mem_support_iff.1 (Finset.mem_coe.1 hμ))`. Rewrite `h1` using `[weight_wLet]`. Rewrite using `[h1, Finset.sum_congr rfl fun j _ => TD_wLet C0 CE1 CE2 X j x (β j) (hβ j) (hO X hD1 hH hc j (β j) (hβ j)), ← natPartSum X.TT St.seg2 (fun s => if s = x.1.val then hhDegs X.TT X.aT X.bT x else 0), Finset.sum_ite_eq', if_pos x.1.2]`.
+-/
 theorem symPolAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X)
     (hO : OPlusAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : SymPolAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -30,11 +35,17 @@ theorem symPolAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ}
 
 def RestOPlus : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => OPlusAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
+/- English proof (translation)
+Use `TransportedAlt.mono ?_ (thr_std.and h)` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨_, hstd⟩, hO⟩`. Conclude with `symPolAt_of hstd hO`.
+-/
 theorem restSymPol_of (h : RestOPlus) : RestSymPol := by
   refine TransportedAlt.mono ?_ (thr_std.and h)
   rintro C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨_, hstd⟩, hO⟩
   exact symPolAt_of hstd hO
 
+/- English proof (translation)
+The claim follows from `restForm_of' hB h1 prodAt (restSymPol_of h3) intAt numAt zProdAt`.
+-/
 theorem symbol_form_of_orthogonality (hB : RestBlockForm) (h1 : ∀ C0 CE1 CE2, OrthAt C0 CE1 CE2) (h3 : RestOPlus) : RestForm :=
   restForm_of' hB h1 prodAt (restSymPol_of h3) intAt numAt zProdAt
 

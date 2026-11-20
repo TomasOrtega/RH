@@ -20,6 +20,9 @@ section SlopeTestRemainingChoices
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Establish `e : (gl (mD w)).val = !![(w : A E), 0; 0, ((w⁻¹ : (A E)ˣ) : A E)]` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, e, aE_val, aE_val, dM_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_left_comm]`.
+-/
 private theorem aE_dM_eq (z w : (A E)ˣ) : aE z * dM w⁻¹ = gl (mD w) * aE (z * w⁻¹) := by
   refine Units.ext ?_
   have e : (gl (mD w)).val = !![(w : A E), 0; 0, ((w⁻¹ : (A E)ˣ) : A E)] := rfl
@@ -27,6 +30,9 @@ private theorem aE_dM_eq (z w : (A E)ˣ) : aE z * dM w⁻¹ = gl (mD w) * aE (z 
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, mul_left_comm]
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[GroundTheory.Automorphic.Reduction.scalarUnits_apply, GroundTheory.Automorphic.Reduction.coe_diagUnits]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]`.
+-/
 private theorem scal_eq {K : Type} [Field K] [NumberField K] (u : (A K)ˣ) :
     GroundTheory.Automorphic.Reduction.scalarUnits K 2 u = Matrix.GeneralLinearGroup.scalar (Fin 2) u := by
   refine Units.ext ?_
@@ -34,6 +40,13 @@ private theorem scal_eq {K : Type} [Field K] [NumberField K] (u : (A K)ˣ) :
   rw [GroundTheory.Automorphic.Reduction.scalarUnits_apply, GroundTheory.Automorphic.Reduction.coe_diagUnits]
   fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]
 
+/- English proof (translation)
+Establish `hd : Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`. Choose the witnesses or unpack the hypotheses as in `⟨s₀, hs₀⟩ : ∃ s₀ : {r : ℝ // 0 < r}, s₀ ^ Module.finrank ℚ E = s := by`. Use `⟨⟨s.1 ^ ((Module.finrank ℚ E : ℝ))⁻¹, Real.rpow_pos_of_pos s.2 _⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Positive.val_pow]`. Conclude with `Real.rpow_inv_natCast_pow s.2.le hd`.
+
+Take `⟨y, hy⟩ : ∃ y : (A ℚ)ˣ, GroundTheory.Automorphic.Reduction.centralSection ℚ 2 s₀ = Matrix.GeneralLinearGroup.scalar (Fin 2) y` from `⟨_, (rfl : _ = GroundTheory.Automorphic.Reduction.scalarUnits ℚ 2 _).trans (scal_eq _)⟩`. Use `⟨ideleEmbedding ℚ E y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs₀, ← UpperTheory.centralSection_baseChange ℚ E 2 s₀, hy]`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.GeneralLinearGroup.scalar]`. Rewrite using `[ideleNorm_ideleEmbedding, map_pow, ← hy, ← map_pow, hs₀]`.
+-/
 private theorem norm_central (s : {r : ℝ // 0 < r}) :
     ∃ z : (A E)ˣ, GroundTheory.Automorphic.Reduction.centralSection E 2 s = Matrix.GeneralLinearGroup.scalar (Fin 2) z ∧
       Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleNorm ℚ E z) = GroundTheory.Automorphic.Reduction.centralSection ℚ 2 s := by
@@ -53,6 +66,27 @@ private theorem norm_central (s : {r : ℝ // 0 < r}) :
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `E _ _ _ D W M N P hP π hπ ⟨f, hf, ph, hph, φ, hφ, hne⟩`. Take `⟨Φ, hΦ⟩` from `UpperTheory.ConvolutionTheory.R2.smooth ℚ E D W M π f hf ph hph`. Establish `hm : Φ ∈ span W M π` using `Submodule.subset_span ⟨f, hf, ph, hph, hΦ⟩`. Establish `hBd : Bd fun x => Φ.1 x * φ.1 x` using `(UpperTheory.ConvolutionTheory.RankTwoDescent.prodBd E D W M N P π Φ hm φ hφ).1`. Take `⟨-, hcont, hgl, hrat⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.meanLaws E N _ hBd`.
+
+Set `β : (A E)ˣ → ℂ` to `fun t => mean N fun x => Φ.1 (x * aE t) * φ.1 (x * aE t)`. Establish `hβc : Continuous β` using `hcont.comp continuous_aE`. Establish `hβi : ∀ (e : Eˣ) t, β (IdeleGroup.diagonal E e * t) = β t` using `fun e t => by`. Take `⟨γ, hγ⟩` from `exists_ratGL_aE (F := E) e`. Establish `h` using `hrat γ (aE t)`.
+
+Simplify using `only [β]`. Rewrite using `[aE_mul, ← hγ]`. Conclude with `h`. Establish `hJ : (J1 D N fun x => lift W M f.1 ph x * φ.1 x) = UI fun z => β (z * (Units.map (D.bar : A E →* A E) z)⁻¹)`. Rewrite using `[← hΦ]`.
+
+Use `congrArg UI (funext fun z => ?_)` and prove the remaining obligations. Establish `h` using `hgl (mD (Units.map (D.bar : A E →* A E) z)) (aE (z * (Units.map (D.bar : A E →* A E) z)⁻¹))`. Simplify using `only [β, sZ]`. Rewrite using `[aE_dM_eq]`. Conclude with `h`.
+
+Take `⟨χ, h1, h2, h3⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.charSel E D β hβc hβi (by rw [← hJ]; exact hne)`. Take `⟨χ₀, hχ₀⟩` from `UpperTheory.ConvolutionTheory.RankTwoDescent.charDown E D χ h1`. Establish `hdet : ∀ (g : G1 ℚ) (n : (A ℚ)ˣ), chiDet 2 χ₀ (gl g * dM n) = χ₀.1 n` using `fun g n => by`. Establish `e : chiDet 2 χ₀ (gl g * dM n) = χ₀.1 (Matrix.GeneralLinearGroup.det (gl g * dM n))` using `rfl`. Rewrite using `[e, map_mul, det_gl, det_dM, one_mul]`.
+
+Establish `hcs : ∀ s, chiDet 2 χ₀ (GroundTheory.Automorphic.Reduction.centralSection ℚ 2 s) = 1` using `fun s => by`. Take `⟨z, hz, hn⟩` from `norm_central (E := E) s`. Establish `hz1 : χ₀.1 (ideleNorm ℚ E z) = 1` using `by rw [← hχ₀ z]; exact h2 z ⟨s, hz.symm⟩`. Establish `e : chiDet 2 χ₀ (Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleNorm ℚ E z)) = χ₀.1 (Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleNorm ℚ E z)))` using `rfl`. Rewrite using `[← hn, e, det_scalar, map_pow, hz1, one_pow]`.
+
+Establish `hlift : ∀ x, lift W M (TR.mulChi 2 χ₀ f).1 ph x = ((χ₀.1 (nu ℚ x) : ℂˣ) : ℂ) * lift W M f.1 ph x` using `fun x => by`. Simplify using `only [lift]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [TR.mulChi_apply, hdet]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨π.twist χ₀, ?_, TR.mulChi 2 χ₀ f, ⟨f, hf, rfl⟩, ph, hph, φ, hφ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f₁, hf₁, rfl⟩ s g`. Express the relevant statement in the definitionally equal form `f₁.1 _ * _ = f₁.1 g * _`. Rewrite using `[hπ f₁ hf₁ s g, map_mul, hcs, one_mul]`.
+
+Establish `e : (II N fun x => lift W M (TR.mulChi 2 χ₀ f).1 ph x * φ.1 x) = UI fun t => ((χ.1 t : ℂˣ) : ℂ) * β t`. Use `congrArg UI (funext fun t => ?_)` and prove the remaining obligations. Simplify using `only [mean, β]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+
+Simplify using `only [hlift, nu_mul, nu_gl, nu_aE, one_mul, hχ₀ t, hΦ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h3`.
+-/
 theorem UpperTheory.ConvolutionTheory.RankTwoDescent.toII :
     ToII := by
   intro E _ _ _ D W M N P hP π hπ ⟨f, hf, ph, hph, φ, hφ, hne⟩

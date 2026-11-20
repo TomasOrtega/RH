@@ -19,11 +19,33 @@ section Lie
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x : Sp R ⟶ S} {A : Over (Sp R)} [GrpObj A]
   {φ : A.left ⟶ G.left} {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `let ⟨e, he⟩ := LiePull.exists_pushEquiv h (epsR R) (spMap (algebraMap R (DualNumber R)) ≫ x) rfl ⟨e.symm u, by rw [← he, e.apply_symm_apply]⟩`.
+-/
 theorem exists_lift (h : IsGrpPullback A G x φ) (u : FramedFlatCoordinates.epsAt x ⟶ G) :
     ∃ v : epsR R ⟶ A, v.left ≫ φ = u.left :=
   let ⟨e, he⟩ := LiePull.exists_pushEquiv h (epsR R) (spMap (algebraMap R (DualNumber R)) ≫ x) rfl
   ⟨e.symm u, by rw [← he, e.apply_symm_apply]⟩
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `LiePull.exists_pushEquiv h (epsR R) (spMap (algebraMap R (DualNumber R)) ≫ x) rfl`. Take `⟨e₀, he₀⟩` from `LiePull.exists_pushEquiv h (𝟙_ (Over (Sp R))) x (Category.id_comp _).symm`. Take `rfl : u = fun i => e (v i)` from `funext fun i => Over.OverMorphism.ext ((hu i).symm.trans (he _).symm)`. Establish `one : (1 : Over.mk x ⟶ G).left = η[A].left ≫ φ`. Rewrite using `[← map_one e₀, he₀, Hom.one_def, toUnit_unit, Category.id_comp]`.
+
+Establish `sc : ∀ c : R, spMap (epsScaleR c) ≫ spMap (algebraMap R (DualNumber R)) = spMap (algebraMap R (DualNumber R))` using `fun c => by`. Use `(Spec.map_comp _ _).symm.trans (congrArg Spec.map ?_)` and prove the remaining obligations. Apply the tactic sequence `ext a <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `fs : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations.
+
+Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hR : ∀ (c : R) (u v : epsR R ⟶ A), u.left = spMap (epsScaleR c) ≫ v.left ↔ (e u).left = spMap (epsScaleR c) ≫ (e v).left` using `fun c u v => by`. Rewrite using `[he, he]`. Use `⟨fun E => by rw [E]; exact Category.assoc _ _ _, fun E => h.1.hom_ext (E.trans (Category.assoc _ _ _).symm) ?_⟩` and prove the remaining obligations.
+
+Use `(Over.w u).trans (Eq.symm ((Category.assoc _ _ _).trans ?_))` and prove the remaining obligations. Conclude with `(congrArg (spMap (epsScaleR c) ≫ ·) (Over.w v)).trans (sc c)`. Establish `pr : ∀ u : Fin m → (epsR R ⟶ A), e (List.ofFn u).prod = (List.ofFn fun i => e (u i)).prod` using `fun u => by`. Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+
+Establish `hC : ∀ (c : Fin m → R) (w : epsR R ⟶ A), IsLieComb c v w ↔ FramedFlatCoordinates.IsCombination x c (fun i => (e (v i)).left) (e w)` using `fun c w => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨fun i => e (u i), fun i => (hR _ _ _).1 (hu i), pr u⟩`. Introduce and unpack `⟨u, hu, hw⟩`.
+
+Use `⟨fun i => e.symm (u i), fun i => (hR _ _ _).2 (by simpa using hu i), e.injective ?_⟩` and prove the remaining obligations. Rewrite using `[pr, hw]`. Simplify using the standard rewrite rules. Use `⟨fun c w w' hw => ?_, fun {O} _ a b hab χ => ?_⟩` and prove the remaining obligations. Take `rfl : w' = e w` from `Over.OverMorphism.ext (hw.symm.trans (he _).symm)`.
+
+Conclude with `hC c w`. Establish `hP : ∀ v : epsR R ⟶ A, EigenvectorLieDegree.IsEigVec a χ v ↔ FramedFlatCoordinates.IsEigenTangent b x χ (e v)` using `fun v => by`. Use `and_congr ?_ (forall_congr' fun c => ?_)` and prove the remaining obligations. Rewrite using `[one, he, IsTangent]`. Use `⟨fun E => by rw [← E]; exact (Category.assoc _ _ _).symm, fun E => h.1.hom_ext ((Category.assoc _ _ _).trans E) ?_⟩` and prove the remaining obligations.
+
+Use `((Category.assoc _ _ _).trans ?_).trans (Over.w η[A]).symm` and prove the remaining obligations. Conclude with `(congrArg (spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ ·) (Over.w v)).trans fs`. Establish `E : e (v ≫ a.act c) = e v ≫ b.act c` using `Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, hab, Category.assoc])`. Rewrite using `[hR, E]`.
+
+Use `and_congr (forall_congr' fun i => hP _) (Iff.trans ?_ e.surjective.forall.symm)` and prove the remaining obligations. Conclude with `forall_congr' fun w => imp_congr (hP w) (existsUnique_congr fun c => hC c w)`.
+-/
 theorem fibre_iff (h : IsGrpPullback A G x φ) {v : Fin m → (epsR R ⟶ A)} {u : Fin m → (FramedFlatCoordinates.epsAt x ⟶ G)}
     (hu : ∀ i, (v i).left ≫ φ = (u i).left) :
     (∀ (c : Fin m → R) (w : epsR R ⟶ A) (w' : FramedFlatCoordinates.epsAt x ⟶ G), w.left ≫ φ = w'.left →

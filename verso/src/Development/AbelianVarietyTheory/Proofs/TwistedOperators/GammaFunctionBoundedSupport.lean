@@ -10,6 +10,37 @@ namespace GlobalTheory.Chamber
 
 variable {k : ℕ}
 
+/- English proof (translation)
+Establish `huP` using `(mem_sdiff.1 hu).1`. Establish `huR` using `(mem_sdiff.1 hu).2`. Distinguish the cases in `hr : 0 < ⟪rt P u, H⟫_ℝ`. Use `mul_nonpos_of_nonpos_of_nonneg ?_ hr.le` and prove the remaining obligations. Assume the negation of the conclusion as `hd`.
+
+Use `push_neg at hd`. Apply `hg` to reduce the goal to its premises. Establish `hpair : ∀ S : Finset (SV k), u ∉ S → (-1 : ℝ) ^ (insert u S \ R).card * tau P (insert u S) H * tauHat (insert u S) R (H - Y) = -((-1) ^ (S \ R).card * tau P S H * tauHat S R (H - Y))`. Introduce `S huS`. Establish `e1 : insert u S \ R = insert u (S \ R)` using `Finset.insert_sdiff_of_notMem _ huR`.
+
+Establish `hn : u ∉ S \ R` using `fun h => huS (mem_sdiff.1 h).1`. Establish `i2 : (∀ v ∈ P \ insert u S, 0 < ⟪rt P v, H⟫_ℝ) ↔ (∀ v ∈ P \ S, 0 < ⟪rt P v, H⟫_ℝ)`. Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Distinguish the cases in `hvu : v = u`.
+
+Substitute `hvu` using the available equality. Conclude with `hr`. Conclude with `h v (mem_sdiff.2 ⟨(mem_sdiff.1 hv).1, fun h' => (mem_insert.1 h').elim hvu (mem_sdiff.1 hv).2⟩)`. Introduce `h v hv`. Conclude with `h v (mem_sdiff.2 ⟨(mem_sdiff.1 hv).1, fun h' => (mem_sdiff.1 hv).2 (mem_insert_of_mem h')⟩)`.
+
+Establish `e2 : tau P (insert u S) H = tau P S H`. Unfold `tau`. Conclude with `if_congr i2 rfl rfl`. Establish `i3 : (∀ v ∈ insert u S \ R, 0 < ⟪wt R v, H - Y⟫_ℝ) ↔ (∀ v ∈ S \ R, 0 < ⟪wt R v, H - Y⟫_ℝ)`. Rewrite using `[e1, forall_mem_insert]`.
+
+Conclude with `⟨fun h => h.2, fun h => ⟨hd, h⟩⟩`. Establish `e3 : tauHat (insert u S) R (H - Y) = tauHat S R (H - Y)`. Unfold `tauHat`. Conclude with `if_congr i3 rfl rfl`. Rewrite using `[e1, card_insert_of_notMem hn, pow_succ, e2, e3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `gamP`. Use `Finset.sum_involution (fun S _ => if u ∈ S then S.erase u else insert u S) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `S hS`. Distinguish the cases in `huS : u ∈ S`.
+
+Simplify using `only [huS, if_true]`. Use `hpair (S.erase u) (notMem_erase u S)` as an intermediate fact. Rewrite `this` using `[insert_erase huS]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [huS, if_false]`. Rewrite using `[hpair S huS]`. Expand and normalize the polynomial expressions, which then agree. Introduce `S hS _`. Distinguish the cases in `huS : u ∈ S`.
+
+Simplify using `only [huS, if_true]; exact fun h => notMem_erase u S (by rw [h]; exact huS)`. Simplify using `only [huS, if_false]`. Conclude with `fun h => huS (h ▸ mem_insert_self u S)`. Introduce `S hS`. Simplify using `only [between, mem_filter, mem_powerset] at hS ⊢`.
+
+Distinguish the cases in `huS : u ∈ S`. Simplify using `only [huS, if_true]`. Conclude with `⟨(erase_subset u S).trans hS.1, fun v hv => mem_erase.2 ⟨fun e => huR (e ▸ hv), hS.2 hv⟩⟩`. Simplify using `only [huS, if_false]`. Conclude with `⟨insert_subset huP hS.1, hS.2.trans (subset_insert u S)⟩`.
+
+Introduce `S hS`. Distinguish the cases in `huS : u ∈ S`. Simplify using `only [huS, if_true, notMem_erase, if_false]`. Conclude with `insert_erase huS`. Simplify using `only [huS, if_false, mem_insert_self, if_true]`.
+
+Conclude with `erase_insert huS`. Use `push_neg at hr`. Use `mul_nonpos_of_nonneg_of_nonpos ?_ hr` and prove the remaining obligations. Assume the negation of the conclusion as `hd`. Use `push_neg at hd`.
+
+Apply `hg` to reduce the goal to its premises. Unfold `gamP`. Use `Finset.sum_eq_zero fun S hS => ?_` and prove the remaining obligations. Distinguish the cases in `huS : u ∈ S`. Establish `: tauHat S R (H - Y) = 0` using `if_neg fun h => lt_asymm (h u (mem_sdiff.2 ⟨huS, huR⟩)) hd`.
+
+Rewrite using `[this, mul_zero]`. Establish `: tau P S H = 0` using `if_neg fun h => not_lt.2 hr (h u (mem_sdiff.2 ⟨huP, huS⟩))`. Rewrite using `[this, mul_zero, zero_mul]`.
+-/
 theorem gamP_ne_zero_wt_mul_rt_nonpos {P R : Finset (SV k)} {Y H : A0 k} (hg : gamP P R Y H ≠ 0) {u : SV k}
     (hu : u ∈ P \ R) : ⟪wt R u, H - Y⟫_ℝ * ⟪rt P u, H⟫_ℝ ≤ 0 := by
   have huP := (mem_sdiff.1 hu).1
@@ -80,6 +111,31 @@ theorem gamP_ne_zero_wt_mul_rt_nonpos {P R : Finset (SV k)} {Y H : A0 k} (hg : g
     · have : tau P S H = 0 := if_neg fun h => not_lt.2 hr (h u (mem_sdiff.2 ⟨huP, huS⟩))
       rw [this, mul_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `k P R Y hP hRP`. Establish `hpr : ∀ (Q : Finset (SV k)) (v : A0 k), pr Q v ∈ aP Q` using `fun Q v => Submodule.starProjection_apply_mem _ _`. Establish `hwtp : ∀ (Q : Finset (SV k)) (v : SV k), wt Q v ∈ (aP Q)ᗮ` using `fun Q v => Submodule.sub_starProjection_mem_orthogonal _`. Establish `hsp : ∀ (Q : Finset (SV k)) (w : SV k), w ∈ Q → vec w ∈ aP Q` using `fun Q w hw => Submodule.subset_span ⟨w, hw, rfl⟩`. Establish `hrtmem : ∀ u ∈ P, rt P u ∈ aP P` using `fun u hu => sub_mem (hsp P u hu) (vecSpan_mono (erase_subset u P) (hpr _ _))`.
+
+Establish `horth : ∀ u ∈ P, ∀ w ∈ P, w ≠ u → ⟪vec w, rt P u⟫_ℝ = 0` using `fun u _ w hw hwu => Submodule.inner_right_of_mem_orthogonal (hsp _ w (mem_erase.2 ⟨hwu, hw⟩)) (hwtp _ _)`. Establish `hpos : ∀ u ∈ P, 0 < ⟪vec u, rt P u⟫_ℝ` using `fun u hu => by`. Establish `hne : rt P u ≠ 0` using `hP.wt_ne_zero (erase_subset u P) (by simp [hu])`. Establish `h0 : ⟪pr (P.erase u) (vec u), rt P u⟫_ℝ = 0` using `Submodule.inner_right_of_mem_orthogonal (hpr _ _) (hwtp _ _)`. Establish `e : ⟪vec u, rt P u⟫_ℝ = ⟪rt P u, rt P u⟫_ℝ`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, real_inner_self_eq_norm_sq]`. Conclude with `pow_pos (norm_pos_iff.2 hne) 2`. Use `⟨∑ u ∈ P \ R, |⟪wt R u, Y⟫_ℝ| / ⟪vec u, rt P u⟫_ℝ * ‖rt P u‖, fun H hH hg => ?_⟩` and prove the remaining obligations. Simplify using `only [aMQ, Submodule.mem_inf] at hH`.
+
+Take `⟨hHP, hHR⟩` from `hH`. Establish `hwt : ∀ u, ⟪wt R u, H⟫_ℝ = ⟪vec u, H⟫_ℝ` using `fun u => by`. Rewrite using `[wt, inner_sub_left, Submodule.inner_right_of_mem_orthogonal (hpr R (vec u)) hHR, sub_zero]`. Establish `hexp : H = ∑ u ∈ P \ R, (⟪vec u, H⟫_ℝ / ⟪vec u, rt P u⟫_ℝ) • rt P u` using `by set H' := H - ∑ u ∈ P \ R, (⟪vec u, H⟫_ℝ / ⟪vec u, rt P u⟫_ℝ) • rt P u with hH'`. Establish `hm : H' ∈ aP P` using `sub_mem hHP (sum_mem fun u hu => Submodule.smul_mem _ _ (hrtmem u (mem_sdiff.1 hu).1))`.
+
+Establish `hv : ∀ w ∈ P, ⟪vec w, H'⟫_ℝ = 0`. Introduce `w hw`. Rewrite using `[hH', inner_sub_right, inner_sum]`. Repeatedly rewrite using `[real_inner_smul_right]`. Distinguish the cases in `hwR : w ∈ R`.
+
+Rewrite using `[Submodule.inner_right_of_mem_orthogonal (hsp R w hwR) hHR]`. Rewrite using `[sum_eq_zero fun u hu => by`. Rewrite using `[horth u (mem_sdiff.1 hu).1 w hw (fun e => (mem_sdiff.1 hu).2 (e ▸ hwR)), mul_zero]]`. Simplify using the standard rewrite rules. Establish `hwPR : w ∈ P \ R` using `mem_sdiff.2 ⟨hw, hwR⟩`.
+
+Rewrite using `[sum_eq_single w (fun u hu hne => by rw [horth u (mem_sdiff.1 hu).1 w hw hne.symm, mul_zero]) (fun h => absurd hwPR h)]`. Rewrite using `[div_mul_cancel₀ _ (hpos w hw).ne', sub_self]`. Establish `hle : aP P ≤ (ℝ ∙ H')ᗮ` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_right, real_inner_comm]`.
+
+Conclude with `hv w hw)`. Establish `h2` using `Submodule.mem_orthogonal_singleton_iff_inner_right.1 (hle hm)`. Conclude with `sub_eq_zero.1 (inner_self_eq_zero.1 h2)`. Establish `hsq : ‖H‖ ^ 2 = ∑ u ∈ P \ R, ⟪vec u, H⟫_ℝ / ⟪vec u, rt P u⟫_ℝ * ⟪rt P u, H⟫_ℝ`. Rewrite using `[← real_inner_self_eq_norm_sq]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hterm : ∀ u ∈ P \ R, ⟪vec u, H⟫_ℝ / ⟪vec u, rt P u⟫_ℝ * ⟪rt P u, H⟫_ℝ ≤ |⟪wt R u, Y⟫_ℝ| / ⟪vec u, rt P u⟫_ℝ * ‖rt P u‖ * ‖H‖`. Introduce `u hu`. Establish `hs` using `gamP_ne_zero_wt_mul_rt_nonpos hg hu`. Rewrite `hs` using `[inner_sub_right, hwt u]`.
+
+Establish `hn` using `hpos u (mem_sdiff.1 hu).1`. Establish `h1 : ⟪vec u, H⟫_ℝ * ⟪rt P u, H⟫_ℝ ≤ ⟪wt R u, Y⟫_ℝ * ⟪rt P u, H⟫_ℝ`. Rewrite `hs` using `[sub_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ⟪wt R u, Y⟫_ℝ * ⟪rt P u, H⟫_ℝ ≤ |⟪wt R u, Y⟫_ℝ| * (‖rt P u‖ * ‖H‖)`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hC : 0 ≤ ∑ u ∈ P \ R, |⟪wt R u, Y⟫_ℝ| / ⟪vec u, rt P u⟫_ℝ * ‖rt P u‖` using `sum_nonneg fun u hu => mul_nonneg (div_nonneg (abs_nonneg _) (hpos u (mem_sdiff.1 hu).1).le) (norm_nonneg _)`. Establish `hb : ‖H‖ * ‖H‖ ≤ (∑ u ∈ P \ R, |⟪wt R u, Y⟫_ℝ| / ⟪vec u, rt P u⟫_ℝ * ‖rt P u‖) * ‖H‖`. Rewrite using `[← sq, hsq, sum_mul]`.
+
+Conclude with `sum_le_sum hterm`. Break down `(norm_nonneg H).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`. Conclude with `hC`. Conclude with `le_of_mul_le_mul_right hb h0`.
+-/
 theorem gamP_bounded_support : ∀ (k : ℕ) (P R : Finset (SV k)) (Y : A0 k), IsPar P → R ⊆ P →
     ∃ C : ℝ, ∀ H ∈ aMQ (aP P) R, gamP P R Y H ≠ 0 → ‖H‖ ≤ C := by
   intro k P R Y hP hRP

@@ -12,6 +12,13 @@ namespace WordTransvectionCongruences
 
 variable {L : Type} [Field L] [NumberField L] {N : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hsub : (Finset.univ : Finset (Fin N)) ⊆ {i, j}`. Introduce `k _`. Distinguish the cases in `hk : k = i`.
+
+Simplify using `[hk]`. Simplify using `[hc k hk]`. Establish `h1` using `Finset.card_le_card hsub`. Establish `h2 : ({i, j} : Finset (Fin N)).card ≤ 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h1` using `[Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_third {N : ℕ} (hN : 3 ≤ N) (i j : Fin N) : ∃ k : Fin N, k ≠ i ∧ k ≠ j := by
   by_contra hc
   push_neg at hc
@@ -27,12 +34,20 @@ theorem exists_third {N : ℕ} (hN : 3 ≤ N) (i j : Fin N) : ∃ k : Fin N, k �
   rw [Finset.card_univ, Fintype.card_fin] at h1
   omega
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[mo, mt, SpecialLinearGroup.transvection_coe, Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem mo_tv {i j : Fin N} (h : i ≠ j) (t : 𝓞 L) :
     mo L N (SpecialLinearGroup.transvection h t) = transvection i j (t : L) := by
   ext a b
   simp [mo, mt, SpecialLinearGroup.transvection_coe, Matrix.transvection, Matrix.one_apply, Matrix.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `show ∃ γ, dg L N π 0 * (mt L N) (SpecialLinearGroup.transvection h (t : L)) = (mo L N) γ * dg L N π 0`. Use `⟨SpecialLinearGroup.transvection h t, ?_⟩` and prove the remaining obligations. Establish `hd : dg L N π 0 = 1`. Use extensionality with `a b`. Simplify using `[dg, Matrix.diagonal, Matrix.one_apply]`.
+
+Rewrite using `[hd, mo_tv]`. Simplify using `[mt, SpecialLinearGroup.transvection_coe, Matrix.transvection]`.
+-/
 theorem integral_transvection_mem_slIntegers_conjugate_zero (π : 𝓞 L) {i j : Fin N} (h : i ≠ j) (t : 𝓞 L) :
     SpecialLinearGroup.transvection h (t : L) ∈ Kg L N π 0 := by
   show ∃ γ, dg L N π 0 * (mt L N) (SpecialLinearGroup.transvection h (t : L)) = (mo L N) γ * dg L N π 0
@@ -43,6 +58,15 @@ theorem integral_transvection_mem_slIntegers_conjugate_zero (π : 𝓞 L) {i j :
   rw [hd, mo_tv]
   simp [mt, SpecialLinearGroup.transvection_coe, Matrix.transvection]
 
+/- English proof (translation)
+Use `show ∃ γ, dg L N π 1 * (mt L N) (SpecialLinearGroup.transvection h ((t : L) / π)) = (mo L N) γ * dg L N π 1`. Use `⟨SpecialLinearGroup.transvection h t, ?_⟩` and prove the remaining obligations. Rewrite using `[mo_tv]`. Establish `hj : ¬ ((j : ℕ) < 1)`. Introduce `hj`.
+
+Apply `h` to reduce the goal to its premises. Use `ext`. Use linear arithmetic over natural numbers and integers. Establish `hi' : (i : ℕ) < 1` using `by omega`. Use extensionality with `a b`.
+
+Simplify using `only [mt, dg, SpecialLinearGroup.coeMonoidHom_apply, SpecialLinearGroup.transvection_coe, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Distinguish the cases in `hab : i = a ∧ j = b`. Take `⟨rfl, rfl⟩` from `hab`. Simplify using `[h, hi', hj]`. Clear the denominators using the available nonvanishing facts.
+
+Apply the tactic sequence `simp only [hab, if_false, add_zero] split_ifs <;> simp_all`.
+-/
 theorem mem_parahoricTimesPrincipalCongruence_iff (π : 𝓞 L) (hπ : (π : L) ≠ 0) {i j : Fin N} (h : i ≠ j) (hi : (i : ℕ) = 0) (t : 𝓞 L) :
     SpecialLinearGroup.transvection h ((t : L) / π) ∈ Kg L N π 1 := by
   show ∃ γ, dg L N π 1 * (mt L N) (SpecialLinearGroup.transvection h ((t : L) / π)) = (mo L N) γ * dg L N π 1
@@ -65,6 +89,17 @@ theorem mem_parahoricTimesPrincipalCongruence_iff (π : 𝓞 L) (hπ : (π : L) 
   · simp only [hab, if_false, add_zero]
     split_ifs <;> simp_all
 
+/- English proof (translation)
+Establish `hn : ∀ (p q : Fin N) (x : L), Matrix.single p q (-x) = -Matrix.single p q x`. Introduce `p q x`. Use extensionality with `r s`. Simplify using `[Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `m1 : ∀ {p q : Fin N} (hpq : p ≠ q) (x : L), (1 + Matrix.single p q x) * (1 + Matrix.single p q (-x)) = (1 : Matrix (Fin N) (Fin N) L)`. Introduce `p q hpq x`. Establish `z : Matrix.single p q x * Matrix.single p q (-x) = (0 : Matrix (Fin N) (Fin N) L)` using `Matrix.single_mul_single_of_ne (h := hpq.symm) ..`. Rewrite using `[Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, z, Matrix.one_mul, Matrix.one_mul, Matrix.mul_one, hn]`. Normalize the expressions using the abelian group laws.
+
+Establish `hinv : ∀ {p q : Fin N} (hpq : p ≠ q) (x : L), (SpecialLinearGroup.transvection hpq x)⁻¹ = SpecialLinearGroup.transvection hpq (-x)`. Introduce `p q hpq x`. Rewrite using `[inv_eq_iff_mul_eq_one]`. Conclude with `Subtype.ext (m1 hpq x)`. Establish `m : (1 + Matrix.single i k a) * (1 + Matrix.single k j b) * (1 + Matrix.single i k (-a)) * (1 + Matrix.single k j (-b)) = (1 + Matrix.single i j (a * b) : Matrix (Fin N) (Fin N) L)`.
+
+Simplify using `[Matrix.add_mul, Matrix.mul_add, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, hik, hkj, hij, hik.symm, hkj.symm, hij.symm]`. Simplify using `only [hn]`. Normalize the expressions using the abelian group laws. Establish `hx` using `G.mul_mem (G.mul_mem (G.mul_mem ha hb) (G.inv_mem ha)) (G.inv_mem hb)`. Rewrite `hx` using `[hinv, hinv]`.
+
+Use `hx using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext m.symm`.
+-/
 theorem comm_mem {G : Subgroup (SpecialLinearGroup (Fin N) L)} {i j k : Fin N} (hik : i ≠ k) (hkj : k ≠ j)
     (hij : i ≠ j) {a b : L} (ha : SpecialLinearGroup.transvection hik a ∈ G)
     (hb : SpecialLinearGroup.transvection hkj b ∈ G) : SpecialLinearGroup.transvection hij (a * b) ∈ G := by
@@ -95,6 +130,23 @@ theorem comm_mem {G : Subgroup (SpecialLinearGroup (Fin N) L)} {i j k : Fin N} (
   convert hx using 1
   exact Subtype.ext m.symm
 
+/- English proof (translation)
+Take `⟨z, hz⟩ : ∃ z : Fin N, (z : ℕ) = 0` from `⟨⟨0, by omega⟩, rfl⟩`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i j h t`. Simplify using `using Subgroup.mem_sup_left (S := Kg L N π 0) (T := Kg L N π 1) (integral_transvection_mem_slIntegers_conjugate_zero π h t)`.
+
+Consider the case `succ m ih`. Establish `hK1 : ∀ {j : Fin N} (hzj : z ≠ j), SpecialLinearGroup.transvection hzj (((1 : 𝓞 L) : L) / π) ∈ Kg L N π 0 ⊔ Kg L N π 1` using `fun hzj => Subgroup.mem_sup_right (mem_parahoricTimesPrincipalCongruence_iff π hπ hzj hz 1)`. Establish `hK0 : ∀ {i j : Fin N} (hij : i ≠ j), SpecialLinearGroup.transvection hij (((1 : 𝓞 L) : L)) ∈ Kg L N π 0 ⊔ Kg L N π 1` using `fun hij => Subgroup.mem_sup_left (integral_transvection_mem_slIntegers_conjugate_zero π hij 1)`. Establish `c1 : ∀ {i j : Fin N} (h : i ≠ j) (t : 𝓞 L), i ≠ z → j ≠ z → SpecialLinearGroup.transvection h ((t : L) / (π : L) ^ (m + 1)) ∈ Kg L N π 0 ⊔ Kg L N π 1`. Introduce `i j h t hiz hjz`.
+
+Use `comm_mem hiz (Ne.symm hjz) h (ih hiz t) (hK1 (Ne.symm hjz))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `c0 : ∀ {j : Fin N} (h : z ≠ j) (t : 𝓞 L), SpecialLinearGroup.transvection h ((t : L) / (π : L) ^ (m + 1)) ∈ Kg L N π 0 ⊔ Kg L N π 1`. Introduce `j h t`. Take `⟨k, hkz, hkj⟩` from `exists_third hN z j`. Use `comm_mem (Ne.symm hkz) hkj h (hK1 (Ne.symm hkz)) (ih hkj t)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `c2 : ∀ {i : Fin N} (h : i ≠ z) (t : 𝓞 L), SpecialLinearGroup.transvection h ((t : L) / (π : L) ^ (m + 1)) ∈ Kg L N π 0 ⊔ Kg L N π 1`. Introduce `i h t`.
+
+Take `⟨k, hki, hkz⟩` from `exists_third hN i z`. Use `comm_mem (Ne.symm hki) hkz h (c1 (Ne.symm hki) t h hkz) (hK0 hkz)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i j h t`. Distinguish the cases in `hi : i = z`. Substitute `hi` using the available equality. Conclude with `c0 h t`. Distinguish the cases in `hj : j = z`.
+
+Substitute `hj` using the available equality. Conclude with `c2 h t`. Conclude with `c1 h t hi hj`.
+-/
 theorem mem_sup (π : 𝓞 L) (hπ : (π : L) ≠ 0) (hN : 3 ≤ N) (m : ℕ) :
     ∀ {i j : Fin N} (h : i ≠ j) (t : 𝓞 L),
       SpecialLinearGroup.transvection h ((t : L) / (π : L) ^ m) ∈ Kg L N π 0 ⊔ Kg L N π 1 := by
@@ -144,6 +196,9 @@ theorem mem_sup (π : 𝓞 L) (hπ : (π : L) ≠ 0) (hN : 3 ≤ N) (m : ℕ) :
         exact c2 h t
       · exact c1 h t hi hj
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Use extensionality with `a b`. Simplify using `[jS, SpecialLinearGroup.transvection_coe, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem jS_tv {i j : Fin N} (h : i ≠ j) (c : L) :
     jS L N (SpecialLinearGroup.transvection h c) = fun w => SpecialLinearGroup.transvection h (w.embedding c) := by
   funext w
@@ -151,6 +206,11 @@ theorem jS_tv {i j : Fin N} (h : i ≠ j) (c : L) :
   simp [jS, SpecialLinearGroup.transvection_coe, Matrix.one_apply, Matrix.single_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Apply `Continuous.subtype_mk` to reduce the goal to its premises. Apply `continuous_pi` to reduce the goal to its premises. Introduce `a`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `b`.
+
+Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem continuous_tv {ι : Type} [Fintype ι] [DecidableEq ι] {i j : ι} (h : i ≠ j) :
     Continuous fun c : ℂ => SpecialLinearGroup.transvection h c := by
   apply Continuous.subtype_mk
@@ -164,6 +224,21 @@ theorem continuous_tv {ι : Type} [Fintype ι] [DecidableEq ι] {i j : ι} (h : 
 end WordTransvectionCongruences
 
 open WordTransvectionCongruences in
+/- English proof (translation)
+Introduce `L _ _ hL π hp N hN`. Use `haveI : Nontrivial (Fin N) := Fin.nontrivial_iff_two_le.mpr (by omega)`. Establish `hπ : (π : L) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Use `set H := Subgroup.map (jS L N) (Kg L N π 0 ⊔ Kg L N π 1) with hH`. Establish `hv : ∀ {i j : Fin N} (h : i ≠ j) (v : InfinitePlace L → ℂ), (fun w => SpecialLinearGroup.transvection h (v w)) ∈ H.topologicalClosure`.
+
+Introduce `i j h v`. Establish `hc : Continuous fun u : InfinitePlace L → ℂ => (fun w => SpecialLinearGroup.transvection h (u w) : Sp L N)` using `continuous_pi fun w => (continuous_tv h).comp (continuous_apply w)`. Establish `hd` using `WordTransvectionCongruences.dense_pow π hp.not_unit hp.ne_zero`. Establish `hr` using `hc.range_subset_closure_image_dense hd ⟨v, rfl⟩`. Rewrite using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe]`.
+
+Use `closure_mono ?_ hr` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨t, k, rfl⟩, rfl⟩`. Use `⟨_, mem_sup π hπ hN k h t, ?_⟩` and prove the remaining obligations. Rewrite using `[jS_tv]`. Establish `htop : H.topologicalClosure = ⊤`.
+
+Rewrite using `[eq_top_iff, ← Subgroup.pi_top Set.univ, Subgroup.pi_le_iff]`. Introduce `w₀`. Rewrite using `[Subgroup.map_le_iff_le_comap]`. Establish `hs` using `WordTransvectionCongruences.sl_top (Subgroup.comap (MonoidHom.mulSingle (fun _ : InfinitePlace L => Matrix.SpecialLinearGroup (Fin N) ℂ) w₀) H.topologicalClosure) (by`. Introduce `i j h c`.
+
+Rewrite using `[Subgroup.mem_comap]`. Use `hv h (Pi.single w₀ c) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Rewrite using `[MonoidHom.mulSingle_apply]`. Distinguish the cases in `hw : w = w₀`.
+
+Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hw, Pi.single_eq_of_ne hw]`. Use extensionality with `a b`. Simplify using `[SpecialLinearGroup.transvection_coe, Matrix.transvection])`.
+
+Rewrite using `[hs]`. Rewrite using `[dense_iff_closure_eq, ← Subgroup.topologicalClosure_coe, htop, Subgroup.coe_top]`.
+-/
 theorem dens_holds : Dens := by
   classical
   intro L _ _ hL π hp N hN

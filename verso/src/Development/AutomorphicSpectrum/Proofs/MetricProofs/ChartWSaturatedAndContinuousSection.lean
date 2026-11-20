@@ -15,11 +15,25 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit.NoMonodromy
 
 variable {a g : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[mulVec, dotProduct]`.
+-/
 theorem map_mulVec_real (M : Matrix (Fin g) (Fin g) ℤ) (v : Fin g → ℤ) :
     M.map (fun x : ℤ => (x : ℝ)) *ᵥ (fun k => (v k : ℝ)) = fun k => ((M *ᵥ v) k : ℝ) := by
   funext k
   simp [mulVec, dotProduct]
 
+/- English proof (translation)
+Use `set r : Fin g → ℝ := fun k => (v k : ℝ) with hr`. Establish `hsum : (∑ j, B j).map (fun x : ℤ => (x : ℝ)) = ∑ j, (B j).map (fun x : ℤ => (x : ℝ))`. Use extensionality with `p q`. Simplify using `[Matrix.sum_apply]`. Establish `h1 : (∑ j, (B j).map (fun x : ℤ => (x : ℝ))) *ᵥ r = 0`.
+
+Rewrite using `[← hsum, hr, map_mulVec_real, hv]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Establish `h0 : r ⬝ᵥ ((∑ j, (B j).map (fun x : ℤ => (x : ℝ))) *ᵥ r) = 0`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules. Rewrite `h0` using `[Matrix.sum_mulVec, dotProduct_sum]`. Establish `hnn : ∀ i ∈ Finset.univ, 0 ≤ r ⬝ᵥ ((B i).map (fun x : ℤ => (x : ℝ)) *ᵥ r)`. Introduce `i _`. Simplify using `using (hB i).dotProduct_mulVec_nonneg r`.
+
+Establish `h2` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h0 j (Finset.mem_univ j)`. Establish `h3 : (B j).map (fun x : ℤ => (x : ℝ)) *ᵥ r = 0` using `((hB j).dotProduct_mulVec_zero_iff r).1 (by simpa using h2)`. Rewrite `h3` using `[hr, map_mulVec_real]`. Use function extensionality and compare the values at `k`. Use `congrFun h3 k` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem ker_each (B : Fin a → Matrix (Fin g) (Fin g) ℤ)
     (hB : ∀ j, ((B j).map (fun x : ℤ => (x : ℝ))).PosSemidef) (v : Fin g → ℤ)
     (hv : (∑ j, B j) *ᵥ v = 0) (j : Fin a) : B j *ᵥ v = 0 := by
@@ -45,6 +59,9 @@ theorem ker_each (B : Fin a → Matrix (Fin g) (Fin g) ℤ)
   have := congrFun h3 k
   simpa using this
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `[cst, Finset.sum_apply, Pi.single_apply]`.
+-/
 theorem vec_eq_sum (t : Fin g → ℂ) : t = ∑ i, t i • cst (Pi.single i 1 : Fin g → ℤ) := by
   funext k
   simp [cst, Finset.sum_apply, Pi.single_apply]
@@ -55,6 +72,41 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.BoundaryLimit
 
 open NoMonodromy
 
+/- English proof (translation)
+Introduce `n a g Λ _ L bas A T0 B c ρ h`. Establish `hmem : ∀ x, x ∈ chartW bas B ↔ (∑ j, B j) *ᵥ vCo bas x = 0` using `fun x => by`. Rewrite using `[chartW, LinearMap.mem_ker]`. Both sides reduce to the same expression. Establish `h0ball : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`.
+
+Establish `hA0 : ContinuousAt A 0` using `h.A_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)`. Establish `hT0 : ContinuousAt T0 0` using `h.T_cont.continuousAt (Metric.isOpen_ball.mem_nhds h0ball)`. Establish `hunit : IsUnit ((A 0)ᵀ).det` using `Ne.isUnit (by rw [det_transpose]; exact h.A_det)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x k hk hx`.
+
+Rewrite `hx`, the goal using `[hmem]`. Rewrite `hx` using `[map_zsmul, Matrix.mulVec_smul]`. Conclude with `(smul_eq_zero.1 hx).resolve_left hk`. Introduce `x hx`. Establish `hxv` using `(hmem x).1 hx`.
+
+Use `⟨?_, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hcts : Continuous (fun p : Matrix (Fin g) (Fin g) ℂ × Matrix (Fin g) (Fin g) ℂ => p.1ᵀ *ᵥ (cst (uCo bas x) + p.2 *ᵥ cst (vCo bas x)))` using `(continuous_fst.matrix_transpose).matrix_mulVec (continuous_const.add (continuous_snd.matrix_mulVec continuous_const))`. Conclude with `ContinuousAt.comp (f := fun z => (A z, T0 z)) hcts.continuousAt (hA0.prodMk hT0)`. Rewrite using `[h.per w hw x]`. Simplify using `only [chartS, tauAt]`.
+
+Establish `hz : (∑ j, (w (Fin.castLE L.a_le j) / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))) *ᵥ cst (vCo bas x) = 0`. Rewrite using `[Matrix.sum_mulVec]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, cst_mulVec, ker_each B h.B_psd _ hxv j, cst_zero, smul_zero]`. Rewrite using `[Matrix.add_mulVec, hz, add_zero]`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hxv` using `(hmem _).1 x.2`. Use `set u := uCo bas (x : Λ) with hu`. Use `set v := vCo bas (x : Λ) with hv`.
+
+Establish `hS : (A 0)ᵀ *ᵥ (cst u + T0 0 *ᵥ cst v) = 0` using `hx`. Establish `hy : cst u + T0 0 *ᵥ cst v = 0`. Use `congrArg (fun y => ((A 0)ᵀ)⁻¹ *ᵥ y) hS` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hunit]`. Use `set r : Fin g → ℝ := fun k => (v k : ℝ) with hr`.
+
+Establish `him : ((T0 0).map Complex.im) *ᵥ r = 0`. Use function extensionality and compare the values at `i`. Establish `h1` using `congrArg Complex.im (congrFun hy i)`. Simplify `h1` using `[cst, mulVec, dotProduct, hr]`. Establish `hlow` using `GlobalTheory.CompanionTheory.ChartBlockLower.im_lower_on_kernel n a g L.a_le (Metric.ball 0 ρ) T0 B c Metric.isOpen_ball (h.T_cont.mono (Metric.ball_subset_ball h.ρ_le)) h.B_psd h.c_pos h.im_lower 0 (Metric.mem_ball_self h.ρ_pos) 0 (fun j hj => absurd rfl hj) (fun _ _ => rfl) r ( …`.
+
+Rewrite using `[hr, map_mulVec_real, ker_each B h.B_psd _ hxv j]`. Use function extensionality and compare the values at `k`. Use the proof step `simp)`. Simplify using `only [Pi.zero_apply, zero_div, zero_smul, Finset.sum_const_zero, add_zero] at hlow`. Rewrite `hlow` using `[him, dotProduct_zero]`.
+
+Establish `hrr : r ⬝ᵥ r ≤ 0`. Assume the negation of the conclusion as `hcon`. Conclude with `absurd hlow (not_le.2 (mul_pos h.c_pos (not_le.1 hcon)))`. Establish `hr0 : r = 0`. Use `dotProduct_self_eq_zero.1 (le_antisymm hrr ?_)` and prove the remaining obligations.
+
+Conclude with `Finset.sum_nonneg fun i _ => mul_self_nonneg _`. Establish `hv0 : v = 0`. Use function extensionality and compare the values at `k`. Use `congrFun hr0 k` as an intermediate fact. Simplify `this` using `[hr]`.
+
+Establish `hu0 : u = 0`. Rewrite `hy` using `[hv0, cst_zero, mulVec_zero, add_zero]`. Use function extensionality and compare the values at `k`. Use `congrFun hy k` as an intermediate fact. Simplify `this` using `[cst]`.
+
+Use `Subtype.ext (eq_of_coords bas ?_ ?_)` and prove the remaining obligations. Rewrite using `[← hu, hu0]`. Simplify using the standard rewrite rules. Rewrite using `[← hv, hv0]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[eq_top_iff]`. Introduce `y _`. Use `set t : Fin g → ℂ := ((A 0)ᵀ)⁻¹ *ᵥ y with ht`. Establish `hyt : y = (A 0)ᵀ *ᵥ t`. Rewrite using `[ht, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hunit, Matrix.one_mulVec]`.
+
+Establish `hper : ∀ i, (A 0)ᵀ *ᵥ cst (Pi.single i 1 : Fin g → ℤ) ∈ Submodule.span ℂ (Set.range (chartPer bas A T0 B))`. Introduce `i`. Use `Submodule.subset_span ⟨⟨mk bas (Pi.single i 1) 0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hmem, vCo_mk]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `chartS bas A T0 (mk bas (Pi.single i 1) 0) 0 = _`. Simplify using `only [chartS, uCo_mk, vCo_mk, cst_zero, mulVec_zero, add_zero]`. Rewrite using `[hyt, vec_eq_sum t, Matrix.mulVec_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hper i)`.
+-/
 theorem noMonodromy_lattice : ∀ (n a g : ℕ) (Λ : Type) [AddCommGroup Λ] (L : Flat.LogPeriods n a g Λ) (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (A T0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (c ρ : ℝ), IsChart L bas A T0 B c ρ → (∀ (x : Λ) (k : ℤ), k ≠ 0 → k • x ∈ chartW bas B → x ∈ chartW bas B) ∧ (∀ x ∈ chartW bas B, ContinuousAt (chartS bas A T0 x) 0 ∧ ∀ w ∈ logCover L.a_le, chartS bas A T0 x (expCover a w) = L.P w x) ∧ Function.Injective (chartPer bas A T0 B) ∧ Submodule.span ℂ (Set.range (chartPer bas A T0 B)) = ⊤ := by
   intro n a g Λ _ L bas A T0 B c ρ h
   have hmem : ∀ x, x ∈ chartW bas B ↔ (∑ j, B j) *ᵥ vCo bas x = 0 := fun x => by

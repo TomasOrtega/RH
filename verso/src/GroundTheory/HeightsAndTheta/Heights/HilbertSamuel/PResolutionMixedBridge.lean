@@ -11,6 +11,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ d M m₁ hM hm₁`. Establish `hex : ∃ Ψ : (((k : Unit) → GlobalTheory κ k) → ℂ) →ₗ[ℂ] (Fin (D + 1) → ℂ), IsGoodProj (coordIdeal ℤ d.x) Ψ` using `goodProjExists Unit (GlobalTheory κ) (coordIdeal ℤ d.x) D d.arith`. Use `set B : HermLine (GlobalTheory κ) := (HermLine.ofCone m₁).tensor (HermLine.ofCone d.m).inv with hBdef`. Establish `hB0 : B.a = 0`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[B, HermLine.tensor, HermLine.inv, HermLine.ofCone]`. Establish `hgl : logRatio d.m m₁ = logNorm B.inv 1`. Use function extensionality and compare the values at `z`. Rewrite using `[logNorm_inv_one]`. Simplify using `only [B, HermLine.tensor, HermLine.inv, HermLine.ofCone, logRatio, div_eq_mul_inv]`.
+
+Establish `hBs : IsSmoothHerm B.inv` using `isSmoothHerm_inv (isSmoothHerm_tensor (gbamix_smoothHerm_ofCone hm₁) (isSmoothHerm_inv (gbamix_smoothHerm_ofCone d.smooth)))`. Establish `hsec : IsSectionOn (coordIdeal ℤ d.x) B.inv 1` using `isSectionOn_inv_one d.arith.2.1.1 hB0`. Establish `key` using `AnResBridge.bridge d.R hex.choose (fun j => HermLine.ofCone (M j)) B.inv 1 d.arith hex.choose_spec (fun j => gbamix_smoothHerm_ofCone (hM j)) hBs hsec`. Unfold `ptsIntegral`. Rewrite using `[dif_pos hex, hgl]`.
+
+Conclude with `key`.
+-/
 theorem ResolutionMixedBridge.proof : ResolutionMixedBridge.Statement := by
   intro D Ω _ _ κ _ d M m₁ hM hm₁
   have hex : ∃ Ψ : (((k : Unit) → GlobalTheory κ k) → ℂ) →ₗ[ℂ] (Fin (D + 1) → ℂ),

@@ -10,6 +10,9 @@ namespace PositivityTheory.RgUd.CellA
 
 abbrev dd (r m : ℕ) : Fin 2 → ℕ := ![r, m]
 
+/- English proof (translation)
+Simplify using `[Fin.sum_univ_two]`.
+-/
 theorem hdd (r m : ℕ) : ∑ a, dd r m a = r + m := by
   simp [Fin.sum_univ_two]
 

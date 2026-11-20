@@ -28,10 +28,32 @@ variable {F : Type} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K →
 def ratios (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) : (Σ k, ι k) → Ω := fun p => y p / y ⟨p.1, c p.1⟩
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨p, rfl⟩`.
+-/
 theorem ratios_mem (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) :
     ratios y c p ∈ chartRingOver F y c :=
   Algebra.subset_adjoin ⟨p, rfl⟩
 
+/- English proof (translation)
+Introduce `f hf`. Take `⟨b, h, hh, hall⟩` from `FieldNumbers.MChartHomog.proof.{0} F K ι c f`. Use `set Q : Ideal (NumbersDVR.MRing ι F) := RingHom.ker (aeval y : MvPolynomial (Σ k, ι k) F →ₐ[F] Ω) with hQ`. Establish `: Q.IsPrime` using `RingHom.ker_isPrime _`. Establish `hcQ : ∀ k, (X ⟨k, c k⟩ : NumbersDVR.MRing ι F) ∉ Q` using `fun k hk => hc k (by`.
+
+Simplify `hk)` using `[hQ, RingHom.mem_ker]`. Establish `hg : Function.Injective (Ideal.kerLiftAlg (aeval y : MvPolynomial (Σ k, ι k) F →ₐ[F] Ω))` using `Ideal.kerLiftAlg_injective _`. Use `set Φ : FractionRing (NumbersDVR.MRing ι F ⧸ Q) →+* Ω := IsFractionRing.lift hg with hΦ`. Establish `hΦm : ∀ g, Φ (algebraMap _ _ (Ideal.Quotient.mk Q g)) = aeval y g` using `fun g => by`. Rewrite using `[hΦ, IsFractionRing.lift_algebraMap]`.
+
+Conclude with `Ideal.kerLiftAlg_mk _ g`. Establish `hcomp : Φ.comp (chartMap Q c : NumbersDVR.MRing ι F →+* _) = (aeval (ratios y c) : MvPolynomial (Σ k, ι k) F →ₐ[F] Ω).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Establish `e1 : algebraMap F (FractionRing (NumbersDVR.MRing ι F ⧸ Q)) r = algebraMap (NumbersDVR.MRing ι F ⧸ Q) _ (Ideal.Quotient.mk Q (C r))`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply F (NumbersDVR.MRing ι F ⧸ Q)]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, AlgHom.coe_toRingHom, chartMap, aeval_C]`. Rewrite using `[e1, hΦm, aeval_C]`. Conclude with `(aeval_C (ratios y c) r).symm`.
+
+Introduce `v`. Simplify using `only [RingHom.comp_apply, AlgHom.coe_toRingHom, chartMap, aeval_X, map_div₀, hΦm]`. Conclude with `(aeval_X (ratios y c) v).symm`. Establish `key : Φ (chartMap Q c f) = aeval (ratios y c) f` using `RingHom.congr_fun hcomp f`. Establish `h0 : chartMap Q c f = 0`.
+
+Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero, key]`. Conclude with `hf`. Rewrite `h0` using `[hall Q hcQ, div_eq_zero_iff]`. Establish `hhQ : h ∈ Q`.
+
+Break down `h0 with h0 | h0` into its components or cases. Rewrite `h0` using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis. Conclude with `absurd h0 (FieldNumbers.MChartLocDim.algebraMap_mk_ne_zero Q (FieldNumbers.MChartLocDim.chartMonomial_not_mem Q c hcQ b))`. Establish `hhy : h ∈ mIdealOver F y` using `by classical`. Rewrite using `[mem_mIdealOver_iff]`.
+
+Introduce `b'`. Establish `hmem : h ∈ weightedHomogeneousSubmodule F (NumbersDVR.blockWeight ι) b`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `hh`. Rewrite using `[weightedHomogeneousComponent_of_mem hmem]`.
+
+Use `split_ifs`. Simplify `hhQ` using `[hQ, RingHom.mem_ker]`. Conclude with `map_zero _`. Rewrite using `[chartIdeal, RingHom.mem_ker, hall W hcW, (Ideal.Quotient.eq_zero_iff_mem).2 (hW hhy), map_zero, zero_div]`.
+-/
 theorem ker_aeval_ratios_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (W : Ideal (NumbersDVR.MRing ι F)) [W.IsPrime] (hW : mIdealOver F y ≤ W)
     (hcW : ∀ k, (X ⟨k, c k⟩ : NumbersDVR.MRing ι F) ∉ W) :
@@ -86,6 +108,13 @@ theorem ker_aeval_ratios_le (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : �
     · exact map_zero _
   rw [chartIdeal, RingHom.mem_ker, hall W hcW, (Ideal.Quotient.eq_zero_iff_mem).2 (hW hhy), map_zero, zero_div]
 
+/- English proof (translation)
+Use `set φ := (aeval (ratios y c) : MvPolynomial (Σ k, ι k) F →ₐ[F] Ω) with hφ`. Establish `hA : chartRingOver F y c = φ.range` using `Algebra.adjoin_range_eq_range_aeval F (ratios y c)`. Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker φ) (chartMap W c) (fun a ha => ker_aeval_ratios_le y c hc W hW hcW ha)).comp ((Ideal.quotientKerEquivRange φ).symm.toAlgHom.comp (Subalgebra.equivOfEq _ _ hA).toAlgHom), fun p => ?_⟩` and prove the remaining obligations. Establish `h1 : (Ideal.quotientKerEquivRange φ).symm ((Subalgebra.equivOfEq _ _ hA) ⟨ratios y c p, ratios_mem y c p⟩) = Ideal.Quotient.mk _ (X p)`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[Ideal.quotientKerEquivRange, hφ, ratios]`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.liftₐ (RingHom.ker φ) (chartMap W c) (fun a ha => ker_aeval_ratios_le y c hc W hW hcW ha)) ((Ideal.quotientKerEquivRange φ).symm ((Subalgebra.equivOfEq _ _ hA) ⟨ratios y c p, ratios_mem y c p⟩)) = _`. Rewrite using `[h1]`. Use `show chartMap W c (X p) = _`.
+
+Simplify using `[chartMap, genPtOf]`.
+-/
 theorem exists_specialise (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
     (W : Ideal (NumbersDVR.MRing ι F)) [W.IsPrime] (hW : mIdealOver F y ≤ W)
     (hcW : ∀ k, (X ⟨k, c k⟩ : NumbersDVR.MRing ι F) ∉ W) :
@@ -116,10 +145,48 @@ variable {F : Type} [Field F] {K : Type} {ι : K → Type} {Ω : Type} [Field Ω
   {L : Type} [Field L] [Algebra F L]
 
 omit [Field L] in
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨p, rfl⟩`.
+-/
 theorem ratios_mem' (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (p : Σ k, ι k) :
     y p / y ⟨p.1, c p.1⟩ ∈ chartRingOver F y c :=
   Algebra.subset_adjoin ⟨p, rfl⟩
 
+/- English proof (translation)
+Use `set P : Ideal (chartRingOver F y c) := RingHom.ker (σ : (chartRingOver F y c) →+* L) with hP`. Establish `hPp : P.IsPrime` using `RingHom.ker_isPrime _`. Establish `hmod' : IndefiniteRowSideFullHecke.Kleiman2.modelPts F y = IndefiniteRowSideFullHecke.Kleiman2.modelPts F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))` using `hmod`. Establish `hO : locIn (chartRingOver F y c) P ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))`. Rewrite using `[← hmod']`.
+
+Conclude with `⟨c, hc, P, hPp, rfl⟩`. Take `⟨c', hc', P', hP', hOeq⟩` from `hO`. Use `hP'` as an intermediate fact. Establish `hBO : ∀ b ∈ (chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c'), b ∈ locIn (chartRingOver F y c) P` using `fun b hb => by rw [hOeq]; exact le_locIn (chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c') P' hb`. Establish `hAO : ∀ a ∈ (chartRingOver F y c), a ∈ locIn (chartRingOver F y c) P` using `fun a ha => le_locIn (chartRingOver F y c) P ha`.
+
+Establish `hg : Function.Injective (RingHom.kerLift (σ : (chartRingOver F y c) →+* L))` using `RingHom.kerLift_injective _`. Use `set τ : locIn (chartRingOver F y c) P →+* L := (IsFractionRing.lift hg).comp (resMap y c P) with hτ`. Establish `hτa : ∀ (a : (chartRingOver F y c)) (h : (a : Ω) ∈ locIn (chartRingOver F y c) P), τ ⟨a, h⟩ = σ a` using `fun a h => by`. Rewrite using `[hτ, RingHom.comp_apply, resMap_of_mem, resq, IsFractionRing.lift_algebraMap, RingHom.kerLift_mk]`. Both sides reduce to the same expression.
+
+Establish `hτr : ∀ q (h : y q / y ⟨q.1, c q.1⟩ ∈ locIn (chartRingOver F y c) P), τ ⟨y q / y ⟨q.1, c q.1⟩, h⟩ = z q / z ⟨q.1, c q.1⟩` using `fun q h => (hτa ⟨_, ratios_mem' y c q⟩ h).trans (hσ q)`. Establish `hy0 : y ⟨k₀, c' ()⟩ ≠ 0` using `hc' ()`. Establish `hB : ∀ b ∈ (chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c'), ∃ h : b ∈ locIn (chartRingOver F y c) P, IsAlgebraic S0 (τ ⟨b, h⟩)`. Introduce `b hb`. Proceed by induction on `hb using Algebra.adjoin_induction with`.
+
+Consider the case `mem w hw`. Take `⟨⟨⟨⟩, j⟩, rfl⟩` from `hw`. Establish `hw1` using `hBO _ (Algebra.subset_adjoin ⟨⟨(), j⟩, rfl⟩)`. Use `⟨hw1, ?_⟩` and prove the remaining obligations. Establish `hrj` using `hAO _ (ratios_mem' (F := F) y c ⟨k₀, j⟩)`.
+
+Establish `hrc` using `hAO _ (ratios_mem' (F := F) y c ⟨k₀, c' ()⟩)`. Establish `hinv` using `hBO _ (Algebra.subset_adjoin (R := F) (s := Set.range fun q : (Σ _ : Unit, ι k₀) => IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) q / IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀ …`. Establish `hunit : IsUnit (⟨_, hrc⟩ : locIn (chartRingOver F y c) P)`. Use `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext ?_)` and prove the remaining obligations. Simplify using `only [Subring.coe_mul, Subring.coe_one, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+
+Clear denominators, using `[hc k₀, hy0]` for the nonvanishing conditions. Establish `hne : τ ⟨_, hrc⟩ ≠ 0` using `(hunit.map τ).ne_zero`. Establish `hmul : τ ⟨_, hrc⟩ * τ ⟨_, hw1⟩ = τ ⟨_, hrj⟩`. Rewrite using `[← map_mul]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subring.coe_mul, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Clear denominators, using `[hc k₀, hy0]` for the nonvanishing conditions. Establish `hc1 : IsAlgebraic S0 (τ ⟨_, hrc⟩)`. Rewrite using `[hτr ⟨k₀, c' ()⟩ hrc]`.
+
+Conclude with `isAlgebraic_algebraMap (⟨_, hS0 (c' ())⟩ : S0)`. Establish `hj1 : IsAlgebraic S0 (τ ⟨_, hrc⟩ * τ ⟨_, hw1⟩)`. Rewrite using `[hmul, hτr ⟨k₀, j⟩ hrj]`. Conclude with `isAlgebraic_algebraMap (⟨_, hS0 j⟩ : S0)`. Conclude with `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero hne) hc1 hj1`.
+
+Consider the case `algebraMap r`. Establish `h1` using `hBO _ ((chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c').algebraMap_mem r)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `e1 : τ ⟨algebraMap F Ω r, h1⟩ = algebraMap F L r` using `(hτa (algebraMap F (chartRingOver F y c) r) h1).trans (σ.commutes r)`. Rewrite using `[e1]`.
+
+Conclude with `isAlgebraic_algebraMap (⟨_, S0.algebraMap_mem r⟩ : S0)`. Consider the case `add a b _ _ ha hb`. Take `⟨h1, h1'⟩` from `ha`. Take `⟨h2, h2'⟩` from `hb`. Use `⟨add_mem h1 h2, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : τ ⟨a + b, add_mem h1 h2⟩ = τ ⟨a, h1⟩ + τ ⟨b, h2⟩` using `by rw [← map_add]; rfl`. Rewrite using `[e1]`. Conclude with `h1'.add h2'`. Consider the case `mul a b _ _ ha hb`. Take `⟨h1, h1'⟩` from `ha`.
+
+Take `⟨h2, h2'⟩` from `hb`. Use `⟨mul_mem h1 h2, ?_⟩` and prove the remaining obligations. Establish `e1 : τ ⟨a * b, mul_mem h1 h2⟩ = τ ⟨a, h1⟩ * τ ⟨b, h2⟩` using `by rw [← map_mul]; rfl`. Rewrite using `[e1]`. Conclude with `h1'.mul h2'`.
+
+Establish `hp` using `hAO _ (ratios_mem' (F := F) y c p)`. Establish `hw : y p / y ⟨p.1, c p.1⟩ ∈ locIn (chartRingOver F (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) c') P'` using `by rw [← hOeq]; exact hp`. Take `⟨a, b, hb, hab⟩` from `(mem_locIn_chart_iff _ c' P').1 hw`. Establish `hb0 : (b : Ω) ≠ 0` using `coe_ne_zero_of_notMem _ c' P' hb`. Take `⟨ha1, ha2⟩` from `hB a a.2`.
+
+Take `⟨hb1, hb2⟩` from `hB b b.2`. Establish `hinv : (1 : Ω) / b ∈ locIn (chartRingOver F y c) P`. Rewrite using `[hOeq]`. Conclude with `(mem_locIn_chart_iff _ c' P').2 ⟨1, b, hb, by simp⟩`. Establish `hunit : IsUnit (⟨b, hb1⟩ : locIn (chartRingOver F y c) P)` using `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (by simp [hb0]))`.
+
+Establish `hne : τ ⟨b, hb1⟩ ≠ 0` using `(hunit.map τ).ne_zero`. Establish `hmul : τ ⟨b, hb1⟩ * τ ⟨_, hp⟩ = τ ⟨a, ha1⟩`. Rewrite using `[← map_mul]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [Subring.coe_mul]`. Rewrite using `[hab]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hτr p hp]`. Conclude with `IsAlgebraic.of_mul (mem_nonZeroDivisors_of_ne_zero hne) hb2 (hmul ▸ ha2)`.
+-/
 theorem isAlgebraic_ratio (y : (Σ k, ι k) → Ω) (k₀ : K)
     (hmod : IndefiniteRowSideFullHecke.Kleiman2.SameModel F y (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)))
     (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) (z : (Σ k, ι k) → L)
@@ -224,6 +291,9 @@ theorem isAlgebraic_ratio (y : (Σ k, ι k) → Ω) (k₀ : K)
 
 end Key
 
+/- English proof (translation)
+Unfold `relDim`. Rewrite using `[h]`. Establish `e₁ : WithBot.map (fun d : ℕ∞ => WithTop.map (fun e : ℕ => (e : ℤ) - Fintype.card K) d) ((((t + Fintype.card K : ℕ) : ℕ∞)) : WithBot ℕ∞) = (((((t + Fintype.card K : ℕ) : ℤ) - Fintype.card K : ℤ) : WithTop ℤ) : WithBot (WithTop ℤ))` using `rfl`. Rewrite using `[e₁, Nat.cast_add, add_sub_cancel_right]`. Both sides reduce to the same expression.
+-/
 theorem relDim_of_dim {K : Type} [Fintype K] {ι : K → Type} {F : Type} [Field F]
     (I : Ideal (NumbersDVR.MRing ι F)) (t : ℕ)
     (h : ringKrullDim (NumbersDVR.MRing ι F ⧸ I) = (((t + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞)) :
@@ -236,6 +306,31 @@ theorem relDim_of_dim {K : Type} [Fintype K] {ι : K → Type} {F : Type} [Field
   rw [e₁, Nat.cast_add, add_sub_cancel_right]
   rfl
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e hmod W hW hle`. Use `hW.isPrime` as an intermediate fact. Use `set z := genPtOf (k := F) W with hz`. Establish `hzW : mIdealOver F z = W` using `mIdealOver_genPtOf W hW.multiHomog`. Establish `hz0 : ∀ p, z p = 0 ↔ (X p : NumbersDVR.MRing ι F) ∈ W` using `fun p => by`.
+
+Rewrite using `[← X_mem_mIdealOver_iff (k := F) z p, hzW]`. Use `choose u hu using hW.relevant`. Establish `hzu : ∀ k, z ⟨k, u k⟩ ≠ 0` using `fun k h => hu k ((hz0 _).1 h)`. Establish `hyu : ∀ k, y ⟨k, u k⟩ ≠ 0` using `fun k h => hu k (hle ((X_mem_mIdealOver_iff (k := F) y _).2 h))`. Take `⟨σ, hσ⟩` from `exists_specialise y u hyu W hle hu`.
+
+Use `set x' : (Σ _ : Unit, Fin (N + 1)) → FractionRing (NumbersDVR.MRing ι F ⧸ W) := IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec z k₀ ∘ e.symm) with hx'`. Use `set c0 : Unit → Fin (N + 1) := fun _ => e (u k₀) with hc0`. Establish `hx'0 : ∀ k, x' ⟨k, c0 k⟩ ≠ 0` using `fun _ => by`. Simplify `hzu k₀` using `[hx', hc0, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `hx'W : mIdealOver F x' = baseComap F k₀ e W`.
+
+Apply `le_antisymm (mIdealOver_le_baseComap F z k₀ e rfl hzW.le)` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[baseComap, Ideal.mem_comap, ← hzW]`. Establish `hcomp : (mConeMapOver F z).comp (rename fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) = ((rename (R` using `FractionRing (NumbersDVR.MRing ι F ⧸ W)) fun _ : Unit => k₀).restrictScalars F).comp (mConeMapOver F x') := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `p`. Simplify using `[mConeMapOver, hx', IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `h1` using `AlgHom.congr_fun hcomp f`. Rewrite `h1` using `[AlgHom.comp_apply, AlgHom.comp_apply]`. Establish `hf' : mConeMapOver F z (rename (fun p : (Σ _ : Unit, Fin (N + 1)) => (⟨k₀, e.symm p.2⟩ : Σ k, ι k)) f) = 0` using `hf`.
+
+Rewrite `h1` using `[hf']`. Establish `hinj : Function.Injective (rename (R` using `FractionRing (NumbersDVR.MRing ι F ⧸ W)) fun _ : Unit => k₀) := rename_injective _ (fun a b _ => Subsingleton.elim a b)`. Express the relevant statement in the definitionally equal form `mConeMapOver F x' f = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Conclude with `h1.symm`. Use `set S0 := chartRingOver F x' c0 with hS0def`. Establish `hS0 : ∀ j : ι k₀, z ⟨k₀, j⟩ / z ⟨k₀, u k₀⟩ ∈ S0` using `fun j => by`. Use `ratios_mem' (F := F) x' c0 ⟨(), e j⟩` as an intermediate fact. Simplify `this` using `[hx', hc0, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+
+Establish `hle0 : S0 ≤ chartRingOver F z u` using `Algebra.adjoin_le (by`. Introduce and unpack `_ ⟨⟨⟨⟩, a⟩, rfl⟩`. Use `ratios_mem' (F := F) z u ⟨k₀, e.symm a⟩` as an intermediate fact. Simplify `this)` using `[hx', hc0, IndefiniteRowSideFullHecke.Kleiman2.oneBlock, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `halg : ∀ t ∈ chartRingOver F z u, IsAlgebraic S0 t` using `fun t ht => isAlgebraic_of_mem_adjoin S0 (by`.
+
+Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `isAlgebraic_ratio y k₀ hmod.2 u hyu z σ hσ S0 hS0 p) ht`. Establish `htr : Algebra.trdeg F S0 = Algebra.trdeg F (chartRingOver F z u)` using `trdeg_eq_of_le_of_isAlgebraic hle0 halg`. Establish `h1` using `trdeg_quotient_mIdealOver (F := F) z u hzu`. Establish `h2` using `trdeg_quotient_mIdealOver (F := F) x' c0 hx'0`.
+
+Rewrite `h1` using `[hzW]`. Rewrite `h2` using `[hx'W, htr]`. Establish `hfin` using `trdeg_lt_aleph0_of_finiteType (R := F) (S := MvPolynomial (Σ k, ι k) F ⧸ W)`. Rewrite `hfin` using `[h1]`. Take `⟨t, ht⟩` from `Cardinal.lt_aleph0.1 (lt_of_le_of_lt le_self_add hfin)`.
+
+Establish `: (baseComap F k₀ e W).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `dimW : ringKrullDim (NumbersDVR.MRing ι F ⧸ W) = (((t + Fintype.card K : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, h1, ht]`. Simplify using the standard rewrite rules. Establish `dim0 : ringKrullDim (NumbersDVR.MRing (fun _ : Unit => Fin (N + 1)) F ⧸ baseComap F k₀ e W) = (((t + Fintype.card Unit : ℕ) : ℕ∞) : WithBot ℕ∞)`.
+
+Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg F, h2, ht]`. Simplify using the standard rewrite rules. Rewrite using `[relDim_of_dim _ t dimW, relDim_of_dim _ t dim0]`.
+-/
 theorem proof : Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e hmod W hW hle
   have := hW.isPrime

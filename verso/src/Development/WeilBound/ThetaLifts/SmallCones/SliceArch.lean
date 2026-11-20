@@ -15,31 +15,55 @@ variable (V) in
 
 def P (m : ℕ) : Seminorm ℂ (SchwartzMap V ℂ) := (Finset.Iic (m, m)).sup (schwartzSeminormFamily ℂ V ℂ)
 
+/- English proof (translation)
+The claim follows from `Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ V ℂ).continuous_seminorm i`.
+-/
 theorem P_cont (m : ℕ) : Continuous (P V m) :=
   Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ V ℂ).continuous_seminorm i
 
 def sc {Z : Type} [AddCommGroup Z] [Module ℂ Z] (C : ℝ) (p : Seminorm ℂ Z) : Seminorm ℂ Z := C.toNNReal • p
 
+/- English proof (translation)
+Rewrite using `[sc, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ h]`.
+-/
 theorem sc_apply {Z : Type} [AddCommGroup Z] [Module ℂ Z] {C : ℝ} (h : 0 ≤ C) (p : Seminorm ℂ Z) (f : Z) : sc C p f = C * p f := by
   rw [sc, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul, Real.coe_toNNReal _ h]
 
+/- English proof (translation)
+The claim follows from `((continuous_const (y := (C.toNNReal : ℝ))).mul h).congr fun f => by rw [sc, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]; rfl`.
+-/
 theorem sc_cont {Z : Type} [AddCommGroup Z] [Module ℂ Z] [TopologicalSpace Z] (C : ℝ) {p : Seminorm ℂ Z} (h : Continuous p) :
     Continuous (sc C p) := ((continuous_const (y := (C.toNNReal : ℝ))).mul h).congr fun f => by
   rw [sc, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]; rfl
 
+/- English proof (translation)
+Introduce `j hj x` and use `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (m, m)) le_rfl hj f x`.
+-/
 theorem bd_P (m : ℕ) (f : SchwartzMap V ℂ) : Bd m f (2 ^ m * P V m f) := fun j hj x =>
   SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (m, m)) le_rfl hj f x
 
+/- English proof (translation)
+The claim follows from `le_trans (by positivity) (h 0 (Nat.zero_le _) 0)`.
+-/
 theorem Bd.nonneg {m : ℕ} {f : V → ℂ} {C : ℝ} (h : Bd m f C) : 0 ≤ C :=
   le_trans (by positivity) (h 0 (Nat.zero_le _) 0)
 
+/- English proof (translation)
+Introduce `j hj x` and use `(h j hj x).trans hC`.
+-/
 theorem Bd.mono {m : ℕ} {f : V → ℂ} {C C' : ℝ} (h : Bd m f C) (hC : C ≤ C') : Bd m f C' :=
   fun j hj x => (h j hj x).trans hC
 
+/- English proof (translation)
+Introduce `j hj x` and use `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ (by linarith [norm_nonneg x]) (Nat.le_succ m)) (norm_nonneg _)) (h j (hj.trans (Nat.le_succ m)) x)`.
+-/
 theorem Bd.succ {m : ℕ} {f : V → ℂ} {C : ℝ} (h : Bd (m + 1) f C) : Bd m f C := fun j hj x =>
   le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_right₀ (by linarith [norm_nonneg x]) (Nat.le_succ m)) (norm_nonneg _))
     (h j (hj.trans (Nat.le_succ m)) x)
 
+/- English proof (translation)
+Use `Seminorm.finset_sup_apply_le h.nonneg fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_Iic.1 hi`. Use `SchwartzMap.seminorm_le_bound ℂ i.1 i.2 f h.nonneg fun x => le_trans ?_ (h i.2 hi'.2 x)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Conclude with `(pow_le_pow_left₀ (norm_nonneg x) (by linarith) _).trans (pow_le_pow_right₀ (by linarith [norm_nonneg x]) hi'.1)`.
+-/
 theorem P_le {m : ℕ} {f : SchwartzMap V ℂ} {C : ℝ} (h : Bd m f C) : P V m f ≤ C := by
   refine Seminorm.finset_sup_apply_le h.nonneg fun i hi => ?_
   have hi' := Finset.mem_Iic.1 hi
@@ -48,6 +72,11 @@ theorem P_le {m : ℕ} {f : SchwartzMap V ℂ} {C : ℝ} (h : Bd m f C) : P V m 
   exact (pow_le_pow_left₀ (norm_nonneg x) (by linarith) _).trans
     (pow_le_pow_right₀ (by linarith [norm_nonneg x]) hi'.1)
 
+/- English proof (translation)
+Take `⟨s, C, -, h⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) q hq`. Use `⟨s.sup fun i => max i.1 i.2, C, C.2, fun f => (h f).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul]`. Use `mul_le_mul_of_nonneg_left (Seminorm.finset_sup_apply_le (apply_nonneg _ _) fun i hi => ?_) C.2` and prove the remaining obligations. Use `Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi` as an intermediate fact.
+
+Conclude with `Seminorm.le_finset_sup_apply (Finset.mem_Iic.2 ⟨(le_max_left _ _).trans this, (le_max_right _ _).trans this⟩)`.
+-/
 theorem exists_P (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : ∃ (m : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ f, q f ≤ C * P V m f := by
   obtain ⟨s, C, -, h⟩ := Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) q hq
   refine ⟨s.sup fun i => max i.1 i.2, C, C.2, fun f => (h f).trans ?_⟩
@@ -56,10 +85,16 @@ theorem exists_P (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : �
   have := Finset.le_sup (f := fun i : ℕ × ℕ => max i.1 i.2) hi
   exact Seminorm.le_finset_sup_apply (Finset.mem_Iic.2 ⟨(le_max_left _ _).trans this, (le_max_right _ _).trans this⟩)
 
+/- English proof (translation)
+Establish `h1 : ‖x‖ ≤ ‖y‖ + ‖y - x‖` using `by simpa using norm_sub_le y (y - x)`. Use polynomial arithmetic with `[norm_nonneg y, norm_nonneg (y - x)]`.
+-/
 theorem peetre (x y : V) {r : ℝ} (h : ‖y - x‖ ≤ r) : 1 + ‖x‖ ≤ (1 + r) * (1 + ‖y‖) := by
   have h1 : ‖x‖ ≤ ‖y‖ + ‖y - x‖ := by simpa using norm_sub_le y (y - x)
   nlinarith [norm_nonneg y, norm_nonneg (y - x)]
 
+/- English proof (translation)
+Introduce `j hj x`. Rewrite using `[iteratedFDeriv_comp_add_right]`. Use `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) (peetre x (x + t) (r := ‖t‖) (by simp)) m) (norm_nonneg _)) ?_` and prove the remaining obligations. Rewrite using `[mul_pow, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h j hj _) (by positivity)`.
+-/
 theorem Bd.shift {m : ℕ} {f : V → ℂ} {C : ℝ} (h : Bd m f C) (t : V) : Bd m (fun x => f (x + t)) ((1 + ‖t‖) ^ m * C) := by
   intro j hj x
   rw [iteratedFDeriv_comp_add_right]
@@ -68,6 +103,15 @@ theorem Bd.shift {m : ℕ} {f : V → ℂ} {C : ℝ} (h : Bd m f C) (t : V) : Bd
   rw [mul_pow, mul_assoc]
   exact mul_le_mul_of_nonneg_left (h j hj _) (by positivity)
 
+/- English proof (translation)
+Introduce `j hj x`. Establish `hj' : ContDiff ℝ j f` using `hf.of_le (by exact_mod_cast le_top)`. Establish `e : iteratedFDeriv ℝ j (fun x => f (x + t) - f x) x = iteratedFDeriv ℝ j f (x + t) - iteratedFDeriv ℝ j f x`. Rewrite using `[← iteratedFDeriv_comp_add_right]`. Conclude with `iteratedFDeriv_sub_apply (f := fun x => f (x + t)) (hj'.comp (contDiff_id.add contDiff_const)).contDiffAt hj'.contDiffAt`.
+
+Establish `hd : Differentiable ℝ (iteratedFDeriv ℝ j f)` using `hf.differentiable_iteratedFDeriv (by exact_mod_cast ENat.coe_lt_top j)`. Establish `hp : 0 < (1 + ‖x‖) ^ m` using `by positivity`. Use `(convex_closedBall x ‖t‖).norm_image_sub_le_of_norm_fderiv_le (f := iteratedFDeriv ℝ j f) (C := (1 + ‖t‖) ^ m * C / (1 + ‖x‖) ^ m) (fun y _ => hd y) (fun y hy => by` as an intermediate fact. Rewrite using `[norm_fderiv_iteratedFDeriv, le_div_iff₀ hp, mul_comm]`. Use `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) (peetre x y (r := ‖t‖) (by simpa [dist_eq_norm] using hy)) m) (norm_nonneg _)) ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_pow, mul_assoc]`. Use `mul_le_mul_of_nonneg_left (le_trans ?_ (h (j + 1) (by omega) y)) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ (by linarith [norm_nonneg y]) (Nat.le_succ m)) (norm_nonneg _))`. Use the proof step `(Metric.mem_closedBall_self (norm_nonneg t)) (y := x + t) (by simp)`. Rewrite using `[e, mul_comm, ← le_div_iff₀ hp]`.
+
+Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Bd.shift_sub {m : ℕ} {f : V → ℂ} (hf : ContDiff ℝ ∞ f) {C : ℝ} (h : Bd (m + 1) f C) (t : V) :
     Bd m (fun x => f (x + t) - f x) ((1 + ‖t‖) ^ m * C * ‖t‖) := by
   intro j hj x
@@ -90,6 +134,15 @@ theorem Bd.shift_sub {m : ℕ} {f : V → ℂ} (hf : ContDiff ℝ ∞ f) {C : �
   refine this.trans (le_of_eq ?_)
   rw [add_sub_cancel_left]; ring
 
+/- English proof (translation)
+Introduce `j hj x`. Establish `hA0 : 0 ≤ A`. Use `(norm_nonneg _).trans (hA 0 (Nat.zero_le _) 0)` as an intermediate fact. Simplify using `using this`. Establish `h1` using `norm_iteratedFDeriv_mul_le ha hf x (n := j) (by exact_mod_cast le_top)`.
+
+Use `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `(Finset.sum_le_sum (g := fun i => (j.choose i : ℝ) * (A * C)) fun i hi => ?_).trans ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.1 hi`. Establish `h2` using `h (j - i) (by omega) x`.
+
+Establish `h3` using `hA i (by omega) x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul, ← Nat.cast_sum, Nat.sum_range_choose]`. Use `mul_le_mul_of_nonneg_right ?_ (mul_nonneg hA0 h.nonneg)` and prove the remaining obligations. Use `push_cast`.
+
+Conclude with `pow_le_pow_right₀ one_le_two hj`.
+-/
 theorem Bd.mul {m r : ℕ} {a f : V → ℂ} (ha : ContDiff ℝ ∞ a) (hf : ContDiff ℝ ∞ f) {A C : ℝ}
     (hA : ∀ i ≤ m, ∀ x, ‖iteratedFDeriv ℝ i a x‖ ≤ A * (1 + ‖x‖) ^ r) (h : Bd (m + r) f C) :
     Bd m (fun x => a x * f x) (2 ^ m * (A * C)) := by
@@ -113,6 +166,9 @@ theorem Bd.mul {m r : ℕ} {a f : V → ℂ} (ha : ContDiff ℝ ∞ a) (hf : Con
     push_cast
     exact pow_le_pow_right₀ one_le_two hj
 
+/- English proof (translation)
+Introduce `j hj x`. Rewrite using `[show iteratedFDeriv ℝ j (fun x => f x + g x) x = _ from iteratedFDeriv_add_apply (hf.of_le (by exact_mod_cast le_top)).contDiffAt (hg.of_le (by exact_mod_cast le_top)).contDiffAt]`. Use `le_trans (mul_le_mul_of_nonneg_left (norm_add_le _ _) (by positivity)) ?_` and prove the remaining obligations. Rewrite using `[mul_add]`. Conclude with `add_le_add (h j hj x) (h' j hj x)`.
+-/
 theorem Bd.add {m : ℕ} {f g : V → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) {C D : ℝ} (h : Bd m f C) (h' : Bd m g D) :
     Bd m (fun x => f x + g x) (C + D) := by
   intro j hj x
@@ -124,11 +180,22 @@ theorem Bd.add {m : ℕ} {f g : V → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContD
 
 def ph (l : V →L[ℝ] ℝ) (c : ℝ) (x : V) : ℂ := cexp (I * ((l x + c : ℝ) : ℂ))
 
+/- English proof (translation)
+The claim follows from `(contDiff_const.mul (ofRealCLM.contDiff.comp (contDiff_id.add contDiff_const))).cexp`.
+-/
 theorem u_smooth (c : ℝ) : ContDiff ℝ ∞ fun s : ℝ => cexp (I * ((s + c : ℝ) : ℂ)) :=
   (contDiff_const.mul (ofRealCLM.contDiff.comp (contDiff_id.add contDiff_const))).cexp
 
+/- English proof (translation)
+The claim follows from `(u_smooth c).comp l.contDiff`.
+-/
 theorem ph_smooth (l : V →L[ℝ] ℝ) (c : ℝ) : ContDiff ℝ ∞ (ph l c) := (u_smooth c).comp l.contDiff
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `s`.
+
+Establish `h : HasDerivAt (fun s : ℝ => ((s + c : ℝ) : ℂ)) 1 s` using `((hasDerivAt_id s).add_const c).ofReal_comp`. Rewrite using `[(((h.const_mul I).cexp).const_mul (I ^ i)).deriv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem u_deriv (c : ℝ) (i : ℕ) :
     iteratedDeriv i (fun s : ℝ => cexp (I * ((s + c : ℝ) : ℂ))) = fun s : ℝ => I ^ i * cexp (I * ((s + c : ℝ) : ℂ)) := by
   induction i with
@@ -140,6 +207,9 @@ theorem u_deriv (c : ℝ) (i : ℕ) :
     rw [(((h.const_mul I).cexp).const_mul (I ^ i)).deriv]
     ring
 
+/- English proof (translation)
+Establish `e` using `l.iteratedFDeriv_comp_right (u_smooth c) x (i := i) (by exact_mod_cast le_top)`. Rewrite using `[show ph l c = (fun s : ℝ => cexp (I * ((s + c : ℝ) : ℂ))) ∘ l from rfl, e]`. Use `(ContinuousMultilinearMap.norm_compContinuousLinearMap_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_eq_norm_iteratedDeriv, u_deriv, norm_mul, norm_pow, norm_I, one_pow, mul_comm I, norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+-/
 theorem ph_bd (l : V →L[ℝ] ℝ) (c : ℝ) (i : ℕ) (x : V) : ‖iteratedFDeriv ℝ i (ph l c) x‖ ≤ ‖l‖ ^ i := by
   have e := l.iteratedFDeriv_comp_right (u_smooth c) x (i := i) (by exact_mod_cast le_top)
   rw [show ph l c = (fun s : ℝ => cexp (I * ((s + c : ℝ) : ℂ))) ∘ l from rfl, e]
@@ -147,9 +217,19 @@ theorem ph_bd (l : V →L[ℝ] ℝ) (c : ℝ) (i : ℕ) (x : V) : ‖iteratedFDe
   rw [norm_iteratedFDeriv_eq_norm_iteratedDeriv, u_deriv, norm_mul, norm_pow, norm_I, one_pow, mul_comm I, norm_exp_ofReal_mul_I]
   simp
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ph_smooth l c, fun n => ⟨0, ‖l‖ ^ n, fun x => by simpa using ph_bd l c n x⟩⟩`.
+-/
 theorem ph_temp (l : V →L[ℝ] ℝ) (c : ℝ) : (ph l c).HasTemperateGrowth :=
   ⟨ph_smooth l c, fun n => ⟨0, ‖l‖ ^ n, fun x => by simpa using ph_bd l c n x⟩⟩
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ δ` using `(norm_nonneg _).trans hl`. Break down `i with _ | i` into its components or cases. Rewrite using `[norm_iteratedFDeriv_zero, ph]`. Use `Real.norm_exp_I_mul_ofReal_sub_one_le.trans ((norm_add_le _ _).trans ?_)` and prove the remaining obligations. Use `l.le_opNorm x` as an intermediate fact.
+
+Rewrite using `[Real.norm_eq_abs c]`. Use polynomial arithmetic with `[norm_nonneg x]`. Rewrite using `[show iteratedFDeriv ℝ (i + 1) (fun x => ph l c x - 1) x = _ from iteratedFDeriv_sub_apply ((ph_smooth l c).of_le (by exact_mod_cast le_top)).contDiffAt contDiffAt_const, iteratedFDeriv_succ_const]`. Use `le_trans (by simpa using ph_bd l c (i + 1) x) ?_` and prove the remaining obligations. Establish `: ‖l‖ ^ (i + 1) ≤ δ` using `(pow_le_of_le_one (norm_nonneg _) (hl.trans h1) (Nat.succ_ne_zero i)).trans hl`.
+
+Use polynomial arithmetic with `[norm_nonneg x]`.
+-/
 theorem ph_sub_bd (l : V →L[ℝ] ℝ) (c : ℝ) {δ : ℝ} (h1 : δ ≤ 1) (hl : ‖l‖ ≤ δ) (hc : |c| ≤ δ) (i : ℕ) (x : V) :
     ‖iteratedFDeriv ℝ i (fun x => ph l c x - 1) x‖ ≤ δ * (1 + ‖x‖) ^ 1 := by
   have h0 : 0 ≤ δ := (norm_nonneg _).trans hl
@@ -168,13 +248,26 @@ theorem ph_sub_bd (l : V →L[ℝ] ℝ) (c : ℝ) {δ : ℝ} (h1 : δ ≤ 1) (hl
 def S (w : V × (V →L[ℝ] ℝ)) : SchwartzMap V ℂ →L[ℂ] SchwartzMap V ℂ :=
   (SchwartzMap.smulLeftCLM ℂ (ph w.2 (w.2 w.1 / 2))).comp (SchwartzMap.compSubConstCLM ℂ (-w.1))
 
+/- English proof (translation)
+Rewrite using `[S, ContinuousLinearMap.comp_apply, SchwartzMap.smulLeftCLM_apply_apply (ph_temp _ _), SchwartzMap.compSubConstCLM_apply, sub_neg_eq_add, smul_eq_mul]`.
+-/
 theorem S_apply (w : V × (V →L[ℝ] ℝ)) (f : SchwartzMap V ℂ) (x : V) : S w f x = ph w.2 (w.2 w.1 / 2) x * f (x + w.1) := by
   rw [S, ContinuousLinearMap.comp_apply, SchwartzMap.smulLeftCLM_apply_apply (ph_temp _ _), SchwartzMap.compSubConstCLM_apply,
     sub_neg_eq_add, smul_eq_mul]
 
+/- English proof (translation)
+The claim follows from `(f.smooth ⊤).comp (contDiff_id.add contDiff_const)`.
+-/
 theorem shift_smooth (f : SchwartzMap V ℂ) (t : V) : ContDiff ℝ ∞ fun x => f (x + t) :=
   (f.smooth ⊤).comp (contDiff_id.add contDiff_const)
 
+/- English proof (translation)
+Take `⟨m, C, hC, h⟩` from `exists_P q hq`. Use `⟨sc (C * 2 ^ m * 2 ^ m) (P V m), m + m, sc_cont _ (P_cont m), fun w f => (h _).trans ?_⟩` and prove the remaining obligations. Establish `h1` using `Bd.mul (r := 0) (A := (1 + ‖w‖) ^ m) (ph_smooth w.2 (w.2 w.1 / 2)) (shift_smooth f w.1) (fun i hi x => by`. Use `(ph_bd _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one]`.
+
+Conclude with `(pow_le_pow_left₀ (norm_nonneg _) ((norm_snd_le w).trans (by linarith)) _).trans (pow_le_pow_right₀ (by linarith [norm_nonneg w]) hi)) ((bd_P m f).shift w.1)`. Establish `h2` using `P_le (f := S w f) (by rw [show (S w f : V → ℂ) = _ from funext (S_apply w f)]; exact h1)`. Rewrite using `[sc_apply (by positivity)]`. Establish `h3` using `norm_fst_le w`. Establish `h4` using `apply_nonneg (P V m) f`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h2.trans ?_) hC` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by ring`.
+-/
 theorem grow (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : ∃ (p : Seminorm ℂ (SchwartzMap V ℂ)) (M : ℕ),
     Continuous p ∧ ∀ w f, q (S w f) ≤ (1 + ‖w‖) ^ M * p f := by
   obtain ⟨m, C, hC, h⟩ := exists_P q hq
@@ -193,6 +286,15 @@ theorem grow (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : ∃ (p
         gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Take `⟨m, C, hC, h⟩` from `exists_P q hq`. Use `⟨sc (C * (2 ^ m * 2 ^ (m + 1) * 2 ^ (m + 1) + 2 ^ m * 2 ^ (m + 1))) (P V (m + 1)), sc_cont _ (P_cont _), fun w f hw => (h _).trans ?_⟩` and prove the remaining obligations. Establish `h3` using `norm_fst_le w`. Establish `hc : |w.2 w.1 / 2| ≤ ‖w‖`. Use `w.2.le_opNorm w.1` as an intermediate fact.
+
+Rewrite using `[abs_div, abs_two, ← Real.norm_eq_abs]`. Use polynomial arithmetic with `[norm_snd_le w, norm_nonneg w.1, norm_nonneg w.2]`. Establish `h1` using `Bd.mul (m := m) ((ph_smooth w.2 (w.2 w.1 / 2)).sub contDiff_const) (shift_smooth f w.1) (fun i _ x => ph_sub_bd w.2 _ hw (norm_snd_le w) hc i x) ((bd_P (m + 1) f).shift w.1)`. Establish `h2` using `h1.add (((ph_smooth w.2 (w.2 w.1 / 2)).sub contDiff_const).mul (shift_smooth f w.1)) ((shift_smooth f w.1).sub (f.smooth ⊤)) ((bd_P (m + 1) f).shift_sub (f.smooth ⊤) w.1)`. Establish `h5` using `P_le (f := S w f - f) (by`.
+
+Rewrite using `[show ((S w f - f : SchwartzMap V ℂ) : V → ℂ) = _ from funext fun x => show _ = (ph w.2 (w.2 w.1 / 2) x - 1) * f (x + w.1) + (f (x + w.1) - f x) by rw [SchwartzMap.sub_apply, S_apply]; ring]`. Conclude with `h2)`. Rewrite using `[sc_apply (by positivity)]`. Establish `h4` using `apply_nonneg (P V (m + 1)) f`. Establish `h6 : 1 + ‖w.1‖ ≤ 2` using `by linarith`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (h5.trans ?_) hC` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by ring`.
+-/
 theorem lip (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : ∃ p : Seminorm ℂ (SchwartzMap V ℂ),
     Continuous p ∧ ∀ w f, ‖w‖ ≤ 1 → q (S w f - f) ≤ ‖w‖ * p f := by
   obtain ⟨m, C, hC, h⟩ := exists_P q hq
@@ -219,10 +321,18 @@ theorem lip (q : Seminorm ℂ (SchwartzMap V ℂ)) (hq : Continuous q) : ∃ p :
         gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[S_apply, ph]`.
+-/
 theorem S_zero (f : SchwartzMap V ℂ) : S 0 f = f := by
   ext x
   simp [S_apply, ph]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[SchwartzMap.smul_apply, S_apply, S_apply, S_apply, ph, ph, ph, smul_eq_mul, ← mul_assoc, ← mul_assoc, ← Complex.exp_add, ← Complex.exp_add, Prod.fst_add, add_assoc x]`. Use `congr 2`. Simplify using `only [Prod.snd_add, ContinuousLinearMap.add_apply, map_add]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem S_add (w h : V × (V →L[ℝ] ℝ)) (f : SchwartzMap V ℂ) :
     S (w + h) f = cexp (I * ((w.2 h.1 - h.2 w.1) / 2 : ℝ)) • S w (S h f) := by
   ext x
@@ -233,11 +343,19 @@ theorem S_add (w h : V × (V →L[ℝ] ℝ)) (f : SchwartzMap V ℂ) :
   push_cast
   ring
 
+/- English proof (translation)
+Use `S_add w (-w) f` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, S_zero]`. Simplify using `using this.symm`.
+-/
 theorem S_neg (w : V × (V →L[ℝ] ℝ)) (f : SchwartzMap V ℂ) : S w (S (-w) f) = f := by
   have := S_add w (-w) f
   rw [add_neg_cancel, S_zero] at this
   simpa using this.symm
 
+/- English proof (translation)
+Rewrite using `[(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]`. Introduce `i ε hε`. Take `⟨p, -, hp⟩` from `lip _ ((schwartz_withSeminorms ℂ V ℂ).continuous_seminorm i)`. Establish `h1 : Tendsto (fun w : V × (V →L[ℝ] ℝ) => ‖w‖ * p f) (𝓝 0) (𝓝 0)`. Simplify using `using (tendsto_norm_zero (E := V × (V →L[ℝ] ℝ))).mul_const (p f)`.
+
+Use `filter_upwards [h1.eventually (gt_mem_nhds hε), Metric.closedBall_mem_nhds 0 one_pos] with w h2 h3`. Conclude with `(hp w f (by simpa using h3)).trans_lt h2`.
+-/
 theorem tendsto_S (f : SchwartzMap V ℂ) : Tendsto (fun w => S w f) (𝓝 0) (𝓝 f) := by
   rw [(schwartz_withSeminorms ℂ V ℂ).tendsto_nhds]
   intro i ε hε
@@ -247,6 +365,11 @@ theorem tendsto_S (f : SchwartzMap V ℂ) : Tendsto (fun w => S w f) (𝓝 0) (�
   filter_upwards [h1.eventually (gt_mem_nhds hε), Metric.closedBall_mem_nhds 0 one_pos] with w h2 h3
   exact (hp w f (by simpa using h3)).trans_lt h2
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun w => ?_` and prove the remaining obligations. Establish `h1 : Tendsto (fun u => u - w) (𝓝 w) (𝓝 0)` using `by simpa using (continuous_sub_right w).tendsto w`. Establish `h2 : Continuous fun h : V × (V →L[ℝ] ℝ) => cexp (I * ((w.2 h.1 - h.2 w.1) / 2 : ℝ))` using `by fun_prop`. Establish `h3` using `((h2.tendsto 0).smul (((S w).continuous.tendsto f).comp (tendsto_S f))).comp h1`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, map_zero, ContinuousLinearMap.zero_apply, sub_self, zero_div, ofReal_zero, mul_zero, Complex.exp_zero, one_smul] at h3`.
+
+Use `h3.congr fun u => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[← S_add, add_sub_cancel]`.
+-/
 theorem continuous_S (f : SchwartzMap V ℂ) : Continuous fun w => S w f := by
   refine continuous_iff_continuousAt.2 fun w => ?_
   have h1 : Tendsto (fun u => u - w) (𝓝 w) (𝓝 0) := by simpa using (continuous_sub_right w).tendsto w
@@ -258,6 +381,11 @@ theorem continuous_S (f : SchwartzMap V ℂ) : Continuous fun w => S w f := by
   simp only [Function.comp_apply]
   rw [← S_add, add_sub_cancel]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact fun q hq => ⟨q, hq, fun w f _ => by simp⟩`. Consider the case `succ n ih`. Introduce `q hq`. Take `⟨p, hp, h⟩` from `ih q hq`.
+
+Take `⟨p', hp', h'⟩` from `lip p hp`. Use `⟨p', hp', fun w f hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply, pow_succ, mul_assoc]`. Conclude with `(h w _ hw).trans (mul_le_mul_of_nonneg_left (h' w f hw) (by positivity))`.
+-/
 theorem lip_pow (n : ℕ) : ∀ q : Seminorm ℂ (SchwartzMap V ℂ), Continuous q → ∃ p : Seminorm ℂ (SchwartzMap V ℂ),
     Continuous p ∧ ∀ w f, ‖w‖ ≤ 1 → q ((fun g => S w g - g)^[n] f) ≤ ‖w‖ ^ n * p f := by
   induction n with
@@ -270,6 +398,19 @@ theorem lip_pow (n : ℕ) : ∀ q : Seminorm ℂ (SchwartzMap V ℂ), Continuous
     rw [Function.iterate_succ_apply, pow_succ, mul_assoc]
     exact (h w _ hw).trans (mul_le_mul_of_nonneg_left (h' w f hw) (by positivity))
 
+/- English proof (translation)
+Take `⟨p₁, hp₁, h₁⟩` from `lip_pow (M + N) p hp`. Use `set R := max K 1 with hR`. Establish `hR1 : 1 ≤ R` using `le_max_right _ _`. Use `⟨sc ((1 + R) ^ (M + N)) p + sc ((2 * R) ^ (M + N)) p₁, (sc_cont _ hp).add (sc_cont _ hp₁), fun y f => ?_⟩` and prove the remaining obligations. Rewrite using `[Seminorm.add_apply, sc_apply (by positivity), sc_apply (by positivity)]`.
+
+Establish `a1` using `apply_nonneg p f`. Establish `a2` using `apply_nonneg p₁ f`. Establish `a3` using `hs y`. Break down `le_total (s y) R with h | h` into its components or cases. Use `le_add_of_le_of_nonneg ?_ (by positivity)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Use `le_add_of_nonneg_of_le (by positivity) ?_` and prove the remaining obligations. Take `⟨w, hw, hA⟩` from `hK y (by linarith)`. Establish `hw' : ‖w‖ * s y ≤ R` using `hw.trans (le_max_left _ _)`. Establish `hw1 : ‖w‖ ≤ 1` using `by nlinarith [norm_nonneg w]`.
+
+Establish `key : ∀ n : ℕ, ∀ g, q (A y g) ≤ q (A y ((fun g => S w g - g)^[n] g))` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => exact fun g => le_rfl`. Consider the case `succ n ih`. Introduce `g`.
+
+Rewrite using `[Function.iterate_succ_apply]`. Use `le_trans ?_ (ih _)` and prove the remaining obligations. Rewrite using `[map_sub, hA, show -A y g - A y g = (-2 : ℂ) • A y g by module, map_smul_eq_mul]`. Use `apply_nonneg q (A y g)` as an intermediate fact. Simplify using `only [norm_neg, Complex.norm_ofNat]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖w‖ * (1 + s y) ≤ 2 * R` using `by nlinarith [norm_nonneg w]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem decay {Y Z : Type} [AddCommGroup Z] [Module ℂ Z] (A : Y → SchwartzMap V ℂ →ₗ[ℂ] Z) (s : Y → ℝ) (hs : ∀ y, 0 ≤ s y)
     (K : ℝ) (hK : ∀ y, 0 < s y → ∃ w, ‖w‖ * s y ≤ K ∧ ∀ f, A y (S w f) = -A y f) (q : Seminorm ℂ Z)
     (p : Seminorm ℂ (SchwartzMap V ℂ)) (hp : Continuous p) (M : ℕ) (hq : ∀ y f, q (A y f) ≤ (1 + s y) ^ M * p f) (N : ℕ) :
@@ -309,6 +450,11 @@ theorem decay {Y Z : Type} [AddCommGroup Z] [Module ℂ Z] (A : Y → SchwartzMa
       _ = (‖w‖ * (1 + s y)) ^ (M + N) * p₁ f := by rw [mul_pow]; ring
       _ ≤ _ := by gcongr
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `b.exists_antilipschitzWith (LinearMap.ker_eq_bot'.2 hb)`. Use `⟨K, K.2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 < ‖b x‖` using `norm_pos_iff.2 fun h => hx (hb x h)`. Take `⟨a, ha, ha'⟩` from `(b x).exists_lt_apply_of_lt_opNorm (half_lt_self h0)`. Establish `h1 : b x a ≠ 0` using `norm_pos_iff.1 (by linarith)`.
+
+Establish `h2 : ‖x‖ ≤ K * ‖b x‖` using `by simpa using hK.le_mul_dist x 0`. Use `⟨(2 * b x a)⁻¹ • a, ?_, by rw [map_smul, smul_eq_mul]; field_simp⟩` and prove the remaining obligations. Rewrite using `[norm_smul, norm_inv, norm_mul, Real.norm_two, mul_assoc, inv_mul_le_iff₀ (by linarith)]`. Use `K.2` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg a, norm_nonneg x, mul_nonneg this (norm_nonneg (b x a))]`.
+-/
 theorem exists_half {U : Type} [NormedAddCommGroup U] [NormedSpace ℝ U] [FiniteDimensional ℝ U] (b : U →ₗ[ℝ] U →L[ℝ] ℝ)
     (hb : ∀ x, b x = 0 → x = 0) : ∃ K : ℝ, 0 ≤ K ∧ ∀ x, x ≠ 0 → ∃ a, ‖a‖ * ‖x‖ ≤ K ∧ b x a = 1 / 2 := by
   obtain ⟨K, -, hK⟩ := b.exists_antilipschitzWith (LinearMap.ker_eq_bot'.2 hb)

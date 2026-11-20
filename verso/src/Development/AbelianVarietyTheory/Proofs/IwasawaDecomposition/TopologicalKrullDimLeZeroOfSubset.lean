@@ -23,6 +23,11 @@ section Sheaf
 
 variable {X : Scheme.{0}} {L : LB X}
 
+/- English proof (translation)
+Set `e` to `stalkEquivOfLinear (F := twistZ F L (-1)) (G := F) (fun V hV => zchartEquiv hL (-1) i hV) (fun hV h' t => zchartEquiv_resM hL i hV h' t) hx`. Establish `key : ⇑(stalkLinear (cutHom F hL s) x) = (X.presheaf.germ _ x hx (s.f i) • ·) ∘ e` using `funext fun u => by`. Take `⟨V, hV, hxV, u, rfl⟩` from `exists_germ_eq_of_mem hx u`. Rewrite using `[stalkLinear_germ, cutHom_app F hL s i hV, QCoh.germ_smul, Function.comp_apply, stalkEquivOfLinear_germ _ _ hx hV]`. Conclude with `congrArg (· • _) (Cartier.germ_resG hV x hxV _)`.
+
+Rewrite using `[key]`. Conclude with `h.comp e.injective`.
+-/
 theorem injective_stalkLinear_cutHom (F : X.Modules) (hL : L.IsLB) (s : L.Sec) (i : L.ι) {x : X} (hx : x ∈ L.U i)
     (h : IsSMulRegular (F.presheaf.stalk x :) (X.presheaf.germ _ x hx (s.f i))) :
     Function.Injective (stalkLinear (cutHom F hL s) x) := by
@@ -36,6 +41,9 @@ theorem injective_stalkLinear_cutHom (F : X.Modules) (hL : L.IsLB) (s : L.Sec) (
   rw [key]
   exact h.comp e.injective
 
+/- English proof (translation)
+Use `⟨(Submodule.quotEquivOfEq _ _ ?_).trans ((stalkLinear (cutπ F hL s) x).quotKerEquivOfSurjective (stalkLinear_surjective _ x))⟩` and prove the remaining obligations. Use extensionality with `t`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists, LinearMap.mem_ker]`. Use `Iff.trans ?_ ((isMulBy_cutHom F hL s).stalkLinear_π_eq_zero_iff i hx t).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem nonempty_stalk_cut_equiv (F : X.Modules) (hL : L.IsLB) (s : L.Sec) (i : L.ι) {x : X} (hx : x ∈ L.U i) :
     Nonempty (QuotSMulTop (X.presheaf.germ _ x hx (s.f i)) (F.presheaf.stalk x :) ≃ₗ[X.presheaf.stalk x]
       ((cut F hL s).presheaf.stalk x :)) := by
@@ -46,6 +54,9 @@ theorem nonempty_stalk_cut_equiv (F : X.Modules) (hL : L.IsLB) (s : L.Sec) (i : 
   refine Iff.trans ?_ ((isMulBy_cutHom F hL s).stalkLinear_π_eq_zero_iff i hx t).symm
   simp
 
+/- English proof (translation)
+Establish `: Finite s` using `(S.finite_toSet.subset hs).to_subtype`. Establish `: T1Space s` using `⟨fun x => by`. Simplify `(hc x.1 (hs x.2)).preimage (continuous_subtype_val (p := (· ∈ s)))⟩` using `[← Set.image_singleton, Set.preimage_image_eq _ Subtype.val_injective]`. Conclude with `topologicalKrullDim_zero_of_discreteTopology s`.
+-/
 theorem topologicalKrullDim_le_zero_of_subset {T : Type} [TopologicalSpace T] {S : Finset T}
     (hc : ∀ x ∈ S, IsClosed ({x} : Set T)) {s : Set T} (hs : s ⊆ S) : topologicalKrullDim s ≤ 0 := by
   have : Finite s := (S.finite_toSet.subset hs).to_subtype
@@ -56,6 +67,11 @@ theorem topologicalKrullDim_le_zero_of_subset {T : Type} [TopologicalSpace T] {S
 
 variable {k : Type} [Field k] (f : X ⟶ Sp k)
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `isNoetherian_of_isProjOver hf` as an intermediate fact. Establish `fin : ∀ (H : X.Modules) [IsFiniteQC H], FiniteCohTwists k H` using `fun H _ => finiteCohTwists_of_isProjOver (fun _ => rfl) H hf`. Establish `h₁` using `interNum_cokernel (kernel.ι φ) hP (fin _) (fin _)`. Establish `h₂` using `interNum_cokernel (kernel.ι (cokernel.π φ)) hP (fin _) (fin _)`.
+
+Establish `e₁ : cokernel (kernel.ι φ) ≅ kernel (cokernel.π φ)` using `Abelian.coimageIsoImage φ`. Establish `e₂ : cokernel (kernel.ι (cokernel.π φ)) ≅ cokernel φ` using `(cokernelIsCokernel _).coconePointUniqueUpToIso (Abelian.epiIsCokernelOfKernel _ (kernelIsKernel (cokernel.π φ)))`. Rewrite `h₁` using `[interNum_congr k e₁]`. Rewrite `h₂` using `[interNum_congr k e₂]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem interNum_sub_eq (hf : IsProjOver f) {F G : X.Modules} [IsFiniteQC F] [IsFiniteQC G] (φ : G ⟶ F) {d : ℕ}
     {P : Fin d → LB X} (hP : ∀ i, (P i).IsLB) :
     letI := algebraΓOfHom f
@@ -74,6 +90,25 @@ theorem interNum_sub_eq (hf : IsProjOver f) {F G : X.Modules} [IsFiniteQC F] [Is
   rw [interNum_congr k e₂] at h₂
   omega
 
+/- English proof (translation)
+Use `letI := algebraΓOfHom f`. Use `isNoetherian_of_isProjOver hf` as an intermediate fact. Use `((isProjOver_iff_isProper_and_exists_isAmpleLB f).1 hf).1` as an intermediate fact. Proceed by induction on `l generalizing F with`. Consider the case `nil`.
+
+Establish `hs : support F ⊆ S` using `fun x hx => hz x hx (by simp)`. Establish `hd : suppDim F ≤ 0` using `topologicalKrullDim_le_zero_of_subset hS hs`. Establish `: IsEmpty (Fin ([] : List L.Sec).length)` using `inferInstanceAs (IsEmpty (Fin 0))`. Rewrite using `[interNum_of_isEmpty, chi_eq_hdim_zero_of_suppDim_le_zero k hd, hdim_zero_eq_sum_toNat f hd hs]`. Use `congrArg _ <| Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[(Submodule.quotEquivOfEqBot (Ideal.ofList [] • ⊤ : Submodule (X.presheaf.stalk x) (F.presheaf.stalk x :)) (by simp only [Ideal.ofList_nil]; exact Submodule.bot_smul _)).length_eq.symm]`. Both sides reduce to the same expression. Consider the case `cons s l ih`. Use `isFiniteQC_twist (F := F) (isLB_lbZPow hL (-1))` as an intermediate fact. Establish `e : (fun _ : Fin (s :: l).length => L) = (Fin.cons L (fun _ => L) : Fin (l.length + 1) → LB X)`.
+
+Use function extensionality and compare the values at `(Fin.cases rfl fun _ => rfl)`. Establish `h0 : ∀ x ∈ S, Subsingleton ((kernel (cutHom F hL s)).presheaf.stalk x :)` using `fun x hx => by`. Establish `h` using `injective_stalkLinear_cutHom F hL s (c x) (hc x) ((isWeaklyRegular_cons_iff _ _ _).1 (hr x hx)).1`. Use `subsingleton_of_forall_eq 0 fun t => stalkLinear_injective (kernel.ι _) x (h ?_)` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← stalkLinear_comp, kernel.condition, stalkLinear_zero, map_zero, map_zero]`.
+
+Both sides reduce to the same expression. Establish `hK` using `ih (kernel (cutHom F hL s)) (fun x hx hl => ?_) fun x hx => ?_`. Establish `hC` using `ih (cut F hL s) (fun x hx hl => ?_) fun x hx => ?_`. Rewrite using `[e, interNum_cons k F hL fun _ => hL, interNum_sub_eq f hf (cutHom F hL s) fun _ => hL, hK]`. Rewrite using `[Finset.sum_eq_zero (fun x hx => ?_), Nat.cast_zero, sub_zero]`.
+
+Use `hC.trans (congrArg _ <| Finset.sum_congr rfl fun x _ => ?_)` and prove the remaining obligations. Take `⟨q⟩` from `nonempty_stalk_cut_equiv F hL s (c x) (hc x)`. Rewrite using `[List.map_cons, (Submodule.quotOfListConsSMulTopEquivQuotSMulTopInner _ _ _).length_eq, (Submodule.Quotient.equiv _ _ q (by rw [Submodule.map_smul'', Submodule.map_top, LinearEquiv.range])).length_eq]`. Use `h0 x hx` as an intermediate fact. Rewrite using `[Module.length_eq_zero]`.
+
+Simplify using the standard rewrite rules. Rewrite `hx` using `[support_cut]`. Conclude with `hz x hx.1 (List.forall_mem_cons.2 ⟨hx.2, hl⟩)`. Take `⟨q⟩` from `nonempty_stalk_cut_equiv F hL s (c x) (hc x)`. Conclude with `(q.isWeaklyRegular_congr _).1 ((isWeaklyRegular_cons_iff _ _ _).1 (hr x hx)).2`.
+
+Establish `h₁` using `support_subset_of_mono (kernel.ι (cutHom F hL s)) hx`. Rewrite `h₁` using `[support_twist (isLB_lbZPow hL (-1))]`. Use `hz x h₁ (List.forall_mem_cons.2 ⟨fun hs => notMem_support_iff.2 ?_ hx, hl⟩)` and prove the remaining obligations. Establish `hu` using `(X.mem_basicOpen _ x (hc x)).1 ((Cartier.mem_nonzeroLocus_iff s _ (hc x)).1 hs)`. Establish `h` using `injective_stalkLinear_cutHom F hL s (c x) (hc x) (hu.isSMulRegular _)`.
+
+Use `subsingleton_of_forall_eq 0 fun t => stalkLinear_injective (kernel.ι _) x (h ?_)` and prove the remaining obligations. Rewrite using `[← LinearMap.comp_apply, ← stalkLinear_comp, kernel.condition, stalkLinear_zero, map_zero, map_zero]`. Both sides reduce to the same expression. Use `h0 x hx` as an intermediate fact. Conclude with `⟨fun _ _ _ _ _ => Subsingleton.elim _ _⟩`.
+-/
 theorem interNum_eq_sum_length (hf : IsProjOver f) (hL : L.IsLB) (c : X → L.ι) (hc : ∀ x, x ∈ L.U (c x))
     (S : Finset X) (hS : ∀ x ∈ S, IsClosed ({x} : Set X)) (l : List L.Sec) (F : X.Modules) [IsFiniteQC F]
     (hz : ∀ x ∈ support F, (∀ s ∈ l, x ∉ nonzeroLocus s) → x ∈ S)
@@ -165,6 +200,9 @@ variable {k K : Type} [Field k] [Field K] {X X' : Scheme.{0}} {f : X ⟶ Sp k} {
 def stalkConst (f' : X' ⟶ Sp K) (z : X') : K →+* X'.presheaf.stalk z :=
   ((Scheme.ΓSpecIso (.of K)).inv ≫ f'.appTop ≫ X'.presheaf.germ ⊤ z trivial).hom
 
+/- English proof (translation)
+Establish `e : p.appTop (f'.appTop ((Scheme.ΓSpecIso (.of K)).inv a)) = (Scheme.ΓSpecIso (.of K)).inv a`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, hp, Scheme.Hom.id_appTop]`. Both sides reduce to the same expression. Use `(congrArg (stalkClosedPointIso (.of K)).hom ((Scheme.Hom.germ_stalkMap_apply p ⊤ _ trivial _).trans (congrArg ((Sp K).presheaf.germ ⊤ _ trivial) e))).trans ?_` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (germ_stalkClosedPointIso_hom (.of K)) _).trans (Iso.inv_hom_id_apply _ _)`.
+-/
 theorem stalkClosedPointTo_stalkConst {p : Sp K ⟶ X'} (hp : p ≫ f' = 𝟙 _) (a : K) :
     (Scheme.stalkClosedPointTo p).hom (stalkConst f' _ a) = a := by
   have e : p.appTop (f'.appTop ((Scheme.ΓSpecIso (.of K)).inv a)) = (Scheme.ΓSpecIso (.of K)).inv a := by
@@ -174,12 +212,20 @@ theorem stalkClosedPointTo_stalkConst {p : Sp K ⟶ X'} (hp : p ≫ f' = 𝟙 _)
     (congrArg ((Sp K).presheaf.germ ⊤ _ trivial) e))).trans ?_
   exact (ConcreteCategory.congr_hom (germ_stalkClosedPointIso_hom (.of K)) _).trans (Iso.inv_hom_id_apply _ _)
 
+/- English proof (translation)
+Use `(StabFlat.stalk_of_smooth_local K X' f' d h z hz _ (Spec.map_preimage _).symm inferInstance).2.2.2` as an intermediate fact. Rewrite `this` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot]`. Conclude with `(ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _)).symm.trans this`.
+-/
 theorem ringKrullDim_stalk {d : ℕ} (h : SmoothOfRelativeDimension d f') {z : X'} (hz : IsClosed ({z} : Set X')) :
     ringKrullDim (X'.presheaf.stalk z) = d := by
   have := (StabFlat.stalk_of_smooth_local K X' f' d h z hz _ (Spec.map_preimage _).symm inferInstance).2.2.2
   rw [IsLocalRing.maximalIdeal_eq_bot, Ideal.map_bot] at this
   exact (ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _)).symm.trans this
 
+/- English proof (translation)
+Rewrite using `[residueDegree_eq_finrank]`. Use `letI := algebraΓOfHom f'`. Use `letI := residueFieldAlgebraOver K (p (IsLocalRing.closedPoint K))`. Set `r` to `(Scheme.descResidueField (Scheme.stalkClosedPointTo p)).hom`. Establish `h : ∀ a, r (algebraMap K _ a) = a` using `stalkClosedPointTo_stalkConst hp`.
+
+Conclude with `Module.finrank_of_bijective_algebraMap ⟨(algebraMap K _).injective, fun b => ⟨r b, r.injective (h _)⟩⟩`.
+-/
 theorem residueDegree_eq_one {p : Sp K ⟶ X'} (hp : p ≫ f' = 𝟙 _) :
     f'.residueDegree (p (IsLocalRing.closedPoint K)) = 1 := by
   rw [residueDegree_eq_finrank]
@@ -204,6 +250,9 @@ variable {F : Type} [Field F] (Y : Var F) {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y
 
 omit Y in
 
+/- English proof (translation)
+Establish `h : RegAt (below y) (algebraMap _ Z.functionField a)` using `⟨a, rfl⟩`. Rewrite using `[TrueGeo.valAt, dif_pos h, IsFractionRing.injective _ Z.functionField h.choose_spec]`.
+-/
 theorem valAt_algebraMap {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z)
     (a : Z.presheaf.stalk (below y)) :
     TrueGeo.valAt y (algebraMap _ Z.functionField a) = (Scheme.stalkClosedPointTo y).hom a := by

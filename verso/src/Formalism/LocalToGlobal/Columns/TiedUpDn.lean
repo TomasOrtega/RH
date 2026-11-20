@@ -21,16 +21,25 @@ section Comparison₂
 variable {X : Fields} {Pr : Primes X} (hc : CMData X.F X.E) (hPr : Pr.Ok) (σ₀ : X.K →+* ℂ) (u : Pr.Word) {n : ℕ} [NeZero n]
   {cls : Type} (s : cls → DecoSet X.E n (Pr.vT u) Pr.vGs) (Q : StepCrd Pr σ₀ n fun c => (s c).1.L)
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `tieInv_spec hPr u P`. Rewrite `h` using `[mul_comm]`. Conclude with `one_notMem P.1 (by simpa using Ideal.sub_mem _ h h1)`.
+-/
 theorem tud_unit (P : Pr.vT u) : tieInv hPr u P * cO X.E (Pr.piT u) ∉ P.1.asIdeal := by
   intro h
   have h1 := tieInv_spec hPr u P
   rw [mul_comm] at h
   exact one_notMem P.1 (by simpa using Ideal.sub_mem _ h h1)
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk P.1.asIdeal), ← map_sub, mul_comm]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (tieInv_spec hPr u P)`.
+-/
 theorem tud_unit_mk (P : Pr.vT u) : Ideal.Quotient.mk P.1.asIdeal (tieInv hPr u P * cO X.E (Pr.piT u)) = 1 := by
   rw [← sub_eq_zero, ← map_one (Ideal.Quotient.mk P.1.asIdeal), ← map_sub, mul_comm]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (tieInv_spec hPr u P)
 
+/- English proof (translation)
+Establish `hm : tieInv hPr u P • cO X.E (Pr.piT u) • z.1 ∈ (s c).1.N` using `(s c).1.N.smul_mem _ ((s c).2.smul_Lsh_mem_N (sepElt_of_ok hPr u).conj ((tie_Ld_eq hc σ₀ u s Q c) ▸ z.2))`. Establish `h1 : modP.mk P.1 (s c).1.N ⟨modP.rep (tiePr hc hPr σ₀ u s Q P c z), modP.rep_mem _⟩ = modP.mk P.1 (s c).1.N ⟨_, hm⟩` using `(modP.mk_rep _).trans rfl`. Rewrite using `[mul_smul]`. Conclude with `(lv_mk_eq_iff P.1 _ _).1 h1`.
+-/
 theorem tud_rep_pr (P : Pr.vT u) (c : cls) (z : ↥(dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c))) :
     modP.rep (tiePr hc hPr σ₀ u s Q P c z) - (tieInv hPr u P * cO X.E (Pr.piT u)) • z.1 ∈ P.1.asIdeal • (s c).1.N := by
   have hm : tieInv hPr u P • cO X.E (Pr.piT u) • z.1 ∈ (s c).1.N :=
@@ -40,6 +49,13 @@ theorem tud_rep_pr (P : Pr.vT u) (c : cls) (z : ↥(dualL (hc.sig : X.E →+* X.
   rw [mul_smul]
   exact (lv_mk_eq_iff P.1 _ _).1 h1
 
+/- English proof (translation)
+Establish `hy' : y ∈ (s c).1.LshKer P` using `tie_Lk_eq hc hPr σ₀ u s Q c P I hI ▸ hy`. Establish `hm : (tieInv hPr u P * cO X.E (Pr.piT u)) • y ∈ (s c).1.kerAt P`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ (lv_smul_LshKer_mem (s c) (sepElt_of_ok hPr u) P hy')`. Establish `h1` using `modP.ext_spec P.1 ((s c).1.kerAt P) g y (tud_unit hPr u P) hm`.
+
+Rewrite `h1` using `[tud_unit_mk, one_mul]`. Rewrite using `[h1]`. Use `congr 1`. Use `show modP.mk P.1 _ ⟨tieInv hPr u P • cO X.E (Pr.piT u) • y, _⟩ = _`. Use `congr 1`.
+
+Conclude with `Subtype.ext (mul_smul _ _ _).symm`.
+-/
 theorem tud_prk (P : Pr.vT u) (c : cls) (I : Ideal (𝓞 X.E)) (hI : I = P.1.asIdeal) (g : Module.Dual (𝓞 X.E ⧸ P.1.asIdeal) ((s c).lk P))
     (y : Sp X.E n) (hy : y ∈ Q.lat c ⊔ I • dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c)) :
     g (tiePrk hc hPr σ₀ u s Q P c I hI ⟨y, hy⟩) = modP.ext P.1 ((s c).1.kerAt P) g y := by
@@ -57,12 +73,18 @@ theorem tud_prk (P : Pr.vT u) (c : cls) (I : Ideal (𝓞 X.E)) (hI : I = P.1.asI
 
 end Comparison₂
 
+/- English proof (translation)
+Use `show (toGLm E n) (glEquiv (γ : GL (Fin n) E)) = _`. Unfold `toGLm glEquiv`. Simplify using the standard rewrite rules.
+-/
 theorem tud_ufGL_ratHom {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : CMData F E) (n : ℕ) (γ : URat hc n) : ufGL E n (ratHom hc n γ) = (γ : GL (Fin n) E) := by
   show (toGLm E n) (glEquiv (γ : GL (Fin n) E)) = _
   unfold toGLm glEquiv
   simp
 
+/- English proof (translation)
+Unfold `levTyp levChr`. Rewrite using `[MonoidHom.inv_apply, map_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem tud_typ_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {hc : CMData F E} {n : ℕ} [NeZero n] {ST SG : Finset (Pl E)} {H : Subgroup (GLG E n SG)} {M : Type} [CommGroup M]
     (lam : H →* M) (κ : levU hc n ST SG H) : levTyp lam κ⁻¹ = lam (levRed hc n ST SG H κ) := by
@@ -88,6 +110,9 @@ abbrev tudUp (Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ u
 abbrev tudDn (P : Pr.vT u) (c : StCl W Λ u i) (g : Module.Dual (𝓞 X.E ⧸ P.1.asIdeal) ((tudR W Λ u i c).lk P)) : StCl W Λ u i :=
   clsD (colVal W u i (Pr.vT u) Pr.vGs) (Λ i) ((tudR W Λ u i c).dnL P g)
 
+/- English proof (translation)
+Use `show σ₀ (((Λ i).chr ((stepGSD W Λ u i).outSec.mv d₁).2 : X.Kˣ) : X.K) • h (frMul σ₀ (ufGL X.E (R.N i) ((stepGSD W Λ u i).outSec.mv d₁).1)⁻¹ s) = _`. Rewrite using `[← hγ, ← hκ, tud_ufGL_ratHom, smul_eq_mul, ← map_inv, tud_typ_inv]`. Both sides reduce to the same expression.
+-/
 theorem tud_trPt (d₁ : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) (γ : URat hc (R.N i)) (κ : levU hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp)
     (hγ : ratHom hc (R.N i) γ = ((stepGSD W Λ u i).outSec.mv d₁).1)
     (hκ : levRed hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp κ = ((stepGSD W Λ u i).outSec.mv d₁).2)
@@ -99,6 +124,11 @@ theorem tud_trPt (d₁ : DecoSet X.E (R.N i) (Pr.vT u) Pr.vGs) (γ : URat hc (R.
   rw [← hγ, ← hκ, tud_ufGL_ratHom, smul_eq_mul, ← map_inv, tud_typ_inv]
   rfl
 
+/- English proof (translation)
+Establish `hs' : s = frMul σ₀ γ s'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Establish `h1` using `hs τ`. Rewrite `h1` using `[hW, hW, hemb]`.
+
+Conclude with `h1`. Rewrite using `[hs', ← frMul_mul, inv_mul_cancel, frMul_one]`.
+-/
 theorem tud_frame {Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ u i c).1.L}
     (eY : FrS X σ₀ (R.N i) ≃ Frames (gramC Q.J Q.emb)) (hW : ∀ s, (eY s).1 = s.1) (hemb : Q.emb = X.embC σ₀)
     (γ : GL (Fin (R.N i)) X.E) {s s' : FrS X σ₀ (R.N i)} (hs : IsTr (atInf Q.emb γ.1) (eY s') (eY s)) :
@@ -113,6 +143,19 @@ theorem tud_frame {Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `ha` using `sepElt_of_ok hPr u`. Establish `hP` using `moveHyp_of_ok hPr u P`. Take `⟨hq, hq2⟩` from `T_unif hX hPr u P`. Establish `hLd` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q c`. Establish `hLd'` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q (tudUp W Λ hc hPr σ₀ u i Q P c z)`.
+
+Establish `hfv` using `tie_fv hc hPr σ₀ u (tudR W Λ u i) Q P`. Establish `hrz` using `tud_rep_pr hc hPr σ₀ u (tudR W Λ u i) Q P c z`. Establish `hzL : z.1 ∈ (tudR W Λ u i c).1.Lsh` using `hLd ▸ z.2`. Take `⟨γ, η, κ, hγ, hκ, hη, e, h3, h4, h5⟩` from `tud_up_core hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp hS c₀ (tudR W Λ u i c) (tudR W Λ u i (tudUp W Λ hc hPr σ₀ u i Q P c z)) P (tieEV_over hc hX hPr u P) hP hq hq2 ha _ hz ((stepGSD W Λ u i).outSec.mv _) ((stepGSD W Λ u i).outSec.mv_smul _)`. Establish `h4'` using `h4 (tud_unit hPr u P) hzL hrz`.
+
+Rewrite `h4'` using `[map_natCast]`. Establish `htr` using `tud_trPt W Λ hc σ₀ hσ u i _ γ κ hγ hκ`. Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Use `⟨⟨γ.1, γ.2⟩, η, κ, hη, e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Ideal.mk_ker]`.
+
+Rewrite using `[hLd]`. Conclude with `h3`. Simplify using `only [Ideal.mk_ker]`. Rewrite using `[hLd']`. Use `h4' using 3` and compare the differences between its conclusion and the goal.
+
+Introduce `x hx`. Rewrite using `[hfv, hfv]`. Conclude with `h5 x.1 (hLd' ▸ x.2)`. Introduce `h s s' hs`. Rewrite using `[htr h s, tud_frame W Λ σ₀ u i eY hW rfl γ.1 hs]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tud_up (Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ u i c).1.L)
     (eY : FrS X σ₀ (R.N i) ≃ Frames (gramC Q.J Q.emb)) (hW : ∀ s, (eY s).1 = s.1) (P : Pr.vT u) (c : StCl W Λ u i)
     (z : ↥(dualL (hc.sig : X.E →+* X.E) Q.J (Q.lat c)))
@@ -170,6 +213,15 @@ theorem tud_up (Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `ha` using `sepElt_of_ok hPr u`. Establish `hP` using `moveHyp_of_ok hPr u P`. Establish `hLd'` using `tie_Ld_eq hc σ₀ u (tudR W Λ u i) Q (tudDn W Λ u i P c g)`. Establish `hfv` using `tie_fv hc hPr σ₀ u (tudR W Λ u i) Q P`. Establish `hprk` using `tud_prk hc hPr σ₀ u (tudR W Λ u i) Q P c _ Ideal.mk_ker g`.
+
+Take `⟨γ, η, κ, hγ, hκ, hη, e, h3, h5⟩` from `tud_dn_core hc (R.N i) (Pr.vT u) Pr.vGs (Λ i).grp hS c₀ (tudR W Λ u i c) (tudR W Λ u i (tudDn W Λ u i P c g)) P (tieEV_over hc hX hPr u P) hP ha g hg ((stepGSD W Λ u i).outSec.mv _) ((stepGSD W Λ u i).outSec.mv_smul _)`. Establish `htr` using `tud_trPt W Λ hc σ₀ hσ u i _ γ κ hγ hκ`. Take `⟨J, f, bad, emb, lat, l0, rfl, rfl, rfl, rfl, rfl, rfl⟩` from `Q`. Use `⟨⟨γ.1, γ.2⟩, η, κ, hη, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Ideal.mk_ker]`.
+
+Rewrite using `[hLd']`. Conclude with `h3`. Introduce `x hx`. Rewrite using `[hfv, hprk]`. Conclude with `h5 x.1`.
+
+Introduce `h s s' hs`. Rewrite using `[htr h s, tud_frame W Λ σ₀ u i eY hW rfl γ.1 hs]`. Both sides reduce to the same expression.
+-/
 theorem tud_dn (Q : StepCrd Pr σ₀ (R.N i) fun c : StCl W Λ u i => (tudR W Λ u i c).1.L)
     (eY : FrS X σ₀ (R.N i) ≃ Frames (gramC Q.J Q.emb)) (hW : ∀ s, (eY s).1 = s.1) (P : Pr.vT u) (c : StCl W Λ u i)
     (g : Module.Dual (𝓞 X.E ⧸ P.1.asIdeal) ((tudR W Λ u i c).lk P)) (hg : g ≠ 0) :

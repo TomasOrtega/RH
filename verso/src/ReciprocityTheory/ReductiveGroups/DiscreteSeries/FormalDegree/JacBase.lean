@@ -15,6 +15,13 @@ variable {n : ℕ}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `open Matrix.Norms.Operator in`. Use the proof step `(refine contDiff_iff_contDiffAt.mpr fun z => ?_`. Establish `hf` using `JacB.contDiffAt_of_exp (𝔸 := Matrix (Fin n) (Fin n) ℂ) (f := fun w => (2 : ℝ) • pmat (actR (ε := ε) g w)) (z := z) (((JacB.pmat_contDiff ε).continuous.comp (JacB.actR_continuous hg)).const_smul (2 : ℝ)).continuousAt (by`. Use `ContDiffAt.congr_of_eventuallyEq ((((contDiff_const (c := gᴴ)).mul (JacB.contDiff_exp_alg.comp ((JacB.pmat_contDiff ε).const_smul (2 : ℝ)))).mul (contDiff_const (c := g))).contDiffAt) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Conclude with `JacB.exp_two_actR hg w)`.
+
+Use the proof step `(JacB.fderiv_exp_two_inj _)`. Establish `h2` using `(JacB.crdC ε).contDiff.contDiffAt.comp z (hf.const_smul (1 / 2 : ℝ))`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Establish `e : (1 / 2 : ℝ) • (2 : ℝ) • pmat (actR (ε` using `ε) g w) = pmat (actR (ε := ε) g w) := by`. Rewrite using `[smul_smul]`.
+
+Evaluate the numerical expressions. Use `show actR g w = JacB.crdC ε ((1 / 2 : ℝ) • (2 : ℝ) • pmat (actR (ε := ε) g w))`. Rewrite using `[e]`. Conclude with `(JacB.crd_pmat _).symm)`.
+-/
 theorem actR_contDiff {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     ContDiff ℝ 1 (actR (ε := ε) g) := by
   open Matrix.Norms.Operator in
@@ -40,6 +47,9 @@ theorem actR_contDiff {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg
    rw [e]
    exact (JacB.crd_pmat _).symm)
 
+/- English proof (translation)
+The claim follows from `|LinearMap.det ((fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 : (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))| * Jac y = 1 := by set D : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ) := ((fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 : (PCoord …`.
+-/
 theorem jacBase {ε : Fin n → Bool} (y : PCoord ε → ℂ) :
     |LinearMap.det ((fderiv ℝ (actR (ε := ε) (NormedSpace.exp (pmat y))) 0 :
       (PCoord ε → ℂ) →L[ℝ] (PCoord ε → ℂ)) : (PCoord ε → ℂ) →ₗ[ℝ] (PCoord ε → ℂ))| * Jac y = 1 := by

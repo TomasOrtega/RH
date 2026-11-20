@@ -9,6 +9,9 @@ open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalThe
 
 namespace PositivityTheory.RgUd.Form.LeviSmoothness.props
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toUnits_val (z : Circle) : ((Circle.toUnits z : ℂˣ) : ℂ) = (z : ℂ) := rfl
 
 open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.LeviSmoothness PositivityTheory.RgUd.Form.U.Atom
@@ -18,6 +21,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ (GL (Fin N) k) V} {s : ℝ} {B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
 
+/- English proof (translation)
+Establish `e` using `hB.mir _ (unip_mem_Mir m x) v w`. Establish `hd : Matrix.GeneralLinearGroup.det (unip k (m + 1) (Multiplicative.ofAdd x)) = 1` using `det_unip (m + 1) _`. Rewrite `e` using `[hd]`. Establish `h1 : nabs k (1 : kˣ) ^ s = 1`. Establish `: nabs k (1 : kˣ) = 1` using `by simp [nabs]`.
+
+Rewrite using `[this, Real.one_rpow]`. Rewrite `e` using `[h1, Complex.ofReal_one, one_mul]`. Conclude with `e`.
+-/
 theorem colInv (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) (v w : V) :
     B (π (colEl k m N h x) v) (π (colEl k m N h x) w) = B v w := by
   have e := hB.mir _ (unip_mem_Mir m x) v w
@@ -29,25 +37,42 @@ theorem colInv (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) (v w : V) :
   rw [h1, Complex.ofReal_one, one_mul] at e
   exact e
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isCompact_sup A A' hA.1 hA'.1, AddSubgroup.isOpen_mono le_sup_left hA.2⟩`.
+-/
 theorem isLat_sup {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (hA' : IsLat A') : IsLat (A ⊔ A') :=
   ⟨isCompact_sup A A' hA.1 hA'.1, AddSubgroup.isOpen_mono le_sup_left hA.2⟩
 
+/- English proof (translation)
+Establish `e` using `PositivityTheory.RgUd.Form.U.Atom.avg_avg h π ψ hB.cont hB.smooth ξ ξ hA hA le_rfl v`. Rewrite `e` using `[if_pos (fun _ _ => rfl)]`. Conclude with `e`.
+-/
 theorem avg_idem (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (v : V) :
     avg ψ h π ξ A (avg ψ h π ξ A v) = avg ψ h π ξ A v := by
   have e := PositivityTheory.RgUd.Form.U.Atom.avg_avg h π ψ hB.cont hB.smooth ξ ξ hA hA le_rfl v
   rw [if_pos (fun _ _ => rfl)] at e
   exact e
 
+/- English proof (translation)
+Establish `e1` using `form_avg h π ψ hB.cont hB.smooth B (colInv hB) ξ hA (avg ψ h π ξ A v) v`. Rewrite `e1` using `[avg_idem hB ξ hA v]`. Conclude with `e1`.
+-/
 theorem form_avg_self (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A)
     (v : V) : B (avg ψ h π ξ A v) v = B (avg ψ h π ξ A v) (avg ψ h π ξ A v) := by
   have e1 := form_avg h π ψ hB.cont hB.smooth B (colInv hB) ξ hA (avg ψ h π ξ A v) v
   rw [avg_idem hB ξ hA v] at e1
   exact e1
 
+/- English proof (translation)
+The claim follows from `hD v w`.
+-/
 theorem dens_at {A₀ : AddSubgroup (Fin (m + 1) → k)} {B' : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ} (hD : IsDens ψ h π A₀ B B')
     (v w : V) : ∃ A₁, IsLat A₁ ∧ A₀ ≤ A₁ ∧ ∀ A, IsLat A → A₁ ≤ A →
       B' v w = ((A₀.relIndex A : ℕ) : ℂ) * B (avg ψ h π (xi0 k m) A v) w := hD v w
 
+/- English proof (translation)
+Use `⟨fun v w => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨A₁, hA₁, -, e₁⟩` from `hD v w`. Take `⟨A₂, hA₂, -, e₂⟩` from `hD w v`. Establish `hA` using `isLat_sup hA₁ hA₂`. Rewrite using `[e₁ _ hA le_sup_left, e₂ _ hA le_sup_right, form_avg h π ψ hB.cont hB.smooth B (colInv hB) (xi0 k m) hA w v, hB.psd.1 (avg ψ h π (xi0 k m) (A₁ ⊔ A₂) v) w, map_mul, map_natCast]`.
+
+Take `⟨A₁, hA₁, -, e₁⟩` from `hD v v`. Rewrite using `[e₁ _ hA₁ le_rfl, form_avg_self hB _ hA₁ v]`. Rewrite using `[show ((A₀.relIndex A₁ : ℕ) : ℂ) = ((A₀.relIndex A₁ : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (hB.psd.2 _)`.
+-/
 theorem dens_psd (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)} (hA₀ : IsLat A₀) {B' : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
     (hD : IsDens ψ h π A₀ B B') : IsPsd B' := by
   refine ⟨fun v w => ?_, fun v => ?_⟩
@@ -62,6 +87,15 @@ theorem dens_psd (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)} 
     rw [show ((A₀.relIndex A₁ : ℕ) : ℂ) = ((A₀.relIndex A₁ : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul]
     exact mul_nonneg (Nat.cast_nonneg _) (hB.psd.2 _)
 
+/- English proof (translation)
+Unfold `twKer at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, v, rfl⟩` from `hy`. Take `⟨hm, hc⟩` from `ColumnElementGluing.colEl_conj_derUnip ψ h x u`.
+
+Use `Submodule.subset_span ⟨⟨_, hm⟩, π (colEl k m N h x) v, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_sub, map_smul]`. Use `congr 1`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`.
+
+Simplify using `[mul_assoc]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+
+Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+-/
 theorem twKer_colEl_stable (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) {z : V}
     (hz : z ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2))) :
     π (colEl k m N h x) z ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2)) := by
@@ -80,6 +114,9 @@ theorem twKer_colEl_stable (hB : Lv ψ h π s B) (x : Fin (m + 1) → k) {z : V}
   | add a b _ _ ha hb => rw [map_add]; exact Submodule.add_mem _ ha hb
   | smul c a _ ha => rw [map_smul]; exact Submodule.smul_mem _ c ha
 
+/- English proof (translation)
+Take `⟨p, hp, -⟩` from `exists_avgData h π ψ hB.cont hB.smooth ξ hA z ⊤ isOpen_univ`. Rewrite using `[avg_eq h π ψ hp]`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `twKer_colEl_stable hB t hz`.
+-/
 theorem avg_twKer (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) {z : V}
     (hz : z ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2))) :
     avg ψ h π ξ A z ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2)) := by
@@ -88,12 +125,26 @@ theorem avg_twKer (hB : Lv ψ h π s B) (ξ : Fin (m + 1) → k) {A : AddSubgrou
   refine Submodule.smul_mem _ _ (Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ ?_)
   exact twKer_colEl_stable hB t hz
 
+/- English proof (translation)
+Take `⟨A₁, hA₁, -, e₁⟩` from `hD z w`. Rewrite using `[e₁ _ hA₁ le_rfl, hB.kills _ (avg_twKer hB _ hA₁ hz) w, mul_zero]`.
+-/
 theorem dens_kills2 (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)} {B' : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
     (hD : IsDens ψ h π A₀ B B') {z : V} (hz : z ∈ twKer π (derUnip k N (m + 2)) (lvlChar k ψ N (m + 2))) (w : V) :
     B' z w = 0 := by
   obtain ⟨A₁, hA₁, -, e₁⟩ := hD z w
   rw [e₁ _ hA₁ le_rfl, hB.kills _ (avg_twKer hB _ hA₁ hz) w, mul_zero]
 
+/- English proof (translation)
+Introduce `v hv`. Unfold `twKer at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨u, v₀, rfl⟩` from `hy`.
+
+Take `⟨x, u', hu, hc⟩` from `ColumnElementGluing.derUnip_decomp ψ h u`. Introduce `w`. Establish `hsplit : π (u : GL (Fin N) k) v₀ - ((lvlChar k ψ N (m + 1) u : ℂˣ) : ℂ) • v₀ = π (colEl k m N h x) (π (u' : GL (Fin N) k) v₀ - ((lvlChar k ψ N (m + 2) u' : ℂˣ) : ℂ) • v₀) + ((lvlChar k ψ N (m + 2) u' : ℂˣ) : ℂ) • (π (colEl k m N h x) v₀ - ((ψ (xi0 k m ⬝ᵥ x) : Circle) : ℂ) • v₀)`. Rewrite using `[hc, hu, map_mul, Module.End.mul_apply, map_sub, map_smul, smul_sub, smul_smul]`. Simplify using `only [Units.val_mul, toUnits_val]`.
+
+Rewrite using `[mul_comm ((lvlChar k ψ N (m + 2) u' : ℂˣ) : ℂ)]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit, map_add, LinearMap.add_apply, map_smul, LinearMap.smul_apply, dens_kills2 hB hD (twKer_colEl_stable hB x (Submodule.subset_span ⟨u', v₀, rfl⟩)) w, zero_add]`. Take `⟨A₁, hA₁, -, e₁⟩` from `hD (π (colEl k m N h x) v₀ - ((ψ (xi0 k m ⬝ᵥ x) : Circle) : ℂ) • v₀) w`. Take `⟨Ax, hAx1, hAx2, hxA⟩` from `exists_lat_mem (m + 1) x`.
+
+Establish `hA` using `isLat_sup hA₁ ⟨hAx1, hAx2⟩`. Rewrite using `[e₁ _ hA le_sup_left, sub_eq_add_neg, ← neg_smul, avg_add h π ψ hB.cont hB.smooth _ hA, avg_smul h π ψ hB.cont hB.smooth _ hA, avg_colEl h π ψ hB.cont hB.smooth _ hA (AddSubgroup.mem_sup_right hxA), neg_smul, ← sub_eq_add_neg, sub_self, map_zero, LinearMap.zero_apply, mul_zero, s …`. Consider the case `zero => intro w`. Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb => intro w`.
+
+Rewrite using `[map_add, LinearMap.add_apply, ha w, hb w, add_zero]`. Consider the case `smul c a _ ha => intro w`. Rewrite using `[map_smul, LinearMap.smul_apply, ha w, smul_zero]`.
+-/
 theorem dens_kills (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)} (hA₀ : IsLat A₀) {B' : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
     (hD : IsDens ψ h π A₀ B B') : Kills ψ π (m + 1) B' := by
   intro v hv
@@ -124,6 +175,11 @@ theorem dens_kills (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)
   | add a b _ _ ha hb => intro w; rw [map_add, LinearMap.add_apply, ha w, hb w, add_zero]
   | smul c a _ ha => intro w; rw [map_smul, LinearMap.smul_apply, ha w, smul_zero]
 
+/- English proof (translation)
+Take `⟨A₁, hA₁, hA01, e₁⟩` from `hD v v`. Establish `hc : ((A₀.relIndex A₁ : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (relIndex_ne_zero' A₁ A₀ hA₁.1 hA₀.2 hA01)`. Rewrite `hv` using `[e₁ _ hA₁ le_rfl, form_avg_self hB _ hA₁ v]`. Establish `h0 : B (avg ψ h π (xi0 k m) A₁ v) (avg ψ h π (xi0 k m) A₁ v) = 0` using `(mul_eq_zero.1 hv).resolve_left hc`. Establish `hker : avg ψ h π (xi0 k m) A₁ v ∈ LinearMap.ker B`.
+
+Rewrite using `[LinearMap.mem_ker]`. Conclude with `LinearMap.ext fun w => GlobalTheory.T.hermitian_psd_isotropic_radical V B hB.psd.1 hB.psd.2 _ h0 w`. Establish `e : v = (v - avg ψ h π (xi0 k m) A₁ v) + avg ψ h π (xi0 k m) A₁ v` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (ColumnElementGluing.sub_avg_mem ψ h π hB.cont hB.smooth A₁ hA₁ v) hker`.
+-/
 theorem dens_rad (hB : Lv ψ h π s B) {A₀ : AddSubgroup (Fin (m + 1) → k)} (hA₀ : IsLat A₀) {B' : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ}
     (hD : IsDens ψ h π A₀ B B') (v : V) (hv : B' v v = 0) :
     v ∈ twKer π (derUnip k N (m + 1)) (lvlChar k ψ N (m + 1)) ⊔ LinearMap.ker B := by

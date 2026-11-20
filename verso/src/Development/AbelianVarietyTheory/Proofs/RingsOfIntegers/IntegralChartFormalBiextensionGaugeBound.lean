@@ -16,6 +16,11 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.ChartBiext
 
+/- English proof (translation)
+Establish `hz : ∀ p : Fin 2 × Fin d, MvPowerSeries.constantCoeff ((![0, pt K d 0] : Fin 2 → Pt K 1 d) p.1 p.2) = 0`. Introduce and unpack `⟨i, j⟩`. Apply the tactic sequence `fin_cases i <;> simp [pt]`. Establish `hsub` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hz`. Use `set c := MvPowerSeries.constantCoeff h with hc`.
+
+Establish `hdec : h = MvPowerSeries.C c + (h - MvPowerSeries.C c)` using `by ring`. Establish `hrest : MvPowerSeries.constantCoeff (h - MvPowerSeries.C c) = 0` using `by simp [hc]`. Establish `key` using `congrArg MvPowerSeries.constantCoeff hh.ax0`. Rewrite `key` using `[ev, hdec, MvPowerSeries.subst_add hsub, map_add, MvPowerSeries.constantCoeff_subst_eq_zero hsub hz hrest]`. Simplify using `using key`.
+-/
 theorem constantCoeff_gauge {R K O : Type} [CommRing R] [CommRing K] [Algebra ℚ K] [Algebra R K] [CommRing O] [StarRing O]
     {d : ℕ} (B : FB R d O) {h : PS K 2 d} (hh : B.IsCanonGauge K h) : MvPowerSeries.constantCoeff h = 0 := by
   have hz : ∀ p : Fin 2 × Fin d,
@@ -31,11 +36,17 @@ theorem constantCoeff_gauge {R K O : Type} [CommRing R] [CommRing K] [Algebra �
     MvPowerSeries.constantCoeff_subst_eq_zero hsub hz hrest] at key
   simpa using key
 
+/- English proof (translation)
+Use extensionality with `m`. Simplify using the standard rewrite rules.
+-/
 theorem toK_self {K : Type} [CommRing K] {σ : Type} (f : MvPowerSeries σ K) :
     MvPowerSeries.map (algebraMap K K) f = f := by
   ext m
   simp
 
+/- English proof (translation)
+Simplify using `only [nabValN, FB.hL, hF, hA]`.
+-/
 theorem nabValN_congr {R R' K O : Type} [CommRing R] [CommRing R'] [CommRing K] [Algebra ℚ K] [Algebra R K] [Algebra R' K]
     [CommRing O] [StarRing O] {d : ℕ} (B : FB R d O) (B' : FB R' d O) (hF : B.FK K = B'.FK K)
     (hA : ∀ a, B.actK K a = B'.actK K a) (h : PS K 2 d) (w0 : O) (m : ℕ) {n : ℕ} (f : PS K n d) {Ix : Type} [Fintype Ix]
@@ -47,6 +58,29 @@ end GlobalTheory.ChartBiext
 
 open GlobalTheory.ChartBiext in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c inst hstar T io y C`. Establish `hinst : inst = H.starRing`. Consider the cases of `inst with`. Consider the case `@mk toStarMul star_add`. Consider the cases of `toStarMul with`.
+
+Consider the case `@mk toInvolutiveStar star_mul`. Consider the cases of `toInvolutiveStar with`. Consider the case `@mk toStar star_involutive`. Consider the cases of `toStar with`. Consider the case `@mk s`.
+
+Establish `hs : s = fun a => H.bar a` using `funext hstar`. Substitute `hs` using the available equality. Both sides reduce to the same expression. Substitute `hinst` using the available equality. Use `letI : StarRing (𝓞 E) := H.starRing`.
+
+Take `⟨BT, hF, hA, h1, h2, hs, had, hK⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C`. Take `⟨hFK, hAK, hG, hC⟩` from `hK T.Fr`. Use `⟨BT, ⟨hF, hA, h1, h2, hs, had⟩, ?_⟩` and prove the remaining obligations. Introduce `B hB`. Take `⟨hBF, hBA, hB1, hB2, hBs, hBa⟩` from `hB`.
+
+Establish `eFK : B.FK T.Fr = BT.FK T.Fr`. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map _ (B.G.F i) = MvPowerSeries.map _ (BT.G.F i)`. Rewrite using `[hBF, hF]`. Establish `eAK : ∀ a, B.actK T.Fr a = BT.actK T.Fr a`.
+
+Introduce `a`. Use function extensionality and compare the values at `i`. Use `show MvPowerSeries.map _ (B.A.act a i) = MvPowerSeries.map _ (BT.A.act a i)`. Rewrite using `[hBA, hA]`. Establish `hgB : B.IsCanonGauge T.Fr (gaugeOf C) ↔ BT.IsCanonGauge T.Fr (gaugeOf C)` using `GlobalTheory.FBDescent.gauge_iff B BT T.Fr eFK eAK (by rw [hB1, h1]) (by rw [hB2, h2]) (by rw [hBs, hs]) (fun a => by rw [hBa, had]) (gaugeOf C)`.
+
+Establish `hgT : BT.IsCanonGauge T.Fr (gaugeOf C)`. Rewrite `hC` using `[GlobalTheory.ChartBiext.toK_self]`. Conclude with `(hG _).2 hC`. Establish `hgauge : B.IsCanonGauge T.Fr (gaugeOf C)` using `hgB.2 hgT`. Use `⟨hgauge, GlobalTheory.ChartBiext.constantCoeff_gauge B hgauge, ?_⟩` and prove the remaining obligations.
+
+Use `letI := io.toAlgebra`. Establish `eFK' : B.FK T.Fr = C.ch.B.FK T.Fr` using `eFK.trans hFK`. Establish `eAK' : ∀ a, B.actK T.Fr a = C.ch.B.actK T.Fr a` using `fun a => (eAK a).trans (hAK a)`. Use `⟨fun ℓ a => ?_, ?_⟩` and prove the remaining obligations. Establish `hd : dAct T.Fr B a = dAct T.Fr C.ch.B a`.
+
+Unfold `dAct`. Rewrite using `[eAK' a]`. Rewrite using `[hd]`. Conclude with `GlobalTheory.PowGerm.eigDirSt E H Dw l Xo c T io y C a ℓ`. Introduce `e ρ w n hb k P hP g`.
+
+Establish `hint : IsIntPS T (FB.toK T.Fr g)` using `fun m => ⟨MvPowerSeries.coeff m g, by simp [FB.toK, MvPowerSeries.coeff_map]⟩`. Establish `hle : nuLocC C e k w n ≤ nval T.V e (nabValN C.ch.B T.Fr C.ch.h H.w0 k (FB.toK T.Fr g) (fun ℓ : LtN Dw n => ℓ.2.2) (fun ℓ => C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩) P)`. Unfold `nuLocC`. Conclude with `iInf₂_le_of_le P hP (iInf₂_le (FB.toK T.Fr g) hint)`. Rewrite using `[GlobalTheory.ChartBiext.nabValN_congr B C.ch.B eFK' eAK']`.
+
+Conclude with `(hb k).trans hle`.
+-/
 theorem GlobalTheory.PlaceInt.integralBiext_gauge_eig_bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), ∃ B : FB T.V (chD C.ch) (𝓞 E), IsBT C B ∧ ∀ B : FB T.V (chD C.ch) (𝓞 E), IsBT C B → B.IsCanonGauge T.Fr (gaugeOf C) ∧ MvPowerSeries.constantCoeff (gaugeOf C) = 0 ∧ (letI := io.toAlgebra; (∀ (ℓ : Lt1 Dw) (a : 𝓞 E), (dAct T.Fr B a).mulVec (C.ch.uvec ℓ) = io (embK c ℓ.1 a) • C.ch.uvec ℓ) ∧ ∀ (e : ℕ) (ρ : ℝ) (w : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ChBound C e ρ w n → ∀ (k : ℕ) (P : MvPolynomial (LtN Dw n) T.Fr), P ∈ FFV (Dw := Dw) T w n → ∀ g : PS T.V n (chD C.ch), ((-ρ : ℝ) : EReal) ≤ nval T.V e (nabValN B T.Fr (gaugeOf C) H.w0 k (FB.toK T.Fr g) (fun ℓ : LtN Dw n => ℓ.2.2) (fun ℓ => C.ch.uvec ⟨ℓ.1, ℓ.2.1⟩) P)) := by
   intro E _ _ _ H Dw l Xo c inst hstar T io y C
 

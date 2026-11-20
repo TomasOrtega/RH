@@ -177,11 +177,17 @@ def MassFromLelong.Statement : Prop :=
 
 section Inhabitants
 
+/- English proof (translation)
+Introduce `q hq`. Rewrite `hq` using `[Ideal.mem_bot]`. Simplify using `[hq]`.
+-/
 theorem mem_zeroLocus_bot {n : ℕ} (x : Fin n → ℂ) : x ∈ zeroLocus (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) := by
   intro q hq
   rw [Ideal.mem_bot] at hq
   simp [hq]
 
+/- English proof (translation)
+The claim follows from `Ideal.isPrime_bot dim := by rw [ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field] simp`.
+-/
 theorem isAffVariety_bot (n : ℕ) : IsAffVariety (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) n where
   isPrime := Ideal.isPrime_bot
   dim := by
@@ -189,9 +195,17 @@ theorem isAffVariety_bot (n : ℕ) : IsAffVariety (⊥ : Ideal (MvPolynomial (Fi
       MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]
     simp
 
+/- English proof (translation)
+Simplify using `[linForm]`.
+-/
 theorem linForm_one_line : linForm (fun _ : Fin 1 => (1 : ℂ)) = X 0 := by
   simp [linForm]
 
+/- English proof (translation)
+Establish `hA : (aeval (R` using `ℂ) fun i : Fin n => Ideal.Quotient.mk (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) (linForm ((1 : Matrix (Fin n) (Fin n) ℂ) i))) = Ideal.Quotient.mkₐ ℂ ⊥ := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[linForm, Matrix.one_apply]`. Unfold `IsFiniteProj`.
+
+Rewrite using `[hA]`. Conclude with `AlgHom.Finite.of_surjective _ (Ideal.Quotient.mkₐ_surjective ℂ ⊥)`.
+-/
 theorem isFiniteProj_one (n : ℕ) :
     IsFiniteProj (⊥ : Ideal (MvPolynomial (Fin n) ℂ)) (1 : Matrix (Fin n) (Fin n) ℂ) := by
   have hA : (aeval (R := ℂ) fun i : Fin n => Ideal.Quotient.mk (⊥ : Ideal (MvPolynomial (Fin n) ℂ))
@@ -203,21 +217,36 @@ theorem isFiniteProj_one (n : ℕ) :
   rw [hA]
   exact AlgHom.Finite.of_surjective _ (Ideal.Quotient.mkₐ_surjective ℂ ⊥)
 
+/- English proof (translation)
+The claim follows from `(contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (0 : Fin 1))`.
+-/
 theorem contDiff_normSq_coord : ContDiff ℝ ∞ fun x : Fin 1 → ℂ => ‖x 0‖ ^ 2 :=
   (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (0 : Fin 1))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Set.univ, isOpen_univ, Set.subset_univ _, hf.contDiffOn⟩`.
+-/
 theorem smoothNear_of_contDiff {n : ℕ} (Z : Set (Fin n → ℂ)) {f : (Fin n → ℂ) → ℝ}
     (hf : ContDiff ℝ ∞ f) : SmoothNear Z f :=
   ⟨Set.univ, isOpen_univ, Set.subset_univ _, hf.contDiffOn⟩
 
 def lineBump : (Fin 1 → ℂ) → ℝ := fun x => (⟨1, 2, one_pos, one_lt_two⟩ : ContDiffBump (0 : ℂ)) (x 0)
 
+/- English proof (translation)
+The claim follows from `(ContDiffBump.contDiff _).comp (contDiff_apply ℝ ℂ (0 : Fin 1))`.
+-/
 theorem contDiff_lineBump : ContDiff ℝ ∞ lineBump :=
   (ContDiffBump.contDiff _).comp (contDiff_apply ℝ ℂ (0 : Fin 1))
 
+/- English proof (translation)
+The claim follows from `(ContDiffBump.hasCompactSupport _).comp_homeomorph (Homeomorph.funUnique (Fin 1) ℂ)`.
+-/
 theorem hasCompactSupport_lineBump : HasCompactSupport lineBump :=
   (ContDiffBump.hasCompactSupport _).comp_homeomorph (Homeomorph.funUnique (Fin 1) ℂ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, isFiniteProj_one 1, contDiff_lineBump.continuous.measurable, fun _ => smoothNear_of_contDiff _ contDiff_normSq_coord⟩`.
+-/
 theorem ProjectionIndependence.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 ∧
       IsFiniteProj (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (1 : Matrix (Fin 1) (Fin 1) ℂ) ∧
@@ -227,10 +256,16 @@ theorem ProjectionIndependence.hypotheses_inhabited :
   ⟨isAffVariety_bot 1, isFiniteProj_one 1, contDiff_lineBump.continuous.measurable,
     fun _ => smoothNear_of_contDiff _ contDiff_normSq_coord⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨contDiff_lineBump.continuous.measurable, fun _ => contDiff_normSq_coord⟩`.
+-/
 theorem VarIntegralFlat.hypotheses_inhabited :
     Measurable lineBump ∧ ∀ i : Fin 1, ContDiff ℝ ∞ ((fun _ x => ‖x 0‖ ^ 2 : Fin 1 → (Fin 1 → ℂ) → ℝ) i) :=
   ⟨contDiff_lineBump.continuous.measurable, fun _ => contDiff_normSq_coord⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, isFiniteProj_one 1, by rw [Ne, Ideal.span_singleton_eq_bot]; exact X_ne_zero 0⟩`.
+-/
 theorem CutOff.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 ∧
       IsFiniteProj (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (1 : Matrix (Fin 1) (Fin 1) ℂ) ∧
@@ -238,6 +273,9 @@ theorem CutOff.hypotheses_inhabited :
   ⟨isAffVariety_bot 1, isFiniteProj_one 1, by
     rw [Ne, Ideal.span_singleton_eq_bot]; exact X_ne_zero 0⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, smoothNear_of_contDiff _ contDiff_lineBump, smoothNear_of_contDiff _ contDiff_normSq_coord, Or.inl hasCompactSupport_lineBump⟩`.
+-/
 theorem StokesOnVariety.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (0 + 1) ∧
       SmoothNear (zeroLocus (⊥ : Ideal (MvPolynomial (Fin 1) ℂ))) lineBump ∧
@@ -246,6 +284,9 @@ theorem StokesOnVariety.hypotheses_inhabited :
   ⟨isAffVariety_bot 1, smoothNear_of_contDiff _ contDiff_lineBump,
     smoothNear_of_contDiff _ contDiff_normSq_coord, Or.inl hasCompactSupport_lineBump⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, isFiniteProj_one 1, fun _ => smoothNear_of_contDiff _ contDiff_normSq_coord, linForm_one_not_mem_point ℂ, Metric.isBounded_ball⟩`.
+-/
 theorem LogIntegrable.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) 1 ∧
       IsFiniteProj (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (1 : Matrix (Fin 1) (Fin 1) ℂ) ∧
@@ -256,6 +297,9 @@ theorem LogIntegrable.hypotheses_inhabited :
   ⟨isAffVariety_bot 1, isFiniteProj_one 1, fun _ => smoothNear_of_contDiff _ contDiff_normSq_coord,
     linForm_one_not_mem_point ℂ, Metric.isBounded_ball⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, linForm_one_not_mem_point ℂ, contDiff_lineBump, hasCompactSupport_lineBump⟩`.
+-/
 theorem PoincareLelong.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (0 + 1) ∧
       linForm (fun _ : Fin 1 => (1 : ℂ)) ∉ (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
@@ -264,6 +308,13 @@ theorem PoincareLelong.hypotheses_inhabited :
 
 def lineOriginIdeal : Ideal (MvPolynomial (Fin 1) ℂ) := RingHom.ker (eval (0 : Fin 1 → ℂ))
 
+/- English proof (translation)
+Introduce `q hq`. Rewrite `hq` using `[lineOriginIdeal, RingHom.mem_ker, eval_zero]`. Establish `hs : Ideal.span {(X 0 : MvPolynomial (Fin 1) ℂ)} = Ideal.span (X '' {(0 : Fin 1)} : Set (MvPolynomial (Fin 1) ℂ))`. Rewrite using `[Set.image_singleton]`. Rewrite using `[hs, mem_ideal_span_X_image]`.
+
+Introduce `m hm`. Use `⟨0, rfl, fun hm0 => ?_⟩` and prove the remaining obligations. Establish `hm' : m = 0` using `Finsupp.ext fun i => by`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `using hm0`.
+
+Substitute `hm'` using the available equality. Conclude with `(mem_support_iff.mp hm) (by rw [← constantCoeff_eq]; exact hq)`.
+-/
 theorem lineOriginIdeal_le : lineOriginIdeal ≤ Ideal.span {(X 0 : MvPolynomial (Fin 1) ℂ)} := by
   intro q hq
   rw [lineOriginIdeal, RingHom.mem_ker, eval_zero] at hq
@@ -279,10 +330,18 @@ theorem lineOriginIdeal_le : lineOriginIdeal ≤ Ideal.span {(X 0 : MvPolynomial
   subst hm'
   exact (mem_support_iff.mp hm) (by rw [← constantCoeff_eq]; exact hq)
 
+/- English proof (translation)
+Rewrite using `[lineOriginIdeal, RingHom.mem_ker]`. Simplify using the standard rewrite rules.
+-/
 theorem X_mem_lineOriginIdeal : (X 0 : MvPolynomial (Fin 1) ℂ) ∈ lineOriginIdeal := by
   rw [lineOriginIdeal, RingHom.mem_ker]
   simp
 
+/- English proof (translation)
+Rewrite using `[linForm_one_line, bot_sup_eq]`. Use `⟨⟨RingHom.ker_isPrime _, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `X_mem_lineOriginIdeal`. Introduce `P hP _`.
+
+Conclude with `lineOriginIdeal_le.trans hP.2`.
+-/
 theorem lineOriginIdeal_mem_minimalPrimes :
     lineOriginIdeal ∈ ((⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ⊔
       Ideal.span {linForm (fun _ : Fin 1 => (1 : ℂ))}).minimalPrimes := by
@@ -293,6 +352,9 @@ theorem lineOriginIdeal_mem_minimalPrimes :
   · intro P hP _
     exact lineOriginIdeal_le.trans hP.2
 
+/- English proof (translation)
+Establish `h` using `hq _ X_mem_lineOriginIdeal`. Rewrite `h` using `[eval_X]`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Conclude with `h`.
+-/
 theorem eq_zero_of_mem_zeroLocus_lineOriginIdeal {q : Fin 1 → ℂ} (hq : q ∈ zeroLocus lineOriginIdeal) : q = 0 := by
   have h := hq _ X_mem_lineOriginIdeal
   rw [eval_X] at h
@@ -300,13 +362,22 @@ theorem eq_zero_of_mem_zeroLocus_lineOriginIdeal {q : Fin 1 → ℂ} (hq : q ∈
   rw [Fin.fin_one_eq_zero i]
   exact h
 
+/- English proof (translation)
+Introduce `q hq`. Conclude with `hq`.
+-/
 theorem zero_mem_zeroLocus_lineOriginIdeal : (0 : Fin 1 → ℂ) ∈ zeroLocus lineOriginIdeal := by
   intro q hq
   exact hq
 
+/- English proof (translation)
+Simplify using `[linVal]`.
+-/
 theorem linVal_one_line (x : Fin 1 → ℂ) : linVal (fun _ => (1 : ℂ)) x = x 0 := by
   simp [linVal]
 
+/- English proof (translation)
+The claim follows from `Metric.isOpen_ball isBounded_U := Metric.isBounded_ball mem_U := Metric.mem_ball_self one_pos mem_W := zero_mem_zeroLocus_lineOriginIdeal isOpen_V := isOpen_univ mem_V := Set.mem_univ _ pos := one_pos zeros q _ _ hq _ := by rw [linVal_one_line] at hq have hq0 : q = 0 := by funext …`.
+-/
 theorem goodPosition_line :
     GoodPosition (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) lineOriginIdeal (fun _ => 1) 0
       (0 : Matrix (Fin 0) (Fin 1) ℂ) (Metric.ball 0 1) Set.univ 1 1 where
@@ -345,6 +416,9 @@ theorem goodPosition_line :
     rw [hset, Set.encard_singleton]
     rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isAffVariety_bot 1, linForm_one_not_mem_point ℂ, lineOriginIdeal_mem_minimalPrimes, goodPosition_line⟩`.
+-/
 theorem LocalOrder.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) (0 + 1) ∧
       linForm (fun _ : Fin 1 => (1 : ℂ)) ∉ (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
@@ -354,6 +428,11 @@ theorem LocalOrder.hypotheses_inhabited :
         (0 : Matrix (Fin 0) (Fin 1) ℂ) (Metric.ball 0 1) Set.univ 1 1 :=
   ⟨isAffVariety_bot 1, linForm_one_not_mem_point ℂ, lineOriginIdeal_mem_minimalPrimes, goodPosition_line⟩
 
+/- English proof (translation)
+Use `⟨isAffVariety_bot 2, ?_, ?_, measurable_const, fun _ _ _ => rfl⟩` and prove the remaining obligations. Introduce `f hf k`. Rewrite `hf`, the goal using `[Ideal.mem_bot]`. Simplify using `[hf]`. Rewrite using `[Ideal.mem_bot]`.
+
+Simplify using `[linForm, Pi.single_apply, X_ne_zero]`.
+-/
 theorem ConeToProjective.hypotheses_inhabited :
     IsAffVariety (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) (1 + 1) ∧
       IsHomogIdeal (⊥ : Ideal (MvPolynomial (Fin 2) ℂ)) ∧

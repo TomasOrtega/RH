@@ -24,6 +24,9 @@ open GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.LeviHC
 open GlobalTheory.Orb (archMat)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TorFin.line_mulVec_eq_smul | exact GlobalTheory.TorFin.line_mulVec_eq_smul | (intros; apply GlobalTheory.TorFin.line_mulVec_eq_smul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.levi_line_eigenvector_adelic_point : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E) (w : InfinitePlace F) (τ : EmbOver E w)
       (Y : Matrix (Fin n) (Fin n) ℂ) (l : ℂ), Y *ᵥ (fun i => τ.1 (x i)) = l • (fun i => τ.1 (x i)) →

@@ -8,6 +8,9 @@ noncomputable section
 
 namespace GlobalTheory.OddFrame.DualFrame
 
+/- English proof (translation)
+Establish `: (fun τ => (M τ).det) = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ∏ a, (fun τ => M τ (σ a) a)`. Use extensionality with `τ`. Simplify using `[Matrix.det_apply', Finset.sum_apply, Finset.prod_apply]`. Rewrite using `[this]`. Conclude with `MDifferentiable.sum fun σ _ => (MDifferentiable.prod fun a _ => hM _ _).const_smul _`.
+-/
 theorem mdiff_det {n : ℕ} {M : ℍ → Matrix (Fin n) (Fin n) ℂ} (hM : ∀ a b, MDiff fun τ => M τ a b) :
     MDiff fun τ => (M τ).det := by
   have : (fun τ => (M τ).det) =
@@ -22,6 +25,11 @@ def dualEntry (i j : Fin r) : ℍ → ℂ := fun τ => ModularForm.discriminant 
 
 variable {s w F}
 
+/- English proof (translation)
+Establish `hJ : denom (y : GL (Fin 2) ℝ) τ ≠ 0` using `denom_ne_zero _ _`. Simplify using `only [evM, Matrix.of_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← zpow_add₀ hJ]`. Simplify using the standard rewrite rules.
+
+Use `_ = c i * (F k ∣[w k] s (π i)) τ * denom (y : GL (Fin 2) ℝ) τ ^ w k := by`. Rewrite using `[← slash_mul_apply, hc]`. Simplify using `[smul_eq_mul]`.
+-/
 theorem evM_smul {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r → ℂ}
     (hc : ∀ i j, F j ∣[w j] (s i * y) = c i • F j ∣[w j] s (π i)) (τ : ℍ) (i k : Fin r) :
     evM s w F (y • τ) i k = c i * evM s w F τ (π i) k * denom (y : GL (Fin 2) ℝ) τ ^ w k := by
@@ -33,6 +41,15 @@ theorem evM_smul {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r → ℂ}
     _ = c i * (F k ∣[w k] s (π i)) τ * denom (y : GL (Fin 2) ℝ) τ ^ w k := by
         rw [← slash_mul_apply, hc]; simp [smul_eq_mul]
 
+/- English proof (translation)
+Use `set J := denom (y : GL (Fin 2) ℝ) τ with hJdef`. Establish `hJ : J ≠ 0` using `denom_ne_zero _ _`. Establish `key : (Matrix.of fun j i => J ^ (-w j) * c i * (evM s w F τ)⁻¹ j (π i)) * evM s w F (y • τ) = 1`. Use extensionality with `j k`. Rewrite using `[Matrix.mul_apply]`.
+
+Simplify using `only [Matrix.of_apply, evM_smul hc, ← hJdef]`. Establish `h1 : ∀ l, J ^ (-w j) * c l * (evM s w F τ)⁻¹ j (π l) * (c l * evM s w F τ (π l) k * J ^ w k) = (J ^ (-w j) * J ^ w k) * ((evM s w F τ)⁻¹ j (π l) * evM s w F τ (π l) k)`. Introduce `l`. Take the linear combination `(J ^ (-w j) * (evM s w F τ)⁻¹ j (π l) * evM s w F τ (π l) k * J ^ w k) * hcc l`. Rewrite using `[Finset.sum_congr rfl fun l _ => h1 l, ← Finset.mul_sum, Equiv.sum_comp π (fun l => (evM s w F τ)⁻¹ j l * evM s w F τ l k), ← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hA)]`.
+
+Break down `eq_or_ne j k with rfl | hjk` into its components or cases. Rewrite using `[← zpow_add₀ hJ]`. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hjk]`. Rewrite using `[Matrix.inv_eq_left_inv key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem inv_evM_smul {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r → ℂ} (hcc : ∀ i, c i * c i = 1)
     (hc : ∀ i j, F j ∣[w j] (s i * y) = c i • F j ∣[w j] s (π i)) (τ : ℍ) (hA : (evM s w F τ).det ≠ 0)
     (i j : Fin r) :
@@ -54,6 +71,9 @@ theorem inv_evM_smul {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r → �
     · simp [Matrix.one_apply_ne hjk]
   rw [Matrix.inv_eq_left_inv key]; rfl
 
+/- English proof (translation)
+Establish `hJ : denom (y : GL (Fin 2) ℝ) τ ≠ 0` using `denom_ne_zero _ _`. Establish `h` using `congrFun (SlashInvariantForm.slash_action_generators_SL2Z ModularForm.discriminant_S_invariant ModularForm.discriminant_T_invariant y) τ`. Rewrite `h` using `[ModularForm.SL_slash_apply]`. Rewrite using `[← h, mul_assoc, ← zpow_add₀ hJ]`. Simplify using the standard rewrite rules.
+-/
 theorem discriminant_smul (y : SL(2, ℤ)) (τ : ℍ) :
     ModularForm.discriminant (y • τ) = ModularForm.discriminant τ * denom (y : GL (Fin 2) ℝ) τ ^ (12 : ℤ) := by
   have hJ : denom (y : GL (Fin 2) ℝ) τ ≠ 0 := denom_ne_zero _ _
@@ -62,6 +82,11 @@ theorem discriminant_smul (y : SL(2, ℤ)) (τ : ℍ) :
   rw [ModularForm.SL_slash_apply] at h
   rw [← h, mul_assoc, ← zpow_add₀ hJ]; simp
 
+/- English proof (translation)
+Use extensionality with `τ`. Establish `hJ : denom (y : GL (Fin 2) ℝ) τ ≠ 0` using `denom_ne_zero _ _`. Rewrite using `[ModularForm.SL_slash_apply]`. Simplify using `only [dualEntry, Pi.smul_apply, smul_eq_mul, discriminant_smul, inv_evM_smul hcc hc τ (hA τ)]`. Establish `hJJ : denom (y : GL (Fin 2) ℝ) τ ^ (12 : ℤ) * denom (y : GL (Fin 2) ℝ) τ ^ (-w j) * denom (y : GL (Fin 2) ℝ) τ ^ (-(12 - w j)) = 1`.
+
+Rewrite using `[← zpow_add₀ hJ, ← zpow_add₀ hJ, show (12 : ℤ) + -w j + -(12 - w j) = 0 by ring, zpow_zero]`. Take the linear combination `(c i * ModularForm.discriminant τ * (evM s w F τ)⁻¹ j (π i)) * hJJ`.
+-/
 theorem dualEntry_slash {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r → ℂ} (hcc : ∀ i, c i * c i = 1)
     (hc : ∀ i j, F j ∣[w j] (s i * y) = c i • F j ∣[w j] s (π i)) (hA : ∀ τ, (evM s w F τ).det ≠ 0)
     (i j : Fin r) : dualEntry s w F i j ∣[12 - w j] y = c i • dualEntry s w F (π i) j := by
@@ -74,6 +99,19 @@ theorem dualEntry_slash {y : SL(2, ℤ)} {π : Equiv.Perm (Fin r)} {c : Fin r �
     rw [← zpow_add₀ hJ, ← zpow_add₀ hJ, show (12 : ℤ) + -w j + -(12 - w j) = 0 by ring, zpow_zero]
   linear_combination (c i * ModularForm.discriminant τ * (evM s w F τ)⁻¹ j (π i)) * hJJ
 
+/- English proof (translation)
+Take `⟨π, hπ⟩` from `hs.exists_perm y`. Use `choose g hg hdec using hπ`. Set `c : Fin r → ℂ` to `fun l => if s l * y = g l * s (π l) then 1 else -1`. Establish `hcc : ∀ l, c l * c l = 1`. Apply the tactic sequence `intro l; simp only [c]; split_ifs <;> norm_num`.
+
+Establish `hc : ∀ l j, F j ∣[w j] (s l * y) = c l • F j ∣[w j] s (π l)`. Introduce `l j`. Distinguish the cases in `hp : s l * y = g l * s (π l)`. Simplify using `only [c, if_pos hp]`. Rewrite using `[hp, (hF j).2.slash_mul (hg l), one_smul]`.
+
+Simplify using `only [c, if_neg hp]`. Rewrite using `[(hdec l).resolve_left hp, slash_neg_of_odd (hF j).1, (hF j).2.slash_mul (hg l), neg_one_smul]`. Establish `hπi : π i = i'`. Apply `hs.2 (π i) i' ((g i)⁻¹ * γ) (Γ.mul_mem (Γ.inv_mem (hg i)) hγ)` to reduce the goal to its premises. Break down `hdec i with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[mul_assoc, ← hy, h, inv_mul_cancel_left]`. Use `right`. Rewrite using `[mul_assoc, ← hy, h, mul_neg, neg_neg, inv_mul_cancel_left]`. Establish `hp : s i * y = g i * s (π i)`.
+
+Assume the negation of the conclusion as `hp`. Establish `h` using `(hdec i).resolve_left hp`. Rewrite `h` using `[hy, hπi, ← neg_mul]`. Establish `h2 : γ = -g i` using `mul_right_cancel h`. Apply `hΓ` to reduce the goal to its premises.
+
+Establish `h3 : (-1 : SL(2, ℤ)) = γ * (g i)⁻¹` using `by rw [h2, neg_mul, mul_inv_cancel]`. Rewrite using `[h3]`. Conclude with `Γ.mul_mem hγ (Γ.inv_mem (hg i))`. Rewrite using `[dualEntry_slash hcc hc hA, hπi]`. Simplify using `only [c, if_pos hp, one_smul]`.
+-/
 theorem dualEntry_slash_of_eq {Γ : Subgroup SL(2, ℤ)} (hΓ : (-1 : SL(2, ℤ)) ∉ Γ) (hs : IsReps Γ s)
     (hF : ∀ j, Odd (w j) ∧ IsMF Γ (w j) (F j)) (hA : ∀ τ, (evM s w F τ).det ≠ 0)
     {y γ : SL(2, ℤ)} (hγ : γ ∈ Γ) {i i' : Fin r} (hy : s i * y = γ * s i') (j : Fin r) :
@@ -108,6 +146,11 @@ theorem dualEntry_slash_of_eq {Γ : Subgroup SL(2, ℤ)} (hΓ : (-1 : SL(2, ℤ)
   rw [dualEntry_slash hcc hc hA, hπi]
   simp only [c, if_pos hp, one_smul]
 
+/- English proof (translation)
+Apply the tactic sequence `have e : dualEntry s w F i j = ModularForm.discriminant * ((fun τ => (evM s w F τ).det)⁻¹ * fun τ => ((evM s w F τ).updateRow i (Pi.single j 1)).det) := by`. Use extensionality with `τ`. Simplify using `[dualEntry, Matrix.inv_def, Matrix.adjugate_apply, Ring.inverse_eq_inv']`. Rewrite using `[e]`. Use `CuspForm.discriminant.holo'.mul (((mdiff_det_evM s w hF).inv hA).mul (mdiff_det fun a b => ?_))` and prove the remaining obligations.
+
+Distinguish the cases in `h : a = i`. Simplify using `only [Matrix.updateRow_apply, if_pos h]`. Conclude with `mdifferentiable_const`. Simplify using `only [Matrix.updateRow_apply, if_neg h]`. Conclude with `mdiff_slash (hF b) _ _`.
+-/
 theorem mdiff_dualEntry (hF : ∀ j, MDiff (F j)) (hA : ∀ τ, (evM s w F τ).det ≠ 0) (i j : Fin r) :
     MDiff (dualEntry s w F i j) := by
   have e : dualEntry s w F i j = ModularForm.discriminant * ((fun τ => (evM s w F τ).det)⁻¹ *
@@ -122,6 +165,21 @@ theorem mdiff_dualEntry (hF : ∀ j, MDiff (F j)) (hA : ∀ τ, (evM s w F τ).d
   · simp only [Matrix.updateRow_apply, if_neg h]
     exact mdiff_slash (hF b) _ _
 
+/- English proof (translation)
+Apply the tactic sequence `let G : Fin r → ℍ → ℂ := fun j => dualEntry s w F j j ∣[12 - w j] (s j)⁻¹`. Establish `hodd : ∀ j, Odd (12 - w j)` using `fun j => by`. Take `⟨k, hk⟩` from `(hF j).1`. Conclude with `⟨5 - k, by omega⟩`. Apply the tactic sequence `have hpos : ∀ j i, ∀ γ ∈ Γ, G j ∣[12 - w j] (γ * s i) = dualEntry s w F i j := by`.
+
+Introduce `j i γ hγ`. Simplify using `only [G]`. Rewrite using `[← SlashAction.slash_mul]`. Conclude with `dualEntry_slash_of_eq hΓ hs hF hA hγ (mul_inv_cancel_left _ _) j`. Apply the tactic sequence `have hzero : ∀ i j, IsZeroAtImInfty (dualEntry s w F i j) := fun i j => tendsto_pi_nhds.mp (tendsto_pi_nhds.mp hT j) i`.
+
+Apply the tactic sequence `refine ⟨G, fun j => ⟨fun γ hγ => ?_, mdiff_slash (mdiff_dualEntry (fun j => (hF j).2.2.1) hA j j) _ _, fun x => ?_⟩, fun τ => ?_⟩`. Take `⟨i, g, hg, h | h⟩` from `hs.1 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← mul_neg, ← h, mul_one]`.
+
+Use `_ = G j ∣[12 - w j] (-(g * s i)) := by`. Rewrite using `[slash_neg_of_odd (hodd j), slash_neg_of_odd (hodd j), hpos j i _ (Γ.mul_mem hγ hg), hpos j i g hg]`. Use `_ = G j := by rw [← h, SlashAction.slash_one]`. Take `⟨i, g, hg, rfl | rfl⟩` from `hs.1 x`. Rewrite using `[hpos j i g hg]`.
+
+Conclude with `hzero i j`. Rewrite using `[slash_neg_of_odd (hodd j), hpos j i g hg]`. Conclude with `(hzero i j).neg`. Establish `e : evM s (fun j => 12 - w j) G τ = (ModularForm.discriminant τ • (evM s w F τ)⁻¹).transpose`. Use extensionality with `i j`.
+
+Establish `h` using `hpos j i 1 Γ.one_mem`. Rewrite `h` using `[one_mul]`. Express the relevant statement in the definitionally equal form `(G j ∣[12 - w j] s i) τ = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Matrix.det_transpose, Matrix.det_smul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (pow_ne_zero _ (ModularForm.discriminant_ne_zero τ)) (inv_ne_zero (hA τ))`.
+-/
 theorem exists_dual_cuspForms (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (hΓ : (-1 : SL(2, ℤ)) ∉ Γ) (hs : IsReps Γ s)
     (hF : ∀ j, Odd (w j) ∧ IsMF Γ (w j) (F j)) (hA : ∀ τ, (evM s w F τ).det ≠ 0)

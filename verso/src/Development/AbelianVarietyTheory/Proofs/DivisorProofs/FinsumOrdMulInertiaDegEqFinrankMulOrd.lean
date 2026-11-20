@@ -7,6 +7,15 @@ namespace GlobalTheory
 
 open IsLocalRing in
 open scoped Pointwise in
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_linearIndependent_of_le_finrank (R := A) (M := M) le_rfl`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Use `set N := Submodule.span A (Set.range v)`. Establish `hN : Module.finrank A N = Module.finrank A M`. Rewrite using `[finrank_span_eq_card hv, Fintype.card_fin]`.
+
+Establish `hC : Module.finrank A (M ⧸ N) = 0`. Use `Submodule.finrank_quotient_add_finrank N` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `htors : Module.IsTorsion A (M ⧸ N)`. Introduce `x`.
+
+Take `⟨c, hc, hcx⟩` from `Module.finrank_eq_zero_iff.1 hC x`. Conclude with `⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩, hcx⟩`. Take `⟨c, hcann, hcnz⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors htors`. Use `⟨c, hcnz, fun m ↦ ?_⟩` and prove the remaining obligations. Establish `: c • (N.mkQ m) = 0` using `(Submodule.mem_annihilator.1 hcann) _ Submodule.mem_top`.
+
+Rewrite `this` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+-/
 private lemma exists_linearIndependent_smul_mem_span {A M : Type*} [CommRing A] [IsDomain A] [AddCommGroup M] [Module A M]
     [Module.Finite A M] :
     ∃ v : Fin (Module.finrank A M) → M, LinearIndependent A v ∧
@@ -30,6 +39,17 @@ private lemma exists_linearIndependent_smul_mem_span {A M : Type*} [CommRing A] 
 
 open IsLocalRing in
 open scoped Pointwise in
+/- English proof (translation)
+Take `⟨n, s, hs⟩` from `Module.Finite.exists_fin (R := A) (M := X)`. Establish `hle : ∀ i, Ideal.span {c} ≤ LinearMap.ker (LinearMap.toSpanSingleton A X (s i))`. Introduce `i`. Rewrite using `[Ideal.span_singleton_le_iff_mem, LinearMap.mem_ker, LinearMap.toSpanSingleton_apply]`. Conclude with `hX _`.
+
+Set `φ : (Fin n → A ⧸ Ideal.span {c}) →ₗ[A] X` to `∑ i, (Submodule.liftQ _ (LinearMap.toSpanSingleton A X (s i)) (hle i)) ∘ₗ LinearMap.proj i`. Establish `hφ : Function.Surjective φ`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨Pi.single i (Submodule.Quotient.mk 1), ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [φ, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Pi.single_eq_same]`. Conclude with `(Submodule.liftQ_apply _ _ 1).trans (one_smul A _)`. Introduce `j _ hj`.
+
+Simplify using `[Pi.single_apply, hj]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hQ : IsFiniteLength A (A ⧸ Ideal.span {c})` using `isFiniteLength_quotient_span_singleton A hc`. Rewrite `hQ`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`.
+
+Take `⟨-, hQa⟩` from `hQ`. Conclude with `⟨inferInstance, isArtinian_of_surjective _ φ hφ⟩`.
+-/
 private lemma isFiniteLength_of_nonZeroDivisor_smul_eq_zero {A X : Type*} [CommRing A] [IsNoetherianRing A]
     [Ring.KrullDimLE 1 A] [AddCommGroup X] [Module A X] [Module.Finite A X] {c : A}
     (hc : c ∈ nonZeroDivisors A) (hX : ∀ x : X, c • x = 0) : IsFiniteLength A X := by
@@ -59,6 +79,9 @@ private lemma isFiniteLength_of_nonZeroDivisor_smul_eq_zero {A X : Type*} [CommR
 
 open IsLocalRing in
 open scoped Pointwise in
+/- English proof (translation)
+Establish `e` using `Module.length_eq_add_of_exact (Submodule.map P.mkQ Q).subtype (Submodule.map P.mkQ Q).mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Rewrite `e` using `[(Submodule.quotientQuotientEquivQuotient P Q h).length_eq]`. Rewrite using `[e, (LinearMap.quotKerEquivRange (P.mkQ ∘ₗ Q.subtype)).length_eq, LinearMap.range_comp, Submodule.range_subtype]`.
+-/
 private lemma length_quotient_eq_length_add_of_le {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M]
     (P Q : Submodule A M) (h : P ≤ Q) :
     Module.length A (M ⧸ P) =
@@ -72,6 +95,39 @@ private lemma length_quotient_eq_length_add_of_le {A M : Type*} [CommRing A] [Ad
 
 open IsLocalRing in
 open scoped Pointwise in
+/- English proof (translation)
+Take `⟨v, hv, c, hc, hcN⟩` from `exists_linearIndependent_smul_mem_span (A := A) (M := M)`. Use `set N := Submodule.span A (Set.range v) with hNdef`. Establish `hCfin : IsFiniteLength A (M ⧸ N)`. Use `isFiniteLength_of_nonZeroDivisor_smul_eq_zero hc fun x ↦ ?_` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H m => rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hcN m`. Establish `hmem : ∀ m : M, a • m ∈ a • N ↔ m ∈ N`. Introduce `m`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Take `⟨n, hn, he⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 h`. Use `hM (n - m) (by rw [smul_sub, he, sub_self])` as an intermediate fact. Rewrite `hn` using `[sub_eq_zero.1 this]`. Then use the resulting hypothesis. Introduce `h`.
+
+Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ h`. Establish `hle1 : a • N ≤ N`. Rewrite using `[← Submodule.ideal_span_singleton_smul]`. Conclude with `Submodule.smul_le_right`. Establish `hle2 : a • N ≤ a • (⊤ : Submodule A M)`.
+
+Rewrite using `[← Submodule.ideal_span_singleton_smul, ← Submodule.ideal_span_singleton_smul]`. Conclude with `Submodule.smul_mono le_rfl le_top`. Establish `e1` using `length_quotient_eq_length_add_of_le (a • N) N hle1`. Establish `e2` using `length_quotient_eq_length_add_of_le (a • N) (a • ⊤) hle2`. Set `μ : M ≃ₗ[A] (a • ⊤ : Submodule A M)` to `LinearEquiv.ofBijective ((a • LinearMap.id).codRestrict (a • ⊤) (fun m ↦ Submodule.smul_mem_pointwise_smul m a ⊤ Submodule.mem_top)) ⟨fun x y h ↦ by`.
+
+Establish `h' : a • x = a • y` using `congrArg Subtype.val h`. Conclude with `sub_eq_zero.1 (hM _ (by rw [smul_sub, h', sub_self])),`. Use `by`. Introduce and unpack `⟨_, hy⟩`. Take `⟨m, -, rfl⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 hy`.
+
+Conclude with `⟨m, rfl⟩⟩`. Establish `hα : Module.length A ((a • ⊤ : Submodule A M) ⧸ LinearMap.ker ((a • N).mkQ ∘ₗ (a • ⊤ : Submodule A M).subtype)) = Module.length A (M ⧸ N)`. Use `(Submodule.Quotient.equiv N _ μ ?_).length_eq.symm` and prove the remaining obligations. Use extensionality with `⟨x, hx⟩`. Take `⟨m, -, rfl⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 hx`.
+
+Simplify using `only [Submodule.mem_map, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, he⟩`. Establish `: a • n = a • m` using `congrArg Subtype.val he`. Rewrite using `[← hM (n - m) (by rw [smul_sub, this, sub_self]) |> sub_eq_zero.1]`.
+
+Conclude with `hn`. Introduce `h`. Conclude with `⟨m, h, rfl⟩`. Establish `hβ : Module.length A (N ⧸ LinearMap.ker ((a • N).mkQ ∘ₗ N.subtype)) = Module.finrank A M * Module.length A (A ⧸ Ideal.span {a})`. Establish `hker : LinearMap.ker ((a • N).mkQ ∘ₗ N.subtype) = a • (⊤ : Submodule A N)`.
+
+Use extensionality with `⟨x, hx⟩`. Simplify using `only [LinearMap.mem_ker, LinearMap.comp_apply, Submodule.subtype_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨n, hn, rfl⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 h`.
+
+Conclude with `Submodule.smul_mem_pointwise_smul (⟨n, hn⟩ : N) a ⊤ Submodule.mem_top`. Introduce `h`. Take `⟨n, -, he⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 h`. Establish `hx' : x = a • (n : M)` using `(congrArg Subtype.val he).symm`. Rewrite using `[hx']`.
+
+Conclude with `Submodule.smul_mem_pointwise_smul _ a N n.2`. Set `e : N ≃ₗ[A] (Fin (Module.finrank A M) → A)` to `hv.linearCombinationEquiv.symm ≪≫ₗ Finsupp.linearEquivFunOnFinite A A _`. Establish `hpi : (a • ⊤ : Submodule A (Fin (Module.finrank A M) → A)) = Submodule.pi Set.univ (fun _ ↦ Ideal.span {a})`. Use extensionality with `f`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_implies, Ideal.mem_span_singleton']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨g, -, rfl⟩` from `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.1 h`. Conclude with `⟨g i, by simp [mul_comm]⟩`. Introduce `h choose g hg using h`.
+
+Use `Submodule.mem_smul_pointwise_iff_exists _ _ _ |>.2 ⟨g, Submodule.mem_top, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[← hg i, mul_comm]`. Rewrite using `[hker, (Submodule.Quotient.equiv _ _ e (by`. Rewrite using `[Submodule.map_pointwise_smul, Submodule.map_top, LinearEquiv.range])).length_eq, hpi,`.
+
+Use the proof step `(Submodule.quotientPi _).length_eq, Module.length_pi_of_fintype]`. Simplify using the standard rewrite rules. Rewrite `e2` using `[hα]`. Rewrite `e1` using `[hβ]`. Establish `hfin : Module.length A (M ⧸ N) ≠ ⊤` using `Module.length_ne_top_iff.2 hCfin`.
+
+Rewrite `e2` using `[e1, add_comm]`. Conclude with `(WithTop.add_left_cancel hfin e2).symm`.
+-/
 private lemma length_quotient_smul_univ_eq_finrank_mul {A M : Type*} [CommRing A] [IsDomain A]
     [IsNoetherianRing A] [Ring.KrullDimLE 1 A] [AddCommGroup M] [Module A M] [Module.Finite A M]
     (a : A) (hM : ∀ m : M, a • m = 0 → m = 0) :
@@ -168,6 +224,29 @@ private lemma length_quotient_smul_univ_eq_finrank_mul {A M : Type*} [CommRing A
 open IsLocalRing in
 open scoped Pointwise in
 
+/- English proof (translation)
+Use `haveI : Ring.KrullDimLE 1 A := Ring.krullDimLE_iff.2 hdim.le`. Use `haveI : IsNoetherianRing B := isNoetherian_of_tower A inferInstance`. Use `haveI := _root_.GlobalTheory.finite_maximalSpectrum_of_finite A B`. Use `haveI : Fintype (MaximalSpectrum B) := Fintype.ofFinite _`. Use `set b := algebraMap A B a with hb`.
+
+Establish `hb0 : b ≠ 0`. Rewrite using `[hb, ne_eq, ← map_zero (algebraMap A B)]`. Conclude with `hinj.ne ha`. Establish `hM : ∀ m : B, a • m = 0 → m = 0` using `fun m h ↦ by`. Rewrite `h` using `[Algebra.smul_def]`.
+
+Conclude with `(mul_eq_zero.1 h).resolve_left hb0`. Establish `hI : (Ideal.span {b}).restrictScalars A = (a • ⊤ : Submodule A B)`. Use extensionality with `x`. Rewrite using `[Submodule.restrictScalars_mem, Ideal.mem_span_singleton', Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, Submodule.mem_top, by rw [Algebra.smul_def, mul_comm]⟩`. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, by rw [Algebra.smul_def, mul_comm]⟩`. Establish `hordA : Ring.ord A a ≠ ⊤` using `Module.length_ne_top_iff.2 (isFiniteLength_quotient_span_singleton A (mem_nonZeroDivisors_of_ne_zero ha))`.
+
+Establish `h1 : Module.length A (B ⧸ Ideal.span {b}) = Module.finrank A B * Ring.ord A a`. Rewrite using `[← (Submodule.Quotient.restrictScalarsEquiv A (Ideal.span {b})).length_eq, hI, length_quotient_smul_univ_eq_finrank_mul a hM]`. Both sides reduce to the same expression. Establish `hne : (Module.finrank A B : ℕ∞) * Ring.ord A a ≠ ⊤` using `WithTop.mul_ne_top (ENat.coe_ne_top _) hordA`. Establish `hfinA : IsFiniteLength A (B ⧸ Ideal.span {b})`.
+
+Rewrite using `[← Module.length_ne_top_iff, h1]`. Conclude with `hne`. Establish `hfinB : IsFiniteLength B (B ⧸ Ideal.span {b})`. Rewrite `hfinA`, the goal using `[isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `⟨inferInstance, isArtinian_of_tower A hfinA.2⟩`.
+
+Establish `h2` using `_root_.GlobalTheory.length_restrictScalars_eq_sum_inertiaDeg_of_isLocalizedModule A B hfinB (fun n : MaximalSpectrum B ↦ Localization.AtPrime n.asIdeal) (fun n ↦ Localization.AtPrime n.asIdeal ⧸ (Ideal.span {b}).localized' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Al …`. Establish `hloc : ∀ n : MaximalSpectrum B, Module.length (Localization.AtPrime n.asIdeal) (Localization.AtPrime n.asIdeal ⧸ (Ideal.span {b}).localized' (Localization.AtPrime n.asIdeal) n.asIdeal.primeCompl (Algebra.linearMap B (Localization.AtPrime n.asIdeal))) = Ring.ord (Localization.AtPr …`. Introduce `n`. Rewrite using `[Submodule.localized'_span, Set.image_singleton]`. Both sides reduce to the same expression.
+
+Simplify using `only [hloc, h1] at h2`. Establish `hterm : ∀ n ∈ (Finset.univ : Finset (MaximalSpectrum B)), Ring.ord (Localization.AtPrime n.asIdeal) (algebraMap B _ b) * ((n.asIdeal.inertiaDeg A : ℕ) : ℕ∞) ≠ ⊤` using `fun n hn ↦ ne_top_of_le_ne_top (h2 ▸ hne) (Finset.single_le_sum (f := fun n : MaximalSpectrum B ↦ Ring.ord (Localization.AtPrime n.asIdeal) (algebraMap B _ b) * ((n.asIdeal.inertiaDeg A : ℕ) : ℕ∞)) (fun _ _ ↦ bot_le) hn)`. Establish `h3` using `congrArg ENat.toNat h2`. Rewrite `h3` using `[ENat.toNat_sum hterm]`. Simplify using `only [ENat.toNat_mul, ENat.toNat_coe] at h3`.
+
+Establish `hS : {Q : PrimeSpectrum B | Q.asIdeal.comap (algebraMap A B) = maximalIdeal A} = Set.range MaximalSpectrum.toPrimeSpectrum`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce `hQ`. Establish `: (Q.asIdeal.comap (algebraMap A B)).IsMaximal`.
+
+Rewrite using `[show Q.asIdeal.comap (algebraMap A B) = maximalIdeal A from hQ]`. Use `infer_instance`. Conclude with `⟨⟨Q.asIdeal, Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ this⟩, rfl⟩`. Introduce and unpack `⟨n, rfl⟩`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal n.asIdeal)`.
+
+Rewrite using `[hS, finsum_mem_range MaximalSpectrum.toPrimeSpectrum_injective, finsum_eq_sum_of_fintype]`. Conclude with `h3.symm` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.finsum_ord_mul_inertiaDeg_eq_finrank_mul_ord (A B : Type) [CommRing A] [IsDomain A]
     [IsNoetherianRing A] [IsLocalRing A] [CommRing B] [IsDomain B] [Algebra A B]
     [Module.Finite A B] (hinj : Function.Injective (algebraMap A B)) (hdim : ringKrullDim A = 1)

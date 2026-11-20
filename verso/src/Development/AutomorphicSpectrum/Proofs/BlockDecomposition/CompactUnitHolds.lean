@@ -23,6 +23,11 @@ section Abstract
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G]
   [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [DiscreteTopology Γ]
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `hc`. Use `⟨?_⟩` and prove the remaining obligations. Establish `e : mk Γ '' C = Set.univ` using `Set.eq_univ_of_forall fun q => by`. Take `⟨g, rfl⟩` from `Quotient.exists_rep q`. Take `⟨γ, hγ, hg⟩` from `h g`.
+
+Conclude with `⟨_, hg, (mk_eq_iff.2 ⟨⟨γ, hγ⟩, rfl⟩).symm⟩`. Rewrite using `[← e]`. Conclude with `hC.image continuous_quot_mk`.
+-/
 theorem compactSpace_quot (hc : ∃ C : Set G, IsCompact C ∧ ∀ g, ∃ γ ∈ Γ, γ * g ∈ C) : CompactSpace (Quot Γ) := by
   obtain ⟨C, hC, h⟩ := hc
   refine ⟨?_⟩
@@ -33,6 +38,9 @@ theorem compactSpace_quot (hc : ∃ C : Set G, IsCompact C ∧ ∀ g, ∃ γ ∈
   rw [← e]
   exact hC.image continuous_quot_mk
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun g => by obtain ⟨C, hC, hcov⟩ := hc have h := isFundamentalDomain_stdDom Γ μ have hfin : μ (stdDom Γ) ≠ ⊤ := by rw [← GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h] refine ((quotMeasure_le (T := C) MeasurableSet.univ fun q _ => ?_).trans_lt hC.measure_lt_top).ne obtain …`.
+-/
 theorem isMulRightInvariant_of_cover (hc : ∃ C : Set G, IsCompact C ∧ ∀ g, ∃ γ ∈ Γ, γ * g ∈ C)
     (μ : Measure G) [μ.IsHaarMeasure] : μ.IsMulRightInvariant := ⟨fun g => by
   obtain ⟨C, hC, hcov⟩ := hc
@@ -52,6 +60,21 @@ theorem isMulRightInvariant_of_cover (hc : ∃ C : Set G, IsCompact C ∧ ∀ g,
     smul_eq_mul, ENNReal.mul_eq_right (h.measure_ne_zero (NeZero.ne μ)) hfin, ENNReal.coe_eq_one] at h1
   rw [e, h1, one_smul]⟩
 
+/- English proof (translation)
+Set `μ : Measure G` to `Measure.haar`. Use `haveI : μ.IsMulRightInvariant := isMulRightInvariant_of_cover Γ hc μ`. Use `haveI := compactSpace_quot Γ hc`. Establish `hm : ∀ v, MemL2Quotient Γ μ (f v)` using `fun v => (GlobalTheory.AutomorphicL2Cocompact.cocompact G Γ μ inferInstance).2.2 _ (hleft v) (hcont v)`. Set `T : V →ₗ[ℂ] L2 Γ μ` to `{ toFun := fun v => (hm v).toL2 map_add' := fun v w => by`.
+
+Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [(hm (v + w)).coeFn_toL2, (hm v).coeFn_toL2, (hm w).coeFn_toL2, Lp.coeFn_add (hm v).toL2 (hm w).toL2] with q h1 h2 h3 h4`. Rewrite using `[h1, h4, Pi.add_apply, h2, h3, map_add]`. Both sides reduce to the same expression. Use the proof step `map_smul' := fun c v => by`.
+
+Apply `Lp.ext` to reduce the goal to its premises. Use `filter_upwards [(hm (c • v)).coeFn_toL2, (hm v).coeFn_toL2, Lp.coeFn_smul c (hm v).toL2] with q h1 h2 h3`. Rewrite using `[h1, RingHom.id_apply, h3, Pi.smul_apply, h2, map_smul]`. Use `rfl }`. Establish `hT : ∀ v, T v = (hm v).toL2` using `fun _ => rfl`.
+
+Establish `hT0 : ∀ v, T v = 0 → v = 0` using `fun v h0 => by`. Establish `h1 : ∀ᵐ q ∂GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ, GlobalTheory.AutomorphicL2Unitary.descend Γ (f v) q = 0` using `by filter_upwards [(hm v).coeFn_toL2, Lp.coeFn_zero ℂ 2 (GlobalTheory.AutomorphicL2Unitary.quotMeasure Γ μ)] with q h1 h2`. Rewrite using `[← h1, ← hT, h0, h2]`. Both sides reduce to the same expression. Establish `h2 : ∀ᵐ g ∂μ, f v g = 0` using `by filter_upwards [ae_quotMeasure_iff.1 h1] with g hg`.
+
+Rewrite `hg` using `[(hleft v).descend_mk]`. Then use the resulting hypothesis. Establish `h3 : f v = 0` using `(Continuous.ae_eq_iff_eq μ (hcont v) continuous_const).1 h2`. Conclude with `hf (by rw [h3, map_zero])`. Establish `hTR : ∀ x v, T (ρ (p x) v) = R Γ μ (ι x) (T v)` using `fun x v => by`. Rewrite using `[hT, hT, right_translate_toL2, MemL2Quotient.toL2_eq_iff_ae_eq]`.
+
+Conclude with `.of_forall fun y => heq x v y`. Establish `hU` using `isUnitaryRep_R Γ μ`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => ⟪T w, T v⟫_ℂ) (fun _ _ _ => by simp [inner_add_right]) (fun _ _ _ => by simp [inner_smul_right]) (fun _ _ _ => by simp [inner_add_left]) (fun _ _ _ => by simp [inner_smul_left]), fun v w => (inner_conj_symm (T v) (T w)) …` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hp g`. Express the relevant statement in the definitionally equal form `⟪T (ρ (p x) w), T (ρ (p x) v)⟫_ℂ = ⟪T w, T v⟫_ℂ`.
+
+Rewrite using `[hTR, hTR]`. Conclude with `GlobalTheory.AutMult.inner_map_map hU _ _ _`.
+-/
 theorem isUnitarisable_of_embedding (hc : ∃ C : Set G, IsCompact C ∧ ∀ g, ∃ γ ∈ Γ, γ * g ∈ C)
     {L H V : Type} [Group L] [Group H] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ H V)
     (p : L →* H) (hp : Function.Surjective p) (ι : L →* G) (f : V →ₗ[ℂ] (G → ℂ)) (hf : Function.Injective f)
@@ -111,11 +134,21 @@ local notation "σ₀" => (IsCMField.complexConj E : E →ₐ[maximalRealSubfiel
 
 open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
+/- English proof (translation)
+Take `⟨j, h, -⟩` from `GlobalTheory.DefTransfer.Glob.exists_group (E := E) (n := n) 1 1 (by simp [cT])`. Conclude with `⟨j, h⟩`.
+-/
 theorem exists_HA (n : ℕ) : ∃ j : UA E n ≃ₜ* HA (AF F₀) σ₀ (1 : Matrix (Fin n) (Fin n) E),
     ∀ x, x ∈ ratU E n ↔ j x ∈ HFinIn (AF F₀) σ₀ (1 : Matrix (Fin n) (Fin n) E) := by
   obtain ⟨j, h, -⟩ := GlobalTheory.DefTransfer.Glob.exists_group (E := E) (n := n) 1 1 (by simp [cT])
   exact ⟨j, h⟩
 
+/- English proof (translation)
+Introduce `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hc : ∀ y : E, τ (IsCMField.complexConj E y) = star (τ y)` using `fun y => IsCMField.complexEmbedding_complexConj E τ y`. Establish `e : Formalism.UG.hform (σ₀ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) x x = ∑ i, IsCMField.complexConj E (x i) * x i`. Simplify using `[Formalism.UG.hform, Matrix.one_apply]`.
+
+Establish `h1` using `congrArg τ (e.symm.trans h)`. Rewrite `h1` using `[map_sum, map_zero]`. Establish `h2 : ∑ i, ((Complex.normSq (τ (x i)) : ℝ) : ℂ) = 0`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hc, Complex.star_def, mul_comm, Complex.mul_conj]`. Establish `h3 : ∑ i, Complex.normSq (τ (x i)) = 0` using `by exact_mod_cast h2`. Use `hx (funext fun i => ?_)` and prove the remaining obligations. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg _).1 h3 i (Finset.mem_univ _)`. Conclude with `(map_eq_zero τ).1 (Complex.normSq_eq_zero.1 h4)`.
+-/
 theorem hform_one_ne_zero {n : ℕ} (x : Fin n → E) (hx : x ≠ 0) :
     Formalism.UG.hform (σ₀ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) x x ≠ 0 := by
   intro h
@@ -136,6 +169,15 @@ theorem hform_one_ne_zero {n : ℕ} (x : Fin n → E) (hx : x ≠ 0) :
   have h4 := (Finset.sum_eq_zero_iff_of_nonneg fun i _ => Complex.normSq_nonneg _).1 h3 i (Finset.mem_univ _)
   exact (map_eq_zero τ).1 (Complex.normSq_eq_zero.1 h4)
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `exists_HA (E := E) n`. Take `⟨l1, l2, l3⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F₀ E σ₀ n 1`. Establish `hcm` using `GlobalTheory.AdelicU.isCMExt_of_isCMField E`. Establish `hherm : IsHermND σ₀ (1 : Matrix (Fin n) (Fin n) E)`. Use `⟨fun a b => ?_, by simp⟩` and prove the remaining obligations.
+
+Distinguish the cases in `e : a = b`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, e, Ne.symm e]`. Take `⟨K, hK, hKe⟩` from `GlobalTheory.AnisoCocompact.exists_compact σ₀ hcm 1 hherm hform_one_ne_zero`.
+
+Use `haveI := GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ₀ (1 : Matrix (Fin n) (Fin n) E)`. Establish `hcf : Continuous (fun x : ratU E n => (⟨j x.1, (hj _).1 x.2⟩ : HFinIn (AF F₀) σ₀ (1 : Matrix (Fin n) (Fin n) E)))` using `(j.continuous.comp continuous_subtype_val).subtype_mk _`. Use `⟨inferInstance, j.toHomeomorph.isClosedEmbedding.locallyCompactSpace, j.toHomeomorph.secondCountableTopology, j.toHomeomorph.isEmbedding.t2Space, .of_continuous_injective hcf (fun a b h => Subtype.ext (j.injective (congrArg Subtype.val h))), j.symm '' K, hK.image j.symm.continuou …` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, e⟩` from `hKe (j g)`. Use `⟨j.symm γ⁻¹, (hj _).2 (by rw [j.apply_symm_apply]; exact inv_mem hγ), k, hk, ?_⟩` and prove the remaining obligations.
+
+Apply `j.injective` to reduce the goal to its premises. Rewrite using `[map_mul, j.apply_symm_apply, j.apply_symm_apply, e, inv_mul_cancel_left]`.
+-/
 theorem setup (n : ℕ) : IsTopologicalGroup (UA E n) ∧ LocallyCompactSpace (UA E n) ∧
     SecondCountableTopology (UA E n) ∧ T2Space (UA E n) ∧ DiscreteTopology (ratU E n) ∧
     ∃ C : Set (UA E n), IsCompact C ∧ ∀ g, ∃ γ ∈ ratU E n, γ * g ∈ C := by
@@ -161,6 +203,11 @@ theorem setup (n : ℕ) : IsTopologicalGroup (UA E n) ∧ LocallyCompactSpace (U
   apply j.injective
   rw [map_mul, j.apply_symm_apply, j.apply_symm_apply, e, inv_mul_cancel_left]
 
+/- English proof (translation)
+Establish `key : ∀ (v : Pl E) (_ : v = w) (f : v.adicCompletion E →+* w.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ (GlobalTheory.SplitPts.conjE E k)) → (∀ y, Valued.v (f y) = Valued.v y) → (∀ x : E, cj w (algebraMap E _ x) = algebraMap E _ (IsCMField.c …`. Introduce and unpack `v rfl f hf h hval`. Establish `hex : ∃ s : v.adicCompletion E →+* v.adicCompletion E, Continuous s ∧ ∀ x : E, s (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)` using `⟨f, hf, h⟩`. Take `⟨hc, he⟩` from `GlobalTheory.ConjAtPlace.cj_spec v hex`. Establish `e : cj v = f` using `GlobalTheory.ConjAtPlace.ext_of_cont _ _ hc hf he h`.
+
+Conclude with `⟨he, fun x => by rw [e]; exact hval x⟩`. Conclude with `key _ (GlobalTheory.BCT.GlobLev.conjSrc_eq_of_not_split hw) _ (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).1 (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.1 (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.2`.
+-/
 theorem cj_props {w : Pl E} (hw : ¬ IsSplitAt w) :
     (∀ x : E, cj w (algebraMap E _ x) = algebraMap E _ (IsCMField.complexConj E x)) ∧
       ∀ x, Valued.v (cj w x) = Valued.v x := by
@@ -178,6 +225,13 @@ theorem cj_props {w : Pl E} (hw : ¬ IsSplitAt w) :
   exact key _ (GlobalTheory.BCT.GlobLev.conjSrc_eq_of_not_split hw) _ (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).1
     (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.1 (conjLoc_spec (GlobalTheory.SplitPts.conjE E) _).2.2
 
+/- English proof (translation)
+Introduce `g`. Distinguish the cases in `hs : IsSplitAt w`. Take `⟨e, he⟩` from `GlobalTheory.locU_equiv_GL E n w hs`. Conclude with `⟨e.symm g.1, Subtype.ext (by rw [hp, ← he, e.apply_symm_apply])⟩`. Take `⟨h1, h2⟩` from `cj_props hs`.
+
+Take `⟨e, he⟩` from `GlobalTheory.DefU.Inert.locU_equiv E n w (cj w) h1 h2`. Establish `hg : g.1 ∈ UJ (cj w) (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))`. Establish `h : UL n w = UJ (cj w) 1` using `if_neg hs`. Establish `key : ∀ y : GLw n w, y ∈ UL n w → y ∈ UJ (cj w) (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E))` using `fun y hy => by rwa [h] at hy`. Conclude with `key g.1 g.2`.
+
+Conclude with `⟨e.symm ⟨g.1, hg⟩, Subtype.ext (by rw [hp, ← he, e.apply_symm_apply])⟩`.
+-/
 theorem surjective_of_cLoc (n : ℕ) (w : Pl E) (p : locU n w →* UL n w) (hp : ∀ x, (p x).1 = cLoc w x.1) :
     Function.Surjective p := by
   intro g
@@ -195,6 +249,15 @@ theorem surjective_of_cLoc (n : ℕ) (w : Pl E) (p : locU n w →* UL n w) (hp :
 
 end Concrete
 
+/- English proof (translation)
+Introduce and unpack `E _ _ _ n π hπ w σ ⟨p, hp, hirr, f, hf0, hfm, hf⟩`. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `setup (E := E) n`. Establish `hs` using `surjective_of_cLoc n w p hp`. Use `letI : MeasurableSpace (UA E n) := borel _`. Use `haveI : BorelSpace (UA E n) := ⟨rfl⟩`.
+
+Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Take `⟨-, h1⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff _).1 hirr`. Establish `hW : ∀ g v, v ∈ LinearMap.ker f → σ.ρ g v ∈ LinearMap.ker f` using `fun g v hv => by`. Take `⟨x, rfl⟩` from `hs g`.
+
+Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, map_zero]`. Break down `h1 _ hW with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`.
+
+Conclude with `(GlobalTheory.LGrp.isUnitarisable_iff _).1 (isUnitarisable_of_embedding (ratU E n) t6 σ.ρ p hs (locU n w).subtype f hinj (fun v => (hπ.aut _ (hfm v)).cont) (fun v => (hπ.aut _ (hfm v)).left) (fun x v y => by rw [hf]; rfl))`.
+-/
 theorem compUnit : PositivityTheory.Rg.BcB.F.Eig.CompUnit := by
   rintro E _ _ _ n π hπ w σ ⟨p, hp, hirr, f, hf0, hfm, hf⟩
   obtain ⟨t1, t2, t3, t4, t5, t6⟩ := setup (E := E) n

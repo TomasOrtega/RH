@@ -10,6 +10,9 @@ noncomputable section
 
 namespace GlobalTheory.ShapeNeg
 
+/- English proof (translation)
+Use `haveI : Module.Finite F V := Module.Finite.of_finite`. Use `haveI : Finite (Module.Dual F V) := DFunLike.finite (Module.Dual F V)`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.natCard_eq_pow_finrank (K := F), Module.natCard_eq_pow_finrank (K := F) (V := V), Subspace.dual_finrank_eq]`.
+-/
 theorem finite_card_dual {F V : Type} [Field F] [Finite F] [AddCommGroup V] [Module F V] [Finite V] :
     Finite (Module.Dual F V) ∧ Nat.card (Module.Dual F V) = Nat.card V := by
   haveI : Module.Finite F V := Module.Finite.of_finite
@@ -18,6 +21,15 @@ theorem finite_card_dual {F V : Type} [Field F] [Finite F] [AddCommGroup V] [Mod
   rw [Module.natCard_eq_pow_finrank (K := F), Module.natCard_eq_pow_finrank (K := F) (V := V),
     Subspace.dual_finrank_eq]
 
+/- English proof (translation)
+Introduce `hT p _ K hK O _ _ _ _ ϖ hϖ M _ _ e ρ h`. Use `letI := GlobalTheory.ShapeNeg.levZ (M := M) p 1 h`. Introduce `hc`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.finite_card_torsionLevel_fractionRingQuot hϖ e 1`. Use `haveI : Finite (Lev M (ϖ ^ 1)) := hfin`.
+
+Use `haveI : Fact (p ^ 1).Prime := ⟨by rw [pow_one]; exact Fact.out⟩`. Take `⟨⟨eH⟩, -, -, -, hb⟩` from `hT p K hK 1 (Lev M (ϖ ^ 1)) (levRepZ p 1 h ρ) one_pos hc`. Use `set ρ' := levRepZ p 1 h ρ`. Use `set χ := Formalism.GaloisCohomology.cycK p K 1`. Set `W` to `↥(H0 ((twDual χ ρ').comp (MonoidHom.id _)))`.
+
+Use `haveI : Finite (TDual (ZMod (p ^ 1)) (Lev M (ϖ ^ 1))) := (finite_card_dual (F := ZMod (p ^ 1)) (V := Lev M (ϖ ^ 1))).1`. Use `haveI : Finite W := Subtype.finite`. Establish `hW : Nat.card W ≤ Nat.card (Lev M (ϖ ^ 1))` using `(Nat.card_le_card_of_injective Subtype.val Subtype.val_injective).trans (finite_card_dual (F := ZMod (p ^ 1)) (V := Lev M (ϖ ^ 1))).2.le`. Take `⟨hfd, hcd⟩` from `finite_card_dual (F := ZMod (p ^ 1)) (V := W)`. Set `E` to `LinearEquiv.congrRight (M := W) eH`.
+
+Use `haveI : Finite (W →ₗ[ZMod (p ^ 1)] H2 ((charRep χ).comp (MonoidHom.id _))) := Finite.of_equiv _ E.symm.toEquiv`. Establish `h1 : Nat.card (H2 ρ') ≤ Nat.card (W →ₗ[ZMod (p ^ 1)] H2 ((charRep χ).comp (MonoidHom.id _)))` using `Nat.card_le_card_of_injective _ hb.1`. Establish `h2 : Nat.card (W →ₗ[ZMod (p ^ 1)] H2 ((charRep χ).comp (MonoidHom.id _))) = Nat.card W` using `(Nat.card_congr E.toEquiv).trans hcd`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem card_H2_level_rep_le :
     Formalism.GaloisCohomology.LocalTateDualityK → ∀ {p : ℕ} [Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)},
     FiniteDimensional ℚ_[p] K → ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

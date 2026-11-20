@@ -16,11 +16,17 @@ namespace SectionNorm
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ} {P : ArithVariety n}
 
+/- English proof (translation)
+Simplify using `only [evalCone, GroundTheory.Heights₂.Heights.AddBlockData.liftOld, eval₂_rename]`. Both sides reduce to the same expression.
+-/
 theorem evalCone_liftOld (D : GroundTheory.Heights₂.Heights.AddBlockData P) (w : Cone D.extSizes ℂ)
     (f : MvPolynomial (Coord n) ℤ) : evalCone w (D.liftOld f) = evalCone (D.basePart₂ w) f := by
   simp only [evalCone, GroundTheory.Heights₂.Heights.AddBlockData.liftOld, eval₂_rename]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← evalCone_liftOld]`. Simplify using `only [evalCone, eval₂_mul, eval₂_X]`. Both sides reduce to the same expression.
+-/
 theorem evalCone_newCoord_mul (D : GroundTheory.Heights₂.Heights.AddBlockData P) (w : Cone D.extSizes ℂ)
     (j : Fin (D.size + 1)) (f : MvPolynomial (Coord n) ℤ) :
     evalCone w (X (D.newCoord j) * D.liftOld f) = D.newPart w j * evalCone (D.basePart₂ w) f := by
@@ -64,6 +70,9 @@ def lineB {D : AddBlockData P} (G : ChartForms D) (Γ : GenSystem P) (N : HermLi
     show hPlus G Γ N w / N.metric (AddBlockData.basePart₂ w) = _
     rw [hmet w hw]
 
+/- English proof (translation)
+Take `⟨⟨H, hdeg, hmet, -⟩, -⟩` from `hM ι n P (AddBlockData.toObjects D) N hN G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators`. Conclude with `⟨lineB G Γ N hN H hdeg hmet, rfl, rfl⟩`.
+-/
 theorem exists_lineB (hM : GroundTheory.Heights₂.Heights.ChartMetric.Statement) (D : AddBlockData P)
     (G : ChartForms D) (Γ : GenSystem P) (N : HermLine n) (hN : N.deg = D.deg) :
     ∃ B : HermLine D.dims, B.deg = D.degB ∧ B.metric = hB G Γ N := by
@@ -71,6 +80,11 @@ theorem exists_lineB (hM : GroundTheory.Heights₂.Heights.ChartMetric.Statement
     Γ.r Γ.f Γ.δ Γ.isHomogGenerators
   exact ⟨lineB G Γ N hN H hdeg hmet, rfl, rfl⟩
 
+/- English proof (translation)
+Introduce `ι _ _ n P D N hN d g hg r G δ hG c j hnot w hw hz`. Establish `hext : (AddBlockData.ofObjects D).ext = D.extIdeal` using `AddBlockEq.addBlockEquiv_extIdeal D`. Establish `hpts : D.extPoints = conePoints (AddBlockData.ofObjects D).ext ℂ` using `AddBlockEq.extPoints_eq D`. Establish `h1` using `(h ι n P (AddBlockData.ofObjects D) (ChartForms.ofFormSystem hg) (GenSystem.ofIsHomogGenerators hG) N hN).2 c j (by rw [hext]; exact hnot) w (by rw [← hpts]; exact hw) hz`. Rewrite using `[evalCone_newCoord_mul, evalCone_liftOld, norm_mul, div_div]`.
+
+Conclude with `h1`.
+-/
 theorem kleimanNef_field_of_alt (h : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.SectionNorm.Statement) :
     GroundTheory.Heights₂.Heights.SectionNorm.Statement := by
   intro ι _ _ n P D N hN d g hg r G δ hG c j hnot w hw hz
@@ -82,6 +96,11 @@ theorem kleimanNef_field_of_alt (h : GroundTheory.Heights₂.Heights.IndefiniteR
   rw [evalCone_newCoord_mul, evalCone_liftOld, norm_mul, div_div]
   exact h1
 
+/- English proof (translation)
+Introduce `ι _ _ n P D G Γ N hN`. Use `⟨hL ι n P D G Γ N hN, fun c j hnot w hw hz ↦ ?_⟩` and prove the remaining obligations. Establish `hext : (AddBlockData.toObjects D).extIdeal = D.ext` using `AddBlockEq.addBlockEquiv_symm_extIdeal D`. Establish `hpts : (AddBlockData.toObjects D).extPoints = conePoints D.ext ℂ` using `AddBlockEq.addBlockEquiv_symm_conePoints D`. Establish `h1` using `h ι n P (AddBlockData.toObjects D) N hN G.d G.g G.isFormSystem Γ.r Γ.f Γ.δ Γ.isHomogGenerators c j (by rw [hext]; exact hnot) w (by rw [hpts]; exact hw) hz`.
+
+Use `erw [evalCone_newCoord_mul, evalCone_liftOld] at h1`. Rewrite `h1` using `[norm_mul, div_div]`. Conclude with `h1`.
+-/
 theorem finiteTwists_degree_form_of_first
     (hL : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (n : ι → ℕ) (P : ArithVariety n)
       (D : AddBlockData P) (G : ChartForms D) (Γ : GenSystem P) (N : HermLine n), N.deg = D.deg →
@@ -99,6 +118,9 @@ theorem finiteTwists_degree_form_of_first
   rw [norm_mul, div_div] at h1
   exact h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨finiteTwists_degree_form_of_first fun _ _ _ _ _ D G Γ N hN ↦ exists_lineB hM D G Γ N hN, kleimanNef_field_of_alt⟩`.
+-/
 theorem equiv (hM : GroundTheory.Heights₂.Heights.ChartMetric.Statement) :
     GroundTheory.Heights₂.Heights.SectionNorm.Statement ↔
       GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Close.SectionNorm.Statement :=

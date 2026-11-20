@@ -7,6 +7,11 @@ namespace Formalism.RepresentationBoundsCohomology.CyclotomicTwistCohomology
 
 open Matrix Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic Polynomial
 
+/- English proof (translation)
+Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `hN : 1 ≤ ℓ ^ n0 ℓ (M0 + h0) * (ℓ - 1)` using `Nat.mul_pos (pow_pos hℓ.pos _) (Nat.sub_pos_of_lt hℓ.one_lt)`. Introduce `a ha`. Apply `F.lnzd` to reduce the goal to its premises. Take `⟨N, hN'⟩` from `Nat.exists_eq_add_of_le hN`.
+
+Rewrite using `[← F.thx, hN', add_comm, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma x_nzd {ℓ : ℕ} [Fact ℓ.Prime] (R : Setup ℓ) {r M0 h0 : ℕ} (F : R.Facts r M0 h0) :
     ∀ a : R.OC, R.ϑ (R.jA R.x) * a = 0 → a = 0 := by
   have hℓ : ℓ.Prime := Fact.out
@@ -20,6 +25,15 @@ lemma x_nzd {ℓ : ℕ} [Fact ℓ.Prime] (R : Setup ℓ) {r M0 h0 : ℕ} (F : R.
       = R.ϑ (R.jA R.x) ^ N * R.c * (R.ϑ (R.jA R.x) * a) := by ring
     _ = 0 := by rw [ha, mul_zero]
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W F FH h hh`. Establish `hs` using `FH.pH h hh`. Establish `hG : W.Gm (R.p h) = 1`. Apply `hat_inj R F` to reduce the goal to its premises. Rewrite using `[hat_one]`.
+
+Establish `e : hat R (W.Gm (R.p h)) * W.Xx = W.Xx`. Rewrite using `[show hat R (W.Gm (R.p h)) * W.Xx = ((W.Gm (R.p h)).map R.jA).map R.ι * W.Xx from rfl, ← W.W2, W.fixH _ hs]`. Use `congrArg (fun M => M * W.Xi) e` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, W.inv1, Matrix.mul_one] at this`. Conclude with `this`.
+
+Establish `hc : R.ϑ (R.jA (R.cx (R.p h))) = 1`. Establish `h1` using `congrArg R.ϑ (F.gx (R.p h))`. Rewrite `h1` using `[FH.fixAs _ hs, map_mul]`. Establish `: R.ϑ (R.jA R.x) * (R.ϑ (R.jA (R.cx (R.p h))) - 1) = 0`. Rewrite using `[mul_sub, mul_one, mul_comm, ← h1, sub_self]`.
+
+Conclude with `sub_eq_zero.mp (x_nzd R F _ this)`. Use extensionality with `a b`. Use `show R.ϑ (R.jA ((R.cx (R.p h)) ^ M0 * W.Gm (R.p h) a b)) = _`. Rewrite using `[hG, map_mul, map_mul, map_pow, map_pow, hc, one_pow, one_mul]`. Apply the tactic sequence `by_cases hab : a = b <;> simp [Matrix.one_apply, hab]`.
+-/
 theorem umH : StatUmH := by
   intro ℓ _ R r L En M0 h0 W F FH h hh
   have hs := FH.pH h hh
@@ -43,6 +57,21 @@ theorem umH : StatUmH := by
   rw [hG, map_mul, map_mul, map_pow, map_pow, hc, one_pow, one_mul]
   by_cases hab : a = b <;> simp [Matrix.one_apply, hab]
 
+/- English proof (translation)
+Introduce `ℓ _ R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm Uτ hX hP hS hB hHT h0U hne infm infX X hInf hT4 hUn hFl hLES`. Take `⟨hv, hm1, hm2, _⟩` from `w_facts R F`. Establish `hI` using `wInter ℓ R r L En M0 h0 W A F hA`. Establish `hVm` using `w3Vm ℓ R r L En M0 h0 W F`. Establish `hinjO : Function.Injective R.eOh`.
+
+Introduce `a b hab`. Use `FH.injE hab` as an intermediate fact. Rewrite using `[← R.Tt.pr_alg a, this, R.Tt.pr_alg]`. Take `⟨s1, s2, s3, s4, s5⟩` from `sec3 ℓ R.Gg R.OC R.Tt.Om R.eOh R.actO r ρ (L.sl R.actO) Sτ (UmW R L W) (VmW R L W) (A.map R.ϑ) Y' Pp Sp Cm Bm (R.z * R.ϖ) F.lnzd hinjO hI hY2 hP hS hB hVm`. Establish `hPiece` using `pieceBThm ℓ R ρ r M0 h0 Sτ _ (Cm * VmW R L W * Bm) Uτ _ _ F hX s3 s2 s1 s5 hHT 0 infm infX hInf hT4`.
+
+Establish `hCB : Cm.map R.eOh * Bm.map R.eOh = 1`. Rewrite using `[← Matrix.map_mul, s4, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hzero` using `cyclotomicInvariantsZero_statement ℓ R ρ r M0 h0 Sτ _ (Cm * VmW R L W * Bm) Uτ _ _ F hX s3 s2 s1 s5 hHT h0U FH.t4 FH.injE FH.g0E (by`. Introduce `h hh`. Use `show (Cm.map R.eOh).map (R.actO (R.p h)) * UmW R L W (R.p h) * Bm.map R.eOh = 1`.
+
+Rewrite using `[umH ℓ R r L En M0 h0 W F FH h hh, Matrix.mul_one]`. Establish `: (Cm.map R.eOh).map (R.actO (R.p h)) = Cm.map R.eOh`. Use extensionality with `a b`. Conclude with `FH.fixOi h hh _`. Rewrite using `[this, hCB])`.
+
+Use the proof step `(by show (Cm.map R.eOh).map (R.actO (R.p R.gg)) * UmW R L W (R.p R.gg) * Bm.map R.eOh = _`. Establish `e1 : (Cm.map R.eOh).map (R.actO (R.p R.gg)) = Cm.map R.eOh`. Use extensionality with `a b`. Use `show R.actO (R.p R.gg) (R.emb (algebraMap R.Tt.Om R.Tt.Oi (Cm a b))) = _`. Rewrite using `[FH.g0E, AlgHom.commutes]`.
+
+Both sides reduce to the same expression. Establish `e2 : UmW R L W (R.p R.gg) = (VmW R L W).map R.eOh` using `umVm ℓ R r L En M0 h0 W F`. Rewrite using `[e1, e2, ← Matrix.map_mul, ← Matrix.map_mul]`. Use the proof step `rfl)`. Use `Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic.h0 ℓ R.w (mOf ℓ R.s (M0 + h0)) hm1 (fun _ => hm2) hv Uτ h0U hne (X.toH0 _) hPiece hUn hFl hLES ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x _ _`. Conclude with `Subtype.ext (hzero x.1 x.2)`. Introduce `x`. Conclude with `⟨map_zero _, map_zero _⟩`.
+-/
 theorem h0W : InvariantsOfTwistedModule := by
   intro ℓ _ R r L En M0 h0 W A Y' F FH hA hY1 hY2 ρ Sτ Pp Sp Cm Bm Uτ hX hP hS hB hHT h0U hne infm infX X
     hInf hT4 hUn hFl hLES

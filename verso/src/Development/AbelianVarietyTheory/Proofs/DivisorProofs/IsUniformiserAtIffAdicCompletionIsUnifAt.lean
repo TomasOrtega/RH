@@ -8,6 +8,17 @@ namespace GlobalTheory.UnifVal
 
 variable {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : Valued.v ((u : v.adicCompletionIntegers K) : v.adicCompletion K) ≤ 1` using `(u : v.adicCompletionIntegers K).2`. Establish `h2 : Valued.v (((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K) : v.adicCompletion K) ≤ 1` using `((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K).2`. Establish `h3 : Valued.v ((u : v.adicCompletionIntegers K) : v.adicCompletion K) * Valued.v (((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K) : v.adicCompletion K) = 1`.
+
+Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`. Establish `hlt` using `lt_of_le_of_ne h1 hne`. Establish `: Valued.v ((u : v.adicCompletionIntegers K) : v.adicCompletion K) * Valued.v (((u⁻¹ : (v.adicCompletionIntegers K)ˣ) : v.adicCompletionIntegers K) : v.adicCompletion K) < 1` using `mul_lt_one_of_lt_of_le hlt h2`.
+
+Rewrite `this` using `[h3]`. Conclude with `lt_irrefl _ this`. Introduce `h`. Establish `ha0 : (a : v.adicCompletion K) ≠ 0`. Introduce `h0`.
+
+Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Establish `hmem : (a : v.adicCompletion K)⁻¹ ∈ v.adicCompletionIntegers K` using `by show Valued.v ((a : v.adicCompletion K)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, h, inv_one]`. Use `isUnit_iff_exists_inv.2 ⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (a : v.adicCompletion K) * (a : v.adicCompletion K)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ ha0`.
+-/
 theorem isUnit_iff_v_eq_one (a : v.adicCompletionIntegers K) :
     IsUnit a ↔ Valued.v (a : v.adicCompletion K) = 1 := by
   constructor
@@ -35,6 +46,37 @@ theorem isUnit_iff_v_eq_one (a : v.adicCompletionIntegers K) :
     show (a : v.adicCompletion K) * (a : v.adicCompletion K)⁻¹ = 1
     exact mul_inv_cancel₀ ha0
 
+/- English proof (translation)
+Unfold `IsUniformiserAt Formalism.L2.Host.IsUnifAt`. Establish `hx0 : (x : v.adicCompletion K) ≠ 0` using `x.ne_zero`. Establish `hv0 : Valued.v (x : v.adicCompletion K) ≠ 0` using `by simpa using hx0`. Use `set m := WithZero.log (Valued.v (x : v.adicCompletion K)) with hm`. Establish `hx : Valued.v (x : v.adicCompletion K) = WithZero.exp m` using `(WithZero.exp_log hv0).symm`.
+
+Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective K v (WithZero.exp (-1 : ℤ))`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Conclude with `WithZero.exp_ne_zero (hπ.symm.trans (map_zero _))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hmem, hirr⟩`. Establish `hle : Valued.v (x : v.adicCompletion K) ≤ 1` using `hmem`. Establish `hnu : Valued.v (x : v.adicCompletion K) ≠ 1` using `fun h => hirr.not_isUnit ((isUnit_iff_v_eq_one v _).2 h)`. Rewrite `hle` using `[hx, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hnu` using `[hx, ← WithZero.exp_zero, Ne, WithZero.exp_inj]`.
+
+Rewrite using `[hx]`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[WithZero.exp_inj]`. Establish `hm2 : m ≤ -2` using `by omega`. Establish `ha : π ∈ v.adicCompletionIntegers K` using `by show Valued.v π ≤ 1`.
+
+Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Establish `hbv : Valued.v ((x : v.adicCompletion K) / π) = WithZero.exp (m + 1)`. Rewrite using `[map_div₀, hx, hπ, ← WithZero.exp_sub, sub_neg_eq_add]`. Establish `hb : (x : v.adicCompletion K) / π ∈ v.adicCompletionIntegers K` using `by show Valued.v ((x : v.adicCompletion K) / π) ≤ 1`.
+
+Rewrite using `[hbv, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hprod : (⟨(x : v.adicCompletion K), hmem⟩ : v.adicCompletionIntegers K) = ⟨π, ha⟩ * ⟨(x : v.adicCompletion K) / π, hb⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : v.adicCompletion K) = π * ((x : v.adicCompletion K) / π)`.
+
+Clear the denominators using the available nonvanishing facts. Break down `hirr.isUnit_or_isUnit hprod with h | h` into its components or cases. Rewrite `h` using `[isUnit_iff_v_eq_one]`. Express the relevant statement in the definitionally equal form `Valued.v π = 1 at h`. Rewrite `h` using `[hπ, ← WithZero.exp_zero, WithZero.exp_inj]`.
+
+Evaluate the numerical expressions using `at h`. Rewrite `h` using `[isUnit_iff_v_eq_one]`. Express the relevant statement in the definitionally equal form `Valued.v ((x : v.adicCompletion K) / π) = 1 at h`. Rewrite `h` using `[hbv, ← WithZero.exp_zero, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+
+Introduce `h`. Establish `hmem : (x : v.adicCompletion K) ∈ v.adicCompletionIntegers K` using `by show Valued.v (x : v.adicCompletion K) ≤ 1`. Rewrite using `[h, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions. Use `⟨hmem, irreducible_iff.2 ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `hu`. Rewrite `hu` using `[isUnit_iff_v_eq_one]`. Express the relevant statement in the definitionally equal form `Valued.v (x : v.adicCompletion K) = 1 at hu`. Rewrite `hu` using `[h, ← WithZero.exp_zero, WithZero.exp_inj]`. Evaluate the numerical expressions using `at hu`.
+
+Introduce `a b hab`. Establish `hv : Valued.v (a : v.adicCompletion K) * Valued.v (b : v.adicCompletion K) = WithZero.exp (-1 : ℤ)`. Establish `hab' : (x : v.adicCompletion K) = (a : v.adicCompletion K) * (b : v.adicCompletion K)` using `congrArg Subtype.val hab`. Rewrite using `[← map_mul, ← hab', h]`. Establish `ha0 : Valued.v (a : v.adicCompletion K) ≠ 0`.
+
+Introduce `h0`. Rewrite `hv` using `[h0, zero_mul]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hb0 : Valued.v (b : v.adicCompletion K) ≠ 0`. Introduce `h0`.
+
+Rewrite `hv` using `[h0, mul_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Establish `hale : Valued.v (a : v.adicCompletion K) ≤ 1` using `a.2`. Establish `hble : Valued.v (b : v.adicCompletion K) ≤ 1` using `b.2`. Rewrite `hale` using `[← WithZero.exp_log ha0, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+
+Rewrite `hble` using `[← WithZero.exp_log hb0, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hv` using `[← WithZero.exp_log ha0, ← WithZero.exp_log hb0, ← WithZero.exp_add, WithZero.exp_inj]`. Distinguish the cases in `hi : WithZero.log (Valued.v (a : v.adicCompletion K)) = 0`. Use `left`. Rewrite using `[isUnit_iff_v_eq_one, ← WithZero.exp_log ha0, hi, WithZero.exp_zero]`.
+
+Use `right`. Establish `hj : WithZero.log (Valued.v (b : v.adicCompletion K)) = 0` using `by omega`. Rewrite using `[isUnit_iff_v_eq_one, ← WithZero.exp_log hb0, hj, WithZero.exp_zero]`.
+-/
 theorem isUniformiserAt_iff_isUnifAt (x : (v.adicCompletion K)ˣ) :
     IsUniformiserAt K v (x : v.adicCompletion K) ↔ Formalism.L2.Host.IsUnifAt v x := by
   unfold IsUniformiserAt Formalism.L2.Host.IsUnifAt

@@ -18,6 +18,9 @@ def IntM {m : ℕ} (X : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F)) : 
 def SA {m : ℕ} (S : Matrix (Fin m) (Fin m) E) : Matrix (Fin m) (Fin m) (E ⊗[F] v.adicCompletion F) :=
   S.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F))
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e r => simp [PI.UnitaryApproxDefs.sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_sigR (hσ : ∀ e, σ (σ e) = e) (x : E ⊗[F] v.adicCompletion F) :
     PI.UnitaryApproxDefs.sigR σ _ (PI.UnitaryApproxDefs.sigR σ _ x) = x := by
   induction x using TensorProduct.induction_on with

@@ -15,6 +15,11 @@ open GlobalTheory.ThetaDens
 
 namespace GlobalTheory.ThetaDens
 
+/- English proof (translation)
+Rewrite using `[ENNReal.tendsto_nhds_zero]`. Introduce `ε hε`. Take `⟨δ, hδ0, hδ⟩` from `ENNReal.lt_iff_exists_nnreal_btwn.1 hε`. Establish `hδ0' : (0 : ℝ) < δ` using `by exact_mod_cast hδ0`. Use `filter_upwards [Metric.tendstoUniformly_iff.1 h δ hδ0'] with j hj`.
+
+Establish `hb : ∀ᵐ x ∂ν, ‖(g j - f) x‖ ≤ δ` using `Filter.Eventually.of_forall fun x => by`. Use `(hj x).le` as an intermediate fact. Rewrite `this` using `[dist_comm, dist_eq_norm]`. Then use the resulting hypothesis. Use `(eLpNorm_le_of_ae_bound hb).trans ?_` and prove the remaining obligations. Simplify `hδ.le` using `[hν]`.
+-/
 theorem eLpNorm_sub_tendsto_of_unif {X : Type} [MeasurableSpace X] (ν : Measure X) (hν : ν Set.univ = 1)
     (g : ℕ → X → ℂ) (f : X → ℂ) (h : TendstoUniformly g f Filter.atTop) :
     Filter.Tendsto (fun j => eLpNorm (g j - f) 2 ν) Filter.atTop (nhds 0) := by
@@ -29,6 +34,11 @@ theorem eLpNorm_sub_tendsto_of_unif {X : Type} [MeasurableSpace X] (ν : Measure
   refine (eLpNorm_le_of_ae_bound hb).trans ?_
   simpa [hν] using hδ.le
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons, ih, GlobalTheory.Size.wordAct_cons, GlobalTheory.Size.wordAct_cons, sub_eq_add_neg, sub_eq_add_neg, ← neg_one_smul ℂ, ← neg_one_smul ℂ (GlobalTheory.Size.heisDer ψ θ a _)]`. Simplify using `only [GlobalTheory.Size.heisDer]`.
+
+Rewrite using `[GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l hf) (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.Size.theta_word hψ hθ l hg)), GlobalTheory.Size.dRho_smul]`.
+-/
 theorem wordAct_heisDer_sub {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {θ : InfFam D}
     (hθ : IsInfFam θ) {S T : HSp D} {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g)
     (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) :
@@ -43,6 +53,11 @@ theorem wordAct_heisDer_sub {D : D7} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsS
     rw [GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l hf)
       (GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.Size.theta_word hψ hθ l hg)), GlobalTheory.Size.dRho_smul]
 
+/- English proof (translation)
+Introduce `D ψ hψ θ hθ S T μ 𝓕 hμ u f hf hu hl d`. Establish `key : ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), Filter.Tendsto (fun j => GlobalTheory.Size.l2O μ 𝓕 (GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j - f))) Filter.atTop (nhds 0)`. Introduce `l`. Simplify using `only [wordAct_heisDer_sub hψ hθ (hu _) hf l, GlobalTheory.Size.l2O]`. Conclude with `eLpNorm_sub_tendsto_of_unif _ (by rw [Measure.restrict_apply_univ]; exact hμ.2.2) _ _ (hl l)`.
+
+Use `tendsto_finset_sum (Finset.range (d + 1)) fun k _ => tendsto_finset_sum (Finset.univ : Finset (Fin k → D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) fun a _ => key (List.ofFn a)` as an intermediate fact. Simplify using `only [Finset.sum_const_zero] at this`. Conclude with `this`.
+-/
 theorem sobO_sub_tendsto_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ S T : HSp D, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ (u : ℕ → WO S T → ℂ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ j, IsThetaFunO ψ S T (u j)) → (∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), TendstoUniformly (fun j => GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l (u j)) (GlobalTheory.Size.wordAct (GlobalTheory.Size.heisDer ψ θ) l f) Filter.atTop) → ∀ d, Filter.Tendsto (fun j => sobO ψ θ μ 𝓕 d (u j - f)) Filter.atTop (nhds 0) := by
   intro D ψ hψ θ hθ S T μ 𝓕 hμ u f hf hu hl d
   have key : ∀ l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool), Filter.Tendsto

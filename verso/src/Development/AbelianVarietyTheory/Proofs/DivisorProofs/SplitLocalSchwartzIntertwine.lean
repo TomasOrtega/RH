@@ -19,19 +19,33 @@ section General
 
 variable {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hχ.mul hf.1, hf.2.mul_left (f := χ)⟩`.
+-/
 theorem mul_mem_SB {χ f : X → ℂ} (hχ : IsLocallyConstant χ) (hf : f ∈ SB X) : (fun x => χ x * f x) ∈ SB X :=
   ⟨hχ.mul hf.1, hf.2.mul_left (f := χ)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hf.1.comp_continuous (continuous_add_right A), hf.2.comp_homeomorph (Homeomorph.addRight A)⟩`.
+-/
 theorem translate_mem_SB [AddGroup X] [IsTopologicalAddGroup X] {f : X → ℂ} (hf : f ∈ SB X) (A : X) :
     (fun x => f (x + A)) ∈ SB X :=
   ⟨hf.1.comp_continuous (continuous_add_right A), hf.2.comp_homeomorph (Homeomorph.addRight A)⟩
 
 variable {L : (X → ℂ) → ℂ}
 
+/- English proof (translation)
+Use `hL 0 (zero_mem _) 0 (zero_mem _) 1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem lin_zero (hL : ∀ f ∈ SB X, ∀ g ∈ SB X, ∀ z : ℂ, L (z • f + g) = z * L f + L g) : L 0 = 0 := by
   have := hL 0 (zero_mem _) 0 (zero_mem _) 1
   simpa using this
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using lin_zero hL`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Use `hL _ (hf a) _ (Submodule.sum_mem _ fun i (_ : i ∈ t) => hf i) 1` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem lin_sum (hL : ∀ f ∈ SB X, ∀ g ∈ SB X, ∀ z : ℂ, L (z • f + g) = z * L f + L g) {ι : Type} (t : Finset ι)
     (f : ι → X → ℂ) (hf : ∀ i, f i ∈ SB X) : L (∑ i ∈ t, f i) = ∑ i ∈ t, L (f i) := by
   classical
@@ -42,6 +56,21 @@ theorem lin_sum (hL : ∀ f ∈ SB X, ∀ g ∈ SB X, ∀ z : ℂ, L (z • f + 
     have := hL _ (hf a) _ (Submodule.sum_mem _ fun i (_ : i ∈ t) => hf i) 1
     simpa using this
 
+/- English proof (translation)
+Establish `key : ∀ t : Finset {p : ι × ℂ // p.2 ≠ 1}, ∀ f ∈ SB X, (∀ x, f x ≠ 0 → ∃ p ∈ t, χ p.1.1 x = p.1.2) → L f = 0`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `f _ h`.
+
+Establish `: f = 0` using `funext fun x => by`. Assume the negation of the conclusion as `hx`. Simplify using `using h x hx`. Rewrite using `[this, lin_zero hL]`. Consider the case `insert p t _ ih`.
+
+Introduce `f hf h`. Establish `hg` using `mul_mem_SB (hχ p.1.1) hf`. Establish `h1` using `ih _ (add_mem (Submodule.smul_mem _ (-p.1.2) hf) hg) fun x hx => by`. Establish `hx' : (χ p.1.1 x - p.1.2) * f x ≠ 0`. Introduce `h0`.
+
+Apply `hx` to reduce the goal to its premises. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `h0`. Take `⟨q, hq, hq'⟩` from `h x (right_ne_zero_of_mul hx')`. Break down `Finset.mem_insert.1 hq with rfl | hq` into its components or cases.
+
+Conclude with `absurd (sub_eq_zero.2 hq') (left_ne_zero_of_mul hx')`. Conclude with `⟨q, hq, hq'⟩`. Rewrite `h1` using `[hL _ hf _ hg, hinv _ _ hf]`. Establish `h2 : (1 - p.1.2) * L f = 0` using `by linear_combination h1`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 p.2.symm)`.
+
+Establish `hK : IsCompact (Function.support f)` using `hf.2.isCompact.of_isClosed_subset (hf.1.isClopen_fiber 0).isOpen.isClosed_compl subset_closure`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun p : {p : ι × ℂ // p.2 ≠ 1} => {x | χ p.1.1 x = p.1.2}) (fun p => (hχ p.1.1).isOpen_fiber _) fun x hx => by`. Take `⟨i, hi⟩` from `hs x hx`. Conclude with `Set.mem_iUnion.2 ⟨⟨(i, χ i x), hi⟩, rfl⟩`. Use `key t f hf fun x hx => ?_` and prove the remaining obligations.
+
+Simplify using `using ht hx`.
+-/
 theorem lin_eq_zero_of_support (hL : ∀ f ∈ SB X, ∀ g ∈ SB X, ∀ z : ℂ, L (z • f + g) = z * L f + L g) {ι : Type}
     (χ : ι → X → ℂ) (hχ : ∀ i, IsLocallyConstant (χ i)) (hinv : ∀ i, ∀ f ∈ SB X, L (fun x => χ i x * f x) = L f)
     (f : X → ℂ) (hf : f ∈ SB X) (hs : ∀ x, f x ≠ 0 → ∃ i, χ i x ≠ 1) : L f = 0 := by
@@ -89,6 +118,9 @@ variable {k : Type} [Field k] {b a' : ℕ}
 def skipCol (b a' : ℕ) (j : Fin (b + a')) : Fin (b + 2 + a') :=
   ⟨skip 0 (b + 1) j, by have := j.2; unfold skip; split_ifs <;> omega⟩
 
+/- English proof (translation)
+Introduce `i j h`. Establish `h' : skip 0 (b + 1) i = skip 0 (b + 1) j` using `congrArg Fin.val h`. Apply `Fin.ext` to reduce the goal to its premises. Unfold `skip at h'`. Apply the tactic sequence `split_ifs at h' <;> omega`.
+-/
 theorem skipCol_injective : Function.Injective (skipCol b a') := by
   intro i j h
   have h' : skip 0 (b + 1) i = skip 0 (b + 1) j := congrArg Fin.val h
@@ -96,6 +128,13 @@ theorem skipCol_injective : Function.Injective (skipCol b a') := by
   unfold skip at h'
   split_ifs at h' <;> omega
 
+/- English proof (translation)
+Use `j.2` as an intermediate fact. Distinguish the cases in `h0 : (j : ℕ) = 0`. Conclude with `Or.inl h0`. Distinguish the cases in `h1 : (j : ℕ) = b + 1`. Conclude with `Or.inr (Or.inl h1)`.
+
+Use `Or.inr (Or.inr ?_)` and prove the remaining obligations. Distinguish the cases in `h2 : (j : ℕ) ≤ b`. Use `⟨⟨j - 1, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Simplify using `only [skipCol, skip]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Use `⟨⟨j - 2, by omega⟩, Fin.ext ?_⟩` and prove the remaining obligations. Simplify using `only [skipCol, skip]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem col_cases (j : Fin (b + 2 + a')) : (j : ℕ) = 0 ∨ (j : ℕ) = b + 1 ∨ ∃ j', j = skipCol b a' j' := by
   have := j.2
   by_cases h0 : (j : ℕ) = 0
@@ -111,12 +150,18 @@ theorem col_cases (j : Fin (b + 2 + a')) : (j : ℕ) = 0 ∨ (j : ℕ) = b + 1 �
     simp only [skipCol, skip]
     split_ifs <;> omega
 
+/- English proof (translation)
+Establish `: ∀ j' : Fin (b + a'), (((skipCol b a' j : Fin _) : ℕ) = skip 0 (b + 1) j') ↔ j = j'` using `fun j' => ⟨fun h => skipCol_injective (Fin.ext h), fun h => h ▸ rfl⟩`. Simplify using `[Matrix.mul_apply, insP, this]`.
+-/
 theorem mul_insP_skipCol (Y : Matrix (Fin a') (Fin (b + a')) k) (i : Fin a') (j : Fin (b + a')) :
     (Y * (insP k b a')ᵀ) i (skipCol b a' j) = Y i j := by
   have : ∀ j' : Fin (b + a'), (((skipCol b a' j : Fin _) : ℕ) = skip 0 (b + 1) j') ↔ j = j' := fun j' =>
     ⟨fun h => skipCol_injective (Fin.ext h), fun h => h ▸ rfl⟩
   simp [Matrix.mul_apply, insP, this]
 
+/- English proof (translation)
+Establish `: ∀ j' : Fin (b + a'), ¬ ((j : ℕ) = skip 0 (b + 1) j')` using `fun j' => by`. Unfold `skip`. Apply the tactic sequence `split_ifs <;> omega`. Simplify using `[Matrix.mul_apply, insP, this]`.
+-/
 theorem mul_insP_other (Y : Matrix (Fin a') (Fin (b + a')) k) (i : Fin a') (j : Fin (b + 2 + a'))
     (hj : (j : ℕ) = 0 ∨ (j : ℕ) = b + 1) : (Y * (insP k b a')ᵀ) i j = 0 := by
   have : ∀ j' : Fin (b + a'), ¬ ((j : ℕ) = skip 0 (b + 1) j') := fun j' => by
@@ -124,6 +169,11 @@ theorem mul_insP_other (Y : Matrix (Fin a') (Fin (b + a')) k) (i : Fin a') (j : 
     split_ifs <;> omega
   simp [Matrix.mul_apply, insP, this]
 
+/- English proof (translation)
+Unfold `GlobalTheory.FlipMatch.pairM`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `j' _ h`. Simplify using `[h.symm]`.
+
+Simplify using the standard rewrite rules. Introduce `i' _ h`. Simplify using `[h.symm]`. Simplify using the standard rewrite rules.
+-/
 theorem pairM_single {m n : ℕ} (Z : Matrix (Fin m) (Fin n) k) (i : Fin m) (j : Fin n) (t : k) :
     GlobalTheory.FlipMatch.pairM Z (Matrix.single i j t) = Z i j * t := by
   unfold GlobalTheory.FlipMatch.pairM
@@ -136,6 +186,13 @@ theorem pairM_single {m n : ℕ} (Z : Matrix (Fin m) (Fin n) k) (i : Fin m) (j :
     simp [h.symm]
   · simp
 
+/- English proof (translation)
+Use extensionality with `i' j'`. Break down `col_cases j' with h | h | ⟨j'', rfl⟩` into its components or cases. Rewrite using `[mul_insP_other _ _ _ (Or.inl h), Matrix.single_apply_of_col_ne]`. Introduce and unpack `rfl`. Simplify using `only [skipCol, skip] at h`.
+
+Apply the tactic sequence `split_ifs at h <;> omega`. Rewrite using `[mul_insP_other _ _ _ (Or.inr h), Matrix.single_apply_of_col_ne]`. Introduce and unpack `rfl`. Simplify using `only [skipCol, skip] at h`. Apply the tactic sequence `split_ifs at h <;> omega`.
+
+Rewrite using `[mul_insP_skipCol]`. Simplify using `[Matrix.single, skipCol_injective.eq_iff]`.
+-/
 theorem single_mul_insP (i : Fin a') (j : Fin (b + a')) (t : k) :
     Matrix.single i j t * (insP k b a')ᵀ = Matrix.single i (skipCol b a' j) t := by
   ext i' j'
@@ -157,6 +214,11 @@ section Local
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Continuous fun y : k => y - x` using `by fun_prop`. Establish `ht` using `hc.tendsto x`. Simplify using `only [sub_self] at ht`.
+
+Use `ht ((GlobalTheory.SplitWeil.isOpen_int k).mem_nhds (zero_mem 𝒪[k]))` as an intermediate fact. Use `filter_upwards [this] with y hy`. Establish `e : y = x + (y - x)` using `by ring`. Rewrite using `[e, AddChar.map_add_eq_mul, h _ hy, mul_one]`.
+-/
 theorem isLocallyConstant_char (ψ₀ : AddChar k ℂ) (h : ∀ y ∈ 𝒪[k], ψ₀ y = 1) : IsLocallyConstant ψ₀ := by
   rw [IsLocallyConstant.iff_eventually_eq]
   intro x
@@ -173,6 +235,13 @@ open Classical in
 def colInd {m n : ℕ} (s : kˣ) (j₀ : Fin n) (Z : Matrix (Fin m) (Fin n) k) : ℂ :=
   if (∀ i j, Z i j ∈ 𝒪[k]) ∧ ∀ i, Z i j₀ ∈ GlobalTheory.SplitWeil.cball s then 1 else 0
 
+/- English proof (translation)
+Establish `key : ∀ X Y : Matrix (Fin m) (Fin n) k, (∀ i j, valuation k (Y i j - X i j) ≤ valuation k ((ϖ ^ (c + 1) : kˣ) : k)) → ((∀ i j, X i j ∈ 𝒪[k]) ∧ ∀ i, X i j₀ ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) → ((∀ i j, Y i j ∈ 𝒪[k]) ∧ ∀ i, Y i j₀ ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c))` using `fun X Y h hX => by`. Use `⟨fun i j => ?_, fun i => cball_stable hϖ (h i j₀) (hX.2 i)⟩` and prove the remaining obligations. Establish `: Y i j = (Y i j - X i j) + X i j` using `by ring`. Rewrite using `[this]`. Conclude with `add_mem (show valuation k (Y i j - X i j) ≤ 1 from (h i j).trans (unif_pow_facts hϖ c).1.le) (hX.1 i j)`.
+
+Use `⟨isLocallyConstant_of_close (ϖ ^ (c + 1)) _ fun X Y h => ?_, hasCompactSupport_of_int _ fun X hX => ?_⟩` and prove the remaining obligations. Unfold `colInd`. Use `if_congr ⟨key Y X fun i j => ?_, key X Y h⟩ rfl rfl` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `h i j`.
+
+Unfold `colInd at hX split_ifs at hX with h`. Conclude with `h.1`. Conclude with `absurd rfl hX`.
+-/
 theorem colInd_mem_SB {m n : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (c : ℕ) (j₀ : Fin n) :
     colInd (ϖ ^ c) j₀ ∈ SB (Matrix (Fin m) (Fin n) k) := by
   have key : ∀ X Y : Matrix (Fin m) (Fin n) k,
@@ -194,6 +263,21 @@ theorem colInd_mem_SB {m n : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUni
     · exact h.1
     · exact absurd rfl hX
 
+/- English proof (translation)
+Establish `hI : ∀ x : 𝒪[k], x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ (x : k) ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)` using `fun x => by`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, ← (Valuation.integer.integers (valuation k)).le_iff_dvd]`. Conclude with `Iff.rfl`. Establish `hint : ∀ (r : Fin m → 𝒪[k]) i j, Matrix.vecMulVec (fun i => (r i : k)) (Pi.single j₀ 1) i j ∈ 𝒪[k]` using `fun r i j => by`. Rewrite using `[Matrix.vecMulVec_apply, Pi.single_apply]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Use function extensionality and compare the values at `Z`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `hZ : ∀ i j, Z i j ∈ 𝒪[k]`. Rewrite using `[Set.indicator_of_mem (by exact hZ), Pi.one_apply, Finset.sum_eq_single (fun i => -Ideal.Quotient.mk _ (⟨Z i j₀, hZ i j₀⟩ : 𝒪[k]))]`.
+
+Unfold `colInd`. Rewrite using `[if_pos]`. Use `⟨fun i j => add_mem (hZ i j) (hint _ i j), fun i => ?_⟩` and prove the remaining obligations. Use `(hI (⟨Z i j₀, hZ i j₀⟩ + Quotient.out (-Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (⟨Z i j₀, hZ i j₀⟩ : 𝒪[k])))).1 (by` as an intermediate fact. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_add, Ideal.Quotient.mk_out, add_neg_cancel])`.
+
+Simplify `this` using `[Matrix.vecMulVec_apply]`. Introduce `ρ _ hρ`. Unfold `colInd`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, h⟩`.
+
+Apply `hρ` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `(hI (⟨Z i j₀, hZ i j₀⟩ + Quotient.out (ρ i))).2 (by simpa [Matrix.vecMulVec_apply] using h i)` as an intermediate fact. Rewrite `this` using `[← Ideal.Quotient.eq_zero_iff_mem, map_add, Ideal.Quotient.mk_out]`. Conclude with `eq_neg_of_add_eq_zero_right this`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (by exact hZ)]`. Use `Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Unfold `colInd`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `⟨h, -⟩`. Apply `hZ` to reduce the goal to its premises. Introduce `i j`. Simplify using `using sub_mem (h i j) (hint (fun i => Quotient.out (ρ i)) i j)`.
+-/
 theorem sum_colInd {m n : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (c : ℕ) (j₀ : Fin n)
     [Fintype (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c)] :
     (∑ ρ : Fin m → 𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c, fun Z : Matrix (Fin m) (Fin n) k =>
@@ -238,6 +322,29 @@ theorem sum_colInd {m n : ℕ} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif �
     intro i j
     simpa using sub_mem (h i j) (hint (fun i => Quotient.out (ρ i)) i j)
 
+/- English proof (translation)
+Establish `h2 : blk₂ (Z + Y * (insP k b a')ᵀ) = blk₂ Y`. Use extensionality with `i j`. Establish `e : Fin.natAdd (b + 2) j = skipCol b a' (Fin.natAdd b j)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [skipCol, skip, Fin.val_natAdd]`.
+
+Apply the tactic sequence `split_ifs <;> omega`. Simplify using `only [blk₂, Matrix.of_apply, Matrix.add_apply]`. Rewrite using `[hZ i _ (by simp only [Fin.val_natAdd]; omega), e, mul_insP_skipCol, zero_add]`. Establish `h0 : (0 : k) ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)` using `by simp [GlobalTheory.SplitWeil.cball]`. Establish `h1 : (∀ i j, blk₁ (Z + Y * (insP k b a')ᵀ) i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) ↔ (∀ i j, blk₁ Y i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)) ∧ ((∀ i j, Z i j ∈ 𝒪[k]) ∧ ∀ i, Z i ⟨b + 1, by omega⟩ ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c))`.
+
+Simplify using `only [blk₁, Matrix.of_apply, Matrix.add_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hc : ∀ i, Z i ⟨b + 1, by omega⟩ ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)` using `fun i => by`. Use `h i ⟨b + 1, by omega⟩` as an intermediate fact.
+
+Rewrite `this` using `[mul_insP_other _ _ _ (Or.inr rfl), add_zero]`. Conclude with `this`. Use `⟨fun i j => ?_, fun i j => ?_, hc⟩` and prove the remaining obligations. Use `h i ⟨j + 1, by omega⟩` as an intermediate fact. Establish `e : Fin.castAdd a' (⟨j + 1, by omega⟩ : Fin (b + 2)) = skipCol b a' (Fin.castAdd a' j)`.
+
+Apply `Fin.ext` to reduce the goal to its premises. Use `j.2` as an intermediate fact. Simplify using `only [skipCol, skip, Fin.val_castAdd]`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite `this` using `[hZ i _ (by have := j.2; simp only [Fin.val_castAdd]; omega), e, mul_insP_skipCol, zero_add]`.
+
+Conclude with `this`. Distinguish the cases in `hj : (j : ℕ) = b + 1`. Establish `e : j = ⟨b + 1, by omega⟩` using `Fin.ext hj`. Rewrite using `[e]`. Conclude with `(Valuation.mem_integer_iff _ _).2 (le_trans (hc i) (unif_pow_facts hϖ c).2.2)`.
+
+Rewrite using `[hZ i j hj]`. Conclude with `zero_mem _`. Introduce and unpack `⟨hY, -, hc⟩ i j`. Establish `hj` using `j.2`. Distinguish the cases in `hj0 : (j : ℕ) = 0`.
+
+Rewrite using `[hZ i _ (by simp only [Fin.val_castAdd]; omega), mul_insP_other _ _ _ (Or.inl hj0), add_zero]`. Conclude with `h0`. Distinguish the cases in `hj1 : (j : ℕ) = b + 1`. Establish `e : Fin.castAdd a' j = ⟨b + 1, by omega⟩` using `Fin.ext hj1`. Rewrite using `[mul_insP_other _ _ _ (Or.inr hj1), add_zero, e]`.
+
+Conclude with `hc i`. Establish `e : Fin.castAdd a' j = skipCol b a' (Fin.castAdd a' ⟨j - 1, by omega⟩)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [skipCol, skip, Fin.val_castAdd]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Rewrite using `[hZ i _ (by simp only [Fin.val_castAdd]; omega), e, mul_insP_skipCol, zero_add]`. Conclude with `hY i _`. Unfold `stdB colInd`. Distinguish the cases in `hA : (∀ i j, Z i j ∈ 𝒪[k]) ∧ ∀ i, Z i ⟨b + 1, by omega⟩ ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`. Rewrite using `[if_pos hA, mul_one]`.
+
+Distinguish the cases in `hB : (blk₂ Y).det ≠ 0 ∧ IsGLO (blk₂ Y) ∧ ∀ i j, blk₁ Y i j ∈ GlobalTheory.SplitWeil.cball (ϖ ^ c)`. Rewrite using `[dif_pos hB, dif_pos ⟨h2 ▸ hB.1, h2 ▸ hB.2.1, h1.2 ⟨hB.2.2, hA⟩⟩]`. Simplify using `only [h2]`. Rewrite using `[dif_neg hB, dif_neg fun h => hB ⟨h2 ▸ h.1, h2 ▸ h.2.1, (h1.1 h.2.2).1⟩]`. Rewrite using `[if_neg hA, mul_zero, dif_neg fun h => hA (h1.1 h.2.2).2]`.
+-/
 theorem stdB_add_insP (ν : kˣ →* ℂˣ) {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (c b a' : ℕ)
     (Y : Matrix (Fin a') (Fin (b + a')) k) (Z : Matrix (Fin a') (Fin (b + 2 + a')) k)
     (hZ : ∀ i (j : Fin (b + 2 + a')), (j : ℕ) ≠ b + 1 → Z i j = 0) :
@@ -303,6 +410,31 @@ theorem stdB_add_insP (ν : kˣ →* ℂˣ) {ϖ : kˣ} (hϖ : GlobalTheory.Split
 
 end Local
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ₀ hψ ν ϖ hϖ c b a' S hlin htr hch hY hX hvac hSB`. Establish `hL : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) k), ∀ g ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) k), ∀ z : ℂ, (fun f => S f 0) (z • f + g) = z * (fun f => S f 0) f + (fun f => S f 0) g` using `fun f hf g hg z => by`. Simplify using `[hlin f hf g hg z]`. Establish `hψ1 : ∀ y ∈ 𝒪[k], ψ₀ y = 1` using `fun y hy => by simpa using (hψ 1).2 (one_mem _) y hy`. Establish `hψ2 : ∀ x : k, x ≠ 0 → ∃ t, ψ₀ (x * t) ≠ 1` using `fun x hx => by`.
+
+Establish `hn : (ϖ : k)⁻¹ ∉ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀, not_le, hϖ]`. Conclude with `one_lt_inv_iff₀.2 ⟨uniformizer_pos, uniformizer_lt_one⟩`. Rewrite `hn` using `[← hψ]`. Use `push Not at hn`.
+
+Take `⟨y, -, hy⟩` from `hn`. Conclude with `⟨x⁻¹ * ((ϖ : k)⁻¹ * y), by rwa [mul_inv_cancel_left₀ hx]⟩`. Use `set j₀ : Fin (b + 2 + a') := ⟨b + 1, by omega⟩ with hj₀`. Establish `hvan : ∀ f ∈ SB (Matrix (Fin a') (Fin (b + 2 + a')) k), (∀ Z : Matrix (Fin a') (Fin (b + 2 + a')) k, (∀ i (j : Fin (b + 2 + a')), (j : ℕ) ≠ b + 1 → Z i j = 0) → f Z = 0) → S f 0 = 0` using `fun f hf h => by`. Use `lin_eq_zero_of_support (L := fun f => S f 0) hL (ι := Fin a' × {j : Fin (b + 2 + a') // (j : ℕ) ≠ b + 1} × k) (fun p Z => ψ₀ (Z p.1 p.2.1 * p.2.2)) (fun p => ?_) ?_ f hf fun Z hZ => ?_` and prove the remaining obligations.
+
+Conclude with `(isLocallyConstant_char ψ₀ hψ1).comp_continuous ((continuous_id.matrix_elem p.1 p.2.1.1).mul continuous_const)`. Introduce and unpack `⟨i, ⟨j, hj⟩, t⟩ f hf`. Break down `col_cases j with h | h | ⟨j', rfl⟩` into its components or cases. Take `rfl : j = 0` from `Fin.ext h`. Use `hch f hf (Pi.single i t)` as an intermediate fact.
+
+Rewrite using `[show Matrix.vecMulVec (Pi.single i t) (Pi.single (0 : Fin (b + 2 + a')) (1 : k)) = Matrix.single i 0 t by`. Use extensionality with `i' j'`. Simplify using `only [Matrix.vecMulVec_apply, Pi.single_apply, Matrix.single, Matrix.of_apply, @eq_comm _ i i', @eq_comm _ 0 j']`. Apply the tactic sequence `by_cases h1 : i' = i <;> by_cases h2 : j' = 0 <;> simp [h1, h2]] at this`. Simplify using `only [pairM_single] at this`.
+
+Conclude with `congrFun this 0`. Conclude with `absurd h hj`. Use `congrFun (hX f hf (Matrix.single i j' t)) 0` as an intermediate fact. Simplify using `only [single_mul_insP, pairM_single] at this`. Simplify using `using this`.
+
+Assume the negation of the conclusion as `hc push Not at hc`. Use `hZ (h Z fun i j hj => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨t, ht⟩` from `hψ2 _ h0`. Conclude with `ht (hc ⟨i, ⟨j, hj⟩, t⟩)`.
+
+Establish `hg` using `colInd_mem_SB (m := a') hϖ c j₀`. Establish `hcard : Nat.card (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c) = Nat.card 𝓀[k] ^ c`. Establish `hq` using `cardQuot_pow_of_prime (P := IsLocalRing.maximalIdeal 𝒪[k]) (IsDiscreteValuationRing.not_a_field _) (i := c)`. Rewrite `hq` using `[Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `hq`.
+
+Establish `hq0 : Nat.card 𝓀[k] ≠ 0` using `Nat.card_pos.ne'`. Use `haveI : Finite (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c) := Nat.finite_of_card_ne_zero (hcard ▸ pow_ne_zero _ hq0)`. Use `haveI := Fintype.ofFinite (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c)`. Establish `hone : (Nat.card 𝓀[k] : ℂ) ^ (c * a') * S (colInd (ϖ ^ c) j₀) 0 = 1`. Establish `h1` using `lin_sum (L := fun f => S f 0) hL Finset.univ (fun (ρ : Fin a' → 𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Z : Matrix (Fin a') (Fin (b + 2 + a')) k) => colInd (ϖ ^ c) j₀ (Z + Matrix.vecMulVec (fun i => ((Quotient.out (ρ i) : 𝒪[k]) : k)) (Pi.single j₀ 1))) fun ρ => translate_mem_S …`.
+
+Rewrite `h1` using `[sum_colInd hϖ]`. Simplify using `only [hvac, htr _ hg] at h1`. Rewrite `h1` using `[Set.indicator_of_mem (by simp), Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcard, ← pow_mul]`. Simplify using `using h1.symm`. Use function extensionality and compare the values at `Y`.
+
+Establish `hf` using `translate_mem_SB hSB (Y * (insP k b a')ᵀ)`. Establish `h1` using `hvan _ (add_mem (Submodule.smul_mem _ (-stdB ν ϖ c b a' Y) hg) hf) fun Z hZ => by`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[stdB_add_insP ν hϖ c b a' Y Z hZ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `h1` using `[hlin _ hg _ hf, hY _ hSB]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, zero_add] at h1 ⊢`. Rewrite using `[zpow_neg, zpow_natCast, eq_inv_mul_iff_mul_eq₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 hq0))]`. Take the linear combination `(Nat.card 𝓀[k] : ℂ) ^ (c * a') * h1 + stdB ν ϖ c b a' Y * hone`.
+-/
 theorem map_stdB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ₀ : AddChar k ℂ),
     (∀ x : k, (∀ y ∈ 𝒪[k], ψ₀ (x * y) = 1) ↔ x ∈ 𝒪[k]) →
     ∀ (ν : kˣ →* ℂˣ) (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (c b a' : ℕ)

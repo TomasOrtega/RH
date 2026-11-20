@@ -23,6 +23,17 @@ noncomputable def relationEliminateColumn (c : ι) : KTp K d.D d.N →ₐ[K] MvP
         MvPolynomial.C (ratio (Ω := Ω c) (d.w k c) (d.w (d.jc c) c))
     else MvPolynomial.X t
 
+/- English proof (translation)
+Establish `h1 : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := ratio_self_height (hd.w_base c)`. Use `split_ifs with hi`. Substitute `hi` using the available equality. Unfold `Data.rationalBaseRow`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ (d.jc c))]`.
+
+Simplify using `only [h1, map_one, mul_one]`. Establish `hsum : ∑ k ∈ Finset.univ.erase (d.jc c), d.sH c (MvPolynomial.X (i, k)) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω` using `Ω c) (d.w k c) (d.w (d.jc c) c)) = ∑ k : Fin d.N, d.sH c (MvPolynomial.X (i, (d.jc c).succAbove k)) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (d.x c k) := by`. Establish `e1` using `Finset.add_sum_erase Finset.univ (fun k => d.sH c (MvPolynomial.X (i, k)) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w k c) (d.w (d.jc c) c))) (Finset.mem_univ (d.jc c))`. Establish `e2` using `Fin.sum_univ_succAbove (fun k => d.sH c (MvPolynomial.X (i, k)) * algebraMap (Ω c) (OmS (Ω c) d.D d.N) (ratio (Ω := Ω c) (d.w k c) (d.w (d.jc c) c))) (d.jc c)`. Conclude with `add_left_cancel (e1.trans e2)`.
+
+Establish `hX : ∀ j, d.sH c (MvPolynomial.X (i, j)) = sImg (d.jc c) (d.x c) (i, j)` using `fun j => MvPolynomial.aeval_X _ _`. Establish `hS0 : ∀ (y : MvPolynomial (SVar d.D d.N) (Ω c)) (q : Fin d.N → MvPolynomial (SVar d.D d.N) (Ω c)), Fin.succAboveCases (α` using `fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) (d.jc c) y q (d.jc c) = y := fun y q => Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) (d.jc c) y q`. Establish `hS1 : ∀ (y : MvPolynomial (SVar d.D d.N) (Ω c)) (q : Fin d.N → MvPolynomial (SVar d.D d.N) (Ω c)) (k : Fin d.N), Fin.succAboveCases (α` using `fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) (d.jc c) y q ((d.jc c).succAbove k) = q k := fun y q k => Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar d.D d.N) (Ω c)) (d.jc c) y q k`. Establish `hA : d.sH c (MvPolynomial.X (i, d.jc c)) = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (-∑ k, MvPolynomial.X (Sum.inr (i, k)) * MvPolynomial.C (d.x c k))`. Rewrite using `[hX]`.
+
+Simplify using `only [sImg, hS0, if_neg hi]`. Establish `hB : ∀ k : Fin d.N, d.sH c (MvPolynomial.X (i, (d.jc c).succAbove k)) = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (MvPolynomial.X (Sum.inr (i, k)))`. Introduce `k`. Rewrite using `[hX]`. Simplify using `only [sImg, hS1]`.
+
+Rewrite using `[hsum, hA]`. Simplify using `only [hB]`. Rewrite using `[map_neg, map_sum, neg_add_eq_zero]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, IsScalarTower.algebraMap_apply (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N), MvPolynomial.algebraMap_eq]`.
+-/
 theorem relation_section_identity (hd : d.AxH 𝒜) (c : ι) (i : Fin (d.D + 1)) :
     d.sH c (MvPolynomial.X (i, d.jc c)) + ∑ k ∈ Finset.univ.erase (d.jc c),
       d.sH c (MvPolynomial.X (i, k)) *
@@ -71,6 +82,29 @@ theorem relation_section_identity (hd : d.AxH 𝒜) (c : ι) (i : Fin (d.D + 1))
     rw [map_mul, IsScalarTower.algebraMap_apply (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c))
       (OmS (Ω c) d.D d.N), MvPolynomial.algebraMap_eq]
 
+/- English proof (translation)
+Use `set Ψ : MvPolynomial (TVar d.D d.N) (Ω c) →ₐ[Ω c] OmS (Ω c) d.D d.N := MvPolynomial.aeval (sImg (d.jc c) (d.x c)) with hΨ`. Establish `htop : (0 : WithTop ℤ) < ⊤` using `WithTop.coe_lt_top 0`. Establish `hsHX : ∀ n : TVar d.D d.N, d.sH c (MvPolynomial.X n) = sImg (d.jc c) (d.x c) n` using `fun n => MvPolynomial.aeval_X _ _`. Establish `hΨX : ∀ n : TVar d.D d.N, Ψ (MvPolynomial.X n) = sImg (d.jc c) (d.x c) n` using `fun n => MvPolynomial.aeval_X _ _`. Establish `hΨs : ∀ n : TVar d.D d.N, Ψ (MvPolynomial.X n) = d.sH c (MvPolynomial.X n)` using `fun n => (hΨX n).trans (hsHX n).symm`.
+
+Establish `hΨC : ∀ r : Ω c, Ψ (MvPolynomial.C r) = algebraMap (Ω c) (OmS (Ω c) d.D d.N) r` using `fun r => MvPolynomial.aeval_C _ _`. Establish `hnn : ∀ x : KTp K d.D d.N, 0 ≤ w (d.sH c x)` using `fun x => (hw.2 x).1`. Establish `key : ∀ R : KTp K d.D d.N, 0 < w (d.sH c R - Ψ (d.relationEliminateColumn c R))`. Introduce `R`. Proceed by induction on `R using MvPolynomial.induction_on`.
+
+Use `next a =>`. Establish `e1 : d.sH c (MvPolynomial.C a) = algebraMap K (OmS (Ω c) d.D d.N) a`. Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(d.sH c).commutes a`. Establish `e2 : d.relationEliminateColumn c (MvPolynomial.C a) = algebraMap K (MvPolynomial (TVar d.D d.N) (Ω c)) a`.
+
+Rewrite using `[← MvPolynomial.algebraMap_eq]`. Conclude with `(d.relationEliminateColumn c).commutes a`. Rewrite using `[e1, e2, IsScalarTower.algebraMap_apply K (Ω c) (MvPolynomial (TVar d.D d.N) (Ω c)) a, AlgHom.commutes, ← IsScalarTower.algebraMap_apply K (Ω c) (OmS (Ω c) d.D d.N) a, sub_self, AddValuation.map_zero]`. Conclude with `htop`. Use `next P₁ P₂ h₁ h₂ =>`.
+
+Simplify using `only [map_add]`. Rewrite using `[add_sub_add_comm]`. Conclude with `lt_of_lt_of_le (lt_min h₁ h₂) (AddValuation.map_add _ _ _)`. Use `next P n hP =>`. Establish `hXn : 0 < w (d.sH c (MvPolynomial.X n) - Ψ (d.relationEliminateColumn c (MvPolynomial.X n)))`.
+
+Take `⟨i, j⟩` from `n`. Establish `hr : d.relationEliminateColumn c (MvPolynomial.X (i, j)) = if j = d.jc c then -∑ k ∈ Finset.univ.erase (d.jc c), MvPolynomial.X (i, k) * MvPolynomial.C (ratio (Ω` using `Ω c) (d.w k c) (d.w (d.jc c) c)) else MvPolynomial.X (i, j) := MvPolynomial.aeval_X _ _`. Rewrite using `[hr]`. Use `split_ifs with hj`. Substitute `hj` using the available equality.
+
+Rewrite using `[map_neg, map_sum, sub_neg_eq_add]`. Simplify using `only [map_mul, hΨs, hΨC]`. Rewrite using `[relation_section_identity d hd c i]`. Use `split_ifs with hi`. Conclude with `hpos`.
+
+Rewrite using `[AddValuation.map_zero]`. Conclude with `htop`. Rewrite using `[hΨs, sub_self, AddValuation.map_zero]`. Conclude with `htop`. Simplify using `only [map_mul]`.
+
+Establish `e : d.sH c P * d.sH c (MvPolynomial.X n) - Ψ (d.relationEliminateColumn c P) * Ψ (d.relationEliminateColumn c (MvPolynomial.X n)) = d.sH c P * (d.sH c (MvPolynomial.X n) - Ψ (d.relationEliminateColumn c (MvPolynomial.X n))) + (d.sH c P - Ψ (d.relationEliminateColumn c P)) * Ψ (d. …` using `by ring`. Rewrite using `[e]`. Establish `hb : 0 ≤ w (Ψ (d.relationEliminateColumn c (MvPolynomial.X n)))`. Establish `h3` using `AddValuation.map_sub w (d.sH c (MvPolynomial.X n)) (d.sH c (MvPolynomial.X n) - Ψ (d.relationEliminateColumn c (MvPolynomial.X n)))`. Rewrite `h3` using `[sub_sub_cancel]`.
+
+Conclude with `le_trans (le_min (hnn _) hXn.le) h3`. Use `lt_of_lt_of_le (lt_min ?_ ?_) (AddValuation.map_add _ _ _)` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Conclude with `lt_of_lt_of_le hXn (le_add_of_nonneg_left (hnn P))`. Rewrite using `[AddValuation.map_mul]`.
+
+Conclude with `lt_of_lt_of_le hP (le_add_of_nonneg_right hb)`. Establish `h` using `key Q`. Rewrite `h` using `[hQ, map_zero, sub_zero]`. Conclude with `((hw.2 Q).2).1 h`.
+-/
 theorem relation_ker_le_valuation_prime (hd : d.AxH 𝒜) (c : ι) (p : Ideal (KTp K d.D d.N))
     (w : AddValuation (OmS (Ω c) d.D d.N) (WithTop ℤ)) (hw : w ∈ d.OverP c p)
     (htriv : ∀ a : Ω c, a ≠ 0 → d.Wres c w a = 0) (hpos : 0 < w (d.rationalBaseRow c))
@@ -144,6 +178,17 @@ theorem relation_ker_le_valuation_prime (hd : d.AxH 𝒜) (c : ι) (p : Ideal (K
   rw [hQ, map_zero, sub_zero] at h
   exact ((hw.2 Q).2).1 h
 
+/- English proof (translation)
+Introduce `hker`. Establish `hinj : Function.Injective (d.relationEliminateColumn c)` using `(RingHom.injective_iff_ker_eq_bot _).mpr hker`. Set `g : Fin (d.D + 1) × Fin d.N → TVar d.D d.N` to `fun t => (t.1, (d.jc c).succAbove t.2)`. Set `φ : KTp K d.D d.N →ₐ[K] MvPolynomial (Fin (d.D + 1) × Fin d.N) (Ω c)` to `MvPolynomial.aeval fun t : TVar d.D d.N => Fin.insertNth (α := fun _ => MvPolynomial (Fin (d.D + 1) × Fin d.N) (Ω c)) (d.jc c) (-∑ k, MvPolynomial.X (t.1, k) * MvPolynomial.C (d.x c k)) (fun k => MvPolynomial.X (t.1, k)) t.2`. Establish `hfac : d.relationEliminateColumn c = ((MvPolynomial.rename g).restrictScalars K).comp φ`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, j⟩`. Simplify using `only [Data.relationEliminateColumn, φ, AlgHom.comp_apply, AlgHom.restrictScalars_apply, MvPolynomial.aeval_X]`. Distinguish the cases in `hj : j = d.jc c`. Substitute `hj` using the available equality.
+
+Simplify using `only [if_true, Fin.insertNth_apply_same, map_neg, map_sum, map_mul, MvPolynomial.rename_X, MvPolynomial.rename_C, g]`. Use `congr 1`. Establish `e1` using `Finset.add_sum_erase Finset.univ (fun k => (MvPolynomial.X (i, k) : MvPolynomial (TVar d.D d.N) (Ω c)) * MvPolynomial.C (ratio (Ω := Ω c) (d.w k c) (d.w (d.jc c) c))) (Finset.mem_univ (d.jc c))`. Establish `e2` using `Fin.sum_univ_succAbove (fun k => (MvPolynomial.X (i, k) : MvPolynomial (TVar d.D d.N) (Ω c)) * MvPolynomial.C (ratio (Ω := Ω c) (d.w k c) (d.w (d.jc c) c))) (d.jc c)`. Conclude with `add_left_cancel (e1.trans e2)`.
+
+Take `⟨k', rfl⟩` from `Fin.exists_succAbove_eq hj`. Simplify using `only [if_neg hj, Fin.insertNth_apply_succAbove, MvPolynomial.rename_X, g]`. Establish `hφ : Function.Injective φ`. Introduce `a b hab`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[hfac, AlgHom.comp_apply, AlgHom.comp_apply, hab]`. Use `not_injective_of_trdeg_lt φ d.D (hd.trdeg c) ?_ hφ` and prove the remaining obligations. Simplify using `only [Fintype.card_prod, Fintype.card_fin]`. Rewrite using `[Nat.mul_succ]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ker_relation_map_ne_bot (hd : d.AxH 𝒜) (c : ι) : RingHom.ker (d.relationEliminateColumn c) ≠ ⊥ := by
   intro hker
   have hinj : Function.Injective (d.relationEliminateColumn c) := (RingHom.injective_iff_ker_eq_bot _).mpr hker
@@ -180,6 +225,31 @@ theorem ker_relation_map_ne_bot (hd : d.AxH 𝒜) (c : ι) : RingHom.ker (d.rela
   rw [Nat.mul_succ]
   omega
 
+/- English proof (translation)
+Take `⟨κ, T, e, hκ, hT, hFe, hpl⟩` from `fZ_factor_positive_places (d := d) hd h c F hF`. Use `set I : Ideal (KTp K d.D d.N) := RingHom.ker (d.relationEliminateColumn c) with hIdef`. Establish `hIp : I.IsPrime` using `RingHom.ker_isPrime _`. Establish `hIb : I ≠ ⊥` using `ker_relation_map_ne_bot (d := d) hd c`. Take `⟨q, hqI, hq⟩` from `hIp.exists_mem_prime_of_ne_bot hIb`.
+
+Establish `hprime : ∀ p ∈ d.HtOne, q ∈ p → Prime (d.gen p)`. Introduce `p hp1 hqp`. Establish `hsp` using `height_one_prime_eq_span_gen (d := d) p hp1`. Establish `hgq : d.gen p ∣ q`. Rewrite `hqp` using `[hsp]`.
+
+Conclude with `Ideal.mem_span_singleton.1 hqp`. Establish `hg0 : d.gen p ≠ 0`. Introduce `h0`. Rewrite `hgq` using `[h0]`. Conclude with `hq.ne_zero (zero_dvd_iff.1 hgq)`.
+
+Establish `hpr : (Ideal.span {d.gen p}).IsPrime`. Rewrite using `[← hsp]`. Conclude with `hp1.1`. Conclude with `(Ideal.span_singleton_prime hg0).1 hpr`. Establish `hcont : ∀ p ∈ T, 0 < e p → p = I`.
+
+Introduce `p hpT hep`. Take `⟨w, hw, htriv, hpos'⟩` from `hpl p hpT hep`. Establish `hIle : I ≤ p` using `fun Q hQ => relation_ker_le_valuation_prime (d := d) hd c p w hw htriv hpos' Q (RingHom.mem_ker.1 hQ)`. Establish `hp1 : p ∈ d.HtOne` using `hT hpT`. Establish `hsp` using `height_one_prime_eq_span_gen (d := d) p hp1`.
+
+Establish `hgp` using `hprime p hp1 (hIle hqI)`. Establish `hgq : d.gen p ∣ q`. Establish `hqp` using `hIle hqI`. Rewrite `hqp` using `[hsp]`. Conclude with `Ideal.mem_span_singleton.1 hqp`.
+
+Take `⟨v, hv⟩` from `hgp.irreducible.dvd_symm hq.irreducible hgq`. Establish `hgI : d.gen p ∈ I`. Rewrite using `[hv]`. Conclude with `I.mul_mem_right v hqI`. Use `le_antisymm ?_ hIle` and prove the remaining obligations.
+
+Rewrite using `[hsp]`. Conclude with `(Ideal.span_singleton_le_iff_mem I).2 hgI`. Distinguish the cases in `hIT : I ∈ T ∧ 0 < e I`. Take `⟨hIT, heI⟩` from `hIT`. Establish `hI1 : I ∈ d.HtOne` using `hT hIT`.
+
+Establish `hsp` using `height_one_prime_eq_span_gen (d := d) I hI1`. Use `⟨d.gen I, κ, e I, hκ, heI, (hprime I hI1 hqI).irreducible, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hFe, Finset.prod_eq_single I (fun b hb hbI => ?_) (fun hn => absurd hIT hn)]`. Break down `Nat.eq_zero_or_pos (e b) with h0 | h0` into its components or cases. Rewrite using `[h0, pow_zero]`.
+
+Conclude with `absurd (hcont b hb h0) hbI`. Introduce `Q`. Rewrite using `[← Ideal.mem_span_singleton, ← hsp]`. Conclude with `RingHom.mem_ker.symm`. It suffices to derive a contradiction.
+
+Establish `hone : ∏ p ∈ T, d.gen p ^ e p = 1`. Use `Finset.prod_eq_one fun p hp => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (e p) with h0 | h0` into its components or cases. Rewrite using `[h0, pow_zero]`. Establish `hpI` using `hcont p hp h0`.
+
+Substitute `hpI` using the available equality. Conclude with `absurd ⟨hp, h0⟩ hIT`. Rewrite `hpos` using `[hFe, hone, mul_one, height_const_eq_zero (Nat.succ_pos _)]`. Conclude with `lt_irrefl _ hpos`.
+-/
 theorem fZ_eq_const_mul_irreducible_pow (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (F : KTp K d.D d.N)
     (hF : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c)
     (hpos : 0 < ReciprocityTheory.MultiplicativeHeights.h0 F) :

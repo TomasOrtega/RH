@@ -67,6 +67,13 @@ def RestCloudY (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH C
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → SourceCleaning.aux₃ D CLa' CD Csz → PlaneGramData.aux₃ D CH CE C6 C18 →
     ∃ Ct0 CD1 C₁ : ℝ, 0 < Ct0 ∧ 0 < CD1 ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → CloudStepY C Ct0 CD1 CLa
 
+/- English proof (translation)
+Introduce `hA h14a h14b`. Take `⟨Ct0, CD1, C₁, h0, h1, h2, hS⟩` from `hY hA h14a h14b`. Use `⟨Ct0, CD1, max C₁ 1, h0, h1, lt_of_lt_of_le h2 (le_max_left _ _), ?_⟩` and prove the remaining obligations. Introduce `C hC p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K _ _ hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB`. Take `⟨Θ, hΘ, n2, tT, D1, sh, a2, a3, a4, a5, a6⟩` from `hS C (le_trans (le_max_left _ _) hC) p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar hSet H φ hφ K hk hrk F hF E' hE' nb B hB hli hc e he htgt hm g hhm hg hbasis FsB hFsB`.
+
+Establish `hBs` using `hyps_basic (C := C) (le_trans (le_max_right _ _) hC) H`. Establish `hW : tableLineDegreeFive.WeightHyp TT aT bT cpp c0 a lam0` using `H.2.2.2.2.1`. Establish `hm2 : 2 ≤ m` using `by have := hBs.m_ge; omega`. Use `⟨Θ, hΘ, n2, r * TT.card * c0 + 2 * r * n' * cpp, tT, D1, sh, ?_, a2, a3, fun i => ⟨a4 i, ?_⟩, a5, a6⟩` and prove the remaining obligations. Unfold `om`.
+
+Use `push_cast`. Conclude with `le_refl _`. Conclude with `Re_le_scale_HL hSet.1 m r (restW TT lam0) (restW_dom (by omega) TT lam0 hW.2.1) e he _ (ordMax_rest hm2 hW r) (a4 i)`.
+-/
 theorem restCloudX_of_Y (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 : ℝ)
     (hY : RestCloudY D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18) :
     RestCloudX D CLa Ck Crk Cdeg CLa' CD Csz CH CE C6 C18 := by

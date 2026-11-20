@@ -11,6 +11,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Ind
 
 namespace GlobalTheory.CompanionTheory.ThetaGLLen
 
+/- English proof (translation)
+Establish `hle : twRel (τ.comp (MonoidHom.inl Γ G)) ψ ≤ LinearMap.ker Φ` using `hker.ge`. Establish `hinj : Function.Injective ((twRel (τ.comp (MonoidHom.inl Γ G)) ψ).liftQ Φ hle)`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `(Submodule.Quotient.mk_eq_zero _).2 ?_` and prove the remaining obligations.
+
+Rewrite using `[← hker]`. Conclude with `hx`. Set `Ψ : (coinv τ ψ).IntertwiningMap π` to `{ toLinearMap := (twRel (τ.comp (MonoidHom.inl Γ G)) ψ).liftQ Φ hle isIntertwining' := fun g => LinearMap.ext fun x => by`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `hint g f }`.
+
+Conclude with `GroundTheory.Automorphic.hasFiniteLength_of_injective Ψ hinj hπ`.
+-/
 theorem hasFiniteLength_coinv_of_ker {Γ G V U : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup U] [Module ℂ U] (τ : Representation ℂ (Γ × G) V) (ψ : Γ →* ℂˣ)
     (π : Representation ℂ G U) (Φ : V →ₗ[ℂ] U) (hint : ∀ g v, Φ (τ (1, g) v) = π g (Φ v))
@@ -30,6 +37,31 @@ theorem hasFiniteLength_coinv_of_ker {Γ G V U : Type} [Group Γ] [Group G] [Add
         exact hint g f }
   exact GroundTheory.Automorphic.hasFiniteLength_of_injective Ψ hinj hπ
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hI Γ W b c d _ _ _ _ _ _ _ _ _ e τ hτ ψ hfin`. Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k _ b _ (two e)`. Take `⟨_, _⟩` from `SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `ρ : Representation ℂ (Levi k (Two c d)) W` to `MonoidHom.comp (τ.comp (MonoidHom.inr Γ _)) (leviTwo k c d).symm.toMonoidHom`. Set `R : Submodule ℂ W` to `twRel (τ.comp (MonoidHom.inl Γ (GL c k × GL d k))) ψ`.
+
+Establish `hR : ∀ (m : Levi k (Two c d)) (v : W), v ∈ R → ρ m v ∈ R` using `fun m v hv => twRel_stable τ ψ _ v hv`. Set `ρD : Representation ℂ (Levi k (Two c d)) (W ⧸ R)` to `Representation.quotient ρ R hR`. Set `q : ρ.IntertwiningMap ρD` to `{ toLinearMap := R.mkQ, isIntertwining' := fun _ => LinearMap.ext fun _ => rfl }`. Establish `hq : Function.Surjective q` using `Submodule.mkQ_surjective R`. Establish `hρ : IsSmooth ρ` using `isSmooth_comp hτ _ ((continuous_apply false).prodMk (continuous_apply true))`.
+
+Establish `hρD : IsSmooth ρD` using `(IsSubquotient.of_surjective q hq).isSmooth hρ`. Use `haveI : FiniteDimensional ℂ (W ⧸ R) := hfin`. Establish `hInd : HasFiniteLength (parInd (two e) ρD)` using `hI Bool b (Two c d) (two e) (W ⧸ R) ρD hρD (FinitenessModel.hasFiniteLength_of_finiteDimensional ρD)`. Set `σ : Representation ℂ (parab k (two e)) W` to `(twist ρ (deltaHalf k (Two c d))).comp (leviProj k (two e))`. Establish `hσ : IsSmooth σ` using `isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ hcont`.
+
+Set `α : σ.IntertwiningMap ((twist ρD (deltaHalf k (Two c d))).comp (leviProj k (two e)))` to `compMap (twistMap q _) _`. Set `T : Γ → σ.IntertwiningMap σ` to `fun γ => { toLinearMap := (ψ γ : ℂ)⁻¹ • τ (γ, 1) isIntertwining' := fun p => by`. Establish `h` using `(compMap (twistMap (actFst τ γ) (deltaHalf k (Two c d))) (leviProj k (two e))).isIntertwining' p`. Establish `h' : τ (γ, 1) ∘ₗ σ p = σ p ∘ₗ τ (γ, 1)` using `h`. Rewrite using `[LinearMap.smul_comp, LinearMap.comp_smul, h'] }`.
+
+Establish `hT : ∀ γ v, T γ v = (ψ γ : ℂ)⁻¹ • τ (γ, 1) v` using `fun _ _ => rfl`. Establish `hψ : ∀ γ, (ψ γ : ℂ) ≠ 0` using `fun γ => (ψ γ).ne_zero`. Establish `hker0 : ∀ x, α x = 0 → x ∈ Submodule.span ℂ {y : W | ∃ γ z, y = T γ z - z}`. Introduce `x hx`. Establish `hxR : x ∈ R` using `(Submodule.Quotient.mk_eq_zero R).1 hx`.
+
+Use `(Submodule.span_le (p := Submodule.span ℂ {y : W | ∃ γ z, y = T γ z - z})).2 ?_ hxR` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, v, rfl⟩`. Establish `h : (τ.comp (MonoidHom.inl Γ (GL c k × GL d k))) γ v - (ψ γ : ℂ) • v = (ψ γ : ℂ) • (T γ v - v)`. Rewrite using `[hT, smul_sub, smul_smul, mul_inv_cancel₀ (hψ γ), one_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨γ, v, rfl⟩)`. Take `⟨-, hker⟩` from `GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (GL b k) (parab k (two e)) (KO k b) hP SplitFlip.isCompact_KO hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k b) W (W ⧸ R) σ _ hσ α Γ T (fun y => hq y) hker0`. Set `Φ : (parInd (two e) ρ).IntertwiningMap (parInd (two e) ρD)` to `parIndMap (two e) q`. Use `hasFiniteLength_coinv_of_ker (indSnd e τ) ψ (parInd (two e) ρD) Φ.toLinearMap (fun g f => ?_) (le_antisymm ?_ ?_) hInd` and prove the remaining obligations.
+
+Rewrite using `[indSnd_inr]`. Conclude with `Φ.isIntertwining _ _ g f`. Introduce `f hf`. Use `(Submodule.span_le (p := twRel ((indSnd e τ).comp (MonoidHom.inl Γ (GL b k))) ψ)).2 ?_ (hker f hf)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, z, rfl⟩`.
+
+Establish `h : smIndMap (T γ) z - z = (ψ γ : ℂ)⁻¹ • (indSnd e τ (γ, 1) z - (ψ γ : ℂ) • z)`. Rewrite using `[smul_sub, smul_smul, inv_mul_cancel₀ (hψ γ), one_smul]`. Use `congr 1`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Use `show (ψ γ : ℂ)⁻¹ • τ (γ, 1) (z.1.1 x) = (ψ γ : ℂ)⁻¹ • τ (γ, 1) (z.1.1 (x * 1))`.
+
+Rewrite using `[mul_one]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨γ, z, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, f, rfl⟩`.
+
+Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Establish `h : τ (γ, 1) (f.1.1 x) - (ψ γ : ℂ) • f.1.1 x ∈ R` using `Submodule.subset_span ⟨γ, f.1.1 x, rfl⟩`. Establish `h2` using `(Submodule.Quotient.mk_eq_zero R).2 h`. Use `show q (τ (γ, 1) (f.1.1 (x * 1)) - (ψ γ : ℂ) • f.1.1 x) = 0`. Rewrite using `[mul_one]`.
+
+Conclude with `h2`.
+-/
 theorem hasFiniteLength_coinv_indSnd : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], InductionFiniteLength k → ∀ (Γ W b c d : Type) [Group Γ] [AddCommGroup W] [Module ℂ W] [Fintype b] [DecidableEq b] [Fintype c] [DecidableEq c] [Fintype d] [DecidableEq d] (e : c ⊕ d ≃ b) (τ : Representation ℂ (Γ × (GL c k × GL d k)) W), IsSmooth (τ.comp (MonoidHom.inr Γ (GL c k × GL d k))) → ∀ ψ : Γ →* ℂˣ, Module.Finite ℂ (W ⧸ twRel (τ.comp (MonoidHom.inl Γ (GL c k × GL d k))) ψ) → HasFiniteLength (coinv (indSnd e τ) ψ) := by
   intro k _ _ _ _ hI Γ W b c d _ _ _ _ _ _ _ _ _ e τ hτ ψ hfin
   obtain ⟨-, -, -, -, -, hcont, hP, -, hPK⟩ := GlobalTheory.SmGL.LeviInt.levi_integral_facts k _ b _ (two e)

@@ -15,24 +15,43 @@ open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model GlobalTheory.StdUnn.LeftInvSe
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Apply `mat_inj` to reduce the goal to its premises. Rewrite using `[mat_mul, h, h, h, submatrix_fromBlocks_mul]`. Simplify using `[add_comm]`.
+-/
 theorem nb_add {nb : hermA D n → G D n} (h : IsNMap nb) (b c : hermA D n) : nb (b + c) = nb b * nb c := by
   apply mat_inj
   rw [mat_mul, h, h, h, submatrix_fromBlocks_mul]
   simp [add_comm]
 
+/- English proof (translation)
+Apply `mat_inj` to reduce the goal to its premises. Rewrite using `[mat_one, h]`. Conclude with `block_matrix_one`.
+-/
 theorem nb_zero {nb : hermA D n → G D n} (h : IsNMap nb) : nb 0 = 1 := by
   apply mat_inj
   rw [mat_one, h]
   exact block_matrix_one
 
+/- English proof (translation)
+The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← nb_add h, neg_add_cancel, nb_zero h])`.
+-/
 theorem nb_neg {nb : hermA D n → G D n} (h : IsNMap nb) (b : hermA D n) : nb (-b) = (nb b)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← nb_add h, neg_add_cancel, nb_zero h])
 
+/- English proof (translation)
+Unfold `blk4`. Conclude with `(Continuous.matrix_fromBlocks continuous_const hf continuous_const continuous_const).matrix_submatrix _ _`.
+-/
 theorem continuous_blk (f : hermA D n → Mx D n n) (hf : Continuous f) :
     Continuous fun b : hermA D n => (blk4 1 (f b) 0 1 : Mx D (n + n) (n + n)) := by
   unfold blk4
   exact (Continuous.matrix_fromBlocks continuous_const hf continuous_const continuous_const).matrix_submatrix _ _
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Rewrite using `[(isEmbedding_matHom (AF D.host.F) D.sp.cm.sig (Jst D n)).continuous_iff]`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_blk _ continuous_subtype_val).congr fun b => (h b).symm`.
+
+Use `(continuous_blk (fun b => -b.1) continuous_subtype_val.neg).congr fun b => ?_` and prove the remaining obligations. Establish `e : (matHom (AF D.host.F) D.sp.cm.sig (Jst D n) (nb b))⁻¹ = matHom (AF D.host.F) D.sp.cm.sig (Jst D n) (nb (-b))`. Rewrite using `[nb_neg h, map_inv]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e]`.
+
+Conclude with `(h (-b)).symm`.
+-/
 theorem nb_continuous {nb : hermA D n → G D n} (h : IsNMap nb) : Continuous nb := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _
@@ -46,6 +65,15 @@ theorem nb_continuous {nb : hermA D n → G D n} (h : IsNMap nb) : Continuous nb
     rw [e]
     exact (h (-b)).symm
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `mem_ratMx.1 hγ`. Establish `hadj : adj (rat x) = rat x` using `by rw [hx]; exact γ.2`. Set `u : GL (Fin (n + n)) D.host.E` to `⟨blk4 1 x 0 1, blk4 1 (-x) 0 1, by simp [submatrix_fromBlocks_mul, block_matrix_one], by simp [submatrix_fromBlocks_mul, block_matrix_one]⟩`. Establish `hm : rat u.1 = mat (nb γ)`. Rewrite using `[h]`.
+
+Express the relevant statement in the definitionally equal form `(blk4 1 x 0 1).map (incA D) = _`. Rewrite using `[GlobalTheory.StdUnn.Frame.block_matrix_map, show γ.1 = rat x from hx.symm]`. Use `congr 1`. Conclude with `Matrix.map_one _ (map_zero (incA D)) (map_one (incA D))`. Conclude with `Matrix.map_zero _ (map_zero (incA D))`.
+
+Conclude with `Matrix.map_one _ (map_zero (incA D)) (map_one (incA D))`. Use `⟨u, ?_, Units.ext hm⟩` and prove the remaining obligations. Establish `hu : adj (mat (nb γ)) * JR (AF D.host.F) (Jst D n) * mat (nb γ) = JR (AF D.host.F) (Jst D n)` using `(nb γ).2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) u.1 * Jst D n * u.1 = Jst D n`. Apply `rat_injective` to reduce the goal to its premises.
+
+Rewrite using `[rat_mul, rat_mul, cT_sig, rat_conjTranspose, hm]`. Conclude with `hu`.
+-/
 theorem nb_rat {nb : hermA D n → G D n} (h : IsNMap nb) {γ : hermA D n} (hγ : γ ∈ ratHerm D n) : nb γ ∈ GF D n := by
   obtain ⟨x, hx⟩ := mem_ratMx.1 hγ
   have hadj : adj (rat x) = rat x := by rw [hx]; exact γ.2
@@ -65,6 +93,9 @@ theorem nb_rat {nb : hermA D n → G D n} (h : IsNMap nb) {γ : hermA D n} (hγ 
   rw [rat_mul, rat_mul, cT_sig, rat_conjTranspose, hm]
   exact hu
 
+/- English proof (translation)
+Introduce `_ _ _ h` and use `⟨nb_continuous h, nb_add h, fun _ hγ => nb_rat h hγ⟩`.
+-/
 theorem nb_facts : ∀ (D : D7) (n : ℕ) (nb : PositivityTheory.GramSchwartzFunctions.BC.hermA D n → GlobalTheory.StdUnn.G D n), PositivityTheory.PfSWUS.IsNMap nb →
     Continuous nb ∧ (∀ b c, nb (b + c) = nb b * nb c) ∧ ∀ γ ∈ PositivityTheory.GramSchwartzFunctions.BC.ratHerm D n, nb γ ∈ GlobalTheory.StdUnn.GF D n :=
   fun _ _ _ h => ⟨nb_continuous h, nb_add h, fun _ hγ => nb_rat h hγ⟩

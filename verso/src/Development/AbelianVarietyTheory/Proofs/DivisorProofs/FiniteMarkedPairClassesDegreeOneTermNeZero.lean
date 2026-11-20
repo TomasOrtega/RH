@@ -21,6 +21,27 @@ namespace GlobalTheory.LKCx.FiniteClassIntegralRoots
 
 open Polynomial in
 
+/- English proof (translation)
+Establish `hyi : IsIntegral F y` using `IsIntegral.of_finite F y`. Establish `hm0 : minpoly F y ≠ 0` using `minpoly.ne_zero hyi`. Set `hq : F[X] → ℚ[X]` to `fun q => if hirr : Irreducible q then haveI : Fact (Irreducible q) := ⟨hirr⟩ minpoly ℚ (AdjoinRoot.root q) else 1`. Establish `key : ∀ q ∈ UniqueFactorizationMonoid.normalizedFactors (minpoly F y), q ∣ (hq q).map (algebraMap ℚ F) ∧ (((hq q).map (algebraMap ℚ E)).IsRoot μ → ∃ τ : F →+* E, (q.map τ).IsRoot μ)`. Introduce `q hqm`.
+
+Establish `hirr : Irreducible q` using `UniqueFactorizationMonoid.irreducible_of_normalized_factor q hqm`. Use `haveI : Fact (Irreducible q) := ⟨hirr⟩`. Establish `hq0 : q ≠ 0` using `hirr.ne_zero`. Use `haveI : FiniteDimensional F (AdjoinRoot q) := (AdjoinRoot.powerBasis hq0).finite`. Use `haveI : FiniteDimensional ℚ (AdjoinRoot q) := Module.Finite.trans F _`.
+
+Use `haveI : Algebra.IsAlgebraic ℚ (AdjoinRoot q) := Algebra.IsAlgebraic.of_finite ℚ _`. Establish `e : hq q = minpoly ℚ (AdjoinRoot.root q)` using `dif_pos hirr`. Rewrite using `[e]`. Use `⟨?_, fun hμ => ?_⟩` and prove the remaining obligations. Rewrite using `[← AdjoinRoot.mk_eq_zero, ← AdjoinRoot.aeval_eq, aeval_map_algebraMap, minpoly.aeval]`.
+
+Establish `hne : minpoly ℚ (AdjoinRoot.root q) ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral _)`. Establish `hμ' : μ ∈ (minpoly ℚ (AdjoinRoot.root q)).rootSet E`. Rewrite using `[mem_rootSet]`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_eq_eval_map]`.
+
+Conclude with `hμ.eq_zero`. Rewrite `hμ'` using `[← Algebra.IsAlgebraic.range_eval_eq_rootSet_minpoly]`. Take `⟨ψ, hψ⟩` from `hμ'`. Use `⟨(ψ : AdjoinRoot q →+* E).comp (algebraMap F _), ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ, IsRoot.def, eval_map]`.
+
+Express the relevant statement in the definitionally equal form `eval₂ ((ψ : AdjoinRoot q →+* E).comp (algebraMap F _)) ((ψ : AdjoinRoot q →+* E) (AdjoinRoot.root q)) q = 0`. Rewrite using `[← hom_eval₂, ← aeval_def, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, map_zero]`. Use `set S := UniqueFactorizationMonoid.normalizedFactors (minpoly F y) with hS`. Use `set H : ℚ[X] := (S.map hq).prod with hH`. Establish `hdvd : minpoly F y ∣ H.map (algebraMap ℚ F)`.
+
+Establish `h1 : minpoly F y ∣ S.prod` using `(UniqueFactorizationMonoid.prod_normalizedFactors hm0).symm.dvd`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[hH, Polynomial.map_multiset_prod, Multiset.map_map]`. Use `Multiset.prod_dvd_prod_of_dvd (S := S) (fun q => q) (fun q => (hq q).map (algebraMap ℚ F)) (fun q hq' => (key q hq').1)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hH0 : aeval y H = 0`. Rewrite using `[← aeval_map_algebraMap F]`. Take `⟨k, hk⟩` from `hdvd`. Rewrite using `[hk, map_mul, minpoly.aeval, zero_mul]`. Establish `hdy : minpoly ℚ y ∣ H` using `minpoly.dvd ℚ y hH0`.
+
+Establish `hHμ : (H.map (algebraMap ℚ E)).IsRoot μ`. Take `⟨k, hk⟩` from `hdy`. Rewrite using `[hk, Polynomial.map_mul, IsRoot.def, eval_mul, h.eq_zero, zero_mul]`. Rewrite `hHμ` using `[hH, Polynomial.map_multiset_prod, IsRoot.def, Polynomial.eval_multiset_prod, Multiset.prod_eq_zero_iff, Multiset.map_map, Multiset.map_map]`. Take `⟨q, hqS, hq0⟩` from `Multiset.mem_map.1 hHμ`.
+
+Take `⟨τ, hτ⟩` from `(key q hqS).2 hq0`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `hqd : q ∣ minpoly F y` using `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hqS`. Take `⟨k, hk⟩` from `hqd`. Rewrite using `[hk, Polynomial.map_mul, IsRoot.def, eval_mul, hτ.eq_zero, zero_mul]`.
+-/
 theorem exists_emb_isRoot' {F C E : Type} [Field F] [NumberField F] [Ring C] [Algebra F C]
     [Algebra ℚ C] [IsScalarTower ℚ F C] [FiniteDimensional F C] [Field E] [Algebra ℚ E] [IsAlgClosed E]
     (y : C) (μ : E) (h : ((minpoly ℚ y).map (algebraMap ℚ E)).IsRoot μ) :
@@ -86,6 +107,17 @@ theorem exists_emb_isRoot' {F C E : Type} [Field F] [NumberField F] [Ring C] [Al
   obtain ⟨k, hk⟩ := hqd
   rw [hk, Polynomial.map_mul, IsRoot.def, eval_mul, hτ.eq_zero, zero_mul]
 
+/- English proof (translation)
+Introduce `p _ G β y c hyc B hc hc' hy hyi μ hμ`. Establish `h0` using `GlobalTheory.GlobEig.isRoot_minpoly_of_isRoot_charpoly (y : G.C) μ hμ`. Take `⟨τ, hτ⟩` from `exists_emb_isRoot' (F := G.F) (y : G.C) μ h0`. Establish `hcpos : 0 < ‖((c : ℚ) : ℚ_[p])‖` using `norm_pos_iff.2 (by simp)`. Establish `hprod : ‖((c : ℚ) : ℚ_[p])‖ * ‖(((c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ = 1`.
+
+Rewrite using `[← norm_mul, ← Rat.cast_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Rat.cast_one, norm_one]`. Establish `hB0 : 0 ≤ B` using `hcpos.le.trans hc`. Establish `hB1 : 1 ≤ B`. Establish `h1 : 1 ≤ B * B`. Rewrite using `[← hprod]`.
+
+Conclude with `mul_le_mul hc hc' (norm_nonneg _) hB0`. Use the polynomial consequences of the given equalities and inequalities. Break down `GlobalTheory.GlobEig.liesOver_or_conj G τ with hu | hu` into its components or cases. Take `⟨i, ν, hνμ, hν⟩` from `GlobalTheory.GlobEig.exists_root_rho G τ hu y μ hτ`. Establish `h1` using `hy i ν hν`.
+
+Rewrite `h1` using `[hνμ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2` using `GlobalTheory.GlobEig.isRoot_minpoly_sh G y τ μ hτ`. Take `⟨i, ν, hνμ, hν⟩` from `GlobalTheory.GlobEig.exists_root_rho G _ hu (sh G y) μ h2`. Establish `h3` using `GlobalTheory.GlobEig.isRoot_inv G i β y c hyc ν hν`.
+
+Establish `h4` using `hyi i _ h3`. Establish `hs : ‖((c : ℚ) : PadicAlgCl p)‖ = ‖((c : ℚ) : ℚ_[p])‖`. Rewrite using `[← PadicAlgCl.norm_extends, map_ratCast]`. Rewrite `h4` using `[norm_mul, norm_inv, hs, hνμ, ← div_eq_mul_inv, div_le_iff₀ hcpos]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem root_norm_le' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β y : G.Cˣ) (c : ℚˣ),
     (y : G.C) * β * sh G y = algebraMap ℚ G.C c * β → ∀ B : ℝ, ‖((c : ℚ) : ℚ_[p])‖ ≤ B →
     ‖(((c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ ≤ B →
@@ -122,6 +154,29 @@ theorem root_norm_le' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (β y : G.C
     calc ‖μ‖ ≤ B * ‖((c : ℚ) : ℚ_[p])‖ := h4
       _ ≤ B * B := mul_le_mul_of_nonneg_left hc hB0
 
+/- English proof (translation)
+Introduce `p _ G L f r K φ hr hf hφ`. Take `⟨Ω, hΩc, hΩ⟩` from `GlobalTheory.T.twistedHeckeTestFunction_support_compact p G L f hf`. Take `⟨D, hD, hDp⟩` from `GlobalTheory.T.compact_conj_charpoly_bounded_denominators_awayP p G (Ω ∪ Ω⁻¹) (hΩc.union hΩc.inv)`. Take `⟨k, hk⟩` from `GlobalTheory.T.twisted_orbit_norm_bounds p G r K φ hr hφ`. Establish `hp` using `(Fact.out : p.Prime)`.
+
+Use `⟨D * p ^ (2 * k * Module.finrank ℚ G.C), Nat.mul_pos hD (pow_pos hp.pos _), ?_⟩` and prove the remaining obligations. Introduce `P _ hP`. Establish `fin : ∀ (y0 : G.Cˣ) (c0 : ℚˣ), (y0 : G.C) * P.β * sh G y0 = algebraMap ℚ G.C c0 * P.β → ‖((c0 : ℚ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k → ‖(((c0⁻¹ : ℚˣ) : ℚ) : ℚ_[p])‖ ≤ (p : ℝ) ^ k → (∀ (w : Fin G.m) (μ : PadicAlgCl p), ((G.rho w (y0 : G.C)).charpoly.map (algebraMap (G.Fw w) (PadicAlgCl p))) …`. Introduce `y0 c0 hy0 hc hc' hu hu' hAf`. Establish `hroots` using `root_norm_le' p G P.β y0 c0 hy0 _ hc hc' hu hu'`.
+
+Establish `hroots' : ∀ μ : PadicAlgCl p, ((LinearMap.mulLeft ℚ (y0 : G.C)).charpoly.map (algebraMap ℚ (PadicAlgCl p))).IsRoot μ → ‖μ‖ ≤ (p : ℝ) ^ (2 * k)` using `fun μ hμ => by`. Rewrite using `[show 2 * k = k + k by ring, pow_add]; exact hroots μ hμ`. Establish `h6` using `GlobalTheory.T.padic_coeff_denominator_bound_of_bounded_roots p _ (LinearMap.charpoly_monic _) (2 * k) hroots'`. Rewrite `h6` using `[LinearMap.charpoly_natDegree]`. Apply `GlobalTheory.T.isIntegral_natCast_smul_of_mul_charpoly_coeff_int G.C` to reduce the goal to its premises.
+
+Introduce `i`. Take `⟨kk, hkk⟩` from `hAf i`. Conclude with `GlobalTheory.T.den_bound_combine_padic_primeToP p D (2 * k * Module.finrank ℚ G.C) kk hp _ (h6 i) hkk`. Rewrite `hP` using `[Pair.term]`. Use `split_ifs at hP with h`.
+
+Use `swap`. Conclude with `absurd rfl hP`. Rewrite `hP` using `[Pair.termAt, pointSum]`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, _ ≠ (0 : ℂ) := by`. Assume the negation of the conclusion as `hc`.
+
+Use `push_neg at hc`. Conclude with `hP (by rw [finsum_congr hc]; exact finsum_zero)`. Establish `hq2` using `(mul_ne_zero_iff.1 hq).2`. Establish `hfq` using `(mul_ne_zero_iff.1 hq2).1`. Establish `hφq` using `(mul_ne_zero_iff.1 hq2).2`.
+
+Use `set x := P.trivAf.choose with hxdef`. Use `set o := Quotient.out q with hodef`. Establish `hgΩ` using `hΩ _ hfq`. Establish `hnrm` using `h.choose_spec`. Take `⟨hk1, hk2, hk3, hk4⟩` from `hk P.atP h.choose.1 h.choose.2 o.2 hnrm hφq`.
+
+Use `set g := o.1⁻¹ * P.toAf x P.trivAf.choose_spec.choose P.trivAf.choose_spec.choose_spec P.self * o.1 with hg`. Establish `hg1 : ((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : (AfP p ⊗[ℚ] G.C)ˣ) = ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x) * Units.map (inC G (AfP p)).toMonoidHom P.γ * ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x)⁻¹` using `by show ((o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ * (x * Units.map (inC G (AfP p)).toMonoidHom P.γ * x⁻¹) * (o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 = _ group`. Use `set X := (o.1 : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1⁻¹ * x`. Establish `hA` using `hDp g (P.γ : G.C) X (Or.inl hgΩ) (by rw [hg1]; rfl)`. Establish `hgi : g⁻¹ ∈ Ω ∪ Ω⁻¹` using `Or.inr (by simpa using hgΩ)`.
+
+Establish `hA'` using `hDp g⁻¹ ((P.γ⁻¹ : G.Cˣ) : G.C) X hgi (by show (((g : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ).val = _`. Rewrite using `[hg1]`. Simplify using `[mul_assoc])`. Establish `hc1 : ((P.atP.1 : ℚ_[p]ˣ) : ℚ_[p]) = ((P.c : ℚ) : ℚ_[p])` using `by show algebraMap ℚ ℚ_[p] (P.c : ℚ) = _`. Simplify using the standard rewrite rules.
+
+Establish `hc2 : ((P.atP.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) = (((P.c⁻¹ : ℚˣ) : ℚ) : ℚ_[p])` using `by show algebraMap ℚ ℚ_[p] ((P.c⁻¹ : ℚˣ) : ℚ) = _`. Simplify using the standard rewrite rules. Establish `hw1 : ∀ w, (((P.atP.2 w : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))) = G.rho w (P.γ : G.C)` using `fun w => rfl`. Establish `hw2 : ∀ w, ((((P.atP.2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w))) = G.rho w ((P.γ⁻¹ : G.Cˣ) : G.C)` using `fun w => rfl`. Establish `hrel' : ((P.γ⁻¹ : G.Cˣ) : G.C) * P.β * sh G ((P.γ⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C ((P.c⁻¹ : ℚˣ) : ℚ) * P.β` using `(P.cent.inv_mem P.self.2).2`.
+
+Use `⟨fin P.γ P.c P.sim (hc1 ▸ hk1) (hc2 ▸ hk2) (fun w μ hμ => hk3 w μ (by rw [hw1]; exact hμ)) (fun w μ hμ => hk4 w μ (by rw [hw2]; exact hμ)) hA, fin P.γ⁻¹ P.c⁻¹ hrel' (hc2 ▸ hk2) (by rw [inv_inv]; exact hc1 ▸ hk1) (fun w μ hμ => hk4 w μ (by rw [hw2]; exact hμ)) (fun w μ hμ => hk3 w …` and prove the remaining obligations.
+-/
 theorem integral_of_term_ne_zero' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (L : G.Level) (f : G.GAf → ℂ) (r : ℕ) (K : Subgroup (Gr G r)) (φ : Gr G r → ℂ), 0 < r → IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → IsTest (sigG G r) (KHT p G.m G.n r G.Fw) K φ → ∃ N : ℕ, 0 < N ∧ ∀ P : Pair G, (∃ μ, P.Mark μ) → P.term L.K.toSubgroup f r K φ ≠ 0 → IsIntegral ℤ ((N : ℤ) • (P.γ : G.C)) ∧ IsIntegral ℤ ((N : ℤ) • ((P.γ⁻¹ : G.Cˣ) : G.C)) := by
   intro p _ G L f r K φ hr hf hφ
   obtain ⟨Ω, hΩc, hΩ⟩ := GlobalTheory.T.twistedHeckeTestFunction_support_compact p G L f hf
@@ -203,6 +258,37 @@ theorem integral_of_term_ne_zero' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p)
 
 open GlobalTheory.LKMid.Northcott in
 
+/- English proof (translation)
+Introduce `p _ G hG N hN`. Use `(GlobalTheory.T.finite_monic_of_roots_bdd_of_mul_isIntegral G.F G.n N N hN).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨P, ⟨μ, v₀, hv₀, x₀, hx₀, hpos⟩, rfl, hI1, hI2⟩`. Establish `hc0 : ((P.c : ℚ) : ℝ) ≠ 0` using `by exact_mod_cast P.c.ne_zero`. Establish `hnorm : ∀ (v : InfinitePlace G.F) (w : ℂ) (x : Fin G.n → ℂ), x ≠ 0 → G.psi v P.γ *ᵥ x = w • x → ‖w‖ ^ 2 = ((P.c : ℚ) : ℝ)`.
+
+Introduce `v w x hx hwx`. Take `⟨-, -, hlaw⟩` from `GlobalTheory.T.similitudePair_hermitianForm_invertible_similitude p G P v`. Take `⟨Z, hZ⟩` from `GlobalTheory.T.similitudePair_gram_inv_congruent p G P v`. Establish `hsig` using `G.sig v`. Establish `hn` using `G.n_pos`.
+
+Use `GlobalTheory.T.eigenvalue_normSq_of_similitude_hermitian_signature G.n (G.gram v) _ (G.psi v P.γ) (G.gram_herm v) Z ((P.c : ℚ) : ℝ) ?_ ?_ hZ hc0 ?_ ?_ w x hx hwx` and prove the remaining obligations. Apply the tactic sequence `rcases hsig with h | h <;> omega`. Apply the tactic sequence `rcases hsig with h | h <;> omega`. Rewrite using `[hlaw]`. Use `congr 1`.
+
+Distinguish the cases in `hv : v = v₀`. Substitute `hv` using the available equality. Conclude with `Or.inr ⟨μ, x₀, hx₀, hpos⟩`. Use `left`. Establish `h1 : sigPosH (G.gram_herm v) ≠ 1`.
+
+Introduce `h1`. Establish `hcard : Fintype.card {v : InfinitePlace G.F // sigPosH (G.gram_herm v) = 1} ≤ 1` using `hG.le`. Use `Fintype.card_le_one_iff.1 hcard ⟨v, h1⟩ ⟨v₀, hv₀⟩` as an intermediate fact. Conclude with `hv (congrArg Subtype.val this)`. Break down `hsig with h | h` into its components or cases.
+
+Conclude with `absurd h.1 h1`. Conclude with `h.1`. Establish `hint : ∀ (v : InfinitePlace G.F) (w : ℂ) (x : Fin G.n → ℂ), x ≠ 0 → G.psi v P.γ *ᵥ x = w • x → IsIntegral ℤ ((N : ℂ) * w) ∧ IsIntegral ℤ ((N : ℂ) * w⁻¹)`. Introduce `v w x hx hwx`. Establish `hinv : G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) * G.psi v (P.γ : G.C) = 1`.
+
+Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hx' : x = w • (G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) *ᵥ x)` using `by conv_lhs => rw [← Matrix.one_mulVec x, ← hinv, ← Matrix.mulVec_mulVec, hwx, Matrix.mulVec_smul]`. Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises.
+
+Rewrite using `[hx', zero_smul]`. Establish `hinvx : G.psi v ((P.γ⁻¹ : G.Cˣ) : G.C) *ᵥ x = w⁻¹ • x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ hw0, one_smul]`. Use `_ = w⁻¹ • x := by rw [← hx']`.
+
+Prove the components needed by the constructor for the conclusion. Use `isIntegral_eig (hI1.map (G.psi v).toIntAlgHom) hx ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.psi v ((N : ℤ) • (P.γ : G.C)) *ᵥ x = _`. Rewrite using `[map_zsmul, Matrix.smul_mulVec, hwx, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Use `isIntegral_eig (hI2.map (G.psi v).toIntAlgHom) hx ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `G.psi v ((N : ℤ) • ((P.γ⁻¹ : G.Cˣ) : G.C)) *ᵥ x = _`. Rewrite using `[map_zsmul, Matrix.smul_mulVec, hinvx, ← Int.cast_smul_eq_zsmul ℂ, smul_smul]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hkey : ∀ (v : InfinitePlace G.F) (w : ℂ), P.pol.eval₂ v.embedding w = 0 → ‖w‖ ≤ N ∧ IsIntegral ℤ ((N : ℂ) * w)`. Introduce `v w hw`. Take `⟨x, hx, hwx⟩` from `GlobalTheory.T.exists_eigenvector_of_minpoly_root_hermitianPsi p G P v w hw`. Take `⟨h2, h3⟩` from `hint v w x hx hwx`.
+
+Conclude with `⟨norm_le_of_isIntegral_inv w P.c N hN (hnorm v w x hx hwx) hc0 h3, h2⟩`. Use `⟨minpoly.monic (Algebra.IsIntegral.isIntegral _), P.reg.1, ?_⟩` and prove the remaining obligations. Introduce `φ w hw`. Establish `hr : P.pol.eval₂ φ w = 0`. Use `(Polynomial.mem_roots'.1 hw).2` as an intermediate fact.
+
+Rewrite `this` using `[Polynomial.IsRoot, Polynomial.eval_map]`. Then use the resulting hypothesis. Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite `hr` using `[← h]`. Conclude with `hkey _ w hr`. Establish `hr' : P.pol.eval₂ (InfinitePlace.mk φ).embedding (starRingEnd ℂ w) = 0`.
+
+Rewrite using `[h]`. Use `congrArg (starRingEnd ℂ) hr` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂]`. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext fun x => rfl`.
+
+Take `⟨h1, h2⟩` from `hkey _ _ hr'`. Use `⟨by simpa using h1, ?_⟩` and prove the remaining obligations. Use `h2.map (starRingEnd ℂ).toIntAlgHom` as an intermediate fact. Simplify using `using this`.
+-/
 theorem finite_pol_marked' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ N : ℕ, 0 < N →
     {P0 : Polynomial G.F | ∃ P : Pair G, (∃ μ, P.Mark μ) ∧ P.pol = P0 ∧
       IsIntegral ℤ ((N : ℤ) • (P.γ : G.C)) ∧ IsIntegral ℤ ((N : ℤ) • ((P.γ⁻¹ : G.Cˣ) : G.C))}.Finite := by
@@ -279,6 +365,11 @@ theorem finite_pol_marked' : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a =
     have := h2.map (starRingEnd ℂ).toIntAlgHom
     simpa using this
 
+/- English proof (translation)
+Introduce `p _ G ha L f hf hreg K' f' hf'`. Take `⟨N, hN, hb⟩` from `integral_of_term_ne_zero' p G L f 1 K' f' one_pos hf hf'`. Establish `hS` using `finite_pol_marked' p G ha N hN`. Use `(hS.biUnion (fun P0 _ => GlobalTheory.T.finite_kottwitz_classes_per_minpoly_a_eq_one p G ha L f hf hreg K' f' hf' P0)).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨hm, ht⟩`.
+
+Take `⟨h1, h2⟩` from `hb (Quot.out q) hm ht`. Conclude with `Set.mem_biUnion (x := (Quot.out q).pol) ⟨Quot.out q, hm, rfl, h1, h2⟩ ⟨rfl, hm, ht⟩`.
+-/
 theorem finite_cls_term_one_a_one : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p), G.a = 1 → ∀ (L : G.Level) (f : G.GAf → ℂ), IsTest (MonoidHom.id _) L.K.toSubgroup L.K.toSubgroup f → (∀ g, f g ≠ 0 → RegAf G g) → ∀ (K' : Subgroup (Gr G 1)) (f' : Gr G 1 → ℂ), IsTest (sigG G 1) (KHT p G.m G.n 1 G.Fw) K' f' → Set.Finite {Q : Cls G | (∃ μ, (Quot.out Q).Mark μ) ∧ (Quot.out Q).term L.K.toSubgroup f 1 K' f' ≠ 0} := by
   intro p _ G ha L f hf hreg K' f' hf'
   obtain ⟨N, hN, hb⟩ := integral_of_term_ne_zero' p G L f 1 K' f' one_pos hf hf'

@@ -22,6 +22,11 @@ def gA (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b : Mt k 
 def gB (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b : Mt k r) : Mt k r :=
   fun i j => (Matrix.of a * E * (Matrix.of b)⁻¹) i j
 
+/- English proof (translation)
+Establish `e : (fun p : Mt k r × Mt k r => gA E p.1 p.2) = fun p => (fun i j => (Matrix.of (fun i j => (Matrix.of (fun i j => ((Matrix.of p.1)⁻¹) i j : Mt k r) * Matrix.of (E : Mt k r)) i j : Mt k r) * Matrix.of p.2) i j : Mt k r)`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Establish `: Measurable fun p : Mt k r × Mt k r => gA E p.1 p.2`. Rewrite using `[e]`.
+
+Conclude with `mulMt_meas (mulMt_meas (invMt_meas measurable_fst) measurable_const) measurable_snd`. Conclude with `hf.comp this`.
+-/
 theorem meas_gA (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) {f : Mt k r → ℝ≥0∞} (hf : Measurable f) :
     Measurable fun p : Mt k r × Mt k r => f (gA E p.1 p.2) := by
   have e : (fun p : Mt k r × Mt k r => gA E p.1 p.2) = fun p =>
@@ -33,10 +38,16 @@ theorem meas_gA (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) {f 
     exact mulMt_meas (mulMt_meas (invMt_meas measurable_fst) measurable_const) measurable_snd
   exact hf.comp this
 
+/- English proof (translation)
+The claim follows from `hf.comp (meas_PQinv (fun p : Mt k r × Mt k r => Matrix.of p.1 * E) (fun p => Matrix.of p.2) (by fun_prop) (by fun_prop))`.
+-/
 theorem meas_gB (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) {f : Mt k r → ℝ≥0∞} (hf : Measurable f) :
     Measurable fun p : Mt k r × Mt k r => f (gB E p.1 p.2) :=
   hf.comp (meas_PQinv (fun p : Mt k r × Mt k r => Matrix.of p.1 * E) (fun p => Matrix.of p.2) (by fun_prop) (by fun_prop))
 
+/- English proof (translation)
+Set `P : Mt k r → Mt k r` to `fun b => ((Matrix.of a0)⁻¹ * E * Matrix.of b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`. Establish `hP : Continuous P` using `by show Continuous fun b : Mt k r => ((Matrix.of a0)⁻¹ * E * Matrix.of b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) fun_prop`. Conclude with `hf.comp hP.measurable`.
+-/
 theorem measurable_comp_group_action (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a0 : Mt k r) {f : Mt k r → ℝ≥0∞}
     (hf : Measurable f) : Measurable fun b : Mt k r => f (gA E a0 b) := by
   let P : Mt k r → Mt k r := fun b =>
@@ -47,6 +58,9 @@ theorem measurable_comp_group_action (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 *
     fun_prop
   exact hf.comp hP.measurable
 
+/- English proof (translation)
+Establish `h1 : ((Matrix.of a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)⁻¹)⁻¹ = Matrix.of a` using `Matrix.nonsing_inv_nonsing_inv _ ha`. Use `show (fun i j => (((Matrix.of a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)⁻¹)⁻¹ * E * (Matrix.of b)⁻¹) i j : Mt k r) = fun i j => (Matrix.of a * E * (Matrix.of b)⁻¹) i j`. Rewrite using `[h1]`.
+-/
 theorem gA_inv (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b : Mt k r)
     (ha : IsUnit (Matrix.of a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ).det) :
     gA E (Formalism.FourierDecayAlt.B2.invM a) (Formalism.FourierDecayAlt.B2.invM b) = gB E a b := by
@@ -56,6 +70,17 @@ theorem gA_inv (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (a b
       (Matrix.of b)⁻¹) i j : Mt k r) = fun i j => (Matrix.of a * E * (Matrix.of b)⁻¹) i j
   rw [h1]
 
+/- English proof (translation)
+Establish `sW` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hW`. Establish `sW'` using `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite hW'`. Establish `hinv : μW.map Formalism.FourierDecayAlt.B2.invM = μW` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k r (UWset k r z) μW (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) hW`. Establish `hinv' : μW'.map Formalism.FourierDecayAlt.B2.invM = μW'` using `Formalism.FourierDecayAlt.P.haar_measure_inversion k r (UWset k r z') μW' (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z') hW'`. Establish `hA` using `meas_gA (k := k) (r := r) E hf`.
+
+Establish `e0 : (fun p : Mt k r × Mt k r => f ((Matrix.of p.1)⁻¹ * E * Matrix.of p.2)) = fun p => f (gA E p.1 p.2)`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[e0, lintegral_prod (fun p : Mt k r × Mt k r => f (gA E p.1 p.2)) hA.aemeasurable]`. Establish `key : ∀ (ν : Measure (Mt k r)), ν.map Formalism.FourierDecayAlt.B2.invM = ν → ∀ F : Mt k r → ℝ≥0∞, Measurable F → ∫⁻ a, F a ∂ν = ∫⁻ a, F (Formalism.FourierDecayAlt.B2.invM a) ∂ν`.
+
+Introduce `ν hν F hF`. Use `conv_lhs => rw [← hν]`. Conclude with `lintegral_map hF Formalism.FourierDecayAlt.P.B2x1.invM_meas`. Use `(key μW hinv _ hA.lintegral_prod_right').trans ?_` and prove the remaining obligations. Establish `hae : ∀ᵐ a ∂μW, (Matrix.of a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UWset k r z` using `ae_iff.2 hW.conc`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with a ha`. Establish `hau : IsUnit (Matrix.of a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ).det` using `unit_of_UH ha.1`. Use `(key μW' hinv' _ (measurable_comp_group_action E (Formalism.FourierDecayAlt.B2.invM a) hf)).trans ?_` and prove the remaining obligations. Use `lintegral_congr fun b => ?_` and prove the remaining obligations.
+
+Rewrite using `[gA_inv E a b hau]`. Both sides reduce to the same expression.
+-/
 theorem prod_to_iter {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT : 0 < Tz k r z) (hz' : inWb k r z')
     (hT' : 0 < Tz k r z') {μW μW' : Measure (Mt k r)} (hW : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μW)
     (hW' : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z') μW') (E : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
@@ -88,6 +113,11 @@ theorem prod_to_iter {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hT 
   rw [gA_inv E a b hau]
   rfl
 
+/- English proof (translation)
+Introduce `k r z z' μW μW' a a' μsec D`. Take `⟨μb0, hb0⟩` from `Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists k r`. Establish `hW` using `Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.1 k r z μW D.z_mem D.T_pos D.haarW`. Establish `hW'` using `Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.1 k r z' μW' D.z'_mem D.T'_pos D.haarW'`. Take `⟨C, hC, hI⟩` from `Formalism.FourierDecayAlt.P.rank_one_integration_formula k r z z' μsec μb0 μW μW' D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos D.sec hb0 hW hW'`.
+
+Use `⟨C⁻¹ • μb0, isHaarOn_smul (skHaar_of_cs hb0) (inv_pos.2 hC), fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[lintegral_smul_measure, hI φ hφ]`. Unfold `rhsW`. Repeatedly rewrite using `[prod_to_iter D.z_mem D.T_pos D.z'_mem D.T'_pos hW hW' _ hφ]`. Rewrite using `[ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ hC.ne', ENNReal.coe_one, one_mul]`.
+-/
 theorem rhsWHaar : RhsWHaar := by
   intro k r z z' μW μW' a a' μsec D
   obtain ⟨μb0, hb0⟩ := Formalism.FourierDecayAlt.P.opposite_weyl_haar_exists k r
@@ -101,6 +131,11 @@ theorem rhsWHaar : RhsWHaar := by
   simp_rw [prod_to_iter D.z_mem D.T_pos D.z'_mem D.T'_pos hW hW' _ hφ]
   rw [ENNReal.smul_def, smul_eq_mul, ← mul_assoc, ← ENNReal.coe_mul, inv_mul_cancel₀ hC.ne', ENNReal.coe_one, one_mul]
 
+/- English proof (translation)
+Establish `hlt : Tz k r z * Tz k r z' < Complex.normSq (zeta0 k r z z')`. Establish `hp : 0 < Tz k r z * Tz k r z'` using `mul_pos hT hT'`. Unfold `zeta0`. Rewrite using `[Complex.normSq_ofReal]`. Establish `hs` using `Real.mul_self_sqrt hp.le`.
+
+Establish `e : (2 * Real.sqrt (Tz k r z * Tz k r z')) * (2 * Real.sqrt (Tz k r z * Tz k r z')) = 4 * (Real.sqrt (Tz k r z * Tz k r z') * Real.sqrt (Tz k r z * Tz k r z'))` using `by ring`. Rewrite using `[e, hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(Formalism.FourierDecayAlt.P.unipotent_weyl_properties k r).1 ▸ ⟨_, (hsec.2 _ hlt).1, rfl⟩`.
+-/
 theorem mBase_mem {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ}
     (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') (hsec : IsSection k r z z' μsec) :
     mBase k r z z' μsec ∈ Formalism.FourierDecayAlt.B2.UWb k r := by
@@ -115,6 +150,11 @@ theorem mBase_mem {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matrix (
     linarith
   exact (Formalism.FourierDecayAlt.P.unipotent_weyl_properties k r).1 ▸ ⟨_, (hsec.2 _ hlt).1, rfl⟩
 
+/- English proof (translation)
+Introduce `k r z z' μb μW μW' a a' μsec D hμb ρ hρ`. Establish `hg : MeasurableSet (bBall k r ρ)` using `measurableSet_expBall (k := k) (r := r) (Formalism.FourierDecayAlt.B2.UWb k r) ρ hρ`. Establish `hmem : (mBase k r z z' μsec)⁻¹ ∈ Formalism.FourierDecayAlt.B2.UWb k r` using `(Formalism.FourierDecayAlt.P.opposite_weyl_subgroup_closed k r).inv_mem _ (mBase_mem D.T_pos D.T'_pos D.sec)`. Establish `hl : Measurable (lmulM (k` using `k) (r := r) (mBase k r z z' μsec)⁻¹) := by`. Establish `: Continuous (lmulM (k` using `k) (r := r) (mBase k r z z' μsec)⁻¹) := by show Continuous fun x : Mt k r => ((mBase k r z z' μsec)⁻¹ * Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`.
+
+Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `this.measurable`. Establish `e : mBall k r z z' μsec ρ = lmulM (mBase k r z z' μsec)⁻¹ ⁻¹' bBall k r ρ` using `rfl`. Use `⟨e ▸ hl hg, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Measure.map_apply hl hg, hμb.2.2.2 _ hmem]`.
+-/
 theorem gaugeShiftW : GaugeShiftW := by
   intro k r z z' μb μW μW' a a' μsec D hμb ρ hρ
   have hg : MeasurableSet (bBall k r ρ) := measurableSet_expBall (k := k) (r := r) (Formalism.FourierDecayAlt.B2.UWb k r) ρ hρ
@@ -130,6 +170,15 @@ theorem gaugeShiftW : GaugeShiftW := by
   refine ⟨e ▸ hl hg, ?_⟩
   rw [e, ← Measure.map_apply hl hg, hμb.2.2.2 _ hmem]
 
+/- English proof (translation)
+Introduce `k r hk`. Use `set z : Fin (2 * r + k + 1) → ℂ := Formalism.L2.SG.Pf.WFL.zBv k r 1 with hz`. Establish `hzW : inWb k r z` using `Formalism.L2.SG.Pf.WFL.inWb_zB 1`. Establish `hzT : Tz k r z = 1` using `Formalism.L2.SG.Pf.WFL.Tz_zB zero_le_one`. Establish `hT : 0 < Tz k r z` using `by rw [hzT]; exact one_pos`.
+
+Take `⟨μ, hμ⟩` from `Formalism.FourierDecayAlt.P.weyl_haar_exists k r z hzW hT`. Establish `hcpt` using `Formalism.FourierDecayAlt.P.weyl_subgroup_compact k r z hzW hT`. Establish `hfin : μ Set.univ < ⊤`. Establish `h1 : μ Set.univ ≤ μ (UWset k r z : Set (Mt k r)) + μ (UWset k r z : Set (Mt k r))ᶜ`. Use `measure_union_le (μ := μ) (UWset k r z : Set (Mt k r)) (UWset k r z : Set (Mt k r))ᶜ` as an intermediate fact.
+
+Rewrite `this` using `[Set.union_compl_self]`. Then use the resulting hypothesis. Establish `h2 : μ (UWset k r z : Set (Mt k r))ᶜ = 0` using `hμ.conc`. Establish `h3 : μ (UWset k r z : Set (Mt k r)) < ⊤` using `hμ.finite_compact _ hcpt`. Rewrite `h1` using `[h2, add_zero]`. Conclude with `lt_of_le_of_lt h1 h3`.
+
+Establish `h0 : μ Set.univ ≠ 0` using `fun h => hμ.ne_zero (Measure.measure_univ_eq_zero.1 h)`. Take `⟨μsec, hsec⟩` from `Formalism.FourierDecayAlt.P.SettingConstruction.sectionExists k r z z hk hzW hzW hT hT`. Establish `ha : 0 < (μ Set.univ).toReal` using `ENNReal.toReal_pos h0 hfin.ne`. Establish `hm : μ Set.univ = ENNReal.ofReal (μ Set.univ).toReal` using `(ENNReal.ofReal_toReal hfin.ne).symm`. Conclude with `⟨z, z, μ, μ, _, _, μsec, ⟨hk, hzW, hzW, hT, hT, skHaar_of_cs hμ, skHaar_of_cs hμ, ha, ha, hm, hm, hsec⟩⟩`.
+-/
 theorem wbDataEx : WbDataEx := by
   intro k r hk
   set z : Fin (2 * r + k + 1) → ℂ := Formalism.L2.SG.Pf.WFL.zBv k r 1 with hz

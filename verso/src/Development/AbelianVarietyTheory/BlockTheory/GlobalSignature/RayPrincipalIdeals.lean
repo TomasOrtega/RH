@@ -48,6 +48,11 @@ def rayUnits (𝔪 : Ideal (𝓞 K)) : Subgroup Kˣ where
 def rayPrincipal (𝔪 : Ideal (𝓞 K)) : Subgroup (FractionalIdeal (𝓞 K)⁰ K)ˣ :=
   (rayUnits 𝔪).map (toPrincipalIdeal (𝓞 K) K)
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {a} ≠ (0 : Ideal (𝓞 K))` using `by simpa using ha`. Establish `: FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K) = ((Ideal.span {a} : Ideal (𝓞 K)) : FractionalIdeal (𝓞 K)⁰ K)` using `(FractionalIdeal.coeIdeal_span_singleton a).symm`. Rewrite using `[this, FractionalIdeal.count_coe K 𝔭 h0]`. Use `norm_cast`. Assume the negation of the conclusion as `hne`.
+
+Establish `hd : 𝔭.asIdeal ∣ Ideal.span {a}` using `(Associates.count_ne_zero_iff_dvd h0 𝔭.irreducible).1 hne`. Conclude with `𝔭.prime.not_unit (h.isUnit_of_dvd' hd hp)`.
+-/
 theorem count_span_eq_zero {𝔪 : Ideal (𝓞 K)} {a : 𝓞 K} (ha : a ≠ 0) (h : IsCoprime (Ideal.span {a}) 𝔪)
     (𝔭 : HeightOneSpectrum (𝓞 K)) (hp : 𝔭.asIdeal ∣ 𝔪) :
     FractionalIdeal.count K 𝔭 (FractionalIdeal.spanSingleton (𝓞 K)⁰ (a : K)) = 0 := by
@@ -78,10 +83,16 @@ def RayField : Prop :=
         ∀ (𝔭 : HeightOneSpectrum (𝓞 K)) (h : ¬ 𝔭.asIdeal ∣ 𝔪),
           GlobalTheory.NT.UnramIn L 𝔭 ∧ GlobalTheory.NT.IsFrob L 𝔭 (Art (primeClass 𝔪 𝔭 h))
 
+/- English proof (translation)
+Use `eq_top_iff.2 fun J _ 𝔭 h => absurd ?_ 𝔭.isPrime.ne_top` and prove the remaining obligations. Conclude with `top_le_iff.1 (Ideal.le_of_dvd h)`.
+-/
 example : idealsPrimeTo (⊤ : Ideal (𝓞 K)) = ⊤ := by
   refine eq_top_iff.2 fun J _ 𝔭 h => absurd ?_ 𝔭.isPrime.ne_top
   exact top_le_iff.1 (Ideal.le_of_dvd h)
 
+/- English proof (translation)
+Introduce and unpack `⟨a, b, ⟨-, -, -, -, -, hp⟩, hx⟩`. Use `hp (Rat.castHom ℝ)` as an intermediate fact. Rewrite `this` using `[← hx]`. Simplify using `only [Units.val_neg, Units.val_one, map_mul, map_neg, map_one] at this`. Use polynomial arithmetic with `[mul_self_nonneg ((Rat.castHom ℝ) (b : ℚ))]`.
+-/
 example (𝔪 : Ideal (𝓞 ℚ)) : (-1 : ℚˣ) ∉ rayUnits 𝔪 := by
   rintro ⟨a, b, ⟨-, -, -, -, -, hp⟩, hx⟩
   have := hp (Rat.castHom ℝ)

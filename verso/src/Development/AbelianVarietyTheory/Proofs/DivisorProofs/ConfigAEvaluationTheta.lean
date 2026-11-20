@@ -18,6 +18,9 @@ namespace GlobalTheory.ThKNScalar
 section
 open scoped Classical
 
+/- English proof (translation)
+Introduce `g _`. Use `⟨g (fun i => (y i).2) • ((BoundedContinuousFunction.evalCLM ℂ (fun i => evI F (y i))).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_proj, Function.eval, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.coe_comp', Function.comp_apply, smul_eq_mul, pureA]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem proj_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (y : κ → AF F) :
     (LinearMap.proj y : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := by
   intro g _
@@ -30,6 +33,11 @@ theorem proj_adm (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (
 
 end
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ k a hx hι`. Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hP₁` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT₁).1`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨h1, h2⟩` from `GlobalTheory.T.eval_comp_om_rho_equivariant_isoA_invariant F E σ B b a' G G₁ H H' hC e he X om om' hT k a hx hι`.
+
+Use `GlobalTheory.T.config_first_eval_char_compat hKP F E σ B b a' G G₁ H H' hC e he X om om' om₁ om₁' hT hT₁ (e ∘ₗ om (k, 1)) h1 h2 fun y => ?_` and prove the remaining obligations. Use `hS.adm (k, 1) _ (GlobalTheory.T.eigen_intertwiner_good_models F E σ B _ _ _ _ G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι _ e hP.good hP₁.good he _ (proj_adm F _ y))` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_assoc]`. Then use the resulting hypothesis.
+-/
 theorem twist_scalar : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → ∀ e, IsEv B G.M G₁.M H.ι H'.ι (isoA H H') e →
     ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

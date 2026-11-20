@@ -12,5 +12,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl | exact GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl | (intros; apply GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chern_root_eval_eq_flag_degree : ∀ (ι : Type) [Fintype ι] (N : ℕ) (Q : MvPolynomial (GlobalTheory.GoodMetric.Root (fun _ : ι => N)) ℝ) (R : MvPolynomial (ι × ℕ) ℝ), GlobalTheory.GoodMetric.antisymm Q = GlobalTheory.GoodMetric.chernRoots (fun _ : ι => N) R * GlobalTheory.GoodMetric.rootDiscr (fun _ : ι => N) → MvPolynomial.eval (fun x : ι × ℕ => if x.2 = 0 then (1 : ℝ) else 0) R = degFl ι N (MvPolynomial.rename (fun x : GlobalTheory.GoodMetric.Root (fun _ : ι => N) => (x.1, x.2)) Q) := by
   first | exact @GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl | exact GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl | (intros; apply GlobalTheory.FlagAlternation.eval_chernRoots_eq_degFl <;> assumption)

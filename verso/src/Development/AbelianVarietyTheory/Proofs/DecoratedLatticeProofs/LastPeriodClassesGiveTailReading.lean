@@ -10,6 +10,15 @@ noncomputable section
 
 namespace GlobalTheory.SeeSaw
 
+/- English proof (translation)
+Introduce `D c t ρ A hA hcP n h ψ hψ ψ' hψ' a H F`. Establish `e1` using `hA.tail n h ψ hψ F`. Establish `e2` using `hA.tail n h ψ' hψ' F`. Establish `key : ∀ β (x : A.cl), A.ell n h β x F (ρ.low n h fun z => t.rd n β ψ ((ρ.fr n).symm z) ((c.oT n h).emb (A.h x, 1))) = a * A.ell n h β x F (ρ.low n h fun z => t.rd n β ψ' ((ρ.fr n).symm z) ((c.oT n h).emb (A.h x, 1)))`. Introduce `β x`.
+
+Establish `: (fun z => t.rd n β ψ ((ρ.fr n).symm z) ((c.oT n h).emb (A.h x, 1))) = a • (fun z => t.rd n β ψ' ((ρ.fr n).symm z) ((c.oT n h).emb (A.h x, 1)))`. Use function extensionality and compare the values at `z`. Rewrite using `[H β ((ρ.fr n).symm z)]`. Both sides reduce to the same expression. Rewrite using `[this, map_smul, map_smul, smul_eq_mul]`.
+
+Rewrite `e1` using `[key]`. Establish `e3 : t.cP * t.tail n h ψ F = t.cP * (a * t.tail n h ψ' F)`. Rewrite using `[← e1, mul_left_comm t.cP a, ← e2]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ hcP e3`.
+-/
 theorem tailRd_of_clsT : ∀ (D : D7) (c : Comm D) (t : Tup c) (ρ : RealD c) (A : ClsT ρ t), A.Is → t.cP ≠ 0 → t.TailRd := by
   intro D c t ρ A hA hcP n h ψ hψ ψ' hψ' a H F
   have e1 := hA.tail n h ψ hψ F

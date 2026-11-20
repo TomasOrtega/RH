@@ -12,6 +12,9 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.FreeMass
 
+/- English proof (translation)
+The claim follows from `|(∫⁻ s in S, G s ∂ν).toReal - (ν S).toReal| ≤ δ * (ν S).toReal := by have hae : ∀ᵐ s ∂(ν.restrict S), G s ≠ ⊤ ∧ |(G s).toReal - 1| ≤ δ := by rw [ae_restrict_iff' hS] filter_upwards [measure_eq_zero_iff_ae_notMem.1 hN] with s hs hsS exact h s hsS hs have hup : ∫⁻ s in S, G s ∂ν ≤ …`.
+-/
 theorem lintegral_close {R : Type} [MeasurableSpace R] (ν : Measure R) (G : R → ℝ≥0∞) {S N : Set R}
     (hS : MeasurableSet S) (hfin : ν S ≠ ⊤) (hN : ν N = 0) {δ : ℝ} (hδ : 0 ≤ δ)
     (h : ∀ s ∈ S, s ∉ N → G s ≠ ⊤ ∧ |(G s).toReal - 1| ≤ δ) :
@@ -46,6 +49,9 @@ theorem lintegral_close {R : Type} [MeasurableSpace R] (ν : Measure R) (G : R �
   rw [abs_le]
   constructor <;> nlinarith
 
+/- English proof (translation)
+The claim follows from `|x - 1| ≤ δ := by obtain ⟨r1, r2, r3, r4, -⟩ := GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v haveI := r1 haveI := r2 haveI := r3 haveI := r4 haveI : BorelSpace (Fv F v) := ⟨rfl⟩ obtain ⟨a1, a2, a3, a4, -, -, -, a8, -, -⟩ := GlobalTheory.CompanionTheory.SW.TopK.topTens_prop …`.
+-/
 theorem density_close {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J)
     (hM : 3 ≤ M) {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F))
@@ -135,6 +141,13 @@ theorem density_close {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
 
 end GlobalTheory.CompanionTheory.WeilSiegel.FreeMass
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b lam hlam m hm`. Establish `hL` using `fun v => GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b 1 M v`. Establish `avg` using `fun v => GlobalTheory.T.local_volume_rank_one_isotropic F E σ hσ M J hJ hM h₀ d b v (lam v) (hlam v) (m v) (hm v) (latV b v) (hL v).1 (hL v).2.1`. Use `⟨fun v => (avg v).1, ?_⟩` and prove the remaining obligations. Use `Summable.of_norm_bounded_eventually (g := fun v : HeightOneSpectrum (𝓞 F) => 2 * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2)) ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left 2) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [GlobalTheory.T.rank_one_local_density_almost_all F E σ hσ M J hJ hM d b] with v hv`. Take `⟨m', hm'⟩` from `GlobalTheory.CompanionTheory.SW.GoodMass.exists_family hσ hJ b v (lam v) (hlam v) 1`. Establish `hq : (1 : ℝ) ≤ (Ideal.absNorm v.asIdeal : ℝ)` using `GlobalTheory.CompanionTheory.SW.GoodMass.absNorm_one_le v`. Establish `hd` using `GlobalTheory.CompanionTheory.WeilSiegel.FreeMass.density_close hσ hJ hM b v (lam v) (hlam v) m' hm' (x := (m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) (latV b v)).toReal) (δ := 2 / (Ideal.absNorm v.asIdeal : ℝ) ^ (M - 1)) (by positivity) (hv (lam v) (hlam v) m' hm') …`. Rewrite using `[Real.norm_eq_abs, abs_abs]`.
+
+Use `hd.trans ?_` and prove the remaining obligations. Rewrite using `[mul_one_div]`. Conclude with `div_le_div_of_nonneg_left (by norm_num) (by positivity) (pow_le_pow_right₀ hq (by omega))`.
+-/
 theorem GlobalTheory.CompanionTheory.WeilSiegel.FreeMass.mass_free_summable : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → 3 ≤ M → ∀ (h₀ : ∀ a b : Fin 1, σ ((0 : Matrix (Fin 1) (Fin 1) E) b a) = (0 : Matrix (Fin 1) (Fin 1) E) a b), ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFibFree (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) (m v)) → (∀ v, m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) (latV b v) < ⊤) ∧ Summable fun v => |(m v (hermOf (Fv F v) σ (0 : Matrix (Fin 1) (Fin 1) E) h₀) (latV b v)).toReal - 1| := by
   intro F E _ _ _ _ _ σ hσ M J hJ hM h₀ d b lam hlam m hm
   have hL := fun v => GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hσ d b 1 M v

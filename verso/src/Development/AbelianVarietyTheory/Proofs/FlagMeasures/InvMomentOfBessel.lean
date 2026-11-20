@@ -19,6 +19,19 @@ namespace GlobalTheory.TwoSidedMoments
 
 open GlobalTheory.AmpMoments
 
+/- English proof (translation)
+Establish `hb2 : 2 < b` using `lt_trans (by have := Real.exp_one_gt_d9; linarith) hb`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hB : (2 : ℝ) ≤ max 2 Cu` using `le_max_left _ _`.
+
+Establish `hp` using `Real.pi_gt_three`. Establish `hg2 : 1 ≤ b ^ (2 * Cg)` using `hg.trans hgb`. Establish `hM : max (Real.pi / v / g) (Real.pi / v / g)⁻¹ ≤ b ^ (2 * Cg + 2)`. Rewrite using `[Real.rpow_add hb0, Real.rpow_two]`. Use `max_le ?_ ?_` and prove the remaining obligations.
+
+Establish `: Real.pi / v / g ≤ Real.pi` using `(div_le_self (by positivity) hg).trans (div_le_self (by positivity) hv)`. Use `Real.pi_le_four` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[div_div, inv_div, div_le_iff₀ (by positivity)]`. Establish `h1 : v * g ≤ b ^ 2 * b ^ (2 * Cg)` using `mul_le_mul (by nlinarith) hgb (by linarith) (by positivity)`.
+
+Establish `: 0 ≤ b ^ (2 * Cg) * b ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : x ≤ b ^ ((2 * Cg + 2) * r)`. Rewrite using `[Real.rpow_mul_natCast hb0.le]`. Conclude with `hx.trans (pow_le_pow_left₀ (le_max_of_le_left (by positivity)) hM r)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_add hb0, Real.rpow_mul_natCast hb0.le (max 2 Cu)]`. Use `_ ≤ _ := by`. Use `Real.rpow_le_rpow_of_exponent_le hb1 ?_` and prove the remaining obligations. Use `push_cast`.
+
+Use `abs_nonneg CT` as an intermediate fact. Use polynomial arithmetic with `[mul_nonneg this hr, mul_nonneg (by linarith : 0 ≤ Cg) hr, mul_nonneg (by linarith : 0 ≤ max 2 Cu) hr]`.
+-/
 theorem size_bound_inv {b v g x Cg Cu CT : ℝ} {r : ℕ} (hb : Real.exp 1 < b) (hv : 1 ≤ v) (hvb : 2 * v ≤ b)
     (hg : 1 ≤ g) (hgb : g ≤ b ^ (2 * Cg)) (hCg : 8 ≤ Cg) (hx0 : 0 ≤ x)
     (hx : x ≤ max (Real.pi / v / g) (Real.pi / v / g)⁻¹ ^ r) :
@@ -53,6 +66,9 @@ theorem size_bound_inv {b v g x Cg Cu CT : ℝ} {r : ℕ} (hb : Real.exp 1 < b) 
         have := abs_nonneg CT
         nlinarith [mul_nonneg this hr, mul_nonneg (by linarith : 0 ≤ Cg) hr, mul_nonneg (by linarith : 0 ≤ max 2 Cu) hr]
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_mul_natCast hb]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rpow_bridge {b C x : ℝ} {q : ℕ} (hb : 0 ≤ b) : b ^ (2 * C * x * q) = (b ^ (C * x)) ^ (2 * q) := by
   rw [← Real.rpow_mul_natCast hb]; congr 1; push_cast; ring
 
@@ -62,6 +78,17 @@ namespace GlobalTheory.TwoSidedMoments
 
 open GlobalTheory.AmpMoments
 
+/- English proof (translation)
+Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, hg1, -, hg2, -, -, -, -, -, -, -, -, -, -, -⟩, hDat, -⟩` from `hZ`. Take `⟨-, -, -, -, -, -, -, -, hmod, -⟩` from `hDat`. Establish `hk : (1 : ℝ) ≤ D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hbe : Real.exp 1 < large₂.sc.b` using `Real.exp_lt_exp.2 hL`.
+
+Establish `hb2 : 2 < large₂.sc.b` using `lt_trans (by have := Real.exp_one_gt_d9; linarith) hbe`. Establish `hkb : 2 < (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`. Establish `hg : (2 : ℝ) < D.host.g 0` using `lt_of_lt_of_le hkb ((le_self_pow₀ (by linarith) (by norm_num)).trans hg1)`. Establish `hg' : 2 < D.host.g 0` using `by exact_mod_cast hg`. Establish `hgg : (2 : ℝ) < D.host.g 1` using `lt_of_lt_of_le hkb ((le_self_pow₀ (by linarith) (by norm_num)).trans hg2)`.
+
+Establish `hgg' : 2 < D.host.g 1` using `by exact_mod_cast hgg`. Establish `hp` using `(D.mem w).A.T_prime`. Establish `h3 : 3 ≤ (D.mem w).A.T`. Break down `(D.mem w).A.T_prime.two_le.eq_or_lt with h | h` into its components or cases. It suffices to derive a contradiction.
+
+Establish `hm` using `(hmod w).2`. Rewrite `hm` using `[← h]`. Establish `hN : 4 < (D.host.g 0 * D.host.g 1) ^ 2`. Establish `h9 : 9 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_le_mul (show 3 ≤ D.host.g 0 from hg') (show 3 ≤ D.host.g 1 from hgg')`. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `hm` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Conclude with `⟨hp, hp, h3, h3, Int.ModEq.refl _⟩`.
+-/
 theorem hypTT_self (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hZ : HypZ D large₂ C' Cl Cg cb Cu cT CT C0)
     (w : D.what₂.Word) : HypTT D w w := by
   obtain ⟨⟨-, -, -, -, -, -, -, -, -, -, -, hg1, -, hg2, -, -, -, -, -, -, -, -, -, -, -⟩, hDat, -⟩ := hZ
@@ -95,6 +122,11 @@ namespace GlobalTheory.TwoSidedMoments
 
 open GlobalTheory.AmpMoments
 
+/- English proof (translation)
+Take `⟨⟨-, -, -, -, -, -, -, -, -, -, hrdL, -, -, -, -, -, -, -, hv, -⟩, -, -⟩` from `hZ`. Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hrd : D.host.rdE = 2 * D.host.v` using `by unfold Host.v; ring`. Establish `h0 : 0 < D.host.rdE` using `by rw [hrd]; linarith`. Establish `h1 : large₂.sc.L / Cl ≤ large₂.sc.L` using `div_le_self (by linarith) (by linarith)`.
+
+Use `show D.host.rdE ≤ Real.exp large₂.sc.L`. Conclude with `(Real.log_le_iff_le_exp h0).1 (hrdL.trans h1)`.
+-/
 theorem rd_le_b (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hCl : 1000 ≤ Cl)
     (hZ : HypZ D large₂ C' Cl Cg cb Cu cT CT C0) : D.host.rdE ≤ large₂.sc.b := by
   obtain ⟨⟨-, -, -, -, -, -, -, -, -, -, hrdL, -, -, -, -, -, -, -, hv, -⟩, -, -⟩ := hZ

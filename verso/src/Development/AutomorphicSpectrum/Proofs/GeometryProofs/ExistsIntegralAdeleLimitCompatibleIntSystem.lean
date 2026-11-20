@@ -5,6 +5,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `R E O _ _ _ _ ρ s τ`. Unfold `eigSp`. Conclude with `s.surjective.iInf_comp (fun b => LinearMap.ker (ρ b - τ b • LinearMap.id))`.
+-/
 theorem eigSp_comp_ringEquiv : ∀ (R E O : Type) [CommRing R] [AddCommGroup E] [Module R E] [CommRing O] (ρ : O →+* Module.End R E) (s : O ≃+* O) (τ : O →+* R), eigSp (ρ.comp s.toRingHom) (τ.comp s.toRingHom) = eigSp ρ τ := by
   intro R E O _ _ _ _ ρ s τ
   unfold eigSp

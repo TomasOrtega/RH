@@ -14,6 +14,15 @@ namespace GlobalTheory.HL.FrameStabLat
 section General
 variable {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V] (O : Subring E)
 
+/- English proof (translation)
+Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← H]`.
+
+Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨v, hv, rfl⟩`. Rewrite `hv` using `[← H]`. Take `⟨u, hu, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`. Establish `: h⁻¹ (h • u) = u` using `h.symm_apply_apply u`. Rewrite using `[this]` and apply the resulting hypothesis.
+
+Introduce and unpack `⟨H1, H2⟩`. Use extensionality with `v`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`.
+
+Conclude with `H1 u hu`. Introduce `hv`. Conclude with `⟨h⁻¹ v, H2 v hv, h.apply_symm_apply v⟩`.
+-/
 theorem mem_stab_iff (Λ : Submodule O V) (h : V ≃ₗ[E] V) :
     h ∈ MulAction.stabilizer (V ≃ₗ[E] V) Λ ↔ (∀ v ∈ Λ, h v ∈ Λ) ∧ ∀ v ∈ Λ, h⁻¹ v ∈ Λ := by
   rw [MulAction.mem_stabilizer_iff]
@@ -35,6 +44,13 @@ theorem mem_stab_iff (Λ : Submodule O V) (h : V ≃ₗ[E] V) :
     · intro hv
       exact ⟨h⁻¹ v, H2 v hv, h.apply_symm_apply v⟩
 
+/- English proof (translation)
+Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← H]`.
+
+Conclude with `Set.smul_mem_smul_set hv`. Rewrite `hv` using `[← H]`. Conclude with `Set.mem_smul_set_iff_inv_smul_mem.1 hv`. Introduce and unpack `⟨H1, H2⟩`. Use extensionality with `v`.
+
+Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Simplify using `using H1 _ hv`. Conclude with `H2 v`.
+-/
 theorem mem_stab_set_iff {G X : Type} [Group G] [MulAction G X] (C : Set X) (h : G) :
     h ∈ MulAction.stabilizer G C ↔ (∀ v ∈ C, h • v ∈ C) ∧ ∀ v ∈ C, h⁻¹ • v ∈ C := by
   rw [MulAction.mem_stabilizer_iff]
@@ -53,10 +69,18 @@ theorem mem_stab_set_iff {G X : Type} [Group G] [MulAction G X] (C : Set X) (h :
       simpa using H1 _ hv
     · exact H2 v
 
+/- English proof (translation)
+The claim follows from `Submodule.span_le_restrictScalars O E _ hx`.
+-/
 theorem span_le {ι : Type} (g : ι → V) {x : V} (hx : x ∈ Submodule.span O (Set.range g)) :
     x ∈ Submodule.span E (Set.range g) :=
   Submodule.span_le_restrictScalars O E _ hx
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `H i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Λ.add_mem hx hy`. Consider the case `smul c x _ hx`. Establish `: h (c • x) = c • h x` using `h.map_smul (c : E) x`. Rewrite using `[this]`. Conclude with `Λ.smul_mem c hx`.
+-/
 theorem map_span {ι : Type} (g : ι → V) (h : V ≃ₗ[E] V) (Λ : Submodule O V) (H : ∀ i, h (g i) ∈ Λ)
     {x : V} (hx : x ∈ Submodule.span O (Set.range g)) : h x ∈ Λ := by
   induction hx using Submodule.span_induction with
@@ -67,6 +91,11 @@ theorem map_span {ι : Type} (g : ι → V) (h : V ≃ₗ[E] V) (Λ : Submodule 
     have : h (c • x) = c • h x := h.map_smul (c : E) x
     rw [this]; exact Λ.smul_mem c hx
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `H i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+
+Conclude with `Λ.add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Λ.smul_mem c hx`.
+-/
 theorem map_spanE {ι : Type} (g : ι → V) (h : V ≃ₗ[E] V) (Λ : Submodule E V) (H : ∀ i, h (g i) ∈ Λ)
     {x : V} (hx : x ∈ Submodule.span E (Set.range g)) : h x ∈ Λ := by
   induction hx using Submodule.span_induction with
@@ -75,6 +104,9 @@ theorem map_spanE {ι : Type} (g : ι → V) (h : V ≃ₗ[E] V) (Λ : Submodule
   | add x y _ _ hx hy => rw [map_add]; exact Λ.add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Λ.smul_mem c hx
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨a, ha, a', ha', rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, map_add]`. Conclude with `Λ.add_mem (Λ.add_mem (H1 a ha) (H2 a' ha')) (H3 w hw)`.
+-/
 theorem map_mem_of_mem_sup_three_submodules (A A' B Λ : Submodule O V) (h : V ≃ₗ[E] V) (H1 : ∀ x ∈ A, h x ∈ Λ)
     (H2 : ∀ x ∈ A', h x ∈ Λ) (H3 : ∀ x ∈ B, h x ∈ Λ) : ∀ x ∈ A ⊔ A' ⊔ B, h x ∈ Λ := by
   intro x hx
@@ -83,6 +115,13 @@ theorem map_mem_of_mem_sup_three_submodules (A A' B Λ : Submodule O V) (h : V �
   rw [map_add, map_add]
   exact Λ.add_mem (Λ.add_mem (H1 a ha) (H2 a' ha')) (H3 w hw)
 
+/- English proof (translation)
+Take `⟨y, hy, w, hw, rfl⟩` from `Submodule.mem_sup.1 hx`. Take `⟨a, ha, a', ha', rfl⟩` from `Submodule.mem_sup.1 hy`. Prove the components needed by the constructor for the conclusion. Introduce `hP`. Use `(H (a - (a + a' + w)) (P.sub_mem (hA a ha) hP) a' (hA' a' ha') w (hB w hw) (by abel)).1` as an intermediate fact.
+
+Rewrite using `[← sub_eq_zero.1 this]`. Conclude with `ha`. Introduce `hP`. Use `(H a (hA a ha) (a' - (a + a' + w)) (P'.sub_mem (hA' a' ha') hP) w (hB w hw) (by abel)).2` as an intermediate fact. Rewrite using `[← sub_eq_zero.1 this]`.
+
+Conclude with `ha'`.
+-/
 theorem inter (A A' B : Submodule O V) (P P' W : Submodule E V) (hA : ∀ x ∈ A, x ∈ P)
     (hA' : ∀ x ∈ A', x ∈ P') (hB : ∀ x ∈ B, x ∈ W)
     (H : ∀ a ∈ P, ∀ a' ∈ P', ∀ w ∈ W, a + a' + w = 0 → a = 0 ∧ a' = 0) {x : V} (hx : x ∈ A ⊔ A' ⊔ B) :
@@ -97,6 +136,13 @@ theorem inter (A A' B : Submodule O V) (P P' W : Submodule E V) (hA : ∀ x ∈ 
     have := (H a (hA a ha) (a' - (a + a' + w)) (P'.sub_mem (hA' a' ha') hP) w (hB w hw) (by abel)).2
     rw [← sub_eq_zero.1 this]; exact ha'
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases.
+
+Rewrite using `[hs.1 i l h, zero_mul]`. Rewrite using `[ht.1 l j (lt_of_lt_of_le hij h), mul_zero]`. Introduce `i`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hs.2, ht.2, mul_one]`.
+
+Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hs.1 i l h, zero_mul]`. Rewrite using `[ht.1 l i h, mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem uni_mul {m : ℕ} {s t : Matrix (Fin m) (Fin m) E} (hs : IsUni s) (ht : IsUni t) :
     IsUni (s * t) := by
   constructor
@@ -115,6 +161,9 @@ theorem uni_mul {m : ℕ} {s t : Matrix (Fin m) (Fin m) E} (hs : IsUni s) (ht : 
       · rw [ht.1 l i h, mul_zero]
     · simp
 
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul, hs, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem map_comb {m : ℕ} (g : Fin m → V) (h : V ≃ₗ[E] V) (s t : Matrix (Fin m) (Fin m) E)
     (hs : ∀ j, h (g j) = ∑ i, s i j • g i) (j : Fin m) :
     h (∑ i, t i j • g i) = ∑ i, (s * t) i j • g i := by
@@ -123,6 +172,17 @@ theorem map_comb {m : ℕ} (g : Fin m → V) (h : V ≃ₗ[E] V) (s t : Matrix (
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Take `⟨w, hw, e⟩` from `hc j`. Take `⟨u, rfl⟩` from `hπ`. Establish `h1 : h (g j) - g j ∈ Submodule.span E (Set.range g)`. Rewrite using `[hs]`. Conclude with `Submodule.sub_mem _ (Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)) (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Establish `h2 : w ∈ Submodule.span E (Set.range g)`. Use `Submodule.smul_mem _ ((u⁻¹ : Eˣ) : E) h1` as an intermediate fact. Rewrite `this` using `[e, smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 (hΛ w hw h2)`. Use `⟨c i, (c i).2, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ∑ l, (s l j - ((1 : Matrix (Fin m) (Fin m) E) l j + u * c l)) • g l = 0`. Establish `h4 : ∑ l, (1 : Matrix (Fin m) (Fin m) E) l j • g l = g j`. Simplify using `[Matrix.one_apply]`. Establish `h5 : ∑ l, ((u : E) * c l) • g l = (u : E) • w`. Rewrite using `[← hc, Finset.smul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul]`. Both sides reduce to the same expression. Simplify using `only [sub_smul, add_smul, Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Rewrite using `[h4, h5, ← hs, ← e]`.
+
+Normalize the expressions using the abelian group laws. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hg _ h3 i)`.
+-/
 theorem cong_coef {m : ℕ} (g : Fin m → V) (hg : LinearIndependent E g) (h : V ≃ₗ[E] V)
     (s : Matrix (Fin m) (Fin m) E) (hs : ∀ j, h (g j) = ∑ i, s i j • g i) (π : E) (hπ : IsUnit π)
     (Λ : Submodule O V)
@@ -151,6 +211,17 @@ theorem cong_coef {m : ℕ} (g : Fin m → V) (hg : LinearIndependent E g) (h : 
     rw [h4, h5, ← hs, ← e]; abel
   exact sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hg _ h3 i)
 
+/- English proof (translation)
+Establish `key : ∀ h ∈ N, ∃ s : Matrix (Fin m) (Fin m) E, IsUni s ∧ ∀ j, h (n (f j)) = ∑ i, s i j • n (f i)`. Introduce `h hh`. Take `⟨s, hs, e⟩` from `hN (n⁻¹ * h * n) (N.mul_mem (N.mul_mem (N.inv_mem hn) hh) hn)`. Use `⟨s, hs, fun j => ?_⟩` and prove the remaining obligations. Establish `h1 : h (n (f j)) = n ((n⁻¹ * h * n) (f j))` using `(n.apply_symm_apply _).symm`.
+
+Rewrite using `[h1, e]`. Simplify using the standard rewrite rules. Use `⟨hf.map' n.toLinearMap n.ker, le_antisymm ?_ ?_, key⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Take `⟨s, -, e⟩` from `hN n hn`. Use `show n (f j) ∈ Submodule.span E (Set.range f)`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨s, -, e⟩` from `key n⁻¹ (N.inv_mem hn)`. Establish `h1 : f j = n⁻¹ (n (f j))` using `(n.symm_apply_apply _).symm`. Use `show f j ∈ Submodule.span E (Set.range fun b => n (f b))`. Rewrite using `[h1, e]`.
+
+Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+-/
 theorem frame_facts {m : ℕ} (f : Fin m → V) (hf : LinearIndependent E f) (N : Subgroup (V ≃ₗ[E] V))
     (hN : ∀ n ∈ N, ∃ s : Matrix (Fin m) (Fin m) E, IsUni s ∧ ∀ j, n (f j) = ∑ i, s i j • f i)
     (n : V ≃ₗ[E] V) (hn : n ∈ N) :
@@ -184,12 +255,18 @@ end General
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] {L : LocE F E} {r k : ℕ}
 
+/- English proof (translation)
+Unfold `Frames.spanTo`. Establish `: {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ` using `Set.eq_univ_of_forall fun i => i.2`. Rewrite using `[this, Set.image_univ]`.
+-/
 theorem spanTo_top (S : Frames L r k) (g : Fin (r + 1) → S.V) :
     S.spanTo g (r + 1) = Submodule.span E (Set.range g) := by
   unfold Frames.spanTo
   have : {i : Fin (r + 1) | (i : ℕ) < r + 1} = Set.univ := Set.eq_univ_of_forall fun i => i.2
   rw [this, Set.image_univ]
 
+/- English proof (translation)
+Establish `h1 : S.spanTo g r ≤ Submodule.span E (Set.range g)` using `Submodule.span_mono (Set.image_subset_range _ _)`. Conclude with `h1 (hh.2.2 w fun y hy => hw y (hg (h1 hy)))`.
+-/
 theorem move_perp (S : Frames L r k) (g : Fin (r + 1) → S.V) (h : S.GLV) (hh : h ∈ S.Nof g) (w : S.V)
     (hw : w ∈ perp L S.Hm S.ME) (hg : Submodule.span E (Set.range g) ≤ S.ME) :
     h w - w ∈ Submodule.span E (Set.range g) := by
@@ -197,6 +274,21 @@ theorem move_perp (S : Frames L r k) (g : Fin (r + 1) → S.V) (h : S.GLV) (hh :
     Submodule.span_mono (Set.image_subset_range _ _)
   exact h1 (hh.2.2 w fun y hy => hw y (hg (h1 hy)))
 
+/- English proof (translation)
+Introduce and unpack `p ⟨A, A', hA, hA', h0, h1, hc, hp, hp'⟩`. Establish `one : ∀ i j, (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i j ∈ L.O`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `L.O.one_mem`. Conclude with `L.O.zero_mem`. Use `choose c hcO hce using c`. Use `choose c' hcO' hce' using c'`. Use `choose a haO hae using hc`.
+
+Take `⟨d, hd, hπd⟩` from `hth`. Establish `u1` using `uni_mul hs (t := A) ⟨fun i j hij => (h0 i j hij).1, fun i => (h1 i).1⟩`. Establish `u2` using `uni_mul hs' (t := A') ⟨fun i j hij => (h0 i j hij).2, fun i => (h1 i).2⟩`. Use `⟨s * A, s' * A', fun i j => ?_, fun i j => ?_, fun i j hij => ⟨u1.1 i j hij, u2.1 i j hij⟩, fun i => ⟨u1.2 i, u2.2 i⟩, fun i j => ?_, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+
+Use `L.O.sum_mem fun l _ => L.O.mul_mem ?_ (hA l j)` and prove the remaining obligations. Rewrite using `[hce]`. Conclude with `L.O.add_mem (one _ _) (L.O.mul_mem hπ (hcO _ _))`. Rewrite using `[Matrix.mul_apply]`. Use `L.O.sum_mem fun l _ => L.O.mul_mem ?_ (hA' l j)` and prove the remaining obligations.
+
+Rewrite using `[hce']`. Conclude with `L.O.add_mem (one _ _) (L.O.mul_mem hπ (hcO' _ _))`. Use `⟨∑ l, ((1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i l * a l j + d * (c' i l * A' l j - c i l * A l j)), L.O.sum_mem fun l _ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `L.O.add_mem (L.O.mul_mem (one _ _) (haO _ _)) (L.O.mul_mem hd (L.O.sub_mem (L.O.mul_mem (hcO' _ _) (hA' _ _)) (L.O.mul_mem (hcO _ _) (hA _ _))))`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_sub_distrib, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hce, hce', hπd]`. Take the linear combination `(1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i l * hae l j`. Use `show h (p.1 j) = _`. Rewrite using `[hp, map_comb g h s A e]`.
+
+Use `show h (p.2 j) = _`. Rewrite using `[hp', map_comb g' h s' A' e']`.
+-/
 theorem cls_map (S : Frames L r k) (g g' : Fin (r + 1) → S.V) (h : S.GLV)
     (s s' : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hs : IsUni s) (hs' : IsUni s')
     (e : ∀ j, h (g j) = ∑ i, s i j • g i) (e' : ∀ j, h (g' j) = ∑ i, s' i j • g' i)
@@ -238,6 +330,13 @@ theorem cls_map (S : Frames L r k) (g g' : Fin (r + 1) → S.V) (h : S.GLV)
   · show h (p.2 j) = _
     rw [hp', map_comb g' h s' A' e']
 
+/- English proof (translation)
+Establish `one : ∀ i j, (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i j ∈ L.O`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `L.O.one_mem`.
+
+Conclude with `L.O.zero_mem`. Use `⟨1, 1, one, one, fun i j hij => ?_, fun i => ?_, fun i j => ⟨0, L.O.zero_mem, by simp⟩, fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply_ne hij.ne']`. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply]`.
+
+Simplify using `[Matrix.one_apply]`.
+-/
 theorem self_mem_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) : (g, g') ∈ S.frameCls g g' := by
   have one : ∀ i j, (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i j ∈ L.O := by
     intro i j
@@ -252,6 +351,11 @@ theorem self_mem_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) : (g, g') �
   · simp [Matrix.one_apply]
   · simp [Matrix.one_apply]
 
+/- English proof (translation)
+Take `⟨A, A', hA, hA', -, -, -, hp, hp'⟩` from `hp`. Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (⟨A i j, hA i j⟩ : L.O) (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[hp']`.
+
+Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (⟨A' i j, hA' i j⟩ : L.O) (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_of_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) (p : S.FrP) (hp : p ∈ S.frameCls g g') :
     (∀ j, p.1 j ∈ Submodule.span L.O (Set.range g)) ∧ ∀ j, p.2 j ∈ Submodule.span L.O (Set.range g') := by
   obtain ⟨A, A', hA, hA', -, -, -, hp, hp'⟩ := hp
@@ -263,6 +367,47 @@ theorem mem_of_cls (S : Frames L r k) (g g' : Fin (r + 1) → S.V) (p : S.FrP) (
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ (⟨A' i j, hA' i j⟩ : L.O)
       (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S n hn n' hn'`. Take `⟨hli, hcompl, -, -, -, -, -, b, -, hb⟩` from `GlobalTheory.FrameBasic.main L r k S`. Take `⟨hN, hN', -⟩` from `GlobalTheory.HL.FrameOnto.unipotent_onto L r k S`. Take `⟨hf, hf', hdis⟩` from `linearIndependent_sum.1 hli`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr] at hf hf' hdis`.
+
+Take `⟨hg, hP, hs⟩` from `frame_facts S.f hf S.N hN n hn`. Take `⟨hg', hP', hs'⟩` from `frame_facts S.f' hf' S.N' hN' n' hn'`. Use `set g : Fin (r + 1) → S.V := fun b => n (S.f b) with hgdef`. Use `set g' : Fin (r + 1) → S.V := fun b => n' (S.f' b) with hgdef'`. Establish `hME : S.ME = Submodule.span E (Set.range S.f) ⊔ Submodule.span E (Set.range S.f')`.
+
+Unfold `Frames.ME`. Rewrite using `[spanTo_top, spanTo_top]`. Establish `hfix : ∀ h ∈ S.St, ∀ w ∈ S.W0, h w = w`. Introduce `h hh w hw`. Establish `h1` using `move_perp S S.f h hh.1 w hw (hME ▸ le_sup_left)`.
+
+Establish `h2` using `move_perp S S.f' h hh.2 w hw (hME ▸ le_sup_right)`. Conclude with `sub_eq_zero.1 (Submodule.disjoint_def.1 hdis _ h1 h2)`. Rewrite `hME`, `hdis` using `[← hP, ← hP']`. Use `set P := Submodule.span E (Set.range g) with hPdef`. Use `set P' := Submodule.span E (Set.range g') with hPdef'`.
+
+Use `set A := Submodule.span L.O (Set.range g) with hAdef`. Use `set A' := Submodule.span L.O (Set.range g') with hAdef'`. Use `set B := Submodule.span L.O (Set.range b) with hBdef`. Establish `hA : ∀ x ∈ A, x ∈ P` using `fun x hx => span_le L.O g hx`. Establish `hA' : ∀ x ∈ A', x ∈ P'` using `fun x hx => span_le L.O g' hx`.
+
+Establish `hB : ∀ x ∈ B, x ∈ S.W0` using `fun x hx => hb ▸ span_le L.O b hx`. Establish `hind : ∀ a ∈ P, ∀ a' ∈ P', ∀ w ∈ S.W0, a + a' + w = 0 → a = 0 ∧ a' = 0`. Introduce `a ha a' ha' w hw e`. Establish `h1 : a + a' ∈ S.ME` using `hME ▸ Submodule.add_mem_sup ha ha'`. Establish `h2 : a + a' ∈ S.W0`.
+
+Rewrite using `[eq_neg_of_add_eq_zero_left e]`. Conclude with `S.W0.neg_mem hw`. Establish `h3` using `Submodule.disjoint_def.1 hcompl.disjoint _ h1 h2`. Establish `h4 : a = 0` using `Submodule.disjoint_def.1 hdis a ha (by`. Rewrite using `[eq_neg_of_add_eq_zero_left h3]`.
+
+Conclude with `P'.neg_mem ha')`. Conclude with `⟨h4, by simpa [h4] using h3⟩`. Establish `hint` using `fun x (hx : x ∈ A ⊔ A' ⊔ B) => inter L.O A A' B P P' S.W0 hA hA' hB hind hx`. Establish `lA : ∀ x ∈ A, x ∈ A ⊔ A' ⊔ B` using `fun x hx => Submodule.mem_sup_left (Submodule.mem_sup_left hx)`. Establish `lA' : ∀ x ∈ A', x ∈ A ⊔ A' ⊔ B` using `fun x hx => Submodule.mem_sup_left (Submodule.mem_sup_right hx)`.
+
+Establish `lB : ∀ x ∈ B, x ∈ A ⊔ A' ⊔ B` using `fun x hx => Submodule.mem_sup_right hx`. Establish `presP : ∀ h ∈ S.St, (∀ x ∈ P, h x ∈ P) ∧ ∀ x ∈ P', h x ∈ P'`. Introduce `h hh`. Take `⟨s, -, e⟩` from `hs h hh.1`. Take `⟨s', -, e'⟩` from `hs' h hh.2`.
+
+Use `⟨fun x hx => map_spanE g h P (fun j => ?_) hx, fun x hx => map_spanE g' h P' (fun j => ?_) hx⟩` and prove the remaining obligations. Rewrite using `[show h (g j) = ∑ i, s i j • g i from e j]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`. Rewrite using `[show h (g' j) = ∑ i, s' i j • g' i from e' j]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+
+Establish `down : ∀ h ∈ S.St, (∀ x ∈ A ⊔ A' ⊔ B, h x ∈ A ⊔ A' ⊔ B) → (∀ x ∈ A, h x ∈ A) ∧ ∀ x ∈ A', h x ∈ A'` using `fun h hh H => ⟨fun x hx => (hint _ (H x (lA x hx))).1 ((presP h hh).1 x (hA x hx)), fun x hx => (hint _ (H x (lA' x hx))).2 ((presP h hh).2 x (hA' x hx))⟩`. Establish `up : ∀ h ∈ S.St, (∀ x ∈ A, h x ∈ A) → (∀ x ∈ A', h x ∈ A') → ∀ x ∈ A ⊔ A' ⊔ B, h x ∈ A ⊔ A' ⊔ B` using `fun h hh H H' => map_mem_of_mem_sup_three_submodules L.O A A' B _ h (fun x hx => lA _ (H x hx)) (fun x hx => lA' _ (H' x hx)) fun x hx => by rw [hfix h hh x (hB x hx)]; exact lB x hx`. Use `⟨A ⊔ A' ⊔ B, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((Submodule.fg_span (Set.finite_range _)).sup (Submodule.fg_span (Set.finite_range _))).sup (Submodule.fg_span (Set.finite_range _))`. Rewrite using `[eq_top_iff, ← hcompl.sup_eq_top, hME, hb]`.
+
+Use `sup_le (sup_le ?_ ?_) ?_` and prove the remaining obligations. Conclude with `Submodule.span_mono fun x hx => lA x (Submodule.subset_span hx)`. Conclude with `Submodule.span_mono fun x hx => lA' x (Submodule.subset_span hx)`. Conclude with `Submodule.span_mono fun x hx => lB x (Submodule.subset_span hx)`. Use extensionality with `h`.
+
+Simplify using `only [Subgroup.mem_inf, mem_stab_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hh, H1, H2⟩`. Establish `d1` using `down h hh H1`. Establish `d2` using `down h⁻¹ (S.St.inv_mem hh) H2`.
+
+Conclude with `⟨⟨hh, d1.1, d2.1⟩, d1.2, d2.2⟩`. Introduce and unpack `⟨⟨hh, a1, a2⟩, a3, a4⟩`. Conclude with `⟨hh, up h hh a1 a3, up h⁻¹ (S.St.inv_mem hh) a2 a4⟩`. Introduce and unpack `h ⟨hh, H⟩`. Take `⟨H1, H2⟩` from `(mem_stab_set_iff _ h).1 H`.
+
+Establish `m1` using `mem_of_cls S g g' _ (H1 _ (self_mem_cls S g g'))`. Establish `m2` using `mem_of_cls S g g' _ (H2 _ (self_mem_cls S g g'))`. Use `⟨hh, (mem_stab_iff L.O _ h).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `up h hh (fun x hx => map_span L.O g h A m1.1 hx) fun x hx => map_span L.O g' h A' m1.2 hx`. Conclude with `up h⁻¹ (S.St.inv_mem hh) (fun x hx => map_span L.O g h⁻¹ A m2.1 hx) fun x hx => map_span L.O g' h⁻¹ A' m2.2 hx`.
+
+Establish `hϖ : ((S.ϖ : F) ^ 1) ≠ 0`. Rewrite using `[pow_one]`. Conclude with `fun h => S.ϖ_irr.ne_zero (Subtype.ext h)`. Establish `hu : IsUnit (algebraMap F E ((S.ϖ : F) ^ 1))` using `(IsUnit.mk0 _ hϖ).map _`. Establish `hO : algebraMap F E ((S.ϖ : F) ^ 1) ∈ L.O`.
+
+Rewrite using `[L.O_def, pow_one]`. Conclude with `isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := S.ϖ)`. Establish `hth : ∃ d ∈ L.O, algebraMap F E ((S.ϖ : F) ^ 1) = algebraMap F E S.th * d`. Unfold `Frames.th`. Use `split_ifs`.
+
+Conclude with `⟨1, L.O.one_mem, by simp⟩`. Conclude with `⟨_, hO, by simp⟩`. Establish `step : ∀ h ∈ S.St, CongId L S.ϖ (A ⊔ A' ⊔ B) 1 h → ∀ p ∈ S.frameCls g g', h • p ∈ S.frameCls g g'`. Introduce `h hh hc`. Take `⟨s, us, e⟩` from `hs h hh.1`.
+
+Take `⟨s', us', e'⟩` from `hs' h hh.2`. Conclude with `cls_map S g g' h s s' us us' e e' _ hO hth (cong_coef L.O g hg h s e _ hu _ (fun x hx => (hint x hx).1) fun j => hc _ (lA _ (Submodule.subset_span ⟨j, rfl⟩))) (cong_coef L.O g' hg' h s' e' _ hu _ (fun x hx => (hint x hx).2) fun j => hc _ (lA' _ (Submodule.subset_span ⟨j, rfl⟩)))`. Introduce and unpack `h ⟨hh, H⟩ hc`. Take `⟨-, H2⟩` from `(mem_stab_iff L.O _ h).1 H`. Use `(mem_stab_set_iff _ h).2 ⟨step h hh hc, step h⁻¹ (S.St.inv_mem hh) fun v hv => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, e⟩` from `hc _ (H2 v hv)`. Use `⟨-w, Submodule.neg_mem _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, ← e, show h (h⁻¹ v) = v from h.apply_symm_apply v, neg_sub]`.
+-/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ n ∈ S.N, ∀ n' ∈ S.N', ∃ Λ : Submodule L.O S.V, IsLat L Λ ∧ S.St ⊓ stabL L Λ = S.St ⊓ stabL L (Submodule.span L.O (Set.range fun b => n (S.f b))) ⊓ stabL L (Submodule.span L.O (Set.range fun b => n' (S.f' b))) ∧ S.St ⊓ MulAction.stabilizer S.GLV (S.frameCls (fun b => n (S.f b)) fun b => n' (S.f' b)) ≤ S.St ⊓ stabL L Λ ∧ ∀ h ∈ S.St ⊓ stabL L Λ, CongId L S.ϖ Λ 1 h → h ∈ MulAction.stabilizer S.GLV (S.frameCls (fun b => n (S.f b)) fun b => n' (S.f' b)) := by
   intro F _ _ _ _ _ E _ _ _ L r k S n hn n' hn'
   obtain ⟨hli, hcompl, -, -, -, -, -, b, -, hb⟩ := GlobalTheory.FrameBasic.main L r k S

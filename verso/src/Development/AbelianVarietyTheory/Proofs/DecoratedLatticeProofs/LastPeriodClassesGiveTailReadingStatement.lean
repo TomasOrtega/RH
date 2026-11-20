@@ -7,5 +7,8 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.KJI
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SeeSaw.tailRd_of_clsT | exact GlobalTheory.SeeSaw.tailRd_of_clsT | (intros; apply GlobalTheory.SeeSaw.tailRd_of_clsT <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lastPeriodClasses_give_tailReading : ∀ (D : D7) (c : Comm D) (t : Tup c) (ρ : RealD c) (A : ClsT ρ t), A.Is → t.cP ≠ 0 → t.TailRd := by
   first | exact @GlobalTheory.SeeSaw.tailRd_of_clsT | exact GlobalTheory.SeeSaw.tailRd_of_clsT | (intros; apply GlobalTheory.SeeSaw.tailRd_of_clsT <;> assumption)

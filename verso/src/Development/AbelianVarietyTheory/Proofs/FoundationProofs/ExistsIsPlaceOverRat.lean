@@ -5,6 +5,9 @@ open scoped Matrix
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Ω _ _ _ q`. Conclude with `ReciprocityTheory.Gal.exists_isPlaceOver Ω q`.
+-/
 theorem exists_isPlaceOver_rat :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (q : Pl),
       ∃ B : ValuationSubring Ω, IsPlaceOver B q := by

@@ -13,6 +13,15 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.TP PositivityTheory.RgUd.TP.D
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hc : ∀ (i : ℕ) (A : Matrix (Fin N) (Fin N) k), A.charpoly.coeff i = MvPolynomial.eval (fun p : Fin N × Fin N => A p.1 p.2) (MvPolynomial.map (Int.castRingHom k) ((Matrix.charpoly.univ ℤ (Fin N)).coeff i))`. Introduce `i A`. Establish `h` using `Matrix.charpoly.univ_map_eval₂Hom (Fin N) (Int.castRingHom k) (fun p : Fin N × Fin N => A p.1 p.2)`. Establish `hA : Matrix.of (Function.curry (fun p : Fin N × Fin N => A p.1 p.2)) = A`. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Rewrite `h` using `[hA]`. Rewrite using `[← h, Polynomial.coeff_map, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq_eval_map]`. Establish `hset : {A : Matrix (Fin N) (Fin N) k | A.charpoly = c} = ⋂ i : ℕ, {A | A.charpoly.coeff i = c.coeff i}`. Use extensionality with `A`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Conclude with `⟨fun h i => by rw [h], fun h => Polynomial.ext h⟩`. Rewrite using `[hset]`. Use `isClosed_iInter fun i => ?_` and prove the remaining obligations. Simplify using `only [hc]`.
+
+Conclude with `isClosed_eq ((MvPolynomial.continuous_eval _).comp (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)) continuous_const`.
+-/
 theorem isClosed_charpoly_eq {N : ℕ} (c : k[X]) : IsClosed {A : Matrix (Fin N) (Fin N) k | A.charpoly = c} := by
   have hc : ∀ (i : ℕ) (A : Matrix (Fin N) (Fin N) k), A.charpoly.coeff i =
       MvPolynomial.eval (fun p : Fin N × Fin N => A p.1 p.2)
@@ -34,6 +43,11 @@ theorem isClosed_charpoly_eq {N : ℕ} (c : k[X]) : IsClosed {A : Matrix (Fin N)
   exact isClosed_eq ((MvPolynomial.continuous_eval _).comp
     (continuous_pi fun p => continuous_id.matrix_elem p.1 p.2)) continuous_const
 
+/- English proof (translation)
+Establish `hg' : ∀ a ∈ Z, a * g.val = g.val * a` using `hg`. Establish `hx' : ∀ a ∈ Z, a * x = x * a` using `hx`. Use `show ∀ a ∈ Z, a * (g.val * x * g⁻¹.val) = g.val * x * g⁻¹.val * a`. Introduce `a ha`. Establish `hi : a * g⁻¹.val = g⁻¹.val * a`.
+
+Establish `e` using `congrArg (fun m => g⁻¹.val * m * g⁻¹.val) (hg' a ha)`. Simplify using `only [mul_assoc, Units.mul_inv, mul_one, Units.inv_mul_cancel_left] at e`. Conclude with `e.symm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_mem_Bz {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     {x : Matrix (Fin n) (Fin n) k} (hx : x ∈ Bz Z) : g.val * x * g⁻¹.val ∈ Bz Z := by
   have hg' : ∀ a ∈ Z, a * g.val = g.val * a := hg
@@ -49,6 +63,45 @@ theorem conj_mem_Bz {n : ℕ} {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)} {g :
     _ = g.val * x * (a * g⁻¹.val) := by rw [hx' a ha]; simp only [mul_assoc]
     _ = g.val * x * g⁻¹.val * a := by rw [hi]; simp only [mul_assoc]
 
+/- English proof (translation)
+Unfold `PullPieces`. Introduce `n N q Z Z' φ e hZ hD χ`. Establish `hBz : ∀ {m : ℕ} (S : Subalgebra k (Matrix (Fin m) (Fin m) k)), IsClosed (Bz S)`. Introduce `m S`. Establish `hS : Bz S = ⋂ a ∈ S, {x : Matrix (Fin m) (Fin m) k | a * x = x * a}`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[hS]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul continuous_id) (continuous_id.matrix_mul continuous_const)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨P, hP0, hP⟩ : ∃ P : k[X], P ≠ 0 ∧ ∀ x : Matrix (Fin n) (Fin n) k, x.charpoly = χ → aeval (φ x) P = 0 := by`. Distinguish the cases in `hχ : χ = 0`. Conclude with `⟨1, one_ne_zero, fun x hx => absurd (hx.trans hχ) (Matrix.charpoly_monic x).ne_zero⟩`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality.
+
+Use `⟨1, one_ne_zero, fun x _ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `i.elim0`. Take `⟨hq, -⟩` from `Ppull2A.choose_zero hD hN`. Use `⟨expand k q χ, ?_, fun x hx => Ppull2A.aeval_expand hD hN χ x (hx ▸ Matrix.aeval_self_charpoly x)⟩` and prove the remaining obligations.
+
+Rewrite using `[Ne, Polynomial.expand_eq_zero (by omega)]` and apply the resulting hypothesis. Take `⟨l, hnd, hl⟩` from `Ppull2A.finite_charpoly N P hP0`. Use `⟨l, fun h => ?_⟩` and prove the remaining obligations. Use `choose M F' hP' hG' using h`. Unfold `IsPieces at hP'`.
+
+Set `L : Fin l.length → k[X]` to `fun j => l[j.val]'j.isLt`. Establish `hLm : ∀ j, L j ∈ l` using `fun j => List.getElem_mem j.isLt`. Set `mj : Fin l.length → ℕ` to `fun j => M (L j) (hLm j)`. Set `G : (Σ j : Fin l.length, Fin (mj j)) → Set (Matrix (Fin n) (Fin n) k)` to `fun s => {x | x ∈ Bz Z ∧ x.charpoly = χ ∧ (φ x).charpoly = L s.1 ∧ φ x ∈ F' (L s.1) (hLm s.1) s.2}`. Establish `memG : ∀ s x, x ∈ G s ↔ (x ∈ Bz Z ∧ x.charpoly = χ ∧ (φ x).charpoly = L s.1 ∧ φ x ∈ F' (L s.1) (hLm s.1) s.2)` using `fun _ _ => Iff.rfl`.
+
+Establish `hGc : ∀ s, IsClosed (G s) ∧ G s ⊆ Bz Z ∧ ∀ g ∈ Gz Z, ∀ x ∈ G s, (g : Matrix (Fin n) (Fin n) k) * x * ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) ∈ G s`. Introduce and unpack `⟨j, i⟩`. Use `⟨?_, fun x hx => ((memG _ x).1 hx).1, ?_⟩` and prove the remaining obligations. Conclude with `(hBz Z).inter ((isClosed_charpoly_eq χ).inter (((isClosed_charpoly_eq _).preimage hD.emb.continuous).inter (((hP' _ _).1 i).1.preimage hD.emb.continuous)))`. Introduce `g hg x hx`.
+
+Take `⟨hxB, hxc, hxφc, hxF⟩` from `(memG _ x).1 hx`. Set `g' : GL (Fin N) k` to `Units.map (φ : Matrix (Fin n) (Fin n) k →* Matrix (Fin N) (Fin N) k) g`. Establish `hg' : g' ∈ Gz Z'` using `(hD.gz g').2 ⟨g, hg, rfl⟩`. Establish `hφ : φ (g.val * x * g⁻¹.val) = g'.val * φ x * g'⁻¹.val`. Rewrite using `[map_mul, map_mul]`.
+
+Both sides reduce to the same expression. Use `(memG _ _).2 ⟨conj_mem_Bz hg hxB, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `hxc`. Use `show (φ (g.val * x * g⁻¹.val)).charpoly = _`.
+
+Rewrite using `[hφ, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `hxφc`. Use `show φ (g.val * x * g⁻¹.val) ∈ _`. Rewrite using `[hφ]`. Conclude with `((hP' _ _).1 i).2.2 g' hg' _ hxF`.
+
+Establish `hGd : ∀ s s', s ≠ s' → Disjoint (G s) (G s')`. Introduce and unpack `⟨j, i⟩ ⟨j', i'⟩ hne`. Rewrite using `[Set.disjoint_left]`. Introduce `x hx1 hx2`. Take `⟨-, -, hc1, hF1⟩` from `(memG _ x).1 hx1`.
+
+Take `⟨-, -, hc2, hF2⟩` from `(memG _ x).1 hx2`. Distinguish the cases in `hj : j = j'`. Substitute `hj` using the available equality. Establish `hi : i ≠ i'` using `fun h => hne (by rw [h])`. Conclude with `Set.disjoint_left.1 ((hP' _ _).2.1 i i' hi) hF1 hF2`.
+
+Apply `hj` to reduce the goal to its premises. Establish `hL : L j = L j'` using `hc1.symm.trans hc2`. Conclude with `Fin.ext ((List.Nodup.getElem_inj_iff hnd).1 hL)`. Establish `hGcov : ∀ x ∈ Bz Z, x.charpoly = χ → ∃ s, x ∈ G s`. Introduce `x hx hc`.
+
+Take `⟨j0, hj0, hj0e⟩` from `List.getElem_of_mem (hl (φ x) (hP x hc))`. Set `j : Fin l.length` to `⟨j0, hj0⟩`. Establish `hxB' : φ x ∈ Bz Z'`. Rewrite using `[hD.cen]`. Conclude with `⟨x, hx, rfl⟩`.
+
+Take `⟨i, hi⟩` from `(hP' (L j) (hLm j)).2.2 (φ x) hxB' hj0e.symm`. Conclude with `⟨⟨j, i⟩, (memG _ x).2 ⟨hx, hc, hj0e.symm, hi⟩⟩`. Establish `hGg : ∀ s, Good Z (G s)`. Introduce and unpack `⟨j, i⟩`. Establish `hg` using `hG' (L j) (hLm j) i`.
+
+Unfold `Good at hg ⊢`. Break down `hg with ⟨c', hc', hnil⟩ | ⟨N', S, hS, hmu, hV⟩` into its components or cases. Establish `hcc : c' ∈ φ '' (Z : Set (Matrix (Fin n) (Fin n) k))`. Rewrite using `[← hD.carrier]`. Conclude with `hc'`.
+
+Take `⟨c, hc, rfl⟩` from `hcc`. Use `Or.inl ⟨c, hc, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `hnil (φ x) ((memG _ x).1 hx).2.2.2`. Conclude with `⟨m, hD.inj (by rw [map_pow, map_sub, hm, map_zero])⟩`. Use `Or.inr ⟨N', S, hS, by rw [← hD.mu]; exact hmu, fun hv => Ppull2B.fibVan_pull hD _ _ (fun x hx => ((memG _ x).1 hx).2.2.2) (hV hv)⟩` and prove the remaining obligations.
+
+Use `⟨∑ j, mj j, fun t => G (finSigmaFinEquiv.symm t), ?_, fun t => hGg _⟩` and prove the remaining obligations. Unfold `IsPieces`. Use `⟨fun t => hGc _, fun t t' htt => hGd _ _ (fun h => htt (finSigmaFinEquiv.symm.injective h)), ?_⟩` and prove the remaining obligations. Introduce `x hx hc`. Take `⟨s, hs⟩` from `hGcov x hx hc`.
+
+Conclude with `⟨finSigmaFinEquiv s, by simpa using hs⟩`.
+-/
 theorem pullPieces : PullPieces k := by
   unfold PullPieces
   intro n N q Z Z' φ e hZ hD χ

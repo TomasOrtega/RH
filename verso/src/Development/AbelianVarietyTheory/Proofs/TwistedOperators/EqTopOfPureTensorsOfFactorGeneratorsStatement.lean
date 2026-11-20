@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.SimpleOver
 open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TensHead.eq_top_of_pure_generators | exact GlobalTheory.TensHead.eq_top_of_pure_generators | (intros; apply GlobalTheory.TensHead.eq_top_of_pure_generators <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.eq_top_of_pure_tensors_of_factor_generators : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] {M₀ : Type} [AddCommGroup M₀] [Module ℂ M₀]
     {M : ι → Type} [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)]
     (Op₀ : Set (Module.End ℂ M₀)) (Op : ∀ i, Set (Module.End ℂ (M i)))

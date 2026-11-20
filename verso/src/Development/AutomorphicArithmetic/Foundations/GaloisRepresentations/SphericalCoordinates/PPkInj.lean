@@ -19,11 +19,17 @@ private def mv (A : MF G) (z : Loc G) : Loc G := fun w => A w *ᵥ z w
 
 private def sc (k : ℕ) (A : MF G) : MF G := fun w => (p ^ k) • A w
 
+/- English proof (translation)
+Rewrite using `[IntermediateField.coe_mul, norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+-/
 private theorem int_mul {w : Fin G.m} {a b : G.Fw w} (ha : ‖(a : PadicAlgCl p)‖ ≤ 1)
     (hb : ‖(b : PadicAlgCl p)‖ ≤ 1) : ‖((a * b : G.Fw w) : PadicAlgCl p)‖ ≤ 1 := by
   rw [IntermediateField.coe_mul, norm_mul]
   exact mul_le_one₀ ha (norm_nonneg _) hb
 
+/- English proof (translation)
+Establish `e : ((∑ i, f i : G.Fw w) : PadicAlgCl p) = ∑ i, (f i : PadicAlgCl p)` using `map_sum (G.Fw w).val f Finset.univ`. Rewrite using `[e]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => h i`.
+-/
 private theorem int_sum {w : Fin G.m} (f : Fin G.n → G.Fw w) (h : ∀ i, ‖(f i : PadicAlgCl p)‖ ≤ 1) :
     ‖((∑ i, f i : G.Fw w) : PadicAlgCl p)‖ ≤ 1 := by
   have e : ((∑ i, f i : G.Fw w) : PadicAlgCl p) = ∑ i, (f i : PadicAlgCl p) :=
@@ -31,19 +37,31 @@ private theorem int_sum {w : Fin G.m} (f : Fin G.n → G.Fw w) (h : ∀ i, ‖(f
   rw [e]
   exact IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => h i
 
+/- English proof (translation)
+Introduce `w i` and use `int_sum _ fun j => int_mul (hA w i j) (hz w j)`.
+-/
 private theorem mv_int {A : MF G} {z : Loc G} (hA : IntM A) (hz : IntL z) : IntL (mv A z) :=
   fun w i => int_sum _ fun j => int_mul (hA w i j) (hz w j)
 
+/- English proof (translation)
+Introduce `w i j` and use `by show ‖(((A w * B w) i j : G.Fw w) : PadicAlgCl p)‖ ≤ 1 rw [Matrix.mul_apply] exact int_sum _ fun l => int_mul (hA w i l) (hB w l j)`.
+-/
 private theorem intM_mul {A B : MF G} (hA : IntM A) (hB : IntM B) : IntM (fun w => A w * B w) :=
   fun w i j => by
     show ‖(((A w * B w) i j : G.Fw w) : PadicAlgCl p)‖ ≤ 1
     rw [Matrix.mul_apply]
     exact int_sum _ fun l => int_mul (hA w i l) (hB w l j)
 
+/- English proof (translation)
+Introduce `w i` and use `by have h := IsUltrametricDist.norm_add_le_max ((a w i : G.Fw w) : PadicAlgCl p) ((b w i : G.Fw w) : PadicAlgCl p) exact h.trans (max_le (ha w i) (hb w i))`.
+-/
 private theorem intL_add {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a + b) := fun w i => by
   have h := IsUltrametricDist.norm_add_le_max ((a w i : G.Fw w) : PadicAlgCl p) ((b w i : G.Fw w) : PadicAlgCl p)
   exact h.trans (max_le (ha w i) (hb w i))
 
+/- English proof (translation)
+Introduce `w i` and use `by have e : (((a - b) w i : G.Fw w) : PadicAlgCl p) = (a w i : PadicAlgCl p) + -(b w i : PadicAlgCl p) := by rw [← sub_eq_add_neg] rfl have h := IsUltrametricDist.norm_add_le_max ((a w i : G.Fw w) : PadicAlgCl p) (-((b w i : G.Fw w) : PadicAlgCl p)) rw [norm_neg] at h rw [e] exac …`.
+-/
 private theorem intL_sub {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a - b) := fun w i => by
   have e : (((a - b) w i : G.Fw w) : PadicAlgCl p) = (a w i : PadicAlgCl p) + -(b w i : PadicAlgCl p) := by
     rw [← sub_eq_add_neg]
@@ -53,12 +71,20 @@ private theorem intL_sub {a b : Loc G} (ha : IntL a) (hb : IntL b) : IntL (a - b
   rw [e]
   exact h.trans (max_le (ha w i) (hb w i))
 
+/- English proof (translation)
+Establish `h` using `norm_algebraMap' (PadicAlgCl p) (p : ℚ_[p])`. Rewrite `h` using `[map_natCast]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+-/
 private theorem norm_p_lt : ‖((p : ℕ) : PadicAlgCl p)‖ < 1 := by
   have h := norm_algebraMap' (PadicAlgCl p) (p : ℚ_[p])
   rw [map_natCast] at h
   rw [h]
   exact Padic.norm_p_lt_one
 
+/- English proof (translation)
+Simplify using `only [IntM, Filter.eventually_all]`. Introduce `w i j`. Establish `ht : Filter.Tendsto (fun k : ℕ => ‖((p : ℕ) : PadicAlgCl p)‖ ^ k * ‖(A w i j : PadicAlgCl p)‖) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) norm_p_lt).mul_const ‖(A w i j : PadicAlgCl p)‖`. Use `filter_upwards [ht.eventually (Iio_mem_nhds zero_lt_one)] with k hk`.
+
+Establish `e : ((sc k A w i j : G.Fw w) : PadicAlgCl p) = ((p : ℕ) : PadicAlgCl p) ^ k * (A w i j : PadicAlgCl p)`. Simplify using `[sc, Matrix.smul_apply, nsmul_eq_mul]`. Rewrite using `[e, norm_mul, norm_pow]`. Conclude with `le_of_lt hk`.
+-/
 private theorem small (A : MF G) : ∀ᶠ k in Filter.atTop, IntM (sc k A : MF G) := by
   simp only [IntM, Filter.eventually_all]
   intro w i j
@@ -72,19 +98,35 @@ private theorem small (A : MF G) : ∀ᶠ k in Filter.atTop, IntM (sc k A : MF G
   rw [e, norm_mul, norm_pow]
   exact le_of_lt hk
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Conclude with `Matrix.mulVec_mulVec _ _ _`.
+-/
 private theorem mv_mv (A B : MF G) (z : Loc G) : mv A (mv B z) = mv (fun w => A w * B w) z := by
   funext w
   exact Matrix.mulVec_mulVec _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Conclude with `Matrix.one_mulVec _`.
+-/
 private theorem mv_one (z : Loc G) : mv (fun _ => 1) z = z := by
   funext w
   exact Matrix.one_mulVec _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [mv, sc, Pi.add_apply, Pi.smul_apply, Matrix.mulVec_add, Matrix.smul_mulVec, Matrix.mulVec_smul]`.
+-/
 private theorem mv_add_sc (B : MF G) (a a' : Loc G) (k : ℕ) :
     mv B (a + p ^ k • a') = mv B a + mv (sc k B) a' := by
   funext w
   simp only [mv, sc, Pi.add_apply, Pi.smul_apply, Matrix.mulVec_add, Matrix.smul_mulVec, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Introduce `w i j`. Establish `hz : IntL (Pi.single w (Pi.single j 1) : Loc G)`. Introduce `w' i'`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality.
+
+Distinguish the cases in `hi : i' = j`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hi]`. Simplify using `[Pi.single_eq_of_ne hw]`.
+
+Use `h _ hz w i` as an intermediate fact. Simplify `this` using `[mv, Matrix.mulVec_single_one]`.
+-/
 private theorem intM_of {C : MF G} (h : ∀ z, IntL z → IntL (mv C z)) : IntM C := by
   intro w i j
   have hz : IntL (Pi.single w (Pi.single j 1) : Loc G) := by
@@ -100,6 +142,15 @@ private theorem intM_of {C : MF G} (h : ∀ z, IntL z → IntL (mv C z)) : IntM 
 
 variable {D : Datum p} {L : Link D G} {β : G.Cˣ}
 
+/- English proof (translation)
+Take `⟨k, hk1, hk2, hk3, hk4⟩` from `((small P).and ((small P').and ((small Q).and (small Q')))).exists`. Take `⟨x, a', b', ha', hb', hT, hT'⟩` from `A.dense (mv R z) (mv S z') k`. Establish `e1 : ∀ B : MF G, mv B (A.T x) = mv (fun w => B w * R w) z + mv (sc k B) a'` using `fun B => by`. Rewrite using `[hT, mv_add_sc, mv_mv]`. Establish `e2 : ∀ B : MF G, mv B (A.T' x) = mv (fun w => B w * S w) z' + mv (sc k B) b'` using `fun B => by`.
+
+Rewrite using `[hT', mv_add_sc, mv_mv]`. Establish `h1 : IntL (mv P' (A.T x))`. Rewrite using `[e1, show (fun w => P' w * R w) = (fun _ => 1 : MF G) from funext hP, mv_one]`. Conclude with `intL_add hz (mv_int hk2 ha')`. Establish `h2 : IntL (mv Q' (A.T' x))`.
+
+Rewrite using `[e2, show (fun w => Q' w * S w) = (fun _ => 1 : MF G) from funext hQ, mv_one]`. Conclude with `intL_add hz' (mv_int hk4 hb')`. Take `⟨r1, r2⟩` from `h x h1 h2`. Rewrite `r1` using `[e1]`. Rewrite `r2` using `[e2]`.
+
+Prove the components needed by the constructor for the conclusion. Simplify using `using intL_sub r1 (mv_int hk1 ha')`. Simplify using `using intL_sub r2 (mv_int hk3 hb')`.
+-/
 private theorem core (A : PFrame L β) {P P' Q Q' R S : MF G}
     (hP : ∀ w, P' w * R w = 1) (hQ : ∀ w, Q' w * S w = 1)
     (h : ∀ x, IntL (mv P' (A.T x)) → IntL (mv Q' (A.T' x)) → IntL (mv P (A.T x)) ∧ IntL (mv Q (A.T' x)))
@@ -137,13 +188,27 @@ private def Bm (d : ∀ w : Fin G.m, G.Fw w) (g : Gp G) : MF G :=
 private def Qi (d : ∀ w : Fin G.m, G.Fw w) (g : Gp G) : MF G :=
   fun w => (sca (g.1 : ℚ_[p]) w * (d w)⁻¹) • (Pm g w)ᵀ
 
+/- English proof (translation)
+The claim follows from `Units.inv_mul _`.
+-/
 private theorem pm_gm (g : Gp G) (w : Fin G.m) : Pm g w * Gm g w = 1 := Units.inv_mul _
 
+/- English proof (translation)
+The claim follows from `Units.mul_inv _`.
+-/
 private theorem gm_pm (g : Gp G) (w : Fin G.m) : Gm g w * Pm g w = 1 := Units.mul_inv _
 
+/- English proof (translation)
+The claim follows from `norm_algebraMap' (PadicAlgCl p) t`.
+-/
 private theorem norm_sca (t : ℚ_[p]) (w : Fin G.m) : ‖(sca t w : PadicAlgCl p)‖ = ‖t‖ :=
   norm_algebraMap' (PadicAlgCl p) t
 
+/- English proof (translation)
+Simplify using `only [pairL, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : (sca t w • ((B w)ᵀ *ᵥ a w)) ⬝ᵥ z w = t • (a w ⬝ᵥ mv B z w)`. Rewrite using `[smul_dotProduct, smul_eq_mul, Algebra.smul_def t, mv, Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, map_smul, smul_eq_mul]`.
+-/
 private theorem pair_mv (t : ℚ_[p]) (a z : Loc G) (B : MF G) :
     t * pairL a (mv B z) = pairL (fun w => sca t w • ((B w)ᵀ *ᵥ a w)) z := by
   simp only [pairL, Finset.mul_sum]
@@ -153,6 +218,11 @@ private theorem pair_mv (t : ℚ_[p]) (a z : Loc G) (B : MF G) :
     rfl
   rw [e, map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `key : (∀ z : Loc G, IntL z → ‖((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) * pairL (A.T' x) (mv (Gm g) z)‖ ≤ 1) ↔ IntL (mv (Bm d g) (A.T' x))`. Repeatedly rewrite using `[pair_mv]`. Rewrite using `[hd]`. Establish `e : (fun w => d w • sca ((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) w • ((Gm g w)ᵀ *ᵥ A.T' x w)) = mv (Bm d g) (A.T' x)`. Use function extensionality and compare the values at `w`.
+
+Simplify using `only [mv, Bm, Matrix.smul_mulVec, smul_smul]`. Rewrite using `[e]`. Conclude with `and_congr Iff.rfl key`.
+-/
 private theorem mem_iff {d : ∀ w : Fin G.m, G.Fw w}
     (hd : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖pairL a z‖ ≤ 1) ↔ IntL (fun w => d w • a w))
     (A : PFrame L β) (g : Gp G) (x : VQ D) :
@@ -167,6 +237,11 @@ private theorem mem_iff {d : ∀ w : Fin G.m, G.Fw w}
     rw [e]
   exact and_congr Iff.rfl key
 
+/- English proof (translation)
+Simplify using `only [Bm, Qi, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.transpose_mul]`. Use `congr 1`. Establish `e : sca ((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p]) w = sca ((g.1⁻¹ : ℚ_[p]ˣ) : ℚ_[p]) w * sca (g'.1 : ℚ_[p]) w`. Simplify using `[sca, Units.val_mul, map_mul]`. Rewrite using `[e]`.
+
+Clear denominators, using `[hd0 w]` for the nonvanishing conditions.
+-/
 private theorem bq {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0) (g g' : Gp G) (w : Fin G.m) :
     Bm d g w * Qi d g' w = sca ((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p]) w • (Pm g' w * Gm g w)ᵀ := by
   simp only [Bm, Qi, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.transpose_mul]
@@ -176,11 +251,23 @@ private theorem bq {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0) (g g' 
   rw [e]
   field_simp [hd0 w]
 
+/- English proof (translation)
+Rewrite using `[bq hd0, pm_gm]`. Simplify using `[sca]`.
+-/
 private theorem bq_self {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0) (g : Gp G) (w : Fin G.m) :
     Bm d g w * Qi d g w = 1 := by
   rw [bq hd0, pm_gm]
   simp [sca]
 
+/- English proof (translation)
+Establish `hc : ∀ z : Loc G, IntL z → IntL (mv (fun w => Pm g w * Gm g' w) z) ∧ IntL (mv (fun w => Bm d g w * Qi d g' w) z)` using `fun z hz => core A (P' := Pm g') (Q' := Bm d g') (pm_gm g') (bq_self hd0 g') (fun x h1 h2 => (mem_iff hd A g x).1 (h x ((mem_iff hd A g' x).2 ⟨h1, h2⟩))) hz hz`. Establish `h1 : IntM (fun w => Pm g w * Gm g' w)` using `intM_of fun z hz => (hc z hz).1`. Establish `h2 : IntM (fun w => Bm d g w * Qi d g' w)` using `intM_of fun z hz => (hc z hz).2`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `h1t : IntM (fun w => (Pm g w * Gm g' w)ᵀ)` using `fun w i j => h1 w j i`.
+
+Establish `h3` using `intM_mul h2 h1t`. Take `⟨w⟩` from `hw`. Establish `i : Fin G.n` using `⟨0, G.n_pos⟩`. Establish `e : Bm d g w * Qi d g' w * (Pm g w * Gm g' w)ᵀ = sca ((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p]) w • 1`. Rewrite using `[bq hd0, Matrix.smul_mul, ← Matrix.transpose_mul]`.
+
+Establish `: Pm g w * Gm g' w * (Pm g' w * Gm g w) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Gm g' w), gm_pm, Matrix.one_mul, pm_gm]`. Rewrite using `[this, Matrix.transpose_one]`. Establish `h4 : ‖(((Bm d g w * Qi d g' w * (Pm g w * Gm g' w)ᵀ) i i : G.Fw w) : PadicAlgCl p)‖ ≤ 1` using `h3 w i i`. Rewrite `h4` using `[e]`.
+
+Simplify `h4` using `[Matrix.smul_apply, norm_sca]`.
+-/
 private theorem half {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0)
     (hd : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖pairL a z‖ ≤ 1) ↔ IntL (fun w => d w • a w))
     (hw : Nonempty (Fin G.m)) (A : PFrame L β) (g g' : Gp G) (h : ∀ x, A.Mem g' x → A.Mem g x) :
@@ -204,6 +291,9 @@ private theorem half {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0)
   rw [e] at h4
   simpa [Matrix.smul_apply, norm_sca] using h4
 
+/- English proof (translation)
+Establish `e : (((g⁻¹ * g').2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) = (g'.2 w)⁻¹ * g.2 w` using `by show ((g.2 w)⁻¹ * g'.2 w)⁻¹ = _`. Rewrite using `[_root_.mul_inv_rev, _root_.inv_inv]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 private theorem inv_val (g g' : Gp G) (w : Fin G.m) :
     ((((g⁻¹ * g').2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) : Matrix (Fin G.n) (Fin G.n) (G.Fw w)) = Pm g' w * Gm g w := by
   have e : (((g⁻¹ * g').2 w)⁻¹ : GL (Fin G.n) (G.Fw w)) = (g'.2 w)⁻¹ * g.2 w := by
@@ -212,12 +302,18 @@ private theorem inv_val (g g' : Gp G) (w : Fin G.m) :
   rw [e]
   rfl
 
+/- English proof (translation)
+Establish `e : (g'.1⁻¹ * g.1 : ℚ_[p]ˣ) = (g.1⁻¹ * g'.1)⁻¹`. Rewrite using `[_root_.mul_inv_rev, _root_.inv_inv]`. Rewrite using `[e, Units.val_inv_eq_inv_val, norm_inv]`.
+-/
 private theorem norm_swap (g g' : Gp G) :
     ‖((g'.1⁻¹ * g.1 : ℚ_[p]ˣ) : ℚ_[p])‖ = ‖((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p])‖⁻¹ := by
   have e : (g'.1⁻¹ * g.1 : ℚ_[p]ˣ) = (g.1⁻¹ * g'.1)⁻¹ := by
     rw [_root_.mul_inv_rev, _root_.inv_inv]
   rw [e, Units.val_inv_eq_inv_val, norm_inv]
 
+/- English proof (translation)
+Use `⟨hs, fun w i j => ⟨hH w i j, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[inv_val]`. Conclude with `hI w i j`.
+-/
 private theorem intPt_of {g g' : Gp G} (hH : IntM (fun w => Pm g w * Gm g' w))
     (hI : IntM (fun w => Pm g' w * Gm g w)) (hs : ‖((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p])‖ = 1) :
     IntPt (g⁻¹ * g') := by
@@ -225,6 +321,15 @@ private theorem intPt_of {g g' : Gp G} (hH : IntM (fun w => Pm g w * Gm g' w))
   rw [inv_val]
   exact hI w i j
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(mem_iff hd A g x).1 hx`. Use `(mem_iff hd A g' x).2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : mv (Pm g') (A.T x) = mv (fun w => Pm g' w * Gm g w) (mv (Pm g) (A.T x))`. Rewrite using `[mv_mv]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Matrix.mul_assoc, gm_pm, Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `mv_int hI h1`. Establish `hB : IntM (fun w => Bm d g' w * Qi d g w)` using `fun w i j => by show ‖(((Bm d g' w * Qi d g w) i j : G.Fw w) : PadicAlgCl p)‖ ≤ 1`.
+
+Rewrite using `[bq hd0, Matrix.smul_apply, smul_eq_mul]`. Conclude with `int_mul (by rw [norm_sca]; exact hs) (hH w j i)`. Establish `e : mv (Bm d g') (A.T' x) = mv (fun w => Bm d g' w * Qi d g w) (mv (Bm d g) (A.T' x))`. Rewrite using `[mv_mv]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Matrix.mul_assoc, _root_.mul_eq_one_comm.1 (bq_self hd0 g w), Matrix.mul_one]`. Rewrite using `[e]`. Conclude with `mv_int hB h2`.
+-/
 private theorem mono {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0)
     (hd : ∀ a : Loc G, (∀ z : Loc G, IntL z → ‖pairL a z‖ ≤ 1) ↔ IntL (fun w => d w • a w))
     (A : PFrame L β) (g g' : Gp G) (hH : IntM (fun w => Pm g w * Gm g' w))
@@ -254,6 +359,15 @@ private theorem mono {d : ∀ w : Fin G.m, G.Fw w} (hd0 : ∀ w, d w ≠ 0)
 end UpperTheory.Gal.W2.PeriodInjective
 
 open UpperTheory.Gal.W2.PeriodInjective in
+/- English proof (translation)
+Introduce `hMD hEA p _ D G L β A g g'`. Take `⟨d, hd0, hd⟩` from `hMD p G`. Establish `hw : Nonempty (Fin G.m)`. Take `⟨w, -⟩` from `hEA p G ((IsAlgClosed.lift : G.F →ₐ[ℚ] PadicAlgCl p) : G.F →+* PadicAlgCl p)`. Conclude with `⟨w⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a1, a2⟩` from `half hd0 hd hw A g g' fun x => (h x).2`. Take `⟨b1, b2⟩` from `half hd0 hd hw A g' g fun x => (h x).1`. Use `intPt_of a1 b1 (le_antisymm a2 ?_)` and prove the remaining obligations.
+
+Rewrite `b2` using `[norm_swap]`. Conclude with `(inv_le_one₀ (norm_pos_iff.2 (Units.ne_zero _))).1 b2`. Introduce `h x`. Establish `hH : IntM (fun w => Pm g w * Gm g' w)` using `fun w i j => (h.2 w i j).1`. Establish `hI : IntM (fun w => Pm g' w * Gm g w)` using `fun w i j => by`.
+
+Establish `h2` using `(h.2 w i j).2`. Rewrite `h2` using `[inv_val]`. Conclude with `h2`. Establish `hs : ‖((g.1⁻¹ * g'.1 : ℚ_[p]ˣ) : ℚ_[p])‖ = 1` using `h.1`. Conclude with `⟨mono hd0 hd A g g' hH hI (by rw [norm_swap, hs, inv_one]) x, mono hd0 hd A g' g hI hH hs.le x⟩`.
+-/
 theorem UpperTheory.Gal.W2.pkInj_of :
     UpperTheory.Gal.W2.MemDual → UpperTheory.Gal.W2.EmbAll → UpperTheory.Gal.W2.PkInj := by
   intro hMD hEA p _ D G L β A g g'

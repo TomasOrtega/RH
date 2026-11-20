@@ -6,6 +6,23 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 
 namespace DegLTEventuallyConst
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `m hm hs`. Establish `hmN : m = N`.
+
+Use function extensionality and compare the values at `k`. Establish `hk : (m k - N k).toNat = 0` using `(Finset.sum_eq_zero_iff.mp hs) k (Finset.mem_univ k)`. Establish `hle : N k ≤ m k` using `hm k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hmN]`.
+
+Consider the case `succ d ih`. Introduce `m hm hs`. Choose the witnesses or unpack the hypotheses as in `⟨k, -, hk⟩ : ∃ k ∈ Finset.univ, (m k - N k).toNat ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Rewrite `hs` using `[Finset.sum_eq_zero hne]`. Use linear arithmetic over natural numbers and integers. Take `⟨m', hm'⟩ : ∃ m' : K → ℤ, m' = m - Pi.single k (1 : ℤ)` from `⟨_, rfl⟩`. Establish `hm'k : m' k = m k - 1` using `by simp [hm']`. Establish `hm'j : ∀ j, j ≠ k → m' j = m j`.
+
+Introduce `j hj`. Simplify using `[hm', hj]`. Establish `hkk : N k + 1 ≤ m k` using `by omega`. Establish `hNm' : N ≤ m'`. Introduce `j`.
+
+Use `show N j ≤ m' j`. Distinguish the cases in `hj : j = k`. Rewrite using `[hj, hm'k]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hm'j j hj]`.
+
+Conclude with `hm j`. Establish `hs' : ∑ j, (m' j - N j).toNat = d`. Establish `e1` using `Finset.add_sum_erase Finset.univ (fun j => (m j - N j).toNat) (Finset.mem_univ k)`. Establish `e2` using `Finset.add_sum_erase Finset.univ (fun j => (m' j - N j).toNat) (Finset.mem_univ k)`. Establish `e3 : ∑ j ∈ Finset.univ.erase k, (m' j - N j).toNat = ∑ j ∈ Finset.univ.erase k, (m j - N j).toNat` using `Finset.sum_congr rfl fun j hj => by rw [hm'j j (Finset.ne_of_mem_erase hj)]`.
+
+Simplify using `only [hm'k] at e2`. Use linear arithmetic over natural numbers and integers. Establish `step : g m - g m' = 0` using `by rw [hm']; exact h m hm k`. Rewrite using `[← ih _ hNm' hs']`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem eq_of_unitSteps_eq_zero {K : Type} [Fintype K] [DecidableEq K] (g : (K → ℤ) → ℤ)
     (N : K → ℤ) (h : ∀ m, N ≤ m → ∀ k, g m - g (m - Pi.single k 1) = 0) :
     ∀ d : ℕ, ∀ m, N ≤ m → ∑ k, (m k - N k).toNat = d → g m = g N := by
@@ -53,6 +70,11 @@ theorem eq_of_unitSteps_eq_zero {K : Type} [Fintype K] [DecidableEq K] (g : (K �
     rw [← ih _ hNm' hs']
     omega
 
+/- English proof (translation)
+Introduce `K _ _ n f hf bs`. Establish `hev : ∀ k : K, ∀ᶠ m in Filter.atTop, mixedDiff bs f m - mixedDiff bs f (m - Pi.single k 1) = 0`. Introduce `k`. Establish `hk` using `hf (Matrix.vecCons (Pi.single k 1) bs)`. Rewrite `hk` using `[(h1 K n bs f 0 0 0 (Pi.single k 1)).2.2.2.2]`.
+
+Conclude with `hk`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.mp (Filter.eventually_all.mpr hev)`. Conclude with `⟨mixedDiff bs f N, Filter.eventually_atTop.mpr ⟨N, fun m hm => eq_of_unitSteps_eq_zero (mixedDiff bs f) N (fun m hm => hN m hm) _ m hm rfl⟩⟩`.
+-/
 theorem proof (h1 : MixedDiffLinear.Statement) : DegLTEventuallyConst.Statement := by
   intro K _ _ n f hf bs
   have hev : ∀ k : K, ∀ᶠ m in Filter.atTop,

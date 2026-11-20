@@ -15,6 +15,9 @@ variable {D : D7} {u : D.what₂.Word} (X : Ch D u)
 noncomputable def colUp (i : ℕ) : Fn X 0 →ₗ[ℂ] Fn X i :=
   Nat.rec (motive := fun i => Fn X 0 →ₗ[ℂ] Fn X i) LinearMap.id (fun i g => KT X i ∘ₗ g) i
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ i ih => show KT X i (colUp X i φ) = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+-/
 theorem colUp_eq (i : ℕ) (φ : Fn X 0) : colUp X i φ = Formalism.ThetaLiftIndependence.chainOpM X.C.wt X.C.Kmap i φ := by
   induction i with
   | zero => rfl
@@ -22,8 +25,14 @@ theorem colUp_eq (i : ℕ) (φ : Fn X 0) : colUp X i φ = Formalism.ThetaLiftInd
     show KT X i (colUp X i φ) = _
     rw [ih]; rfl
 
+/- English proof (translation)
+The claim follows from `(colUp_eq X _ φ).symm`.
+-/
 theorem colT_eq (φ : Fn X 0) : colT X φ = colUp X D.R.m φ := (colUp_eq X _ φ).symm
 
+/- English proof (translation)
+Rewrite using `[← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem emb_mem (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
   rw [← (X.fm.emb_basis i).2, ← (X.fm.lat i).b.sum_repr x, map_sum]
   refine Submodule.sum_mem _ fun a _ => ?_
@@ -32,6 +41,9 @@ theorem emb_mem (i : ℕ) (x : Vl X i) : X.fm.emb i x ∈ X.fm.Fi i := by
 
 variable {X}
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact hφ`. Consider the case `cons v l ih => exact hF.1 i hi v _ ih`.
+-/
 theorem fold_mem (hF : FormsStable X) {i : ℕ} (hi : i ≤ D.R.m) (l : List X.A.vT) {φ : Fn X i}
     (hφ : φ ∈ X.fm.Fi i) :
     (l.foldr (fun v g => (Uop X i v).comp g) LinearMap.id : Fn X i →ₗ[ℂ] Fn X i) φ ∈ X.fm.Fi i := by
@@ -39,21 +51,35 @@ theorem fold_mem (hF : FormsStable X) {i : ℕ} (hi : i ≤ D.R.m) (l : List X.A
   | nil => exact hφ
   | cons v l ih => exact hF.1 i hi v _ ih
 
+/- English proof (translation)
+The claim follows from `fold_mem hF hi _ hφ`.
+-/
 theorem Uprod_mem (hF : FormsStable X) {i : ℕ} (hi : i ≤ D.R.m) (w : D.what₂.places.Pl) {φ : Fn X i}
     (hφ : φ ∈ X.fm.Fi i) : Uprod X i w φ ∈ X.fm.Fi i := fold_mem hF hi _ hφ
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact hφ`. Consider the case `succ n ih => rw [pow_succ']`. Conclude with `Uprod_mem hF (Nat.zero_le _) w ih`.
+-/
 theorem Upow_mem (hF : FormsStable X) (w : D.what₂.places.Pl) (n : ℕ) {φ : Fn X 0}
     (hφ : φ ∈ X.fm.Fi 0) : (Uprod X 0 w ^ n) φ ∈ X.fm.Fi 0 := by
   induction n with
   | zero => exact hφ
   | succ n ih => rw [pow_succ']; exact Uprod_mem hF (Nat.zero_le _) w ih
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => exact hφ`. Consider the case `succ i ih => exact hF.2.2 i hi _ (ih (Nat.le_of_succ_le hi))`.
+-/
 theorem colUp_mem (hF : FormsStable X) {i : ℕ} (hi : i ≤ D.R.m) {φ : Fn X 0}
     (hφ : φ ∈ X.fm.Fi 0) : colUp X i φ ∈ X.fm.Fi i := by
   induction i with
   | zero => exact hφ
   | succ i ih => exact hF.2.2 i hi _ (ih (Nat.le_of_succ_le hi))
 
+/- English proof (translation)
+Establish `h : ((D.R.t : ℝ) + 1) / 2 = (s : ℝ)`. Establish `: ((D.R.t + 1 : ℕ) : ℝ) = ((2 * s : ℕ) : ℝ)` using `by rw [hs]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h, Real.rpow_natCast]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem scalar_eq {s : ℕ} (hs : D.R.t + 1 = 2 * s) :
     ((((X.A.T : ℝ) ^ (((D.R.t : ℝ) + 1) / 2) : ℝ)) : ℂ) = (X.A.T : ℂ) ^ s := by
   have h : ((D.R.t : ℝ) + 1) / 2 = (s : ℝ) := by
@@ -61,6 +87,9 @@ theorem scalar_eq {s : ℕ} (hs : D.R.t + 1 = 2 * s) :
     push_cast at this; linarith
   rw [h, Real.rpow_natCast]; push_cast; rfl
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons v l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, LinearMap.comp_apply, LinearMap.comp_apply, ih, map_smul, h4 i hi v _ (fold_mem hF hi.le l hφ), scalar_eq hs, smul_smul, ← pow_add, List.length_cons, Nat.mul_succ]`.
+-/
 theorem fold_comm (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) {s : ℕ} (hs : D.R.t + 1 = 2 * s) {i : ℕ}
     (hi : i < D.R.m) (l : List X.A.vT) {φ : Fn X i} (hφ : φ ∈ X.fm.Fi i) :
     (l.foldr (fun v g => (Uop X (i + 1) v).comp g) LinearMap.id : Fn X (i + 1) →ₗ[ℂ] Fn X (i + 1)) (KT X i φ) =
@@ -72,11 +101,19 @@ theorem fold_comm (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) {
     rw [List.foldr_cons, List.foldr_cons, LinearMap.comp_apply, LinearMap.comp_apply, ih, map_smul,
       h4 i hi v _ (fold_mem hF hi.le l hφ), scalar_eq hs, smul_smul, ← pow_add, List.length_cons, Nat.mul_succ]
 
+/- English proof (translation)
+Rewrite using `[← Finset.length_toList]`. Conclude with `fold_comm hF h4 hs hi _ hφ`.
+-/
 theorem Uprod_comm (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) {s : ℕ} (hs : D.R.t + 1 = 2 * s) {i : ℕ}
     (hi : i < D.R.m) (w : D.what₂.places.Pl) {φ : Fn X i} (hφ : φ ∈ X.fm.Fi i) :
     Uprod X (i + 1) w (KT X i φ) = (X.A.T : ℂ) ^ (s * (VVT X w).card) • KT X i (Uprod X i w φ) := by
   rw [← Finset.length_toList]; exact fold_comm hF h4 hs hi _ hφ
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp [colUp]`. Consider the case `succ i ih`. Establish `hi' : i < D.R.m` using `hi`. Use `show Uprod X (i + 1) w (KT X i (colUp X i φ)) = _ • KT X i (colUp X i (Uprod X 0 w φ))`.
+
+Rewrite using `[Uprod_comm hF h4 hs hi' w (colUp_mem hF hi'.le hφ), ih hi'.le, map_smul, smul_smul, ← pow_add, Nat.mul_succ, Nat.add_comm (s * _)]`.
+-/
 theorem Uprod_colUp (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) {s : ℕ} (hs : D.R.t + 1 = 2 * s) {i : ℕ}
     (hi : i ≤ D.R.m) (w : D.what₂.places.Pl) {φ : Fn X 0} (hφ : φ ∈ X.fm.Fi 0) :
     Uprod X i w (colUp X i φ) = (X.A.T : ℂ) ^ (s * (VVT X w).card * i) • colUp X i (Uprod X 0 w φ) := by
@@ -88,6 +125,15 @@ theorem Uprod_colUp (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X)
     rw [Uprod_comm hF h4 hs hi' w (colUp_mem hF hi'.le hφ), ih hi'.le, map_smul, smul_smul, ← pow_add,
       Nat.mul_succ, Nat.add_comm (s * _)]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => intro x hx; exact ⟨x, hx, by simp [colUp]⟩`. Consider the case `succ i ih`. Establish `hi' : i < D.R.m` using `hi`. Introduce `x hx`.
+
+Take `⟨y, hy, hy'⟩` from `ih hi'.le x hx`. Take `⟨z, hz, hz'⟩` from `hU i hi' y hy`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `hm` using `Upow_mem hF w i (emb_mem X 0 x)`. Establish `key` using `Uprod_colUp hF h4 hs hi w hm`.
+
+Establish `e1 : colUp X (i + 1) ((Uprod X 0 w ^ i) (X.fm.emb 0 x)) = KT X i (colUp X i ((Uprod X 0 w ^ i) (X.fm.emb 0 x)))` using `rfl`. Rewrite using `[hz']`. Use `beta_reduce at hy' ⊢`. Rewrite using `[hy', map_smul, map_smul, ← e1, key, pow_succ' (Uprod X 0 w) i, Module.End.mul_apply, tpow, smul_smul, smul_smul, ← pow_add, ← pow_add, Finset.sum_range_succ _ (i + 1)]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chain_into (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) {s : ℕ} (hs : D.R.t + 1 = 2 * s)
     (w : D.what₂.places.Pl) (e : ℕ)
     (hU : ∀ i, i < D.R.m → Into X w (fun φ => tpow X e • Uprod X (i + 1) w (KT X i φ))
@@ -113,6 +159,9 @@ theorem chain_into (hF : FormsStable X) (h4 : LevelChainUOperatorCommutation X) 
     congr 2
     ring
 
+/- English proof (translation)
+Unfold `VVT`. Rewrite using `[if_pos h]`. Use `Finset.card_bij (fun v _ => X.fm.tauOf w v) (fun v hv => (Finset.mem_filter.1 hv).2) (fun a _ b _ hab => (X.fm.tauOf w).injective hab) (fun τ hτ => ?_)` and prove the remaining obligations. Conclude with `⟨(X.fm.tauOf w).symm τ, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simpa using hτ⟩, by simp⟩`.
+-/
 theorem card_VVT {w : D.what₂.places.Pl} (h : X.fm.seenP w = true) : (VVT X w).card = (tops D).card := by
   unfold VVT
   rw [if_pos h]
@@ -120,6 +169,9 @@ theorem card_VVT {w : D.what₂.places.Pl} (h : X.fm.seenP w = true) : (VVT X w)
     (fun a _ b _ hab => (X.fm.tauOf w).injective hab) (fun τ hτ => ?_)
   exact ⟨(X.fm.tauOf w).symm τ, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simpa using hτ⟩, by simp⟩
 
+/- English proof (translation)
+Use `mul_nonneg (Int.natCast_nonneg _) (Finset.sum_nonneg fun v hv => hW.1 _ ?_)` and prove the remaining obligations. Unfold `VVT at hv`. Use `split_ifs at hv`. Conclude with `(Finset.mem_filter.1 hv).2`. Simplify using `at hv`.
+-/
 theorem expT_nonneg (hW : WtBounds X) (w : D.what₂.places.Pl) : 0 ≤ expT X w := by
   refine mul_nonneg (Int.natCast_nonneg _) (Finset.sum_nonneg fun v hv => hW.1 _ ?_)
   unfold VVT at hv
@@ -127,6 +179,11 @@ theorem expT_nonneg (hW : WtBounds X) (w : D.what₂.places.Pl) : 0 ≤ expT X w
   · exact (Finset.mem_filter.1 hv).2
   · simp at hv
 
+/- English proof (translation)
+Establish `h` using `D.what₂.places.val_resChar w`. Rewrite `h` using `[show D.what₂.places.resChar w = X.A.T from hw]`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+
+Rewrite using `[pow_succ, AddValuation.map_mul, ih, h, ← WithTop.coe_add]`. Use `congr 1`.
+-/
 theorem val_pow {w : D.what₂.places.Pl} (hw : OverT X w) (k : ℕ) :
     D.what₂.places.val w ((X.A.T : D.what₂.LL) ^ k) = (((D.what₂.places.ramIdx w * k : ℕ) : ℤ) : WithTop ℤ) := by
   have h := D.what₂.places.val_resChar w
@@ -137,6 +194,9 @@ theorem val_pow {w : D.what₂.places.Pl} (hw : OverT X w) (k : ℕ) :
     rw [pow_succ, AddValuation.map_mul, ih, h, ← WithTop.coe_add]
     congr 1
 
+/- English proof (translation)
+Use `show (0 : WithTop ℤ) ≤ D.what₂.places.val w _`. Rewrite using `[AddValuation.map_mul, AddValuation.map_mul, AddValuation.map_inv, hc, val_pow hw, val_pow hw]`. Rewrite using `[← WithTop.LinearOrderedAddCommGroup.coe_neg, ← WithTop.coe_add, ← WithTop.coe_add]`. Establish `: (0 : ℤ) ≤ ((D.what₂.places.ramIdx w * a : ℕ) : ℤ)` using `Int.natCast_nonneg _`. Conclude with `(by omega : (0 : ℤ) ≤ n + ((D.what₂.places.ramIdx w * a : ℕ) : ℤ) + -((D.what₂.places.ramIdx w * b : ℕ) : ℤ))` after adjusting the coercions.
+-/
 theorem quot_mem {w : D.what₂.places.Pl} (hw : OverT X w) {c : D.what₂.LL} {n : ℤ}
     (hc : D.what₂.places.val w c = ((n : ℤ) : WithTop ℤ)) (a b : ℕ)
     (h : ((D.what₂.places.ramIdx w * b : ℕ) : ℤ) ≤ n) :
@@ -147,6 +207,15 @@ theorem quot_mem {w : D.what₂.places.Pl} (hw : OverT X w) {c : D.what₂.LL} {
   have : (0 : ℤ) ≤ ((D.what₂.places.ramIdx w * a : ℕ) : ℤ) := Int.natCast_nonneg _
   exact_mod_cast (by omega : (0 : ℤ) ≤ n + ((D.what₂.places.ramIdx w * a : ℕ) : ℤ) + -((D.what₂.places.ramIdx w * b : ℕ) : ℤ))
 
+/- English proof (translation)
+Unfold `ET`. Distinguish the cases in `h : X.fm.seenP w = true`. Rewrite using `[if_pos h, if_pos h, card_VVT h]`. Unfold `ETpi`. Establish `h1 : ((D.R.t : ℝ) + 1) = 2 * s` using `by exact_mod_cast hs`.
+
+Establish `h2 : ((∑ j ∈ Finset.range (D.R.m + 1), j : ℕ) : ℝ) * 2 = ((D.R.m : ℝ) + 1) * D.R.m`. Use `Finset.sum_range_id_mul_two (D.R.m + 1)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel]`. Conclude with `this` after adjusting the coercions. Rewrite using `[h1]`.
+
+Generalize the expression as in `(∑ j ∈ Finset.range (D.R.m + 1), j : ℕ) = S at h2 ⊢`. Use `push_cast`. Take the linear combination `((s : ℝ) * ((tops D).card : ℝ) / 2) * h2`. Establish `: VVT X w = ∅` using `by unfold VVT; rw [if_neg h]`. Rewrite using `[if_neg h, if_neg h, this]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem loss_eq {s : ℕ} (hs : D.R.t + 1 = 2 * s) (w : D.what₂.places.Pl) :
     ((D.R.m * (if X.fm.seenP w then 2 * ∑ τ, Wt X τ + D.R.f * D.R.N D.R.m else 0) +
       s * (VVT X w).card * ∑ j ∈ Finset.range (D.R.m + 1), j : ℕ) : ℝ) = (D.R.m : ℝ) * ET X w := by
@@ -171,6 +240,15 @@ end ColSharp
 
 open ColSharp in
 
+/- English proof (translation)
+Introduce `D u X hF h4 hU hW w hw c n hc hn x' hx'`. Take `⟨x, hx, hxx⟩` from `hx'`. Take `⟨s0, hs0⟩` from `D.R.t_odd`. Establish `hs : D.R.t + 1 = 2 * (s0 + 1)` using `by omega`. Take `⟨y, hy, hy'⟩` from `chain_into hF h4 hs w _ (hU w hw) (le_refl D.R.m) x hx.1`.
+
+Rewrite `hn` using `[← loss_eq (X := X) hs w]`. Use `set b := D.R.m * (if X.fm.seenP w then 2 * ∑ τ, Wt X τ + D.R.f * D.R.N D.R.m else 0) + (s0 + 1) * (VVT X w).card * ∑ j ∈ Finset.range (D.R.m + 1), j with hb`. Take `⟨a, ha⟩` from `Int.eq_ofNat_of_zero_le (expT_nonneg hW w)`. Establish `hmem` using `quot_mem hw hc a b (by exact_mod_cast hn)`. Use `⟨(⟨_, hmem⟩ : Ow D w) • y, (X.fm.S D.R.m w).smul_mem _ hy, ?_⟩` and prove the remaining obligations.
+
+Establish `hT : (X.A.T : ℂ) ^ b ≠ 0` using `pow_ne_zero _ (by exact_mod_cast X.A.T_prime.ne_zero)`. Use `beta_reduce at hy' ⊢`. Rewrite using `[Subring.smul_def, LinearMap.map_smulₛₗ, hy', hxx, colT_eq, ha, LinearMap.smul_apply, map_smul, smul_smul, smul_smul, zpow_natCast]`. Use `congr 1`. Simplify using `only [map_mul, map_inv₀, map_pow, map_natCast]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem levelChainSharpColumnValuation_of_stability : ∀ (D : D7) (u : D.what₂.Word) (X : Ch D u),
     FormsStable X → LevelChainUOperatorCommutation X → UKSharp X → WtBounds X → Conclusion5Sharp X := by
   intro D u X hF h4 hU hW w hw c n hc hn x' hx'

@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.Rw.CopyRead
 
+/- English proof (translation)
+Use `Set.ext fun ρ => ⟨h.all ρ, fun ⟨π, hi⟩ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `h.mem π`. Use `⟨b, ?_⟩` and prove the remaining obligations. Unfold `principalLevelFrame.isotE at hb ⊢`. Rewrite using `[← principalLevelFrame.isotL_iso _ _ _ _ _ _ (principalLevelFrame.conjT_iso hi)]`.
+
+Conclude with `hb`.
+-/
 theorem occ_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks]
     [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A} {y : Hd R} {Φ : Type}
     {rep : Φ → Formalism.L2.NG.FinTyp D.host.E D.R.r} (h : Reps y F rep) : y.occ F = {ρ | ∃ π, (rep π).Iso ρ} := by
@@ -26,6 +31,9 @@ theorem occ_iff {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : Fa
   rw [← principalLevelFrame.isotL_iso _ _ _ _ _ _ (principalLevelFrame.conjT_iso hi)]
   exact hb
 
+/- English proof (translation)
+Substitute `e e'` using the available equality. Conclude with `congrArg _ (Formalism.L2.Col.finTypRep_inj (Formalism.L2.NG.IsoRep.trans h (Formalism.L2.NG.IsoRep.symm (Formalism.L2.Col.finTypRep _ c').stable h')))`.
+-/
 theorem rep_eq {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {S S' U : Set (Formalism.L2.NG.FinTyp L n)} (e : S = U) (e' : S' = U)
     {c : Formalism.L2.Col.FinTypCls S} {c' : Formalism.L2.Col.FinTypCls S'} {ρ : Formalism.L2.NG.FinTyp L n}
     (h : (Formalism.L2.Col.finTypRep S c).Iso ρ) (h' : (Formalism.L2.Col.finTypRep S' c').Iso ρ) :
@@ -38,6 +46,11 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z₀ : w.Lt
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `e : ((by with_unfolding_all exact (m.t.rep :)) : type_of% q.t.rep) = q.t.rep` using `eq_of_heq ((by with_unfolding_all exact (hco.rep :)))`. Establish `h1` using `occ_iff m.t.reps`. Establish `h2` using `congrArg (fun P : type_of% m.y.PY => principalLevelFrame.OccRows m.z.R.θ P (m.z.R.MY 0) (fun b => levS _ (m.z.R.βY 0) (m.z.R.dat0 (m.z.R.toRealDat.levR m.z.F.lv2 b))) (fun b => levChi _ (m.z.R.βY 0) (m.z.R.dat0 (m.z.R.toRealDat.levR m.z.F.lv2 b))) (fun _ => m.z.R.toRealDat.e0)) r …`. Establish `h3` using `h2.trans h1`. Establish `h4` using `hp.rep ((by with_unfolding_all exact (π :)))`.
+
+Rewrite using `[← e]`. Establish `h5 : ∃ (S : Set (Formalism.L2.NG.FinTyp (w.st o.Z).toD7.host.E (w.st o.Z).toD7.R.r)) (c : Formalism.L2.Col.FinTypCls S), S = {ρ | ∃ π', (m.t.rep π').Iso ρ} ∧ (Formalism.L2.Col.finTypRep S c).Iso (m.t.rep π) ∧ HEq (principalLevelFrame.rowRepR m.z.R.θ (r.Y.eFT ((by with_unfolding_a …` using `⟨_, r.Y.eFT π, h3, h4, HEq.rfl⟩`. Conclude with `(by with_unfolding_all exact (h5 :))`.
+-/
 theorem rep_pin {o : q.Over} {m : Moved o} (hco : m.Coh) {s : Side0 o} (r : ReadPk m s) (hp : r.Pin) (π : q.p.Φ) :
     ∃ (S : Set (Formalism.L2.NG.FinTyp (w.st Z₀).toD7.host.E (w.st Z₀).toD7.R.r)) (c : Formalism.L2.Col.FinTypCls S),
       S = {ρ | ∃ π', (q.t.rep π').Iso ρ} ∧ (Formalism.L2.Col.finTypRep S c).Iso (q.t.rep π) ∧
@@ -57,6 +70,9 @@ theorem rep_pin {o : q.Over} {m : Moved o} (hco : m.Coh) {s : Side0 o} (r : Read
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Establish `h : ∀ π : q.p.Φ, ((by with_unfolding_all exact ((GlobalTheory.HeightCounting.repOf r'.Y ((π))) : _)) : Formalism.L2.NG.FinTyp (w.st Z₀).toD7.host.E (w.st Z₀).toD7.R.r) = (by with_unfolding_all exact ((GlobalTheory.HeightCounting.repOf r.Y ((π))) : _))` using `fun π => by`. Take `⟨S, c, h1, h2, h3⟩` from `rep_pin hco r hp π`. Take `⟨S', c', h1', h2', h3'⟩` from `rep_pin hco' r' hp' π`. Conclude with `eq_of_heq ((by with_unfolding_all exact ((h3'.trans ((heq_of_eq (rep_eq h1' h1 h2' h2)).trans h3.symm)) :)))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (funext h)) :))`.
+-/
 theorem repOf_heq {o o' : q.Over} {m : Moved o} (hco : m.Coh) {s : Side0 o} (r : ReadPk m s) (hp : r.Pin)
     {m' : Moved o'} (hco' : m'.Coh) {s' : Side0 o'} (r' : ReadPk m' s') (hp' : r'.Pin) :
     HEq (GlobalTheory.HeightCounting.repOf r'.Y) (GlobalTheory.HeightCounting.repOf r.Y) := by

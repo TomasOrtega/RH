@@ -14,10 +14,20 @@ def LeftEx (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) : Prop :=
   ∀ (B' B B'' : ModuleCat.{0} Λ), Tors Λ B → Tors Λ B'' → ∀ (f : B' ⟶ B) (g : B ⟶ B''), Function.Injective f.hom →
       Function.Exact f.hom g.hom → Function.Injective (F.map f).hom ∧ Function.Exact (F.map f).hom (F.map g).hom
 
+/- English proof (translation)
+Rewrite using `[F.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_map (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) {A B C : ModuleCat.{0} Λ} (f : A ⟶ B) (g : B ⟶ C)
     (x : F.obj A) : (F.map g).hom ((F.map f).hom x) = (F.map (f ≫ g)).hom x := by
   rw [F.map_comp]; rfl
 
+/- English proof (translation)
+Establish `hex : ∃ m : ℕ, ∃ (C : ModuleCat.{0} Λ) (f : C ⟶ A) (z : F.obj C), Function.Injective f.hom ∧ (F.map f).hom z = x ∧ Nat.card C = m` using `⟨_, A, 𝟙 A, x, Function.injective_id, by rw [F.map_id]; rfl, rfl⟩`. Take `⟨C, f, z, hf, hz, hm⟩` from `Nat.find_spec hex`. Use `⟨C, f, z, hf, hz, fun B hB φ hφ => ?_⟩` and prove the remaining obligations. Use `haveI : Finite C := Finite.of_injective _ hf`. Establish `hC : Tors Λ C` using `fun c => by`.
+
+Take `⟨n, hn⟩` from `hA (f.hom c)`. Conclude with `⟨n, fun r hr => hf (by rw [map_smul, hn r hr, map_zero])⟩`. Take `⟨-, h2⟩` from `hF (ModuleCat.of Λ (LinearMap.ker φ.hom)) C B hC hB (ModuleCat.ofHom (LinearMap.ker φ.hom).subtype) φ Subtype.val_injective (LinearMap.exact_subtype_ker_map φ.hom)`. Take `⟨w, hw⟩` from `(h2 z).1 hφ`. Establish `hle : Nat.find hex ≤ Nat.card (LinearMap.ker φ.hom)` using `Nat.find_min' hex ⟨ModuleCat.of Λ (LinearMap.ker φ.hom), ModuleCat.ofHom (LinearMap.ker φ.hom).subtype ≫ f, w, hf.comp Subtype.val_injective, by rw [← map_map, hw, hz], rfl⟩`.
+
+Rewrite `hle` using `[← hm]`. Establish `hbij : Function.Bijective (LinearMap.ker φ.hom).subtype` using `Function.Injective.bijective_of_nat_card_le Subtype.val_injective hle`. Use extensionality with `c`. Take `⟨k, rfl⟩` from `hbij.2 c`. Conclude with `k.2`.
+-/
 theorem exists_min (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) (hF : LeftEx F) (A : ModuleCat.{0} Λ) [Finite A]
     (hA : Tors Λ A) (x : F.obj A) :
     ∃ (C : ModuleCat.{0} Λ) (f : C ⟶ A) (z : F.obj C), Function.Injective f.hom ∧ (F.map f).hom z = x ∧
@@ -47,6 +57,17 @@ theorem exists_min (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) (hF : LeftEx F) (
   obtain ⟨k, rfl⟩ := hbij.2 c
   exact k.2
 
+/- English proof (translation)
+Use `set c := Nat.card (F.obj (ModuleCat.of Λ (IsLocalRing.ResidueField Λ))) with hc`. Use `haveI : Finite (Λ ⧸ IsLocalRing.maximalIdeal Λ) := ‹Finite (IsLocalRing.ResidueField Λ)›`. Use `haveI : Finite (Λ ⧸ IsLocalRing.maximalIdeal Λ ^ n) := Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`. Use `⟨Nat.card (Fin c → Λ ⧸ IsLocalRing.maximalIdeal Λ ^ n), fun A x hA hn hmin => ?_⟩` and prove the remaining obligations. Establish `hk : Tors Λ (IsLocalRing.ResidueField Λ)` using `fun b => ⟨1, fun r hr => by`.
+
+Rewrite `hr` using `[pow_one]`. Rewrite using `[Algebra.smul_def, IsLocalRing.ResidueField.algebraMap_eq, (IsLocalRing.residue_eq_zero_iff r).2 hr, zero_mul]⟩`. Establish `hinj : Function.Injective (fun φ : A →ₗ[Λ] IsLocalRing.ResidueField Λ => (F.map (ModuleCat.ofHom φ : A ⟶ ModuleCat.of Λ (IsLocalRing.ResidueField Λ))).hom x)`. Introduce `φ ψ h`. Use `hmin (ModuleCat.of Λ (IsLocalRing.ResidueField Λ)) hk ((ModuleCat.ofHom φ : A ⟶ ModuleCat.of Λ (IsLocalRing.ResidueField Λ)) - ModuleCat.ofHom ψ) (by` as an intermediate fact.
+
+Rewrite using `[F.map_sub]`. Conclude with `sub_eq_zero.2 h)`. Establish `h2` using `sub_eq_zero.1 this`. Conclude with `congrArg ModuleCat.Hom.hom h2`. Establish `h1 : Nat.card (A →ₗ[Λ] IsLocalRing.ResidueField Λ) ≤ c` using `Nat.card_le_card_of_injective _ hinj`.
+
+Establish `h2 : c ≤ Nat.card (IsLocalRing.ResidueField Λ) ^ c` using `(Nat.lt_pow_self Finite.one_lt_card).le`. Take `⟨v, hv⟩` from `GlobalTheory.T.exists_generators_of_card_hom_residueField_le Λ A c (h1.trans h2)`. Set `p : Fin c → (Λ ⧸ IsLocalRing.maximalIdeal Λ ^ n) →ₗ[Λ] A` to `fun i => (IsLocalRing.maximalIdeal Λ ^ n).liftQ (LinearMap.toSpanSingleton Λ A (v i)) (fun r hr => hn r hr _)`. Use `Nat.card_le_card_of_surjective (fun t => ∑ i, p i (t i)) (fun a => ?_)` and prove the remaining obligations. Establish `ha : a ∈ Submodule.span Λ (Set.range v)` using `hv ▸ Submodule.mem_top`.
+
+Take `⟨t, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun Λ).1 ha`. Conclude with `⟨fun i => Submodule.Quotient.mk (t i), rfl⟩`.
+-/
 theorem card_le_of_min [IsNoetherianRing Λ] [Finite (IsLocalRing.ResidueField Λ)]
     (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) [F.Additive]
     (hfin : Finite (F.obj (ModuleCat.of Λ (IsLocalRing.ResidueField Λ)))) (n : ℕ) :
@@ -81,6 +102,29 @@ theorem card_le_of_min [IsNoetherianRing Λ] [Finite (IsLocalRing.ResidueField �
   obtain ⟨t, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun Λ).1 ha
   exact ⟨fun i => Submodule.Quotient.mk (t i), rfl⟩
 
+/- English proof (translation)
+Introduce `Λ _ _ _ _ F _ _ hF hfin n`. Take `⟨N, hN⟩` from `card_le_of_min F hfin n`. Set `P : ℕ → Prop` to `fun m => ∃ (M : ModuleCat.{0} Λ) (ξ : F.obj M), Finite M ∧ (∀ x ∈ IsLocalRing.maximalIdeal Λ ^ n, ∀ y : M, x • y = 0) ∧ IsMin F M ξ ∧ Nat.card M = m`. Establish `h0 : P (Nat.card (ModuleCat.of Λ PUnit))` using `⟨ModuleCat.of Λ PUnit, 0, inferInstanceAs (Finite PUnit), fun _ _ _ => rfl, fun B _ φ _ => by`. Use extensionality with `c`.
+
+Conclude with `map_zero φ.hom, rfl⟩`. Establish `hle : ∀ m, P m → m ≤ N`. Introduce and unpack `m ⟨M, ξ, h1, h2, h3, rfl⟩`. Conclude with `hN M ξ h1 h2 h3`. Take `⟨M, ξ, hM, hMn, hmin, hcard⟩ : P (Nat.findGreatest P N)` from `Nat.findGreatest_spec (hle _ h0) h0`.
+
+Use `⟨M, ξ, hM, hMn, hmin, fun B hB hBn η => ?_⟩` and prove the remaining obligations. Set `A : ModuleCat.{0} Λ` to `ModuleCat.of Λ (M × B)`. Use `haveI : Finite A := inferInstanceAs (Finite (M × B))`. Establish `hAn : ∀ x ∈ IsLocalRing.maximalIdeal Λ ^ n, ∀ y : A, x • y = 0` using `fun r hr y => Prod.ext (hMn r hr y.1) (hBn r hr y.2)`. Set `i1 : M ⟶ A` to `ModuleCat.ofHom (LinearMap.inl Λ M B)`.
+
+Set `i2 : B ⟶ A` to `ModuleCat.ofHom (LinearMap.inr Λ M B)`. Set `q1 : A ⟶ M` to `ModuleCat.ofHom (LinearMap.fst Λ M B)`. Set `q2 : A ⟶ B` to `ModuleCat.ofHom (LinearMap.snd Λ M B)`. Establish `e11 : i1 ≫ q1 = 𝟙 M` using `rfl`. Establish `e22 : i2 ≫ q2 = 𝟙 B` using `rfl`.
+
+Establish `e12 : i1 ≫ q2 = 0` using `rfl`. Establish `e21 : i2 ≫ q1 = 0` using `rfl`. Take `⟨C, f, z, hf, hz, hC⟩` from `exists_min F hF A (fun a => ⟨n, fun r hr => hAn r hr a⟩) ((F.map i1).hom ξ + (F.map i2).hom η)`. Establish `hz1 : (F.map (f ≫ q1)).hom z = ξ`. Rewrite using `[← map_map, hz, map_add, map_map, map_map, e11, e21, F.map_id, F.map_zero]`.
+
+Conclude with `add_zero _`. Establish `hz2 : (F.map (f ≫ q2)).hom z = η`. Rewrite using `[← map_map, hz, map_add, map_map, map_map, e12, e22, F.map_id, F.map_zero]`. Conclude with `zero_add _`. Use `haveI hCf : Finite C := Finite.of_injective _ hf`.
+
+Use `set g := f ≫ q1 with hg`. Establish `hsurj : Function.Surjective g.hom`. Use `hmin (ModuleCat.of Λ (M ⧸ LinearMap.range g.hom)) (fun b => ⟨n, fun r hr => by` as an intermediate fact. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[← Submodule.Quotient.mk_smul, hMn r hr, Submodule.Quotient.mk_zero]⟩)`.
+
+Use the proof step `(ModuleCat.ofHom (LinearMap.range g.hom).mkQ) (by`. Establish `e : g ≫ ModuleCat.ofHom (LinearMap.range g.hom).mkQ = 0`. Use extensionality with `c`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨c, rfl⟩`. Rewrite using `[← hz1, map_map, e, F.map_zero]`.
+
+Use the proof step `rfl)`. Introduce `m`. Establish `h3 : (LinearMap.range g.hom).mkQ m = 0` using `congrArg (fun φ : M ⟶ ModuleCat.of Λ (M ⧸ LinearMap.range g.hom) => φ.hom m) this`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 h3`. Establish `hPC : P (Nat.card C)` using `⟨C, z, hCf, fun r hr y => hf (by rw [map_smul, hAn r hr, map_zero]), hC, rfl⟩`.
+
+Establish `hcle : Nat.card C ≤ Nat.card M` using `hcard ▸ Nat.le_findGreatest (hle _ hPC) hPC`. Establish `hbij : Function.Bijective g.hom` using `hsurj.bijective_of_nat_card_le hcle`. Set `e` to `LinearEquiv.ofBijective g.hom hbij`. Use `⟨(ModuleCat.ofHom e.symm.toLinearMap : M ⟶ C) ≫ f ≫ q2, ?_⟩` and prove the remaining obligations. Establish `e3 : g ≫ (ModuleCat.ofHom e.symm.toLinearMap : M ⟶ C) = 𝟙 C`.
+
+Use extensionality with `c`. Conclude with `e.symm_apply_apply c`. Rewrite using `[← hz1, map_map, ← Category.assoc, e3, Category.id_comp, hz2]`.
+-/
 theorem level : ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [Finite (IsLocalRing.ResidueField Λ)]
   (F : ModuleCat.{0} Λ ⥤ ModuleCat.{0} Λ) [F.Additive] [F.Linear Λ],
   (∀ (B' B B'' : ModuleCat.{0} Λ), Tors Λ B → Tors Λ B'' → ∀ (f : B' ⟶ B) (g : B ⟶ B''), Function.Injective f.hom →

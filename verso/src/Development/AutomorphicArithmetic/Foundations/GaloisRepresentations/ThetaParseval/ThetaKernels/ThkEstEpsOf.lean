@@ -13,6 +13,11 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 namespace SignatureOfHermitianForm
 end SignatureOfHermitianForm
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB n X r s hX`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hτ` using `hB.cm.2.2.2 (B.emb w).1`. Break down `hX with hX | hX` into its components or cases. Use `SignatureOfHermitianForm.of_sig σ _ hτ X.J 1 one_ne_zero (r := r) (s := s) (by rw [one_smul]; exact hX.sig w)` as an intermediate fact.
+
+Conclude with `⟨⟨Or.inl hX.herm, this.1⟩, this.2⟩`. Use `SignatureOfHermitianForm.of_sig σ _ hτ X.J Complex.I Complex.I_ne_zero (hX.sig w)` as an intermediate fact. Conclude with `⟨⟨Or.inr hX.skew, this.1⟩, this.2⟩`.
+-/
 theorem epsOf_of_k : _root_.PositivityTheory.ThKEst.EpsOf_k := by
   intro F E _ _ _ _ _ σ B hB n X r s hX
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance

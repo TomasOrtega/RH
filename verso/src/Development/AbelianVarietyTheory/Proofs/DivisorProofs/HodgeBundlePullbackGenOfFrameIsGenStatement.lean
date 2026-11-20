@@ -16,6 +16,9 @@ open GlobalTheory.VB GlobalTheory.LieVB GlobalTheory.HodgeFrameGen
 open GlobalTheory.QCoh (pullbackSections)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeFrameGen.gen_isGen | exact GlobalTheory.HodgeFrameGen.gen_isGen | (intros; apply GlobalTheory.HodgeFrameGen.gen_isGen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hodgeBundlePullbackGenOfFrame_isGen : ∀ {S' T : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x : T ⟶ S'}
     {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ} (h : IsGrpPullback H G x ψ)
     {a : Fin g → Γ(omega H, ⊤)} (ha : IsFrame a), (gen h ha).IsGen := by

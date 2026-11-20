@@ -6,6 +6,9 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.SatakeWeyl
 
+/- English proof (translation)
+Use `Fintype.sum_equiv (MulAction.toPerm g) _ _ fun y => ?_` and prove the remaining obligations. Establish `h1 : (MulAction.toPerm g y : A ⧸ U) = ((g * y.out : A) : A ⧸ U)`. Rewrite using `[MulAction.toPerm_apply, ← MulAction.Quotient.coe_smul_out, smul_eq_mul]`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul U (g * y.out)`. Rewrite using `[h1, hu, hF u u.2]`.
+-/
 theorem sum_out_left_translate {A : Type} [Group A] (U : Subgroup A) [Fintype (A ⧸ U)] (F : A → ℂ)
     (hF : ∀ u ∈ U, ∀ a, F (a * u) = F a) (g : A) :
     ∑ y : A ⧸ U, F (g * y.out) = ∑ y : A ⧸ U, F y.out := by
@@ -15,6 +18,13 @@ theorem sum_out_left_translate {A : Type} [Group A] (U : Subgroup A) [Fintype (A
   obtain ⟨u, hu⟩ := QuotientGroup.mk_out_eq_mul U (g * y.out)
   rw [h1, hu, hF u u.2]
 
+/- English proof (translation)
+Introduce `A _ U V f hU hV hl hr`. Use `haveI : U.FiniteIndex := ⟨hU⟩`. Use `haveI : V.FiniteIndex := ⟨hV⟩`. Use `letI : Fintype (A ⧸ U) := Fintype.ofFinite _`. Use `letI : Fintype (A ⧸ V) := Fintype.ofFinite _`.
+
+Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Establish `e1 : ∀ x : A ⧸ U, ∑ y : A ⧸ V, f (y.out⁻¹ * x.out) = ∑ y : A ⧸ V, f y.out⁻¹`. Introduce `x`. Use `sum_out_left_translate V (fun a => f a⁻¹) (fun v hv a => by simp only [mul_inv_rev]; exact hl _ (V.inv_mem hv) _) x.out⁻¹` as an intermediate fact. Simplify `this` using `[mul_inv_rev]`.
+
+Establish `e2 : ∀ y : A ⧸ V, ∑ x : A ⧸ U, f (y.out⁻¹ * x.out) = ∑ x : A ⧸ U, f x.out` using `fun y => sum_out_left_translate U f hr _`. Use `Finset.sum_comm (s := (Finset.univ : Finset (A ⧸ U))) (t := (Finset.univ : Finset (A ⧸ V))) (f := fun x y => f (y.out⁻¹ * x.out))` as an intermediate fact. Simplify using `only [e1, e2, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`. Rewrite using `[Subgroup.index_eq_card, Subgroup.index_eq_card, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Conclude with `this`.
+-/
 theorem unimodFin : UnimodFin := by
   intro A _ U V f hU hV hl hr
   haveI : U.FiniteIndex := ⟨hU⟩

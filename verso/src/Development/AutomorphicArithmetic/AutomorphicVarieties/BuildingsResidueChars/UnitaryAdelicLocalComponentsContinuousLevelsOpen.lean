@@ -17,9 +17,15 @@ section SlopeTestRemainingChoices
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `(inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing`.
+-/
 private theorem nh_loc : IsLocalRing 𝒪[k] := (inferInstance : IsDiscreteValuationRing 𝒪[k]).toIsLocalRing
 attribute [local instance] nh_loc
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `valuation_surjective (uniformizer k)`. Establish `h0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `uniformizer_pos.ne (by simpa using hx)`. Conclude with `Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩`.
+-/
 private theorem nh_unif : valuation k (unif k : k) = uniformizer k := by
   obtain ⟨x, hx⟩ := valuation_surjective (uniformizer k)
   have h0 : x ≠ 0 := by
@@ -27,6 +33,11 @@ private theorem nh_unif : valuation k (unif k : k) = uniformizer k := by
     exact uniformizer_pos.ne (by simpa using hx)
   exact Classical.epsilon_spec (p := fun x : kˣ => valuation k (x : k) = uniformizer k) ⟨Units.mk0 x h0, hx⟩
 
+/- English proof (translation)
+Establish `hI` using `Valuation.integer.integers (valuation k)`. Set `p : 𝒪[k]` to `⟨unif k, (nh_unif.trans_lt uniformizer_lt_one).le⟩`. Establish `hp : valuation k (algebraMap 𝒪[k] k p) = uniformizer k` using `nh_unif`. Establish `e : IsLocalRing.maximalIdeal 𝒪[k] = Ideal.span {p}`. Use extensionality with `y`.
+
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, GlobalTheory.StepData.residue_eq_zero_iff_lt, Ideal.mem_span_singleton, hI.dvd_iff_le, hp, le_uniformizer_iff]`. Both sides reduce to the same expression. Rewrite using `[e, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hI.dvd_iff_le, map_pow, map_pow, hp]`. Both sides reduce to the same expression.
+-/
 private theorem nh_pow (c : ℕ) (x : 𝒪[k]) :
     x ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ c ↔ valuation k (x : k) ≤ uniformizer k ^ c := by
   have hI := Valuation.integer.integers (valuation k)
@@ -40,6 +51,13 @@ private theorem nh_pow (c : ℕ) (x : 𝒪[k]) :
   rw [e, Ideal.span_singleton_pow, Ideal.mem_span_singleton, hI.dvd_iff_le, map_pow, map_pow, hp]
   rfl
 
+/- English proof (translation)
+Establish `key : ∀ u : GL (Fin n) 𝒪[k], u ∈ (Matrix.GeneralLinearGroup.map (n` using `Fin n) (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c))).ker ↔ ∀ i j, valuation k (((Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u).val - 1) i j) ≤ uniformizer k ^ c := by`. Introduce `u`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Establish `e : ((1 : GL (Fin n) (𝒪[k] ⧸ IsLocalRing.maximalIdeal 𝒪[k] ^ c)).val) i j = Ideal.Quotient.mk _ ((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j)`.
+
+Apply the tactic sequence `simp only [Units.val_one, Matrix.one_apply]; split_ifs <;> simp`. Rewrite using `[e]`. Use `(Ideal.Quotient.eq.trans (nh_pow c _)).trans (iff_of_eq ?_)` and prove the remaining obligations. Use `congr 2`. Apply the tactic sequence `simp only [Matrix.sub_apply, Matrix.one_apply]; split_ifs <;> simp <;> rfl`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨⟨u, rfl⟩, (key u).1 hu⟩`. Introduce and unpack `⟨⟨u, rfl⟩, hu⟩`. Conclude with `⟨u, (key u).2 hu, rfl⟩`.
+-/
 private theorem nh_memKc {c : ℕ} {g : GL (Fin n) k} :
     g ∈ Kc k n c ↔ g ∈ KO k (Fin n) ∧ ∀ i j, valuation k ((g.val - 1) i j) ≤ uniformizer k ^ c := by
   have key : ∀ u : GL (Fin n) 𝒪[k],
@@ -61,6 +79,11 @@ private theorem nh_memKc {c : ℕ} {g : GL (Fin n) k} :
   · rintro ⟨⟨u, rfl⟩, hu⟩
     exact ⟨u, (key u).2 hu, rfl⟩
 
+/- English proof (translation)
+Establish `e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩ ⋂ i, ⋂ j, (fun g : GL (Fin n) k => (g.val - 1) i j) ⁻¹' {x | valuation k x ≤ uniformizer k ^ c}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, nh_memKc, Set.mem_iInter, Set.mem_inter_iff]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Use `GlobalTheory.SplitFlip.isOpen_KO.inter <| isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.preimage ?_ ?_` and prove the remaining obligations. Use `Units.continuous_val (M := Matrix (Fin n) (Fin n) k) fun_prop` as an intermediate fact. Establish `h0 : (valuation k).restrict ((unif k : k) ^ c) ≠ 0` using `by simp`. Simplify `Valuation.isOpen_closedBall h0` using `only [Valuation.restrict_le_iff, map_pow (valuation k), nh_unif]`.
+-/
 private theorem nh_Kc_open (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) := by
   have e : (Kc k n c : Set (GL (Fin n) k)) = (KO k (Fin n) : Set (GL (Fin n) k)) ∩
       ⋂ i, ⋂ j, (fun g : GL (Fin n) k => (g.val - 1) i j) ⁻¹' {x | valuation k x ≤ uniformizer k ^ c} := by
@@ -75,6 +98,11 @@ private theorem nh_Kc_open (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) :=
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Set `p : UA L n →* GL (Fin n) (Af L)` to `(Matrix.GeneralLinearGroup.map (pFin L)).comp (UA L n).subtype`. Establish `hp : Continuous p` using `GlobalTheory.DefU.continuous_map_pFin.comp continuous_subtype_val`. Establish `ho : IsOpen (GlobalTheory.GLIntegral.intSubring L : Set (Af L))` using `RestrictedProduct.isOpen_forall_mem (A := fun v : HeightOneSpectrum (𝓞 L) => (v.adicCompletionIntegers L : Set (v.adicCompletion L))) (fun v => Valued.isOpen_valuationSubring _)`. Use `Subgroup.isOpen_mono (H₁ := (GlobalTheory.GLIntegral.glSub (GlobalTheory.GLIntegral.intSubring L)).comap p) (fun g hg => ?_) ((GlobalTheory.GLIntegral.isOpen_glSub _ ho).preimage hp)` and prove the remaining obligations. Establish `hv : ∀ (w : Plc L) (x : w.adicCompletion L), x ∈ w.adicCompletionIntegers L → x ∈ 𝒪[w.adicCompletion L]` using `fun w x hx => by haveI : (Valued.v : Valuation (w.adicCompletion L) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`.
+
+Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation _), ← Valuation.vle_iff_le, Valuation.vle_iff_le Valued.v, map_one]`. Conclude with `hx`. Conclude with `Subgroup.mem_iInf.2 fun w => (GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => hv w _ (hg.1 i j w), fun i j => hv w _ (hg.2 i j w)⟩`.
+-/
 private theorem nh_open {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} : IsOpen ((⨅ w : Plc L, (KO (w.adicCompletion L) (Fin n)).comap (cLoc w) : Subgroup (UA L n)) : Set (UA L n)) := by
   let p : UA L n →* GL (Fin n) (Af L) := (Matrix.GeneralLinearGroup.map (pFin L)).comp (UA L n).subtype
   have hp : Continuous p := GlobalTheory.DefU.continuous_map_pFin.comp continuous_subtype_val
@@ -90,6 +118,9 @@ private theorem nh_open {L : Type} [Field L] [NumberField L] [IsCMField L] {n : 
     exact hx
   exact Subgroup.mem_iInf.2 fun w => (GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨fun i j => hv w _ (hg.1 i j w), fun i j => hv w _ (hg.2 i j w)⟩
 
+/- English proof (translation)
+Introduce `L _ _ _ n`. Use `⟨fun w => GlobalTheory.DefU.Inert.continuous_cLoc w, fun w b => nh_Kc_open b, ?_⟩` and prove the remaining obligations. Establish `h` using `((nh_open (L := L) (n := n)).preimage (continuous_subtype_val (p := fun x => x ∈ finU L n))).mem_nhds (x := (1 : finU L n)) (one_mem (⨅ w : Plc L, (KO (w.adicCompletion L) (Fin n)).comap (cLoc w) : Subgroup (UA L n)))`. Use `filter_upwards [h] with k hk w`. Conclude with `Subgroup.mem_iInf.1 hk w`.
+-/
 theorem UpperTheory.unitaryAdelic_localComponents_continuous_levels_open :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ), (∀ w : Plc L, Continuous (cLoc (E := L) (n := n) w)) ∧ (∀ (w : Plc L) (b : ℕ), IsOpen (Kc (w.adicCompletion L) n b : Set (GLw n w))) ∧ ∀ᶠ k : finU L n in nhds 1, ∀ w : Plc L, cLoc w (k : UA L n) ∈ KO (w.adicCompletion L) (Fin n) := by
   intro L _ _ _ n

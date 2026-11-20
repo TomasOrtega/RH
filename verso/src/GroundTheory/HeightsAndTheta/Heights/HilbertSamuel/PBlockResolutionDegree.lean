@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.ArakelovGeometry ReciprocityTheory.AnForm.M
 
+/- English proof (translation)
+Introduce `D K _ _ ι _ Ω _ _ d A₀ A₁ h₀ h₁ s₀ s₁ t ht`. Take `⟨C, hC⟩` from `hRank D K ι Ω d.y d.k₀ d.one_le d.arith d.birat`. Use `⟨C, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[hInt D K ι Ω d A₀ A₁ h₀ h₁ s₀ s₁ t ht]`. Conclude with `hC n`.
+-/
 theorem BlockResolutionDegree.proof (hRank : BlockSectionsRank.Statement)
     (hInt : BlockResolutionDegreeIntegral.Statement) : BlockResolutionDegree.Statement := by
   intro D K _ _ ι _ Ω _ _ d A₀ A₁ h₀ h₁ s₀ s₁ t ht

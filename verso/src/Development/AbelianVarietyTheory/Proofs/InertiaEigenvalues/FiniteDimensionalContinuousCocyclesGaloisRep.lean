@@ -13,6 +13,11 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 
 namespace GlobalTheory.HyodoFin
 
+/- English proof (translation)
+Introduce `l _ P K V _ _ _ _ _ _ _ ρ hc`. Take `⟨ρ', m, hc', hD⟩` from `GlobalTheory.T.exists_tateTwistDual_perfectPairing l P K V ρ hc`. Use `letI : Module ℤ_[l] V := Module.compHom V (algebraMap ℤ_[l] ℚ_[l])`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] V := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `A : GRep ↥(GK K) ℚ_[l] ℚ_[l] ℤ_[l]` to `{ V := V, ρ := ρ, cont := hc }`.
+
+Set `A' : GRep ↥(GK K) ℚ_[l] ℚ_[l] ℤ_[l]` to `{ V := Fin (finrank ℚ_[l] V) → ℚ_[l], ρ := ρ', cont := hc' }`. Establish `hH` using `(GlobalTheory.T.finrank_H1_dual_pair CompanionTheory.LocalTateOrthogonality.Gcoh.top_tate CompanionTheory.LocalTateOrthogonality.Gcoh.top_euler l P K ℚ_[l] ℤ_[l] GlobalTheory.Published.BlochKato.goodO_padicInt A A' m hD).1`. Conclude with `GlobalTheory.BlochKatoAnn.finite_continuous_cocycles_localGaloisRep A hH`.
+-/
 theorem finite_continuous_cocycles_localGaloisRep : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (V : Type) [AddCommGroup V]
     [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V]
     [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V),

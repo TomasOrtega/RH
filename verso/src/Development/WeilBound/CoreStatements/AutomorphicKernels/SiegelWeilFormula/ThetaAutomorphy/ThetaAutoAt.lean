@@ -11,6 +11,15 @@ namespace PositivityTheory.SiegelWeilFormula.Tauto
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hc` using `cpt hS d`. Use `haveI := hc.cnt`. Use `haveI := d.ok.haar`. Establish `hom : ∀ x, ∀ Ψ ∈ d.sch, d.om x Ψ ∈ d.sch` using `fun x Ψ hΨ => d.ok.dbl.weil.2.1.pres x Ψ hΨ`. Establish `hcomm : ∀ Φ ∈ d.sch, ∀ x g, d.om x (d.S g Φ) = d.S g (d.om x Φ)` using `fun Φ hΦ => (hT F E σ d Φ hΦ).2`.
+
+Take `⟨Λ, hΛ, hΛv⟩` from `exists_meanAdm hS hP hT d`. Use `⟨fd_ne d.ok.dom, (hc.fin d.μ d.D d.ok.haar d.ok.dom).ne, fun Φ hΦ => ⟨fun x => ?_, ?_, fun γ hγ x => ?_⟩⟩` and prove the remaining obligations. Simplify using `only [hcomm Φ hΦ]`. Conclude with `intOn_S hS hP hT d (hom x Φ hΦ)`. Establish `e : d.I Φ = fun x => Λ (d.om x Φ)` using `funext fun x => by`.
+
+Rewrite using `[hΛv _ (hom x Φ hΦ)]`. Use `show PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ x = _`. Rewrite using `[PositivityTheory.SiegelWeilFormula.thetaMean, setAverage_eq]`. Simplify using `only [hcomm Φ hΦ]`. Rewrite using `[e]`.
+
+Conclude with `d.ok.dbl.weil.2.1.cont Λ hΛ Φ hΦ`. Use `show PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ (γ * x) = PositivityTheory.SiegelWeilFormula.thetaMean d.om d.S d.μ d.D Φ x`. Simplify using `only [PositivityTheory.SiegelWeilFormula.thetaMean, map_mul, Module.End.mul_apply]`. Use `congrArg (fun f : UA σ d.A.J → ℂ => ⨍ g in d.D, f g ∂d.μ) (funext fun g => ?_)` and prove the remaining obligations. Conclude with `theta_sum_rational_invariant d γ hγ _ (hom x _ (d.ok.dbl.lin.pres g Φ hΦ))`.
+-/
 theorem thetaAuto_at (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : TPar) (hT : TTheta) (d : SD σ) :
     d.μ d.D ≠ 0 ∧ d.μ d.D ≠ ⊤ ∧ ∀ Φ ∈ d.sch,
       (∀ x, IntegrableOn (fun g => thetaSum F (d.om x (d.S g Φ))) d.D d.μ) ∧ Continuous (d.I Φ) ∧
@@ -36,6 +45,9 @@ theorem thetaAuto_at (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : TPar) 
     refine congrArg (fun f : UA σ d.A.J → ℂ => ⨍ g in d.D, f g ∂d.μ) (funext fun g => ?_)
     exact theta_sum_rational_invariant d γ hγ _ (hom x _ (d.ok.dbl.lin.pres g Φ hΦ))
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ d` and use `thetaAuto_at hS hP hT d`.
+-/
 theorem thetaAuto (hS : GlobalTheory.Published.SiegelSetUnitary) (hP : TPar) (hT : TTheta) : ThetaAuto :=
   fun _ _ _ _ _ _ _ _ d => thetaAuto_at hS hP hT d
 

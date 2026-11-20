@@ -28,22 +28,38 @@ section Congr
 
 variable {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) (p K : ℕ) [NeZero K]
 
+/- English proof (translation)
+Unfold `Dat.Bdeg`. Rewrite using `[h]`.
+-/
 theorem Bdeg_congr (j : ℤ) {b b' : ℤ → ℕ} (x : ℤ) (h : b x = b' x) : X.Bdeg p K j b x = X.Bdeg p K j b' x := by
   unfold Dat.Bdeg
   rw [h]
 
+/- English proof (translation)
+Unfold `Dat.beS`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Conclude with `Bdeg_congr X p K j x (h x (Finset.mem_filter.mp hx).2)`.
+-/
 theorem beS_congr (j : ℤ) {b b' : ℤ → ℕ} (h : ∀ x, x < X.F.fr j 0 → b x = b' x) :
     X.beS p K j b = X.beS p K j b' := by
   unfold Dat.beS
   refine Finset.sum_congr rfl fun x hx => ?_
   exact Bdeg_congr X p K j x (h x (Finset.mem_filter.mp hx).2)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hP.path, fun i hi => by rw [hP.degs i hi]; exact Bdeg_congr X p K j _ (h _ hi), fun i i' hi m hm => by rw [hP.head i i' hi m hm, beS_congr X p K j h]⟩`.
+-/
 theorem IsPATH_congr (j : ℤ) {b b' : ℤ → ℕ} (h : ∀ x, x < X.F.fr j 0 → b x = b' x)
     {μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ} {dd : Fin (segN X.F j) → ℕ} (hP : X.IsPATH p K j b μ dd) :
     X.IsPATH p K j b' μ dd :=
   ⟨hP.path, fun i hi => by rw [hP.degs i hi]; exact Bdeg_congr X p K j _ (h _ hi),
     fun i i' hi m hm => by rw [hP.head i i' hi m hm, beS_congr X p K j h]⟩
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hlate : segE X.F j i ∈ X.toLate j` using `Finset.mem_filter.mpr ⟨segE_mem X.F j i, hi⟩`. Establish `hold` using `(oldest_letter_in_segment p n' r K X hX j _ hlate).2`. Establish `hth : X.thc p K j b' (segE X.F j i) = X.thc p K j b (segE X.F j i)`. Unfold `Dat.thc`.
+
+Use `split_ifs with hW`. Both sides reduce to the same expression. Establish `hLL` using `hold hW`. Unfold `Frames.LLset at hLL`. Establish `hlt` using `(Finset.mem_Ioo.mp (Finset.mem_filter.mp hLL).1).2`.
+
+Rewrite using `[h _ hlt]`. Rewrite using `[hth]`. Conclude with `hG i hi`.
+-/
 theorem IsGood_congr (hX : X.Hyp p K) (j : ℤ) {b b' : ℤ → ℕ} (h : ∀ x, x < X.F.fr j 0 → b x = b' x)
     {μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ} (hG : X.IsGood p K j b μ) : X.IsGood p K j b' μ := by
   classical
@@ -61,12 +77,24 @@ theorem IsGood_congr (hX : X.Hyp p K) (j : ℤ) {b b' : ℤ → ℕ} (h : ∀ x,
   rw [hth]
   exact hG i hi
 
+/- English proof (translation)
+Unfold `Dat.restr Dat.setTau`. Establish `: ¬ (X.F.fr j 0 ≤ x ∧ x ≤ X.F.fr j (r - 1))` using `fun h => by omega`. Simplify using `only [this, if_false]`.
+-/
 theorem restr_setTau_low (j : ℤ) (b : ℤ → ℕ) (e : Fin r → ℕ) (x : ℤ) (hx : x < X.F.fr j 0) :
     X.restr j b x = X.restr j (X.setTau j b e) x := by
   unfold Dat.restr Dat.setTau
   have : ¬ (X.F.fr j 0 ≤ x ∧ x ≤ X.F.fr j (r - 1)) := fun h => by omega
   simp only [this, if_false]
 
+/- English proof (translation)
+Establish `hV` using `hX.valid`. Establish `hmem` using `k_fr_mem_letters X.F hV j i'.isLt`. Establish `h4` using `hV.2.2.2.1 (j - 1)`. Rewrite `h4` using `[sub_add_cancel]`. Establish `a2` using `kfr_le X.F hV j (Nat.zero_le i'.val) i'.isLt`.
+
+Establish `a3` using `kfr_le X.F hV j (by have := i'.isLt; omega : i'.val ≤ r - 1) (by have := i'.isLt; omega)`. Establish `hlate : X.F.fr j i'.val ∈ X.toLate j`. Use `Finset.mem_filter.mpr ⟨hmem, ?_⟩` and prove the remaining obligations. Unfold `Frames.IsW`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `Dat.restr Dat.setTau`. Rewrite using `[if_pos hlate, if_pos ⟨a2, a3⟩, Finset.sum_eq_single i']`. Simplify using the standard rewrite rules. Introduce `i _ hne`. Rewrite using `[if_neg]`.
+
+Introduce `h`. Conclude with `hne (fr_injective X.F hV j h).symm`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem restr_setTau_tau (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (e : Fin r → ℕ) (i' : Fin r) :
     X.restr j (X.setTau j b e) (X.F.fr j i'.val) = e i' := by
   classical
@@ -91,6 +119,69 @@ theorem restr_setTau_tau (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (e : Fin r
 
 end Congr
 
+/- English proof (translation)
+Introduce `p n' r K _ _ _ X hX hLa hk j b hA hfin ρ`. Establish `hV` using `hX.valid`. Establish `hr : 0 < r` using `NeZero.pos r`. Establish `hY : (1 : ℝ) ≤ X.Y` using `hX.Y1`. Establish `hrhs : (0 : ℝ) ≤ ∑ e ∈ Fintype.piFinset fun i : Fin r => (Finset.range (r * X.Qc p K j)).filter fun e => e % X.Qc p K j = ρ i % X.Qc p K j, (Nat.card (X.Idx p K j (X.restr j (X.setTau j b e))) : ℝ)` using `Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`.
+
+Break down `le_or_gt (1 - (r : ℝ) / (2 * X.Y)) 0 with hneg | hpos` into its components or cases. Rewrite using `[max_eq_left hneg, mul_zero, zero_pow hr.ne', mul_zero]`. Conclude with `hrhs`. Rewrite using `[max_eq_right hpos.le]`. Use `set be := X.beS p K j (X.restr j b) with hbe`.
+
+Use `set Q := X.Qc p K j with hQ`. Establish `hQpos : 0 < Q`. Rewrite using `[hQ]`. Unfold `Dat.Qc`. Conclude with `pow_pos hX.prime.pos _`.
+
+Establish `hbeQ : 4 * X.Y * (be : ℝ) ≤ (Q : ℝ)` using `h61 p n' r K X hX hLa hk j b hA`. Establish `hbeQ' : 4 * be ≤ Q`. Establish `: (4 : ℝ) * (be : ℝ) ≤ (Q : ℝ)` using `by nlinarith [Nat.cast_nonneg (α := ℝ) be]`. Conclude with `this` after adjusting the coercions. Take `⟨T, hT⟩ : ∃ T, Q = T + 2 * be` from `⟨Q - 2 * be, by omega⟩`.
+
+Establish `hTpos : 0 < T` using `by omega`. Establish `hrN` using `k_r_le_segN X.F hV hr j`. Set `idxT : Fin r → Fin (segN X.F j)` to `fun i' => ⟨segN X.F j - r + i'.val, by have := i'.isLt; omega⟩`. Establish `hidx : ∀ i', segE X.F j (idxT i') = X.F.fr j i'.val` using `fun i' => (segE_eq_fr_iff X.F hV j _ i'.isLt).mpr rfl`. Use `Fintype.ofFinite (X.Tset p K j (X.restr j b))` as an intermediate fact.
+
+Set `ddOf : X.Tset p K j (X.restr j b) → Fin (segN X.F j) → ℕ` to `fun τ => Classical.choose τ.2`. Establish `hdd : ∀ τ : X.Tset p K j (X.restr j b), X.IsPATH p K j (X.restr j b) τ.1.1 (ddOf τ) ∧ X.IsGood p K j (X.restr j b) τ.1.1 ∧ IsSt (tanPart τ.1.1) τ.1.2` using `fun τ => Classical.choose_spec τ.2`. Set `dtau : X.Tset p K j (X.restr j b) → Fin r → ℕ` to `fun τ i' => ddOf τ (idxT i')`. Establish `hdtau : ∀ τ i', dtau τ i' ≤ 2 * be`. Introduce `τ i'`.
+
+Use `h21 p n' r K X hX j _ _ _ (hdd τ).1 (idxT i') ?_` and prove the remaining obligations. Rewrite using `[hidx]`. Conclude with `kfr_le X.F hV j (Nat.zero_le _) i'.isLt`. Set `Wfin : Finset (Fin r → ℕ)` to `Fintype.piFinset fun _ : Fin r => Finset.range T`. Set `Ufin : Finset (Fin r × Fin r → ℕ)` to `Fintype.piFinset fun _ : Fin r × Fin r => Finset.range T`.
+
+Set `φ : X.Tset p K j (X.restr j b) × (Fin r × Fin r → ℕ) → Fin r → ℕ` to `fun x i' => dtau x.1 i' + ∑ c, x.2 (i', c)`. Set `A : Finset (X.Tset p K j (X.restr j b) × (Fin r × Fin r → ℕ))` to `((Finset.univ : Finset (X.Tset p K j (X.restr j b))) ×ˢ Ufin).filter fun x => ∀ i', φ x i' % Q = ρ i' % Q`. Use `set E := Fintype.piFinset fun i : Fin r => (Finset.range (r * Q)).filter fun e => e % Q = ρ i % Q with hE`. Use `set cst : ℝ := (Q : ℝ) ^ (r - 1) * (1 - (r : ℝ) / (2 * X.Y)) with hcst`. Establish `hcst0 : 0 ≤ cst` using `by positivity`.
+
+Establish `hφE : ∀ x ∈ A, φ x ∈ E`. Introduce `x hx`. Take `⟨hx1, hx2⟩` from `Finset.mem_filter.mp hx`. Establish `hu` using `(Finset.mem_product.mp hx1).2`. Rewrite `hu` using `[Fintype.mem_piFinset]`.
+
+Rewrite using `[hE, Fintype.mem_piFinset]`. Introduce `i'`. Use `Finset.mem_filter.mpr ⟨Finset.mem_range.mpr ?_, hx2 i'⟩` and prove the remaining obligations. Establish `h1 : ∑ c, x.2 (i', c) ≤ r * (T - 1)`. Use `Finset.sum_le_card_nsmul (Finset.univ : Finset (Fin r)) (fun c => x.2 (i', c)) (T - 1) (by` as an intermediate fact.
+
+Introduce `c _`. Use `Finset.mem_range.mp (hu (i', c))` as an intermediate fact. Use the proof step `omega)`. Simplify using `using this`. Establish `h2` using `hdtau x.1 i'`.
+
+Establish `h3 : r * (T - 1) + r = r * T`. Take `⟨T', rfl⟩ : ∃ T', T = T' + 1` from `⟨T - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : 2 * be ≤ r * (2 * be)` using `Nat.le_mul_of_pos_left _ hr`.
+
+Establish `h5 : r * Q = r * T + r * (2 * be)` using `by rw [hT]; ring`. Use `show dtau x.1 i' + ∑ c, x.2 (i', c) < r * Q`. Use linear arithmetic over natural numbers and integers. Establish `hfib : ∀ e ∈ E, (A.filter fun x => φ x = e).card ≤ Nat.card (X.Idx p K j (X.restr j (X.setTau j b e)))`. Introduce `e _`.
+
+Establish `hlow` using `restr_setTau_low X j b e`. Establish `hbe' : X.beS p K j (X.restr j (X.setTau j b e)) = be` using `(beS_congr X p K j hlow).symm`. Establish `hfinI : Finite (X.Idx p K j (X.restr j (X.setTau j b e)))`. Set `g : X.Idx p K j (X.restr j (X.setTau j b e)) → X.Tset p K j (X.restr j b) × (Fin r × Fin r → Fin Q)` to `fun q => (⟨(q.1.1, q.1.2.1), by`. Take `⟨dd, h1, h2, h3, -⟩` from `q.2`.
+
+Conclude with `⟨dd, IsPATH_congr X p K j (fun x hx => (hlow x hx).symm) h1, IsGood_congr X p K hX j (fun x hx => (hlow x hx).symm) h2, h3⟩⟩,`. Use `fun v => ⟨q.1.2.2 v, by`. Take `⟨dd, -, -, -, h4, -⟩` from `q.2`. Use `h4 v` as an intermediate fact. Use the proof step `omega⟩)`.
+
+Use `Finite.of_injective g ?_` and prove the remaining obligations. Introduce `q q' hqq`. Establish `h1 : q.1.1 = q'.1.1` using `congrArg (fun z => z.1.1.1) hqq`. Establish `h2 : q.1.2.1 = q'.1.2.1` using `congrArg (fun z => z.1.1.2) hqq`. Use `Subtype.ext (Prod.ext h1 (Prod.ext h2 ?_))` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Conclude with `congrArg (fun z => (z.2 v).val) hqq`. Set `g : {x // x ∈ A.filter fun x => φ x = e} → X.Idx p K j (X.restr j (X.setTau j b e))` to `fun x => ⟨(x.1.1.1.1, x.1.1.1.2, x.1.2), by`. Take `⟨hxA, hxe⟩` from `Finset.mem_filter.mp x.2`. Take `⟨hx1, hx2⟩` from `Finset.mem_filter.mp hxA`.
+
+Establish `hu` using `(Finset.mem_product.mp hx1).2`. Rewrite `hu` using `[Fintype.mem_piFinset]`. Use `⟨ddOf x.1.1, IsPATH_congr X p K j hlow (hdd x.1.1).1, IsGood_congr X p K hX j hlow (hdd x.1.1).2.1, (hdd x.1.1).2.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Rewrite using `[hbe']`.
+
+Use `Finset.mem_range.mp (hu v)` as an intermediate fact. Use `show x.1.2 v + 2 * be < Q`. Use linear arithmetic over natural numbers and integers. Introduce `i i' hi`. Establish `hii : i = idxT i'` using `(segE_strictMono X.F j).injective (hi.trans (hidx i').symm)`.
+
+Rewrite using `[restr_setTau_tau X p K hX j b e i', hii]`. Conclude with `congrFun hxe i'⟩`. Establish `hg : Function.Injective g`. Introduce `x x' hxx`. Establish `h1 : x.1.1.1.1 = x'.1.1.1.1` using `congrArg (fun z => z.1.1) hxx`.
+
+Establish `h2 : x.1.1.1.2 = x'.1.1.1.2` using `congrArg (fun z => z.1.2.1) hxx`. Establish `h3 : x.1.2 = x'.1.2` using `congrArg (fun z => z.1.2.2) hxx`. Conclude with `Subtype.ext (Prod.ext (Subtype.ext (Prod.ext h1 h2)) h3)`. Use `Nat.card_le_card_of_injective g hg` as an intermediate fact. Rewrite `this` using `[Nat.card_eq_fintype_card, Fintype.card_coe]`. Then use the resulting hypothesis.
+
+Establish `hcount : ∀ τ : X.Tset p K j (X.restr j b), cst ^ r ≤ ((A.filter fun x => x.1 = τ).card : ℝ)`. Introduce `τ`. Establish `h1 : ∀ i' : Fin r, cst ≤ ((Wfin.filter fun w => (dtau τ i' + ∑ c, w c) % Q = ρ i' % Q).card : ℝ)`. Introduce `i'`. Establish `h63'` using `h63 r Q be (dtau τ i') (ρ i') hX.r2 (by omega)`.
+
+Rewrite `h63'` using `[show Q - 2 * be = T by omega]`. Use `le_trans ?_ h63'` and prove the remaining obligations. Rewrite using `[hcst]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `hQr : (0 : ℝ) < (Q : ℝ)` using `by exact_mod_cast hQpos`.
+
+Establish `hYp : (0 : ℝ) < X.Y` using `by linarith`. Establish `: 2 * (r : ℝ) * (be : ℝ) / Q ≤ (r : ℝ) / (2 * X.Y)`. Rewrite using `[div_le_div_iff₀ hQr (by positivity)]`. Establish `hr0 : (0 : ℝ) ≤ (r : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (Fintype.piFinset fun i' : Fin r => Wfin.filter fun w => (dtau τ i' + ∑ c, w c) % Q = ρ i' % Q).card ≤ (A.filter fun x => x.1 = τ).card`. Use `Finset.card_le_card_of_injOn (fun w => (τ, fun v : Fin r × Fin r => w v.1 v.2)) ?_ ?_` and prove the remaining obligations. Introduce `w hw`. Establish `hw'` using `Fintype.mem_piFinset.mp (Finset.mem_coe.mp hw)`.
+
+Use `Finset.mem_coe.mpr (Finset.mem_filter.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨Finset.mem_univ _, Fintype.mem_piFinset.mpr fun v => ?_⟩, fun i' => ?_⟩, rfl⟩)` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.mp (Finset.mem_filter.mp (hw' v.1)).1 v.2`. Conclude with `(Finset.mem_filter.mp (hw' i')).2`. Introduce `w _ w' _ hww`. Simplify using `only [Prod.mk.injEq, true_and] at hww`.
+
+Use function extensionality and compare the values at `a c`. Conclude with `congrFun hww (a, c)`. Rewrite `h2` using `[Fintype.card_piFinset]`. Establish `h3 : cst ^ r ≤ ∏ i' : Fin r, ((Wfin.filter fun w => (dtau τ i' + ∑ c, w c) % Q = ρ i' % Q).card : ℝ)`. Establish `: cst ^ r = ∏ _i' : Fin r, cst` using `by simp`.
+
+Rewrite using `[this]`. Conclude with `Finset.prod_le_prod (fun _ _ => hcst0) fun i' _ => h1 i'`. Use `le_trans h3 ?_` and prove the remaining obligations. Conclude with `h2` after adjusting the coercions. Establish `hA1 : A.card = ∑ τ : X.Tset p K j (X.restr j b), (A.filter fun x => x.1 = τ).card` using `Finset.card_eq_sum_card_fiberwise fun x _ => Finset.mem_coe.mpr (Finset.mem_univ _)`.
+
+Establish `hA2 : A.card = ∑ e ∈ E, (A.filter fun x => φ x = e).card` using `Finset.card_eq_sum_card_fiberwise fun x hx => Finset.mem_coe.mpr (hφE x (Finset.mem_coe.mp hx))`. Establish `hstep1 : (Nat.card (X.Tset p K j (X.restr j b)) : ℝ) * cst ^ r ≤ (A.card : ℝ)`. Rewrite using `[hA1, Nat.card_eq_fintype_card]`. Use `push_cast`. Establish `: (Fintype.card (X.Tset p K j (X.restr j b)) : ℝ) * cst ^ r = ∑ _τ : X.Tset p K j (X.restr j b), cst ^ r`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Finset.sum_le_sum fun τ _ => hcount τ`. Use `le_trans hstep1 ?_` and prove the remaining obligations. Rewrite using `[hA2]`.
+
+Use `push_cast`. Conclude with `Finset.sum_le_sum fun e he => by exact_mod_cast hfib e he`.
+-/
 theorem restMon_of (C₀ : ℝ) (h61 : BetaRatioBound C₀) (h21 : TauDegreeOnPathBound) (h63 : ResidueClassCount) : RestMon C₀ := by
   intro p n' r K _ _ _ X hX hLa hk j b hA hfin ρ
   classical

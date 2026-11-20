@@ -51,6 +51,9 @@ instance powComm [IsCommMonObj G] (j : ℕ) : IsCommMonObj (powObj G j) := by
   | zero => exact inferInstanceAs (IsCommMonObj (𝟙_ (Over S)))
   | succ j ih => exact inferInstanceAs (IsCommMonObj (G ⊗ powObj G j))
 
+/- English proof (translation)
+The claim follows from `| 0 => fun i => i.elim0 | j + 1 => fun i => by refine Fin.cases ?_ (fun k => ?_) i · exact inferInstanceAs (IsMonHom (fst G (powObj G j))) · have := powPr_isMonHom j k exact inferInstanceAs (IsMonHom (snd G (powObj G j) ≫ powPr G j k))`.
+-/
 lemma powPr_isMonHom : (j : ℕ) → (i : Fin j) → IsMonHom (powPr G j i)
   | 0 => fun i => i.elim0
   | j + 1 => fun i => by
@@ -60,6 +63,9 @@ lemma powPr_isMonHom : (j : ℕ) → (i : Fin j) → IsMonHom (powPr G j i)
       exact inferInstanceAs (IsMonHom (snd G (powObj G j) ≫ powPr G j k))
 
 omit [GrpObj G] in
+/- English proof (translation)
+The claim follows from `| 0 => ⟨fun x y _ => toUnit_unique (X := T) x y, fun _ => ⟨toUnit T, funext fun i => i.elim0⟩⟩ | j + 1 => by obtain ⟨hi, hs⟩ := powPr_bij T j refine ⟨fun x y h => ?_, fun z => ?_⟩ · refine CartesianMonoidalCategory.hom_ext (X := G) (Y := powObj G j) x y (congrFun h 0) (hi ?_) fun …`.
+-/
 lemma powPr_bij (T : Over S) : (j : ℕ) →
     Function.Bijective (fun (x : T ⟶ powObj G j) (i : Fin j) => x ≫ powPr G j i)
   | 0 => ⟨fun x y _ => toUnit_unique (X := T) x y,
@@ -84,6 +90,9 @@ section Symm
 
 variable {G : Over S} [GrpObj G]
 
+/- English proof (translation)
+Rewrite using `[Category.id_comp, eSec, ← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 lemma eSec_inv : eSec G ≫ (GrpObj.inv (X := G)).left = 𝟙 _ ≫ eSec G := by
   rw [Category.id_comp, eSec, ← Over.comp_left]
   congr 1
@@ -101,6 +110,9 @@ def RespectsCube (L : LB G.left) (w : LB.Iso L (L.pull (GrpObj.inv (X := G)).lef
   LB.Gen.Maps (LB.linCombIso w (thφ G (x3 G)) thε) t
     ((CubeMap.ofHom (GrpObj.inv (X := G))).thetaPull L t)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨_, w, h⟩ => ⟨w, h⟩, fun ⟨w, h⟩ => ⟨eSec_inv, w, h⟩⟩`.
+-/
 example (L : RigLB G) : L.IsSymmetric ↔ ∃ w, IsNormSymm L w :=
   ⟨fun ⟨_, w, h⟩ => ⟨w, h⟩, fun ⟨w, h⟩ => ⟨eSec_inv, w, h⟩⟩
 
@@ -113,15 +125,26 @@ variable {j : ℕ} {G' G : Over S} [GrpObj G'] [GrpObj G] (P : PowerDatum j G' G
 def box (L : LB G.left) : LB G'.left :=
   LB.LinComb L (K := Fin j) (fun i => (P.pr i).left) (fun _ => 1)
 
+/- English proof (translation)
+Rewrite using `[eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]`.
+-/
 lemma eSec_pr (i : Fin j) : eSec G' ≫ (P.pr i).left = eSec G := by
   rw [eSec, eSec, ← Over.comp_left, IsMonHom.one_hom]
 
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 lemma inv_pr (i : Fin j) : (GrpObj.inv (X := G')).left ≫ (P.pr i).left =
     (P.pr i).left ≫ (GrpObj.inv (X := G)).left := by
   rw [← Over.comp_left, ← Over.comp_left]
   congr 1
   simp
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : (eSec G').base y ∈ LB.wchart L (fun i => (P.pr i).left) (a ⟨⟩)` using `Set.mem_iInter.1 hy ⟨⟩`. Establish `h2 : (P.pr i).left.base ((eSec G').base y) ∈ L.U (a ⟨⟩ i)` using `Set.mem_iInter.1 h1 i`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(eSec G).base y ∈ (L.U (a ⟨⟩ i) : Set _)`.
+
+Rewrite using `[← P.eSec_pr i]`. Conclude with `h2`.
+-/
 lemma rig_le (L : LB G.left) (a : PUnit.{1} → Fin j → L.ι) (i : Fin j) :
     LB.wchart (P.box L) (fun _ : PUnit.{1} => eSec G') a ≤
       LB.wchart L (fun _ : PUnit.{1} => eSec G) (fun _ => a ⟨⟩ i) := by
@@ -138,6 +161,11 @@ def boxRig (L : LB G.left) (r : LB.Gen (L.pull (eSec G))) :
     LB.Gen ((P.box L).pull (eSec G')) where
   s := fun a => ∏ i, res (P.rig_le L a i) (r.s (fun _ => a ⟨⟩ i))
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h1 : (GrpObj.inv (X` using `G')).left.base y ∈ LB.wchart L (fun i => (P.pr i).left) (p.1 ⟨⟩) := Set.mem_iInter.1 hy.1 ⟨⟩`. Establish `h2 : (P.pr i).left.base ((GrpObj.inv (X` using `G')).left.base y) ∈ L.U (p.1 ⟨⟩ i) := Set.mem_iInter.1 h1 i`. Use `⟨Set.mem_iInter.2 fun _ => ?_, Set.mem_iInter.1 hy.2 i⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((P.pr i).left ≫ (GrpObj.inv (X := G)).left).base y ∈ (L.U (p.1 ⟨⟩ i) : Set _)`.
+
+Rewrite using `[← P.inv_pr i]`. Conclude with `h2`.
+-/
 lemma symm_le (L : LB G.left) (p : (PUnit.{1} → Fin j → L.ι) × (Fin j → L.ι)) (i : Fin j) :
     LB.wchart (P.box L) (fun _ : PUnit.{1} => (GrpObj.inv (X := G')).left) p.1 ⊓
         LB.wchart L (fun i => (P.pr i).left) p.2 ≤
@@ -160,6 +188,11 @@ def boxSymm (L : LB G.left) (w : LB.Iso L (L.pull (GrpObj.inv (X := G)).left)) :
 
 variable [IsCommMonObj G'] [IsCommMonObj G]
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun I => ?_` and prove the remaining obligations. Establish `h1 : (thφ G' (x3 G') I).base y ∈ LB.wchart L (fun i => (P.pr i).left) (a I)` using `Set.mem_iInter.1 hy I`. Establish `h2 : (P.pr i).left.base ((thφ G' (x3 G') I).base y) ∈ L.U (a I i)` using `Set.mem_iInter.1 h1 i`. Express the relevant statement in the definitionally equal form `((CubeMap.ofHom (P.pr i)).F3 ≫ (psum G (x3 G) I.down).left).base y ∈ (L.U (a I i) : Set _)`.
+
+Rewrite using `[← (CubeMap.ofHom (P.pr i)).psum_comm I.down]`. Conclude with `h2`.
+-/
 lemma theta_le (L : LB G.left) (a : thK.{0} → Fin j → L.ι) (i : Fin j) :
     LB.wchart (P.box L) (thφ G' (x3 G')) a ≤
       (P.pr i ⊗ₘ P.pr i ⊗ₘ P.pr i).left ⁻¹ᵁ LB.wchart L (thφ G (x3 G)) (fun I => a I i) := by
@@ -209,6 +242,9 @@ def BoxRespectsCubeSt : Prop :=
 def BoxCubicalSymmetricSt : Prop :=
   BoxRigidifiedSt ∧ BoxCubicalSt ∧ BoxNormSymmSt ∧ BoxRespectsCubeSt
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => 𝟙 G, fun _ => inferInstance, fun _ => ⟨fun x y h => by simpa using congrFun h 0, fun z => ⟨z 0, funext fun i => by rw [Subsingleton.elim i 0]; simp⟩⟩⟩`.
+-/
 example (G : Over S) [GrpObj G] : PowerDatum 1 G G :=
   ⟨fun _ => 𝟙 G, fun _ => inferInstance, fun _ =>
     ⟨fun x y h => by simpa using congrFun h 0,

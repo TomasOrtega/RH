@@ -5,6 +5,9 @@ namespace ReciprocityTheory.L2DbarEstimates.H
 open MeasureTheory ReciprocityTheory.L2DbarEstimates ReciprocityTheory.L2DbarEstimates.H.SkodaOperators
 open scoped ENNReal InnerProductSpace
 
+/- English proof (translation)
+Unfold `wint`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h] with x hx`. Rewrite using `[hx]`.
+-/
 private theorem wint_congr_ae (n : ℕ) {N : Type*} [MeasurableSpace N] (z : N → V n)
     (ψ : N → ℝ) {f₁ f₂ : N → ℂ} (h : f₁ =ᵐ[vol n z] f₂) : wint n z f₁ ψ = wint n z f₂ ψ := by
   unfold wint
@@ -12,6 +15,9 @@ private theorem wint_congr_ae (n : ℕ) {N : Type*} [MeasurableSpace N] (z : N �
   filter_upwards [h] with x hx
   rw [hx]
 
+/- English proof (translation)
+Take `⟨A1, -, -⟩` from `l2w n N z ψ hψ`. Use `⟨(Lp.aestronglyMeasurable F).mk _, (Lp.aestronglyMeasurable F).stronglyMeasurable_mk.measurable, ?_⟩` and prove the remaining obligations. Conclude with `(A1 (fun x => (F : N → ℂ) x = (Lp.aestronglyMeasurable F).mk _ x)).mp (Lp.aestronglyMeasurable F).ae_eq_mk`.
+-/
 private theorem exists_pow_mul_eq_eval₂_theta (n : ℕ) {N : Type*} [MeasurableSpace N] (z : N → V n) (ψ : N → ℝ)
     (hψ : Measurable ψ) (F : WeightedL2 n z ψ) :
     ∃ f : N → ℂ, Measurable f ∧ (F : N → ℂ) =ᵐ[vol n z] f := by
@@ -21,6 +27,15 @@ private theorem exists_pow_mul_eq_eval₂_theta (n : ℕ) {N : Type*} [Measurabl
   exact (A1 (fun x => (F : N → ℂ) x = (Lp.aestronglyMeasurable F).mk _ x)).mp
     (Lp.aestronglyMeasurable F).ae_eq_mk
 
+/- English proof (translation)
+Take `⟨A1, -, -⟩` from `l2w n N₁ z₁ ψ₁ hψ₁`. Take `⟨B1, -, -⟩` from `l2w n N₂ z₂ ψ₂ hψ₂`. Use `choose L hL using hex`. Establish `key : ∀ (a : ℂ) (F₁ F₂ : WeightedL2 n z₁ ψ₁), L (a • F₁ + F₂) = a • L F₁ + L F₂`. Introduce `a F₁ F₂`.
+
+Apply `Lp.ext` to reduce the goal to its premises. Establish `h2 : ((a • F₁ + F₂ : WeightedL2 n z₁ ψ₁) : N₁ → ℂ) =ᵐ[vol n z₁] fun x => a * F₁ x + F₂ x` using `(A1 (fun x => ((a • F₁ + F₂ : WeightedL2 n z₁ ψ₁) : N₁ → ℂ) x = a * F₁ x + F₂ x)).mp (by filter_upwards [Lp.coeFn_add (a • F₁) F₂, Lp.coeFn_smul a F₁] with x hx1 hx2`. Rewrite using `[hx1, Pi.add_apply, hx2, Pi.smul_apply, smul_eq_mul])`. Establish `h3 : ((a • L F₁ + L F₂ : WeightedL2 n z₂ ψ₂) : N₂ → ℂ) =ᵐ[vol n z₂] fun y => a * L F₁ y + L F₂ y` using `(B1 (fun y => ((a • L F₁ + L F₂ : WeightedL2 n z₂ ψ₂) : N₂ → ℂ) y = a * L F₁ y + L F₂ y)).mp (by filter_upwards [Lp.coeFn_add (a • L F₁) (L F₂), Lp.coeFn_smul a (L F₁)] with y hy1 hy2`. Rewrite using `[hy1, Pi.add_apply, hy2, Pi.smul_apply, smul_eq_mul])`.
+
+Use `(B1 (fun y => ((L (a • F₁ + F₂) : WeightedL2 n z₂ ψ₂) : N₂ → ℂ) y = ((a • L F₁ + L F₂ : WeightedL2 n z₂ ψ₂) : N₂ → ℂ) y)).mpr ?_` and prove the remaining obligations. Use `filter_upwards [hL (a • F₁ + F₂), hTae _ _ h2, h3, hL F₁, hL F₂] with y e1 e2 e3 e4 e5`. Rewrite using `[e1, e2, hT a (F₁ : N₁ → ℂ) (F₂ : N₁ → ℂ), e3, e4, e5]`. Establish `L0 : L 0 = 0`. Establish `h` using `key 1 0 0`.
+
+Simplify using `only [one_smul, add_zero] at h`. Establish `h' : L 0 + 0 = L 0 + L 0` using `by rw [add_zero]; exact h`. Conclude with `(add_left_cancel h').symm`. Use `⟨LinearMap.mkContinuous { toFun := L map_add' := fun F₁ F₂ => by simpa using key 1 F₁ F₂ map_smul' := fun c F => by simpa [L0] using key c F 0 } 1 (fun F => by simpa using hb F (L F) (hL F)), fun F => hL F⟩` and prove the remaining obligations.
+-/
 private theorem exists_clm_weightedL2_of_bounded (n : ℕ) {N₁ N₂ : Type*} [MeasurableSpace N₁] [MeasurableSpace N₂]
     (z₁ : N₁ → V n) (z₂ : N₂ → V n) (ψ₁ : N₁ → ℝ) (ψ₂ : N₂ → ℝ)
     (hψ₁ : Measurable ψ₁) (hψ₂ : Measurable ψ₂) (T : (N₁ → ℂ) → (N₂ → ℂ))
@@ -59,6 +74,21 @@ private theorem exists_clm_weightedL2_of_bounded (n : ℕ) {N₁ N₂ : Type*} [
       map_smul' := fun c F => by simpa [L0] using key c F 0 } 1
     (fun F => by simpa using hb F (L F) (hL F)), fun F => hL F⟩
 
+/- English proof (translation)
+Use `set A := ContinuousLinearMap.adjoint S with hA`. Set `Si : F →ₗᵢ[ℂ] E` to `{ toLinearMap := S.toLinearMap, norm_map' := hS }`. Establish `hSS : ∀ x y, ⟪S x, S y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun x y => Si.inner_map_map x y`. Establish `hAS : ∀ x, A (S x) = x`. Introduce `x`.
+
+Apply `ext_inner_left ℂ` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hA, ContinuousLinearMap.adjoint_inner_right, hSS]`. Use `set k := h - S (A h) with hk0`. Establish `hk : ∀ y, ⟪S y, k⟫_ℂ = 0`.
+
+Introduce `y`. Rewrite using `[← ContinuousLinearMap.adjoint_inner_right, ← hA, hk0, map_sub, hAS, sub_self, inner_zero_right]`. Establish `hGk : G k = 0`. Assume the negation of the conclusion as `hne`. Establish `ha : 0 < ‖G k‖` using `norm_pos_iff.mpr hne`.
+
+Take `⟨s, hs⟩ : ∃ s : ℝ, s = ‖k‖ ^ 2 / ‖G k‖ ^ 2` from `⟨_, rfl⟩`. Establish `hs0 : 0 ≤ s` using `by rw [hs]; positivity`. Establish `hsa : s * ‖G k‖ ^ 2 = ‖k‖ ^ 2`. Rewrite using `[hs]`. Conclude with `div_mul_cancel₀ _ (pow_pos ha 2).ne'`.
+
+Establish `h1 : ‖G (S ((s : ℂ) • G k) + k)‖ ≤ ‖S ((s : ℂ) • G k) + k‖` using `hG _`. Rewrite `h1` using `[map_add, hGS]`. Establish `h2 : ‖(s : ℂ) • G k + G k‖ = (s + 1) * ‖G k‖`. Establish `e : (s : ℂ) • G k + G k = ((s + 1 : ℝ) : ℂ) • G k`. Rewrite using `[Complex.ofReal_add, Complex.ofReal_one, add_smul, one_smul]`.
+
+Rewrite using `[e, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (by linarith)]`. Establish `h3 : ‖S ((s : ℂ) • G k) + k‖ * ‖S ((s : ℂ) • G k) + k‖ = (s * ‖G k‖) * (s * ‖G k‖) + ‖k‖ * ‖k‖`. Rewrite using `[norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ (hk _), hS, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hs0]`. Rewrite `h1` using `[h2]`. Establish `h4` using `mul_self_le_mul_self (by positivity) h1`.
+
+Use polynomial arithmetic with `[h3, h4, hsa, mul_pos ha ha, mul_nonneg hs0 (mul_self_nonneg ‖G k‖)]`. Establish `hdec : h = S (A h) + k` using `by rw [hk0]; abel`. Establish `hGh : G h = A h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGh, hA, ContinuousLinearMap.adjoint_inner_right]`.
+-/
 private theorem inner_isometry_eq_inner_left_inverse {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [CompleteSpace E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
     (S : F →L[ℂ] E) (G : E →L[ℂ] F) (hS : ∀ w, ‖S w‖ = ‖w‖) (hG : ∀ h, ‖G h‖ ≤ ‖h‖)
@@ -102,6 +132,47 @@ private theorem inner_isometry_eq_inner_left_inverse {E F : Type*} [NormedAddCom
       _ = A h := by rw [map_add, hGS, hGk, add_zero]
   rw [hGh, hA, ContinuousLinearMap.adjoint_inner_right]
 
+/- English proof (translation)
+Introduce `X p g φ hg hgv hφ`. Establish `hz : IsLocalHomeomorph X.z` using `X.isLocalHomeomorph`. Establish `hgc : ∀ l, Continuous (g l)` using `fun l => Smooth.continuous n X.z hz (g l) (Holo.smooth n X.z (g l) (hg l))`. Establish `hgm : ∀ l, Measurable (g l)` using `fun l => (hgc l).measurable`. Establish `hgq : Measurable fun q : M × Fin p => g q.2 q.1` using `measurable_from_prod_countable_left fun i => hgm i`.
+
+Establish `hN : ∀ x, 0 < vsq (gv g x)`. Introduce `x`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, gv g x i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+
+Conclude with `hgv x (funext hc)`. Establish `h1 : 0 < ‖gv g x i‖ ^ 2` using `pow_pos (norm_pos_iff.mpr hi) 2`. Establish `h2 : ‖gv g x i‖ ^ 2 ≤ ∑ j, ‖gv g x j‖ ^ 2` using `Finset.single_le_sum (f := fun j => ‖gv g x j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`. Unfold `vsq`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hvc : Continuous fun x => vsq (gv g x)` using `by show Continuous fun x => ∑ i, ‖g i x‖ ^ 2`. Conclude with `continuous_finset_sum _ fun i _ => ((hgc i).norm).pow 2`. Establish `hvm : Measurable fun x => vsq (gv g x)` using `hvc.measurable`. Establish `hφm : Measurable φ` using `hφ.measurable`. Establish `hψm : Measurable fun x => φ x + Real.log (vsq (gv g x))` using `hφm.add (Real.measurable_log.comp hvm)`.
+
+Establish `hψpm : Measurable fun x : M × Fin p => φ x.1` using `hφm.comp measurable_fst`. Take `⟨A1, A2, A3⟩` from `l2w n M X.z (fun x => φ x + Real.log (vsq (gv g x))) hψm`. Take `⟨B1, B2, B3⟩` from `l2w n (M × Fin p) (fun q : M × Fin p => X.z q.1) (fun x : M × Fin p => φ x.1) hψpm`. Establish `hcn : Measurable fun q : M × Fin p => ((vsq (gv g q.1) : ℝ) : ℂ)` using `Complex.measurable_ofReal.comp (hvm.comp measurable_fst)`. Establish `hcj : Measurable fun q : M × Fin p => (starRingEnd ℂ) (g q.2 q.1)` using `Complex.continuous_conj.measurable.comp hgq`.
+
+Establish `hlift : ∀ f₁ f₂ : M → ℂ, f₁ =ᵐ[vol n X.z] f₂ → ∀ᵐ q ∂vol n (fun q : M × Fin p => X.z q.1), f₁ q.1 = f₂ q.1` using `fun f₁ f₂ h => ae_lift_prodFin X.z hz p (P := fun x => f₁ x = f₂ x) h`. Establish `hslice : ∀ h₁ h₂ : M × Fin p → ℂ, h₁ =ᵐ[vol n (fun q : M × Fin p => X.z q.1)] h₂ → ∀ᵐ x ∂vol n X.z, ∀ i, h₁ (x, i) = h₂ (x, i)` using `fun h₁ h₂ h => ae_all_iff.mpr fun i => ae_slice_prodFin X.z hz p (P := fun q => h₁ q = h₂ q) h i`. Establish `hcancel : ∀ (x : M) (c : ℂ), ∑ i, g i x * (c * (starRingEnd ℂ) (g i x) / ((vsq (gv g x) : ℝ) : ℂ)) = c`. Introduce `x c`. Establish `hV : ((vsq (gv g x) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (hN x).ne'`.
+
+Establish `hs : ∑ i, g i x * (starRingEnd ℂ) (g i x) = ((vsq (gv g x) : ℝ) : ℂ)`. Rewrite using `[show vsq (gv g x) = ∑ i, ‖g i x‖ ^ 2 from rfl, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum, Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = c := by rw [hs, mul_div_assoc, div_self hV, mul_one]`. Establish `hGsn : ∀ (w : WeightedL2 n X.z (fun x => φ x + Real.log (vsq (gv g x)))) (H : WeightedL2 n (fun q : M × Fin p => X.z q.1) (fun x : M × Fin p => φ x.1)), (H : M × Fin p → ℂ) =ᵐ[vol n (fun q : M × Fin p => X.z q.1)] (fun q => (w : M → ℂ) q.1 * (starRingEnd ℂ) (g q.2 q.1) / ((vsq (g …`. Introduce `w H hH`. Take `⟨wm, hwm, hwae⟩` from `exists_pow_mul_eq_eval₂_theta n X.z _ hψm w`.
+
+Establish `hH' : (H : M × Fin p → ℂ) =ᵐ[vol n (fun q : M × Fin p => X.z q.1)] (fun q => wm q.1 * (starRingEnd ℂ) (g q.2 q.1) / ((vsq (gv g q.1) : ℝ) : ℂ))` using `by filter_upwards [hH, hlift _ _ hwae] with q h1 h2`. Rewrite using `[h1, h2]`. Establish `e : ‖H‖ ^ 2 = ‖w‖ ^ 2`. Rewrite using `[(B2 H).2, (A2 w).2, wint_congr_ae n _ (fun x : M × Fin p => φ x.1) hH', wint_Gs_eq X.z hz p g hgm φ hφm hN wm hwm, wint_congr_ae n X.z (fun x => φ x + Real.log (vsq (gv g x))) hwae]`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp e`.
+
+Establish `hGb : ∀ (h : WeightedL2 n (fun q : M × Fin p => X.z q.1) (fun x : M × Fin p => φ x.1)) (H : WeightedL2 n X.z (fun x => φ x + Real.log (vsq (gv g x)))), (H : M → ℂ) =ᵐ[vol n X.z] (fun x => ∑ i, g i x * (h : M × Fin p → ℂ) (x, i)) → ‖H‖ ≤ ‖h‖`. Introduce `h H hH`. Take `⟨hm, hhm, hhae⟩` from `exists_pow_mul_eq_eval₂_theta n (fun q : M × Fin p => X.z q.1) _ hψpm h`. Establish `hH' : (H : M → ℂ) =ᵐ[vol n X.z] (fun x => ∑ i, g i x * hm (x, i))` using `by filter_upwards [hH, hslice _ _ hhae] with x h1 h2`. Rewrite using `[h1]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [h2 i]`. Establish `hfin : wint n (fun q : M × Fin p => X.z q.1) hm (fun x : M × Fin p => φ x.1) ≠ ⊤`. Rewrite using `[← wint_congr_ae n _ (fun x : M × Fin p => φ x.1) hhae]`. Conclude with `(B2 h).1.ne`. Establish `e : ‖H‖ ^ 2 ≤ ‖h‖ ^ 2`.
+
+Rewrite using `[(A2 H).2, (B2 h).2, wint_congr_ae n X.z (fun x => φ x + Real.log (vsq (gv g x))) hH', wint_congr_ae n _ (fun x : M × Fin p => φ x.1) hhae]`. Conclude with `ENNReal.toReal_mono hfin (wint_G_le X.z hz p g φ hφm hN hm hhm)`. Use polynomial arithmetic with `[norm_nonneg H, norm_nonneg h]`. Take `⟨Gs, hGs⟩` from `exists_clm_weightedL2_of_bounded n X.z (fun q : M × Fin p => X.z q.1) (fun x => φ x + Real.log (vsq (gv g x))) (fun x : M × Fin p => φ x.1) hψm hψpm (fun f q => f q.1 * (starRingEnd ℂ) (g q.2 q.1) / ((vsq (gv g q.1) : ℝ) : ℂ)) (fun a f₁ f₂ => by funext q; beta_reduce; ring) (fun …`. Rewrite using `[hq])`.
+
+Use the proof step `(fun w => by`. Take `⟨wm, hwm, hwae⟩` from `exists_pow_mul_eq_eval₂_theta n X.z _ hψm w`. Establish `hmeas : Measurable (fun q : M × Fin p => wm q.1 * (starRingEnd ℂ) (g q.2 q.1) / ((vsq (gv g q.1) : ℝ) : ℂ))` using `((hwm.comp measurable_fst).mul hcj).div hcn`. Take `⟨H, hH⟩` from `B3 _ hmeas.aestronglyMeasurable (by`. Rewrite using `[wint_Gs_eq X.z hz p g hgm φ hφm hN wm hwm, ← wint_congr_ae n X.z (fun x => φ x + Real.log (vsq (gv g x))) hwae]`.
+
+Conclude with `(A2 w).1)`. Use `⟨H, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hH, hlift _ _ hwae] with q h1 h2`. Use `beta_reduce`. Rewrite using `[h1, h2])`.
+
+Use the proof step `(fun w H hH => le_of_eq (hGsn w H hH))`. Take `⟨G, hG⟩` from `exists_clm_weightedL2_of_bounded n (fun q : M × Fin p => X.z q.1) X.z (fun x : M × Fin p => φ x.1) (fun x => φ x + Real.log (vsq (gv g x))) hψpm hψm (fun h x => ∑ i, g i x * h (x, i)) (fun a h₁ h₂ => by`. Use function extensionality and compare the values at `x`. Use `beta_reduce`. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring)`. Use the proof step `(fun h₁ h₂ hh => by filter_upwards [hslice h₁ h₂ hh] with x hx beta_reduce`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hx i])`. Use the proof step `(fun h => by`. Take `⟨hm, hhm, hhae⟩` from `exists_pow_mul_eq_eval₂_theta n (fun q : M × Fin p => X.z q.1) _ hψpm h`.
+
+Establish `hmeas : Measurable (fun x : M => ∑ i, g i x * hm (x, i))` using `Finset.measurable_sum _ fun i _ => (hgm i).mul (hhm.comp (by fun_prop))`. Take `⟨H, hH⟩` from `A3 _ hmeas.aestronglyMeasurable (lt_of_le_of_lt (wint_G_le X.z hz p g φ hφm hN hm hhm) (by`. Rewrite using `[← wint_congr_ae n _ (fun x : M × Fin p => φ x.1) hhae]`. Conclude with `(B2 h).1))`. Use `⟨H, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hH, hslice _ _ hhae] with x h1 h2`. Use `beta_reduce`. Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h2 i])`. Use the proof step `(fun h H hH => hGb h H hH)`.
+
+Establish `hGsiso : ∀ w, ‖Gs w‖ = ‖w‖` using `fun w => hGsn w (Gs w) (hGs w)`. Establish `hGS : ∀ w, G (Gs w) = w`. Introduce `w`. Apply `Lp.ext` to reduce the goal to its premises. Use `(A1 (fun x => (G (Gs w) : M → ℂ) x = (w : M → ℂ) x)).mpr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hG (Gs w), hslice _ _ (hGs w)] with x h1 h2`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨G, Gs, hG, hGs, fun w h => inner_isometry_eq_inner_left_inverse Gs G hGsiso (fun h => hGb h (G h) (hG h)) hGS w h, hGsiso⟩`.
+-/
 theorem skodaOps (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] :
     SkodaOpsStatement n M := by

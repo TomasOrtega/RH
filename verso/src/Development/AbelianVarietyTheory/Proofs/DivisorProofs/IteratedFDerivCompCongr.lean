@@ -17,6 +17,13 @@ namespace GlobalTheory.LatJet.An.Chain
 
 variable {I : Type} [Fintype I]
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro s z _`. Simplify using `[iterD]`. Consider the case `succ k ih`.
+
+Introduce `s z hz`. Establish `hev : iterD (List.ofFn (Fin.tail s)) f =ᶠ[𝓝 z] fun w => iteratedFDeriv ℂ k f w (fun a => Pi.single (Fin.tail s a) 1)` using `Filter.eventually_of_mem (hU.mem_nhds hz) (ih (Fin.tail s))`. Establish `hd : DifferentiableAt ℂ (iteratedFDeriv ℂ k f) z` using `(((hf.contDiffAt (hU.mem_nhds hz)).iteratedFDeriv_right (m := 1) (i := k) le_top)).differentiableAt one_ne_zero`. Establish `e1 : iterD (List.ofFn s) f z = partialD (s 0) (iterD (List.ofFn (Fin.tail s)) f) z`. Rewrite using `[List.ofFn_succ]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, partialD, hev.lineDeriv_eq, (hd.continuousMultilinear_apply_const _).lineDeriv_eq_fderiv, fderiv_continuousMultilinear_apply_const_apply hd, iteratedFDeriv_succ_apply_left]`. Both sides reduce to the same expression.
+-/
 theorem iterD_ofFn {f : (I → ℂ) → ℂ} {U : Set (I → ℂ)} (hU : IsOpen U) (hf : ContDiffOn ℂ ω f U) :
     ∀ (k : ℕ) (s : Fin k → I), ∀ z ∈ U,
       iterD (List.ofFn s) f z = iteratedFDeriv ℂ k f z (fun a => Pi.single (s a) 1) := by
@@ -36,17 +43,28 @@ theorem iterD_ofFn {f : (I → ℂ) → ℂ} {U : Set (I → ℂ)} (hU : IsOpen 
       fderiv_continuousMultilinear_apply_const_apply hd, iteratedFDeriv_succ_apply_left]
     rfl
 
+/- English proof (translation)
+Take `⟨r, hr, hfr⟩` from `hf.exists_ball_analyticOnNhd`. Conclude with `iterD_ofFn Metric.isOpen_ball (hfr.contDiffOn Metric.isOpen_ball.uniqueDiffOn) k s 0 (Metric.mem_ball_self hr)`.
+-/
 theorem iterD_ofFn_zero {f : (I → ℂ) → ℂ} (hf : AnalyticAt ℂ f 0) (k : ℕ) (s : Fin k → I) :
     iterD (List.ofFn s) f 0 = iteratedFDeriv ℂ k f 0 (fun a => Pi.single (s a) 1) := by
   obtain ⟨r, hr, hfr⟩ := hf.exists_ball_analyticOnNhd
   exact iterD_ofFn Metric.isOpen_ball (hfr.contDiffOn Metric.isOpen_ball.uniqueDiffOn) k s 0
     (Metric.mem_ball_self hr)
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons j l ih => simp [List.count_cons, Finset.sum_add_distrib, ih]`.
+-/
 theorem sum_count (l : List I) : ∑ i, l.count i = l.length := by
   induction l with
   | nil => simp
   | cons j l ih => simp [List.count_cons, Finset.sum_add_distrib, ih]
 
+/- English proof (translation)
+Rewrite using `[show (∏ b : Fin l.length, a (l.get b)) = (l.map a).prod by simpa using Fin.prod_univ_fun_getElem l a]`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons j l ih`. Rewrite using `[List.map_cons, List.prod_cons, ih]`.
+
+Simplify using `only [List.count_cons, pow_add, Finset.prod_mul_distrib]`. Rewrite using `[mul_comm]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single j (fun b _ hb => by simp [beq_iff_eq, Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+-/
 theorem prod_get (a : I → ℂ) (l : List I) : ∏ b : Fin l.length, a (l.get b) = ∏ i, a i ^ l.count i := by
   rw [show (∏ b : Fin l.length, a (l.get b)) = (l.map a).prod by simpa using Fin.prod_univ_fun_getElem l a]
   induction l with
@@ -59,12 +77,20 @@ theorem prod_get (a : I → ℂ) (l : List I) : ∏ b : Fin l.length, a (l.get b
     rw [Finset.prod_eq_single j (fun b _ hb => by simp [beq_iff_eq, Ne.symm hb]) (by simp)]
     simp
 
+/- English proof (translation)
+Establish `h` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).iteratedFDeriv_comp_left hf (i := k) le_top`. Conclude with `congrArg (fun L => L m) h`.
+-/
 theorem iteratedFDeriv_coord {f : (I → ℂ) → I → ℂ} (hf : ContDiffAt ℂ ω f 0) (k : ℕ) (i : I)
     (m : Fin k → I → ℂ) : iteratedFDeriv ℂ k (fun z => f z i) 0 m = iteratedFDeriv ℂ k f 0 m i := by
   have h := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).iteratedFDeriv_comp_left hf
     (i := k) le_top
   exact congrArg (fun L => L m) h
 
+/- English proof (translation)
+Take `⟨u, hu, hfu⟩` from `hf.contDiffOn (m := (k : WithTop ℕ∞)) le_top (fun _ => rfl)`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.mp hu`. Establish `hs : IsOpen (Metric.ball (0 : I → ℂ) r)` using `Metric.isOpen_ball`. Establish `h0 : (0 : I → ℂ) ∈ Metric.ball (0 : I → ℂ) r` using `Metric.mem_ball_self hr`. Establish `hpre : IsOpen (A ⁻¹' Metric.ball (0 : I → ℂ) r)` using `hs.preimage A.continuous`.
+
+Establish `h0' : (0 : I → ℂ) ∈ A ⁻¹' Metric.ball (0 : I → ℂ) r` using `by simpa using h0`. Establish `key` using `A.iteratedFDerivWithin_comp_right (hfu.mono hball) hs.uniqueDiffOn hpre.uniqueDiffOn h0' (i := k) le_rfl`. Rewrite `key` using `[iteratedFDerivWithin_of_isOpen k hpre h0', map_zero, iteratedFDerivWithin_of_isOpen k hs h0]`. Conclude with `key`.
+-/
 theorem iteratedFDeriv_comp_clm {f : (I → ℂ) → ℂ} (hf : ContDiffAt ℂ ω f 0) (A : (I → ℂ) →L[ℂ] (I → ℂ))
     (k : ℕ) : iteratedFDeriv ℂ k (f ∘ A) 0 = (iteratedFDeriv ℂ k f 0).compContinuousLinearMap fun _ => A := by
   obtain ⟨u, hu, hfu⟩ := hf.contDiffOn (m := (k : WithTop ℕ∞)) le_top (fun _ => rfl)
@@ -78,6 +104,11 @@ theorem iteratedFDeriv_comp_clm {f : (I → ℂ) → ℂ} (hf : ContDiffAt ℂ �
   rw [iteratedFDerivWithin_of_isOpen k hpre h0', map_zero, iteratedFDerivWithin_of_isOpen k hs h0] at key
   exact key
 
+/- English proof (translation)
+Introduce `k hk`. Rewrite using `[iteratedFDeriv_comp (by rw [e₁]; exact hg) h₁ le_top, iteratedFDeriv_comp (by rw [e₂]; exact hg) h₂ le_top, e₁, e₂]`. Unfold `FormalMultilinearSeries.taylorComp`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hc : (fun m => ftaylorSeries ℂ f₁ 0 (c.partSize m)) = fun m => ftaylorSeries ℂ f₂ 0 (c.partSize m)`.
+
+Use function extensionality and compare the values at `fun m => h _ ((c.partSize_le m).trans hk)`. Simplify using `only [FormalMultilinearSeries.compAlongOrderedFinpartition, hc]`.
+-/
 theorem iteratedFDeriv_comp_congr {g : (I → ℂ) → ℂ} {f₁ f₂ : (I → ℂ) → I → ℂ}
     (hg : ContDiffAt ℂ ω g 0) (h₁ : ContDiffAt ℂ ω f₁ 0) (h₂ : ContDiffAt ℂ ω f₂ 0)
     (e₁ : f₁ 0 = 0) (e₂ : f₂ 0 = 0) (N : ℕ)
@@ -91,6 +122,27 @@ theorem iteratedFDeriv_comp_congr {g : (I → ℂ) → ℂ} {f₁ f₂ : (I → 
     funext fun m => h _ ((c.partSize_le m).trans hk)
   simp only [FormalMultilinearSeries.compAlongOrderedFinpartition, hc]
 
+/- English proof (translation)
+Introduce `hC I _ n J ζ a g hζ hζ0 hg hjet ν u hu`. Take `⟨h1, h2, -, h4, h5, -, -⟩` from `hC I n J`. Set `Λ : (I → ℂ) →L[ℂ] (I → ℂ)` to `ContinuousLinearMap.pi fun i => a i • ContinuousLinearMap.proj i`. Establish `hΛ : ∀ z i, Λ z i = a i * z i` using `fun z i => by simp [Λ]`. Establish `hpr : ∀ i, AnalyticAt ℂ (fun z : I → ℂ => z i) 0` using `fun i => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).analyticAt 0`.
+
+Establish `hΛjet : ∀ i, jet J (fun z => Λ z i) = a i • J.t i`. Introduce `i`. Establish `e : (fun z : I → ℂ => Λ z i) = (fun _ => a i) * (fun z => z i)` using `by funext z; simp [hΛ]`. Rewrite using `[e, (h2 _ _ analyticAt_const (hpr i)).1, h4, h5, Algebra.smul_def]`. Establish `hζi : ∀ i, AnalyticAt ℂ (fun z => ζ z i) 0` using `fun i => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).analyticAt (ζ 0)).comp hζ`.
+
+Establish `hΛi : ∀ i, AnalyticAt ℂ (fun z => Λ z i) 0` using `fun i => ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : I => ℂ) i).analyticAt (Λ 0)).comp (Λ.analyticAt 0)`. Establish `hD : ∀ i k, k ≤ n + 1 → iteratedFDeriv ℂ k (fun z => ζ z i) 0 = iteratedFDeriv ℂ k (fun z => Λ z i) 0`. Introduce `i k hk`. Apply `ContinuousMultilinearMap.toMultilinearMap_injective` to reduce the goal to its premises. Use `Module.Basis.ext_multilinear (fun _ => Pi.basisFun ℂ I) fun s => ?_` and prove the remaining obligations.
+
+Simplify using `only [ContinuousMultilinearMap.coe_coe, Pi.basisFun_apply]`. Rewrite using `[← iterD_ofFn_zero (hζi i) k s, ← iterD_ofFn_zero (hΛi i) k s]`. Establish `hν : ∑ j, (List.ofFn s).count j ≤ n + 1` using `by rw [sum_count, List.length_ofFn]; exact hk`. Rewrite using `[← h1 _ (hζi i) ⟨_, hν⟩ _ (fun _ => rfl), ← h1 _ (hΛi i) ⟨_, hν⟩ _ (fun _ => rfl), hjet i, hΛjet i]`. Establish `hDv : ∀ k ≤ n + 1, iteratedFDeriv ℂ k ζ 0 = iteratedFDeriv ℂ k Λ 0`.
+
+Introduce `k hk`. Use extensionality with `m i`. Rewrite using `[← iteratedFDeriv_coord hζ.contDiffAt, ← iteratedFDeriv_coord (Λ.analyticAt 0).contDiffAt, hD i k hk]`. Establish `hk : u.length ≤ n + 1`. Rewrite using `[← sum_count u]`.
+
+Simplify using `only [hu]`. Conclude with `ν.2`. Establish `hgz : AnalyticAt ℂ (g ∘ ζ) 0`. Use `AnalyticAt.comp ?_ hζ` and prove the remaining obligations. Rewrite using `[hζ0]`.
+
+Conclude with `hg`. Rewrite using `[h1 _ hgz ν u hu]`. Establish `e : ∀ f, iterD u f 0 = iterD (List.ofFn u.get) f 0` using `by intro f; rw [List.ofFn_get]`. Rewrite using `[e, e, iterD_ofFn_zero hgz, iterD_ofFn_zero hg, iteratedFDeriv_comp_congr hg.contDiffAt hζ.contDiffAt (Λ.analyticAt 0).contDiffAt hζ0 (map_zero Λ) (n + 1) hDv _ hk, iteratedFDeriv_comp_clm hg.contDiffAt]`. Rewrite using `[ContinuousMultilinearMap.compContinuousLinearMap_apply]`.
+
+Establish `hv : (fun b : Fin u.length => Λ (Pi.single (u.get b) 1)) = fun b => a (u.get b) • Pi.single (u.get b) 1`. Use function extensionality and compare the values at `b`. Use extensionality with `i`. Rewrite using `[hΛ]`. Distinguish the cases in `h : i = u.get b`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [List.get_eq_getElem] at h`. Simplify using `[Pi.single_apply, h]`. Rewrite using `[hv, ContinuousMultilinearMap.map_smul_univ, smul_eq_mul, prod_get, mul_comm]`.
+
+Simplify using `only [hu]`.
+-/
 theorem jetChain_of_jetCalc : JetCalc → JetChain := by
   intro hC I _ n J ζ a g hζ hζ0 hg hjet ν u hu
   obtain ⟨h1, h2, -, h4, h5, -, -⟩ := hC I n J

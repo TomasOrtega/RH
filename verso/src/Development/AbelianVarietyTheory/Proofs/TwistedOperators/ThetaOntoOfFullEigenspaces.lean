@@ -12,6 +12,11 @@ section Hilbert
 variable {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
   [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] (θ : V →ₗ[ℂ] W) {X : Submodule ℂ V} {M : Submodule ℂ W}
 
+/- English proof (translation)
+Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `_ ⟨m, -, rfl⟩ h`. Establish `h0 : θ (LinearMap.adjoint θ m) = 0` using `h`. Establish `: inner ℂ (LinearMap.adjoint θ m) (LinearMap.adjoint θ m) = 0`. Rewrite using `[LinearMap.adjoint_inner_left, h0, inner_zero_right]`.
+
+Conclude with `inner_self_eq_zero.1 this`.
+-/
 theorem disjoint_map_adjoint_ker (M : Submodule ℂ W) : Disjoint (M.map (LinearMap.adjoint θ)) (LinearMap.ker θ) := by
   rw [Submodule.disjoint_def]
   rintro _ ⟨m, -, rfl⟩ h
@@ -39,6 +44,11 @@ def GoodMatchAt : Prop :=
 
 end Readings
 
+/- English proof (translation)
+Use `⟨(EuclideanSpace.projₗ (0 : Fin 2)), ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `z _`. Conclude with `⟨EuclideanSpace.single 0 z, trivial, by simp⟩`. Use `disjoint_map_adjoint_ker (EuclideanSpace.projₗ (0 : Fin 2) : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] ℂ) ⊤` as an intermediate fact.
+
+Rewrite `this` using `[h, Submodule.disjoint_def]`. Establish `h1` using `this (EuclideanSpace.single 1 1) trivial (by simp)`. Establish `h2` using `congrArg (fun v : EuclideanSpace ℂ (Fin 2) => v 1) h1`. Simplify using `at h2`.
+-/
 example : ∃ θ : EuclideanSpace ℂ (Fin 2) →ₗ[ℂ] ℂ, (⊤ : Submodule ℂ _).map θ = ⊤ ∧
     (⊤ : Submodule ℂ ℂ).map (LinearMap.adjoint θ) ≠ ⊤ := by
   refine ⟨(EuclideanSpace.projₗ (0 : Fin 2)), ?_, fun h => ?_⟩

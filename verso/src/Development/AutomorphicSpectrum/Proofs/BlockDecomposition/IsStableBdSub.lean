@@ -20,6 +20,13 @@ def trans (r : ℕ) (s : ℝ) : Module.End ℂ (GA E N → ℂ) where
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Proceed by induction on `i generalizing f with`. Consider the case `zero`. Use function extensionality and compare the values at `g`. Simplify using `[aT_zero]`. Consider the case `succ i ih`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Express the relevant statement in the definitionally equal form `f (aT E N r s * (aT E N r (s * i) * g)) = _`. Rewrite using `[← mul_assoc, ← aT_add]`. Use `congr 3`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trans_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) :
     (trans r s ^ i) f = fun g => f (aT E N r (s * i) * g) := by
   induction i generalizing f with
@@ -35,6 +42,11 @@ theorem trans_pow (r : ℕ) (s : ℝ) (i : ℕ) (f : GA E N → ℂ) :
     push_cast
     ring
 
+/- English proof (translation)
+Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, trans_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `g`.
+
+Simplify `h g` using `[Finset.sum_apply]`. Introduce `h g`. Simplify `congrFun h g` using `[Finset.sum_apply]`.
+-/
 theorem kl_iff {r : ℕ} {s : ℝ} {p : ℂ[X]} {F : GA E N → ℂ} :
     Kl r s p F ↔ aeval (trans (E := E) (N := N) r s) p F = 0 := by
   rw [Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]
@@ -46,11 +58,21 @@ theorem kl_iff {r : ℕ} {s : ℝ} {p : ℂ[X]} {F : GA E N → ℂ} :
   · intro h g
     simpa [Finset.sum_apply] using congrFun h g
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[kl_iff]`. Rewrite using `[map_mul, Module.End.mul_apply, h, map_zero]`.
+-/
 theorem kl_mul_left {r : ℕ} {s : ℝ} {p : ℂ[X]} {F : GA E N → ℂ} (h : Kl r s p F) (q : ℂ[X]) :
     Kl r s (q * p) F := by
   rw [kl_iff] at h ⊢
   rw [map_mul, Module.End.mul_apply, h, map_zero]
 
+/- English proof (translation)
+Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E N γ * g * finGL E N k) = φ.1 (g * finGL E N k)`. Rewrite using `[mul_assoc, h.1]`. Establish `hc : Continuous fun u : GL (Fin N) (Af E) => k⁻¹ * u * k` using `by fun_prop`. Establish `hm : {u | finRep E N u φ = φ} ∈ nhds (k⁻¹ * 1 * k)`.
+
+Establish `: k⁻¹ * 1 * k = 1` using `by group`. Rewrite using `[this]`. Conclude with `h.2.mem_nhds (by simp)`. Use `Filter.mem_of_superset (hc.continuousAt.preimage_mem_nhds hm) fun u hu => ?_` and prove the remaining obligations. Establish `hu' : finRep E N (k⁻¹ * u * k) φ = φ` using `hu`.
+
+Express the relevant statement in the definitionally equal form `finRep E N u (finRep E N k φ) = finRep E N k φ`. Use `conv_rhs => rw [← hu']`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`.
+-/
 theorem lo_fin {φ : Sm E N} (h : LO φ) (k : GL (Fin N) (Af E)) : LO (act (.fin k) φ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ ?_⟩
   · change φ.1 (ratGL E N γ * g * finGL E N k) = φ.1 (g * finGL E N k)
@@ -68,6 +90,11 @@ theorem lo_fin {φ : Sm E N} (h : LO φ) (k : GL (Fin N) (Af E)) : LO (act (.fin
     congr 2
     group
 
+/- English proof (translation)
+Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.2.mem_nhds (by simp)) fun u hu => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (ratGL E N γ * g * infGL E N (Unitary.toUnits k)) = φ.1 (g * infGL E N (Unitary.toUnits k))`. Rewrite using `[mul_assoc, h.1]`. Establish `hu' : finRep E N u φ = φ` using `hu`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E N u * infGL E N (Unitary.toUnits k)) = φ.1 (g * infGL E N (Unitary.toUnits k))`. Establish `e : φ.1 (g * infGL E N (Unitary.toUnits k) * finGL E N u) = φ.1 (g * infGL E N (Unitary.toUnits k))` using `congrArg (fun ψ : Sm E N => ψ.1 (g * infGL E N (Unitary.toUnits k))) hu'`. Rewrite using `[← e, mul_assoc, mul_assoc, infGL_comm]`.
+-/
 theorem lo_cpt {φ : Sm E N} (h : LO φ) (k : Kinf E N) : LO (act (.cpt k) φ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.2.mem_nhds (by simp)) fun u hu => ?_)⟩
   · change φ.1 (ratGL E N γ * g * infGL E N (Unitary.toUnits k)) = φ.1 (g * infGL E N (Unitary.toUnits k))
@@ -80,12 +107,20 @@ theorem lo_cpt {φ : Sm E N} (h : LO φ) (k : Kinf E N) : LO (act (.cpt k) φ) :
       congrArg (fun ψ : Sm E N => ψ.1 (g * infGL E N (Unitary.toUnits k))) hu'
     rw [← e, mul_assoc, mul_assoc, infGL_comm]
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k => exact lo_fin h k`. Consider the case `cpt k => exact lo_cpt h k`. Consider the case `lie X => exact lo_lie h X`.
+-/
 theorem lo_act {φ : Sm E N} (h : LO φ) (o : Op E N) : LO (act o φ) := by
   cases o with
   | fin k => exact lo_fin h k
   | cpt k => exact lo_cpt h k
   | lie X => exact lo_lie h X
 
+/- English proof (translation)
+Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset ((h.2.inter h'.2).mem_nhds ⟨by simp, by simp⟩) fun k hk => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _`. Rewrite using `[h.1, h'.1]`. Establish `h1 : finRep E N k φ = φ` using `hk.1`. Establish `h2 : finRep E N k ψ = ψ` using `hk.2`.
+
+Express the relevant statement in the definitionally equal form `finRep E N k (φ + ψ) = φ + ψ`. Rewrite using `[map_add, h1, h2]`.
+-/
 theorem lo_add {φ ψ : Sm E N} (h : LO φ) (h' : LO ψ) : LO (φ + ψ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset
     ((h.2.inter h'.2).mem_nhds ⟨by simp, by simp⟩) fun k hk => ?_)⟩
@@ -96,6 +131,11 @@ theorem lo_add {φ ψ : Sm E N} (h : LO φ) (h' : LO ψ) : LO (φ + ψ) := by
     change finRep E N k (φ + ψ) = φ + ψ
     rw [map_add, h1, h2]
 
+/- English proof (translation)
+Use `⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.2.mem_nhds (by simp)) fun k hk => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c * φ.1 _ = c * φ.1 _`. Rewrite using `[h.1]`. Establish `h1 : finRep E N k φ = φ` using `hk`. Express the relevant statement in the definitionally equal form `finRep E N k (c • φ) = c • φ`.
+
+Rewrite using `[map_smul, h1]`.
+-/
 theorem lo_smul {φ : Sm E N} (h : LO φ) (c : ℂ) : LO (c • φ) := by
   refine ⟨fun γ g => ?_, isOpen_stab_of_mem_nhds _ _ (Filter.mem_of_superset (h.2.mem_nhds (by simp)) fun k hk => ?_)⟩
   · change c * φ.1 _ = c * φ.1 _
@@ -104,6 +144,9 @@ theorem lo_smul {φ : Sm E N} (h : LO φ) (c : ℂ) : LO (c • φ) := by
     change finRep E N k (c • φ) = c • φ
     rw [map_smul, h1]
 
+/- English proof (translation)
+Use `⟨fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Establish `: {k | finRep E N k (0 : Sm E N) = 0} = Set.univ` using `Set.eq_univ_of_forall fun k => map_zero _`. Rewrite using `[this]`. Conclude with `isOpen_univ`.
+-/
 theorem lo_zero : LO (0 : Sm E N) := by
   refine ⟨fun _ _ => rfl, ?_⟩
   have : {k | finRep E N k (0 : Sm E N) = 0} = Set.univ := Set.eq_univ_of_forall fun k => map_zero _
@@ -115,12 +158,24 @@ section CT
 variable {r : ℕ} [MeasurableSpace (BlockIx N r → Ad E)] [BorelSpace (BlockIx N r → Ad E)]
   (μ : Measure (BlockIx N r → Ad E)) [μ.IsAddHaarMeasure] (𝓕 : Set (BlockIx N r → Ad E))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Conclude with `integral_add (GlobalTheory.CompanionTheory.CTFin.Central.integrable_unip_mul μ 𝓕 h𝓕 hφ.1 hφ.2 g) (GlobalTheory.CompanionTheory.CTFin.Central.integrable_unip_mul μ 𝓕 h𝓕 hψ.1 hψ.2 g)`.
+-/
 theorem ct_add_lo (h𝓕 : IsAddFundamentalDomain (ratN E N r) 𝓕 μ) {φ ψ : Sm E N} (hφ : LO φ) (hψ : LO ψ) :
     PositivityTheory.Affgl.CT.ct μ 𝓕 (φ + ψ).1 = PositivityTheory.Affgl.CT.ct μ 𝓕 φ.1 + PositivityTheory.Affgl.CT.ct μ 𝓕 ψ.1 := by
   funext g
   exact integral_add (GlobalTheory.CompanionTheory.CTFin.Central.integrable_unip_mul μ 𝓕 h𝓕 hφ.1 hφ.2 g)
     (GlobalTheory.CompanionTheory.CTFin.Central.integrable_unip_mul μ 𝓕 h𝓕 hψ.1 hψ.2 g)
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `fin k`. Establish `e : PositivityTheory.Affgl.CT.ct μ 𝓕 (act (.fin k) φ).1 = fun g => PositivityTheory.Affgl.CT.ct μ 𝓕 φ.1 (g * finGL E N k)`. Use function extensionality and compare the values at `g`. Conclude with `congrArg (fun f : (BlockIx N r → Ad E) → ℂ => ∫ x in 𝓕, f x ∂μ) (funext fun x => congrArg φ.1 (mul_assoc _ _ _))`.
+
+Rewrite using `[e]`. Conclude with `kl_right h _`. Consider the case `cpt k`. Establish `e : PositivityTheory.Affgl.CT.ct μ 𝓕 (act (.cpt k) φ).1 = fun g => PositivityTheory.Affgl.CT.ct μ 𝓕 φ.1 (g * infGL E N (Unitary.toUnits k))`. Use function extensionality and compare the values at `g`.
+
+Conclude with `congrArg (fun f : (BlockIx N r → Ad E) → ℂ => ∫ x in 𝓕, f x ∂μ) (funext fun x => congrArg φ.1 (mul_assoc _ _ _))`. Rewrite using `[e]`. Conclude with `kl_right h _`. Consider the case `lie X`. Take `⟨F, hF1, hF2⟩` from `ct_smooth E N r φ hφ.1 hφ.2 μ 𝓕 inferInstance h𝓕`.
+
+Establish `e1 : F.1 = PositivityTheory.Affgl.CT.ct μ 𝓕 φ.1` using `funext hF1`. Establish `e2 : (lie E N X F).1 = PositivityTheory.Affgl.CT.ct μ 𝓕 (act (.lie X) φ).1` using `funext (hF2 X)`. Rewrite using `[← e2]`. Conclude with `kl_lie (e1 ▸ h) X`.
+-/
 theorem kl_act_lo (h𝓕 : IsAddFundamentalDomain (ratN E N r) 𝓕 μ) {s : ℝ} {p : ℂ[X]} {φ : Sm E N}
     (hφ : LO φ) (h : Kl r s p (PositivityTheory.Affgl.CT.ct μ 𝓕 φ.1)) (o : Op E N) :
     Kl r s p (PositivityTheory.Affgl.CT.ct μ 𝓕 (act o φ).1) := by
@@ -182,6 +237,11 @@ def bdSub (r : ℕ) (ρ : ℝ) : Submodule ℂ (Sm E N) where
     rw [ct_smul]
     exact (klSub r 1 p).smul_mem c (hpk _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩)
 
+/- English proof (translation)
+Introduce and unpack `o φ ⟨hφ, p, hp, hpz, hpk⟩`. Use `⟨lo_act hφ o, p, hp, hpz, ?_⟩` and prove the remaining obligations. Introduce and unpack `F ⟨μ, 𝓕, hμ, h𝓕, rfl⟩`. Set `_ : MeasurableSpace (BlockIx N r → Ad E)` to `borel _`. Establish `_ : BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`.
+
+Establish `_` using `hμ`. Conclude with `kl_act_lo μ 𝓕 h𝓕 hφ (hpk _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩) o`.
+-/
 theorem isStable_bdSub (r : ℕ) (ρ : ℝ) : IsStable (bdSub (E := E) (N := N) r ρ) := by
   rintro o φ ⟨hφ, p, hp, hpz, hpk⟩
   refine ⟨lo_act hφ o, p, hp, hpz, ?_⟩
@@ -191,6 +251,9 @@ theorem isStable_bdSub (r : ℕ) (ρ : ℝ) : IsStable (bdSub (E := E) (N := N) 
   have _ := hμ
   exact kl_act_lo μ 𝓕 h𝓕 hφ (hpk _ ⟨μ, 𝓕, hμ, h𝓕, rfl⟩) o
 
+/- English proof (translation)
+Take `⟨-, p, -, hpz, hpk⟩` from `hφ`. Take `⟨F₀, hCT, F, hF, hF0, hFe⟩` from `hc`. Establish `hroot` using `kl_eigen (kl_span (hpk _ hCT) hF) hF0 hFe`. Use `hpz _ hroot` as an intermediate fact. Simplify `this` using `[Complex.norm_exp]`.
+-/
 theorem re_le_of_mem {r : ℕ} {ρ : ℝ} {φ : Sm E N} (hφ : φ ∈ bdSub (E := E) (N := N) r ρ) {c : ℂ}
     (hc : c ∈ Exp r φ.1) : c.re ≤ ρ := by
   obtain ⟨-, p, -, hpz, hpk⟩ := hφ
@@ -199,6 +262,15 @@ theorem re_le_of_mem {r : ℕ} {ρ : ℝ} {φ : Sm E N} (hφ : φ ∈ bdSub (E :
   have := hpz _ hroot
   simpa [Complex.norm_exp] using this
 
+/- English proof (translation)
+Take `⟨-, -, -, hDct⟩` from `dict_holds E N`. Take `⟨hct, huniq⟩` from `hDct φ hφ r hr hrN`. Establish `hcont : ∀ g, Continuous fun t => An.ctn r φ.1 (aT E N r t * g)`. Set `_ : MeasurableSpace (BlockIx N r → Ad E)` to `_root_.borel _`. Establish `_ : BorelSpace (BlockIx N r → Ad E)` using `⟨rfl⟩`.
+
+Take `⟨μ, 𝓕, hμ, h𝓕, e⟩` from `hct`. Take `⟨F, hF, -⟩` from `ct_smooth E N r φ hφ.left hφ.level μ 𝓕 hμ h𝓕`. Establish `e2 : An.ctn r φ.1 = F.1` using `e.trans (funext fun g => (hF g).symm)`. Introduce `g`. Rewrite using `[e2]`.
+
+Conclude with `PDich.continuous_aT F r g`. Take `⟨p, hp, hk, hroot⟩` from `killPoly_holds (GA E N) (aT E N r) (An.ctn r φ.1) (fun u v => aT_add r u v) hcont (finTr_holds E N φ hφ r hr hrN _ hct)`. Establish `hk' : Kl r 1 p (An.ctn r φ.1)` using `fun g => by`. Simplify `hk g` using `only [one_mul]`. Use `⟨⟨hφ.left, hφ.level⟩, p, hp, fun z hz => ?_, fun F hF => ?_⟩` and prove the remaining obligations.
+
+Take `⟨c, rfl, F, hF, hF0, hFe⟩` from `hroot z hz`. Rewrite using `[Complex.norm_exp]`. Conclude with `Real.exp_le_exp.2 (hρ c ⟨_, hct, F, hF, hF0, hFe⟩)`. Take `⟨a, -, rfl⟩` from `huniq F hF`. Conclude with `(klSub r 1 p).smul_mem a hk'`.
+-/
 theorem mem_bdSub {r : ℕ} (hr : 0 < r) (hrN : r < N) {ρ : ℝ} {φ : Sm E N} (hφ : IsAutForm φ)
     (hρ : ∀ c ∈ Exp r φ.1, c.re ≤ ρ) : φ ∈ bdSub (E := E) (N := N) r ρ := by
   obtain ⟨-, -, -, hDct⟩ := dict_holds E N
@@ -227,6 +299,13 @@ end GlobalTheory.CompanionTheory.HullExp
 
 open GlobalTheory.CompanionTheory.HullExp in
 
+/- English proof (translation)
+Introduce `E _ _ _ N S hS φ hφ r hr hrN c hc`. Establish `hd : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `key : ∀ ψ ∈ S, ψ ∈ bdSub (E` using `E) (N := N) r (An.rho E N r) := fun ψ hψ => mem_bdSub hr hrN (hS ψ hψ).1 fun c' hc' => by`. Use `(hS ψ hψ).2 r hr hrN c' hc'` as an intermediate fact. Rewrite `this` using `[pE, sub_nonpos, div_le_iff₀ hd]`.
+
+Rewrite using `[An.rho]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : φ ∈ bdSub (E` using `E) (N := N) r (An.rho E N r) := (Submodule.mem_sInf.1 hφ) _ ⟨key, isStable_bdSub r _⟩`. Use `re_le_of_mem hmem hc` as an intermediate fact. Rewrite using `[pE, sub_nonpos, div_le_iff₀ hd]`.
+
+Rewrite `this` using `[An.rho]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem GlobalTheory.CompanionTheory.HullExp.hullNonPos : PositivityTheory.Rg.BcB.E.E3.HullNonPos := by
   intro E _ _ _ N S hS φ hφ r hr hrN c hc
   have hd : (0 : ℝ) < Module.finrank ℚ E := by exact_mod_cast Module.finrank_pos

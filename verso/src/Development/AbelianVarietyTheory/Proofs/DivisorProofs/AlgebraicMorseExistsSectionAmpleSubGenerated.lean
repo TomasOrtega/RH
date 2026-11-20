@@ -23,6 +23,17 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Twist
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ X _ _ hp d hd L B M hL hB hM e hlt`. Establish `hf` using `algebraMap_eq_strHom k X`. Use `isNoetherian_of_isProjOver hp` as an intermediate fact. Establish `hsd : suppDim (GlobalTheory.structureModule X) ≤ (d + 1 : ℕ)`. Rewrite using `[suppDim_structureModule]`.
+
+Conclude with `hd`. Establish `hfin` using `finiteCohTwists_of_isProjOver hf (GlobalTheory.structureModule X) hp`. Take `⟨s, hs⟩` from `IsGenerated.exists_mono_cutHom k (GlobalTheory.structureModule X) hB`. Use `set G := cut (GlobalTheory.structureModule X) hB.isLB s with hG`. Use `haveI : IsFiniteQC G := isFiniteQC_cut (GlobalTheory.structureModule X) hB.isLB s`.
+
+Take `⟨t, ht⟩` from `IsGenerated.exists_mono_cutHom k G hB`. Establish `hGd : suppDim G ≤ (d : ℕ)` using `suppDim_cut_le _ hB.isLB s hsd`. Establish `hcut` using `interNum_cons_eq_interNum_cut hB.isLB s (P := fun _ : Fin d => L) (fun _ => hL.isLB) hfin`. Take `⟨C, m₀, hC⟩` from `GlobalTheory.T.asymptotic_riemannRoch_ample_coherent k X hp (d + 1) (GlobalTheory.structureModule X) hsd L hL`. Take `⟨C', m₁, hC'⟩` from `GlobalTheory.T.asymptotic_riemannRoch_ample_coherent k X hp d G hGd L hL`.
+
+Rewrite `hlt` using `[hcut]`. Take `⟨m, hm1, hm⟩` from `GlobalTheory.T.exists_mul_lt_of_asymptotic_bounds d (topSelfIntersection k L (d + 1)) (interNum k G (fun _ : Fin d => L)) (fun m => hdim k (twist (GlobalTheory.structureModule X) (lbPow L m)) 0) (fun m => hdim k (twist G (lbPow L m)) 0) C C' m₀ m₁ hC hC' hlt`. Establish `hcl : cls (lbPow L m) (isLB_lbPow hL.isLB m) = cls (lbPow M m) (isLB_lbPow hM m) + m • cls B hB.isLB`. Rewrite using `[cls_lbPow hL.isLB, cls_lbPow hM, e, smul_add]`. Establish `hch` using `GlobalTheory.T.sectionsDim_le_add_mul_sectionsDim_cut k X hp (GlobalTheory.structureModule X) B (lbPow L m) hB.isLB (isLB_lbPow hL.isLB m) s t hs ht m (lbPow M m) (isLB_lbPow hM m) hcl`.
+
+Establish `hch' : hdim k (twist (GlobalTheory.structureModule X) (lbPow L m)) 0 ≤ hdim k (twist (GlobalTheory.structureModule X) (lbPow M m)) 0 + m * hdim k (twist G (lbPow L m)) 0` using `hch`. Use `⟨m, hm1, lineBundleHasNonzeroSection_of_globalSectionsDim_pos (k := k) ?_⟩` and prove the remaining obligations. Use `show 0 < hdim k (twist (GlobalTheory.structureModule X) (lbPow M m)) 0`. Establish `: m * hdim k (twist G (lbPow L m)) 0 < hdim k (twist (GlobalTheory.structureModule X) (lbPow L m)) 0` using `hm`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_sec_of_ample_sub_generated :
     ∀ (k : Type) [Field k] [Infinite k] (X : Scheme.{0}) [IsIntegral X] [Algebra k Γ(X, ⊤)], IsProjOver (strHom k X) → ∀ d : ℕ, topologicalKrullDim X ≤ (d + 1 : ℕ) → ∀ (L B M : LB X) (hL : IsAmpleLB L) (hB : IsGenerated B) (hM : M.IsLB), cls L hL.isLB = cls M hM + cls B hB.isLB → ((d : ℤ) + 1) * interNum k (GlobalTheory.structureModule X) (Fin.cons B (fun _ : Fin d => L) : Fin (d + 1) → LB X) < topSelfIntersection k L (d + 1) → ∃ r, 1 ≤ r ∧ HasNonzeroSec (lbPow M r) := by
   intro k _ _ X _ _ hp d hd L B M hL hB hM e hlt

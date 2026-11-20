@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Svd
 
+/- English proof (translation)
+Introduce `hA Bd Q Lk ker hQ hE`. Establish `h2 : Formalism.L2.Th1.CM.CM2` using `GlobalTheory.Corev.CmTwoClosing.cmGoodModel_of_globalArtinReciprocity hA`. Take `⟨hT, hG, hC⟩` from `GlobalTheory.CurveThetaInert.torsionTaylorAlgebraic_latticeExists_of_cm h2`. Conclude with `GlobalTheory.T.bundle_bothParts_of_standardKernel_and_six_hypotheses hT hG hC (GlobalTheory.intInert_of_complexMultiplication_condition h2) (GlobalTheory.TwV.Lt.inert_theta_admissibility_of_complex_multiplication h2) (GlobalTheory.TwV.Lt.exists_genusOne_formal_iso_of_unramified_g …`.
+-/
 theorem servH_row_of_artin :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ {Bd : BdT} (Q : V4.Slot) (Lk : LkT Bd)
       (ker : ∀ (D : D7) (O : Obj D) (c : ℝ), Bd D O c → KerEntTied O.ex),

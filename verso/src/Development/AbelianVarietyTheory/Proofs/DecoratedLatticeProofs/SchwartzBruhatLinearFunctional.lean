@@ -15,6 +15,11 @@ open scoped Topology
 noncomputable section
 namespace GlobalTheory.CoinvSB
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Use `filter_upwards [h1.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_mem hx, Set.indicator_of_mem hy]`. Use `filter_upwards [h2.isOpen_compl.mem_nhds hx] with y hy`.
+
+Simplify using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]`.
+-/
 theorem isLocallyConstant_indicator_const {X : Type*} [TopologicalSpace X] {U : Set X} (h1 : IsOpen U)
     (h2 : IsClosed U) (c : ℂ) : IsLocallyConstant (U.indicator fun _ => c) := by
   refine (IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_
@@ -24,6 +29,17 @@ theorem isLocallyConstant_indicator_const {X : Type*} [TopologicalSpace X] {U : 
   · filter_upwards [h2.isOpen_compl.mem_nhds hx] with y hy
     simp [Set.indicator_of_notMem hx, Set.indicator_of_notMem hy]
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψc hψ1 hν I₀ I₁ I₂ _ _ _ M _ _ l h1 h2 D hD`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s : kˣ, ∀ t ∈ box I₁ s, ∀ y : (I₀ → k) × (I₁ → k) × (I₂ → k), D.1 (y + (0, t, 0)) = D.1 y := by`. Establish `h` using `GlobalTheory.SBConv.eventually_translate D.2`. Establish `hT : Filter.Tendsto (fun t : I₁ → k => ((0 : I₀ → k), -t, (0 : I₂ → k))) (𝓝 0) (𝓝 0)`. Establish `: Continuous (fun t : I₁ → k => ((0 : I₀ → k), -t, (0 : I₂ → k)))` using `by fun_prop`.
+
+Conclude with `this.tendsto' 0 0 (by simp)`. Take `⟨s, hs⟩` from `exists_box_subset (hT.eventually h)`. Use `⟨s, fun t ht y => ?_⟩` and prove the remaining obligations. Use `hs ht y` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+
+Take `⟨Φ', hΦ', hl⟩` from `GlobalTheory.T.exists_cutoff_of_addChar_translation_invariant_functional k ψ hψc hψ1 I₀ I₁ I₂ M l h1 D s`. Establish `hz : ∀ x₀ x₁, ∫ a, Φ'.1 (x₀, x₁, a) ∂(Measure.pi fun _ => ν) = 0`. Introduce `x₀ x₁`. Repeatedly rewrite using `[hΦ']`. Distinguish the cases in `hx : x₁ ∈ box I₁ s`.
+
+Establish `e : ∀ a, D.1 (x₀, x₁, a) = D.1 (x₀, 0, a)` using `fun a => by`. Simplify using `using hs x₁ hx (x₀, 0, a)`. Simplify using `only [Set.indicator_of_mem hx, one_mul, e]`. Conclude with `hD x₀`. Simplify using `[Set.indicator_of_notMem hx]`.
+
+Rewrite using `[hl]`. Conclude with `GlobalTheory.T.schwartzBruhat_functional_zero_of_fibre_integral_zero k ν hν I₀ I₁ I₂ M l h2 Φ' hz`.
+-/
 theorem kernel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (I₀ I₁ I₂ : Type) [Fintype I₀] [Fintype I₁] [Fintype I₂] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)) →ₗ[ℂ] M), (∀ (b : I₁ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) → l Φ' = l Φ) → (∀ (a : I₂ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = Φ.1 (x + (0, 0, a))) → l Φ' = l Φ) → ∀ D : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)), (∀ x₀, ∫ a, D.1 (x₀, 0, a) ∂(Measure.pi fun _ => ν) = 0) → l D = 0 := by
   intro k _ _ _ _ _ _ ψ ν hψc hψ1 hν I₀ I₁ I₂ _ _ _ M _ _ l h1 h2 D hD
   obtain ⟨s, hs⟩ : ∃ s : kˣ, ∀ t ∈ box I₁ s, ∀ y : (I₀ → k) × (I₁ → k) × (I₂ → k),
@@ -49,6 +65,31 @@ theorem kernel : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   rw [hl]
   exact GlobalTheory.T.schwartzBruhat_functional_zero_of_fibre_integral_zero k ν hν I₀ I₁ I₂ M l h2 Φ' hz
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψc hψ1 hν I₀ I₁ I₂ _ _ _ M _ _ l h1 h2`. Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `set μ : Measure (I₂ → k) := Measure.pi fun _ => ν with hμ`. Use `haveI : μ.IsAddHaarMeasure := by rw [hμ]; infer_instance`.
+
+Use `set vol : ℝ := μ.real (box I₂ 1) with hvol`. Establish `hvol0 : vol ≠ 0`. Use `(ENNReal.toReal_pos ?_ ?_).ne'` and prove the remaining obligations. Conclude with `(isOpen_box 1).measure_ne_zero μ ⟨0, fun i _ => by simp [cball]⟩`. Conclude with `(isCompact_box 1).measure_lt_top.ne`.
+
+Establish `hlc : ∀ (n : Type) [Fintype n] (c : ℂ), IsLocallyConstant ((box n (1 : kˣ)).indicator fun _ => c)` using `fun n _ c => isLocallyConstant_indicator_const (isOpen_box 1) (isCompact_box 1).isClosed c`. Set `σf : SB (I₀ → k) → (I₀ → k) × (I₁ → k) × (I₂ → k) → ℂ` to `fun Ψ x => Ψ.1 x.1 * ((box I₁ (1 : kˣ)).indicator (fun _ => (1 : ℂ)) x.2.1 * (box I₂ (1 : kˣ)).indicator (fun _ => ((vol : ℂ))⁻¹) x.2.2)`. Establish `hσ : ∀ Ψ, σf Ψ ∈ SB ((I₀ → k) × (I₁ → k) × (I₂ → k))`. Introduce `Ψ`. Use `⟨(Ψ.2.1.comp_continuous continuous_fst).mul (((hlc I₁ 1).comp_continuous (by fun_prop)).mul ((hlc I₂ _).comp_continuous (by fun_prop))), ?_⟩` and prove the remaining obligations.
+
+Use `HasCompactSupport.intro (Ψ.2.2.prod ((isCompact_box (1 : kˣ)).prod (isCompact_box (1 : kˣ)))) ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [σf]`. Distinguish the cases in `h0 : x.1 ∈ tsupport Ψ.1`. Distinguish the cases in `h1' : x.2.1 ∈ box I₁ (1 : kˣ)`.
+
+Establish `h2' : x.2.2 ∉ box I₂ (1 : kˣ)` using `fun h => hx ⟨h0, h1', h⟩`. Simplify using `[Set.indicator_of_notMem h2']`. Simplify using `[Set.indicator_of_notMem h1']`. Simplify using `[image_eq_zero_of_notMem_tsupport h0]`. Set `σ : SB (I₀ → k) →ₗ[ℂ] SB ((I₀ → k) × (I₁ → k) × (I₂ → k))` to `{ toFun := fun Ψ => ⟨σf Ψ, hσ Ψ⟩ map_add' := fun Ψ Ψ' => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `only [σf, Submodule.coe_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c Ψ => by`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `only [σf, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Use `ring }`. Establish `hσv : ∀ Ψ x, (σ Ψ).1 x = σf Ψ x` using `fun _ _ => rfl`.
+
+Establish `hInt : ∀ (Φ : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))) (x : I₀ → k), Integrable (fun a => Φ.1 (x, 0, a)) μ`. Introduce `Φ x`. Use `Continuous.integrable_of_hasCompactSupport (Φ.2.1.continuous.comp (by fun_prop)) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (IsCompact.image Φ.2.2 (continuous_snd.comp continuous_snd)) fun a ha => ?_` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport fun h => ha ⟨_, h, rfl⟩`.
+
+Establish `hσi : ∀ Ψ x, ∫ a, (σ Ψ).1 (x, 0, a) ∂μ = Ψ.1 x`. Introduce `Ψ x`. Simplify using `only [hσv, σf]`. Establish `h0 : (0 : I₁ → k) ∈ box I₁ (1 : kˣ)` using `fun i _ => by simp [cball]`. Simplify using `only [Set.indicator_of_mem h0, one_mul]`.
+
+Rewrite using `[integral_const_mul, integral_indicator_const _ (isOpen_box _).measurableSet]`. Rewrite using `[← hvol, Complex.real_smul, mul_inv_cancel₀ (by exact_mod_cast hvol0), mul_one]`. Use `⟨l ∘ₗ σ, fun Φ => ⟨⟨_, GlobalTheory.T.integral_last_factor_slice_mem_schwartzBruhat k ν I₀ I₁ I₂ Φ⟩, fun x => rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Use `set Ψ : SB (I₀ → k) := ⟨_, GlobalTheory.T.integral_last_factor_slice_mem_schwartzBruhat k ν I₀ I₁ I₂ Φ⟩`. Establish `hk` using `kernel k ψ ν hψc hψ1 hν I₀ I₁ I₂ M l h1 h2 (Φ - σ Ψ) (fun x₀ => by`.
+
+Simplify using `only [Submodule.coe_sub, Pi.sub_apply]`. Rewrite using `[integral_sub (hInt Φ x₀) (hInt (σ Ψ) x₀), hσi]`. Conclude with `sub_self _)`. Rewrite `hk` using `[map_sub, sub_eq_zero]`. Simplify using `using hk`.
+
+Introduce `l₀ hl₀ ext1 Ψ`. Take `⟨Ψ', hΨ', hl⟩` from `hl₀ (σ Ψ)`. Establish `: Ψ' = Ψ` using `Subtype.ext (funext fun x => (hΨ' x).trans (hσi Ψ x))`. Substitute `this` using the available equality. Simplify using `[← hl]`.
+-/
 theorem coinvariants : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (I₀ I₁ I₂ : Type) [Fintype I₀] [Fintype I₁] [Fintype I₂] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)) →ₗ[ℂ] M), (∀ (b : I₁ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) → l Φ' = l Φ) → (∀ (a : I₂ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = Φ.1 (x + (0, 0, a))) → l Φ' = l Φ) → ∃! l₀ : SB (I₀ → k) →ₗ[ℂ] M, ∀ Φ : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)), ∃ Ψ : SB (I₀ → k), (∀ x, Ψ.1 x = ∫ a, Φ.1 (x, 0, a) ∂(Measure.pi fun _ => ν)) ∧ l Φ = l₀ Ψ := by
   intro k _ _ _ _ _ _ ψ ν hψc hψ1 hν I₀ I₁ I₂ _ _ _ M _ _ l h1 h2
   haveI := secondCountable k

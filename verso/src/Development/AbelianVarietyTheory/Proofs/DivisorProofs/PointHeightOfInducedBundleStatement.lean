@@ -16,5 +16,8 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTheory.ArInt ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.ProjVar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.ModelHt.main | exact GlobalTheory.Mean4O.ModelHt.main | (intros; apply GlobalTheory.Mean4O.ModelHt.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.point_height_of_induced_bundle : GlobalTheory.Published.ArExists → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (P : TrueGeo.Model Y) (L : HermLB P.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced P L k cf → ∀ y : Y.X, IsClosed ({y} : Set Y.X) → IsPtHt L (P.j y) (((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ) * A.ht y - ((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ) * (∑ᶠ v, cf v) / (Module.finrank ℚ F : ℝ)) := by
   first | exact @GlobalTheory.Mean4O.ModelHt.main | exact GlobalTheory.Mean4O.ModelHt.main | (intros; apply GlobalTheory.Mean4O.ModelHt.main <;> assumption)

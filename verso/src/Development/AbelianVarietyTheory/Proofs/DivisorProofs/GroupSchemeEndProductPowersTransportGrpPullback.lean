@@ -7,6 +7,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.ActFin
 
+/- English proof (translation)
+Introduce `S S' t A _ _ A' _ _ φ h r g f c hc`. Set `U : Over.mk (A'.hom ≫ t) ⟶ A` to `pushPt h.1.w (𝟙 A')`. Establish `hk : ∀ k, pushHom h A' (g k) = preHom U (f k)` using `fun k => by`. Use `ext`. Use `show (g k).left ≫ φ = (𝟙 A' : A' ⟶ A').left ≫ φ ≫ (f k).left`.
+
+Rewrite using `[hc k, Over.id_left, Category.id_comp]`. Establish `e : pushHom h A' (∏ k, g k ^ c k) = preHom U (∏ k, f k ^ c k)`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [map_zpow, map_zpow, hk k]`. Establish `e'` using `congrArg (fun z => z.left) e`.
+
+Express the relevant statement in the definitionally equal form `(∏ k, g k ^ c k).left ≫ φ = ((𝟙 A' : A' ⟶ A').left ≫ φ) ≫ (∏ k, f k ^ c k).left at e'`. Rewrite `e'` using `[Over.id_left, Category.id_comp]`. Then use the resulting hypothesis.
+-/
 theorem prod_zpow_transport : ∀ (S S' : Scheme.{0}) (t : S' ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] (A' : Over S') [GrpObj A'] [IsCommMonObj A'] (φ : A'.left ⟶ A.left), IsGrpPullback A' A t φ → ∀ (r : ℕ) (g : Fin r → (A' ⟶ A')) (f : Fin r → (A ⟶ A)) (c : Fin r → ℤ), (∀ k, (g k).left ≫ φ = φ ≫ (f k).left) → (∏ k, g k ^ c k).left ≫ φ = φ ≫ (∏ k, f k ^ c k).left := by
   intro S S' t A _ _ A' _ _ φ h r g f c hc
   let U : Over.mk (A'.hom ≫ t) ⟶ A := pushPt h.1.w (𝟙 A')

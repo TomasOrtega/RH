@@ -6,6 +6,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 
 namespace GlobalTheory.BurnsideIff
 
+/- English proof (translation)
+Use `first`. Consider the case `(rename_i h_3 h_4 h_5; revert Γ k K h_3 h_4 h_5 r M h W hW; exact @_root_.GlobalTheory.InvariantBotOrTop.main)`. Consider the case `exact @_root_.GlobalTheory.InvariantBotOrTop.main`. Consider the case `exact _root_.GlobalTheory.InvariantBotOrTop.main`. Consider the case `(apply _root_.GlobalTheory.InvariantBotOrTop.main <;> assumption)`.
+
+Consider the case `(intros; apply _root_.GlobalTheory.InvariantBotOrTop.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.InvariantBotOrTop.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.InvariantBotOrTop.main ..)`.
+-/
 theorem eq_bot_or_top_of_span_eq_top {Γ k K : Type} [Field k] [Field K] [Algebra k K] {r : ℕ}
     (M : Γ → Matrix (Fin r) (Fin r) k) (h : Submodule.span k (Set.range M) = ⊤)
     (W : Submodule K (Fin r → K))

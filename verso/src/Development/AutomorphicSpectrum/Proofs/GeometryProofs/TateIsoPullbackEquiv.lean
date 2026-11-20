@@ -13,6 +13,13 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.CompanionTheory.Ar.XR
 
+/- English proof (translation)
+Introduce `E _ _ _ H D X X' t t' f m k _ x' x hx`. Substitute `hx` using the available equality. Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.φ)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+
+Take `⟨e, he⟩` from `GlobalTheory.LiePull.exists_pushEquiv m.cart (Over.mk x') (x' ≫ f) rfl`. Establish `eact : ∀ c y, e (y ≫ t'.act.act c) = e y ≫ t.act.act c` using `fun c y => Over.OverMorphism.ext (by`. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, m.act, Category.assoc])`. Establish `eact' : ∀ c y, e.symm (y ≫ t.act.act c) = e.symm y ≫ t'.act.act c` using `fun c y => e.injective (by rw [eact, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply])`. Establish `weil : ∀ (n : ℤ) (y y' : Over.mk x' ⟶ t'.G) (c : Γ(Sp k, ⊤)ˣ), Out.WeilIs t'.G t'.PP.L n y y' c ↔ Out.WeilIs t.G t.PP.L n (e y) (e y') c` using `fun n y y' c => GlobalTheory.weilIs_grpPullback_of_comm' _ _ _ _ _ m.φ _ _ t.PP.isLB t'.PP.isLB m.cart hL (Over.mk x') n y y' (e y) (e y') c (he y) (he y')`.
+
+Use `⟨fun I => ⟨GlobalTheory.PELPeriod.tateIsoMap I e.symm eact' fun n y y' c h => (weil n _ _ _).2 ?_, rfl, fun n a => ?_⟩, fun I' => ⟨GlobalTheory.PELPeriod.tateIsoMap I' e eact fun n y y' c h => (weil n _ _ _).1 h, rfl, fun n a => (he _).symm⟩⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]` and apply the resulting hypothesis. Use `show (e.symm (I.ev n a)).left ≫ m.φ = _`. Rewrite using `[← he, MulEquiv.apply_symm_apply]`.
+-/
 theorem tateIsoAt_move : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∀ (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (m : SABMap t' t f) (k : Type) [Field k] (x' : Sp k ⟶ X') (x : Sp k ⟶ X), x = x' ≫ f → (∀ I : TateIsoAt D t x, ∃ I' : TateIsoAt D t' x', I'.ζ = I.ζ ∧ ∀ n a, (I'.ev n a).left ≫ m.φ = (I.ev n a).left) ∧ ∀ I' : TateIsoAt D t' x', ∃ I : TateIsoAt D t x, I'.ζ = I.ζ ∧ ∀ n a, (I'.ev n a).left ≫ m.φ = (I.ev n a).left := by
   intro E _ _ _ H D X X' t t' f m k _ x' x hx
   subst hx

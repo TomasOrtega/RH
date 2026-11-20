@@ -4,6 +4,19 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsJLeviMul
 import Development.AbelianVarietyTheory.Proofs.SatakeParameters.IwahoriNeBotOfSpherical
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel Matrix UpperTheory.Gal.TypesAndIwahori
 
+/- English proof (translation)
+Introduce `L k _ _ _ _ N s d e V _ _ π hs hi θ μ hμ ⟨v, hv0, hv⟩`. Establish `hadm : IsAdmissible π` using `(L.bz k).1 (Fin N) V π hs hi`. Establish `hb` using `L.mp k N s d e V π hadm`. Establish `hJ : KOne k (Fin N) ⊔ (unipRad k e ⊓ KO k (Fin N)) = proRad k e` using `(GlobalTheory.LocGL.IwahoriFactor.proRad_eq_sup e).symm`. Rewrite `hb` using `[hJ]`.
+
+Establish `key : ∀ g ∈ proRad k e, π g v = v`. Introduce `g hg`. Establish `hp : g ∈ parahoric k e` using `proRad_le_parahoric e hg`. Establish `h1 : parahoricProj k e ⟨g, hp⟩ = 1` using `(parahoricProj_eq_one_iff e ⟨g, hp⟩).2 hg`. Establish `h2 : π g v = ((typeChar e θ ⟨g, hp⟩ : ℂˣ) : ℂ) • v` using `hv ⟨g, hp⟩`.
+
+Establish `h3 : typeChar e θ ⟨g, hp⟩ = 1` using `by show leviChar _ θ (parahoricProj k e ⟨g, hp⟩) = 1`. Rewrite using `[h1, map_one]`. Rewrite using `[h2, h3, Units.val_one, one_smul]`. Establish `hfix : v ∈ fixed π (proRad k e)` using `GlobalTheory.Cong.LimitAtL.mem_fixed.2 key`. Establish `h0 : (0 : V) ∈ fixed π (proRad k e)` using `zero_mem _`.
+
+Use `⟨Submodule.Quotient.mk v, fun hy => hv0 (hb.injOn hfix h0 ?_), fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `using hy`. Establish `h1 : jacU e π x (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (leviEmb k e x) v)` using `rfl`. Establish `h2` using `hv ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩`. Establish `h3 : π (leviEmb k e x) v = ((typeChar e θ ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩ : ℂˣ) : ℂ) • v` using `h2`.
+
+Establish `h4 : ∀ a, ((μ a (GeneralLinearGroup.det (x a)) : ℂˣ) : ℂ) = ((θ a (GeneralLinearGroup.det (redLevi k _ ⟨x, hx⟩ a)) : ℂˣ) : ℂ)`. Introduce `a`. Establish `h5` using `(hμ a).detChar_eq ⟨x a, hx a trivial⟩`. Rewrite using `[redLevi_apply]`. Conclude with `congrArg (fun u : ℂˣ => (u : ℂ)) h5`.
+
+Establish `h6 : parahoricProj k e ⟨leviEmb k e x, leviEmb_mem_parahoric e ⟨x, hx⟩⟩ = redLevi k _ ⟨x, hx⟩` using `parahoricProj_leviEmb e ⟨x, hx⟩`. Rewrite using `[h1, h3, typeChar_apply, h6, Units.coe_prod, Submodule.Quotient.mk_smul]`. Simplify using `only [h4]`.
+-/
 theorem UpperTheory.Gal.TypesAndIwahori.jacOfType :
     UpperTheory.Gal.TypesAndIwahori.Loc → UpperTheory.Gal.TypesAndIwahori.JacOfType := by
   intro L k _ _ _ _ N s d e V _ _ π hs hi θ μ hμ ⟨v, hv0, hv⟩

@@ -20,28 +20,45 @@ section Scaling
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
+/- English proof (translation)
+The claim follows from `hermLine_eq_of (by funext k; simp [HermLine.zcomb, HermLine.tensor, hermZpow]) (by funext z; simp [HermLine.zcomb, HermLine.tensor, hermZpow])`.
+-/
 theorem zcomb_eq_tensor (A X : HermLine ι) (q : ℕ) :
     HermLine.zcomb A X q 1 = (hermZpow A q).tensor X :=
   hermLine_eq_of (by funext k; simp [HermLine.zcomb, HermLine.tensor, hermZpow])
     (by funext z; simp [HermLine.zcomb, HermLine.tensor, hermZpow])
 
+/- English proof (translation)
+Rewrite using `[zcomb_eq_tensor]`. Conclude with `isSmoothHerm_tensor (isSmoothHerm_hermZpow hA q) hX`.
+-/
 theorem isSmoothHerm_zcomb {A X : HermLine ι} (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) (q : ℕ) :
     IsSmoothHerm (HermLine.zcomb A X q 1) := by
   rw [zcomb_eq_tensor]
   exact isSmoothHerm_tensor (isSmoothHerm_hermZpow hA q) hX
 
+/- English proof (translation)
+Introduce `z`. Use `show A.h _ ^ p * B.h _ ^ q = A.h z ^ p * B.h z ^ q`. Rewrite using `[hA z, hB z]`.
+-/
 theorem isConjInvariantH_zcomb {A B : HermLine ι} (hA : IsConjInvariantH A) (hB : IsConjInvariantH B) (p q : ℤ) :
     IsConjInvariantH (HermLine.zcomb A B p q) := by
   intro z
   show A.h _ ^ p * B.h _ ^ q = A.h z ^ p * B.h z ^ q
   rw [hA z, hB z]
 
+/- English proof (translation)
+Introduce `z`. Simplify using `[fsH, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`.
+-/
 theorem isConjInvariantH_fsH : IsConjInvariantH (fsH ι) := by
   intro z
   simp [fsH, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]
 
 variable {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {P : Ideal (MRing ι)} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[zcomb_eq_tensor]`. Establish `hAq` using `isSmoothHerm_hermZpow hA (q : ℤ)`. Establish `hR : ∀ i : Fin n, IsSmoothHerm ((fun i : Fin n => L (Equiv.swap a (Fin.last n) i.castSucc)) i)` using `fun i => hL _`. Rewrite using `[fam_update_eq_snoc hI hP L hL a (isSmoothHerm_tensor hAq hX), fam_update_eq_snoc hI hP L hL a hA, fam_update_eq_snoc hI hP L hL a hX, hI.2.1 P n _ _ _ hP hR hAq hX, fam_snoc_zpow hI hP _ hR hA (q : ℤ)]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fam_update_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
     (L : Fin (n + 1) → HermLine ι) (hL : ∀ j, IsSmoothHerm (L j)) (a : Fin (n + 1)) {A X : HermLine ι}
     (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) (q : ℕ) :
@@ -56,6 +73,21 @@ theorem fam_update_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hsm : ∀ i, IsSmoothHerm (![X, A] i)` using `Fin.forall_fin_two.mpr ⟨hX, hA⟩`. Proceed by induction on `T using Finset.induction_on generalizing t with`. Consider the case `empty`. Simplify using `only [Finset.notMem_empty, if_false]`. Conclude with `(famExt_basis ![X, A] t).symm`.
+
+Consider the case `insert a T ha ih`. Establish `hins : ∀ {β : Type} (w : β) (F : Fin 2 → β), (fun j => if j ∈ insert a T then w else F (t j)) = Function.update (fun j => if j ∈ T then w else F (t j)) a w`. Introduce `β w F`. Use function extensionality and compare the values at `j`. Break down `eq_or_ne j a with rfl | h` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `hupd : ∀ {β : Type} (w : β) (F : Fin 2 → β) (i : Fin 2), Function.update (fun j => if j ∈ T then w else F (t j)) a (F i) = fun j => if j ∈ T then w else F (Function.update t a i j)`. Introduce `β w F i`. Use function extensionality and compare the values at `j`.
+
+Break down `eq_or_ne j a with rfl | h` into its components or cases. Simplify using `[ha]`. Simplify using `[Function.update_of_ne h]`. Establish `hL : ∀ j, IsSmoothHerm ((fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (t j)) j)`. Introduce `j`.
+
+Simplify using `only`. Use `split_ifs`. Conclude with `isSmoothHerm_zcomb hA hX q`. Conclude with `hsm (t j)`. Establish `eL : (fun j => if j ∈ insert a T then HermLine.zcomb A X q 1 else ![X, A] (t j)) = Function.update (fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (t j)) a (HermLine.zcomb A X q 1)` using `hins _ _`.
+
+Establish `eV : (fun j => if j ∈ insert a T then (![1, (q : ℝ)] : Fin 2 → ℝ) else Pi.single (t j) 1) = Function.update (fun j => if j ∈ T then (![1, (q : ℝ)] : Fin 2 → ℝ) else Pi.single (t j) 1) a ![1, (q : ℝ)]` using `hins (![1, (q : ℝ)] : Fin 2 → ℝ) fun i => Pi.single i 1`. Establish `hA1 : Function.update (fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (t j)) a A = fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (Function.update t a 1 j)` using `hupd _ ![X, A] 1`. Establish `hX0 : Function.update (fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (t j)) a X = fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (Function.update t a 0 j)` using `hupd _ ![X, A] 0`. Establish `hV1 : Function.update (fun j => if j ∈ T then (![1, (q : ℝ)] : Fin 2 → ℝ) else Pi.single (t j) 1) a (Pi.single 1 1) = fun j => if j ∈ T then ![1, (q : ℝ)] else Pi.single (Function.update t a 1 j) 1` using `hupd (![1, (q : ℝ)] : Fin 2 → ℝ) (fun i => Pi.single i 1) 1`. Establish `hV0 : Function.update (fun j => if j ∈ T then (![1, (q : ℝ)] : Fin 2 → ℝ) else Pi.single (t j) 1) a (Pi.single 0 1) = fun j => if j ∈ T then ![1, (q : ℝ)] else Pi.single (Function.update t a 0 j) 1` using `hupd (![1, (q : ℝ)] : Fin 2 → ℝ) (fun i => Pi.single i 1) 0`.
+
+Establish `hw : (![1, (q : ℝ)] : Fin 2 → ℝ) = (q : ℝ) • Pi.single 1 1 + (1 : ℝ) • Pi.single 0 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[eL, eV, fam_update_zcomb hI hP _ hL a hA hX q, hA1, hX0, ih, ih, congrArg (Function.update (fun j => if j ∈ T then (![1, (q : ℝ)] : Fin 2 → ℝ) else Pi.single (t j) 1) a) hw, MultilinearMap.map_update_add, MultilinearMap.map_update_smul, MultilinearMap.map_update_smul, hV1, hV0, …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fam_eq_famExt_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {A X : HermLine ι}
     (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) (q : ℕ) (T : Finset (Fin (n + 1))) (t : Fin (n + 1) → Fin 2) :
     I P (n + 1) (fun j => if j ∈ T then HermLine.zcomb A X q 1 else ![X, A] (t j)) =
@@ -117,6 +149,19 @@ theorem fam_eq_famExt_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n 
       smul_eq_mul, smul_eq_mul]
     ring
 
+/- English proof (translation)
+Establish `hfull : ∀ q : ℕ, I P (n + 1) (fun _ => HermLine.zcomb A X q 1) = famExt I P (n + 1) ![X, A] (fun _ => ![1, (q : ℝ)])`. Introduce `q`. Simplify using `using fam_eq_famExt_zcomb hI hP hA hX q Finset.univ (fun _ => 0)`. Establish `hscale : ∀ q : ℕ, q ≠ 0 → famExt I P (n + 1) ![X, A] (fun _ => ![1, (q : ℝ)]) / (q : ℝ) ^ (n + 1) = famExt I P (n + 1) ![X, A] (fun _ => ![1 / (q : ℝ), 1])`. Introduce `q hq`.
+
+Establish `hq' : (q : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hq`. Establish `e : (fun _ : Fin (n + 1) => (![1, (q : ℝ)] : Fin 2 → ℝ)) = fun i => (fun _ : Fin (n + 1) => (q : ℝ)) i • (![1 / (q : ℝ), 1] : Fin 2 → ℝ)`. Use function extensionality and compare the values at `i j`. Apply the tactic sequence `fin_cases j <;> simp [hq']`. Rewrite using `[e, MultilinearMap.map_smul_univ, smul_eq_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hlim : Tendsto (fun q : ℕ => famExt I P (n + 1) ![X, A] (fun _ => ![1 / (q : ℝ), 1])) atTop (𝓝 (famExt I P (n + 1) ![X, A] (fun _ => ![0, 1])))`. Simplify using `only [famExt_apply]`. Use `tendsto_finsetSum _ fun s _ => Tendsto.const_mul _ (tendsto_finsetProd _ fun j _ => ?_)` and prove the remaining obligations. Generalize the expression as in `s j = i`.
+
+Use `fin_cases i`. Simplify using `using (tendsto_one_div_atTop_nhds_zero_nat : Tendsto (fun q : ℕ => 1 / (q : ℝ)) atTop (𝓝 0))`. Simplify using the standard rewrite rules. Establish `hval : famExt I P (n + 1) ![X, A] (fun _ => ![0, 1]) = I P (n + 1) (fun _ => A)`. Establish `e : (fun _ : Fin (n + 1) => (![0, 1] : Fin 2 → ℝ)) = fun j => Pi.single ((fun _ => (1 : Fin 2)) j) 1`.
+
+Use function extensionality and compare the values at `j i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[e, famExt_basis]`. Both sides reduce to the same expression. Rewrite `hlim` using `[hval]`.
+
+Use `hlim.congr' ((eventually_ge_atTop 1).mono fun q hq => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hfull, hscale q (by omega)]`.
+-/
 theorem tendsto_fam_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {A X : HermLine ι}
     (hA : IsSmoothHerm A) (hX : IsSmoothHerm X) :
     Tendsto (fun q : ℕ => I P (n + 1) (fun _ => HermLine.zcomb A X q 1) / (q : ℝ) ^ (n + 1)) atTop
@@ -156,6 +201,31 @@ theorem tendsto_fam_zcomb (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 
 
 end Scaling
 
+/- English proof (translation)
+Introduce `K _ ι _ Ω _ y D a A P0 II hD hII hY hbir ha hP0 hsemi hmon hconj`. Use `set F : ℝ := ((D + 1).factorial : ℝ) with hF`. Establish `hFpos : 0 < F` using `by rw [hF]; exact_mod_cast Nat.factorial_pos _`. Set `f : ℕ → ℝ` to `fun τ => smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLatNm y A.a) τ / ((τ : ℝ) ^ (D + 1) / F)`. Use `show limsup f atTop ≤ II K ι (mCoordIdeal y) (D + 1) (fun _ => A)`.
+
+Establish `hcnt : ∀ (B : HermLine ι) (La : ℕ → AddSubgroup Ω) (τ : ℕ), 0 ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y B) La τ` using `fun B La τ => by`. Unfold `smallSectionCount`. Conclude with `Real.log_natCast_nonneg _`. Establish `hf0 : ∀ τ, 0 ≤ f τ` using `fun τ => div_nonneg (hcnt _ _ _) (div_nonneg (by positivity) hFpos.le)`. Establish `key : ∀ q : ℕ, 1 ≤ q → ∀ ε : ℝ, 0 < ε → limsup f atTop ≤ (II K ι (mCoordIdeal y) (D + 1) (fun _ => HermLine.zcomb A (fsH ι) q 1) + ε) / (q : ℝ) ^ (D + 1)`.
+
+Introduce `q hq ε hε`. Use `set B := HermLine.zcomb A (fsH ι) q 1 with hBdef`. Use `set c := II K ι (mCoordIdeal y) (D + 1) (fun _ => B) + ε with hc`. Establish `hsg : IsSmallGeneratedDatum P0 y D B` using `hPM K ι Ω y D a A P0 q hD hY hbir ha hP0 hsemi hmon hq`. Establish `hBconj : IsConjInvariantH B` using `isConjInvariantH_zcomb hconj isConjInvariantH_fsH _ _`.
+
+Establish `hBa : ∀ k, 1 ≤ B.a k`. Introduce `k`. Simplify using `only [hBdef, HermLine.zcomb, fsH, HermLine.ofMetrics, ha, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.one_apply, mul_one]`. Use polynomial arithmetic with `[show (0 : ℤ) ≤ (q : ℤ) * (a k : ℤ) by positivity]`. Take `⟨N, hN⟩` from `eventually_atTop.mp (hU K ι Ω y D B P0 II hD hII hY hbir hsg hBconj hBa ε hε)`.
+
+Establish `hqpos : (0 : ℝ) < q` using `by exact_mod_cast (show 0 < q by omega)`. Establish `hbound : ∀ᶠ τ : ℕ in atTop, f τ ≤ c / (q : ℝ) ^ (D + 1) * (1 + q / (τ : ℝ)) ^ (D + 1)` using `by filter_upwards [eventually_ge_atTop (q * N + 1)] with τ hτ`. Establish `hτpos : (0 : ℝ) < τ` using `by exact_mod_cast (show 0 < τ by omega)`. Establish `hdm` using `Nat.div_add_mod τ q`. Establish `hmod` using `Nat.mod_lt τ (show 0 < q by omega)`.
+
+Establish `hqn : τ ≤ q * (τ / q + 1)` using `by rw [Nat.mul_add, mul_one]; omega`. Establish `hnN : N ≤ τ / q + 1`. Establish `: N ≤ τ / q` using `(Nat.le_div_iff_mul_le (by omega)).mpr (by rw [mul_comm]; omega)`. Use linear arithmetic over natural numbers and integers. Establish `hnq : (((τ / q + 1 : ℕ) : ℝ)) * q ≤ τ + q`.
+
+Use `Nat.div_mul_le_self τ q` as an intermediate fact. Establish `h' : (τ / q + 1) * q ≤ τ + q` using `by rw [Nat.add_mul, one_mul]; omega`. Conclude with `h'` after adjusting the coercions. Establish `h1 : smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLatNm y A.a) τ ≤ c * ((((τ / q + 1 : ℕ) : ℝ)) ^ (D + 1) / F)` using `(hS K ι Ω y D a A P0 q τ (τ / q + 1) hY hbir ha hP0 hsemi hmon hq hqn).trans (hN _ hnN)`. Establish `hc0 : 0 ≤ c`.
+
+Establish `hpos : 0 < (((τ / q + 1 : ℕ) : ℝ)) ^ (D + 1) / F` using `by positivity`. Conclude with `(mul_nonneg_iff_of_pos_right hpos).mp ((hcnt _ _ _).trans h1)`. Establish `hnle : (((τ / q + 1 : ℕ) : ℝ)) ≤ (τ + q) / q` using `by rw [le_div_iff₀ hqpos]; exact hnq`. Establish `h2 : (((τ / q + 1 : ℕ) : ℝ)) ^ (D + 1) ≤ ((τ + q) / q) ^ (D + 1)` using `pow_le_pow_left₀ (Nat.cast_nonneg _) hnle _`. Establish `e : c / (q : ℝ) ^ (D + 1) * (1 + q / (τ : ℝ)) ^ (D + 1) = c * ((((τ : ℝ) + q) / q) ^ (D + 1) / F) / ((τ : ℝ) ^ (D + 1) / F)`.
+
+Rewrite using `[show (1 : ℝ) + q / τ = (τ + q) / τ by field_simp]`. Simplify using `only [div_pow]`. Clear the denominators using the available nonvanishing facts. Use `show smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLatNm y A.a) τ / ((τ : ℝ) ^ (D + 1) / F) ≤ _`. Rewrite using `[e, div_le_div_iff_of_pos_right (by positivity)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlim : Tendsto (fun τ : ℕ => c / (q : ℝ) ^ (D + 1) * (1 + q / (τ : ℝ)) ^ (D + 1)) atTop (𝓝 (c / (q : ℝ) ^ (D + 1)))`. Establish `h0 : Tendsto (fun τ : ℕ => (q : ℝ) / τ) atTop (𝓝 0)` using `tendsto_const_div_atTop_nhds_zero_nat _`. Simplify using `using ((tendsto_const_nhds (x := (1 : ℝ))).add h0).pow (D + 1) |>.const_mul (c / (q : ℝ) ^ (D + 1))`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hT` using `tendsto_fam_zcomb (hII K ι) hY hsemi.1 (show IsSmoothHerm (fsH ι) from isSmoothHerm_ofMetrics_fs 1)`. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ q : ℕ in atTop, limsup f atTop - ε ≤ II K ι (mCoordIdeal y) (D + 1) (fun _ => HermLine.zcomb A (fsH ι) q 1) / (q : ℝ) ^ (D + 1)` using `by filter_upwards [eventually_ge_atTop 1] with q hq`. Establish `hk` using `key q hq ε hε`. Establish `hq1 : (1 : ℝ) ≤ (q : ℝ) ^ (D + 1)` using `one_le_pow₀ (by exact_mod_cast hq)`.
+
+Establish `hεq : ε / (q : ℝ) ^ (D + 1) ≤ ε` using `div_le_self hε.le hq1`. Rewrite `hk` using `[add_div]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `ge_of_tendsto hT hev` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ArithmeticVolumeNef.proof (hS : MonomialShift.Statement) (hPM : PerturbMonomial.Statement)
     (hU : UpperNormalisation.Statement) : ArithmeticVolumeNef.Statement := by
   intro K _ ι _ Ω _ y D a A P0 II hD hII hY hbir ha hP0 hsemi hmon hconj

@@ -48,14 +48,25 @@ def WeilSplitFormula (D : D7) : Prop :=
 
 def WeilSplitFormulaAll : Prop := ∀ D : D7, WeilSplitFormula D
 
+/- English proof (translation)
+Unfold `pullPt actO`. Rewrite using `[inv_inv]`.
+-/
 theorem pullPt_eq_actO (S T : HSp D) (g : GA D S) (h : GA D T) (t : WO S T) :
     pullPt S T g h t = actO S T g⁻¹ h⁻¹ t := by
   unfold pullPt actO; rw [inv_inv]
 
+/- English proof (translation)
+Simplify using `[splitFacO]`.
+-/
 theorem factor_eq (χS χT : (AE D)ˣ →* Circle) (x y : (AE D)ˣ) :
     ((χT x : ℂ))⁻¹ * (χS y : ℂ) = (splitFacO χS χT x y : ℂ) := by
   simp [splitFacO]
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `hk`. Establish `hy'` using `(hβ y).1 hy`. Use `(hβ _).2 fun i => ?_` and prove the remaining obligations. Establish `e0 : β⁻¹ * Formalism.L2.DIV.frGL β u = Formalism.L2.DIV.intGL F E n u * β⁻¹` using `by show β⁻¹ * (β * Formalism.L2.DIV.intGL F E n u * β⁻¹) = _ group`. Establish `e1 : (β⁻¹).val.mulVec ((Formalism.L2.DIV.frGL β u).val.mulVec y) = (Formalism.L2.DIV.intGL F E n u).val.mulVec ((β⁻¹).val.mulVec y)`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, e0]`. Rewrite using `[e1]`. Use `show ∑ j, (Formalism.L2.DIV.intGL F E n u).val i j * ((β⁻¹).val.mulVec y) j ∈ _`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (u.val i j).2 (hy' j)`.
+-/
 theorem mulVec_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (hβ : Formalism.L2.DIV.IsFrame β Λ)
     {k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hk : k ∈ Formalism.L2.DIV.St β) {y : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
@@ -73,6 +84,9 @@ theorem mulVec_mem_hatL {F E : Type} [Field F] [NumberField F] [Field E] [Number
   show ∑ j, (Formalism.L2.DIV.intGL F E n u).val i j * ((β⁻¹).val.mulVec y) j ∈ _
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (u.val i j).2 (hy' j)
 
+/- English proof (translation)
+Use `⟨mulVec_mem_hatL hβ hk, fun hy => ?_⟩` and prove the remaining obligations. Use `mulVec_mem_hatL hβ (Subgroup.inv_mem _ hk) hy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem mulVec_mem_hatL_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (hβ : Formalism.L2.DIV.IsFrame β Λ)
     {k : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hk : k ∈ Formalism.L2.DIV.St β) (y : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -81,6 +95,9 @@ theorem mulVec_mem_hatL_iff {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   have := mulVec_mem_hatL hβ (Subgroup.inv_mem _ hk) hy
   rwa [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Introduce `y` and use `mulVec_mem_hatL_iff hβ hg y`.
+-/
 theorem stabLat_of_mem_St (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (hβ : Formalism.L2.DIV.IsFrame β Λ) (g : GA D V)
     (hg : Formalism.IndefR.Lev.finE V g ∈ Formalism.L2.DIV.St β) : StabLat V Λ g :=

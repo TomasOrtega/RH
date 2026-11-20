@@ -26,6 +26,15 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.FibN
 
 noncomputable section
 
+/- English proof (translation)
+Use `set uu : Fin (d + 2) → Fin 2 → ℝ := fun r => if (r : ℕ) < 2 * k then DiagonalFibreFubini.wordCoef i r else 0`. Use `set vv : Fin (d + 2) → ℝ := fun r => if (r : ℕ) < 2 * k then (0 : ℝ) else 1`. Establish `hrow : (fun r => hessC (φ r) (Fin.cons p₀ (Fin.cons p₁ y))) = fun r => blk ((uu r 0 : ℂ) * -(wS p₀ : ℂ)) (blk ((uu r 1 : ℂ) * -(wS p₁ : ℂ)) ((∑ j, ((uu r 0 * nS p₀ j + uu r 1 * nS p₁ j : ℝ) : ℂ) • T j) + ((vv r : ℝ) : ℂ) • H))`. Use function extensionality and compare the values at `r`. Establish `e : φ r = fun z : Fin (d + 2) → ℂ => uu r 0 * f (Fin.cons (z 0) (Fin.tail (Fin.tail z))) + uu r 1 * f (Fin.cons (z 1) (Fin.tail (Fin.tail z))) + vv r * α (Fin.tail (Fin.tail z))`.
+
+Use function extensionality and compare the values at `(hφ r)`. Rewrite using `[e, GlobalTheory.T.complex_hessian_two_point_combination d f α y p₀ p₁ _ _ _ _ (uu r 0) (uu r 1) (vv r) (hfc _) (hfc _) hα (hfh _) (hfh _), ← hH]`. Use `congr 3`. Simplify using `only [Finset.smul_sum, smul_smul, ← Finset.sum_add_distrib, ← add_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hB` using `GlobalTheory.T.mixed_discriminant_two_row_expansion d T H L hL uu vv (nS p₀) (nS p₁) (-(wS p₀ : ℂ)) (-(wS p₁ : ℂ))`. Rewrite `hB` using `[GlobalTheory.T.word_coefficient_second_derivative d k i hi hkd (nS p₀) (nS p₁)]`. Rewrite using `[maDens, hrow]`.
+
+Establish `hre` using `congrArg Complex.re hB`. Rewrite `hre` using `[show (((d + 2).factorial : ℕ) : ℂ) = (((d + 2).factorial : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul, neg_mul_neg, ← Complex.ofReal_mul, Complex.re_ofReal_mul]`. Rewrite using `[mul_right_comm, hre]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem densW (d k i : ℕ) (hi : i < k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → Matrix (Fin d) (Fin d) ℂ)
     (H : Matrix (Fin d) (Fin d) ℂ) (L : MvPolynomial (Option (Fin 3)) ℝ →ₗ[ℝ] ℂ)
     (hL : ∀ (c : Fin d → Fin 3 → ℝ) (v : Fin d → ℝ),
@@ -70,6 +79,17 @@ theorem densW (d k i : ℕ) (hi : i < k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → 
   rw [mul_right_comm, hre]
   ring
 
+/- English proof (translation)
+Use `set cc : Fin (d + 1) → ℝ := fun r => if (r : ℕ) < 2 * k - 1 then (1 : ℝ) else 0`. Use `set vv : Fin (d + 1) → ℝ := fun r => if (r : ℕ) < 2 * k - 1 then (0 : ℝ) else 1`. Establish `hrow : (fun r => hessC (φ r) (Fin.cons a y)) = fun r => blk ((cc r : ℂ) * -(wS a : ℂ)) ((∑ j, ((cc r * nS a j : ℝ) : ℂ) • T j) + ((vv r : ℝ) : ℂ) • H)`. Use function extensionality and compare the values at `r`. Establish `e : φ r = fun z : Fin (d + 1) → ℂ => cc r * f z + vv r * α (Fin.tail z)` using `funext (hφ r)`.
+
+Rewrite using `[e, GlobalTheory.T.complex_hessian_block_combination d f α y a _ _ (cc r) (vv r) (hfc _) hα (hfh _), ← hH]`. Use `congr 2`. Simplify using `only [Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Both sides reduce to the same expression. Establish `hB` using `GlobalTheory.T.mixed_discriminant_one_row_expansion d T H L hL cc vv (nS a) (-(wS a : ℂ))`. Rewrite `hB` using `[GlobalTheory.T.row_product_first_derivative d k hk hkd (nS a)]`. Rewrite using `[maDens, hrow]`. Establish `hre` using `congrArg Complex.re hB`.
+
+Establish `hR : (-(wS a : ℂ) * L (C (2 * (k : ℝ) - 1) * rename some (lin3 (nS a) ^ (2 * k - 2)) * X none ^ (d + 2 - 2 * k))).re = -(wS a) * (2 * (k : ℝ) - 1) * (L (rename some (lin3 (nS a) ^ (2 * k - 2)) * X none ^ (d + 2 - 2 * k))).re`. Rewrite using `[mul_assoc (C _), C_mul', map_smul, Complex.real_smul, ← Complex.ofReal_neg, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hre` using `[show (((d + 1).factorial : ℕ) : ℂ) = (((d + 1).factorial : ℝ) : ℂ) by push_cast; rfl, Complex.re_ofReal_mul, hR]`. Rewrite using `[mul_right_comm, hre]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem densY (d k : ℕ) (hk : 1 ≤ k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → Matrix (Fin d) (Fin d) ℂ)
     (H : Matrix (Fin d) (Fin d) ℂ) (L : MvPolynomial (Option (Fin 3)) ℝ →ₗ[ℝ] ℂ)
     (hL : ∀ (c : Fin d → Fin 3 → ℝ) (v : Fin d → ℝ),
@@ -112,6 +132,33 @@ theorem densY (d k : ℕ) (hk : 1 ≤ k) (hkd : 2 * k ≤ d + 2) (T : Fin 3 → 
   rw [mul_right_comm, hre]
   ring
 
+/- English proof (translation)
+Introduce `h d k hk hkd G α y hPD hG2 hα hG1 hGd`. Take `⟨T, hT⟩` from `GlobalTheory.T.xi_potential_hessian_decomposition d G y hPD hG2 hG1 hGd`. Take `⟨L, hL⟩` from `GlobalTheory.T.mixed_discriminant_linear_functional d T (hessC α y)`. Use `set f : (Fin (d + 1) → ℂ) → ℝ := fun z => xiPot (G (Fin.tail z)) (z 0) with hf`. Establish `hfc : ∀ a : ℂ, ContDiffAt ℝ 2 f (Fin.cons a y)` using `fun a => (hT a).1`.
+
+Establish `hfh : ∀ a : ℂ, hessC f (Fin.cons a y) = blk (-(wS a : ℂ)) (∑ j, ((nS a j : ℝ) : ℂ) • T j)`. Introduce `a`. Rewrite using `[(hT a).2]`. Use extensionality with `p q`. Apply the tactic sequence `refine Fin.cases ?_ (fun p' => ?_) p <;> refine Fin.cases ?_ (fun q' => ?_) q`.
+
+Simplify using `[blk, wS]`. Simplify using `[blk]`. Simplify using `[blk]`. Simplify using `[blk, nS, Matrix.sum_apply]`. Set `ℓ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ` to `Complex.reLm ∘ₗ L ∘ₗ (LinearMap.mulRight ℝ (X none ^ (d + 2 - 2 * k) : MvPolynomial (Option (Fin 3)) ℝ)) ∘ₗ (rename some : MvPolynomial (Fin 3) ℝ →ₐ[ℝ] MvPolynomial (Option (Fin 3)) ℝ).toLinearMap`.
+
+Establish `hℓ : ∀ p, (L (rename some p * X none ^ (d + 2 - 2 * k))).re = ℓ p` using `fun p => rfl`. Establish `hword : ∀ i ∈ Finset.range k, (∫ p : ℂ × ℂ, logSin (G y) p.1 p.2 * maDens (let u : ℕ → Fin 2 → ℝ` using `(fun (i : ℕ) (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) i; (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 …`. Introduce `i hi`. Establish `hik` using `Finset.mem_range.1 hi`. Establish `hpt : ∀ p : ℂ × ℂ, logSin (G y) p.1 p.2 * maDens (let u : ℕ → Fin 2 → ℝ` using `(fun (i : ℕ) (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) i; (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 …`.
+
+Introduce `p`. Rewrite using `[densW d k i hik hkd T _ L hL f α y hfc hα hfh rfl _ ?_ p.1 p.2, hG1, hℓ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `r z`. Establish `hcoef : ∀ c : Fin 2, (if (r : ℕ) = 0 then (![1, -1] : Fin 2 → ℝ) c else if (r : ℕ) = 1 then (![0, 1] : Fin 2 → ℝ) c else if (r : ℕ) < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) = DiagonalFibreFubini.wordCoef i r c`.
+
+Introduce `c`. Simplify using `only [DiagonalFibreFubini.wordCoef]`. Apply the tactic sequence `split_ifs <;> rfl`. Distinguish the cases in `hr : (r : ℕ) < 2 * k`. Simplify using `only [hr, if_true, hcoef, hf, Fin.tail, Fin.cons_zero, Fin.cons_succ]`.
+
+Simplify using the standard rewrite rules. Simplify using `[hr]`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_const_mul, GlobalTheory.T.sphere_pair_log_sine_moment, DiagonalFibreFubini.linProd_word k i hik]`. Both sides reduce to the same expression.
+
+Establish `hY : ∀ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) = (2 / Real.pi) ^ (d + 1) * (-(2 * (k : ℝ) - 1)) * (wS a * ℓ (lin3 (nS a) ^ (2 * k - 2)))`. Introduce `a`. Rewrite using `[densY d k hk hkd T _ L hL f α y hfc hα hfh rfl _ ?_ a, hℓ]`. Expand and normalize the polynomial expressions, which then agree. Introduce `r z`.
+
+Distinguish the cases in `hr : (r : ℕ) < 2 * k - 1`. Simplify using `[hr, hf]`. Simplify using `[hr]`. Establish `hfib : fibreMomentPoly k = C (-kappa k) * (∑ i, X i ^ 2) ^ (k - 1)`. Establish `h2` using `h.2.1 k (MvPolynomial (Fin 3) ℝ) X`.
+
+Rewrite `h2` using `[aeval_X_left_apply, MvPolynomial.algebraMap_eq]`. Then use the resulting hypothesis. Establish `hpush : pushMomentPoly k = -(∑ i, X i ^ 2) ^ (k - 1)`. Establish `h2` using `h.2.2.2.1 k hk (MvPolynomial (Fin 3) ℝ) X`. Rewrite `h2` using `[aeval_X_left_apply]`. Then use the resulting hypothesis. Rewrite using `[Finset.sum_congr rfl hword, ← Finset.mul_sum, ← Finset.mul_sum, ← map_sum, DiagFibreMoment.sum_diagWordMomentPoly, hfib]`.
+
+Repeatedly rewrite using `[hY]`. Rewrite using `[integral_const_mul, GlobalTheory.T.sphere_moment_power]`. Establish `hp : (-(2 * (k : ℝ) - 1)) * ℓ (momentPoly sphereMeasure (fun _ => 1) (dotPoly (id : S2 → S2) ^ (2 * k - 2))) = -ℓ ((∑ i, X i ^ 2) ^ (k - 1))`. Rewrite using `[← map_neg, ← hpush, pushMomentPoly, map_smul, smul_eq_mul]`. Establish `hπ : Real.pi ≠ 0` using `Real.pi_ne_zero`.
+
+Rewrite using `[C_mul', map_smul, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 2 * kappa k * ((2 / Real.pi) ^ (d + 1) * (Real.pi * (-ℓ ((∑ i, X i ^ 2) ^ (k - 1))))) := by`.
+
+Clear the denominators using the available nonvanishing facts. Use `_ = _ := by`. Rewrite using `[← hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fibre_integral_normal : GroundTheory.Heights₂.Heights.Inter.FibreLocal.Statement → ∀ (d k : ℕ), 1 ≤ k → 2 * k ≤ d + 2 → ∀ (G : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ) (α : (Fin d → ℂ) → ℝ) (y : Fin d → ℂ), (∀ᶠ y' in 𝓝 y, (G y').PosDef) → (∀ p q, ContDiffAt ℝ 2 (fun y' => G y' p q) y) → ContDiffAt ℝ 2 α y → G y = 1 → (∀ p q, fderiv ℝ (fun y' => G y' p q) y = 0) → (∑ i ∈ Finset.range k, ∫ p : ℂ × ℂ, logSin (G y) p.1 p.2 * maDens (let u : ℕ → Fin 2 → ℝ := (fun (i : ℕ) (r : ℕ) (c : Fin 2) => if r = 0 then (![1, -1] : Fin 2 → ℝ) c else if r = 1 then (![0, 1] : Fin 2 → ℝ) c else if r < 2 + 2 * i then (![1, 0] : Fin 2 → ℝ) c else (![0, 1] : Fin 2 → ℝ) c) i; (fun (r : Fin (d + 2)) (z : Fin (d + 2) → ℂ) => if (r : ℕ) < 2 * k then u r 0 * xiPot (G (Fin.tail (Fin.tail z))) (z 0) + u r 1 * xiPot (G (Fin.tail (Fin.tail z))) (z 1) else α (Fin.tail (Fin.tail z)))) (Fin.cons p.1 (Fin.cons p.2 y))) = 2 * ReciprocityTheory.ChartRestriction.G.AI.kappa k * ∫ a : ℂ, maDens (fun (r : Fin (d + 1)) (z : Fin (d + 1) → ℂ) => if (r : ℕ) < 2 * k - 1 then xiPot (G (Fin.tail z)) (z 0) else α (Fin.tail z)) (Fin.cons a y) := by
   intro h d k hk hkd G α y hPD hG2 hα hG1 hGd
   obtain ⟨T, hT⟩ := GlobalTheory.T.xi_potential_hessian_decomposition d G y hPD hG2 hG1 hGd

@@ -14,6 +14,11 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.LowKType
 
+/- English proof (translation)
+Establish `hle : lowKSub ε lam σ ≤ Q.map D.subtype`. Unfold `lowKSub`. Use `sSup_le fun S hS x hx => ?_` and prove the remaining obligations. Conclude with `⟨⟨x, hD S hS hx⟩, hQ S hS ⟨x, hD S hS hx⟩ hx, rfl⟩`. Introduce `y hy`.
+
+Take `⟨z, hz, hzy⟩` from `hle hy`. Establish `: z = y` using `Subtype.ext hzy`. Conclude with `this ▸ hz`.
+-/
 theorem lowKSub_mem_of_forall {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {lam : Fin n → ℝ} {D : Submodule ℂ H} (Q : Submodule ℂ D)
     (hD : ∀ S : Submodule ℂ H, IsKTypeOf ε σ (lowK ε lam) S → S ≤ D)
@@ -31,6 +36,19 @@ theorem lowKSub_mem_of_forall {n : ℕ} {ε : Fin n → Bool} {H : Type} [Normed
 end GlobalTheory.LowKType
 
 open GlobalTheory.LowKType in
+/- English proof (translation)
+Introduce `n ε H _ _ σ D E lam hHC hch hDS hK`. Take `⟨hC, _, hU, hI, _, hEx, hmin⟩` from `hDS`. Establish `hT` using `fun μ S hS => GlobalTheory.T.kType_le_kFiniteVectors_finiteDimensional n ε H σ D E hC hU hI hK μ S hS`. Establish `hD : ∀ S : Submodule ℂ H, IsKTypeOf ε σ (lowK ε lam) S → S ≤ D` using `fun S hS => (hT _ S hS).1`. Establish `hM : IsMin ε E lam` using `fun μ x hx0 hx => by`.
+
+Take `⟨T, hT'⟩` from `hK.ty μ x hx0 hx`. Conclude with `hmin μ T hT'`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `lowKSub`. Conclude with `sSup_le fun S hS => hD S hS`.
+
+Introduce `a b hab v hv`. Conclude with `lowKSub_mem_of_forall ((lowKSub ε lam σ).comap D.subtype |>.comap (E a b)) hD (fun S hS y hy => by`. Establish `h3` using `(hT _ S hS).2.2.1 a b hab y hy`. Use `show ((E a b y : D) : H) ∈ lowKSub ε lam σ`. Conclude with `(le_sSup hS : S ≤ lowKSub ε lam σ) h3) v hv`.
+
+Take `⟨S, hS⟩` from `hEx`. Take `⟨v, hv0, hvS, _⟩` from `hK.hw _ S hS`. Introduce `hbot`. Establish `hv : v ∈ (lowKSub ε lam σ).comap D.subtype` using `(le_sSup hS : S ≤ lowKSub ε lam σ) hvS`. Rewrite `hv` using `[hbot]`.
+
+Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`. Introduce `a b ha hb x hx`. Conclude with `(lowKSub_mem_of_forall (LinearMap.ker (E b a)) hD (fun S hS y hy => by`. Establish `h` using `hT _ S hS`. Use `haveI := h.2.1`.
+
+Conclude with `GlobalTheory.T.pMinus_annihilates_lowestKType_holomorphicChamber n ε D E lam hK.gl hK.unit hHC.1 hch hM (S.comap D.subtype) h.2.1 h.2.2.1 h.2.2.2 a b ha hb y hy) x hx : x ∈ LinearMap.ker (E b a))`.
+-/
 theorem GlobalTheory.HolDS.lowKSub_kMod : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (D : Submodule ℂ H) (E : Fin n → Fin n → Module.End ℂ D) (lam : Fin n → ℝ), IsHCParam lam → IsHolChamber ε lam → IsDS ε lam σ → IsKMod ε σ D E → lowKSub ε lam σ ≤ D ∧ KStab ε E ((lowKSub ε lam σ).comap D.subtype) ∧ (lowKSub ε lam σ).comap D.subtype ≠ ⊥ ∧ ∀ a b : Fin n, ε a = true → ε b = false → ∀ x ∈ (lowKSub ε lam σ).comap D.subtype, E b a x = 0 := by
   intro n ε H _ _ σ D E lam hHC hch hDS hK
   obtain ⟨hC, _, hU, hI, _, hEx, hmin⟩ := hDS

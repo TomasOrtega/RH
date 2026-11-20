@@ -7,5 +7,8 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory Car
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.RealMult
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.torsion_descends_to_complex | exact GlobalTheory.RealMult.torsion_descends_to_complex | (intros; apply GlobalTheory.RealMult.torsion_descends_to_complex <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.torsion_point_defined_over_base : ∀ (F : Type) [Field F] [NumberField F] (𝔠 : FracId F) (X : Obj F 𝔠 (Sp ℂ)) (N : ℕ), 1 ≤ N → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (t : Sp Ω ⟶ Sp ℂ) (y : Over.mk t ⟶ X.A), y ^ N = 1 → ∃ z : 𝟙_ (Over (Sp ℂ)) ⟶ X.A, y = toUnit (Over.mk t) ≫ z := by
   first | exact @GlobalTheory.RealMult.torsion_descends_to_complex | exact GlobalTheory.RealMult.torsion_descends_to_complex | (intros; apply GlobalTheory.RealMult.torsion_descends_to_complex <;> assumption)

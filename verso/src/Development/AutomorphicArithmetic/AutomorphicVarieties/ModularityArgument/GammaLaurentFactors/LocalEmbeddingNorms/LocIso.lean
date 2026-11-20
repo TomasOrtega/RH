@@ -16,6 +16,11 @@ open scoped Classical
 
 namespace UpperTheory.V.Z.Gam
 
+/- English proof (translation)
+Use `Units.ext <| Matrix.ext fun a b => FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((AdelicGLn.finiteRestrictedEquiv K n).symm _ : AdelicGLn.FiniteAdelicGL K n) a b v = _`. Rewrite using `[AdelicGLn.finiteRestrictedEquiv_symm_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (pLoc_locGL v g)).symm`. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `(congrArg (fun x : GL (Fin n) (v.adicCompletion K) => x a b) (pLoc_locGL_of_ne h g)).symm`.
+-/
 private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
     (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) (w.adicCompletion K)) :
     AdelicGLn.localEmbedding w g = locGL K n w g := by
@@ -32,6 +37,17 @@ private theorem localEmbedding_eq {K : Type} [Field K] [NumberField K] {n : ℕ}
 end UpperTheory.V.Z.Gam
 
 open UpperTheory.V UpperTheory.V.Z.Gam in
+/- English proof (translation)
+Introduce `K _ _ _ n σ h D v`. Set `τ : SmIrr (GL (Fin n) (v.adicCompletion K))` to `{ V := D.finite.W v ρ := D.finite.π v smooth := (D.finite.isAdmissible v).1 irred := D.finite.isIrreducible v }`. Establish `hτ : σ.IsLocComp v τ`. Take `⟨a, x, hx, ha, hx0, -⟩` from `exists_pureTensor_spherical (Cm.toRep σ h) D`. Use `⟨(Cm.carrierEq σ).toLinearMap ∘ₗ Iv D a x hx v, fun e => ?_, fun g y => ?_⟩` and prove the remaining obligations.
+
+Establish `e' : Iv D a x hx v (x v) = 0` using `(Cm.carrierEq σ).map_eq_zero_iff.1 (LinearMap.congr_fun e (x v))`. Rewrite `e'` using `[Iv_self]`. Conclude with `phi_ne D a x hx ha hx0 e'`. Use `((congrArg (Cm.carrierEq σ) (Iv_int D a x hx v g y)).trans (Cm.carrierEq_τ σ _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[localEmbedding_eq]`.
+
+Both sides reduce to the same expression. Use `⟨?_, fun B hB => ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨σ', h1, h2⟩`. Take `⟨e⟩` from `LocUniq.isLocComp_unique σ v σ' τ h1 hτ`. Conclude with `h2.of_equiv e`.
+
+Take `⟨α, -, h'⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp σ ((CG.hasSat_mk σ v B).1 hB) hτ`. Establish `h1 : GlobalTheory.LGrp.IsSpherical τ.ρ (GlobalTheory.SplitWeil.KO (v.adicCompletion K) (Fin n))` using `h'.2.1`. Establish `hsph : GlobalTheory.LGrp.IsSpherical τ.ρ (GlobalTheory.LFun.KGL v n)`. Rewrite `h1` using `[GlobalTheory.SmGL.SphCompletion.KO_completion v n]`. Then use the resulting hypothesis. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hsph`.
+
+Rewrite using `[(Af.Smo.sphDict K n v).1]`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, fun k hk => GlobalTheory.LGrp.mem_fixed.1 hx k hk, hx0⟩`.
+-/
 theorem UpperTheory.V.Z.Gam.locIso :
     UpperTheory.V.Z.Gam.LocIso := by
   intro K _ _ _ n σ h D v

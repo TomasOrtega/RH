@@ -21,25 +21,40 @@ variable {D : D7}
 def coreMap {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) : WO V₀ W₀ →+ WO V W :=
   (dV.ext0 W).comp (dW.inc0 V₀)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Both sides reduce to the same expression.
+-/
 theorem coreMap_eq {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) :
     ⇑(coreMap dV dW) = fun w => (dW.j0 * w) * dV.p0 := by
   funext w; rfl
 
+/- English proof (translation)
+Rewrite using `[coreMap_eq]`. Conclude with `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+-/
 theorem continuous_coreMap {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) :
     Continuous (coreMap dV dW) := by
   rw [coreMap_eq]
   exact (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
+/- English proof (translation)
+Use `show ((dW.j0 * w) * dV.p0).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem coreMap_finPart {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (w : WO V₀ W₀)
     (h : w.map (finPart D) = 0) : (coreMap dV dW w).map (finPart D) = 0 := by
   show ((dW.j0 * w) * dV.p0).map (finPart D) = 0
   rw [Matrix.map_mul, Matrix.map_mul, h, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Use `show ((dW.j0 * w) * dV.p0).map (infPart D) = 0`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem coreMap_infPart {V V₀ W W₀ : HSp D} {ρ σ : ℕ} (dV : HypDec V V₀ ρ) (dW : HypDec W W₀ σ) (w : WO V₀ W₀)
     (h : w.map (infPart D) = 0) : (coreMap dV dW w).map (infPart D) = 0 := by
   show ((dW.j0 * w) * dV.p0).map (infPart D) = 0
   rw [Matrix.map_mul, Matrix.map_mul, h, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+Introduce `D ψ hψ V V₀ W W₀ ρ σ dV dW vS vT vU x hx y Ψ hΨ`. Take `⟨θ, hθ⟩` from `GlobalTheory.AdelicU.exists_isInfFam D`. Establish `hF` using `GlobalTheory.T.flatMap_integrable_and_bounded_linearForm D ψ hψ θ hθ V V₀ W W₀ ρ σ dV dW vS vT vU x hx y`. Use `⟨hF.1 Ψ hΨ, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.theta_of_heisenberg_intertwiner_bounded_at_zero D ψ hψ θ hθ V W V₀ W₀ (coreMap dV dW) (continuous_coreMap dV dW) (coreMap_finPart dV dW) (coreMap_infPart dV dW) (fun f => flatAt ψ dV dW vS.μ vS.𝓕 vT.μ vT.𝓕 vU.ν (rat x) y f) (hF.2 0) (fun f w hf => ((GlobalTheory.T. …`.
+-/
 theorem flatLaw : ∀ D : D7, FlatLaw D := by
   intro D ψ hψ V V₀ W W₀ ρ σ dV dW vS vT vU x hx y Ψ hΨ
   obtain ⟨θ, hθ⟩ := GlobalTheory.AdelicU.exists_isInfFam D

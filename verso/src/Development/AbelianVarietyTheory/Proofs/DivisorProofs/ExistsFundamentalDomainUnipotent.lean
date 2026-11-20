@@ -18,6 +18,9 @@ open GlobalTheory.ConeSmallMidJB
 
 namespace GlobalTheory.UnipFDAdapted
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r s hB hW hH`. Take `⟨R, hR⟩` from `GlobalTheory.UnipCompact.exists_bounded_translate F E σ B _ _ W W₁ H' _ _ _ _ hB hW hH`. Use `GlobalTheory.UnipFD.main F E σ W H' ⟨Subtype.val ⁻¹' {g : UA σ W.J | ht g ≤ R}, (GlobalTheory.UnipCT.isClosed_unip σ W H').isClosedEmbedding_subtypeVal.isCompact_preimage (GlobalTheory.ConeSmallSerInt.isCompact_ht_le R), fun u => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hle⟩` from `hR u.1 u.2`. Conclude with `⟨⟨γ, hγ.2⟩, Subgroup.mem_subgroupOf.2 hγ.1, hle⟩`.
+-/
 theorem exists_fd_mass_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s : ℕ),
     B.IsGood σ → W.IsSkew σ B r s → H'.IsAdapted σ B W W₁ i₀ i₁ →

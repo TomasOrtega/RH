@@ -8,6 +8,17 @@ noncomputable section
 
 namespace GlobalTheory.BlowOpen
 
+/- English proof (translation)
+Establish `hC` using `irreducibleComponent_mem_irreducibleComponents x`. Establish `hCi : IsIrreducible (irreducibleComponent x)` using `isIrreducible_irreducibleComponent`. Establish `hCc : IsClosed (irreducibleComponent x)` using `isClosed_of_mem_irreducibleComponents _ hC`. Establish `hη : IsGenericPoint hCi.genericPoint (irreducibleComponent x)`. Simplify `hCi.isGenericPoint_genericPoint_closure` using `[hCc.closure_eq]`.
+
+Set `F` to `⋃ C' ∈ (irreducibleComponents X \ {irreducibleComponent x}), C'`. Establish `hFc : IsClosed F` using `(NoetherianSpace.finite_irreducibleComponents.diff).isClosed_biUnion (fun C' h => isClosed_of_mem_irreducibleComponents C' h.1)`. Establish `hηF : hCi.genericPoint ∉ F`. Simplify using `only [F, Set.mem_iUnion]`. Introduce and unpack `⟨C', ⟨hC', hne⟩, hηC'⟩`.
+
+Establish `hsub : irreducibleComponent x ⊆ C'` using `fun y hy => (hη.specializes hy).mem_closed (isClosed_of_mem_irreducibleComponents C' hC') hηC'`. Conclude with `hne (Set.mem_singleton_iff.2 (hC.eq_of_le hC'.1 hsub).symm)`. Take `⟨w, hwF, hwS⟩` from `hSd.inter_open_nonempty Fᶜ hFc.isOpen_compl ⟨_, hηF⟩`. Establish `hwC : w ∈ irreducibleComponent x`. Assume the negation of the conclusion as `h`.
+
+Apply `hwF` to reduce the goal to its premises. Simplify using `only [F, Set.mem_iUnion]`. Use `⟨irreducibleComponent w, ⟨irreducibleComponent_mem_irreducibleComponents w, fun e => h ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Rewrite using `[← Set.mem_singleton_iff.1 e]`. Conclude with `mem_irreducibleComponent`.
+
+Conclude with `⟨_, (hη.specializes hwC).mem_open hSo hwS, hη.specializes mem_irreducibleComponent⟩`.
+-/
 theorem exists_specializes_of_dense {X : Type} [TopologicalSpace X] [QuasiSober X] [NoetherianSpace X] (S : Set X)
     (hSo : IsOpen S) (hSd : Dense S) (x : X) : ∃ w ∈ S, w ⤳ x := by
   classical
@@ -35,6 +46,9 @@ theorem exists_specializes_of_dense {X : Type} [TopologicalSpace X] [QuasiSober 
     rw [← Set.mem_singleton_iff.1 e]; exact mem_irreducibleComponent
   exact ⟨_, (hη.specializes hwC).mem_open hSo hwS, hη.specializes mem_irreducibleComponent⟩
 
+/- English proof (translation)
+Take `⟨_, ⟨O, hO, rfl⟩, hnO, -⟩` from `N.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ n) isOpen_univ`. Use `haveI : IsNoetherianRing Γ(N, O) := IsLocallyNoetherian.component_noetherian ⟨O, hO⟩`. Take `⟨w, hw, hwn⟩` from `@exists_specializes_of_dense (O : Set N) _ O.isOpen.isOpenEmbedding_subtypeVal.quasiSober (noetherianSpace_of_isAffineOpen O hO) (Subtype.val ⁻¹' W : Set (O : Set N)) (hWo.preimage continuous_subtype_val) (hWd.preimage O.isOpen.isOpenMap_subtype_val) ⟨n, hnO⟩`. Conclude with `⟨w, hw, hwn.map continuous_subtype_val⟩`.
+-/
 theorem exists_specializes_of_dense_scheme (N : Scheme.{0}) [IsLocallyNoetherian N] (W : Set N) (hWo : IsOpen W)
     (hWd : Dense W) (n : N) : ∃ w ∈ W, w ⤳ n := by
   obtain ⟨_, ⟨O, hO, rfl⟩, hnO, -⟩ := N.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ n) isOpen_univ
@@ -44,10 +58,48 @@ theorem exists_specializes_of_dense_scheme (N : Scheme.{0}) [IsLocallyNoetherian
     (hWd.preimage O.isOpen.isOpenMap_subtype_val) ⟨n, hnO⟩
   exact ⟨w, hw, hwn.map continuous_subtype_val⟩
 
+/- English proof (translation)
+Use `Set.mem_range_self (f := U.ι) t` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_ι {X : Scheme.{0}} (U : X.Opens) (t : U.toScheme) : U.ι t ∈ U := by
   have := Set.mem_range_self (f := U.ι) t
   rwa [Scheme.Opens.range_ι] at this
 
+/- English proof (translation)
+Set `UK : (pullback s P).Opens` to `pullback.fst s P ⁻¹ᵁ U`. Set `φ : U.toScheme ⟶ N` to `inv (f ∣_ U) ≫ (f ⁻¹ᵁ U).ι`. Establish `hφ : φ ≫ f = U.ι`. Simplify using `only [φ, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc]`. Establish `hret : ∀ {T' : Scheme.{0}} (x : T' ⟶ N) (y : T' ⟶ U.toScheme), y ≫ U.ι = x ≫ f → y ≫ φ = x`.
+
+Introduce `T' x y hxy`. Establish `hrange : Set.range x ⊆ Set.range (f ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[SetLike.mem_coe, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, ← hxy, Scheme.Hom.comp_apply]`.
+
+Conclude with `mem_of_ι U _`. Establish `hh : IsOpenImmersion.lift (f ⁻¹ᵁ U).ι x hrange ≫ (f ⁻¹ᵁ U).ι = x` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hh2 : IsOpenImmersion.lift (f ⁻¹ᵁ U).ι x hrange ≫ f ∣_ U = y`. Rewrite using `[← cancel_mono U.ι, Category.assoc, morphismRestrict_ι, ← Category.assoc, hh, hxy]`. Rewrite using `[← hh, ← hh2]`.
+
+Simplify using `only [φ, Category.assoc, IsIso.hom_inv_id_assoc]`. Establish `hyK : (pullback.fst s P ∣_ U) ≫ U.ι = UK.ι ≫ pullback.fst s P` using `morphismRestrict_ι _ _`. Set `g' : UK.toScheme ⟶ pullback g P` to `pullback.lift ((pullback.fst s P ∣_ U) ≫ φ) (UK.ι ≫ pullback.snd s P) (by rw [← hg]; simp only [Category.assoc]; rw [reassoc_of% hφ, reassoc_of% hyK, pullback.condition])`. Establish `hg'r : g' ≫ r = UK.ι`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hr1, pullback.lift_fst_assoc, Category.assoc, hφ, hyK]`. Rewrite using `[Category.assoc, hr2, pullback.lift_snd]`. Establish `he : (r ∣_ UK) ≫ UK.ι = (r ⁻¹ᵁ UK).ι ≫ r` using `morphismRestrict_ι _ _`. Establish `hg'range : Set.range g' ⊆ Set.range (r ⁻¹ᵁ UK).ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[SetLike.mem_coe, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, hg'r]`. Conclude with `mem_of_ι UK t`. Establish `hk : IsOpenImmersion.lift (r ⁻¹ᵁ UK).ι g' hg'range ≫ (r ⁻¹ᵁ UK).ι = g'` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsIso (r ∣_ UK) := by`.
+
+Use `⟨⟨IsOpenImmersion.lift (r ⁻¹ᵁ UK).ι g' hg'range, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (r ⁻¹ᵁ UK).ι, Category.assoc, hk, Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc]`. Apply `hret` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hyK, ← Category.assoc, he, Category.assoc, hr1, Category.assoc]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, he, Category.assoc, hr2]`. Rewrite using `[← cancel_mono UK.ι, Category.assoc, he, ← Category.assoc, hk, hg'r, Category.id_comp]`. Establish `hjVrange : Set.range jV ⊆ Set.range UK.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hU v`. Establish `hjV' : IsOpenImmersion.lift UK.ι jV hjVrange ≫ UK.ι = jV` using `IsOpenImmersion.lift_fac _ _ _`. Use `haveI : IsOpenImmersion (IsOpenImmersion.lift UK.ι jV hjVrange) := by haveI : IsOpenImmersion (IsOpenImmersion.lift UK.ι jV hjVrange ≫ UK.ι) := by rw [hjV']; infer_instance`. Conclude with `IsOpenImmersion.of_comp _ UK.ι`.
+
+Set `jN : V ⟶ pullback g P` to `IsOpenImmersion.lift UK.ι jV hjVrange ≫ inv (r ∣_ UK) ≫ (r ⁻¹ᵁ UK).ι`. Establish `hjNr : jN ≫ r = jV`. Simplify using `only [jN, Category.assoc, ← he, IsIso.inv_hom_id_assoc, hjV']`. Establish `hrange : r ⁻¹' Set.range jV = Set.range jN`. Use extensionality with `p`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Establish `hpU : p ∈ r ⁻¹ᵁ UK`. Rewrite using `[Scheme.Hom.mem_preimage, ← hv]`. Conclude with `hU v`.
+
+Take `⟨q, rfl⟩ : p ∈ Set.range (r ⁻¹ᵁ UK).ι` from `by rw [Scheme.Opens.range_ι]; exact hpU`. Establish `hq : (r ∣_ UK) q = IsOpenImmersion.lift UK.ι jV hjVrange v`. Apply `UK.ι.isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply, he, Scheme.Hom.comp_apply, ← hv, ← Scheme.Hom.comp_apply, hjV']`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [jN, Scheme.Hom.comp_apply, ← hq]`. Rewrite using `[show (inv (r ∣_ UK)) ((r ∣_ UK) q) = q from Scheme.hom_inv_apply (asIso (r ∣_ UK)) q]`. Introduce and unpack `⟨v, rfl⟩`. Conclude with `⟨v, by rw [← Scheme.Hom.comp_apply, hjNr]⟩`. Establish `hsub : ∀ p ∈ r ⁻¹ᵁ UK, p ∈ closure (Set.range jN)`.
+
+Introduce `p hp`. Take `⟨q, rfl⟩ : p ∈ Set.range (r ⁻¹ᵁ UK).ι` from `by rw [Scheme.Opens.range_ι]; exact hp`. Rewrite using `[mem_closure_iff]`. Introduce `O hO hqO`. Establish `hS : IsOpen ((r ⁻¹ᵁ UK).ι ⁻¹' O)` using `hO.preimage (r ⁻¹ᵁ UK).ι.continuous`.
+
+Establish `hT : IsOpen (UK.ι '' ((r ∣_ UK) '' ((r ⁻¹ᵁ UK).ι ⁻¹' O)))` using `UK.ι.isOpenEmbedding.isOpenMap _ ((r ∣_ UK).isOpenEmbedding.isOpenMap _ hS)`. Take `⟨_, ⟨_, ⟨s0, hs0, rfl⟩, rfl⟩, v, hv⟩` from `hd.inter_open_nonempty _ hT ⟨_, ⟨_, ⟨q, hqO, rfl⟩, rfl⟩⟩`. Use `⟨(r ⁻¹ᵁ UK).ι s0, hs0, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrange]`. Conclude with `⟨v, by rw [hv, ← Scheme.Hom.comp_apply, he, Scheme.Hom.comp_apply]⟩`.
+
+Establish `hdense : Dense (Set.range jN)`. Introduce `p`. Take `⟨w, hwW, hwn⟩` from `exists_specializes_of_dense_scheme N _ (f ⁻¹ᵁ U).isOpen hW (pullback.fst g P p)`. Take `⟨p', hp'p, hp'w⟩` from `Flat.generalizingMap (pullback.fst g P) hwn`. Apply `hp'p.mem_closed isClosed_closure` to reduce the goal to its premises.
+
+Apply `hsub` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.mem_preimage, Scheme.Hom.mem_preimage, ← Scheme.Hom.comp_apply, hr1, Scheme.Hom.comp_apply, hp'w]`. Conclude with `hwW`. Conclude with `⟨jN, inferInstance, hdense, hjNr, hrange⟩`.
+-/
 theorem lift_of_isIso_over {S T Z N V : Scheme.{0}} (s : Z ⟶ S) (P : T ⟶ S) [Flat P] (f : N ⟶ Z) (g : N ⟶ S)
     (hg : f ≫ s = g) (U : Z.Opens) [IsIso (f ∣_ U)] [IsLocallyNoetherian N]
     (hW : Dense ((f ⁻¹ᵁ U : N.Opens) : Set N))
@@ -145,6 +197,11 @@ theorem lift_of_isIso_over {S T Z N V : Scheme.{0}} (s : Z ⟶ S) (P : T ⟶ S) 
     exact hwW
   exact ⟨jN, inferInstance, hdense, hjNr, hrange⟩
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ Z X' N V s b ν U jV hN hjV hjVd hjVU hb hν hWd`. Use `haveI := hN`. Use `haveI := hjV`. Use `haveI := hb`. Use `haveI := hν`.
+
+Use `haveI : IsIso ((ν ≫ b) ∣_ U) := by rw [morphismRestrict_comp]; exact IsIso.comp_isIso' hν hb`. Use `haveI : Flat (spMap (algebraMap R K)) := HasRingHomProperty.Spec_iff.mpr (RingHom.flat_algebraMap_iff.mpr (IsLocalization.flat K (nonZeroDivisors R)))`. Conclude with `lift_of_isIso_over s (spMap (algebraMap R K)) (ν ≫ b) (ν ≫ b ≫ s) (Category.assoc _ _ _) U hWd jV hjVd hjVU _ (pullback.lift_fst _ _ _) ((pullback.lift_snd _ _ _).trans (Category.comp_id _))`.
+-/
 theorem lifts_to_normalisation : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (Z X' N V : Scheme.{0})
     (s : Z ⟶ Sp R) (b : X' ⟶ Z) (ν : N ⟶ X') (U : Z.Opens) (jV : V ⟶ pullback s (spMap (algebraMap R K))),
     IsLocallyNoetherian N → IsOpenImmersion jV → Dense (Set.range jV) →

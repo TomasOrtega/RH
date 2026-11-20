@@ -8,6 +8,13 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.GJMat
 open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
+/- English proof (translation)
+Introduce `F _ _ _ M₀ u hu hN hi`. Take `⟨ρ, -, hρ, hρ'⟩` from `M.iwDens F M₀`. Establish `hp : Measurable fun p : IdeleGroup F × G1 F => mD p.1 * p.2` using `((M.continuous_mD.comp continuous_fst).mul continuous_snd).measurable`. Establish `hi' : Integrable (fun p : IdeleGroup F × G1 F => u (mD p.1 * p.2)) ρ` using `(hρ' _).1.2 hi`. Use `⟨fun g₀ => ?_, fun t => ?_⟩` and prove the remaining obligations.
+
+Establish `hg : Measurable fun g => u (g * g₀)` using `hu.comp (measurable_mul_const g₀)`. Take `⟨h1, h2⟩` from `M.transfer (m := ρ) (n := ρ) (hg.comp hp) (hu.comp hp) fun φ hφ => (hρ (fun g => φ (u (g * g₀))) (hφ.comp hg)).trans ((M.lintegral_unipotent_quotient_right_invariant F M₀ (fun g => φ (u g)) (hφ.comp hu) (fun b g => by simp only [hN]) g₀).trans (hρ (fun g => φ (u g)) (hφ.comp hu)) …`. Conclude with `⟨(hρ' _).1.1 (h1.2 hi'), (hρ' _).2.symm.trans (h2.trans (hρ' _).2)⟩`. Establish `hg : Measurable fun g => u (cD t g)` using `hu.comp (M.continuous_cD t).measurable`. Take `⟨h1, h2⟩` from `M.transfer (m := ρ) (n := ENNReal.ofReal (ab t)⁻¹ • ρ) (hg.comp hp) (hu.comp hp) fun φ hφ => by`.
+
+Rewrite using `[lintegral_smul_measure, smul_eq_mul]`. Conclude with `(hρ (fun g => φ (u (cD t g))) (hφ.comp hg)).trans ((M.lintegral_unipotent_quotient_comp_diagonal_conj F M₀ (fun g => φ (u g)) (hφ.comp hu) (fun b g => by simp only [hN]) t).trans (congrArg _ (hρ (fun g => φ (u g)) (hφ.comp hu)).symm))`. Use `⟨(hρ' _).1.1 (h1.2 (hi'.smul_measure ENNReal.ofReal_ne_top)), (hρ' _).2.symm.trans (h2.trans ?_)⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, ENNReal.toReal_ofReal (inv_pos.2 (M.ab_pos t)).le, Complex.real_smul]`. Conclude with `congrArg _ (hρ' _).2`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.inv :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], St.Inv F := by
   intro F _ _ _ M₀ u hu hN hi

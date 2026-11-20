@@ -18,11 +18,17 @@ open GlobalTheory.Dict.MarkMove
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H}
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul (level_mem l).1 trivial`.
+-/
 theorem level_smul_levQ (q : LevQ Dw l) : l.M • q = 0 := by
   obtain ⟨x, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul (𝓞 E)]
   exact Submodule.smul_mem_smul (level_mem l).1 trivial
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Establish `e : cSep l • y - y = (cSep l - 1) • y` using `by rw [sub_smul, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (cSep_spec l).2 trivial`.
+-/
 theorem cSep_smul_levQ (q : LevQ Dw l) : cSep l • q = q := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ q
   rw [← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]
@@ -30,6 +36,11 @@ theorem cSep_smul_levQ (q : LevQ Dw l) : cSep l • q = q := by
   rw [e]
   exact Submodule.smul_mem_smul (cSep_spec l).2 trivial
 
+/- English proof (translation)
+Establish `h1 : x - levRep q ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)` using `(Submodule.Quotient.eq _).1 (hq.trans (Classical.choose_spec (Submodule.Quotient.mk_surjective _ q)).symm)`. Take `⟨b1, hb1⟩` from `modN_smul l ((mul_comm _ _).trans l.prod) (cSep_spec l).1 h1`. Take `⟨b2, hb2⟩` from `modN_smul l l.prod (cSep_spec l).2 hx`. Use `⟨b1 - b2, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, ← hb1, ← hb2, smul_sub, sub_smul, one_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem sub_sepRep (q : LevQ Dw l) (x : Dw.La) (hx : x ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La))
     (hq : Submodule.Quotient.mk x = q) : ∃ z : Dw.La, x - cSep l • levRep q = l.M • z := by
   have h1 : x - levRep q ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La) :=
@@ -46,6 +57,29 @@ namespace GlobalTheory.DilateLevel
 
 open GlobalTheory.Dict.MarkMove
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l r n L mk m hm`. Use `hm.elim fun α hβ => hβ.elim fun β hab => ?_` and prove the remaining obligations. Establish `hM0 : (l.M : E) ≠ 0` using `by have := l.three_le; exact_mod_cast (by omega : l.M ≠ 0)`. Establish `hsm : ∀ a, (m • mk) a = m • mk a` using `fun a => LinearMap.smul_apply _ _ _`. Establish `hbez : ∀ x : Fin r → E, x = α • (m • x) + β • (l.M • x)` using `fun x => by`.
+
+Rewrite using `[smul_smul, ← natCast_zsmul, smul_smul, ← add_smul, hab, one_smul]`. Use `⟨fun h => ?_, fun N Y => ⟨fun hmem h => ?_, fun g X bas w Λ v c => ?_⟩⟩` and prove the remaining obligations. Use `⟨fun a => by rw [hsm]; exact zsmul_mem (h.mem a) m, fun a ha hu => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Use `hu.elim fun u hu' => h.inj a ha ⟨α • u + β • mk a, add_mem (zsmul_mem hu'.1 α) (zsmul_mem (h.mem a) β), ?_⟩` and prove the remaining obligations. Establish `e : m • mk a = l.M • u` using `(hsm a).symm.trans hu'.2`.
+
+Use `(hbez (mk a)).trans ?_` and prove the remaining obligations. Rewrite using `[e, smul_add, smul_comm α, smul_comm β]`. Establish `hvL : v ∈ L` using `Submodule.smul_le_right hv`. Use `(h.surj (α • v) (zsmul_mem hv α)).elim fun a1 h1 => h1.elim fun ha1 h2 => h2.elim fun u1 h3 => ?_` and prove the remaining obligations. Use `⟨a1, ha1, m • u1 + β • v, add_mem (zsmul_mem h3.1 m) (zsmul_mem hvL β), ?_⟩` and prove the remaining obligations.
+
+Establish `e : α • v = mk a1 + l.M • u1` using `h3.2`. Use `(hbez v).trans ?_` and prove the remaining obligations. Rewrite using `[smul_comm α m, e, hsm, smul_add, smul_add, smul_comm m, smul_comm β]`. Normalize the expressions using the abelian group laws. Introduce `q b`.
+
+Establish `h0` using `h (m • q) b`. Use `⟨?_, h0.2⟩` and prove the remaining obligations. Use `h0.1.elim fun a0 k => k.elim fun ha0 k2 => ?_` and prove the remaining obligations. Establish `hq0 : Submodule.Quotient.mk a0 = m • q b` using `k2.1`. Establish `hY0` using `k2.2`.
+
+Use `set a' : Dw.La := cSep l • levRep (q b) with ha'`. Establish `ha'm : a' ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La)` using `Submodule.smul_mem_smul (cSep_spec l).1 trivial`. Establish `hcls : (Submodule.Quotient.mk a' : LevQ Dw l) = q b`. Establish `hr : (Submodule.Quotient.mk (levRep (q b)) : LevQ Dw l) = q b` using `Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q b))`. Rewrite using `[ha', Submodule.Quotient.mk_smul, hr, cSep_smul_levQ]`.
+
+Use `⟨a', ha'm, hcls, ?_⟩` and prove the remaining obligations. Establish `hm' : (Submodule.Quotient.mk (m • a') : LevQ Dw l) = m • q b`. Rewrite using `[Submodule.Quotient.mk_smul, hcls]`. Use `(sub_sepRep (m • q b) a0 ha0 hq0).elim fun z1 hz1 => ?_` and prove the remaining obligations. Use `(sub_sepRep (m • q b) (m • a') (zsmul_mem ha'm m) hm').elim fun z2 hz2 => ?_` and prove the remaining obligations.
+
+Establish `hd : a0 - m • a' = l.M • (z1 - z2)`. Rewrite using `[smul_sub, ← hz1, ← hz2]`. Normalize the expressions using the abelian group laws. Establish `key : ((l.M : E)⁻¹) • (mk a0 - (m • mk) a') = mk (z1 - z2)`. Rewrite using `[hsm, ← map_zsmul mk, ← map_sub, hd, map_nsmul, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM0]`.
+
+Use `add_mem hY0 (hmem (z1 - z2))` as an intermediate fact. Rewrite `this` using `[← key]`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub]`. Normalize the expressions using the abelian group laws.
+
+Establish `hk : ∀ q : Fin n → LevQ Dw l, ((l.M : ℤ)) • q = 0` using `fun q => funext fun b => by`. Rewrite using `[Pi.smul_apply, natCast_zsmul, level_smul_levQ]`. Both sides reduce to the same expression. Establish `hinv : ∀ q : Fin n → LevQ Dw l, α • m • q = q` using `fun q => by`. Rewrite using `[smul_smul, show α * m = 1 - β * l.M by linear_combination hab, sub_smul, one_smul, mul_smul, hk, smul_zero, sub_zero]`.
+
+Set `e : (Fin n → LevQ Dw l) ≃ (Fin n → LevQ Dw l)` to `{ toFun := fun q => m • q invFun := fun q => α • q left_inv := fun q => hinv q right_inv := fun q => by`. Express the relevant statement in the definitionally equal form `m • α • q = q`. Rewrite using `[smul_comm]`. Conclude with `hinv q }`. Conclude with `finsum_comp_equiv e (f := fun q => c q • heisG X bas (Y q) (projA X bas w (tens Λ L) v))`.
+-/
 theorem dilate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (r n : ℕ) (L : Lt E r) (mk : Dw.La →ₗ[𝓞 E] (Fin r → E)) (m : ℤ), IsCoprime m (l.M : ℤ) → (IsMark l L mk → IsMark l L (m • mk)) ∧ ∀ (N : ℕ) (Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E), ((∀ a, mk a ∈ L) → IsRoots l L mk N Y → IsRoots l L (m • mk) N (fun q => Y (m • q))) ∧ ∀ (g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (w : E) (Λ : Lt E n) (v : TF n g) (c : (Fin n → LevQ Dw l) → ℂ), gphi X bas w Λ L v (fun q => c (m • q)) (fun q => Y (m • q)) = gphi X bas w Λ L v c Y := by
   intro E _ _ _ H Dw l r n L mk m hm
   refine hm.elim fun α hβ => hβ.elim fun β hab => ?_

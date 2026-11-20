@@ -16,6 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.GenMass.Norms
 
+/- English proof (translation)
+Use `Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D` as an intermediate fact. Establish `h1` using `InfinitePlace.prod_eq_abs_norm x`. Establish `h2 : ∏ w : InfinitePlace D.host.E, w x ^ w.mult = (∏ w : InfinitePlace D.host.E, w x) ^ 2`. Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [(IsTotallyComplex.isComplex w).mult_eq_two]`.
+
+Rewrite using `[← Rat.cast_abs, ← h1, h2]`. Conclude with `Real.sqrt_sq (Finset.prod_nonneg fun w _ => w.1.nonneg _)`.
+-/
 theorem sqrt_norm_eq (D : D7) (x : D.host.E) :
     Real.sqrt |((Algebra.norm ℚ x : ℚ) : ℝ)| = ∏ w : InfinitePlace D.host.E, w x := by
   have := Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D
@@ -26,11 +31,17 @@ theorem sqrt_norm_eq (D : D7) (x : D.host.E) :
   rw [← Rat.cast_abs, ← h1, h2]
   exact Real.sqrt_sq (Finset.prod_nonneg fun w _ => w.1.nonneg _)
 
+/- English proof (translation)
+Rewrite using `[← Formalism.MainNotions.LatticeGluingRadicals.d_card D, ← Finset.card_univ, ← Finset.prod_const]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [map_pow, InfinitePlace.map_natCast]`.
+-/
 theorem prod_natPow (D : D7) (g m : ℕ) :
     ∏ w : InfinitePlace D.host.E, w ((g : D.host.E) ^ m) = ((g : ℝ) ^ m) ^ D.R.f := by
   rw [← Formalism.MainNotions.LatticeGluingRadicals.d_card D, ← Finset.card_univ, ← Finset.prod_const]
   exact Finset.prod_congr rfl fun w _ => by rw [map_pow, InfinitePlace.map_natCast]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.CntLocal.sqrtAbsNormOfScaledGram`. Rewrite using `[sqrt_norm_eq, ← prod_natPow, ← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [map_div₀]`.
+-/
 theorem localInvariantNorm_eq_prod_infinitePlaces_div (D : D7) (T T' : D.host.E) (Z : Formalism.L2.SG.CntLocal.MatZ D) :
     Formalism.L2.SG.CntLocal.sqrtAbsNormOfScaledGram T T' Z =
       (∏ w : InfinitePlace D.host.E, w (Formalism.L2.SG.CntLocal.GZ T T' Z)) / (((gS D : ℕ) : ℝ) ^ D.R.m) ^ D.R.f := by
@@ -38,6 +49,11 @@ theorem localInvariantNorm_eq_prod_infinitePlaces_div (D : D7) (T T' : D.host.E)
   rw [sqrt_norm_eq, ← prod_natPow, ← Finset.prod_div_distrib]
   exact Finset.prod_congr rfl fun w _ => by rw [map_div₀]
 
+/- English proof (translation)
+Establish `h` using `Formalism.MainNotions.BridgeLemma.szf_rd_pow D`. Rewrite `h` using `[Formalism.L2.SG.NGCut.LeadingMinorIntegrality.discr_sq]`. Establish `hrd` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.rd_pos (D := D)`. Use `(pow_left_inj₀ (by positivity) (abs_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[h]`.
+
+Use `push_cast`. Rewrite using `[abs_pow]`.
+-/
 theorem rd_pow_f (D : D7) : D.host.rdE ^ D.R.f = |(NumberField.discr D.host.F : ℝ)| := by
   have h := Formalism.MainNotions.BridgeLemma.szf_rd_pow D
   rw [Formalism.L2.SG.NGCut.LeadingMinorIntegrality.discr_sq] at h
@@ -45,12 +61,18 @@ theorem rd_pow_f (D : D7) : D.host.rdE ^ D.R.f = |(NumberField.discr D.host.F : 
   refine (pow_left_inj₀ (by positivity) (abs_nonneg _) two_ne_zero).1 ?_
   rw [h]; push_cast; rw [abs_pow]
 
+/- English proof (translation)
+Distinguish the cases in `h : Multipliable a`. Use `ge_of_tendsto' h.hasProd fun s => ?_` and prove the remaining obligations. Conclude with `Finset.one_le_prod (fun i _ => ha i)`. Rewrite using `[tprod_eq_one_of_not_multipliable h]`.
+-/
 theorem one_le_tprod_real {ι : Type} (a : ι → ℝ) (ha : ∀ i, 1 ≤ a i) : 1 ≤ ∏' i, a i := by
   by_cases h : Multipliable a
   · refine ge_of_tendsto' h.hasProd fun s => ?_
     exact Finset.one_le_prod (fun i _ => ha i)
   · rw [tprod_eq_one_of_not_multipliable h]
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Pf.Cnt.nM`. Use `one_le_tprod_real _ fun p => one_le_pow₀ ?_` and prove the remaining obligations. Establish `h0 : p.1 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField p.2 (RingOfIntegers.not_isField F)`. Establish `h1 : Ideal.absNorm p.1 ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 h1` after adjusting the coercions.
+-/
 theorem one_le_nM {K V : Type} [Field K] [NumberField K] [StarRing K] (F : Type) [Field F] [NumberField F]
     [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
     (h : V →ₗ⋆[K] V →ₗ[K] K) (U : Submodule K V) (M : Submodule (𝓞 K) V) :
@@ -61,12 +83,36 @@ theorem one_le_nM {K V : Type} [Field K] [NumberField K] [StarRing K] (F : Type)
   have h1 : Ideal.absNorm p.1 ≠ 0 := by rwa [Ne, Ideal.absNorm_eq_zero_iff]
   exact_mod_cast Nat.one_le_iff_ne_zero.2 h1
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem m_eq (D : D7) : D.R.m = 2 * D.R.rS + 2 := by
   obtain ⟨t, ht⟩ := D.R.m_even
   have h2 := D.R.two_le_m
   unfold Ranks.rS
   omega
 
+/- English proof (translation)
+Introduce `D X Y u u' hT G' Λ w hzt hP hrow hE hcell`. Establish `hun` using `hrow.2.1.2.1`. Establish `hz` using `hrow.2.1.2.2.1.1`. Establish `hX` using `hrow.2.2`. Establish `hz' : G'.fl.z ∈ Λ` using `hE.1.1.1`.
+
+Establish `hX'` using `hE.2.2.2.1.2`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ Λ` using `PtPf.frame_mem _ hz hX`. Establish `hF' : ∀ b, frame G' b ∈ Λ` using `PtPf.frame_mem _ hz' hX'`. Establish `hrd` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.rd_pos (D := D)`. Establish `hg : (0 : ℝ) < (gS D : ℕ)` using `by exact_mod_cast Formalism.MainNotions.LatticeGluingRadicals.z_gS_pos D`.
+
+Establish `hGeq` using `LeadingMinorIntegrality.gpt_eq (T := Tu D u) (T' := Tu D u') (lf D (X.Fu u)) G' _ hcell`. Use `set P : ℝ := ∏ v : InfinitePlace D.host.E, v (Gval (lf D (X.Fu u)) G') with hPdef`. Establish `hNG : NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) = ((D.host.rdE ^ D.R.f) ^ (2 * D.R.rS * (D.R.rS + 1)))⁻¹ * P`. Unfold `NGPt`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Formalism.MainNotions.LatticeGluingRadicals.d_card D, hGeq, inv_pow, ← pow_mul, ← pow_mul, mul_comm D.R.f]`.
+
+Both sides reduce to the same expression. Establish `hN0 : Formalism.L2.SG.CntLocal.sqrtAbsNormOfScaledGram ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) (ZhatL (lf D (X.Fu u)) G') = P / (((gS D : ℕ) : ℝ) ^ D.R.m) ^ D.R.f` using `localInvariantNorm_eq_prod_infinitePlaces_div D _ _ _`. Use `⟨fun a => ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hj : endIdx (toPts w) a ≤ D.R.rS + 1` using `(toPts w).1.sizeUpTo_le _`. Take `⟨o, ho, e⟩` from `LeadingMinorIntegrality.lead_mem hun (lf D (X.Fu u)) G' hz hX hz' hX' _ hj`.
+
+Rewrite `e` using `[← LeadingMinorIntegrality.lead_cell _ _ hcell, ← LeadingMinorIntegrality.endMin_eq]`. Establish `hE5` using `PtPf.blockEndMinors_of_cell _ (PtPf.zhatOM_isIntegral _ _ hun hF hF') _ hcell`. Establish `h0 : endMin (toPts w) a ≠ 0` using `(hE5 a).2`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Formalism.MainNotions.LatticeGluingRadicals.d_card D]`. Establish `hsq` using `LeadingMinorIntegrality.prod_sq_ge _ o ho (by rw [e]; exact h0)`.
+
+Rewrite `hsq` using `[e]`. Rewrite using `[inv_pow, ← div_eq_inv_mul, one_le_div (by positivity), ← pow_mul, mul_comm _ D.R.f, pow_mul]`. Conclude with `hsq`. Establish `hI` using `Formalism.L2.SG.Pf.Cnt.mmInt_of_EZ hT (Y.rowsOK u) hzt rfl hP hrow hE`. Establish `hn` using `PI.UnitaryGroupMassFormula.CntFormula.R6.norm_mass_of_jordan D u u' hT (X.Fu u) (Y.what₂ u) (Y.rowsOK u) _ G' hzt rfl hP hI`.
+
+Establish `h1` using `one_le_nM D.host.F (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D (X.Fu u) G') (Formalism.L2.SG.Pf.Cnt.MMof D (X.Fu u) G')`. Use `replace h1 := h1.trans_eq hn`. Rewrite `h1` using `[zpow_neg, zpow_natCast, ← rd_pow_f]`. Use `replace h1 : 1 ≤ ((D.host.rdE ^ D.R.f) ^ (2 * D.R.rS * (D.R.rS + 1)))⁻¹ * (P / (((gS D : ℕ) : ℝ) ^ D.R.m) ^ D.R.f) := hN0 ▸ h1`. Rewrite `h1` using `[← mul_div_assoc, one_le_div (by positivity)]`.
+
+Rewrite using `[hNG, Formalism.MainNotions.LatticeGluingRadicals.d_card D, ← m_eq, pow_mul]`. Conclude with `h1`. Establish `hv : 2 * D.host.v = D.host.rdE` using `by unfold Host.v; ring`. Rewrite using `[hN0, hNG, hv]`. Unfold `Formalism.L2.SG.MassDataConc.ngFac PN.abelian₂`.
+
+Rewrite using `[sqrt_norm_eq, prod_natPow, ← mul_pow, div_mul_cancel₀ _ (by positivity)]`. Establish `e : D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1) * (D.R.k - 1) * D.R.f) = ((D.host.rdE ^ D.R.f) ^ (2 * D.R.rS * (D.R.rS + 1))) ^ (D.R.k - 1)`. Rewrite using `[← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, ← mul_pow, mul_inv_cancel_left₀ (by positivity)]`.
+-/
 theorem norms_generic : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), (D.mem u).A.T ≡ (D.mem u').A.T [MOD (gS D) ^ 2] → ∀ (G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (Λ : LV D) (w : Point D.host.E (D.R.rS + 1)), G'.zt = G'.fl.z → TotPos (Gval (lf D (X.Fu u)) G') → IsRowLat D (X.Fu u) Λ → G' ∈ Formalism.L2.SG.CntLocal.EZ ((Tu D u' : ℕ) : D.host.E) (X.Fu u) Λ (ZhatL (lf D (X.Fu u)) G') → IsInCell (ZhatOM (ZhatL (lf D (X.Fu u)) G')) w → (∀ a, 1 ≤ ∏ v : InfinitePlace D.host.E, (D.host.rdE ^ (2 * (endIdx (toPts w) a * (2 * D.R.rS + 1 - endIdx (toPts w) a))))⁻¹ * v (endMin (toPts w) a) ^ 2) ∧ ((gS D : ℝ)) ^ ((2 * D.R.rS + 2) * Fintype.card (InfinitePlace D.host.E)) ≤ NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) ∧ Formalism.L2.SG.CntLocal.sqrtAbsNormOfScaledGram ((Tu D u : ℕ) : D.host.E) ((Tu D u' : ℕ) : D.host.E) (ZhatL (lf D (X.Fu u)) G') ^ (D.R.k - 1) * Formalism.L2.SG.MassDataConc.ngFac D = PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * NGPt D.host.rdE (Tu D u * Tu D u') (toPts w) ^ (D.R.k - 1) := by
   intro D X Y u u' hT G' Λ w hzt hP hrow hE hcell
   have hun := hrow.2.1.2.1

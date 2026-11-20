@@ -17,15 +17,26 @@ section Tr
 
 variable {D : D7} (X : HidaSetting D)
 
+/- English proof (translation)
+Establish `hv : v.IsReal` using `totReal_of X v`. Establish `h` using `NumberField.ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hv)`. Use `RingHom.congr_fun h a` as an intermediate fact. Simplify `this` using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+-/
 theorem emb_real (v : InfinitePlace X.B.I.F) (a : X.B.I.F) : conj (v.embedding a) = v.embedding a := by
   have hv : v.IsReal := totReal_of X v
   have h := NumberField.ComplexEmbedding.isReal_iff.1 (InfinitePlace.isReal_iff.1 hv)
   have := RingHom.congr_fun h a
   simpa [NumberField.ComplexEmbedding.conjugate_coe_eq] using this
 
+/- English proof (translation)
+The claim follows from `X.B.I.cm.cmUnram.2.1 _ e`.
+-/
 theorem phi_star (v : InfinitePlace X.B.I.F) (e : X.B.I.E) : X.B.I.φ v (star e) = conj (X.B.I.φ v e) :=
   X.B.I.cm.cmUnram.2.1 _ e
 
+/- English proof (translation)
+Introduce `h`. Establish `hr : NumberField.ComplexEmbedding.IsReal (X.B.I.φ v)`. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`. Use extensionality with `e`. Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq, h e]`.
+
+Establish `hc` using `X.B.I.cm.cmUnram.1.isComplex (InfinitePlace.mk (X.B.I.φ v))`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)`.
+-/
 theorem phi_notReal (v : InfinitePlace X.B.I.F) : ¬ ∀ e : X.B.I.E, conj (X.B.I.φ v e) = X.B.I.φ v e := by
   intro h
   have hr : NumberField.ComplexEmbedding.IsReal (X.B.I.φ v) := by
@@ -35,6 +46,15 @@ theorem phi_notReal (v : InfinitePlace X.B.I.F) : ¬ ∀ e : X.B.I.E, conj (X.B.
   have hc := X.B.I.cm.cmUnram.1.isComplex (InfinitePlace.mk (X.B.I.φ v))
   exact (InfinitePlace.not_isReal_iff_isComplex.2 hc) (InfinitePlace.isReal_mk_iff.2 hr)
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `letI : Algebra X.B.I.F ℂ := v.embedding.toAlgebra`. Set `φA : X.B.I.E →ₐ[X.B.I.F] ℂ` to `{ X.B.I.φ v with commutes' := X.B.I.φ_over v }`. Set `ψA : X.B.I.E →ₐ[X.B.I.F] ℂ` to `{ (starRingEnd ℂ).comp (X.B.I.φ v) with commutes' := fun a => by show conj (X.B.I.φ v (algebraMap X.B.I.F X.B.I.E a)) = v.embedding a`. Rewrite using `[X.B.I.φ_over, emb_real] }`.
+
+Establish `hne : φA ≠ ψA`. Introduce `h`. Apply `phi_notReal X v` to reduce the goal to its premises. Introduce `e`. Use `congrArg (fun f : X.B.I.E →ₐ[X.B.I.F] ℂ => f e) h` as an intermediate fact.
+
+Conclude with `this.symm`. Establish `hcard : Fintype.card (X.B.I.E →ₐ[X.B.I.F] ℂ) = 2`. Rewrite using `[AlgHom.card X.B.I.F X.B.I.E ℂ, X.B.I.cm.deg2]`. Establish `huniv : (Finset.univ : Finset (X.B.I.E →ₐ[X.B.I.F] ℂ)) = {φA, ψA}`. Use `symm`.
+
+Apply `Finset.eq_of_subset_of_card_le (Finset.subset_univ _)` to reduce the goal to its premises. Rewrite using `[Finset.card_univ, hcard, Finset.card_pair hne]`. Establish `h` using `trace_eq_sum_embeddings (K := X.B.I.F) (L := X.B.I.E) ℂ (x := e)`. Rewrite `h` using `[huniv, Finset.sum_pair hne]`. Conclude with `h`.
+-/
 theorem emb_trace (v : InfinitePlace X.B.I.F) (e : X.B.I.E) :
     v.embedding (Algebra.trace X.B.I.F X.B.I.E e) = X.B.I.φ v e + conj (X.B.I.φ v e) := by
   classical
@@ -62,6 +82,9 @@ theorem emb_trace (v : InfinitePlace X.B.I.F) (e : X.B.I.E) :
   rw [huniv, Finset.sum_pair hne] at h
   exact h
 
+/- English proof (translation)
+Establish `hv : v.IsReal` using `totReal_of X v`. Use `show conj (InfinitePlace.Completion.extensionEmbedding v (a v)) = InfinitePlace.Completion.extensionEmbedding v (a v)`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv]`. Conclude with `Complex.conj_ofReal _`.
+-/
 theorem evInf_conj (v : InfinitePlace X.B.I.F) (a : Ainf X.B.I.F) :
     conj (PI.AprimeInfU.evInf X v a) = PI.AprimeInfU.evInf X v a := by
   have hv : v.IsReal := totReal_of X v
@@ -70,16 +93,27 @@ theorem evInf_conj (v : InfinitePlace X.B.I.F) (a : Ainf X.B.I.F) :
   rw [← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hv]
   exact Complex.conj_ofReal _
 
+/- English proof (translation)
+The claim follows from `evV_algebraMap X.B.I v a`.
+-/
 theorem evInf_alg (v : InfinitePlace X.B.I.F) (a : X.B.I.F) :
     PI.AprimeInfU.evInf X v (algebraMap X.B.I.F (Ainf X.B.I.F) a) = v.embedding a :=
   evV_algebraMap X.B.I v a
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Rewrite using `[Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+-/
 theorem trace_one_tmul (e : X.B.I.E) :
     Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) ((1 : Ainf X.B.I.F) ⊗ₜ[X.B.I.F] e) =
       algebraMap X.B.I.F (Ainf X.B.I.F) (Algebra.trace X.B.I.F X.B.I.E e) := by
   haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X
   rw [Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h1 : a ⊗ₜ[X.B.I.F] e = a • ((1 : Ainf X.B.I.F) ⊗ₜ[X.B.I.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Rewrite using `[h1, map_smul, trace_one_tmul, smul_eq_mul, map_mul, evInf_alg, emb_trace, ← h1, thetaInf_tmul, map_mul, evInf_conj]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem evInf_trace (v : InfinitePlace X.B.I.F) (z : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     PI.AprimeInfU.evInf X v (Algebra.trace (Ainf X.B.I.F) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) z) =
       PI.AprimeInfU.thetaInf X v z + conj (PI.AprimeInfU.thetaInf X v z) := by
@@ -93,6 +127,11 @@ theorem evInf_trace (v : InfinitePlace X.B.I.F) (z : Ainf X.B.I.F ⊗[X.B.I.F] X
     ring
   | add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]; ring
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h : sigR (Ainf X.B.I.F) X.B.I.cm.sig (a ⊗ₜ[X.B.I.F] e) = a ⊗ₜ[X.B.I.F] (star e)` using `rfl`. Rewrite using `[h, thetaInf_tmul, thetaInf_tmul, map_mul, evInf_conj, phi_star]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem theta_sigR (v : InfinitePlace X.B.I.F) (t : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) :
     PI.AprimeInfU.thetaInf X v (sigR (Ainf X.B.I.F) X.B.I.cm.sig t) = conj (PI.AprimeInfU.thetaInf X v t) := by
   induction t using TensorProduct.induction_on with
@@ -102,10 +141,26 @@ theorem theta_sigR (v : InfinitePlace X.B.I.F) (t : Ainf X.B.I.F ⊗[X.B.I.F] X.
     rw [h, thetaInf_tmul, thetaInf_tmul, map_mul, evInf_conj, phi_star]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Rewrite using `[Algebra.TensorProduct.algebraMap_apply, thetaInf_tmul, evInf_alg, map_one, mul_one]`.
+-/
 theorem theta_alg (v : InfinitePlace X.B.I.F) (q : X.B.I.F) :
     PI.AprimeInfU.thetaInf X v (algebraMap X.B.I.F (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) q) = v.embedding q := by
   rw [Algebra.TensorProduct.algebraMap_apply, thetaInf_tmul, evInf_alg, map_one, mul_one]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Set `b : Module.Basis (Fin 2) X.B.I.F X.B.I.E` to `Module.finBasisOfFinrankEq X.B.I.F X.B.I.E X.B.I.cm.deg2`. Establish `hr : ∀ v : InfinitePlace X.B.I.F, ∃ r : Fin 2 → ℝ, (r 0 : ℂ) * X.B.I.φ v (b 0) + (r 1 : ℂ) * X.B.I.φ v (b 1) = z v`. Introduce `v`. Set `f : Fin 2 → ℂ` to `![X.B.I.φ v (b 0), X.B.I.φ v (b 1)]`.
+
+Establish `hli : LinearIndependent ℝ f`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fin.sum_univ_two]`. Establish `key` using `theta_lin_indep (X.B.I.φ v) (X.B.I.cm.sig : X.B.I.E →+* X.B.I.E) (fun a => X.B.I.cm.cmUnram.2.1 (X.B.I.φ v) a) (fun a ha => RingHom.mem_range.1 ((X.B.I.cm.fixed a).1 ha)) b g (by`.
+
+Simplify `hg)` using `[f, Complex.real_smul]`. Introduce `i`. Use `fin_cases i`. Conclude with `key.1`. Conclude with `key.2`.
+
+Establish `hsp : Submodule.span ℝ (Set.range f) = ⊤` using `hli.span_eq_top_of_card_eq_finrank (by simp [Complex.finrank_real_complex])`. Establish `hz : z v ∈ Submodule.span ℝ (Set.range f)` using `by rw [hsp]; trivial`. Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun ℝ).1 hz`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr, Fin.sum_univ_two]`.
+
+Simplify using `[f, Complex.real_smul]`. Use `choose r hr using hr`. Establish `hv : ∀ v : InfinitePlace X.B.I.F, v.IsReal` using `fun v => totReal_of X v`. Set `c : Fin 2 → Ainf X.B.I.F` to `fun i => (fun w => (InfinitePlace.Completion.ringEquivRealOfIsReal (hv w)).symm (r w i) : ∀ w : InfinitePlace X.B.I.F, w.Completion)`. Establish `hc : ∀ i v, PI.AprimeInfU.evInf X v (c i) = (r v i : ℂ)`.
+
+Introduce `i v`. Use `show InfinitePlace.Completion.extensionEmbedding v ((InfinitePlace.Completion.ringEquivRealOfIsReal (hv v)).symm (r v i)) = _`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (hv v), ← InfinitePlace.Completion.ringEquivRealOfIsReal_apply (hv v), RingEquiv.apply_symm_apply]`. Use `⟨c 0 ⊗ₜ[X.B.I.F] b 0 + c 1 ⊗ₜ[X.B.I.F] b 1, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, thetaInf_tmul, thetaInf_tmul, hc, hc, hr]`.
+-/
 theorem theta_surj (z : InfinitePlace X.B.I.F → ℂ) :
     ∃ y : Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E, ∀ v, PI.AprimeInfU.thetaInf X v y = z v := by
   classical

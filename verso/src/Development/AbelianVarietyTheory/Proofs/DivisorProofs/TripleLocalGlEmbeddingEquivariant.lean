@@ -12,6 +12,13 @@ namespace GlobalTheory.SiegelValGood
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Take `⟨hn, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hn)`. Set `A' : Matrix (Fin n) (Fin n) ℂ` to `A.submatrix id e.symm`. Establish `key : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA]`.
+
+Use extensionality with `i j`. Simplify using `[A', Matrix.mul_apply]`. Establish `h2` using `congrArg Matrix.det key`. Rewrite `h2` using `[Matrix.det_submatrix_equiv_self, Matrix.det_mul, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_neg, Matrix.det_one]`. Introduce `h0`.
+
+Rewrite `h2` using `[h0, mul_zero, zero_mul]`. Simplify using `at h2`. Conclude with `absurd h2.symm (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero))`.
+-/
 theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hn, A, hA⟩ := h
   let e : Fin r ⊕ Fin s ≃ Fin n := finSumFinEquiv.trans (finCongr hn)
@@ -31,6 +38,11 @@ theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : 
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hm : (mat h)ᵀ * incM F J * (mat h).map (cA σ) = incM F J` using `h.2`. Establish `h2` using `congrArg Matrix.det hm`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `e1 : ((mat h).map (cA σ)).det = cA σ (mat h).det` using `(AlgHom.map_det (cA σ) _).symm`. Establish `e2 : (incM F J).det = inclR (F` using `F) (AF F) J.det := (RingHom.map_det _ J).symm`.
+
+Rewrite `h2` using `[e1, e2]`. Establish `hu : IsUnit (inclR (F` using `F) (AF F) J.det) := (isUnit_iff_ne_zero.2 hJ).map _`. Establish `h3 : (mat h).det * cA σ (mat h).det * inclR (F` using `F) (AF F) J.det = 1 * inclR (F := F) (AF F) J.det := by`. Take the linear combination `h2`. Conclude with `hu.mul_left_injective h3`.
+-/
 theorem det_mul_cA {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J.det ≠ 0) (h : UA σ J) :
     (mat h).det * cA σ (mat h).det = 1 := by
   have hm : (mat h)ᵀ * incM F J * (mat h).map (cA σ) = incM F J := h.2
@@ -44,18 +56,36 @@ theorem det_mul_cA {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     linear_combination h2
   exact hu.mul_left_injective h3
 
+/- English proof (translation)
+Use `show splitProj τ (compFin F E v (a ⊗ₜ[F] (1 : E))) = _`. Use `show splitProj τ (evFin F v a ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[splitProj_tmul, map_one, mul_one]`.
+-/
 theorem piW_algebraMap {v : Pl F} (τ : E →ₐ[F] Fv F v) (a : AF F) :
     piW τ (algebraMap (AF F) (AE F E) a) = evFin F v a := by
   show splitProj τ (compFin F E v (a ⊗ₜ[F] (1 : E))) = _
   show splitProj τ (evFin F v a ⊗ₜ[F] (1 : E)) = _
   rw [splitProj_tmul, map_one, mul_one]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [← smul_mul_assoc, hx u hu, zero_mul]`.
+-/
 theorem at_mul {v : Pl F} {x : AE F E} (hx : At (evFin F v) x) (y : AE F E) : At (evFin F v) (x * y) := fun u hu => by
   rw [← smul_mul_assoc, hx u hu, zero_mul]
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [smul_add, hx u hu, hy u hu, add_zero]`.
+-/
 theorem at_add {v : Pl F} {x y : AE F E} (hx : At (evFin F v) x) (hy : At (evFin F v) y) : At (evFin F v) (x + y) :=
   fun u hu => by rw [smul_add, hx u hu, hy u hu, add_zero]
 
+/- English proof (translation)
+Introduce `u hu`. Set `I : Ideal (AE F E)` to `Ideal.span (Set.range fun p : Fin n × Fin n => (M - 1) p.1 p.2)`. Establish `hdet : M.det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, RingHom.map_det, sub_eq_zero]`. Establish `: (Ideal.Quotient.mk I).mapMatrix M = 1`.
+
+Use extensionality with `i j`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, ← map_one (Ideal.Quotient.mk I).mapMatrix, RingHom.mapMatrix_apply, Matrix.map_apply, Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span ⟨(i, j), rfl⟩`. Rewrite using `[this, Matrix.det_one]`. Establish `hle : I ≤ (Submodule.span (AE F E) {algebraMap (AF F) (AE F E) u}).annihilator`.
+
+Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_annihilator_span_singleton, smul_eq_mul, mul_comm, ← Algebra.smul_def]`. Use `congrFun (congrFun (hM u hu) p.1) p.2` as an intermediate fact. Simplify using `using this`.
+
+Use `(Submodule.mem_annihilator_span_singleton _ _).1 (hle hdet)` as an intermediate fact. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite `this` using `[smul_eq_mul]`. Then use the resulting hypothesis.
+-/
 theorem at_det_sub_one {v : Pl F} {n : ℕ} {M : Matrix (Fin n) (Fin n) (AE F E)} (hM : At (evFin F v) (M - 1)) :
     At (evFin F v) (M.det - 1) := by
   intro u hu
@@ -78,9 +108,15 @@ theorem at_det_sub_one {v : Pl F} {n : ℕ} {M : Matrix (Fin n) (Fin n) (AE F E)
   rw [Algebra.smul_def, mul_comm]
   rwa [smul_eq_mul] at this
 
+/- English proof (translation)
+The claim follows from `Algebra.TensorProduct.includeLeft_injective (R := F) (S := AF F) (A := AF F) (B := E) (algebraMap F E).injective`.
+-/
 theorem algebraMap_injective_AE : Function.Injective (algebraMap (AF F) (AE F E)) :=
   Algebra.TensorProduct.includeLeft_injective (R := F) (S := AF F) (A := AF F) (B := E) (algebraMap F E).injective
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Apply `algebraMap_injective_AE (F := F) (E := E)` to reduce the goal to its premises. Use `show algebraMap (AF F) (AE F E) (Algebra.norm (AF F) (mat h).det) = algebraMap (AF F) (AE F E) 1`. Rewrite using `[GlobalTheory.Doubling.algebraMap_norm_eq hσ, map_one]`. Conclude with `det_mul_cA hJ h`.
+-/
 theorem norm_det_eq_one {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : J.det ≠ 0)
     (h : UA σ J) :
     Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det (h : GL (Fin n) (AE F E))) = 1 := by
@@ -90,6 +126,13 @@ theorem norm_det_eq_one {σ : E →ₐ[F] E} (hσ : IsCMExt F E σ) {n : ℕ} {J
   rw [GlobalTheory.Doubling.algebraMap_norm_eq hσ, map_one]
   exact det_mul_cA hJ h
 
+/- English proof (translation)
+Establish `h1` using `hα u`. Establish `h2` using `hβ u`. Use `show (X.α / X.β) _ = 1`. Rewrite using `[MonoidHom.div_apply, div_eq_one]`. Apply `Circle.ext` to reduce the goal to its premises.
+
+Rewrite using `[h1, h2]`. Use `split_ifs`. Both sides reduce to the same expression. Establish `key : Even a ↔ Even a'` using `Nat.even_add.1 he`. Distinguish the cases in `ha : Even a`.
+
+Rewrite using `[ha.neg_one_pow, (key.1 ha).neg_one_pow]`. Rewrite using `[(Nat.not_even_iff_odd.1 ha).neg_one_pow, (Nat.not_even_iff_odd.1 (fun h => ha (key.2 h))).neg_one_pow]`.
+-/
 theorem ratio_algebraMap_eq_one {X : Chars F E} {a a' : ℕ}
     (hα : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.α a')
     (hβ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.β a) (he : Even (a + a')) (u : (AF F)ˣ) :
@@ -107,6 +150,13 @@ theorem ratio_algebraMap_eq_one {X : Chars F E} {a a' : ℕ}
     · rw [ha.neg_one_pow, (key.1 ha).neg_one_pow]
     · rw [(Nat.not_even_iff_odd.1 ha).neg_one_pow, (Nat.not_even_iff_odd.1 (fun h => ha (key.2 h))).neg_one_pow]
 
+/- English proof (translation)
+Introduce `c hc`. Establish `hs` using `Neutral.B1.localIdele_isSupportedAt F v x`. Establish `key : c * ((Neutral.B1.localIdele F v x : AF F) - 1) = 0`. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w show c.1 w * ((Neutral.B1.localIdele F v x : AF F).1 w - 1) = 0`.
+
+Rewrite using `[hs.1 w, sub_self, mul_zero]`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `P`. Use `show c.2 P * ((Neutral.B1.localIdele F v x : AF F).2 P - 1) = 0`. Distinguish the cases in `hP : P = v`.
+
+Substitute `hP` using the available equality. Establish `: c.2 P = 0` using `hc`. Rewrite using `[this, zero_mul]`. Rewrite using `[hs.2 P hP, sub_self, mul_zero]`. Rewrite using `[Algebra.smul_def, ← map_one (algebraMap (AF F) (AE F E)), ← map_sub, ← map_mul, key, map_zero]`.
+-/
 theorem at_localIdele (v : Pl F) (x : (Fv F v)ˣ) :
     At (evFin F v) (algebraMap (AF F) (AE F E) (Neutral.B1.localIdele F v x : AF F) - 1) := by
   intro c hc
@@ -129,6 +179,27 @@ theorem at_localIdele (v : Pl F) (x : (Fv F v)ˣ) :
 end GlobalTheory.SiegelValGood
 
 open GlobalTheory.SiegelValGood in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv t K hK g`. Use `left`. Establish `hσ : IsCMExt F E σ` using `hT.base.cm`. Establish `hJ : G.V'.J.det ≠ 0`. Introduce `h0`.
+
+Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Apply `det_ne_zero_of_hasSig (hT.geo.hV'.sig w)` to reduce the goal to its premises. Establish `e : (G.V'.J.map (B.emb w).1).det = (B.emb w).1 G.V'.J.det` using `(RingHom.map_det _ _).symm`. Rewrite using `[e, h0, map_zero]`. Take `⟨hat, h1, h2⟩` from `hK g`.
+
+Use `set D := Matrix.GeneralLinearGroup.det ((K g : UA σ G.V'.J) : GL (Fin a') (AE F E)) with hD`. Establish `hDv : (D : AE F E) = (mat (K g)).det` using `rfl`. Establish `hN : Units.map (Algebra.norm (AF F) : AE F E →* AF F) D = 1` using `norm_det_eq_one hσ hJ (K g)`. Rewrite using `[hN, map_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, mul_one]`. Establish `hpt : piW t (D : AE F E) = (GlobalTheory.SplitFlip.gdet g : Fv F v)`.
+
+Rewrite using `[hDv, RingHom.map_det, RingHom.mapMatrix_apply, h1]`. Both sides reduce to the same expression. Establish `hJt : (G.V'.J.map t).det ≠ 0`. Establish `: (G.V'.J.map t).det = t G.V'.J.det` using `(AlgHom.map_det t _).symm`. Rewrite using `[this]`.
+
+Conclude with `(map_ne_zero _).2 hJ`. Establish `hgi : ((g⁻¹ : GL (Fin a') (Fv F v)) : Matrix (Fin a') (Fin a') (Fv F v)).det = (((GlobalTheory.SplitFlip.gdet g)⁻¹ : (Fv F v)ˣ) : Fv F v)`. Rewrite using `[show (GlobalTheory.SplitFlip.gdet g)⁻¹ = Matrix.GeneralLinearGroup.det g⁻¹ from (map_inv _ _).symm]`. Both sides reduce to the same expression. Establish `hps : piW (t.comp σ) (D : AE F E) = (((GlobalTheory.SplitFlip.gdet g)⁻¹ : (Fv F v)ˣ) : Fv F v)`.
+
+Rewrite using `[hDv, RingHom.map_det, RingHom.mapMatrix_apply, h2, Matrix.det_mul, Matrix.det_mul, Matrix.det_nonsing_inv, Matrix.det_transpose, Ring.inverse_eq_inv, mul_right_comm, inv_mul_cancel₀ hJt, one_mul, hgi]`. Use `set u := Neutral.B1.localIdele F v (GlobalTheory.SplitFlip.gdet g) with hu`. Use `set zz : (AE F E)ˣ := Units.map (algebraMap (AF F) (AE F E) : AF F →* AE F E) u with hzz`. Establish `hzt : ∀ τ : E →ₐ[F] Fv F v, piW τ (zz : AE F E) = (GlobalTheory.SplitFlip.gdet g : Fv F v)` using `fun τ => by show piW τ (algebraMap (AF F) (AE F E) (u : AF F)) = _`. Rewrite using `[piW_algebraMap]`.
+
+Conclude with `Neutral.B1.localIdele_snd_self F v _`. Establish `hzat : At (evFin F v) ((zz : AE F E) - 1)` using `at_localIdele v _`. Establish `hνz : X.ν zz = 1` using `ratio_algebraMap_eq_one hT.chars.resα hT.chars.resβ hT.geo.even u`. Establish `hyat : At (evFin F v) (((D * zz : (AE F E)ˣ) : AE F E) - 1)`. Establish `e : ((D * zz : (AE F E)ˣ) : AE F E) - 1 = ((D : AE F E) - 1) * zz + ((zz : AE F E) - 1)`.
+
+Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `at_add (at_mul (at_det_sub_one hat) _) hzat`. Establish `hy1 : piW (t.comp σ) ((D * zz : (AE F E)ˣ) : AE F E) = 1`.
+
+Rewrite using `[Units.val_mul, map_mul, hps, hzt, Units.inv_mul]`. Establish `key` using `GlobalTheory.ChrLocal.chrW_piW_eq F E σ hσ X.ν v t (D * zz) hyat hy1`. Establish `hsq : Units.map (piW t).toMonoidHom (D * zz) = GlobalTheory.SplitFlip.gdet g ^ 2`. Apply `Units.ext` to reduce the goal to its premises. Use `show piW t ((D * zz : (AE F E)ˣ) : AE F E) = ((GlobalTheory.SplitFlip.gdet g ^ 2 : (Fv F v)ˣ) : Fv F v)`.
+
+Rewrite using `[Units.val_mul, map_mul, hpt, hzt, Units.val_pow_eq_pow_val, sq]`. Rewrite `key` using `[hsq, map_pow, map_mul, hνz, mul_one]`. Use `show ((X.ν D : Circle) : ℂ) = _`. Rewrite using `[← Units.val_pow_eq_pow_val, key]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.SiegelValGood.siegel_factor_eq_sq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ v, X.Good v → ∀ (t : E →ₐ[F] Fv F v)

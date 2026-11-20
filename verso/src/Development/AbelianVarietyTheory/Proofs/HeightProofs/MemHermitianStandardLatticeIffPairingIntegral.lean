@@ -16,6 +16,11 @@ section Lattice
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
+/- English proof (translation)
+Rewrite using `[map_sum V.hT, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_sum, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, HSpace.gram, starRingEnd_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hT_coord (V : HSpace E) (x y : Fin V.rank → E) :
     V.hT (∑ i, x i • V.frame i) (∑ k, y k • V.frame k) = ∑ i, ∑ k, star (x i) * V.gram i k * y k := by
   rw [map_sum V.hT, LinearMap.sum_apply]
@@ -25,6 +30,9 @@ theorem hT_coord (V : HSpace E) (x y : Fin V.rank → E) :
   rw [map_smul, smul_eq_mul, HSpace.gram, starRingEnd_apply]
   ring
 
+/- English proof (translation)
+Establish `h : Formalism.E.hdual V.hT V.L0 = V.L0` using `V.baseLattice_isUnimodular`. Use `conv_lhs => rw [← h]`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_one, LinearMap.restrictScalars_apply]`.
+-/
 theorem mem_hermitianStandardLattice_iff_pairing_integral (V : HSpace E) (x : V.V) : x ∈ V.L0 ↔ ∀ y ∈ V.L0, ∃ o : 𝓞 E, (o : E) = V.hT y x := by
   have h : Formalism.E.hdual V.hT V.L0 = V.L0 := V.baseLattice_isUnimodular
   conv_lhs => rw [← h]
@@ -32,6 +40,13 @@ theorem mem_hermitianStandardLattice_iff_pairing_integral (V : HSpace E) (x : V.
 
 end Lattice
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis F N`. Establish `key : ∀ {Q : Type} [AddCommGroup Q] [Module F Q] (u : M →ₗ[F] Q) (z : M ⊗[F] N) i, TensorProduct.equivFinsuppOfBasisRight b (u.rTensor N z) i = u (TensorProduct.equivFinsuppOfBasisRight b z i)`. Introduce `Q _ _ u z i`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul m n => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Apply `(TensorProduct.equivFinsuppOfBasisRight b).injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[key]`.
+
+Use `h _ fun t => ?_` and prove the remaining obligations. Rewrite using `[← key, hz t]`. Simplify using the standard rewrite rules.
+-/
 theorem rTensor_eq_self {F M N ι : Type} {P : ι → Type} [Field F] [AddCommGroup M] [Module F M]
     [AddCommGroup N] [Module F N] [∀ t, AddCommGroup (P t)] [∀ t, Module F (P t)]
     (f : ∀ t, M →ₗ[F] P t) (g : M →ₗ[F] M) (h : ∀ m, (∀ t, f t m = 0) → g m = m)
@@ -72,8 +87,14 @@ def idemOff : Af F :=
     · simp only [h, if_false]; exact one_mem _⟩
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalV_idemOff (v : HeightOneSpectrum (𝓞 F)) : evalV F v (idemOff F S) = if v ∈ S then 0 else 1 := rfl
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[evalV_idemOff]`. Use `split_ifs`. Conclude with `zero_mem _`. Conclude with `one_mem _`.
+-/
 theorem idemOff_int : idemOff F S ∈ intAf F := by
   intro v
   rw [evalV_idemOff]
@@ -82,21 +103,42 @@ theorem idemOff_int : idemOff F S ∈ intAf F := by
   · exact one_mem _
 
 variable {F} in
+/- English proof (translation)
+Introduce `v` and use `by rw [map_mul]; exact mul_mem (ha v) (hb v)`.
+-/
 theorem intAf_mul {a b : Af F} (ha : a ∈ intAf F) (hb : b ∈ intAf F) : a * b ∈ intAf F := fun v => by
   rw [map_mul]; exact mul_mem (ha v) (hb v)
 
+/- English proof (translation)
+Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+-/
 theorem intAf_one : (1 : Af F) ∈ intAf F := fun v => by
   rw [map_one]; exact one_mem _
 
 variable {F} in
+/- English proof (translation)
+The claim follows from `RestrictedProduct.ext _ _ h`.
+-/
 theorem Af_ext {a b : Af F} (h : ∀ v, evalV F v a = evalV F v b) : a = b :=
   RestrictedProduct.ext _ _ h
 
 def liftOff : Af F →ₗ[F] AF F :=
   (LinearMap.inr F (Ainf F) (Af F)) ∘ₗ LinearMap.mulLeft F (idemOff F S)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftOff_apply (α : Af F) : liftOff F S α = pairA F 0 (idemOff F S * α) := rfl
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.comp_apply, ← LinearMap.rTensor_comp]`. Use `rTensor_eq_self (ι := Option S) (P := fun t => Ainf F × (∀ v, Fv F v)) (fun t => t.elim ((LinearMap.inl _ _ _) ∘ₗ (fstA F).toLinearMap) fun v => (LinearMap.inr _ _ _) ∘ₗ (LinearMap.single F (fun v => Fv F v) v.1) ∘ₗ (evalV F v.1).toLinearMap ∘ₗ (sndA F).toLinearMap) _ ?_ z ?_` and prove the remaining obligations. Introduce `m hm`. Establish `a1 : fstA F m = 0` using `congrArg Prod.fst (hm none)`. Establish `a2 : ∀ v ∈ S, evalV F v (sndA F m) = 0`.
+
+Introduce `v hv`. Establish `h3 : (Pi.single v (evalV F v (sndA F m)) : ∀ v, Fv F v) v = 0` using `congrFun (congrArg Prod.snd (hm (some ⟨v, hv⟩))) v`. Rewrite `h3` using `[Pi.single_eq_same]`. Then use the resulting hypothesis. Use `Prod.ext a1.symm (Af_ext fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F v (idemOff F S * sndA F m) = evalV F v (sndA F m)`.
+
+Rewrite using `[map_mul, evalV_idemOff]`. Use `split_ifs with hv`. Rewrite using `[a2 v hv, mul_zero]`. Rewrite using `[one_mul]`. Introduce and unpack `(_ | ⟨v, hv⟩)`.
+
+Simplify using `only [Option.elim, LinearMap.rTensor_comp, LinearMap.comp_apply, h1, map_zero]`. Simplify using `only [Option.elim, LinearMap.rTensor_comp, LinearMap.comp_apply, h2 v hv, map_zero]`.
+-/
 theorem liftOff_snd {E : Type} [AddCommGroup E] [Module F E] (z : AF F ⊗[F] E)
     (h1 : (fstA F).toLinearMap.rTensor E z = 0)
     (h2 : ∀ v ∈ S, (evalV F v).toLinearMap.rTensor E ((sndA F).toLinearMap.rTensor E z) = 0) :
@@ -127,16 +169,25 @@ theorem liftOff_snd {E : Type} [AddCommGroup E] [Module F E] (z : AF F ⊗[F] E)
 def liftMul {E : Type} [Field E] [Algebra F E] (c : E) : Af F ⊗[F] E →+ AF F ⊗[F] E :=
   ((liftOff F S).rTensor E).toAddMonoidHom.comp (AddMonoidHom.mulLeft ((1 : Af F) ⊗ₜ[F] c))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftMul_apply {E : Type} [Field E] [Algebra F E] (c : E) (z : Af F ⊗[F] E) :
     liftMul F S c z = (liftOff F S).rTensor E (((1 : Af F) ⊗ₜ[F] c) * z) := rfl
 
 end Adeles
 
+/- English proof (translation)
+The claim follows from `liftOff_snd D.host.F S z h1 h2`.
+-/
 theorem liftOff_finPart (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (z : AE D) (h1 : infPart D z = 0)
     (h2 : ∀ v ∈ S, locPart D v z = 0) :
     (liftOff D.host.F S).rTensor D.host.E (finPart D z) = z :=
   liftOff_snd D.host.F S z h1 h2
 
+/- English proof (translation)
+Take `⟨o, ho⟩` from `(mem_hermitianStandardLattice_iff_pairing_integral V _).1 hy _ hx`. Conclude with `⟨o, ho.trans (hT_coord V x y)⟩`.
+-/
 theorem selfDualLattice_frame_span_integral_coordinates (V : HSp D) {x y : Fin V.rank → D.host.E} (hx : x ∈ L0c D V) (hy : y ∈ L0c D V) :
     ∃ o : 𝓞 D.host.E, (o : D.host.E) = ∑ i, ∑ k, star (x i) * V.gram i k * y k := by
   obtain ⟨o, ho⟩ := (mem_hermitianStandardLattice_iff_pairing_integral V _).1 hy _ hx
@@ -147,6 +198,9 @@ def latRankOne (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) : 
     ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ x ∈ L0c D A, ∃ y ∈ L0c D B,
       w = Matrix.of fun i j => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] (a * star (x i) * y j)}
 
+/- English proof (translation)
+Simplify using `only [mapUp, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, gramFin, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+-/
 theorem mapUp_mulVec (A B : HSp D) (x : WA A B) (y : Fin A.rank → AEf D) (j : Fin B.rank) :
     (mapUp A B x).mulVec y j = ∑ i, finPart D (x i j) * ∑ l, ((1 : Af D.host.F) ⊗ₜ[D.host.F] A.gram i l) * y l := by
   simp only [mapUp, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, gramFin,
@@ -156,6 +210,21 @@ theorem mapUp_mulVec (A B : HSp D) (x : WA A B) (y : Fin A.rank → AEf D) (j : 
   rw [mul_assoc]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hS, a, ha, x, hx, y, hy, rfl⟩` from `hw`. Use `⟨⟨fun i j => ?_, fun v hv i j => ?_⟩, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `TensorProduct.zero_tmul _ _`.
+
+Express the relevant statement in the definitionally equal form `evalV D.host.F v α ⊗ₜ[D.host.F] _ = 0`. Rewrite using `[hS v hv, TensorProduct.zero_tmul]`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβ, u, hu, rfl⟩` from `hz`.
+
+Take `⟨o, ho⟩` from `selfDualLattice_frame_span_integral_coordinates A hx hu`. Use `AddSubgroup.subset_closure ⟨α * β, intAf_mul hα hβ, (o • a) • y, ⟨o • a, Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) o ha, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[mapUp_mulVec]`. Establish `: (((o • a) • y) j) = ∑ i, ∑ l, (a * star (x i) * y j) * (A.gram i l * u l)`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, Algebra.smul_def, show algebraMap _ _ o = (o : D.host.E) from rfl, ho]`. Simplify using `only [Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring`. Rewrite using `[this]`. Simplify using `only [TensorProduct.tmul_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(α ⊗ₜ[D.host.F] (a * star (x i) * y j)) * _ = _`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add z z' _ _ h h' => rw [Matrix.mulVec_add]`. Conclude with `add_mem h h'`. Consider the case `neg z _ h => rw [Matrix.mulVec_neg]`. Conclude with `neg_mem h`. Consider the case `zero => exact ⟨zero_mem _, fun y _ => by rw [mapUp_zero, Matrix.zero_mulVec]; exact zero_mem _⟩`.
+
+Consider the case `add x x' _ _ h h'`. Conclude with `⟨add_mem h.1 h'.1, fun y hy => by rw [mapUp_add, Matrix.add_mulVec]; exact add_mem (h.2 y hy) (h'.2 y hy)⟩`. Consider the case `neg x _ h => exact ⟨neg_mem h.1, fun y hy => by rw [mapUp_neg, Matrix.neg_mulVec]; exact neg_mem (h.2 y hy)⟩`.
+-/
 theorem latRankOne_maps (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {x : WA A B}
     (hx : x ∈ latRankOne A B S) : x ∈ offS A B S ∧ ∀ y ∈ latFin A, (mapUp A B x).mulVec y ∈ latFinAA B := by
   induction hx using AddSubgroup.closure_induction with
@@ -190,6 +259,13 @@ theorem latRankOne_maps (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.hos
     exact ⟨add_mem h.1 h'.1, fun y hy => by rw [mapUp_add, Matrix.add_mulVec]; exact add_mem (h.2 y hy) (h'.2 y hy)⟩
   | neg x _ h => exact ⟨neg_mem h.1, fun y hy => by rw [mapUp_neg, Matrix.neg_mulVec]; exact neg_mem (h.2 y hy)⟩
 
+/- English proof (translation)
+Set `Φ : (Fin B.rank → AEf D) →+ WA A B` to `AddMonoidHom.mk' (fun z => Matrix.of fun i j => liftMul D.host.F S (star (q i)) (z j)) fun z z' => Matrix.ext fun i j => (liftMul D.host.F S (star (q i))).map_add (z j) (z' j)`. Establish `hle : latFinAA B ≤ (latRankOne A B S).comap Φ`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨β, hβ, u, ⟨a, ha, y, hy, rfl⟩, rfl⟩`. Use `AddSubgroup.subset_closure ⟨idemOff D.host.F S * β, intAf_mul (idemOff_int _ _) hβ, fun v hv => ?_, a, ha, q, hq, y, hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, evalV_idemOff, if_pos hv, zero_mul]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `liftMul D.host.F S (star (q i)) (β ⊗ₜ[D.host.F] (a * y j)) = _`. Simplify using `only [liftMul_apply, Matrix.of_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, LinearMap.rTensor_tmul, liftOff_apply]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Conclude with `hle hz`.
+-/
 theorem rankOne_mem (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {q : Fin A.rank → D.host.E}
     (hq : q ∈ L0c D A) {z : Fin B.rank → AEf D} (hz : z ∈ latFinAA B) :
     (Matrix.of fun i j => liftMul D.host.F S (star (q i)) (z j) : WA A B) ∈ latRankOne A B S := by
@@ -210,6 +286,15 @@ theorem rankOne_mem (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F)
       ring
   exact hle hz
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.of_apply, liftMul_apply]`. Use `(liftOff_finPart S (x i j) (hx.1 i j) fun v hv => hx.2 v hv i j).symm.trans (Eq.trans (congrArg _ ?_) (map_sum ((liftOff D.host.F S).rTensor D.host.E) _ _))` and prove the remaining obligations. Simplify using `only [mapUp_mulVec, Finset.mul_sum, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `: ∀ i', ∑ k, ∑ l, ((1 : Af D.host.F) ⊗ₜ[D.host.F] star (q k i)) * (finPart D (x i' j) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (A.gram i' l * p k l))) = if i = i' then finPart D (x i' j) else 0`. Introduce `i'`. Establish `e : ∑ k, ∑ l, ((1 : Af D.host.F) ⊗ₜ[D.host.F] star (q k i)) * (finPart D (x i' j) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (A.gram i' l * p k l))) = finPart D (x i' j) * ((1 : Af D.host.F) ⊗ₜ[D.host.F] (∑ k, star (q k i) * ∑ l, A.gram i' l * p k l))`. Simplify using `only [Finset.mul_sum, TensorProduct.tmul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[e, hpq]`. Use `split_ifs`. Rewrite using `[← Algebra.TensorProduct.one_def, mul_one]`.
+
+Rewrite using `[TensorProduct.tmul_zero, mul_zero]`. Simplify using `only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem eq_sum_rankOne (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) {x : WA A B}
     (hx : x ∈ offS A B S) {n : ℕ} {p q : Fin n → Fin A.rank → D.host.E}
     (hpq : ∀ i i', ∑ k, star (q k i) * ∑ l, A.gram i' l * p k l = if i = i' then 1 else 0) :
@@ -238,12 +323,22 @@ theorem eq_sum_rankOne (A B : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host
     · rw [TensorProduct.tmul_zero, mul_zero]
   simp only [this, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem unramOutside_iff (χ : (AE D)ˣ →* Circle) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     Formalism.L2.Theta.UnramOutside D χ S ↔ GlobalTheory.IndefiniteRowSideFullHecke.ShiftMapsUpDown.UnramOutside D S χ := Iff.rfl
 
 def HalfIntegral (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) : Prop :=
   ∀ u ∈ homLat V W S, ∀ u' ∈ homLat V W S, ψ (symplH V W u u') = 1
 
+/- English proof (translation)
+Establish `h : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E)`. Conclude with `D.host.sqd_sq`. Take `⟨-, -, -, hd, -⟩` from `D.host.hyp`. Take `⟨k, hk⟩ : ∃ k : ℕ, D.host.d = 16 * k + 7` from `⟨D.host.d / 16, by omega⟩`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((4 * k + 2 : ℕ) : ℤ), ?_, ?_⟩` and prove the remaining obligations.
+
+Use `monicity!`. Rewrite `h` using `[hk]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, theta0]`. Rewrite using `[eq_intCast]`. Move the coercions through the operations in `at h ⊢`.
+
+Take the linear combination `(1 / 4 : D.host.E) * h`.
+-/
 theorem theta0_isIntegral (D : D7) : IsIntegral ℤ (theta0 D) := by
   have h : D.host.sqrtMinusD ^ 2 = -(D.host.d : D.host.E) := by
     exact D.host.sqd_sq
@@ -258,6 +353,13 @@ theorem theta0_isIntegral (D : D7) : IsIntegral ℤ (theta0 D) := by
     push_cast at h ⊢
     linear_combination (1 / 4 : D.host.E) * h
 
+/- English proof (translation)
+Proceed by induction on `hl using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hS, a, ha, x, hx, y, hy, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, hS, o • a, Submodule.smul_mem (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) o ha, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] (o : D.host.E)) * (_ ⊗ₜ _) = _ ⊗ₜ _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.smul_def, show algebraMap _ _ o = (o : D.host.E) from rfl]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> ring`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add x x' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`. Consider the case `neg x _ h => rw [smul_neg]`. Conclude with `neg_mem h`.
+-/
 theorem smul_mem_latVWS (V W : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (o : 𝓞 D.host.E) {l : WA V W}
     (hl : l ∈ latVWS V W S) : incA D (o : D.host.E) • l ∈ latVWS V W S := by
   induction hl using AddSubgroup.closure_induction with
@@ -275,6 +377,11 @@ theorem smul_mem_latVWS (V W : HSp D) (S : Finset (HeightOneSpectrum (𝓞 D.hos
   | add x x' _ _ h h' => rw [smul_add]; exact add_mem h h'
   | neg x _ h => rw [smul_neg]; exact neg_mem h
 
+/- English proof (translation)
+Unfold `hHom`. Use `split_ifs`. Use `all_goals`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hHom_smul_right (V W : HSp D) (c : AE D) (x y : WA V W) : hHom V W x (c • y) = c * hHom V W x y := by
   unfold hHom
   split_ifs
@@ -284,6 +391,9 @@ theorem hHom_smul_right (V W : HSp D) (c : AE D) (x y : WA V W) : hHom V W x (c 
       Finset.sum_congr rfl fun l _ => ?_
     ring
 
+/- English proof (translation)
+Rewrite using `[vacSignOf, symplH, sympl, hHom_smul_right, RingHom.map_mul, ← mul_assoc (incA D D.host.xi0), mul_comm (incA D D.host.xi0)]`.
+-/
 theorem vacSignOf_eq (ψ : AddChar (AF D.host.F) ℂ) (θ : D.host.E) (V W : HSp D) (l : WA V W) :
     vacSignOf ψ θ V W l = ψ (symplH V W (incA D θ • l) l) := by
   rw [vacSignOf, symplH, sympl, hHom_smul_right, RingHom.map_mul, ← mul_assoc (incA D D.host.xi0),
@@ -301,11 +411,17 @@ def FixesVacuumWhere (Wl : WeilTied D X T)
 
 def halfA (D : D7) : AE D := algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) (1 / 2))
 
+/- English proof (translation)
+Rewrite using `[symplH, sympl, sympl, hHom_smul_right, mul_left_comm, halfA]`. Generalize the expression as in `algebraMap D.host.F (AF D.host.F) (1 / 2) = r`. Rewrite using `[← Algebra.smul_def r, LinearMap.map_smul, smul_eq_mul]`.
+-/
 theorem symplH_eq (V W : HSp D) (u u' : WA V W) : symplH V W u u' = sympl V W (halfA D • u) u' := by
   rw [symplH, sympl, sympl, hHom_smul_right, mul_left_comm, halfA]
   generalize algebraMap D.host.F (AF D.host.F) (1 / 2) = r
   rw [← Algebra.smul_def r, LinearMap.map_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h2 : v.valuation F (2 : F) = 1` using `(v.valuation_eq_one_iff_notMem (K := F)).2 h`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `: Valued.v (algebraMap F (Fv F v) (1 / 2)) = v.valuation F (1 / 2)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _`. Rewrite using `[this, map_div₀, h2, map_one, div_one]`.
+-/
 theorem half_mem_integers {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (h : (2 : 𝓞 F) ∉ v.asIdeal) :
     algebraMap F (Fv F v) (1 / 2) ∈ v.adicCompletionIntegers F := by
   have h2 : v.valuation F (2 : F) = 1 := (v.valuation_eq_one_iff_notMem (K := F)).2 h
@@ -314,6 +430,13 @@ theorem half_mem_integers {F : Type} [Field F] [NumberField F] (v : HeightOneSpe
     HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _
   rw [this, map_div₀, h2, map_one, div_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h u hu`. Use `(hd _ ⟨fun i j => ?_, fun v hv i j => ?_⟩).2 fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, hu.1.1 i j]`. Conclude with `MulZeroClass.mul_zero _`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, hu.1.2 v hv i j]`. Conclude with `MulZeroClass.mul_zero _`. Rewrite using `[← symplH_eq]`. Conclude with `h u hu l hl`. Introduce `h u hu u' hu'`.
+
+Rewrite using `[symplH_eq]`. Conclude with `(hd _ (h u hu).1).1 (h u hu) u' hu'`.
+-/
 theorem halfIntegral_iff_of_selfDual (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D)
     (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
     (hd : ∀ x ∈ offS V W S, x ∈ homLat V W S ↔ ∀ l ∈ homLat V W S, ψ (sympl V W x l) = 1) :

@@ -13,6 +13,9 @@ variable {k : Type*} [Field k] {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ}
 def nfBasis (ϖ : kˣ) (g : GL n k) (e : Fin c → ℤ) (z : n → k) : GL (n ⊕ Fin c) k :=
   colE c 1 z * embX c g * embA n (SplitFlip.diagGL fun i => ϖ ^ e i)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `fromBlocks 1 _ 0 1 * fromBlocks g.val 0 0 1 * fromBlocks 1 0 0 (diagonal _) = _`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`. Apply the tactic sequence `ext (r | r) (i | i) <;> simp`.
+-/
 theorem nfBasis_val (ϖ : kˣ) (g : GL n k) (e : Fin c → ℤ) (z : n → k) : (nfBasis ϖ g e z).val =
     fromBlocks g.val (Matrix.of fun r i => if i.val = 0 then z r * (ϖ : k) ^ e i else 0) 0
       (diagonal fun i => (ϖ : k) ^ e i) := by
@@ -20,6 +23,9 @@ theorem nfBasis_val (ϖ : kˣ) (g : GL n k) (e : Fin c → ℤ) (z : n → k) : 
   rw [fromBlocks_multiply, fromBlocks_multiply]
   ext (r | r) (i | i) <;> simp
 
+/- English proof (translation)
+Simplify using `[nfBasis, normalBasis]`.
+-/
 theorem nfBasis_one (ϖ : kˣ) (e : Fin c → ℤ) (z : n → k) : nfBasis ϖ 1 e z = normalBasis ϖ e z := by
   simp [nfBasis, normalBasis]
 
@@ -121,6 +127,9 @@ variable (k) in
 
 def LatticeClasses : Prop := NormalFormModN k ∧ LatticeBounds k ∧ ChainSizes k
 
+/- English proof (translation)
+The claim follows from `(H ϖ hϖ ψ hψ ν hν s (κ ⊕ Fin (s + 1)) t (Ix (κ ⊕ Fin (s + 1)) t (s + 2)) (XIx κ t) δ hδ μ₀ h₀ (fun j c h => plainFrame (stdOrd κ t j c h)) (LatFrame.refl k _) fun _ _ _ => rfl).1.2.1`.
+-/
 example (H : ChainSizes k) (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : HasConductor ψ 1)
     [hν : ν.IsAddHaarMeasure] (κ t : Type) [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t]
     (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (μ₀ : ℕ → kˣ →* ℂˣ) (h₀ : ∀ j, IsUnram (μ₀ j)) :
@@ -128,6 +137,13 @@ example (H : ChainSizes k) (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : H
   (H ϖ hϖ ψ hψ ν hν s (κ ⊕ Fin (s + 1)) t (Ix (κ ⊕ Fin (s + 1)) t (s + 2)) (XIx κ t) δ hδ μ₀ h₀
     (fun j c h => plainFrame (stdOrd κ t j c h)) (LatFrame.refl k _) fun _ _ _ => rfl).1.2.1
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [topCoord, powInt, mem_latOf_one, Set.mem_setOf_eq, zpow_zero, Units.val_one, map_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, -, rfl⟩`. Conclude with `hy _`.
+
+Introduce `ha`. Use `⟨Pi.single (Sum.inr i) a, fun l => ?_, fun l hl => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs exacts [ha, zero_mem _]`. Rewrite using `[Pi.single_apply, if_neg]`.
+
+Simplify using `using hl.ne'`.
+-/
 example {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ} (i : Fin c) :
     topCoord (latOf (1 : GL (n ⊕ Fin c) k)) i = powInt ϖ 0 := by
   ext a

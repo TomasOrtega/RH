@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.TwU.ScaleUnit
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S`. Take `⟨-, hAt, -⟩` from `S.curve`. Take `⟨h1, h2, h3, hLam, hOk⟩` from `hAt`. Establish `hU : GL3Theta.IsModelU S.g.lam (TaylorLogMetric.lamOf D t.cc t.δ) S.g.C` using `hLam ▸ hOk.1`. Establish `hu` using `(GlobalTheory.UnitModel.modelEx_holds D _ S.g.lam t.cc t.δ h1 h2 h3).2.2 S.g.C hU`.
+
+Unfold `ltC`. Rewrite using `[norm_inv, norm_mul, hu, norm_wToC_unit, mul_one, inv_one]`.
+-/
 theorem norm_ltC_eq_one : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ‖ltC S.g S.hLT‖ = 1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S
   obtain ⟨-, hAt, -⟩ := S.curve

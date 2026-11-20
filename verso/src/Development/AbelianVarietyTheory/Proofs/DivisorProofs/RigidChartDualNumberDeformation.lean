@@ -27,6 +27,41 @@ namespace GlobalTheory.KSUniq
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Establish `hs : Smooth P₀.A.hom` using `P₀.isAb.smooth`. Take `⟨-, hind⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hu hdd Z m L hL hiso`. Take `⟨hcoc, hcob⟩` from `hind φ hφ`. Set `Wp : J × J' → Z.Opens` to `fun p => W p.1 ⊓ W' p.2`. Establish `hWpU : ∀ p, Wp p ≤ π ⁻¹ᵁ U` using `fun p => inf_le_left.trans (hWU p.1)`.
+
+Establish `bse` using `fun i => field_base π (W i) (hWU i) (d i) (hf i) D (hl i)`. Establish `bse'` using `fun k => field_base π (W' k) (hWU' k) (d' k) (hf' k) D (hl' k)`. Establish `ex : ∀ p : J × J', ∃ h : Fin n → Γ(P₀.A.left, m ⁻¹ᵁ Wp p), ∀ W₁, W₁ ≤ Wp p → ∀ f, (m.app W₁).hom (d p.1 W₁ f - d' p.2 W₁ f) = ∑ a, rsT (h a) _ * dd a (m ⁻¹ᵁ W₁) ((m.app W₁).hom f)`. Introduce `p`. Use `(coeff_id hs hu hdd x0 π m hm hU (Wp p) (hWpU p) (fun W₁ f => (m.app W₁).hom (d p.1 W₁ f - d' p.2 W₁ f)) (fun W₁ h f f' => ?_) (fun W₁ h f f' => ?_) (fun W₁ W₂ h h₀ f => ?_) (fun W₁ h r => ?_)).exists` and prove the remaining obligations.
+
+Rewrite using `[(hf p.1).1 W₁ (h.trans inf_le_left), (hf' p.2).1 W₁ (h.trans inf_le_right)]`. Simplify using `only [map_sub, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hf p.1).2.1 W₁ (h.trans inf_le_left), (hf' p.2).2.1 W₁ (h.trans inf_le_right)]`. Simplify using `only [map_sub, map_add, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hf p.1).2.2 W₁ W₂ h (h₀.trans inf_le_left), (hf' p.2).2.2 W₁ W₂ h (h₀.trans inf_le_right), ← map_sub, app_resG]`. Rewrite using `[bse p.1 W₁ (h.trans inf_le_left), bse' p.2 W₁ (h.trans inf_le_right), sub_self, map_zero]`. Use `choose h hh using ex`. Establish `cmp : ∀ (p p' : J × J') (a : Fin n), rsT (h p a) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') - rsT (h p' a) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') = ∑ b, (constFn P₀.A.hom (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') (θ a b) * rsT (φ b (j p.1) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') - constFn P₀.A.hom (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') …`.
+
+Introduce `p p'`. Set `W₁` to `Wp p ⊓ Wp p'`. Establish `l1 : W₁ ≤ Wp p` using `inf_le_left`. Establish `l2 : W₁ ≤ Wp p'` using `inf_le_right`. Establish `k2 : m ⁻¹ᵁ W₁ ≤ m ⁻¹ᵁ Wp p` using `m.preimage_mono l1`.
+
+Establish `k3 : m ⁻¹ᵁ W₁ ≤ m ⁻¹ᵁ Wp p'` using `m.preimage_mono l2`. Establish `k4 : m ⁻¹ᵁ W₁ ≤ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun z hz => ⟨hWj p.1 (hz.1.1), hWj p'.1 (hz.2.1)⟩`. Establish `k5 : m ⁻¹ᵁ W₁ ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2)` using `fun z hz => ⟨hWj' p.2 (hz.1.2), hWj' p'.2 (hz.2.2)⟩`. Set `y₁ : Fin n → Γ(P₀.A.left, m ⁻¹ᵁ W₁)` to `fun a => rsT (h p a) _ - rsT (h p' a) _ - ∑ b, (constFn P₀.A.hom _ (θ a b) * rsT (φ b (j p.1) (j p'.1)) _ - constFn P₀.A.hom _ (θ' a b) * rsT (φ b (j' p.2) (j' p'.2)) _)`. Establish `z` using `(coeff_id hs hu hdd x0 π m hm hU W₁ (l1.trans (hWpU p)) (fun _ _ => 0) (fun _ _ _ _ => by simp) (fun _ _ _ _ => by simp) (fun _ _ _ _ _ => by simp [rsT_zero]) (fun _ _ _ => rfl)).unique (y₁ := y₁) (y₂ := fun _ => 0) (fun W₂ hW₂ f => ?_) (fun W₂ hW₂ f => by simp [rsT_zero])`.
+
+Introduce `a`. Use `congrFun z a` as an intermediate fact. Simplify using `only [y₁] at this`. Rewrite `this` using `[sub_eq_zero]`. Conclude with `this`.
+
+Establish `k1 : m ⁻¹ᵁ W₂ ≤ m ⁻¹ᵁ W₁` using `m.preimage_mono hW₂`. Establish `E1` using `hh p W₂ (hW₂.trans l1) f`. Establish `E2` using `hh p' W₂ (hW₂.trans l2) f`. Establish `E3` using `hP p.1 p'.1 W₂ (fun z hz => ⟨(l1 (hW₂ hz)).1, (l2 (hW₂ hz)).1⟩) f`. Establish `E4` using `hP' p.2 p'.2 W₂ (fun z hz => ⟨(l1 (hW₂ hz)).2, (l2 (hW₂ hz)).2⟩) f`.
+
+Establish `k1' : m ⁻¹ᵁ W₂ ≤ m ⁻¹ᵁ Wp p` using `k1.trans k2`. Establish `k1'' : m ⁻¹ᵁ W₂ ≤ m ⁻¹ᵁ Wp p'` using `k1.trans k3`. Establish `k4' : m ⁻¹ᵁ W₂ ≤ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `k1.trans k4`. Establish `k5' : m ⁻¹ᵁ W₂ ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2)` using `k1.trans k5`. Simplify using `(disch := assumption) only [y₁, rsT_sub, rsT_sum, rsT_mul, rsT_rsT, rsT_constFn, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul] at E1 E2 E3 E4 ⊢`.
+
+Simplify using `only [map_sub] at E1 E2 E3 E4`. Take the linear combination `E1 - E2 - E3 + E4`. Use function extensionality and compare the values at `a`. Use `sub_eq_zero.1 (hcob (θ a - θ' a) ?_)` and prove the remaining obligations. Use `GlobalTheory.T.isCechOneCoboundary_of_refinement (fun i => m ⁻¹ᵁ L.U i) (lc P₀.A.hom (θ a - θ' a) φ) (isCoc_lc _ _ _ hcoc) (fun p => m ⁻¹ᵁ Wp p) (fun p => j p.1) (fun p => m.preimage_mono (inf_le_left.trans (hWj p.1))) ?_ (fun p => -(h p a) - ∑ b, constFn P₀.A.hom _ (θ' a b) * rs …` and prove the remaining obligations.
+
+Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hcov z`. Take `⟨k, hk⟩` from `hcov' z`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, k), hi, hk⟩`. Introduce `p p'`.
+
+Establish `k2 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ Wp p` using `inf_le_left`. Establish `k3 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ Wp p'` using `inf_le_right`. Establish `k4 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun z hz => ⟨hWj p.1 hz.1.1, hWj p'.1 hz.2.1⟩`. Establish `k6 : m ⁻¹ᵁ Wp p ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1)` using `fun z hz => ⟨hWj' p.2 hz.2, hWj p.1 hz.1⟩`. Establish `k7 : m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun z hz => ⟨hWj' p'.2 hz.2, hWj p'.1 hz.1⟩`.
+
+Establish `T1 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun z hz => ⟨⟨hWj' p.2 hz.1.2, hWj' p'.2 hz.2.2⟩, hWj p'.1 hz.2.1⟩`. Establish `T2 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun z hz => ⟨⟨hWj' p.2 hz.1.2, hWj p.1 hz.1.1⟩, hWj p'.1 hz.2.1⟩`. Establish `C1 : ∀ b, rsT (φ b (j' p.2) (j' p'.2)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') + rsT (φ b (j' p'.2) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') = rsT (φ b (j' p.2) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p')` using `fun b => by`. Use `congrArg (fun s => rsT s (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p')) (hcoc b (j' p.2) (j' p'.2) (j p'.1))` as an intermediate fact. Establish `a1 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2)` using `inf_le_left`.
+
+Establish `a2 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun _ h => ⟨h.1.2, h.2⟩`. Establish `a3 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun _ h => ⟨h.1.1, h.2⟩`. Simplify `this` using `(disch := assumption) only [rsT_add, rsT_rsT]`. Establish `C2 : ∀ b, rsT (φ b (j' p.2) (j p.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') + rsT (φ b (j p.1) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') = rsT (φ b (j' p.2) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p')` using `fun b => by`. Use `congrArg (fun s => rsT s (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p')) (hcoc b (j' p.2) (j p.1) (j p'.1))` as an intermediate fact.
+
+Establish `a1 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1)` using `inf_le_left`. Establish `a2 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun _ h => ⟨h.1.2, h.2⟩`. Establish `a3 : m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1) ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `fun _ h => ⟨h.1.1, h.2⟩`. Simplify `this` using `(disch := assumption) only [rsT_add, rsT_rsT]`. Establish `E` using `cmp p p' a`.
+
+Establish `k8 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j' p.2) ⊓ m ⁻¹ᵁ L.U (j p.1)` using `k2.trans k6`. Establish `k9 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j' p'.2) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `k3.trans k7`. Establish `k10 : m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p' ≤ m ⁻¹ᵁ L.U (j p.1) ⊓ m ⁻¹ᵁ L.U (j p'.1)` using `k4`. Simplify using `(disch := assumption) only [lc, rsT_sub, rsT_neg, rsT_sum, rsT_mul, rsT_rsT, rsT_constFn, constFn_sub, sub_mul, Finset.sum_sub_distrib]`. Establish `E' : ∑ b, (constFn P₀.A.hom (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') (θ a b) * rsT (φ b (j p.1) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') - constFn P₀.A.hom (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') (θ' a b) * rsT (φ b (j p.1) (j p'.1)) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p')) = rsT (h p a) (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') - rsT (h …`.
+
+Rewrite using `[E, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Take the linear combination `(constFn P₀.A.hom (m ⁻¹ᵁ Wp p ⊓ m ⁻¹ᵁ Wp p') (θ' a b)) * (C1 b - C2 b)`. Simplify using `only [Pi.sub_apply, constFn_sub, sub_mul, mul_sub, Finset.sum_sub_distrib] at E' ⊢`. Take the linear combination `E'`.
+-/
 theorem theta_eq_fibre (P₀ : Out.PolAV (Sp K)) {n : ℕ} (u : Fin n → (epsR K ⟶ P₀.A)) (hu : IsLieBasis u)
     (dd : Fin n → ∀ O : P₀.A.left.Opens, Γ(P₀.A.left, O) → Γ(P₀.A.left, O)) (hdd : ∀ a, IsInvDer (u a) (dd a))
     {X Z : Scheme.{0}} (π : Z ⟶ X) (x0 : Sp K ⟶ X) (m : P₀.A.left ⟶ Z) (hm : IsPullback m P₀.A.hom π x0)
@@ -175,6 +210,11 @@ theorem theta_eq_fibre (P₀ : Out.PolAV (Sp K)) {n : ℕ} (u : Fin n → (epsR 
     simp only [Pi.sub_apply, constFn_sub, sub_mul, mul_sub, Finset.sum_sub_distrib] at E' ⊢
     linear_combination E'
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← AlgebraicGeometry.basicOpen_eq_bot_iff]`. Establish `h0 : Y.basicOpen (resG Y (inf_le_left : U ⊓ V ≤ U) (f - g)) = ⊥`. Rewrite using `[map_sub, h, sub_self, Scheme.basicOpen_zero]`. Rewrite `h0` using `[resG, Scheme.basicOpen_res]`. Use `eq_bot_iff.2 fun x hx => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy1, hy2⟩` from `hV.inter_open_nonempty _ (Y.basicOpen (f - g)).isOpen ⟨x, hx⟩`. Establish `: y ∈ (U ⊓ V) ⊓ Y.basicOpen (f - g)` using `⟨⟨Y.basicOpen_le _ hy1, hy2⟩, hy1⟩`. Rewrite `this` using `[h0]`. Conclude with `this.elim`.
+-/
 theorem eq_of_resG_eq_of_dense {Y : Scheme.{0}} [IsReduced Y] {U V : Y.Opens} (hV : Dense (V : Set Y))
     (f g : Γ(Y, U)) (h : resG Y (inf_le_left : U ⊓ V ≤ U) f = resG Y inf_le_left g) : f = g := by
   rw [← sub_eq_zero, ← AlgebraicGeometry.basicOpen_eq_bot_iff]
@@ -187,6 +227,25 @@ theorem eq_of_resG_eq_of_dense {Y : Scheme.{0}} [IsReduced Y] {U V : Y.Opens} (h
   rw [h0] at this
   exact this.elim
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y _ _ _ _ U n v A hv hb hA D Θ Θ' hK hK'`. Use `haveI : IsReduced Y.X := GlobalTheory.Coisotropic.isReduced_of_isNormalScheme Y.normal`. Establish `key : ∀ {K : Type} [Field K] (x0 : Sp K ⟶ Y.X) (hU : ⊤ ≤ x0 ⁻¹ᵁ U.1), ⊤ ≤ x0 ⁻¹ᵁ interior Y → ∀ a b, GlobalTheory.FlagMod.ev x0 U.1 hU (Θ a b) = GlobalTheory.FlagMod.ev x0 U.1 hU (Θ' a b)`. Introduce `K _ x0 hU hV a b`. Take `⟨P₀, θm, hpb, hiso⟩` from `exists_polAV_interior Y x0 hV`.
+
+Use `haveI : IsCommMonObj P₀.A := P₀.isAb.comm`. Establish `hx : spMap (GlobalTheory.FlagMod.ev x0 U.1 hU) ≫ chart U = x0` using `GlobalTheory.FlagMod.spMap_ev x0 U.2 hU`. Establish `hv'` using `fun i => GlobalTheory.LieMet.isTan_map (GlobalTheory.FlagMod.ev x0 U.1 hU) hx (hv i)`. Establish `hb'` using `GlobalTheory.GradedPieces.basis_map (GlobalTheory.FlagMod.ev x0 U.1 hU) hx hv hb`. Take `⟨u, hu, hu'⟩` from `GlobalTheory.LiePull.lieBasis_of_tanBasis Y.t x0 P₀.A θm hpb _ hv' hb'`.
+
+Use `choose dd hdd using fun a => (GlobalTheory.KS.InvField.main K P₀.A (u a) (hu.1 a)).1`. Take `⟨⟨φ, hφ⟩, -⟩` from `GlobalTheory.KS.DlogPol.dlog_independent K P₀ n u dd hu hdd _ θm Y.t.PP.L Y.t.PP.isLB hiso`. Take `⟨J, W, j, d, hcov, hWj, hf, hl, hdiff⟩` from `hK`. Take `⟨J', W', j', d', hcov', hWj', hf', hl', hdiff'⟩` from `hK'`. Establish `hP` using `pull_diff Y.t (interior Y) U v hv Θ W j d hWj hdiff x0 hU P₀.A θm hpb u hu' dd hdd φ hφ`.
+
+Establish `hP'` using `pull_diff Y.t (interior Y) U v hv Θ' W' j' d' hWj' hdiff' x0 hU P₀.A θm hpb u hu' dd hdd φ hφ`. Establish `hWU : ∀ i, W i ≤ Y.t.G.hom ⁻¹ᵁ U.1` using `fun i p hp => by`. Establish `: p ∈ Y.t.G.hom ⁻¹ᵁ (U.1 ⊓ interior Y)` using `hcov ▸ (le_iSup W i) hp`. Conclude with `this.1`. Establish `hWU' : ∀ i, W' i ≤ Y.t.G.hom ⁻¹ᵁ U.1` using `fun i p hp => by`.
+
+Establish `: p ∈ Y.t.G.hom ⁻¹ᵁ (U.1 ⊓ interior Y)` using `hcov' ▸ (le_iSup W' i) hp`. Conclude with `this.1`. Establish `hfib : ∀ z, Y.t.G.hom (θm z) ∈ U.1 ⊓ interior Y` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, hpb.1.w, Scheme.Hom.comp_apply]`. Conclude with `⟨hU (Set.mem_univ _), hV (Set.mem_univ _)⟩`.
+
+Establish `hcv : ∀ z, ∃ i, θm z ∈ W i` using `fun z => by`. Establish `h2 : θm z ∈ ⨆ i, W i` using `by rw [hcov]; exact hfib z`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 h2`. Establish `hcv' : ∀ z, ∃ i, θm z ∈ W' i` using `fun z => by`. Establish `h2 : θm z ∈ ⨆ i, W' i` using `by rw [hcov']; exact hfib z`.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.1 h2`. Use `theta_eq_fibre P₀ u hu dd hdd Y.t.G.hom x0 θm hpb.1 U.2 Y.t.PP.L Y.t.PP.isLB hiso _ (Matrix.of fun a b => GlobalTheory.FlagMod.ev x0 U.1 hU (Θ a b)) (Matrix.of fun a b => GlobalTheory.FlagMod.ev x0 U.1 hU (Θ' a b)) W W' j j' d d' hWU hWU' hWj hWj' hcv hcv' hf hf' hl hl' φ hφ hP h …` as an intermediate fact. Conclude with `congrFun (congrFun this a) b`. Use `Matrix.ext fun a b => eq_of_resG_eq_of_dense (V := interior Y) (dense_interior Y) _ _ ?_` and prove the remaining obligations. Use `GlobalTheory.GenericExtend.eq_of_valR_eq fun x hx => ⟨Y.X.residueField x, inferInstance, Y.X.fromSpecResidueField x, fun o => Scheme.fromSpecResidueField_apply x o, ?_⟩` and prove the remaining obligations.
+
+Establish `ho : ∀ o, (Y.X.fromSpecResidueField x : Sp (Y.X.residueField x) ⟶ Y.X) o = x` using `fun o => Scheme.fromSpecResidueField_apply x o`. Generalize the expression as in `(Y.X.fromSpecResidueField x : Sp (Y.X.residueField x) ⟶ Y.X) = h at ho`. Establish `hU : ⊤ ≤ h ⁻¹ᵁ U.1` using `fun o _ => show h o ∈ U.1 by rw [ho]; exact hx.1`. Establish `hV : ⊤ ≤ h ⁻¹ᵁ interior Y` using `fun o _ => show h o ∈ interior Y by rw [ho]; exact hx.2`. Establish `hUV : ⊤ ≤ h ⁻¹ᵁ (U.1 ⊓ interior Y)` using `fun o _ => show h o ∈ U.1 ⊓ interior Y by rw [ho]; exact hx`.
+
+Conclude with `(GlobalTheory.CechKS.valR_resG h _ hUV _).trans ((GlobalTheory.CechKS.valR_eq_ev _ _ hU _).trans ((key h hU hV a b).trans ((GlobalTheory.CechKS.valR_eq_ev _ _ hU _).symm.trans (GlobalTheory.CechKS.valR_resG h _ hUV _).symm)))`.
+-/
 theorem isKS_unique_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ Θ' : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), IsKS Y.t (interior Y) U v D.1 Θ → IsKS Y.t (interior Y) U v D.1 Θ' → Θ = Θ' := by
   intro E _ _ _ H Dw l Xo c Y _ _ _ _ U n v A hv hb hA D Θ Θ' hK hK'
   haveI : IsReduced Y.X := GlobalTheory.Coisotropic.isReduced_of_isNormalScheme Y.normal

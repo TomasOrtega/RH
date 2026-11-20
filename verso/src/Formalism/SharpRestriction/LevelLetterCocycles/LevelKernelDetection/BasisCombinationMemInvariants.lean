@@ -19,6 +19,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 variable {T : LocLat G Qp LL O} {r : ℕ}
 
+/- English proof (translation)
+Set `v : Fin r → W.N T` to `fun j => ⟨b j, hbN j⟩`. Establish `hv : ∀ a : Fin r → LetA O n, ((∑ j, a j • v j : W.N T) : W.DD T) = ∑ j, a j • b j`. Introduce `a`. Simplify using `[v]`. Establish `hli : LinearIndependent (LetA O n) v`.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Establish `h0 : (0 : W.DD T) = ∑ j, g j • b j` using `by rw [← hv, hg]; rfl`. Take `⟨a, -, ha⟩` from `huniq 0 (W.N T).zero_mem`. Establish `e1` using `ha g h0`.
+
+Establish `e2` using `ha 0 (by simp)`. Conclude with `congrFun (e1.trans e2.symm) j`. Establish `hsp : ⊤ ≤ Submodule.span (LetA O n) (Set.range v)`. Introduce and unpack `⟨x, hx⟩ -`. Take `⟨a, ha, -⟩` from `huniq x hx`.
+
+Establish `hx' : (⟨x, hx⟩ : W.N T) = ∑ j, a j • v j` using `Subtype.ext (by rw [hv]; exact ha)`. Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Use `⟨(W.N_base T hcr).basis (Module.Basis.mk hli hsp), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[IsBaseChange.basis_apply, Module.Basis.mk_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_EE_basis_of_lattice (hcr : IsCrys PD T.ρ) (b : Fin r → W.DD T) (hbN : ∀ j, b j ∈ W.N T)
     (huniq : ∀ x ∈ W.N T, ∃! a : Fin r → LetA O n, x = ∑ j, a j • b j) :
     ∃ B : Module.Basis (Fin r) W.EE (W.DD T), ∀ j, B j = b j := by
@@ -47,6 +58,9 @@ theorem exists_EE_basis_of_lattice (hcr : IsCrys PD T.ρ) (b : Fin r → W.DD T)
 variable (B : Module.Basis (Fin r) W.EE (W.DD T)) (hB : ∀ j, ∀ δ ∈ W.DelF, W.γD T δ (B j) = B j)
 
 include hB in
+/- English proof (translation)
+Establish `h1 : W.γD T δ x = ∑ j, W.γE δ (B.repr x j) • B j` using `by conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[map_sum]`. Simplify using `only [W.γD_smul, hB _ δ hδ]`. Rewrite using `[h1, Module.Basis.repr_sum_self]`.
+-/
 theorem basis_repr_gamma (x : W.DD T) (δ : W.Gam) (hδ : δ ∈ W.DelF) (j : Fin r) :
     B.repr (W.γD T δ x) j = W.γE δ (B.repr x j) := by
   have h1 : W.γD T δ x = ∑ j, W.γE δ (B.repr x j) • B j := by
@@ -55,6 +69,9 @@ theorem basis_repr_gamma (x : W.DD T) (δ : W.Gam) (hδ : δ ∈ W.DelF) (j : Fi
     simp only [W.γD_smul, hB _ δ hδ]
   rw [h1, Module.Basis.repr_sum_self]
 
+/- English proof (translation)
+Establish `h1 : (letE i : LetA O n) • x = ∑ j, ((letE i : LetA O n) • B.repr x j) • B j` using `by conv_lhs => rw [← B.sum_repr x]`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_assoc]`. Rewrite using `[h1, Module.Basis.repr_sum_self]`.
+-/
 theorem basis_repr_idempotent_smul (x : W.DD T) (i : ZMod n) (j : Fin r) :
     B.repr ((letE i : LetA O n) • x) j = (letE i : LetA O n) • B.repr x j := by
   have h1 : (letE i : LetA O n) • x = ∑ j, ((letE i : LetA O n) • B.repr x j) • B j := by
@@ -65,6 +82,9 @@ theorem basis_repr_idempotent_smul (x : W.DD T) (i : ZMod n) (j : Fin r) :
 
 include hB in
 
+/- English proof (translation)
+Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← basis_repr_idempotent_smul, hx.1]`. Rewrite using `[← basis_repr_gamma B hB x δ hδ, hx.2 δ hδ]`.
+-/
 theorem basis_repr_mem_letter (i : ZMod n) (x : W.DD T) (hx : x ∈ DDl W T i) (j : Fin r) :
     B.repr x j ∈ EEl W i := by
   refine ⟨?_, fun δ hδ => ?_⟩
@@ -73,6 +93,11 @@ theorem basis_repr_mem_letter (i : ZMod n) (x : W.DD T) (hx : x ∈ DDl W T i) (
 
 include hB in
 
+/- English proof (translation)
+Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smul_assoc, (hd j).1]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[W.γD_smul, hB j δ hδ, (hd j).2 δ hδ]`.
+-/
 theorem basis_combination_mem_invariants (i : ZMod n) (d : Fin r → W.EE) (hd : ∀ j, d j ∈ EEl W i) :
     ∑ j, d j • B j ∈ DDl W T i := by
   refine ⟨?_, fun δ hδ => ?_⟩
@@ -83,27 +108,42 @@ theorem basis_combination_mem_invariants (i : ZMod n) (d : Fin r → W.EE) (hd :
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [W.γD_smul, hB j δ hδ, (hd j).2 δ hδ]
 
+/- English proof (translation)
+Establish `h1` using `Fintype.linearIndependent_iff.1 B.linearIndependent (c - c') (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self])`. Use function extensionality and compare the values at `j`. Conclude with `sub_eq_zero.1 (h1 j)`.
+-/
 theorem basis_coefficients_unique {c c' : Fin r → W.EE} (h : ∑ j, c j • B j = ∑ j, c' j • B j) : c = c' := by
   have h1 := Fintype.linearIndependent_iff.1 B.linearIndependent (c - c') (by
     simp only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h, sub_self])
   funext j
   exact sub_eq_zero.1 (h1 j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun t => (letterRing_val_surjective i (c t) (hc t)).choose, fun t => (letterRing_val_surjective i (c t) (hc t)).choose_spec⟩`.
+-/
 theorem exists_preimage_letter_ring (i : ZMod n) {κ : Type} (c : κ → W.EE) (hc : ∀ t, c t ∈ EEl W i) :
     ∃ a : κ → k17R W i, ∀ t, letterRingVal W i (a t) = c t :=
   ⟨fun t => (letterRing_val_surjective i (c t) (hc t)).choose, fun t => (letterRing_val_surjective i (c t) (hc t)).choose_spec⟩
 
+/- English proof (translation)
+Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_mul_assoc, ha.1]`. Rewrite using `[map_mul, ha.2 δ hδ, hb.2 δ hδ]`.
+-/
 theorem letter_coefficients_mul_mem {i : ZMod n} {a b : W.EE} (ha : a ∈ EEl W i) (hb : b ∈ EEl W i) :
     a * b ∈ EEl W i := by
   refine ⟨?_, fun δ hδ => ?_⟩
   · rw [← smul_mul_assoc, ha.1]
   · rw [map_mul, ha.2 δ hδ, hb.2 δ hδ]
 
+/- English proof (translation)
+Establish `h` using `(letterRing_val_mem i r).1`. Rewrite `h` using `[idempotent_smul_eq_mul]`. Rewrite using `[mul_comm, h]`.
+-/
 theorem letterRing_mul_idempotent (i : ZMod n) (r : k17R W i) : letterRingVal W i r * k17e W i = letterRingVal W i r := by
   have h := (letterRing_val_mem i r).1
   rw [idempotent_smul_eq_mul] at h
   rw [mul_comm, h]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_apply, map_sum]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, letterRing_val_mul]`.
+-/
 theorem letterRing_sum_mul {i : ZMod n} {ι : Type} [Fintype ι] (a : ι → k17R W i)
     (C : ι → Fin r → k17R W i) (l : Fin r) :
     ∑ t, letterRingVal W i (a t) * letterRingVal W i (C t l) = letterRingVal W i ((∑ t, a t • C t) l) := by
@@ -112,6 +152,19 @@ theorem letterRing_sum_mul {i : ZMod n} {ι : Type} [Fintype ι] (a : ι → k17
 
 include hB in
 
+/- English proof (translation)
+Establish `hlc : ∀ c : ι → W.EE, lc (fun t => ∑ l, letterRingVal W i (C t l) • B l) c = ∑ l, (∑ t, c t * letterRingVal W i (C t l)) • B l`. Introduce `c`. Simplify using `only [lc, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Use `⟨fun c hc => ?_, fun c c' hc hc' h => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hlc]`. Conclude with `basis_combination_mem_invariants B hB i _ fun l => AddSubgroup.sum_mem _ fun t _ => letter_coefficients_mul_mem (hc t) (letterRing_val_mem i _)`. Take `⟨a, ha⟩` from `exists_preimage_letter_ring i c hc`. Take `⟨a', ha'⟩` from `exists_preimage_letter_ring i c' hc'`. Rewrite `h` using `[hlc, hlc]`.
+
+Establish `h1` using `basis_coefficients_unique B h`. Establish `h2 : ∑ t, a t • C t = ∑ t, a' t • C t`. Use function extensionality and compare the values at `l`. Apply `letterRing_val_injective i` to reduce the goal to its premises. Rewrite using `[← letterRing_sum_mul, ← letterRing_sum_mul]`.
+
+Simplify using `only [ha, ha']`. Conclude with `congrFun h1 l`. Establish `h3 : a = a'`. Establish `h4` using `Fintype.linearIndependent_iff.1 C.linearIndependent (a - a') (by`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib, h2, sub_self])`.
+
+Use function extensionality and compare the values at `t`. Conclude with `sub_eq_zero.1 (h4 t)`. Use function extensionality and compare the values at `t`. Rewrite using `[← ha, ← ha', h3]`. Take `⟨u, hu⟩` from `exists_preimage_letter_ring i (fun l => B.repr x l) (basis_repr_mem_letter B hB i x hx)`.
+
+Use `⟨fun t => letterRingVal W i (C.repr u t), fun t => letterRing_val_mem i _, ?_⟩` and prove the remaining obligations. Rewrite using `[hlc]`. Use `conv_rhs => rw [← B.sum_repr x]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[letterRing_sum_mul, C.sum_repr u, hu]`.
+-/
 theorem letter_invariants_basis (i : ZMod n) {ι : Type} [Fintype ι]
     (C : Module.Basis ι (k17R W i) (Fin r → k17R W i)) :
     LBasis W T i (fun t => ∑ l, letterRingVal W i (C t l) • B l) := by

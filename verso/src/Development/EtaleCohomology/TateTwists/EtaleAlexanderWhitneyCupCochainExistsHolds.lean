@@ -6,11 +6,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 
 namespace LateralTheory.EtaleFoundations
 
+/- English proof (translation)
+Unfold `Sx.sub Sx.res`. Conclude with `((E.map (SimplexCategory.subinterval j l h).op).naturality_apply g.op x)`.
+-/
 theorem awex_sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g := by
   unfold Sx.sub Sx.res
   exact ((E.map (SimplexCategory.subinterval j l h).op).naturality_apply g.op x)
 
+/- English proof (translation)
+Unfold `freeGen`. Establish `e` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)) (ModuleCat.freeMk (ULift.up x))`. Use `e.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V)).hom y) (ModuleCat.free_map_apply (R := ULift.{1} R) (uliftFunctor.{1}.map (P.map g.op)) (ULift.up x))`.
+-/
 theorem awex_freeGen_res {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((free R).obj P).obj.map g.op).hom (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
   unfold freeGen
@@ -20,6 +26,9 @@ theorem awex_freeGen_res {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g
   exact congrArg (fun y => ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).app (op V)).hom y)
     (ModuleCat.free_map_apply (R := ULift.{1} R) (uliftFunctor.{1}.map (P.map g.op)) (ULift.up x))
 
+/- English proof (translation)
+Unfold `ev Sec.res`. Establish `e` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom).naturality g.op)) (freeGen R _ U x)`. Use `e.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun y => (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op V)).hom y) (awex_freeGen_res (R := R) _ g x)`.
+-/
 theorem awex_ev_res {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α : Cochain ((chains R).obj E) I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E p U) :
     Sec.res g (ev α p s h U x) = ev α p s h V (x.res g) := by
@@ -30,6 +39,9 @@ theorem awex_ev_res {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ} (α :
   exact congrArg (fun y => (((chainsXIso R E p).inv ≫ α.v _ _ h).hom.app (op V)).hom y)
     (awex_freeGen_res (R := R) _ g x)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem awex_lift_single {S : Type*} [Semiring S] {X M : Type*} [AddCommMonoid M] [Module S M]
     (f : X → M) (x : X) : Finsupp.lift M S X f (Finsupp.single x 1) = f x := by
   simp
@@ -58,6 +70,9 @@ noncomputable def awexPhi {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) : (free R).obj (E.obj (op (SimplexCategory.mk p))) ⟶ I.X s :=
   ((sheafificationAdjunction Scheme.etaleTopology _).homEquiv _ (I.X s)).symm (awexNat a ha p s h)
 
+/- English proof (translation)
+Establish `e` using `toSheafify_sheafifyLift Scheme.etaleTopology (awexNat a ha p s h) (I.X s).property`. Establish `e2` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (congrArg (fun φ => φ.app (op U)) e)) (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up.{1} x))`. Use `e2.trans ?_` and prove the remaining obligations. Conclude with `awex_lift_single (S := ULift.{1} R) (fun y : ULift.{1} (Sx E p U) => a p s h U y.down) (ULift.up x)`.
+-/
 theorem awexPhi_freeGen {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
     (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -74,6 +89,11 @@ def EtaleSimplicialCochainFromNaturalEvaluationsExists : Prop := ∀ (R : Type) 
   (∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g)) →
   ∃ α : Cochain ((chains R).obj E) I n, ∀ p s h U x, ev α p s h U x = a p s h U x
 
+/- English proof (translation)
+Introduce `R _ I J K μ E n m k hk α β`. Take `⟨γ, hγ⟩` from `hmk R (E := E) (I := K) (n := k) (fun N w h U x => ∑ p : Fin (N + 1), (m * (p : ℕ)).negOnePow • μ.mul U (-((p : ℕ) : ℤ) + n) (-((N - p : ℕ) : ℤ) + m) w (by omega) (ev α p _ rfl U (x.sub 0 p (by omega))) (ev β (N - p) _ rfl U (x.sub p (N - p) (by omega)))) (by`. Introduce `N w h V U g x`. Simplify using `only [Sec.res, map_sum, Units.smul_def, map_zsmul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[awex_sub_res, awex_sub_res, ← awex_ev_res, ← awex_ev_res]`. Conclude with `μ.nat g _ _ _ _ _ _)`. Conclude with `⟨γ, fun N w h U x => hγ N w h U x⟩`.
+-/
 theorem etale_alexander_whitney_cup_exists_of_cochain_from_evaluations (hmk : EtaleSimplicialCochainFromNaturalEvaluationsExists) : EtaleAlexanderWhitneyCupCochainExistsForPairing := by
   intro R _ I J K μ E n m k hk α β
   obtain ⟨γ, hγ⟩ := hmk R (E := E) (I := K) (n := k)
@@ -98,6 +118,9 @@ noncomputable def awexCochain {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : 
       (chainsXIso R E (-x).toNat).hom ≫ awexPhi a ha (-x).toNat y (by omega)
   else 0
 
+/- English proof (translation)
+Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem awex_key {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
     (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -107,6 +130,9 @@ theorem awex_key {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
   subst e
   simp
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[awexCochain, Cochain.mk_v, dif_pos (by omega), awex_key a ha _ p (by omega)]`. Conclude with `awexPhi_freeGen a ha p s h U x`.
+-/
 theorem awex_ev {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
     (a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + n = s → ∀ U : Scheme.{0}, Sx E p U → Sec (I.X s) U)
     (ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx E p U), Sec.res g (a p s h U x) = a p s h V (x.res g))
@@ -116,10 +142,16 @@ theorem awex_ev {R : Type} [CommRing R] {E : Spc} {I : Cx R} {n : ℤ}
   rw [awexCochain, Cochain.mk_v, dif_pos (by omega), awex_key a ha _ p (by omega)]
   exact awexPhi_freeGen a ha p s h U x
 
+/- English proof (translation)
+Introduce `R _ E I n a ha`. Conclude with `⟨awexCochain a ha, awex_ev a ha⟩`.
+-/
 theorem etale_simplicial_cochain_from_natural_evaluations_exists_holds : EtaleSimplicialCochainFromNaturalEvaluationsExists := by
   intro R _ E I n a ha
   exact ⟨awexCochain a ha, awex_ev a ha⟩
 
+/- English proof (translation)
+The claim follows from `etale_alexander_whitney_cup_exists_of_cochain_from_evaluations etale_simplicial_cochain_from_natural_evaluations_exists_holds`.
+-/
 theorem etale_alexander_whitney_cup_cochain_exists_holds : EtaleAlexanderWhitneyCupCochainExistsForPairing :=
   etale_alexander_whitney_cup_exists_of_cochain_from_evaluations etale_simplicial_cochain_from_natural_evaluations_exists_holds
 

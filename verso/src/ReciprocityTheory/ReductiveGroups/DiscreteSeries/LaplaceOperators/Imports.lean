@@ -7,6 +7,9 @@ noncomputable section
 
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
+/- English proof (translation)
+The claim follows from `nv_of Base.stepIBase step hIS S0.DecDeriv.decDeriv`.
+-/
 theorem nv (hIS : S0.IntSStatement) : NVStatement :=
   nv_of Base.stepIBase step hIS S0.DecDeriv.decDeriv
 

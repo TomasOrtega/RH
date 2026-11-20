@@ -11,6 +11,15 @@ namespace Formalism.DworkPowerSeriesWeights.OddLevelGainBounds
 
 open Formalism.IncomingBounds
 
+/- English proof (translation)
+Establish `hex : ∀ s, ∃ f : Fin (JnumOneLetter l d TT nu1 size s) → ZMod d × ℤ, Function.Injective f ∧ ∀ q : ZMod d × ℤ, (∃ i, f i = q) ↔ IsLabOneLetter l d TT nu1 size s q.1 q.2`. Introduce `s`. Establish `hfin` using `letter_labels_finite l d hl TT nu1 size s`. Establish `hcard : hfin.toFinset.card = JnumOneLetter l d TT nu1 size s` using `(Set.ncard_eq_toFinset_card _ hfin).symm`. Use `⟨fun i => ((Finset.equivFinOfCardEq hcard).symm i).1, ?_, fun q => ⟨?_, fun hq => ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `i i' h`. Conclude with `(Finset.equivFinOfCardEq hcard).symm.injective (Subtype.ext h)`. Introduce and unpack `⟨i, rfl⟩`. Establish `h` using `((Finset.equivFinOfCardEq hcard).symm i).2`. Rewrite `h` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `h`. Use `⟨Finset.equivFinOfCardEq hcard ⟨q, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hq`. Simplify using the standard rewrite rules.
+
+Use `choose lab hinj hlab using hex`. Use `⟨lab, ∑ s, ∑ i, (-(lab s i).2).toNat, hinj, fun s s0 j => hlab s (s0, j), fun s i => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gauss7_labels (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (TT : Finset (ZMod d))
     (nu1 size : ZMod d → ℕ) :
     ∃ (lab : ∀ s, Fin (JnumOneLetter l d TT nu1 size s) → ZMod d × ℤ) (m : ℕ),
@@ -45,6 +54,17 @@ theorem gauss7_labels (l d : ℕ) [NeZero d] (hl : 2 ≤ l) (TT : Finset (ZMod d
     _ ≤ _ := Finset.single_le_sum (f := fun s => ∑ i, (-(lab s i).2).toNat)
           (fun _ _ => Nat.zero_le _) (Finset.mem_univ s)
 
+/- English proof (translation)
+Introduce `l _ d N0 N1 _ hl3 hd hde hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize hJ n`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨K, instK, hult, hchar, φ, Y, hφ, hgauss, hgen⟩` from `residuallyGenericExists l (ZMod d × Fin N0 × Fin N0)`. Use `hult` as an intermediate fact. Use `hchar` as an intermediate fact.
+
+Establish `hnl : ‖(l : K)‖ = ‖(l : ℂ_[l])‖` using `by rw [← map_natCast φ, hφ]`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1` using `norm_l_lt_one l`. Take `⟨lab, m, hinj, hlab, hm⟩` from `gauss7_labels l d hlp.two_le TT nu1 size`. Take `⟨hT1, hT2, hT3, hT4⟩` from `admissibleTransfer ℂ_[l] K φ hφ l d N0 N1 K0 ζ be`. Take `⟨hg0', hg'⟩` from `hT3 g hg0 hg`.
+
+Apply the tactic sequence `have hA := hA0 K l d N0 N1 hlp hl3 hd hde (hnl ▸ hl1) hN0 (K0.map φ) (hT1 hK0) (φ ζ) (hζ.map_of_injective φ.injective) _ (hT2 hbe) _ hg0' hg' _ (hT4 U hU) (φ ε) (by rcases hε with rfl | rfl <;> simp) TT colN p hp hp1 I Y hgen nu1 nu2 size hnu1 hnu2 hsize (JnumOneLetter l d TT nu1 …`. Rewrite `hA` using `[← frame_jet_evaluation ℂ_[l] K φ d N0 N1 g U ε be hg0 (asmS_cc_be hbe.2.2.1) colN p hp I (genFrame TT l m Y), hnl]`. Use `le_trans ?_ hA` and prove the remaining obligations. Establish `hk : genFrame TT l m Y = fun y => Y y ^ (if y.1 ∈ TT ∧ y.2.1.val = 0 then l ^ m else 1)`. Use function extensionality and compare the values at `y`.
+
+Unfold `genFrame`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hk]`. Use `gauss_sum_powers ℂ_[l] K φ _ Y hgauss _ (fun y => ?_) _ n` and prove the remaining obligations. Use `split_ifs`.
+
+Conclude with `pow_ne_zero _ hlp.ne_zero`. Conclude with `one_ne_zero`.
+-/
 theorem thmAGauss7_of (hA0 : ThmAGeneric7.{0}) : ThmAGauss7 := by
   intro l _ d N0 N1 _ hl3 hd hde hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I
     nu1 nu2 size hnu1 hnu2 hsize hJ n
@@ -76,6 +96,9 @@ theorem thmAGauss7_of (hA0 : ThmAGeneric7.{0}) : ThmAGauss7 := by
   · exact pow_ne_zero _ hlp.ne_zero
   · exact one_ne_zero
 
+/- English proof (translation)
+Introduce `l _ d N0 N1 _ hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ c hc`. Establish `hcpos : 0 < ‖c‖` using `lt_of_lt_of_le (Real.rpow_pos_of_pos (norm_l_pos l) _) hc`. Use `slope_bound_saturation ℂ_[l] d N0 colN p hp _ (Submodule.smul_mem _ _ (coefficient_bound_membership ℂ_[l] d N0 N1 colN p hp I _)) fun n => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, norm_smul, norm_inv, inv_mul_le_iff₀ hcpos, mul_one]`. Conclude with `(hG l d N0 N1 hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 hJ n).trans hc`.
+-/
 theorem thmAWeyl7_of (hG : ThmAGauss7) : ThmAWeyl7 := by
   intro l _ d N0 N1 _ hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I
     nu1 nu2 size h1 h2 h3 hJ c hc
@@ -86,6 +109,11 @@ theorem thmAWeyl7_of (hG : ThmAGauss7) : ThmAWeyl7 := by
   exact (hG l d N0 N1 hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I
     nu1 nu2 size h1 h2 h3 hJ n).trans hc
 
+/- English proof (translation)
+Introduce `l _ d N0 N1 _ hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize hJ δ hδ`. Use `le_rpow_of_forall_norm l _ _ (norm_nonneg _) fun c hc => ?_` and prove the remaining obligations. Establish `hmem` using `hW l d N0 N1 hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I nu1 nu2 size hnu1 hnu2 hsize hJ c hc`. Establish `hcpos : 0 < ‖c‖` using `lt_of_lt_of_le (Real.rpow_pos_of_pos (norm_l_pos l) _) hc`. Establish `h1` using `hδ _ hmem`.
+
+Rewrite `h1` using `[map_smul, norm_smul, norm_inv]`. Rewrite `h1` using `[inv_mul_le_iff₀ hcpos, mul_one]`. Then use the resulting hypothesis.
+-/
 theorem thmAEntry7_of (hW : ThmAWeyl7) : ThmAEntry7 := by
   intro l _ d N0 N1 _ hl hd hev hN0 K0 hK0 ζ hζ be hbe g hg0 hg U hU ε hε TT colN p hp hp1 I
     nu1 nu2 size hnu1 hnu2 hsize hJ δ hδ

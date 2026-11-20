@@ -18,9 +18,15 @@ section Pure
 
 variable {j j' : ℕ}
 
+/- English proof (translation)
+Simplify using `[sgI, fromBlocks_multiply, fromBlocks_one]`.
+-/
 theorem sgI_mul_self : sgI j j' * sgI j j' = 1 := by
   simp [sgI, fromBlocks_multiply, fromBlocks_one]
 
+/- English proof (translation)
+Establish `h : uᴴ * sgI j j' * u = sgI j j'` using `hu`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h, sgI_mul_self]`.
+-/
 theorem sgUInv_mul {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) :
     (sgI j j' * uᴴ * sgI j j') * u = 1 := by
   have h : uᴴ * sgI j j' * u = sgI j j' := hu
@@ -28,10 +34,16 @@ theorem sgUInv_mul {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) :
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h, sgI_mul_self]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 (sgUInv_mul hu)`.
+-/
 theorem mul_sgUInv {u : Matrix (Sg j j') (Sg j j') ℂ} (hu : IsSgU u) :
     u * (sgI j j' * uᴴ * sgI j j') = 1 :=
   mul_eq_one_comm.1 (sgUInv_mul hu)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks u]`. Simplify using `only [sgI, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_mulVec]`. Apply the tactic sequence `ext (i | i) <;> simp [Matrix.neg_mulVec, Matrix.mulVec_neg]`.
+-/
 theorem sgUInv_mulVec (u : Matrix (Sg j j') (Sg j j') ℂ) (x : Fin j' → ℂ) :
     (sgI j j' * uᴴ * sgI j j') *ᵥ Sum.elim 0 x =
       Sum.elim (-(u.toBlocks₂₁ᴴ *ᵥ x)) (u.toBlocks₂₂ᴴ *ᵥ x) := by
@@ -39,16 +51,25 @@ theorem sgUInv_mulVec (u : Matrix (Sg j j') (Sg j j') ℂ) (x : Fin j' → ℂ) 
   simp only [sgI, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_mulVec]
   ext (i | i) <;> simp [Matrix.neg_mulVec, Matrix.mulVec_neg]
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks u]`. Simplify using `only [fromBlocks_mulVec]`. Apply the tactic sequence `ext (i | i) <;> simp`.
+-/
 theorem mulVec_elim_zero (u : Matrix (Sg j j') (Sg j j') ℂ) (w : Fin j → ℂ) :
     u *ᵥ Sum.elim w 0 = Sum.elim (u.toBlocks₁₁ *ᵥ w) (u.toBlocks₂₁ *ᵥ w) := by
   conv_lhs => rw [← fromBlocks_toBlocks u]
   simp only [fromBlocks_mulVec]
   ext (i | i) <;> simp
 
+/- English proof (translation)
+Simplify using `[moebW]`.
+-/
 theorem moebW_zero (u : Matrix (Sg j j') (Sg j j') ℂ) :
     moebW u 0 = u.toBlocks₂₁ * (u.toBlocks₁₁)⁻¹ := by
   simp [moebW]
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, dotProduct, Matrix.mulVec_single_one, Matrix.conjTranspose_apply]`.
+-/
 theorem star_conj_single (d : Matrix (Fin j') (Fin j') ℂ) (a b : Fin j') :
     star (dᴴ *ᵥ Pi.single a 1) ⬝ᵥ (dᴴ *ᵥ Pi.single b 1) = (d * dᴴ) a b := by
   simp [Matrix.mul_apply, dotProduct, Matrix.mulVec_single_one, Matrix.conjTranspose_apply]
@@ -57,6 +78,21 @@ end Pure
 
 section Point
 
+/- English proof (translation)
+Take `⟨hc1, hc2, -⟩` from `GlobalTheory.T.adapted_frame_inverse_properties E Ψ j j' n g Λ F C τ (A₀ τ) h0`. Generalize the expression as in `C.cinv (A₀ τ) τ = c at hc1 hc2 hW`. Establish `hsgr : cᴴ * sgI j j' * c = C.sgr τ`. Establish `: cᴴ * ((A₀ τ)ᴴ * C.sgr τ * A₀ τ) * c = (A₀ τ * c)ᴴ * C.sgr τ * (A₀ τ * c)`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Rewrite `this` using `[h0, hc2]`. Simplify using `using this`. Establish `hu : IsSgU (c * A τ)`. Establish `h : (c * A τ)ᴴ * sgI j j' * (c * A τ) = (A τ)ᴴ * (cᴴ * sgI j j' * c) * A τ`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+
+Use `show (c * A τ)ᴴ * sgI j j' * (c * A τ) = sgI j j'`. Rewrite using `[h, hsgr, hA.unit τ]`. Establish `hAu : A₀ τ * (c * A τ) = A τ`. Rewrite using `[← Matrix.mul_assoc, hc2, Matrix.one_mul]`. Generalize the expression as in `hue : c * A τ = u at hu hAu hW`.
+
+Take `⟨ha, hd, hinv, hpos⟩` from `H1 u hu`. Rewrite `hinv`, `hpos` using `[← hW]`. Use `⟨fun v => ?_, ?_, hpos⟩` and prove the remaining obligations. Establish `hWv : Sum.elim v (W *ᵥ v) = u *ᵥ Sum.elim ((u.toBlocks₁₁)⁻¹ *ᵥ v) 0`. Rewrite using `[mulVec_elim_zero, hW, moebW_zero, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ ha, Matrix.one_mulVec]`.
+
+Rewrite using `[hWv, Matrix.mulVec_mulVec, hAu]`. Conclude with `hA.ker τ _`. Establish `hp : ∀ x : Fin j' → ℂ, C.pPart R τ (A₀ τ *ᵥ Sum.elim 0 x) = C.pPart R τ (A τ *ᵥ Sum.elim 0 (u.toBlocks₂₂ᴴ *ᵥ x))`. Introduce `x`. Establish `hA₀ : A₀ τ = A τ * (sgI j j' * uᴴ * sgI j j')`.
+
+Rewrite using `[← hAu, Matrix.mul_assoc, mul_sgUInv hu, Matrix.mul_one]`. Establish `hs : (Sum.elim (-(u.toBlocks₂₁ᴴ *ᵥ x)) (u.toBlocks₂₂ᴴ *ᵥ x) : Sg j j' → ℂ) = Sum.elim (-(u.toBlocks₂₁ᴴ *ᵥ x)) 0 + Sum.elim (0 : Fin j → ℂ) (u.toBlocks₂₂ᴴ *ᵥ x)`. Apply the tactic sequence `ext (i | i) <;> simp`. Use `conv_lhs => rw [hA₀, ← Matrix.mulVec_mulVec, sgUInv_mulVec, hs, Matrix.mulVec_add]`. Rewrite using `[pPart_add, hA.ker τ, zero_add]`.
+
+Establish `hg : R.gram (fun b : Fin j' => C.pPart R τ (A₀ τ *ᵥ Sum.elim 0 (Pi.single b 1))) = ((2 * C.c : ℝ) : ℂ) • (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ)`. Use extensionality with `a b`. Simplify using `only [RiemLat.gram, Matrix.of_apply, hp, H2, star_conj_single, Matrix.smul_apply, smul_eq_mul]`. Establish `hinv' : (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ) * (1 - W * Wᴴ) = 1` using `mul_eq_one_comm.1 hinv`. Rewrite using `[hg, Matrix.smul_mul, hinv']`.
+-/
 theorem point_graph_gram (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (A A₀ : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ) (τ : Ψ) (W : Matrix (Fin j') (Fin j) ℂ)
     (H1 : ∀ u : Matrix (Sg j j') (Sg j j') ℂ, IsSgU u → IsUnit u.toBlocks₁₁.det ∧ IsUnit u.toBlocks₂₂.det ∧ (1 - moebW u 0 * (moebW u 0)ᴴ) * (u.toBlocks₂₂ * u.toBlocks₂₂ᴴ) = 1 ∧ (1 - moebW u 0 * (moebW u 0)ᴴ).PosDef)
     (H2 : ∀ x y : Fin j' → ℂ, R.ip (C.pPart R τ (A τ *ᵥ Sum.elim 0 x)) (C.pPart R τ (A τ *ᵥ Sum.elim 0 y)) = ((2 * C.c : ℝ) : ℂ) * (star x ⬝ᵥ y))

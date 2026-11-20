@@ -11,16 +11,25 @@ def oscS (u : ℂ) : ℝ := Real.sin ((-1 / 2) * Real.log (‖u‖ ^ 2))
 
 def oscW (u : ℂ) : ℝ := cutoff (‖u‖ ^ 2) * oscS u
 
+/- English proof (translation)
+Establish `h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Real.smoothTransition` using `Real.smoothTransition.contDiff`. Conclude with `h1.comp ((contDiff_const.sub (contDiff_const.mul (contDiff_norm_sq ℝ))))`.
+-/
 theorem contDiff_cutoffN : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun u : ℂ => cutoff (‖u‖ ^ 2) := by
   have h1 : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) Real.smoothTransition := Real.smoothTransition.contDiff
   exact h1.comp ((contDiff_const.sub (contDiff_const.mul (contDiff_norm_sq ℝ))))
 
+/- English proof (translation)
+Establish `hne : ‖u‖ ^ 2 ≠ 0` using `by positivity`. Establish `h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun v : ℂ => Real.log (‖v‖ ^ 2)) u` using `(contDiff_norm_sq ℝ).contDiffAt.log hne`. Conclude with `Real.contDiff_sin.contDiffAt.comp u (contDiffAt_const.mul h1)`.
+-/
 theorem contDiffAt_oscS {u : ℂ} (hu : u ≠ 0) : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) oscS u := by
   have hne : ‖u‖ ^ 2 ≠ 0 := by positivity
   have h1 : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun v : ℂ => Real.log (‖v‖ ^ 2)) u :=
     (contDiff_norm_sq ℝ).contDiffAt.log hne
   exact Real.contDiff_sin.contDiffAt.comp u (contDiffAt_const.mul h1)
 
+/- English proof (translation)
+The claim follows from `contDiff_cutoffN.contDiffAt.mul (contDiffAt_oscS hu)`.
+-/
 theorem contDiffAt_oscW {u : ℂ} (hu : u ≠ 0) : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) oscW u :=
   contDiff_cutoffN.contDiffAt.mul (contDiffAt_oscS hu)
 

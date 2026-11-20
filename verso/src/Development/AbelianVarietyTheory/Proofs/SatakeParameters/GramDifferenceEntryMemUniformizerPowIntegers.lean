@@ -6,6 +6,9 @@ open Matrix
 
 namespace GlobalTheory.Hk3.HoweG
 
+/- English proof (translation)
+Establish `hz : ∀ a l, (z * M) a l = (z *ᵥ fun i => M i l) a` using `fun a l => by`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [Formalism.UG.cT, Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hz, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem gram_entry_eq_hform {L : Type} [Field L] (σ : L →+* L) {n n' r : ℕ}
     (J : Matrix (Fin n') (Fin n') L) (z : Matrix (Fin n') (Fin n) L) (M : Matrix (Fin n) (Fin r) L) (j k : Fin r) :
     (Formalism.UG.cT σ (z * M) * J * (z * M)) j k =
@@ -16,6 +19,15 @@ theorem gram_entry_eq_hform {L : Type} [Field L] (σ : L →+* L) {n n' r : ℕ}
     Finset.sum_mul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Introduce `L _ _ ϖ σ n n' r JT a x y M e hϖ hiff hM haM hG j k`. Establish `hcO : ∀ t : ℕ, ϖ ^ t ∈ Formalism.UG.intL L` using `fun t => Subring.pow_mem _ hϖ t`. Establish `hx : ∀ l, e l ≤ max (e j) (e k) → ∀ i, (x *ᵥ ((ϖ ^ max (e j) (e k)) • fun i => M i l)) i ∈ Formalism.UG.intL L`. Introduce `l hl`. Use `(hiff ((ϖ ^ max (e j) (e k)) • fun i => M i l) (fun i => ?_)).1 ⟨(ϖ ^ max (e j) (e k)) • (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ fun i => M i l), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `Subring.mul_mem _ (hcO _) (hM i l)`. Establish `h1 : ((ϖ ^ max (e j) (e k)) • (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ fun i => M i l)) i = ((((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * M) i l * ϖ ^ e l) * ϖ ^ (max (e j) (e k) - e l)`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hl]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, mul_comm]`.
+
+Rewrite using `[h1]`. Conclude with `Subring.mul_mem _ (haM i l) (hcO _)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, a.mul_inv, Matrix.one_mulVec]`. Establish `key` using `hG (fun i => M i j) (fun i => M i k) (fun i => hM i j) (fun i => hM i k) _ (hcO _) (hx j (le_max_left _ _)) (hx k (le_max_right _ _))`. Rewrite using `[Matrix.sub_apply, gram_entry_eq_hform, gram_entry_eq_hform, mul_comm]`.
+
+Conclude with `key`.
+-/
 theorem gramDiff_entry_int : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (σ : L →+* L) (n n' r : ℕ) (JT : GL (Fin n') L) (a : GL (Fin n) L)
   (x y : Matrix (Fin n') (Fin n) L) (M : Matrix (Fin n) (Fin r) L) (e : Fin r → ℕ),
   ϖ ∈ Formalism.UG.intL L → (∀ v : Fin n → L, (∀ i, v i ∈ Formalism.UG.intL L) →

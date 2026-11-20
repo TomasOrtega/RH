@@ -3,6 +3,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatJDGaugeQQAs
 
 namespace Formalism.FourierDecayAlt.P.CutMP
 
+/- English proof (translation)
+The claim follows from `jDecayTrQQd_of_open h2`.
+-/
 theorem jDecayTrQQ_of_open (h2 : JDHatOpQQ) : JDecayTrQQ := jDecayTrQQd_of_open h2
 
 end Formalism.FourierDecayAlt.P.CutMP

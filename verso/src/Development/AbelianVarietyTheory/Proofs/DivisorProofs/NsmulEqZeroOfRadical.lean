@@ -22,6 +22,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KSSymm
 
+/- English proof (translation)
+Use `hA.smooth` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact.
+
+Establish `: LocallyOfFiniteType (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: LocallyOfFiniteType f.left` using `locallyOfFiniteType_of_comp _ B.hom`. Establish `: QuasiCompact (f.left ≫ B.hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact f.left` using `QuasiCompact.of_comp _ B.hom`. Establish `hSA` using `isSemiAbelian_of_isAbelianScheme A hA`.
+
+Establish `: LocallyQuasiFinite f.left` using `locallyQuasiFinite_of_finite_geometric_ker _ A B f hf inferInstance inferInstance fun Ω _ _ t => by`. Use `HomExt.finite_torsion_points hSA t hm` as an intermediate fact. Conclude with `Finite.of_injective (β := {x : Over.mk t ⟶ A // x ^ m = 1}) (fun x => ⟨x.1, hker _ x.1 x.2⟩) fun a b e => Subtype.ext (congrArg (fun z : {x : Over.mk t ⟶ A // x ^ m = 1} => z.1) e)`. Establish `hflat : Flat f.left` using `SemiAbMulFlat.flat_of_flatOver_fields f.left B.hom inferInstance (by rw [Over.w]; infer_instance) (by rw [Over.w]; infer_instance) inferInstance fun k _ s => FibreFlat.flatOver_of_pullback f s (IsogenyQuasiInverse.flat_fibre A B g hA hB hAg hBg f k s)`. Establish `hsurj : Surjective f.left` using `AbLaw.MulN.surjective_of_geomFibres f fun K _ _ t => (IsogenyQuasiInverse.flat_surjective_geomFibre A B g hA hB hAg hBg f K t).2`.
+
+Establish `hmA : IsMonHom (𝟙 A ^ m)` using `AbLaw.MulN.isMonHom_mulA A m`. Conclude with `(exists_monHom_factor_of_flat_surjective _ A B A f (𝟙 A ^ m) hf hmA hflat hsurj inferInstance fun T x hx => by rw [MonObj.comp_pow, Category.comp_id, hker T x hx]).1`.
+-/
 theorem exists_leftInverse {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B] {g : ℕ}
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) (hAg : SmoothOfRelativeDimension g A.hom)
     (hBg : SmoothOfRelativeDimension g B.hom) (f : A ⟶ B) [hf : IsMonHom f] {m : ℕ} (hm : 0 < m)
@@ -57,17 +66,34 @@ theorem exists_leftInverse {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A
 
 variable {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {R : Type} [CommRing R] (X : Obj F 𝔠 (Sp R))
 
+/- English proof (translation)
+Take `⟨c₁, hc₁⟩` from `fracId_exists_totPos F 𝔠`. Establish `hL` using `pull_isLB (X.isLB c₁) (lift (𝟙 X.A) (𝟙 X.A)).left`. Take `⟨H, hH, hamp⟩` from `BirigidLift.exists_relAmple_prod X.ab X.ab hL (X.pos c₁ hc₁) hL (X.pos c₁ hc₁)`. Conclude with `BirigidLift.additive_of_triv X.ab X.ab hH hamp (X.isLB c) (X.rig₁ c) (X.rig₂ c)`.
+-/
 theorem additive [IsTotallyReal F] (c : 𝔠.elt) : IsAdditive (X.P c) ∧ IsAdditive (swap (X.P c)) := by
   obtain ⟨c₁, hc₁⟩ := fracId_exists_totPos F 𝔠
   have hL := pull_isLB (X.isLB c₁) (lift (𝟙 X.A) (𝟙 X.A)).left
   obtain ⟨H, hH, hamp⟩ := BirigidLift.exists_relAmple_prod X.ab X.ab hL (X.pos c₁ hc₁) hL (X.pos c₁ hc₁)
   exact BirigidLift.additive_of_triv X.ab X.ab hH hamp (X.isLB c) (X.rig₁ c) (X.rig₂ c)
 
+/- English proof (translation)
+The claim follows from `cupSquare_of_free HR.1 (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)`.
+-/
 theorem cupSquare (HR : AbelianDeRham) : CupSquare (dp0 R) (𝟙 _) (X.A ⊗ X.A) :=
   cupSquare_of_free HR.1 (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim)
 
 variable {X}
 
+/- English proof (translation)
+Take `⟨B, _, Q, hB, hBg, hd, hd'⟩` from `HD (Sp R) X.A X.ab`. Establish `hBg` using `hBg _ X.dim`. Take `⟨a₁, a₂⟩` from `additive X c`. Take `⟨lam, hlam, hcls⟩` from `BirigidLift.exists_hom hd hd'.additive (X.isLB c) a₁ a₂`. Establish `hker : ∀ (T : Over (Sp R)) (x : T ⟶ X.A), x ≫ lam = 1 → x ^ m = 1`.
+
+Introduce `T x hx`. Establish `tr : Triv (ev (X.P c) (fst X.A T) (snd X.A T ≫ x))`. Rewrite using `[triv_ev_iff (X.isLB c), BirigidLift.evc_of_cls hd.isLB (X.isLB c) hcls, Category.assoc, hx, comp_one]`. Conclude with `evc_one_right hd.isLB hd.zero _`. Establish `k` using `X.ker c T x tr (m : 𝓞 F) hm`.
+
+Rewrite `k` using `[PolPrimeTo.act_natCast, comp_pow, Category.comp_id]`. Then use the resulting hypothesis. Take `⟨μ', hμ', e₁⟩` from `exists_leftInverse X.ab hB X.dim hBg lam hm0 hker`. Take `⟨⟨φ, hφ, -⟩, hperf⟩` from `AbelianDualCrystal.duality HR X.ab X.dim hB hBg (hd.isPerfect hd')`. Establish `e : LBIso (ev Q (fst X.A X.A) (snd X.A X.A ≫ lam)) (ev (X.P c) (fst X.A X.A ≫ 𝟙 X.A) (snd X.A X.A))`. Use `(cls_eq_iff (pull_isLB hd.isLB _) (pull_isLB (X.isLB c) _)).1 ?_` and prove the remaining obligations.
+
+Rewrite using `[cls_ev hd.isLB, cls_ev (X.isLB c), BirigidLift.evc_of_cls hd.isLB (X.isLB c) hcls, Category.comp_id]`. Establish `z : push (dp0 R) (𝟙 _) lam y = 0` using `(injective_iff_map_eq_zero _).1 (hperf φ hφ).1.bijective_right.1 _ <| LinearMap.ext fun x ↦ by`. Establish `k` using `IsCorrForm.adjoint (cupSquare X HR) hd.isLB (X.isLB c) hφ hψ (𝟙 X.A) lam e x y`. Rewrite `k` using `[push_id]`. Conclude with `k.trans (hy _)`.
+
+Use `haveI := PolPrimeTo.isMonHom_id_pow X.A m`. Establish `k` using `push_push (κ := dp0 R) (t := 𝟙 _) lam μ' _ e₁ y`. Rewrite `k` using `[z, map_zero, PolPrimeTo.push_id_pow]`. Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `k.symm`.
+-/
 theorem nsmul_eq_zero_of_radical [IsTotallyReal F] (HR : AbelianDeRham) (HD : DualAbelianScheme) {c : 𝔠.elt} {m : ℕ}
     (hm0 : 0 < m) (hm : ∀ d : 𝔠.elt, ∃ t : 𝓞 F, (m : 𝓞 F) • d = t • c) {ψ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hψ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) ψ) {y : HdR X.A} (hy : ∀ x, ψ x y = 0) : m • y = 0 := by
@@ -98,6 +124,11 @@ theorem nsmul_eq_zero_of_radical [IsTotallyReal F] (HR : AbelianDeRham) (HD : Du
   rw [← Nat.cast_smul_eq_nsmul R]
   exact k.symm
 
+/- English proof (translation)
+Substitute `e` using the available equality. Use `X.rm.hom` as an intermediate fact. Take `⟨χ', hχ', k⟩` from `hφ.pull (X.isLB c) (homMor (dp0 R) (𝟙 _) (𝟙 X.A)) (homMor (dp0 R) (𝟙 _) (X.rm.act b)) (h := (lift (fst X.A X.A) (snd X.A X.A ≫ X.rm.act b)).left) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category.comp_id]) (by simp only [← Over.comp_left, lift_fst, lift_snd, Category. …`. Take `rfl` from `hχ.unique (cupSquare X HR) (X.isLB (b • c)) hχ'`. Establish `e` using `k (push (dp0 R) (𝟙 _) (𝟙 X.A) x) x (push (dp0 R) (𝟙 _) (X.rm.act b) y) y (fun _ ↦ rfl) fun _ ↦ rfl`.
+
+Rewrite `e` using `[push_id, LinearMap.id_apply, RingHom.id_apply]`. Then use the resulting hypothesis.
+-/
 theorem form_smul (HR : AbelianDeRham) {c d : 𝔠.elt} {b : 𝓞 F} (e : d = b • c)
     {φ χ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R} (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ)
     (hχ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P d) χ) (x y : HdR X.A) :
@@ -115,13 +146,24 @@ theorem form_smul (HR : AbelianDeRham) {c d : 𝔠.elt} {b : 𝓞 F} (e : d = b 
 
 variable (X) in
 
+/- English proof (translation)
+The claim follows from `exists_isCorrForm (cupSquare X HR) (X.isLB c) (X.rig₁ c) (X.rig₂ c)`.
+-/
 theorem exists_form_of (HR : AbelianDeRham) (c : 𝔠.elt) : ∃ φ, IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ :=
   exists_isCorrForm (cupSquare X HR) (X.isLB c) (X.rig₁ c) (X.rig₂ c)
 
+/- English proof (translation)
+The claim follows from `JetIsotropic.corrForm_antisymm (cupSquare X HR) (X.isLB c) (X.symm c) hφ x y`.
+-/
 theorem form_skew (HR : AbelianDeRham) {c : 𝔠.elt} {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) (x y : HdR X.A) : φ x y = -φ y x :=
   JetIsotropic.corrForm_antisymm (cupSquare X HR) (X.isLB c) (X.symm c) hφ x y
 
+/- English proof (translation)
+Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, ha, hb]`. Consider the case `tmul r b`. Take `⟨χ, hχ⟩` from `exists_form_of X HR (b • c)`.
+
+Rewrite using `[actAlg_tmul, actAlg_tmul, map_smul, map_smul, LinearMap.smul_apply, form_skew HR hφ, ← form_smul HR rfl hφ hχ, ← form_smul HR rfl hφ hχ, form_skew HR hχ x]`.
+-/
 theorem form_balanced (HR : AbelianDeRham) {c : 𝔠.elt} {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) (s : R ⊗[ℤ] 𝓞 F) (x y : HdR X.A) :
     φ (actAlg (dp0 R) (𝟙 _) X.rm s x) y = φ x (actAlg (dp0 R) (𝟙 _) X.rm s y) := by
@@ -133,6 +175,9 @@ theorem form_balanced (HR : AbelianDeRham) {c : 𝔠.elt} {φ : HdR X.A →ₗ[R
     rw [actAlg_tmul, actAlg_tmul, map_smul, map_smul, LinearMap.smul_apply, form_skew HR hφ,
       ← form_smul HR rfl hφ hχ, ← form_smul HR rfl hφ hχ, form_skew HR hχ x]
 
+/- English proof (translation)
+Introduce `a ha b hb`. Take `⟨ψ, hψ, eψ⟩` from `hφ.isPolForm`. Establish `t` using `(HR.2.2.2.2 R _ _ (AbelianSchemeGerms.isAbelianScheme_tensor X.A X.A X.ab X.ab) (smooth_prod X.dim X.dim) _ (X.isLB c) ψ hψ).1 _ (push_mem_Fil (inl X.A X.A) ha) _ (push_mem_Fil (inr X.A X.A) hb)`. Rewrite `t` using `[eψ, push_push _ _ _ (lift_fst _ _), push_push _ _ _ (lift_snd _ _), push_push _ _ _ (lift_fst _ _), push_id, push_one]`. Simplify using `using t`.
+-/
 theorem form_fil (HR : AbelianDeRham) {c : 𝔠.elt} {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R}
     (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) : ∀ a ∈ Fil X.A, ∀ b ∈ Fil X.A, φ a b = 0 := by
   intro a ha b hb
@@ -143,6 +188,27 @@ theorem form_fil (HR : AbelianDeRham) {c : 𝔠.elt} {φ : HdR X.A →ₗ[R] HdR
     push_id, push_one] at t
   simpa using t
 
+/- English proof (translation)
+Use `letI := X.lieModule`. Use `haveI : Module.Invertible (R ⊗[ℤ] 𝓞 F) X.Lie := hX`. Establish `sm : ∀ (r : R) (b : 𝓞 F) (v : X.Lie), (r ⊗ₜ[ℤ] b : R ⊗[ℤ] 𝓞 F) • v = r • b • v` using `fun _ _ _ ↦ rfl`. Use `haveI : IsScalarTower R (R ⊗[ℤ] 𝓞 F) X.Lie := ⟨fun r s v ↦ by`. Proceed by induction on `s with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [smul_add, add_smul, ha, hb]`. Consider the case `tmul r' b => rw [smul_tmul', sm, sm, smul_assoc]⟩`. Establish `lie : ∀ (s : R ⊗[ℤ] 𝓞 F) x, hL.toLie X.rm (actAlg (dp0 R) (𝟙 _) X.rm s x) = s • hL.toLie X.rm x` using `fun s x ↦ by`. Proceed by induction on `s with`.
+
+Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, LinearMap.add_apply, add_smul, ha, hb]`. Consider the case `tmul r b => rw [actAlg_tmul, map_smul, hL.toLie_act, sm]`. Establish `mem : ∀ (s : R ⊗[ℤ] 𝓞 F) (x : Fil X.A), actAlg (dp0 R) (𝟙 _) X.rm s x ∈ Fil X.A` using `fun s x ↦ by`. Establish `: hL.toLie X.rm x = 0` using `LinearMap.mem_ker.1 ((hL.ker_toLie X.rm).ge x.2)`.
+
+Use `(hL.ker_toLie X.rm).le (LinearMap.mem_ker.2 ?_)` and prove the remaining obligations. Rewrite using `[lie, this, smul_zero]`. Set `ρ : R ⊗[ℤ] 𝓞 F → Fil X.A → Fil X.A` to `fun s x ↦ ⟨_, mem s x⟩`. Establish `hρ : ∀ s x, κ (ρ s x) = s • κ x` using `fun s x ↦ by`. Proceed by induction on `s with`.
+
+Consider the case `zero => rw [zero_smul, ← map_zero κ]; exact congrArg κ (Subtype.ext (by simp [ρ]))`. Consider the case `add a b ha hb`. Rewrite using `[add_smul, ← ha, ← hb, ← map_add]`. Conclude with `congrArg κ (Subtype.ext (by simp [ρ]))`. Consider the case `tmul r b`.
+
+Rewrite using `[sm, ← hκ b x (ρ (1 ⊗ₜ b) x) ((actAlg_tmul _ _ _ _ _ _).trans (one_smul _ _)), ← map_smul]`. Conclude with `congrArg κ (Subtype.ext (by simp [ρ, actAlg_tmul]))`. Use `sub_eq_zero.1 (eq_zero_of_coprime fun l hl ↦ ?_)` and prove the remaining obligations. Use `haveI := Fact.mk hl`. Take `⟨c₀, -, hgen⟩` from `FracGen.exists_gen F 𝔠 l`.
+
+Take `⟨m, hm0, hml, hm⟩` from `PolPrimeTo.exists_uniform 𝔠 l c₀ hgen`. Take `⟨n, e, t, τ, hn, cas, tr⟩` from `exists_casimir F l R`. Take `⟨φ₀, hφ₀⟩` from `exists_form_of X HR c₀`. Take `⟨b, hb⟩` from `hm c`. Take `⟨χ, hχ⟩` from `exists_form_of X HR ((m : 𝓞 F) • c)`.
+
+Establish `eφ : ∀ x y, m • φ x y = φ₀ x (actAlg (dp0 R) (𝟙 _) X.rm (1 ⊗ₜ b) y)` using `fun x y ↦ by`. Rewrite using `[actAlg_tmul, one_smul, ← form_smul HR hb hφ₀ hχ, form_smul HR rfl hφ hχ, map_natCast, Module.End.natCast_apply, map_nsmul]`. Establish `key` using `symm_of_casimir e t τ n m cas tr ρ (hL.filToDual X.rm φ₀ (form_fil HR hφ₀)) (fun s x v ↦ by`. Take `⟨y, rfl⟩` from `hL.toLie_surjective X.rm v`. Rewrite using `[← lie, hL.filToDual_toLie, hL.filToDual_toLie]`.
+
+Conclude with `form_balanced HR hφ₀ s x y)`. Use the proof step `(fun x hx ↦ Subtype.ext (nsmul_eq_zero_of_radical HR HD hm0 hm hφ₀ fun y ↦ by`. Rewrite using `[form_skew HR hφ₀, ← hL.filToDual_toLie X.rm φ₀ (form_fil HR hφ₀), hx, LinearMap.zero_apply, neg_zero]))`. Use `κ hρ f (ρ (1 ⊗ₜ b) f')`. Rewrite `key` using `[hρ, ← hk, ← hk', ← lie, hL.filToDual_toLie, hL.filToDual_toLie, form_balanced HR hφ₀, ← eφ, ← eφ, ← smul_sub, ← mul_smul]`.
+
+Conclude with `⟨_, ((hml.mul_left hn).mul_left hn).mul_left hml, key⟩`.
+-/
 theorem form_symm [IsTotallyReal F] (HR : AbelianDeRham) (HD : DualAbelianScheme) (hX : X.IsRapoport)
     (hL : LieExact X.A) {κ : Fil X.A →ₗ[R] X.Lie} (hκ : X.IsLinearKS κ) {c : 𝔠.elt}
     {φ : HdR X.A →ₗ[R] HdR X.A →ₗ[R] R} (hφ : IsCorrForm (dp0 R) (𝟙 _) X.A X.A (X.P c) φ) {f f' : Fil X.A}

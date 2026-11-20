@@ -17,6 +17,9 @@ section Smooth
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Unfold `inUJ at *`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Jm ε := by rw [hg, hh]`.
+-/
 theorem inUJ_mul {n : ℕ} {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (hh : inUJ ε h) :
     inUJ ε (g * h) := by
   unfold inUJ at *
@@ -24,6 +27,39 @@ theorem inUJ_mul {n : ℕ} {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) �
         simp only [conjTranspose_mul, Matrix.mul_assoc]
     _ = Jm ε := by rw [hg, hh]
 
+/- English proof (translation)
+Take `⟨hemb, hrange⟩` from `isClosedEmbeddingMatrix n ε`. Use `set μ := muG ε`. Establish `hmem : ∀ g : UJ ε, inUJ ε (toM g)` using `fun g => g.2`. Establish `hu : Continuous fun g : UJ ε => toM g` using `hemb.continuous`. Establish `hb : Continuous fun g : UJ ε => σ (toM g)` using `hcont.comp_continuous hu hmem`.
+
+Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `hmem 1`. Establish `hnb : {g | ‖σ g - 1‖ < 1 / 2} ∈ 𝓝[{g | inUJ ε g}] (1 : Matrix (Fin n) (Fin n) ℂ)`. Establish `h` using `(hcont 1 hone) (Metric.ball_mem_nhds _ (half_pos one_pos))`. Simplify `h` using `[h1, Set.preimage, dist_eq_norm]`. Take `⟨U, hU, hUs⟩` from `mem_nhdsWithin_iff_exists_mem_nhds_inter.1 hnb`.
+
+Take `⟨φ, hφU, hφc, hφ, hφr, hφ1⟩` from `exists_contDiff_tsupport_subset (n := ⊤) hU`. Establish `hφ0 : ∀ y, 0 ≤ φ y` using `fun y => (hφr ⟨y, rfl⟩).1`. Establish `hψ : Continuous fun g : UJ ε => φ (toM g)` using `hφ.continuous.comp hu`. Establish `hψc : HasCompactSupport fun g : UJ ε => φ (toM g)` using `hφc.comp_isClosedEmbedding hemb`. Establish `hint' : ∀ x, inUJ ε x → Integrable (fun g : UJ ε => φ (toM g) • σ (x * toM g)) μ` using `fun x hx => (hψ.smul (hcont.comp_continuous (continuous_const.matrix_mul hu) fun g => inUJ_mul hx (hmem g))).integrable_of_hasCompactSupport hψc.smul_right`.
+
+Establish `hint : Integrable (fun g : UJ ε => φ (toM g) • σ (toM g)) μ` using `by simpa using hint' 1 hone`. Establish `hψi : Integrable (fun g : UJ ε => φ (toM g)) μ` using `hψ.integrable_of_hasCompactSupport hψc`. Establish `hpos : 0 < ∫ g : UJ ε, φ (toM g) ∂μ` using `hψ.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) hψc (fun g => hφ0 _) (by show φ 1 ≠ 0; rw [hφ1]; exact one_ne_zero)`. Use `set c := ∫ g : UJ ε, φ (toM g) ∂μ with hc`. Use `set A := ∫ g : UJ ε, φ (toM g) • σ (toM g) ∂μ with hA`.
+
+Establish `hAu : ∃ A' : B, A * A' = 1`. Establish `e1 : ∫ g : UJ ε, (φ (toM g) • σ (toM g) - φ (toM g) • (1 : B)) ∂μ = A - c • (1 : B)`. Rewrite using `[integral_sub hint (hψi.smul_const _), integral_smul_const]`. Establish `e2 : ‖∫ g : UJ ε, (φ (toM g) • σ (toM g) - φ (toM g) • (1 : B)) ∂μ‖ ≤ ∫ g : UJ ε, φ (toM g) * (1 / 2) ∂μ`. Use `norm_integral_le_of_norm_le (hψi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations.
+
+Rewrite using `[← smul_sub, norm_smul, Real.norm_of_nonneg (hφ0 _)]`. Distinguish the cases in `hg : φ (toM g) = 0`. Simplify using `[hg]`. Conclude with `mul_le_mul_of_nonneg_left (le_of_lt (hUs ⟨hφU (subset_tsupport _ hg), hmem g⟩)) (hφ0 _)`. Rewrite `e2` using `[e1, integral_mul_const, ← hc]`.
+
+Establish `e3 : ‖(1 : B) - c⁻¹ • A‖ < 1`. Establish `: (1 : B) - c⁻¹ • A = -(c⁻¹ • (A - c • (1 : B)))`. Rewrite using `[smul_sub, smul_smul, inv_mul_cancel₀ hpos.ne', one_smul, neg_sub]`. Rewrite using `[this, norm_neg, norm_smul, Real.norm_of_nonneg (inv_pos.2 hpos).le, inv_mul_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨u, hu⟩` from `isUnit_one_sub_of_norm_lt_one e3`. Rewrite `hu` using `[sub_sub_cancel]`. Use `⟨c⁻¹ • (↑u⁻¹ : B), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul_comm, ← smul_mul_assoc, ← hu, Units.mul_inv]`. Take `⟨A', hA'⟩` from `hAu`.
+
+Set `y : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun x => Jm ε * xᴴ * Jm ε`. Establish `hy : ContDiff ℝ ∞ y` using `contDiff_matMul (contDiff_matMul contDiff_const contDiff_adj) contDiff_const`. Establish `hyx : ∀ x, inUJ ε x → y x * x = 1` using `fun x hx => by`. Establish `h : xᴴ * Jm ε * x = Jm ε` using `hx`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hform : ∀ x, inUJ ε x → ∫ g : UJ ε, φ (toM g) • σ (x * toM g) ∂μ = ∫ g : UJ ε, φ (y x * toM g) • σ (toM g) ∂μ`. Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : x ∈ Set.range (fun g : UJ ε => toM g) := by`. Rewrite using `[show Set.range (fun g : UJ ε => toM g) = _ from hrange]`. Conclude with `hx`.
+
+Establish `hz' : toM z = x` using `hz`. Rewrite using `[← integral_mul_left_eq_self (fun g : UJ ε => φ (y x * toM g) • σ (toM g)) z]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : toM (z * g) = x * toM g` using `by rw [← hz']; rfl`. Simplify using `only [e]`.
+
+Rewrite using `[← Matrix.mul_assoc, hyx x hx, Matrix.one_mul]`. Use `⟨fun x => (∫ g : UJ ε, φ (toM g) • σ (x * toM g) ∂μ) * A', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x₀ _`. Establish `hC : IsCompact (Set.image2 (· * ·) (Metric.closedBall x₀ 1) (tsupport φ))`. Rewrite using `[← Set.image_prod]`.
+
+Conclude with `((isCompact_closedBall x₀ 1).prod hφc).image (contDiff_matMul contDiff_fst contDiff_snd).continuous`. Establish `hK` using `hemb.isCompact_preimage hC`. Establish `hs : ContDiff ℝ ∞ fun x => ∫ g in (fun g : UJ ε => toM g) ⁻¹' (Set.image2 (· * ·) (Metric.closedBall x₀ 1) (tsupport φ)), φ (y x * toM g) • σ (toM g) ∂μ` using `contDiff_infty.2 fun m => GlobalTheory.GardingVec.contDiff_setIntegral_nat μ hK (hu.prodMk hb) m (fun z : Matrix (Fin n) (Fin n) ℂ × (Matrix (Fin n) (Fin n) ℂ × B) => φ (y z.1 * z.2.1) • z.2.2) ((hφ.comp (contDiff_matMul (hy.comp contDiff_fst) (contDiff_fst.comp contDiff_snd))).s …`. Use `⟨Metric.ball x₀ 1, _, Metric.isOpen_ball, Metric.mem_ball_self one_pos, (hs.mul (contDiff_const (c := A'))).contDiffOn, fun x hx hxG => ?_⟩` and prove the remaining obligations. Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero, ← hform x hxG]`.
+
+Introduce `g hg`. Assume the negation of the conclusion as `hne`. Use `hg ⟨x, Metric.ball_subset_closedBall hx, y x * toM g, subset_tsupport _ fun h => hne (by rw [h, zero_smul]), ?_⟩` and prove the remaining obligations. Use `show x * (y x * toM g) = toM g`. Rewrite using `[← Matrix.mul_assoc, mul_eq_one_comm.1 (hyx x hxG), Matrix.one_mul]`.
+
+Simplify `hA'` using `only [Matrix.one_mul]`. Introduce `k hk hmul x hx`. Use `(ContinuousLinearMap.mul ℂ B (σ k)).integral_comp_comm (hint' x hx)` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.mul_apply']`. Use `beta_reduce`.
+
+Rewrite using `[← mul_assoc (σ k), ← this]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Matrix.mul_assoc, hmul _ (inUJ_mul hx (hmem g)), ContinuousLinearMap.mul_apply', mul_smul_comm]`.
+-/
 theorem exists_smooth_equivariant {n : ℕ} {ε : Fin n → Bool} {B : Type} [NormedRing B] [NormedAlgebra ℂ B]
     [CompleteSpace B] {σ : Matrix (Fin n) (Fin n) ℂ → B} (h1 : σ 1 = 1)
     (hcont : ContinuousOn σ {g | inUJ ε g}) :
@@ -129,6 +165,11 @@ section Lie
 
 variable {n : ℕ} {ε : Fin n → Bool}
 
+/- English proof (translation)
+Use `⟨?_, by rw [Matrix.smul_mul, Matrix.mul_smul, hX.2]⟩` and prove the remaining obligations. Establish `h : Xᴴ * Jm ε + Jm ε * X = 0` using `hX.1`. Use `show ((t : ℂ) • X)ᴴ * Jm ε + Jm ε * ((t : ℂ) • X) = 0`. Rewrite using `[conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`.
+
+Rewrite using `[← smul_add, h, smul_zero]`.
+-/
 theorem inK_smul {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) : inK ε ((t : ℂ) • X) := by
   refine ⟨?_, by rw [Matrix.smul_mul, Matrix.mul_smul, hX.2]⟩
   have h : Xᴴ * Jm ε + Jm ε * X = 0 := hX.1
@@ -137,10 +178,16 @@ theorem inK_smul {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) : in
   simp only [Complex.star_def, Complex.conj_ofReal]
   rw [← smul_add, h, smul_zero]
 
+/- English proof (translation)
+The claim follows from `(kFacts n ε).2.2.2.1 _ (inK_smul hX t)`.
+-/
 theorem exp_memK {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • X) ∈ Kset ε :=
   (kFacts n ε).2.2.2.1 _ (inK_smul hX t)
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hX a) b`. Simplify using `only [Jm, mul_diagonal, diagonal_mul] at h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp [ha, hb] at h hab`. Take the linear combination `(1 / 2 : ℂ) * h`. Take the linear combination `(-1 / 2 : ℂ) * h`.
+-/
 theorem entry_eq_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X) {a b : Fin n} (hab : ε a ≠ ε b) :
     X a b = 0 := by
   have h := congrFun (congrFun hX a) b
@@ -149,6 +196,11 @@ theorem entry_eq_zero {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε *
   · linear_combination (1 / 2 : ℂ) * h
   · linear_combination (-1 / 2 : ℂ) * h
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [Jm, mul_diagonal, diagonal_mul, Matrix.single_apply]`. Distinguish the cases in `h : a = i ∧ b = j`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[hab]`.
+
+Simplify using `[h]`.
+-/
 theorem single_comm {a b : Fin n} (hab : ε a = ε b) :
     Matrix.single a b (1 : ℂ) * Jm ε = Jm ε * Matrix.single a b 1 := by
   ext i j
@@ -158,10 +210,16 @@ theorem single_comm {a b : Fin n} (hab : ε a = ε b) :
     simp [hab]
   · simp [h]
 
+/- English proof (translation)
+Rewrite using `[conjTranspose_single, star_one, ← single_comm hab.symm, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]`.
+-/
 theorem conj_single {a b : Fin n} (hab : ε a = ε b) :
     Jm ε * (Matrix.single a b (1 : ℂ))ᴴ * Jm ε = Matrix.single b a 1 := by
   rw [conjTranspose_single, star_one, ← single_comm hab.symm, Matrix.mul_assoc, Jm_mul_self, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Use `⟨⟨h1, ?_⟩, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[cpart1, conj_single hab, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, single_comm hab, single_comm hab.symm]`. Rewrite using `[cpart2, conj_single hab, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, single_comm hab, single_comm hab.symm]`.
+-/
 theorem cpart_inK {a b : Fin n} (hab : ε a = ε b) :
     inK ε (cpart1 ε (Matrix.single a b 1)) ∧ inK ε (cpart2 ε (Matrix.single a b 1)) := by
   obtain ⟨h1, h2, -⟩ := cpartMem n ε (Matrix.single a b 1)
@@ -171,6 +229,9 @@ theorem cpart_inK {a b : Fin n} (hab : ε a = ε b) :
   · rw [cpart2, conj_single hab, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add,
       single_comm hab, single_comm hab.symm]
 
+/- English proof (translation)
+Establish `h : (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) * Jm ε = Jm ε * Matrix.diagonal fun a => (θ a : ℂ) * Complex.I`. Simplify using `only [Jm, diagonal_mul_diagonal, mul_comm]`. Use `⟨?_, h⟩` and prove the remaining obligations. Use `show _ * _ + _ = 0`. Rewrite using `[diag_skew, Matrix.neg_mul, h, neg_add_cancel]`.
+-/
 theorem diag_inK (θ : Fin n → ℝ) : inK ε (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) := by
   have h : (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) * Jm ε =
       Jm ε * Matrix.diagonal fun a => (θ a : ℂ) * Complex.I := by
@@ -186,6 +247,9 @@ section Deriv
 variable {n : ℕ} {ε : Fin n → Bool} {B : Type} [NormedRing B] [NormedAlgebra ℂ B]
   {F : Matrix (Fin n) (Fin n) ℂ → B}
 
+/- English proof (translation)
+Rewrite using `[← ((hasDerivAt_rdV hs hX).const_mul (F g)).deriv, RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hK _ hg _ (exp_indefinite_unitary_holds n ε X hX t)`.
+-/
 theorem rdV_left (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → F (k * x) = F k * F x)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inG ε X) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     RdV X F g = F g * RdV X F 1 := by
@@ -194,6 +258,9 @@ theorem rdV_left (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε 
   funext t
   exact hK _ hg _ (exp_indefinite_unitary_holds n ε X hX t)
 
+/- English proof (translation)
+Rewrite using `[← ((hasDerivAt_rdV hs hX.1).mul_const b).deriv, RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[Matrix.one_mul]`. Conclude with `hf _ (exp_memK hX t)`.
+-/
 theorem rdV_one_of_eqK (hs : SmoothOnGV ε F) {f : Matrix (Fin n) (Fin n) ℂ → B} {b : B}
     (hf : ∀ g ∈ Kset ε, f g = F g * b) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) :
     RdV X f 1 = RdV X F 1 * b := by
@@ -203,6 +270,9 @@ theorem rdV_one_of_eqK (hs : SmoothOnGV ε F) {f : Matrix (Fin n) (Fin n) ℂ �
   rw [Matrix.one_mul]
   exact hf _ (exp_memK hX t)
 
+/- English proof (translation)
+Take `⟨h1, h2, -⟩` from `cpartMem n ε (Matrix.single a b 1)`. Simplify using `only [EabV, EcV]`. Rewrite using `[rdV_left hs hK h1 hg, rdV_left hs hK h2 hg, mul_add, mul_smul_comm]`.
+-/
 theorem eabV_left (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → F (k * x) = F k * F x)
     (a b : Fin n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     EabV ε a b F g = F g * EabV ε a b F 1 := by
@@ -210,6 +280,9 @@ theorem eabV_left (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε
   simp only [EabV, EcV]
   rw [rdV_left hs hK h1 hg, rdV_left hs hK h2 hg, mul_add, mul_smul_comm]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `cpart_inK hab`. Establish `h` using `fun g hg => eabV_left hs hK c d (g := g) hg`. Use `show RdV _ _ 1 + Complex.I • RdV _ _ 1 = (RdV _ F 1 + Complex.I • RdV _ F 1) * _`. Rewrite using `[rdV_one_of_eqK hs h h1, rdV_one_of_eqK hs h h2, add_mul, smul_mul_assoc]`.
+-/
 theorem eabV_eabVK (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → F (k * x) = F k * F x)
     {a b : Fin n} (hab : ε a = ε b) (c d : Fin n) :
     EabV ε a b (EabV ε c d F) 1 = EabV ε a b F 1 * EabV ε c d F 1 := by
@@ -218,6 +291,9 @@ theorem eabV_eabVK (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ �
   show RdV _ _ 1 + Complex.I • RdV _ _ 1 = (RdV _ F 1 + Complex.I • RdV _ F 1) * _
   rw [rdV_one_of_eqK hs h h1, rdV_one_of_eqK hs h h2, add_mul, smul_mul_assoc]
 
+/- English proof (translation)
+Introduce `a b c d hab hcd`. Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`. Use `eabGlV n ε B F a b c d 1 hs hone` as an intermediate fact. Rewrite `this` using `[eabV_eabVK hs hK hab, eabV_eabVK hs hK hcd]`. Then use the resulting hypothesis.
+-/
 theorem kRel_eabV (hs : SmoothOnGV ε F) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → F (k * x) = F k * F x) :
     KRel ε fun a b => EabV ε a b F 1 := by
   intro a b c d hab hcd
@@ -232,6 +308,11 @@ section Unit
 variable {n : ℕ} {ε : Fin n → Bool} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {π : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)}
 
+/- English proof (translation)
+Establish `h` using `(hasDerivAt_apply hs hX.1 x).inner ℂ (hasDerivAt_apply hs hX.1 y)`. Establish `hc : (fun t : ℝ => ⟪π (NormedSpace.exp ((t : ℂ) • X)) x, π (NormedSpace.exp ((t : ℂ) • X)) y⟫_ℂ) = fun _ => ⟪x, y⟫_ℂ`. Use function extensionality and compare the values at `t`. Conclude with `LinearIsometry.inner_map_map ⟨(π (NormedSpace.exp ((t : ℂ) • X))).toLinearMap, hiso _ (exp_memK hX t)⟩ x y`. Rewrite `h` using `[hc]`.
+
+Establish `h0` using `h.unique (hasDerivAt_const (0 : ℝ) _)`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, h1, ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`.
+-/
 theorem rdV_skewK (hs : SmoothOnGV ε π) (h1 : π 1 = 1) (hiso : ∀ g ∈ Kset ε, ∀ v, ‖π g v‖ = ‖v‖)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : inK ε X) (x y : W) :
     ⟪RdV X π 1 x, y⟫_ℂ = -⟪x, RdV X π 1 y⟫_ℂ := by
@@ -246,6 +327,17 @@ theorem rdV_skewK (hs : SmoothOnGV ε π) (h1 : π 1 = 1) (hiso : ∀ g ∈ Kset
   simp only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, h1, ContinuousLinearMap.one_apply] at h0
   linear_combination h0
 
+/- English proof (translation)
+Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`. Use `⟨fun a b => (EabV ε a b π 1).toLinearMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b c d hab hcd`. Use `congrArg ContinuousLinearMap.toLinearMap (kRel_eabV hs hK a b c d hab hcd)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ <;> exact this`.
+
+Introduce `a b hab x y`. Take `⟨h1', h2'⟩` from `cpart_inK hab`. Establish `e1 : cpart1 ε (Matrix.single b a 1) = ((-1 : ℝ) : ℂ) • cpart1 ε (Matrix.single a b (1 : ℂ))`. Rewrite using `[cpart1, cpart1, conj_single hab, conj_single hab.symm, ← neg_sub, smul_neg]`. Use `push_cast`.
+
+Rewrite using `[neg_one_smul]`. Establish `e2 : cpart2 ε (Matrix.single b a 1) = cpart2 ε (Matrix.single a b (1 : ℂ))`. Rewrite using `[cpart2, cpart2, conj_single hab, conj_single hab.symm, add_comm]`. Establish `e3` using `(rdLinV n _ _ π π _ _ (-1) 0 1 hs hs h1'.1 h1'.1 hone).2.1`. Simplify using `only [EabV, EcV, e1, e2, e3, ContinuousLinearMap.coe_coe, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+
+Establish `s1` using `rdV_skewK hs h1 hiso h1' x y`. Establish `s2` using `rdV_skewK hs h1 hiso h2' x y`. Rewrite using `[s1, s2]`. Simplify using the standard rewrite rules. Introduce `Z hZ v`.
+
+Use `hasDerivAt_apply hs hZ.1 v` as an intermediate fact. Rewrite `this` using `[rdV_eq_sum hs hZ.1]`. Simplify using `using this`.
+-/
 theorem exists_derived (hs : SmoothOnGV ε π) (h1 : π 1 = 1)
     (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π k * π x) (hiso : ∀ g ∈ Kset ε, ∀ v, ‖π g v‖ = ‖v‖) :
     ∃ E : Fin n → Fin n → Module.End ℂ W, KRel ε E ∧ KUnit ε E ∧
@@ -286,10 +378,16 @@ open Formalism.MainNotions.S
 variable {n : ℕ} {ε : Fin n → Bool} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {π : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)}
 
+/- English proof (translation)
+Simplify using `[h1]`.
+-/
 theorem group_zeroK (h1 : π 1 = 1) (Z : Matrix (Fin n) (Fin n) ℂ) (v : W) :
     π (NormedSpace.exp (((0 : ℝ) : ℂ) • Z)) v = v := by
   simp [h1]
 
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_add, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left _).smul_right _), hK _ (exp_memK hZ s) _ (exp_indefinite_unitary_holds n ε Z hZ.1 t)]`. Both sides reduce to the same expression.
+-/
 theorem group_addK (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π k * π x)
     {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : inK ε Z) (s t : ℝ) (v : W) :
     π (NormedSpace.exp (((s + t : ℝ) : ℂ) • Z)) v =
@@ -298,6 +396,13 @@ theorem group_addK (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π
     (((Commute.refl Z).smul_left _).smul_right _), hK _ (exp_memK hZ s) _ (exp_indefinite_unitary_holds n ε Z hZ.1 t)]
   rfl
 
+/- English proof (translation)
+Introduce `θ _`. Establish `h` using `eigen (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I))) (∑ a, ((θ a : ℂ) * Complex.I) • E a a) (group_zeroK h1 _) (group_addK hK (diag_inK θ)) (fun w => by`. Use `hE _ (diag_inK θ) w` as an intermediate fact. Rewrite `this` using `[UnitaryHighestWeight.sum_diag]`. Simplify `this)` using `only [LinearMap.sum_apply, LinearMap.smul_apply]`.
+
+Use `v (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) (by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, hv _, smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => by ring)`. Simplify using `only [exp_diag, one_mul] at h`. Conclude with `h`.
+-/
 theorem isWtOn_of_isWeightK (h1 : π 1 = 1) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π k * π x)
     (E : Fin n → Fin n → Module.End ℂ W)
     (hE : ∀ Z : Matrix (Fin n) (Fin n) ℂ, inK ε Z → ∀ v,
@@ -319,6 +424,19 @@ theorem isWtOn_of_isWeightK (h1 : π 1 = 1) (hK : ∀ k ∈ Kset ε, ∀ x, inUJ
   simp only [exp_diag, one_mul] at h
   exact h
 
+/- English proof (translation)
+Introduce `a`. Use `set θ : Fin n → ℝ := Pi.single a 1 with hθ`. Establish `h1` using `hE _ (diag_inK θ) v`. Rewrite `h1` using `[UnitaryHighestWeight.sum_diag]`. Establish `h2 : (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I)) v) = fun t : ℝ => Complex.exp ((μ a * Complex.I) * t) • v`.
+
+Use function extensionality and compare the values at `t`. Establish `hm` using `exp_memK (diag_inK (ε := ε) θ) t`. Rewrite `hm`, the goal using `[exp_diag]`. Rewrite using `[hv (fun b => t * θ b) hm]`. Use `congr 2`.
+
+Simplify using `[hθ, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp ((μ a * Complex.I) * t) • v) ((μ a * Complex.I) • v) 0`. Establish `h4 : HasDerivAt (fun t : ℝ => (μ a * Complex.I) * (t : ℂ)) (μ a * Complex.I) 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).const_mul (μ a * Complex.I)`.
+
+Simplify using `using h4.cexp.smul_const v`. Rewrite `h1` using `[h2]`. Establish `h5` using `h1.unique h3`. Establish `h6 : ∑ b, ((θ b : ℂ) * Complex.I) • E b b v = Complex.I • E a a v`. Rewrite using `[Finset.sum_eq_single a]`.
+
+Simplify using `[hθ]`. Introduce `b _ hb`. Simplify using `[hθ, Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite `h5` using `[h6, mul_comm, ← smul_smul]`.
+
+Conclude with `smul_right_injective W Complex.I_ne_zero h5`.
+-/
 theorem isWeight_of_isWtOnK (E : Fin n → Fin n → Module.End ℂ W)
     (hE : ∀ Z : Matrix (Fin n) (Fin n) ℂ, inK ε Z → ∀ v,
       HasDerivAt (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Z)) v) (∑ a, ∑ b, Z a b • E a b v) 0)
@@ -351,6 +469,11 @@ theorem isWeight_of_isWtOnK (E : Fin n → Fin n → Module.End ℂ W)
   rw [h6, mul_comm, ← smul_smul] at h5
   exact smul_right_injective W Complex.I_ne_zero h5
 
+/- English proof (translation)
+Introduce `g hg v hv`. Take `⟨Y, hY, hg', -⟩` from `compact_exponential_surjective n ε g hg`. Establish `h` using `stable (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Y))) (∑ a, ∑ b, Y a b • E a b) (group_zeroK h1 _) (group_addK hK hY) (fun w => by simpa only [LinearMap.sum_apply, LinearMap.smul_apply] using hE _ hY w) S (fun w hw => by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Use `S.sum_mem fun a _ => S.sum_mem fun b _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hab : ε a = ε b`. Conclude with `S.smul_mem _ (hS a b hab w hw)`. Rewrite using `[entry_eq_zero hY.2 hab, zero_smul]`. Conclude with `S.zero_mem) v hv 1`. Simplify `h` using `[hg']`.
+-/
 theorem stable_of_derivedK [FiniteDimensional ℂ W] (h1 : π 1 = 1)
     (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π k * π x) (E : Fin n → Fin n → Module.End ℂ W)
     (hE : ∀ Z : Matrix (Fin n) (Fin n) ℂ, inK ε Z → ∀ v,
@@ -370,6 +493,13 @@ theorem stable_of_derivedK [FiniteDimensional ℂ W] (h1 : π 1 = 1)
         exact S.zero_mem) v hv 1
   simpa [hg'] using h
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Rewrite `hv` using `[compact_span_eq_lowering hr hΛ]`. Establish `key : ∀ z ∈ lowSpan ε E x, ⟪z, v⟫_ℂ = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `hy`. Use `compact_weight_orthogonal W n _ E _ μ _ v hk (word_action_weight hr hΛ.1 w (fun q hq => (hw q hq).1)) hμ ?_` and prove the remaining obligations. Introduce `heq`. Conclude with `hne (heq ▸ cdom_add_lowering_word _ Λ w hw)`.
+
+Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [inner_add_left, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [inner_smul_left, hy, mul_zero]`. Conclude with `hv0 (inner_self_eq_zero.mp (key v hv))`.
+-/
 theorem cdom_of_mem_kSpan (E : Fin n → Fin n → Module.End ℂ W) (Λ μ : Fin n → ℝ) (x v : W) (hr : KRel ε E)
     (hk : KUnit ε E) (hΛ : KHighest ε E Λ x) (hv : v ∈ kSpan ε E x) (hv0 : v ≠ 0) (hμ : IsWeight E μ v) :
     CDom ε μ Λ := by
@@ -388,6 +518,11 @@ theorem cdom_of_mem_kSpan (E : Fin n → Fin n → Module.End ℂ W) (Λ μ : Fi
     | smul c y _ hy => rw [inner_smul_left, hy, mul_zero]
   exact hv0 (inner_self_eq_zero.mp (key v hv))
 
+/- English proof (translation)
+Take `⟨E, hr, hk, hE⟩` from `exists_derived hs h1 hK hiso`. Take `⟨x, -, hx, Λ, hΛ⟩` from `highestWeightExists_holds W n ε E ⊤ inferInstance hr hk (fun _ _ _ _ _ => trivial) top_ne_bot`. Establish `hxm : x ∈ kSpan ε E x` using `Submodule.mem_sInf.2 fun S hS => hS.1`. Establish `hst : KStable ε E (kSpan ε E x)` using `fun a b hab y hy => Submodule.mem_sInf.2 fun S hS => hS.2 a b hab y (Submodule.mem_sInf.1 hy S hS)`. Establish `htop : kSpan ε E x = ⊤`.
+
+Break down `hirr _ (stable_of_derivedK h1 hK E hE _ hst) with h | h` into its components or cases. Rewrite `hxm` using `[h]`. Conclude with `absurd hxm hx`. Conclude with `h`. Conclude with `⟨Λ, ⟨x, hx, isWtOn_of_isWeightK h1 hK E hE Λ x hΛ.1⟩, fun μ v hv hw => cdom_of_mem_kSpan E Λ μ x v hr hk hΛ (htop ▸ trivial) hv (isWeight_of_isWtOnK E hE μ v hw)⟩`.
+-/
 theorem exists_highest [FiniteDimensional ℂ W] [Nontrivial W] (hs : SmoothOnGV ε π) (h1 : π 1 = 1)
     (hK : ∀ k ∈ Kset ε, ∀ x, inUJ ε x → π (k * x) = π k * π x) (hiso : ∀ g ∈ Kset ε, ∀ v, ‖π g v‖ = ‖v‖)
     (hirr : ∀ S : Submodule ℂ W, IsKStableOn ε π S → S = ⊥ ∨ S = ⊤) :
@@ -415,6 +550,11 @@ open Formalism.MainNotions.S
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+Take `⟨S', ⟨hle, hne, hst⟩, hmin⟩` from `(measure fun T : Submodule ℂ H => Module.finrank ℂ T).wf.has_min {T | T ≤ S ∧ T ≠ ⊥ ∧ IsKStableOn ε σ T} ⟨S, le_rfl, h0, hS⟩`. Use `⟨S', hle, hne, hst, fun T hT hTs => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hle`.
+
+Conclude with `hmin T ⟨hT.trans hle, hcon.1, hTs⟩ (Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hT hcon.2))`.
+-/
 theorem exists_minimal (S : Submodule ℂ H) [FiniteDimensional ℂ S] (hS : IsKStableOn ε σ S) (h0 : S ≠ ⊥) :
     ∃ S' : Submodule ℂ H, S' ≤ S ∧ S' ≠ ⊥ ∧ IsKStableOn ε σ S' ∧
       ∀ T : Submodule ℂ H, T ≤ S' → IsKStableOn ε σ T → T = ⊥ ∨ T = S' := by
@@ -426,6 +566,15 @@ theorem exists_minimal (S : Submodule ℂ H) [FiniteDimensional ℂ S] (hS : IsK
   haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hle
   exact hmin T ⟨hT.trans hle, hcon.1, hTs⟩ (Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne hT hcon.2))
 
+/- English proof (translation)
+Establish `hk' : kᴴ ∈ Kset ε`. Use `⟨Unitary.star_mem hk.1, ?_⟩` and prove the remaining obligations. Use `congrArg conjTranspose hk.2` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, Jm_conjTranspose]`. Conclude with `this.symm`.
+
+Establish `hkU : k ∈ UJset ε` using `(kFacts n ε).1 k hk`. Establish `hkU' : kᴴ ∈ UJset ε` using `(kFacts n ε).1 _ hk'`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hS k hk _ (Submodule.starProjection_apply_mem S v)) fun w hw => ?_` and prove the remaining obligations. Establish `hkk : k * kᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hk.1`. Establish `hw' : w = σ k (σ kᴴ w)`.
+
+Use `hσ.1.2 k hkU _ hkU'` as an intermediate fact. Rewrite `this` using `[hkk, hσ.1.1]`. Conclude with `DFunLike.congr_fun this w`. Rewrite using `[← map_sub, hw']`. Use `LinearIsometry.inner_map_map (𝕜 := ℂ) ⟨(σ k).toLinearMap, hσ.2.1 k hkU⟩ (v - S.starProjection v) (σ kᴴ w)` as an intermediate fact.
+
+Conclude with `this.trans (Submodule.starProjection_inner_eq_zero v _ (hS _ hk' w hw))`.
+-/
 theorem proj_comm (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [FiniteDimensional ℂ S]
     (hS : IsKStableOn ε σ S) {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (v : H) :
     S.starProjection (σ k v) = σ k (S.starProjection v) := by
@@ -447,6 +596,17 @@ theorem proj_comm (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [FiniteDi
   have := LinearIsometry.inner_map_map (𝕜 := ℂ) ⟨(σ k).toLinearMap, hσ.2.1 k hkU⟩ (v - S.starProjection v) (σ kᴴ w)
   exact this.trans (Submodule.starProjection_inner_eq_zero v _ (hS _ hk' w hw))
 
+/- English proof (translation)
+Use `haveI : CompleteSpace S := FiniteDimensional.complete ℂ S`. Set `b : Matrix (Fin n) (Fin n) ℂ → (S →L[ℂ] S)` to `fun g => S.orthogonalProjection ∘L σ g ∘L S.subtypeL`. Establish `hb : ∀ g (v : S), (b g v : H) = S.starProjection (σ g v)` using `fun g v => rfl`. Establish `hbK : ∀ k ∈ Kset ε, ∀ v : S, (b k v : H) = σ k v` using `fun k hk v => by`. Rewrite using `[hb, (Submodule.starProjection_eq_self_iff (K := S)).2 (hS k hk v v.2)]`.
+
+Establish `hb1 : b 1 = 1`. Use extensionality with `v`. Rewrite using `[hb, hσ.1.1]`. Conclude with `(Submodule.starProjection_eq_self_iff (K := S)).2 v.2`. Establish `hcont : ContinuousOn b {g | inUJ ε g}` using `continuousOn_clm_apply.2 fun v => S.orthogonalProjection.continuous.comp_continuousOn (hσ.2.2 v)`.
+
+Establish `hmul : ∀ k ∈ Kset ε, ∀ g, inUJ ε g → b (k * g) = b k * b g` using `fun k hk g hg => by`. Use extensionality with `v`. Rewrite using `[ContinuousLinearMap.mul_apply, hbK k hk, hb, hb, hσ.1.2 k ((kFacts n ε).1 k hk) g hg, ContinuousLinearMap.comp_apply, proj_comm hσ S hS hk]`. Take `⟨F, hF, hF1, hFK⟩` from `exists_smooth_equivariant hb1 hcont`. Establish `hone : inUJ ε (1 : Matrix (Fin n) (Fin n) ℂ)` using `by simp [inUJ]`.
+
+Establish `hFb : ∀ k ∈ Kset ε, F k = b k` using `fun k hk => by`. Simplify `hFK k ((kFacts n ε).1 k hk) (hmul k hk) 1 hone` using `[hF1]`. Use `⟨F, hF, hF1, fun k hk x hx => ?_, fun k hk v => ?_⟩` and prove the remaining obligations. Rewrite using `[hFb k hk]`. Conclude with `hFK k ((kFacts n ε).1 k hk) (hmul k hk) x hx`.
+
+Rewrite using `[hFb k hk, hbK k hk]`.
+-/
 theorem exists_smooth_restrict (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [FiniteDimensional ℂ S]
     (hS : IsKStableOn ε σ S) :
     ∃ π : Matrix (Fin n) (Fin n) ℂ → (S →L[ℂ] S), SmoothOnGV ε π ∧ π 1 = 1 ∧
@@ -475,6 +635,13 @@ theorem exists_smooth_restrict (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ
     exact hFK k ((kFacts n ε).1 k hk) (hmul k hk) x hx
   · rw [hFb k hk, hbK k hk]
 
+/- English proof (translation)
+Introduce `n ε H _ _ σ hσ S _ hS h0`. Take `⟨S', hle, hne, hst, hmin⟩` from `exists_minimal S hS h0`. Use `haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hle`. Use `haveI : Nontrivial S' := Submodule.nontrivial_iff_ne_bot.2 hne`. Take `⟨π, hs, h1, hK, hπ⟩` from `exists_smooth_restrict hσ S' hst`.
+
+Establish `hiso : ∀ g ∈ Kset ε, ∀ v, ‖π g v‖ = ‖v‖` using `fun g hg v => by`. Rewrite using `[Submodule.coe_norm, hπ g hg, hσ.2.1 g ((kFacts n ε).1 g hg), Submodule.coe_norm]`. Establish `hwt : ∀ (μ : Fin n → ℝ) (v : S'), IsWtOn (Kset ε) π μ v ↔ IsWtOn (Kset ε) σ μ (v : H)` using `fun μ v => forall₂_congr fun θ hθ => by rw [← hπ _ hθ, ← Submodule.coe_smul, Subtype.coe_inj]`. Take `⟨Λ, ⟨x, hx, hxw⟩, hΛ⟩` from `exists_highest hs h1 hK hiso fun T hT => by`. Break down `hmin (T.map S'.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases.
+
+Introduce and unpack `g hg _ ⟨v, hv, rfl⟩`. Conclude with `⟨π g v, hT g hg v hv, hπ g hg v⟩) with h | h`. Conclude with `Or.inl (Submodule.map_injective_of_injective S'.injective_subtype (by rw [h, Submodule.map_bot]))`. Conclude with `Or.inr (Submodule.map_injective_of_injective S'.injective_subtype (by rw [h, Submodule.map_top, Submodule.range_subtype]))`. Use `⟨Λ, S', hle, inferInstance, hst, hmin, ⟨x, x.2, fun h => hx (Subtype.ext h), (hwt Λ x).1 hxw⟩, fun μ v hv hv0 hw => hΛ μ ⟨v, hv⟩ (fun h => hv0 (congrArg Subtype.val h)) ((hwt μ ⟨v, hv⟩).2 hw)⟩` and prove the remaining obligations.
+-/
 theorem exists_kType : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : GlobalTheory.HolDict.Mt n → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → ∀ S : Submodule ℂ H, FiniteDimensional ℂ S →
     IsKStableOn ε σ S → S ≠ ⊥ → ∃ (μ : Fin n → ℝ) (S' : Submodule ℂ H), S' ≤ S ∧ IsKTypeOf ε σ μ S' := by

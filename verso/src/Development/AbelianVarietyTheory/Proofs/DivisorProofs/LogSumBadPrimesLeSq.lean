@@ -39,6 +39,21 @@ noncomputable section
 
 namespace GlobalTheory.BadLogCov
 
+/- English proof (translation)
+Introduce `_`. Use `⟨37, by norm_num, fun D T hT j hj Y e o hY Lb hL hM hE hfr => ?_⟩` and prove the remaining obligations. Establish `hQ` using `hT.pins`. Establish `hM0 : Y.d.l₂.M ≠ 0` using `by have := Y.d.l₂.three_le; omega`. Establish `h1` using `UpperTheory.KR.sum_log_bad_le D.host.toHostAx Y.d.l₂.M (badPrimes T.Q.H Y.d.l₂) hM0 fun p hp => by`.
+
+Take `⟨hp, h'⟩` from `mem_badPrimes.1 hp`. Use `⟨hp, ?_⟩` and prove the remaining obligations. Break down `h' with h' | h' | h' | h' | h'` into its components or cases. Conclude with `Or.inl h'`. Conclude with `Or.inr (Or.inl (h'.trans hQ.1.1))`.
+
+Conclude with `Or.inr (Or.inr (Or.inl h'))`. Conclude with `Or.inr (Or.inr (Or.inr h'))`. Rewrite `h'` using `[hY.lev.2]`. Conclude with `absurd (Nat.dvd_one.1 h') hp.ne_one`. Establish `hrd : Real.log D.host.rd ≤ fieldSz D.host.E`.
+
+Use `le_trans (le_of_eq ?_) (log_rd_le_fieldSz D.host.E)` and prove the remaining obligations. Unfold `Formalism.HC.HostRaw.rd`. Rewrite using `[Real.log_rpow (abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E))]; ring`. Establish `hsum : GlobalTheory.FlatTw.logSum (GlobalTheory.FlatTw.badPrimes T.Q.H Y.d.l₂) ≤ 37 * Lb`. Use `le_trans h1 ?_` and prove the remaining obligations.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : 0 < D.R.n` using `D.R.ord_pos`. Establish `h1'` using `D.R.two_le_m`. Establish `h2'` using `D.R.m_add_three_le_k`. Establish `hf : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast (by unfold Ranks.f; omega : 1 ≤ D.R.f)`.
+
+Establish `hr : (1 : ℝ) ≤ D.R.r` using `by exact_mod_cast (by unfold Ranks.r; omega : 1 ≤ D.R.r)`. Establish `hfr1 : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r` using `one_le_mul_of_one_le_of_one_le hf hr`. Establish `hX : Lb ≤ ((D.R.f : ℝ) * D.R.r * Lb) ^ 2`. Establish `a : Lb ≤ (D.R.f : ℝ) * D.R.r * Lb` using `le_mul_of_one_le_left (by linarith) hfr1`. Establish `b : (1 : ℝ) ≤ (D.R.f : ℝ) * D.R.r * Lb` using `hL.trans a`.
+
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem logSum_badPrimes_le_sq : Hypotheses2 → ∃ C : ℝ, 0 ≤ C ∧ ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j : ℕ, InR D j → ∀ (Y : Deep T.toCore j) (e : ℕ) (o : ℝ), Y.Good e o → ∀ Lb : ℝ, 1 ≤ Lb → Real.log Y.d.l₂.M ≤ 30 * Lb → fieldSz D.host.E ≤ 3 * Lb → Real.log (D.R.f * D.R.r) ≤ Lb → GlobalTheory.FlatTw.logSum (GlobalTheory.FlatTw.badPrimes T.Q.H Y.d.l₂) ≤ C * ((D.R.f : ℝ) * D.R.r * Lb) ^ 2 := by
   intro _
   refine ⟨37, by norm_num, fun D T hT j hj Y e o hY Lb hL hM hE hfr => ?_⟩

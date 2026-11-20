@@ -19,6 +19,11 @@ def linC {R : Type} [CommRing R] {κ : Type} [Fintype κ] {r : ℕ} (c : Fin r �
 def linD {R : Type} [CommRing R] {κ : Type} [Fintype κ] {r : ℕ} (d : Fin r → κ → R) (z : κ → R) : Fin r → R :=
   fun i => ∑ k, d i k * z k
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [linD, linC, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `h : ∀ j, ∑ k, e (p i k) * (y j * e (a j k)) = y j * e (if i = j then 1 else 0)`. Introduce `j`.
+
+Rewrite using `[← hp i j, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h, apply_ite e, map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+-/
 theorem linD_linC {F R : Type} [Field F] [CommRing R] (e : F →+* R) {κ : Type} [Fintype κ] {r : ℕ}
     (a p : Fin r → κ → F) (hp : ∀ i j, ∑ k, p i k * a j k = if i = j then 1 else 0) (y : Fin r → R) :
     linD (fun i k => e (p i k)) (linC (fun j k => e (a j k)) y) = y := by
@@ -32,6 +37,17 @@ theorem linD_linC {F R : Type} [Field F] [CommRing R] (e : F →+* R) {κ : Type
     rw [map_mul]; ring
   simp only [h, apply_ite e, map_one, map_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Set `A : (Fin r → F) →ₗ[F] (κ → F)` to `{ toFun := fun y => ∑ j, y j • a j map_add' := by intro x y; simp [add_smul, Finset.sum_add_distrib] map_smul' := by intro c x; simp [Finset.smul_sum, smul_smul] }`. Establish `hA : LinearMap.ker A = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `y hy`. Use function extensionality and compare the values at `i`.
+
+Conclude with `Fintype.linearIndependent_iff.1 ha y hy i`. Take `⟨P, hP⟩` from `LinearMap.exists_leftInverse_of_injective A hA`. Use `⟨fun i k => P (fun k' => if k = k' then 1 else 0) i, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : A (fun j' => if j = j' then 1 else 0) = a j`. Simplify using `[A]`.
+
+Establish `h2 : P (a j) = fun j' => if j = j' then 1 else 0`. Rewrite using `[← h1]`. Conclude with `LinearMap.congr_fun hP _`. Establish `h3 : P (a j) i = ∑ k, P (fun k' => if k = k' then (1 : F) else 0) i * a j k` using `by conv_lhs => rw [pi_eq_sum_univ (a j)]`. Rewrite using `[map_sum, Finset.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[← h3, h2]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem exists_leftInv {F : Type} [Field F] {κ : Type} [Fintype κ] {r : ℕ} (a : Fin r → κ → F)
     (ha : LinearIndependent F a) : ∃ p : Fin r → κ → F, ∀ i j, ∑ k, p i k * a j k = if i = j then 1 else 0 := by
   let A : (Fin r → F) →ₗ[F] (κ → F) :=
@@ -74,14 +90,25 @@ noncomputable def finPart : AF F →+* FiniteAdeleRing (𝓞 F) F :=
 
 variable {F}
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_finset_sum _ fun j _ => (continuous_apply j).mul continuous_const`.
+-/
 theorem continuous_linC {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {κ : Type} [Fintype κ]
     {r : ℕ} (c : Fin r → κ → R) : Continuous (linC c) :=
   continuous_pi fun _ => continuous_finset_sum _ fun j _ => (continuous_apply j).mul continuous_const
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun _ => continuous_finset_sum _ fun k _ => continuous_const.mul (continuous_apply k)`.
+-/
 theorem continuous_linD {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {κ : Type} [Fintype κ]
     {r : ℕ} (d : Fin r → κ → R) : Continuous (linD d) :=
   continuous_pi fun _ => continuous_finset_sum _ fun k _ => continuous_const.mul (continuous_apply k)
 
+/- English proof (translation)
+Establish `hg' : IsLocallyConstant g ∧ HasCompactSupport g` using `hg`. Use `show IsLocallyConstant (g ∘ linC c) ∧ HasCompactSupport (g ∘ linC c)`. Use `⟨hg'.1.comp_continuous (continuous_linC c), ?_⟩` and prove the remaining obligations. Establish `h1 : tsupport (g ∘ linC c) ⊆ linC c ⁻¹' tsupport g` using `closure_minimal (fun y hy => subset_tsupport g hy) ((isClosed_tsupport g).preimage (continuous_linC c))`. Establish `hsub : tsupport (g ∘ linC c) ⊆ linD d '' tsupport g` using `fun y hy => ⟨linC c y, h1 hy, hdc y⟩`.
+
+Conclude with `(hg'.2.image (continuous_linD d)).of_isClosed_subset (isClosed_tsupport _) hsub`.
+-/
 theorem comp_mem_SB {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {κ : Type} [Fintype κ] {r : ℕ}
     (c d : Fin r → κ → R) (hdc : ∀ y, linD d (linC c y) = y)
     {g : (κ → R) → ℂ} (hg : g ∈ SB (κ → R)) : (g ∘ linC c) ∈ SB (Fin r → R) := by
@@ -95,6 +122,11 @@ theorem comp_mem_SB {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalR
 
 variable (F) in
 
+/- English proof (translation)
+Set `Lc : (Fin r → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (κ → mixedEmbedding.mixedSpace F)` to `{ toFun := linC c map_add' := by intro y z; funext k; simp [linC, add_mul, Finset.sum_add_distrib] map_smul' := by intro a y; funext k; simp [linC, Finset.smul_sum, smul_mul_assoc] }`. Set `Ld : (κ → mixedEmbedding.mixedSpace F) →ₗ[ℝ] (Fin r → mixedEmbedding.mixedSpace F)` to `{ toFun := linD d map_add' := by intro y z; funext k; simp [linD, mul_add, Finset.sum_add_distrib] map_smul' := by intro a y; funext k; simp [linD, Finset.smul_sum, mul_smul_comm] }`. Set `Lc'` to `LinearMap.toContinuousLinearMap Lc`. Set `Ld'` to `LinearMap.toContinuousLinearMap Ld`. Establish `hb : ∃ (k : ℕ) (C : ℝ), ∀ y, ‖y‖ ≤ C * (1 + ‖Lc' y‖) ^ k`.
+
+Use `⟨1, ‖Ld'‖, fun y => ?_⟩` and prove the remaining obligations. Establish `e : Ld' (Lc' y) = y` using `hdc y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pow_one]; exact mul_le_mul_of_nonneg_left (by linarith) (norm_nonneg _)`. Conclude with `⟨SchwartzMap.compCLM ℝ Lc'.hasTemperateGrowth hb f, fun y => rfl⟩`.
+-/
 theorem exists_schwartz_comp {κ : Type} [Fintype κ] {r : ℕ} (c d : Fin r → κ → mixedEmbedding.mixedSpace F)
     (hdc : ∀ y, linD d (linC c y) = y) (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) :
     ∃ f' : SchwartzMap (Fin r → mixedEmbedding.mixedSpace F) ℂ, ∀ y, f' y = f (linC c y) := by
@@ -119,6 +151,15 @@ theorem exists_schwartz_comp {κ : Type} [Fintype κ] {r : ℕ} (c d : Fin r →
 
 variable (F) in
 
+/- English proof (translation)
+Take `⟨f', hf'⟩` from `exists_schwartz_comp F (fun j k => ((archPart F).comp (algebraMap F (AF F))) (a j k)) (fun i k => ((archPart F).comp (algebraMap F (AF F))) (p i k)) (linD_linC _ a p hp) f`. Establish `hg'` using `comp_mem_SB (fun j k => ((finPart F).comp (algebraMap F (AF F))) (a j k)) (fun i k => ((finPart F).comp (algebraMap F (AF F))) (p i k)) (linD_linC _ a p hp) hg`. Use `Submodule.subset_span ⟨f', _, hg', ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hA : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (linC (fun j k => algebraMap F (AF F) (a j k)) x i).1) = linC (fun j k => ((archPart F).comp (algebraMap F (AF F))) (a j k)) (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)`.
+
+Use function extensionality and compare the values at `k`. Use `show archPart F (linC (fun j k => algebraMap F (AF F) (a j k)) x k) = _`. Simplify using `only [linC, map_sum, map_mul]`. Both sides reduce to the same expression. Establish `hB : (fun i => (linC (fun j k => algebraMap F (AF F) (a j k)) x i).2) = linC (fun j k => ((finPart F).comp (algebraMap F (AF F))) (a j k)) (fun i => (x i).2)`.
+
+Use function extensionality and compare the values at `k`. Use `show finPart F (linC (fun j k => algebraMap F (AF F) (a j k)) x k) = _`. Simplify using `only [linC, map_sum, map_mul]`. Both sides reduce to the same expression. Simplify using `only [pureA, Function.comp_apply, hf']`.
+
+Rewrite using `[hA, hB]`.
+-/
 theorem pureA_comp_mem {κ : Type} [Fintype κ] {r : ℕ} (a p : Fin r → κ → F)
     (hp : ∀ i j, ∑ k, p i k * a j k = if i = j then 1 else 0)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
@@ -146,6 +187,17 @@ theorem pureA_comp_mem {κ : Type} [Fintype κ] {r : ℕ} (a p : Fin r → κ �
   simp only [pureA, Function.comp_apply, hf']
   rw [hA, hB]
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ κ _ r u hu μ hμ φ hφ`. Use `letI : MeasurableSpace (Fin r → AF F) := borel _`. Use `haveI : BorelSpace (Fin r → AF F) := ⟨rfl⟩`. Take `⟨p, hp⟩` from `exists_leftInv (fun j => (u j).1) hu`. Establish `hmem : (fun x => φ (linC (fun j k => algebraMap F (AF F) ((u j).1 k)) x)) ∈ schA F (Fin r)`.
+
+Establish `hle : schA F κ ≤ (schA F (Fin r)).comap (LinearMap.funLeft ℂ ℂ (linC (fun j k => algebraMap F (AF F) ((u j).1 k))))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, g, hg, rfl⟩`. Conclude with `pureA_comp_mem F (fun j => (u j).1) p hp f hg`. Conclude with `hle hφ`.
+
+Establish `hint : Integrable (fun x => φ (linC (fun j k => algebraMap F (AF F) ((u j).1 k)) x)) μ` using `schA_integrable F (Fin r) μ hμ _ hmem`. Set `W : (Fin r → AF F) → (κ → AF F) × (κ → AF F)` to `fun x => ∑ j, x j • ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k)))`. Establish `hW1 : ∀ x, (W x).1 = linC (fun j k => algebraMap F (AF F) ((u j).1 k)) x`. Introduce `x`. Use function extensionality and compare the values at `k`.
+
+Simplify using `[W, linC, Prod.fst_sum, Finset.sum_apply]`. Establish `hWc : Continuous W` using `continuous_finset_sum _ fun j _ => (continuous_apply j).smul continuous_const`. Establish `hT : Continuous fun x => ψ ((0 : κ → AF F) ⬝ᵥ (W x).2 + ⅟(2 : AF F) * ((W x).1 ⬝ᵥ (W x).2))` using `hψ.1.comp (by fun_prop)`. Use `(hint.bdd_mul (c := 1) (f := fun x => ψ ((0 : κ → AF F) ⬝ᵥ (W x).2 + ⅟(2 : AF F) * ((W x).1 ⬝ᵥ (W x).2))) hT.aestronglyMeasurable (ae_of_all _ fun x => (GlobalTheory.StdCharFromIsStd.norm_psi hψ _).le)).congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Use `show ψ ((0 : κ → AF F) ⬝ᵥ (W x).2 + ⅟(2 : AF F) * ((W x).1 ⬝ᵥ (W x).2)) * φ _ = ψ ((0 : κ → AF F) ⬝ᵥ (W x).2 + ⅟(2 : AF F) * ((W x).1 ⬝ᵥ (W x).2)) * φ (0 + (W x).1)`.
+
+Rewrite using `[zero_add, hW1]`.
+-/
 theorem integrable_lagrForm : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (r : ℕ) (u : Fin r → (κ → F) × (κ → F)), LinearIndependent F (fun j => (u j).1) →
     ∀ μ : @Measure (Fin r → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
     ∀ φ ∈ schA F κ, Integrable (fun x : Fin r → AF F => schr ψ (∑ j, x j • ((fun k => algebraMap F (AF F) ((u j).1 k)), (fun k => algebraMap F (AF F) ((u j).2 k)))) φ 0) μ := by

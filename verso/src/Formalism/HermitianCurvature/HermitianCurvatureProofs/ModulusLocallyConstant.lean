@@ -10,6 +10,23 @@ section Alg
 
 variable {K : Type} [CommRing K]
 
+/- English proof (translation)
+Use `choose! ρ hρ using fun l hl => (hS.2 l hl).exists`. Establish `huniq : ∀ l ∈ L₂, ∀ y ∈ S, l - y ∈ L₁ → y = ρ l` using `fun l hl y hy h => (hS.2 l hl).unique ⟨hy, h⟩ (hρ l hl)`. Establish `key : ∀ l ∈ L₂, f (ρ l) = f l`. Introduce `l hl`. Establish `h` using `hρ l hl`.
+
+Establish `e : f l = f (ρ l) * f (l - ρ l)`. Rewrite using `[← hmul _ (hS.1 _ h.1) _ (hle h.2)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h1 _ h.2, mul_one]`.
+
+Establish `hsum : ∑ σ ∈ S, f (σ + l₀) = ∑ σ ∈ S, f σ`. Use `Finset.sum_nbij' (fun σ => ρ (σ + l₀)) (fun σ => ρ (σ - l₀)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ hσ`. Conclude with `(hρ _ (L₂.add_mem (hS.1 σ hσ) hl₀)).1`. Introduce `σ hσ`.
+
+Conclude with `(hρ _ (L₂.sub_mem (hS.1 σ hσ) hl₀)).1`. Introduce `σ hσ`. Establish `h` using `hρ _ (L₂.add_mem (hS.1 σ hσ) hl₀)`. Use `(huniq _ (L₂.sub_mem (hS.1 _ h.1) hl₀) σ hσ ?_).symm` and prove the remaining obligations. Use `L₁.neg_mem h.2` as an intermediate fact.
+
+Establish `e : ρ (σ + l₀) - l₀ - σ = -(σ + l₀ - ρ (σ + l₀))` using `by ring`. Rewrite using `[e]`. Conclude with `this`. Introduce `σ hσ`. Establish `h` using `hρ _ (L₂.sub_mem (hS.1 σ hσ) hl₀)`.
+
+Use `(huniq _ (L₂.add_mem (hS.1 _ h.1) hl₀) σ hσ ?_).symm` and prove the remaining obligations. Use `L₁.neg_mem h.2` as an intermediate fact. Establish `e : ρ (σ - l₀) + l₀ - σ = -(σ - l₀ - ρ (σ - l₀))` using `by ring`. Rewrite using `[e]`. Conclude with `this`.
+
+Introduce `σ hσ`. Conclude with `(key _ (L₂.add_mem (hS.1 σ hσ) hl₀)).symm`. Establish `h2 : ∑ σ ∈ S, f (σ + l₀) = (∑ σ ∈ S, f σ) * f l₀`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun σ hσ => hmul _ (hS.1 σ hσ) _ hl₀`.
+
+Establish `h3 : (∑ σ ∈ S, f σ) * (f l₀ - 1) = 0`. Rewrite using `[mul_sub, ← h2, hsum, mul_one, sub_self]`. Conclude with `(mul_eq_zero.1 h3).resolve_right (sub_ne_zero.2 hne)`.
+-/
 theorem sum_reps_eq_zero {L₁ L₂ : AddSubgroup K} {S : Finset K} (hle : L₁ ≤ L₂)
     (hS : IsReps S L₂ L₁) (f : K → ℂ) (hmul : ∀ x ∈ L₂, ∀ y ∈ L₂, f (x + y) = f x * f y)
     (h1 : ∀ l ∈ L₁, f l = 1) {l₀ : K} (hl₀ : l₀ ∈ L₂) (hne : f l₀ ≠ 1) : ∑ σ ∈ S, f σ = 0 := by
@@ -54,23 +71,39 @@ theorem sum_reps_eq_zero {L₁ L₂ : AddSubgroup K} {S : Finset K} (hle : L₁ 
     rw [mul_sub, ← h2, hsum, mul_one, sub_self]
   exact (mul_eq_zero.1 h3).resolve_right (sub_ne_zero.2 hne)
 
+/- English proof (translation)
+Take `⟨a, ha, _⟩` from `hS.2 0 L₂.zero_mem`. Conclude with `⟨a, ha.1⟩`.
+-/
 theorem reps_nonempty {L₁ L₂ : AddSubgroup K} {S : Finset K} (hS : IsReps S L₂ L₁) :
     S.Nonempty := by
   obtain ⟨a, ha, _⟩ := hS.2 0 L₂.zero_mem
   exact ⟨a, ha.1⟩
 
+/- English proof (translation)
+Establish `hz : IsUnit z` using `IsUnit.of_mul_eq_one a h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ringInv_eq {z a : K} (h : z * a = 1) : Ring.inverse z = a := by
   have hz : IsUnit z := IsUnit.of_mul_eq_one a h
   calc Ring.inverse z = Ring.inverse z * (z * a) := by rw [h, mul_one]
     _ = (Ring.inverse z * z) * a := by ring
     _ = a := by rw [Ring.inverse_mul_cancel z hz, one_mul]
 
+/- English proof (translation)
+Introduce `h`. Use `φ.map_add_eq_mul x (-x)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+-/
 theorem addChar_ne_zero {G : Type} [AddGroup G] (φ : AddChar G ℂ) (x : G) : φ x ≠ 0 := by
   intro h
   have := φ.map_add_eq_mul x (-x)
   rw [add_neg_cancel, AddChar.map_zero_eq_one, h, zero_mul] at this
   exact one_ne_zero this
 
+/- English proof (translation)
+Unfold `mulR`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Establish `e : b * (AddMonoidHom.mulLeft a) r = r`.
+
+Rewrite using `[AddMonoidHom.coe_mulLeft]`. Take the linear combination `r * hab`. Rewrite using `[e]`. Conclude with `hr`. Introduce `h`.
+
+Use `⟨b * x, h, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMonoidHom.coe_mulLeft]`. Take the linear combination `x * hab`.
+-/
 theorem mem_mulR_iff {R : Subring K} {a b : K} (hab : a * b = 1) (x : K) :
     x ∈ mulR R a ↔ b * x ∈ R := by
   unfold mulR
@@ -87,9 +120,19 @@ theorem mem_mulR_iff {R : Subring K} {a b : K} (hab : a * b = 1) (x : K) :
     rw [AddMonoidHom.coe_mulLeft]
     linear_combination x * hab
 
+/- English proof (translation)
+Rewrite using `[← mul_pow, hpq, one_pow]`.
+-/
 theorem pow_mul_pow_one {p q : K} (hpq : p * q = 1) (m : ℕ) : p ^ m * q ^ m = 1 := by
   rw [← mul_pow, hpq, one_pow]
 
+/- English proof (translation)
+Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd z (1 : K)`. Simplify using `only [smul_eq_mul, mul_one] at hy`. Establish `h0 : (z * (1 - z * y)) ^ (n + 1) = 0`. Establish `e1 : ∀ w : K, (z * w) ^ (n + 1) = (z ^ n * w) * (z * w ^ n)`. Introduce `w`.
+
+Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : z ^ n * (1 - z * y) = z ^ n - z ^ (n + 1) * y` using `by ring`. Rewrite using `[e1, e2, hy, sub_self, zero_mul]`. Establish `h1 : z * (1 - z * y) = 0` using `IsNilpotent.eq_zero ⟨n + 1, h0⟩`.
+
+Conclude with `⟨y, by linear_combination h1⟩`.
+-/
 theorem vnr [IsArtinianRing K] [IsReduced K] (z : K) : ∃ c, z = z * z * c := by
   obtain ⟨n, y, hy⟩ := IsArtinian.exists_pow_succ_smul_dvd z (1 : K)
   simp only [smul_eq_mul, mul_one] at hy
@@ -110,10 +153,20 @@ section Top
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
   {ψ : AddChar K ℂ}
 
+/- English proof (translation)
+Use `(hD.selfDual 1).2 R.one_mem r hr` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 theorem psi_one (hD : LocalDatum K R ψ) {r : K} (hr : r ∈ R) : ψ r = 1 := by
   have := (hD.selfDual 1).2 R.one_mem r hr
   rwa [one_mul] at this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `: ((mulR R a : AddSubgroup K) : Set K) = (fun x => b * x) ⁻¹' (R : Set K)`. Use extensionality with `x`. Conclude with `mem_mulR_iff hab x`. Rewrite using `[this]`.
+
+Conclude with `hD.isOpen.preimage (by fun_prop)`. Establish `: ((mulR R a : AddSubgroup K) : Set K) = (fun x => a * x) '' (R : Set K)`. Unfold `mulR`. Rewrite using `[AddSubgroup.coe_map]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `hD.isCompact.image (by fun_prop)`.
+-/
 theorem isLat_mulR (hD : LocalDatum K R ψ) {a b : K} (hab : a * b = 1) : IsLat (mulR R a) := by
   constructor
   · have : ((mulR R a : AddSubgroup K) : Set K) = (fun x => b * x) ⁻¹' (R : Set K) := by
@@ -128,6 +181,31 @@ theorem isLat_mulR (hD : LocalDatum K R ψ) {a b : K} (hab : a * b = 1) : IsLat 
     rw [this]
     exact hD.isCompact.image (by fun_prop)
 
+/- English proof (translation)
+Use `hD.t2` as an intermediate fact. Use `hD.artin` as an intermediate fact. Use `hD.red` as an intermediate fact. Assume the negation of the conclusion as `hz0`. Use `set J : Set K := {x | ∀ m : ℕ, q ^ m * x ∈ R} with hJ`.
+
+Establish `hJmul : ∀ c x, x ∈ J → c * x ∈ J`. Introduce `c x hx m`. Take `⟨k, hk⟩` from `hex c`. Establish `h2` using `R.mul_mem hk (hx (m + k))`. Establish `e : q ^ m * (c * x) = p ^ k * c * (q ^ (m + k) * x)`.
+
+Establish `h1 : p ^ k * q ^ k = 1` using `pow_mul_pow_one hpq k`. Rewrite using `[pow_add]`. Take the linear combination `(-(q ^ m * c * x)) * h1`. Rewrite using `[e]`. Conclude with `h2`.
+
+Establish `hJc : IsCompact J`. Apply `hD.isCompact.of_isClosed_subset` to reduce the goal to its premises. Establish `: J = ⋂ m : ℕ, (fun x => q ^ m * x) ⁻¹' (R : Set K)`. Use extensionality with `x`. Simplify using `[hJ]`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun m => hD.isCompact.isClosed.preimage (by fun_prop)`. Introduce `x hx`. Simplify using `using hx 0`. Establish `hopen : IsOpen {ab : K × K | ab.1 * ab.2 ≠ z}` using `(isOpen_compl_singleton (x := z)).preimage (continuous_fst.mul continuous_snd)`.
+
+Take `⟨U, V, hU, hV, h0U, hJV, hUV⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : K))) hJc hopen (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, hb⟩`. Establish `ha' : a = 0` using `ha`. Substitute `ha'` using the available equality. Use `show (0 : K) * b ≠ z`.
+
+Rewrite using `[zero_mul]`. Conclude with `Ne.symm hz0)`. Establish `hzJ : z ∈ J` using `hz`. Establish `hseq : ∀ n : ℕ, (n : K) * z ∈ J` using `fun n => hJmul _ _ hzJ`. Take `⟨a, haJ, ha⟩` from `hJc.exists_clusterPt (f := map (fun n : ℕ => (n : K) * z) atTop) (by`.
+
+Rewrite using `[le_principal_iff]`. Conclude with `mem_map.2 (univ_mem' hseq))`. Establish `hU0 : U ∈ 𝓝 (0 : K)` using `hU.mem_nhds (h0U rfl)`. Establish `hsub : Tendsto (fun xy : K × K => xy.1 - xy.2) (𝓝 a ×ˢ 𝓝 a) (𝓝 0)`. Establish `h : Tendsto (fun xy : K × K => xy.1 - xy.2) (𝓝 (a, a)) (𝓝 (a - a))` using `(continuous_fst.sub continuous_snd : Continuous fun xy : K × K => xy.1 - xy.2).tendsto (a, a)`.
+
+Rewrite `h` using `[nhds_prod_eq, sub_self]`. Then use the resulting hypothesis. Take `⟨N, hN, hNN⟩` from `Filter.mem_prod_self_iff.1 (hsub hU0)`. Establish `hfreq : ∃ᶠ n : ℕ in atTop, (n : K) * z ∈ N` using `MapClusterPt.frequently (u := fun n : ℕ => (n : K) * z) ha hN`. Take `⟨n, _, hn⟩` from `hfreq.forall_exists_of_atTop 0`. Take `⟨m, hm, hmN⟩` from `hfreq.forall_exists_of_atTop (n + 1)`.
+
+Establish `hk : ((m - n : ℕ) : K) * z ∈ U`. Establish `h3` using `hNN (Set.mk_mem_prod hmN hn)`. Simplify using `only [Set.mem_preimage] at h3`. Rewrite using `[Nat.cast_sub (by omega), sub_mul]`. Conclude with `h3`.
+
+Take `⟨u, hu⟩` from `hQ (m - n) (by omega)`. Take `⟨c, hc⟩` from `vnr z`. Establish `hy : (↑u⁻¹ * c) * z ∈ J` using `hJmul _ _ hzJ`. Apply `hUV (Set.mk_mem_prod hk (hJV hy))` to reduce the goal to its premises. Use `show ((m - n : ℕ) : K) * z * (↑u⁻¹ * c * z) = z`.
+
+Rewrite using `[← hu]`. Establish `h4 : (u : K) * ↑u⁻¹ = 1` using `u.mul_inv`. Take the linear combination `(z * z * c) * h4 - hc`.
+-/
 theorem inter_zero (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) {p q : K}
     (hpq : p * q = 1) (hex : ∀ x : K, ∃ m : ℕ, p ^ m * x ∈ R) {z : K}
     (hz : ∀ m : ℕ, q ^ m * z ∈ R) : z = 0 := by
@@ -194,6 +272,11 @@ theorem inter_zero (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUni
   have h4 : (u : K) * ↑u⁻¹ = 1 := u.mul_inv
   linear_combination (z * z * c) * h4 - hc
 
+/- English proof (translation)
+Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `e : q ^ m * x = p ^ d * (q ^ (m + d) * x)`. Establish `h1` using `pow_mul_pow_one hpq d`. Rewrite using `[pow_add]`. Take the linear combination `(-(q ^ m * x)) * h1`.
+
+Rewrite using `[e]`. Conclude with `R.mul_mem (R.pow_mem hp d) hx`.
+-/
 theorem lat_mono {p q : K} (hpq : p * q = 1) (hp : p ∈ R) {m m' : ℕ} (h : m ≤ m') {x : K}
     (hx : q ^ m' * x ∈ R) : q ^ m * x ∈ R := by
   obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le h
@@ -204,6 +287,17 @@ theorem lat_mono {p q : K} (hpq : p * q = 1) (hp : p ∈ R) {m m' : ℕ} (h : m 
   rw [e]
   exact R.mul_mem (R.pow_mem hp d) hx
 
+/- English proof (translation)
+Use `hD.t2` as an intermediate fact. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `t : ℕ → Set K` to `fun m => (fun x => q ^ m * x) ⁻¹' (R : Set K) ∩ (interior V)ᶜ`. Establish `hcl : ∀ m, IsClosed (t m)` using `fun m => (hD.isCompact.isClosed.preimage (by fun_prop)).inter isOpen_interior.isClosed_compl`.
+
+Establish `hne : (⋂ m, t m).Nonempty`. Apply `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed t` to reduce the goal to its premises. Introduce `m x hx`. Conclude with `⟨lat_mono hpq hp (Nat.le_succ m) hx.1, hx.2⟩`. Introduce `m`.
+
+Take `⟨x, hx, hxV⟩` from `hcon m`. Conclude with `⟨x, hx, fun h => hxV (interior_subset h)⟩`. Apply `hD.isCompact.of_isClosed_subset (hcl 0)` to reduce the goal to its premises. Introduce `x hx`. Simplify using `using hx.1`.
+
+Conclude with `hcl`. Take `⟨x, hx⟩` from `hne`. Rewrite `hx` using `[Set.mem_iInter]`. Establish `hx0 : x = 0` using `inter_zero hD hQ hpq hex fun m => (hx m).1`. Apply `(hx 0).2` to reduce the goal to its premises.
+
+Rewrite using `[hx0]`. Conclude with `mem_interior_iff_mem_nhds.2 hV`.
+-/
 theorem small (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) {p q : K}
     (hpq : p * q = 1) (hp : p ∈ R) (hex : ∀ x : K, ∃ m : ℕ, p ^ m * x ∈ R) {V : Set K}
     (hV : V ∈ 𝓝 (0 : K)) : ∃ m : ℕ, ∀ x, q ^ m * x ∈ R → x ∈ V := by
@@ -231,6 +325,25 @@ theorem small (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUnit (n 
   rw [hx0]
   exact mem_interior_iff_mem_nhds.2 hV
 
+/- English proof (translation)
+Use `hD.artin` as an intermediate fact. Establish `hnz : ∀ y : K, (1 + p * x) * y = 0 → y = 0`. Introduce `y hy`. Establish `hpow : ∀ n : ℕ, y = p ^ n * (-x) ^ n * y`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `: p ^ (n + 1) * (-x) ^ (n + 1) * y = p ^ n * (-x) ^ n * (-(p * x * y))` using `by ring`. Rewrite using `[this]`.
+
+Establish `h2 : -(p * x * y) = y` using `by linear_combination -hy`. Rewrite using `[h2]`. Conclude with `ih`. Take `⟨k, hk⟩` from `hex y`. Apply `inter_zero hD hQ hpq hex` to reduce the goal to its premises.
+
+Introduce `m`. Establish `e : q ^ m * y = (-x) ^ (m + k) * (p ^ k * y)`. Establish `h1` using `pow_mul_pow_one hpq m`. Establish `h2` using `hpow (m + k)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e]`. Conclude with `R.mul_mem (R.pow_mem (R.neg_mem hx) _) hk`. Establish `hu : IsUnit (1 + p * x)`. Apply `IsArtinianRing.isUnit_of_mem_nonZeroDivisors` to reduce the goal to its premises. Rewrite using `[mem_nonZeroDivisors_iff_right]`.
+
+Introduce `y hy`. Conclude with `hnz y (by rw [mul_comm]; exact hy)`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Use `⟨w, hw, R.add_mem R.one_mem (R.mul_mem hp hx), ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ n : ℕ, ∃ s ∈ R, w = s + p ^ n * (-x) ^ n * w`.
+
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, R.zero_mem, by simp⟩`. Consider the case `succ n ih`. Take `⟨s, hs, h⟩` from `ih`.
+
+Use `⟨s + p ^ n * (-x) ^ n, R.add_mem hs (R.mul_mem (R.pow_mem hp n) (R.pow_mem (R.neg_mem hx) n)), ?_⟩` and prove the remaining obligations. Establish `h2 : w = 1 - p * x * w` using `by linear_combination hw`. Combine the equalities or inequalities in the displayed calculation. Take `⟨k, hk⟩` from `hex w`. Take `⟨s, hs, h⟩` from `hpow k`.
+
+Rewrite using `[h]`. Establish `e : p ^ k * (-x) ^ k * w = (-x) ^ k * (p ^ k * w)` using `by ring`. Rewrite using `[e]`. Conclude with `R.add_mem hs (R.mul_mem (R.pow_mem (R.neg_mem hx) k) hk)`.
+-/
 theorem one_add (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) {p q : K}
     (hpq : p * q = 1) (hp : p ∈ R) (hex : ∀ x : K, ∃ m : ℕ, p ^ m * x ∈ R) {x : K} (hx : x ∈ R) :
     ∃ w : K, (1 + p * x) * w = 1 ∧ 1 + p * x ∈ R ∧ w ∈ R := by
@@ -291,6 +404,13 @@ section Top2
 variable {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {R : Subring K}
   {ψ : AddChar K ℂ}
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `hC.elim_directed_cover (fun m : ℕ => (fun x => p ^ m * x) ⁻¹' (R : Set K)) (fun m => hD.isOpen.preimage (by fun_prop)) (fun z _ => by`. Take `⟨m, hm⟩` from `hex z`. Conclude with `Set.mem_iUnion.2 ⟨m, hm⟩)`. Use the proof step `(by`. Apply `Monotone.directed_le` to reduce the goal to its premises.
+
+Introduce `m m' h x hx`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Establish `e : p ^ (m + d) * x = p ^ d * (p ^ m * x)` using `by ring`. Use `show p ^ (m + d) * x ∈ R`. Rewrite using `[e]`.
+
+Conclude with `R.mul_mem (R.pow_mem hp d) hx)`. Conclude with `⟨m, fun z hz => hm hz⟩`.
+-/
 theorem bounded (hD : LocalDatum K R ψ) {p : K} (hp : p ∈ R)
     (hex : ∀ x : K, ∃ m : ℕ, p ^ m * x ∈ R) {C : Set K} (hC : IsCompact C) :
     ∃ m : ℕ, ∀ z ∈ C, p ^ m * z ∈ R := by
@@ -309,6 +429,21 @@ theorem bounded (hD : LocalDatum K R ψ) {p : K} (hp : p ∈ R)
       exact R.mul_mem (R.pow_mem hp d) hx)
   exact ⟨m, fun z hz => hm hz⟩
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hOm.elim_directed_cover (fun k : ℕ => {z : K | ∃ w, z * w = 1 ∧ p ^ k * w ∈ R}) (fun k => by`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `z₀ ⟨w₀, hw₀, hk⟩`. Establish `hN : (fun z => q * w₀ * (z - z₀)) ⁻¹' (R : Set K) ∈ 𝓝 z₀`. Apply `(hD.isOpen.preimage (by fun_prop)).mem_nhds` to reduce the goal to its premises.
+
+Use `show q * w₀ * (z₀ - z₀) ∈ R`. Rewrite using `[sub_self, mul_zero]`. Conclude with `R.zero_mem`. Use `mem_of_superset hN ?_` and prove the remaining obligations. Introduce `z hz`.
+
+Take `⟨w', hw', _, hw'R⟩` from `one_add hD hQ hpq hp hex hz`. Use `⟨w₀ * w', ?_, ?_⟩` and prove the remaining obligations. Establish `e : z = z₀ * (1 + p * (q * w₀ * (z - z₀)))`. Take the linear combination `(-(z - z₀)) * hw₀ - (z₀ * w₀ * (z - z₀)) * hpq`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← mul_assoc]`. Conclude with `R.mul_mem hk hw'R)`. Use the proof step `(fun z hz => by`. Take `⟨w, hw⟩` from `(hu z hz).exists_right_inv`. Take `⟨m, hm⟩` from `hex w`.
+
+Conclude with `Set.mem_iUnion.2 ⟨m, w, hw, hm⟩)`. Use the proof step `(by`. Apply `Monotone.directed_le` to reduce the goal to its premises. Introduce and unpack `m m' h x ⟨w, hw, hx⟩`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`.
+
+Establish `e : p ^ (m + d) * w = p ^ d * (p ^ m * w)` using `by ring`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `R.mul_mem (R.pow_mem hp d) hx)`. Use `⟨k, fun z hz => ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, h⟩` from `hk hz`. Rewrite using `[ringInv_eq hw]`. Conclude with `h`.
+-/
 theorem inv_bounded (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUnit (n : K)) {p q : K}
     (hpq : p * q = 1) (hp : p ∈ R) (hex : ∀ x : K, ∃ m : ℕ, p ^ m * x ∈ R) {Om : Set K}
     (hOm : IsCompact Om) (hu : ∀ z ∈ Om, IsUnit z) :
@@ -351,6 +486,11 @@ theorem inv_bounded (hD : LocalDatum K R ψ) (hQ : ∀ n : ℕ, n ≠ 0 → IsUn
   rw [ringInv_eq hw]
   exact h
 
+/- English proof (translation)
+Use extensionality with `y`. Unfold `mulR`. Simplify using `only [AddSubgroup.mem_map, AddMonoidHom.coe_mulLeft]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`.
+
+Conclude with `⟨v * r, R.mul_mem hv hr, by ring⟩`. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `⟨w * r, R.mul_mem hw hr, by linear_combination (z * r) * hvw⟩`.
+-/
 theorem mulR_mul_unit {z v w : K} (hvw : v * w = 1) (hv : v ∈ R) (hw : w ∈ R) :
     mulR R (z * v) = mulR R z := by
   ext y
@@ -362,6 +502,17 @@ theorem mulR_mul_unit {z v w : K} (hvw : v * w = 1) (hv : v ∈ R) (hw : w ∈ R
   · rintro ⟨r, hr, rfl⟩
     exact ⟨w * r, R.mul_mem hw hr, by linear_combination (z * r) * hvw⟩
 
+/- English proof (translation)
+Establish `: CompactSpace L` using `isCompact_iff_compactSpace.1 hL`. Establish `ho : IsOpen ((M.addSubgroupOf L : AddSubgroup L) : Set L)` using `hM.preimage continuous_subtype_val`. Establish `: Finite (L ⧸ M.addSubgroupOf L)` using `AddSubgroup.quotient_finite_of_isOpen _ ho`. Establish `: Fintype (L ⧸ M.addSubgroupOf L)` using `Fintype.ofFinite _`. Use `⟨Finset.univ.image fun y : L ⧸ M.addSubgroupOf L => ((Quotient.out y : L) : K), ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha`. Take `⟨y, _, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `(Quotient.out y : L).2`. Introduce `l hl`. Establish `hrel : ∀ y : L ⧸ M.addSubgroupOf L, l - ((Quotient.out y : L) : K) ∈ M ↔ y = ((⟨l, hl⟩ : L) : L ⧸ M.addSubgroupOf L)`.
+
+Introduce `y`. Establish `h1 : y = ((⟨l, hl⟩ : L) : L ⧸ M.addSubgroupOf L) ↔ ((Quotient.out y : L) : L ⧸ M.addSubgroupOf L) = ((⟨l, hl⟩ : L) : L ⧸ M.addSubgroupOf L)`. Rewrite using `[QuotientAddGroup.out_eq']`. Rewrite using `[h1, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `e : ((-(Quotient.out y : L) + ⟨l, hl⟩ : L) : K) = l - ((Quotient.out y : L) : K)`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `⟨((Quotient.out ((⟨l, hl⟩ : L) : L ⧸ M.addSubgroupOf L) : L) : K), ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, (hrel _).2 rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨ha, hal⟩`.
+
+Take `⟨y, _, rfl⟩` from `Finset.mem_image.1 ha`. Rewrite using `[(hrel y).1 hal]`.
+-/
 theorem exists_reps {L M : AddSubgroup K} (hL : IsCompact (L : Set K)) (hM : IsOpen (M : Set K)) :
     ∃ S : Finset K, IsReps S L M := by
   classical
@@ -392,6 +543,45 @@ theorem exists_reps {L M : AddSubgroup K} (hL : IsCompact (L : Set K)) (hM : IsO
     obtain ⟨y, _, rfl⟩ := Finset.mem_image.1 ha
     rw [(hrel y).1 hal]
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `exists_reps (L := R.toAddSubgroup) (M := mulR R a) hD.isCompact (isLat_mulR hD hab).1`. Establish `hle : mulR R a ≤ R.toAddSubgroup`. Introduce `x hx`. Establish `h` using `(mem_mulR_iff hab x).1 hx`. Establish `e : x = a * (b * x)` using `by linear_combination (-x) * hab`.
+
+Rewrite using `[e]`. Conclude with `R.mul_mem ha h`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Set `X : K → ℂ` to `fun x => if h : x ∈ R then χ ⟨x, h⟩ else 0`.
+
+Establish `hX : ∀ (x : K) (h : x ∈ R), X x = χ ⟨x, h⟩` using `fun x h => dif_pos h`. Establish `hSR : ∀ s ∈ S, s ∈ R` using `fun s hs => hS.1 s hs`. Establish `h1 : ∀ s ∈ S, ∑ r ∈ S, X r * ψ (b * s * r) = 0`. Introduce `s hs`. Take `⟨r, hr⟩` from `hcon (-(b * s))`.
+
+Use `sum_reps_eq_zero hle hS (fun x => X x * ψ (b * s * x)) ?_ ?_ (l₀ := (r : K)) r.2 ?_` and prove the remaining obligations. Introduce `x hx y hy`. Establish `hxy : x + y ∈ R` using `R.add_mem hx hy`. Use `show X (x + y) * ψ (b * s * (x + y)) = X x * ψ (b * s * x) * (X y * ψ (b * s * y))`. Rewrite using `[hX _ hxy, hX _ hx, hX _ hy, mul_add, AddChar.map_add_eq_mul]`.
+
+Establish `: (⟨x + y, hxy⟩ : R) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[this, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `l hl`. Establish `hlR : l ∈ R` using `hle hl`.
+
+Use `show X l * ψ (b * s * l) = 1`. Rewrite using `[hX _ hlR, hχ ⟨l, hlR⟩ hl, one_mul]`. Apply `psi_one hD` to reduce the goal to its premises. Establish `e : b * s * l = s * (b * l)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `R.mul_mem (hSR s hs) ((mem_mulR_iff hab l).1 hl)`. Use `show X (r : K) * ψ (b * s * (r : K)) ≠ 1`. Introduce `h`. Apply `hr` to reduce the goal to its premises. Rewrite `h` using `[hX _ r.2]`.
+
+Establish `h2 : ψ (b * s * (r : K)) * ψ (-(b * s) * (r : K)) = 1`. Rewrite using `[← AddChar.map_add_eq_mul]`. Establish `: b * s * (r : K) + -(b * s) * (r : K) = 0` using `by ring`. Rewrite using `[this, AddChar.map_zero_eq_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Take `⟨r₀, ⟨hr₀S, hr₀⟩, huniq⟩` from `hS.2 0 R.toAddSubgroup.zero_mem`. Establish `hr₀a : r₀ ∈ mulR R a`. Use `(mulR R a).neg_mem hr₀` as an intermediate fact. Simplify using `using this`. Establish `h2 : ∀ r ∈ S, r ≠ r₀ → ∑ s ∈ S, ψ (b * s * r) = 0`.
+
+Introduce `r hr hne`. Establish `hnot : ¬ b * r ∈ R`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Apply `huniq` to reduce the goal to its premises.
+
+Use `⟨hr, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_sub]`. Conclude with `(mulR R a).neg_mem ((mem_mulR_iff hab r).2 h)`. Establish `hex : ∃ t ∈ R, ψ (b * r * t) ≠ 1`. Assume the negation of the conclusion as `hc`.
+
+Use `push Not at hc`. Conclude with `hnot ((hD.selfDual _).1 hc)`. Take `⟨t, ht, hne'⟩` from `hex`. Use `sum_reps_eq_zero hle hS (fun x => ψ (b * x * r)) ?_ ?_ (l₀ := t) ht ?_` and prove the remaining obligations. Introduce `x _ y _ show ψ (b * (x + y) * r) = ψ (b * x * r) * ψ (b * y * r)`.
+
+Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `l hl`. Apply `psi_one hD` to reduce the goal to its premises.
+
+Establish `e : b * l * r = (b * l) * r` using `by ring`. Rewrite using `[e]`. Conclude with `R.mul_mem ((mem_mulR_iff hab l).1 hl) (hSR r hr)`. Use `show ψ (b * t * r) ≠ 1`. Establish `e : b * t * r = b * r * t` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `hne'`. Establish `h3 : ∑ s ∈ S, ψ (b * s * r₀) = (S.card : ℂ)`. Establish `: ∑ s ∈ S, ψ (b * s * r₀) = ∑ s ∈ S, (1 : ℂ)`. Use `Finset.sum_congr rfl fun s hs => psi_one hD ?_` and prove the remaining obligations.
+
+Establish `e : b * s * r₀ = s * (b * r₀)` using `by ring`. Rewrite using `[e]`. Conclude with `R.mul_mem (hSR s hs) ((mem_mulR_iff hab r₀).1 hr₀a)`. Rewrite using `[this, Finset.sum_const, nsmul_eq_mul, mul_one]`. Establish `h4 : ∑ s ∈ S, ∑ r ∈ S, X r * ψ (b * s * r) = (S.card : ℂ)`.
+
+Rewrite using `[Finset.sum_comm]`. Establish `: ∀ r ∈ S, ∑ s ∈ S, X r * ψ (b * s * r) = X r * ∑ s ∈ S, ψ (b * s * r)` using `fun r _ => (Finset.mul_sum _ _ _).symm`. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_eq_single r₀]`. Rewrite using `[h3, hX _ (hSR r₀ hr₀S), hχ _ hr₀a, one_mul]`. Introduce `r hr hne`.
+
+Rewrite using `[h2 r hr hne, mul_zero]`. Introduce `h`. Conclude with `absurd hr₀S h`. Rewrite `h4` using `[Finset.sum_congr rfl h1, Finset.sum_const_zero]`. Establish `hc : (S.card : ℂ) ≠ 0`.
+
+Conclude with `(Finset.card_pos.2 (reps_nonempty hS)).ne'` after adjusting the coercions. Conclude with `hc h4.symm`.
+-/
 theorem dual_exists (hD : LocalDatum K R ψ) {a b : K} (hab : a * b = 1) (ha : a ∈ R)
     (χ : AddChar R ℂ) (hχ : ∀ r : R, (r : K) ∈ mulR R a → χ r = 1) :
     ∃ z : K, ∀ r : R, χ r = ψ (z * (r : K)) := by
@@ -502,6 +692,13 @@ end A6x4
 
 open A6x4
 
+/- English proof (translation)
+Introduce `K _ ψ L₁ L₂ S hle hS a ha`. Establish `hc : (S.card : ℂ) ≠ 0`. Conclude with `(Finset.card_pos.2 (reps_nonempty hS)).ne'` after adjusting the coercions. Use `split_ifs with h`. Establish `: ∑ σ ∈ S, ψ (a * σ) = ∑ σ ∈ S, (1 : ℂ)` using `Finset.sum_congr rfl fun σ hσ => h σ (hS.1 σ hσ)`.
+
+Rewrite using `[this, Finset.sum_const, nsmul_eq_mul, mul_one, inv_mul_cancel₀ hc]`. Establish `h' : ∃ l ∈ L₂, ψ (a * l) ≠ 1`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `h hcon`.
+
+Take `⟨l₀, hl₀, hne⟩` from `h'`. Rewrite using `[sum_reps_eq_zero hle hS (fun x => ψ (a * x)) ?_ ha hl₀ hne, mul_zero]`. Introduce `x _ y _`. Use `show ψ (a * (x + y)) = ψ (a * x) * ψ (a * y)`. Rewrite using `[mul_add, AddChar.map_add_eq_mul]`.
+-/
 theorem characterMean : Formalism.FourierDecayAlt.A6.CharMean := by
   intro K _ ψ L₁ L₂ S hle hS a ha
   have hc : (S.card : ℂ) ≠ 0 := by
@@ -520,6 +717,11 @@ theorem characterMean : Formalism.FourierDecayAlt.A6.CharMean := by
     show ψ (a * (x + y)) = ψ (a * x) * ψ (a * y)
     rw [mul_add, AddChar.map_add_eq_mul]
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hQ V hV`. Take `⟨ϖ, hp, hex⟩` from `hD.unif`. Establish `hpq : (ϖ : K) * ((ϖ⁻¹ : Kˣ) : K) = 1` using `ϖ.mul_inv`. Take `⟨m, hm⟩` from `small hD hQ hpq hp hex hV`. Use `⟨ϖ ^ m, hm _ ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_pow_eq_pow_val, mul_comm, pow_mul_pow_one hpq]`. Conclude with `R.one_mem`.
+-/
 theorem smallUnits : Formalism.FourierDecayAlt.A6.SmallUnits := by
   intro K _ _ _ R ψ hD hQ V hV
   obtain ⟨ϖ, hp, hex⟩ := hD.unif
@@ -529,6 +731,23 @@ theorem smallUnits : Formalism.FourierDecayAlt.A6.SmallUnits := by
   rw [Units.val_pow_eq_pow_val, mul_comm, pow_mul_pow_one hpq]
   exact R.one_mem
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hQ`. Take `⟨ϖ, hp, hex⟩` from `hD.unif`. Establish `hpq : (ϖ : K) * ((ϖ⁻¹ : Kˣ) : K) = 1` using `ϖ.mul_inv`. Prove the components needed by the constructor for the conclusion. Introduce `C hC`.
+
+Take `⟨m, hm⟩` from `bounded hD hp hex hC`. Establish `hab` using `pow_mul_pow_one hpq m`. Use `⟨mulR R ((ϖ : K) ^ m), isLat_mulR hD hab, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `h` using `(mem_mulR_iff hab x).1 hx`.
+
+Establish `e : x = (ϖ : K) ^ m * (((ϖ⁻¹ : Kˣ) : K) ^ m * x)` using `by linear_combination (-x) * hab`. Rewrite using `[e]`. Conclude with `R.mul_mem (R.pow_mem hp m) h`. Introduce `z hz l hl`. Apply `psi_one hD` to reduce the goal to its premises.
+
+Establish `h` using `(mem_mulR_iff hab l).1 hl`. Establish `e : z * l = ((ϖ : K) ^ m * z) * (((ϖ⁻¹ : Kˣ) : K) ^ m * l)`. Take the linear combination `(-(z * l)) * hab`. Rewrite using `[e]`. Conclude with `R.mul_mem (hm z hz) h`.
+
+Introduce `V hV`. Take `⟨m, hm⟩` from `small hD hQ hpq hp hex hV`. Establish `hab` using `pow_mul_pow_one hpq m`. Establish `hba : ((ϖ⁻¹ : Kˣ) : K) ^ m * (ϖ : K) ^ m = 1` using `by rw [mul_comm]; exact hab`. Use `⟨mulR R (((ϖ⁻¹ : Kˣ) : K) ^ m), isLat_mulR hD hba, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `(mem_mulR_iff hba x).2 (R.mul_mem (R.pow_mem hp m) hx)`. Introduce `z hz`. Apply `hm` to reduce the goal to its premises. Apply `(hD.selfDual _).1` to reduce the goal to its premises.
+
+Introduce `r hr`. Establish `hl : ((ϖ⁻¹ : Kˣ) : K) ^ m * r ∈ mulR R (((ϖ⁻¹ : Kˣ) : K) ^ m)`. Apply `(mem_mulR_iff hba _).2` to reduce the goal to its premises. Rewrite using `[← mul_assoc, hab, one_mul]`. Conclude with `hr`.
+
+Establish `h` using `hz _ hl`. Establish `e : ((ϖ⁻¹ : Kˣ) : K) ^ m * z * r = z * (((ϖ⁻¹ : Kˣ) : K) ^ m * r)` using `by ring`. Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem compactOpenChoice : Formalism.FourierDecayAlt.A6.LatChoice := by
   intro K _ _ _ R ψ hD hQ
   obtain ⟨ϖ, hp, hex⟩ := hD.unif
@@ -570,6 +789,23 @@ theorem compactOpenChoice : Formalism.FourierDecayAlt.A6.LatChoice := by
       rw [e]
       exact h
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hQ Om hOm hu E hE`. Take `⟨ϖ, hp, hex⟩` from `hD.unif`. Establish `hpq : (ϖ : K) * ((ϖ⁻¹ : Kˣ) : K) = 1` using `ϖ.mul_inv`. Generalize the expression as in `(ϖ : K) = p at hp hex hpq`. Generalize the expression as in `((ϖ⁻¹ : Kˣ) : K) = q at hpq`.
+
+Take `⟨k, hk⟩` from `inv_bounded hD hQ hpq hp hex hOm hu`. Take `⟨j, hj⟩` from `small hD hQ hpq hp hex hE`. Establish `hab` using `pow_mul_pow_one hpq (j + 1 + k)`. Use `⟨mulR R (p ^ (j + 1 + k)), isLat_mulR hD hab, ?_⟩` and prove the remaining obligations. Introduce `z hz l hl`.
+
+Establish `hzw : z * Ring.inverse z = 1` using `Ring.mul_inverse_cancel z (hu z hz)`. Establish `hkz` using `hk z hz`. Generalize the expression as in `Ring.inverse z = w at hzw hkz ⊢`. Establish `hr` using `(mem_mulR_iff hab l).1 hl`. Establish `hr' : q ^ (j + 1 + k) * l * (p ^ k * w) ∈ R` using `R.mul_mem hr hkz`.
+
+Generalize the expression as in `hx : q ^ (j + 1 + k) * l * (p ^ k * w) = x at hr'`. Establish `hlw : l * w = p ^ (j + 1) * x`. Rewrite using `[← hx]`. Establish `e : p ^ (j + 1) * (q ^ (j + 1 + k) * l * (p ^ k * w)) = (p ^ (j + 1 + k) * q ^ (j + 1 + k)) * (l * w)`. Rewrite using `[pow_add p (j + 1) k]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hab, one_mul]`. Take `⟨w', hw', hvR, hw'R⟩` from `one_add hD hQ hpq hp hex (R.mul_mem (R.pow_mem hp j) hr')`. Establish `hzl : z + l = z * (1 + p * (p ^ j * x))`. Establish `e : p * (p ^ j * x) = l * w` using `by rw [hlw]; ring`.
+
+Rewrite using `[e]`. Take the linear combination `(-l) * hzw`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `IsUnit.of_mul_eq_one (w * w')` to reduce the goal to its premises. Rewrite using `[hzl]`.
+
+Combine the equalities or inequalities in the displayed calculation. Unfold `modK`. Rewrite using `[hzl, mulR_mul_unit hw' hvR hw'R]`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hlw]`.
+
+Establish `e : q ^ j * (p ^ (j + 1) * x) = (p ^ j * q ^ j) * (p * x)` using `by ring`. Rewrite using `[e, pow_mul_pow_one hpq, one_mul]`. Conclude with `R.mul_mem hp hr'`.
+-/
 theorem modulusLocallyConstant : Formalism.FourierDecayAlt.A6.ModLocConst := by
   intro K _ _ _ R ψ hD hQ Om hOm hu E hE
   obtain ⟨ϖ, hp, hex⟩ := hD.unif
@@ -612,6 +848,17 @@ theorem modulusLocallyConstant : Formalism.FourierDecayAlt.A6.ModLocConst := by
     rw [e, pow_mul_pow_one hpq, one_mul]
     exact R.mul_mem hp hr'
 
+/- English proof (translation)
+Introduce `K _ _ _ R ψ hD hQ L₁ hL₁ hle χ hχ`. Take `⟨ϖ, hp, hex⟩` from `hD.unif`. Establish `hpq : (ϖ : K) * ((ϖ⁻¹ : Kˣ) : K) = 1` using `ϖ.mul_inv`. Prove the components needed by the constructor for the conclusion. Take `⟨m, hm⟩` from `small hD hQ hpq hp hex (hL₁.1.mem_nhds L₁.zero_mem)`.
+
+Establish `hab` using `pow_mul_pow_one hpq m`. Take `⟨z, hz⟩` from `dual_exists hD hab (R.pow_mem hp m) χ (fun r hr => hχ r (hm _ ((mem_mulR_iff hab _).1 hr)))`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations. Introduce `l hl`. Establish `h` using `hz ⟨l, hle hl⟩`.
+
+Rewrite `h` using `[hχ ⟨l, hle hl⟩ hl]`. Conclude with `h.symm`. Introduce `z z' hz hz'`. Apply `(hD.selfDual _).1` to reduce the goal to its premises. Introduce `r hr`.
+
+Establish `h1` using `hz ⟨r, hr⟩`. Establish `h2` using `hz' ⟨r, hr⟩`. Establish `h3 : ψ ((z - z') * r) * ψ (z' * r) = ψ (z * r)`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h4 : ψ (z' * r) = ψ (z * r)` using `by rw [← h1, ← h2]`. Rewrite `h3` using `[h4]`. Conclude with `mul_right_cancel₀ (addChar_ne_zero ψ _) (by rw [h3, one_mul])`.
+-/
 theorem annihilatorCharacters : Formalism.FourierDecayAlt.A6.PerpDual := by
   intro K _ _ _ R ψ hD hQ L₁ hL₁ hle χ hχ
   obtain ⟨ϖ, hp, hex⟩ := hD.unif

@@ -9,6 +9,9 @@ open Filter Topology Matrix Polynomial
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hζ` using `Complex.isPrimitiveRoot_exp m hm`. Establish `hset : {a : ℂ | a ^ m = t} = ↑(nthRootsFinset m t)`. Use extensionality with `a`. Simplify using `[mem_nthRootsFinset (Nat.pos_of_ne_zero hm)]`. Rewrite using `[hset, Set.encard_coe_eq_coe_finsetCard, nthRootsFinset_def, Multiset.toFinset_card_of_nodup (hζ.nthRoots_nodup ht), hζ.card_nthRoots, if_pos ⟨t ^ ((m : ℂ)⁻¹), Complex.cpow_nat_inv_pow t hm⟩]`.
+-/
 theorem encard_pow_eq_of_ne_zero {m : ℕ} (hm : m ≠ 0) {t : ℂ} (ht : t ≠ 0) :
     {a : ℂ | a ^ m = t}.encard = m := by
   have hζ := Complex.isPrimitiveRoot_exp m hm
@@ -20,6 +23,57 @@ theorem encard_pow_eq_of_ne_zero {m : ℕ} (hm : m ≠ 0) {t : ℂ} (ht : t ≠ 
     Multiset.toFinset_card_of_nodup (hζ.nthRoots_nodup ht), hζ.card_nthRoots,
     if_pos ⟨t ^ ((m : ℂ)⁻¹), Complex.cpow_nat_inv_pow t hm⟩]
 
+/- English proof (translation)
+Use `set Ψ : (Fin (d + 1) → ℂ) → Fin (d + 1) → ℂ := fun τ => vecCons (τ 0) (F τ) with hΨ`. Use `set Φ : (Fin (d + 1) → ℂ) → Fin (d + 1) → ℂ := fun τ => vecCons (τ 0 * k τ) (F τ) with hΦ`. Establish `h0 : AnalyticAt ℂ (fun τ : Fin (d + 1) → ℂ => τ 0) s` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) 0).analyticAt s`. Establish `hΨa : AnalyticAt ℂ Ψ s`. Use `(analyticAt_pi_iff (f := fun i τ => Ψ τ i)).mpr fun i => ?_` and prove the remaining obligations.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify `h0` using `[hΨ]`. Simplify `hF j` using `[hΨ]`. Establish `hΦa : AnalyticAt ℂ Φ s`. Use `(analyticAt_pi_iff (f := fun i τ => Φ τ i)).mpr fun i => ?_` and prove the remaining obligations.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Use `show AnalyticAt ℂ (fun τ => τ 0 * k τ) s`. Conclude with `h0.mul hk`. Simplify `hF j` using `[hΦ]`. Establish `hΨd : HasFDerivAt Ψ (fderiv ℂ Ψ s) s` using `hΨa.differentiableAt.hasFDerivAt`.
+
+Establish `hΦs : HasStrictFDerivAt Φ (fderiv ℂ Φ s) s` using `hΦa.hasStrictFDerivAt`. Establish `hΦd : HasFDerivAt Φ (fderiv ℂ Φ s) s` using `hΦs.hasFDerivAt`. Establish `hΨ0 : ∀ v, fderiv ℂ Ψ s v 0 = v 0`. Introduce `v`. Establish `h1` using `hasFDerivAt_pi'.mp hΨd 0`.
+
+Establish `h2 : HasFDerivAt (fun τ => Ψ τ 0) (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin (d + 1) => ℂ) 0) s := hasFDerivAt_apply 0 s`. Conclude with `DFunLike.congr_fun (h1.unique h2) v`. Establish `hΦ0 : ∀ v, fderiv ℂ Φ s v 0 = k s * v 0`. Introduce `v`. Establish `h1` using `hasFDerivAt_pi'.mp hΦd 0`.
+
+Establish `h2 : HasFDerivAt (fun τ => Φ τ 0) (s 0 • fderiv ℂ k s + k s • ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin (d + 1) => ℂ) 0) s := (hasFDerivAt_apply 0 s).mul hk.differentiableAt.hasFDerivAt`. Establish `h3` using `DFunLike.congr_fun (h1.unique h2) v`. Simplify `h3` using `[hs0]`. Establish `hsucc : ∀ v (j : Fin d), fderiv ℂ Φ s v j.succ = fderiv ℂ Ψ s v j.succ`. Introduce `v j`.
+
+Establish `h1` using `hasFDerivAt_pi'.mp hΦd j.succ`. Establish `h2` using `hasFDerivAt_pi'.mp hΨd j.succ`. Conclude with `DFunLike.congr_fun (h1.unique h2) v`. Establish `hinj : Function.Injective (fderiv ℂ Φ s)`. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `v hv`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations.
+
+Establish `h1 : fderiv ℂ Φ s v 0 = 0` using `by rw [hv]; rfl`. Rewrite `h1` using `[hΦ0]`. Rewrite using `[hΨ0]`. Simplify `h1` using `[hks]`. Establish `h1 : fderiv ℂ Φ s v j.succ = 0` using `by rw [hv]; rfl`.
+
+Rewrite `h1` using `[hsucc]`. Simplify using `using h1`. Establish `hsurj : Function.Surjective (fderiv ℂ Φ s : (Fin (d + 1) → ℂ) →ₗ[ℂ] (Fin (d + 1) → ℂ))` using `LinearMap.injective_iff_surjective.mp hinj`. Set `e : (Fin (d + 1) → ℂ) ≃L[ℂ] (Fin (d + 1) → ℂ)` to `(LinearEquiv.ofBijective (fderiv ℂ Φ s : _ →ₗ[ℂ] _) ⟨hinj, hsurj⟩).toContinuousLinearEquiv`. Establish `hΦe : HasStrictFDerivAt Φ (e : (Fin (d + 1) → ℂ) →L[ℂ] (Fin (d + 1) → ℂ)) s`.
+
+Establish `he : (e : (Fin (d + 1) → ℂ) →L[ℂ] (Fin (d + 1) → ℂ)) = fderiv ℂ Φ s` using `ContinuousLinearMap.ext fun v => rfl`. Rewrite using `[he]`. Conclude with `hΦs`. Take `⟨φ, hφ, hsrc⟩ : ∃ φ : OpenPartialHomeomorph (Fin (d + 1) → ℂ) (Fin (d + 1) → ℂ), ⇑φ = Φ ∧ s ∈ φ.source` from `⟨_, hΦe.toOpenPartialHomeomorph_coe, hΦe.mem_toOpenPartialHomeomorph_source⟩`. Establish `hinjΦ : Set.InjOn Φ φ.source` using `hφ ▸ φ.injOn`.
+
+Establish `hΦzero : ∀ τ, τ 0 = 0 → Φ τ = vecCons 0 (F τ)`. Introduce `τ hτ`. Simplify using `[hΦ, hτ]`. Establish `hΦk : ∀ τ, m ≠ 0 → τ 0 ^ m * H τ = (τ 0 * k τ) ^ m`. Introduce `τ hm`.
+
+Rewrite using `[mul_pow, hkm hm τ]`. Use `⟨φ.source ∩ {τ | ‖H s‖ / 2 < ‖H τ‖}, Filter.inter_mem (φ.open_source.mem_nhds hsrc) (hHc.norm.eventually (lt_mem_nhds (half_lt_self (norm_pos_iff.mpr hHs)))), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ ⟨⟨hτs, -⟩, hτ0⟩ τ' ⟨⟨hτ's, -⟩, hτ'0⟩ hFF`. Apply `hinjΦ hτs hτ's` to reduce the goal to its premises. Rewrite using `[hΦzero τ hτ0, hΦzero τ' hτ'0, hFF]`.
+
+Introduce `P hP hPP`. Establish `hPn : Φ '' P ∈ 𝓝 (vecCons 0 (F s))`. Rewrite using `[← hΦzero s hs0, ← hφ]`. Conclude with `φ.image_mem_nhds hsrc hP`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.mp hPn`.
+
+Establish `hpull : ∀ (a : ℂ) (w : Fin d → ℂ), ‖a‖ < ε → w ∈ Metric.ball (F s) ε → ∃ τ ∈ P, Φ τ = vecCons a w`. Introduce `a w ha hw`. Establish `hmem : vecCons a w ∈ Metric.ball (vecCons 0 (F s)) ε`. Rewrite using `[Metric.mem_ball, dist_eq_norm, pi_norm_lt_iff hε]`. Introduce `i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using ha`. Rewrite `hw` using `[Metric.mem_ball, dist_eq_norm]`. Simplify using `using (norm_le_pi_norm (w - F s) j).trans_lt hw`. Take `⟨τ, hτP, hτ⟩` from `hball hmem`.
+
+Conclude with `⟨τ, hτP, hτ⟩`. Use `⟨Metric.ball (F s) ε, if m = 0 then ‖H s‖ / 2 else ε ^ m, Metric.isOpen_ball, Metric.mem_ball_self hε, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `half_pos (norm_pos_iff.mpr hHs)`. Check the signs of the components of the expression.
+
+Introduce `w hw τ hτ hτ0 hFw`. Take `⟨τ', hτ'P, hτ'⟩` from `hpull 0 w (by simpa using hε) hw`. Establish `: τ' = τ` using `hinjΦ (hPP hτ'P).1 hτ.1 (by rw [hτ', hΦzero τ hτ0, hFw])`. Conclude with `this ▸ hτ'P`. Introduce `w hw t ht0 htρ`.
+
+Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Rewrite `htρ` using `[if_pos rfl]`. Establish `hempty : {τ | τ ∈ P ∧ F τ = w ∧ τ 0 ^ 0 * H τ = t} = ∅`. Use `Set.eq_empty_iff_forall_notMem.mpr ?_` and prove the remaining obligations.
+
+Introduce and unpack `τ ⟨hτP, -, hτt⟩`. Establish `h1 : ‖H s‖ / 2 < ‖H τ‖` using `(hPP hτP).2`. Rewrite `hτt` using `[pow_zero, one_mul]`. Rewrite `h1` using `[hτt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[hempty, Set.encard_empty]`. Both sides reduce to the same expression. Rewrite `htρ` using `[if_neg hm]`. Establish `himg : Φ '' {τ | τ ∈ P ∧ F τ = w ∧ τ 0 ^ m * H τ = t} = (fun a => vecCons a w) '' {a : ℂ | a ^ m = t}`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, ⟨-, hFw, hτt⟩, rfl⟩`. Use `⟨τ 0 * k τ, ?_, ?_⟩` and prove the remaining obligations. Use `show (τ 0 * k τ) ^ m = t`. Rewrite using `[← hΦk τ hm]`.
+
+Conclude with `hτt`. Simplify using `[hΦ, hFw]`. Introduce and unpack `⟨a, ha, rfl⟩`. Establish `ha' : a ^ m = t` using `ha`. Establish `hlt : ‖a‖ < ε`.
+
+Use `lt_of_pow_lt_pow_left₀ m hε.le ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, ha']`. Conclude with `htρ`. Take `⟨τ, hτP, hτ⟩` from `hpull a w hlt hw`. Establish `h12` using `vecCons_inj.mp (show vecCons (τ 0 * k τ) (F τ) = vecCons a w from hτ)`.
+
+Use `⟨τ, ⟨hτP, h12.2, ?_⟩, hτ⟩` and prove the remaining obligations. Rewrite using `[hΦk τ hm, h12.1]`. Conclude with `ha'`. Establish `hcons : Function.Injective (fun a : ℂ => (vecCons a w : Fin (d + 1) → ℂ))` using `fun a b hab => (vecCons_inj.mp hab).1`. Rewrite using `[← (hinjΦ.mono fun τ hτ => (hPP hτ.1).1).encard_image, himg, hcons.encard_image, encard_pow_eq_of_ne_zero hm (norm_pos_iff.mp ht0)]`.
+-/
 theorem powerUnitCount_of_root {d m : ℕ} {F : (Fin (d + 1) → ℂ) → Fin d → ℂ}
     {H k : (Fin (d + 1) → ℂ) → ℂ} {s : Fin (d + 1) → ℂ} (hs0 : s 0 = 0)
     (hF : ∀ j, AnalyticAt ℂ (fun τ => F τ j) s) (hHc : ContinuousAt H s) (hHs : H s ≠ 0)
@@ -174,6 +228,15 @@ theorem powerUnitCount_of_root {d m : ℕ} {F : (Fin (d + 1) → ℂ) → Fin d 
     rw [← (hinjΦ.mono fun τ hτ => (hPP hτ.1).1).encard_image, himg, hcons.encard_image,
       encard_pow_eq_of_ne_zero hm (norm_pos_iff.mp ht0)]
 
+/- English proof (translation)
+Introduce `d m O F H s hO hs hs0 hF hH hHs hbij`. Establish `hFa : ∀ j, AnalyticAt ℂ (fun τ => F τ j) s` using `fun j => ReciprocityTheory.AnForm.Osgood.osgood (d + 1) O _ hO (differentiableOn_pi.mp hF j) s hs`. Establish `hHa : AnalyticAt ℂ H s` using `ReciprocityTheory.AnForm.Osgood.osgood (d + 1) O H hO hH s hs`. Distinguish the cases in `hm : m = 0`. Conclude with `powerUnitCount_of_root (k := fun _ => 1) hs0 hFa hHa.continuousAt hHs analyticAt_const one_ne_zero (fun h => (h hm).elim) hbij`.
+
+Establish `hroot : ∀ x : ℂ, (x ^ ((m : ℂ)⁻¹)) ^ m = x` using `fun x => Complex.cpow_nat_inv_pow x hm`. Use `powerUnitCount_of_root (k := fun τ => H s ^ ((m : ℂ)⁻¹) * ((H s)⁻¹ * H τ) ^ ((m : ℂ)⁻¹)) hs0 hFa hHa.continuousAt hHs ?_ ?_ ?_ hbij` and prove the remaining obligations. Use `analyticAt_const.mul ((analyticAt_const.mul hHa).cpow analyticAt_const ?_) show (H s)⁻¹ * H s ∈ Complex.slitPlane` and prove the remaining obligations. Rewrite using `[inv_mul_cancel₀ hHs]`. Conclude with `Complex.one_mem_slitPlane`.
+
+Introduce `h`. Rewrite `h` using `[inv_mul_cancel₀ hHs, Complex.one_cpow, mul_one]`. Apply `hHs` to reduce the goal to its premises. Rewrite using `[← hroot (H s), h, zero_pow hm]`. Introduce `_ τ`.
+
+Rewrite using `[mul_pow, hroot, hroot, mul_inv_cancel_left₀ hHs]`.
+-/
 theorem PowerUnitCount.proof : PowerUnitCount.Statement := by
   intro d m O F H s hO hs hs0 hF hH hHs hbij
   have hFa : ∀ j, AnalyticAt ℂ (fun τ => F τ j) s := fun j =>

@@ -15,6 +15,35 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {hc : IsCompl U (orthK h U)}
   {M T Λ₀ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
 
+/- English proof (translation)
+Establish `G0 : Good hc M T 𝔭 Λ₀` using `hgood Λ₀ h0`. Establish `hd₀ : dualF h 𝔭 Λ₀ = Λ₀` using `h0.2.1`. Establish `hTW : ∀ {d : V}, d ∈ locF 𝔭 T → d ∈ orthK h U`. Introduce `d hd`. Establish `: d ∈ Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K)` using `by rw [G0.cW]; exact hd`.
+
+Conclude with `this.2`. Establish `hTL : ∀ {Λ : Submodule (𝓞 K) V}, Good hc M T 𝔭 Λ → ∀ {d : V}, d ∈ locF 𝔭 T → d ∈ Λ`. Introduce `Λ hG d hd`. Establish `: d ∈ Λ ⊓ (orthK h U).restrictScalars (𝓞 K)` using `by rw [hG.cW]; exact hd`. Conclude with `this.1`.
+
+Establish `hsW : ∀ {d : V}, d ∈ orthK h U → prO hc.symm d = d` using `fun hd => (mem_W_of_prO_zero (hc := hc) (orth_projection_of_mem_compl hd)).2`. Establish `hFP : ∀ Λ (hΛ : InFib h U 𝔭 M T Λ), FP (isoOf G0 (hgood Λ hΛ))`. Introduce `Λ hΛ`. Establish `hG` using `hgood Λ hΛ`. Use `fp_of (hc := hc) hs hd₀ hΛ.2.1 _ ?_` and prove the remaining obligations.
+
+Introduce `b x' hx'`. Take `⟨z, hz, hzb⟩` from `G0.oW b b.2`. Take `⟨w, hw, hwz⟩` from `hG.oU (prO hc z) (G0.iU z hz)`. Establish `hb : b = ⟨prO hc.symm z, G0.iW z hz⟩` using `Subtype.ext hzb.symm`. Rewrite `hx'` using `[hb, isoOf_mk G0 hG hz hw hwz, Submodule.Quotient.eq, Submodule.mem_comap]`.
+
+Establish `hd : (x' : V) - prO hc.symm w ∈ locF 𝔭 T` using `by simpa using hx'`. Establish `hdW` using `hTW hd`. Use `⟨z, hz, w + ((x' : V) - prO hc.symm w), Λ.add_mem hw (hTL hG hd), hzb, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hsW hdW]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[map_add, orth_projection_of_mem_compl hdW, add_zero, hwz]`. Establish `hglue : ∀ P, FP P → InFib h U 𝔭 M T (glue hc T 𝔭 Λ₀ P)`. Introduce `P hP`. Take `⟨N₀, hN₀, hloc⟩` from `h0.1`. Use `haveI : Finite (DiscMod h (orthK h U) T 𝔭) := Formalism.L2.SG.Pf.ProjectionDiscriminantModule.discMod_finite hc h𝔭 hM hT hN₀ hloc G0.cW G0.iW G0.oW`.
+
+Conclude with `glue_mem hs h𝔭 hM hT G0 h0 hP (Finite.surjective_of_injective (FP.injective G0 hd₀ hP))`. Establish `hleft : ∀ Λ (hΛ : InFib h U 𝔭 M T Λ), glue hc T 𝔭 Λ₀ (isoOf G0 (hgood Λ hΛ)) = Λ`. Introduce `Λ hΛ`. Establish `hG` using `hgood Λ hΛ`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, y, hy, c, hcy, hU, hP⟩`. Take `⟨w, hw, hwy⟩` from `hG.oU (prO hc y) (G0.iU y hy)`. Establish `hc' : c = ⟨prO hc.symm y, G0.iW y hy⟩` using `Subtype.ext hcy`. Rewrite `hP` using `[hc', isoOf_mk G0 hG hy hw hwy, Submodule.Quotient.eq, Submodule.mem_comap]`.
+
+Establish `hd : (b : V) - prO hc.symm w ∈ locF 𝔭 T` using `by simpa using hP`. Rewrite `hd` using `[hb]`. Conclude with `mem_of_proj hG hw (hwy.trans hU) hd`. Introduce `hx`. Take `⟨y, hy, hyx⟩` from `G0.oU (prO hc x) (hG.iU x hx)`.
+
+Conclude with `⟨⟨prO hc.symm x, hG.iW x hx⟩, rfl, y, hy, ⟨prO hc.symm y, G0.iW y hy⟩, rfl, hyx, (isoOf_mk G0 hG hy hx hyx.symm).symm⟩`. Establish `hright : ∀ P (hP : FP P), isoOf G0 (hgood _ (hglue P hP)) = P`. Introduce `P hP`. Establish `hG` using `hgood _ (hglue P hP)`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations.
+
+Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `_ c`. Take `⟨y, hy, hyc⟩` from `G0.oW c c.2`. Establish `hc' : c = ⟨prO hc.symm y, G0.iW y hy⟩` using `Subtype.ext hyc.symm`. Take `⟨x', hx'⟩` from `Submodule.Quotient.mk_surjective _ (P (Submodule.Quotient.mk c))`.
+
+Rewrite `hx'`, the goal using `[hc']`. Establish `hmem` using `mem_glue_of (P := P) G0 hy x' hx'`. Establish `hx'W : (x' : V) ∈ orthK h U` using `memW G0 x'.2`. Establish `hUeq : prO hc (prO hc y + x') = prO hc y`. Rewrite using `[map_add, prO_of_mem_U (prO_mem hc y), orth_projection_of_mem_compl hx'W, add_zero]`.
+
+Rewrite using `[isoOf_mk G0 hG hy hmem hUeq, ← hx']`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `prO_add hc (prO hc y)`. Rewrite `e` using `[prO_of_mem_U (prO_mem hc y)]`.
+
+Establish `e0 : prO hc.symm (prO hc y) = 0`. Use `congrArg (fun v => v - prO hc y) e` as an intermediate fact. Simplify using `using this`. Simplify using `only [map_add, e0, zero_add, hsW hx'W]`. Conclude with `Nat.card_congr { toFun := fun Λ => ⟨isoOf G0 (hgood Λ.1 Λ.2), hFP Λ.1 Λ.2⟩ invFun := fun P => ⟨glue hc T 𝔭 Λ₀ P.1, hglue P.1 P.2⟩ left_inv := fun Λ => Subtype.ext (hleft Λ.1 Λ.2) right_inv := fun P => Subtype.ext (hright P.1 P.2) }`.
+-/
 theorem card_eq [FiniteDimensional K V] (hs : h.IsSymm) (h𝔭 : 𝔭.IsMaximal) (hM : IsLatIn U M)
     (hT : IsLatIn (orthK h U) T) (hgood : ∀ Λ, InFib h U 𝔭 M T Λ → Good hc M T 𝔭 Λ)
     (h0 : InFib h U 𝔭 M T Λ₀) :

@@ -23,6 +23,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 
 namespace GlobalTheory.AnyChartExtend
 
+/- English proof (translation)
+Break down `h with ⟨hF, -⟩ | ⟨hD, -, -⟩` into its components or cases. Use `letI := hF.toField`. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`. Conclude with `⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩`.
+-/
 theorem powerSeries_props (O' : Type) [CommRing O'] [IsDomain O'] (ϖ : O') (h : IsArcBase O' ϖ) :
     ∃ (_ : IsLocalRing (PowerSeries O')), IsNoetherianRing (PowerSeries O') ∧ IsIntegrallyClosed (PowerSeries O') := by
   rcases h with ⟨hF, -⟩ | ⟨hD, -, -⟩
@@ -30,6 +33,9 @@ theorem powerSeries_props (O' : Type) [CommRing O'] [IsDomain O'] (ϖ : O') (h :
     exact ⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩
   · exact ⟨inferInstance, inferInstance, GlobalTheory.PowerSeriesNormal.isIntegrallyClosed_powerSeries O'⟩
 
+/- English proof (translation)
+Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext h)`.
+-/
 theorem spMap_jK' {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {g : R →+* R'}
     {gam : FractionRing R →+* FractionRing R'} (h : ∀ r, gam (algebraMap R _ r) = algebraMap R' _ (g r)) :
     spMap gam ≫ Out.jK R = Out.jK R' ≫ spMap g := by
@@ -40,6 +46,35 @@ theorem spMap_jK' {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomai
 
 open GlobalTheory.ArcOrder in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV φ m BD hφ hpol O' _ _ _ b' ϖ a χ₀ hbase hchart x₀ hx₀`. Take `⟨hL, hL₂, hL₃, hL₄, hL₅, hL₆⟩` from `GlobalTheory.allSixLaws`. Take `⟨W₀⟩` from `(Y.hasArcData_iff (GlobalTheory.PolArc.moveV bV hbV b' a) _ _ _ _).1 hchart.2.2.2`. Establish `hR : AdmBase (PowerSeries O') (Ideal.span {PowerSeries.X})`. Break down `hbase with ⟨hf, -⟩ | ⟨hd, -, -⟩` into its components or cases.
+
+Use `letI := hf.toField`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`. Conclude with `GlobalTheory.ArcPull.admissibleBase_powerSeries_span_X O'`. Use `haveI : Module.Finite (𝓞 E) (GlobalTheory.PolArc.moveV bV hbV b' a).D₀.X := Module.Finite.equiv W₀.e.symm`. Take `⟨c₀, hc₀⟩ : ∃ c₀ : ℝ, c₀ = φ.eval (GlobalTheory.PolArc.moveV bV hbV b' a).D₀.X (fun p q => ((GlobalTheory.PolArc.moveV bV hbV b' a).be p q : ℝ))` from `⟨_, rfl⟩`.
+
+Establish `inj : ∀ (V : Type) [CommRing V] [IsDomain V] (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → Function.Injective ψ` using `fun V _ _ ψ gam hg x y e => IsFractionRing.injective (PowerSeries O') (FractionRing (PowerSeries O')) (gam.injective (by rw [hg, hg, e]))`. Establish `hYc : ∀ (V : Type) [CommRing V] [IsDomain V] (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → jK V ≫ spMap ψ ≫ χ₀ = (spMap gam ≫ x₀) ≫ Y.j` using `fun V _ _ ψ gam hg => by`. Rewrite using `[← Category.assoc, ← ArcExtends.spMap_jK hg, Category.assoc, Category.assoc, hx₀]`. Establish `key : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V → ∀ (ψ : PowerSeries O' →+* V) (gam : FractionRing (PowerSeries O') →+* FractionRing V), (∀ r, gam (algebraMap (PowerSeries O') _ r) = algebraMap V _ (ψ r)) → ∀ χ : Sp V ⟶ Z.X, spMap gam ≫ x₀ ≫ Z.j = jK V ≫ χ → …`. Introduce `V _ _ _ hV ψ gam hg χ hχ ϖ' hϖ' v k hk hu`.
+
+Use `hV.1` as an intermediate fact. Establish `hψ` using `inj V ψ gam hg`. Establish `hsub : (Ideal.span {(PowerSeries.X : PowerSeries O')}).map ψ ≤ maximalIdeal V`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_le_iff_mem, hu]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ ((mem_maximalIdeal _).2 hϖ'.not_isUnit) _ (Nat.pos_of_ne_zero hk))`.
+
+Take `⟨A, -⟩` from `ArcWit.baseChange hL₃.cubePull hL.polBaseChange hL₄.unifBaseChange hL₅ (qkPullExists hL.globalFns) polOActPull hR (GlobalTheory.ArcPointDescent.admissibleBase_maximalIdeal_completeDVR hV) W₀ ψ hψ hsub`. Rewrite using `[hc₀]`. Conclude with `order_of_arcWit Z Y BD φ hφ hpol.1 hV (f := ψ.comp PowerSeries.C) (show Function.Injective (ψ.comp PowerSeries.C) from hψ.comp PowerSeries.C_injective) A (spMap gam ≫ x₀) χ (by rw [Category.assoc]; exact hχ.symm) (hYc V ψ gam hg) hϖ' v k hu`. Establish `hK : CharZero (FractionRing O')` using `IsFractionRing.charZero_of_isFractionRing O'`. Take `⟨ψ₁, hψ₁⟩ : ∃ ψ₁ : PowerSeries O' →+* PowerSeries (FractionRing O'), ψ₁ = PowerSeries.map (algebraMap O' (FractionRing O'))` from `⟨_, rfl⟩`.
+
+Establish `hψi : Function.Injective ψ₁` using `hψ₁ ▸ PowerSeries.map_injective _ (IsFractionRing.injective O' _)`. Establish `j : Function.Injective ((algebraMap (PowerSeries (FractionRing O')) (FractionRing (PowerSeries (FractionRing O')))).comp ψ₁)` using `(IsFractionRing.injective _ _).comp hψi`. Take `⟨gam₁, hg₁⟩ : ∃ gam₁ : FractionRing (PowerSeries O') →+* FractionRing (PowerSeries (FractionRing O')), ∀ r, gam₁ (algebraMap (PowerSeries O') _ r) = algebraMap (PowerSeries (FractionRing O')) _ (ψ₁ r)` from `⟨IsFractionRing.lift j, fun r => IsFractionRing.lift_algebraMap j r⟩`. Establish `hV₁ : CDvr (PowerSeries (FractionRing O'))` using `GlobalTheory.ArcPointDescent.cDvr_powerSeries _`. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact.
+
+Establish `hjZ : Z.j ≫ Z.s = pullback.snd _ _ ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Z.jQ_over]`. Establish `hjY : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (c.V W).subtype`. Rewrite using `[Model.j, Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`. Establish `hb : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap bV`.
+
+Rewrite using `[← spMap_comp]`. Conclude with `congrArg spMap (RingHom.ext fun x => (hbV x).symm)`. Establish `hjj : Z.j ≫ Z.s = Y.j ≫ Y.s ≫ spMap bV`. Rewrite using `[hjZ, hb, ← Category.assoc Y.j, hjY, Category.assoc]`. Establish `hs : x₀ ≫ Z.j ≫ Z.s = jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' ≫ spMap bV := by`.
+
+Rewrite using `[hjj, ← Category.assoc x₀, ← hx₀, Category.assoc, ← Category.assoc χ₀, hchart.1, Category.assoc]`. Take `⟨χ₁, hχ₁, -⟩` from `val_exists Z.s (spMap gam₁ ≫ x₀ ≫ Z.j) (spMap ψ₁ ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b' ≫ spMap bV) (by`. Rewrite using `[Category.assoc, Category.assoc, hs, ← Category.assoc, ArcExtends.spMap_jK hg₁, Category.assoc])`. Take `⟨n, hn, -⟩` from `key _ hV₁ ψ₁ gam₁ hg₁ χ₁ hχ₁.symm PowerSeries.X PowerSeries.X_prime.irreducible 1 1 one_ne_zero (by simp [hψ₁])`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Introduce `V _ _ _ hV ψ gam hg χ hχ`. Use `hV.1` as an intermediate fact. Establish `hψ` using `inj V ψ gam hg`. Establish `hZc : jK V ≫ χ = (spMap gam ≫ x₀) ≫ Z.j` using `by rw [Category.assoc]; exact hχ.symm`. Distinguish the cases in `hU : IsUnit (ψ PowerSeries.X)`.
+
+Take `⟨t₁, ⟨n₁⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap ψ ≫ χ₀) Y.t`. Take `⟨mZ⟩` from `exists_sabMap_of_generic Z Y hV (spMap gam ≫ x₀) χ (spMap ψ ≫ χ₀) hZc (hYc V ψ gam hg) n₁`. Establish `hab : ∀ p, χ p ∈ abLocus Z.t.G` using `fun p => by`. Use `(abLocus_pullback abLocusOne Z.t.semi mZ.cart.1 p).2 ((abLocus_pullback abLocusOne Y.t.semi n₁.cart.1 p).1 ?_)` and prove the remaining obligations. Use `(congrArg (· ∈ abLocus Y.t.G) (Scheme.Hom.comp_apply (spMap ψ) χ₀ p)).mpr ((hchart.2.1 _).2 fun hX => ?_)` and prove the remaining obligations.
+
+Establish `h' : ψ PowerSeries.X ∈ p.asIdeal` using `hX`. Conclude with `p.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h' hU)`. Rewrite using `[idlAlong_eq_top_of_abelian Z BD φ hpol.1 hV (spMap gam ≫ x₀) χ hZc hab]`. Conclude with `(Ideal.span_singleton_eq_top.2 (hU.pow n)).symm`. Take `⟨ϖ', hϖ'⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+
+Establish `hne : ψ PowerSeries.X ≠ 0` using `fun h => PowerSeries.X_ne_zero (hψ (h.trans (map_zero ψ).symm))`. Take `⟨k, v, hk⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hne hϖ'`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Conclude with `hU (by simp [hk])`.
+
+Take `⟨n₂, hn₂, hid⟩` from `key V hV ψ gam hg χ hχ ϖ' hϖ' v k hk0 hk`. Establish `e : n₂ = k * n`. Establish `: (n₂ : ℝ) = k * n` using `by rw [hn₂, hn]; simp`. Conclude with `this` after adjusting the coercions. Rewrite using `[hid, e, hk, mul_pow, pow_mul, Ideal.span_singleton_mul_left_unit (v.isUnit.pow n)]`.
+-/
 theorem order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W)
@@ -151,6 +186,13 @@ theorem order : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host
 open GlobalTheory.FlagMod GlobalTheory.Reg GlobalTheory.PolFin GlobalTheory.TraitGen in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c p W _ _ Z Y bV hbV O' _ _ _ b' ϖ a χ₀ hO _ x₀ hx`. Establish `: IsLocalRing O'`. Break down `hO with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Conclude with `h.toField.instIsLocalRing`. Use `infer_instance`.
+
+Take `⟨tR, ⟨mt⟩⟩` from `exists_sabPull χ₀ Y.t`. Take `⟨u, ⟨n₀⟩⟩` from `exists_sabPull x₀ Z.oF.t`. Take `⟨aC, -⟩` from `LevelCover.sab_comp n₀ Z.m (e := x₀ ≫ Z.j) rfl`. Take `⟨n₁, -⟩` from `LevelCover.sab_comp n₀ Z.m0.toSABMap rfl`. Take `⟨n₂, -⟩` from `LevelCover.sab_cancel Y.m0.toSABMap n₁ x₀ rfl`.
+
+Take `⟨n₃, -⟩` from `LevelCover.sab_comp n₂ Y.m (e := x₀ ≫ Y.j) rfl`. Take `⟨aT, -⟩` from `LevelCover.sab_cancel mt n₃ (jK _) hx`. Establish `hu : IsProper u.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 Z.oF.proper`. Conclude with `exists_detOm_gen_extAt hu aT aC`.
+-/
 theorem detFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W)
@@ -175,6 +217,9 @@ theorem detFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
   have hu : IsProper u.G.hom := MorphismProperty.of_isPullback (P := @IsProper) n₀.cart.1 Z.oF.proper
   exact exists_detOm_gen_extAt hu aT aC
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c p W hp hW Z Y bV hbV φ m BD hhom hpol O' _ _ _ b' ϖ a χ₀ hB hC x₀ hx₀ n hn`. Take `⟨e₁, he₁, hx₁⟩` from `detFrame E H D l Xo c p W hp hW Z Y bV hbV O' b' ϖ a χ₀ hB hC x₀ hx₀`. Take `⟨e₂, he₂, hx₂⟩` from `GlobalTheory.TraitGen.extAt_lbPow _ _ _ _ e₁ m he₁ hx₁`. Take `⟨e₃, he₃, hx₃⟩` from `GlobalTheory.TraitGen.exists_dual_gen_extAt Z.X BD (PowerSeries O') PowerSeries.X PowerSeries.X_ne_zero (x₀ ≫ Z.j) n hn`. Conclude with `GlobalTheory.TraitGen.exists_tens_extAt _ _ _ _ _ e₂ e₃ he₂ he₃ hx₂ hx₃`.
+-/
 theorem polGen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W)
@@ -197,6 +242,17 @@ theorem polGen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Hos
     PowerSeries.X_ne_zero (x₀ ≫ Z.j) n hn
   exact GlobalTheory.TraitGen.exists_tens_extAt _ _ _ _ _ e₂ e₃ he₂ he₃ hx₂ hx₃
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c p W hp hpW Z Y bV hbV φ m BD hhom hpol O' _ _ _ b' ϖ a χ₀ hO hχ₀ x₀ hx₀`. Take `⟨_, _, _⟩` from `powerSeries_props O' ϖ hO`. Establish `: CharZero (PowerSeries O')` using `charZero_of_injective_ringHom (PowerSeries.C_injective (R := O'))`. Use `isProper_toroidalModel_structureMap Z` as an intermediate fact. Establish `: CompactSpace Z.X` using `hpol.2.compactSpace`.
+
+Establish `: QuasiSeparatedSpace Z.X` using `quasiSeparatedSpace_of_quasiSeparated Z.s`. Establish `eF : spMap (algebraMap (𝓞 c.F) c.F) = spMap (c.V W).subtype ≫ spMap bV`. Rewrite using `[← spMap_comp]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `congrArg (fun y : c.F => (y : ℂ)) (hbV x).symm`. Establish `hZs : x₀ ≫ Z.j ≫ Z.s = Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' ≫ spMap bV := by`. Establish `hY : x₀ ≫ Y.j ≫ Y.s = Out.jK (PowerSeries O') ≫ spMap (PowerSeries.C (R` using `O')) ≫ spMap b' := by`. Rewrite using `[← Category.assoc, ← hx₀, Category.assoc, hχ₀.1]`. Rewrite `hY`, the goal using `[Model.j_s]`.
+
+Rewrite using `[eF]`. Simplify using `only [← Category.assoc] at hY ⊢`. Rewrite using `[hY]`. Take `⟨n, hn⟩` from `order E H D l Xo c p W hp hpW Z Y bV hbV φ m BD hhom hpol O' b' ϖ a χ₀ hO hχ₀ x₀ hx₀`. Take `⟨e, he, htr⟩` from `polGen E H D l Xo c p W hp hpW Z Y bV hbV φ m BD hhom hpol O' b' ϖ a χ₀ hO hχ₀ x₀ hx₀ n hn`.
+
+Use `GlobalTheory.ExtLB.exists_extension Z.X (polOf Z m BD) hpol.2.isLB (fun z => GlobalTheory.PolFin.exists_H0_of_isAmpleLB hpol.2 z) (PowerSeries O') (x₀ ≫ Z.j) e he fun V _ _ _ hV ψ gam hg => ?_` and prove the remaining obligations. Use `hV.1` as an intermediate fact. Take `⟨χ, hχ, -⟩` from `val_exists Z.s (spMap gam ≫ x₀ ≫ Z.j) (spMap ψ ≫ spMap (PowerSeries.C (R := O')) ≫ spMap b' ≫ spMap bV) (by`. Rewrite using `[Category.assoc, Category.assoc, hZs, ← Category.assoc (spMap gam), spMap_jK' hg, Category.assoc])`. Conclude with `⟨χ, hχ.symm, htr V hV ψ gam hg χ hχ.symm⟩`.
+-/
 theorem extend : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits →
     ∀ (Z : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Y : Model Xo c (c.V W).subtype) (bV : 𝓞 c.F →+* c.V W)

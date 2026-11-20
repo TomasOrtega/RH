@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_appellHumbert_frame_of_isLB | exact GlobalTheory.exists_appellHumbert_frame_of_isLB | (intros; apply GlobalTheory.exists_appellHumbert_frame_of_isLB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_hermitian_theta_factor : ∀ (A : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (L : LB A.left), L.IsLB →
     ∀ (g : ℕ) (u : HolUnif A L g), ∃ (u' : HolUnif A L g) (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u'.Λ → ℂ),
       u'.ex = u.ex ∧ Hm.IsHermitian ∧ (∀ l, ‖χ l‖ = 1) ∧

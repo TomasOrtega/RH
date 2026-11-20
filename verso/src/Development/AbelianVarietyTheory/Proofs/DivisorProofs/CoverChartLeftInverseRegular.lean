@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.ConstLat
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨W', hxW', hW'⟩` from `hu.exists_nhds`. Take `⟨v, e, y, z, yt, hv, hy, hz, hyt, hle, -⟩` from `GlobalTheory.Mean4O.Cover.ThroughFibre.exists_algPt_through F Y V p hp W hW (U ⊓ W') x ⟨hx, hxW'⟩ hpx`. Establish `h1` using `h v hv e y hy z yt hz hyt fun q hq => (hle hq).1`. Take `⟨a, ha, hf⟩` from `hW' (yt (IsLocalRing.closedPoint e.O)) (hle trivial).2`.
+
+Rewrite `h1` using `[← hyt, ← hf, GlobalTheory.HalfGlue.val_stalk, GlobalTheory.HalfGlue.lt_one_iff e.w e.O e.mem_O]`. Conclude with `IsLocalRing.residue_ne_zero_iff_isUnit _ |>.2 (ha.map _) h1`.
+-/
 theorem not_unitAt_of_atTest {F : Type} [Field F] [NumberField F] {Y : Var F} {p : ℕ} (hp : p.Prime) (V : Cover Y)
     (W : Y.X.Opens) (hW : genericPoint Y.X ∈ W) (U : V.X.Opens) (f : V.X.functionField)
     (h : AtTest V W p fun _ e _ z yt => ⊤ ≤ yt ⁻¹ᵁ U → e.w (valAt (z ≫ V.j) f) < 1)
@@ -26,6 +31,19 @@ theorem not_unitAt_of_atTest {F : Type} [Field F] [NumberField F] {Y : Var F} {p
   rw [← hyt, ← hf, GlobalTheory.HalfGlue.val_stalk, GlobalTheory.HalfGlue.lt_one_iff e.w e.O e.mem_O] at h1
   exact IsLocalRing.residue_ne_zero_iff_isUnit _ |>.2 (ha.map _) h1
 
+/- English proof (translation)
+Introduce `F _ _ Y C g A p hp V W hW U H d T Um Lf c Jx Jix hF hJ hreg hsm x hx hpx`. Establish `hnu : ∀ i j, ¬ UnitAt x ((Um.transpose * Jx * Um) i j)` using `fun i j => not_unitAt_of_atTest hp V W hW U _ (fun v hv e y hy z yt hz hyt hU => hsm v hv e y hy z yt hz hyt hU i j) x hx hpx`. Establish `hL` using `hF.1`. Use `choose SU hSU using fun k l => (hF.2.1 x hx hpx k l).1`. Use `choose SL hSL using fun l k => (hF.2.1 x hx hpx k l).2`.
+
+Use `choose SJ hSJ using fun i j => (hreg x hx hpx i j).1`. Use `choose SI hSI using fun i j => (hreg x hx hpx i j).2`. Use `set φ := algebraMap (V.X.presheaf.stalk x) V.X.functionField with hφ`. Establish `hinj : Function.Injective φ` using `IsFractionRing.injective _ V.X.functionField`. Use `clear hF hreg hsm`.
+
+Take `rfl : (Matrix.of SU).map φ = Um` from `Matrix.ext hSU`. Take `rfl : (Matrix.of SL).map φ = Lf` from `Matrix.ext hSL`. Take `rfl : (Matrix.of SJ).map φ = Jx` from `Matrix.ext hSJ`. Take `rfl : (Matrix.of SI).map φ = Jix` from `Matrix.ext hSI`. Use `clear hSU hSL hSJ hSI`.
+
+Generalize the expression as in `Matrix.of SU = PU at *`. Generalize the expression as in `Matrix.of SL = PL at *`. Generalize the expression as in `Matrix.of SJ = PJ at *`. Generalize the expression as in `Matrix.of SI = PI at *`. Use `⟨(GlobalTheory.ConstLat.compl PU PL PI).det, isUnit_det_compl PU PL PJ PI ?_ ?_ fun i j hu => hnu i j ⟨_, hu, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, hL, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Apply `Matrix.map_injective hinj` to reduce the goal to its premises. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, hJ, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`. Rewrite using `[← compl_map_ringHom, ← hφ, RingHom.map_det, RingHom.mapMatrix_apply]`.
+-/
 theorem unitAt_det_compl_of_atTest : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ), p.Prime →
     ∀ (V : Cover Y) (W : Y.X.Opens), genericPoint Y.X ∈ W → ∀ (U : V.X.Opens)
     (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn)

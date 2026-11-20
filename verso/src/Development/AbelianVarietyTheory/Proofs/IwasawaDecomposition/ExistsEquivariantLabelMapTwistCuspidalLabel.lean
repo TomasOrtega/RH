@@ -15,6 +15,17 @@ open CategoryTheory Formalism.IrreducibleCountingLemmas.TYPES PI.GreenLabelMapW 
 
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
+/- English proof (translation)
+Establish `hint : IsIntegral K z` using `Algebra.IsIntegral.isIntegral z`. Establish `hmin : (γ : Matrix ι ι K).charpoly = minpoly K z` using `minpoly.eq_of_irreducible_of_monic hγ hz (Matrix.charpoly_monic _)`. Establish `hdeg : (minpoly K z).natDegree = Fintype.card ι`. Rewrite using `[← hmin, Matrix.charpoly_natDegree_eq_dim]`. Set `pb` to `IntermediateField.adjoin.powerBasis hint`.
+
+Establish `hnorm : Algebra.norm K pb.gen = Matrix.det (γ : Matrix ι ι K)`. Rewrite using `[Algebra.PowerBasis.norm_gen_eq_coeff_zero_minpoly, Matrix.det_eq_sign_charpoly_coeff, hmin]`. Establish `h1 : pb.dim = Fintype.card ι`. Rewrite using `[IntermediateField.adjoin.powerBasis_dim, hdeg]`. Establish `h2 : pb.gen = IntermediateField.AdjoinSimple.gen K z` using `IntermediateField.adjoin.powerBasis_gen hint`.
+
+Rewrite using `[h1, h2, IntermediateField.minpoly_gen]`. Use `haveI : FiniteDimensional K K⟮z⟯ := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K⟮z⟯ := Module.finite_of_finite K`. Establish `hfr : Module.finrank K K⟮z⟯ = Fintype.card ι`. Rewrite using `[IntermediateField.adjoin.finrank hint, hdeg]`.
+
+Establish `h3` using `FiniteField.algebraMap_norm_eq_pow_sum (K := K) (L := K⟮z⟯) (x := pb.gen)`. Rewrite `h3` using `[hnorm, hfr, Nat.card_eq_fintype_card]`. Establish `h5 : ((pb.gen ^ ∑ i ∈ Finset.range (Fintype.card ι), Fintype.card K ^ i : K⟮z⟯) : AlgebraicClosure K) = z ^ ∑ i ∈ Finset.range (Fintype.card ι), Fintype.card K ^ i`. Rewrite using `[IntermediateField.coe_pow, IntermediateField.adjoin.powerBasis_gen hint, IntermediateField.AdjoinSimple.coe_gen]`. Rewrite using `[← h5, ← h3]`.
+
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_det_eq_pow {ι : Type} [Fintype ι] [DecidableEq ι] (γ : GL ι K)
     (hγ : Irreducible (γ : Matrix ι ι K).charpoly) {z : AlgebraicClosure K}
     (hz : aeval z (γ : Matrix ι ι K).charpoly = 0) :
@@ -45,6 +56,9 @@ theorem algebraMap_det_eq_pow {ι : Type} [Fintype ι] [DecidableEq ι] (γ : GL
   rw [← h5, ← h3]
   rfl
 
+/- English proof (translation)
+Establish `hn` using `Cv.gen_norm 1 (Fintype.card ι) le_rfl hι`. Rewrite `hn` using `[one_mul, pow_one]`. Rewrite using `[algebraMap_det_eq_pow γ hγ hz, ← hn, ← hm, ← pow_mul, ← pow_mul, Nat.geomSum_eq Fintype.one_lt_card, mul_comm]`.
+-/
 theorem gen_one_pow_eq_det (Cv : LabelConv K) {ι : Type} [Fintype ι] [DecidableEq ι]
     (hι : 1 ≤ Fintype.card ι) (γ : GL ι K) (hγ : Irreducible (γ : Matrix ι ι K).charpoly)
     {z : AlgebraicClosure K} (hz : aeval z (γ : Matrix ι ι K).charpoly = 0) {m : ℕ}
@@ -55,6 +69,19 @@ theorem gen_one_pow_eq_det (Cv : LabelConv K) {ι : Type} [Fintype ι] [Decidabl
   rw [algebraMap_det_eq_pow γ hγ hz, ← hn, ← hm, ← pow_mul, ← pow_mul,
     Nat.geomSum_eq Fintype.one_lt_card, mul_comm]
 
+/- English proof (translation)
+Use `set xb := algebraMap K (AlgebraicClosure K) x with hxb`. Establish `hxb0 : xb ≠ 0`. Rewrite using `[hxb]`. Conclude with `(map_ne_zero_iff _ (algebraMap K (AlgebraicClosure K)).injective).2 hx`. Take `⟨hm, hi, hX, hdeg, hval⟩` from `greenLab_spec Cv hC hd hs hc`.
+
+Establish `hdeg' : (greenLab Cv d τ).natDegree = d` using `by rw [hdeg, Fintype.card_fin]`. Take `⟨w, hw⟩` from `IsAlgClosed.exists_aeval_eq_zero (AlgebraicClosure K) (greenLab Cv d τ) (by rw [degree_eq_natDegree hm.ne_zero, hdeg']; exact_mod_cast (show d ≠ 0 by omega))`. Establish `hf : ∀ (σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K) (y : AlgebraicClosure K), σ y * xb = σ (y * xb)` using `fun σ y => by rw [map_mul, hxb, AlgEquiv.commutes]`. Establish `hinj : ∀ r₁ r₂ : AlgebraicClosure K, aeval r₁ (greenLab Cv d τ) = 0 → aeval r₂ (greenLab Cv d τ) = 0 → r₁ * xb = r₂ * xb → r₁ = r₂` using `fun _ _ _ _ h => mul_right_cancel₀ hxb0 h`. Establish `hint : IsIntegral K (w * xb)` using `Algebra.IsIntegral.isIntegral _`.
+
+Establish `hxq : ∀ i : ℕ, xb ^ (Fintype.card K ^ i) = xb` using `fun i => by`. Rewrite using `[hxb, ← map_pow, FiniteField.pow_card_pow]`. Establish `hlab : HasCuspLabel Cv τ' (minpoly K (w * xb))`. Use `⟨minpoly.monic hint, minpoly.irreducible hint, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Establish `h0` using `minpoly.aeval K (w * xb)`. Rewrite `h0` using `[h, aeval_X]`. Conclude with `mul_ne_zero (root_ne_zero hm hi hX hw) hxb0 h0`. Rewrite using `[natDegree_minpoly_eq hm hi hw (fun y => y * xb) hf hinj, hdeg]`. Introduce `y hy γ hγ z hz m hm'`.
+
+Take `⟨r, hr, rfl⟩` from `(conj_roots hm hi hw (fun y => y * xb) hf y).1 hy`. Establish `hι : 1 ≤ Fintype.card (Fin d)` using `by rw [Fintype.card_fin]; exact hd`. Rewrite using `[htr γ m (gen_one_pow_eq_det Cv hι γ hγ hz hm'), hval r hr γ hγ z hz m hm', mul_left_comm, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `e : Cv.ι xb ^ (m * Fintype.card K ^ i) = Cv.ι xb ^ m`. Rewrite using `[mul_comm, pow_mul, ← map_pow, hxq i]`. Rewrite using `[map_mul, mul_pow, e, mul_comm]`. Rewrite using `[greenLab_eq Cv hC hd hs' hc' hlab]`. Conclude with `aroots_eq_map hm hi hw (fun y => y * xb) hf hinj`.
+-/
 theorem twist_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ)
     (τ τ' : FDRep ℂ (GL (Fin d) K)) (x : K) (hd : 1 ≤ d) (hx : x ≠ 0) (hs : Simple τ)
     (hc : IsCuspidal K τ) (hs' : Simple τ') (hc' : IsCuspidal K τ')
@@ -99,6 +126,13 @@ theorem twist_clause (Cv : LabelConv K) (hC : CuspParam K Cv) (d : ℕ)
   rw [greenLab_eq Cv hC hd hs' hc' hlab]
   exact aroots_eq_map hm hi hw (fun y => y * xb) hf hinj
 
+/- English proof (translation)
+Introduce `K _ _ _ Cv hC`. Set `O : LabelMap K Cv` to `{ lab := greenLab Cv lab_iso := greenLab_iso Cv lab_spec := fun d τ hd hs hc => by`. Take `⟨h1, h2, h3, h4, -⟩` from `greenLab_spec Cv hC hd hs hc`. Conclude with `⟨h1, h2, h3, by rw [h4, Fintype.card_fin]⟩`. Use `lab_inj := fun d τ τ' hd hs hc hs' hc' h => (hC d hd).2.2 τ τ' (greenLab Cv d τ) hs hc hs' hc' (greenLab_spec Cv hC hd hs hc) (by rw [h]; exact greenLab_spec Cv hC hd hs' hc')`.
+
+Use `lab_one := fun τ x hs hx htr => greenLab_one Cv hC τ x hs hx htr }`. Use `⟨O, ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `d α a hα τ τ' hd hs hc hs' hc' htr`. Conclude with `galois_clause Cv hC d α a hα τ τ' hd hs hc hs' hc' htr`. Introduce `d τ τ' hd hs hc hs' hc' htr`.
+
+Conclude with `dual_clause Cv hC d τ τ' hd hs hc hs' hc' htr`. Introduce `d τ τ' x hd hx hs hc hs' hc' htr`. Conclude with `twist_clause Cv hC d τ τ' x hd hx hs hc hs' hc' htr`. Introduce `d τ hd hs hc`. Conclude with `greenLab_spec Cv hC hd hs hc`.
+-/
 theorem exists_labelMap_twist_cuspLabel :
     ∀ (K : Type) [Field K] [Fintype K] [DecidableEq K] (C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv K),
       Formalism.IrreducibleCountingLemmas.TYPES.CuspParam K C → ∃ O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap K C,

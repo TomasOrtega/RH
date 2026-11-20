@@ -12,6 +12,15 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂
   (r : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
   (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) (π : N.X i)
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_eq_one_iff]`. Establish `hc1 : 1 ≤ (c : ℕ)`. Break down `Nat.eq_zero_or_pos (c : ℕ) with h | h` into its components or cases. Conclude with `absurd (Fin.ext h) hc`. Conclude with `h`.
+
+Establish `hct` using `c.isLt`. Use `⟨⟨⟨r + ((c : ℕ) - 1), by omega⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Unfold `blkG`. Rewrite using `[dif_neg (by simp)]`. Conclude with `Fin.ext (by simp; omega)`.
+
+Introduce and unpack `⟨a, ha⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Unfold `blkG at ha`. Use `split_ifs at ha with h`. Conclude with `absurd ha.symm hc`.
+
+Establish `h2` using `congrArg Fin.val ha`. Simplify using `at h2`. Conclude with `Fin.ext (by simp; omega)`.
+-/
 theorem card_blk (r t : ℕ) (c : Fin (t + 1)) (hc : c ≠ 0) :
     Fintype.card {a : Fin (r + t) // blkG r t a = c} = 1 := by
   rw [Fintype.card_eq_one_iff]
@@ -33,6 +42,9 @@ theorem card_blk (r t : ℕ) (c : Fin (t + 1)) (hc : c ≠ 0) :
       simp at h2
       exact Fin.ext (by simp; omega)
 
+/- English proof (translation)
+Unfold `blkG at ha`. Use `split_ifs at ha with h`. Conclude with `absurd rfl ha`. Conclude with `⟨⟨(a : ℕ) - r, by have := a.2; omega⟩, Fin.ext (by simp; omega)⟩`.
+-/
 theorem exists_natAdd (r t : ℕ) (a : Fin (r + t)) (ha : blkG r t a ≠ 0) :
     ∃ c : Fin t, a = Fin.natAdd r c := by
   unfold blkG at ha
@@ -40,6 +52,15 @@ theorem exists_natAdd (r t : ℕ) (a : Fin (r + t)) (ha : blkG r t a ≠ 0) :
   · exact absurd rfl ha
   · exact ⟨⟨(a : ℕ) - r, by have := a.2; omega⟩, Fin.ext (by simp; omega)⟩
 
+/- English proof (translation)
+Take `⟨hbd, hχ, -⟩` from `hN`. Use `⟨N.T_local i, N.T_sep i, hG1, hbd, fun c hc => card_blk R.r R.t c hc, fun g a ha => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `exists_natAdd R.r R.t a ha`. Establish `h1 : ((blk R (Fin.natAdd R.r c) : Fin (R.t + 1)) : ℕ) - 1 = (c : ℕ)`. Rewrite using `[show blk R (Fin.natAdd R.r c) = c.succ from blkG_natAdd R.r R.t c]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `(hχ g c).trans ?_` and prove the remaining obligations. Establish `h2` using `N.chi_def i ((c : ℕ) + 1) (by omega) (by have := c.2; omega)`. Establish `h3 : chiU N i ((c : ℕ) + 1) g = chiU N i 1 g * ((epsU N i g)⁻¹ ^ (c : ℕ))` using `by show N.chi i ((c : ℕ) + 1) g = _`.
+
+Rewrite using `[h2, MonoidHom.mul_apply]`. Use `congr 1`. Establish `h4 : (-(((((c : ℕ) + 1 : ℕ) : ℤ)) - 1)) = -((c : ℕ) : ℤ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h4, _root_.zpow_neg, zpow_natCast, MonoidHom.inv_apply, MonoidHom.pow_apply, inv_pow]`. Both sides reduce to the same expression. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+-/
 theorem primHyp_of (hN : NormAt N r ρ π)
     (hG1 : ∀ (γ : GE N) (k : ℕ), (fun x : N.X i => ((rO N i r x γ).charpolyRev).coeff k) ∈ N.T i) :
     PrimHyp (N.O i) (N.T i) (repX N r) π (blk R) (chiU N i 1) (epsU N i) := by

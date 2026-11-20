@@ -4,5 +4,8 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 Ad3.SchwartzSpaceL2
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.DoubleTate.sdz | exact GlobalTheory.CompanionTheory.DoubleTate.sdz | (intros; apply GlobalTheory.CompanionTheory.DoubleTate.sdz <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_vanishing_at_zero : Ad3.SchwartzSpaceL2.SDZ := by
   first | exact @GlobalTheory.CompanionTheory.DoubleTate.sdz | exact GlobalTheory.CompanionTheory.DoubleTate.sdz | (intros; apply GlobalTheory.CompanionTheory.DoubleTate.sdz <;> assumption)

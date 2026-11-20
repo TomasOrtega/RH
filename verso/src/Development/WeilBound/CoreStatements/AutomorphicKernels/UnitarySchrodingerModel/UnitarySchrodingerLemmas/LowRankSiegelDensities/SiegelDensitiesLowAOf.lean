@@ -33,6 +33,11 @@ section Alg
 
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[← GlobalTheory.CompanionTheory.SW.CountGen.hE_mulVec]`. Apply `hJ` to reduce the goal to its premises. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Use `congrArg (fun y => ((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ y) h0` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec]`.
+-/
 theorem isAnisoH_of_isometry (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (g : GL (Fin M) E)
     (hJ : IsAnisoH σ J) : IsAnisoH σ (cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E)) := by
   intro x hx
@@ -43,10 +48,18 @@ theorem isAnisoH_of_isometry (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) 
   have := congrArg (fun y => ((g⁻¹ : GL (Fin M) E) : Matrix (Fin M) (Fin M) E) *ᵥ y) h0
   simpa [Matrix.mulVec_mulVec] using this
 
+/- English proof (translation)
+Simplify using `[hE, hform, blockOne, Fin.sum_univ_succ]`.
+-/
 theorem hE_block_cons (σ : E →ₐ[F] E) {M : ℕ} (c : E) (J : Matrix (Fin M) (Fin M) E) (x : Fin M → E) :
     hE σ (blockOne c J) (Fin.cons 0 x) (Fin.cons 0 x) = hE σ J x x := by
   simp [hE, hform, blockOne, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite using `[← hE_block_cons σ c J x]`. Apply `h` to reduce the goal to its premises. Introduce `h0`. Apply `hx` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Simplify using `using congrFun h0 i.succ`.
+-/
 theorem isAnisoH_of_block (σ : E →ₐ[F] E) {M : ℕ} (c : E) (J : Matrix (Fin M) (Fin M) E)
     (h : IsAnisoH σ (blockOne c J)) : IsAnisoH σ J := by
   intro x hx
@@ -59,6 +72,9 @@ theorem isAnisoH_of_block (σ : E →ₐ[F] E) {M : ℕ} (c : E) (J : Matrix (Fi
 
 end Alg
 
+/- English proof (translation)
+The claim follows from `|x * y - 1| ≤ (|A| + |B| + |A| * |B|) / q ^ 2 := by have hq0 : 0 < q ^ 2 := by positivity set e : ℝ := 1 / q ^ 2 with he have he0 : 0 < e := by positivity have he1 : e ≤ 1 := by rw [he, div_le_one hq0] nlinarith have hx' : |x - 1| ≤ |A| * e := by refine hx.trans ?_ rw [he, mul_on …`.
+-/
 theorem arith2 {x y q A B : ℝ} (hq : 1 ≤ q) (hx : |x - 1| ≤ A / q ^ 2) (hy : |y - 1| ≤ B / q ^ 2) :
     |x * y - 1| ≤ (|A| + |B| + |A| * |B|) / q ^ 2 := by
   have hq0 : 0 < q ^ 2 := by positivity
@@ -92,6 +108,9 @@ theorem arith2 {x y q A B : ℝ} (hq : 1 ≤ q) (hx : |x - 1| ≤ A / q ^ 2) (hy
   rw [hfin]
   nlinarith
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ hM ha T hT hd`. Distinguish the cases in `h : 3 ≤ M`. Conclude with `GlobalTheory.T.siegel_weil_measure_rank_one F E σ hCM M J hJ h T hT hd`. Conclude with `hE1 F E σ hCM M J hJ (by omega) (ha.resolve_left h) T hT hd`.
+-/
 theorem one_vec_sw (hE1 : OneVecBinary) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     2 ≤ M → (3 ≤ M ∨ IsAnisoH σ J) → ∀ (T : Matrix (Fin 1) (Fin 1) E) (hT : ∀ a b, σ (T b a) = T a b),
@@ -108,6 +127,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.CompanionTheory.SW.GoodMass
 
+/- English proof (translation)
+The claim follows from `|(m (hermScal (Fv F v) σ s) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by by_cases h : 3 ≤ M · refine ⟨2, ?_⟩ filter_upwards [GlobalTheory.T.rank_one_local_density_almost_all F E σ hcm M J hJ h d b] with v hv lam hl m hm s hs have hint : s ∈ v.adicCompleti …`.
+-/
 theorem one_vec_bound (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E)
     (hJ : IsHermND σ J) (hM : 2 ≤ M) {d : ℕ} (b : Module.Basis (Fin d) F E) : ∃ C : ℝ,
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ (lam : Measure (Fv F v)), IsStdV v lam → ∀ m,
@@ -129,6 +151,9 @@ theorem one_vec_bound (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) (M : ℕ) 
     exact div_le_div_of_nonneg_left (by norm_num) (by positivity) (pow_le_pow_right₀ hq (by omega))
   · exact hE2 F E σ hcm M J hJ (by omega) d b
 
+/- English proof (translation)
+The claim follows from `|(m (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by intro n induction n with | zero => intro M J hJ _ T hT _ d b refine ⟨0, Filter.Eventually.of_forall ?_⟩ intro v lam hl m hm haveI : BorelSpace (Fv F v) := ⟨rfl⟩ have h0 := GlobalThe …`.
+-/
 theorem mass_good_lt (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     n < M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b),
     T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∃ C : ℝ,
@@ -191,6 +216,17 @@ theorem mass_good_lt (hE2 : OneVecBinaryMass) (hcm : IsCMExt F E σ) : ∀ (n M 
 
 end Main
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn T hT hdet d b lam hlam m hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`.
+
+Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`.
+
+Establish `hh` using `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh.2.1 n M`. Use `haveI hH := hh.2.2 n`. Establish `hlf` using `(GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Fv F v) hloc n _ _ (m v) hW hH (hm v) (hermOf (Fv F v) σ T hT)).1`. Conclude with `(GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b n M v).1.measure_lt_top`.
+
+Take `⟨C, hC⟩` from `mass_good_lt hE2 hCM n M J hJ hn T hT hdet d b`. Use `Summable.of_norm_bounded_eventually (g := fun v : HeightOneSpectrum (𝓞 F) => C * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2)) ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left C) ?_` and prove the remaining obligations. Use `filter_upwards [hC] with v hv`. Use `hv (lam v) (hlam v) (m v) (hm v)` as an intermediate fact. Rewrite using `[Real.norm_eq_abs, abs_abs]`.
+
+Simplify `this` using `[div_eq_mul_inv]`.
+-/
 theorem mass_summable_lt (hE2 : OneVecBinaryMass) :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ), n < M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (lam : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fv F v)), (∀ v, IsStdV v (lam v)) → ∀ (m : ∀ v : HeightOneSpectrum (𝓞 F), HermR (Fv F v) σ n → Measure (Fin n → Fin M → Fv F v ⊗[F] E)), (∀ v, IsGramFib (Fv F v) σ J n (coordW (Fv F v) b (lam v) n M) (coordHerm (Fv F v) σ b (lam v) n) (m v)) → (∀ v, m v (hermOf (Fv F v) σ T hT) (latV b v) < ⊤) ∧ Summable fun v => |(m v (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn T hT hdet d b lam hlam m hm
@@ -218,6 +254,25 @@ theorem mass_summable_lt (hE2 : OneVecBinaryMass) :
     rw [Real.norm_eq_abs, abs_abs]
     simpa [div_eq_mul_inv] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht hA n hn T hT hdet hT' hne`. Introduce `d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf m hminf hm`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`. Establish `hLinf : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1`.
+
+Establish `hLv : ∀ v : HeightOneSpectrum (𝓞 F), IsLocR (Fv F v)` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F`. Establish `haarOf : ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ lam' : Measure R, lam'.IsAddHaarMeasure → (∀ n' M' : ℕ, (coordW R b lam' n' M').IsAddHaarMeasure) ∧ ∀ n' : ℕ, (coordHerm R σ b lam' n').IsAddHaarMeasure`. Introduce `R _ _ _ _ _ hLoc lam' hl`. Take `⟨_, _, _, _, -⟩` from `hLoc`. Conclude with `(GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hCM R d b lam' hl).2`.
+
+Set `T1 : Matrix (Fin 1) (Fin 1) E` to `fun _ _ => algebraMap F E t`. Establish `hT1 : ∀ a b, σ (T1 b a) = T1 a b` using `fun _ _ => σ.commutes t`. Establish `htE : algebraMap F E t ≠ 0` using `(map_ne_zero _).2 ht`. Establish `hdet1 : T1.det ≠ 0`. Rewrite using `[Matrix.det_fin_one]`.
+
+Conclude with `htE`. Establish `hsw` using `one_vec_sw hE1 F E σ hCM M J hJ (by omega) hA T1 hT1 hdet1`. Take `⟨minf1, hminf1⟩` from `GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLinf 1 _ _ ((haarOf _ hLinf laminf hinf.1).1 1 M) ((haarOf _ hLinf laminf hinf.1).2 1)`. Establish `hex : ∀ v : HeightOneSpectrum (𝓞 F), ∃ m' : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin M → Fv F v ⊗[F] E), IsGramFib (Fv F v) σ J 1 (coordW (Fv F v) b (lam v) 1 M) (coordHerm (Fv F v) σ b (lam v) 1) m'` using `fun v => GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Fv F v) (hLv v) 1 _ _ ((haarOf _ (hLv v) (lam v) (hv v).1).1 1 M) ((haarOf _ (hLv v) (lam v) (hv v).1).2 1)`. Use `choose m1 hm1 using hex`.
+
+Establish `hEul` using `hsw d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf1 m1 hminf1 hm1`. Establish `hS1 : {X : Fin 1 → Fin M → E | gramE σ J X = T1} = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hX`.
+
+Conclude with `hne (X 0) (congrFun (congrFun hX 0) 0)`. Establish `hS : {X : Fin (n + 1) → Fin M → E | gramE σ J X = blockOne (algebraMap F E t) T} = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]`. Introduce `hX`.
+
+Apply `hne (X 0)` to reduce the goal to its premises. Simplify `congrFun (congrFun hX 0) 0` using `[gramE, blockOne]`. Establish `hz` using `((GlobalTheory.T.euler_product_measure_zero F E σ hCM d b 1 M _ 1 _ _).1 hEul (SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS1))`. Establish `hvan : minf (hermOf (Ainf F) σ (blockOne (algebraMap F E t) T) hT') = 0 ∨ ∃ v, m v (hermOf (Fv F v) σ (blockOne (algebraMap F E t) T) hT') = 0`. Break down `hz with h | h | ⟨v, h⟩` into its components or cases.
+
+Conclude with `absurd h one_ne_zero`. Conclude with `Or.inl (SwEmpty.fibre_zero_of_one σ hCM J hJ (Ainf F) hLinf b laminf hinf.1 t ht T hT' T1 rfl hT1 minf1 minf hminf1 hminf h)`. Conclude with `Or.inr ⟨v, SwEmpty.fibre_zero_of_one σ hCM J hJ (Fv F v) (hLv v) b (lam v) (hv v).1 t ht T hT' T1 rfl hT1 (m1 v) (m v) (hm1 v) (hm v) h⟩`. Establish `hdetB : (blockOne (algebraMap F E t) T).det ≠ 0`. Rewrite using `[((GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hCM n T t).1)]`.
+
+Conclude with `mul_ne_zero htE hdet`. Take `⟨hfin, hsum⟩` from `mass_summable_lt hE2 F E σ hCM M J hJ (n + 1) (by omega) (blockOne (algebraMap F E t) T) hT' hdetB d b lam (fun v => hv v) m hm`. Rewrite using `[SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]`. Conclude with `(GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan`.
+-/
 theorem notRep_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → (3 ≤ M ∨ IsAnisoH σ J) → ∀ n : ℕ, n + 2 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), (∀ x : Fin M → E, hE σ J x x ≠ algebraMap F E t) → SWMeas σ J (blockOne (algebraMap F E t) T) hT' := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht hA n hn T hT hdet hT' hne
   intro d b laminf lam hinf hv μ 𝓕 hμ h𝓕 minf m hminf hm
@@ -275,6 +330,39 @@ theorem notRep_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Typ
   rw [SwEmpty.thetaMeas_of_empty σ J μ 𝓕 _ hS]
   exact (GlobalTheory.T.euler_product_measure_zero F E σ hCM d b (n + 1) M 0 1 _ _).2.2 hfin hsum hvan
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ t ht hA n hn T hT hdet hT' hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.T.infinite_adeles_local_ring_totally_real F hCM.1`. Establish `hLv : ∀ v, IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F`. Use `haveI hBi : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI hBv : ∀ v, BorelSpace (Fv F v) := fun v => ⟨rfl⟩`.
+
+Establish `hta : algebraMap F E t ≠ 0` using `by simpa using ht`. Take `⟨hdetb, hhermb, -, -⟩` from `GlobalTheory.T.block_one_det_hermitian_gram F E σ hCM M J t`. Establish `hJ' : IsHermND σ (blockOne (algebraMap F E t) J)` using `⟨hhermb hJ.1, by rw [hdetb]; exact mul_ne_zero hta hJ.2⟩`. Establish `hdet' : (blockOne (algebraMap F E t) T).det ≠ 0`. Rewrite using `[(GlobalTheory.T.block_one_det_hermitian_gram F E σ hCM n T t).1]`.
+
+Conclude with `mul_ne_zero hta hdet`. Take `⟨m₁inf, hm₁inf⟩` from `Step.loc_families σ hCM _ hJ' (Ainf F) hLi b laminf hinf.1 1`. Take `⟨m'inf, hm'inf⟩` from `Step.loc_families σ hCM J hJ (Ainf F) hLi b laminf hinf.1 n`. Use `choose m₁ hm₁ using fun v => Step.loc_families σ hCM _ hJ' (Fv F v) (hLv v) b (lam v) (hlam v).1 1`. Use `choose m' hm' using fun v => Step.loc_families σ hCM J hJ (Fv F v) (hLv v) b (lam v) (hlam v).1 n`.
+
+Take `⟨⟨μ₁, hμ₁⟩, hFV⟩` from `GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ`. Take `⟨⟨𝓕₁, h𝓕₁⟩, -⟩` from `hFV μ₁ hμ₁`. Take `⟨cinf, c, hc, hcinf, hcv⟩` from `GlobalTheory.T.scalar_multiplication_euler_product F E σ hCM (algebraMap F E t) hta`. Establish `hKi : (coordK (Ainf F) b laminf).map (fun y => inclR (Ainf F) (algebraMap F E t) * y) = cinf • coordK (Ainf F) b laminf`. Take `⟨h1, h2, h3, h4, -⟩` from `hLi`.
+
+Conclude with `hcinf _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hinf.1).1`. Establish `hKv : ∀ v, (coordK (Fv F v) b (lam v)).map (fun y => inclR (Fv F v) (algebraMap F E t) * y) = c v • coordK (Fv F v) b (lam v)` using `fun v => by`. Take `⟨h1, h2, h3, h4, -⟩` from `hLv v`. Conclude with `hcv v _ (GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1).1`. Take `⟨-, -, -, -, -, -, -, S₃, hS₃⟩` from `GlobalTheory.T.unit_product_closure_properties F cinf 1 c (fun _ => 1) hc ⟨by simp, by simp⟩`.
+
+Establish `hE'` using `hSW d b laminf lam hinf hlam μ₁ 𝓕₁ hμ₁ h𝓕₁ m'inf (fun v => m' v) hm'inf hm'`. Set `T1 : Matrix (Fin 1) (Fin 1) E` to `fun _ _ => algebraMap F E t`. Establish `hT1 : ∀ a b, σ (T1 b a) = T1 a b` using `fun a b => by simp [T1]`. Establish `hdet1 : T1.det ≠ 0` using `by rw [Matrix.det_fin_one]; exact hta`. Establish `hE₁` using `one_vec_sw hE1 F E σ hCM (M + 1) _ hJ' (by omega) (hA.imp_left (by omega)) T1 hT1 hdet1 d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 m₁inf m₁ hm₁inf hm₁`.
+
+Take `⟨β, hβ1, -, hβ2⟩` from `GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hCM T1 hT1`. Establish `hβ : β = t` using `(algebraMap F E).injective (congrFun (congrFun hβ1 0) 0).symm`. Rewrite `hβ2` using `[hβ]`. Simplify using `only [hβ2] at hE₁`. Take `⟨-, hsum₁, S₁, hS₁⟩` from `hE₁`.
+
+Establish `hsum'` using `hE'.2.1`. Establish `hgood` using `mass_summable_lt hE2 F E σ hCM (M + 1) _ hJ' (n + 1) (by omega) _ hT' hdet' d b lam hlam m hm`. Use `⟨hgood.1, hgood.2, ?_⟩` and prove the remaining obligations. Take `⟨S₂, hS₂⟩` from `Step.theta_hypothesis F E σ hCM M J hJ t ht n d b _ _ _ hE'`. Establish `hG` using `GlobalTheory.T.local_density_block_one_eventually F E σ hCM M J hJ t ht n T hT hdet hT' d b`.
+
+Establish `hSG` using `GlobalTheory.T.local_measures_orthogonal_sum_almost_all_places F E σ hCM M J hJ t ht n T hT hdet d b`. Use `⟨S₁ ∪ S₂ ∪ S₃ ∪ (Filter.eventually_cofinite.1 hG).toFinset ∪ (Filter.eventually_cofinite.1 hSG).toFinset, fun S hS φinf φ hφinf hφ => ?_⟩` and prove the remaining obligations. Establish `hS1 : S₁ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS2 : S₂ ⊆ S` using `fun x hx => hS (by simp [hx])`. Establish `hS3 : S₃ ⊆ S` using `fun x hx => hS (by simp [hx])`.
+
+Establish `hS4 : (Filter.eventually_cofinite.1 hG).toFinset ⊆ S` using `fun x hx => hS (by`. Simplify using `only [Finset.mem_union]`. Conclude with `Or.inl (Or.inr hx))`. Establish `hS5 : (Filter.eventually_cofinite.1 hSG).toFinset ⊆ S` using `fun x hx => hS (by`. Simplify using `only [Finset.mem_union]`.
+
+Conclude with `Or.inr hx)`. Take `⟨hc1, hc2⟩` from `hS₃ S hS3`. Take `⟨Ψinf, hΨinfm, hΨinf1, hΨinf2⟩` from `GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Ainf F) hLi d b laminf hinf.1 minf m₁inf m'inf hminf hm₁inf hm'inf cinf hKi φinf hφinf`. Use `choose Ψ hΨm hΨ1 hΨ2 using fun v => GlobalTheory.T.local_density_block_one_product F E σ hCM M J hJ t ht n T hT hdet hT' (Fv F v) (hLv v) d b (lam v) (hlam v).1 (m v) (m₁ v) (m' v) (hm v) (hm₁ v) (hm' v) (c v) (hKv v) (φ v) (hφ v)`. Establish `hHv : ∀ v, (coordW (Fv F v) b (lam v) n M).IsAddHaarMeasure ∧ (coordHerm (Fv F v) σ b (lam v) n).IsAddHaarMeasure` using `fun v => by`.
+
+Take `⟨h1, h2, h3, h4, -⟩` from `hLv v`. Establish `hh` using `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1`. Conclude with `⟨hh.2.1 n M, hh.2.2 n⟩`. Establish `hHyp` using `hS₂ S hS2 φinf φ Ψinf Ψ hφinf hφ hΨinf1 hΨ1 (fun v hv g => Step.of_cofinite hSG hS5 hv _ _ (m' v) (hHv v).1 (hHv v).2 (hm' v) g)`. Use `set τ' := ENNReal.ofReal (∏' v : {v // v ∉ S}, (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal) with hτ'`.
+
+Establish `hPm : Measurable (pureL b S Ψinf Ψ)` using `GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b 1 (M + 1) S Ψinf Ψ hΨinfm hΨm`. Establish `hth` using `GlobalTheory.T.lintegral_thetaMeas_block_one_eq_rank_one F E σ hCM M J hJ t ht n T μ 𝓕 hμ h𝓕 μ₁ 𝓕₁ hμ₁ h𝓕₁ (pureL b S φinf φ) (fun y => τ' * pureL b S Ψinf Ψ y) (GlobalTheory.T.pure_adelic_function_measurable F E σ hCM d b (n + 1) (M + 1) S φinf φ hφinf hφ) (hPm.const_mul τ') hHy …`. Establish `hone` using `hS₁ S hS1 Ψinf Ψ hΨinfm hΨm`. Rewrite using `[hth, lintegral_const_mul _ hPm]`. Establish `hone' : ∫⁻ X, pureL b S Ψinf Ψ X ∂(thetaMeas σ _ μ 𝓕 {y : Fin 1 → Fin (M + 1) → E | gramE σ (blockOne (algebraMap F E t) J) y = fun _ _ => algebraMap F E t}) = _` using `hone`.
+
+Rewrite using `[hone']`. Establish `hprod : (∫⁻ X, φinf X ∂(minf (hermOf (Ainf F) σ _ hT'))) * ∏ v ∈ S, ∫⁻ X, φ v X ∂(m v (hermOf (Fv F v) σ _ hT')) = (∫⁻ y, Ψinf y ∂(m₁inf (hermScal (Ainf F) σ (algebraMap F (Ainf F) t)))) * ∏ v ∈ S, ∫⁻ y, Ψ v y ∂(m₁ v (hermScal (Fv F v) σ (algebraMap F (Fv F v) t)))`. Establish `hone2 : (cinf : ℝ≥0∞) * ∏ v ∈ S, (c v : ℝ≥0∞) = 1` using `by exact_mod_cast hc2`. Rewrite using `[hΨinf2, Finset.prod_congr rfl (fun v _ => hΨ2 v), Finset.prod_mul_distrib, Finset.prod_pow]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `htail : ENNReal.ofReal (∏' v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ _ hT') (latV b v.1)).toReal) = τ' * ENNReal.ofReal (∏' v : {v // v ∉ S}, (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal)`. Establish `hA` using `GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal) (hsum'.subtype _)`. Establish `hB` using `GlobalTheory.T.infinite_product_multipliable {v // v ∉ S} (fun v => (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal) (hsum₁.subtype _)`. Establish `hcong : ∀ v : {v // v ∉ S}, (m v.1 (hermOf (Fv F v.1) σ _ hT') (latV b v.1)).toReal = (m' v.1 (hermOf (Fv F v.1) σ T hT) (latV b v.1)).toReal * (m₁ v.1 (hermScal (Fv F v.1) σ (algebraMap F (Fv F v.1) t)) (latV b v.1)).toReal` using `fun v => by`. Rewrite using `[Step.of_cofinite hG hS4 v.2 (lam v.1) (hlam v.1).1 (m v.1) (m₁ v.1) (m' v.1) (hm v.1) (hm₁ v.1) (hm' v.1) (c v.1) (hKv v.1), hc1 v.1 v.2]`.
+
+Simplify using `[ENNReal.toReal_mul]`. Rewrite using `[tprod_congr hcong, hA.1.tprod_mul hB.1, ENNReal.ofReal_mul (hA.2.2.2 fun _ => ENNReal.toReal_nonneg)]`. Rewrite using `[hprod, htail]`. Simplify using `only [ENNReal.coe_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ t : F, t ≠ 0 → (2 ≤ M ∨ IsAnisoH σ (blockOne (algebraMap F E t) J)) → ∀ n : ℕ, n + 1 ≤ M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b), T.det ≠ 0 → ∀ (hT' : ∀ a b, σ (blockOne (algebraMap F E t) T b a) = blockOne (algebraMap F E t) T a b), SWMeas σ J T hT → SWMeas σ (blockOne (algebraMap F E t) J) (blockOne (algebraMap F E t) T) hT' := by
   intro F E _ _ _ _ _ σ hCM M J hJ t ht hA n hn T hT hdet hT' hSW d b laminf lam hinf hlam μ 𝓕 hμ h𝓕 minf m hminf hm
   classical
@@ -376,6 +464,21 @@ theorem step_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type)
   simp only [ENNReal.coe_one, one_mul]
   ring
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `M J hJ _ _ T hT hd`. Conclude with `GlobalTheory.T.siegel_weil_measure_rank_zero F E σ hσ M J hJ T hT hd`.
+
+Consider the case `succ n ih`. Introduce `M J hJ hn hR T hT hd`. Distinguish the cases in `hbig : n + 1 + 2 ≤ M`. Conclude with `GlobalTheory.T.siegel_weil_measure_of_rank_small_or_zero F E σ hσ (n + 1) M J hJ (Or.inr hbig) T hT hd`. Establish `ha : IsAnisoH σ J` using `hR.resolve_left hbig`.
+
+Establish `hM : n + 2 ≤ M` using `by omega`. Take `⟨t, x, ht, hx⟩` from `GlobalTheory.CompanionTheory.SW.HermRep.exists_repr F E σ hσ n T ⟨hT, hd⟩`. Take `⟨g, T₁, hT₁, hb, -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ n T ⟨hT, hd⟩ t x ht hx`. Take `⟨hdet, hblk, -, -⟩` from `GlobalTheory.CompanionTheory.SW.BlockAlg.block_alg F E σ hσ n T₁ t`. Establish `hT'` using `hblk hT₁.1`.
+
+Establish `htE : algebraMap F E t ≠ 0`. Simplify using `using ht`. Establish `hd' : (blockOne (algebraMap F E t) T₁).det ≠ 0`. Rewrite using `[hdet]`. Conclude with `mul_ne_zero htE hT₁.2`.
+
+Use `GlobalTheory.T.siegel_weil_measure_of_congruent_target F E σ hσ M J hJ (n + 1) T hT hd g _ hT' hb ?_` and prove the remaining obligations. Distinguish the cases in `hrep : ∃ y : Fin M → E, hE σ J y y = algebraMap F E t`. Take `⟨y, hy⟩` from `hrep`. Take `⟨M₁, rfl⟩ : ∃ M₁, M = M₁ + 1` from `⟨M - 1, by omega⟩`. Take `⟨g', J₁, hJ₁, hb', -⟩` from `GlobalTheory.CompanionTheory.SW.AlgSplit.split_anisotropic F E σ hσ M₁ J hJ t y ht hy`.
+
+Establish `ha' : IsAnisoH σ (blockOne (algebraMap F E t) J₁)`. Rewrite using `[hb']`. Apply the tactic sequence `exact isAnisoH_of_isometry σ J g' ha`. Use `GlobalTheory.T.siegel_weil_measure_of_congruent_form F E σ hσ (M₁ + 1) J hJ g' _ hb' (n + 1) _ hT' hd' ?_` and prove the remaining obligations. Conclude with `step_lt hE1 hE2 F E σ hσ M₁ J₁ hJ₁ t ht (Or.inr ha') n (by omega) T₁ hT₁.1 hT₁.2 hT' (ih M₁ J₁ hJ₁ (by omega) (Or.inr (isAnisoH_of_block σ _ J₁ ha')) T₁ hT₁.1 hT₁.2)`.
+
+Conclude with `notRep_lt hE1 hE2 F E σ hσ M J hJ t ht (Or.inr ha) n hM T₁ hT₁.1 hT₁.2 hT' (fun y hy => hrep ⟨y, hy⟩)`.
+-/
 theorem swMeas_lt (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n M : ℕ)
     (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → n < M → (n + 2 ≤ M ∨ IsAnisoH σ J) →
@@ -442,6 +545,29 @@ def SiegelDensitiesLowA : Prop :=
       meanC μ 𝓕 (thetaS F E σ M J Φ {X | gramE σ J X = T}) =
         ginf (hermOf (Ainf F) σ T hT) * ∏' v, gv v (hermOf (Fv F v) σ T hT)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn hR T hT hdet d b Φ Φinf Φf Φv hsch hpure hprod`. Establish `hfv : FinVol F E σ M J` using `GlobalTheory.T.unitary_group_finite_volume F E σ hCM M J hJ`. Use `⟨hfv.1, fun μ hμ => ⟨(hfv.2 μ hμ).1, fun 𝓕 h𝓕 => ⟨GlobalTheory.CompanionTheory.SW.CharEx.exists_isCharAF F, fun ψ hψ => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨⟨laminf, hli⟩, hlv⟩` from `GlobalTheory.T.exists_standard_local_measures F`. Use `choose lam hlam using hlv`.
+
+Take `⟨ci, c, hc1, hWi, hWv⟩` from `GlobalTheory.T.exists_unit_scaling_selfdual_adelic_measures F E σ hCM M J hJ d b laminf lam hli hlam ψ hψ n`. Take `⟨ei, e, he1, hHi, hHv⟩` from `GlobalTheory.T.exists_unit_scaling_selfdual_herm_measures F E σ hCM d b laminf lam hli hlam ψ hψ n`. Take `⟨hci0, hc0, -, -, hdiv, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ci ei c e hc1 he1`. Take `⟨hei0, he0, -⟩` from `GlobalTheory.T.unit_product_closure_properties F ei ci e c he1 hc1`. Use `⟨⟨_, (hWi _).2 rfl⟩, fun μinf hμinf => ⟨⟨_, (hHi _).2 rfl⟩, fun νinf hνinf => ⟨⟨_, fun v => (hWv v _).2 rfl⟩, fun μv hμv => ⟨⟨_, fun v => (hHv v _).2 rfl⟩, fun νv hνv => ?_⟩⟩⟩⟩` and prove the remaining obligations.
+
+Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Use `haveI : ∀ v : HeightOneSpectrum (𝓞 F), BorelSpace (Fv F v) := fun _ => ⟨rfl⟩`. Establish `hLi : IsLocR (Ainf F)` using `GlobalTheory.CompanionTheory.SW.isLocR_Ainf F hCM.1`. Establish `hLv : ∀ v : HeightOneSpectrum (𝓞 F), IsLocR (Fv F v)` using `fun v => GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Establish `key : ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ l : Measure R, l.IsAddHaarMeasure → ∃ m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E), IsGramFib R σ J n (coordW R b l n M) (coordHerm R σ b l n) m ∧ (∀ S, IsL …`.
+
+Introduce `R _ _ _ _ _ hR l hl`. Take `⟨i1, i2, i3, i4, -⟩` from `id hR`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b l hl`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ R hR n _ _ (hW n M) (hH n)`. Use `⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm S).1, ?_⟩` and prove the remaining obligations.
+
+Introduce `a a' ha ha' h1 h2 φ hφ hφc`. Establish `h3` using `GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ R hR n _ _ m (hW n M) (hH n) hm a a' ha ha'`. Establish `h4` using `(GlobalTheory.T.gram_fiber_integral_isContDensityOn F E σ hCM M J hJ R hR n _ _ _ h1 h2 h3 φ hφ hφc).1`. Simplify `h4` using `only [integral_smul_nnreal_measure]`. Establish `keyi : ∃ m : HermR (Ainf F) σ n → Measure (Fin n → Fin M → Ainf F ⊗[F] E), IsGramFib (Ainf F) σ J n (coordW (Ainf F) b laminf n M) (coordHerm (Ainf F) σ b laminf n) m ∧ (∀ S, IsLocallyFiniteMeasure (m S)) ∧ Continuous Φinf ∧ (∀ S : HermR (Ainf F) σ n, IsUnit (S : Matrix (Fin n) ( …`.
+
+Take `⟨i1, i2, i3, i4, -⟩` from `id hLi`. Take `⟨-, hW, hH⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Ainf F) d b laminf hli.1`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_gram_fiber_measures F E σ hCM M J hJ (Ainf F) hLi n _ _ (hW n M) (hH n)`. Take `⟨hcI, -, hiI⟩` from `hB F E σ hCM M J hJ n _ _ m (hW n M) (hH n) hm Φinf hsch`. Use `⟨m, hm, fun S => (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm S).1, hcI, hiI, ?_⟩` and prove the remaining obligations.
+
+Introduce `a a' ha ha' h1 h2`. Establish `h3` using `GlobalTheory.T.gram_fiber_measures_scaling F E σ hCM M J hJ (Ainf F) hLi n _ _ m (hW n M) (hH n) hm a a' ha ha'`. Establish `h4` using `(hB F E σ hCM M J hJ n _ _ _ h1 h2 h3 Φinf hsch).2.1`. Simplify `h4` using `only [integral_smul_nnreal_measure]`. Take `⟨minf, hmi, hfi, hcI, hiI, hdi⟩` from `keyi`.
+
+Use `choose m hm hf hd using fun v => key (Fv F v) (hLv v) (lam v) (hlam v).1`. Establish `e1` using `(hWi μinf).1 hμinf`. Establish `e2` using `(hHi νinf).1 hνinf`. Establish `e3` using `fun v => (hWv v (μv v)).1 (hμv v)`. Establish `e4` using `fun v => (hHv v (νv v)).1 (hνv v)`.
+
+Establish `hSW : SWMeas σ J T hT` using `swMeas_lt hE1 hE2 F E σ hCM n M J hJ hn hR T hT hdet`. Establish `hE` using `hSW d b laminf lam hli hlam μ 𝓕 hμ h𝓕 minf m hmi hm`. Take `⟨hmeas, hint, hmul, hI⟩` from `euler_int_integrable F E σ hCM d b n M _ _ _ hE (hfi _) (fun v => hf v _) Φ Φinf Φf Φv hcI (hiI _ (isUnit_det_hermOf (Ainf F) σ T hT hdet)) hpure hprod`. Establish `hθ` using `GlobalTheory.T.siegel_mean_value_integrable F E σ hCM M J hJ μ 𝓕 hμ h𝓕 n _ Φ hmeas hint`. Take `⟨r1, r2⟩` from `GlobalTheory.CompanionTheory.SW.TopDens.rescale_tprod (ci / ei) (fun v => c v / e v) hdiv.1 hdiv.2 (∫ X, Φinf X ∂(minf (hermOf (Ainf F) σ T hT))) _ hmul`.
+
+Use `⟨fun S => (ci / ei) • ∫ X, Φinf X ∂(minf S), fun v S => (c v / e v) • ∫ X, Φv v X ∂(m v S), ?_, fun v => ?_, r1, ?_⟩` and prove the remaining obligations. Use `hdi ci ei hci0 hei0 (e1 ▸ hμinf.1) (e2 ▸ hνinf.1)` as an intermediate fact. Rewrite `this` using `[← e1, ← e2]`. Then use the resulting hypothesis. Use `hd v (c v) (e v) (hc0 v) (he0 v) (e3 v ▸ (hμv v).1) (e4 v ▸ (hνv v).1) (Φv v) (hpure.1 v).1.continuous (hpure.1 v).2` as an intermediate fact. Rewrite `this` using `[← e3 v, ← e4 v]`. Then use the resulting hypothesis.
+
+Rewrite using `[hθ, hI]`. Conclude with `r2.symm`.
+-/
 theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB : SchwartzDensInf) :
     SiegelDensitiesLowA := by
   intro F E _ _ _ _ _ σ hCM M J hJ n hn hR T hT hdet d b Φ Φinf Φf Φv hsch hpure hprod
@@ -522,6 +648,9 @@ theorem siegelDensitiesLowA_of (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) (hB
   · rw [hθ, hI]
     exact r2.symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ ha T hT hd` and use `swMeas_lt hE1 hE2 F E σ hσ n (n + 1) J hJ (by omega) (Or.inr ha) T hT hd`.
+-/
 theorem swMeas_edge_aniso (hE1 : OneVecBinary) (hE2 : OneVecBinaryMass) : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin (n + 1)) (Fin (n + 1)) E), IsHermND σ J → IsAnisoH σ J →

@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 2000000
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J La hLa`. Take `⟨-, hA⟩` from `GlobalTheory.T.lattice_tuple_adelic_point_step_zero t std J La`. Establish `hb` using `GlobalTheory.T.lattice_tuple_bases_span_at_places t std J 0 La hLa`. Take `⟨hγ, κ, hκ⟩` from `pt00 J.one La.1 La.2 _ hb _ hA`. Establish `hc : clsAt X H 0 La.1 La.2 = J.e0 (levelZeroClass J.one La.1 La.2)` using `J.cls0 La.1 La.2 hLa`.
+
+Take `⟨κ', hκ'⟩` from `(J.y0 (levelZeroClass J.one La.1 La.2)).imp fun _ h => h.1`. Establish `hU` using `(J.lev0 (J.chart std 0 (Nat.zero_le _) La)).2.2.1`. Establish `hm : κ'.1⁻¹ * κ.1 ∈ (J.Gd.forms u).cls0.lev.U` using `Subgroup.mul_mem _ (Subgroup.inv_mem _ κ'.2) κ.2`. Use `⟨rationalElementZero J.one La.1 La.2, hγ, ⟨κ'.1⁻¹ * κ.1, by rw [hU]; exact hm⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hκ', hκ]`.
+
+Use `show _ = _ * _ * (κ'.1⁻¹ * κ.1)`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.TwV.Joint.pt_zero_eq_rat_mul_rep_mul : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G.LatInst D} {Kc : G.Consts} {Dx : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Dx cX} (t : KerEntTied ex) {u : D.what₂.Word} {μ : D.what₂.Tup} {w : D.what₂.places.Pl} {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {Lv : Levels (Gl.Fl u w hg)} {I : CmpJIn ex.tw u μ w hg Lv} {H : CmpJHyp ex.cmp I} {X : LabIn I} [Fact (D.what₂.places.resChar w).Prime] (std : Lt.StdAtW D Gl u w hg) (J : Joint t H X), ∀ (La : (sysS H X std).Lt 0), ((sysS H X std).Pj 0).IsLatTup La.2 → ∃ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)), ∃ κ : ((J.St 0 (Nat.zero_le _)).K (J.chart std 0 (Nat.zero_le _) La)).lev.U, (J.pt std 0 (Nat.zero_le _) La).1 = ratA D.host.F γ * ((J.St 0 (Nat.zero_le _)).y (clsAt X H 0 La.1 La.2)).1 * κ.1 := by
   intro D L hT Gi Gl Kc Dx cX ex t u μ w hg Lv I H X _ std J La hLa
   obtain ⟨-, hA⟩ := GlobalTheory.T.lattice_tuple_adelic_point_step_zero t std J La

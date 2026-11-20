@@ -15,6 +15,9 @@ open MonoidalCategory CartesianMonoidalCategory
 
 namespace GlobalTheory.ArcDatumExists
 
+/- English proof (translation)
+Establish `h1 : IsUnit (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K) (arcDet Dw K))` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `h2 : Matrix.det (Matrix.of fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, i, k⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) (LaurentSeries K))) ∣ arcDet Dw K` using `Finset.dvd_prod_of_mem (fun τ : E →+* ℂ => Matrix.det (Matrix.of fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, i, k⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) (LaurentSeries K)))) (Finset.mem_univ τ)`. Establish `h3` using `isUnit_of_dvd_unit (map_dvd (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K)) h2) h1`. Rewrite `h3` using `[RingHom.map_det]`. Conclude with `h3`.
+-/
 theorem isUnit_det_letM {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (Dw : Datum H)
     (K : Type) [Field K] (τ : E →+* ℂ) : IsUnit (letM Dw K τ).det := by
   have h1 : IsUnit (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K)) (ArcS Dw K) (arcDet Dw K)) :=
@@ -28,10 +31,18 @@ theorem isUnit_det_letM {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   rw [RingHom.map_det] at h3
   exact h3
 
+/- English proof (translation)
+Set `_` to `f.toAlgebra`. Conclude with `(inferInstance : Module.Flat K S)`.
+-/
 theorem flat_of_field {K S : Type} [Field K] [CommRing S] (f : K →+* S) : f.Flat := by
   let _ := f.toAlgebra
   exact (inferInstance : Module.Flat K S)
 
+/- English proof (translation)
+Establish `: Scheme.Hom.appLE (𝟙 X) U U h = 𝟙 _`. Unfold `Scheme.Hom.appLE`. Rewrite using `[Scheme.Hom.id_app]`. Conclude with `(Category.id_comp _).trans (X.presheaf.map_id _)`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem appLE_id_apply {X : Scheme.{0}} (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ U) (r : Γ(X, U)) :
     (Scheme.Hom.appLE (𝟙 X) U U h).hom r = r := by
   have : Scheme.Hom.appLE (𝟙 X) U U h = 𝟙 _ := by
@@ -40,6 +51,15 @@ theorem appLE_id_apply {X : Scheme.{0}} (U : X.Opens) (h : U ≤ 𝟙 X ⁻¹ᵁ
     exact (Category.id_comp _).trans (X.presheaf.map_id _)
   rw [this]; rfl
 
+/- English proof (translation)
+Take `⟨pm, h1, h2, h3⟩` from `h`. Establish `hid : spMap (RingHom.id S) = 𝟙 _`. Unfold `spMap`. Simplify using the standard rewrite rules. Establish `hpm : pm = 𝟙 _`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite `h2` using `[hid]`. Simplify using `using h2`. Simplify using `using h1`. Substitute `hpm` using the available equality.
+
+Establish `h4` using `h3 i le_rfl`. Establish `hs : scal x (1 : S) i = 1`. Unfold `scal Out.liftFun`. Simplify using the standard rewrite rules. Rewrite `h4` using `[hs, one_mul]`.
+
+Rewrite using `[← h4]`. Conclude with `appLE_id_apply _ _ _`.
+-/
 theorem sec_eq_of_secBC_id_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (s s' : LB.Sec (PPx x))
     (h : SecBC (RingHom.id S) 1 x x s s') (i : (PPx x).ι) : s'.f i = s.f i := by
@@ -60,6 +80,11 @@ theorem sec_eq_of_secBC_id_one {E : Type} [Field E] [NumberField E] [IsCMField E
   rw [← h4]
   exact appLE_id_apply _ _ _
 
+/- English proof (translation)
+Take `⟨x, xo, u, tan, eig, bas, s, gen⟩` from `yF`. Take `⟨hx, hu, hs⟩` from `hchg`. Simplify using `only at hx hu hs`. Substitute `hx` using the available equality. Take `⟨z, t', m1, m2, φ, -, -, -, h0, hm, -, θ, w1, w2, σ', s1, θ2, hθ, r1, r2, i1, i2, ps, hg⟩` from `hfr`.
+
+Take `⟨σ, fam, θ', a1, a2, a3, a4⟩` from `hθ`. Use `⟨σ, fam, θ', θ, hth, a1, a2, a3, a4, t', m1, m2, w1, w2, σ', s1, θ2, ⟨φ, h0, hm⟩, r1, r2, i1, i2, ps, ?_⟩` and prove the remaining obligations. Introduce `g g1 g2 j h`. Rewrite using `[hg g g1 g2 j h]`. Conclude with `congrArg _ (sec_eq_of_secBC_id_one _ _ _ hs _).symm`.
+-/
 theorem isArcPt3At_of_frChg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
     {K₁ : Type} [Field K₁] [Algebra c.F K₁] {b : O →+* K₁} {a : ArcIn Dw l β K₁ b} {χ : Sp (PowerSeries K₁) ⟶ Y.X}
@@ -77,6 +102,19 @@ theorem isArcPt3At_of_frChg {E : Type} [Field E] [NumberField E] [IsCMField E] {
   rw [hg g g1 g2 j h]
   exact congrArg _ (sec_eq_of_secBC_id_one _ _ _ hs _).symm
 
+/- English proof (translation)
+Introduce `hL hL2 E _ _ _ H Dw l Xo c K₁ _ _ Wp Y hN4 a`. Establish `: CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap c.F K₁).injective`. Take `⟨χ, hχ, -⟩` from `hN4 K₁ ((algebraMap c.F K₁).comp (c.V Wp).subtype) 1 (a.restrict (c.V Wp).subtype) (Or.inl ⟨Field.toIsField K₁, rfl⟩)`. Take `⟨hs, -, hj, hW⟩` from `(hχ χ).1 rfl`. Take `⟨W⟩` from `(Y.hasArcData_iff _ _ _ _ χ).1 hW`.
+
+Use `⟨χ, W, ?_, fun e he th hth μ jj => ?_⟩` and prove the remaining obligations. Take `⟨e, -, he⟩` from `GlobalTheory.ConstBasis.exists_arcBasis hL hL2 E H Dw l Xo c _ _ Y K₁ _ (a.restrict (c.V Wp).subtype) χ W (fun τ => (algebraMap c.F K₁).comp (embK c τ)) ((algebraMap K₁ (FractionRing K₁)).comp (algebraMap c.F K₁)) rfl (fun _ _ => rfl) (GlobalTheory.JointModelGuards.exists_root_an …`. Conclude with `⟨e, he⟩`. Establish `hcomp : (algebraMap c.F (ArcS Dw K₁)).comp (c.V Wp).subtype = (arcι Dw K₁).comp ((PowerSeries.C (R` using `K₁)).comp ((algebraMap c.F K₁).comp (c.V Wp).subtype)) := by`. Use extensionality with `r`.
+
+Simplify using `only [RingHom.comp_apply]`. Conclude with `arcS_pin Dw K₁ ((c.V Wp).subtype r)`. Take `⟨z, hz1, hz2⟩` from `arcPt_point (Dw := Dw) Y ((algebraMap c.F K₁).comp (c.V Wp).subtype) hcomp χ hs (fun x hx => hj x (by rwa [map_one, one_mul]))`. Establish `hnz : ThNZ th` using `(GlobalTheory.ThetaOverField.nonzero_generates hL hL2 K₁ a.D₀ th).1.1 hth`. Establish `hflat : ((arcι Dw K₁).comp (PowerSeries.C (R` using `K₁))).Flat := flat_of_field _`.
+
+Establish `hz3 : z ≫ pullback.fst _ _ ≫ Xo.s = sOf c (ArcS Dw K₁)`. Rewrite `hz2` using `[Y.jQ_over]`. Rewrite using `[pullback.condition, ← Category.assoc, hz2, ← spMap_comp]`. Both sides reduce to the same expression. Take `⟨y₀, -, hy₀⟩` from `GlobalTheory.ArcQ.exists_isArcFr hL hL2 E H Dw l Xo c _ _ Y K₁ _ (a.restrict (c.V Wp).subtype) χ W (fun τ => (algebraMap c.F K₁).comp (embK c τ)) e th he hnz (Or.inl (Field.toIsField K₁)) (ArcS Dw K₁) (arcι Dw K₁) z hflat hz1 hz3 (fun τ x => arcS_pin Dw K₁ (embK c τ x))`.
+
+Take `⟨yF, hyF⟩` from `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c (ArcS Dw K₁) (letM Dw K₁) 1 y₀).1 (isUnit_det_letM Dw K₁) isUnit_one`. Establish `h12` using `hy₀.isFramedPoint_changed_by_letters hyF hs`. Establish `h3` using `isArcPt3At_of_frChg (W := W) (e := e) hth hy₀ hyF`. Use `⟨⟨Wp, Y, a, χ, W, e, yF, th, h12, h3, μ, jj⟩, rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl, rfl, rfl, hs, y₀, hy₀, ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.ArcQ.cst Dw (1 : K₁) = 1` using `by simp only [GlobalTheory.ArcQ.cst, map_one]`.
+
+Rewrite using `[h1]`. Conclude with `hyF`.
+-/
 theorem exists_arcDatum : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [Algebra c.F K₁] (Wp : ValuationSubring ℂ) (Y : Model Xo c (c.V Wp).subtype), Y.N4 → ∀ a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁), ∃ (χ : Sp (PowerSeries K₁) ⟶ Y.X) (W : Wit Y (a.restrict (c.V Wp).subtype) χ), (∃ e, ArcLieBasis W e) ∧ ∀ e, ArcLieBasis W e → ∀ th : a.D₀.P.L.Sec, (∃ j, th.f j ≠ 0) → ∀ (μ : ArcLt Dw →₀ ℕ) (jj : ℤ), ∃ d : ArcDatum Xo c K₁, d.Wp = Wp ∧ HEq d.Y Y ∧ d.a = a ∧ HEq d.e e ∧ HEq d.th th ∧ d.μ = μ ∧ d.jj = jj ∧ d.OverBase ∧ d.Normal 1 := by
   intro hL hL2 E _ _ _ H Dw l Xo c K₁ _ _ Wp Y hN4 a
   have : CharZero K₁ := charZero_of_injective_algebraMap (algebraMap c.F K₁).injective

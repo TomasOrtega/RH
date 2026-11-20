@@ -14,6 +14,9 @@ section Power
 
 variable {K : Type u} [Field K] [NumberField K] {n : ℕ} [NeZero n] [HasEnoughRootsOfUnity K n]
 
+/- English proof (translation)
+The claim follows from `firstInequality.index_map_powerSubgroup S hS hJ`.
+-/
 theorem index_map_powerSubgroup (S : Finset (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v : HeightOneSpectrum (𝓞 K), (n : 𝓞 K) ∈ v.asIdeal → v ∈ S)
     (hJ : (diagonal K).range ⊔ sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) = ⊤) :

@@ -23,6 +23,11 @@ def cMF' (L : LD d) (δ : E) (c : (Fin L.n → AE F E) × AF F) :
     Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E) :=
   Matrix.fromBlocks (uA L (-c.1)) (-(uA L (-c.1) * aB L δ c.2 * (uA L c.1)ᵀ.map (cA σ))) 0 ((uA L c.1)ᵀ.map (cA σ))
 
+/- English proof (translation)
+Establish `e1` using `uA_mul_neg L c.1`. Establish `e2 : (uA L (-c.1))ᵀ.map (cA σ) * (uA L c.1)ᵀ.map (cA σ) = 1`. Rewrite using `[← kunf.map_cA_mul, ← Matrix.transpose_mul, e1, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e3 : uA L c.1 * -(uA L (-c.1) * aB L δ c.2 * (uA L c.1)ᵀ.map (cA σ)) + aB L δ c.2 * (uA L c.1)ᵀ.map (cA σ) = 0`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, neg_add_cancel]`.
+
+Simplify using `only [cMF, cMF', Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Rewrite using `[e1, e2, e3, Matrix.fromBlocks_one]`.
+-/
 theorem cMF_mul (L : LD d) (δ : E) (c : (Fin L.n → AE F E) × AF F) : cMF (σ := σ) L δ c * cMF' L δ c = 1 := by
   have e1 := uA_mul_neg L c.1
   have e2 : (uA L (-c.1))ᵀ.map (cA σ) * (uA L c.1)ᵀ.map (cA σ) = 1 := by
@@ -34,6 +39,9 @@ theorem cMF_mul (L : LD d) (δ : E) (c : (Fin L.n → AE F E) × AF F) : cMF (σ
   simp only [cMF, cMF', Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
   rw [e1, e2, e3, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [aB, Matrix.single_apply]`. Use `split_ifs`. Conclude with `Continuous.smul (continuous_snd (X := Fin L.n → AE F E) (Y := AF F)) (continuous_const (y := inclR (F := F) (E := E) (AF F) δ))`. Conclude with `continuous_const`.
+-/
 theorem continuous_aB (L : LD d) (δ : E) :
     Continuous fun c : (Fin L.n → AE F E) × AF F => aB (σ := σ) L δ c.2 := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -43,6 +51,13 @@ theorem continuous_aB (L : LD d) (δ : E) :
       (continuous_const (y := inclR (F := F) (E := E) (AF F) δ))
   · exact continuous_const
 
+/- English proof (translation)
+Establish `hF : ∀ c, inFrame d.b (cM c) = cMF L δ c` using `inFrame_cM h`. Establish `hN` using `ComplexParameterFamilyContinuity.continuous_nilpotentFramePart L`. Establish `hU : Continuous fun c : (Fin L.n → AE F E) × AF F => uA L c.1` using `continuous_const.add (hN.comp continuous_fst)`. Establish `hUn : Continuous fun c : (Fin L.n → AE F E) × AF F => uA L (-c.1)` using `continuous_const.add (hN.comp continuous_fst.neg)`. Establish `hcA : Continuous fun M : Matrix (Fin d.n) (Fin d.n) (AE F E) => M.map (cA σ)` using `continuous_id.matrix_map (GlobalTheory.EisBL.DoubledGroupTopology.continuous_cA σ)`.
+
+Establish `hA` using `continuous_aB (σ := σ) L δ`. Establish `hc : Continuous (cMF (σ` using `σ) L δ) := Continuous.matrix_fromBlocks hU hA continuous_const (hcA.comp hUn.matrix_transpose)`. Establish `hc' : Continuous (cMF' (σ` using `σ) L δ) := Continuous.matrix_fromBlocks hUn ((hUn.matrix_mul hA).matrix_mul (hcA.comp hU.matrix_transpose)).neg continuous_const (hcA.comp hU.matrix_transpose)`. Establish `h1 : Continuous fun c => incM F d.b.1 * cMF L δ c * incM F (d.b⁻¹).1` using `(continuous_const.matrix_mul hc).matrix_mul continuous_const`. Establish `h2 : Continuous fun c => incM F d.b.1 * cMF' L δ c * incM F (d.b⁻¹).1` using `(continuous_const.matrix_mul hc').matrix_mul continuous_const`.
+
+Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Use `h1.congr fun c => ?_ show _ = mat2 (cM c)` and prove the remaining obligations. Rewrite using `[kunf.matrix_eq_inFrame_conj d.b, hF c]`. Use `h2.congr fun c => ?_ show _ = mat2 (cM c)⁻¹` and prove the remaining obligations. Rewrite using `[kunf.matrix_eq_inFrame_conj d.b, GlobalTheory.EisBL.DoubledParabolic.inFrame_inv, hF c, Matrix.inv_eq_right_inv (cMF_mul L δ c)]`.
+-/
 theorem continuous_cM (h : Hyp L nb uM nb' w₁ cM δ) : Continuous cM := by
   have hF : ∀ c, inFrame d.b (cM c) = cMF L δ c := inFrame_cM h
   have hN := ComplexParameterFamilyContinuity.continuous_nilpotentFramePart L

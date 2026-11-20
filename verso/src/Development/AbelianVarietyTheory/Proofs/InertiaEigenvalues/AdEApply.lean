@@ -17,6 +17,9 @@ def homLat (E : Type) [Field E] {O A₁ A₂ : Type} [CommRing O] [Algebra O E] 
   zero_mem' := fun x _ => by simp
   smul_mem' := fun c ψ hψ x hx => by simpa using M₁.smul_mem c (hψ x hx)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem adE_apply (E : Type) [Field E] {A₁ A₂ : Type} [CommRing A₁] [CommRing A₂] [Algebra E A₁] [Algebra E A₂]
     (g₁ : A₁) (g₂ : A₂) (ψ : A₂ →ₗ[E] A₁) (x : A₂) : adE E g₁ g₂ ψ x = g₁ * ψ x - ψ (g₂ * x) := rfl
 

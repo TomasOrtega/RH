@@ -13,6 +13,13 @@ namespace AffPres
 
 variable (P : AffPres s)
 
+/- English proof (translation)
+Use `set g := (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv (Ideal.Quotient.mk P.K f) with hg`. Establish `h1 : x ∈ W.basicOpen (P.secHom f) ↔ (⟨x, hx⟩ : P.V.toScheme) ∈ P.V.toScheme.basicOpen (P.iso.hom.app ⊤ g)`. Rewrite using `[Scheme.Opens.mem_basicOpen_toScheme]`. Establish `e : P.secHom f = W.presheaf.map (eqToHom P.V.ι_image_top.symm).op (P.iso.hom.app ⊤ g)` using `rfl`. Establish `e'` using `Scheme.basicOpen_res W (i := (eqToHom P.V.ι_image_top.symm).op) (f := (P.iso.hom.app ⊤ g : Γ(W, P.V.ι ''ᵁ ⊤)))`.
+
+Rewrite using `[e]`. Use `(Iff.of_eq (congrArg (fun O => x ∈ O) e')).trans ?_` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨hx, h⟩⟩`. Establish `e2` using `Scheme.preimage_basicOpen P.iso.hom g`.
+
+Use `h1.trans (Iff.trans (Iff.of_eq (congrArg (fun O => (⟨x, hx⟩ : P.V.toScheme) ∈ O) e2.symm)) ?_)` and prove the remaining obligations. Use `show P.iso.hom.base ⟨x, hx⟩ ∈ (Spec _).basicOpen g ↔ _`. Establish `e4` using `AlgebraicGeometry.basicOpen_eq_of_affine (R := .of (MvPolynomial (Fin P.n) ℂ ⧸ P.K)) (Ideal.Quotient.mk P.K f)`. Rewrite using `[hg, e4]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_basicOpen_secHom_iff (x : W) (hx : x ∈ P.V) (f : MvPolynomial (Fin P.n) ℂ) :
     x ∈ W.basicOpen (P.secHom f) ↔ f ∉ P.ptOf x hx := by
   set g := (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv
@@ -35,6 +42,13 @@ theorem mem_basicOpen_secHom_iff (x : W) (hx : x ∈ P.V) (f : MvPolynomial (Fin
   rw [hg, e4]
   exact Iff.rfl
 
+/- English proof (translation)
+Establish `e1 : P.secHom (C c) = P.V.topIso.hom (P.iso.hom.appTop ((Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv (Ideal.Quotient.mk P.K (C c))))` using `rfl`. Establish `e2 : (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv (Ideal.Quotient.mk P.K (C c)) = (Spec.map (CommRingCat.ofHom (algebraMap ℂ (MvPolynomial (Fin P.n) ℂ ⧸ P.K)))).appTop ((Scheme.ΓSpecIso (.of ℂ)).inv c)`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Establish `e3 : P.iso.hom.appTop ((Spec.map (CommRingCat.ofHom (algebraMap ℂ (MvPolynomial (Fin P.n) ℂ ⧸ P.K)))).appTop ((Scheme.ΓSpecIso (.of ℂ)).inv c)) = (P.V.ι ≫ s).appTop ((Scheme.ΓSpecIso (.of ℂ)).inv c)`.
+
+Rewrite using `[← P.hover]`. Both sides reduce to the same expression. Establish `key : (Scheme.ΓSpecIso (.of ℂ)).inv ≫ s.appTop ≫ W.presheaf.map (homOfLE (le_top : P.V.ι ''ᵁ ⊤ ≤ ⊤)).op ≫ W.presheaf.map (eqToHom P.V.ι_image_top.symm).op = (Scheme.ΓSpecIso (.of ℂ)).inv ≫ s.appLE ⊤ P.V le_top`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, e2, e3]`. Conclude with `congrArg (fun φ => φ.hom c) key`.
+-/
 theorem secHom_C' (c : ℂ) : P.secHom (C c) = constSec s P.V c := by
   have e1 : P.secHom (C c) = P.V.topIso.hom (P.iso.hom.appTop
       ((Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv (Ideal.Quotient.mk P.K (C c)))) := rfl
@@ -57,6 +71,19 @@ theorem secHom_C' (c : ℂ) : P.secHom (C c) = constSec s P.V c := by
   rw [e1, e2, e3]
   exact congrArg (fun φ => φ.hom c) key
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `val_ringHom s P.V x hx hc`. Use `set ψ := φ.comp P.secHom with hψdef`. Establish `hC : ∀ c, ψ (C c) = c`. Introduce `c`. Rewrite using `[hψdef, RingHom.comp_apply, hφ, secHom_C', val_const s _ x hx hc]`.
+
+Establish `hker : ∀ g, ψ g = 0 → g ∈ P.ptOf x hx`. Introduce `g h`. Assume the negation of the conclusion as `hg`. Rewrite `hg` using `[← mem_basicOpen_secHom_iff]`. Rewrite `h` using `[hψdef, RingHom.comp_apply, hφ, val_eq_zero_iff s _ x hx hc, Scheme.evaluation_eq_zero_iff_notMem_basicOpen]`.
+
+Conclude with `h hg`. Establish `hpr : P.ptOf x hx ≠ ⊤` using `Ideal.comap_ne_top _ (P.iso.hom.base ⟨x, hx⟩).isPrime.ne_top`. Establish `hX : ∀ j, ψ (X j) = P.coord x hx j`. Introduce `j`. Establish `h1 : X j - C (ψ (X j)) ∈ P.ptOf x hx` using `hker _ (by rw [map_sub, hC, sub_self])`.
+
+Establish `h2 : X j - C (P.coord x hx j) ∈ P.ptOf x hx` using `Classical.epsilon_spec (p := fun c : ℂ => X j - C c ∈ P.ptOf x hx) ⟨_, h1⟩`. Establish `h3 : C (ψ (X j) - P.coord x hx j) ∈ P.ptOf x hx`. Use `sub_mem h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left, ← map_sub]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hne`.
+
+Establish `hu : IsUnit (C (ψ (X j) - P.coord x hx j) : MvPolynomial (Fin P.n) ℂ)` using `(isUnit_iff_ne_zero.mpr (sub_ne_zero.mpr hne)).map C`. Conclude with `hpr (Ideal.eq_top_of_isUnit_mem _ h3 hu)`. Establish `hψ : ψ = eval (P.coord x hx)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`.
+
+Rewrite using `[hC, eval_C]`. Introduce `j`. Rewrite using `[hX, eval_X]`. Rewrite using `[← hφ]`. Conclude with `(RingHom.congr_fun hψ f).symm`.
+-/
 theorem eval_coord_eq_val [LocallyOfFiniteType s] (x : W) (hx : x ∈ P.V)
     (hc : IsClosed ({x} : Set W)) (f : MvPolynomial (Fin P.n) ℂ) :
     eval (P.coord x hx) f = val s (P.secHom f) x hx := by

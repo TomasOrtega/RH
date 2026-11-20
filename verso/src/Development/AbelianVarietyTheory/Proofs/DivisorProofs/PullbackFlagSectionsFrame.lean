@@ -19,6 +19,15 @@ open GlobalTheory.VB
 open GlobalTheory.QCoh (appLinear appLinear_apply pullbackSections)
 open GlobalTheory.Twist (app_resM resM_resM resM_smul resM_self)
 
+/- English proof (translation)
+Use `choose W t hy ht hm using H`. Establish `hres (y : X) (V : X.Opens) (h : V ≤ W y) (j : Fin l) : m.app V (resM P h (t y j)) = resM Q (le_top : V ≤ ⊤) (c j)`. Rewrite using `[app_resM, hm, resM_resM]`. Establish `hinj (y : X) (V : X.Opens) (h : V ≤ W y) : Function.Injective (m.app V)`. Rewrite using `[← show ⇑(appLinear m V) = ⇑(m.app V) from rfl, injective_iff_map_eq_zero]`.
+
+Introduce `s hs`. Take `⟨a, rfl⟩` from `(ht y V h).2 s`. Rewrite `hs` using `[Fintype.linearCombination_apply, map_sum]`. Simplify using `only [map_smul, appLinear_apply, hres] at hs`. Rewrite using `[show a = 0 from funext (Fintype.linearIndependent_iff.1 (hc V) a hs), map_zero]`.
+
+Establish `hcov : (⊤ : X.Opens) ≤ iSup W` using `fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hy y⟩`. Use `choose s hs using fun j => GlobalTheory.Twist.exists_sec_of_cover (F := P) W (fun _ => le_top) hcov (fun y => t y j) fun y z => hinj y _ inf_le_left ((hres y _ _ j).trans (hres z _ _ j).symm)`. Use `⟨s, isFrame_of_forall_exists fun V h x hx => ⟨V ⊓ W x, inf_le_left, ⟨hx, hy x⟩, ?_⟩, fun j => ?_⟩` and prove the remaining obligations. Use `ht x (V ⊓ W x) inf_le_right` as an intermediate fact. Simplify using `only [← hs, resM_resM] at this`.
+
+Conclude with `this`. Use `GlobalTheory.Twist.sec_ext_of_cover W (fun _ => le_top) hcov fun y => ?_` and prove the remaining obligations. Rewrite using `[← app_resM, hs, hm]`.
+-/
 private theorem glue_frame {X : Scheme.{0}} {P Q : X.Modules} (m : P ⟶ Q) {l : ℕ} (c : Fin l → Γ(Q, ⊤))
     (hc : ∀ V : X.Opens, LinearIndependent Γ(X, V) fun j => resM Q (le_top : V ≤ ⊤) (c j))
     (H : ∀ y : X, ∃ (W : X.Opens) (t : Fin l → Γ(P, W)), y ∈ W ∧ VB.IsFrame t ∧
@@ -45,11 +54,25 @@ private theorem glue_frame {X : Scheme.{0}} {P Q : X.Modules} (m : P ⟶ Q) {l :
   · refine GlobalTheory.Twist.sec_ext_of_cover W (fun _ => le_top) hcov fun y => ?_
     rw [← app_resM, hs, hm]
 
+/- English proof (translation)
+The claim follows from `isFrame_sum_smul_of_isUnit ((isFrame_freeFrame (Sp ℤ) (Fin N)).pullback x) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.mapMatrix g.1) (g.isUnit.map _)`.
+-/
 private theorem isFrame_colSec (N : ℕ) (A : Type) [CommRing A] (x : Sp A ⟶ Sp ℤ) (g : GL (Fin N) A) :
     VB.IsFrame (GlobalTheory.FlagZ.Taut.colSec x g.1) :=
   isFrame_sum_smul_of_isUnit ((isFrame_freeFrame (Sp ℤ) (Fin N)).pullback x)
     ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.mapMatrix g.1) (g.isUnit.map _)
 
+/- English proof (translation)
+Establish `hmem (k : Fin l) : c (Fin.castLE hl k) ∈ P.sec U`. Use `(hP U le_rfl (Pi.single (Fin.castLE hl k) 1)).2 fun j hj => by` as an intermediate fact. Rewrite using `[Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Simplify using `at hj`.
+
+Use linear arithmetic over natural numbers and integers. Simplify `this` using `[Pi.single_apply, Finset.sum_ite_eq']`. Set `e : Fin l → Γ(P.toMod, U)` to `fun k => P.mkSec _ (hmem k)`. Establish `hincl (V : X.Opens) (h : V ≤ U) (b : Fin l → Γ(X, V)) : P.incl.app V (Fintype.linearCombination Γ(X, V) (fun k => resM P.toMod h (e k)) b) = ∑ k, b k • resM F h (c (Fin.castLE hl k))`. Rewrite using `[Fintype.linearCombination_apply, ← appLinear_apply, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, appLinear_apply, app_resM]`. Both sides reduce to the same expression. Use `⟨e, fun V h => ⟨fun b b' hbb => ?_, fun s => ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h1` using `congrArg (P.incl.app V) hbb`.
+
+Rewrite `h1` using `[hincl, hincl]`. Conclude with `funext (Fintype.linearIndependent_iffₛ.1 (((isFrame_iff.1 hc V h).1).comp _ (Fin.castLE_injective hl)) b b' h1)`. Take `⟨a, ha⟩` from `(hc V h).2 (P.incl.app V s)`. Rewrite `ha` using `[Fintype.linearCombination_apply]`. Establish `hz` using `(hP V h a).1 (ha ▸ P.incl_app_mem s)`.
+
+Use `⟨fun k => a (Fin.castLE hl k), P.incl_app_injective V ?_⟩` and prove the remaining obligations. Rewrite using `[hincl, ← ha]`. Conclude with `sum_castLE_eq hl (fun j => a j • resM F h (c j)) fun j hj => by rw [hz j hj, zero_smul]`.
+-/
 private theorem exists_isFrame_sub {X : Scheme.{0}} {F : X.Modules} {U : X.Opens} {N : ℕ}
     (P : VB.Sub F) (c : Fin N → Γ(F, U)) (hc : VB.IsFrame c) (l : ℕ) (hl : l ≤ N)
     (hP : ∀ (V : X.Opens) (h : V ≤ U) (a : Fin N → Γ(X, V)),
@@ -83,6 +106,9 @@ private theorem exists_isFrame_sub {X : Scheme.{0}} {F : X.Modules} {U : X.Opens
     rw [hincl, ← ha]
     exact sum_castLE_eq hl (fun j => a j • resM F h (c j)) fun j hj => by rw [hz j hj, zero_smul]
 
+/- English proof (translation)
+The claim follows from `exists_isFrame_sub (sub ι N τ l) _ (isFrame_cellCol ι N w τ) l l.is_le (mem_sub_iff_cellCol ι N τ l w)`.
+-/
 private theorem exists_frame_cell (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : Fin (N + 1))
     (w : ι → Equiv.Perm (Fin N)) :
     ∃ e : Fin l → Γ(F ι N τ l, cellOpen ι N w), VB.IsFrame e ∧
@@ -91,6 +117,11 @@ private theorem exists_frame_cell (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Establish `h3` using `QCoh.pullback_map_app_pullbackSections x i (le_refl (x ⁻¹ᵁ U)) s`. Use `(congrArg (((Scheme.Modules.pullbackComp x q).hom.app E).app _) h3).trans ?_` and prove the remaining obligations. Rewrite using `[hs, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[QCoh.pullbackSections_smul, Scheme.Modules.Hom.app_smul, ← Vert.DivPull.pullbackComp_inv_app x q E h₁ le_rfl h₂]`.
+
+Use `congr 1`. Conclude with `congr(($((Scheme.Modules.pullbackComp x q).inv_hom_id_app E)).app _ _)`.
+-/
 private theorem pull_comb {T Y Z : Scheme.{0}} (x : T ⟶ Y) (q : Y ⟶ Z) (E : Z.Modules) {F : Y.Modules}
     (i : F ⟶ (Scheme.Modules.pullback q).obj E) {μ : Type} [Fintype μ] (e : μ → Γ(E, ⊤)) {U : Y.Opens}
     (s : Γ(F, U)) (a : μ → Γ(Y, U)) (h₁ : U ≤ q ⁻¹ᵁ ⊤) (h₂ : x ⁻¹ᵁ U ≤ (x ≫ q) ⁻¹ᵁ ⊤)
@@ -109,6 +140,11 @@ private theorem pull_comb {T Y Z : Scheme.{0}} (x : T ⟶ Y) (q : Y ⟶ Z) (E : 
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `(pull_comb x (flStr ι N) (GlobalTheory.FlagZ.Taut.stdE N) (incl ι N τ l) (VB.freeFrame (Sp ℤ) (Fin N)) s (fun i => cellRing ι N w ((cellGL Prod.fst Prod.snd w τ).1 i k)) le_top le_top ?_).trans (Finset.sum_congr rfl fun i _ => congrArg _ (QCoh.res_pullbackSections _ _ _ _ _).symm …` and prove the remaining obligations. Use `(congrArg ((freeIso ι N).inv.app _) hs).trans ?_` and prove the remaining obligations. Rewrite using `[cellCol, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, app_resM]`.
+
+Use `congr 1`. Establish `h1 : (freeIso ι N).hom.app ⊤ _ = _` using `IsFrame.iso_hom_app ((VB.isFrame_freeFrame (Sp ℤ) (Fin N)).pullback (flStr ι N)) (VB.isFrame_freeFrame _ (Fin N)) i`. Rewrite using `[← h1]`. Use `Eq.trans (congrArg _ ?_) (QCoh.res_pullbackSections (flStr ι N) _ (U := ⊤) le_top _ _)` and prove the remaining obligations. Conclude with `congr(($((freeIso ι N).hom_inv_id)).app ⊤ _)`.
+-/
 private theorem pull_incl_cellCol (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : Fin (N + 1))
     (w : ι → Equiv.Perm (Fin N)) {T : Scheme.{0}} (x : T ⟶ Fl ι N) (s : Γ(F ι N τ l, cellOpen ι N w)) (k : Fin N)
     (hs : (sub ι N τ l).incl.app _ s = cellCol ι N w τ k) :
@@ -133,6 +169,11 @@ private theorem pull_incl_cellCol (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (
   refine Eq.trans (congrArg _ ?_) (QCoh.res_pullbackSections (flStr ι N) _ (U := ⊤) le_top _ _)
   exact congr(($((freeIso ι N).hom_inv_id)).app ⊤ _)
 
+/- English proof (translation)
+Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w) hU (isAffineOpen_top _) (Scheme.Hom.preimage_image_eq _ ⊤).ge`. Establish `e₀ : ((cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appIso ⊤).hom = (cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appLE (cellOpen ι N w) ⊤ (Scheme.Hom.preimage_image_eq _ ⊤).ge` using `Scheme.Hom.appIso_hom' _ _`. Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← e₀]`. Establish `e : spMap (cellRing ι N w) = Spec.map ((cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w).appIso ⊤).inv ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of (CellRing (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd))).inv`. Conclude with `Spec.map_comp _ _`.
+
+Rewrite using `[e]`. Use `erw [Category.assoc, ← h]`. Use `erw [← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]`.
+-/
 private theorem spMap_cellRing_cell (ι : Type) [Fintype ι] (N : ℕ) (w : ι → Equiv.Perm (Fin N))
     (hU : IsAffineOpen (cellOpen ι N w)) :
     spMap (cellRing ι N w) ≫ cell (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd w = hU.fromSpec := by
@@ -150,6 +191,9 @@ private theorem spMap_cellRing_cell (ι : Type) [Fintype ι] (N : ℕ) (w : ι �
   erw [Category.assoc, ← h]
   erw [← Spec.map_comp_assoc, Iso.hom_inv_id, Spec.map_id, Category.id_comp]
 
+/- English proof (translation)
+Establish `h` using `IsAffineOpen.map_fromSpec (isAffineOpen_top (Sp A)) hW (homOfLE le_top).op`. Rewrite `h` using `[IsAffineOpen.fromSpec_top]`. Use `erw [Scheme.isoSpec_Spec_inv] at h`. Rewrite using `[← h]`. Conclude with `Spec.map_comp _ _`.
+-/
 private theorem spMap_res (A : Type) [CommRing A] (W : (Sp A).Opens) (hW : IsAffineOpen W) :
     spMap ((resG (Sp A) (le_top : W ≤ ⊤)).comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom) = hW.fromSpec := by
   have h := IsAffineOpen.map_fromSpec (isAffineOpen_top (Sp A)) hW (homOfLE le_top).op
@@ -158,6 +202,15 @@ private theorem spMap_res (A : Type) [CommRing A] (W : (Sp A).Opens) (hW : IsAff
   rw [← h]
   exact Spec.map_comp _ _
 
+/- English proof (translation)
+Establish `hU : IsAffineOpen (cellOpen ι N w)` using `(isAffineOpen_top (Sp (CellRing (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd))).image_of_isOpenImmersion _`. Take `⟨W, hWa, hyW, hW⟩` from `exists_isAffineOpen_mem_and_subset hy`. Establish `hW : W ≤ flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g ⁻¹ᵁ cellOpen ι N w` using `hW`. Use `set x := flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g with hx`. Set `ψ : A →+* Γ(Sp A, W)` to `(resG (Sp A) (le_top : W ≤ ⊤)).comp (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom`.
+
+Set `φ : CellRing (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd →+* Γ(Sp A, W)` to `(x.appLE _ W hW).hom.comp (cellRing ι N w)`. Establish `key : flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd (fun τ => Matrix.GeneralLinearGroup.map φ (cellGL Prod.fst Prod.snd w τ)) = flagPt Prod.fst Prod.snd (fun τ => Matrix.GeneralLinearGroup.map ψ (g τ))`. Rewrite using `[← spMap_flagPt, ← spMap_flagPt, ← hx, ← cell, spMap_res A W hWa, ← IsAffineOpen.SpecMap_appLE_fromSpec x hU hWa hW, ← spMap_cellRing_cell ι N w hU]`. Rewrite using `[spMap, spMap, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Both sides reduce to the same expression.
+
+Establish `hB` using `(flagPt_eq_iff_below _ _ _ _ _ _ _ _).1 key a`. Use `⟨W, hW, ((Matrix.GeneralLinearGroup.map φ (cellGL Prod.fst Prod.snd w a))⁻¹ * Matrix.GeneralLinearGroup.map ψ (g a)).1, hyW, fun i j h => hB i j ⟨(a, i.castSucc), rfl, h, le_rfl⟩, (Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _), fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun m : GL (Fin N) Γ(Sp A, W) => m.1 i j) (mul_inv_cancel_left (Matrix.GeneralLinearGroup.map φ (cellGL Prod.fst Prod.snd w a)) (Matrix.GeneralLinearGroup.map ψ (g a)))`. Use `e.symm.trans ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `congrArg (· * _) (LB.resG_appLE x le_rfl hW _).symm`.
+-/
 private theorem exists_upper_cell (ι : Type) [Fintype ι] (N : ℕ) (A : Type) [CommRing A] (g : ι → GL (Fin N) A) (a : ι)
     (w : ι → Equiv.Perm (Fin N)) (y : Sp A)
     (hy : y ∈ flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g ⁻¹ᵁ cellOpen ι N w) :
@@ -193,6 +246,9 @@ private theorem exists_upper_cell (ι : Type) [Fintype ι] (N : ℕ) (A : Type) 
   refine Finset.sum_congr rfl fun k _ => ?_
   exact congrArg (· * _) (LB.resG_appLE x le_rfl hW _).symm
 
+/- English proof (translation)
+Establish `ht : B.BlockTriangular id` using `fun i j h => hB i j h`. Establish `ht' : (B.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular id` using `fun i j h => hB _ _ h`. Rewrite `hdet` using `[Matrix.det_of_upperTriangular ht]`. Rewrite using `[Matrix.det_of_upperTriangular ht']`. Conclude with `IsUnit.prod_univ_iff.2 fun i => IsUnit.prod_univ_iff.1 hdet (Fin.castLE hl i)`.
+-/
 private theorem isUnit_det_castLE {R : Type} [CommRing R] {N : ℕ} (B : Matrix (Fin N) (Fin N) R)
     (hB : ∀ i j : Fin N, j < i → B i j = 0) (hdet : IsUnit B.det) (l : ℕ) (hl : l ≤ N) :
     IsUnit (B.submatrix (Fin.castLE hl) (Fin.castLE hl)).det := by
@@ -205,6 +261,19 @@ private theorem isUnit_det_castLE {R : Type} [CommRing R] {N : ℕ} (B : Matrix 
 end GlobalTheory.FlagZ.TautPull
 
 open GlobalTheory.VB GlobalTheory.FlagZ.TautPull in
+/- English proof (translation)
+Introduce `ι _ N A _ g a l`. Use `haveI : (F ι N a l).IsQuasicoherent := (GlobalTheory.T.tautological_subbundle_rank ι N a l).1.isQuasicoherent`. Use `glue_frame _ _ (fun V => ?_) (fun y => ?_)` and prove the remaining obligations. Conclude with `((isFrame_iff.1 (isFrame_colSec N A _ (g a)) V le_top).1).comp _ (Fin.castLE_injective _)`. Take `⟨w, hw⟩` from `GlobalTheory.FlagZ.exists_mem_range_cell ι (ι × Fin (N + 1)) N Prod.fst Prod.snd (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g y)`.
+
+Establish `hy : y ∈ flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g ⁻¹ᵁ cellOpen ι N w` using `(mem_cellOpen ι N).2 hw`. Take `⟨W, hW, B, hyW, hBt, hBd, hB⟩` from `exists_upper_cell ι N A g a w y hy`. Take `⟨e, he, hinc⟩` from `exists_frame_cell ι N a l w`. Establish `ht0` using `he.pullback (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g)`. Use `⟨W, fun j => ∑ k, B.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le) k j • resM _ hW (QCoh.pullbackSections (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) (F ι N a l) le_rfl (e k)), hyW, isFrame_sum_smul_of_isUnit (ht0.res hW) _ ((Matrix.isUnit_iff_isUnit_det _).2 (isUni …` and prove the remaining obligations.
+
+Use `set q : Fin N → Γ((Scheme.Modules.pullback ((flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) ≫ flStr ι N)).obj (GlobalTheory.FlagZ.Taut.stdE N), ⊤) := fun i => QCoh.pullbackSections ((flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) ≫ flStr ι N) (GlobalTheory.FlagZ.Taut.st …`. Establish `h1 : ∀ k : Fin l, ((Scheme.Modules.pullback (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g)).map (incl ι N a l) ≫ (Scheme.Modules.pullbackComp (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) (flStr ι N)).hom.app (GlobalTheory.FlagZ.Taut.stdE N)).app W (resM _ hW (QCoh.p …`. Introduce `k`. Rewrite using `[GlobalTheory.Twist.app_resM, pull_incl_cellCol ι N a l w (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) (e k) _ (hinc k), map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Twist.resM_smul, GlobalTheory.Twist.resM_resM]`. Establish `h2 : resM _ (le_top : W ≤ ⊤) (GlobalTheory.FlagZ.Taut.colSec ((flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g) ≫ flStr ι N) (g a).1 (Fin.castLE l.is_le j)) = ∑ i, resG (Sp A) (le_top : W ≤ ⊤) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom ((g a).1 i (Fin.castLE l.is_le j))) • …`. Rewrite using `[GlobalTheory.FlagZ.Taut.colSec, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Twist.resM_smul]`.
+
+Rewrite using `[h2, map_sum]`. Repeatedly rewrite using `[Scheme.Modules.Hom.app_smul, h1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, hB]`.
+
+Use `congr 1`. Use `Fintype.sum_of_injective (Fin.castLE l.is_le) (Fin.castLE_injective _) _ _ (fun k hk => ?_) fun k => mul_comm _ _` and prove the remaining obligations. Establish `hk' : (l : ℕ) ≤ (k : ℕ)` using `not_lt.1 fun h => hk ⟨⟨k, h⟩, rfl⟩`. Rewrite using `[hBt k _ (Fin.lt_iff_val_lt_val.2 (lt_of_lt_of_le j.2 hk')), mul_zero]`.
+-/
 theorem _root_.GlobalTheory.T.pullback_flag_sections_frame : ∀ (ι : Type) [Fintype ι] (N : ℕ) (A : Type) [CommRing A] (g : ι → GL (Fin N) A) (a : ι) (l : Fin (N + 1)),
     ∃ s : Fin l → Γ((Scheme.Modules.pullback (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g)).obj (F ι N a l), ⊤),
       VB.IsFrame s ∧ ∀ j, ((Scheme.Modules.pullback (flagPt (Prod.fst : ι × Fin (N + 1) → ι) Prod.snd g)).map (incl ι N a l) ≫

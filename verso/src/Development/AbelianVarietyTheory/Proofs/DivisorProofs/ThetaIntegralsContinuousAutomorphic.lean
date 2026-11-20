@@ -18,11 +18,31 @@ namespace GlobalTheory.ThKCont
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `only [theta]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+-/
 theorem theta_one_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (om : Rep σ X W) (Φ : Fn F n d) (g : UA σ X.J)
     (h : UA σ W.J) : theta om Φ g h = theta om (om (1, h) Φ) g 1 := by
   simp only [theta]
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]
 
+/- English proof (translation)
+Establish `hW` using `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B n d X W M χX χW om r s r' s' hP hdim`. Establish `pres : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F (Fin n × Fin d)` using `fun x Ψ hΨ => (IsUWeilPair.isUSplitting hP.weil).pres x Ψ hΨ`. Establish `thAdd : ∀ Ψ₁ ∈ schA F (Fin n × Fin d), ∀ Ψ₂ ∈ schA F (Fin n × Fin d), ∀ g h, theta om (Ψ₁ + Ψ₂) g h = theta om Ψ₁ g h + theta om Ψ₂ g h` using `fun Ψ₁ h₁ Ψ₂ h₂ g h => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (pres _ Ψ₁ h₁) (pres _ Ψ₂ h₂)`.
+
+Establish `thSmul : ∀ (z : ℂ) Ψ g h, theta om (z • Ψ) g h = z * theta om Ψ g h` using `fun z Ψ g h => by`. Simplify using `only [theta, map_smul]`. Conclude with `thetaSum_smul F z _`. Set `L0 : schA F (Fin n × Fin d) →ₗ[ℂ] ℂ` to `{ toFun := fun Ψ => M.I om Ψ.1 1 map_add' := fun Ψ₁ Ψ₂ => by`. Simplify using `only [Submodule.coe_add, Model.I, thAdd _ Ψ₁.2 _ Ψ₂.2]`.
+
+Conclude with `integral_add ((hW.1 _ Ψ₁.2).1 1) ((hW.1 _ Ψ₂.2).1 1)`. Use the proof step `map_smul' := fun z Ψ => by`. Simplify using `only [Submodule.coe_smul, Model.I, thSmul, RingHom.id_apply, smul_eq_mul]`. Conclude with `integral_const_mul z _ }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend L0`.
+
+Establish `hl' : ∀ Ψ (hΨ : Ψ ∈ schA F (Fin n × Fin d)), l Ψ = M.I om Ψ 1` using `fun Ψ hΨ => by`. Use `LinearMap.congr_fun hl ⟨Ψ, hΨ⟩` as an intermediate fact. Simplify `this` using `[L0]`. Establish `hadm : l ∈ (adeleClass F).adm (Fin n × Fin d)`. Introduce `g hg`.
+
+Establish `memA : ∀ f : SInf F (Fin n × Fin d), pureA F f g ∈ schA F (Fin n × Fin d)` using `fun f => Submodule.subset_span ⟨f, g, hg, rfl⟩`. Set `P : SInf F (Fin n × Fin d) →ₗ[ℂ] Fn F n d` to `{ toFun := fun f => pureA F f g map_add' := fun f₁ f₂ => funext fun x => by simp [pureA, add_mul] map_smul' := fun z f₁ => funext fun x => by simp [pureA, mul_assoc] }`. Establish `hc : Continuous (l.comp P)`. Establish `e : (l.comp P : SInf F (Fin n × Fin d) → ℂ) = fun f : SInf F (Fin n × Fin d) => M.I om (pureA F f g) 1`. Use function extensionality and compare the values at `fun f => hl' _ (memA f)`.
+
+Rewrite using `[e]`. Conclude with `hW.2 g hg 1`. Conclude with `⟨⟨l.comp P, hc⟩, fun f => rfl⟩`. Establish `hc : Continuous fun p : UA σ X.J × UA σ W.J => l (om p Φ)` using `hP.weil.2.2 l hadm Φ hΦ`. Establish `e : M.I om Φ = fun h => l (om (1, h) Φ)` using `funext fun h => by`.
+
+Rewrite using `[hl' _ (pres _ _ hΦ)]`. Simplify using `only [Model.I]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Conclude with `theta_one_right om Φ g h`.
+
+Rewrite using `[e]`. Conclude with `hc.comp (continuous_const.prodMk continuous_id)`.
+-/
 theorem continuous_I_of_weil (hKP : KP) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ X W)
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s')
     (hdim : d + 2 * min r s < 2 * n ∨ min r s = 0) (Φ : Fn F n d) (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
@@ -73,6 +93,11 @@ theorem continuous_I_of_weil (hKP : KP) {n d : ℕ} {X : Spc F E n} {W : Spc F E
   rw [e]
   exact hc.comp (continuous_const.prodMk continuous_id)
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT`. Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hK.base`. Establish `hV : IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV, skew := hT.geo.hW, good := hT.geo.hM, hX := hT.chars.heckeβ, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeβ hT.chars.heckeα, resX := hT.chars.resβ, resW := GlobalTheory.ThKRatInv.resEtaPow_div hT.chars.resβ hT.chars.resα, weil := hT …`. Establish `hV' : IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV', skew := hT.geo.hW, good := hT.geo.hM', hX := hT.chars.heckeα, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeα hT.chars.heckeβ, resX := hT.chars.resα, resW := by rw [add_comm a a']; exact GlobalTheory.ThKRatInv.resEtaPow_div hT.chars …`. Establish `hdim : a + a' + 2 * min (a - G.p) G.p < 2 * a`.
+
+Establish `h1` using `hT.geo.eBig`. Establish `h2` using `hT.geo.lt`. Establish `h3` using `min_le_right (a - G.p) G.p`. Use linear arithmetic over natural numbers and integers. Use `⟨fun Φ hΦ => ⟨continuous_I_of_weil hK B G.M hV (Or.inl hdim) Φ (GlobalTheory.ThKRatInv.polData_le_schA B G.M hT.geo.hM hΦ), GlobalTheory.ThKRatInv.I_rat_inv hTB B G.M hV Φ hΦ⟩, fun Φ' hΦ' => ⟨GlobalTheory.T.pol_data_so_theta_continuous hK F E σ B a' (a + a') G.V' G.W G.M' X.α (X. …` and prove the remaining obligations.
+-/
 theorem thCont : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → (∀ Φ ∈ PolData B G.M, Continuous (G.M.I om Φ) ∧ ∀ γ ∈ ratU σ G.W.J, ∀ h, G.M.I om Φ (γ * h) = G.M.I om Φ h) ∧ ∀ Φ' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, Continuous (G.M'.I om' Φ') ∧ ∀ γ ∈ ratU σ G.W.J, ∀ h, G.M'.I om' Φ' (γ * h) = G.M'.I om' Φ' h := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT
   have hTB : ThetaBasic := GlobalTheory.T.theta_basic_properties hK.base

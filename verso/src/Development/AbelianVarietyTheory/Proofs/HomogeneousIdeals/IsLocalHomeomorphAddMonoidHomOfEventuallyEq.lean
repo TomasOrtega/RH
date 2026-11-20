@@ -11,6 +11,11 @@ section LocalHomeomorphHom
 variable {V A : Type*} [NormedAddCommGroup V] [AddCommGroup A] [TopologicalSpace A]
   [IsTopologicalAddGroup A] {e : V →+ A}
 
+/- English proof (translation)
+Take `⟨s, hs, hso, hs0⟩` from `_root_.eventually_nhds_iff.mp he`. Use `IsLocalHomeomorph.mk e fun x => ⟨(Homeomorph.subRight x).toOpenPartialHomeomorph.trans ((ψ.restrOpen s hso).trans (Homeomorph.addRight (e x)).toOpenPartialHomeomorph), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h0, hs0]`. Introduce `y hy`. Establish `hy' : y - x ∈ s`.
+
+Simplify using `at hy`. Conclude with `hy.2`. Use `hs _ hy'` as an intermediate fact. Simplify using `only [map_sub] at this`. Simplify using `[← this]`.
+-/
 theorem isLocalHomeomorph_addMonoidHom_of_eventuallyEq {ψ : OpenPartialHomeomorph V A}
     (h0 : (0 : V) ∈ ψ.source) (he : e =ᶠ[𝓝 0] ψ) : IsLocalHomeomorph e := by
   obtain ⟨s, hs, hso, hs0⟩ := _root_.eventually_nhds_iff.mp he
@@ -27,6 +32,11 @@ theorem isLocalHomeomorph_addMonoidHom_of_eventuallyEq {ψ : OpenPartialHomeomor
 
 omit [IsTopologicalAddGroup A] in
 
+/- English proof (translation)
+Take `⟨U, hU, hU0, hinj⟩` from `he.isLocallyInjective 0`. Use `discreteTopology_iff_isOpen_singleton_zero.mpr ⟨U, hU, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Use `⟨fun hx => Subtype.ext (hinj hx hU0 ?_), ?_⟩` and prove the remaining obligations. Conclude with `(show e x = 0 from x.2).trans (map_zero e).symm`.
+
+Introduce and unpack `rfl`. Conclude with `hU0`.
+-/
 theorem discreteTopology_ker_of_isLocalHomeomorph (he : IsLocalHomeomorph e) :
     DiscreteTopology e.ker := by
   obtain ⟨U, hU, hU0, hinj⟩ := he.isLocallyInjective 0
@@ -37,6 +47,9 @@ theorem discreteTopology_ker_of_isLocalHomeomorph (he : IsLocalHomeomorph e) :
   · rintro rfl
     exact hU0
 
+/- English proof (translation)
+Establish `: Finite (A ⧸ e.range)` using `e.range.quotient_finite_of_isOpen he.isOpen_range`. Introduce `a`. Take `⟨b, rfl⟩` from `hdiv e.range.index AddSubgroup.index_ne_zero_of_finite a`. Conclude with `e.range.nsmul_index_mem b`.
+-/
 theorem surjective_of_isOpenMap_of_compact_of_divisible [CompactSpace A] (he : IsOpenMap e)
     (hdiv : ∀ n : ℕ, n ≠ 0 → ∀ a : A, ∃ b : A, n • b = a) : Function.Surjective e := by
   have : Finite (A ⧸ e.range) := e.range.quotient_finite_of_isOpen he.isOpen_range
@@ -44,6 +57,15 @@ theorem surjective_of_isOpenMap_of_compact_of_divisible [CompactSpace A] (he : I
   obtain ⟨b, rfl⟩ := hdiv e.range.index AddSubgroup.index_ne_zero_of_finite a
   exact e.range.nsmul_index_mem b
 
+/- English proof (translation)
+Establish `hK : IsCompact (range e)` using `(e.range.isClosed_of_isOpen he.isOpen_range).isCompact`. Take `⟨n, hn⟩` from `hK.elim_directed_cover (fun n : ℕ => e '' ball 0 n) (fun n => he _ isOpen_ball) (by`. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨n, hn⟩` from `exists_nat_gt ‖v‖`. Conclude with `mem_iUnion.mpr ⟨n, v, mem_ball_zero_iff.mpr hn, rfl⟩)`.
+
+Use the proof step `(Monotone.directed_le fun m n hmn => image_mono (ball_subset_ball (by exact_mod_cast hmn)))`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← SetLike.mem_coe, ← (Submodule.span ℝ (e.ker : Set V)).closed_of_finiteDimensional.closure_eq, Metric.mem_closure_iff]`. Introduce `η hη`.
+
+Establish `ht : (0 : ℝ) < (n + 1) / η` using `by positivity`. Take `⟨b, hb, hbe⟩` from `hn (mem_range_self (((n + 1 : ℝ) / η) • v))`. Use `⟨((n + 1 : ℝ) / η)⁻¹ • (((n + 1 : ℝ) / η) • v - b), Submodule.smul_mem _ _ (Submodule.subset_span ?_), ?_⟩` and prove the remaining obligations. Simplify using `[hbe]`. Rewrite using `[dist_eq_norm, smul_sub, inv_smul_smul₀ ht.ne', sub_sub_cancel, norm_smul, Real.norm_of_nonneg (inv_nonneg.mpr ht.le), inv_mul_lt_iff₀ ht, div_mul_cancel₀ _ hη.ne']`.
+
+Combine the linear relations using `[mem_ball_zero_iff.mp hb]`.
+-/
 theorem span_ker_eq_top_of_isOpenMap_of_compact [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     [CompactSpace A] (he : IsOpenMap e) : Submodule.span ℝ (e.ker : Set V) = ⊤ := by
   have hK : IsCompact (range e) := (e.range.isClosed_of_isOpen he.isOpen_range).isCompact
@@ -84,6 +106,13 @@ namespace IsLocalCommGroupLaw
 
 variable {m : V × V → V}
 
+/- English proof (translation)
+Establish `hd` using `ha.differentiableAt.hasFDerivAt`. Establish `hu' : ∀ᶠ x in 𝓝 (0 : V), m (0, x) = x`. Establish `ht : Tendsto (fun x : V => ((0 : V), x)) (𝓝 0) (𝓝 0)` using `tendsto_const_nhds.prodMk_nhds tendsto_id`. Use `filter_upwards [hu, ht.eventually hc] with x h1 h2`. Conclude with `h2.trans h1`.
+
+Establish `h1 : (fderiv ℂ m 0).comp (ContinuousLinearMap.inl ℂ V V) = ContinuousLinearMap.id ℂ V` using `(HasFDerivAt.comp (f := ContinuousLinearMap.inl ℂ V V) (0 : V) (by rwa [map_zero]) (ContinuousLinearMap.inl ℂ V V).hasFDerivAt).unique ((hasFDerivAt_id (0 : V)).congr_of_eventuallyEq hu)`. Establish `h2 : (fderiv ℂ m 0).comp (ContinuousLinearMap.inr ℂ V V) = ContinuousLinearMap.id ℂ V` using `(HasFDerivAt.comp (f := ContinuousLinearMap.inr ℂ V V) (0 : V) (by rwa [map_zero]) (ContinuousLinearMap.inr ℂ V V).hasFDerivAt).unique ((hasFDerivAt_id (0 : V)).congr_of_eventuallyEq hu')`. Use `⟨ha, (isBigO_sub_linear_sq_of_analyticAt ha hu.self_of_nhds hd).congr_left fun p => ?_, hc, hs⟩` and prove the remaining obligations. Establish `e : p = (p.1, 0) + (0, p.2)` using `by simp`. Establish `e1 : fderiv ℂ m 0 (p.1, 0) = p.1` using `DFunLike.congr_fun h1 p.1`.
+
+Establish `e2 : fderiv ℂ m 0 (0, p.2) = p.2` using `DFunLike.congr_fun h2 p.2`. Use `conv_lhs => rw [show fderiv ℂ m 0 p = fderiv ℂ m 0 ((p.1, 0) + (0, p.2)) by rw [← e], map_add, e1, e2]`.
+-/
 theorem of_unit (ha : AnalyticAt ℂ m 0) (hu : ∀ᶠ x in 𝓝 (0 : V), m (x, 0) = x)
     (hc : ∀ᶠ p in 𝓝 (0 : V × V), m (p.1, p.2) = m (p.2, p.1))
     (hs : ∀ᶠ p in 𝓝 (0 : V × V × V), m (m (p.1, p.2.1), p.2.2) = m (p.1, m (p.2.1, p.2.2))) :
@@ -113,17 +142,31 @@ theorem of_unit (ha : AnalyticAt ℂ m 0) (hu : ∀ᶠ x in 𝓝 (0 : V), m (x, 
 variable (h : IsLocalCommGroupLaw m)
 include h
 
+/- English proof (translation)
+The claim follows from `map_zero_of_isBigO_sq (L := ContinuousLinearMap.fst ℂ V V + ContinuousLinearMap.snd ℂ V V) h.isBigO`.
+-/
 theorem map_zero : m 0 = 0 :=
   map_zero_of_isBigO_sq (L := ContinuousLinearMap.fst ℂ V V + ContinuousLinearMap.snd ℂ V V)
     h.isBigO
 
+/- English proof (translation)
+The claim follows from `hasFDerivAt_of_isBigO_sq h.isBigO`.
+-/
 theorem hasFDerivAt :
     HasFDerivAt m (ContinuousLinearMap.fst ℂ V V + ContinuousLinearMap.snd ℂ V V) 0 :=
   hasFDerivAt_of_isBigO_sq h.isBigO
 
+/- English proof (translation)
+Simplify `h.analyticAt.continuousAt` using `[ContinuousAt, h.map_zero]`.
+-/
 theorem tendsto : Tendsto m (𝓝 0) (𝓝 0) := by
   simpa [ContinuousAt, h.map_zero] using h.analyticAt.continuousAt
 
+/- English proof (translation)
+Establish `t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : V × V => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Establish `t3 : Tendsto (fun p : V × V => m (p.2, p.2)) (𝓝 0) (𝓝 0)` using `h.tendsto.comp (t2.prodMk_nhds t2)`. Use `filter_upwards [(t1.prodMk_nhds (t2.prodMk_nhds h.tendsto)).eventually h.assoc, h.comm, (t2.prodMk_nhds (t2.prodMk_nhds t1)).eventually h.assoc, (t3.prodMk_nhds t1).eventually h.comm, (t1.prodMk_nhds (t1.prodMk_nhds t3)).eventually h.assoc] with ⟨x, y⟩ h1 h2 h3 h4 h5`. Simplify using `only at h1 h2 h3 h4 h5 ⊢`.
+
+Rewrite using `[h1, h2, ← h3, h4, h5]`.
+-/
 theorem doubling_law :
     ∀ᶠ p in 𝓝 (0 : V × V), m (m p, m p) = m (m (p.1, p.1), m (p.2, p.2)) := by
   have t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0) := continuous_fst.tendsto 0
@@ -137,6 +180,9 @@ theorem doubling_law :
   simp only at h1 h2 h3 h4 h5 ⊢
   rw [h1, h2, ← h3, h4, h5]
 
+/- English proof (translation)
+The claim follows from `AnalyticAt.comp (f := fun x : V => (x, x)) h.analyticAt (analyticAt_id.prod analyticAt_id)`.
+-/
 theorem analyticAt_doubling : AnalyticAt ℂ (fun x => m (x, x)) 0 :=
   AnalyticAt.comp (f := fun x : V => (x, x)) h.analyticAt (analyticAt_id.prod analyticAt_id)
 
@@ -147,6 +193,9 @@ noncomputable def twoEquiv (V : Type*) [NormedAddCommGroup V] [NormedSpace ℂ V
     ((2 : ℂ)⁻¹ • ContinuousLinearMap.id ℂ V) (fun x => by simp [smul_smul])
     (fun x => by simp [smul_smul])
 
+/- English proof (translation)
+Use `HasFDerivAt.comp (f := fun x : V => (x, x)) (0 : V) h.hasFDerivAt ((hasFDerivAt_id (0 : V)).prodMk (hasFDerivAt_id (0 : V)))` as an intermediate fact. Use `this.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[twoEquiv, two_smul]`.
+-/
 theorem hasFDerivAt_doubling :
     HasFDerivAt (fun x => m (x, x)) (twoEquiv V : V →L[ℂ] V) 0 := by
   have := HasFDerivAt.comp (f := fun x : V => (x, x)) (0 : V) h.hasFDerivAt
@@ -155,6 +204,9 @@ theorem hasFDerivAt_doubling :
   ext x
   simp [twoEquiv, two_smul]
 
+/- English proof (translation)
+The claim follows from `h.hasFDerivAt_doubling.fderiv ▸ h.analyticAt_doubling.hasStrictFDerivAt`.
+-/
 theorem hasStrictFDerivAt_doubling :
     HasStrictFDerivAt (fun x => m (x, x)) (twoEquiv V : V →L[ℂ] V) 0 :=
   h.hasFDerivAt_doubling.fderiv ▸ h.analyticAt_doubling.hasStrictFDerivAt
@@ -164,6 +216,9 @@ variable [CompleteSpace V]
 noncomputable def halving : V → V :=
   h.hasStrictFDerivAt_doubling.localInverse _ _ _
 
+/- English proof (translation)
+The claim follows from `h.hasStrictFDerivAt_doubling.eventually_left_inverse`.
+-/
 theorem halving_doubling : ∀ᶠ x in 𝓝 (0 : V), h.halving (m (x, x)) = x :=
   h.hasStrictFDerivAt_doubling.eventually_left_inverse
 
@@ -172,10 +227,16 @@ section AnyInverse
 variable {ε : V → V} (hε : ∀ᶠ x in 𝓝 (0 : V), ε (m (x, x)) = x)
 include hε
 
+/- English proof (translation)
+Use `h.hasStrictFDerivAt_doubling.localInverse_unique hε` as an intermediate fact. Rewrite `this` using `[show m (0, 0) = 0 from h.map_zero]`. Then use the resulting hypothesis.
+-/
 theorem eventuallyEq_halving : ε =ᶠ[𝓝 0] h.halving := by
   have := h.hasStrictFDerivAt_doubling.localInverse_unique hε
   rwa [show m (0, 0) = 0 from h.map_zero] at this
 
+/- English proof (translation)
+Use `h.hasStrictFDerivAt_doubling.eventually_right_inverse` as an intermediate fact. Rewrite `this` using `[show m (0, 0) = 0 from h.map_zero]`. Use `filter_upwards [this, h.eventuallyEq_halving hε] with x h1 h2`. Rewrite using `[h2]`. Conclude with `h1`.
+-/
 theorem doubling_inverse : ∀ᶠ x in 𝓝 (0 : V), m (ε x, ε x) = x := by
   have := h.hasStrictFDerivAt_doubling.eventually_right_inverse
   rw [show m (0, 0) = 0 from h.map_zero] at this
@@ -183,6 +244,9 @@ theorem doubling_inverse : ∀ᶠ x in 𝓝 (0 : V), m (ε x, ε x) = x := by
   rw [h2]
   exact h1
 
+/- English proof (translation)
+Use `((h.analyticAt_doubling.contDiffAt (n := ⊤)).to_localInverse h.hasFDerivAt_doubling (by simp)).analyticAt` as an intermediate fact. Rewrite `this` using `[show m (0, 0) = 0 from h.map_zero]`. Conclude with `this.congr (h.eventuallyEq_halving hε).symm`.
+-/
 theorem analyticAt_inverse : AnalyticAt ℂ ε 0 := by
   have := ((h.analyticAt_doubling.contDiffAt (n := ⊤)).to_localInverse h.hasFDerivAt_doubling
     (by simp)).analyticAt
@@ -190,14 +254,25 @@ theorem analyticAt_inverse : AnalyticAt ℂ ε 0 := by
   exact this.congr (h.eventuallyEq_halving hε).symm
 
 omit [CompleteSpace V] in
+/- English proof (translation)
+Simplify `hε.self_of_nhds` using `[show m (0, 0) = 0 from h.map_zero]`.
+-/
 theorem inverse_zero : ε 0 = 0 := by
   simpa [show m (0, 0) = 0 from h.map_zero] using hε.self_of_nhds
 
+/- English proof (translation)
+Use `(h.hasStrictFDerivAt_doubling.to_local_left_inverse hε).hasFDerivAt` as an intermediate fact. Rewrite `this` using `[show m (0, 0) = 0 from h.map_zero]`. Conclude with `isBigO_sub_linear_sq_of_analyticAt (h.analyticAt_inverse hε) (h.inverse_zero hε) this`.
+-/
 theorem isBigO_inverse : (fun x => ε x - (2 : ℂ)⁻¹ • x) =O[𝓝 0] fun x => ‖x‖ ^ 2 := by
   have := (h.hasStrictFDerivAt_doubling.to_local_left_inverse hε).hasFDerivAt
   rw [show m (0, 0) = 0 from h.map_zero] at this
   exact isBigO_sub_linear_sq_of_analyticAt (h.analyticAt_inverse hε) (h.inverse_zero hε) this
 
+/- English proof (translation)
+Establish `t0 : Tendsto ε (𝓝 0) (𝓝 0)`. Simplify `(h.analyticAt_inverse hε).continuousAt` using `[ContinuousAt, h.inverse_zero hε]`. Establish `t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : V × V => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Establish `t3 : Tendsto (fun p : V × V => (ε p.1, ε p.2)) (𝓝 0) (𝓝 0)` using `(t0.comp t1).prodMk_nhds (t0.comp t2)`.
+
+Use `filter_upwards [t3.eventually h.doubling_law, (h.tendsto.comp t3).eventually hε, t1.eventually (h.doubling_inverse hε), t2.eventually (h.doubling_inverse hε)] with p h1 h2 h3 h4`. Simplify using `only [h3, h4, Function.comp] at h1 h2`. Rewrite using `[← h2, h1]`.
+-/
 theorem inverse_law : ∀ᶠ p in 𝓝 (0 : V × V), ε (m p) = m (ε p.1, ε p.2) := by
   have t0 : Tendsto ε (𝓝 0) (𝓝 0) := by
     simpa [ContinuousAt, h.inverse_zero hε] using (h.analyticAt_inverse hε).continuousAt
@@ -211,6 +286,19 @@ theorem inverse_law : ∀ᶠ p in 𝓝 (0 : V × V), ε (m p) = m (ε p.1, ε p.
   simp only [h3, h4, Function.comp] at h1 h2
   rw [← h2, h1]
 
+/- English proof (translation)
+Take `⟨r, hr, C, hC0, hc, hC⟩` from `exists_ball_contraction (h.isBigO_inverse hε)`. Take `⟨D, hD0, hD⟩` from `h.isBigO.exists_nonneg`. Take `⟨s, hs, hball⟩` from `Metric.eventually_nhds_iff_ball.mp (hD.bound.and (h.inverse_law hε))`. Use `filter_upwards [ball_mem_nhds 0 hs, ball_mem_nhds 0 hr, h.tendsto.eventually (ball_mem_nhds 0 hr)] with p hps hpr hm`. Establish `hx : p.1 ∈ ball (0 : V) r` using `mem_ball_zero_iff.mpr ((norm_fst_le p).trans_lt (mem_ball_zero_iff.mp hpr))`.
+
+Establish `hy : p.2 ∈ ball (0 : V) r` using `mem_ball_zero_iff.mpr ((norm_snd_le p).trans_lt (mem_ball_zero_iff.mp hpr))`. Establish `hq : ∀ j : ℕ, ‖(ε^[j] p.1, ε^[j] p.2)‖ ≤ (5 / 8) ^ j * ‖p‖` using `fun j => norm_prod_le_iff.mpr ⟨(norm_iterate_le_of_contraction hc hx j).trans (by gcongr; exact norm_fst_le p), (norm_iterate_le_of_contraction hc hy j).trans (by gcongr; exact norm_snd_le p)⟩`. Establish `hqs : ∀ j : ℕ, (ε^[j] p.1, ε^[j] p.2) ∈ ball (0 : V × V) s` using `fun j => mem_ball_zero_iff.mpr (((hq j).trans (mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (by norm_num) (by norm_num)))).trans_lt (mem_ball_zero_iff.mp hps))`. Establish `hit : ∀ j : ℕ, ε^[j] (m p) = m (ε^[j] p.1, ε^[j] p.2)`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => simp only [Function.iterate_succ_apply', ih, (hball _ (hqs j)).2]`. Establish `h0 : Tendsto (fun j : ℕ => (2 : ℂ) ^ j • ε^[j] (m p) - ((2 : ℂ) ^ j • ε^[j] p.1 + (2 : ℂ) ^ j • ε^[j] p.2)) atTop (𝓝 0)`. Use `squeeze_zero_norm (a := fun j : ℕ => D * ‖p‖ ^ 2 * (25 / 32 : ℝ) ^ j) (fun j => ?_) ?_` and prove the remaining obligations.
+
+Establish `h1` using `(hball _ (hqs j)).1`. Rewrite `h1` using `[norm_pow, norm_norm]`. Rewrite using `[← smul_add, ← smul_sub, hit, norm_smul, norm_pow, Complex.norm_two]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1.trans (by gcongr; exact hq j)`.
+
+Use `_ = D * ‖p‖ ^ 2 * (2 * (5 / 8) ^ 2) ^ j := by`. Rewrite using `[mul_pow, mul_pow, ← pow_mul, ← pow_mul, mul_comm j 2]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by norm_num`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_lt_one (r := (25 / 32 : ℝ)) (by norm_num) (by norm_num)).const_mul (D * ‖p‖ ^ 2)`.
+
+Conclude with `sub_eq_zero.mp (tendsto_nhds_unique ((tendsto_doublingLog_of_contraction hc hC0 hC hm).sub ((tendsto_doublingLog_of_contraction hc hC0 hC hx).add (tendsto_doublingLog_of_contraction hc hC0 hC hy))) h0)`.
+-/
 theorem doublingLog_law :
     ∀ᶠ p in 𝓝 (0 : V × V), doublingLog ε (m p) = doublingLog ε p.1 + doublingLog ε p.2 := by
   obtain ⟨r, hr, C, hC0, hc, hC⟩ := exists_ball_contraction (h.isBigO_inverse hε)
@@ -255,9 +343,15 @@ theorem doublingLog_law :
       ((tendsto_doublingLog_of_contraction hc hC0 hC hx).add
         (tendsto_doublingLog_of_contraction hc hC0 hC hy))) h0)
 
+/- English proof (translation)
+The claim follows from `hasFDerivAt_of_isBigO_sq (isBigO_doublingLog_sub (h.isBigO_inverse hε))`.
+-/
 theorem hasFDerivAt_doublingLog : HasFDerivAt (doublingLog ε) (ContinuousLinearMap.id ℂ V) 0 :=
   hasFDerivAt_of_isBigO_sq (isBigO_doublingLog_sub (h.isBigO_inverse hε))
 
+/- English proof (translation)
+The claim follows from `map_zero_of_isBigO_sq (L := ContinuousLinearMap.id ℂ V) (isBigO_doublingLog_sub (h.isBigO_inverse hε))`.
+-/
 theorem doublingLog_zero : doublingLog ε 0 = 0 :=
   map_zero_of_isBigO_sq (L := ContinuousLinearMap.id ℂ V)
     (isBigO_doublingLog_sub (h.isBigO_inverse hε))
@@ -266,20 +360,35 @@ end AnyInverse
 
 noncomputable def log : V → V := doublingLog h.halving
 
+/- English proof (translation)
+The claim follows from `h.doublingLog_zero h.halving_doubling`.
+-/
 @[simp] theorem log_zero : h.log 0 = 0 := h.doublingLog_zero h.halving_doubling
 
+/- English proof (translation)
+The claim follows from `h.hasFDerivAt_doublingLog h.halving_doubling`.
+-/
 theorem hasFDerivAt_log : HasFDerivAt h.log (ContinuousLinearMap.id ℂ V) 0 :=
   h.hasFDerivAt_doublingLog h.halving_doubling
 
+/- English proof (translation)
+The claim follows from `h.doublingLog_law h.halving_doubling`.
+-/
 theorem log_law : ∀ᶠ p in 𝓝 (0 : V × V), h.log (m p) = h.log p.1 + h.log p.2 :=
   h.doublingLog_law h.halving_doubling
 
 variable [FiniteDimensional ℂ V]
 
+/- English proof (translation)
+The claim follows from `analyticAt_doublingLog (h.analyticAt_inverse h.halving_doubling) (h.isBigO_inverse h.halving_doubling)`.
+-/
 theorem analyticAt_log : AnalyticAt ℂ h.log 0 :=
   analyticAt_doublingLog (h.analyticAt_inverse h.halving_doubling)
     (h.isBigO_inverse h.halving_doubling)
 
+/- English proof (translation)
+Use `h.analyticAt_log.hasStrictFDerivAt` as an intermediate fact. Rewrite `this` using `[h.hasFDerivAt_log.fderiv]`. Then use the resulting hypothesis.
+-/
 theorem hasStrictFDerivAt_log :
     HasStrictFDerivAt h.log (ContinuousLinearEquiv.refl ℂ V : V →L[ℂ] V) 0 := by
   have := h.analyticAt_log.hasStrictFDerivAt
@@ -288,27 +397,50 @@ theorem hasStrictFDerivAt_log :
 noncomputable def logChart : OpenPartialHomeomorph V V :=
   h.hasStrictFDerivAt_log.toOpenPartialHomeomorph h.log
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_logChart : (h.logChart : V → V) = h.log := rfl
 
+/- English proof (translation)
+The claim follows from `h.hasStrictFDerivAt_log.mem_toOpenPartialHomeomorph_source`.
+-/
 theorem zero_mem_logChart_source : (0 : V) ∈ h.logChart.source :=
   h.hasStrictFDerivAt_log.mem_toOpenPartialHomeomorph_source
 
+/- English proof (translation)
+Simplify using `using h.logChart.map_source h.zero_mem_logChart_source`.
+-/
 theorem zero_mem_logChart_target : (0 : V) ∈ h.logChart.target := by
   simpa using h.logChart.map_source h.zero_mem_logChart_source
 
+/- English proof (translation)
+Simplify using `using h.logChart.left_inv h.zero_mem_logChart_source`.
+-/
 @[simp] theorem logChart_symm_zero : h.logChart.symm 0 = 0 := by
   simpa using h.logChart.left_inv h.zero_mem_logChart_source
 
+/- English proof (translation)
+Use `((h.analyticAt_log.contDiffAt (n := ⊤)).to_localInverse h.hasStrictFDerivAt_log.hasFDerivAt (by simp)).analyticAt` as an intermediate fact. Rewrite `this` using `[h.log_zero]`. Then use the resulting hypothesis.
+-/
 theorem analyticAt_logChart_symm : AnalyticAt ℂ h.logChart.symm 0 := by
   have := ((h.analyticAt_log.contDiffAt (n := ⊤)).to_localInverse
     h.hasStrictFDerivAt_log.hasFDerivAt (by simp)).analyticAt
   rwa [h.log_zero] at this
 
+/- English proof (translation)
+Use `h.hasStrictFDerivAt_log.to_localInverse.hasFDerivAt` as an intermediate fact. Rewrite `this` using `[h.log_zero]`. Then use the resulting hypothesis.
+-/
 theorem hasFDerivAt_logChart_symm :
     HasFDerivAt h.logChart.symm (ContinuousLinearMap.id ℂ V) 0 := by
   have := h.hasStrictFDerivAt_log.to_localInverse.hasFDerivAt
   rwa [h.log_zero] at this
 
+/- English proof (translation)
+Establish `t0 : Tendsto h.logChart.symm (𝓝 0) (𝓝 0)`. Simplify `h.analyticAt_logChart_symm.continuousAt` using `[ContinuousAt]`. Establish `t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : V × V => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Establish `t3 : Tendsto (fun p : V × V => (h.logChart.symm p.1, h.logChart.symm p.2)) (𝓝 0) (𝓝 0)` using `(t0.comp t1).prodMk_nhds (t0.comp t2)`.
+
+Establish `hr` using `h.logChart.eventually_right_inverse h.zero_mem_logChart_target`. Use `filter_upwards [t3.eventually h.log_law, t1.eventually hr, t2.eventually hr, (h.tendsto.comp t3).eventually (h.logChart.eventually_left_inverse h.zero_mem_logChart_source)] with p h1 h2 h3 h4`. Simplify using `only [coe_logChart, Function.comp] at h1 h2 h3 h4`. Rewrite using `[← h4, h1, h2, h3]`.
+-/
 theorem logChart_symm_add : ∀ᶠ p in 𝓝 (0 : V × V),
     h.logChart.symm (p.1 + p.2) = m (h.logChart.symm p.1, h.logChart.symm p.2) := by
   have t0 : Tendsto h.logChart.symm (𝓝 0) (𝓝 0) := by
@@ -346,18 +478,33 @@ namespace IsAnalyticGroupChart
 variable {φ : OpenPartialHomeomorph A V} (h : IsAnalyticGroupChart φ)
 include h
 
+/- English proof (translation)
+The claim follows from `h.map_zero ▸ φ.map_source h.zero_mem_source`.
+-/
 theorem zero_mem_target : (0 : V) ∈ φ.target := h.map_zero ▸ φ.map_source h.zero_mem_source
 
+/- English proof (translation)
+Simplify `φ.left_inv h.zero_mem_source` using `[h.map_zero]`.
+-/
 theorem symm_zero : φ.symm 0 = 0 := by simpa [h.map_zero] using φ.left_inv h.zero_mem_source
 
+/- English proof (translation)
+Simplify `φ.continuousAt h.zero_mem_source` using `[ContinuousAt, h.map_zero]`.
+-/
 theorem tendsto : Tendsto φ (𝓝 0) (𝓝 0) := by
   simpa [ContinuousAt, h.map_zero] using φ.continuousAt h.zero_mem_source
 
+/- English proof (translation)
+Simplify `φ.continuousAt_symm h.zero_mem_target` using `[ContinuousAt, h.symm_zero]`.
+-/
 theorem tendsto_symm : Tendsto φ.symm (𝓝 0) (𝓝 0) := by
   simpa [ContinuousAt, h.symm_zero] using φ.continuousAt_symm h.zero_mem_target
 
 variable [IsTopologicalAddGroup A]
 
+/- English proof (translation)
+Establish `t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : V × V => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Establish `t : Tendsto (fun p : V × V => φ.symm p.1 + φ.symm p.2) (𝓝 0) (𝓝 0)`. Simplify using `using (h.tendsto_symm.comp t1).add (h.tendsto_symm.comp t2)`. Conclude with `t.eventually (φ.eventually_left_inverse h.zero_mem_source)`.
+-/
 theorem symm_chartLaw :
     ∀ᶠ p in 𝓝 (0 : V × V), φ.symm (chartLaw φ p) = φ.symm p.1 + φ.symm p.2 := by
   have t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0) := continuous_fst.tendsto 0
@@ -366,6 +513,11 @@ theorem symm_chartLaw :
     simpa using (h.tendsto_symm.comp t1).add (h.tendsto_symm.comp t2)
   exact t.eventually (φ.eventually_left_inverse h.zero_mem_source)
 
+/- English proof (translation)
+Use `IsLocalCommGroupLaw.of_unit h.analyticAt ?_ (Eventually.of_forall fun p => by simp only [chartLaw, add_comm]) ?_` and prove the remaining obligations. Use `filter_upwards [φ.eventually_right_inverse h.zero_mem_target] with x hx`. Simplify using `[chartLaw, h.symm_zero, hx]`. Establish `t1 : Tendsto (fun p : V × V × V => (p.1, p.2.1)) (𝓝 0) (𝓝 0)` using `(by fun_prop : Continuous fun p : V × V × V => (p.1, p.2.1)).tendsto 0`. Establish `t2 : Tendsto (fun p : V × V × V => (p.2.1, p.2.2)) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`.
+
+Use `filter_upwards [t1.eventually h.symm_chartLaw, t2.eventually h.symm_chartLaw] with p h1 h2`. Express the relevant statement in the definitionally equal form `φ (φ.symm (chartLaw φ _) + φ.symm p.2.2) = φ (φ.symm p.1 + φ.symm (chartLaw φ _))`. Rewrite using `[h1, h2, add_assoc]`.
+-/
 theorem isLocalCommGroupLaw : IsLocalCommGroupLaw (chartLaw φ) := by
   refine IsLocalCommGroupLaw.of_unit h.analyticAt ?_
     (Eventually.of_forall fun p => by simp only [chartLaw, add_comm]) ?_
@@ -386,14 +538,28 @@ noncomputable abbrev log : V → V := h.isLocalCommGroupLaw.log
 noncomputable def localExp : OpenPartialHomeomorph V A :=
   h.isLocalCommGroupLaw.logChart.symm.trans φ.symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localExp_apply (v : V) :
     h.localExp v = φ.symm (h.isLocalCommGroupLaw.logChart.symm v) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem localExp_symm_apply (a : A) : h.localExp.symm a = h.log (φ a) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.isLocalCommGroupLaw.zero_mem_logChart_target, by simpa using h.zero_mem_target⟩`.
+-/
 theorem zero_mem_localExp_source : (0 : V) ∈ h.localExp.source :=
   ⟨h.isLocalCommGroupLaw.zero_mem_logChart_target, by simpa using h.zero_mem_target⟩
 
+/- English proof (translation)
+Establish `t0 : Tendsto h.isLocalCommGroupLaw.logChart.symm (𝓝 0) (𝓝 0)`. Simplify `h.isLocalCommGroupLaw.analyticAt_logChart_symm.continuousAt` using `[ContinuousAt]`. Establish `t1 : Tendsto (fun p : V × V => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : V × V => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Use `filter_upwards [h.isLocalCommGroupLaw.logChart_symm_add, ((t0.comp t1).prodMk_nhds (t0.comp t2)).eventually h.symm_chartLaw] with p h1 h2`.
+
+Rewrite using `[localExp_apply, h1]`. Conclude with `h2`.
+-/
 theorem localExp_add :
     ∀ᶠ p in 𝓝 (0 : V × V), h.localExp (p.1 + p.2) = h.localExp p.1 + h.localExp p.2 := by
   have t0 : Tendsto h.isLocalCommGroupLaw.logChart.symm (𝓝 0) (𝓝 0) := by
@@ -408,25 +574,46 @@ theorem localExp_add :
 noncomputable def exp : V →+ A :=
   (exists_addMonoidHom_eventuallyEq h.localExp_add).choose
 
+/- English proof (translation)
+The claim follows from `(exists_addMonoidHom_eventuallyEq h.localExp_add).choose_spec`.
+-/
 theorem exp_eventuallyEq : h.exp =ᶠ[𝓝 0] h.localExp :=
   (exists_addMonoidHom_eventuallyEq h.localExp_add).choose_spec
 
+/- English proof (translation)
+The claim follows from `isLocalHomeomorph_addMonoidHom_of_eventuallyEq h.zero_mem_localExp_source h.exp_eventuallyEq`.
+-/
 theorem isLocalHomeomorph_exp : IsLocalHomeomorph h.exp :=
   isLocalHomeomorph_addMonoidHom_of_eventuallyEq h.zero_mem_localExp_source h.exp_eventuallyEq
 
+/- English proof (translation)
+The claim follows from `h.isLocalHomeomorph_exp.continuous`.
+-/
 theorem continuous_exp : Continuous h.exp := h.isLocalHomeomorph_exp.continuous
 
+/- English proof (translation)
+The claim follows from `h.isLocalHomeomorph_exp.isOpenMap`.
+-/
 theorem isOpenMap_exp : IsOpenMap h.exp := h.isLocalHomeomorph_exp.isOpenMap
 
+/- English proof (translation)
+Simplify using `using h.isLocalHomeomorph_exp.map_nhds_eq 0`.
+-/
 theorem map_exp_nhds_zero : map h.exp (𝓝 0) = 𝓝 0 := by
   simpa using h.isLocalHomeomorph_exp.map_nhds_eq 0
 
+/- English proof (translation)
+Use `filter_upwards [h.exp_eventuallyEq, h.localExp.eventually_left_inverse h.zero_mem_localExp_source] with v h1 h2`. Rewrite using `[h1]`. Conclude with `h2`.
+-/
 theorem log_exp : ∀ᶠ v in 𝓝 (0 : V), h.log (φ (h.exp v)) = v := by
   filter_upwards [h.exp_eventuallyEq,
     h.localExp.eventually_left_inverse h.zero_mem_localExp_source] with v h1 h2
   rw [h1]
   exact h2
 
+/- English proof (translation)
+Rewrite using `[← h.map_exp_nhds_zero, eventually_map]`. Use `filter_upwards [h.log_exp] with v hv`. Rewrite using `[hv]`.
+-/
 theorem exp_log : ∀ᶠ a in 𝓝 (0 : A), h.exp (h.log (φ a)) = a := by
   rw [← h.map_exp_nhds_zero, eventually_map]
   filter_upwards [h.log_exp] with v hv
@@ -434,6 +621,9 @@ theorem exp_log : ∀ᶠ a in 𝓝 (0 : A), h.exp (h.log (φ a)) = a := by
 
 omit [FiniteDimensional ℂ V] in
 
+/- English proof (translation)
+Establish `t1 : Tendsto (fun p : A × A => p.1) (𝓝 0) (𝓝 0)` using `continuous_fst.tendsto 0`. Establish `t2 : Tendsto (fun p : A × A => p.2) (𝓝 0) (𝓝 0)` using `continuous_snd.tendsto 0`. Establish `hl` using `φ.eventually_left_inverse h.zero_mem_source`. Use `filter_upwards [((h.tendsto.comp t1).prodMk_nhds (h.tendsto.comp t2)).eventually h.isLocalCommGroupLaw.log_law, t1.eventually hl, t2.eventually hl] with p h1 h2 h3`. Simplify `h1` using `[chartLaw, h2, h3]`.
+-/
 theorem log_add :
     ∀ᶠ p in 𝓝 (0 : A × A), h.log (φ (p.1 + p.2)) = h.log (φ p.1) + h.log (φ p.2) := by
   have t1 : Tendsto (fun p : A × A => p.1) (𝓝 0) (𝓝 0) := continuous_fst.tendsto 0
@@ -443,6 +633,9 @@ theorem log_add :
     h.isLocalCommGroupLaw.log_law, t1.eventually hl, t2.eventually hl] with p h1 h2 h3
   simpa [chartLaw, h2, h3] using h1
 
+/- English proof (translation)
+Establish `t0 : Tendsto h.isLocalCommGroupLaw.logChart.symm (𝓝 0) (𝓝 0)`. Simplify `h.isLocalCommGroupLaw.analyticAt_logChart_symm.continuousAt` using `[ContinuousAt]`. Use `filter_upwards [h.exp_eventuallyEq, t0.eventually (φ.eventually_right_inverse h.zero_mem_target)] with v h1 h2`. Rewrite using `[h1, localExp_apply, h2]`.
+-/
 theorem chart_exp_eventuallyEq :
     (fun v => φ (h.exp v)) =ᶠ[𝓝 0] h.isLocalCommGroupLaw.logChart.symm := by
   have t0 : Tendsto h.isLocalCommGroupLaw.logChart.symm (𝓝 0) (𝓝 0) := by
@@ -451,13 +644,22 @@ theorem chart_exp_eventuallyEq :
     t0.eventually (φ.eventually_right_inverse h.zero_mem_target)] with v h1 h2
   rw [h1, localExp_apply, h2]
 
+/- English proof (translation)
+The claim follows from `h.isLocalCommGroupLaw.analyticAt_logChart_symm.congr h.chart_exp_eventuallyEq.symm`.
+-/
 theorem analyticAt_chart_exp : AnalyticAt ℂ (fun v => φ (h.exp v)) 0 :=
   h.isLocalCommGroupLaw.analyticAt_logChart_symm.congr h.chart_exp_eventuallyEq.symm
 
+/- English proof (translation)
+The claim follows from `h.isLocalCommGroupLaw.hasFDerivAt_logChart_symm.congr_of_eventuallyEq h.chart_exp_eventuallyEq`.
+-/
 theorem hasFDerivAt_chart_exp :
     HasFDerivAt (fun v => φ (h.exp v)) (ContinuousLinearMap.id ℂ V) 0 :=
   h.isLocalCommGroupLaw.hasFDerivAt_logChart_symm.congr_of_eventuallyEq h.chart_exp_eventuallyEq
 
+/- English proof (translation)
+Use `addMonoidHom_eq_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [Tendsto.eventually h.map_exp_nhds_zero.le he, h.log_exp] with v h1 h2`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+-/
 theorem eq_exp_of_log {e : V →+ A} (he : ∀ᶠ a in 𝓝 (0 : A), e (h.log (φ a)) = a) :
     e = h.exp := by
   refine addMonoidHom_eq_of_eventuallyEq ?_
@@ -466,6 +668,9 @@ theorem eq_exp_of_log {e : V →+ A} (he : ∀ᶠ a in 𝓝 (0 : A), e (h.log (�
 
 noncomputable def periodLattice : Submodule ℤ V := AddSubgroup.toIntSubmodule h.exp.ker
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_periodLattice {v : V} : v ∈ h.periodLattice ↔ h.exp v = 0 := Iff.rfl
 
 instance discreteTopology_ker_exp : DiscreteTopology h.exp.ker :=
@@ -477,6 +682,9 @@ instance discreteTopology_periodLattice : DiscreteTopology h.periodLattice :=
 instance isZLattice_periodLattice [CompactSpace A] : IsZLattice ℝ h.periodLattice :=
   ⟨span_ker_eq_top_of_isOpenMap_of_compact h.isOpenMap_exp⟩
 
+/- English proof (translation)
+The claim follows from `surjective_of_isOpenMap_of_compact_of_divisible h.isOpenMap_exp hdiv`.
+-/
 theorem exp_surjective [CompactSpace A] (hdiv : ∀ n : ℕ, n ≠ 0 → ∀ a : A, ∃ b : A, n • b = a) :
     Function.Surjective h.exp :=
   surjective_of_isOpenMap_of_compact_of_divisible h.isOpenMap_exp hdiv

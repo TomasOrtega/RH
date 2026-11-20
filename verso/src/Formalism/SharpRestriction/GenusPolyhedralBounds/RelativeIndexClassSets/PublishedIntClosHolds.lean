@@ -17,6 +17,11 @@ def PublishedIntClos : Prop :=
     [FiniteDimensional K A] [IsReduced A],
     Module.Finite O ↥(As O A) ∧ ∀ ζ : Pts O A, IsDVRAt ζ
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`. Establish `h : IsNilpotent x`. Rewrite using `[nilpotent_iff_mem_prime]`. Introduce `J hJ`. Use `haveI := hJ`.
+
+Conclude with `hx ⟨J, IsArtinianRing.isMaximal_of_isPrime J⟩`. Conclude with `h.eq_zero`.
+-/
 private theorem inj_lemma (K A : Type) [Field K] [CommRing A] [Algebra K A] [FiniteDimensional K A]
     [IsReduced A] (x : A) (hx : ∀ M : MaximalSpectrum A, x ∈ M.asIdeal) : x = 0 := by
   haveI : IsArtinianRing A := IsArtinianRing.of_finite K A
@@ -27,6 +32,17 @@ private theorem inj_lemma (K A : Type) [Field K] [CommRing A] [Algebra K A] [Fin
     exact hx ⟨J, IsArtinianRing.isMaximal_of_isPrime J⟩
   exact h.eq_zero
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`. Use `haveI : Fintype (MaximalSpectrum A) := Fintype.ofFinite _`. Establish `hb : ∀ J : MaximalSpectrum A, J ≠ I → ∃ b : A, b ∈ J.asIdeal ∧ Ideal.Quotient.mk I.asIdeal b = 1`. Introduce `J hJ`. Establish `hsup : I.asIdeal ⊔ J.asIdeal = ⊤`.
+
+Assume the negation of the conclusion as `h`. Establish `h1 : I.asIdeal = I.asIdeal ⊔ J.asIdeal` using `I.isMaximal.eq_of_le h le_sup_left`. Establish `h2 : J.asIdeal ≤ I.asIdeal` using `le_sup_right.trans h1.ge`. Conclude with `hJ (MaximalSpectrum.ext (J.isMaximal.eq_of_le I.isMaximal.ne_top h2))`. Establish `h1 : (1 : A) ∈ I.asIdeal ⊔ J.asIdeal` using `by rw [hsup]; exact Submodule.mem_top`.
+
+Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.mp h1`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `hb' : b = 1 - a` using `by rw [← hab]; ring`. Rewrite using `[hb', map_sub, map_one, Ideal.Quotient.eq_zero_iff_mem.mpr ha, sub_zero]`. Use `choose! b hbJ hbI using hb`.
+
+Use `⟨∏ J ∈ Finset.univ.filter (fun J => J ≠ I), b J, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun J hJ => hbI J (Finset.mem_filter.mp hJ).2`. Introduce `J hJ`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+
+Establish `hmem : J ∈ Finset.univ.filter (fun J => J ≠ I)` using `Finset.mem_filter.mpr ⟨Finset.mem_univ _, hJ⟩`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem b hmem`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (hbJ J hJ)`.
+-/
 private theorem idem_lemma_2 (K A : Type) [Field K] [CommRing A] [Algebra K A] [FiniteDimensional K A]
     (I : MaximalSpectrum A) : ∃ e : A, Ideal.Quotient.mk I.asIdeal e = 1 ∧
       ∀ J : MaximalSpectrum A, J ≠ I → Ideal.Quotient.mk J.asIdeal e = 0 := by
@@ -58,6 +74,13 @@ private theorem idem_lemma_2 (K A : Type) [Field K] [CommRing A] [Algebra K A] [
     rw [hc]
     exact Ideal.mul_mem_right _ _ (hbJ J hJ)
 
+/- English proof (translation)
+Use `letI : Field (A ⧸ M) := Ideal.Quotient.field M`. Use `haveI : FiniteDimensional K (A ⧸ M) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K M).toLinearMap (Ideal.Quotient.mkₐ_surjective K M)`. Use `haveI : Algebra.IsSeparable K (A ⧸ M) := inferInstance`. Use `⟨IsIntegralClosure.finite O K (A ⧸ M) (integralClosure O (A ⧸ M)), IsIntegralClosure.isDedekindDomain O K (A ⧸ M) (integralClosure O (A ⧸ M)), ?_⟩` and prove the remaining obligations. Introduce `h`.
+
+Apply `IsDiscreteValuationRing.not_isField O` to reduce the goal to its premises. Use `isField_of_isIntegral_of_isField ?_ h` and prove the remaining obligations. Introduce `a b hab`. Establish `hinj : Function.Injective (algebraMap O (A ⧸ M))`. Rewrite using `[IsScalarTower.algebraMap_eq O K (A ⧸ M)]`.
+
+Conclude with `(algebraMap K (A ⧸ M)).injective.comp (IsFractionRing.injective O K)`. Conclude with `hinj (congrArg Subtype.val hab)`.
+-/
 private theorem fld_lemma_3 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [CharZero K] [CommRing A] [Algebra K A] [Algebra O A]
     [IsScalarTower O K A] [FiniteDimensional K A] (M : Ideal A) [M.IsMaximal] :
@@ -80,6 +103,35 @@ private theorem fld_lemma_3 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscrete
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `hP : Pm.IsPrime` using `Ideal.IsMaximal.isPrime inferInstance`. Establish `hker : RingHom.ker φ ≤ Pm`. Introduce `c hc`. Establish `h0 : e * c ∈ Pm` using `by rw [he0 c (RingHom.mem_ker.mp hc)]; exact Pm.zero_mem`. Conclude with `(hP.mem_or_mem h0).resolve_left heP`.
+
+Use `haveI hQ : (Pm.map φ).IsPrime := Ideal.map_isPrime_of_surjective hφ hker`. Establish `hcomap : (Pm.map φ).comap φ = Pm`. Rewrite using `[Ideal.comap_map_of_surjective φ hφ, ← RingHom.ker_eq_comap_bot]`. Conclude with `sup_eq_left.mpr hker`. Establish `hnotin : ∀ s : Cr, s ∉ Pm → φ s ∉ Pm.map φ`.
+
+Introduce `s hs h`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← hcomap]`. Conclude with `Ideal.mem_comap.mpr h`. Establish `hQ0 : Pm.map φ ≠ ⊥`.
+
+Introduce `hQb`. Apply `hD` to reduce the goal to its premises. Use `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {d} hd => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `hφ d`. Establish `hc : c ∉ Pm`.
+
+Introduce `hcP`. Apply `hd` to reduce the goal to its premises. Establish `h1 : φ c ∈ Pm.map φ` using `Ideal.mem_map_of_mem φ hcP`. Rewrite `h1` using `[hQb]`. Conclude with `Ideal.mem_bot.mp h1`.
+
+Take `⟨y, i, hi, hyi⟩` from `Ideal.IsMaximal.exists_inv inferInstance hc`. Use `⟨φ y, ?_⟩` and prove the remaining obligations. Establish `hφi : φ i = 0`. Establish `h1 : φ i ∈ Pm.map φ` using `Ideal.mem_map_of_mem φ hi`. Rewrite `h1` using `[hQb]`.
+
+Conclude with `Ideal.mem_bot.mp h1`. Establish `h2` using `congrArg φ hyi`. Rewrite `h2` using `[map_add, map_mul, hφi, add_zero, map_one]`. Rewrite using `[mul_comm]`. Conclude with `h2`.
+
+Set `LQ` to `Localization.AtPrime (Pm.map φ)`. Use `letI algC : Algebra Cr LQ := ((algebraMap Dr LQ).comp φ).toAlgebra`. Use `haveI hloc : IsLocalization Pm.primeCompl LQ := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs⟩`.
+
+Conclude with `IsLocalization.map_units LQ (⟨φ s, hnotin s hs⟩ : (Pm.map φ).primeCompl)`. Introduce `z`. Take `⟨⟨d, t⟩, hz⟩` from `IsLocalization.surj (Pm.map φ).primeCompl z`. Take `⟨a, rfl⟩` from `hφ d`. Take `⟨s, hs⟩` from `hφ (t : Dr)`.
+
+Establish `hsP : s ∉ Pm` using `fun hsP => t.2 (by rw [← hs]; exact Ideal.mem_map_of_mem φ hsP)`. Use `⟨⟨a, ⟨s, hsP⟩⟩, ?_⟩` and prove the remaining obligations. Use `show z * algebraMap Dr LQ (φ s) = algebraMap Dr LQ (φ a)`. Rewrite using `[hs]`. Conclude with `hz`.
+
+Introduce `x y hxy`. Establish `hxy' : algebraMap Dr LQ (φ x) = algebraMap Dr LQ (φ y)` using `hxy`. Take `⟨⟨t, ht⟩, htxy⟩` from `(IsLocalization.eq_iff_exists (Pm.map φ).primeCompl LQ).mp hxy'`. Take `⟨s, rfl⟩` from `hφ t`. Establish `hsP : s ∉ Pm` using `fun h => ht (Ideal.mem_map_of_mem φ h)`.
+
+Use `⟨⟨e * s, fun h => (hP.mem_or_mem h).elim heP hsP⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : φ (s * x - s * y) = 0`. Rewrite using `[map_sub, map_mul, map_mul]`. Conclude with `sub_eq_zero.mpr htxy`. Establish `h2` using `he0 _ h1`.
+
+Use `show e * s * x = e * s * y`. Take the linear combination `h2`. Use `haveI hLQd : IsDomain LQ := IsLocalization.isDomain_localization (Ideal.primeCompl_le_nonZeroDivisors (Pm.map φ))`. Set `f : Localization.AtPrime Pm ≃ₐ[Cr] LQ` to `IsLocalization.algEquiv Pm.primeCompl (Localization.AtPrime Pm) LQ`. Use `haveI hdom : IsDomain (Localization.AtPrime Pm) := Function.Injective.isDomain f.toRingEquiv.toRingHom f.toRingEquiv.injective`.
+
+Use `letI algD : Algebra Dr (Localization.AtPrime Pm) := (f.symm.toRingEquiv.toRingHom.comp (algebraMap Dr LQ)).toAlgebra`. Set `g : LQ ≃ₐ[Dr] Localization.AtPrime Pm` to `{ f.symm.toRingEquiv with commutes' := fun _ => rfl }`. Use `haveI : IsLocalization (Pm.map φ).primeCompl (Localization.AtPrime Pm) := IsLocalization.isLocalization_of_algEquiv (M := (Pm.map φ).primeCompl) (S := LQ) g`. Conclude with `⟨hdom, IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain Dr hQ0 (Localization.AtPrime Pm)⟩`.
+-/
 private theorem dvr_lemma_4 (Cr Dr : Type) [CommRing Cr] [CommRing Dr] [IsDomain Dr] [IsDedekindDomain Dr]
     (hD : ¬IsField Dr) (φ : Cr →+* Dr) (hφ : Function.Surjective φ) (e : Cr) (he1 : φ e = 1)
     (he0 : ∀ c, φ c = 0 → e * c = 0) (Pm : Ideal Cr) [Pm.IsMaximal] (heP : e ∉ Pm) :
@@ -162,6 +214,13 @@ private theorem dvr_lemma_4 (Cr Dr : Type) [CommRing Cr] [CommRing Dr] [IsDomain
   exact ⟨hdom, IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain Dr hQ0
     (Localization.AtPrime Pm)⟩
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`. Use `haveI : ∀ I : MaximalSpectrum A, Module.Finite O ↥(integralClosure O (A ⧸ I.asIdeal)) := fun I => by haveI := I.isMaximal; exact (fld_lemma_3 O K A I.asIdeal).1`. Set `ψ : ↥(As O A) →ₗ[O] ((I : MaximalSpectrum A) → ↥(integralClosure O (A ⧸ I.asIdeal)))` to `LinearMap.pi fun I => (((Ideal.Quotient.mkₐ O I.asIdeal).comp (As O A).val).codRestrict (integralClosure O (A ⧸ I.asIdeal)) fun x => id (IsIntegral.map (Ideal.Quotient.mkₐ O I.asIdeal) (x.2 : IsIntegral O (x : A)))).toLinearMap`. Establish `hψ : Function.Injective ψ`. Introduce `x y hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`. Apply `inj_lemma K A` to reduce the goal to its premises. Introduce `M`. Rewrite using `[← Ideal.Quotient.eq]`.
+
+Conclude with `congrArg Subtype.val (congrFun hxy M)`. Conclude with `Module.Finite.of_injective ψ hψ`.
+-/
 private theorem fin_lemma_5 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [CharZero K] [CommRing A] [Algebra K A] [Algebra O A]
     [IsScalarTower O K A] [FiniteDimensional K A] [IsReduced A] : Module.Finite O ↥(As O A) := by
@@ -185,6 +244,37 @@ private theorem fin_lemma_5 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscrete
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite K A`. Use `haveI : Fintype (MaximalSpectrum A) := Fintype.ofFinite _`. Use `choose E hE1 hE0 using idem_lemma_2 K A`. Establish `hmk : ∀ (M I : MaximalSpectrum A) (a : A), Ideal.Quotient.mk M.asIdeal (E I * a) = if M = I then Ideal.Quotient.mk M.asIdeal a else 0`. Introduce `M I a`.
+
+Rewrite using `[map_mul]`. Use `split_ifs with h`. Rewrite using `[h, hE1, one_mul]`. Rewrite using `[hE0 I M h, zero_mul]`. Establish `hev : ∀ (M : MaximalSpectrum A) (x : A) (q : Polynomial O), Ideal.Quotient.mk M.asIdeal (Polynomial.aeval x q) = Polynomial.aeval (Ideal.Quotient.mk M.asIdeal x) q`.
+
+Introduce `M x q`. Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk O, Polynomial.aeval_algHom_apply]`. Establish `hint : ∀ (I : MaximalSpectrum A) (y : A ⧸ I.asIdeal), IsIntegral O y → ∀ a : A, Ideal.Quotient.mk I.asIdeal a = y → E I * a ∈ As O A`. Introduce `I y hy a ha`. Take `⟨p, hp, hpy⟩` from `hy`.
+
+Use `(show IsIntegral O (E I * a) from ⟨Polynomial.X * p, Polynomial.monic_X.mul hp, ?_⟩)` and prove the remaining obligations. Rewrite using `[← Polynomial.aeval_def, map_mul, Polynomial.aeval_X]`. Apply `inj_lemma K A` to reduce the goal to its premises. Introduce `M`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, hev, hmk M I a]`.
+
+Use `split_ifs with h`. Rewrite using `[h, ha, Polynomial.aeval_def, hpy, mul_zero]`. Rewrite using `[zero_mul]`. Establish `hEi : ∀ I, E I ∈ As O A` using `fun I => by`. Simplify using `using hint I 1 isIntegral_one 1 (map_one _)`.
+
+Establish `hsum : ∑ I, E I = 1`. Rewrite using `[← sub_eq_zero]`. Apply `inj_lemma K A` to reduce the goal to its premises. Introduce `M`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_sum, map_one, Finset.sum_eq_single M]`.
+
+Rewrite using `[hE1, sub_self]`. Introduce `J _ hJ`. Conclude with `hE0 J M (Ne.symm hJ)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ M) h`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨I, hI⟩ : ∃ I, (⟨E I, hEi I⟩ : ↥(As O A)) ∉ ζ.asIdeal := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Apply `ζ.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1 : (∑ I, (⟨E I, hEi I⟩ : ↥(As O A))) ∈ ζ.asIdeal` using `ζ.asIdeal.sum_mem fun I _ => hall I`. Establish `h2 : (∑ I, (⟨E I, hEi I⟩ : ↥(As O A))) = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hsum]`. Rewrite `h1` using `[h2]`.
+
+Conclude with `h1`. Use `haveI := I.isMaximal`. Use `haveI := ζ.isMaximal`. Take `⟨_, hDed, hNF⟩` from `fld_lemma_3 O K A I.asIdeal`. Use `haveI := hDed`.
+
+Set `φ : ↥(As O A) →+* ↥(integralClosure O (A ⧸ I.asIdeal))` to `(((Ideal.Quotient.mkₐ O I.asIdeal).comp (As O A).val).codRestrict (integralClosure O (A ⧸ I.asIdeal)) fun x => id (IsIntegral.map (Ideal.Quotient.mkₐ O I.asIdeal) (x.2 : IsIntegral O (x : A)))).toRingHom`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (y : A ⧸ I.asIdeal)`. Use `⟨⟨E I * a, hint I y (y.2 : IsIntegral O (y : A ⧸ I.asIdeal)) a ha⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.Quotient.mk I.asIdeal (E I * a) = y`. Rewrite using `[hmk, if_pos rfl, ha]`. Establish `hone : φ ⟨E I, hEi I⟩ = 1` using `Subtype.ext (hE1 I)`. Establish `hzero : ∀ c, φ c = 0 → (⟨E I, hEi I⟩ : ↥(As O A)) * c = 0`.
+
+Introduce `c hc`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show E I * (c : A) = 0`. Apply `inj_lemma K A` to reduce the goal to its premises. Introduce `M`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hmk]`. Use `split_ifs with h`. Rewrite using `[h]`. Conclude with `congrArg Subtype.val hc`. Both sides reduce to the same expression.
+
+Take `⟨h1, h2⟩` from `dvr_lemma_4 _ _ hNF φ hsurj _ hone hzero ζ.asIdeal hI`. Conclude with `⟨h1, h2⟩`.
+-/
 private theorem pt_lemma_6 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [CharZero K] [CommRing A] [Algebra K A] [Algebra O A]
     [IsScalarTower O K A] [FiniteDimensional K A] [IsReduced A] (ζ : Pts O A) : IsDVRAt ζ := by
@@ -270,6 +360,9 @@ private theorem pt_lemma_6 (O K A : Type) [CommRing O] [IsDomain O] [IsDiscreteV
   obtain ⟨h1, h2⟩ := dvr_lemma_4 _ _ hNF φ hsurj _ hone hzero ζ.asIdeal hI
   exact ⟨h1, h2⟩
 
+/- English proof (translation)
+Introduce `O K A _ _ _ _ _ _ _ _ _ _ _ _ _`. Conclude with `⟨fin_lemma_5 O K A, fun ζ => pt_lemma_6 O K A ζ⟩`.
+-/
 theorem integralClosure_dvr' : PublishedIntClos := by
   intro O K A _ _ _ _ _ _ _ _ _ _ _ _ _
   exact ⟨fin_lemma_5 O K A, fun ζ => pt_lemma_6 O K A ζ⟩

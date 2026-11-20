@@ -2,6 +2,21 @@ import Mathlib
 
 namespace Bl.general_b_fact_left'''''
 
+/- English proof (translation)
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `F _ h2`. Conclude with `hS F (fun i => h2 i (Finset.notMem_empty i))`.
+
+Consider the case `insert j s hj ih`. Introduce `F h1 h2`. Establish `key : ∀ x : B j, ∏ i, ε i (Function.update F j x i) = ε j x * ∏ i ∈ Finset.univ \ {j}, ε i (F i)`. Introduce `x`. Establish `e : (fun i => ε i (Function.update F j x i)) = Function.update (fun k => ε k (F k)) j (ε j x)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `Function.apply_update (fun k => (ε k : B k → A)) F j x i`. Rewrite using `[e, Finset.prod_update_of_mem (Finset.mem_univ j)]`. Establish `hT : T j ⊆ (S.comap ((LinearMap.mulRight O (∏ i ∈ Finset.univ \ {j}, ε i (F i))).comp (ε j)) : Set (B j))`. Introduce `x hx`.
+
+Use `show (LinearMap.mulRight O (∏ i ∈ Finset.univ \ {j}, ε i (F i))) (ε j x) ∈ S`. Rewrite using `[LinearMap.mulRight_apply, ← key x]`. Apply `ih (Function.update F j x)` to reduce the goal to its premises. Introduce `i hi`. Establish `hij : i ≠ j` using `fun h => hj (h ▸ hi)`.
+
+Rewrite using `[Function.update_of_ne hij]`. Conclude with `h1 i (Finset.mem_insert_of_mem hi)`. Introduce `i hi`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Rewrite using `[Function.update_self]`. Conclude with `hx`. Rewrite using `[Function.update_of_ne hij]`. Conclude with `h2 i (by simp [hij, hi])`. Establish `hmem` using `Submodule.span_le.mpr hT (h1 j (Finset.mem_insert_self j s))`.
+
+Establish `k` using `key (F j)`. Rewrite `k` using `[Function.update_eq_self]`. Rewrite using `[k]`. Conclude with `hmem`.
+-/
 private lemma aux {O A I : Type} [CommRing O] [CommRing A] [Algebra O A]
     [Fintype I] [DecidableEq I] {B : I → Type} [(i : I) → AddCommGroup (B i)]
     [(i : I) → Module O (B i)] (ε : (i : I) → B i →ₗ[O] A)
@@ -47,6 +62,11 @@ private lemma aux {O A I : Type} [CommRing O] [CommRing A] [Algebra O A]
     rw [k]
     exact hmem
 
+/- English proof (translation)
+Introduce `O A I _ _ _ _ _ B _ _ ε T`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `X ⟨F, hF, rfl⟩`. Conclude with `aux ε T _ (fun G hG => Submodule.subset_span (show ∃ H : (i : I) → B i, (∀ i, H i ∈ T i) ∧ ∏ i, ε i (G i) = ∏ i, ε i (H i) from ⟨G, hG, rfl⟩)) Finset.univ F (fun i _ => hF i) (fun i hi => absurd (Finset.mem_univ i) hi)`.
+
+Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `X ⟨F, hF, rfl⟩`. Conclude with `(show ∃ G : (i : I) → B i, (∀ i, G i ∈ Submodule.span O (T i)) ∧ _ from ⟨F, fun i => Submodule.subset_span (hF i), rfl⟩)`.
+-/
 theorem goal1 :
   ∀ {O A I : Type} [inst : CommRing.{0} O] [inst_1 : CommRing.{0} A] [inst_2 : Algebra.{0, 0} O A]
   [inst_3 : Fintype.{0} I] [DecidableEq.{1} I] {B : I → Type} [inst_5 : (i : I) → AddCommGroup.{0} (B i)]

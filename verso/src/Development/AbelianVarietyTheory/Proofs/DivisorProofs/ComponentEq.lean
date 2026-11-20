@@ -24,18 +24,36 @@ namespace GlobalTheory.NsmulPull
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Establish `e : (toUnit D.P.A).left = D.P.A.hom` using `by simpa using Over.w (toUnit D.P.A)`. Use `show (toUnit D.P.A ≫ η[D.P.A]).left = _`. Rewrite using `[Over.comp_left, e]`. Both sides reduce to the same expression.
+-/
 theorem one_left (D : DegPre R) : (1 : D.P.A ⟶ D.P.A).left = D.P.A.hom ≫ eSec D.P.A := by
   have e : (toUnit D.P.A).left = D.P.A.hom := by simpa using Over.w (toUnit D.P.A)
   show (toUnit D.P.A ≫ η[D.P.A]).left = _
   rw [Over.comp_left, e]
   rfl
 
+/- English proof (translation)
+The claim follows from `one_left D`.
+-/
 theorem unit_left (D : DegPre R) : (toUnit D.P.A ≫ η[D.P.A]).left = D.P.A.hom ≫ eSec D.P.A := one_left D
 
+/- English proof (translation)
+Simplify using `only [padd, ← Category.assoc, comp_lift, Category.comp_id]`.
+-/
 theorem comp_padd (D : DegPre R) (a x : D.P.A ⟶ D.P.A) :
     a ≫ padd D.P.A (𝟙 D.P.A) x = padd D.P.A a (a ≫ x) := by
   simp only [padd, ← Category.assoc, comp_lift, Category.comp_id]
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Set `ρ` to `LB.pullGen D.P.L (K := PUnit) (fun _ => eSec D.P.A) (fun _ => 1) D.rig D.P.A.hom`. Establish `hρ : ρ.IsGen` using `pullGen_isGen _ _ _ _ D.rig_gen _`. Set `t` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ κ (GeneratorPullback.powGen D.P.L _ _ ρ (k' - k))) u`. Establish `ht : t.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ hκ (powGen_isGen _ _ _ _ hρ _)) hu`.
+
+Establish `e₁` using `comp_padd D a (toUnit D.P.A ≫ D.c χ)`. Establish `e₂ : a ≫ toUnit D.P.A = toUnit D.P.A` using `toUnit_unique _ _`. Establish `e₃ : a.left ≫ D.P.A.hom = D.P.A.hom` using `Over.w a`. Take `⟨eB, he, hv⟩` from `exists_gen hL (φ' := Sum.elim (D.famφB χ') (fun i => a.left ≫ D.famφB χ i)) (ε' := Sum.elim (DegPre.famε k') (fun i => - DegPre.famε k i)) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Fin.prod_univ_four, Fin.prod_univ_three, Finset.univ_unique, Finset.prod_singleton, DegPre.famφB, DegPre.famε, DegPre.Oφ, Oε, Oinvε, kapLB, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_thr …`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use the proof step `module) t ht`. Use `⟨eB, he, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv Z r z J hJ, val_mul hJ, val_mul hJ, val_pow, val_pull hJ, show ((k' : ℤ) - k) = ((k' - k : ℕ) : ℤ) by omega, zpow_natCast]`.
+
+Both sides reduce to the same expression.
+-/
 theorem gen_shape (D : DegPre R) (a : D.P.A ⟶ D.P.A) (k' k : ℕ) (hk : k ≤ k') (χ' χ : D.X)
     (κ : LB.Gen (kapLB D a k' k)) (hκ : κ.IsGen)
     (u : LB.Gen (LB.LinComb D.P.L (Sum.elim (D.Oφ (𝟙 D.P.A) χ') (D.Oφ a χ)) (Sum.elim Oε Oinvε))) (hu : u.IsGen) :

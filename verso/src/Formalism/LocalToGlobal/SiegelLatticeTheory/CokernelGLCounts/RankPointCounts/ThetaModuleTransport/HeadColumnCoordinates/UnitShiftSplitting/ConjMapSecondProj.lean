@@ -12,6 +12,13 @@ variable {M : Model F E} {g : SplitG M.L} {r : ℕ} (hs : M.split = some g)
 
 def dl (r : ℕ) (b : Fin (r + 1)) : F := if b = Fin.last r then 1 else 0
 
+/- English proof (translation)
+Establish `he : g.e (((eV r : Fin (r + 1) → M.R) b : M.R) : E) = ((dl r b : F), (dl r b : F))`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Rewrite using `[show (((eV r : Fin (r + 1) → M.R) (Fin.last r) : M.R) : E) = 1 by simp [eV], map_one]`. Simplify using `only [dl, if_true]`.
+
+Both sides reduce to the same expression. Rewrite using `[show (((eV r : Fin (r + 1) → M.R) b : M.R) : E) = 0 by simp [eV, hb], map_zero]`. Simplify using `only [dl, if_neg hb]`. Both sides reduce to the same expression. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, AddMemClass.coe_add, MulMemClass.coe_mul, map_add, map_mul, he, embedding_uniformizer]`.
+
+Use `ext`. Simplify using `[p1]`. Simplify using `[p2]`.
+-/
 theorem e_ueq (η : M.R) (l : Fin (r + 1) → M.R) (b : Fin (r + 1)) :
     g.e ((((η • (eV r : Fin (r + 1) → M.R) + q2 hs • l) : Fin (r + 1) → M.R) b : M.R) : E) =
       (p1 g η * dl r b, p2 g η * dl r b + (g.q : F) * p2 g (l b)) := by
@@ -30,14 +37,23 @@ theorem e_ueq (η : M.R) (l : Fin (r + 1) → M.R) (b : Fin (r + 1)) :
   · simp [p1]
   · simp [p2]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[p1, p2, g.e_cj]`.
+-/
 theorem conj_map_firstProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (Zh.map M.L.cj).map (p1 g) = Zh.map (p2 g) := by
   ext i j
   simp [p1, p2, g.e_cj]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[p1, p2, g.e_cj]`.
+-/
 theorem conj_map_secondProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : (Zh.map M.L.cj).map (p2 g) = Zh.map (p1 g) := by
   ext i j
   simp [p1, p2, g.e_cj]
 
+/- English proof (translation)
+Simplify using `[dl, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq']`.
+-/
 theorem sum_dl (x : Fin (r + 1) → F) : ∑ b, x b * dl r b = x (Fin.last r) := by
   simp [dl, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq']
 

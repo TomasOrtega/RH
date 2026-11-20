@@ -13,6 +13,11 @@ noncomputable section
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `j k`. Simplify using `only [cHess, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Rewrite using `[cmpa_hess_comp hU hxU hτ hh j k]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmpa_cHess_comp {τ : V n → V n} {h : V n → ℂ} {x : V n} {U : Set (V n)} (hU : IsOpen U)
     (hxU : x ∈ U) (hτ : DifferentiableOn ℂ τ U) (hh : ContDiffAt ℝ 2 h (τ x)) :
     cHess n (h ∘ τ) x = (Matrix.of fun l j => (fderiv ℂ τ x (bas n j)) l).transpose * cHess n h (τ x) *
@@ -25,11 +30,17 @@ theorem cmpa_cHess_comp {τ : V n → V n} {h : V n → ℂ} {x : V n} {U : Set 
   refine Finset.sum_congr rfl fun l _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis]`. Use `congr 1`.
+-/
 theorem cmpa_det_jac (L : V n →L[ℂ] V n) :
     (Matrix.of fun l j => (L (bas n j)) l).det = L.det := by
   rw [ContinuousLinearMap.det, ← LinearMap.det_toMatrix (EuclideanSpace.basisFun (Fin n) ℂ).toBasis]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[cmpa_cHess_comp hU hxU hτ hh, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hc : ((Matrix.of fun l j => (fderiv ℂ τ x (bas n j)) l).map conj).det = conj ((Matrix.of fun l j => (fderiv ℂ τ x (bas n j)) l).det)` using `(RingHom.map_det (starRingEnd ℂ) _).symm`. Rewrite using `[hc, cmpa_det_jac, Complex.sq_norm, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmpa_det_comp {τ : V n → V n} {h : V n → ℂ} {x : V n} {U : Set (V n)} (hU : IsOpen U)
     (hxU : x ∈ U) (hτ : DifferentiableOn ℂ τ U) (hh : ContDiffAt ℝ 2 h (τ x)) :
     (cHess n (h ∘ τ) x).det = (((‖(fderiv ℂ τ x).det‖ ^ 2 : ℝ)) : ℂ) * (cHess n h (τ x)).det := by
@@ -40,6 +51,15 @@ theorem cmpa_det_comp {τ : V n → V n} {h : V n → ℂ} {x : V n} {U : Set (V
   rw [hc, cmpa_det_jac, Complex.sq_norm, ← Complex.mul_conj]
   ring
 
+/- English proof (translation)
+Establish `hgd : DifferentiableAt ℂ g y` using `hg.differentiableAt (by simp)`. Establish `hgR : HasFDerivAt g ((fderiv ℂ g y).restrictScalars ℝ) y` using `hgd.hasFDerivAt.restrictScalars ℝ`. Establish `hN` using `hgR.norm_sq`. Establish `hpos : ‖g y‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.2 hy)`. Establish `hL` using `hN.log hpos`.
+
+Establish `hF` using `Complex.ofRealCLM.hasFDerivAt.comp y hL`. Unfold `wdb`. Rewrite using `[show (fun v => ((Real.log (‖g v‖ ^ 2) : ℝ) : ℂ)) = ⇑Complex.ofRealCLM ∘ fun v => Real.log (‖g v‖ ^ 2) from rfl, hF.fderiv]`. Establish `hG : (g y).re * (g y).re + (g y).im * (g y).im ≠ 0`. Rewrite using `[← Complex.normSq_apply, ← Complex.sq_norm]`.
+
+Conclude with `hpos`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_restrictScalars', map_smul, innerSL_apply_apply, Complex.ofRealCLM_apply, smul_eq_mul, nsmul_eq_mul, Complex.inner, Complex.sq_norm, Complex.normSq_apply]`. Apply the tactic sequence `apply Complex.ext <;>`. Apply the tactic sequence `simp [Complex.div_re, Complex.div_im, Complex.normSq_apply] <;>`. Apply the tactic sequence `field_simp <;>`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cmpa_wdb_log {g : V n → ℂ} {y : V n} (hg : ContDiffAt ℂ 2 g y) (hy : g y ≠ 0) (k : Fin n) :
     wdb n k (fun v => ((Real.log (‖g v‖ ^ 2) : ℝ) : ℂ)) y = conj (fderiv ℂ g y (bas n k) / g y) := by
   have hgd : DifferentiableAt ℂ g y := hg.differentiableAt (by simp)
@@ -61,6 +81,11 @@ theorem cmpa_wdb_log {g : V n → ℂ} {y : V n} (hg : ContDiffAt ℂ 2 g y) (hy
     field_simp <;>
     ring
 
+/- English proof (translation)
+Establish `H` using `(hh.hasFDerivAt.restrictScalars ℝ).star`. Establish `H2 : fderiv ℝ (fun v => (starRingEnd ℂ) (h v)) y = ((starL' ℝ : ℂ ≃L[ℝ] ℂ) : ℂ →L[ℝ] ℂ).comp ((fderiv ℂ h y).restrictScalars ℝ)` using `H.fderiv`. Simplify using `only [wd, H2, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', map_smul, smul_eq_mul, ContinuousLinearEquiv.coe_coe, starL'_apply, star_mul', Complex.star_def, Complex.conj_I]`. Put the polynomial expressions in normal form. Apply the tactic sequence `try simp only [Complex.I_sq]`.
+
+Apply the tactic sequence `try ring`.
+-/
 private theorem wd_conj_of_complex_differentiableAt_eq_zero {h : V n → ℂ} {y : V n} (hh : DifferentiableAt ℂ h y) (j : Fin n) :
     wd n j (fun v => (starRingEnd ℂ) (h v)) y = 0 := by
   have H := (hh.hasFDerivAt.restrictScalars ℝ).star
@@ -73,6 +98,11 @@ private theorem wd_conj_of_complex_differentiableAt_eq_zero {h : V n → ℂ} {y
   try simp only [Complex.I_sq]
   try ring
 
+/- English proof (translation)
+Establish `hgs : ContDiffOn ℂ ∞ g U` using `contDiffOn_of_differentiableOn n g U hU hg`. Establish `ev : wdb n k (fun v => ((Real.log (‖g v‖ ^ 2) : ℝ) : ℂ)) =ᶠ[𝓝 x] fun v => conj (fderiv ℂ g v (bas n k) / g v)` using `by filter_upwards [hU.mem_nhds hxU] with v hv`. Conclude with `cmpa_wdb_log ((contDiffOn_infty.1 hgs 2).contDiffAt (hU.mem_nhds hv)) (hne v hv) k`. Establish `e1 : wd n j (wdb n k (fun v => ((Real.log (‖g v‖ ^ 2) : ℝ) : ℂ))) x = wd n j (fun v => conj (fderiv ℂ g v (bas n k) / g v)) x`. Simplify using `only [wd, ev.fderiv_eq]`.
+
+Rewrite using `[e1]`. Apply `wd_conj_of_complex_differentiableAt_eq_zero` to reduce the goal to its premises. Establish `hD : ContDiffOn ℂ ∞ (fderiv ℂ g) U` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hgs).2`. Establish `h1` using `(((hD.contDiffAt (hU.mem_nhds hxU)).differentiableAt (by simp)).clm_apply (differentiableAt_const (bas n k))).mul ((hg.differentiableAt (hU.mem_nhds hxU)).inv (hne x hxU))`. Conclude with `h1`.
+-/
 theorem cmpa_hess_log {g : V n → ℂ} {x : V n} {U : Set (V n)} (hU : IsOpen U) (hxU : x ∈ U)
     (hg : DifferentiableOn ℂ g U) (hne : ∀ v ∈ U, g v ≠ 0) (j k : Fin n) :
     wd n j (wdb n k (fun v => ((Real.log (‖g v‖ ^ 2) : ℝ) : ℂ))) x = 0 := by

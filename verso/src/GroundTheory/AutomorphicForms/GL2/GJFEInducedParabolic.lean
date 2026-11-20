@@ -37,16 +37,27 @@ def inducedChar : levi F n β →* ℝ≥0 :=
   leviRatio β * leviSqrtModular β * leviAbsDetShift β
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detPow_eq_cpow (g : GL (Fin n) F) (s : ℂ) :
     detPow g s = ((LocalField.modulus ((g : Matrix (Fin n) (Fin n) F).det) : ℝ) : ℂ) ^ s := rfl
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+The claim follows from `LocalField.modulus_pos (det_ne_zero g)`.
+-/
 theorem modulus_det_pos (g : GL (Fin n) F) :
     0 < LocalField.modulus ((g : Matrix (Fin n) (Fin n) F).det) :=
   LocalField.modulus_pos (det_ne_zero g)
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `hx` using `modulus_det_pos (m : GL (Fin n) F)`. Rewrite using `[detPow_eq_cpow, detPow_eq_cpow, Complex.cpow_add _ _ (by exact_mod_cast hx.ne')]`. Use `congr 1`. Rewrite using `[leviAbsDetShift, MonoidHom.coe_mk, OneHom.coe_mk, leviAbsDet_apply, NNReal.coe_rpow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`.
+
+Both sides reduce to the same expression.
+-/
 theorem detPow_add_shift (m : levi F n β) (s : ℂ) :
     detPow (m : GL (Fin n) F) (s + ((n : ℂ) - 1) / 2) =
       detPow (m : GL (Fin n) F) s * ((leviAbsDetShift β m : ℝ≥0) : ℂ) := by
@@ -60,6 +71,9 @@ theorem detPow_add_shift (m : levi F n β) (s : ℂ) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Simplify using `only [leviIntegrand, inducedChar, MonoidHom.mul_apply, detPow_add_shift]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviIntegrand_shift (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W) (ℓ : Module.Dual ℂ W)
     (s : ℂ) (m : levi F n β) :
     leviIntegrand σ (leviRatio β * leviSqrtModular β) Ψ w ℓ (s + ((n : ℂ) - 1) / 2) m =
@@ -71,9 +85,21 @@ theorem leviIntegrand_shift (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W) (ℓ
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F]
   [BorelSpace F] in
 
+/- English proof (translation)
+The claim follows from `left_ne_zero_of_mul_eq_one (map_mul_eq_one χ (mul_inv_cancel g))`.
+-/
 theorem monoidHom_ne_zero {G : Type*} [Group G] (χ : G →* ℝ≥0) (g : G) : χ g ≠ 0 :=
   left_ne_zero_of_mul_eq_one (map_mul_eq_one χ (mul_inv_cancel g))
 
+/- English proof (translation)
+Use `set x : ℝ≥0 := leviAbsDet β m with hxdef`. Establish `hx : x ≠ 0` using `(modulus_det_pos (m : GL (Fin n) F)).ne'`. Use `set c : ℝ := ((n : ℝ) - 1) / 2 with hc`. Establish `hsplit : detPow (m : GL (Fin n) F) (1 - s + ((n : ℂ) - 1) / 2) = ((x ^ (1 + c) : ℝ≥0) : ℂ) * detPow (m : GL (Fin n) F) (-s)`. Establish `hx' : ((x : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hx`.
+
+Rewrite using `[detPow_eq_cpow, detPow_eq_cpow]`. Use `show ((x : ℝ) : ℂ) ^ (1 - s + ((n : ℂ) - 1) / 2) = ((x ^ (1 + c) : ℝ≥0) : ℂ) * ((x : ℝ) : ℂ) ^ (-s)`. Rewrite using `[show (1 - s + ((n : ℂ) - 1) / 2) = ((1 + c : ℝ) : ℂ) + (-s) by rw [hc]; push_cast; ring, Complex.cpow_add _ _ hx', NNReal.coe_rpow, Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Establish `hid : leviRatio β m ^ 2 * Measure.modularCharacter (leviIncl m) * x ^ n = leviModulus β m` using `leviRatio_sq_mul_modular_mul_det (F := F) m`. Establish `hsq : leviSqrtModular β m * leviSqrtModular β m = Measure.modularCharacter (leviIncl m)`.
+
+Simplify using `[leviSqrtModular, NNReal.mul_self_sqrt]`. Establish `hpow : x ^ c * x ^ (1 + c) = x ^ n`. Rewrite using `[← NNReal.rpow_add hx, show c + (1 + c) = (n : ℝ) by rw [hc]; ring, NNReal.rpow_natCast]`. Establish `hκ : inducedChar β m = leviRatio β m * leviSqrtModular β m * x ^ c` using `rfl`. Establish `hκ0 : inducedChar β m ≠ 0` using `monoidHom_ne_zero _ m`.
+
+Establish `key : leviRatio β m * leviSqrtModular β m * x ^ (1 + c) = (inducedChar β m)⁻¹ * leviModulus β m`. Rewrite using `[eq_inv_mul_iff_mul_eq₀ hκ0, hκ, ← hid, ← hsq, ← hpow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, ← mul_assoc, ← Complex.ofReal_mul, ← NNReal.coe_mul, key]`.
+-/
 theorem weightB_eq (m : levi F n β) (s : ℂ) :
     ((leviRatio β m * leviSqrtModular β m : ℝ≥0) : ℂ) *
         detPow (m : GL (Fin n) F) (1 - s + ((n : ℂ) - 1) / 2) =
@@ -103,6 +129,9 @@ theorem weightB_eq (m : levi F n β) (s : ℂ) :
     ring
   rw [hsplit, ← mul_assoc, ← Complex.ofReal_mul, ← NNReal.coe_mul, key]
 
+/- English proof (translation)
+Rewrite using `[weightB_eq, leviIntegrandB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem leviIntegrandB_eq (Ψ : Matrix (Fin n) (Fin n) F → ℂ) (w : W) (ℓ : Module.Dual ℂ W)
     (s : ℂ) (m : levi F n β) :
     Ψ ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) *
@@ -116,6 +145,9 @@ section ParabolicB
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `h` using `modularCharacter_eq_one_of_mem _ (leviProj_inv_mul_mem p)`. Rewrite `h` using `[map_mul, map_inv]`. Conclude with `(inv_mul_eq_one₀ (monoidHom_ne_zero _ _)).1 h`.
+-/
 theorem modularCharacter_leviProj (p : blockUpper F n β) :
     Measure.modularCharacter (leviIncl (leviProj F n β p)) = Measure.modularCharacter p := by
   have h := modularCharacter_eq_one_of_mem _ (leviProj_inv_mul_mem p)
@@ -123,16 +155,25 @@ theorem modularCharacter_leviProj (p : blockUpper F n β) :
   exact (inv_mul_eq_one₀ (monoidHom_ne_zero _ _)).1 h
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[← modularCharacter_leviProj, leviProj_parabolicMk]`.
+-/
 theorem modularCharacter_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     Measure.modularCharacter (parabolicMk β m u) = Measure.modularCharacter (leviIncl m) := by
   rw [← modularCharacter_leviProj, leviProj_parabolicMk]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Rewrite using `[coe_leviSqrtModular, ← sqrtModular_leviProj, leviProj_parabolicMk]`.
+-/
 theorem sqrtModular_parabolicMk (m : levi F n β) (u : UnipotentIndex n β → F) :
     sqrtModular F n β (parabolicMk β m u) = ((leviSqrtModular β m : ℝ≥0) : ℂ) := by
   rw [coe_leviSqrtModular, ← sqrtModular_leviProj, leviProj_parabolicMk]
 
 omit [MeasurableSpace F] [BorelSpace F] in
+/- English proof (translation)
+Simplify using `[leviSqrtModular, NNReal.mul_self_sqrt]`.
+-/
 theorem leviSqrtModular_mul_self (m : levi F n β) :
     leviSqrtModular β m * leviSqrtModular β m = Measure.modularCharacter (leviIncl m) := by
   simp [leviSqrtModular, NNReal.mul_self_sqrt]
@@ -146,6 +187,11 @@ def parabolicB (Ξ : Matrix (Fin n) (Fin n) F → ℂ) (φ : GL (Fin n) F → W)
 
 omit [MeasurableSpace F] [BorelSpace F] in
 
+/- English proof (translation)
+Establish `h1` using `hφ.1 (parabolicMk β m u)⁻¹ y`. Rewrite `h1` using `[inflateTwist_apply, map_inv, map_inv, leviProj_parabolicMk, sqrtModular_parabolicMk, Subgroup.coe_inv]`. Establish `hs0 : ((leviSqrtModular β m : ℝ≥0) : ℂ) ≠ 0`. Conclude with `monoidHom_ne_zero (leviSqrtModular β) m` after adjusting the coercions. Rewrite using `[parabolicB, h1, map_smul, smul_eq_mul, modularCharacter_parabolicMk, ← leviSqrtModular_mul_self, coe_parabolicMk, detPow_parabolicMk]`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem modular_mul_parabolicB {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicIndSpace F n β σ)
     (Ξ : Matrix (Fin n) (Fin n) F → ℂ) (ℓ : Module.Dual ℂ W) (s : ℂ) (y : GL (Fin n) F)
     (m : levi F n β) (u : UnipotentIndex n β → F) :
@@ -175,6 +221,11 @@ variable (β) in
 abbrev measureM : Measure (levi F n β) := haarLevi β (leviCoordMeasure β ψ)
 
 omit [MeasurableSpace F] [BorelSpace F] [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
+/- English proof (translation)
+Take `⟨K, hKo, hK⟩` from `hφ.2`. Establish `hℓφ : Continuous fun g => ℓ (φ g)`. Use `IsLocallyConstant.continuous fun S => isOpen_iff_forall_mem_open.2 fun g hg => ?_` and prove the remaining obligations. Use `⟨g • (K : Set (GL (Fin n) F)), ?_, hKo.smul g, ⟨1, one_mem _, mul_one g⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`.
+
+Simplify using `only [Set.mem_preimage, smul_eq_mul, hK k hk]`. Conclude with `hg`. Establish `hv : Continuous fun p : blockUpper F n β => (p : GL (Fin n) F)` using `continuous_subtype_val`. Conclude with `((hΞ.1.continuous.comp (Units.continuous_val.comp hv)).mul ((continuous_detPow _).comp hv)).mul (hℓφ.comp ((hv.inv).mul continuous_const))`.
+-/
 theorem continuous_parabolicB {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicIndSpace F n β σ)
     {Ξ : Matrix (Fin n) (Fin n) F → ℂ} (hΞ : IsSchwartzBruhat Ξ) (ℓ : Module.Dual ℂ W) (s : ℂ)
     (y : GL (Fin n) F) : Continuous (parabolicB β Ξ φ ℓ s y) := by
@@ -189,6 +240,17 @@ theorem continuous_parabolicB {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicI
   exact ((hΞ.1.continuous.comp (Units.continuous_val.comp hv)).mul
     ((continuous_detPow _).comp hv)).mul (hℓφ.comp ((hv.inv).mul continuous_const))
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (blockUpper F n β)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Establish `hc` using `continuous_parabolicB hφ hΞ ℓ s y`. Establish `hmeas : Measurable fun p => ‖parabolicB β Ξ φ ℓ s y p‖ₑ` using `hc.enorm.measurable`. Establish `hΔ` using `LinearChart.measurable_modularCharacter (parabolicChart F n β)`. Rewrite using `[show measureP β ψ = (parabolicChart F n β).haar (parabolicMeasure β (leviCoordMeasure β ψ) (unipMeasure β ψ)) from rfl, LinearChart.lintegral_inv_haar _ _ hmeas, show (parabolicChart F n β).haar (parabolicMeasure β (leviCoordMeasure β ψ) (unipMeasure β ψ)) = measureP β ψ from rf …`.
+
+Use `lintegral_congr fun m => ?_` and prove the remaining obligations. Establish `hint` using `integrable_add_unipMatrix (unipMeasure β ψ) hΞ (X := ((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) (mem_levi.1 m.2)`. Use `set c : ℂ := ((leviSqrtModular β m : ℝ≥0) : ℂ) * detPow (m : GL (Fin n) F) (1 - s + ((n : ℂ) - 1) / 2) * ℓ (σ m⁻¹ (φ y)) with hcdef`. Establish `hpt : ∀ u, (Measure.modularCharacter (parabolicMk β m u) : ℝ≥0∞) * ‖parabolicB β Ξ φ ℓ s y (parabolicMk β m u)‖ₑ = ‖Ξ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ₑ * ‖c‖ₑ`. Introduce `u`.
+
+Rewrite using `[← enorm_coe_nnreal, ← enorm_mul]`. Use `modular_mul_parabolicB (σ := σ) hφ Ξ ℓ s y m u` as an intermediate fact. Rewrite using `[this, enorm_mul]`. Repeatedly rewrite using `[hpt]`. Establish `hΞm : Measurable fun u : UnipotentIndex n β → F => ‖Ξ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ₑ` using `(hΞ.1.continuous.comp (continuous_const.add continuous_unipMatrix)).enorm.measurable`.
+
+Rewrite using `[lintegral_mul_const _ hΞm, ← ofReal_integral_norm_eq_lintegral_enorm hint]`. Establish `hI : 0 ≤ ∫ u, ‖Ξ (((m : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) + unipMatrix F u)‖ ∂unipMeasure β ψ` using `integral_nonneg fun _ => norm_nonneg _`. Rewrite using `[← leviIntegrandB_eq, integral_complex_ofReal, hcdef]`. Simplify using `only [enorm_mul]`. Rewrite using `[enorm_ofReal_complex hI, enorm_coe_nnreal, enorm_coe_nnreal]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lintegral_parabolicB_inv {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicIndSpace F n β σ)
     {Ξ : Matrix (Fin n) (Fin n) F → ℂ} (hΞ : IsSchwartzBruhat Ξ) (ℓ : Module.Dual ℂ W) (s : ℂ)
     (y : GL (Fin n) F) :
@@ -234,6 +296,15 @@ theorem lintegral_parabolicB_inv {φ : GL (Fin n) F → W} (hφ : φ ∈ parabol
   push_cast
   ring
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (blockUpper F n β)` using `Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Establish `hc` using `continuous_parabolicB hφ hΞ ℓ s y`. Establish `hΔc : Continuous fun p : blockUpper F n β => ((Measure.modularCharacter p : ℝ≥0) : ℂ)` using `(Complex.continuous_ofReal.comp NNReal.continuous_coe).comp (LinearChart.continuous_modularCharacter (parabolicChart F n β))`. Establish `hint2 : Integrable (fun p => ((Measure.modularCharacter p : ℝ≥0) : ℂ) * parabolicB β Ξ φ ℓ s y p) (measureP β ψ)`. Use `⟨(hΔc.mul hc).aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫⁻ p, ‖((Measure.modularCharacter p : ℝ≥0) : ℂ) * parabolicB β Ξ φ ℓ s y p‖ₑ ∂measureP β ψ < ⊤`. Establish `h1 : ∫⁻ p, ‖((Measure.modularCharacter p : ℝ≥0) : ℂ) * parabolicB β Ξ φ ℓ s y p‖ₑ ∂measureP β ψ = ∫⁻ p, ‖parabolicB β Ξ φ ℓ s y p⁻¹‖ₑ ∂measureP β ψ`. Rewrite using `[show measureP β ψ = (parabolicChart F n β).haar (parabolicMeasure β (leviCoordMeasure β ψ) (unipMeasure β ψ)) from rfl, LinearChart.lintegral_inv_haar _ _ hc.enorm.measurable]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[enorm_mul, enorm_coe_nnreal]`.
+
+Rewrite using `[h1]`. Conclude with `hint.2`. Rewrite using `[show measureP β ψ = (parabolicChart F n β).haar (parabolicMeasure β (leviCoordMeasure β ψ) (unipMeasure β ψ)) from rfl, LinearChart.integral_inv_haar _ _ hc, show (parabolicChart F n β).haar (parabolicMeasure β (leviCoordMeasure β ψ) (unipMeasure β ψ)) = measureP β ψ from rfl, i …`. Use `integral_congr_ae (Filter.Eventually.of_forall fun m => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Repeatedly rewrite using `[modular_mul_parabolicB (σ := σ) hφ Ξ ℓ s y m]`. Rewrite using `[integral_mul_const, ← leviIntegrandB_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integral_parabolicB_inv {φ : GL (Fin n) F → W} (hφ : φ ∈ parabolicIndSpace F n β σ)
     {Ξ : Matrix (Fin n) (Fin n) F → ℂ} (hΞ : IsSchwartzBruhat Ξ) (ℓ : Module.Dual ℂ W) (s : ℂ)
     (y : GL (Fin n) F)

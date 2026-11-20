@@ -13,6 +13,19 @@ noncomputable section
 
 namespace GlobalTheory.DualCon
 
+/- English proof (translation)
+Introduce `S A _ hA L hL T x hx`. Use `haveI := hA.comm`. Establish `hP : (abelian₂ A L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `e : ∀ (Y : Over S) (a b : Y ⟶ A), evc hP a b = lam (cls L hL) a b` using `fun Y a b ↦ by`. Rewrite using `[evc, show cls _ hP = lam (cls L hL) (fst A A) (snd A A) from cls_cube_two hL _ _ hP, pull_lam, lift_fst, lift_snd]`.
+
+Rewrite using `[triv_ev_iff hP]`. Take `⟨M, hM, hc⟩` from `cls_surj (evc hP (fst A T) (snd A T ≫ x))`. Rewrite using `[← hc]`. Establish `key : ∀ {X : Scheme.{0}} (f : X ⟶ (A ⊗ T).left), Triv (M.pull f) ↔ CechPic.pull f (evc hP (fst A T) (snd A T ≫ x)) = 0`. Introduce `X f`.
+
+Rewrite using `[← hc, ← cls_pull hM f (pull_isLB hM f)]`. Conclude with `(cls_eq_zero_iff (pull_isLB hM f)).symm`. Use `(cls_eq_zero_iff hM).2 (GlobalTheory.CubeGlue.triv_of_locally_triv hM (snd A T).left (lift 1 (𝟙 T)).left ?_ (surj_restrict_snd hA T) ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Rewrite using `[key, pull_evc, e, lift_fst, lift_snd_assoc, Category.id_comp, lam_one_left]`.
+
+Introduce `p`. Take `⟨V, hV, hTV⟩` from `hx p`. Take `⟨W, hW, hw⟩` from `exists_pull_eq_zero (CechPic.pull x.left (cls L hL) - CechPic.pull (1 : T ⟶ A).left (cls L hL)) p`. Use `⟨V ⊓ W, ⟨hV, hW⟩, ?_⟩` and prove the remaining obligations. Set `U` to `(snd A T).left ⁻¹ᵁ (V ⊓ W)`.
+
+Set `Y : Over S` to `Over.mk (U.ι ≫ (A ⊗ T).hom)`. Set `i : Y ⟶ A ⊗ T` to `Over.homMk U.ι rfl`. Use `show Triv (M.pull i.left)`. Rewrite using `[key, pull_evc, e]`. Establish `ht : ∀ z, (i ≫ snd A T).left z ∈ V` using `fun z ↦ z.2.1`.
+
+Establish `h1` using `pull_mul_eq hL hTV (i ≫ snd A T) ht (i ≫ fst A T)`. Establish `h2 : CechPic.pull (i ≫ snd A T).left (CechPic.pull x.left (cls L hL) - CechPic.pull (1 : T ⟶ A).left (cls L hL)) = 0` using `pull_eq_zero_of_mem W (i ≫ snd A T).left (fun z ↦ z.2.2) hw`. Rewrite `h2` using `[map_sub, ← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, MonObj.comp_one, Category.assoc]`. Rewrite using `[lam, mul_comm (i ≫ fst A T), ← Category.assoc i (snd A T) x, h1, Category.assoc, sub_self, zero_sub, neg_add_eq_zero]`. Conclude with `(sub_eq_zero.1 h2)`.
+-/
 theorem lam_triv_of_memKL : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left,
     L.IsLB → ∀ (T : Over S) (x : T ⟶ A), GlobalTheory.MemKL A L x → Triv (ev (abelian₂ A L) (fst A T) (snd A T ≫ x)) := by
   intro S A _ hA L hL T x hx

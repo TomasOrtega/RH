@@ -12,22 +12,36 @@ open NumberField Polynomial Finset Formalism.REAL
 
 namespace PositivityTheory.RgBcC.Bridge
 
+/- English proof (translation)
+Proceed by induction on `k generalizing i j with`. Consider the case `zero => simp [epow, Matrix.one_apply]`. Consider the case `succ k ih => simp only [epow, pow_succ, Matrix.mul_apply, ih, Matrix.of_apply]`.
+-/
 theorem epow_eq_pow {A : Type} [Ring A] {n : ℕ} (M : Fin n → Fin n → A) (k : ℕ) (i j : Fin n) :
     epow M k i j = ((Matrix.of M) ^ k) i j := by
   induction k generalizing i j with
   | zero => simp [epow, Matrix.one_apply]
   | succ k ih => simp only [epow, pow_succ, Matrix.mul_apply, ih, Matrix.of_apply]
 
+/- English proof (translation)
+Rewrite using `[epow_eq_pow, pow_succ', Matrix.mul_apply]`. Simplify using `only [epow_eq_pow, Matrix.of_apply]`.
+-/
 theorem epow_succ' {A : Type} [Ring A] {n : ℕ} (M : Fin n → Fin n → A) (k : ℕ) (i j : Fin n) :
     epow M (k + 1) i j = ∑ c, M i c * epow M k c j := by
   rw [epow_eq_pow, pow_succ', Matrix.mul_apply]
   simp only [epow_eq_pow, Matrix.of_apply]
 
+/- English proof (translation)
+Simplify using `only [defect, sub_comp, mul_comp, C_comp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defect_sub (t : ℕ → ℂ) (m N : ℕ) (P Q : ℂ[X]) (z : ℂ) :
     defect t m N (Q - C z * P) = defect t m N Q - C z * defect t m N P := by
   simp only [defect, sub_comp, mul_comp, C_comp]
   ring
 
+/- English proof (translation)
+Rewrite using `[natDegree_le_iff_coeff_eq_zero]`. Introduce `N hN`. Break down `Nat.lt_or_ge (m + 1) N with h | h` into its components or cases. Conclude with `coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt h1 h)`. Establish `e : N = m + 1` using `by omega`.
+
+Substitute `e` using the available equality. Conclude with `h2`.
+-/
 theorem natDegree_le_of_coeff (p : ℂ[X]) (m : ℕ) (h1 : p.natDegree ≤ m + 1) (h2 : p.coeff (m + 1) = 0) :
     p.natDegree ≤ m := by
   rw [natDegree_le_iff_coeff_eq_zero]
@@ -37,6 +51,11 @@ theorem natDegree_le_of_coeff (p : ℂ[X]) (m : ℕ) (h1 : p.natDegree ≤ m + 1
   · have e : N = m + 1 := by omega
     subst e; exact h2
 
+/- English proof (translation)
+Simplify using `only [defect]`. Rewrite using `[sum_range_succ _ (N + 1)]`. Establish `e : ∀ k ∈ range (N + 1), C ((-1) ^ k * t k) * (X - C (m : ℂ)) ^ (N + 1 - k) = (X - C (m : ℂ)) * (C ((-1) ^ k * t k) * (X - C (m : ℂ)) ^ (N - k))`. Introduce `k hk`. Establish `: N + 1 - k = (N - k) + 1` using `by have := mem_range.mp hk; omega`.
+
+Rewrite using `[this, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sum_congr rfl e, ← mul_sum, Nat.sub_self, pow_zero]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem defect_succ (t : ℕ → ℂ) (m N : ℕ) (D : ℂ[X]) :
     defect t m (N + 1) D = (X - C (m : ℂ)) * defect t m N D - C ((-1) ^ (N + 1) * t (N + 1)) * D := by
   simp only [defect]
@@ -49,6 +68,13 @@ theorem defect_succ (t : ℕ → ℂ) (m N : ℕ) (D : ℂ[X]) :
   rw [sum_congr rfl e, ← mul_sum, Nat.sub_self, pow_zero]
   ring
 
+/- English proof (translation)
+Establish `hP : P ≠ 0` using `by intro h; rw [h] at hd; simp at hd`. Establish `hqd : (X + 1 : ℂ[X]).natDegree = 1` using `by simpa using natDegree_X_add_C (1 : ℂ)`. Establish `hql : (X + 1 : ℂ[X]).leadingCoeff = 1` using `by simpa using leadingCoeff_X_add_C (1 : ℂ)`. Establish `h2 : (P.comp (X + 1)).natDegree = d + 1` using `by rw [natDegree_comp, hqd, hd, mul_one]`. Establish `hl : (P.comp (X + 1)).leadingCoeff = P.leadingCoeff`.
+
+Rewrite using `[leadingCoeff_comp (by rw [hqd]; norm_num), hql, one_pow, mul_one]`. Establish `h1 : P.comp (X + 1) ≠ 0` using `by intro h; rw [h] at h2; simp at h2`. Distinguish the cases in `h0 : P.comp (X + 1) - P = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+
+Establish `hlt` using `degree_sub_lt_left (by rw [degree_eq_natDegree h1, degree_eq_natDegree hP, h2, hd]) h1 hl`. Rewrite `hlt` using `[degree_eq_natDegree h1, h2, degree_eq_natDegree h0]`. Conclude with `Nat.lt_succ_iff.mp (by exact_mod_cast hlt)`.
+-/
 theorem natDegree_comp_sub_le (P : ℂ[X]) (d : ℕ) (hd : P.natDegree = d + 1) :
     (P.comp (X + 1) - P).natDegree ≤ d := by
   have hP : P ≠ 0 := by intro h; rw [h] at hd; simp at hd
@@ -64,6 +90,11 @@ theorem natDegree_comp_sub_le (P : ℂ[X]) (d : ℕ) (hd : P.natDegree = d + 1) 
   rw [degree_eq_natDegree h1, h2, degree_eq_natDegree h0] at hlt
   exact Nat.lt_succ_iff.mp (by exact_mod_cast hlt)
 
+/- English proof (translation)
+Establish `e1 : P.comp (X + 1) = taylor 1 P` using `by rw [taylor_apply, map_one]`. Rewrite using `[coeff_sub, e1, taylor_coeff]`. Establish `hdeg : (hasseDeriv d P).natDegree < 2`. Rewrite using `[natDegree_hasseDeriv, hd]`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[eval_eq_sum_range' hdeg, sum_range_succ, sum_range_one, hasseDeriv_coeff, hasseDeriv_coeff]`. Simplify using `only [zero_add, Nat.choose_self, Nat.cast_one, one_mul, pow_zero, mul_one, one_pow]`. Rewrite using `[leadingCoeff, hd, add_comm 1 d, Nat.choose_succ_self_right]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_comp_sub (P : ℂ[X]) (d : ℕ) (hd : P.natDegree = d + 1) :
     (P.comp (X + 1) - P).coeff d = ((d : ℂ) + 1) * P.leadingCoeff := by
   have e1 : P.comp (X + 1) = taylor 1 P := by rw [taylor_apply, map_one]
@@ -76,13 +107,26 @@ theorem coeff_comp_sub (P : ℂ[X]) (d : ℕ) (hd : P.natDegree = d + 1) :
   push_cast
   ring
 
+/- English proof (translation)
+The claim follows from `monic_prod_of_monic _ _ fun _ _ => monic_X_add_C _`.
+-/
 theorem monic_capQ (m : ℕ) (χ : Fin (m + 1) → ℂ) : (∏ s, (X + C (χ s - (m : ℂ) / 2))).Monic :=
   monic_prod_of_monic _ _ fun _ _ => monic_X_add_C _
 
+/- English proof (translation)
+Rewrite using `[natDegree_prod_of_monic _ _ fun _ _ => monic_X_add_C _]`. Simplify using `only [natDegree_X_add_C, sum_const, card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`.
+-/
 theorem natDegree_capQ (m : ℕ) (χ : Fin (m + 1) → ℂ) : (∏ s, (X + C (χ s - (m : ℂ) / 2))).natDegree = m + 1 := by
   rw [natDegree_prod_of_monic _ _ fun _ _ => monic_X_add_C _]
   simp only [natDegree_X_add_C, sum_const, card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use `set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP`. Establish `hG` using `GlobalTheory.T.trace_element_gelfand_polynomial_formula m χ N`. Rewrite `hG` using `[← hP]`. Use `set G : ℂ[X] := (X - C (m : ℂ)) ^ (N + 1) * (P.comp (X + 1) - P) - P * ∑ k ∈ range N, C ((-1) ^ k * GlobalTheory.Dec.gelfVal χ k) * (X - C (m : ℂ)) ^ (N - k) with hGd`. Establish `hdef : defect (GlobalTheory.Dec.gelfVal χ) m N P = G - P * C ((-1) ^ N * GlobalTheory.Dec.gelfVal χ N)`.
+
+Simplify using `only [defect, hGd, sum_range_succ, Nat.sub_self, pow_zero, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hneg : ((-1 : ℂ[X]) ^ N) = C ((-1 : ℂ) ^ N)` using `by simp`. Rewrite `hG` using `[hneg, coeff_C_mul]`. Establish `hPc : P.coeff (m + 1) = 1`.
+
+Use `(monic_capQ m χ).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[natDegree_capQ]`. Then use the resulting hypothesis. Establish `hsq : ((-1 : ℂ) ^ N) * ((-1 : ℂ) ^ N) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`. Rewrite using `[hdef, coeff_sub, coeff_mul_C, hPc, one_mul]`. Take the linear combination `((-1 : ℂ) ^ N) * hG - (G.coeff (m + 1)) * hsq`.
+-/
 theorem coeff_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
     (defect (GlobalTheory.Dec.gelfVal χ) m N (∏ s, (X + C (χ s - (m : ℂ) / 2)))).coeff (m + 1) = 0 := by
   set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP
@@ -102,6 +146,17 @@ theorem coeff_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
   rw [hdef, coeff_sub, coeff_mul_C, hPc, one_mul]
   linear_combination ((-1 : ℂ) ^ N) * hG - (G.coeff (m + 1)) * hsq
 
+/- English proof (translation)
+Use `set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP`. Establish `hPd : P.natDegree = m + 1` using `natDegree_capQ m χ`. Establish `hXm : (X - C (m : ℂ)).natDegree = 1` using `natDegree_X_sub_C _`. Proceed by induction on `N with`. Consider the case `zero`.
+
+Use `natDegree_le_of_coeff _ _ ?_ (coeff_defect_gelf m χ 0)` and prove the remaining obligations. Simplify using `only [defect, zero_add, pow_one, sum_range_one, Nat.sub_self, pow_zero, mul_one]`. Use `(natDegree_sub_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[hXm]`.
+
+Use `natDegree_comp_sub_le P m hPd` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[hPd, natDegree_C]`. Consider the case `succ N ih`.
+
+Use `natDegree_le_of_coeff _ _ ?_ (coeff_defect_gelf m χ (N + 1))` and prove the remaining obligations. Rewrite using `[defect_succ]`. Use `(natDegree_sub_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `(natDegree_mul_le).trans ?_` and prove the remaining obligations. Rewrite using `[hXm]`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `(natDegree_C_mul_le _ _).trans hPd.le`.
+-/
 theorem natDegree_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
     (defect (GlobalTheory.Dec.gelfVal χ) m N (∏ s, (X + C (χ s - (m : ℂ) / 2)))).natDegree ≤ m := by
   set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP
@@ -124,6 +179,19 @@ theorem natDegree_defect_gelf (m : ℕ) (χ : Fin (m + 1) → ℂ) (N : ℕ) :
       rw [hXm]; omega
     · exact (natDegree_C_mul_le _ _).trans hPd.le
 
+/- English proof (translation)
+Establish `hmin : ∀ i j : Fin (m + 1), ∃ c' : ℕ → Module.End ℂ V, ∀ w : ℂ, qminor M (Fin.succAbove j) (Fin.succAbove i) w = ∑ d ∈ range (m + 1), w ^ d • c' d`. Introduce `i j`. Take `⟨c', hc'⟩` from `GlobalTheory.qminor_polyMap (Module.End ℂ V) (m + 1) m M (Fin.succAbove j) (Fin.succAbove i) 0`. Conclude with `⟨c', fun w => by simpa using hc' w⟩`. Use `choose cm hcm using hmin`.
+
+Set `Rc : ℕ → Module.End ℂ V` to `fun d => ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * cm i j d * epow M (N + 1) j i`. Establish `hR : ∀ w : ℂ, ∑ i : Fin (m + 1), ∑ j : Fin (m + 1), (((-1 : ℤ) ^ ((i : ℕ) + (j : ℕ)) : ℤ) : Module.End ℂ V) * qminor M (Fin.succAbove j) (Fin.succAbove i) w * epow M (N + 1) j i = ∑ d ∈ range (m + 1), w ^ d • Rc d`. Introduce `w`. Simplify using `only [Rc, hcm, mul_sum, sum_mul, smul_sum, mul_smul_comm, smul_mul_assoc]`. Use `conv_lhs => enter [2, x]`.
+
+Rewrite using `[sum_comm]`. Rewrite using `[sum_comm]`. Use `set Rp := GlobalTheory.CapelliNewton.polyOf m Rc f v with hRp`. Establish `key : defect t m N Q = -(C ((-1 : ℂ) ^ N) * Rp)`. Use `Polynomial.funext fun w => ?_` and prove the remaining obligations.
+
+Establish `h1` using `congrArg (fun T : Module.End ℂ V => f (T v)) (GlobalTheory.T.traced_qminor_comatrix_truncated_inverse (Module.End ℂ V) m M hM w N)`. Rewrite `h1` using `[← GlobalTheory.T.qdet_add_one_sub_eq_sum_qminor', hR]`. Establish `h2 : (qdet M w * ∑ k ∈ range (N + 1), algebraMap ℂ (Module.End ℂ V) ((-1) ^ k * (w - m) ^ (N - k)) * etr M k) v = (∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * t k) • qdet M w v`. Rewrite using `[Module.End.mul_apply, LinearMap.sum_apply, map_sum, sum_smul]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Module.End.mul_apply, ht k, Module.algebraMap_end_apply, smul_smul, map_smul]`. Rewrite `h1` using `[h2]`. Simplify using `only [LinearMap.add_apply, Module.End.mul_apply, Module.algebraMap_end_apply, map_add, map_smul, LinearMap.sub_apply, map_sub, smul_eq_mul] at h1`. Rewrite `h1` using `[← GlobalTheory.CapelliNewton.polyOf_eval, ← hRp]`. Simplify using `only [defect, eval_sub, eval_mul, eval_pow, eval_X, eval_C, eval_comp, eval_add, eval_one, eval_finsetSum, eval_neg, hQ]`.
+
+Establish `h3 : ∑ k ∈ range (N + 1), (-1) ^ k * t k * (w - m) ^ (N - k) = ∑ k ∈ range (N + 1), (-1) ^ k * (w - m) ^ (N - k) * t k` using `sum_congr rfl fun k _ => by ring`. Rewrite using `[h3]`. Take the linear combination `h1`. Rewrite using `[key, natDegree_neg]`. Conclude with `(natDegree_C_mul_le _ _).trans (GlobalTheory.CapelliNewton.polyOf_natDegree _ _ _ _)`.
+-/
 theorem natDegree_defect_op (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
     (M : Fin (m + 1) → Fin (m + 1) → Module.End ℂ V) (hM : GlRel M) (v : V) (t : ℕ → ℂ)
     (ht : ∀ k, etr M k v = t k • v) (f : Module.Dual ℂ V) (Q : ℂ[X])
@@ -168,6 +236,31 @@ theorem natDegree_defect_op (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
   rw [key, natDegree_neg]
   exact (natDegree_C_mul_le _ _).trans (GlobalTheory.CapelliNewton.polyOf_natDegree _ _ _ _)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hD0`. Use `set N := m + 1 with hN`. Use `set S : ℂ[X] := ∑ k ∈ range (N + 1), C ((-1) ^ k * t k) * (X - C (m : ℂ)) ^ (N - k) with hS`. Establish `hXp : ∀ j : ℕ, ((X - C (m : ℂ)) ^ j).natDegree = j` using `fun j => by`. Rewrite using `[(monic_X_sub_C _).natDegree_pow, natDegree_X_sub_C, mul_one]`.
+
+Establish `hXc : ∀ j : ℕ, ((X - C (m : ℂ)) ^ j).coeff j = 1` using `fun j => by`. Use `((monic_X_sub_C (m : ℂ)).pow j).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[hXp]`. Then use the resulting hypothesis. Establish `hSd : S.natDegree ≤ N`. Use `natDegree_sum_le_of_forall_le _ _ fun k _ => ?_` and prove the remaining obligations.
+
+Use `(natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hXp]`. Use linear arithmetic over natural numbers and integers. Establish `hSc : S.coeff N = (m : ℂ) + 1`. Rewrite using `[hS, sum_range_succ', coeff_add, finsetSum_coeff, sum_eq_zero]`.
+
+Rewrite using `[zero_add, coeff_C_mul, Nat.sub_zero, hXc, pow_zero, one_mul, mul_one, ht]`. Introduce `k _`. Apply `coeff_eq_zero_of_natDegree_lt` to reduce the goal to its premises. Use `lt_of_le_of_lt (natDegree_C_mul_le _ _) ?_` and prove the remaining obligations. Rewrite using `[hXp]`.
+
+Use linear arithmetic over natural numbers and integers. Use `set d := D.natDegree with hd`. Establish `ha : D.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hD0`. Establish `hzero : (defect t m N D).coeff (N + d) = 0` using `coeff_eq_zero_of_natDegree_lt (by omega)`. Establish `hDS : (D * S).coeff (d + N) = D.leadingCoeff * ((m : ℂ) + 1)`.
+
+Rewrite using `[coeff_mul_add_eq_of_natDegree_le le_rfl hSd, hSc]`. Both sides reduce to the same expression. Break down `Nat.eq_zero_or_eq_succ_pred d with h0 | h0` into its components or cases. Establish `hc : D = C (D.coeff 0)` using `eq_C_of_natDegree_eq_zero (by omega)`. Establish `hΔ : D.comp (X + 1) - D = 0` using `by rw [hc, C_comp, sub_self]`.
+
+Simplify using `only [defect, hΔ, mul_zero, zero_sub, coeff_neg] at hzero`. Rewrite `hzero` using `[← hS, add_comm, hDS]`. Apply `ha` to reduce the goal to its premises. Establish `h1 : ((m : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero m`. Use `neg_eq_zero.mp hzero` as an intermediate fact.
+
+Conclude with `(mul_eq_zero.mp this).resolve_right h1`. Use `set d' := d.pred with hd'`. Establish `hdd : D.natDegree = d' + 1` using `by omega`. Establish `hΔd` using `natDegree_comp_sub_le D d' hdd`. Establish `hΔc` using `coeff_comp_sub D d' hdd`.
+
+Establish `hP1 : ((X - C (m : ℂ)) ^ (N + 1) * (D.comp (X + 1) - D)).coeff (N + 1 + d') = ((d' : ℂ) + 1) * D.leadingCoeff`. Rewrite using `[coeff_mul_add_eq_of_natDegree_le (hXp _).le hΔd, hXc, one_mul, hΔc]`. Establish `e : N + d = N + 1 + d'` using `by omega`. Establish `e2 : N + d = d + N` using `by omega`. Simplify using `only [defect] at hzero`.
+
+Rewrite `hzero` using `[coeff_sub, ← hS]`. Rewrite `hzero` using `[e]`. Rewrite `hzero` using `[hP1, ← e, e2, hDS]`. Establish `hne : ((d' : ℂ) + 1) - ((m : ℂ) + 1) ≠ 0`. Rewrite using `[sub_ne_zero]`.
+
+Introduce `h'`. Establish `: (d' + 1 : ℕ) = m + 1` using `by exact_mod_cast h'`. Use linear arithmetic over natural numbers and integers. Apply `ha` to reduce the goal to its premises. Establish `: (((d' : ℂ) + 1) - ((m : ℂ) + 1)) * D.leadingCoeff = 0` using `by linear_combination hzero`.
+
+Conclude with `(mul_eq_zero.mp this).resolve_left hne`.
+-/
 theorem eq_zero_of_defect (m : ℕ) (t : ℕ → ℂ) (ht : t 0 = (m : ℂ) + 1) (D : ℂ[X]) (hD : D.natDegree ≤ m)
     (h : (defect t m (m + 1) D).natDegree ≤ m) : D = 0 := by
   by_contra hD0
@@ -225,9 +318,25 @@ theorem eq_zero_of_defect (m : ℕ) (t : ℕ → ℂ) (ht : t 0 = (m : ℂ) + 1)
     have : (((d' : ℂ) + 1) - ((m : ℂ) + 1)) * D.leadingCoeff = 0 := by linear_combination hzero
     exact (mul_eq_zero.mp this).resolve_left hne
 
+/- English proof (translation)
+Simplify using `[GlobalTheory.Dec.gelfVal, Matrix.one_apply]`.
+-/
 theorem gelfVal_zero' {n : ℕ} (χ : Fin n → ℂ) : GlobalTheory.Dec.gelfVal χ 0 = n := by
   simp [GlobalTheory.Dec.gelfVal, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).mp fun f => ?_` and prove the remaining obligations. Take `⟨c, hc1, hc⟩` from `GlobalTheory.T.exists_monic_poly_eq_qdet (Module.End ℂ V) (m + 1) M`. Use `set Q := GlobalTheory.CapelliNewton.polyOf (m + 1) c f v with hQd`. Establish `hQ : ∀ u : ℂ, Q.eval u = f (qdet M u v)` using `fun u => by rw [hQd, GlobalTheory.CapelliNewton.polyOf_eval, hc]`.
+
+Use `set P : ℂ[X] := ∏ s, (X + C (χ s - (m : ℂ) / 2)) with hP`. Use `set D := Q - C (f v) * P with hDd`. Establish `hQc : Q.coeff (m + 1) = f v` using `by rw [hQd, GlobalTheory.CapelliNewton.polyOf_coeff, hc1]; rfl`. Establish `hPc : P.coeff (m + 1) = 1`. Use `(monic_capQ m χ).coeff_natDegree` as an intermediate fact.
+
+Rewrite `this` using `[natDegree_capQ]`. Then use the resulting hypothesis. Establish `hDdeg : D.natDegree ≤ m`. Use `natDegree_le_of_coeff _ _ ?_ ?_` and prove the remaining obligations. Use `(natDegree_sub_le _ _).trans (max_le (GlobalTheory.CapelliNewton.polyOf_natDegree _ _ _ _) ?_)` and prove the remaining obligations. Conclude with `(natDegree_C_mul_le _ _).trans (natDegree_capQ m χ).le`.
+
+Rewrite using `[hDd, coeff_sub, coeff_C_mul, hQc, hPc, mul_one, sub_self]`. Establish `hdef : (defect (GlobalTheory.Dec.gelfVal χ) m (m + 1) D).natDegree ≤ m`. Rewrite using `[hDd, defect_sub]`. Use `(natDegree_sub_le _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `natDegree_defect_op V m M hM v _ hv f Q hQ (m + 1)`.
+
+Conclude with `(natDegree_C_mul_le _ _).trans (natDegree_defect_gelf m χ (m + 1))`. Establish `h0` using `eq_zero_of_defect m (GlobalTheory.Dec.gelfVal χ) (by rw [gelfVal_zero']; push_cast; ring) D hDdeg hdef`. Establish `hev` using `congrArg (fun p : ℂ[X] => p.eval (Y + (m : ℂ) / 2)) h0`. Simplify using `only [hDd, eval_sub, eval_mul, eval_C, eval_zero, hQ, hP, eval_prod, eval_add, eval_X] at hev`. Establish `e1 : (((m + 1 : ℕ) : ℂ) - 1) / 2 = (m : ℂ) / 2` using `by push_cast; ring`.
+
+Rewrite using `[e1, map_sub, map_smul, smul_eq_mul, Formalism.QuantumDeterminants.capP]`. Establish `e2 : ∏ s, (Y + (m : ℂ) / 2 + (χ s - (m : ℂ) / 2)) = ∏ s, (Y + χ s)` using `prod_congr rfl fun s _ => by ring`. Rewrite `hev` using `[e2]`. Take the linear combination `hev`.
+-/
 theorem gelfToCap (V : Type) [AddCommGroup V] [Module ℂ V] (m : ℕ)
     (M : Fin (m + 1) → Fin (m + 1) → Module.End ℂ V) (χ : Fin (m + 1) → ℂ) (v : V) (hM : GlRel M)
     (hv : ∀ k, etr M k v = GlobalTheory.Dec.gelfVal χ k • v) (Y : ℂ) :

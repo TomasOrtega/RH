@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsLocallyConstan
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.KA
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.KA.TameUnr.tame_limit_unram | exact GlobalTheory.KA.TameUnr.tame_limit_unram | (intros; apply GlobalTheory.KA.TameUnr.tame_limit_unram <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.tameShapiroSystem_limit_unramified_away_from_l : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (W : R2 Ω l) (c : Coef l) (n e : ℕ)
     (χ : ∀ r : ℕ, (ZMod (l ^ r))ˣ → Qbar l) (θ : G ℚ Ω →* (Qbar l)ˣ) (ρ : G ℚ Ω → Matrix (Fin 2) (Fin 2) (Qbar l))
     (ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n)))

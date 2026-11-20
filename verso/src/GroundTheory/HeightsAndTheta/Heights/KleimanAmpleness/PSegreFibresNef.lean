@@ -14,6 +14,13 @@ open GroundTheory.Heights₂.Heights.NumbersDVR (MRing IsMultiProjPrime intNum)
 open GroundTheory.Heights₂.Heights.FieldNumbers (relDim)
 open ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH (mIdealOver)
 
+/- English proof (translation)
+Take `⟨hrel, hle, hlift⟩` from `hD O Ω F φ K ι y`. Prove the components needed by the constructor for the conclusion. Introduce `h W hW hPW hdim`. Establish `hpos` using `h (segreLift ι F W) (hB F K ι W hW) (hlift W hPW) (by rw [hC F K ι W hW]; exact hdim)`. Rewrite `hpos` using `[hN F K ι W hW β]`. Then use the resulting hypothesis.
+
+Introduce `h W' hW' hPW' hdim`. Take `⟨hWp, heq⟩` from `hA F K ι W' hW' fun g hg => hPW' (hrel hg)`. Establish `hPW : (mIdealOver O y).map (MvPolynomial.map φ) ≤ W'.comap (segreIncl ι F)` using `hle.trans (Ideal.comap_mono hPW')`. Establish `hdimW : relDim (W'.comap (segreIncl ι F)) = ((1 : ℕ) : WithBot (WithTop ℤ))`. Rewrite using `[← hC F K ι _ hWp, ← heq]`.
+
+Conclude with `hdim`. Establish `hpos` using `h _ hWp hPW hdimW`. Rewrite using `[heq, hN F K ι _ hWp β]`. Conclude with `hpos`.
+-/
 theorem segreFibresNef_of_map (hA : SegreLiftComap.Statement) (hB : SegreLiftPrime.Statement)
     (hC : SegreLiftRelDim.Statement) (hN : SegreLiftIntNum.Statement)
     (hD : SegreFibreIdeal.Statement) (O : Type) [CommRing O] (Ω : Type) [Field Ω] [Algebra O Ω]
@@ -39,6 +46,9 @@ theorem segreFibresNef_of_map (hA : SegreLiftComap.Statement) (hB : SegreLiftPri
     rw [heq, hN F K ι _ hWp β]
     exact hpos
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ _ _ K _ _ ι _ y _ β`. Conclude with `⟨segreFibresNef_of_map hA hB hC hN hD O Ω _ (IsLocalRing.residue O) K ι y β, segreFibresNef_of_map hA hB hC hN hD O Ω _ (algebraMap O (FractionRing O)) K ι y β⟩`.
+-/
 theorem SegreFibresNef.proof (hA : SegreLiftComap.Statement) (hB : SegreLiftPrime.Statement)
     (hC : SegreLiftRelDim.Statement) (hN : SegreLiftIntNum.Statement)
     (hD : SegreFibreIdeal.Statement) : SegreFibresNef.Statement := by

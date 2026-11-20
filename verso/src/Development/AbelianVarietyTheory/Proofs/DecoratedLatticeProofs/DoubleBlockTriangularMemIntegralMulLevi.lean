@@ -7,6 +7,11 @@ namespace GlobalTheory.PClassAlg
 
 variable {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] {c p : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `h : l.val + 1 < p`. Apply `h2 show OrderDual.toDual (lev p (Sum.inl y : n ⊕ Fin c)) < OrderDual.toDual (lev p (Sum.inr l : n ⊕ Fin c))` to reduce the goal to its premises. Simplify using `only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]`. Use linear arithmetic over natural numbers and integers. Apply `h1` to reduce the goal to its premises.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem shape_aX (hp : 1 ≤ p) (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (h1 : B.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
     (h2 : B.BlockTriangular (fun r => OrderDual.toDual (lev p r))) (l : Fin c) (y : n) :
@@ -17,6 +22,11 @@ theorem shape_aX (hp : 1 ≤ p) (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega
   · apply h1; simp only [Sum.elim_inl, Sum.elim_inr]; omega
 
+/- English proof (translation)
+Establish `: i.val ≠ j.val` using `fun h => hij (Fin.ext h)`. Break down `Nat.lt_or_gt_of_ne this with h | h` into its components or cases. Apply `h2 show OrderDual.toDual (lev p (Sum.inr j : n ⊕ Fin c)) < OrderDual.toDual (lev p (Sum.inr i : n ⊕ Fin c))` to reduce the goal to its premises. Simplify using `only [lev, Sum.elim_inr, OrderDual.toDual_lt_toDual]`. Use linear arithmetic over natural numbers and integers.
+
+Apply `h1` to reduce the goal to its premises. Simplify using `only [Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem shape_aa (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (h1 : B.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
     (h2 : B.BlockTriangular (fun r => OrderDual.toDual (lev p r))) (i j : Fin c) (hij : i ≠ j) :
@@ -28,6 +38,11 @@ theorem shape_aa (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     simp only [lev, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega
   · apply h1; simp only [Sum.elim_inr]; omega
 
+/- English proof (translation)
+Break down `Nat.lt_or_gt_of_ne hi with h | h` into its components or cases. Apply `h1` to reduce the goal to its premises. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers. Apply `h2 show OrderDual.toDual (lev p (Sum.inr i : n ⊕ Fin c)) < OrderDual.toDual (lev p (Sum.inl x : n ⊕ Fin c))` to reduce the goal to its premises.
+
+Simplify using `only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem shape_Xa (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (h1 : B.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
     (h2 : B.BlockTriangular (fun r => OrderDual.toDual (lev p r))) (x : n) (i : Fin c) (hi : i.val + 1 ≠ p) :
@@ -38,6 +53,9 @@ theorem shape_Xa (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     show OrderDual.toDual (lev p (Sum.inr i : n ⊕ Fin c)) < OrderDual.toDual (lev p (Sum.inl x : n ⊕ Fin c))
     simp only [lev, Sum.elim_inl, Sum.elim_inr, OrderDual.toDual_lt_toDual]; omega
 
+/- English proof (translation)
+Use `conv_lhs => rw [← fromBlocks_toBlocks B]`. Use `congr 1`. Use extensionality with `l y`. Conclude with `shape_aX hp B h1 h2 l y`.
+-/
 theorem eq_fromBlocks (hp : 1 ≤ p) (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (h1 : B.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
     (h2 : B.BlockTriangular (fun r => OrderDual.toDual (lev p r))) :
@@ -46,6 +64,9 @@ theorem eq_fromBlocks (hp : 1 ≤ p) (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
   congr 1
   ext l y; exact shape_aX hp B h1 h2 l y
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[toBlocks₂₂]`. Simplify using `[toBlocks₂₂, diagonal_apply_ne _ h, shape_aa B h1 h2 i j h]`.
+-/
 theorem diag_block (B : Matrix (n ⊕ Fin c) (n ⊕ Fin c) k)
     (h1 : B.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))))
     (h2 : B.BlockTriangular (fun r => OrderDual.toDual (lev p r))) :
@@ -59,6 +80,35 @@ end GlobalTheory.PClassAlg
 
 namespace GlobalTheory.PClassAlg
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ϖ n _ _ c p hp hpc A hA1 hA2 hB1 hB2 hD hE`. Establish `eA` using `eq_fromBlocks hp _ hA1 hA2`. Establish `eB` using `eq_fromBlocks hp _ hB1 hB2`. Establish `dA` using `diag_block _ hA1 hA2`. Establish `dB` using `diag_block _ hB1 hB2`.
+
+Establish `sXa` using `shape_Xa _ hA1 hA2`. Use `set P := toBlocks₁₁ A.val`. Use `set Q := toBlocks₁₂ A.val`. Use `set S := toBlocks₂₂ A.val`. Use `set P' := toBlocks₁₁ (A⁻¹).val`.
+
+Use `set Q' := toBlocks₁₂ (A⁻¹).val`. Use `set S' := toBlocks₂₂ (A⁻¹).val`. Establish `hAB : A.val * (A⁻¹).val = 1` using `Units.mul_inv A`. Establish `hBA : (A⁻¹).val * A.val = 1` using `Units.inv_mul A`. Rewrite `hAB`, `hBA` using `[eA, eB, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_inj]`.
+
+Simplify using `only [Matrix.mul_zero, add_zero, Matrix.zero_mul, zero_add] at hAB hBA`. Take `⟨hPP', hPQ, -, -⟩` from `hAB`. Take `⟨hP'P, -, -, -⟩` from `hBA`. Set `γ : GL n k` to `⟨P', P, hP'P, hPP'⟩`. Establish `hpow : ∀ i : Fin c, (((ϖ ^ (i.val + 1) : kˣ)) : k) = (ϖ : k) ^ (i.val + 1)` using `fun i => by simp`.
+
+Establish `hne : ∀ i : Fin c, (ϖ : k) ^ (i.val + 1) ≠ 0` using `fun i => pow_ne_zero _ ϖ.ne_zero`. Use `⟨γ, (GlobalTheory.SplitFlip.mem_KO_iff _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hM : (A * embX c γ * embA n (GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1))).val = fromBlocks (P * P') (Q * diagonal fun i : Fin c => (ϖ : k) ^ (i.val + 1)) 0 (S * diagonal fun i : Fin c => (ϖ : k) ^ (i.val + 1))`. Rewrite using `[Units.val_mul, Units.val_mul, eA]`. Use `show fromBlocks P Q 0 S * fromBlocks P' 0 0 1 * fromBlocks 1 0 0 (GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1)).val = _`.
+
+Simplify using `[fromBlocks_multiply, hpow]`. Rewrite using `[hM, hPP']`. Introduce and unpack `(x | l) (y | i)`. Apply the tactic sequence `simp only [fromBlocks_apply₁₁, one_apply]; split_ifs <;> simp`. Simplify using `only [fromBlocks_apply₁₂, mul_diagonal]`.
+
+Distinguish the cases in `h : i.val + 1 = p`. Conclude with `hE i h x`. Simplify using `[Q, toBlocks₁₂, sXa x i h]`. Simplify using the standard rewrite rules. Simplify using `only [fromBlocks_apply₂₂, mul_diagonal, dA]`.
+
+Distinguish the cases in `h : l = i`. Substitute `h` using the available equality. Simplify using `using (hD l).1`. Simplify using `[diagonal_apply_ne _ h]`. Establish `hM : ((A * embX c γ * embA n (GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1)))⁻¹).val = fromBlocks (P * P') (P * Q') 0 ((diagonal fun i : Fin c => ((ϖ : k) ^ (i.val + 1))⁻¹) * S')`.
+
+Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, ← map_inv, ← map_inv, Units.val_mul, Units.val_mul, eB]`. Use `show fromBlocks 1 0 0 ((GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1))⁻¹).val * (fromBlocks P 0 0 1 * fromBlocks P' Q' 0 S') = _`. Establish `: ((GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1))⁻¹).val = diagonal fun i : Fin c => ((ϖ : k) ^ (i.val + 1))⁻¹`. Use extensionality with `i j`. Simplify using `[GlobalTheory.SplitFlip.diagGL, diagonal_apply]`.
+
+Rewrite using `[this]`. Simplify using `[fromBlocks_multiply]`. Establish `hPQ' : P * Q' = -(Q * S')` using `eq_neg_of_add_eq_zero_left hPQ`. Rewrite using `[hM, hPP', hPQ', dB]`. Introduce and unpack `(x | l) (y | i)`.
+
+Apply the tactic sequence `simp only [fromBlocks_apply₁₁, one_apply]; split_ifs <;> simp`. Simplify using `only [fromBlocks_apply₁₂, Matrix.neg_apply, mul_diagonal]`. Distinguish the cases in `h : i.val + 1 = p`. Establish `e : Q x i * (A⁻¹).val (Sum.inr i) (Sum.inr i) = (A.val (Sum.inl x) (Sum.inr i) * (ϖ : k) ^ (i.val + 1)) * ((A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹)`. Use `hne i` as an intermediate fact.
+
+Simplify using `only [Q, toBlocks₁₂, of_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `neg_mem (mul_mem (hE i h x) (hD i).2)`. Simplify using `[Q, toBlocks₁₂, sXa x i h]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [fromBlocks_apply₂₂, diagonal_mul_diagonal, diagonal_apply] split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_comm]`. Conclude with `(hD l).2`.
+
+Conclude with `zero_mem _`.
+-/
 theorem blockDiag_mem_KO : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ϖ : kˣ) (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ), 1 ≤ p → p ≤ c → ∀ (A : GL (n ⊕ Fin c) k), A.val.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))) → A.val.BlockTriangular (fun r => OrderDual.toDual (lev p r)) → (A⁻¹).val.BlockTriangular (Sum.elim (fun _ : n => 2 * p - 1) (fun i : Fin c => 2 * (i.val + 1))) → (A⁻¹).val.BlockTriangular (fun r => OrderDual.toDual (lev p r)) → (∀ i : Fin c, A.val (Sum.inr i) (Sum.inr i) * (ϖ : k) ^ (i.val + 1) ∈ 𝒪[k] ∧ (A⁻¹).val (Sum.inr i) (Sum.inr i) * ((ϖ : k) ^ (i.val + 1))⁻¹ ∈ 𝒪[k]) → (∀ i : Fin c, i.val + 1 = p → ∀ x : n, A.val (Sum.inl x) (Sum.inr i) * (ϖ : k) ^ (i.val + 1) ∈ 𝒪[k]) → ∃ γ : GL n k, A * embX c γ * embA n (GlobalTheory.SplitFlip.diagGL fun i : Fin c => ϖ ^ (i.val + 1)) ∈ KO k (n ⊕ Fin c) := by
   intro k _ _ _ _ ϖ n _ _ c p hp hpc A hA1 hA2 hB1 hB2 hD hE
   have eA := eq_fromBlocks hp _ hA1 hA2

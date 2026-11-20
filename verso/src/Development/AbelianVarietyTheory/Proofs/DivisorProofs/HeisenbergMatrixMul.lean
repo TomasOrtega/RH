@@ -11,16 +11,25 @@ namespace GlobalTheory.UnipMass
 namespace ProdFormula
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [cA, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem cA_cA_of_invol (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
   | zero => simp
   | tmul a b => simp [cA, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[cA, incM, inclR]`.
+-/
 theorem cA_incM_apply (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (i j : Fin n) :
     cA σ (incM F J i j) = incM F (J.map σ) i j := by
   simp [cA, incM, inclR]
 
+/- English proof (translation)
+Simplify using `only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA_of_invol σ hσ, cA_incM_apply]`. Simplify using `only [incM, Matrix.map_apply, hJ, map_neg]`. Simplify using `only [Finset.mul_sum, neg_mul, mul_neg, Finset.sum_neg_distrib, neg_neg]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+-/
 theorem hA_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin n → AE F E) : hA σ J w v = - cA σ (hA σ J v w) := by
   simp only [hA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA_of_invol σ hσ, cA_incM_apply]
@@ -29,18 +38,30 @@ theorem hA_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (J :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Simplify using `only [hA, add_dotProduct]`.
+-/
 theorem hA_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     hA σ J (v + v') w = hA σ J v w + hA σ J v' w := by
   simp only [hA, add_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hA, sub_dotProduct]`.
+-/
 theorem hA_sub_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → AE F E) :
     hA σ J (v - v') w = hA σ J v w - hA σ J v' w := by
   simp only [hA, sub_dotProduct]
 
+/- English proof (translation)
+Simplify using `only [hA, smul_dotProduct, smul_eq_mul]`.
+-/
 theorem hA_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : AE F E) (v w : Fin n → AE F E) :
     hA σ J (a • v) w = a * hA σ J v w := by
   simp only [hA, smul_dotProduct, smul_eq_mul]
 
+/- English proof (translation)
+Establish `: (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Simplify using `only [hA, this, Matrix.mulVec_add, dotProduct_add]`.
+-/
 theorem hA_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → AE F E) :
     hA σ J v (w + w') = hA σ J v w + hA σ J v w' := by
   have : (fun i => cA σ ((w + w') i)) = (fun i => cA σ (w i)) + fun i => cA σ (w' i) := by
@@ -51,6 +72,11 @@ end ProdFormula
 
 open ProdFormula in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ n J hJ x u u' c c' hxx hux hu'x`. Establish `hxu : hA σ J x u = 0` using `by rw [hA_swap σ hσ J hJ u x, hux, map_zero, neg_zero]`. Establish `key : ∀ v, (nmat σ J x u c * nmat σ J x u' c') *ᵥ v = nmat σ J x (u + u') (c + c' - hA σ J u' u) *ᵥ v`. Introduce `v`. Rewrite using `[← Matrix.mulVec_mulVec, nmat_mulVec, nmat_mulVec, nmat_mulVec]`.
+
+Simplify using `only [hA_add_left, hA_sub_left, hA_smul_left, hA_add_right, hxx, hux, hu'x, hxu]`. Use extensionality with `i`. Simplify using `only [Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Matrix.toLin'.injective (LinearMap.ext fun v => by simpa only [Matrix.toLin'_apply] using key v)`.
+-/
 theorem nmat_mul_nmat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), (∀ a, σ (σ a) = a) → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), (∀ i j, σ (J j i) = -J i j) →
     ∀ (x u u' : Fin n → AE F E) (c c' : AE F E), hA σ J x x = 0 → hA σ J u x = 0 → hA σ J u' x = 0 →

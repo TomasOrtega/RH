@@ -16,6 +16,9 @@ section Face
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+The claim follows from `divClausesR_of wf0 wf1 Pk.core R u Nu sg I`.
+-/
 theorem linkDIV_L2R_face [IsTotallyComplex K] {Bs : DefBase K} {A : DefAmb Bs} {fc : DefSub A → DefFace Bs} {cf : ConvFace Bs} {C CH : ℝ}
     (Pk : IndefPkgR A fc cf C CH) (wf0 : (fc Pk.Zs).Df0.WF) (wf1 : (fc Pk.Zs).Df1.WF)
     {Pl : Type} [Fintype Pl] [DecidableEq Pl] (R : RecNums Bs.J Pl) (u : (fc Pk.Zs).Dc.Mem)
@@ -29,6 +32,9 @@ section Fam3
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I0 Ty T : Type} {m : ℕ}
 
+/- English proof (translation)
+The claim follows from `divClausesR_of (A3.side_well_formed hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) (A3.side_well_formed hOk P1 ψ1 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core R u Nu sg I`.
+-/
 theorem linkDIV_L2R3 [IsTotallyComplex K] (A3 : FamIn3 K G Pl0 I0 Ty T m) {s : ℕ} (hOk : A3.fam3.Ok3 s)
     (hsep : A3.fam3.TypesSep3) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)
     (Dc : ∀ Zs : DefSub A3.fam3.amb3, DefCols (A3.side3 P1 ψ1 Zs)) (Sp : ∀ Zs : DefSub A3.fam3.amb3, SPer (Dc Zs))
@@ -51,6 +57,9 @@ variable {X : Col.Fields} {Pr : Col.Primes X} {R : Ranks} (W : Col.Wts X Pr.Word
   (xiVal : Tup X.F X.E X.K S → HeightOneSpectrum (𝓞 X.E) → X.Kˣ)
   (trIv : Fin R.m → (Col.LevOffI ∅ Pr.vGs S0 × List ℕ → X.K) → Col.LevOffI ∅ Pr.vGs S0 × List ℕ → X.K)
 
+/- English proof (translation)
+The claim follows from `haveI : IsTotallyComplex X.K := hX.cplxK divClausesR_of (colSide3_WF W Ch sel hX v0 TU Xg S0 xiVal trIv hH hI P0 Pk.Zs Pk.stable Pk.inBlock) (colSide3_WF W Ch sel hX v0 TU Xg S0 xiVal trIv hH hI P1 Pk.Zs Pk.stable Pk.inBlock) Pk.core Rn u Nu sg I`.
+-/
 theorem linkDIV_L2R3_col (hH : ColHyp3 W Ch sel v0 TU Xg S0) (hI : (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).TrISep)
     (P0 P1 : Col.LevFam X.E X.K R.r Pr.vGs)
     (Dc : ∀ Zs : DefSub (colFam3 W Ch sel hX v0 TU Xg S0 xiVal trIv).amb3,

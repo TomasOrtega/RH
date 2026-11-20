@@ -12,11 +12,17 @@ variable {K : Type} [Fintype K] [DecidableEq K]
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Simplify using `[mixedDiff]`.
+-/
 theorem mixedDiff_of_fin_zero (bs : Fin 0 → K → ℤ) (f : (K → ℤ) → ℤ) : mixedDiff bs f = f := by
   simp [mixedDiff]
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Unfold `mixedDiff`. Rewrite using `[List.ofFn_succ']`. Simplify using `[List.concat_eq_append, List.foldr_append]`.
+-/
 theorem mixedDiff_snoc_eq_diffStep {n : ℕ} (bs : Fin n → K → ℤ) (b : K → ℤ) (f : (K → ℤ) → ℤ) :
     mixedDiff (Fin.snoc bs b : Fin (n + 1) → K → ℤ) f = mixedDiff bs (diffStep b f) := by
   unfold mixedDiff
@@ -25,6 +31,9 @@ theorem mixedDiff_snoc_eq_diffStep {n : ℕ} (bs : Fin n → K → ℤ) (b : K �
 
 omit [Fintype K] [DecidableEq K] in
 
+/- English proof (translation)
+Introduce `bs`. Establish `h` using `hf (Fin.snoc bs b : Fin (n + 1) → K → ℤ)`. Rewrite `h` using `[mixedDiff_snoc_eq_diffStep]`. Then use the resulting hypothesis.
+-/
 theorem degLT_diffStep_of_degLT_succ {n : ℕ} {f : (K → ℤ) → ℤ} (hf : DegLT f (n + 1)) (b : K → ℤ) :
     DegLT (diffStep b f) n := by
   intro bs
@@ -33,6 +42,11 @@ theorem degLT_diffStep_of_degLT_succ {n : ℕ} {f : (K → ℤ) → ℤ} (hf : D
 
 omit [Fintype K] in
 
+/- English proof (translation)
+Unfold `diffStep`. Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = k`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem diffStep_single_natCast (g : (K → ℤ) → ℤ) (m : K → ℕ) (k : K) :
     diffStep (Pi.single k 1) g (fun j => ((m + Pi.single k 1 : K → ℕ) j : ℤ)) =
       g (fun j => ((m + Pi.single k 1 : K → ℕ) j : ℤ)) - g (fun j => (m j : ℤ)) := by
@@ -43,10 +57,16 @@ theorem diffStep_single_natCast (g : (K → ℤ) → ℤ) (m : K → ℕ) (k : K
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+Simplify using `[Finset.sum_add_distrib]`.
+-/
 theorem sum_add_pi_single_one (m : K → ℕ) (k : K) :
     ∑ j, (m + Pi.single k 1 : K → ℕ) j = ∑ j, m j + 1 := by
   simp [Finset.sum_add_distrib]
 
+/- English proof (translation)
+The claim follows from `|((G a : ℝ) - G (fun _ => A))| ≤ D * s := by induction s with | zero => intro a hs ha _ have : a = fun _ => A := by funext k have h0 := (Finset.sum_eq_zero_iff.mp hs) k (Finset.mem_univ k) have := ha k omega subst this simp | succ s ih => intro a hs ha hstep by_cases hall : ∀ k, …`.
+-/
 theorem abs_sub_le_of_unit_steps (G : (K → ℕ) → ℤ) (A : ℕ) (D : ℝ) (hD : 0 ≤ D) (s : ℕ) :
     ∀ a : K → ℕ, ∑ k, a k = s → (∀ k, A ≤ a k) →
       (∀ (m : K → ℕ) (k : K), (∀ j, A ≤ m j) → ∑ j, m j + 1 ≤ s →
@@ -96,6 +116,9 @@ theorem abs_sub_le_of_unit_steps (G : (K → ℕ) → ℤ) (A : ℕ) (D : ℝ) (
         _ ≤ D + D * s := add_le_add h2 h1
         _ = D * ((s + 1 : ℕ) : ℝ) := by push_cast; ring
 
+/- English proof (translation)
+The claim follows from `|(g (fun k => (a k : ℤ)) : ℝ)| ≤ C * (((∑ k, a k : ℕ) : ℝ) + 1) ^ n := by induction n with | zero => intro g hg have hev : ∀ᶠ m in Filter.atTop, ∀ k, diffStep (Pi.single k 1) g m = 0 := by refine Filter.eventually_all.2 fun k => ?_ have := degLT_diffStep_of_degLT_succ hg (Pi.sing …`.
+-/
 theorem degLT_succ_growth_natPow (n : ℕ) : ∀ g : (K → ℤ) → ℤ, DegLT g (n + 1) →
     ∃ (A : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ a : K → ℕ, (∀ k, A ≤ a k) →
       |(g (fun k => (a k : ℤ)) : ℝ)| ≤ C * (((∑ k, a k : ℕ) : ℝ) + 1) ^ n := by
@@ -183,6 +206,17 @@ theorem degLT_succ_growth_natPow (n : ℕ) : ∀ g : (K → ℤ) → ℤ, DegLT 
 
 end Growth
 
+/- English proof (translation)
+Introduce `K _ _ n g hg`. Consider the cases of `n with`. Consider the case `zero`. Establish `hev : ∀ᶠ m in Filter.atTop, g m = 0`. Simplify `hg Fin.elim0` using `[mixedDiff_of_fin_zero]`.
+
+Take `⟨m₀, hm₀⟩` from `Filter.eventually_atTop.1 hev`. Use `⟨∑ k, (m₀ k).toNat, 0, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hge : m₀ ≤ fun k => (a k : ℤ)`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Finset.single_le_sum (f := fun k => (m₀ k).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)` after adjusting the coercions. Use `_ ≤ (a k : ℤ) := by exact_mod_cast ha k`. Rewrite using `[hm₀ _ hge]`. Simplify using the standard rewrite rules. Consider the case `succ n`.
+
+Take `⟨A, C, _, hb⟩` from `degLT_succ_growth_natPow n g hg`. Use `⟨A, C, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h` using `hb a ha`. Establish `he : ((n + 1 : ℕ) : ℝ) - 1 = (n : ℝ)` using `by push_cast; ring`. Rewrite using `[he, Real.rpow_natCast]`.
+
+Move the coercions through the operations in `at h`. Conclude with `h`.
+-/
 theorem DegLTGrowth.proof : DegLTGrowth.Statement := by
   intro K _ _ n g hg
   cases n with

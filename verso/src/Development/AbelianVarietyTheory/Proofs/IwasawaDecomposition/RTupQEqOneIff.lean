@@ -13,6 +13,9 @@ section Gen
 
 variable {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank)
 
+/- English proof (translation)
+The claim follows from `q.2.1`.
+-/
 theorem parLev_of_Q (q : (levEnv V β L).Q) :
     Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _) ∈ parLev D.sp.cm V.gram β L := q.2.1
 
@@ -25,9 +28,15 @@ def rTupQ : (levEnv V β L).Q →* G0 L.Pg L.r where
     simp only [Subgroup.coe_mul, map_mul]
     exact rTup_mul (parLev_of_Q V β L x) (parLev_of_Q V β L y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rTupQ_apply (q : (levEnv V β L).Q) :
     rTupQ V β L q = rTup β L (Formalism.UG.bc (swapAE D) ((q : Bridge.Gf V) : GL _ _)) := rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨parLev_of_Q V β L q, Subgroup.mem_bot.2 h⟩`. Introduce `h`. Conclude with `Subgroup.mem_bot.1 h.2`.
+-/
 theorem rTupQ_eq_one_iff (q : (levEnv V β L).Q) :
     rTupQ V β L q = 1 ↔ ((q : Bridge.Gf V)) ∈ (levEnv V β L).J := by
   constructor

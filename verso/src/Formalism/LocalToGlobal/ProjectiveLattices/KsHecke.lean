@@ -35,6 +35,9 @@ def ActTie (act : G → WL →ₗ[L] WL) (Th : XS →ₗ[L] WL) (TV : XS →ₗ[
 def eqvTh (Th : XS →ₗ[L] WL) (hs : LinearMap.range Th = ⊤) : (XS ⧸ LinearMap.ker Th) ≃ₗ[L] WL :=
   Th.quotKerEquivOfSurjective (LinearMap.range_eq_top.mp hs)
 
+/- English proof (translation)
+Introduce `x hx`. Simplify using `only [Submodule.mem_comap, LinearMap.mem_ker] at hx ⊢`. Conclude with `hk x hx`.
+-/
 theorem kerStab_le {Th : XS →ₗ[L] WL} (hk : KerStab Th TV) :
     LinearMap.ker Th ≤ (LinearMap.ker Th).comap TV := by
   intro x hx

@@ -24,6 +24,9 @@ def bd {n : ℕ} (w : Pt E n) (A : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (F
 def Rep {n m : ℕ} (f : Fin m → Fin n → E) (g : (Fin n → E) ≃ₗ[E] (Fin n → E))
     (s : Matrix (Fin m) (Fin m) E) : Prop := ∀ j, g (f j) = ∑ i, s i j • f i
 
+/- English proof (translation)
+Introduce `j`. Rewrite using `[LinearEquiv.mul_apply, hh j, map_sum]`. Simplify using `only [map_smul, hg _, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+-/
 lemma Rep.mul {n m : ℕ} {f : Fin m → Fin n → E} {g h : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     {s t : Matrix (Fin m) (Fin m) E} (hg : Rep f g s) (hh : Rep f h t) : Rep f (g * h) (s * t) := by
   intro j
@@ -40,6 +43,9 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {E : Type} [CommRing E] in
+/- English proof (translation)
+Simplify using `only [map_sum, map_smul, hg _, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 private lemma rep_apply_sum_smul_eq_sum_mul_smul {n m : ℕ} {f : Fin m → Fin n → E}
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} {A : Matrix (Fin m) (Fin m) E}
     (hg : _root_.GlobalTheory.HL.StabConj.Rep f g A) (B : Matrix (Fin m) (Fin m) E) (j : Fin m) :
@@ -53,6 +59,11 @@ private lemma rep_apply_sum_smul_eq_sum_mul_smul {n m : ℕ} {f : Fin m → Fin 
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {E : Type} [CommRing E] in
+/- English proof (translation)
+Introduce `j`. Establish `h` using `rep_apply_sum_smul_eq_sum_mul_smul hg B j`. Establish `h1 : ∑ i, (1 : Matrix (Fin m) (Fin m) E) i j • f i = f j`. Simplify using `[Matrix.one_apply]`. Rewrite `h` using `[hAB, h1]`.
+
+Rewrite using `[← h]`. Conclude with `g.symm_apply_apply _`.
+-/
 private lemma rep_inv_of_mul_eq_one {n m : ℕ} {f : Fin m → Fin n → E}
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} {A B : Matrix (Fin m) (Fin m) E}
     (hg : _root_.GlobalTheory.HL.StabConj.Rep f g A) (hAB : A * B = 1) :
@@ -68,6 +79,9 @@ private lemma rep_inv_of_mul_eq_one {n m : ℕ} {f : Fin m → Fin n → E}
 open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {E : Type} [CommRing E] in
+/- English proof (translation)
+Use extensionality with `i j`. Use `Fintype.linearIndependent_iff.mp hf (fun l => A l j - B l j) (by simp only [sub_smul, Finset.sum_sub_distrib, h j, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp (this i)`.
+-/
 private lemma matrix_eq_of_linearIndependent_sum_smul_eq {n m : ℕ} {f : Fin m → Fin n → E}
     (hf : LinearIndependent E f) {A B : Matrix (Fin m) (Fin m) E}
     (h : ∀ j, ∑ i, A i j • f i = ∑ i, B i j • f i) : A = B := by
@@ -80,6 +94,11 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] in
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
+/- English proof (translation)
+Rewrite using `[Submodule.smul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Use `show g (f j) ∈ Submodule.span L.O (Set.range f)`. Rewrite using `[hg j]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `: A i j • f i = (⟨A i j, hA i j⟩ : L.O) • f i` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 private lemma smul_span_le_of_rep_entries_mem (L : _root_.Formalism.MainNotions.S.Loc.LocE F E) {n m : ℕ} {f : Fin m → Fin n → E}
     {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} {A : Matrix (Fin m) (Fin m) E}
     (hg : _root_.GlobalTheory.HL.StabConj.Rep f g A) (hA : ∀ i j, A i j ∈ L.O) :
@@ -97,6 +116,63 @@ open ValuativeRel MeasureTheory in
 open scoped Pointwise ENNReal Classical in
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] in
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] in
+/- English proof (translation)
+Introduce `F _ _ _ _ _ E _ _ _ L r k S n hn`. Take `⟨σ, β, τ, hβ⟩` from `_root_.GlobalTheory.HL.BlockStab.exists_monomial S.w.blocks`. Rewrite `hβ` using `[S.w.size]`. Establish `hsame : ∀ i j : Fin (r + 1), _root_.Formalism.MainNotions.S.Loc.sameBlock S.w.blocks i j = true ↔ β i = β j` using `fun i j => ((hβ i i.isLt).2.2.2 j j.isLt).1`. Establish `hmono : ∀ i j : Fin (r + 1), i ≤ j → β i ≤ β j` using `fun i j hij => ((hβ i i.isLt).2.2.2 j j.isLt).2.1 hij`.
+
+Establish `hfalse : ∀ i j : Fin (r + 1), β i ≠ β j → _root_.Formalism.MainNotions.S.Loc.sameBlock S.w.blocks i j = false` using `fun i j hij => Bool.eq_false_iff.mpr fun ht => hij ((hsame i j).1 ht)`. Establish `hoff : ∀ M : Matrix (Fin (r + 1)) (Fin (r + 1)) E, _root_.GlobalTheory.HL.IsUni M → (∀ i j : Fin (r + 1), β i < β j → M i j = 0) → ∀ i j : Fin (r + 1), β i ≠ β j → M i j = 0`. Introduce `M hM hlt i j hij`. Break down `lt_or_gt_of_ne hij with h1 | h1` into its components or cases. Conclude with `hlt i j h1`.
+
+Conclude with `hM.1 i j (lt_of_not_ge fun hle => absurd (hmono i j hle) (not_le.mpr h1))`. Establish `hlower : ∀ M : Matrix (Fin (r + 1)) (Fin (r + 1)) E, _root_.GlobalTheory.HL.IsUni M → ∀ i j : Fin (r + 1), β j < β i → M i j = 0`. Introduce `M hM i j hij`. Conclude with `hM.1 i j (lt_of_not_ge fun hle => absurd (hmono i j hle) (not_le.mpr hij))`. Take `⟨s, hsU, hns⟩` from `(_root_.GlobalTheory.HL.FrameOnto.unipotent_onto L r k S).1 n hn`.
+
+Establish `hsU' : _root_.GlobalTheory.HL.IsUni s` using `hsU`. Take `⟨sb, hsb⟩ : ∃ sb, sb = _root_.GlobalTheory.HL.StabConj.bd S.w s` from `⟨_, rfl⟩`. Establish `hsbU : _root_.GlobalTheory.HL.IsUni sb`. Unfold `_root_.GlobalTheory.HL.IsUni`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hsb]`. Simplify using `only [_root_.GlobalTheory.HL.StabConj.bd]`. Use `split_ifs`. Conclude with `hsU'.1 i j hji`. Both sides reduce to the same expression.
+
+Rewrite using `[hsb]`. Simplify using `only [_root_.GlobalTheory.HL.StabConj.bd, (hsame i i).2 rfl, if_true]`. Conclude with `hsU'.2 i`. Establish `hsb0 : ∀ i j : Fin (r + 1), _root_.Formalism.MainNotions.S.Loc.sameBlock S.w.blocks i j = false → sb i j = 0`. Introduce `i j hij`.
+
+Rewrite using `[hsb]`. Simplify using `[_root_.GlobalTheory.HL.StabConj.bd, hij]`. Take `⟨s', hs'U, hs'⟩` from `(_root_.GlobalTheory.HL.BlockStab.stabiliser_blockDiag L r k S).2 sb hsbU hsb0`. Take `⟨h, hhSt, hhf, -⟩` from `((_root_.GlobalTheory.HL.FrameStab.stab_eq L r k S).2 sb s' hsbU hs'U).mp hs'`. Establish `hhR : _root_.GlobalTheory.HL.StabConj.Rep S.f h sb` using `hhf`.
+
+Take `⟨B, hsbB, hBsb, hBU, -, hBβ⟩` from `_root_.GlobalTheory.HL.BlockStab.inv_facts sb hsbU`. Establish `hBoff : ∀ i j : Fin (r + 1), β i ≠ β j → B i j = 0` using `hoff B hBU (hBβ (fun i => β i) fun i j hij => hsb0 i j (hfalse i j hij.ne))`. Establish `hu : _root_.GlobalTheory.HL.IsUni (B * s)` using `_root_.GlobalTheory.HL.FrameStabLat.uni_mul hBU hsU'`. Establish `hublk : ∀ i j : Fin (r + 1), β i = β j → (B * s) i j = (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) i j`. Introduce `i j hij`.
+
+Rewrite using `[← hBsb, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hil : β i = β l`. Rewrite using `[hsb]`. Simplify using `only [_root_.GlobalTheory.HL.StabConj.bd, (hsame l j).2 (hil.symm.trans hij), if_true]`.
+
+Rewrite using `[hBoff i l hil, zero_mul, zero_mul]`. Establish `hnu : _root_.GlobalTheory.HL.StabConj.Rep S.f (h⁻¹ * n) (B * s)`. Introduce `j`. Use `show h⁻¹ (n (S.f j)) = _`. Rewrite using `[hns j]`.
+
+Conclude with `rep_apply_sum_smul_eq_sum_mul_smul (rep_inv_of_mul_eq_one hhR hsbB) s j`. Establish `hfli : LinearIndependent E S.f` using `(_root_.GlobalTheory.FrameBasic.main L r k S).1.comp Sum.inl Sum.inl_injective`. Take `⟨B', -, hB'u, hB'U, -, -⟩` from `_root_.GlobalTheory.HL.BlockStab.inv_facts _ hu`. Establish `key : ∀ g ∈ S.St ⊓ _root_.GlobalTheory.HL.stabL L (Submodule.span L.O (Set.range fun b => n (S.f b))), (h⁻¹ * g * h) • Submodule.span L.O (Set.range S.f) ≤ Submodule.span L.O (Set.range S.f) ∧ (h⁻¹ * g * h) • Submodule.span L.O (Set.range S.f') ≤ Submodule.span L.O (Set.range S.f …`. Introduce `g hg`.
+
+Take `⟨hgSt, hgΛ⟩` from `Subgroup.mem_inf.mp hg`. Establish `hgΛ' : g • Submodule.span L.O (Set.range fun b => n (S.f b)) = Submodule.span L.O (Set.range fun b => n (S.f b))` using `hgΛ`. Establish `hg'St : h⁻¹ * g * h ∈ S.St` using `mul_mem (mul_mem (inv_mem hhSt) hgSt) hhSt`. Take `⟨t, htU, ht⟩` from `(_root_.GlobalTheory.HL.FrameOnto.unipotent_onto L r k S).1 _ (Subgroup.mem_inf.mp hg'St).1`. Take `⟨t', ht'U, ht'⟩` from `(_root_.GlobalTheory.HL.FrameOnto.unipotent_onto L r k S).2.1 _ (Subgroup.mem_inf.mp hg'St).2`.
+
+Establish `heq` using `((_root_.GlobalTheory.HL.FrameStab.stab_eq L r k S).2 t t' htU ht'U).mpr ⟨_, hg'St, ht, ht'⟩`. Take `⟨htblk, htint⟩` from `(_root_.GlobalTheory.HL.BlockStab.stabiliser_blockDiag L r k S).1 t t' htU ht'U heq`. Establish `htU' : _root_.GlobalTheory.HL.IsUni t` using `htU`. Establish `htR : _root_.GlobalTheory.HL.StabConj.Rep S.f (h⁻¹ * g * h) t` using `ht`. Establish `htoff : ∀ i j : Fin (r + 1), β i ≠ β j → t i j = 0` using `fun i j hij => (htblk i j (hfalse i j hij)).1`.
+
+Establish `hcoef : ∀ j, ∃ c : Fin (r + 1) → L.O, ∑ i, c i • n (S.f i) = g (n (S.f j))`. Introduce `j`. Establish `hmem : g • n (S.f j) ∈ g • Submodule.span L.O (Set.range fun b => n (S.f b))` using `Submodule.smul_mem_pointwise_smul _ g _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `hmem` using `[hgΛ']`. Conclude with `(Submodule.mem_span_range_iff_exists_fun L.O).mp hmem`.
+
+Use `choose c hc using hcoef`. Take `⟨C, hC⟩ : ∃ C : Matrix (Fin (r + 1)) (Fin (r + 1)) E, C = fun i j => (c j i : E)` from `⟨_, rfl⟩`. Establish `hhh : ∀ x, h (h⁻¹ x) = x` using `fun x => h.apply_symm_apply x`. Establish `hlin : ∀ j, ∑ i, (t * (B * s)) i j • S.f i = ∑ i, ((B * s) * C) i j • S.f i`. Introduce `j`.
+
+Rewrite using `[← rep_apply_sum_smul_eq_sum_mul_smul htR, ← rep_apply_sum_smul_eq_sum_mul_smul hnu, ← hnu j]`. Use `show h⁻¹ (g (h (h⁻¹ (n (S.f j))))) = h⁻¹ (n (∑ i, C i j • S.f i))`. Rewrite using `[hhh, ← hc j]`. Use `congr 1`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hC]`. Both sides reduce to the same expression. Establish `htu` using `matrix_eq_of_linearIndependent_sum_smul_eq hfli hlin`. Establish `hCeq : C = B' * (t * (B * s))`.
+
+Rewrite using `[htu, ← Matrix.mul_assoc, hB'u, Matrix.one_mul]`. Establish `hCU : _root_.GlobalTheory.HL.IsUni C`. Rewrite using `[hCeq]`. Conclude with `_root_.GlobalTheory.HL.FrameStabLat.uni_mul hB'U (_root_.GlobalTheory.HL.FrameStabLat.uni_mul htU' hu)`. Establish `htO : _root_.GlobalTheory.HL.IsIntM L t`.
+
+Unfold `_root_.GlobalTheory.HL.IsIntM`. Introduce `i j`. Distinguish the cases in `hij : β i = β j`. Establish `e1 : (t * (B * s)) i j = t i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`.
+
+Rewrite using `[hublk j j rfl, Matrix.one_apply_eq, mul_one]`. Introduce `l _ hl`. Distinguish the cases in `hil : β i = β l`. Rewrite using `[hublk l j (hil.symm.trans hij), Matrix.one_apply_ne hl, mul_zero]`. Rewrite using `[htoff i l hil, zero_mul]`.
+
+Introduce `hj`. Conclude with `absurd (Finset.mem_univ j) hj`. Establish `e2 : ((B * s) * C) i j = C i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hublk i i rfl, Matrix.one_apply_eq, one_mul]`.
+
+Introduce `l _ hl`. Break down `lt_trichotomy (β l) (β i) with h1 | h1 | h1` into its components or cases. Rewrite using `[hlower _ hu i l h1, zero_mul]`. Rewrite using `[hublk i l h1.symm, Matrix.one_apply_ne (Ne.symm hl), zero_mul]`. Rewrite using `[hlower _ hCU l j (hij ▸ h1), mul_zero]`.
+
+Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite using `[← e1, htu, e2, hC]`. Conclude with `(c j i).2`. Rewrite using `[htoff i j hij]`.
+
+Conclude with `L.O.zero_mem`. Conclude with `⟨smul_span_le_of_rep_entries_mem L htR htO, smul_span_le_of_rep_entries_mem L ht' (htint.mp htO)⟩`. Establish `hconj : ∀ (g : S.GLV) (K : Subgroup S.GLV), g ∈ MulAut.conj h • K ↔ h⁻¹ * g * h ∈ K`. Introduce `g K`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`.
+
+Simplify using the standard rewrite rules. Establish `hstab : ∀ (x : S.GLV) (M : Submodule L.O S.V), x • M ≤ M → x⁻¹ • M ≤ M → x • M = M`. Introduce `x M h1 h2`. Use `le_antisymm h1 fun v hv => ?_` and prove the remaining obligations. Establish `hv' : x⁻¹ • v ∈ M` using `h2 (Submodule.smul_mem_pointwise_smul v x⁻¹ M hv)`.
+
+Simplify using `using Submodule.smul_mem_pointwise_smul _ x M hv'`. Use `⟨h, hhSt, fun g hg => ?_, B * s, hu, fun i j hij => ?_, hnu⟩` and prove the remaining obligations. Rewrite using `[hconj]`. Establish `hg' : h⁻¹ * g * h ∈ S.St` using `mul_mem (mul_mem (inv_mem hhSt) (Subgroup.mem_inf.mp hg).1) hhSt`. Take `⟨h1, h2⟩` from `key g hg`.
+
+Take `⟨h3, h4⟩` from `key g⁻¹ (inv_mem hg)`. Establish `hinv : h⁻¹ * g⁻¹ * h = (h⁻¹ * g * h)⁻¹` using `by group`. Rewrite `h3`, `h4` using `[hinv]`. Conclude with `Subgroup.mem_inf.mpr ⟨Subgroup.mem_inf.mpr ⟨hg', hstab _ _ h1 h3⟩, hstab _ _ h2 h4⟩`. Rewrite using `[hublk i j ((hsame i j).1 hij), Matrix.one_apply] split_ifs`.
+
+Conclude with `L.O.one_mem`. Conclude with `L.O.zero_mem`.
+-/
 theorem _root_.GlobalTheory.HL.StabConj.main : ∀ {F : Type} [Field F] [ValuativeRel F]
     [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : _root_.Formalism.MainNotions.S.Loc.LocE F E), ∀ (r k : ℕ)

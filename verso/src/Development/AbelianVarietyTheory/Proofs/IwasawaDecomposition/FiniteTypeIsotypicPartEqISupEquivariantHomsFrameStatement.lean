@@ -19,5 +19,8 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IsotHom.isotIn_eq_iSup_homInto | exact GlobalTheory.IsotHom.isotIn_eq_iSup_homInto | (intros; apply GlobalTheory.IsotHom.isotIn_eq_iSup_homInto <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finiteTypeIsotypicPart_eq_iSup_equivariantHoms_frame : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) {n : ℕ} (P : principalLevelFrame.RowPsi V n) (π : Formalism.L2.NG.FinTyp D.host.E n), principalLevelFrame.isotIn (principalLevelFrame.actM P M) (principalLevelFrame.Minf θ P M) π = ⨆ f ∈ homInto ((GlobalTheory.OccRowVec.finRep π).comp (GlobalTheory.KapIsot.eqv P).symm.toMonoidHom) (finRep M) (allMaps θ M), LinearMap.range f := by
   first | exact @GlobalTheory.IsotHom.isotIn_eq_iSup_homInto | exact GlobalTheory.IsotHom.isotIn_eq_iSup_homInto | (intros; apply GlobalTheory.IsotHom.isotIn_eq_iSup_homInto <;> assumption)

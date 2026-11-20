@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheore
 open CategoryTheory AlgebraicGeometry MonoidalCategory ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.DeRham GlobalTheory.DeRhamSheaf
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PrincipalPolPairing.exists_affine_pairings | exact GlobalTheory.PrincipalPolPairing.exists_affine_pairings | (intros; apply GlobalTheory.PrincipalPolPairing.exists_affine_pairings <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.principal_polarization_de_rham_pairing : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.CovTop.Hypotheses2 →
     GlobalTheory.Published.PoincareDeRhamDuality → ∀ {T : Scheme.{0}} (A : Over T) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → (∃ c, GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.IsPrincipalPol A c) → ∀ (H : T.Modules)

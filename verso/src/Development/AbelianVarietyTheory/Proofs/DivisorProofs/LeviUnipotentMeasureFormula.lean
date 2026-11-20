@@ -19,6 +19,15 @@ namespace GlobalTheory.LeviConjHaar
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `hinv : mat k⁻¹ * mat k = 1` using `GlobalTheory.ThK.UnipClosed.mat_inv_mul k`. Establish `hx' : mat k⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hk : ∀ z, mat k *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ (M *ᵥ z)` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, hι, ← Matrix.mulVec_mulVec]`.
+
+Establish `hk' : ∀ z, mat k⁻¹ *ᵥ (incM F H.ι *ᵥ (M *ᵥ z)) = incM F H.ι *ᵥ z` using `fun z => by`. Rewrite using `[← hk, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hle : unip σ W H ≤ (unip σ W H).comap (MulAut.conj k⁻¹).toMonoidHom`. Use `(Subgroup.closure_le _).2 fun s hs => ?_` and prove the remaining obligations. Take `⟨hs1, hs2⟩` from `hs`.
+
+Simplify using `only [Subgroup.coe_comap, Set.mem_preimage, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.ThK.UnipClosed.mat_mul, GlobalTheory.ThK.UnipClosed.mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hx, hs1, hx']`. Take `⟨c, hc⟩` from `hs2 (M *ᵥ z)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.ThK.UnipClosed.mat_mul, GlobalTheory.ThK.UnipClosed.mat_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hk, hc, Matrix.mulVec_add, Matrix.mulVec_smul, hk', hx']`. Simplify `hle hu` using `[MulAut.conj_apply]`.
+-/
 theorem conj_mem_unip {d d₁ : ℕ} {W : Spc F E d} {H : Plane E d d₁} {k : UA σ W.J}
     {M : Matrix (Fin d₁) (Fin d₁) (AE F E)} (hx : mat k *ᵥ incV F H.x = incV F H.x)
     (hι : mat k * incM F H.ι = incM F H.ι * M) {u : UA σ W.J} (hu : u ∈ unip σ W H) :
@@ -48,6 +57,41 @@ end GlobalTheory.LeviConjHaar
 
 open GlobalTheory.LeviConjHaar in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hC hB hG hG₁ m hm μN hμ γ hγ f _`. Take `⟨h, hrat, hL⟩` from `GlobalTheory.T.rational_unitary_levi_lift F E σ B b a' G G₁ H H' hC hB hG hG₁ γ hγ`. Establish `heq : m 1 γ = h` using `GlobalTheory.T.levi_lift_unique F E σ B b a' G G₁ H H' hC hB hG hG₁ 1 γ (m 1 γ) h (hm 1 γ) hL`. Use `set g := m 1 γ with hgdef`. Establish `hg : IsLevi H 1 γ g` using `hm 1 γ`.
+
+Establish `hratg : g ∈ ratU σ G.V.J` using `heq ▸ hrat`. Establish `hx : mat g *ᵥ incV F H.x = incV F H.x` using `by rw [hg.1]; simp`. Establish `hinvg : mat g⁻¹ * mat g = 1` using `GlobalTheory.ThK.UnipClosed.mat_inv_mul g`. Establish `hx' : mat g⁻¹ *ᵥ incV F H.x = incV F H.x` using `by conv_lhs => rw [← hx]`. Rewrite using `[Matrix.mulVec_mulVec, hinvg, Matrix.one_mulVec]`.
+
+Establish `hγγ : mat γ * mat γ⁻¹ = 1`. Rewrite using `[← GlobalTheory.ThK.UnipClosed.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipClosed.mat_one]`. Establish `hι' : mat g⁻¹ * incM F H.ι = incM F H.ι * mat γ⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : ∀ u ∈ unip σ G.V H, g⁻¹ * u * g ∈ unip σ G.V H` using `fun u hu => conj_mem_unip hx hg.2.2 hu`.
+
+Establish `hB' : ∀ u ∈ unip σ G.V H, g * u * g⁻¹ ∈ unip σ G.V H` using `fun u hu => by`. Simplify using `using conj_mem_unip hx' hι' hu`. Set `ce : unip σ G.V H ≃* unip σ G.V H` to `{ toFun := fun u => ⟨g⁻¹ * u.1 * g, hA _ u.2⟩ invFun := fun u => ⟨g * u.1 * g⁻¹, hB' _ u.2⟩ left_inv := fun u => Subtype.ext (by simp [mul_assoc]) right_inv := fun u => Subtype.ext (by simp [mul_assoc]) map_mul' := fun u v => Subtype.ext (by simp [mul_assoc]) }`. Establish `hce : ∀ u, (ce u).1 = g⁻¹ * u.1 * g` using `fun u => rfl`. Establish `hces : ∀ u, (ce.symm u).1 = g * u.1 * g⁻¹` using `fun u => rfl`.
+
+Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (b + 2) G.V.J`. Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Establish `hcl` using `GlobalTheory.ThK.UnipClosed.isClosed_unip F E σ _ _ G.V H`. Use `haveI : LocallyCompactSpace (unip σ G.V H) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology (unip σ G.V H) := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`. Establish `hc1 : Continuous ce` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`.
+
+Establish `hc2 : Continuous ce.symm` using `Continuous.subtype_mk ((continuous_const.mul continuous_subtype_val).mul continuous_const) _`. Set `tt : unip σ G.V H ≃ₜ unip σ G.V H` to `⟨ce.toEquiv, hc1, hc2⟩`. Set `me` to `tt.toMeasurableEquiv`. Establish `hme : ∀ u, me u = ce u` using `fun u => rfl`. Establish `hp : MeasurePreserving me μN (μN.map me)` using `⟨me.measurable, rfl⟩`.
+
+Use `haveI hHaar : (μN.map me).IsHaarMeasure := MulEquiv.isHaarMeasure_map μN ce hc1 hc2`. Establish `hps : MeasurePreserving me.symm (μN.map me) μN` using `hp.symm`. Establish `hsc` using `MeasureTheory.Measure.isMulLeftInvariant_eq_smul (μN.map me) μN`. Use `set s := MeasureTheory.Measure.haarScalarFactor (μN.map me) μN with hsdef`. Set `Γ` to `(ratU σ G.V.J).subgroupOf (unip σ G.V H)`.
+
+Use `haveI hΓc : Countable Γ := by haveI := GlobalTheory.QDom.countable_ratU σ G.V.J`. Use `Function.Injective.countable (f := fun x : Γ => (⟨x.1.1, x.2⟩ : ratU σ G.V.J)) ?_` and prove the remaining obligations. Introduce `x y hxy`. Conclude with `Subtype.ext (Subtype.ext (by simpa using congrArg Subtype.val hxy))`. Establish `hΓ : ∀ x : Γ, ce x.1 ∈ Γ` using `fun x => by`.
+
+Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations. Rewrite using `[hce]`. Conclude with `mul_mem (mul_mem (inv_mem hratg) (Subgroup.mem_subgroupOf.1 x.2)) hratg`. Establish `hΓ' : ∀ x : Γ, ce.symm x.1 ∈ Γ` using `fun x => by`. Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[hces]`. Conclude with `mul_mem (mul_mem hratg (Subgroup.mem_subgroupOf.1 x.2)) (inv_mem hratg)`. Set `eΓ : Γ → Γ` to `fun x => ⟨ce x.1, hΓ x⟩`. Establish `heΓ : Function.Bijective eΓ` using `⟨fun x y hxy => Subtype.ext (ce.injective (congrArg Subtype.val hxy)), fun x => ⟨⟨ce.symm x.1, hΓ' x⟩, Subtype.ext (ce.apply_symm_apply x.1)⟩⟩`. Take `⟨𝓕, h𝓕, h0, htop⟩` from `GlobalTheory.T.unipotent_fundamental_domain_exists F E σ B b a' G G₁ H H' hC hB hG hG₁ μN hμ`.
+
+Establish `hfd : IsFundamentalDomain Γ (me.symm ⁻¹' 𝓕) (μN.map me)` using `h𝓕.preimage_of_equiv hps.quasiMeasurePreserving heΓ fun x y => by show ce.symm (ce x.1 * y) = x.1 * ce.symm y`. Rewrite using `[map_mul, ce.symm_apply_apply]`. Establish `hset : me ⁻¹' (me.symm ⁻¹' 𝓕) = 𝓕`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Establish `hmass : (μN.map me) (me.symm ⁻¹' 𝓕) = μN 𝓕`. Rewrite using `[MeasurableEquiv.map_apply, hset]`. Establish `hfd2 : IsFundamentalDomain Γ 𝓕 (μN.map me)`. Rewrite using `[hsc]`. Conclude with `h𝓕.mono Measure.smul_absolutelyContinuous`.
+
+Use `haveI : SMulInvariantMeasure Γ (unip σ G.V H) (μN.map me) := ⟨fun c A _ => by show (μN.map me) ((fun x => (c : unip σ G.V H) * x) ⁻¹' A) = _`. Conclude with `measure_preimage_mul _ _ _⟩`. Use `haveI : MeasurableConstSMul Γ (unip σ G.V H) := ⟨fun c => by show Measurable fun x : unip σ G.V H => (c : unip σ G.V H) * x`. Conclude with `measurable_const_mul _⟩`. Establish `hmeq : (μN.map me) 𝓕 = (μN.map me) (me.symm ⁻¹' 𝓕)` using `hfd2.measure_eq hfd`.
+
+Establish `hs1 : s = 1`. Establish `h2 : (μN.map me) 𝓕 = (s : ENNReal) * μN 𝓕`. Rewrite using `[hsc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Establish `h1 : (s : ENNReal) * μN 𝓕 = 1 * μN 𝓕`. Rewrite using `[one_mul, ← h2, hmeq, hmass]`.
+
+Use `(ENNReal.mul_left_inj h0 htop).1 h1` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hmap : μN.map me = μN`. Rewrite using `[hsc, hs1, one_smul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[hme, hce]`. Simplify using `[mul_assoc]`. Use `_ = ∫⁻ n, f (g * n.1) ∂(μN.map me) := (lintegral_map_equiv (fun n : unip σ G.V H => f (g * n.1)) me).symm`. Use `_ = ∫⁻ n, f (g * n.1) ∂μN := by rw [hmap]`.
+-/
 theorem GlobalTheory.LeviConjHaar.lintegral_conj_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' → B.IsGood σ → G.IsGood B → G₁.IsGood B →
     ∀ m : (AE F E)ˣ → UA σ G₁.V.J → UA σ G.V.J, (∀ l g₀, IsLevi H l g₀ (m l g₀)) →

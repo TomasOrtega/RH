@@ -52,6 +52,9 @@ def IsProjOf {c : CoefA (Vc D i)} {H : HMod (Bridge.Gf (Vc D i) → c.W)}
   ∀ (x : H.H) (v : ∀ ρ, lowT (R.MW i σ) ρ),
     (R.HW i σ).e (th x) (fun ρ => v ρ) = R.eWf i σ (thP ((c.ext ∘ₗ H.e).rangeRestrict x) (PiTensorProduct.tprod ℂ v))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ω, f₀, f, B, io, thP, h1, h2, h3, h4, h5, h6, h7⟩`. Conclude with `⟨ω, f₀, f, B, io, thP, ⟨h1, ⟨h2, h3, h4⟩, h5, h6⟩, h7⟩`. Introduce and unpack `⟨ω, f₀, f, B, io, thP, h, h7⟩`. Conclude with `⟨ω, f₀, f, B, io, thP, h.1, h.2.1.vec, h.2.1.onb, h.2.1.theta, h.2.2.1, h.2.2.2, h7⟩`.
+-/
 theorem isConjLift_iff (μ' η' : (AE D)ˣ →* Circle) (c : CoefA (Vc D i)) (H : HMod (Bridge.Gf (Vc D i) → c.W))
     (th : H.H →ₗ[ℂ] (R.HW i σ).H) :
     IsConjLift R i σ μ' η' c H th ↔ ∃ ω f₀ f B io thP, LiftData R i σ μ' η' c H ω f₀ f B io thP ∧ IsProjOf R i σ thP th := by
@@ -74,6 +77,9 @@ def PhaseFun (u : GA D (Wc D i) → ℂ) : Prop :=
   (∀ h, ‖u h‖ = 1) ∧ (∀ γ ∈ GQ (Wc D i), ∀ h, u (γ * h) = u h) ∧ (∀ g ∈ GinfC (Wc D i), ∀ h, u (h * g) = u h) ∧
     ∀ k ∈ levW R i, ∀ h, u (h * k) = u h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+-/
 theorem phaseFun_one : PhaseFun R i (fun _ => 1) := ⟨fun _ => norm_one, fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 
 abbrev IsLiftW (g : G) (k : GA D (Wc D i)) : Prop := Lev.IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g) k

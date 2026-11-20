@@ -2,6 +2,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ta
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Establish `hl : ∀ z : Multiplicative (ZMod l), z ^ l = 1`. Introduce `z`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Simplify using `[toAdd_pow]`. Establish `hKo : IsOpen ((χ.ker.map H.subtype : Subgroup Γ) : Set Γ)`.
+
+Rewrite using `[Subgroup.coe_map]`. Conclude with `hH.isOpenMap_subtype_val _ hχ`. Use `Subgroup.topologicalClosure_minimal _ ?_ (Subgroup.isClosed_of_isOpen _ hKo)` and prove the remaining obligations. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.normalClosure, Subgroup.closure_le]`.
+
+Introduce `x hx`. Take `⟨a, ha, hc⟩` from `Group.mem_conjugatesOfSet_iff.1 hx`. Take `⟨c, rfl⟩` from `isConj_iff.1 hc`. Conclude with `hS a ha c`. Set `K : OpenSubgroup Γ` to `⟨χ.ker.map H.subtype, hKo⟩`.
+
+Establish `: Finite (Γ ⧸ K.toSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ hKo`. Establish `: Subgroup.FiniteIndex K.toSubgroup` using `Subgroup.finiteIndex_of_finite_quotient`. Set `U : OpenNormalSubgroup Γ` to `{ toSubgroup := Subgroup.normalCore K.toSubgroup isOpen' := Subgroup.isOpen_of_isClosed_of_finiteIndex _ (K.toSubgroup.normalCore_isClosed K.isClosed) }`. Establish `hU : ∀ h ∈ H, ∃ e, h ^ l ^ e ∈ U`. Introduce `h hh`.
+
+Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce `b`. Establish `hb : b * h * b⁻¹ ∈ H` using `hN.conj_mem h hh b`. Use `⟨⟨b * h * b⁻¹, hb⟩ ^ l, MonoidHom.mem_ker.2 (by rw [map_pow, hl]), ?_⟩` and prove the remaining obligations. Simplify using `[conj_pow]`.
+
+Unfold `PL`. Conclude with `iInf_le_of_le U (iInf_le_of_le hU (Subgroup.normalCore_le K.toSubgroup))`.
+-/
 private theorem closure_normal_frattini_le_kernel (l : ℕ) {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (H : Subgroup Γ) [hN : H.Normal] (hH : IsOpen (H : Set Γ)) (S : Set Γ) (χ : H →* Multiplicative (ZMod l))
     (hχ : IsOpen (χ.ker : Set H))
@@ -38,6 +51,21 @@ private theorem closure_normal_frattini_le_kernel (l : ℕ) {Γ : Type} [Group �
     unfold PL
     exact iInf_le_of_le U (iInf_le_of_le hU (Subgroup.normalCore_le K.toSubgroup))
 
+/- English proof (translation)
+Use `set q := p.subgroupComap H with hqdef`. Establish `hq : Function.Surjective q`. Introduce and unpack `⟨y, hy⟩`. Take `⟨x, rfl⟩` from `hs y`. Conclude with `⟨⟨x, hy⟩, rfl⟩`.
+
+Establish `hker : q.ker ≤ χ.ker`. Introduce `x hx`. Establish `h1 : p x.1 = 1` using `congrArg Subtype.val (MonoidHom.mem_ker.1 hx)`. Take `⟨y, hy, hyx⟩` from `hk (MonoidHom.mem_ker.2 h1 : x.1 ∈ p.ker)`. Establish `: y = x` using `Subtype.ext hyx`.
+
+Conclude with `this ▸ hy`. Set `φ : H →* Multiplicative (ZMod l)` to `(q.liftOfRightInverse (Function.surjInv hq) (Function.rightInverse_surjInv hq)) ⟨χ, hker⟩`. Establish `hφ : ∀ x, φ (q x) = χ x` using `fun x => q.liftOfRightInverse_comp_apply _ _ ⟨χ, hker⟩ x`. Establish `hcont : Continuous q` using `(hp.comp continuous_subtype_val).subtype_mk _`. Establish `hNc : IsClosed ((H.comap p : Subgroup Γ') : Set Γ')` using `(Subgroup.isClosed_of_isOpen H hH).preimage hp`.
+
+Use `haveI : CompactSpace (H.comap p) := isCompact_iff_compactSpace.1 hNc.isCompact`. Establish `hc : IsClosed ((χ.ker : Set (H.comap p))ᶜ)` using `hχ.isClosed_compl`. Establish `himg : IsClosed (q '' (χ.ker : Set (H.comap p))ᶜ)` using `(hc.isCompact.image hcont).isClosed`. Establish `hopen : IsOpen (φ.ker : Set H)`. Use `himg.isOpen_compl using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `hq y`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_compl_iff, Set.mem_image, not_exists, not_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h x' hx' hxx`.
+
+Apply `hx'` to reduce the goal to its premises. Rewrite using `[← hφ x', hxx, h]`. Introduce `h`. Assume the negation of the conclusion as `hne`. Conclude with `h x (by rw [← hφ]; exact hne) rfl`.
+
+Conclude with `⟨⟨φ, hopen⟩, hφ⟩`.
+-/
 private theorem twisted_kernel_forms_nonvanishing (l : ℕ) {Γ' Γ : Type} [Group Γ'] [TopologicalSpace Γ'] [IsTopologicalGroup Γ'] [CompactSpace Γ']
     [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [T2Space Γ] (p : Γ' →* Γ) (hp : Continuous p)
     (hs : Function.Surjective p) (H : Subgroup Γ) (hH : IsOpen (H : Set Γ))
@@ -79,6 +107,33 @@ private theorem twisted_kernel_forms_nonvanishing (l : ℕ) {Γ' Γ : Type} [Gro
       exact h x (by rw [← hφ]; exact hne) rfl
   exact ⟨⟨φ, hopen⟩, hφ⟩
 
+/- English proof (translation)
+Introduce `l _ Γ' _ _ _ _ _ Γ _ _ _ _ _ p H q ta hp hs hta hker hfin`. Use `set N : Subgroup Γ' := H.toSubgroup.comap p with hN`. Use `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩`. Establish `hNo : IsOpen (N : Set Γ')` using `H.isOpen.preimage hp`. Use `haveI : Finite (Γ' ⧸ N) := Subgroup.quotient_finite_of_isOpen _ hNo`.
+
+Establish `hHn : H.toSubgroup.Normal` using `inferInstance`. Establish `hmem : ∀ (g : Γ') (j : Fin q), g * ta j * g⁻¹ ∈ N`. Introduce `g j`. Use `show p (g * ta j * g⁻¹) ∈ H.toSubgroup`. Simplify using `[hta]`.
+
+Set `f : HomL l N → (Fin q × (Γ' ⧸ N) → Multiplicative (ZMod l))` to `fun χ jc => χ.1 ⟨jc.2.out * ta jc.1 * jc.2.out⁻¹, hmem _ _⟩`. Use `haveI : Nonempty (HomL l N) := ⟨⟨1, by simp⟩⟩`. Set `g : (Fin q × (Γ' ⧸ N) → Multiplicative (ZMod l)) → HomL l N` to `Function.invFun f`. Establish `hg : ∀ χ, f (g (f χ)) = f χ` using `fun χ => Function.invFun_eq ⟨χ, rfl⟩`. Establish `key : ∀ χ : HomL l N, ∃ ψ : HomL l H.toSubgroup, ∀ x, ψ.1 (p.subgroupComap H.toSubgroup x) = (χ.1 * (g (f χ)).1⁻¹) x`.
+
+Introduce `χ`. Establish `hopenδ : IsOpen (((χ.1 * (g (f χ)).1⁻¹).ker : Subgroup N) : Set N)`. Use `Subgroup.isOpen_mono (H₁ := χ.1.ker ⊓ (g (f χ)).1.ker) ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Subgroup.mem_inf, MonoidHom.mem_ker] at hx`.
+
+Simplify using `[MonoidHom.mem_ker, hx.1, hx.2]`. Conclude with `χ.2.inter (g (f χ)).2`. Establish `hS : ∀ t ∈ Set.range ta, ∀ g' : Γ', g' * t * g'⁻¹ ∈ (χ.1 * (g (f χ)).1⁻¹).ker.map N.subtype`. Introduce and unpack `t ⟨j, rfl⟩ g'`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul N g'`.
+
+Use `set c : Γ' ⧸ N := (QuotientGroup.mk g' : Γ' ⧸ N)`. Establish `hb : c.out * (h : Γ')⁻¹ * c.out⁻¹ ∈ N` using `by show p (c.out * (h : Γ')⁻¹ * c.out⁻¹) ∈ H.toSubgroup`. Rewrite using `[map_mul, map_mul, map_inv, map_inv]`. Conclude with `hHn.conj_mem _ (H.toSubgroup.inv_mem h.2) _`. Establish `ha` using `congrFun (hg χ) (j, c)`.
+
+Use `⟨⟨c.out * (h : Γ')⁻¹ * c.out⁻¹, hb⟩ * ⟨c.out * ta j * c.out⁻¹, hmem _ _⟩ * ⟨c.out * (h : Γ')⁻¹ * c.out⁻¹, hb⟩⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_mul, map_inv]`. Establish `: (χ.1 * (g (f χ)).1⁻¹) ⟨c.out * ta j * c.out⁻¹, hmem _ _⟩ = 1`. Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply]`. Conclude with `mul_inv_eq_one.2 ha.symm`.
+
+Rewrite using `[this, mul_one, mul_inv_cancel]`. Simplify using `only [Subgroup.subtype_apply, Subgroup.coe_mul, Subgroup.coe_inv]`. Rewrite using `[hh]`. Use `group`. Establish `hk' : p.ker ≤ (χ.1 * (g (f χ)).1⁻¹).ker.map N.subtype` using `hker.trans (closure_normal_frattini_le_kernel l N hNo (Set.range ta) _ hopenδ hS)`.
+
+Conclude with `twisted_kernel_forms_nonvanishing l p hp hs H.toSubgroup H.isOpen _ hopenδ hk'`. Use `choose D hD using key`. Set `F : HomL l N → (Fin q × (Γ' ⧸ N) → Multiplicative (ZMod l)) × HomL l H.toSubgroup` to `fun χ => (f χ, D χ)`. Establish `hF : Function.Injective F`. Introduce `χ χ' h`.
+
+Simplify using `only [F, Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Establish `e : ∀ x, (χ.1 * (g (f χ)).1⁻¹) x = (χ'.1 * (g (f χ')).1⁻¹) x`. Introduce `x`. Rewrite using `[← hD, ← hD, h2]`.
+
+Rewrite `e` using `[h1]`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `x`. Establish `e'` using `e x`. Rewrite `e'` using `[MonoidHom.mul_apply, MonoidHom.mul_apply]`.
+
+Conclude with `mul_right_cancel (G := Multiplicative (ZMod l)) e'`. Use `haveI : Finite (HomL l N) := Finite.of_injective F hF`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Establish `hidx : Nat.card (Γ' ⧸ N) = H.toSubgroup.index` using `Subgroup.index_comap_of_surjective _ hs`. Establish `hZ : Nat.card (Multiplicative (ZMod l)) = l` using `(Nat.card_congr Multiplicative.toAdd).trans (Nat.card_zmod l)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_prod, mul_comm, Nat.card_fun, Nat.card_prod, Nat.card_fin, hidx, hZ]`.
+-/
 theorem UpperTheory.V.Pa.homBound :
     ∀ (l : ℕ) [Fact l.Prime] (Γ' : Type) [Group Γ'] [TopologicalSpace Γ'] [IsTopologicalGroup Γ'] [CompactSpace Γ'] [TotallyDisconnectedSpace Γ'] (Γ : Type) [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [TotallyDisconnectedSpace Γ] (p : Γ' →* Γ) (H : OpenNormalSubgroup Γ) (q : ℕ) (ta : Fin q → Γ'), Continuous p → Function.Surjective p → (∀ j, p (ta j) = 1) → p.ker ≤ (Subgroup.normalClosure (Set.range ta) ⊔ PL l (H.toSubgroup.comap p)).topologicalClosure → Finite (HomL l H.toSubgroup) → Finite (HomL l (H.toSubgroup.comap p)) ∧ Nat.card (HomL l (H.toSubgroup.comap p)) ≤ Nat.card (HomL l H.toSubgroup) * l ^ (q * H.toSubgroup.index) := by
   intro l _ Γ' _ _ _ _ _ Γ _ _ _ _ _ p H q ta hp hs hta hker hfin

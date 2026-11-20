@@ -9,6 +9,21 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 
 namespace GlobalTheory.CompanionTheory.Ar.Small
 
+/- English proof (translation)
+Introduce `Ψ _ _ N T II B u g c s q m hII hT1 hW hB hs hs0 hq hm`. Take `⟨h1, -, h3, h4, h5⟩` from `hT1 u g hW B hB c`. Establish `hs' : Tendsto s atTop (𝓝[>] (0 : ℝ))` using `tendsto_nhdsWithin_iff.2 ⟨hs0, Eventually.of_forall fun n => hs n⟩`. Establish `hδ : ((T.M B c).δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (T.M B c).δ_pos.ne'`. Establish `hqn : ∀ n, (q n : ℝ) ≠ 0` using `fun n => Nat.cast_ne_zero.2 (hq n).ne'`.
+
+Establish `hgeo : ∀ n, geomDeg (T.M B c).P (combLine ((T.M B c).line (scale (s n))) (m n)) (dimFl Ψ N) = (T.M B c).δ * (q n : ℝ) ^ dimFl Ψ N * T.mDeg B c u (s n)`. Introduce `n`. Use `geoFun_comb_mixed II hII Ψ N (T.M B c) (scale (s n)) (fun _ => T.lamS u (s n)) (fun _ => s n) (q n) (fun _ => m n) (fun _ j => hm n j)` as an intermediate fact. Rewrite `this` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `this`.
+
+Establish `har : ∀ n, II (T.M B c).K (T.M B c).ι (T.M B c).P (dimFl Ψ N + 1) (fun _ => combLine ((T.M B c).line (scale (s n))) (m n)) = (T.M B c).δ * (q n : ℝ) ^ (dimFl Ψ N + 1) * T.mbarTop II B c u (s n)` using `fun n => top_comb_eq_arFun II hII Ψ N (T.M B c) (scale (s n)) (T.lamS u (s n)) (s n) (q n) (m n) (hm n)`. Use `⟨?_, ?_, ?_, h4⟩` and prove the remaining obligations. Use `filter_upwards [hs'.eventually h1] with n hn`. Establish `a` using `(nefFib_integral_multiple Ψ N (T.M B c) (scale (s n)) (T.lamS u (s n)) (s n) (q n) (m n) (hm n)).2 hn.1`. Establish `b` using `RootFieldNumerics.root_model_line_semipositive Ψ N (T.M B c) (scale (s n)) (T.lamS u (s n)) (s n) (q n) (m n) (hm n) hn.2`.
+
+Conclude with `⟨⟨_, le_rfl, b.1⟩, b.2, a⟩`. Use `((h3.comp hs').const_mul ((T.M B c).δ : ℝ)).congr fun n => ?_` and prove the remaining obligations. Rewrite using `[hgeo n]`. Use `hqn n` as an intermediate fact. Simplify using `only [Function.comp]`.
+
+Clear the denominators using the available nonvanishing facts. Use `(h5.comp hs').congr fun n => ?_` and prove the remaining obligations. Unfold `normHt`. Rewrite using `[hgeo n, har n]`. Use `hqn n` as an intermediate fact.
+
+Simplify using `only [Function.comp]`. Distinguish the cases in `h0 : T.mDeg B c u (s n) = 0`. Simplify using `[h0]`. Establish `h2 : ((dimFl Ψ N : ℝ) + 1) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tower_seq : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (T : RootTower Ψ N) (II : IntersectionSystem) (B : ℕ) (u : Wt Ψ N) (g : ℝ) (c : T.Comp) (s : ℕ → ℝ) (q : ℕ → ℕ) (m : ℕ → Option (Ψ × Fin N) → ℤ), IsFullIntersectionSystem II → T.T1 II → WeightHyp T.j u g → bigB0 u g < B + 1 → (∀ n, 0 < s n) → Tendsto s atTop (𝓝 0) → (∀ n, 0 < q n) → (∀ n j, (m n j : ℝ) = q n * (T.M B c).coef (T.lamS u (s n)) (s n) j) → (∀ᶠ n in atTop, IsNefH (T.M B c).P (combLine ((T.M B c).line (scale (s n))) (m n))) ∧ Tendsto (fun n => geomDeg (T.M B c).P (combLine ((T.M B c).line (scale (s n))) (m n)) (dimFl Ψ N) / (q n : ℝ) ^ dimFl Ψ N) atTop (𝓝 ((T.M B c).δ * (T.vol c * flagDeg u))) ∧ Tendsto (fun n => normHt II (T.M B c).P (combLine ((T.M B c).line (scale (s n))) (m n)) (dimFl Ψ N) / q n) atTop (𝓝 (T.slope II B c u)) ∧ 0 < T.vol c * flagDeg u := by
   intro Ψ _ _ N T II B u g c s q m hII hT1 hW hB hs hs0 hq hm
   obtain ⟨h1, -, h3, h4, h5⟩ := hT1 u g hW B hB c

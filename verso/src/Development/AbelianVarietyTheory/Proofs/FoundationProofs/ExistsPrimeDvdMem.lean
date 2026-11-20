@@ -4,6 +4,17 @@ universe u_1
 
 namespace GlobalTheory.PrimeDivisorMembership
 
+/- English proof (translation)
+Introduce `R _ P hP n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hmem`. Distinguish the cases in `h1 : n = 1`.
+
+Substitute `h1` using the available equality. Rewrite `hmem` using `[Nat.cast_one]`. Conclude with `absurd ((Ideal.eq_top_iff_one P).2 hmem) hP.ne_top`. Establish `hmin` using `Nat.minFac_prime h1`. Take `⟨m, hm⟩` from `Nat.minFac_dvd n`.
+
+Establish `hmem' : (n.minFac : R) * (m : R) ∈ P`. Rewrite using `[← Nat.cast_mul, ← hm]`. Conclude with `hmem`. Break down `hP.mem_or_mem hmem' with hq | hq` into its components or cases. Conclude with `⟨n.minFac, hmin, Nat.minFac_dvd n, hq⟩`.
+
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Rewrite `hm` using `[mul_zero]`. Conclude with `hn hm`. Establish `hlt : m < n`.
+
+Combine the equalities or inequalities in the displayed calculation. Take `⟨q, hq1, hq2, hq3⟩` from `ih m hlt hm0 hq`. Conclude with `⟨q, hq1, hq2.trans (Dvd.intro_left _ hm.symm), hq3⟩`.
+-/
 theorem exists_prime_dvd_mem : ∀ {R : Type u_1} [inst : CommRing R] (P : Ideal R), Ideal.IsPrime P → ∀ (n : ℕ), n ≠ (0 : ℕ) → (↑n : R) ∈ P → ∃ (q : ℕ), Nat.Prime q ∧ q ∣ n ∧ (↑q : R) ∈ P := by
   intro R _ P hP n
   induction n using Nat.strong_induction_on with

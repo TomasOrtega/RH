@@ -14,6 +14,13 @@ namespace GlobalTheory.DefFree.AdelCls
 
 open GlobalTheory.Mass
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, k, hk, e⟩`. Rewrite `hx` using `[← hQ]`. Take `⟨γ, hγ, rfl⟩` from `Subgroup.mem_map.1 hx`. Take `⟨κ, hκA, rfl⟩` from `hA k`.
+
+Use `⟨γ, hγ, κ, (hL κ).2 ⟨hκA, hk⟩, (γ * h * κ)⁻¹ * h', (hN _).1 ?_, (mul_inv_cancel_left (γ * h * κ) h').symm⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_inv, e, inv_mul_cancel]`. Introduce and unpack `⟨γ, hγ, κ, hκ, k, hk, rfl⟩`. Use `⟨f γ, ?_, f κ, ((hL κ).1 hκ).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hQ]`.
+
+Conclude with `Subgroup.mem_map_of_mem f hγ`. Rewrite using `[map_mul, map_mul, map_mul, (hN k).2 hk, mul_one]`.
+-/
 theorem dc_iff {G H : Type} [Group G] [Group H] (f : G →* H) (Γ A L N : Subgroup G) (Q K : Subgroup H)
     (hQ : Γ.map f = Q) (hA : ∀ x, ∃ h ∈ A, f h = x) (hL : ∀ κ, κ ∈ L ↔ κ ∈ A ∧ f κ ∈ K)
     (hN : ∀ h, f h = 1 ↔ h ∈ N) (h h' : G) :
@@ -34,6 +41,9 @@ theorem dc_iff {G H : Type} [Group G] [Group H] (f : G →* H) (Γ A L N : Subgr
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_finU, coe_swapPts, hπ h]`. Both sides reduce to the same expression.
+-/
 theorem finU_eq (V : HSp D) {π : GA D V →* HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram}
     (hπ : IsFinProj D.sp.cm.sig V.gram π) (h : GA D V) :
     finU V h = swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram (π h) := by
@@ -41,6 +51,9 @@ theorem finU_eq (V : HSp D) {π : GA D V →* HA (Formalism.MainNotions.GlobalTh
   rw [coe_finU, coe_swapPts, hπ h]
   rfl
 
+/- English proof (translation)
+Establish `hs : Function.Injective (swapAE D)` using `(Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective`. Establish `hb : Function.Injective (Formalism.UG.bc (swapAE D) : GL (Fin V.rank) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) →* GL (Fin V.rank) (EAf D))` using `Units.map_injective (Matrix.map_injective hs)`. Rewrite using `[← OneMemClass.coe_eq_one, coe_finU, GinfC, MonoidHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Formalism.UG.bc (swapAE D) (finHom V h) = 1 ↔ finHom V h = 1`. Conclude with `map_eq_one_iff _ hb`.
+-/
 theorem finU_eq_one_iff (V : HSp D) (h : GA D V) : finU V h = 1 ↔ h ∈ GinfC V := by
   have hs : Function.Injective (swapAE D) :=
     (Algebra.TensorProduct.comm D.host.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.host.E).injective
@@ -51,6 +64,13 @@ theorem finU_eq_one_iff (V : HSp D) (h : GA D V) : finU V h = 1 ↔ h ∈ GinfC 
   change Formalism.UG.bc (swapAE D) (finHom V h) = 1 ↔ finHom V h = 1
   exact map_eq_one_iff _ hb
 
+/- English proof (translation)
+Take `⟨hsp, hex⟩` from `parts_spec (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram`. Take `⟨y, rfl⟩` from `(swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).surjective x`. Take `⟨g, g1, g2⟩` from `hex 1 (HA.mat _ _ _ y)`. Establish `hg : g ∈ HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig V.gram`. Use `(hsp g).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[g1]`. Conclude with `one_mem _`. Rewrite using `[g2]`. Conclude with `(y : HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).2`. Use `⟨⟨g, hg⟩, MonoidHom.mem_ker.2 g1, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_swapPts, ← g2]`. Both sides reduce to the same expression.
+-/
 theorem exists_fin (V : HSp D) (x : UA D.sp.cm V.gram) : ∃ h ∈ GfC V, finU V h = x := by
   obtain ⟨hsp, hex⟩ := parts_spec (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram
   obtain ⟨y, rfl⟩ := (swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).surjective x
@@ -66,10 +86,16 @@ theorem exists_fin (V : HSp D) (x : UA D.sp.cm V.gram) : ∃ h ∈ GfC V, finU V
   rw [coe_swapPts, ← g2]
   rfl
 
+/- English proof (translation)
+Simplify using `only [levA, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_subgroupOf, coe_finU]`.
+-/
 theorem mem_levA (V : HSp D) (K : Subgroup (GL (Fin V.rank) (EAf D))) (κ : GA D V) :
     κ ∈ levA V K ↔ κ ∈ GfC V ∧ finU V κ ∈ K.subgroupOf (UA D.sp.cm V.gram) := by
   simp only [levA, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_subgroupOf, coe_finU]
 
+/- English proof (translation)
+Take `⟨π, hπ, -⟩` from `existsUnique_isFinProj (F := D.host.F) D.sp.cm.sig V.gram`. Establish `e : finU V = (swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram →* UA D.sp.cm V.gram).comp π` using `MonoidHom.ext fun h => finU_eq V hπ h`. Establish `h1 : (GQ V).map π = ratIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram` using `hπ.map_ratIn`. Rewrite using `[e, ← Subgroup.map_map, h1]`. Conclude with `map_swapPts_rat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram`.
+-/
 theorem map_rat (V : HSp D) : (GQ V).map (finU V) = UQ D.sp.cm V.gram := by
   obtain ⟨π, hπ, -⟩ := existsUnique_isFinProj (F := D.host.F) D.sp.cm.sig V.gram
   have e : finU V = (swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram :
@@ -79,15 +105,26 @@ theorem map_rat (V : HSp D) : (GQ V).map (finU V) = UQ D.sp.cm V.gram := by
   rw [e, ← Subgroup.map_map, h1]
   exact map_swapPts_rat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram
 
+/- English proof (translation)
+Rewrite using `[← map_rat V]`. Conclude with `Subgroup.mem_map_of_mem _ hγ`.
+-/
 theorem rat_mem (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) : finU V γ ∈ UQ D.sp.cm V.gram := by
   rw [← map_rat V]
   exact Subgroup.mem_map_of_mem _ hγ
 
+/- English proof (translation)
+Take `⟨π, hπ, -⟩` from `existsUnique_isFinProj (F := D.host.F) D.sp.cm.sig V.gram`. Rewrite `e` using `[finU_eq V hπ, MulEquiv.map_eq_one_iff]`. Conclude with `hπ.injOn (SetLike.mem_coe.2 hγ) (SetLike.mem_coe.2 (Subgroup.one_mem _)) (by rw [e, map_one])`.
+-/
 theorem rat_inj (V : HSp D) (γ : GA D V) (hγ : γ ∈ GQ V) (e : finU V γ = 1) : γ = 1 := by
   obtain ⟨π, hπ, -⟩ := existsUnique_isFinProj (F := D.host.F) D.sp.cm.sig V.gram
   rw [finU_eq V hπ, MulEquiv.map_eq_one_iff] at e
   exact hπ.injOn (SetLike.mem_coe.2 hγ) (SetLike.mem_coe.2 (Subgroup.one_mem _)) (by rw [e, map_one])
 
+/- English proof (translation)
+Introduce `D V`. Use `⟨exists_fin V, rat_mem V, fun x hx => ?_, rat_inj V, fun K h h' => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← map_rat V]`. Take `⟨γ, hγ, e⟩` from `Subgroup.mem_map.1 hx`. Conclude with `⟨γ, hγ, e⟩`.
+
+Use `first`. Consider the case `rw [clsA, clsA, Quotient.eq'', DoubleCoset.rel_iff]`. Consider the case `(show DoubleCoset.mk _ _ (finU V h) = DoubleCoset.mk _ _ (finU V h') ↔ _`. Rewrite using `[DoubleCoset.eq])`. Conclude with `dc_iff (finU V) (GQ V) (GfC V) (levA V K) (GinfC V) (UQ D.sp.cm V.gram) (K.subgroupOf (UA D.sp.cm V.gram)) (map_rat V) (exists_fin V) (mem_levA V K) (finU_eq_one_iff V) h h'`.
+-/
 theorem adelic_classes : ∀ (D : D7) (V : HSp D), (∀ x : UA D.sp.cm V.gram, ∃ h ∈ GfC V, finU V h = x) ∧ (∀ γ ∈ GQ V, finU V γ ∈ UQ D.sp.cm V.gram) ∧ (∀ x ∈ UQ D.sp.cm V.gram, ∃ γ ∈ GQ V, finU V γ = x) ∧ (∀ γ ∈ GQ V, finU V γ = 1 → γ = 1) ∧ ∀ (K : Subgroup (GL (Fin V.rank) (EAf D))) (h h' : GA D V), clsA V K h = clsA V K h' ↔ ∃ γ ∈ GQ V, ∃ κ ∈ levA V K, ∃ k ∈ GinfC V, h' = γ * h * κ * k := by
   intro D V
   refine ⟨exists_fin V, rat_mem V, fun x hx => ?_, rat_inj V, fun K h h' => ?_⟩

@@ -21,6 +21,33 @@ namespace GlobalTheory.ModelIntFr
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hr A _ _ ξ β hξ hβ T₀ α _hα yy₀ hyy`. Take `⟨io', hio'⟩ : ∃ io' : c'.F →+* T₀.Fr, spMap io' = yy₀ ≫ pullback.snd _ _` from `⟨(Spec.preimage (yy₀ ≫ pullback.snd _ _)).hom, by simp [spMap]⟩`. Set `io : c.F →+* T₀.Fr` to `io'.comp (IntermediateField.inclusion hle).toRingHom`. Set `yt : Sp T₀.V ⟶ Y.X` to `spMap α ≫ ξ`. Establish `hz : yy₀ ≫ Y.j = spMap (algebraMap T₀.V (FractionRing T₀.V)) ≫ yt`.
+
+Rewrite using `[hyy]`. Simplify using `only [yt, spMap, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Choose the witnesses or unpack the hypotheses as in `⟨G, ⟨m⟩⟩ : ∃ G : SAB H (Sp T₀.V), Nonempty (SABMap G Y.t yt) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull yt Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m2⟩⟩ : ∃ t' : SAB H (Sp T₀.Fr), Nonempty (SABMap t' G (spMap (algebraMap T₀.V T₀.Fr))) := by`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap (algebraMap T₀.V T₀.Fr)) G`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨θ, hθ, -, w2, σ', ⟨g2, r2⟩, hcl, hgen⟩` from `GlobalTheory.DepthSum.thetaCore_trait E H Dw l' Xo' c' _ _ Y T₀.V yt yy₀ hz G m t' m2`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m m2`.
+
+Establish `cancel : ∀ (p : Sp T₀.Fr ⟶ Y.X) (_ : p = yy₀ ≫ Y.j) (n : SABMap t' Y.t p), Nonempty (SABMap t' Y.oF.t yy₀)`. Introduce `p hp n`. Substitute `hp` using the available equality. Conclude with `⟨(sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n).choose⟩`. Take `⟨m3⟩` from `cancel _ hz.symm n`.
+
+Take `⟨m1, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν m3`. Use `letI := io.toAlgebra`. Establish `hx : (yy₀ ≫ r ≫ pullback.fst _ _) ≫ Xo.s = sOf c T₀.Fr`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc r, hr, Category.assoc, ← Category.assoc yy₀, ← hio']`. Simplify using `only [sOf, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Take `⟨y, hy⟩` from `GlobalTheory.AnyLevelFrame.exists_intFr T₀ io _ hx G t' m1 m2 θ hθ w2 σ' ⟨g2, r2⟩ hcl hgen`. Establish `hjs : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap (c'.V W).subtype` using `by show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`. Establish `key : io'.comp (c'.V W).subtype = ((algebraMap T₀.V T₀.Fr).comp α).comp β`. Establish `e` using `congrArg (· ≫ Y.s) hyy`.
+
+Simplify using `only [Category.assoc, hjs, hξ] at e`. Rewrite `e` using `[← Category.assoc, ← hio']`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp] at e`. Simplify using `using congrArg CommRingCat.Hom.hom (Spec.map_injective e)`. Establish `hunit : ∀ b : c'.F, b ≠ 0 → b ∈ c'.V W → vV T₀.V (io' b) = 0`.
+
+Introduce `b hb hbV`. Establish `e` using `RingHom.congr_fun key ⟨b, hbV⟩`. Simplify using `only [RingHom.comp_apply] at e`. Establish `hu : IsUnit (α (β ⟨b, hbV⟩))` using `(hβ _ fun h => hb (congrArg Subtype.val h)).map α`. Establish `ev : valV T₀.V (algebraMap T₀.V T₀.Fr (α (β ⟨b, hbV⟩))) = 1`.
+
+Rewrite using `[valV, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h hu`. Rewrite using `[show io' b = _ from e]`. Simplify using `[vV, ev]`. Use `⟨T₀, RingHom.id _, RingHom.id _, fun a => rfl, Function.injective_id, inferInstance, io, y, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `a ha`. Establish `hb : (IntermediateField.inclusion hle a : c'.F) ≠ 0`. Introduce `h; exact ha (by simpa using congrArg Subtype.val h)`. Use `show vV T₀.V (io' (IntermediateField.inclusion hle a)) = 0`. Break down `(c'.V W).mem_or_inv_mem (IntermediateField.inclusion hle a) with h | h` into its components or cases.
+
+Conclude with `hunit _ hb h`. Use `hunit _ (inv_ne_zero hb) h` as an intermediate fact. Rewrite `this` using `[map_inv₀]`. Unfold `vV at this ⊢`. Rewrite `this` using `[map_inv₀, WithZero.log_inv]`.
+
+Use linear arithmetic over natural numbers and integers. Use `show GlobalTheory.AllWt.ptF y.1 = spMap (RingHom.id T₀.Fr) ≫ yy₀ ≫ r`. Rewrite using `[show spMap (RingHom.id T₀.Fr) = 𝟙 _ by simp [spMap], Category.id_comp]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_fst, hy, Category.assoc]`.
+
+Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_snd, Category.assoc, hr, ← Category.assoc, ← hio']`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem exists_intFr_of_modelPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ) (Y : Model Xo' c' (c'.V W).subtype) (r : Xo'.XF c' ⟶ Xo.XF c) (ν : SABMap Y.oF.t Xo.univ.t (r ≫ pullback.fst _ _)) (hle : c.F ≤ c'.F), OverIncl r hle → ∀ (A : Type) [CommRing A] [IsDomain A] (ξ : Sp A ⟶ Y.X) (β : c'.V W →+* A), ξ ≫ Y.s = spMap β → (∀ a : c'.V W, a ≠ 0 → IsUnit (β a)) → ∀ (T₀ : CDVR) (α : A →+* T₀.V), Function.Injective α → ∀ yy₀ : Sp T₀.Fr ⟶ Xo'.XF c', yy₀ ≫ Y.j = spMap ((algebraMap T₀.V T₀.Fr).comp α) ≫ ξ → ∃ (T : CDVR) (i : T₀.V →+* T.V) (iF : T₀.Fr →+* T.Fr), (∀ a, algebraMap T.V T.Fr (i a) = iF (algebraMap T₀.V T₀.Fr a)) ∧ Function.Injective i ∧ IsLocalHom i ∧ ∃ (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), (∀ a, a ≠ 0 → vV T.V (io a) = 0) ∧ (letI := io.toAlgebra; GlobalTheory.AllWt.ptF y₀.1 = spMap iF ≫ yy₀ ≫ r) := by
   intro E _ _ _ H Dw l l' Xo Xo' c c' W Y r ν hle hr A _ _ ξ β hξ hβ T₀ α _hα yy₀ hyy
   obtain ⟨io', hio'⟩ : ∃ io' : c'.F →+* T₀.Fr, spMap io' = yy₀ ≫ pullback.snd _ _ :=

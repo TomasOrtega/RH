@@ -30,6 +30,15 @@ namespace GlobalTheory.CongEx
 
 open UpperTheory.V.Af
 
+/- English proof (translation)
+Establish `hp : (Ideal.span {(l : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Int.prime_iff_natAbs_prime.2 (by simpa using (Fact.out : l.Prime))).irreducible`. Establish `hker : RingHom.ker (algebraMap ℤ (𝓞 E)) ≤ Ideal.span {(l : ℤ)}`. Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Establish `: x = 0` using `by exact_mod_cast (algebraMap ℤ (𝓞 E)).injective_int (hx.trans (map_zero _).symm)`.
+
+Rewrite using `[this]`. Conclude with `zero_mem _`. Take `⟨Q, hQ, hQc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 E) _ hker`. Establish `hl : ((l : ℕ) : 𝓞 E) ∈ Q`. Establish `: (l : ℤ) ∈ Q.comap (algebraMap ℤ (𝓞 E))` using `by rw [hQc]; exact Ideal.mem_span_singleton_self _`.
+
+Simplify using `using this`. Use `⟨⟨Q, hQ.isPrime, fun h => ?_⟩, hl⟩` and prove the remaining obligations. Rewrite `hQc` using `[h]`. Establish `h0 : (l : ℤ) ∈ Ideal.span {(l : ℤ)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h0` using `[← hQc, Ideal.comap_bot_of_injective _ (algebraMap ℤ (𝓞 E)).injective_int]`.
+
+Use `(Fact.out : l.Prime).ne_zero` as an intermediate fact. Simplify the hypotheses and the goal together.
+-/
 theorem exists_place_over (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
     ∃ w : HeightOneSpectrum (𝓞 E), ((l : ℕ) : 𝓞 E) ∈ w.asIdeal := by
   have hp : (Ideal.span {(l : ℤ)}).IsMaximal :=
@@ -50,6 +59,9 @@ theorem exists_place_over (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l
   have := (Fact.out : l.Prime).ne_zero
   simp_all
 
+/- English proof (translation)
+Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`.
+-/
 theorem eventually_not_mem_l (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal := by
   have h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0 := by

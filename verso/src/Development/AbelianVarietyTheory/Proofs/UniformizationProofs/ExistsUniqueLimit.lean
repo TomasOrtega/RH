@@ -30,19 +30,33 @@ def comb (c : R →+* W) (b : Fin m → W) (z : Fin m → R) : W := ∑ i, c (z 
 def IsBas (c : R →+* W) (S : Set W) (b : Fin m → W) : Prop :=
   (∀ i, b i ∈ S) ∧ ∀ s ∈ S, ∃! z : Fin m → R, s = comb c b z
 
+/- English proof (translation)
+Simplify using `only [comb, map_sum, map_mul, h]`.
+-/
 theorem map_comb {c : R →+* W} {c' : R' →+* W'} {ρ : W →+* W'} {g : R →+* R'} (h : ∀ a, ρ (c a) = c' (g a))
     (b : Fin m → W) (z : Fin m → R) : ρ (comb c b z) = comb c' (fun i => ρ (b i)) (fun i => g (z i)) := by
   simp only [comb, map_sum, map_mul, h]
 
+/- English proof (translation)
+Simplify using `only [comb, h, Matrix.vecMul, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem comb_vecMul {c : R →+* W} {b v : Fin m → W} {a : Matrix (Fin m) (Fin m) R} (h : ∀ i, v i = comb c b (a i))
     (z : Fin m → R) : comb c v z = comb c b (Matrix.vecMul z a) := by
   simp only [comb, h, Matrix.vecMul, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul, _root_.mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[comb, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_mul]) (fun h => (h (Finset.mem_univ _)).elim), Pi.single_eq_same, map_one, _root_.one_mul]`.
+-/
 theorem comb_single (c : R →+* W) (b : Fin m → W) (i : Fin m) : b i = comb c b (Pi.single i 1) := by
   rw [comb, Finset.sum_eq_single i (fun j _ hj => by rw [Pi.single_eq_of_ne hj, map_zero, zero_mul])
     (fun h => (h (Finset.mem_univ _)).elim), Pi.single_eq_same, map_one, _root_.one_mul]
 
+/- English proof (translation)
+Use `⟨fun i => (hS _).2 ⟨_, hb.1 i, rfl⟩, fun s' hs' => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, rfl⟩` from `(hS _).1 hs'`. Use `(existsUnique_congr fun z => ?_).1 (hb.2 s hs)` and prove the remaining obligations. Establish `e : comb c' (fun i => ρ (b i) * U) z = ρ (comb c b z) * U`. Simplify using `only [comb, map_sum, map_mul, h, Finset.sum_mul, _root_.mul_assoc]`.
+
+Rewrite using `[e, Units.mul_left_inj, hρ.eq_iff]`.
+-/
 theorem IsBas.transfer {c : R →+* W} {c' : R →+* W'} {ρ : W →+* W'} (h : ∀ a, ρ (c a) = c' a)
     (hρ : Function.Injective ρ) (U : W'ˣ) {S : Set W} {S' : Set W'}
     (hS : ∀ s', s' ∈ S' ↔ ∃ s ∈ S, s' = ρ s * U) {b : Fin m → W} (hb : IsBas c S b) :
@@ -54,6 +68,21 @@ theorem IsBas.transfer {c : R →+* W} {c' : R →+* W'} {ρ : W →+* W'} (h : 
     simp only [comb, map_sum, map_mul, h, Finset.sum_mul, _root_.mul_assoc]
   rw [e, Units.mul_left_inj, hρ.eq_iff]
 
+/- English proof (translation)
+Use `choose a ha _ using fun i => hb'.2 _ (hS _ (hb.1 i))`. Use `choose e he _ using fun i => hb''.2 _ (hS' _ (hb'.1 i))`. Use `choose t ht ht' using fun i => hl _ (hb''.1 i)`. Use `choose d hd _ using fun i => hb.2 _ (ht i)`. Set `A : Matrix (Fin m) (Fin m) R'` to `Matrix.of a`.
+
+Set `E : Matrix (Fin m) (Fin m) R''` to `Matrix.of e`. Set `D : Matrix (Fin m) (Fin m) R''` to `Matrix.of fun l i => g' (g (d l i))`. Establish `h₁ : D * (A.map g' * E) = 1`. Use extensionality with `l j`. Establish `e₁ : b'' l = comb c'' b'' (Matrix.vecMul (D l) (A.map g' * E))`.
+
+Rewrite using `[← Matrix.vecMul_vecMul, ← comb_vecMul (a := E) he, ← comb_vecMul (v := fun i => ρ' (ρ (b i))) (a := A.map g') fun i => by rw [ha i, map_comb h']; rfl]`. Rewrite using `[ht' l, hd l, map_comb h, map_comb h']`. Both sides reduce to the same expression. Use `congrFun ((hb''.2 _ (hb''.1 l)).unique e₁ (comb_single c'' b'' l)) j` as an intermediate fact. Rewrite `*` using `[Matrix.one_apply, ← Matrix.mul_apply_eq_vecMul]`.
+
+Rewrite using `[this, Pi.single_apply]`. Simplify using `only [eq_comm]`. Establish `hA : IsUnit A.det`. Use `congrArg Matrix.det h₁` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_one, mul_left_comm]`.
+
+Establish `h₂ : IsUnit (A.map g').det` using `IsUnit.of_mul_eq_one _ this`. Rewrite `h₂` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `IsUnit.of_map g' _ h₂`. Use `⟨fun i => hS _ (hb.1 i), fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `hb'.2 s hs`.
+
+Use `⟨Matrix.vecMul y A⁻¹, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[comb_vecMul (a := A) ha, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]`. Conclude with `hy`. Use `beta_reduce at hz`.
+
+Rewrite `hz` using `[comb_vecMul (a := A) ha]`. Rewrite using `[← hy' _ hz, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hA, Matrix.vecMul_one]`.
+-/
 theorem IsBas.reduce {c : R →+* W} {c' : R' →+* W'} {c'' : R'' →+* W''} {ρ : W →+* W'} {ρ' : W' →+* W''}
     {g : R →+* R'} {g' : R' →+* R''} [IsLocalHom g'] (h : ∀ a, ρ (c a) = c' (g a)) (h' : ∀ a, ρ' (c' a) = c'' (g' a))
     {S : Set W} {S' : Set W'} {S'' : Set W''} (hS : ∀ s ∈ S, ρ s ∈ S') (hS' : ∀ s ∈ S', ρ' s ∈ S'')
@@ -92,6 +121,19 @@ theorem IsBas.reduce {c : R →+* W} {c' : R' →+* W'} {c'' : R'' →+* W''} {�
     rw [comb_vecMul (a := A) ha] at hz
     rw [← hy' _ hz, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hA, Matrix.vecMul_one]
 
+/- English proof (translation)
+Use `choose z hz hz' using fun e => (hb' e).2 _ (hf e)`. Use `choose y hy using fun e i => Ideal.Quotient.mk_surjective (z e i)`. Establish `key : ∀ e (x : Fin m → R), ρ e (comb c b x) = f e ↔ ∀ i, x i - y e i ∈ I ^ (e + 1)` using `fun e x => by`. Rewrite using `[map_comb (h e)]`. Simplify using `only [← Ideal.Quotient.eq, hy]`.
+
+Conclude with `⟨fun H => congrFun (hz' e _ H.symm), fun H => by rw [funext H]; exact (hz e).symm⟩`. Establish `step : ∀ e i, y (e + 1) i - y e i ∈ I ^ (e + 1)` using `fun e => (key e _).1 (by`. Rewrite using `[← hτ, (key (e + 1) _).2 fun i => by rw [sub_self]; exact zero_mem _, hc])`. Establish `hL : ∀ i, ∃ L : R, ∀ e, L - y e i ∈ I ^ (e + 1)` using `fun i => by`. Take `⟨L, hL⟩` from `IsPrecomplete.prec (I := I) (M := R) inferInstance (f := fun e => y e i) ((AdicCompletion.isAdicCauchy_iff I R _).2 fun n => by`.
+
+Rewrite using `[smul_eq_mul, Ideal.mul_top]`. Conclude with `(SModEq.sub_mem.2 (Ideal.pow_le_pow_right n.le_succ (step n i))).symm)`. Use `⟨L, fun e => ?_⟩` and prove the remaining obligations. Use `hL (e + 1)` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, Ideal.mul_top]`.
+
+Use `add_mem (SModEq.sub_mem.1 this.symm) (step e i)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Use `choose L hL using hL`. Use `⟨comb c b L, ⟨hS L, fun e => (key e L).2 fun i => hL i e⟩, fun s ⟨hs, hs'⟩ => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl, -⟩` from `hb.2 s hs`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `sub_eq_zero.1 (IsHausdorff.haus (I := I) (M := R) inferInstance _ fun n => ?_)` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Ideal.mul_top, SModEq.zero]`. Use `sub_mem ((key n x).1 (hs' n) i) (hL i n)` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_sub_cancel_right]`. Conclude with `Ideal.pow_le_pow_right n.le_succ this`.
+-/
 theorem existsUnique_limit (I : Ideal R) [IsAdicComplete I R] {T : ℕ → Type u} [∀ e, CommRing (T e)]
     {c : R →+* W} {c' : ∀ e, R ⧸ I ^ (e + 1) →+* T e} {ρ : ∀ e, W →+* T e} {τ : ∀ e, T (e + 1) →+* T e}
     (h : ∀ e a, ρ e (c a) = c' e (Ideal.Quotient.mk _ a)) (hτ : ∀ e s, τ e (ρ (e + 1) s) = ρ e s)
@@ -155,14 +197,23 @@ def cst {R : Type} [CommRing R] (f : Y ⟶ Spec (CommRingCat.of R)) : R →+* Va
 
 variable {L}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Conclude with `congrArg (fun q => w Z q z J) (Category.assoc _ _ _)`.
+-/
 theorem pull_pull (h : Y' ⟶ Y) (h' : Y'' ⟶ Y') (w : Vals L Y) : pull L h' (pull L h w) = pull L (h' ≫ h) w := by
   funext Z r z J
   exact congrArg (fun q => w Z q z J) (Category.assoc _ _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Conclude with `congrArg (fun q => w Z q z J) (Category.comp_id _)`.
+-/
 theorem pull_id (w : Vals L Y) : pull L (𝟙 Y) w = w := by
   funext Z r z J
   exact congrArg (fun q => w Z q z J) (Category.comp_id _)
 
+/- English proof (translation)
+Establish `e₁` using `congrArg (fun Q => Q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom g))`. Establish `e₂` using `congrArg (fun q => q.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a)) w`. Use function extensionality and compare the values at `Z r z J`. Conclude with `(gs_pull r π z ⊤ trivial _).symm.trans (congrArg (gs r z ⊤) ((congrArg f'.appTop.hom e₁).trans e₂.symm).symm)`.
+-/
 theorem pull_cst {R R' : Type} [CommRing R] [CommRing R'] (g : R →+* R') {π : Y' ⟶ Y}
     {f : Y ⟶ Spec (CommRingCat.of R)} {f' : Y' ⟶ Spec (CommRingCat.of R')}
     (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom g)) (a : R) : pull L π (cst L f a) = cst L f' (g a) := by
@@ -185,26 +236,41 @@ def secVals (φ : K → (Y ⟶ X)) (ε : K → ℤ) : Set (Vals L Y) := Set.rang
 
 variable {φ : K → (Y ⟶ X)} {ε : K → ℤ}
 
+/- English proof (translation)
+The claim follows from `DVR.SecOps.sec_ext (sec_ext_val hL fun y J hJ => h y ⟨J, hJ⟩)`.
+-/
 theorem eq_of_val (hL : L.IsLB) {s s' : LB.Sec (LB.LinComb L φ ε)}
     (h : ∀ y J, ev s Y (𝟙 Y) y J = ev s' Y (𝟙 Y) y J) : s = s' :=
   DVR.SecOps.sec_ext (sec_ext_val hL fun y J hJ => h y ⟨J, hJ⟩)
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hw`. Take `⟨s', rfl⟩` from `hw'`. Rewrite using `[eq_of_val hL h]`.
+-/
 theorem secVals_ext (hL : L.IsLB) {w w' : Vals L Y} (hw : w ∈ secVals L φ ε) (hw' : w' ∈ secVals L φ ε)
     (h : ∀ y J, w Y (𝟙 Y) y J = w' Y (𝟙 Y) y J) : w = w' := by
   obtain ⟨s, rfl⟩ := hw
   obtain ⟨s', rfl⟩ := hw'
   rw [eq_of_val hL h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Conclude with `DVR.SectionScalarValuation.sval_pullSec φ ε s h r z J.2`.
+-/
 theorem ev_pullSec (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) : ev (DVR.pullSec L φ ε s h) = pull L h (ev s) := by
   funext Z r z J
   exact DVR.SectionScalarValuation.sval_pullSec φ ε s h r z J.2
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hw`. Take `rfl : ψ = fun k => h ≫ φ k` from `funext e`. Conclude with `⟨_, ev_pullSec s h⟩`.
+-/
 theorem pull_mem {w : Vals L Y} (hw : w ∈ secVals L φ ε) (h : Y' ⟶ Y) {ψ : K → (Y' ⟶ X)} (e : ∀ k, ψ k = h ≫ φ k) :
     pull L h w ∈ secVals L ψ ε := by
   obtain ⟨s, rfl⟩ := hw
   obtain rfl : ψ = fun k => h ≫ φ k := funext e
   exact ⟨_, ev_pullSec s h⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Simplify using `only [comb, Finset.sum_apply]`. Conclude with `DVR.SectionScalarValuation.sval_lin (fun i => g (a i)) b hs r z J.2`.
+-/
 theorem ev_comb {R : Type} [CommRing R] {m : ℕ} (g : R →+* Γ(Y, ⊤)) (a : Fin m → R)
     (b : Fin m → LB.Sec (LB.LinComb L φ ε)) {s : LB.Sec (LB.LinComb L φ ε)}
     (hs : ∀ j, s.f j = ∑ i, resTop _ (g (a i)) * (b i).f j) : ev s = comb ((fn L Y).comp g) (fun i => ev (b i)) a := by
@@ -212,12 +278,18 @@ theorem ev_comb {R : Type} [CommRing R] {m : ℕ} (g : R →+* Γ(Y, ⊤)) (a : 
   simp only [comb, Finset.sum_apply]
   exact DVR.SectionScalarValuation.sval_lin (fun i => g (a i)) b hs r z J.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨fun j => ∑ i, resTop _ (a i) * (b i).f j, fun j j' => by rw [map_sum, map_sum, Finset.mul_sum] exact Finset.sum_congr rfl fun i _ => (DVR.SecOps.secScale (a i) (b i)).compat j j'⟩, fun _ => rfl⟩`.
+-/
 theorem exists_comb {M : LB Y} {m : ℕ} (a : Fin m → Γ(Y, ⊤)) (b : Fin m → LB.Sec M) :
     ∃ s : LB.Sec M, ∀ j, s.f j = ∑ i, resTop _ (a i) * (b i).f j :=
   ⟨⟨fun j => ∑ i, resTop _ (a i) * (b i).f j, fun j j' => by
     rw [map_sum, map_sum, Finset.mul_sum]
     exact Finset.sum_congr rfl fun i _ => (DVR.SecOps.secScale (a i) (b i)).compat j j'⟩, fun _ => rfl⟩
 
+/- English proof (translation)
+Use `choose t ht using hb`. Take `rfl : (fun i => ev (t i)) = b` from `funext ht`. Take `⟨s, hs⟩` from `exists_comb (fun i => g (a i)) t`. Conclude with `⟨s, ev_comb g a t hs⟩`.
+-/
 theorem comb_mem {R : Type} [CommRing R] {m : ℕ} (g : R →+* Γ(Y, ⊤)) (a : Fin m → R) {b : Fin m → Vals L Y}
     (hb : ∀ i, b i ∈ secVals L φ ε) : comb ((fn L Y).comp g) b a ∈ secVals L φ ε := by
   choose t ht using hb
@@ -225,6 +297,11 @@ theorem comb_mem {R : Type} [CommRing R] {m : ℕ} (g : R →+* Γ(Y, ⊤)) (a :
   obtain ⟨s, hs⟩ := exists_comb (fun i => g (a i)) t
   exact ⟨s, ev_comb g a t hs⟩
 
+/- English proof (translation)
+Use `⟨fun i => ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Use `(existsUnique_congr fun a => ⟨ev_comb g a b, fun H => ?_⟩).1 (hb s)` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_comb (fun i => g (a i)) b`. Rewrite `H` using `[← ev_comb g a b ht]`.
+
+Rewrite using `[eq_of_val hL fun y J => congrFun (congrFun (congrFun (congrFun H _) _) y) J]`. Conclude with `ht`.
+-/
 theorem isBas_of_comb (hL : L.IsLB) {R : Type} [CommRing R] {m : ℕ} (g : R →+* Γ(Y, ⊤))
     (b : Fin m → LB.Sec (LB.LinComb L φ ε))
     (hb : ∀ s : LB.Sec (LB.LinComb L φ ε), ∃! a : Fin m → R, ∀ j, s.f j = ∑ i, resTop _ (g (a i)) * (b i).f j) :
@@ -237,6 +314,17 @@ theorem isBas_of_comb (hL : L.IsLB) {R : Type} [CommRing R] {m : ℕ} (g : R →
   rw [eq_of_val hL fun y J => congrFun (congrFun (congrFun (congrFun H _) _) y) J]
   exact ht
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs⟩`. Establish `hu'` using `DVR.invGen_isGen L _ _ u hu`. Take `⟨t, ht⟩` from `exists_sec (φ' := φ) (ε' := ε) hL (fun U _ q => by`. Use `h U q` as an intermediate fact.
+
+Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.id_comp] at this ⊢`. Rewrite using `[← this]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, mul_inv_cancel_right]) (pullMulSec s (𝟙 Y) (LB.invGen L _ _ u) hu')`. Use `⟨t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`.
+
+Use `(ht Z r z J.1 J.2).trans ?_` and prove the remaining obligations. Rewrite using `[sval_pullMulSec _ _ _ hu' _ z J.2, val_inv, Category.comp_id, Units.mul_inv_eq_iff_eq_mul]`. Conclude with `congrFun (congrFun (congrFun (congrFun hs Z) r) z) J`. Introduce and unpack `⟨s, rfl⟩`. Take `⟨t, ht⟩` from `exists_sec (φ' := φ') (ε' := ε') hL (fun U _ q => by`.
+
+Simplify `h U q) (pullMulSec s (𝟙 Y) u hu)` using `only [Category.id_comp]`. Use `⟨t, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Z r z J`. Use `(ht Z r z J.1 J.2).trans ?_` and prove the remaining obligations. Rewrite using `[sval_pullMulSec _ _ _ hu _ z J.2, Category.comp_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mul_mem_iff (hL : L.IsLB) {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {φ₃ : K₃ → (Y ⟶ X)} {ε₃ : K₃ → ℤ}
     (u : LB.Gen (LB.LinComb L φ₃ ε₃)) (hu : u.IsGen) (h : FormEq (Sum.elim φ φ₃) (Sum.elim ε ε₃) φ' ε')
     (w : Vals L Y) : w * evU u ∈ secVals L φ' ε' ↔ w ∈ secVals L φ ε := by
@@ -262,6 +350,9 @@ theorem mul_mem_iff (hL : L.IsLB) {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} {�
     rw [sval_pullMulSec _ _ _ hu _ z J.2, Category.comp_id]
     rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `Z r z J`. Conclude with `congrArg Units.val (val_pull J.2 u h r)`.
+-/
 theorem pull_evU (u : LB.Gen (LB.LinComb L φ ε)) (h : Y' ⟶ Y) :
     (evU (LB.pullGen L φ ε u h)).val = pull L h (evU u).val := by
   funext Z r z J

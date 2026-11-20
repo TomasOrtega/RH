@@ -11,6 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ M _ _ _ N _ _ f hf`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `m hm`. Rewrite `hm` using `[LinearMap.mem_ker]`. Use `(Module.forall_dual_apply_eq_zero_iff R m).mp fun φ => ?_` and prove the remaining obligations.
+
+Take `⟨ψ, rfl⟩` from `hf φ`. Simplify using `[LinearMap.dualMap_apply, hm]`.
+-/
 theorem injective_of_dualMap_surjective_of_projective :
     ∀ (R : Type) [CommRing R] (M : Type 1) [AddCommGroup M] [Module R M] [Module.Projective R M]
       (N : Type) [AddCommGroup N] [Module R N] (f : M →ₗ[R] N),

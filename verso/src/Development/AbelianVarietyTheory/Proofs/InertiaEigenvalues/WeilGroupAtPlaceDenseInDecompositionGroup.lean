@@ -7,6 +7,9 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 
 namespace GlobalTheory.WeilDeligne
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h d hd y`. Take `⟨K, hK, hy, j, hj⟩` from `GlobalTheory.T.decompositionGroup_acts_residues_frobeniusPower E Ω A w h d hd y`. Take `⟨ρ, hρK, hρ⟩` from `GlobalTheory.T.exists_fixing_actsAsFrobeniusPowerResidue E Ω A w h K d hd j hj`. Use `⟨d * ρ, (mem_Weil h).2 ⟨j, 0, hρ⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hρK y hy]`.
+-/
 theorem exists_weil_apply_eq : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w),
     ∀ d ∈ Dec (F := E) A, ∀ y : Ω, ∃ τ ∈ Weil h, τ y = d y := by

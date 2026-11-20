@@ -66,6 +66,11 @@ def TransferAt : Prop :=
 
 variable {Xo c U}
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩, rfl⟩`. Use `letI := ι.toAlgebra`. Take `⟨k, hk⟩` from `h T.Fr y.1 y.2.1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `show nval T.V e (evI y (w k)) ≠ ⊤`.
+
+Establish `hk' : evI y (w k) ≠ 0` using `hk`. Rewrite using `[nval_of_ne hk']`. Conclude with `EReal.coe_ne_top _`.
+-/
 theorem NoCommonZero.at {κ : Type} {w : κ → Rul Xo c} (h : NoCommonZero w) (la : HeightOneSpectrum (𝓞 c.F)) :
     NoCommonZeroAt la w := by
   rintro _ ⟨⟨q, T, ι, e, ho, y, hy, η, hη, rfl⟩, rfl⟩
@@ -77,10 +82,16 @@ theorem NoCommonZero.at {κ : Type} {w : κ → Rul Xo c} (h : NoCommonZero w) (
   rw [nval_of_ne hk']
   exact EReal.coe_ne_top _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun la aL nL aE nE hL hE m w hw hz => h.2.1 la aL nL aE nE hL hE m w hw (hz.at la), fun la aL nL hL m w hw hz => h.2.2 la aL nL hL m w hw (hz.at la)⟩`.
+-/
 theorem TransferAt.transfer (h : TransferAt Xo c U) : Transfer Xo c U :=
   ⟨h.1, fun la aL nL aE nE hL hE m w hw hz => h.2.1 la aL nL aE nE hL hE m w hw (hz.at la),
     fun la aL nL hL m w hw hz => h.2.2 la aL nL hL m w hw (hz.at la)⟩
 
+/- English proof (translation)
+Take `⟨T, ι, ht, y, rfl⟩` from `ho`. Use `show nval T.V 1 (evI y (a • f)) = nval T.V 1 (evI y f)`. Rewrite using `[evI_smul]`. Conclude with `nval_mul_unit 1 ((map_ne_zero ι).2 ha) (ht a ha) _`.
+-/
 theorem ordVal_smul {o : Rul Xo c → EReal} (ho : o ∈ ordVal Xo c) {a : c.F} (ha : a ≠ 0) (f : Rul Xo c) :
     o (a • f) = o f := by
   obtain ⟨T, ι, ht, y, rfl⟩ := ho

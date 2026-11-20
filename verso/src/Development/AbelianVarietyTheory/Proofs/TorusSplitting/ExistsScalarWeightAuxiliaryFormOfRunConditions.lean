@@ -28,6 +28,19 @@ namespace GlobalTheory.EtaBoundForm
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hP hjm`. Take `⟨Q, PT, hS, -, -⟩` from `id hP.page`. Establish `what₂` using `GlobalTheory.EtaAn.page_rows D large₂ H.CA hP.hyp.1 hS`. Take `⟨t1, t2, t3, t4, t5, t6⟩` from `hP.tie`. Establish `htie : TieC ⟨1, 2, 1, 2, 1, 2, 1, 4, 7⟩ H 1 4 0 11 C2 A2 7` using `⟨t1, t2, t3, t4, t5, rfl, rfl, t6, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl, le_rfl⟩`.
+
+Establish `hsupp : EtaleWeightGaps.PageSupp D large₂ (recB h.toLawsCore) C2 A2 nW ⟨(((D.host.g 0 * D.host.g 1) ^ DF wL : ℕ) : 𝓞 (recB h.toLawsCore).KO), 1, 1, 1⟩ wL`. Use `⟨hP.p13, fun σ => ?_, hP.frd, hP.r8, hP.df⟩` and prove the remaining obligations. Establish `e : σ (((((D.host.g 0 * D.host.g 1) ^ DF wL : ℕ) : 𝓞 (recB h.toLawsCore).KO)) : (recB h.toLawsCore).KO) = (((D.host.g 0 * D.host.g 1) ^ DF wL : ℕ) : ℂ)`. Rewrite using `[← map_natCast σ]`. Conclude with `congrArg σ (map_natCast (algebraMap (𝓞 (recB h.toLawsCore).KO) (recB h.toLawsCore).KO) _)`.
+
+Express the relevant statement in the definitionally equal form `_ ≤ Real.log ‖σ (((((D.host.g 0 * D.host.g 1) ^ DF wL : ℕ) : 𝓞 (recB h.toLawsCore).KO)) : (recB h.toLawsCore).KO)‖`. Rewrite using `[e, Complex.norm_natCast, Nat.cast_pow, Real.log_pow, ← Nat.cast_mul]`. Establish `h1 : 0 ≤ Real.log ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)` using `Real.log_natCast_nonneg _`. Establish `h2 : (0 : ℝ) ≤ (DF wL : ℝ)` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg h2 h1]`.
+
+Establish `hrun` using `(GlobalTheory.RunParametersAtRecord.run_at_record D _ _ j (recPJ h j hj) _ _ _ _ _ _ large₂ H C2 A2 7 CT ka wL wF Tn nP nW h0 hP.hyp htie hP.page hsupp).1`. Establish `hq1 : 1 ≤ D.host.g 0 * D.host.g 1` using `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos`. Establish `hlog : Real.log ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ) ≤ 70 * large₂.sc.L`. Establish `a0 : D.host.g 0 ≠ 0` using `fun e => by simp [e] at hq1`. Establish `a1 : D.host.g 1 ≠ 0` using `fun e => by simp [e] at hq1`.
+
+Rewrite using `[Nat.cast_mul, Real.log_mul (by exact_mod_cast a0) (by exact_mod_cast a1)]`. Establish `b0` using `what₂.2.2.2.2.1 0`. Establish `b1` using `what₂.2.2.2.2.1 1`. Combine the linear relations using `[what₂.1]`. Take `⟨i, hi, η, ha, hb, hc, hd⟩` from `GlobalTheory.T.etaleExtension_degreeTwo_constants D T h large₂ what₂ _ _ _ hrun hq1 hlog j hj.1 hjm`.
+
+Conclude with `⟨i, η, hi, ha, hb, hc, hd, ((GlobalTheory.EtaInt.etVal_integral D T h j hj i η).2.2 hb).2⟩`.
+-/
 theorem exists_etaOK : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → j < D.R.m → ∃ (i : ℕ) (et : (recB h.toLawsCore).Cusp j (etWt D j i)), EtaOK h j hj large₂ wL i et := by
   intro D T h j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hP hjm
   obtain ⟨Q, PT, hS, -, -⟩ := id hP.page

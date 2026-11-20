@@ -33,6 +33,11 @@ def IsComb (M : Adl C Y) {ι : Type} [Fintype ι] (ρ : ι → Adl C Y) (t : ι 
       Real.log (e.w (valAt y.1 (genAt M.D (below y.1) ^ q / ∏ i, genAt (ρ i).D (below y.1) ^ b i))) +
         ∑ i, b i * (ρ i).lg v e y
 
+/- English proof (translation)
+Establish `e (x : Y.X) : genAt M.D x ^ 1 / ∏ _i : Unit, genAt M.D x ^ (1 : ℤ) = 1`. Simplify using `[genAt]`. Use `⟨1, fun _ => 1, one_pos, fun _ => by simp [Adl.twist], by simp [Adl.twist], fun σ z => ⟨h σ z, ?_⟩, fun v w y => ?_⟩` and prove the remaining obligations. Rewrite using `[show (M.twist c 0).D = M.D from rfl, e, Base.ratVal_one]`. Simplify using `[lnAdl, Adl.twist]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h₁ : valAt y.1 (1 : Y.Fn) = 1` using `by simpa using Base.valAt_stalk y.1 1`. Rewrite using `[show (M.twist c 0).D = M.D from rfl, e, h₁]`. Simplify using `[Adl.twist]`.
+-/
 theorem isComb_twist (M : Adl C Y) (h : ∀ σ z, PosAt (M.m σ) z) (c : InfinitePlace F → ℝ) :
     IsComb (M.twist c 0) (fun _ : Unit => M) (fun _ => 1) fun σ _ => c (InfinitePlace.mk σ) := by
   have e (x : Y.X) : genAt M.D x ^ 1 / ∏ _i : Unit, genAt M.D x ^ (1 : ℤ) = 1 := by
@@ -61,6 +66,11 @@ abbrev basePt (y : Pt s) : (Φ.C (compPt s y)).Y.X := baseOn Φ (compPt s y) y
 
 variable {Φ}
 
+/- English proof (translation)
+Take `⟨p, hp, -, -⟩` from `h`. Set `o : Sp Qb` to `IsLocalRing.closedPoint Qb`. Use `(PtComp.existsUnique_onComp s (y.y o)).unique (PtComp.onComp_compPt s y o) ?_` and prove the remaining obligations. Take `⟨z, hz⟩ : ((s.U κ.σ₀).X k).dom.Nonempty` from `GlobalTheory.OrbitScalar.exists_mem_dom _`. Use `⟨⟨z, hz⟩, fun pt => ?_⟩` and prove the remaining obligations.
+
+Conclude with `(isPreconnected_range (Φ.C k).π.continuous).subset_connectedComponent ⟨p o, by rw [← hp]; rfl⟩ (Φ.label k ⟨z, hz⟩ pt)`.
+-/
 theorem LiesUnder.compPt_eq {k : s.Comp} {y : Pt s} {x : (Φ.C k).Y.X} (h : LiesUnder Φ k y x) : compPt s y = k := by
   obtain ⟨p, hp, -, -⟩ := h
   let o : Sp Qb := IsLocalRing.closedPoint Qb
@@ -72,6 +82,11 @@ theorem LiesUnder.compPt_eq {k : s.Comp} {y : Pt s} {x : (Φ.C k).Y.X} (h : Lies
 
 variable (Φ) in
 
+/- English proof (translation)
+Establish `: IsAlgClosed Qb` using `(algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Take `⟨⟨k, p⟩, hp, hu⟩` from `Φ.lifts Qb y.fK y.y y.y_over y.frame`. Take `rfl : compPt s y = k` from `LiesUnder.compPt_eq ⟨p, hp.1, hp.2, rfl⟩`. Use `⟨below p, ⟨p, hp.1, hp.2, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, h₁, h₂, rfl⟩`.
+
+Rewrite using `[eq_of_heq (Sigma.mk.inj (hu ⟨_, q⟩ ⟨h₁, h₂⟩)).2]`.
+-/
 theorem existsUnique_liesUnder (y : Pt s) : ∃! x, LiesUnder Φ (compPt s y) y x := by
   have : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed
   obtain ⟨⟨k, p⟩, hp, hu⟩ := Φ.lifts Qb y.fK y.y y.y_over y.frame
@@ -82,9 +97,15 @@ theorem existsUnique_liesUnder (y : Pt s) : ∃! x, LiesUnder Φ (compPt s y) y 
 
 variable (Φ) in
 
+/- English proof (translation)
+The claim follows from `Classical.epsilon_spec (existsUnique_liesUnder Φ y).exists`.
+-/
 theorem liesUnder_basePt (y : Pt s) : LiesUnder Φ (compPt s y) y (basePt Φ y) :=
   Classical.epsilon_spec (existsUnique_liesUnder Φ y).exists
 
+/- English proof (translation)
+Take `⟨p, hp, -, e⟩` from `liesUnder_basePt Φ y`. Rewrite using `[← e, ← hp]`. Both sides reduce to the same expression.
+-/
 theorem π_basePt (y : Pt s) : (Φ.C _).π (basePt Φ y) = below y.y := by
   obtain ⟨p, hp, -, e⟩ := liesUnder_basePt Φ y
   rw [← e, ← hp]
@@ -100,10 +121,16 @@ def rootEx (τ : E →+* ℂ) (i : ℕ) : Letter Dw → ℤ := expo Dw (rootSym 
 
 open Classical in
 
+/- English proof (translation)
+The claim follows from `Finsupp.sum_single_index (by simp)`.
+-/
 theorem expo_single (a : Sym E) (n : ℤ) (x : Letter Dw) :
     expo Dw (Finsupp.single a n) x = if letterOf Dw a.2.2 = some x then n else 0 :=
   Finsupp.sum_single_index (by simp)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [rootEx, rootSym]`. Apply the tactic sequence `split_ifs <;> simp only [expo_single]`.
+-/
 theorem expo_rootSym (a : ℕ → Bool) (R : Option ℝ) (τ : E →+* ℂ) (i : ℕ) :
     expo Dw (rootSym Dw a R τ i) = rootEx Dw τ i := by
   funext x
@@ -189,6 +216,11 @@ def ofKit {A : Amb D} {N j : ℕ} (h : 1 ≤ j ∧ j < N) {S : Sig A N j} {κ : 
     (adm : AdmSt D N j jC) (met : MetIn k.Φ) : Setup D :=
   ⟨A, N, j, h, S, κ, s, L, k.Φ, k.dim_eq, k.B, k.fl, k.Mb, jC, ng, .ofPkg k.pad, .ofPkg k.pad, adm, met⟩
 
+/- English proof (translation)
+Unfold `shimXAt Y`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = padAt _ (.ofPkg (k N j hN hj κ).pad) (.ofPkg (k N j hN hj κ).pad) adm _ _`. Generalize the expression as in `(k N j hN hj κ).pad = P at e ⊢`. Substitute `e` using the available equality.
+
+Both sides reduce to the same expression.
+-/
 theorem shimXAt_eq {A : Amb D} {F : SrcFam A} {L : CmList A}
     {jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)} {ng : NgPkg} (k : Kits F L (cxSt D.what₂.LL) jC ng)
     {N j : ℕ} (hN : 2 ≤ N) (hj : j ≤ N) (κ : Lv A) (h : 1 ≤ j ∧ j < N) (loc : LocSt D N j ng)
@@ -204,6 +236,9 @@ theorem shimXAt_eq {A : Amb D} {F : SrcFam A} {L : CmList A}
 
 abbrev var (c : O.s.Comp) : Var D.what₂.LL := (O.Φ.C c).Y
 
+/- English proof (translation)
+Establish `hM : O.κ.l.M' ≠ 0` using `(Nat.lcm_pos (lt_of_lt_of_le (by norm_num) O.κ.l.three_le) O.κ.l.A_pos).ne'`. Establish `hd : 2 * (NumberField.discr D.host.E).natAbs ≠ 0` using `mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero _))`. Rewrite using `[FlagAr.setB, Pad.setB, Nat.primeFactors_mul hd hM]`. Both sides reduce to the same expression.
+-/
 theorem setB_eq (B : ℝ) : FlagAr.setB O.Y B = Pad.setB O.κ B := by
   have hM : O.κ.l.M' ≠ 0 := (Nat.lcm_pos (lt_of_lt_of_le (by norm_num) O.κ.l.three_le) O.κ.l.A_pos).ne'
   have hd : 2 * (NumberField.discr D.host.E).natAbs ≠ 0 :=
@@ -255,6 +290,9 @@ def root (Q : Finset ℕ) (x : DV.Rt D.what₂.Tau O.N) : HermLB W.V.p :=
 
 def mult : ℕ := W.k * (O.met.ab c).n
 
+/- English proof (translation)
+The claim follows from `Nat.mul_pos W.k_pos (O.met.ab c).n.2`.
+-/
 theorem mult_pos : 0 < W.mult := Nat.mul_pos W.k_pos (O.met.ab c).n.2
 
 def gens (Q : Finset ℕ) : Option (DV.Rt D.what₂.Tau O.N) → HermLB W.V.p := fun o => o.elim W.amp fun x => (W.root Q x).dual
@@ -319,9 +357,15 @@ def aux (Ps : ℝ → O.s.Comp → MvPolynomial (Option (D.what₂.Tau × Fin O.
   ht (L : ∀ c, Adl (cxSt D.what₂.LL) (O.var c)) (y : Pt O.s) := (L _).ht (basePt O.Φ y)
   dense (c : O.s.Comp) (Z : Set (Pt O.s)) := Z ⊆ compPt O.s ⁻¹' {c} ∧ Dense (baseOn O.Φ c '' Z)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, rfl, fun _ _ => rfl, fun _ _ => Iff.rfl⟩`.
+-/
 theorem heightData_satisfies (Ps : ℝ → O.s.Comp → MvPolynomial (Option (D.what₂.Tau × Fin O.N)) ℝ) : O.IsFlagHeightData (O.aux Ps) :=
   ⟨rfl, rfl, fun _ _ => rfl, fun _ _ => Iff.rfl⟩
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _⟩` from `A`. Take `⟨rfl, rfl, h₁, h₂⟩` from `h`. Reduce the equality to equality of the corresponding arguments. Conclude with `funext₂ h₁`. Conclude with `funext₂ fun c Z => propext (h₂ c Z)`.
+-/
 theorem IsFlagHeightData.eq_aux {O : Setup D} {A : SlopeTestRemainingChoices O.Y} (h : O.IsFlagHeightData A) : A = O.aux A.Ps := by
   obtain ⟨_, _, _, _, _⟩ := A
   obtain ⟨rfl, rfl, h₁, h₂⟩ := h
@@ -336,12 +380,18 @@ def hts : Ht O.Y where
   int := {y : Pt O.s | below y.y ∉ genBd O.s.T.Z}
   falt (y : Pt O.s) := O.faltAt _ (basePt O.Φ y)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => Iff.rfl, fun _ _ _ => rfl, fun _ => rfl, fun _ _ => rfl⟩`.
+-/
 theorem htIs_hts : O.HtIs O.hts := ⟨fun _ _ => rfl, fun _ => Iff.rfl, fun _ _ _ => rfl, fun _ => rfl, fun _ _ => rfl⟩
 
 def Reads.withPs {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H)
     (Ps : ℝ → O.Y.Comp → MvPolynomial (Option (D.what₂.Tau × Fin O.Y.N)) ℝ) : O.Reads { A with Ps := Ps } T H :=
   { h with aux := ⟨h.aux.dir, h.aux.w, h.aux.ht, h.aux.dense⟩ }
 
+/- English proof (translation)
+Establish `e (a i) : h.pts.conj (compPt O.s y) y a i ∈ (T.M _).Z a ↔ below y.y ∈ genBd O.s.T.Z`. Rewrite using `[(h.an _).Z, ← π_basePt (Φ := O.Φ) y, ← ((h.pts_is.conj y a).2.le ⟨i, rfl⟩ :)]`. Rewrite using `[h.ht.int]`. Conclude with `⟨fun hy a i => (e a i).not.2 hy, fun hy => (e 0 0).not.1 (hy 0 0)⟩`.
+-/
 theorem Reads.mem_int_iff {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (h : O.Reads A T H) (y : Pt O.s) :
     y ∈ H.int ↔ ∀ a i, h.pts.conj (compPt O.s y) y a i ∉ (T.M _).Z a := by
   have e (a i) : h.pts.conj (compPt O.s y) y a i ∈ (T.M _).Z a ↔ below y.y ∈ genBd O.s.T.Z := by
@@ -349,10 +399,16 @@ theorem Reads.mem_int_iff {O : Setup D} {A : SlopeTestRemainingChoices O.Y} {T :
   rw [h.ht.int]
   exact ⟨fun hy a i => (e a i).not.2 hy, fun hy => (e 0 0).not.1 (hy 0 0)⟩
 
+/- English proof (translation)
+Simplify using `[htWt]`.
+-/
 example {c : O.s.Comp} (ρ : DV.Rt D.what₂.Tau O.N → Adl (cxSt D.what₂.LL) (O.var c)) (x : DV.Rt D.what₂.Tau O.N)
     (z : (O.var c).X) : O.htWt ρ (fun τ i => open Classical in if (τ, i) = x then 1 else 0) z = -(ρ x).ht z := by
   simp [htWt]
 
+/- English proof (translation)
+Simplify using `[chg, lnRatio, h]`.
+-/
 example (c : O.s.Comp) (R : ℝ) (h : O.met.hm c (some R) = O.met.h0 c) (u : D.what₂.Tau → Fin O.N → ℝ)
     (σ : D.what₂.LL →+* ℂ) (z : Pts (O.var c) σ) : O.chg c (some R) u σ z = 0 := by
   simp [chg, lnRatio, h]
@@ -362,11 +418,17 @@ end Setup
 inductive ObjOf {D : D7} (Tr : Setup D → Prop) : ∀ Y : DV.ShimX D.what₂.Tau, SlopeTestRemainingChoices Y → Real0 Y → Ht Y → Prop
   | mk (O : Setup D) (tr : Tr O) {A : SlopeTestRemainingChoices O.Y} {T : Real0 O.Y} {H : Ht O.Y} (reads : O.Reads A T H) : ObjOf Tr O.Y A T H
 
+/- English proof (translation)
+Take `⟨O, tr, r⟩` from `o`. Conclude with `.mk O (h O tr) r`.
+-/
 theorem ObjOf.mono {D : D7} {Tr Tr' : Setup D → Prop} (h : ∀ O, Tr O → Tr' O) {Y : DV.ShimX D.what₂.Tau} {A : SlopeTestRemainingChoices Y}
     {T : Real0 Y} {H : Ht Y} (o : ObjOf Tr Y A T H) : ObjOf Tr' Y A T H := by
   obtain ⟨O, tr, r⟩ := o
   exact .mk O (h O tr) r
 
+/- English proof (translation)
+Take `⟨O, tr, r⟩` from `o`. Conclude with `.mk O tr (r.withPs Ps)`.
+-/
 theorem ObjOf.withPs {D : D7} {Tr : Setup D → Prop} {Y : DV.ShimX D.what₂.Tau} {A : SlopeTestRemainingChoices Y} {T : Real0 Y} {H : Ht Y}
     (o : ObjOf Tr Y A T H) (Ps : ℝ → Y.Comp → MvPolynomial (Option (D.what₂.Tau × Fin Y.N)) ℝ) :
     ObjOf Tr Y { A with Ps := Ps } T H := by

@@ -13,12 +13,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TwV.Xc.MuLL
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.heckeCharacter_finite_idele_eq_prod_values_zpow χ T b hb h1 hu`.
+-/
 theorem hchar_eq_prod_val {L : Type} [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L)
     (T : Finset (HeightOneSpectrum (𝓞 L))) (b : Neutral.B1.Ideles L) (hb : Formalism.L2.Host.IsFinIdele b)
     (h1 : ∀ P, P ∉ T → (b : AdeleRing (𝓞 L) L).2 P = 1) (hu : ∀ P ∈ T, χ.UnrAt P) :
     ∃ n : HeightOneSpectrum (𝓞 L) → ℤ, χ.1 b = ∏ P ∈ T, χ.val P ^ n P :=
   GlobalTheory.T.heckeCharacter_finite_idele_eq_prod_values_zpow χ T b hb h1 hu
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finiteAdele_iso_component_zero_of_infinitely_divisible iE iA hrat hint ι hι z ℓ D hℓ hD hz P hP`.
+-/
 theorem transfer_eq_zero {F E F' E' : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [Field F'] [NumberField F'] [Field E'] [NumberField E'] [Algebra F' E']
     (iE : E' ≃+* E) (iA : AfE F' E' ≃+* AfE F E) (hrat : ∀ x : E', iA (x ⊗ₜ[F'] 1) = iE x ⊗ₜ[F] 1)
@@ -30,12 +36,18 @@ theorem transfer_eq_zero {F E F' E' : Type} [Field F] [NumberField F] [Field E] 
     ι (iA.symm z) P = 0 :=
   GlobalTheory.T.finiteAdele_iso_component_zero_of_infinitely_divisible iE iA hrat hint ι hι z ℓ D hℓ hD hz P hP
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_nat_mul_div_pow_mem_integral_finiteAdele w z hz ℓ hℓ`.
+-/
 theorem exists_div_int {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (w : HeightOneSpectrum (𝓞 F)) (z : AfE F E) (hz : ∀ w', w' ≠ w → prV (E := E) w' z = 0)
     (ℓ : ℕ) (hℓ : ((ℓ : ℕ) : 𝓞 F) ∉ w.asIdeal) :
     ∃ D : ℕ, 0 < D ∧ ∀ n : ℕ, (((D : E) / (ℓ : E) ^ n) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * z ∈ RInt F E :=
   GlobalTheory.T.exists_nat_mul_div_pow_mem_integral_finiteAdele w z hz ℓ hℓ
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.hilbert90_normOne_oneOff_at_split_place_forall σ w spl hsig π hπ hoff`.
+-/
 theorem exists_h90_oneOff_preimage_at_splitPlace {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F))
     (spl : E ⊗[F] w.adicCompletion F ≃+* w.adicCompletion F × w.adicCompletion F)
@@ -44,6 +56,9 @@ theorem exists_h90_oneOff_preimage_at_splitPlace {F E : Type} [Field F] [NumberF
     ∃ x : (AfE F E)ˣ, h90 σ x = π ∧ OneOff w x :=
   GlobalTheory.T.hilbert90_normOne_oneOff_at_split_place_forall σ w spl hsig π hπ hoff
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_natCast_coprime_mem_heightOneSpectrum p hp P hP`.
+-/
 theorem exists_nat_mem_coprime {E : Type} [Field E] [NumberField E] (p : ℕ) (hp : p.Prime)
     (P : HeightOneSpectrum (𝓞 E)) (hP : ((p : ℕ) : 𝓞 E) ∉ P.asIdeal) :
     ∃ ℓ : ℕ, 0 < ℓ ∧ ((ℓ : ℕ) : 𝓞 E) ∈ P.asIdeal ∧ Nat.Coprime ℓ p :=
@@ -55,6 +70,13 @@ namespace GlobalTheory.TwV.Xc.MuLL
 
 open GlobalTheory.TwU (IsAdIso exists_isAdIso)
 
+/- English proof (translation)
+Establish `hd' : (π : AfE D.host.F D.host.E) * sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) π = 1`. Use `congrArg Units.val hπ` as an intermediate fact. Simplify `this` using `[Formalism.L2.DIV.U1, Formalism.L2.DIV.conjId]`. Use `⟨⟨Units.map (Matrix.scalar (Fin 1) : AfE D.host.F D.host.E →+* _).toMonoidHom π, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show cT _ _ * _ * _ = _`.
+
+Use extensionality with `a b`. Use `fin_cases a`. Use `fin_cases b`. Simplify using `[cT, Matrix.mul_apply, sigD]`. Rewrite using `[mul_comm]`.
+
+Conclude with `hd'`. Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem exists_unitaryOneFiniteAdelic_of_det_normOne (D : D7) (π : (AfE D.host.F D.host.E)ˣ) (hπ : π ∈ U1 (sigD D)) :
     ∃ y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm, Matrix.GeneralLinearGroup.det y.1 = π := by
   have hd' : (π : AfE D.host.F D.host.E) * sigR (sigD D) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) π = 1 := by
@@ -76,6 +98,11 @@ namespace GlobalTheory.TwV.Xc.MuLL
 
 open GlobalTheory.TwU (IsAdIso exists_isAdIso)
 
+/- English proof (translation)
+Introduce `ha`. Take `⟨c, d, h⟩` from `(Nat.isCoprime_iff_coprime.2 hab : IsCoprime (a : ℤ) (b : ℤ))`. Establish `h'` using `congrArg (Int.cast : ℤ → R) h`. Move the coercions through the operations in `at h'`. Apply `hI` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, ← h']`. Conclude with `add_mem (Ideal.mul_mem_left _ _ ha) (Ideal.mul_mem_left _ _ hb)`.
+-/
 theorem natCast_not_mem_of_coprime {R : Type} [CommRing R] (I : Ideal R) (hI : I ≠ ⊤) (a b : ℕ) (hab : Nat.Coprime a b)
     (hb : ((b : ℕ) : R) ∈ I) : ((a : ℕ) : R) ∉ I := by
   intro ha
@@ -88,6 +115,39 @@ theorem natCast_not_mem_of_coprime {R : Type} [CommRing R] (I : Ideal R) (hI : I
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hDict _hSpl hK v π hπ j hj`. Establish `hpp : (D.what₂.places.resChar w).Prime` using `Fact.out`. Establish `hpw0 : (((D.what₂.places.resChar w : ℕ)) : 𝓞 D.host.F) ∈ ((A0 J).pl v).1.asIdeal` using `((A0 J).pl v).2`. Take `⟨x', hx'h, hx'off⟩` from `exists_h90_oneOff_preimage_at_splitPlace (sigD D) ((A0 J).pl v).1 ((A0 J).spl v) (J.one.good.sig v) π hπ.1 hπ.2.1`. Take `⟨y, hy⟩` from `exists_unitaryOneFiniteAdelic_of_det_normOne D π hπ.1`.
+
+Use `set x : (AfE t.X.F t.X.E)ˣ := Units.map J.A.iA.symm.toRingHom.toMonoidHom x' with hxdef`. Establish `hxx : Units.map J.A.iA.toRingHom.toMonoidHom x = x'` using `by ext; simp [hxdef]`. Establish `hq : J.A.q x = J.dtU y` using `J.pins.q_dt x y (by rw [hy, hxx, hx'h])`. Establish `hmu : S.muT (j + 1) π = (((t.O u μ).mt (j + 1) (J.A.q x) : ℂˣ) : ℂ)`. Rewrite using `[← hy, S.law.mu_read j hj y, hq]`.
+
+Take `⟨ι, hι⟩` from `exists_isAdIso t.X.F t.X.E`. Use `set b : Neutral.B1.Ideles t.X.E := MulEquiv.prodUnits.symm (1, Units.map ι.toRingHom.toMonoidHom x) with hbdef`. Establish `hb : Formalism.L2.Host.IsFinIdele b` using `fun _ => rfl`. Establish `hmuTil` using `J.pins.muTil ι hι ⟨j, hj⟩ b x hb rfl`. Establish `hfin : {P : HeightOneSpectrum (𝓞 t.X.E) | P.asIdeal ∣ Ideal.span {((D.what₂.places.resChar w : ℕ) : 𝓞 t.X.E)}}.Finite` using `Ideal.finite_factors (by`.
+
+Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hpp.ne_zero)` after adjusting the coercions. Use `set T := hfin.toFinset with hT`. Establish `hmemT : ∀ P, P ∈ T ↔ ((D.what₂.places.resChar w : ℕ) : 𝓞 t.X.E) ∈ P.asIdeal`. Introduce `P`.
+
+Rewrite using `[hT, Set.Finite.mem_toFinset, Set.mem_setOf_eq, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Establish `h1 : ∀ P, P ∉ T → (b : AdeleRing (𝓞 t.X.E) t.X.E).2 P = 1`. Introduce `P hP`. Rewrite `hP` using `[hmemT]`. Take `⟨ℓ, hℓ0, hℓP, hcop⟩` from `exists_nat_mem_coprime _ hpp P hP`.
+
+Establish `hℓw : ((ℓ : ℕ) : 𝓞 D.host.F) ∉ ((A0 J).pl v).1.asIdeal` using `natCast_not_mem_of_coprime _ ((A0 J).pl v).1.isPrime.ne_top ℓ _ hcop hpw0`. Use `set z : AfE D.host.F D.host.E := (x' : AfE D.host.F D.host.E) - 1 with hzdef`. Establish `hz : ∀ w', w' ≠ ((A0 J).pl v).1 → prV (E` using `D.host.E) w' z = 0 := by`. Introduce `w' hw'`. Rewrite using `[hzdef, map_sub, hx'off w' hw', map_one, sub_self]`.
+
+Take `⟨Dd, hDd, hdiv⟩` from `exists_div_int _ z hz ℓ hℓw`. Establish `h0` using `transfer_eq_zero t.seam.iE J.A.iA J.pins.iA_rat J.pins.iA_int ι hι z ℓ Dd hℓ0 hDd hdiv P hℓP`. Establish `e1 : ((x : (AfE t.X.F t.X.E)ˣ) : AfE t.X.F t.X.E) = J.A.iA.symm z + 1`. Rewrite using `[hzdef, map_sub, map_one, sub_add_cancel]`. Both sides reduce to the same expression.
+
+Establish `e2 : (b : AdeleRing (𝓞 t.X.E) t.X.E).2 = ι ((x : (AfE t.X.F t.X.E)ˣ) : AfE t.X.F t.X.E)` using `rfl`. Rewrite using `[e2, e1, map_add, map_one]`. Use `show ι (J.A.iA.symm z) P + 1 = 1`. Rewrite using `[h0, zero_add]`. Establish `hu : ∀ P ∈ T, (t.glob.mu0 ⟨j, hj⟩).UnrAt P`.
+
+Introduce `P hP`. Rewrite `hP` using `[hmemT]`. Use `(J.pins.mu0 ⟨j, hj⟩).unr P fun i hgi => ?_` and prove the remaining obligations. Establish `hne : D.what₂.places.resChar w ≠ t.Pr.g i`. Rewrite using `[t.g_rec i]`.
+
+Conclude with `(GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg).2.2.2 i`. Establish `hcop : Nat.Coprime (t.Pr.g i) (D.what₂.places.resChar w)` using `(Nat.coprime_primes (t.pr_ok.g_prime i) hpp).2 hne.symm`. Conclude with `natCast_not_mem_of_coprime _ P.isPrime.ne_top _ _ hcop hP hgi`. Take `⟨n, hn⟩` from `hchar_eq_prod_val (t.glob.mu0 ⟨j, hj⟩) T b hb h1 hu`. Use `set kU : t.X.Kˣ := ∏ P ∈ T, t.Ch.muVal ⟨j, hj⟩ P ^ n P with hkU`.
+
+Establish `hk : Units.map t.seam.σ₀.toMonoidHom kU = (t.glob.mu0 ⟨j, hj⟩).1 b`. Rewrite using `[hn, hkU, map_prod]`. Use `Finset.prod_congr rfl fun P hP => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Use `congr 1`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_map, ← t.glob_σ]`. Use `J.pins.ch.muVal ⟨j, hj⟩ P fun i hgi => ?_` and prove the remaining obligations. Rewrite `hP` using `[hmemT]`. Establish `hne : D.what₂.places.resChar w ≠ t.Pr.g i`.
+
+Rewrite using `[t.g_rec i]`. Conclude with `(GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg).2.2.2 i`. Establish `hcop : Nat.Coprime (t.Pr.g i) (D.what₂.places.resChar w)` using `(Nat.coprime_primes (t.pr_ok.g_prime i) hpp).2 hne.symm`. Conclude with `natCast_not_mem_of_coprime _ P.isPrime.ne_top _ _ hcop hP hgi`. Rewrite using `[hmu]`.
+
+Distinguish the cases in `hμ : μ = D.what₂.mu0`. Take `⟨r, hr⟩` from `hK (kU : t.X.K)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, (J.pins.ref hμ).2, hmuTil, ← hk]`. Both sides reduce to the same expression.
+
+Take `⟨ξ, hξ, hmt⟩` from `J.pins.tw μ hμ rfl`. Establish `e : (t.O u μ).mt (j + 1) = D.muTil (j + 1) * ξ`. Rewrite using `[hmt u]`. Conclude with `if_pos (⟨by omega, by omega⟩ : 1 ≤ j + 1 ∧ j + 1 ≤ D.R.m)`. Take `⟨r, hr⟩` from `hK ((kU : t.X.K) * ((t.tup μ : Chr t.X.F t.X.E t.X.K) x : t.X.K))`.
+
+Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, e, MonoidHom.mul_apply, Units.val_mul, hmuTil, hξ x, ← hk, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem mu_mem_LL : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>
     KIn t → ∀ v π, IsUnifAt J v π → ∀ j < D.R.m, ∃ r : D.what₂.LL, D.what₂.embLL r = S.muT (j + 1) π) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hDict _hSpl hK v π hπ j hj

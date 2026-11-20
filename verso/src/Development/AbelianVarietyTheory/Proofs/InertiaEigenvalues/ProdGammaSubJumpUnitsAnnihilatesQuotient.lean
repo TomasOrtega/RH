@@ -12,6 +12,33 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.PowerSeriesTwi
 
 namespace GlobalTheory.NL.KillLevels
 
+/- English proof (translation)
+Establish `hins : ∀ A d x, d ∉ A → P (insert d A) x = P A (op d x)` using `fun A d x hd => by`. Rewrite using `[hP (insert d A) d x (Finset.mem_insert_self d A), Finset.erase_insert hd]`. Establish `pres : ∀ A x k, S x → (∀ j < k, E x j ∈ Sub (j - y)) → S (P A x) ∧ ∀ j < k, E (P A x) j ∈ Sub (j - y)`. Introduce `A`. Use `Finset.induction_on A ?_ ?_` and prove the remaining obligations.
+
+Introduce `x k hx hk`. Rewrite using `[hP0]`. Conclude with `⟨hx, hk⟩`. Introduce `d A hd ih x k hx hk`. Rewrite using `[hins A d x hd]`.
+
+Conclude with `ih _ k (hS d x hx) (hstep d x k hx hk).1`. Establish `nobad : ∀ A x k, S x → (∀ j < k, E x j ∈ Sub (j - y)) → (∀ k', k ≤ k' → Sub k' ≤ Sub (k' - y)) → ∀ j, E (P A x) j ∈ Sub (j - y)`. Introduce `A x k hx hk hgood j`. Take `⟨hS', hk'⟩` from `pres A x k hx hk`. Distinguish the cases in `hj : j < k`.
+
+Conclude with `hk' j hj`. Conclude with `hgood j (not_lt.1 hj) (hE _ hS' j)`. It suffices to establish `H : ∀ n : ℕ, ∀ A : Finset β, A.card ≤ n → ∀ x k, S x → (∀ j < k, E x j ∈ Sub (j - y)) → (∀ k', k ≤ k' → ¬ Sub k' ≤ Sub (k' - y) → c k' ∈ A) → ∀ j, E (P A x) j ∈ Sub (j - y) from fun A => H _ A le_rfl`. Introduce `n`. Proceed by induction on `n with`.
+
+Consider the case `zero`. Introduce `A hA x k hx hk hbad`. Distinguish the cases in `hex : ∃ k', k ≤ k' ∧ ¬ Sub k' ≤ Sub (k' - y)`. Take `⟨k', h1, h2⟩` from `hex`. Establish `h3` using `hbad k' h1 h2`.
+
+Rewrite `h3` using `[Finset.card_eq_zero.1 (Nat.le_zero.1 hA)]`. Simplify using `at h3`. Use `push Not at hex`. Conclude with `nobad A x k hx hk hex`. Consider the case `succ n ih`.
+
+Introduce `A hA x k hx hk hbad`. Distinguish the cases in `hex : ∃ m : ℕ, ¬ Sub (k + m) ≤ Sub (k + m - y)`. Establish `hm0 : ¬ Sub (k + (Nat.find hex : ℕ)) ≤ Sub (k + (Nat.find hex : ℕ) - y)` using `Nat.find_spec hex`. Establish `hmin : ∀ m < Nat.find hex, Sub (k + m) ≤ Sub (k + m - y)` using `fun m hm => not_not.1 (Nat.find_min hex hm)`. Establish `hla : ∀ j < k + (Nat.find hex : ℕ), E x j ∈ Sub (j - y)`.
+
+Introduce `j hj`. Distinguish the cases in `hjk : j < k`. Conclude with `hk j hjk`. Establish `e : j = k + ((j - k).toNat : ℕ)` using `by omega`. Establish `h1` using `hmin (j - k).toNat (by omega)`.
+
+Rewrite `h1` using `[← e]`. Conclude with `h1 (hE x hx j)`. Establish `hca : c (k + (Nat.find hex : ℕ)) ∈ A` using `hbad _ (by omega) hm0`. Establish `hla' : ∀ j < k + (Nat.find hex : ℕ) + 1, E (op (c (k + (Nat.find hex : ℕ))) x) j ∈ Sub (j - y)`. Introduce `j hj`.
+
+Break down `lt_or_eq_of_le (Int.lt_add_one_iff.1 hj) with h | h` into its components or cases. Conclude with `(hstep _ x _ hx hla).1 j h`. Rewrite using `[h]`. Conclude with `(hstep _ x _ hx hla).2 rfl`. Rewrite using `[hP A _ x hca]`.
+
+Use `ih (A.erase _) ?_ _ _ (hS _ x hx) hla' ?_` and prove the remaining obligations. Use `Finset.card_erase_of_mem hca` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `k' hk' hb`. Use `Finset.mem_erase.2 ⟨fun he => ?_, hbad k' (by omega) hb⟩` and prove the remaining obligations.
+
+Use `hc he` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `push Not at hex`. Use `nobad A x k hx hk fun k' hk' => ?_` and prove the remaining obligations. Establish `h1` using `hex (k' - k).toNat`.
+
+Rewrite `h1` using `[show k + (((k' - k).toNat : ℕ) : ℤ) = k' by omega]`. Then use the resulting hypothesis.
+-/
 theorem kill {β α M R : Type} [DecidableEq β] [Semiring R] [AddCommMonoid M] [Module R M]
     (Sub : ℤ → Submodule R M) (y : ℕ) (S : α → Prop) (E : α → ℤ → M)
     (c : ℤ → β) (hc : Function.Injective c)
@@ -110,10 +137,20 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[AlgHom.commutes, PowerSeries.algebraMap_apply]`.
+-/
 theorem lev_algebraMap (W : LocWach PD LL O v n) (i : ZMod n) (ζ : LL) (d : O) :
     W.lev i ζ (algebraMap O (LetA O n) d) = PowerSeries.C (algebraMap O LL d) := by
   rw [AlgHom.commutes, PowerSeries.algebraMap_apply]
 
+/- English proof (translation)
+Establish `hdz : W.Q ^ y • (d • z) = algebraMap O (LetA O n) d • (W.Q ^ y • z)`. Rewrite using `[← algebraMap_smul (LetA O n) d z, smul_smul, mul_comm, ← smul_smul]`. Establish `hz' : W.Q ^ y • (W.γ T z - d • z) ∈ W.N T`. Rewrite using `[smul_sub, hdz]`. Conclude with `(W.N T).sub_mem hγz ((W.N T).smul_mem _ hz)`.
+
+Use `⟨hz', fun j => ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨_, hz'⟩ : ↥(W.N T)) = ⟨_, hγz⟩ - algebraMap O (LetA O n) d • ⟨_, hz⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show W.Q ^ y • (W.γ T z - d • z) = W.Q ^ y • W.γ T z - algebraMap O (LetA O n) d • (W.Q ^ y • z)`. Rewrite using `[smul_sub, hdz]`.
+
+Rewrite using `[e1, map_sub, he, lev_algebraMap, GlobalTheory.NL.LevInj.conv_C]`. Both sides reduce to the same expression.
+-/
 theorem map_sub_smul {M : Type} [AddCommGroup M] [Module LL M] (W : LocWach PD LL O v n)
     (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (e : ↥(W.N T) →+ (ℤ → M))
     (he : ∀ (a : LetA O n) (x : ↥(W.N T)), e (a • x) = conv (W.lev i ζ a) (e x))
@@ -133,6 +170,9 @@ theorem map_sub_smul {M : Type} [AddCommGroup M] [Module LL M] (W : LocWach PD L
   rw [e1, map_sub, he, lev_algebraMap, GlobalTheory.NL.LevInj.conv_C]
   rfl
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_erase_mul A _ hd, map_mul, Module.End.mul_apply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+-/
 theorem aeval_erase [DecidableEq Oˣ] (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (A : Finset Oˣ) (d : Oˣ)
     (z : W.DD T) (hd : d ∈ A) :
     Polynomial.aeval (W.γ T) (∏ c ∈ A, ((Polynomial.X : Polynomial O) - Polynomial.C (Units.val c))) z =
@@ -142,6 +182,9 @@ theorem aeval_erase [DecidableEq Oˣ] (W : LocWach PD LL O v n) (T : LocLat G Qp
   congr 1
   simp
 
+/- English proof (translation)
+Establish `h2` using `congrArg Units.val (map_zpow (Units.map (algebraMap O LL).toMonoidHom) (uU W) m)`. Rewrite `h2` using `[Units.val_zpow_eq_zpow_val]`. Simplify using `only [Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe] at h2`. Conclude with `h2`.
+-/
 theorem algebraMap_uU_zpow (W : LocWach PD LL O v n) (m : ℤ) :
     algebraMap O LL ((uU W ^ m : Oˣ) : O) = algebraMap O LL (W.χΓ W.gam : O) ^ m := by
   have h2 := congrArg Units.val (map_zpow (Units.map (algebraMap O LL).toMonoidHom) (uU W) m)
@@ -162,6 +205,9 @@ def Ex (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (i : Let K) (ζ 
     (z : (H.W K s LL h).DD T) : ℤ → T.V ⊗[ℚ_[l]] P.R.B :=
   if hz : (H.W K s LL h).Q ^ y • z ∈ (H.W K s LL h).N T then ex C h T i ζ ⟨_, hz⟩ else 0
 
+/- English proof (translation)
+Unfold `Ex`. Rewrite using `[dif_pos hz]`.
+-/
 theorem Ex_eq (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (i : Let K) (ζ : ↥LL.1) (y : ℕ)
     (z : (H.W K s LL h).DD T) (hz : (H.W K s LL h).Q ^ y • z ∈ (H.W K s LL h).N T) :
     Ex C h T i ζ y z = ex C h T i ζ ⟨_, hz⟩ := by
@@ -172,6 +218,9 @@ def SubF (H : LocHW l P) (h : Good K s LL) (T : Lt K LL) (i : Let K) (τ : ↥K.
     Submodule ↥LL.1 (T.V ⊗[ℚ_[l]] P.R.B) :=
   Di H h T i ⊓ (FilAt (P.PD K) T τ (-k)).comap (ιV (P.PD K) (LL := ↥LL.1) (V := T.V))
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hanti : Antitone (FilAt (P.PD K) T τ)` using `antitone_int_of_succ_le (GlobalTheory.NL.Model.FilAt_anti T τ)`. Conclude with `inf_le_inf_left _ (Submodule.comap_mono (hanti (by omega)))`.
+-/
 theorem SubF_mono (H : LocHW l P) (h : Good K s LL) (T : Lt K LL) (i : Let K) (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) :
     Monotone (SubF H h T i τ) := by
   intro a b hab
@@ -181,6 +230,17 @@ theorem SubF_mono (H : LocHW l P) (h : Good K s LL) (T : Lt K LL) (i : Let K) (�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Apply `hb` to reduce the goal to its premises. Establish `hnj : ∀ a : ℤ, -k ≤ a → a ≤ y - k - 1 → FildR (P.PD K) T.ρ τ (a + 1) = FildR (P.PD K) T.ρ τ a`. Introduce `a h1 h2`.
+
+Assume the negation of the conclusion as `hj`. Conclude with `absurd h2 (not_le.2 (hn a hj h1))`. Establish `hfil : ∀ m : ℕ, m ≤ y → FildR (P.PD K) T.ρ τ (-k + m) = FildR (P.PD K) T.ρ τ (-k)`. Introduce `m`. Proceed by induction on `m with`.
+
+Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `hm`. Rewrite using `[show -k + ((m + 1 : ℕ) : ℤ) = (-k + m) + 1 by push_cast; ring, hnj _ (by omega) (by omega), ih (by omega)]`.
+
+Establish `hF : FilAt (P.PD K) T τ (-(k - y)) = FilAt (P.PD K) T τ (-k)`. Unfold `FilAt`. Rewrite using `[show -(k - (y : ℤ)) = -k + (y : ℕ) by ring, hfil y le_rfl]`. Introduce `e he`. Unfold `SubF at he ⊢`.
+
+Rewrite using `[hF]`. Conclude with `he`.
+-/
 theorem exists_jump (H : LocHW l P) (h : Good K s LL) (T : Lt K LL) (i : Let K)
     (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (y : ℕ) (k : ℤ) (hb : ¬ SubF H h T i τ k ≤ SubF H h T i τ (k - y)) :
     ∃ a : ℤ, IsJumpV (P.PD K) T.ρ τ a ∧ -k ≤ a ∧ a ≤ y - k - 1 := by
@@ -211,6 +271,9 @@ theorem exists_jump (H : LocHW l P) (h : Good K s LL) (T : Lt K LL) (i : Let K)
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨hz', he⟩` from `map_sub_smul (H.W K s LL h) T i ζ ((C.C K s LL h).tie.levB T i ζ) (GlobalTheory.NL.Model.ex_smul C h T i ζ) y z d hz hγz`. Rewrite using `[Ex_eq C h T i ζ y _ hz', Ex_eq C h T i ζ y _ hγz, Ex_eq C h T i ζ y z hz]`. Conclude with `he j`.
+-/
 theorem Ex_sub_smul (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (i : Let K) (ζ : ↥LL.1) (y : ℕ)
     (z : (H.W K s LL h).DD T) (d : ↥(OL LL))
     (hz : (H.W K s LL h).Q ^ y • z ∈ (H.W K s LL h).N T)
@@ -225,6 +288,15 @@ theorem Ex_sub_smul (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (i 
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hform : ∀ j, Ex C h T i ζ y ((H.W K s LL h).γ T z - d • z) j = conv w (fun m => algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL)) ^ m • Ex C h T i ζ y z m) j - algebraMap ↥(OL LL) ↥LL.1 d • Ex C h T i ζ y z j`. Introduce `j`. Rewrite using `[Ex_sub_smul C h T i ζ y z d hz (hγN z hz) j, Ex_eq C h T i ζ y _ (hγN z hz), Ex_eq C h T i ζ y z hz, hw z hz (hγN z hz) j]`. Establish `hbdd : ∃ m : ℤ, ∀ j < m, Ex C h T i ζ y z j = 0`. Take `⟨m, hm⟩` from `(C.C K s LL h).tie.levB_supp T i ζ ⟨_, hz⟩`.
+
+Conclude with `⟨m, fun j hj => by rw [Ex_eq C h T i ζ y z hz]; exact hm j hj⟩`. Take `⟨-, -, h3, h4⟩` from `GlobalTheory.T.powerSeriesTwistedScaling_triangular_laurent w (algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL))) (SubF H h T i τ) (SubF_mono H h T i τ) y (Ex C h T i ζ y z) hbdd (hE z hz) k hk`. Use `⟨fun j hj => ?_, fun hd => ?_⟩` and prove the remaining obligations. Rewrite using `[hform j]`. Conclude with `(SubF H h T i τ _).sub_mem (h3 j hj) ((SubF H h T i τ _).smul_mem _ (hk j hj))`.
+
+Rewrite using `[hform k, hd]`. Establish `hu0 : algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL)) ≠ 0` using `(((H.W K s LL h).χΓ (H.W K s LL h).gam).isUnit.map (algebraMap ↥(OL LL) ↥LL.1)).ne_zero`. Establish `e : algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL)) ^ (k - (y : ℤ)) = PowerSeries.constantCoeff w * algebraMap ↥(OL LL) ↥LL.1 ((H.W K s LL h).χΓ (H.W K s LL h).gam : ↥(OL LL)) ^ k`. Rewrite using `[hw0, ← zpow_add₀ hu0, neg_add_eq_sub]`. Rewrite using `[e]`.
+
+Conclude with `h4`.
+-/
 theorem step (C : LocCmpT l P AI H F) (h : Good K s LL) (T : Lt K LL) (i : Let K) (ζ : ↥LL.1)
     (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (y : ℕ) (w : PowerSeries ↥LL.1)
     (hw0 : PowerSeries.constantCoeff w = algebraMap ↥(OL LL) ↥LL.1
@@ -282,6 +354,29 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 set_option maxHeartbeats 2000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `D HW F Cm l _ K s LL h W T hT y hy Fs hFs x hx`. Establish `hx' : W.Q ^ y • x ∈ W.N T` using `by simpa [invN, smulA] using hx`. Take `⟨hγ, hgam⟩` from `GlobalTheory.T.wachN_invQPow_gamma_stable D HW F Cm l K s LL h T hT y`. Set `S : W.DD T → Prop` to `fun z => W.Q ^ y • z ∈ W.N T`. Set `op : (↥(OL LL))ˣ → W.DD T → W.DD T` to `fun d z => W.γ T z - (d : ↥(OL LL)) • z`.
+
+Set `Pf : Finset (↥(OL LL))ˣ → W.DD T → W.DD T` to `fun A z => Polynomial.aeval (W.γ T) (∏ c ∈ A, ((Polynomial.X : Polynomial ↥(OL LL)) - Polynomial.C (Units.val c))) z`. Establish `hP0 : ∀ z, Pf ∅ z = z` using `by intro z; simp [Pf]`. Establish `hP : ∀ A d z, d ∈ A → Pf A z = Pf (A.erase d) (op d z)` using `fun A d z hd => aeval_erase W T A d z hd`. Establish `hS : ∀ d z, S z → S (op d z)` using `fun d z hz => (map_sub_smul W T 0 1 (((Cm l).C K s LL h).tie.levB T 0 1) (GlobalTheory.NL.Model.ex_smul (Cm l) h T 0 1) y z (d : ↥(OL LL)) hz (hγ z hz)).1`. Establish `hSA : ∀ A z, S z → S (Pf A z)`.
+
+Introduce `A`. Use `Finset.induction_on A ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[hP0]`. Conclude with `hz`.
+
+Introduce `d A hd ih z hz`. Rewrite using `[hP (insert d A) d z (Finset.mem_insert_self d A), Finset.erase_insert hd]`. Conclude with `ih _ (hS d z hz)`. Establish `hQ : S (Pf Fs x)` using `hSA Fs x hx'`. Use `(GlobalTheory.T.mem_wachN_iff_expansion D HW F Cm l K s LL h T hT y (Pf Fs x) hQ).2 ?_` and prove the remaining obligations.
+
+Introduce `i ζ hζ`. Take `⟨τ, hτ⟩` from `(GlobalTheory.NL.Points.points D HW l K s LL h).1 i ζ hζ`. Take `⟨w, hw0, hw⟩` from `hgam i ζ hζ`. Establish `hlat` using `GlobalTheory.NL.LatFil.lat_eq_fil D HW F Cm l K s LL h T hT i ζ τ hτ`. Set `c : ℤ → (↥(OL LL))ˣ` to `fun k => uU W ^ (k - (y : ℤ))`.
+
+Establish `hu0 : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL)) ≠ 0` using `((W.χΓ W.gam).isUnit.map (algebraMap ↥(OL LL) ↥LL.1)).ne_zero`. Establish `hc : Function.Injective c`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Establish `h1 : algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL)) ^ (a - (y : ℤ)) = algebraMap ↥(OL LL) ↥LL.1 (W.χΓ W.gam : ↥(OL LL)) ^ (b - (y : ℤ))` using `(algebraMap_uU_zpow W _).symm.trans ((congrArg (fun e : (↥(OL LL))ˣ => algebraMap ↥(OL LL) ↥LL.1 (e : ↥(OL LL))) hab).trans (algebraMap_uU_zpow W _))`.
+
+Use `GlobalTheory.NL.AtZero.chi_gam_zpow_ne_one W (a - b) (sub_ne_zero.2 hne) ?_` and prove the remaining obligations. Establish `e : a - b = (a - (y : ℤ)) - (b - (y : ℤ))` using `by ring`. Rewrite using `[e, zpow_sub₀ hu0, h1, div_self (zpow_ne_zero _ hu0)]`. Establish `hE : ∀ z, S z → ∀ j, Ex (Cm l) h T i ζ y z j ∈ SubF (HW l) h T i τ j`. Introduce `z hz j`.
+
+Rewrite using `[Ex_eq (Cm l) h T i ζ y z hz]`. Conclude with `((hlat _).1 (GlobalTheory.NL.Model.ex_mem_Lat (Cm l) h T i ζ ⟨_, hz⟩)).2 j`. Establish `hbdd : ∀ z, S z → ∃ m : ℤ, ∀ k < m, Ex (Cm l) h T i ζ y z k = 0`. Introduce `z hz`. Rewrite using `[Ex_eq (Cm l) h T i ζ y z hz]`.
+
+Conclude with `((Cm l).C K s LL h).tie.levB_supp T i ζ ⟨_, hz⟩`. Take `⟨m, hm⟩` from `hbdd x hx'`. Establish `key` using `kill (SubF (HW l) h T i τ) y S (Ex (Cm l) h T i ζ y) c hc Pf op hP0 hP hS hE (fun d z k hz hk => ⟨(step (Cm l) h T i ζ τ y w hw0 hγ hw hE (d : ↥(OL LL)) z k hz hk).1, fun hd => (step (Cm l) h T i ζ τ y w hw0 hγ hw hE (d : ↥(OL LL)) z k hz hk).2 (by rw [hd]; exact algebraMap_uU_zp …`. Take `⟨a, ha, h1, h2⟩` from `exists_jump (HW l) h T i τ y k hb`. Establish `h3` using `hFs a ⟨τ, ha⟩ ((y : ℤ) - k - a).toNat (by omega) (by omega)`.
+
+Establish `e : -(a + ((((y : ℤ) - k - a).toNat : ℕ) : ℤ)) = k - (y : ℤ)` using `by omega`. Rewrite `h3` using `[e]`. Conclude with `h3)`. Take `⟨m', hm'⟩` from `hbdd _ hQ`. Use `⟨fun j => Ex (Cm l) h T i ζ y (Pf Fs x) (j + y), (hlat _).2 ⟨⟨m' - y, fun k hk => hm' _ (by omega)⟩, fun k => ?_⟩, fun j => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `key (k + y)`. Rewrite `h1` using `[add_sub_cancel_right]`. Conclude with `h1`. Use `show _ = Ex (Cm l) h T i ζ y (Pf Fs x) (j - y + y)`. Rewrite using `[sub_add_cancel, Ex_eq (Cm l) h T i ζ y _ hQ]`.
+-/
 theorem annihilate : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ y : ℕ, 1 ≤ y → ∀ Fs : Finset (↥(OL LL))ˣ, (∀ a ∈ Jumps (PD := (D.loc l).PD K) T, ∀ j : ℕ, 1 ≤ j → j ≤ y → uU W ^ (-(a + j)) ∈ Fs) → ∀ x ∈ invN W T (W.Q ^ y), Polynomial.aeval (W.γ T) (∏ c ∈ Fs, ((Polynomial.X : Polynomial ↥(OL LL)) - Polynomial.C (Units.val c))) x ∈ W.N T := by
   classical
   intro D HW F Cm l _ K s LL h W T hT y hy Fs hFs x hx

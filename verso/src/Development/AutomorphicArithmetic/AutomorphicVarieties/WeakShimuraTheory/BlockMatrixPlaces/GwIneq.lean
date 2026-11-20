@@ -3,11 +3,49 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Po
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Bl
 
+/- English proof (translation)
+Use `haveI : Subsingleton P := ⟨fun a b => Subtype.ext ((h a a.2).trans (h b b.2).symm)⟩`. Conclude with `Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, ⟨0⟩⟩`.
+-/
 private theorem card_one_of {R N : Type} [Ring R] [AddCommGroup N] [Module R N] (P : Submodule R N)
     (h : ∀ x ∈ P, x = 0) : Nat.card P = 1 := by
   haveI : Subsingleton P := ⟨fun a b => Subtype.ext ((h a a.2).trans (h b b.2).symm)⟩
   exact Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, ⟨0⟩⟩
 
+/- English proof (translation)
+Introduce `hGF hGW Ω _ _ _ l _ r M _ _ _ _ _ S ρ hr hl2 hS hρ c hc hcneg Av hAv v0 s hsD hsz hsbij L hL`. Establish `hcop : Nat.Coprime 2 (l ^ r)` using `Nat.Coprime.pow_right r ((Nat.coprime_primes Nat.prime_two (Fact.out)).mpr (Ne.symm hl2))`. Establish `hinv : ∀ m : M, m = -m → m = 0`. Introduce `m hm`. Use `set u := ZMod.unitOfCoprime 2 hcop`.
+
+Establish `hu : (u : ZMod (l ^ r)) = 2` using `by simp [u]`. Establish `h2 : (2 : ZMod (l ^ r)) • m = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 2 [hm]`. Conclude with `add_neg_cancel m`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, Units.inv_mul, one_smul]`. Use `_ = 0 := by rw [hu, h2, smul_zero]`. Take `⟨μ, hμ⟩` from `GlobalTheory.Published.PoitouTate.exists_lift_cycMod (F := ℚ) (Ω := Ω) (l := l) (r := r) hS`. Establish `hcc : ∀ w : InfinitePlace ℚ, w.IsReal → IsCCAt w c`.
+
+Introduce `w _`. Take `⟨j, hj⟩` from `hc`. Conclude with `⟨j, hj, Subsingleton.elim _ _⟩`. Establish `key` using `hGW ℚ Ω l r M S ρ hr hl2 hS hρ μ hμ Av hAv (fun _ => c) hcc L`. Establish `hμs : μ (toGS Ω _ s) = 1`.
+
+Establish `h` using `congrArg (fun f => f s) hμ`. Simplify using `only [MonoidHom.comp_apply] at h`. Rewrite using `[h]`. Simplify using `[cycMod, hsz]`. Establish `htw : Nat.card (H0 (twDual μ ρ)) = 1`.
+
+Use `card_one_of _ (fun φ hφ => ?_)` and prove the remaining obligations. Establish `hfix` using `(mem_riemannRochSpace_iff_regularAt_everywhere _ φ).mp hφ (toGS Ω _ s)`. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Take `⟨x, rfl⟩` from `hsbij.2 m`.
+
+Establish `hx : φ (ρ (toGS Ω _ s) x) = φ x`. Establish `h` using `congrArg (fun ψ : TDual (ZMod (l ^ r)) M => ψ (ρ (toGS Ω _ s) x)) hfix`. Simplify using `only [twDual_apply, hμs, Units.val_one, one_mul] at h`. Rewrite using `[← h, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `hsub : (φ : Module.Dual (ZMod (l ^ r)) M) (ρ (toGS Ω _ s) x - x) = (φ : Module.Dual (ZMod (l ^ r)) M) (ρ (toGS Ω _ s) x) - (φ : Module.Dual (ZMod (l ^ r)) M) x` using `LinearMap.map_sub _ _ _`.
+
+Use `show φ (ρ (toGS Ω _ s) x - x) = 0`. Conclude with `hsub.trans (by erw [hx]; exact sub_self _)`. Establish `harch : archH0Card S ρ (fun _ => c) = 1`. Establish `h0 : InfinitePlace.nrComplexPlaces ℚ = 0` using `by simp`. Unfold `archH0Card`.
+
+Rewrite using `[h0, pow_zero, mul_one]`. Use `Finset.prod_eq_one (fun w _ => ?_)` and prove the remaining obligations. Use `haveI : Subsingleton {m : M // ρ (toGS Ω _ c) m = m} := ⟨fun a b => Subtype.ext (by`. Establish `ha` using `hinv a.1 (by rw [← hcneg a.1, a.2])`. Establish `hb` using `hinv b.1 (by rw [← hcneg b.1, b.2])`.
+
+Rewrite using `[ha, hb])⟩`. Conclude with `Nat.card_eq_one_iff_unique.mpr ⟨inferInstance, ⟨⟨0, map_zero _⟩⟩⟩`. Establish `hv0 : Nat.card (H0 (ρ.comp (locFam S Av v0))) = 1`. Use `card_one_of _ (fun m hm => ?_)` and prove the remaining obligations. Establish `hfix` using `(mem_riemannRochSpace_iff_regularAt_everywhere _ m).mp hm ⟨s, hsD⟩`.
+
+Establish `hfix' : ρ (toGS Ω _ s) m = m` using `hfix`. Apply `hsbij.1` to reduce the goal to its premises. Use `show ρ (toGS Ω _ s) m - m = ρ (toGS Ω _ s) 0 - 0`. Rewrite using `[hfix', sub_self, map_zero, sub_self]`. Rewrite `key` using `[htw, harch, mul_one, mul_one]`.
+
+Take `⟨-, hH1, -, -⟩` from `hGF ℚ Ω l r M S ρ hr hS hρ`. Establish `hSelpos : 0 < Nat.card (Sel ρ (locFam S Av) (continuous_locFam S Av) L)` using `Nat.card_pos`. Establish `hH0pos : ∀ v, 0 < Nat.card (H0 (ρ.comp (locFam S Av v)))` using `fun v => Nat.card_pos`. Establish `hP` using `Finset.mul_prod_erase Finset.univ (fun v => Nat.card (H0 (ρ.comp (locFam S Av v)))) (Finset.mem_univ v0)`. Establish `hQ` using `Finset.mul_prod_erase Finset.univ (fun v => Nat.card (L v)) (Finset.mem_univ v0)`.
+
+Simplify using `only at hP hQ`. Rewrite `hP` using `[hv0, one_mul]`. Use `set P' := ∏ v ∈ Finset.univ.erase v0, Nat.card (H0 (ρ.comp (locFam S Av v)))`. Use `set Q' := ∏ v ∈ Finset.univ.erase v0, Nat.card (L v)`. Establish `hP'pos : 0 < P'` using `Finset.prod_pos (fun v _ => hH0pos v)`.
+
+Establish `hPQ : P' ≤ Q'` using `Finset.prod_le_prod (fun v _ => Nat.zero_le _) (fun v hv => hL v (Finset.ne_of_mem_erase hv))`. Rewrite `key` using `[← hP, ← hQ]`. Use `set a := Nat.card (Sel ρ (locFam S Av) (continuous_locFam S Av) L)`. Use `set b := Nat.card (Sel (twDual μ ρ) (locFam S Av) _ (perpCond μ ρ (locFam S Av) _ L))`. Use `set h0 := Nat.card (H0 ρ)`.
+
+Establish `hbpos : 0 < b`. Break down `Nat.eq_zero_or_pos b with hb | hb` into its components or cases. Rewrite `key` using `[hb, zero_mul, zero_mul]`. Conclude with `absurd key (Nat.mul_pos hSelpos hP'pos).ne'`. Conclude with `hb`.
+
+Establish `hh0 : 0 < h0` using `Nat.card_pos`. Establish `h1 : Nat.card (L v0) * Q' ≤ a * P'`. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Nat.card (L v0) * P' ≤ a * P'` using `le_trans (Nat.mul_le_mul_left _ hPQ) h1`.
+
+Conclude with `Nat.le_of_mul_le_mul_right h2 hP'pos`.
+-/
 theorem UpperTheory.V.Ws.Bl.gwIneq :
     GlobalFiniteness → GreenbergWiles → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (r : ℕ) (M : Type) [AddCommGroup M] [Module (ZMod (l ^ r)) M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 ℚ))) (ρ : Representation (ZMod (l ^ r)) (GS Ω (S : Set (HeightOneSpectrum (𝓞 ℚ)))) M), 0 < r → l ≠ 2 → ContainsAbove S l → ContAction ρ →
           ∀ c : G ℚ Ω, IsCC c → (∀ m, ρ (toGS Ω _ c) m = -m) → ∀ Av : S → ValuationSubring Ω, (∀ v, IsPlaceOver (Av v) v.1) →

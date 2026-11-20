@@ -7,6 +7,11 @@ open UpperTheory.Gal.LocalSmoothExtension
 open UpperTheory.Gal.G3 (bcMap bcMap_fst bcMap_snd)
 open UpperTheory.Gal.Int.Geo (KS Lv)
 
+/- English proof (translation)
+Establish `P` using `(GlobalTheory.KS.PowPB.powMap_isPullback S S' A A' f φ hφ H k).paste_vert hf`. Establish `Q : IsPullback e.inv ((GlobalTheory.KS.pow A k).hom ≫ s) q (𝟙 B')`. Use `IsPullback.of_horiz_isIso ⟨?_⟩` and prove the remaining obligations. Rewrite using `[← he, Category.comp_id, Iso.inv_hom_id_assoc]`. Establish `R` using `P.paste_horiz Q`.
+
+Rewrite `R` using `[Category.comp_id]`. Conclude with `R`.
+-/
 private theorem level_isPullback {S S' B B' Z : Scheme.{0}} {A : Over S} {A' : Over S'} {s : S ⟶ B'} {s' : S' ⟶ B}
     {f : S' ⟶ S} {g : B ⟶ B'} {φ : A'.left ⟶ A.left} (hφ : φ ≫ A.hom = A'.hom ≫ f)
     (H : IsPullback φ A'.hom A.hom f) (hf : IsPullback f s' s g) (k : ℕ) {q : Z ⟶ B'}
@@ -20,6 +25,9 @@ private theorem level_isPullback {S S' B B' Z : Scheme.{0}} {A : Over S} {A' : O
   rw [Category.comp_id] at R
   exact R
 
+/- English proof (translation)
+Establish `h₃ : (φ₂ ≫ χ) ≫ A₁.hom = A₂'.hom ≫ (f₂ ≫ π)`. Rewrite using `[Category.assoc, hχ, ← Category.assoc, h₂, Category.assoc]`. Rewrite using `[pc _ _ _ A₂' A₁' A₁ π' f₁ (f₂ ≫ π) χ' φ₁ (φ₂ ≫ χ) hχ' h₁ h₃ hπ hc k, pc _ _ _ A₂' A₂ A₁ f₂ π (f₂ ≫ π) φ₂ χ (φ₂ ≫ χ) h₂ hχ h₃ rfl rfl k]`.
+-/
 private theorem pow_square (pc : PowComp) {S₁ S₂ S₁' S₂' : Scheme.{0}} {A₁ : Over S₁} {A₂ : Over S₂} {A₁' : Over S₁'}
     {A₂' : Over S₂'} {f₁ : S₁' ⟶ S₁} {f₂ : S₂' ⟶ S₂} {π : S₂ ⟶ S₁} {π' : S₂' ⟶ S₁'} {φ₁ : A₁'.left ⟶ A₁.left}
     {φ₂ : A₂'.left ⟶ A₂.left} {χ : A₂.left ⟶ A₁.left} {χ' : A₂'.left ⟶ A₁'.left}
@@ -32,6 +40,11 @@ private theorem pow_square (pc : PowComp) {S₁ S₂ S₁' S₂' : Scheme.{0}} {
   rw [pc _ _ _ A₂' A₁' A₁ π' f₁ (f₂ ≫ π) χ' φ₁ (φ₂ ≫ χ) hχ' h₁ h₃ hπ hc k,
     pc _ _ _ A₂' A₂ A₁ f₂ π (f₂ ≫ π) φ₂ χ (φ₂ ≫ χ) h₂ hχ h₃ rfl rfl k]
 
+/- English proof (translation)
+Establish `hΨ : Ψ ≫ e₁.inv = e₂.inv ≫ t`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← he, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Apply `P₁.hom_ext` to reduce the goal to its premises. Simplify using `only [Iso.symm_hom, Category.assoc, IsPullback.isoPullback_inv_fst, bcMap_fst]`. Rewrite using `[reassoc_of% hsq, hΨ, ← Category.assoc Φ₂ e₂.inv t, IsPullback.isoPullback_inv_fst_assoc]`.
+
+Simplify using `only [Iso.symm_hom, Category.assoc, IsPullback.isoPullback_inv_snd, bcMap_snd]`. Rewrite using `[reassoc_of% hΨ', hs, IsPullback.isoPullback_inv_snd]`.
+-/
 private theorem level_tr {S₁ S₂ S₁' S₂' B B' Z₁ Z₂ : Scheme.{0}} {A₁ : Over S₁} {A₂ : Over S₂} {A₁' : Over S₁'}
     {A₂' : Over S₂'} {q₁ : Z₁ ⟶ B'} {q₂ : Z₂ ⟶ B'} {g : B ⟶ B'} {k : ℕ} {s₁' : S₁' ⟶ B} {s₂' : S₂' ⟶ B}
     {Φ₁ : (GlobalTheory.KS.pow A₁' k).left ⟶ (GlobalTheory.KS.pow A₁ k).left} {Φ₂ : (GlobalTheory.KS.pow A₂' k).left ⟶ (GlobalTheory.KS.pow A₂ k).left}
@@ -50,6 +63,15 @@ private theorem level_tr {S₁ S₂ S₁' S₂' B B' Z₁ Z₂ : Scheme.{0}} {A�
   · simp only [Iso.symm_hom, Category.assoc, IsPullback.isoPullback_inv_snd, bcMap_snd]
     rw [reassoc_of% hΨ', hs, IsPullback.isoPullback_inv_snd]
 
+/- English proof (translation)
+Introduce `hmod hleg pc p _ D G L R _ _ gb k T τ gb' hρ ht`. Establish `ht' : ∀ i, gb'.t i = τ.comp (gb.t i)` using `fun i => RingHom.ext fun c => ht i c`. Establish `hM` using `fun N : Lv p => hmod D.toG R ℂ τ gb gb' hρ ht' (↑N) (T.M N)`. Use `choose M' f hpb hm using hM`. Set `m` to `fun N => (hm N).some`.
+
+Establish `hφ : ∀ N, (m N).φ ≫ (T.M N).univ.A.hom = (M' N).univ.A.hom ≫ f N` using `fun N => (m N).cart.1.w`. Establish `P : ∀ N, IsPullback (GlobalTheory.KS.powMap (f N) (m N).φ (hφ N) k ≫ (T.e N).inv) ((GlobalTheory.KS.pow (M' N).univ.A k).hom ≫ (M' N).s) (T.X.q (T.lev N)) (Spec.map (CommRingCat.ofHom τ))` using `fun N => level_isPullback (hφ N) (m N).cart.1 (hpb N) k (T.e N) (T.e_q N)`. Use `⟨UpperTheory.Gal.Int.Geo.KS.mk (towerBc T.X (Spec.map (CommRingCat.ofHom τ))) T.lev T.K_eq T.Δ_eq M' (fun N => (P N).isoPullback.symm) ?_ ?_, rfl, HEq.rfl⟩` and prove the remaining obligations. Introduce `N`. Conclude with `(P N).isoPullback_inv_snd`.
+
+Introduce `N' N h a b`. Take `⟨π₀, o₀, ψ₀, φ₀, hw₀, hs₀, htr₀, he₀⟩` from `T.tr_eq N' N h a b`. Take `⟨π₁, o₁, ψ₁, φ₁, hs₁, htr₁, hπ, hc⟩` from `hleg p D G L R ℂ τ gb gb' hρ ht' N N' (T.M N) (T.M N') (M' N) (M' N') (f N) (f N') (hpb N) (hpb N') (m N) (m N') h π₀ o₀ ψ₀ φ₀ hs₀ htr₀`. Establish `hw₁ : (Over.Hom.left ψ₁ ≫ φ₁.φ) ≫ (M' N).univ.A.hom = (M' N').univ.A.hom ≫ π₁`. Rewrite using `[Category.assoc, φ₁.cart.1.w, ← Category.assoc, Over.w]`.
+
+Use `⟨π₁, o₁, ψ₁, φ₁, hw₁, hs₁, htr₁, ?_⟩` and prove the remaining obligations. Conclude with `level_tr (GlobalTheory.KS.PowPB.powMap_w π₁ _ hw₁ k) hs₁ (pow_square pc (hφ N) (hφ N') hw₀ hw₁ hπ hc k) (T.e N) (T.e N') _ (T.X.tr_q _ _ h a b) he₀ (P N) (P N')`.
+-/
 theorem UpperTheory.Gal.LocalSmoothExtension.kSBc_of :
     ModelBc → LegBc → PowComp → KSBc := by
   intro hmod hleg pc p _ D G L R _ _ gb k T τ gb' hρ ht

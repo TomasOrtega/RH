@@ -15,6 +15,29 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CechPic GlobalTheory.ProjVar
 open GlobalTheory.VertCmp
 open scoped Classical
 
+/- English proof (translation)
+Use `set S : Finset Z := (hν.toFinset ∪ Finset.univ.biUnion fun j => (hμ j).toFinset.image (g j)).filter fun η => A η ∧ C η with hS`. Establish `e1 : (∑ᶠ z, if A z then ((ν z * π z : ℤ) : ℝ) else 0) = ∑ z ∈ S, ((ν z * π z : ℤ) : ℝ)`. Rewrite using `[finsum_eq_sum_of_support_subset (s := S)]`. Use `Finset.sum_congr rfl fun z hz => if_pos (Finset.mem_filter.1 hz).2.1` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hA : A z`. Assume the negation of the conclusion as `h`. Conclude with `hz (if_neg h)`. Establish `hn : ν z ≠ 0`. Introduce `h`.
+
+Apply `hz` to reduce the goal to its premises. Simplify using `[h]`. Conclude with `Finset.mem_coe.2 (Finset.mem_filter.2 ⟨Finset.mem_union_left _ (by simpa using hn), hA, h3 z hn⟩)`. Establish `e2 : ∀ j, (∑ᶠ ζ, μ j ζ * w j ζ) = ∑ ζ ∈ (hμ j).toFinset, μ j ζ * w j ζ` using `fun j => finsum_eq_sum_of_support_subset _ fun ζ hζ => by`. Simplify using `using left_ne_zero_of_mul hζ`.
+
+Establish `e3 : ∀ j η, (∑ᶠ ζ, if g j ζ = η then ((m : ℤ) * μ j ζ) * rd j ζ else 0) = ∑ ζ ∈ (hμ j).toFinset, if g j ζ = η then ((m : ℤ) * μ j ζ) * rd j ζ else 0` using `fun j η => finsum_eq_sum_of_support_subset _ fun ζ hζ => by`. Establish `: μ j ζ ≠ 0`. Introduce `h`. Apply `hζ` to reduce the goal to its premises. Simplify using `[h]`.
+
+Simplify using `using this`. Establish `e4 : ∀ j, (m : ℤ) ^ (d + 1) * ∑ ζ ∈ (hμ j).toFinset, μ j ζ * w j ζ = ∑ η ∈ S, (∑ ζ ∈ (hμ j).toFinset, if g j ζ = η then ((m : ℤ) * μ j ζ) * rd j ζ else 0) * π η`. Introduce `j`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun ζ hζ => ?_` and prove the remaining obligations. Establish `hζ' : μ j ζ ≠ 0` using `by simpa using hζ`. Simplify using `only [ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Establish `hiff : g j ζ ∈ S ↔ C (g j ζ)`.
+
+Use `⟨fun h => (Finset.mem_filter.1 h).2.2, fun h => Finset.mem_filter.2 ⟨?_, h1 j ζ hζ', h⟩⟩` and prove the remaining obligations. Conclude with `Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, Finset.mem_image_of_mem _ hζ⟩)`. Use `h2 j ζ hζ'` as an intermediate fact. Distinguish the cases in `hC : C (g j ζ)`. Rewrite `this` using `[if_pos hC]`.
+
+Rewrite using `[if_pos (hiff.2 hC)]`. Take the linear combination `(m : ℤ) * μ j ζ * this`. Rewrite `this` using `[if_neg hC]`. Rewrite using `[if_neg (mt hiff.1 hC)]`. Take the linear combination `(m : ℤ) * μ j ζ * this`.
+
+Rewrite using `[e1, Finset.mul_sum S]`. Establish `e5 : ∀ η ∈ S, K * ((ν η * π η : ℤ) : ℝ) = c * ∑ j, (((∑ ζ ∈ (hμ j).toFinset, if g j ζ = η then ((m : ℤ) * μ j ζ) * rd j ζ else 0) * π η : ℤ) : ℝ)`. Introduce `η hη`. Use `h4 η (Finset.mem_filter.1 hη).2.1 (Finset.mem_filter.1 hη).2.2` as an intermediate fact. Simplify using `only [e3] at this`.
+
+Simplify using `only [Int.cast_mul (_ : ℤ) (π η)]`. Rewrite using `[← Finset.sum_mul, ← mul_assoc, ← this, mul_assoc]`. Rewrite using `[Finset.sum_congr rfl e5, ← Finset.mul_sum, Finset.sum_comm, mul_comm _ c, mul_assoc, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e2, ← Int.cast_sum, ← e4]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 private theorem comb {J Z : Type} [Fintype J] {X : J → Type} (g : ∀ j, X j → Z) (μ w rd : ∀ j, X j → ℤ)
     (hμ : ∀ j, (Function.support (μ j)).Finite) (ν π : Z → ℤ) (hν : (Function.support ν).Finite)
     (A C : Z → Prop) (c K : ℝ) (m d : ℕ)
@@ -86,6 +109,17 @@ private theorem comb {J Z : Type} [Fintype J] {X : J → Type} (g : ∀ j, X j �
   push_cast
   rfl
 
+/- English proof (translation)
+Set `e'` to `fun j => RingEquiv.ofBijective _ (he j)`. Use `Nat.card_congr { toFun := fun q => ⟨⟨q.1.1, q.1.2.comp (e q.1.1)⟩, ?_, ?_⟩ invFun := fun q => ⟨⟨q.1.1, q.1.2.comp (e' q.1.1).symm.toRingHom⟩, ?_, ?_⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← hφ]`. Conclude with `q.2.1`. Rewrite using `[RingHom.comp_assoc, hc]`.
+
+Conclude with `q.2.2`. Use `Eq.trans ?_ q.2.1` and prove the remaining obligations. Rewrite using `[hφ]`. Use extensionality with `x`. Conclude with `congrArg q.1.2 ((e' q.1.1).symm_apply_apply _)`.
+
+Use `Eq.trans ?_ q.2.2` and prove the remaining obligations. Rewrite using `[← hc]`. Use extensionality with `x`. Conclude with `congrArg q.1.2 ((e' q.1.1).symm_apply_apply _)`. Introduce and unpack `⟨⟨j, a⟩, h⟩`.
+
+Use `Subtype.ext (Sigma.ext rfl (heq_of_eq ?_))` and prove the remaining obligations. Use extensionality with `x`. Conclude with `congrArg a ((e' j).apply_symm_apply x)`. Introduce and unpack `⟨⟨j, a⟩, h⟩`. Use `Subtype.ext (Sigma.ext rfl (heq_of_eq ?_))` and prove the remaining obligations.
+
+Use extensionality with `x`. Conclude with `congrArg a ((e' j).symm_apply_apply x)`.
+-/
 private theorem card_transport {J A O C : Type} [Semiring A] [Semiring O] [Semiring C] {K K' : J → Type}
     [∀ j, Semiring (K j)] [∀ j, Semiring (K' j)] (e : ∀ j, K j →+* K' j) (he : ∀ j, Function.Bijective (e j))
     (φ : ∀ j, A →+* K j) (φ' : ∀ j, A →+* K' j) (c : ∀ j, O →+* K j) (c' : ∀ j, O →+* K' j)
@@ -119,6 +153,11 @@ private theorem card_transport {J A O C : Type} [Semiring A] [Semiring O] [Semir
     ext x
     exact congrArg a ((e' j).symm_apply_apply x)
 
+/- English proof (translation)
+Establish `h1 : T.str ζ = closedPoint O` using `not_not.1 (mt Vert.Model.mem_gen.2 hζ)`. Establish `h2 : Q.p (g ζ) = spMap b (T.str ζ)`. Rewrite using `[← Scheme.Hom.comp_apply, hg, Scheme.Hom.comp_apply]`. Rewrite using `[h2, h1]`. Use extensionality with `x`.
+
+Conclude with `(hb.2 x).symm`.
+-/
 private theorem over_of_notMem_gen {F : Type} [Field F] [NumberField F] {Y : Var F} {v : HeightOneSpectrum (𝓞 F)}
     {F' : Type} [Field F'] {ε : F →+* F'} {O : ValuationSubring F'} [IsDiscreteValuationRing O] {b : 𝓞 F →+* O}
     (hb : IsUp v ε O b) {T : Vert.Model O} {Q : TrueGeo.Model Y} {g : T.X ⟶ Q.X}
@@ -130,6 +169,9 @@ private theorem over_of_notMem_gen {F : Type} [Field F] [NumberField F] {Y : Var
   ext x
   exact (hb.2 x).symm
 
+/- English proof (translation)
+Introduce `hg`. Take `⟨i, hi⟩` from `exists_chart P.isLB ζ`. Apply `hζ` to reduce the goal to its premises. Rewrite using `[((presents_divOfRatSec P.isLB ht).isEqn i ζ hi).mult_eq, h i (gen_mem (memInf hg hi))]`. Conclude with `(unitAt_fnOf (memInf hg hi) _ (P.isUnit i).unit).ord_eq_zero`.
+-/
 private theorem notMem_gen_of_mult {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {T : Vert.Model O} (P : VertDiv T) (t : P.M.ι → T.X.functionFieldˣ) (ht : IsRatSec P.M t) (h : IsSecOf P t)
     {ζ : T.X} (hζ : (divOfRatSec P.isLB ht).mult ζ ≠ 0) : ζ ∉ T.gen := by
@@ -139,11 +181,29 @@ private theorem notMem_gen_of_mult {O : Type} [CommRing O] [IsDomain O] [IsDiscr
   rw [((presents_divOfRatSec P.isLB ht).isEqn i ζ hi).mult_eq, h i (gen_mem (memInf hg hi))]
   exact (unitAt_fnOf (memInf hg hi) _ (P.isUnit i).unit).ord_eq_zero
 
+/- English proof (translation)
+Rewrite using `[← VertOrd.ord_pow' ha, ← div_mul_cancel₀ (a ^ m) hc, Scheme.ord_mul h.ne_zero hc, h.ord_eq_zero, zero_add]`.
+-/
 private theorem ord_eq_of_unitAt {X : Scheme.{0}} [IsIntegral X] [IsLocallyNoetherian X] {x : X}
     {a c : X.functionField} (ha : a ≠ 0) (hc : c ≠ 0) {m : ℕ} (h : UnitAt x (a ^ m / c)) :
     Scheme.ord c x = (m : ℤ) * Scheme.ord a x := by
   rw [← VertOrd.ord_pow' ha, ← div_mul_cancel₀ (a ^ m) hc, Scheme.ord_mul h.ne_zero hc, h.ord_eq_zero, zero_add]
 
+/- English proof (translation)
+Establish `: IsProper Q.p` using `(isProper_and_exists_isAmpleLB_of_isProjOver Q.ar.isProjOver).1`. Establish `: CompactSpace Q.X` using `QuasiCompact.compactSpace_of_compactSpace Q.p`. Establish `he : (ramIdx O p : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Vert.ramIdx_ne_zero O p)`. Establish `hf : (resDeg O p : ℝ) ≠ 0`. Use `letI := ZMod.algebra (ResidueField O) p`.
+
+Conclude with `Nat.cast_ne_zero.2 (Module.finrank_pos (R := ZMod p) (M := ResidueField O)).ne'`. Establish `key` using `comb (fun j => g j) (fun j => (divOfRatSec (P j).isLB (ht j).1).mult) (fun j => pdeg p (L j)) (fun j ζ => ((g j).residueDegree ζ : ℤ)) (fun j => CartierDiv.finite_support_mult _) (divOfRatSec hM hr).mult (pdeg p N) (CartierDiv.finite_support_mult _) (fun z => (Q.p z).asIdeal = v. …`. Establish `hζ` using `notMem_gen_of_mult _ _ _ (hP j) h`. Rewrite using `[← UpperTheory.pdeg_smul_power O p (B j) d m (L j) (fun k => (N k).pull (g j)) (hL j) (fun k => LB.isLB_pull (hN k) (g j)) (fun k => UpperTheory.pull_class_rational_power _ _ (g j) (hg j) (L j k) (hL j k) (u j k) (N k) (hN k) (s k) m (hu j k).1 (hl k).1 (UpperTheory.unitAt_pow_di …`. Use `UpperTheory.vertical_model_dimension_match F Y v p hp F' ε O b hb (B j) d hd (hBd j) Q (g j) (hE j).2 N hN ζ hζ (CartierDiv.coheight_eq_one_of_mult_ne_zero h))` and compare the differences between its conclusion and the goal.
+
+Use the proof step `(fun η h => CartierDiv.coheight_eq_one_of_mult_ne_zero h)`. Use the proof step `(fun η hη hη' => by`. Take `⟨i', hi'⟩` from `exists_chart hM η`. Rewrite using `[((presents_divOfRatSec hM hr).isEqn i' η hi').mult_eq, ← UpperTheory.normal_model_complex_compat F Y v p hp F' ε O b hb σ Q hQ J B hB (fun j => (hBd j).trans hd.symm) μ g hg hE n hn hc η hη hη' (r i') (r i').ne_zero]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `finsum_congr fun ζ => ?_` and prove the remaining obligations. Distinguish the cases in `h : g j ζ = η`. Rewrite using `[if_pos h, if_pos h]`.
+
+Take `⟨i, hi⟩` from `exists_chart (P j).isLB ζ`. Rewrite using `[((presents_divOfRatSec (P j).isLB (ht j).1).isEqn i ζ hi).mult_eq, ord_eq_of_unitAt (t j i).ne_zero ((map_ne_zero _).2 (r i').ne_zero) (UpperTheory.unitAt_pow_div_fnMap_of_reads_of_gReads F Y v p hp F' ε O b hb (B j) (hB j) (μ j) Q (g j) (hg j) (hE j) (P j).M (P j).isLB (t j) M …`. Rewrite using `[if_neg h, if_neg h])`. Establish `e : ∀ j, ((∑ᶠ ζ, (divOfRatSec (P j).isLB (ht j).1).mult ζ * pdeg p (L j) ζ : ℤ) : ℝ) = (((B j).capDeg_vp p (Vert.Model.toQ (P j).cls) (∏ k, Vert.c1 (L j k) (hL j k)) : ℚ) : ℝ) * ((ramIdx O p : ℝ) * (resDeg O p : ℝ))`. Introduce `j`.
+
+Establish `h` using `congrArg (Rat.cast : ℚ → ℝ) (UpperTheory.vertical_degree_rational_section O p (B j) (hB j) d (hBd j) (P j) (t j) (ht j).1 (hP j) (L j) (hL j))`. Rewrite `h` using `[Rat.cast_intCast]`. Rewrite using `[← h, Vert.Model.capDeg_vp_toQ]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Simplify using `only [e] at key`. Rewrite `key` using `[← Finset.sum_mul]`. Use `mul_right_cancel₀ (mul_ne_zero he hf) ?_` and prove the remaining obligations. Rewrite using `[mul_assoc _ _ (_ * _), key, mul_right_comm]`. Use `congr!`.
+-/
 private theorem onT (F : Type) [Field F] [NumberField F] (Y : Var F) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ)
     [Fact p.Prime] (hp : (p : 𝓞 F) ∈ v.asIdeal) (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F')
     (O : ValuationSubring F') [IsDiscreteValuationRing O] [CharP (ResidueField O) p] [Finite (ResidueField O)]
@@ -217,6 +277,15 @@ private theorem onT (F : Type) [Field F] [NumberField F] (Y : Var F) (v : Height
   rw [mul_assoc _ _ (_ * _), key, mul_right_comm]
   congr!
 
+/- English proof (translation)
+Introduce `F _ _ Y v p _ hp F' _ _ ε O _ _ b hb σ Q _ _ hQ d hd m M hM r hr l₀ hl₀ N hN s l hl J _ B hB hBd μ n hn hc P t hP ht L hL u hu`. Establish `hfin : Finite (ResidueField O)`. Use `(GlobalTheory.isDiscreteValuationRing_and_finite_residueField_of_numberField O (Fact.out : p.Prime).ne_zero ?_).2` and prove the remaining obligations. Establish `h : ((p : ℕ) : O) ∈ maximalIdeal O`. Use `(hb.2 p).1 hp` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Use `O.coe_mem_nonunits_iff.2 h` as an intermediate fact. Simplify using `using this`. Use `choose T f μ' g hf f' hT hf0 hf1 hbij hφ h1 h2 hE hg using fun j => UpperTheory.exists_normal_vertical_model F Y O b (B j) (μ j) Q`. Establish `hpb` using `fun j => UpperTheory.vertical_model_match_compat F Y O b (B j) (T j) (μ j) (μ' j) (f j) (hf j) (f' j) (h1 j) (h2 j)`.
+
+Establish `hc' : Count μ' ε σ n` using `fun ι hι => (card_transport (fun j => SmallSec.fnMap (f j).f (hf j)) hbij (fun j => (μ j).φ) (fun j => (μ' j).φ) (fun j => cst (B j)) (fun j => cst (T j)) hφ (fun j => (hpb j).2.2) ι _).trans (hc ι hι)`. Establish `key` using `onT F Y v p hp F' ε O b hb σ Q hQ d hd m M hM r hr l₀ hl₀ N hN s l hl J T hT (fun j => by rw [← (f j).relDim_add, hf0, hBd, add_zero]) μ' g hg hE n hn hc' (fun j => (P j).pull (f j).comp_str) _ (fun j => (hpb j).2.1 (P j) (t j) (hP j)) (fun j => (hpb j).1 v (P j).M (t j) l₀ (ht j …`. Rewrite using `[← key]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Establish `h` using `(GlobalTheory.VertDegProj.capDeg_vp_vPullQ O p (B j) (hB j) (T j) (f j) (hf0 j)).2 (Vert.Model.toQ (P j).cls) (∏ k, Vert.c1 (L j k) (hL j k))`. Rewrite `h` using `[hf1, one_mul, Vert.Model.vPullQ_toQ, ← VertDiv.cls_pull, map_prod]`. Rewrite using `[← h]`. Simplify using `only [pullback_firstChern (f j).f (hL j _) (LB.isLB_pull (hL j _) (f j).f)]`.
+-/
 theorem UpperTheory.normal_model_complex_compat_alt :
     ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (v : HeightOneSpectrum (𝓞 F)) (p : ℕ) [Fact p.Prime], (p : 𝓞 F) ∈ v.asIdeal → ∀ (F' : Type) [Field F'] [NumberField F'] (ε : F →+* F') (O : ValuationSubring F') [IsDiscreteValuationRing O] [CharP (ResidueField O) p] (b : 𝓞 F →+* O), IsUp v ε O b → ∀ (σ : F' →+* ℂ) (Q : TrueGeo.Model Y) [IsIntegral Q.X] [IsLocallyNoetherian Q.X], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Q.X → ∀ (d : ℕ), Y.dim = d → ∀ (m : ℕ) (M : LB Q.X) (hM : M.IsLB) (r : M.ι → Q.X.functionFieldˣ) (hr : IsRatSec M r) (l₀ : Ext v → AlgPt Y → ℝ), GReads Q v M r (fun e y => (m : ℝ) * l₀ e y) → ∀ (N : Fin d → LB Q.X), (∀ k, (N k).IsLB) → ∀ (s : ∀ k, (N k).ι → Q.X.functionFieldˣ) (l : Fin d → Ext v → AlgPt Y → ℝ), (∀ k, GReads Q v (N k) (s k) (fun e y => (m : ℝ) * l k e y)) → ∀ (J : Type) [Fintype J] (B : J → Vert.Model O), (∀ j, GlobalTheory.IsNormalScheme (B j).X) → (∀ j, (B j).relDim = d) → ∀ (μ : ∀ j, Match Y b (B j)) (n : ℕ), 0 < n → Count μ ε σ n → ∀ (P : ∀ j, VertDiv (B j)) (t : ∀ j, (P j).M.ι → (B j).X.functionFieldˣ), (∀ j, IsSecOf (P j) (t j)) → (∀ j, Reads (μ j) v (P j).M (t j) l₀) → ∀ (L : ∀ j, Fin d → LB (B j).X) (hL : ∀ j k, (L j k).IsLB) (u : ∀ j k, (L j k).ι → (B j).X.functionFieldˣ), (∀ j k, Reads (μ j) v (L j k) (u j k) (l k)) → (m : ℝ) ^ (d + 1) * placeDeg p v * ∑ j, (((B j).capDeg_vp p (Vert.Model.toQ (P j).cls) (∏ k, Vert.c1 (L j k) (hL j k)) : ℚ) : ℝ) = (n : ℝ) * ∑ᶠ z : Q.X, if (Q.p z).asIdeal = v.asIdeal then (((divOfRatSec hM hr).mult z * pdeg p N z : ℤ) : ℝ) else 0 := by
   intro F _ _ Y v p _ hp F' _ _ ε O _ _ b hb σ Q _ _ hQ d hd m M hM r hr l₀ hl₀ N hN s l hl J _ B hB hBd μ n hn hc

@@ -8,12 +8,22 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SurjectionOntoH4.ThetaEmpty
 open CrystallineSemistableComparison.Onto GlobalTheory.CompanionTheory.SurjectionOntoH4
 
+/- English proof (translation)
+Establish `h : (toR C ∅ : A → C.R ∅) = C.base.symm` using `funext fun a => C.res_id ∅ _ _`. Rewrite using `[h]`. Conclude with `C.base.symm.bijective`.
+-/
 theorem toR_empty_bijective {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A]
     (C : ChartRings K A n d) : Function.Bijective (toR C ∅) := by
   have h : (toR C ∅ : A → C.R ∅) = C.base.symm := funext fun a => C.res_id ∅ _ _
   rw [h]
   exact C.base.symm.bijective
 
+/- English proof (translation)
+Introduce `K _ n d A _ _ C`. Set `e : Bp K n d ≃ₐ[K] R0 K n d ∅` to `AlgEquiv.ofBijective (poly n K ∅) PolyBij.poly_bijective`. Set `θ : R0 K n d ∅ →ₐ[K] C.R ∅` to `(toR C ∅).comp ((phi C).comp e.symm.toAlgHom)`. Establish `hθ : ∀ b, θ (poly n K ∅ b) = toR C ∅ (phi C b)` using `fun b => by`. Establish `hb : e.symm (poly n K ∅ b) = b` using `e.symm_apply_apply b`.
+
+Express the relevant statement in the definitionally equal form `toR C ∅ (phi C (e.symm (poly n K ∅ b))) = _`. Rewrite using `[hb]`. Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Set `eM : Bp K n d ≃ₗ[Bp K n d] R0 K n d ∅` to `LinearEquiv.ofBijective (Algebra.linearMap (Bp K n d) (R0 K n d ∅)) PolyBij.poly_bijective`. Set `eN : Aa C ≃ₗ[Aa C] Rb C ∅` to `LinearEquiv.ofBijective (Algebra.linearMap (Aa C) (Rb C ∅)) (toR_empty_bijective C)`.
+
+Use `(IsBaseChange.iff_of_equiv_comm (f := Algebra.linearMap (Bp K n d) (Aa C)) eM eN ?_).mp (IsBaseChange.linearMap (Bp K n d) (Aa C))` and prove the remaining obligations. Use `LinearMap.ext fun b => ?_` and prove the remaining obligations. Conclude with `hθ b`.
+-/
 theorem theta_empty : ∀ {K : Type} [Field K] {n d : ℕ} {A : Type} [CommRing A] [Algebra K A] (C : ChartRings K A n d),
     ∃ (θ : R0 K n d ∅ →ₐ[K] C.R ∅) (hθ : ∀ b, θ (poly n K ∅ b) = toR C ∅ (phi C b)),
       IsBaseChange (Aa C) (thetaLin C θ hθ) := by

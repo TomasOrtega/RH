@@ -11,6 +11,21 @@ open GlobalTheory.TorusPart
 
 open GlobalTheory.SS.TorusSlice
 
+/- English proof (translation)
+Set `T` to `splitTorus S X`. Set `Y₁` to `pullback σ η[T]`. Set `e : Y₁ ⟶ Y` to `pullback.fst _ _`. Establish `he : IsPullback e (toUnit Y₁) σ η[T]`. Rewrite using `[toUnit_unique (toUnit Y₁) (pullback.snd σ η[T])]`.
+
+Conclude with `IsPullback.of_hasPullback _ _`. Establish `he1 : e ≫ σ = 1` using `he.w`. Establish `hη : IsClosedImmersion (η[T]).left`. Establish `: IsClosedImmersion ((η[T]).left ≫ T.hom)`. Rewrite using `[Over.w]`.
+
+Conclude with `inferInstanceAs (IsClosedImmersion (𝟙 S))`. Conclude with `IsClosedImmersion.of_comp (η[T]).left T.hom`. Establish `: IsAffineHom e.left` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (he.map (Over.forget S)).flip (inferInstanceAs (IsAffineHom (η[T]).left))`. Establish `: IsAffine Y₁.left` using `isAffine_of_isAffineHom e.left`. Establish `: IsAffineHom (snd T Y₁).left` using `inferInstanceAs (IsAffineHom (pullback.snd T.hom Y₁.hom))`.
+
+Establish `: IsAffine (T ⊗ Y₁).left` using `isAffine_of_isAffineHom (snd T Y₁).left`. Use `isOpenImmersion_sweep i j σ hσ e he` as an intermediate fact. Use `⟨_, goodOpen_of_equivar i ((fst T Y₁ ≫ i) * (snd T Y₁ ≫ e ≫ j)) (fst T Y₁) (fun Z t p p' h => ?_) (fun Z t p => ⟨lift (t * (p ≫ fst _ _)) (p ≫ snd _ _), ?_⟩), fun s => ?_⟩` and prove the remaining obligations. Establish `h1 : (p' ≫ snd T Y₁ ≫ e) ≫ j = (((p' ≫ fst T Y₁)⁻¹ * (t * (p ≫ fst T Y₁))) ≫ i) * ((p ≫ snd T Y₁ ≫ e) ≫ j)`. Simplify using `only [MonObj.comp_mul] at h`.
+
+Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, GrpObj.inv_comp, _root_.mul_assoc, eq_inv_mul_iff_mul_eq, _root_.mul_assoc]`. Simplify using `using h`. Establish `h2` using `hσ _ _ _ _ h1`. Simplify using `only [Category.assoc, he1, MonObj.comp_one, _root_.mul_one] at h2`. Conclude with `(eq_inv_mul_iff_mul_eq.1 h2 ▸ (_root_.mul_one _).symm)`.
+
+Simplify using `[MonObj.comp_mul, MonObj.mul_comp, _root_.mul_assoc]`. Take `⟨y₁, hy₁, -⟩` from `he.exists_lift y (toUnit _) hy`. Establish `: y ≫ j = lift 1 y₁ ≫ ((fst T Y₁ ≫ i) * (snd T Y₁ ≫ e ≫ j))`. Simplify using `[MonObj.comp_mul, reassoc_of% hy₁]`. Rewrite using `[this, Scheme.Hom.image_top_eq_opensRange, Over.comp_left, Scheme.Hom.comp_apply]`.
+
+Conclude with `⟨_, rfl⟩`.
+-/
 private theorem goodOpen_of_unit_point {S : Scheme.{0}} {X : Type} [AddCommGroup X] [Module.Finite ℤ X]
     {G Y Z₀ : Over S} [GrpObj G]
     (i : splitTorus S X ⟶ G) [IsMonHom i] (j : Y ⟶ G) [IsOpenImmersion j.left] [QuasiCompact j.left] [IsAffine Y.left]
@@ -51,6 +66,11 @@ private theorem goodOpen_of_unit_point {S : Scheme.{0}} {X : Type} [AddCommGroup
     rw [this, Scheme.Hom.image_top_eq_opensRange, Over.comp_left, Scheme.Hom.comp_apply]
     exact ⟨_, rfl⟩
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Take `⟨c, hc⟩` from `exists_of_basis (Z := 𝟙_ (Over S)) b fun n => Units.map r.appTop.hom.toMonoidHom (splitTorusPointsEquiv S X _ t (Multiplicative.ofAdd (b n)))`. Use `⟨c, ext_basis b fun n => ?_⟩` and prove the remaining obligations. Establish `e : (toUnit (Over.mk p)).left = p` using `(Category.comp_id _).symm.trans (Over.w (toUnit (Over.mk p)))`. Establish `e2` using `congrArg (fun φ : B ⟶ B => φ.appTop.hom (ch t (b n))) h`.
+
+Rewrite using `[ch_comp, hc, e]`. Rewrite `e2`, the goal using `[ch_eq]`. Simplify using `only [Scheme.Hom.comp_appTop, Scheme.Hom.id_appTop] at e2`. Conclude with `e2`.
+-/
 private theorem exists_section {S B : Scheme.{0}} {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     (p : B ⟶ S) (r : S ⟶ B) (h : p ≫ r = 𝟙 _) (t : Over.mk p ⟶ splitTorus S X) :
     ∃ c : 𝟙_ (Over S) ⟶ splitTorus S X, toUnit _ ≫ c = t := by
@@ -65,6 +85,37 @@ private theorem exists_section {S B : Scheme.{0}} {X : Type} [AddCommGroup X] [M
   simp only [Scheme.Hom.comp_appTop, Scheme.Hom.id_appTop] at e2
   exact e2
 
+/- English proof (translation)
+Introduce `k _ _ C _ hC G _ hG X _ _ _ i hi H p hp`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `: Smooth (strHom k C)` using `have := hC.1`. Use the proof step `SmoothOfRelativeDimension.smooth 1 _`.
+
+Establish `: IsLocallyNoetherian G.left` using `LocallyOfFiniteType.isLocallyNoetherian (G.hom ≫ strHom k C)`. Set `b` to `Module.Free.chooseBasis ℤ X`. Set `pt : Sp k` to `IsLocalRing.closedPoint k`. Use `choose U u hne hu hw using fun χ => H χ (p pt)`. Set `F : Over (Sp k)` to `Over.mk (pullback.snd G.hom p)`.
+
+Set `φ : F.left ⟶ G.left` to `pullback.fst G.hom p`. Establish `: IsIntegral F.left` using `GlobalTheory.isIntegral_pullback_of_smooth G.hom p`. Establish `: LocallyOfFiniteType F.hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom p))`. Set `O : G.left.Opens` to `⟨⋂ n, (U (b n) : G.left.Opens), isOpen_iInter_of_finite fun n => TopologicalSpace.Opens.isOpen _⟩`. Establish `hd : Dense (⋂ n, ((φ ⁻¹ᵁ U (b n) : F.left.Opens) : Set F.left))`.
+
+Establish `aux : ∀ (s : Finset (Module.Free.ChooseBasisIndex ℤ X)) (f : _ → Set F.left), (∀ n, IsOpen (f n)) → (∀ n, Dense (f n)) → Dense (⋂ n ∈ s, f n)` using `fun s f h1 h2 => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.set_biInter_insert]`.
+
+Conclude with `(h2 a).inter_of_isOpen_left ih (h1 a)`. It suffices to establish `h : ∀ n, Dense ((φ ⁻¹ᵁ U (b n) : F.left.Opens) : Set F.left) by`. Simplify using `using aux Finset.univ _ (fun n => TopologicalSpace.Opens.isOpen _) h`. Introduce `n`. Take `⟨y, hy, e⟩` from `hne (b n)`.
+
+Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := G.hom) (g := p) y pt e`. Conclude with `(TopologicalSpace.Opens.isOpen _).dense ⟨z, show φ z ∈ U (b n) from hz ▸ hy⟩`. Take `⟨q, hq⟩` from `exists_point F hd.nonempty (isOpen_iInter_of_finite fun n => TopologicalSpace.Opens.isOpen _).isLocallyClosed`. Set `w : Over.mk p ⟶ G` to `Over.homMk (q.left ≫ φ) (by`. Use `Over.w q` as an intermediate fact.
+
+Express the relevant statement in the definitionally equal form `(q.left ≫ pullback.fst G.hom p) ≫ G.hom = p`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Conclude with `(congrArg (· ≫ p) this).trans (Category.id_comp _))`. Establish `hO : w.left pt ∈ O` using `Set.mem_iInter.2 fun n => by`. Express the relevant statement in the definitionally equal form `(q.left ≫ φ) pt ∈ U (b n)`.
+
+Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `Set.mem_iInter.1 (hq pt) n`. Take `⟨Y₀, hY₀, hpY, hYO⟩` from `exists_isAffineOpen_mem_and_subset hO`. Set `Y : Over C` to `Over.mk (Y₀.ι ≫ G.hom)`. Set `j : Y ⟶ G` to `Over.homMk Y₀.ι rfl`.
+
+Establish `: IsOpenImmersion j.left` using `inferInstanceAs (IsOpenImmersion Y₀.ι)`. Establish `: QuasiCompact j.left` using `inferInstance`. Establish `: IsAffine Y.left` using `hY₀`. Establish `hr : Set.range w.left ⊆ Set.range Y₀.ι`. Introduce and unpack `_ ⟨s, rfl⟩`.
+
+Rewrite using `[Scheme.Opens.range_ι, Subsingleton.elim (α := PrimeSpectrum k) s pt]`. Conclude with `hpY`. Set `y₀ : Over.mk p ⟶ Y` to `Over.homMk (IsOpenImmersion.lift Y₀.ι w.left hr) ((IsOpenImmersion.lift_fac_assoc _ _ hr _).trans (Over.w w))`. Establish `hy₀ : y₀ ≫ j = w` using `Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ hr)`. Establish `hle : ∀ n, ⊤ ≤ j.left ⁻¹ᵁ U (b n)` using `fun n z _ => Set.mem_iInter.1 (hYO z.2) n`.
+
+Take `⟨σ₀, hσ⟩` from `exists_of_basis (Z := Y) b fun n => ((hu (b n)).map (j.left.appLE (U (b n)) ⊤ (hle n)).hom).unit`. Establish `hE : Equivar i j σ₀` using `fun Z t a a' h => ext_basis b fun n => by`. Establish `pre : ∀ c : Z ⟶ Y, ⊤ ≤ (c ≫ j).left ⁻¹ᵁ U (b n)` using `fun c z _ => by`. Express the relevant statement in the definitionally equal form `(c ≫ j).left z ∈ U (b n)`. Rewrite using `[Over.comp_left, Scheme.Hom.comp_apply]`.
+
+Conclude with `hle n (Set.mem_univ _)`. Use `hw (b n) Z t (a ≫ j) (h ▸ pre a') (pre a)` as an intermediate fact. Rewrite `this` using `[appLE_comp_top a' _ _ h.symm _ _ (hle n), appLE_comp_top a _ _ rfl _ _ (hle n)]`. Rewrite using `[ch_mul, ch_comp, ch_comp, hσ, IsUnit.unit_spec]`. Conclude with `this`.
+
+Take `⟨c, hc⟩` from `exists_section p (strHom k C) hp (y₀ ≫ σ₀)⁻¹`. Set `σ : Y ⟶ splitTorus C X` to `σ₀ * (toUnit Y ≫ c)`. Establish `hσ' : Equivar i j σ` using `fun Z t a a' h => by`. Simplify using `only [σ, MonObj.comp_mul, hE Z t a a' h, _root_.mul_assoc]`. Rewrite using `[← Category.assoc, ← Category.assoc a, toUnit_unique (a' ≫ toUnit Y) (a ≫ toUnit Y)]`.
+
+Establish `hy : y₀ ≫ σ = 1`. Simplify using `only [σ, MonObj.comp_mul]`. Rewrite using `[← Category.assoc, toUnit_unique (y₀ ≫ toUnit Y) (toUnit _), hc, mul_inv_cancel]`. Take `⟨V, hV, hpV⟩` from `goodOpen_of_unit_point i j σ hσ' y₀ hy`. Rewrite `hpV` using `[hy₀]`.
+
+Conclude with `⟨V, w, hV, fun s _ => hpV s⟩`.
+-/
 theorem UpperTheory.weight_units_section_at_point :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)], IsCurve k C →
         ∀ (G : Over C) [GrpObj G], IsSemiAbelian G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus C X ⟶ G), IsMonHom u →

@@ -11,6 +11,11 @@ variable {G : Type} [AddCommGroup G] [TopologicalSpace G] [NonarchimedeanAddGrou
 
 def ind (U : OpenAddSubgroup G) (a : G) : G → ℂ := fun x => if x - a ∈ U then 1 else 0
 
+/- English proof (translation)
+Establish `hc : IsClopen ((fun x => x - a) ⁻¹' (U : Set G))` using `U.isClopen.preimage (continuous_sub_right a)`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x - a ∈ U`. Use `filter_upwards [hc.isOpen.mem_nhds hx] with z hz`. Conclude with `(if_pos hz).trans (if_pos hx).symm`.
+
+Use `filter_upwards [hc.isClosed.isOpen_compl.mem_nhds hx] with z hz`. Conclude with `(if_neg hz).trans (if_neg hx).symm`. Use `HasCompactSupport.intro (h₀.image (continuous_add_right a)) fun y hy => if_neg fun h => hy ?_` and prove the remaining obligations. Conclude with `⟨y - a, hU h, sub_add_cancel y a⟩`.
+-/
 theorem ind_mem {U₀ U : OpenAddSubgroup G} (h₀ : IsCompact (U₀ : Set G)) (hU : U ≤ U₀) (a : G) : ind U a ∈ SB G := by
   have hc : IsClopen ((fun x => x - a) ⁻¹' (U : Set G)) := U.isClopen.preimage (continuous_sub_right a)
   refine ⟨(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_, ?_⟩
@@ -22,6 +27,13 @@ theorem ind_mem {U₀ U : OpenAddSubgroup G} (h₀ : IsCompact (U₀ : Set G)) (
   · refine HasCompactSupport.intro (h₀.image (continuous_add_right a)) fun y hy => if_neg fun h => hy ?_
     exact ⟨y - a, hU h, sub_add_cancel y a⟩
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ t in 𝓝 (0 : G), ∀ z ∈ tsupport φ, φ (z + t) = φ z`. Use `IsCompact.eventually_forall_of_forall_eventually hφ.2 fun z _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : G × G => (φ (q.2 + q.1), φ q.2)` using `(hφ.1.comp_continuous (by fun_prop)).prodMk (hφ.1.comp_continuous continuous_snd)`. Use `filter_upwards [h2.eventually_eq (0, z)] with q hq`. Simplify using `only [Prod.mk.injEq, add_zero] at hq`.
+
+Rewrite using `[hq.1, hq.2]`. Take `⟨U, hU⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h1`. Use `⟨U, fun u hu z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ tsupport φ`. Conclude with `hU hu z hz`.
+
+Distinguish the cases in `hz' : z + u ∈ tsupport φ`. Use `hU (U.neg_mem hu) _ hz'` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']`.
+-/
 theorem uniform {φ : G → ℂ} (hφ : φ ∈ SB G) : ∃ U : OpenAddSubgroup G, ∀ u ∈ U, ∀ x, φ (x + u) = φ x := by
   have h1 : ∀ᶠ t in 𝓝 (0 : G), ∀ z ∈ tsupport φ, φ (z + t) = φ z := by
     refine IsCompact.eventually_forall_of_forall_eventually hφ.2 fun z _ => ?_
@@ -40,6 +52,15 @@ theorem uniform {φ : G → ℂ} (hφ : φ ∈ SB G) : ∃ U : OpenAddSubgroup G
     exact this.symm
   · rw [image_eq_zero_of_notMem_tsupport hz, image_eq_zero_of_notMem_tsupport hz']
 
+/- English proof (translation)
+Use `QuotientAddGroup.discreteTopology (N := U.toAddSubgroup) U.isOpen` as an intermediate fact. Establish `hfin : ((QuotientAddGroup.mk : G → G ⧸ U.toAddSubgroup) '' tsupport φ).Finite` using `(IsCompact.image hφ.2 QuotientAddGroup.continuous_mk).finite_of_discrete`. Establish `hf : {q : G ⧸ U.toAddSubgroup | φ q.out ≠ 0}.Finite` using `hfin.subset fun q hq => ⟨q.out, subset_tsupport _ hq, QuotientAddGroup.out_eq' q⟩`. Use `⟨hf.toFinset, fun q => hf.mem_toFinset, funext fun y => ?_⟩` and prove the remaining obligations. Establish `hind : ∀ q : G ⧸ U.toAddSubgroup, ind U q.out y = if (y : G ⧸ U.toAddSubgroup) = q then 1 else 0`.
+
+Introduce `q`. Establish `: (y : G ⧸ U.toAddSubgroup) = q ↔ y - q.out ∈ U` using `by conv_lhs => rw [← QuotientAddGroup.out_eq' q]`. Conclude with `QuotientAddGroup.eq_iff_sub_mem`. Simplify using `only [ind, this]`. Establish `h2 : -y + (y : G ⧸ U.toAddSubgroup).out ∈ U` using `QuotientAddGroup.eq.mp (QuotientAddGroup.out_eq' _).symm`.
+
+Establish `h3` using `hU _ h2 y`. Rewrite `h3` using `[add_neg_cancel_left]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hind, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq]`. Use `split_ifs with h`. Conclude with `h3.symm`.
+
+Rewrite using `[← h3]`. Assume the negation of the conclusion as `hne`. Conclude with `h (hf.mem_toFinset.2 hne)`.
+-/
 theorem decomp {φ : G → ℂ} (hφ : φ ∈ SB G) (U : OpenAddSubgroup G) (hU : ∀ u ∈ U, ∀ x, φ (x + u) = φ x) :
     ∃ t : Finset (G ⧸ U.toAddSubgroup), (∀ q, q ∈ t ↔ φ q.out ≠ 0) ∧ φ = ∑ q ∈ t, φ q.out • ind U q.out := by
   have := QuotientAddGroup.discreteTopology (N := U.toAddSubgroup) U.isOpen
@@ -67,6 +88,21 @@ theorem decomp {φ : G → ℂ} (hφ : φ ∈ SB G) (U : OpenAddSubgroup G) (hU 
 variable {U₀ : OpenAddSubgroup G} (h₀ : IsCompact (U₀ : Set G)) {P : Set G} {l : (G → ℂ) →ₗ[ℂ] ℂ}
 
 include h₀ in
+/- English proof (translation)
+Use `choose! χ hχ hne hl using h2`. Establish `hV : ∀ a, ∃ V : OpenAddSubgroup G, a ∉ P → ∀ u ∈ V, χ a (a + u) = χ a a`. Introduce `a`. Distinguish the cases in `ha : a ∈ P`. Conclude with `⟨⊤, fun h => absurd ha h⟩`.
+
+Establish `: ∀ᶠ u in 𝓝 (0 : G), χ a (a + u) = χ a a`. Simplify using `using (((hχ a ha).comp_continuous (continuous_add_left a)).eventually_eq 0)`. Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ this`. Conclude with `⟨V, fun _ u hu => hV hu⟩`. Use `choose V hV using hV`.
+
+Establish `hcl : IsClosed (Function.support φ)` using `(hφ.1.isClopen_fiber 0).compl.isClosed`. Establish `hK : IsCompact (Function.support φ)` using `IsCompact.of_isClosed_subset hφ.2 hcl (subset_tsupport _)`. Take `⟨s, hs, hcov⟩` from `hK.elim_nhds_subcover (fun a => (fun b => b - a) ⁻¹' (V a : Set G)) (fun a _ => (continuous_sub_right a).continuousAt.preimage_mem_nhds (by show (V a : Set G) ∈ 𝓝 (a - a); rw [sub_self]; exact (V a).mem_nhds_zero))`. Take `⟨U₁, hU₁⟩` from `uniform hφ`. Take `⟨U, hU⟩` from `NonarchimedeanAddGroup.is_nonarchimedean ((U₀ : Set G) ∩ U₁ ∩ ⋂ a ∈ s, (V a : Set G)) (inter_mem (inter_mem U₀.mem_nhds_zero U₁.mem_nhds_zero) ((biInter_finset_mem s).2 fun a _ => (V a).mem_nhds_zero))`.
+
+Take `⟨t, ht, e⟩` from `decomp hφ U fun u hu => hU₁ u (hU hu).1.2`. Rewrite using `[e, map_sum]`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Take `⟨a, ha, hqa⟩` from `Set.mem_iUnion₂.mp (hcov ((ht q).1 hq))`. Establish `haP : a ∉ P` using `hP a (hs a ha)`.
+
+Establish `h3` using `hl a haP _ (ind_mem h₀ (fun u hu => (hU hu).1.1) q.out)`. Establish `h4 : (fun x => χ a x * ind U q.out x) = χ a a • ind U q.out`. Use function extensionality and compare the values at `x`. Simplify using `only [ind, Pi.smul_apply, smul_eq_mul]`. Use `split_ifs with hx`.
+
+Use `hV a haP _ ((V a).add_mem (Set.mem_iInter₂.1 (hU hx).2 a ha) hqa)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 2`. Use `beta_reduce`. Normalize the expressions using the abelian group laws.
+
+Simplify using the standard rewrite rules. Rewrite `h3` using `[h4, map_smul, smul_eq_mul]`. Rewrite using `[map_smul, (mul_left_eq_self₀.1 h3).resolve_left (hne a haP), smul_zero]`.
+-/
 theorem off (h2 : ∀ a ∉ P, ∃ χ : G → ℂ, IsLocallyConstant χ ∧ χ a ≠ 1 ∧ ∀ φ ∈ SB G, l (fun x => χ x * φ x) = l φ)
     {φ : G → ℂ} (hφ : φ ∈ SB G) (hP : ∀ a, φ a ≠ 0 → a ∉ P) : l φ = 0 := by
   choose! χ hχ hne hl using h2
@@ -105,6 +141,21 @@ theorem off (h2 : ∀ a ∉ P, ∃ χ : G → ℂ, IsLocallyConstant χ ∧ χ a
 
 include h₀ in
 
+/- English proof (translation)
+Establish `key : ∀ U ≤ U₀, ∀ a, l (ind U a) = if ∃ p ∈ P, p - a ∈ U then l (ind U 0) else 0`. Introduce `U hU a`. Use `split_ifs with h`. Take `⟨p, hp, hpa⟩` from `h`. Rewrite using `[← h1 p hp _ (ind_mem h₀ hU a)]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [ind, sub_zero, add_sub_assoc]`. Conclude with `if_congr (U.toAddSubgroup.add_mem_cancel_right hpa) rfl rfl`. Use `off h₀ h2 (ind_mem h₀ hU a) fun b hb hbP => h ⟨b, hbP, ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hb (if_neg hc)`. Establish `zero : ∀ U ≤ U₀, l (ind U 0) = 0`. Introduce `U hU`. Take `⟨t, ht, e⟩` from `decomp (ind_mem h₀ le_rfl 0) U fun u hu x => by`.
+
+Simplify using `only [ind, sub_zero]`. Conclude with `if_congr (U₀.toAddSubgroup.add_mem_cancel_right (hU hu)) rfl rfl`. Establish `h3 : ∀ q ∈ t, ind U₀ 0 q.out = 1` using `fun q hq => by`. Use `(ht q).1 hq` as an intermediate fact. Unfold `ind at this ⊢`.
+
+Use `split_ifs at this ⊢ with h`. Both sides reduce to the same expression. Conclude with `absurd rfl this`. Rewrite `h0` using `[e, map_sum, Finset.sum_congr rfl fun q hq => by rw [h3 q hq, one_smul, key U hU], ← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Use `(mul_eq_zero.1 h0).resolve_left (Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨0, ?_⟩))` and prove the remaining obligations.
+
+Establish `h4 : (0 : G ⧸ U.toAddSubgroup).out ∈ U` using `(QuotientAddGroup.eq_zero_iff _).1 (QuotientAddGroup.out_eq' (0 : G ⧸ U.toAddSubgroup))`. Use `Finset.mem_filter.2 ⟨(ht _).2 ?_, 0, hP0, by simpa using U.neg_mem h4⟩` and prove the remaining obligations. Simplify using `[ind, hU h4]`. Take `⟨U₁, hU₁⟩` from `uniform hφ`. Take `⟨t, -, e⟩` from `decomp hφ (U₀ ⊓ U₁) fun u hu => hU₁ u hu.2`.
+
+Rewrite using `[e, map_sum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, key _ inf_le_left, zero _ inf_le_left, ite_self, smul_zero]`.
+-/
 theorem test (hP0 : (0 : G) ∈ P) (h1 : ∀ p ∈ P, ∀ φ ∈ SB G, l (fun x => φ (x + p)) = l φ)
     (h2 : ∀ a ∉ P, ∃ χ : G → ℂ, IsLocallyConstant χ ∧ χ a ≠ 1 ∧ ∀ φ ∈ SB G, l (fun x => χ x * φ x) = l φ)
     (h0 : l (ind U₀ 0) = 0) {φ : G → ℂ} (hφ : φ ∈ SB G) : l φ = 0 := by

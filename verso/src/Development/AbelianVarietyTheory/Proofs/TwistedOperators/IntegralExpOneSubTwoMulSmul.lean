@@ -6,6 +6,11 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.PolarU
 
+/- English proof (translation)
+Establish `h` using `intervalIntegral.integral_comp_sub_mul (a := (0 : ℝ)) (b := 1) (fun x : ℝ => x ^ n) (two_ne_zero' ℝ) 1`. Simplify using `only [mul_one, mul_zero, sub_zero] at h`. Rewrite using `[h, integral_pow, smul_eq_mul]`. Establish `e : (1 : ℝ) - 2 = -1` using `by norm_num`. Rewrite using `[e, one_pow]`.
+
+Establish `hn : (n : ℝ) + 1 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem integral_one_sub_two_mul_pow (n : ℕ) :
     ∫ s in (0 : ℝ)..1, (1 - 2 * s) ^ n = (1 - (-1) ^ (n + 1)) / (2 * ((n : ℝ) + 1)) := by
   have h := intervalIntegral.integral_comp_sub_mul (a := (0 : ℝ)) (b := 1)
@@ -17,6 +22,9 @@ theorem integral_one_sub_two_mul_pow (n : ℕ) :
   have hn : (n : ℝ) + 1 ≠ 0 := by positivity
   field_simp
 
+/- English proof (translation)
+Rewrite using `[NormedSpace.exp_eq_tsum ℝ]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Rewrite using `[smul_pow, smul_smul, smul_smul, mul_comm]`.
+-/
 private theorem exp_smul_eq_tsum (A : Type) [NormedRing A] [NormedAlgebra ℝ A]
     [CompleteSpace A] (X : A) (t : ℝ) :
     NormedSpace.exp (t • X) = ∑' n : ℕ, t ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n) := by
@@ -24,6 +32,11 @@ private theorem exp_smul_eq_tsum (A : Type) [NormedRing A] [NormedAlgebra ℝ A]
   refine tsum_congr fun n => ?_
   rw [smul_pow, smul_smul, smul_smul, mul_comm]
 
+/- English proof (translation)
+Establish `hn : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℝ (n + 1) with h | h <;> rw [h]`. Evaluate the numerical expressions. Rewrite using `[show (1 : ℝ) - -1 = 2 by norm_num, div_mul_eq_div_div, div_self (two_ne_zero' ℝ)]`.
+
+Establish `h0 : 0 ≤ 1 / ((n : ℝ) + 1)` using `by positivity`. Use `⟨by linarith, (div_le_one hn).2 ?_⟩` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ n` using `n.cast_nonneg`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem norm_one_sub_neg_one_pow_div_le_one (n : ℕ) :
     ‖(1 - (-1 : ℝ) ^ (n + 1)) / (2 * ((n : ℝ) + 1))‖ ≤ 1 := by
   have hn : (0 : ℝ) < (n : ℝ) + 1 := by positivity
@@ -36,6 +49,27 @@ private theorem norm_one_sub_neg_one_pow_div_le_one (n : ℕ) :
     have : (0 : ℝ) ≤ n := n.cast_nonneg
     linarith
 
+/- English proof (translation)
+Establish `hc : Summable fun n : ℕ => ‖((n.factorial : ℝ)⁻¹) • X ^ n‖` using `NormedSpace.norm_expSeries_summable' (𝕂 := ℝ) X`. Repeatedly rewrite using `[exp_smul_eq_tsum]`. Rewrite using `[intervalIntegral.integral_of_le zero_le_one]`. Establish `hint : ∀ n : ℕ, Integrable (fun s : ℝ => (1 - 2 * s) ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n)) (volume.restrict (Set.Ioc (0 : ℝ) 1))` using `fun n => (Continuous.intervalIntegrable (by fun_prop) 0 1).1`. Establish `hbound : ∀ n : ℕ, ∫ s in Set.Ioc (0 : ℝ) 1, ‖(1 - 2 * s) ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n)‖ ≤ ‖((n.factorial : ℝ)⁻¹) • X ^ n‖`.
+
+Introduce `n`. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one]`. Establish `h` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := (0 : ℝ)) (b := 1) (C := ‖((n.factorial : ℝ)⁻¹) • X ^ n‖) (f := fun s : ℝ => ‖(1 - 2 * s) ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n)‖) (fun s hs => by`. Rewrite `hs` using `[Set.uIoc_of_le zero_le_one]`. Rewrite using `[norm_norm, norm_smul, norm_pow]`.
+
+Use `mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith [hs.1, hs.2])`. Rewrite `h` using `[sub_zero, abs_one, mul_one, Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans h`.
+
+Establish `hsum : Summable fun n : ℕ => ∫ s in Set.Ioc (0 : ℝ) 1, ‖(1 - 2 * s) ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n)‖` using `Summable.of_nonneg_of_le (fun n => integral_nonneg fun _ => norm_nonneg _) hbound hc`. Rewrite using `[← integral_tsum_of_summable_integral_norm hint hsum]`. Establish `hterm : ∀ n : ℕ, ∫ s in Set.Ioc (0 : ℝ) 1, (1 - 2 * s) ^ n • (((n.factorial : ℝ)⁻¹) • X ^ n) = ((1 - (-1) ^ (n + 1)) / (2 * ((n : ℝ) + 1))) • (((n.factorial : ℝ)⁻¹) • X ^ n)`. Introduce `n`. Rewrite using `[← intervalIntegral.integral_of_le zero_le_one, intervalIntegral.integral_smul_const, integral_one_sub_two_mul_pow]`.
+
+Rewrite using `[tsum_congr hterm]`. Use `set g : ℕ → A := fun n => ((1 - (-1) ^ (n + 1)) / (2 * ((n : ℝ) + 1))) • (((n.factorial : ℝ)⁻¹) • X ^ n) with hgdef`. Establish `hg : Summable g` using `Summable.of_norm_bounded hc fun n => by`. Rewrite using `[hgdef, norm_smul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (norm_one_sub_neg_one_pow_div_le_one n)`.
+
+Establish `he : Summable fun k : ℕ => g (2 * k)` using `hg.comp_injective (mul_right_injective₀ (two_ne_zero' ℕ))`. Establish `ho : Summable fun k : ℕ => g (2 * k + 1)` using `hg.comp_injective ((add_left_injective 1).comp (mul_right_injective₀ (two_ne_zero' ℕ)))`. Rewrite using `[← tsum_even_add_odd he ho]`. Establish `hodd : ∀ k : ℕ, g (2 * k + 1) = 0`. Introduce `k`.
+
+Rewrite using `[hgdef]`. Simplify using `only`. Rewrite using `[show 2 * k + 1 + 1 = 2 * (k + 1) by ring, pow_mul]`. Evaluate the numerical expressions. Establish `heven : ∀ k : ℕ, g (2 * k) = (((2 * k + 1).factorial : ℝ)⁻¹) • X ^ (2 * k)`.
+
+Introduce `k`. Rewrite using `[hgdef]`. Simplify using `only`. Rewrite using `[pow_succ, pow_mul, smul_smul, Nat.factorial_succ]`. Use `congr 1`.
+
+Use `push_cast`. Establish `h1 : (2 * (k : ℝ) + 1) ≠ 0` using `by positivity`. Establish `h2 : ((2 * k).factorial : ℝ) ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+
+Repeatedly rewrite using `[hodd, heven, tsum_zero, add_zero]`.
+-/
 theorem integral_exp_one_sub_two_mul_smul (A : Type) [NormedRing A] [NormedAlgebra ℝ A]
     [CompleteSpace A] (X : A) :
     ∫ s in (0 : ℝ)..1, NormedSpace.exp ((1 - 2 * s) • X)

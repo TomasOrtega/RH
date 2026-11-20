@@ -21,6 +21,11 @@ open scoped Classical
 
 namespace GlobalTheory.TestClassObj
 
+/- English proof (translation)
+Introduce `hX h2 hH hR hSW hPr hPD hC`. Take `⟨r, hr⟩` from `hC`. Establish `hV` using `GlobalTheory.T.ch2HodgeVanishes_of_poincareDeRhamDuality hX h2 hPD`. Use `⟨r, fun D O hO hf A T H h hh hhh Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hz` using `GlobalTheory.T.hodge_tate_power_sum_and_siegel h2 hH hR hSW D O hO hf A T H h`.
+
+Conclude with `GlobalTheory.CovTest.testVal_of_hhTest r D O.Y Φ hh hf hΦ (GlobalTheory.T.weights_sum_to_volume_proportional h2 hH D O hO hf A T H h).2.2 (by rw [HhTest, GlobalTheory.T.test_function_flag_eigenvalue h2 hH.deg h2.p4 hR D O.Y hh hhh, bcFl]; ring) (GlobalTheory.T.lattice_at_of_prism …`.
+-/
 theorem main : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → PrismaticDieudonnePerfd →
     PoincareDeRhamDuality → (∃ r, Ch2Const r) → TestSt := by
   intro hX h2 hH hR hSW hPr hPD hC

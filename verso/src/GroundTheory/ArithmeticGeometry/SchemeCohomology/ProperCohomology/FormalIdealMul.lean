@@ -16,6 +16,9 @@ attribute [local instance] algebraOfOver
 
 variable (I : Ideal A) (F : X.Modules)
 
+/- English proof (translation)
+Rewrite `ha` using `[← span_idealGen J]`. Take `⟨c, hc⟩` from `(Ideal.mem_span_range_iff_exists_fun).1 ha`. Use `⟨biproduct.lift fun j => smulHom F (algebraMap A Γ(X, ⊤) (c j)), ?_⟩` and prove the remaining obligations. Simplify using `only [idealSumMap, biproduct.lift_desc, smulHom_comp_smulHom, ← map_mul, ← smulHom_sum, ← map_sum]`. Rewrite using `[hc]`.
+-/
 lemma exists_smulHom_eq_comp_idealSumMap (J : Ideal A) {a : A} (ha : a ∈ J) :
     ∃ h : F ⟶ (⨁ fun _ : Fin (idealGenNum J) => F),
       smulHom F (algebraMap A Γ(X, ⊤) a) = h ≫ idealSumMap F J := by
@@ -32,6 +35,9 @@ def idealPowOfMem {k : ℕ} (a : A) (ha : a ∈ I ^ k) : F ⟶ idealPow I F k :=
     rw [hh, Category.assoc, cokernel.condition, comp_zero])
 
 @[reassoc (attr := simp)]
+/- English proof (translation)
+The claim follows from `kernel.lift_ι _ _ _`.
+-/
 lemma idealPowOfMem_ι {k : ℕ} (a : A) (ha : a ∈ I ^ k) :
     idealPowOfMem I F a ha ≫ idealPowι I F k = smulHom F (algebraMap A Γ(X, ⊤) a) :=
   kernel.lift_ι _ _ _

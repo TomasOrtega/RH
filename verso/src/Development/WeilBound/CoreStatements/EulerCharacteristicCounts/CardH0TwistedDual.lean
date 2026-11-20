@@ -9,6 +9,19 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Formalis
 
 namespace PositivityTheory.LocalTateOrthogonality.Bk
 
+/- English proof (translation)
+Set `F : W' → ReciprocityTheory.Gal.TDual (ZMod N) M` to `fun y => ReciprocityTheory.Gal.TDual.mk (AddMonoidHom.toZModLinearMap N (P.flip y))`. Establish `hF : ∀ y x, F y x = P x y` using `fun _ _ => rfl`. Establish `hinj : Function.Injective F` using `fun y y' h => by`. Use `sub_eq_zero.1 (hr _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, ← hF, ← hF, h, sub_self]`.
+
+Establish `hT` using `GlobalTheory.CocycleCount.card_linear_le N M`. Establish `hTf : Finite (ReciprocityTheory.Gal.TDual (ZMod N) M)` using `hT.1`. Establish `hTc : Nat.card (ReciprocityTheory.Gal.TDual (ZMod N) M) ≤ Nat.card M` using `hT.2`. Establish `hfin : Finite (W' →+ ZMod N)` using `DFunLike.finite _`. Establish `hM : Nat.card M ≤ Nat.card (W' →+ ZMod N)` using `Nat.card_le_card_of_injective P ((injective_iff_map_eq_zero P).2 fun x hx => hl x fun y => by rw [hx, AddMonoidHom.zero_apply])`.
+
+Establish `hbij : Function.Bijective F` using `hinj.bijective_of_nat_card_le (hTc.trans (hM.trans (GlobalTheory.natCard_addMonoidHom_zmod_le N W')))`. Establish `hact : ∀ g y, ReciprocityTheory.Gal.twDual χ rho (φ g) (F y) = F (a' g y)` using `fun g y => by`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Establish `h1 : a g (rho (φ g)⁻¹ x) = x`. Use `ha (φ g) (rho (φ g)⁻¹ x)` as an intermediate fact.
+
+Rewrite `this` using `[φ.symm_apply_apply]`. Rewrite using `[← this, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[ReciprocityTheory.Gal.twDual_apply, hF, hF, ← he, h1]`. Use `symm`. Use `Nat.card_congr ((Equiv.ofBijective F hbij).subtypeEquiv fun y => ?_)` and prove the remaining obligations.
+
+Rewrite using `[ReciprocityTheory.Gal.mem_riemannRochSpace_iff_regularAt_everywhere]`. Prove the components needed by the constructor for the conclusion. Introduce `h g`. Take `⟨g, rfl⟩` from `φ.surjective g`. Conclude with `(hact g y).trans (congrArg F (h g))`.
+
+Introduce `h g`. Conclude with `hinj ((hact g y).symm.trans (h (φ g)))`.
+-/
 theorem card_H0_twisted_dual (N : ℕ) [NeZero N] (G G' : Type) [Group G] [TopologicalSpace G] [Group G']
     (φ : G' ≃* G)
     (M : Type) [AddCommGroup M] [Module (ZMod N) M] [Finite M] (χ : G →* (ZMod N)ˣ)
@@ -50,6 +63,15 @@ theorem card_H0_twisted_dual (N : ℕ) [NeZero N] (G G' : Type) [Group G] [Topol
   · intro h g
     exact hinj ((hact g y).symm.trans (h (φ g)))
 
+/- English proof (translation)
+Establish `hTf : Finite (ReciprocityTheory.Gal.TDual (ZMod N) M)` using `(GlobalTheory.CocycleCount.card_linear_le N M).1`. Set `A : Type` to `ReciprocityTheory.Gal.H0 ((ReciprocityTheory.Gal.twDual χ rho).comp (MonoidHom.id G))`. Set `E2 : ReciprocityTheory.Gal.H2 rho ≃ (A →ₗ[ZMod N] ZMod N)` to `(Equiv.ofBijective _ hb).trans (LinearEquiv.congrRight e).toEquiv`. Establish `h2 : Nat.card (ReciprocityTheory.Gal.H2 rho) = Nat.card A` using `(Nat.card_congr E2).trans (GlobalTheory.ZModDual.card_dual_eq N A)`. Establish `hZ` using `GlobalTheory.CocycleCount.card_cocycles_mul_invariants_discrete _ _ M rho hrho`.
+
+Establish `h0 : 0 < Nat.card (ReciprocityTheory.Gal.H0 rho)` using `Nat.card_pos`. Establish `hZ' : Nat.card (ReciprocityTheory.Gal.Z1 rho) = Nat.card (ReciprocityTheory.Gal.H2 rho) * Nat.card M ^ (d + 1)`. Apply `Nat.eq_of_mul_eq_mul_right h0` to reduce the goal to its premises. Rewrite using `[hZ, hEu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Set `E : {c : G' → M // IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)} ≃ ↥(ReciprocityTheory.Gal.Z1 rho)` to `{ toFun := fun c => ⟨fun g => c.1 (φ.symm g), c.2.1.continuous.comp hφ.2, fun g h => by beta_reduce`. Rewrite using `[ha, map_mul, c.2.2]⟩`. Use `invFun := fun c => ⟨fun g => c.1 (φ g), (IsLocallyConstant.iff_continuous _).2 (c.2.1.comp hφ.1), fun g h => by`. Use `c.2.2 (φ g) (φ h)` as an intermediate fact. Rewrite `this` using `[ha, φ.symm_apply_apply, ← map_mul]`.
+
+Conclude with `this⟩`. Use `left_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.symm_apply_apply g))`. Use `right_inv := fun c => Subtype.ext (funext fun g => congrArg c.1 (φ.apply_symm_apply g)) }`. Rewrite using `[Nat.card_congr E, hZ', h2]`.
+-/
 theorem count_eq (N : ℕ) [NeZero N] (G G' : Type) [Group G] [TopologicalSpace G]
     [Group G'] [TopologicalSpace G'] (φ : G' ≃* G) (hφ : Continuous φ ∧ Continuous φ.symm)
     (M : Type) [AddCommGroup M] [Module (ZMod N) M] [Finite M] [TopologicalSpace M]
@@ -96,6 +118,11 @@ variable {G LL O V : Type} [Group G] [TopologicalSpace G] [Field LL] [CommRing O
   [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V] {ρ : Representation LL G V}
 
 omit [TopologicalSpace G] in
+/- English proof (translation)
+Take `⟨t, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (actT L (g * h) t) = Submodule.Quotient.mk (actT L g (actT L h t))`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ (g * h) (t : V) = ρ g (ρ h (t : V))`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coc_actQ_mul (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I) (g h : G)
     (m : ↥L.T ⧸ I) : actQ L I hI (g * h) m = actQ L I hI g (actQ L I hI h m) := by
   obtain ⟨t, rfl⟩ := Submodule.Quotient.mk_surjective _ m
@@ -105,6 +132,15 @@ theorem coc_actQ_mul (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : St
   change ρ (g * h) (t : V) = ρ g (ρ h (t : V))
   simp
 
+/- English proof (translation)
+Set `d0 : (↥L.T ⧸ I) →ₗ[O] (G → ↥L.T ⧸ I)` to `LinearMap.pi fun g => actQ L I hI g - LinearMap.id`. Establish `hd0 : ∀ m g, d0 m g = actQ L I hI g m - m` using `fun _ _ => rfl`. Establish `hle : BQ L I hI ≤ quotientCocycles L I hI`. Introduce and unpack `_ ⟨m, rfl⟩`. Use `⟨(hlc m).comp (fun x => x - m), fun g h => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `d0 m (g * h) = d0 m g + actQ L I hI g (d0 m h)`. Simplify using `only [hd0, coc_actQ_mul, map_sub]`. Normalize the expressions using the abelian group laws. Establish `h1` using `Submodule.card_eq_card_quotient_mul_card ((BQ L I hI).comap (quotientCocycles L I hI).subtype)`. Establish `h2 : Nat.card ((BQ L I hI).comap (quotientCocycles L I hI).subtype) = Nat.card (BQ L I hI)` using `Nat.card_congr (Submodule.comapSubtypeEquivOfLe hle).toEquiv`.
+
+Establish `hk : Nat.card (LinearMap.ker d0) = Nat.card {x : ↥L.T ⧸ I // ∀ g, actQ L I hI g x = x}` using `Nat.card_congr (Equiv.subtypeEquivRight fun m => by`. Rewrite using `[LinearMap.mem_ker, funext_iff]`. Simplify using `only [hd0, Pi.zero_apply, sub_eq_zero])`. Establish `h3` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker d0)`. Establish `h4 : Nat.card ((↥L.T ⧸ I) ⧸ LinearMap.ker d0) = Nat.card (BQ L I hI)` using `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv`.
+
+Rewrite `h3` using `[h4, hk]`. Rewrite using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_H1Q_mul (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : StableSub L I)
     (hlc : ∀ m, IsLocallyConstant fun g => actQ L I hI g m) :
     Nat.card (QuotientCohomology L I hI) * Nat.card (↥L.T ⧸ I) =
@@ -133,6 +169,13 @@ theorem card_H1Q_mul (L : Lattice (O := O) ρ) (I : Submodule O ↥L.T) (hI : St
 
 end Count
 
+/- English proof (translation)
+Introduce `hT hE l _ K n hn M _ _ a h1 hmul hlc hr W' _ _ a' _ _ P hl hrt he`. Establish `hK : FiniteDimensional ℚ_[l] ↥K.1` using `K.2`. Set `_ : TopologicalSpace M` to `⊥`. Establish `_ : DiscreteTopology M` using `⟨rfl⟩`. Establish `_ : NeZero (l ^ n)` using `⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+
+Set `_ : Module (ZMod (l ^ n)) M` to `AddCommGroup.zmodModule hr`. Set `φ : ↥(GK K) ≃* Formalism.GaloisCohomology.GK l K.1` to `IntermediateField.fixingSubgroupEquiv K.1`. Establish `hφ : Continuous φ ∧ Continuous φ.symm` using `GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) K.1`. Set `rho : Representation (ZMod (l ^ n)) (Formalism.GaloisCohomology.GK l K.1) M` to `GlobalTheory.CocycleCount.repOfAction _ (fun g => a (φ.symm g)) (fun m => by rw [map_one, h1]) (fun g h m => by rw [map_mul, hmul])`. Establish `hrho : ReciprocityTheory.Gal.ContAction rho`.
+
+Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Conclude with `(hlc m).continuous.comp hφ.2`. Take `⟨⟨e⟩, -, -, -, hb⟩` from `hT l K.1 hK n M rho hn hrho`. Establish `hEu` using `hE l K.1 hK n M rho hn hrho`. Rewrite using `[count_eq _ _ _ φ hφ M _ rho hrho e hb _ hEu a fun _ _ => rfl, card_H0_twisted_dual _ _ _ φ M _ rho a (fun _ _ => rfl) W' a' P hl hrt he]`.
+-/
 theorem cocycles : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (n : ℕ), 0 < n → ∀ (W : Type) [AddCommGroup W] [Finite W] (a : ↥(GK K) → W →+ W), (∀ m, a 1 m = m) → (∀ g h m, a (g * h) m = a g (a h m)) → (∀ m, IsLocallyConstant fun g => a g m) → (∀ m : W, l ^ n • m = 0) → ∀ (W' : Type) [AddCommGroup W'] [Finite W'] (a' : ↥(GK K) → W' →+ W'), (∀ m, a' 1 m = m) → (∀ g h m, a' (g * h) m = a' g (a' h m)) → ∀ P : W →+ W' →+ ZMod (l ^ n), (∀ x, (∀ y, P x y = 0) → x = 0) → (∀ y, (∀ x, P x y = 0) → y = 0) → (∀ g x y, P (a g x) (a' g y) = (Formalism.GaloisCohomology.cycK l K.1 n (K.1.fixingSubgroupEquiv g) : ZMod (l ^ n)) * P x y) → Nat.card {c : ↥(GK K) → W // IsLocallyConstant c ∧ ∀ g h, c (g * h) = c g + a g (c h)} = Nat.card {y : W' // ∀ g, a' g y = y} * Nat.card W ^ (finrank ℚ_[l] ↥K.1 + 1) := by
   intro hT hE l _ K n hn M _ _ a h1 hmul hlc hr W' _ _ a' _ _ P hl hrt he
   have hK : FiniteDimensional ℚ_[l] ↥K.1 := K.2
@@ -154,6 +197,9 @@ theorem cocycles : Formalism.GaloisCohomology.LocalTateDualityK → Formalism.Ga
   rw [count_eq _ _ _ φ hφ M _ rho hrho e hb _ hEu a fun _ _ => rfl,
     card_H0_twisted_dual _ _ _ φ M _ rho a (fun _ _ => rfl) W' a' P hl hrt he]
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ _ _ _ _ LA I hI _ hlc` and use `card_H1Q_mul LA I hI hlc`.
+-/
 theorem h1count : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL] (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (I : Submodule O ↥LA.T) (hI : StableSub LA I), Finite (↥LA.T ⧸ I) → (∀ m, IsLocallyConstant fun g => actQ LA I hI g m) → Nat.card (QuotientCohomology LA I hI) * Nat.card (↥LA.T ⧸ I) = Nat.card ↥(quotientCocycles LA I hI) * Nat.card {x : ↥LA.T ⧸ I // ∀ g, actQ LA I hI g x = x} :=
   fun _ _ _ _ _ _ _ _ _ _ _ LA I hI _ hlc => card_H1Q_mul LA I hI hlc
 

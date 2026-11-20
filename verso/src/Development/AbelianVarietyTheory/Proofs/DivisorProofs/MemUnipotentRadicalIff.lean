@@ -40,6 +40,11 @@ def unipSet (σ : E →ₐ[F] E) {n n₁ : ℕ} (X : Spc F E n) (H : Plane E n n
     rw [ha, Matrix.mulVec_add, Matrix.mulVec_smul, h1] at this
     rw [neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq]; exact this
 
+/- English proof (translation)
+Establish `hc : unip σ X H = unipSet σ X H`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Subgroup.closure_le _).2 fun v hv => hv`. Introduce `v hv`. Conclude with `Subgroup.subset_closure hv`.
+
+Rewrite using `[hc]`. Both sides reduce to the same expression.
+-/
 theorem mem_unip_iff (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n n₁ : ℕ) (X : Spc F E n) (H : Plane E n n₁) (u : UA σ X.J) : u ∈ unip σ X H ↔
       (mat u *ᵥ incV F H.x = incV F H.x ∧ ∀ z, ∃ a : AE F E, mat u *ᵥ (incM F H.ι *ᵥ z) = incM F H.ι *ᵥ z + a • incV F H.x) := by

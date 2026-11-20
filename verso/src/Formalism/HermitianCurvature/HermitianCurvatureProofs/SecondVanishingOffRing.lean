@@ -8,10 +8,16 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.LatticeAverageIdent
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `second_gram_vanishing_of_parts kernel_gram_property modulus_positive_multiplicative tripleForm lattice_average_identity triple_form_end_identity`.
+-/
 theorem second_gram_and_vanishing : Formalism.FourierDecayAlt.A5.A2 :=
   second_gram_vanishing_of_parts kernel_gram_property modulus_positive_multiplicative tripleForm
     lattice_average_identity triple_form_end_identity
 
+/- English proof (translation)
+The claim follows from `second_gram_and_vanishing.2`.
+-/
 theorem second_vanishing_off_ring : Formalism.FourierDecayAlt.A5.BlockKernelSupport := second_gram_and_vanishing.2
 
 end Formalism.FourierDecayAlt.P

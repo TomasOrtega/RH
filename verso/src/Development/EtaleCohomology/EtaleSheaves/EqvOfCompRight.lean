@@ -9,15 +9,26 @@ abbrev cov {X : Scheme.{0}} (O : X.Opens) {ι : Type} (V : ι → X.Opens) (hV :
     (∐ fun j => (V j).toScheme) ⟶ O.toScheme :=
   Sigma.desc fun j => X.homOfLE (hV j)
 
+/- English proof (translation)
+Introduce `_ hx` and use `h hx`.
+-/
 theorem pre_le {Y X : Scheme.{0}} (g : Y ⟶ X) {A B : X.Opens} (h : A ≤ B) : g ⁻¹ᵁ A ≤ g ⁻¹ᵁ B :=
   fun _ hx => h hx
 
+/- English proof (translation)
+Use `Sigma.hom_ext _ _ fun j => ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono O.ι]`. Simplify using `[cov, morphismRestrict_ι]`.
+-/
 theorem sq_cov {Y X : Scheme.{0}} (g : Y ⟶ X) (O : X.Opens) {ι : Type} (V : ι → X.Opens) (hV : ∀ j, V j ≤ O) :
     Limits.Sigma.map (fun j => g ∣_ V j) ≫ cov O V hV = cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j)) ≫ g ∣_ O := by
   refine Sigma.hom_ext _ _ fun j => ?_
   rw [← cancel_mono O.ι]
   simp [cov, morphismRestrict_ι]
 
+/- English proof (translation)
+Apply `Surjective.sigmaDesc_of_union_range_eq_univ` to reduce the goal to its premises. Use `Set.eq_univ_iff_forall.2 fun x => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc x.2)`. Use `Set.mem_iUnion.2 ⟨j, ⟨⟨x.1, hj⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Conclude with `congr($(X.homOfLE_ι (hV j)) ⟨x.1, hj⟩)`.
+-/
 theorem cov_surj {X : Scheme.{0}} (O : X.Opens) {ι : Type} (V : ι → X.Opens) (hV : ∀ j, V j ≤ O)
     (hc : O ≤ ⨆ j, V j) : Surjective (cov O V hV) := by
   apply Surjective.sigmaDesc_of_union_range_eq_univ
@@ -46,6 +57,11 @@ def LevelIso : Prop := ∀ {Y X : Scheme.{0}} (g : Y ⟶ X) (O : X.Opens) {ι : 
 section
 variable {R : Type} [CommRing R] {F : Shv R}
 
+/- English proof (translation)
+Establish `w : f = e.hom.left ≫ f' ≫ e.inv.right`. Use `Arrow.w e.hom` as an intermediate fact. Simplify using `only [Arrow.mk_hom] at this`. Rewrite using `[← Category.assoc, this, Category.assoc, ← Arrow.comp_right, e.hom_inv_id, Arrow.id_right]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[w]`. Conclude with `ZariskiLocalCech.eqv_comp (ZariskiLocalCech.eqv_iso _) (ZariskiLocalCech.eqv_comp h (ZariskiLocalCech.eqv_iso _))`.
+-/
 theorem eqv_of_arrowIso {E E' E₁ E₁' : Spc} {f : E ⟶ E'} {f' : E₁ ⟶ E₁'} (e : Arrow.mk f ≅ Arrow.mk f')
     (h : Eqv R f' F) : Eqv R f F := by
   have w : f = e.hom.left ≫ f' ≫ e.inv.right := by
@@ -56,6 +72,9 @@ theorem eqv_of_arrowIso {E E' E₁ E₁' : Spc} {f : E ⟶ E'} {f' : E₁ ⟶ E�
   rw [w]
   exact ZariskiLocalCech.eqv_comp (ZariskiLocalCech.eqv_iso _) (ZariskiLocalCech.eqv_comp h (ZariskiLocalCech.eqv_iso _))
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x have := hfg n rw [h] at this exact (Function.Bijective.of_comp_iff' (hf n) _).1 this`.
+-/
 theorem eqv_of_comp_left {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : Eqv R f F) (hfg : Eqv R (f ≫ g) F) :
     Eqv R g F := fun n => by
   have h : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x
@@ -63,6 +82,9 @@ theorem eqv_of_comp_left {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hf : 
   rw [h] at this
   exact (Function.Bijective.of_comp_iff' (hf n) _).1 this
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x have := hfg n rw [h] at this exact (Function.Bijective.of_comp_iff _ (hg n)).1 this`.
+-/
 theorem eqv_of_comp_right {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hg : Eqv R g F) (hfg : Eqv R (f ≫ g) F) :
     Eqv R f F := fun n => by
   have h : ⇑(pull R (f ≫ g) F n) = pull R f F n ∘ pull R g F n := funext fun x => pull_comp R f g F n x
@@ -72,6 +94,17 @@ theorem eqv_of_comp_right {E E' E'' : Spc} {f : E ⟶ E'} {g : E' ⟶ E''} (hg :
 
 end
 
+/- English proof (translation)
+Unfold `LevelIso at hL`. Introduce `hH R _ F Y X g O ι V hV hc hn`. Take `⟨_, hA2, hA3, -⟩` from `hH`. Establish `hc' : g ⁻¹ᵁ O ≤ ⨆ j, g ⁻¹ᵁ V j`. Rewrite using `[← Scheme.Hom.preimage_iSup]`.
+
+Conclude with `pre_le g hc`. Use `cov_surj O V hV hc` as an intermediate fact. Use `cov_surj (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j)) hc'` as an intermediate fact. Establish `e1 : Eqv R (cechAug (cov O V hV)) F` using `hA2 R _ F`. Establish `e2 : Eqv R (cechAug (cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j)))) F` using `hA2 R _ F`.
+
+Establish `e3 : Eqv R (Arrow.mapCechNerve (arr g O V hV)) F`. Use `hA3 R _ F fun m => ?_` and prove the remaining obligations. Take `⟨e⟩` from `hL g O V hV m.unop.len`. Establish `e' : Arrow.mk (disc.map ((Arrow.mapCechNerve (arr g O V hV)).app m)) ≅ Arrow.mk (sch.map (Limits.Sigma.map fun j : Fin (m.unop.len + 1) → ι => g ∣_ (⨅ k, V (j k))))` using `(disc.mapArrow).mapIso e`. Conclude with `eqv_of_arrowIso e' (hn _)`.
+
+Establish `w : Arrow.mapCechNerve (arr g O V hV) ≫ cechAug (cov O V hV) = cechAug (cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j))) ≫ sch.map (g ∣_ O)`. Establish `h` using `(Arrow.mapAugmentedCechNerve (arr g O V hV)).w`. Conclude with `h`. Establish `h4 : Eqv R (cechAug (cov (g ⁻¹ᵁ O) (fun j => g ⁻¹ᵁ V j) (fun j => pre_le g (hV j))) ≫ sch.map (g ∣_ O)) F`. Rewrite using `[← w]`.
+
+Conclude with `ZariskiLocalCech.eqv_comp e3 e1`. Conclude with `eqv_of_comp_left e2 h4`.
+-/
 theorem CechSigma_of (hL : LevelIso) : ZariskiLocalCech.CechSigma := by
   unfold LevelIso at hL
   intro hH R _ F Y X g O ι V hV hc hn

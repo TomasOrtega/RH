@@ -4,6 +4,23 @@ open scoped ComplexOrder ENNReal Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h1 h2 h3 r S hS hirr`. Use `choose w hw1 hw using h1 r`. Take `⟨η, hη, hη2⟩` from `h2 r S hS hirr`. Establish `hw0 : ∀ a, 0 ≤ w a` using `fun a => le_trans zero_le_one (hw1 a)`. Establish `hΩ1 : (1:ℝ) ≤ 1 + ∑ a ∈ S, w a`.
+
+Use `Finset.sum_nonneg (s := S) (fun a _ => hw0 a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hwΩ : ∀ a ∈ S, w a ≤ 1 + ∑ a ∈ S, w a`. Introduce `a ha`. Use `Finset.single_le_sum (s := S) (fun a _ => hw0 a) ha` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Generalize the expression as in `(1 + ∑ a ∈ S, w a) = Ω at hΩ1 hwΩ`. Take `⟨δ, c, hδ, hc0, hc1, hc⟩` from `h3 S.card Ω η hΩ1 hη`. Use `⟨δ, c, Ω, hδ, hc0, hc1, hΩ1, ?_⟩` and prove the remaining obligations. Introduce `i M hM`.
+
+Establish `hΩ0 : 0 < Ω` using `lt_of_lt_of_le one_pos hΩ1`. Establish `key : ∀ a ∈ S, (((a * M)ᴴ * (a * M)).det.re) ≤ Ω * (((M)ᴴ * (M)).det.re) ∧ (((M)ᴴ * (M)).det.re) ≤ Ω * (((a * M)ᴴ * (a * M)).det.re)`. Introduce `a ha`. Take `⟨-, hdet, hinv⟩` from `hS a ha`. Use `⟨(hw a (Fin i) M).trans (mul_le_mul_of_nonneg_right (hwΩ a ha) hM.le), ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `hw a⁻¹ (Fin i) (a * M)`. Establish `e : a⁻¹ * (a * M) = M`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul a (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mul]`. Rewrite `h` using `[e]`. Establish `hpos : 0 < (((a * M)ᴴ * (a * M)).det.re)`.
+
+Assume the negation of the conclusion as `hn`. Use `mul_nonpos_of_nonneg_of_nonpos (hw0 a⁻¹) (not_lt.mp hn)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h.trans (mul_le_mul_of_nonneg_right (hwΩ _ hinv) hpos.le)`. Use `⟨key, fun hi hir => ?_⟩` and prove the remaining obligations.
+
+Use `hc _ S (fun a => (((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) rfl ?_ (hη2 i hi hir M hM)` and prove the remaining obligations. Introduce `a ha`. Take `⟨k1, k2⟩` from `key a ha`. Use `⟨?_, (div_le_iff₀ hM).mpr k1⟩` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hM, inv_mul_le_iff₀ hΩ0]`.
+
+Conclude with `k2`.
+-/
 theorem gramDet_contraction : (∀ (r : ℕ) (a : Matrix (Fin r) (Fin r) ℂ), ∃ ω : ℝ, 1 ≤ ω ∧ ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : Matrix (Fin r) ι ℂ), (((a * M)ᴴ * (a * M)).det.re) ≤ ω * (((M)ᴴ * (M)).det.re)) → (∀ (r : ℕ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → ∃ η : ℝ, 0 < η ∧ ∀ (i : ℕ), 0 < i → i < r → ∀ M : Matrix (Fin r) (Fin i) ℂ, 0 < (((M)ᴴ * (M)).det.re) → η ≤ ∑ a ∈ S, Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re))) → (∀ (N : ℕ) (ω η : ℝ), 1 ≤ ω → 0 < η → ∃ δ c : ℝ, 0 < δ ∧ 0 ≤ c ∧ c < 1 ∧ ∀ (σ : Type) (S : Finset σ) (t : σ → ℝ), S.card = N → (∀ s ∈ S, ω⁻¹ ≤ t s ∧ t s ≤ ω) → η ≤ ∑ s ∈ S, Real.log (t s) → ∑ s ∈ S, t s ^ (-δ) ≤ N * c) → (∀ (r : ℕ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → ∃ δ c ω : ℝ, 0 < δ ∧ 0 ≤ c ∧ c < 1 ∧ 1 ≤ ω ∧ ∀ (i : ℕ) (M : Matrix (Fin r) (Fin i) ℂ), 0 < (((M)ᴴ * (M)).det.re) → (∀ a ∈ S, (((a * M)ᴴ * (a * M)).det.re) ≤ ω * (((M)ᴴ * (M)).det.re) ∧ (((M)ᴴ * (M)).det.re) ≤ ω * (((a * M)ᴴ * (a * M)).det.re)) ∧ (0 < i → i < r → ∑ a ∈ S, ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) ^ (-δ) ≤ S.card * c)) := by
   intro h1 h2 h3 r S hS hirr
   choose w hw1 hw using h1 r

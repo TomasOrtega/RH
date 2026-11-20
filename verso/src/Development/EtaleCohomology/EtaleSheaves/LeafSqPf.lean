@@ -13,12 +13,22 @@ def LeafSqFree : Prop := ∀ (R : Type) [CommRing R] {P U E' E : PSh} (fst : P �
     E'.map k.op a = E'.map k.op b ∨ ∃ u : U.obj (op V), f.app (op V) u = E.map k.op (g.app (op T) a)) →
   IsPushout ((free R).map snd) ((free R).map fst) ((free R).map g) ((free R).map f)
 
+/- English proof (translation)
+Rewrite using `[← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, ← Functor.map_comp, ← Functor.map_comp, pullback.condition]`.
+-/
 theorem sq_comm (R : Type) [CommRing R] {U E' E : Spc} (f : U ⟶ E) (g : E' ⟶ E) (n : ℤ) :
     ((chains R).map (pullback.snd f g)).f n ≫ ((chains R).map g).f n =
       ((chains R).map (pullback.fst f g)).f n ≫ ((chains R).map f).f n := by
   rw [← HomologicalComplex.comp_f, ← HomologicalComplex.comp_f, ← Functor.map_comp, ← Functor.map_comp,
     pullback.condition]
 
+/- English proof (translation)
+Introduce `R _ U E' E f _ g h1 h2 n`. Distinguish the cases in `h : ∃ p : ℕ, ComplexShape.embeddingDownNat.f p = n`. Take `⟨p, hp⟩` from `h`. Establish `hpb : IsPullback ((pullback.fst f g).app (op (SimplexCategory.mk p))) ((pullback.snd f g).app (op (SimplexCategory.mk p))) (f.app (op (SimplexCategory.mk p))) (g.app (op (SimplexCategory.mk p)))` using `(IsPullback.of_hasPullback f g).map ((evaluation _ _).obj (op (SimplexCategory.mk p)))`. Establish `: Mono (f.app (op (SimplexCategory.mk p)))` using `(NatTrans.mono_iff_mono_app f).1 ‹_› _`.
+
+Establish `key` using `hFree R _ _ _ _ hpb (fun T y => h1 p T y) (fun T a b hab => h2 p T a b hab)`. Use `show IsPushout (HomologicalComplex.extendMap ((chainsN R).map (pullback.snd f g)) ComplexShape.embeddingDownNat |>.f n) (HomologicalComplex.extendMap ((chainsN R).map (pullback.fst f g)) ComplexShape.embeddingDownNat |>.f n) (HomologicalComplex.extendMap ((chainsN R).map g) Compl …`. Rewrite using `[HomologicalComplex.extendMap_f _ _ hp, HomologicalComplex.extendMap_f _ _ hp, HomologicalComplex.extendMap_f _ _ hp, HomologicalComplex.extendMap_f _ _ hp]`. Apply the tactic sequence `refine key.of_iso (HomologicalComplex.extendXIso ((chainsN R).obj (pullback f g)) _ hp).symm (HomologicalComplex.extendXIso ((chainsN R).obj E') _ hp).symm (HomologicalComplex.extendXIso ((chainsN R).obj U) _ hp).symm (HomologicalComplex.extendXIso ((chainsN R).obj E) _ hp).symm …`. Conclude with `(Iso.inv_hom_id_assoc _ _).symm`.
+
+Simplify using `only [not_exists] at h`. Establish `hz : ∀ X : Spc, IsZero (((chains R).obj X).X n)` using `fun X => HomologicalComplex.isZero_extend_X ((chainsN R).obj X) ComplexShape.embeddingDownNat n h`. Use `(hz _).isIso (hz _) (((chains R).map (pullback.snd f g)).f n)` as an intermediate fact. Use `(hz _).isIso (hz _) (((chains R).map f).f n)` as an intermediate fact. Conclude with `IsPushout.of_horiz_isIso ⟨sq_comm R f g n⟩`.
+-/
 theorem LeafSq_of (hFree : LeafSqFree) : LeafSq := by
   intro R _ U E' E f _ g h1 h2 n
   by_cases h : ∃ p : ℕ, ComplexShape.embeddingDownNat.f p = n
@@ -73,6 +83,9 @@ def LeafFreeLoc : Prop := ∀ (R : Type) [CommRing R] {P U E' E : PSh} (fst : P 
   LocOnto ((freeP R).map g) ((freeP R).map f) ∧
     LocKer ((freeP R).map snd) ((freeP R).map fst) ((freeP R).map g) ((freeP R).map f)
 
+/- English proof (translation)
+Introduce `R _ P U E' E fst snd f _ g hpb h1 h2`. Take `⟨hon, hker⟩` from `hFL R fst snd f g hpb h1 h2`. Establish `hw : (freeP R).map snd ≫ (freeP R).map g = (freeP R).map fst ≫ (freeP R).map f`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, hpb.w]`. Conclude with `hSP R _ _ _ _ hw hon hker`.
+-/
 theorem LeafSqFree_of (hSP : LeafSheafPush) (hFL : LeafFreeLoc) : LeafSqFree := by
   intro R _ P U E' E fst snd f _ g hpb h1 h2
   obtain ⟨hon, hker⟩ := hFL R fst snd f g hpb h1 h2
@@ -80,6 +93,9 @@ theorem LeafSqFree_of (hSP : LeafSheafPush) (hFL : LeafFreeLoc) : LeafSqFree := 
     rw [← Functor.map_comp, ← Functor.map_comp, hpb.w]
   exact hSP R _ _ _ _ hw hon hker
 
+/- English proof (translation)
+The claim follows from `LeafSq_of (LeafSqFree_of hSP hFL)`.
+-/
 theorem square_of_pushout_and_free_local (hSP : LeafSheafPush) (hFL : LeafFreeLoc) : LeafSq := LeafSq_of (LeafSqFree_of hSP hFL)
 
 end LateralTheory.E.LeafSqPf

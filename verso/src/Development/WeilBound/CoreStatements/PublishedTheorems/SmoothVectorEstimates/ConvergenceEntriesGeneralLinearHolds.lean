@@ -35,105 +35,207 @@ import Development.WeilBound.CoreStatements.PublishedTheorems.SmoothVectorEstima
 
 namespace PositivityTheory.jumpWindows
 
+/- English proof (translation)
+The claim follows from `lie_algebra_action_exists`.
+-/
 theorem compositionalInverseSymm : S1 :=
   lie_algebra_action_exists
 
+/- English proof (translation)
+The claim follows from `smooth_vectors_stable_intertwiner`.
+-/
 theorem orthogonalSplitPolarizationVanishes : S2 :=
   smooth_vectors_stable_intertwiner
 
+/- English proof (translation)
+The claim follows from `unit_chart_operator_bound compositionalInverseSymm`.
+-/
 theorem addPreservesExpCongruence : S3 :=
   unit_chart_operator_bound compositionalInverseSymm
 
+/- English proof (translation)
+The claim follows from `valuation_bound_of_three`.
+-/
 theorem expCongruenceExtendsToSum : S4 :=
   valuation_bound_of_three
 
+/- English proof (translation)
+The claim follows from `haar_measure_pairing`.
+-/
 theorem hit_valuation_bound : S5 :=
   haar_measure_pairing
 
+/- English proof (translation)
+The claim follows from `conjugation_units_open orthogonalSplitPolarizationVanishes expCongruenceExtendsToSum`.
+-/
 theorem smooth_vectors_conjugation_holds : S6 :=
   conjugation_units_open orthogonalSplitPolarizationVanishes expCongruenceExtendsToSum
 
+/- English proof (translation)
+The claim follows from `exists_logarithm_linear`.
+-/
 theorem exists_logarithm_linear_holds : S8 :=
   exists_logarithm_linear
 
+/- English proof (translation)
+The claim follows from `positive_matrix_block_product`.
+-/
 theorem positive_matrix_block_product_holds : MirabolicColumnBlock :=
   positive_matrix_block_product
 
+/- English proof (translation)
+The claim follows from `mirabolic_induction_step_exists orthogonalSplitPolarizationVanishes addPreservesExpCongruence hit_valuation_bound smooth_vectors_conjugation_holds exists_logarithm_linear_holds positive_matrix_block_product_holds`.
+-/
 theorem mirabolic_induction_step_holds : S7 :=
   mirabolic_induction_step_exists orthogonalSplitPolarizationVanishes addPreservesExpCongruence hit_valuation_bound smooth_vectors_conjugation_holds exists_logarithm_linear_holds positive_matrix_block_product_holds
 
+/- English proof (translation)
+The claim follows from `lattice_open_last_entry positive_matrix_block_product_holds`.
+-/
 theorem lattice_open_last_entry_holds : S9 :=
   lattice_open_last_entry positive_matrix_block_product_holds
 
+/- English proof (translation)
+The claim follows from `standard_stabiliser_bound`.
+-/
 theorem automorphic_basic_setup_holds : G0 :=
   standard_stabiliser_bound
 
+/- English proof (translation)
+The claim follows from `firstGeometricCondition_of_properties compositionalInverseSymm`.
+-/
 theorem multiplicity_one_holds : G1 :=
   firstGeometricCondition_of_properties compositionalInverseSymm
 
+/- English proof (translation)
+The claim follows from `almost_everywhere_spherical_of_G1 multiplicity_one_holds`.
+-/
 theorem almost_everywhere_spherical : AlmostEverywhereSpherical :=
   almost_everywhere_spherical_of_G1 multiplicity_one_holds
 
+/- English proof (translation)
+The claim follows from `averaging_projection_linear`.
+-/
 theorem averaging_projection_linear_holds : G2a :=
   averaging_projection_linear
 
+/- English proof (translation)
+The claim follows from `bounded_invariant_functions_in_L2`.
+-/
 theorem bounded_invariant_L2_holds : G2b :=
   bounded_invariant_functions_in_L2
 
+/- English proof (translation)
+The claim follows from `hecke_operator_of_automorphic automorphic_basic_setup_holds`.
+-/
 theorem hecke_operator_automorphic_holds : G2c :=
   hecke_operator_of_automorphic automorphic_basic_setup_holds
 
+/- English proof (translation)
+The claim follows from `local_group_averaging_tensor`.
+-/
 theorem whittaker_functional_exists_holds : G5 :=
   local_group_averaging_tensor
 
+/- English proof (translation)
+The claim follows from `smooth_vectors_regular_representation orthogonalSplitPolarizationVanishes automorphic_basic_setup_holds`.
+-/
 theorem smooth_vectors_regular_holds : G5b :=
   smooth_vectors_regular_representation orthogonalSplitPolarizationVanishes automorphic_basic_setup_holds
 
+/- English proof (translation)
+The claim follows from `whittaker_nondegenerate_character mirabolic_induction_step_holds positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds`.
+-/
 theorem whittaker_nondegenerate_holds : G6 :=
   whittaker_nondegenerate_character mirabolic_induction_step_holds positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds
 
+/- English proof (translation)
+The claim follows from `whittaker_expansion_cuspidal orthogonalSplitPolarizationVanishes lattice_open_last_entry_holds positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds smooth_vectors_regular_holds`.
+-/
 theorem whittaker_expansion_cuspidal_holds : G7 :=
   whittaker_expansion_cuspidal orthogonalSplitPolarizationVanishes lattice_open_last_entry_holds positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds smooth_vectors_regular_holds
 
+/- English proof (translation)
+The claim follows from `whittaker_factorization_places whittaker_nondegenerate_holds whittaker_expansion_cuspidal_holds`.
+-/
 theorem whittaker_factorization_places_holds : FourierInductionSteps :=
   whittaker_factorization_places whittaker_nondegenerate_holds whittaker_expansion_cuspidal_holds
 
+/- English proof (translation)
+The claim follows from `whittaker_uniqueness_local h7 h12 automorphic_basic_setup_holds whittaker_functional_exists_holds`.
+-/
 theorem whittaker_uniqueness_local_holds (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : G9 :=
   whittaker_uniqueness_local h7 h12 automorphic_basic_setup_holds whittaker_functional_exists_holds
 
+/- English proof (translation)
+The claim follows from `convergence_entries_general_linear automorphic_basic_setup_holds`.
+-/
 theorem convergence_entries_general_linear_holds : PlacewiseToOutsideS :=
   convergence_entries_general_linear automorphic_basic_setup_holds
 
+/- English proof (translation)
+The claim follows from `smooth_vector_orbit_invariance automorphic_basic_setup_holds whittaker_functional_exists_holds smooth_vectors_regular_holds (whittaker_uniqueness_local_holds h7 h12) convergence_entries_general_linear_holds`.
+-/
 theorem smooth_vector_orbit_holds (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : G8 :=
   smooth_vector_orbit_invariance automorphic_basic_setup_holds whittaker_functional_exists_holds smooth_vectors_regular_holds (whittaker_uniqueness_local_holds h7 h12) convergence_entries_general_linear_holds
 
+/- English proof (translation)
+The claim follows from `adelic_character_holds`.
+-/
 theorem adelic_character_condition_holds : StandardCharacterExists :=
   adelic_character_holds
 
+/- English proof (translation)
+The claim follows from `induction_g11_holds`.
+-/
 theorem local_uniqueness_auxiliary_holds : FourierUniquenessMirabolic :=
   induction_g11_holds
 
+/- English proof (translation)
+The claim follows from `good_inverse_of_G0 automorphic_basic_setup_holds`.
+-/
 theorem good_inverse_dense_range_holds : WeakApproximationGL :=
   good_inverse_of_G0 automorphic_basic_setup_holds
 
+/- English proof (translation)
+The claim follows from `mirror_global_of positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds (whittaker_uniqueness_local_holds h7 h12) convergence_entries_general_linear_holds local_uniqueness_auxiliary_holds good_inverse_dense_range_holds`.
+-/
 theorem whittaker_support_theorem_holds (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : WhittakerVanishingImpliesZero :=
   mirror_global_of positive_matrix_block_product_holds automorphic_basic_setup_holds whittaker_functional_exists_holds (whittaker_uniqueness_local_holds h7 h12) convergence_entries_general_linear_holds local_uniqueness_auxiliary_holds good_inverse_dense_range_holds
 
+/- English proof (translation)
+The claim follows from `meet_of orthogonalSplitPolarizationVanishes positive_matrix_block_product_holds automorphic_basic_setup_holds multiplicity_one_holds almost_everywhere_spherical averaging_projection_linear_holds bounded_invariant_L2_holds hecke_operator_automorphic_holds whittaker_functional_exis …`.
+-/
 theorem finite_part_meets_conditions (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : Meet :=
   meet_of orthogonalSplitPolarizationVanishes positive_matrix_block_product_holds automorphic_basic_setup_holds multiplicity_one_holds almost_everywhere_spherical averaging_projection_linear_holds bounded_invariant_L2_holds hecke_operator_automorphic_holds whittaker_functional_exists_holds smooth_vectors_regular_holds whittaker_factorization_places_holds (smooth_vector_orbit_holds h7 h12) adelic_character_condition_holds (whittaker_support_theorem_holds h7 h12)
 
+/- English proof (translation)
+The claim follows from `finite_part_of_meet (finite_part_meets_conditions h7 h12)`.
+-/
 theorem finite_part_of_meet_holds (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : CuspidalIrreducibleSubrep :=
   finite_part_of_meet (finite_part_meets_conditions h7 h12)
 
+/- English proof (translation)
+The claim follows from `smonorm_of (finite_part_meets_conditions h7 h12) (finite_part_of_meet_holds h7 h12)`.
+-/
 theorem smooth_multiplicity_normalized (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : SmoNorm :=
   smonorm_of (finite_part_meets_conditions h7 h12) (finite_part_of_meet_holds h7 h12)
 
+/- English proof (translation)
+The claim follows from `finite_infinite_product_eq_one`.
+-/
 theorem finite_infinite_product_one_holds : HeckeCharacterRigidity :=
   finite_infinite_product_eq_one
 
+/- English proof (translation)
+The claim follows from `smo_of (smooth_multiplicity_normalized h7 h12) finite_infinite_product_one_holds`.
+-/
 theorem smooth_multiplicity_one_holds (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : Smo :=
   smo_of (smooth_multiplicity_normalized h7 h12) finite_infinite_product_one_holds
 
+/- English proof (translation)
+The claim follows from `mean_convergence_of (smooth_multiplicity_one_holds h7 h12)`.
+-/
 theorem cuspidal_multiplicity_one (h7 : PositivityTheory.JacquetShalikaLocal.L7) (h12 : PositivityTheory.JacquetShalikaLocal.lift_levelP_alt₂) : GlobalTheory.Published.CuspidalMultiplicityOne :=
   mean_convergence_of (smooth_multiplicity_one_holds h7 h12)
 

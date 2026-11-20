@@ -39,9 +39,15 @@ section
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {m : ℕ}
   {b : Fin m → V} {a : Fin m → 𝓞 F}
 
+/- English proof (translation)
+Simplify using `only [crd, map_sub, sub_div]`.
+-/
 theorem crd_sub (x y : V) (j : Fin m) : crd h b a (x - y) j = crd h b a x j - crd h b a y j := by
   simp only [crd, map_sub, sub_div]
 
+/- English proof (translation)
+Unfold `crd`. Rewrite using `[smul_eq_jK c x, LinearMap.map_smul, smul_eq_mul, mul_div_assoc]`.
+-/
 theorem crd_smul (c : 𝓞 K) (x : V) (j : Fin m) : crd h b a (c • x) j = jK c * crd h b a x j := by
   unfold crd
   rw [smul_eq_jK c x, LinearMap.map_smul, smul_eq_mul, mul_div_assoc]
@@ -50,6 +56,11 @@ variable (horth : ∀ i j, i ≠ j → h (b i) (b j) = 0)
   (hdiag : ∀ i, h (b i) (b i) = algebraMap F K ((a i : 𝓞 F) : F)) (ha : ∀ i, a i ≠ 0)
 include horth hdiag ha
 
+/- English proof (translation)
+Establish `e : ∀ j, jK (ι (a j)) = algebraMap F K ((a j : 𝓞 F) : F)` using `fun j => (IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K (a j)).symm.trans (IsScalarTower.algebraMap_apply (𝓞 F) F K (a j))`. Unfold `crd`. Rewrite using `[map_sum, Finset.sum_eq_single k]`. Rewrite using `[LinearMap.map_smul, hdiag k, smul_eq_mul, ← e k, mul_div_assoc, div_self (jK_ι_ne_zero (K := K) (ha k)), mul_one]`. Introduce `i _ hik`.
+
+Rewrite using `[LinearMap.map_smul, horth k i (Ne.symm hik), smul_zero]`. Introduce `hk`. Conclude with `absurd (Finset.mem_univ k) hk`.
+-/
 theorem crd_sum (c : Fin m → K) (k : Fin m) : crd h b a (∑ i, c i • b i) k = c k := by
   have e : ∀ j, jK (ι (a j)) = algebraMap F K ((a j : 𝓞 F) : F) := fun j =>
     (IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K (a j)).symm.trans
@@ -63,11 +74,17 @@ theorem crd_sum (c : Fin m → K) (k : Fin m) : crd h b a (∑ i, c i • b i) k
   · intro hk
     exact absurd (Finset.mem_univ k) hk
 
+/- English proof (translation)
+Rewrite using `[show gmap h b a Y x = ∑ i, (∑ j, jK (Y i j) * crd h b a x j) • b i from rfl]`. Conclude with `crd_sum horth hdiag ha _ k`.
+-/
 theorem crd_gmap (Y : Matrix (Fin m) (Fin m) (𝓞 K)) (x : V) (k : Fin m) :
     crd h b a (gmap h b a Y x) k = ∑ j, jK (Y k j) * crd h b a x j := by
   rw [show gmap h b a Y x = ∑ i, (∑ j, jK (Y i j) * crd h b a x j) • b i from rfl]
   exact crd_sum horth hdiag ha _ k
 
+/- English proof (translation)
+Unfold `crd`. Rewrite using `[mul_div_assoc', eq_div_iff (jK_ι_ne_zero (K := K) (ha k)), mul_comm]`.
+-/
 theorem h_b (x : V) (k : Fin m) : h (b k) x = jK (ι (a k)) * crd h b a x k := by
   unfold crd
   rw [mul_div_assoc', eq_div_iff (jK_ι_ne_zero (K := K) (ha k)), mul_comm]
@@ -76,9 +93,21 @@ variable (hbX : ∀ i, b i ∈ (⊤ : Submodule K V))
   (hloc : locF 𝔭 (Submodule.span (𝓞 K) (Set.range b)) = locF 𝔭 L)
 include hbX hloc
 
+/- English proof (translation)
+The claim follows from `G2.coords (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha) h𝔭 hL Submodule.mem_top`.
+-/
 theorem coordsT (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn ⊤ L) (x : V) : x = ∑ i, crd h b a x i • b i := G2.coords (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha)
   h𝔭 hL Submodule.mem_top
 
+/- English proof (translation)
+Establish `e : ∀ j, jK (ι (a j)) = algebraMap F K ((a j : 𝓞 F) : F)` using `fun j => (IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 K) K (a j)).symm.trans (IsScalarTower.algebraMap_apply (𝓞 F) F K (a j))`. Establish `e1 : ∀ j, h x (b j) = star (crd h b a x j) * jK (ι (a j))`. Introduce `j`. Establish `hx` using `coordsT horth hdiag ha hbX hloc h𝔭 hL x`. Use `conv_lhs => rw [hx]`.
+
+Rewrite using `[map_sum, LinearMap.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, hdiag j, smul_eq_mul, starRingEnd_apply, ← e j]`. Introduce `i _ hij`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, horth i j hij, smul_zero]`. Introduce `hj`.
+
+Conclude with `absurd (Finset.mem_univ j) hj`. Establish `hy` using `coordsT horth hdiag ha hbX hloc h𝔭 hL y`. Use `conv_lhs => rw [hy]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.map_smul, e1 j, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem h_expand (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn ⊤ L) (x y : V) :
     h x y = ∑ i, star (crd h b a x i) * jK (ι (a i)) * crd h b a y i := by
   have e : ∀ j, jK (ι (a j)) = algebraMap F K ((a j : 𝓞 F) : F) := fun j =>
@@ -101,12 +130,20 @@ theorem h_expand (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn ⊤ L) (x y : V) :
   rw [LinearMap.map_smul, e1 j, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[G2.mem_B_iff (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha) h𝔭 hL x]`. Conclude with `⟨fun hx => hx.2, fun hx => ⟨Submodule.mem_top, hx⟩⟩`.
+-/
 theorem mem_B (h𝔭 : 𝔭.IsPrime) (hL : IsLatIn ⊤ L) (x : V) :
     x ∈ locF 𝔭 L ↔ ∀ i, crd h b a x i ∈ HU.SP K 𝔭 := by
   rw [G2.mem_B_iff (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha)
     h𝔭 hL x]
   exact ⟨fun hx => hx.2, fun hx => ⟨Submodule.mem_top, hx⟩⟩
 
+/- English proof (translation)
+Rewrite using `[G2.mem_locF_dualIn_iff (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha) hF h𝔭 hL x]`. Use `⟨fun hx i => ?_, fun hx => ⟨Submodule.mem_top, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h_b horth hdiag ha x i]`. Conclude with `hx.2 i`. Rewrite using `[h_b horth hdiag ha x i]`.
+
+Conclude with `hx i`.
+-/
 theorem mem_A (hF : IsFixF K F) (h𝔭 : 𝔭.IsMaximal) (hL : IsLatIn ⊤ L) (x : V) :
     x ∈ locF 𝔭 (dualIn h ⊤ L) ↔ ∀ i, jK (ι (a i)) * crd h b a x i ∈ HU.SP K 𝔭 := by
   rw [G2.mem_locF_dualIn_iff (hbX := hbX) (hloc := hloc) (horth := horth) (hdiag := hdiag) (ha := ha)

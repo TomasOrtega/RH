@@ -11,6 +11,13 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Establish `hx' : xᴴ * JJ n * x = JJ n` using `hx`. Establish `hJ : JJ n * JJ n = -1`. Simplify using `[JJ, fromBlocks_multiply, ← fromBlocks_one, fromBlocks_neg]`. Establish `hl : (-(JJ n * xᴴ * JJ n)) * x = 1`. Establish `e : JJ n * xᴴ * JJ n * x = JJ n * (xᴴ * JJ n * x)` using `by simp only [Matrix.mul_assoc]`.
+
+Rewrite using `[neg_mul, e, hx', hJ, neg_neg]`. Rewrite using `[ub1, Matrix.inv_eq_left_inv hl, u1]`. Rewrite using `[← fromBlocks_toBlocks x]`. Simplify using `only [JJ, fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_neg, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₂₁, conjTranspose_add, conjTranspose_smul, Complex.star_def, Complex.conj_I]`. Simplify using the standard rewrite rules.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem inverse_first_block_eq_adjoint {x : M2 n} (hx : InG x) : ub1 x = (u1 x)ᴴ := by
   have hx' : xᴴ * JJ n * x = JJ n := hx
   have hJ : JJ n * JJ n = -1 := by
@@ -25,6 +32,11 @@ theorem inverse_first_block_eq_adjoint {x : M2 n} (hx : InG x) : ub1 x = (u1 x)�
   simp
   abel
 
+/- English proof (translation)
+Introduce `n m e w y`. Establish `hg : InG (mR y)` using `y.2`. Establish `key : ∀ r : ℝ, 0 ≤ r → ((r⁻¹ : ℝ) : ℂ) ^ w = (r : ℂ) ^ (-w)`. Introduce `r hr`. Rewrite using `[Complex.ofReal_inv, Complex.inv_cpow, Complex.cpow_neg]`.
+
+Rewrite using `[Complex.arg_ofReal_of_nonneg hr]`. Conclude with `Real.pi_ne_zero.symm`. Simplify using `only [fz, F0, f0, hLoc, inverse_first_block_eq_adjoint hg, det_conjTranspose]`. Rewrite using `[key _ (by positivity), Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Simplify using the standard rewrite rules.
+-/
 theorem secFz : SecFz := by
   intro n m e w y
   have hg : InG (mR y) := y.2

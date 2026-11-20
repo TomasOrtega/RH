@@ -31,6 +31,15 @@ def cutPts (S T : HSp D) (e : AE D) : AddSubgroup (WO S T) where
     show e • (-x) = -x
     rw [smul_neg, show e • x = x from hx]
 
+/- English proof (translation)
+Establish `hss : singleV D.host.F v 1 * singleV D.host.F v 1 = singleV D.host.F v 1`. Apply `GlobalTheory.LatticeLocal.af_ext D.host.F` to reduce the goal to its premises. Introduce `w`. Rewrite using `[map_mul]`. Distinguish the cases in `h : w = v`.
+
+Substitute `h` using the available equality. Simplify using `only [GlobalTheory.LatticeLocal.ev_self, mul_one]`. Simplify using `only [GlobalTheory.LatticeLocal.ev_ne D.host.F h, mul_zero]`. Establish `hrep : idem D (.inl v) = pairA D.host.F 0 (singleV D.host.F v 1) ⊗ₜ[D.host.F] (1 : D.host.E)` using `by show algebraMap (AF D.host.F) (AE D) (pairA D.host.F 0 (singleV D.host.F v 1)) = _`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hrep]`. Use `_ = pairA D.host.F 0 (singleV D.host.F v 1 * singleV D.host.F v 1) ⊗ₜ[D.host.F] (1 : D.host.E) := GlobalTheory.LatticeLocal.idem_inl_mul v _ _`. Use `_ = idem D (.inl v) := by rw [hss, hrep]`.
+
+Rewrite using `[hrep] show (Algebra.TensorProduct.map (AlgHom.id D.host.F (AF D.host.F)) D.sp.cm.sig) _ = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one]`. Rewrite using `[hrep] show (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)) _ = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, show fstA D.host.F (pairA D.host.F 0 (singleV D.host.F v 1)) = 0 from rfl, TensorProduct.zero_tmul]`.
+-/
 theorem idem_fin (D : D7) (v : FinPl D) : idem D (.inl v) * idem D (.inl v) = idem D (.inl v) ∧
     cA D (idem D (.inl v)) = idem D (.inl v) ∧ infPart D (idem D (.inl v)) = 0 := by
   have hss : singleV D.host.F v 1 * singleV D.host.F v 1 = singleV D.host.F v 1 := by
@@ -59,10 +68,16 @@ theorem idem_fin (D : D7) (v : FinPl D) : idem D (.inl v) * idem D (.inl v) = id
     rw [Algebra.TensorProduct.map_tmul,
       show fstA D.host.F (pairA D.host.F 0 (singleV D.host.F v 1)) = 0 from rfl, TensorProduct.zero_tmul]
 
+/- English proof (translation)
+Rewrite using `[← hx, GlobalTheory.SplitScalar.symplO_smul, ce, hu, GlobalTheory.SplitScalar.symplO_zero_right]`.
+-/
 theorem symplO_cut {S T : HSp D} {e : AE D} (ce : cA D e = e) {x u : WO S T} (hx : e • x = x) (hu : e • u = 0) :
     symplO S T x u = 0 := by
   rw [← hx, GlobalTheory.SplitScalar.symplO_smul, ce, hu, GlobalTheory.SplitScalar.symplO_zero_right]
 
+/- English proof (translation)
+Establish `h2 : (2 : F) • a = 0`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem eq_zero_of_eq_neg_AF {F : Type} [Field F] [NumberField F] (a : AF F) (ha : a = -a) : a = 0 := by
   have h2 : (2 : F) • a = 0 := by
     calc (2 : F) • a = a + a := two_smul F a
@@ -72,6 +87,17 @@ private theorem eq_zero_of_eq_neg_AF {F : Type} [Field F] [NumberField F] (a : A
     _ = (1 / 2 : F) • ((2 : F) • a) := mul_smul _ _ _
     _ = 0 := by rw [h2, smul_zero]
 
+/- English proof (translation)
+Take `⟨hii, hci, -⟩` from `idem_fin D v`. Establish `split : ∀ u ∈ latO S T ΛS ΛT P, wAt (.inl v) u ∈ latO S T ΛS ΛT (fun u => u = v) ∧ idem D (.inl v) • wAt (.inl v) u = wAt (.inl v) u ∧ u - wAt (.inl v) u ∈ latO S T ΛS ΛT (fun u => Sum.inl u ≠ (Sum.inl v : Place D)) ∧ idem D (.inl v) • (u - wAt (.inl v) u) = 0`. Introduce `u hu`. Take `⟨ha, hb, -⟩` from `GlobalTheory.LatticeLocal.wAt_mem_latO D S T ΛS ΛT P u hu (.inl v)`. Use `⟨latO_mono (fun w hw => Sum.inl_injective hw.2) ha, ?_, latO_mono (fun w hw => hw.2) hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[wAt_eq_smul, smul_smul, hii]`. Rewrite using `[wAt_eq_smul, smul_sub, smul_smul, hii, sub_self]`. Use `⟨fun u hu => ?_, fun e he u hu hhu => ?_⟩` and prove the remaining obligations. Take `⟨ha, hia, hb, hib⟩` from `split u hu`. Establish `horth : symplO S T (2 • wAt (.inl v) u) (2 • (u - wAt (.inl v) u)) = 0` using `symplO_cut hci (by rw [smul_comm (idem D (.inl v)) (2 : ℕ), hia]) (by rw [smul_comm (idem D (.inl v)) (2 : ℕ), hib, smul_zero])`.
+
+Establish `hsum : 2 • u = 2 • wAt (.inl v) u + 2 • (u - wAt (.inl v) u)` using `by abel`. Rewrite using `[hsum, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T horth, hoff.1 _ hb, h2 _ ha hia]`. Take `⟨ha, hia, hb, hib⟩` from `split u hu`. Establish `heu : e • u = u` using `(GlobalTheory.SplitScalar.isHalf_iff e u).mp hhu`. Establish `hea : e • wAt (.inl v) u = wAt (.inl v) u`.
+
+Rewrite using `[wAt_eq_smul, smul_smul, mul_comm, ← smul_smul, heu]`. Establish `heb : IsHalf e (u - wAt (.inl v) u)`. Rewrite using `[GlobalTheory.SplitScalar.isHalf_iff, smul_sub, heu, hea]`. Establish `horth : symplO S T (wAt (.inl v) u) (u - wAt (.inl v) u) = 0` using `symplO_cut hci hia hib`. Establish `hsum : u = wAt (.inl v) u + (u - wAt (.inl v) u)` using `by abel`.
+
+Rewrite using `[hsum, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T horth, hoff.2 e he _ hb heb, hs e he _ ha hia ((GlobalTheory.SplitScalar.isHalf_iff e _).mpr hea)]`.
+-/
 private theorem isLatVac_latO_of_local_conditions {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (v : FinPl D) (f : WO S T → ℂ)
@@ -111,6 +137,61 @@ private theorem isLatVac_latO_of_local_conditions {D : D7} {ψ : AddChar (AF D.h
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D ψ θ S T sS sT ΛS ΛT f₀ hb v x hx`. Take `⟨hii, hci, -⟩` from `idem_fin D v`. Establish `hψ` using `base_std hb`. Establish `hθ` using `base_inf hb`. Establish `hsdS : IsSelfDualC S ΛS` using `hb.2.2.1`.
+
+Establish `hsdT : IsSelfDualC T ΛT` using `hb.2.2.2.1`. Establish `hloc0 : IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) f₀` using `base_isLocal hb (.inl v)`. Establish `hvac0 : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun u => u = v) f₀` using `base_vacAt hb (.inl v)`. Establish `hglob` using `GlobalTheory.T.self_dual_lattice_pairing_dual D ψ S T ΛS ΛT hψ hsdS hsdT`. Establish `hcl : ∀ f, IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) f → (∀ w : WO S T, IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) (heisO ψ S T (wAt (.inl v) w) f)) ∧ (∀ (c : ℂ) g, IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) g → IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) (c • f + g))` using `fun f hf => ⟨((GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ f hf.1).2 (.inl v) hf).1, ((GlobalTheory.T.fockVacua_localFactors_stable_heisenberg_away D ψ θ S T sS sT ΛS ΛT hψ hθ f hf.1).2 (.inl v) hf).2.1⟩`.
+
+Establish `h0loc : IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) 0`. Establish `h` using `(hcl f₀ hloc0).2 (-1) f₀ hloc0`. Simplify using `using h`. Establish `hvAll0 : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) f₀` using `isLatVac_latO_of_local_conditions v f₀ hloc0.2.1 (fun a ha _ => hvac0.1 a ha) (fun e he a ha _ hh => hvac0.2 e he a ha hh) _`. Set `Msub : Submodule ℂ (WO S T → ℂ)` to `{ carrier := {f | IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) f} add_mem' := fun {f g} hf hg => by`.
+
+Establish `h` using `(hcl f hf).2 1 g hg`. Simplify using `using h`. Use the proof step `zero_mem' := h0loc`. Use the proof step `smul_mem' := fun c f hf => by`. Establish `h` using `(hcl f hf).2 c 0 h0loc`.
+
+Simplify using `using h }`. Set `X` to `cutPts S T (idem D (.inl v))`. Set `ρ : ↥X → ↥Msub →ₗ[ℂ] ↥Msub` to `fun y => { toFun := fun m => ⟨heisO ψ S T (y : WO S T) m, by`. Establish `hy : idem D (.inl v) • (y : WO S T) = y` using `y.2`. Establish `h` using `(hcl m m.2).1 y`.
+
+Rewrite using `[wAt_eq_smul, hy] at h⟩` and apply the resulting hypothesis. Use the proof step `map_add' := fun m m' => Subtype.ext (by show heisO ψ S T (y : WO S T) ((m : WO S T → ℂ) + m') = heisO ψ S T y m + heisO ψ S T y m'`. Rewrite using `[← GlobalTheory.SplitScalar.heisL_apply, map_add, GlobalTheory.SplitScalar.heisL_apply, GlobalTheory.SplitScalar.heisL_apply])`. Use the proof step `map_smul' := fun c m => Subtype.ext (by show heisO ψ S T (y : WO S T) (c • (m : WO S T → ℂ)) = c • heisO ψ S T y m`. Conclude with `GlobalTheory.SplitScalar.heisO_smul ψ S T y c m) }`.
+
+Set `e0 : ↥Msub` to `⟨f₀, hloc0⟩`. Set `β : ↥X → ↥X → ℂ` to `fun y z => ψ (symplOH S T y z)`. Set `Λ : AddSubgroup ↥X` to `(latO S T ΛS ΛT fun u => u = v).comap X.subtype`. Establish `hl : ∀ a b c : ↥X, β (a + b) c = β a c * β b c` using `fun a b c => by show ψ (symplOH S T ((a + b : ↥X) : WO S T) c) = ψ (symplOH S T a c) * ψ (symplOH S T b c)`. Rewrite using `[AddSubgroup.coe_add, GlobalTheory.SplitScalar.symplOH_add_left, AddChar.map_add_eq_mul]`.
+
+Establish `hr : ∀ a b c : ↥X, β a (b + c) = β a b * β a c` using `fun a b c => by show ψ (symplOH S T a ((b + c : ↥X) : WO S T)) = ψ (symplOH S T a b) * ψ (symplOH S T a c)`. Rewrite using `[AddSubgroup.coe_add, GlobalTheory.SplitScalar.symplOH_add_right, AddChar.map_add_eq_mul]`. Establish `hd : ∀ a : ↥X, β a a = 1` using `fun a => by show ψ (symplOH S T a a) = 1`. Rewrite using `[eq_zero_of_eq_neg_AF _ (GlobalTheory.SplitScalar.symplOH_skew S T a a), AddChar.map_zero_eq_one]`. Establish `h0 : ∀ m : ↥Msub, ρ 0 m = m` using `fun m => Subtype.ext (by show heisO ψ S T ((0 : ↥X) : WO S T) m = m`.
+
+Rewrite using `[AddSubgroup.coe_zero, GlobalTheory.SplitScalar.heisO_zero])`. Establish `hρ : ∀ (a b : ↥X) (m : ↥Msub), ρ a (ρ b m) = β a b • ρ (a + b) m` using `fun a b m => Subtype.ext (by show heisO ψ S T a (heisO ψ S T b m) = ψ (symplOH S T a b) • heisO ψ S T ((a + b : ↥X) : WO S T) m`. Rewrite using `[AddSubgroup.coe_add]`. Conclude with `GlobalTheory.SplitScalar.heisO_heisO ψ S T a b m)`. Establish `hsq : ∀ y z : ↥X, β y z ^ 2 = ψ (symplO S T y z)` using `fun y z => by show ψ (symplOH S T y z) ^ 2 = _`.
+
+Rewrite using `[sq, ← AddChar.map_add_eq_mul, GlobalTheory.SplitScalar.symplOH_add_self]`. Establish `hΛ : ∀ y : ↥X, y ∈ Λ ↔ ∀ a ∈ Λ, β y a ^ 2 = 1`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy a ha`.
+
+Establish `hy' : (y : WO S T) ∈ latO S T ΛS ΛT (fun u => u = v)` using `hy`. Establish `ha' : (a : WO S T) ∈ latO S T ΛS ΛT (fun u => u = v)` using `ha`. Rewrite using `[hsq]`. Establish `hyall` using `GlobalTheory.PlaceModel.latO_le_top _ hy'`. Conclude with `((hglob.1 _ (GlobalTheory.SplitScalar.latO_fin hyall)).mp hyall) _ (GlobalTheory.PlaceModel.latO_le_top _ ha')`.
+
+Introduce `h`. Establish `hε0 : IsPlaceIdem D v (pairA D.host.F 0 (singleV D.host.F v 1))` using `⟨singleV D.host.F v 1, rfl, GlobalTheory.LatticeLocal.ev_self D.host.F v, fun w hw => GlobalTheory.LatticeLocal.ev_ne D.host.F hw⟩`. Establish `hm` using `GlobalTheory.PlaceModel.mem_of_dual (ψ := ψ) hε0 hglob.1 (a := idem D (.inl v)) hii hii (by rw [hci]; exact hii) (y : WO S T) ((GlobalTheory.PlaceModel.mem_half S T).mpr y.2) (fun z hz => by`. Establish `hz2 : idem D (.inl v) • z = z`. Establish `h3` using `(GlobalTheory.PlaceModel.mem_half S T).mp (AddSubgroup.mem_inf.mp hz).2`.
+
+Rewrite `h3` using `[hci]`. Then use the resulting hypothesis. Establish `h4` using `h ⟨z, hz2⟩ (AddSubgroup.mem_inf.mp hz).1`. Rewrite using `[hsq] at h4)` and apply the resulting hypothesis. Conclude with `(AddSubgroup.mem_inf.mp hm).1`. Establish `hdiv : ∀ N : ℕ, 0 < N → ∀ y : ↥X, ∃ z : ↥X, N • z = y` using `fun N hN y => by`.
+
+Take `⟨z, hz, hzN⟩` from `GlobalTheory.PlaceModel.half_div S T (idem D (.inl v)) N hN (y : WO S T) ((GlobalTheory.PlaceModel.mem_half S T).mpr y.2)`. Conclude with `⟨⟨z, (GlobalTheory.PlaceModel.mem_half S T).mp hz⟩, Subtype.ext (by rw [AddSubgroup.coe_nsmul]; exact hzN)⟩`. Establish `hFGS : ΛS.FG` using `hsdS.1.fg`. Establish `hFGT : ΛT.FG` using `hsdT.1.fg`. Establish `hfin : ∀ N : ℕ, 0 < N → ∃ R : Set ↥X, R.Finite ∧ ∀ t ∈ Λ, ∃ r ∈ R, ∃ u ∈ Λ, t = r + N • u`.
+
+Introduce `N hN`. Take `⟨R0, hR0, hR0m⟩` from `GlobalTheory.LatFinMod.latO_finite_mod D S T ΛS ΛT hFGS hFGT (fun u => u = v) N hN`. Establish `hcut : ∀ w : WO S T, idem D (.inl v) • (idem D (.inl v) • w) = idem D (.inl v) • w` using `fun w => by`. Rewrite using `[smul_smul, hii]`. Use `⟨(fun r => (⟨idem D (.inl v) • r, hcut r⟩ : ↥X)) '' R0, hR0.image _, ?_⟩` and prove the remaining obligations.
+
+Introduce `t ht`. Take `⟨r, hr, u, hu, htu⟩` from `hR0m (t : WO S T) ht`. Establish `hu' : idem D (.inl v) • u ∈ latO S T ΛS ΛT (fun w => w = v)`. Rewrite using `[← wAt_eq_smul]`. Conclude with `latO_mono (fun w hw => Sum.inl_injective hw.2) (GlobalTheory.LatticeLocal.wAt_mem_latO D S T ΛS ΛT (fun w => w = v) u hu (.inl v)).1`.
+
+Use `⟨⟨idem D (.inl v) • r, hcut r⟩, ⟨r, hr, rfl⟩, ⟨idem D (.inl v) • u, hcut u⟩, hu', ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[AddSubgroup.coe_add, AddSubgroup.coe_nsmul]`. Use `show (t : WO S T) = idem D (.inl v) • r + N • (idem D (.inl v) • u)`. Establish `ht2 : idem D (.inl v) • (t : WO S T) = t` using `t.2`.
+
+Rewrite using `[← ht2, htu, smul_add, smul_comm (idem D (.inl v)) N u]`. Establish `he : e0 ≠ 0` using `fun h => base_ne_zero hb (congrArg Subtype.val h)`. Establish `hε : ∀ u ∈ Λ, ∃ ε : ℂ, ρ u e0 = ε • e0` using `fun u hu => by`. Establish `hu' : (u : WO S T) ∈ latO S T ΛS ΛT (fun w => w = v)` using `hu`. Take `⟨ε, -, hε⟩` from `hglob.2.2 f₀ hvAll0 u (GlobalTheory.PlaceModel.latO_le_top _ hu')`.
+
+Conclude with `⟨ε, Subtype.ext (hε f₀ hvAll0)⟩`. Establish `h2 : ∀ u ∈ Λ, ρ (2 • u) e0 = e0` using `fun u hu => Subtype.ext (by show heisO ψ S T ((2 • u : ↥X) : WO S T) f₀ = f₀`. Rewrite using `[AddSubgroup.coe_nsmul]`. Conclude with `hvac0.1 _ hu)`. Establish `hvac : ∀ m : ↥Msub, (∀ u ∈ Λ, ∀ ε : ℂ, ρ u e0 = ε • e0 → ρ u m = ε • m) → ∃ c : ℂ, m = c • e0`.
+
+Introduce `m hm`. Establish `hmloc : IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) m` using `m.2`. Establish `hmAll : IsLatVac (heisO ψ S T) (latO S T ΛS ΛT fun _ => True) m`. Use `isLatVac_latO_of_local_conditions (ψ := ψ) (S := S) (T := T) (ΛS := ΛS) (ΛT := ΛT) v (m : WO S T → ℂ) hmloc.2.1 (fun a ha hia => ?_) (fun e he a ha hia hh => ?_) _` and prove the remaining obligations. Establish `h2a : idem D (.inl v) • (2 • a) = 2 • a`.
+
+Rewrite using `[smul_comm (idem D (.inl v)) (2 : ℕ), hia]`. Establish `h3` using `hm ⟨2 • a, h2a⟩ (nsmul_mem ha 2) 1 (Subtype.ext (by show heisO ψ S T (2 • a) f₀ = (1 : ℂ) • f₀`. Rewrite using `[one_smul]`. Conclude with `hvac0.1 a ha))`. Establish `h4 : heisO ψ S T (2 • a) m = (1 : ℂ) • (m : WO S T → ℂ)` using `congrArg Subtype.val h3`.
+
+Rewrite `h4` using `[one_smul]`. Then use the resulting hypothesis. Establish `h3` using `hm ⟨a, hia⟩ ha 1 (Subtype.ext (by show heisO ψ S T a f₀ = (1 : ℂ) • f₀`. Rewrite using `[one_smul]`. Conclude with `hvac0.2 e he a ha hh))`. Establish `h4 : heisO ψ S T a m = (1 : ℂ) • (m : WO S T → ℂ)` using `congrArg Subtype.val h3`.
+
+Rewrite `h4` using `[one_smul]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `GlobalTheory.VacuumLine.eq_smul_base D ψ θ S T sS sT ΛS ΛT f₀ hb m hmloc.1 hmAll (fun τ => hmloc.2.2 τ Sum.inr_ne_inl)`. Conclude with `⟨c, Subtype.ext hc⟩`. Establish `hv : ∃ N : ℕ, 0 < N ∧ ∀ u ∈ Λ, ρ (N • u) ⟨x, hx⟩ = ⟨x, hx⟩`. Take `⟨U, hUo, hU⟩` from `hx.1.level`.
+
+Take `⟨N, hN, hNU⟩` from `(GlobalTheory.T.completedHomLattice_multiple_mem_open_level D S T ΛS ΛT hsdS hsdT (GlobalTheory.T.completedHomLattice_finitelyGenerated D S T ΛS ΛT hsdS hsdT)).1 U hUo`. Use `⟨N, hN, fun u hu => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hu' : (u : WO S T) ∈ latO S T ΛS ΛT (fun w => w = v)` using `hu`. Establish `hall` using `GlobalTheory.PlaceModel.latO_le_top _ hu'`. Use `show heisO ψ S T ((N • u : ↥X) : WO S T) x = x`.
+
+Rewrite using `[AddSubgroup.coe_nsmul]`. Conclude with `hU _ (hNU _ hall) (GlobalTheory.SplitScalar.latO_fin (nsmul_mem hall N))`. Establish `hmem` using `GlobalTheory.HeisVacuum.mem_span_translates_vacuum ↥X ↥Msub β ρ Λ e0 hl hr hd h0 hρ hΛ hdiv hfin he hε h2 hvac ⟨x, hx⟩ hv`. Establish `hmap` using `Submodule.mem_map_of_mem (f := Msub.subtype) hmem`. Rewrite `hmap` using `[← Submodule.span_image]`.
+
+Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, rfl⟩, rfl⟩`. Use `⟨(y : WO S T), ?_⟩` and prove the remaining obligations. Establish `hy : idem D (.inl v) • (y : WO S T) = y` using `y.2`. Use `show heisO ψ S T (wAt (.inl v) (y : WO S T)) f₀ = heisO ψ S T (y : WO S T) f₀`.
+
+Rewrite using `[wAt_eq_smul, hy]`.
+-/
 theorem mem_span_local : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (f₀ : WO S T → ℂ), IsBase ψ θ S T sS sT ΛS ΛT f₀ → ∀ (v : FinPl D) (x : WO S T → ℂ), IsLocal ψ θ S T sS sT ΛS ΛT (.inl v) x → x ∈ Submodule.span ℂ (Set.range fun w : WO S T => heisO ψ S T (wAt (.inl v) w) f₀) := by
   intro D ψ θ S T sS sT ΛS ΛT f₀ hb v x hx
   obtain ⟨hii, hci, -⟩ := idem_fin D v

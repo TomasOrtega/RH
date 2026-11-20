@@ -13,10 +13,16 @@ variable {R S : Type} [CommRing R] [CommRing S]
 def mapF (φ : R →+* S) (F : ℂ → MvPolynomial (Fin 2) R) : ℂ → MvPolynomial (Fin 2) S :=
   fun z => MvPolynomial.map φ (F z)
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`.
+-/
 theorem map_smul' (φ : R →+* S) (c : R) (p : MvPolynomial (Fin 2) R) :
     MvPolynomial.map φ (c • p) = φ c • MvPolynomial.map φ p := by
   rw [MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, Betti.slP_X, MvPolynomial.map_X, map_add, map_smul', map_intCast]`.
+-/
 theorem map_slP (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynomial (Fin 2) R) :
     MvPolynomial.map φ (slP m p) = slP m (MvPolynomial.map φ p) := by
   induction p using MvPolynomial.induction_on with
@@ -25,23 +31,41 @@ theorem map_slP (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ) (p : MvPolynom
   | mul_X p i hp =>
     simp only [map_mul, hp, Betti.slP_X, MvPolynomial.map_X, map_add, map_smul', map_intCast]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[mapF]`.
+-/
 theorem mapF_add (φ : R →+* S) (F G : ℂ → MvPolynomial (Fin 2) R) : mapF φ (F + G) = mapF φ F + mapF φ G := by
   funext z; simp [mapF]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[mapF]`.
+-/
 theorem mapF_sub (φ : R →+* S) (F G : ℂ → MvPolynomial (Fin 2) R) : mapF φ (F - G) = mapF φ F - mapF φ G := by
   funext z; simp [mapF]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[mapF, map_smul']`.
+-/
 theorem mapF_smul (φ : R →+* S) (c : R) (F : ℂ → MvPolynomial (Fin 2) R) : mapF φ (c • F) = φ c • mapF φ F := by
   funext z; simp [mapF, map_smul']
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[mapF, Finset.sum_apply, map_sum]`.
+-/
 theorem mapF_sum {ι : Type} (φ : R →+* S) (s : Finset ι) (F : ι → ℂ → MvPolynomial (Fin 2) R) :
     mapF φ (∑ j ∈ s, F j) = ∑ j ∈ s, mapF φ (F j) := by
   funext z; simp [mapF, Finset.sum_apply, map_sum]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `[mapF, opP, map_slP]`.
+-/
 theorem mapF_opP (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ) (F : ℂ → MvPolynomial (Fin 2) R) :
     mapF φ (opP R m F) = opP S m (mapF φ F) := by
   funext z; simp [mapF, opP, map_slP]
 
+/- English proof (translation)
+Consider the cases of `T with`. Consider the case `T q => simp only [opL, LinearMap.add_apply, LinearMap.sum_apply, mapF_add, mapF_sum, mapF_opP]`. Consider the case `U => simp only [opL, LinearMap.sum_apply, mapF_sum, mapF_opP]`. Consider the case `D d => simp only [opL, mapF_opP]`.
+-/
 theorem mapF_opL (φ : R →+* S) (N l : ℕ) (T : Letter) (F : ℂ → MvPolynomial (Fin 2) R) :
     mapF φ (opL R N l T F) = opL S N l T (mapF φ F) := by
   cases T with
@@ -49,6 +73,11 @@ theorem mapF_opL (φ : R →+* S) (N l : ℕ) (T : Letter) (F : ℂ → MvPolyno
   | U => simp only [opL, LinearMap.sum_apply, mapF_sum, mapF_opP]
   | D d => simp only [opL, mapF_opP]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hF`. Use `⟨fun z => (h1 z).map φ, fun γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `h2 γ hγ`. Use `⟨MvPolynomial.map φ p, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp z hz, map_sub, map_slP]`.
+
+Both sides reduce to the same expression.
+-/
 theorem mapF_mem_pot (φ : R →+* S) {w : ℕ} {Γ : Subgroup SL(2, ℤ)} {F : ℂ → MvPolynomial (Fin 2) R}
     (hF : F ∈ Pot R w Γ) : mapF φ F ∈ Pot S w Γ := by
   obtain ⟨h1, h2⟩ := hF
@@ -57,6 +86,11 @@ theorem mapF_mem_pot (φ : R →+* S) {w : ℕ} {Γ : Subgroup SL(2, ℤ)} {F : 
   refine ⟨MvPolynomial.map φ p, fun z hz => ?_⟩
   rw [← hp z hz, map_sub, map_slP]; rfl
 
+/- English proof (translation)
+Take `⟨ψ, p, h1, h2⟩` from `hF`. Use `⟨mapF φ ψ, MvPolynomial.map φ p, fun γ hγ z hz => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [mapF]`. Rewrite using `[← map_slP, h1 γ hγ z hz]`. Simplify using `only [mapF]`.
+
+Rewrite using `[h2 z hz, map_add]`.
+-/
 theorem mapF_mem_triv (φ : R →+* S) {w : ℕ} {Γ : Subgroup SL(2, ℤ)} {F : ℂ → MvPolynomial (Fin 2) R}
     (hF : F ∈ Triv R w Γ) : mapF φ F ∈ Triv S w Γ := by
   obtain ⟨ψ, p, h1, h2⟩ := hF
@@ -64,6 +98,15 @@ theorem mapF_mem_triv (φ : R →+* S) {w : ℕ} {Γ : Subgroup SL(2, ℤ)} {F :
   · simp only [mapF]; rw [← map_slP, h1 γ hγ z hz]
   · simp only [mapF]; rw [h2 z hz, map_add]
 
+/- English proof (translation)
+Unfold `admissibleLettersSubalgebra at hP`. Proceed by induction on `hP using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨T, hT, rfl⟩` from `hx`. Conclude with `⟨FreeAlgebra.ι R T, Algebra.subset_adjoin ⟨T, hT, rfl⟩, by simp, fun F => by simp [mapF_opL]⟩`.
+
+Consider the case `algebraMap r`. Use `⟨algebraMap R _ (ι.symm r), Subalgebra.algebraMap_mem _ _, by simp, fun F => ?_⟩` and prove the remaining obligations. Simplify using `[Module.algebraMap_end_apply, mapF_smul]`. Consider the case `add x y _ _ hx hy`. Take `⟨Q, hQ, h1, h2⟩` from `hx`.
+
+Take `⟨Q', hQ', h1', h2'⟩` from `hy`. Conclude with `⟨Q + Q', add_mem hQ hQ', by simp [h1, h1'], fun F => by simp [mapF_add, h2, h2']⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨Q, hQ, h1, h2⟩` from `hx`. Take `⟨Q', hQ', h1', h2'⟩` from `hy`.
+
+Conclude with `⟨Q * Q', mul_mem hQ hQ', by simp [h1, h1'], fun F => by simp [h2, h2']⟩`.
+-/
 theorem exists_preimage (ι : R ≃+* S) (N l : ℕ) (lam : Letter → R) {P : FreeAlgebra S Letter} (hP : P ∈ admissibleLettersSubalgebra S N l) :
     ∃ Q ∈ admissibleLettersSubalgebra R N l, ι (FreeAlgebra.lift R lam Q) = FreeAlgebra.lift S (fun T => ι (lam T)) P ∧
       ∀ F, mapF (ι : R →+* S) (FreeAlgebra.lift R (opL R N l) Q F) =
@@ -85,6 +128,9 @@ theorem exists_preimage (ι : R ≃+* S) (N l : ℕ) (lam : Letter → R) {P : F
     obtain ⟨Q', hQ', h1', h2'⟩ := hy
     exact ⟨Q * Q', mul_mem hQ hQ', by simp [h1, h1'], fun F => by simp [h2, h2']⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Simplify using `only [mapF, MvPolynomial.map_map]`. Rewrite using `[RingEquiv.symm_comp, MvPolynomial.map_id]`.
+-/
 theorem mapF_symm_mapF (ι : R ≃+* S) (F : ℂ → MvPolynomial (Fin 2) R) :
     mapF (ι.symm : S →+* R) (mapF (ι : R →+* S) F) = F := by
   funext z
@@ -95,6 +141,11 @@ end GlobalTheory.KZ.Transport
 
 open GlobalTheory.KZ.Transport in
 
+/- English proof (translation)
+Introduce `N l w E _ ι lam ⟨P, hP, h1, h2⟩`. Take `⟨Q, hQ, e1, e2⟩` from `exists_preimage ι N l lam hP`. Use `⟨Q, hQ, ι.injective (by rw [e1, h1, map_one]), fun F hF T hT => ?_⟩` and prove the remaining obligations. Establish `h` using `mapF_mem_triv (ι.symm : ℂ →+* E) (h2 _ (mapF_mem_pot (ι : E →+* ℂ) hF) T hT)`. Rewrite `h` using `[← e2]`.
+
+Rewrite using `[← mapF_symm_mapF ι ((opL E N l T - lam T • (1 : Module.End E (ℂ → MvPolynomial (Fin 2) E))) (FreeAlgebra.lift E (opL E N l) Q F))]`. Use `h using 2` and compare the differences between its conclusion and the goal. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, mapF_sub, mapF_smul, mapF_opL]`. Both sides reduce to the same expression.
+-/
 theorem GlobalTheory.KZ.ssPot_transport : ∀ (N l w : ℕ) {E : Type} [Field E] (ι : E ≃+* ℂ) (lam : Letter → E),
     SSPotB N l w (fun T => ι (lam T)) → ∃ P ∈ admissibleLettersSubalgebra E N l, FreeAlgebra.lift E lam P = 1 ∧
       ∀ F ∈ Pot E w (Gam N l), ∀ T : Letter, admitted N l T →

@@ -9,6 +9,17 @@ open UpperTheory.V.Lit UpperTheory.V.Lit.Geo UpperTheory.V.Lit.Bor UpperTheory.V
 open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
+/- English proof (translation)
+Introduce `E _ _ _ a ha μ _ _ T hT T' hL`. Take `⟨c1, c2, c3, -⟩` from `clFacts E a μ`. Establish `gf` using `gardFacts E a ha μ`. Use `⟨fun φ h => (hL φ h).1, fun X φ hφ => ?_, fun g φ hφ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`.
+
+Consider the case `mem φ h`. Take `⟨ψ, F, hψ, hφ⟩` from `h`. Establish `h1` using `liftCv E a ha μ T hT T' hL ψ φ F hψ hφ`. Establish `h2` using `cvLie E a μ ψ _ hψ _ h1 X`. Establish `h3` using `cvLie E a μ ψ φ hψ F hφ X`.
+
+Establish `h4` using `liftCv E a ha μ T hT T' hL _ _ F (((testOps E a ψ).2 hψ).1 X) h3`. Conclude with `Subtype.ext (h2.trans h4.symm)`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul s x _ hx => simp only [map_smul, hx]`.
+
+Establish `m1 : rt E a g (T' φ) ∈ gard μ` using `(gf _ (hL φ hφ).1).2.2.2.2 g`. Establish `m0 : rt E a g φ ∈ gard μ` using `(gf _ hφ).2.2.2.2 g`. Establish `m2 : T' (rt E a g φ) ∈ gard μ` using `(hL _ m0).1`. Establish `m3 : (1 : ℂ) • rt E a g (T' φ) + (-1 : ℂ) • T' (rt E a g φ) ∈ gard μ` using `add_mem (Submodule.smul_mem _ _ m1) (Submodule.smul_mem _ _ m2)`. Establish `e` using `(c1 _ _ 1 (-1) (gf _ m1).2.1 (gf _ m2).2.1).2`.
+
+Rewrite `e` using `[c3 _ g (gf _ (hL φ hφ).1).2.1, (hL φ hφ).2, (hL _ m0).2, c3 _ g (gf _ hφ).2.1, hT, ← add_smul, add_neg_cancel, zero_smul]`. Establish `z` using `c2 _ (gf _ m3).1 (gf _ m3).2.1 e`. Rewrite `z` using `[one_smul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `z`.
+-/
 theorem UpperTheory.V.Cj.H.opComm :
     UpperTheory.V.Cj.H.OpComm := by
   intro E _ _ _ a ha μ _ _ T hT T' hL

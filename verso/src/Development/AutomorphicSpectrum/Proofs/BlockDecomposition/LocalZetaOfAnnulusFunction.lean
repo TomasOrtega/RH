@@ -13,6 +13,15 @@ section Compact
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `hq : (1 : ℝ) < (residueCard F : ℝ)` using `by exact_mod_cast one_lt_residueCard (K := F)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt R hq`. Establish `hO : IsCompact (𝒪[F] : Set F)` using `IsNonarchimedeanLocalField.isCompact_closedBall F 1`. Use `set u : Fˣ := unifUnit F ^ (k : ℤ) with hu`. Establish `hI : IsCompact ((fun y : F => y * ((u⁻¹ : Fˣ) : F)) '' (𝒪[F] : Set F))` using `hO.image (continuous_id.mul continuous_const)`.
+
+Establish `hmod : Continuous fun x : F => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Use `hI.of_isClosed_subset (isClosed_le hmod continuous_const) ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨x * (u : F), ?_, by simp⟩` and prove the remaining obligations. Establish `hmu : (modulus (u : F) : ℝ) = ((residueCard F : ℝ) ^ k)⁻¹`.
+
+Rewrite using `[modulus_of_ne_zero u.ne_zero, hu, ord_unifUnit_zpow]`. Use `push_cast`. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Establish `hx' : (modulus x : ℝ) ≤ R` using `hx`. Establish `hpos : (0 : ℝ) < (residueCard F : ℝ) ^ k` using `by positivity`.
+
+Apply `(modulus_le_one_iff).1` to reduce the goal to its premises. Rewrite using `[modulus_mul, ← NNReal.coe_le_coe]`. Use `push_cast`. Rewrite using `[hmu, ← div_eq_mul_inv, div_le_one hpos]`. Conclude with `hx'.trans hk.le`.
+-/
 theorem isCompact_modulus_le (R : ℝ) : IsCompact {x : F | (modulus x : ℝ) ≤ R} := by
   have hq : (1 : ℝ) < (residueCard F : ℝ) := by exact_mod_cast one_lt_residueCard (K := F)
   obtain ⟨k, hk⟩ := pow_unbounded_of_one_lt R hq
@@ -37,6 +46,13 @@ theorem isCompact_modulus_le (R : ℝ) : IsCompact {x : F | (modulus x : ℝ) �
   rw [hmu, ← div_eq_mul_inv, div_le_one hpos]
   exact hx'.trans hk.le
 
+/- English proof (translation)
+Establish `hmod : Continuous fun x : F => (modulus x : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Establish `hK : IsCompact {x : F | r ≤ (modulus x : ℝ) ∧ (modulus x : ℝ) ≤ R}` using `(isCompact_modulus_le R).of_isClosed_subset ((isClosed_le continuous_const hmod).inter (isClosed_le hmod continuous_const)) fun x hx => hx.2`. Establish `hsub : {x : F | r ≤ (modulus x : ℝ) ∧ (modulus x : ℝ) ≤ R} ⊆ Set.range (Units.val : Fˣ → F)`. Introduce `x hx`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `rfl`. Use `hx.1` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨Units.mk0 x hx0, rfl⟩`.
+
+Conclude with `((isOpenEmbedding_units_val (K := F)).isInducing.isCompact_preimage_iff hsub).2 hK`.
+-/
 theorem isCompact_shell {r : ℝ} (hr : 0 < r) (R : ℝ) :
     IsCompact {τ : Fˣ | r ≤ (modulus (τ : F) : ℝ) ∧ (modulus (τ : F) : ℝ) ≤ R} := by
   have hmod : Continuous fun x : F => (modulus x : ℝ) :=
@@ -55,6 +71,9 @@ theorem isCompact_shell {r : ℝ} (hr : 0 < r) (R : ℝ) :
     exact ⟨Units.mk0 x hx0, rfl⟩
   exact ((isOpenEmbedding_units_val (K := F)).isInducing.isCompact_preimage_iff hsub).2 hK
 
+/- English proof (translation)
+Establish `hm : Continuous fun τ : Fˣ => (((modulus (τ : F) : ℝ)) : ℂ)` using `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Conclude with `hm.cpow continuous_const fun τ => Complex.ofReal_mem_slitPlane.2 (by exact_mod_cast modulus_pos τ.ne_zero)`.
+-/
 theorem continuous_mp (z : ℂ) : Continuous fun τ : Fˣ => mp τ z := by
   have hm : Continuous fun τ : Fˣ => (((modulus (τ : F) : ℝ)) : ℂ) :=
     Complex.continuous_ofReal.comp
@@ -67,12 +86,30 @@ end Compact
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Unfold `Atau`. Conclude with `((hf.comp Units.continuous_val).mul (Units.continuous_val.comp hc.1.inv)).mul (continuous_mp _)`.
+-/
 theorem continuous_Atau {f : F → ℂ} {c : Fˣ →* ℂˣ} (hf : Continuous f) (hc : IsUnit1 c) (s lam : ℂ) :
     Continuous (Atau f c s lam) := by
   unfold Atau
   exact ((hf.comp Units.continuous_val).mul
     (Units.continuous_val.comp hc.1.inv)).mul (continuous_mp _)
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ f c hf ⟨r, R, hr, hsupp⟩ hc s lam`. Establish `hmodc : Continuous fun τ : Fˣ => (modulus (τ : F) : ℝ)` using `NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val)`. Use `set k : ℝ := ((multHaarConst F).toReal)⁻¹ with hk`. Establish `hk0 : 0 ≤ k` using `inv_nonneg.2 ENNReal.toReal_nonneg`. Use `set g : Fˣ → ENNReal := fun τ => ENNReal.ofReal (k * (modulus (τ : F) : ℝ) ^ 2) with hg`.
+
+Establish `hgm : Measurable g` using `(continuous_const.mul (hmodc.pow 2)).measurable.ennreal_ofReal`. Establish `hglt : ∀ᵐ τ ∂multHaar F, g τ < ⊤` using `Eventually.of_forall fun τ => ENNReal.ofReal_lt_top`. Establish `hgr : ∀ τ, (g τ).toReal = k * (modulus (τ : F) : ℝ) ^ 2` using `fun τ => ENNReal.toReal_ofReal (by positivity)`. Establish `hA` using `continuous_Atau hf hc s lam`. Establish `hcont : Continuous fun τ : Fˣ => (g τ).toReal • Atau f c s lam τ`.
+
+Simplify using `only [hgr]`. Conclude with `(continuous_const.mul (hmodc.pow 2)).smul hA`. Establish `hcs : HasCompactSupport fun τ : Fˣ => (g τ).toReal • Atau f c s lam τ`. Use `HasCompactSupport.intro (isCompact_shell hr R) fun τ hτ => ?_` and prove the remaining obligations. Establish `h0 : f (τ : F) = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hτ (hsupp _ h)`. Simplify using `[Atau, h0]`. Establish `hsm : Integrable (fun τ : Fˣ => (g τ).toReal • Atau f c s lam τ) (multHaar F)` using `hcont.integrable_of_hasCompactSupport hcs`. Use `⟨(integrable_withDensity_iff_integrable_smul' hgm hglt).2 hsm, ?_⟩` and prove the remaining obligations.
+
+Establish `hrho : rho F = (multHaar F).withDensity g` using `rfl`. Rewrite using `[hrho, integral_withDensity_eq_integral_toReal_smul hgm hglt, localZeta, kq, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun τ => ?_)` and prove the remaining obligations. Establish `hm0 : (((modulus (τ : F) : ℝ)) : ℂ) ≠ 0`. Conclude with `modulus_ne_zero τ.ne_zero` after adjusting the coercions.
+
+Establish `hpow : (((modulus (τ : F) : ℝ)) : ℂ) ^ (1 - s - lam) = (((modulus (τ : F) : ℝ)) : ℂ) ^ 2 * mp τ (-s - 1 - lam)`. Rewrite using `[mp, ← Complex.cpow_ofNat, ← Complex.cpow_add _ _ hm0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [hgr, Atau, hpow, MonoidHom.inv_apply, Complex.real_smul]`. Rewrite using `[hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_and_integral_Atau : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (f : F → ℂ) (c : Fˣ →* ℂˣ), Continuous f → (∃ r R : ℝ, 0 < r ∧ ∀ x, f x ≠ 0 → r ≤ (modulus x : ℝ) ∧ (modulus x : ℝ) ≤ R) → IsUnit1 c → ∀ s lam : ℂ, Integrable (Atau f c s lam) (rho F) ∧ ∫ τ, Atau f c s lam τ ∂rho F = kq F * localZeta f c⁻¹ (1 - s - lam) := by
   intro F _ _ _ _ _ _ f c hf ⟨r, R, hr, hsupp⟩ hc s lam
   have hmodc : Continuous fun τ : Fˣ => (modulus (τ : F) : ℝ) :=

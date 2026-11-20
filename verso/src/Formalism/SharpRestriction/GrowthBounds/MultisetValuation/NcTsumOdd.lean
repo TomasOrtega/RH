@@ -8,6 +8,9 @@ open Formalism.BasicNotions Finset
 
 variable {D : Formalism.BasicNotions.D7} {L : SizeData₂ D}
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : D.host.cls p = PrimeClass.inertClass` using `hg.2.2.1`. Unfold `Formalism.MainNotions.G.IsSg at h`. Rewrite `h` using `[h1]`. Conclude with `absurd h (by decide)`.
+-/
 theorem nc_notSg {T p : ℕ} (hg : GIdx D.host T p) : ¬ Formalism.MainNotions.G.IsSg D p := by
   intro h
   have h1 : D.host.cls p = PrimeClass.inertClass := hg.2.2.1
@@ -15,14 +18,23 @@ theorem nc_notSg {T p : ℕ} (hg : GIdx D.host T p) : ¬ Formalism.MainNotions.G
   rw [h1] at h
   exact absurd h (by decide)
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.stepP`. Rewrite using `[if_neg (nc_notSg hg)]`.
+-/
 theorem nc_step {T p : ℕ} (hg : GIdx D.host T p) : Formalism.MainNotions.G.stepP D p = Formalism.MainNotions.G.hP D p := by
   unfold Formalism.MainNotions.G.stepP; rw [if_neg (nc_notSg hg)]
 
+/- English proof (translation)
+Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]`.
+-/
 theorem nc_bs_iter (X : Formalism.MainNotions.G.Inst D L) (h t : Formalism.MainNotions.G.HH D) (i : ℕ) : X.bs h (t + i • h) = X.bs h t := by
   induction i with
   | zero => simp
   | succ i ih => rw [succ_nsmul, ← add_assoc, X.bs_step, ih]
 
+/- English proof (translation)
+Take `⟨t1, _, rfl⟩` from `Finset.mem_image.1 ht0`. Take `⟨i, hi⟩` from `X.bs_orb h t1`. Use `nc_bs_iter X h (X.bs h t1) i` as an intermediate fact. Rewrite `this` using `[hi]`. Conclude with `this.symm`.
+-/
 theorem nc_bs_rep (X : Formalism.MainNotions.G.Inst D L) (h t0 : Formalism.MainNotions.G.HH D) (ht0 : t0 ∈ Finset.univ.image (X.bs h)) :
     X.bs h t0 = t0 := by
   obtain ⟨t1, _, rfl⟩ := Finset.mem_image.1 ht0
@@ -31,11 +43,21 @@ theorem nc_bs_rep (X : Formalism.MainNotions.G.Inst D L) (h t0 : Formalism.MainN
   rw [hi] at this
   exact this.symm
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.G.partner`. Simplify using `[nc_notSg hg]`.
+-/
 theorem nc_partner {T p : ℕ} (hg : GIdx D.host T p) (t : Formalism.MainNotions.G.HH D) (e : ℕ) :
     Formalism.MainNotions.G.partner D p t e = (false, t + e • Formalism.MainNotions.G.hP D p) := by
   unfold Formalism.MainNotions.G.partner
   simp [nc_notSg hg]
 
+/- English proof (translation)
+Establish `hi : Function.Injective (fun e : ℕ => 2 * e + 1)`. Introduce `a b h`. Simplify using `only at h`. Use linear arithmetic over natural numbers and integers. Establish `hs : Function.support (fun e : ℕ => if Odd e then g e else 0) ⊆ Set.range (fun e : ℕ => 2 * e + 1)`.
+
+Introduce `e he`. Distinguish the cases in `ho : Odd e`. Take `⟨k, rfl⟩` from `ho`. Conclude with `⟨k, by ring⟩`. Conclude with `(he (if_neg ho)).elim`.
+
+Rewrite using `[← hi.tsum_eq hs]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `if_pos (odd_two_mul_add_one e)`.
+-/
 theorem nc_tsum_odd (g : ℕ → ℝ) [DecidablePred (fun e : ℕ => Odd e)] :
     ∑' e : ℕ, (if Odd e then g e else 0) = ∑' e : ℕ, g (2 * e + 1) := by
   have hi : Function.Injective (fun e : ℕ => 2 * e + 1) := by

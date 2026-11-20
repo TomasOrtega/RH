@@ -28,6 +28,9 @@ abbrev pC (A : CommRingCat.{0}) : A ⟶ CommRingCat.of (Polynomial A) := CommRin
 def Good (q : ℕ) (i : ℤ) {T K A : CommRingCat.{0}} (k : T ⟶ K) (t : T ⟶ A) : Prop :=
   ∀ (B : CommRingCat.{0}) (c : A ⟶ B), Et c → BC q i k (t ≫ c)
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) = pull _ (sch.map (Spec.map g)) (tw q i) n ∘ pull _ (sch.map (Spec.map f)) (tw q i) n := by funext x; rw [Spec.map_comp, Functor.map_comp, pull_comp]; rfl rw [h]; exact (hg n).comp (hf n)`.
+-/
 theorem RE.comp {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : RE q i f) (hg : RE q i g) :
     RE q i (f ≫ g) := fun n => by
   have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) =
@@ -35,6 +38,9 @@ theorem RE.comp {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A ⟶ B} {g :
     funext x; rw [Spec.map_comp, Functor.map_comp, pull_comp]; rfl
   rw [h]; exact (hg n).comp (hf n)
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) = pull _ (sch.map (Spec.map g)) (tw q i) n ∘ pull _ (sch.map (Spec.map f)) (tw q i) n := by funext x; rw [Spec.map_comp, Functor.map_comp, pull_comp]; rfl have := hfg n rw [h] at this; exact (Function.Bijective.of_comp …`.
+-/
 theorem RE.of_comp_left {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hf : RE q i f)
     (hfg : RE q i (f ≫ g)) : RE q i g := fun n => by
   have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) =
@@ -43,6 +49,9 @@ theorem RE.of_comp_left {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A ⟶
   have := hfg n
   rw [h] at this; exact (Function.Bijective.of_comp_iff _ (hf n)).1 this
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) = pull _ (sch.map (Spec.map g)) (tw q i) n ∘ pull _ (sch.map (Spec.map f)) (tw q i) n := by funext x; rw [Spec.map_comp, Functor.map_comp, pull_comp]; rfl have := hfg n rw [h] at this; exact (Function.Bijective.of_comp …`.
+-/
 theorem RE.of_comp_right {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A ⟶ B} {g : B ⟶ C} (hg : RE q i g)
     (hfg : RE q i (f ≫ g)) : RE q i f := fun n => by
   have h : ⇑(pull _ (sch.map (Spec.map (f ≫ g))) (tw q i) n) =
@@ -51,11 +60,17 @@ theorem RE.of_comp_right {q : ℕ} {i : ℤ} {A B C : CommRingCat.{0}} {f : A �
   have := hfg n
   rw [h] at this; exact (Function.Bijective.of_comp_iff' (hg n) _).1 this
 
+/- English proof (translation)
+Introduce `n` and use `by have h : ⇑(pull _ (sch.map (Spec.map (𝟙 A))) (tw q i) n) = _root_.id := by funext x; rw [Spec.map_id, CategoryTheory.Functor.map_id, pull_id]; rfl rw [h]; exact Function.bijective_id`.
+-/
 theorem RE.id (q : ℕ) (i : ℤ) (A : CommRingCat.{0}) : RE q i (𝟙 A) := fun n => by
   have h : ⇑(pull _ (sch.map (Spec.map (𝟙 A))) (tw q i) n) = _root_.id := by
     funext x; rw [Spec.map_id, CategoryTheory.Functor.map_id, pull_id]; rfl
   rw [h]; exact Function.bijective_id
 
+/- English proof (translation)
+Introduce `n` and use `by have h1 : ∀ x, pull _ (sch.map (Spec.map (inv f))) (tw q i) n (pull _ (sch.map (Spec.map f)) (tw q i) n x) = x := fun x => by rw [← pull_comp, ← Functor.map_comp, ← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id, CategoryTheory.Functor.map_id, pull_id] have h2 : ∀ x, pull _ (sch …`.
+-/
 theorem RE.of_isIso (q : ℕ) (i : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) [IsIso f] : RE q i f := fun n => by
   have h1 : ∀ x, pull _ (sch.map (Spec.map (inv f))) (tw q i) n (pull _ (sch.map (Spec.map f)) (tw q i) n x) = x := fun x => by
     rw [← pull_comp, ← Functor.map_comp, ← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id, CategoryTheory.Functor.map_id, pull_id]
@@ -63,6 +78,9 @@ theorem RE.of_isIso (q : ℕ) (i : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) [I
     rw [← pull_comp, ← Functor.map_comp, ← Spec.map_comp, IsIso.inv_hom_id, Spec.map_id, CategoryTheory.Functor.map_id, pull_id]
   exact ⟨Function.LeftInverse.injective h1, Function.RightInverse.surjective h2⟩
 
+/- English proof (translation)
+Introduce `_ _ ψ h'` and use `by rw [← h.inr_isoIsPushout_hom _ _ h'] exact hr.comp (RE.of_isIso q i _)`.
+-/
 theorem BC.of_one {q : ℕ} {i : ℤ} {A Y C Y' : CommRingCat.{0}} {φ : A ⟶ Y} {c : A ⟶ C} {w : Y ⟶ Y'} {φ' : C ⟶ Y'}
     (h : IsPushout φ c w φ') (hr : RE q i φ') : BC q i φ c := fun _ _ ψ h' => by
   rw [← h.inr_isoIsPushout_hom _ _ h']
@@ -149,11 +167,21 @@ def Global : Prop := Hyp → ∀ (q : ℕ) (i : ℤ) {T K : CommRingCat.{0}} (k 
   (∀ n : ℕ, Good q i k (CommRingCat.ofHom (MvPolynomial.C : T →+* MvPolynomial (Fin n) T))) →
   ∀ {X : Scheme.{0}} (p : X ⟶ Spec T) [Smooth p], Eqv _ (sch.map (pullback.fst p (Spec.map k))) (tw q i)
 
+/- English proof (translation)
+Introduce `B c hc` and use `by rw [← ht, Category.assoc] exact h B _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective e.bijective) hc)`.
+-/
 theorem Good.of_equiv {q : ℕ} {i : ℤ} {T K A A' : CommRingCat.{0}} {k : T ⟶ K} {t : T ⟶ A} (h : Good q i k t)
     (e : A ≃+* A') (t' : T ⟶ A') (ht : t ≫ CommRingCat.ofHom e.toRingHom = t') : Good q i k t' := fun B c hc => by
   rw [← ht, Category.assoc]
   exact h B _ (RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective e.bijective) hc)
 
+/- English proof (translation)
+Introduce `a1 a2 a3 a4 a5 _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ c3 c4 _ _ _ _ _ _ q _ T _ _ _ hT hq X p _ i`. Establish `H : Hyp` using `⟨a1, a2, a3, a4, a5, a9, b1, b2, b4, c3, c4⟩`. Use `h4 H q i _ (fun n => ?_) p` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero`.
+
+Use `(h2 H q i T hT hq).of_equiv (MvPolynomial.isEmptyRingEquiv T (Fin 0)).symm _ ?_` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Use `(h3 H q i _ _ hq (h1.2.2.2.2.2 T _ (nonZeroDivisors T)) ih).of_equiv (MvPolynomial.finSuccEquiv T n).symm.toRingEquiv _ ?_` and prove the remaining obligations.
+
+Use `ext1`. Conclude with `RingHom.ext fun x => (MvPolynomial.finSuccEquiv T n).symm.commutes x`.
+-/
 theorem goal_of (h1 : AlgResProps) (h2 : Base) (h3 : Step) (h4 : Global) : LateralTheory.E.EtaleChapterEThree := by
   intro a1 a2 a3 a4 a5 _ _ a9 _ _ b1 b2 _ b4 _ _ _ _ c3 c4 _ _ _ _ _ _ q _ T _ _ _ hT hq X p _ i
   have H : Hyp := ⟨a1, a2, a3, a4, a5, a9, b1, b2, b4, c3, c4⟩

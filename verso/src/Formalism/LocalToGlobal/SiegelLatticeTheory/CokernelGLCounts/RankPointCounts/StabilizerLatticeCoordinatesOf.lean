@@ -73,6 +73,43 @@ def StabilizerLatticeTwistedProduct : Prop :=
           2⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) * √|(discr D.host.E : ℝ)| *
           ((D.host.rdE : ℝ) ^ ht p) ^ (2 * Fintype.card (InfinitePlace X.B.I.F))) = 1
 
+/- English proof (translation)
+Introduce `D X Y u u' hg3 hPr t hrel hG w hat F' L U hNR γw s s' hIs hs hs' hpt c Φ hD`. Take `⟨h', I, Λ, k, τ0, σι, hh', hφ, hΛ, hk, hk0, hτ0, hset0, hc0, hconst0⟩` from `hB D X Y u u' hg3 hPr t hrel hG w hat`. Take `⟨σ, hσn, A, hA, hcoord⟩` from `hD.2.2.2`. Establish `hrd : 0 < (D.host.rdE : ℝ)` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.rd_pos (D := D)`. Establish `hσ0 : ∀ p, σ p ≠ 0` using `fun p h => by`.
+
+Use `hσn p` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `(pow_pos hrd _).ne' this.symm`. Establish `hAu : ∀ v, IsUni ht (A v)` using `fun v x x' p hxx => hA v x x' p hxx`. Use `choose B hAB hBA hBu using fun v => uni_inv ht (hAu v)`.
+
+Use `set φ := Formalism.L2.SG.Pf.VolPinAsm.phiV X`. Set `yOf : (InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ) → (InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ)` to `fun x v p => (σ p)⁻¹ * B v (x v) p`. Set `τ : Formalism.L2.SG.RealObj.FreeE w → (InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ) → (InfinitePlace X.B.I.F → ℂ)` to `fun p x v => (x v p - B v (x v) p) + σ p * τ0 p (yOf x) v`. Establish `hBagree : ∀ v (x x' : Formalism.L2.SG.RealObj.FreeE w → ℂ) q, (∀ r, ht r < ht q → x r = x' r) → x q = x' q → B v x q = B v x' q`. Introduce `v x x' q hl hq`.
+
+Use `hBu v x x' q hl` as an intermediate fact. Rewrite `this` using `[hq]`. Take the linear combination `this`. Establish `hτ : ∀ p (x x' : InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ), (∀ q, h' q < h' p → ∀ v, x v q = x' v q) → τ p x = τ p x'`. Introduce `p x x' hxx`.
+
+Establish `hy : ∀ q, h' q < h' p → ∀ v, yOf x v q = yOf x' v q`. Introduce `q hq v`. Use `show (σ q)⁻¹ * B v (x v) q = (σ q)⁻¹ * B v (x' v) q`. Rewrite using `[hBagree v (x v) (x' v) q (fun r hr => hxx r (lt_trans (hh' q r hr) hq) v) (hxx q hq v)]`. Use function extensionality and compare the values at `v`.
+
+Use `show (x v p - B v (x v) p) + σ p * τ0 p (yOf x) v = (x' v p - B v (x' v) p) + σ p * τ0 p (yOf x') v`. Establish `h1` using `hBu v (x v) (x' v) p fun r hr => hxx r (hh' p r hr) v`. Rewrite using `[hτ0 p (yOf x) (yOf x') hy]`. Take the linear combination `-h1`. Use `⟨σ, h', I, Λ, k, τ, σι, hh', hφ, hΛ, hk, hk0, hσ0, hτ, fun x => ?_, hc0, ?_⟩` and prove the remaining obligations.
+
+Establish `hS : ∀ β : Formalism.L2.SG.Pf.VolPinAsm.StG w, Formalism.L2.SG.RealObj.stCoord X u' w γw (s⁻¹ * (c⁻¹ * Φ β * c) * s) = fun v => A v (fun p => σ p * φ v (((ptMat w)⁻¹ * ((β : Formalism.L2.SG.PairVal.GLR D) : Formalism.L2.SG.PairVal.MatR D) * ptMat w) p.1.1 p.1.2))`. Introduce `β`. Use function extensionality and compare the values at `v`. Conclude with `hcoord β v`. Establish `hyOfS : ∀ y : InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ, yOf (fun v => A v (fun p => σ p * y v p)) = y`.
+
+Introduce `y`. Use function extensionality and compare the values at `v p`. Use `show (σ p)⁻¹ * B v (A v (fun p => σ p * y v p)) p = y v p`. Rewrite using `[hBA v]`. Clear denominators, using `[hσ0 p]` for the nonvanishing conditions.
+
+Establish `hSyOf : ∀ x : InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ, (fun v => A v (fun p => σ p * yOf x v p)) = x`. Introduce `x`. Use function extensionality and compare the values at `v`. Establish `: (fun p => σ p * yOf x v p) = B v (x v)`. Use function extensionality and compare the values at `p`.
+
+Use `show σ p * ((σ p)⁻¹ * B v (x v) p) = B v (x v) p`. Clear denominators, using `[hσ0 p]` for the nonvanishing conditions. Rewrite using `[this, hAB v]`. Establish `hdiff : ∀ p x, (fun v => x v p) - τ p x = fun v => σ p * (yOf x v p - τ0 p (yOf x) v)`. Introduce `p x`.
+
+Use function extensionality and compare the values at `v`. Use `show x v p - ((x v p - B v (x v) p) + σ p * τ0 p (yOf x) v) = σ p * ((σ p)⁻¹ * B v (x v) p - τ0 p (yOf x) v)`. Clear denominators, using `[hσ0 p]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Establish `hmemiff : ∀ p (z : InfinitePlace X.B.I.F → ℂ), (fun v => σ p * z v) ∈ (Λ p).map (embS φ (σ p)) ↔ z ∈ (Λ p).map (embS φ 1)`.
+
+Introduce `p z`. Simplify using `only [AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hae⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `v`. Use `congrFun hae v` as an intermediate fact. Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.embS, AddMonoidHom.coe_mk, ZeroHom.coe_mk, one_mul] at this ⊢`. Conclude with `mul_left_cancel₀ (hσ0 p) this`. Introduce and unpack `⟨a, ha, hae⟩`.
+
+Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `congrFun hae v` as an intermediate fact. Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.embS, AddMonoidHom.coe_mk, ZeroHom.coe_mk, one_mul] at this ⊢`. Rewrite using `[this]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨β, hβ, rfl⟩`. Introduce `p`. Rewrite using `[hS β, hdiff, hmemiff, hyOfS]`. Conclude with `(hset0 _).1 ⟨β, hβ, rfl⟩ p`.
+
+Introduce `hx`. Establish `hy : ∀ p, (fun v => yOf x v p) - τ0 p (yOf x) ∈ (Λ p).map (embS φ 1)`. Introduce `p`. Use `hx p` as an intermediate fact. Rewrite `this` using `[hdiff, hmemiff]`.
+
+Conclude with `this`. Take `⟨β, hβ, hyβ⟩` from `(hset0 (yOf x)).2 hy`. Use `⟨β, hβ, ?_⟩` and prove the remaining obligations. Rewrite using `[hS β, ← hSyOf x, hyβ]`. Rewrite using `[← hconst0]`.
+
+Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hσn p]`. Both sides reduce to the same expression.
+-/
 theorem stabilizerLatticeCoordinates_of (hB : StabilizerLatticeTwistedProduct) : StabilizerLatticeCoordinates := by
   intro D X Y u u' hg3 hPr t hrel hG w hat F' L U hNR γw s s' hIs hs hs' hpt c Φ hD
   obtain ⟨h', I, Λ, k, τ0, σι, hh', hφ, hΛ, hk, hk0, hτ0, hset0, hc0, hconst0⟩ := hB D X Y u u' hg3 hPr t hrel hG w hat
@@ -169,6 +206,47 @@ theorem stabilizerLatticeCoordinates_of (hB : StabilizerLatticeTwistedProduct) :
     rw [hσn p]
     rfl
 
+/- English proof (translation)
+Introduce `D X Y u u' hg3 hPr t hrel hG w hat F' L U hNR γw s s' μw hIs hs hs' hpt hHaar hmap c Φ hD`. Take `⟨BX, hBm, hBd, hB0, hstm, hStm, hinj, hsurj, hmul, hconj⟩` from `hC D X Y u u' t hrel hG w hat γw s s' hIs hs hs' hpt`. Establish `hΦR : ∀ β, c⁻¹ * Φ β * c ∈ Formalism.L2.SG.TermOp.Vanish.Rset t` using `hD.2.1`. Take `⟨σ, h', I, Λ, k, τ, σι, hh', hφ, hΛ, hk, hk0, hs0, hτ, hset, hc0, hconst⟩` from `hL D X Y u u' hg3 hPr t hrel hG w hat F' L U hNR γw s s' hIs hs hs' hpt c Φ hD`. Establish `hTC` using `Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D`.
+
+Establish `: IsEmpty {w : InfinitePlace D.host.E // w.IsReal}` using `⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1)) w.2⟩`. Use `set St := Formalism.L2.SG.RealObj.StInf X u u' γw with hStdef`. Use `set sc := Formalism.L2.SG.RealObj.stCoord X u' w γw with hscdef`. Set `gβ : Formalism.L2.SG.Pf.VolPinAsm.StG w → X.B.I.Ginf` to `fun β => s⁻¹ * (c⁻¹ * Φ β * c) * s`. Establish `hgSt : ∀ β, gβ β ∈ St` using `fun β => hconj _ (hΦR β)`.
+
+Establish `hg_inv : ∀ β, gβ β⁻¹ = (gβ β)⁻¹`. Introduce `β`. Simplify using `only [gβ, map_inv]`. Use `group`. Establish `hg_mul : ∀ β (y : X.B.I.Ginf), s⁻¹ * (c⁻¹ * (Φ β * y) * c) * s = gβ β * (s⁻¹ * (c⁻¹ * y * c) * s)`.
+
+Introduce `β y`. Simplify using `only [gβ]`. Use `group`. Set `A : Formalism.L2.SG.RealObj.FreeE w → AddSubgroup (InfinitePlace X.B.I.F → ℂ)` to `fun p => (Λ p).map (Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p))`. Establish `hΓ : ∀ x, (∀ p, (fun v => x v p) - τ p x ∈ A p) ↔ ∃ β : Formalism.L2.SG.Pf.VolPinAsm.StG w, (β : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w ∧ x = sc (gβ β)`.
+
+Introduce `x`. Conclude with `(hset x).symm`. Establish `hBd' : ∀ p (x x' y y' : Formalism.L2.SG.RealObj.FreeE w → ℂ), (∀ q, h' q < h' p → x q = x' q ∧ y q = y' q) → BX p x y = BX p x' y'` using `fun p x x' y y' hxy => hBd p x x' y y' fun q hq => hxy q (hh' p q hq)`. Establish `hinv : ∀ γ, (∀ p, (fun v => γ v p) - τ p γ ∈ A p) → ∃ γ', (∀ p, (fun v => γ' v p) - τ p γ' ∈ A p) ∧ ∀ x, lawX BX γ' (lawX BX γ x) = x ∧ lawX BX γ (lawX BX γ' x) = x`. Introduce `γ hγ`.
+
+Take `⟨β, hβ, rfl⟩` from `(hΓ γ).1 hγ`. Establish `hβi : ((β⁻¹ : Formalism.L2.SG.Pf.VolPinAsm.StG w) : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w`. Rewrite using `[Subgroup.coe_inv]`. Conclude with `Subgroup.inv_mem _ hβ`. Use `⟨sc (gβ β⁻¹), (hΓ _).2 ⟨β⁻¹, hβi, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z, hz, rfl⟩` from `hsurj x`. Establish `h1` using `hmul (gβ β) (hgSt β) z hz`. Establish `h1'` using `hmul (gβ β⁻¹) (hgSt _) z hz`. Prove the components needed by the constructor for the conclusion. Establish `h2` using `hmul (gβ β⁻¹) (hgSt _) (gβ β * z) h1.1`.
+
+Rewrite using `[← h1.2, ← h2.2, hg_inv, inv_mul_cancel_left]`. Establish `h2` using `hmul (gβ β) (hgSt β) (gβ β⁻¹ * z) h1'.1`. Rewrite using `[← h1'.2, ← h2.2, hg_inv, mul_inv_cancel_left]`. Establish `hfd : ∀ p, ∃ F : Set (InfinitePlace X.B.I.F → ℂ), MeasurableSet F ∧ ∀ v, ∃! b : A p, (b : InfinitePlace X.B.I.F → ℂ) + v ∈ F`. Introduce `p`.
+
+Take `⟨F, hF, hFd⟩` from `exists_fd D.host.E (InfinitePlace X.B.I.F) (Formalism.L2.SG.Pf.VolPinAsm.phiV X) σι hφ (I p) (Λ p) (hΛ p) (by rw [hk p]; exact hk0 p) (σ p) (hs0 p)`. Use `⟨F, hF, fun v => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hau⟩` from `hFd v`. Use `⟨⟨Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a, AddSubgroup.mem_map_of_mem _ a.2⟩, ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩ hyF`.
+
+Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 hy`. Use `hau ⟨a', ha'⟩ hyF` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a' = Formalism.L2.SG.NGCut.SplitEmbedding.embS (Formalism.L2.SG.Pf.VolPinAsm.phiV X) (σ p) a`. Rewrite using `[show a' = (a : D.host.E) from congrArg Subtype.val this]`.
+
+Use `choose F hF hFd using hfd`. Use `set K' : Set (InfinitePlace X.B.I.F → Formalism.L2.SG.RealObj.FreeE w → ℂ) := {y | ∀ p, (fun v => y v p) ∈ F p} with hK'def`. Establish `hK'm : MeasurableSet K'`. Rewrite using `[hK'def, Set.setOf_forall]`. Conclude with `MeasurableSet.iInter fun p => (measurable_pi_lambda _ fun v => (measurable_pi_apply p).comp (measurable_pi_apply v)) (hF p)`.
+
+Establish `hKd` using `box_fundX h' BX hBd' τ hτ A F hFd`. Establish `hone` using `covol_one_eq_one D.host.E (InfinitePlace X.B.I.F) (Formalism.L2.SG.Pf.VolPinAsm.phiV X) σι hφ (Formalism.L2.SG.RealObj.FreeE w) h' BX hBm hBd' hB0 _ hc0 I Λ hΛ k hk hk0 σ hs0 hconst τ hτ hinv K' hK'm hKd`. Establish `hQm : Measurable (fun y : X.B.I.Ginf => s⁻¹ * (c⁻¹ * y * c) * s)` using `((continuous_const.mul ((continuous_const.mul continuous_id).mul continuous_const)).mul continuous_const).measurable`. Use `set KA := (fun y : X.B.I.Ginf => s⁻¹ * (c⁻¹ * y * c) * s) ⁻¹' (St ∩ sc ⁻¹' K') with hKAdef`. Establish `hKAm : MeasurableSet KA` using `hQm (hStm.inter (hstm hK'm))`.
+
+Use `⟨KA, hKAm, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `set z := s⁻¹ * (c⁻¹ * y * c) * s`. Establish `hz : z ∈ St` using `hconj _ hy`. Take `⟨γ, ⟨hγΓ, hγK⟩, hγu⟩` from `hKd (sc z)`. Take `⟨β, hβ, rfl⟩` from `(hΓ γ).1 hγΓ`.
+
+Use `⟨Φ β, ⟨⟨β, (Subgroup.mem_subgroupOf).2 hβ, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show s⁻¹ * (c⁻¹ * (Φ β * y) * c) * s ∈ St ∩ sc ⁻¹' K'`. Rewrite using `[hg_mul]`. Establish `h1` using `hmul (gβ β) (hgSt β) z hz`. Conclude with `⟨h1.1, by show sc (gβ β * z) ∈ K'; rw [h1.2]; exact hγK⟩`.
+
+Introduce and unpack `x' ⟨hx'm, hx'K⟩`. Take `⟨β', hβ', rfl⟩` from `Subgroup.mem_map.1 hx'm`. Establish `hβ'' : (β' : Formalism.L2.SG.PairVal.GLR D) ∈ Formalism.L2.SG.PairVal.stabInt D u u' Y.δ Y.M w` using `(Subgroup.mem_subgroupOf).1 hβ'`. Establish `hK2 : s⁻¹ * (c⁻¹ * (Φ β' * y) * c) * s ∈ St ∩ sc ⁻¹' K'` using `hx'K`. Rewrite `hK2` using `[hg_mul]`.
+
+Establish `h1` using `hmul (gβ β') (hgSt β') z hz`. Establish `hin : lawX BX (sc (gβ β')) (sc z) ∈ K'` using `by rw [← h1.2]; exact hK2.2`. Establish `heq` using `hγu (sc (gβ β')) ⟨(hΓ _).2 ⟨β', hβ'', rfl⟩, hin⟩`. Establish `hgg : gβ β' = gβ β` using `hinj (hgSt β') (hgSt β) heq`. Establish `: Φ β' = Φ β`.
+
+Establish `e : c⁻¹ * Φ β' * c = c⁻¹ * Φ β * c`. Use `congrArg (fun g => s * g * s⁻¹) hgg` as an intermediate fact. Simplify `this` using `[gβ, mul_assoc]`. Use `congrArg (fun g => c * g * c⁻¹) e` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Conclude with `this`. Establish `hc1m : Measurable (fun y : X.B.I.Ginf => c * y * c⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hs1m : Measurable (fun y : X.B.I.Ginf => s * y * s⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Rewrite using `[Measure.map_apply hc1m hKAm, Measure.map_apply hs1m (hc1m hKAm)]`. Establish `hset' : (fun y : X.B.I.Ginf => s * y * s⁻¹) ⁻¹' ((fun y : X.B.I.Ginf => c * y * c⁻¹) ⁻¹' KA) = St ∩ sc ⁻¹' K'`.
+
+Use extensionality with `y`. Simplify using `only [Set.mem_preimage, hKAdef]`. Establish `e : s⁻¹ * (c⁻¹ * (c * (s * y * s⁻¹) * c⁻¹) * c) * s = y` using `by group`. Rewrite using `[e]`. Rewrite using `[hset', Set.inter_comm, measure_inter_conull hHaar.2.2.1, ← Measure.map_apply hstm hK'm, hmap]`.
+
+Conclude with `hone`.
+-/
 theorem covolOne3C_of (hC : ChartC) (hL : StabilizerLatticeCoordinates) : Formalism.L2.SG.Pf.VolPinAsm.CovolOne3C := by
   intro D X Y u u' hg3 hPr t hrel hG w hat F' L U hNR γw s s' μw hIs hs hs' hpt hHaar hmap c Φ hD
   obtain ⟨BX, hBm, hBd, hB0, hstm, hStm, hinj, hsurj, hmul, hconj⟩ :=

@@ -13,6 +13,9 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM
 
+/- English proof (translation)
+Take `⟨N, i, hi, -, rfl⟩` from `hs`. Use `isProper_str R N` as an intermediate fact. Conclude with `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str R N)`.
+-/
 theorem isLocallyNoetherian_of_isQProjOver {R : Type} [CommRing R] [IsNoetherianRing R] {X : Scheme.{0}}
     {s : X ⟶ Sp R} (hs : IsQProjOver s) : IsLocallyNoetherian X := by
   obtain ⟨N, i, hi, -, rfl⟩ := hs

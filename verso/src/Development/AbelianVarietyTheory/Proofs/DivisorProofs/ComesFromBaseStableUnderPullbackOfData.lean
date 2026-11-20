@@ -16,6 +16,29 @@ noncomputable section
 
 namespace GlobalTheory.UCanon.DivFromPull
 
+/- English proof (translation)
+Introduce `E _ _ _ H D' l c L R V _ _ _ _ Q _ oQ Q' _ oQ' iw θ I _ s ε e hD e' he' hact hs hdiv`. Take `⟨g, hD0, hg, hxe, hac⟩` from `hdiv`. Establish `ψL : Nonempty (PsiOn (mulDeg L.D l.M') ⊤)` using `GlobalTheory.ArcPull.nonempty_psiOn_top _ (fun y => L.gen (l.M' • y))`. Take `⟨hD1, hW1, hp1, hx1⟩` from `GlobalTheory.T.exists_isPullDeg_whole_spectrum hD0 ψL`. Establish `ψR : Nonempty (PsiOn (GlobalTheory.PolDeg.rescale Q g) ⊤)`.
+
+Use `GlobalTheory.PullDegUniq.nonempty_psiOn_pull hD1` as an intermediate fact. Rewrite `this` using `[hW1]`. Simplify using `using this`. Set `n : Q'.X → I → ℤ` to `fun y k => (l.M' : ℤ) * ε k (e' y) (H.w0 • e' y)`. Establish `hs0 : ∀ k, algebraMap V (FractionRing V) (θ (s k)) ≠ 0` using `fun k => (map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 (hs k)`.
+
+Establish `hr0 : ∀ k, algebraMap R (FractionRing R) (s k) ≠ 0` using `fun k => (map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 (fun h => hs k (by rw [h, map_zero]))`. Set `g' : Q'.X → (FractionRing V)ˣ` to `fun y => (Units.mk0 (∏ k, algebraMap V (FractionRing V) (θ (s k)) ^ n y k) (Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hs0 k)))⁻¹`. Establish `hab : ∀ y, ∃ a b : R, θ b ≠ 0 ∧ (g (hD.xe y) : FractionRing R) * algebraMap R (FractionRing R) b = algebraMap R (FractionRing R) a ∧ (g' y : FractionRing V) * algebraMap V (FractionRing V) (θ b) = algebraMap V (FractionRing V) (θ a)`. Introduce `y`. Establish `key : ∀ {K : Type} [Field K] (x : K), x ≠ 0 → ∀ m : ℤ, x ^ (-m) * x ^ m.toNat = x ^ (-m).toNat`.
+
+Introduce `K _ x hx m`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hx]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hgz : (g (hD.xe y) : FractionRing R) = ∏ k, algebraMap R (FractionRing R) (s k) ^ (-n y k)`.
+
+Establish `h` using `hg (hD.xe y)`. Rewrite `h` using `[Units.val_inv_eq_inv_val]`. Rewrite using `[← inv_inv (g (hD.xe y) : FractionRing R), h, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg]`.
+
+Simplify using `only [n, he' y]`. Establish `hg'y : (g' y : FractionRing V) = ∏ k, algebraMap V (FractionRing V) (θ (s k)) ^ (-n y k)`. Simplify using `only [g', Units.val_inv_eq_inv_val, Units.val_mk0, ← Finset.prod_inv_distrib, zpow_neg]`. Use `⟨∏ k, s k ^ (-n y k).toNat, ∏ k, s k ^ (n y k).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => by rw [map_pow]; exact pow_ne_zero _ (hs k)`. Rewrite using `[hgz, map_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Conclude with `key _ (hr0 k) _`.
+
+Rewrite using `[hg'y, map_prod, map_prod, map_prod, map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, map_pow, map_pow]`. Conclude with `key _ (hs0 k) _`. Take `⟨h1, hp2, hx2⟩` from `GlobalTheory.T.exists_isPullDeg_rescale_both_sides hD g g' ψR hab`.
+
+Take `⟨r, hpr, hxr⟩` from `GlobalTheory.T.exists_isPullDeg_comp_of_first_top hD1 h1 hW1`. Use `⟨g', r, fun y => ?_, fun y => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [g', Units.val_inv_eq_inv_val, inv_inv, Units.val_mk0, map_zpow]`. Both sides reduce to the same expression. Conclude with `(hxr y).trans ((hx1 _).trans ((congrArg hD0.xe (hx2 y)).trans ((hxe _).trans (he' y).symm)))`.
+
+Use `letI := H.starRing`. Establish `c₁ : (oQ'.onB.act x).left ≫ hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ) = hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ) ≫ (oQ.onB.act x).left`. Use `congrArg (fun m => m.left ≫ pullback.fst Q.P.A.hom (specOf θ)) (hact x)` as an intermediate fact. Simplify `this` using `only [Over.comp_left, Category.assoc, GlobalTheory.Mum.over_pullback_map_left_comp_pullbackFst_scheme]`. Establish `hpr' : r.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf (θ.comp iw)) = (hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ)) ≫ hD0.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw)` using `hpr.trans (by rw [hp1]; exact congrArg (· ≫ _) hp2)`.
+
+Establish `key : (oQ'.onB.act x).left ≫ ((hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ)) ≫ hD0.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw)) = ((hD.e.hom.left ≫ pullback.fst Q.P.A.hom (specOf θ)) ≫ hD0.e.hom.left ≫ pullback.fst L.D.P.A.hom (specOf iw)) ≫ (L.oa.onB.act x).left`. Simplify using `only [Category.assoc] at c₁ hac ⊢`. Rewrite using `[reassoc_of% c₁]`. Conclude with `congrArg _ (congrArg _ ((hac x).trans (Category.assoc _ _ _).symm))`. Conclude with `(congrArg _ hpr').trans (key.trans (congrArg (· ≫ _) hpr'.symm))`.
+-/
 theorem divFrom_pull : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) {R V : Type} [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] (Q : DegPre R) [Module (𝓞 E) Q.X] (oQ : letI := H.starRing; Q.OAct (𝓞 E)) (Q' : DegPre V) [Module (𝓞 E) Q'.X] (oQ' : letI := H.starRing; Q'.OAct (𝓞 E)) (iw : L.W →+* R) (θ : R →+* V) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : Q.X ≃ₗ[𝓞 E] L.D.X) (hD : IsPullDeg θ Q Q') (e' : Q'.X ≃ₗ[𝓞 E] L.D.X), (∀ y, e' y = e (hD.xe y)) → (letI := H.starRing; ∀ x, oQ'.onB.act x ≫ hD.e.hom = hD.e.hom ≫ (Over.pullback (specOf θ)).map (oQ.onB.act x)) → (∀ k, θ (s k) ≠ 0) → DivFrom L Q oQ iw s ε e → DivFrom L Q' oQ' (θ.comp iw) (fun k => θ (s k)) ε e' := by
   intro E _ _ _ H D' l c L R V _ _ _ _ Q _ oQ Q' _ oQ' iw θ I _ s ε e hD e' he' hact hs hdiv
   obtain ⟨g, hD0, hg, hxe, hac⟩ := hdiv

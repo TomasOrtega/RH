@@ -27,11 +27,28 @@ def ind (S : Finset (Pl F)) : Af F :=
     · simp only [h, if_false]; exact zero_mem _⟩
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_ind (S : Finset (Pl F)) (u : Pl F) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S) = if u ∈ S then 1 else 0 := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (funext h)`.
+-/
 theorem fin_ext {a b : Af F} (h : ∀ u, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u a = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u b) : a = b :=
   Subtype.ext (funext h)
 
+/- English proof (translation)
+Set `T : Set (Pl F)` to `{u | α u ∈ (u.adicCompletionIntegers F : Set (u.adicCompletion F))}`. Establish `hT : cofinite ≤ 𝓟 T` using `le_principal_iff.2 α.2`. Set `f : Finset (Pl F) → RestrictedProduct (fun u : Pl F => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (𝓟 T)` to `fun S => ⟨fun u => if u ∈ S then α u else 0, fun u hu => by`. Distinguish the cases in `h : u ∈ S`. Simplify using `only [Set.mem_setOf_eq, h, if_true]`.
+
+Conclude with `hu`. Simplify using `only [Set.mem_setOf_eq, h, if_false]`. Conclude with `zero_mem _⟩`. Set `a : RestrictedProduct (fun u : Pl F => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (𝓟 T)` to `⟨fun u => α u, fun u hu => hu⟩`. Establish `hf : Tendsto f atTop (𝓝 a)`.
+
+Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `u`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop ({u} : Finset _)] with S hS`. Conclude with `(if_pos (hS (Finset.mem_singleton_self u))).symm`.
+
+Establish `h2` using `((RestrictedProduct.continuous_inclusion hT).tendsto a).comp hf`. Use `Tendsto.congr (fun S => fin_ext fun u => ?_) h2` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind]`. Express the relevant statement in the definitionally equal form `(if u ∈ S then α u else 0) = _`. Use `split_ifs`.
+
+Conclude with `(one_mul _).symm`. Conclude with `(zero_mul _).symm`.
+-/
 theorem tendsto_ind_mul (α : Af F) : Tendsto (fun S : Finset (Pl F) => ind S * α) atTop (𝓝 α) := by
   classical
   let T : Set (Pl F) := {u | α u ∈ (u.adicCompletionIntegers F : Set (u.adicCompletion F))}
@@ -62,12 +79,28 @@ def eps (S : Finset (Pl F)) : AF F := ((1, ind S) : Ainf F × Af F)
 
 def idm (v : Pl F) : AF F := ((0, ind {v}) : Ainf F × Af F)
 
+/- English proof (translation)
+The claim follows from `fin_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp`.
+-/
 theorem ind_sq (S : Finset (Pl F)) : ind S * ind S = ind S := fin_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `Prod.ext (one_mul _) (ind_sq S)`.
+-/
 theorem eps_sq (S : Finset (Pl F)) : eps S * eps S = eps S := Prod.ext (one_mul _) (ind_sq S)
 
+/- English proof (translation)
+The claim follows from `Prod.ext (mul_zero _) (ind_sq _)`.
+-/
 theorem idm_sq (v : Pl F) : idm v * idm v = idm v := Prod.ext (mul_zero _) (ind_sq _)
 
+/- English proof (translation)
+Use `⟨Prod.ext (add_zero _).symm (fin_ext fun u => ?_), Prod.ext (mul_zero _) (fin_ext fun u => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind _) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S + ind {v})`. Rewrite using `[map_add, ev_ind, ev_ind, ev_ind]`. Distinguish the cases in `h : u = v`. Simplify using `[h, hv]`.
+
+Establish `hm : u ∈ S.cons v hv ↔ u ∈ S` using `Finset.mem_cons.trans (or_iff_right h)`. Distinguish the cases in `h' : u ∈ S`. Rewrite using `[if_pos (hm.2 h'), if_pos h', if_neg (by simpa using h), add_zero]`. Rewrite using `[if_neg (fun x => h' (hm.1 x)), if_neg h', if_neg (by simpa using h), add_zero]`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S * ind {v}) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u 0`.
+
+Rewrite using `[map_mul, ev_ind, ev_ind, map_zero]`. Distinguish the cases in `h : u = v`. Simplify using `[h, hv]`. Simplify using `[h]`.
+-/
 theorem eps_cons (S : Finset (Pl F)) (v : Pl F) (hv : v ∉ S) : eps (S.cons v hv) = eps S + idm v ∧ eps S * idm v = 0 := by
   refine ⟨Prod.ext (add_zero _).symm (fin_ext fun u => ?_), Prod.ext (mul_zero _) (fin_ext fun u => ?_)⟩
   · change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind _) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F u (ind S + ind {v})
@@ -84,6 +117,11 @@ theorem eps_cons (S : Finset (Pl F)) (v : Pl F) (hv : v ∉ S) : eps (S.cons v h
     · simp [h, hv]
     · simp [h]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simpa only [smul_zero] using tendsto_const_nhds`. Consider the case `tmul a e`. Establish `h0 : Tendsto (fun S : Finset (Pl F) => eps S * a) atTop (𝓝 a)` using `Tendsto.congr (f₁ := fun S => ((a.1, ind S * a.2) : Ainf F × Af F)) (fun S => Prod.ext (one_mul _).symm rfl) ((tendsto_const_nhds (x := a.1)).prodMk_nhds (tendsto_ind_mul a.2))`. Establish `h` using `h0.smul_const ((1 : AF F) ⊗ₜ[F] e)`.
+
+Simplify `h` using `only [TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x y hx hy => simpa only [smul_add] using hx.add hy`.
+-/
 theorem tendsto_eps (x : AE F E) : Tendsto (fun S : Finset (Pl F) => eps S • x) atTop (𝓝 x) := by
   induction x using TensorProduct.induction_on with
   | zero => simpa only [smul_zero] using tendsto_const_nhds
@@ -97,6 +135,9 @@ theorem tendsto_eps (x : AE F E) : Tendsto (fun S : Finset (Pl F) => eps S • x
 
 variable {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
 
+/- English proof (translation)
+Rewrite using `[show x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1) by noncomm_ring, add_mul, mul_add, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, smul_smul, ha, smul_add, smul_add, one_mul, one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mix_mul {a : AF F} (ha : a * a = a) (x y : Matrix (Fin d) (Fin d) (AE F E)) :
     (1 + a • (x - 1)) * (1 + a • (y - 1)) = 1 + a • (x * y - 1) := by
   rw [show x * y - 1 = (x - 1) + (y - 1) + (x - 1) * (y - 1) by noncomm_ring, add_mul, mul_add, mul_add, Matrix.smul_mul,
@@ -120,14 +161,23 @@ def piece (a : AF F) (ha : a * a = a) (g : UA σ J) : UA σ J :=
     rw [add_mul, add_mul, mul_add, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul,
       smul_smul, ha, one_mul, mul_one, mul_one, add_assoc, ← add_assoc (a • _), add_comm (a • (K * _)), e2, add_zero]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_piece {a : AF F} (ha : a * a = a) (g : UA σ J) : mat (piece a ha g) = 1 + a • (mat g - 1) := rfl
 
+/- English proof (translation)
+The claim follows from `mat_inj (by rw [mat_mul, mat_piece, mat_piece, mat_piece, e, add_mul, mul_add, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, smul_smul, o, zero_smul, add_smul, one_mul, one_mul, mul_one] abel)`.
+-/
 theorem piece_add {a b c : AF F} (ha : a * a = a) (hb : b * b = b) (hc : c * c = c) (e : c = a + b) (o : a * b = 0) (g : UA σ J) :
     piece c hc g = piece a ha g * piece b hb g := mat_inj (by
   rw [mat_mul, mat_piece, mat_piece, mat_piece, e, add_mul, mul_add, mul_add, Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul,
     Matrix.mul_smul, smul_smul, o, zero_smul, add_smul, one_mul, one_mul, mul_one]
   abel)
 
+/- English proof (translation)
+Establish `h : ∀ M : Matrix (Fin d) (Fin d) (AE F E), Tendsto (fun S : Finset (Pl F) => 1 + eps S • (M - 1)) atTop (𝓝 M)` using `fun M => by`. Establish `: Tendsto (fun S : Finset (Pl F) => eps S • (M - 1)) atTop (𝓝 (M - 1))` using `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => tendsto_eps _`. Simplify using `using this.const_add 1`. Use `(IsEmbedding.subtypeVal.tendsto_nhds_iff).2 ((Units.isEmbedding_embedProduct.tendsto_nhds_iff).2 ?_)` and prove the remaining obligations. Conclude with `(h _).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (h (mat g⁻¹)))`.
+-/
 theorem tendsto_piece (g : UA σ J) : Tendsto (fun S : Finset (Pl F) => piece (eps S) (eps_sq S) g) atTop (𝓝 g) := by
   have h : ∀ M : Matrix (Fin d) (Fin d) (AE F E), Tendsto (fun S : Finset (Pl F) => 1 + eps S • (M - 1)) atTop (𝓝 M) := fun M => by
     have : Tendsto (fun S : Finset (Pl F) => eps S • (M - 1)) atTop (𝓝 (M - 1)) :=
@@ -136,6 +186,11 @@ theorem tendsto_piece (g : UA σ J) : Tendsto (fun S : Finset (Pl F) => piece (e
   refine (IsEmbedding.subtypeVal.tendsto_nhds_iff).2 ((Units.isEmbedding_embedProduct.tendsto_nhds_iff).2 ?_)
   exact (h _).prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp (h (mat g⁻¹)))
 
+/- English proof (translation)
+Establish `h : ∀ z : AE F E, compInf F E w (eps S • z) = compInf F E w z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [smul_zero]`. Consider the case `tmul a x`. Conclude with `congrArg (fun b => GlobalTheory.AutFunCompare.evW w b ⊗ₜ[F] x) (one_mul a.1)`.
+
+Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `piInf τ ((1 : Matrix _ _ _) i j + eps S • (mat g i j - (1 : Matrix _ _ _) i j)) = piInf τ (mat g i j)`. Rewrite using `[map_add, piInf, RingHom.comp_apply, RingHom.comp_apply, h, ← map_add, ← map_add, add_sub_cancel, RingHom.comp_apply]`.
+-/
 theorem piInf_piece (S : Finset (Pl F)) (g : UA σ J) {w : InfinitePlace F} (τ : EmbOver E w) :
     (mat (piece (eps S) (eps_sq S) g)).map (piInf τ) = (mat g).map (piInf τ) := by
   have h : ∀ z : AE F E, compInf F E w (eps S • z) = compInf F E w z := fun z => by
@@ -148,6 +203,15 @@ theorem piInf_piece (S : Finset (Pl F)) (g : UA σ J) {w : InfinitePlace F} (τ 
   change piInf τ ((1 : Matrix _ _ _) i j + eps S • (mat g i j - (1 : Matrix _ _ _) i j)) = piInf τ (mat g i j)
   rw [map_add, piInf, RingHom.comp_apply, RingHom.comp_apply, h, ← map_add, ← map_add, add_sub_cancel, RingHom.comp_apply]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.cons_induction with`. Consider the case `empty => exact ⟨[], by simp, by simp⟩`. Consider the case `cons v S hv ih`. Take `⟨l, h1, h2⟩` from `ih`. Use `⟨l ++ [piece (idm v) (idm_sq v) g], fun h hh => ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `List.mem_append.1 hh with k | k` into its components or cases. Conclude with `h1 h k`. Use `⟨v, fun u hu => ?_⟩` and prove the remaining obligations. Establish `: u * idm v = 0` using `Prod.ext (mul_zero u.1) (fin_ext fun x => by`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x (u.2 * ind {v}) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x 0`.
+
+Rewrite using `[map_mul, ev_ind, map_zero]`. Use `split_ifs with e`. Rewrite using `[Finset.mem_singleton.1 e, mul_one]`. Conclude with `hu`. Conclude with `mul_zero _)`.
+
+Rewrite using `[List.mem_singleton.1 k, mat_piece, add_sub_cancel_left, smul_smul, this, zero_smul]`. Rewrite using `[piece_add (eps_sq S) (idm_sq v) _ (eps_cons S v hv).1 (eps_cons S v hv).2, h2, List.prod_append, List.prod_singleton, mul_assoc]`.
+-/
 theorem piece_prod {W : Spc F E d} (g : UA σ W.J) (S : Finset (Pl F)) : ∃ l : List (UA σ W.J),
     (∀ h ∈ l, ∃ v, h ∈ UAt σ W (evFin F v)) ∧ piece (eps S) (eps_sq S) g = piece (eps ∅) (eps_sq ∅) g * l.prod := by
   induction S using Finset.cons_induction with
@@ -168,12 +232,20 @@ theorem piece_prod {W : Spc F E d} (g : UA σ W.J) (S : Finset (Pl F)) : ∃ l :
     · rw [piece_add (eps_sq S) (idm_sq v) _ (eps_cons S v hv).1 (eps_cons S v hv).2, h2, List.prod_append, List.prod_singleton,
         mul_assoc]
 
+/- English proof (translation)
+Introduce `u hu` and use `by have : u * eps ∅ = 0 := Prod.ext ((mul_one u.1).trans ((map_eq_zero_iff _ (RingEquiv.injective _)).1 hu)) (fin_ext fun x => by change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x (u.2 * ind ∅) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.e …`.
+-/
 theorem piece_inf {W : Spc F E d} (g : UA σ W.J) : piece (eps ∅) (eps_sq ∅) g ∈ UAt σ W (evI F) := fun u hu => by
   have : u * eps ∅ = 0 := Prod.ext ((mul_one u.1).trans ((map_eq_zero_iff _ (RingEquiv.injective _)).1 hu)) (fin_ext fun x => by
     change Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x (u.2 * ind ∅) = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F x 0
     rw [map_mul, ev_ind, map_zero, if_neg (Finset.notMem_empty x), mul_zero])
   rw [mat_piece, add_sub_cancel_left, smul_smul, this, zero_smul]
 
+/- English proof (translation)
+Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨U, hU, h⟩` from `hL F E σ B n d X W M χX χW om r s r' s' hp g hg`. Conclude with `mem_of_superset hU fun u hu k => h u hu k f`.
+
+Consider the case `zero => exact Eventually.of_forall fun _ _ => map_zero _`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with u h1 h2 k using by rw [map_add, h1 k, h2 k]`. Consider the case `smul a x _ hx => filter_upwards [hx] with u h1 k using by rw [map_smul, h1 k]`.
+-/
 theorem level_sch (hL : PositivityTheory.ThKEst.Level) {n : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW om r s r' s'}
     (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F _) :
     ∀ᶠ u in 𝓝 (1 : UA σ W.J), (∀ w, (mat u).map (piInf (B.emb w)) = 1) → om (1, u) Φ = Φ := by
@@ -186,6 +258,11 @@ theorem level_sch (hL : PositivityTheory.ThKEst.Level) {n : ℕ} {X : Spc F E n}
   | add x y _ _ hx hy => filter_upwards [hx, hy] with u h1 h2 k using by rw [map_add, h1 k, h2 k]
   | smul a x _ hx => filter_upwards [hx] with u h1 k using by rw [map_smul, h1 k]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' t k hk Φ hΦ Φ' hΦ'`. Establish `h1 : Tendsto (fun S : Finset (Pl F) => (piece (eps S) (eps_sq S) k)⁻¹ * k) atTop (𝓝 1)`. Rewrite using `[← inv_mul_cancel k]`. Conclude with `(tendsto_piece k).inv.mul_const k`. Take `⟨S, h2, h3⟩` from `(h1.eventually ((level_sch hL (PositivityTheory.ThKG.pairV t) hΦ).and (level_sch hL (PositivityTheory.ThKG.pairV' t) hΦ'))).exists`.
+
+Establish `h4 : ∀ w, (mat ((piece (eps S) (eps_sq S) k)⁻¹ * k)).map (piInf (B.emb w)) = 1` using `fun w => by`. Rewrite using `[mat_mul, Matrix.map_mul, ← piInf_piece S k, ← Matrix.map_mul, mat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨l, l1, l2⟩` from `piece_prod k S`. Conclude with `⟨_, ⟨piece_inf k, fun w => (piInf_piece ∅ k _).symm ▸ hk w⟩, l, _, l1, by rw [← l2, mul_inv_cancel_left], h2 h4, h3 h4⟩`.
+-/
 theorem decomp_of (hL : PositivityTheory.ThKEst.Level) : Decomp := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t k hk Φ hΦ Φ' hΦ'
   have h1 : Tendsto (fun S : Finset (Pl F) => (piece (eps S) (eps_sq S) k)⁻¹ * k) atTop (𝓝 1) := by
@@ -197,6 +274,23 @@ theorem decomp_of (hL : PositivityTheory.ThKEst.Level) : Decomp := by
   obtain ⟨l, l1, l2⟩ := piece_prod k S
   exact ⟨_, ⟨piece_inf k, fun w => (piInf_piece ∅ k _).symm ▸ hk w⟩, l, _, l1, by rw [← l2, mul_inv_cancel_left], h2 h4, h3 h4⟩
 
+/- English proof (translation)
+Establish `hT` using `Finset.subset_insert v T`. Set `ext : (∀ u : T, Y u) → ∀ u : (insert v T : Finset ι), Y u` to `fun w u => if h : (u : ι) ∈ T then w ⟨u, h⟩ else s u`. Establish `hupd : ∀ (inst : DecidableEq T) (w : ∀ u : T, Y u) (i : T) (z : Y i),`. Use extensionality with `(@Function.update _ _ inst w i z) = Function.update (ext w) ⟨i.1, hT i.2⟩ z := by`. Introduce `inst w i z`.
+
+Use function extensionality and compare the values at `u`. Distinguish the cases in `hv : u = ⟨i.1, hT i.2⟩`. Substitute `hv` using the available equality. Simplify using `[ext]`. Rewrite using `[Function.update_of_ne hv]`.
+
+Distinguish the cases in `h : (u : ι) ∈ T`. Establish `hne : (⟨u, h⟩ : T) ≠ i` using `fun e => hv (Subtype.ext (show (u : ι) = i.1 by rw [← e]))`. Simplify using `only [ext, dif_pos h]`. Rewrite using `[Function.update_of_ne hne]`. Simplify using `only [ext, dif_neg h]`.
+
+Set `m : MultilinearMap ℂ (fun u : T => Y u) (PiTensorProduct ℂ fun u : (insert v T : Finset ι) => Y u)` to `{ toFun := fun w => PiTensorProduct.tprod ℂ (ext w) map_update_add' := fun {inst} w i x y => by`. Simplify using `only [hupd inst]`. Conclude with `(PiTensorProduct.tprod ℂ).map_update_add _ _ _ _`. Use the proof step `map_update_smul' := fun {inst} w i c x => by`. Simplify using `only [hupd inst]`.
+
+Conclude with `(PiTensorProduct.tprod ℂ).map_update_smul _ _ _ _ }`. Use `⟨PiTensorProduct.map (Function.update (fun j : (insert v T : Finset ι) => (LinearMap.id : Y j →ₗ[ℂ] Y j)) ⟨v, Finset.mem_insert_self v T⟩ Op) ∘ₗ PiTensorProduct.lift m, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : ext (fun u : T => y u) = fun u : (insert v T : Finset ι) => y u` using `funext fun u => by`. Distinguish the cases in `h : (u : ι) ∈ T`. Simplify using `[ext, h]`.
+
+Simplify using `[ext, h, hy _ h]`. Rewrite using `[LinearMap.comp_apply, PiTensorProduct.lift.tprod]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.map _ (PiTensorProduct.tprod ℂ (ext fun u : T => y u)) = _`. Rewrite using `[e, PiTensorProduct.map_tprod]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u = ⟨v, Finset.mem_insert_self v T⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne h, Function.update_of_ne (show (u : ι) ≠ v from fun e => h (Subtype.ext e))]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_ins {ι : Type} [DecidableEq ι] {Y : ι → Type} [∀ i, AddCommGroup (Y i)] [∀ i, Module ℂ (Y i)] (T : Finset ι) (v : ι)
     (s : ∀ i, Y i) (Op : Module.End ℂ (Y v)) :
     ∃ e : (PiTensorProduct ℂ fun u : T => Y u) →ₗ[ℂ] PiTensorProduct ℂ fun u : (insert v T : Finset ι) => Y u,
@@ -240,6 +334,11 @@ theorem exists_ins {ι : Type} [DecidableEq ι] {Y : ι → Type} [∀ i, AddCom
   · subst h; simp
   · rw [Function.update_of_ne h, Function.update_of_ne (show (u : ι) ≠ v from fun e => h (Subtype.ext e))]; rfl
 
+/- English proof (translation)
+Establish `hq : Function.Surjective (p.domRestrict S)` using `fun u => by`. Take `⟨x, h1, h2⟩ : u ∈ S.map p` from `h ▸ Submodule.mem_top`. Conclude with `⟨⟨x, h1⟩, h2⟩`. Take `⟨s, hs⟩` from `(p.domRestrict S).exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hq)`. Establish `hs' : ∀ y, p (s y) = y` using `LinearMap.congr_fun hs`.
+
+Use `⟨p ∘ₗ A ∘ₗ S.subtype ∘ₗ s, fun x hx => ?_, fun x' hx' => e _ (s _).2 _ hx' (hs' _)⟩` and prove the remaining obligations. Use `e (s (p x) - x) (sub_mem (s _).2 hx) 0 (zero_mem _) (by rw [map_sub, hs', sub_self, map_zero])` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, map_zero, map_zero, sub_eq_zero]`. Conclude with `this`.
+-/
 theorem common_op {V V' P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup P] [Module ℂ P]
     {S : Submodule ℂ V} {S' : Submodule ℂ V'} {p : V →ₗ[ℂ] P} {p' : V' →ₗ[ℂ] P} (h : S.map p = ⊤) (A : V →ₗ[ℂ] V)
     (A' : V' →ₗ[ℂ] V') (e : ∀ x ∈ S, ∀ x' ∈ S', p x = p' x' → p (A x) = p' (A' x')) :
@@ -257,6 +356,17 @@ theorem common_op {V V' P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup 
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'}
   {Rf : FinMaps F a a'}
 
+/- English proof (translation)
+Establish `t` using `hm.triple`. Establish `one : ∀ {n : ℕ} (Y : Spc F E n), (1 : UA σ Y.J) ∈ KInf σ Y B.emb` using `fun Y => ⟨fun u _ => by rw [mat_one, sub_self, smul_zero], fun w => by`. Rewrite using `[mat_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Commute.one_left _⟩`. Take `⟨A, a1, a2⟩` from `hA F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (PositivityTheory.ThKG.pairV t) 1 (one _).1 k hk.1`.
+
+Take `⟨A', b1, b2⟩` from `hA F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (PositivityTheory.ThKG.pairV' t) 1 (one _).1 k hk.1`. Take `⟨Op, o1, o2⟩` from `common_op (S' := G.M'.Pol B.ψ B.emb) hm.real.quot.onto (A : _ →ₗ[ℂ] _) (A' : _ →ₗ[ℂ] _) fun x hx x' hx' e => hm.real.cpt k hk _ hx _ hx' _ _ (a1.2 _) (b1.2 _) e`. Take `⟨T, hT, m, m', f, φ, f', φ', h1, h2, rfl, rfl, e⟩` from `H`. Establish `cof : ∀ {P : Pl F → Prop}, (∀ v ∉ T, P v) → ∀ᶠ v in cofinite, P v` using `fun h => T.eventually_cofinite_notMem.mono h`. Use `⟨T, hT, m, m', fun i => A (f i), φ, fun i => A' (f' i), φ', fun i => ⟨a2 (one _) hk _ (h1 i).1, (h1 i).2⟩, fun i => ⟨b2 (one _) hk _ (h2 i).1, (h2 i).2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA t.geo.hM (φ i) (h1 i).2.1 (cof (h1 i).2.2)`. Rewrite using `[e, e, a1.1 _ g hg]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨g, hg, e⟩` from `PositivityTheory.ThKG.pure_eq_pureA t.geo.hM' (φ' i) (h2 i).2.1 (cof (h2 i).2.2)`. Rewrite using `[e, e, b1.1 _ g hg]`. Use `congrArg (Op.rTensor _) e` as an intermediate fact. Simplify using `only [map_sum, LinearMap.rTensor_tmul, o1 _ (h1 _).1, o2 _ (h2 _).1] at this`.
+
+Conclude with `this`.
+-/
 theorem match_inf (hA : PositivityTheory.ThKF.ArchOp) (hm : IsMatched B G X om om' R Rf) {k : UA σ G.W.J} (hk : k ∈ KInf σ G.W B.emb) {Φ Φ'}
     (H : PolMatch B G X R Rf Φ Φ') : PolMatch B G X R Rf (om (1, k) Φ) (om' (1, k) Φ') := by
   have t := hm.triple
@@ -283,6 +393,23 @@ theorem match_inf (hA : PositivityTheory.ThKF.ArchOp) (hm : IsMatched B G X om o
     simp only [map_sum, LinearMap.rTensor_tmul, o1 _ (h1 _).1, o2 _ (h2 _).1] at this
     exact this
 
+/- English proof (translation)
+Establish `t` using `hm.triple`. Take `⟨ω, ρ, L⟩` from `PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B _ _ G.M om ⟨t.base, ⟨_, _, t.geo.hV⟩, ⟨_, _, t.geo.hW⟩, t.geo.hM, _, _, t.weil⟩ v`. Take `⟨ω', ρ', L'⟩` from `PositivityTheory.ThKH.Locrep.locRepEx F E σ _ _ B _ _ G.M' om' ⟨t.base, ⟨_, _, t.geo.hV'⟩, ⟨_, _, t.geo.hW⟩, t.geo.hM', _, _, t.weil'⟩ v`. Establish `o` using `PositivityTheory.ThKH.Locrep.one_mem_UAt (σ := σ) G.V v`. Establish `o'` using `PositivityTheory.ThKH.Locrep.one_mem_UAt (σ := σ) G.V' v`.
+
+Take `⟨Op, o1, o2⟩` from `common_op (S' := SB _) (hm.fin.onto v) (ω (1, h)) (ω' (1, h)) fun x hx x' hx' e => hm.fin.equiv v h hh _ hx _ hx' _ (L.pres 1 o h hh _ hx) _ (L'.pres 1 o' h hh _ hx') ((L.acts 1 o h hh _ hx _).2 rfl) ((L'.acts 1 o' h hh _ hx' _).2 rfl) e`. Take `⟨T, hT, m, m', f, φ, f', φ', h1, h2, rfl, rfl, e⟩` from `H`. Establish `cof : ∀ {P : Pl F → Prop}, (∀ v ∉ T, P v) → ∀ᶠ v in cofinite, P v` using `fun h => T.eventually_cofinite_notMem.mono h`. Establish `upd : ∀ {Y : Pl F → Type} (P : ∀ u, Y u → Prop) (y : ∀ u, Y u) (z : Y v), (∀ u, P u (y u)) → P v z → ∀ u, P u (Function.update y v z u)` using `fun P y z h1 h2 u => by`. Distinguish the cases in `e : u = v`.
+
+Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `h1 u`. Establish `off : ∀ {Y : Pl F → Type} (y w : ∀ u, Y u) (z : Y v), (∀ u ∉ T, y u = w u) → ∀ u ∉ insert v T, Function.update y v z u = w u` using `fun y w z h1 u hu => by`.
+
+Rewrite `hu` using `[Finset.mem_insert, not_or]`. Rewrite using `[Function.update_of_ne hu.1, h1 u hu.2]`. Take `⟨Ω, hΩ⟩` from `exists_ins (Y := Rf.Pi) T v (fun u => Rf.p u (G.M.vac u)) Op`. Use `⟨insert v T, hT.trans (Finset.subset_insert v T), m, m', f, fun i => Function.update (φ i) v (ω (1, h) (φ i v)), f', fun i => Function.update (φ' i) v (ω' (1, h) (φ' i v)), fun i => ⟨(h1 i).1, upd (fun _ x => x ∈ SB _) _ _ (h1 i).2.1 (L.pres 1 o h hh _ ((h1 i).2.1 v)), off _ _ _ …` and prove the remaining obligations. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(hP F _ v (om (1, h)) (f i) (φ i) (h1 i).2.1 (((cof (h1 i).2.2).and t.geo.hM.std).mono fun _ k => k.1.trans k.2)).2.2 _ ((L.acts 1 o h hh _ ((h1 i).2.1 v) _).2 rfl)` and compare the differences between its conclusion and the goal. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `(hP F _ v (om' (1, h)) (f' i) (φ' i) (h2 i).2.1 (((cof (h2 i).2.2).and t.geo.hM'.std).mono fun _ k => k.1.trans k.2)).2.2 _ ((L'.acts 1 o' h hh _ ((h2 i).2.1 v) _).2 rfl)` and compare the differences between its conclusion and the goal.
+
+Use `congrArg (Ω.lTensor _) e` as an intermediate fact. Simplify using `only [map_sum, LinearMap.lTensor_tmul] at this`. Use `(Finset.sum_congr rfl fun i _ => ?_).trans (this.trans (Finset.sum_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[hΩ (fun u => Rf.p u (φ i u)) fun u hu => by rw [(h1 i).2.2 u hu], o1 _ ((h1 i).2.1 v)]`. Use `congr 2`.
+
+Use function extensionality and compare the values at `u`. Conclude with `Function.apply_update (fun u => Rf.p u) _ _ _ _`. Rewrite using `[hΩ (fun u => Rf.p' u (φ' i u)) fun u hu => by rw [(h2 i).2.2 u hu, (hm.fin.sph u fun k => hu (hT k)).1], o2 _ ((h2 i).2.1 v)]`. Use `congr 2`. Use function extensionality and compare the values at `u`.
+
+Conclude with `(Function.apply_update (fun u => Rf.p' u) _ _ _ _).symm`.
+-/
 theorem match_fin (hP : PositivityTheory.ThKF.PureAct) (hm : IsMatched B G X om om' R Rf) {v : Pl F} {h : UA σ G.W.J}
     (hh : h ∈ UAt σ G.W (evFin F v)) {Φ Φ'} (H : PolMatch B G X R Rf Φ Φ') : PolMatch B G X R Rf (om (1, h) Φ) (om' (1, h) Φ') := by
   classical
@@ -332,6 +459,15 @@ theorem match_fin (hP : PositivityTheory.ThKF.PureAct) (hm : IsMatched B G X om 
       funext u
       exact (Function.apply_update (fun u => Rf.p' u) _ _ _ _).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' R Rf hm k hk Φ Φ' hΦ' hP`. Establish `t` using `hm.triple`. Use `⟨hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (PositivityTheory.ThKG.pairV' t) _ _ hΦ', ?_⟩` and prove the remaining obligations. Take `⟨p1, p2⟩` from `PositivityTheory.ThKG.polMatch_mem hP`. Take `⟨k₀, h0, l, r, h1, rfl, h2, h3⟩` from `decomp_of hL F E σ B a a' G X om om' t k hk Φ (PositivityTheory.ThKG.polData_le t.geo.hM p1) Φ' (PositivityTheory.ThKG.polData_le t.geo.hM' p2)`.
+
+Establish `m : ∀ {n : ℕ} {Y : Spc F E n} (o : Rep σ Y G.W) x y Ψ, o (1, x * y) Ψ = o (1, x) (o (1, y) Ψ)` using `fun o x y Ψ => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[m, m, m, m, h2, h3]`. Use `match_inf hA hm h0 ?_` and prove the remaining obligations. Use `clear hk h2 h3`.
+
+Proceed by induction on `l with`. Consider the case `nil => simpa only [List.prod_nil, ← Prod.one_eq_mk, map_one, Module.End.one_apply] using hP`. Consider the case `cons x l ih`. Take `⟨v, hv⟩` from `h1 x List.mem_cons_self`. Rewrite using `[List.prod_cons, m, m]`.
+
+Conclude with `match_fin hPA hm hv (ih fun h hh => h1 h (List.mem_cons_of_mem _ hh))`.
+-/
 theorem matchStab_of (hA : PositivityTheory.ThKF.ArchOp) (hPA : PositivityTheory.ThKF.PureAct) (hL : PositivityTheory.ThKEst.Level) (hS : PositivityTheory.ThKCT.SoStab) : MatchStab := by
   intro F E _ _ _ _ _ σ B a a' G X om om' R Rf hm k hk Φ Φ' hΦ' hP
   have t := hm.triple

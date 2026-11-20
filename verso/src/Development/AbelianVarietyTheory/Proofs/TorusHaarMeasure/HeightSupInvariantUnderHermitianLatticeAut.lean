@@ -9,6 +9,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `r X d hd δ α hα γ hγ x hx i hi`. Take `⟨hx', hmap⟩` from `HeightInv.height_lact r X d hd γ hγ x hx`. Establish `hinj : ∀ g : GL (Fin r) E, Function.Injective (g : Matrix (Fin r) (Fin r) E).mulVecLin`. Introduce `g v w hvw`. Establish `h` using `congrArg (fun u => ((g⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ u) hvw`.
+
+Simplify `h` using `[Matrix.mulVec_mulVec]`. Establish `hrank : ∀ (g : GL (Fin r) E) (W : Submodule E (Fin r → E)), Module.finrank E (W.map (g : Matrix (Fin r) (Fin r) E).mulVecLin) = Module.finrank E W` using `fun g W => (Submodule.equivMapOfInjective _ (hinj g) W).finrank_eq.symm`. Establish `hset : (fun W => d (lact γ x) W ^ (-δ)) '' {W | Module.finrank E W = i} = (fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨W', hW', rfl⟩`. Use `⟨W'.map ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVecLin, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq] at hW' ⊢`. Rewrite using `[hrank, hW']`. Establish `hback : (W'.map ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVecLin).map (γ : Matrix (Fin r) (Fin r) E).mulVecLin = W'`.
+
+Rewrite using `[← Submodule.map_comp, ← Matrix.mulVecLin_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mulVecLin_one, Submodule.map_id]`. Simplify using `only`. Rewrite using `[← hmap, hback]`. Introduce and unpack `⟨W, hW, rfl⟩`. Use `⟨W.map (γ : Matrix (Fin r) (Fin r) E).mulVecLin, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_ofPred_eq] at hW ⊢`. Rewrite using `[hrank, hW]`. Simplify using `only`. Rewrite using `[hmap]`. Establish `h1` using `hα i hi (lact γ x) hx'`.
+
+Rewrite `h1` using `[hset]`. Conclude with `h1.unique (hα i hi x hx)`.
+-/
 theorem height_sup_lact_invariant : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → ∀ (δ : ℝ) (α : ℕ → Frame X.Ψ r → ℝ), (∀ i ≤ r, ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → IsLUB ((fun W => d x W ^ (-δ)) '' {W | Module.finrank E W = i}) (α i x)) → ∀ γ : GL (Fin r) E, IsUStab X.Gm X.Λ γ → ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ i ≤ r, α i (lact γ x) = α i x) := by
   intro r X d hd δ α hα γ hγ x hx i hi
   obtain ⟨hx', hmap⟩ := HeightInv.height_lact r X d hd γ hγ x hx

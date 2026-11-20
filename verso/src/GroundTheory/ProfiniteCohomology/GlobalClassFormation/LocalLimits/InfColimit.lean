@@ -32,6 +32,9 @@ abbrev infLocalCochainsInfl :
       cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) :=
   cochainsMapAlong (infLocalDecompHom ι F) (continuous_infLocalDecompHom ι F) (infLocalUnitsMor ι F)
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h'` using `congrArg (fun u ↦ ((Additive.toMul u : (AlgebraicClosure v.Completion)ˣ) : AlgebraicClosure v.Completion)) h`. Simplify using `only at h'`. Conclude with `congrArg Additive.ofMul (Units.ext ((infCompletionEmbedding ι F).toRingHom.injective h'))`.
+-/
 theorem infLocalUnitsMor_injective : Function.Injective (infLocalUnitsMor ι F).hom := by
   intro a b h
   have h' := congrArg (fun u ↦ ((Additive.toMul u :
@@ -39,6 +42,11 @@ theorem infLocalUnitsMor_injective : Function.Injective (infLocalUnitsMor ι F).
   simp only at h'
   exact congrArg Additive.ofMul (Units.ext ((infCompletionEmbedding ι F).toRingHom.injective h'))
 
+/- English proof (translation)
+Introduce `y y' h`. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι (infLocalLevelRep ι F)).f m)).1 inferInstance` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Take `⟨σ, rfl⟩ : ∃ σ : Fin m → Gal(AlgebraicClosure v.Completion/v.Completion), (fun i ↦ infLocalDecompHom ι F (σ i)) = τ` from `⟨fun i ↦ Function.surjInv (infLocalDecompHom_surjective ι F) (τ i),`. Use function extensionality and compare the values at `fun i ↦ Function.surjInv_eq (infLocalDecompHom_surjective ι F) (τ i)⟩`.
+
+Establish `h1` using `congrFun (congrArg (fun c ↦ ((cochainsComplexι (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).f m).hom c) h) σ`. Conclude with `infLocalUnitsMor_injective ι F h1`.
+-/
 theorem infLocalCochains_injective (m : ℕ) : Function.Injective ((infLocalCochainsInfl ι F).f m).hom := by
   intro y y' h
   apply (ModuleCat.mono_iff_injective ((cochainsComplexι (infLocalLevelRep ι F)).f m)).1 inferInstance
@@ -53,6 +61,15 @@ theorem infLocalCochains_injective (m : ℕ) : Function.Injective ((infLocalCoch
 
 end Level
 
+/- English proof (translation)
+Establish `hp` using `exists_level_infCompletionEmbedding_surjective ι`. Take `⟨p, hp⟩` from `hp`. Establish `hsurj` using `hp p le_rfl`. Establish `hinj` using `infLocalDecompHom_injective ι p.1 hsurj`. Establish `hval : ∀ g, ∃ z : ((infPlaceOfEmbedding ι p.1 : NumberField.InfinitePlace p.1.1).Completion)ˣ, infCompletionEmbedding ι p.1 z = ((Additive.toMul (f g) : (AlgebraicClosure v.Completion)ˣ) : AlgebraicClosure v.Completion)`.
+
+Introduce `g`. Establish `hy` using `hsurj ((Additive.toMul (f g) : (AlgebraicClosure v.Completion)ˣ) : AlgebraicClosure v.Completion)`. Take `⟨y, hy⟩` from `hy`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hy` using `[map_zero]`. Conclude with `(Additive.toMul (f g) : (AlgebraicClosure v.Completion)ˣ).ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, by rw [Units.val_mk0, hy]⟩`. Use `choose z hz using hval`. Use `⟨p, fun τ ↦ z fun i ↦ Function.surjInv (infLocalDecompHom_surjective ι p.1) (τ i), fun g ↦ ?_⟩` and prove the remaining obligations.
+
+Establish `hg : (fun i ↦ Function.surjInv (infLocalDecompHom_surjective ι p.1) (infLocalDecompHom ι p.1 (g i))) = g`. Use function extensionality and compare the values at `fun i ↦ hinj (Function.surjInv_eq (infLocalDecompHom_surjective ι p.1) _)`. Express the relevant statement in the definitionally equal form `infCompletionEmbedding ι p.1 (z fun i ↦ Function.surjInv (infLocalDecompHom_surjective ι p.1) (infLocalDecompHom ι p.1 (g i))) = _`. Rewrite using `[hg]`. Conclude with `hz g`.
+-/
 theorem exists_infLevel_factor (m : ℕ)
     (f : (Fin m → Gal(AlgebraicClosure v.Completion/v.Completion)) →
       Additive (AlgebraicClosure v.Completion)ˣ) :
@@ -89,6 +106,11 @@ theorem exists_infLevel_factor (m : ℕ)
   rw [hg]
   exact hz g
 
+/- English proof (translation)
+Establish `hfac` using `exists_infLevel_factor ι m (((cochainsComplexι (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).f m).hom x)`. Take `⟨p, z, hz⟩` from `hfac`. Use `⟨p, ⟨fun τ ↦ Additive.ofMul (z τ), IsLocallyConstant.of_discrete _⟩, ?_⟩` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplexι (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).f m)).1 inferInstance` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Conclude with `congrArg Additive.ofMul (Units.ext ((infLocalUnitsMor_hom_apply ι p.1 _).trans (hz g)))`.
+-/
 theorem exists_infLocalCochains_eq (m : ℕ)
     (x : (cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).X m) :
     ∃ (p : GLevel K) (y : (cochainsComplex (infLocalLevelRep ι p.1)).X m),
@@ -105,6 +127,11 @@ section Transition
 variable {F E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ E)] [Fact (F ≤ E)]
   [F.1.fixingSubgroup.Normal] [E.1.fixingSubgroup.Normal]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_infDecompRestrict, coe_infLocalDecompHom]`. Use `((decompHom_eq_iff (infEmbedLevel ι F) σ _).2 fun x ↦ ?_).symm` and prove the remaining obligations. Rewrite using `[infEmbedLevel_apply, infEmbedLevel_apply]`. Establish `h1` using `coe_levelRestrict_apply (K := K) (F := F) (E := E) (infLocalDecompHom ι E σ : Gal(E.1/K.1)) x`.
+
+Establish `h2` using `ι_infLocalDecompHom_apply ι E σ (algebraMap F.1 E.1 x)`. Rewrite `h2` using `[← h1]`. Conclude with `h2`.
+-/
 theorem infDecompRestrict_infLocalDecompHom
     (σ : Gal(AlgebraicClosure v.Completion/v.Completion)) :
     infDecompRestrict (w := infPlaceOfEmbedding ι F) (w' := infPlaceOfEmbedding ι E)
@@ -119,11 +146,19 @@ theorem infDecompRestrict_infLocalDecompHom
   rw [← h1] at h2
   exact h2
 
+/- English proof (translation)
+The claim follows from `congrArg Additive.ofMul (Units.ext (infCompletionEmbedding_completionMap ι _))`.
+-/
 theorem infLocalUnitsMor_infCompletionUnitsRep (a : Additive ((infPlaceOfEmbedding ι F : NumberField.InfinitePlace F.1).Completion)ˣ) :
     (infLocalUnitsMor ι E).hom ((infCompletionUnitsRep (w := infPlaceOfEmbedding ι F)
       (w' := infPlaceOfEmbedding ι E)).hom a) = (infLocalUnitsMor ι F).hom a :=
   congrArg Additive.ofMul (Units.ext (infCompletionEmbedding_completionMap ι _))
 
+/- English proof (translation)
+Rewrite using `[← cochainsMapAlong_comp]`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hfun : (fun i ↦ infDecompRestrict (w` using `infPlaceOfEmbedding ι F) (w' := infPlaceOfEmbedding ι E) (infLocalDecompHom ι E (g i))) = fun i ↦ infLocalDecompHom ι F (g i) :=`.
+
+Use function extensionality and compare the values at `fun i ↦ infDecompRestrict_infLocalDecompHom ι (g i)`. Conclude with `(infLocalUnitsMor_infCompletionUnitsRep ι _).trans (congrArg (fun τ ↦ (infLocalUnitsMor ι F).hom (((cochainsComplexι (infLocalLevelRep ι F)).f m).hom x τ)) hfun)`.
+-/
 theorem infLocalCochains_comp :
     cochainsMapAlong (infDecompRestrict (w := infPlaceOfEmbedding ι F) (w' := infPlaceOfEmbedding ι E))
       continuous_of_discreteTopology infCompletionUnitsRep ≫ infLocalCochainsInfl ι E =
@@ -139,6 +174,9 @@ theorem infLocalCochains_comp :
     (congrArg (fun τ ↦ (infLocalUnitsMor ι F).hom
       (((cochainsComplexι (infLocalLevelRep ι F)).f m).hom x τ)) hfun)
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun φ ↦ HomologicalComplex.homologyMap φ n) (infLocalCochains_comp ι (F := F) (E := E))`. Simplify using `only [HomologicalComplex.homologyMap_comp] at h`. Conclude with `h`.
+-/
 theorem infLocalTransition_comp_infLocalInfl (n : ℕ) :
     infLocalTransition K F E (infPlaceOfEmbedding ι F) (infPlaceOfEmbedding ι E) n ≫ infLocalInfl ι E n =
       infLocalInfl ι F n := by
@@ -155,6 +193,11 @@ variable (F : FiniteSubfield) [Fact (K ≤ F)] [F.1.fixingSubgroup.Normal]
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hd : ((cochainsComplex (infLocalLevelRep ι F)).d n (n + 1)).hom y₀ = 0`. Apply `infLocalCochains_injective ι F (n + 1)` to reduce the goal to its premises. Rewrite using `[map_zero, hom_f_d_apply, hy₀]`. Conclude with `iCycles_d_apply _ n (n + 1) z`. Take `⟨w, hw⟩` from `exists_iCycles_eq_of_d_eq_zero _ n y₀ hd`.
+
+Use `⟨((cochainsComplex (infLocalLevelRep ι F)).homologyπ n).hom w, (homologyMap_homologyπ_apply (infLocalCochainsInfl ι F) n w).trans (congrArg _ ?_)⟩` and prove the remaining obligations. Apply `(ModuleCat.mono_iff_injective ((cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).iCycles n)).1 inferInstance` to reduce the goal to its premises. Rewrite using `[iCycles_cyclesMap_apply, hw, hy₀]`.
+-/
 theorem exists_infLocalInfl_eq_homologyπ (n : ℕ)
     (z : (cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).cycles n)
     (y₀ : (cochainsComplex (infLocalLevelRep ι F)).X n)
@@ -173,6 +216,9 @@ theorem exists_infLocalInfl_eq_homologyπ (n : ℕ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hy'` using `(homologyMap_homologyπ_apply (infLocalCochainsInfl ι F) n w).symm.trans hy`. Take `⟨u, hu⟩` from `(homologyπ_eq_zero_iff _ _).1 hy'`. Rewrite `hu` using `[iCycles_cyclesMap_apply]`. Conclude with `⟨u, hu⟩`.
+-/
 theorem exists_d_eq_of_infLocalInfl_eq_zero (n : ℕ) (w : (cochainsComplex (infLocalLevelRep ι F)).cycles n)
     (hy : (infLocalInfl ι F n).hom (((cochainsComplex (infLocalLevelRep ι F)).homologyπ n).hom w) = 0) :
     ∃ u : (cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).X ((ComplexShape.up ℕ).prev n),
@@ -192,6 +238,11 @@ variable {F M E : FiniteSubfield} [Fact (K ≤ F)] [Fact (K ≤ M)] [Fact (K ≤
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Use `(homologyMap_homologyπ_apply (cochainsMapAlong (infDecompRestrict (w := infPlaceOfEmbedding ι F) (w' := infPlaceOfEmbedding ι E)) continuous_of_discreteTopology infCompletionUnitsRep) n w).trans ((homologyπ_eq_zero_iff _ _).2 ⟨((cochainsMapAlong (infDecompRestrict (w := infPlaceO …` and prove the remaining obligations. Rewrite using `[iCycles_cyclesMap_apply]`. Apply `infLocalCochains_injective ι E n` to reduce the goal to its premises. Rewrite using `[hom_f_d_apply]`. Establish `e1` using `congrArg (fun φ ↦ (φ.f _).hom u') (infLocalCochains_comp ι (F := M) (E := E))`.
+
+Establish `e2` using `congrArg (fun φ ↦ (φ.f n).hom (((cochainsComplex (infLocalLevelRep ι F)).iCycles n).hom w)) (infLocalCochains_comp ι (F := F) (E := E))`. Simplify using `only [HomologicalComplex.comp_f, ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`. Conclude with `(congrArg (fun c ↦ ((cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).d _ n).hom c) e1).trans (hu.trans e2.symm)`.
+-/
 theorem infLocalTransition_homologyπ_eq_zero (n : ℕ) (w : (cochainsComplex (infLocalLevelRep ι F)).cycles n)
     (u' : (cochainsComplex (infLocalLevelRep ι M)).X ((ComplexShape.up ℕ).prev n))
     (hu : ((cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).d _ n).hom (((infLocalCochainsInfl ι M).f _).hom u') =
@@ -216,6 +267,11 @@ end GenericTransition
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hz` using `(ModuleCat.epi_iff_surjective ((cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).homologyπ n)).1 inferInstance x`. Take `⟨z, rfl⟩` from `hz`. Establish `hc` using `exists_infLocalCochains_eq ι n (((cochainsComplex (galUnitsZ v.Completion (AlgebraicClosure v.Completion))).iCycles n).hom z)`. Take `⟨p, y₀, hy₀⟩` from `hc`. Establish `hy` using `exists_infLocalInfl_eq_homologyπ ι p.1 n z y₀ hy₀`.
+
+Take `⟨y, hy⟩` from `hy`. Conclude with `⟨p, y, hy⟩`.
+-/
 theorem exists_infLocalInfl_eq (n : ℕ)
     (x : cohomology (galUnitsZ v.Completion (AlgebraicClosure v.Completion)) n) :
     ∃ (p : GLevel K) (y : cohomology (infLocalLevelRep ι p.1) n), (infLocalInfl ι p.1 n).hom y = x := by
@@ -229,6 +285,13 @@ theorem exists_infLocalInfl_eq (n : ℕ)
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hw` using `(ModuleCat.epi_iff_surjective ((cochainsComplex (infLocalLevelRep ι p.1)).homologyπ n)).1 inferInstance y`. Take `⟨w, rfl⟩` from `hw`. Establish `hu` using `exists_d_eq_of_infLocalInfl_eq_zero ι p.1 n w hy`. Take `⟨u, hu⟩` from `hu`. Establish `hq` using `exists_infLocalCochains_eq ι _ u`.
+
+Take `⟨q, u', hu'⟩` from `hq`. Establish `hr` using `GLevel.exists_ge p q`. Take `⟨r, hpr, hqr⟩` from `hr`. Establish `: Fact (p.1 ≤ r.1)` using `⟨hpr⟩`. Establish `: Fact (q.1 ≤ r.1)` using `⟨hqr⟩`.
+
+Conclude with `⟨r, hpr, infLocalTransition_homologyπ_eq_zero ι (M := q.1) n w u' (by rw [hu', hu])⟩`.
+-/
 theorem exists_infLocalTransition_eq_zero (n : ℕ) (p : GLevel K) (y : cohomology (infLocalLevelRep ι p.1) n)
     (hy : (infLocalInfl ι p.1 n).hom y = 0) :
     ∃ (q : GLevel K) (h : p ≤ q), (haveI : Fact (p.1 ≤ q.1) := ⟨h⟩

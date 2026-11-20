@@ -25,6 +25,47 @@ set_option maxHeartbeats 1000000
 
 namespace GlobalTheory.BKLim.SatLat
 
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d N T0 V V' Y1 hT0 hV hV' hVV' hY1`. Take `⟨htu, -, -, -⟩` from `GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ`. Establish `hOEcl` using `GlobalTheory.T.breuilKisin_OE_stability_properties l K bk`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin d) (Fin d) (WCb l), M = inclW l τ ^ N • T0` from `⟨_, rfl⟩`. Establish `hMu : IsUnit M.det`.
+
+Rewrite using `[hM, Matrix.det_smul]`. Conclude with `((htu.pow N).pow _).mul ((Matrix.isUnit_iff_isUnit_det T0).1 hT0)`. Establish `hMM : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hMu`. Establish `hMM' : M⁻¹ * M = 1` using `Matrix.nonsing_inv_mul M hMu`. Establish `hVu : IsUnit V.det`.
+
+Establish `h : V.det * V'.det = 1` using `by rw [← Matrix.det_mul, hVV', Matrix.det_one]`. Conclude with `⟨⟨V.det, V'.det, h, by rw [mul_comm]; exact h⟩, rfl⟩`. Set `ι : (Fin d → Ainf l) → (Fin d → WCb l)` to `fun y a => inclW l (y a)`. Establish `hιmul : ∀ (A : Matrix (Fin d) (Fin d) (Ainf l)) (v : Fin d → Ainf l), ι (A *ᵥ v) = A.map (inclW l) *ᵥ ι v`. Introduce `A v`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[ι, Matrix.mulVec, dotProduct, map_sum]`. Establish `hevW : ∀ s : bk.S, bk.evW s ∈ bk.OE` using `fun s n => ⟨0, s, 0, by simp⟩`. Establish `hevWι : ∀ c : Fin d → bk.S, ι (fun a => bk.ev (c a)) = fun a => bk.evW (c a)` using `fun c => rfl`. Set `mem : (Fin d → Ainf l) → Prop` to `fun y => ∀ i, (M⁻¹ *ᵥ ι y) i ∈ bk.OE`.
+
+Establish `hY1M : Y1.map (inclW l) = M * V` using `by rw [hY1, hM, Matrix.smul_mul]`. Establish `hmemV : ∀ c : Fin d → bk.S, mem (Y1 *ᵥ fun a => bk.ev (c a))`. Introduce `c i`. Use `show (M⁻¹ *ᵥ ι (Y1 *ᵥ fun a => bk.ev (c a))) i ∈ bk.OE`. Rewrite using `[hιmul, hevWι, hY1M, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hMM', Matrix.one_mul]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hV i j) (hevW _)`. Take `⟨Y, hYu, hYmem⟩` from `GlobalTheory.T.ainf_closed_membership_limit l K bk d mem (fun i => by show (M⁻¹ *ᵥ ι 0) i ∈ bk.OE`. Establish `: ι 0 = 0` using `by funext a; simp [ι]`. Rewrite using `[this, Matrix.mulVec_zero]`.
+
+Conclude with `Subring.zero_mem _)`. Use the proof step `(fun y z hy hz i => by show (M⁻¹ *ᵥ ι (y + z)) i ∈ bk.OE`. Establish `: ι (y + z) = ι y + ι z` using `by funext a; simp [ι]`. Rewrite using `[this, Matrix.mulVec_add]`. Conclude with `Subring.add_mem _ (hy i) (hz i))`.
+
+Use the proof step `(fun c y hy i => by show (M⁻¹ *ᵥ ι (fun a => bk.ev c * y a)) i ∈ bk.OE`. Establish `: ι (fun a => bk.ev c * y a) = bk.evW c • ι y` using `by funext a; simp [ι, BK.evW]`. Rewrite using `[this, Matrix.mulVec_smul]`. Conclude with `Subring.mul_mem _ (hevW c) (hy i))`. Use the proof step `(fun y hy i => by`.
+
+Establish `h : (M⁻¹ *ᵥ ι (fun a => (l : Ainf l) * y a)) i ∈ bk.OE` using `hy i`. Establish `: ι (fun a => (l : Ainf l) * y a) = ((l : ℕ) : WCb l) • ι y` using `by funext a; simp [ι]`. Rewrite `h` using `[this, Matrix.mulVec_smul]`. Conclude with `hOEcl.1 _ h)`. Use the proof step `(fun y hy _ z hz i => by`.
+
+Use `hOEcl.2.1 _ fun n => ⟨_, hy n i, ?_⟩` and prove the remaining obligations. Rewrite using `[← Pi.sub_apply, ← Matrix.mulVec_sub]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.dvd_sum fun j _ => Dvd.dvd.mul_left ?_ _` and prove the remaining obligations. Use `map_dvd (inclW l) (hz n j)` as an intermediate fact.
+
+Simplify `this)` using `[ι, map_sub, map_pow, map_natCast]`. Use `Y1 M (by rw [hY1M, Matrix.det_mul]; exact (hMu.mul hVu).ne_zero)`. Use the proof step `((Matrix.isUnit_iff_isUnit_det M).2 hMu) hmemV`. Use the proof step `(fun y hy => by`. Use `⟨M⁻¹ *ᵥ ι y, hy, ?_⟩` and prove the remaining obligations.
+
+Use `show ι y = M *ᵥ (M⁻¹ *ᵥ ι y)`. Rewrite using `[Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec])`. Take `⟨Wm, hWm⟩ : ∃ Wm : Matrix (Fin d) (Fin d) (WCb l), Wm = M⁻¹ * Y.map (inclW l)` from `⟨_, rfl⟩`. Establish `hYWm : Y.map (inclW l) = M * Wm` using `by rw [hWm, ← Matrix.mul_assoc, hMM, Matrix.one_mul]`. Establish `hcol : ∀ (A : Matrix (Fin d) (Fin d) (Ainf l)) (j : Fin d), (A *ᵥ fun a => bk.ev ((Pi.single j (1 : bk.S) : Fin d → bk.S) a)) = fun i => A i j`.
+
+Introduce `A j`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hWmOE : ∀ i j, Wm i j ∈ bk.OE`. Introduce `i j`.
+
+Establish `h : (M⁻¹ *ᵥ ι (fun a => Y a j)) i ∈ bk.OE` using `(hYmem (fun a => Y a j)).2 ⟨Pi.single j (1 : bk.S), (hcol Y j).symm⟩ i`. Rewrite using `[hWm]`. Simplify `h` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, ι]`. Establish `hC : ∀ j, ∃ c : Fin d → bk.S, (fun i => Y1 i j) = Y *ᵥ fun a => bk.ev (c a)` using `fun j => (hYmem _).1 (by rw [← hcol Y1 j]; exact hmemV _)`. Use `choose c hc using hC`.
+
+Take `⟨Cw, hCw⟩ : ∃ Cw : Matrix (Fin d) (Fin d) (WCb l), Cw = Matrix.of fun a j => bk.evW (c j a)` from `⟨_, rfl⟩`. Establish `hVW : V = Wm * Cw`. Establish `h1 : Y1.map (inclW l) = Y.map (inclW l) * Cw`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrArg (fun v => inclW l (v i)) (hc j)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, hCw, BK.evW, map_sum]`. Rewrite `h1` using `[hY1M, hYWm, Matrix.mul_assoc]`. Establish `h2` using `congrArg (HMul.hMul M⁻¹) h1`. Rewrite `h2` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hMM', Matrix.one_mul, Matrix.one_mul]`. Conclude with `h2`.
+
+Use `⟨Y, Wm, Cw * V', hYu, hWmOE, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [Matrix.mul_apply, hCw, Matrix.of_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hevW _) (hV' k j)`. Rewrite using `[← Matrix.mul_assoc, ← hVW, hVV']`.
+
+Rewrite using `[hYWm, hM, Matrix.smul_mul]`. Introduce and unpack `y ⟨w, hw, hyw⟩`. Use `(hYmem y).1 ?_` and prove the remaining obligations. Introduce `i`. Establish `: ι y = M *ᵥ w`.
+
+Rewrite using `[hM]`. Use `hyw.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`. Use `show (M⁻¹ *ᵥ ι y) i ∈ bk.OE`.
+
+Rewrite using `[this, Matrix.mulVec_mulVec, hMM', Matrix.one_mulVec]`. Conclude with `hw i`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (T0 V V' : Matrix (Fin d) (Fin d) (WCb l)) (Y1 : Matrix (Fin d) (Fin d) (Ainf l)), IsUnit T0 → (∀ i j, V i j ∈ bk.OE) → (∀ i j, V' i j ∈ bk.OE) → V * V' = 1 → Y1.map (inclW l) = inclW l τ ^ N • (T0 * V) → ∃ (Y : Matrix (Fin d) (Fin d) (Ainf l)) (Wm Wm' : Matrix (Fin d) (Fin d) (WCb l)), IsUnit (Y.map (inclW l)) ∧ (∀ i j, Wm i j ∈ bk.OE) ∧ (∀ i j, Wm' i j ∈ bk.OE) ∧ Wm * Wm' = 1 ∧ Y.map (inclW l) = inclW l τ ^ N • (T0 * Wm) ∧ ∀ y : Fin d → Ainf l, (∃ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) ∧ (fun i => inclW l (y i)) = inclW l τ ^ N • (T0 *ᵥ w)) → ∃ c : Fin d → bk.S, y = Y *ᵥ fun a => bk.ev (c a) := by
   intro l _ K bk τ hτ d N T0 V V' Y1 hT0 hV hV' hVV' hY1
   classical

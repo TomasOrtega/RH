@@ -7,6 +7,11 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.SnakeCov
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Both sides reduce to the same expression. Consider the case `tmul b k`. Take `⟨b₁, b₂⟩` from `b`.
+
+Simplify using the standard rewrite rules. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Prod.mk_add_mk]`.
+-/
 theorem prodLeft_eq_rTensor {A B₁ B₂ K : Type} [CommRing A] [AddCommGroup B₁] [Module A B₁]
     [AddCommGroup B₂] [Module A B₂] [AddCommGroup K] [Module A K] (w : (B₁ × B₂) ⊗[A] K) :
     TensorProduct.prodLeft A A B₁ B₂ K w =
@@ -18,6 +23,9 @@ theorem prodLeft_eq_rTensor {A B₁ B₂ K : Type} [CommRing A] [AddCommGroup B�
     simp
   | add x y hx hy => simp only [map_add, hx, hy, Prod.mk_add_mk]
 
+/- English proof (translation)
+Apply `(TensorProduct.prodLeft A A B₁ B₂ K).injective` to reduce the goal to its premises. Rewrite using `[prodLeft_eq_rTensor, prodLeft_eq_rTensor, h₁, h₂]`.
+-/
 theorem tensor_prod_ext {A B₁ B₂ K : Type} [CommRing A] [AddCommGroup B₁] [Module A B₁]
     [AddCommGroup B₂] [Module A B₂] [AddCommGroup K] [Module A K] {w w' : (B₁ × B₂) ⊗[A] K}
     (h₁ : (LinearMap.fst A B₁ B₂).rTensor K w = (LinearMap.fst A B₁ B₂).rTensor K w')
@@ -26,6 +34,21 @@ theorem tensor_prod_ext {A B₁ B₂ K : Type} [CommRing A] [AddCommGroup B₁] 
   apply (TensorProduct.prodLeft A A B₁ B₂ K).injective
   rw [prodLeft_eq_rTensor, prodLeft_eq_rTensor, h₁, h₂]
 
+/- English proof (translation)
+Introduce `p _ A _ B₁ _ _ B₂ _ _ D _ _ r ρ₁ ρ₂ hr hD hsurj hK`. Set `ρ : (B₁ × B₂) →ₗ[A] D` to `ρ₁.toLinearMap ∘ₗ LinearMap.fst A B₁ B₂ - ρ₂.toLinearMap ∘ₗ LinearMap.snd A B₁ B₂`. Establish `hρ : Function.Surjective ρ`. Introduce `y`. Take `⟨b₁, b₂, rfl⟩` from `hsurj y`.
+
+Conclude with `⟨(b₁, b₂), by simp [ρ]⟩`. Establish `h1 : ρ 1 = 0` using `by simp [ρ]`. Use `mv_cov p A (B₁ × B₂) D r ρ hr hD hρ h1 ?_` and prove the remaining obligations. Introduce `K _ _ hPK`. Take `⟨hinj, hker⟩` from `hK K hPK`.
+
+Establish `hf : ∀ a : K, (LinearMap.fst A B₁ B₂).rTensor K ((1 : B₁ × B₂) ⊗ₜ[A] a) = (1 : B₁) ⊗ₜ[A] a`. Introduce `a`. Simplify using the standard rewrite rules. Establish `hs : ∀ a : K, (LinearMap.snd A B₁ B₂).rTensor K ((1 : B₁ × B₂) ⊗ₜ[A] a) = (1 : B₂) ⊗ₜ[A] a`. Introduce `a`.
+
+Simplify using the standard rewrite rules. Use `⟨fun a ha => hinj a ?_ ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ha, map_zero]`. Rewrite using `[← hs, ha, map_zero]`. Establish `hcomm : ∀ t : (B₁ × B₂) ⊗[A] K, ρ.rTensor K t = Algebra.TensorProduct.map ρ₁ (AlgHom.id A K) ((LinearMap.fst A B₁ B₂).rTensor K t) - Algebra.TensorProduct.map ρ₂ (AlgHom.id A K) ((LinearMap.snd A B₁ B₂).rTensor K t)`.
+
+Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul b k => simp [ρ, TensorProduct.sub_tmul]`. Consider the case `add x y hx hy`.
+
+Simplify using `only [map_add, hx, hy]`. Normalize the expressions using the abelian group laws. Establish `heq` using `hcomm w`. Rewrite `heq` using `[hw, eq_comm, sub_eq_zero]`. Take `⟨a, ha₁, ha₂⟩` from `hker _ _ heq`.
+
+Conclude with `⟨a, tensor_prod_ext (by rw [ha₁, hf]) (by rw [ha₂, hs])⟩`.
+-/
 theorem mv_prod : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B₁ : Type) [CommRing B₁] [Algebra A B₁] (B₂ : Type) [CommRing B₂] [Algebra A B₂] (D : Type) [CommRing D] [Algebra A D] (r : ℕ → A) (ρ₁ : B₁ →ₐ[A] D) (ρ₂ : B₂ →ₐ[A] D), IsRt p r → Pf p D → (∀ y, ∃ b₁ b₂, y = ρ₁ b₁ - ρ₂ b₂) → (∀ (K : Type) [CommRing K] [Algebra A K], Pf p K → (∀ a : K, ((1 : B₁) ⊗ₜ[A] a) = 0 → ((1 : B₂) ⊗ₜ[A] a) = 0 → ∀ k, r k • a = 0) ∧ ∀ (w₁ : B₁ ⊗[A] K) (w₂ : B₂ ⊗[A] K), Algebra.TensorProduct.map ρ₁ (AlgHom.id A K) w₁ = Algebra.TensorProduct.map ρ₂ (AlgHom.id A K) w₂ → ∃ a : K, w₁ = (1 : B₁) ⊗ₜ[A] a ∧ w₂ = (1 : B₂) ⊗ₜ[A] a) → Cov p r (B₁ × B₂) := by
   intro p _ A _ B₁ _ _ B₂ _ _ D _ _ r ρ₁ ρ₂ hr hD hsurj hK
   let ρ : (B₁ × B₂) →ₗ[A] D :=

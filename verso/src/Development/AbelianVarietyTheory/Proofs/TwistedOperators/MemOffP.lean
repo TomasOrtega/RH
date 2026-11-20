@@ -21,11 +21,17 @@ def offP : Subgroup (NI V C) := ((GlobalTheory.RowReal.infMatHom V (θ τ)).ker)
 
 variable {θ V C τ}
 
+/- English proof (translation)
+Simplify using `only [atP, Subgroup.mem_subgroupOf, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker]`. Both sides reduce to the same expression.
+-/
 theorem mem_atP {p : NI V C} :
     p ∈ atP θ V C τ ↔ (p : GA D V) ∈ GinfC V ∧ ∀ τ', τ' ≠ τ → cmp θ τ' (p : GA D V) = 1 := by
   simp only [atP, Subgroup.mem_subgroupOf, Subgroup.mem_inf, Subgroup.mem_iInf, MonoidHom.mem_ker]
   rfl
 
+/- English proof (translation)
+Simplify using `only [offP, Subgroup.mem_subgroupOf, MonoidHom.mem_ker]`. Both sides reduce to the same expression.
+-/
 theorem mem_offP {q : NI V C} : q ∈ offP θ V C τ ↔ cmp θ τ (q : GA D V) = 1 := by
   simp only [offP, Subgroup.mem_subgroupOf, MonoidHom.mem_ker]
   rfl

@@ -11,6 +11,15 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.ColumnElementGluing P
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hσ : ∀ t ∈ T, ∃ s, s ∈ T' ∧ t - s ∈ L` using `fun t ht => (hT'.2 t (hT.1 t ht)).exists`. Establish `hτ : ∀ s ∈ T', ∃ t, t ∈ T ∧ s - t ∈ L` using `fun s hs => (hT.2 s (hT'.1 s hs)).exists`. Use `choose! σ hσT hσL using hσ`. Use `choose! τ hτT hτL using hτ`. Use `Finset.sum_nbij' σ τ hσT hτT ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `t ht`. Use `(hT.2 t (hT.1 t ht)).unique ⟨hτT _ (hσT t ht), ?_⟩ ⟨ht, by simp⟩` and prove the remaining obligations. Establish `e : t - τ (σ t) = (t - σ t) + (σ t - τ (σ t))` using `by abel`. Rewrite using `[e]`. Conclude with `L.add_mem (hσL t ht) (hτL _ (hσT t ht))`.
+
+Introduce `s hs`. Use `(hT'.2 s (hT'.1 s hs)).unique ⟨hσT _ (hτT s hs), ?_⟩ ⟨hs, by simp⟩` and prove the remaining obligations. Establish `e : s - σ (τ s) = (s - τ s) + (τ s - σ (τ s))` using `by abel`. Rewrite using `[e]`. Conclude with `L.add_mem (hτL s hs) (hσL _ (hτT s hs))`.
+
+Introduce `t ht`. Use `hF (σ t) _ (hσL t ht)` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+-/
 theorem sum_tr_indep {X W : Type} [AddCommGroup X] [AddCommMonoid W] (A L : AddSubgroup X) (T T' : Finset X)
     (hT : IsTr A L T) (hT' : IsTr A L T') (F : X → W) (hF : ∀ a, ∀ d ∈ L, F (a + d) = F a) :
     ∑ t ∈ T, F t = ∑ t ∈ T', F t := by
@@ -32,6 +41,11 @@ theorem sum_tr_indep {X W : Type} [AddCommGroup X] [AddCommMonoid W] (A L : AddS
     have := hF (σ t) _ (hσL t ht)
     rw [← this]; congr 1; abel
 
+/- English proof (translation)
+Use `⟨fun t ht => (Finset.mem_filter.1 ht).2, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨u, ⟨hu, hau⟩, huniq⟩` from `hU.2 a (hAA ha)`. Establish `huA : u ∈ A`. Establish `e : u = a - (a - u)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `A.sub_mem ha (hHA hau)`. Use `⟨u, ⟨Finset.mem_filter.2 ⟨hu, huA⟩, hau⟩, fun t ⟨ht, hat⟩ => huniq t ⟨(Finset.mem_filter.1 ht).1, hat⟩⟩` and prove the remaining obligations.
+-/
 theorem isTr_filter {X : Type} [AddCommGroup X] (A A' H : AddSubgroup X) (hHA : H ≤ A) (U : Finset X)
     (hU : IsTr A' H U) (hAA : A ≤ A') [DecidablePred (· ∈ A)] : IsTr A H (U.filter (· ∈ A)) := by
   refine ⟨fun t ht => (Finset.mem_filter.1 ht).2, fun a ha => ?_⟩
@@ -41,8 +55,22 @@ theorem isTr_filter {X : Type} [AddCommGroup X] (A A' H : AddSubgroup X) (hHA : 
     rw [e]; exact A.sub_mem ha (hHA hau)
   refine ⟨u, ⟨Finset.mem_filter.2 ⟨hu, huA⟩, hau⟩, fun t ⟨ht, hat⟩ => huniq t ⟨(Finset.mem_filter.1 ht).1, hat⟩⟩
 
+/- English proof (translation)
+Simplify using `[hz]`.
+-/
 theorem conj_circle_eq_one {z : Circle} (hz : z = 1) : starRingEnd ℂ (z : ℂ) = 1 := by simp [hz]
 
+/- English proof (translation)
+Use `split_ifs with huA`. Rewrite using `[Finset.sum_congr rfl fun η hη => conj_circle_eq_one (hR.1 η hη u huA), Finset.sum_const, nsmul_eq_mul, mul_one]`. Take `⟨η₀, hη₀A, hη₀u⟩` from `GlobalTheory.T.exists_character_separating_lattice k ψ hψ hψ1 (m + 1) A hA.1 hA.2 u huA set F : (Fin (m + 1) → k) → ℂ := fun η => starRingEnd ℂ ((ψ (η ⬝ᵥ u) : Circle) : ℂ) with hFdef`. Establish `hF : ∀ a, ∀ d ∈ ann ψ A', F (a + d) = F a`. Introduce `a d hd`.
+
+Simplify using `only [hFdef, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, map_mul, hd u hu, Circle.coe_one, map_one, mul_one]`. Establish `e` using `sum_translate_transversal (ann ψ A) (ann ψ A') R hR.1 hR.2 F hF η₀ hη₀A`. Establish `e2 : ∀ η, F (η + η₀) = F η * starRingEnd ℂ ((ψ (η₀ ⬝ᵥ u) : Circle) : ℂ)`. Introduce `η`. Simplify using `only [hFdef, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, map_mul]`.
+
+Simplify using `only [e2, ← Finset.sum_mul] at e`. Establish `hc : starRingEnd ℂ ((ψ (η₀ ⬝ᵥ u) : Circle) : ℂ) ≠ 1`. Introduce `hc`. Apply `hη₀u` to reduce the goal to its premises. Establish `: ((ψ (η₀ ⬝ᵥ u) : Circle) : ℂ) = 1`.
+
+Use `congrArg (starRingEnd ℂ) hc` as an intermediate fact. Simplify using `using this`. Conclude with `Circle.coe_inj.1 (by simpa using this)`. Establish `: (∑ η ∈ R, F η) * (starRingEnd ℂ ((ψ (η₀ ⬝ᵥ u) : Circle) : ℂ) - 1) = 0`. Rewrite using `[mul_sub, mul_one, e, sub_self]`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hc)`.
+-/
 theorem sum_char {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) {m : ℕ}
     {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) {R : Finset (Fin (m + 1) → k)}
     (hR : IsTr (ann ψ A) (ann ψ A') R) (u : Fin (m + 1) → k) (hu : u ∈ A') [Decidable (u ∈ A)] :
@@ -76,6 +104,25 @@ section
 variable {ψ : AddChar k Circle} {m N : ℕ} {h : m + 2 ≤ N} {V : Type} [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+Take `⟨⟨H, S⟩, hHA, hHo, hHv, hHξ, hS1, hS2⟩` from `avgData_exists ψ h π hψ hπ ξ A hA v`. Take `⟨U, hU1, hU2⟩` from `GlobalTheory.T.exists_coset_reps_open_in_compact (Fin (m + 1) → k) A' H hA'.1 hHo (hHA.trans hAA)`. Use `set f : (Fin (m + 1) → k) → V := fun t => (starRingEnd ℂ ((ψ (ξ ⬝ᵥ t) : Circle) : ℂ)) • π (colEl k m N h t) v with hfdef`. Establish `hav : avg ψ h π ξ A v = ((S.card : ℂ)⁻¹) • ∑ t ∈ S, f t` using `PositivityTheory.RgUd.Form.LeviSmoothness.mir.avg_eq_of_data ψ h π hψ hπ ξ hA v ⟨H, S⟩ ⟨hHA, hHo, hHv, hHξ, hS1, hS2⟩`. Establish `hav' : ∀ η ∈ R, avg ψ h π (ξ + η) A' v = ((U.card : ℂ)⁻¹) • ∑ u ∈ U, starRingEnd ℂ ((ψ (η ⬝ᵥ u) : Circle) : ℂ) • f u`.
+
+Introduce `η hη`. Establish `hdat : AvgData ψ h π (ξ + η) A' v ⟨H, U⟩`. Use `⟨hHA.trans hAA, hHo, hHv, fun a ha => ?_, hU1, hU2⟩` and prove the remaining obligations. Rewrite using `[add_dotProduct, AddChar.map_add_eq_mul, hHξ a ha, hR.1 η hη a (hHA ha), one_mul]`. Rewrite using `[PositivityTheory.RgUd.Form.LeviSmoothness.mir.avg_eq_of_data ψ h π hψ hπ (ξ + η) hA' v ⟨H, U⟩ hdat]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Simplify using `only [hfdef, smul_smul, add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, map_mul]`. Put the polynomial expressions in normal form. Establish `hsum : ∑ η ∈ R, avg ψ h π (ξ + η) A' v = ((U.card : ℂ)⁻¹ * (R.card : ℂ)) • ∑ u ∈ U.filter (· ∈ A), f u`.
+
+Rewrite using `[Finset.sum_congr rfl hav', ← Finset.smul_sum, Finset.sum_comm]`. Establish `e1 : ∀ u ∈ U, ∑ η ∈ R, starRingEnd ℂ ((ψ (η ⬝ᵥ u) : Circle) : ℂ) • f u = (if u ∈ A then (R.card : ℂ) else 0) • f u` using `fun u hu => by`. Rewrite using `[← Finset.sum_smul, sum_char hψ hψ1 hA hR u (hU1 u hu)]`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_filter, mul_smul]`. Use `congr 1`.
+
+Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Establish `hper : ∀ a, ∀ d ∈ H, f (a + d) = f a`. Introduce `a d hd`.
+
+Simplify using `only [hfdef, dotProduct_add, AddChar.map_add_eq_mul, hHξ d hd, mul_one, colEl_add, map_mul, Module.End.mul_apply, hHv d hd]`. Establish `hind : ∑ u ∈ U.filter (· ∈ A), f u = ∑ t ∈ S, f t` using `sum_tr_indep A H _ S (isTr_filter A A' H hHA U ⟨hU1, hU2⟩ hAA) ⟨hS1, hS2⟩ f hper`. Establish `cU : U.card = H.relIndex A'` using `GlobalTheory.T.card_coset_reps_eq_relIndex _ A' H U (hHA.trans hAA) hU1 hU2`. Establish `cS : S.card = H.relIndex A` using `GlobalTheory.T.card_coset_reps_eq_relIndex _ A H S hHA hS1 hS2`. Establish `cT : T.card = A.relIndex A'` using `GlobalTheory.T.card_coset_reps_eq_relIndex _ A' A T hAA hT.1 hT.2`.
+
+Establish `cmul : U.card = S.card * T.card`. Rewrite using `[cU, cS, cT, AddSubgroup.relIndex_mul_relIndex H A A' hHA hAA]`. Establish `hS0 : (S.card : ℂ) ≠ 0`. Take `⟨t, ht, -⟩` from `hS2 0 A.zero_mem`. Conclude with `(Finset.card_pos.2 ⟨t, ht.1⟩).ne'` after adjusting the coercions.
+
+Establish `hT0 : (T.card : ℂ) ≠ 0`. Take `⟨t, ht, -⟩` from `hT.2 0 A'.zero_mem`. Conclude with `(Finset.card_pos.2 ⟨t, ht.1⟩).ne'` after adjusting the coercions. Rewrite using `[hsum, hind, hav, smul_smul, smul_smul, cmul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem avg_decomp_pf (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (hπ : IsSmooth π) (ξ : Fin (m + 1) → k)
     {A A' : AddSubgroup (Fin (m + 1) → k)} (hA : IsLat A) (hA' : IsLat A') (hAA : A ≤ A') {R T : Finset (Fin (m + 1) → k)}
     (hR : IsTr (ann ψ A) (ann ψ A') R) (hT : IsTr A' A T) (v : V) :

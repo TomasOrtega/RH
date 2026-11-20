@@ -11,6 +11,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.MatRead
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply, Finset.sum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `σ _ hσ`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, f (σ i) < f i := by`. Assume the negation of the conclusion as `hne`.
+
+Simplify using `only [not_exists, not_lt] at hne`. Apply `hσ` to reduce the goal to its premises. Establish `hsum : ∑ i, f (σ i) = ∑ i, f i` using `Equiv.sum_comp σ f`. Establish `heq` using `(Finset.sum_eq_sum_iff_of_le (fun i _ => hne i)).mp hsum.symm`. Use `Equiv.ext (fun i => ?_)` and prove the remaining obligations.
+
+Conclude with `(hf (heq i (Finset.mem_univ i)).symm : σ i = i)`. Establish `hz : ∏ j, A (σ j) j = 0` using `Finset.prod_eq_zero (Finset.mem_univ i) (h _ _ hi)`. Rewrite using `[hz, smul_zero]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ 1) h1`.
+-/
 theorem det_of_key {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (f : Fin m → ℕ) (hf : Function.Injective f)
     (h : ∀ i j, f i < f j → A i j = 0) : A.det = ∏ i, A i i := by
   rw [Matrix.det_apply, Finset.sum_eq_single 1]
@@ -29,6 +36,21 @@ theorem det_of_key {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (f : Fin m → ℕ
   · intro h1
     exact absurd (Finset.mem_univ 1) h1
 
+/- English proof (translation)
+Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by have := Finset.card_pos.mpr ⟨b, hb⟩; omega⟩`. Establish `hcol' : ∀ i, i ≠ p → X (I.orderEmbOfFin hI i) b = 0`. Introduce `i hi`. Use `hcol _ (Finset.orderEmbOfFin_mem I hI i) (fun h1 => hi ?_)` and prove the remaining obligations. Apply `(I.orderEmbOfFin hI).injective` to reduce the goal to its premises.
+
+Rewrite using `[h1, hp]`. Establish `hT : (S.erase b).card = n`. Rewrite using `[Finset.card_erase_of_mem hb, hS, Nat.add_sub_cancel]`. Establish `hg' : ⇑(S.orderEmbOfFin hS) ∘ q.succAbove = (S.erase b).orderEmbOfFin hT`. Apply `Finset.orderEmbOfFin_unique hT` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[Function.comp_apply, Finset.mem_erase]`. Conclude with `⟨fun h1 => Fin.succAbove_ne q x ((S.orderEmbOfFin hS).injective (h1.trans hq.symm)), Finset.orderEmbOfFin_mem S hS _⟩`. Conclude with `(S.orderEmbOfFin hS).strictMono.comp (Fin.strictMono_succAbove q)`. Establish `hg : ⇑(I.orderEmbOfFin hI) ∘ p.succAbove = (S.erase b).orderEmbOfFin hT`.
+
+Apply `Finset.orderEmbOfFin_unique hT` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Function.comp_apply, ← hIS, Finset.mem_erase]`. Conclude with `⟨fun h1 => Fin.succAbove_ne p x ((I.orderEmbOfFin hI).injective (h1.trans hp.symm)), Finset.orderEmbOfFin_mem I hI _⟩`. Conclude with `(I.orderEmbOfFin hI).strictMono.comp (Fin.strictMono_succAbove p)`.
+
+Establish `hdetT : (X.submatrix ((S.erase b).orderEmbOfFin hT) ((S.erase b).orderEmbOfFin hT)).det = 1`. Rewrite using `[det_of_key _ (fun i => (((S.erase b).orderEmbOfFin hT i : Fin N) : ℕ)) ?_ ?_]`. Conclude with `Finset.prod_eq_one (fun i _ => hX.1 _)`. Introduce `i j hij`. Conclude with `((S.erase b).orderEmbOfFin hT).injective (Fin.ext hij)`.
+
+Introduce `i j hij`. Conclude with `hX.2 _ _ hij`. Rewrite using `[Matrix.det_succ_column _ q, Finset.sum_eq_single p]`. Establish `e1 : (X.submatrix (I.orderEmbOfFin hI) (S.orderEmbOfFin hS)) p q = X a b`. Rewrite using `[Matrix.submatrix_apply, hp, hq]`.
+
+Rewrite using `[e1, Matrix.submatrix_submatrix, hg, hg', hdetT, mul_one]`. Introduce `i _ hi`. Rewrite using `[Matrix.submatrix_apply, hq, hcol' i hi, mul_zero, zero_mul]`. Introduce `h1`. Conclude with `absurd (Finset.mem_univ p) h1`.
+-/
 private theorem minor_col_lemma {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX : IsLowerUni X)
     (S I : Finset (Fin N)) (a b : Fin N) (hb : b ∈ S) (hIS : I.erase a = S.erase b)
     (hcol : ∀ d ∈ I, d ≠ a → X d b = 0) (k : ℕ) (hI : I.card = k) (hS : S.card = k)
@@ -72,6 +94,17 @@ private theorem minor_col_lemma {N : ℕ} (X : Matrix (Fin N) (Fin N) ℂ) (hX :
   · intro h1
     exact absurd (Finset.mem_univ p) h1
 
+/- English proof (translation)
+Establish `haS : a ∉ S.erase b` using `fun h1 => ha (Finset.mem_of_mem_erase h1)`. Establish `hcard : (insert a (S.erase b)).card = S.card`. Rewrite using `[Finset.card_insert_of_notMem haS, Finset.card_erase_of_mem hb]`. Use `Finset.card_pos.mpr ⟨b, hb⟩` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, (insert a (S.erase b)).orderEmbOfFin hcard p = a := by`. Establish `h1 : a ∈ Set.range ((insert a (S.erase b)).orderEmbOfFin hcard)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `Finset.mem_insert_self _ _`. Conclude with `h1`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q, S.orderEmbOfFin rfl q = b := by`. Establish `h1 : b ∈ Set.range (S.orderEmbOfFin rfl)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hb`. Conclude with `h1`.
+
+Use `⟨(-1) ^ ((p : ℕ) + (q : ℕ)), pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero), fun X hX hcol => ?_⟩` and prove the remaining obligations. Rewrite using `[minorIJ, dif_pos hcard]`. Use `minor_col_lemma X hX S _ a b hb (Finset.erase_insert haS) ?_ _ hcard rfl p q hp hq` and prove the remaining obligations. Introduce `d hd hda`. Break down `Finset.mem_insert.mp hd with h1 | h1` into its components or cases.
+
+Conclude with `absurd h1 hda`. Conclude with `hcol d (Finset.mem_of_mem_erase h1) (Finset.ne_of_mem_erase h1)`.
+-/
 theorem exists_sign {N : ℕ} (S : Finset (Fin N)) (a b : Fin N) (ha : a ∉ S) (hb : b ∈ S) :
     ∃ c : ℂ, c ≠ 0 ∧ ∀ X : Matrix (Fin N) (Fin N) ℂ, IsLowerUni X → (∀ d ∈ S, d ≠ b → X d b = 0) →
       minorIJ X (insert a (S.erase b)) S = c * X a b := by
@@ -98,6 +131,13 @@ theorem exists_sign {N : ℕ} (S : Finset (Fin N)) (a b : Fin N) (ha : a ∉ S) 
   · exact absurd h1 hda
   · exact hcol d (Finset.mem_of_mem_erase h1) (Finset.ne_of_mem_erase h1)
 
+/- English proof (translation)
+Introduce `N X S a b hX ha hb hba hcol`. Take `⟨c, hc0, hc⟩` from `exists_sign S a b ha hb`. Establish `hab : a ≠ b` using `(ne_of_lt hba).symm`. Establish `hY : IsLowerUni (1 + Matrix.single a b (1 : ℂ))`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply, if_neg (fun h1 => hab (h1.1.trans h1.2.symm)), add_zero]`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hij), Matrix.single_apply, if_neg (fun h1 => lt_asymm hba (by rw [h1.1, h1.2]; exact hij)), add_zero]`. Establish `hYcol : ∀ d ∈ S, d ≠ b → (1 + Matrix.single a b (1 : ℂ)) d b = 0`. Introduce `d hd hdb`. Establish `hda : d ≠ a` using `fun h1 => ha (h1 ▸ hd)`.
+
+Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hdb, Matrix.single_apply, if_neg (fun h1 => hda h1.1.symm), add_zero]`. Establish `hp : pSgn S a b = c`. Rewrite using `[pSgn, hc _ hY hYcol, Matrix.add_apply, Matrix.one_apply_ne hab, Matrix.single_apply, if_pos ⟨rfl, rfl⟩, zero_add, mul_one]`. Rewrite using `[hp]`. Conclude with `⟨hc X hX hcol, hc0⟩`.
+-/
 theorem minor_replace : ∀ (N : ℕ) (X : Matrix (Fin N) (Fin N) ℂ) (S : Finset (Fin N)) (a b : Fin N), IsLowerUni X → a ∉ S → b ∈ S → b < a → (∀ c ∈ S, c ≠ b → X c b = 0) → minorIJ X (insert a (S.erase b)) S = pSgn S a b * X a b ∧ pSgn S a b ≠ 0 := by
   intro N X S a b hX ha hb hba hcol
   obtain ⟨c, hc0, hc⟩ := exists_sign S a b ha hb

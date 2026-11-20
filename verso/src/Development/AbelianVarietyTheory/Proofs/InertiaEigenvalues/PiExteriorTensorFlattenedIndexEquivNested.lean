@@ -14,6 +14,15 @@ section SigmaCurry
 variable {α : Type} [DecidableEq α] {β : α → Type} [∀ a, DecidableEq (β a)]
   (M : (Σ a, β a) → Type) [∀ p, AddCommGroup (M p)] [∀ p, Module ℂ (M p)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = a₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = b₀`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hb, Function.update_of_ne]`.
+
+Introduce `h'`. Conclude with `hb (eq_of_heq (Sigma.mk.inj h').2)`. Rewrite using `[Function.update_of_ne h]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Rewrite using `[Function.update_of_ne]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst h')`.
+-/
 theorem tprod_tprod_update_sigma [DecidableEq (Σ a, β a)] (x : ∀ p, M p) (a₀ : α) (b₀ : β a₀)
     (v : M ⟨a₀, b₀⟩) :
     (fun a => tprod ℂ fun b => Function.update x ⟨a₀, b₀⟩ v ⟨a, b⟩) =
@@ -49,6 +58,9 @@ def curryML : MultilinearMap ℂ M (⨂[ℂ] a, ⨂[ℂ] b, M ⟨a, b⟩) where
     simp only [tprod_tprod_update_sigma]
     rw [MultilinearMap.map_update_smul, MultilinearMap.map_update_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem curryML_apply (x : ∀ p, M p) : curryML M x = tprod ℂ fun a => tprod ℂ fun b => x ⟨a, b⟩ := rfl
 
 variable [Finite α] [∀ a, Finite (β a)]
@@ -62,6 +74,9 @@ def nestBasis : Basis (∀ a b, Free.ChooseBasisIndex ℂ (M ⟨a, b⟩)) ℂ (�
 def sigmaCurry : (⨂[ℂ] p, M p) ≃ₗ[ℂ] ⨂[ℂ] a, ⨂[ℂ] b, M ⟨a, b⟩ :=
   (sigBasis M).equiv (nestBasis M) (Equiv.piCurry fun a b => Free.ChooseBasisIndex ℂ (M ⟨a, b⟩))
 
+/- English proof (translation)
+Apply `(sigBasis M).ext` to reduce the goal to its premises. Introduce `q`. Rewrite using `[LinearEquiv.coe_coe, sigmaCurry, Basis.equiv_apply]`. Simplify using `only [sigBasis, nestBasis, Basis.piTensorProduct_apply, lift.tprod, curryML_apply]`. Both sides reduce to the same expression.
+-/
 theorem sigmaCurry_eq_lift : (sigmaCurry M : (⨂[ℂ] p, M p) →ₗ[ℂ] _) = lift (curryML M) := by
   apply (sigBasis M).ext
   intro q
@@ -69,6 +84,9 @@ theorem sigmaCurry_eq_lift : (sigmaCurry M : (⨂[ℂ] p, M p) →ₗ[ℂ] _) = 
   simp only [sigBasis, nestBasis, Basis.piTensorProduct_apply, lift.tprod, curryML_apply]
   rfl
 
+/- English proof (translation)
+Establish `h` using `LinearMap.congr_fun (sigmaCurry_eq_lift M) (tprod ℂ x)`. Simplify `h` using `[curryML_apply]`.
+-/
 @[simp] theorem sigmaCurry_tprod (x : ∀ p, M p) :
     sigmaCurry M (tprod ℂ x) = tprod ℂ fun a => tprod ℂ fun b => x ⟨a, b⟩ := by
   have h := LinearMap.congr_fun (sigmaCurry_eq_lift M) (tprod ℂ x)
@@ -86,18 +104,33 @@ def flatTensorEquiv (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a 
   (reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv).symm.trans
     (sigmaCurry fun p : Σ a, Fin (t a) => Y p.1 p.2)
 
+/- English proof (translation)
+Rewrite using `[flatTensorEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, sigmaCurry_tprod]`.
+-/
 theorem flatTensorEquiv_reindex_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)]
     [∀ a b, Module ℂ (Y a b)] (x : ∀ p : Σ a, Fin (t a), Y p.1 p.2) :
     flatTensorEquiv Y (reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv (tprod ℂ x)) =
       tprod ℂ fun a => tprod ℂ fun b => x ⟨a, b⟩ := by
   rw [flatTensorEquiv, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, sigmaCurry_tprod]
 
+/- English proof (translation)
+Rewrite using `[← flatTensorEquiv_reindex_tprod, reindex_tprod]`.
+-/
 theorem flatTensorEquiv_tprod (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)]
     [∀ a b, Module ℂ (Y a b)] (x : ∀ p : Σ a, Fin (t a), Y p.1 p.2) :
     flatTensorEquiv Y (tprod ℂ fun c => x (finSigmaFinEquiv.symm c)) =
       tprod ℂ fun a => tprod ℂ fun b => x ⟨a, b⟩ := by
   rw [← flatTensorEquiv_reindex_tprod, reindex_tprod]
 
+/- English proof (translation)
+Introduce `s t Γ _ Y _ _ ρ`. Use `⟨Representation.Equiv.mk (flatTensorEquiv Y) fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w : ⨂[ℂ] p : Σ a, Fin (t a), Y p.1 p.2, flatTensorEquiv Y (((piTensor fun c : Fin (∑ a, t a) => ρ (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2).comp (flatHom Γ)) g (reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv w)) = piTensor (fun a => piTens …`. Introduce `w`. Proceed by induction on `w using PiTensorProduct.induction_on with`.
+
+Consider the case `smul_tprod r x`. Simplify using `only [map_smul]`. Use `congr 1`. Rewrite using `[flatTensorEquiv_reindex_tprod, piTensor_tprod]`. Simplify using `only [piTensor_tprod]`.
+
+Rewrite using `[reindex_tprod, MonoidHom.comp_apply, piTensor_tprod]`. Conclude with `flatTensorEquiv_tprod Y fun p => ρ p.1 p.2 (g p.1 p.2) (x p)`. Consider the case `add w w' hw hw'`. Simplify using `only [map_add]`. Rewrite using `[hw, hw']`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(reindex ℂ (fun p : Σ a, Fin (t a) => Y p.1 p.2) finSigmaFinEquiv).surjective v`. Conclude with `key w`.
+-/
 theorem piTensor_flatHom_equiv : ∀ (s : ℕ) (t : Fin s → ℕ) (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)]
     (Y : ∀ a, Fin (t a) → Type) [∀ a b, AddCommGroup (Y a b)] [∀ a b, Module ℂ (Y a b)]
     (ρ : ∀ a b, Representation ℂ (Γ a b) (Y a b)),

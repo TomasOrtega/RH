@@ -23,6 +23,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.BaseChangeNonzero
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T0 A T _ R F κ v₀ O hnV hC hFW hIo j hP hrow hne`. Take `⟨tie⟩` from `hFW`. Establish `hT : LawsJ T` using `tie.laws`. Establish `hj : InR D ((j : ℕ) + 1)` using `⟨Nat.le_add_left _ _, j.2⟩`. Establish `hn : (κ j).n = (Vc D j).rank` using `(tie.kap j (D.eTau.symm 1)).2.2.trans (D.sp.V_rank _ (Nat.le_add_left _ _) j.2).symm`.
+
+Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hsec` using `cusp_le_sec _ _ _ _ _ hf`. Establish `hBC` using `GlobalTheory.FieldBC.rulBC_cusp _ _ _ _ _ _ _ (O j).hle _ (T.U ((j : ℕ) + 1)) _ _ f hsec`. Establish `hmem : GlobalTheory.FieldBC.rulBC (O j).hle f ∈ GlobalTheory.OneMapAll.cuspOver (O j) (κ j)`. Unfold `GlobalTheory.OneMapAll.cuspOver`.
+
+Rewrite using `[← hn]`. Conclude with `hBC.2.2 hf`. Introduce `hbot`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Take `⟨σ', hσ'⟩` from `GlobalTheory.FieldBC.exists_emb_ext (O j).hle T.toCore.σ₀`.
+
+Establish `hrd` using `hBC.1 σ'`. Rewrite `hrd` using `[hmem, map_zero]`. Establish `hgood : GoodEmb T.Q.c (σ'.comp (incF T.Q.c (O j).c' (O j).hle))` using `hσ' ▸ T.toCore.good_σ₀`. Establish `hU : IsUnf (T.U ((j : ℕ) + 1) (σ'.comp (incF T.Q.c (O j).c' (O j).hle)))` using `hT.unf _ hj _ hgood`. Use `hf0 ((GlobalTheory.reading_linearIndependent_and_injective GlobalTheory.lawsFieldsSeparately.2.1 _ _ _ _ _ T.Q.c _ _ (Formalism.L2.PjFree.Unf.ofPj (T.U ((j : ℕ) + 1) (σ'.comp (incF T.Q.c (O j).c' (O j).hle)))) ((Formalism.L2.PjFree.isUnf_ofPj _).2 hU) _ _).2 f hsec (fun k x _ => …` and prove the remaining obligations.
+
+Use `show rdU (T.U ((j : ℕ) + 1) (σ'.comp (incF T.Q.c (O j).c' (O j).hle))) f k x = 0`. Conclude with `(congrFun (congrFun hrd k) x).symm`.
+-/
 theorem cuspOver_ne_bot : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 T0 : Type) (A : FamIn D.what₂.LL Γ Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → IoExt R → ∀ (j : Fin D.R.m), OMPins T R κ v₀ O j → OneMapRow0 T R κ v₀ O j → T.toCore.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n ≠ ⊥ → GlobalTheory.OneMapAll.cuspOver (O j) (κ j) ≠ ⊥ := by
   intro D Γ _ _ Pl0 T0 A T _ R F κ v₀ O hnV hC hFW hIo j hP hrow hne
   obtain ⟨tie⟩ := hFW

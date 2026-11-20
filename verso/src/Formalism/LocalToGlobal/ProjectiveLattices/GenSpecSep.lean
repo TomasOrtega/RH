@@ -8,6 +8,11 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
+/- English proof (translation)
+Unfold `SepXSt`. Establish `hq` using `Xo.qproj`. Unfold `IsQProjOver at hq`. Take `⟨N, i, hi, -, hcomp⟩` from `hq`. Rewrite using `[← hcomp]`.
+
+Use `haveI := hi`. Use `infer_instance`.
+-/
 theorem sepX (Xo : Moduli Dw l) : SepXSt Xo := by
   unfold SepXSt
   have hq := Xo.qproj
@@ -17,6 +22,11 @@ theorem sepX (Xo : Moduli Dw l) : SepXSt Xo := by
   haveI := hi
   infer_instance
 
+/- English proof (translation)
+Unfold `spMap`. Prove the components needed by the constructor for the conclusion. Establish `hd : DenseRange (PrimeSpectrum.comap φ)`. Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot φ).1 hφ]`. Conclude with `bot_le`.
+
+Conclude with `hd`.
+-/
 theorem spMap_isDominant {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T) (hφ : Function.Injective φ) :
     IsDominant (spMap φ) := by
   unfold spMap
@@ -26,6 +36,11 @@ theorem spMap_isDominant {S T : Type} [CommRing S] [CommRing T] (φ : S →+* T)
     exact bot_le
   exact hd
 
+/- English proof (translation)
+Use `haveI : IsSeparated Xo.s := sepX Xo`. Use `haveI : IsDominant (spMap φ) := spMap_isDominant φ hφ`. Use `first`. Consider the case `exact ext_of_isDominant_of_isSeparated Xo.s hs (spMap φ) h`. Consider the case `exact ext_of_isDominant_of_isSeparated Xo.s hs h`.
+
+Consider the case `exact ext_of_isDominant_of_isSeparated (s := Xo.s) hs (ι := spMap φ) h`.
+-/
 theorem x_eq_of_inj (Xo : Moduli Dw l) {S T : Type} [CommRing S] [IsReduced S] [CommRing T] (φ : S →+* T)
     (hφ : Function.Injective φ) {f g : Sp S ⟶ Xo.X} (hs : f ≫ Xo.s = g ≫ Xo.s)
     (h : spMap φ ≫ f = spMap φ ≫ g) : f = g := by

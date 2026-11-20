@@ -9,6 +9,25 @@ open Formalism
 
 namespace GammaInvariantLatticeLift
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hit : ∀ k (x : D), (fun x : D => Q • x)^[k] x = Q ^ k • x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', mul_smul]`. Establish `hbM : Function.Bijective (fun x : D => Q ^ M • x)`. Use `hbij.iterate M` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[hit]`. Use `set w : A := ↑hv.unit⁻¹ with hw_def`. Establish `hwv : w * v = 1` using `hv.val_inv_mul`.
+
+Establish `hw1 : w - 1 = X * (-(w * t))`. Establish `: w - 1 = w * (1 - v)` using `by rw [mul_sub, hwv, mul_one]`. Rewrite using `[this, hvt]`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : X ∣ w ^ M - 1 := by`.
+
+Establish `h1` using `sub_dvd_pow_sub_pow w 1 M`. Rewrite `h1` using `[one_pow]`. Conclude with `(Dvd.intro _ hw1.symm).trans h1`. Establish `hwM : w ^ M = 1 + X * s` using `by rw [← hs]; ring`. Take `⟨n', hn'N, hn'⟩` from `hN _ hy`.
+
+Establish `e1 : (v * Q) ^ M • γ y = Q ^ M • y + X • n'`. Rewrite using `[← hQ, ← map_pow, ← hsmul, ← hn']`. Normalize the expressions using the abelian group laws. Establish `key : Q ^ M • γ y = w ^ M • (Q ^ M • y + X • n')`. Rewrite using `[← e1, smul_smul, mul_pow, ← mul_assoc, ← mul_pow, hwv, one_pow, one_mul]`.
+
+Use `set m : D := s • (Q ^ M • y) + w ^ M • n' with hm_def`. Establish `hmN : m ∈ N` using `N.add_mem (N.smul_mem _ hy) (N.smul_mem _ hn'N)`. Establish `hQm : Q ^ M • (γ y - y) = X • m`. Rewrite using `[smul_sub, key, hm_def, hwM]`. Use `module`.
+
+Take `⟨y', hy'⟩` from `hbM.2 m`. Use `⟨y', ?_, ?_⟩` and prove the remaining obligations. Use `show Q ^ M • y' ∈ N`. Establish `: Q ^ M • y' = m` using `hy'`. Rewrite using `[this]`.
+
+Conclude with `hmN`. Apply `hbM.1 show Q ^ M • (γ y - y) = Q ^ M • (X • y')` to reduce the goal to its premises. Establish `: Q ^ M • y' = m` using `hy'`. Rewrite using `[hQm, smul_comm, this]`.
+-/
 theorem gamma_invariant_lattice_lift {O A D : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup D]
     [Module A D] [Module O D] [IsScalarTower O A D]
     (X Q v t : A) (γA : A →ₐ[O] A) (M : ℕ) (N : Submodule A D) (γ : D →ₗ[O] D)
@@ -72,9 +91,17 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
   {V : Type} [AddCommGroup V] [Module AA V] [Module A V] [IsScalarTower A AA V]
   [Module O V] [IsScalarTower O AA V] [IsScalarTower O A V]
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul AA a v).symm`.
+-/
 theorem smul_eq_alg (a : A) (v : V) : a • v = algebraMap A AA a • v :=
   (algebraMap_smul AA a v).symm
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `ha`. Use `Function.bijective_iff_has_inverse.mpr ⟨fun x j => (↑u⁻¹ : AA) • x j, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use function extensionality and compare the values at `j`. Use `show (↑u⁻¹ : AA) • (a • x j) = x j`.
+
+Rewrite using `[smul_eq_alg (AA := AA) a (x j), ← hu, smul_smul, Units.inv_mul, one_smul]`. Introduce `x`. Use function extensionality and compare the values at `j`. Use `show a • ((↑u⁻¹ : AA) • x j) = x j`. Rewrite using `[smul_eq_alg (AA := AA) a, ← hu, smul_smul, Units.mul_inv, one_smul]`.
+-/
 theorem smul_bij (_E : WachCohomologyFacts.Amb B AA) (a : A) (ha : IsUnit (algebraMap A AA a)) :
     Function.Bijective (fun x : ZMod n → V => a • x) := by
   obtain ⟨u, hu⟩ := ha
@@ -88,18 +115,27 @@ theorem smul_bij (_E : WachCohomologyFacts.Amb B AA) (a : A) (ha : IsUnit (algeb
     show a • ((↑u⁻¹ : AA) • x j) = x j
     rw [smul_eq_alg (AA := AA) a, ← hu, smul_smul, Units.mul_inv, one_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show W.φ (j - 1) (a • x (j - 1)) = B.φ a • W.φ (j - 1) (x (j - 1))`. Rewrite using `[smul_eq_alg (AA := AA) a, W.φ_smul, E.φ_ext, ← smul_eq_alg]`.
+-/
 theorem Φ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n → V) :
     W.Φ (a • x) = B.φ a • W.Φ x := by
   funext j
   show W.φ (j - 1) (a • x (j - 1)) = B.φ a • W.φ (j - 1) (x (j - 1))
   rw [smul_eq_alg (AA := AA) a, W.φ_smul, E.φ_ext, ← smul_eq_alg]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show W.γ j (a • x j) = B.γ a • W.γ j (x j)`. Rewrite using `[smul_eq_alg (AA := AA) a, W.γ_smul, E.γ_ext, ← smul_eq_alg]`.
+-/
 theorem Γ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n → V) :
     W.Γ (a • x) = B.γ a • W.Γ x := by
   funext j
   show W.γ j (a • x j) = B.γ a • W.γ j (x j)
   rw [smul_eq_alg (AA := AA) a, W.γ_smul, E.γ_ext, ← smul_eq_alg]
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_pi]`. Use `choose x' hx' he using fun j => W.γ_sub j (x j) (hx j (Set.mem_univ j))`. Conclude with `⟨x', (Submodule.mem_pi).2 fun j _ => hx' j, funext fun j => he j⟩`.
+-/
 theorem Γ_sub (W : WachCohomologyFacts.WachDatum E n V) :
     ∀ x ∈ Submodule.pi Set.univ W.N, ∃ x' ∈ Submodule.pi Set.univ W.N, W.Γ x - x = B.X • x' := by
   intro x hx
@@ -107,6 +143,9 @@ theorem Γ_sub (W : WachCohomologyFacts.WachDatum E n V) :
   choose x' hx' he using fun j => W.γ_sub j (x j) (hx j (Set.mem_univ j))
   exact ⟨x', (Submodule.mem_pi).2 fun j _ => hx' j, funext fun j => he j⟩
 
+/- English proof (translation)
+Use `show B.γ (B.X + (B.ℓ : A)) = (1 + B.X * B.c) * (B.X + (B.ℓ : A))`. Rewrite using `[map_add, map_natCast]`. Take the linear combination `B.hγX`.
+-/
 theorem γq (B : WachCohomologyFacts.Base O A) : B.γ B.q = (1 + B.X * B.c) * B.q := by
   show B.γ (B.X + (B.ℓ : A)) = (1 + B.X * B.c) * (B.X + (B.ℓ : A))
   rw [map_add, map_natCast]
@@ -161,6 +200,9 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
 def fA (hm : WachCohomologyFacts.Hom W₁ W₂) : (ZMod n → V₁) →ₗ[A] (ZMod n → V₂) :=
   LinearMap.pi (fun j => (hm.f.restrictScalars A).comp (LinearMap.proj j))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fA_apply (hm : WachCohomologyFacts.Hom W₁ W₂) (x : ZMod n → V₁) : fA hm x = hm.fD x := rfl
 
 def toHom (hm : WachCohomologyFacts.Hom W₁ W₂) {M : ℕ}

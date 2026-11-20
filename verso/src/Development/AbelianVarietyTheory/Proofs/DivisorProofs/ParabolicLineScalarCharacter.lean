@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 def hypH : Matrix (Fin 2) (Fin 2) E := !![0, 1; 1, 0]
 
+/- English proof (translation)
+Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (a b : Fin n → E) : form σ J a b = σ (form σ J b a) := by
   simp only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]
@@ -25,6 +28,21 @@ lemma form_swap_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) {n : ℕ}
 
 variable {d d₁ : ℕ}
 
+/- English proof (translation)
+Establish `hcol : ∀ k, (fun i => H.ι i k) = H.ι *ᵥ Pi.single k 1` using `fun k => by`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `ho : ∀ l, form σ V.J (H.ι.col l) H.x = 0 ∧ form σ V.J (H.ι.col l) H.y = 0` using `fun l => by`. Establish `hc : H.ι.col l = H.ι *ᵥ Pi.single l 1` using `hcol l`.
+
+Rewrite using `[hc]`. Conclude with `hA.orth _`. Establish `hyx : form σ V.J H.y H.x = 1`. Rewrite using `[form_swap_herm σ hσ V.J hV.herm, hA.xy, map_one]`. Use extensionality with `a b`.
+
+Rewrite using `[entry]`. Express the relevant statement in the definitionally equal form `form σ V.J _ _ = _`. Apply the tactic sequence `rcases a with k | k <;> rcases b with l | l`. Rewrite using `[← hA.gram, Matrix.fromBlocks_apply₁₁, entry]`. Both sides reduce to the same expression.
+
+Use `fin_cases l`. Simplify using `only [frame, twoCols, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, Matrix.of_apply]`. Conclude with `(ho k).1`. Simplify using `only [frame, twoCols, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₂, Matrix.zero_apply, Matrix.of_apply]`. Conclude with `(ho k).2`.
+
+Use `fin_cases k`. Simplify using `[frame, twoCols, hcol]`. Rewrite using `[form_swap_herm σ hσ V.J hV.herm]`. Simplify using `[(ho l).1]`. Simplify using `[frame, twoCols, hcol]`.
+
+Rewrite using `[form_swap_herm σ hσ V.J hV.herm]`. Simplify using `[(ho l).2]`. Apply the tactic sequence `fin_cases k <;> fin_cases l`. Simplify `hA.xx` using `[frame, twoCols, hypH]`. Simplify `hA.xy` using `[frame, twoCols, hypH]`.
+
+Simplify `hyx` using `[frame, twoCols, hypH]`. Simplify `hA.yy` using `[frame, twoCols, hypH]`.
+-/
 lemma gram_frame_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d} {V₁ : Spc F E d₁}
     {H : Plane E d d₁} {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s) (hA : H.IsAdapted σ B V V₁ i₀ i₁) :
     (frame H)ᵀ * V.J * (frame H).map σ = Matrix.fromBlocks V₁.J 0 0 hypH := by
@@ -54,6 +72,17 @@ lemma gram_frame_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Bas
     · simpa [frame, twoCols, hypH] using hyx
     · simpa [frame, twoCols, hypH] using hA.yy
 
+/- English proof (translation)
+Establish `hg` using `gram_frame_herm σ hσ B hV hA`. Establish `h0 : v ᵥ* Matrix.fromBlocks V₁.J 0 0 hypH = 0`. Rewrite using `[← hg, Matrix.mul_assoc, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hv, Matrix.zero_vecMul]`. Establish `h1 : v (Sum.inr 0) = 0 ∧ v (Sum.inr 1) = 0`. Establish `a` using `congrFun h0 (Sum.inr 0)`.
+
+Establish `b` using `congrFun h0 (Sum.inr 1)`. Simplify using `[Matrix.vecMul_fromBlocks, hypH, Matrix.vecMul, dotProduct, Fin.sum_univ_two] at a b`. Conclude with `⟨b, a⟩`. Establish `h2 : (fun k : Fin 2 => v (Sum.inr k)) = 0`. Use extensionality with `k`.
+
+Use `fin_cases k`. Conclude with `h1.1`. Conclude with `h1.2`. Establish `hu : H.ι *ᵥ (fun k => v (Sum.inl k)) = 0`. Establish `: frame H *ᵥ v = H.ι *ᵥ (fun k => v (Sum.inl k)) + twoCols H *ᵥ (fun k => v (Sum.inr k))`.
+
+Rewrite using `[frame, Matrix.fromCols_mulVec]`. Both sides reduce to the same expression. Rewrite `hv` using `[this, h2, Matrix.mulVec_zero, add_zero]`. Conclude with `hv`. Establish `hu0` using `not_line V₁.L hV₁.lat (fun k => v (Sum.inl k)) fun a => (hA.low _).mpr (by rw [Matrix.mulVec_smul, hu, smul_zero]; exact zero_mem _)`.
+
+Use extensionality with `(k | k)`. Conclude with `congrFun hu0 k`. Conclude with `congrFun h2 k`.
+-/
 lemma frame_mulVec_eq_zero_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d}
     {V₁ : Spc F E d₁} {H : Plane E d d₁} {i₀ i₁ r s r₁ s₁ : ℕ} (hV : V.IsHerm σ B r s)
     (hV₁ : V₁.IsHerm σ B r₁ s₁) (hA : H.IsAdapted σ B V V₁ i₀ i₁) (v : Fin d₁ ⊕ Fin 2 → E)
@@ -81,6 +110,11 @@ lemma frame_mulVec_eq_zero_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z
   · exact congrFun hu0 k
   · exact congrFun h2 k
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mulVec_injective_iff_isUnit]`. Introduce `a b hab`. Establish `h0 : PlaneLeviExt.sq hA.rank H *ᵥ (a - b) = 0` using `by rw [Matrix.mulVec_sub, hab, sub_self]`. Rewrite `h0` using `[PlaneLeviExt.sq, Matrix.submatrix_mulVec_equiv]`. Establish `h1` using `frame_mulVec_eq_zero_herm σ hσ B hV hV₁ hA _ (by simpa using h0)`.
+
+Establish `h2 : a - b = 0`. Use extensionality with `i`. Use `congrFun h1 ((num hA.rank).symm i)` as an intermediate fact. Simplify using `using this`. Conclude with `sub_eq_zero.mp h2`.
+-/
 lemma isUnit_sq_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d}
     {V₁ : Spc F E d₁} {H : Plane E d d₁} {i₀ i₁ r s r₁ s₁ : ℕ} (hV : V.IsHerm σ B r s)
     (hV₁ : V₁.IsHerm σ B r₁ s₁) (hA : H.IsAdapted σ B V V₁ i₀ i₁) : IsUnit (PlaneLeviExt.sq hA.rank H) := by
@@ -95,6 +129,9 @@ lemma isUnit_sq_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base
     simpa using this
   exact sub_eq_zero.mp h2
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ`. Establish `e1 : t.1 * (t⁻¹).1 = 1` using `t.mul_inv`. Establish `e2 : cA σ (t⁻¹).1 * cA σ t.1 = 1` using `by rw [← map_mul, t.inv_mul, map_one]`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;>`. Simplify using `[dg, hypH, incM, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal_apply, hc, e1, e2]`.
+-/
 lemma dg_unitary_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (t : (AE F E)ˣ) :
     (dg σ t)ᵀ * incM F (hypH (E := E)) * (dg σ t).map (cA σ) = incM F (hypH (E := E)) := by
   have hc := GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ
@@ -112,15 +149,26 @@ open GlobalTheory.PlaneLeviExt GlobalTheory.PlaneLeviAt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {d d₁ : ℕ} {hd : d = d₁ + 2} {H : Plane E d d₁}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (cA σ).toRingHom)`.
+-/
 lemma map_mul_cA (σ : E →ₐ[F] E) {a b c : Type} [Fintype b] (X : Matrix a b (AE F E)) (Y : Matrix b c (AE F E)) :
     (X * Y).map (cA σ) = X.map (cA σ) * Y.map (cA σ) := Matrix.map_mul (f := (cA σ).toRingHom)
 
+/- English proof (translation)
+Rewrite using `[← gram_frame_herm σ hσ B hV hA, incM_mul, incM_mul, incM_transpose, cA_incM]`.
+-/
 lemma gram_incM (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d} {V₁ : Spc F E d₁}
     {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s) (hA : H.IsAdapted σ B V V₁ i₀ i₁) :
     (incM F (frame H))ᵀ * incM F V.J * (incM F (frame H)).map (cA σ) =
       incM F (Matrix.fromBlocks V₁.J 0 0 hypH) := by
   rw [← gram_frame_herm σ hσ B hV hA, incM_mul, incM_mul, incM_transpose, cA_incM]
 
+/- English proof (translation)
+Establish `h1 : (incM F (frame H) * incM F (coframe hd H))ᵀ * incM F V.J * (incM F (frame H) * incM F (coframe hd H)).map (cA σ) = incM F V.J`. Rewrite using `[S_T hu, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, map_mul_cA]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [gram_incM σ hσ B hV hA]`.
+-/
 lemma J_eq (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d} {V₁ : Spc F E d₁}
     {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s) (hA : H.IsAdapted σ B V V₁ i₀ i₁) (hu : IsUnit (PlaneLeviExt.sq hd H)) :
     incM F V.J = (incM F (coframe hd H))ᵀ * incM F (Matrix.fromBlocks V₁.J 0 0 hypH) *
@@ -135,6 +183,13 @@ lemma J_eq (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V :
       rw [Matrix.transpose_mul, map_mul_cA]; simp only [Matrix.mul_assoc]
     _ = _ := by rw [gram_incM σ hσ B hV hA]
 
+/- English proof (translation)
+Establish `hG` using `gram_incM σ hσ B hV hA`. Establish `hJ` using `J_eq σ hσ B hV hA hu`. Establish `hB : (blkT σ t g)ᵀ * incM F (Matrix.fromBlocks V₁.J 0 0 hypH) * (blkT σ t g).map (cA σ) = incM F (Matrix.fromBlocks V₁.J 0 0 hypH)`. Establish `e1 : incM F (Matrix.fromBlocks V₁.J 0 0 (hypH (E` using `E))) = Matrix.fromBlocks (incM F V₁.J) 0 0 (incM F hypH) := by`. Simplify using `[incM, Matrix.fromBlocks_map]`.
+
+Establish `e2 : (blkT σ t g).map (cA σ) = Matrix.fromBlocks (g.map (cA σ)) 0 0 ((dg σ t).map (cA σ))`. Rewrite using `[blkT, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_zero _ (map_zero _)]`. Rewrite using `[e1, e2, blkT, Matrix.fromBlocks_transpose, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hg, dg_unitary_herm σ hσ t]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [leviT, Matrix.transpose_mul, map_mul_cA, Matrix.mul_assoc]`. Use `_ = incM F V.J := by rw [hG, hB, ← hJ]`.
+-/
 lemma leviT_unitary_herm (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d}
     {V₁ : Spc F E d₁} {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s) (hA : H.IsAdapted σ B V V₁ i₀ i₁)
     (hu : IsUnit (PlaneLeviExt.sq hd H)) (t : (AE F E)ˣ) (g : Matrix (Fin d₁) (Fin d₁) (AE F E))
@@ -161,6 +216,9 @@ def frQ (hd : d = d₁ + 2) (H : Plane E d d₁) (P : Matrix (Fin d) (Fin d) (AE
     Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E) :=
   incM F (coframe hd H) * P * incM F (frame H)
 
+/- English proof (translation)
+Establish `hG` using `gram_incM σ hσ B hV hA`. Establish `hJ` using `J_eq σ hσ B hV hA hu`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [frQ, Matrix.transpose_mul, map_mul_cA, Matrix.mul_assoc]`. Use `_ = _ := by rw [← hJ, Matrix.mul_assoc Pᵀ, ← Matrix.mul_assoc Pᵀ, hP, hG]`.
+-/
 lemma frQ_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E) {V : Spc F E d}
     {V₁ : Spc F E d₁} {i₀ i₁ r s : ℕ} (hV : V.IsHerm σ B r s) (hA : H.IsAdapted σ B V V₁ i₀ i₁)
     (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin d) (AE F E))
@@ -174,9 +232,15 @@ lemma frQ_unitary (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F 
         simp only [frQ, Matrix.transpose_mul, map_mul_cA, Matrix.mul_assoc]
     _ = _ := by rw [← hJ, Matrix.mul_assoc Pᵀ, ← Matrix.mul_assoc Pᵀ, hP, hG]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[Matrix.mulVec_single, incM, frame, twoCols, incV]`.
+-/
 lemma frame_mulVec_single_eq_x : incM F (frame H) *ᵥ Pi.single (Sum.inr 0) 1 = incV F H.x := by
   ext i; simp [Matrix.mulVec_single, incM, frame, twoCols, incV]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [frQ, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = c • (incM F (coframe hd H) *ᵥ (incM F (frame H) *ᵥ Pi.single (Sum.inr 0) 1)) := by`. Rewrite using `[frame_mulVec_single_eq_x, hP, Matrix.mulVec_smul]`. Use `_ = c • Pi.single (Sum.inr 0) 1 := by rw [Matrix.mulVec_mulVec, T_S hu, Matrix.one_mulVec]`.
+-/
 lemma frQ_col (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin d) (AE F E)) (c : AE F E)
     (hP : P *ᵥ incV F H.x = c • incV F H.x) :
     frQ hd H P *ᵥ Pi.single (Sum.inr 0) 1 = c • Pi.single (Sum.inr 0) 1 := by
@@ -187,6 +251,17 @@ lemma frQ_col (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin d) (
         rw [frame_mulVec_single_eq_x, hP, Matrix.mulVec_smul]
     _ = c • Pi.single (Sum.inr 0) 1 := by rw [Matrix.mulVec_mulVec, T_S hu, Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hcc` using `GlobalTheory.AdelicPlaneLevi.cA_cA σ hσ`. Establish `h1 : (Pi.single (Sum.inr 0) 1 : Fin d₁ ⊕ Fin 2 → AE F E) ᵥ* (Qᵀ * incM F (Matrix.fromBlocks J₁ 0 0 hypH) * Q.map (cA σ)) = (Pi.single (Sum.inr 0) 1 : Fin d₁ ⊕ Fin 2 → AE F E) ᵥ* incM F (Matrix.fromBlocks J₁ 0 0 hypH)` using `by rw [hQ]`. Rewrite `h1` using `[← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, hc, Matrix.smul_vecMul, Matrix.smul_vecMul]`. Establish `he : (Pi.single (Sum.inr 0) 1 : Fin d₁ ⊕ Fin 2 → AE F E) ᵥ* incM F (Matrix.fromBlocks J₁ 0 0 hypH) = Pi.single (Sum.inr 1) 1`. Use extensionality with `(k | k)`.
+
+Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply, incM]`. Apply the tactic sequence `fin_cases k <;> simp [Matrix.vecMul, dotProduct, Pi.single_apply, incM, hypH]`. Rewrite `h1` using `[he]`. Establish `h2` using `congrFun h1 j`. Establish `h3 : ((Pi.single (Sum.inr 1) 1 : Fin d₁ ⊕ Fin 2 → AE F E) ᵥ* Q.map (cA σ)) j = cA σ (Q (Sum.inr 1) j)`.
+
+Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`. Rewrite `h2` using `[Pi.smul_apply, h3, smul_eq_mul]`. Establish `h4 : cA σ (Q (Sum.inr 1) j) = (c⁻¹).1 * (Pi.single (Sum.inr 1) 1 : Fin d₁ ⊕ Fin 2 → AE F E) j`. Rewrite using `[← h2, ← mul_assoc, c.inv_mul, one_mul]`. Establish `h5` using `congrArg (cA σ) h4`.
+
+Rewrite `h5` using `[hcc, map_mul]`. Rewrite using `[h5]`. Use `congr 1`. Distinguish the cases in `hj : j = Sum.inr 1`. Substitute `hj` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`.
+-/
 lemma row_of_col (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (J₁ : Matrix (Fin d₁) (Fin d₁) E)
     (Q : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E))
     (hQ : Qᵀ * incM F (Matrix.fromBlocks J₁ 0 0 hypH) * Q.map (cA σ) = incM F (Matrix.fromBlocks J₁ 0 0 hypH))
@@ -226,6 +301,9 @@ open GlobalTheory.PlaneLeviExt GlobalTheory.PlaneLeviAt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {d d₁ : ℕ} {hd : d = d₁ + 2} {H : Plane E d d₁}
 
+/- English proof (translation)
+Rewrite using `[incM_frame, Matrix.fromCols_mulVec]`. Use `congr 1`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two, incM, twoCols, incV]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma frame_mulVec_split (v : Fin d₁ ⊕ Fin 2 → AE F E) :
     incM F (frame H) *ᵥ v = incM F H.ι *ᵥ (fun i => v (Sum.inl i)) + (v (Sum.inr 0) • incV F H.x + v (Sum.inr 1) • incV F H.y) := by
   rw [incM_frame, Matrix.fromCols_mulVec]
@@ -234,6 +312,9 @@ lemma frame_mulVec_split (v : Fin d₁ ⊕ Fin 2 → AE F E) :
   simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two, incM, twoCols, incV]
   ring
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun h (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Fintype.sum_sum_type, Fin.sum_univ_two, h0, h1, zero_mul, mul_zero, add_zero, Matrix.one_apply, Sum.inl.injEq] at this`. Simplify `this` using `[Matrix.toBlocks₁₁, Matrix.mul_apply, Matrix.one_apply]`.
+-/
 lemma blk_mul_eq_one (Q Q' : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E)) (h : Q * Q' = 1)
     (h0 : ∀ i, Q (Sum.inl i) (Sum.inr 0) = 0) (h1 : ∀ j, Q' (Sum.inr 1) (Sum.inl j) = 0) :
     Q.toBlocks₁₁ * Q'.toBlocks₁₁ = 1 := by
@@ -243,6 +324,9 @@ lemma blk_mul_eq_one (Q Q' : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (A
     Matrix.one_apply, Sum.inl.injEq] at this
   simpa [Matrix.toBlocks₁₁, Matrix.mul_apply, Matrix.one_apply] using this
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `congrFun (congrFun hQ (Sum.inl i)) (Sum.inl j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Fintype.sum_sum_type, Fin.sum_univ_two, incM, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, map_zero, h1, mul_zero, zero_mul, add_zer …`. Simplify using `only [hypH, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, map_zero, mul_zero, zero_mul, add_zero, zero_add] at this`. Simplify `this` using `[Matrix.toBlocks₁₁, Matrix.mul_apply, incM]`.
+-/
 lemma blk_unitary (σ : E →ₐ[F] E) (J₁ : Matrix (Fin d₁) (Fin d₁) E)
     (Q : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E))
     (hQ : Qᵀ * incM F (Matrix.fromBlocks J₁ 0 0 hypH) * Q.map (cA σ) = incM F (Matrix.fromBlocks J₁ 0 0 hypH))
@@ -266,29 +350,50 @@ open GlobalTheory.PlaneLeviExt GlobalTheory.PlaneLeviAt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {d d₁ : ℕ} {hd : d = d₁ + 2} {H : Plane E d d₁}
 
+/- English proof (translation)
+Use `show ((h.1 * (h⁻¹).1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression.
+-/
 lemma mat_mul_inv {σ : E →ₐ[F] E} {J : Matrix (Fin d) (Fin d) E} (h : UA σ J) : mat h * mat h⁻¹ = 1 := by
   show ((h.1 * (h⁻¹).1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1
   rw [← Subgroup.coe_mul, mul_inv_cancel]; rfl
 
+/- English proof (translation)
+Use `show (((h⁻¹).1 * h.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1`. Rewrite using `[← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+-/
 lemma mat_inv_mul {σ : E →ₐ[F] E} {J : Matrix (Fin d) (Fin d) E} (h : UA σ J) : mat h⁻¹ * mat h = 1 := by
   show (((h⁻¹).1 * h.1 : GL (Fin d) (AE F E)) : Matrix (Fin d) (Fin d) (AE F E)) = 1
   rw [← Subgroup.coe_mul, inv_mul_cancel]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma mat_mul' {σ : E →ₐ[F] E} {J : Matrix (Fin d) (Fin d) E} (g h : UA σ J) : mat (g * h) = mat g * mat h := rfl
 
+/- English proof (translation)
+Simplify using `only [frQ, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (frame H)) (incM F (coframe hd H)), S_T hu, Matrix.one_mul]`.
+-/
 lemma frQ_mul (hu : IsUnit (PlaneLeviExt.sq hd H)) (P P' : Matrix (Fin d) (Fin d) (AE F E)) :
     frQ hd H P * frQ hd H P' = frQ hd H (P * P') := by
   simp only [frQ, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incM F (frame H)) (incM F (coframe hd H)), S_T hu, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[frQ, Matrix.mul_one, T_S hu]`.
+-/
 lemma frQ_one (hu : IsUnit (PlaneLeviExt.sq hd H)) : frQ hd H (1 : Matrix (Fin d) (Fin d) (AE F E)) = 1 := by
   rw [frQ, Matrix.mul_one, T_S hu]
 
+/- English proof (translation)
+Simplify using `only [frQ, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (frame H)) (incM F (coframe hd H)), S_T hu, Matrix.one_mul]`.
+-/
 lemma frame_frQ (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin d) (AE F E)) :
     incM F (frame H) * frQ hd H P = P * incM F (frame H) := by
   simp only [frQ, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incM F (frame H)) (incM F (coframe hd H)), S_T hu, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `e : frQ hd H P - 1 = incM F (coframe hd H) * (P - 1) * incM F (frame H)`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, T_S hu]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `at_mul _ _ _ _ hP`.
+-/
 lemma at_frQ {R : Type} [Zero R] (ev : AF F → R) (hu : IsUnit (PlaneLeviExt.sq hd H))
     (P : Matrix (Fin d) (Fin d) (AE F E)) (hP : At ev (P - 1)) : At ev (frQ hd H P - 1) := by
   have e : frQ hd H P - 1 = incM F (coframe hd H) * (P - 1) * incM F (frame H) := by
@@ -296,6 +401,9 @@ lemma at_frQ {R : Type} [Zero R] (ev : AF F → R) (hu : IsUnit (PlaneLeviExt.sq
   rw [e]
   exact at_mul _ _ _ _ hP
 
+/- English proof (translation)
+Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun hc (Sum.inl i)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`. Use `congrFun hc (Sum.inr 0)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single]`.
+-/
 lemma col_entry (Q : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E)) (c : AE F E)
     (hc : Q *ᵥ Pi.single (Sum.inr 0) 1 = c • Pi.single (Sum.inr 0) 1) :
     (∀ i, Q (Sum.inl i) (Sum.inr 0) = 0) ∧ Q (Sum.inr 0) (Sum.inr 0) = c := by
@@ -305,6 +413,13 @@ lemma col_entry (Q : Matrix (Fin d₁ ⊕ Fin 2) (Fin d₁ ⊕ Fin 2) (AE F E)) 
   · have := congrFun hc (Sum.inr 0)
     simpa [Matrix.mulVec_single] using this
 
+/- English proof (translation)
+Establish `e0 : incM F (frame H) *ᵥ Sum.elim w 0 = incM F H.ι *ᵥ w`. Rewrite using `[frame_mulVec_split]`. Simplify using the standard rewrite rules. Use `⟨(frQ hd H P *ᵥ Sum.elim w 0) (Sum.inr 0), ?_⟩` and prove the remaining obligations. Rewrite using `[← e0, Matrix.mulVec_mulVec, ← frame_frQ hu, ← Matrix.mulVec_mulVec, frame_mulVec_split]`.
+
+Establish `e1 : (frQ hd H P *ᵥ Sum.elim w 0) (Sum.inr 1) = 0`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h1]`. Establish `e2 : (fun i => (frQ hd H P *ᵥ Sum.elim w 0) (Sum.inl i)) = (frQ hd H P).toBlocks₁₁ *ᵥ w`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₁₁]`.
+
+Rewrite using `[e1, e2, zero_smul, add_zero]`.
+-/
 lemma mulVec_iota (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin d) (AE F E))
     (h1 : ∀ j, frQ hd H P (Sum.inr 1) (Sum.inl j) = 0) (w : Fin d₁ → AE F E) :
     ∃ a : AE F E, P *ᵥ (incM F H.ι *ᵥ w) = incM F H.ι *ᵥ ((frQ hd H P).toBlocks₁₁ *ᵥ w) + a • incV F H.x := by
@@ -319,6 +434,29 @@ lemma mulVec_iota (hu : IsUnit (PlaneLeviExt.sq hd H)) (P : Matrix (Fin d) (Fin 
     simp [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.toBlocks₁₁]
   rw [e1, e2, zero_smul, add_zero]
 
+/- English proof (translation)
+Establish `hu` using `isUnit_sq_herm σ hσ B hV hV₁ hA`. Establish `hx' : mat p⁻¹ *ᵥ incV F H.x = (t⁻¹).1 • incV F H.x`. Establish `h` using `congrArg (fun v => (t⁻¹).1 • (mat p⁻¹ *ᵥ v)) hx`. Simplify using `only [Matrix.mulVec_mulVec, mat_inv_mul, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, t.inv_mul, one_smul] at h`. Conclude with `h.symm`.
+
+Use `set Q := frQ hA.rank H (mat p) with hQd`. Use `set Q' := frQ hA.rank H (mat p⁻¹) with hQd'`. Establish `hQu` using `frQ_unitary σ hσ B hV hA hu (mat p) p.2`. Establish `hQu'` using `frQ_unitary σ hσ B hV hA hu (mat p⁻¹) (p⁻¹).2`. Establish `hc` using `frQ_col hu (mat p) _ hx`.
+
+Establish `hc'` using `frQ_col hu (mat p⁻¹) _ hx'`. Establish `hr : ∀ j, Q (Sum.inr 1) (Sum.inl j) = 0` using `fun j => by`. Rewrite using `[hQd, row_of_col σ hσ V₁.J _ hQu t hc]`. Simplify using the standard rewrite rules. Establish `hr' : ∀ j, Q' (Sum.inr 1) (Sum.inl j) = 0` using `fun j => by`.
+
+Rewrite using `[hQd', row_of_col σ hσ V₁.J _ hQu' t⁻¹ hc']`. Simplify using the standard rewrite rules. Establish `hQQ : Q * Q' = 1` using `by rw [hQd, hQd', frQ_mul hu, mat_mul_inv, frQ_one hu]`. Establish `hQQ' : Q' * Q = 1` using `by rw [hQd, hQd', frQ_mul hu, mat_inv_mul, frQ_one hu]`. Apply the tactic sequence `have hAA := blk_mul_eq_one Q Q' hQQ (col_entry _ _ hc).1 hr'`.
+
+Apply the tactic sequence `have hAA' := blk_mul_eq_one Q' Q hQQ' (col_entry _ _ hc').1 hr`. Establish `hAu` using `blk_unitary σ V₁.J Q hQu hr`. Establish `hatQ : At ev (Q - 1)` using `at_frQ ev hu _ hp`. Establish `hatt : At ev (t.1 - 1)` using `fun u hu0 => by`. Use `congrFun (congrFun (hatQ u hu0) (Sum.inr 0)) (Sum.inr 0)` as an intermediate fact.
+
+Apply the tactic sequence `rw [Matrix.smul_apply, Matrix.sub_apply, hQd, (col_entry _ _ hc).2, Matrix.one_apply_eq] at this`. Conclude with `this`. Establish `hatA : At ev (Q.toBlocks₁₁ - 1)` using `fun u hu0 => by`. Use extensionality with `i j`. Use `congrFun (congrFun (hatQ u hu0) (Sum.inl i)) (Sum.inl j)` as an intermediate fact.
+
+Simplify `this` using `[Matrix.toBlocks₁₁, Matrix.one_apply]`. Set `gU : GL (Fin d₁) (AE F E)` to `⟨Q.toBlocks₁₁, Q'.toBlocks₁₁, hAA, hAA'⟩`. Establish `hgmem : gU ∈ UG (cA σ) (incM F V₁.J)` using `hAu`. Set `mU : GL (Fin d) (AE F E)` to `⟨leviT σ hA.rank H t Q.toBlocks₁₁, leviT σ hA.rank H t⁻¹ Q'.toBlocks₁₁, by rw [leviT_mul σ hu, hAA, mul_inv_cancel, leviT_one σ hu], by rw [leviT_mul σ hu, hAA', inv_mul_cancel, leviT_one σ hu]⟩`. Establish `hmem : mU ∈ UG (cA σ) (incM F V.J)` using `leviT_unitary_herm σ hσ B hV hA hu t _ hAu`.
+
+Set `m : UA σ V.J` to `⟨mU, hmem⟩`. Establish `hm : mat m = leviT σ hA.rank H t Q.toBlocks₁₁` using `rfl`. Establish `hm' : mat m⁻¹ = leviT σ hA.rank H t⁻¹ Q'.toBlocks₁₁` using `rfl`. Establish `hatm : At ev (mat m - 1)`. Establish `e : leviT σ hA.rank H t Q.toBlocks₁₁ - 1 = incM F (frame H) * (blkT σ t Q.toBlocks₁₁ - 1) * incM F (coframe hA.rank H)`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, S_T hu]`. Both sides reduce to the same expression. Rewrite using `[hm, e]`. Conclude with `at_mul _ _ _ _ (at_blkT _ σ t _ hatt hatA)`. Take `⟨k1, -, k3⟩` from `leviT_cols σ _ t⁻¹ Q'.toBlocks₁₁ (leviT_frame σ hu t⁻¹ Q'.toBlocks₁₁)`.
+
+Use `⟨hatt, p * m⁻¹, m, ⟨gU, hgmem⟩, Subgroup.subset_closure ⟨?_, fun z => ?_⟩, ?_, leviT_cols σ _ t _ (leviT_frame σ hu t _), hatm, hatA, (inv_mul_cancel_right p m).symm⟩` and prove the remaining obligations. Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, hm', k1, Matrix.mulVec_smul, hx, smul_smul, t.inv_mul, one_smul]`. Take `⟨a, ha⟩` from `mulVec_iota hu (mat p) hr (Q'.toBlocks₁₁ *ᵥ z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_mul', ← Matrix.mulVec_mulVec, hm', Matrix.mulVec_mulVec z, k3, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec z, hAA, Matrix.one_mulVec]`.
+
+Introduce `u hu0`. Establish `e : mat (p * m⁻¹) - 1 = (mat p - 1) * mat m⁻¹ - (mat m - 1) * mat m⁻¹`. Rewrite using `[mat_mul', Matrix.sub_mul, Matrix.sub_mul, mat_mul_inv, Matrix.one_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, smul_sub, ← Matrix.smul_mul, ← Matrix.smul_mul, hp u hu0, hatm u hu0, sub_self]`.
+-/
 theorem levi_decomp {R : Type} [Zero R] (ev : AF F → R) (σ : E →ₐ[F] E) (hσ : ∀ z, σ (σ z) = z) (B : Base F E)
     {V : Spc F E d} {V₁ : Spc F E d₁} {i₀ i₁ r s r₁ s₁ : ℕ} (hV : V.IsHerm σ B r s) (hV₁ : V₁.IsHerm σ B r₁ s₁)
     (hA : H.IsAdapted σ B V V₁ i₀ i₁) (p : UA σ V.J) (hp : p ∈ UAt σ V ev) (t : (AE F E)ˣ)
@@ -383,6 +521,9 @@ theorem levi_decomp {R : Type} [Zero R] (ev : AF F → R) (σ : E →ₐ[F] E) (
       rw [mat_mul', Matrix.sub_mul, Matrix.sub_mul, mat_mul_inv, Matrix.one_mul]; abel
     rw [e, smul_sub, ← Matrix.smul_mul, ← Matrix.smul_mul, hp u hu0, hatm u hu0, sub_self]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ p hp t hx`. Conclude with `levi_decomp (evI F) σ (GlobalTheory.AdelicPlaneLevi.sigma_invol hT.base.cm) B hT.geo.hV' hT₁.geo.hV' hC.hH p hp t hx`.
+-/
 theorem stab_line_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ X om om' om₁ om₁', IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' →

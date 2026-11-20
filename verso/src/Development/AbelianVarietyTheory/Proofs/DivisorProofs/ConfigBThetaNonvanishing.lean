@@ -18,6 +18,17 @@ noncomputable section
 
 namespace GlobalTheory.IndLine
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Establish `hS` using `(GlobalTheory.T.low_part_compact_stable) hKP F E σ B a (b + 2) G X om om' R Rf hM`. Establish `hMu` using `(GlobalTheory.T.low_part_endomorphism_scalar) hKP F E σ B a b G₁ X om₁ om₁' R₁ Rf₁ hM₁`. Take `⟨π, hπ', hπ⟩` from `(GlobalTheory.T.config_b_real_place_h1_branch) hKP F E σ B a b G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁`. Use `⟨lowPartInf B G.M R.p, ?_, hS, ?_⟩` and prove the remaining obligations.
+
+Apply `lowPartInf_ne_bot haveI := hM.real.nontriv` to reduce the goal to its premises. Take `⟨y, hy⟩` from `exists_ne (0 : R.Pi)`. Establish `hy' : y ∈ (G.M.Pol B.ψ B.emb).map R.p` using `by rw [hM.real.quot.onto]; trivial`. Take `⟨f, hf, rfl⟩` from `hy'`. Conclude with `⟨f, hf, hy⟩`.
+
+Introduce `φ φ' hφ hφ'`. Take `⟨T, hT, hφT⟩` from `hπ φ hφ`. Take `⟨T', hT', hφT'⟩` from `hπ φ' hφ'`. Take `⟨c, hc⟩` from `hMu T hT`. Take `⟨c', hc'⟩` from `hMu T' hT'`.
+
+Distinguish the cases in `h0 : c = 0`. Use `left`. Introduce `v hv`. Rewrite using `[hφT v hv, hc _ (hπ' v hv), h0, zero_smul]`. Use `right`.
+
+Use `⟨c' / c, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hφT' v hv, hφT v hv, hc' _ (hπ' v hv), hc _ (hπ' v hv), smul_smul, div_mul_cancel₀ _ h0]`.
+-/
 theorem config_b_real_place_h1 : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b)
     (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

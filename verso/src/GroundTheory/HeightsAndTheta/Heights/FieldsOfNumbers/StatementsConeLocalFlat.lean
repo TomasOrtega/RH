@@ -16,6 +16,9 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
 
 omit [DecidableEq K] in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `fun h => hs (hPW h)`.
+-/
 theorem primeCompl_map_le_nonZeroDivisors (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime]
     (hPW : P ≤ W) :
     W.primeCompl.map (Ideal.Quotient.mk P) ≤ nonZeroDivisors (MRing ι F ⧸ P) := by
@@ -34,6 +37,11 @@ instance coneLocal.isLocalization (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPr
     IsLocalization (W.primeCompl.map (Ideal.Quotient.mk P)) (coneLocal P W hPW) :=
   Localization.subalgebra.isLocalization_ofField _ _ _
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨b, f, g, -, -, -, hgW, rfl⟩` from `hx`. Conclude with `⟨Ideal.Quotient.mk P f, Ideal.Quotient.mk P g, ⟨g, hgW W rfl, rfl⟩, div_eq_mul_inv _ _⟩`.
+
+Consider the case `algebraMap r`. Rewrite using `[IsScalarTower.algebraMap_apply F (MRing ι F ⧸ P)]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`.
+-/
 theorem degZeroLoc_le_coneLocal (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime] (hPW : P ≤ W) :
     ∀ x ∈ degZeroLoc P {W}, x ∈ coneLocal P W hPW := by
   intro x hx
@@ -56,6 +64,9 @@ instance degZeroLoc.algebraCone (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrim
     Algebra (degZeroLoc P {W}) (coneLocal P W hPW) :=
   (degZeroLocToCone P W hPW).toAlgebra
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem degZeroLoc.algebraMap_cone_coe (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime]
     (hPW : P ≤ W) (x : degZeroLoc P {W}) :
     ((algebraMap (degZeroLoc P {W}) (coneLocal P W hPW) x : coneLocal P W hPW) :

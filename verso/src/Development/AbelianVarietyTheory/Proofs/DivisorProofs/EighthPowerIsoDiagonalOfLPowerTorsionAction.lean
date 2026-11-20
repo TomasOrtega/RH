@@ -16,6 +16,9 @@ section General
 
 variable {C : Type*} [Category C] [CartesianMonoidalCategory C]
 
+/- English proof (translation)
+Rewrite using `[MonObj.one_eq_one X, MonObj.one_eq_one Y]`. Conclude with `h1 _`. Use `mul_hom := by`. Rewrite using `[MonObj.mul_eq_mul X, MonObj.mul_eq_mul Y, hm, MonObj.comp_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem isMonHom_of_points {X Y : C} [MonObj X] [MonObj Y] (f : X ⟶ Y)
     (h1 : ∀ T : C, (1 : T ⟶ X) ≫ f = 1)
     (hm : ∀ (T : C) (x y : T ⟶ X), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f where
@@ -26,6 +29,17 @@ theorem isMonHom_of_points {X Y : C} [MonObj X] [MonObj Y] (f : X ⟶ Y)
     rw [MonObj.mul_eq_mul X, MonObj.mul_eq_mul Y, hm, MonObj.comp_mul]
     simp
 
+/- English proof (translation)
+Establish `hex` using `fun b => (hu H (fun c => if c = b then 𝟙 H else 1)).exists`. Use `choose j hj using hex`. Establish `key : ∀ {T : C} (x : T ⟶ H) (b c : n), x ≫ j b ≫ p c = if c = b then x else 1`. Introduce `T x b c`. Rewrite using `[hj b c]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Establish `ext : ∀ {T : C} (x y : T ⟶ G), (∀ a, x ≫ p a = y ≫ p a) → x = y` using `fun {T} x y h => (hu T fun a => y ≫ p a).unique h (fun _ => rfl)`. Use `⟨j, fun b => ?_, fun b => by simpa using key (𝟙 H) b b, fun b c hcb => by simpa [hcb] using key (𝟙 H) b c⟩` and prove the remaining obligations. Apply `isMonHom_of_points` to reduce the goal to its premises. Introduce `T`.
+
+Apply `ext` to reduce the goal to its premises. Introduce `a`. Use `haveI := hp a`. Rewrite using `[Category.assoc, key, MonObj.one_comp]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Introduce `T x y`. Apply `ext` to reduce the goal to its premises. Introduce `a`. Use `haveI := hp a`. Simplify using `only [Category.assoc, key, MonObj.mul_comp]`.
+
+Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem exists_sections {G H : C} [MonObj G] [MonObj H] {n : Type} [DecidableEq n]
     (p : n → (G ⟶ H)) (hp : ∀ a, IsMonHom (p a))
     (hu : ∀ (T : C) (y : n → (T ⟶ H)), ∃! x : T ⟶ G, ∀ a, x ≫ p a = y a) :
@@ -56,6 +70,17 @@ theorem exists_sections {G H : C} [MonObj G] [MonObj H] {n : Type} [DecidableEq 
     simp only [Category.assoc, key, MonObj.mul_comp]
     split_ifs <;> simp
 
+/- English proof (translation)
+Use `haveI := Fintype.ofFinite n`. Establish `ext : ∀ {T : C} (x y : T ⟶ G), (∀ a, x ≫ p a = y ≫ p a) → x = y` using `fun {T} x y h => (hu T fun a => y ≫ p a).unique h (fun _ => rfl)`. Establish `hcomp : ∀ {K : C} [MonObj K] (k : G ⟶ K) [IsMonHom k] (l : List n), (l.map fun b => p b ≫ j b).prod ≫ k = (l.map fun b => p b ≫ j b ≫ k).prod`. Introduce `K _ k _ l`. Proceed by induction on `l with`.
+
+Consider the case `nil => simp`. Consider the case `cons b l ih => simp [MonObj.mul_comp, ih]`. Establish `hlist : ∀ (c : n) (l : List n), l.Nodup → (l.map fun b => p b ≫ j b ≫ p c).prod = if c ∈ l then p c else 1`. Introduce `c l hl`. Proceed by induction on `l with`.
+
+Consider the case `nil => simp`. Consider the case `cons b l ih`. Rewrite using `[List.map_cons, List.prod_cons, ih (List.nodup_cons.mp hl).2]`. Distinguish the cases in `hbc : b = c`. Substitute `hbc` using the available equality.
+
+Establish `hnot : b ∉ l` using `(List.nodup_cons.mp hl).1`. Simplify using `[h1, hnot]`. Simplify using `[h2 b c (Ne.symm hbc), Ne.symm hbc]`. Establish `hs : (Finset.univ.toList.map fun b => p b ≫ j b).prod = 𝟙 G`. Apply `ext` to reduce the goal to its premises.
+
+Introduce `c`. Use `haveI := hp c`. Rewrite using `[hcomp (p c), hlist c _ (Finset.nodup_toList _)]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hom_ext_sections {G H H' : C} [MonObj G] [MonObj H] [MonObj H']
     {n : Type} [Finite n] [DecidableEq n]
     (p : n → (G ⟶ H)) (hp : ∀ a, IsMonHom (p a))
@@ -98,6 +123,37 @@ theorem hom_ext_sections {G H H' : C} [MonObj G] [MonObj H] [MonObj H']
 
 end General
 
+/- English proof (translation)
+Introduce `K _ _ G₀ G₁ H₀ H₁ _ _ _ _ _ _ hH₀ hH₁ l hl hlK p₀ p₁ hp₀ hp₁ hu₀ hu₁ F hF hFi htor`. Take `⟨j₀, hj₀m, hj₀1, hj₀2⟩` from `exists_sections p₀ hp₀ hu₀`. Take `⟨j₁, hj₁m, hj₁1, hj₁2⟩` from `exists_sections p₁ hp₁ hu₁`. Use `haveI := hF`. Use `haveI := hFi`.
+
+Use `haveI := fun a => hp₀ a`. Use `haveI := fun a => hp₁ a`. Use `haveI := fun b => hj₀m b`. Establish `hpj : ∀ b a : Fin 8, j₀ b ≫ p₀ a = if a = b then 𝟙 H₀ else 1`. Introduce `b a`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hj₀1 a`. Conclude with `hj₀2 b a h`. Establish `hpj₁ : ∀ b a : Fin 8, j₁ b ≫ p₁ a = if a = b then 𝟙 H₁ else 1`.
+
+Introduce `b a`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hj₁1 a`. Conclude with `hj₁2 b a h`.
+
+Establish `htors : ∀ (b : Fin 8) (y : 𝟙_ (Over (Sp K)) ⟶ H₀) (k : ℕ), y ^ (l ^ k) = 1 → ∃ k : ℕ, (y ≫ j₀ b) ^ (l ^ k) = 1`. Introduce `b y k hy`. Use `haveI := hj₀m b`. Conclude with `⟨k, by rw [← MonObj.pow_comp, hy, MonObj.one_comp]⟩`. Establish `hoff : ∀ b a : Fin 8, a ≠ b → j₀ b ≫ F ≫ p₁ a = 1`.
+
+Introduce `b a hab`. Use `haveI := hj₀m b`. Use `haveI := hp₁ a`. Use `GlobalTheory.TorsionDense.eq_one_of_torsion_comp_eq_one K H₀ H₁ hH₀ hH₁ l hl hlK _ inferInstance (fun _ _ y k hy => ?_)` and prove the remaining obligations. Use `htor (y ≫ j₀ b) 1 (htors b y k hy) ⟨0, _root_.one_pow _⟩ a a (by rw [Category.assoc, hpj, if_neg hab, MonObj.comp_one, MonObj.one_comp])` as an intermediate fact.
+
+Rewrite `this` using `[MonObj.one_comp (F ≫ p₁ a)]`. Simplify `this` using `[Category.assoc]`. Establish `hdiag : ∀ a : Fin 8, j₀ a ≫ F ≫ p₁ a = j₀ 0 ≫ F ≫ p₁ 0`. Introduce `a`. Use `haveI := hj₀m a`.
+
+Use `haveI := hj₀m 0`. Use `haveI := hp₁ a`. Use `haveI := hp₁ 0`. Establish `hpt : ∀ (T : Over (Sp K)) (x : T ⟶ H₀), x ≫ ((j₀ a ≫ F ≫ p₁ a) * (j₀ 0 ≫ F ≫ p₁ 0)⁻¹) = (x ≫ j₀ a ≫ F ≫ p₁ a) * (x ≫ j₀ 0 ≫ F ≫ p₁ 0)⁻¹`. Introduce `T x`.
+
+Rewrite using `[MonObj.comp_mul, GrpObj.comp_inv]`. Establish `hmon : IsMonHom ((j₀ a ≫ F ≫ p₁ a) * (j₀ 0 ≫ F ≫ p₁ 0)⁻¹)`. Apply `isMonHom_of_points` to reduce the goal to its premises. Introduce `T`. Rewrite using `[hpt, MonObj.one_comp, MonObj.one_comp, _root_.inv_one, _root_.mul_one]`.
+
+Introduce `T x y`. Rewrite using `[hpt, hpt, hpt, MonObj.mul_comp, MonObj.mul_comp, _root_.mul_inv, _root_.mul_mul_mul_comm]`. Establish `h1` using `GlobalTheory.TorsionDense.eq_one_of_torsion_comp_eq_one K H₀ H₁ hH₀ hH₁ l hl hlK _ hmon (fun _ _ y k hy => by`. Use `htor (y ≫ j₀ a) (y ≫ j₀ 0) (htors a y k hy) (htors 0 y k hy) a 0 (by rw [Category.assoc, Category.assoc, hpj, hpj, if_pos rfl, if_pos rfl])` as an intermediate fact. Rewrite using `[hpt, _root_.mul_inv_eq_one]`.
+
+Simplify `this)` using `[Category.assoc]`. Conclude with `_root_.mul_inv_eq_one.mp h1`. Set `f₁ : H₀ ⟶ H₁` to `j₀ 0 ≫ F ≫ p₁ 0`. Use `haveI : IsMonHom f₁ := by haveI := hj₀m 0 haveI := hp₁ 0 dsimp [f₁] infer_instance`. Establish `hcomm : ∀ a, F ≫ p₁ a = p₀ a ≫ f₁`.
+
+Introduce `a`. Use `haveI := hp₁ a`. Use `haveI := hp₀ a`. Use `hom_ext_sections p₀ hp₀ hu₀ j₀ hj₀1 hj₀2 _ _ (fun b => ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc (j₀ b) (p₀ a), hpj]`.
+
+Use `split_ifs with hab`. Substitute `hab` using the available equality. Rewrite using `[Category.id_comp, hdiag]`. Rewrite using `[hoff b a hab, MonObj.one_comp]`. Establish `hsec : j₀ 0 ≫ F = f₁ ≫ j₁ 0`.
+
+Use `(hu₁ H₀ fun a => (f₁ ≫ j₁ 0) ≫ p₁ a).unique (fun a => ?_) (fun _ => rfl)` and prove the remaining obligations. Rewrite using `[Category.assoc, hcomm, ← Category.assoc, hpj, Category.assoc, hpj₁]`. Use `split_ifs`. Simplify using the standard rewrite rules. Rewrite using `[MonObj.one_comp, MonObj.comp_one]`.
+
+Use `⟨f₁, inferInstance, ⟨⟨j₁ 0 ≫ inv F ≫ p₀ 0, ?_, ?_⟩⟩, hcomm⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← hsec, Category.assoc, IsIso.hom_inv_id_assoc, hj₀1]`. Rewrite using `[Category.assoc, Category.assoc, ← hcomm, IsIso.inv_hom_id_assoc, hj₁1]`.
+-/
 theorem exists_diagonal : ∀ (K : Type) [Field K] [IsAlgClosed K] (G₀ G₁ H₀ H₁ : Over (Sp K)) [GrpObj G₀] [GrpObj G₁] [GrpObj H₀] [GrpObj H₁] [IsCommMonObj H₀] [IsCommMonObj H₁], IsSemiAbelian H₀ → IsSemiAbelian H₁ → ∀ (l : ℕ), l.Prime → (l : K) ≠ 0 → ∀ (p₀ : Fin 8 → (G₀ ⟶ H₀)) (p₁ : Fin 8 → (G₁ ⟶ H₁)), (∀ a, IsMonHom (p₀ a)) → (∀ a, IsMonHom (p₁ a)) → (∀ (T : Over (Sp K)) (y : Fin 8 → (T ⟶ H₀)), ∃! x : T ⟶ G₀, ∀ a, x ≫ p₀ a = y a) → (∀ (T : Over (Sp K)) (y : Fin 8 → (T ⟶ H₁)), ∃! x : T ⟶ G₁, ∀ a, x ≫ p₁ a = y a) → ∀ (F : G₀ ⟶ G₁), IsMonHom F → IsIso F → (∀ (z z' : 𝟙_ (Over (Sp K)) ⟶ G₀), (∃ k : ℕ, z ^ (l ^ k) = 1) → (∃ k : ℕ, z' ^ (l ^ k) = 1) → ∀ a a', z ≫ p₀ a = z' ≫ p₀ a' → z ≫ F ≫ p₁ a = z' ≫ F ≫ p₁ a') → ∃ f₁ : H₀ ⟶ H₁, IsMonHom f₁ ∧ IsIso f₁ ∧ ∀ a, F ≫ p₁ a = p₀ a ≫ f₁ := by
   intro K _ _ G₀ G₁ H₀ H₁ _ _ _ _ _ _ hH₀ hH₁ l hl hlK p₀ p₁ hp₀ hp₁ hu₀ hu₁ F hF hFi htor
   classical

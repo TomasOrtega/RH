@@ -23,12 +23,22 @@ open GlobalTheory.Pst Polynomial Module Matrix Formalism.WeaklyAdmissibleFiltrat
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
   (ι : Qbar l ≃+* ℂ) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w)
 
+/- English proof (translation)
+Establish `: deg (σ * ineIncl h s * σ⁻¹) = 0` using `by simp`. Use `⟨⟨_, deg_eq_zero_iff.1 this⟩, ?_⟩` and prove the remaining obligations. Establish `e : ineIncl h ⟨_, deg_eq_zero_iff.1 this⟩ = σ * ineIncl h s * σ⁻¹` using `rfl`. Rewrite using `[e, inv_mul_cancel_right]`.
+-/
 private theorem ine_normal (σ : ↥(Weil h)) (s : ↥(Ine (F := F) A)) : ∃ t, σ * ineIncl h s = ineIncl h t * σ := by
   have : deg (σ * ineIncl h s * σ⁻¹) = 0 := by simp
   refine ⟨⟨_, deg_eq_zero_iff.1 this⟩, ?_⟩
   have e : ineIncl h ⟨_, deg_eq_zero_iff.1 this⟩ = σ * ineIncl h s * σ⁻¹ := rfl
   rw [e, inv_mul_cancel_right]
 
+/- English proof (translation)
+Use `haveI := hV.finite`. Establish `hc : ∀ σ, (wdRho P ι Bw h hj ρ σ).charpoly = ∏ j, (X - C (μ j σ : ℂ))` using `fun σ => (DpstMap.charPol_wdPst P ι Bw h hj ρ hV σ).symm.trans (hP σ)`. Take `⟨hN, hL⟩` from `UpperTheory.inertia_eigenvector_extends_of_distinct_characters (ineIncl h) (wdRho P ι Bw h hj ρ) μ (ine_normal h) (isSmooth_wdRho P ι Bw h hj ρ).finite_range hc hμ`. Use `⟨hN _ (isNilpotent_wdN P ι ρ) fun s => ?_, fun j hj1 => ?_⟩` and prove the remaining obligations. Use `wdRho_wdN P ι Bw h hj ρ (ineIncl h s)` as an intermediate fact.
+
+Rewrite `this` using `[deg_ineIncl, zpow_zero, one_smul]`. Conclude with `this`. Take `⟨h1, h2⟩` from `hL j`. Simplify using `only [hj1, MonoidHom.one_apply, Units.val_one, one_smul] at h1 h2`. Take `⟨h3, h4⟩` from `UpperTheory.exists_invariant_vector_of_finite_image_averaging ι h Bw hj P ρ h1 h2`.
+
+Conclude with `UpperTheory.exists_frobenius_fixed_period h Bw hj P ρ h3 h4`.
+-/
 private theorem core0 {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
     (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) (P : LocPrime l) {L : FinExt l} {V : Type}
     [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] [FiniteDimensional ↥L.1 V]
@@ -50,6 +60,19 @@ private theorem core0 {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSp
   obtain ⟨h3, h4⟩ := UpperTheory.exists_invariant_vector_of_finite_image_averaging ι h Bw hj P ρ h1 h2
   exact UpperTheory.exists_frobenius_fixed_period h Bw hj P ρ h3 h4
 
+/- English proof (translation)
+Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Take `⟨hd, hJ, hP⟩` from `hD O Bw hj`. Establish `hp` using `hB.isPstAt T Bw r (Units.continuous_val.comp hr) hd`. Take `⟨L, r', hm, hV, e⟩` from `wdAt_of_isPstAt ι Bw h hj hp`. Take `⟨hN0, hz⟩` from `core0 ι h Bw hj (UpperTheory.V.Loc.PP l) (Bw.repE L r') hV μ hμ fun σ => (congrArg (fun x => WD.charPol x σ) e).symm.trans (hP σ)`.
+
+Use `⟨(GlobalTheory.PstLaws.wdParameterAt_monodromy_zero_iff_potCrystalline Bw h hj _ ι r hp).1 ?_, fun j hj1 hHT => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(mono0_wdPst ι Bw h hj hV).2 hN0`. Take `⟨z, z0, z1, z2⟩` from `hz j hj1`. Establish `hd'` using `(hm.isdRAt_iff _).1 hd`.
+
+Establish `hM` using `(GlobalTheory.PstLaws.wdN_eq_zero_iff (UpperTheory.V.Loc.PP l) (Bw.repE L r') ι).1 hN0`. Establish `hmult : ∀ (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥L.1) (c : ℤ), c < 0 → Bw.multE (UpperTheory.V.Loc.PP l) L r' τ' c = 0`. Introduce `τ' c hc0`. Set `τ : F →+* Qbar l` to `((algebraMap ↥L.1 (Om l)).comp τ'.toRingHom).comp ((Bw.j.comp (algebraMap F Ω)).codRestrict Bw.Kw.1 Bw.j_E)`. Establish `hτ : IsInduced Bw τ τ'` using `fun _ => rfl`.
+
+Use `IsJumpsAt.count_eq _ hm hτ (hJ τ L τ' hτ) c` as an intermediate fact. Rewrite `this` using `[Multiset.count_eq_zero.2 fun hc' => absurd (hHT τ c hc') (not_le.2 hc0)]`. Conclude with `this.symm`. Take `⟨v, v0, hv⟩` from `UpperTheory.exists_invariant_of_dpst_phi_fixed_of_nonneg_weights (fun τ x => hm.1 (Bw.LL_split τ x)) (Bw.repE L r') (finiteDimensional_DdR _ _ hd') hmult z z0 (LinearMap.congr_fun hM z) z1 z2`. Use `⟨fun i => (v i : Om l), fun h0 => v0 (funext fun i => Subtype.ext (congrFun h0 i)), fun g => ?_⟩` and prove the remaining obligations.
+
+Establish `h5 : (r' g : Matrix (Fin n) (Fin n) ↥L.1) *ᵥ v = v`. Use `hv (Bw.e g)` as an intermediate fact. Rewrite using `[← Bw.e.symm_apply_apply g]`. Conclude with `this`. Use function extensionality and compare the values at `i`.
+
+Establish `h6` using `congrArg (algebraMap ↥L.1 (Om l)) (congrFun h5 i)`. Rewrite `h6` using `[RingHom.map_mulVec]`. Rewrite using `[← hm.2]`. Conclude with `h6`.
+-/
 private theorem core (hB : DeRhamPotSemistable) {n : ℕ} (r : ↥(Dec (F := F) A) →* GL (Fin n) (Qbar l))
     (hr : Continuous r) (HT : (F →+* Qbar l) → Multiset ℤ) (μ : Fin n → ↥(Weil h) →* ℂˣ)
     (hμ : ∀ j k, j ≠ k → ∃ s, μ j (ineIncl h s) ≠ μ k (ineIncl h s))
@@ -92,6 +115,13 @@ private theorem core (hB : DeRhamPotSemistable) {n : ℕ} (r : ↥(Dec (F := F) 
   exact h6
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+Use `H.smooth` as an intermediate fact. Unfold `GlobalTheory.SmGL.IsSmoothChar at this ⊢`. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Use `cont := H.cont.inv`. Use `val := fun s g hg hs => by`. Use `H.val s g hg hs` as an intermediate fact. Simplify using `only [MonoidHom.comp_apply, Units.coeHom_apply, MonoidHom.inv_apply, Units.val_inv_eq_inv_val] at this ⊢`. Rewrite using `[this, mul_inv, map_inv₀]`.
+
+Use `congr 1`. Unfold `algPow`. Rewrite using `[← finprod_inv_distrib]`. Simplify using the standard rewrite rules.
+-/
 private theorem ordChar_inv {a : ↥(Weil h) →* (w.adicCompletion F)ˣ} {ω : (w.adicCompletion F)ˣ →* ℂˣ}
     {hh : (F →+* Qbar l) → ℤ} {ψ : ↥(Dec (F := F) A) →* (Qbar l)ˣ} (H : OrdChar ι a ω hh ψ) :
     OrdChar ι a ω⁻¹ (-hh) ψ⁻¹ where
@@ -127,12 +157,28 @@ private noncomputable def twR {H k : Type} [Group H] [Field k] {n : ℕ} (μ : H
   map_one' := Units.ext (by simp)
   map_mul' g g' := Units.ext (by simp [smul_smul, mul_comm])
 
+/- English proof (translation)
+The claim follows from `Units.continuous_iff.2 ⟨(Units.continuous_val.comp hμ).smul (Units.continuous_val.comp hr), ((Units.continuous_val.comp hμ).smul (Units.continuous_val.comp hr)).comp continuous_inv⟩`.
+-/
 private theorem twR_cont {H k : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Field k]
     [TopologicalSpace k] [IsTopologicalRing k] {n : ℕ} {μ : H →* kˣ} {r : H →* GL (Fin n) k}
     (hμ : Continuous μ) (hr : Continuous r) : Continuous (twR μ r) :=
   Units.continuous_iff.2 ⟨(Units.continuous_val.comp hμ).smul (Units.continuous_val.comp hr),
     ((Units.continuous_val.comp hμ).smul (Units.continuous_val.comp hr)).comp continuous_inv⟩
 
+/- English proof (translation)
+Establish `hB` using `hL.aut.berger`. Proceed by induction on `n with`. Consider the case `zero => exact fun r _ _ _ _ _ _ _ _ => ⟨1, fun _ => ⟨fun i => i.elim0, fun i => i.elim0⟩⟩`. Consider the case `succ n ih`. Introduce `r hr hh hmono ω ψ hO hne hD`.
+
+Establish `hO'` using `ordChar_inv ι h (hO 0)`. Establish `hc` using `twR_cont hO'.cont hr`. Establish `h1` using `UpperTheory.deRham_rational_twist_by_character hB ι h r (twR (ψ 0)⁻¹ r) (ψ 0)⁻¹ hr hc hO'.cont (fun _ => rfl) _ _ _ _ hD (UpperTheory.V.Loc.charDR hL h hw ι a ha _ _ _ hO').1`. Take `⟨LL, Bw, hj⟩` from `GlobalTheory.Pst.Test.exists_induces (l := l) (E := F) (Ω := Ω) hw h`. Take `⟨v, v0, hv⟩` from `(core ι h hB _ hc _ (fun j => (ω j * (ω 0)⁻¹).comp a) (fun j k hjk => (hne j k hjk).imp fun s hs e => hs (mul_right_cancel e)) (by simpa only [MonoidHom.comp_apply, MonoidHom.mul_apply, Units.val_mul] using h1) Bw hj).2 0 (by rw [mul_inv_cancel]; rfl) (fun τ c hc => by`.
+
+Simplify using `only [Multiset.mem_map, Finset.mem_val, Finset.mem_univ, true_and, Pi.neg_apply] at hc`. Take `⟨_, ⟨j, rfl⟩, rfl⟩` from `hc`. Use `(hmono τ).monotone (Fin.zero_le j)` as an intermediate fact. Use the proof step `omega)`. Establish `hv' : ∀ g, (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l)) *ᵥ v = (ψ 0 g : Qbar l) • v` using `fun g => by`.
+
+Use `hv g` as an intermediate fact. Express the relevant statement in the definitionally equal form `((((ψ 0 g)⁻¹ : (Qbar l)ˣ) : Qbar l) • (r g : Matrix (Fin (n + 1)) (Fin (n + 1)) (Qbar l))) *ᵥ v = v at this`. Rewrite `this` using `[Matrix.smul_mulVec]`. Rewrite using `[← congrArg (fun x => (ψ 0 g : Qbar l) • x) this, smul_smul, Units.mul_inv, one_smul]`. Take `⟨p, r₁, r', e₁, c₁, c', b1, b2, b3, hfl⟩` from `UpperTheory.exists_common_eigenline r ψ v hr v0 hv'`.
+
+Establish `h2` using `UpperTheory.deRhamRational_of_conj hB ι h r r₁ p hr e₁ _ _ hD`. Use `hfl (ih r' c' (fun j => hh j.succ) (fun τ => (hmono τ).comp Fin.strictMono_succ) (fun j => ω j.succ) _ (fun j => hO j.succ) (fun i j hij => hne _ _ fun e => hij (Fin.succ_injective _ e)) ?_)` and prove the remaining obligations. Use `UpperTheory.deRham_rational_of_extension_by_character hB ι h r₁ r' (ψ 0) c₁ b1 b2 b3 (hh 0) _ _ _ ?_ (UpperTheory.V.Loc.charDR hL h hw ι a ha _ _ _ (hO 0)).1` and prove the remaining obligations. Use `h2 using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Fin.univ_val_map, Fin.univ_val_map, List.ofFn_succ, Multiset.cons_coe]`.
+
+Rewrite using `[Fin.prod_univ_succ]`.
+-/
 private theorem flag (hL : GlobalTheory.Mem.LiteralAutomorphy.LitN) (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal)
     {a : ↥(Weil h) →* (w.adicCompletion F)ˣ} (ha : IsLocalArtin h a) (n : ℕ) :
     ∀ (r : ↥(Dec (F := F) A) →* GL (Fin n) (Qbar l)), Continuous r →
@@ -177,6 +223,11 @@ private theorem flag (hL : GlobalTheory.Mem.LiteralAutomorphy.LitN) (hw : ((l : 
 
 end Main
 
+/- English proof (translation)
+Introduce `hL F Ω _ _ _ _ _ l _ _ ι n w hw A h a ha r hr hh hmono ω ψ hO hne hD`. Establish `hne' : ∀ i j, i ≠ j → ∃ s, ω i (a (ineIncl h s)) ≠ ω j (a (ineIncl h s))` using `fun i j hij => by`. Take `⟨⟨y, hy⟩, hy'⟩` from `hne i j hij`. Take `⟨σ, rfl⟩` from `ha.surj y`. Establish `h0` using `ha.ord_eq σ`.
+
+Rewrite `h0` using `[GlobalTheory.SmGL.ord_eq_zero hy, eq_comm, neg_eq_zero, deg_eq_zero_iff]`. Conclude with `⟨⟨σ, h0⟩, hy'⟩`. Conclude with `⟨flag ι h hL hw ha n r hr hh hmono ω ψ hO hne' hD, fun O _ _ _ Bw hj => (core ι h hL.aut.berger r hr _ (fun j => (ω j).comp a) hne' hD Bw hj).1⟩`.
+-/
 theorem UpperTheory.V.Loc.ordFlag :
     GlobalTheory.Mem.LiteralAutomorphy.LitN → OrdFlag := by
   intro hL F Ω _ _ _ _ _ l _ _ ι n w hw A h a ha r hr hh hmono ω ψ hO hne hD

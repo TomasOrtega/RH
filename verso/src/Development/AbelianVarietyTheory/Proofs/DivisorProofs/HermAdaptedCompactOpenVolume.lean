@@ -15,12 +15,20 @@ namespace GlobalTheory.ConeBump
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `only [disp, sub_add_cancel, map_mul]`.
+-/
 theorem disp_add_x {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ : Fin n → E)
     (k : UA σ J) (l : (AE F E)ˣ) (i : Fin n) :
     disp v x₀ k l i + compFin F E v (incV F x₀ i) =
       compFin F E v (l : AE F E) * compFin F E v ((mat k⁻¹ *ᵥ incV F x₀) i) := by
   simp only [disp, sub_add_cancel, map_mul]
 
+/- English proof (translation)
+Establish `h1 : mat k *ᵥ (mat k⁻¹ *ᵥ incV F x₀) = incV F x₀`. Rewrite using `[Matrix.mulVec_mulVec, show mat k * mat k⁻¹ = 1 from Units.mul_inv k.1, Matrix.one_mulVec]`. Establish `hx : incV F x₀ i₀ = ∑ j, mat k i₀ j * (mat k⁻¹ *ᵥ incV F x₀) j` using `by conv_lhs => rw [← h1]`. Both sides reduce to the same expression. Rewrite using `[hx, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, add_comm (compFin F E v (incV F x₀ j)), disp_add_x]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lam_mul_x_eq_sum {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (v : Pl F) (x₀ : Fin n → E)
     (k : UA σ J) (l : (AE F E)ˣ) (i₀ : Fin n) :
     compFin F E v (l : AE F E) * compFin F E v (incV F x₀ i₀) =
@@ -35,6 +43,17 @@ theorem lam_mul_x_eq_sum {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin
   rw [map_mul, add_comm (compFin F E v (incV F x₀ j)), disp_add_x]
   ring
 
+/- English proof (translation)
+Establish `hk' : k⁻¹ ∈ UAtSub σ X (evFin F v)` using `inv_mem (show k ∈ UAtSub σ X (evFin F v) from hk)`. Establish `hz : ∀ i, (l : AE F E) * (mat k⁻¹ *ᵥ incV F x₀) i = incV F x₀ i`. Introduce `i`. Establish `hat : At (evFin F v) ((l : AE F E) * (mat k⁻¹ *ᵥ incV F x₀) i - incV F x₀ i)`. Introduce `u hu`.
+
+Establish `e : (l : AE F E) * (mat k⁻¹ *ᵥ incV F x₀) i - incV F x₀ i = ((l : AE F E) - 1) * (mat k⁻¹ *ᵥ incV F x₀) i + ((mat k⁻¹ - 1) *ᵥ incV F x₀) i`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : u • ((mat k⁻¹ - 1) *ᵥ incV F x₀) = 0`. Rewrite using `[← Matrix.smul_mulVec, hk' u hu, Matrix.zero_mulVec]`.
+
+Rewrite using `[e, smul_add, ← smul_mul_assoc, hl u hu, zero_mul, zero_add, ← Pi.smul_apply, h2, Pi.zero_apply]`. Take `⟨h1, h2⟩` from `at_evFin_iff.1 hat`. Use `sub_eq_zero.1 (GlobalTheory.Doubling.adele_ext (fun w => by rw [h1 w, map_zero]) fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+
+Rewrite using `[map_zero, map_sub, map_mul]`. Use `congrFun h i` as an intermediate fact. Simplify `this` using `[disp, map_mul]`. Rewrite using `[h2 w hw, map_zero]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hz i).symm`. Use `_ = (l : AE F E) • (mat k *ᵥ (mat k⁻¹ *ᵥ incV F x₀)) := Matrix.mulVec_smul _ _ _`. Use `_ = _ := by rw [Matrix.mulVec_mulVec, show mat k * mat k⁻¹ = 1 from Units.mul_inv k.1, Matrix.one_mulVec]`.
+-/
 theorem mulVec_eq_of_disp {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} (v : Pl F) (x₀ : Fin n → E)
     {k : UA σ X.J} (hk : k ∈ UAt σ X (evFin F v)) {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evFin F v))
     (h : disp v x₀ k l = 0) : mat k *ᵥ incV F x₀ = (l : AE F E) • incV F x₀ := by
@@ -63,6 +82,35 @@ theorem mulVec_eq_of_disp {σ : E →ₐ[F] E} {n : ℕ} {X : Spc F E n} (v : Pl
     _ = (l : AE F E) • (mat k *ᵥ (mat k⁻¹ *ᵥ incV F x₀)) := Matrix.mulVec_smul _ _ _
     _ = _ := by rw [Matrix.mulVec_mulVec, show mat k * mat k⁻¹ = 1 from Units.mul_inv k.1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ r s H j₀ j₁ K _hB _hX hH hK v Ω hΩ hfib`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI : T2Space (Fv F v ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`.
+
+Use `haveI : CompactSpace (KAt K (evFin F v)) := isCompact_iff_compactSpace.1 (isCompact_KAt hK _)`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, H.x i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1` using `hH.xy`.
+
+Rewrite `h1` using `[show H.x = 0 from funext h]`. Simplify using `[form] at h1`. Establish `hcf : Continuous (compFin F E v)` using `GlobalTheory.AutFunCompare.continuous_tensNU (E := E) (evFin F v).toLinearMap (map_mul (evFin F v)) ((RestrictedProduct.continuous_eval v).comp continuous_snd)`. Take `⟨sv, hsx⟩ : ∃ sv : Fv F v ⊗[F] E, sv * compFin F E v (incV F H.x i₀) = 1` from `⟨compFin F E v (inclR (F := F) (AF F) (H.x i₀)⁻¹), by`. Rewrite using `[incV, ← map_mul, ← map_mul, inv_mul_cancel₀ hi₀, map_one, map_one]⟩`.
+
+Establish `hmat : Continuous fun q : KAt K (evFin F v) => mat q.1` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hmatinv : Continuous fun q : KAt K (evFin F v) => mat q.1⁻¹` using `Units.continuous_coe_inv.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hOc : IsCompact (intLoc F E v : Set (Fv F v ⊗[F] E))` using `(isCompact_isOpen_intLoc v).1`. Establish `hOo : IsOpen (intLoc F E v : Set (Fv F v ⊗[F] E))` using `(isCompact_isOpen_intLoc v).2`. Set `D : Set (Fin n → Fv F v ⊗[F] E)` to `Set.univ.pi fun _ => (intLoc F E v : Set (Fv F v ⊗[F] E))`.
+
+Establish `hDc : IsCompact D` using `isCompact_univ_pi fun _ => hOc`. Establish `hDo : IsOpen D` using `isOpen_set_pi Set.finite_univ fun _ _ => hOo`. Set `Φ₁ : KAt K (evFin F v) × (Fin n → Fv F v ⊗[F] E) → Fv F v ⊗[F] E` to `fun q => sv * ∑ j, compFin F E v (mat q.1.1 i₀ j) * (compFin F E v (incV F H.x j) + q.2 j)`. Establish `hΦ₁ : Continuous Φ₁` using `continuous_const.mul (continuous_finset_sum _ fun j _ => (hcf.comp ((continuous_apply j).comp ((continuous_apply i₀).comp (hmat.comp continuous_fst)))).mul (continuous_const.add (show Continuous fun q : KAt K (evFin F v) × (Fin n → Fv F v ⊗[F] E) => q.2 j from (continuous_apply j …`. Set `A₁` to `Φ₁ '' (Set.univ ×ˢ D)`.
+
+Establish `hA₁ : IsCompact A₁` using `(isCompact_univ.prod hDc).image hΦ₁`. Set `Φ₂ : KAt K (evFin F v) × (Fv F v ⊗[F] E) → Fv F v ⊗[F] E` to `fun q => sv * compFin F E v ((mat q.1.1⁻¹ *ᵥ incV F H.x) i₀) * q.2`. Establish `hΦ₂ : Continuous Φ₂` using `(continuous_const.mul (hcf.comp ((continuous_apply i₀).comp ((hmatinv.comp continuous_fst).matrix_mulVec continuous_const)))).mul continuous_snd`. Set `A₂` to `Φ₂ '' (Set.univ ×ˢ (intLoc F E v : Set (Fv F v ⊗[F] E)))`. Establish `hA₂ : IsCompact A₂` using `(isCompact_univ.prod hOc).image hΦ₂`.
+
+Set `W : Set (Fv F v ⊗[F] E)ˣ` to `{w | (w : Fv F v ⊗[F] E) ∈ A₁ ∧ ((w⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) ∈ A₂}`. Establish `hW : IsCompact W`. Establish `e : W = Units.embedProduct (Fv F v ⊗[F] E) ⁻¹' (A₁ ×ˢ (MulOpposite.op '' A₂))`. Use extensionality with `w`. Simplify using `[W, Units.embedProduct_apply]`.
+
+Rewrite using `[e]`. Conclude with `Units.isClosedEmbedding_embedProduct.isCompact_preimage (hA₁.prod (hA₂.image MulOpposite.continuous_op))`. Set `C : Set (idelesAt E (evFin F v))` to `(idelesAtEquiv E v) ⁻¹' W`. Establish `hC : IsCompact C` using `(Homeomorph.isCompact_preimage (idelesAtEquiv E v).toHomeomorph).2 hW`. Set `V₀ : Set (Fv F v ⊗[F] E)` to `Units.val '' ((intLoc F E v).toSubmonoid.units : Set (Fv F v ⊗[F] E)ˣ)`.
+
+Establish `hV₀ : IsOpen V₀` using `(GlobalTheory.LocTateConv.isOpenEmbedding_val_tens v).isOpenMap _ (Submonoid.isOpen_units hOo)`. Set `U₀ : Set (Fin n → Fv F v ⊗[F] E)` to `D ∩ {d | 1 + sv * d i₀ ∈ V₀}`. Establish `hU₀ : IsOpen U₀` using `hDo.inter (hV₀.preimage (show Continuous fun d : Fin n → Fv F v ⊗[F] E => 1 + sv * d i₀ by fun_prop))`. Establish `h0U₀ : (0 : Fin n → Fv F v ⊗[F] E) ∈ U₀` using `⟨fun _ _ => zero_mem (intLoc F E v), ⟨1, one_mem _, by simp⟩⟩`. Establish `hbound : ∀ p : KAt K (evFin F v) × idelesAt E (evFin F v), disp v H.x p.1.1 p.2.1 ∈ U₀ → p.2 ∈ C`.
+
+Introduce and unpack `⟨k, l⟩ ⟨hd, w, hw, hwv⟩`. Establish `hlv : ((idelesAtEquiv E v l : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E) = compFin F E v (l.1 : AE F E)` using `rfl`. Use `⟨⟨(k, disp v H.x k.1 l.1), ⟨trivial, hd⟩, ?_⟩, ⟨(k, ((w⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)), ⟨trivial, ((Submonoid.mem_units_iff _ _).1 hw).2⟩, ?_⟩⟩` and prove the remaining obligations. Use `show sv * ∑ j, compFin F E v (mat k.1 i₀ j) * (compFin F E v (incV F H.x j) + disp v H.x k.1 l.1 j) = _`. Rewrite using `[← lam_mul_x_eq_sum, mul_left_comm, hsx, mul_one, hlv]`.
+
+Use `symm`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hlv]`. Use `show compFin F E v (l.1 : AE F E) * (sv * compFin F E v ((mat k.1⁻¹ *ᵥ incV F H.x) i₀) * ((w⁻¹ : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)) = 1`. Establish `e1 : compFin F E v (l.1 : AE F E) * (sv * compFin F E v ((mat k.1⁻¹ *ᵥ incV F H.x) i₀)) = (w : Fv F v ⊗[F] E)`.
+
+Rewrite using `[mul_left_comm, ← disp_add_x, mul_add, hsx, add_comm, hwv]`. Rewrite using `[← mul_assoc, e1, Units.mul_inv]`. Set `dsp : KAt K (evFin F v) × idelesAt E (evFin F v) → (Fin n → Fv F v ⊗[F] E)` to `fun p => disp v H.x p.1.1 p.2.1`. Establish `hdsp : Continuous dsp` using `continuous_pi fun i => (hcf.comp ((Units.continuous_val.comp (continuous_subtype_val.comp continuous_snd)).mul ((continuous_apply i).comp ((hmatinv.comp continuous_fst).matrix_mulVec continuous_const)))).sub continuous_const`. Set `A : Set (KAt K (evFin F v) × idelesAt E (evFin F v))` to `({p | p.2 ∈ C} ∩ dsp ⁻¹' D) ∩ Ωᶜ`.
+
+Establish `hA : IsCompact A` using `(isCompact_univ.prod hC).of_isClosed_subset (((hC.isClosed.preimage continuous_snd).inter (hDc.isClosed.preimage hdsp)).inter hΩ.isClosed_compl) (fun p hp => ⟨trivial, hp.1.1⟩)`. Establish `hK₁ : IsClosed (dsp '' A)` using `(hA.image hdsp).isClosed`. Establish `h0 : (0 : Fin n → Fv F v ⊗[F] E) ∉ dsp '' A`. Introduce and unpack `⟨p, hp, hp0⟩`. Conclude with `hp.2 (hfib p (mulVec_eq_of_disp v H.x p.1.2.2 p.2.2 hp0))`.
+
+Use `⟨U₀ ∩ (dsp '' A)ᶜ, (hU₀.inter hK₁.isOpen_compl).mem_nhds ⟨h0U₀, h0⟩, C, hC, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hpC` using `hbound p hp.1`. Use `⟨?_, hpC⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hpΩ`. Conclude with `hp.2 ⟨p, ⟨⟨hpC, hp.1.1⟩, hpΩ⟩, rfl⟩`.
+-/
 theorem disp_proper_near : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n n₁ : ℕ) (X : Spc F E n) (X₁ : Spc F E n₁) (r s : ℕ) (H : Plane E n n₁) (j₀ j₁ : ℕ) (K : Subgroup (UA σ X.J)),
     B.IsGood σ → X.IsHerm σ B r s → H.IsAdapted σ B X X₁ j₀ j₁ → IsCompact (K : Set (UA σ X.J)) →

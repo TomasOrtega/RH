@@ -13,6 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace Onto
 
+/- English proof (translation)
+Rewrite using `[← AddSubgroup.coe_map, AddSubgroup.closure_eq, AddSubgroup.mem_map]`.
+-/
 theorem mem_closure_image {A B : Type*} [AddCommGroup A] [AddCommGroup B] (f : A →+ B) (H : AddSubgroup A)
     (y : B) : y ∈ AddSubgroup.closure (f '' (H : Set A)) ↔ ∃ t ∈ H, f t = y := by
   rw [← AddSubgroup.coe_map, AddSubgroup.closure_eq, AddSubgroup.mem_map]
@@ -24,12 +27,18 @@ def embHom : D.host.E →+ (InfinitePlace X.B.I.F → ℂ) where
   map_zero' := by funext v; simp [embV]
   map_add' x y := by funext v; simp [embV]
 
+/- English proof (translation)
+Use `mem_closure_image (embHom X) ((I : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) y` as an intermediate fact. Conclude with `this`.
+-/
 theorem mem_cl_emb (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     (y : InfinitePlace X.B.I.F → ℂ) :
     y ∈ AddSubgroup.closure (embV X '' (I : Set D.host.E)) ↔ ∃ t ∈ I, embV X t = y := by
   have := mem_closure_image (embHom X) ((I : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup) y
   exact this
 
+/- English proof (translation)
+Establish `h` using `thetaEx_holds D`. Unfold `theta`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem theta_spec (D : D7) : IsIntegral ℤ (theta D) ∧ theta D + D.host.conj (theta D) = 1 := by
   have h := thetaEx_holds D
   unfold theta

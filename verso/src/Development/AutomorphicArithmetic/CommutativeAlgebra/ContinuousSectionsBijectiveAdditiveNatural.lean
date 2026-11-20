@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.EtaleCohomology.A6su
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex UpperTheory.Et
 
+/- English proof (translation)
+Rewrite using `[Presheaf.isSheaf_iff_isSheaf_forget (s := forget (ModuleCat.{1} (ULift.{1} R))), isSheaf_iff_isSheaf_of_type]`. Establish `h` using `Presieve.isSheaf_of_le _ Scheme.proetaleTopology_le_fpqcTopology ((isSheaf_iff_isSheaf_of_type _ _).1 (isSheaf_fpqcTopology_continuousMapPresheaf.{0, 0} T))`. Establish `h' : Presieve.IsSheaf Scheme.proetaleTopology (continuousMapPresheaf.{0} T ⋙ uliftFunctor.{1})` using `(Presieve.isSheaf_comp_uliftFunctor_iff _).2 h`. Conclude with `Presieve.isSheaf_iso _ (NatIso.ofComponents (fun U => Iso.refl _) (by intros; rfl) : continuousMapPresheaf.{0} T ⋙ uliftFunctor.{1} ≅ cPre R T ⋙ forget _) h'`.
+-/
 private theorem cPre_isSheaf (R : Type) [CommRing R] (T : Type) [AddCommGroup T] [Module R T] [TopologicalSpace T]
     [IsTopologicalAddGroup T] [ContinuousConstSMul R T] :
     Presheaf.IsSheaf Scheme.proetaleTopology.{0} (cPre R T) := by
@@ -18,6 +21,13 @@ private theorem cPre_isSheaf (R : Type) [CommRing R] (T : Type) [AddCommGroup T]
     (NatIso.ofComponents (fun U => Iso.refl _) (by intros; rfl) :
       continuousMapPresheaf.{0} T ⋙ uliftFunctor.{1} ≅ cPre R T ⋙ forget _) h'
 
+/- English proof (translation)
+Introduce `R _ T _ _ _ _ _ U`. Use `haveI : IsIso (toSheafify Scheme.proetaleTopology (cPre R T)) := isIso_toSheafify _ (cPre_isSheaf R T)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hb` using `ConcreteCategory.bijective_of_isIso ((toSheafify Scheme.proetaleTopology (cPre R T)).app (op U))`. Conclude with `hb.comp Equiv.ulift.symm.bijective`.
+
+Introduce `a b`. Conclude with `map_add (ModuleCat.Hom.hom ((toSheafify Scheme.proetaleTopology (cPre R T)).app (op U))) (ULift.up a) (ULift.up b)`. Introduce `V g a`. Conclude with `(congrArg (fun f => ModuleCat.Hom.hom f (ULift.up a)) ((toSheafify Scheme.proetaleTopology (cPre R T)).naturality g.op)).symm`. Introduce `T' _ _ _ _ _ u a`.
+
+Conclude with `congrArg (fun f => ModuleCat.Hom.hom (NatTrans.app f (op U)) (ULift.up a)) (toSheafify_naturality Scheme.proetaleTopology (cPreMap u)).symm`.
+-/
 theorem UpperTheory.continuousSections_bijective_additive_natural :
     ∀ (R : Type) [CommRing R] (T : Type) [AddCommGroup T] [Module R T] [TopologicalSpace T] [IsTopologicalAddGroup T] [ContinuousConstSMul R T] (U : Scheme.{0}),
     Function.Bijective (cSec R T (U := U)) ∧ (∀ a b : C(U, T), cSec R T (a + b) = cSec R T a + cSec R T b) ∧ (∀ (V : Scheme.{0}) (g : V ⟶ U) (a : C(U, T)), rs _ g (cSec R T a) = cSec R T (a.comp g.base.hom)) ∧

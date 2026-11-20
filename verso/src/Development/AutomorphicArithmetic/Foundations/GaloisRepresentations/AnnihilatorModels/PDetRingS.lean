@@ -7,6 +7,19 @@ open TensorProduct
 
 namespace UpperTheory.Gal.crystallineComparison
 
+/- English proof (translation)
+Introduce `F L U B C _ _ _ _ _ _ _ _ _ _ _ τL τU h`. Use `letI : Algebra U C := τU.toAlgebra`. Set `S` to `TensorProduct U C B`. Establish `hS : Nontrivial S` using `Algebra.TensorProduct.nontrivial_of_algebraMap_injective_of_flat_right U C B τU.injective`. Set `ψ : B →+* S` to `(Algebra.TensorProduct.includeRight : B →ₐ[U] S).toRingHom`.
+
+Establish `key : ∀ c : U, algebraMap C S (τU c) = (1 : C) ⊗ₜ[U] algebraMap U B c`. Introduce `c`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `e : τU c = c • (1 : C)`. Rewrite using `[Algebra.smul_def, mul_one]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, TensorProduct.smul_tmul, Algebra.algebraMap_eq_smul_one]`. Use `letI : Algebra F S := (ψ.comp (algebraMap F B)).toAlgebra`. Set `φ : L →ₐ[F] S` to `{ (algebraMap C S).comp τL with commutes' := by`. Introduce `z`.
+
+Express the relevant statement in the definitionally equal form `algebraMap C S (τL (algebraMap F L z)) = ψ (algebraMap F B z)`. Rewrite using `[h z, key, IsScalarTower.algebraMap_apply F U B z]`. Use `rfl }`. Set `ψ' : B →ₐ[F] S` to `{ ψ with commutes' := fun _ => rfl }`. Set `π : L ⊗[F] B →+* S` to `(Algebra.TensorProduct.lift φ ψ' (fun _ _ => Commute.all _ _)).toRingHom`.
+
+Use `⟨S, inferInstance, inferInstance, π, hS, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Express the relevant statement in the definitionally equal form `φ x * ψ' 1 = _`. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression.
+
+Introduce `c`. Express the relevant statement in the definitionally equal form `φ 1 * ψ' (algebraMap U B c) = _`. Rewrite using `[map_one, one_mul, key]`. Both sides reduce to the same expression.
+-/
 theorem detRingS_of :
     RingS := by
   intro F L U B C _ _ _ _ _ _ _ _ _ _ _ τL τU h

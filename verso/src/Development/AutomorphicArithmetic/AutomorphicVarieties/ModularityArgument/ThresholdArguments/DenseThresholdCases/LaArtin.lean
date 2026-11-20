@@ -8,6 +8,9 @@ set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 200000
 
 section
+/- English proof (translation)
+Introduce `N F Ω _ _ _ _ _ A w h`. Take `⟨rc, hrc⟩` from `_root_.UpperTheory.V.Z.Win.exRec'_alt N h`. Take `⟨a, ha, ε, -⟩` from `_root_.UpperTheory.V.Z.Win.toV' hrc`. Conclude with `⟨a, ha⟩`.
+-/
 theorem UpperTheory.V.Z.Win.T2.laArtinLit' :
     _root_.UpperTheory.V.Loc.localArtinReciprocity_type := by
   intro N F Ω _ _ _ _ _ A w h

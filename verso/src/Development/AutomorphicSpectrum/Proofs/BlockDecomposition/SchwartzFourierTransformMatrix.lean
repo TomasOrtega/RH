@@ -5,6 +5,9 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.FourierMatrix
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.P6.r12b.GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_bilinear_transform μ B hB φ`.
+-/
 theorem exists_schwartz_bilinear_transform {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
     [μ.IsAddHaarMeasure] (B : V →ₗ[ℝ] V →ₗ[ℝ] ℝ) (hB : ∀ u, (∀ v, B u v = 0) → u = 0)
@@ -13,6 +16,9 @@ theorem exists_schwartz_bilinear_transform {V : Type*} [NormedAddCommGroup V] [N
       ∫ v, Complex.exp (2 * Real.pi * Complex.I * ((B u v : ℝ) : ℂ)) * φ v ∂μ :=
   _root_.UpperTheory.Reformulated.B.P6.r12b.GlobalTheory.CompanionTheory.FourierMatrix.exists_schwartz_bilinear_transform μ B hB φ
 
+/- English proof (translation)
+Simplify using `[Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem trace_conjTranspose_mul (m n : ℕ) (u v : Fin m → Fin n → ℂ) :
     Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v) = ∑ j, ∑ i, star (u i j) * v i j := by
   simp [Matrix.trace, Matrix.mul_apply, Matrix.conjTranspose_apply]
@@ -48,9 +54,21 @@ noncomputable def traceForm (m n : ℕ) (s : ℂ) :
       rw [trace_conjTranspose_mul, trace_conjTranspose_mul, this, mul_left_comm,
         Complex.re_ofReal_mul, smul_eq_mul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem traceForm_apply (m n : ℕ) (s : ℂ) (u v : Fin m → Fin n → ℂ) :
     traceForm m n s u v = (s * Matrix.trace ((Matrix.of u)ᴴ * Matrix.of v)).re := rfl
 
+/- English proof (translation)
+Establish `h0` using `h (fun i j => star s * u i j)`. Rewrite `h0` using `[traceForm_apply, trace_conjTranspose_mul]`. Establish `h1 : s * ∑ j, ∑ i, star (u i j) * (star s * u i j) = ((Complex.normSq s * ∑ j, ∑ i, Complex.normSq (u i j) : ℝ) : ℂ)`. Use `push_cast`. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_conj_mul_self]`. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[h1, Complex.ofReal_re]`.
+
+Establish `hsn : Complex.normSq s ≠ 0` using `by simpa [Complex.normSq_eq_zero] using hs`. Establish `h2 : ∑ j, ∑ i, Complex.normSq (u i j) = 0`. Break down `mul_eq_zero.mp h0 with h3 | h3` into its components or cases. Conclude with `absurd h3 hsn`. Conclude with `h3`.
+
+Use function extensionality and compare the values at `i j`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Finset.sum_nonneg fun i _ => Complex.normSq_nonneg (u i j))).mp h2 j (Finset.mem_univ j)`. Establish `h4` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (u i j))).mp h3 i (Finset.mem_univ i)`. Simplify `h4` using `[Complex.normSq_eq_zero]`.
+-/
 theorem traceForm_nondegenerate (m n : ℕ) (s : ℂ) (hs : s ≠ 0) (u : Fin m → Fin n → ℂ)
     (h : ∀ v, traceForm m n s u v = 0) : u = 0 := by
   have h0 := h (fun i j => star s * u i j)
@@ -77,6 +95,11 @@ theorem traceForm_nondegenerate (m n : ℕ) (s : ℂ) (hs : s ≠ 0) (u : Fin m 
     (fun i _ => Complex.normSq_nonneg (u i j))).mp h3 i (Finset.mem_univ i)
   simpa [Complex.normSq_eq_zero] using h4
 
+/- English proof (translation)
+Introduce `m n C s hs φ`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure (Fin n → ℂ)) := Measure.pi.isAddHaarMeasure _`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure (Fin m → Fin n → ℂ)) := Measure.pi.isAddHaarMeasure _`. Take `⟨ψ, hψ⟩` from `exists_schwartz_bilinear_transform (volume : Measure (Fin m → Fin n → ℂ)) (traceForm m n s) (traceForm_nondegenerate m n s hs) φ`. Use `⟨C • ψ, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `u`. Simplify using `only [SchwartzMap.smul_apply, hψ, smul_eq_mul, traceForm_apply]`.
+-/
 theorem exists_schwartz_trace_transform :
     ∀ (m n : ℕ) (C s : ℂ), s ≠ 0 → ∀ φ : SchwartzMap (Fin m → Fin n → ℂ) ℂ,
       ∃ ψ : SchwartzMap (Fin m → Fin n → ℂ) ℂ, ⇑ψ = fun u => C * ∫ v : Fin m → Fin n → ℂ,

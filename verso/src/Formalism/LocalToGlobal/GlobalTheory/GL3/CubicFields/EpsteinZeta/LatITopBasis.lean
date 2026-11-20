@@ -8,10 +8,20 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5
 open NumberField Polynomial Matrix Classical
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hp : Prime (d : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out)`. Conclude with `hp.neg.squarefree`.
+-/
 lemma squarefree_neg_natCast_prime (d : ℕ) [Fact d.Prime] : Squarefree (-(d : ℤ)) := by
   have hp : Prime (d : ℤ) := Nat.prime_iff_prime_int.mp (Fact.out)
   exact hp.neg.squarefree
 
+/- English proof (translation)
+Establish `hint : IsIntegral ℚ x` using `Algebra.IsIntegral.isIntegral x`. Establish `hnot : x ∉ (algebraMap ℚ K).range`. Introduce and unpack `⟨q, rfl⟩`. Establish `h2 : q ^ 2 = -(d : ℚ)` using `(algebraMap ℚ K).injective (by simpa using hx)`. Establish `hd : (0 : ℚ) < d` using `by exact_mod_cast (Fact.out : d.Prime).pos`.
+
+Use polynomial arithmetic with `[sq_nonneg q]`. Establish `hle : (minpoly ℚ x).natDegree ≤ 2` using `hK ▸ minpoly.natDegree_le x`. Establish `hne : (minpoly ℚ x).natDegree ≠ 1` using `fun h => hnot (minpoly.natDegree_eq_one_iff.mp h)`. Establish `hpos : 0 < (minpoly ℚ x).natDegree` using `minpoly.natDegree_pos hint`. Establish `hfin : Module.finrank ℚ (IntermediateField.adjoin ℚ {x}) = 2`.
+
+Rewrite using `[IntermediateField.adjoin.finrank hint]`. Use linear arithmetic over natural numbers and integers. Conclude with `IntermediateField.eq_of_le_of_finrank_le le_top (by rw [IntermediateField.finrank_top', hK, hfin])`.
+-/
 lemma covA_adjoin (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime]
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) :
     IntermediateField.adjoin ℚ {x} = ⊤ := by
@@ -30,6 +40,9 @@ lemma covA_adjoin (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime]
   exact IntermediateField.eq_of_le_of_finrank_le le_top
     (by rw [IntermediateField.finrank_top', hK, hfin])
 
+/- English proof (translation)
+Use `Formalism.HF.P.quadDiscr_ne_one K (-(d : ℤ)) x (by push_cast; exact hx) (covA_adjoin K d x hx hK) (squarefree_neg_natCast_prime d) ?_ ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use `(Fact.out : d.Prime).pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 lemma covA_discr (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) :
     NumberField.discr K = -(d : ℤ) := by
@@ -39,6 +52,13 @@ lemma covA_discr (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (
   · have := (Fact.out : d.Prime).pos
     omega
 
+/- English proof (translation)
+Establish `h1` using `congrArg Complex.re hs`. Establish `h2` using `congrArg Complex.im hs`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at h1 h2`. Establish `hd' : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `hre : s.re = 0`.
+
+Break down `mul_eq_zero.mp (show s.re * s.im = 0 by linarith) with h | h` into its components or cases. Conclude with `h`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[sq_nonneg s.re]`. Rewrite `h1` using `[hre]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma covA_sq_im (s : ℂ) (d : ℕ) (hd : 0 < d) (hs : s ^ 2 = -(d : ℂ)) :
     s.im ^ 2 = (d : ℝ) := by
   have h1 := congrArg Complex.re hs
@@ -54,6 +74,65 @@ lemma covA_sq_im (s : ℂ) (d : ℕ) (hd : 0 < d) (hs : s ^ 2 = -(d : ℂ)) :
   rw [hre] at h1
   nlinarith
 
+/- English proof (translation)
+Establish `hd : d.Prime` using `Fact.out`. Establish `hdQ : (0 : ℚ) < d` using `by exact_mod_cast hd.pos`. Take `⟨k, hk⟩ : ∃ k : ℕ, d = 4 * k + 3` from `⟨d / 4, by omega⟩`. Establish `hxr : ∀ q : ℚ, (q : K) ≠ x`. Introduce `q hq`.
+
+Establish `h2 : ((q ^ 2 : ℚ) : K) = ((-(d : ℚ) : ℚ) : K)`. Use `push_cast`. Rewrite using `[hq, hx]`. Establish `h3 : q ^ 2 = -(d : ℚ)` using `Rat.cast_injective h2`. Use polynomial arithmetic with `[sq_nonneg q]`.
+
+Establish `hωint : IsIntegral ℤ ((1 + x) / 2)`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((k : ℤ) + 1), by monicity!, ?_⟩` and prove the remaining obligations. Establish `hx' : x ^ 2 = -(4 * (k : K) + 3)`. Rewrite using `[hx, hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Use `push_cast`. Take the linear combination `(1 / 4 : K) * hx'`. Use `⟨⟨(1 + x) / 2, hωint⟩, rfl, ?_⟩` and prove the remaining obligations.
+
+Introduce `y`. Establish `hli : LinearIndependent ℚ ![(1 : K), x]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`.
+
+Substitute `ht` using the available equality. Simplify using `at hst`. Conclude with `⟨hst, rfl⟩`. It suffices to derive a contradiction. Apply `hxr (-(s / t))` to reduce the goal to its premises.
+
+Establish `htK : (t : K) ≠ 0` using `by exact_mod_cast ht`. Rewrite `hst` using `[Rat.smul_def, Rat.smul_def, mul_one]`. Use `push_cast`. Rewrite using `[neg_eq_iff_eq_neg, div_eq_iff htK]`. Take the linear combination `hst`.
+
+Take `⟨a, b, hab⟩ : ∃ a b : ℚ, (y : K) = (a : K) + (b : K) * x` from `by set bs := basisOfLinearIndependentOfCardEqFinrank hli (by simp [hK]) with hbs`. Use `⟨bs.repr y 0, bs.repr y 1, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← bs.sum_repr (y : K)]`. Simplify using `[Fin.sum_univ_two, hbs, coe_basisOfLinearIndependentOfCardEqFinrank, Rat.smul_def]`. Establish `hyint : IsIntegral ℤ (y : K)` using `RingOfIntegers.isIntegral_coe y`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨A, hA, N, hN⟩ : ∃ A : ℤ, (A : ℚ) = 2 * a ∧ ∃ N : ℤ, (N : ℚ) = a ^ 2 + d * b ^ 2 := by`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `h1 : (y : K) = algebraMap ℚ K a`. Rewrite using `[hab]`.
+
+Simplify using the standard rewrite rules. Establish `h2 : IsIntegral ℤ a`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap ℚ K).injective, ← h1]`. Conclude with `hyint`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h2`.
+
+Use `⟨2 * z, by simp [← hz], z ^ 2, by simp [← hz]⟩` and prove the remaining obligations. Use `set q : Polynomial ℚ := Polynomial.X ^ 2 - Polynomial.C (2 * a) * Polynomial.X + Polynomial.C (a ^ 2 + d * b ^ 2) with hq`. Establish `hqm : q.Monic`. Rewrite using `[hq]`. Use `monicity!`.
+
+Establish `hqd : q.natDegree = 2`. Rewrite using `[hq]`. Use `compute_degree!`. Establish `hqy : Polynomial.aeval (y : K) q = 0`. Rewrite using `[hq]`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_pow, Polynomial.aeval_X, Polynomial.aeval_C, eq_ratCast]`. Rewrite using `[hab]`. Use `push_cast`. Take the linear combination `(b : K) ^ 2 * hx`. Establish `hnr : (y : K) ∉ (algebraMap ℚ K).range`.
+
+Introduce and unpack `⟨r, hr⟩`. Apply `hxr ((r - a) / b)` to reduce the goal to its premises. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb`. Rewrite `hr` using `[eq_ratCast]`. Use `push_cast`.
+
+Rewrite using `[div_eq_iff hbK, hr, hab]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmin : q = minpoly ℚ (y : K)`. Use `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic (Algebra.IsIntegral.isIntegral _)) hqm (minpoly.dvd ℚ _ hqy) ?_` and prove the remaining obligations. Establish `h1 : (minpoly ℚ (y : K)).natDegree ≠ 1` using `fun h => hnr (minpoly.natDegree_eq_one_iff.mp h)`.
+
+Establish `h0 : 0 < (minpoly ℚ (y : K)).natDegree` using `minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral _)`. Use linear arithmetic over natural numbers and integers. Establish `hZ` using `minpoly.isIntegrallyClosed_eq_field_fractions' ℚ hyint`. Establish `c1` using `congrArg (fun p => Polynomial.coeff p 1) (hmin.trans hZ)`. Establish `c0` using `congrArg (fun p => Polynomial.coeff p 0) (hmin.trans hZ)`.
+
+Simplify using `only [hq, Polynomial.coeff_map, Polynomial.coeff_add, Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow, Polynomial.coeff_X, Polynomial.coeff_C, eq_intCast] at c1 c0`. Use `⟨-(minpoly ℤ (y : K)).coeff 1, ?_, (minpoly ℤ (y : K)).coeff 0, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← c1]`. Evaluate the numerical expressions.
+
+Rewrite using `[← c0]`. Evaluate the numerical expressions. Establish `sqint : ∀ r : ℚ, ∀ M : ℤ, (d : ℚ) * r ^ 2 = M → ∃ B : ℤ, (B : ℚ) = r`. Introduce `r M hr`. Establish `hden : r.den = 1`.
+
+Establish `e : (d : ℚ) * (r.num : ℚ) ^ 2 = M * (r.den : ℚ) ^ 2`. Establish `h` using `hr`. Rewrite `h` using `[← Rat.num_div_den r, div_pow, mul_div_assoc', div_eq_iff (by positivity)]`. Conclude with `h`. Establish `e' : (d : ℤ) * r.num ^ 2 = M * (r.den : ℤ) ^ 2` using `by exact_mod_cast e`.
+
+Establish `hcop : IsCoprime ((r.den : ℤ) ^ 2) (r.num ^ 2)`. Establish `h0 : IsCoprime (r.den : ℤ) r.num`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Conclude with `r.reduced.symm`. Conclude with `h0.pow`.
+
+Establish `hdvd : ((r.den : ℤ) ^ 2) ∣ (d : ℤ)`. Establish `h1 : ((r.den : ℤ) ^ 2) ∣ (d : ℤ) * r.num ^ 2` using `⟨M, by rw [e']; ring⟩`. Conclude with `hcop.dvd_of_dvd_mul_right h1`. Establish `h2 : r.den ^ 2 ∣ d` using `by exact_mod_cast hdvd`. Establish `h3 : r.den ∣ d` using `(dvd_pow_self _ two_ne_zero).trans h2`.
+
+Break down `(Nat.dvd_prime hd).mp h3 with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Rewrite `h2` using `[h]`. Establish `h4` using `Nat.le_of_dvd hd.pos h2`.
+
+Use polynomial arithmetic with `[hd.two_le]`. Conclude with `⟨r.num, Rat.coe_int_num_of_den_eq_one hden⟩`. Take `⟨B, hB⟩` from `sqint (2 * b) (4 * N - A ^ 2) (by push_cast; rw [hN, hA]; ring)`. Establish `e4 : 4 * N = A ^ 2 + (4 * (k : ℤ) + 3) * B ^ 2`. Establish `: (4 * N : ℚ) = A ^ 2 + d * B ^ 2`.
+
+Rewrite using `[hN, hA, hB]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : (4 * N : ℤ) = A ^ 2 + d * B ^ 2` using `by exact_mod_cast this`. Rewrite using `[h', hk]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, A - B = 2 * m := by`. Apply the tactic sequence `rcases Int.even_or_odd A with ⟨u, hu⟩ | ⟨u, hu⟩ <;>`. Break down `Int.even_or_odd B with ⟨v, hv⟩ | ⟨v, hv⟩` into its components or cases. Conclude with `⟨u - v, by rw [hu, hv]; ring⟩`.
+
+It suffices to derive a contradiction. Rewrite `e4` using `[hu, hv]`. Establish `h5 : 4 * (N - u ^ 2 - (4 * k + 3) * (v ^ 2 + v) - k) = 3` using `by linear_combination e4`. Generalize the expression as in `N - u ^ 2 - (4 * k + 3) * (v ^ 2 + v) - k = X at h5`. Use linear arithmetic over natural numbers and integers.
+
+It suffices to derive a contradiction. Rewrite `e4` using `[hu, hv]`. Establish `h5 : 4 * (N - u ^ 2 - u - (4 * k + 3) * v ^ 2) = 1` using `by linear_combination e4`. Generalize the expression as in `N - u ^ 2 - u - (4 * k + 3) * v ^ 2 = X at h5`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `⟨u - v, by rw [hu, hv]; ring⟩`. Use `⟨m, B, ?_⟩` and prove the remaining obligations. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Simplify using `only [map_add, map_mul, map_intCast]`. Express the relevant statement in the definitionally equal form `(y : K) = (m : K) + (B : K) * ((1 + x) / 2)`.
+
+Rewrite using `[hab]`. Establish `ha2 : (2 : K) * a = A` using `by exact_mod_cast hA.symm`. Establish `hb2 : (2 : K) * b = B` using `by exact_mod_cast hB.symm`. Establish `hm2 : (A : K) - B = 2 * m` using `by exact_mod_cast hm`. Take the linear combination `(1 / 2 : K) * ha2 + (x / 2) * hb2 + (1 / 2 : K) * hm2`.
+-/
 lemma covA_span (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) :
     ∃ ω : 𝓞 K, (ω : K) = (1 + x) / 2 ∧
@@ -213,10 +292,34 @@ lemma covA_span (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (h
   have hm2 : (A : K) - B = 2 * m := by exact_mod_cast hm
   linear_combination (1 / 2 : K) * ha2 + (x / 2) * hb2 + (1 / 2 : K) * hm2
 
+/- English proof (translation)
+The claim follows from `covA_discr K d hd4 x hx hK`.
+-/
 theorem discr_K (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2) :
     NumberField.discr K = -(d : ℤ) := covA_discr K d hd4 x hx hK
 
+/- English proof (translation)
+Take `⟨ω, hω, hspan⟩` from `covA_span K d hd4 x hx hK`. Establish `hd0 : 0 < d` using `(Fact.out : d.Prime).pos`. Establish `hφx : (φ x) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hx]; simp`. Establish `ht` using `covA_sq_im (φ x) d hd0 hφx`. Establish `key : ∀ ω' : 𝓞 K, (∀ y : 𝓞 K, ∃ m n : ℤ, y = (m : 𝓞 K) + (n : 𝓞 K) * ω') → latI φ ⊤ 1 = AddSubgroup.closure {1, φ (ω' : K)}`.
+
+Introduce `ω' hsp`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[latI, AddSubgroup.closure_le]`. Introduce and unpack `w ⟨c, -, rfl⟩`. Take `⟨m, n, rfl⟩` from `hsp c`.
+
+Establish `e : (1 : ℂ) * φ (((m : 𝓞 K) + (n : 𝓞 K) * ω' : 𝓞 K) : K) = m • (1 : ℂ) + n • φ (ω' : K)`. Use `push_cast`. Simplify using `[zsmul_eq_mul]`. Rewrite using `[e]`. Conclude with `add_mem (zsmul_mem (AddSubgroup.subset_closure (Set.mem_insert _ _)) m) (zsmul_mem (AddSubgroup.subset_closure (Set.mem_insert_of_mem _ (Set.mem_singleton _))) n)`.
+
+Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `w (rfl | rfl)`. Conclude with `AddSubgroup.subset_closure ⟨1, Submodule.mem_top, by simp⟩`. Conclude with `AddSubgroup.subset_closure ⟨ω', Submodule.mem_top, by simp⟩`. Establish `hωc : φ (ω : K) = (1 + φ x) / 2` using `by rw [hω, map_div₀, map_add, map_one, map_ofNat]`.
+
+Break down `lt_or_ge 0 (φ x).im with hpos | hneg` into its components or cases. Use `⟨1, φ (ω : K), ?_, key ω hspan, ?_⟩` and prove the remaining obligations. Simplify using `[hωc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : Real.sqrt d = (φ x).im`.
+
+Rewrite using `[← ht, Real.sqrt_sq hpos.le]`. Simplify using `[hωc, hs]`. Establish `hneg' : (φ x).im < 0`. Break down `hneg.lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+Rewrite `ht` using `[h]`. Establish `: (0 : ℝ) < d` using `by exact_mod_cast hd0`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨1, φ ((1 - ω : 𝓞 K) : K), ?_, key (1 - ω) ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hωc]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce `y`. Take `⟨m, n, rfl⟩` from `hspan y`. Conclude with `⟨m + n, -n, by push_cast; ring⟩`. Establish `hs : Real.sqrt d = -(φ x).im`.
+
+Rewrite using `[← ht, ← neg_sq, Real.sqrt_sq (by linarith)]`. Establish `h1ω : φ ((1 - ω : 𝓞 K) : K) = (1 - φ x) / 2`. Use `push_cast`. Rewrite using `[map_sub, map_one, hωc]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1ω, hs]`. Simplify using the standard rewrite rules.
+-/
 theorem latI_top_basis (K : Type) [Field K] [NumberField K] (d : ℕ) [Fact d.Prime] (hd4 : d % 4 = 3)
     (x : K) (hx : x ^ 2 = -(d : K)) (hK : Module.finrank ℚ K = 2)
     (φ : K →+* ℂ) :

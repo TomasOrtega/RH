@@ -12,6 +12,9 @@ def IsProd {S : Scheme.{0}} (P P₁ P₂ : PPAS S) : Prop :=
     Nonempty (IsLimit (BinaryFan.mk π₁ π₂)) ∧ P.g = P₁.g + P₂.g ∧
     P.c = CechPic.pull (π₁ ⊗ₘ π₁).left P₁.c + CechPic.pull (π₂ ⊗ₘ π₂).left P₂.c
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, hg, _⟩` from `h`. Conclude with `hg`.
+-/
 theorem IsProd.g_eq {S : Scheme.{0}} {P P₁ P₂ : PPAS S} (h : P.IsProd P₁ P₂) : P.g = P₁.g + P₂.g := by
   obtain ⟨_, _, _, _, _, hg, _⟩ := h
   exact hg

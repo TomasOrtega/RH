@@ -75,6 +75,9 @@ def Fam.map {E : Spc} (Z : Sub E) (p : ℕ) {M N : Shv R} (φ : M ⟶ N) : Fam Z
   map_zero' := by ext U x; simp
   map_add' a b := by ext U x; simp
 
+/- English proof (translation)
+The claim follows from `(ConcreteCategory.congr_hom ((E.δ i).naturality g.op) x).symm`.
+-/
 theorem face_res {E : Spc} {p : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E (p + 1) U) (i : Fin (p + 2)) :
     (x.face i).res g = (x.res g).face i :=
   (ConcreteCategory.congr_hom ((E.δ i).naturality g.op) x).symm

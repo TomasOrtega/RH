@@ -15,6 +15,9 @@ instance resGE (q : ℕ) (i : ℤ) : (res (ZMod q) (tw q i)).IsStrictlyGE 0 := b
   unfold res InjectiveResolution.cochainComplex
   infer_instance
 
+/- English proof (translation)
+Use `⟨resGE q i, resAug (tw q i), ?_, fun U ζ => ?_⟩` and prove the remaining obligations. Unfold `resAug`. Conclude with `(inferInstance : QuasiIso (injectiveResolution (tw q i)).ι')`. Simplify using `only [resGen, resι, sglι, Sec.map]`. Both sides reduce to the same expression.
+-/
 theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
     IsTwRes q i (res (ZMod q) (tw q i)) (fun _ ζ => resGen i ζ) := by
   refine ⟨resGE q i, resAug (tw q i), ?_, fun U ζ => ?_⟩
@@ -23,6 +26,9 @@ theorem res_isTwRes (q : ℕ) [NeZero q] (i : ℤ) :
   · simp only [resGen, resι, sglι, Sec.map]
     rfl
 
+/- English proof (translation)
+Introduce `q _ i j T τ hτ`. Conclude with `h1 q i j (i + j) rfl (fun _ ζ => resGen i ζ) (fun _ ζ => resGen j ζ) (res_isTwRes q i) (res_isTwRes q j) (h2 q j) τ hτ`.
+-/
 theorem leafTwTensRes_of (h1 : LeafTensTwres) (h2 : LeafResFlat) : LateralTheory.E.LeafTwPairExistsPf.LeafTwTensRes := by
   intro q _ i j T τ hτ
   exact h1 q i j (i + j) rfl (fun _ ζ => resGen i ζ) (fun _ ζ => resGen j ζ) (res_isTwRes q i) (res_isTwRes q j) (h2 q j) τ hτ

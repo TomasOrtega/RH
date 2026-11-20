@@ -12,6 +12,9 @@ namespace AdditiveFunction
 
 variable {l : ℕ} {Γ : Type v} [Group Γ] (d : AdditiveFunction.{u} l Γ)
 
+/- English proof (translation)
+The claim follows from `d.additive ρ _ σ (LinearMap.inl _ X Y) (LinearMap.snd _ X Y) ⟨fun _ _ => by ext <;> simp⟩ ⟨fun _ _ => rfl⟩ LinearMap.inl_injective Function.Exact.inl_snd LinearMap.snd_surjective`.
+-/
 theorem toFun_prod {X Y : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X]
     [AddCommGroup Y] [Module (ZMod l) Y] [Finite Y] (ρ : Representation (ZMod l) Γ X)
     (σ : Representation (ZMod l) Γ Y) :
@@ -20,6 +23,11 @@ theorem toFun_prod {X Y : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X
     ⟨fun _ _ => by ext <;> simp⟩ ⟨fun _ _ => rfl⟩ LinearMap.inl_injective
     Function.Exact.inl_snd LinearMap.snd_surjective
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [d.toFun_eq_zero_of_subsingleton (X := Fin 0 → X)]`. Consider the case `succ n ih`. Rewrite using `[← d.toFun_congr (ρ.prod (piRep (Fin n) ρ)) (piRep (Fin (n + 1)) ρ) (Fin.consLinearEquiv (ZMod l) (fun _ => X)) ?_, d.toFun_prod, ih]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `γ x`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp`.
+-/
 theorem toFun_pi {X : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X]
     (ρ : Representation (ZMod l) Γ X) (n : ℕ) :
     d.toFun (Fin n → X) (piRep (Fin n) ρ) = n * d.toFun X ρ := by
@@ -34,6 +42,9 @@ theorem toFun_pi {X : Type u} [AddCommGroup X] [Module (ZMod l) X] [Finite X]
       funext i
       refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
+/- English proof (translation)
+Establish `: Subsingleton (TorsN A l)` using `⟨fun x y => Subtype.ext (by`. Rewrite using `[hA x ((mem_ker_lsmul_iff l (x : A)).1 x.2), hA y ((mem_ker_lsmul_iff l (y : A)).1 y.2)])⟩`. Rewrite using `[d.g_eq A, d.toFun_eq_zero_of_subsingleton (X := TorsN A l), sub_zero]`.
+-/
 theorem g_eq_of_torsion_trivial (A : Type u) [AddCommGroup A] [DistribMulAction Γ A]
     [Finite (ModN A l)] (hA : ∀ a : A, l • a = 0 → a = 0) :
     d.g A = d.toFun (ModN A l) (modNRep Γ A l) := by
@@ -41,6 +52,15 @@ theorem g_eq_of_torsion_trivial (A : Type u) [AddCommGroup A] [DistribMulAction 
     rw [hA x ((mem_ker_lsmul_iff l (x : A)).1 x.2), hA y ((mem_ker_lsmul_iff l (y : A)).1 y.2)])⟩
   rw [d.g_eq A, d.toFun_eq_zero_of_subsingleton (X := TorsN A l), sub_zero]
 
+/- English proof (translation)
+Distinguish the cases in `hfin : Finite (ModN A l) ∧ Finite (TorsN A l)`. Take `⟨_, _⟩` from `hfin`. Rewrite using `[d.g_eq A, sub_eq_zero]`. Set `φ : A →ₗ[ℤ] TorsN A l` to `LinearMap.codRestrict _ LinearMap.id (fun a => (mem_ker_lsmul_iff l a).2 (hA a))`. Set `ψ` to `(LinearMap.range (LinearMap.lsmul ℤ A (l : ℤ))).liftQ φ (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `Subtype.ext (by simpa [φ] using hA y))`. Use `d.toFun_congr _ _ (LinearEquiv.ofBijective (ψ.toAddMonoidHom.toZModLinearMap l) ⟨fun x y hxy => ?_, fun t => ⟨Submodule.Quotient.mk (t : A), Subtype.ext rfl⟩⟩) ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `congrArg _ (congrArg Subtype.val hxy : (a : A) = b)`. Introduce `γ x`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+
+Conclude with `d.g_of_not_finite A hfin`.
+-/
 theorem g_eq_zero_of_nsmul_eq_zero (A : Type u) [AddCommGroup A] [DistribMulAction Γ A]
     (hA : ∀ a : A, l • a = 0) : d.g A = 0 := by
   by_cases hfin : Finite (ModN A l) ∧ Finite (TorsN A l)
@@ -62,6 +82,23 @@ theorem g_eq_zero_of_nsmul_eq_zero (A : Type u) [AddCommGroup A] [DistribMulActi
       rfl
   · exact d.g_of_not_finite A hfin
 
+/- English proof (translation)
+It suffices to establish `H : ∀ (N : ℕ) (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite A], Nat.card A = N → d.g A = 0 from H _ A rfl`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `A _ _ _ hN`.
+
+Distinguish the cases in `hA : ∀ a : A, l • a = 0 → a = 0`. Establish `hs : Function.Surjective (fun a : A => l • a)` using `Finite.injective_iff_surjective.1 (fun a b hab => sub_eq_zero.1 (hA (a - b) (by rw [smul_sub, sub_eq_zero]; exact hab)))`. Establish `: Subsingleton (ModN A l)` using `⟨fun x y => by`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+
+Take `⟨a', rfl⟩` from `hs a`. Take `⟨b', rfl⟩` from `hs b`. Rewrite using `[(modN_mk_eq_zero_iff l _).2 ⟨a', rfl⟩, (modN_mk_eq_zero_iff l _).2 ⟨b', rfl⟩]⟩`. Rewrite using `[d.g_eq_of_torsion_trivial A hA, d.toFun_eq_zero_of_subsingleton (X := ModN A l)]`. Use `push Not at hA`.
+
+Take `⟨a₀, ha₀, hne⟩` from `hA`. Set `m : A →+ A` to `(LinearMap.lsmul ℤ A (l : ℤ)).toAddMonoidHom`. Establish `hm : ∀ a, m a = l • a` using `fun a => by simp [m]`. Establish `hK : ∀ (γ : Γ) (a : A), a ∈ m.ker → γ • a ∈ m.ker` using `fun γ a ha => by`. Rewrite `ha`, the goal using `[AddMonoidHom.mem_ker, hm]`.
+
+Rewrite using `[← smul_comm γ l a, ha, smul_zero]`. Establish `hH : ∀ (γ : Γ) (a : A), a ∈ m.range → γ • a ∈ m.range`. Introduce and unpack `γ _ ⟨b, rfl⟩`. Conclude with `⟨γ • b, by rw [hm, hm, smul_comm]⟩`. Set `_` to `subgroupDistribMulAction m.ker hK`.
+
+Set `_` to `subgroupDistribMulAction m.range hH`. Establish `hKl : ∀ x : m.ker, l • x = 0` using `fun x => Subtype.ext (by rw [AddSubgroup.coe_nsmul, ← hm]; exact x.2)`. Establish `hcard : Nat.card m.range < N`. Establish `h₁ : Nat.card A = Nat.card m.range * Nat.card m.ker`. Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup m.ker, Nat.card_congr (QuotientAddGroup.quotientKerEquivRange m).toEquiv]`.
+
+Establish `h₂ : 1 < Nat.card m.ker`. Establish `: Nontrivial m.ker` using `⟨⟨⟨a₀, by rw [AddMonoidHom.mem_ker, hm, ha₀]⟩, 0, fun h => hne (congrArg Subtype.val h)⟩⟩`. Conclude with `Finite.one_lt_card`. Establish `h₃ : 0 < Nat.card m.range` using `Nat.card_pos`. Rewrite using `[← hN, h₁]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `e` using `d.g_add m.ker.subtype m.rangeRestrict (fun _ _ => rfl) (fun γ a => Subtype.ext (show m (γ • a) = γ • m a by rw [hm, hm, smul_comm])) (AddSubgroup.subtype_injective _) (fun y => ⟨fun hy => ⟨⟨y, congrArg Subtype.val hy⟩, rfl⟩, by rintro ⟨x, rfl⟩; exact Subtype.ext (AddMonoidHom.mem …`. Rewrite using `[e, d.g_eq_zero_of_nsmul_eq_zero _ hKl, ih _ hcard _ rfl, add_zero]`.
+-/
 theorem g_eq_zero_of_finite (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite A] :
     d.g A = 0 := by
   suffices H : ∀ (N : ℕ) (A : Type u) [AddCommGroup A] [DistribMulAction Γ A] [Finite A],
@@ -114,6 +151,9 @@ theorem g_eq_zero_of_finite (A : Type u) [AddCommGroup A] [DistribMulAction Γ A
       m.rangeRestrict_surjective
     rw [e, d.g_eq_zero_of_nsmul_eq_zero _ hKl, ih _ hcard _ rfl, add_zero]
 
+/- English proof (translation)
+Establish `hR : ∀ (γ : Γ) (a : A), a ∈ f.range → γ • a ∈ f.range`. Introduce and unpack `γ _ ⟨b, rfl⟩`. Conclude with `⟨γ • b, hfγ γ b⟩`. Set `_` to `quotientDistribMulAction f.range hR`. Rewrite using `[d.g_add f (QuotientAddGroup.mk' f.range) hfγ (fun _ _ => rfl) hf (fun y => by rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; rfl) (QuotientAddGroup.mk'_surjective _), d.g_eq_zero_of_finite (A ⧸ f.range), add_zero]`.
+-/
 theorem g_eq_of_finite_cokernel {A B : Type u} [AddCommGroup A] [AddCommGroup B]
     [DistribMulAction Γ A] [DistribMulAction Γ B] (f : B →+ A)
     (hfγ : ∀ (γ : Γ) (b : B), f (γ • b) = γ • f b) (hf : Function.Injective f)
@@ -126,6 +166,9 @@ theorem g_eq_of_finite_cokernel {A B : Type u} [AddCommGroup A] [AddCommGroup B]
     (fun y => by rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; rfl)
     (QuotientAddGroup.mk'_surjective _), d.g_eq_zero_of_finite (A ⧸ f.range), add_zero]
 
+/- English proof (translation)
+Establish `hfh : Function.Exact f (QuotientAddGroup.mk' f.range)` using `fun y => by rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; rfl`. Establish `hh` using `QuotientAddGroup.mk'_surjective f.range`. Use `finite_torsN_of_injective (n := l) hf` as an intermediate fact. Establish `: Finite (ModN B l)` using `finite_of_exact (connecting hh hfh hf).toAddMonoidHom (modNMap l f).toAddMonoidHom (exact_connecting_modNMap hh hfh hf)`. Conclude with `d.g_eq_of_finite_cokernel f hfγ hf`.
+-/
 theorem g_eq_of_finite_cokernel' {A B : Type u} [AddCommGroup A] [AddCommGroup B]
     [DistribMulAction Γ A] [DistribMulAction Γ B] (f : B →+ A)
     (hfγ : ∀ (γ : Γ) (b : B), f (γ • b) = γ • f b) (hf : Function.Injective f)
@@ -139,6 +182,13 @@ theorem g_eq_of_finite_cokernel' {A B : Type u} [AddCommGroup A] [AddCommGroup B
       (exact_connecting_modNMap hh hfh hf)
   exact d.g_eq_of_finite_cokernel f hfγ hf
 
+/- English proof (translation)
+Establish `hA : ∀ a : A, l • a = 0 → a = 0` using `fun a ha => by`. Establish `h` using `congrArg e ha`. Rewrite `h` using `[map_nsmul, map_zero, nsmul_eq_mul]`. Establish `h'` using `(mul_eq_zero.1 h).resolve_left (by exact_mod_cast NeZero.ne l)`. Conclude with `e.injective (by rw [h', map_zero])`.
+
+Set `b : Module.Basis Unit ℤ A` to `(Module.Basis.singleton Unit ℤ).map e.symm.toIntLinearEquiv`. Set `E : ModN A l ≃ₗ[ZMod l] ULift.{u} (ZMod l)` to `(ModN.basis b).equivFun.trans ((LinearEquiv.funUnique Unit (ZMod l) (ZMod l)).trans ULift.moduleEquiv.symm)`. Establish `: Finite (ModN A l)` using `Finite.of_equiv _ E.symm.toEquiv`. Rewrite using `[d.g_eq_of_torsion_trivial A hA]`. Use `d.toFun_congr _ _ E (fun γ x => ?_)` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[modNRep_mk, htriv]`. Both sides reduce to the same expression.
+-/
 theorem g_of_trivial_int [NeZero l] (A : Type u) [AddCommGroup A] [DistribMulAction Γ A]
     (htriv : ∀ (γ : Γ) (a : A), γ • a = a) (e : A ≃+ ℤ) : d.g A = d.one := by
   have hA : ∀ a : A, l • a = 0 → a = 0 := fun a ha => by

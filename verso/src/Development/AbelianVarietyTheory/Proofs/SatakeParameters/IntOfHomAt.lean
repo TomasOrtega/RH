@@ -12,16 +12,25 @@ section Val
 
 variable {K : Type} [Field K] [NumberField K] (w : HeightOneSpectrum (𝓞 K))
 
+/- English proof (translation)
+Rewrite `h` using `[map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le' hk.ne').1 h`.
+-/
 theorem val_of_pow {a : K} {k : ℕ} (hk : 0 < k) (h : w.valuation K (a ^ k) = 1) : w.valuation K a = 1 := by
   rw [map_pow] at h
   exact (pow_eq_one_iff_of_nonneg zero_le' hk.ne').1 h
 
+/- English proof (translation)
+Use `(w.valuation_eq_one_iff_notMem (K := K) (r := (q : 𝓞 K))).2 hq` as an intermediate fact. Simplify using `using this`.
+-/
 theorem val_nat {q : ℕ} (hq : (q : 𝓞 K) ∉ w.asIdeal) : w.valuation K (q : K) = 1 := by
   have := (w.valuation_eq_one_iff_notMem (K := K) (r := (q : 𝓞 K))).2 hq
   simpa using this
 
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Distinguish the cases in `h : LocE.unitV χ a = 0`. Simplify using `[h]`. Take `⟨k, hk, h1⟩` from `unitV_root χ a h`. Use `val_of_pow w hk (a := LocE.unitV χ a) (by rw [h1, map_one])` as an intermediate fact. Simplify using `[this]`.
+-/
 theorem val_unitV (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     w.valuation K (LocE.unitV χ a) ≤ 1 ∧ w.valuation K (LocE.unitV χ a)⁻¹ ≤ 1 := by
   by_cases h : LocE.unitV χ a = 0
@@ -30,12 +39,18 @@ theorem val_unitV (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     have := val_of_pow w hk (a := LocE.unitV χ a) (by rw [h1, map_one])
     simp [this]
 
+/- English proof (translation)
+Unfold `LocE.locChar`. Rewrite using `[mul_inv, map_mul, map_mul, map_inv₀ _ (cq ^ _), map_zpow₀, hc, one_zpow, inv_one, one_mul, one_mul]`. Conclude with `val_unitV w χ _`.
+-/
 theorem val_locChar (q : ℕ) {cq : K} (hc : w.valuation K cq = 1) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (a : E) :
     w.valuation K (LocE.locChar q cq χ a) ≤ 1 ∧ w.valuation K (LocE.locChar q cq χ a)⁻¹ ≤ 1 := by
   unfold LocE.locChar
   rw [mul_inv, map_mul, map_mul, map_inv₀ _ (cq ^ _), map_zpow₀, hc, one_zpow, inv_one, one_mul, one_mul]
   exact val_unitV w χ _
 
+/- English proof (translation)
+Unfold `Loc.om`. Simplify using `only [map_mul, map_zpow₀, hsq, one_zpow, mul_one]`. Conclude with `mul_le_one' (mul_le_one' (hmu _).1 (hmu _).2) (hΦ _)`.
+-/
 theorem val_om {a b : ℕ} {mu : E → K} (hmu : ∀ t, w.valuation K (mu t) ≤ 1 ∧ w.valuation K (mu t)⁻¹ ≤ 1) (v : E → ℤ)
     {sq : K} (hsq : w.valuation K sq = 1) (g₀ : (Fin a → E) ≃ₗ[E] (Fin a → E)) (h : (Fin b → E) ≃ₗ[E] (Fin b → E))
     {Φ : Loc.SF E K a b} (hΦ : ∀ x, w.valuation K (Φ x) ≤ 1) (x) : w.valuation K (Loc.om mu v sq g₀ h Φ x) ≤ 1 := by
@@ -43,6 +58,9 @@ theorem val_om {a b : ℕ} {mu : E → K} (hmu : ∀ t, w.valuation K (mu t) ≤
   simp only [map_mul, map_zpow₀, hsq, one_zpow, mul_one]
   exact mul_le_one' (mul_le_one' (hmu _).1 (hmu _).2) (hΦ _)
 
+/- English proof (translation)
+Unfold `LocE.PhiQ`. Use `split_ifs`. Conclude with `(val_unitV w χ _).1`. Simplify using the standard rewrite rules.
+-/
 theorem val_PhiQ (q : ℕ) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) (k₀ r c' n' c n : ℕ) (x) :
     w.valuation K (LocE.PhiQ q χ k₀ r c' n' c n x) ≤ 1 := by
   unfold LocE.PhiQ
@@ -56,6 +74,9 @@ section Supp
 
 variable {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Use `⟨LocE.fPos k₀ c n l, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `unfold LocE.fPos split_ifs <;> omega`. Apply the tactic sequence `unfold LocE.fIdx LocE.fPos split_ifs <;> omega`.
+-/
 theorem exists_fIdx {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : ∃ s, s < n + c ∧ LocE.fIdx k₀ c n s = l := by
   refine ⟨LocE.fPos k₀ c n l, ?_, ?_⟩
   · unfold LocE.fPos
@@ -63,6 +84,13 @@ theorem exists_fIdx {k₀ c n l : ℕ} (hk : k₀ ≤ n) (hl : l < n + c) : ∃ 
   · unfold LocE.fIdx LocE.fPos
     split_ifs <;> omega
 
+/- English proof (translation)
+Unfold `LocE.PhiQ at hx`. Use `split_ifs at hx with h`. Rewrite `hv`, the goal using `[mem_stdAt]`. Introduce `i`. Rewrite using `[apply_eq_sum]`.
+
+Use `intAt_sum _ fun j _ => (hv j).mul ?_` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `exists_fIdx hk i.2`. Take `⟨p', hp', e'⟩` from `exists_fIdx hk' j.2`. Establish `h1` using `h.1 p p' hp hp'`. Establish `h2 : Loc.eN E (n' + c') j.1 = Pi.single j 1`.
+
+Use function extensionality and compare the values at `l`. Simplify using `[Loc.eN, Pi.single_apply, Fin.ext_iff]`. Simplify `h1` using `[LocE.entB, e, e', LocE.scE, Loc.atN, h2]`. Conclude with `absurd rfl hx`.
+-/
 theorem int_of_PhiQ {q : ℕ} {χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ} {k₀ r c' n' c n : ℕ} (hk' : k₀ ≤ n') (hk : k₀ ≤ n)
     {x : HomE E (n' + c') (n + c)} (hx : LocE.PhiQ q χ k₀ r c' n' c n x ≠ 0) {v : Sp E (n' + c')}
     (hv : v ∈ stdAt E (n' + c') P) : x v ∈ stdAt E (n + c) P := by
@@ -81,6 +109,11 @@ theorem int_of_PhiQ {q : ℕ} {χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ} {k₀ r c
     simpa [LocE.entB, e, e', LocE.scE, Loc.atN, h2] using h1
   · exact absurd rfl hx
 
+/- English proof (translation)
+Unfold `Loc.chArg`. Rewrite using `[Finset.mul_sum]`. Use `intAt_sum _ fun i _ => ?_` and prove the remaining obligations. Unfold `Loc.atN`. Use `split_ifs with hi`.
+
+Conclude with `mem_stdAt.1 (h _ eN_mem) ⟨n + i, hi⟩`. Simplify using `using intAt_zero`.
+-/
 theorem intAt_chArg {n' c' n c : ℕ} (a : E) (x : HomE E (n' + c') (n + c))
     (h : ∀ v ∈ stdAt E (n' + c') P, a • x v ∈ stdAt E (n + c) P) : IntAt P (a * Loc.chArg x) := by
   unfold Loc.chArg
@@ -91,6 +124,9 @@ theorem intAt_chArg {n' c' n c : ℕ} (a : E) (x : HomE E (n' + c') (n + c))
   · exact mem_stdAt.1 (h _ eN_mem) ⟨n + i, hi⟩
   · simpa using intAt_zero
 
+/- English proof (translation)
+Establish `h` using `mem_stdAt.1 (hz P (Finset.mem_singleton_self P) _ (single_mem_stdAt s)) l`. Establish `hq` using `qOf_ne_zero (P := P)`. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, inv_mul_cancel_left₀ (pow_ne_zero _ hq)]` and apply the resulting hypothesis.
+-/
 theorem int_of_homAt {a b : ℕ} {z : HomE E a b} (hz : z ∈ homAt {P} (stdLat E a) (stdLat E b)) (B : ℕ) (s : Fin a) (l : Fin b) :
     IntAt P (((qOf P : E) ^ B)⁻¹ * (((qOf P : E) ^ B) • z) (Pi.single s 1) l) := by
   have h := mem_stdAt.1 (hz P (Finset.mem_singleton_self P) _ (single_mem_stdAt s)) l
@@ -99,10 +135,28 @@ theorem int_of_homAt {a b : ℕ} {z : HomE E a b} (hz : z ∈ homAt {P} (stdLat 
 
 end Supp
 
+/- English proof (translation)
+Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem k_le_N (R : Ranks) (j : ℕ) : R.k ≤ R.N j := by
   unfold Ranks.N
   omega
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S mu cst L G m2 hL P w hP hdeg hq hmu`. Establish `hm` using `hL.hm`. Establish `hqv` using `val_nat w hq`. Establish `hsq : w.valuation X.K (cst.sq P) = 1` using `val_of_pow w two_pos (by rw [hL.cst_ok.sq_sq, hqv])`. Establish `hom : ∀ i, i < R.m → ∀ hal h x, w.valuation X.K (omPhi Ch sel mu cst i P hal h x) ≤ 1`.
+
+Introduce `i hi hal h x`. Use `val_om w (fun t => val_locChar w _ (hmu i hi) _ t) _ hsq _ _ (fun y => ?_) x` and prove the remaining obligations. Rewrite using `[PhiAt, if_neg hP]`. Conclude with `val_PhiQ w _ _ _ _ _ _ _ _ y`. Use `⟨fun i hi al be => ⟨fun x => ?_, fun x z hz => hL.xiInv i hi al be P x _ (int_of_homAt hz _)⟩, fun al y => ⟨fun x => hom m2 (by omega) _ _ _, fun x z hz => hL.psiInvX al P x _ y (int_of_homAt hz _)⟩⟩` and prove the remaining obligations.
+
+Unfold `XiAt E1at Loc.E1`. Rewrite using `[map_mul, map_mul, map_pow, map_inv₀ _ (_ ^ cst.B), map_pow, hqv, one_pow, inv_one, one_pow, one_mul]`. Use `mul_le_one' (hV X Pr R _ _ _ _ w hP hdeg hq) (Valuation.map_sum_le _ fun t _ => ?_)` and prove the remaining obligations. Generalize the expression as in `Loc.xx1 x t = y`. Distinguish the cases in `h0 : omPhi Ch sel mu cst i P (L.h i al P) (L.h (i + 1) be P) y = 0`.
+
+Simplify using `[h0]`. Rewrite using `[map_mul]`. Use `mul_le_one' (hom i (by omega) _ _ _) (le_of_eq ?_)` and prove the remaining obligations. Establish `h1` using `right_ne_zero_of_mul h0`. Rewrite `h1` using `[PhiAt, if_neg hP]`.
+
+Establish `hb` using `hL.boundQ i al P hP`. Establish `hb'` using `hL.boundQ (i + 1) be P hP`. Establish `hD` using `hL.depthQ' P hP`. Simplify using `only [lamYat, hP, if_false, mem_lamY_zero] at hb hb'`. Establish `hint : IntAt P.1 ((qOf P.1 : X.E) ^ (i + 1) * Loc.chArg y)`.
+
+Use `intAt_chArg _ y fun v hv => ?_` and prove the remaining obligations. Establish `h2` using `(hb' _ (int_of_PhiQ (k_le_N R _) (k_le_N R _) h1 (hb v hv).1)).2`. Establish `h3 : (L.h i al P) ((L.h i al P)⁻¹ v) = v` using `LinearEquiv.apply_symm_apply _ v`. Simplify `h2` using `[h3]`. Establish `hint' : IntAt P.1 ((qOf P.1 : X.E) ^ cst.D P * -Loc.chArg y)`.
+
+Take `⟨d, hd⟩ : ∃ d, cst.D P = d + (i + 1)` from `⟨cst.D P - (i + 1), by omega⟩`. Rewrite using `[hd, pow_add, mul_neg, mul_assoc]`. Conclude with `intAt_neg ((intAt_pow (intAt_nat _) _).mul hint)`. Conclude with `val_of_pow w (pow_pos (qOf_pos _) _) (by rw [psi_root hL.cst_ok P _ hint', map_one])`.
+-/
 theorem entryAtQ (hV : VolumeAtQ) : EntryAtQ := by
   intro X Pr R Ch sel S mu cst L G m2 hL P w hP hdeg hq hmu
   have hm := hL.hm

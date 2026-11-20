@@ -6,6 +6,17 @@ namespace GroundTheory.Heights₂.Heights
 
 open MvPolynomial
 
+/- English proof (translation)
+Introduce `n k f u u'`. Simplify using `only [specFirst, bind₁_bind₁, bind₁_rename]`. Use `congrArg (fun φ => bind₁ φ f) (funext fun ij => ?_)` and prove the remaining obligations. Take `⟨i, j⟩` from `ij`. Establish `one : (1 : Fin (k + 1 + 1)) = Fin.succ 0` using `Fin.succ_zero_eq_one.symm`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 0, j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (0, j))`. Rewrite using `[Equiv.swap_apply_left, one]`. Simplify using `only [specFirstVar, Fin.cases_succ, Fin.cases_zero, bind₁_X_right, bind₁_C_right]`. Consider the case `succ i`.
+
+Consider the cases of `i using Fin.cases with`. Consider the case `zero => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ 0), j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (Fin.succ 0, j))`. Establish `h : Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ 0) = 0`. Rewrite using `[← one]`. Conclude with `Equiv.swap_apply_right _ _`.
+
+Rewrite using `[h]`. Simplify using `only [specFirstVar, Fin.cases_succ, Fin.cases_zero, bind₁_X_right, bind₁_C_right]`. Consider the case `succ i => show (bind₁ (specFirstVar u')) (specFirstVar u (Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ (Fin.succ i)), j)) = (bind₁ (specFirstVar u)) (specFirstVar u' (Fin.succ (Fin.succ i), j))`. Establish `h : Equiv.swap (0 : Fin (k + 1 + 1)) 1 (Fin.succ (Fin.succ i)) = Fin.succ (Fin.succ i)`. Use `Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) ?_` and prove the remaining obligations.
+
+Rewrite using `[one]`. Conclude with `fun h' => Fin.succ_ne_zero i (Fin.succ_injective _ h')`. Rewrite using `[h]`. Simplify using `only [specFirstVar, Fin.cases_succ, bind₁_X_right]`.
+-/
 theorem SpecFirstRename.proof : SpecFirstRename.Statement := by
   intro n k f u u'
   simp only [specFirst, bind₁_bind₁, bind₁_rename]

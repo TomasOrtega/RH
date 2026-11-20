@@ -121,15 +121,27 @@ def ModerateGrowthIso (D : D7) : Prop :=
 
 def ModerateGrowth (D : D7) : Prop := ∀ A B : HSp D, InRange A B → PairGrowth A B
 
+/- English proof (translation)
+Rewrite using `[half, ← map_add, add_halves, map_one]`.
+-/
 theorem half_add_half : half D + half D = 1 := by
   rw [half, ← map_add, add_halves, map_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[fstCols, cols]`.
+-/
 theorem fstCols_cols (x y : WO A B) : fstCols A B (cols A B x y) = x := by
   ext i j; simp [fstCols, cols]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [sndCols, cols, Matrix.submatrix_apply, Equiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem sndCols_cols (x y : WO A B) : sndCols A B (cols A B x y) = y := by
   ext i j; simp only [sndCols, cols, Matrix.submatrix_apply, Equiv.symm_apply_apply]; rfl
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [xOf, yOf, onX, onY, fstCols_cols, sndCols_cols]`. Rewrite using `[← add_smul, half_add_half, one_smul]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[sub_neg_eq_add, smul_add, ← add_smul, half_add_half, one_smul]`.
+-/
 theorem coords (x y : WO A B) : xOf A B (onX A B x) = x ∧ yOf A B (onX A B x) = 0 ∧
     xOf A B (onY A B y) = 0 ∧ yOf A B (onY A B y) = y := by
   refine ⟨?_, ?_, ?_, ?_⟩ <;> simp only [xOf, yOf, onX, onY, fstCols_cols, sndCols_cols]

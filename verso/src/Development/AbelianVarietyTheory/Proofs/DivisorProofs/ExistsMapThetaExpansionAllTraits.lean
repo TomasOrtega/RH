@@ -20,6 +20,11 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Introduce `R _ _ W _ _ φ hφ`. Set `g : R →+* Kb W` to `(algebraMap (FractionRing W) (Kb W)).comp ((algebraMap W (FractionRing W)).comp φ)`. Establish `hg : Function.Injective g` using `(algebraMap (FractionRing W) (Kb W)).injective.comp ((IsFractionRing.injective W (FractionRing W)).comp hφ)`. Use `letI : Algebra (FractionRing R) (Kb W) := (IsFractionRing.lift (K := FractionRing R) hg).toAlgebra`. Use `⟨Kb W, inferInstance, inferInstance, inferInstance, inferInstance, IsAlgClosed.lift, fun r => ?_⟩` and prove the remaining obligations.
+
+Conclude with `IsFractionRing.lift_algebraMap hg r`.
+-/
 theorem exists_field_over_trait : ∀ (R : Type) [CommRing R] [IsDomain R] (W : Type) [CommRing W] [IsDomain W] (φ : R →+* W), Function.Injective φ → ∃ (F : Type) (_ : Field F) (_ : IsAlgClosed F) (_ : Algebra (FractionRing R) F) (_ : Algebra (FractionRing W) F) (_ : Kb R →ₐ[FractionRing R] F), ∀ r, algebraMap (FractionRing R) F (algebraMap R _ r) = algebraMap (FractionRing W) F (algebraMap W _ (φ r)) := by
   intro R _ _ W _ _ φ hφ
   let g : R →+* Kb W := (algebraMap (FractionRing W) (Kb W)).comp ((algebraMap W (FractionRing W)).comp φ)
@@ -29,6 +34,15 @@ theorem exists_field_over_trait : ∀ (R : Type) [CommRing R] [IsDomain R] (W : 
   refine ⟨Kb W, inferInstance, inferInstance, inferInstance, inferInstance, IsAlgClosed.lift, fun r => ?_⟩
   exact IsFractionRing.lift_algebraMap hg r
 
+/- English proof (translation)
+Introduce `R _ _ _ hR D C j`. Establish `hodd : Odd (C.n ^ j)` using `C.n_odd.pow`. Establish `h1 : 1 ≤ C.n ^ j` using `Nat.one_le_pow _ _ C.n_prime.pos`. Take `⟨wA, hwA⟩` from `C.α_lb`. Apply the tactic sequence `have hL : C.P.L.L.IsLB := by first | exact C.P.L.isLB | exact C.P.L.hL | exact C.P.L.lb`.
+
+Establish `hL' : C.A.L.IsLB` using `C.A.isLB`. Distinguish the cases in `hT : ∃ (W : Type) (_ : CommRing W) (_ : IsDomain W) (_ : IsLocalRing W), Nonempty (Trait C W)`. Take `⟨W₀, _, _, _, ⟨T₀⟩⟩` from `hT`. Take `⟨K₀, _, _, _, _, em₀, hK₀⟩` from `exists_field_over_trait R W₀ T₀.φ T₀.inj`. Take `⟨lab, E, hlab, hE, -⟩` from `GlobalTheory.T.trait_inverse_expansion_equivariant_labels R hR D C j wA hwA W₀ T₀ K₀ em₀ hK₀`.
+
+Take `⟨Eb, hEb⟩` from `GlobalTheory.Mum.Desc.eqv_down R hR D C.A (C.n ^ j) hodd (C.lab j) K₀ em₀ lab E hlab hE`. Establish `hgal` using `GlobalTheory.Mum.labExt_of_trait R hR D C j W₀ ⟨T₀⟩`. Take `⟨Φ₀, E₀, hE₀, hΦ₀⟩` from `GlobalTheory.Mum.exists_eqv_rational R hR D C.A (C.n ^ j) hodd (C.lab j) Eb hEb hgal`. Use `choose Φ hΦ using fun F₀ => GlobalTheory.T.exists_lineBundlePowSection_transport_pullbackIso C.P.L.L C.A.L C.α wA hL hL' hwA (C.n ^ j) (Φ₀ F₀)`. Use `⟨Φ, fun W _ _ _ T => ?_⟩` and prove the remaining obligations.
+
+Take `⟨K, _, _, _, _, em, hK⟩` from `exists_field_over_trait R W T.φ T.inj`. Take `⟨c, hc, hcv⟩` from `GlobalTheory.T.integral_family_expansion_eq_const_mul_algClosure R hR D C j wA hwA E₀ Φ₀ hE₀ hΦ₀ Φ hΦ W T K em hK`. Conclude with `GlobalTheory.T.traitExpansion_descends_from_algClosed_field R hR D C (C.n ^ j) W T K hK Φ c hc (fun F₀ => GlobalTheory.T.exists_integralSection_expanding_thetaFamily R hR D C (C.n ^ j) h1 W T F₀) hcv`. Conclude with `⟨fun _ => ⟨fun _ => 0, fun _ _ => by simp⟩, fun W _ _ _ T => (hT ⟨W, _, _, _, ⟨T⟩⟩).elim⟩`.
+-/
 theorem exists_map_exp_all_traits : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D) (j : ℕ), ∃ Φ : IntFam (maximalIdeal R) D.toPre (C.n ^ j) → SecK C.P.L.L C.α (C.n ^ j), ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (T : Trait C W), ∃ a b : W, a ≠ 0 ∧ b ≠ 0 ∧ ∀ F, T.Exp a b (Φ F) F := by
   intro R _ _ _ hR D C j
   have hodd : Odd (C.n ^ j) := C.n_odd.pow

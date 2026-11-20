@@ -17,6 +17,13 @@ section Gen
 variable {G G' W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G'] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `hH' : ∀ g', Φ.symm g' ∈ H ↔ g' ∈ H'` using `fun g' => by`. Rewrite using `[← hH, MulEquiv.apply_symm_apply]`. Establish `hσ' : ∀ h' : H', σ ⟨Φ.symm h', (hH' h').2 h'.2⟩ = σ' h'`. Introduce `h'`. Rewrite using `[← hσ]`.
+
+Use `congr 1`. Conclude with `Subtype.ext (MulEquiv.apply_symm_apply _ _)`. Use `⟨transport Φ.symm (by simpa using hΦ) hH' hσ', fun f => ⟨transportFun Φ hΦs hH hσ f, ?_⟩⟩` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun y => ?_))` and prove the remaining obligations. Use `show f.1.1 (Φ.symm (Φ.symm.symm y)) = f.1.1 y`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_transport_symm_surjective (Φ : G ≃* G') (hΦ : Continuous Φ) (hΦs : Continuous Φ.symm)
     {H : Subgroup G} {H' : Subgroup G'} (hH : ∀ g, Φ g ∈ H' ↔ g ∈ H) {σ : Representation ℂ H W}
     {σ' : Representation ℂ H' W} (hσ : ∀ h : H, σ' ⟨Φ h, (hH h).2 h.2⟩ = σ h) :
@@ -38,6 +45,9 @@ end Gen
 variable {K L : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun g : GL (Fin N) K => (g : Matrix (Fin N) (Fin N) K).map ψ`. Conclude with `Units.continuous_val.matrix_map hψ`. Use `show Continuous fun g : GL (Fin N) K => ((g⁻¹ : GL (Fin N) K) : Matrix (Fin N) (Fin N) K).map ψ`. Conclude with `Units.continuous_coe_inv.matrix_map hψ`.
+-/
 theorem continuous_glEquiv (ψ : K ≃+* L) (hψ : Continuous ψ) {N : ℕ} :
     Continuous (GlobalTheory.LFun.SplitTie.glEquiv N ψ) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -49,6 +59,11 @@ theorem continuous_glEquiv (ψ : K ≃+* L) (hψ : Continuous ψ) {N : ℕ} :
 variable {α : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
   [∀ a, DecidableEq (m a)] {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[mem_unipRad, mem_unipRad, glEquiv_mem_parab]`. Use `and_congr_right fun _ => forall_congr' fun a => forall₂_congr fun i j => ?_` and prove the remaining obligations. Use `show ψ ((g : Matrix (Fin N) (Fin N) K) _ _) = _ ↔ _`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using `only [Matrix.one_apply_eq]`. Conclude with `map_eq_one_iff ψ ψ.injective`. Simplify using `only [Matrix.one_apply_ne hij]`. Conclude with `map_eq_zero_iff ψ ψ.injective`.
+-/
 theorem glEquiv_mem_unipRad (ψ : K ≃+* L) (e : (Σ a, m a) ≃ Fin N) (g : GL (Fin N) K) :
     GlobalTheory.LFun.SplitTie.glEquiv N ψ g ∈ unipRad L e ↔ g ∈ unipRad K e := by
   rw [mem_unipRad, mem_unipRad, glEquiv_mem_parab]
@@ -61,6 +76,11 @@ theorem glEquiv_mem_unipRad (ψ : K ≃+* L) (e : (Σ a, m a) ≃ Fin N) (g : GL
   · simp only [Matrix.one_apply_ne hij]
     exact map_eq_zero_iff ψ ψ.injective
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨⟨a, x⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective j`. Use `show ψ ((leviEmb K e g : Matrix (Fin N) (Fin N) K) _ _) = _`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same, leviEmb_apply_same, levMap_apply]`. Both sides reduce to the same expression. Rewrite using `[leviEmb_apply_ne K e g hab, leviEmb_apply_ne L e _ hab, map_zero]`.
+-/
 theorem glEquiv_leviEmb (ψ : K ≃+* L) (e : (Σ a, m a) ≃ Fin N) (g : Levi K m) :
     GlobalTheory.LFun.SplitTie.glEquiv N ψ (leviEmb K e g) = leviEmb L e (levMap ψ g) := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -73,6 +93,11 @@ theorem glEquiv_leviEmb (ψ : K ≃+* L) (e : (Σ a, m a) ≃ Fin N) (g : Levi K
     rfl
   · rw [leviEmb_apply_ne K e g hab, leviEmb_apply_ne L e _ hab, map_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Rewrite using `[levMap_apply]`. Distinguish the cases in `hj : j = 1`. Substitute `hj` using the available equality. Simplify using `only [midHom, MonoidHom.mulSingle_apply, Pi.mulSingle_eq_same]`.
+
+Both sides reduce to the same expression. Use `show glMap ψ _ (Pi.mulSingle (M := fun j : Fin 3 => GL (Fin (tripSizes l n N j)) K) 1 g j) = Pi.mulSingle (M := fun j : Fin 3 => GL (Fin (tripSizes l n N j)) L) 1 (GlobalTheory.LFun.SplitTie.glEquiv n ψ g) j erw [Pi.mulSingle_eq_of_ne hj, Pi.mulSingle_eq_of_ne hj, map_one]`.
+-/
 theorem levMap_midHom (ψ : K ≃+* L) (l n N : ℕ) (g : GL (Fin n) K) :
     levMap ψ (midHom K l n N g) = midHom L l n N (GlobalTheory.LFun.SplitTie.glEquiv n ψ g) := by
   funext j
@@ -85,6 +110,23 @@ theorem levMap_midHom (ψ : K ≃+* L) (l n N : ℕ) (g : GL (Fin n) K) :
       Pi.mulSingle (M := fun j : Fin 3 => GL (Fin (tripSizes l n N j)) L) 1 (GlobalTheory.LFun.SplitTie.glEquiv n ψ g) j
     erw [Pi.mulSingle_eq_of_ne hj, Pi.mulSingle_eq_of_ne hj, map_one]
 
+/- English proof (translation)
+Introduce `k k' _ _ _ _ _ _ _ _ e he hes a a' l n h α₀ β₀ α β hα hβ W _ _ Q hQ`. Establish `hρ : ∀ g, ofChar (twoDet a a' α β) (levMap e g) = ofChar (twoDet a a' α₀ β₀) g`. Introduce `g`. Establish `h2 : twoDet a a' α β (levMap e g) = twoDet a a' α₀ β₀ g` using `by show α (Matrix.GeneralLinearGroup.det (levMap e g 0)) * β (Matrix.GeneralLinearGroup.det (levMap e g 1)) = α₀ (Matrix.GeneralLinearGroup.det (g 0)) * β₀ (Matrix.GeneralLinearGroup.det (g 1))`. Rewrite using `[levMap_apply, levMap_apply, det_glMap, det_glMap, hα, hβ]`.
+
+Conclude with `LinearMap.ext fun x => by simp [ofChar_apply, h2]`. Establish `hσ : ∀ p : parab k (e2 a a'), ((twist (ofChar (twoDet a a' α β)) (deltaHalf k' _)).comp (leviProj k' (e2 a a'))) ⟨GlobalTheory.LFun.SplitTie.glEquiv (a + a') e p, (glEquiv_mem_parab e (e2 a a') p).2 p.2⟩ = ((twist (ofChar (twoDet a a' α₀ β₀)) (deltaHalf k _)).comp (leviProj k (e2 …`. Introduce `p`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Use `show (deltaHalf k' _ (leviProj k' (e2 a a') _) : ℂ) • ofChar (twoDet a a' α β) (leviProj k' (e2 a a') _) w = (deltaHalf k _ (leviProj k (e2 a a') p) : ℂ) • ofChar (twoDet a a' α₀ β₀) (leviProj k (e2 a a') p) w`.
+
+Rewrite using `[leviProj_glEquiv, deltaHalf_levMap e he, hρ]`. Take `⟨S, hS⟩ : ∃ S : (detInd a a' α β).IntertwiningMap ((detInd a a' α₀ β₀).comp (GlobalTheory.LFun.SplitTie.glEquiv (a + a') e).symm.toMonoidHom), Function.Surjective S` from `exists_transport_symm_surjective _ (continuous_glEquiv e he) (continuous_glEquiv_symm e he) (glEquiv_mem_parab e (e2 a a')) hσ`. Establish `hSi : ∀ g v, S (detInd a a' α β g v) = detInd a a' α₀ β₀ ((GlobalTheory.LFun.SplitTie.glEquiv (a + a') e).symm g) (S v)` using `fun g v => LinearMap.congr_fun (S.isIntertwining' g) v`. Establish `hU : ∀ u ∈ unipRad k' (tripPlace h), (GlobalTheory.LFun.SplitTie.glEquiv (a + a') e).symm u ∈ unipRad k (tripPlace h)` using `fun u hu => by`. Rewrite using `[← glEquiv_mem_unipRad e, MulEquiv.apply_symm_apply]`.
+
+Conclude with `hu`. Establish `hle : twKer (detInd a a' α β) (unipRad k' (tripPlace h)) 1 ≤ (twKer (detInd a a' α₀ β₀) (unipRad k (tripPlace h)) 1).comap S.toLinearMap`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨⟨_, hU u u.2⟩, S v, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Rewrite using `[← hSi]`. Both sides reduce to the same expression. Establish `key : ∀ g : GL (Fin n) k', (GlobalTheory.LFun.SplitTie.glEquiv (a + a') e).symm (leviEmb k' (tripPlace h) (midHom k' l n (a + a') g)) = leviEmb k (tripPlace h) (midHom k l n (a + a') ((GlobalTheory.LFun.SplitTie.glEquiv n e).symm g))`. Introduce `g`.
+
+Rewrite using `[MulEquiv.symm_apply_eq, glEquiv_leviEmb, levMap_midHom, MulEquiv.apply_symm_apply]`. Set `J : Representation.IntertwiningMap ((jacU (tripPlace h) (detInd a a' α β)).comp (midHom k' l n (a + a'))) (((jacU (tripPlace h) (detInd a a' α₀ β₀)).comp (midHom k l n (a + a'))).comp (GlobalTheory.LFun.SplitTie.glEquiv n e).symm.toMonoidHom)` to `⟨(twKer _ _ 1).mapQ (twKer _ _ 1) S.toLinearMap hle, fun g => by`. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show Submodule.Quotient.mk (S (detInd a a' α β (leviEmb k' (tripPlace h) (midHom k' l n (a + a') g)) v)) = (Submodule.Quotient.mk (detInd a a' α₀ β₀ (leviEmb k (tripPlace h) (midHom k l n (a + a') ((GlobalTheory.LFun.SplitTie.glEquiv n e).symm g))) (S v)) : Jacquet (detInd a a' α …`. Rewrite using `[hSi, key]⟩`.
+
+Establish `hJ : Function.Surjective J`. Establish `hm : Function.Surjective ((twKer (detInd a a' α β) (unipRad k' (tripPlace h)) 1).mapQ (twKer (detInd a a' α₀ β₀) (unipRad k (tripPlace h)) 1) S.toLinearMap hle)`. Establish `h1` using `Submodule.mapQ_mkQ (twKer (detInd a a' α β) (unipRad k' (tripPlace h)) 1) (twKer (detInd a a' α₀ β₀) (unipRad k (tripPlace h)) 1) S.toLinearMap (h := hle)`. Establish `h2 : Function.Surjective (((twKer (detInd a a' α₀ β₀) (unipRad k (tripPlace h)) 1).mkQ).comp S.toLinearMap)` using `(Submodule.mkQ_surjective _).comp hS`. Rewrite `h2` using `[← h1]`.
+
+Rewrite `h2` using `[LinearMap.coe_comp]`. Conclude with `Function.Surjective.of_comp h2`. Conclude with `hm`. Conclude with `(isSubquotient_comp hQ _).trans (IsSubquotient.of_surjective J hJ)`.
+-/
 theorem isSubquotient_midJacU_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (e : k ≃+* k'),
     Continuous e → Continuous e.symm → ∀ (a a' l n : ℕ) (h : l + n ≤ a + a') (α₀ β₀ : kˣ →* ℂˣ) (α β : k'ˣ →* ℂˣ),

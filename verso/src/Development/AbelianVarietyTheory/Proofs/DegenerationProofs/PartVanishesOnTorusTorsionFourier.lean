@@ -14,10 +14,20 @@ namespace GlobalTheory.TorsionFourier
 section Val
 variable {F : Type} [Field F] {X : Scheme.{0}} {x : Sp F ⟶ X} {U : X.Opens}
 
+/- English proof (translation)
+Simplify using `only [valF, dif_pos h, map_sum]`.
+-/
 theorem valF_sum (h : ⊤ ≤ x ⁻¹ᵁ U) {J : Type} (A : Finset J) (a : J → Γ(X, U)) :
     valF x U (∑ j ∈ A, a j) = ∑ j ∈ A, valF x U (a j) := by
   simp only [valF, dif_pos h, map_sum]
 
+/- English proof (translation)
+Establish `e1` using `Scheme.basicOpen_appLE x ⊤ U h a`. Rewrite `e1` using `[top_inf_eq]`. Establish `e2 : (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (valF x U a) = (x.appLE U ⊤ h).hom a`. Rewrite using `[valF, dif_pos h]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).hom_inv_id_apply _`.
+
+Establish `e3 : x ⁻¹ᵁ X.basicOpen a = (Sp F).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (valF x U a))`. Rewrite using `[e2]`. Conclude with `e1.symm`. Rewrite using `[e3]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hne`. Conclude with `(Scheme.basicOpen_of_isUnit _ ((Ne.isUnit hne).map _)).ge`. Introduce `hle h0`. Rewrite `hle` using `[h0, map_zero, Scheme.basicOpen_zero]`. Conclude with `hle (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)`.
+-/
 theorem valF_ne_zero_iff_le (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) :
     valF x U a ≠ 0 ↔ ⊤ ≤ x ⁻¹ᵁ X.basicOpen a := by
   have e1 := Scheme.basicOpen_appLE x ⊤ U h a
@@ -36,6 +46,13 @@ theorem valF_ne_zero_iff_le (h : ⊤ ≤ x ⁻¹ᵁ U) (a : Γ(X, U)) :
     rw [h0, map_zero, Scheme.basicOpen_zero] at hle
     exact hle (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hp : x (IsLocalRing.closedPoint F) ∈ Out.nonzeroLocus s` using `h (show (IsLocalRing.closedPoint F : Sp F) ∈ (⊤ : (Sp F).Opens) from trivial)`. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Establish `h1 : ⊤ ≤ x ⁻¹ᵁ X.basicOpen (s.f l)`.
+
+Introduce `y _`. Establish `: y = IsLocalRing.closedPoint F` using `Subsingleton.elim (α := PrimeSpectrum F) _ _`. Substitute `this` using the available equality. Conclude with `hl`. Establish `h2 : ⊤ ≤ x ⁻¹ᵁ H.U l` using `h1.trans (Scheme.Hom.preimage_mono x (X.basicOpen_le _))`.
+
+Conclude with `⟨l, h2, (valF_ne_zero_iff_le h2 _).2 h1⟩`. Introduce and unpack `⟨l, h2, hne⟩`. Conclude with `((valF_ne_zero_iff_le h2 _).1 hne).trans (Scheme.Hom.preimage_mono x (le_iSup (fun k => X.basicOpen (s.f k)) l))`.
+-/
 theorem le_nonzeroLocus_iff {H : LB X} (s : H.Sec) (x : Sp F ⟶ X) :
     ⊤ ≤ x ⁻¹ᵁ Out.nonzeroLocus s ↔ ∃ l, ⊤ ≤ x ⁻¹ᵁ H.U l ∧ valF x (H.U l) (s.f l) ≠ 0 := by
   constructor
@@ -56,6 +73,29 @@ theorem le_nonzeroLocus_iff {H : LB X} (s : H.Sec) (x : Sp F ⟶ X) :
 
 end Val
 
+/- English proof (translation)
+Introduce `k _ _ Φ d n hn φ hinc hφ α ψ hψ x hx hle`. Take `⟨hex, hfin, hext, hsum⟩` from `GlobalTheory.ZH.WtPart.weight_parts k Φ d`. Take `⟨l, hl, hne⟩` from `(le_nonzeroLocus_iff (F := k) ψ x.left).1 hle`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `hn Nat.cast_zero`. Establish `: NeZero (n : k)` using `⟨hn⟩`. Establish `: NeZero n` using `⟨hn0⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot k n`. Establish `hα : α ∈ Φ.supp φ`.
+
+Assume the negation of the conclusion as `hα`. Apply `hne` to reduce the goal to its premises. Establish `h0 : ψ.f l = ∑ β ∈ (∅ : Finset Φ.E.X), ((fun _ => ψ) β).f l`. Use `hsum ψ ∅ (fun _ => ψ) ?_ (fun β hβ => absurd hβ (Finset.notMem_empty β)) l` and prove the remaining obligations. Introduce and unpack `β ⟨l', hl'⟩`.
+
+Establish `e : β = α` using `hψ.1 ⟨l', hl'⟩`. Substitute `e` using the available equality. Conclude with `absurd ⟨l', by rwa [← hψ.2 l']⟩ hα`. Use `(congrArg (valF (F := k) x.left _) h0).trans ((valF_sum (F := k) hl _ _).trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_empty`.
+
+Use `choose p hp using hex φ`. Set `p' : Φ.E.X → (Φ.H d).Sec` to `fun β => if β = α then ψ else p β`. Establish `hp' : ∀ β, Φ.IsPart β φ (p' β)` using `fun β => by`. Distinguish the cases in `h : β = α`. Substitute `h` using the available equality.
+
+Simplify `hψ` using `only [p', if_pos rfl]`. Simplify `hp β` using `only [p', if_neg h]`. Set `A : Finset Φ.E.X` to `(hfin φ).toFinset`. Establish `hA : ∀ β, β ∈ A ↔ β ∈ Φ.supp φ` using `fun β => (hfin φ).mem_toFinset`. Set `v : Φ.E.X → k` to `fun β => valF (F := k) x.left ((Φ.H d).U l) ((p' β).f l)`.
+
+Set `c : Φ.E.X →₀ k` to `Finsupp.indicator A fun β _ => v β`. Establish `hcs : c.support ⊆ A` using `Finsupp.support_indicator_subset _ _`. Establish `hc : c = 0`. Use `GlobalTheory.finsupp_eq_zero_of_sum_torsion_characters_eq_zero k Φ.E.X n ζ (Nat.pos_of_ne_zero hn0) hζ k c (fun a ha b hb => hinc a ((hA a).1 (hcs ha)) b ((hA b).1 (hcs hb))) fun t ht => ?_` and prove the remaining obligations. Take `⟨a, -, ha, hat⟩` from `GlobalTheory.TorusTranslate.exists_point_translate_pure k Φ t`.
+
+Establish `hax : (a * x) ^ n = 1`. Rewrite using `[mul_pow, ha n ht, hx, _root_.one_mul]`. Establish `hl'` using `(hat d α ψ hψ.1 x l hl).1`. Establish `h0 : valF (F` using `k) (a * x).left ((Φ.H d).U l) (φ.f l) = 0 := by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hφ _ hax ((le_nonzeroLocus_iff (F := k) φ (a * x).left).2 ⟨l, hl', h⟩)`. Rewrite using `[Finsupp.sum_of_support_subset c hcs _ (fun _ _ => smul_zero _), ← h0]`. Establish `h1` using `hsum φ A p' (fun β hβ => (hA β).2 hβ) (fun β _ => hp' β) l`. Use `Eq.trans ?_ ((congrArg (valF (F := k) (a * x).left _) h1).trans (valF_sum (F := k) hl' _ _)).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.indicator_of_mem hβ]`. Conclude with `(hat d β (p' β) (hp' β).1 x l hl).2.symm`. Establish `h2 : c α = v α` using `Finsupp.indicator_of_mem ((hA α).2 hα) _`. Apply `hne` to reduce the goal to its premises. Establish `h3 : v α = 0` using `by rw [← h2, hc]; rfl`.
+
+Establish `h4 : p' α = ψ` using `if_pos rfl`. Rewrite using `[← h4]`. Conclude with `h3`.
+-/
 theorem part_vanishes_on_torsion : (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (d n : ℕ), (n : k) ≠ 0 → ∀ φ : (Φ.H d).Sec, (∀ α ∈ Φ.supp φ, ∀ β ∈ Φ.supp φ, (∃ w, α = β + n • w) → α = β) → (∀ x : Φ.Pt, x ^ n = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ) → ∀ α ψ, Φ.IsPart α φ ψ → ∀ x : Φ.Pt, x ^ n = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus ψ) := by
   intro k _ _ Φ d n hn φ hinc hφ α ψ hψ x hx hle
   classical

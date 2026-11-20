@@ -10,6 +10,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 variable {M : Model F E}
 
+/- English proof (translation)
+Establish `hsub : ∀ B : Matrix (Fin (r + 1)) (Fin (r + 1)) R, (s • B).submatrix Fin.castSucc Fin.castSucc = s • B.submatrix Fin.castSucc Fin.castSucc` using `fun B => by`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[det_add_cornerM, det_add_cornerM, head_add_cornerM, head_add_cornerM, hsub, hsub, Matrix.det_smul, Matrix.det_smul, Matrix.det_smul, Matrix.det_smul]`. Simplify using `only [Fintype.card_fin]`.
+
+Take the linear combination `(s ^ r * s ^ (r + 1)) * hrel`.
+-/
 theorem rel_smul_corner {R : Type} [CommRing R] {r : ℕ} (B₁ B₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
     (s c : R) (hrel : (B₁.submatrix Fin.castSucc Fin.castSucc).det * B₂.det =
       (B₂.submatrix Fin.castSucc Fin.castSucc).det * B₁.det) :
@@ -22,6 +27,9 @@ theorem rel_smul_corner {R : Type} [CommRing R] {r : ℕ} (B₁ B₂ : Matrix (F
   simp only [Fintype.card_fin]
   linear_combination (s ^ r * s ^ (r + 1)) * hrel
 
+/- English proof (translation)
+Rewrite using `[← Matrix.transpose_submatrix, ← Matrix.transpose_submatrix]`. Simplify using `only [Matrix.det_transpose]`. Conclude with `hrel`.
+-/
 theorem rel_transpose {R : Type} [CommRing R] {r : ℕ} (B₁ B₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) R)
     (hrel : (B₁.submatrix Fin.castSucc Fin.castSucc).det * B₂.det =
       (B₂.submatrix Fin.castSucc Fin.castSucc).det * B₁.det) :
@@ -31,6 +39,25 @@ theorem rel_transpose {R : Type} [CommRing R] {r : ℕ} (B₁ B₂ : Matrix (Fin
   simp only [Matrix.det_transpose]
   exact hrel
 
+/- English proof (translation)
+Set `φ₁ : E →+* F` to `(RingHom.fst F F).comp g.e.toRingEquiv.toRingHom`. Set `φ₂ : E →+* F` to `(RingHom.snd F F).comp g.e.toRingEquiv.toRingHom`. Establish `hφ₁ : ∀ x, φ₁ x = (g.e x).1` using `fun _ => rfl`. Establish `hφ₂ : ∀ x, φ₂ x = (g.e x).2` using `fun _ => rfl`. Establish `hdet : ∀ (φ : E →+* F) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E), φ A.det = (A.map φ).det`.
+
+Introduce `φ A`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `hhd : ∀ (φ : E →+* F) (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E), φ (A.submatrix Fin.castSucc Fin.castSucc).det = ((A.map φ).submatrix Fin.castSucc Fin.castSucc).det`. Introduce `φ A`.
+
+Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Establish `hrelφ : ∀ φ : E →+* F, ((Zh₁.map φ).submatrix Fin.castSucc Fin.castSucc).det * (Zh₂.map φ).det = ((Zh₂.map φ).submatrix Fin.castSucc Fin.castSucc).det * (Zh₁.map φ).det`. Introduce `φ`. Rewrite using `[← hdet, ← hdet, ← hhd, ← hhd, ← map_mul, ← map_mul, hrel]`.
+
+Establish `m1 : ∀ Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (HermSp.ZZplusOf M Zh T T').map φ₁ = ((g.q : F)⁻¹) • Zh.map φ₁ + cornerM r (T / (g.q : F))`. Introduce `Zh`. Use extensionality with `a b`. Unfold `HermSp.ZZplusOf`. Rewrite using `[hs]`.
+
+Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, cornerM, smul_eq_mul, hφ₁, map_sub, AlgEquiv.apply_symm_apply, Prod.fst_sub]`. Use `split_ifs with h`. Simplify using `only [map_sub, AlgEquiv.apply_symm_apply, Prod.fst_sub]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_zero, Prod.fst_zero]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `m2 : ∀ Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E, (HermSp.ZZplusOf M Zh T T').map φ₂ = (-(g.q : F)⁻¹) • (Zh.map φ₂).transpose + cornerM r (-(T' / (g.q : F)))`. Introduce `Zh`. Use extensionality with `a b`. Unfold `HermSp.ZZplusOf`.
+
+Rewrite using `[hs]`. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, cornerM, smul_eq_mul, hφ₂, Matrix.transpose_apply, map_sub, AlgEquiv.apply_symm_apply, Prod.snd_sub]`. Use `split_ifs with h`. Simplify using `only [map_sub, AlgEquiv.apply_symm_apply, Prod.snd_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [map_zero, Prod.snd_zero]`. Expand and normalize the polynomial expressions, which then agree. Apply `g.e.injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show φ₁ _ = φ₁ _`.
+
+Rewrite using `[map_mul, map_mul, hdet, hdet, hhd, hhd, m1, m1]`. Conclude with `rel_smul_corner _ _ _ _ (hrelφ φ₁)`. Use `show φ₂ _ = φ₂ _`. Rewrite using `[map_mul, map_mul, hdet, hdet, hhd, hhd, m2, m2]`. Conclude with `rel_smul_corner _ _ _ _ (rel_transpose _ _ (hrelφ φ₂))`.
+-/
 theorem det_rel_split {g : SplitG M.L} (hs : M.split = some g) {r : ℕ}
     (Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hrel : (Zh₁.submatrix Fin.castSucc Fin.castSucc).det * Zh₂.det =

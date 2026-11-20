@@ -27,6 +27,11 @@ namespace GlobalTheory.DownLift.DefiniteComp
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Establish `hr : (finHom (Vc D i)).rangeRestrict (h * k) = (finHom (Vc D i)).rangeRestrict h`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[MonoidHom.mem_ker.1 hk]`. Use `show (R.cV i).ρ (h * k)⁻¹ ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict (h * k))) = (R.cV i).ρ k⁻¹ ((R.cV i).ρ h⁻¹ ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict h)))`. Use `(congrArg ((R.cV i).ρ (h * k)⁻¹) (congrArg ((R.HV i t).e y) hr)).trans ?_` and prove the remaining obligations.
+
+Establish `e : (R.cV i).ρ (h * k)⁻¹ = (R.cV i).ρ k⁻¹ * (R.cV i).ρ h⁻¹` using `by rw [_root_.mul_inv_rev, map_mul]`. Conclude with `congrArg (fun f : Module.End ℂ (R.cV i).W => f ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict h))) e`.
+-/
 theorem extV_mul_inf (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H)
     {k : GA D (Vc D i)} (hk : k ∈ GinfC (Vc D i)) (h : GA D (Vc D i)) :
     R.extV i t y (h * k) = (R.cV i).ρ k⁻¹ (R.extV i t y h) := by
@@ -39,6 +44,11 @@ theorem extV_mul_inf (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t
   have e : (R.cV i).ρ (h * k)⁻¹ = (R.cV i).ρ k⁻¹ * (R.cV i).ρ h⁻¹ := by rw [_root_.mul_inv_rev, map_mul]
   exact congrArg (fun f : Module.End ℂ (R.cV i).W => f ((R.HV i t).e y ((finHom (Vc D i)).rangeRestrict h))) e
 
+/- English proof (translation)
+Establish `h2 : Kg D.sp.cm (Vc D i).gram (R.βV i) (R.Pg ∪ R.Q t) ≤ lev D.sp.cm (Vc D i).gram (R.βV i) (flag1L (R.datVt i t))` using `Kg_le_lev (D := flag1L (R.datVt i t)) Finset.subset_union_left Finset.subset_union_right`. Establish `hlev : κ ∈ levG (Vc D i) (R.βV i) (flag1L (R.datVt i t))` using `mem_levA.2 ⟨hκ, h2 hK⟩`. Establish `hred : ∀ PP ∈ R.Pg ∪ R.Q t, redFn (R.βV i) PP (finE (Vc D i) κ) = 1` using `fun PP hP => (mem_princAt.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hK.2 PP) hP)).2`. Establish `hfn : levFn (R.βV i) (flag1L (R.datVt i t)) (finE (Vc D i) κ) = 1` using `GlobalTheory.ThetaIntegrand.levFn_eq_one (R.βV i) _ (flag1L (R.datVt i t)) (fun PP hP => hred PP (Finset.mem_union_left _ hP)) (fun PP hP => hred PP (Finset.mem_union_right _ hP))`. Establish `hchi : levChi (Vc D i) (R.βV i) (flag1L (R.datVt i t)) κ = 1` using `(congrArg (fun u : ℂˣ => (u : ℂ)) hfn).trans Units.val_one`.
+
+Conclude with `(GlobalTheory.DownLift.GenFinite.extV_type R hM i t y κ hlev h).trans (by simp only [hchi, one_smul])`.
+-/
 theorem extV_mul_Kg (R : RealDat D A Ks) (hM : R.IsModels) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H)
     {κ : GA D (Vc D i)} (hκ : κ ∈ GfC (Vc D i))
     (hK : finE (Vc D i) κ ∈ Kg D.sp.cm (Vc D i).gram (R.βV i) (R.Pg ∪ R.Q t)) (h : GA D (Vc D i)) :
@@ -60,11 +70,23 @@ def compL (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) :
     ((R.cV i).W →ₗ[ℂ] ℂ) →ₗ[ℂ] (GA D (Vc D i) → ℂ) :=
   LinearMap.pi fun g => LinearMap.applyₗ (R := ℂ) (R.extV i t y g)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨l ∘ₗ (R.cV i).ρ k⁻¹, funext fun g => (congrArg l (extV_mul_inf R i t y hk g)).symm⟩`.
+-/
 theorem mul_inf_mem_range (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (y : (R.HV i t).H) (l : (R.cV i).W →ₗ[ℂ] ℂ)
     {k : GA D (Vc D i)} (hk : k ∈ GinfC (Vc D i)) :
     (fun g => l (R.extV i t y (g * k))) ∈ LinearMap.range (compL R i t y) :=
   ⟨l ∘ₗ (R.cV i).ρ k⁻¹, funext fun g => (congrArg l (extV_mul_inf R i t y hk g)).symm⟩
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t cA a hd y l`. Establish `hM : R.IsModels` using `hG.core.models`. Establish `hf : (R.HV i t).e y ∈ Formalism.IndefR.Bridge.AdForms (Formalism.IndefR.Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ` using `(hM.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `hcont : Continuous fun g => l (R.extV i t y g)` using `(LinearMap.continuous_of_finiteDimensional l).comp (GlobalTheory.ThetaIntegrand.ext_continuous (R.cV i) (hM.cV i) (R.βV i) (R.datVt i t) hf)`. Establish `hleft : ∀ γ ∈ GQ (Vc D i), ∀ g, l (R.extV i t y (γ * g)) = l (R.extV i t y g)` using `fun γ hγ g => congrArg l (GlobalTheory.ThetaIntegrand.ext_invariant (R.cV i) hf γ hγ g)`.
+
+Establish `hlevel : ∃ U : Subgroup (GA D (Vc D i)), IsOpen (U : Set (GA D (Vc D i))) ∧ ∀ k ∈ U, k ∈ GfC (Vc D i) → ∀ g, l (R.extV i t y (g * k)) = l (R.extV i t y g)` using `⟨_, GlobalTheory.DefiniteEnd.isOpen_Kg (Vc D i) (R.βV i) (R.Pg ∪ R.Q t), fun k hk hkf g => congrArg l (extV_mul_Kg R hM i t y hkf hk g)⟩`. Establish `hkfin : FiniteDimensional ℂ (Submodule.span ℂ {ψ : GA D (Vc D i) → ℂ | ∃ k ∈ GinfC (Vc D i), ψ = rTr (Vc D i) k fun g => l (R.extV i t y g)})` using `Submodule.finiteDimensional_of_le (Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `mul_inf_mem_range R i t y l hk))`. Establish `hdef : IsAutFunDef (Vc D i) fun g => l (R.extV i t y g)` using `⟨⟨hleft, hlevel, hcont⟩, hkfin⟩`.
+
+Establish `hdefn : (Vc D i).IsDefinite` using `fun τ => Or.inl (hd.pos τ)`. Establish `hsm` using `((GlobalTheory.DefiniteForms.autFunDefIffSm D) R.θ hd.inf (Vc D i) hd.sig hdefn _).1 hdef`. Establish `hcusp : IsCuspFun (Vc D i) fun g => l (R.extV i t y g)` using `fun r C hC => absurd hC (GlobalTheory.Per.isAniso_of_posDef hd.sig hd.pos r C)`. Establish `hK : GlobalTheory.Doubling.IsKFinite (GlobalTheory.Cusp.Kinf R.θ (Vc D i) cA) fun g => l (R.extV i t y g)` using `GlobalTheory.Doubling.isKFinite_iff.2 ⟨LinearMap.range (compL R i t y), inferInstance, fun k hk => mul_inf_mem_range R i t y l (GlobalTheory.Cusp.Kinf_le hk)⟩`. Use `⟨GlobalTheory.Cusp.mem_cuspForms.2 ⟨⟨hsm, hcusp⟩, hK⟩, fun κ hκ g => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `mem_levA.1 hκ`. Establish `h2 : finE (Vc D i) κ ∈ Kg D.sp.cm (Vc D i).gram (R.βV i) (R.Pg ∪ R.Q t)` using `(Model.lev_prinDat (Vc D i) (R.βV i) (R.Pg ∪ R.Q t)) ▸ h1.2`. Conclude with `congrArg l (extV_mul_Kg R hM i t y h1.1 h2 g)`.
+-/
 theorem definiteScalarComponent_isCusp_and_congruence_fixed : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t cA a, Defin R.θ (Vc D i) cA a → ∀ (y : (R.HV i t).H) (l : (R.cV i).W →ₗ[ℂ] ℂ), (fun g => l (R.extV i t y g)) ∈ GlobalTheory.Cusp.A0 R.θ (Vc D i) cA ∧ ∀ κ ∈ prin (Vc D i) (R.βV i) (R.Pg ∪ R.Q t), ∀ g, l (R.extV i t y (g * κ)) = l (R.extV i t y g) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t cA a hd y l
   have hM : R.IsModels := hG.core.models

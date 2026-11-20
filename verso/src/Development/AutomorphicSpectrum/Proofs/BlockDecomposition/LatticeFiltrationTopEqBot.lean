@@ -7,6 +7,9 @@ open DividedPowers CrystallineSemistableComparison.Pb
 
 namespace GlobalTheory.CompanionTheory.LatNil
 
+/- English proof (translation)
+Use `⟨Ideal.map_comap_le, ?_⟩` and prove the remaining obligations. Introduce `n a ha`. Conclude with `(Lat.ι_γ f ξ l M hc ha).symm`.
+-/
 theorem isDPMorphism_ι {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (l M : ℕ)
     (hc : Lat.DPClosed (Lat.ι f ξ l M) (Lat.γB f ξ)) :
     IsDPMorphism (Lat.γ f ξ l M hc) (Lat.γB f ξ) (Lat.ι f ξ l M) := by
@@ -14,6 +17,11 @@ theorem isDPMorphism_ι {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (
   intro n a ha
   exact (Lat.ι_γ f ξ l M hc ha).symm
 
+/- English proof (translation)
+Introduce `W B _ _ _ f ξ l M m h hc`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Ideal.mem_bot]`. Establish `h1 : Lat.ι f ξ l M x ∈ pdP (Lat.γB f ξ) m` using `dividedPowerFiltration_map (isDPMorphism_ι f ξ l M hc) m hx`.
+
+Rewrite `h1` using `[GlobalTheory.T.divided_power_filtration_span_pow f ξ m, h.nil, Ideal.mem_span_singleton, zero_dvd_iff]`. Conclude with `Lat.ι_injective f ξ l M (by rw [h1, map_zero])`.
+-/
 theorem dividedPowerFiltration_eq_bot : ∀ {W B : Type} [CommRing W] [CommRing B] [Algebra ℚ B] (f : W →+* B) (ξ : W) (l M : ℕ) (m : ℕ),
     Lat.Hyp f ξ l m → ∀ hc : Lat.DPClosed (Lat.ι f ξ l M) (Lat.γB f ξ), pdP (Lat.γ f ξ l M hc) m = ⊥ := by
   intro W B _ _ _ f ξ l M m h hc

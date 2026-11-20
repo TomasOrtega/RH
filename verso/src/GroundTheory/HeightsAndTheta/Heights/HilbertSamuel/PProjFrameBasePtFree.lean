@@ -11,6 +11,11 @@ noncomputable section
 
 namespace ProjFrameBasePtFree
 
+/- English proof (translation)
+Simplify using `only [linForm, projMat]`. Generalize the expression as in `e k = q`. Take `⟨⟨⟩, j⟩` from `q`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules.
+
+Introduce `i _ hi`. Simplify using `[Ne.symm hi]`. Simplify using the standard rewrite rules.
+-/
 theorem linForm_projMat {κ : Type} [Fintype κ] {D : ℕ} (e : Fin (D + 1) → Ix κ) (k : Fin (D + 1)) :
     linForm (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e) ⟨(), k⟩ = X (e k) := by
   classical
@@ -23,6 +28,13 @@ theorem linForm_projMat {κ : Type} [Fintype κ] {D : ℕ} (e : Fin (D + 1) → 
     simp [Ne.symm hi]
   · simp
 
+/- English proof (translation)
+Establish `h1 : h ∈ Ideal.span ((X : Fin (D + 1) → MvPolynomial (Fin (D + 1)) ℤ) '' Set.univ)`. Rewrite using `[mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Establish `hm0 : m = 0` using `Finsupp.ext fun i => hcon i (Set.mem_univ i)`. Use `hh (mem_support_iff.mp hm)` as an intermediate fact. Rewrite `this` using `[hm0, map_zero]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `Ideal.mem_map_of_mem (rename e : MvPolynomial (Fin (D + 1)) ℤ →ₐ[ℤ] MvPolynomial (Ix κ) ℤ) h1`.
+
+Rewrite `h2` using `[Ideal.map_span, Set.image_image, Set.image_univ]`. Simplify `h2` using `[rename_X]`.
+-/
 theorem rename_mem_span {κ : Type} {D : ℕ} (e : Fin (D + 1) → Ix κ) {h : MvPolynomial (Fin (D + 1)) ℤ} {n : ℕ}
     (hh : h.IsHomogeneous n) (hn : 0 < n) :
     rename e h ∈ Ideal.span (Set.range fun k => (X (e k) : MvPolynomial (Ix κ) ℤ)) := by
@@ -39,6 +51,21 @@ theorem rename_mem_span {κ : Type} {D : ℕ} (e : Fin (D + 1) → Ix κ) {h : M
   rw [Ideal.map_span, Set.image_image, Set.image_univ] at h2
   simpa [rename_X] using h2
 
+/- English proof (translation)
+Take `⟨q, hmon, hq⟩` from `hfr.integral p`. Use `set N := q.natDegree with hNdef`. Establish `hcoef : ∀ j, ∃ f : MvPolynomial (Fin (D + 1)) ℤ, coneMap ℤ (x ∘ e) f = ((q.coeff j : coneRing ℤ (x ∘ e)) : Polynomial Ω)` using `fun j => (q.coeff j).2`. Use `choose f hf using hcoef`. Use `set F : MvPolynomial (Ix κ) ℤ := X p ^ N + ∑ j ∈ Finset.range N, rename e (homogeneousComponent (N - j) (f j)) * X p ^ j with hFdef`.
+
+Establish `hFh : F.IsHomogeneous N`. Use `(isHomogeneous_X_pow p N).add (IsHomogeneous.sum _ _ _ fun j hj => ?_)` and prove the remaining obligations. Establish `hj' : N - j + j = N` using `Nat.sub_add_cancel (Finset.mem_range.mp hj).le`. Use `((homogeneousComponent_isHomogeneous (N - j) (f j)).rename_isHomogeneous (f := e)).mul (isHomogeneous_X_pow p j)` as an intermediate fact. Rewrite `this` using `[hj']`. Then use the resulting hypothesis.
+
+Establish `hFx : aeval x F = 0`. Establish `h0` using `congrArg (fun r : Polynomial Ω => r.coeff N) hq`. Simplify using `only [Polynomial.coeff_zero] at h0`. Rewrite `h0` using `[hmon.as_sum, Polynomial.eval₂_add, Polynomial.eval₂_finsetSum, Polynomial.coeff_add, Polynomial.finsetSum_coeff]`. Rewrite using `[← h0, hFdef, map_add, map_sum]`.
+
+Use `congr 1`. Rewrite using `[Polynomial.eval₂_X_pow, mul_pow, ← Polynomial.C_pow, Polynomial.coeff_C_mul_X_pow, if_pos rfl, map_pow, aeval_X]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjN : j ≤ N` using `(Finset.mem_range.mp hj).le`. Rewrite using `[Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_X_pow, mul_pow, ← Polynomial.C_pow, ← mul_assoc, Polynomial.coeff_mul_X_pow', if_pos hjN, Polynomial.coeff_mul_C]`.
+
+Rewrite using `[map_mul, map_pow, aeval_X, aeval_rename]`. Establish `: algebraMap (coneRing ℤ (x ∘ e)) (Polynomial Ω) (q.coeff j) = coneMap ℤ (x ∘ e) (f j)` using `(hf j).symm`. Rewrite using `[this, coeff_coneMap]`. Establish `hFP : F ∈ coordIdeal ℤ x` using `mem_coordIdeal_of_isHomogeneous ℤ x hFh hFx`. Use `⟨N, ?_⟩` and prove the remaining obligations.
+
+Establish `hsum : (∑ j ∈ Finset.range N, rename e (homogeneousComponent (N - j) (f j)) * X p ^ j) ∈ Ideal.span (Set.range fun k => (X (e k) : MvPolynomial (Ix κ) ℤ))`. Use `Ideal.sum_mem _ fun j hj => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Establish `hjN : j < N` using `Finset.mem_range.mp hj`. Conclude with `rename_mem_span e (homogeneousComponent_isHomogeneous (N - j) (f j)) (by omega)`. Establish `: (X p : MvPolynomial (Ix κ) ℤ) ^ N = F - ∑ j ∈ Finset.range N, rename e (homogeneousComponent (N - j) (f j)) * X p ^ j`.
+
+Rewrite using `[hFdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hFP) (Ideal.mem_sup_right hsum)`.
+-/
 theorem pow_mem (D : ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (κ : Type) (x : Ix κ → Ω)
     (e : Fin (D + 1) → Ix κ) (hfr : IsProjFrame x e) (p : Ix κ) :
     ∃ N : ℕ, (X p : MvPolynomial (Ix κ) ℤ) ^ N ∈
@@ -90,6 +117,11 @@ end ProjFrameBasePtFree
 
 open ProjFrameBasePtFree in
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ x e hfr k₂ i`. Take `⟨N, hN⟩` from `pow_mem D Ω κ x e hfr ⟨(), i ()⟩`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hspan : (Set.range fun j : GlobalTheory (Fin (D + 1)) k₂ => linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e) ⟨k₂, j⟩) = Set.range fun k => (X (e k) : MvPolynomial (Ix κ) ℤ) := by`. Consider the cases of `k₂`.
+
+Use `ext`. Simplify using `[linForm_projMat]`. Rewrite using `[hspan, Fintype.prod_unique]`. Conclude with `hN`.
+-/
 theorem ProjFrameBasePtFree.proof : ProjFrameBasePtFree.Statement := by
   intro D Ω _ _ κ _ x e hfr k₂ i
   obtain ⟨N, hN⟩ := pow_mem D Ω κ x e hfr ⟨(), i ()⟩

@@ -10,6 +10,9 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 
 namespace GlobalTheory.PairStep
 
+/- English proof (translation)
+Introduce `X _ _ N x z hN hzx`. Set `U : X.Opens` to `⟨(closure ({z} : Set X))ᶜ, isClosed_closure.isOpen_compl⟩`. Establish `hx : x ∈ U` using `fun h => hzx (specializes_iff_mem_closure.2 h)`. Take `⟨n, hn, s, hs, hle, -⟩` from `hN.exists_affine_le hx`. Conclude with `⟨n, s, hn, hs, fun h => hle h (subset_closure rfl)⟩`.
+-/
 theorem exists_sec_mem_not_mem_of_not_specializes :
     ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (N : LB X) (x z : X), IsAmpleLB N → ¬ z ⤳ x →
       ∃ (l : ℕ) (s : (lbPow N l).Sec), 0 < l ∧ x ∈ nonzeroLocus s ∧ z ∉ nonzeroLocus s := by

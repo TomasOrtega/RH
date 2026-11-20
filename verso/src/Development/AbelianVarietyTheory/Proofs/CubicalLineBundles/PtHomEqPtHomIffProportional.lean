@@ -7,6 +7,9 @@ namespace GlobalTheory.AddLaw
 
 open GlobalTheory.WeierstrassCurve
 
+/- English proof (translation)
+The claim follows from `ptHom_eq_ptHom_iff_minors W hP hQ`.
+-/
 theorem ptHom_eq_ptHom_iff_proportional (R : Type) [CommRing R] (W : WeierstrassCurve R)
     (A : Type) [CommRing A] (ρ : R →+* A) (P Q : Fin 3 → A)
     (hP : IsUnimodularSol (W.map ρ) P) (hQ : IsUnimodularSol (W.map ρ) Q) :

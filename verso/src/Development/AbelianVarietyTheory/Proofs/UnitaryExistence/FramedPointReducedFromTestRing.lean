@@ -27,17 +27,26 @@ namespace GlobalTheory.Frames.TestDescent
 
 open GlobalTheory.FramedBaseChange
 
+/- English proof (translation)
+The claim follows from `spec_comp φ.toRingHom ψ.toRingHom`.
+-/
 theorem spec_comp_alg {K S T U : Type} [Field K] [CommRing S] [CommRing T] [CommRing U] [Algebra K S]
     [Algebra K T] [Algebra K U] (φ : S →ₐ[K] T) (ψ : T →ₐ[K] U) :
     spMap (ψ.comp φ).toRingHom = spMap ψ.toRingHom ≫ spMap φ.toRingHom :=
   spec_comp φ.toRingHom ψ.toRingHom
 
+/- English proof (translation)
+Establish `h1` using `Spec.map_injective h`. Establish `h2 : φ.toRingHom = ψ.toRingHom` using `congrArg CommRingCat.Hom.hom h1`. Conclude with `AlgHom.coe_ringHom_injective h2`.
+-/
 theorem algHom_eq_of_spec {K S T : Type} [Field K] [CommRing S] [CommRing T] [Algebra K S]
     [Algebra K T] (φ ψ : S →ₐ[K] T) (h : spMap φ.toRingHom = spMap ψ.toRingHom) : φ = ψ := by
   have h1 := Spec.map_injective h
   have h2 : φ.toRingHom = ψ.toRingHom := congrArg CommRingCat.Hom.hom h1
   exact AlgHom.coe_ringHom_injective h2
 
+/- English proof (translation)
+Use `Localization.algebraMap_injective_of_span_eq_top _ hs ?_` and prove the remaining obligations. Use function extensionality and compare the values at `r`. Take `⟨_, i, rfl⟩` from `r`. Conclude with `hab i`.
+-/
 theorem eq_of_away {S : Type} [CommRing S] {n : ℕ} (h : Fin n → S) (hs : Ideal.span (Set.range h) = ⊤)
     (a b : S) (hab : ∀ i, algebraMap S (Localization.Away (h i)) a = algebraMap S (Localization.Away (h i)) b) :
     a = b := by
@@ -46,6 +55,11 @@ theorem eq_of_away {S : Type} [CommRing S] {n : ℕ} (h : Fin n → S) (hs : Ide
   obtain ⟨_, i, rfl⟩ := r
   exact hab i
 
+/- English proof (translation)
+Establish `hf' : ∀ y : Submonoid.powers x, IsUnit (f y)`. Introduce and unpack `⟨_, m, rfl⟩`. Simplify using `only [map_pow]`. Conclude with `hf.pow m`. Use `⟨IsLocalization.liftAlgHom (M := Submonoid.powers x) hf', ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `s`. Conclude with `IsLocalization.lift_eq (M := Submonoid.powers x) (g := f.toRingHom) hf' s`.
+-/
 theorem exists_lift_away {K S T : Type} [Field K] [CommRing S] [CommRing T] [Algebra K S] [Algebra K T]
     (x : S) (f : S →ₐ[K] T) (hf : IsUnit (f x)) :
     ∃ ν : Localization.Away x →ₐ[K] T, ν.comp (IsScalarTower.toAlgHom K S (Localization.Away x)) = f := by
@@ -57,6 +71,9 @@ theorem exists_lift_away {K S T : Type} [Field K] [CommRing S] [CommRing T] [Alg
   ext s
   exact IsLocalization.lift_eq (M := Submonoid.powers x) (g := f.toRingHom) hf' s
 
+/- English proof (translation)
+Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Conclude with `IsLocalization.ringHom_ext (Submonoid.powers x) (RingHom.ext h)`.
+-/
 theorem away_algHom_ext {K S T : Type} [Field K] [CommRing S] [CommRing T] [Algebra K S] [Algebra K T]
     (x : S) (f g : Localization.Away x →ₐ[K] T)
     (h : ∀ s, f (algebraMap S _ s) = g (algebraMap S _ s)) : f = g := by
@@ -66,6 +83,15 @@ theorem away_algHom_ext {K S T : Type} [Field K] [CommRing S] [CommRing T] [Alge
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Take `⟨g, a, -, hga⟩` from `(GlobalTheory.T.frameChange_exists_unique_of_same_point E H Dw l Xo c S y y').1 hx`. Establish `key` using `fun i => (GlobalTheory.T.frameChange_exists_unique_of_same_point E H Dw l Xo c _ (z i) (z i)).2 _ _ _ _ ((GlobalTheory.T.frameChange_comm_baseChange E H Dw l Xo c S _ _ y y' (z i) (z i) g a hga (hy i)).1 (hy' i)) (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c _ …`. Establish `hg : g = fun _ => 1`. Use function extensionality and compare the values at `τ`. Use extensionality with `p q`.
+
+Use `eq_of_away h hs _ _ fun i => ?_` and prove the remaining obligations. Use `congrFun (congrFun (congrFun (key i).1 τ) p) q` as an intermediate fact. Simplify using `only [Matrix.map_apply, IsScalarTower.coe_toAlgHom'] at this`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `ha : a = 1`. Use `ext`. Use `eq_of_away h hs _ _ fun i => ?_` and prove the remaining obligations. Use `(key i).2` as an intermediate fact. Simplify using `using this`.
+
+Substitute `hg ha` using the available equality. Conclude with `(GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c S y (fun _ => 1) 1 (fun _ => by simp)).unique (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c _ y y y).1 hga`.
+-/
 theorem eq_of_cover {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (h : Fin n → S)
     (hs : Ideal.span (Set.range h) = ⊤) (y y' : FrPt Xo c S) (hx : y'.x = y.x)
     (z : ∀ i, FrPt Xo c (Localization.Away (h i)))
@@ -92,6 +118,13 @@ theorem eq_of_cover {S : Type} [CommRing S] [Algebra c.F S] {n : ℕ} (h : Fin n
   exact (GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c S y (fun _ => 1) 1 (fun _ => by simp)).unique
     (GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c _ y y y).1 hga
 
+/- English proof (translation)
+Set `xF : Sp S ⟶ Xo.XF c` to `pullback.lift x (spMap (algebraMap c.F S)) (hx.trans (spec_comp _ _))`. Use `choose p j y₀ hj hr using fun q : Sp S => GlobalTheory.T.exists_openChart_framedPoint_testRing hB E H Dw l Xo c (xF q)`. Use `choose g hg hfac using fun q : Sp S => GlobalTheory.Frames.openChart_factor_near_prime E H Dw l Xo c _ (j q) (y₀ q) (hj q) S xF (pullback.lift_snd _ _ _) q (hr q)`. Establish `hspan : Ideal.span (Set.range g) = ⊤`. Assume the negation of the conclusion as `hne`.
+
+Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Conclude with `hg ⟨m, hm.isPrime⟩ (hle (Ideal.subset_span ⟨_, rfl⟩))`. Take `⟨t, ht, htspan⟩` from `(Ideal.span_eq_top_iff_finite _).1 hspan`. Use `choose q hq using fun a : t => ht a.2`. Set `e` to `t.equivFin.symm`.
+
+Use `⟨xF, t.card, fun i => g (q (e i)), fun i => p (q (e i)), fun i => j (q (e i)), fun i => y₀ (q (e i)), pullback.lift_fst _ _ _, ?_, fun i => hj _, fun i => hfac _⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← htspan]`. Use `Ideal.span_mono fun a ha => ⟨e.symm ⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Simplify using `[hq]`.
+-/
 theorem exists_chart_cover (hB : Out.SecBaseChangeSt) {S : Type} [CommRing S] [Algebra c.F S]
     (x : Sp S ⟶ Xo.X) (hx : x ≫ Xo.s = sOf c S) :
     ∃ (xF : Sp S ⟶ Xo.XF c) (n : ℕ) (g : Fin n → S) (p : Fin n → TRing c.F)
@@ -117,6 +150,9 @@ theorem exists_chart_cover (hB : Out.SecBaseChangeSt) {S : Type} [CommRing S] [A
   refine Ideal.span_mono fun a ha => ⟨e.symm ⟨a, ha⟩, ?_⟩
   simp [hq]
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `b`. Take `⟨θ, hθ, hinj, -⟩` from `GlobalTheory.exists_awayMap_subalgebra K S S₁ b hb`. Conclude with `⟨θ, hθ, hinj⟩`.
+-/
 theorem exists_away_val {K S : Type} [Field K] [CommRing S] [Algebra K S] (S₁ : Subalgebra K S) (b : S₁) :
     ∃ θ : Localization.Away b →ₐ[K] Localization.Away (b : S),
       (∀ s : S₁, θ (algebraMap S₁ _ s) = algebraMap S _ (s : S)) ∧ Function.Injective θ := by
@@ -124,6 +160,13 @@ theorem exists_away_val {K S : Type} [Field K] [CommRing S] [Algebra K S] (S₁ 
   obtain ⟨θ, hθ, hinj, -⟩ := GlobalTheory.exists_awayMap_subalgebra K S S₁ b hb
   exact ⟨θ, hθ, hinj⟩
 
+/- English proof (translation)
+Establish `hα' : ∀ s : S₁, α (algebraMap S₁ _ s) = algebraMap S₁ _ s` using `fun s => RingHom.congr_fun hα s`. Establish `hun : IsUnit (IsScalarTower.toAlgHom c.F S (Localization.Away (b : S)) h)`. Establish `h1 : IsUnit (algebraMap S₁ (Localization.Away h₁) h₁)` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `h2` using `(h1.map α).map θ`. Rewrite `h2` using `[hα', hθ, hh]`.
+
+Conclude with `h2`. Take `⟨ν, hν⟩` from `exists_lift_away h _ hun`. Establish `e : ν.comp κ = θ.comp α`. Use `away_algHom_ext _ _ _ fun s => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, hκ, hα', hθ]`.
+
+Conclude with `AlgHom.congr_fun hν (s : S)`. Establish `m1 : FrMap ν z w` using `cancel _ ν hz (by rw [hν]; exact hw)`. Establish `m2 : FrMap (θ.comp α) v w` using `by rw [← e]; exact trans _ _ hv m1`. Conclude with `cancel _ θ hu m2`.
+-/
 theorem frMap_restrict {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (S₁ : Subalgebra c.F S) (h : S) (h₁ : S₁) (hh : (h₁ : S) = h)
     (κ : Localization.Away h₁ →ₐ[c.F] Localization.Away h)
@@ -154,12 +197,26 @@ theorem frMap_restrict {S : Type} [CommRing S] [Algebra c.F S]
   have m2 : FrMap (θ.comp α) v w := by rw [← e]; exact trans _ _ hv m1
   exact cancel _ θ hu m2
 
+/- English proof (translation)
+Rewrite using `[hu.1, hv, ← Category.assoc, ← spec_comp, hα]`.
+-/
 theorem x_restrict {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra c.F A] [Algebra c.F B]
     (x : Sp R ⟶ Xo.X) (f : R →+* A) (g : R →+* B) (α : A →ₐ[c.F] B) (hα : α.toRingHom.comp f = g)
     {v : FrPt Xo c A} {u : FrPt Xo c B} (hv : v.x = spMap f ≫ x) (hu : FrMap α v u) :
     u.x = spMap g ≫ x := by
   rw [hu.1, hv, ← Category.assoc, ← spec_comp, hα]
 
+/- English proof (translation)
+Take `⟨y₁, hy₁x, hy₁⟩` from `GlobalTheory.T.framedPoints_glue_principal_cover hB E H Dw l Xo c S₁ x₁ hx₁ n h₁ hs₁ v hvx (by`. Introduce `i j α β hα hβ u hu`. Take `⟨u', hu'⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ β (v j)`. Take `⟨θ, hθ, hinj⟩` from `exists_away_val S₁ (h₁ i * h₁ j)`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ (IsScalarTower.toAlgHom c.F S (Localization.Away ((h₁ i * h₁ j : S₁) : S))) y`.
+
+Establish `a1` using `frMap_restrict y S₁ _ _ (hh i) (κ i) (hκ i) _ (hz i) _ (hv i) _ θ hθ α hα w hw u hu`. Establish `b1` using `frMap_restrict y S₁ _ _ (hh j) (κ j) (hκ j) _ (hz j) _ (hv j) _ θ hθ β hβ w hw u' hu'`. Establish `a2` using `x_restrict x₁ _ _ α hα (hvx i) hu`. Establish `b2` using `x_restrict x₁ _ _ β hβ (hvx j) hu'`. Establish `: u = u'` using `GlobalTheory.T.frame_eq_of_baseChange_injective hB E H Dw l Xo c _ _ θ u u' w hinj (b2.trans a2.symm) a1 b1`.
+
+Rewrite using `[this]`. Conclude with `hu')`. Take `⟨w, hw⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ S₁.val y₁`. Establish `: w = y`. Use `eq_of_cover h hs w y ?_ z (fun i => ?_) hz` and prove the remaining obligations.
+
+Rewrite using `[hw.1, hy₁x, hx]`. Establish `e : (κ i).comp (IsScalarTower.toAlgHom c.F S₁ (Localization.Away (h₁ i))) = (IsScalarTower.toAlgHom c.F S (Localization.Away (h i))).comp S₁.val` using `AlgHom.ext fun s => hκ i s`. Use `cancel _ _ hw ?_` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `trans _ _ (hy₁ i) (hv i)`.
+
+Substitute `this` using the available equality. Conclude with `⟨y₁, hw⟩`.
+-/
 theorem exists_descent_of_local (hB : Out.SecBaseChangeSt) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) (S₁ : Subalgebra c.F S) (x₁ : Sp S₁ ⟶ Xo.X) (hx₁ : x₁ ≫ Xo.s = sOf c S₁)
     (hx : spMap S₁.val.toRingHom ≫ x₁ = y.x) {n : ℕ} (h : Fin n → S) (h₁ : Fin n → S₁)
@@ -198,6 +255,13 @@ theorem exists_descent_of_local (hB : Out.SecBaseChangeSt) {S : Type} [CommRing 
   subst this
   exact ⟨y₁, hw⟩
 
+/- English proof (translation)
+Use `haveI := hj.1`. Establish `e2 : κ.comp ψ₁ = ψ`. Apply `algHom_eq_of_spec` to reduce the goal to its premises. Use `(cancel_mono j).1 ?_` and prove the remaining obligations. Rewrite `hψ` using `[← hlam, spec_comp_alg _ κ, Category.assoc, hψ₁]`.
+
+Rewrite using `[spec_comp_alg _ κ, Category.assoc]`. Conclude with `hψ`. Establish `e3 : a'.comp π = ψ₁`. Use `AlgHom.ext fun t => hinj ?_` and prove the remaining obligations. Use `AlgHom.congr_fun (ha.trans e2.symm) t` as an intermediate fact.
+
+Conclude with `this`. Rewrite using `[hv.1, hu, ← Category.assoc, ← spec_comp_alg, e3, ← hj.2.1, ← Category.assoc, ← hψ₁, Category.assoc]`.
+-/
 theorem x_of_descended {R A S₀ T₁ T : Type} [CommRing R] [CommRing A] [CommRing S₀] [CommRing T₁] [CommRing T]
     [Algebra c.F R] [Algebra c.F A] [Algebra c.F S₀] [Algebra c.F T₁] [Algebra c.F T]
     (xF : Sp S₀ ⟶ Xo.XF c) (j : Sp R ⟶ Xo.XF c) (y₀ : FrPt Xo c R) (hj : OpenChart j y₀)
@@ -224,6 +288,21 @@ theorem x_of_descended {R A S₀ T₁ T : Type} [CommRing R] [CommRing A] [CommR
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨S₀, hS₀, x₀, hx₀, hx⟩` from `GlobalTheory.moduli_point_from_fg_subalgebra E H Dw l Xo c S y.x y.x_over`. Take `⟨xF, n, g, p, j, y₀, hxF, hg, hj, hfac⟩` from `exists_chart_cover hB x₀ hx₀`. Set `h : Fin n → S` to `fun i => (g i : S)`. Establish `hs : Ideal.span (Set.range h) = ⊤`. Use `congrArg (Ideal.map S₀.val) hg` as an intermediate fact.
+
+Rewrite `this` using `[Ideal.map_top, Ideal.map_span, ← Set.range_comp]`. Then use the resulting hypothesis. Use `choose A π X s u hu using fun i => GlobalTheory.T.exists_universalFrame_testRing hB E H Dw l Xo c (p i) (y₀ i)`. Use `choose z hz using fun i => GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ (IsScalarTower.toAlgHom c.F S (Localization.Away (h i))) y`. Use `choose ψ hψ using fun i => hfac i (Localization.Away (h i)) ((IsScalarTower.toAlgHom c.F S (Localization.Away (h i))).comp S₀.val) (IsLocalization.Away.algebraMap_isUnit (h i))`. Establish `hzx : ∀ i, (z i).x = spMap (ψ i).toRingHom ≫ (y₀ i).x`.
+
+Introduce `i`. Rewrite using `[← (hj i).2.1, ← Category.assoc, ← hψ, Category.assoc, hxF, spec_comp_alg, Category.assoc, hx, (hz i).1]`. Use `choose a ha hau using fun i => (GlobalTheory.T.universalFrame_classifies_framedPoints hB E H Dw l Xo c _ _ (y₀ i) (π i) (X i) (s i) (u i) (hu i) _ (z i) (ψ i) (hzx i)).exists`. Take `⟨S₁, h₁, hS₁, hle, hh, hs₁, hd⟩` from `GlobalTheory.exists_fg_subalgebra_desc_away c.F S S₀ hS₀ n h (fun i => (A i).R) (fun i => inferInstance) a hs`. Use `choose κ a' hκ hinj hκa using hd`.
+
+Use `choose v hv using fun i => GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ (a' i) (u i)`. Set `incl : S₀ →ₐ[c.F] S₁` to `Subalgebra.inclusion hle`. Use `⟨S₁, hS₁, exists_descent_of_local hB y S₁ (spMap incl.toRingHom ≫ x₀) ?_ ?_ h h₁ hh hs hs₁ κ hκ z hz v (fun i => ?_) (fun i => cancel _ _ (hv i) ((hκa i).symm ▸ hau i))⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hx₀, sOf, sOf, ← spec_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Category.assoc, ← spec_comp_alg, ← hx]`. Both sides reduce to the same expression. Establish `hg₁ : incl (g i) = h₁ i` using `Subtype.ext (hh i).symm`. Take `⟨ψ', hψ'⟩` from `hfac i (Localization.Away (h₁ i)) ((IsScalarTower.toAlgHom c.F S₁ (Localization.Away (h₁ i))).comp incl) (by`. Rewrite using `[AlgHom.comp_apply, hg₁]`.
+
+Conclude with `IsLocalization.Away.algebraMap_isUnit (h₁ i))`. Establish `e1 : (κ i).comp ((IsScalarTower.toAlgHom c.F S₁ (Localization.Away (h₁ i))).comp incl) = (IsScalarTower.toAlgHom c.F S (Localization.Away (h i))).comp S₀.val` using `AlgHom.ext fun t => hκ i (incl t)`. Take `⟨u₀, hu₀, hch⟩` from `(hu i).2`. Establish `t` using `x_of_descended xF (j i) (y₀ i) (hj i) (κ i) (hinj i) _ _ e1 ψ' (ψ i) hψ' (hψ i) (π i) (a' i) (by rw [hκa, ha]) (u i) (hch.1.trans hu₀.1) (v i) (hv i)`. Rewrite using `[t, hxF, spec_comp_alg, Category.assoc]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_fg_descent (hB : Out.SecBaseChangeSt) {S : Type} [CommRing S] [Algebra c.F S]
     (y : FrPt Xo c S) :
     ∃ S₁ : Subalgebra c.F S, S₁.FG ∧ ∃ y₁ : FrPt Xo c S₁, FrMap S₁.val y₁ y := by
@@ -273,6 +352,13 @@ end GlobalTheory.Frames.TestDescent
 
 namespace GlobalTheory.Frames
 
+/- English proof (translation)
+Introduce `hB E _ _ _ H Dw l Xo c S _ _ _ y`. Take `⟨S₁, hS₁, y₁, hy₁⟩` from `TestDescent.exists_fg_descent hB y`. Establish `hred : IsReduced S₁` using `isReduced_of_injective S₁.val Subtype.val_injective`. Take `⟨p, ⟨e⟩⟩` from `(GlobalTheory.reduced_finiteType_iff_testRing c.F).1 S₁ ((Subalgebra.fg_iff_finiteType S₁).1 hS₁) hred`. Take `⟨y', hy'⟩` from `GlobalTheory.T.exists_framedPoint_baseChange_algebraMap hB E H Dw l Xo c _ _ (e.symm : S₁ →ₐ[c.F] p.R) y₁`.
+
+Use `⟨p, S₁.val.comp (e : p.R →ₐ[c.F] S₁), y', FramedBaseChange.cancel _ _ hy' ?_⟩` and prove the remaining obligations. Establish `: (S₁.val.comp (e : p.R →ₐ[c.F] S₁)).comp (e.symm : S₁ →ₐ[c.F] p.R) = S₁.val`. Use extensionality with `t`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `hy₁`.
+-/
 theorem allTest_of_secBaseChange : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), AllTest Xo c := by
   intro hB E _ _ _ H Dw l Xo c S _ _ _ y
   obtain ⟨S₁, hS₁, y₁, hy₁⟩ := TestDescent.exists_fg_descent hB y

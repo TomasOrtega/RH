@@ -12,11 +12,21 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (mat x τ) (mat a τ) (mat b τ)`.
+-/
 private theorem rmul_rmul' {Ψ : Finset (E →+* ℂ)} (x a b : Frame Ψ r) :
     rmul (rmul x a) b = rmul x (rmul a b) := by
   funext τ
   exact Matrix.mul_assoc (mat x τ) (mat a τ) (mat b τ)
 
+/- English proof (translation)
+Simplify using `only [Bor, Set.mem_setOf_eq] at ha hb ⊢`. Introduce `τ`. Take `⟨ha1, ha2⟩` from `ha τ`. Take `⟨hb1, hb2⟩` from `hb τ`. Establish `hA : Matrix.BlockTriangular (mat a τ) id`.
+
+Introduce `i j h`. Conclude with `ha2 i j h`. Establish `hB : Matrix.BlockTriangular (mat b τ) id`. Introduce `i j h`. Conclude with `hb2 i j h`.
+
+Use `⟨?_, fun i j h => hA.mul hB h⟩` and prove the remaining obligations. Use `show (mat a τ * mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero ha1 hb1`.
+-/
 private theorem rmul_mem_bor_upper_bounds {Ψ : Finset (E →+* ℂ)} {a b : Frame Ψ r} (ha : a ∈ Bor Ψ r)
     (hb : b ∈ Bor Ψ r) : rmul a b ∈ Bor Ψ r := by
   simp only [Bor, Set.mem_setOf_eq] at ha hb ⊢
@@ -34,6 +44,13 @@ private theorem rmul_mem_bor_upper_bounds {Ψ : Finset (E →+* ℂ)} {a b : Fra
   rw [Matrix.det_mul]
   exact mul_ne_zero ha1 hb1
 
+/- English proof (translation)
+Simplify using `only [Bor, Set.mem_setOf_eq] at hb ⊢`. Introduce `τ`. Take `⟨hb1, hb2⟩` from `hb τ`. Establish `hB : Matrix.BlockTriangular (mat b τ) id`. Introduce `i j h`.
+
+Conclude with `hb2 i j h`. Use `haveI : Invertible (mat b τ) := Matrix.invertibleOfIsUnitDet _ (isUnit_iff_ne_zero.mpr hb1)`. Establish `hI : Matrix.BlockTriangular (mat b τ)⁻¹ id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Use `⟨?_, fun i j h => ?_⟩` and prove the remaining obligations. Rewrite using `[hc τ]`.
+
+Conclude with `(Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.mpr hb1)).ne_zero`. Establish `h2` using `hI h`. Rewrite `h2` using `[← hc τ]`. Conclude with `h2`.
+-/
 private theorem mem_bor_of_mat_eq_inv {Ψ : Finset (E →+* ℂ)} {b c : Frame Ψ r} (hb : b ∈ Bor Ψ r)
     (hc : ∀ τ, mat c τ = (mat b τ)⁻¹) : c ∈ Bor Ψ r := by
   simp only [Bor, Set.mem_setOf_eq] at hb ⊢
@@ -51,6 +68,11 @@ private theorem mem_bor_of_mat_eq_inv {Ψ : Finset (E →+* ℂ)} {b c : Frame �
     rw [← hc τ] at h2
     exact h2
 
+/- English proof (translation)
+Simplify using `only [Bor, Set.mem_setOf_eq] at hb`. Use function extensionality and compare the values at `τ`. Establish `h` using `isUnit_iff_ne_zero.mpr (hb τ).1`. Use `show mat x τ * mat b τ * mat c τ = x τ`. Rewrite using `[hc τ, Matrix.mul_nonsing_inv_cancel_right _ _ h]`.
+
+Both sides reduce to the same expression.
+-/
 private theorem rmul_rmul_of_mat_eq_inv {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ r) {b c : Frame Ψ r} (hb : b ∈ Bor Ψ r)
     (hc : ∀ τ, mat c τ = (mat b τ)⁻¹) : rmul (rmul x b) c = x := by
   simp only [Bor, Set.mem_setOf_eq] at hb
@@ -60,11 +82,17 @@ private theorem rmul_rmul_of_mat_eq_inv {Ψ : Finset (E →+* ℂ)} (x : Frame �
   rw [hc τ, Matrix.mul_nonsing_inv_cancel_right _ _ h]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm`.
+-/
 private theorem lact_rmul_upper_bounds {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (x b : Frame Ψ r) :
     lact γ (rmul x b) = rmul (lact γ x) b := by
   funext τ
   exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) = ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 private theorem lact_lact' {Ψ : Finset (E →+* ℂ)} (γ δ : GL (Fin r) E) (x : Frame Ψ r) :
     lact γ (lact δ x) = lact (γ * δ) x := by
   funext τ
@@ -72,6 +100,9 @@ private theorem lact_lact' {Ψ : Finset (E →+* ℂ)} (γ δ : GL (Fin r) E) (x
     ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[lact_lact', inv_mul_cancel]`. Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]`. Apply the tactic sequence `try rfl`.
+-/
 private theorem lact_inv_lact_upper_bounds {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) (x : Frame Ψ r) :
     lact γ⁻¹ (lact γ x) = x := by
   rw [lact_lact', inv_mul_cancel]
@@ -80,6 +111,23 @@ private theorem lact_inv_lact_upper_bounds {Ψ : Finset (E →+* ℂ)} (γ : GL 
   rw [Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]
   try rfl
 
+/- English proof (translation)
+Unfold `IsFundSet at hFF`. Take `⟨_, hFO, hFinj, _⟩` from `hFF`. Establish `hS : ∀ w, w ∈ KU.Sset X x0 FF → ∃ z ∈ FF, ∃ b ∈ Bor X.Ψ r, w = rmul (cpt X x0 z) b`. Introduce `w hw`. Simplify using `only [KU.Sset] at hw`.
+
+Take `⟨⟨z, b⟩, ⟨hz, hb⟩, he⟩` from `hw`. Conclude with `⟨z, hz, b, hb, he.symm⟩`. Establish `huniq : ∀ γ γ0 : X.Γ, lact γ.1 y ∈ KU.Sset X x0 FF → lact γ0.1 y ∈ KU.Sset X x0 FF → γ = γ0`. Introduce `γ γ0 h1 h2`. Take `⟨z, hz, b, hb, hzb⟩` from `hS _ h1`.
+
+Take `⟨z0, hz0, b0, hb0, hzb0⟩` from `hS _ h2`. Establish `hg : γ.1 * γ0.1⁻¹ ∈ X.Γ` using `X.Γ.mul_mem γ.2 (X.Γ.inv_mem γ0.2)`. Establish `hy : y = lact γ0.1⁻¹ (rmul (cpt X x0 z0) b0)`. Rewrite using `[← hzb0, lact_inv_lact_upper_bounds]`. Establish `hst : rmul (lact (γ.1 * γ0.1⁻¹) (cpt X x0 z0)) b0 = rmul (cpt X x0 z) b`.
+
+Rewrite using `[← lact_rmul_upper_bounds, ← lact_lact', ← hy, hzb]`. Take `⟨bi, hbi⟩ : ∃ c : Frame X.Ψ r, ∀ τ, mat c τ = (mat b τ)⁻¹` from `⟨(fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)), fun τ => rfl⟩`. Take `⟨bi0, hbi0⟩ : ∃ c : Frame X.Ψ r, ∀ τ, mat c τ = (mat b0 τ)⁻¹` from `⟨(fun τ => ((mat b0 τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)), fun τ => rfl⟩`. Establish `hw : cpt X x0 z = lact (γ.1 * γ0.1⁻¹) (rmul (cpt X x0 z0) (rmul b0 bi))`. Rewrite using `[lact_rmul_upper_bounds, ← rmul_rmul', hst, rmul_rmul_of_mat_eq_inv _ hb hbi]`.
+
+Establish `hzz : z0 = z` using `hFinj z0 hz0 z hz _ hg _ (rmul_mem_bor_upper_bounds hb0 (mem_bor_of_mat_eq_inv hb hbi)) hw`. Substitute `hzz` using the available equality. Establish `hw0 : cpt X x0 z0 ∈ X.dom` using `hFO hz0`. Establish `hfix : lact (γ.1 * γ0.1⁻¹) (cpt X x0 z0) = rmul (cpt X x0 z0) (rmul b bi0)`. Rewrite using `[← rmul_rmul', ← hst, rmul_rmul_of_mat_eq_inv _ hb0 hbi0]`.
+
+Establish `hg1 : γ.1 * γ0.1⁻¹ = 1` using `X.Γ_free _ hg _ hw0 _ (rmul_mem_bor_upper_bounds hb (mem_bor_of_mat_eq_inv hb0 hbi0)) hfix`. Conclude with `Subtype.ext (mul_inv_eq_one.mp hg1)`. Distinguish the cases in `hex : ∃ γ0 : X.Γ, lact γ0.1 y ∈ KU.Sset X x0 FF`. Take `⟨γ0, hγ0⟩` from `hex`. Rewrite using `[tsum_eq_single γ0]`.
+
+Rewrite using `[Set.indicator_of_mem hγ0]`. Simplify using the standard rewrite rules. Introduce `γ hne`. Conclude with `Set.indicator_apply_eq_zero.mpr fun hm => absurd (huniq γ γ0 hm hγ0) hne`. Use `push_neg at hex`.
+
+Establish `h0 : ∀ γ : X.Γ, (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 y) = 0` using `fun γ => Set.indicator_apply_eq_zero.mpr fun hm => absurd hm (hex γ)`. Rewrite using `[tsum_congr h0, tsum_zero]`. Conclude with `zero_le_one`.
+-/
 theorem atMostOnce (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {FF : Set (V (nd X))}
     (hFF : IsFundSet X x0 FF) (y : Frame X.Ψ r) :
     ∑' γ : X.Γ, (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 y) ≤ 1 := by
@@ -128,6 +176,39 @@ theorem atMostOnce (X : Data E r) {x0 : Frame X.Ψ r} (ho : IsOrth X x0) {FF : S
 
 end
 
+/- English proof (translation)
+Introduce `r X x0 FF ho hFF ⟨x1, ho1, CechHodgeFiltration, hFF1, hfin⟩`. Use `KU.countable_Γ X` as an intermediate fact. Establish `hM` using `measInv_holds (E := E)`. Establish `hS : MeasurableSet (KU.Sset X x0 FF)` using `KU.meas_S X ho hFF.1`. Establish `hS1 : MeasurableSet (KU.Sset X x1 CechHodgeFiltration)` using `KU.meas_S X ho1 hFF1.1`.
+
+Establish `hcpt0` using `(KU.cont_cpt X x0).measurable`. Establish `hcpt1` using `(KU.cont_cpt X x1).measurable`. Use `set Bad : Set (Frame X.Ψ r) := ⋂ γ : X.Γ, (lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration)ᶜ with hBaddef`. Establish `hBad : MeasurableSet Bad` using `MeasurableSet.iInter fun γ => ((KU.cont_lact X γ.1⁻¹).measurable hS1).compl`. Establish `hBadB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul x b) = Bad.indicator 1 x`.
+
+Introduce `x _ b hb`. Establish `e : rmul x b ∈ Bad ↔ x ∈ Bad`. Simplify using `only [hBaddef, Set.mem_iInter, Set.mem_compl_iff, Set.mem_preimage, KU.lact_rmul', KU.rmul_mem_S X hb]`. Distinguish the cases in `h : x ∈ Bad`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (e.mpr h)]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (fun h' => h (e.mp h'))]`. Establish `h1 : ∫⁻ z, Bad.indicator 1 (cpt X x1 z) ∂muF X x1 = 0`. Establish `hm : Measurable fun z => Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x1 z)` using `(measurable_one.indicator hBad).comp hcpt1`. Rewrite using `[lintegral_eq_zero_iff hm]`.
+
+Use `filter_upwards [KU.cover X hFF1] with z ⟨γ, hγ, hSz⟩`. Establish `: cpt X x1 z ∉ Bad` using `fun h => (Set.mem_iInter.mp h ⟨γ, hγ⟩) hSz`. Simplify using `[Set.indicator_of_notMem this]`. Establish `h0 : ∫⁻ z, Bad.indicator 1 (cpt X x0 z) ∂muF X x0 = 0`. Rewrite using `[hM r X x0 x1 ho ho1 _ (measurable_one.indicator hBad) hBadB]`.
+
+Conclude with `h1`. Establish `hcov : ∀ᵐ z ∂muF X x0, cpt X x0 z ∉ Bad`. Establish `hm : Measurable fun z => Bad.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X x0 z)` using `(measurable_one.indicator hBad).comp hcpt0`. Use `(lintegral_eq_zero_iff hm).mp h0` as an intermediate fact. Use `filter_upwards [this] with z hz hb`.
+
+Simplify using `[Set.indicator_of_mem hb] at hz`. Set `H : X.Γ → Frame X.Ψ r → ℝ≥0∞` to `fun γ y => (KU.Sset X x0 FF).indicator 1 y * (lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration).indicator 1 y`. Establish `hHm : ∀ γ, Measurable (H γ)` using `fun γ => (measurable_one.indicator hS).mul (measurable_one.indicator ((KU.cont_lact X γ.1⁻¹).measurable hS1))`. Establish `hHB : ∀ γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, H γ (rmul x b) = H γ x`. Introduce `γ x _ b hb`.
+
+Establish `e1 : rmul x b ∈ KU.Sset X x0 FF ↔ x ∈ KU.Sset X x0 FF` using `KU.rmul_mem_S X hb`. Establish `e2 : rmul x b ∈ lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration ↔ x ∈ lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration`. Simplify using `only [Set.mem_preimage, KU.lact_rmul', KU.rmul_mem_S X hb]`. Simplify using `only [H, Set.indicator_apply, e1, e2, Pi.one_apply]`. Establish `step1 : muF X x0 FF = ∫⁻ z, (KU.Sset X x0 FF).indicator 1 (cpt X x0 z) ∂muF X x0`.
+
+Rewrite using `[← lintegral_indicator_one hFF.1]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Distinguish the cases in `hz : z ∈ FF`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem ((KU.cpt_mem_S X ho z).mpr hz)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (fun h => hz ((KU.cpt_mem_S X ho z).mp h))]`. Establish `step2 : ∫⁻ z, (KU.Sset X x0 FF).indicator 1 (cpt X x0 z) ∂muF X x0 ≤ ∫⁻ z, ∑' γ : X.Γ, H γ (cpt X x0 z) ∂muF X x0`. Use `lintegral_mono_ae (hcov.mono fun z hz => ?_)` and prove the remaining obligations. Distinguish the cases in `hS0 : cpt X x0 z ∈ KU.Sset X x0 FF`. Establish `: ∃ γ : X.Γ, cpt X x0 z ∈ lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration`.
+
+Assume the negation of the conclusion as `hn`. Use `push_neg at hn`. Conclude with `hz (Set.mem_iInter.mpr fun γ => hn γ)`. Take `⟨γ, hγ⟩` from `this`. Use `le_trans (le_of_eq ?_) (ENNReal.le_tsum γ)` and prove the remaining obligations.
+
+Simplify using `only [H, Set.indicator_of_mem hS0, Set.indicator_of_mem hγ, Pi.one_apply, mul_one]`. Rewrite using `[Set.indicator_of_notMem hS0]`. Conclude with `bot_le`. Establish `step3 : ∫⁻ z, ∑' γ : X.Γ, H γ (cpt X x0 z) ∂muF X x0 = ∑' γ : X.Γ, ∫⁻ z, H γ (cpt X x0 z) ∂muF X x0` using `lintegral_tsum fun γ => ((hHm γ).comp hcpt0).aemeasurable`. Establish `hae1 : ∀ᵐ z ∂muF X x1, z ∈ OmF X x1` using `ExtFPf.ae_OmF (X := X) (x0 := x1)`.
+
+Establish `step4 : ∀ γ : X.Γ, ∫⁻ z, H γ (cpt X x0 z) ∂muF X x0 = ∫⁻ z, CechHodgeFiltration.indicator (fun z => (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 (cpt X x1 z))) z ∂muF X x1`. Introduce `γ`. Rewrite using `[hM r X x0 (lact γ.1 x1) ho (KU.isOrth_lact X γ.2 ho1) (H γ) (hHm γ) (hHB γ), KU.muF_lact X γ.2]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[KU.cpt_lact]`.
+
+Simplify using `only [H]`. Establish `e : lact γ.1 (cpt X x1 z) ∈ lact γ.1⁻¹ ⁻¹' KU.Sset X x1 CechHodgeFiltration ↔ z ∈ CechHodgeFiltration`. Rewrite using `[Set.mem_preimage, KU.lact_lact, inv_mul_cancel, KU.lact_one, KU.cpt_mem_S X ho1]`. Distinguish the cases in `hz : z ∈ CechHodgeFiltration`. Rewrite using `[Set.indicator_of_mem (e.mpr hz), Set.indicator_of_mem hz, Pi.one_apply, mul_one]`.
+
+Rewrite using `[Set.indicator_of_notMem (fun h => hz (e.mp h)), Set.indicator_of_notMem hz, mul_zero]`. Establish `hI : ∀ γ : X.Γ, Measurable fun z => CechHodgeFiltration.indicator (fun z => (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 (cpt X x1 z))) z` using `fun γ => ((measurable_one.indicator hS).comp ((KU.cont_lact X γ.1).comp (KU.cont_cpt X x1)).measurable).indicator hFF1.1`. Establish `step5 : ∑' γ : X.Γ, ∫⁻ z, CechHodgeFiltration.indicator (fun z => (KU.Sset X x0 FF).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (lact γ.1 (cpt X x1 z))) z ∂muF X x1 ≤ muF X x1 CechHodgeFiltration`. Rewrite using `[← lintegral_tsum fun γ => (hI γ).aemeasurable, ← lintegral_indicator_one hFF1.1]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hz : z ∈ CechHodgeFiltration`. Simplify using `only [Set.indicator_of_mem hz, Pi.one_apply]`. Conclude with `FSM.atMostOnce X ho hFF _`. Simplify using `[Set.indicator_of_notMem hz]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem fundSetMeasStatement_of_isCMField {E : Type} [Field E] [NumberField E] [IsCMField E] :
     FundSetMeasStatement (E := E) := by
   intro r X x0 FF ho hFF ⟨x1, ho1, CechHodgeFiltration, hFF1, hfin⟩
@@ -235,9 +316,15 @@ namespace ReciprocityTheory.ChartRestriction.G.AR.Up
 
 open NumberField
 
+/- English proof (translation)
+The claim follows from `FSM.fundSetMeasStatement_of_isCMField`.
+-/
 theorem FundSetMeasStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] :
     FundSetMeasStatement (E := E) := FSM.fundSetMeasStatement_of_isCMField
 
+/- English proof (translation)
+The claim follows from `DivSt.divStart_of FundSetMeasStatement_holds`.
+-/
 theorem DivStartStatement_holds {E : Type} [Field E] [NumberField E] [IsCMField E] :
     DivStartStatement (E := E) := DivSt.divStart_of FundSetMeasStatement_holds
 

@@ -93,6 +93,9 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
 
 omit [IsAdicComplete (span {(p : O)}) O] in
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[coeff_frobenius_charP]`. Simplify using `only [ofPadic, RingHom.comp_apply, map_coeff]`. Rewrite using `[← map_pow, ZMod.pow_card]`.
+-/
 theorem frobenius_ofPadic_eq (c : ℤ_[p]) :
     (WittVector.frobenius (ofPadic p O c) : Ainf p O) = ofPadic p O c := by
   ext n
@@ -100,6 +103,17 @@ theorem frobenius_ofPadic_eq (c : ℤ_[p]) :
   simp only [ofPadic, RingHom.comp_apply, map_coeff]
   rw [← map_pow, ZMod.pow_card]
 
+/- English proof (translation)
+Set `: Algebra ℤ_[p] (Ainf p O)` to `(ofPadic p O).toAlgebra`. Establish `hs : ∀ (c : ℤ_[p]) (x : Ainf p O), c • x = ofPadic p O c * x` using `fun _ _ => rfl`. Establish `: IsAdicComplete (span {(p : Ainf p O)}) (Ainf p O)` using `WittVector.isAdicCompleteIdealSpanP`. Set `N : Submodule ℤ_[p] (Ainf p O)` to `{ carrier := {a | WittVector.frobenius a = WittVector.frobenius (xi ε) * a} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_ofPred_eq] at ha hb ⊢`.
+
+Rewrite using `[map_add, ha, hb, mul_add]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_ofPred_eq] at ha ⊢`. Rewrite using `[hs, map_mul, frobenius_ofPadic_eq, ha]`.
+
+Use `ring }`. Set `m : N` to `⟨Sandwich.mu ε, frobenius_mu ε⟩`. It suffices to establish `hsurj : Function.Surjective (LinearMap.toSpanSingleton ℤ_[p] N m) by`. Take `⟨c, hc⟩` from `hsurj ⟨a, h⟩`. Conclude with `⟨c, congrArg Subtype.val hc⟩`.
+
+Use `TateFree.surjective_of_mod _ (fun y hy => ?_) (fun y => ?_)` and prove the remaining obligations. Use `Subtype.ext (IsHausdorff.haus' (I := span {(p : Ainf p O)}) _ fun n => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `hy n`. Rewrite using `[SModEq.zero, ← hz, Ideal.span_singleton_pow, Submodule.coe_smul, hs, map_pow, map_natCast, ← smul_eq_mul]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+
+Take `⟨c, b, hc, hb⟩` from `GlobalTheory.DieudonneTest.eigen_step hε y.2`. Use `⟨c, ⟨b, hb⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ofPadic p O p * b = y - ofPadic p O c * Sandwich.mu ε`. Rewrite using `[map_natCast, map_intCast, hc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_padic_of_eigen [IsDomain (PreTilt O p)] {ε : PreTilt O p}
     (hε : IsPrimitiveRoot (root ε).untilt p) {a : Ainf p O}
     (h : WittVector.frobenius a = WittVector.frobenius (xi ε) * a) :
@@ -131,6 +145,9 @@ theorem exists_padic_of_eigen [IsDomain (PreTilt O p)] {ε : PreTilt O p}
     change ofPadic p O p * b = y - ofPadic p O c * Sandwich.mu ε
     rw [map_natCast, map_intCast, hc]; ring
 
+/- English proof (translation)
+Take `⟨h1, h2, ε, hv, hε⟩` from `PadicComplexHost.main p`. Conclude with `⟨h1, h2, ε, hε, h p ℂ_[p] Valued.v _ hv ε hε⟩`.
+-/
 example (h : Published.PrismaticDieudonneIntegers) (p : ℕ) [Fact p.Prime] :
     ∃ (_ : Fact ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p]))
       (_ : IsAdicComplete (span {((p : ℕ) : 𝓞_ℂ_[p])}) 𝓞_ℂ_[p]) (ε : PreTilt 𝓞_ℂ_[p] p)

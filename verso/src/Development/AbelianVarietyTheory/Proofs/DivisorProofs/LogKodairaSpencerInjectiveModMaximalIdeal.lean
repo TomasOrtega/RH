@@ -16,6 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `p : PrimeSpectrum Γ(X, U.1)` to `⟨m, hm.isPrime⟩`. Use `⟨U.2.fromSpec p, ?_, ?_⟩` and prove the remaining obligations. Establish `h : U.2.fromSpec p ∈ Set.range U.2.fromSpec` using `⟨p, rfl⟩`. Rewrite `h` using `[U.2.range_fromSpec]`. Conclude with `h`.
+
+Introduce `f hf hx`. Establish `h : p ∈ U.2.fromSpec ⁻¹ᵁ X.basicOpen f` using `hx`. Rewrite `h` using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `h hf`.
+-/
 theorem exists_point_vanishing_of_isMaximal {X : Scheme} (U : X.affineOpens) (m : Ideal Γ(X, U.1))
     (hm : m.IsMaximal) : ∃ x, x ∈ U.1 ∧ ∀ f ∈ m, x ∉ X.basicOpen f := by
   let p : PrimeSpectrum Γ(X, U.1) := ⟨m, hm.isPrime⟩
@@ -28,6 +33,11 @@ theorem exists_point_vanishing_of_isMaximal {X : Scheme} (U : X.affineOpens) (m 
     rw [U.2.fromSpec_preimage_basicOpen] at h
     exact h hf
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm hKS hΘ`. Establish `hp` using `exists_point_vanishing_of_isMaximal U m hm`. Take `⟨x, hxU, hxm⟩` from `hp`. Distinguish the cases in `hx : x ∈ LogKS.interior Y`. Conclude with `GlobalTheory.T.kodairaSpencer_injective_closed_interior_point E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm ⟨x, hx, hxU, hxm⟩ hKS hΘ`.
+
+Establish `hb : ∃ x, x ∉ LogKS.interior Y ∧ x ∈ U.1 ∧ ∀ f ∈ m, x ∉ Y.X.basicOpen f` using `⟨x, hx, hxU, hxm⟩`. Establish `key` using `GlobalTheory.T.logKodairaSpencer_injective_mod_maximal_boundary E H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm`. Use `first`. Consider the case `exact key hb hKS hΘ`. Consider the case `exact key hKS hΘ`.
+-/
 theorem logKS_inj_mod_maximal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), 1 ≤ Dw.p + Dw.q → SmoothOfRelativeDimension Dw.dim (genStr Y) → ReciprocityTheory.AnForm.R.FinalTheorems.Snc (genBdIdeal Y) → (∀ x ∈ genBd Y, IsClosed ({x} : Set (gen Y)) → HasRigidChart Y x) → ∀ (U : Y.X.affineOpens) (n : ℕ) (v : Fin n → (Sp (DualNumber Γ(Y.X, U.1)) ⟶ Y.t.G.left)) (A : 𝓞 E → Matrix (Fin n) (Fin n) Γ(Y.X, U.1)), (∀ i, IsTanAtG Y.t (chart U) (v i)) → (∀ w, IsTanAtG Y.t (chart U) w → ∃! cf : Fin n → Γ(Y.X, U.1), IsCombAtG Y.t (chart U) v cf w) → (∀ a i, IsCombAtG Y.t (chart U) v (A a i) (v i ≫ (Y.t.act.act a).left)) → ∀ (D : logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U) (Θ : Matrix (Fin n) (Fin n) Γ(Y.X, U.1)) (m : Ideal Γ(Y.X, U.1)), m.IsMaximal → IsKS Y.t (interior Y) U v D.1 Θ → (∀ a b, Θ a b ∈ m) → D ∈ m • (⊤ : Submodule Γ(Y.X, U.1) (logDer Y.s (Scheme.IdealSheafData.vanishingIdeal (interior Y).compl) U)) := by
   intro E _ _ _ H Dw l Xo c Y hpq hsm hsnc hrig U n v A hv hbasis hact D Θ m hm hKS hΘ
   have hp := exists_point_vanishing_of_isMaximal U m hm

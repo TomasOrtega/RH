@@ -7,6 +7,9 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.Xgp.t_c_fl_arith`.
+-/
 theorem pFl_isArithVar : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ), 2 ≤ N →
     IsArithVar (PFl Ψ N) (antisymDegree Ψ N + 1) :=
   @PositivityTheory.Xgp.t_c_fl_arith

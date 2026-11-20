@@ -30,6 +30,9 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Establish `hbc : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBaseChangeStatement` using `_root_.GlobalTheory.twistBaseChange`. Establish `hgl : _root_.ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt` using `_root_.GlobalTheory.globalFns_holds`. Establish `hspan : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBCSpanStatement` using `_root_.ReciprocityTheory.ChartRestriction.G.DVR.twistBCSpan_of hbc`. Establish `hval : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.VRatioGtStatement` using `_root_.GlobalTheory.RatioVal.main`. Conclude with `⟨hbc, hspan, hval, _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.tw_of hgl hspan hval, _root_.GlobalTheory.UnitBallFree.main hgl hbc⟩`.
+-/
 theorem _root_.GlobalTheory.twistBaseChange_and_valuation_statements :
     _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBaseChangeStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBCSpanStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWM.VRatioGtStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.TWStatement ∧ _root_.ReciprocityTheory.ChartRestriction.G.DVR.UUStatement := by
   have hbc : _root_.ReciprocityTheory.ChartRestriction.G.DVR.TwistBaseChangeStatement := _root_.GlobalTheory.twistBaseChange

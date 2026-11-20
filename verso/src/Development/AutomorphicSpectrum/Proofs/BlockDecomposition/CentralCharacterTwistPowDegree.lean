@@ -11,6 +11,9 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 
 namespace GlobalTheory.CompanionTheory.ScalarTwist
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `φ.toLinearEquiv.surjective w`. Use `show σ g (φ.toIntertwiningMap v) = c • φ.toIntertwiningMap v`. Rewrite using `[← φ.toIntertwiningMap.isIntertwining, h, map_smul]`.
+-/
 theorem acts_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) {g : G} {c : ℂ}
     (h : ∀ v, ρ g v = c • v) (w : W) : σ g w = c • w := by
@@ -18,6 +21,9 @@ theorem acts_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [
   show σ g (φ.toIntertwiningMap v) = c • φ.toIntertwiningMap v
   rw [← φ.toIntertwiningMap.isIntertwining, h, map_smul]
 
+/- English proof (translation)
+Establish `hdet : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin x.1) t) = t ^ x.1` using `by ext; simp [GeneralLinearGroup.scalar]`. Use `acts_of_equiv (x.twEquiv (absPow k s) (isSmoothChar_absPow s)) (g := GeneralLinearGroup.scalar (Fin x.1) t) ?_` and prove the remaining obligations. Introduce `v`. Rewrite using `[twist_apply, h v, detChar_apply, hdet, smul_smul]`. Simplify using `[mul_comm]`.
+-/
 theorem scalarBy_nu (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : IrrGL k) (t : kˣ) (c s : ℂ) (h : Zl.ScalarBy x t c) :
     Zl.ScalarBy (x.nu s) t (c * ((absPow k s t : ℂˣ) : ℂ) ^ x.1) := by

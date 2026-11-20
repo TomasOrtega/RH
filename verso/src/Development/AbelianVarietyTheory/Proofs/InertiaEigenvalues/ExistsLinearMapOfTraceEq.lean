@@ -5,6 +5,17 @@ namespace GlobalTheory.TraceConj
 
 open IsLocalRing
 
+/- English proof (translation)
+Use `set a := Finsupp.linearCombination R (fun g => M g) with ha`. Use `set b := Finsupp.linearCombination R (fun g => N g) with hb`. Establish `hab : ∀ c g, (a c * M g).trace = (b c * N g).trace`. Introduce `c g`. Proceed by induction on `c using Finsupp.induction_linear with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, add_mul, add_mul, Matrix.trace_add, Matrix.trace_add, hx, hy]`. Consider the case `single x c`. Simplify using `only [ha, hb, Finsupp.linearCombination_single, Matrix.smul_mul, Matrix.trace_smul, ← map_mul, h]`. Introduce `c hc`.
+
+Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Establish `h1 : ∀ Y ∈ Submodule.span R (Set.range N), (b c * Y).trace = 0`. Introduce `Y hY`. Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem Y hY => obtain ⟨g, rfl⟩ := hY`.
+
+Rewrite using `[← hab, hc]`. Simplify using the standard rewrite rules. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, Matrix.trace_add, hx, hy, add_zero]`. Consider the case `smul t x _ hx => rw [Matrix.mul_smul, Matrix.trace_smul, hx, smul_zero]`.
+
+Use extensionality with `p q`. Use `h1 (Matrix.single q p 1) (hN ▸ Submodule.mem_top)` as an intermediate fact. Rewrite `this` using `[Matrix.trace_mul_single]`. Simplify using `using this`.
+-/
 theorem ker_le_ker_of_trace_eq {Γ R : Type} [Monoid Γ] [CommRing R] {n : ℕ}
     (M N : Γ →* Matrix (Fin n) (Fin n) R) (h : ∀ g, (M g).trace = (N g).trace)
     (hN : Submodule.span R (Set.range N) = ⊤) :
@@ -34,6 +45,13 @@ theorem ker_le_ker_of_trace_eq {Γ R : Type} [Monoid Γ] [CommRing R] {n : ℕ}
   rw [Matrix.trace_mul_single] at this
   simpa using this
 
+/- English proof (translation)
+Set `a` to `Finsupp.linearCombination K (fun g => M g)`. Set `b` to `Finsupp.linearCombination K (fun g => N g)`. Establish `hker : LinearMap.ker a ≤ LinearMap.ker b` using `ker_le_ker_of_trace_eq M N h hN`. Establish `hb : LinearMap.range b = ⊤` using `by rw [Finsupp.range_linearCombination]; exact hN`. Set `f : LinearMap.range a →ₗ[K] Matrix (Fin n) (Fin n) K` to `((LinearMap.ker a).liftQ b hker).comp a.quotKerEquivRange.symm.toLinearMap`.
+
+Establish `hf : Function.Surjective f`. Introduce `Y`. Take `⟨c, rfl⟩` from `LinearMap.range_eq_top.1 hb Y`. Use `⟨a.quotKerEquivRange (Submodule.Quotient.mk c), ?_⟩` and prove the remaining obligations. Simplify using `[f]`.
+
+Establish `hle` using `LinearMap.finrank_le_finrank_of_surjective hf`. Use `Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) hle)` as an intermediate fact. Rewrite `this` using `[Finsupp.range_linearCombination]`. Then use the resulting hypothesis.
+-/
 theorem span_top_of_trace_eq {Γ K : Type} [Monoid Γ] [Field K] {n : ℕ}
     (M N : Γ →* Matrix (Fin n) (Fin n) K) (h : ∀ g, (M g).trace = (N g).trace)
     (hN : Submodule.span K (Set.range N) = ⊤) : Submodule.span K (Set.range M) = ⊤ := by
@@ -53,6 +71,19 @@ theorem span_top_of_trace_eq {Γ K : Type} [Monoid Γ] [Field K] {n : ℕ}
   have := Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) hle)
   rwa [Finsupp.range_linearCombination] at this
 
+/- English proof (translation)
+Establish `lift : ∀ Z ∈ Submodule.span (ResidueField O) (Set.range fun g => (M g).map (residue O)), ∃ Y ∈ Submodule.span O (Set.range M), Y.map (residue O) = Z`. Introduce `Z hZ`. Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem Z hZ => obtain ⟨g, rfl⟩ := hZ`. Conclude with `⟨M g, Submodule.subset_span ⟨g, rfl⟩, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x, hx, rfl⟩` from `hx`. Take `⟨y, hy, rfl⟩` from `hy`. Conclude with `⟨x + y, Submodule.add_mem _ hx hy, by ext; simp⟩`.
+
+Consider the case `smul t x _ hx`. Take `⟨x, hx, rfl⟩` from `hx`. Take `⟨t, rfl⟩` from `residue_surjective t`. Conclude with `⟨t • x, Submodule.smul_mem _ _ hx, by ext; simp⟩`. Rewrite using `[eq_top_iff]`.
+
+Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := maximalIdeal O) Module.Finite.fg_top (maximalIdeal_le_jacobson _) fun X _ => ?_` and prove the remaining obligations. Take `⟨Y, hY, hYX⟩` from `lift (X.map (residue O)) (h ▸ Submodule.mem_top)`. Rewrite using `[← add_sub_cancel Y X]`. Use `Submodule.add_mem_sup hY ?_` and prove the remaining obligations. Rewrite using `[Matrix.matrix_eq_sum_single (X - Y)]`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `e : Matrix.single i j ((X - Y) i j) = (X - Y) i j • Matrix.single i j (1 : O)`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations.
+
+Rewrite using `[← residue_eq_zero_iff, Matrix.sub_apply, map_sub, sub_eq_zero]`. Conclude with `(congrFun (congrFun hYX i) j).symm`.
+-/
 theorem span_top_of_residual {Γ O : Type} [CommRing O] [IsLocalRing O] {n : ℕ}
     (M : Γ → Matrix (Fin n) (Fin n) O)
     (h : Submodule.span (ResidueField O) (Set.range fun g => (M g).map (residue O)) = ⊤) :
@@ -87,6 +118,17 @@ theorem span_top_of_residual {Γ O : Type} [CommRing O] [IsLocalRing O] {n : ℕ
   rw [← residue_eq_zero_iff, Matrix.sub_apply, map_sub, sub_eq_zero]
   exact (congrFun (congrFun hYX i) j).symm
 
+/- English proof (translation)
+Set `a` to `Finsupp.linearCombination R (fun g => M g)`. Set `b` to `Finsupp.linearCombination R (fun g => N g)`. Establish `hker : LinearMap.ker a ≤ LinearMap.ker b` using `ker_le_ker_of_trace_eq M N h hN`. Establish `ha : Function.Surjective a`. Rewrite using `[← LinearMap.range_eq_top, Finsupp.range_linearCombination]`.
+
+Conclude with `hM`. Set `φ : Matrix (Fin n) (Fin n) R →ₗ[R] Matrix (Fin n) (Fin n) R` to `((LinearMap.ker a).liftQ b hker).comp (a.quotKerEquivOfSurjective ha).symm.toLinearMap`. Establish `hφ : ∀ c, φ (a c) = b c` using `fun c => by`. Establish `: a c = a.quotKerEquivOfSurjective ha (Submodule.Quotient.mk c)` using `rfl`. Rewrite using `[this]`.
+
+Simplify using `only [φ, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.liftQ_apply]`. Establish `hφg : ∀ g, φ (M g) = N g` using `fun g => by`. Simplify `hφ (Finsupp.single g 1)` using `[a, b]`. Use `⟨φ, by simpa using hφg 1, fun g X => ?_⟩` and prove the remaining obligations. Establish `hX : X ∈ Submodule.span R (Set.range M)` using `hM ▸ Submodule.mem_top`.
+
+Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem X hX => obtain ⟨g', rfl⟩ := hX`. Rewrite using `[← map_mul, hφg, hφg, map_mul]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, map_add, map_add, mul_add, hx, hy]`.
+
+Consider the case `smul t x _ hx => rw [Matrix.mul_smul, map_smul, map_smul, Matrix.mul_smul, hx]`.
+-/
 theorem exists_linearMap_of_trace_eq {Γ R : Type} [Monoid Γ] [CommRing R] {n : ℕ}
     (M N : Γ →* Matrix (Fin n) (Fin n) R) (h : ∀ g, (M g).trace = (N g).trace)
     (hM : Submodule.span R (Set.range M) = ⊤) (hN : Submodule.span R (Set.range N) = ⊤) :
@@ -113,6 +155,23 @@ theorem exists_linearMap_of_trace_eq {Γ R : Type} [Monoid Γ] [CommRing R] {n :
   | add x y _ _ hx hy => rw [mul_add, map_add, map_add, mul_add, hx, hy]
   | smul t x _ hx => rw [Matrix.mul_smul, map_smul, map_smul, Matrix.mul_smul, hx]
 
+/- English proof (translation)
+Introduce `O _ _ _ _ Γ _ r ρ ρ' hspan htr`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Conclude with `⟨1, fun g => Units.ext (Subsingleton.elim _ _)⟩`. Set `M : Γ →* Matrix (Fin r) (Fin r) O` to `(Units.coeHom _).comp ρ`. Set `N : Γ →* Matrix (Fin r) (Fin r) O` to `(Units.coeHom _).comp ρ'`.
+
+Set `π : Matrix (Fin r) (Fin r) O →* Matrix (Fin r) (Fin r) (ResidueField O)` to `(residue O).mapMatrix.toMonoidHom`. Establish `hN' : Submodule.span (ResidueField O) (Set.range (π.comp N)) = ⊤` using `span_top_of_trace_eq (π.comp N) (π.comp M) (fun g => by`. Express the relevant statement in the definitionally equal form `((N g).map (residue O)).trace = ((M g).map (residue O)).trace`. Rewrite using `[← AddMonoidHom.map_trace, ← AddMonoidHom.map_trace]`. Conclude with `congrArg _ (htr g)) hspan`.
+
+Take `⟨φ, h1, hφ⟩` from `exists_linearMap_of_trace_eq M N (fun g => (htr g).symm) (span_top_of_residual _ hspan) (span_top_of_residual _ hN')`. Set `k : Fin r` to `⟨0, hr⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, residue O (φ (Matrix.single j j 1) k k) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Establish `e : (1 : Matrix (Fin r) (Fin r) O) = ∑ j, Matrix.single j j 1` using `(Matrix.sum_single_one).symm`. Use `congrArg (fun X : Matrix (Fin r) (Fin r) O => residue O (X k k)) h1` as an intermediate fact. Rewrite `this` using `[e, map_sum, ← e]`. Simplify using `[Matrix.sum_apply, hc] at this`. Set `A : Matrix (Fin r) (Fin r) O` to `Matrix.of fun p q => φ (Matrix.single q j 1) p k`.
+
+Establish `hA : ∀ g, N g * A = A * M g`. Introduce `g`. Use extensionality with `p q`. Establish `e : M g * Matrix.single q j 1 = ∑ t, M g t q • Matrix.single t j (1 : O)`. Use extensionality with `a b`.
+
+Distinguish the cases in `hb : j = b`. Substitute `hb` using the available equality. Simplify using `[Matrix.sum_apply, Matrix.single_apply]`. Simplify using `[Matrix.sum_apply, Matrix.single_apply, Matrix.mul_apply, hb]`. Use `congrFun (congrFun (hφ g (Matrix.single q j 1)) p) k` as an intermediate fact.
+
+Rewrite `this` using `[e, map_sum]`. Simplify using `only [map_smul, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply] at this`. Simplify using `only [Matrix.mul_apply, A, Matrix.of_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun t _ => mul_comm _ _`.
+
+Use `GlobalTheory.exists_gl_intertwiner_of_residual_span_eq_top O Γ r ρ ρ' hspan ⟨A, fun h0 => ?_, hA⟩` and prove the remaining obligations. Use `GlobalTheory.det_ne_zero_of_intertwines_of_span_eq_top _ (fun g => (N g).map (residue O)) hspan (A.map (residue O)) k j hj (fun g => ?_) ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, hA, Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`.
+-/
 theorem exists_gl_conj_of_trace_eq :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (Γ : Type) [Group Γ] (r : ℕ) (ρ ρ' : Γ →* GL (Fin r) O), Submodule.span (IsLocalRing.ResidueField O) (Set.range fun g => ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).map (IsLocalRing.residue O)) = ⊤ → (∀ g, ((ρ' g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).trace = ((ρ g : GL (Fin r) O) : Matrix (Fin r) (Fin r) O).trace) → ∃ U : GL (Fin r) O, ∀ g, ρ' g * U = U * ρ g := by
   intro O _ _ _ _ Γ _ r ρ ρ' hspan htr

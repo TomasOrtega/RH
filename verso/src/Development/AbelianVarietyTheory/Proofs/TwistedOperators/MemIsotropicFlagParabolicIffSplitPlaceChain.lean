@@ -10,6 +10,11 @@ namespace GlobalTheory.SplitFlag
 
 open GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups (perp extSub coordR act parab)
 
+/- English proof (translation)
+Introduce `u hu`. Set `f : S →ₗ[K] S` to `(M : Matrix (Fin n) (Fin n) K).mulVecLin.restrict hS`. Establish `hinj : Function.Injective f`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `e : (M : Matrix (Fin n) (Fin n) K) *ᵥ (a : Fin n → K) = (M : Matrix (Fin n) (Fin n) K) *ᵥ (b : Fin n → K)` using `congrArg Subtype.val hab`. Establish `e2` using `congrArg (fun x => ((M⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) e`. Simplify `e2` using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Take `⟨a, ha⟩` from `LinearMap.injective_iff_surjective.1 hinj ⟨u, hu⟩`. Conclude with `⟨a.1, a.2, congrArg Subtype.val ha⟩`.
+-/
 theorem exists_mulVec_eq_of_maps {K : Type} [Field K] {n : ℕ} (M : GL (Fin n) K) (S : Submodule K (Fin n → K))
     (hS : ∀ u ∈ S, (M : Matrix (Fin n) (Fin n) K) *ᵥ u ∈ S) :
     ∀ u ∈ S, ∃ u₀ ∈ S, (M : Matrix (Fin n) (Fin n) K) *ᵥ u₀ = u := by
@@ -28,6 +33,9 @@ theorem exists_mulVec_eq_of_maps {K : Type} [Field K] {n : ℕ} (M : GL (Fin n) 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
   {V : Formalism.BasicNotions.HSpace E} {v : HeightOneSpectrum (𝓞 F)}
 
+/- English proof (translation)
+Take `⟨y, hy, rfl⟩` from `hu`. Conclude with `⟨act hc V g y, mem_parab_iff_maps.1 hg y hy, splitVec_matHom_mulVec τ g y⟩`.
+-/
 theorem splitHom_mulVec_mem_wPart (hc : Formalism.BasicNotions.CMData F E) (τ : E →ₐ[F] Fv F v) {W : Submodule E V.V}
     {g : GlobalTheory.AdelicU.GLoc hc.sig V.gram v} (hg : g ∈ parab hc V (Fv F v) W) {u : Fin V.rank → Fv F v}
     (hu : u ∈ wPart τ W) :
@@ -36,10 +44,16 @@ theorem splitHom_mulVec_mem_wPart (hc : Formalism.BasicNotions.CMData F E) (τ :
   obtain ⟨y, hy, rfl⟩ := hu
   exact ⟨act hc V g y, mem_parab_iff_maps.1 hg y hy, splitVec_matHom_mulVec τ g y⟩
 
+/- English proof (translation)
+Rewrite using `[flagChain_of_le 𝔉 τ (show (i : ℕ) ≤ 𝔉.k by omega)]`.
+-/
 theorem flagChain_eq_X (𝔉 : GlobalTheory.Cusp.IsoFlag V) (τ : E →ₐ[F] Fv F v) (i : Fin (𝔉.k + 1)) :
     flagChain 𝔉 τ ⟨i, by omega⟩ = wPart τ (𝔉.X i) := by
   rw [flagChain_of_le 𝔉 τ (show (i : ℕ) ≤ 𝔉.k by omega)]
 
+/- English proof (translation)
+Rewrite using `[flagChain_of_lt 𝔉 τ (show 𝔉.k < 2 * 𝔉.k + 1 - (i : ℕ) by omega)]`. Use `congr 3`. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem flagChain_eq_perp (𝔉 : GlobalTheory.Cusp.IsoFlag V) (τ : E →ₐ[F] Fv F v) (i : Fin (𝔉.k + 1)) :
     flagChain 𝔉 τ ⟨2 * 𝔉.k + 1 - i, by omega⟩ = wPart τ (perp V (𝔉.X i)) := by
   rw [flagChain_of_lt 𝔉 τ (show 𝔉.k < 2 * 𝔉.k + 1 - (i : ℕ) by omega)]
@@ -48,6 +62,17 @@ theorem flagChain_eq_perp (𝔉 : GlobalTheory.Cusp.IsoFlag V) (τ : E →ₐ[F]
   simp only
   omega
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ V v hc h hJ τ 𝔉 g`. Prove the components needed by the constructor for the conclusion. Introduce `hg j u hu`. Break down `le_or_gt (j : ℕ) 𝔉.k with hj | hj` into its components or cases. Rewrite `hu`, the goal using `[flagChain_of_le 𝔉 τ hj]`.
+
+Conclude with `splitHom_mulVec_mem_wPart hc τ (Subgroup.mem_iInf.1 hg _) hu`. Rewrite `hu`, the goal using `[flagChain_of_lt 𝔉 τ hj]`. Conclude with `splitHom_mulVec_mem_wPart hc τ (parab_le_perp (Subgroup.mem_iInf.1 hg _)) hu`. Introduce `H`. Use `Subgroup.mem_iInf.2 fun i => mem_parab_iff_maps.2 fun y hy => ?_` and prove the remaining obligations.
+
+Establish `H1` using `H ⟨i, by omega⟩`. Rewrite `H1` using `[flagChain_eq_X]`. Establish `H2` using `H ⟨2 * 𝔉.k + 1 - i, by omega⟩`. Rewrite `H2` using `[flagChain_eq_perp]`. Establish `key : ∀ τ' : E →ₐ[F] Fv F v, splitVec τ' (act hc V g y) = ((GlobalTheory.AdelicU.splitHom hc.sig V.gram τ' g : GL (Fin V.rank) (Fv F v)) : Matrix (Fin V.rank) (Fin V.rank) (Fv F v)) *ᵥ splitVec τ' y` using `fun τ' => splitVec_matHom_mulVec τ' g y`.
+
+Rewrite `hy`, the goal using `[mem_extSub_iff_split hc h τ]`. Take `⟨hy1, hy2⟩` from `hy`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `H1 _ hy1`.
+
+Rewrite using `[key, mem_wPart_comp_iff hc h hJ τ]`. Introduce `u hu`. Take `⟨u₀, hu₀, rfl⟩` from `exists_mulVec_eq_of_maps _ _ H2 u hu`. Rewrite using `[pairing_splitHom]`. Conclude with `(mem_wPart_comp_iff hc h hJ τ).1 hy2 u₀ hu₀`.
+-/
 theorem mem_par_iff_flagChain : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     {V : Formalism.BasicNotions.HSpace E} {v : HeightOneSpectrum (𝓞 F)} (hc : Formalism.BasicNotions.CMData F E), IsCMExt F E hc.sig →
     IsHermND hc.sig V.gram → ∀ (τ : E →ₐ[F] Fv F v) (𝔉 : GlobalTheory.Cusp.IsoFlag V) (g : GlobalTheory.AdelicU.GLoc hc.sig V.gram v),

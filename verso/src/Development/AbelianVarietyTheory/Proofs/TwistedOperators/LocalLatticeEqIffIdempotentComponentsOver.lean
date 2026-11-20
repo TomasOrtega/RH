@@ -15,6 +15,9 @@ open GlobalTheory.StdFrames (cpt cpt_ext toAd_spec)
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Use `haveI : Module.Finite (𝓞 D.host.E) Λ := Module.Finite.iff_fg.mpr h`. Rewrite using `[mem_hat]`. Conclude with `GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Λ y`.
+-/
 theorem mem_hat_iff_locL {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG) (y : Fin n → EAf D) :
     y ∈ hat Λ ↔ ∀ v : HeightOneSpectrum (𝓞 D.host.F),
       (fun i => Formalism.UG.prV (E := D.host.E) v (y i)) ∈ Formalism.L2.Herm.locL v Λ := by
@@ -22,11 +25,19 @@ theorem mem_hat_iff_locL {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (
   rw [mem_hat]
   exact GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Λ y
 
+/- English proof (translation)
+Use `(GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (toAd_spec D) v z).trans ?_` and prove the remaining obligations. Conclude with `Iff.rfl`.
+-/
 theorem prV_eq_zero_iff_cpt (v : HeightOneSpectrum (𝓞 D.host.F)) (z : EAf D) :
     Formalism.UG.prV (E := D.host.E) v z = 0 ↔ ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → cpt Q z = 0 := by
   refine (GlobalTheory.AdeleBaseChange.prV_eq_zero_iff (toAd_spec D) v z).trans ?_
   exact Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_hat_iff_locL h]`. Use `⟨fun H => H v, fun H w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwv : w = v`. Substitute `hwv` using the available equality. Conclude with `H`.
+
+Establish `hz : (fun i => Formalism.UG.prV (E` using `D.host.E) w (y i)) = 0 := by`. Use extensionality with `i`. Conclude with `hy w hwv i`. Rewrite using `[hz]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem mem_hat_iff_of_supp {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG)
     (v : HeightOneSpectrum (𝓞 D.host.F)) {y : Fin n → EAf D}
     (hy : ∀ w, w ≠ v → ∀ i, Formalism.UG.prV (E := D.host.E) w (y i) = 0) :
@@ -43,6 +54,23 @@ theorem mem_hat_iff_of_supp {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)
     exact Submodule.zero_mem _
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨e, -, -, he1, he0⟩` from `GlobalTheory.StdFrames.exists_idem (D := D) {Q : Pl D.host.E | Q.under (𝓞 D.host.F) = v}`. Establish `hpe : Formalism.UG.prV (E` using `D.host.E) v e = 1 := by`. Establish `h0 : Formalism.UG.prV (E` using `D.host.E) v (e - 1) = 0 := by`. Rewrite using `[prV_eq_zero_iff_cpt]`. Introduce `Q hQ`.
+
+Rewrite using `[map_sub, map_one, he1 Q hQ, sub_self]`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `key : ∀ x ∈ Λ, (e • fun i => inc D (x i)) ∈ hat Λ'`. Introduce `x hx`. Use `mem_hat_of_idem h' fun w => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_smul]`. Distinguish the cases in `hw : w.under (𝓞 D.host.F) = v`. Establish `hwe : idem w * e = idem w`. Use `cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[cpt_idem_self, he1 Q hw, one_mul]`. Rewrite using `[cpt_idem_ne hQ, zero_mul]`. Rewrite using `[hwe]`.
+
+Conclude with `H w hw _ (smul_mem_hat (idem_mem w) (inc_mem_hat hx))`. Establish `hwe : idem w * e = 0`. Use `cpt_ext fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `hQ : Q = w`.
+
+Substitute `hQ` using the available equality. Rewrite using `[he0 Q hw, mul_zero]`. Rewrite using `[cpt_idem_ne hQ, zero_mul]`. Rewrite using `[hwe, zero_smul]`. Conclude with `zero_mem_hat`.
+
+Unfold `Formalism.L2.Herm.locL Formalism.UG.latS`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hm` using `(mem_hat_iff_locL h' _).mp (key x hx) v`. Establish `hxe : (fun i => Formalism.UG.prV (E` using `D.host.E) v ((e • fun i => inc D (x i)) i)) = fun i => Formalism.UG.inclE (F := D.host.F) (v.adicCompletion D.host.F) (x i) := by`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hpe, one_mul]`. Rewrite using `[Formalism.UG.P.afsplit_prV_inclE]`. Rewrite `hm` using `[hxe]`. Conclude with `hm`.
+-/
 theorem locL_le {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : Λ.FG) (h' : Λ'.FG)
     (v : HeightOneSpectrum (𝓞 D.host.F))
     (H : ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → ∀ y : Fin n → EAf D, idem Q • y ∈ hat Λ → idem Q • y ∈ hat Λ') :
@@ -93,6 +121,11 @@ theorem locL_le {Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : �
   rw [hxe] at hm
   exact hm
 
+/- English proof (translation)
+Introduce `w hw i`. Establish `hQw : Formalism.UG.prV (E` using `D.host.E) w (idem Q) = 0 := by`. Rewrite using `[prV_eq_zero_iff_cpt]`. Introduce `Q' hQ'`. Apply `cpt_idem_ne` to reduce the goal to its premises.
+
+Introduce `hEq`. Substitute `hEq` using the available equality. Conclude with `hw (hQ'.symm.trans hQ)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, hQw, zero_mul]`.
+-/
 theorem prV_idem_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {Q : Pl D.host.E} (hQ : Q.under (𝓞 D.host.F) = v)
     (y : Fin n → EAf D) : ∀ w, w ≠ v → ∀ i, Formalism.UG.prV (E := D.host.E) w ((idem Q • y) i) = 0 := by
   intro w hw i
@@ -105,6 +138,11 @@ theorem prV_idem_smul {v : HeightOneSpectrum (𝓞 D.host.F)} {Q : Pl D.host.E} 
     exact hw (hQ'.symm.trans hQ)
   rw [Pi.smul_apply, smul_eq_mul, map_mul, hQw, zero_mul]
 
+/- English proof (translation)
+Introduce `D n Λ Λ' h h' v`. Prove the components needed by the constructor for the conclusion. Introduce `heq Q hQ y`. Rewrite using `[mem_hat_iff_of_supp h v (prV_idem_smul hQ y), mem_hat_iff_of_supp h' v (prV_idem_smul hQ y), heq]`. Introduce `H`.
+
+Conclude with `le_antisymm (locL_le h h' v fun Q hQ y => (H Q hQ y).mp) (locL_le h' h v fun Q hQ y => (H Q hQ y).mpr)`.
+-/
 theorem locL_eq_iff_idem : ∀ (D : D7) (n : ℕ) (Λ Λ' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), Λ.FG → Λ'.FG → ∀ v : HeightOneSpectrum (𝓞 D.host.F), Formalism.L2.Herm.locL v Λ = Formalism.L2.Herm.locL v Λ' ↔ ∀ Q : Pl D.host.E, Q.under (𝓞 D.host.F) = v → ∀ y : Fin n → EAf D, idem Q • y ∈ hat Λ ↔ idem Q • y ∈ hat Λ' := by
   intro D n Λ Λ' h h' v
   constructor

@@ -18,16 +18,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.FieldModel
 
+/- English proof (translation)
+Establish `hle : Subfield.closure S ≤ β.fieldRange` using `Subfield.closure_le.2 h`. Use `⟨(β.rangeRestrictFieldEquiv).symm.toRingHom.comp (Subfield.inclusion hle), RingHom.ext fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val ((β.rangeRestrictFieldEquiv).apply_symm_apply (Subfield.inclusion hle x))`.
+-/
 theorem exists_factor {k K : Type} [Field k] [Field K] (β : k →+* K) (S : Set K) (h : S ⊆ Set.range β) :
     ∃ α : Subfield.closure S →+* k, β.comp α = (Subfield.closure S).subtype := by
   have hle : Subfield.closure S ≤ β.fieldRange := Subfield.closure_le.2 h
   refine ⟨(β.rangeRestrictFieldEquiv).symm.toRingHom.comp (Subfield.inclusion hle), RingHom.ext fun x => ?_⟩
   exact congrArg Subtype.val ((β.rangeRestrictFieldEquiv).apply_symm_apply (Subfield.inclusion hle x))
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`.
+-/
 theorem spMap_comp {k k₁ K : Type} [Field k] [Field k₁] [Field K] {α : k →+* k₁} {β : k₁ →+* K} {σ : k →+* K}
     (h : β.comp α = σ) : spMap β ≫ spMap α = spMap σ := by
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, h]
 
+/- English proof (translation)
+Use `⟨pullback.lift φ (X.hom ≫ b) (by rw [Category.assoc, h, H.w]), pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Use `IsPullback.of_right (h₁₂ := pullback.fst X₀.hom a) (v₁₃ := X₀.hom) (h₂₂ := a) ?_ (pullback.lift_snd _ _ _) (.of_hasPullback _ _)` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, h]`. Conclude with `H`.
+-/
 theorem exists_baseChange {S S₁ S₀ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S₁} {c : S ⟶ S₀} (h : b ≫ a = c)
     {X : Over S} {X₀ : Over S₀} {φ : X.left ⟶ X₀.left} (H : IsPullback φ X.hom X₀.hom c) :
     ∃ φ₁ : X.left ⟶ ((Over.pullback a).obj X₀).left, φ₁ ≫ pullback.fst X₀.hom a = φ ∧
@@ -44,6 +53,15 @@ def HasModel {K : Type} [Field K] (X : Over (Sp K)) : Prop :=
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Take `⟨sU, hU⟩` from `hU`. Take `⟨sV, hV⟩` from `hV`. Take `⟨sW, hW⟩` from `hW`. Set `k₀` to `Subfield.closure ((sU ∪ sV ∪ sW : Finset K) : Set K)`. Establish `sub : ∀ t : Finset K, t ⊆ sU ∪ sV ∪ sW → (t : Set K) ⊆ Set.range k₀.subtype` using `fun t ht x hx => ⟨⟨x, Subfield.subset_closure (ht hx)⟩, rfl⟩`.
+
+Take `⟨U₀, φU, HU⟩` from `hU k₀ k₀.subtype (sub _ (by intro x; simp; tauto))`. Take `⟨V₀, φV, HV⟩` from `hV k₀ k₀.subtype (sub _ (by intro x; simp; tauto))`. Take `⟨W₀, φW, HW⟩` from `hW k₀ k₀.subtype (sub _ (by intro x; simp; tauto))`. Take `⟨s₁, hs₁⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K k₀.subtype W U W₀ U₀ φW φU HW HU h₁ h₂ h₃ p`. Take `⟨s₂, hs₂⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K k₀.subtype W V W₀ V₀ φW φV HW HV h₁ h₂ h₄ q`.
+
+Use `⟨sU ∪ sV ∪ sW ∪ (s₁ ∪ s₂), fun k _ β hβ => ?_⟩` and prove the remaining obligations. Rewrite `hβ` using `[Finset.coe_union, Finset.coe_union s₁, Set.union_subset_iff, Set.union_subset_iff]`. Take `⟨α, hα⟩` from `exists_factor β _ hβ.1`. Take `⟨ψU, eU, PU⟩` from `exists_baseChange (spMap_comp hα) HU`. Take `⟨ψV, eV, PV⟩` from `exists_baseChange (spMap_comp hα) HV`.
+
+Take `⟨ψW, eW, PW⟩` from `exists_baseChange (spMap_comp hα) HW`. Take `⟨p₁, hp⟩` from `hs₁ k α β hα hβ.2.1 _ _ ψW _ ψU _ (.of_hasPullback _ _) (.of_hasPullback _ _) eW eU PW.w PU.w`. Take `⟨q₁, hq⟩` from `hs₂ k α β hα hβ.2.2 _ _ ψW _ ψV _ (.of_hasPullback _ _) (.of_hasPullback _ _) eW eV PW.w PV.w`. Conclude with `GlobalTheory.T.glue_models_over_subfield k K β X U V W u v p q hu hv h hc _ _ _ ψU ψV ψW PU PV PW p₁ q₁ hp hq`.
+-/
 theorem HasModel.glue {X U V W : Over (Sp K)} (u : U ⟶ X) (v : V ⟶ X) (p : W ⟶ U) (q : W ⟶ V)
     (hu : IsOpenImmersion u.left) (hv : IsOpenImmersion v.left) (h : IsPullback p.left q.left u.left v.left)
     (hc : ∀ x : X.left, x ∈ Set.range u.left ∨ x ∈ Set.range v.left)
@@ -76,6 +94,9 @@ abbrev part (X : Over (Sp K)) (U : X.left.Opens) : Over (Sp K) := Over.mk (U.ι 
 abbrev partMap (X : Over (Sp K)) {U V : X.left.Opens} (h : U ≤ V) : part X U ⟶ part X V :=
   Over.homMk (X.left.homOfLE h) (by simp)
 
+/- English proof (translation)
+Establish `: CompactSpace (A ⊓ B : X.left.Opens).toScheme` using `isCompact_iff_compactSpace.1 hc`. Use `HasModel.glue (partMap X le_sup_left) (partMap X le_sup_right) (partMap X inf_le_left) (partMap X inf_le_right) (inferInstanceAs (IsOpenImmersion (X.left.homOfLE le_sup_left))) (inferInstanceAs (IsOpenImmersion (X.left.homOfLE le_sup_right))) (isPullback_opens_inf_le le_sup_left …` and prove the remaining obligations. Take `⟨x, hx | hx⟩` from `x`. Conclude with `Or.inl ⟨⟨x, hx⟩, Subtype.ext (X.left.homOfLE_apply le_sup_left _)⟩`. Conclude with `Or.inr ⟨⟨x, hx⟩, Subtype.ext (X.left.homOfLE_apply le_sup_right _)⟩`.
+-/
 theorem HasModel.sup (X : Over (Sp K)) [LocallyOfFiniteType X.hom] [IsSeparated X.hom] (A B : X.left.Opens)
     (hc : IsCompact ((A ⊓ B : X.left.Opens) : Set X.left))
     (hA : HasModel (part X A)) (hB : HasModel (part X B)) (hAB : HasModel (part X (A ⊓ B))) :
@@ -92,6 +113,21 @@ theorem HasModel.sup (X : Over (Sp K)) [LocallyOfFiniteType X.hom] [IsSeparated 
   · exact Or.inl ⟨⟨x, hx⟩, Subtype.ext (X.left.homOfLE_apply le_sup_left _)⟩
   · exact Or.inr ⟨⟨x, hx⟩, Subtype.ext (X.left.homOfLE_apply le_sup_right _)⟩
 
+/- English proof (translation)
+Establish `sep : IsSeparated (terminal.from X.left)`. Rewrite using `[← terminal.comp_from X.hom]`. Use `infer_instance`. Establish `: X.left.IsSeparated` using `⟨sep⟩`. Establish `: CompactSpace X.left` using `QuasiCompact.compactSpace_of_compactSpace X.hom`.
+
+Establish `aff : ∀ V : X.left.Opens, IsAffineOpen V → HasModel (part X V)` using `fun V hV => GlobalTheory.T.exists_finset_model_of_isAffine' K (part X V) hV (inferInstanceAs (LocallyOfFiniteType (V.ι ≫ X.hom)))`. Establish `cpt : ∀ S V : X.left.Opens, IsCompact S.carrier → IsAffineOpen V → IsCompact ((S ⊓ V : X.left.Opens) : Set X.left)` using `fun S V hS hV => QuasiSeparatedSpace.inter_isCompact _ _ S.isOpen hS V.isOpen hV.isCompact`. Establish `h₁ : ∀ S : X.left.Opens, IsCompact (S : Set X.left) → ∀ V, IsAffineOpen V → HasModel (part X (S ⊓ V))`. Introduce `S hS`. Use `compact_open_induction_on (P := fun S => ∀ V, IsAffineOpen V → HasModel (part X (S ⊓ V))) S hS ?_ ?_` and prove the remaining obligations.
+
+Introduce `V _`. Rewrite using `[bot_inf_eq]`. Conclude with `aff _ (isAffineOpen_bot _)`. Introduce `S hS U ih V hV`. Establish `hUV : IsAffineOpen (U.1 ⊓ V)` using `U.2.inf hV`.
+
+Establish `e : S ⊓ V ⊓ (U.1 ⊓ V) = S ⊓ (U.1 ⊓ V)`. Rewrite using `[inf_assoc, inf_left_comm V, inf_idem]`. Rewrite using `[inf_sup_right]`. Use `HasModel.sup X _ _ ?_ (ih V hV) (aff _ hUV) ?_` and prove the remaining obligations. Rewrite using `[e]`.
+
+Conclude with `cpt _ _ hS hUV`. Rewrite using `[e]`. Conclude with `ih _ hUV`. Establish `h₂ : HasModel (part X ⊤)`. Use `compact_open_induction_on (P := fun S => HasModel (part X S)) ⊤ isCompact_univ (aff _ (isAffineOpen_bot _)) fun S hS U ih => ?_` and prove the remaining obligations.
+
+Conclude with `HasModel.sup X _ _ (cpt _ _ hS U.2) ih (aff _ U.2) (h₁ S hS _ U.2)`. Take `⟨s, hs⟩` from `h₂`. Use `⟨s, fun k _ β hβ => ?_⟩` and prove the remaining obligations. Take `⟨X₀, φ, H⟩` from `hs k β hβ`. Use `⟨X₀, X.left.topIso.inv ≫ φ, ?_⟩` and prove the remaining obligations.
+
+Establish `H' : IsPullback X.left.topIso.inv X.hom (part X ⊤).hom (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by simp⟩`. Simplify using `using H'.paste_horiz H`.
+-/
 theorem hasModel (X : Over (Sp K)) [LocallyOfFiniteType X.hom] [QuasiCompact X.hom] [IsSeparated X.hom] :
     HasModel X := by
   have sep : IsSeparated (terminal.from X.left) := by
@@ -137,13 +173,24 @@ def sq (w : φ ≫ B₀.hom = B.hom ≫ c) : (B ⊗ B).left ⟶ (B₀ ⊗ B₀).
   pullback.map B.hom B.hom B₀.hom B₀.hom φ φ c w.symm w.symm
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _ @[reassoc]`.
+-/
 theorem sq_fst (w : φ ≫ B₀.hom = B.hom ≫ c) : sq w ≫ (fst B₀ B₀).left = (fst B B).left ≫ φ :=
   pullback.lift_fst _ _ _
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 theorem sq_snd (w : φ ≫ B₀.hom = B.hom ≫ c) : sq w ≫ (snd B₀ B₀).left = (snd B B).left ≫ φ :=
   pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Establish `h : IsPullback (fst B B).left (snd B B).left B.hom B.hom` using `.of_hasPullback _ _`. Establish `h₀ : IsPullback (fst B₀ B₀).left (snd B₀ B₀).left B₀.hom B₀.hom` using `.of_hasPullback _ _`. Establish `h₁ : IsPullback (sq H.w) (snd B B).left (snd B₀ B₀).left φ`. Use `IsPullback.of_right ?_ (sq_snd _) h₀` and prove the remaining obligations. Rewrite using `[sq_fst, H.w]`.
+
+Conclude with `h.paste_horiz H`. Rewrite using `[← Over.w (snd B B), ← Over.w (snd B₀ B₀)]`. Conclude with `h₁.paste_vert H`.
+-/
 theorem isPullback_sq (H : IsPullback φ B.hom B₀.hom c) :
     IsPullback (sq H.w) (B ⊗ B).hom (B₀ ⊗ B₀).hom c := by
   have h : IsPullback (fst B B).left (snd B B).left B.hom B.hom := .of_hasPullback _ _
@@ -155,6 +202,9 @@ theorem isPullback_sq (H : IsPullback φ B.hom B₀.hom c) :
   rw [← Over.w (snd B B), ← Over.w (snd B₀ B₀)]
   exact h₁.paste_vert H
 
+/- English proof (translation)
+Apply `Over.tensorObj_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst B₀ B₀).left = _ ≫ (fst B₀ B₀).left`. Rewrite using `[Category.assoc, sq_fst, sq_fst_assoc, sq_fst, e]`. Express the relevant statement in the definitionally equal form `_ ≫ (snd B₀ B₀).left = _ ≫ (snd B₀ B₀).left`. Rewrite using `[Category.assoc, sq_snd, sq_snd_assoc, sq_snd, e]`.
+-/
 theorem sq_comp {S₁ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S₁} {B₁ : Over S₁} {ψ : B.left ⟶ B₁.left}
     {χ : B₁.left ⟶ B₀.left} (e : ψ ≫ χ = φ) (w : φ ≫ B₀.hom = B.hom ≫ c) (w₁ : ψ ≫ B₁.hom = B.hom ≫ b)
     (w₂ : χ ≫ B₀.hom = B₁.hom ≫ a) : sq w₁ ≫ sq w₂ = sq w := by
@@ -164,12 +214,18 @@ theorem sq_comp {S₁ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S₁} {B₁ :
   · change _ ≫ (snd B₀ B₀).left = _ ≫ (snd B₀ B₀).left
     rw [Category.assoc, sq_snd, sq_snd_assoc, sq_snd, e]
 
+/- English proof (translation)
+The claim follows from `IsPullback.of_vert_isIso (fst := c) (snd := 𝟙 S) (f := 𝟙 S₀) (g := c) ⟨by simp⟩`.
+-/
 theorem isPullback_unit (c : S ⟶ S₀) : IsPullback (show (𝟙_ (Over S)).left ⟶ (𝟙_ (Over S₀)).left from c)
     (𝟙_ (Over S)).hom (𝟙_ (Over S₀)).hom c :=
   IsPullback.of_vert_isIso (fst := c) (snd := 𝟙 S) (f := 𝟙 S₀) (g := c) ⟨by simp⟩
 
 end Square
 
+/- English proof (translation)
+Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg _ (SplitTorus.bcMap_torusFst a X)).trans ((SplitTorus.bcMap_torusFst b X).trans (SplitTorus.bcMap_torusFst c X).symm))`. Express the relevant statement in the definitionally equal form `_ ≫ (splitTorus S₀ X).hom = _ ≫ (splitTorus S₀ X).hom`. Rewrite using `[Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc, SplitTorus.bcMap_hom, h]`.
+-/
 theorem bcMap_comp {S S₁ S₀ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S₁} {c : S ⟶ S₀} (h : b ≫ a = c) (X : Type)
     [AddCommGroup X] : SplitTorus.bcMap b X ≫ SplitTorus.bcMap a X = SplitTorus.bcMap c X := by
   apply pullback.hom_ext
@@ -178,6 +234,23 @@ theorem bcMap_comp {S S₁ S₀ : Scheme.{0}} {a : S₁ ⟶ S₀} {b : S ⟶ S�
   · change _ ≫ (splitTorus S₀ X).hom = _ ≫ (splitTorus S₀ X).hom
     rw [Category.assoc, SplitTorus.bcMap_hom, SplitTorus.bcMap_hom_assoc, SplitTorus.bcMap_hom, h]
 
+/- English proof (translation)
+Set `_` to `T.grpB`. Set `_` to `T.addCommGroup`. Use `T.isAbelian.proper` as an intermediate fact. Establish `HG` using `isGrpPullback_pullback G (spMap σ)`. Take `⟨g₀, eg₀, Hg₀⟩` from `exists_baseChange (X := (Over.pullback (spMap σ)).obj G) (X₀ := G) (spMap_comp e₀) HG.1`.
+
+Establish `lB : LocallyOfFiniteType T.B.hom` using `inferInstance`. Establish `cG : QuasiCompact ((Over.pullback (spMap σ)).obj G).hom` using `inferInstanceAs (QuasiCompact (pullback.snd G.hom _))`. Establish `sG : QuasiSeparated ((Over.pullback (spMap σ)).obj G).hom` using `inferInstanceAs (QuasiSeparated (pullback.snd G.hom _))`. Establish `lG : LocallyOfFiniteType ((Over.pullback (spMap σ)).obj G).hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom _))`. Establish `pBB : IsProper (T.B ⊗ T.B).hom` using `inferInstanceAs (IsProper (pullback.fst T.B.hom T.B.hom ≫ T.B.hom))`.
+
+Take `⟨sm, hm⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ (isPullback_sq H₀) H₀ inferInstance inferInstance lB μ[T.B]`. Take `⟨si, hi⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ H₀ H₀ inferInstance inferInstance lB ι[T.B]`. Take `⟨se, he⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ (isPullback_unit _) H₀ (inferInstanceAs (QuasiCompact (𝟙 (Sp K)))) (inferInstanceAs (QuasiSeparated (𝟙 (Sp K)))) lB η[T.B]`. Take `⟨sq', hq⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k₀ K σ₀ _ _ _ _ _ _ Hg₀ H₀ cG sG lB T.q`. Take `⟨st, ht⟩` from `GlobalTheory.T.hom_descends_to_subfield_containing_finset_alt k K σ _ _ _ _ _ _ (SplitTorus.isPullback_bcMap (spMap σ) T.X) HG.1 inferInstance inferInstance lG T.i`.
+
+Use `⟨sm ∪ (si ∪ (se ∪ (sq' ∪ st))), by simp, fun k₁ _ α ρ β hαβ hρ hρα hs => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.union_subset_iff] at hs`. Take `⟨bm, bi, be, bq, bt⟩` from `hs`. Take `⟨φ₁, eφ, H₁⟩` from `exists_baseChange (spMap_comp hρ) H₀`. Establish `P₁ : IsPullback (pullback.fst B₀.hom (spMap ρ)) ((Over.pullback (spMap ρ)).obj B₀).hom B₀.hom (spMap ρ)` using `.of_hasPullback _ _`.
+
+Establish `HG₁` using `isGrpPullback_pullback G (spMap α)`. Take `⟨g₁, eg₁, Hg₁⟩` from `exists_baseChange (X := (Over.pullback (spMap σ)).obj G) (X₀ := G) (spMap_comp hαβ) HG.1`. Take `⟨χ, eχ, Hχ⟩` from `exists_baseChange (X := (Over.pullback (spMap α)).obj G) (X₀ := G) (spMap_comp hρα) HG₁.1`. Establish `egχ : g₁ ≫ χ = g₀`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc]`. Conclude with `((congrArg _ eχ).trans eg₁).trans eg₀.symm`. Express the relevant statement in the definitionally equal form `_ ≫ ((Over.pullback (spMap α₀)).obj G).hom = _ ≫ ((Over.pullback (spMap α₀)).obj G).hom`. Rewrite using `[Category.assoc, Hχ.w, Hg₀.w, Hg₁.w_assoc, spMap_comp hρ]`. Establish `gp : IsGrpPullback _ ((Over.pullback (spMap α)).obj G) (spMap β) g₁` using `HG₁.cancel (by rw [eg₁, spMap_comp hαβ]; exact HG) Hg₁.w`.
+
+Take `⟨m₁, hm₁⟩` from `hm k₁ ρ β hρ bm _ _ (sq H₁.w) _ φ₁ _ (isPullback_sq P₁) P₁ (sq_comp eφ _ _ _) eφ (isPullback_sq H₁).w H₁.w`. Take `⟨i₁, hi₁⟩` from `hi k₁ ρ β hρ bi _ _ φ₁ _ φ₁ _ P₁ P₁ eφ eφ H₁.w H₁.w`. Take `⟨e₁, he₁⟩` from `he k₁ ρ β hρ be (𝟙_ _) _ (spMap β) _ φ₁ _ (isPullback_unit (spMap ρ)) P₁ (spMap_comp hρ) eφ (isPullback_unit (spMap β)).w H₁.w`. Take `⟨q₁, hq₁⟩` from `hq k₁ ρ β hρ bq _ _ g₁ _ φ₁ _ Hχ P₁ egχ eφ Hg₁.w H₁.w`. Take `⟨t₁, ht₁⟩` from `ht k₁ α β hαβ bt _ _ (SplitTorus.bcMap (spMap β) T.X) _ g₁ _ (SplitTorus.isPullback_bcMap (spMap α) T.X) HG₁.1 (bcMap_comp (spMap_comp hαβ) _) eg₁ (SplitTorus.bcMap_hom _ _) Hg₁.w`.
+
+Take `⟨gB, ab, gpB⟩` from `GlobalTheory.T.group_structure_descends_along_pullback k₁ K β T.B _ φ₁ T.isAbelian H₁ m₁ i₁ e₁ _ (sq_fst _) (sq_snd _) hm₁ hi₁ he₁`. Take `⟨c₁, c₂, c₃, c₄, c₅, c₆⟩` from `GlobalTheory.T.splitTorus_extension_descends_alt k₁ K β _ T.B _ _ T.X g₁ φ₁ gp gpB T.q T.i q₁ t₁ hq₁ ht₁ T.q_hom T.q_flat T.q_surjective T.q_quasiCompact T.i_hom T.isKernel`. Conclude with `⟨ { X := T.X free := T.free finite := T.finite B := _ grpB := gB isAbelian := ab q := q₁ q_hom := c₁ q_flat := c₂ q_surjective := c₃ q_quasiCompact := c₄ i := t₁ i_hom := c₅ isKernel := c₆ }⟩`.
+-/
 theorem exists_finite_torusExtension_of_model {k k₀ K : Type} [Field k] [Field k₀] [Field K] {σ : k →+* K}
     {α₀ : k →+* k₀} {σ₀ : k₀ →+* K} (e₀ : σ₀.comp α₀ = σ) (G : Over (Sp k)) [GrpObj G]
     [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] [IsSeparated G.hom]
@@ -254,6 +327,13 @@ theorem exists_finite_torusExtension_of_model {k k₀ K : Type} [Field k] [Field
       i_hom := c₅
       isKernel := c₆ }⟩
 
+/- English proof (translation)
+Set `_` to `T.grpB`. Use `T.isAbelian.proper` as an intermediate fact. Take `⟨s₀, hs₀⟩` from `hasModel T.B`. Set `k₀` to `Subfield.closure ((s₀ : Set K) ∪ Set.range σ)`. Set `α₀ : k →+* k₀` to `σ.codRestrict k₀ fun x => Subfield.subset_closure (Or.inr ⟨x, rfl⟩)`.
+
+Establish `e₀ : k₀.subtype.comp α₀ = σ` using `rfl`. Take `⟨B₀, φ₀, H₀⟩` from `hs₀ k₀ k₀.subtype fun x hx => ⟨⟨x, Subfield.subset_closure (Or.inl hx)⟩, rfl⟩`. Take `⟨s, hs, h⟩` from `exists_finite_torusExtension_of_model e₀ G T H₀`. Use `⟨s₀ ∪ s, s₀.finite_toSet.union hs, fun k₁ _ α β hαβ hb => ?_⟩` and prove the remaining obligations. Take `⟨b₀, b₁⟩` from `Set.union_subset_iff.1 hb`.
+
+Take `⟨ρ, hρ⟩` from `exists_factor β ((s₀ : Set K) ∪ Set.range σ) (Set.union_subset b₀ (by rintro _ ⟨x, rfl⟩; exact ⟨α x, by rw [← hαβ]; rfl⟩))`. Conclude with `h k₁ α ρ β hαβ hρ (RingHom.ext fun x => β.injective ((congrArg (fun f => f (α₀ x)) hρ).trans (congrArg (fun f => f x) hαβ).symm)) b₁`.
+-/
 theorem exists_finite_torusExtension_range {k K : Type} [Field k] [Field K] (σ : k →+* K) (G : Over (Sp k))
     [GrpObj G] [LocallyOfFiniteType G.hom] [QuasiCompact G.hom] [IsSeparated G.hom]
     (T : TorusExtension ((Over.pullback (spMap σ)).obj G)) :
@@ -278,6 +358,9 @@ end GlobalTheory.FieldModel
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k K _ _ _ _ G _ _ _ _ ⟨T⟩`. Take `⟨s, hs, h⟩` from `FieldModel.exists_finite_torusExtension_range (algebraMap k K) G T`. Use `hs.to_subtype` as an intermediate fact. Use `⟨IntermediateField.adjoin k s, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, ?_⟩` and prove the remaining obligations. Conclude with `h _ _ (algebraMap (IntermediateField.adjoin k s) K) rfl fun x hx => ⟨⟨x, IntermediateField.subset_adjoin k s hx⟩, rfl⟩`.
+-/
 theorem exists_finite_torusExtension : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] [Algebra.IsAlgebraic k K]
     (G : Over (Sp k)) [GrpObj G], LocallyOfFiniteType G.hom → QuasiCompact G.hom → IsSeparated G.hom →
     Nonempty (TorusExtension ((Over.pullback (spMap (algebraMap k K))).obj G)) →

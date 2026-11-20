@@ -7,6 +7,21 @@ namespace Formalism.HermitianLattices.TraceIntegrality
 open MeasureTheory Set Metric
 
 open scoped Function ENNReal in
+/- English proof (translation)
+Introduce `E _ _ _ s r δ hδ hr hs h`. Use `borelize E`. Set `μ : Measure E` to `Measure.addHaar`. Establish `δpos : 0 < δ / 2` using `by positivity`. Establish `ρpos : 0 < r + δ / 2` using `by positivity`.
+
+Use `set A := ⋃ c ∈ s, ball (c : E) (δ / 2) with hA`. Establish `D : Set.Pairwise (s : Set E) (Disjoint on fun c => ball (c : E) (δ / 2))`. Introduce and unpack `c hc d hd hcd`. Apply `ball_disjoint_ball` to reduce the goal to its premises. Rewrite using `[dist_eq_norm]`.
+
+Use `h c hc d hd hcd` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `A_subset : A ⊆ ball (0 : E) (r + δ / 2)`. Use `iUnion₂_subset fun x hx => ?_` and prove the remaining obligations. Apply `ball_subset_ball'` to reduce the goal to its premises.
+
+Rewrite using `[dist_zero_right]`. Use `hs x hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `I : (s.card : ℝ≥0∞) * ENNReal.ofReal ((δ / 2) ^ Module.finrank ℝ E) * μ (ball 0 1) ≤ ENNReal.ofReal ((r + δ / 2) ^ Module.finrank ℝ E) * μ (ball 0 1)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hA, measure_biUnion_finset D fun c _ => measurableSet_ball]`. Simplify using `only [μ.addHaar_ball_of_pos _ δpos]`. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_assoc]`. Use `_ ≤ μ (ball (0 : E) (r + δ / 2)) := measure_mono A_subset`. Use `_ = ENNReal.ofReal ((r + δ / 2) ^ Module.finrank ℝ E) * μ (ball 0 1) := by`.
+
+Simplify using `only [μ.addHaar_ball_of_pos _ ρpos]`. Establish `J : (s.card : ℝ≥0∞) * ENNReal.ofReal ((δ / 2) ^ Module.finrank ℝ E) ≤ ENNReal.ofReal ((r + δ / 2) ^ Module.finrank ℝ E)` using `(ENNReal.mul_le_mul_iff_left (measure_ball_pos _ _ zero_lt_one).ne' measure_ball_lt_top.ne).1 I`. Establish `K : (s.card : ℝ) * (δ / 2) ^ Module.finrank ℝ E ≤ (r + δ / 2) ^ Module.finrank ℝ E`. Use `ENNReal.toReal_le_of_le_ofReal (pow_nonneg ρpos.le _) J` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.toReal_ofReal (pow_nonneg δpos.le _)]`. Then use the resulting hypothesis.
+
+Establish `e : 1 + 2 * r / δ = (r + δ / 2) / (δ / 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, div_pow, le_div_iff₀ (pow_pos δpos _)]`. Conclude with `K`.
+-/
 theorem separated_set_packing_bound : SeparatedSetPackingBound := by
   intro E _ _ _ s r δ hδ hr hs h
   borelize E
@@ -50,6 +65,25 @@ theorem separated_set_packing_bound : SeparatedSetPackingBound := by
   rw [e, div_pow, le_div_iff₀ (pow_pos δpos _)]
   exact K
 
+/- English proof (translation)
+Introduce `Y h g v hv hh hc`. Take `⟨hint, hle⟩` from `Formalism.LogVandermondeBounds.flipTwoThree.gamma_integral_polynomial_bound v g hv`. Establish `hpi` using `Real.pi_pos`. Use `set w : ℝ → ℝ := fun u => Real.pi * Real.exp (-Real.pi * u) with hw`. Establish `hwpos : ∀ u, 0 ≤ w u` using `fun u => by positivity`.
+
+Establish `hwint : IntegrableOn w (Ioi 0)` using `(integrableOn_exp_mul_Ioi (a := -Real.pi) (by linarith) 0).const_mul _`. Establish `key : ∀ F : Finset Y, ∑ y ∈ F, Real.exp (-Real.pi * h y) ≤ 2 ^ g * (1 + 4 * g * v / Real.pi) ^ g`. Introduce `F`. Establish `h1 : ∀ y, Real.exp (-Real.pi * h y) = ∫ u in Ioi 0, (Ioi (h y)).indicator w u`. Introduce `y`.
+
+Rewrite using `[setIntegral_indicator measurableSet_Ioi, Ioi_inter_Ioi, max_eq_right (hh y)]`. Simplify using `only [hw]`. Rewrite using `[integral_const_mul, integral_exp_mul_Ioi (by linarith)]`. Clear the denominators using the available nonvanishing facts. Establish `hi : ∀ y, IntegrableOn ((Ioi (h y)).indicator w) (Ioi 0)` using `fun y => hwint.indicator measurableSet_Ioi`.
+
+Establish `hpt : ∀ u ∈ Ioi (0 : ℝ), ∑ y ∈ F, (Ioi (h y)).indicator w u ≤ 2 ^ g * (Real.pi * Real.exp (-Real.pi * u) * (1 + 4 * u * v) ^ g)`. Introduce `u hu`. Establish `hu0 : (0 : ℝ) ≤ u` using `le_of_lt hu`. Take `⟨hfin, hcard⟩` from `hc u hu0`. Establish `e1 : ∑ y ∈ F, (Ioi (h y)).indicator w u = ((F.filter (fun y => h y < u)).card : ℝ) * w u`.
+
+Simplify using `only [Set.indicator_apply, mem_Ioi]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]`. Establish `e2 : (F.filter (fun y => h y < u)).card ≤ {y | h y ≤ u}.ncard`. Rewrite using `[← Set.ncard_coe_finset]`. Apply `Set.ncard_le_ncard _ hfin` to reduce the goal to its premises.
+
+Introduce `y hy`. Simplify using `only [Finset.coe_filter, mem_ofPred_eq] at hy`. Conclude with `le_of_lt hy.2`. Establish `e3 : ((F.filter (fun y => h y < u)).card : ℝ) ≤ 2 ^ g * (1 + 4 * u * v) ^ g` using `le_trans (by exact_mod_cast e2) hcard`. Rewrite using `[e1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hnn : (0 : Y → ℝ) ≤ fun y => Real.exp (-Real.pi * h y)` using `fun y => (Real.exp_pos _).le`. Establish `hsum` using `Real.tsum_le_of_sum_le hnn key`. Use `⟨summable_of_sum_le hnn key, hsum, ?_⟩` and prove the remaining obligations.
+
+Establish `hb : 1 + 4 * (g : ℝ) * v / Real.pi ≤ 2 + 8 * g * v`. Establish `h3 : (1 : ℝ) ≤ Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `hgv : 0 ≤ 4 * (g : ℝ) * v` using `by positivity`. Establish `: 4 * (g : ℝ) * v / Real.pi ≤ 4 * (g : ℝ) * v` using `div_le_self hgv h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hb0 : 0 ≤ 1 + 4 * (g : ℝ) * v / Real.pi` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions. Use `_ ≤ 4 ^ g * (2 + 8 * g * v) ^ g := mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hb0 hb g) (by positivity)`.
+-/
 theorem layer_cake_bound : LayerCakeSumBound := by
   intro Y h g v hv hh hc
   obtain ⟨hint, hle⟩ := Formalism.LogVandermondeBounds.flipTwoThree.gamma_integral_polynomial_bound v g hv

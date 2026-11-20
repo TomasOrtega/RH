@@ -367,6 +367,9 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.TypedSet
 
 variable {D : D7} (X : HidaSetting D) (u u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
+/- English proof (translation)
+Unfold `gAt`. Use `split_ifs`. Conclude with `D.host.g_prime 0`. Conclude with `D.host.g_prime 1`.
+-/
 theorem gAt_prime (v : PlX X) : (gAt X v).Prime := by
   unfold gAt
   split_ifs
@@ -383,6 +386,25 @@ def KapX : Prop :=
     locF p.1 (κ • ratTup (Fv X.B.I.F p.1) (F0 (frameOf X u'))) a -
       locF p.1 (ratTup (Fv X.B.I.F p.1) (F0 (frameOf X u))) a = sc (E := X.B.I.E) p.1 (gAt X p.1 : Fv X.B.I.F p.1) • y
 
+/- English proof (translation)
+Take `⟨π, -, hT, hm⟩` from `D.T_norm u`. Use `set m : ℕ := D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 with hmdef`. Rewrite `hm` using `[Ideal.mem_span_singleton]`. Take `⟨c, hc⟩` from `hm`. Establish `hπ : (π : D.host.E) = 1 + (m : D.host.E) * (c : D.host.E)`.
+
+Use `congrArg (fun z : 𝓞 D.host.E => (z : D.host.E)) hc` as an intermediate fact. Simplify using `only [map_sub, map_one, map_mul, map_natCast] at this`. Take the linear combination `this`. Use `set y : D.host.E := (c : D.host.E) + D.host.conj (c : D.host.E) + (m : D.host.E) * (c : D.host.E) * D.host.conj (c : D.host.E) with hy`. Establish `hTy : (((D.mem u).A.T : ℕ) : D.host.E) - 1 = (m : D.host.E) * y`.
+
+Rewrite using `[← hT, hπ, map_add, map_one, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : IsIntegral ℤ y`. Establish `h1 : IsIntegral ℤ (c : D.host.E)` using `c.2`. Establish `h2 : IsIntegral ℤ (D.host.conj (c : D.host.E))` using `h1.map (D.host.conj.toAlgHom.restrictScalars ℤ)`.
+
+Establish `h3 : IsIntegral ℤ (m : D.host.E)`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ D.host.E (m : ℤ)))`. Conclude with `(h1.add h2).add ((h3.mul h1).mul h2)`. Distinguish the cases in `hm0 : m = 0`. Simplify using `[hm0] at hTy ⊢`.
+
+Establish `: (((D.mem u).A.T : ℕ) : D.host.E) = 1` using `sub_eq_zero.mp hTy`. Establish `h' : (((D.mem u).A.T : ℕ) : ℤ) = 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers. Use `set q : ℚ := ((((D.mem u).A.T : ℕ) : ℤ) - 1 : ℤ) / (m : ℚ) with hq`. Establish `hyq : y = algebraMap ℚ D.host.E q`.
+
+Establish `hmE : (m : D.host.E) ≠ 0` using `by exact_mod_cast hm0`. Rewrite using `[hq, map_div₀]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_comm]`.
+
+Conclude with `hTy.symm`. Rewrite `hint` using `[hyq]`. Establish `hqint : IsIntegral ℤ q` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ ℚ D.host.E) (algebraMap ℚ D.host.E).injective).mp hint`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hqint`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Establish `hmQ : (m : ℚ) ≠ 0` using `by exact_mod_cast hm0`. Establish `hz' : (z : ℚ) = q` using `by simpa using hz`. Establish `: ((((D.mem u).A.T : ℕ) : ℤ) - 1 : ℚ) = (m : ℚ) * (z : ℚ)`. Rewrite using `[hz', hq]`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+-/
 theorem T_sub_one_dvd (D : D7) (u : D.what₂.Word) :
     ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : ℤ) ∣ (((D.mem u).A.T : ℕ) : ℤ) - 1 := by
   obtain ⟨π, -, hT, hm⟩ := D.T_norm u
@@ -429,6 +451,13 @@ theorem T_sub_one_dvd (D : D7) (u : D.what₂.Word) :
       rw [hz', hq]; push_cast; field_simp
     exact_mod_cast this
 
+/- English proof (translation)
+Introduce `p`. Establish `hg : (gAt X p.1 : ℤ) ∣ ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : ℤ)`. Apply `Int.natCast_dvd_natCast.mpr` to reduce the goal to its premises. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Unfold `gAt`.
+
+Use `split_ifs`. Conclude with `dvd_pow (dvd_mul_right _ _) two_ne_zero`. Conclude with `dvd_pow (dvd_mul_left _ _) two_ne_zero`. Establish `h` using `dvd_sub (hg.trans (T_sub_one_dvd D u)) (hg.trans (T_sub_one_dvd D u'))`. Establish `e : (((D.mem u).A.T : ℕ) : ℤ) - 1 - ((((D.mem u').A.T : ℕ) : ℤ) - 1) = (Tw u : ℤ) - Tw u'`.
+
+Unfold `Tw`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem tCongX : TCongX X u u' := by
   intro p
   have hg : (gAt X p.1 : ℤ) ∣ ((D.host.QS * D.host.q * D.host.d * (D.host.g 0 * D.host.g 1) ^ 2 : ℕ) : ℤ) := by
@@ -443,6 +472,9 @@ theorem tCongX : TCongX X u u' := by
     unfold Tw; ring
   rwa [e] at h
 
+/- English proof (translation)
+Introduce `p` and use `⟨gAt_prime X p.1, (h1 p).1, (h1 p).2, h2 p, h3 p⟩`.
+-/
 theorem typFacts_of (h1 : GSplitX X) (h2 : TCongX X u u') (h3 : KapX X u u') : TypFacts X u u' :=
   fun p => ⟨gAt_prime X p.1, (h1 p).1, (h1 p).2, h2 p, h3 p⟩
 
@@ -452,6 +484,9 @@ def LocCompatX (w : D.what₂.Word) : Prop :=
 def PrimX (w : D.what₂.Word) : Prop :=
   ∀ v : PlX X, IsPrim v (LamX X) (locF v (ratTup (Fv X.B.I.F v) (F0 (frameOf X w))))
 
+/- English proof (translation)
+Introduce `v`. Use `⟨X.measG_norm.2.2.2.1 v, (X.measW_norm w).2.2.2.2.2.2.2.1 v, h1 v, h2 v⟩` and prove the remaining obligations.
+-/
 theorem locTieX_of (w : D.what₂.Word) (h1 : LocCompatX X ψ w) (h2 : PrimX X w) : LocTieX X ψ w := by
   intro v
   refine ⟨X.measG_norm.2.2.2.1 v, (X.measW_norm w).2.2.2.2.2.2.2.1 v, h1 v, h2 v⟩

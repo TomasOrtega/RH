@@ -23,10 +23,18 @@ def pairT (P : V →ₗ[LL] V' →ₗ[LL] LL) : V ⊗[Qp] R →ₗ[Qp] V' ⊗[Qp
 
 variable {R}
 
+/- English proof (translation)
+Simplify using `[pairT]`.
+-/
 @[simp] theorem pairT_tmul (P : V →ₗ[LL] V' →ₗ[LL] LL) (v : V) (r : R) (v' : V') (r' : R) :
     pairT R P (v ⊗ₜ[Qp] r) (v' ⊗ₜ[Qp] r') = P v v' ⊗ₜ[Qp] (r * r') := by
   simp [pairT]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp [hx, hx', smul_add]`. Consider the case `tmul v r`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp [hy, hy', smul_add]`. Consider the case `tmul v' r'`. Rewrite using `[TensorProduct.smul_tmul', pairT_tmul, pairT_tmul, TensorProduct.smul_tmul', map_smul]`.
+-/
 theorem pairT_smul_right (P : V →ₗ[LL] V' →ₗ[LL] LL) (x : V ⊗[Qp] R) (c : LL) (y : V' ⊗[Qp] R) :
     pairT R P x (c • y) = c • pairT R P x y := by
   induction x using TensorProduct.induction_on with
@@ -53,15 +61,27 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
+/- English proof (translation)
+Simplify using `[charRep]`.
+-/
 theorem charRep_apply (χ : G →* LLˣ) (g : G) (c : LL) : charRep χ g c = ((χ g : LLˣ) : LL) * c := by
   simp [charRep]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actVB_tmul (ρ : Representation LL G V) (g : G) (v : V) (b : B) :
     actVB PD ρ g (v ⊗ₜ[Qp] b) = ρ g v ⊗ₜ[Qp] PD.actB g b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actVdR_tmul (ρ : Representation LL G V) (g : G) (v : V) (b : BdR) :
     actVdR PD ρ g (v ⊗ₜ[Qp] b) = ρ g v ⊗ₜ[Qp] PD.actdR g b := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [actVB_tmul, map_mul, Module.End.mul_apply]`.
+-/
 theorem actVB_mul (ρ : Representation LL G V) (g h : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * h) x = actVB PD ρ g (actVB PD ρ h x) := by
   induction x using TensorProduct.induction_on with
@@ -69,6 +89,11 @@ theorem actVB_mul (ρ : Representation LL G V) (g h : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul v b => simp [actVB_tmul, map_mul, Module.End.mul_apply]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul v r`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul v' r'`. Rewrite using `[actVB_tmul, actVB_tmul, pairT_tmul, pairT_tmul, actVB_tmul, hP, charRep_apply, map_mul]`.
+-/
 theorem pairT_actVB (ρ : Representation LL G V) (ρ' : Representation LL G V')
     (P : V →ₗ[LL] V' →ₗ[LL] LL)
     (hP : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y) (g : G)
@@ -85,6 +110,11 @@ theorem pairT_actVB (ρ : Representation LL G V) (ρ' : Representation LL G V')
     | tmul v' r' =>
       rw [actVB_tmul, actVB_tmul, pairT_tmul, pairT_tmul, actVB_tmul, hP, charRep_apply, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul v r`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul v' r'`. Rewrite using `[actVdR_tmul, actVdR_tmul, pairT_tmul, pairT_tmul, actVdR_tmul, hP, charRep_apply, map_mul]`.
+-/
 theorem pairT_actVdR (ρ : Representation LL G V) (ρ' : Representation LL G V')
     (P : V →ₗ[LL] V' →ₗ[LL] LL)
     (hP : ∀ g x y, P (ρ g x) (ρ' g y) = ((cycLL PD LL g : LLˣ) : LL) * P x y) (g : G)
@@ -101,6 +131,11 @@ theorem pairT_actVdR (ρ : Representation LL G V) (ρ' : Representation LL G V')
     | tmul v' r' =>
       rw [actVdR_tmul, actVdR_tmul, pairT_tmul, pairT_tmul, actVdR_tmul, hP, charRep_apply, map_mul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul v r`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul v' r'`. Simplify using `[φVB, pairT_tmul]`.
+-/
 theorem pairT_φVB (P : V →ₗ[LL] V' →ₗ[LL] LL) (x : V ⊗[Qp] B) (y : V' ⊗[Qp] B) :
     φVB PD (LL := LL) (V := LL) (pairT B P x y) =
       pairT B P (φVB PD (LL := LL) (V := V) x) (φVB PD (LL := LL) (V := V') y) := by
@@ -114,6 +149,11 @@ theorem pairT_φVB (P : V →ₗ[LL] V' →ₗ[LL] LL) (x : V ⊗[Qp] B) (y : V'
     | tmul v' r' =>
       simp [φVB, pairT_tmul]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul v r`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul v' r'`. Simplify using `[ιV, pairT_tmul]`.
+-/
 theorem pairT_ιV (P : V →ₗ[LL] V' →ₗ[LL] LL) (x : V ⊗[Qp] B) (y : V' ⊗[Qp] B) :
     ιV PD (LL := LL) (V := LL) (pairT B P x y) =
       pairT BdR P (ιV PD (LL := LL) (V := V) x) (ιV PD (LL := LL) (V := V') y) := by
@@ -127,6 +167,11 @@ theorem pairT_ιV (P : V →ₗ[LL] V' →ₗ[LL] LL) (x : V ⊗[Qp] B) (y : V' 
     | tmul v' r' =>
       simp [ιV, pairT_tmul]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hz`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply]`. Conclude with `add_mem hy hy'`.
+
+Consider the case `tmul v f`. Rewrite using `[AlgebraTensorModule.map_tmul, pairT_tmul, mul_one]`. Conclude with `⟨P v v' ⊗ₜ[Qp] f, rfl⟩`.
+-/
 theorem pairT_filV (P : V →ₗ[LL] V' →ₗ[LL] LL) (a : ℤ) (z : V ⊗[Qp] BdR)
     (hz : z ∈ FilV PD (LL := LL) (V := V) a) (v' : V') :
     pairT BdR P z (v' ⊗ₜ[Qp] (1 : BdR)) ∈ FilV PD (LL := LL) (V := LL) a := by
@@ -138,6 +183,11 @@ theorem pairT_filV (P : V →ₗ[LL] V' →ₗ[LL] LL) (a : ℤ) (z : V ⊗[Qp] 
     rw [AlgebraTensorModule.map_tmul, pairT_tmul, mul_one]
     exact ⟨P v v' ⊗ₜ[Qp] f, rfl⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hz`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add]`. Conclude with `add_mem hy hy'`.
+
+Consider the case `tmul v f`. Rewrite using `[AlgebraTensorModule.map_tmul, actVdR_tmul]`. Conclude with `⟨ρ g v ⊗ₜ[Qp] (⟨PD.actdR g f, PD.Fil_G g a f f.2⟩ : (PD.Fil a).restrictScalars Qp), rfl⟩`.
+-/
 theorem actVdR_filV (ρ : Representation LL G V) (a : ℤ) (g : G) (z : V ⊗[Qp] BdR)
     (hz : z ∈ FilV PD (LL := LL) (V := V) a) : actVdR PD ρ g z ∈ FilV PD (LL := LL) (V := V) a := by
   obtain ⟨y, rfl⟩ := hz
@@ -149,6 +199,11 @@ theorem actVdR_filV (ρ : Representation LL G V) (a : ℤ) (g : G) (z : V ⊗[Qp
     exact ⟨ρ g v ⊗ₜ[Qp] (⟨PD.actdR g f, PD.Fil_G g a f f.2⟩ : (PD.Fil a).restrictScalars Qp), rfl⟩
 
 include PD in
+/- English proof (translation)
+Establish `: Nontrivial BdR`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[Subsingleton.elim (PD.ι PD.t) 0]`.
+
+Conclude with `(PD.Fil 2).zero_mem`. Conclude with `PD.ι.toRingHom.domain_nontrivial`.
+-/
 theorem nontrivial_B' : Nontrivial B := by
   have : Nontrivial BdR := by
     by_contra h
@@ -159,12 +214,18 @@ theorem nontrivial_B' : Nontrivial B := by
   exact PD.ι.toRingHom.domain_nontrivial
 
 include PD in
+/- English proof (translation)
+Use `haveI := nontrivial_B' PD`. Conclude with `Algebra.TensorProduct.includeLeft_injective (S := Qp) (A := LL) (B := B) (algebraMap Qp B).injective`.
+-/
 theorem tmul_one_injective : Function.Injective fun c : LL => c ⊗ₜ[Qp] (1 : B) := by
   haveI := nontrivial_B' PD
   exact Algebra.TensorProduct.includeLeft_injective (S := Qp) (A := LL) (B := B)
     (algebraMap Qp B).injective
 
 omit [Algebra K₀ B] [IsScalarTower Qp K₀ B] in
+/- English proof (translation)
+Rewrite using `[add_tmul, sub_tmul]`.
+-/
 theorem tmul_one_sub_add (u v w : LL) :
     (u - v + w) ⊗ₜ[Qp] (1 : B) = u ⊗ₜ[Qp] (1 : B) - v ⊗ₜ[Qp] (1 : B) + w ⊗ₜ[Qp] (1 : B) := by
   rw [add_tmul, sub_tmul]
@@ -189,6 +250,37 @@ end Char
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `haveI : IsTopologicalRing LL := hO.2.2.2.1`. Take `⟨x, hx⟩` from `ha.2`. Take `⟨y, hy⟩` from `hb.2`. Take `⟨hd1, d2, hd2, hd2'⟩` from `GlobalTheory.CobCrisLift.coboundary_lift l P AI hT K LL O hO A hdR a x hx`. Take `⟨hsurj, hker⟩` from `GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI hT K LL LL`.
+
+Take `⟨w1, w2, hw2, hw1φ, hw1ι⟩` from `hsurj (pairT P.R.B m (x - φVB (P.PD K) (LL := LL) (V := A.V) x) y) (pairT P.R.BdR m d2 (ιV (P.PD K) (LL := LL) (V := A'.V) y))`. Establish `hfix1 : ∀ g, actVB (P.PD K) A.ρ g (x - φVB (P.PD K) (LL` using `LL) (V := A.V) x) = x - φVB (P.PD K) (LL := LL) (V := A.V) x := fun g => by`. Use `(Submodule.mem_iInf _).1 hd1 g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hfix2 : ∀ g, actVdR (P.PD K) A.ρ g d2 = d2` using `fun g => by`.
+
+Use `(Submodule.mem_iInf _).1 hd2 g` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Then use the resulting hypothesis. Set `F : ↥(GK K) → LL ⊗[ℚ_[l]] P.R.B` to `fun h => pairT P.R.B m x (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) - (actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) h w1 - w1)`. Establish `hFφ : ∀ h, φVB (P.PD K) (LL` using `LL) (V := LL) (F h) = F h := fun h => by`. Establish `e1 : φVB (P.PD K) (LL` using `LL) (V := A'.V) (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = b h ⊗ₜ[ℚ_[l]] (1 : P.R.B) := by`.
+
+Simplify using `[φVB]`. Establish `e2 : pairT P.R.B m (x - φVB (P.PD K) (LL` using `LL) (V := A.V) x) (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) h (pairT P.R.B m (x - φVB (P.PD K) (LL := LL) (V := A.V) x) y) - pairT P.R.B m (x - φVB (P.PD K) (LL := LL) (V := A.V) x) y := by`. Rewrite using `[hy h, map_sub, ← pairT_actVB (P.PD K) A.ρ A'.ρ m hD.1 h _ y, hfix1 h]`. Establish `s1 : F h - φVB (P.PD K) (LL` using `LL) (V := LL) (F h) = (pairT P.R.B m x (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) - pairT P.R.B m (φVB (P.PD K) (LL := LL) (V := A.V) x) (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B))) - (actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) h (w1 - φVB (P.PD K) (LL := LL) (V := LL) w1) - (w1 - φVB (P.PD K) (LL := LL) (V …`. Simplify using `only [F, map_sub, pairT_φVB, e1, GlobalTheory.CobCrisLift.φVB_act]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[eq_comm, ← sub_eq_zero, s1, hw1φ, ← LinearMap.sub_apply, ← map_sub, e2, sub_self]`. Establish `hFι : ∀ h, ιV (P.PD K) (LL` using `LL) (V := LL) (F h) ∈ FilV (P.PD K) (LL := LL) (V := LL) 0 := fun h => by`. Establish `e1 : ιV (P.PD K) (LL` using `LL) (V := A'.V) (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = b h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) := by`. Simplify using `[ιV]`.
+
+Establish `e1' : b h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) = actVdR (P.PD K) A'.ρ h (ιV (P.PD K) (LL` using `LL) (V := A'.V) y) - ιV (P.PD K) (LL := LL) (V := A'.V) y := by`. Rewrite using `[← e1, hy h, map_sub, GlobalTheory.CobCrisLift.ιV_act]`. Establish `e2 : pairT P.R.BdR m d2 (b h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)) = actVdR (P.PD K) (charRep (cycLL (P.PD K) LL)) h (pairT P.R.BdR m d2 (ιV (P.PD K) (LL` using `LL) (V := A'.V) y)) - pairT P.R.BdR m d2 (ιV (P.PD K) (LL := LL) (V := A'.V) y) := by`. Rewrite using `[e1', map_sub, ← pairT_actVdR (P.PD K) A.ρ A'.ρ m hD.1 h d2 _, hfix2 h]`. Establish `hι1 : ιV (P.PD K) (LL` using `LL) (V := LL) w1 = pairT P.R.BdR m d2 (ιV (P.PD K) (LL := LL) (V := A'.V) y) + w2 := sub_eq_iff_eq_add.1 hw1ι`.
+
+Establish `s1 : ιV (P.PD K) (LL` using `LL) (V := LL) (F h) = pairT P.R.BdR m (ιV (P.PD K) (LL := LL) (V := A.V) x - d2) (b h ⊗ₜ[ℚ_[l]] (1 : P.R.BdR)) - (actVdR (P.PD K) (charRep (cycLL (P.PD K) LL)) h w2 - w2) := by`. Simplify using `only [F, map_sub, pairT_ιV, e1, GlobalTheory.CobCrisLift.ιV_act, hι1, map_add, LinearMap.sub_apply, e2]`. Normalize the expressions using the abelian group laws. Rewrite using `[s1]`. Conclude with `sub_mem (pairT_filV (P.PD K) m 0 _ hd2' (b h)) (sub_mem (actVdR_filV (P.PD K) _ 0 h w2 hw2) hw2)`.
+
+Establish `hF : ∀ h, ∃ c : LL, F h = c ⊗ₜ[ℚ_[l]] (1 : P.R.B)` using `fun h => hker (F h) (hFφ h) (hFι h)`. Use `choose f hf using hF`. Set `bas` to `Module.finBasis LL A'.V`. Set `β : Fin (finrank LL A'.V) → ↥(GK K) → LL` to `fun i g => bas.coord i (b g)`. Establish `hβ : ∀ i, Continuous (β i)` using `fun i => (IsModuleTopology.continuous_of_linearMap (bas.coord i)).comp hb.1.1`.
+
+Establish `hsum : ∀ g, f g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = ∑ i, β i g • pairT P.R.B m x (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B)) + (actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) g (-w1) - -w1)`. Introduce `g`. Establish `eb : b g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = ∑ i, β i g • (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B))` using `by conv_lhs => rw [← bas.sum_repr (b g)]`. Rewrite using `[TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[TensorProduct.smul_tmul']`. Both sides reduce to the same expression. Rewrite using `[← hf g]`. Simplify using `only [F, eb, map_sum, pairT_smul_right, map_neg]`. Normalize the expressions using the abelian group laws.
+
+Establish `hcont : Continuous f` using `GlobalTheory.FundCont.contCore_tied l P AI hT K LL O hO (charGRep (Qp := ℚ_[l]) (O := O) (cycLL (P.PD K) LL) hχ) _ (fun i => pairT P.R.B m x (bas i ⊗ₜ[ℚ_[l]] (1 : P.R.B))) β hβ (-w1) f hsum`. Use `⟨f, hcont, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨g, h⟩`. Establish `hcup : cupL A'.ρ m a b (g, h) = m (a g) (A'.ρ g (b h))` using `rfl`. Rewrite using `[hcup]`.
+
+Apply `tmul_one_injective (P.PD K) (LL := LL)` to reduce the goal to its premises. Use `beta_reduce`. Establish `hd : ReciprocityTheory.Def.d1 (charRep (cycLL (P.PD K) LL)) f (g, h) = charRep (cycLL (P.PD K) LL) g (f h) - f (g * h) + f g` using `rfl`. Establish `hact : (charRep (cycLL (P.PD K) LL) g (f h)) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) g (f h ⊗ₜ[ℚ_[l]] (1 : P.R.B))`. Rewrite using `[actVB_tmul, map_one]`.
+
+Establish `hbh : actVB (P.PD K) A'.ρ g (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B)) = A'.ρ g (b h) ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Rewrite using `[actVB_tmul, map_one]`. Establish `hcoc : b (g * h) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = b g ⊗ₜ[ℚ_[l]] (1 : P.R.B) + A'.ρ g (b h) ⊗ₜ[ℚ_[l]] (1 : P.R.B)`. Rewrite using `[hb.1.2 g h, add_tmul]`. Establish `hrhs : (m (a g) (A'.ρ g (b h))) ⊗ₜ[ℚ_[l]] (1 : P.R.B) = pairT P.R.B m (actVB (P.PD K) A.ρ g x) (actVB (P.PD K) A'.ρ g (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B))) - pairT P.R.B m x (A'.ρ g (b h) ⊗ₜ[ℚ_[l]] (1 : P.R.B))`.
+
+Rewrite using `[hbh, ← LinearMap.sub_apply, ← map_sub, ← hx g, pairT_tmul, mul_one]`. Establish `main : actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) g (F h) - F (g * h) + F g = pairT P.R.B m (actVB (P.PD K) A.ρ g x) (actVB (P.PD K) A'.ρ g (b h ⊗ₜ[ℚ_[l]] (1 : P.R.B))) - pairT P.R.B m x (A'.ρ g (b h) ⊗ₜ[ℚ_[l]] (1 : P.R.B))`. Simplify using `only [F, map_sub, actVB_mul, hcoc, map_add, ← pairT_actVB (P.PD K) A.ρ A'.ρ m hD.1 g]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hd, tmul_one_sub_add, hact]`. Use `_ = actVB (P.PD K) (charRep (cycLL (P.PD K) LL)) g (F h) - F (g * h) + F g := by`. Rewrite using `[hf h, hf (g * h), hf g]`. Use `_ = _ := main`. Use `_ = _ := hrhs.symm`.
+-/
 theorem cob_of_cont (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (hT : LocTied l P AI)
     (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL]
     (O : Type) [CommRing O] [Algebra O LL] (hO : GoodO (Qp := ℚ_[l]) LL O)
@@ -315,6 +407,15 @@ theorem cob_of_cont (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     _ = _ := main
     _ = _ := hrhs.symm
 
+/- English proof (translation)
+Introduce `l _ P AI hT K LL _ _ _ O _ _ hO A A' m hdR hD a ha b hb`. Use `haveI : IsTopologicalRing LL := hO.2.2.2.1`. Distinguish the cases in `hV : ∃ v : A.V, v ≠ 0`. Take `⟨v, hv⟩` from `hV`. Choose the witnesses or unpack the hypotheses as in `⟨v', hv'⟩ : ∃ v', m v v' ≠ 0 := by`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hv (hD.2.1 v h)`. Establish `hm : Continuous fun p : A.V × A'.V => m p.1 p.2` using `IsModuleTopology.continuous_bilinear_of_finite_left m`. Establish `hχ : Continuous fun g => ((cycLL (P.PD K) LL g : LLˣ) : LL)`.
+
+Establish `e : (fun g => ((cycLL (P.PD K) LL g : LLˣ) : LL)) = fun g => m (A.ρ g v) (A'.ρ g v') * (m v v')⁻¹`. Use function extensionality and compare the values at `g`. Rewrite using `[hD.1, mul_assoc, mul_inv_cancel₀ hv', mul_one]`. Rewrite using `[e]`. Conclude with `(hm.comp ((A.cont v).prodMk (A'.cont v'))).mul continuous_const`.
+
+Conclude with `cob_of_cont l P AI hT K LL O hO A A' m hdR hD hχ a ha b hb`. Use `push_neg at hV`. Use `⟨0, continuous_const, funext fun x => ?_⟩` and prove the remaining obligations. Simplify using `[cupL, hV (a x.1), ReciprocityTheory.Def.d1]`.
+-/
 theorem bk_orth : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDR (P.PD K) A.ρ → IsDual1 (P.PD K) A.ρ A'.ρ m → ∀ a ∈ finiteCocycles (P.PD K) A.ρ, ∀ b ∈ finiteCocycles (P.PD K) A'.ρ, CobL (P.PD K) (cupL A'.ρ m a b) := by
   intro l _ P AI hT K LL _ _ _ O _ _ hO A A' m hdR hD a ha b hb
   haveI : IsTopologicalRing LL := hO.2.2.2.1

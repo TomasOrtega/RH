@@ -9,6 +9,15 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 
 namespace GlobalTheory.TwU
 
+/- English proof (translation)
+Introduce `p _ X _ E hfin hst g hLT T pos F`. Introduce `hK`. Use `letI := wittFractionAlgebraCp p`. Use `letI := algKfC E.toCEmb`. Establish `h1 : ∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 → (pendT X E hfin hst hLT pos F).ThF j La La' = thFOf X pos F j La La'`.
+
+Introduce and unpack `j hj ⟨c, L⟩ La' hL hL'`. Express the relevant statement in the definitionally equal form `thFN X ℂ_[p] hfin (thGeo X ℂ_[p] hfin (thFOf X pos F)) j (c, L) La' = _`. Rewrite using `[thN_eq]`. Generalize the expression as in `delt X hfin j c L = δ`. Establish `hL2 : (X.Pj j).IsLatTup ((X.Lv.lev j c).smul δ⁻¹ L)` using `(Formalism.MainNotions.FormalGroupSystem.Pf.latTup_smul _ _ δ⁻¹ L).2 hL`.
+
+Use `hK j hj c _ La' δ hL2 hL'` as an intermediate fact. Rewrite `this` using `[lsmul_lsmul_inv]`. Conclude with `this.symm`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `v j hj ⟨Ξ, u, u', hu, hu', hΞ⟩`.
+
+Use `⟨Ξ, u, u', hu, hu', fun La La' hL hL' => ?_⟩` and prove the remaining obligations. Rewrite using `[h1 j hj La La' hL hL']`. Conclude with `hΞ La La' hL hL'`.
+-/
 theorem pendT_ThF_lt_of_kapLawLt : ∀ (p : ℕ) [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv) (g : GL3Theta.G1 p) (hLT : LTIso g) (T : Type) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ T) (F : ∀ j, X.Lt j → X.Lt (j + 1) → MvPowerSeries (T × Fin ((X.Pj (j + 1)).m + 1) × Fin ((X.Pj j).m + 1)) ℂ_[p]), letI := wittFractionAlgebraCp p; letI := algKfC E.toCEmb; KapLawLt X ℂ_[p] (thFOf X pos F) → (∀ j < X.mm, ∀ (La : X.Lt j) (La' : X.Lt (j + 1)), (X.Pj j).IsLatTup La.2 → (X.Pj (j + 1)).IsLatTup La'.2 → (pendT X E hfin hst hLT pos F).ThF j La La' = thFOf X pos F j La La') ∧ ∀ v, ∀ j < X.mm, XiEx X ℂ_[p] (thFOf X pos F) v j → XiEx X ℂ_[p] (pendT X E hfin hst hLT pos F).ThF v j := by
   intro p _ X _ E hfin hst g hLT T pos F
   intro hK

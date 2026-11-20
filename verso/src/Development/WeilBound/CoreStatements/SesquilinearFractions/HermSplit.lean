@@ -21,6 +21,19 @@ def Hm : Matrix (Fin g) (Fin g) ℂ :=
 def Q (σ : E →+* ℂ) (z w : Fin g → ℂ) : ℂ :=
   ∑ k : {k // ty k = σ}, ∑ k' : {k // ty k = σ}, z k * (2 * Complex.I * σ (G (blk hty k) (blk hty k'))) * conj (w k')
 
+/- English proof (translation)
+Establish `hF : ∀ σ : E →+* ℂ, ∀ k : {k // ty k = σ}, ∑ k' : {k // ty k = σ}, z k * (2 * Complex.I * σ (G (blk hty k) (blk hty k'))) * conj (w k') = z k * (Hm hty G *ᵥ star w) k`. Introduce `σ ⟨k, hk⟩`. Simplify using `only [mulVec, dotProduct, Pi.star_apply, RCLike.star_def]`. Rewrite using `[Finset.mul_sum, ← Fintype.sum_subtype_add_sum_subtype (fun k' => ty k' = σ)]`. Establish `h2 : ∑ k' : {k' // ¬ ty k' = σ}, z k * (Hm hty G k k' * conj (w k')) = 0`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨k', hk'⟩ _`. Establish `hne : ¬ ty k = ty k'`. Rewrite using `[hk]`. Conclude with `fun h => hk' h.symm`.
+
+Simplify using `[Hm, hne]`. Rewrite using `[h2, add_zero]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce and unpack `⟨k', hk'⟩ _`. Establish `heq : ty k = ty k'` using `hk.trans hk'.symm`.
+
+Simplify using `only [Hm, Matrix.of_apply, heq, if_true]`. Rewrite using `[hk']`. Expand and normalize the polynomial expressions, which then agree. Unfold `hermForm`. Rewrite using `[dotProduct, ← Fintype.sum_fiberwise ty]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `σ _`. Unfold `Q`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`.
+
+Conclude with `(hF σ k).symm`.
+-/
 theorem herm_split (z w : Fin g → ℂ) : hermForm (Hm hty G) z w = ∑ σ, Q hty G σ z w := by
   have hF : ∀ σ : E →+* ℂ, ∀ k : {k // ty k = σ},
       ∑ k' : {k // ty k = σ}, z k * (2 * Complex.I * σ (G (blk hty k) (blk hty k'))) * conj (w k') =
@@ -51,6 +64,13 @@ theorem herm_split (z w : Fin g → ℂ) : hermForm (Hm hty G) z w = ∑ σ, Q h
   intro k _
   exact (hF σ k).symm
 
+/- English proof (translation)
+Establish `hb : ∀ a : Fin p, blk hty ((eP hty σ h).symm a : Fin g) = Sum.inl a`. Introduce `a`. Rewrite using `[blk_inl hty σ h _ ((eP hty σ h).symm a).2]`. Simplify using the standard rewrite rules. Unfold `Q`.
+
+Rewrite using `[← Equiv.sum_comp (eP hty σ h).symm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[← Equiv.sum_comp (eP hty σ h).symm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `b _`. Rewrite using `[hb a, hb b]`.
+-/
 theorem Q_inl (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (z w : Fin g → ℂ) :
     Q hty G σ z w = ∑ a : Fin p, ∑ b : Fin p, z ((eP hty σ h).symm a) *
       (2 * Complex.I * σ (G (.inl a) (.inl b))) * conj (w ((eP hty σ h).symm b)) := by
@@ -67,6 +87,13 @@ theorem Q_inl (σ : E →+* ℂ) (h : σ (H.rt : E) = H.rt0) (z w : Fin g → �
   intro b _
   rw [hb a, hb b]
 
+/- English proof (translation)
+Establish `hb : ∀ a : Fin q, blk hty ((eQ hty σ h).symm a : Fin g) = Sum.inr a`. Introduce `a`. Rewrite using `[blk_inr hty σ h _ ((eQ hty σ h).symm a).2]`. Simplify using the standard rewrite rules. Unfold `Q`.
+
+Rewrite using `[← Equiv.sum_comp (eQ hty σ h).symm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[← Equiv.sum_comp (eQ hty σ h).symm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `b _`. Rewrite using `[hb a, hb b]`.
+-/
 theorem Q_inr (σ : E →+* ℂ) (h : σ (H.rt : E) ≠ H.rt0) (z w : Fin g → ℂ) :
     Q hty G σ z w = ∑ a : Fin q, ∑ b : Fin q, z ((eQ hty σ h).symm a) *
       (2 * Complex.I * σ (G (.inr a) (.inr b))) * conj (w ((eQ hty σ h).symm b)) := by

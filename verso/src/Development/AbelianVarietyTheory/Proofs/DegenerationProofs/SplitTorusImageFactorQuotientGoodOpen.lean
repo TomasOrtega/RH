@@ -18,10 +18,16 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.TorusImage
 
+/- English proof (translation)
+Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem appLE_res {Z Y : Scheme.{0}} (g : Z ⟶ Y) {U V : Y.Opens} (hV : V ≤ U) (h : ⊤ ≤ g ⁻¹ᵁ V) (h' : ⊤ ≤ g ⁻¹ᵁ U)
     (f : Γ(Y, U)) : (g.appLE V ⊤ h).hom ((Y.presheaf.map (homOfLE hV).op).hom f) = (g.appLE U ⊤ h').hom f := by
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun q => q.hom f) (Scheme.Hom.appLE_comp_appLE π g U ⊤ ⊤ h le_top)`.
+-/
 theorem appTop_appLE {Z' Z Y : Scheme.{0}} (π : Z' ⟶ Z) (g : Z ⟶ Y) (g' : Z' ⟶ Y) (e : π ≫ g = g') {U : Y.Opens}
     (h : ⊤ ≤ g ⁻¹ᵁ U) (h' : ⊤ ≤ g' ⁻¹ᵁ U) (f : Γ(Y, U)) :
     π.appTop.hom ((g.appLE U ⊤ h).hom f) = (g'.appLE U ⊤ h').hom f := by
@@ -29,6 +35,11 @@ theorem appTop_appLE {Z' Z Y : Scheme.{0}} (π : Z' ⟶ Z) (g : Z ⟶ Y) (g' : Z
   rw [← CommRingCat.comp_apply, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   exact congrArg (fun q => q.hom f) (Scheme.Hom.appLE_comp_appLE π g U ⊤ ⊤ h le_top)
 
+/- English proof (translation)
+Establish `: IsAffine U.toScheme` using `hU`. Establish `h1 : g.resLE U ⊤ h = g'.resLE U ⊤ h'`. Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.appTop, Scheme.Hom.resLE_app_top, Scheme.Hom.resLE_app_top, e]`. Establish `h2` using `congrArg (· ≫ U.ι) h1`.
+
+Simplify using `only [Scheme.Hom.resLE_comp_ι] at h2`. Establish `: IsIso (⊤ : Z.Opens).ι` using `inferInstanceAs (IsIso Z.topIso.hom)`. Conclude with `(cancel_epi _).1 h2`.
+-/
 theorem ext_affineOpen {Z Y : Scheme.{0}} (g g' : Z ⟶ Y) {U : Y.Opens} (hU : IsAffineOpen U)
     (h : ⊤ ≤ g ⁻¹ᵁ U) (h' : ⊤ ≤ g' ⁻¹ᵁ U) (e : g.appLE U ⊤ h = g'.appLE U ⊤ h') : g = g' := by
   have : IsAffine U.toScheme := hU
@@ -40,6 +51,15 @@ theorem ext_affineOpen {Z Y : Scheme.{0}} (g g' : Z ⟶ Y) {U : Y.Opens} (hU : I
   have : IsIso (⊤ : Z.Opens).ι := inferInstanceAs (IsIso Z.topIso.hom)
   exact (cancel_epi _).1 h2
 
+/- English proof (translation)
+Establish `hft : (G.hom.appLE ⊤ U le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType G.hom inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Set `_` to `(G.hom.appLE ⊤ U le_top).hom.toAlgebra`. Take `⟨s, hs⟩` from `(show Algebra.FiniteType Γ(S, ⊤) Γ(G.left, U) from hft).out`. Use `⟨s, fun Z g g' h h' e => Over.OverMorphism.ext (ext_affineOpen _ _ hU h h' ?_)⟩` and prove the remaining obligations. Use extensionality with `f`.
+
+Establish `hf : f ∈ Algebra.adjoin Γ(S, ⊤) (s : Set Γ(G.left, U))` using `hs ▸ trivial`. Establish `key : ∀ (g : Z ⟶ G) (h : ⊤ ≤ g.left ⁻¹ᵁ U) (c : Γ(S, ⊤)), (g.left.appLE U ⊤ h).hom ((G.hom.appLE ⊤ U le_top).hom c) = (Z.hom.appLE ⊤ ⊤ le_top).hom c`. Introduce `g h c`. Establish `aux : ∀ q : Z.left ⟶ S, g.left ≫ G.hom = q → ∀ hq, (g.left.appLE U ⊤ h).hom ((G.hom.appLE ⊤ U le_top).hom c) = (q.appLE ⊤ ⊤ hq).hom c`. Introduce and unpack `_ rfl hq`.
+
+Conclude with `congrArg (fun q => q.hom c) (Scheme.Hom.appLE_comp_appLE g.left G.hom ⊤ U ⊤ le_top h)`. Conclude with `aux _ (Over.w g) _`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact e x hx`. Consider the case `algebraMap c => exact (key g h c).trans (key g' h' c).symm`.
+
+Consider the case `add x y _ _ a b => rw [map_add, map_add, a, b]`. Consider the case `mul x y _ _ a b => rw [map_mul, map_mul, a, b]`.
+-/
 theorem exists_finset_ext {S : Scheme.{0}} [IsAffine S] (G : Over S) [LocallyOfFiniteType G.hom] {U : G.left.Opens}
     (hU : IsAffineOpen U) : ∃ s : Finset Γ(G.left, U), ∀ (Z : Over S) (g g' : Z ⟶ G) (h : ⊤ ≤ g.left ⁻¹ᵁ U)
       (h' : ⊤ ≤ g'.left ⁻¹ᵁ U), (∀ f ∈ s, (g.left.appLE U ⊤ h).hom f = (g'.left.appLE U ⊤ h').hom f) → g = g' := by
@@ -67,20 +87,32 @@ theorem exists_finset_ext {S : Scheme.{0}} [IsAffine S] (G : Over S) [LocallyOfF
 section
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup X] {i : splitTorus S X ⟶ G}
 
+/- English proof (translation)
+Rewrite using `[SplitTorus.charUnit_val, SplitTorus.val_eq]`.
+-/
 theorem appTop_charUnit {Z : Over S} (t : Z ⟶ splitTorus S X) (χ : X) :
     t.left.appTop.hom (charUnit S X χ).val = SplitTorus.val t χ := by
   rw [SplitTorus.charUnit_val, SplitTorus.val_eq]
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂`. Rewrite using `[appLE_res _ hV h₁ (h₁.trans fun _ hx => hV hx), appLE_res _ hV h₂ (h₂.trans fun _ hx => hV hx)]`. Conclude with `h Z t g _ _`.
+-/
 theorem wt_res {U V : G.left.Opens} (hV : V ≤ U) {u : Γ(G.left, U)} {χ : X} (h : Wt i U u χ) :
     Wt i V ((G.left.presheaf.map (homOfLE hV).op).hom u) χ := by
   intro Z t g h₁ h₂
   rw [appLE_res _ hV h₁ (h₁.trans fun _ hx => hV hx), appLE_res _ hV h₂ (h₂.trans fun _ hx => hV hx)]
   exact h Z t g _ _
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂`. Rewrite using `[appTop_charUnit, SplitTorus.val_zero, map_one, map_one, _root_.mul_one]`.
+-/
 theorem wt_one (U : G.left.Opens) : Wt i U 1 0 := by
   intro Z t g h₁ h₂
   rw [appTop_charUnit, SplitTorus.val_zero, map_one, map_one, _root_.mul_one]
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂`. Rewrite using `[map_mul, map_mul, h Z t g h₁ h₂, h' Z t g h₁ h₂, appTop_charUnit, appTop_charUnit, appTop_charUnit, SplitTorus.val_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wt_mul {U : G.left.Opens} {u v : Γ(G.left, U)} {χ ψ : X} (h : Wt i U u χ) (h' : Wt i U v ψ) :
     Wt i U (u * v) (χ + ψ) := by
   intro Z t g h₁ h₂
@@ -88,6 +120,11 @@ theorem wt_mul {U : G.left.Opens} {u v : Γ(G.left, U)} {χ ψ : X} (h : Wt i U 
     SplitTorus.val_add]
   ring
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂`. Establish `a` using `h Z t g h₁ h₂`. Establish `b` using `congrArg (((t ≫ i) * g).left.appLE U ⊤ h₁).hom e`. Establish `c` using `congrArg (g.left.appLE U ⊤ h₂).hom e`. Establish `d : SplitTorus.val t χ * SplitTorus.val t (-χ) = 1`.
+
+Rewrite using `[← SplitTorus.val_add, add_neg_cancel, SplitTorus.val_zero]`. Rewrite `b`, `c` using `[map_mul, map_one]`. Rewrite `a`, the goal using `[appTop_charUnit]`. Rewrite `b` using `[a]`. Take the linear combination `(SplitTorus.val t (-χ) * (g.left.appLE U ⊤ h₂).hom v) * b - (((t ≫ i) * g).left.appLE U ⊤ h₁).hom v * (SplitTorus.val t χ * SplitTorus.val t (-χ)) * c - (((t ≫ i) * g).left.appLE U ⊤ h₁).hom v * d`.
+-/
 theorem wt_inv {U : G.left.Opens} {u v : Γ(G.left, U)} (e : u * v = 1) {χ : X} (h : Wt i U u χ) :
     Wt i U v (-χ) := by
   intro Z t g h₁ h₂
@@ -117,6 +154,15 @@ def weights [IrreducibleSpace G.left] : AddSubgroup X where
     obtain ⟨v, e⟩ := hu.exists_right_inv
     exact ⟨U, v, hU, IsUnit.of_mul_eq_one_right u e, wt_inv e h⟩
 
+/- English proof (translation)
+Introduce `Z t g h₁ h₂`. Use `Diag.flat_diagMap S hφ` as an intermediate fact. Use `Diag.surjective_diagMap S hφ` as an intermediate fact. Set `Z' : Over S` to `Over.mk (pullback.fst t.left (Diag.diagMap S φ).left ≫ Z.hom)`. Set `π : Z' ⟶ Z` to `Over.homMk (pullback.fst t.left (Diag.diagMap S φ).left) rfl`.
+
+Set `t' : Z' ⟶ splitTorus S X` to `Over.homMk (pullback.snd t.left (Diag.diagMap S φ).left) (by show _ = pullback.fst _ _ ≫ _`. Rewrite using `[← Over.w (Diag.diagMap S φ), ← Category.assoc, ← pullback.condition, Category.assoc, Over.w])`. Establish `hc : π ≫ t = t' ≫ Diag.diagMap S φ` using `Over.OverMorphism.ext pullback.condition`. Establish `: Epi π.left` using `Flat.epi_of_flat_of_surjective (pullback.fst t.left (Diag.diagMap S φ).left)`. Apply `FunDescent.appTop_injective π.left` to reduce the goal to its premises.
+
+Establish `e1 : π.left ≫ ((t ≫ i') * g).left = ((t' ≫ i) * (π ≫ g)).left`. Rewrite using `[← Over.comp_left, MonObj.comp_mul, ← Category.assoc, hc, Category.assoc, e]`. Establish `k1 : ⊤ ≤ ((t' ≫ i) * (π ≫ g)).left ⁻¹ᵁ U`. Rewrite using `[← e1]`. Conclude with `fun x _ => h₁ (trivial : π.left x ∈ (⊤ : Z.left.Opens))`.
+
+Establish `k2 : ⊤ ≤ (π ≫ g).left ⁻¹ᵁ U` using `fun x _ => h₂ (trivial : π.left x ∈ (⊤ : Z.left.Opens))`. Rewrite using `[map_mul, appTop_appLE _ _ _ e1 h₁ k1, appTop_appLE _ _ (π ≫ g).left rfl h₂ k2, h Z' t' (π ≫ g) k1 k2, appTop_charUnit, appTop_charUnit, ← SplitTorus.val_comp, hc, SplitTorus.val_comp t', SplitTorus.val_eq (Diag.diagMap S φ), Diag.diagMap_chi, SplitTorus.val_eq]`.
+-/
 theorem wt_desc {X' : Type} [AddCommGroup X'] (φ : X' →+ X) (hφ : Function.Injective φ) (i' : splitTorus S X' ⟶ G)
     (e : Diag.diagMap S φ ≫ i' = i) {U : G.left.Opens} {u : Γ(G.left, U)} {χ : X'} (h : Wt i U u (φ χ)) :
     Wt i' U u χ := by
@@ -140,6 +186,23 @@ theorem wt_desc {X' : Type} [AddCommGroup X'] (φ : X' →+ X) (hφ : Function.I
     appTop_charUnit, appTop_charUnit, ← SplitTorus.val_comp, hc, SplitTorus.val_comp t', SplitTorus.val_eq (Diag.diagMap S φ),
     Diag.diagMap_chi, SplitTorus.val_eq]
 
+/- English proof (translation)
+Set `a : Z ⊗ G ⟶ G` to `(fst Z G ≫ x) * snd Z G`. Set `O : (Z ⊗ G).left.Opens` to `a.left ⁻¹ᵁ U ⊓ (snd Z G).left ⁻¹ᵁ U`. Set `Y : Over S` to `Over.mk (O.ι ≫ (Z ⊗ G).hom)`. Set `j : Y ⟶ Z ⊗ G` to `Over.homMk O.ι rfl`. Establish `e1 : ((j ≫ fst Z G) ≫ x) * (j ≫ snd Z G) = j ≫ a`.
+
+Rewrite using `[MonObj.comp_mul, Category.assoc]`. Establish `h1` using `h Y (j ≫ fst Z G) (j ≫ snd Z G) (by rw [e1]; exact fun y _ => y.2.1) (fun y _ => y.2.2)`. Establish `h2 : (j ≫ fst Z G) ≫ x = (j ≫ fst Z G) ≫ 1`. Rewrite using `[MonObj.comp_one]`. Conclude with `mul_eq_right.1 h1`.
+
+Establish `hf : Flat (fst Z G).left` using `inferInstanceAs (Flat (pullback.fst Z.hom G.hom))`. Establish `hg : GeometricallyIrreducible (fst Z G).left` using `inferInstanceAs (GeometricallyIrreducible (pullback.fst Z.hom G.hom))`. Establish `: Flat (j ≫ fst Z G).left` using `inferInstanceAs (Flat (O.ι ≫ (fst Z G).left))`. Establish `m2 : ∀ z : Z.left, ∃ w : (Z ⊗ G).left, (snd Z G).left w ∈ U ∧ (fst Z G).left w = z`. Introduce `z`.
+
+Take `⟨y, hy, e⟩` from `hU (Z.hom z)`. Take `⟨w, hw1, hw2⟩` from `Scheme.Pullback.exists_preimage_pullback z y e.symm`. Conclude with `⟨w, by rw [← hw2] at hy; exact hy, hw1⟩`. Establish `m1 : ∀ z : Z.left, ∃ w : (Z ⊗ G).left, a.left w ∈ U ∧ (fst Z G).left w = z`. Introduce `z`.
+
+Take `⟨w, hw1, hw2⟩` from `m2 z`. Set `b : Z ⊗ G ⟶ Z ⊗ G` to `lift (fst Z G) ((fst Z G ≫ x)⁻¹ * snd Z G)`. Establish `b1 : b ≫ a = snd Z G`. Simplify using `[a, b, MonObj.comp_mul, ← Category.assoc]`. Establish `b2 : b ≫ fst Z G = fst Z G` using `lift_fst _ _`.
+
+Use `⟨b.left w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, b1]`. Conclude with `hw1`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, b2]`. Conclude with `hw2`.
+
+Establish `: Surjective (j ≫ fst Z G).left` using `⟨fun z => by`. Establish `hi : IsIrreducible ((fst Z G).left ⁻¹' {z})`. Rewrite using `[← (fst Z G).left.range_fiberι, ← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image _ ((fst Z G).left.fiberι z).continuous.continuousOn`. Take `⟨w, hw, e⟩` from `m1 z`.
+
+Take `⟨w', hw', e'⟩` from `m2 z`. Take `⟨y, hy, k₁, k₂⟩` from `hi.2 _ _ (a.left ⁻¹ᵁ U).2 ((snd Z G).left ⁻¹ᵁ U).2 ⟨w, e, hw⟩ ⟨w', e', hw'⟩`. Conclude with `⟨⟨y, k₁, k₂⟩, hy⟩⟩`. Use `FlatQuotient.epi_of_flat_surjective (j ≫ fst Z G)` as an intermediate fact. Conclude with `(cancel_epi _).1 h2`.
+-/
 theorem eq_one_of_open [Flat G.hom] [GeometricallyIrreducible G.hom] (U : G.left.Opens)
     (hU : ∀ s : S, ∃ y ∈ U, G.hom y = s) {Z : Over S} (x : Z ⟶ G)
     (h : ∀ (Y : Over S) (π : Y ⟶ Z) (g : Y ⟶ G), ⊤ ≤ ((π ≫ x) * g).left ⁻¹ᵁ U → ⊤ ≤ g.left ⁻¹ᵁ U → (π ≫ x) * g = g) :
@@ -184,6 +247,21 @@ theorem eq_one_of_open [Flat G.hom] [GeometricallyIrreducible G.hom] (U : G.left
   exact (cancel_epi _).1 h2
 end
 
+/- English proof (translation)
+Use `hG.2.1` as an intermediate fact. Take `⟨x⟩ : Nonempty G.left` from `inferInstance`. Take `⟨W, hW, hx, -⟩` from `exists_isAffineOpen_mem_and_subset (X := G.left) (U := ⊤) (x := x) trivial`. Take `⟨s, hs⟩` from `exists_finset_ext G hW`. Establish `one : ∀ f : Γ(G.left, W), ∃ U : G.left.Opens, (U : Set G.left).Nonempty ∧ ∀ (Y : Over (Sp k)) (t : Y ⟶ splitTorus (Sp k) X) (g : Y ⟶ G), (∀ χ ∈ weights i, SplitTorus.val t χ = 1) → ⊤ ≤ ((t ≫ i) * g).left ⁻¹ᵁ U → ⊤ ≤ g.left ⁻¹ᵁ U → ∀ h₁ h₂, (((t ≫ i) * g).left.appLE W ⊤ h₁).hom f …`.
+
+Introduce `f`. Take `⟨U, hU, n, a, b, χ, hne, hw, hb, e⟩` from `GlobalTheory.T.exists_ratio_of_weight_sums' k G hG X i hi W f ⟨x, hx⟩`. Use `⟨U, hne, fun Y t g ht k₁ k₂ h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (c : Γ(G.left, U)) (ψ : X), Wt i U c ψ → (c = 0 ∨ IsUnit c) → (((t ≫ i) * g).left.appLE U ⊤ k₁).hom c = (g.left.appLE U ⊤ k₂).hom c`. Introduce and unpack `c ψ hc (rfl | hu)`.
+
+Rewrite using `[map_zero, map_zero]`. Rewrite using `[hc Y t g k₁ k₂, appTop_charUnit, ht ψ ⟨U, c, hne, hu, hc⟩, _root_.one_mul]`. Establish `ea : (((t ≫ i) * g).left.appLE U ⊤ k₁).hom (∑ j, a j) = (g.left.appLE U ⊤ k₂).hom (∑ j, a j)`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => key _ _ (hw j).1 (hw j).2.2.1`.
+
+Establish `eb : (((t ≫ i) * g).left.appLE U ⊤ k₁).hom (∑ j, b j) = (g.left.appLE U ⊤ k₂).hom (∑ j, b j)`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => key _ _ (hw j).2.1 (hw j).2.2.2`. Rewrite `ea` using `[← e, map_mul, map_mul, eb, appLE_res _ hU k₁ h₁, appLE_res _ hU k₂ h₂]`. Conclude with `(hb.map (g.left.appLE U ⊤ k₂).hom).mul_right_cancel ea`.
+
+Use `choose V hV hV' using one`. Establish `fin : ∀ s : Finset Γ(G.left, W), ∃ U : G.left.Opens, (U : Set G.left).Nonempty ∧ U ≤ W ∧ ∀ f ∈ s, U ≤ V f` using `by classical`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨W, ⟨x, hx⟩, le_rfl, by simp⟩`.
+
+Consider the case `insert f s _ ih`. Take `⟨U, h1, h2, h3⟩` from `ih`. Use `⟨U ⊓ V f, nonempty_preirreducible_inter U.2 (V f).2 h1 (hV f), inf_le_left.trans h2, fun f' hf' => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hf' with rfl | hf'` into its components or cases. Conclude with `inf_le_right`.
+
+Conclude with `inf_le_left.trans (h3 f' hf')`. Take `⟨U, h1, h2, h3⟩` from `fin s`. Use `⟨U, h1, fun Y t g ht k₁ k₂ => hs Y _ _ (k₁.trans fun _ hy => h2 hy) (k₂.trans fun _ hy => h2 hy) fun f hf => ?_⟩` and prove the remaining obligations. Conclude with `hV' f Y t g ht (k₁.trans fun _ hy => h3 f hf hy) (k₂.trans fun _ hy => h3 f hf hy) _ _`.
+-/
 theorem exists_open (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G] (hG : SmConn G)
     [IrreducibleSpace G.left] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (i : splitTorus (Sp k) X ⟶ G) (hi : IsMonHom i) :
@@ -230,6 +308,21 @@ theorem exists_open (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpO
   refine ⟨U, h1, fun Y t g ht k₁ k₂ => hs Y _ _ (k₁.trans fun _ hy => h2 hy) (k₂.trans fun _ hy => h2 hy) fun f hf => ?_⟩
   exact hV' f Y t g ht (k₁.trans fun _ hy => h3 f hf hy) (k₂.trans fun _ hy => h3 f hf hy) _ _
 
+/- English proof (translation)
+Introduce `k _ _ G _ hG X _ _ _ i hi`. Use `hG.2.1` as an intermediate fact. Use `hG.2.2.2.2` as an intermediate fact. Establish `: GeometricallyIntegral G.hom` using `GlobalTheory.geometricallyIntegral_of_smooth G.hom`. Establish `: IrreducibleSpace G.left` using `GeometricallyIrreducible.irreducibleSpace_of_subsingleton G.hom`.
+
+Take `⟨U, ⟨y, hy⟩, hU⟩` from `exists_open k G hG X i hi`. Set `φ : weights i →+ X` to `(weights i).subtype`. Establish `hφ : Function.Injective φ` using `Subtype.val_injective`. Establish `hfree : Module.Free ℤ (weights i)` using `inferInstanceAs (Module.Free ℤ (weights i).toIntSubmodule)`. Establish `hfin : Module.Finite ℤ (weights i)` using `inferInstanceAs (Module.Finite ℤ (weights i).toIntSubmodule)`.
+
+Set `ρ` to `Diag.diagMap (Sp k) φ`. Establish `: Flat ρ.left` using `Diag.flat_diagMap _ hφ`. Establish `hsurj : Surjective ρ.left` using `Diag.surjective_diagMap _ hφ`. Establish `: QuasiCompact (ρ.left ≫ (splitTorus (Sp k) (weights i)).hom)` using `by rw [Over.w]; infer_instance`. Establish `: QuasiCompact ρ.left` using `.of_comp _ (splitTorus (Sp k) (weights i)).hom`.
+
+Establish `hker : IsPullback (pullback.fst ρ η[splitTorus (Sp k) (weights i)]) (toUnit _) ρ η`. Rewrite using `[← toUnit_unique (pullback.snd ρ η[splitTorus (Sp k) (weights i)]) (toUnit _)]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `hkill : pullback.fst ρ η[splitTorus (Sp k) (weights i)] ≫ i = toUnit _ ≫ η[G]`. Rewrite using `[← Hom.one_def]`.
+
+Use `eq_one_of_open U (fun s => ⟨y, hy, Subsingleton.elim _ _⟩) _ fun Y π g h₁ h₂ => ?_` and prove the remaining obligations. Rewrite `h₁`, the goal using `[← Category.assoc]`. Use `hU Y _ g (fun χ hχ => ?_) h₁ h₂` and prove the remaining obligations. Establish `e : (π ≫ pullback.fst ρ η[splitTorus (Sp k) (weights i)]) ≫ ρ = 1`. Rewrite using `[Category.assoc, hker.w, ← Hom.one_def, MonObj.comp_one]`.
+
+Establish `e'` using `SplitTorus.val_one (T := Y) (⟨χ, hχ⟩ : weights i)`. Rewrite `e'` using `[← e, SplitTorus.val_comp, SplitTorus.val_eq ρ, Diag.diagMap_chi, ← SplitTorus.val_eq]`. Conclude with `e'`. Take `⟨i', hi', e⟩` from `FlatQuotient.exists_desc ρ _ i hker hkill`. Use `⟨weights i, inferInstance, hfree, hfin, i', ρ, hi', inferInstance, hsurj, e, GlobalTheory.T.exists_torusStableGoodOpen_of_weightUnits k G hG (weights i) i' hi' fun χ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨V, u, hV, hu, h⟩` from `χ.2`. Conclude with `⟨V, u, hV, hu, wt_desc φ hφ i' e h⟩`.
+-/
 theorem exists_factor_goodOpen : ∀ (k : Type) [Field k] [IsAlgClosed k] (G : Over (Sp k)) [GrpObj G], SmConn G → ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (i : splitTorus (Sp k) X ⟶ G), IsMonHom i → ∃ (X' : Type) (_ : AddCommGroup X') (_ : Module.Free ℤ X') (_ : Module.Finite ℤ X') (i' : splitTorus (Sp k) X' ⟶ G) (ρ : splitTorus (Sp k) X ⟶ splitTorus (Sp k) X'), IsMonHom i' ∧ IsMonHom ρ ∧ Surjective ρ.left ∧ ρ ≫ i' = i ∧ (∀ x : G.left, ∃ V, x ∈ V ∧ GoodOpen i' V) := by
   intro k _ _ G _ hG X _ _ _ i hi
   have := hG.2.1

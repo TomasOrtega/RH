@@ -16,6 +16,9 @@ def raw : Gen.Raw D :=
 
 @[reducible] def ledTr (L : SizeData₂ D) : SizeData₂ (cut D c) := Gen.ledTr (raw c) L
 
+/- English proof (translation)
+The claim follows from `Gen.tiesTr (raw c) h h.tw_cover`.
+-/
 theorem tiesTr (h : Ties D) : Ties (raw c).rec' := Gen.tiesTr (raw c) h h.tw_cover
 
 set_option maxHeartbeats 1600000 in

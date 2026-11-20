@@ -24,6 +24,9 @@ def toRC {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra O Ω] [Algeb
     (R : Subalgebra O Ω) (RC : Subalgebra O C) (h : ∀ a ∈ R, algebraMap Ω C a ∈ RC) : R →+* RC :=
   ((algebraMap Ω C).comp (R.val : R →+* Ω)).codRestrict RC fun a => h a a.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toRC {O Ω C : Type} [CommRing O] [Field Ω] [Field C] [Algebra O Ω] [Algebra O C] [Algebra Ω C]
     (R : Subalgebra O Ω) (RC : Subalgebra O C) (h : ∀ a ∈ R, algebraMap Ω C a ∈ RC) (a : R) :
     ((toRC R RC h a : RC) : C) = algebraMap Ω C a := rfl

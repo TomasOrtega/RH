@@ -11,6 +11,9 @@ noncomputable section
 namespace GlobalTheory.HeckeLOneBound
 open GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds
 
+/- English proof (translation)
+Establish `h2 : (2 * (Real.pi : ℂ)) = ((2 * Real.pi : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[norm_mul, norm_mul, h2, Complex.norm_cpow_eq_rpow_re_of_pos (by positivity)]`. Simplify using the standard rewrite rules.
+-/
 theorem norm_factor (s c : ℂ) :
     ‖2 * (2 * (Real.pi : ℂ)) ^ (-(s + c)) * Complex.Gamma (s + c)‖ =
       2 * (2 * Real.pi) ^ (-(s.re + c.re)) * ‖Complex.Gamma (s + c)‖ := by
@@ -18,6 +21,11 @@ theorem norm_factor (s c : ℂ) :
   rw [norm_mul, norm_mul, h2, Complex.norm_cpow_eq_rpow_re_of_pos (by positivity)]
   simp
 
+/- English proof (translation)
+Unfold `archFactor`. Rewrite using `[norm_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_factor]`. Establish `hc : ((x : ℂ) + ((|n i| : ℤ) : ℂ) / 2) = ((x + ((|n i| : ℤ) : ℝ) / 2 : ℝ) : ℂ)`.
+
+Simplify using `only [Complex.ofReal_add, Complex.ofReal_div, Complex.ofReal_intCast, Complex.ofReal_ofNat]`. Establish `h0 : (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (n i)`. Rewrite using `[hc, Complex.Gamma_ofReal, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.Gamma_pos_of_pos (by linarith))]`. Use `congr 3`. Simplify using the standard rewrite rules.
+-/
 theorem norm_archFactor_real {I : Type} [Fintype I] (n : I → ℤ) {x : ℝ} (hx : 0 < x) :
     ‖archFactor n (x : ℂ)‖ = ∏ i, (2 * (2 * Real.pi) ^ (-(x + ((|n i| : ℤ) : ℝ) / 2)) *
       Real.Gamma (x + ((|n i| : ℤ) : ℝ) / 2)) := by
@@ -32,6 +40,13 @@ theorem norm_archFactor_real {I : Type} [Fintype I] (n : I → ℤ) {x : ℝ} (h
   congr 3
   simp
 
+/- English proof (translation)
+Rewrite using `[norm_archFactor_real n hs]`. Unfold `archFactor`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_factor]`.
+
+Establish `h0 : (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (n i)`. Establish `hre : (s + ((|n i| : ℤ) : ℂ) / 2).re = s.re + ((|n i| : ℤ) : ℝ) / 2` using `by simp`. Establish `hre' : (((|n i| : ℤ) : ℂ) / 2).re = ((|n i| : ℤ) : ℝ) / 2` using `by simp`. Rewrite using `[hre']`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations.
+
+Use `PI.EF.norm_Gamma_le (w := s + ((|n i| : ℤ) : ℂ) / 2) (by rw [hre]; linarith)` as an intermediate fact. Rewrite `this` using `[hre]`. Then use the resulting hypothesis.
+-/
 theorem norm_archFactor_le {I : Type} [Fintype I] (n : I → ℤ) {s : ℂ} (hs : 0 < s.re) :
     ‖archFactor n s‖ ≤ ‖archFactor n (s.re : ℂ)‖ := by
   rw [norm_archFactor_real n hs]
@@ -47,6 +62,11 @@ theorem norm_archFactor_le {I : Type} [Fintype I] (n : I → ℤ) {s : ℂ} (hs 
   have := PI.EF.norm_Gamma_le (w := s + ((|n i| : ℤ) : ℂ) / 2) (by rw [hre]; linarith)
   rwa [hre] at this
 
+/- English proof (translation)
+Use `PhragmenLindelof.vertical_strip hf.diffContOnCl ?_ ha hb hza hzb` and prove the remaining obligations. Use `⟨0, div_pos Real.pi_pos (sub_pos.2 hab), 0, ?_⟩` and prove the remaining obligations. Take `⟨C', hC'⟩` from `hbd`. Use `Asymptotics.IsBigO.of_bound C' ?_` and prove the remaining obligations. Use `Filter.eventually_inf_principal.2 (Filter.Eventually.of_forall fun z hz => ?_)` and prove the remaining obligations.
+
+Simplify using `only [zero_mul, Real.exp_zero, norm_one, mul_one]`. Conclude with `hC' z hz.1.le hz.2.le`.
+-/
 theorem pl_strip {f : ℂ → ℂ} (hf : Differentiable ℂ f) {a b C : ℝ} (hab : a < b)
     (hbd : ∃ C' : ℝ, ∀ s : ℂ, a ≤ s.re → s.re ≤ b → ‖f s‖ ≤ C')
     (ha : ∀ s : ℂ, s.re = a → ‖f s‖ ≤ C) (hb : ∀ s : ℂ, s.re = b → ‖f s‖ ≤ C)
@@ -59,6 +79,11 @@ theorem pl_strip {f : ℂ → ℂ} (hf : Differentiable ℂ f) {a b C : ℝ} (ha
   simp only [zero_mul, Real.exp_zero, norm_one, mul_one]
   exact hC' z hz.1.le hz.2.le
 
+/- English proof (translation)
+Establish `hpi : 1 ≤ 2 * Real.pi` using `by linarith [Real.pi_gt_three]`. Establish `h1 : (2 * Real.pi) ^ (-(3 / 2 + c)) ≤ (2 * Real.pi) ^ (-(1 + c))` using `Real.rpow_le_rpow_of_exponent_le hpi (by linarith)`. Establish `h2 : Real.Gamma (3 / 2 + c) ≤ Real.Gamma (1 + c + 1)` using `Real.Gamma_strictMonoOn_Ici.monotoneOn (Set.mem_Ici.2 (by linarith)) (Set.mem_Ici.2 (by linarith)) (by linarith)`. Rewrite `h2` using `[Real.Gamma_add_one (by linarith)]`. Establish `hg : 0 ≤ Real.Gamma (3 / 2 + c)` using `(Real.Gamma_pos_of_pos (by linarith)).le`.
+
+Establish `hp : 0 ≤ (2 * Real.pi) ^ (-(1 + c))` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem factor_three_halves_le {c : ℝ} (hc : 1 ≤ c) :
     2 * (2 * Real.pi) ^ (-(3 / 2 + c)) * Real.Gamma (3 / 2 + c) ≤
       2 * (2 * Real.pi) ^ (-(1 + c)) * Real.Gamma (1 + c) * (1 + c) := by
@@ -75,6 +100,13 @@ theorem factor_three_halves_le {c : ℝ} (hc : 1 ≤ c) :
     _ ≤ 2 * (2 * Real.pi) ^ (-(1 + c)) * ((1 + c) * Real.Gamma (1 + c)) := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `e32 : (3 / 2 : ℂ) = ((3 / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `e1 : (1 : ℂ) = ((1 : ℝ) : ℂ)` using `by simp`. Rewrite using `[e32, e1, norm_archFactor_real _ (by norm_num), norm_archFactor_real _ (by norm_num), ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => ?_) fun i _ => ?_` and prove the remaining obligations. Establish `: 0 < 3 / 2 + ((|2 * m i| : ℤ) : ℝ) / 2`.
+
+Establish `: (0 : ℝ) ≤ ((|2 * m i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `Real.Gamma_pos_of_pos this` as an intermediate fact. Check the signs of the components of the expression. Establish `hc : ((|2 * m i| : ℤ) : ℝ) / 2 = (m i : ℝ)`.
+
+Rewrite using `[abs_of_pos (by have := hm i; omega)]; push_cast; ring`. Rewrite using `[hc]`. Conclude with `factor_three_halves_le (by exact_mod_cast hm i)`.
+-/
 theorem archFactor_three_halves_le {I : Type} [Fintype I] (m : I → ℤ) (hm : ∀ i, 0 < m i) :
     ‖archFactor (fun i => 2 * m i) (3 / 2)‖ ≤ ‖archFactor (fun i => 2 * m i) 1‖ * ∏ i, (1 + (m i : ℝ)) := by
   have e32 : (3 / 2 : ℂ) = ((3 / 2 : ℝ) : ℂ) := by push_cast; ring
@@ -96,6 +128,39 @@ end GlobalTheory.HeckeLOneBound
 namespace GlobalTheory.HeckeLOneBound
 open GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hFE hB hφ χ m a Λ hu htr hinf hpos ha hL`. Use `set n : I → ℤ := fun i => 2 * m i with hn_def`. Use `set A : ℕ := (discr E).natAbs * a.prod fun v k => Ideal.absNorm v.asIdeal ^ k with hA_def`. Use `set Z : ℝ := ‖riemannZeta (3 / 2)‖ ^ Module.finrank ℚ E with hZ_def`. Establish `hinf' : Formalism.L2.Host.HChar.HasInf χ φ n` using `hinf`.
+
+Take `⟨i₀⟩` from `GlobalTheory.LValNe.nonempty_of_isCMType hφ`. Establish `hn : ∃ i, n i ≠ 0` using `⟨i₀, by have := hpos i₀; simp only [hn_def]; omega⟩`. Establish `hn' : ∃ i, (fun i => -n i) i ≠ 0` using `⟨i₀, by have := hpos i₀; simp only [hn_def]; omega⟩`. Establish `hu'` using `GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu`. Establish `hinv` using `GlobalTheory.Published.HeckeFEModel.hasInf_inv hinf'`.
+
+Take `⟨Λc, hΛc, hbc⟩` from `hB E I φ hφ χ n hu hinf' hn`. Take `⟨Λc', hΛc', -⟩` from `hB E I φ hφ χ⁻¹ (fun i => -n i) hu' hinv hn'`. Take `⟨ε, hε, hfe⟩` from `hFE E I φ hφ χ n a Λc Λc' hu hinf' hn ha hΛc hΛc'`. Establish `hL' : IsHeckeL χ⁻¹ Λ` using `GlobalTheory.T.isPrimitiveHeckeLFunction_inv_of_trivialOnMaxReal E χ Λ htr hL`. Establish `harch : archFactor (fun i => -n i) = archFactor n`.
+
+Use function extensionality and compare the values at `s`. Unfold `archFactor`. Simplify using `only [abs_neg]`. Establish `hApos : 0 < A`. Use `Nat.mul_pos (Int.natAbs_pos.2 (discr_ne_zero E)) ?_` and prove the remaining obligations.
+
+Unfold `Finsupp.prod`. Conclude with `Finset.prod_pos fun v _ => pow_pos (Nat.pos_of_ne_zero fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)) _`. Establish `hA1 : (1 : ℝ) ≤ (A : ℝ)` using `by exact_mod_cast hApos`. Establish `hZ0 : 0 ≤ Z` using `by positivity`. Use `set F : ℝ := ‖archFactor n (3 / 2)‖ with hF_def`.
+
+Establish `hF0 : 0 ≤ F` using `norm_nonneg _`. Establish `hline : ∀ s : ℂ, s.re = 3 / 2 → ‖Λc s‖ ≤ F * Z` using `fun s hs => by`. Rewrite using `[hΛc.eq_mul hL (by rw [hs]; norm_num), norm_mul]`. Establish `h1` using `norm_archFactor_le n (s := s) (by rw [hs]; norm_num)`. Rewrite `h1` using `[hs]`.
+
+Establish `h1' : ‖archFactor n s‖ ≤ F`. Rewrite using `[hF_def]`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `mul_le_mul h1' (GlobalTheory.T.norm_heckeLFunction_le_zeta_three_halves_pow E χ Λ s hu hL hs.ge) (norm_nonneg _) hF0`. Establish `hline' : ∀ s : ℂ, s.re = 3 / 2 → ‖Λc' s‖ ≤ F * Z` using `fun s hs => by`. Rewrite using `[hΛc'.eq_mul hL' (by rw [hs]; norm_num), norm_mul, harch]`. Establish `h1` using `norm_archFactor_le n (s := s) (by rw [hs]; norm_num)`. Rewrite `h1` using `[hs]`.
+
+Establish `h1' : ‖archFactor n s‖ ≤ F`. Rewrite using `[hF_def]`. Use `h1 using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `mul_le_mul h1' (GlobalTheory.T.norm_heckeLFunction_le_zeta_three_halves_pow E χ⁻¹ Λ s hu' hL' hs.ge) (norm_nonneg _) hF0`. Establish `hleft : ∀ s : ℂ, s.re = -1 / 2 → ‖Λc s‖ ≤ A * F * Z` using `fun s hs => by`. Rewrite using `[hfe s, norm_mul, norm_mul, hε, one_mul, Complex.norm_natCast_cpow_of_pos hApos]`. Establish `hre : (1 / 2 - s).re = 1`. Simplify using `only [Complex.sub_re, hs]`.
+
+Evaluate the numerical expressions. Rewrite using `[hre, Real.rpow_one, mul_assoc]`. Use `mul_le_mul_of_nonneg_left (hline' _ ?_) (by positivity)` and prove the remaining obligations. Simplify using `only [Complex.sub_re, Complex.one_re, hs]`. Evaluate the numerical expressions.
+
+Establish `hright : ∀ s : ℂ, s.re = 3 / 2 → ‖Λc s‖ ≤ A * F * Z` using `fun s hs => by`. Use `(hline s hs).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `le_mul_of_one_le_left (by positivity) hA1`. Establish `hbd` using `hbc (-1 / 2) (3 / 2) (by norm_num)`.
+
+Establish `h1 : ‖Λc 1‖ ≤ A * F * Z` using `pl_strip hΛc.1 (by norm_num) hbd hleft hright (by norm_num) (by norm_num)`. Establish `hg : ∀ i, Complex.Gamma ((1 : ℂ) + ((|n i| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => by`. Use `Complex.Gamma_ne_zero_of_re_pos ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (n i)`. Simplify using `only [Complex.add_re, Complex.one_re, Complex.div_re, Complex.intCast_re, Complex.intCast_im]`.
+
+Evaluate the numerical expressions. Check the signs of the components of the expression. Establish `e1` using `GlobalTheory.LValNe.completed_eq hΛc hL hg`. Establish `hG : 0 < ‖archFactor n 1‖` using `norm_pos_iff.2 (GlobalTheory.LValNe.archFactor_ne_zero hg)`. Establish `hrat` using `archFactor_three_halves_le m hpos`.
+
+Rewrite `h1` using `[e1, norm_mul]`. Establish `hP0 : 0 ≤ ∏ i, (1 + (m i : ℝ))` using `Finset.prod_nonneg fun i _ => by have : (0 : ℝ) < m i := by exact_mod_cast hpos i`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : ‖archFactor n 1‖ * ‖Λ 1‖ ≤ ‖archFactor n 1‖ * (Z * (A : ℝ) * ∏ i, (1 + (m i : ℝ)))`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Establish `: A * F * Z ≤ A * (‖archFactor n 1‖ * ∏ i, (1 + (m i : ℝ))) * Z` using `by gcongr`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `le_of_mul_le_mul_left key hG`.
+-/
 theorem norm_heckeL_one_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.CompletedLStripBounds.CompletedLBoundedInStrips → IsCMType φ →
     ∀ (χ : HChar E) (m : I → ℤ) (a : HeightOneSpectrum (𝓞 E) →₀ ℕ) (Λ : ℂ → ℂ),

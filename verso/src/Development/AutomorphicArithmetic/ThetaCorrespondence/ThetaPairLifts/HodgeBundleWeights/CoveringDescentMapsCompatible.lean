@@ -20,6 +20,39 @@ namespace GlobalTheory.CovTop.DescentMaps
 end GlobalTheory.CovTop.DescentMaps
 namespace GlobalTheory.CovTop.DescentMaps
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `hP hGD hQ hSI hTF hSN hGram hDG hSz hFD`. Take `⟨C, hC0, hub⟩` from `_root_.GlobalTheory.T.exists_short_integral_vector_of_determinant_bound hP hGD hQ hSI hTF hSN`. Establish `hT` using `_root_.GlobalTheory.T.type_lattice_deep_level_eq hP hGram hDG`. Establish `hS` using `GlobalTheory.T.size_bounds_for_family hSz`. Establish `hH` using `GlobalTheory.CovTop.Sizes.hostN (2 * C + 200)`.
+
+Unfold `Maps Covers Lifts`. Unfold `DeepGood at hDG`. Unfold `FlatDeg at hFD`. Unfold `Covers Lifts at hT hS hDG hFD`. Unfold `HostN Lifts at hH`.
+
+Use `Closed.imp ((((hT.and hS).and hH).and hDG).and hFD) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hall0`. Take `⟨⟨⟨⟨⟨C1, -, hT'⟩, ⟨C2, -, hS'⟩⟩, ⟨A, -, hH'⟩⟩, ⟨C4, -, hDG'⟩⟩, ⟨C5, -, hFD'⟩⟩` from `hall0`. Use `⟨0, le_rfl, ?_⟩` and prove the remaining obligations. Take `⟨x0, hall⟩` from `(((hT'.and hS').and hH').and hDG').and hFD'`.
+
+Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩` from `hall x hx hle ι p hp`. Take `⟨fr, ψ, -, hl, hlat, hcard⟩` from `a1 i hi Y hY`. Take `⟨hLaws, hInR, hL1, hM, hE, hfr, hexp, hg, hf8, hr100, hflat, -⟩` from `a2 i hi Y hY`. Establish `hN` using `a3 i`.
+
+Establish `hDGY` using `a4 i hi Y hY`. Establish `hFDY` using `a5 i hi Y hY`. Take `⟨-, hpq, hq, h2q⟩` from `GlobalTheory.Member.exists_iotaOK (Fm.D x ι) p.T.Q hLaws.pins ((i : ℕ) + 1) hInR`. Establish `hq1 : 1 ≤ (p.T.Q.Dw ((i : ℕ) + 1)).q`. Rewrite using `[hq]`.
+
+Simplify using `only [Formalism.MainNotions.WeightFamilies.rho, Formalism.BasicNotions.Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hp1 : 1 ≤ (p.T.Q.Dw ((i : ℕ) + 1)).p` using `by omega`. Establish `hfin : 2 < Module.finrank ℚ (Fm.D x ι).host.E / 2` using `by rw [hN.deg]; omega`. Take `⟨u, hu, hdet, hB⟩` from `hub (Fm.D x ι) p.T hLaws ((i : ℕ) + 1) hp1 hq1 hfin hInR Y _ _ hY.1 (Fm.L x ι).sc.L hL1 hM hE hfr (le_of_eq rfl) _ hFDY (by rw [abs_neg]; exact hflat) hexp hg hf8 hr100 fr`.
+
+Establish `hK` using `GlobalTheory.LevelIsometry.keeps_cusp_lattice_norm (Fm.D x ι) p.T hLaws ((i : ℕ) + 1) hp1 hq1 hfin hInR Y _ _ hY.1`. Establish `hGk : Even (Gk p i).2` using `(p.κ i).n_even.natCast`. Establish `hW : Even (wtOf (p.T.Q.Dw ((i : ℕ) + 1)) (cZero (Fm.D x ι) ((i : ℕ) + 1) • hodgeWt (p.T.Q.Dw ((i : ℕ) + 1))) 0).2` using `GlobalTheory.AllWt.even_wtOf _ _`. Establish `hGm : Even (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))).2` using `hGk.add (GlobalTheory.AllWt.even_wtOf _ _)`. Establish `hGW : Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1))) + wtOf (p.T.Q.Dw ((i : ℕ) + 1)) (cZero (Fm.D x ι) ((i : ℕ) + 1) • hodgeWt (p.T.Q.Dw ((i : ℕ) + 1))) 0 = Gk p i`.
+
+Simplify using `only [Gs, shiftG, add_assoc, ← GlobalTheory.AllWt.wtOf_add, neg_smul, neg_add_cancel, add_zero, GlobalTheory.AllWt.wtOf_zero]`. Use `set z := zBase (Fm.L x ι) with hz`. Establish `hzL : (Fm.L x ι).sc.L ≤ z`. Establish `h8 : (8 : ℝ) ≤ (Fm.D x ι).R.f` using `by exact_mod_cast hf8`. Establish `h100 : (100 : ℝ) ≤ (Fm.D x ι).R.r` using `by exact_mod_cast hr100`.
+
+Establish `h0 : (0 : ℝ) ≤ (Fm.L x ι).sc.L` using `by linarith`. Rewrite using `[hz, zBase]`. Use polynomial arithmetic with `[mul_le_mul h8 h100 (by norm_num) (by linarith)]`. Establish `hz1 : 2 * C + 200 ≤ z` using `hN.big.1.trans hzL`. Establish `hPP : z ^ 12 ≤ (Fm.L x ι).sc.b`.
+
+Establish `h1` using `hN.ppLow`. Take `⟨hA1, hA2, -⟩` from `hN.poly`. Establish `h3` using `hN.room`. Establish `hz0 : 1 ≤ z` using `by linarith`. Establish `hx1 : 1 ≤ (Fm.L x ι).sc.x ^ A` using `le_trans (one_le_pow₀ hz0) (h1.trans hA2)`.
+
+Establish `h4 : (Fm.L x ι).sc.x ^ A ≤ ((Fm.L x ι).sc.x ^ A) ^ (2 * C + 200)`. Simplify using `using Real.rpow_le_rpow_of_exponent_le hx1 (show (1 : ℝ) ≤ 2 * C + 200 by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : (Fintype.card (grpHR fr) : ℝ) ^ 3 * Real.exp (C * ((Fm.D x ι).R.f * (Fm.D x ι).R.r * (Fm.L x ι).sc.L) ^ 9) ^ 2 ≤ Real.exp (2 * (Fm.L x ι).sc.b)`. Establish `hz9 : ((Fm.D x ι).R.f * (Fm.D x ι).R.r * (Fm.L x ι).sc.L : ℝ) = z` using `by rw [hz, zBase]`.
+
+Rewrite using `[hz9]`. Rewrite `hcard` using `[Nat.card_eq_fintype_card]`. Establish `hn0 : (0 : ℝ) < Fintype.card (grpHR fr)` using `by exact_mod_cast Fintype.card_pos`. Establish `hz0 : 1 ≤ z` using `by linarith`. Establish `hn3 : (Fintype.card (grpHR fr) : ℝ) ^ 3 ≤ Real.exp (135 * z ^ 2)`.
+
+Rewrite using `[← Real.exp_log (pow_pos hn0 3), Real.log_pow]`. Conclude with `Real.exp_le_exp.2 (by push_cast; linarith)`. Establish `he : Real.exp (C * z ^ 9) ^ 2 = Real.exp (2 * C * z ^ 9)`. Rewrite using `[sq, ← Real.exp_add]`. Put the polynomial expressions in normal form.
+
+Rewrite using `[he]`. Combine the equalities or inequalities in the displayed calculation. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Establish `a1 : z ^ 2 ≤ z ^ 9` using `pow_le_pow_right₀ hz0 (by norm_num)`. Establish `a2 : z ^ 10 ≤ z ^ 12` using `pow_le_pow_right₀ hz0 (by norm_num)`.
+
+Establish `a3 : (135 + 2 * C) * z ^ 9 ≤ z * z ^ 9` using `mul_le_mul_of_nonneg_right (by linarith) (by positivity)`. Establish `a4 : z * z ^ 9 = z ^ 10` using `by ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : Gs p i (cZero (Fm.D x ι) ((i : ℕ) + 1)) = Gk p i + wtOf (p.T.Q.Dw ((i : ℕ) + 1)) (cZero (Fm.D x ι) ((i : ℕ) + 1) • hodgeWt (p.T.Q.Dw ((i : ℕ) + 1))) 0`. Unfold `Gs Gk shiftG`.
+
+Both sides reduce to the same expression. Take `⟨n, φ, h1, h2, h3, h4⟩` from `mapsCore (grpHR fr) (Nat.le_add_right_of_le hp1) hl.coprime (Gs p i (-(cZero (Fm.D x ι) ((i : ℕ) + 1)))) (wtOf (p.T.Q.Dw ((i : ℕ) + 1)) (cZero (Fm.D x ι) ((i : ℕ) + 1) • hodgeWt (p.T.Q.Dw ((i : ℕ) + 1))) 0) (Gk p i) hGW hGm hW (hK _ hGk).1 (hK _ hW).1 (fun γ f g hg => ((hK _ hGk) …`. Conclude with `⟨n, φ, h1, h2, h3, h4⟩`.
+-/
 theorem covering_descent_maps_compatible : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral →
     GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → Gram → DeepGood → Size → FlatDeg → Maps := by
   intro hP hGD hQ hSI hTF hSN hGram hDG hSz hFD
@@ -126,6 +159,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible | exact _root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible | (intros; apply _root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.covering_descent_maps_exist : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → Gram → DeepGood → Size → FlatDeg → Maps := by
   first | exact @_root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible | exact _root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible | (intros; apply _root_.GlobalTheory.CovTop.DescentMaps.covering_descent_maps_compatible <;> assumption)
 end

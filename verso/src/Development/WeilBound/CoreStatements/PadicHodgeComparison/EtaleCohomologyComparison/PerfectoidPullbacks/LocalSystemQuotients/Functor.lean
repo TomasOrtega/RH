@@ -64,6 +64,9 @@ def qα (T : Thick (Wc.L l F ρ (n + 1))) : T ⟶ (Wc.redM l F ρ n).functor.obj
     simp [Wc.redM, B.crMor, Mor.functor, Mor.obj, qT, ← h]
   hv j := j.elim
 
+/- English proof (translation)
+The claim follows from `Thick.Hom.ext (RingHom.ext fun _ => rfl) (funext fun j => j.elim)`.
+-/
 theorem qα_nat {T T' : Thick (Wc.L l F ρ (n + 1))} (f : T ⟶ T') :
     qα hn T ≫ (Wc.redM l F ρ n).functor.map ((qF hn).map f) = f ≫ qα hn T' :=
   Thick.Hom.ext (RingHom.ext fun _ => rfl) (funext fun j => j.elim)

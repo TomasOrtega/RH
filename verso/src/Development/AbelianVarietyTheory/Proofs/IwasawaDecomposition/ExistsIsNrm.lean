@@ -7,6 +7,9 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 
 namespace GlobalTheory.Mem.NrmCompl
 
+/- English proof (translation)
+Introduce `x`. Use `⟨fun hx => (nrmAbs_eq_one_iff P (x : P.adicCompletion L)).2 hx, fun hx => ?_⟩` and prove the remaining obligations. Establish `h : Valued.v (x : P.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `hx`. Rewrite using `[nrmAbs_of_valuation_eq_exp P h, _root_.zpow_neg_one]`. Both sides reduce to the same expression.
+-/
 theorem isNrm_nrmAbs {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) : IsNrm P (nrmAbs P) := by
   intro x
   refine ⟨fun hx => (nrmAbs_eq_one_iff P (x : P.adicCompletion L)).2 hx, fun hx => ?_⟩
@@ -14,6 +17,9 @@ theorem isNrm_nrmAbs {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum
   rw [nrmAbs_of_valuation_eq_exp P h, _root_.zpow_neg_one]
   rfl
 
+/- English proof (translation)
+Introduce `_ _ _ P` and use `⟨nrmAbs P, isNrm_nrmAbs P⟩`.
+-/
 theorem exists_isNrm : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)),
     ∃ nrm : AbsoluteValue (P.adicCompletion L) ℝ, IsNrm P nrm :=
   fun _ _ _ P => ⟨nrmAbs P, isNrm_nrmAbs P⟩

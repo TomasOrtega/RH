@@ -22,13 +22,24 @@ def SigCont : Prop :=
     (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mx k r → (H →L[ℂ] H)),
     PI.UpqRep.IsDSHpk k r ε lam σ → ∀ v : H, ContinuousOn (fun g => σ g v) (UH (Hpk k r))
 
+/- English proof (translation)
+Take `⟨-, h2, -⟩` from `PI.WBL.Cv.grpAll k r 0`. Conclude with `⟨(h2 g hg).1, (h2 g hg).2.1⟩`.
+-/
 theorem unit_of_uh {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 ∧ g⁻¹ * g = 1 := by
   obtain ⟨-, h2, -⟩ := PI.WBL.Cv.grpAll k r 0
   exact ⟨(h2 g hg).1, (h2 g hg).2.1⟩
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (unit_of_uh hg).1`.
+-/
 theorem inv_inv_uh {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹⁻¹ = g :=
   Matrix.inv_eq_left_inv (unit_of_uh hg).1
 
+/- English proof (translation)
+Set `T : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ a : H →ₗ[ℂ] H), norm_map' := hU.2.2 a ha }`. Establish `hai : a⁻¹ ∈ UH (Hpk k r)` using `WeylGroupFacts.uh_inv ha`. Establish `hv : σ a (σ a⁻¹ v) = v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hU.2.1 a ha _ hai, (unit_of_uh ha).1, hU.1]`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hv]`. Use `_ = ⟪u, σ a⁻¹ v⟫_ℂ := T.inner_map_map _ _`.
+-/
 theorem inner_sig {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Mx k r → (H →L[ℂ] H)}
     (hU : PI.WBL.Cv.SigU σ) {a : Mx k r} (ha : a ∈ UH (Hpk k r)) (u v : H) :
     ⟪σ a u, v⟫_ℂ = ⟪u, σ a⁻¹ v⟫_ℂ := by
@@ -41,6 +52,9 @@ theorem inner_sig {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {�
         rw [hv]
     _ = ⟪u, σ a⁻¹ v⟫_ℂ := T.inner_map_map _ _
 
+/- English proof (translation)
+Set `T : E →ₗᵢ[ℂ] E` to `{ toLinearMap := (A : E →ₗ[ℂ] E), norm_map' := hA }`. Use `((ContinuousLinearMap.eq_adjoint_iff B A).mpr fun x y => ?_).symm` and prove the remaining obligations. Establish `hx : A (B x) = x` using `by rw [← ContinuousLinearMap.comp_apply, hAB]; rfl`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem adjoint_of_iso {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     (A B : E →L[ℂ] E) (hAB : A.comp B = 1) (hA : ∀ v, ‖A v‖ = ‖v‖) :
     ContinuousLinearMap.adjoint A = B := by
@@ -50,6 +64,9 @@ theorem adjoint_of_iso {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ
   calc ⟪B x, y⟫_ℂ = ⟪T (B x), T y⟫_ℂ := (T.inner_map_map _ _).symm
     _ = ⟪x, A y⟫_ℂ := by show ⟪A (B x), A y⟫_ℂ = _; rw [hx]
 
+/- English proof (translation)
+Use `adjoint_of_iso _ _ ?_ (hun h hh)` and prove the remaining obligations. Rewrite using `[← hrep.2 h hh _ (WeylGroupFacts.uw_inv hh), (unit_of_uh hh.1).1, hrep.1]`.
+-/
 theorem adjoint_pi {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteSpace E]
     {z : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (E →L[ℂ] E)} (hrep : IsCRepOn (UWset k r z) π)
     (hun : ∀ h ∈ UWset k r z, ∀ v, ‖π h v‖ = ‖v‖) {h : Mx k r} (hh : h ∈ UWset k r z) :
@@ -57,15 +74,24 @@ theorem adjoint_pi {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] 
   refine adjoint_of_iso _ _ ?_ (hun h hh)
   rw [← hrep.2 h hh _ (WeylGroupFacts.uw_inv hh), (unit_of_uh hh.1).1, hrep.1]
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 theorem norm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : Mx k r) : ‖psi k r z c g‖ = 1 := by
   unfold psi
   rw [mul_comm]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨B7.measurable_invM, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μ (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) h⟩`.
+-/
 theorem measurePreserving_invM_of_isHaarOn {z : Fin (2 * r + k + 1) → ℂ} {μ : Measure (Mt k r)} (h : B.IsHaarOn (UWset k r z) μ) :
     MeasurePreserving (B7.invM (k := k) (r := r)) μ μ :=
   ⟨B7.measurable_invM, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μ (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) h⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨B7.measurable_invM, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μ (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) h⟩`.
+-/
 theorem mp_inv_N {μ : Measure (Mt k r)} (h : B.IsHaarOn (Nset k r) μ) :
     MeasurePreserving (B7.invM (k := k) (r := r)) μ μ :=
   ⟨B7.measurable_invM, Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μ (Formalism.FourierDecayAlt.P.unipotent_radical_closed k r) h⟩

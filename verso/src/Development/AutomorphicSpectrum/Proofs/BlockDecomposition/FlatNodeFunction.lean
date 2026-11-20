@@ -8,6 +8,27 @@ open scoped ContDiff
 
 namespace GlobalTheory.CompanionTheory.LimV.NodeFlat
 
+/- English proof (translation)
+Introduce `E _ _ _ r s e₁ e₂ h₁ h₂`. Establish `ap : ∀ (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s)) (c : GL (Fin (r + s)) (Af E)), c ∈ KO E (r + s) → nodeFn e₁ e₂ (unip u * lev (Ad E) r s m * cf (r + s) k c) = e₁ m.1 * e₂ m.2` using `fun u m k c hc => GlobalTheory.T.node_function_levi_decomposition e₁ e₂ h₁ h₂ u m k c hc`. Establish `hleft : ∀ (v : BlockIx (r + s) r → Ad E) (x : GA E (r + s)), nodeFn e₁ e₂ (unip v * x) = nodeFn e₁ e₂ x`. Introduce `v x`. Take `⟨u, m, k, c, hc, rfl⟩` from `exists_iw x`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← PositivityTheory.Rg.Rs.InducedTensorMap.D.unip_add', ap _ _ _ _ hc, ap _ _ _ _ hc]`. Establish `hright : ∀ (x : GA E (r + s)) (k' : Kinf E (r + s)), ∀ c' ∈ KO E (r + s), nodeFn e₁ e₂ (x * cf (r + s) k' c') = nodeFn e₁ e₂ x`. Introduce `x k' c' hc'`. Take `⟨u, m, k, c, hc, rfl⟩` from `exists_iw x`. Rewrite using `[mul_assoc _ (cf (r + s) k c), PositivityTheory.Rg.Rs.InducedTensorMap.cf_mul, ap _ _ _ _ ((KO E (r + s)).mul_mem hc hc'), ap _ _ _ _ hc]`.
+
+Establish `key : ∀ m : GA E r × GA E s, ContDiffAt ℝ ∞ (chart (nodeFn e₁ e₂) (lev (Ad E) r s m)) (oneL E (r + s))`. Introduce `m`. Take `⟨b₁, b₂, κ, u, hb₁, hb₂, hκ, hb₁1, hb₂1, hκ1, hloc⟩` from `exists_local E r s`. Establish `c₁ : ContDiffAt ℝ ∞ (fun y => e₁ (m.1 * infGL E r (b₁ y))) (oneL E (r + s))`. Use `(contDiffAt_chart h₁.sm m.1 (val_mem_invSet (b₁ (oneL E (r + s))))).comp (oneL E (r + s)) hb₁` as an intermediate fact.
+
+Simplify `this` using `only [Function.comp_def, chart_val]`. Establish `c₂ : ContDiffAt ℝ ∞ (fun y => e₂ (m.2 * infGL E s (b₂ y))) (oneL E (r + s))`. Use `(contDiffAt_chart h₂.sm m.2 (val_mem_invSet (b₂ (oneL E (r + s))))).comp (oneL E (r + s)) hb₂` as an intermediate fact. Simplify `this` using `only [Function.comp_def, chart_val]`. Use `ContDiffAt.congr_of_eventuallyEq (c₁.mul c₂) ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hloc] with y hy`. Establish `hyw : y = toL (unip (u y) * lev (Cinf E) r s (b₁ y, b₂ y) * Unitary.toUnits (κ y)).val` using `by show y = toL ((unip (u y) * lev (Cinf E) r s (b₁ y, b₂ y)).val * (κ y).1)`. Rewrite using `[← hy]`. Both sides reduce to the same expression. Use `conv_lhs => rw [hyw, chart_val]`.
+
+Take `⟨v, hv⟩` from `lev_mul_infGL m (u y) (b₁ y) (b₂ y) (κ y)`. Rewrite using `[hv, ap _ _ _ _ ((KO E (r + s)).one_mem)]`. Use `⟨fun x => ?_, hright, ?_⟩` and prove the remaining obligations. Take `⟨u, m, k, c, hc, rfl⟩` from `exists_iw x`. Rewrite using `[ap _ _ _ _ hc]`.
+
+Conclude with `mul_ne_zero (h₁.ne _) (h₂.ne _)`. Use `GlobalTheory.DiscSMO.mem_Sm_of_one fun x => ?_` and prove the remaining obligations. Take `⟨u, m, k, g, hg, rfl⟩` from `exists_iw x`. Establish `e1 : chart (nodeFn e₁ e₂) (unip u * lev (Ad E) r s m * cf (r + s) k g) = chart (nodeFn e₁ e₂) (lev (Ad E) r s m * cf (r + s) k g)`. Use function extensionality and compare the values at `z`.
+
+Unfold `chart`. Use `split_ifs`. Simplify using `only [mul_assoc]`. Conclude with `hleft u _`. Both sides reduce to the same expression.
+
+Rewrite using `[e1, cf, infGL_comm, ← mul_assoc]`. Use `GlobalTheory.DiscSMO.contDiffAt_chart_mul ?_` and prove the remaining obligations. Rewrite using `[← chart_rt_fin]`. Establish `e2 : (fun x => (fun x => nodeFn e₁ e₂ (x * infGL E (r + s) (Unitary.toUnits k))) (x * finGL E (r + s) g)) = nodeFn e₁ e₂`. Use function extensionality and compare the values at `z`.
+
+Use `show nodeFn e₁ e₂ (z * finGL E (r + s) g * infGL E (r + s) (Unitary.toUnits k)) = nodeFn e₁ e₂ z`. Rewrite using `[mul_assoc, ← infGL_comm]`. Conclude with `hright z k g hg`. Rewrite using `[e2]`. Conclude with `key m`.
+-/
 theorem flatFn_nodeFn : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {r s : ℕ} (e₁ : GA E r → ℂ) (e₂ : GA E s → ℂ), FlatFn e₁ → FlatFn e₂ → FlatFn (nodeFn e₁ e₂) := by
   intro E _ _ _ r s e₁ e₂ h₁ h₂
   have ap : ∀ (u : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s))

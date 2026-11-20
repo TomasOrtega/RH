@@ -85,12 +85,18 @@ structure ExtN (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' W
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `{ e with W1 := h }`.
+-/
 theorem ExtN.ext {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w'.st Z') w'.I hX' T' Wt'} (e : ExtN z z')
     (h : ∀ v v', Below (w.D Z) (w'.D Z') v v' → (v ∈ z.W1 (fun _ _ => 0) ↔ v' ∈ z'.W1 fun _ _ => 0)) : Ext z z' :=
   { e with W1 := h }
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+The claim follows from `{ e with }`.
+-/
 theorem Ext.extN {z : Dat (w.st Z) w.I hX T Wt} {z' : Dat (w'.st Z') w'.I hX' T' Wt'} (e : Ext z z') : ExtN z z' :=
   { e with }
 

@@ -12,6 +12,9 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK GlobalTheory.SiegelSet GlobalTheory.UAut GlobalTheory.ThK.SquareIntegrability
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.StdPar.AutLin.isAutOn_sub_smul | exact GlobalTheory.StdPar.AutLin.isAutOn_sub_smul | (intros; apply GlobalTheory.StdPar.AutLin.isAutOn_sub_smul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.automorphic_sub_scalar_mul : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E) (S : Finset (Fin r)) (K : Subgroup (GAd σ J))
     (φ₁ φ₂ : GAd σ J → ℂ) (z : ℂ), GlobalTheory.StdPar.IsAutOn σ J X Y S K φ₁ → GlobalTheory.StdPar.IsAutOn σ J X Y S K φ₂ →

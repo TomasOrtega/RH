@@ -12,6 +12,17 @@ open NumberField
 
 namespace GlobalTheory.FlatCM.HomLat
 
+/- English proof (translation)
+Introduce `E _ _ _ H hH K _ _ ρ σ₁ p X gP gQ hG`. Use `⟨GlobalTheory.FlatCM.HomLat.lat X, GlobalTheory.T.cmLinearHomCoordinateLattice_fg E H hH K ρ σ₁ p X, GlobalTheory.FlatCM.HomLat.intl_mem X, fun barE hbar d => ⟨fun hd c hc => GlobalTheory.T.cmHomGramForm_integral_coordinateLattice E H hH K ρ σ₁ p X gP gQ hG barE hbar c hc d hd, G …` and prove the remaining obligations. Introduce `FP FB MP hMP τ hτ τE hτE`. Use `le_antisymm (GlobalTheory.T.lieEigenLattice_le_span_cmHom_images E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE) ?_` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `w ⟨c, hc, e, he, rfl⟩`. Proceed by induction on `hc using Submodule.span_induction generalizing e with`. Consider the case `mem c hc => exact GlobalTheory.T.sum_smul_differential_mem_eigenLattice E H hH K ρ σ₁ p X FP FB MP hMP τ hτ τE hτE c hc e he`. Consider the case `zero => simp`. Consider the case `add c d _ _ hc hd`.
+
+Simplify using `only [Pi.add_apply, map_add, add_smul, Finset.sum_add_distrib]`. Conclude with `add_mem (hc e he) (hd e he)`. Consider the case `smul s c _ hc`. Establish `h1 : ∑ a, τE ((s • c) a) • MP a e = ∑ a, τE (c a) • MP a ((τ s : K) • e)`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Establish `h2 : τE ((s • c) a) = (τ s : K) * τE (c a)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * τE (c a)) (hτE s)`. Rewrite using `[h2, mul_smul, (MP a).map_smul, smul_comm]`. Rewrite using `[h1]`.
+
+Conclude with `hc _ (by simpa [algebraMap_smul] using (FP.eigLat (X.A true).t.act τ).smul_mem (τ s) he)`.
+-/
 theorem exists_selfDual_lieSpan : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E),
     GlobalTheory.IndefiniteRowSideFullHecke.EigenvectorLieDegree.IsHostField H → ∀ (K : Type) [Field K] [NumberField K] (ρ : 𝓞 K) (σ₁ : K →+* ℂ) (p : ℕ)
     (X : GlobalTheory.CM.CMObj H K ρ σ₁ p 0) (gP : Matrix (Fin p) (Fin p) (𝓞 E)) (gQ : Matrix (Fin 0) (Fin 0) (𝓞 E)),

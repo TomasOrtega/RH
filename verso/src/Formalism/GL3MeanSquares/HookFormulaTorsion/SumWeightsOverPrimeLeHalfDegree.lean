@@ -12,8 +12,16 @@ variable (K : Type) [Field K] [NumberField K]
 
 private noncomputable def residueCharacteristic (P : Ideal (𝓞 K)) : ℕ := ringChar (𝓞 K ⧸ P)
 
+/- English proof (translation)
+The claim follows from `Ring.ne_bot_of_isMaximal_of_not_isField hP (NumberField.RingOfIntegers.not_isField K)`.
+-/
 private lemma maximal_ideal_ne_bot (P : Ideal (𝓞 K)) (hP : P.IsMaximal) : P ≠ ⊥ := Ring.ne_bot_of_isMaximal_of_not_isField hP (NumberField.RingOfIntegers.not_isField K)
 
+/- English proof (translation)
+Use `haveI : P.IsMaximal := hP`. Use `haveI : Finite (𝓞 K ⧸ P) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `maximal_ideal_ne_bot K P hP)`. Use `letI : Fintype (𝓞 K ⧸ P) := Fintype.ofFinite _`.
+
+Use `letI := Ideal.Quotient.field P`. Unfold `residueCharacteristic`. Conclude with `(CharP.char_is_prime_or_zero (𝓞 K ⧸ P) (ringChar (𝓞 K ⧸ P))).resolve_right (CharP.char_ne_zero_of_finite (𝓞 K ⧸ P) (ringChar (𝓞 K ⧸ P)))`.
+-/
 private lemma residue_characteristic_prime (P : Ideal (𝓞 K)) (hP : P.IsMaximal) : (residueCharacteristic K P).Prime := by
   haveI : P.IsMaximal := hP
   haveI : Finite (𝓞 K ⧸ P) := Nat.finite_of_card_ne_zero (by
@@ -25,10 +33,20 @@ private lemma residue_characteristic_prime (P : Ideal (𝓞 K)) (hP : P.IsMaxima
   exact (CharP.char_is_prime_or_zero (𝓞 K ⧸ P) (ringChar (𝓞 K ⧸ P))).resolve_right
     (CharP.char_ne_zero_of_finite (𝓞 K ⧸ P) (ringChar (𝓞 K ⧸ P)))
 
+/- English proof (translation)
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`.
+-/
 private lemma residue_characteristic_mem (P : Ideal (𝓞 K)) : ((residueCharacteristic K P : ℕ) : 𝓞 K) ∈ P := by
   rw [← Ideal.Quotient.eq_zero_iff_mem, map_natCast]
   exact ringChar.Nat.cast_ringChar
 
+/- English proof (translation)
+Establish `hdvd : (∏ P ∈ T, P) ∣ Ideal.span {(p : 𝓞 K)}`. Apply `Finset.prod_dvd_of_coprime` to reduce the goal to its premises. Introduce `P hP Q hQ hPQ`. Conclude with `Ideal.isCoprime_iff_sup_eq.mpr (Ideal.IsMaximal.coprime_of_ne (hT P hP).1 (hT Q hQ).1 hPQ)`. Apply the tactic sequence `intro P hP try dsimp only`.
+
+Rewrite using `[Ideal.dvd_iff_le, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `(hT P hP).2`. Establish `h3 : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ Module.finrank ℚ K`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `: (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`.
+
+Rewrite using `[this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`. Use `map_dvd Ideal.absNorm hdvd` as an intermediate fact. Rewrite `this` using `[map_prod, h3]`. Then use the resulting hypothesis.
+-/
 private lemma prod_norm_dvd_prime_pow_degree (p : ℕ) (T : Finset (Ideal (𝓞 K)))
     (hT : ∀ P ∈ T, P.IsMaximal ∧ (p : 𝓞 K) ∈ P) :
     ∏ P ∈ T, Ideal.absNorm P ∣ p ^ Module.finrank ℚ K := by
@@ -49,6 +67,11 @@ private lemma prod_norm_dvd_prime_pow_degree (p : ℕ) (T : Finset (Ideal (𝓞 
   have := map_dvd Ideal.absNorm hdvd
   rwa [map_prod, h3] at this
 
+/- English proof (translation)
+Use `haveI : P.IsMaximal := hP`. Use `letI := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 K ⧸ P) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `maximal_ideal_ne_bot K P hP)`.
+
+Use `letI : Fintype (𝓞 K ⧸ P) := Fintype.ofFinite _`. Use `haveI : CharP (𝓞 K ⧸ P) (residueCharacteristic K P) := ringChar.charP _`. Take `⟨n, -, hn⟩` from `FiniteField.card (𝓞 K ⧸ P) (residueCharacteristic K P)`. Use `⟨n, n.one_le, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card, hn]`.
+-/
 private lemma abs_norm_eq_prime_pow (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
     ∃ k, 1 ≤ k ∧ Ideal.absNorm P = residueCharacteristic K P ^ k := by
   haveI : P.IsMaximal := hP
@@ -62,6 +85,17 @@ private lemma abs_norm_eq_prime_pow (P : Ideal (𝓞 K)) (hP : P.IsMaximal) :
   refine ⟨n, n.one_le, ?_⟩
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply, Nat.card_eq_fintype_card, hn]
 
+/- English proof (translation)
+Establish `hne : P ≠ ⊥`. Introduce `h`. Rewrite `hN` using `[h, Ideal.absNorm_bot]`. Conclude with `hp.ne_zero hN.symm`. Establish `hPr : P.IsPrime` using `Ideal.isPrime_of_irreducible_absNorm (by rw [hN]; exact hp)`.
+
+Establish `hM : P.IsMaximal` using `hPr.isMaximal hne`. Take `⟨k, hk1, hk⟩` from `abs_norm_eq_prime_pow K P hM`. Rewrite `hk` using `[hN]`. Establish `hpr : residueCharacteristic K P = p` using `((Nat.Prime.pow_eq_iff hp).mp hk.symm).1`. Use `haveI : CharP (𝓞 K ⧸ P) p := by rw [← hpr]; exact ringChar.charP _`.
+
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `letI := Ideal.Quotient.field P`. Use `haveI : Finite (𝓞 K ⧸ P) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hne)`.
+
+Use `letI : Fintype (𝓞 K ⧸ P) := Fintype.ofFinite _`. Establish `hinj : Function.Injective (ZMod.castHom (dvd_refl p) (𝓞 K ⧸ P))` using `(ZMod.castHom (dvd_refl p) (𝓞 K ⧸ P)).injective`. Establish `hcard : Nat.card (𝓞 K ⧸ P) ≤ Nat.card (ZMod p)`. Rewrite using `[Nat.card_zmod, ← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, hN]`. Take `⟨z, hz⟩` from `(hinj.bijective_of_nat_card_le hcard).2 (Ideal.Quotient.mk P x)`.
+
+Use `⟨(z.val : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, ← hz, map_intCast, Int.cast_natCast, ZMod.castHom_apply, ZMod.natCast_val, sub_self]`.
+-/
 private lemma exists_int_congruent_mod_prime (P : Ideal (𝓞 K)) (p : ℕ) (hp : p.Prime) (hN : Ideal.absNorm P = p)
     (x : 𝓞 K) : ∃ n : ℤ, x - (n : 𝓞 K) ∈ P := by
   have hne : P ≠ ⊥ := by
@@ -89,6 +123,17 @@ private lemma exists_int_congruent_mod_prime (P : Ideal (𝓞 K)) (p : ℕ) (hp 
 
 variable [StarRing K]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨θ, t, ht, hθt⟩` from `hu`. Take `⟨k, hk1, hk⟩` from `abs_norm_eq_prime_pow K P hP`. Establish `hp` using `residue_characteristic_prime K P hP`.
+
+Establish `hk2 : k = 1`. Assume the negation of the conclusion as `hne`. Establish `h2k : 2 ≤ k` using `by omega`. Use `Nat.pow_le_pow_right hp.pos h2k` as an intermediate fact. Rewrite `this` using `[← hk]`.
+
+Conclude with `absurd this (not_le.mpr hlt)`. Rewrite `hk` using `[hk2, pow_one]`. Take `⟨n, hn⟩` from `exists_int_congruent_mod_prime K P _ hp hk θ`. Apply `hθt` to reduce the goal to its premises. Establish `h2 : t - (n : 𝓞 K) ∈ Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P := by`.
+
+Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨θ - n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, ht, star_sub, map_intCast, star_intCast]`. Rewrite `h2` using `[hc]`. Use `P.sub_mem hn h2` as an intermediate fact.
+
+Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 private lemma inert_prime_norm_ge_sq (P : Ideal (𝓞 K)) (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P)
     (hu : ∃ θ t : 𝓞 K, algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K θ) ∧ θ - t ∉ P) :
@@ -124,10 +169,18 @@ private noncomputable def invPowMonoidHomReal (M : ℕ) : ℕ →* ℝ where
   map_one' := by simp
   map_mul' a b := by push_cast; rw [mul_inv, mul_pow]
 
+/- English proof (translation)
+Use `Real.summable_nat_pow_inv.mpr (by omega : 1 < M)` as an intermediate fact. Simplify `this` using `[inv_pow]`.
+-/
 private lemma summable_inv_pow_real (M : ℕ) (hM : 2 ≤ M) : Summable (fun n : ℕ => ((n : ℝ)⁻¹) ^ M) := by
   have := Real.summable_nat_pow_inv.mpr (by omega : 1 < M)
   simpa [inv_pow] using this
 
+/- English proof (translation)
+Rewrite using `[(summable_inv_pow_real M hM).tsum_eq_zero_add]`. Rewrite using `[Nat.cast_zero, inv_zero, zero_pow (by omega), zero_add]`. Use `show _ = ∑' n : ℕ, 1 / ((n : ℝ) + 1) ^ M`. Use `congr 1`. Use extensionality with `n`.
+
+Use `push_cast`. Rewrite using `[one_div, inv_pow]`.
+-/
 private lemma tsum_inv_pow_eq_zeta_real (M : ℕ) (hM : 2 ≤ M) : ∑' n : ℕ, ((n : ℝ)⁻¹) ^ M = zetaR M := by
   rw [(summable_inv_pow_real M hM).tsum_eq_zero_add]
   rw [Nat.cast_zero, inv_zero, zero_pow (by omega), zero_add]
@@ -137,12 +190,28 @@ private lemma tsum_inv_pow_eq_zeta_real (M : ℕ) (hM : 2 ≤ M) : ∑' n : ℕ,
   push_cast
   rw [one_div, inv_pow]
 
+/- English proof (translation)
+Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `h1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Conclude with `pow_lt_one₀ (by positivity) h1 (by omega)`.
+-/
 private lemma inv_prime_pow_lt_one' (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) :
     ((p : ℝ)⁻¹) ^ M < 1 := by
   have h2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le
   have h1 : (p : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by linarith)
   exact pow_lt_one₀ (by positivity) h1 (by omega)
 
+/- English proof (translation)
+Establish `hfv : ∀ n : ℕ, invPowMonoidHomReal M n = ((n : ℝ)⁻¹) ^ M` using `fun n => rfl`. Use `set N := S.sup id + 1 with hNdef`. Establish `hsub : S ⊆ N.primesBelow`. Introduce `p hp`. Rewrite using `[Nat.mem_primesBelow]`.
+
+Conclude with `⟨Nat.lt_succ_of_le (Finset.le_sup (f := id) hp), hS p hp⟩`. Establish `hf : ∀ {p : ℕ}, p.Prime → ‖invPowMonoidHomReal M p‖ < 1`. Introduce `p hp`. Rewrite using `[hfv, Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `inv_prime_pow_lt_one' M (by omega) p hp`.
+
+Take `⟨-, hhs⟩` from `EulerProduct.summable_and_hasSum_smoothNumbers_prod_primesBelow_geometric hf N`. Establish `hsum : Summable (fun n : ℕ => invPowMonoidHomReal M n)`. Simplify using `only [hfv]`. Conclude with `summable_inv_pow_real M hM`. Establish `key : ∏ p ∈ N.primesBelow, (1 - invPowMonoidHomReal M p)⁻¹ ≤ ∑' n : ℕ, invPowMonoidHomReal M n`.
+
+Rewrite using `[← hhs.tsum_eq]`. Conclude with `Summable.tsum_subtype_le (fun n : ℕ => invPowMonoidHomReal M n) _ (fun n => by rw [hfv]; positivity) hsum`. Establish `hfac : ∀ p ∈ N.primesBelow, 1 ≤ (1 - invPowMonoidHomReal M p)⁻¹`. Introduce `p hp`. Establish `hp'` using `(Nat.mem_primesBelow.mp hp).2`.
+
+Establish `h1` using `inv_prime_pow_lt_one' M (by omega) p hp'`. Establish `h0 : 0 ≤ ((p : ℝ)⁻¹) ^ M` using `by positivity`. Rewrite using `[hfv]`. Conclude with `(one_le_inv₀ (by linarith)).mpr (by linarith)`. Establish `hsplit` using `Finset.prod_sdiff hsub (f := fun p => (1 - invPowMonoidHomReal M p)⁻¹)`.
+
+Establish `hrest : 1 ≤ ∏ p ∈ N.primesBelow \ S, (1 - invPowMonoidHomReal M p)⁻¹` using `Finset.prod_induction _ (fun x => 1 ≤ x) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl (fun p hp => hfac p (Finset.sdiff_subset hp))`. Establish `hSpos : 0 ≤ ∏ p ∈ S, (1 - invPowMonoidHomReal M p)⁻¹` using `Finset.prod_nonneg (fun p hp => by linarith [hfac p (hsub hp)])`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma euler_product_le_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∏ p ∈ S, (1 - ((p : ℝ)⁻¹) ^ M)⁻¹ ≤ zetaR M := by
   classical
@@ -184,9 +253,15 @@ private lemma euler_product_le_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (h
 
 private noncomputable def negLogOneSubInvPow (M p : ℕ) : ℝ := -Real.log (1 - ((p : ℝ)⁻¹) ^ M)
 
+/- English proof (translation)
+Conclude with `inv_prime_pow_lt_one' M hM p hp`.
+-/
 private lemma inv_prime_pow_lt_one (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) : ((p : ℝ)⁻¹) ^ M < 1 := by
   exact inv_prime_pow_lt_one' M hM p hp
 
+/- English proof (translation)
+Establish `h` using `inv_prime_pow_lt_one M hM p hp`. Establish `h0 : 0 ≤ ((p : ℝ)⁻¹) ^ M` using `by positivity`. Unfold `negLogOneSubInvPow`. Establish `: Real.log (1 - ((p : ℝ)⁻¹) ^ M) ≤ 0` using `Real.log_nonpos (by linarith) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma neg_log_one_sub_inv_pow_nonneg (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) : 0 ≤ negLogOneSubInvPow M p := by
   have h := inv_prime_pow_lt_one M hM p hp
   have h0 : 0 ≤ ((p : ℝ)⁻¹) ^ M := by positivity
@@ -194,6 +269,11 @@ private lemma neg_log_one_sub_inv_pow_nonneg (M : ℕ) (hM : 1 ≤ M) (p : ℕ) 
   have : Real.log (1 - ((p : ℝ)⁻¹) ^ M) ≤ 0 := Real.log_nonpos (by linarith) (by linarith)
   linarith
 
+/- English proof (translation)
+Establish `hpos : ∀ p ∈ S, 0 < 1 - ((p : ℝ)⁻¹) ^ M` using `fun p hp => by`. Combine the linear relations using `[inv_prime_pow_lt_one M (by omega) p (hS p hp)]`. Establish `hsum : ∑ p ∈ S, negLogOneSubInvPow M p = Real.log (∏ p ∈ S, (1 - ((p : ℝ)⁻¹) ^ M)⁻¹)`. Rewrite using `[Real.log_prod (fun p hp => (inv_pos.mpr (hpos p hp)).ne')]`. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[negLogOneSubInvPow, Real.log_inv]`. Rewrite using `[hsum]`. Conclude with `Real.log_le_log (Finset.prod_pos (fun p hp => inv_pos.mpr (hpos p hp))) (euler_product_le_zeta M hM S hS)`.
+-/
 private lemma sum_neg_log_le_log_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) (hS : ∀ p ∈ S, p.Prime) :
     ∑ p ∈ S, negLogOneSubInvPow M p ≤ Real.log (zetaR M) := by
   have hpos : ∀ p ∈ S, 0 < 1 - ((p : ℝ)⁻¹) ^ M := fun p hp => by
@@ -205,6 +285,9 @@ private lemma sum_neg_log_le_log_zeta (M : ℕ) (hM : 2 ≤ M) (S : Finset ℕ) 
   rw [hsum]
   exact Real.log_le_log (Finset.prod_pos (fun p hp => inv_pos.mpr (hpos p hp))) (euler_product_le_zeta M hM S hS)
 
+/- English proof (translation)
+The claim follows from `|Real.log ((1 - s * y)⁻¹)| ≤ -Real.log (1 - x) := by have hx0 : 0 < 1 - x := by linarith rcases hs with rfl | rfl · rw [one_mul, Real.log_inv, abs_neg, abs_of_nonpos (Real.log_nonpos (by linarith) (by linarith))] have := Real.log_le_log hx0 (by linarith : 1 - x ≤ 1 - y) linarith …`.
+-/
 private lemma abs_log_inv_one_sub_le_real (s y x : ℝ) (hs : s = 1 ∨ s = -1) (hy : 0 ≤ y) (hyx : y ≤ x) (hx : x < 1) :
     |Real.log ((1 - s * y)⁻¹)| ≤ -Real.log (1 - x) := by
   have hx0 : 0 < 1 - x := by linarith
@@ -218,6 +301,9 @@ private lemma abs_log_inv_one_sub_le_real (s y x : ℝ) (hs : s = 1 ∨ s = -1) 
     have h2 := Real.log_le_sub_one_of_pos hx0
     linarith
 
+/- English proof (translation)
+The claim follows from `|Real.log ((1 - (-1 : ℝ) ^ M * (Real.sqrt (N : ℝ)) ^ (-(M : ℤ)))⁻¹)| ≤ negLogOneSubInvPow M p := by have hp2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le have hsq : (p : ℝ) ^ 2 ≤ (N : ℝ) := by exact_mod_cast hN have hpN : (p : ℝ) ≤ Real.sqrt (N : ℝ) := (le_abs_self _).trans (Real …`.
+-/
 private lemma euler_factor_inert_prime_bound (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) (N : ℕ) (hN : p ^ 2 ≤ N) :
     0 < (1 - (-1 : ℝ) ^ M * (Real.sqrt (N : ℝ)) ^ (-(M : ℤ)))⁻¹ ∧
     |Real.log ((1 - (-1 : ℝ) ^ M * (Real.sqrt (N : ℝ)) ^ (-(M : ℤ)))⁻¹)| ≤ negLogOneSubInvPow M p := by
@@ -236,6 +322,9 @@ private lemma euler_factor_inert_prime_bound (M : ℕ) (hM : 1 ≤ M) (p : ℕ) 
   apply inv_pos.mpr
   rcases hs with h | h <;> rw [h] <;> linarith
 
+/- English proof (translation)
+The claim follows from `|Real.log ((1 - (N : ℝ) ^ (-(M : ℤ))) ^ (-(1 : ℝ) / 2))| ≤ 1 / 2 * negLogOneSubInvPow M p := by have hp2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le have hpN : (p : ℝ) ≤ N := by exact_mod_cast hN have hzp : (N : ℝ) ^ (-(M : ℤ)) = ((N : ℝ)⁻¹) ^ M := by rw [zpow_neg, zpow_natCast, …`.
+-/
 private lemma euler_factor_split_prime_bound (M : ℕ) (hM : 1 ≤ M) (p : ℕ) (hp : p.Prime) (N : ℕ) (hN : p ≤ N) :
     0 < (1 - (N : ℝ) ^ (-(M : ℤ))) ^ (-(1 : ℝ) / 2) ∧
     |Real.log ((1 - (N : ℝ) ^ (-(M : ℤ))) ^ (-(1 : ℝ) / 2))| ≤ 1 / 2 * negLogOneSubInvPow M p := by
@@ -266,8 +355,24 @@ variable (K : Type) [Field K] [NumberField K]
 private noncomputable def idealPrimeWeight (P : Ideal (𝓞 K)) : ℝ :=
   Real.log (Ideal.absNorm P : ℝ) / (2 * Real.log (residueCharacteristic K P : ℝ))
 
+/- English proof (translation)
+The claim follows from `Real.log_pos (by exact_mod_cast hp.one_lt)`.
+-/
 private lemma log_prime_pos (p : ℕ) (hp : p.Prime) : 0 < Real.log (p : ℝ) := Real.log_pos (by exact_mod_cast hp.one_lt)
 
+/- English proof (translation)
+Break down `T.eq_empty_or_nonempty with rfl | ⟨P0, hP0⟩` into its components or cases. Simplify using `only [Finset.sum_empty]`. Check the signs of the components of the expression. Establish `hp : p.Prime` using `by rw [← hT P0 hP0]; exact residue_characteristic_prime K P0.1 P0.2`. Establish `hlp` using `log_prime_pos p hp`.
+
+Establish `hdvd : ∏ P ∈ T, Ideal.absNorm P.1 ∣ p ^ Module.finrank ℚ K`. Use `prod_norm_dvd_prime_pow_degree K p (T.map (Function.Embedding.subtype _)) (by` as an intermediate fact. Introduce `P hP`. Take `⟨Q, hQ, rfl⟩` from `Finset.mem_map.mp hP`. Use `⟨Q.2, ?_⟩` and prove the remaining obligations.
+
+Use `residue_characteristic_mem K Q.1` as an intermediate fact. Rewrite using `[hT Q hQ] at this)` and apply the resulting hypothesis. Simplify `this` using `[Finset.prod_map]`. Establish `hpos : ∀ P ∈ T, 0 < Ideal.absNorm P.1` using `fun P _ => Nat.pos_of_ne_zero (by`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+
+Conclude with `maximal_ideal_ne_bot K P.1 P.2)`. Establish `hle : ∏ P ∈ T, Ideal.absNorm P.1 ≤ p ^ Module.finrank ℚ K` using `Nat.le_of_dvd (pow_pos hp.pos _) hdvd`. Establish `hlog : ∑ P ∈ T, Real.log (Ideal.absNorm P.1 : ℝ) ≤ Module.finrank ℚ K * Real.log p`. Rewrite using `[← Real.log_prod (fun P hP => by exact_mod_cast (hpos P hP).ne'), ← Real.log_pow]`. Apply `Real.log_le_log (Finset.prod_pos fun P hP => by exact_mod_cast hpos P hP)` to reduce the goal to its premises.
+
+Conclude with `hle` after adjusting the coercions. Establish `hlne` using `hlp.ne'`. Combine the equalities or inequalities in the displayed calculation. Apply `div_le_div_of_nonneg_right hlog` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Apply the tactic sequence `_ = (Module.finrank ℚ K : ℝ) / 2 := by field_simp; try ring`.
+-/
 private lemma sum_weights_over_prime_le_half_degree (p : ℕ) (T : Finset {P : Ideal (𝓞 K) // P.IsMaximal})
     (hT : ∀ P ∈ T, residueCharacteristic K P.1 = p) :
     ∑ P ∈ T, idealPrimeWeight K P.1 ≤ (Module.finrank ℚ K : ℝ) / 2 := by
@@ -302,6 +407,9 @@ private lemma sum_weights_over_prime_le_half_degree (p : ℕ) (T : Finset {P : I
 
 variable [StarRing K]
 
+/- English proof (translation)
+The claim follows from `|Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P)| ≤ idealPrimeWeight K P * negLogOneSubInvPow M (residueCharacteristic K P) := by have hp := residue_characteristic_prime K P hP obtain ⟨k, hk1, hk⟩ := abs_norm_eq_prime_pow K P hP have hlp := log_prime_pos _ hp have hln …`.
+-/
 private lemma euler_factor_log_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 1 ≤ M) (P : Ideal (𝓞 K))
     (hP : P.IsMaximal) :
     0 < Formalism.HermitianLatticesTheory.eulerFac K M P ∧
@@ -333,6 +441,19 @@ private lemma euler_factor_log_bound (hK : Formalism.HermitianLatticesTheory.IsC
     have : (1 : ℝ) ≤ k := by exact_mod_cast hk1
     nlinarith
 
+/- English proof (translation)
+Establish `hn : (Formalism.HermitianLatticesTheory.fDeg K : ℝ) = (Module.finrank ℚ K : ℝ) / 2` using `by haveI := hK.1`. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank K`. Establish `h2` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`. Establish `h3` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero K`. Unfold `Formalism.HermitianLatticesTheory.fDeg`.
+
+Rewrite using `[h2, ← h1, h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set S := u.image (fun P => residueCharacteristic K P.1) with hSdef`. Establish `hSp : ∀ p ∈ S, p.Prime`.
+
+Introduce `p hp`. Take `⟨P, -, rfl⟩` from `Finset.mem_image.mp hp`. Conclude with `residue_characteristic_prime K P.1 P.2`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun P hP => ?_)` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hP).2]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ p ∈ S, negLogOneSubInvPow M p * ((Module.finrank ℚ K : ℝ) / 2) := by`.
+
+Use `Finset.sum_le_sum (fun p hp => ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (sum_weights_over_prime_le_half_degree K p _ (fun P hP => (Finset.mem_filter.mp hP).2)) (neg_log_one_sub_inv_pow_nonneg M (by omega) p (hSp p hp))`. Use `_ = (Module.finrank ℚ K : ℝ) / 2 * ∑ p ∈ S, negLogOneSubInvPow M p := by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun _ _ => mul_comm _ _)`.
+
+Use `_ ≤ (Module.finrank ℚ K : ℝ) / 2 * Real.log (zetaR M) := mul_le_mul_of_nonneg_left (sum_neg_log_le_log_zeta M hM S hSp) (by positivity)`. Use `_ = (Formalism.HermitianLatticesTheory.fDeg K : ℝ) * Real.log (zetaR M) := by rw [hn]`.
+-/
 private lemma partial_sums_log_euler_factor_le (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (M : ℕ) (hM : 2 ≤ M)
     (u : Finset {P : Ideal (𝓞 K) // P.IsMaximal}) :
     ∑ P ∈ u, |Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P.1)| ≤
@@ -374,6 +495,13 @@ private lemma partial_sums_log_euler_factor_le (hK : Formalism.HermitianLattices
 
 end main
 
+/- English proof (translation)
+Introduce `K _ _ _ hK M hM`. Establish `hM2 : 2 ≤ M` using `by omega`. Establish `hpos : ∀ P : {P : Ideal (𝓞 K) // P.IsMaximal}, 0 < Formalism.HermitianLatticesTheory.eulerFac K M P.1` using `fun P => (euler_factor_log_bound K hK M (by omega) P.1 P.2).1`. Establish `habs : Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => |Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P.1)|)` using `summable_of_sum_le (fun P => abs_nonneg _) (partial_sums_log_euler_factor_le K hK M hM2)`. Establish `hsum : Summable (fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P.1))` using `habs.of_abs`.
+
+Use `⟨Real.multipliable_of_summable_log hpos hsum, ?_, ?_⟩` and prove the remaining obligations. Unfold `Formalism.HermitianLatticesTheory.lValEta`. Rewrite using `[← Real.rexp_tsum_eq_tprod hpos hsum]`. Conclude with `Real.exp_pos _`. Unfold `Formalism.HermitianLatticesTheory.lValEta`.
+
+Rewrite using `[← Real.rexp_tsum_eq_tprod hpos hsum, Real.log_exp]`. Establish `hn` using `norm_tsum_le_tsum_norm (f := fun P : {P : Ideal (𝓞 K) // P.IsMaximal} => Real.log (Formalism.HermitianLatticesTheory.eulerFac K M P.1)) (by simpa [Real.norm_eq_abs] using habs)`. Simplify using `only [Real.norm_eq_abs] at hn`. Conclude with `hn.trans (habs.tsum_le_of_sum_le (partial_sums_log_euler_factor_le K hK M hM2))`.
+-/
 theorem log_l_value_field_bound : LogLFunctionEulerBound := by
   intro K _ _ _ hK M hM
   have hM2 : 2 ≤ M := by omega

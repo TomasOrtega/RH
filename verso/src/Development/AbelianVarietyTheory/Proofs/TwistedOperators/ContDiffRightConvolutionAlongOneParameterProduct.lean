@@ -20,6 +20,15 @@ section Param
 variable {H : Type} [MeasurableSpace H] {ν : Measure H} {P X : Type} [NormedAddCommGroup P] [NormedSpace ℝ P]
   [FiniteDimensional ℝ P] [NormedAddCommGroup X] [NormedSpace ℝ X] {c : H → X} {S : Set X} {φ : H → ℂ}
 
+/- English proof (translation)
+Establish `hΘs : ContDiff ℝ ∞ fun p : P × X => fderiv ℝ (fun s => Θ (s, p.2)) p.1` using `ContDiff.fderiv (f := fun (p : P × X) (s : P) => Θ (s, p.2)) (g := Prod.fst) (hΘ.comp (contDiff_snd.prodMk contDiff_fst.snd)) contDiff_fst le_rfl`. Establish `hΘ'` using `hΘs.continuous`. Establish `hK : IsCompact (closedBall t₀ 1 ×ˢ S)` using `(isCompact_closedBall t₀ 1).prod hS`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hΘ'.continuousOn`. Take `⟨C₀, hC₀⟩` from `hK.exists_bound_of_continuousOn hΘ.continuous.continuousOn`.
+
+Establish `hm : ∀ t, AEStronglyMeasurable (fun y => φ y • Θ (t, c y)) ν` using `fun t => hφ.1.smul ((hΘ.continuous.comp (continuous_const.prodMk continuous_id)).comp_aestronglyMeasurable hc)`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (F' := fun t y => φ y • fderiv ℝ (fun s => Θ (s, c y)) t) (bound := fun y => ‖φ y‖ * C) (ball_mem_nhds t₀ one_pos) (.of_forall hm) ?_ ?_ ?_ (hφ.norm.mul_const C) ?_` and prove the remaining obligations. Use `Integrable.mono' (hφ.norm.mul_const C₀) (hm t₀) ?_ filter_upwards [hcS] with y hy` and prove the remaining obligations. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC₀ _ ⟨mem_closedBall_self zero_le_one, hy⟩) (norm_nonneg _)`.
+
+Conclude with `hφ.1.smul ((hΘ'.comp (continuous_const.prodMk continuous_id)).comp_aestronglyMeasurable hc)`. Use `filter_upwards [hcS] with y hy t ht`. Rewrite using `[norm_smul]`. Conclude with `mul_le_mul_of_nonneg_left (hC (t, c y) ⟨ball_subset_closedBall ht, hy⟩) (norm_nonneg _)`. Use `.of_forall fun y t _ => ?_` and prove the remaining obligations.
+
+Establish `hd : ContDiff ℝ ∞ fun s => Θ (s, c y)` using `hΘ.comp (contDiff_id.prodMk contDiff_const)`. Conclude with `((hd.differentiable (by simp)) t).hasFDerivAt.const_smul (φ y)`.
+-/
 theorem hasFDerivAt_integral_smul_param (hc : AEStronglyMeasurable c ν) (hS : IsCompact S)
     (hcS : ∀ᵐ y ∂ν, c y ∈ S) (hφ : Integrable φ ν) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     [NormedSpace ℂ W] [SMulCommClass ℝ ℂ W] [IsScalarTower ℝ ℂ W] [CompleteSpace W] {Θ : P × X → W} (hΘ : ContDiff ℝ ∞ Θ) (t₀ : P) :
@@ -47,6 +56,11 @@ theorem hasFDerivAt_integral_smul_param (hc : AEStronglyMeasurable c ν) (hS : I
     have hd : ContDiff ℝ ∞ fun s => Θ (s, c y) := hΘ.comp (contDiff_id.prodMk contDiff_const)
     exact ((hd.differentiable (by simp)) t).hasFDerivAt.const_smul (φ y)
 
+/- English proof (translation)
+Rewrite using `[contDiff_infty]`. Introduce `n`. Proceed by induction on `n generalizing W with`. Consider the case `zero`. Conclude with `contDiff_zero.2 (continuous_iff_continuousAt.2 fun t => (hasFDerivAt_integral_smul_param hc hS hcS hφ hΘ t).continuousAt)`.
+
+Consider the case `succ n ih`. Establish `hΘ' : ContDiff ℝ ∞ fun p : P × X => fderiv ℝ (fun s => Θ (s, p.2)) p.1` using `ContDiff.fderiv (f := fun (p : P × X) (s : P) => Θ (s, p.2)) (g := Prod.fst) (hΘ.comp (contDiff_snd.prodMk contDiff_fst.snd)) contDiff_fst le_rfl`. Conclude with `contDiff_succ_iff_hasFDerivAt.2 ⟨fun t => ∫ y, φ y • fderiv ℝ (fun s => Θ (s, c y)) t ∂ν, ih hΘ', fun t => hasFDerivAt_integral_smul_param hc hS hcS hφ hΘ t⟩`.
+-/
 theorem contDiff_integral_smul_param (hc : AEStronglyMeasurable c ν) (hS : IsCompact S)
     (hcS : ∀ᵐ y ∂ν, c y ∈ S) (hφ : Integrable φ ν) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W]
     [NormedSpace ℂ W] [SMulCommClass ℝ ℂ W] [IsScalarTower ℝ ℂ W] [CompleteSpace W] {Θ : P × X → W} (hΘ : ContDiff ℝ ∞ Θ) :
@@ -76,6 +90,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] [FiniteDimensional ℝ P] in
 
+/- English proof (translation)
+Simplify using `only [infFin, map_mul, hu.1, mul_one, e, infCoord_mul]`.
+-/
 theorem infFin_mul_smoothFam (hu : IsSmoothRealFam u) {a : GInf σ J → ℂ} {b : GFin σ J → ℂ}
     {Φ : (∀ w : InfinitePlace F, EmbOver E w → Fin n → Fin n → ℂ) → ℂ} (e : ∀ x, a x = Φ (infCoord σ J x))
     (z : GAd σ J) (t : P) :
@@ -83,6 +100,11 @@ theorem infFin_mul_smoothFam (hu : IsSmoothRealFam u) {a : GInf σ J → ℂ} {b
       archMat σ J τ (projArch σ J w (u t)) k j) * b (projFin σ J z) := by
   simp only [infFin, map_mul, hu.1, mul_one, e, infCoord_mul]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `continuous_of_mem_ccAd hh`. Take `⟨M, hM⟩` from `h1.bounded_above_of_compact_support h2`. Use `Integrable.mono' (hφ.norm.const_mul M) ?_ (.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hc : Continuous fun y : GAd σ J => conj (h (y⁻¹ * g * x))` using `Complex.continuous_conj.comp (h1.comp ((continuous_inv.mul continuous_const).mul continuous_const))`. Conclude with `hc.aestronglyMeasurable.mul hφ.1`.
+
+Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`.
+-/
 theorem integrable_conj_mul_of_mem (hφ : Integrable φ ν) {h : GAd σ J → ℂ}
     (hh : h ∈ CcAd σ J) (g : GAd σ J) (x : GAd σ J) :
     Integrable (fun y => conj (h (y⁻¹ * g * x)) * φ y) ν := by
@@ -95,6 +117,23 @@ theorem integrable_conj_mul_of_mem (hφ : Integrable φ ν) {h : GAd σ J → �
   · rw [norm_mul, Complex.norm_conj]
     exact mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)
 
+/- English proof (translation)
+Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ⟨-, Φ, hΦ, e⟩, b, hb, rfl⟩` from `hf`. Establish `hcc : Continuous fun y : GAd σ J => infCoord σ J (projInf σ J (y⁻¹ * g))` using `(continuous_infCoord σ J).comp ((continuous_projInf σ J).comp (continuous_inv.mul continuous_const))`. Take `⟨M, hM⟩` from `hb.1.continuous.bounded_above_of_compact_support hb.2`.
+
+Establish `hφ' : Integrable (fun y => conj (b (projFin σ J (y⁻¹ * g))) * φ y) ν`. Use `Integrable.mono' (hφ.norm.const_mul M) ?_ (.of_forall fun y => ?_)` and prove the remaining obligations. Conclude with `(Complex.continuous_conj.comp (hb.1.continuous.comp ((continuous_projFin σ J).comp (continuous_inv.mul continuous_const)))).aestronglyMeasurable.mul hφ.1`. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`.
+
+Establish `hΘ : ContDiff ℝ ∞ fun p : P × (∀ w : InfinitePlace F, EmbOver E w → Fin n → Fin n → ℂ) => conj (Φ (fun w τ i j => ∑ k, p.2 w τ i k * archMat σ J τ (projArch σ J w (u p.1)) k j))` using `Complex.conjCLE.contDiff.comp (hΦ.comp (contDiff_pi.2 fun w => contDiff_pi.2 fun τ => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ContDiff.sum fun k _ => (contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 contDiff_snd w) τ) i) k).mul ((hu.2 w τ k j).comp contDiff_fst)) …`. Establish `key` using `GlobalTheory.ConvSmooth.contDiff_integral_smul_param hcc.aestronglyMeasurable (hKc.image hcc) (hK.mono fun y hy => mem_image_of_mem _ hy) hφ' hΘ`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations.
+
+Simplify using `only [smul_eq_mul]`. Rewrite using `[infFin_mul_smoothFam hu e, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => simp only [Pi.zero_apply, map_zero, zero_mul, integral_zero]`. Conclude with `contDiff_const`.
+
+Consider the case `add f f' hf hf' h h'`. Establish `e : (fun t => ∫ y, conj ((f + f') (y⁻¹ * g * u t)) * φ y ∂ν) = fun t => (∫ y, conj (f (y⁻¹ * g * u t)) * φ y ∂ν) + ∫ y, conj (f' (y⁻¹ * g * u t)) * φ y ∂ν`. Use function extensionality and compare the values at `fun t => by`. Simplify using `only [Pi.add_apply, map_add, add_mul]`. Conclude with `integral_add (integrable_conj_mul_of_mem hφ hf g _) (integrable_conj_mul_of_mem hφ hf' g _)`.
+
+Rewrite using `[e]`. Conclude with `h.add h'`. Consider the case `smul a f _ h`. Establish `e : (fun t => ∫ y, conj ((a • f) (y⁻¹ * g * u t)) * φ y ∂ν) = fun t => conj a * ∫ y, conj (f (y⁻¹ * g * u t)) * φ y ∂ν`. Use function extensionality and compare the values at `fun t => by`.
+
+Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Conclude with `contDiff_const.mul h`.
+-/
 theorem contDiff_integral_of_compact (hu : IsSmoothRealFam u) (hKc : IsCompact K) (hK : ∀ᵐ y ∂ν, y ∈ K)
     (hφ : Integrable φ ν) {h : GAd σ J → ℂ} (hh : h ∈ CcAd σ J) (g : GAd σ J) :
     ContDiff ℝ ∞ fun t => ∫ y, conj (h (y⁻¹ * g * u t)) * φ y ∂ν := by
@@ -144,6 +183,11 @@ theorem contDiff_integral_of_compact (hu : IsSmoothRealFam u) (hKc : IsCompact K
     rw [e]
     exact contDiff_const.mul h
 
+/- English proof (translation)
+Use `contDiff_iff_contDiffAt.2 fun t₀ => ?_` and prove the remaining obligations. Take `⟨-, hs⟩` from `continuous_of_mem_ccAd hh`. Use `set K := (fun p : P × GAd σ J => g * u p.1 * p.2⁻¹) '' (closedBall t₀ 1 ×ˢ tsupport h) with hKdef`. Establish `hKc : IsCompact K` using `((isCompact_closedBall t₀ 1).prod hs.isCompact).image (by fun_prop)`. Establish `key` using `contDiff_integral_of_compact (ν := μ.restrict K) hu hKc (ae_restrict_mem hKc.measurableSet) (hφ.integrableOn_isCompact hKc) hh g`.
+
+Use `key.contDiffAt.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds t₀ one_pos] with t ht`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_).symm` and prove the remaining obligations. Establish `: y⁻¹ * g * u t ∉ tsupport h` using `fun hm => hy ⟨(t, y⁻¹ * g * u t), ⟨ball_subset_closedBall ht, hm⟩, by simp [mul_assoc]⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport this]`.
+-/
 theorem contDiff_integral_conj_mul (hu : IsSmoothRealFam u) (hcu : Continuous u) (hφ : LocallyIntegrable φ μ)
     {h : GAd σ J → ℂ} (hh : h ∈ CcAd σ J) (g : GAd σ J) :
     ContDiff ℝ ∞ fun t => ∫ y, conj (h (y⁻¹ * g * u t)) * φ y ∂μ := by
@@ -169,6 +213,9 @@ open scoped TensorProduct
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using continuous_const`. Consider the case `succ k ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Conclude with `(hv 0).mul (ih fun i => hv i.succ)`.
+-/
 theorem continuous_ofFn_prod {G Q : Type} [Monoid G] [TopologicalSpace G] [ContinuousMul G] [TopologicalSpace Q]
     {k : ℕ} {v : Fin k → Q → G} (hv : ∀ i, Continuous (v i)) :
     Continuous fun t => (List.ofFn fun i => v i t).prod := by
@@ -178,6 +225,11 @@ theorem continuous_ofFn_prod {G Q : Type} [Monoid G] [TopologicalSpace G] [Conti
     simp only [List.ofFn_succ, List.prod_cons]
     exact (hv 0).mul (ih fun i => hv i.succ)
 
+/- English proof (translation)
+Introduce `D V μ _ _ θ hθ f hf F k τs Xs hX g`. Establish `hu` using `GlobalTheory.Orb.isSmoothRealFam_prod fun i => (GlobalTheory.Orb.isSmoothRealFam_oneP hθ (hX i)).1.comp (contDiff_apply ℝ ℝ i)`. Establish `hcu` using `continuous_ofFn_prod (v := fun i (t : Fin k → ℝ) => oneP θ V (τs i) (Xs i) (t i)) fun i => (GlobalTheory.Orb.isSmoothRealFam_oneP hθ (hX i)).2.1.comp (continuous_apply i)`. Establish `hφ : LocallyIntegrable (GlobalTheory.AutomorphicL2Unitary.lift (GQ V) F) μ` using `locallyIntegrable_iff.2 fun C hC => (GlobalTheory.AutomorphicL2Local.memLp_restrict_compact _ (GQ V) μ F C hC).2`. Establish `key` using `contDiff_integral_conj_mul hu hcu hφ (GlobalTheory.Orb.starFn_mem_ccAd hf) g`.
+
+Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.convR_eq]`. Use `integral_congr_ae (.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[GlobalTheory.AutomorphicL2Unitary.starFn, mul_assoc]`.
+-/
 theorem contDiff_convR_lift_oneP : ∀ {D : D7} {V : HSp D} (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ {f : GA D V → ℂ}, f ∈ GlobalTheory.Orb.CcGA V → ∀ (F : GlobalTheory.AutomorphicL2Unitary.DividedPowerChartLift V μ) (k : ℕ) (τs : Fin k → D.what₂.Tau) (Xs : Fin k → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ i, Xs i ∈ lieAt V (τs i)) → ∀ g : GA D V, ContDiff ℝ ∞ fun t : Fin k → ℝ => GlobalTheory.AutomorphicL2Unitary.convR μ f (GlobalTheory.AutomorphicL2Unitary.lift (GQ V) F) (g * (List.ofFn fun i => oneP θ V (τs i) (Xs i) (t i)).prod) := by
   intro D V μ _ _ θ hθ f hf F k τs Xs hX g
   have hu := GlobalTheory.Orb.isSmoothRealFam_prod fun i =>

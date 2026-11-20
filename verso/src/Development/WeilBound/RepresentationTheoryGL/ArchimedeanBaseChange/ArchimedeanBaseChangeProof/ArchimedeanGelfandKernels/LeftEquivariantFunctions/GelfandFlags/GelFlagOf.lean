@@ -12,6 +12,31 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ConjMemNilSet
 
 namespace PositivityTheory.RgBcC.VC
 
+/- English proof (translation)
+Introduce `hWE hWS hMA hGC hGF hFF hNU hKZ`. Establish `hKC : KerComm` using `kerComm_of GlobalTheory.CompanionTheory.WaveInv.waveN GlobalTheory.CompanionTheory.WaveField.waveA`. Establish `hKN : KerNId` using `kerNId_of' GlobalTheory.CompanionTheory.LgBound.lgCpt`. Establish `hNA : NAvg` using `nAvg_of GlobalTheory.CompanionTheory.ParamInt.intSmooth GlobalTheory.CompanionTheory.LgBound.lgCpt hNU`. Introduce `n lam E Fr ε ι S Γ T hCx _ _ μ _ k val τ hMult d W₁ W₂ hW hW1 hd2 hd1 N hN ν _`.
+
+Use `letI : NormedAddCommGroup (RgTw.Mat n) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (RgTw.Mat n) := Matrix.normedSpace`. Take `⟨H, hHs, hHh, hHtr, hHk, hHq, hHd⟩` from `hFF n W₁ W₂ hW hW1`. Take `⟨m, c, w, g, ks, hks, hk, -⟩` from `hMult`. Establish `hcl : IsClosed (N : Set (RgTw.G n))`.
+
+Rewrite using `[hN]`. Establish `hc : ∀ v : Fin n → ℂ, Continuous (fun u : RgTw.G n => ((u : RgTw.Mat n) - 1).mulVec v)` using `fun v => (Units.continuous_val.sub continuous_const).matrix_mulVec continuous_const`. Establish `e : nilSet W₁ W₂ = (⋂ v, (fun u : RgTw.G n => ((u : RgTw.Mat n) - 1).mulVec v) ⁻¹' (W₂ : Set (Fin n → ℂ))) ∩ (⋂ v ∈ W₂, (fun u : RgTw.G n => ((u : RgTw.Mat n) - 1).mulVec v) ⁻¹' (W₁ : Set (Fin n → ℂ))) ∩ (⋂ v ∈ W₁, (fun u : RgTw.G n => ((u : RgTw.Mat n) - 1).mulVec v) ⁻¹' {0})`. Use extensionality with `u`. Simplify using `only [nilSet, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Set.mem_singleton_iff, and_assoc]`.
+
+Rewrite using `[e]`. Use `((isClosed_iInter fun v => W₂.closed_of_finiteDimensional.preimage (hc v)).inter (isClosed_biInter fun v _ => W₁.closed_of_finiteDimensional.preimage (hc v))).inter (isClosed_biInter fun v _ => isClosed_singleton.preimage (hc v))` and prove the remaining obligations. Set `A : RgTw.Mat n → E.V →L[ℂ] E.V` to `fun x => ε (H x)`. Establish `hA : IsField E A`. Use `⟨(LinearMap.toContinuousLinearMap ε).contDiff.comp_contDiffOn hHs, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx k0`. Establish `hkG : ((k0 : Matrix (Fin n) (Fin n) ℂ) : RgTw.Mat n) ∈ GLs n`. Establish `hu` using `Matrix.det_of_mem_unitary k0.2`. Conclude with `right_ne_zero_of_mul_eq_one hu.1`. Establish `h` using `hCx.frε _ hkG (H x) (hHh x hx)`.
+
+Rewrite `h` using `[hCx.onK]`. Use `show ε (H (x * k0)) = E.ρ k0⁻¹ * ε (H x) * E.ρ k0`. Rewrite using `[hHk x hx k0, mul_assoc (E.ρ k0⁻¹), h, ← mul_assoc, ← map_mul, inv_mul_cancel, map_one, one_mul]`. Establish `hQ : QInv W₁ W₂ A`. Introduce `q hq h1 h2 x hx`.
+
+Simplify using `only [A, hHq q hq h1 h2 x hx]`. Establish `hdG : (d : RgTw.Mat n) ∈ GLs n` using `mem_GLs d`. Establish `hAd : A d = -A 1`. Simplify using `only [A, hHd _ hdG hd2 hd1, map_neg]`. Establish `hone : ∀ i, MeasureTheory.Integrable (fun u : N => trT T (ks i ((u : RgTw.G n) * (d : RgTw.Mat n)))) ν ∧ ∫ u : N, trT T (ks i ((u : RgTw.G n) * (d : RgTw.Mat n))) ∂ν = 0`.
+
+Introduce `i`. Take `⟨hb, hker⟩` from `hks i`. Take `⟨hsm, ⟨R, hR⟩, hbi, -⟩` from `hker`. Establish `hI : MeasureTheory.Integrable (fun u : N => ks i ((u : RgTw.G n) * (d : RgTw.Mat n))) ν` using `KN.integrable_N GlobalTheory.CompanionTheory.LgBound.lgCpt hcl ν (ks i) hsm.continuousOn R hR _ hdG`. Use `⟨(trT T).integrable_comp hI, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ContinuousLinearMap.integral_comp_comm _ hI]`. Establish `hcomm` using `hKC hWE hWS hGC hGF GlobalTheory.CompanionTheory.ParamInt.intSmooth n μ E (w i) (g i) τ (ks i) hb (hks i).2 W₁ W₂ hW A hA hQ`. Establish `key` using `hKN hNU hKZ hNA n μ E (ks i) hsm ⟨R, hR⟩ hbi W₁ W₂ hW N hN ν A hA hQ hcomm _ hdG`. Rewrite `key` using `[hAd]`. Establish `h1G : (1 : RgTw.Mat n) ∈ GLs n` using `one_mem_GLs`.
+
+Rewrite using `[trT_apply]`. Use `trZero E.V _ T (ε (H 1)) (ι (H 1)) ((H 1 * H 1).trace) hHtr (hCx.car _ _ (hHh 1 h1G) (hHh 1 h1G)) ?_ (hCx.Tε _)` and prove the remaining obligations. Establish `: ∀ B : E.V →L[ℂ] E.V, B * -ε (H 1) = -(B * ε (H 1))` using `fun B => by rw [mul_neg]`. Rewrite `key` using `[this]`. Conclude with `key.symm`.
+
+Establish `hsum : ∀ u : N, phiOf E T k ((u : RgTw.G n) * d) = ∑ i, c i * trT T (ks i ((u : RgTw.G n) * (d : RgTw.Mat n)))`. Introduce `u`. Establish `hm : (((u : RgTw.G n) * d : RgTw.G n) : RgTw.Mat n) ∈ GLs n` using `mem_GLs _`. Rewrite using `[phiOf, ← trT_apply, hk _ hm, map_sum]`. Simplify using `only [map_smul, smul_eq_mul, Units.val_mul]`.
+
+Simplify using `only [hsum]`. Rewrite using `[MeasureTheory.integral_finset_sum _ (fun i _ => (hone i).1.const_mul (c i))]`. Simplify using `[MeasureTheory.integral_const_mul, (hone _).2]`.
+-/
 theorem vcOf : PositivityTheory.RgBcC.VCOf := by
   intro hWE hWS hMA hGC hGF hFF hNU hKZ
   have hKC : KerComm := kerComm_of GlobalTheory.CompanionTheory.WaveInv.waveN GlobalTheory.CompanionTheory.WaveField.waveA

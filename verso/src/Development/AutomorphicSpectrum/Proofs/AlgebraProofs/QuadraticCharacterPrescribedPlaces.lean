@@ -5,6 +5,15 @@ open NumberField TensorProduct
 
 namespace GlobalTheory.CompanionTheory.HeightOneFrame
 
+/- English proof (translation)
+Introduce `A Ω _ _ _ _ _ _ _ E _ _ r b b' hb hP hspan i`. Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).mp (hspan i)`. Establish `key : ∀ k, x k ∈ Set.range (algebraMap A Ω)`. Introduce `k`. Use `GroundTheory.Arith.Toric.mem_range_of_forall_height_one (A := A) (K := Ω) (x k) ?_` and prove the remaining obligations.
+
+Introduce `p hp h1`. Take `⟨s, c, hs, hc⟩` from `hP ⟨p, hp⟩ h1 i`. Use `⟨c k, s, hs, ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ j, (algebraMap A Ω s * x j - algebraMap A Ω (c j)) • b j = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, mul_smul, ← Finset.smul_sum]`.
+
+Rewrite using `[hx, hc, sub_self]`. Establish `h2` using `(Fintype.linearIndependent_iff.mp hb) _ h0 k`. Establish `h3 : algebraMap A Ω s * x k = algebraMap A Ω (c k)` using `sub_eq_zero.mp h2`. Rewrite using `[← h3, mul_comm]`. Use `choose c hc using key`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Simplify using `only [hc]`.
+-/
 theorem integral_of_integral_at_height_one :
     ∀ (A Ω : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field Ω]
       [Algebra A Ω] [IsFractionRing A Ω] (E : Type) [AddCommGroup E] [Module Ω E] (r : ℕ)

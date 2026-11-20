@@ -7,6 +7,19 @@ open scoped TensorProduct NNReal Matrix
 open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 open GlobalTheory.WeilM GlobalTheory.EvAdm
 
+/- English proof (translation)
+Introduce `F _ _ κ _ W hW`. Rewrite `hW` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hIt⟩` from `hW`. Use `choose M hM0 hM using fun i => GlobalTheory.IdeleCharLevel.exists_level F (t i) (ht i)`. Establish `hN0 : (∏ i, M i : ℕ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hM0 i`.
+
+Use `⟨((∏ i, M i : ℕ) : F), by exact_mod_cast hN0, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Apply `hIt` to reduce the goal to its premises. Introduce `i _`. Apply `hM i` to reduce the goal to its premises.
+
+Introduce `P`. Establish `h1 : (algebraMap F (P.adicCompletion F) ((∏ i, M i : ℕ) : F))⁻¹ * (z i) P ∈ P.adicCompletionIntegers F` using `hz i P`. Rewrite `h1` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_inv₀]`. Establish `hA : Valued.v (algebraMap F (P.adicCompletion F) ((∏ i, M i : ℕ) : F)) = P.intValuation ((∏ i, M i : ℕ) : 𝓞 F)`. Establish `e : ((∏ i, M i : ℕ) : F) = algebraMap (𝓞 F) F ((∏ i, M i : ℕ) : 𝓞 F)` using `by simp`.
+
+Rewrite using `[e, ← IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Conclude with `Formalism.UG.P.levelaf_valued_algebraMap P ((algebraMap (𝓞 F) F) ↑(∏ i, M i))`. Establish `hB : P.intValuation ((∏ i, M i : ℕ) : 𝓞 F) ≤ P.intValuation ((M i : ℕ) : 𝓞 F)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ M (Finset.mem_univ i), Nat.cast_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (IsDedekindDomain.HeightOneSpectrum.intValuation_le_one _ _)`.
+
+Establish `h0 : Valued.v (algebraMap F (P.adicCompletion F) ((∏ i, M i : ℕ) : F)) ≠ 0`. Rewrite using `[hA]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.intValuation_ne_zero _ _ (by exact_mod_cast hN0)`. Use `le_trans ?_ (hA ▸ hB)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_inv_cancel_left₀ h0]`. Use `_ ≤ Valued.v (algebraMap F (P.adicCompletion F) ((∏ i, M i : ℕ) : F)) := mul_le_of_le_one_right' h1`.
+-/
 theorem PositivityTheory.Mix.exists_scaled_integral_lattice_subset : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (W : Set (κ → FiniteAdeleRing (𝓞 F) F)),
     W ∈ 𝓝 (0 : κ → FiniteAdeleRing (𝓞 F) F) → ∃ a : F, a ≠ 0 ∧ (scaledInt F κ a : Set (κ → FiniteAdeleRing (𝓞 F) F)) ⊆ W := by
   classical

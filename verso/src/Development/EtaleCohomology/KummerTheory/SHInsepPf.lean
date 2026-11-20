@@ -15,6 +15,9 @@ def SHInsepHens : Prop := ∀ (κ K A : Type) [Field κ] [Field K] [Algebra κ K
 def SHInsepRes : Prop := ∀ (κ K A : Type) [Field κ] [Field K] [Algebra κ K] [IsPurelyInseparable κ K] [CommRing A]
   [Algebra κ A], SH A → ∀ [IsLocalRing (A ⊗[κ] K)], IsSepClosed (IsLocalRing.ResidueField (A ⊗[κ] K))
 
+/- English proof (translation)
+Introduce `κ K A _ _ _ _ _ _ hA`. Use `hL κ K A hA` as an intermediate fact. Conclude with `⟨hH κ K A hA, hR κ K A hA⟩`.
+-/
 theorem SHInsep_of (hL : SHInsepLoc) (hH : SHInsepHens) (hR : SHInsepRes) : SHInsep := by
   intro κ K A _ _ _ _ _ _ hA
   have := hL κ K A hA

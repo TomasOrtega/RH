@@ -20,6 +20,9 @@ def latticeHomEquiv : latticeHom L₁ L₂ ≃+ isogHom (weierstrassCurve L₁) 
   right_inv Q := latticeToHom_homConst Q
   map_add' := latticeToHom_add
 
+/- English proof (translation)
+The claim follows from `homPt_latticeToHom α z`.
+-/
 theorem homPt_latticeHomEquiv (α : latticeHom L₁ L₂) (z : ℂ) :
     homPt (latticeHomEquiv L₁ L₂ α) (toPoint L₁ z) = toPoint L₂ (α * z) :=
   homPt_latticeToHom α z
@@ -47,6 +50,9 @@ def latticeEndEquiv : latticeEnd L ≃+* isogEnd (weierstrassCurve L) where
   map_mul' α β := latticeToHom_mul ⟨α, α.2⟩ ⟨β, β.2⟩ (α * β).2
   map_add' α β := latticeToHom_add ⟨α, α.2⟩ ⟨β, β.2⟩
 
+/- English proof (translation)
+The claim follows from `homConst_latticeToHom _`.
+-/
 theorem homConst_latticeEndEquiv (α : latticeEnd L) :
     homConst (weierstrassCurve L) (weierstrassCurve L) (latticeEndEquiv L α) = α :=
   homConst_latticeToHom _
@@ -63,6 +69,9 @@ def mulLattice (α : latticeHom L₁ L₂) : AddSubgroup L₂.lattice where
     rintro a ⟨l, hl, ha⟩
     exact ⟨-l, neg_mem hl, by rw [Submodule.coe_neg, ha, mul_neg]⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_mulLattice {α : latticeHom L₁ L₂} {w : L₂.lattice} :
     w ∈ mulLattice α ↔ ∃ l ∈ L₁.lattice, (w : ℂ) = α * l :=
   Iff.rfl
@@ -79,6 +88,11 @@ def kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     apply Subtype.ext
     simp only [Submodule.coe_add, add_div, AddMemClass.mk_add_mk, toPoint_add]
 
+/- English proof (translation)
+Introduce and unpack `⟨P, hP⟩`. Take `⟨z, rfl⟩` from `toPoint_surjective (L := L₁) P`. Rewrite `hP` using `[AddMonoidHom.mem_ker, homPt_latticeHomEquiv, toPoint_eq_zero_iff]`. Use `⟨⟨_, hP⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show toPoint L₁ (α * z / α) = toPoint L₁ z`.
+
+Rewrite using `[mul_div_cancel_left₀ _ h0]`.
+-/
 theorem kerMap_surjective (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     Function.Surjective (kerMap α h0) := by
   rintro ⟨P, hP⟩
@@ -88,6 +102,13 @@ theorem kerMap_surjective (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
   show toPoint L₁ (α * z / α) = toPoint L₁ z
   rw [mul_div_cancel_left₀ _ h0]
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[AddMonoidHom.mem_ker, mem_mulLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : toPoint L₁ (w / α) = 0` using `congrArg Subtype.val h`.
+
+Rewrite `h'` using `[toPoint_eq_zero_iff]`. Conclude with `⟨_, h', by rw [mul_div_cancel₀ _ h0]⟩`. Introduce and unpack `⟨l, hl, hw⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show toPoint L₁ (w / α) = 0`.
+
+Rewrite using `[hw, mul_div_cancel_left₀ _ h0]`. Conclude with `toPoint_of_mem hl`.
+-/
 theorem ker_kerMap (α : latticeHom L₁ L₂) (h0 : (α : ℂ) ≠ 0) :
     (kerMap α h0).ker = mulLattice α := by
   ext w

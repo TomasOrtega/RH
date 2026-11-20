@@ -23,10 +23,20 @@ open GlobalTheory.KummerEisensteinGalois GlobalTheory.LambdaValuationPowers
 
 variable {l : ℕ} [Fact l.Prime] {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)`.
+-/
 theorem norm_l_pow_le (k : ℕ) : ‖((l : ℕ) : Qbar l) ^ k‖ ≤ 1 := by
   rw [norm_pow]
   exact pow_le_one₀ (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ _)
 
+/- English proof (translation)
+Unfold `Cg at *`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Establish `hψ : ‖ψ (b : ZMod (l ^ m))‖ ≤ 1`.
+
+Establish `h1 : (ψ (b : ZMod (l ^ m))) ^ orderOf b = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_orderOf_eq_one, Units.val_one, map_one]`. Establish `h2 : ‖ψ (b : ZMod (l ^ m))‖ ^ orderOf b = 1` using `by rw [← norm_pow, h1, norm_one]`. Establish `hpos : orderOf b ≠ 0` using `(orderOf_pos b).ne'`. Conclude with `le_of_eq ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hpos).1 h2)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem cg_char_sum (n m : ℕ) (f g : (ZMod (l ^ m))ˣ → Qbar l) (ψ : DirichletCharacter (Qbar l) (l ^ m))
     (h : ∀ b, Cg n (f b) (g b)) :
     Cg n (∑ b : (ZMod (l ^ m))ˣ, ψ (b : ZMod (l ^ m)) * f b) (∑ b : (ZMod (l ^ m))ˣ, ψ (b : ZMod (l ^ m)) * g b) := by
@@ -43,6 +53,13 @@ theorem cg_char_sum (n m : ℕ) (f g : (ZMod (l ^ m))ˣ → Qbar l) (ψ : Dirich
   calc ‖ψ (b : ZMod (l ^ m))‖ * ‖f b - g b‖ ≤ 1 * ‖f b - g b‖ := by gcongr
     _ ≤ _ := by rw [one_mul]; exact h b
 
+/- English proof (translation)
+Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Take `⟨q, o, w, ho, hs⟩` from `H`. Use `⟨q, fun i => (l : Qbar l) ^ k * o i, w, fun i => ⟨?_, ?_, (ho i).2.2⟩, fun s h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (norm_l_pow_le k) (norm_nonneg _) (ho i).1`.
+
+Introduce `σ hσ hσ'`. Rewrite using `[map_mul, map_pow, map_natCast, (ho i).2.1 σ hσ hσ']`. Establish `h3` using `hs s h1 h2`. Unfold `Cg at *`. Establish `e : (l : Qbar l) ^ (a + k) * Z m s y - ((l : Qbar l) ^ (a + k) * h * lamv l m s + ∑ i, (l : Qbar l) ^ k * o i * (j (s (w i)) - j (w i))) = (l : Qbar l) ^ k * ((l : Qbar l) ^ a * Z m s y - ((l : Qbar l) ^ a * h * lamv l m s + ∑ i, o i * (j (s (w i)) - j (w i))))`.
+
+Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem htCoL_mono {A : ValuationSubring Ω} {c : Coef l} {j : Ω →+* Qbar l} {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l}
     {m a b : ℕ} {y : (ZMod (l ^ m))ˣ} {h : Qbar l} (H : HTCoL A c j Z m a y h) (hab : a ≤ b) : HTCoL A c j Z m b y h := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le hab
@@ -72,6 +89,17 @@ def unitVal (ε : Ω →+* ℂ) (j : Ω →+* Qbar l) (lam : (ℕ → Qbar l) �
       (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β)
       ((unitSet l m).filter fun γ => (γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det = 1)) i))
 
+/- English proof (translation)
+Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hp : l.Prime` using `Fact.out`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (by rintro rfl; exact hN (dvd_zero _))`. Take `⟨-, -, hr, hrN⟩` from `GlobalTheory.Glue.Roots.eOm_isPrimitiveRoot_compatible Ω ε ε.injective l hp N hN0 m`. Use `set ζ := eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) with hζ`.
+
+Establish `hjζ : IsPrimitiveRoot (j ζ) (N * l ^ m)` using `hr.map_of_injective j.injective`. Establish `hP` using `GlobalTheory.KummerEisensteinGalois.psum_galois_unitPiece N l m k (Qbar l) ψ c d (w, 0) (w', 0) (j ζ) β hp hN0 ((Nat.Prime.coprime_iff_not_dvd hp).2 hN) hm hjζ hβ`. Establish `hl0 : (l : Qbar l) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `key : ∀ (F : (ZMod (l ^ m))ˣ → ℕ → Qbar l) (C : Qbar l) (g : ℕ → Qbar l), (∀ i, ∑ b : (ZMod (l ^ m))ˣ, ψ b * F b i = C * g i) → ∑ b : (ZMod (l ^ m))ˣ, ψ b * lam (F b) = C * lam g`. Introduce `F C g h`.
+
+Establish `e : ∑ b : (ZMod (l ^ m))ˣ, ψ b • F b = C • g`. Use function extensionality and compare the values at `i`. Simplify `h i` using `[Finset.sum_apply]`. Establish `e2` using `congrArg lam e`. Simplify `e2` using `[map_sum, map_smul]`.
+
+Use `key _ _ _ fun i => ?_` and prove the remaining obligations. Establish `h1` using `hE (j ζ) hjζ i`. Rewrite `h1` using `[toQ, ← hP, gaussS, ← map_pow, hrN]`. Simplify using `only [toQ, GlobalTheory.KummerEisensteinGalois.map_pieceT_one N l m k Ω (Qbar l) j, map_pow, ← hζ]`. Simplify using `only [mul_left_comm (ψ _) ((l : Qbar l) ^ m), ← Finset.mul_sum]`.
+
+Rewrite using `[h1, zpow_neg, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem sum_unitVal [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (j : Ω →+* Qbar l) (lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l) (N k : ℕ)
     (c d w w' : ℤ) (m : ℕ) (β : (ZMod (l ^ m))ˣ → ℕ) (ψ : DirichletCharacter (Qbar l) (l ^ m)) (F : ℕ → Qbar l) (hN : ¬ l ∣ N)
     (hm : 1 ≤ m) (hβ : ∀ b, ((β b : ℕ) : ZMod (l ^ m)) = b ∧ ((β b : ℕ) : ZMod N) = 1)
@@ -107,6 +135,37 @@ theorem sum_unitVal [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (j : Ω →+* Qbar
   rw [h1, zpow_neg, zpow_natCast]
   field_simp
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Establish `hN0 : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `hcop : Nat.Coprime l N` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hN`. Take `⟨m₁, C₁, hpres⟩` from `hpres`. Take `⟨c₁, hloc⟩` from `hloc`.
+
+Use `choose! c' hc' using hco`. Use `set C : ℕ := C₁ + ∑ x, c' x with hC`. Establish `hle : ∀ x, c' x ≤ C` using `fun x => (Finset.single_le_sum (f := c') (fun _ _ => Nat.zero_le _) (Finset.mem_univ x)).trans (Nat.le_add_left _ _)`. Establish `hroot` using `fun m => GlobalTheory.Glue.Roots.eOm_isPrimitiveRoot_compatible Ω ε ε.injective l hp N hN0 m`. Establish `hl0 : (l : Qbar l) ≠ 0` using `by exact_mod_cast hp.ne_zero`.
+
+Use `⟨m₁ + C + c₁ + 1, C + c₁, (l : Qbar l) ^ c₀ * κ₀ * K, fun m => (per m)⁻¹, mul_ne_zero (mul_ne_zero (pow_ne_zero _ hl0) hκ) hK, fun m => ⟨by rw [norm_inv, (hper m).1, inv_one], ?_⟩, fun m => eOm ε (1 / (l : ℚ) ^ m), fun m => ⟨(hroot m).1, (hroot m).2.1⟩, fun m hm => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ n, per n ≠ 0` using `fun n h => by simpa [h] using (hper n).1`. Establish `h1` using `(hper m).2`. Unfold `Cg at *`. Rewrite using `[inv_sub_inv (h0 _) (h0 _), norm_div, norm_mul, (hper m).1, (hper (m + 1)).1, mul_one, div_one, norm_sub_rev]`.
+
+Conclude with `h1`. Take `⟨ι, hι, P, o, hP⟩` from `hpres m (by omega) _ (hroot m).1`. Establish `hcm : Nat.Coprime (l ^ m) N` using `Nat.Coprime.pow_left m hcop`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : ℤ, (l : ℤ) ^ m * t ≡ 1 [ZMOD N] := by`. Use `⟨Int.gcdA ((l ^ m : ℕ) : ℤ) N, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `Int.gcd_eq_gcd_ab ((l ^ m : ℕ) : ℤ) (N : ℤ)`. Rewrite `h` using `[Int.gcd_natCast_natCast, hcm]`. Use `(Int.modEq_iff_dvd.2 ⟨Int.gcdB ((l ^ m : ℕ) : ℤ) N, ?_⟩)` and prove the remaining obligations. Move the coercions through the operations in `at h ⊢`. Take the linear combination `h`.
+
+Establish `hβ : ∀ b : (ZMod (l ^ m))ˣ, ∃ β : ℕ, (β : ZMod (l ^ m)) = b ∧ (β : ZMod N) = 1` using `fun b => by`. Take `⟨β, h1, h2⟩` from `Nat.chineseRemainder hcm (b : ZMod (l ^ m)).val 1`. Use `⟨β, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(ZMod.natCast_eq_natCast_iff _ _ _).2 h1, ZMod.natCast_zmod_val]`. Rewrite using `[(ZMod.natCast_eq_natCast_iff _ _ _).2 h2, Nat.cast_one]`.
+
+Use `choose β hβ using hβ`. Use `set u : ZMod N → (ZMod (l ^ m))ˣ → Qbar l := fun x y => (per m)⁻¹ * (l : Qbar l) ^ c₀ * κ₀ * U x m (β y) t with hu`. Establish `hH : ∀ y, HTCoL A cf j Z m C y (∑ x, cw x * u x y)`. Introduce `y`. Establish `h1` using `GlobalTheory.LambdaValuationPowers.htCoL_sum l Ω A cf j (ZMod N) cw (fun x => if cw x = 0 then 0 else Zx x) m C y (fun x => if cw x = 0 then 0 else u x y) (fun x => ⟨GlobalTheory.LambdaValuationPowers.norm_le_one_of_mem (hcw x), fun σ h _ => h _ (hcw x)⟩) (fun x => by`.
+
+Distinguish the cases in `hx : cw x = 0`. Simplify using `only [hx, if_true]`. Conclude with `htCoL_of_eq A cf j _ m C y 0 (fun s => by simp)`. Simplify using `only [hx, if_false]`. Conclude with `htCoL_mono (hc' x hx m (by omega) y (β y) t (hβ y).1 (hβ y).2 ht) (hle x))`.
+
+Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r s y'`. Rewrite using `[hZ]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : cw x = 0 <;> simp [hx]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : cw x = 0 <;> simp [hx]`. Establish `hPC` using `htPresNu7_mono_loss l Ω A cf Z m C₁ C _ ι P o hP (Nat.le_add_right _ _)`. Use `⟨ι, hι, P, o, htPresNu7_mono_loss l Ω A cf Z m C (C + c₁) _ ι P o hPC (Nat.le_add_right _ _), fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `h2` using `cg_char_sum _ m _ _ ψ (hloc m C (by omega) _ ι P o _ hPC hH)`.
+
+Rewrite `h2` using `[Nat.sub_sub]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Establish `hup : up (l ^ m) (fun i => ∑ x : ZMod N, cw x * F m ψ x i) = ∑ x : ZMod N, cw x • up (l ^ m) (F m ψ x)`. Use function extensionality and compare the values at `i`. Simplify using `[up, Finset.sum_apply]`.
+
+Establish `hsw : ∑ b : (ZMod (l ^ m))ˣ, ψ b * ∑ x, cw x * u x b = ∑ x, ∑ b : (ZMod (l ^ m))ˣ, ψ b * (cw x * u x b)`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.mul_sum _ _ _`. Use `beta_reduce`. Rewrite using `[hsw, hup, map_sum, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : cw x = 0`. Simplify using `[hx]`. Establish `h3` using `hU x hx m (by omega) ψ hψ β t hβ ht`. Establish `h4 : ∑ b : (ZMod (l ^ m))ˣ, ψ b * (cw x * u x b) = cw x * ((per m)⁻¹ * (l : Qbar l) ^ c₀ * κ₀) * ∑ b : (ZMod (l ^ m))ˣ, ψ b * U x m (β b) t`.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h4, h3, map_smul, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem law_of_parts [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω) (cf : Coef l) (j : Ω →+* Qbar l) (ε : Ω →+* ℂ) (N : ℕ) [NeZero N]
     (cw : ZMod N → Qbar l) (c₀ : ℕ) (K : Qbar l) (U : ZMod N → ℕ → ℕ → ℤ → Qbar l)
     (F : ∀ m : ℕ, DirichletCharacter (Qbar l) (l ^ m) → ZMod N → ℕ → Qbar l) (Zx : ZMod N → ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l)

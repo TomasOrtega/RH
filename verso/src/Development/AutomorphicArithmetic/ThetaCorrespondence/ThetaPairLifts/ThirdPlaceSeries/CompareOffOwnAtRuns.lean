@@ -11,6 +11,15 @@ open NumberField IsDedekindDomain
 open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Cx Formalism.IndefR.FWT
 open GlobalTheory.BigTop GlobalTheory.BigOn
 namespace GlobalTheory.BigOn
+/- English proof (translation)
+Use `(GlobalTheory.T.runNumericalConditions_hold_along_family 0).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hN`. Take `⟨x0, H⟩` from `hN`. Use `⟨x0, fun x hx hx0 i p hp hM r h _ v hv j => ?_⟩` and prove the remaining obligations. Establish `hn` using `(H x hx hx0 i).2.2.2.2`.
+
+Take `⟨hw1, hcore, hrec⟩` from `hM`. Establish `hL` using `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p hp hw1`. Take `⟨hch, -, hLU, -, -, -, hpins, hph⟩` from `hL`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hch.lev, hch.grp, hch.fam, hch.models, hch.chain, hch.thP⟩`. Establish `hio : IoExt (R2 p)` using `hp.ioExt`.
+
+Establish `hone : ∀ k, OneMapRow0 p.T (R2 p) p.κ p.v₀ (om2 p) k` using `fun k => (hp.oneMap k).1`. Establish `hspan` using `GlobalTheory.ClassSumSpanCore.classSumsSpan_core _ _ _ _ _ p.T (R2 p) (F2 p) p.κ p.v₀ (om2 p) hn hC ⟨fw2 p⟩ hio j (hpins j) (hone j)`. Establish `hdel : ∀ y, ((((R2 p).C.delAt (Formalism.EigenvalueLevelCeiling.plc v)).1 y : ℂˣ) : ℂ) ∈ (Fm.D x i).what₂.embLL.range`. Introduce `y`. Take `⟨z, hz⟩` from `(Formalism.L2.Pj.FO_le _ (hcore.delAt_mem (Formalism.EigenvalueLevelCeiling.plc v) y))`.
+
+Conclude with `⟨z, hz⟩`. Use `letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg`. Conclude with `GlobalTheory.T.traceLattice_le_span_thetaSeries_awayFromOwnPrime _ _ _ _ _ (r.used v).full (R2 p) (F2 p) p.κ p.v₀ (fw2 p) (om2 p) (h.laws v) hC j (hpins j) (p.betaStd.1 j) hLU hio (hone j) (hph j) hspan v hv hch.tup.mu_on p.qGuard (hcore.fieldAt v) hrec.small.val hdel h.half (h.r …`.
+-/
 theorem compareOffOwn_atRuns_alt : (_root_.GlobalTheory.BigOn.ForallTwoRuns fun Fm x _ i p r h => ∀ v ∈ p.R.twPl, ∀ j, letI : Algebra (r.used v).full.J.Q.c.F (Fm.D x i).what₂.LL := p.alg; GlobalTheory.TraceClassRank.CompareOffOwn (T := (r.used v).full) (R := R2 p) (h.laws v).p (fw2 p) j (r.lev j) (F2 p).P0 (F2 p).ψ0⁻¹ 1 v (ownAt (Fm.D x i) v)) := by
   refine (GlobalTheory.T.runNumericalConditions_hold_along_family 0).imp ?_
   intro eps Fm CH _ hN

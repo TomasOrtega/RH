@@ -9,12 +9,34 @@ private noncomputable def Bf {F : Type} [Field F] [NumberField F] (δ : F)
     (a y : Fin 4 → FiniteAdeleRing (𝓞 F) F) : FiniteAdeleRing (𝓞 F) F :=
   2 * (a 2 * y 2 - algebraMap F (FiniteAdeleRing (𝓞 F) F) δ * (a 3 * y 3)) - a 1 * y 0 - a 0 * y 1
 
+/- English proof (translation)
+Unfold `Bf`. Use `fun_prop`.
+-/
 private theorem continuous_Bf {F : Type} [Field F] [NumberField F] (δ : F) :
     Continuous fun p : (Fin 4 → FiniteAdeleRing (𝓞 F) F) × (Fin 4 → FiniteAdeleRing (𝓞 F) F) =>
       Bf δ p.1 p.2 := by
   unfold Bf
   fun_prop
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `hg`. Establish `hev` using `IsLocallyConstant.iff_eventually_eq g |>.1 hl`. Establish `hP1 : IsOpen {p : (Fin 4 → FiniteAdeleRing (𝓞 F) F) × (Fin 4 → FiniteAdeleRing (𝓞 F) F) | g (p.2 + p.1) = g p.2}`. Rewrite using `[isOpen_iff_eventually]`. Introduce `p hp`.
+
+Establish `h1 : ∀ᶠ q : (Fin 4 → FiniteAdeleRing (𝓞 F) F) × (Fin 4 → FiniteAdeleRing (𝓞 F) F) in 𝓝 p, g (q.2 + q.1) = g (p.2 + p.1)` using `((continuous_snd.add continuous_fst).tendsto p).eventually (hev _)`. Establish `h2 : ∀ᶠ q : (Fin 4 → FiniteAdeleRing (𝓞 F) F) × (Fin 4 → FiniteAdeleRing (𝓞 F) F) in 𝓝 p, g q.2 = g p.2` using `(continuous_snd.tendsto p).eventually (hev _)`. Use `filter_upwards [h1, h2] with q e1 e2`. Express the relevant statement in the definitionally equal form `g (q.2 + q.1) = g q.2`. Rewrite using `[e1, e2]`.
+
+Conclude with `hp`. Establish `hχ : IsLocallyConstant fun x : FiniteAdeleRing (𝓞 F) F => (finiteAdelicChar F x : ℂ)`. Use `isLocallyConstant_finiteAdelicChar_mul (K := F) (1 : FiniteAdeleRing (𝓞 F) F)` as an intermediate fact. Simplify using `using this`. Establish `hP2 : IsOpen {p : (Fin 4 → FiniteAdeleRing (𝓞 F) F) × (Fin 4 → FiniteAdeleRing (𝓞 F) F) | (finiteAdelicChar F (Bf δ p.1 p.2) : ℂ) = 1}` using `(hχ.isOpen_fiber 1).preimage (continuous_Bf δ)`.
+
+Take `⟨u, w, hu, -, h0u, hSw, huw⟩` from `generalized_tube_lemma (isCompact_singleton (x := (0 : Fin 4 → FiniteAdeleRing (𝓞 F) F))) (t := tsupport g) hc (hP1.inter hP2) (by`. Introduce and unpack `⟨a, y⟩ ⟨ha, -⟩`. Take `rfl : a = 0` from `ha`. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(finiteAdelicChar F (Bf δ 0 y) : ℂ) = 1`.
+
+Establish `: Bf δ 0 y = 0` using `by simp [Bf]`. Rewrite using `[this, AddChar.map_zero_eq_one, Circle.coe_one])`. Establish `hu0 : u ∈ 𝓝 (0 : Fin 4 → FiniteAdeleRing (𝓞 F) F)` using `hu.mem_nhds (h0u rfl)`. Rewrite `hu0` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hIt⟩` from `hu0`.
+
+Establish `hN : (⋂ i, t i) ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 F) F)` using `Filter.iInter_mem.mpr ht`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset hN`. Use `⟨⟨idealFiniteAdeles J, isOpen_idealFiniteAdeles J⟩, fun a ha y => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ b : Fin 4 → FiniteAdeleRing (𝓞 F) F, (∀ i, b i ∈ idealFiniteAdeles J) → b ∈ u` using `fun b hb => hIt fun i _ => Set.mem_iInter.1 (hJ (hb i)) i`. Establish `ha' : ∀ i, a i ∈ idealFiniteAdeles J` using `ha`.
+
+Establish `hau : a ∈ u` using `hmem a ha'`. Establish `hnau : -a ∈ u` using `hmem (-a) fun i => neg_mem (ha' i)`. Distinguish the cases in `hy : y ∈ tsupport g`. Take `⟨e1, e2⟩` from `huw (Set.mk_mem_prod hau (hSw hy))`. Establish `e2' : (finiteAdelicChar F (Bf δ a y) : ℂ) = 1` using `e2`.
+
+Use `⟨e1, ?_⟩` and prove the remaining obligations. Rewrite using `[e2', one_mul]`. Establish `hy0 : g y = 0` using `image_eq_zero_of_notMem_tsupport hy`. Use `⟨?_, by rw [hy0, mul_zero]⟩` and prove the remaining obligations. Distinguish the cases in `hy' : y + a ∈ tsupport g`.
+
+Establish `e1 : g (y + a + -a) = g (y + a)` using `(huw (Set.mk_mem_prod hnau (hSw hy'))).1`. Rewrite `e1` using `[add_neg_cancel_right]`. Conclude with `e1.symm`. Rewrite using `[hy0]`. Conclude with `image_eq_zero_of_notMem_tsupport hy'`.
+-/
 private theorem fin_level {F : Type} [Field F] [NumberField F] (δ : F)
     {g : (Fin 4 → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F (ι := Fin 4)) :
     ∃ Λ : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F), ∀ a : Fin 4 → FiniteAdeleRing (𝓞 F) F,
@@ -74,6 +96,11 @@ private theorem fin_level {F : Type} [Field F] [NumberField F] (δ : F)
     · rw [hy0]
       exact image_eq_zero_of_notMem_tsupport hy'
 
+/- English proof (translation)
+Establish `: B4 δ a v = finiteAdeleInr (Bf δ (finPartPi a) (finPartPi v))`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[B4, ha, finiteAdeleInr_fst]`. Establish `h2 : (2 : A F).2 = (2 : FiniteAdeleRing (𝓞 F) F)` using `map_ofNat (RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)) 2`. Simplify using `[B4, Bf, finPartPi, finiteAdeleInr_snd, h2]`.
+
+Rewrite using `[ψ, this, finiteAdelicChar_apply]`.
+-/
 private theorem quaternaryForm_polarization {F : Type} [Field F] [NumberField F] (δ : F) (a v : V4 F)
     (ha : ∀ i, (a i).1 = 0) :
     ψ (B4 δ a v) = (finiteAdelicChar F (Bf δ (finPartPi a) (finPartPi v)) : ℂ) := by
@@ -84,6 +111,23 @@ private theorem quaternaryForm_polarization {F : Type} [Field F] [NumberField F]
       simp [B4, Bf, finPartPi, finiteAdeleInr_snd, h2]
   rw [ψ, this, finiteAdelicChar_apply]
 
+/- English proof (translation)
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Take `⟨Λ, hΛ⟩` from `fin_level δ hg`. Use `⟨Λ, fun a ha v => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e1, e2⟩` from `hΛ (finPartPi a) (fun i => (ha i).2) (finPartPi v)`. Establish `hinf : infPartPi (v + a) = infPartPi v`. Use function extensionality and compare the values at `i`. Establish `: (v + a) i = ((v i).1, (v i).2 + (a i).2)`. Use `Prod.ext ?_ rfl` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(v i).1 + (a i).1 = (v i).1`. Rewrite using `[(ha i).1, add_zero]`. Simplify using `only [infPartPi, this]`. Establish `hfin : finPartPi (v + a) = finPartPi v + finPartPi a` using `rfl`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [schwartzBruhatTensorPi, hinf, hfin, e1]`. Simplify using `only [schwartzBruhatTensorPi]`. Rewrite using `[quaternaryForm_polarization δ a v fun i => (ha i).1, mul_left_comm, e2]`. Consider the case `zero`. Conclude with `⟨⊤, fun _ _ _ => ⟨rfl, by simp⟩⟩`.
+
+Consider the case `add G H _ _ hG hH`. Take `⟨Λ, hΛ⟩` from `hG`. Take `⟨Λ', hΛ'⟩` from `hH`. Use `⟨Λ ⊓ Λ', fun a ha v => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `hΛ a (fun i => ⟨(ha i).1, (ha i).2.1⟩) v`.
+
+Take `⟨e1', e2'⟩` from `hΛ' a (fun i => ⟨(ha i).1, (ha i).2.2⟩) v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, e1, e1']`. Simplify using `only [Pi.add_apply, mul_add, e2, e2']`. Consider the case `smul c G _ hG`.
+
+Take `⟨Λ, hΛ⟩` from `hG`. Use `⟨Λ, fun a ha v => ?_⟩` and prove the remaining obligations. Take `⟨e1, e2⟩` from `hΛ a ha v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, e1]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm, e2]`.
+-/
 private theorem level_of_mem {F : Type} [Field F] [NumberField F] (δ : F) {f : V4 F → ℂ}
     (hf : f ∈ schwartzBruhatPi F (Fin 4)) :
     ∃ Λ : OpenAddSubgroup (FiniteAdeleRing (𝓞 F) F), ∀ a : V4 F, (∀ i, (a i).1 = 0 ∧ (a i).2 ∈ Λ) →
@@ -126,6 +170,9 @@ private theorem level_of_mem {F : Type} [Field F] [NumberField F] (δ : F) {f : 
     · simp only [Pi.smul_apply, smul_eq_mul]
       rw [mul_left_comm, e2]
 
+/- English proof (translation)
+Introduce `F _ _ δ`. Use `⟨fun φ => ?_, fun Λ Λ' h φ hφ a ha v => hφ a (fun i => ⟨(ha i).1, h (ha i).2⟩) v⟩` and prove the remaining obligations. Take `⟨Λ, hΛ⟩` from `level_of_mem δ φ.2`. Conclude with `⟨Λ, fun a ha v => hΛ a ha v⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fixEx :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F), (∀ φ : S4 F, ∃ Λ, φ ∈ Fix δ Λ) ∧ ∀ Λ Λ', Λ ≤ Λ' → Fix δ Λ' ≤ Fix δ Λ := by
   intro F _ _ δ

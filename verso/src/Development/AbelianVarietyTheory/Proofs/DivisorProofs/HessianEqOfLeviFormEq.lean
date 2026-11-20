@@ -8,6 +8,47 @@ namespace GlobalTheory.HessLevi
 
 open Filter Topology Metric
 
+/- English proof (translation)
+Distinguish the cases in `hL : fderiv ℝ φ z = 0`. Use `swap`. Establish `hev : ∀ᶠ y in 𝓝 z, fderiv ℝ φ y ≠ 0` using `hH.continuousAt.eventually_ne hL`. Use `second_derivative_symmetric_of_eventually_of_real (f := φ) ?_ hH u v` and prove the remaining obligations. Use `filter_upwards [hev] with y hy`.
+
+Establish `: DifferentiableAt ℝ φ y`. Assume the negation of the conclusion as `hd`. Conclude with `hy (fderiv_zero_of_not_differentiableAt hd)`. Conclude with `this.hasFDerivAt`. Distinguish the cases in `h0 : ∀ a b, H a b = 0`.
+
+Rewrite using `[h0, h0]`. Use `push_neg at h0`. Take `⟨a0, w, ha⟩` from `h0`. Choose the witnesses or unpack the hypotheses as in `⟨x0, hx0⟩ : ∃ x0, 0 < H x0 w := by`. Break down `lt_or_gt_of_ne ha with h | h` into its components or cases.
+
+Conclude with `⟨-a0, by simpa using neg_pos.mpr h⟩`. Conclude with `⟨a0, h⟩`. Establish `hx0ne : x0 ≠ 0` using `by rintro rfl; simp at hx0`. Establish `hnx0 : 0 < ‖x0‖` using `norm_pos_iff.mpr hx0ne`. Use `set κ : ℝ := H x0 w / (2 * ‖x0‖) with hκ`.
+
+Establish `hκpos : 0 < κ` using `div_pos hx0 (by positivity)`. Establish `hκx0 : κ * ‖x0‖ = H x0 w / 2`. Rewrite using `[hκ]`. Clear the denominators using the available nonvanishing facts. Use `set c : ℝ := κ / (2 * (‖w‖ + 1)) with hc`.
+
+Establish `hcpos : 0 < c` using `div_pos hκpos (by positivity)`. Establish `hcw : c * ‖w‖ ≤ κ / 2`. Rewrite using `[hc, div_mul_eq_mul_div, div_le_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[norm_nonneg w]`. Take `⟨δ, hδ, hball⟩ : ∃ δ > 0, ∀ p ∈ ball z δ, ‖fderiv ℝ φ p - fderiv ℝ φ z - H (p - z)‖ ≤ c * ‖p - z‖` from `Metric.eventually_nhds_iff_ball.1 (hH.isLittleO.def hcpos)`.
+
+Use `set C : Set E := {p | κ * ‖p - z‖ ≤ H (p - z) w} with hC`. Establish `conv1 : Convex ℝ C`. Introduce `p hp q hq a b ha hb hab`. Simplify using `only [hC, Set.mem_setOf_eq] at *`. Establish `e : a • p + b • q - z = a • (p - z) + b • (q - z)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Establish `hn : ‖a • (p - z) + b • (q - z)‖ ≤ a * ‖p - z‖ + b * ‖q - z‖`. Use `(norm_add_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_smul, Real.norm_of_nonneg ha, Real.norm_of_nonneg hb]`.
+
+Establish `hlin : H (a • (p - z) + b • (q - z)) w = a * H (p - z) w + b * H (q - z) w`. Simplify using `[map_add, map_smul]`. Rewrite using `[hlin]`. Combine the equalities or inequalities in the displayed calculation. Use `set s : Set E := C ∩ ball z δ with hs`.
+
+Establish `s_conv : Convex ℝ s` using `conv1.inter (convex_ball z δ)`. Establish `hzs : z ∈ s` using `⟨by simp [hC], mem_ball_self hδ⟩`. Establish `hcont1 : Continuous fun p : E => κ * ‖p - z‖` using `by fun_prop`. Establish `hcont2 : Continuous fun p : E => H (p - z) w`. Establish `: (fun p : E => H (p - z) w) = fun p => (H.flip w) (p - z)`.
+
+Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `fun_prop`. Establish `hne : (interior s).Nonempty` using `by set U : Set E := {p | κ * ‖p - z‖ < H (p - z) w} ∩ ball z δ with hU`.
+
+Establish `hUo : IsOpen U` using `(isOpen_lt hcont1 hcont2).inter isOpen_ball`. Establish `hUs : U ⊆ s` using `fun p hp => ⟨(show κ * ‖p - z‖ < H (p - z) w from hp.1).le, hp.2⟩`. Use `set t : ℝ := δ / (2 * (‖x0‖ + 1)) with ht`. Establish `htpos : 0 < t` using `div_pos hδ (by positivity)`. Use `⟨z + t • x0, interior_maximal hUs hUo ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_setOf_eq, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg htpos.le, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Establish `: κ * (t * ‖x0‖) = t * (H x0 w / 2)` using `by rw [← hκx0]; ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg htpos.le, ht]`.
+
+Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[norm_nonneg x0]`. Establish `hzint : z ∉ interior s`. Introduce `hz`. Establish `hmem : s ∈ 𝓝 z` using `mem_interior_iff_mem_nhds.1 hz`.
+
+Establish `htend : Tendsto (fun t : ℝ => z - t • x0) (𝓝[>] 0) (𝓝 z)`. Establish `hc0 : Continuous fun t : ℝ => z - t • x0` using `by fun_prop`. Conclude with `(hc0.tendsto' 0 z (by simp)).mono_left nhdsWithin_le_nhds`. Establish `hev : ∀ᶠ t in 𝓝[>] (0:ℝ), z - t • x0 ∈ s` using `htend hmem`. Take `⟨t, hts, htpos⟩` from `(hev.and self_mem_nhdsWithin).exists`.
+
+Establish `h1` using `hts.1`. Simplify using `only [hC, Set.mem_setOf_eq, sub_sub_cancel_left, norm_neg, norm_smul, map_neg, map_smul, ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, smul_eq_mul] at h1`. Establish `htp : (0 : ℝ) < t` using `htpos`. Establish `: 0 ≤ κ * (‖t‖ * ‖x0‖)` using `by positivity`. Use polynomial arithmetic with `[mul_pos htp hx0]`.
+
+Establish `hf : ∀ x ∈ interior s, HasFDerivAt φ (fderiv ℝ φ x) x`. Introduce `x hx`. Establish `hxs : x ∈ s` using `interior_subset hx`. Establish `hxz : x ≠ z` using `by rintro rfl; exact hzint hx`. Use `DifferentiableAt.hasFDerivAt ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hd`. Establish `hb` using `hball x hxs.2`. Rewrite `hb` using `[fderiv_zero_of_not_differentiableAt hd, hL, sub_zero, zero_sub, norm_neg]`. Establish `h1 : κ * ‖x - z‖ ≤ H (x - z) w` using `hxs.1`. Establish `h2 : H (x - z) w ≤ ‖H (x - z)‖ * ‖w‖` using `(le_abs_self _).trans ((H (x - z)).le_opNorm w)`.
+
+Establish `h3 : ‖H (x - z)‖ * ‖w‖ ≤ c * ‖x - z‖ * ‖w‖` using `mul_le_mul_of_nonneg_right hb (norm_nonneg _)`. Establish `h4 : c * ‖x - z‖ * ‖w‖ ≤ κ / 2 * ‖x - z‖`. Rewrite using `[mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right hcw (norm_nonneg _)`. Establish `hpos : 0 < ‖x - z‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hxz)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Conclude with `s_conv.second_derivative_within_at_symmetric hne hf hzs hH.hasFDerivWithinAt u v`.
+-/
 theorem symm_of_hasFDerivAt_fderiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {φ : E → ℝ} {z : E} {H : E →L[ℝ] E →L[ℝ] ℝ}
     (hH : HasFDerivAt (fderiv ℝ φ) H z) (u v : E) : H u v = H v u := by
@@ -116,6 +157,11 @@ theorem symm_of_hasFDerivAt_fderiv {E : Type*} [NormedAddCommGroup E] [NormedSpa
     nlinarith
   exact s_conv.second_derivative_within_at_symmetric hne hf hzs hH.hasFDerivWithinAt u v
 
+/- English proof (translation)
+Establish `h1` using `hd (a + b)`. Establish `h2` using `hd a`. Establish `h3` using `hd b`. Simplify using `only [smul_add, map_add, ContinuousLinearMap.add_apply] at h1`. Rewrite `h1` using `[hsH b a, hsH (Complex.I • b) (Complex.I • a), hsK b a, hsK (Complex.I • b) (Complex.I • a)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem polar {n : ℕ} {H K : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ) →L[ℝ] ℝ}
     (hsH : ∀ a b, H a b = H b a) (hsK : ∀ a b, K a b = K b a)
     (hd : ∀ w, H w w + H (Complex.I • w) (Complex.I • w) =
@@ -133,6 +179,17 @@ end GlobalTheory.HessLevi
 
 namespace GlobalTheory.HessLevi
 
+/- English proof (translation)
+Establish `hsK : ∀ a b, fderiv ℝ (fderiv ℝ ψ) z a b = fderiv ℝ (fderiv ℝ ψ) z b a` using `hψ.isSymmSndFDerivAt (by simp)`. Establish `hsH : ∀ a b, fderiv ℝ (fderiv ℝ φ) z a b = fderiv ℝ (fderiv ℝ φ) z b a`. Distinguish the cases in `hd : DifferentiableAt ℝ (fderiv ℝ φ) z`. Conclude with `symm_of_hasFDerivAt_fderiv hd.hasFDerivAt`. Introduce `a b`.
+
+Rewrite using `[fderiv_zero_of_not_differentiableAt hd]`. Both sides reduce to the same expression. Establish `hd : ∀ w, fderiv ℝ (fderiv ℝ φ) z w w + fderiv ℝ (fderiv ℝ φ) z (Complex.I • w) (Complex.I • w) = fderiv ℝ (fderiv ℝ ψ) z w w + fderiv ℝ (fderiv ℝ ψ) z (Complex.I • w) (Complex.I • w)`. Introduce `w`. Use `hlev w` as an intermediate fact.
+
+Simplify using `only [levi] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `polar hsH hsK hd`. Use extensionality with `i j`. Simplify using `only [hessC]`.
+
+Establish `k1` using `key (Pi.single i 1) (Pi.single j 1)`. Establish `k2` using `key (Pi.single i 1) (Complex.I • Pi.single j 1)`. Establish `hII : Complex.I • Complex.I • (Pi.single j 1 : Fin n → ℂ) = -Pi.single j 1`. Rewrite using `[smul_smul, Complex.I_mul_I, neg_one_smul]`. Rewrite `k2` using `[hII, map_neg, map_neg]`.
+
+Establish `k2' : fderiv ℝ (fderiv ℝ φ) z (Pi.single i 1) (Complex.I • Pi.single j 1) - fderiv ℝ (fderiv ℝ φ) z (Complex.I • Pi.single i 1) (Pi.single j 1) = fderiv ℝ (fderiv ℝ ψ) z (Pi.single i 1) (Complex.I • Pi.single j 1) - fderiv ℝ (fderiv ℝ ψ) z (Complex.I • Pi.single i 1) (Pi.single j …`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[k1, k2']`.
+-/
 theorem hessC_eq_of_levi_eq {n : ℕ} {φ ψ : (Fin n → ℂ) → ℝ} {z : Fin n → ℂ}
     (hψ : ContDiffAt ℝ 2 ψ z) (hlev : ∀ w, levi φ z w = levi ψ z w) :
     hessC φ z = hessC ψ z := by

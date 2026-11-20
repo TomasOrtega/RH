@@ -109,11 +109,22 @@ def FunSt : Prop :=
     HkFun (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)
       (fun Ω _ _ _ y => HeckeIdx Xo c h i Ω y) (fun Ω _ _ _ y C z => IsHeckePt Xo c tr h i Ω y C z)
 
+/- English proof (translation)
+The claim follows from `y.gen`.
+-/
 example {Ω : Type} [CommRing Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) : IsThGen y.x y.s := y.gen
 
+/- English proof (translation)
+Simplify using `[Sends]`.
+-/
 example {Ω : Type} [CommRing Ω] (x : Sp Ω ⟶ Xo.X) (a : Over.mk x ⟶ Xo.univ.t.G) : Sends (𝟙 (Gx x)) a a := by
   simp [Sends]
 
+/- English proof (translation)
+Establish `hp : ∀ (T : Scheme.{0}) (t : T ⟶ Sp Ω) (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G), push (𝟙 (Gx x)) t a = a.left`. Introduce `T t a`. Unfold `push toFib`. Rewrite using `[Category.id_comp, ← Over.comp_left, lift_snd]`. Use `⟨Category.id_comp _, fun T t a₁ a₂ b₁ b₂ h₁ h₂ => ?_, fun r => by simp⟩` and prove the remaining obligations.
+
+Rewrite `h₁`, `h₂`, the goal using `[hp]`. Rewrite using `[Over.OverMorphism.ext h₁, Over.OverMorphism.ext h₂]`.
+-/
 example {Ω : Type} [CommRing Ω] (x : Sp Ω ⟶ Xo.X) : IsLinHom (𝟙 (Gx x)) := by
   have hp : ∀ (T : Scheme.{0}) (t : T ⟶ Sp Ω) (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G), push (𝟙 (Gx x)) t a = a.left := by
     intro T t a

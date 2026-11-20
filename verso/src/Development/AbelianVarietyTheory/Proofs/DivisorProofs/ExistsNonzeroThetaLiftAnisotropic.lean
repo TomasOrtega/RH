@@ -16,6 +16,9 @@ section
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+The claim follows from `hT.base herm := hT.geo.hV skew := hT.geo.hW good := hT.geo.hM hX := hT.chars.heckeβ hW := by refine ⟨?_, fun x => ?_⟩ · exact hT.chars.heckeβ.1.div' hT.chars.heckeα.1 · rw [MonoidHom.div_apply, hT.chars.heckeβ.2 x, hT.chars.heckeα.2 x, div_one] resX := hT.chars.resβ weil := hT.we …`.
+-/
 theorem isPair_larger {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') :
     IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) where
@@ -36,6 +39,13 @@ theorem isPair_larger {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F
     · simp
     · rw [div_eq_mul_inv, ← inv_pow, inv_neg_one, pow_add]
 
+/- English proof (translation)
+Introduce `z hz`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: piInf (τ w) (z : AE F E) / (‖piInf (τ w) (z : AE F E)‖ : ℂ) ≠ 0`. Establish `h0 : piInf (τ w) (z : AE F E) ≠ 0`.
+
+Introduce `e`. Use `congrArg (piInf (τ w)) z.mul_inv` as an intermediate fact. Rewrite `this` using `[map_mul, e, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Conclude with `div_ne_zero h0 (by exact_mod_cast norm_ne_zero_iff.2 h0)`.
+
+Rewrite using `[zpow_sub₀ this]`.
+-/
 theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') (fun w => m w - m' w) := by
   intro z hz
@@ -50,13 +60,22 @@ theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E
     exact div_ne_zero h0 (by exact_mod_cast norm_ne_zero_iff.2 h0)
   rw [zpow_sub₀ this]
 
+/- English proof (translation)
+Simplify using `only [locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div]`.
+-/
 theorem locChar_div (χ χ' : Chr F E) (w : HeightOneSpectrum (𝓞 E)) (x : (w.adicCompletion E)ˣ) :
     locChar (χ / χ') w x = locChar χ w x / locChar χ' w x := by
   simp only [locChar, MonoidHom.comp_apply, MonoidHom.div_apply, map_div]
 
+/- English proof (translation)
+Introduce `x hx` and use `by rw [locChar_div, h x hx, h' x hx, div_one]`.
+-/
 theorem unrAt_div {χ χ' : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt χ w) (h' : UnrAt χ' w) : UnrAt (χ / χ') w :=
   fun x hx => by rw [locChar_div, h x hx, h' x hx, div_one]
 
+/- English proof (translation)
+Introduce `x hx` and use `by have := h x hx rw [locChar_div] at this ⊢ rw [← inv_div, this, inv_one]`.
+-/
 theorem unrAt_div_swap {χ χ' : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt (χ / χ') w) : UnrAt (χ' / χ) w :=
   fun x hx => by
     have := h x hx
@@ -65,6 +84,11 @@ theorem unrAt_div_swap {χ χ' : Chr F E} {w : HeightOneSpectrum (𝓞 E)} (h : 
 
 end
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT hp hq`. Establish `h1` using `hT.geo.lt`. Establish `h2` using `hT.geo.aBig`. Use `GlobalTheory.T.doubling_l_function_special_value hKP F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ (isPair_larger hT) (by rw [hp]; simp) (by rw [hp, hq]; simp) (by omega) (by omega) hT.geo.even (fun w => B.mβ w - B.mα w) (hasExp_div B.emb hT.chars.expβ hT.chars.expα) …` and prove the remaining obligations. Rewrite using `[abs_sub_comm]`.
+
+Conclude with `(hT.geo.kappa w).trans_le (le_abs_self _)`.
+-/
 theorem nonzero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.p = 0 → G.q = 0 → ∃ Φ ∈ PolData B G.M, G.M.I om Φ ≠ 0 := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT hp hq

@@ -11,6 +11,11 @@ universe u
 
 noncomputable section
 
+/- English proof (translation)
+Distinguish the cases in `h : m ≤ (IsLocalRing.maximalIdeal D).comap C.subtype`. Use `right`. Rewrite using `[hm.eq_of_le (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal D).ne_top) h]`. Conclude with `hC`. Use `left`.
+
+Take `⟨c, hcm, hc⟩` from `Set.not_subset.mp h`. Establish `hu : IsUnit (C.subtype c)`. Assume the negation of the conclusion as `hnu`. Conclude with `hc (IsLocalRing.mem_maximalIdeal _ |>.mpr hnu)`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hcm) hu`.
+-/
 theorem subring_map_maximal_cases {D : Type*} [CommRing D] [IsLocalRing D] (C : Subring D)
     (hC : IsLocalRing.maximalIdeal D ≤ ((IsLocalRing.maximalIdeal D).comap C.subtype).map C.subtype)
     (m : Ideal C) (hm : m.IsMaximal) :
@@ -26,6 +31,11 @@ theorem subring_map_maximal_cases {D : Type*} [CommRing D] [IsLocalRing D] (C : 
       exact hc (IsLocalRing.mem_maximalIdeal _ |>.mpr hnu)
     exact Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hcm) hu
 
+/- English proof (translation)
+Set `_ : Algebra A C` to `f.toAlgebra`. Establish `s3` using `h₃ A C hdim hfinj (fun c => by`. Take `⟨b, hb, hbc⟩` from `hfrac c`. Conclude with `⟨b, hb, by rw [Algebra.smul_def]; exact hbc⟩) a ha`. Establish `s2 : Module.length C (C ⧸ Ideal.span {algebraMap A C a}) ≤ Module.length A (C ⧸ Ideal.span {algebraMap A C a})`.
+
+Establish `h` using `Submodule.length_le_length_restrictScalars A (⊤ : Submodule C (C ⧸ Ideal.span {algebraMap A C a}))`. Rewrite `h` using `[Submodule.restrictScalars_top, Module.length_top, Module.length_top]`. Then use the resulting hypothesis. Establish `s1` using `h₂ C D C.subtype (subring_map_maximal_cases C hmax) (Ideal.span {algebraMap A C a})`. Rewrite `s1` using `[Ideal.map_span, Set.image_singleton]`. Conclude with `s1.trans (s2.trans s3)`.
+-/
 theorem length_quot_le_of_subring (h₂ : LengthMapIdealLe.Statement.{u})
     (h₃ : IntermediateRingQuotLength.Statement.{u}) {A D : Type u} [CommRing A] [IsDomain A]
     [IsNoetherianRing A] [CommRing D] [IsDomain D] [IsLocalRing D] (hdim : ringKrullDim A = 1)
@@ -49,6 +59,35 @@ theorem length_quot_le_of_subring (h₂ : LengthMapIdealLe.Statement.{u})
   rw [Ideal.map_span, Set.image_singleton] at s1
   exact s1.trans (s2.trans s3)
 
+/- English proof (translation)
+Introduce `R _ _ K _ ι _ J _ P hP u G' y hy hG' hrel x hx hG z hz`. Establish `hGp : G'.IsPrime` using `hG'.1.1`. Take `⟨G₀, W₀, hG₀p, hW₀p, hG₀, hW₀⟩` from `BlowUpLocalChart.exists_quotient_primes hGp (le_sup_left.trans hG'.1.2) (le_sup_left.trans hG.1.2)`. Establish `hRHS0 : (0 : ℤ) ≤ divCycle P z (G'.comap (liftForm (J` using `J))) := by`. Unfold `divCycle`.
+
+Apply the tactic sequence `split_ifs <;> positivity`. Distinguish the cases in `hL : G' ∈ (blowUpOf P u ⊔ Ideal.span {liftForm z}).minimalPrimes ∧ IsRelevant G'`. Use `swap`. Establish `h0 : divCycle (blowUpOf P u) (liftForm z) G' = 0`. Unfold `divCycle`.
+
+Rewrite using `[dif_neg hL]`. Rewrite using `[h0]`. Conclude with `hRHS0`. Establish `hzG : z ∈ G'.comap (liftForm (J` using `J)) := hL.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hcp : (G'.comap (liftForm (J` using `J))).IsPrime := hG.1.1`.
+
+Establish `hRmin : G'.comap (liftForm (J` using `J)) ∈ (P ⊔ Ideal.span {z}).minimalPrimes := by`. Establish `h` using `mem_minimalPrimes_sup_span_mul (P := P) (W := G'.comap (liftForm (J := J))) hz hG`. Use `⟨⟨hcp, sup_le (le_sup_left.trans hG.1.2) ((Ideal.span_singleton_le_iff_mem _).mpr hzG)⟩, ?_⟩` and prove the remaining obligations. Introduce `q hq hqG`. Use `h.2 ⟨hq.1, sup_le (le_sup_left.trans hq.2) ((Ideal.span_singleton_le_iff_mem _).mpr ?_)⟩ hqG` and prove the remaining obligations.
+
+Conclude with `q.mul_mem_left x (hq.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self z)))`. Establish `hRrel : IsRelevant (G'.comap (liftForm (J` using `J))) := by`. Introduce `k`. Take `⟨i, hi⟩` from `hL.2 (some k)`. Use `⟨i, fun hmem => hi ?_⟩` and prove the remaining obligations.
+
+Rewrite `hmem` using `[Ideal.mem_comap]`. Simplify `hmem` using `[liftForm, rename_X]`. Establish `hfin` using `length_localizedQuot_ne_top (P ⊔ Ideal.span {z}) (G'.comap (liftForm (J := J))) hRmin`. Unfold `divCycle`. Rewrite using `[dif_pos hL, dif_pos ⟨hRmin, hRrel⟩]`.
+
+It suffices to establish `key : multAt (blowUpOf P u ⊔ Ideal.span {liftForm z}) G' ≤ multAt (P ⊔ Ideal.span {z}) (G'.comap (liftForm (J` using `J))) by`. Conclude with `ENat.toNat_le_toNat key hfin` after adjusting the coercions. Take `⟨C, f, hfinj, hfrac, hfcompat, hmax⟩` from `h₄ R K ι J P hP u G' y hy hG' hrel x hx hG G₀ hG₀ W₀ hW₀`. Establish `hQp : (blowUpOf P u).IsPrime` using `RingHom.ker_isPrime _`. Establish `hSn : IsNoetherianRing (MRing ι R ⧸ P)` using `inferInstance`.
+
+Establish `hAn : IsNoetherianRing (Localization.AtPrime G₀)` using `IsLocalization.isNoetherianRing G₀.primeCompl _ hSn`. Establish `hAinj : Function.Injective (algebraMap (MRing ι R ⧸ P) (Localization.AtPrime G₀))` using `IsLocalization.injective (Localization.AtPrime G₀) (Ideal.primeCompl_le_nonZeroDivisors G₀)`. Establish `hdim : ringKrullDim (Localization.AtPrime G₀) = 1`. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height G₀ (Localization.AtPrime G₀)]`. Establish `hmap : (G'.comap (liftForm (J` using `J))).map (Ideal.Quotient.mk P) = G₀ := by`.
+
+Rewrite using `[← hG₀, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Establish `hle : G₀.height ≤ 1` using `hmap ▸ Ideal.map_height_le_one_of_mem_minimalPrimes hG`. Establish `hne : G₀.height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff_eq_bot]`. Introduce `hbot`.
+
+Establish `hxG : Ideal.Quotient.mk P x ∈ G₀`. Rewrite using `[← Ideal.mem_comap, hG₀]`. Conclude with `hG.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Rewrite `hxG` using `[hbot, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx hxG`.
+
+Establish `h1 : G₀.height = 1` using `le_antisymm hle (Order.one_le_iff_ne_zero.mpr hne)`. Rewrite using `[h1]`. Both sides reduce to the same expression. Use `set a : Localization.AtPrime G₀ := algebraMap (MRing ι R ⧸ P) (Localization.AtPrime G₀) (Ideal.Quotient.mk P z) with ha_def`. Establish `ha : a ≠ 0`.
+
+Introduce `h0`. Rewrite `h0` using `[ha_def, ← map_zero (algebraMap (MRing ι R ⧸ P) (Localization.AtPrime G₀))]`. Conclude with `hz (Ideal.Quotient.eq_zero_iff_mem.mp (hAinj h0))`. Establish `hDom : IsDomain (Localization.AtPrime W₀)` using `inferInstance`. Establish `hchain` using `length_quot_le_of_subring h₂ h₃ hdim C f hfinj hfrac hmax a ha`.
+
+Rewrite `hchain` using `[ha_def, hfcompat z]`. Establish `e₁` using `h₁ (MRing (extIdx ι J) R) (blowUpOf P u) W₀ (liftForm z)`. Establish `e₂` using `h₁ (MRing ι R) P G₀ z`. Establish `key : ∀ (H : Ideal (MRing (extIdx ι J) R)) [H.IsPrime] (G : Ideal (MRing ι R)) [G.IsPrime], W₀.comap (Ideal.Quotient.mk (blowUpOf P u)) = H → G₀.comap (Ideal.Quotient.mk P) = G → multAt (blowUpOf P u ⊔ Ideal.span {liftForm z}) H ≤ multAt (P ⊔ Ideal.span {z}) G`. Introduce `H _ G _ hH hGG`.
+
+Substitute `hH` using the available equality. Substitute `hGG` using the available equality. Unfold `multAt`. Conclude with `e₁.le.trans (hchain.trans e₂.ge)`. Conclude with `key _ _ hW₀ hG₀`.
+-/
 theorem BlowUpOrderLe.proof (h₁ : LocalizedQuotLength.Statement.{u})
     (h₂ : LengthMapIdealLe.Statement.{u}) (h₃ : IntermediateRingQuotLength.Statement.{u})
     (h₄ : BlowUpLocalChart.Statement.{u}) : BlowUpOrderLe.Statement.{u} := by

@@ -18,26 +18,44 @@ variable {F : Type u} [Field F] (E : WeierstrassCurve F) [E.IsElliptic]
 def invDeriv (f : E.toAffine.FunctionField) : E.toAffine.FunctionField :=
   invCoeff E (D F E.toAffine.FunctionField f)
 
+/- English proof (translation)
+The claim follows from `invCoeff_eq E (by rw [mul_smul, invCoeff_smul])`.
+-/
 theorem invCoeff_smul_mul (c : E.toAffine.FunctionField) (η : KaehlerDifferential F E.toAffine.FunctionField) :
     invCoeff E (c • η) = c * invCoeff E η :=
   invCoeff_eq E (by rw [mul_smul, invCoeff_smul])
 
+/- English proof (translation)
+Rewrite using `[invDeriv, map_add, invCoeff_add]`. Both sides reduce to the same expression.
+-/
 theorem invDeriv_add (f g : E.toAffine.FunctionField) :
     invDeriv E (f + g) = invDeriv E f + invDeriv E g := by
   rw [invDeriv, map_add, invCoeff_add]; rfl
 
+/- English proof (translation)
+Rewrite using `[invDeriv, Derivation.leibniz, invCoeff_add, invCoeff_smul_mul, invCoeff_smul_mul]`. Both sides reduce to the same expression.
+-/
 theorem invDeriv_mul (f g : E.toAffine.FunctionField) :
     invDeriv E (f * g) = f * invDeriv E g + g * invDeriv E f := by
   rw [invDeriv, Derivation.leibniz, invCoeff_add, invCoeff_smul_mul, invCoeff_smul_mul]; rfl
 
+/- English proof (translation)
+Rewrite using `[invDeriv, D_coeff, invCoeff_zero]`.
+-/
 theorem invDeriv_algebraMap (c : F) : invDeriv E (algebraMap F _ c) = 0 := by
   rw [invDeriv, D_coeff, invCoeff_zero]
 
+/- English proof (translation)
+Apply `invCoeff_eq` to reduce the goal to its premises. Conclude with `(omegaAt_some_spec E _).1`.
+-/
 theorem invDeriv_genX : invDeriv E (genX E) = 2 * genY E +
     algebraMap F _ E.a₁ * genX E + algebraMap F _ E.a₃ := by
   apply invCoeff_eq
   exact (omegaAt_some_spec E _).1
 
+/- English proof (translation)
+Apply `invCoeff_eq` to reduce the goal to its premises. Conclude with `(omegaAt_some_spec E _).2`.
+-/
 theorem invDeriv_genY : invDeriv E (genY E) = 3 * genX E ^ 2 +
     2 * algebraMap F _ E.a₂ * genX E + algebraMap F _ E.a₄ - algebraMap F _ E.a₁ * genY E := by
   apply invCoeff_eq
@@ -45,6 +63,9 @@ theorem invDeriv_genY : invDeriv E (genY E) = 3 * genX E ^ 2 +
 
 variable {E} {E' : WeierstrassCurve F} [E'.IsElliptic]
 
+/- English proof (translation)
+Establish `e` using `(omegaAt_some_spec E' h).1`. Rewrite `e` using `[← hφ, ← isogenyPullback_invariantDifferential, isogenyPullback_invariantDifferential_eq_smul, smul_smul]`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃] at e`. Rewrite using `[invDeriv, invCoeff_eq E e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isogCoeff_mul (φ : Isogeny E E') {x y : E.toAffine.FunctionField}
     {h : (E'.baseChange E.toAffine.FunctionField).toAffine.Nonsingular x y}
     (hφ : φ.1 = Point.some x y h) :
@@ -71,9 +92,15 @@ def dualMap {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) :
   map_zero' := by ext <;> simp
   map_add' a b := by ext <;> simp
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem dualMap_fst {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (z : TrivSqZeroExt R R) : (dualMap f z).fst = f z.fst := by simp [dualMap]
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem dualMap_snd {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (z : TrivSqZeroExt R R) : (dualMap f z).snd = f z.snd := by simp [dualMap]
 
@@ -95,9 +122,15 @@ def invDerivHom : E.toAffine.FunctionField →+*
     ext <;> simp [h0]
   map_add' a b := by ext <;> simp [invDeriv_add]
 
+/- English proof (translation)
+Simplify using `[invDerivHom]`.
+-/
 theorem invDerivHom_fst (f : E.toAffine.FunctionField) : (invDerivHom E f).fst = f := by
   simp [invDerivHom]
 
+/- English proof (translation)
+Simplify using `[invDerivHom]`.
+-/
 theorem invDerivHom_snd (f : E.toAffine.FunctionField) :
     (invDerivHom E f).snd = invDeriv E f := by
   simp [invDerivHom]
@@ -118,6 +151,9 @@ def gaussDY : gaussRing W :=
   3 * gaussX W ^ 2 + 2 * algebraMap 𝒪 _ W.a₂ * gaussX W + algebraMap 𝒪 _ W.a₄ -
     algebraMap 𝒪 _ W.a₁ * gaussY W
 
+/- English proof (translation)
+Establish `h` using `equation_gen (W.baseChange K)`. Rewrite `h` using `[← algebraMap_gaussX W K, ← algebraMap_gaussY W K]`. Establish `e : (W.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField = (W.map (algebraMap 𝒪 (gaussRing W))).map (algebraMap (gaussRing W) _)` using `(gaussCurve_map_functionField K W W).symm`. Rewrite `h` using `[e]`. Conclude with `(WeierstrassCurve.Affine.map_equation (W.map (algebraMap 𝒪 (gaussRing W))).toAffine (IsFractionRing.injective _ (W.baseChange K).toAffine.FunctionField) _ _).mp h`.
+-/
 theorem gauss_equation (K : Type u) [Field K] [Algebra 𝒪 K] [IsFractionRing 𝒪 K] :
     (W.map (algebraMap 𝒪 (gaussRing W))).toAffine.Equation (gaussX W) (gaussY W) := by
   have h := equation_gen (W.baseChange K)
@@ -129,6 +165,13 @@ theorem gauss_equation (K : Type u) [Field K] [Algebra 𝒪 K] [IsFractionRing �
   exact (WeierstrassCurve.Affine.map_equation (W.map (algebraMap 𝒪 (gaussRing W))).toAffine
     (IsFractionRing.injective _ (W.baseChange K).toAffine.FunctionField) _ _).mp h
 
+/- English proof (translation)
+Establish `e` using `(WeierstrassCurve.Affine.equation_iff _ _).1 (gauss_equation W K)`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`. Rewrite using `[WeierstrassCurve.Affine.equation_iff]`. Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆, RingHom.comp_apply, inlHom_apply]`. Use `ext`.
+
+Simplify using `only [fst_add, fst_mul, fst_pow, fst_inl, fst_inr, add_zero]`. Take the linear combination `e`. Simplify using `only [fst_add, fst_mul, fst_pow, fst_inl, fst_inr, snd_add, snd_mul, snd_pow, snd_inl, snd_inr, add_zero, zero_add, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, nsmul_eq_mul, Nat.cast_ofNat, Nat.pred_eq_sub_one, mul_zero, zero_mul]`. Simplify using `only [gaussDX, gaussDY]`. Evaluate the numerical expressions.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_dual_equation (K : Type u) [Field K] [Algebra 𝒪 K] [IsFractionRing 𝒪 K] :
     (W.map ((inlHom (gaussRing W) (gaussRing W)).comp (algebraMap 𝒪 (gaussRing W)))).toAffine.Equation
       (inl (gaussX W) + inr (gaussDX W)) (inl (gaussY W) + inr (gaussDY W)) := by
@@ -163,21 +206,37 @@ def gaussDualA : W.toAffine.CoordinateRing →+* TrivSqZeroExt (gaussRing W) (ga
     (inl (gaussY W) + inr (gaussDY W))
     (eval₂_polynomial_of_equation W _ (gauss_dual_equation W K))
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 𝒪[X] W.toAffine.CoordinateRing, AdjoinRoot.algebraMap_eq, gaussDualA, AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules.
+-/
 theorem gaussDualA_algebraMap (c : 𝒪) :
     gaussDualA K W (algebraMap 𝒪 _ c) = inl (algebraMap 𝒪 (gaussRing W) c) := by
   rw [IsScalarTower.algebraMap_apply 𝒪 𝒪[X] W.toAffine.CoordinateRing, AdjoinRoot.algebraMap_eq,
     gaussDualA, AdjoinRoot.lift_of]
   simp
 
+/- English proof (translation)
+Rewrite using `[AdjoinRoot.mk_C, gaussDualA, AdjoinRoot.lift_of]`. Simplify using the standard rewrite rules.
+-/
 theorem gaussDualA_X :
     gaussDualA K W (CoordinateRing.mk W (C X)) = inl (gaussX W) + inr (gaussDX W) := by
   rw [AdjoinRoot.mk_C, gaussDualA, AdjoinRoot.lift_of]
   simp
 
+/- English proof (translation)
+Rewrite using `[AdjoinRoot.mk_X, gaussDualA, AdjoinRoot.lift_root]`.
+-/
 theorem gaussDualA_Y :
     gaussDualA K W (CoordinateRing.mk W Y) = inl (gaussY W) + inr (gaussDY W) := by
   rw [AdjoinRoot.mk_X, gaussDualA, AdjoinRoot.lift_root]
 
+/- English proof (translation)
+Establish `: ((fstHom 𝒪 (gaussRing W) (gaussRing W)).toRingHom).comp (gaussDualA K W) = algebraMap _ (gaussRing W)`. Apply `coordinateRing_ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[gaussDualA_algebraMap, ← IsScalarTower.algebraMap_apply]`. Use `show (gaussDualA K W (CoordinateRing.mk W (C X))).fst = _`.
+
+Rewrite using `[gaussDualA_X, fst_add, fst_inl, fst_inr, add_zero]`. Both sides reduce to the same expression. Use `show (gaussDualA K W (CoordinateRing.mk W Y)).fst = _`. Rewrite using `[gaussDualA_Y, fst_add, fst_inl, fst_inr, add_zero]`. Both sides reduce to the same expression.
+
+Conclude with `congrArg (fun f => f a) this`.
+-/
 theorem fst_gaussDualA (a : W.toAffine.CoordinateRing) :
     (gaussDualA K W a).fst = algebraMap _ (gaussRing W) a := by
   have : ((fstHom 𝒪 (gaussRing W) (gaussRing W)).toRingHom).comp (gaussDualA K W) =
@@ -196,10 +255,16 @@ def gaussDual : gaussRing W →+* TrivSqZeroExt (gaussRing W) (gaussRing W) :=
     fun s => isUnit_iff_isUnit_fst.2 (by
       rw [fst_gaussDualA]; exact IsLocalization.map_units (gaussRing W) s)
 
+/- English proof (translation)
+The claim follows from `IsLocalization.lift_eq _ _`.
+-/
 theorem gaussDual_algebraMap (a : W.toAffine.CoordinateRing) :
     gaussDual K W (algebraMap _ _ a) = gaussDualA K W a :=
   IsLocalization.lift_eq _ _
 
+/- English proof (translation)
+Rewrite using `[IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W), gaussDual_algebraMap, gaussDualA_algebraMap, ← IsScalarTower.algebraMap_apply]`.
+-/
 theorem gaussDual_algebraMap_base (c : 𝒪) :
     gaussDual K W (algebraMap 𝒪 (gaussRing W) c) = inl (algebraMap 𝒪 (gaussRing W) c) := by
   rw [IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W),
@@ -217,11 +282,27 @@ variable {𝒪 : Type u} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRin
   (K : Type u) [Field K] [Algebra 𝒪 K] [IsFractionRing 𝒪 K] (W : WeierstrassCurve 𝒪)
   [W.IsElliptic]
 
+/- English proof (translation)
+Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply 𝒪 K]`.
+-/
 theorem algebraMap_gauss_const (c : 𝒪) :
     algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField (algebraMap 𝒪 _ c) =
       algebraMap K _ (algebraMap 𝒪 K c) := by
   rw [← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply 𝒪 K]
 
+/- English proof (translation)
+Establish `key : (dualMap (algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField)).comp (gaussDual K W) = (invDerivHom (W.baseChange K)).comp (algebraMap (gaussRing W) _)`. Apply `IsLocalization.ringHom_ext (gaussPrime W).primeCompl` to reduce the goal to its premises. Apply `coordinateRing_ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, ← IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W), gaussDual_algebraMap_base]`.
+
+Use `ext`. Rewrite using `[dualMap_fst, invDerivHom_fst, fst_inl]`. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_inl, map_zero, algebraMap_gauss_const, invDeriv_algebraMap]`. Simplify using `only [RingHom.comp_apply, gaussDual_algebraMap, gaussDualA_X]`. Rewrite using `[show algebraMap W.toAffine.CoordinateRing (gaussRing W) (CoordinateRing.mk W (C X)) = gaussX W from rfl, algebraMap_gaussX]`.
+
+Use `ext`. Rewrite using `[dualMap_fst, invDerivHom_fst, fst_add, fst_inl, fst_inr, add_zero, algebraMap_gaussX]`. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_add, snd_inl, snd_inr, zero_add, invDeriv_genX, gaussDX]`. Simplify using `only [map_add, map_mul, map_ofNat, algebraMap_gaussX, algebraMap_gaussY, algebraMap_gauss_const]`. Both sides reduce to the same expression.
+
+Simplify using `only [RingHom.comp_apply, gaussDual_algebraMap, gaussDualA_Y]`. Rewrite using `[show algebraMap W.toAffine.CoordinateRing (gaussRing W) (CoordinateRing.mk W Y) = gaussY W from rfl, algebraMap_gaussY]`. Use `ext`. Rewrite using `[dualMap_fst, invDerivHom_fst, fst_add, fst_inl, fst_inr, add_zero, algebraMap_gaussY]`. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_add, snd_inl, snd_inr, zero_add, invDeriv_genY, gaussDY]`.
+
+Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, algebraMap_gaussX, algebraMap_gaussY, algebraMap_gauss_const]`. Both sides reduce to the same expression. Use `congrArg (fun f => (f g).snd) key` as an intermediate fact. Simplify using `only [RingHom.comp_apply, dualMap_snd, invDerivHom_snd] at this`. Rewrite using `[gaussDeriv]`.
+
+Conclude with `this`.
+-/
 theorem algebraMap_gaussDeriv (g : gaussRing W) :
     algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField (gaussDeriv K W g) =
       invDeriv (W.baseChange K) (algebraMap (gaussRing W) _ g) := by
@@ -262,6 +343,19 @@ theorem algebraMap_gaussDeriv (g : gaussRing W) :
   rw [gaussDeriv]
   exact this
 
+/- English proof (translation)
+Establish `key : (dualMap ((gaussResidue W).comp (residue (gaussRing W)))).comp (gaussDual K W) = (invDerivHom (W.map (residue 𝒪))).comp ((gaussResidue W).comp (residue (gaussRing W)))`. Apply `IsLocalization.ringHom_ext (gaussPrime W).primeCompl` to reduce the goal to its premises. Apply `coordinateRing_ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, ← IsScalarTower.algebraMap_apply 𝒪 W.toAffine.CoordinateRing (gaussRing W), gaussDual_algebraMap_base]`.
+
+Use `ext`. Rewrite using `[dualMap_fst, invDerivHom_fst, fst_inl]`. Both sides reduce to the same expression. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_inl, map_zero, gaussResidue_residue_algebraMap, invDeriv_algebraMap]`. Simplify using `only [RingHom.comp_apply, gaussDual_algebraMap, gaussDualA_X]`.
+
+Rewrite using `[show algebraMap W.toAffine.CoordinateRing (gaussRing W) (CoordinateRing.mk W (C X)) = gaussX W from rfl]`. Use `ext`. Rewrite using `[dualMap_fst, invDerivHom_fst, fst_add, fst_inl, fst_inr, add_zero]`. Both sides reduce to the same expression. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_add, snd_inl, snd_inr, zero_add, gaussResidue_gaussX, invDeriv_genX, gaussDX]`.
+
+Simplify using `only [map_add, map_mul, map_ofNat, RingHom.comp_apply, gaussResidue_gaussX, gaussResidue_gaussY, gaussResidue_residue_algebraMap]`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, gaussDual_algebraMap, gaussDualA_Y]`. Rewrite using `[show algebraMap W.toAffine.CoordinateRing (gaussRing W) (CoordinateRing.mk W Y) = gaussY W from rfl]`. Use `ext`.
+
+Rewrite using `[dualMap_fst, invDerivHom_fst, fst_add, fst_inl, fst_inr, add_zero]`. Both sides reduce to the same expression. Rewrite using `[dualMap_snd, invDerivHom_snd, snd_add, snd_inl, snd_inr, zero_add, gaussResidue_gaussY, invDeriv_genY, gaussDY]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_ofNat, RingHom.comp_apply, gaussResidue_gaussX, gaussResidue_gaussY, gaussResidue_residue_algebraMap]`. Both sides reduce to the same expression.
+
+Use `congrArg (fun f => (f g).snd) key` as an intermediate fact. Simplify using `only [RingHom.comp_apply, dualMap_snd, invDerivHom_snd] at this`. Rewrite using `[gaussDeriv]`. Conclude with `this`.
+-/
 theorem gaussResidue_gaussDeriv (g : gaussRing W) :
     gaussResidue W (residue _ (gaussDeriv K W g)) =
       invDeriv (W.map (residue 𝒪)) (gaussResidue W (residue _ g)) := by
@@ -310,6 +404,29 @@ variable {𝒪 : Type u} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRin
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨x, y, h, hφ⟩` from `exists_isogeny_coords K W W' φ`. Take `⟨h', hred⟩` from `reduceFF_some K W W' h`. Establish `hφ' : (reduceIsogeny K W W' φ).1 = Point.some _ _ h'`. Rewrite using `[reduceIsogeny_val, hφ, hred]`. Use `set u : gaussRing W := 2 * y + algebraMap 𝒪 _ W'.a₁ * x + algebraMap 𝒪 _ W'.a₃ with hu_def`.
+
+Establish `hu_res : gaussResidue W (residue _ u) = 2 * gaussResidue W (residue _ y) + algebraMap (ResidueField 𝒪) _ (W'.map (residue 𝒪)).a₁ * gaussResidue W (residue _ x) + algebraMap (ResidueField 𝒪) _ (W'.map (residue 𝒪)).a₃`. Simplify using `only [hu_def, map_add, map_mul, map_ofNat, gaussResidue_residue_algebraMap]`. Both sides reduce to the same expression. Establish `hu_ne : gaussResidue W (residue _ u) ≠ 0`. Establish `hg` using `(reduceIsogeny K W W' φ).isGenPt`.
+
+Rewrite `hg` using `[hφ']`. Establish `hd` using `genDen_ne_zero (W'.map (residue 𝒪))`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Apply `(genEval (W'.map (residue 𝒪)) _ hg).toRingHom.injective` to reduce the goal to its premises.
+
+Rewrite using `[map_zero, ← h0, hu_res]`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, map_add, map_mul, map_ofNat, AlgHom.commutes, genEval_genX, genEval_genY]`. Both sides reduce to the same expression. Establish `hu : IsUnit u`. Assume the negation of the conclusion as `hnu`.
+
+Conclude with `hu_ne (by rw [(residue_eq_zero_iff _).2 ((mem_maximalIdeal _).2 hnu), map_zero])`. Establish `e1 : isogCoeff φ * algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField u = algebraMap (gaussRing W) _ (gaussDeriv K W x)`. Rewrite using `[algebraMap_gaussDeriv, ← isogCoeff_mul φ hφ]`. Use `congr 1`. Simplify using `only [hu_def, map_add, map_mul, map_ofNat, algebraMap_gauss_const]`.
+
+Both sides reduce to the same expression. Use `set v : gaussRing W := gaussDeriv K W x * ↑hu.unit⁻¹ with hv_def`. Establish `hv : algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField v = isogCoeff φ`. Establish `hne : algebraMap (gaussRing W) (W.baseChange K).toAffine.FunctionField u ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 hu.ne_zero`. Rewrite using `[hv_def, map_mul, ← e1, mul_assoc, ← map_mul, IsUnit.mul_val_inv, map_one, mul_one]`.
+
+Establish `hint : invConst φ ∈ Set.range (algebraMap 𝒪 K)`. Assume the negation of the conclusion as `hX`. Take `⟨t, ht, hte⟩` from `exists_inv_mem_of_notMem_range K hX`. Establish `hc0 : invConst φ ≠ 0` using `fun h0 => hX ⟨0, by rw [map_zero, h0]⟩`. Establish `h1 : v * algebraMap 𝒪 (gaussRing W) t = 1`.
+
+Apply `IsFractionRing.injective (gaussRing W) (W.baseChange K).toAffine.FunctionField` to reduce the goal to its premises. Rewrite using `[map_mul, hv, algebraMap_gauss_const, hte, ← algebraMap_invConst, map_inv₀, mul_inv_cancel₀ ((_root_.map_ne_zero _).2 hc0), map_one]`. Establish `: IsUnit (algebraMap 𝒪 (gaussRing W) t)` using `isUnit_iff_exists_inv.2 ⟨v, by rw [mul_comm]; exact h1⟩`. Conclude with `(mem_maximalIdeal _).1 ht ((isUnit_map_iff (algebraMap 𝒪 (gaussRing W)) t).1 this)`. Take `⟨c, hc⟩` from `hint`.
+
+Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `hvc : algebraMap 𝒪 (gaussRing W) c = v`. Apply `IsFractionRing.injective (gaussRing W) (W.baseChange K).toAffine.FunctionField` to reduce the goal to its premises. Rewrite using `[algebraMap_gauss_const, hc, algebraMap_invConst, hv]`. Establish `e2` using `isogCoeff_mul (reduceIsogeny K W W' φ) hφ'`.
+
+Rewrite `e2` using `[← gaussResidue_gaussDeriv K W x]`. Establish `e2' : isogCoeff (reduceIsogeny K W W' φ) = gaussResidue W (residue _ v)`. Establish `hres_u : gaussResidue W (residue _ u) * gaussResidue W (residue _ ↑hu.unit⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, IsUnit.mul_val_inv, map_one, map_one]`. Rewrite using `[hv_def, map_mul, map_mul, ← e2, ← hu_res, mul_assoc, hres_u, mul_one]`.
+
+Apply `(algebraMap (ResidueField 𝒪) (W.map (residue 𝒪)).toAffine.FunctionField).injective` to reduce the goal to its premises. Rewrite using `[algebraMap_invConst, e2', ← hvc, gaussResidue_residue_algebraMap]`.
+-/
 theorem exists_invConst_reduceIsogeny :
     ∃ c : 𝒪, algebraMap 𝒪 K c = invConst φ ∧
       residue 𝒪 c = invConst (reduceIsogeny K W W' φ) := by

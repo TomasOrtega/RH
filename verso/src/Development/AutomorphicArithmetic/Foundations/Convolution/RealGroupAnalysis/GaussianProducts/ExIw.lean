@@ -9,6 +9,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
+/- English proof (translation)
+Introduce `F _ _ _ _ π`. Take `⟨f, hf, g, -, hg⟩` from `UpperTheory.ConvolutionTheory.R2.Pp.wfNe F π`. Take `⟨b, a, k, hk, rfl⟩` from `UpperTheory.ConvolutionTheory.R2.M.iwa F g`. Use `⟨f, hf, a, k, hk, fun h => hg ?_⟩` and prove the remaining obligations. Establish `e : gl (nU b * mD a * k) = gl (nU b) * gl (mD a * k)`.
+
+Rewrite using `[mul_assoc]`. Conclude with `map_mul _ _ _`. Rewrite using `[e, ((UpperTheory.ConvolutionTheory.R2.Pp.wfBasic F f.1 (UpperTheory.ConvolutionTheory.R2.Pp.cuspZero F π f hf).1).2.1 b _), h, mul_zero]`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.G.exIw :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F) (π : TR.CuspSub F 2), ∃ f ∈ π.V, ∃ a, ∃ k ∈ KK F, Wf f.1 (gl (mD a * k)) ≠ 0 := by
   intro F _ _ _ _ π

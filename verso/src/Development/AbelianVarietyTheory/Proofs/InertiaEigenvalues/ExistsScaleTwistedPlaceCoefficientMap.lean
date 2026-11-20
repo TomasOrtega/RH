@@ -21,6 +21,15 @@ noncomputable section
 
 namespace GlobalTheory.PlaceScale
 
+/- English proof (translation)
+Take `⟨gR, cR0, cL0, hT, u, hu, hF⟩` from `h`. Take `⟨gR', cR0', cL0', hT', u', hu', hF'⟩` from `h'`. Establish `huu : u' = u` using `funext fun τ => Subtype.ext ((hu' τ).trans (hu τ).symm)`. Substitute `huu` using the available equality. Take `⟨a, ⟨k, hk, hak⟩, ha⟩` from `GlobalTheory.CoefRoot.coef_root _ _ _ _ _ _ _ _ _ _ _ _ _ hT hT' j`.
+
+Take `⟨F, x, hx⟩` from `GlobalTheory.CoeffNonvanish.exists_coefFn_ne_zero (FWT.lamV D j)`. Establish `e1` using `hF' F`. Rewrite `e1` using `[ha]`. Use `erw [LinearMap.map_smul, LinearMap.map_smul, hF F] at e1`. Establish `e2` using `congrFun e1 x`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at e2`. Establish `hc : c' = D.what₂.embLL a * c`. Establish `h3 : D.what₂.embLL a * c * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x = c' * coefFn D.what₂.embLL (FWT.lamV D j) (F : Pol D.what₂.LL D.what₂.Tau (Vc D j).rank) x`. Rewrite using `[mul_assoc]`. Conclude with `e2`.
+
+Conclude with `(mul_right_cancel₀ hx h3).symm`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_pow, ← map_pow, hak, map_one, one_mul]`.
+-/
 theorem pow_eq_of_isScale {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T : Type}
     {A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks)
@@ -45,6 +54,9 @@ theorem pow_eq_of_isScale {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T
   refine ⟨k, hk, ?_⟩
   rw [hc, mul_pow, ← map_pow, hak, map_one, one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [coefFn, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_map, RingHom.id_comp]`.
+-/
 theorem coefFn_map {D : D7} {n : ℕ} {K : Type} [Field K] (σ : K →+* ℂ) (lam : D.what₂.Tau → DomWeight n)
     (F : Formalism.L2.DIV.Pol K D.what₂.Tau n) : coefFn (RingHom.id ℂ) lam (MvPolynomial.map σ F) = coefFn σ lam F := by
   funext x
@@ -52,6 +64,19 @@ theorem coefFn_map {D : D7} {n : ℕ} {K : Type} [Field K] (σ : K →+* ℂ) (l
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D X X0 Y S YS Z c w j H`. Establish `hch` using `X.char`. Establish `hC : GlobalTheory.Hk3.Core X.R.toRealDat X.F.lv2` using `⟨hch.lev, hch.grp, hch.fam, hch.models, hch.chain, hch.thP⟩`. Establish `hio : IoExt X.R.toRealDat` using `GlobalTheory.IoExtremal.ioExt D _ _ _ _ _ X.R.toRealDat hC.lev hC.fam hC.models hC.thP`. Take `⟨ν', hν', -⟩` from `H.rat`.
+
+Take `⟨hν0, c₀, hsc, n, hn, hνn⟩` from `(Z.scalar (c.twI w) j (c.sd w)).norm ⟨ν', hν'⟩`. Take `⟨-, -, -, -, u, hu, -⟩` from `id hsc`. Take `⟨cc, hc⟩` from `GlobalTheory.ExtCoeff.exists_extC _ _ _ _ _ _ _ j Unit (fun _ => X.A3.A.μ0) (X.geo.O j)`. Establish `hB` using `Z.good.base (c.twI w) j (c.sd w)`. Establish `hBo` using `GlobalTheory.BigOn.Exp.TwConj.baseOf_of_realPin hch.lev Z.good Z.pin (c.twI w) j (c.sd w)`.
+
+Establish `hO` using `X.geo.pins j`. Take `⟨κ, hκ0, hval, hκ⟩` from `GlobalTheory.CoefLatConj.exists_coef_scale D _ _ _ X.A3.A X.core X.R.toRealDat X.F.lv2 X.geo.κ X.geo.v₀ X.geo.O hC ⟨X.geo.fw⟩ hio j hO cc hc u hu _ hB hBo`. Establish `hfield` using `hO.2.lift.field`. Take `⟨gramR, c0R, c0L, hft, hbc⟩` from `hO.2.lift.c0`. Establish `hcL : ∀ F : VV D.what₂.LL (lamV D j), cc (GlobalTheory.CoefModel.mapVV D.what₂.embLL (lamV D j) F) = c0L j F` using `fun F => by`.
+
+Take `⟨v', hv', hv0⟩` from `hbc F`. Use `(hc v' _ ?_).trans hv0` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `MvPolynomial.map D.what₂.embLL _ = _`. Rewrite using `[hv', MvPolynomial.map_map, hfield]`. Establish `hκs : IsScale X.R X.geo.v₀ (baseOf Z c w j) κ` using `⟨gramR, c0R, c0L, hft, u, hu, fun F => (congrArg (fun z => harmFn _ _ _ (X.R.ioP j (PiTensorProduct.tprod ℂ u) z)) (hcL F)).symm.trans ((hκ _).trans (congrArg (κ • ·) (coefFn_map _ _ _)))⟩`.
+
+Take `⟨k, hk, hkk⟩` from `pow_eq_of_isScale X.R X.geo.v₀ _ hsc hκs`. Use `⟨u, cc, κ, hu, hc, hκ0, hval, hκ, hκs, n * k, Nat.pos_of_ne_zero (Nat.mul_ne_zero hn hk), ?_⟩` and prove the remaining obligations. Rewrite `hνn` using `[X.phs j, map_one, one_mul]`. Establish `e : Z.ν (c.twI w) j (c.sd w) ^ (n * k) = κ ^ (n * k)`. Rewrite using `[pow_mul, hνn, ← pow_mul, mul_comm n k, pow_mul c₀, pow_mul κ, hkk]`.
+
+Rewrite using `[div_pow, e, div_self (pow_ne_zero _ hκ0)]`.
+-/
 theorem exists_scale : ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∃ (u : ∀ τ, lowT (X.R.MW j (sg0 D X.A3.A)) τ) (cc : VsV D j ℂ →ₗ[ℂ] (X.R.cV j).W) (κ : ℂ), IsLow X j u ∧ ExtC X.R.toRealDat j (inC (X.geo.O j).c') (X.geo.O j).c0' cc ∧ κ ≠ 0 ∧
     (∀ x, X.R.ioP j (PiTensorProduct.tprod ℂ u) (cc x) ∈ (baseOf Z c w j).valSpace) ∧

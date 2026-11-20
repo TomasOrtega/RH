@@ -11,6 +11,11 @@ noncomputable section
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `h1` using `(measurePreserving_prodAssoc μL μM (μP.prod μN)).symm`. Establish `h2` using `(Measure.measurePreserving_swap (μ := μL) (ν := μM)).prod (MeasurePreserving.id (μP.prod μN))`. Establish `h3` using `measurePreserving_prodAssoc μM μL (μP.prod μN)`. Establish `h4` using `(MeasurePreserving.id μM).prod (measurePreserving_prodAssoc μL μP μN).symm`. Use `h4.comp (h3.comp (h2.comp h1))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `⟨l, m, p, n⟩`. Both sides reduce to the same expression.
+-/
 theorem measurePreserving_prod_rearrange {L M P N : Type*} [MeasurableSpace L] [MeasurableSpace M] [MeasurableSpace P] [MeasurableSpace N]
     (μL : Measure L) (μM : Measure M) (μP : Measure P) (μN : Measure N) [SigmaFinite μL] [SigmaFinite μM]
     [SigmaFinite μP] [SigmaFinite μN] :
@@ -25,6 +30,19 @@ theorem measurePreserving_prod_rearrange {L M P N : Type*} [MeasurableSpace L] [
   funext ⟨l, m, p, n⟩
   rfl
 
+/- English proof (translation)
+Establish `sf : ∀ {V : Set (B.Mat k r)} {μ : Measure (Mt k r)}, B.IsHaarOn V μ → SigmaFinite μ`. Introduce `V μ h`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`. Use `haveI := sf S.haarW`.
+
+Use `haveI := sf S.haarW'`. Use `haveI := sf hμ0`. Use `haveI := sf hμ0'`. Establish `m1 : Measurable (fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of.symm (C2.tauM k r S.z (G.upper p.1) * Matrix.of p.2))` using `(HC.cont_Phi S.z).measurable`. Establish `m2 : Measurable (fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of.symm (C2.tauM k r S.z' (G.upper p.1) * Matrix.of p.2))` using `(HC.cont_Phi S.z').measurable`.
+
+Establish `hA : MeasurePreserving (fun p : (C2.Lstidx w → ℂ) × OD.RR k r w => ((p.2.1.1, (e (p.1, p.2.1.2.1), p.2.1.2.2)), p.2.2)) ((volume : Measure (C2.Lstidx w → ℂ)).prod (OD.nuR S w μ0 μ0')) ((S.μW.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0)).prod (S.μW'.prod ((volume : Measure …`. Establish `h1` using `(measurePreserving_prodAssoc (volume : Measure (C2.Lstidx w → ℂ)) (S.μW.prod ((volume : Measure (C2.LPidx w → ℂ)).prod μ0)) (S.μW'.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0'))).symm`. Establish `h2` using `(measurePreserving_prod_rearrange (volume : Measure (C2.Lstidx w → ℂ)) S.μW (volume : Measure (C2.LPidx w → ℂ)) μ0).prod (MeasurePreserving.id (S.μW'.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0')))`. Establish `h3` using `((MeasurePreserving.id S.μW).prod (he.prod (MeasurePreserving.id μ0))).prod (MeasurePreserving.id (S.μW'.prod ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0')))`. Use `h3.comp (h2.comp h1)` as an intermediate fact.
+
+Simplify using `only [OD.nuR]`. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals first | rfl | (funext p; rfl)`. Establish `hB : Measurable (Prod.map (Prod.map (id : Mt k r → Mt k r) (fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of.symm (C2.tauM k r S.z (G.upper p.1) * Matrix.of p.2))) (Prod.map (id : Mt k r → Mt k r) (fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of.symm (C2.tauM k r S.z' (G.upper p …` using `(measurable_id.prodMap m1).prodMap (measurable_id.prodMap m2)`. Establish `hXi : (fun p : (C2.Lstidx w → ℂ) × OD.RR k r w => OD.Xi S w e p.1 p.2) = (Prod.map (Prod.map (id : Mt k r → Mt k r) (fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of.symm (C2.tauM k r S.z (G.upper p.1) * Matrix.of p.2))) (Prod.map (id : Mt k r → Mt k r) (fun p : (G.UT (r + 1) → ℂ …`.
+
+Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[hXi, ← Measure.map_map hB hA.measurable, hA.map_eq, ← Measure.map_prod_map _ _ (measurable_id.prodMap m1) (measurable_id.prodMap m2), ← Measure.map_prod_map _ _ measurable_id m1, ← Measure.map_prod_map _ _ measurable_id m2, Measure.map_id, Measure.map_id]`. Use `show (S.μW.prod S.μN).prod (S.μW'.prod S.μN) = _`. Establish `e2 : S.μW'.prod S.μN = S.μW'.prod (c2 • ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0').map (fun p => Matrix.of.symm (C2.tauM k r S.z' (G.upper p.1) * Matrix.of p.2)))` using `by rw [← hN2]`.
+
+Rewrite using `[e2, hN1]`. Rewrite using `[ENNReal.smul_def c1, ENNReal.smul_def c2, ENNReal.smul_def (c1 * c2), Measure.prod_smul_right, Measure.prod_smul_right, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, ENNReal.coe_mul]`.
+-/
 theorem muSS_eq (S : B.RealPlaceData k r Wp Wq) (w : Equiv.Perm (Fin (r + 1)))
     (e : ((C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) ≃ᵐ (G.UT (r + 1) → ℂ)) (he : MeasurePreserving e volume volume)
     (μ0 μ0' : Measure (Mt k r)) (hμ0 : B.IsHaarOn (C2.N0set k r S.z) μ0)

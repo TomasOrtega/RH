@@ -5,6 +5,17 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor (PSpace)
 
 namespace GlobalTheory.CompanionTheory.GE
 
+/- English proof (translation)
+Use `le_antisymm ?_ (sup_le ?_ ?_)` and prove the remaining obligations. Use `set K := Scheme.Hom.ker (a ≫ t) ⊔ Scheme.Hom.ker (b ≫ t) with hK`. Establish `hA : Scheme.Hom.ker (a ≫ t) ≤ K.subschemeι.ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `le_sup_left`.
+
+Establish `hB : Scheme.Hom.ker (b ≫ t) ≤ K.subschemeι.ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]`. Conclude with `le_sup_right`. Set `u : K.subscheme ⟶ A` to `IsClosedImmersion.lift (a ≫ t) K.subschemeι hA`. Set `v : K.subscheme ⟶ B` to `IsClosedImmersion.lift (b ≫ t) K.subschemeι hB`.
+
+Establish `hu : u ≫ a ≫ t = K.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`. Establish `hv : v ≫ b ≫ t = K.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`. Establish `huv : u ≫ a = v ≫ b`. Rewrite using `[← cancel_mono t, Category.assoc, Category.assoc, hu, hv]`. Establish `hl : h.lift u v huv ≫ (f ≫ a) ≫ t = K.subschemeι`.
+
+Rewrite using `[← Category.assoc, ← Category.assoc, h.lift_fst, Category.assoc]`. Conclude with `hu`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc]`. Conclude with `Scheme.Hom.le_ker_comp _ _`.
+
+Rewrite using `[h.w, Category.assoc]`. Conclude with `Scheme.Hom.le_ker_comp _ _`.
+-/
 theorem ker_inter_eq_sup {X Y A B Z : Scheme.{0}} (t : Y ⟶ X) (a : A ⟶ Y) (b : B ⟶ Y) (f : Z ⟶ A)
     (g : Z ⟶ B) [IsClosedImmersion t] [IsClosedImmersion a] [IsClosedImmersion b]
     (h : IsPullback f g a b) :

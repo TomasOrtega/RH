@@ -27,9 +27,15 @@ def resRd {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hT : AllTest Xo c) (k : U.Co
     funext y
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resRd_apply {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hT : AllTest Xo c) (k : U.Comp) (f : Rul Xo c)
     (y : ↥(U.X k).dom) : resRd U hT k f y = rdU U f k y.1 := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `[resRd_apply, map_smulₛₗ]`.
+-/
 theorem resRd_smul {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hT : AllTest Xo c) (k : U.Comp) (a : c.F) (f : Rul Xo c) :
     resRd U hT k (a • f) = σ a • resRd U hT k f := by
   funext y

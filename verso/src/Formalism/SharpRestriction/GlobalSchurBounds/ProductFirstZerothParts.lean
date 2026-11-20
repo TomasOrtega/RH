@@ -67,18 +67,30 @@ def Gs (i : ℕ) (v : (D.mem u).A.vT) : Fn D u i →ₗ[ℂ] Fn D u i :=
 def GsD (i : ℕ) (v : (D.mem u).A.vT) : Fn D u i →ₗ[ℂ] Fn D u i :=
   ∑ a : ((D.mem u).A.Fv v)ˣ, (D.mem u).A.psiT v (-(a : (D.mem u).A.Fv v)) • dia D u i v a⁻¹
 
+/- English proof (translation)
+Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ`. Use function extensionality and compare the values at `c`. Rewrite using `[(D.fm u).rhoT_dil]`. Both sides reduce to the same expression.
+-/
 theorem dia_zero (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) : dia D u 0 v a = (D.mem u).A.rhoT v a := by
   apply LinearMap.ext; intro φ; funext c
   rw [(D.fm u).rhoT_dil]; rfl
 
+/- English proof (translation)
+Simplify using `only [Nm, Formalism.BasicNotions.ColumnsAtT.Nm, dia_zero]`.
+-/
 theorem Nm_zero (v : (D.mem u).A.vT) : Nm D u 0 v = (D.mem u).A.Nm v := by
   simp only [Nm, Formalism.BasicNotions.ColumnsAtT.Nm, dia_zero]
 
+/- English proof (translation)
+Simplify using `only [Gs, Formalism.BasicNotions.ColumnsAtT.gauss, Formalism.ThetaLiftIndependence.gaussOp, dia_zero]`.
+-/
 theorem Gs_zero (v : (D.mem u).A.vT) : Gs D u 0 v = (D.mem u).A.gauss v := by
   simp only [Gs, Formalism.BasicNotions.ColumnsAtT.gauss, Formalism.ThetaLiftIndependence.gaussOp, dia_zero]
 
 def MramI (i : ℕ) : Submodule ℂ (Fn D u i) := (D.fm u).Fi i ⊓ ⨅ v, LinearMap.ker (Nm D u i v)
 
+/- English proof (translation)
+Simplify using `only [MramI, Formalism.BasicNotions.ColumnsAtT.Mram, Nm_zero, (D.fm u).Fi_zero]`.
+-/
 theorem MramI_zero : MramI D u 0 = (D.mem u).A.Mram := by
   simp only [MramI, Formalism.BasicNotions.ColumnsAtT.Mram, Nm_zero, (D.fm u).Fi_zero]
 
@@ -86,6 +98,9 @@ def KT (i : ℕ) : Fn D u i →ₗ[ℂ] Fn D u (i + 1) := (D.mem u).C.Klin i
 
 def colT : Fn D u 0 → Fn D u D.R.m := (D.mem u).C.col
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem KT_apply (i : ℕ) (φ : Fn D u i) : KT D u i φ = (D.mem u).C.K i φ := rfl
 
 abbrev Wt (τ : D.what₂.Tau) : ℕ := Wtau D u τ
@@ -117,6 +132,11 @@ def tL {i : ℕ} (w : D.what₂.places.Pl) (n : ℤ) (A : Submodule (Ow D w) (Vl
 
 abbrev Nlam (w : D.what₂.places.Pl) : Submodule (Ow D w) (Vl D u 0) := LT.Nlam D u w
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Formalism.BasicNotions.MemberForms.ramL, Submodule.mem_inf]`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h2 : r • x ∈ (D.fm u).ramSub` using `h.2`. Establish `hr' : (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r) ≠ 0` using `by simpa using hr`. Rewrite `h2` using `[← algebraMap_smul D.what₂.LL r x]`.
+
+Establish `h3` using `(D.fm u).ramSub.smul_mem (algebraMap (𝓞 D.what₂.LL) D.what₂.LL r)⁻¹ h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hr', one_smul]`. Conclude with `h3`.
+-/
 theorem ram_saturated (x : Vl D u 0) (hx : x ∈ ((D.fm u).lat 0).L) (r : 𝓞 D.what₂.LL) (hr : r ≠ 0)
     (h : r • x ∈ (D.fm u).ramL) : x ∈ (D.fm u).ramL := by
   rw [Formalism.BasicNotions.MemberForms.ramL, Submodule.mem_inf] at h ⊢
@@ -310,6 +330,9 @@ def ETpi : ℝ :=
 
 abbrev ET (w : D.what₂.places.Pl) : ℝ := EatT D u w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ET_eq (w : D.what₂.places.Pl) : ET D u w = if (D.fm u).seenP w then ETpi D u else 0 := rfl
 
 def Conclusion5Sharp : Prop :=
@@ -374,6 +397,11 @@ def CSpan {n : ℕ} (lam : ι → DomWeight n) : Submodule ℂ (MvPolynomial (ι
   Submodule.span ℂ {p | ∃ f : ι → MvPolynomial (Fin n × Fin n) ℂ,
     (∀ τ, f τ ∈ delSq ℂ n (lam τ)) ∧ p = ten f}
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Finsupp.comapDomain_apply, Finsupp.finset_sum_apply, Finset.sum_eq_single τ]`. Conclude with `Finsupp.mapDomain_apply (Prod.mk_right_injective τ) _ a`. Introduce `b _ hb`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `hb (congrArg Prod.fst hy)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+-/
 lemma comap_sum {α : Type} (v : ι → (α →₀ ℕ)) (τ : ι) :
     (∑ σ, (v σ).mapDomain (Prod.mk σ)).comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn = v τ := by
   ext a
@@ -385,6 +413,9 @@ lemma comap_sum {α : Type} (v : ι → (α →₀ ℕ)) (τ : ι) :
     exact hb (congrArg Prod.fst hy)
   · intro h; exact absurd (Finset.mem_univ τ) h
 
+/- English proof (translation)
+Unfold `ten`. Simplify using `only [MvPolynomial.rename_monomial]`. Rewrite using `[MvPolynomial.monomial_sum_one]`.
+-/
 lemma ten_monomial {n : ℕ} (v : ι → ((Fin n × Fin n) →₀ ℕ)) :
     ten (fun τ => MvPolynomial.monomial (v τ) (1 : ℂ)) =
       MvPolynomial.monomial (∑ σ, (v σ).mapDomain (Prod.mk σ)) 1 := by
@@ -397,9 +428,19 @@ def tenM (n : ℕ) : MultilinearMap ℂ (fun _ : ι => MvPolynomial (Fin n × Fi
   (MultilinearMap.mkPiAlgebra ℂ ι (MvPolynomial (ι × Fin n × Fin n) ℂ)).compLinearMap
     (fun τ => (MvPolynomial.rename (Prod.mk τ) : MvPolynomial (Fin n × Fin n) ℂ →ₐ[ℂ] _).toLinearMap)
 
+/- English proof (translation)
+Simplify using `[tenM, ten]`.
+-/
 lemma tenM_apply (n : ℕ) (f : ι → MvPolynomial (Fin n × Fin n) ℂ) : tenM n f = ten f := by
   simp [tenM, ten]
 
+/- English proof (translation)
+Establish `key : (blk (n` using `n) (n' := n') (fun τ => F τ)).compMultilinearMap (tenM (ι := ι) n) = (tenM (ι := ι) n').compLinearMap F := by`. Apply `Module.Basis.ext_multilinear (fun _ => MvPolynomial.basisMonomials (Fin n × Fin n) ℂ)` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, MultilinearMap.compLinearMap_apply, tenM_apply, MvPolynomial.coe_basisMonomials]`. Rewrite using `[ten_monomial]`.
+
+Establish `hc` using `(MvPolynomial.basisMonomials (ι × Fin n × Fin n) ℂ).constr_basis ℂ (fun mon => ten fun τ => F τ (MvPolynomial.monomial (mon.comapDomain (Prod.mk τ) (Prod.mk_right_injective τ).injOn) 1)) (∑ σ, (v σ).mapDomain (Prod.mk σ))`. Simplify using `only [MvPolynomial.coe_basisMonomials] at hc`. Unfold `blk`. Rewrite using `[hc]`. Simplify using `only [comap_sum]`.
+
+Establish `h1` using `congrArg (fun g => g f) key`. Simplify `h1` using `[tenM_apply]`.
+-/
 theorem blk_ten {n n' : ℕ}
     (F : ι → MvPolynomial (Fin n × Fin n) ℂ →ₗ[ℂ] MvPolynomial (Fin n' × Fin n') ℂ)
     (f : ι → MvPolynomial (Fin n × Fin n) ℂ) :
@@ -430,6 +471,9 @@ def IntSpan {n : ℕ} (w : D.what₂.places.Pl) (lam : D.what₂.Tau → DomWeig
     r ∈ Ow D w ∧ (∀ τ, f τ ∈ delSq ℤ n (lam τ)) ∧
     p = D.what₂.embLL r • ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ))}
 
+/- English proof (translation)
+The claim follows from `Nat.sub_add_cancel (Ranks.N_pos R R.m)`.
+-/
 lemma Nm_succ (R : Ranks) : R.N R.m - 1 + 1 = R.N R.m := Nat.sub_add_cancel (Ranks.N_pos R R.m)
 
 def wSh {n : ℕ} (l : DomWeight n) (c : ℤ) : DomWeight n where
@@ -442,9 +486,17 @@ def lamTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m) := wSh ((D.fm u).lam D.
 
 def sgTr (τ : D.what₂.Tau) : DomWeight (D.R.N D.R.m - 1) := wSh ((D.fm u).sg τ) (cTw D.R)
 
+/- English proof (translation)
+Simplify using `[DomWeight.detShift, hn, wSh]`.
+-/
 theorem detShift_wSh {n : ℕ} (l : DomWeight n) (c : ℤ) (hn : 0 < n) : (wSh l c).detShift = l.detShift - c := by
   simp [DomWeight.detShift, hn, wSh]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hn : 0 < n` using `Fin.pos i`. Unfold `DomWeight.natW`. Rewrite using `[detShift_wSh l c hn]`. Use `congr 1`.
+
+Use `show l.w i - c - (l.detShift - c) = l.w i - l.detShift`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem natW_wSh {n : ℕ} (l : DomWeight n) (c : ℤ) : (wSh l c).natW = l.natW := by
   funext i
   have hn : 0 < n := Fin.pos i
@@ -454,13 +506,22 @@ theorem natW_wSh {n : ℕ} (l : DomWeight n) (c : ℤ) : (wSh l c).natW = l.natW
   show l.w i - c - (l.detShift - c) = l.w i - l.detShift
   ring
 
+/- English proof (translation)
+Unfold `delSq`. Rewrite using `[natW_wSh]`.
+-/
 theorem delSq_wSh (R : Type) [CommRing R] {n : ℕ} (l : DomWeight n) (c : ℤ) : delSq R n (wSh l c) = delSq R n l := by
   unfold delSq; rw [natW_wSh]
 
+/- English proof (translation)
+Unfold `extremal`. Rewrite using `[natW_wSh]`.
+-/
 theorem extremal_wSh (R : Type) [CommRing R] {n : ℕ} (l : DomWeight n) (c : ℤ) :
     extremal R n (wSh l c) = extremal R n l := by
   unfold extremal; rw [natW_wSh]
 
+/- English proof (translation)
+Introduce `i` and use `⟨sub_le_sub_right (h τ i).1 _, sub_le_sub_right (h τ i).2 _⟩`.
+-/
 theorem interlaceTr (h : (D.fm u).SgInterlace) (τ : D.what₂.Tau) :
     Formalism.MainNotions.PrimeDegreeVariant.Interlace (Nm_succ D.R) (lamTr D u τ) (sgTr D u τ) :=
   fun i => ⟨sub_le_sub_right (h τ i).1 _, sub_le_sub_right (h τ i).2 _⟩
@@ -540,6 +601,15 @@ def adm3 (G : Th22 D) : Prop := Formalism.MainNotions.TaylorLogMetric.mom22 D G.
 def ChiTie (G : Th22 D) : Prop :=
   ∃ idl : D.Dt ⧸ D.UO → Formalism.MainNotions.TaylorLogMetric.IdE D, Formalism.MainNotions.TaylorLogMetric.RelDetPinned D idl ∧ G.χ = Formalism.MainNotions.TaylorLogMetric.chiRec D idl
 
+/- English proof (translation)
+Take `⟨idl, hpin, hχ⟩` from `t`. Unfold `adm1 Formalism.MainNotions.TaylorLogMetric.eq22 at h`. Take `⟨-, h1, h2, h3⟩` from `h`. Use `letI := D.host.cmStar`. Establish `key : ∀ N (L L' : SDLat D.host.E N), G.χ (Formalism.MainNotions.TaylorLogMetric.detId D L.1 L'.1) = ((Formalism.MainNotions.TaylorLogMetric.chiQ D (D.relDet N L L') : ℂˣ) : ℂ)`.
+
+Introduce `N L L'`. Rewrite using `[hχ, ← hpin.2.2.2.2 N L L']`. Unfold `Formalism.MainNotions.TaylorLogMetric.chiRec`. Establish `hex : ∃ x, idl x = idl (D.relDet N L L')` using `⟨_, rfl⟩`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `congrArg (fun x => ((Formalism.MainNotions.TaylorLogMetric.chiQ D x : ℂˣ) : ℂ)) (hpin.1 hex.choose_spec)`. Unfold `Formalism.MainNotions.TaylorLogMetric.RelativeDeterminantEquation`. Use `⟨h1, fun N N' L L' L'' hN hN' => ?_, fun N N' L L₁ L' hN hN' => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 N N' L L' L'' hN hN']`. Simplify using `only [key, Units.val_zpow_eq_zpow_val]`.
+
+Rewrite using `[h3 N N' L L₁ L' hN hN']`. Simplify using `only [key, Units.val_zpow_eq_zpow_val]`.
+-/
 theorem relative_determinant_equation_of_admissible (G : Th22 D) (h : adm1 G) (t : ChiTie G) : Formalism.MainNotions.TaylorLogMetric.RelativeDeterminantEquation D G.Tr G.e := by
   obtain ⟨idl, hpin, hχ⟩ := t
   unfold adm1 Formalism.MainNotions.TaylorLogMetric.eq22 at h
@@ -586,12 +656,18 @@ def FamilyEventuallyPointwiseAtConst {eps : ℝ} (Fm : Formalism.MainNotions.Fam
 
 def ShareFamilyAtConstant {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∃ C : ℝ, FamilyEventuallyPointwiseAtConst Fm C
 
+/- English proof (translation)
+Introduce and unpack `⟨x1, hA⟩`. Take `⟨x0, hS⟩` from `h`. Conclude with `⟨max x0 x1, fun x hx i u hs => hS x (le_trans (le_max_left _ _) hx) i u hs (hA x (le_trans (le_max_right _ _) hx) i u)⟩`.
+-/
 theorem family_statement_of_pointwise_const {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (C : ℝ) (h : FamilyEventuallyPointwiseAtConst Fm C) : KudlaFamilyStatement Fm C := by
   rintro ⟨x1, hA⟩
   obtain ⟨x0, hS⟩ := h
   exact ⟨max x0 x1, fun x hx i u hs =>
     hS x (le_trans (le_max_left _ _) hx) i u hs (hA x (le_trans (le_max_right _ _) hx) i u)⟩
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `h`. Introduce `hA`. Conclude with `⟨C, family_statement_of_pointwise_const Fm C hC hA⟩`.
+-/
 theorem family_statement_exists_of_pointwise {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (h : ShareFamilyAtConstant Fm) : ExistsConstFamilyConclusionsOfHypotheses Fm := by
   obtain ⟨C, hC⟩ := h
   intro hA

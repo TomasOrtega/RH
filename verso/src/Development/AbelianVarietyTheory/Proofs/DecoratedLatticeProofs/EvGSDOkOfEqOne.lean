@@ -11,6 +11,9 @@ namespace GlobalTheory.CoreHt
 
 open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Col Formalism.L2.Ker GlobalTheory.IndefiniteRowSideFullHecke.PlaceLogThetaBounds
 
+/- English proof (translation)
+Introduce `X _ hX Pr R W Ch sel Sg mu P u hPr hmu`. Substitute `hmu` using the available equality. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.WeightedNormSquareDivisors.evOk W Ch sel Sg hX hPr P u`.
+-/
 theorem evGSD_ok_of_eq_one : ∀ (X : Fields) [IsTotallyComplex X.K] (hX : X.Ok) (Pr : Primes X) (R : Ranks)
     (W : Wts X Pr.Word R) (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg)

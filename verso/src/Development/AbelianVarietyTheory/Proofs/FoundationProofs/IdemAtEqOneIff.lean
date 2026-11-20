@@ -20,10 +20,16 @@ open NumberField IsDedekindDomain AlgebraicGeometry CategoryTheory ReciprocityTh
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y`.
+-/
 theorem exists_bc {S T : Type} [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T)
     (y : FrPt Xo c S) : ∃ z, FrMap φ y z :=
   GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.abelianSchemeLaws_all.1.secBaseChange E H Dw l Xo c S T φ y
 
+/- English proof (translation)
+Take `⟨w', hw'⟩` from `exists_bc ψ z`. Rewrite using `[(frMap_unique_refl_iff E H Dw l Xo c R T χ y).1 w w' hw (h ▸ ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ _ hz hw')]` and apply the resulting hypothesis.
+-/
 theorem frMap_of_comp {R S T : Type} [CommRing R] [Algebra c.F R] [CommRing S] [Algebra c.F S] [CommRing T]
     [Algebra c.F T] {φ : R →ₐ[c.F] S} {ψ : S →ₐ[c.F] T} {χ : R →ₐ[c.F] T} (h : ψ.comp φ = χ) {y : FrPt Xo c R}
     {z : FrPt Xo c S} {w : FrPt Xo c T} (hz : FrMap φ y z) (hw : FrMap χ y w) : FrMap ψ z w := by
@@ -33,6 +39,11 @@ theorem frMap_of_comp {R S T : Type} [CommRing R] [Algebra c.F R] [CommRing S] [
 abbrev idemAt (Z : Comp Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) : S :=
   CompSplitPfB.cspB_idem _ (CompSplitPfB.cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over
 
+/- English proof (translation)
+Use `⟨fun h q => (CompSplitPfB.cspB_idem_spec _ (CompSplitPfB.cspB_isClopen (CompSplitPfD.cspD_comp_disj Xo c) Z) y.x y.x_over q).1 ?_, fun h => ?_⟩` and prove the remaining obligations. Use `show idemAt Z y ∉ _`. Rewrite using `[h]`. Conclude with `(Ideal.ne_top_iff_one _).1 q.isPrime.ne_top`. Use `CompSplitPfB.cspB_idem_eq_of (CompSplitPfB.cspB_idem_idem _ _ _ _) IsIdempotentElem.one fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[CompSplitPfB.cspB_idem_spec]`. Conclude with `iff_of_true (h q) ((Ideal.ne_top_iff_one _).1 q.isPrime.ne_top)`.
+-/
 theorem idemAt_eq_one_iff (Z : Comp Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) :
     idemAt Z y = 1 ↔ LiesOn Z y := by
   refine ⟨fun h q => (CompSplitPfB.cspB_idem_spec _
@@ -50,12 +61,28 @@ def IsCoef (Z : Comp Xo c) (y₀ : FrPt Xo c c.F) (τ : E →+* ℂ) {S : Type} 
     (g : (∀ ρ : E →+* ℂ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) T)) (a : T),
     FrMap φ y w → FrMap (Algebra.ofId c.F T) y₀ z → FrChg g a w z → φ s = (g τ).det
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h)`. Use `he.eq` as an intermediate fact. Take the linear combination `ht - hs - e * hb - b * this`.
+-/
 theorem eq_of_mk_eq {S : Type} [CommRing S] {e s t : S} (he : IsIdempotentElem e) (hs : e * s = s) (ht : e * t = t)
     (h : Ideal.Quotient.mk (Ideal.span {1 - e}) s = Ideal.Quotient.mk (Ideal.span {1 - e}) t) : s = t := by
   obtain ⟨b, hb⟩ := Ideal.mem_span_singleton'.1 (Ideal.Quotient.eq.1 h)
   have := he.eq
   linear_combination ht - hs - e * hb - b * this
 
+/- English proof (translation)
+Establish `he : IsIdempotentElem (idemAt Z y)` using `CompSplitPfB.cspB_idem_idem _ _ _ _`. Set `π` to `Ideal.Quotient.mkₐ c.F (Ideal.span {1 - idemAt Z y})`. Establish `hπ : π (idemAt Z y) = 1`. Rewrite using `[← map_one π]`. Conclude with `(Ideal.Quotient.eq.2 (Ideal.mem_span_singleton_self _)).symm`.
+
+Take `⟨w, hw⟩` from `exists_bc π y`. Take `⟨z, hz⟩` from `exists_bc (Algebra.ofId c.F (S ⧸ Ideal.span {1 - idemAt Z y})) y₀`. Establish `hwZ : LiesOn Z w` using `(idemAt_eq_one_iff Z w).1 ((CompSplitPfB.cspB_idem_map _ _ π y.x_over w.x_over hw.1).symm.trans hπ)`. Take `⟨g, a, hg, hc⟩` from `(frChg_exists_unique E H Dw l Xo c _ w z).1 (hz.1.trans (hy₀ _ w hwZ).symm)`. Take `⟨d', hd'⟩` from `(hg τ).exists_right_inv`.
+
+Take `⟨s, hs⟩` from `Ideal.Quotient.mkₐ_surjective c.F _ (g τ).det`. Take `⟨s', hs'⟩` from `Ideal.Quotient.mkₐ_surjective c.F _ d'`. Establish `k : ∀ t, idemAt Z y * (idemAt Z y * t) = idemAt Z y * t` using `fun t => by rw [← mul_assoc, he.eq]`. Establish `hs₁ : π (idemAt Z y * s) = (g τ).det` using `by rw [map_mul, hπ, one_mul]; exact hs`. Establish `hs₂ : π (idemAt Z y * s') = d'` using `by rw [map_mul, hπ, one_mul]; exact hs'`.
+
+Use `⟨idemAt Z y * s, idemAt Z y * s', ⟨k s, fun T _ _ φ w' z' g' a' hw' hz' hc' => ?_⟩, fun t ht => eq_of_mk_eq he ht.1 (k s) ((ht.2 _ π w z g a hw hz hc).trans hs₁.symm), k s', eq_of_mk_eq he (by rw [← mul_assoc, k]) he.eq ?_⟩` and prove the remaining obligations. Establish `h1 : φ (idemAt Z y) = 1` using `(CompSplitPfB.cspB_idem_map _ _ φ y.x_over w'.x_over hw'.1).trans ((CompSplitPfB.cspB_idem_congr _ _ z'.x_over w'.x_over hc'.1.symm).trans ((idemAt_eq_one_iff Z z').2 (liesOn_frMap hz' h₀)))`. Set `ψ` to `Ideal.Quotient.liftₐ (Ideal.span {1 - idemAt Z y}) φ fun b hb => by`. Take `⟨b', rfl⟩` from `Ideal.mem_span_singleton'.1 hb`. Rewrite using `[map_mul, map_sub, h1, map_one, sub_self, mul_zero]`.
+
+Establish `hψ : ψ.comp π = φ` using `Ideal.Quotient.liftₐ_comp _ _ _`. Establish `c₁` using `(ChgBC.frChg_baseChange E H Dw l Xo c _ T ψ w z w' z' g a hc (frMap_of_comp hψ hw hw')).1 (frMap_of_comp (Subsingleton.elim _ _) hz hz')`. Rewrite using `[((frChg_exists_unique E H Dw l Xo c T w' z').2 _ _ _ _ hc' c₁).1, ← hψ, AlgHom.comp_apply, hs₁]`. Conclude with `ψ.toRingHom.map_det (g τ)`. Use `show π _ = π _`.
+
+Rewrite using `[map_mul, hs₁, hs₂, hd', hπ]`.
+-/
 theorem exists_isCoef {Z : Comp Xo c} {y₀ : FrPt Xo c c.F} (h₀ : LiesOn Z y₀)
     (hy₀ : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y →
       y.x = spMap (algebraMap c.F S) ≫ y₀.x) (τ : E →+* ℂ) {S : Type} [CommRing S] [Algebra c.F S]
@@ -94,6 +121,13 @@ theorem exists_isCoef {Z : Comp Xo c} {y₀ : FrPt Xo c c.F} (h₀ : LiesOn Z y�
   · show π _ = π _
     rw [map_mul, hs₁, hs₂, hd', hπ]
 
+/- English proof (translation)
+Establish `h : ∀ (ρ : E →+* ℂ) (i : Fin (Dw.mult ρ)), exOf Dw (flatWt Dw τ) 0 (some ⟨ρ, i⟩) = open Classical in if ρ = τ.1 then -1 else 0` using `fun ρ i => by`. Establish `hi` using `i.2`. Establish `hρ : ρ (H.rt : E) = H.rt0`. Assume the negation of the conclusion as `hn`. Simplify using `[Datum.mult, hn, hq] at hi`.
+
+Use `(wtOf_big (flatWt Dw τ) 0 ⟨ρ, hρ⟩ i (by simpa [Datum.mult, hρ] using hi)).trans ?_` and prove the remaining obligations. Simplify using `only [flatWt, parWt, sub_zero]`. Distinguish the cases in `h1 : ρ = τ.1`. Rewrite using `[if_pos h1, if_pos (Subtype.ext h1)]`. Rewrite using `[if_neg h1, if_neg fun h2 => h1 (congrArg Subtype.val h2)]`.
+
+Establish `h0 : exOf Dw (flatWt Dw τ) 0 none = 0` using `rfl`. Rewrite using `[Fintype.prod_option, h0, zpow_zero, one_mul, Fintype.prod_sigma, Finset.prod_eq_single τ.1 (fun ρ _ hρ => by simp [h, hρ]) (by simp)]`. Simplify using `[h]`.
+-/
 theorem prod_exOf_flatWt (hq : Dw.q = 0) (τ : Psi H) {G : Type} [CommGroup G] (t : Ix Dw → G) :
     ∏ i, t i ^ exOf Dw (flatWt Dw τ) 0 i = (∏ i, t (some ⟨τ.1, i⟩))⁻¹ := by
   have h : ∀ (ρ : E →+* ℂ) (i : Fin (Dw.mult ρ)),
@@ -112,6 +146,15 @@ theorem prod_exOf_flatWt (hq : Dw.q = 0) (τ : Psi H) {G : Type} [CommGroup G] (
     (fun ρ _ hρ => by simp [h, hρ]) (by simp)]
   simp [h]
 
+/- English proof (translation)
+Establish `k1 : ∀ p y, idem Z p y * f' p y = f' p y` using `fun p y => congrFun (congrFun h1 p) y`. Establish `k2 : ∀ p y, f p y * f' p y = idem Z p y` using `fun p y => congrFun (congrFun h2 p) y`. Establish `hi` using `idem_mem_secZ Z`. Use `⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩` and prove the remaining obligations. Establish `a1` using `congrArg φ (k1 p y)`.
+
+Establish `a2` using `congrArg φ (k2 p y)`. Rewrite `a1` using `[map_mul, ← hi.1 p q φ y z h]`. Rewrite `a2` using `[map_mul, ← hi.1 p q φ y z h, ← hf.1 p q φ y z h]`. Take the linear combination `a1 - k1 q z - f' q z * a2 + φ (f' p y) * k2 q z`. Establish `a1` using `k2 p y'`.
+
+Establish `a0 : idem Z p y' = idem Z p y` using `by simpa using hi.2 p t y y' h`. Establish `a4` using `k1 p y'`. Rewrite `a1` using `[hf.2 p t y y' h, a0]`. Rewrite `a4` using `[a0]`. Establish `a3 : ((∏ i, t i ^ (-e) i : (p.R)ˣ) : p.R) * ((∏ i, t i ^ e i : (p.R)ˣ) : p.R) = 1`.
+
+Rewrite using `[← Units.val_mul, ← Finset.prod_mul_distrib]`. Simplify using the standard rewrite rules. Generalize the expression as in `((∏ i, t i ^ (-e) i : (p.R)ˣ) : p.R) = A at *`. Generalize the expression as in `((∏ i, t i ^ e i : (p.R)ˣ) : p.R) = B at *`. Take the linear combination `A * f' p y * a1 - a4 - f' p y' * k2 p y + A * k1 p y - f p y * f' p y * f' p y' * a3`.
+-/
 theorem inv_mem_secZ_on {Z : Comp Xo c} {e : Ix Dw → ℤ} {f f' : Rul Xo c} (hf : f ∈ secZ Xo c e)
     (h1 : idem Z * f' = f') (h2 : f * f' = idem Z) : f' ∈ secZ Xo c (-e) := by
   have k1 : ∀ p y, idem Z p y * f' p y = f' p y := fun p y => congrFun (congrFun h1 p) y
@@ -134,6 +177,17 @@ theorem inv_mem_secZ_on {Z : Comp Xo c} {e : Ix Dw → ℤ} {f f' : Rul Xo c} (h
     generalize ((∏ i, t i ^ e i : (p.R)ˣ) : p.R) = B at *
     linear_combination A * f' p y * a1 - a4 - f' p y' * k2 p y + A * k1 p y - f p y * f' p y * f' p y' * a3
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hq Z τ y₀ h₀ hy₀`. Use `choose f f' hf hu h1 h2 using fun (p : TRing c.F) (y : FrPt Xo c p.R) => exists_isCoef h₀ hy₀ τ.1 y`. Establish `i1 : idem Z * f' = f'` using `funext fun p => funext fun y => h1 p y`. Establish `i2 : (f : Rul Xo c) * f' = idem Z` using `funext fun p => funext fun y => h2 p y`. Establish `hm : f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0)`.
+
+Use `⟨fun p q φ y z h => (hu q z _ ⟨?_, fun T _ _ ψ w z' g a hw hz hc => ?_⟩).symm, fun p t y y' h => (hu p y' _ ⟨?_, fun T _ _ ψ w' z' g a hw hz hc => ?_⟩).symm⟩` and prove the remaining obligations. Rewrite using `[idemAt, ← CompSplitPfB.cspB_idem_map _ _ φ y.x_over z.x_over h.1, ← map_mul]`. Conclude with `congrArg φ (hf p y).1`. Conclude with `(hf p y).2 T (ψ.comp φ) w z' g a (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans _ _ h hw) hz hc`. Rewrite using `[mul_left_comm, idemAt, CompSplitPfB.cspB_idem_congr _ _ y.x_over y'.x_over h.1]`.
+
+Conclude with `congrArg _ (hf p y).1`. Take `⟨k, k0, k1, hk⟩` from `((frBor_calculus E H Dw l Xo c _ y y' y').1 t).1 h`. Take `⟨w, hw₀⟩` from `exists_bc ψ y`. Establish `c₁` using `(ChgBC.frChg_baseChange E H Dw l Xo c _ T ψ y y' w w' k _ hk hw₀).1 hw`. Establish `c₂` using `(frChg_refl_and_comp E H Dw l Xo c T w w' z').2 _ _ _ _ c₁ hc`.
+
+Establish `hd : (k τ.1).det = ((∏ i, t (some ⟨τ.1, i⟩) : (p.R)ˣ) : p.R)`. Rewrite using `[Matrix.det_of_isLowerTriangular _ (fun i j hij => k0 τ.1 i j hij), Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun i _ => k1 τ.1 i`. Establish `hd' : ((k τ.1).map ψ).det = ψ (k τ.1).det` using `(ψ.toRingHom.map_det (k τ.1)).symm`. Rewrite using `[map_mul, (hf p y).2 T ψ w z' _ _ hw₀ hz c₂, Matrix.det_mul, hd', hd, prod_exOf_flatWt hq, mul_left_comm, ← map_mul, Units.inv_mul, map_one, mul_one]`.
+
+Use `⟨f, f', hm, inv_mem_secZ_on hm i1 i2, funext fun p => funext fun y => (hf p y).1, i1, i2, fun S _ _ y z g a ht hz hc => ?_⟩` and prove the remaining obligations. Unfold `evR evalAt`. Rewrite using `[dif_pos ht]`. Conclude with `(hf _ _).2 S _ y z g a ht.choose_spec.choose_spec.choose_spec hz hc`.
+-/
 theorem exists_flatRule : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), Dw.q = 0 → ∀ (Z : Comp Xo c) (τ : Psi H) (y₀ : FrPt Xo c c.F), LiesOn Z y₀ → (∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), LiesOn Z y → y.x = spMap (algebraMap c.F S) ≫ y₀.x) → ∃ f f' : Rul Xo c, f ∈ secZ Xo c (exOf Dw (flatWt Dw τ) 0) ∧ f' ∈ secZ Xo c (-exOf Dw (flatWt Dw τ) 0) ∧ idem Z * f = f ∧ idem Z * f' = f' ∧ f * f' = idem Z ∧ ∀ (S : Type) [CommRing S] [Algebra c.F S] (y z : FrPt Xo c S) (g : (∀ ρ : E →+* ℂ, Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) S)) (a : S), Tested y → FrMap (Algebra.ofId c.F S) y₀ z → FrChg g a y z → evR Xo c f y = (g τ.1).det := by
   intro E _ _ _ H Dw l Xo c hq Z τ y₀ h₀ hy₀
   choose f f' hf hu h1 h2 using fun (p : TRing c.F) (y : FrPt Xo c p.R) => exists_isCoef h₀ hy₀ τ.1 y

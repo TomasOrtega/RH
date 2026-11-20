@@ -16,9 +16,25 @@ namespace GlobalTheory.CompanionTheory.SplitPlacePowers
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
+/- English proof (translation)
+Introduce `hT` and use `(hm.T w hT).1 (hm.S w hS).1`.
+-/
 theorem not_mem_T_of_mem_S₀ (d : LocData E n) (hm : MOk d) {w : Pl E} (hS : w ∈ d.S₀) : w ∉ d.T := fun hT =>
   (hm.T w hT).1 (hm.S w hS).1
 
+/- English proof (translation)
+Establish `hT` using `not_mem_T_of_mem_S₀ d hm hS`. Take `⟨hsp, -, hlv⟩` from `hm.S w hS`. Take `⟨-, -, -, -, -, hf⟩` from `hd.K' w hS`. Establish `hU : UL n w = ⊤` using `if_pos hsp`. Establish `hKU : d.KU w = (d.K' w).subgroupOf (UL n w)`.
+
+Unfold `LocData.KU`. Rewrite using `[if_neg hT, if_pos hS]`. Establish `hg : d.g₀ w = fun y => d.e w y.1`. Unfold `LocData.g₀`. Rewrite using `[if_neg hT, if_pos hS]`.
+
+Unfold `LocData.gU`. Rewrite using `[hKU, hg]`. Proceed by induction on `k with`. Consider the case `zero`. Use function extensionality and compare the values at `y`.
+
+Establish `hidx : ((d.K' w).subgroupOf (UL n w)).relIndex (KL n w) ≠ 0` using `GlobalTheory.CompanionTheory.FmPowP.relIndex_ne_of_open hlv.1 (GlobalTheory.LocFinU.isCompact_KL n w)`. Conclude with `GlobalTheory.CompanionTheory.MatchPow.conv_unit hlv.2.1 hidx (f := fun y : UL n w => d.e w y.1) (fun k hk x => by`. Establish `h2 : (k : GLw n w) ∈ d.K' w` using `Subgroup.mem_subgroupOf.1 hk`. Simplify using `using hf.2.2.2 1 (Subgroup.one_mem _) _ h2 x.1) y`. Consider the case `succ k ih => show lconv _ (lpow _ _ (k + 1)) = _`.
+
+Rewrite using `[ih]`. Use function extensionality and compare the values at `u`. Establish `h` using `congrFun (GlobalTheory.CompanionTheory.CtMulSplit.lconv_eq_gconv hU (fun y : UL n w => d.e w y.1) (fun v : UL n w => PositivityTheory.Rg.BcB.F.MS.gpow (d.e w) k (v : GLw n w))) u.1`. Rewrite `h` using `[GlobalTheory.CompanionTheory.CtMulSplit.toSub_val hU]`. Simplify using `only [GlobalTheory.CompanionTheory.CtMulSplit.val_toSub hU] at h`.
+
+Conclude with `h`.
+-/
 theorem gU_S (d : LocData E n) (hd : d.Ok) (hm : MOk d) {w : Pl E} (hS : w ∈ d.S₀) (k : ℕ) :
     d.gU (k + 1) w = fun u : UL n w => PositivityTheory.Rg.BcB.F.MS.gpow (d.e w) k u.1 := by
   have hT := not_mem_T_of_mem_S₀ d hm hS
@@ -51,8 +67,14 @@ theorem gU_S (d : LocData E n) (hd : d.Ok) (hm : MOk d) {w : Pl E} (hS : w ∈ d
     simp only [GlobalTheory.CompanionTheory.CtMulSplit.val_toSub hU] at h
     exact h
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ d hd hm _ hS N u` and use `congrFun (gU_S d hd hm hS N) u`.
+-/
 theorem generator_pow_split_places : SplitPlaceGeneratorPowers := fun _ _ _ _ _ d hd hm _ hS N u => congrFun (gU_S d hd hm hS N) u
 
+/- English proof (translation)
+Introduce `_` and use `generator_pow_split_places`.
+-/
 theorem generator_pow_split_places_of_idempotent : SplitPowersOfIdempotents := fun _ => generator_pow_split_places
 
 end GlobalTheory.CompanionTheory.SplitPlacePowers

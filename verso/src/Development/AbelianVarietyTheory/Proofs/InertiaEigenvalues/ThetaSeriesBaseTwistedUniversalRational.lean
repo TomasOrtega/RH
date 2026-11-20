@@ -30,6 +30,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type} {A3 : F
   {S : NX.RatDat D.ntw} (YS : NX.NExpRealS Rl cG S) {κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)}
   {v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec}
 
+/- English proof (translation)
+Establish `hm : (YS.fi j).e (Subtype.val f) ∈ (Rl.FW j).WK` using `((YS.fi j).wk _).1 f.2`. Take `⟨c, hc⟩` from `(fw.e j).surjective ⟨_, hm⟩`. Establish `hc0 : c = 0` using `Subtype.ext (by`. Establish `h2` using `c.2`. Simplify using `only [h, Submodule.mem_bot] at h2`.
+
+Conclude with `h2)`. Rewrite `hc` using `[hc0, map_zero]`. Establish `h3 : (YS.fi j).e (Subtype.val f) = 0` using `(congrArg Subtype.val hc).symm`. Establish `h4 : Subtype.val f = 0` using `(YS.fi j).e.injective (h3.trans (map_zero _).symm)`. Rewrite using `[h4, map_zero]`.
+-/
 theorem evW_eq_zero (fw : FWTie T Rl.toRealDat κ v₀) {j : Fin D.R.m}
     (h : T.toCore.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n = ⊥) (f : NX.FmK S ((j : ℕ) + 1)) :
     evW YS v₀ j (Subtype.val f) = 0 := by
@@ -44,6 +49,11 @@ theorem evW_eq_zero (fw : FWTie T Rl.toRealDat κ v₀) {j : Fin D.R.m}
   have h4 : Subtype.val f = 0 := (YS.fi j).e.injective (h3.trans (map_zero _).symm)
   rw [h4, map_zero]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `ν⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f) = 0`. Establish `key : ∀ x : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1), evK YS v₀ hρ i j b x = 0` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact map_zero _`. Consider the case `add x y hx hy => rw [map_add, hx, hy, add_zero]`.
+
+Consider the case `tmul a g => rw [evK_tmul, evW_eq_zero YS fw h, smul_zero]`. Conclude with `(congrArg (fun x => ν⁻¹ • x) (key _)).trans (smul_zero _)`.
+-/
 theorem realRd_eq_zero (fw : FWTie T Rl.toRealDat κ v₀) {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) {j : Fin D.R.m} (b : Bool)
     (h : T.toCore.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n = ⊥) (ν : ℂ) (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     realRd YS v₀ hρ i j b ν f = 0 := by
@@ -57,6 +67,17 @@ theorem realRd_eq_zero (fw : FWTie T Rl.toRealDat κ v₀) {ρ : Setup D.ntw} (h
 
 end Zero
 
+/- English proof (translation)
+Introduce `hA hRF row D Γ _ _ Pl0 I0 T0 A3 T _ Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin hL hsp H`. Establish `hrat : ∀ ν, IsRatScalar T Rl κ v₀ hV (ρ.B i j b) ν → Rat hρ (realRd YS v₀ hρ i j b ν)` using `fun ν hν => by`. Use `⟨?_, GlobalTheory.SeriesTie.TwistRat.ratTwist hA hRF row D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin hL hsp H ν hν, GlobalTheory.SeriesTie.UnivRat.ratUniv_of_ratHyp hA hRF row D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin hL hsp H ν hν⟩` and prove the remaining obligations. Apply the tactic sequence `apply GlobalTheory.SeriesTie.BaseRat.ratBase_of_ratHyp hA hRF row D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O ρ hρ i j b hV <;> assumption`. Distinguish the cases in `hc : T.toCore.cuspA ((j : ℕ) + 1) (wtA (κ j)) (κ j).n = ⊥`.
+
+Take `⟨fw⟩` from `H.fw`. Establish `hcore` using `H.core`. Establish `hti` using `H.tieIn`. Establish `hrow0 : OneMapRow0 T Rl.toRealDat κ v₀ O j` using `GlobalTheory.OneMapTies.oneMapRow0_of_ties_base_clauses GlobalTheory.chartIndependence_unconditional D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ hcore.lev hcore.grp hcore.fam hcore.models hcore.thP hti H.io O j H.pins`. Establish `hph1 : ‖cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j)‖ = 1` using `(H.phase hrow0).2.1.2.2.2.2.1`.
+
+Establish `hph0 : cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) ≠ 0` using `fun e => by`. Rewrite `hph1` using `[e, norm_zero]`. Conclude with `zero_ne_one hph1`. Take `⟨c, hc0, hsc⟩` from `exists_isScale Rl cG v₀ hρ hpin hcore.lev hcore.fam.tie hcore.models.cV hcore.thP H.io i j b (hti.hv₀ j _)`. Establish `hsc'` using `hsc`.
+
+Take `⟨gramR, c0R, c0L, hft, u, hu, hs⟩` from `hsc'`. Take `⟨ph, h1, h2⟩` from `row D Γ Pl0 T0 A3.A T Rl.toRealDat F κ v₀ H.laws hcore.lev hcore.grp hcore.fam hcore.models hcore.thP hti j hV H.frame H.std gramR c0R c0L hft u hu`. Establish `hR` using `hrat _ (IsRatScalar.intro (B := ρ.B i j b) hft hu hc0 h1 hs fun C hC _ => h2 C hC)`. Establish `e : realRd YS v₀ hρ i j b (ph * c) = realRd YS v₀ hρ i j b (cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * c)` using `LinearMap.ext fun f => (realRd_eq_zero YS fw hρ i b hc _ f).trans (realRd_eq_zero YS fw hρ i b hc _ f).symm`. Conclude with `⟨_, ⟨mul_ne_zero hph0 hc0, c, hsc, 1, one_ne_zero, rfl⟩, e ▸ hR⟩`.
+
+Take `⟨ν, hn, hν⟩` from `GlobalTheory.SeriesTie.NormRatStd.exists_isNorm_isRatScalar_std hA hRF row D Γ Pl0 I0 T0 A3 T Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin H hc`. Conclude with `⟨ν, hn, hrat ν hν⟩`.
+-/
 theorem ratRow : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt → GlobalTheory.SerStd.SeriesRatS → ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T0 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T.Q.c.F) (cG : G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (F : Face D A3.A) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (O : ∀ j, OMDat T.toCore Rl.toRealDat j Unit (fun _ => A3.A.μ0)) (ρ : Setup D.ntw) (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (hV : T.V ((j : ℕ) + 1) T.σ₀ = Wc D j), RealPin Rl cG ρ → ρ.LevelOf D.nexp → D.host.cls D.host.pde = .splitK ∧ D.host.cls D.host.pde' = .splitK → RatHyp T Rl F κ v₀ O i j hV → RatRow YS v₀ hρ i j b := by
   intro hA hRF row D Γ _ _ Pl0 I0 T0 A3 T _ Rl cG S YS F κ v₀ O ρ hρ i j b hV hpin hL hsp H
   have hrat : ∀ ν, IsRatScalar T Rl κ v₀ hV (ρ.B i j b) ν → Rat hρ (realRd YS v₀ hρ i j b ν) := fun ν hν => by

@@ -17,6 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+The claim follows from `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by rw [BwdNA.hsw (VS D) F0.z x] have h := NMoveP.hT_f_X F0 (Fin.last D.R.rS) hx rw [NMoveP.fvecL] at h rw [h, star_zero]`.
+-/
 theorem bwdN_zorth : F0.z ∈ orth (VS D) (Xsp (lf D F0)) :=
   (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by
     rw [BwdNA.hsw (VS D) F0.z x]
@@ -24,6 +27,9 @@ theorem bwdN_zorth : F0.z ∈ orth (VS D) (Xsp (lf D F0)) :=
     rw [NMoveP.fvecL] at h
     rw [h, star_zero]
 
+/- English proof (translation)
+Introduce `h`. Establish `h0` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 (bwdN_zorth (F0 := F0)) F0.z h`. Rewrite `h0` using `[F0.z_norm, neg_eq_zero]`. Establish `hT` using `(D.mem u).A.T_prime.ne_zero`. Conclude with `hT (Nat.cast_eq_zero.1 h0)`.
+-/
 theorem bwdN_znotX : F0.z ∉ Xsp (lf D F0) := by
   intro h
   have h0 := (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 (bwdN_zorth (F0 := F0)) F0.z h
@@ -35,6 +41,27 @@ variable (u u' F0 what₂)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂`. Take `⟨hΛ₂lat, hloc₂⟩` from `hΛ₂`. Take `⟨-, hT2, hφ⟩` from `hS`. Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hΛlat : Submodule.IsLattice D.host.E γ.lam` using `hrow.2.1.1`.
+
+Establish `ht1` using `fun p => (hT2 p).1`. Establish `hu : ∀ p a, IsUnit (TermLoc.sgnP D p a * frFac Zd.δ p a)` using `fun p a => BwdNP.unit_of_frame Zd p γ (ht1 p).1.2.1 a`. Establish `hSDl : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p γ.lam)` using `fun p => (ht1 p).1.1`. Establish `hSDl₂ : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p Λ₂)` using `fun p => (hloc₂ p).1.1.1`. Establish `hpr : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p γ.lam) (tLoc Zd p γ).f` using `fun p => (ht1 p).1.2.1.1`.
+
+Establish `hpr₂ : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ₂) (tLoc Zd p γ).f` using `fun p => (hloc₂ p).1.1.2.1.1`. Establish `hLset : ∀ p, (locH Zd p).Lset (lattice₂ D Zd.M p γ.lam) (tLoc Zd p γ).f = (locH Zd p).Lset (lattice₂ D Zd.M p Λ₂) (tLoc Zd p γ).f` using `fun p => by`. Establish `h` using `(hloc₂ p).2.1`. Rewrite `h` using `[hφ p]`. Rewrite using `[← h]`.
+
+Conclude with `(Set.image_id _).symm`. Establish `hSD` using `BwdNP.sd_of_loc Zd hΛlat hSDl`. Establish `hSD₂` using `BwdNP.sd_of_loc Zd hΛ₂lat hSDl₂`. Use `set X := Xsp (lf D F0) with hXdef`. Establish `hXiso : ∀ x ∈ X, ∀ y ∈ X, (VS D).hT x y = 0` using `fun x hx y hy => NMoveP.hT_X_X F0 hx hy`.
+
+Establish `hXX : ∀ {w : (VS D).V}, w ∈ orth (VS D) (orth (VS D) X) → w ∈ X` using `fun {w} hw => BwdNA.mem_of_orth_orth (VS D) X fun v hv => by`. Rewrite using `[BwdNA.hsw (VS D) v w, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw v hv, star_zero]`. Establish `hXo` using `BwdNA.X_le_orth (VS D) X hXiso`. Establish `hL : ∀ x ∈ Λ₂, x ∈ orth (VS D) X → ∃ y ∈ γ.lam, y - x ∈ X` using `fun x hx hxo => by`. Take `⟨w, hw, hxw⟩` from `BwdNA.dual_sum (VS D) γ.lam hΛlat hSD (orth (VS D) X) x (fun m hmΛ hmU => BwdNP.pair_int Zd γ hSDl (fun p => (hLset p).symm.subset) hx hxo hmΛ hmU)`.
+
+Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `h2` using `X.neg_mem (hXX hxw)`. Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Establish `hL' : ∀ y ∈ γ.lam, y ∈ orth (VS D) X → ∃ x ∈ Λ₂, x ∈ orth (VS D) X ∧ y - x ∈ X` using `fun y hy hyo => by`. Take `⟨w, hw, hyw⟩` from `BwdNA.dual_sum (VS D) Λ₂ hΛ₂lat hSD₂ (orth (VS D) X) y (fun m hmΛ hmU => BwdNP.pair_int Zd γ hSDl₂ (fun p => (hLset p).subset) hy hyo hmΛ hmU)`.
+
+Establish `hX1` using `hXX hyw`. Use `⟨w, hw, ?_, hX1⟩` and prove the remaining obligations. Establish `e : w = y - (y - w)` using `by abel`. Rewrite using `[e]`. Conclude with `(orth (VS D) X).sub_mem hyo (hXo hX1)`.
+
+Establish `hXm : ∀ x ∈ X, x ∈ Λ₂ ↔ x ∈ γ.lam` using `fun x hx => ⟨BwdNP.memX Zd γ hpr₂ hpr hΛlat hu hx, BwdNP.memX Zd γ hpr hpr₂ hΛ₂lat hu hx⟩`. Establish `hy` using `BwdNP.exists_y Zd γ hΛ₂lat hSD₂ hpr₂ hu bwdN_znotX`. Establish `htr : ∃ c : D.host.E, IsIntegral ℤ c ∧ c + star c = 1`. Take `⟨c, hc⟩` from `D.host.exists_trace_one`. Use `⟨(c : D.host.E), RingOfIntegers.isIntegral_coe c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj (H := D.host)]`. Conclude with `hc`. Take `⟨n, hiso, hnX, hnz, hno, himg⟩` from `BwdNA.main (VS D) X hXiso F0.z bwdN_zorth γ.lam Λ₂ hΛlat hΛ₂lat hSD hSD₂ hXm (BwdNP.z_mem Zd γ hΛlat hpr) (BwdNP.z_mem Zd γ hΛ₂lat hpr₂) hL hL' hy htr`. Use `⟨n, ⟨hiso, fun j x hx => ?_, hno, fun a => hnX _ (Submodule.subset_span ⟨a, rfl⟩), hnz⟩, himg⟩` and prove the remaining obligations. Establish `hxX : x ∈ X` using `Submodule.span_mono (Set.image_subset_range _ _) hx`.
+
+Rewrite using `[hnX x hxX, sub_self]`. Conclude with `zero_mem _`.
+-/
 theorem bwdN_holds : BwdN Zd u u' F0 what₂ := by
   intro hC γ Z hZ F'₂ φ φ' hS Λ₂ hΛ₂
   obtain ⟨hΛ₂lat, hloc₂⟩ := hΛ₂

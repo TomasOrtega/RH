@@ -13,6 +13,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.SmGL.Bernstein
 
+/- English proof (translation)
+Introduce `hJ k _ _ _ _ a b χ₁ χ₂ s₁ s₂ u₁ u₂ hne`. Use `haveI := GlobalTheory.CompanionTheory.DegPrinSeries.nontrivial_subrepresentation k a b χ₁ χ₂ s₁ s₂`. Use `show IsSimpleOrder (Subrepresentation (parInd (two (stdSum (rfl : a + b = a + b))) ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)))`. Use `⟨fun W => ?_⟩` and prove the remaining obligations. Take `⟨W', hc⟩` from `GlobalTheory.T.admissible_unitary_semisimple _ (GlobalTheory.CompanionTheory.SmGL.exists_compact_open_subgroup_subset k (a + b)) (GlobalTheory.CompanionTheory.DegenSeries.isAdmissible_degenerate k a b χ₁ χ₂ s₁ s₂) (GlobalTheory.CompanionTheory.DegenerateSeries.isUnitarisable_dege …`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hW' : W' ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `h.2 (eq_top_of_isCompl_bot hc)`.
+
+Conclude with `GlobalTheory.T.induced_two_characters_not_scalar k a b χ₁ χ₂ W W' hc h.1 hW' (GlobalTheory.T.jacquet_induced_two_characters k a b χ₁ χ₂ (hJ k) s₁ s₂ u₁ u₂ hne)`.
+-/
 theorem prod₂_detRep_isIrreducible :
     (∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
       JacquetOfInducedFiltration k) →

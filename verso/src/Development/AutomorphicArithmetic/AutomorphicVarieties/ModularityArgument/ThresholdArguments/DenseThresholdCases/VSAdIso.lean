@@ -19,12 +19,18 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Sym.Ga.AutomorphyInvariantUnderRepIso
 section Rep
 variable {Γ k : Type} [Group Γ] [Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k}
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, hg]`. Use `congr 2`. Use `group`.
+-/
 private theorem act_conj (g : GL (Fin n) k) (hg : ∀ s, r' s = g * r s * g⁻¹) (s : Γ) (v : Fin n → k) :
     (r' s : Matrix (Fin n) (Fin n) k) *ᵥ ((g : Matrix (Fin n) (Fin n) k) *ᵥ v) =
       (g : Matrix (Fin n) (Fin n) k) *ᵥ ((r s : Matrix (Fin n) (Fin n) k) *ᵥ v) := by
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, hg]
   congr 2
   group
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Use `GlobalTheory.LatticeComplement.isSSRep_of_intertwine r r' (g : Matrix (Fin n) (Fin n) k) ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) (Units.mul_inv g) (fun s => ?_) hr` and prove the remaining obligations. Rewrite using `[hg s, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`.
+-/
 private theorem ss_iso (h : RepIso r r') (hr : IsSSRep r) : IsSSRep r' := by
   obtain ⟨g, hg⟩ := h
   refine GlobalTheory.LatticeComplement.isSSRep_of_intertwine r r' (g : Matrix (Fin n) (Fin n) k)
@@ -32,6 +38,15 @@ private theorem ss_iso (h : RepIso r r') (hr : IsSSRep r) : IsSSRep r' := by
   rw [hg s, ← Units.val_mul, ← Units.val_mul]
   congr 1
   group
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Use `⟨hr.1, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩` and prove the remaining obligations. Set `e : (Fin n → k) ≃ₗ[k] (Fin n → k)` to `(Matrix.GeneralLinearGroup.toLin g).toLinearEquiv`. Establish `he : ∀ v, e v = (g : Matrix (Fin n) (Fin n) k) *ᵥ v` using `fun _ => rfl`. Establish `hinv` using `hr.2.2 (W.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))) le_top (fun s v hv => by`.
+
+Express the relevant statement in the definitionally equal form `e _ ∈ W`. Establish `h1 : e v ∈ W` using `hv`. Rewrite `h1`, the goal using `[he]`. Rewrite using `[← act_conj g hg]`. Conclude with `hW s _ h1)`.
+
+Establish `hW' : W = (W.comap (e : (Fin n → k) →ₗ[k] (Fin n → k))).map (e : (Fin n → k) →ₗ[k] (Fin n → k))` using `(Submodule.map_comap_eq_of_surjective e.surjective W).symm`. Break down `hinv with h0 | h0` into its components or cases. Use `left`. Rewrite using `[hW', h0, Submodule.map_bot]`. Use `right`.
+
+Rewrite using `[hW', h0, Submodule.map_top, LinearEquiv.range]`.
+-/
 private theorem irr_iso (h : RepIso r r') (hr : IsIrr r) : IsIrr r' := by
   obtain ⟨g, hg⟩ := h
   refine ⟨hr.1, fun _ _ _ => Submodule.mem_top, fun W _ hW => ?_⟩
@@ -50,20 +65,34 @@ private theorem irr_iso (h : RepIso r r') (hr : IsIrr r) : IsIrr r' := by
     rw [hW', h0, Submodule.map_bot]
   · right
     rw [hW', h0, Submodule.map_top, LinearEquiv.range]
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Use `⟨g, fun s => Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mul, tw_val, hg s, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 private theorem tw_iso (χ : Γ →* kˣ) (h : RepIso r r') : RepIso (tw r χ) (tw r' χ) := by
   obtain ⟨g, hg⟩ := h
   refine ⟨g, fun s => Units.ext ?_⟩
   simp only [Units.val_mul, tw_val, hg s, Matrix.mul_smul, Matrix.smul_mul]
+/- English proof (translation)
+Take `⟨g, hg⟩` from `h`. Conclude with `⟨g, fun s => hg (φ s)⟩`.
+-/
 private theorem comp_iso {Γ' : Type} [Group Γ'] (φ : Γ' →* Γ) (h : RepIso r r') : RepIso (r.comp φ) (r'.comp φ) := by
   obtain ⟨g, hg⟩ := h
   exact ⟨g, fun s => hg (φ s)⟩
 end Rep
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ss_iso h H.1, H.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, hB'.of_iso h⟩⟩`.
+-/
 private theorem att_iso {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} {sat : HeightOneSpectrum (𝓞 F) → Multiset ℂˣ → Prop}
     (h : RepIso r r') (H : AttachedSys ι r sat) : AttachedSys ι r' sat :=
   ⟨ss_iso h H.1, H.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, hB'.of_iso h⟩⟩
 end UpperTheory.V.Z.Sym.Ga.AutomorphyInvariantUnderRepIso
 open UpperTheory.V.Z.Sym.Ga.AutomorphyInvariantUnderRepIso in
+/- English proof (translation)
+Introduce `L Ω _ _ _ _ _ _ l _ ι n r r' h`. Use `⟨?_, ?_, irr_iso h, ?_, h.symm', fun ξ => tw_iso ξ h⟩` and prove the remaining obligations. Introduce and unpack `⟨π, h1, h2⟩`. Conclude with `⟨π, h1, att_iso h h2⟩`. Conclude with `fun k => _root_.UpperTheory.GalN.V.IsAutCsdN.weak_admissible_iso h (k.1.imp fun _ x => ⟨x.1, x.2.1, att_iso h x.2.2⟩) k`.
+
+Introduce `hr H hH`. Conclude with `irr_iso (comp_iso H.subtype h) (hr H hH)`.
+-/
 theorem UpperTheory.V.Z.Sym.Ga.isAutC_isAutCsdA_isIrr_irrOpen_symm_tw_of_repIso :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r r' : G L Ω →* GL (Fin n) (Qbar l)), RepIso r r' → (IsAutC ι r → IsAutC ι r') ∧ (_root_.UpperTheory.V.Z.Win.IsAutCsdA ι r → _root_.UpperTheory.V.Z.Win.IsAutCsdA ι r') ∧ (IsIrr r → IsIrr r') ∧ (IrrOpen r → IrrOpen r') ∧ RepIso r' r ∧ ∀ ξ, RepIso (tw r ξ) (tw r' ξ) := by
   intro L Ω _ _ _ _ _ _ l _ ι n r r' h

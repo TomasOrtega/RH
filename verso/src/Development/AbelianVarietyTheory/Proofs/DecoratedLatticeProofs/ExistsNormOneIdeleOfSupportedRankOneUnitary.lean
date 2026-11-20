@@ -9,6 +9,19 @@ open GlobalTheory.Core.Mi.LatMatch
 
 namespace GlobalTheory.Core.Mi.LatMatch
 
+/- English proof (translation)
+Use `haveI hs : Subsingleton (Fin L.rank) := ⟨fun a b => Fin.ext (by have := a.2; have := b.2; omega)⟩`. Set `i₀ : Fin L.rank` to `⟨0, by omega⟩`. Use `set c : AE D := Formalism.L2.Theta.mt L γ i₀ i₀ with hc`. Establish `hmat : Formalism.L2.Theta.mt L γ = c • (1 : Matrix (Fin L.rank) (Fin L.rank) (AE D))`. Use extensionality with `i j`.
+
+Rewrite using `[Subsingleton.elim i i₀, Subsingleton.elim j i₀]`. Simplify using `[hc]`. Establish `hid : c - 1 ∈ idAt D (· = v)`. Establish `h` using `(GlobalTheory.IwaPlace.mem_congGrp_iff L _ γ).1 hγ i₀ i₀`. Simplify `h` using `[hc]`.
+
+Establish `hu` using `congrFun (congrFun (GlobalTheory.MixModel.mt_unitary L γ) i₀) i₀`. Simplify using `only [Matrix.mul_apply, Fintype.sum_subsingleton _ i₀, GlobalTheory.MixModel.adj, GlobalTheory.MixModel.gA, GlobalTheory.MixModel.rat, Matrix.map_apply, Matrix.transpose_apply] at hu`. Establish `hg : HSpace.gram L i₀ i₀ ≠ 0`. Use `GlobalTheory.MixModel.gram_isUnit_det L` as an intermediate fact. Rewrite `this` using `[Matrix.det_eq_elem_of_subsingleton _ i₀]`.
+
+Conclude with `this.ne_zero`. Establish `hgu : IsUnit (incA D (HSpace.gram L i₀ i₀))` using `(Ne.isUnit hg).map _`. Establish `h1 : cA D c * c = 1`. Rewrite `hu` using `[← hc]`. Establish `: (cA D c * c) * incA D (HSpace.gram L i₀ i₀) = 1 * incA D (HSpace.gram L i₀ i₀)`.
+
+Rewrite using `[one_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hgu.mul_right_cancel this`. Establish `h2 : c * cA D c = 1` using `by rw [mul_comm]; exact h1`. Use `⟨c, ⟨h2, hid⟩, ⟨?_, ?_⟩, hmat⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, h2, map_one]`. Establish `: cA D c - 1 = -(cA D c) * (c - 1)`. Take the linear combination `h1`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hid`.
+-/
 theorem exists_normOneAt_of_rank_one (D : D7) (L : HSp D) (v : GlobalTheory.FinPl.Pl D) (γ : GA D L) (hr : L.rank = 1)
     (hγ : γ ∈ grpAt L (· = v)) :
     ∃ c : AE D, NormOneAt v c ∧ NormOneAt v (cA D c) ∧

@@ -12,6 +12,11 @@ open PositivityTheory.Rg.Sw
 def coordX {m n : ℕ} (k : Fin m × Fin n × Bool) (x : Fin m → Fin n → ℂ) : ℂ :=
   if k.2.2 then star (x k.1 k.2.1) else x k.1 k.2.1
 
+/- English proof (translation)
+Break down `k with ⟨a, i, β⟩` into its components or cases. Consider the cases of `β`. Establish `h` using `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a)).hasTemperateGrowth`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Simplify using `[coordX]`. Establish `h` using `((Complex.conjCLE.toContinuousLinearMap).comp ((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) i).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => Fin n → ℂ) a))).hasTemperateGrowth`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[coordX]`.
+-/
 theorem coordX_temperate {m n : ℕ} (k : Fin m × Fin n × Bool) : Function.HasTemperateGrowth (coordX k) := by
   rcases k with ⟨a, i, β⟩
   cases β
@@ -27,6 +32,13 @@ theorem coordX_temperate {m n : ℕ} (k : Fin m × Fin n × Bool) : Function.Has
     funext x
     simp [coordX]
 
+/- English proof (translation)
+Establish `hev : (fun x => evX P x) = fun x => MvPolynomial.eval (fun k => coordX k x) P`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[hev]`. Proceed by induction on `P using MvPolynomial.induction_on with`.
+
+Consider the case `C c0`. Simplify using `only [MvPolynomial.eval_C]`. Conclude with `Function.HasTemperateGrowth.const c0`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`.
+
+Conclude with `Function.HasTemperateGrowth.add (hp rfl) (hq rfl)`. Consider the case `mul_X p k hp`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Conclude with `Function.HasTemperateGrowth.mul (hp rfl) (coordX_temperate k)`.
+-/
 theorem evX_temperate {m n : ℕ} (P : PX m n) : Function.HasTemperateGrowth (fun x => evX P x) := by
   have hev : (fun x => evX P x) = fun x => MvPolynomial.eval (fun k => coordX k x) P := by
     funext x
@@ -43,6 +55,19 @@ theorem evX_temperate {m n : ℕ} (P : PX m n) : Function.HasTemperateGrowth (fu
     simp only [map_mul, MvPolynomial.eval_X]
     exact Function.HasTemperateGrowth.mul (hp rfl) (coordX_temperate k)
 
+/- English proof (translation)
+Establish `hs : 0 < Real.sqrt (c / Real.pi)` using `Real.sqrt_pos.mpr (div_pos hc Real.pi_pos)`. Establish `hs2 : Real.sqrt (c / Real.pi) ^ 2 = c / Real.pi` using `Real.sq_sqrt (div_pos hc Real.pi_pos).le`. Set `L : (Fin m → Fin n → ℂ) ≃ₗ[ℝ] EuclideanSpace ℝ (Fin m × Fin n × Bool)` to `{ toFun := fun x => WithLp.toLp 2 (fun p => Real.sqrt (c / Real.pi) * (if p.2.2 then (x p.1 p.2.1).im else (x p.1 p.2.1).re)) invFun := fun y => fun a i => ⟨(Real.sqrt (c / Real.pi))⁻¹ * y (a, i, false), (Real.sqrt (c / Real.pi))⁻¹ * y (a, i, true)⟩ map_add' := fun x y => by`. Use extensionality with `p`. Break down `p with ⟨a, i, β⟩` into its components or cases.
+
+Apply the tactic sequence `cases β <;> simp <;> ring`. Use the proof step `map_smul' := fun r x => by`. Use extensionality with `p`. Break down `p with ⟨a, i, β⟩` into its components or cases. Apply the tactic sequence `cases β <;> simp <;> ring`.
+
+Use `left_inv := fun x => by`. Use function extensionality and compare the values at `a i`. Apply the tactic sequence `apply Complex.ext <;> simp [hs.ne']`. Use `right_inv := fun y => by`. Use extensionality with `p`.
+
+Break down `p with ⟨a, i, β⟩` into its components or cases. Apply the tactic sequence `cases β <;> simp [hs.ne'] }`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ L.toContinuousLinearEquiv (GroundTheory.Global.gaussianSchwartz _), ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [Function.comp_apply, GroundTheory.Global.gaussianSchwartz_apply, gs]`. Rewrite using `[Complex.ofReal_exp]`. Use `congr 1`. Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `[L, Fintype.sum_prod_type, Fintype.sum_bool, mul_pow, hs2, Complex.sq_norm, Complex.normSq_apply]`.
+
+Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schwartz_gs {m n : ℕ} (c : ℝ) (hc : 0 < c) : ∃ φ : 𝓢(Fin m → Fin n → ℂ, ℂ), ⇑φ = gs c := by
   have hs : 0 < Real.sqrt (c / Real.pi) := Real.sqrt_pos.mpr (div_pos hc Real.pi_pos)
   have hs2 : Real.sqrt (c / Real.pi) ^ 2 = c / Real.pi := Real.sq_sqrt (div_pos hc Real.pi_pos).le
@@ -81,6 +106,9 @@ theorem schwartz_gs {m n : ℕ} (c : ℝ) (hc : 0 < c) : ∃ φ : 𝓢(Fin m →
   field_simp
   ring
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `schwartz_gs (m := m) (n := n) c hc`. Use `⟨SchwartzMap.smulLeftCLM ℂ (fun x => evX P x) g, ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.smulLeftCLM_apply (evX_temperate P), hg]`. Both sides reduce to the same expression.
+-/
 theorem schwartz_polyGauss {m n : ℕ} (c : ℝ) (hc : 0 < c) (P : PX m n) :
     ∃ φ : 𝓢(Fin m → Fin n → ℂ, ℂ), ⇑φ = fun x => evX P x * gs c x := by
   obtain ⟨g, hg⟩ := schwartz_gs (m := m) (n := n) c hc

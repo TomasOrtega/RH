@@ -22,6 +22,9 @@ open scoped Matrix
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Simplify using `only [hermForm, sum_dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_dotProduct, zsmul_eq_mul]`.
+-/
 theorem hermForm_sum_left {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) ℂ) (a : κ → ℤ)
     (x : κ → Fin g → ℂ) (w : Fin g → ℂ) :
     hermForm Hm (∑ i, a i • x i) w = ∑ i, (a i : ℂ) * hermForm Hm (x i) w := by
@@ -29,6 +32,11 @@ theorem hermForm_sum_left {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_dotProduct, zsmul_eq_mul]
 
+/- English proof (translation)
+Establish `hs : star (∑ j, b j • y j) = ∑ j, b j • star (y j)`. Simplify using `[star_sum, star_smul]`. Simplify using `only [hermForm]`. Rewrite using `[hs, Matrix.mulVec_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, zsmul_eq_mul]`.
+-/
 theorem hermForm_sum_right {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) ℂ) (b : κ → ℤ)
     (y : κ → Fin g → ℂ) (z : Fin g → ℂ) :
     hermForm Hm z (∑ j, b j • y j) = ∑ j, (b j : ℂ) * hermForm Hm z (y j) := by
@@ -39,6 +47,9 @@ theorem hermForm_sum_right {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [Matrix.mulVec_smul, dotProduct_smul, zsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[hermForm_sum_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hermForm_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_sum_sum {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) ℂ) (a b : κ → ℤ)
     (x : κ → Fin g → ℂ) :
     hermForm Hm (∑ i, a i • x i) (∑ j, b j • x j) =
@@ -49,14 +60,23 @@ theorem hermForm_sum_sum {κ : Type*} [Fintype κ] (Hm : Matrix (Fin g) (Fin g) 
   refine Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[Complex.mul_re]`.
+-/
 theorem re_int_mul (m n : ℤ) (c : ℂ) :
     ((m : ℂ) * (n : ℂ) * c).re = (m : ℝ) * (n : ℝ) * c.re := by
   simp [Complex.mul_re]
 
+/- English proof (translation)
+Simplify using `[Complex.mul_im]`.
+-/
 theorem im_int_mul (m n : ℤ) (c : ℂ) :
     ((m : ℂ) * (n : ℂ) * c).im = (m : ℝ) * (n : ℝ) * c.im := by
   simp [Complex.mul_im]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun ε _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem congr_apply {κ : Type*} [Fintype κ] (P : Matrix κ κ ℤ) (M : Matrix κ κ ℝ) (α δ : κ) :
     (P.map (Int.cast : ℤ → ℝ) * M * (P.map (Int.cast : ℤ → ℝ))ᵀ) α δ =
       ∑ β, ∑ ε, (P α β : ℝ) * (P δ ε : ℝ) * M β ε := by
@@ -65,9 +85,17 @@ theorem congr_apply {κ : Type*} [Fintype κ] (P : Matrix κ κ ℤ) (M : Matrix
   refine Finset.sum_congr rfl fun β _ => Finset.sum_congr rfl fun ε _ => ?_
   ring
 
+/- English proof (translation)
+The claim follows from `Matrix.map_J (Fin g) (Int.castRingHom ℝ)`.
+-/
 theorem J_map_int : (Matrix.J (Fin g) ℤ).map (Int.cast : ℤ → ℝ) = Matrix.J (Fin g) ℝ :=
   Matrix.map_J (Fin g) (Int.castRingHom ℝ)
 
+/- English proof (translation)
+Establish `h` using `SymplecticGroup.mem_iff.1 hP`. Establish `h2` using `congrArg (fun M => M.map (Int.castRingHom ℝ)) h`. Simplify using `only [Matrix.map_mul] at h2`. Establish `e : (Int.castRingHom ℝ : ℤ → ℝ) = (Int.cast : ℤ → ℝ)` using `rfl`. Rewrite `h2` using `[e, J_map_int, Matrix.transpose_map]`.
+
+Conclude with `h2`.
+-/
 theorem cast_symplectic {P : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hP : P ∈ Matrix.symplecticGroup (Fin g) ℤ) :
     P.map (Int.cast : ℤ → ℝ) * Matrix.J (Fin g) ℝ * (P.map (Int.cast : ℤ → ℝ))ᵀ =
@@ -79,6 +107,9 @@ theorem cast_symplectic {P : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
   rw [e, J_map_int, Matrix.transpose_map] at h2
   exact h2
 
+/- English proof (translation)
+Establish `h` using `SymplecticGroup.mem_iff.1 hP`. Establish `: Matrix.J (Fin g) ℤ * P * Matrix.J (Fin g) ℤ * Pᵀ = Matrix.J (Fin g) ℤ * (P * Matrix.J (Fin g) ℤ * Pᵀ)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.neg_mul, this, h, Matrix.J_squared, neg_neg]`.
+-/
 theorem left_inv_transpose {P : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hP : P ∈ Matrix.symplecticGroup (Fin g) ℤ) :
     (-(Matrix.J (Fin g) ℤ * P * Matrix.J (Fin g) ℤ)) * Pᵀ = 1 := by
@@ -93,6 +124,11 @@ noncomputable def twist {κ M : Type*} [Fintype κ] [DecidableEq κ] [AddCommGro
   b.map (b.equivFun.trans ((Matrix.toLinearEquiv' Pᵀ ⟨Q, h, mul_eq_one_comm.1 h⟩).trans
     b.equivFun.symm))
 
+/- English proof (translation)
+Establish `h1 : b.equivFun (b α) = Pi.single α 1`. Use extensionality with `j`. Simplify using `[Module.Basis.equivFun_apply, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Simplify using `only [twist, Module.Basis.map_apply, LinearEquiv.trans_apply, h1, Module.Basis.equivFun_symm_apply]`. Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(Pᵀ *ᵥ Pi.single α 1) β • b β = _`. Rewrite using `[Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+-/
 theorem twist_apply {κ M : Type*} [Fintype κ] [DecidableEq κ] [AddCommGroup M]
     (b : Module.Basis κ ℤ M) (P Q : Matrix κ κ ℤ) (h : Q * Pᵀ = 1) (α : κ) :
     twist b P Q h α = ∑ β, P α β • b β := by
@@ -106,10 +142,38 @@ theorem twist_apply {κ M : Type*} [Fintype κ] [DecidableEq κ] [AddCommGroup M
   rw [Matrix.mulVec_single_one]
   rfl
 
+/- English proof (translation)
+Simplify using `[Submodule.coe_sum]`.
+-/
 theorem coe_sum_smul {n : ℕ} {κ : Type*} [Fintype κ] (Λ : Submodule ℤ (Fin n → ℂ)) (v : κ → ℤ)
     (x : κ → Λ) : ((∑ α, v α • x α : Λ) : Fin n → ℂ) = ∑ α, v α • (x α : Fin n → ℂ) := by
   simp [Submodule.coe_sum]
 
+/- English proof (translation)
+Introduce `g _ Λ Hm bs hHm hpos him hsymp hposdef`. Use `set G : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℝ := Matrix.of fun α β => (hermForm Hm (bs α : Fin g → ℂ) (bs β : Fin g → ℂ)).re with hG`. Take `⟨ρsq, hleast, hle, P, hP, hfirst, hdet⟩` from `SymplecticReduction.full g G hsymp hposdef`. Establish `hqf : ∀ v : Fin g ⊕ Fin g → ℤ, qf G (intVec v) = (hermForm Hm (∑ α, v α • (bs α : Fin g → ℂ)) (∑ α, v α • (bs α : Fin g → ℂ))).re`. Introduce `v`.
+
+Rewrite using `[hermForm_sum_sum, Complex.re_sum]`. Simplify using `only [Complex.re_sum, re_int_mul, qf, intVec, dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hG, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hne : ∀ v : Fin g ⊕ Fin g → ℤ, v ≠ 0 → ∑ α, v α • (bs α : Fin g → ℂ) ≠ 0`. Introduce `v hv h0`. Apply `hv` to reduce the goal to its premises. Establish `h1 : (∑ α, v α • bs α : Λ) = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[coe_sum_smul]`. Conclude with `h0`. Use function extensionality and compare the values at `α`. Conclude with `Fintype.linearIndependent_iff.1 bs.linearIndependent v h1 α`. Establish `hρpos : 0 < ρsq`.
+
+Take `⟨v, hv, hval⟩` from `hleast.1`. Rewrite using `[hval, hqf]`. Conclude with `hpos _ (hne v hv)`. Establish `hb' : ∀ α, ((twist bs P _ (left_inv_transpose hP) α : Λ) : Fin g → ℂ) = ∑ β, P α β • (bs β : Fin g → ℂ)`. Introduce `α`.
+
+Rewrite using `[twist_apply, coe_sum_smul]`. Establish `hre : ∀ α δ, (hermForm Hm ((twist bs P _ (left_inv_transpose hP) α : Λ) : Fin g → ℂ) ((twist bs P _ (left_inv_transpose hP) δ : Λ) : Fin g → ℂ)).re = (P.map (Int.cast : ℤ → ℝ) * G * (P.map (Int.cast : ℤ → ℝ))ᵀ) α δ`. Introduce `α δ`. Rewrite using `[hb', hb', hermForm_sum_sum, congr_apply]`. Simplify using `only [Complex.re_sum, re_int_mul, hG, Matrix.of_apply]`.
+
+Establish `him' : ∀ α δ, (hermForm Hm ((twist bs P _ (left_inv_transpose hP) α : Λ) : Fin g → ℂ) ((twist bs P _ (left_inv_transpose hP) δ : Λ) : Fin g → ℂ)).im = Matrix.J (Fin g) ℝ α δ`. Introduce `α δ`. Rewrite using `[hb', hb', hermForm_sum_sum, ← cast_symplectic hP, congr_apply]`. Simplify using `only [Complex.im_sum, im_int_mul, him]`. Use `⟨twist bs P _ (left_inv_transpose hP), Real.sqrt ρsq, Real.sqrt_pos.2 hρpos, ?_, him', ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Real.sq_sqrt hρpos.le]`. Conclude with `hle`. Rewrite using `[Real.sq_sqrt hρpos.le, hre]`. Conclude with `hfirst`. Introduce `l hl`.
+
+Rewrite using `[Real.sq_sqrt hρpos.le]`. Establish `hv : (fun α => bs.repr l α) ≠ 0`. Introduce `h0`. Apply `hl` to reduce the goal to its premises. Establish `: bs.repr l = 0`.
+
+Use extensionality with `α`. Conclude with `congrFun h0 α`. Simplify using `using this`. Establish `hsum : (l : Fin g → ℂ) = ∑ α, bs.repr l α • (bs α : Fin g → ℂ)`. Rewrite using `[← coe_sum_smul, bs.sum_repr]`.
+
+Rewrite using `[hsum, ← hqf (fun α => bs.repr l α)]`. Conclude with `hleast.2 ⟨_, hv, rfl⟩`. Rewrite using `[Real.sq_sqrt hρpos.le]`. Establish `: (Matrix.of fun i j : Fin g => (hermForm Hm ((twist bs P _ (left_inv_transpose hP) (Sum.inl i) : Λ) : Fin g → ℂ) ((twist bs P _ (left_inv_transpose hP) (Sum.inl j) : Λ) : Fin g → ℂ)).re) = (P.map (Int.cast : ℤ → ℝ) * G * (P.map (Int.cast : ℤ → ℝ))ᵀ).toBlocks₁₁`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.of_apply, hre, Matrix.toBlocks₁₁]`. Rewrite using `[this]`. Conclude with `hdet`.
+-/
 theorem symplectic_reduction_basis :
     ∀ (g : ℕ) [NeZero g] (Λ : Submodule ℤ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (bs : Module.Basis (Fin g ⊕ Fin g) ℤ Λ),

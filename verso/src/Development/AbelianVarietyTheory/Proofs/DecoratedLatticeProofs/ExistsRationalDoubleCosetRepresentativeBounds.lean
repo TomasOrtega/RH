@@ -13,6 +13,11 @@ noncomputable section
 namespace GlobalTheory.TwBridge.RepsOnto
 open GlobalTheory.SymBridge GlobalTheory.TwBridge.MatGL
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[le_uniformizer_iff]`. Conclude with `(hϖ _).2 le_rfl`. Take `⟨x, hx⟩` from `ValuativeRel.valuation_surjective (uniformizer k)`. Rewrite using `[← hx]`.
+
+Conclude with `(hϖ x).1 (by rw [hx]; exact uniformizer_lt_one)`.
+-/
 theorem val_unif {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ϖ : kˣ} (hϖ : GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ) : valuation k (ϖ : k) = uniformizer k := by
   apply le_antisymm
@@ -21,6 +26,11 @@ theorem val_unif {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsN
     rw [← hx]
     exact (hϖ x).1 (by rw [hx]; exact uniformizer_lt_one)
 
+/- English proof (translation)
+Establish `h1 : DenseRange (Pi.map fun (_ : A) => Pi.map fun (_ : B) => (ι : E → k))` using `DenseRange.piMap fun _ => DenseRange.piMap fun _ => hι`. Use `Dense.mono ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨M, rfl⟩`. Use `⟨Matrix.toLin' ((Matrix.of M).submatrix e.symm e'.symm), ?_⟩` and prove the remaining obligations. Rewrite using `[toLoc_eq, LinearMap.toMatrix'_toLin']`.
+
+Use extensionality with `i l`. Simplify using the standard rewrite rules.
+-/
 theorem denseRange_toLoc {E k : Type} [Field E] [Field k] [TopologicalSpace k] {ι : E →+* k} (hι : DenseRange ι)
     {A B : Type} {a b : ℕ} (e : A ≃ Fin a) (e' : B ≃ Fin b) : DenseRange (toLoc ι e e') := by
   have h1 : DenseRange (Pi.map fun (_ : A) => Pi.map fun (_ : B) => (ι : E → k)) :=
@@ -34,6 +44,17 @@ theorem denseRange_toLoc {E k : Type} [Field E] [Field k] [TopologicalSpace k] {
 
 open GlobalTheory.LatClass GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice in
 
+/- English proof (translation)
+Introduce `R k _ _ _ _ s W _ _ ν hν j c h g hr h' hf`. Use `haveI := hν.1`. Establish `hϖ` using `val_unif W.unif`. Establish `hb : ∀ j c h, latOf ((W.T s R).bas j c h) = latOf 1` using `fun _ _ _ => rfl`. Establish `H : (∀ j c h x, (W.T s R).Phi j c h x ≠ 0 → IntM x) ∧ (∀ j c h x y, MaxM y → (W.T s R).Phi j c h (x + y) = (W.T s R).Phi j c h x) ∧ ∀ j c h, ((W.T s R).lev j c h).J ≤ KO k _` using `GlobalTheory.Proof.TwistSupportPeriodicLevels.ofTwist_support_periodic_levels k s _ _ _ _ W.δ W.tame W.η _ _ (fun _ _ _ => rfl)`.
+
+Take `⟨hs, hp, hJ⟩` from `H`. Take `⟨r, hr, e', z', he', hz', hl⟩` from `hr`. Rewrite `hl` using `[lat_bas hb, ← nfBasis_one]`. Take `⟨x₀, h0⟩` from `Function.ne_iff.1 (GlobalTheory.FlatSourceStable.flat_ne_zero_of_mem_R k _ _ c W.ψ ν _ _ g h' hf r hr)`. Take `⟨r₂, hr₂, e, z, he, hz, hl₂⟩` from `step_normal (NormalForm.normalFormModN k) hϖ W.cond he' hz' (hl ▸ om_supp (hs _ _ _) (r * g) h') (hl ▸ om_per hϖ (hp _ _ _) (r * g) h') h0`.
+
+Use `⟨r₂ * h', ((DoubleCoset.eq _ _ _ _).2 ⟨r₂, hr₂, 1, one_mem _, (mul_one _).symm⟩).symm, fun κ hκ => ?_⟩` and prove the remaining obligations. Rewrite using `[latOf_mul_congr _ (latOf_eq_of_KO (hJ _ _ _ hκ)), mul_one, hl₂]`. Use `⟨fun y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[mem_latOf_one]`. Conclude with `mem_normal.2 ⟨fun r => sub_mem (hy _) (mul_mem (hy _) (hz r)), fun i => pow_mono hϖ (he i).2 (mem_pow_zero.2 (hy _))⟩`.
+
+Take `⟨h1, h2⟩` from `mem_normal.1 hy`. Establish `h3 : ∀ i, (W.ϖ : k) ^ ((j + 1 : ℕ) : ℤ) * y (.inr i) ∈ 𝒪[k]` using `fun i => mem_pow_zero.1 (zpow_mul_mem_pow.2 (pow_mono hϖ (by have := he i; omega) (h2 i)))`. Establish `h4 : (W.ϖ : k) ^ ((j + 1 : ℕ) : ℤ) ∈ 𝒪[k]` using `mem_pow_zero.1 ((zpow_mem_pow hϖ).2 (by omega))`. Rewrite using `[mem_latOf_one, ← zpow_natCast]`. Introduce and unpack `(r | i)`.
+
+Use `add_mem (mul_mem h4 (h1 r)) (mul_mem (h3 0) (hz r)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h3 i`.
+-/
 theorem exists_bounded_rep : ∀ (R : Ranks) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (s : ℕ) (W : TwData k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν →
     ∀ j c (h : j + 1 + c = s) (g : GL (XIx (Fin R.k) (Fin R.t) j ⊕ Fin (c + 1 + 1)) k),
@@ -76,6 +97,21 @@ theorem exists_bounded_rep : ∀ (R : Ranks) (k : Type) [Field k] [ValuativeRel 
       simp only [Pi.smul_apply, smul_eq_mul]; ring
     · exact h3 i
 
+/- English proof (translation)
+Introduce `E k _ _ _ _ _ ι hι A _ _ a e U hU ⟨g₀, hg₀⟩`. Use `haveI : T2Space k := by`. Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Use `infer_instance`.
+
+Establish `hS : IsOpen {M : Matrix A A k | M.det ≠ 0}` using `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`. Set `F : {M : Matrix A A k | M.det ≠ 0} → GL A k` to `fun M => GeneralLinearGroup.mkOfDetNeZero M.1 M.2`. Establish `hF : Continuous F`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `: (fun M => ((F M)⁻¹ : GL A k).val) = fun M => (M.1.det)⁻¹ • M.1.adjugate`.
+
+Use function extensionality and compare the values at `M`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `((continuous_subtype_val.matrix_det).inv₀ fun M => M.2).smul continuous_subtype_val.matrix_adjugate`.
+
+Establish `hV` using `hS.isOpenMap_subtype_val _ (hU.preimage hF)`. Establish `hne : (Subtype.val '' (F ⁻¹' U)).Nonempty`. Use `⟨_, ⟨g₀.val, g₀.det_ne_zero⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `: F ⟨g₀.val, g₀.det_ne_zero⟩ = g₀` using `Units.ext rfl`. Rewrite using `[Set.mem_preimage, this]`.
+
+Conclude with `hg₀`. Take `⟨x, M, hM, hx⟩` from `(denseRange_toLoc hι e e).exists_mem_open hV hne`. Establish `hd : LinearMap.det x ≠ 0`. Introduce `h0`. Establish `h1` using `M.2`.
+
+Rewrite `h1` using `[Set.mem_setOf_eq, hx, toLoc_eq, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Matrix.det_submatrix_equiv_self, LinearMap.det_toMatrix', h0, map_zero]`. Conclude with `h1 rfl`. Establish `hbij : Function.Bijective x` using `(Module.End.isUnit_iff x).1 ((LinearMap.isUnit_iff_isUnit_det x).2 hd.isUnit)`. Use `⟨LinearEquiv.ofBijective x hbij, ?_⟩` and prove the remaining obligations. Establish `: toLocGL ι e (LinearEquiv.ofBijective x hbij) = F M` using `Units.ext hx.symm`.
+
+Rewrite using `[this]`. Conclude with `hM`.
+-/
 theorem exists_toLocGL_mem : ∀ (E k : Type) [Field E] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ι : E →+* k), DenseRange ι → ∀ (A : Type) [Fintype A] [DecidableEq A] (a : ℕ) (e : A ≃ Fin a) (U : Set (GL A k)),
     IsOpen U → U.Nonempty → ∃ γ : (Fin a → E) ≃ₗ[E] (Fin a → E), toLocGL ι e γ ∈ U := by
@@ -113,12 +149,18 @@ theorem exists_toLocGL_mem : ∀ (E k : Type) [Field E] [Field k] [ValuativeRel 
   rw [this]
   exact hM
 
+/- English proof (translation)
+Introduce `E k _ _ _ _ _ ι hι A B _ _ a b e e' f hf hne`. Conclude with `(denseRange_toLoc hι e e').exists_mem_open (hf {z | z ≠ 0}) (Function.ne_iff.1 hne)`.
+-/
 theorem exists_toLoc_ne_zero : ∀ (E k : Type) [Field E] [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ι : E →+* k), DenseRange ι → ∀ (A B : Type) [Fintype A] [Fintype B] (a b : ℕ) (e : A ≃ Fin a) (e' : B ≃ Fin b)
     (f : Matrix A B k → ℂ), IsLocallyConstant f → f ≠ 0 → ∃ x : (Fin b → E) →ₗ[E] (Fin a → E), f (toLoc ι e e' x) ≠ 0 := by
   intro E k _ _ _ _ _ ι hι A B _ _ a b e e' f hf hne
   exact (denseRange_toLoc hι e e').exists_mem_open (hf {z | z ≠ 0}) (Function.ne_iff.1 hne)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Rewrite using `[toLoc_eq, ← LinearMap.toMatrix'_mulVec]`. Simplify using `only [mulVec, dotProduct, map_sum, map_mul, map_apply, submatrix_apply]`. Conclude with `Equiv.sum_comp e fun l => ι (LinearMap.toMatrix' x (e i) l) * ι (y l)`.
+-/
 theorem toLoc_mulVec {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] {a : ℕ} (e : A ≃ Fin a)
     (x : (Fin a → E) →ₗ[E] (Fin a → E)) (y : Fin a → E) :
     (toLoc ι e e x *ᵥ fun i => ι (y (e i))) = fun i => ι (x y (e i)) := by
@@ -127,6 +169,17 @@ theorem toLoc_mulVec {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type
   simp only [mulVec, dotProduct, map_sum, map_mul, map_apply, submatrix_apply]
   exact Equiv.sum_comp e fun l => ι (LinearMap.toMatrix' x (e i) l) * ι (y l)
 
+/- English proof (translation)
+Introduce `X Pr R P k _ _ _ _ ι ϖ hC hP j c n γ g' ⟨e, _, hg⟩ h1 h2 x hx`. Establish `hmem : ∀ y, y ∈ lamYat (Pr` using `Pr) (R := R) j P ↔ (fun i => ι (y (e i))) ∈ latOf (1 : GL _ k) := fun y => by`. Unfold `lamYat LocE.lamY LocE.sclLat stdAt`. Rewrite using `[if_neg hP, Submodule.mem_comap, mem_localization_standardLattice, mem_latOf_one]`. Simplify using `only [hC.int]`.
+
+Rewrite using `[e.surjective.forall]`. Simplify using `[LocE.scE]`. Take `rfl : g' = toLocGL ι e γ` from `Units.ext hg`. Rewrite `hx` using `[hmem]`. Use `⟨(hmem _).2 (mem_latOf_one.2 ?_), (hmem _).2 ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : ∀ i, (toLoc ι e e γ.symm.toLinearMap *ᵥ fun i => ι (x (e i))) i ∈ 𝒪[k]` using `h1 hx`. Rewrite `h3` using `[toLoc_mulVec]`. Conclude with `h3`. Establish `h3 : (toLocGL ι e γ).val *ᵥ (fun i => ι (x (e i))) ∈ latOf (toLocGL ι e γ * 1)` using `(mulVec_mem_latOf _).2 hx`. Rewrite `h3` using `[mul_one]`.
+
+Establish `h4` using `h2 _ h3`. Express the relevant statement in the definitionally equal form `(ϖ : k) ^ n • (toLoc ι e e γ.toLinearMap *ᵥ fun i => ι (x (e i))) ∈ _ at h4`. Rewrite `h4` using `[toLoc_mulVec, hC.unif]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem bounds_of_isGL : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (P : HeightOneSpectrum (𝓞 X.E)) (k : Type) [Field k]
     [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (ϖ : kˣ),
     IsCompl P (qOf P) ι ϖ → P ∉ Pr.vGs → ∀ (j c n : ℕ) (γ : AutY X R j) (g' : GL (XIx (Fin R.k) (Fin R.t) j ⊕ Fin c) k),
@@ -155,6 +208,9 @@ theorem bounds_of_isGL : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (P : Heigh
     funext i
     simp
 
+/- English proof (translation)
+Establish `hN : R.k + j + j * R.t + 0 = R.N j` using `by simp only [Ranks.N]; ring`. Use `⟨(Equiv.sumEmpty _ (Fin 0)).symm.trans (ordY R.k R.t j 0 _ hN), fun a => ?_⟩` and prove the remaining obligations. Use `ordY_isOrd R.k R.t j 0 _ hN (Sum.inl a)` as an intermediate fact. Simplify `this` using `[yPos]`.
+-/
 theorem ordX_exists (R : Ranks) (j : ℕ) : ∃ e : XIx (Fin R.k) (Fin R.t) j ≃ Fin (R.N j), IsOrd xPos e := by
   have hN : R.k + j + j * R.t + 0 = R.N j := by simp only [Ranks.N]; ring
   refine ⟨(Equiv.sumEmpty _ (Fin 0)).symm.trans (ordY R.k R.t j 0 _ hN), fun a => ?_⟩
@@ -165,6 +221,25 @@ end GlobalTheory.TwBridge.RepsOnto
 
 open GlobalTheory.TwBridge.RepsOnto GlobalTheory.SymBridge GlobalTheory.TwBridge.MatGL in
 
+/- English proof (translation)
+Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν hν hc hA L G hL hI j c h al g hg hr h' hf`. Use `haveI : ν.IsAddHaarMeasure := hν.1`. Take `⟨g₁, hdc, hbd⟩` from `exists_bounded_rep R k s W ν hν j c h g hr h' hf`. Use `set J := ((W.T s R).lev (j + 1) (c + 1) (by omega)).J with hJ`. Establish `hreg : (W.T s R).Regular` using `GlobalTheory.StepData.Chain.ofTwist_regular _ _ _ _ _`.
+
+Establish `hlaws : (W.T s R).Laws` using `GlobalTheory.StepData.Chain.ofTwist_laws _ _ _ W.unr _ _`. Establish `hJo` using `(hreg.2.2 (j + 1) (c + 1) (by omega)).1`. Establish `hm` using `hA.steps`. Establish `hN : R.k + (j + 1) + (j + 1) * R.t + (c + 1) = R.N (j + 1) + cOf R (j + 1)`. Establish `e2 : R.N (j + 1) = R.k + (j + 1) + (j + 1) * R.t` using `by simp only [Ranks.N]; ring`.
+
+Rewrite using `[e2]`. Simplify using `only [cOf]`. Rewrite using `[hm]`. Use linear arithmetic over natural numbers and integers. Establish `ho : IsOrdY (ordY R.k R.t (j + 1) (c + 1) _ hN)`.
+
+Use `ordY_isOrd R.k R.t (j + 1) (c + 1) _ hN` as an intermediate fact. Establish `e2 : R.k + (j + 1) + (j + 1) * R.t = R.N (j + 1)` using `by simp only [Ranks.N]; ring`. Rewrite `this` using `[e2]`. Then use the resulting hypothesis. Take `⟨γ, hγ⟩` from `exists_toLocGL_mem X.E k ι hA.compl.dense _ _ (ordY R.k R.t (j + 1) (c + 1) _ hN) {x | g₁⁻¹ * x ∈ J} (hJo.preimage (continuous_const.mul continuous_id)) ⟨g₁, by simp [J.one_mem]⟩`. Use `set g' := toLocGL ι (ordY R.k R.t (j + 1) (c + 1) _ hN) γ with hg'`.
+
+Establish `hgl : IsGL ι γ g'` using `⟨_, ho, rfl⟩`. Establish `hκ : g₁⁻¹ * g' ∈ J` using `hγ`. Establish `hdc' : DoubleCoset.mk (GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) 1) J g' = DoubleCoset.mk (GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) 1) J h'`. Rewrite using `[← hdc]`. Conclude with `(DoubleCoset.eq _ _ _ _).2 ⟨1, one_mem _, (g₁⁻¹ * g')⁻¹, inv_mem hκ, by group⟩`.
+
+Take `⟨hb1, hb2⟩` from `hbd _ hκ`. Rewrite `hb1`, `hb2` using `[mul_inv_cancel_left]`. Establish `hbd'` using `bounds_of_isGL X Pr R P.1 k ι W.ϖ hA.compl hA.nmem (j + 1) (c + 1) (j + 1) γ g' hgl hb1 hb2`. Use `⟨γ, ⟨g', hgl, hdc'⟩, hbd', ?_⟩` and prove the remaining obligations. Establish `hfl : flat W.ψ ν ((W.T s R).mu (j + 1)) ((W.T s R).Phi j (c + 1) (by omega)) g g' ≠ 0`.
+
+Establish `hT` using `hlaws.1 j (c + 1) (by omega)`. Conclude with `(GlobalTheory.UnfoldedEntries.flat_ne_zero_congr (by omega) hT rfl hdc'.symm).1 hf`. Establish `hSB` using `GlobalTheory.RootEx.opE_mem_SB 1 W.ψ ν (GlobalTheory.SplitWeil.om_mem_SB ((W.T s R).mu (j + 1)) g g' (hreg.1 j (c + 1) (by omega)))`. Take `⟨e', he'⟩` from `ordX_exists R j`. Take `⟨e, he⟩` from `ordX_exists R (j + 1)`.
+
+Take `⟨x, hx⟩` from `exists_toLoc_ne_zero X.E k ι hA.compl.dense _ _ _ _ e e' (flat W.ψ ν ((W.T s R).mu (j + 1)) ((W.T s R).Phi j (c + 1) (by omega)) g g') hSB.1 hfl`. Take `⟨A₀, B₀, hAB⟩` from `GlobalTheory.T.unfoldingIntegral_twistPrime_eq_deep_finite_sum X Pr R Ch sel S₀ mu cst σ₀ P k ι s W ν hν hc hA j c h (L.h j al P) γ g g' hg hgl (hL.boundQ j al P hA.nmem) hbd' (hL.depthQ' P hA.nmem)`. Use `⟨A₀, B₀, fun A' B' h1 h2 hz => hx ?_⟩` and prove the remaining obligations. Rewrite using `[hAB A' B' h1 h2 e' e he' he x]`. Use `congrFun hz x` as an intermediate fact.
+
+Simplify using `only [Pi.zero_apply] at this`. Rewrite using `[this, map_zero, mul_zero]`.
+-/
 theorem GlobalTheory.TwBridge.repsOnto : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (W : TwData k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → cst.Ok → AtTwist (R := R) sel mu cst σ₀ P ι s W → ∀ (L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))) (G : ChGlob X R.m), L.Ok Ch sel mu cst G s → IdxProd sel mu cst L → ∀ j c (h : j + 1 + c = s) (al : L.β j) (g : GL (XIx (Fin R.k) (Fin R.t) (j) ⊕ Fin (c + 1 + 1)) k), IsGL ι (L.h j al P) g → (∃ r ∈ GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j)) (c + 1 + 1) 1, GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice.IsNormalRep (W.T s R) W.ϖ j (c + 1) (by omega) (r * g)) → ∀ h' : GL (XIx (Fin R.k) (Fin R.t) (j + 1) ⊕ Fin (c + 1)) k, flat W.ψ ν ((W.T s R).mu (j + 1)) ((W.T s R).Phi j (c + 1) (by omega)) g h' ≠ 0 → ∃ γ : AutY X R (j + 1), (∃ g' : GL (XIx (Fin R.k) (Fin R.t) (j + 1) ⊕ Fin (c + 1)) k, IsGL ι γ g' ∧ DoubleCoset.mk (GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) 1) ((W.T s R).lev (j + 1) (c + 1) (by omega)).J g' = DoubleCoset.mk (GlobalTheory.RootEx.R k (XIx (Fin R.k) (Fin R.t) (j + 1)) (c + 1) 1) ((W.T s R).lev (j + 1) (c + 1) (by omega)).J h') ∧ (∀ x ∈ lamYat (Pr := Pr) (R := R) (j + 1) P.1, γ⁻¹ x ∈ lamYat (Pr := Pr) (R := R) (j + 1) P.1 ∧ ((qOf P.1 : X.E) ^ (j + 1)) • γ x ∈ lamYat (Pr := Pr) (R := R) (j + 1) P.1) ∧ FiniteSumNonzeroLargeDepth Ch sel mu cst j P (L.h j al P) γ := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s W _ _ ν hν hc hA L G hL hI j c h al g hg hr h' hf
   haveI : ν.IsAddHaarMeasure := hν.1

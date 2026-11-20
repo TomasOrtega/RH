@@ -24,6 +24,9 @@ def xiEdge (ξ : kˣ →* ℂˣ) : Edge → kˣ →* ℂˣ
   | .theta _ _ => ξ
   | .ex _ _ => 1
 
+/- English proof (translation)
+Consider the cases of `b with`. Consider the case `theta i j => show Γ.mu (j + 1) / Γ.eta ^ ((Γ.rank X + 1) % 2) = μ₀ (j + 1) / Γ.eta ^ ((Γ.rank X + 1) % 2) * ξ`. Rewrite using `[h, mul_div_right_comm]`. Consider the case `ex i j => show Γ.chi (Γ.m - i) / Γ.eta ^ ((Γ.rank X + 1) % 2) = Γ.chi (Γ.m - i) / Γ.eta ^ ((Γ.rank X + 1) % 2) * 1`. Rewrite using `[mul_one]`.
+-/
 theorem kappa_split (Γ : Grid k) (μ₀ : ℕ → kˣ →* ℂˣ) (ξ : kˣ →* ℂˣ) (h : ∀ j, Γ.mu j = μ₀ j * ξ) (b : Edge) (X : ℕ × ℕ) :
     Γ.kappa b X = ({Γ with mu := μ₀} : Grid k).kappa b X * xiEdge ξ b := by
   cases b with
@@ -37,6 +40,9 @@ theorem kappa_split (Γ : Grid k) (μ₀ : ℕ → kˣ →* ℂˣ) (ξ : kˣ →
 def xiPart (Γ : Grid k) (ξ : kˣ →* ℂˣ) (g : Γ.VertexGroup) : ℂˣ :=
   ((oppositePath Γ.m).map fun b => xiEdge ξ b (gdet (g b.src)) * (xiEdge ξ b (gdet (g b.tgt)))⁻¹).prod
 
+/- English proof (translation)
+Simplify using `only [charFactor, xiPart, kappa_split Γ μ₀ ξ h, ← List.prod_map_mul]`. Use `congrArg List.prod (List.map_congr_left fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [MonoidHom.mul_apply, mul_inv]`. Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem charFactor_split (Γ : Grid k) (μ₀ : ℕ → kˣ →* ℂˣ) (ξ : kˣ →* ℂˣ) (h : ∀ j, Γ.mu j = μ₀ j * ξ)
     (g : Γ.VertexGroup) :
     charFactor Γ g = charFactor ({Γ with mu := μ₀} : Grid k) g * xiPart Γ ξ g := by
@@ -45,6 +51,11 @@ theorem charFactor_split (Γ : Grid k) (μ₀ : ℕ → kˣ →* ℂˣ) (ξ : k�
   simp only [MonoidHom.mul_apply, mul_inv]
   exact mul_mul_mul_comm _ _ _ _
 
+/- English proof (translation)
+Use `H.list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨b, -, rfl⟩` from `List.mem_map.1 hx`. Establish `e : ∀ u, xiEdge ξ b u ∈ H` using `fun u => by`. Consider the cases of `b with`. Consider the case `theta _ _ => exact hH u`.
+
+Consider the case `ex _ _ => exact H.one_mem`. Conclude with `H.mul_mem (e _) (H.inv_mem (e _))`.
+-/
 theorem xiPart_mem (Γ : Grid k) (ξ : kˣ →* ℂˣ) (g : Γ.VertexGroup) (H : Subgroup ℂˣ) (hH : ∀ x, ξ x ∈ H) :
     xiPart Γ ξ g ∈ H := by
   refine H.list_prod_mem fun x hx => ?_
@@ -55,6 +66,11 @@ theorem xiPart_mem (Γ : Grid k) (ξ : kˣ →* ℂˣ) (g : Γ.VertexGroup) (H :
     | ex _ _ => exact H.one_mem
   exact H.mul_mem (e _) (H.inv_mem (e _))
 
+/- English proof (translation)
+Rewrite using `[charFactor, ← Units.coeHom_apply, map_list_prod, List.map_map]`. Use `congrArg List.prod (List.map_congr_left fun b _ => ?_)` and prove the remaining obligations. Establish `ha : ∀ X (z : ℂ), GlobalTheory.SplitFlip.apow (gdet (GlobalTheory.SplitFlip.Assignment.one.read (ε X))) z = 1` using `fun X z => by`. Use `GlobalTheory.SplitFlip.apow_of_valuation_eq_one ?_ z` and prove the remaining obligations. Rewrite using `[show GlobalTheory.SplitFlip.Assignment.one.read (ε X) = GlobalTheory.SplitFlip.invT (ε X) from rfl, GlobalTheory.SplitFlip.gdet_invT, Units.val_inv_eq_inv_val, map_inv₀, GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO (hε X), inv_one]`.
+
+Simplify using `only [Grid.edgeFactor, ha, mul_one, Function.comp, Units.coeHom_apply, Units.val_mul]`.
+-/
 theorem prod_edgeFactor (Γ : Grid k) (ε : Γ.VertexGroup) (hε : ∀ X, ε X ∈ GlobalTheory.SplitWeil.KO k _) :
     ((oppositePath Γ.m).map (Γ.edgeFactor .one ε)).prod = ((charFactor Γ ε : ℂˣ) : ℂ) := by
   rw [charFactor, ← Units.coeHom_apply, map_list_prod, List.map_map]
@@ -65,6 +81,13 @@ theorem prod_edgeFactor (Γ : Grid k) (ε : Γ.VertexGroup) (hε : ∀ X, ε X �
       Units.val_inv_eq_inv_val, map_inv₀, GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO (hε X), inv_one]
   simp only [Grid.edgeFactor, ha, mul_one, Function.comp, Units.coeHom_apply, Units.val_mul]
 
+/- English proof (translation)
+Use `List.prod_eq_one fun x hx => ?_` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hx`. Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse] at hb`. Break down `hb with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Use `show Γ.kappa _ (i, Γ.m) (gdet (ε (i, Γ.m))) * (Γ.kappa _ (i + 1, Γ.m) (gdet (ε (i + 1, Γ.m))))⁻¹ = 1`.
+
+Establish `g1 : ∀ n, gdet (1 : GL (Fin n) k) = 1` using `fun _ => map_one _`. Rewrite using `[(hrow i hi).1, (hrow i hi).2, g1, g1, map_one, map_one, inv_one, mul_one]`. Establish `hu : ∀ X, Γ.kappa (.theta Γ.m j) X (gdet (ε X)) = 1` using `fun X => by`. Establish `hv` using `GlobalTheory.SplitFlip.valuation_gdet_of_mem_KO (hε X)`. Use `show (Γ.mu (j + 1) / Γ.eta ^ ((Γ.rank X + 1) % 2)) (gdet (ε X)) = 1`.
+
+Rewrite using `[MonoidHom.div_apply, MonoidHom.pow_apply, hμ j hj _ hv, hη _ hv, one_pow, div_one]`. Use `show Γ.kappa _ _ (gdet (ε _)) * (Γ.kappa _ _ (gdet (ε _)))⁻¹ = 1`. Rewrite using `[hu, hu, inv_one, mul_one]`.
+-/
 theorem charFactor_eq_one (Γ : Grid k) (ε : Γ.VertexGroup) (hε : ∀ X, ε X ∈ GlobalTheory.SplitWeil.KO k _)
     (hrow : ∀ i < Γ.m, ε (i, Γ.m) = 1 ∧ ε (i + 1, Γ.m) = 1)
     (hμ : ∀ j < Γ.m, IsUnram (Γ.mu (j + 1))) (hη : IsUnram Γ.eta) : charFactor Γ ε = 1 := by
@@ -112,6 +135,13 @@ variable (G : GridData L sc) in
 def stair0 (w : Pl D.host.E) : (grid0 G w).VertexGroup :=
   onColumn (G := grid0 G w) fun j => if j + 2 ≤ D.R.m then stair (grid0 G w) (unifAt w) (cosExp G w) j else 1
 
+/- English proof (translation)
+Establish `hb : β = fun i : Fin _ => DoubleCoset.mk _ _ (stair (locGrid G t w) (unifAt w) (cosExp G w) (i.1 + 1))` using `funext hβ`. Substitute `hb` using the available equality. Use function extensionality and compare the values at `X`. Take `⟨i, j⟩` from `X`. Distinguish the cases in `hi : i = D.R.m`.
+
+Substitute `hi` using the available equality. Establish `e1 : (stair0 G w : (locGrid G t w).VertexGroup) (D.R.m, j) = if j + 2 ≤ D.R.m then stair (locGrid G t w) (unifAt w) (cosExp G w) j else 1` using `onColumn_apply (G := grid0 G w) _ j`. Rewrite using `[e1]`. Use `split_ifs with hj`. Conclude with `through_elt _ hj`.
+
+Conclude with `elt_eq_one t w _ (by omega)`. Use `show onColumn (G := locGrid G t w) _ (i, j) = onColumn (G := grid0 G w) _ (i, j)`. Rewrite using `[onColumn, onColumn, dif_neg (show ¬ (i, j).1 = (locGrid G t w).m from hi), dif_neg (show ¬ (i, j).1 = (grid0 G w).m from hi)]`. Both sides reduce to the same expression.
+-/
 theorem elt_stair (G : GridData L sc) (t : T) (w : Pl D.host.E)
     (β : Cosets (G := locGrid G t w) one_le_sLen (givenLevel G t w))
     (hβ : ∀ i, β i = DoubleCoset.mk _ _ (stair (locGrid G t w) (unifAt w) (cosExp G w) (i + 1))) :
@@ -137,6 +167,27 @@ end Grid0
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Use `⟨fun w => if w ∈ ch.G.pl.W0 then ((charFactor (grid0 ch.G w) (eps0 ch.G w) * charFactor (grid0 ch.G w) (stair0 ch.G w) : ℂˣ) : ℂ) else 1, fun t w => (xiPart (locGrid ch.G t w) ((R.toLevCh.xiH t).loc w) (epsV ch.G t w) * if w ∈ ch.G.pl.W0 then xiPart (locGrid ch.G t w) ((R.toLevCh …` and prove the remaining obligations. Establish `hH : ∀ x, (R.toLevCh.xiH t).loc w x ∈ xiVals R.toLevCh t` using `fun x => Subgroup.subset_closure ⟨w, x, rfl⟩`. Use `inv_mem (mul_mem (xiPart_mem _ _ _ _ hH) ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `xiPart_mem _ _ _ _ hH`. Conclude with `one_mem _`. Establish `hmu : ∀ j, (locGrid ch.G t w).mu j = (fun j => (muBase R.toLevCh j).loc w) j * (R.toLevCh.xiH t).loc w` using `fun j => MonoidHom.ext fun _ => rfl`. Establish `hsplit` using `charFactor_split (locGrid ch.G t w) _ _ hmu`.
+
+Simplify using `only`. Unfold `zetaLoc`. Rewrite using `[prod_edgeFactor _ _ (epsV_mem t w)]`. Distinguish the cases in `h0 : w ∈ ch.G.pl.W0`. Establish `hk : keepAt ch.G w = false` using `by simp [keepAt, h0]`.
+
+Rewrite using `[hk, if_pos h0, if_pos h0, elt_stair ch.G t w β (hβ h0)]`. Establish `key : charFactor (locGrid ch.G t w) (epsV ch.G t w) * charFactor (locGrid ch.G t w) (stair0 ch.G w) = (charFactor (grid0 ch.G w) (eps0 ch.G w) * charFactor (grid0 ch.G w) (stair0 ch.G w)) * ((xiPart (locGrid ch.G t w) ((R.toLevCh.xiH t).loc w) (epsV ch.G t w) * xiPart (locGrid ch …`. Rewrite using `[inv_inv, hsplit (epsV ch.G t w), hsplit (stair0 ch.G w)]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Simplify using `only [Bool.false_eq_true, if_false]`.
+
+Rewrite using `[← Units.val_inv_eq_inv_val, ← Units.val_mul, ← Units.val_mul]`. Conclude with `congrArg Units.val key`. Establish `hk : keepAt ch.G w = true` using `by simp [keepAt, h0]`. Rewrite using `[hk, if_neg h0, if_neg h0, if_pos rfl]`. Establish `ha : w.under (𝓞 D.host.F) ∉ ch.G.pl.S0`.
+
+Break down `GlobalTheory.FunObj.Good.locPl_cases hw with ⟨a, b⟩ | ⟨a, -, -⟩` into its components or cases. Conclude with `absurd (by rw [b]; exact Finset.mem_image_of_mem ch.G.pl.w a) h0`. Conclude with `a`. Establish `hoff : ∀ i j, i ≠ D.R.m → epsV ch.G t w (i, j) = 1` using `fun i j hi => by show onColumn (G := locGrid ch.G t w) _ (i, j) = 1`. Rewrite using `[onColumn, dif_neg (show ¬ (i, j).1 = (locGrid ch.G t w).m from hi)]`.
+
+Establish `h1 : charFactor ({locGrid ch.G t w with mu` using `fun j => (muBase R.toLevCh j).loc w} : Grid (Kw w)) (epsV ch.G t w) = 1 := by`. Use `charFactor_eq_one _ _ (epsV_mem t w) (fun i hi => ⟨hoff i _ (Nat.ne_of_lt hi), ?_⟩) (fun j hj => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `e : i + 1 = D.R.m`. Use `show epsV ch.G t w (i + 1, D.R.m) = 1`. Rewrite using `[show (i + 1, D.R.m) = (D.R.m, D.R.m) by rw [e]]`.
+
+Conclude with `epsV_eq_one t w (by omega)`. Conclude with `hoff _ _ e`. Use `replace hj : j < D.R.m := hj show IsUnram ((muBase R.toLevCh (j + 1)).loc w)`. Rewrite using `[muBase, dif_pos hj]`. Use `GlobalTheory.FunObj.Good.isUnram_loc.2 ((R.toLevCh.C.isMu0 ⟨j, hj⟩).unr w fun k hk => ?_)` and prove the remaining obligations.
+
+Use `ha (ch.G.pl.mem_S0_of_sum_eq.2 (Or.inr ((GlobalTheory.ChiGrid.S1_mem_OmF D).2 ?_)))` and prove the remaining obligations. Establish `: ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (w.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap _ (𝓞 D.host.E) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hk`. Use `fin_cases k`.
+
+Conclude with `Or.inl this`. Conclude with `Or.inr (Or.inl this)`. Conclude with `GlobalTheory.FunObj.Good.isUnram_loc.2 (R.toLevCh.C.isEta.unr w)`. Simplify using `only [hsplit (epsV ch.G t w), h1, one_mul, mul_one, Units.val_inv_eq_inv_val, inv_inv]`.
+-/
 theorem scal : Big fun ch => ScalP ch := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩
   have hL : R.toLevCh.Is A.μ0 := s.core.lev

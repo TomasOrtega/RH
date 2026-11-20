@@ -6,6 +6,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovDomGrp
 
+/- English proof (translation)
+Introduce `D X x n γ hR hγ τ`. Take `⟨M, -, h1, -, h4⟩` from `hR`. Establish `hPu : IsUnit (X.B.I.P (vOf X τ)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit (vOf X τ))`. Establish `hP : X.B.I.P (vOf X τ) * uMat (x.1 (vOf X τ)) * (X.B.I.P (vOf X τ))⁻¹ = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ (vOf X τ))`. Rewrite using `[h1 (vOf X τ)]`.
+
+Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPu, Matrix.mul_one]`. Establish `hN : ∀ c, γ *ᵥ c = (((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map X.ιE).submatrix (ci X) (ci X)) *ᵥ c`. Introduce `c`. Establish `hc` using `hγ (vecOf X c)`.
+
+Rewrite `hc` using `[crdH_vecOf]`. Rewrite using `[← hc]`. Use function extensionality and compare the values at `i`. Rewrite using `[crdH_eq_crd, h4]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.submatrix_apply, Matrix.map_apply]`.
+
+Rewrite using `[← (ci X).sum_comp]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← crdH_eq_crd, crdH_vecOf]`. Establish `hγe : γ = ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map X.ιE).submatrix (ci X) (ci X)` using `Matrix.toLin'.injective (LinearMap.ext fun c => by rw [Matrix.toLin'_apply, Matrix.toLin'_apply]; exact hN c)`. Rewrite using `[hP, hγe]`.
+
+Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.submatrix_apply, X.φ_eq]`. Use `congr 1`. Simplify using `[vOf]`.
+-/
 theorem coordMat_place : ∀ {D : D7} (X : HidaSetting D) {x : X.B.I.GA} (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E), Formalism.L2.SG.TermOp.RatLink X x n → (∀ y, crdH X (n y) = γ *ᵥ crdH X y) → ∀ τ : D.what₂.Tau, γ.map (embS D τ) = (X.B.I.P (vOf X τ) * uMat (x.1 (vOf X τ)) * (X.B.I.P (vOf X τ))⁻¹).submatrix (ci X) (ci X) := by
   intro D X x n γ hR hγ τ
   obtain ⟨M, -, h1, -, h4⟩ := hR

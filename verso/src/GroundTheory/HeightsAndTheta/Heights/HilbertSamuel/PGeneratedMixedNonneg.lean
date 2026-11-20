@@ -8,6 +8,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _ _ V n bs hV hgen`. Conclude with `hGP F K ι (fun V _ L => NumbersDVR.intNum F V L) V n bs (NumbersDVR.IntNumIsFieldIntersection.full F K ι) hV hgen`.
+-/
 theorem GeneratedMixedNonneg.proof (hGP : GeneratedProductNonneg.Statement) :
     GeneratedMixedNonneg.Statement := by
   intro F _ K _ _ ι _ _ V n bs hV hgen

@@ -18,6 +18,15 @@ variable {F : Type} [Field F] [Fintype F] {k : ℕ}
 def IsUTm (A : Matrix (Fin k) (Fin k) F) : Prop :=
   (∀ i, A i i = 1) ∧ ∀ i j, j < i → A i j = 0
 
+/- English proof (translation)
+Take `⟨hA1, hA0⟩` from `hA`. Take `⟨hB1, hB0⟩` from `hB`. Use `⟨fun i => ?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA1, hB1, one_mul]`.
+
+Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hA0 i l h, zero_mul]`. Rewrite using `[hB0 l i h, mul_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases. Rewrite using `[hA0 i l h, zero_mul]`.
+
+Rewrite using `[hB0 l j (lt_of_lt_of_le hij h), mul_zero]`.
+-/
 theorem IsUTm.mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUTm B) : IsUTm (A * B) := by
   obtain ⟨hA1, hA0⟩ := hA
   obtain ⟨hB1, hB0⟩ := hB
@@ -36,6 +45,19 @@ theorem IsUTm.mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUTm B)
     · rw [hA0 i l h, zero_mul]
     · rw [hB0 l j (lt_of_lt_of_le hij h), mul_zero]
 
+/- English proof (translation)
+Take `⟨hA1, hA0⟩` from `hA`. Take `⟨hB1, hB0⟩` from `hB`. Establish `key : ∀ i j : Fin k, (j : ℕ) = (i : ℕ) + 1 → (A * B) i j = A i j + B i j`. Introduce `i j hij`. Establish `hij' : i < j`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_add i j (ne_of_lt hij')]`. Rewrite using `[hA1 i, hB1 j, one_mul, mul_one, add_comm]`. Introduce `c _ hc`.
+
+Break down `lt_or_gt_of_ne hc.1 with h | h` into its components or cases. Rewrite using `[hA0 i c h, zero_mul]`. Establish `h' : j < c`. Establish `h1 : (i : ℕ) < c` using `h`. Establish `h2 : (c : ℕ) ≠ j` using `fun e => hc.2 (Fin.ext e)`.
+
+Rewrite using `[Fin.lt_iff_val_lt_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB0 c j h', mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Simplify using `only [superdiag]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `key i j h`. Rewrite using `[add_zero]`.
+-/
 theorem superdiag_mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUTm B) :
     superdiag k (A * B) = superdiag k A + superdiag k B := by
   obtain ⟨hA1, hA0⟩ := hA
@@ -70,6 +92,15 @@ theorem superdiag_mul {A B : Matrix (Fin k) (Fin k) F} (hA : IsUTm A) (hB : IsUT
   · exact key i j h
   · rw [add_zero]
 
+/- English proof (translation)
+Establish `htri : ∀ i j : Fin k, j < i → ((u⁻¹ : GL (Fin k) F) : Matrix (Fin k) (Fin k) F) i j = 0`. Introduce `i j hij`. Use `letI : Invertible (u : Matrix (Fin k) (Fin k) F) := u.invertible`. Establish `hb : (u : Matrix (Fin k) (Fin k) F).BlockTriangular id`. Introduce `a b hab`.
+
+Conclude with `h.2 a b hab`. Rewrite using `[Matrix.coe_units_inv u]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb hij`. Use `⟨fun i => ?_, htri⟩` and prove the remaining obligations. Establish `hmul : ((u : Matrix (Fin k) (Fin k) F) * ((u⁻¹ : GL (Fin k) F) : Matrix (Fin k) (Fin k) F)) i i = 1`.
+
+Rewrite using `[Units.mul_inv, Matrix.one_apply_eq]`. Rewrite `hmul` using `[Matrix.mul_apply, Finset.sum_eq_single i, h.1 i, one_mul]`. Conclude with `hmul`. Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with hl' | hl'` into its components or cases.
+
+Rewrite using `[h.2 i l hl', zero_mul]`. Rewrite using `[htri l i hl', mul_zero]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+-/
 theorem IsUTm.inv_val (u : GL (Fin k) F) (h : IsUTm (u : Matrix (Fin k) (Fin k) F)) :
     IsUTm ((u⁻¹ : GL (Fin k) F) : Matrix (Fin k) (Fin k) F) := by
   have htri : ∀ i j : Fin k, j < i → ((u⁻¹ : GL (Fin k) F) : Matrix (Fin k) (Fin k) F) i j = 0 := by
@@ -93,14 +124,23 @@ theorem IsUTm.inv_val (u : GL (Fin k) F) (h : IsUTm (u : Matrix (Fin k) (Fin k) 
   · intro hi
     exact absurd (Finset.mem_univ i) hi
 
+/- English proof (translation)
+Establish `h` using `IsUTm.mul (A := (x : Matrix (Fin k) (Fin k) F)) (B := (y : Matrix (Fin k) (Fin k) F)) hx hy`. Use `show IsUTm ((x * y : GL (Fin k) F) : Matrix (Fin k) (Fin k) F)`. Rewrite using `[Units.val_mul]`. Conclude with `h`.
+-/
 theorem isUni_mul {x y : GL (Fin k) F} (hx : IsUni k x) (hy : IsUni k y) : IsUni k (x * y) := by
   have h := IsUTm.mul (A := (x : Matrix (Fin k) (Fin k) F)) (B := (y : Matrix (Fin k) (Fin k) F)) hx hy
   show IsUTm ((x * y : GL (Fin k) F) : Matrix (Fin k) (Fin k) F)
   rw [Units.val_mul]
   exact h
 
+/- English proof (translation)
+The claim follows from `IsUTm.inv_val x hx`.
+-/
 theorem isUni_inv {x : GL (Fin k) F} (hx : IsUni k x) : IsUni k x⁻¹ := IsUTm.inv_val x hx
 
+/- English proof (translation)
+Unfold `psiU`. Rewrite using `[Units.val_mul, superdiag_mul (A := (x : Matrix (Fin k) (Fin k) F)) (B := (y : Matrix (Fin k) (Fin k) F)) hx hy]`. Use `first`. Consider the case `exact AddChar.map_add_eq_mul ψ₀ _ _`. Consider the case `exact AddChar.map_add_mul ψ₀ _ _`.
+-/
 theorem psiU_mul (ψ₀ : AddChar F ℂ) {x y : GL (Fin k) F} (hx : IsUni k x) (hy : IsUni k y) :
     psiU ψ₀ (x * y) = psiU ψ₀ x * psiU ψ₀ y := by
   unfold psiU
@@ -110,6 +150,11 @@ theorem psiU_mul (ψ₀ : AddChar F ℂ) {x y : GL (Fin k) F} (hx : IsUni k x) (
     | exact AddChar.map_add_eq_mul ψ₀ _ _
     | exact AddChar.map_add_mul ψ₀ _ _
 
+/- English proof (translation)
+Establish `hpow : ψ₀ a ^ Fintype.card F = 1`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]`. Establish `hn : Fintype.card F ≠ 0` using `Fintype.card_ne_zero`. Establish `h2 : ‖ψ₀ a‖ ^ Fintype.card F = 1`. Rewrite using `[← norm_pow, hpow, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn).mp h2`.
+-/
 theorem norm_addChar (ψ₀ : AddChar F ℂ) (a : F) : ‖ψ₀ a‖ = 1 := by
 
   have hpow : ψ₀ a ^ Fintype.card F = 1 := by
@@ -122,6 +167,19 @@ theorem norm_addChar (ψ₀ : AddChar F ℂ) (a : F) : ‖ψ₀ a‖ = 1 := by
 end Formalism.L2.SG.NormCut.PsiNatEquivPf
 
 open Formalism.L2.SG.GGMirabolic Formalism.L2.SG.NormCut.PsiNatEquivPf in
+/- English proof (translation)
+Introduce `F _ _ k ψ₀ x w hw`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : IsUni k x`. Unfold `psiNat`. Rewrite using `[if_pos (isUni_mul hx hw), if_pos hx, if_pos hw]`.
+
+Conclude with `psiU_mul ψ₀ hx hw`. Establish `hxw : ¬ IsUni k (x * w)`. Introduce `h`. Establish `h'` using `isUni_mul h (isUni_inv hw)`. Rewrite `h'` using `[mul_inv_cancel_right]`.
+
+Conclude with `hx h'`. Unfold `psiNat`. Rewrite using `[if_neg hxw, if_neg hx, zero_mul]`. Distinguish the cases in `hx : IsUni k x`. Unfold `psiNat`.
+
+Rewrite using `[if_pos (isUni_mul hw hx), if_pos hx, if_pos hw]`. Conclude with `psiU_mul ψ₀ hw hx`. Establish `hwx : ¬ IsUni k (w * x)`. Introduce `h`. Establish `h'` using `isUni_mul (isUni_inv hw) h`.
+
+Rewrite `h'` using `[inv_mul_cancel_left]`. Conclude with `hx h'`. Unfold `psiNat`. Rewrite using `[if_neg hwx, if_neg hx, mul_zero]`. Unfold `psiNat psiU`.
+
+Rewrite using `[if_pos hw]`. Use `first`. Consider the case `(rw [Complex.conj_mul', norm_addChar]; simp)`. Consider the case `(rw [mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, norm_addChar]; simp)`.
+-/
 theorem Formalism.L2.SG.NormCut.psi_natural_equiv_holds : Formalism.L2.SG.NormCut.PsiNatEquiv := by
   intro F _ _ k ψ₀ x w hw
   refine ⟨?_, ?_, ?_⟩

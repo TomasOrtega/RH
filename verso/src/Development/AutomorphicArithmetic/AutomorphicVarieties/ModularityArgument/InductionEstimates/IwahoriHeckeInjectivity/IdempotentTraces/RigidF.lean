@@ -17,6 +17,11 @@ open scoped ComplexConjugate Classical
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
+/- English proof (translation)
+Use `haveI hl : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Establish `hs : Function.Surjective (completionMap (w.under (𝓞 K)) w)` using `h ⟨w, hl⟩`. Establish `hb : Function.Bijective (Algebra.linearMap ((w.under (𝓞 K)).adicCompletion K) (w.adicCompletion M))` using `⟨(completionMap (w.under (𝓞 K)) w).injective, hs⟩`.
+
+Establish `h1 : w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) = 1`. Rewrite using `[← finrank_eq_ramificationIdx_mul_inertiaDeg M (w.under (𝓞 K)) w, ← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, Nat.eq_one_of_mul_eq_one_left h1, pow_one]`.
+-/
 private theorem normV_split {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     (w : HeightOneSpectrum (𝓞 M)) (h : GM.Split M (w.under (𝓞 K))) :
     Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 K)) := by
@@ -33,10 +38,18 @@ private theorem normV_split {K M : Type} [Field K] [NumberField K] [Field M] [Nu
   rw [← Ideal.absNorm_relNorm (𝓞 K) (𝓞 M) w.asIdeal,
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, Nat.eq_one_of_mul_eq_one_left h1, pow_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.le, h.closed, h.inv, h.ne, h.irr⟩`.
+-/
 private theorem summand_of_irr {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     {τ : Submodule ℂ (L2 μ)} (h : CuspIrr μ τ) : IsSummand μ τ :=
   ⟨h.le, h.closed, h.inv, h.ne, h.irr⟩
 
+/- English proof (translation)
+Take `⟨i, k₀⟩` from `a`. Take `⟨D, hD, rfl⟩` from `h`. Establish `hu : ∀ k : κ i, k = k₀` using `fun k => by`. Establish `: (⟨i, k⟩ : Σ i, κ i) = ⟨i, k₀⟩` using `hinj rfl`. Simplify using `using this`.
+
+Rewrite using `[Fintype.sum_eq_single k₀ fun k hk => absurd (hu k) hk]`. Conclude with `hD k₀`.
+-/
 private theorem sat_single {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {ι : Type} {κ : ι → Type}
     [∀ i, Fintype (κ i)] {m : (Σ i, κ i) → ℕ} (Q : ∀ a, CG E (m a))
     (hinj : Function.Injective (Sigma.fst : (Σ i, κ i) → ι)) (a : Σ i, κ i) {w : HeightOneSpectrum (𝓞 E)}
@@ -49,12 +62,42 @@ private theorem sat_single {E : Type} [Field E] [NumberField E] [IsTotallyComple
   rw [Fintype.sum_eq_single k₀ fun k hk => absurd (hu k) hk]
   exact hD k₀
 
+/- English proof (translation)
+Consider the cases of `h`. Conclude with `hq`.
+-/
 private theorem sat_of_sigma {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n n' : ℕ} {p : CG E n} {q : CG E n'}
     (h : (⟨n, p⟩ : Σ a, CG E a) = ⟨n', q⟩) {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ} (hq : q.HasSat w B) :
     p.HasSat w B := by
   cases h
   exact hq
 
+/- English proof (translation)
+Introduce `hL F E _ _ _ _ _ _ _ _ σ h2 hgen τ₁ τ₂ θ₂ hP hgal h12 h21 SE SF hSE hSF m₁ m₂ B₁ B₂ hA₁ hA₂ b Λ' t' hb hbc`. Establish `hp : (Module.finrank F E).Prime` using `h2 ▸ Nat.prime_two`. Take `⟨-, hsw⟩` from `swapAt F E σ h2 hgen τ₁ τ₂ θ₂ hP hgal h12 h21`. Establish `s₁` using `summand_of_irr hP.irr₁`. Establish `s₂` using `summand_of_irr hP.irr₂`.
+
+Take `⟨π₁, c₁, -⟩` from `Dp.exCusp E 2 (BW.mu1 E 2) τ₁ s₁`. Take `⟨π₂, c₂, -⟩` from `Dp.exCusp E 2 (BW.mu1 E 2) τ₂ s₂`. Take `⟨P, hPt⟩` from `T.famSat F (2 + 2) b SF hSF Λ' t' hb`. Use `choose κ fκ m Q hm hne hQ using fun i => hL F E σ hgen hp (b.d i) (b.pos i) (P i)`. Establish `hsum` using `R.liftSum F E hp (Fin b.r) κ b.d (fun a => m a.1 a.2) P (fun a => Q a.1 a.2) hQ`.
+
+Establish `hN` using `(T.places F E hp).2.2.2.2.1`. Establish `hund` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E`. Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∃ (B : Fin 2 → Multiset ℂˣ) (B' : (Σ i, κ i) → Multiset ℂˣ), (∀ i, ((![CG.mk π₁, CG.mk π₂] : Fin 2 → CG E 2) i).HasSat w (B i)) ∧ (∀ a, (Q a.1 a.2).HasSat w (B' a)) ∧ ∑ i, B i = ∑ a, B' a` using `by filter_upwards [hsum, hSE.eventually_cofinite_notMem, hund.eventually hSF.eventually_cofinite_notMem] with w hw hwE hwF`. Take `⟨B, ⟨B1, hB1, e1⟩, D, hD, eD⟩` from `hw (UpperTheory.ConvolutionTheory.resDeg F w) (hN w)`. Take `⟨C, ⟨C1, hC1, e2⟩, e⟩` from `hPt _ hwF`.
+
+Take `⟨A₁, a₁, h₁⟩` from `(Dp.sSatIff E 2 _ π₁ τ₁ c₁ w _).1 (hA₁.2 w hwE)`. Take `⟨A₂, a₂, h₂⟩` from `(Dp.sSatIff E 2 _ π₂ τ₂ c₂ w _).1 (hA₂.2 w hwE)`. Establish `e3 : B = C`. Rewrite using `[e1, e2]`. Conclude with `Finset.sum_congr rfl fun i _ => (hB1 i).unique (hC1 i)`.
+
+Use `⟨![A₁, A₂], D, fun i => ?_, hD, ?_⟩` and prove the remaining obligations. Use `fin_cases i exacts [h₁, h₂]`. Establish `hb` using `hbc w hwE`. Rewrite `hb` using `[bcSat, e, a₁, a₂, Multiset.map_map]`. Use `Multiset.map_injective (f := fun z : ℂˣ => (z : ℂ)) (fun a b e => Units.ext e) ?_` and prove the remaining obligations.
+
+Rewrite using `[← eD, e3, Fin.sum_univ_two, Multiset.map_map]`. Simplify using `using hb`. Take `⟨s, hs⟩` from `PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity E (Fin 2) (Σ i, κ i) (fun _ => 2) (fun a => m a.1 a.2) ![CG.mk π₁, CG.mk π₂] (fun a => Q a.1 a.2) (fun _ => by norm_num) (fun a => hm a.1 a.2) hev`. Establish `hcard : Fintype.card (Σ i, κ i) = 2` using `by simpa using (Fintype.card_congr s).symm`. Establish `hsurj : Function.Surjective (Sigma.fst : (Σ i, κ i) → Fin b.r)` using `fun i => ⟨⟨i, (hne i).some⟩, rfl⟩`.
+
+Establish `hinj : Function.Injective (Sigma.fst : (Σ i, κ i) → Fin b.r)`. Use `((Fintype.bijective_iff_surjective_and_card _).2 ⟨hsurj, ?_⟩).1` and prove the remaining obligations. Establish `h1` using `Fintype.card_le_of_surjective _ hsurj`. Establish `h3` using `b.two`. Simplify using `only [Fintype.card_fin] at h1 ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hl0 : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∀ f : ℕ, Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 F)) ^ f → ∃ B, (P (s 0).1).HasSat (w.under (𝓞 F)) B ∧ (CG.mk π₁).HasSat w (B.map (· ^ f))` using `(hQ (s 0).1).mono fun w hw f hf => by`. Take `⟨B, hB, hC⟩` from `hw f hf`. Conclude with `⟨B, hB, sat_of_sigma (hs 0) (sat_single (fun a => Q a.1 a.2) hinj (s 0) hC)⟩`. Take `⟨X, hX, hlift⟩ : ∃ X : Set (HeightOneSpectrum (𝓞 E)), X.Finite ∧ ∀ w ∉ X, ∀ f : ℕ, Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 F)) ^ f → ∃ B, (P (s 0).1).HasSat (w.under (𝓞 F)) B ∧ (CG.mk π₁).HasSat w (B.map (· ^ f))` from `⟨_, Filter.eventually_cofinite.1 hl0, fun w hw => not_not.1 hw⟩`.
+
+Establish `hev2 : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, w ∉ SE ∧ SSat (BW.mu1 E 2) τ₁ w (B₂ w)` using `by filter_upwards [hund.eventually (R.decomp F E hp), hund.eventually (hX.image fun w => w.under (𝓞 F)).eventually_cofinite_notMem, hSE.eventually_cofinite_notMem] with w hd hy hwE`. Use `⟨hwE, ?_⟩` and prove the remaining obligations. Establish `hg : ∀ w' : HeightOneSpectrum (𝓞 E), w'.under (𝓞 F) = w.under (𝓞 F) → w' ∉ X` using `fun w' hu hc => hy ⟨w', hc, hu⟩`. Establish `hq : 1 < Formalism.ConjugateSelfDual.normV (w.under (𝓞 F))` using `NumberField.HeightOneSpectrum.one_lt_absNorm _`. Break down `hd with ⟨hc, hn⟩ | ⟨-, hn⟩` into its components or cases.
+
+Take `⟨⟨w', hu⟩, hne', -⟩` from `(Nat.card_eq_two_iff' (⟨w, rfl⟩ : {u : HeightOneSpectrum (𝓞 E) // u.under (𝓞 F) = w.under (𝓞 F)})).1 (hc.trans h2)`. Establish `hne : w ≠ w'` using `fun e => hne' (Subtype.ext e.symm)`. Take `⟨B, hB, hw1⟩` from `hlift w (hg w rfl) 1 (by rw [pow_one]; exact hn w rfl)`. Take `⟨B', hB', hw2⟩` from `hlift w' (hg w' hu) 1 (by rw [pow_one, hu]; exact hn w' hu)`. Rewrite `hB'` using `[hu]`.
+
+Take `rfl` from `hB.unique hB'`. Take `⟨Y, eY, hY⟩` from `(Dp.sSatIff E 2 _ π₁ τ₁ c₁ w' _).1 ((hsw w w' hu.symm (Or.inl hne) _).1 (hA₂.2 w hwE))`. Establish `hY' : (CG.mk π₁).HasSat w' Y` using `hY`. Take `rfl : Y = B.map (· ^ 1)` from `hY'.unique hw2`. Conclude with `(Dp.sSatIff E 2 _ π₁ τ₁ c₁ w _).2 ⟨_, eY, hw1⟩`.
+
+Establish `hns : ¬ GM.Split E (w.under (𝓞 F))` using `fun h => by`. Establish `e` using `(hn w rfl).symm.trans (normV_split w h)`. Rewrite `e` using `[h2]`. Establish `: (2 : ℕ) = 1` using `Nat.pow_right_injective hq (e.trans (pow_one _).symm)`. Use linear arithmetic over natural numbers and integers.
+
+Conclude with `(hsw w w rfl (Or.inr hns) _).1 (hA₂.2 w hwE)`. Establish `hτ : τ₁ = τ₂` using `Dp.atInj E 2 _ τ₁ τ₂ s₁ s₂ _ (Filter.eventually_cofinite.1 hev2) B₂ (fun w hw => (not_not.1 hw).2) (fun w hw => hA₂.2 w (not_not.1 hw).1)`. Establish `ho` using `hP.orth`. Rewrite `ho` using `[← hτ]`. Conclude with `hP.irr₁.ne (Submodule.isOrtho_self.1 ho)`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.rigidF :
     T.LiftAll → RigidF := by
   intro hL F E _ _ _ _ _ _ _ _ σ h2 hgen τ₁ τ₂ θ₂ hP hgal h12 h21 SE SF hSE hSF m₁ m₂ B₁ B₂ hA₁ hA₂ b Λ' t' hb hbc

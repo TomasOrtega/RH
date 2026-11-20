@@ -116,6 +116,17 @@ def ReadSplit : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], 
     (∀ k ≤ n, heckeVec (pairRtT a b w) (K2 a b w) (ctT h w (μ.loc w) ϖ k) G = satEig (qV E w) n B k • G) →
     D.Sat u (B.map (·⁻¹)) ∧ D.SplitAt π u
 
+/- English proof (translation)
+Introduce `E _ _ _ hE n a b h μ e π s₁ s₂ Pa Pb D G w B ϖ hμ hπ g₁ g₂ u₁ u₂ t₁ t₂ hJ hG h0 hw hun hB hϖ`. Take `⟨m1, m2, m3⟩` from `h5 E hE μ e w hμ hun`. Establish `hq : qV E w ≠ 0` using `qV_ne_zero w`. Establish `hc : B.card = n`. Take `⟨σ, -, hs⟩` from `hB`.
+
+Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff _).1 hs.1`. Conclude with `(hs.2 x hx hx0).2.2.1`. Establish `key : ∀ (ρ : Representation ℂ (GLw a w × GLw b w) (H E a b → ℂ)) (Ba Bb : Multiset ℂˣ), IsSat2 w ρ G Ba Bb → (∀ k ≤ n, heckeVec ρ (K2 a b w) (ctT h w (μ.loc w) ϖ k) G = satEig (qV E w) n B k • G) → Ba.map (· * μ.val w ^ b) + Bb.map (· * μ.val w ^ a) = B` using `fun ρ Ba Bb hs he => eq_of_satEig_eq hq (by simp [hs.2.1, hs.2.2.1, h]) hc fun k hk => smul_left_injective ℂ h0 ((h4 E n a b h w _ _ _ ρ G Ba Bb hw m1 hs ϖ hϖ k hk).symm.trans (he k hk))`. Use `⟨fun hf he => ?_, fun u hu hf he => ?_⟩` and prove the remaining obligations. Take `⟨Ba, Bb, sa, sb, hs⟩` from `h2 h1 E a b s₁ s₂ Pa Pb w G g₁ g₂ u₁ u₂ t₁ t₂ hG h0 hf`.
+
+Establish `hD` using `h6 E n a b _ _ Pa Pb D w Ba Bb hJ (m2 b).1 (m2 a).1 sa sb`. Rewrite `hD` using `[(m2 b).2, (m2 a).2, key _ Ba Bb hs he]`. Conclude with `⟨hD, h7 E n π D w B hB hD⟩`. Take `⟨Ba, Bb, sa, sb, hs⟩` from `h2 h1 E a b s₁ s₂ Pa Pb u G g₁ g₂ u₁ u₂ t₁ t₂ hG h0 hf`. Take `⟨hu1, hu2⟩` from `m3 u hw hu`.
+
+Take `⟨-, n2, -⟩` from `h5 E hE μ e u hμ hu1`. Establish `hD` using `h6 E n a b _ _ Pa Pb D u Ba Bb hJ (n2 b).1 (n2 a).1 sa sb`. Establish `e1` using `key _ _ _ (h3 E a b w u G Ba Bb hw hu hs) he`. Establish `e2 : Ba.map (· * (μ ^ b).val u) + Bb.map (· * (μ ^ a).val u) = B.map (·⁻¹)`. Rewrite using `[(n2 b).2, (n2 a).2, hu2, ← e1]`.
+
+Simplify using `[Multiset.map_map, mul_comm]`. Rewrite `hD` using `[e2]`. Conclude with `⟨hD, h7 E n π D u _ (h8 E n π w u B hπ hw hu hB) hD⟩`.
+-/
 theorem readSplit_of (h1 : TreeSat) (h2 : PairSat) (h3 : ThetaSat2) (h4 : CtSat) (h5 : MuLoc) (h6 : JoinSat)
     (h7 : SatSplit) (h8 : SatConj) : ReadSplit := by
   intro E _ _ _ hE n a b h μ e π s₁ s₂ Pa Pb D G w B ϖ hμ hπ g₁ g₂ u₁ u₂ t₁ t₂ hJ hG h0 hw hun hB hϖ

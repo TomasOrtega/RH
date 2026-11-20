@@ -17,6 +17,111 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ExG
 
+/- English proof (translation)
+Introduce `E _ _ C _ _ ν bar σ σ' rk p q hℓ hint hcard hσ' hbar`. Take `⟨ℓ, h0, h1⟩` from `hℓ`. Use `haveI : Finite (E →+* C) := Nat.finite_of_card_ne_zero (by`. Rewrite using `[hcard]`. Conclude with `Module.finrank_pos.ne')`.
+
+Use `letI : Fintype (E →+* C) := Fintype.ofFinite _`. Establish `hcard' : Fintype.card (E →+* C) = Module.finrank ℚ E` using `by rw [← Nat.card_eq_fintype_card, hcard]`. Establish `hsumAll` using `GlobalTheory.T.sum_eigen_projections_eq_self E C hcard'`. Set `emb : (E →+* C) → (𝓞 E →+* ν.valuationSubring)` to `fun s => (s.comp (algebraMap (𝓞 E) E)).codRestrict ν.valuationSubring (fun a => hint s a)`. Establish `hemb : ∀ s (a : 𝓞 E), ((emb s a : ν.valuationSubring) : C) = s (a : E)` using `fun s a => rfl`.
+
+Take `⟨π, hπ1, hπ2⟩` from `GlobalTheory.T.statement_unavailable_one E ν.valuationSubring C emb (fun s a => hemb s a) hcard σ`. Set `D : (E →+* C) → Prop` to `fun s => ∀ a, ¬ IsUnit (emb s a - emb σ a)`. Set `S` to `{s // D s}`. Establish `hDσ : D σ` using `fun a => by simp`. Set `τ : S` to `⟨σ, hDσ⟩`.
+
+Set `a : S → ν.valuationSubring` to `fun s => emb s.1 π`. Establish `ha : Function.Injective a` using `fun s s' e => Subtype.ext (hπ1 _ _ s.2 s'.2 e)`. Establish `hmono : ∀ f : (E →+* C) → ν.valuationSubring, (∀ s, ¬ D s → f s = 0) → ((∃ g : Polynomial ν.valuationSubring, ∀ s, D s → f s = g.eval (emb s π)) ↔ f ∈ Submodule.span ν.valuationSubring (Set.range fun a : 𝓞 E => fun s => emb s a))`. Introduce `f hf`. Use `hπ2 f (fun s hs => hf s ?_)` and prove the remaining obligations.
+
+Introduce `hd`. Take `⟨b, hb⟩` from `hs`. Conclude with `hd b hb`. Establish `hbarE : ∀ s : E →+* C, ∃ s' : E →+* C, ∀ a : 𝓞 E, s' (a : E) = s (bar a : 𝓞 E)`. Introduce `s`.
+
+Establish `hinj : Function.Injective ((s.comp (algebraMap (𝓞 E) E)).comp bar.toRingHom)`. Use `(s.injective.comp (FaithfulSMul.algebraMap_injective (𝓞 E) E)).comp bar.injective` and prove the remaining obligations. Conclude with `⟨IsFractionRing.lift hinj, fun a => IsFractionRing.lift_algebraMap hinj a⟩`. Use `choose sbar hsbar using hbarE`. Set `r : S → ℕ` to `fun s => rk (sbar s.1)`.
+
+Set `P : C` to `∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C))`. Establish `hne : ∀ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C)) ≠ 0`. Introduce `s hs e`. Establish `: a τ = a s` using `Subtype.ext (sub_eq_zero.1 e)`. Conclude with `(Finset.mem_erase.1 hs).1 (ha this).symm`.
+
+Establish `hP : P ≠ 0` using `Finset.prod_ne_zero_iff.2 hne`. Set `Q : C` to `∏ s ∈ Finset.univ.erase τ, ((a τ : C) - (a s : C)) ^ r s`. Establish `hQ : Q ≠ 0` using `Finset.prod_ne_zero_iff.2 fun s hs => pow_ne_zero _ (hne s hs)`. Use `⟨Q / P ^ (p + q), div_ne_zero hQ (pow_ne_zero _ hP), ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ _ _ ρ ρH HV Lie x v w u A hfst hinr hmap hfil hfree hrk hv hvs hw hws had hAl hAs`.
+
+Establish `hIv : ν.Integers ν.valuationSubring` using `{ hom_inj := Subtype.val_injective map_le_one := fun x => x.2 exists_of_le_one := fun {r} h => ⟨⟨r, h⟩, rfl⟩ }`. Establish `hsumW` using `hsumAll W ρ`. Establish `hsumH` using `hsumAll _ ρH`. Establish `fstE : ∀ (s : E →+* C) (y : W × Module.Dual C W), (HT.eigProj ρH s y).1 = HT.eigProj ρ s y.1`. Introduce `s y`.
+
+Simplify using `only [HT.eigProj, LinearMap.sum_apply, LinearMap.smul_apply, Prod.fst_sum, Prod.smul_fst, hfst]`. Set `T : S → (Fin (p + q) → C) →ₗ[C] (W × Module.Dual C W)` to `fun s => eigCoord ρH x s.1`. Set `g : S → (Fin (p + q) → C) →ₗ[C] W` to `fun s => (LinearMap.fst C W (Module.Dual C W)) ∘ₗ T s`. Establish `hgT : ∀ s y, g s y = (T s y).1` using `fun s y => rfl`. Establish `Tmem : ∀ s y, T s y ∈ HT.eigSp ρH s.1`.
+
+Introduce `s y`. Express the relevant statement in the definitionally equal form `eigCoord ρH x s.1 y ∈ _`. Rewrite using `[eigCoord_apply]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (HT.LatBasic.eigProj_mem _ _ _)`. Establish `gmem : ∀ s y, g s y ∈ HT.eigSp ρ s.1`.
+
+Introduce `s y`. Rewrite using `[HT.LatBasic.mem_eigSp]`. Introduce `b`. Rewrite using `[hgT, ← hfst, HT.LatBasic.mem_eigSp.1 (Tmem s y) b]`. Both sides reduce to the same expression.
+
+Establish `Tinj : ∀ s, Function.Injective (T s)`. Introduce `s`. Establish `hli` using `HodgeDeterminantLattice.linearIndependent_eigProj (A := ν.valuationSubring) s.1 hfree`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`.
+
+Express the relevant statement in the definitionally equal form `eigCoord ρH x s.1 y = 0 at hy`. Rewrite `hy` using `[eigCoord_apply]`. Conclude with `funext (Fintype.linearIndependent_iff.1 hli y hy)`. Establish `Tsurj : ∀ s y, y ∈ HT.eigSp ρH s.1 → ∃ z, T s z = y`. Introduce `s y hy`.
+
+Establish `hsp` using `HodgeDeterminantLattice.span_eigProj (A := ν.valuationSubring) s.1 hfree`. Rewrite `hy` using `[← hsp]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hy`. Conclude with `⟨c, by change eigCoord ρH x s.1 c = y; rw [eigCoord_apply]; exact hc⟩`. Establish `projSum : ∀ (f : S → Fin (p + q) → C) (t : S), HT.eigProj ρH t.1 (∑ s, T s (f s)) = T t (f t)`.
+
+Introduce `f t`. Rewrite using `[map_sum, Finset.sum_eq_single t]`. Conclude with `HT.LatBasic.eigProj_of_mem (Tmem _ _)`. Introduce `s _ hs`. Conclude with `HT.LatBasic.eigProj_of_ne (fun e => hs (Subtype.ext e).symm) (Tmem _ _)`.
+
+Simplify using the standard rewrite rules. Establish `hind : ∀ f : S → Fin (p + q) → C, ∑ s, g s (f s) = 0 → ∀ s, g s (f s) = 0`. Introduce `f hf t`. Establish `h2` using `congrArg (HT.eigProj ρ t.1) hf`. Rewrite `h2` using `[map_sum, map_zero, Finset.sum_eq_single t]`.
+
+Rewrite `h2` using `[HT.LatBasic.eigProj_of_mem (gmem _ _)]`. Then use the resulting hypothesis. Introduce `s _ hs`. Conclude with `HT.LatBasic.eigProj_of_ne (fun e => hs (Subtype.ext e).symm) (gmem _ _)`. Simplify using the standard rewrite rules. Establish `hblk` using `GlobalTheory.T.cm_type_polynomial_vanishing_criterion E C ν emb (fun s a => hemb s a) hcard' D π hmono _ ρH HV (p + q) x hfree`.
+
+Take `⟨hb1, hb2⟩` from `hblk`. Establish `sumFst : ∀ f : S → Fin (p + q) → C, (∑ s, T s (f s)).1 = ∑ s, g s (f s)`. Introduce `f`. Conclude with `map_sum (LinearMap.fst C W (Module.Dual C W)) _ _`. Establish `hr : ∀ s, Module.finrank C (LinearMap.ker (g s)) = r s`.
+
+Introduce `s`. Establish `e1 : (LinearMap.ker (g s)).map (T s) = HT.eigSp ρH s.1 ⊓ LinearMap.ker (LinearMap.fst C W (Module.Dual C W))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`.
+
+Conclude with `⟨Tmem s z, hz⟩`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨z, rfl⟩` from `Tsurj s y h1`. Conclude with `⟨z, h2, rfl⟩`. Express the relevant statement in the definitionally equal form `_ = rk (sbar s.1)`.
+
+Rewrite using `[← hrk, ← GlobalTheory.T.dual_module_conjugate_eigen_action E C bar s.1 (sbar s.1) W ρ ρH hsumW (hsbar s.1) hbar hinr, ← e1]`. Conclude with `(Submodule.equivMapOfInjective _ (Tinj s) _).finrank_eq`. Establish `hspanLie : Submodule.span C (Lie : Set W) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`.
+
+Establish `h3 : ((y, 0) : W × Module.Dual C W) ∈ Submodule.span C (HV : Set (W × Module.Dual C W))`. Rewrite using `[hfree.2.1]`. Discharge the goal by the elementary cases of `trivial`. Establish `h4 : ∀ z ∈ Submodule.span C (HV : Set (W × Module.Dual C W)), z.1 ∈ Submodule.span C (Lie : Set W)`. Introduce `z hz`.
+
+Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span (hmap ▸ ⟨z, hz, rfl⟩)`. Consider the case `zero => exact zero_mem _`. Consider the case `add z z' _ _ h h' => exact add_mem h h'`. Consider the case `smul c z _ h => exact Submodule.smul_mem _ c h`.
+
+Conclude with `h4 _ h3`. Establish `hLieFG : Lie.FG`. Rewrite using `[← hmap, hfree.2.2]`. Conclude with `(Submodule.fg_span (Set.finite_range _)).map _`. Establish `hwLie : ∀ j, w j ∈ Lie ∧ w j ∈ HT.eigSp ρ σ'`.
+
+Introduce `j`. Establish `: w j ∈ HT.eigSub ρ σ' Lie` using `hws ▸ Submodule.subset_span ⟨j, rfl⟩`. Conclude with `this`. Establish `hwsp : Submodule.span C (Set.range w) = HT.eigSp ρ σ'`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(hwLie j).2`. Introduce `y hy`. Take `⟨c, hc, hcy⟩` from `HT.LatBasic.exists_smul_mem ν hIv (L := Lie) (x := y) (by rw [hspanLie]; trivial)`.
+
+Establish `h3 : c • y ∈ HT.eigSub ρ σ' Lie` using `⟨hcy, Submodule.smul_mem _ c hy⟩`. Rewrite `h3` using `[← hws]`. Establish `h4 : c • y ∈ Submodule.span C (Set.range w)` using `Submodule.span_le_restrictScalars ν.valuationSubring C _ h3`. Use `Submodule.smul_mem _ c⁻¹ h4` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc, one_smul]`. Then use the resulting hypothesis.
+
+Establish `hsat : ∀ y, y ∈ Submodule.span ν.valuationSubring (Set.range w) ↔ y ∈ Lie ∧ y ∈ Submodule.span C (Set.range w)`. Introduce `y`. Rewrite using `[hws, hwsp]`. Conclude with `Iff.rfl`. Establish `hφ` using `GlobalTheory.T.lattice_span_intersection_basis ν.valuationSubring C W Lie q w hLieFG hspanLie hw hsat`.
+
+Establish `hσbar : sbar σ = σ'` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) (RingHom.ext fun b => (hsbar σ b).trans (hσ' b).symm)`. Establish `hrτ : r τ = q`. Express the relevant statement in the definitionally equal form `rk (sbar σ) = q`. Rewrite using `[hσbar, ← hrk, ← hwsp, finrank_span_eq_card hw, Fintype.card_fin]`. Establish `hex : ∀ i, ∃ z, T τ z = u i` using `fun i => Tsurj τ _ (had.1 i)`.
+
+Use `choose U hU using hex`. Establish `hU1 : ∀ i, g τ (U (Fin.castAdd q i)) = v i` using `fun i => by`. Rewrite using `[hgT, hU]`. Conclude with `had.2.1 i`. Establish `hU2 : ∀ j, g τ (U (Fin.natAdd p j)) = 0` using `fun j => by`.
+
+Rewrite using `[hgT, hU]`. Conclude with `(had.2.2 j).1`. Establish `hTmemSpan : ∀ (n : ℕ) (b : Fin n → Fin (p + q) → C) (z : Fin (p + q) → C), z ∈ Submodule.span ν.valuationSubring (Set.range b) ↔ T τ z ∈ Submodule.span ν.valuationSubring (Set.range fun i => T τ (b i))`. Introduce `n b z`. Establish `e : Submodule.span ν.valuationSubring (Set.range fun i => T τ (b i)) = (Submodule.span ν.valuationSubring (Set.range b)).map ((T τ).restrictScalars ν.valuationSubring)`.
+
+Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => ⟨z, h, rfl⟩`.
+
+Introduce and unpack `⟨z', h, e'⟩`. Rewrite using `[← Tinj τ e']` and apply the resulting hypothesis. Establish `hLB2 : IsLatticeBasis ν (fun j => U (Fin.natAdd p j)) (eigenQuot (W` using `fun _ => Fin (p + q) → C) (kerFil a (p + q) g) τ) := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `LinearIndependent.of_comp (T τ)` to reduce the goal to its premises.
+
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc k`. Establish `h2` using `congrArg (fun y : W × Module.Dual C W => y.2 (w k)) hc`. Simplify using `only [Function.comp, hU, Prod.snd_sum, Prod.smul_snd, LinearMap.sum_apply, LinearMap.smul_apply, (had.2.2 _).2, Prod.snd_zero, LinearMap.zero_apply, smul_eq_mul, mul_ite, mul_one, mul_zero] at h2`. Simplify using `using h2`.
+
+Use extensionality with `z`. Rewrite using `[hTmemSpan]`. Simplify using `only [hU]`. Rewrite using `[GlobalTheory.T.hodge_lattice_dual_eigen_decomposition E ν.valuationSubring C bar σ σ' W ρ ρH HV Lie q w (fun j => u (Fin.natAdd p j)) hsumW hσ' hbar hfst hinr hfil hwsp (fun j => (hwLie j).1) (fun j => ⟨had.1 _, (had.2.2 j).1, (had.2.2 j).2⟩) hφ]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨φ, h1, h2⟩`. Take `⟨f, hf, hfs⟩` from `hb2 _ h1`. Use `⟨f, ⟨hf, fun s => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hgT]`. Express the relevant statement in the definitionally equal form `(eigCoord ρH x s.1 (f s)).1 = 0`.
+
+Rewrite using `[← hfs, fstE]`. Simplify using the standard rewrite rules. Apply `Tinj τ` to reduce the goal to its premises. Rewrite using `[← h2, hfs τ]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨f, ⟨hf, hg0⟩, rfl⟩`. Establish `h3` using `(hb1 f).2 hf`. Establish `h4 : (∑ s, T s (f s)).1 = 0`. Rewrite using `[sumFst]`. Conclude with `Finset.sum_eq_zero fun s _ => hg0 s`.
+
+Use `⟨(∑ s, T s (f s)).2, ?_, ?_⟩` and prove the remaining obligations. Establish `: ((0, (∑ s, T s (f s)).2) : W × Module.Dual C W) = ∑ s, T s (f s)` using `Prod.ext h4.symm rfl`. Rewrite using `[this]`. Conclude with `h3`. Establish `: ((0, (∑ s, T s (f s)).2) : W × Module.Dual C W) = ∑ s, T s (f s)` using `Prod.ext h4.symm rfl`.
+
+Rewrite using `[this]`. Conclude with `projSum f τ`. Establish `hvs' : ∀ y, y ∈ Submodule.span ν.valuationSubring (Set.range v) ↔ y ∈ LinearMap.range (g τ) ∧ ∃ f ∈ freeLattice a (p + q), ∑ s, g s (f s) = y`. Introduce `y`. Rewrite using `[hvs]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, hy2⟩`. Establish `hy2' : y ∈ HT.eigSp ρ σ` using `hy2`. Rewrite `hy1` using `[← hmap]`. Take `⟨η, hη, rfl⟩` from `hy1`.
+
+Express the relevant statement in the definitionally equal form `η.1 ∈ HT.eigSp ρ σ at hy2'`. Take `⟨z, hz⟩` from `Tsurj τ _ (HT.LatBasic.eigProj_mem ρH σ η)`. Take `⟨f, hf, hfs⟩` from `hb2 _ hη`. Use `⟨⟨z, ?_⟩, f, hf, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(T τ z).1 = η.1`.
+
+Rewrite using `[hz, fstE]`. Conclude with `HT.LatBasic.eigProj_of_mem hy2'`. Establish `h5 : ∀ s, g s (f s) = HT.eigProj ρ s.1 η.1` using `fun s => by`. Rewrite using `[hgT, ← fstE, hfs s]`. Simplify using `only [h5]`.
+
+Rewrite using `[Finset.sum_eq_single τ]`. Conclude with `HT.LatBasic.eigProj_of_mem hy2'`. Introduce `s _ hs`. Conclude with `HT.LatBasic.eigProj_of_ne (fun e => hs (Subtype.ext e)) hy2'`. Simplify using the standard rewrite rules.
+
+Introduce and unpack `⟨⟨z, rfl⟩, f, hf, e⟩`. Use `⟨?_, gmem τ z⟩` and prove the remaining obligations. Rewrite using `[← hmap]`. Conclude with `⟨_, (hb1 f).2 hf, (sumFst f).trans e⟩`. Establish `hLBA : IsLatticeBasis ν (fun i => ∑ j, A i j • U j) (eigenQuot (W` using `fun _ => Fin (p + q) → C) (freeLattice a (p + q)) τ) := by`.
+
+Establish `hTA : ∀ i, T τ (∑ j, A i j • U j) = ∑ j, A i j • u j` using `fun i => by`. Simplify using `only [map_sum, map_smul, hU]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply `LinearIndependent.of_comp (T τ)` to reduce the goal to its premises. Establish `: (T τ) ∘ (fun i => ∑ j, A i j • U j) = fun i => ∑ j, A i j • u j` using `funext hTA`.
+
+Rewrite using `[this]`. Conclude with `hAl`. Use extensionality with `z`. Rewrite using `[hTmemSpan]`. Simplify using `only [hTA]`.
+
+Rewrite using `[hAs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨η, hη, e⟩`. Take `⟨f, hf, hfs⟩` from `hb2 _ hη`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations.
+
+Apply `Tinj τ` to reduce the goal to its premises. Establish `e' : HT.eigProj ρH σ η = T τ z` using `e`. Rewrite using `[← e', hfs τ]`. Both sides reduce to the same expression. Introduce and unpack `⟨f, hf, rfl⟩`.
+
+Conclude with `⟨_, (hb1 f).2 hf, projSum f τ⟩`. Take `⟨ε, hε⟩` from `GlobalTheory.T.valuation_lattice_matrix_reduction C ν ℓ h0 h1 S a p q τ r W g v U A ha hind hr hrτ hv hvs' hU1 hU2 hLB2 hLBA`. Use `⟨ε, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A.det * P ^ (p + q) = _ * Q at hε`. Express the relevant statement in the definitionally equal form `A.det = ((ε : ν.valuationSubring) : C) * (Q / P ^ (p + q))`.
+
+Rewrite using `[← mul_div_assoc, ← hε, mul_div_cancel_right₀ _ (pow_ne_zero _ hP)]`.
+-/
 theorem targetO : TargetO := by
   intro E _ _ C _ _ ν bar σ σ' rk p q hℓ hint hcard hσ' hbar
   classical
@@ -298,6 +403,9 @@ end GlobalTheory.CompanionTheory.Ar.Flat.ExG
 
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.conjugate_embeddings_valuation_rank_bound ExG.targetO`.
+-/
 theorem det_adapted_eq_unit_mul_const : ∀ (E : Type) [Field E] [NumberField E] (V C : Type) [CommRing V] [IsDomain V] [ValuationRing V] [Field C] [CharZero C] [Algebra V C] [IsFractionRing V C] (bar : 𝓞 E ≃+* 𝓞 E) (σ σ' : E →+* C) (rk : (E →+* C) → ℕ) (p q : ℕ) (ν : Valuation C NNReal), ν.Integers V → (∃ ℓ : C, 0 < ν ℓ ∧ ν ℓ < 1) → (∀ (s : E →+* C) (a : 𝓞 E), s (a : E) ∈ (algebraMap V C).range) → Nat.card (E →+* C) = Module.finrank ℚ E → (∀ a : 𝓞 E, σ' (a : E) = σ (bar a : 𝓞 E)) → (∀ a, bar (bar a) = a) → ∃ γ : C, γ ≠ 0 ∧ ∀ (W : Type) [AddCommGroup W] [Module C W] [Module V W] [IsScalarTower V C W] [FiniteDimensional C W] (ρ : 𝓞 E →+* Module.End C W) (ρH : 𝓞 E →+* Module.End C (W × Module.Dual C W)) (HV : Submodule V (W × Module.Dual C W)) (Lie : Submodule V W) (x : Fin (p + q) → W × Module.Dual C W) (v : Fin p → W) (w : Fin q → W) (u : Fin (p + q) → W × Module.Dual C W) (A : Matrix (Fin (p + q)) (Fin (p + q)) C), (∀ a y, (ρH a y).1 = ρ a y.1) → (∀ a φ, ρH a (0, φ) = (0, φ ∘ₗ ρ (bar a))) → HV.map ((LinearMap.fst C W (Module.Dual C W)).restrictScalars V) = Lie → (∀ φ : Module.Dual C W, (0, φ) ∈ HV ↔ ∀ e ∈ Lie, φ e ∈ (algebraMap V C).range) → HT.IsFreeOn ρH HV x → (∀ s, Module.finrank C (HT.eigSp ρ s) = rk s) → LinearIndependent C v → Submodule.span V (Set.range v) = HT.eigSub ρ σ Lie → LinearIndependent C w → Submodule.span V (Set.range w) = HT.eigSub ρ σ' Lie → IsAdapted ρH σ v w u → LinearIndependent C (fun i => ∑ j, A i j • u j) → Submodule.span V (Set.range fun i => ∑ j, A i j • u j) = HT.eigQuot ρH σ HV → ∃ ε : Vˣ, A.det = algebraMap V C ε * γ :=
   GlobalTheory.T.conjugate_embeddings_valuation_rank_bound ExG.targetO
 

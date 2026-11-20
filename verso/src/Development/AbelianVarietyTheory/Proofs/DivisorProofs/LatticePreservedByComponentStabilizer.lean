@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections.PfModelLatA GlobalThe
 
 namespace GlobalTheory.ShareOn
 
+/- English proof (translation)
+Establish `h2 : (l.M : 𝓞 E) ∈ Ideal.span {(l.M : 𝓞 E)}` using `Ideal.mem_span_singleton_self _`. Rewrite `h2` using `[← l.prod]`. Conclude with `Ideal.mul_le_left (I := l.Mb) (J := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) h2`.
+-/
 theorem natCast_mem_half {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) : (l.M : 𝓞 E) ∈ l.Mb := by
   have h2 : (l.M : 𝓞 E) ∈ Ideal.span {(l.M : 𝓞 E)} := Ideal.mem_span_singleton_self _
@@ -23,17 +26,26 @@ section Cong
 
 variable {E : Type} [Field E] {r : ℕ} {Ψ : Finset (E →+* ℂ)}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [lact, Units.val_mul, Matrix.map_mul]`. Conclude with `Matrix.mul_assoc _ _ _`.
+-/
 theorem lact_mul_lact (a b : GL (Fin r) E) (x : Frame Ψ r) : lact (a * b) x = lact a (lact b x) := by
   funext τ
   simp only [lact, Units.val_mul, Matrix.map_mul]
   exact Matrix.mul_assoc _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use `show (a : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) = ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) * mat b τ`. Rewrite using `[Matrix.mul_assoc]`.
+-/
 theorem lact_rmul_comm (a : GL (Fin r) E) (x b : Frame Ψ r) : lact a (rmul x b) = rmul (lact a x) b := by
   funext τ
   show (a : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ) =
     ((a : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) * mat b τ
   rw [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Simplify using `only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Both sides reduce to the same expression.
+-/
 theorem lact_one_frame (x : Frame Ψ r) : lact (1 : GL (Fin r) E) x = x := by
   funext τ
   simp only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
@@ -43,6 +55,25 @@ end Cong
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i v k γ hγ w hw`. Establish `hL` using `(h.laws v).p.toLawsCore`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨Nat.le_add_left _ _, i.2⟩`. Establish `hσ` using `(r.used v).full.toCore.good_σ₀`. Take `⟨-, hA, -, -, -, -, hnum⟩` from `GlobalTheory.PinNum.numerics_of_pins D _ hL.pins`.
+
+Establish `hU` using `(Formalism.L2.PjFree.isUnf_ofPj _).2 (hL.unf _ hj _ hσ)`. Take `⟨th, hrk, hth, hD⟩` from `hL.dictU _ hj _ hσ`. Take `⟨⟨x0, hx0, -⟩, -⟩` from `hD.2.2`. Take `⟨η, hηU, hηc, b, hb, hx⟩` from `GlobalTheory.T.exists_principal_congruence_back_triangular_frame _ _ _ _ _ _ _ _ _ hσ hU hA (hnum _ hj).2.1 k γ hγ (x0 k) (hx0 k).1`. Establish `hηΓ : η ∈ ((uAt r v i).X k).Γ` using `GlobalTheory.PrincCore.hasPrinc_core D _ hL _ hj _ hσ k η hηU hηc`.
+
+Establish `hmem : (η * γ)⁻¹ ∈ ((uAt r v i).X k).Γ` using `inv_mem (mul_mem hηΓ hγ)`. Establish `hfix : lact (η * γ)⁻¹ (x0 k) = rmul (x0 k) b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lact_mul_lact ((η * γ)⁻¹) (η * γ), lact_mul_lact η γ]`. Use `_ = rmul (x0 k) b := by rw [inv_mul_cancel, lact_one_frame]`.
+
+Establish `h1` using `((uAt r v i).X k).Γ_free _ hmem (x0 k) (hx0 k).1 b hb hfix`. Establish `hγη : γ = η⁻¹`. Rewrite `h1` using `[inv_eq_one]`. Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `hγU` using `((uAt r v i).X k).Γ_stab γ hγ`.
+
+Establish `hcong : ∀ u ∈ ((uAt r v i).X k).Λ, ∃ y ∈ ((uAt r v i).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) u - u = ((r.used v).full.Q.l.M : D.host.E) • y`. Introduce `u hu`. Take `⟨y, hy, he⟩` from `hηc (Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) u) ((hγU.2 u).1 hu)`. Establish `hηγ : Matrix.mulVec (η : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) (Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) u) = u`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, hγη, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Use `⟨-y, ((uAt r v i).X k).Λ.neg_mem hy, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hηγ]`. Rewrite using `[smul_neg, ← he]`. Normalize the expressions using the abelian group laws. Establish `hM0 : ((r.used v).full.Q.l.M : D.host.E) ≠ 0`.
+
+Use `(r.used v).full.Q.l.three_le` as an intermediate fact. Conclude with `(show (r.used v).full.Q.l.M ≠ 0 by omega)` after adjusting the coercions. Take `⟨z, hz⟩ : ∃ z : Fin D.R.r → D.host.E, z = ((r.used v).full.Q.l.M : D.host.E)⁻¹ • (Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w - w)` from `⟨_, rfl⟩`. Establish `hzP : z ∈ lattice₂ D ((uAt r v i).X k).Λ`. Use `mem_latP.2 fun a ha => ?_` and prove the remaining obligations.
+
+Take `⟨y, hy, he⟩` from `hcong (a • w) (mem_latP.1 hw a ha)`. Establish `: a • z = y`. Rewrite using `[hz, smul_comm, smul_sub, ← Matrix.mulVec_smul, he, smul_smul, inv_mul_cancel₀ hM0, one_smul]`. Rewrite using `[this]`. Conclude with `hy`.
+
+Establish `hMmem : ((r.used v).full.Q.l.M : 𝓞 D.host.E) ∈ (r.used v).full.Q.l.Mb` using `natCast_mem_half _`. Establish `hfin : Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w - w = ((r.used v).full.Q.l.M : 𝓞 D.host.E) • z`. Rewrite using `[hz, ← algebraMap_smul D.host.E, smul_smul, map_natCast, mul_inv_cancel₀ hM0, one_smul]`. Rewrite using `[hfin]`. Conclude with `Submodule.smul_mem_smul hMmem hzP`.
+-/
 theorem sub_mem_half_smul_latP : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), More p → ∀ (r : TwoRuns p.T p.P.Gp) (h : RunsOk (fw2 p) r), OwnPin r → ∀ (i : Fin D.R.m) (v : HeightOneSpectrum (𝓞 D.what₂.LL)), ∀ (k : (uAt r v i).Comp), ∀ γ ∈ ((uAt r v i).X k).Γ, ∀ w ∈ lattice₂ D ((uAt r v i).X k).Λ, Matrix.mulVec (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w - w ∈ p.T.Q.l.Mb • lattice₂ D ((uAt r v i).X k).Λ := by
   intro D L hT Gi Gl Kc Y cX ex Csz p _ r h _ i v k γ hγ w hw
   have hL := (h.laws v).p.toLawsCore

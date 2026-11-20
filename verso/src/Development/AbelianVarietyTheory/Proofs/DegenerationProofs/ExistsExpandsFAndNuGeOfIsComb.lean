@@ -12,6 +12,13 @@ open GlobalTheory.UT GlobalTheory.ZH
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `hL V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ hw k hk`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Take `⟨h₁, -⟩` from `(expBijF_and_expandsF_lin hL V _ hA D A G hG U).1 F k hk w₀ hw`. Use `⟨fun t => (h₁ t).exists, ?_⟩` and prove the remaining obligations. Introduce `I _ c s t q r ht hq hs σ hσ`.
+
+Use `choose Φ hΦ using fun i => (h₁ (s i)).exists`. Establish `e` using `(GlobalTheory.TestFibre.isComb_iff_expandsF_sum hL V _ hA D A G hG U F k hk w₀ hw I s Φ c t hΦ).1 ht`. Take `rfl : σ = ∑ i, c i • Φ i` from `(h₁ t).unique hσ e`. Use `Finset.sum_induction _ (fun x => NuGe D Q F v k x (r + q)) (fun a b ha hb => ?_) ?_ fun i _ => ?_` and prove the remaining obligations. Conclude with `NuGe.add Q (s := a) (s' := b) (fun _ _ => rfl) ha hb`.
+
+Introduce `χ`. Conclude with `⟨0, Fin.elim0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => by rw [Finset.univ_eq_empty, Finset.sum_empty]; rfl⟩`. Conclude with `NuGe.smul Q (hq i) ((isSmul_iff (c i) (Φ i) _).2 rfl) (hs i _ (hΦ i))`.
+-/
 theorem exists_expandsF_and_nuGe_of_isComb : LL → AllUV fun {V} _ _ _ {ϖ} hϖ {D} Q {F} _ _ {v} hv {A} {G} _ _ U => ∀ (w₀ : W0 U.toUnifPre), w₀.IsGen → ∀ (k : ℕ), 1 ≤ k → (∀ t : SecA A F k, ∃ σ, U.ExpandsF F k w₀ t σ) ∧ ∀ (I : Type) [Fintype I] (c : I → F) (s : I → SecA A F k) (t : SecA A F k) (q r : ℚ), IsComb s c t → (∀ i, (q : WithTop ℚ) ≤ v (c i)) → (∀ i σ, U.ExpandsF F k w₀ (s i) σ → NuGe D Q F v k σ r) → ∀ σ, U.ExpandsF F k w₀ t σ → NuGe D Q F v k σ (r + q) := by
   intro hL V _ _ _ _ hc ϖ hϖ D Q hQ F _ _ _ v hv A G _ _ hG U w₀ hw k hk
   have hA : AdmBase V (maximalIdeal V) := ⟨inferInstance, inferInstance, inferInstance, hc⟩

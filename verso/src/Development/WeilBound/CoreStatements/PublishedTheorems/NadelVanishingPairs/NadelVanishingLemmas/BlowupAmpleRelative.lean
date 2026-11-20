@@ -20,6 +20,11 @@ namespace GlobalTheory.AmpleUpstairs
 
 open GlobalTheory.Cartier.CartierDiv in
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite `hx` using `[hg.neg.mem_supp_iff]`. Rewrite using `[hg.mem_supp_iff]`. Introduce `hu`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[Units.val_inv_eq_inv_val]`. Conclude with `hu.inv`.
+-/
 theorem supp_neg_le {X : Scheme.{0}} [IsIntegral X] (D : GlobalTheory.Cartier.CartierDiv X) : (-D).supp ≤ D.supp := by
   intro x hx
   obtain ⟨g, hg⟩ := D.exists_isEqn x
@@ -32,6 +37,13 @@ theorem supp_neg_le {X : Scheme.{0}} [IsIntegral X] (D : GlobalTheory.Cartier.Ca
 
 open GlobalTheory.Cartier.CartierDiv in
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite `hx` using `[(hg.nsmul m).mem_supp_iff]`. Rewrite using `[hg.mem_supp_iff]`. Introduce `hu`.
+
+Apply `hx` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val]`. Establish `key : ∀ j : ℕ, UnitAt x ((g : X.functionField) ^ j)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero => simpa using unitAt_one x`. Consider the case `succ j ih => rw [pow_succ]`. Conclude with `ih.mul hu`. Conclude with `key m`.
+-/
 theorem supp_nsmul_le {X : Scheme.{0}} [IsIntegral X] (D : GlobalTheory.Cartier.CartierDiv X) (m : ℕ) :
     (m • D).supp ≤ D.supp := by
   intro x hx
@@ -54,6 +66,21 @@ namespace GlobalTheory
 
 open GlobalTheory.AmpleUpstairs in
 
+/- English proof (translation)
+Introduce `k _ _ Y₀ Y₁ _ _ _ _ q n t _ _ _ hq ht I hiso hI A hA`. Take `⟨-, L₁, hL₁⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver ht`. Use `haveI : CompactSpace Y₁ := hL₁.compactSpace`. Use `haveI : CompactSpace Y₀ := hA.compactSpace`. Use `haveI : IsNoetherian Y₀ := {}`.
+
+Use `haveI : Smooth (t ≫ q) := SmoothOfRelativeDimension.smooth n _`. Use `haveI : GlobalTheory.IsNormalScheme Y₁ := GlobalTheory.ModifSections.isNormalScheme_of_smooth (t ≫ q)`. Take `⟨H, hH⟩` from `toPic_surjective (cls L₁ hL₁.isLB)`. Take `⟨H₀, hH₀⟩` from `GlobalTheory.T.divisor_agreement_on_isomorphism k Y₀ Y₁ q n t ht I.support.compl hiso H`. Take `⟨E₀, hE₀, hsE₀, hgen⟩` from `GlobalTheory.T.blowup_ample_minus_exceptional Y₀ Y₁ t I hI A hA`.
+
+Establish `hD : (H - pullCart t H₀).supp ≤ E₀.supp`. Introduce `y hy`. Rewrite using `[hsE₀, Scheme.IdealSheafData.support_comap]`. Assume the negation of the conclusion as `h`. Conclude with `hH₀ y h hy`.
+
+Take `⟨e, he⟩` from `GlobalTheory.T.effective_multiple_dominates Y₁ (H - pullCart t H₀) E₀ hE₀ hD`. Take `⟨c₁, hc₁, hc₁'⟩` from `((hA.eventually_isGenerated_tens_lbPow (isLB_toLB (-H₀))).and (eventually_ge_atTop 1)).exists`. Take `⟨c₂, hc₂⟩` from `hgen.exists`. Take `⟨P, hP, hPc⟩` from `cls_surj (c₂ • CechPic.pull t (cls A hA.isLB) - toPic E₀)`. Establish `gP` using `hc₂ P hP hPc`.
+
+Establish `g₁` using `hc₁.pull t`. Establish `gM` using `AmpleModelPos.isGenerated_tens g₁ (gP.pow e)`. Establish `hA₁L` using `isLB_tens hL₁.isLB gM.isLB`. Establish `hA₁ : IsAmpleLB (tens L₁ (tens ((tens (toLB (-H₀)) (lbPow A c₁)).pull t) (lbPow P e)))`. Use `hL₁.tensor_isGenerated gM hA₁L ((cls_eq_zero_iff (LB.isLB_div (LB.isLB_div hA₁L hL₁.isLB) gM.isLB)).1 ?_)` and prove the remaining obligations.
+
+Rewrite using `[cls_div (LB.isLB_div hA₁L hL₁.isLB) gM.isLB, cls_div hA₁L hL₁.isLB, cls_tens hL₁.isLB gM.isLB]`. Normalize the expressions using the abelian group laws. Use `⟨c₁ + e * c₂, e • E₀ - (H - pullCart t H₀), _, hA₁, by omega, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_eq_add_neg]`. Use `(GlobalTheory.Cartier.CartierDiv.supp_add_le _ _).trans (sup_le ((supp_nsmul_le _ _).trans hsE₀.le) ?_)` and prove the remaining obligations.
+
+Conclude with `(supp_neg_le _).trans (hD.trans hsE₀.le)`. Rewrite using `[cls_tens hL₁.isLB gM.isLB, cls_tens g₁.isLB (gP.pow e).isLB, cls_lbPow hP e, hPc, cls_pull (isLB_tens (isLB_toLB (-H₀)) (isLB_lbPow hA.isLB c₁)) t, cls_tens (isLB_toLB (-H₀)) (isLB_lbPow hA.isLB c₁), cls_lbPow hA.isLB c₁, ← toPic_apply, map_sub, map_nsmul, map_sub, toPic_pullCar …`. Simplify using `only [map_neg, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_ample_pull_sub_eff : ∀ (k : Type) [Field k] [CharZero k] (Y₀ Y₁ : Scheme.{0}) [IsIntegral Y₀] [IsIntegral Y₁] [IsLocallyNoetherian Y₀] [IsLocallyNoetherian Y₁] (q : Y₀ ⟶ Sp k) (n : ℕ) (t : Y₁ ⟶ Y₀) [IsDominant t] [SmoothOfRelativeDimension n q] [SmoothOfRelativeDimension n (t ≫ q)], IsProjOver q → IsProjOver (t ≫ q) → ∀ I : Y₀.IdealSheafData, IsIso (t ∣_ I.support.compl) → FinalTheorems.EffCartier (I.comap t) → ∀ (A : LB Y₀) (hA : IsAmpleLB A), ∃ (c : ℕ) (E : CartierDiv Y₁) (A₁ : LB Y₁) (hA₁ : IsAmpleLB A₁), 0 < c ∧ E.Eff ∧ E.supp ≤ (I.comap t).support ∧ c • CechPic.pull t (cls A hA.isLB) = cls A₁ hA₁.isLB + toPic E := by
   intro k _ _ Y₀ Y₁ _ _ _ _ q n t _ _ _ hq ht I hiso hI A hA
   obtain ⟨-, L₁, hL₁⟩ := isProper_and_exists_isAmpleLB_of_isProjOver ht

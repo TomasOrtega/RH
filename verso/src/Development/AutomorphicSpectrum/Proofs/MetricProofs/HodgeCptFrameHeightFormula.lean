@@ -21,15 +21,29 @@ section Units
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {p : Cpt ξ}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩`.
+-/
 theorem unit_mul {a b : Ω} (ha : unitAt ξ p a) (hb : unitAt ξ p b) : unitAt ξ p (a * b) :=
   ⟨mul_ne_zero ha.1 hb.1, mul_mem ha.2.1 hb.2.1, by rw [mul_inv]; exact mul_mem ha.2.2 hb.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩`.
+-/
 theorem unit_inv {a : Ω} (ha : unitAt ξ p a) : unitAt ξ p a⁻¹ :=
   ⟨inv_ne_zero ha.1, ha.2.2, by rw [inv_inv]; exact ha.2.1⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨pow_ne_zero _ ha.1, pow_mem ha.2.1 _, by rw [← inv_pow]; exact pow_mem ha.2.2 _⟩`.
+-/
 theorem unit_pow {a : Ω} (ha : unitAt ξ p a) (n : ℕ) : unitAt ξ p (a ^ n) :=
   ⟨pow_ne_zero _ ha.1, pow_mem ha.2.1 _, by rw [← inv_pow]; exact pow_mem ha.2.2 _⟩
 
+/- English proof (translation)
+Establish `hb : b ≠ 0` using `fun hb => h.1 (by rw [hb, div_zero])`. Establish `ha : a ≠ 0` using `fun ha => h.1 (by rw [ha, zero_div])`. Apply `le_antisymm` to reduce the goal to its premises. Use `(Submodule.span_singleton_le_iff_mem _ _).2 (Submodule.mem_span_singleton.2 ⟨⟨a / b, h.2.1⟩, ?_⟩) show a / b * b = a` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Use `(Submodule.span_singleton_le_iff_mem _ _).2 (Submodule.mem_span_singleton.2 ⟨⟨(a / b)⁻¹, h.2.2⟩, ?_⟩) show (a / b)⁻¹ * a = b` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem span_eq_of_unit {a b : Ω} (h : unitAt ξ p (a / b)) :
     Submodule.span (regAt ξ p) {a} = Submodule.span (regAt ξ p) {b} := by
   have hb : b ≠ 0 := fun hb => h.1 (by rw [hb, div_zero])
@@ -42,6 +56,11 @@ theorem span_eq_of_unit {a b : Ω} (h : unitAt ξ p (a / b)) :
     show (a / b)⁻¹ * a = b
     field_simp
 
+/- English proof (translation)
+Establish `h1 : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc.1 k (Finset.mem_univ k)`. Use `⟨h1, fun k i => ?_⟩` and prove the remaining obligations. Use `hc.2 (Function.update c k i) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Finset.prod_div_distrib, Finset.prod_eq_single k]`. Simplify using the standard rewrite rules.
+
+Introduce `k' _ hk`. Rewrite using `[Function.update_of_ne hk, div_self (h1 k')]`. Simplify using the standard rewrite rules.
+-/
 theorem chart_block {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {c : ∀ k, J k}
     (hc : InChart ξ (seg y) c p) :
     (∀ k, y ⟨k, c k⟩ ≠ 0) ∧ ∀ k i, y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ regAt ξ p := by
@@ -55,6 +74,11 @@ theorem chart_block {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) →
     rw [Function.update_of_ne hk, div_self (h1 k')]
   · simp
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.minor_ratio_regular_of_inverse Ω (regAt ξ p) n r Fm U C Z hU hB hC hL ((t : ℕ) + 1) t.2 J₀ hne hr`. Establish `hw : unitAt ξ p _` using `⟨h3, h1, h2⟩`. Establish `hb : Xb ≠ 0` using `fun hb => hX.1 (by rw [hb, zero_div])`. Establish `hc : Xc ≠ 0` using `fun hb => hX.1 (by rw [hb, div_zero])`. Establish `e` using `unit_mul hw (unit_inv (unit_pow hX (((t : ℕ) + 1) * mm)))`.
+
+Use `e using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hZ, div_pow, ← pow_mul, mul_comm mm]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem step_unit {n r : ℕ} {Fm : Matrix (Fin n) (Fin r) Ω} {U : Matrix (Fin r) (Fin r) Ω}
     {C : Matrix (Fin r) (Fin n) Ω} {Z Xb Xc : Ω} {mm : ℕ} (hZ : Z = Xc ^ mm) (hU : U.BlockTriangular id)
     (hB : ∀ a b, (Fm * U) a b / Z ∈ regAt ξ p) (hC : ∀ a b, C a b ∈ regAt ξ p)
@@ -75,6 +99,9 @@ theorem step_unit {n r : ℕ} {Fm : Matrix (Fin n) (Fin r) Ω} {U : Matrix (Fin 
 
 end Units
 
+/- English proof (translation)
+Substitute `hq` using the available equality. Use `GlobalTheory.CompanionTheory.Ar.Flag.tens_gen (fun _ : Unit => (𝔐.V (HodgeCpt.rootIdx D r).1).gr (Fl.b (HodgeCpt.rootIdx D r).1) (HodgeCpt.rootIdx D r).2) (fun _ => HodgeCpt.rootSgn D r) p (fun _ => t) fun _ => ht` as an intermediate fact. Simplify `this.2` using `[HodgeCpt.Flag.rootLat]`.
+-/
 theorem rootLat_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Finset ℕ}
     {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} {𝔐 : HodgeCpt Y S y}
@@ -86,6 +113,43 @@ theorem rootLat_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
     (fun _ => HodgeCpt.rootSgn D r) p (fun _ => t) fun _ => ht
   simpa [HodgeCpt.Flag.rootLat] using this.2
 
+/- English proof (translation)
+Set `yc : K₀ ⊕ StepIx (CMType H) D.p D.q → (GenField Ω (rk (CMType H) D.p D.q))` to `fun k => yv (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀ ⟨k, cc k⟩`. Take `⟨hY, hR⟩` from `chart_block hc`. Establish `hp : genPt 𝔐.ξ ⤳ pr p'.1` using `LatModel.dominates_spec hO.1 p'`. Take `⟨c₁, hc₁⟩` from `𝔐.tie.cover ⟨pr p'.1, hp⟩`. Establish `hc₁' : InChart 𝔐.ξ (seg x₀) c₁ ⟨pr p'.1, hp⟩` using `hc₁`.
+
+Set `Xb : (GenField Ω (rk (CMType H) D.p D.q))` to `∏ k, yc (.inl k)`. Set `Xc : (GenField Ω (rk (CMType H) D.p D.q))` to `algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (seg x₀ c₁)`. Establish `hXb : Xb = algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (seg x₀ fun k => cc (.inl k))`. Simplify using `only [Xb, map_prod]`. Both sides reduce to the same expression.
+
+Establish `hXc : Xc = ∏ k, yv (p` using `D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀ ⟨.inl k, c₁ k⟩ := by`. Simplify using `only [Xc, map_prod]`. Both sides reduce to the same expression. Establish `hXc0 : Xc ≠ 0` using `(map_ne_zero _).2 hc₁.1`. Establish `hXb0 : Xb ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hY _`.
+
+Establish `hX : unitAt 𝔐'.ξ p' (Xb / Xc)`. Use `⟨div_ne_zero hXb0 hXc0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hXb, show Xc = algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q)) (seg x₀ c₁) from rfl, ← map_div₀]`. Conclude with `LatModel.dominates_regAt hO.1 p' hp (hc₁'.2 _)`. Rewrite using `[inv_div, hXc, show Xb = ∏ k, yc (.inl k) from rfl, ← Finset.prod_div_distrib]`.
+
+Conclude with `prod_mem fun k _ => hR (.inl k) (c₁ k)`. Take `⟨UW, CW, hUW, hBW, hCW, hLW, hGW⟩` from `GlobalTheory.T.hodgeCpt_frame_twist_compat E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF 𝔐' pr j Fl hO hV hC τ p' hp c₁ hc₁'`. Take `⟨UO, CO, hUO, hBO, hCO, hLO, hGO⟩` from `GlobalTheory.T.hodgeCpt_frame_twist_degree E H D l Xo c Y S Ω K₀ J₀ x₀ 𝔐 bW bO n m φ hF 𝔐' pr j Fl hO hV hC τ p' hp c₁ hc₁'`. Set `tW : Fin D.p → (GenField Ω (rk (CMType H) D.p D.q))` to `fun l => UW l l`. Set `tO : Fin D.q → (GenField Ω (rk (CMType H) D.p D.q))` to `fun l => UO l l`.
+
+Establish `unitW : ∀ t : Fin D.p, unitAt 𝔐'.ξ p' ((∏ l : Fin ((t : ℕ) + 1), tW (Fin.castLE t.2 l)) * yc (.inr ⟨.inl τ, t⟩) / Xb ^ (((t : ℕ) + 1) * m (.inl τ)))` using `fun t => step_unit (map_pow _ _ _) hUW hBW hCW hLW hX t (cc (.inr ⟨.inl τ, t⟩)) (hY (.inr ⟨.inl τ, t⟩)) (hR (.inr ⟨.inl τ, t⟩))`. Establish `unitO : ∀ t : Fin D.q, unitAt 𝔐'.ξ p' ((∏ l : Fin ((t : ℕ) + 1), tO (Fin.castLE t.2 l)) * yc (.inr ⟨.inr τ, t⟩) / Xb ^ (((t : ℕ) + 1) * m (.inr τ)))` using `fun t => step_unit (map_pow _ _ _) hUO hBO hCO hLO hX t (cc (.inr ⟨.inr τ, t⟩)) (hY (.inr ⟨.inr τ, t⟩)) (hR (.inr ⟨.inr τ, t⟩))`. Set `G : Fin (D.p + D.q) → (GenField Ω (rk (CMType H) D.p D.q))` to `fun i => if h : (i : ℕ) < D.p then tW ⟨i, h⟩ else tO ⟨(i : ℕ) - D.p, by have := i.2; omega⟩`. Establish `hG1 : ∀ (i : Fin (D.p + D.q)) (h : (i : ℕ) < D.p), G i = tW ⟨i, h⟩` using `fun i h => dif_pos h`. Establish `hG2 : ∀ (i : Fin (D.p + D.q)) (h : D.p ≤ (i : ℕ)), G i = tO ⟨(i : ℕ) - D.p, by have` using `i.2; omega⟩ := fun i h => dif_neg (not_lt.2 h)`.
+
+Set `Ee : Fin (D.p + D.q) → (GenField Ω (rk (CMType H) D.p D.q))` to `fun i => ∏ k, yc k ^ (-((model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i) k))`. Establish `hEe : ∀ i, Ee i ≠ 0` using `fun i => Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hY _)`. Establish `hDE : ∀ i, unitAt 𝔐'.ξ p' ((∏ k ∈ Finset.Iic i, G k) / Ee i)`. Introduce `i`. Take `⟨e1, e2⟩` from `GlobalTheory.T.model_monomial_weight_product (CMType H) D.p D.q Ω n (aOf 𝔐 bW bO φ) K₀ J₀ x₀ m h (GenField Ω (rk (CMType H) D.p D.q)) yc hY τ i`.
+
+Take `⟨g1, g2⟩` from `GlobalTheory.T.prod_Iic_blockDiag_det_factors (GenField Ω (rk (CMType H) D.p D.q)) D.p D.q tW tO G hG1 hG2 i`. Distinguish the cases in `hi : (i : ℕ) < D.p`. Establish `e : Ee i = _` using `e1 hi`. Rewrite using `[e, g1 hi]`. Use `unitW ⟨i, hi⟩` as an intermediate fact.
+
+Establish `hy : yc (.inr ⟨.inl τ, ⟨i, hi⟩⟩) ≠ 0` using `hY _`. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `div_div_eq_mul_div _ _ _`. Establish `hi'` using `not_lt.1 hi`. Establish `e : Ee i = _` using `e2 hi'`.
+
+Rewrite using `[e, g2 hi', div_div_eq_mul_div, pow_add, mul_mul_mul_comm, mul_div_mul_comm]`. Establish `hl : (i : ℕ) - D.p < D.q` using `by have := i.2; omega`. Use `unit_mul ?_ (unitO ⟨(i : ℕ) - D.p, hl⟩)` and prove the remaining obligations. Distinguish the cases in `h0 : 0 < D.p`. Rewrite using `[dif_pos h0]`.
+
+Establish `e1 : D.p - 1 + 1 = D.p` using `by omega`. Use `unitW ⟨D.p - 1, by omega⟩` as an intermediate fact. Establish `eP : (∏ l : Fin (D.p - 1 + 1), tW (Fin.castLE (by omega) l)) = ∏ l, tW l` using `Fintype.prod_equiv (finCongr e1) _ _ fun l => congrArg tW (Fin.ext rfl)`. Establish `eX : (D.p - 1 + 1) * m (.inl τ) = D.p * m (.inl τ)` using `by rw [e1]`. Simplify using `only [eP, eX] at this`.
+
+Conclude with `this`. Rewrite using `[dif_neg h0]`. Establish `hp0 : D.p = 0` using `by omega`. Establish `eX : D.p * m (.inl τ) = 0` using `by rw [hp0, zero_mul]`. Use `haveI : IsEmpty (Fin D.p) := by rw [hp0]; infer_instance`.
+
+Rewrite using `[eX, pow_zero, Finset.univ_eq_empty, Finset.prod_empty, mul_one, div_one]`. Conclude with `⟨one_ne_zero, one_mem _, by simp⟩`. Establish `hT` using `GlobalTheory.T.ratio_successive_nonzero_regular (GenField Ω (rk (CMType H) D.p D.q)) (regAt 𝔐'.ξ p') _ G Ee hEe hDE i`. Establish `hW : (∏ k, yv (p` using `D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀ ⟨k, cc k⟩ ^ (if h0 : (i : ℕ) = 0 then -(model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i) else (model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, ⟨(i : ℕ) - 1, by have := i.2; omega⟩) - (model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i)) k) = if h0 : (i : ℕ) = 0 then Ee i else …`. Distinguish the cases in `h0 : (i : ℕ) = 0`.
+
+Simplify using `only [dif_pos h0]`. Both sides reduce to the same expression. Simplify using `only [dif_neg h0] show _ = (∏ k, yc k ^ (-((model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i) k))) / ∏ k, yc k ^ (-((model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, ⟨(i : ℕ) - 1, by have := i.2; omega⟩) k))`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Pi.sub_apply, ← zpow_sub₀ (hY k)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hroot : Fl.rootLat (τ, i) p' = Submodule.span (regAt 𝔐'.ξ p') {G i}`. Distinguish the cases in `hi : (i : ℕ) < D.p`.
+
+Rewrite using `[rootLat_gen Fl (τ, i) p' (q := ⟨.inl τ, ⟨i, hi⟩⟩) (by simp [HodgeCpt.rootIdx, hi]) (hGW ⟨i, hi⟩), hG1 i hi]`. Simplify using `[HodgeCpt.rootSgn, hi]`. Both sides reduce to the same expression. Establish `hi'` using `not_lt.1 hi`. Establish `hl : (i : ℕ) - D.p < D.q` using `by have := i.2; omega`.
+
+Rewrite using `[rootLat_gen Fl (τ, i) p' (q := ⟨.inr τ, (⟨(i : ℕ) - D.p, hl⟩ : Fin D.q).rev⟩) (by`. Simplify using `only [HodgeCpt.rootIdx, dif_neg hi]`. Use `congr 1`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Fin.val_rev]`.
+
+Use the proof step `omega) (hGO ⟨(i : ℕ) - D.p, hl⟩), hG2 i hi']`. Simplify using `[HodgeCpt.rootSgn, hi]`. Both sides reduce to the same expression. Rewrite using `[hroot, hW]`. Conclude with `span_eq_of_unit hT`.
+-/
 theorem point_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ}
     {Ω : Type} [Field Ω] [CharZero Ω] {K₀ : Type} [Fintype K₀] {J₀ : K₀ → Type} [∀ k, Fintype (J₀ k)]
@@ -205,6 +269,9 @@ theorem point_gen {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   rw [hroot, hW]
   exact span_eq_of_unit hT
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ hF _ h 𝔐' pr j Fl hO _ hV hC`. Use `⟨fun r => if h0 : (r.2 : ℕ) = 0 then -(model (aOf 𝔐 bW bO φ) x₀ m h).dy r else (model (aOf 𝔐 bW bO φ) x₀ m h).dy (r.1, ⟨(r.2 : ℕ) - 1, by have := r.2.2; omega⟩) - (model (aOf 𝔐 bW bO φ) x₀ m h).dy r, fun r => ⟨one_ne_zero, fun p' _ cc hc => ?_⟩, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨τ, i⟩` from `r`. Rewrite using `[point_gen hF h hO hV hC τ i p' cc hc, smul_eq_mul, mul_one]`. Conclude with `GlobalTheory.T.eq_neg_sum_Iic_differences _ _ (fun i => (model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i)) i`.
+-/
 theorem rootLines : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K₀ : Type) [Fintype K₀] (J₀ : K₀ → Type) [∀ k, Fintype (J₀ k)] (x₀ : (Σ k, J₀ k) → Ω) (𝔐 : HodgeCpt Y S x₀) (bW : WBases 𝔐) (bO : OmBases 𝔐) (n m : CMType H ⊕ CMType H → ℕ) (φ : ∀ s, Fin (n s) → Module.Dual Ω (EE 𝔐)), FormsOK 𝔐 bW bO m φ → CoordTie ℤ 𝔐.ξ (seg (xb (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) → ∀ (h : ModelOK (aOf 𝔐 bW bO φ) x₀ m) (𝔐' : HodgeCpt Y S (yv (p := D.p) (q := D.q) (aOf 𝔐 bW bO φ) x₀)) (pr : 𝔐'.X ⟶ 𝔐.X) (j : 𝔐.Li →+ 𝔐'.Li) (Fl : 𝔐'.Flag), HodgeOver 𝔐' 𝔐 pr (algebraMap Ω (GenField Ω (rk (CMType H) D.p D.q))) j → Submodule.span (GenField Ω (rk (CMType H) D.p D.q)) (Set.range j) = ⊤ → (∀ s, 𝔐'.V s = (𝔐.V s).pull 𝔐'.ξ pr j) → ColFlags 𝔐 bW bO j Fl → ∃ xdeg : CMType H × Fin (D.p + D.q) → (K₀ ⊕ StepIx (CMType H) D.p D.q) → ℤ, Fl.RootLines xdeg (fun _ => 1) ∧ ∀ τ i, (model (aOf 𝔐 bW bO φ) x₀ m h).dy (τ, i) = -∑ k ∈ Finset.Iic i, xdeg (τ, k) := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K₀ _ J₀ _ x₀ 𝔐 bW bO n m φ hF _ h 𝔐' pr j Fl hO _ hV hC
   refine ⟨fun r => if h0 : (r.2 : ℕ) = 0 then -(model (aOf 𝔐 bW bO φ) x₀ m h).dy r

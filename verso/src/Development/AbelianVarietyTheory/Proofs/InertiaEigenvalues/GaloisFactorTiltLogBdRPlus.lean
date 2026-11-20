@@ -14,6 +14,11 @@ namespace GlobalTheory.InertiaEigenvalues.TiltGalLog
 set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
+/- English proof (translation)
+Establish `hz : C.ζ m ^ (l ^ m) = 1` using `TAct.zeta_pow C m`. Establish `hred : ∀ a : ℕ, C.ζ m ^ a = C.ζ m ^ (a % l ^ m)` using `fun a => by conv_lhs => rw [← Nat.mod_add_div a (l ^ m), pow_add, pow_mul, hz, one_pow, mul_one]`. Establish `hmod : (PadicInt.toZModPow (m + 1) c).val ≡ (PadicInt.toZModPow m c).val [MOD l ^ m]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, ZMod.natCast_val, ZMod.natCast_zmod_val]`. Establish `h` using `congrArg (fun f : ℤ_[l] →+* ZMod (l ^ m) => f c) (PadicInt.zmod_cast_comp_toZModPow (p := l) m (m + 1) (Nat.le_succ m))`.
+
+Simplify using `using h`. Rewrite using `[hred, hmod, ← hred]`.
+-/
 theorem zeta_pow_compat {l : ℕ} [Fact l.Prime] (C : Core l) (c : ℤ_[l]) (m : ℕ) :
     C.ζ m ^ (PadicInt.toZModPow (m + 1) c).val = C.ζ m ^ (PadicInt.toZModPow m c).val := by
   have hz : C.ζ m ^ (l ^ m) = 1 := TAct.zeta_pow C m
@@ -26,6 +31,11 @@ theorem zeta_pow_compat {l : ℕ} [Fact l.Prime] (C : Core l) (c : ℤ_[l]) (m :
     simpa using h
   rw [hred, hmod, ← hred]
 
+/- English proof (translation)
+Unfold `rootT`. Rewrite using `[← map_mul]`. Use `congr 1`. Proceed by induction on `m with`. Consider the case `zero => rfl`.
+
+Consider the case `succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul]`.
+-/
 theorem rootT_mul {l : ℕ} [Fact l.Prime] (a b : Per.Fl l) (m : ℕ) :
     rootT (a * b) m = rootT a m * rootT b m := by
   unfold rootT
@@ -36,6 +46,15 @@ theorem rootT_mul {l : ℕ} [Fact l.Prime] (a b : Per.Fl l) (m : ℕ) :
   | succ m ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
       Function.iterate_succ_apply', ih, map_mul]
 
+/- English proof (translation)
+Introduce `l _ C x g c H`. Take `⟨e, he⟩` from `NoLog.exists_tilt (fun m => C.ζ m ^ (PadicInt.toZModPow m c).val) (fun m => by show (C.ζ (m + 1) ^ (PadicInt.toZModPow (m + 1) c).val) ^ l = C.ζ m ^ (PadicInt.toZModPow m c).val`. Rewrite using `[← pow_mul, mul_comm, pow_mul, C.ζ_succ, zeta_pow_compat]) 1 (by simp [C.ζ_zero])`. Establish `he1 : e.untilt = 1` using `Subtype.ext (by`. Use `he 0` as an intermediate fact.
+
+Rewrite `this` using `[C.ζ_zero, one_pow, map_one]`. Conclude with `this)`. Establish `hre : ∀ m, rootT e m = rootT C.ε m ^ (PadicInt.toZModPow m c).val` using `fun m => Subtype.ext (by rw [he m, SubmonoidClass.coe_pow, C.ε_root m, map_pow])`. Establish `hxe : Per.σF g x = x * e`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `PreTilt.coeff n (Per.σF g x) = PreTilt.coeff n (x * e)`. Rewrite using `[coeff_eq_mk_rootT, coeff_eq_mk_rootT, H n, rootT_mul, hre n, mul_comm]`. Take `⟨y, -, hy, -⟩` from `exists_isLogA l e he1`. Establish `hyeq` using `NoLog.log_eq C e c y he hy`. Use `⟨e, hxe, he1, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `LogFun.isLog_map he1 hy C.j_cris`. Establish `hj : C.j (algebraMap (Per.Ainf l) (Per.Acris l) (Per.zA l c)) = aDp l (Per.zA l c)`. Rewrite using `[GlobalTheory.RingIface.tower, C.j_cris.on0, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]`. Rewrite `h` using `[hyeq, map_mul, hj]`. Then use the resulting hypothesis.
+-/
 theorem gal_factor_log : ∀ (l : ℕ) [Fact l.Prime] (C : Core l) (x : Per.Fl l) (g : GQ l) (c : ℤ_[l]),
     (∀ m : ℕ, rootT (Per.σF g x) m = rootT C.ε m ^ (PadicInt.toZModPow m c).val * rootT x m) →
     ∃ e : Per.Fl l, Per.σF g x = x * e ∧ e.untilt = 1 ∧

@@ -27,11 +27,17 @@ variable {Y X X₁ X₂ : Scheme.{0}} {L : LB X} {L₁ : LB X₁} {L₂ : LB X�
 def extIdx (j₁ : L₁.ι) (j₂ : L₂.ι) : (extLB L₁ L₂ f₁ f₂).ι :=
   ((fun _ => j₁, fun _ => j₂) : (PUnit → L₁.ι) × (PUnit → L₂.ι))
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy.2`.
+-/
 lemma mapsAt₂_le_a (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : Y ⟶ X) (j₁ : L₁.ι) (j₂ : L₂.ι) (jL : L.ι) :
     p ⁻¹ᵁ (LB.div (extLB L₁ L₂ f₁ f₂) L).U (extIdx (f₁ := f₁) (f₂ := f₂) j₁ j₂, jL) ≤
       LB.wchart L (fun _ : PUnit => p) (fun _ => jL) :=
   fun _ hy => Set.mem_iInter.2 fun _ => hy.2
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy.1.1 PUnit.unit`. Conclude with `h1`.
+-/
 lemma mapsAt₂_le_1 (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : Y ⟶ X) (j₁ : L₁.ι) (j₂ : L₂.ι) (jL : L.ι) :
     p ⁻¹ᵁ (LB.div (extLB L₁ L₂ f₁ f₂) L).U (extIdx (f₁ := f₁) (f₂ := f₂) j₁ j₂, jL) ≤
       LB.wchart L₁ (fun _ : PUnit => p ≫ f₁) (fun _ => j₁) := by
@@ -40,6 +46,9 @@ lemma mapsAt₂_le_1 (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : Y ⟶ X) (j
   have h1 := Set.mem_iInter.1 hy.1.1 PUnit.unit
   exact h1
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy.1.2 PUnit.unit`. Conclude with `h1`.
+-/
 lemma mapsAt₂_le_2 (w : LB.Iso L (extLB L₁ L₂ f₁ f₂)) (p : Y ⟶ X) (j₁ : L₁.ι) (j₂ : L₂.ι) (jL : L.ι) :
     p ⁻¹ᵁ (LB.div (extLB L₁ L₂ f₁ f₂) L).U (extIdx (f₁ := f₁) (f₂ := f₂) j₁ j₂, jL) ≤
       LB.wchart L₂ (fun _ : PUnit => p ≫ f₂) (fun _ => j₂) := by

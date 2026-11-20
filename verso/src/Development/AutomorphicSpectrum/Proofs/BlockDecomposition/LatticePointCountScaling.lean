@@ -5,6 +5,9 @@ open scoped Classical
 
 namespace GlobalTheory.CompanionTheory.RiemannCore
 
+/- English proof (translation)
+The claim follows from `|(n : ℝ) * ∑' i, a i - ∫ y, f y ∂μ| ≤ ∫ y, g y ∂μ := by have hsum : ∀ {u : G → ℝ}, Integrable u μ → HasSum (fun i => ∫ y in tile i, u y ∂μ) (∫ y, u y ∂μ) := by intro u hu have := hasSum_integral_iUnion (f := u) (μ := μ) hm hd (by rw [hc]; exact hu.integrableOn) rwa [hc, setIntegr …`.
+-/
 theorem tile_sum_estimate {G ι : Type} [MeasurableSpace G] [Countable ι] (μ : Measure G)
     (tile : ι → Set G) (hm : ∀ i, MeasurableSet (tile i))
     (hd : Pairwise (Function.onFun Disjoint tile)) (hc : ⋃ i, tile i = Set.univ) (n : ℕ)
@@ -36,6 +39,13 @@ theorem tile_sum_estimate {G ι : Type} [MeasurableSpace G] [Countable ι] (μ :
 section
 variable {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
 
+/- English proof (translation)
+Use `letI : UniformSpace G := IsTopologicalAddGroup.rightUniformSpace G`. Use `haveI : IsUniformAddGroup G := isUniformAddGroup_of_addCommGroup`. Establish `huc : UniformContinuous φ` using `hs.uniformContinuous_of_continuous hc`. Establish `hmem` using `huc (Metric.dist_mem_uniformity hδ)`. Rewrite `hmem` using `[uniformity_eq_comap_nhds_zero G]`.
+
+Take `⟨V, hV, hsub⟩` from `Filter.mem_comap.1 hmem`. Use `⟨V, hV, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `h1 : (b, a) ∈ (fun p : G × G => p.2 - p.1) ⁻¹' V` using `hab`. Establish `h2` using `hsub h1`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Real.dist_eq] at h2`.
+
+Rewrite using `[abs_sub_comm]` and apply the resulting hypothesis.
+-/
 theorem exists_nhds_close (φ : G → ℝ) (hc : Continuous φ) (hs : HasCompactSupport φ)
     {δ : ℝ} (hδ : 0 < δ) : ∃ V ∈ 𝓝 (0 : G), ∀ a b, a - b ∈ V → |φ a - φ b| < δ := by
   letI : UniformSpace G := IsTopologicalAddGroup.rightUniformSpace G
@@ -57,6 +67,9 @@ def cell (D : Set G) (R : Finset G) : Set G := ⋃ r ∈ R, (fun y => -r + y) �
 
 def tile (D : Set G) (R : Finset G) (l : G) : Set G := (fun y => -l + y) ⁻¹' cell D R
 
+/- English proof (translation)
+Simplify using `only [tile, cell, Set.mem_preimage, Set.mem_iUnion, exists_prop]`. Use `exists_congr fun r => and_congr Iff.rfl ?_` and prove the remaining obligations. Establish `: -r + (-l + y) = y - r - l` using `by abel`. Rewrite using `[this]`.
+-/
 theorem mem_tile {D : Set G} {R : Finset G} {l y : G} :
     y ∈ tile D R l ↔ ∃ r ∈ R, y - r - l ∈ D := by
   simp only [tile, cell, Set.mem_preimage, Set.mem_iUnion, exists_prop]
@@ -64,14 +77,27 @@ theorem mem_tile {D : Set G} {R : Finset G} {l y : G} :
   have : -r + (-l + y) = y - r - l := by abel
   rw [this]
 
+/- English proof (translation)
+The claim follows from `Finset.measurableSet_biUnion _ fun r _ => (measurable_const_add (-r)) hD`.
+-/
 theorem measurableSet_cell {D : Set G} (hD : MeasurableSet D) (R : Finset G) :
     MeasurableSet (cell D R) :=
   Finset.measurableSet_biUnion _ fun r _ => (measurable_const_add (-r)) hD
 
+/- English proof (translation)
+The claim follows from `(measurable_const_add (-l)) (measurableSet_cell hD R)`.
+-/
 theorem measurableSet_tile {D : Set G} (hD : MeasurableSet D) (R : Finset G) (l : G) :
     MeasurableSet (tile D R l) :=
   (measurable_const_add (-l)) (measurableSet_cell hD R)
 
+/- English proof (translation)
+Rewrite using `[tile, measure_preimage_add, cell, measure_biUnion_finset]`. Simplify using `[measure_preimage_add, hD1]`. Introduce `r hr r' hr' hne`. Use `Set.disjoint_left.2 fun y hy hy' => hne ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage] at hy hy'`.
+
+Establish `e1 : y - r - 0 ∈ D`. Establish `: -r + y = y - r - 0` using `by abel`. Rewrite using `[← this]` and apply the resulting hypothesis. Establish `e2 : y - r' - 0 ∈ D`. Establish `: -r' + y = y - r' - 0` using `by abel`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Use `(ht y).unique (y₁ := (r, 0)) (y₂ := (r', 0)) ⟨hr, Λ.zero_mem, e1⟩ ⟨hr', Λ.zero_mem, e2⟩` as an intermediate fact. Conclude with `congrArg Prod.fst this`. Conclude with `fun r _ => (measurable_const_add (-r)) hD`.
+-/
 theorem measure_tile (μ : Measure G) [μ.IsAddHaarMeasure] {D : Set G} (hD : MeasurableSet D)
     (hD1 : μ D = 1) (R : Finset G) (Λ : AddSubgroup G)
     (ht : ∀ y : G, ∃! p : G × G, p.1 ∈ R ∧ p.2 ∈ Λ ∧ y - p.1 - p.2 ∈ D) (l : G) :
@@ -91,6 +117,11 @@ theorem measure_tile (μ : Measure G) [μ.IsAddHaarMeasure] {D : Set G} (hD : Me
     exact congrArg Prod.fst this
   · exact fun r _ => (measurable_const_add (-r)) hD
 
+/- English proof (translation)
+Introduce `l l' hne`. Use `Set.disjoint_left.2 fun y hy hy' => hne ?_` and prove the remaining obligations. Take `⟨r, hr, h⟩` from `mem_tile.1 hy`. Take `⟨r', hr', h'⟩` from `mem_tile.1 hy'`. Use `(ht y).unique (y₁ := (r, (l : G))) (y₂ := (r', (l' : G))) ⟨hr, l.2, h⟩ ⟨hr', l'.2, h'⟩` as an intermediate fact.
+
+Conclude with `Subtype.ext (congrArg Prod.snd this)`.
+-/
 theorem tile_disjoint {D : Set G} {R : Finset G} {Λ : AddSubgroup G}
     (ht : ∀ y : G, ∃! p : G × G, p.1 ∈ R ∧ p.2 ∈ Λ ∧ y - p.1 - p.2 ∈ D) :
     Pairwise (Function.onFun Disjoint fun l : Λ => tile D R (l : G)) := by
@@ -101,6 +132,9 @@ theorem tile_disjoint {D : Set G} {R : Finset G} {Λ : AddSubgroup G}
   have := (ht y).unique (y₁ := (r, (l : G))) (y₂ := (r', (l' : G))) ⟨hr, l.2, h⟩ ⟨hr', l'.2, h'⟩
   exact Subtype.ext (congrArg Prod.snd this)
 
+/- English proof (translation)
+Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨⟨r, l⟩, ⟨hr, hl, h⟩, -⟩` from `ht y`. Conclude with `Set.mem_iUnion.2 ⟨⟨l, hl⟩, mem_tile.2 ⟨r, hr, h⟩⟩`.
+-/
 theorem tile_cover {D : Set G} {R : Finset G} {Λ : AddSubgroup G}
     (ht : ∀ y : G, ∃! p : G × G, p.1 ∈ R ∧ p.2 ∈ Λ ∧ y - p.1 - p.2 ∈ D) :
     ⋃ l : Λ, tile D R (l : G) = Set.univ := by
@@ -108,6 +142,15 @@ theorem tile_cover {D : Set G} {R : Finset G} {Λ : AddSubgroup G}
   obtain ⟨⟨r, l⟩, ⟨hr, hl, h⟩, -⟩ := ht y
   exact Set.mem_iUnion.2 ⟨⟨l, hl⟩, mem_tile.2 ⟨r, hr, h⟩⟩
 
+/- English proof (translation)
+Establish `hR : 1 ≤ R.card`. Take `⟨⟨r, l⟩, ⟨hr, -, -⟩, -⟩` from `ht 0`. Conclude with `Finset.card_pos.2 ⟨r, hr⟩`. Use `set Q : Set G := (fun p : G × G × G => p.1 - x0 + p.2.1 + p.2.2) '' (C ×ˢ ((R : Set G) ×ˢ K₀)) with hQ`. Establish `hQc : IsCompact Q` using `(hC.prod (R.finite_toSet.isCompact.prod hK)).image (by fun_prop)`.
+
+Set `As : {l : Λ // x0 + (l : G) ∈ C} → Set G` to `fun l => tile D R ((l : Λ) : G)`. Establish `hsub : ⋃ i, As i ⊆ Q`. Use `Set.iUnion_subset fun l y hy => ?_` and prove the remaining obligations. Take `⟨r, hr, h⟩` from `mem_tile.1 hy`. Use `⟨(x0 + ((l : Λ) : G), r, y - r - ((l : Λ) : G)), ⟨l.2, hr, hDK h⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only`. Normalize the expressions using the abelian group laws. Establish `hfin` using `Measure.finite_const_le_meas_of_disjoint_iUnion μ (ε := 1) one_pos (As := As) (fun l => measurableSet_tile hD R _) (fun l l' hne => tile_disjoint ht (fun h => hne (Subtype.ext h))) (ne_top_of_le_ne_top hQc.measure_lt_top.ne (measure_mono hsub))`. Establish `huniv : {i | (1 : ENNReal) ≤ μ (As i)} = Set.univ`. Use `Set.eq_univ_of_forall fun l => ?_` and prove the remaining obligations.
+
+Use `show 1 ≤ μ (tile D R _)`. Rewrite using `[measure_tile μ hD hD1 R Λ ht]`. Conclude with `hR` after adjusting the coercions. Rewrite `hfin` using `[huniv]`. Conclude with `Set.finite_coe_iff.1 (Set.finite_univ_iff.1 hfin)`.
+-/
 theorem finite_lattice_points (μ : Measure G) [μ.IsAddHaarMeasure] {D K₀ : Set G}
     (hD : MeasurableSet D) (hK : IsCompact K₀) (hDK : D ⊆ K₀) (hD1 : μ D = 1) (R : Finset G)
     (Λ : AddSubgroup G) (ht : ∀ y : G, ∃! p : G × G, p.1 ∈ R ∧ p.2 ∈ Λ ∧ y - p.1 - p.2 ∈ D)
@@ -138,6 +181,11 @@ theorem finite_lattice_points (μ : Measure G) [μ.IsAddHaarMeasure] {D K₀ : S
   rw [huniv] at hfin
   exact Set.finite_coe_iff.1 (Set.finite_univ_iff.1 hfin)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Establish `h1 : Integrable h (Measure.map τ μ)`. Rewrite using `[hmap]`. Conclude with `hh.smul_measure ENNReal.ofReal_ne_top`. Conclude with `hτ.integrable_map_iff.1 h1`.
+
+Rewrite using `[← hτ.integral_map, hmap, integral_smul_measure, ENNReal.toReal_ofReal hc, smul_eq_mul]`.
+-/
 theorem scaling (μ : Measure G) {τ : G → G} (hτ : MeasurableEmbedding τ) {c : ℝ} (hc : 0 ≤ c)
     (hmap : Measure.map τ μ = ENNReal.ofReal c • μ) {h : G → ℝ} (hh : Integrable h μ) :
     Integrable (fun y => h (τ y)) μ ∧ ∫ y, h (τ y) ∂μ = c * ∫ y, h y ∂μ := by
@@ -149,6 +197,33 @@ theorem scaling (μ : Measure G) {τ : G → G} (hτ : MeasurableEmbedding τ) {
 
 end
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ Λ _ D K₀ R T M hD hK hDK hD1 ht hcont hinv hscale hshrink x0 φ hφc hφs`. Set `τ : ∀ ε : ℝ, 0 < ε → G ≃ₜ G` to `fun ε hε => { toFun := T ε invFun := T ε⁻¹ left_inv := fun y => (hinv ε hε y).1 right_inv := fun y => (hinv ε hε y).2 continuous_toFun := hcont ε hε continuous_invFun := hcont ε⁻¹ (inv_pos.2 hε) }`. Establish `hsummable : ∀ ε : ℝ, 0 < ε → Summable fun l : Λ => φ (T ε (x0 + l))`. Introduce `ε hε`. Establish `hfin` using `finite_lattice_points μ hD hK hDK hD1 R Λ ht x0 (C := T ε⁻¹ '' tsupport φ) (IsCompact.image hφs (hcont _ (inv_pos.2 hε)))`.
+
+Use `summable_of_finite_support (hfin.subset ?_)` and prove the remaining obligations. Introduce `l hl`. Conclude with `⟨T ε (x0 + l), subset_tsupport _ hl, (hinv ε hε _).1⟩`. Use `⟨hsummable, ?_⟩` and prove the remaining obligations. Take `⟨W, hWc, hW⟩` from `exists_compact_mem_nhds (0 : G)`.
+
+Use `set C : Set G := (fun p : G × G => p.1 - p.2) '' (tsupport φ ×ˢ W) with hC`. Establish `hCc : IsCompact C` using `(IsCompact.prod hφs hWc).image (by fun_prop)`. Establish `hCm : MeasurableSet C` using `hCc.measurableSet`. Use `set B : Set G := (fun p : G × G => x0 - p.1 - p.2) '' ((R : Set G) ×ˢ K₀) with hB`. Establish `hBc : IsCompact B` using `(R.finite_toSet.isCompact.prod hK).image (by fun_prop)`.
+
+Establish `hRpos : (0 : ℝ) < R.card`. Take `⟨⟨r, l⟩, ⟨hr, -, -⟩, -⟩` from `ht 0`. Conclude with `Finset.card_pos.2 ⟨r, hr⟩` after adjusting the coercions. Establish `hφi : Integrable φ μ` using `hφc.integrable_of_hasCompactSupport hφs`. Establish `hCi : Integrable (C.indicator (fun _ => (1 : ℝ))) μ` using `(integrable_indicator_iff hCm).2 (integrableOn_const hCc.measure_lt_top.ne)`.
+
+Establish `hkey : ∀ δ : ℝ, 0 < δ → ∀ᶠ ε in 𝓝[>] (0 : ℝ), |ε ^ M * ∑' l : Λ, φ (T ε (x0 + l)) - (R.card : ℝ)⁻¹ * ∫ y, φ y ∂μ| ≤ δ * (μ.real C / R.card)`. Introduce `δ hδ`. Take `⟨V₁, hV₁, hclose⟩` from `exists_nhds_close φ hφc hφs hδ`. Use `filter_upwards [hshrink B hBc (V₁ ∩ W) (inter_mem hV₁ hW), self_mem_nhdsWithin] with ε hε hpos`. Establish `hpos' : 0 < ε` using `hpos`.
+
+Establish `hpow : 0 < ε ^ M` using `pow_pos hpos' M`. Establish `hemb : MeasurableEmbedding (T ε)` using `(τ ε hpos').measurableEmbedding`. Take `⟨hi1, he1⟩` from `scaling μ hemb (inv_nonneg.2 hpow.le) (hscale ε hpos') hφi`. Take `⟨hi2, he2⟩` from `scaling μ hemb (inv_nonneg.2 hpow.le) (hscale ε hpos') hCi`. Establish `est` using `tile_sum_estimate μ (fun l : Λ => tile D R (l : G)) (fun l => measurableSet_tile hD R _) (tile_disjoint ht) (tile_cover ht) R.card (fun l => measure_tile μ hD hD1 R Λ ht _) (fun l : Λ => φ (T ε (x0 + l))) (hsummable ε hpos') (fun y => φ (T ε y)) (fun y => δ * C.indicator (fun _ = …`.
+
+Introduce `l y hy`. Take `⟨r, hr, hyd⟩` from `mem_tile.1 hy`. Establish `hb : x0 + (l : G) - y ∈ B` using `⟨(r, y - r - l), ⟨hr, hDK hyd⟩, by simp only; abel⟩`. Establish `hTU` using `hε _ hb`. Rewrite `hTU` using `[map_sub]`.
+
+Generalize the expression as in `T ε (x0 + (l : G)) = a at hTU ⊢`. Generalize the expression as in `T ε y = b at hTU ⊢`. Distinguish the cases in `hbC : b ∈ C`. Rewrite using `[Set.indicator_of_mem hbC]`. Simplify using `using (hclose a b hTU.1).le`.
+
+Establish `hb0 : φ b = 0`. Assume the negation of the conclusion as `h`. Conclude with `hbC ⟨(b, 0), ⟨subset_tsupport _ h, mem_of_mem_nhds hW⟩, by simp⟩`. Establish `ha0 : φ a = 0`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hbC ⟨(a, a - b), ⟨subset_tsupport _ h, hTU.2⟩, by simp⟩`. Rewrite using `[Set.indicator_of_notMem hbC]`. Simplify using `[ha0, hb0])`. Rewrite `est` using `[he1, integral_const_mul, he2, integral_indicator_const _ hCm]`. Simplify using `only [smul_eq_mul, mul_one] at est`.
+
+Establish `hid : ε ^ M * ∑' l : Λ, φ (T ε (x0 + l)) - (R.card : ℝ)⁻¹ * ∫ y, φ y ∂μ = (ε ^ M / R.card) * ((R.card : ℝ) * ∑' l : Λ, φ (T ε (x0 + l)) - (ε ^ M)⁻¹ * ∫ y, φ y ∂μ)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hid, abs_mul, abs_of_pos (div_pos hpow hRpos)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Metric.tendsto_nhds]`.
+
+Introduce `η hη`. Establish `hK0 : 0 ≤ μ.real C / R.card` using `div_nonneg measureReal_nonneg hRpos.le`. Use `set L := μ.real C / R.card with hL`. Establish `hδ : 0 < η / (L + 1)` using `by positivity`. Use `filter_upwards [hkey _ hδ] with ε hε`.
+
+Rewrite using `[Real.dist_eq]`. Use `lt_of_le_of_lt hε ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem main : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G] [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsAddHaarMeasure] (Λ : AddSubgroup G) [Countable Λ] (D K₀ : Set G) (R : Finset G) (T : ℝ → G →+ G) (M : ℕ), MeasurableSet D → IsCompact K₀ → D ⊆ K₀ → μ D = 1 → (∀ y : G, ∃! p : G × G, p.1 ∈ R ∧ p.2 ∈ Λ ∧ y - p.1 - p.2 ∈ D) → (∀ ε : ℝ, 0 < ε → Continuous (T ε)) → (∀ ε : ℝ, 0 < ε → ∀ y, T ε⁻¹ (T ε y) = y ∧ T ε (T ε⁻¹ y) = y) → (∀ ε : ℝ, 0 < ε → Measure.map (T ε) μ = ENNReal.ofReal ((ε ^ M)⁻¹) • μ) → (∀ B : Set G, IsCompact B → ∀ U ∈ 𝓝 (0 : G), ∀ᶠ ε in 𝓝[>] (0 : ℝ), ∀ b ∈ B, T ε b ∈ U) → ∀ (x0 : G) (φ : G → ℝ), Continuous φ → HasCompactSupport φ → (∀ ε : ℝ, 0 < ε → Summable fun l : Λ => φ (T ε (x0 + l))) ∧ Tendsto (fun ε : ℝ => ε ^ M * ∑' l : Λ, φ (T ε (x0 + l))) (𝓝[>] 0) (𝓝 ((R.card : ℝ)⁻¹ * ∫ y, φ y ∂μ)) := by
   intro G _ _ _ _ _ _ _ _ μ _ Λ _ D K₀ R T M hD hK hDK hD1 ht hcont hinv hscale hshrink x0 φ hφc hφs
   let τ : ∀ ε : ℝ, 0 < ε → G ≃ₜ G := fun ε hε =>

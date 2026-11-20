@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.FockFin
 
+/- English proof (translation)
+Introduce `D ψ θ hθ S T x y k _ _ hk P`. Take `⟨χS, χT, hW⟩` from `hk.weil`. Establish `hψ : IsStdChar D ψ (-1)` using `hW.std`. Establish `hvac : IsThetaFunO ψ S T k.vac` using `hk.vac.2.theta`. Establish `hc : IsThetaFunO ψ S T (comb ψ S T k.c k.vac)` using `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hvac (hk.fin u hu))`.
+
+Establish `hop : ∀ g ∈ GfC S, ∀ h ∈ GfC T, IsThetaFunO ψ S T (k.pt ψ θ x y P) ∧ k.om (g, h) (k.pt ψ θ x y P) = pureTensorO ψ θ S T x.s y.s x.B y.B (k.om (g, h) (comb ψ S T k.c k.vac)) P` using `fun g hg h hh => GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT k.om hW hθ x.s x.s x.B x.B y.s y.s y.B y.B g h (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hg, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_fin …`. Use `⟨(hop 1 (one_mem _) 1 (one_mem _)).1, fun g hg h hh p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[(hop g hg h hh).2, hp, GlobalTheory.FiniteFock.pureTensorO_smul]`. Both sides reduce to the same expression.
+-/
 theorem pt_finite : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T) (k : KerDat S T), x.Is → y.Is → k.Is ψ θ x y → ∀ P, IsThetaFunO ψ S T (k.pt ψ θ x y P) ∧ ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ p : ℂ, k.om (g, h) (comb ψ S T k.c k.vac) = p • comb ψ S T k.c k.vac → k.om (g, h) (k.pt ψ θ x y P) = p • k.pt ψ θ x y P := by
   intro D ψ θ hθ S T x y k _ _ hk P
   obtain ⟨χS, χT, hW⟩ := hk.weil

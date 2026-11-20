@@ -9,9 +9,19 @@ open UpperTheory.Gal.crystallineComparison (resPt)
 
 namespace UpperTheory.Gal.Mod
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pt_comp {Ω : Type} [Field Ω] {X X' : Scheme.{0}} (x : gp Ω ⟶ X) (f : X ⟶ X') :
     pt (x ≫ f) = f (pt x) := rfl
 
+/- English proof (translation)
+Establish `: ∑ᶠ b ∈ s, f b = ∑ᶠ b ∈ ({a} : Set α), f b`. Apply `finsum_mem_inter_support_eq` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [Set.mem_inter_iff, Function.mem_support, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hb, hf⟩`. Use `⟨?_, hf⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hf (h b hb hne)`. Introduce and unpack `⟨rfl, hf⟩`.
+
+Conclude with `⟨ha, hf⟩`. Rewrite using `[this, finsum_mem_singleton]`.
+-/
 private theorem finsum_single {α : Type*} {s : Set α} {f : α → ℤ} {a : α} (ha : a ∈ s)
     (h : ∀ b ∈ s, b ≠ a → f b = 0) : ∑ᶠ b ∈ s, f b = f a := by
   have : ∑ᶠ b ∈ s, f b = ∑ᶠ b ∈ ({a} : Set α), f b := by
@@ -27,6 +37,13 @@ private theorem finsum_single {α : Type*} {s : Set α} {f : α → ℤ} {a : α
       exact ⟨ha, hf⟩
   rw [this, finsum_mem_singleton]
 
+/- English proof (translation)
+Establish `hB : (s ∩ {b | P b}).Finite` using `hs.subset Set.inter_subset_left`. Establish `: ∑ᶠ b ∈ s, (if P b then (1 : ℤ) else 0) = ∑ᶠ b ∈ s ∩ {b | P b}, (if P b then (1 : ℤ) else 0)`. Apply `finsum_mem_inter_support_eq` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [Set.mem_inter_iff, Function.mem_support, Set.mem_setOf_eq]`.
+
+Apply the tactic sequence `by_cases hb : P b <;> simp [hb]`. Rewrite using `[this, finsum_mem_eq_finite_toFinset_sum _ hB, Set.ncard_eq_toFinset_card _ hB]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : ℤ))]`. Simplify using the standard rewrite rules. Introduce `b hb`.
+
+Use `(hB.mem_toFinset.1 hb).2` as an intermediate fact. Simplify using `only [Set.mem_setOf_eq] at this`. Simplify using `[this]`.
+-/
 private theorem finsum_count {α : Type*} {s : Set α} (hs : s.Finite) (P : α → Prop) [DecidablePred P] :
     ∑ᶠ b ∈ s, (if P b then (1 : ℤ) else 0) = ((s ∩ {b | P b}).ncard : ℤ) := by
   have hB : (s ∩ {b | P b}).Finite := hs.subset Set.inter_subset_left
@@ -43,6 +60,51 @@ private theorem finsum_count {α : Type*} {s : Set α} (hs : s.Finite) (P : α �
     simp only [Set.mem_setOf_eq] at this
     simp [this]
 
+/- English proof (translation)
+Introduce `hF hS hC p Y T w hw V _ _ _ _ _ hp y`. Establish `hTfin : IsFinite T.p` using `T.fin`. Set `K` to `FractionRing V`. Set `η : gp K ⟶ Spec (CommRingCat.of V)` to `sp (algebraMap V K)`. Establish `hSy` using `hS T.p V y`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hfinite : (fib T.p (η ≫ y)).Finite` using `(hF T.p K K (RingHom.id K) (η ≫ y)).1`. Establish `: {z : Spec (CommRingCat.of V) ⟶ T.Z | z ≫ T.p = y}.Finite` using `Set.Finite.of_injOn hSy.mapsTo hSy.injOn hfinite`. Conclude with `this.to_subtype`. Introduce `z₀ hz₀`.
+
+Set `r : pullback T.p y ⟶ Spec (CommRingCat.of V)` to `pullback.snd T.p y`. Set `v : pullback T.p y ⟶ T.Z` to `pullback.fst T.p y`. Establish `hrfin : IsFinite r` using `inferInstance`. Establish `hcond : v ≫ T.p = r ≫ y` using `pullback.condition`. Set `z₁ : gp (IsLocalRing.ResidueField V) ⟶ pullback T.p y` to `pullback.lift z₀ (resPt V) hz₀`.
+
+Establish `hz₁r : z₁ ≫ r = resPt V` using `pullback.lift_snd _ _ _`. Establish `hz₁v : z₁ ≫ v = z₀` using `pullback.lift_fst _ _ _`. Take `⟨U, hU, hUz⟩` from `hC V r z₁ hz₁r`. Set `φ : _ → ℤ` to `fun x => if x ∈ U then 1 else 0`. Establish `hφ : IsLocallyConstant φ`.
+
+Establish `h` using `(LocallyConstant.charFn ℤ hU).isLocallyConstant`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ U`. Conclude with `(if_pos hx).trans ((LocallyConstant.charFn_eq_one (Y := ℤ) x hU).2 hx).symm`.
+
+Conclude with `(if_neg hx).trans ((LocallyConstant.charFn_eq_zero (Y := ℤ) x hU).2 hx).symm`. Take `⟨ψ, hψ, hsum⟩ : ∃ ψ : Spec (CommRingCat.of V) → ℤ, IsLocallyConstant ψ ∧ ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : gp Ω ⟶ Spec (CommRingCat.of V)), ψ (pt x) = ∑ᶠ z ∈ fib r x, w Ω (z ≫ v) * φ (pt z)` from `hw.1 (TranscendenceTraces.Sq.of T.p y) φ hφ`. Establish `hconn : PreconnectedSpace (Spec (CommRingCat.of V))` using `inferInstance`. Establish `hψc : ψ (pt η) = ψ (pt (resPt V))` using `hψ.apply_eq_of_preconnectedSpace _ _`. Establish `hcl : ψ (pt (resPt V)) = w _ z₀`.
+
+Rewrite using `[hsum]`. Establish `hmem : z₁ ∈ fib r (resPt V)` using `hz₁r`. Rewrite using `[finsum_single hmem]`. Establish `: pt z₁ ∈ U` using `(hUz z₁ hz₁r).2 rfl`. Simplify using `[φ, this, hz₁v]`.
+
+Introduce `b hb hne`. Establish `: pt b ∉ U` using `fun h => hne ((hUz b hb).1 h)`. Simplify using `[φ, this]`. Establish `hconst : ∀ σ : Spec (CommRingCat.of V) ⟶ pullback T.p y, pt (η ≫ σ) ∈ U ↔ pt (resPt V ≫ σ) ∈ U`. Introduce `σ`.
+
+Establish `h` using `(hφ.comp_continuous σ.continuous).apply_eq_of_preconnectedSpace (pt η) (pt (resPt V))`. Simplify using `only [Function.comp_apply] at h`. Rewrite using `[pt_comp, pt_comp]`. Apply the tactic sequence `by_cases h1 : σ (pt η) ∈ U <;> by_cases h2 : σ (pt (resPt V)) ∈ U <;> simp_all [φ]`. Establish `hpK : (p : K) ≠ 0`.
+
+Introduce `h0`. Apply `hp` to reduce the goal to its premises. Apply `IsFractionRing.injective V K` to reduce the goal to its premises. Simplify using `using h0`. Establish `hfibfin : (fib r η).Finite` using `(hF r K K (RingHom.id K) η).1`.
+
+Establish `hgen : ψ (pt η) = ((fib r η ∩ {z | pt z ∈ U}).ncard : ℤ)`. Rewrite using `[hsum, ← finsum_count hfibfin]`. Use `finsum_mem_congr rfl ?_` and prove the remaining obligations. Introduce `z _`. Rewrite using `[hw.2 K (z ≫ v) hpK]`.
+
+Simplify using `[φ]`. Set `sec : T.Sec y → (Spec (CommRingCat.of V) ⟶ pullback T.p y)` to `fun s => pullback.lift s.1 (𝟙 _) (by rw [s.2, Category.id_comp])`. Establish `hsecr : ∀ s, sec s ≫ r = 𝟙 _` using `fun s => pullback.lift_snd _ _ _`. Establish `hsecv : ∀ s, sec s ≫ v = s.1` using `fun s => pullback.lift_fst _ _ _`. Set `e : {z : T.Sec y // resPt V ≫ z.1 = z₀} → (gp K ⟶ pullback T.p y)` to `fun s => η ≫ sec s.1`.
+
+Establish `he : Function.Injective e`. Introduce `s s' h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hSy.injOn s.1.2 s'.1.2` to reduce the goal to its premises.
+
+Use `congrArg (· ≫ v) h` as an intermediate fact. Simplify `this` using `[e, hsecv]`. Establish `hrange : Set.range e = fib r η ∩ {z | pt z ∈ U}`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨s, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(η ≫ sec s.1) ≫ r = η`. Rewrite using `[Category.assoc, hsecr, Category.comp_id]`. Express the relevant statement in the definitionally equal form `pt (η ≫ sec s.1) ∈ U`.
+
+Rewrite using `[hconst]`. Establish `hs : resPt V ≫ sec s.1 = z₁`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(resPt V ≫ sec s.1) ≫ v = z₁ ≫ v`. Rewrite using `[Category.assoc, hsecv, hz₁v, s.2]`.
+
+Express the relevant statement in the definitionally equal form `(resPt V ≫ sec s.1) ≫ r = z₁ ≫ r`. Rewrite using `[Category.assoc, hsecr, Category.comp_id, hz₁r]`. Rewrite using `[hs]`. Conclude with `(hUz z₁ hz₁r).2 rfl`. Introduce and unpack `⟨hz, hzU⟩`.
+
+Establish `hz' : z ∈ fib r (sp (algebraMap V (FractionRing V)) ≫ 𝟙 _)`. Express the relevant statement in the definitionally equal form `z ≫ r = η ≫ 𝟙 _`. Rewrite using `[Category.comp_id]`. Conclude with `hz`. Take `⟨σ, hσ, rfl⟩` from `(hS r V (𝟙 _)).surjOn hz'`.
+
+Establish `hσ' : σ ≫ r = 𝟙 _` using `hσ`. Establish `hσU : pt (η ≫ σ) ∈ U` using `hzU`. Rewrite `hσU` using `[hconst]`. Establish `hσ₀ : resPt V ≫ σ = z₁`. Apply `(hUz _ _).1 hσU` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hσ', Category.comp_id]`. Set `s : T.Sec y` to `⟨σ ≫ v, by rw [Category.assoc, hcond, ← Category.assoc, hσ', Category.id_comp]⟩`. Establish `hsσ : sec s = σ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sec s ≫ v = σ ≫ v`.
+
+Rewrite using `[hsecv]`. Express the relevant statement in the definitionally equal form `sec s ≫ r = σ ≫ r`. Rewrite using `[hsecr, hσ']`. Use `⟨⟨s, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resPt V ≫ σ ≫ v = z₀`.
+
+Rewrite using `[← Category.assoc, hσ₀, hz₁v]`. Express the relevant statement in the definitionally equal form `η ≫ sec s = η ≫ σ`. Rewrite using `[hsσ]`. Rewrite using `[← hcl, ← hψc, hgen, ← hrange, ← Nat.card_coe_set_eq, Nat.card_congr (Equiv.ofInjective e he).symm]`.
+-/
 theorem wtVal : FibExt → SecGen → ClopenAt → WtVal := by
   intro hF hS hC p Y T w hw V _ _ _ _ _ hp y
   have hTfin : IsFinite T.p := T.fin

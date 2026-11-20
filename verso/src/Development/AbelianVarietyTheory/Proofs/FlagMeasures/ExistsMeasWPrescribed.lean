@@ -7,6 +7,19 @@ open scoped TensorProduct ENNReal
 
 namespace GlobalTheory.St.MeasWord
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r P T hP μNinf μHinf μN μH μSv hNinf hHinf hN hH hSv`. Establish `: Module.Finite F E` using `PI.VolSemiDirect.W.Lc.finite_nf F E`. Take `⟨eH, heH⟩` from `PI.UnitaryGroupMassFormula.MeasWCore.hermitian_measure_splitting F E σ n J r P T hCM hJ hP`. Take `⟨eN, heN⟩` from `PI.UnitaryGroupMassFormula.MeasWCore.nilpotent_measure_splitting F E σ n J r P T hCM hJ hP`. Establish `hsm : Measurable (splitA σ J)` using `(PI.UnitaryGroupMassFormula.MeasWCore.continuous_measure_splitting F E σ n J hCM).measurable`.
+
+Establish `: SecondCountableTopology (Hsub (AF F) σ J P)` using `eH.toHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `: SecondCountableTopology (Nsub (AF F) σ J P)` using `eN.toHomeomorph.symm.isEmbedding.secondCountableTopology`. Take `⟨μHf, hHf, hHeq⟩` from `GlobalTheory.St.HaarSplit.exists_haar_map_prod_eq eH μHinf μH`. Take `⟨μNf, hNf, hNeq⟩` from `GlobalTheory.St.HaarSplit.exists_haar_map_prod_eq eN μNinf μN`. Take `⟨μSf, hSH, hSeq⟩` from `PI.UnitaryGroupMassFormula.MeasWCore.product_decomposition_holds F E σ n J r P T hCM hJ hP μNf μHf hNf hHf`.
+
+Establish `: SigmaCompactSpace (Hsub (Ainf F) σ J P)` using `inferInstance`. Establish `: SigmaCompactSpace (Nsub (Ainf F) σ J P)` using `inferInstance`. Establish `: SigmaCompactSpace (Hsub (Af F) σ J P)` using `inferInstance`. Establish `: SigmaCompactSpace (Nsub (Af F) σ J P)` using `inferInstance`. Establish `: SigmaFinite μHinf` using `inferInstance`.
+
+Establish `: SigmaFinite μNinf` using `inferInstance`. Establish `: SigmaFinite μHf` using `inferInstance`. Establish `: SigmaFinite μNf` using `inferInstance`. Use `⟨{ μH := μH, μHinf := μHinf, μHf := μHf, μN := μN, μNinf := μNinf, μNf := μNf, μSf := μSf, μSv := μSv }, ?_, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Use `⟨hH, hHinf, hHf, hN, hNinf, hNf, hSH, hSv, ?_, ?_, hSeq⟩` and prove the remaining obligations.
+
+Use `show (μH.map Subtype.val).map (splitA σ J) = _`. Rewrite using `[← hHeq]`. Conclude with `PI.UnitaryGroupMassFormula.MeasWCore.map_split_eq (splitA σ J) hsm eH eH.continuous.measurable heH μHinf μHf`. Use `show (μN.map Subtype.val).map (splitA σ J) = _`. Rewrite using `[← hNeq]`.
+
+Conclude with `PI.UnitaryGroupMassFormula.MeasWCore.map_split_eq (splitA σ J) hsm eN eN.continuous.measurable heN μNinf μNf`.
+-/
 theorem exists_measW_prescribed :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
       IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (P : Frame E n r)

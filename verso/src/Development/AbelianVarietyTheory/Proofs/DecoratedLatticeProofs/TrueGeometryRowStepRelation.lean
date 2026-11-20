@@ -17,6 +17,13 @@ namespace GlobalTheory.PenBridge.SuppLev
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `h1 : GlobalTheory.AdelicU.proj (Formalism.L2.Forms.sigD D) S.gram w κ = 1` using `((GlobalTheory.FinPl.KOpen.mem_grpAt_iff S _ κ).1 hκ).2 w hw`. Establish `hp` using `GlobalTheory.AdelicU.matHom_proj (Formalism.L2.Forms.sigD D) S.gram w κ`. Establish `hE : Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) w) g = GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram w (GlobalTheory.AdelicU.proj _ S.gram w κ) := by`. Use extensionality with `i j`.
+
+Establish `hij` using `congrFun (congrFun hg i) j`. Establish `e1 : (GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram w (GlobalTheory.AdelicU.proj _ S.gram w κ)).val i j = GlobalTheory.StabConjIndex.swap w ((GlobalTheory.AdelicU.matHom (Fv D.host.F w) (Formalism.L2.Forms.sigD D) S.gram (GlobalTheory.AdelicU.proj (Formalism. …` using `rfl`. Rewrite using `[e1, hp]`. Use `show Formalism.UG.prV w (g.1 i j) = GlobalTheory.StabConjIndex.swap w (GlobalTheory.AdelicU.compFin _ _ w _)`. Rewrite using `[← hij]`.
+
+Conclude with `GlobalTheory.FamTrace.prV_toEAf_eq_swap D w _`. Rewrite using `[hE, h1, map_one]`.
+-/
 theorem bc_prV_eq_one_of_not (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) (κ : GA D S)
     (g : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
     (hg : GlobalTheory.AdForm.finM S hn κ = g.1) (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (w : HeightOneSpectrum (𝓞 D.host.F))
@@ -40,6 +47,15 @@ theorem bc_prV_eq_one_of_not (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) (�
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨g, hgU, hg⟩ : ∃ g ∈ Formalism.UG.UPts (sigD D) (S.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), GlobalTheory.AdForm.finM S hn κ = g.1 := by`. Take `⟨e, he⟩` from `GlobalTheory.FinPartIso.exists_finIso D S n hn`. Establish `hf` using `GlobalTheory.FinPl.SetCut.grpAt_le_GfC S _ hκ`. Conclude with `⟨(e ⟨κ, hf⟩).1, (e ⟨κ, hf⟩).2, (he ⟨κ, hf⟩).symm⟩`. Use `⟨⟨g, (K.U_eq _).2 ⟨hgU, fun w => ?_⟩⟩, hg.symm⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hw : P w`. Take `⟨hb, hT, hm⟩` from `hP w hw`. Substitute `hn` using the available equality. Establish `key : ∀ j i : Fin S.rank, ∃ r : 𝓞 D.host.E, (Pi.single j (T : D.host.E) : Fin S.rank → D.host.E) i = (r : D.host.E) ∧ t ∣ r` using `fun j i => by`. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Conclude with `⟨T, (map_natCast (algebraMap (𝓞 D.host.E) D.host.E) T).symm, ht⟩`. Conclude with `⟨0, rfl, dvd_zero _⟩`. Establish `e` using `GlobalTheory.FamTrace.levelVL_eq_of_std (sigD D) (S.gram.reindex (finCongr rfl) (finCongr rfl)) (Lb := K.Lb) (Λ := L) hT (fun x hx j => let ⟨r, hr, _⟩ := (hLb x).1 hx j; ⟨r, hr⟩) (fun j => (hLb _).2 fun i => let ⟨r, hr, hd⟩ := key j i; ⟨r, hr, fun _ => hd⟩) (fun x hx => (hL x).1 …`. Rewrite using `[K.Uloc_hyp w hb hT, e]`.
+
+Conclude with `GlobalTheory.FamTrace.bc_prV_mem_levelVL_of_moves D S _ rfl L L hfg (fun _ => Iff.rfl) κ g hg w hm`. Rewrite using `[bc_prV_eq_one_of_not D S n hn κ g hg P w hw hκ]`. Conclude with `one_mem _`.
+-/
 theorem exists_mem_level_set (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (K : StepLevel D.host.F D.host.E (sigD D) (S.gram.reindex (finCongr hn) (finCongr hn)) T f bad)
     (t : 𝓞 D.host.E) (ht : t ∣ (T : 𝓞 D.host.E))
@@ -77,6 +93,19 @@ end GlobalTheory.PenBridge.SuppLev
 open GlobalTheory.PenBridge in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ t' J' hJ' α' P hP x hx hrd`. Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hok : I.Ok` using `hW.tr.ok`. Establish `hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L` using `(ha.x j hjm).sd`. Use `haveI : Submodule.IsLattice (I.rec7 l Z).host.E (a.g.x j).L := hsd.1`.
+
+Establish `hfg : (a.g.x j).L.FG` using `Submodule.IsLattice.fg (A := (I.rec7 l Z).host.E)`. Establish `hlb` using `(hJ'.is.reads j hjm).lb (J'.ι j α')`. Use `(hJ'.is.U j hjm _ _).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ hx, ?_⟩` and prove the remaining obligations. Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `hd : X.piT u ∣ ((B.T u : ℕ) : 𝓞 B.host.E)` using `⟨_, (hPr.piT_norm u).symm⟩`.
+
+Use `GlobalTheory.PenBridge.SuppLev.exists_mem_level_set (I.rec7 l Z) _ _ _ (J'.A.K j hjm (J'.ι j α')).lev (X.piT u) hd hlb (a.g.x j).L hfg (fun y => ((hat.pinX.xs j hjm).2.2 y).trans (forall_congr' fun r => ⟨fun h => ⟨⟨y r, h⟩, rfl⟩, fun ⟨s, hs⟩ => hs ▸ s.2⟩)) (· ∈ P) x hx ?_` and prove the remaining obligations. Introduce `v hvP`. Take `⟨⟨i, hi⟩, hn'⟩` from `hP v hvP`. Substitute `hi` using the available equality. Establish `hu : I.UnderQ (W.P.I.tup t) (J.G i).q.v` using `⟨J.pl i, (hW.tq.Q t (J.pl i)).1 (J.mem i), ((GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hat t J hJ).2 i).symm⟩`.
+
+Take `⟨hTv, hgv⟩` from `GlobalTheory.Mem.Col2.TC.underQ_notMem I hok l u _ _ hu`. Use `⟨fun h => ?_, hTv, ?_⟩` and prove the remaining obligations. Break down `hJ'.is.bad_le j hjm _ h with (h0 | h0) | ⟨Q, hQ, e⟩` into its components or cases. Conclude with `hgv 0 h0`. Conclude with `hgv 1 h0`.
+
+Take `⟨i', hi'⟩` from `hJ'.surj Q ((hW.tq.Q t' Q).2 hQ)`. Use `hn' ⟨i', ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hat t' J' hJ').2 i', hi']`. Conclude with `e`. Establish `h1` using `hrd i hvP`.
+
+Rewrite `h1` using `[rd, MonoidHom.pi_apply, rdAt_apply, toSum0_mem_KO_iff]`. Conclude with `GlobalTheory.LevProd.SamePlace.moves_of_mem_KO (J.G i).q _ hsd (intIn_frJ J j i (step_before_last_eq_s_succ J hj i)) h1`.
+-/
 theorem GlobalTheory.PenBridge.supp_mem_level : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 1 = B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j) (P : Finset (GlobalTheory.FinPl.Pl (I.rec7 l Z))), (∀ p ∈ P, GlobalTheory.PenBridge.plF J p ∧ ¬ GlobalTheory.PenBridge.plF J' p) → ∀ x ∈ GlobalTheory.FinPl.grpAt _ (· ∈ P), (∀ i, (J.G i).q.v ∈ P → GlobalTheory.PenBridge.rd J j hj x i ∈ KO (J.G i).k _) → x ∈ J'.A.U j (J'.ι j α') := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ t' J' hJ' α' P hP x hx hrd
   have hjm : j ≤ B.R.m := by omega

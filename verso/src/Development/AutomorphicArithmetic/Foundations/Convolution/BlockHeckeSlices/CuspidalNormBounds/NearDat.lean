@@ -22,6 +22,13 @@ private def glue (r s : ℕ) (p : ((E →+* ℂ) → Fin r → ℂ) × (Pl E →
     fun w => ((p.2 w).map fun b : ℂˣ => (b : ℂ) * ((Formalism.UG.qV E w : ℕ) : ℂ) ^ (-z)) + q.2 w)})
 
 open Classical in
+/- English proof (translation)
+Use `Prod.ext (funext fun ⟨τ, i⟩ => ?_) (funext fun w => ?_)` and prove the remaining obligations. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i`. Establish `e : (Dat.cons b d).idx (Fin.castAdd s i) = (0 : Fin (d.len + 1))` using `Fin.addCases_left (motive := fun _ => Fin (d.len + 1)) (left := fun _ => 0) (right := fun i => (d.idx i).succ) i`. Simplify using `only [Dat.ptL, Dat.lam, Fin.addCases_left]`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Consider the case `right i`. Establish `e : (Dat.cons b d).idx (Fin.natAdd r i) = ((d.idx i).succ : Fin (d.len + 1))` using `Fin.addCases_right (motive := fun _ => Fin (d.len + 1)) (left := fun _ => 0) (right := fun i => (d.idx i).succ) i`. Simplify using `only [Dat.ptL, Dat.lam, Fin.addCases_right]`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Simplify using `only split_ifs`. Simplify using the standard rewrite rules. Conclude with `Fin.sum_univ_succ (n := d.len) _`.
+-/
 private theorem pt_cons {r s : ℕ} (b : Blo S r) (d : Dat S s) (z₀ : ℂ) (z : Fin d.len → ℂ) :
     (((Dat.cons b d).ptL (Fin.cons z₀ z : Fin (d.len + 1) → ℂ),
       fun w => if w ∈ S then 0 else (Dat.cons b d).ptS (Fin.cons z₀ z : Fin (d.len + 1) → ℂ) w) : Pt E (r + s)) =
@@ -48,6 +55,11 @@ private theorem pt_cons {r s : ℕ} (b : Blo S r) (d : Dat S s) (z₀ : ℂ) (z 
     · exact Fin.sum_univ_succ (n := d.len) _
 
 open Classical in
+/- English proof (translation)
+Use `Prod.ext rfl (Set.ext fun y => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨z, rfl⟩`. Use `⟨z (0 : Fin (d.len + 1)), _, ⟨Fin.tail (n := d.len) (α := fun _ => ℂ) z, rfl⟩, ?_⟩` and prove the remaining obligations. Use `pt_cons b d (z (0 : Fin (d.len + 1))) (Fin.tail (n := d.len) (α := fun _ => ℂ) z)` as an intermediate fact. Rewrite `this` using `[Fin.cons_self_tail (n := d.len) (α := fun _ => ℂ) z]`.
+
+Conclude with `this`. Introduce and unpack `⟨z₀, _, ⟨z, rfl⟩, rfl⟩`. Conclude with `⟨_, pt_cons b d z₀ z⟩`.
+-/
 private theorem inv_cons {r s : ℕ} (b : Blo S r) (d : Dat S s) :
     inv (Dat.cons b d) = glue r s (b.Λ, fun w => if w ∈ S then 0 else b.sat w) (inv d) := by
   refine Prod.ext rfl (Set.ext fun y => ⟨?_, ?_⟩)
@@ -59,12 +71,28 @@ private theorem inv_cons {r s : ℕ} (b : Blo S r) (d : Dat S s) :
   · rintro ⟨z₀, _, ⟨z, rfl⟩, rfl⟩
     exact ⟨_, pt_cons b d z₀ z⟩
 
+/- English proof (translation)
+Consider the cases of `d with`. Consider the case `nil => exact Or.inl ⟨rfl, rfl⟩`. Consider the case `cons b d' => exact Or.inr ⟨_, _, rfl, b, d', rfl⟩`.
+-/
 private theorem dat_cases {n : ℕ} (d : Dat S n) :
     (∃ h : 0 = n, d = h ▸ Dat.nil) ∨ ∃ (r s : ℕ) (h : r + s = n) (b : Blo S r) (d' : Dat S s), d = h ▸ Dat.cons b d' := by
   cases d with
   | nil => exact Or.inl ⟨rfl, rfl⟩
   | cons b d' => exact Or.inr ⟨_, _, rfl, b, d', rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `ρ`. Establish `h0 : {x | ∃ h : 0 = n, x = inv (h ▸ Dat.nil : Dat S n)}.Finite` using `Set.Subsingleton.finite (by rintro _ ⟨h, rfl⟩ _ ⟨h', rfl⟩; rfl)`. Establish `h1 : ∀ p ∈ Set.Iic n ×ˢ Set.Iic n, {x | ∃ (h : p.1 + p.2 = n) (b : Blo S p.1) (d' : Dat S p.2), (h ▸ Dat.cons b d' : Dat S n).HasTyp ρ.ρ ∧ (∀ τ i, ‖(h ▸ Dat.cons b d' : Dat S n).lam τ i‖ ≤ B) ∧ x = inv (h ▸ Dat.cons b d' : Dat S n)}.Finite`.
+
+Introduce and unpack `⟨r, s⟩ -`. Distinguish the cases in `hp : r + s = n`. Use `swap`. Conclude with `Set.finite_empty.subset (by rintro _ ⟨h, -⟩; exact hp h)`. Substitute `hp` using the available equality.
+
+Distinguish the cases in `hr : 0 < r`. Use `swap`. Conclude with `Set.finite_empty.subset (by rintro _ ⟨-, b, -⟩; exact hr b.pos)`. Take `⟨⟨ρ₁, c₁, e₁⟩, ⟨ρ₂, c₂, e₂⟩, -⟩` from `resTyp E r s ρ`. Use `(Set.Finite.image2 (glue r s) (nearBlo E S r ⟨ρ.d, ρ₁, c₁⟩ B) (ih s (by omega) ⟨ρ.d, ρ₂, c₂⟩)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨h, b, d', ⟨k₁, k₂⟩, hB, rfl⟩`. Use `⟨_, ⟨b, ?_, fun τ i => ?_, rfl, fun _ => rfl⟩, _, ⟨d', ⟨?_, fun τ i => ?_⟩, rfl⟩, (inv_cons b d').symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Killed ρ₁ _`. Rewrite using `[e₁]`. Conclude with `k₁`.
+
+Simplify `hB τ (Fin.castAdd s i)` using `only [Dat.lam, Fin.addCases_left]`. Express the relevant statement in the definitionally equal form `d'.HasTyp ρ₂`. Rewrite using `[e₂]`. Conclude with `k₂`. Simplify `hB τ (Fin.natAdd r i)` using `only [Dat.lam, Fin.addCases_right]`.
+
+Use `(h0.union (((Set.finite_Iic n).prod (Set.finite_Iic n)).biUnion h1)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨d, ⟨hd, hB⟩, rfl⟩`. Break down `dat_cases d with ⟨h, rfl⟩ | ⟨r, s, h, b, d', rfl⟩` into its components or cases. Conclude with `Or.inl ⟨h, rfl⟩`. Conclude with `Or.inr (Set.mem_biUnion (x := (r, s)) ⟨show r ≤ n by omega, show s ≤ n by omega⟩ ⟨h, b, d', hd, hB, rfl⟩)`.
+-/
 private theorem finite_inv (S : Set (Pl E)) (B : ℝ) (n : ℕ) : ∀ ρ : Typ E n,
     (inv '' {d : Dat S n | d.HasTyp ρ.ρ ∧ ∀ τ i, ‖d.lam τ i‖ ≤ B}).Finite := by
   classical
@@ -102,6 +130,13 @@ private theorem finite_inv (S : Set (Pl E)) (B : ℝ) (n : ℕ) : ∀ ρ : Typ E
 
 end
 
+/- English proof (translation)
+Introduce `E _ _ _ S n ρ B`. Take `⟨D, -, hD⟩` from `Set.exists_subset_bijOn {d : Dat S n | d.HasTyp ρ.ρ ∧ ∀ τ i, ‖d.lam τ i‖ ≤ B} inv`. Use `⟨D, Set.Finite.of_finite_image (by rw [hD.image_eq]; exact finite_inv S B n ρ) hD.injOn, fun d hd hB => ?_⟩` and prove the remaining obligations. Take `⟨d', hd', he⟩` from `hD.surjOn ⟨d, ⟨hd, hB⟩, rfl⟩`. Use `⟨d', hd', congrArg Prod.fst he, fun F hF hK z => ?_⟩` and prove the remaining obligations.
+
+Take `⟨z', hz⟩ : _ ∈ (inv d').2` from `by rw [he]; exact ⟨z, rfl⟩`. Rewrite using `[← hK z']`. Establish `e₁ : d'.ptL z' = d.ptL z` using `congrArg Prod.fst hz`. Rewrite using `[e₁]`. Use `MvPolynomial.eval₂Hom_congr' rfl (fun x hx _ => ?_) rfl` and prove the remaining obligations.
+
+Establish `e₂` using `congrFun (congrArg Prod.snd hz) x.1`. Simplify using `only [if_neg (hF x hx)] at e₂`. Rewrite using `[Dat.ptH, Dat.ptH, e₂]`.
+-/
 theorem UpperTheory.ConvolutionTheory.BW.nearDat :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.NearDat E := by
   intro E _ _ _ S n ρ B

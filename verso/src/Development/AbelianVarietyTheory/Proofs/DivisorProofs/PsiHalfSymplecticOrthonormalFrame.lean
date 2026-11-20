@@ -42,6 +42,13 @@ variable {X} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃
 
 include idx in
 
+/- English proof (translation)
+Establish `h1 : (Submodule.span ℝ (Set.range fun (v : Fin r → E) (τ : X.Ψ) => Data.emb τ.1 v)).map (perL X idx x) = ⊤`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `span_range_pv idx hs hx`. Establish `hsurj : Function.Surjective (perL X idx x)`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← h1]`.
+
+Conclude with `LinearMap.map_le_range`. Establish `hd : Module.finrank ℝ (X.Ψ → Fin r → ℂ) = Module.finrank ℝ (Fin g → ℂ)`. Use `Fintype.card_congr idx` as an intermediate fact. Simplify using `only [Fintype.card_fin, Fintype.card_prod] at this`. Simplify using `only [Module.finrank_pi_fintype, finrank_real_complex, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hinj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hd).2 hsurj`. Apply `Submodule.map_injective_of_injective hinj` to reduce the goal to its premises. Rewrite using `[h1, Submodule.map_top, LinearMap.range_eq_top.2 hsurj]`.
+-/
 theorem span_emb (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Submodule.span ℝ (Set.range fun (v : Fin r → E) (τ : X.Ψ) => Data.emb τ.1 v) = ⊤ := by
   have h1 : (Submodule.span ℝ (Set.range fun (v : Fin r → E) (τ : X.Ψ) => Data.emb τ.1 v)).map (perL X idx x) = ⊤ := by
@@ -60,6 +67,19 @@ theorem span_emb (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
   apply Submodule.map_injective_of_injective hinj
   rw [h1, Submodule.map_top, LinearMap.range_eq_top.2 hsurj]
 
+/- English proof (translation)
+Set `B₁ : (X.Ψ → Fin r → ℂ) →ₗ[ℝ] (X.Ψ → Fin r → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun u v => (Geo.Tor.hermForm (ThFr.Hm X bas idx x) (perL X idx x u) (perL X idx x v)).im) (fun u u' v => by simp only [Geo.Tor.hermForm, map_add, add_dotProduct, add_im]) (fun c u v => by simp only [Geo.Tor.hermForm, map_smul, smul_dotProduct, smul_im]) (fun u v …`. Set `B₂ : (X.Ψ → Fin r → ℂ) →ₗ[ℝ] (X.Ψ → Fin r → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun u v => ∑ τ : X.Ψ, 2 * (τ.1 (-(X.κ0 / 2)) * hermC τ.1 X.Gm (u τ) (v τ)).re) (fun u u' v => by simp only [hermC, Pi.add_apply, add_mul, mul_add, add_re, Finset.sum_add_distrib]) (fun c u v => by`. Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm c, ← re_ofReal_mul c, mul_left_comm (c : ℂ)]`.
+
+Use `congr 3`. Simplify using `only [hermC, Finset.mul_sum, Pi.smul_apply, real_smul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Use the proof step `(fun u v v' => by simp only [hermC, Pi.add_apply, map_add, mul_add, add_re, Finset.sum_add_distrib])`. Use the proof step `(fun c u v => by`.
+
+Rewrite using `[smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm c, ← re_ofReal_mul c, mul_left_comm (c : ℂ)]`. Use `congr 3`. Simplify using `only [hermC, Finset.mul_sum, Pi.smul_apply, real_smul, map_mul, conj_ofReal]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring)`. Establish `hB : B₁ = B₂`. Use `LinearMap.ext_on_range (span_emb idx hs hx) fun a => LinearMap.ext_on_range (span_emb idx hs hx) fun b => ?_` and prove the remaining obligations. Establish `h1 : (Geo.Tor.hermForm (ThFr.Hm X bas idx x) (pv X idx x a) (pv X idx x b)).im = (EF X a b : ℝ)` using `im_hermForm_Hm idx hs hx a b`. Use `h1.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[EF_def, TraceFormIndependence.trace_re X]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h2 : τ.1 (herm X.Gm a b) = hermC τ.1 X.Gm (Data.emb τ.1 a) (Data.emb τ.1 b)`. Simplify using `only [herm, hermC, map_sum, map_mul, Data.emb, cc, IsCMField.complexEmbedding_complexConj]`. Rewrite using `[map_mul, h2]`.
+
+Rewrite using `[hx_eq_hermForm]`. Conclude with `LinearMap.congr_fun₂ hB u v`.
+-/
 theorem im_hx_perC (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (u v : X.Ψ → Fin r → ℂ) :
     (GlobalTheory.Dict.hx X bas idx x (fun j => perC X x u (idx j)) (fun j => perC X x v (idx j))).im =
       ∑ τ : X.Ψ, 2 * (τ.1 (-(X.κ0 / 2)) * hermC τ.1 X.Gm (u τ) (v τ)).re := by
@@ -102,11 +122,19 @@ theorem im_hx_perC (hs : IsSympl X bas) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (u
 
 end Classical
 
+/- English proof (translation)
+Establish `h : ∃ ρ', tauE D ρ = tauE D ρ'` using `⟨ρ, rfl⟩`. Rewrite using `[realM, dif_pos h, ← GlobalTheory.StdRat.tauE_injective D h.choose_spec]`.
+-/
 theorem realM_tauE {D : D7} (θ : InfFam D) {m n : ℕ} (w : Mx D m n) (ρ : D.what₂.Tau) :
     realM θ w (tauE D ρ) = compAt θ ρ w := by
   have h : ∃ ρ', tauE D ρ = tauE D ρ' := ⟨ρ, rfl⟩
   rw [realM, dif_pos h, ← GlobalTheory.StdRat.tauE_injective D h.choose_spec]
 
+/- English proof (translation)
+Rewrite using `[← Finset.mul_sum, ← re_sum, ← Finset.mul_sum, ← mul_neg, ← neg_re, ← mul_neg]`. Use `congr 3`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single a (fun b _ hb => by simp [hb.symm]) (by simp), Finset.sum_comm]`.
+
+Simplify using `only [← Finset.sum_neg_distrib, if_true]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem sum_four {m n : ℕ} (c : ℂ) (G : Fin m → Fin m → ℂ) (x y : Fin m → Fin n → ℂ) :
     ∑ b, 2 * (c * ∑ d, ∑ e, x d b * -G e d * conj (y e b)).re =
       -(2 * (c * ∑ a, ∑ b, ∑ e, ∑ d, (if a = b then (1 : ℂ) else 0) * conj (y e b) * G e d * x d a).re) := by
@@ -118,6 +146,19 @@ theorem sum_four {m n : ℕ} (c : ℂ) (G : Fin m → Fin m → ℂ) (x y : Fin 
   simp only [← Finset.sum_neg_distrib, if_true]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Introduce `D ψ θ V W r g hr X bas idx hψ hθ hV _ hM hs x hx v w hv`. Substitute `hr` using the available equality. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `e` using `(GlobalTheory.FockCompare.real_adele_ext_and_char D θ σ hσ _ (GlobalTheory.OrientedHeis.snd_symplO (y := w) (Or.inl hv))).2 ψ hψ`. Rewrite `e` using `[Finset.sum_congr rfl fun τ _ => GlobalTheory.OrientedHeis.valTau_symplO hθ τ v w]`.
+
+Use `e.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[neg_mul, ← mul_neg, ← ofReal_neg]`. Use `congr 2`. Unfold `zOf`.
+
+Simplify using `only [im_hx_perC idx hs hx]`. Rewrite using `[Finset.sum_comm]`. Establish `hb : Function.Bijective fun ρ : D.what₂.Tau => (⟨tauE D ρ, (hM.psi _).2 ⟨ρ, rfl⟩⟩ : X.Ψ)` using `⟨fun a b h => GlobalTheory.StdRat.tauE_injective D (congrArg Subtype.val h), fun τ => by`. Take `⟨ρ, h⟩` from `(hM.psi τ.1).1 τ.2`. Conclude with `⟨ρ, Subtype.ext h.symm⟩⟩`.
+
+Rewrite using `[← hb.sum_comp]`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Establish `hk : -(X.κ0 / 2) = D.host.xi0` using `by rw [hM.kap]; ring`. Establish `hG : ∀ a b, tauE D ρ (X.Gm a b) = -tauE D ρ (W.gram b a)` using `fun a b => by`.
+
+Rewrite using `[hM.model.1, ← map_neg]`. Both sides reduce to the same expression. Establish `h1 : ∀ a b, tauE D ρ (V.gram⁻¹ a b) = if a = b then 1 else 0` using `fun a b => by`. Apply the tactic sequence `rw [hV, inv_one, Matrix.one_apply]; split_ifs <;> simp`. Simplify using `only [realM_tauE, hk, hermC, hG, GlobalTheory.OrientedHeis.formAt, h1]`.
+
+Conclude with `(sum_four _ (fun e d => tauE D ρ (W.gram e d)) _ _).symm`.
+-/
 theorem psi_symplOH_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ x ∈ X.dom, ∀ v w : WO V W, v.map (finPart D) = 0 → ψ (symplOH V W v w) = cexp (Real.pi * I * ((∑ b, (hx X bas idx x (zOf θ V W hr X idx x v b) (zOf θ V W hr X idx x w b)).im : ℝ) : ℂ)) := by
   intro D ψ θ V W r g hr X bas idx hψ hθ hV _ hM hs x hx v w hv
   subst hr
@@ -146,6 +187,9 @@ theorem psi_symplOH_eq : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : Inf
   simp only [realM_tauE, hk, hermC, hG, GlobalTheory.OrientedHeis.formAt, h1]
   exact (sum_four _ (fun e d => tauE D ρ (W.gram e d)) _ _).symm
 
+/- English proof (translation)
+Introduce `D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x hx` and use `psi_symplOH_eq D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x (PIW.FdPA.orthonormal_domain r X x hx)`.
+-/
 theorem psi_symplOH_eq_of_isONFr : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsStdChar D ψ (-1) → IsInfFam θ → V.gram = 1 → Even V.rank → IsMod W hr X → IsSympl X bas → ∀ x : Frame X.Ψ r, IsONFr X x → ∀ v w : WO V W, v.map (finPart D) = 0 → ψ (symplOH V W v w) = cexp (Real.pi * I * ((∑ b, (hx X bas idx x (zOf θ V W hr X idx x v b) (zOf θ V W hr X idx x w b)).im : ℝ) : ℂ)) :=
   fun D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x hx =>
     psi_symplOH_eq D ψ θ V W r g hr X bas idx hψ hθ hV he hM hs x (PIW.FdPA.orthonormal_domain r X x hx)

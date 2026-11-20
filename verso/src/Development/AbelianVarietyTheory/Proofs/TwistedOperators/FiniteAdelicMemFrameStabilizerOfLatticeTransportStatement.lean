@@ -10,5 +10,8 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LevMov.finE_mem_St_of_isMov | exact GlobalTheory.LevMov.finE_mem_St_of_isMov | (intros; apply GlobalTheory.LevMov.finE_mem_St_of_isMov <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.finiteAdelic_mem_frameStabilizer_of_latticeTransport : ∀ (D : D7) (V : HSp D) (L : Lt D.host.E V.rank) (β : GL (Fin V.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame β L → ∀ k : GA D V, IsMov (fmt V k) L L → Lev.finE V k ∈ Formalism.L2.DIV.St β := by
   first | exact @GlobalTheory.LevMov.finE_mem_St_of_isMov | exact GlobalTheory.LevMov.finE_mem_St_of_isMov | (intros; apply GlobalTheory.LevMov.finE_mem_St_of_isMov <;> assumption)

@@ -28,6 +28,9 @@ def omLin {n : ℕ} (e : (Fin n → O) ≃ LieG P.Gt) (he1 : ∀ x y, e (x + y) 
   map_add' x y := by rw [he1]; exact omega_lieAdd F _ _
   map_smul' a x := by rw [he2]; exact omega_lieScale F a _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x y h => by obtain ⟨a, rfl⟩ := e.surjective x obtain ⟨b, rfl⟩ := e.surjective y rw [show (⟨_, h⟩ : LieG P.Gt) = e (a + b) from Subtype.ext (congrArg Subtype.val (he1 a b)).symm] simp, fun r x h => by obtain ⟨a, rfl⟩ := e.surjective x rw [show (⟨_, h⟩ : LieG P.Gt) = e (r • a) …`.
+-/
 theorem coord_mem_omega {n : ℕ} (e : (Fin n → O) ≃ LieG P.Gt) (he1 : ∀ x y, e (x + y) = lieAdd (e x) (e y))
     (he2 : ∀ (a : O) x, e (a • x) = AvDefs.lieScale P.Gt a (e x)) (i : Fin n) :
     (fun y => (e.symm y) i) ∈ omega P.Gt :=
@@ -43,6 +46,9 @@ theorem coord_mem_omega {n : ℕ} (e : (Fin n → O) ≃ LieG P.Gt) (he1 : ∀ x
 
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
+/- English proof (translation)
+Use `haveI := P.isLocalRing`. Take `⟨e, h₁, h₂⟩` from `OmegaRank.exists_param P.G (OmegaRank.smoothDim_model P)`. Take `⟨e', h₃, h₄⟩` from `OmegaRank.exists_lieEquiv P`. Conclude with `⟨_, e.trans e', fun x y => Subtype.ext (h₃ _ _ _ (h₁ x y)), fun a x => Subtype.ext (h₄ a _ _ (h₂ a x))⟩`.
+-/
 theorem exists_coords : ∃ (n : ℕ) (e : (Fin n → O) ≃ LieG P.Gt),
     (∀ x y, e (x + y) = lieAdd (e x) (e y)) ∧ ∀ (a : O) x, e (a • x) = AvDefs.lieScale P.Gt a (e x) := by
   haveI := P.isLocalRing
@@ -53,12 +59,22 @@ theorem exists_coords : ∃ (n : ℕ) (e : (Fin n → O) ≃ LieG P.Gt),
 
 variable [IsAlgClosed C] [CharZero C] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C]
 
+/- English proof (translation)
+Rewrite using `[pairV_bLie_eq_evLie, P.alC_inclT, Point.inclOm, evLie, TensorProduct.mk_apply, LinearMap.liftBaseChange_tmul, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem pairV_bLie_inclT (y : LieG P.Gt) (x : O ⊗[ℤ_[p]] P.T) :
     P.pairV (P.bLie y) (P.inclT x) = algebraMap O C ((P.al x).1 y) := by
   rw [pairV_bLie_eq_evLie, P.alC_inclT, Point.inclOm, evLie, TensorProduct.mk_apply,
     LinearMap.liftBaseChange_tmul, one_smul]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+
+Conclude with `⟨a + b, by simp only [map_add, ha, hb]⟩`. Consider the case `tmul a t`. Take `⟨d, hd⟩` from `(P.mem_latT_iff w).1 hw t`. Use `⟨a * d, ?_⟩` and prove the remaining obligations. Establish `h : P.inclT (a ⊗ₜ t) = algebraMap O C a • ((1 : C) ⊗ₜ t)`.
+
+Rewrite using `[P.inclT_tmul, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[h, map_smul, smul_eq_mul, ← hd, map_mul]`.
+-/
 theorem exists_pairV_inclT {w : P.V} (hw : w ∈ P.latT) (x : O ⊗[ℤ_[p]] P.T) :
     ∃ κ : O, algebraMap O C κ = P.pairV w (P.inclT x) := by
   induction x using TensorProduct.induction_on with
@@ -76,6 +92,33 @@ theorem exists_pairV_inclT {w : P.V} (hw : w ∈ P.latT) (x : O ⊗[ℤ_[p]] P.T
 
 end
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hHT τ w hwT hwS c hc`. Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Distinguish the cases in `hc0 : c = 0`. Rewrite using `[hc0, map_zero, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+
+Take `⟨n, e, he1, he2⟩` from `exists_coords P`. Establish `ht : ∀ i : Fin n, ∃ t : O ⊗[ℤ_[p]] P.T, (P.al t).1 = c • (fun y => (e.symm y) i)`. Introduce `i`. Establish `h2` using `hHT c hc _ (coord_mem_omega P e he1 he2 i)`. Rewrite `h2` using `[← (weilChar_surjective_and_map_range_al p C v O Λ P).2]`.
+
+Take `⟨_, ⟨t, rfl⟩, ht⟩` from `h2`. Conclude with `⟨t, ht⟩`. Use `choose t ht using ht`. Establish `hpair : ∀ y i, P.pairV (P.bLie y) (P.inclT (t i)) = algebraMap O C (c * (e.symm y) i)`. Introduce `y i`.
+
+Rewrite using `[pairV_bLie_inclT, ht i]`. Both sides reduce to the same expression. Establish `hinj : ∀ y y', P.bLie y = P.bLie y' → y = y'`. Introduce `y y' h`. Apply `e.symm.injective` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Establish `h1` using `hpair y i`. Rewrite `h1` using `[h, hpair y' i]`. Conclude with `(mul_left_cancel₀ hc0 (P.integers.hom_inj h1)).symm`. Use `set u : Fin n → LieG P.Gt := fun i => e (fun j => if i = j then (1 : O) else 0) with hu`.
+
+Establish `hexp : ∀ x, P.bLie (e x) = ∑ i, algebraMap O C (x i) • P.bLie (u i)`. Introduce `x`. Use `P.eq_of_pairV fun s => ?_` and prove the remaining obligations. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, Point.pairV_bLie, smul_eq_mul]`. Simplify using `only [← map_mul, ← map_sum]`.
+
+Use `congr 1`. Conclude with `(omLin P e he1 he2 (P.al₀ s)).pi_apply_eq_sum_univ x`. Establish `hspan : w ∈ Submodule.span C (Set.range fun i => P.bLie (u i))`. Use `Submodule.span_le.2 ?_ hwS` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+
+Rewrite using `[SetLike.mem_coe, ← e.apply_symm_apply y.1, hexp]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨β, hβ⟩` from `(Submodule.mem_span_range_iff_exists_fun C).1 hspan`. Establish `hb : ∀ i, ∃ κ : O, algebraMap O C κ = algebraMap O C c * β i`. Introduce `i`.
+
+Take `⟨κ, hκ⟩` from `exists_pairV_inclT P hwT (t i)`. Use `⟨κ, hκ.trans ?_⟩` and prove the remaining obligations. Rewrite using `[← hβ, map_sum, LinearMap.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[map_smul, LinearMap.smul_apply, hpair, smul_eq_mul, hu, e.symm_apply_apply, if_pos rfl, _root_.mul_one, mul_comm]`. Introduce `j _ hj`.
+
+Rewrite using `[map_smul, LinearMap.smul_apply, hpair, hu, e.symm_apply_apply, if_neg hj, mul_zero, map_zero, smul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Use `choose κ hκ using hb`. Establish `hcw : algebraMap O C c • w = P.bLie (e κ)`.
+
+Rewrite using `[hexp, ← hβ, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, hκ]`. Establish `hwE : w ∈ P.eigV τ` using `(Submodule.span_le (p := P.eigV τ)).2 (fun x hx => (P.wRec_le τ hx).2) hwS`. Establish `hE : AvDefs.IsEig P.Gt P.oGt τ (e κ)`.
+
+Introduce `a`. Apply `hinj` to reduce the goal to its premises. Establish `hz` using `mem_eigenSub.1 ((P.eigV τ).smul_mem (algebraMap O C c) hwE) a`. Rewrite using `[P.bLie_act, P.bLie_scale, ← hcw, hz, RingHom.comp_apply, algebraMap_smul]`. Rewrite using `[hcw]`.
+
+Conclude with `⟨⟨e κ, hE⟩, rfl⟩`.
+-/
 theorem smul_mem_wRec_of_mem_span : ∀ {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero C] {v : Valuation C ℝ≥0} {O : Type} [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), HTChar p v P.Gt → ∀ (τ : Λ →+* O) {w : P.V}, w ∈ P.latT → w ∈ Submodule.span C (P.wRec τ : Set P.V) → ∀ {c : O}, v (algebraMap O C c) ^ (p - 1) ≤ v (p : C) → algebraMap O C c • w ∈ P.wRec τ := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hHT τ w hwT hwS c hc
   haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)

@@ -14,6 +14,9 @@ variable (D : D7)
 instance totCx : IsTotallyComplex D.host.E :=
   (D.host.isCMField_hostE).to_isTotallyComplex
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use extensionality with `z`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, RingHom.comp_apply]`. Rewrite using `[show ((D.host.conj : D.host.E →+* D.host.E) z) = D.host.conj z from rfl, Formalism.MainNotions.WeightFamilies.emb_conj]`. Both sides reduce to the same expression.
+-/
 theorem conjugate_emb (g : D.R.GG) :
     ComplexEmbedding.conjugate (D.host.emb g) = D.host.emb (g * D.R.cc) := by
   rw [Formalism.L2.Geo.emb_mul_cc_comp]
@@ -22,6 +25,13 @@ theorem conjugate_emb (g : D.R.GG) :
   rw [show ((D.host.conj : D.host.E →+* D.host.E) z) = D.host.conj z from rfl, Formalism.MainNotions.WeightFamilies.emb_conj]
   rfl
 
+/- English proof (translation)
+Introduce `τ τ' h`. Simplify using `only at h`. Break down `mk_eq_iff.1 h with h1 | h1` into its components or cases. Establish `h2` using `(factEmb D.R D.host).1.1 h1`. Conclude with `D.eTau.injective (Subtype.ext h2)`.
+
+It suffices to derive a contradiction. Unfold `DV.tauEmb at h1`. Rewrite `h1` using `[conjugate_emb]`. Establish `h2` using `(factEmb D.R D.host).1.1 h1`. Establish `hm` using `(D.eTau τ).2`.
+
+Rewrite `hm` using `[Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem]`. Conclude with `hm (h2 ▸ (D.eTau τ').2)`.
+-/
 theorem mk_tauEmb_injective : Function.Injective fun τ : D.what₂.Tau => InfinitePlace.mk (DV.tauEmb D τ) := by
   intro τ τ' h
   simp only at h
@@ -36,6 +46,9 @@ theorem mk_tauEmb_injective : Function.Injective fun τ : D.what₂.Tau => Infin
     rw [Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem] at hm
     exact hm (h2 ▸ (D.eTau τ').2)
 
+/- English proof (translation)
+Establish `h1` using `DualLatticeEmbeddings.nPl_mul_two (K := D.host.E)`. Rewrite `h1` using `[D.host.finrank_cmField]`. Establish `h2 : D.R.f = 2 * D.R.ord` using `rfl`. Rewrite using `[D.what₂.card_Tau, h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_places : Fintype.card (InfinitePlace D.host.E) = Fintype.card D.what₂.Tau := by
   have h1 := DualLatticeEmbeddings.nPl_mul_two (K := D.host.E)
   rw [D.host.finrank_cmField] at h1
@@ -47,20 +60,32 @@ def ePl : D.what₂.Tau ≃ InfinitePlace D.host.E :=
   Equiv.ofBijective _ ((Fintype.bijective_iff_injective_and_card _).2
     ⟨mk_tauEmb_injective D, (card_places D).symm⟩)
 
+/- English proof (translation)
+The claim follows from `embedding_mk_eq _`.
+-/
 theorem ePl_embedding (τ : D.what₂.Tau) :
     (ePl D τ).embedding = DV.tauEmb D τ ∨ (ePl D τ).embedding = ComplexEmbedding.conjugate (DV.tauEmb D τ) :=
   embedding_mk_eq _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases ePl_embedding D τ with h | h <;> rw [h]`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]`.
+-/
 theorem re_ePl (τ : D.what₂.Tau) (z : D.host.E) :
     ((ePl D τ).embedding z).re = (DV.tauEmb D τ z).re := by
   rcases ePl_embedding D τ with h | h <;> rw [h]
   rw [ComplexEmbedding.conjugate_coe_eq, Complex.conj_re]
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.WeightFamilies.trF`. Rewrite using `[← (ePl D).sum_comp]`. Conclude with `Finset.sum_congr rfl fun τ _ => (re_ePl D τ z).symm`.
+-/
 theorem trF_eq (z : D.host.E) : Formalism.MainNotions.WeightFamilies.trF D z = ∑ v : InfinitePlace D.host.E, (v.embedding z).re := by
   unfold Formalism.MainNotions.WeightFamilies.trF
   rw [← (ePl D).sum_comp]
   exact Finset.sum_congr rfl fun τ _ => (re_ePl D τ z).symm
 
+/- English proof (translation)
+Establish `h2 : D.R.f = 2 * D.R.ord` using `rfl`. Rewrite using `[D.host.finrank_cmField, h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_E_eq : finrank ℚ D.host.E = 2 * D.R.f := by
   have h2 : D.R.f = 2 * D.R.ord := rfl
   rw [D.host.finrank_cmField, h2]
@@ -72,6 +97,11 @@ attribute [local instance] starE
 
 variable {D}
 
+/- English proof (translation)
+Establish `hc : v.IsComplex` using `IsTotallyComplex.isComplex v`. Rewrite `hc` using `[isComplex_iff]`. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Apply `hc` to reduce the goal to its premises.
+
+Use extensionality with `z`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.2 (h z)`.
+-/
 theorem exists_im_ne (v : InfinitePlace D.host.E) : ∃ z, (v.embedding z).im ≠ 0 := by
   have hc : v.IsComplex := IsTotallyComplex.isComplex v
   rw [isComplex_iff] at hc
@@ -82,6 +112,11 @@ theorem exists_im_ne (v : InfinitePlace D.host.E) : ∃ z, (v.embedding z).im �
   rw [ComplexEmbedding.conjugate_coe_eq]
   exact Complex.conj_eq_iff_im.2 (h z)
 
+/- English proof (translation)
+Establish `h : ∀ v : InfinitePlace D.host.E, ∃ X : Matrix (Fin n) (Fin n) ℂ, X * Xᴴ = χ.map v.embedding ∧ IsUnit X.det`. Introduce `v`. Take `⟨z, hz⟩` from `exists_im_ne v`. Take `⟨h1, h2⟩` from `TraceQuadraticBound.psd_map (fun z => D.host.conj z) v.embedding (Formalism.MainNotions.WeightFamilies.emb_conj D v.embedding) (TraceQuadraticBound.denseRange_emb v.embedding z hz) χ hH (fun l hl => hP l hl v.embedding)`. Conclude with `TraceQuadraticBound.frame_exists h1 h2`.
+
+Use `choose Xf h1 h2 using h`. Conclude with `⟨Xf, h1, h2⟩`.
+-/
 theorem frames {n : ℕ} (χ : Matrix (Fin n) (Fin n) D.host.E) (hH : Formalism.MainNotions.WeightFamilies.IsHerm D χ)
     (hP : Formalism.MainNotions.WeightFamilies.PosDefE D χ) :
     ∃ Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ,
@@ -97,6 +132,9 @@ theorem frames {n : ℕ} (χ : Matrix (Fin n) (Fin n) D.host.E) (hH : Formalism.
   choose Xf h1 h2 using h
   exact ⟨Xf, h1, h2⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply, mulVec, dotProduct, star_sum, map_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul']`.
+-/
 theorem star_mulVec_map {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     star (M *ᵥ w) = M.map star *ᵥ star w := by
   funext i
@@ -104,6 +142,17 @@ theorem star_mulVec_map {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (w : Fin n �
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [star_mul']
 
+/- English proof (translation)
+Use `set v := ePl D τ`. Establish `hX1 : ∀ y : Fin n → D.host.E, Xf v *ᵥ DualLatticeEmbeddings.fc Xf v y = fun i => v.embedding (y i)`. Introduce `y`. Rewrite using `[DualLatticeEmbeddings.fc, mulVec_mulVec, Matrix.mul_nonsing_inv _ (hXf v), one_mulVec]`. Break down `ePl_embedding D τ with h | h` into its components or cases.
+
+Use `⟨Xf v, by rw [hfr v, h], hXf v, fun y => ⟨DualLatticeEmbeddings.fc Xf v y, ?_, rfl⟩⟩` and prove the remaining obligations. Rewrite using `[hX1 y, h]`. Both sides reduce to the same expression. Establish `hτ : ∀ z, DV.tauEmb D τ z = star (v.embedding z)`. Introduce `z`.
+
+Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq]`. Simplify using the standard rewrite rules. Use `⟨(Xf v).map star, ?_, ?_, fun y => ⟨star (DualLatticeEmbeddings.fc Xf v y), ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i k`. Use `congrArg (fun M => star (M i k)) (hfr v)` as an intermediate fact.
+
+Simplify using `only [mul_apply, conjTranspose_apply, map_apply, star_sum, star_mul', star_star] at this ⊢`. Rewrite using `[hτ, ← this]`. Rewrite using `[show ((Xf v).map star).det = starRingEnd ℂ (Xf v).det from (RingHom.map_det (starRingEnd ℂ) (Xf v)).symm]`. Conclude with `(hXf v).map _`. Rewrite using `[← star_mulVec_map, hX1 y]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Formalism.MainNotions.WeightFamilies.embV, hτ]`. Simplify using `only [Pi.star_apply, norm_star]`.
+-/
 theorem tau_frame {n : ℕ} (χ : Matrix (Fin n) (Fin n) D.host.E)
     (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (hXf : ∀ v, IsUnit (Xf v).det) (τ : D.what₂.Tau) :
@@ -144,6 +193,15 @@ attribute [local instance] starE
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Use `choose Y hY _ hw using tau_frame χ Xf hfr hXf`. Use `set N : D.what₂.Tau → ℝ := fun τ => ∑ i, ‖DualLatticeEmbeddings.fc Xf (ePl D τ) y i‖ ^ 2 with hN`. Establish `hp : ∀ τ, 0 ≤ (Matrix.trace (b τ * χ.map (DV.tauEmb D τ))).re`. Introduce `τ`. Rewrite using `[← hY τ]`.
+
+Conclude with `TraceQuadraticBound.trace_nonneg (hb τ) (Y τ)`. Establish `hN0 : ∀ τ, 0 ≤ N τ` using `fun τ => Finset.sum_nonneg fun i _ => by positivity`. Establish `hq : ∀ τ, (star (Formalism.MainNotions.WeightFamilies.embV D τ y) ⬝ᵥ (b τ) *ᵥ (Formalism.MainNotions.WeightFamilies.embV D τ y)).re ≤ (Matrix.trace (b τ * χ.map (DV.tauEmb D τ))).re * N τ`. Introduce `τ`. Take `⟨w, hw1, hw2⟩` from `hw τ y`.
+
+Simplify using `only [hN]`. Rewrite using `[hw1, ← hw2, ← hY τ]`. Conclude with `TraceQuadraticBound.quad_le_trace (hb τ) (Y τ) w`. Establish `hnorm : ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun D.host.E (Fin n)) Xf y‖ ^ 2 = ∑ τ, N τ`. Rewrite using `[DualLatticeEmbeddings.norm_sq_realize, ← (ePl D).sum_comp]`.
+
+Rewrite using `[hnorm]`. Unfold `Formalism.MainNotions.WeightFamilies.Qv Formalism.MainNotions.WeightFamilies.pairB`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ _ => (hq τ).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (fun τ _ => hN0 τ) (Finset.mem_univ τ)) (hp τ)`.
+-/
 theorem Qv_le (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (hXf : ∀ v, IsUnit (Xf v).det)
     (b : Formalism.MainNotions.WeightFamilies.BForm D n) (hb : ∀ τ, (b τ).PosSemidef) (y : Fin n → D.host.E) :
@@ -169,6 +227,13 @@ theorem Qv_le (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.host.
   refine Finset.sum_le_sum fun τ _ => (hq τ).trans ?_
   exact mul_le_mul_of_nonneg_left (Finset.single_le_sum (fun τ _ => hN0 τ) (Finset.mem_univ τ)) (hp τ)
 
+/- English proof (translation)
+Use `choose Y hY hYu _ using tau_frame χ Xf hfr hXf`. Take `⟨τ0, hτ0⟩` from `Function.ne_iff.1 hb0`. Establish `hp : ∀ τ, 0 ≤ (Matrix.trace (b τ * χ.map (DV.tauEmb D τ))).re`. Introduce `τ`. Rewrite using `[← hY τ]`.
+
+Conclude with `TraceQuadraticBound.trace_nonneg (hb τ) (Y τ)`. Establish `hp0 : 0 < (Matrix.trace (b τ0 * χ.map (DV.tauEmb D τ0))).re`. Rewrite using `[← hY τ0]`. Conclude with `TraceQuadraticBound.trace_pos (hb τ0) hτ0 (Y τ0) (hYu τ0)`. Unfold `Formalism.MainNotions.WeightFamilies.pairB`.
+
+Conclude with `lt_of_lt_of_le hp0 (Finset.single_le_sum (fun τ _ => hp τ) (Finset.mem_univ τ0))`.
+-/
 theorem pairB_pos (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (hXf : ∀ v, IsUnit (Xf v).det)
     (b : Formalism.MainNotions.WeightFamilies.BForm D n) (hb : ∀ τ, (b τ).PosSemidef) (hb0 : b ≠ 0) :
@@ -182,6 +247,9 @@ theorem pairB_pos (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.h
   unfold Formalism.MainNotions.WeightFamilies.pairB
   exact lt_of_lt_of_le hp0 (Finset.single_le_sum (fun τ _ => hp τ) (Finset.mem_univ τ0))
 
+/- English proof (translation)
+Rewrite using `[DualLatticeEmbeddings.norm_sq_yv (fun z => D.host.conj z) (fun v z => Formalism.MainNotions.WeightFamilies.emb_conj D v.embedding z) χ Xf hfr, trF_eq]`. Both sides reduce to the same expression.
+-/
 theorem norm_sq_yv_D (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (ξ : Fin n → D.host.E) :
     ‖DualLatticeEmbeddings.yv Xf ξ‖ ^ 2 = 4 * Formalism.MainNotions.WeightFamilies.trF D (Formalism.MainNotions.WeightFamilies.hform D χ ξ ξ) := by
@@ -189,6 +257,9 @@ theorem norm_sq_yv_D (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace 
     trF_eq]
   rfl
 
+/- English proof (translation)
+Unfold `DualLatticeEmbeddings.yv DualLatticeEmbeddings.mkE`. Use extensionality with `p`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem yv_zero (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ) : DualLatticeEmbeddings.yv Xf 0 = 0 := by
   unfold DualLatticeEmbeddings.yv DualLatticeEmbeddings.mkE
   ext p
@@ -207,6 +278,11 @@ attribute [local instance] starE
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Take `⟨ξ, rfl, hξ⟩` from `DualLatticeEmbeddings.zdual_eq_yv Xf hXf Xc hX y hy`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy0 (yv_zero Xf)`. Rewrite using `[norm_sq_yv_D χ Xf hfr]`.
+
+Use `hnk ξ (fun x hx => hξ x hx) hξ0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dual_norm (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (hXf : ∀ v, IsUnit (Xf v).det)
     (Xc : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
@@ -221,6 +297,11 @@ theorem dual_norm (χ : Matrix (Fin n) (Fin n) D.host.E) (Xf : InfinitePlace D.h
   have := hnk ξ (fun x hx => hξ x hx) hξ0
   linarith
 
+/- English proof (translation)
+Establish `hne : Nonempty D.what₂.Tau`. Establish `h2 : D.R.f = 2 * D.R.ord` using `rfl`. Establish `h3` using `D.R.ord_pos`. Rewrite using `[← Fintype.card_pos_iff, D.what₂.card_Tau, h2]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨τ0⟩` from `hne`. Unfold `Formalism.MainNotions.WeightFamilies.trF`. Conclude with `Finset.sum_pos (fun τ _ => hP ξ hξ _) ⟨τ0, Finset.mem_univ _⟩`.
+-/
 theorem trF_pos (χ : Matrix (Fin n) (Fin n) D.host.E) (hP : Formalism.MainNotions.WeightFamilies.PosDefE D χ)
     (ξ : Fin n → D.host.E) (hξ : ξ ≠ 0) : 0 < Formalism.MainNotions.WeightFamilies.trF D (Formalism.MainNotions.WeightFamilies.hform D χ ξ ξ) := by
   have hne : Nonempty D.what₂.Tau := by
@@ -232,6 +313,23 @@ theorem trF_pos (χ : Matrix (Fin n) (Fin n) D.host.E) (hP : Formalism.MainNotio
   unfold Formalism.MainNotions.WeightFamilies.trF
   exact Finset.sum_pos (fun τ _ => hP ξ hξ _) ⟨τ0, Finset.mem_univ _⟩
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hU`. Take `⟨f, hf0, hfU⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.2 hU) inferInstance`. Use `set ξ : Fin n → D.host.E := fun i => f (Pi.single i 1) with hξdef`. Establish `hf : ∀ u, f u = ∑ i, ξ i * u i`. Introduce `u`.
+
+Use `conv_lhs => rw [← Finset.univ_sum_single u]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show Pi.single i (u i) = u i • (Pi.single i (1 : D.host.E) : Fin n → D.host.E) by`. Rewrite using `[← Pi.single_smul']`.
+
+Use the proof step `simp, map_smul, smul_eq_mul, mul_comm]`. Establish `hξ0 : ξ ≠ 0`. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf u, h0]`. Simplify using the standard rewrite rules. Establish `horth : ∀ j, inner ℝ (Formalism.HermitianLatticesTheory.realize (Pi.basisFun D.host.E (Fin n)) Xf (x j)) (DualLatticeEmbeddings.yv Xf ξ) = 0`. Introduce `j`. Rewrite using `[DualLatticeEmbeddings.inner_yv Xf hXf, ← hf]`.
+
+Establish `: f (x j) = 0`. Establish `hmem : f (x j) ∈ (Submodule.span D.host.E (Set.range x)).map f` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `hmem` using `[hfU]`. Conclude with `(Submodule.mem_bot _).1 hmem`. Rewrite using `[this, map_zero]`.
+
+Simplify using the standard rewrite rules. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, hm])`. Establish `hz : ∀ z ∈ Submodule.span ℝ (Set.range fun j => Formalism.HermitianLatticesTheory.realize (Pi.basisFun D.host.E (Fin n)) Xf (x j)), inner ℝ z (DualLatticeEmbeddings.yv Xf ξ) = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+
+Consider the case `mem z hz => obtain ⟨j, rfl⟩ := hz`. Conclude with `horth j`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]`. Consider the case `smul r a _ ha => rw [real_inner_smul_left, ha, mul_zero]`.
+
+Establish `h0` using `hz (DualLatticeEmbeddings.yv Xf ξ) (by rw [hspan]; trivial)`. Rewrite `h0` using `[real_inner_self_eq_norm_sq, norm_sq_yv_D χ Xf hfr]`. Use `trF_pos χ hP ξ hξ0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem span_E_top (χ : Matrix (Fin n) (Fin n) D.host.E) (hP : Formalism.MainNotions.WeightFamilies.PosDefE D χ)
     (Xf : InfinitePlace D.host.E → Matrix (Fin n) (Fin n) ℂ)
     (hfr : ∀ v, Xf v * (Xf v)ᴴ = χ.map v.embedding) (hXf : ∀ v, IsUnit (Xf v).det)

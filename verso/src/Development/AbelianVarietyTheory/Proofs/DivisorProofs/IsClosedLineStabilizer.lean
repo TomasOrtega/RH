@@ -11,6 +11,9 @@ open GlobalTheory.IwasawaKAvgInt
 
 namespace GlobalTheory.IwasawaKAvgInt
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n X x hx`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hx`. Conclude with `(GlobalTheory.ConeSmallMeas.isClosed_lineStab (σ := σ) (J := X.J) x hi).preimage continuous_subtype_val`.
+-/
 theorem isClosed_lineStab_arch : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (X : Spc F E n) (x : Fin n → E), x ≠ 0 →
     IsClosed (lineStab σ X x : Set (UAtSub σ X (evI F))) := by

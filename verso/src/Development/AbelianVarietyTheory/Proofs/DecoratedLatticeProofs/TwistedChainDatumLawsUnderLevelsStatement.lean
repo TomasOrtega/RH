@@ -18,5 +18,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (SplitPro
 open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric datum)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainTw.TwLaw.levelLawQ | exact GlobalTheory.ChainTw.TwLaw.levelLawQ | (intros; apply GlobalTheory.ChainTw.TwLaw.levelLawQ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedChain_datum_laws_under_levels : ∀ D : D7, LevelLawQ D := by
   first | exact @GlobalTheory.ChainTw.TwLaw.levelLawQ | exact GlobalTheory.ChainTw.TwLaw.levelLawQ | (intros; apply GlobalTheory.ChainTw.TwLaw.levelLawQ <;> assumption)

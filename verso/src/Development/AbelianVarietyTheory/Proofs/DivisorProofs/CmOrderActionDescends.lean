@@ -17,6 +17,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatModel
 
+/- English proof (translation)
+Introduce `E _ _ I _ 𝔠 φ L R X₀ X U p c cm hcm cd hcd1 hcd2 t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, fun v j ↦ by simp⟩`. Consider the case `add s t hs ht`. Take `⟨S, hS⟩` from `hs`.
+
+Take `⟨T, hT⟩` from `ht`. Conclude with `⟨S + T, fun v j ↦ by`. Rewrite using `[LinearMap.add_apply, map_add, Pi.add_apply, hS, hT, map_add, add_mul]⟩`. Consider the case `tmul a x`. Use `cm.hom a` as an intermediate fact.
+
+Take `⟨α, hα, hp, hex⟩` from `hcm a`. Use `⟨x • GlobalTheory.Serre.Lie.map X₀.rm X₀.rm (cm.act a), fun v j ↦ ?_⟩` and prove the remaining obligations. Take `⟨v', hc, hd⟩` from `hcd1 v`. Set `F : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] (Fin (Module.finrank ℚ (FR E)) → ℂ)` to `LinearMap.pi fun j ↦ φ (U.e j) (a : E) • LinearMap.proj j`. Establish `hd'` using `GlobalTheory.HomLinear.isDiff_comp U.u U.u α F (fun w ↦ hex w) v'.isTangent hd`.
+
+Establish `hc' : Obj.LieCorr R.subtype p (GlobalTheory.Serre.Lie.map X₀.rm X₀.rm (cm.act a) v) (GlobalTheory.Serre.Lie.map X.rm X.rm α v')`. Unfold `Obj.LieCorr at hc ⊢`. Rewrite using `[GlobalTheory.Serre.Lie.hom_map, GlobalTheory.Serre.Lie.hom_map, Over.comp_left, Over.comp_left, Category.assoc, hp, ← Category.assoc, hc, Category.assoc]`. Establish `h` using `congrFun (hcd2 _ _ _ hc' hd') j`. Rewrite using `[LinearMap.smul_apply, map_smul, Pi.smul_apply, ← h, Algebra.TensorProduct.productMap_apply_tmul]`.
+
+Express the relevant statement in the definitionally equal form `(x : ℂ) * (φ (U.e j) (a : E) * cd v j) = φ (U.e j) (a : E) * (x : ℂ) * cd v j`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_lie_end_diagonal_of_tensor : ∀ {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I] {𝔠 : FracId (FR E)} {φ : I → E →+* ℂ} {L : Set E}
     (R : Subring ℂ) (X₀ : Obj (FR E) 𝔠 (Sp R)) (X : Obj (FR E) 𝔠 (Sp ℂ)) (U : Unif φ L 0 X) (p : X.A.left ⟶ X₀.A.left)
     (c : Ideal (OF E)) (cm : OAct (orderC c) X₀.A),

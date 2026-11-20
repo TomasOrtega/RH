@@ -10,6 +10,11 @@ open Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainN
 
 namespace GlobalTheory.RotJets
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ (fun e _ => ?_)` and prove the remaining obligations. Establish `h1 : (∏ i, (Matrix.of fun i i' => (MvPolynomial.X (f i i') : MvPolynomial σ ℂ)) (e i) i).IsHomogeneous (∑ _i : Fin a, 1)` using `MvPolynomial.IsHomogeneous.prod _ _ _ (fun i _ => MvPolynomial.isHomogeneous_X ℂ _)`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at h1`. Establish `h0 : (((Equiv.Perm.sign e : ℤ) : MvPolynomial σ ℂ)).IsHomogeneous 0`.
+
+Establish `: (((Equiv.Perm.sign e : ℤ) : MvPolynomial σ ℂ)) = MvPolynomial.C ((Equiv.Perm.sign e : ℤ) : ℂ)` using `by simp`. Rewrite using `[this]`. Conclude with `MvPolynomial.isHomogeneous_C _ _`. Simplify using `using h0.mul h1`.
+-/
 theorem det_X_isHomogeneous {σ : Type*} {a : ℕ} (f : Fin a → Fin a → σ) :
     (Matrix.of fun i i' => (MvPolynomial.X (f i i') : MvPolynomial σ ℂ)).det.IsHomogeneous a := by
   rw [Matrix.det_apply']
@@ -23,6 +28,9 @@ theorem det_X_isHomogeneous {σ : Type*} {a : ℕ} (f : Fin a → Fin a → σ) 
     rw [this]; exact MvPolynomial.isHomogeneous_C _ _
   simpa using h0.mul h1
 
+/- English proof (translation)
+Unfold `GlobalTheory.NormSum.minorPol`. Establish `h` using `MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset D.what₂.Tau) (fun τ => ∏ j, (Matrix.of fun i i' => (MvPolynomial.X (τ, ((T τ j) : Fin a → Fin d) i, i') : MvPolynomial (GL3Theta.Idx D a d) ℂ)).det) (fun τ => ∑ _j : Fin (n τ), a) (fun τ _ => MvPolynomial.IsHomogeneous.prod _ …`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[Finset.mul_sum, mul_comm]`.
+-/
 theorem minorPol_isHomogeneous {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : GlobalTheory.NormSum.Tup D a d n) :
     (GlobalTheory.NormSum.minorPol D T).IsHomogeneous (a * ∑ τ, n τ) := by
   unfold GlobalTheory.NormSum.minorPol
@@ -33,6 +41,9 @@ theorem minorPol_isHomogeneous {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} 
   convert h using 1
   simp [Finset.mul_sum, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `minorPol_isHomogeneous T (MvPolynomial.mem_support_iff.mp hα)`. Rewrite using `[Finsupp.card_toMultiset]`. Rewrite using `[← h]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+-/
 theorem card_of_mem_support {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : GlobalTheory.NormSum.Tup D a d n)
     {α : TaylorLogMetric.Mono D a d} (hα : α ∈ (GlobalTheory.NormSum.minorPol D T).support) :
     Multiset.card (Finsupp.toMultiset α) = a * ∑ τ, n τ := by

@@ -6,6 +6,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.MatMulDet
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.DeterminantRealSandwich.det_real_family`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.DeterminantRealSandwich.det_real_family`.
+
+Consider the case `exact @_root_.GlobalTheory.DeterminantRealSandwich.det_real_family`. Consider the case `exact _root_.GlobalTheory.DeterminantRealSandwich.det_real_family`. Consider the case `(apply _root_.GlobalTheory.DeterminantRealSandwich.det_real_family <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DeterminantRealSandwich.det_real_family <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.DeterminantRealSandwich.det_real_family <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.DeterminantRealSandwich.det_real_family ..)`.
+-/
 theorem det_real_mul_mul (ι : Type) [Fintype ι] (j : ℕ) (A B : ι → Matrix (Fin j) (Fin j) ℂ)
     (L : (ι → Fin j → Fin j → ℂ) →ₗ[ℝ] (ι → Fin j → Fin j → ℂ))
     (hL : ∀ h w, Matrix.of (L h w) = A w * Matrix.of (h w) * B w) :

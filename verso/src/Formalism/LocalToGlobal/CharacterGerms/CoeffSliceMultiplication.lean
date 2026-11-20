@@ -28,6 +28,9 @@ variable {C : Type} [Field C] [CharZero C] {dd : ℕ}
 
 def z1 (ζ : Fin dd →₀ ℕ) : Fin 1 × Fin dd →₀ ℕ := ζ.mapDomain fun j => ((0 : Fin 1), j)
 
+/- English proof (translation)
+Introduce `k i`. Simplify using `[pt]`.
+-/
 theorem z2 : Z0 (![pt C dd 2] : Fin 1 → Pt C 3 dd) := by
   intro k i
   simp [pt]

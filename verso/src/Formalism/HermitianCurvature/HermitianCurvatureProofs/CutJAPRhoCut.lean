@@ -55,6 +55,9 @@ def Lagrange : Prop :=
 
 def Assembly : Prop := FrameLoc → CapSmooth → EigOrth → Lagrange → PRho.PRhoExists
 
+/- English proof (translation)
+The claim follows from `hA hF hC hO hL`.
+-/
 theorem pRhoExists_of_cut (hA : Assembly) (hF : FrameLoc) (hC : CapSmooth) (hO : EigOrth) (hL : Lagrange) :
     PRho.PRhoExists :=
   hA hF hC hO hL

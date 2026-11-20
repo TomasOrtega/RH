@@ -36,6 +36,9 @@ def isoOfBijective {p : ℕ} {O : Type} [CommRing O] {G H : PDivGroup p O} (f : 
   inv_hom_id := hom_ext fun n => BialgHom.ext fun a =>
     (BialgEquiv.ofBijective (f.app n) (hf n)).symm_apply_apply a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem isoOfBijective_hom {p : ℕ} {O : Type} [CommRing O] {G H : PDivGroup p O} (f : G ⟶ H)
     (hf : ∀ n, Function.Bijective (f.app n)) : (isoOfBijective f hf).hom = f := rfl
 
@@ -43,6 +46,13 @@ end GlobalTheory.PDivGroup
 
 namespace GlobalTheory.GroupBplus.Closed
 
+/- English proof (translation)
+Establish `hc` using `TateFree.natCard_pts k k (A ⊗[k] A)`. Establish `hB : Module.finrank k (k ⊗[k] (A ⊗[k] A)) = Module.finrank k (A ⊗[k] A)` using `(Algebra.TensorProduct.lid k (A ⊗[k] A)).toLinearEquiv.finrank_eq`. Use `haveI : Nontrivial (A ⊗[k] A) := (Bialgebra.counitAlgHom k (A ⊗[k] A)).toRingHom.domain_nontrivial`. Use `haveI : Finite (A ⊗[k] A →ₐ[k] k) := Nat.finite_of_card_ne_zero (by rw [hc, hB]; exact Module.finrank_pos.ne')`. Use `letI := Fintype.ofFinite (A ⊗[k] A →ₐ[k] k)`.
+
+Set `E : A ⊗[k] A →ₗ[k] ((A ⊗[k] A →ₐ[k] k) → k)` to `{ toFun := fun b ψ => ψ b map_add' := fun a b => funext fun ψ => map_add ψ a b map_smul' := fun c b => funext fun ψ => by simp }`. Establish `hinj : Function.Injective E` using `fun a b h => TateFree.eq_of_forall_pts k k (A ⊗[k] A) fun ψ => congrFun h ψ`. Establish `hsurj : Function.Surjective E` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by`. Rewrite using `[Module.finrank_fintype_fun_eq_card, ← Nat.card_eq_fintype_card, hc, hB])).1 hinj`. Take `⟨u, hu⟩` from `hsurj fun ψ => F (ψ.comp Algebra.TensorProduct.includeLeft) (ψ.comp Algebra.TensorProduct.includeRight)`.
+
+Use `⟨u, fun y x => ?_⟩` and prove the remaining obligations. Establish `h` using `congrFun hu (WeilPhi.ev y x)`. Simplify using `only [E, LinearMap.coe_mk, AddHom.coe_mk, WeilPhi.ev_comp_left, WeilPhi.ev_comp_right] at h`. Conclude with `h`.
+-/
 theorem exists_tensor_of_pts {k : Type} [Field k] [IsAlgClosed k] [CharZero k] {A : Type} [CommRing A]
     [HopfAlgebra k A] [Module.Finite k A] (F : (A →ₐ[k] k) → (A →ₐ[k] k) → k) :
     ∃ u : A ⊗[k] A, ∀ y x, WeilPhi.ev y x u = F y x := by
@@ -76,6 +86,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {k : Ty
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Establish `h` using `I.add m 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_smul, pow_zero]`.
+
+Conclude with `mul_eq_right.1 h.symm`. Consider the case `succ j ih => rw [succ_nsmul, I.add, ih, pow_succ]`.
+-/
 theorem ev_nsmul (m j : ℕ) (a : Dw.La) : I.ev m (j • a) = I.ev m a ^ j := by
   induction j with
   | zero =>
@@ -85,6 +100,9 @@ theorem ev_nsmul (m j : ℕ) (a : Dw.La) : I.ev m (j • a) = I.ev m a ^ j := by
     exact mul_eq_right.1 h.symm
   | succ j ih => rw [succ_nsmul, I.add, ih, pow_succ]
 
+/- English proof (translation)
+Establish `hp` using `pow_pos (Fact.out : p.Prime).pos n`. Establish `hz : (spOver y ≫ tw.y n) ^ p ^ n = 1` using `(tw.exists_iff n _).1 ⟨y, rfl⟩`. Take `⟨a, ha⟩` from `(I.onto (p ^ n) hp (selfIso.inv ≫ spOver y ≫ tw.y n)).1 (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])`. Conclude with `⟨a, tw.inj n k _ _ (by rw [latPt_y, ha, Iso.hom_inv_id_assoc])⟩`.
+-/
 theorem latPt_surj (n : ℕ) (y : GG.A n →ₐ[k] k) : ∃ a, latPt tw I n a = y := by
   have hp := pow_pos (Fact.out : p.Prime).pos n
   have hz : (spOver y ≫ tw.y n) ^ p ^ n = 1 := (tw.exists_iff n _).1 ⟨y, rfl⟩
@@ -92,12 +110,22 @@ theorem latPt_surj (n : ℕ) (y : GG.A n →ₐ[k] k) : ∃ a, latPt tw I n a = 
     (by rw [← MonObj.comp_pow, hz, MonObj.comp_one])
   exact ⟨a, tw.inj n k _ _ (by rw [latPt_y, ha, Iso.hom_inv_id_assoc])⟩
 
+/- English proof (translation)
+Establish `hp` using `pow_pos (Fact.out : p.Prime).pos n`. Use `TorsionTower.pts_injective tw n k ?_` and prove the remaining obligations. Rewrite using `[map_one, TorsionTower.pts_apply, WithConv.ofConv_toConv, latPt_y, (I.ker (p ^ n) hp _).2 ⟨d, rfl⟩, MonObj.comp_one]`.
+-/
 theorem latPt_pow_smul (n : ℕ) (d : Dw.La) : toConv (latPt tw I n (p ^ n • d)) = 1 := by
   have hp := pow_pos (Fact.out : p.Prime).pos n
   refine TorsionTower.pts_injective tw n k ?_
   rw [map_one, TorsionTower.pts_apply, WithConv.ofConv_toConv, latPt_y,
     (I.ker (p ^ n) hp _).2 ⟨d, rfl⟩, MonObj.comp_one]
 
+/- English proof (translation)
+Establish `hp` using `pow_pos (Fact.out : p.Prime).pos n`. Establish `h1 : toConv (latPt tw I n (a - a')) = 1`. Use `latPt_add tw I n (a - a') a'` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h]`. Conclude with `mul_eq_right.1 this.symm`.
+
+Establish `h2 : I.ev (p ^ n) (a - a') = 1`. Establish `h3` using `congrArg (TorsionTower.pts tw n k) h1`. Rewrite `h3` using `[map_one, TorsionTower.pts_apply, WithConv.ofConv_toConv, latPt_y]`. Establish `h4` using `congrArg (selfIso.inv ≫ ·) h3`. Simplify `h4` using `only [Iso.inv_hom_id_assoc, MonObj.comp_one]`.
+
+Take `⟨c, hc⟩` from `(I.ker (p ^ n) hp _).1 h2`. Conclude with `⟨c, by rw [← hc]; abel⟩`.
+-/
 theorem exists_of_latPt_eq (n : ℕ) {a a' : Dw.La} (h : latPt tw I n a = latPt tw I n a') :
     ∃ c, a = a' + p ^ n • c := by
   have hp := pow_pos (Fact.out : p.Prime).pos n
@@ -113,6 +141,9 @@ theorem exists_of_latPt_eq (n : ℕ) {a a' : Dw.La} (h : latPt tw I n a = latPt 
   obtain ⟨c, hc⟩ := (I.ker (p ^ n) hp _).1 h2
   exact ⟨c, by rw [← hc]; abel⟩
 
+/- English proof (translation)
+Use `tw.inj (n + 1) k _ _ ?_` and prove the remaining obligations. Rewrite using `[← spOver_comp, Category.assoc, tw.res, latPt_y, latPt_y, ev_nsmul, pow_succ, I.tower (p ^ n) p (pow_pos (Fact.out : p.Prime).pos n) (Fact.out : p.Prime).pos]`.
+-/
 theorem latPt_res (n : ℕ) (b : Dw.La) :
     (latPt tw I n b).comp (GG.res n : GG.A (n + 1) →ₐ[k] GG.A n) = latPt tw I (n + 1) (p • b) := by
   refine tw.inj (n + 1) k _ _ ?_
@@ -121,11 +152,25 @@ theorem latPt_res (n : ℕ) (b : Dw.La) :
 
 omit [Fact p.Prime] in
 
+/- English proof (translation)
+Rewrite using `[zpow_add, nsmul_eq_mul, zpow_mul, zpow_natCast, (I.ζ_prim (p ^ n) (pow_pos hp n)).pow_eq_one, one_zpow, _root_.mul_one]`.
+-/
 theorem zeta_zpow_add (hp : 0 < p) (n : ℕ) (x y : ℤ) :
     I.ζ (p ^ n) ^ (x + p ^ n • y) = I.ζ (p ^ n) ^ x := by
   rw [zpow_add, nsmul_eq_mul, zpow_mul, zpow_natCast, (I.ζ_prim (p ^ n) (pow_pos hp n)).pow_eq_one,
     one_zpow, _root_.mul_one]
 
+/- English proof (translation)
+Establish `hp` using `pow_pos (Fact.out : p.Prime).pos n`. Establish `hdvd : ∀ a, ((p ^ n : ℕ) : ℤ) ∣ Dw.EF (b - b') a` using `fun a => by`. Establish `h1` using `h a`. Establish `e : Dw.EF a b = Dw.EF a b' + Dw.EF a (b - b')` using `by rw [map_sub]; abel`. Rewrite `h1` using `[e, zpow_add, mul_eq_left]`.
+
+Establish `h2` using `((I.ζ_prim (p ^ n) hp).zpow_eq_one_iff_dvd _).1 h1`. Establish `skew : Dw.EF (b - b') a = - Dw.EF a (b - b')`. Use `Dw.alt (a + (b - b'))` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply, Dw.alt] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[skew]`. Conclude with `dvd_neg.2 h2`. Set `lf : Dw.La →ₗ[ℤ] ℤ` to `{ toFun := fun a => Dw.EF (b - b') a / ((p ^ n : ℕ) : ℤ) map_add' := fun x y => by rw [map_add, Int.add_ediv_of_dvd_left (hdvd x)] map_smul' := fun m x => by`. Rewrite using `[map_zsmul, RingHom.id_apply, smul_eq_mul, smul_eq_mul]`. Conclude with `Int.mul_ediv_assoc m (hdvd x) }`.
+
+Take `⟨d, hd⟩` from `Dw.unimod.2 lf`. Establish `hcd : b - b' = p ^ n • d` using `Dw.unimod.1 (LinearMap.ext fun a => by`. Rewrite using `[map_nsmul, LinearMap.smul_apply, hd]`. Express the relevant statement in the definitionally equal form `Dw.EF (b - b') a = p ^ n • (Dw.EF (b - b') a / ((p ^ n : ℕ) : ℤ))`. Rewrite using `[nsmul_eq_mul]`.
+
+Conclude with `(Int.mul_ediv_cancel' (hdvd a)).symm)`. Establish `hb : b = b' + p ^ n • d` using `by rw [← hcd]; abel`. Use `latPt_add tw I n b' (p ^ n • d)` as an intermediate fact. Rewrite `this` using `[latPt_pow_smul, _root_.mul_one, ← hb]`. Conclude with `congrArg ofConv this`.
+-/
 theorem latPt_eq_of_forall (n : ℕ) {b b' : Dw.La}
     (h : ∀ a, I.ζ (p ^ n) ^ Dw.EF a b = I.ζ (p ^ n) ^ Dw.EF a b') : latPt tw I n b = latPt tw I n b' := by
   have hp := pow_pos (Fact.out : p.Prime).pos n
@@ -161,6 +206,37 @@ end GlobalTheory.GroupBplus.Closed
 
 namespace GlobalTheory.GroupBplus.Closed
 
+/- English proof (translation)
+Establish `hpp : 0 < p` using `(Fact.out : p.Prime).pos`. Establish `vl : ∀ n a a' c b, a = a' + p ^ n • c → I.ζ (p ^ n) ^ Dw.EF a b = I.ζ (p ^ n) ^ Dw.EF a' b` using `fun n a a' c b h => by`. Rewrite using `[h, map_add, map_nsmul, LinearMap.add_apply, LinearMap.smul_apply, zeta_zpow_add I hpp]`. Establish `vr : ∀ n a b b' c, b = b' + p ^ n • c → I.ζ (p ^ n) ^ Dw.EF a b = I.ζ (p ^ n) ^ Dw.EF a b'` using `fun n a b b' c h => by`. Rewrite using `[h, map_add, map_nsmul, zeta_zpow_add I hpp]`.
+
+Use `choose rep hrep using latPt_surj tw I`. Establish `hval : ∀ n a b, I.ζ (p ^ n) ^ Dw.EF (rep n (latPt tw I n a)) (rep n (latPt tw I n b)) = I.ζ (p ^ n) ^ Dw.EF a b` using `fun n a b => by`. Take `⟨c, hc⟩` from `exists_of_latPt_eq tw I n (hrep n (latPt tw I n a))`. Take `⟨c', hc'⟩` from `exists_of_latPt_eq tw I n (hrep n (latPt tw I n b))`. Rewrite using `[vl n _ _ c _ hc, vr n _ _ _ c' hc']`.
+
+Use `choose u hu using fun n => exists_tensor_of_pts (A := GG.A n) (fun y x => ((I.ζ (p ^ n) ^ Dw.EF (rep n y) (rep n x) : kˣ) : k))`. Establish `hf : ∀ n a b, WeilPhi.ev (latPt tw I n a) (latPt tw I n b) (u n) = ((I.ζ (p ^ n) ^ Dw.EF a b : kˣ) : k)` using `fun n a b => by rw [hu, hval]`. Establish `h1 : ∀ n, (1 : WithConv (GG.A n →ₐ[k] k)).ofConv = latPt tw I n 0` using `fun n => by`. Use `latPt_pow_smul tw I n 0` as an intermediate fact. Rewrite `this` using `[smul_zero]`.
+
+Rewrite using `[← this]`. Establish `hmul : ∀ n (y y' : WithConv (GG.A n →ₐ[k] k)) a a', latPt tw I n a = y.ofConv → latPt tw I n a' = y'.ofConv → (y * y').ofConv = latPt tw I n (a + a')` using `fun n y y' a a' ha ha' => by`. Establish `e : toConv (latPt tw I n (a + a')) = y * y'` using `by rw [latPt_add, ha, ha']`. Rewrite using `[← e]`. Establish `hB : ∀ n, WeilPhi.IsBimul (u n)` using `fun n => { one_left := fun x => by`.
+
+Take `⟨b, rfl⟩` from `latPt_surj tw I n x`. Rewrite using `[h1, hf]`. Simplify using the standard rewrite rules. Use `one_right := fun x => by`. Take `⟨b, rfl⟩` from `latPt_surj tw I n x`.
+
+Rewrite using `[h1, hf]`. Simplify using the standard rewrite rules. Use `mul_left := fun y y' x => by`. Take `⟨a, ha⟩` from `latPt_surj tw I n y.ofConv`. Take `⟨a', ha'⟩` from `latPt_surj tw I n y'.ofConv`.
+
+Take `⟨b, rfl⟩` from `latPt_surj tw I n x`. Rewrite using `[hmul n y y' a a' ha ha', ← ha, ← ha', hf, hf, hf, map_add, LinearMap.add_apply, zpow_add, Units.val_mul]`. Use `mul_right := fun y y' x => by`. Take `⟨a, ha⟩` from `latPt_surj tw I n y.ofConv`. Take `⟨a', ha'⟩` from `latPt_surj tw I n y'.ofConv`.
+
+Take `⟨b, rfl⟩` from `latPt_surj tw I n x`. Rewrite using `[hmul n y y' a a' ha ha', ← ha, ← ha', hf, hf, hf, map_add, zpow_add, Units.val_mul] }`. Establish `hl : ∀ (n : ℕ) (y : GG.A (n + 1) →ₐ[k] k) (x : GG.A n →ₐ[k] k), WeilPhi.ev y (x.comp (GG.res n : GG.A (n + 1) →ₐ[k] GG.A n)) (u (n + 1)) = WeilPhi.ev (y.comp (GG.mulP n : GG.A n →ₐ[k] GG.A (n + 1))) x (u n)` using `fun n y x => by`. Take `⟨a, rfl⟩` from `latPt_surj tw I (n + 1) y`. Take `⟨b, rfl⟩` from `latPt_surj tw I n x`.
+
+Rewrite using `[latPt_res, latPt_compat, hf, hf, map_nsmul, nsmul_eq_mul, zpow_mul, zpow_natCast, pow_succ, I.ζ_pow (p ^ n) p (pow_pos hpp n) hpp]`. Take `⟨φ, hφ⟩` from `WeilPhi.exists_hom_dual k GG u hB hl`. Establish `hbij : ∀ n, Function.Bijective (φ.app n)` using `fun n => by`. Set `P : (GG.A n →ₐ[k] k) → (GG.dual.A n →ₐ[k] k)` to `fun x => x.comp (φ.app n : GG.dual.A n →ₐ[k] GG.A n)`. Establish `hPi : Function.Injective P` using `fun x x' hxx => by`.
+
+Take `⟨s', rfl⟩` from `GG.pt_surjective k n x`. Take `⟨s'', rfl⟩` from `GG.pt_surjective k n x'`. Simplify using `only at hxx ⊢`. Take `⟨b, hb⟩` from `latPt_surj tw I n (s'.pt n)`. Take `⟨b', hb'⟩` from `latPt_surj tw I n (s''.pt n)`.
+
+Establish `e : (tateMap GG GG.dual k φ s').pt n = (tateMap GG GG.dual k φ s'').pt n` using `AlgHom.ext fun a => DFunLike.congr_fun hxx a`. Establish `e2 : charElem (tateMap GG GG.dual k φ s') n = charElem (tateMap GG GG.dual k φ s'') n`. Simplify using `only [charElem, TateOver.conv, e]`. Rewrite using `[← hb, ← hb']`. Use `latPt_eq_of_forall tw I n fun a => Units.ext ?_` and prove the remaining obligations.
+
+Establish `h2` using `hφ (tau tw I a) s' n`. Establish `h3` using `hφ (tau tw I a) s'' n`. Rewrite `h2`, `h3` using `[muRoot_pairing]`. Rewrite `h2` using `[e2, h3, tau_pt, ← hb, ← hb', hf, hf]`. Conclude with `h2.symm`.
+
+Establish `hcard : Nat.card (GG.A n →ₐ[k] k) = Nat.card (GG.dual.A n →ₐ[k] k)`. Rewrite using `[GG.natCard_pts_eq k n, GG.dual.natCard_pts_eq k n]`. Use `haveI : Finite (GG.dual.A n →ₐ[k] k) := Nat.finite_of_card_ne_zero (by rw [GG.dual.natCard_pts_eq k n]; positivity)`. Establish `hPs : Function.Surjective P` using `(hPi.bijective_of_nat_card_le hcard.ge).2`. Establish `hinj : Function.Injective (φ.app n)` using `fun b b' hbb => TateFree.eq_of_forall_pts k k (GG.dual.A n) fun z => by`.
+
+Take `⟨x, rfl⟩` from `hPs z`. Conclude with `congrArg x hbb`. Establish `hfr : Module.finrank k (GG.dual.A n) = Module.finrank k (GG.A n)`. Establish `e1` using `TateFree.natCard_pts k k (GG.dual.A n)`. Establish `e2` using `TateFree.natCard_pts k k (GG.A n)`.
+
+Rewrite `e1`, `e2` using `[(Algebra.TensorProduct.lid k _).toLinearEquiv.finrank_eq]`. Rewrite using `[← e1, ← e2, hcard]`. Conclude with `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr (f := (φ.app n).toLinearMap)).1 hinj⟩`. Use `⟨isoOfBijective φ hbij, fun x y n => ?_⟩` and prove the remaining obligations. Rewrite using `[isoOfBijective_hom, hφ, tau_pt, tau_pt, hf]`.
+-/
 theorem exists_pol_pairing {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {k : Type}
     [Field k] [IsAlgClosed k] [CharZero k] {t : SAB H (Sp k)} {p : ℕ} [Fact p.Prime] {GG : PDivGroup p k}
     (tw : GG.TorsionTower t.G) (I : GeomTate Dw t) : ∃ pol : GG ≅ GG.dual,

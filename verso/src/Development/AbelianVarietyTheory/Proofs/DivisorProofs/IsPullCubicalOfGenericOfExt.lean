@@ -22,6 +22,37 @@ section Group
 
 variable {T K : Type} [CommRing T] [IsDomain T] [Field K] [Algebra T K] [IsFractionRing T K]
 
+/- English proof (translation)
+Take `⟨F, F3, e, he', hp'⟩` from `m'`. Simplify using `only at h₁ h₂ h₃`. Substitute `h₁ h₂ h₃` using the available equality. Rewrite `H'`, `H''`, the goal using `[isPullCubical_iff]`. Take `⟨w', g', r', q'⟩` from `H'`.
+
+Take `⟨w'', g'', r'', q''⟩` from `H''`. Use `hG.smooth` as an intermediate fact. Establish `a₁ : eSec G ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Establish `a₂ : eSec GK ≫ GK.hom = 𝟙 _` using `Over.w η[GK]`. Take `⟨κ, κ', hκ, hκ'⟩ : ∃ (κ : pullback G.hom (spMap (algebraMap T K)) ⟶ GK.left) (κ' : GK.left ⟶ pullback G.hom (spMap (algebraMap T K))), κ ≫ m.F = pullback.fst G.hom (spMap (algebraMap T K)) ∧ κ' ≫ κ = 𝟙 _` from `⟨hp.isoPullback.inv, hp.isoPullback.hom, hp.isoPullback_inv_fst, hp.isoPullback.hom_inv_id⟩`.
+
+Establish `hj : κ' ≫ pullback.fst G.hom (spMap (algebraMap T K)) = m.F` using `by rw [← hκ, ← Category.assoc, hκ', Category.id_comp]`. Take `⟨r, hr, vr⟩` from `exists_quot_of_isos L₀.isLB L.isLB LK.isLB w' w'' g' g'' κ (pullback.fst G.hom (spMap (algebraMap T K))) hκ`. Take `⟨ρ, hρ, vρ⟩` from `exists_quot_of_gens n.e_comm L₀.rig L.rig L₀.rigGen L.rigGen`. Establish `heA : (eSec GK ≫ κ') ≫ pullback.fst G.hom (spMap (algebraMap T K)) = spMap (algebraMap T K) ≫ eSec G`. Rewrite using `[Category.assoc, hj, m.e_comm, he]`.
+
+Establish `heA' : (eSec GK ≫ κ') ≫ pullback.fst G.hom (spMap (algebraMap T K)) = m.e ≫ eSec G`. Rewrite using `[Category.assoc, hj, m.e_comm]`. Establish `heκ : (eSec GK ≫ κ') ≫ κ = eSec GK` using `by rw [Category.assoc, hκ', Category.comp_id]`. Take `⟨w, hw, hwr⟩` from `hE G hG (eSec GK ≫ κ') heA ⟨LB.div (L₀.L.pull n.F) L.L, ρ, LB.isLB_div (pull_isLB L₀.isLB _) L.isLB, hρ⟩ r hr (by`. Introduce `J J' _ _ hJ`.
+
+Take `rfl : J = J'` from `funext fun _ => hJ PUnit.unit PUnit.unit heA`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Use `(gm_res _ y _ hy _).trans (Eq.trans ?_ (gm_res _ y _ hy _).symm)` and prove the remaining obligations. Use `(gm_pullGen _ _ _ r _ (𝟙 _) y J hy.1).trans (Eq.trans ?_ (gm_pullGen _ _ _ ρ _ (𝟙 _) y J hy.2).symm)` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart LK.isLB (eSec GK y)`.
+
+Establish `hm` using `(mem_qchart (j := (eSec GK ≫ κ') ≫ pullback.fst G.hom (spMap (algebraMap T K))) (a := (J PUnit.unit).1 PUnit.unit) (i := (J PUnit.unit).2)).1 hy.1`. Establish `hm'` using `hm`. Establish `hm''` using `hm`. Rewrite `hm'` using `[heA']`. Rewrite `hm''` using `[Category.assoc, hj]`.
+
+Establish `e₁` using `vr _ (eSec GK ≫ κ') y _ _ k hm.1 hm.2 (by show ((eSec GK ≫ κ') ≫ κ) y ∈ _`. Rewrite using `[heκ]`. Conclude with `hk)`. Establish `e₂` using `vρ _ m.e y _ _ hm'.1 hm'.2`. Establish `e₃` using `r'' _ (𝟙 _) y (fun _ => (J PUnit.unit).1 PUnit.unit) (fun _ => k) (fun _ => hm''.1) (fun _ => hk)`.
+
+Establish `e₄` using `r' _ (𝟙 _) y (fun _ => (J PUnit.unit).2) (fun _ => k) (fun _ => hm''.2) (fun _ => hk)`. Rewrite `e₃`, `e₄` using `[Fintype.prod_unique, zpow_one, Category.id_comp, Category.id_comp]`. Rewrite `e₁` using `[heκ]`. Rewrite `e₂` using `[e₃, e₄, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.mul_one]`. Rewrite using `[Category.id_comp, Category.id_comp]`.
+
+Use `e₁.trans (e₂.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[he]`. Use the proof step `rfl)`. Establish `tri : Tri (L` using `L₀.L) (L' := L.L) (F := n.F) w w' w'' := by`. Introduce `Y f y a i k ha hi hk`.
+
+Establish `p₁ : pullback.fst G.hom (spMap (algebraMap T K)) (κ' (f y)) = m.F (f y)` using `congrArg (fun g => g (f y)) hj`. Establish `p₂ : κ (κ' (f y)) = f y` using `congrArg (fun g => g (f y)) hκ'`. Establish `ha' : n.F (pullback.fst G.hom (spMap (algebraMap T K)) (κ' (f y))) ∈ L₀.L.U a` using `by rw [p₁]; exact ha`. Establish `hi' : pullback.fst G.hom (spMap (algebraMap T K)) (κ' (f y)) ∈ L.L.U i` using `by rw [p₁]; exact hi`. Establish `e₁` using `vr _ (f ≫ κ') y a i k ha' hi' (by show κ (κ' (f y)) ∈ _`.
+
+Rewrite using `[p₂]`. Conclude with `hk)`. Establish `hy : (f ≫ κ') y ∈ qchart L₀.L L.L n.F (pullback.fst G.hom (spMap (algebraMap T K))) a i` using `mem_qchart.2 ⟨ha', hi'⟩`. Establish `e₂ : gm (f ≫ κ') y (qchart L₀.L L.L n.F (pullback.fst G.hom (spMap (algebraMap T K))) a i) (r.s (fun _ => (fun _ => a, i))) = gw (L` using `L₀.L) (L' := L.L) (F := n.F) w ((f ≫ κ') ≫ pullback.fst G.hom (spMap (algebraMap T K))) y a i := by`. Rewrite using `[← hwr]`.
+
+Conclude with `(gm_res _ y _ hy _).trans (gm_pull (f ≫ κ') (pullback.fst G.hom (spMap (algebraMap T K))) y ((L₀.L.pull n.F).U (fun _ => a) ⊓ L.L.U i) ⟨mem_pull.2 ha', hi'⟩ _)`. Rewrite `e₁` using `[e₂, Category.assoc, Category.assoc, hj, hκ', Category.comp_id]`. Rewrite using `[e₁, inv_mul_cancel_right]`. Use `⟨w, (isGen_iff _).1 hw, ?_, ?_⟩` and prove the remaining obligations. Use `pmaps_of_tri tri LK.isLB (fun _ => n.e_comm) (fun _ => m.e_comm) r' r'' (𝟙 _) ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.id_comp, he]`. Conclude with `app_injective_generic (p := 𝟙 _) (q := 𝟙 _) (IsPullback.of_vert_isIso ⟨by simp⟩)`. Establish `: Flat (G3 G).hom` using `by show Flat (pullback.fst G.hom (pullback.fst G.hom G.hom ≫ G.hom) ≫ G.hom) infer_instance`. Set `P : Over (Sp K)` to `Over.mk (pullback.snd (G3 G).hom (spMap (algebraMap T K)))`. Set `x : Fin 3 → (P ⟶ GK)` to `fun i => Over.homMk (hp.lift (pullback.fst _ _ ≫ (x3 G i).left) P.hom (by`.
+
+Rewrite using `[Category.assoc, Over.w]`. Conclude with `pullback.condition)) (hp.lift_snd _ _ _)`. Establish `hx : ∀ i, (x i).left ≫ m.F = pullback.fst _ _ ≫ (x3 G i).left` using `fun i => hp.lift_fst _ _ _`. Set `l : P ⟶ G3 GK` to `lift (x 0) (lift (x 1) (x 2))`. Establish `hl : l.left ≫ m.F3 = pullback.fst (G3 G).hom (spMap (algebraMap T K))` using `hom_ext_triple _ fun i => by`.
+
+Apply the tactic sequence `have : l ≫ x3 GK i = x i := by fin_cases i <;> simp [l, x3]`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, this, hx]`. Use `pmaps_of_tri tri LK.isLB (fun I => n.psum_comm I.down) (fun I => m.psum_comm I.down) q' q'' l.left ?_` and prove the remaining obligations. Rewrite using `[hl]`. Conclude with `app_injective_generic (IsPullback.of_hasPullback _ _)`.
+-/
 theorem isPullCubical_of_generic_of_ext (hE : ExtendGenAt T K) {S : Scheme.{0}} {G₀ : Over S} {G : Over (Sp T)}
     {GK : Over (Sp K)} [GrpObj G₀] [IsCommMonObj G₀] [GrpObj G] [IsCommMonObj G] [GrpObj GK] [IsCommMonObj GK]
     (hG : IsSemiAbelian G) {L₀ : RigLB G₀} {L : RigLB G} {LK : RigLB GK} (c₀ : CubicalStr G₀ L₀)

@@ -29,10 +29,16 @@ def resCocycle (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) : (L ≃ₐ[E] L
   fun p => f (p.1.restrictScalars K, p.2.restrictScalars K)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resCocycle_apply (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (p : (L ≃ₐ[E] L) × (L ≃ₐ[E] L)) :
     resCocycle K E f p = f (p.1.restrictScalars K, p.2.restrictScalars K) :=
   rfl
 
+/- English proof (translation)
+Introduce `g h j`. Conclude with `hf (g.restrictScalars K) (h.restrictScalars K) (j.restrictScalars K)`.
+-/
 theorem isMulCocycle₂_resCocycle {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f) :
     IsMulCocycle₂ (resCocycle K E f) := by
   intro g h j
@@ -51,13 +57,22 @@ variable (E) in
 def inclBase : E →ₐ[K] CrossedProduct hf :=
   (incl (hf := hf)).comp (IsScalarTower.toAlgHom K E L)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inclBase_apply (e : E) : inclBase E hf e = incl (algebraMap E L e) :=
   rfl
 
+/- English proof (translation)
+Rewrite using `[inclBase_apply, ← map_mul, mul_comm, map_mul]`.
+-/
 theorem incl_mul_inclBase (a : L) (e : E) :
     incl a * inclBase E hf e = inclBase E hf e * (incl a : CrossedProduct hf) := by
   rw [inclBase_apply, ← map_mul, mul_comm, map_mul]
 
+/- English proof (translation)
+Rewrite using `[inclBase_apply, u_mul_incl, AlgEquiv.restrictScalars_apply, AlgEquiv.commutes]`.
+-/
 theorem u_mul_inclBase (τ : L ≃ₐ[E] L) (e : E) :
     u (τ.restrictScalars K) * inclBase E hf e = inclBase E hf e * (u (τ.restrictScalars K) : CrossedProduct hf) := by
   rw [inclBase_apply, u_mul_incl, AlgEquiv.restrictScalars_apply, AlgEquiv.commutes]

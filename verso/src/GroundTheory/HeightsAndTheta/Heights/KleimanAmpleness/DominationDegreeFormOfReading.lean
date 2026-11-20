@@ -25,6 +25,13 @@ section Lemmas
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Unfold `IndefiniteRowSideFullHecke.Kleiman2.SameModel`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Take `⟨c', hc', heq⟩` from `h₁ c hc`.
+
+Use `⟨c', hc', ?_⟩` and prove the remaining obligations. Rewrite using `[← heq]`. Conclude with `⟨p, hp, rfl⟩`. Introduce and unpack `⟨c', hc', p, hp, rfl⟩`. Take `⟨c, hc, heq⟩` from `h₂ c' hc'`.
+
+Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `⟨p, hp, rfl⟩`.
+-/
 theorem sameModel_of_charts (R : Type) [CommRing R] [Algebra R Ω] {K K' : Type} {ι : K → Type}
     {ι' : K' → Type} (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω)
     (h₁ : ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) →
@@ -46,6 +53,15 @@ theorem sameModel_of_charts (R : Type) [CommRing R] [Algebra R Ω] {K K' : Type}
     rw [heq]
     exact ⟨p, hp, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ c : Unit → κ, chartRingOver R (IndefiniteRowSideFullHecke.Kleiman2.oneBlock v) c = chartRingOver R (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ e.symm)) (fun u => e (c u))`. Introduce `c`. Unfold `chartRingOver`. Use `congr 1`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, b⟩, rfl⟩`. Conclude with `⟨⟨u, e b⟩, by simp [IndefiniteRowSideFullHecke.Kleiman2.oneBlock]⟩`. Introduce and unpack `⟨⟨u, j⟩, rfl⟩`. Conclude with `⟨⟨u, e.symm j⟩, by simp [IndefiniteRowSideFullHecke.Kleiman2.oneBlock]⟩`.
+
+Apply `sameModel_of_charts` to reduce the goal to its premises. Introduce `c hc`. Conclude with `⟨fun u => e (c u), fun k => by simpa [IndefiniteRowSideFullHecke.Kleiman2.oneBlock] using hc k, key c⟩`. Introduce `c' hc'`. Use `⟨fun u => e.symm (c' u), fun k => by simpa [IndefiniteRowSideFullHecke.Kleiman2.oneBlock] using hc' k, ?_⟩` and prove the remaining obligations.
+
+Establish `h` using `key (fun u => e.symm (c' u))`. Simplify using `only [Equiv.apply_symm_apply] at h`. Conclude with `h`.
+-/
 theorem sameModel_reindex (R : Type) [CommRing R] [Algebra R Ω] {κ : Type} {N : ℕ} (v : κ → Ω)
     (e : κ ≃ Fin (N + 1)) :
     IndefiniteRowSideFullHecke.Kleiman2.SameModel R (IndefiniteRowSideFullHecke.Kleiman2.oneBlock v) (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (v ∘ e.symm)) := by

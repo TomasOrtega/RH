@@ -18,6 +18,33 @@ set_option autoImplicit false
 namespace GlobalTheory.FlatLimit
 open Filter Topology MvPolynomial
 
+/- English proof (translation)
+Introduce `hX hP hH hSW D O hC hf A T H h B hB τ Q hQ`. Establish `hTie` using `(GlobalTheory.T.degree_and_arithmetic_compatibility hP hH D O hC hf A T H h).1`. Use `set e : Wt O.Y := fun σ' _ => if σ' = τ then (-1 : ℝ) else 0 with he`. Establish `hlin : Formalism.DegreeFormula.linRoot e = GlobalTheory.FlagPoly.pSum τ 1`. Simplify using `only [Formalism.DegreeFormula.linRoot, GlobalTheory.FlagPoly.pSum, he, pow_one]`.
+
+Rewrite using `[Fintype.sum_prod_type, ← Finset.sum_neg_distrib, Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+
+Set `P : GlobalTheory.FlagPoly.Pol D.what₂.Tau O.Y.N → Prop` to `fun Q => Tendsto (fun R => O.Y.arDeg (GlobalTheory.FlagAr.setB O.Y B) R (GlobalTheory.FlagPoly.pSum τ 1 * Q) - ∑ c, O.Y.htDetT B c τ * (A.w c * Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N Q)) atTop (𝓝 0)`. Establish `key : ∀ u : Wt O.Y, (∀ σ, StrictAnti (u σ)) → P (Formalism.DegreeFormula.linRoot u ^ Formalism.MainNotions.WeightThresholdDefs.dimY O.Y)`. Introduce `u hu`. Establish `hdom : DomL O.Y.j u` using `fun σ a b hab _ => ((hu σ) (by rw [Fin.lt_def]; omega)).le`. Establish `hsm` using `GlobalTheory.T.smooth_green_potential_weight hP hH D O hC hf A T H h`.
+
+Establish `hF1` using `GlobalTheory.T.exists_smooth_boundary_potential hX hP hH hSW D O hC hf A T H h B hB τ`. Establish `hdeg` using `GlobalTheory.T.mixed_integral_constant_flag_degree hP hH D O hC hf A T H h B hB`. Use `choose g hg hgph hgv using hF1`. Establish `hint` using `fun c => GlobalTheory.T.tendsto_mixed_integral_boundary hP hH D O hC hf A T H h B hB τ c u hdom (g c) (hg c) (hgph c)`. Establish `hsum` using `tendsto_finsetSum Finset.univ fun c _ => hint c`.
+
+Rewrite `hsum` using `[Finset.sum_const_zero]`. Use `hsum.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (Real.exp 2)] with R hR`. Rewrite using `[← hlin, GlobalTheory.T.arithmetic_degree_mixed_linear_root D O.Y T hTie B hB R hR e u, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `e1 : T.L B c e + (T.K B c).ar ((T.F c).phR R e) = (T.L B c e + (T.K B c).ar (g c)) + (T.K B c).ar ((T.F c).phR R e) + (-1 : ℝ) • (T.K B c).ar (g c)`. Rewrite using `[neg_one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1, MultilinearMap.cons_add, MultilinearMap.cons_add, MultilinearMap.cons_smul, hgv c u _ (hsm c R hR u), (T.K B c).num_ar _ (hsm c R hR e), (T.K B c).num_ar _ (hg c), hdeg c u _ (hsm c R hR u)]`. Use `show _ = _ - _`.
+
+Simplify using `only [Formalism.DegreeFormula.flagDeg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan` using `GlobalTheory.T.homogeneous_mem_span_linear_roots D.what₂.Tau O.Y.N (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) Q hQ`. Use `show P Q`. Use `clear hQ`.
+
+Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Conclude with `key u hu`. Consider the case `zero => show Tendsto _ _ _`.
+
+Simplify using `only [mul_zero, map_zero]`. Establish `: Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N 0 = 0` using `by simp [Formalism.DegreeFormula.degFl]`. Simplify using `only [this, mul_zero, Finset.sum_const_zero, sub_zero]`. Conclude with `tendsto_const_nhds`. Consider the case `add x y _ _ hx hy => show Tendsto _ _ _`.
+
+Establish `hd : Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N (x + y) = Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N x + Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N y`. Simplify using `only [Formalism.DegreeFormula.degFl, coeff_add, mul_add, Finset.sum_add_distrib]`. Establish `hxy` using `hx.add hy`. Rewrite `hxy` using `[add_zero]`. Use `hxy.congr fun R => ?_` and prove the remaining obligations.
+
+Simplify using `only [mul_add, map_add, hd, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ hx => show Tendsto _ _ _`. Establish `hd : Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N (a • x) = a * Formalism.DegreeFormula.degFl D.what₂.Tau O.Y.N x`. Simplify using `only [Formalism.DegreeFormula.degFl, coeff_smul, smul_eq_mul, Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Use `hx.const_mul a` as an intermediate fact. Rewrite `this` using `[mul_zero]`. Use `this.congr fun R => ?_` and prove the remaining obligations. Simplify using `only [mul_smul_comm, map_smul, smul_eq_mul, hd, mul_sub, Finset.mul_sum]`.
+
+Use `congrArg _ (Finset.sum_congr rfl fun c _ => by ring)` and prove the remaining obligations.
+-/
 theorem limVal : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → GlobalTheory.Published.ScholzeWeinsteinB → OnObj fun D O A _ _ _ =>
     ∀ B : ℝ, 2 ≤ B → ∀ (τ : D.what₂.Tau) (Q : GlobalTheory.FlagPoly.Pol D.what₂.Tau O.Y.N),
       Q.IsHomogeneous (Formalism.MainNotions.WeightThresholdDefs.dimY O.Y) →

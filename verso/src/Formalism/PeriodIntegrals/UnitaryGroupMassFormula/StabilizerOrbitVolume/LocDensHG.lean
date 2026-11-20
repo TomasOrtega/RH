@@ -17,6 +17,19 @@ variable {V X Y : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddG
   [IsTopologicalAddGroup X] [T2Space X] [LocallyCompactSpace X] [SecondCountableTopology X]
   [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hfib`. Establish `hQm : MeasurableSet Q` using `hQo.measurableSet`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Rewrite using `[Measure.restrict_apply' hQm]`.
+
+Use `measure_mono_null ?_ (h1 b)` and prove the remaining obligations. Introduce `x ⟨hx1, hxQ⟩ hx2`. Apply `hx1` to reduce the goal to its premises. Take `⟨hx3, hxU⟩` from `hx2`. Use `⟨?_, hxU, hxQ⟩` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx3 ⊢`. Rewrite using `[hGG' x hxQ, ← hfG x]`. Conclude with `hx3`. Introduce `φ hφ`. Rewrite using `[Set.inter_comm, ← Measure.restrict_restrict hQm, ← lintegral_indicator hQm, h2 _ (hφ.indicator hQm)]`.
+
+Simplify using `only [lintegral_indicator hQm]`. Introduce `φ hφc hφs hφt`. Take `⟨hi, hc⟩` from `h3 φ hφc hφs (hφt.trans Set.inter_subset_left)`. Establish `hz : ∀ x, x ∉ Q → φ x = 0` using `fun x hx => by first`. Consider the case `exact image_eq_zero_of_notMem_tsupport (fun h => hx (hφt h).2)`.
+
+Consider the case `exact image_eq_zero_of_nmem_tsupport (fun h => hx (hφt h).2)`. Use `⟨fun b hb => (hi b hb).restrict, ?_⟩` and prove the remaining obligations. Establish `heq : (fun b => ∫ v, φ v ∂(fib b).restrict Q) = fun b => ∫ v, φ v ∂(fib b)`. Use function extensionality and compare the values at `fun b => setIntegral_eq_integral_of_forall_compl_eq_zero hz`. Rewrite using `[heq]`.
+
+Conclude with `hc`.
+-/
 private theorem isFibreFamily_restrict_of_eqOn_open (μ : Measure V) (ν : Measure X) (f : V → Y) (ι : X → Y)
     (G G' : V → X) (hfG : ∀ x, f x = ι (G x)) (U : Set V) (B : Set X) (fib : X → Measure V)
     (hfib : IsFibreFamily μ f ι U ν B fib) (Q : Set V) (hQo : IsOpen Q)
@@ -51,6 +64,35 @@ private theorem isFibreFamily_restrict_of_eqOn_open (μ : Measure V) (ν : Measu
     rw [heq]
     exact hc
 
+/- English proof (translation)
+Establish `hQm : MeasurableSet Q` using `hQo.measurableSet`. Distinguish the cases in `hX : ∃ T' : X, T' ≠ T`. Take `⟨T', hT'⟩` from `hX`. Set `G' : V → X` to `Q.piecewise G (fun _ => T')`. Establish `hG'c : Continuous G'`.
+
+Use `hGc.piecewise (fun a ha => ?_) continuous_const` and prove the remaining obligations. Establish `hfr : frontier Q = ∅` using `IsClopen.frontier_eq ⟨hQcl, hQo⟩`. Rewrite `ha` using `[hfr]`. Conclude with `absurd ha (by simp)`. Establish `hGG' : ∀ x ∈ Q, G' x = G x` using `fun x hx => by simp [G', hx]`.
+
+Establish `hNb' : Nb ∩ {T'}ᶜ ∈ 𝓝 T` using `Filter.inter_mem hNb (isOpen_compl_singleton.mem_nhds hT'.symm)`. Establish `hNbU' : ∀ x, G' x ∈ Nb ∩ {T'}ᶜ → x ∈ U ∩ Q`. Introduce `x hx`. Distinguish the cases in `hxQ : x ∈ Q`. Rewrite `hx` using `[hGG' x hxQ]`.
+
+Conclude with `⟨hNbU x hxQ hx.1, hxQ⟩`. It suffices to derive a contradiction. Establish `h' : G' x = T'` using `by simp [G', hxQ]`. Conclude with `hx.2 (by rw [h']; rfl)`. Establish `hratio' : ∀ n, μ.real (Q ∩ G' ⁻¹' {z | z - T ∈ H n}) = κ * ν.real (H n)`.
+
+Introduce `n`. Establish `hs : Q ∩ G' ⁻¹' {z | z - T ∈ H n} = Q ∩ G ⁻¹' {z | z - T ∈ H n}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`.
+
+Conclude with `⟨hx, by simpa only [Set.mem_preimage, hGG' x hx] using h⟩`. Introduce and unpack `⟨hx, h⟩`. Conclude with `⟨hx, by simpa only [Set.mem_preimage, hGG' x hx] using h⟩`. Rewrite using `[hs]`. Conclude with `hratio n`.
+
+Establish `key` using `fib_of_ratio μ ν (fun x => ι (G' x)) ι hι G' hG'c (fun x => rfl) (U ∩ Q) B (fun b => (fib b).restrict Q) (isFibreFamily_restrict_of_eqOn_open μ ν f ι G G' hfG U B fib hfib Q hQo hGG') T hB (Nb ∩ {T'}ᶜ) hNb' hNbU' Q hQo hQcl hQc H hHo hHc hHb κ hratio'`. Establish `hI : ∫ x in Q, Q.indicator (1 : V → ℂ) x ∂(fib T) = ∫ x, Q.indicator (1 : V → ℂ) x ∂(fib T)` using `setIntegral_eq_integral_of_forall_compl_eq_zero (fun x hx => by simp [hx])`. Rewrite using `[← hI]`. Conclude with `key`. Use `push_neg at hX`.
+
+Establish `hall : ∀ z : X, z = T` using `hX`. Use `haveI : Subsingleton X := ⟨fun a b => (hall a).trans (hall b).symm⟩`. Establish `hTN : T ∈ Nb` using `mem_of_mem_nhds hNb`. Establish `hQU : Q ⊆ U` using `fun x hx => hNbU x hx (by rw [hall (G x)]; exact hTN)`. Take `⟨-, h2, -⟩` from `hfib`.
+
+Establish `hdis` using `h2 (Q.indicator 1) (measurable_one.indicator hQm)`. Simplify using `only [lintegral_indicator_one hQm] at hdis`. Rewrite `hdis` using `[Measure.restrict_apply hQm, Set.inter_eq_left.mpr hQU]`. Establish `hc : (fun b => fib b Q) = fun _ => fib T Q` using `funext fun b => by rw [hall b]`. Rewrite `hdis` using `[hc, lintegral_const]`.
+
+Establish `hr` using `hratio 0`. Establish `hset : Q ∩ G ⁻¹' {z | z - T ∈ H 0} = Q`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_setOf_eq, and_iff_left_iff_imp]`. Introduce `_`.
+
+Rewrite using `[hall (G x), sub_self]`. Conclude with `(H 0).zero_mem`. Establish `hH0 : ((H 0 : AddSubgroup X) : Set X) = Set.univ` using `Set.eq_univ_of_forall fun z => by`. Rewrite using `[hall z, ← hall 0]`. Conclude with `(H 0).zero_mem`.
+
+Rewrite `hr` using `[hset, hH0]`. Establish `hν1 : ν Set.univ ≠ 0` using `isOpen_univ.measure_ne_zero ν ⟨T, Set.mem_univ _⟩`. Establish `hν2 : ν Set.univ ≠ ⊤` using `(isCompact_univ.measure_lt_top).ne`. Establish `hνpos : ν.real Set.univ ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨hν1, hν2⟩`. Establish `hint : ∫ x, Q.indicator (1 : V → ℂ) x ∂(fib T) = (((fib T) Q).toReal : ℂ)`.
+
+Rewrite using `[show Q.indicator (1 : V → ℂ) = Q.indicator (fun _ => (1 : ℂ)) from rfl, integral_indicator_const _ hQm]`. Simplify using `[Measure.real]`. Rewrite using `[hint]`. Use `congr 1`. Establish `h3` using `congrArg ENNReal.toReal hdis`.
+
+Rewrite `h3` using `[ENNReal.toReal_mul]`. Establish `h' : ((fib T) Q).toReal * ν.real Set.univ = κ * ν.real Set.univ`. Rewrite using `[← hr]`. Conclude with `h3.symm`. Conclude with `mul_right_cancel₀ hνpos h'`.
+-/
 theorem fib_of_ratio_gen (μ : Measure V) (ν : Measure X) [ν.IsAddHaarMeasure]
     (f : V → Y) (ι : X → Y) (hι : Function.Injective ι) (G : V → X) (hGc : Continuous G)
     (hfG : ∀ x, f x = ι (G x)) (U : Set V) (B : Set X) (fib : X → Measure V)
@@ -142,6 +184,53 @@ end FibGenW
 
 open MeasureTheory Topology Filter Set Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes FibGenW
 
+/- English proof (translation)
+Introduce `V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν f ι hι G hGc hfG U B fib hfib T hB L hLo hLc Λ H hΛL hΛo hΛc hΛa hHo hHc hHb Q hQL hQcos hQo hQcl Nb hNb hNbU hyp`. Use `hμ` as an intermediate fact. Use `hν` as an intermediate fact. Establish `hLcl : IsClosed (L : Set V)` using `AddSubgroup.isClosed_of_isOpen _ hLo`. Establish `hScl : ∀ n, IsClosed {z | z - T ∈ H n}` using `fun n => (AddSubgroup.isClosed_of_isOpen _ (hHo n)).preimage (continuous_id.sub continuous_const)`.
+
+Use `set Pn : ℕ → Set V := fun n => Q ∩ G ⁻¹' {z | z - T ∈ H n} with hPndef`. Establish `hPcl : ∀ n, IsClosed (Pn n)` using `fun n => hQcl.inter ((hScl n).preimage hGc)`. Establish `hPo : ∀ n, IsOpen (Pn n)` using `fun n => hQo.inter (((hHo n).preimage (continuous_id.sub continuous_const)).preimage hGc)`. Establish `hPc : ∀ n, IsCompact (Pn n)` using `fun n => hLc.of_isClosed_subset (hPcl n) (inter_subset_left.trans hQL)`. Establish `hν0 : 0 < ν.real (H 0)`.
+
+Rewrite using `[measureReal_def]`. Conclude with `ENNReal.toReal_pos ((hHo 0).measure_pos ν ⟨0, (H 0).zero_mem⟩).ne' (hHc 0).measure_lt_top.ne`. Distinguish the cases in `hne : (Pn 0).Nonempty`. Take `⟨y0, hy0⟩` from `hne`. Take `⟨D0, hD0, _⟩` from `hyp y0 hy0.1 hy0.2`.
+
+Establish `hHa : ∀ n, H n ≤ H 0`. Introduce `n`. Rewrite using `[← hD0, ← hD0]`. Conclude with `AddSubgroup.map_mono (hΛa (Nat.zero_le n))`. Establish `hsat : ∀ y ∈ Pn 0, ∀ Z ∈ Λ 0, y + Z ∈ Pn 0`.
+
+Introduce and unpack `y ⟨hyL, hyS⟩ Z hZ`. Take `⟨D, hD, hG⟩` from `hyp y hyL hyS`. Use `⟨hQcos y hyL Z hZ, ?_⟩` and prove the remaining obligations. Establish `h1` using `hG 0 0 (Λ 0).zero_mem Z hZ`. Simplify using `only [add_zero] at h1`.
+
+Establish `h2 : D Z ∈ H 0` using `hD 0 ▸ AddSubgroup.mem_map_of_mem D hZ`. Establish `hyS' : G y - T ∈ H 0` using `hyS`. Use `show G (y + Z) - T ∈ H 0`. Establish `e : G (y + Z) - T = (G (y + Z) - G y - D Z) + D Z + (G y - T)` using `by abel`. Rewrite using `[e]`.
+
+Conclude with `(H 0).add_mem ((H 0).add_mem (hHa 1 h1) h2) hyS'`. Establish `: DiscreteTopology (V ⧸ Λ 0)` using `QuotientAddGroup.discreteTopology (hΛo 0)`. Set `q : V → V ⧸ Λ 0` to `QuotientAddGroup.mk`. Establish `hq : Continuous q` using `continuous_quot_mk`. Establish `hfin : (q '' Pn 0).Finite` using `((hPc 0).image hq).finite_of_discrete`.
+
+Use `set Tf := hfin.toFinset with hTf`. Establish `hmemT : ∀ p, p ∈ Tf ↔ ∃ y ∈ Pn 0, q y = p`. Introduce `p`. Simplify using `[hTf]`. Establish `hcos : ∀ y, q ⁻¹' {q y} = {x | x - y ∈ Λ 0}`.
+
+Introduce `y`. Use extensionality with `x`. Simplify using `only [mem_preimage, mem_singleton_iff, mem_setOf_eq, q]`. Conclude with `QuotientAddGroup.eq_iff_sub_mem`. Establish `hcount : ∀ n, μ (Pn n) * ν (H 0) = (Tf.card : ENNReal) * (μ (Λ 0) * ν (H n))`.
+
+Introduce `n`. Establish `hdec : Pn n = ⋃ p ∈ Tf, (Pn n ∩ q ⁻¹' {p})`. Use extensionality with `x`. Simplify using `only [mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Use `⟨q x, (hmemT _).2 ⟨x, ⟨hx.1, hHa n hx.2⟩, rfl⟩, hx, rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨_, _, hx, _⟩`. Conclude with `hx`. Establish `hdisj : PairwiseDisjoint (↑Tf : Set (V ⧸ Λ 0)) (fun p => Pn n ∩ q ⁻¹' {p})` using `fun p _ p' _ hne => ((disjoint_singleton.2 hne).preimage q).mono inter_subset_right inter_subset_right`.
+
+Establish `hmeas : ∀ p ∈ Tf, MeasurableSet (Pn n ∩ q ⁻¹' {p})` using `fun p _ => (hPo n).measurableSet.inter ((isOpen_discrete ({p} : Set (V ⧸ Λ 0))).preimage hq).measurableSet`. Establish `hval : ∀ p ∈ Tf, μ (Pn n ∩ q ⁻¹' {p}) * ν (H 0) = μ (Λ 0) * ν (H n)`. Introduce `p hp`. Take `⟨y, hy, rfl⟩` from `(hmemT p).1 hp`. Take `⟨D, hD, hG⟩` from `hyp y hy.1 hy.2`.
+
+Establish `e : Pn n ∩ q ⁻¹' {q y} = {x | x - y ∈ Λ 0} ∩ G ⁻¹' {z | z - T ∈ H n}`. Rewrite using `[hcos]`. Use extensionality with `x`. Simplify using `only [hPndef, mem_inter_iff, mem_setOf_eq, mem_preimage]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨⟨_, hxS⟩, hxy⟩`. Conclude with `⟨hxy, hxS⟩`. Introduce and unpack `⟨hxy, hxS⟩`. Use `⟨⟨?_, hxS⟩, hxy⟩` and prove the remaining obligations. Use `hQcos y hy.1 (x - y) hxy` as an intermediate fact.
+
+Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[e]`. Conclude with `cos_ratio μ ν Λ H hΛo hΛa hHo hHc D hD G y hG T hy.2 n`. Use `conv_lhs => rw [hdec]`. Rewrite using `[measure_biUnion_finset hdisj hmeas, Finset.sum_mul, Finset.sum_congr rfl hval, Finset.sum_const, nsmul_eq_mul]`.
+
+Establish `hreal : ∀ n, μ.real (Pn n) * ν.real (H 0) = (Tf.card : ℝ) * (μ.real (Λ 0 : Set V) * ν.real (H n))`. Introduce `n`. Establish `e'` using `congrArg ENNReal.toReal (hcount n)`. Simplify using `only [ENNReal.toReal_mul, ENNReal.toReal_natCast, ← measureReal_def] at e'`. Conclude with `e'`.
+
+Establish `hratio : ∀ n, μ.real (Q ∩ G ⁻¹' {z | z - T ∈ H n}) = μ.real (Pn 0) / ν.real (H 0) * ν.real (H n)`. Introduce `n`. Establish `h0` using `hreal 0`. Establish `hn` using `hreal n`. Use `show μ.real (Pn n) = _`.
+
+Establish `e0 : μ.real (Pn 0) = (Tf.card : ℝ) * μ.real (Λ 0 : Set V)`. Establish `h' : μ.real (Pn 0) * ν.real (H 0) = ((Tf.card : ℝ) * μ.real (Λ 0 : Set V)) * ν.real (H 0)`. Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ hν0.ne' h'`.
+
+Rewrite using `[e0]`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[fib_of_ratio_gen μ ν f ι hι G hGc hfG U B fib hfib T hB Nb hNb _ hNbU hQo hQcl (hLc.of_isClosed_subset hQcl hQL) H hHo hHc hHb _ hratio, ENNReal.toReal_div, measureReal_def, measureReal_def]`. Establish `hP0 : Pn 0 = ∅` using `not_nonempty_iff_eq_empty.1 hne`.
+
+Establish `hP0' : Q ∩ G ⁻¹' {z | z - T ∈ H 0} = ∅` using `hP0`. Rewrite using `[hP0', measure_empty, ENNReal.zero_div, ENNReal.toReal_zero, Complex.ofReal_zero]`. Establish `hpre : f ⁻¹' {ι T} = G ⁻¹' {T}`. Use extensionality with `x`. Simplify using `[hfG, hι.eq_iff]`.
+
+Establish `hm : G ⁻¹' {T} ∩ U ∈ ae (fib T)`. Rewrite using `[mem_ae_iff, ← hpre]`. Conclude with `hfib.1 T`. Establish `hae : ∀ᵐ x ∂(fib T), Q.indicator (1 : V → ℂ) x = 0` using `by filter_upwards [hm] with x hx`. Establish `hxT : G x = T` using `hx.1`.
+
+Distinguish the cases in `hxL : x ∈ Q`. It suffices to derive a contradiction. Establish `: x ∈ Pn 0` using `⟨hxL, by show G x - T ∈ H 0`. Rewrite using `[hxT, sub_self]`. Conclude with `(H 0).zero_mem⟩`.
+
+Rewrite `this` using `[hP0]`. Conclude with `this`. Conclude with `indicator_of_notMem hxL _`. Rewrite using `[integral_congr_ae hae, integral_zero]`.
+-/
 theorem fibLatGen_holds : FibLatGen := by
   intro V X Y _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ ν hμ hν f ι hι G hGc hfG U B fib hfib T hB
     L hLo hLc Λ H hΛL hΛo hΛc hΛa hHo hHc hHb Q hQL hQcos hQo hQcl Nb hNb hNbU hyp

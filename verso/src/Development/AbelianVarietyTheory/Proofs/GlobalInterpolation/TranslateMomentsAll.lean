@@ -76,6 +76,9 @@ abbrev per (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp 
 def smulLat (r : X.E) (M : Submodule (𝓞 X.E) (HomE X.E a b)) : Submodule (𝓞 X.E) (HomE X.E a b) :=
   M.map ((r • (LinearMap.id : HomE X.E a b →ₗ[X.E] HomE X.E a b)).restrictScalars (𝓞 X.E))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smulLat (r : X.E) (M : Submodule (𝓞 X.E) (HomE X.E a b)) (y : HomE X.E a b) :
     y ∈ smulLat r M ↔ ∃ m ∈ M, r • m = y := Iff.rfl
 
@@ -105,10 +108,20 @@ section Clo
 
 variable {p : ℕ} [Fact p.Prime] {H I : Type}
 
+/- English proof (translation)
+Introduce `F _ ε hε`. Conclude with `⟨0, by simp, by simp, by simpa using fun _ _ => hε⟩`.
+-/
 theorem clo_zero (Sup : Set H) (tab : H → I → ℂ_[p]) (M : Set I) : InIntClosure Sup tab M fun _ => 0 := by
   intro F _ ε hε
   exact ⟨0, by simp, by simp, by simpa using fun _ _ => hε⟩
 
+/- English proof (translation)
+Introduce `F hF ε hε`. Take `⟨c, hc, hc1, hcF⟩` from `h F hF ε hε`. Take `⟨c', hc', hc1', hcF'⟩` from `h' F hF ε hε`. Use `⟨c + c', ?_, fun x => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Break down `Finset.mem_union.1 (Finsupp.support_add (Finset.mem_coe.1 hx)) with h | h` into its components or cases. Use `exacts [hc h, hc' h]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hc1 x) (hc1' x))`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by intros; ring)]`. Establish `: J m + J' m - ((c.sum fun x r => r * tab x m) + c'.sum fun x r => r * tab x m) = (J m - c.sum fun x r => r * tab x m) + (J' m - c'.sum fun x r => r * tab x m)` using `by ring`.
+
+Rewrite using `[this]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hcF m hm) (hcF' m hm))`.
+-/
 theorem clo_add {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} {J J' : I → ℂ_[p]}
     (h : InIntClosure Sup tab M J) (h' : InIntClosure Sup tab M J') : InIntClosure Sup tab M fun m => J m + J' m := by
   classical
@@ -126,6 +139,9 @@ theorem clo_add {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} {J J' : I 
     rw [this]
     exact (IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (hcF m hm) (hcF' m hm))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using clo_zero Sup tab M`. Consider the case `insert k s hk ih`. Simplify using `only [Finset.sum_insert hk]`. Conclude with `clo_add (h k (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))`.
+-/
 theorem clo_sum {κ : Type} {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} (s : Finset κ) (J : κ → I → ℂ_[p])
     (h : ∀ k ∈ s, InIntClosure Sup tab M (J k)) : InIntClosure Sup tab M fun m => ∑ k ∈ s, J k m := by
   classical
@@ -135,6 +151,9 @@ theorem clo_sum {κ : Type} {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I
     simp only [Finset.sum_insert hk]
     exact clo_add (h k (Finset.mem_insert_self _ _)) (ih fun j hj => h j (Finset.mem_insert_of_mem hj))
 
+/- English proof (translation)
+Introduce `F hF ε hε`. Take `⟨c, hc, hc1, hcF⟩` from `h F (hF.trans hM) ε hε`. Conclude with `⟨c, hc.trans hS, hc1, fun m hm => by rw [hJ m (hF hm)]; exact hcF m hm⟩`.
+-/
 theorem clo_congr {Sup Sup' : Set H} {tab : H → I → ℂ_[p]} {M M' : Set I} {J J' : I → ℂ_[p]}
     (h : InIntClosure Sup tab M J) (hS : Sup ⊆ Sup') (hM : M' ⊆ M) (hJ : ∀ m ∈ M', J' m = J m) :
     InIntClosure Sup' tab M' J' := by
@@ -142,6 +161,21 @@ theorem clo_congr {Sup Sup' : Set H} {tab : H → I → ℂ_[p]} {M M' : Set I} 
   obtain ⟨c, hc, hc1, hcF⟩ := h F (hF.trans hM) ε hε
   exact ⟨c, hc.trans hS, hc1, fun m hm => by rw [hJ m (hF hm)]; exact hcF m hm⟩
 
+/- English proof (translation)
+Introduce `F hF ε hε`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC0, hC⟩ : ∃ C : ℝ, 0 < C ∧ ∀ k ∈ s, ∀ m ∈ F, ‖r k m‖ ≤ C := by`. Use `⟨1 + ∑ q ∈ s ×ˢ F, ‖r q.1 q.2‖, by positivity, fun k hk m hm => ?_⟩` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun q : κ × I' => ‖r q.1 q.2‖) (fun _ _ => norm_nonneg _) (Finset.mk_mem_product hk hm)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Take `⟨c, hc, hc1, hcF⟩` from `h ((s ×ˢ F).image fun q => φ q.1 q.2) (by`. Introduce `i hi`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hi)`. Conclude with `hφ _ (Finset.mem_product.1 hq).1 _ (hF (Finset.mem_product.1 hq).2)) (ε / 2 / C) (by positivity)`. Establish `hmem : ∀ x, c x ≠ 0 → x ∈ Sup` using `fun x hx => hc (Finsupp.mem_support_iff.2 hx)`.
+
+Use `⟨Finsupp.onFinset c.support (fun x => c x * w x) (fun x hx => Finsupp.mem_support_iff.2 (left_ne_zero_of_mul hx)), ?_, fun x => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : c x * w x ≠ 0` using `by simpa using hx`. Assume the negation of the conclusion as `hn`. Conclude with `hx' (by rw [hw0 x (hmem x (left_ne_zero_of_mul hx')) hn, mul_zero])`.
+
+Rewrite using `[Finsupp.onFinset_apply]`. Distinguish the cases in `hx : c x = 0`. Simplify using `[hx]`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hc1 x) (norm_nonneg _) (hw x (hmem x hx))`.
+
+Rewrite using `[Finsupp.onFinset_sum _ (by simp)]`. Establish `e : ∑ k ∈ s, r k m * J (φ k m) - ∑ x ∈ c.support, c x * w x * tab' x m = ∑ k ∈ s, r k m * (J (φ k m) - c.sum fun x q => q * tab x (φ k m))`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, Finsupp.sum, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← htab x (hc hx) m (hF hm), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (C := ε / 2) (by positivity) fun k hk => ?_) (by linarith)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Establish `h1` using `hcF (φ k m) (Finset.mem_image.2 ⟨(k, m), Finset.mk_mem_product hk hm, rfl⟩)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem clo_comb {I' κ : Type} {Sup Sup' : Set H} {tab : H → I → ℂ_[p]} {tab' : H → I' → ℂ_[p]} {M : Set I} {M' : Set I'}
     {J : I → ℂ_[p]} (h : InIntClosure Sup tab M J) (s : Finset κ) (r : κ → I' → ℂ_[p]) (φ : κ → I' → I)
     (hφ : ∀ k ∈ s, ∀ m ∈ M', φ k m ∈ M) (w : H → ℂ_[p]) (hw : ∀ x ∈ Sup, ‖w x‖ ≤ 1) (hw0 : ∀ x ∈ Sup, x ∉ Sup' → w x = 0)
@@ -186,6 +220,9 @@ theorem clo_comb {I' κ : Type} {Sup Sup' : Set H} {tab : H → I → ℂ_[p]} {
     calc _ ≤ C * (ε / 2 / C) := mul_le_mul (hC k hk m hm) h1.le (norm_nonneg _) hC0.le
       _ = ε / 2 := by field_simp
 
+/- English proof (translation)
+Use `clo_comb (Sup' := Sup) (tab' := fun x m => c * tab x m) (M' := M) h ({()} : Finset Unit) (fun _ _ => r) (fun _ m => m) (fun _ _ _ hm => hm) (fun _ => r / c) (fun _ _ => by rw [norm_div]; exact div_le_one_of_le₀ hr (norm_nonneg _)) (fun _ h h' => absurd h h') (fun x _ m _ => by si …` as an intermediate fact. Simplify using `using this`.
+-/
 theorem clo_smul {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} {J : I → ℂ_[p]} (h : InIntClosure Sup tab M J)
     (r c : ℂ_[p]) (hc : c ≠ 0) (hr : ‖r‖ ≤ ‖c‖) :
     InIntClosure Sup (fun x m => c * tab x m) M fun m => r * J m := by
@@ -195,6 +232,9 @@ theorem clo_smul {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} {J : I �
     (fun x _ m _ => by simp only [Finset.sum_singleton]; field_simp)
   simpa using this
 
+/- English proof (translation)
+Simplify `hr)` using `using clo_smul h r 1 one_ne_zero (by simpa`.
+-/
 theorem clo_mul {Sup : Set H} {tab : H → I → ℂ_[p]} {M : Set I} {J : I → ℂ_[p]} (h : InIntClosure Sup tab M J)
     (r : ℂ_[p]) (hr : ‖r‖ ≤ 1) : InIntClosure Sup tab M fun m => r * J m := by
   simpa using clo_smul h r 1 one_ne_zero (by simpa using hr)

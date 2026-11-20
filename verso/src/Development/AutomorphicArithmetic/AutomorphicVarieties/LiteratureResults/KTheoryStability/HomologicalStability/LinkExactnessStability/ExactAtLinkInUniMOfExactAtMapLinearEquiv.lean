@@ -6,6 +6,11 @@ open GlobalTheory.SeqCx Matrix
 
 namespace GlobalTheory.SeqCxLinkEquiv
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `h`. Establish `hl : (l.map ψ).length = l.length` using `by simp`. Use `⟨fun i => (f (Fin.cast hl i)).comp ψ.symm.toLinearMap, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `hf (Fin.cast hl i) (Fin.cast hl j)` as an intermediate fact.
+
+Simplify `this` using `[Fin.ext_iff]`.
+-/
 theorem uniM_map_of_mem {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (ψ : M ≃ₗ[R] M)
     (l : List M) (h : l ∈ uniM R M) : l.map ψ ∈ uniM R M := by
   obtain ⟨f, hf⟩ := h
@@ -15,6 +20,15 @@ theorem uniM_map_of_mem {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] 
   have := hf (Fin.cast hl i) (Fin.cast hl j)
   simpa [Fin.ext_iff] using this
 
+/- English proof (translation)
+Use extensionality with `w`. Simplify using `only [linkIn, Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hw, hmem⟩`. Use `⟨w.map ψ.symm, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Rewrite using `[← hX]`. Simplify using `using hw y hy`. Use `uniM_map_of_mem ψ.symm _ hmem` as an intermediate fact.
+
+Simplify `this` using `[List.map_append, List.map_map, Function.comp_def]`. Simplify using `[List.map_map, Function.comp_def]`. Introduce and unpack `⟨w', ⟨hw', hmem⟩, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.1 hx`. Conclude with `(hX y).2 (hw' y hy)`. Use `uniM_map_of_mem ψ _ hmem` as an intermediate fact. Simplify `this` using `[List.map_append]`.
+-/
 theorem linkIn_map {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (ψ : M ≃ₗ[R] M)
     (X : Set M) (hX : ∀ x, ψ x ∈ X ↔ x ∈ X) (τ : List M) :
     linkIn (uniM R M) X (τ.map ψ) = List.map ψ '' linkIn (uniM R M) X τ := by
@@ -38,6 +52,9 @@ theorem linkIn_map {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (ψ :
     · have := uniM_map_of_mem ψ _ hmem
       simpa [List.map_append] using this
 
+/- English proof (translation)
+Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp [Finsupp.mapDomain_add, ha, hb]`. Consider the case `single l n`. Simplify using `[bd, Finsupp.mapDomain_single, Finsupp.linearCombination_single, Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, List.eraseIdx_map]`.
+-/
 private theorem bd_mapDomain_listMap_comm {V : Type} (g : V → V) (c : List V →₀ ℤ) :
     bd V (Finsupp.mapDomain (List.map g) c) = Finsupp.mapDomain (List.map g) (bd V c) := by
   induction c using Finsupp.induction_linear with
@@ -47,6 +64,9 @@ private theorem bd_mapDomain_listMap_comm {V : Type} (g : V → V) (c : List V �
     simp [bd, Finsupp.mapDomain_single, Finsupp.linearCombination_single,
       Finsupp.mapDomain_finset_sum, Finsupp.mapDomain_smul, List.eraseIdx_map]
 
+/- English proof (translation)
+Rewrite `hc`, the goal using `[chains, Finsupp.mem_supported]`. Introduce `x hx`. Take `⟨l, hl, rfl⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hx)`. Take `⟨hlF, hlen⟩` from `hc hl`. Conclude with `⟨hFG l hlF, by simp [hlen]⟩`.
+-/
 private theorem mapDomain_listMap_mem_chains_of_map_mem {V : Type} (g : V → V) (F G : Set (List V))
     (hFG : ∀ l ∈ F, l.map g ∈ G) (p : ℕ) (c : List V →₀ ℤ) (hc : c ∈ chains F p) :
     Finsupp.mapDomain (List.map g) c ∈ chains G p := by
@@ -57,6 +77,13 @@ private theorem mapDomain_listMap_mem_chains_of_map_mem {V : Type} (g : V → V)
   obtain ⟨hlF, hlen⟩ := hc hl
   exact ⟨hFG l hlF, by simp [hlen]⟩
 
+/- English proof (translation)
+Introduce `R M _ _ _ ψ X hX τ p h`. Rewrite `h` using `[linkIn_map ψ X hX τ]`. Introduce `c hc hbd`. Establish `hc'` using `mapDomain_listMap_mem_chains_of_map_mem (⇑ψ) (linkIn (uniM R M) X τ) (List.map ψ '' linkIn (uniM R M) X τ) (fun l hl => ⟨l, hl, rfl⟩) p c hc`. Take `⟨b, hb, hbb⟩` from `h _ hc' (by rw [bd_mapDomain_listMap_comm, hbd]; simp)`.
+
+Use `⟨Finsupp.mapDomain (List.map ψ.symm) b, mapDomain_listMap_mem_chains_of_map_mem (⇑ψ.symm) _ _ ?_ _ b hb, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Simplify `hl` using `[List.map_map, Function.comp_def]`. Establish `hid : (List.map ψ.symm ∘ List.map ψ) = id`. Use function extensionality and compare the values at `l`.
+
+Simplify using `[List.map_map, Function.comp_def]`. Rewrite using `[bd_mapDomain_listMap_comm, hbb, ← Finsupp.mapDomain_comp, hid, Finsupp.mapDomain_id]`.
+-/
 theorem exactAt_linkIn_of_map : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ψ : M ≃ₗ[R] M) (X : Set M), (∀ x, ψ x ∈ X ↔ x ∈ X) → ∀ (τ : List M) (p : ℕ), ExactAt (linkIn (uniM R M) X (τ.map ψ)) p → ExactAt (linkIn (uniM R M) X τ) p := by
   intro R M _ _ _ ψ X hX τ p h
   rw [linkIn_map ψ X hX τ] at h
@@ -77,6 +104,9 @@ end GlobalTheory.SeqCxLinkEquiv
 
 section
 open GlobalTheory.SeqCx Matrix
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.SeqCxLinkEquiv.exactAt_linkIn_of_map`. Consider the case `exact @GlobalTheory.SeqCxLinkEquiv.linkIn_map`. Consider the case `exact @GlobalTheory.SeqCxLinkEquiv.uniM_map_of_mem`.
+-/
 theorem _root_.GlobalTheory.T.exactAt_linkIn_uniM_of_exactAt_map_linearEquiv : ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] (ψ : M ≃ₗ[R] M) (X : Set M), (∀ x, ψ x ∈ X ↔ x ∈ X) → ∀ (τ : List M) (p : ℕ), ExactAt (linkIn (uniM R M) X (τ.map ψ)) p → ExactAt (linkIn (uniM R M) X τ) p := by
   first
   | exact @GlobalTheory.SeqCxLinkEquiv.exactAt_linkIn_of_map

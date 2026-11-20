@@ -7,6 +7,31 @@ namespace GlobalTheory.CNorm
 
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
+/- English proof (translation)
+Take `⟨n, ι, _, q, hq, e, ⟨φ⟩⟩` from `AddCommGroup.equiv_free_prod_directSum_zmod M`. Use `haveI : ∀ i, NeZero (q i ^ e i) := fun i => ⟨pow_ne_zero _ (hq i).ne_zero⟩`. Use `haveI : Finite (DirectSum ι fun i => ZMod (q i ^ e i)) := Finite.of_equiv _ (DirectSum.linearEquivFunOnFintype ℤ ι _).toEquiv.symm`. Use `set D := DirectSum ι fun i => ZMod (q i ^ e i)`. Use `set P := Fin n →₀ ℤ`.
+
+Establish `hker : Nat.card (nsmulAddMonoidHom (α` using `M) p).ker = Nat.card (nsmulAddMonoidHom (α := D) p).ker := by`. Use `Nat.card_congr { toFun := fun x => ⟨(φ x).2, ?_⟩ invFun := fun y => ⟨φ.symm (0, y), ?_⟩ left_inv := ?_ right_inv := ?_ }` and prove the remaining obligations. Establish `h` using `congrArg φ x.2`. Rewrite `h` using `[nsmulAddMonoidHom_apply, map_nsmul, map_zero]`. Rewrite using `[AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply]`.
+
+Conclude with `congrArg Prod.snd h`. Establish `h` using `y.2`. Rewrite `h`, the goal using `[AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply]`. Rewrite using `[← map_nsmul, Prod.smul_mk, smul_zero, h, Prod.mk_zero_zero, map_zero]`. Introduce `x`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `φ.injective` to reduce the goal to its premises. Establish `h` using `congrArg φ x.2`. Rewrite `h` using `[nsmulAddMonoidHom_apply, map_nsmul, map_zero]`. Establish `h1 : p • (φ x).1 = 0` using `congrArg Prod.fst h`.
+
+Establish `h2 : (φ x).1 = 0` using `(smul_eq_zero.mp h1).resolve_left hp.ne'`. Simplify using `only [AddEquiv.apply_symm_apply]`. Conclude with `Prod.ext h2.symm rfl`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using the standard rewrite rules. Establish `hrange : (nsmulAddMonoidHom (α` using `M) p).range = AddSubgroup.comap φ.toAddMonoidHom ((nsmulAddMonoidHom (α := P) p).range.prod (nsmulAddMonoidHom (α := D) p).range) := by`. Use extensionality with `x`. Simplify using `only [AddMonoidHom.mem_range, nsmulAddMonoidHom_apply, AddSubgroup.mem_comap, AddSubgroup.mem_prod, AddEquiv.coe_toAddMonoidHom]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨⟨(φ y).1, by rw [map_nsmul]; rfl⟩, ⟨(φ y).2, by rw [map_nsmul]; rfl⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨φ.symm (a, b), φ.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, AddEquiv.apply_symm_apply, Prod.smul_mk, ha, hb]`.
+
+Establish `hindexD : (nsmulAddMonoidHom (α` using `D) p).range.index = Nat.card (nsmulAddMonoidHom (α := D) p).ker := by haveI : (nsmulAddMonoidHom (α := D) p).ker.FiniteIndex := AddSubgroup.finiteIndex_of_finite`. Conclude with `AddSubgroup.index_range`. Establish `hrank : Module.finrank ℤ M = n`. Rewrite using `[φ.toIntLinearEquiv.finrank_eq]`. Establish `h` using `LinearMap.rank_range_add_rank_ker (LinearMap.fst ℤ P D)`.
+
+Rewrite `h` using `[LinearMap.range_eq_top.mpr fun x => ⟨(x, 0), rfl⟩, LinearMap.ker_fst, rank_top]`. Establish `h0 : Module.rank ℤ (LinearMap.inr ℤ P D).range = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce and unpack `⟨x, y, rfl⟩`. Use `⟨(Nat.card D : ℤ), by exact_mod_cast Nat.card_pos.ne', ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SetLike.val_smul, LinearMap.coe_inr, Submodule.coe_zero, natCast_zsmul]`. Use `ext`. Simplify using the standard rewrite rules. Simplify using `using card_nsmul_eq_zero' (x := y)`.
+
+Rewrite `h` using `[h0, add_zero, rank_finsupp_self, Cardinal.mk_fin, Cardinal.lift_natCast]`. Express the relevant statement in the definitionally equal form `Module.finrank ℤ (P × D) = n`. Rewrite using `[Module.finrank, ← h]`. Simplify using the standard rewrite rules. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hker]`. Conclude with `Nat.card_pos.ne'`. Rewrite using `[hrange, AddSubgroup.index_comap_of_surjective _ φ.surjective, AddSubgroup.index_prod, AddSubgroup.index_range_nsmul, Module.finrank_finsupp_self, Fintype.card_fin, hrank, hindexD, hker]`.
+-/
 private theorem card_quot_range_nsmul_eq_pow_finrank_mul_card_ker (M : Type) [AddCommGroup M]
     [AddGroup.FG M] (p : ℕ) (hp : 0 < p) :
     Nat.card (nsmulAddMonoidHom (α := M) p).ker ≠ 0 ∧
@@ -87,6 +112,17 @@ private theorem card_quot_range_nsmul_eq_pow_finrank_mul_card_ker (M : Type) [Ad
 open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
+/- English proof (translation)
+Introduce `p G _ _ hp`. Take `⟨h1, h2⟩` from `card_quot_range_nsmul_eq_pow_finrank_mul_card_ker (Additive G) p hp`. Establish `htor : _root_.GlobalTheory.CNorm.pTor p (⊤ : Subgroup G) = Nat.card (nsmulAddMonoidHom (α` using `Additive G) p).ker := by`. Unfold `_root_.GlobalTheory.CNorm.pTor`. Use `Nat.card_congr { toFun := fun x => ⟨Additive.ofMul x.1, ?_⟩ invFun := fun y => ⟨y.1.toMul, Subgroup.mem_top _, ?_⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }` and prove the remaining obligations.
+
+Rewrite using `[AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply, ← ofMul_pow, x.2.2, ofMul_one]`. Establish `h` using `y.2`. Rewrite `h` using `[AddMonoidHom.mem_ker, nsmulAddMonoidHom_apply]`. Rewrite using `[← toMul_nsmul, h, toMul_zero]`. Establish `hidx : _root_.GlobalTheory.CNorm.pIdx p (⊤ : Subgroup G) = (nsmulAddMonoidHom (α` using `Additive G) p).range.index := by`.
+
+Unfold `_root_.GlobalTheory.CNorm.pIdx _root_.GlobalTheory.CNorm.pows`. Rewrite using `[Subgroup.relIndex_top_right, ← Subgroup.index_toAddSubgroup]`. Use `congr 1`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `Additive.toMul x ∈ Subgroup.map (powMonoidHom p) ⊤ ↔ _`.
+
+Rewrite using `[Subgroup.mem_map, AddMonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, hy⟩`. Conclude with `⟨Additive.ofMul y, by`. Rewrite using `[nsmulAddMonoidHom_apply, ← ofMul_pow, ← powMonoidHom_apply, hy, ofMul_toMul]⟩`.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨Additive.toMul y, Subgroup.mem_top _, by`. Rewrite using `[powMonoidHom_apply, ← toMul_nsmul, ← nsmulAddMonoidHom_apply, hy]⟩`. Conclude with `⟨htor ▸ h1, by rw [hidx, htor]; exact h2⟩`.
+-/
 theorem _root_.GlobalTheory.CNorm.pIdx_top_of_fg : ∀ (p : ℕ) (G : Type) [CommGroup G] [Group.FG G],
     0 < p →
     _root_.GlobalTheory.CNorm.pTor p (⊤ : Subgroup G) ≠ 0 ∧

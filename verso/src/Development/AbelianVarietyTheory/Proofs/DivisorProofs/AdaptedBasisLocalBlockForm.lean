@@ -26,45 +26,69 @@ open Matrix
 
 namespace GlobalTheory.UnipEmb
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.local_unipotent_embedding_action`.
+-/
 theorem matHom_emb_mulVec : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) (y : Fin n → AF F ⊗[F] E),
     (matHom (AF F) σ J (emb σ J v x)).1 *ᵥ y =
       y + fun k => GlobalTheory.UnipEmb.locInc F E v ((((matHom (Fv F v) σ J x).1 - 1) *ᵥ fun i => compFin F E v (y i)) k) := GlobalTheory.T.local_unipotent_embedding_action
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.local_span_column_inclusion`.
+-/
 theorem locInc_splitIncl_mem : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ}
     (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r)) (u : Fin n → Fv F v),
     u ∈ Submodule.span (Fv F v) ((fun i k => τ (X k i)) '' I) →
     (fun k => GlobalTheory.UnipEmb.locInc F E v (splitIncl h τ u k)) ∈ GlobalTheory.StdPar.colSpan F X I := GlobalTheory.T.local_span_column_inclusion
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.split_projection_column_span_mem`.
+-/
 theorem splitProj_compFin_mem_span : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {n r : ℕ} (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r))
     (y : Fin n → AF F ⊗[F] E), y ∈ GlobalTheory.StdPar.colSpan F X I →
     (fun k => splitProj τ (compFin F E v (y k))) ∈ Submodule.span (Fv F v) ((fun i k => τ (X k i)) '' I) := GlobalTheory.T.split_projection_column_span_mem
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.split_projection_orthogonal_column_fixed`.
+-/
 theorem colPerp_pair_eq_zero : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : IsHermND σ J)
     {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v) {r : ℕ} (X : Matrix (Fin n) (Fin r) E) (I : Set (Fin r))
     (y : Fin n → AF F ⊗[F] E), y ∈ GlobalTheory.StdPar.colPerp σ J X I → ∀ (i : Fin r), i ∈ I →
     (fun k => splitProj (τ.comp σ) (compFin F E v (y k))) ⬝ᵥ (J.map τ *ᵥ fun k => τ (X k i)) = 0 := GlobalTheory.T.split_projection_orthogonal_column_fixed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.split_unitary_fixes_orthogonal_complement`.
+-/
 theorem splitHom_comp_mulVec_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E}
     {n : ℕ} {J : Matrix (Fin n) (Fin n) E}, IsHermND σ J → ∀ {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v)
     (x : GLoc σ J v) (W : Submodule (Fv F v) (Fin n → Fv F v)), (∀ z, ((splitHom σ J τ x).1 - 1) *ᵥ z ∈ W) →
     ∀ (u : Fin n → Fv F v), (∀ w ∈ W, u ⬝ᵥ (J.map τ *ᵥ w) = 0) → (splitHom σ J (τ.comp σ) x).1 *ᵥ u = u := GlobalTheory.T.split_unitary_fixes_orthogonal_complement
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unipotent_radical_conjugate_displacement_span`.
+-/
 theorem conj_unip_sub_one_mulVec_mem : ∀ {K : Type} [Field K] {α : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] {N : ℕ} (e : (Σ a, m a) ≃ Fin N) (u : GL (Fin N) K),
     u ∈ GlobalTheory.SmGL.unipRad K e → ∀ (B : GL (Fin N) K) (z : Fin N → K),
     ((B * u * B⁻¹).1 - 1) *ᵥ z ∈ Submodule.span K ((fun k a => B.1 a k) ''
       {k | ∃ j, (e.symm k).1 < (e.symm j).1 ∧ ((B⁻¹).1 *ᵥ z) j ≠ 0}) := GlobalTheory.T.unipotent_radical_conjugate_displacement_span
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.triple_block_placement_index_value`.
+-/
 theorem tripPlace_symm_fst : ∀ {l d N : ℕ} (h : l + d ≤ N) (k : Fin N),
     ((tripPlace h).symm k).1 = if k.val < l then 0 else if k.val < l + d then 1 else 2 := GlobalTheory.T.triple_block_placement_index_value
 
 end GlobalTheory.UnipEmb
 
 namespace GlobalTheory.UnipEmb
+/- English proof (translation)
+Apply the tactic sequence `split_ifs at h with h1 h2 h3 h4 h5 h6 h7 h8 <;> first | exact absurd h (by decide) | omega`.
+-/
 theorem tri_lt {l d a b : ℕ}
     (h : (if a < l then (0 : Fin 3) else if a < l + d then 1 else 2) < (if b < l then 0 else if b < l + d then 1 else 2)) :
     a < b ∧ a < l + d ∧ l ≤ b ∧ (b < l + d → a < l) := by
@@ -73,6 +97,71 @@ end GlobalTheory.UnipEmb
 
 namespace GlobalTheory.UnipEmb
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hCM n J hJ r Xf Yf hWF v t C hC S l d hgap hk hp hld g hg x hx`. Establish `hbl' : ∀ k : Fin n, ((tripPlace hld).symm k).1 = if k.val < l then 0 else if k.val < l + d then 1 else 2` using `fun k => tripPlace_symm_fst hld k`. Take `⟨k0, hk0S, hk0⟩` from `hk`. Establish `hldr : l + d ≤ r` using `by have := k0.2; omega`. Establish `hrn : r ≤ n` using `by have := hC.le; omega`.
+
+Use `set B : GL (Fin n) (Fv F v) := Matrix.GeneralLinearGroup.map (t : E →+* Fv F v) C with hB`. Use `set tx : Fin r → Fin n → Fv F v := fun i a => t (Xf a i) with htx`. Use `set sx : Fin r → Fin n → Fv F v := fun i a => (t.comp σ) (Xf a i) with hsx`. Establish `hcol : ∀ (k : Fin n) (hk : k.val < r), (fun a => B.1 a k) = tx ⟨k.val, hk⟩`. Introduce `k hk`.
+
+Use function extensionality and compare the values at `a`. Use `show t (C.1 a k) = _`. Rewrite using `[hC.colX k ⟨k.val, hk⟩ rfl a]`. Set `Ann : Submodule (Fv F v) (Fin n → Fv F v)` to `{ carrier := {u | ∀ i : Fin r, i.val < l + d → u ⬝ᵥ (J.map t *ᵥ tx i) = 0} add_mem' := fun {a b} ha hb i hi => by rw [add_dotProduct, ha i hi, hb i hi, add_zero] zero_mem' := fun i _ => zero_dotProduct _ smul_mem' := fun c a ha i hi => by rw [smul_dotProduct, ha i hi, smul_zero] …`. Establish `mem_Ann : ∀ u, u ∈ Ann ↔ ∀ i : Fin r, i.val < l + d → u ⬝ᵥ (J.map t *ᵥ tx i) = 0` using `fun u => Iff.rfl`.
+
+Establish `sx_Ann : ∀ j, sx j ∈ Ann`. Introduce `j`. Rewrite using `[mem_Ann]`. Introduce `i _`. Establish `e` using `congrFun (congrFun hWF.xx j) i`.
+
+Establish `e2 : sx j ⬝ᵥ (J.map t *ᵥ tx i) = t ((Formalism.UG.cT (σ : E →+* E) Xf * J * Xf) j i)`. Simplify using `only [hsx, htx, dotProduct, mulVec, Matrix.mul_apply, Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, map_sum, map_mul, AlgHom.comp_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Rewrite using `[e2, e]`.
+
+Simplify using the standard rewrite rules. Establish `span_Ann : ∀ I : Set (Fin r), Submodule.span (Fv F v) (sx '' I) ≤ Ann` using `fun I => Submodule.span_le.2 (by rintro _ ⟨j, -, rfl⟩; exact sx_Ann j)`. Establish `F1 : ∀ (g' : GL (Fin n) (Fv F v)), g' ∈ GlobalTheory.SmGL.unipRad (Fv F v) (tripPlace hld) → ∀ z, ((B * g' * B⁻¹).1 - 1) *ᵥ z ∈ Submodule.span (Fv F v) (tx '' {i | i.val < l + d})`. Introduce `g' hg' z`. Use `Submodule.span_mono ?_ (conj_unip_sub_one_mulVec_mem _ g' hg' B z)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨k, ⟨j, hkj, -⟩, rfl⟩`. Rewrite `hkj` using `[hbl' k, hbl' j]`. Establish `hk2` using `(tri_lt hkj).2.1`. Conclude with `⟨⟨k.val, by omega⟩, hk2, (hcol k (by omega)).symm⟩`. Establish `F2 : ∀ (g' : GL (Fin n) (Fv F v)), g' ∈ GlobalTheory.SmGL.unipRad (Fv F v) (tripPlace hld) → ∀ j : Fin r, ((B * g' * B⁻¹).1 - 1) *ᵥ tx j ∈ Submodule.span (Fv F v) (tx '' {i | i.val < j.val ∧ i.val < l + d ∧ l ≤ j.val ∧ (j.val < l + d → i.val < l)})`.
+
+Introduce `g' hg' j`. Establish `hj : tx j = B.1 *ᵥ Pi.single (⟨j.val, by omega⟩ : Fin n) 1`. Rewrite using `[Matrix.mulVec_single_one, ← hcol ⟨j.val, by omega⟩ j.2]; rfl`. Establish `hBi : (B⁻¹).1 *ᵥ tx j = Pi.single (⟨j.val, by omega⟩ : Fin n) 1`. Rewrite using `[hj, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Use `Submodule.span_mono ?_ (conj_unip_sub_one_mulVec_mem _ g' hg' B (tx j))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, ⟨j', hkj, hne⟩, rfl⟩`. Rewrite `hne` using `[hBi]`. Establish `hj' : j' = ⟨j.val, by omega⟩`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hne (Pi.single_eq_of_ne hc 1)`. Rewrite `hkj` using `[hj', hbl' k, hbl' _]`. Use `tri_lt hkj` as an intermediate fact. Simplify using `only [Fin.val_mk] at this`. Conclude with `⟨⟨k.val, by omega⟩, this, (hcol k (by omega)).symm⟩`.
+
+Establish `G3 : ∀ (x' : GLoc σ J v) (g' : GL (Fin n) (Fv F v)), g' ∈ GlobalTheory.SmGL.unipRad (Fv F v) (tripPlace hld) → (splitHom σ J t x').1 = (B * g' * B⁻¹).1 → ∀ u ∈ Ann, (splitHom σ J (t.comp σ) x').1 *ᵥ u = u`. Introduce `x' g' hg' he u hu`. Use `splitHom_comp_mulVec_eq hJ t x' _ (fun z => by rw [he]; exact F1 g' hg' z) u ?_` and prove the remaining obligations. Introduce `w hw`. Set `P : Submodule (Fv F v) (Fin n → Fv F v)` to `{ carrier := {w | u ⬝ᵥ (J.map t *ᵥ w) = 0} add_mem' := fun {a b} ha hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq] at *`. Rewrite using `[Matrix.mulVec_add, dotProduct_add, ha, hb, add_zero]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq] at *`.
+
+Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, ha, smul_zero] }`. Establish `: Submodule.span (Fv F v) (tx '' {i | i.val < l + d}) ≤ P` using `Submodule.span_le.2 (by rintro _ ⟨i, hi, rfl⟩; exact hu i hi)`. Conclude with `this hw`. Establish `key : ∀ (x' : GLoc σ J v) (y : Fin n → AF F ⊗[F] E) (I' : Set (Fin r)), ((splitHom σ J t x').1 - 1) *ᵥ (fun k => splitProj t (compFin F E v (y k))) ∈ Submodule.span (Fv F v) (tx '' I') → ((splitHom σ J (t.comp σ) x').1 - 1) *ᵥ (fun k => splitProj (t.comp σ) (compFin F E v (y k))) …`. Introduce `x' y I' h1 h2`.
+
+Rewrite using `[matHom_emb_mulVec, add_sub_cancel_left]`. Use `set w := ((matHom (Fv F v) σ J x').1 - 1) *ᵥ fun i => compFin F E v (y i) with hw0`. Establish `hw : splitIncl hCM t (splitVec t w) + splitIncl hCM (t.comp σ) (splitVec (t.comp σ) w) = w` using `(splitVecEquiv hCM t).symm_apply_apply w`. Establish `e1 : ∀ τ : E →ₐ[F] Fv F v, splitVec τ w = ((splitHom σ J τ x').1 - 1) *ᵥ fun k => splitProj τ (compFin F E v (y k))`. Introduce `τ`.
+
+Establish `hm : ((matHom (Fv F v) σ J x').1 - 1).map (splitProj τ) = (splitHom σ J τ x').1 - 1`. Use extensionality with `i j`. Rewrite using `[splitHom_val]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite using `[hw0, splitVec_mulVec, hm]`. Both sides reduce to the same expression. Rewrite `hw` using `[e1, e1, h2]`.
+
+Establish `h0 : splitIncl hCM (t.comp σ) (0 : Fin n → Fv F v) = 0` using `by funext i; simp [splitIncl]`. Rewrite `hw` using `[h0, add_zero]`. Rewrite using `[← hw]`. Conclude with `locInc_splitIncl_mem hCM t Xf I' _ h1`. Establish `Stab : ∀ (x' : GLoc σ J v) (g' : GL (Fin n) (Fv F v)), g' ∈ GlobalTheory.SmGL.unipRad (Fv F v) (tripPlace hld) → (splitHom σ J t x').1 = (B * g' * B⁻¹).1 → ∀ (I : Set (Fin r)), (∀ i ∈ I, ∀ i' : Fin r, i'.val < i.val → i' ∈ I) → ∀ y, y ∈ GlobalTheory.StdPar.colSpan F Xf I → (matHo …`.
+
+Introduce `x' g' hg' he I hI y hy`. Use `key x' y I ?_ ?_` and prove the remaining obligations. Establish `hq` using `splitProj_compFin_mem_span t Xf I y hy`. Establish `hle : Submodule.span (Fv F v) (tx '' I) ≤ (Submodule.span (Fv F v) (tx '' I)).comap (Matrix.mulVecLin ((splitHom σ J t x').1 - 1))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, he]`. Use `Submodule.span_mono ?_ (F2 g' hg' i)` and prove the remaining obligations. Introduce and unpack `_ ⟨i', hi', rfl⟩`.
+
+Conclude with `⟨i', hI i hi i' hi'.1, rfl⟩`. Conclude with `hle hq`. Establish `hu : (fun k => splitProj (t.comp σ) (compFin F E v (y k))) ∈ Ann` using `span_Ann I (splitProj_compFin_mem_span (t.comp σ) Xf I y hy)`. Rewrite using `[Matrix.sub_mulVec, G3 x' g' hg' he _ hu, Matrix.one_mulVec, sub_self]`. Establish `hx1 : (splitHom σ J t x).1 = (B * g * B⁻¹).1` using `hx`.
+
+Establish `hxi : (splitHom σ J t x⁻¹).1 = (B * g⁻¹ * B⁻¹).1`. Establish `e : splitHom σ J t x = B * g * B⁻¹` using `Units.ext hx`. Rewrite using `[map_inv, e]`. Use `congr 1`. Use `group`.
+
+Establish `hgi : g⁻¹ ∈ GlobalTheory.SmGL.unipRad (Fv F v) (tripPlace hld)` using `inv_mem hg`. Establish `back : ∀ y, (matHom (AF F) σ J (emb σ J v x⁻¹)).1 *ᵥ ((matHom (AF F) σ J (emb σ J v x)).1 *ᵥ y) = y`. Introduce `y`. Rewrite using `[Matrix.mulVec_mulVec, map_inv, map_inv, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `trivA : ∀ I : Set (Fin r), (∀ i ∈ I, ∀ i' : Fin r, i'.val < i.val → i' ∈ I) → ∀ y, y ∈ GlobalTheory.StdPar.colSpan F Xf I ↔ (matHom (AF F) σ J (emb σ J v x)).1 *ᵥ y ∈ GlobalTheory.StdPar.colSpan F Xf I`.
+
+Introduce `I hI y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `add_mem hy (Stab x g hg hx1 I hI y hy)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+
+Introduce `hy`. Use `add_mem hy (Stab x⁻¹ g⁻¹ hgi hxi I hI _ hy)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, back]`. Then use the resulting hypothesis. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_iInf.2 fun j => ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun y => trivA _ ?_ y, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `i ⟨k, hkS, hik, hkj⟩ i' hi'`. Conclude with `⟨k, hkS, Fin.le_iff_val_le_val.2 (by have := Fin.le_iff_val_le_val.1 hik; omega), hkj⟩`. Use `key x y _ ?_ ?_` and prove the remaining obligations. Establish `hq` using `splitProj_compFin_mem_span t Xf {j} y hy`. Establish `hle : Submodule.span (Fv F v) (tx '' {j}) ≤ (Submodule.span (Fv F v) (tx '' {i | ∃ k ∈ S, i ≤ k ∧ k < j})).comap (Matrix.mulVecLin ((splitHom σ J t x).1 - 1))`.
+
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Rewrite `hi` using `[Set.mem_singleton_iff]`. Substitute `hi` using the available equality. Use `Submodule.mem_comap.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVecLin_apply, hx1]`. Use `Submodule.span_mono ?_ (F2 g hg i)` and prove the remaining obligations. Introduce and unpack `_ ⟨i', ⟨h1, h2, h3, h4⟩, rfl⟩`. Use `⟨i', ?_, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hj : i.val < l + d`.
+
+Establish `h5` using `h4 hj`. Break down `hp with hp | ⟨p, hpS, hp⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `⟨p, hpS, Fin.le_iff_val_le_val.2 (by omega), Fin.lt_iff_val_lt_val.2 (by omega)⟩`. Conclude with `⟨k0, hk0S, Fin.le_iff_val_le_val.2 (by omega), Fin.lt_iff_val_lt_val.2 (by omega)⟩`.
+
+Conclude with `hle hq`. Establish `hu : (fun k => splitProj (t.comp σ) (compFin F E v (y k))) ∈ Ann` using `span_Ann {j} (splitProj_compFin_mem_span (t.comp σ) Xf {j} y hy)`. Rewrite using `[Matrix.sub_mulVec, G3 x g hg hx1 _ hu, Matrix.one_mulVec, sub_self]`. Use `⟨fun y => trivA _ ?_ y, fun y hy => ?_⟩` and prove the remaining obligations. Introduce and unpack `i ⟨k, hkS, hik⟩ i' hi'`.
+
+Conclude with `⟨k, hkS, Fin.le_iff_val_le_val.2 (by have := Fin.le_iff_val_le_val.1 hik; omega)⟩`. Use `key x y _ ?_ ?_` and prove the remaining obligations. Rewrite using `[hx1]`. Use `Submodule.span_mono ?_ (F1 g hg _)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+
+Conclude with `⟨i, ⟨k0, hk0S, Fin.le_iff_val_le_val.2 (by simp only [Set.mem_setOf_eq] at hi; omega)⟩, rfl⟩`. Establish `hu : (fun k => splitProj (t.comp σ) (compFin F E v (y k))) ∈ Ann`. Rewrite using `[mem_Ann]`. Introduce `i hi`. Conclude with `colPerp_pair_eq_zero hCM hJ t Xf _ y hy i ⟨k0, hk0S, Fin.le_iff_val_le_val.2 (by omega)⟩`.
+
+Rewrite using `[Matrix.sub_mulVec, G3 x g hg hx1 _ hu, Matrix.one_mulVec, sub_self]`.
+-/
 theorem emb_mem_unip : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf → ∀ (v : HeightOneSpectrum (𝓞 F)) (t : E →ₐ[F] Fv F v) (C : GL (Fin n) E), GlobalTheory.BlockForms.IsAdapted σ J Xf Yf C →

@@ -10,6 +10,11 @@ namespace GlobalTheory.DefiniteBCFrozen
 
 attribute [local instance] GlobalTheory.CuspRep.host_isCMField
 
+/- English proof (translation)
+Use `⟨fun p hp => ⟨(h.discrete p hp).1, (h.discrete p hp).2, h.conjSelfDual p hp⟩, ?_, h.rank, h.split, h.inert, h.inf⟩` and prove the remaining obligations. Use `h.distinct.map ?_` and prove the remaining obligations. Introduce and unpack `⟨a, π, d⟩ ⟨a', π', d'⟩ hh`. Simplify using `only [Prod.mk.injEq, Sigma.mk.injEq] at hh`. Take `⟨⟨rfl, h2⟩, rfl⟩` from `hh`.
+
+Consider the cases of `h2`. Both sides reduce to the same expression.
+-/
 theorem isBC_of_isBaseChange {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
     {B : NBC A} {j : ℕ} {π : B.AU j} {Pa : List (Part A.CG)}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.BaseChangeDistinctness.IsBaseChange B j π Pa) : SphericalInertData.IsBC N A B j π Pa := by
@@ -22,6 +27,9 @@ theorem isBC_of_isBaseChange {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N
   cases h2
   rfl
 
+/- English proof (translation)
+Introduce `D rc hNT hB hMW hP hS hSat hC hU _ _ j h1 h2 _ _ π hπ`. Take `⟨Pa, hPa⟩` from `baseChangeDefinite_at D.nbc rc hNT hB hMW hP hS hSat hC hU j h1 h2 π hπ`. Conclude with `⟨Pa, isBC_of_isBaseChange hPa⟩`.
+-/
 theorem baseChangeDefinite_of_cmDatum_recLaws : ∀ (D : D7) (rc : RecMap D.naut), GlobalTheory.Published.BaseChangeDefiniteUnitary →
     GlobalTheory.Published.BernsteinUnitaryProductIrreducible → DiscreteSpectrum D.host.E → RecProd rc → RecSpeh rc →
     RecSatake rc → CuspRead rc → UnitaryRead D.nbc rc → SphericalInertData.Conclusion1 D := by

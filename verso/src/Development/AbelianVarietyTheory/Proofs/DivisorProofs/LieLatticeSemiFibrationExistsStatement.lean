@@ -11,6 +11,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.QuasiPlurisubhar
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LieAlgebraMaps
 open NumberField Formalism.BasicNotions Formalism.MainNotions ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.TrueGeo GlobalTheory.ShFam.Pad GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.HeightParts
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightParts.lieLat_torusExt_at_boundary | exact GlobalTheory.HeightParts.lieLat_torusExt_at_boundary | (intros; apply GlobalTheory.HeightParts.lieLat_torusExt_at_boundary <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lie_lattice_semi_fibration_exists : Hypotheses2 → HypothesesH → GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraMaps.TorusSaturated → OnObj fun D O _ _ H _ => ∃ C₀ : ℝ, ∀ C : ℝ, C₀ ≤ C →
   ∀ y : Pt O.s, y ∉ H.int → ∃ (K : Type) (_ : Field K) (_ : NumberField K) (L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K))
     (h : HermFam K (Fin (D.R.f * O.N) → K)), IsLieAt O y K L h ∧

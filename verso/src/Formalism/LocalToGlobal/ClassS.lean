@@ -77,8 +77,14 @@ def LinkedFamiliesAligned : FamClass := fun {_} Fm =>
   LinkedFamiliesFixedValues Fm ∧ Formalism.MainNotions.DIV.Align.SmallFirstModulusBelowScale Fm ∧
     Formalism.MainNotions.TameDistinctF Fm
 
+/- English proof (translation)
+The claim follows from `h.1.1`.
+-/
 theorem LinkedFamiliesAligned.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesAligned Fm) : LinkedFamiliesLevelClass Fm := h.1.1
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => let ⟨T, _⟩ := h x hx hx0 i; ⟨T⟩⟩`.
+-/
 theorem LinkedFamiliesOneLevel.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesOneLevel Fm) : LinkedFamiliesLevelClass Fm := by
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx hx0 i => let ⟨T, _⟩ := h x hx hx0 i; ⟨T⟩⟩

@@ -18,11 +18,17 @@ open GlobalTheory.RigidTriv
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[← gm_id_pull f y V hy, pullU_res₂ f h u]`. Conclude with `gm_rp₁ f y U (f ⁻¹ᵁ V) (f.preimage_mono h) hy u`.
+-/
 private theorem gm_res_eq_gm (f : Y ⟶ X) (y : Y) {U V : X.Opens} (h : V ≤ U) (hy : f y ∈ V) (u : Γ(X, U)ˣ) :
     gm f y V (res h u) = gm f y U u := by
   rw [← gm_id_pull f y V hy, pullU_res₂ f h u]
   exact gm_rp₁ f y U (f ⁻¹ᵁ V) (f.preimage_mono h) hy u
 
+/- English proof (translation)
+Simplify using `only [LB.div]`. Rewrite using `[map_mul, map_inv]`. Use `erw [gm_res_eq_gm f y _ hm, gm_res_eq_gm f y _ hm]`.
+-/
 theorem gm_div {M M' : LB X} (f : Y ⟶ X) (y : Y) (a a' : M.ι) (b b' : M'.ι)
     (hm : f y ∈ M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b')) :
     gm f y (M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b')) ((LB.div M M').g (a, b) (a', b')) =
@@ -31,6 +37,11 @@ theorem gm_div {M M' : LB X} (f : Y ⟶ X) (y : Y) (a a' : M.ι) (b b' : M'.ι)
   rw [map_mul, map_inv]
   erw [gm_res_eq_gm f y _ hm, gm_res_eq_gm f y _ hm]
 
+/- English proof (translation)
+Establish `hl : M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b') ≤ M.U a ⊓ M'.U b` using `inf_le_left`. Establish `hr : M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b') ≤ M.U a' ⊓ M'.U b'` using `inf_le_right`. Use `(gm_res_eq_gm f y hl hm (w.s (a, b))).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gm f y (M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b'))) (hw (a, b) (a', b'))).trans ?_` and prove the remaining obligations. Use `(map_mul (gm f y (M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b'))) _ _).trans ?_` and prove the remaining obligations.
+
+Conclude with `congrArg₂ (· * ·) (gm_div f y a a' b b' hm) (gm_res_eq_gm f y hr hm (w.s (a', b')))`.
+-/
 theorem gm_iso {M M' : LB X} {w : LB.Iso M' M} (hw : w.IsGen) (f : Y ⟶ X) (y : Y) (a a' : M.ι) (b b' : M'.ι)
     (hm : f y ∈ M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b')) :
     gm f y (M.U a ⊓ M'.U b) (w.s (a, b)) =
@@ -42,6 +53,11 @@ theorem gm_iso {M M' : LB X} {w : LB.Iso M' M} (hw : w.IsGen) (f : Y ⟶ X) (y :
   refine (map_mul (gm f y (M.U a ⊓ M'.U b ⊓ (M.U a' ⊓ M'.U b'))) _ _).trans ?_
   exact congrArg₂ (· * ·) (gm_div f y a a' b b' hm) (gm_res_eq_gm f y hr hm (w.s (a', b')))
 
+/- English proof (translation)
+Establish `key : (Scheme.Hom.app (𝟙 Z) W).hom u.val = (Scheme.Hom.app (𝟙 Z) W).hom v.val`. Apply `TopCat.Presheaf.section_ext Z.sheaf` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : (𝟙 Z) x ∈ W` using `hx`. Establish `e` using `congrArg Units.val (h x hx)`.
+
+Simplify using `only [gm, pullU, dif_pos hx', MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at e`. Conclude with `e`. Use `ext1`. Conclude with `(ConcreteCategory.bijective_of_isIso (Scheme.Hom.app (𝟙 Z) W)).1 key`.
+-/
 private theorem units_ext_of_gm_id_eq {Z : Scheme.{0}} {W : Z.Opens} (u v : Γ(Z, W)ˣ)
     (h : ∀ x ∈ W, gm (𝟙 Z) x W u = gm (𝟙 Z) x W v) : u = v := by
   have key : (Scheme.Hom.app (𝟙 Z) W).hom u.val = (Scheme.Hom.app (𝟙 Z) W).hom v.val := by
@@ -54,6 +70,9 @@ private theorem units_ext_of_gm_id_eq {Z : Scheme.{0}} {W : Z.Opens} (u v : Γ(Z
   ext1
   exact (ConcreteCategory.bijective_of_isIso (Scheme.Hom.app (𝟙 Z) W)).1 key
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 private theorem res_res_units' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U) (h2 : W ≤ V) (u : Γ(X, U)ˣ) :
     res h2 (res h1 u) = res (h2.trans h1) u := by
   ext1
@@ -61,21 +80,59 @@ private theorem res_res_units' {X : Scheme.{0}} {U V W : X.Opens} (h1 : V ≤ U)
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `Set.mem_iInter.2 fun _ => h`.
+-/
 private theorem mem_pull_U_of_mem {X S : Scheme.{0}} (M : LB X) (e : S ⟶ X) (x : S) (a : M.ι) (h : e x ∈ M.U a) :
     x ∈ (M.pull e).U (fun _ => a) :=
   Set.mem_iInter.2 fun _ => h
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem comm_mul_mul_inv_mul_mul_inv_inv_eq {G : Type*} [CommGroup G] (g g' a a' w : G) :
     g * a * (g' * a')⁻¹ * (g * g'⁻¹ * w)⁻¹ = a * a'⁻¹ * w⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem eq_mul_mul_inv_mul_inv_mul {G : Type*} [CommGroup G] (a b w : G) : a = w * (a * b⁻¹ * w⁻¹) * b := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Introduce `X S p e V V' M M' r r' he hV hV' hr hr' hw`. Take `⟨w, hw⟩` from `hw`. Set `O : M.ι × M'.ι → S.Opens` to `fun k => (M.pull e).U (fun _ => k.1) ⊓ (M'.pull e).U (fun _ => k.2) ⊓ e ⁻¹ᵁ (M.U k.1 ⊓ M'.U k.2)`. Set `c : ∀ k, Γ(S, O k)ˣ` to `fun k => res (inf_le_left.trans inf_le_left : O k ≤ _) (r.s fun _ => k.1) * (res (inf_le_left.trans inf_le_right : O k ≤ _) (r'.s fun _ => k.2))⁻¹ * (res (inf_le_right : O k ≤ _) (pullU e (M.U k.1 ⊓ M'.U k.2) (w.s k)))⁻¹`. Establish `hc : ∀ a b x, x ∈ O (a, b) → gm (𝟙 S) x (O (a, b)) (c (a, b)) = gm (𝟙 S) x _ (r.s fun _ => a) * (gm (𝟙 S) x _ (r'.s fun _ => b))⁻¹ * (gm e x (M.U a ⊓ M'.U b) (w.s (a, b)))⁻¹`.
+
+Introduce `a b x hx`. Simplify using `only [c]`. Rewrite using `[map_mul, map_mul, map_inv, map_inv, gm_res_eq_gm (𝟙 S) x _ hx, gm_res_eq_gm (𝟙 S) x _ hx, gm_res_eq_gm (𝟙 S) x _ hx]`. Use `congrArg (HMul.hMul _) (congrArg Inv.inv ?_)` and prove the remaining obligations. Conclude with `gm_id_pull e x _ hx.2 _`.
+
+Establish `hcomp : ∀ k l, res (inf_le_left : O k ⊓ O l ≤ O k) (c k) = res (inf_le_right : O k ⊓ O l ≤ O l) (c l)`. Introduce and unpack `⟨a, b⟩ ⟨a', b'⟩`. Apply `units_ext_of_gm_id_eq` to reduce the goal to its premises. Introduce `x hx`. Establish `hk` using `hx.1`.
+
+Establish `hl` using `hx.2`. Rewrite using `[gm_res_eq_gm (𝟙 S) x _ hx, gm_res_eq_gm (𝟙 S) x _ hx, hc a b x hk, hc a' b' x hl, pull_gen hr x a a' hk.2.1 hl.2.1, pull_gen hr' x b b' hk.2.2 hl.2.2, gm_iso hw e x a a' b b' ⟨hk.2, hl.2⟩]`. Conclude with `comm_mul_mul_inv_mul_mul_inv_inv_eq _ _ _ _ _`. Take `⟨s0, hs0, -⟩` from `TopCat.Sheaf.existsUnique_gluing' S.sheaf O (⨆ k, O k) (fun i => homOfLE (le_iSup O i)) le_rfl (fun i => (c i).val) (fun i j => congrArg Units.val (hcomp i j))`. Take `⟨t0, ht0, -⟩` from `TopCat.Sheaf.existsUnique_gluing' S.sheaf O (⨆ k, O k) (fun i => homOfLE (le_iSup O i)) le_rfl (fun i => (c i).inv) (fun i j => congrArg Units.inv (hcomp i j))`.
+
+Establish `hst : s0 * t0 = 1`. Apply `TopCat.Sheaf.eq_of_locally_eq' S.sheaf O (⨆ k, O k) (fun i => homOfLE (le_iSup O i)) le_rfl` to reduce the goal to its premises. Introduce `i`. Rewrite using `[map_mul, map_one, hs0 i, ht0 i]`. Conclude with `(c i).val_inv`.
+
+Establish `hts : t0 * s0 = 1`. Apply `TopCat.Sheaf.eq_of_locally_eq' S.sheaf O (⨆ k, O k) (fun i => homOfLE (le_iSup O i)) le_rfl` to reduce the goal to its premises. Introduce `i`. Rewrite using `[map_mul, map_one, hs0 i, ht0 i]`. Conclude with `(c i).inv_val`.
+
+Set `c0 : Γ(S, ⨆ k, O k)ˣ` to `⟨s0, t0, hst, hts⟩`. Establish `hc0 : ∀ k, res (le_iSup O k) c0 = c k` using `fun k => Units.ext (hs0 k)`. Establish `hpe : ∀ x, p (e x) = x` using `fun x => by`. Use `congrArg (fun f => f.base x) he` as an intermediate fact. Simplify using `using this`.
+
+Establish `hk : ∀ k : M.ι × M'.ι, (LB.div M M').U k ≤ p ⁻¹ᵁ (⨆ k, O k)`. Introduce and unpack `⟨a, b⟩ y hy`. Establish `h1 : y ∈ ⨆ a, M.U a` using `TopologicalSpace.Opens.mem_iSup.2 ⟨a, hy.1⟩`. Establish `h2 : y ∈ ⨆ b, M'.U b` using `TopologicalSpace.Opens.mem_iSup.2 ⟨b, hy.2⟩`. Rewrite `h1` using `[hV]`.
+
+Rewrite `h2` using `[hV']`. Establish `h3 : e (p y) ∈ p ⁻¹ᵁ V` using `by show p (e (p y)) ∈ V`. Rewrite using `[hpe]`. Conclude with `h1`. Establish `h4 : e (p y) ∈ p ⁻¹ᵁ V'` using `by show p (e (p y)) ∈ V'`.
+
+Rewrite using `[hpe]`. Conclude with `h2`. Rewrite `h3` using `[← hV]`. Rewrite `h4` using `[← hV']`. Take `⟨a', ha'⟩` from `TopologicalSpace.Opens.mem_iSup.1 h3`.
+
+Take `⟨b', hb'⟩` from `TopologicalSpace.Opens.mem_iSup.1 h4`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(a', b'), ⟨⟨mem_pull_U_of_mem M e _ a' ha', mem_pull_U_of_mem M' e _ b' hb'⟩, ⟨ha', hb'⟩⟩⟩`. Use `⟨⟨fun k => w.s k * res (hk k) (pullU p _ c0)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j dsimp only`. Rewrite using `[map_mul, map_mul, hw i j, res_res_units', res_res_units', _root_.mul_assoc]`.
+
+Introduce `x a b hxa hxb`. Establish `hx : x ∈ O (a, b)` using `⟨⟨mem_pull_U_of_mem M e x a hxa, mem_pull_U_of_mem M' e x b hxb⟩, ⟨hxa, hxb⟩⟩`. Establish `hxab : e x ∈ M.U a ⊓ M'.U b` using `⟨hxa, hxb⟩`. Establish `hx0 : x ∈ ⨆ k, O k` using `le_iSup O (a, b) hx`. Establish `hz : x ∈ e ⁻¹ᵁ (p ⁻¹ᵁ (⨆ k, O k))` using `by show p (e x) ∈ ⨆ k, O k`.
+
+Rewrite using `[hpe]`. Conclude with `hx0`. Establish `hP : gm e x (M.U a ⊓ M'.U b) (res (hk (a, b)) (pullU p _ c0)) = gm (𝟙 S) x (O (a, b)) (c (a, b))`. Combine the equalities or inequalities in the displayed calculation. Establish `hw' : gm e x (M.U a ⊓ M'.U b) (w.s (a, b) * res (hk (a, b)) (pullU p _ c0)) = gm e x (M.U a ⊓ M'.U b) (w.s (a, b)) * gm (𝟙 S) x (O (a, b)) (c (a, b))` using `(map_mul _ _ _).trans (congrArg _ hP)`.
+
+Use `Eq.trans ?_ (congrArg (· * gm (𝟙 S) x _ (r'.s fun _ => b)) hw'.symm)` and prove the remaining obligations. Rewrite using `[hc a b x hx]`. Conclude with `eq_mul_mul_inv_mul_inv_mul _ _ _`.
+-/
 theorem exists_iso_normalised : ∀ (X S : Scheme.{0}) (p : X ⟶ S) (e : S ⟶ X) (V V' : S.Opens) (M M' : LB X) (r : (M.pull e).Gen) (r' : (M'.pull e).Gen), e ≫ p = 𝟙 S → ⨆ a, M.U a = p ⁻¹ᵁ V → ⨆ a, M'.U a = p ⁻¹ᵁ V' → r.IsGen → r'.IsGen → LBIso M' M → ∃ w : LB.Iso M' M, w.IsGen ∧ ∀ (x : S) (a : M.ι) (b : M'.ι), e x ∈ M.U a → e x ∈ M'.U b → gm (𝟙 S) x ((M.pull e).U fun _ => a) (r.s fun _ => a) = gm e x (M.U a ⊓ M'.U b) (w.s (a, b)) * gm (𝟙 S) x ((M'.pull e).U fun _ => b) (r'.s fun _ => b) := by
   intro X S p e V V' M M' r r' he hV hV' hr hr' hw
   obtain ⟨w, hw⟩ := hw

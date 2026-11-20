@@ -11,6 +11,9 @@ variable {L : Type} [NontriviallyNormedField L] [IsUltrametricDist L] {n : ℕ}
 
 def IsUnif (p : Lˣ) : Prop := ‖(p : L)‖ < 1 ∧ ∀ x : L, x ≠ 0 → ∃ a : ℤ, ‖x‖ = ‖(p : L)‖ ^ a
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i l) (hB l j) (norm_nonneg _) ha`.
+-/
 theorem entry_mul {A B : Matrix (Fin n) (Fin n) L} {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hA : ∀ i j, ‖A i j‖ ≤ a) (hB : ∀ i j, ‖B i j‖ ≤ b) (i j : Fin n) : ‖(A * B) i j‖ ≤ a * b := by
   rw [Matrix.mul_apply]
@@ -18,6 +21,11 @@ theorem entry_mul {A B : Matrix (Fin n) (Fin n) L} {a b : ℝ} (ha : 0 ≤ a) (h
   rw [norm_mul]
   exact mul_le_mul (hA i l) (hB l j) (norm_nonneg _) ha
 
+/- English proof (translation)
+Establish `e : A * B - 1 = (A - 1) * (B - 1) + (A - 1) + (B - 1)` using `by noncomm_ring`. Rewrite using `[e, Matrix.add_apply, Matrix.add_apply]`. Establish `h` using `entry_mul h0 h0 hA hB i j`. Establish `h2 : r * r ≤ r` using `by nlinarith`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ (hB i j))` and prove the remaining obligations.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (h.trans h2) (hA i j))`.
+-/
 theorem entry_mul_sub_one {A B : Matrix (Fin n) (Fin n) L} {r : ℝ} (h0 : 0 ≤ r) (h1 : r ≤ 1)
     (hA : ∀ i j, ‖(A - 1) i j‖ ≤ r) (hB : ∀ i j, ‖(B - 1) i j‖ ≤ r) (i j : Fin n) :
     ‖(A * B - 1) i j‖ ≤ r := by
@@ -47,6 +55,9 @@ def congK (r : ℝ) (h0 : 0 ≤ r) (h1 : r ≤ 1) : Subgroup (GL (Fin n) L) wher
     intro a ha i j
     simpa [and_comm] using ha i j
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_congK {r : ℝ} {h0 : 0 ≤ r} {h1 : r ≤ 1} {k : GL (Fin n) L} :
     k ∈ congK L n r h0 h1 ↔ ∀ i j, ‖((k : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r ∧
       ‖(((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) - 1) i j‖ ≤ r := Iff.rfl
@@ -65,9 +76,15 @@ def dPow (p : Lˣ) (a : Fin n → ℤ) : GL (Fin n) L where
     funext i
     rw [← Units.val_mul, _root_.zpow_neg, inv_mul_cancel, Units.val_one]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dPow_val (p : Lˣ) (a : Fin n → ℤ) :
     ((dPow p a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = diagonal fun i => ((p ^ a i : Lˣ) : L) := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, dPow_val, dPow_val, dPow_val, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, _root_.zpow_add, Units.val_mul]`.
+-/
 theorem dPow_add (p : Lˣ) (a b : Fin n → ℤ) : (dPow p (a + b) : GL (Fin n) L) = dPow p a * dPow p b := by
   apply Units.ext
   rw [Units.val_mul, dPow_val, dPow_val, dPow_val, diagonal_mul_diagonal]
@@ -75,6 +92,9 @@ theorem dPow_add (p : Lˣ) (a b : Fin n → ℤ) : (dPow p (a + b) : GL (Fin n) 
   funext i
   rw [Pi.add_apply, _root_.zpow_add, Units.val_mul]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `[dPow_val]`.
+-/
 theorem dPow_zero (p : Lˣ) : (dPow p (0 : Fin n → ℤ) : GL (Fin n) L) = 1 := by
   apply Units.ext
   simp [dPow_val]

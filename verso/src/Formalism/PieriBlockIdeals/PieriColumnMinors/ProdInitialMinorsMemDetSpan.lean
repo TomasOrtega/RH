@@ -12,10 +12,18 @@ namespace Formalism.CohomologicalDescent.LA
 
 open Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Introduce `l n`. Both sides reduce to the same expression.
+-/
 theorem max_valuation_eq : MaxValEq := by
   intro l n
   rfl
 
+/- English proof (translation)
+Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Unfold `rowNu`. Distinguish the cases in `hb : b.val < n`. Establish `ha : a.val < n` using `by omega`.
+
+Rewrite using `[dif_pos hb, dif_pos ha]`. Conclude with `hν (show (⟨a.val, ha⟩ : Fin n) ≤ ⟨b.val, hb⟩ from hab')`. Rewrite using `[dif_neg hb]`. Conclude with `Nat.zero_le _`.
+-/
 theorem la_rowNu_antitone {r n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
     Antitone (rowNu (r := r) ν) := by
   intro a b hab
@@ -28,6 +36,11 @@ theorem la_rowNu_antitone {r n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) :
   · rw [dif_neg hb]
     exact Nat.zero_le _
 
+/- English proof (translation)
+Unfold `LamUStrictAnti`. Introduce `r n ν hν a b hab`. Establish `h1` using `la_rowNu_antitone (r := r) ν hν (le_of_lt hab)`. Establish `h2 : a.val < b.val` using `hab`. Simplify using `only [lamU]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem lambda_u_strict_anti : LamUStrictAnti := by
   unfold LamUStrictAnti
   intro r n ν hν a b hab
@@ -36,6 +49,11 @@ theorem lambda_u_strict_anti : LamUStrictAnti := by
   simp only [lamU]
   omega
 
+/- English proof (translation)
+Unfold `InclZMono InclZ`. Introduce `r n hn ν l e e' hee' hI`. Take `⟨m, hm, h⟩` from `hI`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e1 : m * l ^ e' = l ^ (e' - e) * (m * l ^ e)`.
+
+Rewrite using `[mul_left_comm, ← pow_add, Nat.sub_add_cancel hee']`. Rewrite using `[e1, Nat.cast_mul, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (h x hx)`.
+-/
 theorem incl_z_monotone : InclZMono := by
   unfold InclZMono InclZ
   intro r n hn ν l e e' hee' hI
@@ -46,9 +64,17 @@ theorem incl_z_monotone : InclZMono := by
   rw [e1, Nat.cast_mul, mul_smul]
   exact Submodule.smul_mem _ _ (h x hx)
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem la_posPairs_two : Formalism.RankGapBounds.JumpSetsAlt.posPairs 2 = {((0 : Fin 2), (1 : Fin 2))} := by
   decide
 
+/- English proof (translation)
+Unfold `ExactExponentRankTwo`. Introduce `n ν l`. Unfold `Formalism.RankGapBounds.JumpSetsAlt.eExp`. Rewrite using `[la_posPairs_two, Finset.sum_singleton]`. Use `congr 1`.
+
+Simplify using `only [lamU, Fin.val_zero, Fin.val_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exact_exponent_rank_two : ExactExponentRankTwo := by
   unfold ExactExponentRankTwo
   intro n ν l
@@ -58,11 +84,21 @@ theorem exact_exponent_rank_two : ExactExponentRankTwo := by
   simp only [lamU, Fin.val_zero, Fin.val_one]
   omega
 
+/- English proof (translation)
+Unfold `JointExZ`. Introduce `hA r n hn ν hν l hl`. Conclude with `Nat.sInf_le (hA r n hn ν hν l hl)`.
+-/
 theorem joint_exact_z : JointExZ := by
   unfold JointExZ
   intro hA r n hn ν hν l hl
   exact Nat.sInf_le (hA r n hn ν hν l hl)
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b h`. Establish `hab : b = a` using `Fin.ext (by omega)`.
+
+Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a b h`. Establish `hb` using `b.isLt`.
+
+Establish `hk : a.val + k < r` using `by omega`. Establish `h1` using `ih a ⟨a.val + k, hk⟩ rfl`. Establish `h2 : U b < U ⟨a.val + k, hk⟩` using `hU (Fin.lt_iff_val_lt_val.mpr (by show a.val + k < b.val; omega))`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem la_strictAnti_gap {r : ℕ} (U : Fin r → ℤ) (hU : StrictAnti U) :
     ∀ (k : ℕ) (a b : Fin r), b.val = a.val + k → U b + k ≤ U a := by
   intro k
@@ -82,6 +118,17 @@ theorem la_strictAnti_gap {r : ℕ} (U : Fin r → ℤ) (hU : StrictAnti U) :
     push_cast
     omega
 
+/- English proof (translation)
+Unfold `NuOfSpec`. Introduce `r U hU h0`. Establish `hgap` using `la_strictAnti_gap U hU`. Establish `hpos : ∀ a : Fin r, (r : ℤ) - 1 - a.val ≤ U a`. Introduce `a`.
+
+Establish `ha` using `a.isLt`. Establish `hlast : a.val + (r - 1 - a.val) < r` using `by omega`. Establish `h3` using `hgap (r - 1 - a.val) a ⟨a.val + (r - 1 - a.val), hlast⟩ rfl`. Establish `h4` using `h0 ⟨a.val + (r - 1 - a.val), hlast⟩`. Use linear arithmetic over natural numbers and integers.
+
+Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hab' : a.val ≤ b.val` using `hab`. Establish `hb` using `hpos b`. Establish `ha` using `hpos a`.
+
+Establish `key : U b + ((b.val - a.val : ℕ) : ℤ) ≤ U a` using `hgap (b.val - a.val) a b (by omega)`. Simplify using `only [nuOf]`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `a`. Establish `ha` using `hpos a`.
+
+Establish `hal` using `a.isLt`. Simplify using `only [lamU, rowNu, hal, ↓reduceDIte, nuOf, Fin.eta]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem nu_of_specialization : NuOfSpec := by
   unfold NuOfSpec
   intro r U hU h0
@@ -107,6 +154,9 @@ theorem nu_of_specialization : NuOfSpec := by
     simp only [lamU, rowNu, hal, ↓reduceDIte, nuOf, Fin.eta]
     omega
 
+/- English proof (translation)
+Introduce `ι D W hA hE l hl hexc τ`. Take `⟨h1, h2⟩` from `nu_of_specialization D.Nr (W.U τ) (W.anti τ) (fun a => (W.inRange τ a).1)`. Establish `h3` using `joint_exact_z hA D.Nr D.Nr le_rfl (nuOf (W.U τ)) h1 l hl`. Rewrite `h3` using `[h2]`. Conclude with `(hE l hl hexc τ).trans h3`.
+-/
 theorem joint_lemma_a_full : JointLemmaAFull := by
   intro ι D W hA hE l hl hexc τ
   obtain ⟨h1, h2⟩ := nu_of_specialization D.Nr (W.U τ) (W.anti τ) (fun a => (W.inRange τ a).1)
@@ -114,23 +164,42 @@ theorem joint_lemma_a_full : JointLemmaAFull := by
   rw [h2] at h3
   exact (hE l hl hexc τ).trans h3
 
+/- English proof (translation)
+Unfold `JointLatIncl`. Introduce `hAR R _ _ r n hn ν hν l hl hu x`. Rewrite using `[Submodule.mem_comap]`. Simplify using `using hAR R r n hn ν hν l hl hu x x.2`.
+-/
 theorem joint_lattice_inclusion : JointLatIncl := by
   unfold JointLatIncl
   intro hAR R _ _ r n hn ν hν l hl hu x
   rw [Submodule.mem_comap]
   simpa using hAR R r n hn ν hν l hl hu x x.2
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨w, rfl⟩`.
+-/
 theorem la_word_mem (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (w : List (Fin r × Fin r × ℕ)) : applyWord R w (hw R hn ν) ∈ weyl R r n hn ν := Submodule.subset_span ⟨w, rfl⟩
 
+/- English proof (translation)
+The claim follows from `la_word_mem R hn ν []`.
+-/
 theorem la_hw_mem (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     hw R hn ν ∈ weyl R r n hn ν := la_word_mem R hn ν []
 
+/- English proof (translation)
+Unfold `InclZ`. Conclude with `⟨1, hl.not_dvd_one, fun x hx => Submodule.smul_mem _ _ (h hx)⟩`.
+-/
 theorem la_incl_of_le {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (l e : ℕ) (hl : l.Prime)
     (h : dualWeyl ℤ r n ν ≤ weyl ℤ r n hn ν) : InclZ r n hn ν l e := by
   unfold InclZ
   exact ⟨1, hl.not_dvd_one, fun x hx => Submodule.smul_mem _ _ (h hx)⟩
 
+/- English proof (translation)
+Unfold `LatticeInclusionTrivialWeight`. Introduce `r hn ν l hl`. Apply `la_incl_of_le hn ν _ _ hl` to reduce the goal to its premises. Introduce `x _`. Establish `h1 : hw ℤ hn ν = 1` using `by simp [hw]`.
+
+Establish `hmem` using `la_hw_mem ℤ hn ν`. Rewrite `hmem` using `[h1]`. Establish `hx : x = (coeff 0 x) • (1 : MvPolynomial (Fin r × Fin 0) ℤ)`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Conclude with `MvPolynomial.eq_C_of_isEmpty x`.
+
+Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ hmem`.
+-/
 theorem lattice_z_zero_columns : LatticeInclusionTrivialWeight := by
   unfold LatticeInclusionTrivialWeight
   intro r hn ν l hl
@@ -157,6 +226,11 @@ def la_binLat (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (d : ℕ) :
   Submodule.span R {f | ∃ p q, p + q = d ∧
     f = ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * la_xy R s p q}
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hN`. Establish `hmem : ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * la_xy R s p q ∈ la_binLat R s d` using `Submodule.subset_span ⟨p, q, h, rfl⟩`. Establish `h2` using `Submodule.smul_mem _ (c : R) hmem`. Rewrite `h2` using `[MvPolynomial.smul_eq_C_mul, map_natCast]`. Rewrite using `[Nat.cast_mul, mul_comm ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R), mul_assoc]`.
+
+Conclude with `h2`.
+-/
 theorem la_mem_of_dvd (R : Type) [CommRing R] {n : ℕ} (s : Fin n) {d p q N : ℕ} (h : p + q = d)
     (hN : (p + q).choose q ∣ N) :
     (N : MvPolynomial (Fin 2 × Fin n) R) * la_xy R s p q ∈ la_binLat R s d := by
@@ -168,6 +242,13 @@ theorem la_mem_of_dvd (R : Type) [CommRing R] {n : ℕ} (s : Fin n) {d p q N : �
   rw [Nat.cast_mul, mul_comm ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R), mul_assoc]
   exact h2
 
+/- English proof (translation)
+Rewrite using `[Polynomial.coeff_mul_C]`. Establish `h : (Polynomial.C u + Polynomial.X * Polynomial.C v) ^ p = ∑ m ∈ Finset.range (p + 1), Polynomial.C (v ^ m * u ^ (p - m) * (p.choose m : A)) * Polynomial.X ^ m`. Rewrite using `[add_comm (Polynomial.C u), add_pow]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Simplify using `only [mul_pow, map_mul, map_pow, map_natCast]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Polynomial.finset_sum_coeff]`. Simplify using `only [Polynomial.coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hk`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hk` using `[Finset.mem_range, not_lt]`. Rewrite using `[Nat.choose_eq_zero_of_lt (by omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem la_coeff (A : Type) [CommRing A] (u v w : A) (p k : ℕ) :
     ((Polynomial.C u + Polynomial.X * Polynomial.C v) ^ p * Polynomial.C w).coeff k =
       (p.choose k : A) * (u ^ (p - k) * v ^ k * w) := by
@@ -188,11 +269,19 @@ theorem la_coeff (A : Type) [CommRing A] (u v w : A) (p k : ℕ) :
     rw [Nat.choose_eq_zero_of_lt (by omega)]
     simp
 
+/- English proof (translation)
+Simplify using `only [rowGen, MvPolynomial.aeval_X]`.
+-/
 theorem la_rowGen_X (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (v : Fin r × Fin n) :
     rowGen R a b (X v) = Polynomial.C (X v) +
       (if v.1 = b then Polynomial.X * Polynomial.C (X (a, v.2)) else 0) := by
   simp only [rowGen, MvPolynomial.aeval_X]
 
+/- English proof (translation)
+Establish `h0 : rowGen R a (0 : Fin 2) (X ((0 : Fin 2), s) : MvPolynomial (Fin 2 × Fin n) R) = Polynomial.C (X ((0 : Fin 2), s)) + Polynomial.X * Polynomial.C (X (a, s))`. Rewrite using `[la_rowGen_X, if_pos rfl]`. Establish `h1 : rowGen R a (0 : Fin 2) (X ((1 : Fin 2), s) : MvPolynomial (Fin 2 × Fin n) R) = Polynomial.C (X ((1 : Fin 2), s))`. Rewrite using `[la_rowGen_X, if_neg (show ¬ ((1 : Fin 2) = 0) by decide), add_zero]`. Simplify using `only [rowDiv]`.
+
+Rewrite using `[la_xy, map_mul, map_pow, map_pow, h0, h1, ← Polynomial.C_pow, la_coeff]`.
+-/
 theorem la_rowDiv_xy_zero (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (a : Fin 2) (p q k : ℕ) :
     rowDiv R a 0 k (la_xy R s p q) =
       (p.choose k : MvPolynomial (Fin 2 × Fin n) R) *
@@ -206,6 +295,11 @@ theorem la_rowDiv_xy_zero (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (a : Fin
   simp only [rowDiv]
   rw [la_xy, map_mul, map_pow, map_pow, h0, h1, ← Polynomial.C_pow, la_coeff]
 
+/- English proof (translation)
+Establish `h0 : rowGen R a (1 : Fin 2) (X ((1 : Fin 2), s) : MvPolynomial (Fin 2 × Fin n) R) = Polynomial.C (X ((1 : Fin 2), s)) + Polynomial.X * Polynomial.C (X (a, s))`. Rewrite using `[la_rowGen_X, if_pos rfl]`. Establish `h1 : rowGen R a (1 : Fin 2) (X ((0 : Fin 2), s) : MvPolynomial (Fin 2 × Fin n) R) = Polynomial.C (X ((0 : Fin 2), s))`. Rewrite using `[la_rowGen_X, if_neg (show ¬ ((0 : Fin 2) = 1) by decide), add_zero]`. Simplify using `only [rowDiv]`.
+
+Rewrite using `[la_xy, map_mul, map_pow, map_pow, h0, h1, ← Polynomial.C_pow, mul_comm (Polynomial.C (X ((0 : Fin 2), s) ^ p)), la_coeff]`.
+-/
 theorem la_rowDiv_xy_one (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (a : Fin 2) (p q k : ℕ) :
     rowDiv R a 1 k (la_xy R s p q) =
       (q.choose k : MvPolynomial (Fin 2 × Fin n) R) *
@@ -220,6 +314,9 @@ theorem la_rowDiv_xy_one (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (a : Fin 
   rw [la_xy, map_mul, map_pow, map_pow, h0, h1, ← Polynomial.C_pow,
     mul_comm (Polynomial.C (X ((0 : Fin 2), s) ^ p)), la_coeff]
 
+/- English proof (translation)
+Simplify using `only [rowDiv, map_mul, map_natCast]`. Rewrite using `[← Polynomial.C_eq_natCast, Polynomial.coeff_C_mul]`.
+-/
 theorem la_rowDiv_nat (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (k N : ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) :
     rowDiv R a b k ((N : MvPolynomial (Fin r × Fin n) R) * f) =
@@ -227,6 +324,9 @@ theorem la_rowDiv_nat (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (k N : �
   simp only [rowDiv, map_mul, map_natCast]
   rw [← Polynomial.C_eq_natCast, Polynomial.coeff_C_mul]
 
+/- English proof (translation)
+Establish `key` using `Nat.choose_mul (n := p + k + q) (k := k + q) (s := q) (by omega)`. Rewrite `key` using `[show p + k + q - q = p + k by omega, show k + q - q = k by omega]`. Rewrite using `[show p + (k + q) = p + k + q by omega]`. Conclude with `⟨(k + q).choose q, by linarith [key]⟩`.
+-/
 theorem choose_dvd_choose_mul_right (p k q : ℕ) :
     (p + (k + q)).choose (k + q) ∣ (p + k + q).choose q * (p + k).choose k := by
   have key := Nat.choose_mul (n := p + k + q) (k := k + q) (s := q) (by omega)
@@ -234,6 +334,9 @@ theorem choose_dvd_choose_mul_right (p k q : ℕ) :
   rw [show p + (k + q) = p + k + q by omega]
   exact ⟨(k + q).choose q, by linarith [key]⟩
 
+/- English proof (translation)
+Establish `key` using `Nat.choose_mul (n := p + k + q) (k := q + k) (s := q) (by omega)`. Rewrite `key` using `[show p + k + q - q = p + k by omega, show q + k - q = k by omega]`. Establish `hs : (q + k).choose k = (q + k).choose q` using `(Nat.choose_symm_add).symm`. Rewrite using `[show p + (q + k) = p + k + q by omega, hs]`. Conclude with `⟨(p + k).choose k, by linarith [key]⟩`.
+-/
 theorem choose_dvd_choose_mul_left (p k q : ℕ) :
     (p + k + q).choose q ∣ (p + (q + k)).choose (q + k) * (q + k).choose k := by
   have key := Nat.choose_mul (n := p + k + q) (k := q + k) (s := q) (by omega)
@@ -242,9 +345,35 @@ theorem choose_dvd_choose_mul_left (p k q : ℕ) :
   rw [show p + (q + k) = p + k + q by omega, hs]
   exact ⟨(p + k).choose k, by linarith [key]⟩
 
+/- English proof (translation)
+Evaluate the decidable proposition.
+-/
 theorem fin_two_eq_zero_or_one : ∀ c : Fin 2, c = 0 ∨ c = 1 := by
   decide
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[la_binLat]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, q, hpq, rfl⟩` from `hx`. Rewrite using `[la_rowDiv_nat]`.
+
+Apply the tactic sequence `rcases fin_two_eq_zero_or_one b with rfl | rfl <;> rcases fin_two_eq_zero_or_one a with rfl | rfl`. Rewrite using `[la_rowDiv_xy_zero]`. Distinguish the cases in `hk : k ≤ p`. Establish `e : ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * (((p.choose k : ℕ) : MvPolynomial (Fin 2 × Fin n) R) * (X ((0 : Fin 2), s) ^ (p - k) * X ((0 : Fin 2), s) ^ k * X ((1 : Fin 2), s) ^ q)) = (p.choose k : R) • (((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * la_xy R s …`. Rewrite using `[← pow_add, Nat.sub_add_cancel hk, MvPolynomial.smul_eq_C_mul, map_natCast, la_xy]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, q, hpq, rfl⟩)`. Rewrite using `[Nat.choose_eq_zero_of_lt (show p < k by omega)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[la_rowDiv_xy_zero]`. Distinguish the cases in `hk : k ≤ p`. Take `⟨p', rfl⟩ : ∃ p', p = p' + k` from `⟨p - k, by omega⟩`. Establish `e : ((p' + k + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * ((((p' + k).choose k : ℕ) : MvPolynomial (Fin 2 × Fin n) R) * (X ((0 : Fin 2), s) ^ (p' + k - k) * X ((1 : Fin 2), s) ^ k * X ((1 : Fin 2), s) ^ q)) = (((p' + k + q).choose q * (p' + k).choose k : ℕ) : MvPolynomial (F …`. Rewrite using `[Nat.add_sub_cancel, la_xy]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `la_mem_of_dvd R s (by omega) (choose_dvd_choose_mul_right p' k q)`. Rewrite using `[Nat.choose_eq_zero_of_lt (show p < k by omega)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[la_rowDiv_xy_one]`. Distinguish the cases in `hk : k ≤ q`. Take `⟨q', rfl⟩ : ∃ q', q = q' + k` from `⟨q - k, by omega⟩`. Establish `e : ((p + (q' + k)).choose (q' + k) : MvPolynomial (Fin 2 × Fin n) R) * ((((q' + k).choose k : ℕ) : MvPolynomial (Fin 2 × Fin n) R) * (X ((1 : Fin 2), s) ^ (q' + k - k) * X ((0 : Fin 2), s) ^ k * X ((0 : Fin 2), s) ^ p)) = (((p + (q' + k)).choose (q' + k) * (q' + k).choose k : ℕ) …`.
+
+Rewrite using `[Nat.add_sub_cancel, la_xy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `la_mem_of_dvd R s (by omega) (choose_dvd_choose_mul_left p k q')`.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt (show q < k by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[la_rowDiv_xy_one]`. Distinguish the cases in `hk : k ≤ q`. Establish `e : ((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * (((q.choose k : ℕ) : MvPolynomial (Fin 2 × Fin n) R) * (X ((1 : Fin 2), s) ^ (q - k) * X ((1 : Fin 2), s) ^ k * X ((0 : Fin 2), s) ^ p)) = (q.choose k : R) • (((p + q).choose q : MvPolynomial (Fin 2 × Fin n) R) * la_xy R s …`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel hk, MvPolynomial.smul_eq_C_mul, map_natCast, la_xy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, q, hpq, rfl⟩)`. Rewrite using `[Nat.choose_eq_zero_of_lt (show q < k by omega)]`.
+
+Simplify using the standard rewrite rules. Consider the case `zero`. Rewrite using `[show rowDiv R a b k 0 = 0 from by simp [rowDiv]]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[show rowDiv R a b k (x + y) = rowDiv R a b k x + rowDiv R a b k y from by simp [rowDiv]]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[show rowDiv R a b k (c • x) = c • rowDiv R a b k x from by simp [rowDiv]]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem la_binLat_stable (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (d : ℕ) (a b : Fin 2) (k : ℕ)
     (f : MvPolynomial (Fin 2 × Fin n) R) (hf : f ∈ la_binLat R s d) :
     rowDiv R a b k f ∈ la_binLat R s d := by
@@ -318,16 +447,31 @@ theorem la_binLat_stable (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (d : ℕ)
 def la_mono {n : ℕ} (s : Fin n) (p q : ℕ) : Fin 2 × Fin n →₀ ℕ :=
   Finsupp.single ((0 : Fin 2), s) p + Finsupp.single ((1 : Fin 2), s) q
 
+/- English proof (translation)
+Rewrite using `[la_xy, la_mono, X_pow_eq_monomial, X_pow_eq_monomial, monomial_mul, mul_one]`.
+-/
 theorem la_xy_eq (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (p q : ℕ) :
     la_xy R s p q = monomial (la_mono s p q) 1 := by
   rw [la_xy, la_mono, X_pow_eq_monomial, X_pow_eq_monomial, monomial_mul, mul_one]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Simplify `congrArg (fun m => m ((0 : Fin 2), s)) h` using `[la_mono, Finsupp.single_apply]`. Simplify `congrArg (fun m => m ((1 : Fin 2), s)) h` using `[la_mono, Finsupp.single_apply]`.
+-/
 theorem la_mono_inj {n : ℕ} (s : Fin n) {p q p' q' : ℕ} (h : la_mono s p q = la_mono s p' q') :
     p = p' ∧ q = q' := by
   constructor
   · simpa [la_mono, Finsupp.single_apply] using congrArg (fun m => m ((0 : Fin 2), s)) h
   · simpa [la_mono, Finsupp.single_apply] using congrArg (fun m => m ((1 : Fin 2), s)) h
 
+/- English proof (translation)
+Rewrite `hf` using `[la_binLat]`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p', q', hpq, rfl⟩` from `hx`. Rewrite using `[la_xy_eq, ← nsmul_eq_mul, coeff_smul, coeff_monomial]`.
+
+Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `la_mono_inj s h`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[coeff_add]`. Conclude with `dvd_add hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[coeff_smul, smul_eq_mul]`.
+
+Conclude with `Dvd.dvd.mul_left hx a`.
+-/
 theorem la_coeff_binLat {n : ℕ} (s : Fin n) (d : ℕ) (f : MvPolynomial (Fin 2 × Fin n) ℤ)
     (hf : f ∈ la_binLat ℤ s d) (p q : ℕ) :
     ((p + q).choose q : ℤ) ∣ coeff (la_mono s p q) f := by
@@ -348,6 +492,11 @@ theorem la_coeff_binLat {n : ℕ} (s : Fin n) (d : ℕ) (f : MvPolynomial (Fin 2
     rw [coeff_smul, smul_eq_mul]
     exact Dvd.dvd.mul_left hx a
 
+/- English proof (translation)
+Use `⟨∏ i ∈ Finset.range (d + 1), d.choose i / l ^ ((d.choose i).factorization l), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Prime.dvd_finset_prod_iff hl.prime] push_neg`. Introduce `i hi`. Conclude with `Nat.not_dvd_ordCompl hl (Nat.choose_pos (by rw [Finset.mem_range] at hi; omega)).ne'`. Introduce `i hi`.
+
+Establish `hmem : i ∈ Finset.range (d + 1)` using `Finset.mem_range.mpr (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem la_arith (l d : ℕ) (hl : l.Prime) :
     ∃ m : ℕ, ¬ l ∣ m ∧ ∀ i ≤ d, d.choose i ∣ m * l ^ Formalism.RankGapBounds.JumpSetsAlt.maxVal l d := by
   refine ⟨∏ i ∈ Finset.range (d + 1), d.choose i / l ^ ((d.choose i).factorization l), ?_, ?_⟩
@@ -366,6 +515,13 @@ theorem la_arith (l d : ℕ) (hl : l.Prime) :
           (Finset.dvd_prod_of_mem _ hmem)
       _ = _ := mul_comm _ _
 
+/- English proof (translation)
+Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hm (dvd_zero l)`. Unfold `Formalism.RankGapBounds.JumpSetsAlt.maxVal`. Use `Finset.sup_le (fun i hi => ?_)` and prove the remaining obligations.
+
+Establish `hi' : i ≤ d` using `by rw [Finset.mem_range] at hi; omega`. Establish `hc0 : d.choose i ≠ 0` using `(Nat.choose_pos hi').ne'`. Establish `hne : m * l ^ e ≠ 0` using `mul_ne_zero hm0 (pow_ne_zero _ hl.ne_zero)`. Establish `h1` using `Finsupp.le_def.1 ((Nat.factorization_le_iff_dvd hc0 hne).mpr (h i hi')) l`. Establish `h2 : (m * l ^ e).factorization l = e`.
+
+Rewrite using `[Nat.factorization_mul hm0 (pow_ne_zero _ hl.ne_zero)]`. Simplify using `[Nat.factorization_eq_zero_of_not_dvd hm, hl.factorization_self]`. Rewrite `h1` using `[h2]`. Conclude with `h1`.
+-/
 theorem la_arith_conv (l d m e : ℕ) (hl : l.Prime) (hm : ¬ l ∣ m)
     (h : ∀ i ≤ d, d.choose i ∣ m * l ^ e) : Formalism.RankGapBounds.JumpSetsAlt.maxVal l d ≤ e := by
   have hm0 : m ≠ 0 := by
@@ -383,6 +539,13 @@ theorem la_arith_conv (l d m e : ℕ) (hl : l.Prime) (hm : ¬ l ∣ m)
   rw [h2] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite `hy` using `[la_monLat]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, q, hpq, rfl⟩` from `hx`. Rewrite using `[zsmul_eq_mul, Int.cast_natCast]`.
+
+Conclude with `la_mem_of_dvd ℤ s hpq (by rw [hpq]; exact hN q (by omega))`. Consider the case `zero`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem la_smul_monLat {n : ℕ} (s : Fin n) (d N : ℕ) (hN : ∀ i ≤ d, d.choose i ∣ N)
     (y : MvPolynomial (Fin 2 × Fin n) ℤ) (hy : y ∈ la_monLat ℤ s d) :
     ((N : ℕ) : ℤ) • y ∈ la_binLat ℤ s d := by
@@ -402,6 +565,15 @@ theorem la_smul_monLat {n : ℕ} (s : Fin n) (d N : ℕ) (hN : ∀ i ≤ d, d.ch
     rw [smul_comm]
     exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h⟩`. Use `la_arith_conv l d m e hl hm (fun i hi => ?_)` and prove the remaining obligations. Establish `hy : la_xy ℤ s (d - i) i ∈ la_monLat ℤ s d` using `Submodule.subset_span ⟨d - i, i, by omega, rfl⟩`. Take `⟨z, hz, hgz⟩` from `Submodule.mem_map.mp (h _ (Submodule.mem_map_of_mem hy))`.
+
+Simplify using `only [LinearMap.mulLeft_apply] at hgz`. Establish `hz' : z = ((m * l ^ e : ℕ) : ℤ) • la_xy ℤ s (d - i) i`. Apply `mul_left_cancel₀ hg` to reduce the goal to its premises. Rewrite using `[hgz, mul_smul_comm]`. Establish `hc` using `la_coeff_binLat s d z hz (d - i) i`.
+
+Rewrite `hc` using `[hz', la_xy_eq, coeff_smul, coeff_monomial, if_pos rfl, smul_eq_mul, mul_one, show d - i + i = d by omega]`. Conclude with `hc` after adjusting the coercions. Introduce `he`. Take `⟨m, hm, hdiv⟩` from `la_arith l d hl`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations.
+
+Take `⟨y, hy, rfl⟩` from `Submodule.mem_map.mp hx`. Use `Submodule.mem_map.mpr ⟨((m * l ^ e : ℕ) : ℤ) • y, la_smul_monLat s d (m * l ^ e) (fun i hi => (hdiv i hi).trans (Nat.mul_dvd_mul_left m (Nat.pow_dvd_pow l he))) y hy, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply]`. Conclude with `mul_smul_comm _ _ _`.
+-/
 theorem la_core {n : ℕ} (s : Fin n) (d : ℕ) (g : MvPolynomial (Fin 2 × Fin n) ℤ) (hg : g ≠ 0)
     (l e : ℕ) (hl : l.Prime) :
     (∃ m : ℕ, ¬ l ∣ m ∧ ∀ x ∈ (la_monLat ℤ s d).map (LinearMap.mulLeft ℤ g),
@@ -431,6 +603,9 @@ theorem la_core {n : ℕ} (s : Fin n) (d : ℕ) (g : MvPolynomial (Fin 2 × Fin 
     simp only [LinearMap.mulLeft_apply]
     exact mul_smul_comm _ _ _
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Use `show Matrix.det (Matrix.of fun p q : Fin 1 => (X (Fin.castLE hr p, Fin.castLE hn q) : MvPolynomial (Fin r × Fin n) R)) = _`. Rewrite using `[Matrix.det_fin_one]`. Both sides reduce to the same expression.
+-/
 theorem la_lpMinor_one (R : Type) [CommRing R] {r n : ℕ} (s : ℕ) (hs : s = 1) (hr : s ≤ r)
     (hn : s ≤ n) :
     lpMinor R s hr hn = X ((⟨0, by omega⟩ : Fin r), (⟨0, by omega⟩ : Fin n)) := by
@@ -440,12 +615,20 @@ theorem la_lpMinor_one (R : Type) [CommRing R] {r n : ℕ} (s : ℕ) (hs : s = 1
   rw [Matrix.det_fin_one]
   rfl
 
+/- English proof (translation)
+Use `show ∏ s : Fin 1, (lpMinor R (s.val + 1) (by omega) (by omega)) ^ (ν s - nuNext ν s) = _`. Rewrite using `[Fin.prod_univ_one, show nuNext ν 0 = 0 from dif_neg (by decide), Nat.sub_zero]`. Conclude with `congrArg (· ^ ν 0) (la_lpMinor_one R _ rfl _ _)`.
+-/
 theorem highest_weight_one_column (R : Type) [CommRing R] {r : ℕ} (hn : 1 ≤ r) (ν : Fin 1 → ℕ) :
     hw R hn ν = X ((⟨0, hn⟩ : Fin r), (0 : Fin 1)) ^ ν 0 := by
   show ∏ s : Fin 1, (lpMinor R (s.val + 1) (by omega) (by omega)) ^ (ν s - nuNext ν s) = _
   rw [Fin.prod_univ_one, show nuNext ν 0 = 0 from dif_neg (by decide), Nat.sub_zero]
   exact congrArg (· ^ ν 0) (la_lpMinor_one R _ rfl _ _)
 
+/- English proof (translation)
+Use `show Submodule.span R (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord R w (hw R hn ν)) ≤ L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Proceed by induction on `w with`. Consider the case `nil => exact h0`.
+
+Consider the case `cons x w ih => exact hs x.1 x.2.1 x.2.2 _ ih`.
+-/
 theorem la_weyl_le_of_stable (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (L : Submodule R (MvPolynomial (Fin r × Fin n) R)) (h0 : hw R hn ν ∈ L)
     (hs : ∀ (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) R), f ∈ L →
@@ -457,6 +640,13 @@ theorem la_weyl_le_of_stable (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) 
   | nil => exact h0
   | cons x w ih => exact hs x.1 x.2.1 x.2.2 _ ih
 
+/- English proof (translation)
+Establish `hhw : hw R hn ν = la_xy R (0 : Fin 1) (ν 0) 0`. Rewrite using `[highest_weight_one_column, la_xy, pow_zero, mul_one]`. Apply the tactic sequence `try rfl`. Apply `le_antisymm` to reduce the goal to its premises. Use `la_weyl_le_of_stable R hn ν _ ?_ (fun a b k f hf => la_binLat_stable R 0 (ν 0) a b k f hf)` and prove the remaining obligations.
+
+Rewrite using `[hhw, la_binLat]`. Conclude with `Submodule.subset_span ⟨ν 0, 0, by simp, by simp⟩`. Rewrite using `[la_binLat, Submodule.span_le]`. Introduce and unpack `f ⟨p, q, hpq, rfl⟩`. Establish `h` using `la_word_mem R hn ν [((1 : Fin 2), (0 : Fin 2), q)]`.
+
+Establish `e : applyWord R [((1 : Fin 2), (0 : Fin 2), q)] (hw R hn ν) = ((p + q).choose q : MvPolynomial (Fin 2 × Fin 1) R) * la_xy R 0 p q` using `by show rowDiv R 1 0 q (hw R hn ν) = _`. Rewrite using `[hhw, ← hpq, la_rowDiv_xy_zero]`. Simplify using `[la_xy]`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem la_weyl_r2n1 (R : Type) [CommRing R] (hn : 1 ≤ 2) (ν : Fin 1 → ℕ) :
     weyl R 2 1 hn ν = la_binLat R (0 : Fin 1) (ν 0) := by
   have hhw : hw R hn ν = la_xy R (0 : Fin 1) (ν 0) 0 := by
@@ -477,6 +667,11 @@ theorem la_weyl_r2n1 (R : Type) [CommRing R] (hn : 1 ≤ 2) (ν : Fin 1 → ℕ)
     rw [e] at h
     exact h
 
+/- English proof (translation)
+Establish `h0` using `congrFun h 0`. Rewrite `h0` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `[Fintype.sum_prod_type, Fin.sum_univ_two, colW] at h0`. Use `⟨?_, h0⟩` and prove the remaining obligations. Use extensionality with `⟨i, j⟩`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [la_mono, Finsupp.single_apply]`.
+-/
 theorem la_mono_of_weight {m : Fin 2 × Fin 1 →₀ ℕ} {ν : Fin 1 → ℕ}
     (h : Finsupp.weight (colW 2 1) m = ν) :
     m = la_mono (0 : Fin 1) (m (0, 0)) (m (1, 0)) ∧ m (0, 0) + m (1, 0) = ν 0 := by
@@ -487,6 +682,17 @@ theorem la_mono_of_weight {m : Fin 2 × Fin 1 →₀ ℕ} {ν : Fin 1 → ℕ}
   ext ⟨i, j⟩
   fin_cases i <;> fin_cases j <;> simp [la_mono, Finsupp.single_apply]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : x ∈ weightedHomogeneousSubmodule R (colW 2 1) ν` using `(Submodule.mem_inf.mp hx).1`. Rewrite `hx'` using `[mem_weightedHomogeneousSubmodule]`. Rewrite using `[x.as_sum]`.
+
+Use `Submodule.sum_mem _ (fun d hd => ?_)` and prove the remaining obligations. Take `⟨hd', hsum⟩` from `la_mono_of_weight (hx' (mem_support_iff.mp hd))`. Establish `e : monomial d (coeff d x) = coeff d x • la_xy R (0 : Fin 1) (d (0, 0)) (d (1, 0))`. Rewrite using `[la_xy_eq, ← hd', smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, la_monLat]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, _, hsum, rfl⟩)`. Rewrite using `[la_monLat, Submodule.span_le]`. Introduce and unpack `f ⟨p, q, hpq, rfl⟩`. Use `show la_xy R (0 : Fin 1) p q ∈ weightedHomogeneousSubmodule R (colW 2 1) ν ⊓ _`. Rewrite using `[Submodule.mem_inf]`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule, la_xy_eq]`. Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Use `fin_cases j`.
+
+Simplify using `[la_mono, colW, Finsupp.weight_single, hpq]`. Simplify using `only [Submodule.mem_iInf]`. Introduce `a b hab`. Conclude with `((ne_of_lt hab) (Subsingleton.elim a b)).elim`.
+-/
 theorem la_nabla_r2n1 (R : Type) [CommRing R] (ν : Fin 1 → ℕ) :
     dualWeyl R 2 1 ν = la_monLat R (0 : Fin 1) (ν 0) := by
   apply le_antisymm
@@ -514,10 +720,18 @@ theorem la_nabla_r2n1 (R : Type) [CommRing R] (ν : Fin 1 → ℕ) :
       intro a b hab
       exact ((ne_of_lt hab) (Subsingleton.elim a b)).elim
 
+/- English proof (translation)
+Simplify using `only [binForm, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply, la_xy]`.
+-/
 theorem la_binForm_apply (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) :
     binForm R d c = ∑ i : Fin (d + 1), c i • la_xy R (0 : Fin 1) (d - i.val) i.val := by
   simp only [binForm, LinearMap.sum_apply, LinearMap.smulRight_apply, LinearMap.proj_apply, la_xy]
 
+/- English proof (translation)
+Rewrite using `[la_binForm_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem la_binForm_single (R : Type) [CommRing R] (d : ℕ) (i : Fin (d + 1)) (t : R) :
     binForm R d (Pi.single i t) = t • la_xy R (0 : Fin 1) (d - i.val) i.val := by
   rw [la_binForm_apply, Finset.sum_eq_single i]
@@ -527,6 +741,11 @@ theorem la_binForm_single (R : Type) [CommRing R] (d : ℕ) (i : Fin (d + 1)) (t
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Rewrite using `[la_binForm_apply, coeff_sum, Finset.sum_eq_single i]`. Rewrite using `[coeff_smul, la_xy_eq, coeff_monomial, if_pos rfl, smul_eq_mul, mul_one]`. Introduce `j _ hj`. Rewrite using `[coeff_smul, la_xy_eq, coeff_monomial, if_neg, smul_zero]`. Introduce `h`.
+
+Conclude with `hj (Fin.ext (la_mono_inj 0 h).2)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem la_coeff_binForm (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) (i : Fin (d + 1)) :
     coeff (la_mono (0 : Fin 1) (d - i.val) i.val) (binForm R d c) = c i := by
   rw [la_binForm_apply, coeff_sum, Finset.sum_eq_single i]
@@ -538,12 +757,20 @@ theorem la_coeff_binForm (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → 
   · intro h
     exact absurd (Finset.mem_univ i) h
 
+/- English proof (translation)
+Unfold `BinFormInj`. Introduce `R _ d c c' h`. Use function extensionality and compare the values at `i`. Rewrite using `[← la_coeff_binForm R d c i, ← la_coeff_binForm R d c' i, h]`.
+-/
 theorem binary_form_injective : BinFormInj := by
   unfold BinFormInj
   intro R _ d c c' h
   funext i
   rw [← la_coeff_binForm R d c i, ← la_coeff_binForm R d c' i, h]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[la_binForm_apply, la_monLat]`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨d - i.val, i.val, by have := i.isLt; omega, rfl⟩))`. Rewrite using `[la_monLat, Submodule.span_le]`.
+
+Introduce and unpack `f ⟨p, q, hpq, rfl⟩`. Use `⟨Pi.single ⟨q, by omega⟩ 1, ?_⟩` and prove the remaining obligations. Rewrite using `[la_binForm_single, one_smul]`. Simplify using `only [Fin.val_mk, show d - q = p by omega]`.
+-/
 theorem la_range_binForm (R : Type) [CommRing R] (d : ℕ) :
     LinearMap.range (binForm R d) = la_monLat R (0 : Fin 1) d := by
   apply le_antisymm
@@ -557,15 +784,34 @@ theorem la_range_binForm (R : Type) [CommRing R] (d : ℕ) :
     rw [la_binForm_single, one_smul]
     simp only [Fin.val_mk, show d - q = p by omega]
 
+/- English proof (translation)
+Unfold `DualWeylBinaryForms`. Introduce `R _ ν`. Rewrite using `[la_nabla_r2n1, la_range_binForm]`.
+-/
 theorem nabla_rank_two_one_column : DualWeylBinaryForms := by
   unfold DualWeylBinaryForms
   intro R _ ν
   rw [la_nabla_r2n1, la_range_binForm]
 
+/- English proof (translation)
+Simplify using `[Formalism.CohomologicalDescent.diagBinom]`.
+-/
 theorem la_diagBinom_apply (R : Type) [CommRing R] (d : ℕ) (c : Fin (d + 1) → R) (i : Fin (d + 1)) :
     Formalism.CohomologicalDescent.diagBinom R d c i = (d.choose i.val : R) * c i := by
   simp [Formalism.CohomologicalDescent.diagBinom]
 
+/- English proof (translation)
+Unfold `WeylRankTwoOneColumnImage`. Introduce `R _ hn ν`. Rewrite using `[la_weyl_r2n1]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[la_binLat, Submodule.span_le]`.
+
+Introduce and unpack `f ⟨p, q, hpq, rfl⟩`. Establish `hsingle : Formalism.CohomologicalDescent.diagBinom R (ν 0) (Pi.single (⟨q, by omega⟩ : Fin (ν 0 + 1)) 1) = Pi.single ⟨q, by omega⟩ ((ν 0).choose q : R)`. Use function extensionality and compare the values at `j`. Rewrite using `[la_diagBinom_apply]`. Distinguish the cases in `hj : j = ⟨q, by omega⟩`.
+
+Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hj]`. Use `Submodule.mem_map.mpr ⟨Formalism.CohomologicalDescent.diagBinom R (ν 0) (Pi.single ⟨q, by omega⟩ 1), LinearMap.mem_range_self _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hsingle, la_binForm_single, MvPolynomial.smul_eq_C_mul, map_natCast]`.
+
+Simplify using `only [Fin.val_mk, ← hpq, Nat.add_sub_cancel]`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[Submodule.mem_comap, la_binForm_apply, la_binLat]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations.
+
+Establish `hi` using `i.isLt`. Establish `hg : ((ν 0).choose i.val : R) • la_xy R (0 : Fin 1) (ν 0 - i.val) i.val ∈ Submodule.span R {f | ∃ p q, p + q = ν 0 ∧ f = ((p + q).choose q : MvPolynomial (Fin 2 × Fin 1) R) * la_xy R 0 p q}`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_natCast]`. Conclude with `Submodule.subset_span ⟨ν 0 - i.val, i.val, by omega, by rw [show ν 0 - i.val + i.val = ν 0 by omega]⟩`. Rewrite using `[la_diagBinom_apply, mul_comm ((ν 0).choose i.val : R), mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hg`.
+-/
 theorem delta_rank_two_one_column : WeylRankTwoOneColumnImage := by
   unfold WeylRankTwoOneColumnImage
   intro R _ hn ν
@@ -599,6 +845,9 @@ theorem delta_rank_two_one_column : WeylRankTwoOneColumnImage := by
     rw [la_diagBinom_apply, mul_comm ((ν 0).choose i.val : R), mul_smul]
     exact Submodule.smul_mem _ _ hg
 
+/- English proof (translation)
+Rewrite using `[exact_exponent_rank_two 1 ν l]`. Establish `h0 : rowNu (r` using `2) ν 0 = ν 0 := dif_pos (by decide)`. Establish `h1 : rowNu (r` using `2) ν 1 = 0 := dif_neg (by decide)`. Rewrite using `[h0, h1, Nat.sub_zero]`.
+-/
 theorem la_eExp_r2n1 (ν : Fin 1 → ℕ) (l : ℕ) :
     Formalism.RankGapBounds.JumpSetsAlt.eExp (lamU 2 1 ν) l = Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) := by
   rw [exact_exponent_rank_two 1 ν l]
@@ -606,6 +855,19 @@ theorem la_eExp_r2n1 (ν : Fin 1 → ℕ) (l : ℕ) :
   have h1 : rowNu (r := 2) ν 1 = 0 := dif_neg (by decide)
   rw [h0, h1, Nat.sub_zero]
 
+/- English proof (translation)
+Unfold `LemmaAR_r2n1`. Introduce `R _ hn ν l hl hu x hx`. Rewrite `hx` using `[la_nabla_r2n1]`. Rewrite using `[la_weyl_r2n1, la_eExp_r2n1]`. Take `⟨m, hm, hdiv⟩` from `la_arith l (ν 0) hl`.
+
+Take `⟨u, hu'⟩` from `hu m hm`. Establish `key : ∀ y ∈ la_monLat R (0 : Fin 1) (ν 0), ((m : R) * (l : R) ^ Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0)) • y ∈ la_binLat R 0 (ν 0)`. Introduce `y hy`. Rewrite `hy` using `[la_monLat]`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem z hz`. Take `⟨p, q, hpq, rfl⟩` from `hz`. Establish `h` using `la_mem_of_dvd R (0 : Fin 1) hpq (N := m * l ^ Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0)) (by rw [hpq]; exact hdiv q (by omega))`. Rewrite using `[MvPolynomial.smul_eq_C_mul, ← Nat.cast_pow, ← Nat.cast_mul, map_natCast]`. Conclude with `h`.
+
+Consider the case `zero`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[smul_add]`.
+
+Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `h2` using `Submodule.smul_mem _ (↑u⁻¹ : R) (key x hx)`.
+
+Rewrite `h2` using `[smul_smul, ← mul_assoc, ← hu', Units.inv_mul, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem lemma_a_rank_two_one_column : LemmaAR_r2n1 := by
   unfold LemmaAR_r2n1
   intro R _ hn ν l hl hu x hx
@@ -636,6 +898,11 @@ theorem lemma_a_rank_two_one_column : LemmaAR_r2n1 := by
   have h2 := Submodule.smul_mem _ (↑u⁻¹ : R) (key x hx)
   rwa [smul_smul, ← mul_assoc, ← hu', Units.inv_mul, one_mul] at h2
 
+/- English proof (translation)
+Unfold `SharpInclusionRankTwoOneColumn`. Introduce `hn ν l e hl`. Establish `hc` using `la_core (0 : Fin 1) (ν 0) 1 one_ne_zero l e hl`. Simplify using `only [LinearMap.mulLeft_one, Submodule.map_id] at hc`. Unfold `InclZ`.
+
+Rewrite using `[la_nabla_r2n1, la_weyl_r2n1]`. Conclude with `hc`.
+-/
 theorem sharp_rank_two_one_column : SharpInclusionRankTwoOneColumn := by
   unfold SharpInclusionRankTwoOneColumn
   intro hn ν l e hl
@@ -645,12 +912,20 @@ theorem sharp_rank_two_one_column : SharpInclusionRankTwoOneColumn := by
   rw [la_nabla_r2n1, la_weyl_r2n1]
   exact hc
 
+/- English proof (translation)
+Unfold `LemmaAZ_r2n1`. Introduce `hn ν l hl`. Rewrite using `[la_eExp_r2n1]`. Conclude with `(sharp_rank_two_one_column hn ν l _ hl).mpr le_rfl`.
+-/
 theorem lattice_z_rank_two_one_column : LemmaAZ_r2n1 := by
   unfold LemmaAZ_r2n1
   intro hn ν l hl
   rw [la_eExp_r2n1]
   exact (sharp_rank_two_one_column hn ν l _ hl).mpr le_rfl
 
+/- English proof (translation)
+Unfold `ExZR2N1`. Introduce `hn ν l hl`. Rewrite using `[la_eExp_r2n1]`. Unfold `exZ`. Establish `hset : {e : ℕ | InclZ 2 1 hn ν l e} = {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ≤ e}`.
+
+Use extensionality with `e`. Conclude with `sharp_rank_two_one_column hn ν l e hl`. Rewrite using `[hset]`. Establish `hmem : Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ∈ {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0) ≤ e}` using `le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0))`. Conclude with `le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))`.
+-/
 theorem exact_z_rank_two_one_column : ExZR2N1 := by
   unfold ExZR2N1
   intro hn ν l hl
@@ -664,6 +939,17 @@ theorem exact_z_rank_two_one_column : ExZR2N1 := by
     le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0))
   exact le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))
 
+/- English proof (translation)
+Unfold `LatticeInclusionRankOne`. Introduce `n hn ν hν l hl`. Take `rfl | rfl : n = 0 ∨ n = 1` from `by omega`. Conclude with `lattice_z_zero_columns 1 hn ν l hl`. Apply `la_incl_of_le hn ν _ _ hl` to reduce the goal to its premises.
+
+Introduce `x hx`. Establish `hx' : x ∈ weightedHomogeneousSubmodule ℤ (colW 1 1) ν` using `(Submodule.mem_inf.mp hx).1`. Rewrite `hx'` using `[mem_weightedHomogeneousSubmodule]`. Establish `hhw : hw ℤ hn ν = X ((0 : Fin 1), (0 : Fin 1)) ^ ν 0` using `highest_weight_one_column ℤ hn ν`. Rewrite using `[x.as_sum]`.
+
+Use `Submodule.sum_mem _ (fun d hd => ?_)` and prove the remaining obligations. Establish `hwd` using `hx' (mem_support_iff.mp hd)`. Establish `hd0 : d = Finsupp.single ((0 : Fin 1), (0 : Fin 1)) (ν 0)`. Establish `h0` using `congrFun hwd 0`. Rewrite `h0` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+
+Simplify using `[Fintype.sum_prod_type, colW] at h0`. Use extensionality with `⟨i, j⟩`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `using h0`.
+
+Establish `e : monomial (Finsupp.single ((0 : Fin 1), (0 : Fin 1)) (ν 0)) (coeff (Finsupp.single ((0 : Fin 1), (0 : Fin 1)) (ν 0)) x) = coeff (Finsupp.single ((0 : Fin 1), (0 : Fin 1)) (ν 0)) x • hw ℤ hn ν`. Rewrite using `[hhw, X_pow_eq_monomial, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hd0, e]`. Conclude with `Submodule.smul_mem _ _ (la_hw_mem ℤ hn ν)`.
+-/
 theorem lattice_z_rank_one : LatticeInclusionRankOne := by
   unfold LatticeInclusionRankOne
   intro n hn ν hν l hl
@@ -696,6 +982,9 @@ def la_det (R : Type) [CommRing R] : MvPolynomial (Fin 2 × Fin 2) R :=
   X ((0 : Fin 2), (0 : Fin 2)) * X ((1 : Fin 2), (1 : Fin 2)) -
     X ((0 : Fin 2), (1 : Fin 2)) * X ((1 : Fin 2), (0 : Fin 2))
 
+/- English proof (translation)
+Substitute `hs` using the available equality. Use `show Matrix.det (Matrix.of fun p q : Fin 2 => (X (Fin.castLE hr p, Fin.castLE hn q) : MvPolynomial (Fin 2 × Fin 2) R)) = _`. Rewrite using `[Matrix.det_fin_two]`. Both sides reduce to the same expression.
+-/
 theorem la_lpMinor_two (R : Type) [CommRing R] (s : ℕ) (hs : s = 2) (hr : s ≤ 2) (hn : s ≤ 2) :
     lpMinor R s hr hn = la_det R := by
   subst hs
@@ -704,6 +993,11 @@ theorem la_lpMinor_two (R : Type) [CommRing R] (s : ℕ) (hs : s = 2) (hr : s �
   rw [Matrix.det_fin_two]
   rfl
 
+/- English proof (translation)
+Use `show ∏ s : Fin 2, (lpMinor R (s.val + 1) (by omega) (by omega)) ^ (ν s - nuNext ν s) = _`. Rewrite using `[Fin.prod_univ_two, show nuNext ν 0 = ν 1 from dif_pos (by decide), show nuNext ν 1 = 0 from dif_neg (by decide), Nat.sub_zero]`. Establish `e1` using `la_lpMinor_one R (r := 2) (n := 2) ((0 : Fin 2).val + 1) (by decide) (by decide) (by decide)`. Establish `e2` using `la_lpMinor_two R ((1 : Fin 2).val + 1) (by decide) (by decide) (by decide)`. Rewrite using `[e1, e2, la_xy, pow_zero, mul_one]`.
+
+Conclude with `mul_comm _ _`.
+-/
 theorem highest_weight_rank_two (R : Type) [CommRing R] (hn : 2 ≤ 2) (ν : Fin 2 → ℕ) :
     hw R hn ν = la_det R ^ ν 1 * la_xy R (0 : Fin 2) (ν 0 - ν 1) 0 := by
   show ∏ s : Fin 2, (lpMinor R (s.val + 1) (by omega) (by omega)) ^ (ν s - nuNext ν s) = _
@@ -714,6 +1008,9 @@ theorem highest_weight_rank_two (R : Type) [CommRing R] (hn : 2 ≤ 2) (ν : Fin
   rw [e1, e2, la_xy, pow_zero, mul_one]
   exact mul_comm _ _
 
+/- English proof (translation)
+Apply the tactic sequence `rcases fin_two_eq_zero_or_one a with rfl | rfl <;> rcases fin_two_eq_zero_or_one b with rfl | rfl`. Conclude with `absurd rfl hab`. Apply the tactic sequence `simp [la_det, la_rowGen_X] <;> ring`. Apply the tactic sequence `simp [la_det, la_rowGen_X] <;> ring`. Conclude with `absurd rfl hab`.
+-/
 theorem la_rowGen_det_ne (R : Type) [CommRing R] (a b : Fin 2) (hab : a ≠ b) :
     rowGen R a b (la_det R) = Polynomial.C (la_det R) := by
   rcases fin_two_eq_zero_or_one a with rfl | rfl <;> rcases fin_two_eq_zero_or_one b with rfl | rfl
@@ -722,18 +1019,27 @@ theorem la_rowGen_det_ne (R : Type) [CommRing R] (a b : Fin 2) (hab : a ≠ b) :
   · simp [la_det, la_rowGen_X] <;> ring
   · exact absurd rfl hab
 
+/- English proof (translation)
+Break down `fin_two_eq_zero_or_one a with rfl | rfl` into its components or cases. Apply the tactic sequence `simp [la_det, la_rowGen_X] <;> ring`. Apply the tactic sequence `simp [la_det, la_rowGen_X] <;> ring`.
+-/
 theorem la_rowGen_det_eq (R : Type) [CommRing R] (a : Fin 2) :
     rowGen R a a (la_det R) = Polynomial.C (la_det R) * (1 + Polynomial.X) := by
   rcases fin_two_eq_zero_or_one a with rfl | rfl
   · simp [la_det, la_rowGen_X] <;> ring
   · simp [la_det, la_rowGen_X] <;> ring
 
+/- English proof (translation)
+Simplify using `only [rowDiv]`. Rewrite using `[map_mul, map_pow, la_rowGen_det_ne R a b hab, ← Polynomial.C_pow, Polynomial.coeff_C_mul]`.
+-/
 theorem la_rowDiv_tw_ne (R : Type) [CommRing R] (a b : Fin 2) (hab : a ≠ b) (k c : ℕ)
     (f : MvPolynomial (Fin 2 × Fin 2) R) :
     rowDiv R a b k (la_det R ^ c * f) = la_det R ^ c * rowDiv R a b k f := by
   simp only [rowDiv]
   rw [map_mul, map_pow, la_rowGen_det_ne R a b hab, ← Polynomial.C_pow, Polynomial.coeff_C_mul]
 
+/- English proof (translation)
+Simplify using `only [rowDiv]`. Rewrite using `[map_mul, map_pow, la_rowGen_det_eq, mul_pow, ← Polynomial.C_pow, mul_assoc, Polynomial.coeff_C_mul, Polynomial.coeff_mul]`. Simplify using `only [Polynomial.coeff_one_add_X_pow]`.
+-/
 theorem la_rowDiv_tw_eq (R : Type) [CommRing R] (a : Fin 2) (k c : ℕ)
     (f : MvPolynomial (Fin 2 × Fin 2) R) :
     rowDiv R a a k (la_det R ^ c * f) = la_det R ^ c *
@@ -744,6 +1050,11 @@ theorem la_rowDiv_tw_eq (R : Type) [CommRing R] (a : Fin 2) (k c : ℕ)
     Polynomial.coeff_C_mul, Polynomial.coeff_mul]
   simp only [Polynomial.coeff_one_add_X_pow]
 
+/- English proof (translation)
+Take `⟨g, hg, rfl⟩` from `Submodule.mem_map.mp hf`. Simplify using `only [LinearMap.mulLeft_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[la_rowDiv_tw_eq]`.
+
+Use `Submodule.mem_map.mpr ⟨_, Submodule.sum_mem _ (fun x _ => ?_), rfl⟩` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Conclude with `nsmul_mem (hs _ _ _ _ hg) _`. Rewrite using `[la_rowDiv_tw_ne R a b hab]`. Conclude with `Submodule.mem_map.mpr ⟨_, hs _ _ _ _ hg, rfl⟩`.
+-/
 theorem la_tw_stable (R : Type) [CommRing R] (L : Submodule R (MvPolynomial (Fin 2 × Fin 2) R))
     (hs : ∀ (a b : Fin 2) (k : ℕ) (f : MvPolynomial (Fin 2 × Fin 2) R), f ∈ L →
       rowDiv R a b k f ∈ L) (c : ℕ) (a b : Fin 2) (k : ℕ) (f : MvPolynomial (Fin 2 × Fin 2) R)
@@ -760,11 +1071,21 @@ theorem la_tw_stable (R : Type) [CommRing R] (L : Submodule R (MvPolynomial (Fin
   · rw [la_rowDiv_tw_ne R a b hab]
     exact Submodule.mem_map.mpr ⟨_, hs _ _ _ _ hg, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[la_binLat]`. Conclude with `Submodule.subset_span ⟨d, 0, by simp, by simp⟩`.
+-/
 theorem la_xy_mem_binLat (R : Type) [CommRing R] {n : ℕ} (s : Fin n) (d : ℕ) :
     la_xy R s d 0 ∈ la_binLat R s d := by
   rw [la_binLat]
   exact Submodule.subset_span ⟨d, 0, by simp, by simp⟩
 
+/- English proof (translation)
+Establish `hhw : hw R hn ν = la_det R ^ ν 1 * la_xy R (0 : Fin 2) (ν 0 - ν 1) 0` using `highest_weight_rank_two R hn ν`. Apply `le_antisymm` to reduce the goal to its premises. Use `la_weyl_le_of_stable R hn ν _ ?_ (fun a b k f hf => la_tw_stable R _ (fun a b k f hf => la_binLat_stable R 0 (ν 0 - ν 1) a b k f hf) (ν 1) a b k f hf)` and prove the remaining obligations. Rewrite using `[hhw]`. Use `Submodule.mem_map.mpr ⟨la_xy R 0 (ν 0 - ν 1) 0, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[la_binLat]`. Conclude with `Submodule.subset_span ⟨ν 0 - ν 1, 0, by simp, by simp⟩`. Rewrite using `[la_binLat, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨f, ⟨p, q, hpq, rfl⟩, rfl⟩`. Establish `h` using `la_word_mem R hn ν [((1 : Fin 2), (0 : Fin 2), q)]`.
+
+Establish `e : applyWord R [((1 : Fin 2), (0 : Fin 2), q)] (hw R hn ν) = LinearMap.mulLeft R (la_det R ^ ν 1) (((p + q).choose q : MvPolynomial (Fin 2 × Fin 2) R) * la_xy R 0 p q)` using `by show rowDiv R 1 0 q (hw R hn ν) = _`. Rewrite using `[hhw, la_rowDiv_tw_ne R 1 0 (by decide), ← hpq, la_rowDiv_xy_zero, LinearMap.mulLeft_apply]`. Simplify using `[la_xy]`. Rewrite `h` using `[e]`. Conclude with `h`.
+-/
 theorem la_weyl_r2n2 (R : Type) [CommRing R] (hn : 2 ≤ 2) (ν : Fin 2 → ℕ) :
     weyl R 2 2 hn ν =
       (la_binLat R (0 : Fin 2) (ν 0 - ν 1)).map (LinearMap.mulLeft R (la_det R ^ ν 1)) := by
@@ -789,6 +1110,11 @@ theorem la_weyl_r2n2 (R : Type) [CommRing R] (hn : 2 ≤ 2) (ν : Fin 2 → ℕ)
     rw [e] at h
     exact h
 
+/- English proof (translation)
+Establish `h` using `Submodule.mul_mem_mul hu hu'`. Rewrite `h` using `[la_monLat, la_monLat, Submodule.span_mul_span]`. Rewrite using `[la_monLat]`. Use `Submodule.span_mono ?_ h` and prove the remaining obligations. Introduce and unpack `f ⟨a, ⟨p, q, hpq, rfl⟩, b, ⟨p', q', hpq', rfl⟩, rfl⟩`.
+
+Conclude with `⟨p + p', q + q', by omega, by simp only [la_xy]; ring⟩`.
+-/
 theorem la_monLat_mul (R : Type) [CommRing R] {n : ℕ} (s : Fin n) {d d' : ℕ}
     {u u' : MvPolynomial (Fin 2 × Fin n) R} (hu : u ∈ la_monLat R s d)
     (hu' : u' ∈ la_monLat R s d') : u * u' ∈ la_monLat R s (d + d') := by
@@ -802,6 +1128,11 @@ theorem la_monLat_mul (R : Type) [CommRing R] {n : ℕ} (s : Fin n) {d d' : ℕ}
 def detPowMulMonomialSpan (c d : ℕ) : Submodule ℤ (MvPolynomial (Fin 2 × Fin 2) ℤ) :=
   (la_monLat ℤ (0 : Fin 2) d).map (LinearMap.mulLeft ℤ (la_det ℤ ^ c))
 
+/- English proof (translation)
+Rewrite `hf`, `hf'`, the goal using `[detPowMulMonomialSpan]`. Take `⟨u, hu, rfl⟩` from `Submodule.mem_map.mp hf`. Take `⟨u', hu', rfl⟩` from `Submodule.mem_map.mp hf'`. Use `Submodule.mem_map.mpr ⟨u * u', la_monLat_mul ℤ (0 : Fin 2) hu hu', ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem la_T_mul {c d c' d' : ℕ} {f f' : MvPolynomial (Fin 2 × Fin 2) ℤ} (hf : f ∈ detPowMulMonomialSpan c d)
     (hf' : f' ∈ detPowMulMonomialSpan c' d') : f * f' ∈ detPowMulMonomialSpan (c + c') (d + d') := by
   rw [detPowMulMonomialSpan] at hf hf' ⊢
@@ -811,10 +1142,26 @@ theorem la_T_mul {c d c' d' : ℕ} {f f' : MvPolynomial (Fin 2 × Fin 2) ℤ} (h
   simp only [LinearMap.mulLeft_apply]
   ring
 
+/- English proof (translation)
+Rewrite using `[detPowMulMonomialSpan]`. Conclude with `Submodule.mem_map.mpr ⟨la_xy ℤ (0 : Fin 2) p q, Submodule.subset_span ⟨p, q, rfl, rfl⟩, rfl⟩`.
+-/
 theorem la_T_xy (c p q : ℕ) : la_det ℤ ^ c * la_xy ℤ (0 : Fin 2) p q ∈ detPowMulMonomialSpan c (p + q) := by
   rw [detPowMulMonomialSpan]
   exact Submodule.mem_map.mpr ⟨la_xy ℤ (0 : Fin 2) p q, Submodule.subset_span ⟨p, q, rfl, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Take `rfl | rfl | rfl : s = 0 ∨ s = 1 ∨ s = 2` from `by omega`. Establish `h : initMinor ℤ I hs = 1` using `Matrix.det_isEmpty`. Rewrite using `[h]`. Simplify `la_T_xy 0 0 0` using `[la_xy]`. Establish `h : initMinor ℤ I hs = X (I 0, 0)` using `Matrix.det_fin_one _`.
+
+Rewrite using `[h]`. Apply the tactic sequence `rcases fin_two_eq_zero_or_one (I 0) with h0 | h0 <;> rw [h0]`. Simplify `la_T_xy 0 1 0` using `[la_xy]`. Simplify `la_T_xy 0 0 1` using `[la_xy]`. Establish `h : initMinor ℤ I hs = X (I 0, 0) * X (I 1, 1) - X (I 0, 1) * X (I 1, 0)` using `Matrix.det_fin_two _`.
+
+Establish `h2` using `la_T_xy 1 0 0`. Simplify using `only [la_xy, pow_zero, pow_one, mul_one, add_zero] at h2`. Use `show initMinor ℤ I hs ∈ detPowMulMonomialSpan 1 0`. Rewrite using `[h]`. Apply the tactic sequence `rcases fin_two_eq_zero_or_one (I 0) with h0 | h0 <;> rcases fin_two_eq_zero_or_one (I 1) with h1 | h1 <;> rw [h0, h1]`.
+
+Establish `e : X ((0 : Fin 2), (0 : Fin 2)) * X ((0 : Fin 2), (1 : Fin 2)) - X ((0 : Fin 2), (1 : Fin 2)) * X ((0 : Fin 2), (0 : Fin 2)) = (0 : MvPolynomial (Fin 2 × Fin 2) ℤ)` using `by ring`. Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`. Conclude with `h2`. Establish `e : X ((1 : Fin 2), (0 : Fin 2)) * X ((0 : Fin 2), (1 : Fin 2)) - X ((1 : Fin 2), (1 : Fin 2)) * X ((0 : Fin 2), (0 : Fin 2)) = -la_det ℤ`.
+
+Simplify using `only [la_det]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.neg_mem _ h2`. Establish `e : X ((1 : Fin 2), (0 : Fin 2)) * X ((1 : Fin 2), (1 : Fin 2)) - X ((1 : Fin 2), (1 : Fin 2)) * X ((1 : Fin 2), (0 : Fin 2)) = (0 : MvPolynomial (Fin 2 × Fin 2) ℤ)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem initial_minor_mem_det_span (s : ℕ) (I : Fin s → Fin 2) (hs : s ≤ 2) :
     initMinor ℤ I hs ∈ detPowMulMonomialSpan (if s = 2 then 1 else 0) (if s = 1 then 1 else 0) := by
   obtain rfl | rfl | rfl : s = 0 ∨ s = 1 ∨ s = 2 := by omega
@@ -851,6 +1198,11 @@ theorem initial_minor_mem_det_span (s : ℕ) (I : Fin s → Fin 2) (hs : s ≤ 2
       rw [e]
       exact Submodule.zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty, Finset.sum_empty]`. Simplify `la_T_xy 0 0 0` using `[la_xy]`. Consider the case `@insert k S hk ih`.
+
+Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk, Finset.sum_insert hk]`. Conclude with `la_T_mul (initial_minor_mem_det_span (sz k) (I k) (hsz k)) ih`.
+-/
 theorem prod_initial_minors_mem_det_span {K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ 2) (I : ∀ k, Fin (sz k) → Fin 2)
     (S : Finset (Fin K)) :
     ∏ k ∈ S, initMinor ℤ (I k) (hsz k) ∈
@@ -863,12 +1215,32 @@ theorem prod_initial_minors_mem_det_span {K : ℕ} (sz : Fin K → ℕ) (hsz : �
     rw [Finset.prod_insert hk, Finset.sum_insert hk, Finset.sum_insert hk]
     exact la_T_mul (initial_minor_mem_det_span (sz k) (I k) (hsz k)) ih
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `congrArg (MvPolynomial.eval (fun v : Fin 2 × Fin 2 => if v.1 = v.2 then (1 : ℤ) else 0)) h`. Simplify using `[la_det] at h1`.
+-/
 theorem la_det_ne : la_det ℤ ≠ 0 := by
   intro h
   have h1 := congrArg
     (MvPolynomial.eval (fun v : Fin 2 × Fin 2 => if v.1 = v.2 then (1 : ℤ) else 0)) h
   simp [la_det] at h1
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[standardMonomialSpan 2 2 ν hν]`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨K, sz, hsz, I, hshape, rfl⟩`. Establish `h1` using `prod_initial_minors_mem_det_span sz hsz I Finset.univ`.
+
+Establish `c1 : (∑ k : Fin K, if sz k = 2 then 1 else 0) = ν 1`. Rewrite using `[← hshape]`. Unfold `shapeDeg`. Rewrite using `[Finset.card_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `k _`. Use `hsz k` as an intermediate fact. Establish `e : ((1 : Fin 2).val < sz k) ↔ sz k = 2`. Simplify using `only [Fin.val_one]`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [e]`. Establish `c0 : (∑ k : Fin K, if sz k = 1 then 1 else 0) + (∑ k : Fin K, if sz k = 2 then 1 else 0) = ν 0`. Rewrite using `[← hshape]`. Unfold `shapeDeg`. Rewrite using `[Finset.card_filter, ← Finset.sum_add_distrib]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k _`. Use `hsz k` as an intermediate fact. Simplify using `only [Fin.val_zero]`. Apply the tactic sequence `split_ifs <;> omega`.
+
+Establish `c2 : (∑ k : Fin K, if sz k = 1 then 1 else 0) = ν 0 - ν 1` using `by omega`. Rewrite `h1` using `[c1, c2]`. Conclude with `h1`. Unfold `detPowMulMonomialSpan`. Rewrite using `[Submodule.map_le_iff_le_comap]`.
+
+Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨p, q, h, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Apply `dualWeylSat ℤ 2 2 ν (((p + q).choose q : ℕ) : ℤ) _ (by exact_mod_cast (Nat.choose_pos (by omega)).ne')` to reduce the goal to its premises. Apply `weylLeDual ℤ 2 2 hn ν hν` to reduce the goal to its premises.
+
+Rewrite using `[la_weyl_r2n2]`. Use `⟨_, Submodule.subset_span ⟨p, q, h, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem la_nabla_r2n2 (hn : 2 ≤ 2) (ν : Fin 2 → ℕ) (hν : Antitone ν) :
     dualWeyl ℤ 2 2 ν = detPowMulMonomialSpan (ν 1) (ν 0 - ν 1) := by
   apply le_antisymm
@@ -914,6 +1286,9 @@ theorem la_nabla_r2n2 (hn : 2 ≤ 2) (ν : Fin 2 → ℕ) (hν : Antitone ν) :
     rw [MvPolynomial.smul_eq_C_mul, map_natCast]
     ring
 
+/- English proof (translation)
+Rewrite using `[exact_exponent_rank_two 2 ν l]`. Establish `h0 : rowNu (r` using `2) ν 0 = ν 0 := dif_pos (by decide)`. Establish `h1 : rowNu (r` using `2) ν 1 = ν 1 := dif_pos (by decide)`. Rewrite using `[h0, h1]`.
+-/
 theorem la_eExp_r2n2 (ν : Fin 2 → ℕ) (l : ℕ) :
     Formalism.RankGapBounds.JumpSetsAlt.eExp (lamU 2 2 ν) l = Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) := by
   rw [exact_exponent_rank_two 2 ν l]
@@ -921,6 +1296,11 @@ theorem la_eExp_r2n2 (ν : Fin 2 → ℕ) (l : ℕ) :
   have h1 : rowNu (r := 2) ν 1 = ν 1 := dif_pos (by decide)
   rw [h0, h1]
 
+/- English proof (translation)
+Unfold `SharpInclusionRankTwoTwoColumns`. Introduce `hn ν hν l e hl`. Establish `hc` using `la_core (0 : Fin 2) (ν 0 - ν 1) (la_det ℤ ^ ν 1) (pow_ne_zero _ la_det_ne) l e hl`. Unfold `InclZ`. Rewrite using `[la_nabla_r2n2 hn ν hν, la_weyl_r2n2 ℤ hn ν]`.
+
+Conclude with `hc`.
+-/
 theorem sharp_rank_two_two_columns : SharpInclusionRankTwoTwoColumns := by
   unfold SharpInclusionRankTwoTwoColumns
   intro hn ν hν l e hl
@@ -929,12 +1309,20 @@ theorem sharp_rank_two_two_columns : SharpInclusionRankTwoTwoColumns := by
   rw [la_nabla_r2n2 hn ν hν, la_weyl_r2n2 ℤ hn ν]
   exact hc
 
+/- English proof (translation)
+Unfold `LemmaAZ_r2n2`. Introduce `hn ν hν l hl`. Rewrite using `[la_eExp_r2n2]`. Conclude with `(sharp_rank_two_two_columns hn ν hν l _ hl).mpr le_rfl`.
+-/
 theorem lattice_z_rank_two_two_columns : LemmaAZ_r2n2 := by
   unfold LemmaAZ_r2n2
   intro hn ν hν l hl
   rw [la_eExp_r2n2]
   exact (sharp_rank_two_two_columns hn ν hν l _ hl).mpr le_rfl
 
+/- English proof (translation)
+Unfold `ExZR2N2`. Introduce `hn ν hν l hl`. Rewrite using `[la_eExp_r2n2]`. Unfold `exZ`. Establish `hset : {e : ℕ | InclZ 2 2 hn ν l e} = {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ≤ e}`.
+
+Use extensionality with `e`. Conclude with `sharp_rank_two_two_columns hn ν hν l e hl`. Rewrite using `[hset]`. Establish `hmem : Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ∈ {e : ℕ | Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1) ≤ e}` using `le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1))`. Conclude with `le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))`.
+-/
 theorem exact_z_rank_two_two_columns : ExZR2N2 := by
   unfold ExZR2N2
   intro hn ν hν l hl
@@ -949,6 +1337,11 @@ theorem exact_z_rank_two_two_columns : ExZR2N2 := by
     le_refl (Formalism.RankGapBounds.JumpSetsAlt.maxVal l (ν 0 - ν 1))
   exact le_antisymm (Nat.sInf_le hmem) (le_csInf ⟨_, hmem⟩ (fun b hb => hb))
 
+/- English proof (translation)
+Unfold `LatticeInclusionRankLeTwo`. Introduce `r n hn hr ν hν l hl`. Take `rfl | rfl | rfl : n = 0 ∨ n = 1 ∨ n = 2` from `by omega`. Conclude with `lattice_z_zero_columns r hn ν l hl`. Take `rfl | rfl : r = 1 ∨ r = 2` from `by omega`.
+
+Conclude with `lattice_z_rank_one 1 hn ν hν l hl`. Conclude with `lattice_z_rank_two_one_column hn ν l hl`. Take `rfl : r = 2` from `by omega`. Conclude with `lattice_z_rank_two_two_columns hn ν hν l hl`.
+-/
 theorem lattice_z_rank_le_two : LatticeInclusionRankLeTwo := by
   unfold LatticeInclusionRankLeTwo
   intro r n hn hr ν hν l hl
@@ -960,6 +1353,11 @@ theorem lattice_z_rank_le_two : LatticeInclusionRankLeTwo := by
   · obtain rfl : r = 2 := by omega
     exact lattice_z_rank_two_two_columns hn ν hν l hl
 
+/- English proof (translation)
+Establish `h : dualWeyl ℤ r n ν ≤ homogeneousSubmodule (Fin r × Fin n) ℤ (∑ s, ν s)`. Introduce `f hf`. Establish `h1` using `(mem_dualWeyl_iff.1 hf).1`. Rewrite using `[mem_homogeneousSubmodule]`. Introduce `m hm`.
+
+Rewrite using `[← lclosedeq_weight_sum, h1 hm]`. Conclude with `Submodule.FG.of_le (homogeneousSubmodule_fg _ _ _) h`.
+-/
 theorem la_dualWeyl_fg (r n : ℕ) (ν : Fin n → ℕ) : (dualWeyl ℤ r n ν).FG := by
   have h : dualWeyl ℤ r n ν ≤ homogeneousSubmodule (Fin r × Fin n) ℤ (∑ s, ν s) := by
     intro f hf
@@ -969,6 +1367,19 @@ theorem la_dualWeyl_fg (r n : ℕ) (ν : Fin n → ℕ) : (dualWeyl ℤ r n ν).
     rw [← lclosedeq_weight_sum, h1 hm]
   exact Submodule.FG.of_le (homogeneousSubmodule_fg _ _ _) h
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `la_dualWeyl_fg r n ν`. Establish `hc` using `weylRational r n hn ν hν`. Use `choose! c hc0 hc1 using hc`. Establish `hSm : ∀ g ∈ S, g ∈ dualWeyl ℤ r n ν` using `fun g hg => hS ▸ Submodule.subset_span hg`. Use `⟨(∏ g ∈ S, c g).natAbs, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.natAbs_ne_zero, Finset.prod_ne_zero_iff]`. Conclude with `fun g hg => hc0 g (hSm g hg)`. Introduce `x hx`. Establish `key : (∏ g ∈ S, c g) • x ∈ weyl ℤ r n hn ν`. Rewrite `hx` using `[← hS]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨t, ht⟩` from `Finset.dvd_prod_of_mem c hg`. Rewrite using `[ht, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hc1 g (hSm g hg))`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+
+Break down `Int.natAbs_eq (∏ g ∈ S, c g) with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `key`. Establish `h2 : (((∏ g ∈ S, c g).natAbs : ℕ) : ℤ) = -(∏ g ∈ S, c g)` using `by omega`. Rewrite using `[h2, neg_smul]`.
+
+Conclude with `Submodule.neg_mem _ key`.
+-/
 theorem la_uniform (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antitone ν) :
     ∃ N : ℕ, N ≠ 0 ∧ ∀ x ∈ dualWeyl ℤ r n ν, ((N : ℕ) : ℤ) • x ∈ weyl ℤ r n hn ν := by
   classical
@@ -997,6 +1408,11 @@ theorem la_uniform (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (hν : Antito
       rw [h2, neg_smul]
       exact Submodule.neg_mem _ key
 
+/- English proof (translation)
+Unfold `ExZSpec`. Introduce `r n hn ν hν l hl`. Take `⟨N, hN0, hN⟩` from `la_uniform r n hn ν hν`. Take `⟨v, m, hm, hNe⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0 l hl.ne_one`. Establish `hv : InclZ r n hn ν l v`.
+
+Unfold `InclZ`. Use `⟨m, hm, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm m, ← hNe]`. Conclude with `hN x hx`. Conclude with `Nat.sInf_mem (s := {e : ℕ | InclZ r n hn ν l e}) ⟨v, hv⟩`.
+-/
 theorem exact_z_specialization : ExZSpec := by
   unfold ExZSpec
   intro r n hn ν hν l hl
@@ -1009,6 +1425,11 @@ theorem exact_z_specialization : ExZSpec := by
     exact hN x hx
   exact Nat.sInf_mem (s := {e : ℕ | InclZ r n hn ν l e}) ⟨v, hv⟩
 
+/- English proof (translation)
+Proceed by induction on `g using MvPolynomial.induction_on`. Use `next z => simp [rowGen]`. Use `next p q hp hq => rw [map_add, map_add, hp, hq, map_add, Polynomial.map_add]`. Use `next p v hp =>`. Simplify using `only [map_mul, MvPolynomial.map_X, hp, Polynomial.map_mul, la_rowGen_X]`.
+
+Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem la_rowGen_map_lemma (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r)
     (g : MvPolynomial (Fin r × Fin n) ℤ) :
     rowGen R a b (map (Int.castRingHom R) g) =
@@ -1021,11 +1442,17 @@ private theorem la_rowGen_map_lemma (R : Type) [CommRing R] {r n : ℕ} (a b : F
     congr 1
     split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [rowDiv, la_rowGen_map_lemma, Polynomial.coeff_map]`.
+-/
 private theorem la_rowDiv_map_lemma_2 (R : Type) [CommRing R] {r n : ℕ} (a b : Fin r) (k : ℕ)
     (g : MvPolynomial (Fin r × Fin n) ℤ) :
     rowDiv R a b k (map (Int.castRingHom R) g) = map (Int.castRingHom R) (rowDiv ℤ a b k g) := by
   simp only [rowDiv, la_rowGen_map_lemma, Polynomial.coeff_map]
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show rowDiv R x.1 x.2.1 x.2.2 (applyWord R w (map (Int.castRingHom R) g)) = map (Int.castRingHom R) (rowDiv ℤ x.1 x.2.1 x.2.2 (applyWord ℤ w g))`. Rewrite using `[ih, la_rowDiv_map_lemma_2]`.
+-/
 private theorem la_applyWord_map_lemma_3 (R : Type) [CommRing R] {r n : ℕ}
     (w : List (Fin r × Fin r × ℕ)) (g : MvPolynomial (Fin r × Fin n) ℤ) :
     applyWord R w (map (Int.castRingHom R) g) = map (Int.castRingHom R) (applyWord ℤ w g) := by
@@ -1036,6 +1463,9 @@ private theorem la_applyWord_map_lemma_3 (R : Type) [CommRing R] {r n : ℕ}
       map (Int.castRingHom R) (rowDiv ℤ x.1 x.2.1 x.2.2 (applyWord ℤ w g))
     rw [ih, la_rowDiv_map_lemma_2]
 
+/- English proof (translation)
+Simplify using `only [hw, lpMinor, map_prod, map_pow, RingHom.map_det, RingHom.mapMatrix_apply]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Use `congr 2`. Use extensionality with `p q`. Simplify using the standard rewrite rules.
+-/
 private theorem la_hw_map_lemma_4 (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     map (Int.castRingHom R) (hw ℤ hn ν) = hw R hn ν := by
   simp only [hw, lpMinor, map_prod, map_pow, RingHom.map_det, RingHom.mapMatrix_apply]
@@ -1044,6 +1474,15 @@ private theorem la_hw_map_lemma_4 (R : Type) [CommRing R] {r n : ℕ} (hn : n �
   ext p q
   simp
 
+/- English proof (translation)
+Establish `hf' : f ∈ Submodule.span ℤ (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord ℤ w (hw ℤ hn ν))` using `hf`. Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`.
+
+Rewrite using `[← la_applyWord_map_lemma_3, la_hw_map_lemma_4]`. Conclude with `la_word_mem R hn ν w`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul z x _ hx`. Rewrite using `[map_zsmul]`.
+
+Conclude with `zsmul_mem hx z`.
+-/
 theorem la_map_weyl (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (f : MvPolynomial (Fin r × Fin n) ℤ) (hf : f ∈ weyl ℤ r n hn ν) :
     map (Int.castRingHom R) f ∈ weyl R r n hn ν := by
@@ -1065,6 +1504,15 @@ theorem la_map_weyl (R : Type) [CommRing R] {r n : ℕ} (hn : n ≤ r) (ν : Fin
     rw [map_zsmul]
     exact zsmul_mem hx z
 
+/- English proof (translation)
+Take `⟨m, hm, h⟩` from `hZ`. Rewrite `hx` using `[standardMonomialSpanDomain R r n ν]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨K, sz, hsz, I, hshape, rfl⟩` from `hg`.
+
+Establish `h1 : bideterminant ℤ sz hsz I ∈ dualWeyl ℤ r n ν` using `hshape ▸ bidetMem ℤ r n K sz hsz I`. Establish `h2` using `la_map_weyl R hn ν _ (h _ h1)`. Rewrite `h2` using `[MvPolynomial.smul_eq_C_mul, map_mul, map_C, ldlat_map_bidet, ← MvPolynomial.smul_eq_C_mul]`. Take `⟨u, hu'⟩` from `hu m hm`. Establish `h3` using `Submodule.smul_mem _ (↑u⁻¹ : R) h2`.
+
+Rewrite `h3` using `[smul_smul]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [eq_intCast]`. Use `push_cast`. Rewrite using `[← hu', ← mul_assoc, Units.inv_mul, one_mul]`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem la_incl_R_of_Z (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ)
     (l e : ℕ) (hu : ∀ m : ℕ, ¬ l ∣ m → IsUnit (m : R)) (hZ : InclZ r n hn ν l e)
     (x : MvPolynomial (Fin r × Fin n) R) (hx : x ∈ dualWeyl R r n ν) :
@@ -1089,16 +1537,33 @@ theorem la_incl_R_of_Z (R : Type) [CommRing R] [IsDomain R] (r n : ℕ) (hn : n 
   | add x y _ _ hx hy => rw [smul_add]; exact Submodule.add_mem _ hx hy
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Unfold `LemmaAROfZ LemmaAR`. Introduce `hZ R _ _ r n hn ν hν l hl hu x hx`. Conclude with `la_incl_R_of_Z R r n hn ν l _ hu (hZ r n hn ν hν l hl) x hx`.
+-/
 theorem lemma_a_real_of_integral : LemmaAROfZ := by
   unfold LemmaAROfZ LemmaAR
   intro hZ R _ _ r n hn ν hν l hl hu x hx
   exact la_incl_R_of_Z R r n hn ν l _ hu (hZ r n hn ν hν l hl) x hx
 
+/- English proof (translation)
+Rewrite using `[map_zsmul]`. Conclude with `(Int.cast_smul_eq_zsmul R z _).symm`.
+-/
 theorem la_map_smul (R : Type) [CommRing R] {σ : Type} (z : ℤ) (f : MvPolynomial σ ℤ) :
     map (Int.castRingHom R) (z • f) = (z : R) • map (Int.castRingHom R) f := by
   rw [map_zsmul]
   exact (Int.cast_smul_eq_zsmul R z _).symm
 
+/- English proof (translation)
+Establish `hf' : f ∈ Submodule.span R (Set.range fun w : List (Fin r × Fin r × ℕ) => applyWord R w (hw R hn ν))` using `hf`. Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`.
+
+Use `⟨1, hl.not_dvd_one, applyWord ℤ w (hw ℤ hn ν), la_word_mem ℤ hn ν w, ?_⟩` and prove the remaining obligations. Rewrite using `[← la_applyWord_map_lemma_3, la_hw_map_lemma_4, Nat.cast_one, one_smul]`. Consider the case `zero`. Conclude with `⟨1, hl.not_dvd_one, 0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+
+Take `⟨m1, hm1, f1, hf1, e1⟩` from `hx`. Take `⟨m2, hm2, f2, hf2, e2⟩` from `hy`. Use `⟨m1 * m2, fun h => ((Nat.Prime.dvd_mul hl).mp h).elim hm1 hm2, (m2 : ℤ) • f1 + (m1 : ℤ) • f2, Submodule.add_mem _ (Submodule.smul_mem _ _ hf1) (Submodule.smul_mem _ _ hf2), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_zsmul, map_zsmul, ← e1, ← e2, ← Int.cast_smul_eq_zsmul R, ← Int.cast_smul_eq_zsmul R, smul_smul, smul_smul, smul_add, Nat.cast_mul, Int.cast_natCast, Int.cast_natCast, mul_comm (m2 : R) (m1 : R)]`. Consider the case `smul a x _ hx`.
+
+Take `⟨m1, hm1, f1, hf1, e1⟩` from `hx`. Take `⟨m, hm, z, hz⟩` from `hd a`. Use `⟨m * m1, fun h => ((Nat.Prime.dvd_mul hl).mp h).elim hm hm1, z • f1, Submodule.smul_mem _ _ hf1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, ← e1, ← Int.cast_smul_eq_zsmul R, smul_smul, smul_smul, ← hz, Nat.cast_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem la_clear (R : Type) [CommRing R] (l : ℕ) (hl : l.Prime)
     (hd : ∀ a : R, ∃ m : ℕ, ¬ l ∣ m ∧ ∃ z : ℤ, (m : R) * a = z)
     {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R)
@@ -1132,6 +1597,17 @@ theorem la_clear (R : Type) [CommRing R] (l : ℕ) (hl : l.Prime)
     congr 1
     ring
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `la_dualWeyl_fg r n ν`. Use `choose! M hM hMw using h`. Establish `hS' : ∀ g ∈ S, g ∈ dualWeyl ℤ r n ν`. Introduce `g hg`. Rewrite using `[← hS]`.
+
+Conclude with `Submodule.subset_span hg`. Unfold `InclZ`. Use `⟨∏ g ∈ S, M g, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Prime.dvd_finset_prod_iff hl.prime] push_neg`. Conclude with `fun g hg => hM g (hS' g hg)`.
+
+Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨K, hK⟩` from `Finset.dvd_prod_of_mem M hg`. Rewrite using `[hK, show M g * K * l ^ e = K * (M g * l ^ e) by ring, Nat.cast_mul, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (hMw g (hS' g hg))`. Consider the case `zero`. Rewrite using `[smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`.
+
+Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+-/
 theorem la_incl_of_gens (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (l e : ℕ) (hl : l.Prime)
     (h : ∀ g ∈ dualWeyl ℤ r n ν, ∃ m : ℕ, ¬ l ∣ m ∧
       ((m * l ^ e : ℕ) : ℤ) • g ∈ weyl ℤ r n hn ν) : InclZ r n hn ν l e := by
@@ -1162,6 +1638,15 @@ theorem la_incl_of_gens (r n : ℕ) (hn : n ≤ r) (ν : Fin n → ℕ) (l e : �
       rw [smul_comm]
       exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Introduce `R _ _ _ l hl hu hd r n hn ν e`. Prove the components needed by the constructor for the conclusion. Introduce `hZ x hx`. Conclude with `la_incl_R_of_Z R r n hn ν l e hu hZ x hx`. Introduce `hR`.
+
+Apply `la_incl_of_gens r n hn ν l e hl` to reduce the goal to its premises. Introduce `g hg`. Establish `h1` using `hR _ (dualWeylMap ℤ R (Int.castRingHom R) r n ν g hg)`. Take `⟨m, hm, f0, hf0, h2⟩` from `la_clear R l hl hd hn ν _ h1`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations.
+
+Establish `h3 : map (Int.castRingHom R) (((m * l ^ e : ℕ) : ℤ) • g) = map (Int.castRingHom R) f0`. Rewrite using `[la_map_smul, ← h2, smul_smul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (map (Int.castRingHom R) : MvPolynomial (Fin r × Fin n) ℤ → MvPolynomial (Fin r × Fin n) R)` using `map_injective _ (RingHom.injective_int (Int.castRingHom R))`.
+
+Rewrite using `[hinj h3]`. Conclude with `hf0`.
+-/
 theorem incl_z_iff_incl_r : InclZIffR := by
   intro R _ _ _ l hl hu hd r n hn ν e
   constructor
@@ -1183,6 +1668,23 @@ theorem incl_z_iff_incl_r : InclZIffR := by
     rw [hinj h3]
     exact hf0
 
+/- English proof (translation)
+Introduce `hR r n hn ν hν l hl`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hP : (Ideal.span {(l : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hl0).2 (Nat.prime_iff_prime_int.1 hl)`. Set `R` to `Localization.AtPrime (Ideal.span {(l : ℤ)})`. Establish `hinj : Function.Injective (algebraMap ℤ R)` using `IsLocalization.injective R (Ideal.primeCompl_le_nonZeroDivisors (Ideal.span {(l : ℤ)}))`.
+
+Establish `: CharZero R` using `charZero_of_injective_algebraMap hinj`. Establish `hmem : ∀ t : ℤ, t ∈ (Ideal.span {(l : ℤ)}).primeCompl ↔ ¬ (l : ℤ) ∣ t`. Introduce `t`. Rewrite using `[Ideal.mem_primeCompl_iff, Ideal.mem_span_singleton]`. Establish `hu : ∀ m : ℕ, ¬ l ∣ m → IsUnit (m : R)`.
+
+Introduce `m hm`. Establish `h1 : (m : ℤ) ∈ (Ideal.span {(l : ℤ)}).primeCompl` using `(hmem _).2 (by exact_mod_cast hm)`. Establish `h2` using `IsLocalization.map_units R (⟨(m : ℤ), h1⟩ : (Ideal.span {(l : ℤ)}).primeCompl)`. Simplify using `using h2`. Establish `hd : ∀ a : R, ∃ m : ℕ, ¬ l ∣ m ∧ ∃ z : ℤ, (m : R) * a = z`.
+
+Introduce `a`. Take `⟨⟨z, t⟩, h1⟩` from `IsLocalization.surj (Ideal.span {(l : ℤ)}).primeCompl a`. Establish `ht` using `(hmem _).1 t.2`. Simplify using `only [eq_intCast] at h1`. Use `⟨(t : ℤ).natAbs, fun h => ht (Int.natCast_dvd.2 h), ?_⟩` and prove the remaining obligations.
+
+Break down `Int.natAbs_eq (t : ℤ) with h | h` into its components or cases. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, mul_comm]`. Use `congr 1`. Rewrite using `[← Int.cast_natCast, ← h]`.
+
+Use `⟨-z, ?_⟩` and prove the remaining obligations. Establish `h2 : (((t : ℤ).natAbs : ℤ) : R) = -((t : ℤ) : R)`. Rewrite using `[← Int.cast_neg]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h3 : (((t : ℤ).natAbs : ℕ) : R) = -((t : ℤ) : R)`. Rewrite using `[← Int.cast_natCast]`. Conclude with `h2`. Rewrite using `[h3, Int.cast_neg, ← h1]`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `(incl_z_iff_incl_r R l hl hu hd r n hn ν _).2 (hR R r n hn ν hν l hl hu)`.
+-/
 theorem lemma_a_integral_of_real : LemmaAZOfR := by
   intro hR r n hn ν hν l hl
   have hl0 : (l : ℤ) ≠ 0 := by exact_mod_cast hl.ne_zero
@@ -1224,12 +1726,18 @@ theorem lemma_a_integral_of_real : LemmaAZOfR := by
       ring
   exact (incl_z_iff_incl_r R l hl hu hd r n hn ν _).2 (hR R r n hn ν hν l hl hu)
 
+/- English proof (translation)
+Take `⟨hanti, hlam⟩` from `nu_of_specialization r U hU h0`. Establish `h` using `joint_exact_z hA r r le_rfl (nuOf U) hanti l hl`. Rewrite `h` using `[hlam]`. Then use the resulting hypothesis.
+-/
 theorem la_exZ_le_of_U (hA : LemmaAZ) (r : ℕ) (U : Fin r → ℤ) (hU : StrictAnti U) (h0 : ∀ a, 0 ≤ U a)
     (l : ℕ) (hl : l.Prime) : exZ r r le_rfl (nuOf U) l ≤ Formalism.RankGapBounds.JumpSetsAlt.eExp U l := by
   obtain ⟨hanti, hlam⟩ := nu_of_specialization r U hU h0
   have h := joint_exact_z hA r r le_rfl (nuOf U) hanti l hl
   rwa [hlam] at h
 
+/- English proof (translation)
+Introduce `ι D W hA hE hP l hl hexc`. Use `⟨joint_lemma_a_full ι D W hA hE l hl hexc, fun τ hτ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hP l hl hexc τ hτ).1.trans (la_exZ_le_of_U hA D.k (W.cloud τ) (Formalism.CohomologicalDescent.Joint.cloud_anti W τ) (fun a => (W.inRange τ _).1) l hl)`. Conclude with `(hP l hl hexc τ hτ).2.trans (la_exZ_le_of_U hA (D.Nr - D.k) (W.rest τ) (Formalism.CohomologicalDescent.Joint.rest_anti W τ) (fun a => (W.inRange τ _).1) l hl)`.
+-/
 theorem joint_lemma_a_inputs : JointLemmaAInputs := by
   intro ι D W hA hE hP l hl hexc
   refine ⟨joint_lemma_a_full ι D W hA hE l hl hexc, fun τ hτ => ⟨?_, ?_⟩⟩

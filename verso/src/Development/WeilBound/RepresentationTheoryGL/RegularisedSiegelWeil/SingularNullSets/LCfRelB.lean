@@ -7,6 +7,23 @@ open scoped Topology NNReal ENNReal Real
 
 namespace PositivityTheory.Rg.Rsw.L.LCfRel
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `(isCompact_sphere s₀ ε).exists_bound_of_continuousOn hf`. Establish `hps` using `hc.hasFPowerSeriesOnBall s₀ (R := 1) one_pos`. Use `set p := cauchyPowerSeries c s₀ 1 with hp`. Establish `hfc : Continuous fun θ => f (circleMap s₀ ε θ)` using `hf.comp_continuous (continuous_circleMap s₀ ε) fun θ => circleMap_mem_sphere s₀ hε.le θ`. Set `T : ℕ → ℝ → ℂ` to `fun i θ => deriv (circleMap s₀ ε) θ • ((circleMap s₀ ε θ - s₀) ^ (k - 1) * ((circleMap s₀ ε θ - s₀) ^ i * p.coeff i * f (circleMap s₀ ε θ)))`.
+
+Establish `hT : ∀ i, Continuous (T i)` using `fun i => by`. Simplify using `only [T, deriv_circleMap]`. Conclude with `((continuous_circleMap 0 ε).mul continuous_const).smul ((((continuous_circleMap s₀ ε).sub continuous_const).pow _).mul (((((continuous_circleMap s₀ ε).sub continuous_const).pow _).mul continuous_const).mul hfc))`. Establish `hsum : HasSum (fun i => ∫ θ in (0 : ℝ)..2 * π, T i θ) (∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * (c z * f z))`. Use `intervalIntegral.hasSum_integral_of_dominated_convergence (fun i _ => ε * ε ^ (k - 1) * M * (‖p i‖ * ε ^ i)) (fun i => (hT i).aestronglyMeasurable) (fun i => ae_of_all _ fun θ _ => ?_) (ae_of_all _ fun θ _ => ?_) intervalIntegrable_const (ae_of_all _ fun θ _ => ?_)` and prove the remaining obligations.
+
+Establish `h1 : ‖circleMap s₀ ε θ - s₀‖ = ε` using `by rw [circleMap_sub_center, norm_circleMap_zero, abs_of_pos hε]`. Establish `h2` using `hM _ (circleMap_mem_sphere s₀ hε.le θ)`. Simplify using `only [T, deriv_circleMap, smul_eq_mul, norm_mul, norm_pow, h1, norm_circleMap_zero, abs_of_pos hε, Complex.norm_I, mul_one, ← p.norm_apply_eq_norm_coef]`. Establish `hpos : 0 ≤ ε * ε ^ (k - 1) * (‖p i‖ * ε ^ i)` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hpos]`.
+
+Establish `hr : ((ε.toNNReal : ℝ≥0) : ℝ≥0∞) < p.radius` using `lt_of_lt_of_le ENNReal.coe_lt_top hps.r_le`. Establish `hs : Summable fun n => ‖p n‖ * ε ^ n`. Simplify `p.summable_norm_mul_pow hr` using `[Real.coe_toNNReal _ hε.le]`. Conclude with `hs.mul_left _`. Use `hps.hasSum_sub (y := circleMap s₀ ε θ) (Metric.mem_eball.2 (edist_lt_top _ _))` as an intermediate fact.
+
+Simplify using `only [FormalMultilinearSeries.apply_eq_pow_smul_coeff, smul_eq_mul] at this`. Conclude with `((this.mul_right (f (circleMap s₀ ε θ))).mul_left ((circleMap s₀ ε θ - s₀) ^ (k - 1))).const_smul _`. Establish `hterm : ∀ i, ∫ θ in (0 : ℝ)..2 * π, T i θ = p.coeff i * ∮ z in C(s₀, ε), (z - s₀) ^ (k + i - 1) * f z`. Introduce `i`. Simplify using `only [circleIntegral, T]`.
+
+Rewrite using `[← intervalIntegral.integral_const_mul, show k + i - 1 = k - 1 + i by omega]`. Use `congr 1`. Use extensionality with `θ`. Simplify using `only [smul_eq_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hc0 : p.coeff 0 = c s₀` using `hps.hasFPowerSeriesAt.coeff_zero 1`. Establish `hval : (fun i => ∫ θ in (0 : ℝ)..2 * π, T i θ) = fun i => if i = 0 then c s₀ * ∮ z in C(s₀, ε), (z - s₀) ^ (k - 1) * f z else 0`. Use function extensionality and compare the values at `i`. Rewrite using `[hterm]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Rewrite using `[hc0, Nat.add_zero]`. Rewrite using `[h0 (k + i) (by omega), mul_zero]`. Rewrite `hsum` using `[hval]`. Conclude with `hsum.unique (hasSum_ite_eq 0 _)`.
+-/
 theorem circle_entire_mul (c : ℂ → ℂ) (hc : Differentiable ℂ c) (f : ℂ → ℂ) (s₀ : ℂ) {ε : ℝ} (hε : 0 < ε)
     (hf : ContinuousOn f (sphere s₀ ε)) (k : ℕ) (hk : 1 ≤ k)
     (h0 : ∀ j, k < j → (∮ z in C(s₀, ε), (z - s₀) ^ (j - 1) * f z) = 0) :

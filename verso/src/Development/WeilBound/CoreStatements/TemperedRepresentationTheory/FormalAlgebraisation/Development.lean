@@ -14,6 +14,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 
 namespace PositivityTheory.FormalThickening
 
+/- English proof (translation)
+Use `⟨?_, GlobalTheory.T.formal_algebraisation_schemes GlobalTheory.T.grothendieck_existence_closed_proj⟩` and prove the remaining obligations. Introduce `R _ _ I hI X Z hX hZs hZl hZq Y β b hb hβ f hf hfβ`. Take `⟨g, hg⟩` from `GlobalTheory.T.formal_morphism_existence GlobalTheory.T.grothendieck_existence_closed GlobalTheory.T.iso_of_thickenings R I hI X Z hX hZs hZl hZq Y β b hb hβ f hf hfβ`. Use `⟨g, hg, fun g' hg' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.formal_morphism_uniqueness R I hI X Z hX hZs Y b hb g' g (fun e => (hg' e).trans (hg e).symm)`.
+-/
 theorem formalAlgebraisation : GlobalTheory.Published.FormalAlgebraisation := by
   refine ⟨?_, GlobalTheory.T.formal_algebraisation_schemes GlobalTheory.T.grothendieck_existence_closed_proj⟩
   intro R _ _ I hI X Z hX hZs hZl hZq Y β b hb hβ f hf hfβ

@@ -18,8 +18,14 @@ def f1 {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : D.host.K →+* ℂ_[p
 def f2 {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : D.host.K →+* ℂ_[p] :=
   ((ι : ℂ →+* ℂ_[p]).comp (starRingEnd ℂ)).comp (fK D)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftOneFormsToCompatible_apply {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (x : D.host.K) : f1 ι x = ι (D.host.φ₀ (x : D.host.E)) := rfl
 
+/- English proof (translation)
+Rewrite using `[phi_conj]`. Both sides reduce to the same expression.
+-/
 theorem conjugate_embedding_apply {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (x : D.host.K) :
     f2 ι x = ι (D.host.φ₀ (D.host.conj (x : D.host.E))) := by
   rw [phi_conj]; rfl
@@ -28,6 +34,11 @@ section Kap
 
 variable {γ₀ : IsoK D} (k : KapChoice γ₀)
 
+/- English proof (translation)
+Establish `h1 : ((q : ℕ) : 𝓞 D.host.K) ^ classNumber D.host.K ∈ Ideal.span {k.pi q}` using `k.pi_gen q hq hs ▸ Ideal.pow_mem_pow (k.pp_over q hq hs) _`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `h2 : ((c : D.host.K) * ((k.pi q : 𝓞 D.host.K) : D.host.K)) = ((q : ℕ) : D.host.K) ^ classNumber D.host.K`. Conclude with `congrArg (fun z : 𝓞 D.host.K => (z : D.host.K)) hc` after adjusting the coercions. Establish `h3 : ‖f (c : D.host.K)‖ * ‖f ((k.pi q : 𝓞 D.host.K) : D.host.K)‖ = 1`.
+
+Rewrite using `[← norm_mul, ← map_mul, h2, map_pow, map_natCast, norm_pow, Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.RestC.norm_nat_coprime p ((Nat.coprime_primes hq Fact.out).2 hqp), one_pow]`. Establish `h4` using `normO_le f c`. Establish `h5` using `normO_le f (k.pi q)`. Use polynomial arithmetic with `[norm_nonneg (f (c : D.host.K)), norm_nonneg (f ((k.pi q : 𝓞 D.host.K) : D.host.K))]`.
+-/
 theorem pi_unit {p : ℕ} [Fact p.Prime] (f : D.host.K →+* ℂ_[p]) (q : ℕ) (hq : q.Prime) (hs : SplitK D q) (hqp : q ≠ p) :
     ‖f ((k.pi q : 𝓞 D.host.K) : D.host.K)‖ = 1 := by
   have h1 : ((q : ℕ) : 𝓞 D.host.K) ^ classNumber D.host.K ∈ Ideal.span {k.pi q} :=
@@ -42,11 +53,17 @@ theorem pi_unit {p : ℕ} [Fact p.Prime] (f : D.host.K →+* ℂ_[p]) (q : ℕ) 
   have h5 := normO_le f (k.pi q)
   nlinarith [norm_nonneg (f (c : D.host.K)), norm_nonneg (f ((k.pi q : 𝓞 D.host.K) : D.host.K))]
 
+/- English proof (translation)
+Rewrite using `[← norm_pow, ← map_pow, k.rt_pow q hq hs, map_div₀, norm_div, liftOneFormsToCompatible_apply, conjugate_embedding_apply]`.
+-/
 theorem rt_norm_pow {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (q : ℕ) (hq : q.Prime) (hs : SplitK D q) :
     ‖ι (k.rt q)‖ ^ (2 * classNumber D.host.K) =
       ‖f1 ι ((k.pi q : 𝓞 D.host.K) : D.host.K)‖ / ‖f2 ι ((k.pi q : 𝓞 D.host.K) : D.host.K)‖ := by
   rw [← norm_pow, ← map_pow, k.rt_pow q hq hs, map_div₀, norm_div, liftOneFormsToCompatible_apply, conjugate_embedding_apply]
 
+/- English proof (translation)
+Establish `h` using `rt_norm_pow k ι q hq hs`. Rewrite `h` using `[pi_unit k _ q hq hs hqp, pi_unit k _ q hq hs hqp, div_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (mul_ne_zero two_ne_zero (classNumber_ne D))).1 h`.
+-/
 theorem rt_unit {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (q : ℕ) (hq : q.Prime) (hs : SplitK D q) (hqp : q ≠ p) :
     ‖ι (k.rt q)‖ = 1 := by
   have h := rt_norm_pow k ι q hq hs
@@ -58,6 +75,9 @@ def nm {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) : ℂ →* ℝ where
   map_one' := by simp
   map_mul' x y := by simp
 
+/- English proof (translation)
+Establish `h` using `(yFinite D γ₀ k).preimage (f := fun q : {q : ℕ // q.Prime ∧ SplitK D q} => (q : ℕ)) Subtype.val_injective.injOn`. Use `h.subset fun q hq => ?_` and prove the remaining obligations. Use `⟨q.2.1, q.2.2, fun h0 => hq ?_⟩` and prove the remaining obligations. Use `show k.rt q ^ (-(k.yP q)) = 1`. Rewrite using `[h0, neg_zero, zpow_zero]`.
+-/
 theorem supp_finite : (Function.mulSupport fun q : {q : ℕ // q.Prime ∧ SplitK D q} => k.rt q ^ (-(k.yP q))).Finite := by
   have h := (yFinite D γ₀ k).preimage (f := fun q : {q : ℕ // q.Prime ∧ SplitK D q} => (q : ℕ)) Subtype.val_injective.injOn
   refine h.subset fun q hq => ?_
@@ -65,6 +85,11 @@ theorem supp_finite : (Function.mulSupport fun q : {q : ℕ // q.Prime ∧ Split
   show k.rt q ^ (-(k.yP q)) = 1
   rw [h0, neg_zero, zpow_zero]
 
+/- English proof (translation)
+Establish `h` using `(nm ι).map_finprod (supp_finite k)`. Establish `e : ∀ q : {q : ℕ // q.Prime ∧ SplitK D q}, nm ι (k.rt q ^ (-(k.yP q))) = ‖ι (k.rt q)‖ ^ (-(k.yP q))`. Introduce `q`. Use `show ‖ι (k.rt q ^ (-(k.yP q)))‖ = _`. Rewrite using `[map_zpow₀, norm_zpow]`.
+
+Simplify using `only [e] at h`. Conclude with `h`.
+-/
 theorem kappa_norm {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
     ‖ι k.kappa‖ = ∏ᶠ q : {q : ℕ // q.Prime ∧ SplitK D q}, ‖ι (k.rt q)‖ ^ (-(k.yP q)) := by
   have h := (nm ι).map_finprod (supp_finite k)
@@ -75,6 +100,9 @@ theorem kappa_norm {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) :
   simp only [e] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[kappa_norm]`. Rewrite using `[finprod_eq_single _ (⟨p, hp.out, hs⟩ : {q : ℕ // q.Prime ∧ SplitK D q})]`. Introduce `q hq`. Rewrite using `[rt_unit k ι q q.2.1 q.2.2 (fun h => hq (Subtype.ext h)), one_zpow]`.
+-/
 theorem kappa_norm_split {p : ℕ} [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (hs : SplitK D p) :
     ‖ι k.kappa‖ = ‖ι (k.rt p)‖ ^ (-(k.yP p)) := by
   rw [kappa_norm]
@@ -82,17 +110,46 @@ theorem kappa_norm_split {p : ℕ} [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) 
   intro q hq
   rw [rt_unit k ι q q.2.1 q.2.2 (fun h => hq (Subtype.ext h)), one_zpow]
 
+/- English proof (translation)
+Rewrite using `[kappa_norm]`. Use `finprod_eq_one_of_forall_eq_one fun q => ?_` and prove the remaining obligations. Rewrite using `[rt_unit k ι q q.2.1 q.2.2 (fun h => hs (h ▸ q.2.2)), one_zpow]`.
+-/
 theorem kappa_norm_nonsplit {p : ℕ} [Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (hs : ¬ SplitK D p) : ‖ι k.kappa‖ = 1 := by
   rw [kappa_norm]
   refine finprod_eq_one_of_forall_eq_one fun q => ?_
   rw [rt_unit k ι q q.2.1 q.2.2 (fun h => hs (h ▸ q.2.2)), one_zpow]
 
+/- English proof (translation)
+Rewrite using `[mul_pow, ← zpow_natCast (a ^ (-y)) 2, ← zpow_mul, ← zpow_natCast (a ^ _) h, ← zpow_mul, ← zpow_natCast a (2 * h), ← zpow_mul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zpow_aux (a X : ℝ) (y : ℤ) (h : ℕ) : ((a ^ (-y)) ^ 2 * X) ^ h = (a ^ (2 * h)) ^ (-y) * X ^ h := by
   rw [mul_pow, ← zpow_natCast (a ^ (-y)) 2, ← zpow_mul, ← zpow_natCast (a ^ _) h, ← zpow_mul, ← zpow_natCast a (2 * h), ← zpow_mul]
   congr 2
   push_cast
   ring
 
+/- English proof (translation)
+Use `set x : D.host.K := (k.gaP p).detRel γ₀ with hx`. Establish `hU` using `detRel_unitary (k.gaP p) γ₀`. Rewrite `hU` using `[← hx]`. Establish `hX0 : D.host.φ₀ (x : D.host.E) ≠ 0` using `fun h0 => by rw [h0, zero_mul] at hU; exact zero_ne_one hU`. Establish `hx0 : x ≠ 0`.
+
+Introduce and unpack `h0`. Apply `hX0` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hh : classNumber D.host.K ≠ 0` using `classNumber_ne D`.
+
+Take `⟨b, hb⟩` from `exists_conj (k.pi p)`. Establish `hbn` using `conj_pi_not_mem k p hp.out hs b hb`. Establish `hgen` using `k.pi_gen p hp.out hs`. Establish `hrt` using `rt_norm_pow k ι p hp.out hs`. Establish `hy : k.yP p = -WithZero.log ((k.pp p).valuation D.host.K x)` using `rfl`.
+
+Rewrite using `[kappa_norm_split k ι hs]`. Use `(pow_eq_one_iff_of_nonneg (by positivity) hh).1 ?_` and prove the remaining obligations. Rewrite using `[zpow_aux, hrt]`. Break down `pi_dichotomy k p hp.out hs ι with hlt | hlt` into its components or cases. Establish `hlt1 : ‖f1 ι ((k.pi p : 𝓞 D.host.K) : D.host.K)‖ < 1` using `hlt`.
+
+Establish `e1` using `norm_pow_eq (f1 ι) (k.pp p) (k.pi p) _ hgen hlt1 hx0`. Establish `e2` using `norm_eq_one_of_not_mem (f1 ι) (k.pp p) (k.pi p) _ hgen hlt1 hbn`. Establish `e3 : f2 ι ((k.pi p : 𝓞 D.host.K) : D.host.K) = f1 ι (b : D.host.K)`. Rewrite using `[conjugate_embedding_apply, liftOneFormsToCompatible_apply, hb]`. Rewrite using `[e3, e2, div_one]`.
+
+Rewrite `e1` using `[liftOneFormsToCompatible_apply]`. Rewrite using `[e1, ← hy, ← zpow_add₀ (by`. Introduce `h0`. Use `norm_eq_zero.1 h0` as an intermediate fact. Establish `h1` using `(map_eq_zero (f1 ι)).1 this`.
+
+Conclude with `k.pi_ne_zero p hp.out hs (by exact_mod_cast h1))]`. Simplify using the standard rewrite rules. Establish `hlt2 : ‖f2 ι ((k.pi p : 𝓞 D.host.K) : D.host.K)‖ < 1` using `by rw [conjugate_embedding_apply]; exact hlt`. Establish `e1` using `norm_pow_eq (f2 ι) (k.pp p) (k.pi p) _ hgen hlt2 hx0`. Establish `e2` using `norm_eq_one_of_not_mem (f2 ι) (k.pp p) (k.pi p) _ hgen hlt2 hbn`.
+
+Establish `e3 : f1 ι ((k.pi p : 𝓞 D.host.K) : D.host.K) = f2 ι (b : D.host.K)`. Rewrite using `[conjugate_embedding_apply, liftOneFormsToCompatible_apply, hb, conj_conj]`. Establish `e4 : ‖f2 ι x‖ = ‖ι (D.host.φ₀ (x : D.host.E))‖⁻¹`. Establish `: ‖ι (D.host.φ₀ (x : D.host.E))‖ * ‖f2 ι x‖ = 1` using `by show _ * ‖ι ((starRingEnd ℂ) (D.host.φ₀ (x : D.host.E)))‖ = 1`. Rewrite using `[← norm_mul, ← map_mul, hU, map_one, norm_one]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right this`. Establish `hA0 : ‖f2 ι ((k.pi p : 𝓞 D.host.K) : D.host.K)‖ ≠ 0`. Introduce `h0`. Use `norm_eq_zero.1 h0` as an intermediate fact. Establish `h1` using `(map_eq_zero (f2 ι)).1 this`.
+
+Conclude with `k.pi_ne_zero p hp.out hs (by exact_mod_cast h1)`. Rewrite using `[e3, e2]`. Rewrite `e1` using `[e4, inv_pow, ← hy]`. Establish `e5 : ‖ι (D.host.φ₀ (x : D.host.E))‖ ^ classNumber D.host.K = (‖f2 ι ((k.pi p : 𝓞 D.host.K) : D.host.K)‖ ^ (k.yP p))⁻¹` using `by rw [← e1, inv_inv]`. Rewrite using `[e5, one_div, inv_zpow, zpow_neg, inv_inv]`.
+
+Conclude with `mul_inv_cancel₀ (zpow_ne_zero _ hA0)`.
+-/
 theorem kappa_split {p : ℕ} [hp : Fact p.Prime] (ι : ℂ ≃+* ℂ_[p]) (hs : SplitK D p) :
     ‖ι k.kappa‖ ^ 2 * ‖ι (D.host.φ₀ (((k.gaP p).detRel γ₀ : D.host.K) : D.host.E))‖ = 1 := by
   set x : D.host.K := (k.gaP p).detRel γ₀ with hx
@@ -154,6 +211,9 @@ section Main
 
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ)
 
+/- English proof (translation)
+Introduce `u hiso _ h2 _`. Rewrite using `[det_compare B hsd p ι (B.kc.gaP p) (B.kc.gaP_at p hp.out hs) u hiso h2]`. Conclude with `kappa_split B.kc ι hs`.
+-/
 theorem kappaAt_split (hsd : IsSelfDual (Formalism.L2.Th1.H.stdH B.L (Fin 4 × D.what₂.Tau)) B.latA) (p : ℕ) [hp : Fact p.Prime]
     (ι : ℂ ≃+* ℂ_[p]) (hs : SplitK D p) : B.KappaAt p ι := by
   intro u hiso _ h2 _

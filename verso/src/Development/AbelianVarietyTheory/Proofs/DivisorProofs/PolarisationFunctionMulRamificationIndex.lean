@@ -15,6 +15,15 @@ open Classical
 
 namespace GlobalTheory.UPoinc.UTraitRam
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c _ T T' f fK hf hl hK hy m hm φ hφ`. Take `⟨hdvr, hcpl, hz⟩` from `T'.cdvr`. Establish `hB : GlobalTheory.Mum.Base T'.V` using `⟨⟨inferInstance, inferInstance, inferInstance, hcpl⟩, hz⟩`. Establish `hself : Associated (RingHom.id T'.V T'.ϖ) (T'.ϖ ^ 1)` using `by simp [Associated.refl]`. Establish `hid : spMap (RingHom.id (FractionRing T'.V)) = 𝟙 _` using `Spec.map_id _`.
+
+Take `⟨e, he⟩` from `GlobalTheory.T.traitsOfModuliPoint_have_isomorphic_proportional_lattices E H Dw l Xo c T T' T'.V f (RingHom.id _) fK (RingHom.id _) hB hdvr hf Function.injective_id hl inferInstance hK (fun _ => rfl) (by rw [hid, Category.id_comp, hy]) T'.ϖ m 1 T'.irr hm hself`. Establish `hon : IsPolFanOn H.bar φ T.P.D.toPre.X` using `by haveI : Module.Projective (𝓞 E) T.P.D.toPre.X := GlobalTheory.Forms.projective_of_int (𝓞 E) T.P.D.toPre.X`. Conclude with `hφ _ (GlobalTheory.UPoinc.UTrait.finrank_le_min E H Dw l Xo c T)`. Establish `hc : toReal T.be ∈ psdCone H.bar T.P.D.toPre.X` using `GlobalTheory.PolFan.StrictData.toReal_mem_psdCone ((balForms_eq_levelForms H T.P.D.toPre.X).symm ▸ T.lev) fun y => by simpa using T.mono.nonneg 0 y`. Rewrite using `[← evalR_toReal φ T.be, ← hon.homog _ hc m m.cast_nonneg, ← evalZ_pull φ (r := e.toLinearMap) e.surjective, ← evalR_toReal]`.
+
+Use `congr 1`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `h` using `he a b`. Rewrite `h` using `[Nat.cast_one, one_mul]`. Simplify using `only [toReal_apply, pull_apply, LinearMap.smul_apply, smul_eq_mul]`.
+
+Conclude with `h.symm` after adjusting the coercions.
+-/
 theorem evalZ_eq_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → ∀ (T T' : UTrait Xo c) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V), Function.Injective f → IsLocalHom f → (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) → T'.y = spMap fK ≫ T.y → ∀ m : ℕ, Associated (f T.ϖ) (T'.ϖ ^ m) → ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → φ.evalZ T'.be = m * φ.evalZ T.be := by
   intro E _ _ _ H Dw l Xo c _ T T' f fK hf hl hK hy m hm φ hφ
   obtain ⟨hdvr, hcpl, hz⟩ := T'.cdvr

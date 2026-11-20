@@ -36,12 +36,18 @@ def prodHalf {m n : ℕ} (a b : AE D) (Ψ : Mx D m n → ℂ) : (Mx D m n → �
   map_add' Φ Φ' := by funext x; simp only [Pi.add_apply]; ring
   map_smul' c Φ := by funext x; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prodHalf_apply {m n : ℕ} (a b : AE D) (Ψ Φ : Mx D m n → ℂ) (x : Mx D m n) :
     prodHalf a b Ψ Φ x = Φ (a • x) * Ψ (b • x) * (if IsHalf (a + b) x then 1 else 0) := rfl
 
 def combL (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (d : WO S T →₀ ℂ) : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ) :=
   ∑ u ∈ d.support, d u • GlobalTheory.PlaceModel.heisL S T ψ u
 
+/- English proof (translation)
+Simplify using `only [combL, comb, LinearMap.sum_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem combL_apply (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (d : WO S T →₀ ℂ) (f : WO S T → ℂ) :
     combL ψ S T d f = comb ψ S T d f := by
   simp only [combL, comb, LinearMap.sum_apply, LinearMap.smul_apply]
@@ -58,6 +64,19 @@ variable {D : D7}
 set_option maxHeartbeats 800000
 set_option synthInstance.maxHeartbeats 400000
 
+/- English proof (translation)
+Take `⟨-, k, hk, hinv, hlat⟩` from `hΦ`. Take `⟨-, k', hk', hinv', hlat'⟩` from `hΨ`. Use `⟨fun t ht => ?_, k * k', Nat.mul_pos hk hk', fun u hu hhu t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[prodHalf_apply]`. Assume the negation of the conclusion as `h`.
+
+Conclude with `ht (by rw [if_neg h, mul_zero])`. Rewrite `hhu` using `[isHalf_iff']`. Simplify using `only [prodHalf_apply]`. Establish `e1 : a • (t + (k * k') • u) = a • t + k • (k' • (a • u))`. Rewrite using `[smul_add, mul_smul, smul_comm a k (k' • u), smul_comm a k' u]`.
+
+Establish `e2 : b • (t + (k * k') • u) = b • t + k' • (k • (b • u))`. Rewrite using `[smul_add, mul_comm, mul_smul, smul_comm b k' (k • u), smul_comm b k u]`. Establish `e3 : (a + b) • ((k * k') • u) = (k * k') • u` using `by rw [smul_comm, hhu]`. Establish `ha' : IsHalf a (k' • (a • u))` using `(isHalf_iff' _ _).2 (by rw [smul_comm, smul_smul, ha])`. Establish `hb' : IsHalf b (k • (b • u))` using `(isHalf_iff' _ _).2 (by rw [smul_comm, smul_smul, hb])`.
+
+Rewrite using `[e1, e2, hinv _ (Λ.nsmul_mem (hΛ a ha u hu) k') ha', hinv' _ (Λ.nsmul_mem (hΛ b hb u hu) k) hb']`. Simplify using `only [isHalf_add_iff e3]`. Rewrite `ht` using `[prodHalf_apply]`. Establish `h1 : Φ (a • t) ≠ 0` using `fun h => ht (by rw [h, zero_mul, zero_mul])`. Establish `h2 : Ψ (b • t) ≠ 0` using `fun h => ht (by rw [h, mul_zero, zero_mul])`.
+
+Establish `h3 : IsHalf (a + b) t`. Assume the negation of the conclusion as `h`. Conclude with `ht (by rw [if_neg h, mul_zero])`. Rewrite `h3` using `[isHalf_iff', add_smul]`. Rewrite using `[← h3, smul_add]`.
+
+Use `Λ.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Λ.nsmul_mem (hlat _ h1) k'`. Rewrite using `[mul_smul]`. Conclude with `Λ.nsmul_mem (hlat' _ h2) k`.
+-/
 theorem isSBHalf_prodHalf {m n : ℕ} {a b : AE D} (ha : a * a = a) (hb : b * b = b) {Λ : AddSubgroup (Mx D m n)}
     (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) {Ψ Φ : Mx D m n → ℂ} (hΨ : IsSBHalf b Λ Ψ)
     (hΦ : IsSBHalf a Λ Φ) : IsSBHalf (a + b) Λ (prodHalf a b Ψ Φ) := by
@@ -90,6 +109,15 @@ theorem isSBHalf_prodHalf {m n : ℕ} {a b : AE D} (ha : a * a = a) (hb : b * b 
     · rw [mul_comm, mul_smul]; exact Λ.nsmul_mem (hlat _ h1) k'
     · rw [mul_smul]; exact Λ.nsmul_mem (hlat' _ h2) k
 
+/- English proof (translation)
+Establish `hsb : ∀ Φ, IsSBHalf a Λ Φ → IsSBHalf (a + b) Λ (prodHalf a b Ψ Φ)` using `fun Φ hΦ => isSBHalf_prodHalf ha hb hΛ hΨ hΦ`. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hbx, hax⟩` from `smul_of_half hab hx`. Establish `e : prodHalf a b Ψ (fun t => Φ (t + x)) = fun t => prodHalf a b Ψ Φ (t + x)`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [prodHalf_apply]`. Rewrite using `[smul_add, (isHalf_iff' _ _).1 hx, smul_add b, hbx, add_zero, isHalf_add_iff hax]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.trans _ (hsb Φ hΦ) x ((isHalf_iff' _ _).2 hax)`. Establish `hy' : IsHalf (cA D (a + b)) y`.
+
+Rewrite `hy`, the goal using `[isHalf_iff']`. Rewrite using `[map_add, add_smul, hy, ← hy, smul_smul, ← map_mul, mul_comm, hab, map_zero, zero_smul, add_zero]`. Establish `e : prodHalf a b Ψ (fun t => ψ (symplO S T t y) * Φ t) = fun t => ψ (symplO S T t y) * prodHalf a b Ψ Φ t`. Use function extensionality and compare the values at `z`. Simplify using `only [prodHalf_apply]`.
+
+Rewrite using `[GlobalTheory.PlaceModel.symplO_smul, (isHalf_iff' _ _).1 hy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, e]`. Conclude with `hT.modul _ (hsb Φ hΦ) y hy'`. Rewrite using `[LinearMap.comp_apply, one_smul]`.
+-/
 theorem isPlaceModel_prodHalf {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)} {f₀ : WO S T → ℂ}
     {a b : AE D} {T₀ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} {Ψ : WO S T → ℂ} (ha : a * a = a) (hb : b * b = b)
     (hab : a * b = 0) (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ) (hΨ : IsSBHalf b Λ Ψ)
@@ -118,6 +146,15 @@ theorem isPlaceModel_prodHalf {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {Λ
     exact hT.modul _ (hsb Φ hΦ) y hy'
   · rw [LinearMap.comp_apply, one_smul]
 
+/- English proof (translation)
+Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hψ hS hT).1`. Establish `hfin` using `GlobalTheory.LatFinMod.latO_finite_mod D S T _ _ hS.1.fg hT.1.fg fun _ => True`. Establish `he' : cA D e * cA D e = cA D e` using `by rw [← RingHom.map_mul, he]`. Establish `hsm : ∀ a : AE D, a * a = a → ∀ u ∈ latO S T ΛS ΛT fun _ => True, a • u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T a` using `fun a ha u hu => AddSubgroup.mem_inf.2 ⟨GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ a (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← RingHom.map_mul, ha])) u hu, by rw [mem_half, smul_smul, ha]⟩`. Establish `hLL' : ∀ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T u y) = 1` using `fun u hu y hy => (hdual u (infPart_of_half hinf ((isHalf_iff S T).2 hu.2))).1 hu.1 y hy.1`.
+
+Establish `hX : ∀ x ∈ half S T e, (∀ y ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T (cA D e), ψ (symplO S T x y) = 1) → x ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e` using `fun x hx h => by`. Use `⟨(hdual x (infPart_of_half hinf ((isHalf_iff S T).2 hx))).2 fun u hu => ?_, hx⟩` and prove the remaining obligations. Use `h _ (hsm _ he' u hu)` as an intermediate fact. Rewrite `this` using `[← symplO_smul, (mem_half S T).1 hx]`. Then use the resulting hypothesis. Establish `hfin' : ∀ k : ℕ, 0 < k → ∃ R : Set (WO S T), R.Finite ∧ ∀ t ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, ∃ r ∈ R, ∃ u ∈ (latO S T ΛS ΛT fun _ => True) ⊓ half S T e, t = r + k • u` using `fun k hk => by`.
+
+Take `⟨R, hR, h⟩` from `hfin k hk`. Use `⟨(fun r => e • r) '' R, hR.image _, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, u, hu, htr⟩` from `h t ht.1`. Use `⟨_, ⟨r, hr, rfl⟩, e • u, hsm e he u hu, ?_⟩` and prove the remaining obligations. Use `(mem_half S T).1 ht.2` as an intermediate fact.
+
+Rewrite using `[← this, htr, smul_add, smul_comm e k u]`. Establish `hden : ∀ y ∈ half S T (cA D e), ∃ k : ℕ, 0 < k ∧ k • y ∈ (latO S T ΛS ΛT fun _ => True)` using `fun y hy => exists_nsmul_mem_latO' hS.1 hT.1 y (infPart_of_half (infPart_cA hinf) ((isHalf_iff S T).2 hy))`. Conclude with `placeModel_unique_of_dual ψ _ hLL' hX hfin' hden h₁ h₂ hΦ`.
+-/
 theorem placeModel_eq {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1))
     {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
     (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT) {e : AE D} (he : e * e = e) (hinf : infPart D e = 0)

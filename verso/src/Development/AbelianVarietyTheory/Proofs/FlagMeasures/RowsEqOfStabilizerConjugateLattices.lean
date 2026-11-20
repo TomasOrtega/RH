@@ -13,19 +13,31 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 
 def mix (c d : Fin r → V) : V →ₗ[K] V := ∑ a, (h (c a)).smulRight (d a)
 
+/- English proof (translation)
+Simplify using `[mix]`.
+-/
 theorem mix_apply (c d : Fin r → V) (v : V) : mix h c d v = ∑ a, h (c a) v • d a := by
   simp [mix]
 
 def P (e c : Fin r → V) : V →ₗ[K] V := LinearMap.id - mix h c e
 
+/- English proof (translation)
+Simplify using `[P, mix_apply]`.
+-/
 theorem P_apply (e c : Fin r → V) (v : V) : P h e c v = v - ∑ a, h (c a) v • e a := by
   simp [P, mix_apply]
 
 variable {h}
 
+/- English proof (translation)
+Rewrite using `[← hh, H, star_zero]`.
+-/
 theorem star_pair (hh : ∀ x y, star (h x y) = h y x) {x y : V} (H : h x y = 0) : h y x = 0 := by
   rw [← hh, H, star_zero]
 
+/- English proof (translation)
+Rewrite using `[← hh, hd]`. Distinguish the cases in `hab : b = a`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+-/
 theorem dual_symm (hh : ∀ x y, star (h x y) = h y x) {e c : Fin r → V}
     (hd : ∀ a b, h (e a) (c b) = if a = b then 1 else 0) (a b : Fin r) :
     h (c a) (e b) = if a = b then 1 else 0 := by
@@ -34,25 +46,40 @@ theorem dual_symm (hh : ∀ x y, star (h x y) = h y x) {e c : Fin r → V}
   · subst hab; simp
   · simp [hab, Ne.symm hab]
 
+/- English proof (translation)
+Simplify using `[map_sum, map_smul, hd, Finset.sum_ite_eq]`.
+-/
 theorem pair_sum_e {e c : Fin r → V} (hd : ∀ a b, h (c a) (e b) = if a = b then 1 else 0)
     (s : Fin r → K) (b : Fin r) : h (c b) (∑ a, s a • e a) = s b := by
   simp [map_sum, map_smul, hd, Finset.sum_ite_eq]
 
+/- English proof (translation)
+Simplify using `[map_sum, map_smul, H]`.
+-/
 theorem pair_sum_zero {x : V} {c : Fin r → V} (H : ∀ a, h x (c a) = 0) (s : Fin r → K) :
     h x (∑ a, s a • c a) = 0 := by
   simp [map_sum, map_smul, H]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hv`. Simplify using `only [pair_sum_e hd]`.
+-/
 theorem coord {e c : Fin r → V} (hd : ∀ a b, h (c a) (e b) = if a = b then 1 else 0) {v : V}
     (hv : v ∈ Submodule.span K (Set.range e)) : v = ∑ a, h (c a) v • e a := by
   obtain ⟨s, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hv
   simp only [pair_sum_e hd]
 
+/- English proof (translation)
+Rewrite using `[P_apply, map_sub, map_sub, pair_sum_e hd, pair_sum_zero (hee b), hu, sub_zero, sub_self]`. Conclude with `⟨rfl, rfl⟩`.
+-/
 theorem P_mem {e c : Fin r → V} (hee : ∀ a b, h (e a) (e b) = 0)
     (hd : ∀ a b, h (c a) (e b) = if a = b then 1 else 0) {u : V} (hu : ∀ a, h (e a) u = 0) (b : Fin r) :
     h (e b) (P h e c u) = 0 ∧ h (c b) (P h e c u) = 0 := by
   rw [P_apply, map_sub, map_sub, pair_sum_e hd, pair_sum_zero (hee b), hu, sub_zero, sub_self]
   exact ⟨rfl, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[P_apply, P_apply, P_apply]`. Simplify using `only [map_sub, pair_sum_e hd', sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws.
+-/
 theorem P_P {e c c' : Fin r → V} (hd' : ∀ a b, h (c' a) (e b) = if a = b then 1 else 0) (v : V) :
     P h e c' (P h e c v) = P h e c' v := by
   rw [P_apply, P_apply, P_apply]
@@ -67,10 +94,16 @@ section Gen2
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {h : V →ₗ⋆[K] V →ₗ[K] K} {r : ℕ}
 
+/- English proof (translation)
+Simplify using `[map_sum, LinearMap.map_smulₛₗ, starRingEnd_apply]`.
+-/
 theorem pair_first (s : Fin r → K) (e : Fin r → V) (y : V) :
     h (∑ a, s a • e a) y = ∑ a, star (s a) * h (e a) y := by
   simp [map_sum, LinearMap.map_smulₛₗ, starRingEnd_apply]
 
+/- English proof (translation)
+Establish `h1 : ∀ a, h u (e a) = 0` using `fun a => star_pair hh (hu a)`. Establish `h2 : ∀ a, h (e a) (u' - ∑ b, s' b • e b) = 0`. Introduce `a`. Rewrite using `[map_sub, hu', pair_sum_zero (hee a), sub_zero]`. Rewrite using `[LinearMap.map_sub₂, pair_first s e, map_sub (h u), pair_sum_zero h1, sub_zero, Finset.sum_eq_zero (fun a _ => by rw [h2 a, mul_zero]), sub_zero]`.
+-/
 theorem P_iso (hh : ∀ x y, star (h x y) = h y x) {e : Fin r → V} (hee : ∀ a b, h (e a) (e b) = 0)
     {u u' : V} (hu : ∀ a, h (e a) u = 0) (hu' : ∀ a, h (e a) u' = 0) (s s' : Fin r → K) :
     h (u - ∑ a, s a • e a) (u' - ∑ a, s' a • e a) = h u u' := by
@@ -84,10 +117,16 @@ variable (h) in
 
 def pi (e f : Fin r → V) : V →ₗ[K] V := LinearMap.id - mix h f e - mix h e f
 
+/- English proof (translation)
+Simplify using `[pi, mix_apply]`.
+-/
 theorem pi_apply (e f : Fin r → V) (v : V) :
     pi h e f v = v - ∑ a, h (f a) v • e a - ∑ a, h (e a) v • f a := by
   simp [pi, mix_apply]
 
+/- English proof (translation)
+Rewrite using `[pi_apply]`. Simplify using `only [map_sub, pair_sum_e hd, pair_sum_e hd', pair_sum_zero (hee b), pair_sum_zero (hff b)]`. Apply the tactic sequence `constructor <;> simp`.
+-/
 theorem pi_mem {e f : Fin r → V} (hee : ∀ a b, h (e a) (e b) = 0) (hff : ∀ a b, h (f a) (f b) = 0)
     (hd : ∀ a b, h (e a) (f b) = if a = b then 1 else 0)
     (hd' : ∀ a b, h (f a) (e b) = if a = b then 1 else 0) (v : V) (b : Fin r) :
@@ -96,6 +135,13 @@ theorem pi_mem {e f : Fin r → V} (hee : ∀ a b, h (e a) (e b) = 0) (hff : ∀
   simp only [map_sub, pair_sum_e hd, pair_sum_e hd', pair_sum_zero (hee b), pair_sum_zero (hff b)]
   constructor <;> simp
 
+/- English proof (translation)
+Establish `hd'` using `dual_symm hh hd`. Establish `he : ∀ b, h (e b) (∑ a, s' a • e a + ∑ a, t' a • f a + w') = t' b`. Introduce `b`. Simplify using `only [map_add, pair_sum_zero (hee b), pair_sum_e hd, (hw' b).1, zero_add, add_zero]`. Establish `hf : ∀ b, h (f b) (∑ a, s' a • e a + ∑ a, t' a • f a + w') = s' b`.
+
+Introduce `b`. Simplify using `only [map_add, pair_sum_zero (hff b), pair_sum_e hd', (hw' b).2, zero_add, add_zero]`. Establish `hwe : ∀ a, h w (e a) = 0` using `fun a => star_pair hh (hw a).1`. Establish `hwf : ∀ a, h w (f a) = 0` using `fun a => star_pair hh (hw a).2`. Establish `hww : h w (∑ a, s' a • e a + ∑ a, t' a • f a + w') = h w w'`.
+
+Simplify using `only [map_add, pair_sum_zero hwe, pair_sum_zero hwf, zero_add]`. Rewrite using `[LinearMap.map_add₂, LinearMap.map_add₂, pair_first s e, pair_first t f, hww]`. Simplify using `only [he, hf, Finset.sum_add_distrib]`.
+-/
 theorem decomp_pair (hh : ∀ x y, star (h x y) = h y x) {e f : Fin r → V} (hee : ∀ a b, h (e a) (e b) = 0)
     (hff : ∀ a b, h (f a) (f b) = 0) (hd : ∀ a b, h (e a) (f b) = if a = b then 1 else 0)
     {w w' : V} (hw : ∀ a, h (e a) w = 0 ∧ h (f a) w = 0) (hw' : ∀ a, h (e a) w' = 0 ∧ h (f a) w' = 0)
@@ -127,14 +173,27 @@ def gam (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W) : V →
   mix h f1 e + mix h e f2 +
     (P h e f2 ∘ₗ W.subtype ∘ₗ g.toLinearMap ∘ₗ LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod)
 
+/- English proof (translation)
+Simplify using `[gam, mix_apply]`.
+-/
 theorem gam_apply (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W) (v : V) :
     gam h e fY f1 f2 W hcod g v = ∑ a, h (f1 a) v • e a + ∑ a, h (e a) v • f2 a +
       P h e f2 (g (LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod v) : V) := by
   simp [gam, mix_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cod_val (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (v : V) :
     ((LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod v : W) : V) = P h e fY (pi h e f1 v) := rfl
 
+/- English proof (translation)
+Establish `hd1'` using `dual_symm hh hd1`. Establish `hd2'` using `dual_symm hh hd2`. Establish `hWm : ∀ v, ∀ a, h (e a) (P h e f2 (g (LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod v) : V)) = 0 ∧ h (f2 a) (P h e f2 (g (LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod v) : V)) = 0` using `fun v a => P_mem hee hd2' (hW _ (g _).2) a`. Rewrite using `[gam_apply, gam_apply, decomp_pair hh hee hff2 hd2 (hWm x) (hWm y)]`. Establish `hx : ∀ v, v = ∑ a, h (f1 a) v • e a + ∑ a, h (e a) v • f1 a + pi h e f1 v`.
+
+Introduce `v`. Rewrite using `[pi_apply]`. Normalize the expressions using the abelian group laws. Establish `hpi` using `pi_mem hee hff1 hd1 hd1'`. Use `conv_rhs => rw [hx x, hx y]`.
+
+Rewrite using `[decomp_pair hh hee hff1 hd1 (hpi x) (hpi y)]`. Use `congr 1`. Rewrite using `[P_apply, P_apply, P_iso hh hee (hW _ (g _).2) (hW _ (g _).2), hg, cod_val, cod_val, P_apply, P_apply, P_iso hh hee (fun a => (hpi x a).1) (fun a => (hpi y a).1)]`.
+-/
 theorem gam_iso (hh : ∀ x y, star (h x y) = h y x) (hee : ∀ a b, h (e a) (e b) = 0)
     (hW : ∀ v ∈ W, ∀ a, h (e a) v = 0)
     (hff1 : ∀ a b, h (f1 a) (f1 b) = 0) (hd1 : ∀ a b, h (e a) (f1 b) = if a = b then 1 else 0)
@@ -164,10 +223,18 @@ section Gam2
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
   {h : V →ₗ⋆[K] V →ₗ[K] K} {r : ℕ} {e fY f1 f2 : Fin r → V} {W : Submodule K V}
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by rw [cod_val, hv, map_zero]; rfl)`.
+-/
 theorem cod_zero (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) {v : V} (hv : pi h e f1 v = 0) :
     LinearMap.codRestrict W (P h e fY ∘ₗ pi h e f1) hcod v = 0 :=
   Subtype.ext (by rw [cod_val, hv, map_zero]; rfl)
 
+/- English proof (translation)
+Establish `hd1'` using `dual_symm hh hd1`. Establish `hpi : pi h e f1 (e b) = 0`. Rewrite using `[pi_apply]`. Simplify using `[hd1', hee]`. Rewrite using `[gam_apply, cod_zero hcod hpi]`.
+
+Simplify using `[hd1', hee]`.
+-/
 theorem gam_e (hh : ∀ x y, star (h x y) = h y x) (hee : ∀ a b, h (e a) (e b) = 0)
     (hd1 : ∀ a b, h (e a) (f1 b) = if a = b then 1 else 0)
     (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W) (b : Fin r) :
@@ -178,6 +245,9 @@ theorem gam_e (hh : ∀ x y, star (h x y) = h y x) (hee : ∀ a b, h (e a) (e b)
   rw [gam_apply, cod_zero hcod hpi]
   simp [hd1', hee]
 
+/- English proof (translation)
+Establish `hpi : pi h e f1 (f1 b) = 0`. Rewrite using `[pi_apply]`. Simplify using `[hd1, hff1]`. Rewrite using `[gam_apply, cod_zero hcod hpi]`. Simplify using `[hd1, hff1]`.
+-/
 theorem gam_f (hh : ∀ x y, star (h x y) = h y x) (hff1 : ∀ a b, h (f1 a) (f1 b) = 0)
     (hd1 : ∀ a b, h (e a) (f1 b) = if a = b then 1 else 0)
     (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W) (b : Fin r) :
@@ -187,6 +257,11 @@ theorem gam_f (hh : ∀ x y, star (h x y) = h y x) (hff1 : ∀ a b, h (f1 a) (f1
   rw [gam_apply, cod_zero hcod hpi]
   simp [hd1, hff1]
 
+/- English proof (translation)
+Establish `hpi : pi h e f1 l = l`. Rewrite using `[pi_apply]`. Simplify using `[hl]`. Use `⟨hpi ▸ hcod l, ?_⟩` and prove the remaining obligations. Rewrite using `[gam_apply]`.
+
+Simplify using `only [hl, zero_smul, Finset.sum_const_zero, zero_add]`. Use `congr 3`. Conclude with `Subtype.ext (by show P h e fY (pi h e f1 l) = P h e fY l; rw [hpi])`.
+-/
 theorem gam_orth (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W) {l : V}
     (hl : ∀ a, h (e a) l = 0 ∧ h (f1 a) l = 0) :
     ∃ hm : P h e fY l ∈ W, gam h e fY f1 f2 W hcod g l = P h e f2 (g ⟨P h e fY l, hm⟩ : V) := by
@@ -198,6 +273,9 @@ theorem gam_orth (hcod : ∀ v, P h e fY (pi h e f1 v) ∈ W) (g : W ≃ₗ[K] W
   congr 3
   exact Subtype.ext (by show P h e fY (pi h e f1 l) = P h e fY l; rw [hpi])
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Conclude with `hnd x (fun y => by rw [← hγ, hx, map_zero, LinearMap.zero_apply])`.
+-/
 theorem gam_inj (hnd : ∀ x, (∀ y, h x y = 0) → x = 0) {γ : V →ₗ[K] V}
     (hγ : ∀ x y, h (γ x) (γ y) = h x y) : Function.Injective γ := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -211,12 +289,25 @@ namespace GlobalTheory.RowsOrb.Uniq
 section Spec
 variable {D : D7}
 
+/- English proof (translation)
+Use `(VS D).herm.eq x y` as an intermediate fact. Rewrite `this` using `[starRingEnd_apply]`. Then use the resulting hypothesis.
+-/
 theorem hh (x y : (VS D).V) : star ((VS D).hT x y) = (VS D).hT y x := by
   have := (VS D).herm.eq x y
   rwa [starRingEnd_apply] at this
 
+/- English proof (translation)
+The claim follows from `(VS D).nondeg.1 x H`.
+-/
 theorem hnd (x : (VS D).V) (H : ∀ y, (VS D).hT x y = 0) : x = 0 := (VS D).nondeg.1 x H
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_image, Set.mem_setOf_eq, Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨b, hb, rfl⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `show X.eX b = (X.Fu u).fvec b.castSucc`. Rewrite using `[GlobalTheory.TypeAsm.fv_cast, HidaSetting.Fu_e]`. Introduce and unpack `⟨b, rfl⟩`.
+
+Use `⟨b, b.2, ?_⟩` and prove the remaining obligations. Use `show (X.Fu u).fvec b.castSucc = X.eX b`. Rewrite using `[GlobalTheory.TypeAsm.fv_cast, HidaSetting.Fu_e]`.
+-/
 theorem fixedFrameOfWord_isotropicSpan_eq (X : HidaSetting D) (u : D.what₂.Word) :
     (GlobalTheory.TypeAsm.F0 X u).X = Submodule.span D.host.E (Set.range X.eX) := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa
@@ -233,11 +324,17 @@ theorem fixedFrameOfWord_isotropicSpan_eq (X : HidaSetting D) (u : D.what₂.Wor
     show (X.Fu u).fvec b.castSucc = X.eX b
     rw [GlobalTheory.TypeAsm.fv_cast, HidaSetting.Fu_e]
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hy`. Conclude with `pair_sum_zero H s`.
+-/
 theorem orth_span {x : (VS D).V} {r : ℕ} {v : Fin r → (VS D).V} (H : ∀ b, (VS D).hT x (v b) = 0)
     {y : (VS D).V} (hy : y ∈ Submodule.span D.host.E (Set.range v)) : (VS D).hT x y = 0 := by
   obtain ⟨s, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun D.host.E).1 hy
   exact pair_sum_zero H s
 
+/- English proof (translation)
+Establish `: Formalism.L2.SG.Saturated.latSpan aa v ≤ (Submodule.span D.host.E (Set.range v)).restrictScalars (𝓞 D.host.E)`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, x, -, rfl⟩`. Conclude with `Submodule.smul_mem _ x (Submodule.subset_span ⟨a, rfl⟩)`. Conclude with `this hy`.
+-/
 theorem latSpan_le {r : ℕ} (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     (v : Fin r → (VS D).V) {y : (VS D).V} (hy : y ∈ Formalism.L2.SG.Saturated.latSpan aa v) :
     y ∈ Submodule.span D.host.E (Set.range v) := by
@@ -254,6 +351,25 @@ namespace GlobalTheory.RowsOrb.Uniq
 section Spec2
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hdY : ∀ a b, (VS D).hT (X.fY a) (X.eX b) = if a = b then 1 else 0` using `dual_symm hh X.ef`. Establish `hwWb` using `(GlobalTheory.RowsOrb.mem_Wb X w).1 w.2`. Rewrite using `[GlobalTheory.RowsOrb.mem_Lmap, fixedFrameOfWord_isotropicSpan_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+
+Take `⟨lam, hlam, x, hx, hsum⟩` from `Submodule.mem_sup.1 hw`. Rewrite `hlam` using `[hΛ]`. Take `⟨y, hy, t, ht, rfl⟩` from `Submodule.mem_sup.1 hlam`. Take `⟨s, hs, l, hl, rfl⟩` from `Submodule.mem_sup.1 hy`. Establish `hx' : x ∈ Submodule.span D.host.E (Set.range X.eX)` using `hx`.
+
+Establish `hs'` using `latSpan_le _ _ hs`. Establish `ht'` using `latSpan_le _ _ ht`. Establish `hta : ∀ a, (VS D).hT (X.eX a) t = 0`. Introduce `a`. Establish `e1` using `(hwWb a).1`.
+
+Rewrite `e1` using `[← hsum]`. Simplify using `only [map_add] at e1`. Rewrite `e1` using `[orth_span (X.ee a) hs', (hL l hl a).1, orth_span (X.ee a) hx']`. Simplify using `using e1`. Establish `ht0 : t = 0`.
+
+Rewrite using `[coord hd ht']`. Simplify using `[hta]`. Substitute `ht0` using the available equality. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Establish `hdm : (w : (VS D).V) - P (VS D).hT X.eX X.fY l ∈ Submodule.span D.host.E (Set.range X.eX)`.
+
+Rewrite using `[← hsum, P_apply]`. Establish `: s + l + 0 + x - (l - ∑ a, (VS D).hT (X.fY a) l • X.eX a) = s + x + ∑ a, (VS D).hT (X.fY a) l • X.eX a` using `by abel`. Rewrite using `[this]`. Use `add_mem (add_mem hs' hx') (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))` and prove the remaining obligations. Establish `hPm` using `P_mem X.ee hdY (fun a => (hL l hl a).1)`.
+
+Establish `hc : ∀ a, (VS D).hT (X.fY a) ((w : (VS D).V) - P (VS D).hT X.eX X.fY l) = 0`. Introduce `a`. Rewrite using `[map_sub, (hwWb a).2, (hPm a).2, sub_zero]`. Establish `h0` using `coord hdY hdm`. Simplify using `only [hc, zero_smul, Finset.sum_const_zero] at h0`.
+
+Conclude with `(sub_eq_zero.1 h0).symm`. Introduce and unpack `⟨l, hl, hPl⟩`. Rewrite using `[← hPl, P_apply, sub_eq_add_neg]`. Use `Submodule.mem_sup.2 ⟨l, ?_, -(∑ a, (VS D).hT (X.fY a) l • X.eX a), ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hΛ]`.
+
+Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right hl)`. Use `show _ ∈ Submodule.span D.host.E (Set.range X.eX)`. Conclude with `neg_mem (Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+-/
 theorem lmap_char (X : HidaSetting D) (u : D.what₂.Word) (Λ : Submodule (𝓞 D.host.E) (VS D).V)
     (aa aa' : Fin D.R.rS → FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)
     {f : Fin D.R.rS → (VS D).V} {L : Submodule (𝓞 D.host.E) (VS D).V}
@@ -311,6 +427,11 @@ namespace GlobalTheory.RowsOrb.Uniq
 section Spec3
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Formalism.L2.SG.Saturated.latSpan`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨_, ⟨a, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, x, hx, by simp⟩`. Introduce and unpack `⟨a, x, hx, rfl⟩`. Conclude with `⟨x • v a, ⟨a, x, hx, rfl⟩, by simp⟩`.
+-/
 theorem map_latSpan {r : ℕ} (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (aa : Fin r → FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) (v : Fin r → (VS D).V) :
     Submodule.map ((γ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E))
@@ -329,6 +450,35 @@ end Spec3
 end GlobalTheory.RowsOrb.Uniq
 
 open GlobalTheory.RowsOrb.Uniq in
+/- English proof (translation)
+Introduce `D large₂ X Y u _ Λ₁ h1 Λ₂ h2 g hg`. Take `⟨f1, L1, hff1, hd1, hL1, hz1, hΛ1⟩` from `Y.split u Λ₁ h1`. Take `⟨f2, L2, hff2, hd2, hL2, hz2, hΛ2⟩` from `Y.split u Λ₂ h2`. Simplify using `only [HidaSetting.Fu_e, HidaSetting.flagZVector] at hd1 hL1 hz1 hΛ1 hd2 hL2 hz2 hΛ2`. Establish `hdY` using `dual_symm hh X.ef`.
+
+Establish `hd1'` using `dual_symm hh hd1`. Establish `hcod : ∀ v, P (VS D).hT X.eX X.fY (pi (VS D).hT X.eX f1 v) ∈ GlobalTheory.RowsOrb.Wb X` using `fun v a => P_mem X.ee hdY (fun b => (pi_mem X.ee hff1 hd1 hd1' v b).1) a`. Establish `hiso` using `gam_iso hh X.ee (fun v hv a => (hv a).1) hff1 hd1 hff2 hd2 hcod g.1.1 (fun x y => g.1.2 x y)`. Set `γ` to `LinearEquiv.ofInjectiveEndo _ (gam_inj hnd hiso)`. Establish `hγ : ∀ v, γ v = gam (VS D).hT X.eX X.fY f1 f2 (GlobalTheory.RowsOrb.Wb X) hcod g.1.1 v` using `fun v => rfl`.
+
+Establish `hP2` using `dual_symm hh hd2`. Establish `hγe : ∀ b, γ (X.eX b) = X.eX b` using `fun b => by rw [hγ]; exact gam_e hh X.ee hd1 hcod _ b`. Establish `hγf : ∀ b, γ (f1 b) = f2 b` using `fun b => by rw [hγ]; exact gam_f hh hff1 hd1 hcod _ b`. Establish `hz : γ (X.zu u) = X.zu u`. Take `⟨hm, hgz⟩` from `gam_orth hcod g.1.1 (hL1 _ hz1)`.
+
+Establish `hPz : P (VS D).hT X.eX X.fY (X.zu u) = X.zu u`. Rewrite using `[P_apply]`. Simplify using `[(X.zu_orth u _).2]`. Establish `e1 : (⟨P (VS D).hT X.eX X.fY (X.zu u), hm⟩ : GlobalTheory.RowsOrb.Wb X) = GlobalTheory.RowsOrb.zb X u` using `Subtype.ext hPz`. Establish `hs : (g.1.1 : GlobalTheory.RowsOrb.Wb X ≃ₗ[D.host.E] GlobalTheory.RowsOrb.Wb X) (GlobalTheory.RowsOrb.zb X u) = GlobalTheory.RowsOrb.zb X u` using `g.2`.
+
+Rewrite using `[hγ, hgz, e1, hs, GlobalTheory.RowsOrb.zb_coe, P_apply]`. Simplify using `[(hL2 _ hz2 _).2]`. Establish `hγL : Submodule.map ((γ : (VS D).V →ₗ[D.host.E] (VS D).V).restrictScalars (𝓞 D.host.E)) L1 = L2`. Use extensionality with `v`. Simplify using `only [Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Take `⟨hm, hgl⟩` from `gam_orth hcod g.1.1 (hL1 l hl)`. Establish `hin : (⟨_, hm⟩ : GlobalTheory.RowsOrb.Wb X) ∈ GlobalTheory.RowsOrb.Lmap X u Λ₁` using `(lmap_char X u Λ₁ _ _ hd1 hL1 hΛ1 _).2 ⟨l, hl, rfl⟩`. Establish `hin2 : g.1.1 ⟨_, hm⟩ ∈ GlobalTheory.RowsOrb.Lmap X u Λ₂`.
+
+Rewrite using `[← hg]`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).2 ⟨_, hin, rfl⟩`. Take `⟨l2, hl2, hPl2⟩` from `(lmap_char X u Λ₂ _ _ hd2 hL2 hΛ2 _).1 hin2`. Rewrite using `[hγ, hgl, ← hPl2, P_P hP2, P_apply]`. Simplify `hl2` using `[(hL2 l2 hl2 _).2]`.
+
+Introduce `hv`. Establish `hm : P (VS D).hT X.eX X.fY v ∈ GlobalTheory.RowsOrb.Wb X` using `fun a => P_mem X.ee hdY (fun b => (hL2 v hv b).1) a`. Establish `hin2 : (⟨_, hm⟩ : GlobalTheory.RowsOrb.Wb X) ∈ GlobalTheory.RowsOrb.Lmap X u Λ₂` using `(lmap_char X u Λ₂ _ _ hd2 hL2 hΛ2 _).2 ⟨v, hv, rfl⟩`. Rewrite `hin2` using `[← hg]`. Take `⟨b, hb, hgb⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hin2`.
+
+Take `⟨l1, hl1, hPl1⟩` from `(lmap_char X u Λ₁ _ _ hd1 hL1 hΛ1 _).1 hb`. Use `⟨l1, hl1, ?_⟩` and prove the remaining obligations. Take `⟨hm1, hgl1⟩` from `gam_orth hcod g.1.1 (hL1 l1 hl1)`. Establish `e1 : (⟨_, hm1⟩ : GlobalTheory.RowsOrb.Wb X) = b` using `Subtype.ext hPl1`. Establish `hgb' : g.1.1 b = ⟨_, hm⟩` using `hgb`.
+
+Rewrite using `[hγ, hgl1, e1, hgb']`. Use `show P (VS D).hT X.eX f2 (P (VS D).hT X.eX X.fY v) = v`. Rewrite using `[P_P hP2, P_apply]`. Simplify using `[(hL2 v hv _).2]`. Establish `hstab : γ ∈ stabF D (X.Fu u)`.
+
+Use `⟨fun x y => hiso x y, fun j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.MainNotions.S.FlagG.Xa, HidaSetting.Fu_e]`. Rewrite using `[Submodule.map_span, Set.image_image]`. Simplify using `only [LinearEquiv.coe_coe, hγe]`. Rewrite using `[HidaSetting.flagZVector]`.
+
+Conclude with `hz`. Establish `hmap : Formalism.HermitianLatticesTheory.gmap γ Λ₁ = Λ₂`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[hΛ1, hΛ2, Submodule.map_sup, Submodule.map_sup, map_latSpan, map_latSpan, hγL]`. Simplify using `only [hγe, hγf]`.
+
+Establish `hR` using `Y.rowsOK u`. Use `(hR.2 Λ₂ (hR.1 Λ₂ h2)).unique ⟨h1, γ, hstab, hmap⟩ ⟨h2, 1, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun x y => rfl, fun j => ?_, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use extensionality with `v`.
+
+Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+-/
 theorem GlobalTheory.RowsOrb.rows_eq_of_conj : ∀ (D : D7) (large₂ : SizeData₂ D) (X : HidaSetting D) (Y : Full X) (u : D.what₂.Word),
     GlobalTheory.TypeAsm.Std D large₂ → ∀ Λ₁ ∈ Y.what₂ u, ∀ Λ₂ ∈ Y.what₂ u, ∀ g : GlobalTheory.RowsOrb.Gz X u,
       g • GlobalTheory.RowsOrb.Lmap X u Λ₁ = GlobalTheory.RowsOrb.Lmap X u Λ₂ → Λ₁ = Λ₂ := by

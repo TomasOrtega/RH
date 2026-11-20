@@ -8,6 +8,9 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK.InfB
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT p hp g hg f`. Establish `hex` using `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ a' (a + a') G.V' G.W G.M' B.ψ X.α (X.α / X.β) om' hT.base.cm hT.base.std hT.weil'`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ ∈ schA F _` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hT.weil').pres x Φ hΦ`. Conclude with `GlobalTheory.ThK.InfB.locOpInf_mul hex hpres hp hg f`.
+-/
 theorem locOpInf_mul_V' : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ p ∈ UAt σ G.V' (evI F), ∀ g ∈ UAt σ G.V' (evI F), ∀ f : SInf F (Fin a' × Fin (a + a')),

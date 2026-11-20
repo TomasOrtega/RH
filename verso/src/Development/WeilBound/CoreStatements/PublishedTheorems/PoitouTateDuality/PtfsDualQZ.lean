@@ -7,6 +7,9 @@ open GroundTheory.ProfCoh
 
 namespace PositivityTheory.Lit1.PTN
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul]`.
+-/
 theorem nsmul_eq_zero_of_zmod {N : ℕ} {X : Type} [AddCommGroup X] [Module (ZMod N) X] (a : X) :
     N • a = 0 := by
   rw [← Nat.cast_smul_eq_nsmul (ZMod N), ZMod.natCast_self, zero_smul]
@@ -22,6 +25,9 @@ def dualQZ {N : ℕ} [NeZero N] {X Y : Type} [AddCommGroup X] [Module (ZMod N) X
     simp [zmodToQZ_zmodOfQZ]
   map_add' φ φ' := AddMonoidHom.ext fun y => by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dualQZ_apply {N : ℕ} [NeZero N] {X Y : Type} [AddCommGroup X] [Module (ZMod N) X]
     [AddCommGroup Y] (E : X ≃+ Y) (φ : Module.Dual (ZMod N) X) (y : Y) :
     dualQZ E φ y = zmodToQZ N (φ (E.symm y)) := rfl

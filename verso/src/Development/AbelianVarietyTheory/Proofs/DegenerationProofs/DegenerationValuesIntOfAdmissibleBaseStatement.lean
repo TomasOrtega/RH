@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Ex.IntVal.main | exact GlobalTheory.Ex.IntVal.main | (intros; apply GlobalTheory.Ex.IntVal.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.degenerationValues_int_of_admissibleBase : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R), AdmBase R I → ∀ (D : DegData R I) (C : Type) [NormedField C] [IsUltrametricDist C] [Algebra (FractionRing R) C], CExt R I C → ∀ (N : NumD C) (ν : NumOf D.toPre C N), ν.IntN → ∃ q, N.Int q := by
   first | exact @GlobalTheory.Ex.IntVal.main | exact GlobalTheory.Ex.IntVal.main | (intros; apply GlobalTheory.Ex.IntVal.main <;> assumption)

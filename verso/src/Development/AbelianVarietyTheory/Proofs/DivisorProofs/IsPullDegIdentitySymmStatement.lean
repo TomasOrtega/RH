@@ -6,5 +6,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PullDegSymm.isPullDeg_symm | exact GlobalTheory.PullDegSymm.isPullDeg_symm | (intros; apply GlobalTheory.PullDegSymm.isPullDeg_symm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isPullDeg_identity_symm : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R), IsPullDeg (RingHom.id R) D D' → Nonempty (IsPullDeg (RingHom.id R) D' D) := by
   first | exact @GlobalTheory.PullDegSymm.isPullDeg_symm | exact GlobalTheory.PullDegSymm.isPullDeg_symm | (intros; apply GlobalTheory.PullDegSymm.isPullDeg_symm <;> assumption)

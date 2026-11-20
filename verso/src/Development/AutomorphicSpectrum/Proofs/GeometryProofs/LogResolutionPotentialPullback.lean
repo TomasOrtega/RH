@@ -18,6 +18,11 @@ section Holo
 
 variable {e e' : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousAt (g ∘ (A.chart j).symm) (A.chart j x)` using `(hg j _ ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩).continuousAt`. Establish `h3 : ContinuousAt ((g ∘ (A.chart j).symm) ∘ A.chart j) x` using `ContinuousAt.comp (g := g ∘ (A.chart j).symm) h1 ((A.chart j).continuousAt hj)`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`.
+
+Simplify using `[Function.comp, (A.chart j).left_inv hy]`.
+-/
 theorem continuousAt_holo (A : FinHolAtlas e X) {W : Set X} {g : X → ℂ} (hg : A.HoloOn W g) {x : X}
     (hx : x ∈ W) : ContinuousAt g x := by
   obtain ⟨j, hj⟩ := A.cover x
@@ -29,6 +34,11 @@ theorem continuousAt_holo (A : FinHolAtlas e X) {W : Set X} {g : X → ℂ} (hg 
   filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy
   simp [Function.comp, (A.chart j).left_inv hy]
 
+/- English proof (translation)
+Introduce and unpack `j y ⟨hy, hyU⟩`. Take `⟨k, hk⟩` from `A.cover (h ((B.chart j).symm y))`. Establish `a1 : AnalyticAt ℂ (A.chart k ∘ h ∘ (B.chart j).symm) y` using `hh.2 j k y ⟨hy, hk⟩`. Establish `a2 : AnalyticAt ℂ (g ∘ (A.chart k).symm) ((A.chart k ∘ h ∘ (B.chart j).symm) y)` using `hg k _ ⟨(A.chart k).map_source hk, by`. Simplify `hyU⟩` using `[Function.comp, (A.chart k).left_inv hk]`.
+
+Use `(a2.comp a1).congr ?_` and prove the remaining obligations. Use `filter_upwards [((B.chart j).isOpen_inter_preimage_symm ((A.chart k).open_source.preimage hh.1)).mem_nhds ⟨hy, hk⟩] with y' hy'`. Simplify using `[Function.comp, (A.chart k).left_inv hy'.2]`.
+-/
 theorem holoOn_comp {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y → X} (hh : HoloMap B A h) {U : Set X}
     {g : X → ℂ} (hg : A.HoloOn U g) : B.HoloOn (h ⁻¹' U) (fun y => g (h y)) := by
   rintro j y ⟨hy, hyU⟩
@@ -42,6 +52,13 @@ theorem holoOn_comp {A : FinHolAtlas e X} {B : FinHolAtlas e' Y} {h : Y → X} (
     ((A.chart k).open_source.preimage hh.1)).mem_nhds ⟨hy, hk⟩] with y' hy'
   simp [Function.comp, (A.chart k).left_inv hy'.2]
 
+/- English proof (translation)
+Establish `hcont : ContinuousOn (fun y => c y / c x) W` using `fun y hy => ((continuousAt_holo A hc hy).div_const _).continuousWithinAt`. Establish `hV : IsOpen (W ∩ (fun y => c y / c x) ⁻¹' Complex.slitPlane)` using `hcont.isOpen_inter_preimage hW Complex.isOpen_slitPlane`. Use `⟨_, hV, ⟨hx, ?_⟩, Set.inter_subset_left, fun y => Complex.log (c y / c x) + (Real.log ‖c x‖ : ℂ), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[div_self h0]`. Introduce and unpack `j z ⟨hz, hzW, hzs⟩`.
+
+Establish `a1 : AnalyticAt ℂ (c ∘ (A.chart j).symm) z` using `hc j z ⟨hz, hzW⟩`. Establish `a2 : AnalyticAt ℂ (fun z => (c ∘ (A.chart j).symm) z / c x) z` using `a1.div analyticAt_const h0`. Conclude with `(a2.clog hzs).add analyticAt_const`. Introduce and unpack `y ⟨-, hy⟩`. Establish `hy' : c y / c x ≠ 0` using `Complex.slitPlane_ne_zero hy`.
+
+Establish `hcy : c y ≠ 0` using `fun e => hy' (by simp [e])`. Use `⟨hcy, ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_div]`. Rewrite using `[Real.log_div (norm_ne_zero_iff.2 hcy) (norm_ne_zero_iff.2 h0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_log (A : FinHolAtlas e X) {W : Set X} (hW : IsOpen W) {c : X → ℂ} (hc : A.HoloOn W c) {x : X}
     (hx : x ∈ W) (h0 : c x ≠ 0) :
     ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ V ⊆ W ∧ ∃ L : X → ℂ, A.HoloOn V L ∧
@@ -70,6 +87,13 @@ variable {K₀ K : Type} [Fintype K₀] [Fintype K] {J₀ : K₀ → Type} {J : 
   [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] {κ : K₀ → K} {v : (Σ k, J₀ k) → Σ k, J k}
   {P₀ Jd₀ : Ideal (MRing J₀)} {P Jd : Ideal (MRing J)} {D : ℕ}
 
+/- English proof (translation)
+Take `⟨c₁, h₁, e₁⟩` from `R.compat x y y ⟨hy, R.mem_U y⟩`. Take `⟨c₂, h₂, e₂⟩` from `ho y`. Take `⟨c₃, h₃, e₃⟩` from `R₀.compat (h x) (h y) (h y) ⟨hy₀, R₀.mem_U _⟩`. Use `⟨fun k => c₁ (κ k) / (c₃ k * c₂ k), fun k => div_ne_zero (h₁ _) (mul_ne_zero (h₃ k) (h₂ k)), fun p => ?_⟩` and prove the remaining obligations. Establish `a₁` using `congrFun e₁ (v p)`.
+
+Establish `a₂` using `congrFun e₂ p`. Establish `a₃` using `congrFun e₃ p`. Simplify using `only at a₁ a₂ a₃`. Establish `n₂` using `h₂ p.1`. Establish `n₃` using `h₃ p.1`.
+
+Rewrite using `[a₃, a₂, a₁, hv.2.2.1 p]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem orbit_key (R₀ : AnLogRes P₀ Jd₀ D) (R : AnLogRes P Jd D) (hv : IsBlockMap κ v) (h : R.X → R₀.X)
     (ho : ∀ x, SameOrbit (R₀.lift (h x) (h x)) (fun p => R.lift x x (v p))) {x y : R.X} (hy : y ∈ R.U x)
     (hy₀ : h y ∈ R₀.U (h x)) :
@@ -87,6 +111,15 @@ theorem orbit_key (R₀ : AnLogRes P₀ Jd₀ D) (R : AnLogRes P Jd D) (hv : IsB
   rw [a₃, a₂, a₁, hv.2.2.1 p]
   field_simp
 
+/- English proof (translation)
+Establish `oW : IsOpen (R.U x ∩ h ⁻¹' R₀.U (h x))` using `(R.isOpen_U x).inter ((R₀.isOpen_U _).preimage hh.1)`. Establish `mW : x ∈ R.U x ∩ h ⁻¹' R₀.U (h x)` using `⟨R.mem_U x, R₀.mem_U _⟩`. Take `⟨i, hi⟩` from `(R₀.mem (h x) (h x) (R₀.mem_U _)).1 k`. Take `⟨cx, hcx, ecx⟩` from `orbit_key R₀ R hv h ho (R.mem_U x) (R₀.mem_U (h x))`. Establish `hn : R.A.HoloOn (R.U x ∩ h ⁻¹' R₀.U (h x)) (fun y => R.lift x y (v ⟨k, i⟩))` using `fun j z hz => R.holo x (v ⟨k, i⟩) j z ⟨hz.1, hz.2.1⟩`.
+
+Establish `hd : R.A.HoloOn (R.U x ∩ h ⁻¹' R₀.U (h x)) (fun y => R₀.lift (h x) (h y) ⟨k, i⟩)` using `fun j z hz => holoOn_comp hh (R₀.holo (h x) ⟨k, i⟩) j z ⟨hz.1, hz.2.2⟩`. Establish `hnx : R.lift x x (v ⟨k, i⟩) ≠ 0`. Rewrite using `[ecx ⟨k, i⟩]`. Conclude with `mul_ne_zero (hcx k) hi`. Take `⟨Vn, oVn, mVn, sVn, Ln, hLn, eLn⟩` from `exists_log R.A oW hn mW hnx`.
+
+Take `⟨Vd, oVd, mVd, -, Ld, hLd, eLd⟩` from `exists_log R.A oW hd mW hi`. Use `⟨Vn ∩ Vd, oVn.inter oVd, ⟨mVn, mVd⟩, Set.inter_subset_left.trans sVn, fun y => Ln y - Ld y, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `j z ⟨hz, hzn, hzd⟩`. Conclude with `(hLn j z ⟨hz, hzn⟩).sub (hLd j z ⟨hz, hzd⟩)`. Introduce and unpack `y ⟨hyn, hyd⟩ c hc ec`.
+
+Take `⟨-, e1⟩` from `eLn y hyn`. Take `⟨d0, e2⟩` from `eLd y hyd`. Simplify using `only [Complex.sub_re, e1, e2]`. Rewrite using `[ec ⟨k, i⟩, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 d0)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_coeff_log (R₀ : AnLogRes P₀ Jd₀ D) (R : AnLogRes P Jd D) (hv : IsBlockMap κ v) (h : R.X → R₀.X)
     (hh : HoloMap R.A R₀.A h)
     (ho : ∀ x, SameOrbit (R₀.lift (h x) (h x)) (fun p => R.lift x x (v p))) (x : R.X) (k : K₀) :
@@ -116,6 +149,15 @@ theorem exists_coeff_log (R₀ : AnLogRes P₀ Jd₀ D) (R : AnLogRes P Jd D) (h
     rw [ec ⟨k, i⟩, norm_mul, Real.log_mul (norm_ne_zero_iff.2 (hc k)) (norm_ne_zero_iff.2 d0)]
     ring
 
+/- English proof (translation)
+Introduce `K₀ K _ _ J₀ J _ _ κ v P₀ Jd₀ P Jd D R₀ R X _ B Θ A₀ T π hπ h hv hc hh ho h0 hF x _`. Take `⟨V₀, oV₀, mV₀, G₀, hG₀, e₀⟩` from `h0 (h x) trivial`. Take `⟨V₁, oV₁, mV₁, G₁, hG₁, e₁⟩` from `hF x trivial`. Use `choose Vk oVk mVk sVk L hL eL using exists_coeff_log R₀ R hv h hh ho x`. Use `⟨(⋂ k, Vk k) ∩ ((h ⁻¹' V₀ ∩ V₁) ∩ (R.U x ∩ h ⁻¹' R₀.U (h x))), (isOpen_iInter_of_finite oVk).inter (((oV₀.preimage hh.1).inter oV₁).inter ((R.isOpen_U x).inter ((R₀.isOpen_U _).preimage hh.1))), ⟨Set.mem_iInter.2 mVk, ⟨mV₀, mV₁⟩, R.mem_U x, R₀.mem_U _⟩, fun y => G₀ (h y) + G₁ y + …` and prove the remaining obligations.
+
+Introduce and unpack `j z ⟨hz, hzk, ⟨hz₀, hz₁⟩, -⟩`. Establish `t0 : AnalyticAt ℂ (fun z => G₀ (h ((R.A.chart j).symm z))) z` using `holoOn_comp hh hG₀ j z ⟨hz, hz₀⟩`. Establish `t1 : AnalyticAt ℂ (fun z => G₁ ((R.A.chart j).symm z)) z` using `hG₁ j z ⟨hz, hz₁⟩`. Establish `t2 : ∀ k ∈ (Finset.univ : Finset K₀), AnalyticAt ℂ (fun z => ((A₀.a k : ℝ) : ℂ) * L k ((R.A.chart j).symm z)) z` using `fun k _ => analyticAt_const.mul (hL k j z ⟨hz, Set.mem_iInter.1 hzk k⟩)`. Conclude with `(t0.add t1).add (Finset.analyticAt_fun_sum _ t2)`.
+
+Introduce and unpack `y ⟨hyk, ⟨hy₀, hy₁⟩, hyU, hyU₀⟩`. Take `⟨c, hc0, ec⟩` from `orbit_key R₀ R hv h ho hyU hyU₀`. Establish `E0 : Real.log (A₀.h (R₀.lift (h x) (h y))) - Θ.φ (π (h x)) (π (h y)) = (G₀ (h y)).re` using `e₀ (h y) hy₀`. Establish `E1 : Real.log (T.h (R.lift x y)) - 0 = (G₁ y).re` using `e₁ y hy₁`. Establish `E2 : (fun p => R.lift x y (v p)) = fun p => c p.1 * R₀.lift (h x) (h y) p` using `funext ec`.
+
+Use `show Real.log (((pullHerm hv A₀).tensor T).h (R.lift x y)) - Θ.φ (π (h x)) (π (h y)) = _`. Rewrite using `[log_tensor_pull hv A₀ T (R.mem x y hyU).1, E2, log_h_smul A₀ hc0 (R₀.mem _ _ hyU₀).1]`. Simplify using `only [Complex.add_re, Complex.re_sum, Complex.re_ofReal_mul, ← E0, ← E1, fun k => eL k y (Set.mem_iInter.1 hyk k) c hc0 ec]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem samePot_twist : ∀ (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (κ : K₀ → K) (v : (Σ k, J₀ k) → Σ k, J k) (P₀ Jd₀ : Ideal (MRing J₀)) (P Jd : Ideal (MRing J)) (D : ℕ) (R₀ : AnLogRes P₀ Jd₀ D) (R : AnLogRes P Jd D) (X : Type) [TopologicalSpace X] (B : FinHolAtlas D X) (Θ : LocPot X) (A₀ : HermLine J₀) (T : HermLine J) (π : R₀.X → X) (hπ : HoloMap R₀.A B π) (h : R.X → R₀.X) (hv : IsBlockMap κ v) (hc : Continuous (π ∘ h)), HoloMap R.A R₀.A h → (∀ x, SameOrbit (R₀.lift (h x) (h x)) (fun p => R.lift x x (v p))) → SamePot R₀.A Set.univ (potOf R₀ A₀) (Θ.pullback π hπ.1) → IsFlatOn R T → SamePot R.A Set.univ (potOf R ((pullHerm hv A₀).tensor T)) (Θ.pullback (π ∘ h) hc) := by
   intro K₀ K _ _ J₀ J _ _ κ v P₀ Jd₀ P Jd D R₀ R X _ B Θ A₀ T π hπ h hv hc hh ho h0 hF x _
   obtain ⟨V₀, oV₀, mV₀, G₀, hG₀, e₀⟩ := h0 (h x) trivial

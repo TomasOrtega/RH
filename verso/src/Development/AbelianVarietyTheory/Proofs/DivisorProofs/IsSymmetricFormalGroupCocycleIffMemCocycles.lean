@@ -14,6 +14,17 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory.Katz
 
+/- English proof (translation)
+Introduce `p k _ d G c μ hμ s`. Establish `hcomp : ∀ n, pullbackTwo (G.res n) (c.ev₂ (n + 1) s) = c.ev₂ n s` using `fun n => (GlobalTheory.T.functions_eq_series_in_chart p k d G c).2.1 n s`. Establish `hnil` using `(GlobalTheory.T.eq_zero_of_eval_cube_levels p k d G c).1`. Establish `hinj` using `(GlobalTheory.T.eq_zero_of_eval_cube_levels p k d G c).2`. Establish `hcob : ∀ n, evA k _ (hnil n) (cob2 μ s) = cobTwo k (G.A n) (c.ev₂ n s)` using `fun n => (GlobalTheory.T.connectedPDivGroupChart_coboundaryTwo_coord p k d G c μ hμ n (hnil n)).1 s`.
+
+Establish `hswap : ∀ n, c.ev₂ n (Katz.swap s) = TensorProduct.comm k _ _ (c.ev₂ n s)` using `fun n => (GlobalTheory.T.connectedChart_evalSquare_variables_swap_constant p k d G c n).2.2.1 s`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h2, hs⟩ n`. Use `⟨mem_symCocycles.2 ⟨?_, ?_⟩, hcomp n⟩` and prove the remaining obligations. Rewrite using `[← hcob n, h2, map_zero]`.
+
+Rewrite using `[← hswap n, hs]`. Introduce `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hinj _ fun n hn => ?_` and prove the remaining obligations. Establish `e` using `hcob n`.
+
+Rewrite `e` using `[(mem_symCocycles.1 (h n).1).1]`. Conclude with `e`. Take `⟨t, -, ht⟩` from `(GlobalTheory.T.chart_square_coordinates_present_levels p k d G c).2 (fun n => c.ev₂ n s) hcomp`. Establish `h1` using `ht (Katz.swap s) fun n => by`. Rewrite using `[hswap n]`.
+
+Conclude with `(mem_symCocycles.1 (h n).1).2`. Establish `h2` using `ht s fun n => rfl`. Rewrite using `[h1, h2]`.
+-/
 theorem isCoc_iff_mem_cocycles : ∀ (p : ℕ) (k : Type) [CommRing k] (d : ℕ) (G : PDivGroup p k)
     (c : Chart G d), ∀ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) k), c.IsLawOf μ →
     ∀ s, IsCoc μ s ↔ (fun n => c.ev₂ n s) ∈ G.cocycles := by

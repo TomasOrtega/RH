@@ -9,6 +9,15 @@ noncomputable section
 
 namespace GlobalTheory.HaarTransport
 
+/- English proof (translation)
+Use `⟨?_, ?_, fun a ha b hb => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Use `show (1 : Matrix (Fin N) (Fin N) ℂ)ᴴ * H * 1 = H`. Simplify using the standard rewrite rules. Establish `ha' : aᴴ * H * a = H` using `ha`.
+
+Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = H := by rw [ha', hb']`.
+
+Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `h1 : (H * gᴴ * H) * g = 1`. Rewrite using `[Matrix.mul_assoc H, Matrix.mul_assoc H, hg', hH]`. Establish `hu : IsUnit g.det` using `Matrix.isUnit_det_of_left_inverse h1`. Use `⟨?_, Matrix.mul_nonsing_inv _ hu⟩` and prove the remaining obligations.
+
+Use `show (g⁻¹)ᴴ * H * g⁻¹ = H`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isMatGroup_UH_of_sq {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1) : PI.IsMatGroup (UH H) := by
   refine ⟨?_, ?_, fun a ha b hb => ?_, fun g hg => ?_⟩
   · exact isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
@@ -31,6 +40,19 @@ theorem isMatGroup_UH_of_sq {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H *
       _ = (g * g⁻¹)ᴴ * H * (g * g⁻¹) := by simp only [Matrix.conjTranspose_mul, Matrix.mul_assoc]
       _ = H := by rw [Matrix.mul_nonsing_inv _ hu]; simp
 
+/- English proof (translation)
+Introduce `k r μG ε P hμ hP hH`. Establish `hce` using `Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_closedEmbedding (ε := ε) (P := P) Formalism.REAL.uJEmb hP`. Establish `hm` using `hce.continuous.measurable`. Establish `hme` using `hce.measurableEmbedding`. Establish `hG : PI.IsMatGroup (GG k r)` using `isMatGroup_UH_of_sq _ (hpkFacts k r).2.1`.
+
+Establish `hmem : ∀ y, Matrix.of (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P y) ∈ GG k r` using `fun y => (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_range_iff Formalism.REAL.uJEmb uHConj hP hH _).1 ⟨y, rfl⟩`. Establish `hν : PI.IsHaarOnM (GG k r) ((Formalism.REAL.muG ε).map (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P))`. Use `⟨hme.sigmaFinite_map, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Measure.map_ne_zero_iff hm.aemeasurable).2 (NeZero.ne _)`. Establish `hcl : IsClosed {x : PI.MtM (2 * r + k + 1) | Matrix.of x ∈ GG k r}` using `hG.1 show (Measure.map _ _) {x : PI.MtM (2 * r + k + 1) | Matrix.of x ∈ GG k r}ᶜ = 0`.
+
+Rewrite using `[Measure.map_apply hm hcl.measurableSet.compl]`. Establish `: Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P ⁻¹' {x : PI.MtM (2 * r + k + 1) | Matrix.of x ∈ GG k r}ᶜ = ∅`. Use extensionality with `y`. Simplify using `using hmem y`. Rewrite using `[this, measure_empty]`.
+
+Introduce `a ha`. Take `⟨u, hu⟩` from `(Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi_range_iff Formalism.REAL.uJEmb uHConj hP hH a).2 ha`. Substitute `hu` using the available equality. Establish `hl : Measurable (PI.lmulQ (m` using `2 * r + k + 1) (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P u)) := (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.lmul_cont (k := k) (r := r) (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P u)).measurable`. Rewrite using `[Measure.map_map hl hm]`.
+
+Establish `e : PI.lmulQ (m` using `2 * r + k + 1) (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P u) ∘ Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P = Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P ∘ (fun v => u * v) := by`. Use function extensionality and compare the values at `v`. Conclude with `Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.lmul_phi hP u v`. Rewrite using `[e, ← Measure.map_map hm (measurable_const_mul u), map_mul_left_eq_self]`. Establish `hμ' : PI.IsHaarOnM (GG k r) μG` using `hμ`.
+
+Take `⟨c, -, hct, hc⟩` from `(GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ _ μG hG hμ').1 _ hν`. Use `⟨c, hct.ne, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `h1 : ∫⁻ y, φ (Matrix.of.symm (P⁻¹ * umat y * P)) ∂(Formalism.REAL.muG ε) = ∫⁻ y, φ (Formalism.FourierDecayAlt.P.HaarUniquenessConjugation.phi ε P y) ∂(Formalism.REAL.muG ε)` using `rfl`. Rewrite using `[h1, ← lintegral_map hφ hm, hc, lintegral_smul_measure, smul_eq_mul]`.
+-/
 theorem haar_transport : ∀ (k r : ℕ) (μG : Measure (Mt k r)) (ε : Fin (2 * r + k + 1) → Bool) (P : Mat k r),
     IsHaarOn (GG k r) μG → IsUnit P.det → Pᴴ * Formalism.REAL.Jm ε * P = Hpk k r →
     ∃ c : ℝ≥0∞, c ≠ ⊤ ∧ ∀ φ : Mt k r → ℝ≥0∞, Measurable φ →

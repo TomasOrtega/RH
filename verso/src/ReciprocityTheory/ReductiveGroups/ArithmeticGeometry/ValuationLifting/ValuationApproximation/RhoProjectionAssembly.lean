@@ -6,6 +6,17 @@ namespace ReciprocityTheory.ChartRestriction.G.Lift.VA
 
 open WithZero
 
+/- English proof (translation)
+Take `⟨e, rfl⟩ : ∃ e : ℤ, ε = exp e` from `⟨log ε, (exp_log hε).symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a : ℤ, M ≤ exp a := by`. Break down `eq_or_ne M 0 with rfl | hM` into its components or cases. Conclude with `⟨0, zero_le⟩`. Conclude with `⟨log M, (exp_log hM).ge⟩`.
+
+Use `⟨(a - e + 1).toNat + 1, by omega, fun m' hm' g h hg hh => ?_⟩` and prove the remaining obligations. Break down `eq_or_ne g 0 with rfl | hg0` into its components or cases. Rewrite using `[zero_pow (by omega), zero_mul]`. Conclude with `exp_pos`. Establish `hg1 : g ≤ exp (-1)`.
+
+Rewrite `hg`, the goal using `[← exp_log hg0]`. Rewrite `hg` using `[← exp_zero, exp_lt_exp]`. Rewrite using `[exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← exp_nsmul, ← exp_add]`. Use `congr 1`. Rewrite using `[smul_neg, nsmul_eq_mul, mul_one]`. Use `_ < exp e := by`. Rewrite using `[exp_lt_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem disc (M ε : WithZero (Multiplicative ℤ)) (hε : ε ≠ 0) :
     ∃ m : ℕ, 1 ≤ m ∧ ∀ m', m ≤ m' → ∀ g h : WithZero (Multiplicative ℤ),
       g < 1 → h ≤ M → g ^ m' * h < ε := by
@@ -36,6 +47,11 @@ theorem disc (M ε : WithZero (Multiplicative ℤ)) (hε : ε ≠ 0) :
 section
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Establish `h1 : 1 < v (y ^ m)`. Rewrite using `[map_pow]`. Conclude with `one_lt_pow' hy (by omega)`. Establish `h2 : v (1 + y ^ m) = v (y ^ m)` using `Valuation.map_add_eq_of_lt_right v (by rw [map_one]; exact h1)`. Establish `h3 : v (y ^ m) ≠ 0` using `ne_of_gt (lt_trans zero_lt_one h1)`.
+
+Rewrite using `[map_div₀, h2, div_self h3]`.
+-/
 theorem val_frac_of_one_lt (v : Valuation Ω (WithZero (Multiplicative ℤ))) (y : Ω) (hy : 1 < v y)
     (m : ℕ) (hm : 1 ≤ m) : v (y ^ m / (1 + y ^ m)) = 1 := by
   have h1 : 1 < v (y ^ m) := by
@@ -46,6 +62,9 @@ theorem val_frac_of_one_lt (v : Valuation Ω (WithZero (Multiplicative ℤ))) (y
   have h3 : v (y ^ m) ≠ 0 := ne_of_gt (lt_trans zero_lt_one h1)
   rw [map_div₀, h2, div_self h3]
 
+/- English proof (translation)
+Establish `h1 : v (y ^ m) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one' hy (by omega)`. Establish `h2 : v (1 + y ^ m) = v 1` using `Valuation.map_add_eq_of_lt_left v (by rw [map_one]; exact h1)`. Rewrite using `[map_div₀, h2, map_one, div_one, map_pow]`.
+-/
 theorem val_frac_of_lt_one (v : Valuation Ω (WithZero (Multiplicative ℤ))) (y : Ω) (hy : v y < 1)
     (m : ℕ) (hm : 1 ≤ m) : v (y ^ m / (1 + y ^ m)) = v y ^ m := by
   have h1 : v (y ^ m) < 1 := by
@@ -55,6 +74,11 @@ theorem val_frac_of_lt_one (v : Valuation Ω (WithZero (Multiplicative ℤ))) (y
     Valuation.map_add_eq_of_lt_left v (by rw [map_one]; exact h1)
   rw [map_div₀, h2, map_one, div_one, map_pow]
 
+/- English proof (translation)
+Take `⟨m, -, hm⟩` from `disc (w π) 1 one_ne_zero`. Use `⟨u ^ m * π, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hπ]`. Conclude with `lt_of_lt_of_le (by rw [← exp_zero, exp_lt_exp]; norm_num) (le_mul_of_one_le_left' (one_le_pow_of_one_le' hu m))`. Rewrite using `[map_mul, map_pow]`.
+
+Conclude with `hm m le_rfl _ _ hu' le_rfl`.
+-/
 theorem upgrade (v w : Valuation Ω (WithZero (Multiplicative ℤ))) (π : Ω) (hπ : v π = exp (1 : ℤ))
     (u : Ω) (hu : 1 ≤ v u) (hu' : w u < 1) : ∃ x, 1 < v x ∧ w x < 1 := by
   obtain ⟨m, -, hm⟩ := disc (w π) 1 one_ne_zero
@@ -67,6 +91,21 @@ theorem upgrade (v w : Valuation Ω (WithZero (Multiplicative ℤ))) (π : Ω) (
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ ι _ v h1 h2 i j hij`. Use `choose π hπ using h1`. Establish `hex : ∃ x, ¬ (v i x ≤ 1 ↔ v j x ≤ 1)`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `h2 i j hij (Valuation.isEquiv_of_val_le_one hc)`. Take `⟨x, hx⟩` from `hex`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hx`.
+
+Establish `hi0 : 0 < v i x` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hx0)`. Establish `hj0 : 0 < v j x` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hx0)`. Distinguish the cases in `hix : v i x ≤ 1`. Establish `hjx : 1 < v j x` using `lt_of_not_ge (fun h => hx (iff_of_true hix h))`. Use `upgrade (v i) (v j) (π i) (hπ i) x⁻¹ ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_inv₀]`. Conclude with `(one_le_inv₀ hi0).mpr hix`. Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one₀ hj0).mpr hjx`. Establish `hix' : 1 < v i x` using `lt_of_not_ge hix`.
+
+Establish `hjx : v j x ≤ 1`. Assume the negation of the conclusion as `h`. Conclude with `hx (iff_of_false hix h)`. Take `⟨y, hy1, hy2⟩` from `upgrade (v j) (v i) (π j) (hπ j) x⁻¹ (by rw [map_inv₀]; exact (one_le_inv₀ hj0).mpr hjx) (by rw [map_inv₀]; exact (inv_lt_one₀ hi0).mpr hix')`. Establish `hy0 : y ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hy1` using `[map_zero]`. Conclude with `absurd hy1 (not_lt.mpr zero_le)`. Establish `hiy : 0 < v i y` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hy0)`. Establish `hjy : 0 < v j y` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hy0)`.
+
+Use `⟨y⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀]`. Conclude with `(one_lt_inv₀ hiy).mpr hy2`. Rewrite using `[map_inv₀]`. Conclude with `(inv_lt_one₀ hjy).mpr hy1`.
+-/
 theorem pair_separation : PairSep := by
   intro Ω _ ι _ v h1 h2 i j hij
   choose π hπ using h1
@@ -106,6 +145,23 @@ theorem pair_separation : PairSep := by
     · rw [map_inv₀]
       exact (inv_lt_one₀ hjy).mpr hy1
 
+/- English proof (translation)
+Introduce `Ω _ ι _ v hbig hpair i`. Establish `key : ∀ S : Finset ι, i ∉ S → ∃ y, 1 < v i y ∧ ∀ j ∈ S, v j y < 1`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+
+Introduce `_`. Take `⟨x, hx⟩` from `hbig i`. Conclude with `⟨x, hx, by simp⟩`. Consider the case `insert k S hk IH`. Introduce `hiS`.
+
+Establish `hki : k ≠ i` using `fun h => hiS (h ▸ Finset.mem_insert_self k S)`. Establish `hiS' : i ∉ S` using `fun h => hiS (Finset.mem_insert_of_mem h)`. Take `⟨y, hy1, hyS⟩` from `IH hiS'`. Take `⟨w, hw1, hw2⟩` from `hpair i k (Ne.symm hki)`. Take `⟨m, hm1, hm⟩` from `disc (Finset.univ.sup fun j => v j w) 1 one_ne_zero`.
+
+Establish `hwM : ∀ j, v j w ≤ Finset.univ.sup fun j => v j w` using `fun j => Finset.le_sup (f := fun j => v j w) (Finset.mem_univ j)`. Distinguish the cases in `hky : v k y ≤ 1`. Use `⟨y ^ m * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `lt_of_lt_of_le hw1 (le_mul_of_one_le_left' (one_le_pow_of_one_le' hy1.le m))`.
+
+Introduce `j hj`. Rewrite using `[map_mul, map_pow]`. Break down `Finset.mem_insert.mp hj with rfl | hjS` into its components or cases. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (pow_le_one' hky m)) hw2`. Conclude with `hm m le_rfl _ _ (hyS j hjS) (hwM j)`.
+
+Establish `hky' : 1 < v k y` using `lt_of_not_ge hky`. Use `⟨y ^ m / (1 + y ^ m) * w, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, val_frac_of_one_lt (v i) y hy1 m hm1, one_mul]`. Conclude with `hw1`. Introduce `j hj`.
+
+Rewrite using `[map_mul]`. Break down `Finset.mem_insert.mp hj with rfl | hjS` into its components or cases. Rewrite using `[val_frac_of_one_lt (v j) y hky' m hm1, one_mul]`. Conclude with `hw2`. Rewrite using `[val_frac_of_lt_one (v j) y (hyS j hjS) m hm1]`.
+
+Conclude with `hm m le_rfl _ _ (hyS j hjS) (hwM j)`. Take `⟨y, hy1, hy2⟩` from `key (Finset.univ.erase i) (Finset.notMem_erase i _)`. Conclude with `⟨y, hy1, fun j hj => hy2 j (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩)⟩`.
+-/
 theorem large_small_separation : LargeSmall := by
   intro Ω _ ι _ v hbig hpair i
   classical
@@ -148,6 +204,11 @@ theorem large_small_separation : LargeSmall := by
   obtain ⟨y, hy1, hy2⟩ := key (Finset.univ.erase i) (Finset.notMem_erase i _)
   exact ⟨y, hy1, fun j hj => hy2 j (Finset.mem_erase.mpr ⟨hj, Finset.mem_univ j⟩)⟩
 
+/- English proof (translation)
+Introduce `Ω _ ι _ v hls i ε hε`. Use `choose mj hmj1 hmj using fun j => disc 1 (ε j) (hε j)`. Take `⟨y, hy1, hy2⟩` from `hls i`. Use `set m := (Finset.univ.sup mj) + 1 with hmdef`. Establish `hm1 : 1 ≤ m` using `by omega`.
+
+Establish `hmj' : ∀ j, mj j ≤ m` using `fun j => le_trans (Finset.le_sup (f := mj) (Finset.mem_univ j)) (Nat.le_succ _)`. Use `⟨y ^ m / (1 + y ^ m), val_frac_of_one_lt (v i) y hy1 m hm1, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[val_frac_of_lt_one (v j) y (hy2 j hj) m hm1, ← mul_one (v j y ^ m)]`. Conclude with `hmj j m (hmj' j) _ _ (hy2 j hj) le_rfl`.
+-/
 theorem near_one_approximation : NearOne := by
   intro Ω _ ι _ v hls i ε hε
   classical
@@ -161,6 +222,17 @@ theorem near_one_approximation : NearOne := by
   rw [val_frac_of_lt_one (v j) y (hy2 j hj) m hm1, ← mul_one (v j y ^ m)]
   exact hmj j m (hmj' j) _ _ (hy2 j hj) le_rfl
 
+/- English proof (translation)
+Introduce `Ω _ ι _ v h1 hN n`. Use `choose π hπ using h1`. Establish `hπ0 : ∀ i, π i ≠ 0`. Introduce `i h`. Use `hπ i` as an intermediate fact.
+
+Rewrite `this` using `[h, map_zero]`. Conclude with `exp_ne_zero this.symm`. Use `set t : ι → Ω := fun i => π i ^ n i with ht`. Establish `ht0 : ∀ i k, 0 < v k (t i)` using `fun i k => zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr (zpow_ne_zero _ (hπ0 i)))`. Establish `hε : ∀ i k, exp (n k) * (v k (t i))⁻¹ ≠ 0` using `fun i k => mul_ne_zero exp_ne_zero (inv_ne_zero (ht0 i k).ne')`.
+
+Use `choose z hz1 hz2 using fun i => hN i (fun k => exp (n k) * (v k (t i))⁻¹) (hε i)`. Use `⟨∑ i, z i * t i, fun k => ?_⟩` and prove the remaining obligations. Establish `hmain : v k (z k * t k) = exp (n k)`. Rewrite using `[map_mul, hz1 k, one_mul, ht]`. Simplify using `only`.
+
+Rewrite using `[map_zpow₀, hπ k, ← exp_zsmul, smul_eq_mul, mul_one]`. Establish `hrest : v k (∑ i ∈ Finset.univ.erase k, z i * t i) < exp (n k)`. Use `Valuation.map_sum_lt _ exp_ne_zero (fun i hi => ?_)` and prove the remaining obligations. Establish `hik : k ≠ i` using `fun h => (Finset.mem_erase.mp hi).1 h.symm`. Rewrite using `[map_mul]`.
+
+Conclude with `(lt_mul_inv_iff₀ (ht0 i k)).mp (hz2 i k hik)`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ k), Valuation.map_add_eq_of_lt_left _ (hmain ▸ hrest), hmain]`.
+-/
 theorem rho_projection_assembly : Assembly := by
   intro Ω _ ι _ v h1 hN n
   classical

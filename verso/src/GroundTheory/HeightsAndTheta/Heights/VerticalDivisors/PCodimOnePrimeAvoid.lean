@@ -7,6 +7,25 @@ namespace GroundTheory.Heights₂.Heights.Vertical
 
 open GroundTheory.Arith.Abelian.Jacobian
 
+/- English proof (translation)
+Introduce `k B _ _ _ _ _ h hh hdim`. Set `Bh` to `Localization.Away h`. Establish `hle : Submonoid.powers h ≤ nonZeroDivisors B` using `powers_le_nonZeroDivisors_of_noZeroDivisors hh`. Establish `: IsDomain Bh` using `IsLocalization.isDomain_localization hle`. Establish `: Algebra.FinitePresentation B Bh` using `IsLocalization.Away.finitePresentation (S := Bh) h`.
+
+Establish `: Algebra.FiniteType B Bh` using `inferInstance`. Establish `: Algebra.FiniteType k Bh` using `Algebra.FiniteType.trans (S := B) inferInstance inferInstance`. Establish `: IsNoetherianRing Bh` using `Algebra.FiniteType.isNoetherianRing k Bh`. Set `K` to `FractionRing B`. Establish `hu : ∀ y : Submonoid.powers h, IsUnit (algebraMap B K y)` using `fun y => IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective B K)).2 (nonZeroDivisors.ne_zero (hle y.2)))`.
+
+Set `_ : Algebra Bh K` to `(IsLocalization.lift (M := Submonoid.powers h) (S := Bh) hu).toAlgebra`. Establish `: IsScalarTower B Bh K` using `IsScalarTower.of_algebraMap_eq fun x => (IsLocalization.lift_eq (M := Submonoid.powers h) (S := Bh) hu x).symm`. Establish `: IsScalarTower k Bh K` using `IsScalarTower.of_algebraMap_eq fun x => by`. Rewrite using `[IsScalarTower.algebraMap_apply k B K, IsScalarTower.algebraMap_apply k B Bh, ← IsScalarTower.algebraMap_apply B Bh K]`. Establish `: IsFractionRing Bh K` using `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Submonoid.powers h) Bh K`.
+
+Establish `hdimh : ringKrullDim Bh = ringKrullDim B`. Rewrite using `[ringKrullDim_eq_trdeg_fractionRing k K, ringKrullDim_eq_trdeg_fractionRing k K]`. Establish `hnf : ¬ IsField Bh` using `fun hf => by`. Establish `h0` using `ringKrullDim_eq_zero_of_isField hf`. Rewrite `h0` using `[hdimh]`.
+
+Rewrite `hdim` using `[h0]`. Conclude with `absurd hdim (by decide)`. Take `⟨p, hp0, hp⟩` from `Ring.not_isField_iff_exists_prime.1 hnf`. Take `⟨x, hxp, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp0`. Take `⟨q, hq, -⟩` from `Ideal.exists_minimalPrimes_le ((Ideal.span_singleton_le_iff_mem p).2 hxp)`.
+
+Establish `hqp : q.IsPrime` using `hq.isPrime`. Establish `hxq : x ∈ q` using `(Ideal.span_singleton_le_iff_mem q).1 hq.1.2`. Establish `hq1 : q.height = 1`. Use `le_antisymm (Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ q hq) ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`.
+
+Introduce and unpack `rfl`. Conclude with `hx0 hxq`. Use `⟨q.comap (algebraMap B Bh), hqp.comap _, fun hhN => hqp.ne_top ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.eq_top_of_isUnit_mem _ hhN (IsLocalization.Away.algebraMap_isUnit h)`. Establish `hN` using `IsLocalization.height_under (Submonoid.powers h) q`.
+
+Rewrite `hN` using `[hq1]`. Use `height_add_ringKrullDim_quotient k (q.comap (algebraMap B Bh))` as an intermediate fact. Rewrite `hN` using `[Ideal.under]`. Rewrite `this` using `[hN]`. Rewrite using `[← this, add_comm]`.
+
+Both sides reduce to the same expression.
+-/
 theorem CodimOnePrimeAvoid.proof : CodimOnePrimeAvoid.Statement := by
   intro k B _ _ _ _ _ h hh hdim
   let Bh := Localization.Away h

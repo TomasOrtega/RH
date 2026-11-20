@@ -28,12 +28,20 @@ def frameAt {N : ℕ} (π' : EAf D →+* k) (β : GL (Fin N) (EAf D)) : GlobalTh
 variable {S T : HSp D} (q : GlobalTheory.FinPl.SplitPt D k) {π' : EAf D →+* k}
   (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
 
+/- English proof (translation)
+Establish `h2 : ((x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D)).map π' = x.map q.pr` using `Matrix.ext fun i j => hπ _`. Rewrite using `[frMapO, Matrix.map_mul, Matrix.map_mul, h2]`. Both sides reduce to the same expression.
+-/
 theorem down_eq (hπ : ∀ a, π' (toEAf D a) = q.pr a) (x : WO S T) :
     (ofSplit q).down (frameAt π' βS) (frameAt π' βT) x = (frMapO S T βS βT x).map π' := by
   have h2 : ((x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D)).map π' = x.map q.pr := Matrix.ext fun i j => hπ _
   rw [frMapO, Matrix.map_mul, Matrix.map_mul, h2]
   rfl
 
+/- English proof (translation)
+Unfold `Place.up Place.down`. Establish `: FT.β * (FT.γ * (t : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π * FS.β) * FS.γ = t.map p.π`. Simplify using `only [← Matrix.mul_assoc, FT.βγ, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, FS.βγ, Matrix.mul_one]`. Rewrite using `[this]`.
+
+Conclude with `Matrix.ext fun i j => p.ι_π _`.
+-/
 theorem up_down {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (p : Place D k)
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (t : WO S T) :
     p.up FS FT (p.down FS FT t) = p.e • t := by
@@ -44,6 +52,9 @@ theorem up_down {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [Decidabl
   rw [this]
   exact Matrix.ext fun i j => p.ι_π _
 
+/- English proof (translation)
+Unfold `Place.up Place.down`. Establish `: ((FT.β * x * FS.γ).map p.ι : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map p.π = FT.β * x * FS.γ` using `Matrix.ext fun i j => p.π_ι _`. Rewrite using `[this]`. Simplify using `only [← Matrix.mul_assoc, FT.γβ, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, FS.γβ, Matrix.mul_one]`.
+-/
 theorem down_up {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (p : Place D k)
     (FS : GlobalTheory.LocMod.Frame k S.rank Y') (FT : GlobalTheory.LocMod.Frame k T.rank Y) (x : Matrix Y Y' k) :
     p.down FS FT (p.up FS FT x) = x := by
@@ -54,6 +65,9 @@ theorem down_up {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [Decidabl
   simp only [← Matrix.mul_assoc, FT.γβ, Matrix.one_mul]
   rw [Matrix.mul_assoc, FS.γβ, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `: (a • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D a • x.map (toEAf D)` using `Matrix.ext fun i j => (toEAf D).map_mul _ _`. Conclude with `(congrArg (fun z => GlobalTheory.FunObj.Comparison₂.fr βT βS z i j) this).trans (congrFun (congrFun (GlobalTheory.FunObj.Comparison₂.fr_smul βT βS _ _) i) j)`.
+-/
 theorem frMapO_smul (a : AE D) (x : WO S T) (i : Fin T.rank) (j : Fin S.rank) :
     frMapO S T βS βT (a • x) i j = toEAf D a * frMapO S T βS βT x i j := by
   have : (a • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D a • x.map (toEAf D) :=
@@ -61,6 +75,11 @@ theorem frMapO_smul (a : AE D) (x : WO S T) (i : Fin T.rank) (j : Fin S.rank) :
   exact (congrArg (fun z => GlobalTheory.FunObj.Comparison₂.fr βT βS z i j) this).trans
     (congrFun (congrFun (GlobalTheory.FunObj.Comparison₂.fr_smul βT βS _ _) i) j)
 
+/- English proof (translation)
+Take `⟨ε, hε, h⟩` from `q.above`. Establish `h1 : IsPlaceIdem D q.v (pairA _ 0 (GlobalTheory.VacUnion.idemF q.v))` using `⟨_, rfl, by rw [GlobalTheory.VacUnion.evalV_idemF, if_pos rfl], fun w hw => by rw [GlobalTheory.VacUnion.evalV_idemF, if_neg hw]⟩`. Establish `h2 : GlobalTheory.VacUnion.idemE q.v = q.e + cA D q.e`. Rewrite using `[h, GlobalTheory.IdemSupport.placeIdem_unique hε h1]`. Both sides reduce to the same expression.
+
+Establish `h3` using `GlobalTheory.VacUnion.idemE_smul_mem q.v (GlobalTheory.PlaceModelSum.idem_smul_latO q.split.1 hx)`. Establish `h4 : GlobalTheory.VacUnion.idemE q.v * q.e = q.e`. Rewrite using `[h2]`. Take the linear combination `q.split.1 + q.split.2.1`. Rewrite `h3` using `[smul_smul, h4]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_at {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)} {x : WO S T}
     (hx : x ∈ latO S T LS LT fun _ => True) : q.e • x ∈ latO S T LS LT (· = q.v) := by
   obtain ⟨ε, hε, h⟩ := q.above
@@ -74,10 +93,16 @@ theorem smul_mem_at {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank �
     linear_combination q.split.1 + q.split.2.1
   rwa [smul_smul, h4] at h3
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.closure_mono fun _ ⟨α, hα, _, k⟩ => ⟨α, hα, fun _ hw => (hw trivial).elim, k⟩`.
+-/
 theorem latO_le_top {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} : latO S T LS LT P ≤ latO S T LS LT fun _ => True :=
   AddSubgroup.closure_mono fun _ ⟨α, hα, _, k⟩ => ⟨α, hα, fun _ hw => (hw trivial).elim, k⟩
 
+/- English proof (translation)
+Take `⟨⟨es, h1, rfl⟩, -⟩` from `he`. Establish `hΦ` using `GlobalTheory.StdFrames.comp_toAd D`. Use `(Finset.sum_bij (fun i _ => pl i) (fun i _ => (hQ _).2 ⟨i, rfl⟩) (fun i _ j _ h => hinj h) (fun PP hPP => by obtain ⟨i, hi⟩ := (hQ PP).1 hPP; exact ⟨i, Finset.mem_univ _, hi⟩) fun i _ => ?_).symm` and prove the remaining obligations. Conclude with `GlobalTheory.IdemSupport.delta_unique hΦ (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (ha i)) (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (h1 _ ((hQ _).2 ⟨i, rfl⟩)))`.
+-/
 theorem eq_sum {r : ℕ} {a : Fin r → AE D} {pl : Fin r → Formalism.L2.DIV.Pl D.host.E} {Q : Finset (Formalism.L2.DIV.Pl D.host.E)} {e : AE D}
     (ha : ∀ i, Formalism.L2.NTheta.IsIdemAt (a i) (pl i)) (hinj : Function.Injective pl) (hQ : ∀ PP, PP ∈ Q ↔ ∃ i, pl i = PP)
     (he : IsIdemSum e Q) : e = ∑ i, a i := by
@@ -88,6 +113,19 @@ theorem eq_sum {r : ℕ} {a : Fin r → AE D} {pl : Fin r → Formalism.L2.DIV.P
   exact GlobalTheory.IdemSupport.delta_unique hΦ (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (ha i))
     (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (h1 _ ((hQ _).2 ⟨i, rfl⟩)))
 
+/- English proof (translation)
+Introduce `D r k _ _ _ _ q pl Q e hq hu hinj hQ he S T LS LT hS hT βS βT hβ x hx`. Use `choose π' hπ hrest using fun i => GlobalTheory.FinPl.SplitPt.exists_lift_isRed D (k i) (q i) (pl i) (hq i)`. Establish `hint` using `fun i => (hrest i).2.1`. Establish `he' : e = ∑ i, (q i).e` using `eq_sum hq hinj hQ he`. Establish `hxe : e • x = x` using `Matrix.ext fun i j => hx i j`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← hxe, he', Finset.sum_smul]`. Use `AddSubgroup.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.up_image_integral_matrix_mem_completed_hom_lattice D (k i) (q i) (hu i) _ _ S T (frameAt (π' i) βS) (frameAt (π' i) βT) LS LT hS hT (hβ i _ (hπ i)).1 (hβ i _ (hπ i)).2 ((frMapO S T βS βT x).map (π' i)) fun a b => ((hint i _).1 (h a b)).2`.
+
+Rewrite `h1` using `[← down_eq (q i) βS βT (hπ i), up_down]`. Conclude with `latO_le_top h1`. Introduce `h a b`. Rewrite using `[← hxe, frMapO_smul, he', GlobalTheory.FunObj.Comparison₂.hom_sum, Finset.sum_mul]`. Use `Subring.sum_mem _ fun i _ => (hint i _).2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← mul_assoc, sub_mul, one_mul, ← RingHom.map_mul, (q i).split.1, sub_self, zero_mul]`. Conclude with `zero_mem _`. Take `⟨y, hy, h1⟩` from `GlobalTheory.T.exists_integral_matrix_up_image_completed_hom_lattice D (k i) (q i) (hu i) _ _ S T (frameAt (π' i) βS) (frameAt (π' i) βT) LS LT hS hT (hβ i _ (hπ i)).1 (hβ i _ (hπ i)).2 _ (smul_mem_at (q i) h) (fun a b => by`. Express the relevant statement in the definitionally equal form `(q i).e * ((q i).e * _) = (q i).e * _`. Rewrite using `[← mul_assoc, (q i).split.1])`.
+
+Establish `h2` using `down_eq (q i) βS βT (hπ i) ((q i).e • x)`. Rewrite `h2` using `[h1, down_up, ← h1]`. Rewrite using `[← frMapO_smul]`. Establish `h3` using `hy a b`. Rewrite `h3` using `[h2]`.
+
+Conclude with `h3`.
+-/
 theorem isIntM_iff_mem_latO : ∀ (D : D7) (r : ℕ) (k : Fin r → Type) [∀ i, Field (k i)] [∀ i, ValuativeRel (k i)] [∀ i, TopologicalSpace (k i)] [∀ i, IsNonarchimedeanLocalField (k i)] (q : ∀ i, GlobalTheory.FinPl.SplitPt D (k i)) (pl : Fin r → Formalism.L2.DIV.Pl D.host.E) (Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), (∀ i, Formalism.L2.NTheta.IsIdemAt (q i).e (pl i)) → (∀ i, (q i).UnitAA) → Function.Injective pl → (∀ PP, PP ∈ Q ↔ ∃ i, pl i = PP) → IsIdemSum e Q → ∀ (S T : HSp D) (LS : GlobalTheory.FinPl.Lat S) (LT : GlobalTheory.FinPl.Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), (∀ i (π' : EAf D →+* k i), (∀ a, π' (toEAf D a) = (q i).pr a) → (∀ y : Fin S.rank → k i, (∀ a, y a ∈ 𝒪[k i]) ↔ (fun a => (q i).sec ((βS.val.map π' *ᵥ y) a)) ∈ GlobalTheory.FinPl.latV S LS (· = (q i).v)) ∧ ∀ y : Fin T.rank → k i, (∀ a, y a ∈ 𝒪[k i]) ↔ (fun a => (q i).sec ((βT.val.map π' *ᵥ y) a)) ∈ GlobalTheory.FinPl.latV T LT (· = (q i).v)) → ∀ x : WO S T, IsHalf e x → (IsIntM (frMapO S T βS βT x) ↔ x ∈ latO S T (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) fun _ => True) := by
   intro D r k _ _ _ _ q pl Q e hq hu hinj hQ he S T LS LT hS hT βS βT hβ x hx
   choose π' hπ hrest using fun i => GlobalTheory.FinPl.SplitPt.exists_lift_isRed D (k i) (q i) (pl i) (hq i)

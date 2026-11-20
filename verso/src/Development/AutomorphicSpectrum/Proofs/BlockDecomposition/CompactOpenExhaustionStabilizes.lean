@@ -8,6 +8,45 @@ namespace GlobalTheory.CompanionTheory.BaireCoset
 
 open scoped Pointwise
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ P hP Kc hKc hcov L hL hLc x S hS hSP hT`. Use `set C : Set G := {g | ∃ p ∈ P, ∃ j, ∃ n ∈ L j, g = p * x * n} with hC`. Set `A : ℕ → Set G` to `fun j => {g | ∃ p ∈ P, ∃ n ∈ L j, g = p * x * n}`. Establish `hAmono : ∀ {i j}, i ≤ j → A i ⊆ A j`. Introduce and unpack `i j hij g ⟨p, hp, n, hn, rfl⟩`.
+
+Conclude with `⟨p, hp, n, hL hij hn, rfl⟩`. Establish `hCA : ∀ g ∈ C, ∃ j, g ∈ A j`. Introduce and unpack `g ⟨p, hp, j, n, hn, rfl⟩`. Conclude with `⟨j, p, hp, n, hn, rfl⟩`. Establish `hAclosed : ∀ j, IsClosed (A j)`.
+
+Introduce `j`. Establish `hc : IsCompact ((fun n : G => x * n) '' (L j : Set G))` using `(hLc j).image (continuous_const.mul continuous_id)`. Establish `hEq : A j = (P : Set G) * ((fun n : G => x * n) '' (L j : Set G))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨p, hp, n, hn, rfl⟩`. Conclude with `Set.mem_mul.2 ⟨p, hp, x * n, ⟨n, hn, rfl⟩, (mul_assoc _ _ _).symm⟩`. Introduce `h`. Take `⟨p, hp, _, ⟨n, hn, rfl⟩, rfl⟩` from `Set.mem_mul.1 h`. Conclude with `⟨p, hp, n, hn, (mul_assoc _ _ _).symm⟩`.
+
+Rewrite using `[hEq]`. Conclude with `hP.mul_right_of_isCompact hc`. Establish `hCP : ∀ p ∈ P, ∀ g ∈ C, p * g ∈ C`. Introduce and unpack `p hp g ⟨q, hq, j, n, hn, rfl⟩`. Conclude with `⟨p * q, P.mul_mem hp hq, j, n, hn, by simp only [mul_assoc]⟩`.
+
+Establish `hCL : ∀ j, ∀ m ∈ L j, ∀ g ∈ C, g * m ∈ C`. Introduce and unpack `j m hm g ⟨q, hq, i, n, hn, rfl⟩`. Conclude with `⟨q, hq, max i j, n * m, (L (max i j)).mul_mem (hL (le_max_left i j) hn) (hL (le_max_right i j) hm), by simp only [mul_assoc]⟩`. Distinguish the cases in `hne : (S ∩ C).Nonempty`. Use `haveI : Nonempty ↥(S ∩ C) := hne.to_subtype haveI : LocallyCompactSpace ↥(S ∩ C) := hT.isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+
+Take `⟨j0, y, hy⟩` from `nonempty_interior_of_iUnion_of_closed (f := fun j => ((↑) : ↥(S ∩ C) → G) ⁻¹' A j) (fun j => (hAclosed j).preimage continuous_subtype_val) (by`. Use `Set.eq_univ_of_forall fun t => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `hCA t t.2.2`. Conclude with `Set.mem_iUnion.2 ⟨j, hj⟩)`. Take `⟨V, hV, hVeq⟩` from `isOpen_induced_iff.1 (isOpen_interior (s := ((↑) : ↥(S ∩ C) → G) ⁻¹' A j0))`.
+
+Establish `hyV : (y : G) ∈ V`. Establish `h : y ∈ ((↑) : ↥(S ∩ C) → G) ⁻¹' V` using `by rw [hVeq]; exact hy`. Conclude with `h`. Establish `hVA : ∀ g ∈ V, g ∈ S → g ∈ C → g ∈ A j0`. Introduce `g hgV hgS hgC`.
+
+Establish `h : (⟨g, hgS, hgC⟩ : ↥(S ∩ C)) ∈ ((↑) : ↥(S ∩ C) → G) ⁻¹' V` using `hgV`. Rewrite `h` using `[hVeq]`. Establish `h2 : (⟨g, hgS, hgC⟩ : ↥(S ∩ C)) ∈ ((↑) : ↥(S ∩ C) → G) ⁻¹' A j0` using `interior_subset h`. Conclude with `h2`. Take `⟨p, hp, n, hn, hyeq⟩` from `hVA y hyV y.2.1 y.2.2`.
+
+Set `V₁ : Set G` to `(fun g => p * g * n) ⁻¹' (V ∩ S)`. Establish `hV₁o : IsOpen V₁` using `(hV.inter hS).preimage ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hxV₁ : x ∈ V₁` using `by show p * x * n ∈ V ∩ S`. Rewrite using `[← hyeq]`. Conclude with `⟨hyV, y.2.1⟩`.
+
+Establish `hnL : ∀ g ∈ V₁, g ∈ C → g ∈ A j0`. Introduce `g hgV hgC`. Take `⟨p₂, hp₂, n₂, hn₂, e⟩` from `hVA (p * g * n) hgV.1 hgV.2 (hCL j0 n hn _ (hCP p hp g hgC))`. Use `⟨p⁻¹ * p₂, P.mul_mem (P.inv_mem hp) hp₂, n₂ * n⁻¹, (L j0).mul_mem hn₂ ((L j0).inv_mem hn), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Set `O : ℕ → Set G` to `fun j => ⋃₀ {W | IsOpen W ∧ W ∩ C ⊆ A j}`. Establish `hOo : ∀ j, IsOpen (O j)` using `fun j => isOpen_sUnion fun W hW => hW.1`. Establish `hOm : Monotone O` using `fun i j hij => Set.sUnion_subset_sUnion fun W hW => ⟨hW.1, hW.2.trans (hAmono hij)⟩`. Establish `hOA : ∀ j, O j ∩ C ⊆ A j`. Introduce and unpack `j g ⟨⟨W, hW, hgW⟩, hgC⟩`.
+
+Conclude with `hW.2 ⟨hgW, hgC⟩`. Establish `hAO : ∀ j, j0 ≤ j → A j ⊆ O j`. Introduce and unpack `j hj _ ⟨p', hp', m, hm, rfl⟩`. Use `⟨(fun g => p'⁻¹ * g * m⁻¹) ⁻¹' V₁, ⟨hV₁o.preimage ((continuous_const.mul continuous_id).mul continuous_const), ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hgW, hgC⟩`.
+
+Establish `hu : p'⁻¹ * g * m⁻¹ ∈ C` using `hCL j _ ((L j).inv_mem hm) _ (hCP _ (P.inv_mem hp') g hgC)`. Establish `hu' : p'⁻¹ * g * m⁻¹ ∈ A j` using `hAmono hj (hnL _ hgW hu)`. Take `⟨p₂, hp₂, n₂, hn₂, e⟩` from `hu'`. Use `⟨p' * p₂, P.mul_mem hp' hp₂, n₂ * m, (L j).mul_mem hn₂ hm, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `show p'⁻¹ * (p' * x * m) * m⁻¹ ∈ V₁`. Establish `: p'⁻¹ * (p' * x * m) * m⁻¹ = x` using `by group`. Rewrite using `[this]`. Conclude with `hxV₁`. Take `⟨i, hi⟩` from `(hKc.inter_right hT).elim_directed_cover O hOo (by`.
+
+Introduce and unpack `g ⟨_, hgS, hgC⟩`. Take `⟨j, hj⟩` from `hCA g hgC`. Conclude with `Set.mem_iUnion.2 ⟨max j j0, hAO _ (le_max_right j j0) (hAmono (le_max_left j j0) hj)⟩)`. Use the proof step `hOm.directed_le`. Use `⟨i, fun g hgS hgC => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, hq, c, hc, rfl⟩` from `hcov g`. Establish `hcS : c ∈ S`. Use `hSP q⁻¹ (P.inv_mem hq) _ hgS` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `hcC : c ∈ C`.
+
+Use `hCP q⁻¹ (P.inv_mem hq) _ hgC` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Take `⟨p₂, hp₂, n₂, hn₂, e⟩` from `hOA i ⟨hi ⟨hc, hcS, hcC⟩, hcC⟩`. Conclude with `⟨q * p₂, P.mul_mem hq hp₂, n₂, hn₂, by rw [e]; simp only [mul_assoc]⟩`. Use `⟨0, fun g hgS hgC => ?_⟩` and prove the remaining obligations.
+
+Conclude with `absurd ⟨g, hgS, hgC⟩ hne`.
+-/
 theorem baire_double_coset : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [LocallyCompactSpace G] (P : Subgroup G), IsClosed (P : Set G) → ∀ Kc : Set G, IsCompact Kc → (∀ g, ∃ p ∈ P, ∃ c ∈ Kc, g = p * c) → ∀ L : ℕ → Subgroup G, Monotone L → (∀ j, IsCompact (L j : Set G)) → ∀ (x : G) (S : Set G), IsOpen S → (∀ p ∈ P, ∀ g ∈ S, p * g ∈ S) → IsClosed (S ∩ {g | ∃ p ∈ P, ∃ j, ∃ n ∈ L j, g = p * x * n}) → ∃ j, ∀ g ∈ S, (∃ p ∈ P, ∃ j', ∃ n ∈ L j', g = p * x * n) → ∃ p ∈ P, ∃ n ∈ L j, g = p * x * n := by
   intro G _ _ _ _ _ P hP Kc hKc hcov L hL hLc x S hS hSP hT
   set C : Set G := {g | ∃ p ∈ P, ∃ j, ∃ n ∈ L j, g = p * x * n} with hC

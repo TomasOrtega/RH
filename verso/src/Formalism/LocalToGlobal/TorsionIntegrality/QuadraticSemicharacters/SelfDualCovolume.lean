@@ -18,16 +18,46 @@ import Formalism.LocalToGlobal.TorsionIntegrality.QuadraticSemicharacters.Cayley
 
 namespace Formalism.L2.Th1.H
 
+/- English proof (translation)
+The claim follows from `unitary_index`.
+-/
 theorem unitaryIndex : UnitaryIndex := unitary_index
+/- English proof (translation)
+The claim follows from `cayleyPhaseBasic`.
+-/
 theorem phiBasic : PhiBasic := cayleyPhaseBasic
+/- English proof (translation)
+The claim follows from `gaussSumEighthPower`.
+-/
 theorem gaussEighth : GaussEighth := gaussSumEighthPower
+/- English proof (translation)
+The claim follows from `UnitaryGauss_of gaussEighth`.
+-/
 theorem unitaryGauss : UnitaryGauss := UnitaryGauss_of gaussEighth
+/- English proof (translation)
+The claim follows from `cayleyDet`.
+-/
 theorem detCayley : DetCayley := cayleyDet
+/- English proof (translation)
+The claim follows from `UnitaryConstant_proof`.
+-/
 theorem unitaryConstant : UnitaryConstant := UnitaryConstant_proof
+/- English proof (translation)
+The claim follows from `UnitaryEighth_proof`.
+-/
 theorem unitaryEighth : UnitaryEighth := UnitaryEighth_proof
 
+/- English proof (translation)
+The claim follows from `TripleFormula_proof`.
+-/
 theorem tripleFormula : TripleFormula := TripleFormula_proof
+/- English proof (translation)
+The claim follows from `triplePhaseQuadratic`.
+-/
 theorem psiQuadratic : PsiQuadratic := triplePhaseQuadratic
+/- English proof (translation)
+The claim follows from `TripleEighth_proof`.
+-/
 theorem tripleEighth : TripleEighth := TripleEighth_proof
 
 end Formalism.L2.Th1.H

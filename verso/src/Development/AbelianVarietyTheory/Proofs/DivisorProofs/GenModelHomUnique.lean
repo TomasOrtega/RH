@@ -13,6 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 variable {G : GDatum} {R : Type} [CommRing R] [Algebra ℚ R]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ φ := 𝟙 _ φ₂ := 𝟙 _ cart := GlobalTheory.SiegLower.isGrpPullback_id o.A sq := ⟨by simp, by simp⟩ act := fun c => by simp pol := GlobalTheory.SiegLower.lbIso_pull_id o.isLB eta := fun y => by simp }⟩`.
+-/
 theorem gObjMap_id {b : GBase G R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (o : GObj b N s) :
     Nonempty (GObjMap o o (𝟙 S)) :=
   ⟨{ φ := 𝟙 _
@@ -23,6 +26,9 @@ theorem gObjMap_id {b : GBase G R} {N : ℕ} {S : Scheme.{0}} {s : S ⟶ Sp R} (
      pol := GlobalTheory.SiegLower.lbIso_pull_id o.isLB
      eta := fun y => by simp }⟩
 
+/- English proof (translation)
+Establish `E : LBIso (P.pull a) ((Q.pull c).pull a)` using `SiegelDescent.lbIso_square hP hQ H₂ rfl`. Establish `F : LBIso ((Q.pull c).pull a) ((Q.pull (a ≫ c)).pull (𝟙 X))` using `GlobalTheory.FiniteAmple.lbIso_pull_pull c hQ (g := a) (g' := 𝟙 X) (f' := a ≫ c) (by rw [Category.id_comp])`. Establish `hPa` using `pull_isLB hP a`. Establish `hQc` using `pull_isLB hQ (a ≫ c)`. Conclude with `LBIso.trans hM hPa hQc H₁ (LBIso.trans hPa (pull_isLB (pull_isLB hQ c) a) hQc E (LBIso.trans (pull_isLB (pull_isLB hQ c) a) (pull_isLB hQc (𝟙 X)) hQc F (GlobalTheory.SiegLower.lbIso_pull_id hQc).symm))`.
+-/
 private theorem lbIso_pull_comp_of_lbIso {X Y Z : Scheme.{0}} {M : LB X} {P : LB Y} {Q : LB Z} {a : X ⟶ Y} {c : Y ⟶ Z}
     (H₁ : LBIso M (P.pull a)) (H₂ : LBIso P (Q.pull c)) (hM : M.IsLB) (hP : P.IsLB) (hQ : Q.IsLB) :
     LBIso M (Q.pull (a ≫ c)) := by
@@ -34,6 +40,9 @@ private theorem lbIso_pull_comp_of_lbIso {X Y Z : Scheme.{0}} {M : LB X} {P : LB
   exact LBIso.trans hM hPa hQc H₁ (LBIso.trans hPa (pull_isLB (pull_isLB hQ c) a) hQc E
     (LBIso.trans (pull_isLB (pull_isLB hQ c) a) (pull_isLB hQc (𝟙 X)) hQc F (GlobalTheory.SiegLower.lbIso_pull_id hQc).symm))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ φ := h₁.φ ≫ h₂.φ φ₂ := h₁.φ₂ ≫ h₂.φ₂ cart := IsGrpPullback.comp h₁.cart h₂.cart sq := ⟨by rw [Category.assoc, h₂.sq.1, ← Category.assoc, h₁.sq.1, Category.assoc], by rw [Category.assoc, h₂.sq.2, ← Category.assoc, h₁.sq.2, Category.assoc]⟩ act := fun c => by rw [← Category.asso …`.
+-/
 theorem gObjMap_comp {b : GBase G R} {N : ℕ} {S₁ S₂ S₃ : Scheme.{0}} {s₁ : S₁ ⟶ Sp R} {s₂ : S₂ ⟶ Sp R}
     {s₃ : S₃ ⟶ Sp R} {o₁ : GObj b N s₁} {o₂ : GObj b N s₂} {o₃ : GObj b N s₃} {f : S₁ ⟶ S₂} {g : S₂ ⟶ S₃}
     (h₁ : GObjMap o₁ o₂ f) (h₂ : GObjMap o₂ o₃ g) : Nonempty (GObjMap o₁ o₃ (f ≫ g)) :=

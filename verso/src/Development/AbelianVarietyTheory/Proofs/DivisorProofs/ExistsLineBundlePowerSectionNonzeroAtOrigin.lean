@@ -13,6 +13,17 @@ noncomputable section
 namespace GlobalTheory.Poinc.Origin
 open GlobalTheory.UT.CoefBasic
 
+/- English proof (translation)
+Introduce `hL R _ _ A F _ _ ρ hρ k hk`. Take `⟨M, s, hcov⟩` from `(hL.1.ample _ A k hk).1 ⊤ (isAffineOpen_top _)`. Take `⟨i', hi⟩ : ∃ i' : A.A.left ⟶ (A.A.hom ⁻¹ᵁ ⊤).toScheme, i' ≫ (A.A.hom ⁻¹ᵁ ⊤).ι = 𝟙 _` from `⟨A.A.left.topIso.inv, A.A.left.topIso.inv_hom_id⟩`. Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Set `χ : (TFK (R` to `R) F).left ⟶ (A.A.hom ⁻¹ᵁ ⊤).toScheme := (ptSecT A.A (1 : TFK (R := R) F ⟶ A.A)).left ≫ (snd (TFK (R := R) F) A.A).left ≫ i'`.
+
+Establish `hmem : χ z ∈ (⨆ j, nonzeroLocus (s j))` using `by rw [hcov]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hmem`. Take `⟨t, ht⟩` from `exists_sec A.isLB (φ := fun _ : Fin k => (snd (TFK (R := R) F) A.A).left) (ε := fun _ => 1) (φ' := fun _ : Fin 1 => (snd (TFK (R := R) F) A.A).left) (ε' := fun _ => (k : ℤ)) (fun U _ f => by`. Simplify using `only [zpow_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_one, zpow_natCast])`. Use the proof step `(VVRank.pullTo (L := A.L) (φ := fun _ : Fin k => (A.A.hom ⁻¹ᵁ ⊤).ι) (ε := fun _ => 1) (s j) ((snd (TFK (R := R) F) A.A).left ≫ i') (fun _ => by rw [Category.assoc, hi, Category.comp_id]))`.
+
+Take `⟨c, hc⟩` from `ThetaSpan.exists_value A hρ (F := F) (k := k) t`. Use `⟨t, c, ?_, hc⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Take `⟨J, hJ⟩` from `exists_good' A.isLB (Z := (TFK (R := R) F).left) z`. Establish `h1` using `hc z J hJ`.
+
+Establish `h0 : @id ((TFK (R` using `R) F).left.presheaf.stalk z) (cst (R := R) F z 0) = 0 := by show cst (R := R) F z 0 = 0`. Rewrite using `[cst_eq, map_zero]`. Rewrite `h1` using `[h0, zero_mul]`. Establish `h2 : sA t (ptSecT A.A (1 : TFK (R` using `R) F ⟶ A.A)).left z J = sval (s j) χ z J := (ht _ _ z J hJ).trans ((VVRank.sval_pullTo _ _ _ _ z hJ).trans (by simp only [χ, Category.assoc]))`. Establish `hu : IsUnit (sval (s j) χ z J)` using `(AmpleSpan.mem_nonzeroLocus_iff_gs (s j) χ z (hJ.mem (fun _ : Fin k => (A.A.hom ⁻¹ᵁ ⊤).ι) χ)).1 hj`.
+
+Rewrite `hu` using `[← h2, h1]`. Conclude with `not_isUnit_zero hu`.
+-/
 theorem exists_sec_value_ne_zero : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (ρ : LB.Gen (A.L.pull (eSec A.A))), ρ.IsGen → ∀ k : ℕ, 4 ≤ k → ∃ (t : SecA A F k) (c : F), c ≠ 0 ∧ ∀ z J, Good A.L z J → sA t (ptSecT A.A 1).left z J = @id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z c) * (val (rigT A.A A.L ρ (TFK (R := R) F) (k : ℤ)) (𝟙 _) z J).val := by
   intro hL R _ _ A F _ _ ρ hρ k hk
   obtain ⟨M, s, hcov⟩ := (hL.1.ample _ A k hk).1 ⊤ (isAffineOpen_top _)

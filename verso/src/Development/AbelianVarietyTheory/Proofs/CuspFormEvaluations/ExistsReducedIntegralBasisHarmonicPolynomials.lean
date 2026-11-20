@@ -13,6 +13,11 @@ namespace GlobalTheory.HarmBasis
 
 open MvPolynomial
 
+/- English proof (translation)
+Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem y hy => exact hS hy`. Consider the case `zero => exact ⟨zero_mem _, fun _ _ _ _ _ => map_zero _, fun m hm => by simp at hm⟩`. Consider the case `add y z _ _ hy hz`. Use `⟨add_mem hy.1 hz.1, fun σ i i' h t => ?_, fun m hm => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_add, hy.2.1 σ i i' h t, hz.2.1 σ i i' h t]`. Break down `Finset.mem_union.1 (support_add hm) with h | h exacts [hy.2.2 m h, hz.2.2 m h]` into its components or cases. Consider the case `smul q y _ hy`. Use `⟨Submodule.smul_mem _ _ hy.1, fun σ i i' h t => ?_, fun m hm => hy.2.2 m (support_smul hm)⟩` and prove the remaining obligations. Rewrite using `[map_smul, hy.2.1 σ i i' h t]`.
+-/
 theorem mem_HHa_of_mem_span {T : Type} {r : T → ℕ} {n : ℕ} {k : Type} [Field k] {cc : T → T} {isX : T → Prop}
     {a : T → ℕ → ℕ} {S : Set (MvPolynomial (Letter T r n) k)} (hS : S ⊆ HHa r n k cc isX a)
     {P : MvPolynomial (Letter T r n) k} (hP : P ∈ Submodule.span k S) : P ∈ HHa r n k cc isX a := by
@@ -29,6 +34,9 @@ theorem mem_HHa_of_mem_span {T : Type} {r : T → ℕ} {n : ℕ} {k : Type} [Fie
     refine ⟨Submodule.smul_mem _ _ hy.1, fun σ i i' h t => ?_, fun m hm => hy.2.2 m (support_smul hm)⟩
     rw [map_smul, hy.2.1 σ i i' h t]
 
+/- English proof (translation)
+Use `Finset.sup_le fun m hm => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => hP m hm σ i`.
+-/
 theorem totalDegree_le_of_rowDeg {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ} {k : Type} [Field k]
     {a : T → ℕ → ℕ} {P : MvPolynomial (Letter T r n) k} (hP : RowDeg r n k a P) :
     P.totalDegree ≤ ∑ σ, ∑ i : Fin (r σ), a σ i := by
@@ -39,6 +47,9 @@ theorem totalDegree_le_of_rowDeg {T : Type} [Fintype T] {r : T → ℕ} {n : ℕ
   rw [Fintype.sum_prod_type]
   exact Finset.sum_congr rfl fun i _ => hP m hm σ i
 
+/- English proof (translation)
+Rewrite using `[MvPoly.l1Norm_eq_sum_of_subset (support_map_subset σ P), l1At]`. Simplify using `only [coeff_map]`.
+-/
 theorem l1At_eq_l1Norm_map {K ι : Type} [Field K] (σ : K →+* ℂ) (P : MvPolynomial ι K) :
     l1At σ P = MvPoly.l1Norm (map σ P) := by
   rw [MvPoly.l1Norm_eq_sum_of_subset (support_map_subset σ P), l1At]
@@ -46,6 +57,19 @@ theorem l1At_eq_l1Norm_map {K ι : Type} [Field K] (σ : K →+* ℂ) (P : MvPol
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `h2` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hne : H.rt0 ≠ -H.rt0` using `fun h => by`. Establish `h0 : H.rt0 = 0` using `by linear_combination h / 2`. Rewrite `h2` using `[h0]`.
+
+Establish `: (H.d : ℂ) = 0` using `by simpa using h2.symm`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`. Establish `hc : starRingEnd ℂ H.rt0 = -H.rt0`. Establish `him` using `congrArg Complex.im h2`. Establish `hre` using `congrArg Complex.re h2`.
+
+Simplify using `[pow_two] at him hre`. Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`.
+
+Conclude with `(mul_eq_zero.1 this).resolve_left hne`. Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`. Establish `hs : τ (H.rt : E) ^ 2 = H.rt0 ^ 2`.
+
+Establish `h` using `congrArg (fun a : 𝓞 E => τ (a : E)) H.rt_sq`. Rewrite using `[H.sqrt_neg_disc_sq]`. Simplify using `using h`. Simplify using `only [Datum.mult, ComplexEmbedding.conjugate_coe_eq]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.1 hs with h | h` into its components or cases.
+
+Rewrite using `[if_pos h, if_neg (by rw [h, hc]; exact hne.symm)]`. Rewrite using `[if_neg (by rw [h]; exact hne.symm), if_pos (by rw [h, map_neg, hc, neg_neg]), add_comm]`.
+-/
 theorem mult_add_mult_conjugate (Dw : Datum H) (τ : E →+* ℂ) :
     Dw.mult τ + Dw.mult (ComplexEmbedding.conjugate τ) = Dw.p + Dw.q := by
   have h2 := H.sqrt_neg_disc_sq
@@ -76,6 +100,13 @@ theorem mult_add_mult_conjugate (Dw : Datum H) (τ : E →+* ℂ) :
   · rw [if_pos h, if_neg (by rw [h, hc]; exact hne.symm)]
   · rw [if_neg (by rw [h]; exact hne.symm), if_pos (by rw [h, map_neg, hc, neg_neg]), add_comm]
 
+/- English proof (translation)
+Establish `h1` using `(ComplexEmbedding.involutive_conjugate E).bijective.sum_comp Dw.mult`. Establish `h2 : ∑ τ, (Dw.mult τ + Dw.mult (ComplexEmbedding.conjugate τ)) = Module.finrank ℚ E * (Dw.p + Dw.q)`. Simplify using `only [mult_add_mult_conjugate]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Embeddings.card E ℂ, smul_eq_mul]`. Rewrite `h2` using `[Finset.sum_add_distrib, h1]`.
+
+Establish `h3 : Module.finrank ℚ E = 2 * FD.fdeg E`. Rewrite using `[FD.fdeg, IsTotallyComplex.finrank E]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : ∑ τ, Dw.mult τ = FD.fdeg E * (Dw.p + Dw.q)`. Rewrite `h2` using `[h3, mul_assoc]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[Fintype.card_sigma, ← h4, Finset.sum_mul]`. Simplify using `only [Fintype.card_prod, Fintype.card_fin]`.
+-/
 theorem card_LtN (Dw : Datum H) (n : ℕ) :
     Fintype.card (LtN Dw n) = FD.fdeg E * (Dw.p + Dw.q) * n := by
   have h1 := (ComplexEmbedding.involutive_conjugate E).bijective.sum_comp Dw.mult
@@ -93,6 +124,17 @@ theorem card_LtN (Dw : Datum H) (n : ℕ) :
   rw [Fintype.card_sigma, ← h4, Finset.sum_mul]
   simp only [Fintype.card_prod, Fintype.card_fin]
 
+/- English proof (translation)
+Establish `hd0 : (0 : ℝ) < d` using `by exact_mod_cast hd`. Establish `h1 : (1 + D : ℝ) ^ ((N : ℝ) / 2) ≤ Real.exp (N * L)`. Rewrite using `[Real.rpow_def_of_pos (by positivity)]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right hL (by positivity : (0 : ℝ) ≤ (N : ℝ) / 2)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : √((R + 3) / 4) ≤ √d * Real.exp (N * L)`. Establish `hR' : (1 : ℝ) ≤ R` using `by exact_mod_cast hR`. Establish `hle' : (R : ℝ) ≤ d * (1 + D) ^ N` using `by exact_mod_cast hle`. Use `(Real.sqrt_le_sqrt (show ((R : ℝ) + 3) / 4 ≤ d * (1 + D) ^ N by linarith)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.sqrt_mul hd0.le]`. Use `mul_le_mul_of_nonneg_left (le_trans (le_of_eq ?_) h1) (Real.sqrt_nonneg _)` and prove the remaining obligations. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : Real.exp (4 * Real.log d) = √d * √d * (d : ℝ) ^ 3`. Rewrite using `[Real.mul_self_sqrt hd0.le, show (4 : ℝ) = (4 : ℕ) by norm_num, Real.exp_nat_mul, Real.exp_log hd0]`. Expand and normalize the polynomial expressions, which then agree. Establish `h4 : Real.exp (Real.log Δ / d) = Δ ^ (1 / (d : ℝ))`. Rewrite using `[Real.rpow_def_of_pos hΔ, mul_one_div]`.
+
+Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_add, h3, h4, show 2 * (N : ℝ) * L = N * L + N * L by ring, Real.exp_add]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bound_le_exp {R d D N : ℕ} {L x Δ : ℝ} (hR : 1 ≤ R) (hd : 1 ≤ d) (hΔ : 0 < Δ)
     (hle : R ≤ d * (1 + D) ^ N) (hL : Real.log (1 + D) ≤ 2 * L) :
     (1 + D : ℝ) ^ ((N : ℝ) / 2) * (√((R + 3) / 4) * √d * ((d : ℝ) ^ 3 * Δ ^ (1 / (d : ℝ))) * Real.exp x) ≤
@@ -123,6 +165,17 @@ theorem bound_le_exp {R d D N : ℕ} {L x Δ : ℝ} (hR : 1 ≤ R) (hd : 1 ≤ d
         gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c n hn a L hL h1 h2 h3 h4`. Establish `hsp` using `(GlobalTheory.StdHarm.harmA_mem_span_short E H Dw l c n).2 hn a L hL h1 h2 h3 h4`. Use `set x : ℝ := 140 * (Dw.p + Dw.q : ℕ) * L * DF Dw a with hx`. Use `set S : Set (MvPolynomial (LtN Dw n) c.F) := {Q | Q ∈ harmA c a n ∧ ∀ σ' : c.F →+* ℂ, Real.log (∑ m ∈ Q.support, ‖σ' (Q.coeff m)‖) ≤ x} with hS`. Establish `hW : ∀ P ∈ Submodule.span c.F S, P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) fun τ i => a (τ, i)` using `fun P hP => mem_HHa_of_mem_span (fun Q hQ => hQ.1.1) hP`.
+
+Establish `hI : ∀ P, P ∈ MvPoly.integralPart (Submodule.span c.F S) ↔ P ∈ harmA (Dw` using `Dw) c a n := fun P => ⟨fun h => ⟨hW P h.1, h.2⟩, fun h => ⟨hsp P h, h.2⟩⟩`. Take `⟨ω, hω, hA⟩` from `GlobalTheory.exists_short_independent_integers c.F`. Take `⟨hR, b, -, hb, -⟩` from `MvPoly.exists_reduced_basis_integralPart (Submodule.span c.F S) (D := DF Dw a) (fun P hP => totalDegree_le_of_rowDeg (hW P hP).2.2) S (fun P hP => (hI P).2 hP.1) rfl (B := Real.exp x) (fun P hP s => by`. Rewrite using `[← l1At_eq_l1Norm_map]`. Conclude with `Real.le_exp_of_log_le (hP.2 s))`.
+
+Use `ω (hω.span_eq_top_of_card_eq_finrank' (Fintype.card_fin _)) hA rfl`. Rewrite `hR`, `hb` using `[card_LtN]`. Use `⟨_, fun i => b i, fun i => (hI _).1 (b i).2, fun P hP => ?_, hR, fun i σ => ?_⟩` and prove the remaining obligations. Use `⟨b.repr ⟨P, (hI P).2 hP⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨P, (hI P).2 hP⟩)`.
+
+Simplify using `only [Int.cast_smul_eq_zsmul]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at h`. Conclude with `h.symm`. Rewrite using `[l1At_eq_l1Norm_map]`. Use `(hb i σ).trans ((bound_le_exp (L := L) i.pos Module.finrank_pos (abs_pos.mpr (by exact_mod_cast NumberField.discr_ne_zero c.F)) hR h3).trans (le_of_eq ?_))` and prove the remaining obligations.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_reduced_basis_harmA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (n : ℕ), Dw.p + Dw.q ≤ n → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (L : ℝ), 2 ≤ L → Real.log (FD.rdE E) ≤ 2 * L → Real.log (FD.fdeg E) ≤ 2 * L → Real.log (1 + DF Dw a) ≤ 2 * L → Real.log n ≤ L → ∃ (R : ℕ) (b : Fin R → MvPolynomial (LtN Dw n) c.F), (∀ i, b i ∈ harmA (Dw := Dw) c a n) ∧ (∀ P ∈ harmA (Dw := Dw) c a n, ∃ z : Fin R → ℤ, P = ∑ i, (z i : c.F) • b i) ∧ R ≤ Module.finrank ℚ c.F * (1 + DF Dw a) ^ (FD.fdeg E * (Dw.p + Dw.q) * n) ∧ ∀ i (σ : c.F →+* ℂ), l1At σ (b i) ≤ Real.exp (140 * (Dw.p + Dw.q : ℕ) * L * DF Dw a + 2 * FD.fdeg E * (Dw.p + Dw.q : ℕ) * n * L + 4 * Real.log (Module.finrank ℚ c.F) + Real.log |((NumberField.discr c.F : ℤ) : ℝ)| / Module.finrank ℚ c.F) := by
   intro E _ _ _ H Dw l c n hn a L hL h1 h2 h3 h4
   classical

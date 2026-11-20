@@ -24,6 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `[Ranks.N]`.
+-/
 theorem k_eq_N (D : D7) : D.R.k = D.R.N 0 := by simp [Ranks.N]
 
 def ptEquiv (X : ErrX D) (u : D.what₂.Word) : ConjugacyRepresentativeSystems.ColPt X u ≃ UnipotentLevelStabilisers.ColPt D X.piG (X.piT u) :=
@@ -36,6 +39,9 @@ def repB {X : ErrX D} (rep : ConjugacyRepresentativeSystems.ColRep X) :
 def repA {X : ErrX D} (rep : ∀ u μ, (D.chTw u μ).cls 0 → UnipotentLevelStabilisers.ColPt D X.piG (X.piT u)) : ConjugacyRepresentativeSystems.ColRep X :=
   fun u μ c => (ptEquiv X u).symm (rep u μ c)
 
+/- English proof (translation)
+Rewrite using `[← RingOfIntegers.coe_injective.eq_iff, map_mul, map_natCast]`. Both sides reduce to the same expression.
+-/
 theorem norm_iff (π : 𝓞 D.host.E) (g : ℕ) :
     π * UnipotentLevelStabilisers.conjInt D π = (g : 𝓞 D.host.E) ↔
       (π : D.host.E) * D.host.conj (π : D.host.E) = (g : D.host.E) := by
@@ -55,10 +61,16 @@ def errOf (X₀ : ErrX D) {πg : Fin 2 → 𝓞 D.host.E} {πT : D.what₂.Word 
   vPl_inj := X₀.vPl_inj
   norm_mem_place_ideal := X₀.norm_mem_place_ideal
 
+/- English proof (translation)
+The claim follows from `forall_congr' fun i => by omega`.
+-/
 theorem typePrimesLarge_iff (D : D7) :
     UnipotentLevelStabilisers.TypePrimesLarge D ↔ ∀ i, 2 * D.R.f * D.R.k < D.host.g i - 1 :=
   forall_congr' fun i => by omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, (typePrimesLarge_iff D).mp h 0⟩`.
+-/
 theorem gBig_of_large (h : UnipotentLevelStabilisers.TypePrimesLarge D) : Formalism.MainNotions.StandardLattice.GBig D :=
   ⟨0, (typePrimesLarge_iff D).mp h 0⟩
 

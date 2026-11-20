@@ -21,15 +21,27 @@ def eps : Ix p q → ℂ := Sum.elim (fun _ => 1) (fun _ => -1)
 
 def tJ (X : Mat p q) : Mat p q := Matrix.of fun a b => eps a * eps b * X b a
 
+/- English proof (translation)
+Apply the tactic sequence `rcases a with a | a <;> simp [eps]`.
+-/
 theorem eps_mul_self (a : Ix p q) : eps a * eps a = 1 := by
   rcases a with a | a <;> simp [eps]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases l with ⟨a | a, c | c⟩ <;> rfl`.
+-/
 theorem linePos_swapLn (l : Ln p q r s) : linePos (swapLn p q r s l) = !linePos l := by
   rcases l with ⟨a | a, c | c⟩ <;> rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, tJ, Matrix.of_apply, eps_mul_self, one_mul]`.
+-/
 theorem trace_tJ (X : Mat p q) : (tJ X).trace = X.trace := by
   simp only [Matrix.trace, Matrix.diag, tJ, Matrix.of_apply, eps_mul_self, one_mul]
 
+/- English proof (translation)
+Establish `hd` using `pderiv_rename (R := ℂ) (swapLn p q r s).injective l f`. Unfold `raiB lowB lsg`. Rewrite using `[linePos_swapLn]`. Apply the tactic sequence `cases h : linePos l <;> simp [hd]`.
+-/
 theorem rename_raiB (l : Ln p q r s) (f : Pol p q r s) :
     rename (swapLn p q r s) (raiB l f) = lsg l • lowB (swapLn p q r s l) (rename (swapLn p q r s) f) := by
   have hd := pderiv_rename (R := ℂ) (swapLn p q r s).injective l f
@@ -37,6 +49,9 @@ theorem rename_raiB (l : Ln p q r s) (f : Pol p q r s) :
   rw [linePos_swapLn]
   cases h : linePos l <;> simp [hd]
 
+/- English proof (translation)
+Establish `hd` using `pderiv_rename (R := ℂ) (swapLn p q r s).injective l f`. Unfold `raiB lowB lsg`. Rewrite using `[linePos_swapLn]`. Apply the tactic sequence `cases h : linePos l <;> simp [hd]`.
+-/
 theorem rename_lowB (l : Ln p q r s) (f : Pol p q r s) :
     rename (swapLn p q r s) (lowB l f) = -(lsg l) • raiB (swapLn p q r s l) (rename (swapLn p q r s) f) := by
   have hd := pderiv_rename (R := ℂ) (swapLn p q r s).injective l f
@@ -44,6 +59,13 @@ theorem rename_lowB (l : Ln p q r s) (f : Pol p q r s) :
   rw [linePos_swapLn]
   cases h : linePos l <;> simp [hd]
 
+/- English proof (translation)
+Establish `hc` using `congrArg (fun T : Module.End ℂ (Pol p q s r) => T (rename (swapLn p q r s) f)) (GlobalTheory.FockCasimir.lowB_mul_raiB (swapLn p q r s l) (swapLn p q r s l'))`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply] at hc`. Simplify using `only [omE, LinearMap.add_apply, Module.End.mul_apply, map_add, rename_raiB, rename_lowB, LinearMap.map_smul, hc]`. Distinguish the cases in `h : l = l'`. Substitute `h` using the available equality.
+
+Simplify using `only [if_true, LinearMap.smul_apply, Module.End.one_apply, map_smul]`. Apply the tactic sequence `have h1 : lsg l = 1 ∨ lsg l = -1 := by unfold lsg; split_ifs <;> simp`. Apply the tactic sequence `rcases h1 with h1 | h1 <;> rw [h1] <;> module`. Establish `h' : swapLn p q r s l ≠ swapLn p q r s l'` using `fun e => h ((swapLn p q r s).injective e)`. Simplify using `only [h, h', Ne.symm h', if_false, LinearMap.zero_apply, add_zero, map_zero]`.
+
+Use `module`.
+-/
 theorem rename_omE (l l' : Ln p q r s) (f : Pol p q r s) :
     rename (swapLn p q r s) (omE l l' f) =
       -(lsg l * lsg l') • omE (swapLn p q r s l') (swapLn p q r s l) (rename (swapLn p q r s) f) := by
@@ -65,6 +87,11 @@ def swapM (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) : Matrix (Ln p q s r) (Ln p
   Matrix.of fun m m' => lsg ((swapLn p q r s).symm m') * lsg ((swapLn p q r s).symm m) *
     Z ((swapLn p q r s).symm m') ((swapLn p q r s).symm m)
 
+/- English proof (translation)
+Simplify using `only [omAct_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, rename_omE]`. Establish `e : ∀ h : Ln p q s r → Ln p q s r → Pol p q s r, ∑ m, ∑ m', h m m' = ∑ l, ∑ l', h (swapLn p q r s l') (swapLn p q r s l)`. Introduce `h`. Rewrite using `[Finset.sum_comm, ← (swapLn p q r s).sum_comp]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← (swapLn p q r s).sum_comp]`. Rewrite using `[e]`. Simplify using `only [swapM, Matrix.of_apply, Equiv.symm_apply_apply, ← Finset.sum_neg_distrib, smul_smul, neg_smul, smul_neg, mul_neg]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+-/
 theorem rename_omAct (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) (f : Pol p q r s) :
     rename (swapLn p q r s) (omAct p q r s Z f) = -(omAct p q s r (swapM Z) (rename (swapLn p q r s) f)) := by
   simp only [omAct_apply, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, rename_omE]
@@ -80,10 +107,16 @@ theorem rename_omAct (Z : Matrix (Ln p q r s) (Ln p q r s) ℂ) (f : Pol p q r s
   refine Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_
   ring_nf
 
+/- English proof (translation)
+Simplify using `[Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply]`.
+-/
 theorem kron_apply (X : Mat p q) (a b : Ix p q) (c d : Ix r s) :
     (Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ)).flip (1 : Mat r s) X (a, c) (b, d) = X a b * (1 : Mat r s) c d := by
   simp [Matrix.kroneckerMapBilinear_apply_apply, Matrix.kroneckerMap_apply]
 
+/- English proof (translation)
+Use extensionality with `⟨a, c⟩ ⟨b, d⟩`. Simplify using `only [swapM, Matrix.of_apply, kron_apply, tJ, swapLn, Equiv.prodCongr_symm, Equiv.prodCongr_apply, Equiv.refl_symm, Equiv.refl_apply, Equiv.sumComm_symm, Equiv.sumComm_apply, Prod.map]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> rcases d with d | d <;>`. Apply the tactic sequence `simp [lsg, linePos, eps, Matrix.one_apply] <;> split_ifs <;> simp_all [eq_comm]`.
+-/
 theorem swapM_kron (X : Mat p q) :
     swapM ((Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ)).flip (1 : Mat r s) X) =
       (Matrix.kroneckerMapBilinear (LinearMap.mul ℂ ℂ)).flip (1 : Mat s r) (tJ X) := by
@@ -93,6 +126,9 @@ theorem swapM_kron (X : Mat p q) :
   rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;> rcases d with d | d <;>
     simp [lsg, linePos, eps, Matrix.one_apply] <;> split_ifs <;> simp_all [eq_comm]
 
+/- English proof (translation)
+Simplify using `only [fockAct1, LinearMap.comp_apply]`. Rewrite using `[rename_omAct, swapM_kron]`.
+-/
 theorem rename_fockAct1 (X : Mat p q) (f : Pol p q r s) :
     rename (swapLn p q r s) (fockAct1 p q r s X f) = -(fockAct1 p q s r (tJ X) (rename (swapLn p q r s) f)) := by
   simp only [fockAct1, LinearMap.comp_apply]
@@ -104,6 +140,11 @@ namespace GlobalTheory.RealLift
 
 open GlobalTheory.FockSecondSwap
 
+/- English proof (translation)
+Take `⟨l, hl0, hl⟩` from `h`. Use `⟨l.comp (rename (swapLn P Q R S)).toLinearMap, fun h0 => hl0 (LinearMap.ext fun f => ?_), fun X f => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h0 (rename (swapLn P Q R S).symm f)` as an intermediate fact. Simplify `this` using `[rename_rename, Equiv.self_comp_symm, rename_id]`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`.
+
+Rewrite using `[rename_fockAct1, map_neg, hl, trace_tJ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hasForm_swap {P Q R S : ℕ} {x : ℚ} (h : HasForm P Q S R x) : HasForm P Q R S (-x) := by
   obtain ⟨l, hl0, hl⟩ := h
   refine ⟨l.comp (rename (swapLn P Q R S)).toLinearMap, fun h0 => hl0 (LinearMap.ext fun f => ?_), fun X f => ?_⟩
@@ -114,6 +155,9 @@ theorem hasForm_swap {P Q R S : ℕ} {x : ℚ} (h : HasForm P Q S R x) : HasForm
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `hF P Q R S x k k' h1 h2 h3 h4 h5 h6` and use `hasForm_swap (hF P Q S R x k k' h1 h2 h3 h4 h5 h6)`.
+-/
 theorem hasForm_neg_of_formEx : FormEx → ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), P ≤ S → Q ≤ R → 0 < k → 0 < k' →
     x - Formalism.BasicNotions.TH.cPair S R = k → x + Formalism.BasicNotions.TH.cPair S R = k' → HasForm P Q R S (-x) :=
   fun hF P Q R S x k k' h1 h2 h3 h4 h5 h6 => hasForm_swap (hF P Q S R x k k' h1 h2 h3 h4 h5 h6)

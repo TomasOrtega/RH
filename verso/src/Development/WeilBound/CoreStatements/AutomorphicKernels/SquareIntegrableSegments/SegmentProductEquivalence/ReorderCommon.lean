@@ -13,18 +13,30 @@ namespace PositivityTheory.PfEss.Zc2
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+The claim follows from `a.elim fun a => b.elim fun b => ⟨a.trans b⟩`.
+-/
 theorem ntrans {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup U]
     [Module ℂ U] {G : Type} [Group G] {ρ : Representation ℂ G V} {σ : Representation ℂ G W}
     {τ : Representation ℂ G U} (a : Nonempty (ρ.Equiv σ)) (b : Nonempty (σ.Equiv τ)) : Nonempty (ρ.Equiv τ) :=
   a.elim fun a => b.elim fun b => ⟨a.trans b⟩
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `⟨Representation.Equiv.refl _⟩`.
+-/
 theorem prodIrr_equiv_of_eq {h N : ℕ} {y y' : Fin h → IrrGL k} (e : y = y') (hy : ∑ a, (y a).1 = N)
     (hy' : ∑ a, (y' a).1 = N) : Nonempty ((prodIrr y hy).Equiv (prodIrr y' hy')) := by
   subst e
   exact ⟨Representation.Equiv.refl _⟩
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cut_e {h j : ℕ} (hj : j + 1 < h) : j + (2 + (h - (j + 2))) = h := by omega
 
+/- English proof (translation)
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem cutC_lt {h j b : ℕ} (hb : b < h - (j + 2)) : j + 2 + b < h := by omega
 
 def cutA {α : Type*} {h : ℕ} (x : Fin h → α) (j : ℕ) (hj : j + 1 < h) : Fin j → α :=
@@ -35,12 +47,18 @@ def cutC {α : Type*} {h : ℕ} (x : Fin h → α) (j : ℕ) : Fin (h - (j + 2))
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right]`.
+-/
 theorem sum_append {q c : ℕ} (Q : Fin q → IrrGL k) (C : Fin c → IrrGL k) :
     ∑ a, (Fin.append Q C a).1 = ∑ a, (Q a).1 + ∑ a, (C a).1 := by
   simp only [Fin.sum_univ_add, Fin.append_left, Fin.append_right]
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hw' : w = Fin.append A R` using `funext fun m => hw m`. Substitute `hw'` using the available equality. Simplify using `only [Fin.sum_univ_add, Fin.append_left, Fin.append_right]`.
+-/
 theorem sum_split2 {p q n : ℕ} (A : Fin p → IrrGL k) (R : Fin q → IrrGL k) (w : Fin n → IrrGL k) (e : p + q = n)
     (hw : ∀ m : Fin (p + q), w (Fin.cast e m) = Fin.append A R m) :
     ∑ a, (w a).1 = ∑ a, (A a).1 + ∑ a, (R a).1 := by
@@ -52,6 +70,9 @@ theorem sum_split2 {p q n : ℕ} (A : Fin p → IrrGL k) (R : Fin q → IrrGL k)
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Substitute `e` using the available equality. Establish `hw' : w = Fin.append A R` using `funext fun m => hw m`. Substitute `hw'` using the available equality. Conclude with `GlobalTheory.T.product_irreducible_append_equiv k p q rA rR A R hA hR hN`.
+-/
 theorem stage2 {p q n rA rR : ℕ} (A : Fin p → IrrGL k) (R : Fin q → IrrGL k) (w : Fin n → IrrGL k)
     (e : p + q = n) (hw : ∀ m : Fin (p + q), w (Fin.cast e m) = Fin.append A R m)
     (hA : ∑ a, (A a).1 = rA) (hR : ∑ a, (R a).1 = rR) (hN : ∑ a, (w a).1 = rA + rR) :
@@ -64,6 +85,9 @@ theorem stage2 {p q n rA rR : ℕ} (A : Fin p → IrrGL k) (R : Fin q → IrrGL 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨E⟩` from `E`. Take `⟨o1⟩` from `GlobalTheory.T.product_irreducible_append_equiv k 2 c rQ rC Q C hQ hC hR`. Take `⟨o2⟩` from `GlobalTheory.T.product_irreducible_append_equiv k 2 c rQ rC Q' C hQ' hC hR'`. Conclude with `⟨o1.symm.trans ((prod₂Equiv E (Representation.Equiv.refl _)).trans o2)⟩`.
+-/
 theorem head_swap {c rQ rC : ℕ} (Q Q' : Fin 2 → IrrGL k) (C : Fin c → IrrGL k)
     (hQ : ∑ a, (Q a).1 = rQ) (hQ' : ∑ a, (Q' a).1 = rQ) (hC : ∑ a, (C a).1 = rC)
     (hR : ∑ a, (Fin.append Q C a).1 = rQ + rC) (hR' : ∑ a, (Fin.append Q' C a).1 = rQ + rC)
@@ -76,6 +100,11 @@ theorem head_swap {c rQ rC : ℕ} (Q Q' : Fin 2 → IrrGL k) (C : Fin c → IrrG
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `Fin.addCases (fun a => ?_) (fun b => ?_) m` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `congrArg x (Fin.ext (by simp))`. Rewrite using `[Fin.append_right]`. Use `Fin.addCases (fun b => ?_) (fun b => ?_) b` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left] fin_cases b`. Conclude with `congrArg x (Fin.ext (by simp))`. Conclude with `congrArg x (Fin.ext (by simp))`. Rewrite using `[Fin.append_right]`. Conclude with `congrArg x (Fin.ext (by simp; omega))`.
+-/
 theorem split_alt_alt {h j : ℕ} (hj : j + 1 < h) (e : j + (2 + (h - (j + 2))) = h) (x : Fin h → IrrGL k)
     (m : Fin (j + (2 + (h - (j + 2))))) :
     x (Fin.cast e m) = Fin.append (cutA x j hj)
@@ -95,6 +124,15 @@ theorem split_alt_alt {h j : ℕ} (hj : j + 1 < h) (e : j + (2 + (h - (j + 2))) 
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
+/- English proof (translation)
+Use `Fin.addCases (fun a => ?_) (fun b => ?_) m` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Establish `h0 : (Fin.cast e (Fin.castAdd (2 + (h - (j + 2))) a) : Fin h) = ⟨a.1, by have` using `a.2; omega⟩ := Fin.ext (by simp)`. Rewrite using `[h0, Equiv.swap_apply_of_ne_of_ne (fun H => by have := a.2; simp [Fin.ext_iff] at H; omega) (fun H => by have := a.2; simp [Fin.ext_iff] at H; omega)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Fin.append_right]`. Use `Fin.addCases (fun b => ?_) (fun b => ?_) b` and prove the remaining obligations. Rewrite using `[Fin.append_left] fin_cases b`. Establish `h0 : (Fin.cast e (Fin.natAdd j (Fin.castAdd (h - (j + 2)) (0 : Fin 2))) : Fin h) = ⟨j, Nat.lt_of_succ_lt hj⟩` using `Fin.ext (by simp)`. Simplify using `only [Fin.zero_eta, Fin.isValue] at h0 ⊢`.
+
+Rewrite using `[h0, Equiv.swap_apply_left]`. Both sides reduce to the same expression. Establish `h0 : (Fin.cast e (Fin.natAdd j (Fin.castAdd (h - (j + 2)) (1 : Fin 2))) : Fin h) = ⟨j + 1, hj⟩` using `Fin.ext (by simp)`. Simplify using `only [Fin.mk_one, Fin.isValue] at h0 ⊢`. Rewrite using `[h0, Equiv.swap_apply_right]`.
+
+Both sides reduce to the same expression. Rewrite using `[Fin.append_right]`. Establish `h0 : (Fin.cast e (Fin.natAdd j (Fin.natAdd 2 b)) : Fin h) = ⟨j + 2 + b.1, by have` using `b.2; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[h0, Equiv.swap_apply_of_ne_of_ne (fun H => by simp [Fin.ext_iff] at H; omega) (fun H => by simp [Fin.ext_iff] at H; omega)]`. Both sides reduce to the same expression.
+-/
 theorem split_swap {h j : ℕ} (hj : j + 1 < h) (e : j + (2 + (h - (j + 2))) = h) (x : Fin h → IrrGL k)
     (m : Fin (j + (2 + (h - (j + 2))))) :
     x (Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ (Fin.cast e m)) =
@@ -132,6 +170,15 @@ theorem split_swap {h j : ℕ} (hj : j + 1 < h) (e : j + (2 + (h - (j + 2))) = h
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `e` using `cut_e hj`. Establish `hw1` using `split_alt_alt hj e x`. Establish `hw2` using `split_swap hj e x`. Establish `s1` using `sum_split2 _ _ x e hw1`. Establish `sR` using `sum_append ![x ⟨j, Nat.lt_of_succ_lt hj⟩, x ⟨j + 1, hj⟩] (cutC x j)`.
+
+Establish `sR'` using `sum_append ![x ⟨j + 1, hj⟩, x ⟨j, Nat.lt_of_succ_lt hj⟩] (cutC x j)`. Rewrite `sR` using `[hd2]`. Rewrite `sR'` using `[hd2']`. Rewrite `s1` using `[sR]`. Establish `eN : N = _` using `hd.symm.trans s1`.
+
+Substitute `eN` using the available equality. Establish `ER` using `head_swap _ _ _ hd2 hd2' rfl sR sR' E`. Take `⟨ER⟩` from `ER`. Take `⟨o1⟩` from `stage2 _ _ x e hw1 rfl sR hd`. Take `⟨o2⟩` from `stage2 _ _ _ e hw2 rfl sR' hd'`.
+
+Conclude with `⟨o1.symm.trans ((prod₂Equiv (Representation.Equiv.refl _) ER).trans o2)⟩`.
+-/
 theorem swap_adj {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) (j : ℕ) (hj : j + 1 < h) (M : ℕ)
     (hd2 : ∑ a, (![x ⟨j, Nat.lt_of_succ_lt hj⟩, x ⟨j + 1, hj⟩] a).1 = M)
     (hd2' : ∑ a, (![x ⟨j + 1, hj⟩, x ⟨j, Nat.lt_of_succ_lt hj⟩] a).1 = M)
@@ -162,6 +209,11 @@ def Reach {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) (σ : Eq
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hd'`. Establish `h1 : ∑ a, (x (σ a)).1 = N` using `(Equiv.sum_comp σ (fun a => (x a).1)).trans hd`. Establish `h2 : ∑ a, (x (σ (Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ a))).1 = N` using `(Equiv.sum_comp (Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩) (fun a => (x (σ a)).1)).trans h1`. Establish `F` using `swap_adj (fun a => x (σ a)) h1 j hj _ rfl (by simp [Fin.sum_univ_two, add_comm]) h2 (hcomm _ _ _ _ _ _ _ hu (hL _) (hL _))`. Establish `E1` using `prodIrr_equiv_of_eq (N := N) (y := x ∘ σ) (y' := fun a => x (σ a)) rfl h1 h1`.
+
+Establish `E2` using `prodIrr_equiv_of_eq (N := N) (y := fun a => x (σ (Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ a))) (y' := x ∘ ⇑(σ * Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩)) rfl h2 hd'`. Conclude with `ntrans (ntrans (ntrans (hσ h1) E1) F) E2`.
+-/
 theorem reach_step (hcomm : LUnlinkedComm k) {h N : ℕ} {Δ : Fin h → Segment k} {x : Fin h → IrrGL k}
     (hd : ∑ a, (x a).1 = N) (hL : ∀ i, IsLSeg (Δ i) (x i).rep) (σ : Equiv.Perm (Fin h)) (hσ : Reach x hd σ)
     (j : ℕ) (hj : j + 1 < h) (hu : ¬ (Δ (σ ⟨j, Nat.lt_of_succ_lt hj⟩)).Linked (Δ (σ ⟨j + 1, hj⟩))) :
@@ -178,6 +230,15 @@ theorem reach_step (hcomm : LUnlinkedComm k) {h N : ℕ} {Δ : Fin h → Segment
     (y' := x ∘ ⇑(σ * Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩)) rfl h2 hd'
   exact ntrans (ntrans (ntrans (hσ h1) E1) F) E2
 
+/- English proof (translation)
+Establish `key : ∀ (d a : ℕ) (ha : a + d + 1 < h), f ⟨a, by omega⟩ < f ⟨a + d + 1, ha⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a ha`. Conclude with `H a ha`.
+
+Consider the case `succ d ih`. Introduce `a ha`. Establish `H1` using `H (a + d + 1) (by omega)`. Establish `e1 : (⟨a + (d + 1) + 1, ha⟩ : Fin h) = ⟨a + d + 1 + 1, by omega⟩` using `Fin.ext (by show a + (d + 1) + 1 = a + d + 1 + 1; omega)`. Rewrite using `[e1]`.
+
+Conclude with `(ih a (by omega)).trans H1`. Introduce `a b hab`. Take `⟨a, ha⟩` from `a`. Take `⟨b, hb⟩` from `b`. Establish `hab' : a < b` using `hab`.
+
+Take `⟨d, rfl⟩ : ∃ d, b = a + d + 1` from `⟨b - a - 1, by omega⟩`. Conclude with `key d a hb`.
+-/
 theorem strictMono_of_adj {h : ℕ} (f : Fin h → Fin h)
     (H : ∀ (j : ℕ) (hj : j + 1 < h), f ⟨j, Nat.lt_of_succ_lt hj⟩ < f ⟨j + 1, hj⟩) : StrictMono f := by
   have key : ∀ (d a : ℕ) (ha : a + d + 1 < h), f ⟨a, by omega⟩ < f ⟨a + d + 1, ha⟩ := by
@@ -198,6 +259,9 @@ theorem strictMono_of_adj {h : ℕ} (f : Fin h → Fin h)
   obtain ⟨d, rfl⟩ : ∃ d, b = a + d + 1 := ⟨b - a - 1, by omega⟩
   exact key d a hb
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `u`. Take `⟨v, hv⟩` from `v`. Establish `hvu' : v < u` using `hvu`. Simplify using `only [Equiv.swap_apply_def, Fin.ext_iff] at H ⊢`. Apply the tactic sequence `split_ifs at H <;> simp only [Fin.lt_def] at H <;> omega`.
+-/
 theorem swap_lt_swap {h j : ℕ} (hj : j + 1 < h) {u v : Fin h} (hvu : v < u)
     (H : Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ u < Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ v) :
     v.1 = j ∧ u.1 = j + 1 := by
@@ -210,10 +274,42 @@ theorem swap_lt_swap {h j : ℕ} (hj : j + 1 < h) {u v : Fin h} (hvu : v < u)
 def invSet {h : ℕ} (σ : Equiv.Perm (Fin h)) : Finset (Fin h × Fin h) :=
   Finset.univ.filter fun p => p.1 < p.2 ∧ σ.symm p.2 < σ.symm p.1
 
+/- English proof (translation)
+Rewrite using `[Equiv.Perm.mul_def, Equiv.symm_trans_apply, hs, Equiv.symm_swap]`.
+-/
 theorem symm_mul_swap_apply {h : ℕ} (σ s : Equiv.Perm (Fin h)) (a b : Fin h) (hs : s = Equiv.swap a b)
     (p : Fin h) : (σ * s).symm p = s (σ.symm p) := by
   rw [Equiv.Perm.mul_def, Equiv.symm_trans_apply, hs, Equiv.symm_swap]
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `σ hn hσ`. Distinguish the cases in `hdesc : ∃ (j : ℕ) (hj : j + 1 < h), σ ⟨j + 1, hj⟩ < σ ⟨j, Nat.lt_of_succ_lt hj⟩`.
+
+Take `⟨j, hj, hlt⟩` from `hdesc`. Take `⟨s, hs⟩ : ∃ s, s = Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩` from `⟨_, rfl⟩`. Establish `hτs : ∀ p, (σ * s).symm p = s (σ.symm p)` using `symm_mul_swap_apply σ s _ _ hs`. Establish `sj : s ⟨j, Nat.lt_of_succ_lt hj⟩ = ⟨j + 1, hj⟩` using `by rw [hs, Equiv.swap_apply_left]`. Establish `sj1 : s ⟨j + 1, hj⟩ = ⟨j, Nat.lt_of_succ_lt hj⟩` using `by rw [hs, Equiv.swap_apply_right]`.
+
+Establish `hsub : invSet (σ * s) ⊆ invSet σ`. Introduce `p hp`. Simplify using `only [invSet, Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢`. Use `⟨hp.1, ?_⟩` and prove the remaining obligations. Break down `lt_trichotomy (σ.symm p.2) (σ.symm p.1) with H | H | H` into its components or cases.
+
+Conclude with `H`. Conclude with `absurd (σ.symm.injective H) (ne_of_gt hp.1)`. It suffices to derive a contradiction. Rewrite `hp` using `[hτs, hτs, hs]`. Take `⟨e1, e2⟩` from `swap_lt_swap hj H hp.2`.
+
+Establish `q1 : p.1 = σ ⟨j, Nat.lt_of_succ_lt hj⟩`. Rewrite using `[← Equiv.apply_symm_apply σ p.1]`. Conclude with `congrArg σ (Fin.ext e1)`. Establish `q2 : p.2 = σ ⟨j + 1, hj⟩`. Rewrite using `[← Equiv.apply_symm_apply σ p.2]`.
+
+Conclude with `congrArg σ (Fin.ext e2)`. Establish `h12` using `hp.1`. Rewrite `h12` using `[q1, q2]`. Conclude with `absurd (hlt.trans h12) (lt_irrefl _)`. Establish `hmem : (σ ⟨j + 1, hj⟩, σ ⟨j, Nat.lt_of_succ_lt hj⟩) ∈ invSet σ`.
+
+Simplify using `only [invSet, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.symm_apply_apply]`. Conclude with `⟨hlt, by simp [Fin.lt_def]⟩`. Establish `hnot : (σ ⟨j + 1, hj⟩, σ ⟨j, Nat.lt_of_succ_lt hj⟩) ∉ invSet (σ * s)`. Simplify using `only [invSet, Finset.mem_filter, Finset.mem_univ, true_and, hτs, Equiv.symm_apply_apply, not_and]`. Introduce `_`.
+
+Rewrite using `[sj, sj1]`. Simplify using `[Fin.lt_def]`. Establish `hlt' : (invSet (σ * s)).card < n`. Rewrite using `[← hn]`. Conclude with `Finset.card_lt_card ((Finset.ssubset_iff_of_subset hsub).2 ⟨_, hmem, hnot⟩)`.
+
+Establish `hτinv : ∀ a b, a < b → (σ * s).symm b < (σ * s).symm a → ¬ (Δ a).Linked (Δ b)`. Introduce `a b hab hba`. Establish `hab2 : (a, b) ∈ invSet (σ * s)`. Simplify using `only [invSet, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨hab, hba⟩`.
+
+Establish `hab3` using `hsub hab2`. Simplify using `only [invSet, Finset.mem_filter, Finset.mem_univ, true_and] at hab3`. Conclude with `hσ a b hab3.1 hab3.2`. Establish `Rτ` using `ih _ hlt' (σ * s) rfl hτinv`. Establish `hτj : (σ * s) ⟨j, Nat.lt_of_succ_lt hj⟩ = σ ⟨j + 1, hj⟩` using `by rw [Equiv.Perm.mul_apply, sj]`.
+
+Establish `hτj1 : (σ * s) ⟨j + 1, hj⟩ = σ ⟨j, Nat.lt_of_succ_lt hj⟩` using `by rw [Equiv.Perm.mul_apply, sj1]`. Establish `hu : ¬ (Δ ((σ * s) ⟨j, Nat.lt_of_succ_lt hj⟩)).Linked (Δ ((σ * s) ⟨j + 1, hj⟩))`. Rewrite using `[hτj, hτj1]`. Conclude with `hσ _ _ hlt (by simp [Fin.lt_def])`. Establish `R` using `reach_step hcomm hd hL (σ * s) Rτ j hj hu`.
+
+Establish `hσ' : σ * s * Equiv.swap (⟨j, Nat.lt_of_succ_lt hj⟩ : Fin h) ⟨j + 1, hj⟩ = σ`. Rewrite using `[hs, mul_assoc, Equiv.swap_mul_self, mul_one]`. Rewrite `R` using `[hσ']`. Conclude with `R`. Use `push Not at hdesc`.
+
+Establish `hmono : StrictMono σ` using `strictMono_of_adj σ fun j hj => lt_of_le_of_ne (hdesc j hj) (fun H => by have H2 := σ.injective H; simp [Fin.ext_iff] at H2)`. Establish `h1 : σ = 1`. Establish `H3 : StrictMono.orderIsoOfSurjective σ hmono σ.surjective = OrderIso.refl _` using `Subsingleton.elim _ _`. Use extensionality with `i`. Establish `H4` using `congrArg (fun f : Fin h ≃o Fin h => (f i : ℕ)) H3`.
+
+Simplify using `using H4`. Substitute `h1` using the available equality. Introduce `hd'`. Conclude with `prodIrr_equiv_of_eq rfl hd hd'`.
+-/
 theorem reach_of_inv (hcomm : LUnlinkedComm k) {h N : ℕ} {Δ : Fin h → Segment k} {x : Fin h → IrrGL k}
     (hd : ∑ a, (x a).1 = N) (hL : ∀ i, IsLSeg (Δ i) (x i).rep) :
     ∀ (n : ℕ) (σ : Equiv.Perm (Fin h)), (invSet σ).card = n →

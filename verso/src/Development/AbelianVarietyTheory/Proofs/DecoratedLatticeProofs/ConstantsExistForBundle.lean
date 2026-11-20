@@ -16,9 +16,17 @@ namespace GlobalTheory.Fam.MemberSizes
 
 variable (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL)
 
+/- English proof (translation)
+The claim follows from `RowE.of_all fun _ _ β _ _ _ _ _ => β.p.pt.xa.ties`.
+-/
 theorem ties_at : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D _ _ _ => Formalism.BasicNotions.Ties D) :=
   RowE.of_all fun _ _ β _ _ _ _ _ => β.p.pt.xa.ties
 
+/- English proof (translation)
+Use `⟨1, one_pos, fun eps C8 C5 c6 Cb he _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ => ⟨0, fun cD _ => ⟨0, fun ch _ _ => ⟨max 1 (max (H C) 1 ^ eps⁻¹), fun K hK hx β _ c b _ => ?_⟩⟩⟩⟩⟩` and prove the remaining obligations. Establish `hG : 1 ≤ C.CGam` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 _ (by simp [Inhab.FC.cMid])`. Establish `hs : β.O.L.sc = K.s` using `β.sc`. Establish `hc : β.O.L.CGam = C.CGam` using `β.val.CGam_eq.trans (congrArg Inhab.FC.CGam hK.1)`. Use `⟨?_, hc, hG⟩` and prove the remaining obligations.
+
+Use `show H C ≤ β.O.L.sc.x ^ β.O.L.sc.eps`. Rewrite using `[hs, hK.2.2.2.1]`. Establish `h1 : 0 ≤ max (H C) 1` using `le_trans zero_le_one (le_max_right _ _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem scale_at (H : Formalism.MainNotions.Inhab.FC → ℝ) : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun κ _ O _ _ =>
     H κ.C ≤ O.L.sc.L ∧ O.L.CGam = κ.C.CGam ∧ 1 ≤ κ.C.CGam) := by
   refine ⟨1, one_pos, fun eps C8 C5 c6 Cb he _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun C hC _ _ =>
@@ -34,6 +42,11 @@ theorem scale_at (H : Formalism.MainNotions.Inhab.FC → ℝ) : GlobalTheory.Fc.
     _ = (max (H C) 1 ^ eps⁻¹) ^ eps := (Real.rpow_inv_rpow h1 he.ne').symm
     _ ≤ K.s.x ^ eps := Real.rpow_le_rpow (Real.rpow_nonneg h1 _) (le_trans (le_max_right _ _) hx) he.le
 
+/- English proof (translation)
+Establish `h` using `(((((((ties_at hL p).and (GlobalTheory.T.admissible_ranks_all_members hL p)).and (GlobalTheory.T.degree_hypothesis_all_members hL p (fun C => F (C.P.CYL + 1) C.CTu) (fun C => G (C.P.CYL + 1) C.CTu))).and (GlobalTheory.T.data_nonvanishing_all_members hL p)).and (GlobalTheory.T.typ …`. Use `RowE.imp h ?_` and prove the remaining obligations. Introduce `κ K β c b _ _ _ H0`. Take `⟨⟨⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩, h7⟩, h8, h9, h10⟩` from `H0`. Establish `hm : max (G (κ.C.P.CYL + 1) κ.C.CTu) 40 ≤ (β.D.R.m : ℝ)` using `h3.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+
+Use `⟨max (F (κ.C.P.CYL + 1) κ.C.CTu) (8 * κ.C.CGam), max (G (κ.C.P.CYL + 1) κ.C.CTu) 40, κ.C.P.CYL + 1, κ.C.CTu, le_max_left _ _, le_max_left _ _, h8, ⟨h1, h2, h3, h4, h5⟩, ⟨β.O.L, rfl, h9 ▸ le_max_right _ _, h9 ▸ h10⟩, h6, h7, ?_⟩` and prove the remaining obligations. Establish `h40 : (40 : ℝ) ≤ β.D.R.m` using `le_trans (le_max_right _ _) hm`. Establish `: 40 ≤ β.D.R.m` using `by exact_mod_cast h40`. Use `show 1 ≤ β.D.R.m / 2 - 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem sizes (F G H : ℝ → ℝ → ℝ) : GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D O _ _ =>
     ∃ C' Cl Cg CT : ℝ, F Cg CT ≤ C' ∧ G Cg CT ≤ Cl ∧ H Cg CT ≤ O.L.sc.L ∧
       GlobalTheory.Core.Rk.HD D O.L.sc.L C' Cl Cg (1 / 4) 3 (1 / 2) CT ∧ GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D O.L.sc.L C' ∧
@@ -51,6 +64,9 @@ theorem sizes (F G H : ℝ → ℝ → ℝ) : GlobalTheory.Fc.RowE (Bl.IsGoodE p
   show 1 ≤ β.D.R.m / 2 - 1
   omega
 
+/- English proof (translation)
+Introduce `hL p F G H` and use `sizes hL p F G H`.
+-/
 theorem member_sizes : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (p : Bl.Prm hL) (F G H : ℝ → ℝ → ℝ),
     GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (Bl.IsLinked p) (fun _ D O _ _ => ∃ C' Cl Cg CT : ℝ, F Cg CT ≤ C' ∧ G Cg CT ≤ Cl ∧
       H Cg CT ≤ O.L.sc.L ∧ GlobalTheory.Core.Rk.HD D O.L.sc.L C' Cl Cg (1 / 4) 3 (1 / 2) CT ∧ GlobalTheory.Core.Rk.IsScaleWithBoundedGamma D O.L.sc.L C' ∧

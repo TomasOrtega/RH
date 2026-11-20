@@ -24,6 +24,19 @@ section Decomp
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Take `⟨W, hW, hsl⟩` from `GlobalTheory.T.schwartz_family_finite_dim_span F κ T Ψ hΨ hb`. Set `W' : Submodule ℂ ((κ → Af F) → ℂ)` to `W ⊓ S`. Use `haveI : FiniteDimensional ℂ W' := Submodule.finiteDimensional_of_le inf_le_left`. Set `b` to `Module.finBasis ℂ W'`. Use `choose β hβ using fun j => LinearMap.exists_extend (b.coord j)`.
+
+Take `⟨r, hr⟩` from `(coeL (F := F) (κ := κ)).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 DFunLike.coe_injective)`. Establish `hr' : ∀ f, r (coeL f) = f` using `fun f => LinearMap.congr_fun hr f`. Use `⟨_, fun j => b j, fun j => r ∘ₗ coefFun (β j), fun j => (b j).2.2, fun t => ?_, fun j l => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Set `y : κ → mixedEmbedding.mixedSpace F` to `fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`.
+
+Set `s : W'` to `⟨_, hsl t _, hS t y⟩`. Establish `h1` using `congrFun (congrArg Subtype.val (b.sum_repr s)) fun i => (x i).2`. Establish `h2 : ∀ j, r (coefFun (β j) (Ψ t)) y = b.repr s j` using `fun j => by`. Take `⟨f, hf⟩` from `coefFun_mem (β j) _ (hΨ t)`. Rewrite using `[← hf, hr']`.
+
+Conclude with `(congrFun hf y).trans (LinearMap.congr_fun (hβ j) s)`. Establish `h3 : (s : (κ → Af F) → ℂ) (fun i => (x i).2) = Ψ t x`. Simplify using `only [s, y, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`.
+
+Rewrite using `[Finset.sum_apply]`. Use `(h1.trans h3).symm.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← h2 j]`. Both sides reduce to the same expression. Use `fun g _ => ⟨β j g • l, fun f => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [LinearMap.comp_apply, coefFun_pureA, hr', map_smul]`. Both sides reduce to the same expression.
+-/
 theorem exists_decomp_linear {T : Type} (Ψ : T → (κ → AF F) → ℂ) (hΨ : ∀ t, Ψ t ∈ schA F κ)
     (hb : ∀ l ∈ (adeleClass F).adm κ, ∃ C : ℝ, ∀ t, ‖l (Ψ t)‖ ≤ C) (S : Submodule ℂ ((κ → Af F) → ℂ))
     (hS : ∀ t (y : κ → mixedEmbedding.mixedSpace F),
@@ -79,6 +92,11 @@ end Decomp
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, φ, h1, h2, h3, rfl⟩` from `hx`. Establish `hall : (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) ∈ finPart (M.So B.ψ B.τ₁)` using `fun f' => Submodule.subset_span ⟨f', φ, h1, h2, h3, rfl⟩`.
+
+Establish `e` using `slice_pureA (f : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) (fun y : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F => ∏ᶠ v, φ v fun i => evalV F v (y i)) y`. Conclude with `e ▸ Submodule.smul_mem _ _ hall`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => exact Submodule.smul_mem _ c hx`.
+-/
 theorem slice_mem_finPart {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W)
     (y : Fin n × Fin d → mixedEmbedding.mixedSpace F) : ∀ Φ ∈ M.So B.ψ B.τ₁,
     (fun z : Fin n × Fin d → Af F => Φ fun i => mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) (z i)) ∈
@@ -96,6 +114,27 @@ theorem slice_mem_finPart {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F 
   | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
   | smul c x _ hx => exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair T Ψ hΨ hb`. Establish `hS` using `hPair.weil.isUSplitting`. Take `⟨l, -, hlt⟩` from `GlobalTheory.T.exists_admissibleForm_adelicThetaSum F (Fin n × Fin d)`. Establish `hsch : M.So B.ψ B.τ₁ ≤ schA F (Fin n × Fin d)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Establish `h3` using `(h2.and hPair.good.std).mono fun w hw => hw.1.trans hw.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`. Establish `hlin : ∀ Ψ ∈ schA F (Fin n × Fin d), ∀ g h, theta om Ψ g h = l (om (g, h) Ψ)` using `fun Ψ hΨ g h => (hlt _ (hS.pres _ _ hΨ)).symm`. Take `⟨m, φ, A, hφ, hdec, hA⟩` from `exists_decomp_linear Ψ (fun t => hsch (hΨ t)) hb (SB _ ⊓ finPart (M.So B.ψ B.τ₁)) fun t y => ⟨slice_mem_SB y _ (hsch (hΨ t)), slice_mem_finPart M y _ (hΨ t)⟩`.
+
+Use `choose C k hC using fun j => soDecayUnif hP F E σ B n d X W M χX χW om r s r' s' hPair (φ j) (hφ j).1 (hφ j).2 0`. Use `⟨Finset.univ.sup k, fun w hw hwb => ?_⟩` and prove the remaining obligations. Establish `hsem : ∀ j, ∃ D : ℝ, ∀ t, w t * semK (Fin n × Fin d) (k j) (A j (Ψ t)) ≤ D` using `fun j => by`. Take `⟨D, hD⟩` from `bounded_of_weak (fun t => (w t : ℂ) • A j (Ψ t)) (fun l' => by`. Take `⟨D, hD⟩` from `hwb _ (hA j l')`.
+
+Use `⟨D, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg (hw t)]`. Conclude with `hD t) (semK (Fin n × Fin d) (k j))`. Use the proof step `(Seminorm.continuous_finsetSup fun i _ => (schwartz_withSeminorms ℂ _ ℂ).continuous_seminorm i)`. Use `⟨D, fun t => ?_⟩` and prove the remaining obligations.
+
+Use `hD t` as an intermediate fact. Rewrite `this` using `[map_smul_eq_mul, Complex.norm_real, Real.norm_of_nonneg (hw t)]`. Then use the resulting hypothesis. Use `choose D hD using hsem`. Use `⟨∑ j, |C j| * |D j|, fun t g h => ?_⟩` and prove the remaining obligations. Establish `hh` using `GlobalTheory.ThKSoSpan.one_le_ht h`.
+
+Establish `e : theta om (Ψ t) g h = ∑ j, theta om (pureA F (A j (Ψ t)) (φ j)) g h`. Rewrite using `[hlin _ (hsch (hΨ t))]`. Use `conv_lhs => rw [hdec t]`. Rewrite using `[map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hlin _ (hsch ((hφ j).2 _)) g h).symm`.
+
+Rewrite using `[e, Finset.sum_mul]`. Use `(mul_le_mul_of_nonneg_left (norm_sum_le _ _) (hw t)).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `hC j (A j (Ψ t)) g h`.
+
+Rewrite `h1` using `[pow_zero, mul_one]`. Establish `h0 : 0 ≤ semK (Fin n × Fin d) (k j) (A j (Ψ t))` using `apply_nonneg _ _`. Establish `hk : (ht h : ℝ) ^ k j ≤ (ht h : ℝ) ^ Finset.univ.sup k` using `pow_le_pow_right₀ hh (Finset.le_sup (Finset.mem_univ j))`. Establish `hwt` using `hw t`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_left (h1.trans ?_) hwt` and prove the remaining obligations. Use `gcongr`. Conclude with `le_abs_self _`. Use `_ = |C j| * (w t * semK (Fin n × Fin d) (k j) (A j (Ψ t))) * (ht h : ℝ) ^ k j := by ring`. Use `_ ≤ _ := by gcongr`.
+
+Conclude with `(hD j t).trans (le_abs_self _)`.
+-/
 theorem theta_unif_weight : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
     ∀ (T : Type) (Ψ : T → Fn F n d), (∀ t, Ψ t ∈ M.So B.ψ B.τ₁) →

@@ -7,20 +7,34 @@ open Finset
 namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+The claim follows from `eq_sub_of_add_eq (hC i a j b).2.2`.
+-/
 private theorem isCAR_cm_mul_cp_eq_delta_sub_cp_mul_cm {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm)
     (i a j b : Fin n) :
     cm i a * cp j b = (if i = j ∧ a = b then 1 else 0) - cp j b * cm i a :=
   eq_sub_of_add_eq (hC i a j b).2.2
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left (hC i a j b).2.1`.
+-/
 private theorem isCAR_cm_mul_cm_eq_neg_swap {cp cm : Fin n → Fin n → Module.End ℂ W}
     (hC : IsCAR cp cm) (i a j b : Fin n) :
     cm i a * cm j b = -(cm j b * cm i a) :=
   eq_neg_of_add_eq_zero_left (hC i a j b).2.1
 
+/- English proof (translation)
+The claim follows from `Finset.sum_congr rfl fun x hx => by simp [hx]`.
+-/
 private theorem sum_sum_ite_eq_eq_sum {R ι : Type*} [AddCommMonoid R] [DecidableEq ι] (s : Finset ι)
     (f : ι → R) : ∑ x ∈ s, ∑ y ∈ s, (if x = y then f x else 0) = ∑ x ∈ s, f x :=
   Finset.sum_congr rfl fun x hx => by simp [hx]
 
+/- English proof (translation)
+Rewrite using `[show cp a x * cm b x * (cp b y * cm a y) = cp a x * (cm b x * cp b y) * cm a y by`. Simplify using `only [mul_assoc], isCAR_cm_mul_cp_eq_delta_sub_cp_mul_cm hC b x b y]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Rewrite using `[if_pos ⟨rfl, rfl⟩, if_pos rfl]`.
+
+Use `noncomm_ring`. Rewrite using `[if_neg (fun h => hxy h.2), if_neg hxy] noncomm_ring`.
+-/
 private theorem isCAR_cp_cm_cp_cm_reorder_shared_snd {cp cm : Fin n → Fin n → Module.End ℂ W}
     (hC : IsCAR cp cm) (a b x y : Fin n) :
     cp a x * cm b x * (cp b y * cm a y) =
@@ -34,6 +48,11 @@ private theorem isCAR_cp_cm_cp_cm_reorder_shared_snd {cp cm : Fin n → Fin n �
   · rw [if_neg (fun h => hxy h.2), if_neg hxy]
     noncomm_ring
 
+/- English proof (translation)
+Rewrite using `[show cp i b * cm i a * (cp j a * cm j b) = cp i b * (cm i a * cp j a) * cm j b by`. Simplify using `only [mul_assoc], isCAR_cm_mul_cp_eq_delta_sub_cp_mul_cm hC i a j a]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[if_pos ⟨rfl, rfl⟩, if_pos rfl]`.
+
+Use `noncomm_ring`. Rewrite using `[if_neg (fun h => hij h.1), if_neg hij] noncomm_ring`.
+-/
 private theorem isCAR_cp_cm_cp_cm_reorder_shared_fst {cp cm : Fin n → Fin n → Module.End ℂ W}
     (hC : IsCAR cp cm) (a b i j : Fin n) :
     cp i b * cm i a * (cp j a * cm j b) =
@@ -47,6 +66,25 @@ private theorem isCAR_cp_cm_cp_cm_reorder_shared_fst {cp cm : Fin n → Fin n �
   · rw [if_neg (fun h => hij h.1), if_neg hij]
     noncomm_ring
 
+/- English proof (translation)
+Establish `hpos : ∀ a ∈ plusIdx ε, ∀ b ∈ plusIdx ε, sgE ε cp cm a b * sgE ε cp cm b a = ∑ x ∈ minusIdx ε, ∑ y ∈ minusIdx ε, ((if x = y then cp a x * cm a x else 0) - cp a x * cp b y * (cm b x * cm a y))`. Introduce `a ha b hb`. Rewrite using `[csq_sgE_pp ε cp cm ha hb, csq_sgE_pp ε cp cm hb ha, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun y _ => isCAR_cp_cm_cp_cm_reorder_shared_snd hC a b x y`. Establish `hneg : ∀ a ∈ minusIdx ε, ∀ b ∈ minusIdx ε, sgE ε cp cm a b * sgE ε cp cm b a = ∑ i ∈ plusIdx ε, ∑ j ∈ plusIdx ε, ((if i = j then cp i b * cm i b else 0) - cp i b * cp j a * (cm i a * cm j b))`. Introduce `a ha b hb`. Rewrite using `[csq_sgE_mm ε cp cm ha hb, csq_sgE_mm ε cp cm hb ha, neg_mul_neg, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => isCAR_cp_cm_cp_cm_reorder_shared_fst hC a b i j`. Establish `hposBlock : ∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, sgE ε cp cm a b * sgE ε cp cm b a = (pOf ε : ℂ) • ∑ a ∈ plusIdx ε, ∑ x ∈ minusIdx ε, cp a x * cm a x - ∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, ∑ x ∈ minusIdx ε, ∑ y ∈ minusIdx ε, cp a x * cp b y * (cm b x * cm a y)`. Rewrite using `[Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => hpos a ha b hb]`. Simplify using `only [Finset.sum_sub_distrib, sum_sum_ite_eq_eq_sum, Finset.sum_const, ← Finset.smul_sum]`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul ℂ]`. Both sides reduce to the same expression. Establish `hnegBlock : ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, sgE ε cp cm a b * sgE ε cp cm b a = (qOf ε : ℂ) • ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, cp i b * cm i b - ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, ∑ j ∈ plusIdx ε, cp i b * cp j a * (cm i a * cm j b)`. Rewrite using `[Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => hneg a ha b hb]`. Simplify using `only [Finset.sum_sub_distrib, sum_sum_ite_eq_eq_sum, Finset.sum_const]`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul ℂ]`. Both sides reduce to the same expression. Establish `hT : ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, ∑ j ∈ plusIdx ε, cp i b * cp j a * (cm i a * cm j b) = -∑ a ∈ plusIdx ε, ∑ b ∈ plusIdx ε, ∑ x ∈ minusIdx ε, ∑ y ∈ minusIdx ε, cp a x * cp b y * (cm b x * cm a y)`. Rewrite using `[sum_comm_pair_pair, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[isCAR_cm_mul_cm_eq_neg_swap hC i a j b, mul_neg]`. Establish `hN : ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, cp i b * cm i b = ∑ a ∈ plusIdx ε, ∑ x ∈ minusIdx ε, cp a x * cm a x`. Rewrite using `[Finset.sum_comm]`. Establish `hR1 : ∑ a ∈ plusIdx ε, (qOf ε : ℂ) • sgE ε cp cm a a = (qOf ε : ℂ) • ∑ a ∈ plusIdx ε, ∑ x ∈ minusIdx ε, cp a x * cm a x`.
+
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [csq_sgE_pp ε cp cm ha ha]`. Establish `hR2 : ∑ a ∈ minusIdx ε, (pOf ε : ℂ) • sgE ε cp cm a a = -((pOf ε : ℂ) • ∑ b ∈ minusIdx ε, ∑ i ∈ plusIdx ε, cp i b * cm i b)`. Rewrite using `[Finset.smul_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [csq_sgE_mm ε cp cm ha ha, smul_neg]`.
+
+Rewrite using `[casimirK_pm, two_rho_sum, hposBlock, hnegBlock, hR1, hR2, hT, hN]`. Normalize the expressions using the abelian group laws.
+-/
 theorem casimirK_sgE {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR cp cm) (ε : Fin n → Bool) :
     casimirK ε (sgE ε cp cm) = (2 : ℂ) • ∑ a, ((rhoHol ε a : ℝ) : ℂ) • sgE ε cp cm a a := by
   have hpos : ∀ a ∈ plusIdx ε, ∀ b ∈ plusIdx ε,
@@ -118,6 +156,11 @@ theorem casimirK_sgE {cp cm : Fin n → Fin n → Module.End ℂ W} (hC : IsCAR 
     hnegBlock, hR1, hR2, hT, hN]
   abel
 
+/- English proof (translation)
+Unfold `sgE`. Use `split_ifs`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, (hEC x y a z).1, mul_assoc, (hEC x y b z).2, ← mul_assoc]`.
+
+Rewrite using `[mul_neg, neg_mul, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, (hEC x y i b).1, mul_assoc, (hEC x y i a).2, ← mul_assoc]`. Rewrite using `[mul_zero, zero_mul]`.
+-/
 theorem csq_E_comm_sgE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hEC : CommutesCAR E cp cm)
     (ε : Fin n → Bool) (x y a b : Fin n) :
     E x y * sgE ε cp cm a b = sgE ε cp cm a b * E x y := by
@@ -136,6 +179,11 @@ def crossT (ε : Fin n → Bool) (E cp cm : Fin n → Fin n → Module.End ℂ W
   ∑ x ∈ plusIdx ε, ∑ y ∈ plusIdx ε, E x y * sgE ε cp cm y x +
     ∑ a ∈ minusIdx ε, ∑ b ∈ minusIdx ε, E a b * sgE ε cp cm b a
 
+/- English proof (translation)
+Establish `hsw : ∑ a ∈ s, ∑ b ∈ s, S a b * E b a = ∑ a ∈ s, ∑ b ∈ s, E a b * S b a`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => h b a a b`. Simplify using `only [add_mul, mul_add, Finset.sum_add_distrib]`. Rewrite using `[hsw, two_smul]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 private theorem sum_sum_add_mul_add_of_commute (s : Finset (Fin n)) (E S : Fin n → Fin n → Module.End ℂ W)
     (h : ∀ a b c d, S a b * E c d = E c d * S a b) :
     ∑ a ∈ s, ∑ b ∈ s, (E a b + S a b) * (E b a + S b a) =
@@ -148,6 +196,9 @@ private theorem sum_sum_add_mul_add_of_commute (s : Finset (Fin n)) (E S : Fin n
   rw [hsw, two_smul]
   abel
 
+/- English proof (translation)
+Establish `hc : ∀ a b c d, sgE ε cp cm a b * E c d = E c d * sgE ε cp cm a b` using `fun a b c d => (csq_E_comm_sgE hEC ε c d a b).symm`. Simplify using `only [casimirK_pm, diagE, crossT]`. Rewrite using `[sum_sum_add_mul_add_of_commute (plusIdx ε) E (sgE ε cp cm) hc, sum_sum_add_mul_add_of_commute (minusIdx ε) E (sgE ε cp cm) hc, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem casimirK_diagE {E cp cm : Fin n → Fin n → Module.End ℂ W} (hEC : CommutesCAR E cp cm)
     (ε : Fin n → Bool) :
     casimirK ε (diagE ε E cp cm) =

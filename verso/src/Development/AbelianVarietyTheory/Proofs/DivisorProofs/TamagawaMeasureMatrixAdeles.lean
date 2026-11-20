@@ -16,6 +16,11 @@ open GlobalTheory.SWLink
 
 namespace GlobalTheory.SWLinkMeas
 
+/- English proof (translation)
+Set `t : G ≃ₜ H` to `{ e.toEquiv with continuous_toFun := h1, continuous_invFun := h2 }`. Set `E : G ≃ᵐ H` to `t.toMeasurableEquiv`. Establish `hE : (E : G → H) = e` using `rfl`. Use `⟨μ.map e, ⟨AddEquiv.isAddHaarMeasure_map μ e h1 h2, e '' 𝓕, ?_, ?_⟩, fun f => integral_map_equiv E f⟩` and prove the remaining obligations. Rewrite using `[← hE, E.map_apply, Set.preimage_image_eq _ E.injective, hv]`.
+
+Set `q : Λ ≃ Γ` to `{ toFun := fun y => ⟨e.symm y, (hΓ _).2 (by simpa using y.2)⟩ invFun := fun x => ⟨e x, (hΓ _).1 x.2⟩ left_inv := fun y => Subtype.ext (e.apply_symm_apply _) right_inv := fun x => Subtype.ext (e.symm_apply_apply _) }`. Establish `hp : MeasurePreserving E μ (μ.map e)` using `⟨E.measurable, rfl⟩`. Use `h𝓕.image_of_equiv E.toEquiv (hp.symm E).quasiMeasurePreserving q fun g x => ?_` and prove the remaining obligations. Use `show e (e.symm g + x) = g + e x`. Rewrite using `[map_add, e.apply_symm_apply]`.
+-/
 theorem map_covol {G H : Type} [AddGroup G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     [IsTopologicalAddGroup G] [AddGroup H] [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H]
     [IsTopologicalAddGroup H] (e : G ≃+ H) (h1 : Continuous e) (h2 : Continuous e.symm) (Γ : AddSubgroup G)
@@ -40,6 +45,9 @@ theorem map_covol {G H : Type} [AddGroup G] [TopologicalSpace G] [MeasurableSpac
 
 variable {D : D7} {m n d : ℕ}
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Conclude with `continuous_pi fun p => ((continuous_apply p.2.2).comp (IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF D.host.F) ε).equivFun.toLinearMap)).comp ((continuous_apply p.2.1).comp (continuous_apply p.1))`.
+-/
 theorem continuous_coord (ε : Module.Basis (Fin d) D.host.F D.host.E) : Continuous (coord ε : Mx D m n → _) := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   exact continuous_pi fun p =>
@@ -47,6 +55,9 @@ theorem continuous_coord (ε : Module.Basis (Fin d) D.host.F D.host.E) : Continu
       (Algebra.TensorProduct.basis (AF D.host.F) ε).equivFun.toLinearMap)).comp
       ((continuous_apply p.2.1).comp (continuous_apply p.1))
 
+/- English proof (translation)
+Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AE D) := IsModuleTopology.toContinuousAdd (AF D.host.F) _`. Conclude with `continuous_pi fun i => continuous_pi fun j => (IsModuleTopology.continuous_of_linearMap (Algebra.TensorProduct.basis (AF D.host.F) ε).equivFun.symm.toLinearMap).comp (continuous_pi fun k => continuous_apply (i, j, k))`.
+-/
 theorem continuous_coordL_symm (ε : Module.Basis (Fin d) D.host.F D.host.E) : Continuous (coordL ε m n).symm := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   haveI : ContinuousAdd (AE D) := IsModuleTopology.toContinuousAdd (AF D.host.F) _
@@ -55,12 +66,20 @@ theorem continuous_coordL_symm (ε : Module.Basis (Fin d) D.host.F D.host.E) : C
       (Algebra.TensorProduct.basis (AF D.host.F) ε).equivFun.symm.toLinearMap).comp
       (continuous_pi fun k => continuous_apply (i, j, k))
 
+/- English proof (translation)
+Use `show (Algebra.TensorProduct.basis (AF D.host.F) ε).repr ((1 : AF D.host.F) ⊗ₜ[D.host.F] γ p.1 p.2.1) p.2.2 = _`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]`.
+-/
 theorem coord_rat (ε : Module.Basis (Fin d) D.host.F D.host.E) (γ : Matrix (Fin m) (Fin n) D.host.E)
     (p : Fin m × Fin n × Fin d) :
     coord ε (rat γ : Mx D m n) p = algebraMap D.host.F (AF D.host.F) (ε.repr (γ p.1 p.2.1) p.2.2) := by
   show (Algebra.TensorProduct.basis (AF D.host.F) ε).repr ((1 : AF D.host.F) ⊗ₜ[D.host.F] γ p.1 p.2.1) p.2.2 = _
   rw [Algebra.TensorProduct.basis_repr_tmul, one_smul, Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, rfl⟩`. Conclude with `⟨fun p => ε.repr (γ p.1 p.2.1) p.2.2, funext fun p => (coord_rat ε γ p).symm⟩`. Introduce and unpack `⟨c, hc⟩`. Use `⟨Matrix.of fun i j => ε.equivFun.symm fun k => c (i, j, k), (coord_bijective ε).1 ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hc]`. Use function extensionality and compare the values at `p`. Use `(coord_rat ε _ p).trans ?_` and prove the remaining obligations. Conclude with `congrArg (algebraMap D.host.F (AF D.host.F)) (congrFun (ε.equivFun.apply_symm_apply fun k => c (p.1, p.2.1, k)) p.2.2)`.
+-/
 theorem mem_ratMx_iff (ε : Module.Basis (Fin d) D.host.F D.host.E) (x : Mx D m n) :
     x ∈ ratMx D m n ↔ coord ε x ∈
       (AddMonoidHom.compLeft (algebraMap D.host.F (AF D.host.F)).toAddMonoidHom (Fin m × Fin n × Fin d)).range := by
@@ -75,6 +94,9 @@ theorem mem_ratMx_iff (ε : Module.Basis (Fin d) D.host.F D.host.E) (x : Mx D m 
     exact congrArg (algebraMap D.host.F (AF D.host.F))
       (congrFun (ε.equivFun.apply_symm_apply fun k => c (p.1, p.2.1, k)) p.2.2)
 
+/- English proof (translation)
+Introduce `D m n d ε μ 𝓕 h _ _`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Conclude with `map_covol (coordL ε m n).toAddEquiv (continuous_coord ε) (continuous_coordL_symm ε) (ratMx D m n) _ (mem_ratMx_iff ε) μ 𝓕 h.1 h.2.1 h.2.2`.
+-/
 theorem exists_isTamagawa : ∀ (D : D7) (m n d : ℕ) (ε : Module.Basis (Fin d) D.host.F D.host.E) (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)), IsCovolOne (ratMx D m n) μ 𝓕 → ∀ [MeasurableSpace (Fin m × Fin n × Fin d → AF D.host.F)] [BorelSpace (Fin m × Fin n × Fin d → AF D.host.F)], ∃ μ' : Measure (Fin m × Fin n × Fin d → AF D.host.F), IsTamagawa D.host.F (Fin m × Fin n × Fin d) μ' ∧ ∀ f : (Fin m × Fin n × Fin d → AF D.host.F) → ℂ, ∫ y, f y ∂μ' = ∫ x, f (coord ε x) ∂μ := by
   intro D m n d ε μ 𝓕 h _ _
   haveI : BorelSpace (Mx D m n) := ⟨rfl⟩

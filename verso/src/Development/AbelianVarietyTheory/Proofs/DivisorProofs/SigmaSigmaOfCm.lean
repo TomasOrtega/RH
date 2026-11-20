@@ -20,11 +20,21 @@ variable (σ JS JT) in
 def pairMat (y : WOF F E nS nT) : Matrix (Fin nS) (Fin nT) (AEF F E) :=
   (JS⁻¹).map (incAF F E) * (y.map (cAF σ))ᵀ * JT.map (incAF F E)
 
+/- English proof (translation)
+Simplify using `only [pairMat, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem pairMat_apply (y : WOF F E nS nT) (a : Fin nS) (d : Fin nT) :
     pairMat σ JS JT y a d = ∑ b, ∑ c, incAF F E (JS⁻¹ a b) * cAF σ (y c b) * incAF F E (JT c d) := by
   simp only [pairMat, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Rewrite using `[pairMat_apply, Finset.sum_mul, hOF, Finset.sum_eq_single a₀]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single d₀]`.
+
+Rewrite using `[Matrix.single_apply_same]`. Introduce `d _ hd`. Rewrite using `[Matrix.single_apply_of_ne _ _ _ _ _ (fun h => hd h.1.symm), mul_zero]`. Simplify using the standard rewrite rules. Introduce `a _ ha`.
+
+Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_apply_of_ne _ _ _ _ _ (fun h => ha h.2.symm), mul_zero]`. Simplify using the standard rewrite rules.
+-/
 theorem hOF_single (y : WOF F E nS nT) (d₀ : Fin nT) (a₀ : Fin nS) (t : AEF F E) :
     hOF σ JS JT (Matrix.single d₀ a₀ t) y = pairMat σ JS JT y a₀ d₀ * t := by
   rw [pairMat_apply, Finset.sum_mul, hOF, Finset.sum_eq_single a₀]
@@ -41,6 +51,15 @@ theorem hOF_single (y : WOF F E nS nT) (d₀ : Fin nT) (a₀ : Fin nS) (t : AEF 
     rw [Matrix.single_apply_of_ne _ _ _ _ _ (fun h => ha h.2.symm), mul_zero]
   · simp
 
+/- English proof (translation)
+Introduce `h0`. Apply `hy` to reduce the goal to its premises. Establish `huS : IsUnit JS.det` using `isUnit_iff_ne_zero.mpr hS.2`. Establish `huT : IsUnit JT.det` using `isUnit_iff_ne_zero.mpr hT.2`. Establish `hL : JS.map (incAF F E) * (JS⁻¹).map (incAF F E) = 1`.
+
+Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ huS, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hR : JT.map (incAF F E) * (JT⁻¹).map (incAF F E) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ huT, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hY : (y.map (cAF σ))ᵀ = 0`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[pairMat, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hL, Matrix.one_mul, Matrix.mul_assoc, hR, Matrix.mul_one]`. Use `_ = 0 := by rw [h0, Matrix.mul_zero, Matrix.zero_mul]`. Use extensionality with `i j`. Use `congrFun (congrFun hY j) i` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.zero_apply] at this`.
+
+Rewrite using `[Matrix.zero_apply, ← GlobalTheory.HeisLineF.cAF_cAF σ hσ (y i j), this, map_zero]`.
+-/
 theorem pairMat_ne_zero (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT : IsHermND σ JT) {y : WOF F E nS nT}
     (hy : y ≠ 0) : pairMat σ JS JT y ≠ 0 := by
   intro h0
@@ -61,6 +80,19 @@ theorem pairMat_ne_zero (hσ : ∀ x, σ (σ x) = x) (hS : IsHermND σ JS) (hT :
   simp only [Matrix.transpose_apply, Matrix.map_apply, Matrix.zero_apply] at this
   rw [Matrix.zero_apply, ← GlobalTheory.HeisLineF.cAF_cAF σ hσ (y i j), this, map_zero]
 
+/- English proof (translation)
+Establish `hM` using `pairMat_ne_zero hσ hS hT hy`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, d₀, had⟩ : ∃ a d, pairMat σ JS JT y a d ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hM (Matrix.ext hc)`.
+
+Establish `hcc : cAF σ (cAF σ e) = e` using `GlobalTheory.HeisLineF.cAF_cAF σ hσ e`. Establish `hMe : pairMat σ JS JT y a₀ d₀ * e = pairMat σ JS JT y a₀ d₀`. Rewrite using `[pairMat_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `e1 : cAF σ (y c b) = e * cAF σ (y c b)` using `by conv_lhs => rw [← hyY c b]`. Rewrite using `[map_mul, hcc]`. Take the linear combination `(-(incAF F E (JS⁻¹ a₀ b) * incAF F E (JT c d₀))) * e1`. Establish `hunit : incAF F E ξ₀⁻¹ * incAF F E ξ₀ = 1` using `by rw [← map_mul, inv_mul_cancel₀ hξ0, map_one]`.
+
+Establish `hm0 : incAF F E ξ₀ * pairMat σ JS JT y a₀ d₀ ≠ 0`. Introduce `h0`. Apply `had` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hunit, one_mul]`.
+
+Use `_ = 0 := by rw [h0, mul_zero]`. Take `⟨z, hz⟩` from `GlobalTheory.AdelicTraceNondeg.trace_pairing_nondeg F E ψ hψ _ hm0`. Use `⟨Matrix.single d₀ a₀ (e * z), fun i j => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hij : d₀ = i ∧ a₀ = j`. Take `⟨rfl, rfl⟩` from `hij`.
+
+Rewrite using `[Matrix.single_apply_same, ← mul_assoc, he.1]`. Rewrite using `[Matrix.single_apply_of_ne _ _ _ _ _ hij, mul_zero]`. Rewrite using `[GlobalTheory.FinLatF.symplOHF_skew σ JS JT hσ hS hT ξ₀ hξ y, sub_neg_eq_add, GlobalTheory.FinLatF.symplOHF_add_self, symplOF, hOF_single, ← mul_assoc (pairMat σ JS JT y a₀ d₀) e z, hMe, ← mul_assoc]`. Conclude with `hz`.
+-/
 theorem exists_detect (hσ : ∀ x, σ (σ x) = x) {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (hS : IsHermND σ JS)
     (hT : IsHermND σ JT) {ξ₀ : E} (hξ0 : ξ₀ ≠ 0) (hξ : σ ξ₀ = -ξ₀) {e : AEF F E} (he : IsSplitIdemF σ e)
     {y : WOF F E nS nT} (hyY : ∀ i j, cAF σ e * y i j = y i j) (hy : y ≠ 0) :
@@ -98,6 +130,9 @@ theorem exists_detect (hσ : ∀ x, σ (σ x) = x) {ψ : AddChar (AF F) ℂ} (h�
       hOF_single, ← mul_assoc (pairMat σ JS JT y a₀ d₀) e z, hMe, ← mul_assoc]
     exact hz
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ ψ hψ nS nT JS JT hS hT ξ₀ hξ0 hξ e he y hyY hy`. Conclude with `exists_detect hσ hψ hS hT hξ0 hξ he hyY hy`.
+-/
 theorem detect_conj_half : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), (∀ x, σ (σ x) = x) → ∀ (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (nS nT : ℕ)
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
@@ -108,6 +143,9 @@ theorem detect_conj_half : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   intro F E _ _ _ _ _ σ hσ ψ hψ nS nT JS JT hS hT ξ₀ hξ0 hξ e he y hyY hy
   exact exists_detect hσ hψ hS hT hξ0 hξ he hyY hy
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+-/
 theorem sigma_sigma_of_cm (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])

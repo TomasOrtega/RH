@@ -25,8 +25,14 @@ abbrev RobbaR (ρ0 : Set.Ioo (0 : ℝ) 1) := (gammaTeichLift p ι hϖ hι).Robba
 
 abbrev RobbaTildeL := (gammaTeichLift p ι hϖ hι).RobbaTilde
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsDomain (RobbaTildeL p ι hϖ hι) := inferInstance
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example (ρ0 : Set.Ioo (0 : ℝ) 1) : IsDomain (RobbaR p ι hϖ hι ρ0) := inferInstance
 
 def frobenius (σ : K →+* K) (hσn : ∀ x, ‖σ x‖ = ‖x‖) (a : ℕ)

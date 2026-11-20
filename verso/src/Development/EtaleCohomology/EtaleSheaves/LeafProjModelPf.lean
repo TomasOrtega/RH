@@ -6,6 +6,15 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 
 namespace LateralTheory.E.LeafProjModelPf
 
+/- English proof (translation)
+Establish `hB` using `Y.isBasis_affineOpens.of_isInducing f.imageι.isEmbedding.isInducing`. Establish `hred : ∀ U : Y.affineOpens, _root_.IsReduced Γ(f.image, f.imageι ⁻¹ᵁ U)` using `fun U => isReduced_of_injective _ (f.toImage_app_injective U)`. Use `@isReduced_of_isReduced_stalk _ (fun z => ⟨?_⟩)` and prove the remaining obligations. Introduce and unpack `g ⟨n, e⟩`. Take `⟨U, hzU, s, rfl⟩` from `f.image.presheaf.exists_germ_eq g`.
+
+Rewrite `e` using `[← map_pow, ← map_zero (f.image.presheaf.germ _ z hzU).hom]`. Take `⟨V, hzV, iU, iV, e'⟩` from `f.image.presheaf.germ_eq z hzU hzU _ 0 e`. Rewrite `e'` using `[map_pow, map_zero]`. Take `⟨_, ⟨W, hW, rfl⟩, hzW, hWV⟩` from `Opens.isBasis_iff_nbhd.mp hB hzV`. Establish `h0 : f.image.presheaf.map (homOfLE hWV).op (f.image.presheaf.map iU.op s) = 0`.
+
+Establish `hx` using `congrArg (f.image.presheaf.map (homOfLE hWV).op) e'`. Rewrite `hx` using `[map_pow, map_zero]`. Conclude with `(hred ⟨W, hW⟩).eq_zero _ ⟨n, hx⟩`. Rewrite using `[← f.image.presheaf.germ_res iU z hzV, ← f.image.presheaf.germ_res (homOfLE hWV) z hzW]`. Simplify using `only [CommRingCat.comp_apply] at h0 ⊢`.
+
+Rewrite using `[h0, map_zero]`.
+-/
 theorem image_isReduced {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [IsReduced X] : IsReduced f.image := by
   have hB := Y.isBasis_affineOpens.of_isInducing f.imageι.isEmbedding.isInducing
   have hred : ∀ U : Y.affineOpens, _root_.IsReduced Γ(f.image, f.imageι ⁻¹ᵁ U) := fun U =>
@@ -25,6 +34,9 @@ theorem image_isReduced {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [IsRed
   simp only [CommRingCat.comp_apply] at h0 ⊢
   rw [h0, map_zero]
 
+/- English proof (translation)
+Establish `h1 : IsIrreducible (Set.range f.toImage)`. Simplify `(IrreducibleSpace.isIrreducible_univ X).image _ f.toImage.continuous.continuousOn` using `[Set.image_univ]`. Establish `h2` using `h1.closure`. Rewrite `h2` using `[f.toImage.denseRange.closure_range]`. Conclude with `(irreducibleSpace_def _).mpr h2`.
+-/
 theorem image_irreducible {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [IrreducibleSpace X] :
     IrreducibleSpace f.image := by
   have h1 : IsIrreducible (Set.range f.toImage) := by
@@ -33,6 +45,9 @@ theorem image_irreducible {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] [Irr
   rw [f.toImage.denseRange.closure_range] at h2
   exact (irreducibleSpace_def _).mpr h2
 
+/- English proof (translation)
+Use `image_isReduced f` as an intermediate fact. Use `image_irreducible f` as an intermediate fact. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced _`.
+-/
 theorem leafImageIntegral {X Y : Scheme.{0}} (f : X ⟶ Y) [QuasiCompact f] (hX : IsIntegral X) :
     IsIntegral f.image := by
   have := image_isReduced f
@@ -44,6 +59,11 @@ def LeafQProjImm : Prop := ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Alg
     IsImmersion φ ∧ QuasiCompact φ ∧
     φ ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str k N = Spec.map (CommRingCat.ofHom (algebraMap k A))
 
+/- English proof (translation)
+Introduce `k _ A _ _ _ _`. Take `⟨N, φ, hi, hq, hc⟩` from `h1 k A`. Use `⟨φ.image, φ.imageι ≫ ReciprocityTheory.ChartRestriction.G.Geo.Tor.PSpace.str k N, φ.toImage, leafImageIntegral φ inferInstance, ?_, inferInstance, ?_⟩` and prove the remaining obligations. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str k N infer_instance` as an intermediate fact. Rewrite using `[← Category.assoc, Scheme.Hom.toImage_imageι]`.
+
+Conclude with `hc`.
+-/
 theorem LeafProjModel_of (h1 : LeafQProjImm) : LateralTheory.E.LeafCloseBCut.LeafProjModel := by
   intro k _ A _ _ _ _
   obtain ⟨N, φ, hi, hq, hc⟩ := h1 k A

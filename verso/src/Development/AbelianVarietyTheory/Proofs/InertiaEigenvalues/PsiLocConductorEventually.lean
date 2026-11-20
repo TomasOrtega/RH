@@ -16,6 +16,15 @@ open scoped nonZeroDivisors ComplexConjugate
 
 open IsDedekindDomain Formalism.UG GlobalTheory.LFun
 
+/- English proof (translation)
+Introduce `E _ _`. Establish `hD : (differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) ≠ 0` using `differentIdeal_ne_bot (A := ℤ)`. Take `hfin` from `Ideal.finite_factors hD`. Use `⟨hfin.toFinset, fun w hw x => ?_⟩` and prove the remaining obligations. Establish `hw' : ¬ w.asIdeal ∣ differentIdeal ℤ (𝓞 E)` using `by simpa using hw`.
+
+Rewrite `hw'` using `[Ideal.dvd_iff_le]`. Take `⟨y, hy, hyw⟩` from `SetLike.not_le_iff_exists.mp hw'`. Establish `hval : Valued.v ((algebraMap (𝓞 E) E y : E) : w.adicCompletion E) = 1`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `le_antisymm (w.intValuation_le_one y) (not_lt.mp fun h => hyw ((w.intValuation_lt_one_iff_mem y).mp h))`.
+
+Establish `key : x ∈ GroundTheory.Global.localInvDifferent w ↔ x ∈ w.adicCompletionIntegers E`. Use `⟨fun h => ?_, GroundTheory.Global.mem_localInvDifferent_of_mem⟩` and prove the remaining obligations. Establish `h1` using `h y hy`. Rewrite `h1` using `[HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.map_mul, hval, mul_one]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).mpr h1`.
+
+Use `show _ ↔ x ∈ w.adicCompletionIntegers E`. Rewrite using `[← key, ← GroundTheory.Global.forall_localAdelicChar_mul_eq_one_iff]`. Use `forall₂_congr fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.JSW.WhitModel.psiLoc_eq, Circle.coe_eq_one, mul_comm]`.
+-/
 theorem GlobalTheory.JSW.psiLoc_conductor_eventually : ∀ (E : Type) [Field E] [NumberField E], ∃ S : Finset (HeightOneSpectrum (𝓞 E)), ∀ w ∉ S, ∀ x : w.adicCompletion E, (∀ y ∈ Ov E w, GlobalTheory.JSW.psiLoc w (x * y) = 1) ↔ x ∈ Ov E w := by
   intro E _ _
   classical

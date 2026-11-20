@@ -52,6 +52,11 @@ def FreshSplit : Prop :=
       ∃ u ∉ T, ∀ A : ValuationSubring Ω, IsPlaceOver A u → Dec (F := maximalRealSubfield E) A ≤ U ∧
         ∃ τ ∈ Ine (F := maximalRealSubfield E) A, orderOf (ψ τ) = n
 
+/- English proof (translation)
+Introduce `t A hA`. Break down `h t A hA with h1 | h1` into its components or cases. Break down `h' t A hA with h2 | h2` into its components or cases. Conclude with `Or.inl (le_inf h1 h2)`. Conclude with `Or.inr h2`.
+
+Conclude with `Or.inr h1`.
+-/
 theorem RamSplit.inf {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     {H H' : Subgroup (G (maximalRealSubfield E) Ω)} (h : RamSplit E H) (h' : RamSplit E H') : RamSplit E (H ⊓ H') := by
   intro t A hA
@@ -61,6 +66,9 @@ theorem RamSplit.inf {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra
     · exact Or.inr h2
   · exact Or.inr h1
 
+/- English proof (translation)
+Introduce `t A hA`. Break down `h t A hA with h1 | h1` into its components or cases. Conclude with `Or.inl (h1.trans hle)`. Conclude with `Or.inr h1`.
+-/
 theorem RamSplit.mono {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     {H H' : Subgroup (G (maximalRealSubfield E) Ω)} (hle : H ≤ H') (h : RamSplit E H) : RamSplit E H' := by
   intro t A hA
@@ -68,6 +76,13 @@ theorem RamSplit.mono {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebr
   · exact Or.inl (h1.trans hle)
   · exact Or.inr h1
 
+/- English proof (translation)
+Proceed by induction on `f using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p n hp _ => exact h p n hp`. Consider the case `zero => exact absurd hf (lt_irrefl 0)`. Consider the case `one => simpa using h 2 0 Nat.prime_two`. Consider the case `coprime a b ha hb hab iha ihb`.
+
+Introduce `E Ω _ _ _ _ _ _ v`. Take `⟨r, h1, h2, h3⟩` from `iha (by omega) E Ω v`. Take `⟨s, k1, k2, k3⟩` from `ihb (by omega) E Ω v`. Establish `hle : r.ker ⊓ s.ker ≤ (r * s).ker` using `fun g hg => by`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.mul_apply, MonoidHom.mem_ker.1 hg.1, MonoidHom.mem_ker.1 hg.2, one_mul]`.
+
+Use `⟨r * s, (h1.inf k1).mono hle, (h2.inf k2).mono hle, fun A hA => ⟨(le_inf (h3 A hA).1 (k3 A hA).1).trans hle, fun φ hφ => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(h3 A hA).2 φ hφ`. Establish `e2` using `(k3 A hA).2 φ hφ`. Rewrite using `[MonoidHom.mul_apply, (Commute.all _ _).orderOf_mul_eq_mul_orderOf_of_coprime (by rwa [e1, e2]), e1, e2]`.
+-/
 theorem unrCharAt_of (h : UnrCharPP) (f : ℕ) (hf : 0 < f) : UnrCharAt f := by
   induction f using Nat.recOnPosPrimePosCoprime with
   | prime_pow p n hp _ => exact h p n hp

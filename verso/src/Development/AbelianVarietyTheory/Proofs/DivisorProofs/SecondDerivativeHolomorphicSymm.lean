@@ -7,6 +7,15 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Take `⟨U, hUb, hU⟩` from `h.exists_mem`. Take `⟨V, hVU, hVo, hbV⟩` from `mem_nhds_iff.mp hUb`. Set `e' : E' ≃L[ℂ] (Fin (Module.finrank ℂ E') → ℂ)` to `(Module.finBasis ℂ E').equivFun.toContinuousLinearEquiv`. Set `e : E ≃L[ℂ] (Fin (Module.finrank ℂ E) → ℂ)` to `(Module.finBasis ℂ E).equivFun.toContinuousLinearEquiv`. Establish `hV' : IsOpen (e'.symm ⁻¹' V)` using `hVo.preimage e'.symm.continuous`.
+
+Establish `hcoord : ∀ i, AnalyticAt ℂ (fun x => e (φ (e'.symm x)) i) (e' b)`. Introduce `i`. Use `ReciprocityTheory.AnForm.Osgood.osgood _ _ _ hV' ?_ (e' b) (by simpa using hbV)` and prove the remaining obligations. Introduce `x hx`. Establish `h1 : DifferentiableAt ℂ φ (e'.symm x)` using `hU _ (hVU hx)`.
+
+Establish `h2 : DifferentiableAt ℂ (fun x => e (φ (e'.symm x))) x` using `e.differentiableAt.comp x (h1.comp x e'.symm.differentiableAt)`. Conclude with `(differentiableAt_apply i _ |>.comp x h2).differentiableWithinAt`. Establish `hpi : AnalyticAt ℂ (fun x => e (φ (e'.symm x))) (e' b)` using `analyticAt_pi_iff.mpr hcoord`. Establish `h1 : AnalyticAt ℂ (fun x => e (φ (e'.symm x)) ) (e'.toContinuousLinearMap b)` using `hpi`. Establish `hcomp` using `(e.symm.toContinuousLinearMap.analyticAt _).comp (h1.comp (e'.toContinuousLinearMap.analyticAt b))`.
+
+Establish `heq : (⇑e.symm.toContinuousLinearMap ∘ (fun x => e (φ (e'.symm x))) ∘ ⇑e'.toContinuousLinearMap) = φ`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite `hcomp` using `[heq]`. Then use the resulting hypothesis.
+-/
 theorem analyticAt_of_eventually_differentiableAt_fin
     {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] [FiniteDimensional ℂ E']
@@ -35,6 +44,13 @@ theorem analyticAt_of_eventually_differentiableAt_fin
     funext y; simp
   rwa [heq] at hcomp
 
+/- English proof (translation)
+Establish `hA : AnalyticAt ℂ φ b` using `analyticAt_of_eventually_differentiableAt_fin φ b h`. Establish `hC : ContDiffAt ℂ ω φ b` using `hA.contDiffAt`. Establish `hS : IsSymmSndFDerivAt ℂ φ b` using `hC.isSymmSndFDerivAt (by simp [minSmoothness])`. Establish `hF : DifferentiableAt ℂ (fderiv ℂ φ) b` using `(hC.fderiv_right (m := 1) (by simp)).differentiableAt (by simp)`. Establish `key : ∀ u, fderiv ℂ (fun c => fderiv ℂ φ c u) b = (fderiv ℂ (fderiv ℂ φ) b).flip u`.
+
+Introduce `u`. Rewrite using `[fderiv_clm_apply hF (differentiableAt_const u)]`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[key v, key w]`.
+
+Simplify using `only [ContinuousLinearMap.flip_apply]`. Conclude with `hS w v`.
+-/
 theorem fderiv_fderiv_apply_symm_of_eventually_differentiableAt
     {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] [FiniteDimensional ℂ E']

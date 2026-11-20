@@ -18,6 +18,9 @@ open GlobalTheory.FlatModel
 
 namespace GlobalTheory.UnifNorm
 
+/- English proof (translation)
+Establish `hv : ((Valued.v (x : ℂ_[p]) : NNReal) : ℝ) = ‖(x : ℂ_[p])‖`. Rewrite using `[PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding, Valuation.embedding_restrict]`. Rewrite using `[← hv]`. Establish `: Valued.v (x : ℂ_[p]) ≤ 1` using `x.2`. Conclude with `this` after adjusting the coercions.
+-/
 theorem norm_le_one_of_mem (p : ℕ) [Fact p.Prime] (x : 𝓞_ℂ_[p]) : ‖(x : ℂ_[p])‖ ≤ 1 := by
   have hv : ((Valued.v (x : ℂ_[p]) : NNReal) : ℝ) = ‖(x : ℂ_[p])‖ := by
     rw [PadicComplex.norm_eq_norm, Valued.v.norm_def, PadicComplex.RankOne.hom_eq_embedding,
@@ -26,6 +29,11 @@ theorem norm_le_one_of_mem (p : ℕ) [Fact p.Prime] (x : 𝓞_ℂ_[p]) : ‖(x :
   have : Valued.v (x : ℂ_[p]) ≤ 1 := x.2
   exact_mod_cast this
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `hx.exists_right_inv`. Establish `h1 : (x : ℂ_[p]) * (y : ℂ_[p]) = 1`. Use `congrArg (fun z : 𝓞_ℂ_[p] => (z : ℂ_[p])) hy` as an intermediate fact. Simplify using `using this`. Establish `h3` using `congrArg norm h1`.
+
+Rewrite `h3` using `[norm_mul, norm_one]`. Establish `ha` using `norm_le_one_of_mem p x`. Establish `hb` using `norm_le_one_of_mem p y`. Use polynomial arithmetic with `[norm_nonneg (x : ℂ_[p]), norm_nonneg (y : ℂ_[p])]`.
+-/
 theorem norm_eq_one_of_isUnit (p : ℕ) [Fact p.Prime] {x : 𝓞_ℂ_[p]} (hx : IsUnit x) :
     ‖(x : ℂ_[p])‖ = 1 := by
   obtain ⟨y, hy⟩ := hx.exists_right_inv
@@ -38,6 +46,11 @@ theorem norm_eq_one_of_isUnit (p : ℕ) [Fact p.Prime] {x : 𝓞_ℂ_[p]} (hx : 
   have hb := norm_le_one_of_mem p y
   nlinarith [norm_nonneg (x : ℂ_[p]), norm_nonneg (y : ℂ_[p])]
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hn`. Establish `h1` using `congrArg (fun z : V => ‖((φ z : 𝓞_ℂ_[p]) : ℂ_[p])‖) hu`. Establish `hu1 : ‖((φ (u : V) : 𝓞_ℂ_[p]) : ℂ_[p])‖ = 1` using `norm_eq_one_of_isUnit p ((u.isUnit).map φ)`. Simplify using `only [map_mul, map_pow, map_natCast] at h1`. Simplify using `[norm_mul, norm_pow, hu1] at h1`.
+
+Conclude with `h1.symm`.
+-/
 theorem norm_pow_eq (p : ℕ) [Fact p.Prime] {V : Type} [CommRing V] {ϖ : V} {n : ℕ}
     (hn : Associated (p : V) (ϖ ^ n)) (φ : V →+* 𝓞_ℂ_[p]) :
     ‖((φ ϖ : 𝓞_ℂ_[p]) : ℂ_[p])‖ ^ n = ‖(p : ℂ_[p])‖ := by
@@ -51,6 +64,17 @@ theorem norm_pow_eq (p : ℕ) [Fact p.Prime] {V : Type} [CommRing V] {ϖ : V} {n
 
 end GlobalTheory.UnifNorm
 
+/- English proof (translation)
+Introduce `F _ _ V _ p _ hp ϖ hϖ`. Establish `hp0 : (p : V) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (fun z : V => (z : F)) h`. Simplify using `only [ZeroMemClass.coe_zero] at h'`.
+
+Move the coercions through the operations in `at h'`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) h'`. Establish `hpnu : ¬ IsUnit (p : V)`. Introduce `hu`. Rewrite `hp` using `[ValuationSubring.mem_nonunits_iff]`.
+
+Rewrite `hu` using `[ValuationSubring.valuation_eq_one_iff]`. Establish `: V.valuation ((p : V) : F) < 1` using `by simpa using hp`. Conclude with `(ne_of_lt this) hu`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hp0 hϖ`. Establish `hn0 : n ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `hn` using `[pow_zero]`. Conclude with `hpnu (associated_one_iff_isUnit.mp hn)`. Distinguish the cases in `hne : Nonempty (V →+* 𝓞_ℂ_[p])`. Take `⟨φ₀⟩` from `hne`.
+
+Use `⟨‖((φ₀ ϖ : 𝓞_ℂ_[p]) : ℂ_[p])‖, fun φ => ?_⟩` and prove the remaining obligations. Establish `e1` using `GlobalTheory.UnifNorm.norm_pow_eq p hn φ`. Establish `e0` using `GlobalTheory.UnifNorm.norm_pow_eq p hn φ₀`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) hn0).mp (e1.trans e0.symm)`. Conclude with `⟨0, fun φ => (hne ⟨φ⟩).elim⟩`.
+-/
 theorem GlobalTheory.unif_norm_indep : ∀ (F : Type) [Field F] [NumberField F] (V : ValuationSubring F) [IsDiscreteValuationRing V] (p : ℕ) [Fact p.Prime], (p : F) ∈ V.nonunits → ∀ ϖ : V, Irreducible ϖ → ∃ r : ℝ, ∀ φ : V →+* 𝓞_ℂ_[p], ‖((φ ϖ : 𝓞_ℂ_[p]) : ℂ_[p])‖ = r := by
   intro F _ _ V _ p _ hp ϖ hϖ
   classical

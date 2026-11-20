@@ -7,6 +7,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FullRankSB
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.IsSplitChartSplitChart
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThK.MidJac GlobalTheory.CuspBlock
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MidJacTransport.isSubquotient_midJacU_transport | exact GlobalTheory.MidJacTransport.isSubquotient_midJacU_transport | (intros; apply GlobalTheory.MidJacTransport.isSubquotient_midJacU_transport <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.jacquet_field_iso_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (e : k ≃+* k'),
     Continuous e → Continuous e.symm → ∀ (a a' l n : ℕ) (h : l + n ≤ a + a') (α₀ β₀ : kˣ →* ℂˣ) (α β : k'ˣ →* ℂˣ),

@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.TameLift
 
+/- English proof (translation)
+Unfold `redThrough at h`. Rewrite `h` using `[dif_pos hx, dif_pos hy]`. Establish `h1` using `κ.injective h`. Establish `h2 : (⟨x, hx⟩ : A) - ⟨y, hy⟩ ∈ IsLocalRing.maximalIdeal A`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, h1, sub_self]`.
+
+Use `(A.valuation_lt_one_iff _).1 h2` as an intermediate fact. Simplify using `using this`.
+-/
 theorem valuation_sub_lt_of_redThrough_eq {Ω : Type} [Field Ω] (A : ValuationSubring Ω) {g : ℕ} [Fact g.Prime]
     (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar g) {x y : Ω} (hx : x ∈ A) (hy : y ∈ A)
     (h : redThrough A κ x = redThrough A κ y) : A.valuation (x - y) < 1 := by
@@ -17,6 +22,25 @@ theorem valuation_sub_lt_of_redThrough_eq {Ω : Type} [Field Ω] (A : ValuationS
   have := (A.valuation_lt_one_iff _).1 h2
   simpa using this
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A v hA g hg hgv κ m hm hgm c hc`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: NeZero ((m : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr hm.ne'⟩`. Establish `: NeZero m` using `⟨hm.ne'⟩`.
+
+Establish `hvg : A.valuation (g : Ω) < 1`. Use `(hA (g : 𝓞 E)).2 hgv` as an intermediate fact. Simplify using `using this`. Establish `hvm : ¬ A.valuation (m : Ω) < 1`. Introduce `hlt`.
+
+Establish `hcop : Nat.Coprime m g` using `Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hg.out).mpr hgm)`. Take `⟨u, w, huw⟩` from `Nat.isCoprime_iff_coprime.mpr hcop`. Establish `e : ((u : Ω) * (m : Ω)) + (w : Ω) * (g : Ω) = 1`. Use `congrArg (fun z : ℤ => (z : Ω)) huw` as an intermediate fact. Move the coercions through the operations in `at this`.
+
+Conclude with `this`. Establish `hu : A.valuation (u : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A u)`. Establish `hw : A.valuation (w : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A w)`. Establish `h1 : A.valuation ((u : Ω) * (m : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le' hu) hlt`. Establish `h2 : A.valuation ((w : Ω) * (g : Ω)) < 1`. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le' hw) hvg`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`.
+
+Rewrite `h3` using `[e, Valuation.map_one]`. Conclude with `lt_irrefl _ h3`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω m`. Establish `hζA : ζ ∈ A` using `mem_of_pow_eq_one A hm hζ.pow_eq_one`. Establish `hr : IsPrimitiveRoot (redThrough A κ ζ) m`.
+
+Use `IsPrimitiveRoot.mk_of_lt _ hm ?_ ?_` and prove the remaining obligations. Rewrite using `[← redThrough_pow A κ hζA, hζ.pow_eq_one, redThrough_one]`. Introduce `l hl hlm hrl`. Rewrite `hrl` using `[← redThrough_pow A κ hζA, ← redThrough_one A κ]`. Establish `hv` using `valuation_sub_lt_of_redThrough_eq A κ (pow_mem hζA l) (one_mem A) hrl`.
+
+Establish `heq : ζ ^ l = 1` using `eq_of_pow_eq_one A hvm (by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]) (one_pow _) hv`. Conclude with `hζ.pow_ne_one_of_pos_of_lt hl.ne' hlm heq`. Take `⟨i, -, hi⟩` from `hr.eq_pow_of_pow_eq_one hc`. Use `⟨ζ ^ i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+
+Rewrite using `[redThrough_pow A κ hζA, hi]`.
+-/
 theorem exists_lift : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 E)), IsPlaceOver (F := E) A v → ∀ (g : ℕ) [Fact g.Prime],
     ((g : ℕ) : 𝓞 E) ∈ v.asIdeal → ∀ (κ : IsLocalRing.ResidueField A ≃+* Formalism.CyclotomicNorms.Fbar g) (m : ℕ), 0 < m → ¬ g ∣ m →

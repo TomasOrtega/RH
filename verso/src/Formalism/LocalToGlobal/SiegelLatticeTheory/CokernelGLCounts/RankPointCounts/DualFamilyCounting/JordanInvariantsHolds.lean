@@ -10,6 +10,11 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.G2
 
+/- English proof (translation)
+Introduce `K F V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _hK hF h h' _hs _hs' X X' L L' hL hL' 𝔭 h𝔭 b a b' a' hJ hJ' hiso j`. Take `⟨f⟩` from `hiso`. Take `⟨g⟩` from `disc_equiv hF h𝔭 hL hJ.1 hJ.2.1 hJ.2.2.1 hJ.2.2.2.1 hJ.2.2.2.2`. Take `⟨g'⟩` from `disc_equiv hF h𝔭 hL' hJ'.1 hJ'.2.1 hJ'.2.2.1 hJ'.2.2.2.1 hJ'.2.2.2.2`. Establish `hc` using `card_quot_smul_top_congr ((g.symm.trans f).trans g') (extP K 𝔭 ^ j)`.
+
+Rewrite `hc` using `[card_pi_quot, card_pi_quot]`. Conclude with `Nat.pow_right_injective (two_le_absNorm h𝔭) hc`.
+-/
 theorem jordan_invariants_holds : JordanInv := by
   intro K F V V' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _hK hF h h' _hs _hs' X X' L L' hL hL' 𝔭 h𝔭 b a b' a'
     hJ hJ' hiso j

@@ -15,6 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 2000000
 
+/- English proof (translation)
+Introduce `hCo hCW hHM hPr hSer hL`. Use `(GlobalTheory.T.choice_side_twisted_consistent hCo hCW hHM hPr hSer hL).trans (StepW.of_all fun K B f T w _ _ H P x => ?_)` and prove the remaining obligations. Introduce `l ch tp hxi hpsi hQ hk hside hok`. Establish `hc` using `H P x l ch tp hxi hpsi hQ hk hside hok`. Use `choose e u hb hl hth using hc`.
+
+Set `G : ∀ v, (Dof x).what₂.muAt v ≠ (Dof x).what₂.mu0 → ∀ i : Fin (Dof x).R.m, (Dof x).what₂.MtL ((Dof x).what₂.muTw v) (i.1 + 1) →ₛₗ[ch.embW v] GlobalTheory.ChoiceRead.Tgt ch v (i.1 + 1)` to `fun v hv i => (((u v hv i)⁻¹ : (FractionRing (ch.Oe v))ˣ) : FractionRing (ch.Oe v)) • e v hv i`. Establish `HB` using `GlobalTheory.ChoiceRead.pick_prop ch G (fun v j E => GlobalTheory.ChoiceRead.BasisAt ch v j E) (fun v hv i => (hb v hv i).smul _)`. Establish `HL` using `GlobalTheory.ChoiceRead.pick_prop ch G (fun v j E => Submodule.span (ch.Oe v) (E '' GlobalTheory.ChoiceRead.latS v j) = GlobalTheory.ChoiceRead.latT ch v j) (fun v hv i => GlobalTheory.ChoiceRead.LatAt.smul_inv _ (hl v hv i))`. Use `⟨⟨GlobalTheory.ChoiceRead.withE ch (GlobalTheory.ChoiceRead.pick ch G) HB HL, GlobalTheory.ChoiceRead.tupWithE tp _ HB HL, hxi, hpsi, hQ, hk, GlobalTheory.ChoiceRead.choiceSide_withE hside _ HB HL, hok, ?_⟩, rfl⟩` and prove the remaining obligations. Use `GlobalTheory.ChoiceRead.emtTheta_withE _ HB HL fun v i hv => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.ChoiceRead.pick_eq ch G v hv i]`. Conclude with `(hth v hv i).smul_inv _`.
+-/
 theorem GlobalTheory.ChoiceRead.exists_stC : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ T w P x => ∀ (l : StrictHenselianAcyclic hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → (∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) ((ch.psi' v).comp ((Dof x).ntw.art (ch.twI v) (ch.Q v)))) → ∃ c : StC l.mt l.b T.k T.psi, c.ch.twI = ch.twI := by
   intro hCo hCW hHM hPr hSer hL
   refine (GlobalTheory.T.choice_side_twisted_consistent hCo hCW hHM hPr hSer hL).trans (StepW.of_all fun K B f T w _ _ H P x => ?_)

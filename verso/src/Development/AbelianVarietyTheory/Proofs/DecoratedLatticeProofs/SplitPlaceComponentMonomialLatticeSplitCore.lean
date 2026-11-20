@@ -17,6 +17,9 @@ section
 
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, sec_mul_right, mul_comm]`.
+-/
 theorem mulVec_sec_w (p : SplitPt D k) {m n : ℕ} (a : Matrix (Fin m) (Fin n) (AE D)) (y : Fin n → k) :
     a *ᵥ (fun i => p.sec (y i)) = fun i => p.sec ((a.map p.pr *ᵥ y) i) := by
   funext i
@@ -24,11 +27,17 @@ theorem mulVec_sec_w (p : SplitPt D k) {m n : ℕ} (a : Matrix (Fin m) (Fin n) (
   refine Finset.sum_congr rfl fun j _ => ?_
   rw [mul_comm, sec_mul_right, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[mul_comm, sec_mul_right, mul_comm x]`. Conclude with `⟨fun h => (p.int_iff _).2 h.2, sec_mem_intAt p _⟩`.
+-/
 theorem inc_mul_sec_mem_iff (p : SplitPt D k) (α : D.host.E) (x : k) :
     incA D α * p.sec x ∈ intAt D (· = p.v) ↔ p.pr (incA D α) * x ∈ 𝒪[k] := by
   rw [mul_comm, sec_mul_right, mul_comm x]
   exact ⟨fun h => (p.int_iff _).2 h.2, sec_mem_intAt p _⟩
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, h1, h0, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero]`.
+-/
 theorem proj_mulVec_add {R : Type} [CommRing R] {l m n : ℕ} {P : Matrix (Fin m) (Fin l) R} {J : Matrix (Fin l) (Fin m) R}
     {J' : Matrix (Fin l) (Fin n) R} (h1 : P * J = 1) (h0 : P * J' = 0) (u : Fin m → R) (v : Fin n → R) :
     P *ᵥ (J *ᵥ u + J' *ᵥ v) = u := by
@@ -38,6 +47,25 @@ end
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `x x' t y`. Set `f : D.host.E →+* k` to `p.pr.comp (incA D)`. Establish `hz : o.jB *ᵥ (fun i => p.sec ((t • (f ∘ ζ)) i)) = p.sec t • ratV (vecB o ζ)`. Rewrite using `[mulVec_sec_w, Matrix.mulVec_smul]`. Use function extensionality and compare the values at `i`.
+
+Establish `h` using `RingHom.map_mulVec f o.iB ζ i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, sec_mul_right]`. Conclude with `congrArg (fun u => p.sec (t * u)) h.symm`. Take `⟨c, hc⟩ : ∃ c : Fin S₀.rank → AE D, c = o.jB *ᵥ (fun i => p.sec ((t • (f ∘ ζ)) i)) + o.jA *ᵥ (Formalism.L2.Theta.mt A g *ᵥ fun r => p.sec (y r))` from `⟨_, rfl⟩`. Establish `hcid : ∀ i, c i ∈ idAt D (· = p.v)` using `fun i => by`.
+
+Rewrite using `[hc, mulVec_sec_w, mulVec_sec_w, mulVec_sec_w]`. Conclude with `add_mem (sec_mem_idAt p _) (sec_mem_idAt p _)`. Establish `hvec : (fun r => p.sec ((atW p d.e *ᵥ x + atW p d.e' *ᵥ x' + t • (fun r' => p.pr (incA D ((d.i₀ *ᵥ vecB o ζ) r'))) + atW p (d.i₀ * o.iA) *ᵥ ((Formalism.L2.Theta.mt A g).map p.pr *ᵥ y)) r)) = d.jX *ᵥ (fun i => p.sec (x i)) + d.jY *ᵥ (fun i => p.sec (x' i)) + d.j0 *ᵥ c`. Establish `h1 : (fun r' => p.pr (incA D ((d.i₀ *ᵥ vecB o ζ) r'))) = d.i₀.map f *ᵥ (o.iB.map f *ᵥ (f ∘ ζ))`. Establish `h2 : o.iB.map f *ᵥ (f ∘ ζ) = f ∘ vecB o ζ`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec f o.iB ζ i).symm`. Rewrite using `[h2]`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec f d.i₀ _ i`.
+
+Establish `h3 : atW p (d.i₀ * o.iA) = d.i₀.map f * o.iA.map f` using `Matrix.map_mul (f := f)`. Rewrite using `[hc, Matrix.mulVec_add, h1, h3, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul, ← Matrix.mulVec_smul]`. Establish `e1 : d.jX.map p.pr = atW p d.e` using `rfl`. Establish `e2 : d.jY.map p.pr = atW p d.e'` using `rfl`. Establish `e3 : d.j0.map p.pr = d.i₀.map f` using `rfl`.
+
+Establish `e4 : o.jA.map p.pr = o.iA.map f` using `rfl`. Establish `e5 : o.jB.map p.pr = o.iB.map f` using `rfl`. Rewrite using `[mulVec_sec_w p d.jX, mulVec_sec_w p d.jY, mulVec_sec_w p o.jB, mulVec_sec_w p d.j0, mulVec_sec_w p (Formalism.L2.Theta.mt A g), mulVec_sec_w p o.jA, mulVec_sec_w p d.j0, e1, e2, e3, e4, e5]`. Use function extensionality and compare the values at `r`. Simplify using `only [Pi.add_apply, map_add p.sec, add_assoc]`.
+
+Rewrite using `[hvec, hmono]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_mulVec, d.pX_jX, d.pX_jY, d.pX_j0, d.pY_jX, d.pY_jY, d.pY_j0, d.p0_jX, d.p0_jY, d.p0_j0, Matrix.one_mulVec, Matrix.zero_mulVec, add_zero, zero_add]`. Establish `hA : o.pA *ᵥ c = Formalism.L2.Theta.mt A g *ᵥ fun r => p.sec (y r)`. Rewrite using `[hc, add_comm]`. Conclude with `proj_mulVec_add o.pA_jA o.pA_jB _ _`.
+
+Establish `hB : o.pB *ᵥ c = fun i => p.sec ((t • (f ∘ ζ)) i)`. Rewrite using `[hc]`. Conclude with `proj_mulVec_add o.pB_jB o.pB_jA _ _`. Rewrite using `[hsplit c hcid, hA, hB, hz, hline _ (sec_mem_idAt p t), ← htr _ (fun i => sec_mem_idAt p _), inc_mul_sec_mem_iff]`. Use `and_congr (forall_congr' fun i => ?_) (and_congr (forall_congr' fun i => ?_) and_comm)` and prove the remaining obligations.
+
+Rewrite using `[hX i _ (sec_mem_idAt p _), inc_mul_sec_mem_iff]`. Rewrite using `[hY i _ (sec_mem_idAt p _), inc_mul_sec_mem_iff]`.
+-/
 theorem wShape_of_mono (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S S₀ A Ln : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (o : OrthDec S₀ A Ln) (ζ : Fin Ln.rank → D.host.E)
     (L : Lat S) (M : Lat S₀) (N : Lat A) (α α' : Fin ρ → D.host.E) (μ : D.host.E) (g : GA D A)

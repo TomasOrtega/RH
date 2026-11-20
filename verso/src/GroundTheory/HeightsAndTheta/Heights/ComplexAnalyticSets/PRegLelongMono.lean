@@ -13,6 +13,11 @@ namespace RegLelongMono
 
 variable {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (d + 1)) (Fin n) ℂ}
 
+/- English proof (translation)
+Unfold `chartDens sheetSum`. Use `finsum_nonneg fun z => finsum_nonneg fun hz => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `beta_reduce`. Distinguish the cases in `hza : z ∈ euclBall x s \ euclBall x r`.
+
+Rewrite using `[Set.indicator_of_mem hza, one_mul]`. Use `hL n d J A u ε x z h.choose hε (ne_of_mem_euclBall_diff hr hza) h.choose_spec` as an intermediate fact. Rewrite `this` using `[hz.2]`. Then use the resulting hypothesis. Rewrite using `[Set.indicator_of_notMem hza, zero_mul]`. Conclude with `le_rfl`.
+-/
 theorem chartDens_annulus_nonneg (hL : RegLogDensNonneg.Statement) (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε)
     (x : Fin n → ℂ) {r s : ℝ} (hr : 0 < r) (y : Fin (d + 1) → ℂ) :
     0 ≤ chartDens J A ((euclBall x s \ euclBall x r).indicator fun _ => 1)
@@ -32,6 +37,11 @@ end RegLelongMono
 
 open RegLelongMono in
 
+/- English proof (translation)
+Introduce `n d J A u ε x r s hJ hdim hAf hε hr hrs`. Establish `heq` using `hA n d J A u ε x r s hJ hdim hAf hε hr hrs`. Establish `hτ : 0 ≤ ∫ y, chartDens J A ((euclBall x s \ euclBall x r).indicator fun _ => 1) (vecCons (logReg u ε) fun _ => logDistSq x) y` using `integral_nonneg fun y => chartDens_annulus_nonneg hL u hε x hr y`. Establish `hrs0 : 0 ≤ r ^ (2 * d) * s ^ (2 * d)` using `mul_nonneg (pow_nonneg hr.le _) (pow_nonneg (hr.le.trans hrs) _)`. Use `mul_nonneg hrs0 hτ` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem RegLelongMono.proof (hA : RegLelongAnnulus.Statement) (hL : RegLogDensNonneg.Statement) :
     RegLelongMono.Statement := by
   intro n d J A u ε x r s hJ hdim hAf hε hr hrs

@@ -23,16 +23,33 @@ abbrev ι1 : Ω[B⁄R] →ₗ[B] DR R B := ExteriorAlgebra.ι B
 
 def sgn : DR R B →ₐ[B] DR R B := CliffordAlgebra.involute
 
+/- English proof (translation)
+The claim follows from `CliffordAlgebra.involute_ι ω`.
+-/
 @[simp] theorem sgn_ι (ω : Ω[B⁄R]) : sgn (ι1 ω) = -ι1 ω := CliffordAlgebra.involute_ι ω
 
+/- English proof (translation)
+The claim follows from `CliffordAlgebra.involute_involute x`.
+-/
 @[simp] theorem sgn_sgn (x : DR R B) : sgn (sgn x) = x := CliffordAlgebra.involute_involute x
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul B r x, map_smul, algebraMap_smul]`.
+-/
 theorem sgn_smul (r : R) (x : DR R B) : sgn (r • x) = r • sgn x := by
   rw [← algebraMap_smul B r x, map_smul, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)`.
+-/
 theorem ι_mul_ι_swap (a b : Ω[B⁄R]) : ι1 a * ι1 b = -(ι1 b * ι1 a) :=
   eq_neg_of_add_eq_zero_left (ExteriorAlgebra.ι_add_mul_swap a b)
 
+/- English proof (translation)
+Proceed by induction on `x using ExteriorAlgebra.induction with`. Consider the case `algebraMap b => rw [AlgHom.commutes, Algebra.commutes]`. Consider the case `ι a => rw [sgn_ι, neg_mul]`. Conclude with `ι_mul_ι_swap _ _`. Consider the case `mul a b ha hb => rw [← mul_assoc, ha, mul_assoc, hb, map_mul, mul_assoc]`.
+
+Consider the case `add a b ha hb => rw [mul_add, ha, hb, map_add, add_mul]`.
+-/
 theorem ι_mul (ω : Ω[B⁄R]) (x : DR R B) : ι1 ω * x = sgn x * ι1 ω := by
   induction x using ExteriorAlgebra.induction with
   | algebraMap b => rw [AlgHom.commutes, Algebra.commutes]
@@ -40,6 +57,13 @@ theorem ι_mul (ω : Ω[B⁄R]) (x : DR R B) : ι1 ω * x = sgn x * ι1 ω := by
   | mul a b ha hb => rw [← mul_assoc, ha, mul_assoc, hb, map_mul, mul_assoc]
   | add a b ha hb => rw [mul_add, ha, hb, map_add, add_mul]
 
+/- English proof (translation)
+Establish `key : ∀ ω ∈ Submodule.span B (Set.range (D R B)), ∀ b : B, P (b • ω)`. Introduce `ω hω`. Proceed by induction on `hω using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨c, rfl⟩ := hx`. Conclude with `fun b ↦ h b c`.
+
+Consider the case `zero => intro b`. Rewrite using `[smul_zero]` and apply the resulting hypothesis. Consider the case `add x y _ _ hx hy => intro b`. Rewrite using `[smul_add]`. Conclude with `ha _ _ (hx b) (hy b)`.
+
+Consider the case `smul a x _ hx => intro b`. Rewrite using `[smul_smul]`. Conclude with `hx _`. Simplify using `using key ω (by rw [span_range_derivation]; trivial) 1`.
+-/
 theorem ind1 {P : Ω[B⁄R] → Prop} (h : ∀ b c : B, P (b • D R B c)) (h0 : P 0)
     (ha : ∀ x y, P x → P y → P (x + y)) (ω : Ω[B⁄R]) : P ω := by
   have key : ∀ ω ∈ Submodule.span B (Set.range (D R B)), ∀ b : B, P (b • ω) := by
@@ -51,6 +75,13 @@ theorem ind1 {P : Ω[B⁄R] → Prop} (h : ∀ b c : B, P (b • D R B c)) (h0 :
     | smul a x _ hx => intro b; rw [smul_smul]; exact hx _
   simpa using key ω (by rw [span_range_derivation]; trivial) 1
 
+/- English proof (translation)
+Proceed by induction on `x using ExteriorAlgebra.induction with`. Consider the case `algebraMap b => exact h b`. Consider the case `ι a`. Proceed by induction on `a using ind1 with`. Consider the case `h b c => rw [map_smul, Algebra.smul_def]`.
+
+Conclude with `hm _ _ (h b) (hd c)`. Consider the case `h0 => simpa using h 0`. Consider the case `ha x y hx hy => rw [map_add]`. Conclude with `ha _ _ hx hy`. Consider the case `mul a b h1 h2 => exact hm _ _ h1 h2`.
+
+Consider the case `add a b h1 h2 => exact ha _ _ h1 h2`.
+-/
 theorem indDR {P : DR R B → Prop} (h : ∀ b : B, P (algebraMap B _ b)) (hd : ∀ b : B, P (ι1 (D R B b)))
     (hm : ∀ x y, P x → P y → P (x * y)) (ha : ∀ x y, P x → P y → P (x + y)) (x : DR R B) : P x := by
   induction x using ExteriorAlgebra.induction with
@@ -77,26 +108,59 @@ instance : One (Tw R B) := ⟨(1, 0)⟩
 
 def mk (x y : DR R B) : Tw R B := (x, y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_1 (x y : DR R B) : (mk x y).1 = x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mk_2 (x y : DR R B) : (mk x y).2 = y := rfl
 
+/- English proof (translation)
+The claim follows from `Prod.ext h1 h2`.
+-/
 @[ext] theorem ext' {a b : Tw R B} (h1 : a.1 = b.1) (h2 : a.2 = b.2) : a = b := Prod.ext h1 h2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_1 (a b : Tw R B) : (a * b).1 = a.1 * b.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mul_2 (a b : Tw R B) : (a * b).2 = sgn a.1 * b.2 + a.2 * b.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_1 (a b : Tw R B) : (a + b).1 = a.1 + b.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem add_2 (a b : Tw R B) : (a + b).2 = a.2 + b.2 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_1 : (0 : Tw R B).1 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem zero_2 : (0 : Tw R B).2 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_1 : (1 : Tw R B).1 = 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem one_2 : (1 : Tw R B).2 = 0 := rfl
 
 instance : Ring (Tw R B) :=
@@ -120,8 +184,14 @@ def ofFun : B →+* Tw R B where
     · simp
     · simp [← Algebra.smul_def, ← Algebra.commutes b]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofFun_1 (b : B) : (ofFun (R := R) b).1 = algebraMap B _ b := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofFun_2 (b : B) : (ofFun (R := R) b).2 = ι1 (D R B b) := rfl
 
 instance : Algebra B (Tw R B) := (ofFun (R := R)).toAlgebra' fun b x ↦ by
@@ -129,12 +199,21 @@ instance : Algebra B (Tw R B) := (ofFun (R := R)).toAlgebra' fun b x ↦ by
   · simp [Algebra.commutes]
   · simp [Algebra.commutes, ι_mul (D R B b), add_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smul_def' (b : B) (x : Tw R B) : b • x = ofFun b * x := rfl
 
 instance : Module R (Tw R B) := inferInstanceAs (Module R (DR R B × DR R B))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_1 (r : R) (a : Tw R B) : (r • a).1 = r • a.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem smul_2 (r : R) (a : Tw R B) : (r • a).2 = r • a.2 := rfl
 
 instance : IsScalarTower R B (Tw R B) := ⟨fun r b x ↦ by
@@ -150,8 +229,18 @@ def der : Derivation R B (Tw R B) :=
       · simp [smul_def', ← Algebra.smul_def]
       · simp [smul_def', ι_mul_ι_swap (D R B a)]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem der_apply (b : B) : der (R := R) b = mk (ι1 (D R B b)) 0 := rfl
 
+/- English proof (translation)
+Proceed by induction on `a using ind1 with`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, add_mul, mul_add, add_add_add_comm, hx, hy, add_zero]`. Consider the case `h a a'`. Proceed by induction on `b using ind1 with`.
+
+Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, add_mul, mul_add, add_add_add_comm, hx, hy, add_zero]`. Consider the case `h b b'`. Simplify using `only [map_smul, smul_mul_assoc, mul_smul_comm, Derivation.liftKaehlerDifferential_comp_D]`. Rewrite using `[smul_comm a b, ← smul_add, ← smul_add]`.
+
+Establish `: der (R` using `R) a' * der b' + der b' * der a' = 0 := by`. Apply the tactic sequence `ext <;> simp [der_apply, ι_mul_ι_swap (D R B a')]`. Rewrite using `[this, smul_zero, smul_zero]`.
+-/
 theorem lift_anti (a b : Ω[B⁄R]) :
     der.liftKaehlerDifferential a * der.liftKaehlerDifferential b +
       der.liftKaehlerDifferential b * der.liftKaehlerDifferential a = (0 : Tw R B) := by
@@ -169,6 +258,11 @@ theorem lift_anti (a b : Ω[B⁄R]) :
         ext <;> simp [der_apply, ι_mul_ι_swap (D R B a')]
       rw [this, smul_zero, smul_zero]
 
+/- English proof (translation)
+Proceed by induction on `a using ind1 with`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy`. Rewrite using `[map_add, add_mul, mul_add, mul_add, hx, hy, zero_add, add_zero, lift_anti]`. Consider the case `h a a'`.
+
+Simplify using `only [map_smul, smul_mul_assoc, mul_smul_comm, Derivation.liftKaehlerDifferential_comp_D]`. Apply the tactic sequence `have : der (R := R) a' * der a' = 0 := by ext <;> simp [der_apply]`. Rewrite using `[this, smul_zero, smul_zero]`.
+-/
 theorem lift_sq (a : Ω[B⁄R]) :
     der.liftKaehlerDifferential a * der.liftKaehlerDifferential a = (0 : Tw R B) := by
   induction a using ind1 with
@@ -182,9 +276,17 @@ theorem lift_sq (a : Ω[B⁄R]) :
 
 def graph : DR R B →ₐ[B] Tw R B := ExteriorAlgebra.lift B ⟨der.liftKaehlerDifferential, lift_sq⟩
 
+/- English proof (translation)
+Rewrite using `[graph, ExteriorAlgebra.lift_ι_apply, Derivation.liftKaehlerDifferential_comp_D]`. Both sides reduce to the same expression.
+-/
 theorem graph_D (b : B) : graph (ι1 (D R B b)) = mk (ι1 (D R B b)) 0 := by
   rw [graph, ExteriorAlgebra.lift_ι_apply, Derivation.liftKaehlerDifferential_comp_D]; rfl
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => rw [AlgHom.commutes]`. Both sides reduce to the same expression. Consider the case `hd b => rw [graph_D]`. Both sides reduce to the same expression.
+
+Consider the case `hm x y hx hy => rw [map_mul, mul_1, hx, hy]`. Consider the case `ha x y hx hy => rw [map_add, add_1, hx, hy]`.
+-/
 theorem graph_1 (x : DR R B) : (graph x).1 = x := by
   induction x using indDR with
   | h b => rw [AlgHom.commutes]; rfl
@@ -202,21 +304,38 @@ def dDR : DR R B →ₗ[R] DR R B where
   map_smul' r x := by
     rw [← algebraMap_smul B r x, map_smul, algebraMap_smul]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Tw.graph _).2 = _`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem dDR_algebraMap (b : B) : dDR R B (algebraMap B _ b) = ι1 (D R B b) := by
   change (Tw.graph _).2 = _
   rw [AlgHom.commutes]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Tw.graph _).2 = _`. Rewrite using `[Tw.graph_D]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem dDR_D (b : B) : dDR R B (ι1 (D R B b)) = 0 := by
   change (Tw.graph _).2 = _
   rw [Tw.graph_D]; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(Tw.graph _).2 = _`. Rewrite using `[map_mul, Tw.mul_2, Tw.graph_1, Tw.graph_1]`. Both sides reduce to the same expression.
+-/
 theorem dDR_mul (x y : DR R B) : dDR R B (x * y) = sgn x * dDR R B y + dDR R B x * y := by
   change (Tw.graph _).2 = _
   rw [map_mul, Tw.mul_2, Tw.graph_1, Tw.graph_1]; rfl
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, dDR_mul, AlgHom.commutes, dDR_algebraMap, Algebra.smul_def, add_comm]`.
+-/
 theorem dDR_smul (b : B) (x : DR R B) : dDR R B (b • x) = ι1 (D R B b) * x + b • dDR R B x := by
   rw [Algebra.smul_def, dDR_mul, AlgHom.commutes, dDR_algebraMap, Algebra.smul_def, add_comm]
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp`. Consider the case `hd b => simp`. Consider the case `hm x y hx hy => simp [dDR_mul, hx, hy]`. Normalize the expressions using the abelian group laws.
+
+Consider the case `ha x y hx hy => simp [hx, hy]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dDR_sgn (x : DR R B) : dDR R B (sgn x) = -sgn (dDR R B x) := by
   induction x using indDR with
   | h b => simp
@@ -224,6 +343,9 @@ theorem dDR_sgn (x : DR R B) : dDR R B (sgn x) = -sgn (dDR R B x) := by
   | hm x y hx hy => simp [dDR_mul, hx, hy]; abel
   | ha x y hx hy => simp [hx, hy]; abel
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp`. Consider the case `hd b => simp`. Consider the case `hm x y hx hy => simp [dDR_mul, dDR_sgn, hx, hy]`. Consider the case `ha x y hx hy => simp [hx, hy]`.
+-/
 theorem dDR_dDR (x : DR R B) : dDR R B (dDR R B x) = 0 := by
   induction x using indDR with
   | h b => simp
@@ -231,21 +353,39 @@ theorem dDR_dDR (x : DR R B) : dDR R B (dDR R B x) = 0 := by
   | hm x y hx hy => simp [dDR_mul, dDR_sgn, hx, hy]
   | ha x y hx hy => simp [hx, hy]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range _ ^ 1`. Rewrite using `[pow_one]`. Conclude with `⟨ω, rfl⟩`.
+-/
 theorem ι_mem (ω : Ω[B⁄R]) : ι1 ω ∈ ⋀[B]^1 Ω[B⁄R] := by
   change _ ∈ LinearMap.range _ ^ 1
   rw [pow_one]; exact ⟨ω, rfl⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range _ ^ (i + j)`. Rewrite using `[pow_add]`. Conclude with `Submodule.mul_mem_mul hx hy`.
+-/
 theorem mul_mem {i j : ℕ} {x y : DR R B} (hx : x ∈ ⋀[B]^i Ω[B⁄R]) (hy : y ∈ ⋀[B]^j Ω[B⁄R]) :
     x * y ∈ ⋀[B]^(i + j) Ω[B⁄R] := by
   change _ ∈ LinearMap.range _ ^ (i + j)
   rw [pow_add]; exact Submodule.mul_mem_mul hx hy
 
+/- English proof (translation)
+Proceed by induction on `ω using ind1 with`. Consider the case `h b c => rw [map_smul, dDR_smul, dDR_D, smul_zero, add_zero]`. Conclude with `mul_mem (ι_mem _) (ι_mem _)`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, map_add]`.
+
+Conclude with `add_mem hx hy`.
+-/
 theorem dDR_ι_mem (ω : Ω[B⁄R]) : dDR R B (ι1 ω) ∈ ⋀[B]^2 Ω[B⁄R] := by
   induction ω using ind1 with
   | h b c => rw [map_smul, dDR_smul, dDR_D, smul_zero, add_zero]; exact mul_mem (ι_mem _) (ι_mem _)
   | h0 => simp
   | ha x y hx hy => rw [map_add, map_add]; exact add_mem hx hy
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap b => rw [dDR_algebraMap]`. Conclude with `ι_mem _`. Consider the case `add x y i _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `mem_mul m hm i x hx ih`. Take `⟨ω, rfl⟩` from `hm`. Rewrite using `[dDR_mul, sgn_ι, neg_mul]`. Use `add_mem (neg_mem ?_) ?_` and prove the remaining obligations. Use `mul_mem (ι_mem ω) ih` as an intermediate fact.
+
+Rewrite `this` using `[show 1 + (i + 1) = i + 1 + 1 by ring]`. Then use the resulting hypothesis. Use `mul_mem (dDR_ι_mem ω) hx` as an intermediate fact. Rewrite `this` using `[show 2 + i = i + 1 + 1 by ring]`. Then use the resulting hypothesis.
+-/
 theorem dDR_mem {j : ℕ} {x : DR R B} (hx : x ∈ ⋀[B]^j Ω[B⁄R]) : dDR R B x ∈ ⋀[B]^(j + 1) Ω[B⁄R] := by
   induction hx using Submodule.pow_induction_on_left' with
   | algebraMap b => rw [dDR_algebraMap]; exact ι_mem _
@@ -259,6 +399,11 @@ theorem dDR_mem {j : ℕ} {x : DR R B} (hx : x ∈ ⋀[B]^j Ω[B⁄R]) : dDR R B
     · have := mul_mem (dDR_ι_mem ω) hx
       rwa [show 2 + i = i + 1 + 1 by ring] at this
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap b => simp`. Consider the case `add x y i _ _ hx hy => rw [map_add, hx, hy, mul_add]`. Consider the case `mem_mul m hm i x hx ih`. Take `⟨ω, rfl⟩` from `hm`.
+
+Rewrite using `[map_mul, sgn_ι, ih, pow_succ]`. Apply the tactic sequence `rcases neg_one_pow_eq_or (DR R B) i with h | h <;> simp [h]`.
+-/
 theorem sgn_of_mem {j : ℕ} {x : DR R B} (hx : x ∈ ⋀[B]^j Ω[B⁄R]) : sgn x = (-1) ^ j * x := by
   induction hx using Submodule.pow_induction_on_left' with
   | algebraMap b => simp
@@ -275,8 +420,14 @@ def dOm (j : ℕ) : Om R B j →ₗ[R] Om R B (j + 1) where
   map_add' x y := Subtype.ext (map_add _ _ _)
   map_smul' r x := Subtype.ext (map_smul _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_dOm {j : ℕ} (x : Om R B j) : (dOm R B j x : DR R B) = dDR R B x := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (dDR_dDR _)`.
+-/
 @[simp] theorem dOm_dOm {j : ℕ} (x : Om R B j) : dOm R B (j + 1) (dOm R B j x) = 0 :=
   Subtype.ext (dDR_dDR _)
 
@@ -291,12 +442,24 @@ variable (R B) in
 
 def dTwo : Om R B 2 →ₗ[R] Om R B 3 := dOm R B 2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_dOne (ω : Ω[B⁄R]) : (dOne R B ω : DR R B) = dDR R B (ι1 ω) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_dTwo (x : Om R B 2) : (dTwo R B x : DR R B) = dDR R B x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dOne_eq_dOm (ω : Ω[B⁄R]) : dOne R B ω = dOm R B 1 ⟨ι1 ω, ι_mem ω⟩ := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (dDR_algebraMap b)`.
+-/
 theorem dOm_zero (b : B) (h : algebraMap B (DR R B) b ∈ ⋀[B]^0 Ω[B⁄R]) :
     dOm R B 0 ⟨_, h⟩ = ⟨ι1 (D R B b), ι_mem _⟩ := Subtype.ext (dDR_algebraMap b)
 
@@ -307,32 +470,65 @@ def wedge : Ω[B⁄R] →ₗ[B] Ω[B⁄R] →ₗ[B] Om R B 2 :=
     (fun _ _ _ ↦ Subtype.ext (by simp [add_mul])) (fun _ _ _ ↦ Subtype.ext (by simp))
     (fun _ _ _ ↦ Subtype.ext (by simp [mul_add])) (fun _ _ _ ↦ Subtype.ext (by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_wedge (a b : Ω[B⁄R]) : (wedge R B a b : DR R B) = ι1 a * ι1 b := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [ExteriorAlgebra.ιMulti_apply])`.
+-/
 theorem wedge_eq_ιMulti (a b : Ω[B⁄R]) : wedge R B a b = exteriorPower.ιMulti B 2 ![a, b] :=
   Subtype.ext (by simp [ExteriorAlgebra.ιMulti_apply])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp)`.
+-/
 @[simp] theorem wedge_self (a : Ω[B⁄R]) : wedge R B a a = 0 := Subtype.ext (by simp)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (ι_mul_ι_swap a b)`.
+-/
 theorem wedge_swap (a b : Ω[B⁄R]) : wedge R B a b = -wedge R B b a := Subtype.ext (ι_mul_ι_swap a b)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp)`.
+-/
 theorem wedge_smul_left (r : R) (a b : Ω[B⁄R]) : wedge R B (r • a) b = r • wedge R B a b :=
   Subtype.ext (by simp)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp)`.
+-/
 theorem wedge_smul_right (r : R) (a b : Ω[B⁄R]) : wedge R B a (r • b) = r • wedge R B a b :=
   Subtype.ext (by simp)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (dDR_D b)`.
+-/
 @[simp] theorem dOne_D (b : B) : dOne R B (D R B b) = 0 := Subtype.ext (dDR_D b)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (dDR_dDR _)`.
+-/
 @[simp] theorem dTwo_dOne (ω : Ω[B⁄R]) : dTwo R B (dOne R B ω) = 0 := Subtype.ext (dDR_dDR _)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [dDR_smul])`.
+-/
 theorem dOne_smul (b : B) (ω : Ω[B⁄R]) :
     dOne R B (b • ω) = wedge R B (D R B b) ω + b • dOne R B ω :=
   Subtype.ext (by simp [dDR_smul])
 
+/- English proof (translation)
+Rewrite using `[dOne_smul, dOne_D, smul_zero, add_zero]`.
+-/
 theorem dOne_smul_D (b c : B) : dOne R B (b • D R B c) = wedge R B (D R B b) (D R B c) := by
   rw [dOne_smul, dOne_D, smul_zero, add_zero]
 
+/- English proof (translation)
+Establish `ha' : dDR R B (ι1 a) = 0` using `congrArg Subtype.val ha`. Establish `hb' : dDR R B (ι1 b) = 0` using `congrArg Subtype.val hb`. Conclude with `Subtype.ext (by simp [dDR_mul, ha', hb'])`.
+-/
 theorem dTwo_wedge {a b : Ω[B⁄R]} (ha : dOne R B a = 0) (hb : dOne R B b = 0) :
     dTwo R B (wedge R B a b) = 0 := by
   have ha' : dDR R B (ι1 a) = 0 := congrArg Subtype.val ha
@@ -350,9 +546,15 @@ def SemiHom (σ : R →+* R') (α : B →+* B') : Prop := ∀ (r : R) (b : B), �
 
 variable {σ : R →+* R'} {α : B →+* B'}
 
+/- English proof (translation)
+Rewrite using `[Algebra.algebraMap_eq_smul_one, h, map_one, Algebra.algebraMap_eq_smul_one]`.
+-/
 theorem SemiHom.map_algebraMap (h : SemiHom σ α) (r : R) : α (algebraMap R B r) = algebraMap R' B' (σ r) := by
   rw [Algebra.algebraMap_eq_smul_one, h, map_one, Algebra.algebraMap_eq_smul_one]
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ map_smul φ r b`.
+-/
 theorem SemiHom.of_algHom [Algebra R B'] (φ : B →ₐ[R] B') : SemiHom (RingHom.id R) (φ : B →+* B') :=
   fun r b ↦ map_smul φ r b
 
@@ -375,6 +577,11 @@ def SemiHom.m1' (h : SemiHom σ α) : Ω[B⁄R] →ₛₗ[α] Ω[B'⁄R'] :=
     map_add' := map_add _
     map_smul' := fun b x ↦ δ.liftKaehlerDifferential.map_smul b x }
 
+/- English proof (translation)
+Use `letI : Module B Ω[B'⁄R'] := Module.compHom _ α`. Use `letI : Module R Ω[B'⁄R'] := Module.compHom _ σ`. Use `haveI : IsScalarTower R B Ω[B'⁄R'] := ⟨fun r b x ↦ by`. Express the relevant statement in the definitionally equal form `α (r • b) • x = σ r • α b • x`. Rewrite using `[h, smul_assoc]⟩`.
+
+Conclude with `Derivation.liftKaehlerDifferential_comp_D (M := Ω[B'⁄R']) _ _`.
+-/
 theorem SemiHom.m1'_D (h : SemiHom σ α) (b : B) : h.m1' (D R B b) = D R' B' (α b) := by
   letI : Module B Ω[B'⁄R'] := Module.compHom _ α
   letI : Module R Ω[B'⁄R'] := Module.compHom _ σ
@@ -388,8 +595,14 @@ def SemiHom.m1 (h : SemiHom σ α) : Ω[B⁄R] →ₛₗ[σ] Ω[B'⁄R'] where
   map_add' := map_add _
   map_smul' r x := by rw [← algebraMap_smul B r x, map_smulₛₗ, h.map_algebraMap, algebraMap_smul]
 
+/- English proof (translation)
+The claim follows from `h.m1'_D b`.
+-/
 @[simp] theorem SemiHom.m1_D (h : SemiHom σ α) (b : B) : h.m1 (D R B b) = D R' B' (α b) := h.m1'_D b
 
+/- English proof (translation)
+The claim follows from `map_smulₛₗ h.m1' b ω`.
+-/
 @[simp] theorem SemiHom.oneFormMap_smul_semilinear (h : SemiHom σ α) (b : B) (ω : Ω[B⁄R]) : h.m1 (b • ω) = α b • h.m1 ω :=
   map_smulₛₗ h.m1' b ω
 
@@ -402,20 +615,32 @@ def SemiHom.mDR (h : SemiHom σ α) : DR R B →+* DR R' B' :=
       map_smul' b ω := by
         rw [h.oneFormMap_smul_semilinear, map_smul, Algebra.smul_def]; rfl }, fun _ ↦ ExteriorAlgebra.ι_sq_zero _⟩).toRingHom
 
+/- English proof (translation)
+Use `letI : Algebra B (DR R' B') := ((algebraMap B' (DR R' B')).comp α).toAlgebra' fun b x ↦ Algebra.commutes (α b) x`. Conclude with `ExteriorAlgebra.lift_ι_apply (A := DR R' B') _ _ _ _`.
+-/
 @[simp] theorem SemiHom.mDR_ι (h : SemiHom σ α) (ω : Ω[B⁄R]) : h.mDR (ι1 ω) = ι1 (h.m1 ω) := by
   letI : Algebra B (DR R' B') := ((algebraMap B' (DR R' B')).comp α).toAlgebra'
     fun b x ↦ Algebra.commutes (α b) x
   exact ExteriorAlgebra.lift_ι_apply (A := DR R' B') _ _ _ _
 
+/- English proof (translation)
+Use `letI : Algebra B (DR R' B') := ((algebraMap B' (DR R' B')).comp α).toAlgebra' fun b x ↦ Algebra.commutes (α b) x`. Conclude with `AlgHom.commutes (B := DR R' B') _ _`.
+-/
 @[simp] theorem SemiHom.mDR_algebraMap (h : SemiHom σ α) (b : B) :
     h.mDR (algebraMap B _ b) = algebraMap B' _ (α b) := by
   letI : Algebra B (DR R' B') := ((algebraMap B' (DR R' B')).comp α).toAlgebra'
     fun b x ↦ Algebra.commutes (α b) x
   exact AlgHom.commutes (B := DR R' B') _ _
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_mul, h.mDR_algebraMap, Algebra.smul_def]`.
+-/
 theorem SemiHom.mDR_smul (h : SemiHom σ α) (b : B) (x : DR R B) : h.mDR (b • x) = α b • h.mDR x := by
   rw [Algebra.smul_def, map_mul, h.mDR_algebraMap, Algebra.smul_def]
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp`. Consider the case `hd b => simp`. Consider the case `hm x y hx hy => simp [hx, hy]`. Consider the case `ha x y hx hy => simp [hx, hy]`.
+-/
 theorem SemiHom.mDR_sgn (h : SemiHom σ α) (x : DR R B) : h.mDR (sgn x) = sgn (h.mDR x) := by
   induction x using indDR with
   | h b => simp
@@ -423,6 +648,9 @@ theorem SemiHom.mDR_sgn (h : SemiHom σ α) (x : DR R B) : h.mDR (sgn x) = sgn (
   | hm x y hx hy => simp [hx, hy]
   | ha x y hx hy => simp [hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `x using indDR with`. Consider the case `h b => simp`. Consider the case `hd b => simp`. Consider the case `hm x y hx hy => simp [dDR_mul, h.mDR_sgn, hx, hy]`. Consider the case `ha x y hx hy => simp [hx, hy]`.
+-/
 theorem SemiHom.mDR_dDR (h : SemiHom σ α) (x : DR R B) : h.mDR (dDR R B x) = dDR R' B' (h.mDR x) := by
   induction x using indDR with
   | h b => simp
@@ -430,6 +658,13 @@ theorem SemiHom.mDR_dDR (h : SemiHom σ α) (x : DR R B) : h.mDR (dDR R B x) = d
   | hm x y hx hy => simp [dDR_mul, h.mDR_sgn, hx, hy]
   | ha x y hx hy => simp [hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.pow_induction_on_left' with`. Consider the case `algebraMap b`. Rewrite using `[h.mDR_algebraMap]`. Express the relevant statement in the definitionally equal form `_ ∈ LinearMap.range _ ^ 0`. Rewrite using `[pow_zero]`.
+
+Conclude with `Submodule.algebraMap_mem _`. Consider the case `add x y i _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mem_mul m hm i x hx ih`. Take `⟨ω, rfl⟩` from `hm`.
+
+Rewrite using `[map_mul, h.mDR_ι]`. Use `mul_mem (ι_mem (h.m1 ω)) ih` as an intermediate fact. Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis.
+-/
 theorem SemiHom.mDR_mem (h : SemiHom σ α) {j : ℕ} {x : DR R B} (hx : x ∈ ⋀[B]^j Ω[B⁄R]) :
     h.mDR x ∈ ⋀[B']^j Ω[B'⁄R'] := by
   induction hx using Submodule.pow_induction_on_left' with
@@ -451,23 +686,44 @@ def SemiHom.mOm (h : SemiHom σ α) (j : ℕ) : Om R B j →ₛₗ[σ] Om R' B' 
     change h.mDR (r • x.1) = σ r • h.mDR x.1
     rw [← algebraMap_smul B r x.1, h.mDR_smul, h.map_algebraMap, algebraMap_smul])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem SemiHom.coe_mOm (h : SemiHom σ α) {j : ℕ} (x : Om R B j) : (h.mOm j x : DR R' B') = h.mDR x := rfl
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (h.mDR_smul b x)`.
+-/
 theorem SemiHom.mOm_smul (h : SemiHom σ α) {j : ℕ} (b : B) (x : Om R B j) :
     h.mOm j (b • x) = α b • h.mOm j x := Subtype.ext (h.mDR_smul b x)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (h.mDR_dDR x)`.
+-/
 theorem SemiHom.mOm_dOm (h : SemiHom σ α) {j : ℕ} (x : Om R B j) :
     h.mOm (j + 1) (dOm R B j x) = dOm R' B' j (h.mOm j x) := Subtype.ext (h.mDR_dDR x)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp [h.mDR_dDR])`.
+-/
 theorem SemiHom.mOm_dOne (h : SemiHom σ α) (ω : Ω[B⁄R]) : h.mOm 2 (dOne R B ω) = dOne R' B' (h.m1 ω) :=
   Subtype.ext (by simp [h.mDR_dDR])
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (h.mDR_dDR x)`.
+-/
 theorem SemiHom.mOm_dTwo (h : SemiHom σ α) (x : Om R B 2) : h.mOm 3 (dTwo R B x) = dTwo R' B' (h.mOm 2 x) :=
   Subtype.ext (h.mDR_dDR x)
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by simp)`.
+-/
 theorem SemiHom.mOm_wedge (h : SemiHom σ α) (a b : Ω[B⁄R]) :
     h.mOm 2 (wedge R B a b) = wedge R' B' (h.m1 a) (h.m1 b) := Subtype.ext (by simp)
 
+/- English proof (translation)
+Proceed by induction on `ω using ind1 with`. Consider the case `h b c => simp [e]`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem SemiHom.oneFormMap_eq_self_of_id {τ : R →+* R} {β : B →+* B} (h : SemiHom τ β) (e : ∀ b, β b = b) (ω : Ω[B⁄R]) :
     h.m1 ω = ω := by
   induction ω using ind1 with
@@ -475,6 +731,11 @@ theorem SemiHom.oneFormMap_eq_self_of_id {τ : R →+* R} {β : B →+* B} (h : 
   | h0 => simp
   | ha x y hx hy => rw [map_add, hx, hy]
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_mOm]`. Proceed by induction on `(x : DR R B) using indDR with`. Consider the case `h b => simp [e]`. Consider the case `hd b => simp [e]`.
+
+Consider the case `hm x y hx hy => rw [map_mul, hx, hy]`. Consider the case `ha x y hx hy => rw [map_add, hx, hy]`.
+-/
 theorem SemiHom.mOm_id {τ : R →+* R} {β : B →+* B} (h : SemiHom τ β) (e : ∀ b, β b = b) {j : ℕ}
     (x : Om R B j) : h.mOm j x = x := by
   refine Subtype.ext ?_
@@ -487,9 +748,15 @@ theorem SemiHom.mOm_id {τ : R →+* R} {β : B →+* B} (h : SemiHom τ β) (e 
 
 variable {τ : R' →+* R''} {β : B' →+* B''} {ρ : R →+* R''} {γ : B →+* B''}
 
+/- English proof (translation)
+The claim follows from `fun r b ↦ by simp only [RingHom.comp_apply, h r, h' (σ r)]`.
+-/
 theorem SemiHom.comp (h : SemiHom σ α) (h' : SemiHom τ β) : SemiHom (τ.comp σ) (β.comp α) := fun r b ↦ by
   simp only [RingHom.comp_apply, h r, h' (σ r)]
 
+/- English proof (translation)
+Proceed by induction on `ω using ind1 with`. Consider the case `h b c => simp [e]`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem SemiHom.oneFormMap_comp_oneFormMap (h : SemiHom σ α) (h' : SemiHom τ β) (h'' : SemiHom ρ γ) (e : ∀ b, β (α b) = γ b)
     (ω : Ω[B⁄R]) : h'.m1 (h.m1 ω) = h''.m1 ω := by
   induction ω using ind1 with
@@ -497,6 +764,11 @@ theorem SemiHom.oneFormMap_comp_oneFormMap (h : SemiHom σ α) (h' : SemiHom τ 
   | h0 => simp
   | ha x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Use `Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [coe_mOm]`. Proceed by induction on `(x : DR R B) using indDR with`. Consider the case `h b => simp [e]`. Consider the case `hd b => simp [e]`.
+
+Consider the case `hm x y hx hy => simp only [map_mul, hx, hy]`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem SemiHom.mOm_mOm (h : SemiHom σ α) (h' : SemiHom τ β) (h'' : SemiHom ρ γ) (e : ∀ b, β (α b) = γ b)
     {j : ℕ} (x : Om R B j) : h'.mOm j (h.mOm j x) = h''.mOm j x := by
   refine Subtype.ext ?_
@@ -507,6 +779,9 @@ theorem SemiHom.mOm_mOm (h : SemiHom σ α) (h' : SemiHom τ β) (h'' : SemiHom 
   | hm x y hx hy => simp only [map_mul, hx, hy]
   | ha x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Proceed by induction on `ω using ind1 with`. Consider the case `h b c => simp [e, KaehlerDifferential.map_D]`. Consider the case `h0 => simp`. Consider the case `ha x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem SemiHom.oneFormMap_eq_kaehlerDifferential_map [Algebra R B'] [Algebra B B'] [IsScalarTower R B B'] {τ : R →+* R}
     {β : B →+* B'} (h : SemiHom τ β) (e : ∀ b, β b = algebraMap B B' b) (ω : Ω[B⁄R]) :
     h.m1 ω = KaehlerDifferential.map R R B B' ω := by

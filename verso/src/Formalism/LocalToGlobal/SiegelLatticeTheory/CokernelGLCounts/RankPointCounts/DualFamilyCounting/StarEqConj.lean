@@ -15,16 +15,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[Formalism.BasicNotions.Examples₂.emb_star, Formalism.BasicNotions.Examples₂.emb_conj]`.
+-/
 theorem star_eq_conj' (t : D.host.E) : star t = D.host.conj t := by
   apply D.host.φ₀.injective
   rw [Formalism.BasicNotions.Examples₂.emb_star, Formalism.BasicNotions.Examples₂.emb_conj]
 
+/- English proof (translation)
+Establish `h` using `thetaEx_holds D`. Unfold `theta`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+-/
 theorem theta_spec : IsIntegral ℤ (theta D) ∧ theta D + D.host.conj (theta D) = 1 := by
   have h := thetaEx_holds D
   unfold theta
   rw [dif_pos h]
   exact h.choose_spec
 
+/- English proof (translation)
+Establish `hok'` using `hok`. Take `⟨-, -, -, hM⟩` from `hok'`. Establish `h` using `congrFun (congrFun hM b) a`. Simplify `h` using `only [Matrix.add_apply, Matrix.neg_apply, Matrix.conjTranspose_apply]`.
+-/
 theorem entry_rel {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R.rS → (VS D).V}
     {M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} (hok : DataOK X X0 xs M) (b a : Fin D.R.rS) :
     M b a + star (M a b) = -Gp D X0 xs b a := by
@@ -33,6 +42,13 @@ theorem entry_rel {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R
   have h := congrFun (congrFun hM b) a
   simpa only [Matrix.add_apply, Matrix.neg_apply, Matrix.conjTranspose_apply] using h
 
+/- English proof (translation)
+Establish `hok'` using `hok`. Take `⟨hup, hd, hW, -⟩` from `hok'`. Use `show (fun v => (embS D (X.pl v) (M p.1.1 p.1.2) - star (embS D (X.pl v) (M p.1.2 p.1.1))) / 2) - (fun v => Hc X u (blkQ X u X0 xs M) v p.1.1 p.1.2 / 2) = fun v => embS D (X.pl v) (M p.1.1 p.1.2)`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.sub_apply]`.
+
+Rewrite using `[Hc_blkQ X u X0 xs M hup hd hW v, Matrix.map_apply]`. Establish `e` using `congrArg (embS D (X.pl v)) (entry_rel X hok p.1.1 p.1.2)`. Rewrite `e` using `[map_add, map_neg, Formalism.BasicNotions.Examples₂.emb_star, starRingEnd_apply]`. Rewrite using `[show embS D (X.pl v) (Gp D X0 xs p.1.1 p.1.2) = -(embS D (X.pl v) (M p.1.1 p.1.2) + star (embS D (X.pl v) (M p.1.2 p.1.1))) by`. Rewrite using `[e, neg_neg]]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kblk {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R.rS → (VS D).V}
     {M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} (hok : DataOK X X0 xs M) (p : Formalism.L2.SG.Pf.LsNc5.LtPair D.R.rS) :
     blkQ X u X0 xs M (Sum.inr (Sum.inl p)) - tauQ X u (Sum.inr (Sum.inl p)) (blkQ X u X0 xs M) =
@@ -56,11 +72,19 @@ def xiA (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (V
     (M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (a : Fin D.R.rS) : D.host.E :=
   M a a + Gp D X0 xs a a * theta D
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun (Gp_herm X0 xs) a) a`. Simplify `h` using `only [Matrix.conjTranspose_apply]`.
+-/
 theorem Gp_diag_star (X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E) (xs : Fin D.R.rS → (VS D).V) (a : Fin D.R.rS) :
     star (Gp D X0 xs a a) = Gp D X0 xs a a := by
   have h := congrFun (congrFun (Gp_herm X0 xs) a) a
   simpa only [Matrix.conjTranspose_apply] using h
 
+/- English proof (translation)
+Establish `hs : ∀ t : D.host.E, D.host.conj t = star t` using `fun t => (star_eq_conj' t).symm`. Establish `hθ : D.host.conj (theta D) = 1 - theta D` using `eq_sub_of_add_eq' (theta_spec (D := D)).2`. Establish `hM : star (M a a) = -Gp D X0 xs a a - M a a` using `eq_sub_of_add_eq' (entry_rel X hok a a)`. Unfold `xiA`. Rewrite using `[map_add, map_mul, hθ, hs (M a a), hs (Gp D X0 xs a a), Gp_diag_star X0 xs a, hM]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiA_conj {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R.rS → (VS D).V}
     {M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} (hok : DataOK X X0 xs M) (a : Fin D.R.rS) :
     D.host.conj (xiA X0 xs M a) = -xiA X0 xs M a := by
@@ -71,6 +95,13 @@ theorem xiA_conj {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R.
   rw [map_add, map_mul, hθ, hs (M a a), hs (Gp D X0 xs a a), Gp_diag_star X0 xs a, hM]
   ring
 
+/- English proof (translation)
+Establish `hok'` using `hok`. Take `⟨hup, hd, hW, -⟩` from `hok'`. Use `show (fun v => (embS D (X.pl v) (M a a)).im) - (fun v => -((Hc X u (blkQ X u X0 xs M) v a a).re * (embS D (X.pl v) (theta D)).im)) = fun v => (embS D (X.pl v) (xiA X0 xs M a)).im`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.sub_apply]`.
+
+Rewrite using `[Hc_blkQ X u X0 xs M hup hd hW v, Matrix.map_apply]`. Establish `hreal : (embS D (X.pl v) (Gp D X0 xs a a)).im = 0`. Establish `h1` using `congrArg (embS D (X.pl v)) (Gp_diag_star X0 xs a)`. Rewrite `h1` using `[Formalism.BasicNotions.Examples₂.emb_star]`. Conclude with `Complex.conj_eq_iff_im.mp h1`.
+
+Simplify using `only [xiA, map_add, map_mul, Complex.add_im, Complex.mul_im, hreal]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem imblk {X0 : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} {xs : Fin D.R.rS → (VS D).V}
     {M : Matrix (Fin D.R.rS) (Fin D.R.rS) D.host.E} (hok : DataOK X X0 xs M) (a : Fin D.R.rS) :
     blkQ X u X0 xs M (Sum.inr (Sum.inr a)) - tauQ X u (Sum.inr (Sum.inr a)) (blkQ X u X0 xs M) =

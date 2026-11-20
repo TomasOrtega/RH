@@ -18,6 +18,15 @@ section Alg
 
 variable {X U : Type} [AddCommGroup X] [CommGroup U]
 
+/- English proof (translation)
+Set `g : X →+ Additive U` to `AddMonoidHom.mk' (fun a => Additive.ofMul (f a / f' a)) (fun a a' => by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Simplify using `only [toMul_add, toMul_ofMul]`. Establish `e` using `hf a a'`. Establish `e'` using `hf' a a'`.
+
+Rewrite `e`, `e'` using `[← eq_mul_inv_iff_mul_eq]`. Rewrite using `[e, e']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div, ofMul_inv]`. Use the proof step `abel)`.
+
+Establish `hg : g.toIntLinearMap = 0` using `b.ext fun i => by`. Simplify using `[g, h i]`. Use function extensionality and compare the values at `a`. Use `congrArg (fun q => q a) hg` as an intermediate fact. Simplify using `only [LinearMap.zero_apply, AddMonoidHom.coe_toIntLinearMap] at this`.
+
+Establish `e : Additive.ofMul (f a / f' a) = 0` using `this`. Conclude with `div_eq_one.1 (Additive.ofMul.injective e)`.
+-/
 theorem firstLaw_unique (θ : X → X → U) {I : Type} (b : Module.Basis I ℤ X) {f f' : X → U}
     (hf : ∀ a a', f (a + a') * θ a a' = f a * f a') (hf' : ∀ a a', f' (a + a') * θ a a' = f' a * f' a')
     (h : ∀ i, f (b i) = f' (b i)) : f = f' := by
@@ -81,6 +90,15 @@ def extGroup (θ : X → X → U) (h0 : ∀ a, θ 0 a = 1) (hs : ∀ a b, θ a b
         (q : U × X).1 * (p : U × X).1 * (θ (q : U × X).2 (p : U × X).2)⁻¹
       rw [hs, mul_comm (p : U × X).1] }
 
+/- English proof (translation)
+Use `letI : AddCommGroup (ExtCar U X) := extGroup θ h0 hs hc`. Set `s : X →ₗ[ℤ] ExtCar U X` to `b.constr ℤ (fun i => (((m i, b i) : U × X) : ExtCar U X))`. Set `π : ExtCar U X →+ X` to `{ toFun := fun p => (p : U × X).2, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hπ : π.toIntLinearMap ∘ₗ s = LinearMap.id` using `b.ext fun i => by`. Simplify using `only [LinearMap.comp_apply, s, AddMonoidHom.coe_toIntLinearMap, LinearMap.id_apply]`.
+
+Use `erw [Module.Basis.constr_basis]`. Both sides reduce to the same expression. Establish `h2 : ∀ a, ((s a : ExtCar U X) : U × X).2 = a` using `fun a => congrArg (fun q => q a) hπ`. Use `⟨fun a => ((s a : ExtCar U X) : U × X).1, fun a a' => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `e : ((s (a + a') : ExtCar U X) : U × X).1 = ((s a : ExtCar U X) : U × X).1 * ((s a' : ExtCar U X) : U × X).1 * (θ ((s a : ExtCar U X) : U × X).2 ((s a' : ExtCar U X) : U × X).2)⁻¹`.
+
+Rewrite using `[s.map_add]`. Both sides reduce to the same expression. Use `show ((s (a + a') : ExtCar U X) : U × X).1 * θ a a' = _`. Rewrite using `[e, h2, h2, inv_mul_cancel_right]`. Use `show ((s (b i) : ExtCar U X) : U × X).1 = m i`.
+
+Simplify using `only [s]`. Use `erw [Module.Basis.constr_basis]`.
+-/
 theorem exists_firstLaw (θ : X → X → U) (h0 : ∀ a, θ 0 a = 1) (hs : ∀ a b, θ a b = θ b a)
     (hc : ∀ a a' a'', θ (a + a') a'' * θ a a' = θ a (a' + a'') * θ a' a'') {I : Type} (b : Module.Basis I ℤ X)
     (m : I → U) : ∃ f : X → U, (∀ a a', f (a + a') * θ a a' = f a * f a') ∧ ∀ i, f (b i) = m i := by
@@ -102,6 +120,11 @@ theorem exists_firstLaw (θ : X → X → U) (h0 : ∀ a, θ 0 a = 1) (hs : ∀ 
     simp only [s]
     erw [Module.Basis.constr_basis]
 
+/- English proof (translation)
+Establish `rot : ∀ p q r, θ p q r = θ r p q` using `fun p q r => by rw [s12, s01]`. Establish `a` using `coc x x' y y'`. Establish `b` using `coc x' y y' x`. Rewrite `b` using `[rot (x' + y) y' x, rot x' y x, rot x' (y + y') x, rot y y' x]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Establish `a'` using `congrArg Additive.ofMul a`. Establish `b'` using `congrArg Additive.ofMul b`. Simplify using `only [ofMul_mul] at a' b' ⊢`. Take the linear combination `(norm := abel) a' + b'`.
+-/
 theorem cub_compat (θ : X → X → X → U) (s01 : ∀ x y z, θ x y z = θ y x z) (s12 : ∀ x y z, θ x y z = θ x z y)
     (coc : ∀ x x' x'' y, θ (x + x') x'' y * θ x x' y = θ x (x' + x'') y * θ x' x'' y) (x x' y y' : X) :
     θ (x + x') y y' * θ x x' y' * θ x x' y = θ x x' (y + y') * θ x y y' * θ x' y y' := by
@@ -115,6 +138,21 @@ theorem cub_compat (θ : X → X → X → U) (s01 : ∀ x y z, θ x y z = θ y 
   simp only [ofMul_mul] at a' b' ⊢
   linear_combination (norm := abel) a' + b'
 
+/- English proof (translation)
+Set `b` to `Module.Free.chooseBasis ℤ X`. Establish `h0 : ∀ y a, θ 0 a y = 1` using `fun y a => face a y`. Establish `hs : ∀ y a a', θ a a' y = θ a' a y` using `fun y a a' => s01 a a' y`. Establish `hc : ∀ y a a' a'', θ (a + a') a'' y * θ a a' y = θ a (a' + a'') y * θ a' a'' y` using `fun y a a' a'' => coc a a' a'' y`. Use `choose nu hnu1 hnu2 using fun i => exists_firstLaw (fun a a' => θ a a' (b i)) (h0 _) (hs _) (hc _) b (fun _ => 1)`.
+
+Use `choose mu hmu1 hmu2 using fun y => exists_firstLaw (fun a a' => θ a a' y) (h0 y) (hs y) (hc y) b (fun j => nu j y)`. Establish `c1 : ∀ i a, mu (b i) a = nu i a` using `fun i a => congrFun (firstLaw_unique _ b (hmu1 (b i)) (hnu1 i) (fun j => by rw [hmu2, hnu2, hnu2])) a`. Establish `c2 : ∀ y y' a, mu (y + y') a * θ y y' a = mu y a * mu y' a`. Introduce `y y'`. Establish `e` using `firstLaw_unique (fun a a' => θ a a' (y + y')) b (hmu1 (y + y')) (f' := fun a => mu y a * mu y' a * (θ y y' a)⁻¹) (fun a a' => by`.
+
+Establish `e1` using `hmu1 y a a'`. Establish `e2` using `hmu1 y' a a'`. Establish `e3` using `cub_compat θ s01 s12 coc a a' y y'`. Establish `r1 : θ y y' (a + a') = θ (a + a') y y'` using `by rw [s12, s01]`. Establish `r2 : θ y y' a = θ a y y'` using `by rw [s12, s01]`.
+
+Establish `r3 : θ y y' a' = θ a' y y'` using `by rw [s12, s01]`. Use `show mu y (a + a') * mu y' (a + a') * (θ y y' (a + a'))⁻¹ * θ a a' (y + y') = mu y a * mu y' a * (θ y y' a)⁻¹ * (mu y a' * mu y' a' * (θ y y' a')⁻¹)`. Rewrite using `[r1, r2, r3]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `f1` using `congrArg Additive.ofMul e1`.
+
+Establish `f2` using `congrArg Additive.ofMul e2`. Establish `f3` using `congrArg Additive.ofMul e3`. Simplify using `only [ofMul_mul, ofMul_inv] at f1 f2 f3 ⊢`. Take the linear combination `(norm := abel) f1 + f2 - f3)`. Use the proof step `(fun i => by show mu (y + y') (b i) = mu y (b i) * mu y' (b i) * (θ y y' (b i))⁻¹`.
+
+Rewrite using `[hmu2, hmu2, hmu2, eq_mul_inv_iff_mul_eq]`. Conclude with `hnu1 i y y')`. Introduce `a`. Use `congrFun e a` as an intermediate fact. Rewrite using `[this, inv_mul_cancel_right]`.
+
+Establish `c3 : ∀ y a, mu a y = mu y a`. Introduce `y`. Establish `e` using `firstLaw_unique (fun a a' => θ a a' y) b (hmu1 y) (f' := fun a => mu a y) (fun a a' => c2 a a' y) (fun i => by rw [hmu2, c1])`. Conclude with `fun a => (congrFun e a).symm`. Conclude with `⟨fun a b' => mu b' a, fun a b' => c3 a b', fun a a' b' => hmu1 b' a a'⟩`.
+-/
 theorem exists_symm_triv [Module.Free ℤ X] (θ : X → X → X → U) (face : ∀ x y, θ 0 x y = 1)
     (s01 : ∀ x y z, θ x y z = θ y x z) (s12 : ∀ x y z, θ x y z = θ x z y)
     (coc : ∀ x x' x'' y, θ (x + x') x'' y * θ x x' y = θ x (x' + x'') y * θ x' x'' y) :
@@ -169,6 +207,17 @@ variable {A U : Type} [CommGroup A] [CommGroup U]
 def cob (h : A → U) (x x' y : A) : U :=
   h (x * x' * y) * (h (x * x'))⁻¹ * (h (x * y))⁻¹ * (h (x' * y))⁻¹ * h x * h x' * h y * (h 1)⁻¹
 
+/- English proof (translation)
+Simplify using `only [cob, _root_.one_mul]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_one]`. Normalize the expressions using the abelian group laws. Use `s01 x y z := by`.
+
+Simplify using `only [cob]`. Rewrite using `[mul_comm x y]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+
+Use `s12 x y z := by`. Simplify using `only [cob]`. Rewrite using `[mul_right_comm x y z, mul_comm z y]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Use `coc x x' x'' y := by`. Simplify using `only [cob]`. Rewrite using `[_root_.mul_assoc x x' x'', _root_.mul_assoc x x' y, _root_.mul_assoc x' x'' y]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isCub_cob (h : A → U) : IsCub (cob h) where
   face x y := by
     simp only [cob, _root_.one_mul]
@@ -194,6 +243,11 @@ theorem isCub_cob (h : A → U) : IsCub (cob h) where
     simp only [ofMul_mul, ofMul_inv]
     abel
 
+/- English proof (translation)
+Simplify using `only [h.face, h'.face, inv_one, _root_.mul_one] s01 x y z := by simp only [h.s01 x y z, h'.s01 x y z] s12 x y z := by simp only [h.s12 x y z, h'.s12 x y z] coc x x' x'' y := by`. Establish `e` using `congrArg Additive.ofMul (h.coc x x' x'' y)`. Establish `e'` using `congrArg Additive.ofMul (h'.coc x x' x'' y)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at e e' ⊢`.
+
+Take the linear combination `(norm := abel) e - e'`.
+-/
 theorem isCub_mul_inv {θ θ' : A → A → A → U} (h : IsCub θ) (h' : IsCub θ') :
     IsCub (fun x y z => θ x y z * (θ' x y z)⁻¹) where
   face x y := by simp only [h.face, h'.face, inv_one, _root_.mul_one]
@@ -206,6 +260,9 @@ theorem isCub_mul_inv {θ θ' : A → A → A → U} (h : IsCub θ) (h' : IsCub 
     simp only [ofMul_mul, ofMul_inv] at e e' ⊢
     linear_combination (norm := abel) e - e'
 
+/- English proof (translation)
+The claim follows from `hF _ _ fun p => by rw [(h p).face, map_one] s01 x y z := hF _ _ fun p => (h p).s01 x y z s12 x y z := hF _ _ fun p => (h p).s12 x y z coc x x' x'' y := hF _ _ fun p => by rw [map_mul, map_mul]; exact (h p).coc x x' x'' y`.
+-/
 theorem isCub_of_inj {P : Type} {V : P → Type} [∀ p, CommGroup (V p)] (F : ∀ p, U →* V p)
     (hF : ∀ u u' : U, (∀ p, F p u = F p u') → u = u') {θ : A → A → A → U}
     (h : ∀ p, IsCub (fun x y z => F p (θ x y z))) : IsCub θ where
@@ -223,6 +280,11 @@ variable {X' Y' Z' : Scheme.{0}}
 def trH (L : LB X') (jj : (Y' ⟶ X') → L.ι) (z : Y') (J : (Y' ⟶ X') → L.ι) (ψ : Y' ⟶ X') : (Y'.presheaf.stalk z)ˣ :=
   gm ψ z (L.U (J ψ) ⊓ L.U (jj ψ)) (L.g (J ψ) (jj ψ))
 
+/- English proof (translation)
+Establish `htop : (⊤ : Y'.Opens) ≤ LB.wchart L φ (fun k => jj (φ k))` using `fun y _ => Set.mem_iInter.2 fun k => hjj (φ k) y`. Use `⟨res htop (t.s (fun k => jj (φ k))), fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `e1 : gm (𝟙 Y') z ⊤ (res htop (t.s (fun k => jj (φ k)))) = gm (𝟙 Y') z (LB.wchart L φ (fun k => jj (φ k))) (t.s (fun k => jj (φ k)))` using `gm_res (𝟙 Y') z htop trivial _`. Use `(gen_trans ht (𝟙 Y') z (hJ.mem φ (𝟙 Y')) (htop trivial)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Use `congrArg₂ (· * ·) e1.symm (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations. Use `show trH L jj z J (𝟙 Y' ≫ φ k) ^ ε k = trH L jj z J (φ k) ^ ε k`. Rewrite using `[Category.id_comp]`.
+-/
 theorem val_eq_trH {L : LB X'} (jj : (Y' ⟶ X') → L.ι) (hjj : ∀ ψ y, ψ y ∈ L.U (jj ψ)) {K : Type} [Fintype K]
     {φ : K → (Y' ⟶ X')} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) :
     ∃ w : Γ(Y', ⊤)ˣ, ∀ (z : Y') J, Good L z J →
@@ -237,11 +299,17 @@ theorem val_eq_trH {L : LB X'} (jj : (Y' ⟶ X') → L.ι) (hjj : ∀ ψ y, ψ y
   show trH L jj z J (𝟙 Y' ≫ φ k) ^ ε k = trH L jj z J (φ k) ^ ε k
   rw [Category.id_comp]
 
+/- English proof (translation)
+Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) w) rfl)`.
+-/
 theorem val_scaleGen' {L : LB X'} {K : Type} [Fintype K] {φ : K → (Y' ⟶ X')} {ε : K → ℤ} (w : Γ(Y', ⊤)ˣ)
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Z' ⟶ Y') (z : Z') (J : (Z' ⟶ X') → L.ι) (hJ : Good L z J) :
     val (DVR.scaleGen w t) r z J = gm r z ⊤ w * val t r z J := by
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) w) rfl)
 
+/- English proof (translation)
+The claim follows from `unit_ext fun z _ => by choose J hJ using fun ψ : Y' ⟶ X' => exists_chart hL (ψ z) exact h z J hJ`.
+-/
 theorem eq_of_gm {L : LB X'} (hL : L.IsLB) {w w' : Γ(Y', ⊤)ˣ}
     (h : ∀ (z : Y') (J : (Y' ⟶ X') → L.ι), Good L z J → gm (𝟙 Y') z ⊤ w = gm (𝟙 Y') z ⊤ w') : w = w' :=
   unit_ext fun z _ => by
@@ -254,6 +322,9 @@ section Main
 
 variable {R : Type} [CommRing R] [IsLocalRing R] {B : Over (Sp R)} [GrpObj B] [IsCommMonObj B]
 
+/- English proof (translation)
+Use `choose i hi using fun ψ : Sp R ⟶ B.left => exists_chart M.isLB (ψ (IsLocalRing.closedPoint R))`. Use `⟨i, fun ψ y => ?_⟩` and prove the remaining obligations. Establish `e` using `DVR.eq_top_of_closedPoint_mem (V := R) (ψ ⁻¹ᵁ M.L.U (i ψ)) (hi ψ)`. Establish `hy : y ∈ ψ ⁻¹ᵁ M.L.U (i ψ)` using `by rw [e]; trivial`. Conclude with `hy`.
+-/
 theorem exists_chart_all (M : RigLB B) :
     ∃ jj : ((𝟙_ (Over (Sp R))).left ⟶ B.left) → M.L.ι, ∀ ψ y, ψ y ∈ M.L.U (jj ψ) := by
   choose i hi using fun ψ : Sp R ⟶ B.left => exists_chart M.isLB (ψ (IsLocalRing.closedPoint R))
@@ -262,6 +333,25 @@ theorem exists_chart_all (M : RigLB B) :
   have hy : y ∈ ψ ⁻¹ᵁ M.L.U (i ψ) := by rw [e]; trivial
   exact hy
 
+/- English proof (translation)
+Take `⟨jj, hjj⟩` from `exists_chart_all M`. Establish `hlam : ∀ x x' y : 𝟙_ (Over (Sp R)) ⟶ B, ∃ w : Γ((𝟙_ (Over (Sp R))).left, ⊤)ˣ, ∀ z J, Good M.L z J → cubV cub z J x x' y = gm (𝟙 _) z ⊤ w * cob (fun p : 𝟙_ (Over (Sp R)) ⟶ B => trH M.L jj z J p.left) x x' y`. Introduce `x x' y`. Take `⟨w, hw⟩` from `val_eq_trH jj hjj (t := LB.pullGen M.L (thφ B (x3 B)) thε cub.t (lift x (lift x' y)).left) (DVR.pullGen_isGen _ _ _ _ cub.isGen (lift x (lift x' y)).left)`. Use `⟨w, fun z J hJ => ?_⟩` and prove the remaining obligations.
+
+Establish `e1` using `val_cub cub (𝟙 _) hJ x x' y`. Rewrite `e1` using `[Over.id_left, Category.id_comp, Category.id_comp, Category.id_comp]`. Rewrite using `[← e1, hw z J hJ]`. Conclude with `congrArg _ (prod_cub x x' y (trH M.L jj z J))`. Use `choose lam hlam using hlam`.
+
+Establish `hcub : IsCub lam`. Use `isCub_of_inj (P := {p : (𝟙_ (Over (Sp R))).left × (((𝟙_ (Over (Sp R))).left ⟶ B.left) → M.L.ι) // Good M.L p.1 p.2}) (fun p => gm (𝟙 (𝟙_ (Over (Sp R))).left) p.1.1 ⊤) (fun u u' h => eq_of_gm M.isLB fun z J hJ => by` and prove the remaining obligations. Conclude with `h ⟨(z, J), hJ⟩) fun p => ?_`. Establish `e : (fun x x' y => gm (𝟙 _) p.1.1 ⊤ (lam x x' y)) = fun x x' y => cubV cub p.1.1 p.1.2 x x' y * (cob (fun q : 𝟙_ (Over (Sp R)) ⟶ B => trH M.L jj p.1.1 p.1.2 q.left) x x' y)⁻¹`. Use function extensionality and compare the values at `x x' y`.
+
+Rewrite using `[hlam x x' y p.1.1 p.1.2 p.2, mul_inv_cancel_right]`. Rewrite using `[e]`. Conclude with `isCub_mul_inv (isCub_cubV cub p.2) (isCub_cob _)`. Establish `c0 : c 0 = 1`. Use `c_add 0 0` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.1 this.symm`. Take `⟨mu, hmus, hmua⟩` from `exists_symm_triv (fun a a' b => lam (c a) (c a') (c b)) (fun x y => by simp only [c0, hcub.face]) (fun x y z => hcub.s01 _ _ _) (fun x y z => hcub.s12 _ _ _) (fun x x' x'' y => by simp only [c_add]; exact hcub.coc _ _ _ _)`. Establish `hu : ∀ a b, ∃ u : LB.Gen (LB.LinComb M.L (PolDeg.lamPts (c a) (c b)) PolDeg.negε), u.IsGen` using `fun a b => DVR.exists_gen_of_local (V := R) M.L M.isLB _ _`. Use `choose u hu using hu`.
+
+Establish `hw` using `fun a b => val_eq_trH jj hjj (hu a b)`. Use `choose w hw using hw`. Establish `key : ∀ a b z J, Good M.L z J → val (DVR.scaleGen (mu a b * (w a b)⁻¹) (u a b)) (𝟙 _) z J = gm (𝟙 _) z ⊤ (mu a b) * ((trH M.L jj z J (c a * c b).left)⁻¹ * trH M.L jj z J (c a).left * trH M.L jj z J (c b).left * (trH M.L jj z J (1 : 𝟙_ (Over (Sp R)) ⟶ B).left)⁻¹)`. Introduce `a b z J hJ`. Rewrite using `[val_scaleGen' _ _ _ _ _ hJ, hw a b z J hJ, map_mul, map_inv, Fin.prod_univ_four]`.
+
+Simplify using `[PolDeg.lamPts, PolDeg.negε]`. Use `⟨fun a b => DVR.scaleGen (mu a b * (w a b)⁻¹) (u a b), fun a b => DVR.scaleGen_isGen _ _ (hu a b), fun a b z J hJ => ?_, fun a a' b z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[key a b z J hJ, key b a z J hJ, hmus a b, mul_comm (c a) (c b)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[key _ _ z J hJ, key _ _ z J hJ, key _ _ z J hJ, hlam _ _ _ z J hJ, c_add]`. Establish `e` using `congrArg Additive.ofMul (congrArg (gm (𝟙 (𝟙_ (Over (Sp R))).left) z ⊤) (hmua a a' b))`. Simplify using `only [map_mul] at e`. Simplify using `only [cob]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at e ⊢`. Take the linear combination `(norm := abel) e`.
+-/
 theorem exists_tau_local (M : RigLB B) (cub : CubicalStr B M) {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     (c : X → (𝟙_ (Over (Sp R)) ⟶ B)) (c_add : ∀ a b, c (a + b) = c a * c b) :
     ∃ tau : ∀ a b : X, LB.Gen (LB.LinComb M.L (PolDeg.lamPts (c a) (c b)) PolDeg.negε),

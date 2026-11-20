@@ -18,22 +18,37 @@ open GlobalTheory.PlaceModel
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isPlaceModel_comp_restrictToHalfLatticeIndicator ha hb hab hΛ hT`.
+-/
 theorem isPlaceModel_restrictHalf {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {Λ : AddSubgroup (WO S T)}
     {f₀ : WO S T → ℂ} {a' b : AE D} {T₀ : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)} (ha : a' * a' = a') (hb : b * b = b)
     (hab : a' * b = 0) (hΛ : ∀ e : AE D, e * e = e → ∀ u ∈ Λ, e • u ∈ Λ)
     (hT : IsPlaceModel ψ (symplO S T) (heisO ψ S T) (a' + b) Λ 1 f₀ T₀) :
     IsPlaceModel ψ (symplO S T) (heisO ψ S T) a' Λ 1 f₀ (T₀ ∘ₗ restrictHalf a' b Λ) := GlobalTheory.T.isPlaceModel_comp_restrictToHalfLatticeIndicator ha hb hab hΛ hT
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.finiteAdeleCM_mem_integral_of_idempotent he`.
+-/
 theorem toEAf_mem_intAf_of_idem {e : AE D} (he : e * e = e) : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E := GlobalTheory.T.finiteAdeleCM_mem_integral_of_idempotent he
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.frameMatrices_integral_of_mem_completedLattice hF hR hx hl`.
+-/
 theorem isIntM_of_mem_lat_half {S T : HSp D} {F : Frame S T} (hF : F.Good) {R : Finset (Pl D.host.E)} (hR : PlacesOK ∅ R)
     {x : WO S T} (hx : IsHalf (idem R) x) (hl : x ∈ F.lat) :
     IsIntM (frMapO S T F.βS F.βT x) ∧ IsIntM (frMapAdj S T F.βS F.βT x) :=
   GlobalTheory.T.frameMatrices_integral_of_mem_completedLattice hF hR hx hl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.mem_completedLattice_of_frameMatrix_integral hF hR hx hi`.
+-/
 theorem mem_lat_of_isIntM_half {S T : HSp D} {F : Frame S T} (hF : F.Good) {R : Finset (Pl D.host.E)} (hR : PlacesOK ∅ R)
     {x : WO S T} (hx : IsHalf (idem R) x) (hi : IsIntM (frMapO S T F.βS F.βT x)) : x ∈ F.lat := GlobalTheory.T.mem_completedLattice_of_frameMatrix_integral hF hR hx hi
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.frameMatrixReduction_eq_of_halfIdempotent_subset βS βT hP hQ hx h1 h2`.
+-/
 theorem redM_halfIdem_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     {Pg Qa Qb : Finset (Pl D.host.E)} (hP : PlacesOK Pg Qa) (hQ : Qb ⊆ Qa) {x : WO S T}
     (hx : IsHalf (halfIdem Pg Qa) x) (h1 : IsIntM (frMapAdj S T βS βT x)) (h2 : IsIntM (frMapO S T βS βT x)) :
@@ -51,20 +66,34 @@ open GlobalTheory.PlaceModel GlobalTheory.AdelicLatMove
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `halfIdem idem`. Rewrite using `[← Finset.sum_sdiff hQ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfIdem_eq_add {Pg Qa Qb : Finset (Pl D.host.E)} (hQ : Qb ⊆ Qa) :
     halfIdem Pg Qa = halfIdem Pg Qb + idem (Qa \ Qb) := by
   unfold halfIdem idem
   rw [← Finset.sum_sdiff hQ]
   ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.split.imp fun _ hP => ⟨Finset.empty_subset _, Finset.sdiff_subset.trans hP.2.1, hP.2.2⟩, Finset.disjoint_empty_left _, fun PP hPP => h.prime PP (Or.inr (Finset.sdiff_subset (hPP.resolve_left (Finset.notMem_empty PP))))⟩`.
+-/
 theorem PlacesOK.empty_sdiff {Pg Qa Qb : Finset (Pl D.host.E)} (h : PlacesOK Pg Qa) : PlacesOK ∅ (Qa \ Qb) :=
   ⟨h.split.imp fun _ hP => ⟨Finset.empty_subset _, Finset.sdiff_subset.trans hP.2.1, hP.2.2⟩, Finset.disjoint_empty_left _,
     fun PP hPP => h.prime PP (Or.inr (Finset.sdiff_subset (hPP.resolve_left (Finset.notMem_empty PP))))⟩
 
+/- English proof (translation)
+Use `h.isOrthSum.1.idem` as an intermediate fact. Rewrite `this` using `[halfIdem, idem_empty, map_zero, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem idem_mul_self_of {R : Finset (Pl D.host.E)} (h : PlacesOK ∅ R) : idem R * idem R = idem R := by
   have := h.isOrthSum.1.idem
   rwa [halfIdem, idem_empty, map_zero, zero_add] at this
 
+/- English proof (translation)
+Establish `h1` using `h.isOrthSum.1.idem`. Establish `h2` using `(h.mono hQ).isOrthSum.1.idem`. Establish `h3` using `idem_mul_self_of (h.empty_sdiff (Qb := Qb))`. Rewrite `h1` using `[halfIdem_eq_add hQ]`. Use `GlobalTheory.PlaceVec.natCast_mul_eq_zero 2 _ two_pos ?_` and prove the remaining obligations.
+
+Use `push_cast`. Take the linear combination `h1 - h2 - h3`.
+-/
 theorem halfIdem_mul_idem {Pg Qa Qb : Finset (Pl D.host.E)} (h : PlacesOK Pg Qa) (hQ : Qb ⊆ Qa) :
     halfIdem Pg Qb * idem (Qa \ Qb) = 0 := by
   have h1 := h.isOrthSum.1.idem
@@ -75,11 +104,17 @@ theorem halfIdem_mul_idem {Pg Qa Qb : Finset (Pl D.host.E)} (h : PlacesOK Pg Qa)
   push_cast
   linear_combination h1 - h2 - h3
 
+/- English proof (translation)
+Unfold `frMapO`. Rewrite using `[Matrix.map_add _ (map_add (toEAf D)), Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem frMapO_add' {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x y : WO S T) :
     frMapO S T βS βT (x + y) = frMapO S T βS βT x + frMapO S T βS βT y := by
   unfold frMapO
   rw [Matrix.map_add _ (map_add (toEAf D)), Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Unfold `frMapO`. Establish `: (e • x : Matrix (Fin T.rank) (Fin S.rank) (AE D)).map (toEAf D) = toEAf D e • x.map (toEAf D)` using `Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem frMapO_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (x : WO S T) :
     frMapO S T βS βT (e • x) = toEAf D e • frMapO S T βS βT x := by
   unfold frMapO
@@ -87,6 +122,9 @@ theorem frMapO_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin
     Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul]
   rw [this, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.PlaceVec.frMapAdj_eq]`. Establish `: (((e • x : WO S T).map (toEAf D)).map (cF D))ᵀ = toEAf D (cA D e) • ((x.map (toEAf D)).map (cF D))ᵀ` using `Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul, toEAf_cA]`. Rewrite using `[this, Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem frMapAdj_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (e : AE D) (x : WO S T) :
     frMapAdj S T βS βT (e • x) = toEAf D (cA D e) • frMapAdj S T βS βT x := by
   rw [GlobalTheory.PlaceVec.frMapAdj_eq, GlobalTheory.PlaceVec.frMapAdj_eq]
@@ -94,18 +132,36 @@ theorem frMapAdj_smul {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (F
     Matrix.ext fun i j => by simp [Matrix.smul_apply, map_mul, toEAf_cA]
   rw [this, Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul] exact mul_mem (toEAf_mem_intAf_of_idem he) (hN i j)`.
+-/
 theorem isIntM_smul {b a : ℕ} {e : AE D} (he : e * e = e) {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     IsIntM (toEAf D e • N) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul]
   exact mul_mem (toEAf_mem_intAf_of_idem he) (hN i j)
 
+/- English proof (translation)
+The claim follows from `isIntM_smul (by rw [← map_mul, he]) hN`.
+-/
 theorem isIntM_smul_cA {b a : ℕ} {e : AE D} (he : e * e = e) {N : Matrix (Fin b) (Fin a) (EAf D)} (hN : IsIntM N) :
     IsIntM (toEAf D (cA D e) • N) := isIntM_smul (by rw [← map_mul, he]) hN
 
+/- English proof (translation)
+Introduce `i j` and use `by show e * (e * x i j) = e * x i j rw [← mul_assoc, he]`.
+-/
 theorem isHalf_smul {m n : ℕ} {e : AE D} (he : e * e = e) (x : Mx D m n) : IsHalf e (e • x) := fun i j => by
   show e * (e * x i j) = e * x i j
   rw [← mul_assoc, he]
 
+/- English proof (translation)
+Establish `hR` using `h.empty_sdiff (Qb := Qb)`. Establish `ha'` using `(h.mono hQ).isOrthSum.1.idem`. Establish `hb` using `idem_mul_self_of hR`. Establish `hxe : x = halfIdem Pg Qb • x + idem (Qa \ Qb) • x`. Rewrite using `[← add_smul, ← halfIdem_eq_add hQ]`.
+
+Conclude with `(Matrix.ext fun i j => hx i j).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_, mem_lat_of_isIntM_half hF hR (isHalf_smul hb x) ?_⟩` and prove the remaining obligations. Rewrite using `[frMapAdj_smul]`.
+
+Conclude with `isIntM_smul_cA ha' h1`. Rewrite using `[frMapO_smul]`. Conclude with `isIntM_smul ha' h2`. Rewrite using `[frMapO_smul]`. Conclude with `isIntM_smul hb h2`.
+
+Introduce and unpack `⟨k1, k2, k3⟩`. Take `⟨o, d⟩` from `isIntM_of_mem_lat_half hF hR (isHalf_smul hb x) k3`. Rewrite using `[hxe, GlobalTheory.PlaceVec.frMapAdj_add, frMapO_add']`. Conclude with `⟨fun i j => add_mem (k1 i j) (d i j), fun i j => add_mem (k2 i j) (o i j)⟩`.
+-/
 theorem isInt_iff {S T : HSp D} {F : Frame S T} (hF : F.Good) {Pg Qa Qb : Finset (Pl D.host.E)} (h : PlacesOK Pg Qa)
     (hQ : Qb ⊆ Qa) {x : WO S T} (hx : IsHalf (halfIdem Pg Qa) x) :
     (IsIntM (frMapAdj S T F.βS F.βT x) ∧ IsIntM (frMapO S T F.βS F.βT x)) ↔
@@ -128,6 +184,21 @@ theorem isInt_iff {S T : HSp D} {F : Frame S T} (hF : F.Good) {Pg Qa Qb : Finset
     rw [hxe, GlobalTheory.PlaceVec.frMapAdj_add, frMapO_add']
     exact ⟨fun i j => add_mem (k1 i j) (d i j), fun i j => add_mem (k2 i j) (o i j)⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `ha'` using `(h.mono hQ).isOrthSum.1.idem`. Establish `hb` using `idem_mul_self_of (h.empty_sdiff (Qb := Qb))`. Rewrite using `[restrictHalf_apply, ← halfIdem_eq_add hQ]`. Distinguish the cases in `hx : IsHalf (halfIdem G.Pg Qa) x`.
+
+Use `swap`. Rewrite using `[if_neg hx, mul_zero]`. Simplify using `only [Frame.datumFn]`. Rewrite using `[if_neg fun h => hx h.1, zero_mul]`. Rewrite using `[if_pos hx, mul_one]`.
+
+Establish `ha'x` using `isHalf_smul ha' x`. Establish `hbx` using `isHalf_smul hb x`. Distinguish the cases in `hint : IsIntM (frMapAdj S T F.βS F.βT x) ∧ IsIntM (frMapO S T F.βS F.βT x)`. Take `⟨k1, k2, k3⟩` from `(isInt_iff hF h hQ hx).1 hint`. Take `⟨r1, r2⟩` from `redM_halfIdem_smul F.βS F.βT h hQ hx hint.1 hint.2`.
+
+Simplify using `only [Frame.datumFn, halfInd]`. Rewrite using `[if_pos ⟨hx, hint.1⟩, if_pos ⟨hx, hint.2⟩, if_pos ⟨ha'x, k1⟩, if_pos ⟨ha'x, k2⟩, if_pos ⟨k3, hbx⟩, mul_one]`. Use `congr 1`. Conclude with `GlobalTheory.PlaceDatum.omegaG_congr _ _ _ _ fun PP hPP => r1 PP hPP`. Conclude with `hω _ _ fun PP hPP => r2 PP hPP`.
+
+Establish `hL : F.datumFn G Qa ω x = 0`. Break down `not_and_or.1 hint with h1 | h1` into its components or cases. Simplify using `[Frame.datumFn, h1]`. Simplify using `[Frame.datumFn, h1]`. Rewrite using `[hL]`.
+
+Establish `hr` using `mt (isInt_iff hF h hQ hx).2 hint`. Break down `not_and_or.1 hr with h1 | h1` into its components or cases. Simplify using `[Frame.datumFn, h1]`. Break down `not_and_or.1 h1 with h1 | h1` into its components or cases. Simplify using `[Frame.datumFn, h1]`.
+
+Simplify using `[halfInd, h1]`.
+-/
 theorem datumFn_eq_restrict {S T : HSp D} {F : Frame S T} (hF : F.Good) {G : TypeDat D T.rank}
     {Qa Qb : Finset (Pl D.host.E)} (h : PlacesOK G.Pg Qa) (hQ : Qb ⊆ Qa) {ω : Reds D T.rank S.rank → ℂ}
     (hω : ∀ y y', (∀ PP ∈ Qb, y PP = y' PP) → ω y = ω y') :
@@ -164,6 +235,15 @@ theorem datumFn_eq_restrict {S T : HSp D} {F : Frame S T} (hF : F.Good) {G : Typ
     · simp [Frame.datumFn, h1]
     · simp [halfInd, h1]
 
+/- English proof (translation)
+Introduce `D S T B Q Q' _ φ hB hQ hQ'`. Establish `hL : B.locFn Q (fun PP y => if PP.1 ∈ Q' then φ PP.1 y else 1) = B.locFn Q' (fun PP => φ PP.1)`. Use function extensionality and compare the values at `y`. Unfold `Base.locFn`. Use `congr 1`.
+
+Use `beta_reduce`. Rewrite using `[Finset.prod_coe_sort Q (fun P => if P ∈ Q' then φ P (y P) else 1), ← Finset.prod_subset hQ' (fun P _ hn => if_neg hn), Finset.prod_coe_sort Q' (fun P => φ P (y P))]`. Conclude with `Finset.prod_congr rfl fun P hP => if_pos hP`. Establish `hQb : B.de.Q ∪ Q' ⊆ B.de.Q ∪ Q` using `Finset.union_subset_union (subset_refl _) hQ'`. Establish `hω : ∀ y y' : Reds D T.rank S.rank, (∀ PP ∈ B.de.Q ∪ Q', y PP = y' PP) → B.locFn Q' (fun PP => φ PP.1) y = B.locFn Q' (fun PP => φ PP.1) y'` using `fun y y' hy => by`.
+
+Unfold `Base.locFn`. Rewrite using `[Finset.prod_congr rfl fun PP hPP => by rw [hy PP (Finset.mem_union_left _ hPP)], Finset.prod_congr (s₁ := Finset.univ) rfl fun PP _ => by rw [hy PP.1 (Finset.mem_union_right _ PP.2)]]`. Establish `hP` using `hQ.1`. Establish `hPb` using `hP.mono hQb`. Unfold `Base.vecAt Frame.vec`.
+
+Rewrite using `[hL, datumFn_eq_restrict hB.frame hP hQb hω]`. Establish `hmodel` using `Frame.isPlaceModel_placeMap hB.frame hP`. Rewrite `hmodel`, the goal using `[halfIdem_eq_add hQb]`. Establish `hm'` using `isPlaceModel_restrictHalf hPb.isOrthSum.1.idem (idem_mul_self_of (hP.empty_sdiff (Qb := B.de.Q ∪ Q'))) (halfIdem_mul_idem hP hQb) (fun e he u hu => GlobalTheory.PlaceModelSum.idem_smul_latO he hu) hmodel`. Conclude with `GlobalTheory.PlaceVec.placeModel_unique hB.frame.vac.1 hB.frame.sdS hB.frame.sdT hPb.isOrthSum.1.idem hPb.isOrthSum.1.infPart_eq hm' (Frame.isPlaceModel_placeMap hB.frame hPb) (Frame.isSBHalf_datumFn hB.frame hPb hω)`.
+-/
 theorem vecAt_drop : ∀ (D : D7) (S T : HSp D) (B : Base S T) (Q Q' : Finset (Pl D.host.E)) [DecidablePred (· ∈ Q')]
     (φ : ∀ PP : Pl D.host.E, Matrix (Fin T.rank) (Fin S.rank) (kP PP) → ℂ), B.Good → B.admitted Q → Q' ⊆ Q →
     B.vecAt Q (fun PP y => if PP.1 ∈ Q' then φ PP.1 y else 1) = B.vecAt Q' fun PP => φ PP.1 := by

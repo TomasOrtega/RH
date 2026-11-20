@@ -18,6 +18,47 @@ namespace PositivityTheory.Rg.BcB.F.Rd.B
 open PositivityTheory.Rg.BcB.F PositivityTheory.Rg.BcB.F.Rd
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `haveI := B.ha`. Use `haveI := B.hb`. Use `haveI := B.hν`. Use `haveI : BorelSpace (G B.a) := ⟨rfl⟩`. Use `haveI : BorelSpace (G B.b) := ⟨rfl⟩`.
+
+Use `haveI : BorelSpace (Hf E B.a B.b) := ⟨rfl⟩`. Establish `okOf : ∀ y (t : PT B), g y = Sum.inr t → t.Ok` using `fun y t hy => by`. Use `hok y` as an intermediate fact. Rewrite `this` using `[hy]`. Conclude with `this`.
+
+Establish `ht₀ : t₀.Ok` using `okOf a₀ t₀ ha₀`. Take `⟨M, sk, f, hsg, hsX, hk⟩` from `hReal E B Γ g a₀ t₀ X tX χ hok htX hXe ha₀ hcomm hXc hXs hχn hχ0`. Establish `hc : ∀ k, sk k (genE g X a₀) ≠ 0` using `fun k => (hk k).1`. Establish `hcont : ∀ k i, Continuous (f k i)` using `fun k => (hk k).2.1`. Establish `hne : ∀ k, f k ≠ 0` using `fun k => (hk k).2.2.1`.
+
+Establish `heq0 : ∀ k, PositivityTheory.Rg.BcB.E.conv B.D.μ t₀.Φ (f k) = sk k (genE g X a₀) • f k` using `fun k => (hk k).2.2.2.2.2.1`. Establish `hAt : ∀ k y (t : PT B), g y = Sum.inr t → PositivityTheory.Rg.BcB.E.conv B.D.μ t.Φ (f k) = sk k (genE g X y) • f k`. Introduce `k y t hy`. Establish `htok` using `okOf y t hy`. Establish `e` using `hCM E B.a B.b B.D B.I t.Φ t₀.Φ (hBO E B t t htok htok).1 (hBO E B t₀ t₀ ht₀ ht₀).1 (f k) (hcont k)`.
+
+Rewrite `e` using `[(hk k).2.2.2.2.2.2.1 y t hy, heq0 k, conv_smul]`. Establish `e2 : sk k (genE g X a₀) • PositivityTheory.Rg.BcB.E.conv B.D.μ t.Φ (f k) = sk k (genE g X a₀) • (sk k (genE g X y) • f k)`. Rewrite using `[← e, smul_smul, mul_comm]`. Conclude with `smul_right_injective _ (hc k) e2`. Establish `hAX : ∀ k, PositivityTheory.Rg.BcB.E.conv B.D.μ tX.Φ (f k) = sk k (XE g X) • f k`.
+
+Introduce `k`. Establish `e` using `hCM E B.a B.b B.D B.I tX.Φ t₀.Φ (hBO E B tX tX htX htX).1 (hBO E B t₀ t₀ ht₀ ht₀).1 (f k) (hcont k)`. Rewrite `e` using `[(hk k).2.2.2.2.2.2.2, heq0 k, conv_smul]`. Establish `e2 : sk k (genE g X a₀) • PositivityTheory.Rg.BcB.E.conv B.D.μ tX.Φ (f k) = sk k (genE g X a₀) • (sk k (XE g X) • f k)`. Rewrite using `[← e, smul_smul, mul_comm]`.
+
+Conclude with `smul_right_injective _ (hc k) e2`. Establish `hPk` using `fun k => packK hBO B W₁ W₂ K₁ K₂ o₁ o₂ hP g t₀ bump cK der ht₀ hbump hka0 hkb0 hψ₀ hderA hderB M (f k) (sk k (genE g X a₀)) (fun y => sk k (genE g X y)) (hcont k) (hne k) (hk k).2.2.2.1 (hk k).2.2.2.2.1 (hc k) (heq0 k) (hAt k)`. Use `choose χak χbk hgA hgB hEig hTy hS₁ hS₂ hAu₁ hAu₂ hI₁ hI₂ using hPk`. Take `⟨hFinA, -⟩` from `hFin E B K₁ K₂ o₁ c₁ o₂ c₂ cK t₀.ψ hcK hψ₀`. Establish `hrinv : ∀ k, ∀ i, ∀ u ∈ (K₁.prod K₂ : Subgroup (Hf E B.a B.b)), ∀ x, f k i (x * finH u) = f k i x`.
+
+Introduce `k i u hu x`. Conclude with `(hTy k i).1 u.1 (Subgroup.mem_prod.1 hu).1 u.2 (Subgroup.mem_prod.1 hu).2 x`. Establish `hidk : ∀ k, convF B.ν t₀.ψ (f k) = f k` using `fun k => (hFinA _ (f k) (hrinv k)).1`. Establish `hAVt : ∀ k (t : PT B), t.Ok → PositivityTheory.Rg.BcB.E.conv B.D.μ t.Φ (f k) = t.val (χak k) (χbk k) • convF B.ν t.ψ (f k)`. Introduce `k t htok`.
+
+Conclude with `hAV E B.a B.b B.D B.μa B.μb B.ν B.Ma B.Mb B.κ t₀.ka t.ka t₀.kb t.kb t₀.va t.va t₀.vb t.vb t₀.T t.T t₀.ψ t.ψ (f k) (χak k) (χbk k) B.compat ht₀.ka ht₀.kb ht₀.ψ ⟨hcont k, _, hc k, heq0 k⟩ ⟨hS₁ k, hS₂ k⟩ (hEig k) htok.ka htok.kb htok.ψ`. Establish `hv₀ : ∀ k, t₀.val (χak k) (χbk k) = sk k (genE g X a₀)`. Introduce `k`. Establish `e` using `hAVt k t₀ ht₀`. Rewrite `e` using `[hidk k, heq0 k]`.
+
+Conclude with `(smul_cancel (hne k) e).symm`. Establish `hFinK : ∀ k y (t : PT B), g y = Sum.inr t → FinType t₀ t → convF B.ν t.ψ (f k) = (sk k (genE g X y) / sk k (genE g X a₀)) • f k`. Introduce `k y t hy hft`. Establish `htok` using `okOf y t hy`. Establish `hv : t.val (χak k) (χbk k) = sk k (genE g X a₀)`.
+
+Rewrite using `[← hv₀ k]`. Unfold `PT.val`. Rewrite using `[hft.2.2.1, hft.2.2.2.1]`. Establish `e` using `hAVt k t htok`. Rewrite `e` using `[hAt k y t hy, hv]`.
+
+Use `smul_right_injective _ (hc k) ?_` and prove the remaining obligations. Use `show sk k (genE g X a₀) • _ = sk k (genE g X a₀) • _`. Rewrite using `[← e, smul_smul]`. Use `congr 1`. Clear denominators, using `[hc k]` for the nonvanishing conditions.
+
+Establish `hXK : ∀ k, convF B.ν tX.ψ (f k) = (sk k (XE g X) / sk k (genE g X a₀) ^ jX) • f k`. Introduce `k`. Establish `e` using `hAVt k tX htX`. Rewrite `e` using `[hAX k, hjX, hv₀ k]`. Establish `hcj : sk k (genE g X a₀) ^ jX ≠ 0` using `pow_ne_zero _ (hc k)`.
+
+Use `smul_right_injective _ hcj ?_` and prove the remaining obligations. Use `show sk k (genE g X a₀) ^ jX • _ = sk k (genE g X a₀) ^ jX • _`. Rewrite using `[← e, smul_smul]`. Use `congr 1`. Clear denominators, using `[hcj]` for the nonvanishing conditions.
+
+Establish `hArchK : ∀ k y (t : PT B), g y = Sum.inr t → ArchType t₀ t → t.val (χak k) (χbk k) = sk k (genE g X y)`. Introduce `k y t hy hat`. Establish `e` using `hAVt k t (okOf y t hy)`. Rewrite `e` using `[hAt k y t hy, show t.ψ = t₀.ψ from hat, hidk k]`. Conclude with `(smul_cancel (hne k) e).symm`.
+
+Establish `hlimA : ∀ v s m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χak k v s) m) atTop (𝓝 (if 1 ≤ m ∧ 0 < B.a then χ (genE g X (der v s m).1) / χ (genE g X a₀) else if m = 0 then (B.a : ℂ) else 0))`. Introduce `v s m`. Use `Tendsto.congr (fun k => (hgA k v s m).symm) ?_` and prove the remaining obligations. Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.a`. Simplify using `only [if_pos h]`.
+
+Conclude with `(hsg _).div (hsg a₀) hχ0`. Distinguish the cases in `hm : m = 0`. Simplify using `only [if_neg h, if_pos hm]`. Use `tendsto_const_nhds.congr (fun k => ?_)` and prove the remaining obligations. Clear denominators, using `[hc k]` for the nonvanishing conditions.
+
+Simplify using `only [if_neg h, if_neg hm, zero_div]`. Conclude with `tendsto_const_nhds`. Establish `hlimB : ∀ v s m, Tendsto (fun k => GlobalTheory.Dec.gelfVal (χbk k v s) m) atTop (𝓝 (if 1 ≤ m ∧ 0 < B.b then χ (genE g X (der v s m).2) / χ (genE g X a₀) else if m = 0 then (B.b : ℂ) else 0))`. Introduce `v s m`. Use `Tendsto.congr (fun k => (hgB k v s m).symm) ?_` and prove the remaining obligations.
+
+Distinguish the cases in `h : 1 ≤ m ∧ 0 < B.b`. Simplify using `only [if_pos h]`. Conclude with `(hsg _).div (hsg a₀) hχ0`. Distinguish the cases in `hm : m = 0`. Simplify using `only [if_neg h, if_pos hm]`.
+
+Use `tendsto_const_nhds.congr (fun k => ?_)` and prove the remaining obligations. Clear denominators, using `[hc k]` for the nonvanishing conditions. Simplify using `only [if_neg h, if_neg hm, zero_div]`. Conclude with `tendsto_const_nhds`. Conclude with `⟨M, sk, f, χak, χbk, hsg, hsX, hlimA, hlimB, fun k => ⟨hc k, hcont k, hne k, (hk k).2.2.2.1, (hk k).2.2.2.2.1, hTy k, hS₁ k, hS₂ k, hAu₁ k, hAu₂ k, hI₁ k, hI₂ k, hFinK k, hXK k, hArchK k⟩⟩`.
+-/
 theorem perK (hAV : ActVal) (hBO : BlockOperatorsProductAdjoint) (hCM : ConvMulSt) (hFin : FinSt) (hReal : RealiseSt)
     {E : Type} [Field E] [NumberField E] [IsCMField E] (B : Block E)
     (W₁ : Submodule ℂ (Kinf E B.a → ℂ)) (W₂ : Submodule ℂ (Kinf E B.b → ℂ))

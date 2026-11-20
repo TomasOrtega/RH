@@ -10,6 +10,15 @@ open MeasureTheory Topology Filter Metric Set Formalism.BasicNotions Formalism.L
   Formalism.L2.SG.Sub Formalism.L2.SG.TypedSets Formalism.L2.SG.Pf.NcReal
 open scoped TensorProduct Matrix NNReal
 
+/- English proof (translation)
+Take `⟨K, hK, hanti⟩` from `(f' : E →ₗ[ℝ] F).injective_iff_antilipschitz.mp hinj`. Establish `hc : (0 : ℝ≥0) < (2 * K)⁻¹`. Apply `inv_pos.2` to reduce the goal to its premises. Conclude with `mul_pos (by norm_num) hK`. Take `⟨s, hs, hap⟩` from `hf.approximates_deriv_on_nhds (c := (2 * K)⁻¹) (Or.inr hc)`.
+
+Use `⟨s, hs, fun x hx y hy hxy => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖f x - f y - f' (x - y)‖ ≤ ((2 * K)⁻¹ : ℝ≥0) * ‖x - y‖` using `hap x hx y hy`. Rewrite `h1` using `[hxy, sub_self, zero_sub, norm_neg]`. Establish `h2 : dist x y ≤ K * dist (f' x) (f' y)` using `hanti.le_mul_dist x y`. Rewrite `h2` using `[dist_eq_norm, dist_eq_norm, ← map_sub]`.
+
+Establish `hK' : (0 : ℝ) < K` using `by exact_mod_cast hK`. Establish `h3 : ‖x - y‖ ≤ ‖x - y‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Establish `: ‖x - y‖ = 0` using `le_antisymm (by linarith [norm_nonneg (x - y)]) (norm_nonneg _)`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 this)`.
+-/
 theorem injOn_nhds_of_strict {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] {f : E → F} {f' : E →L[ℝ] F} {a : E}
     (hf : HasStrictFDerivAt f f' a) (hinj : Function.Injective f') : ∃ s ∈ 𝓝 a, InjOn f s := by
@@ -35,6 +44,19 @@ theorem injOn_nhds_of_strict {E F : Type} [NormedAddCommGroup E] [NormedSpace �
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Set `Lc : EuclideanSpace ℝ ι →L[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)` to `L.toContinuousLinearMap`. Set `R : V → (Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ)` to `fun v => (ContinuousLinearMap.mul ℝ (Matrix (Fin n) (Fin n) ℂ)).flip (P v)`. Set `f' : EuclideanSpace ℝ ι →L[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)` to `ContinuousLinearMap.pi fun v => (R v).comp ((ContinuousLinearMap.proj v).comp Lc)`. Establish `hf' : ∀ x v, f' x v = L x v * P v` using `fun x v => rfl`.
+
+Establish `hd : HasStrictFDerivAt (fun x => fun v => NormedSpace.exp (L x v) * P v) f' 0`. Rewrite using `[hasStrictFDerivAt_pi]`. Introduce `v`. Establish `h0 : HasStrictFDerivAt (fun x : EuclideanSpace ℝ ι => L x v) ((ContinuousLinearMap.proj v).comp Lc) 0` using `((ContinuousLinearMap.proj v).comp Lc).hasStrictFDerivAt`. Establish `he : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) (L 0 v)`.
+
+Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero`. Establish `h2` using `(R v).hasStrictFDerivAt.comp 0 (he.comp 0 h0)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+
+Both sides reduce to the same expression. Conclude with `ContinuousLinearMap.ext fun x => rfl`. Establish `hinj : Function.Injective f'`. Introduce `x y hxy`. Establish `: x - y = 0` using `hker (x - y) fun v => by`.
+
+Use `congrFun (congrArg (fun g => g) (show f' (x - y) = 0 by rw [map_sub, hxy, sub_self])) v` as an intermediate fact. Rewrite `this` using `[hf']`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.1 this`. Take `⟨s, hs, hsi⟩` from `injOn_nhds_of_strict hd hinj`. Take `⟨r, hr, hrs⟩` from `Metric.mem_nhds_iff.1 hs`.
+
+Conclude with `⟨r, hr, hsi.mono hrs⟩`.
+-/
 theorem exp_mul_injOn {ι V : Type} [Fintype ι] [Fintype V] {n : ℕ}
     (L : EuclideanSpace ℝ ι →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)) (P : V → Matrix (Fin n) (Fin n) ℂ)
     (hker : ∀ x, (∀ v, L x v * P v = 0) → x = 0) :
@@ -71,6 +93,9 @@ theorem exp_mul_injOn {ι V : Type} [Fintype ι] [Fintype V] {n : ℕ}
   obtain ⟨r, hr, hrs⟩ := Metric.mem_nhds_iff.1 hs
   exact ⟨r, hr, hsi.mono hrs⟩
 
+/- English proof (translation)
+Introduce `s t h`. Establish `e` using `PI.AprimeInfU.eq_of_ofHA X hb ((s, 1) : X.B.I.GA) ((t, 1) : X.B.I.GA) (PI.AprimeInfU.ofHAInf_congr X _ _ h) (PI.AprimeInfU.ofHAFin_congr X _ _ (by rw [PI.AprimeInfU.toHA_fin_one X hb s, PI.AprimeInfU.toHA_fin_one X hb t]))`. Conclude with `congrArg Prod.fst e`.
+-/
 theorem toInf_injective {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso X.B.I) :
     Function.Injective (X.toInf hb) := by
   intro s t h
@@ -83,6 +108,13 @@ def toInfHom {D : D7} (X : HidaSetting D) (hb : Formalism.L2.SG.AdBridge.AdBridg
     X.B.I.Ginf →* HA (Ainf X.B.I.F) X.B.I.cm.sig X.B.I.J :=
   MonoidHom.mk' (X.toInf hb) (PI.AprimeInfU.toInf_mul X hb)
 
+/- English proof (translation)
+Establish `hcol : ∀ r s, s ∉ S → M r s = 0`. Introduce `r s hs`. Use `congrFun (congrFun hC r) s` as an intermediate fact. Rewrite `this` using `[Matrix.mul_diagonal]`. Simplify `this` using `[hs]`.
+
+Use extensionality with `r s`. Distinguish the cases in `hs : s ∈ S`. Distinguish the cases in `hr : r ∈ S`. Conclude with `hB r hr s hs`. Establish `h` using `congrFun (congrFun hL s) r`.
+
+Simplify using `only [Formalism.REAL.Jm, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply, Matrix.zero_apply, hcol s r hr, mul_zero, add_zero] at h`. Apply the tactic sequence `have hd : (if ε r = true then (1 : ℂ) else -1) ≠ 0 := by split_ifs <;> norm_num`. Use `(mul_eq_zero.1 h).resolve_right hd` as an intermediate fact. Simplify using `using this`. Conclude with `hcol r s hs`.
+-/
 theorem lie_zero_of_cols {n : ℕ} (ε : Fin n → Bool) (S : Finset (Fin n)) (M : Matrix (Fin n) (Fin n) ℂ)
     (hL : Mᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * M = 0) (hB : ∀ i ∈ S, ∀ j ∈ S, M i j = 0)
     (hC : M * Matrix.diagonal (fun k => if k ∈ S then (0 : ℂ) else 1) = 0) : M = 0 := by
@@ -103,6 +135,33 @@ theorem lie_zero_of_cols {n : ℕ} (ε : Fin n → Bool) (S : Finset (Fin n)) (M
       simpa using this
   · exact hcol r s hs
 
+/- English proof (translation)
+Introduce `D X u' hb c S ι η _ _ L L₁ ctx`. Establish `hc` using `ctx.2.1`. Establish `hL` using `ctx.2.2.1`. Establish `hB` using `ctx.2.2.2`. Use `set P : NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ := fun v => Matrix.diagonal (fun k => if k ∈ S v then (0 : ℂ) else 1) with hP`.
+
+Establish `hnorm : ∀ {κ' : Type} [Fintype κ'] (x : EuclideanSpace ℝ κ') (M : NumberField.InfinitePlace X.B.I.F → Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ), M = 0 → ∑ v, ∑ i, ∑ j, ‖M v i j‖ ^ 2 = ‖x‖ ^ 2 → x = 0`. Introduce `κ' _ x M hM h`. Substitute `hM` using the available equality. Simplify using `only [Pi.zero_apply, Matrix.zero_apply, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, Finset.sum_const_zero] at h`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h.symm)`.
+
+Take `⟨r1, hr1, hi1⟩` from `exp_mul_injOn L P fun x hx => by`. Use `hnorm x (L x) (funext fun v => lie_zero_of_cols (X.B.I.ε v) (S v) _ (hL.1 x v).1 (hL.1 x v).2 (hx v)) (hL.2.1 x)` and prove the remaining obligations. Take `⟨r2, hr2, hi2⟩` from `exp_mul_injOn L₁ (fun _ => 1) fun x hx => by`. Use `hnorm x (L₁ x) (funext fun v => by simpa using hx v) (hB.2.1 x)` and prove the remaining obligations. Use `⟨min r1 r2, lt_min hr1 hr2, fun a ha b hb' hm => ?_, fun y hy y' hy' he => ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (kap0 X hb c L a)⁻¹ * kap0 X hb c L b = X.toInf hb (c * ((fun v => expU (X.B.I.ε v) (L a v))⁻¹ * (fun v => expU (X.B.I.ε v) (L b v))) * c⁻¹)`. Unfold `kap0`. Express the relevant statement in the definitionally equal form `(toInfHom X hb _)⁻¹ * toInfHom X hb _ = toInfHom X hb _`. Rewrite using `[← map_inv, ← map_mul]`. Use `congr 1`.
+
+Use `group`. Rewrite `hm` using `[e1]`. Establish `hstd` using `(hc.2 _).1 hm`. Apply `hi1 (ball_subset_ball (min_le_left _ _) ha) (ball_subset_ball (min_le_left _ _) hb')` to reduce the goal to its premises. Use function extensionality and compare the values at `v`.
+
+Establish `hv` using `hstd v`. Use `set u := expU (X.B.I.ε v) (L a v) with hu`. Use `set w := expU (X.B.I.ε v) (L b v) with hw`. Establish `hcol : (((u⁻¹ * w : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * P v = P v`. Use extensionality with `j i`.
+
+Simplify using `only [hP, Matrix.mul_diagonal, Matrix.diagonal_apply]`. Distinguish the cases in `hi : i ∈ S v`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `[hi]`.
+
+Simplify using `[hji, hi]`. Use `hv i hi j` as an intermediate fact. Simplify using `only [Pi.mul_apply, Pi.inv_apply] at this`. Rewrite using `[this]`. Distinguish the cases in `hji : j = i`.
+
+Substitute `hji` using the available equality. Simplify using `[hi]`. Simplify using `[hji]`. Establish `ea : NormedSpace.exp (L a v) = (((u : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `(expU_val _ _ (hL.1 a v).1).symm`. Establish `eb : NormedSpace.exp (L b v) = (((w : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `(expU_val _ _ (hL.1 b v).1).symm`.
+
+Use `show NormedSpace.exp (L a v) * P v = NormedSpace.exp (L b v) * P v`. Rewrite using `[ea, eb]`. Use `set U : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ := (u : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) with hU`. Use `set W : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ := (w : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) with hW`. Establish `e4 : (((u⁻¹ * w : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) = ((U⁻¹ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * (W : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `rfl`.
+
+Rewrite `hcol` using `[e4]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `e2` using `toInf_injective X hb he`. Establish `e3 : ((fun v => expU (X.B.I.ε v) (L₁ y v)) : X.B.I.Ginf) = fun v => expU (X.B.I.ε v) (L₁ y' v)`.
+
+Simplify using `using e2`. Apply `hi2 (ball_subset_ball (min_le_right _ _) hy) (ball_subset_ball (min_le_right _ _) hy')` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `congrArg (fun g : X.B.I.Ginf => (((g v : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)) e3` as an intermediate fact. Rewrite `this` using `[expU_val _ _ (hB.1 y v).1, expU_val _ _ (hB.1 y' v).1]`.
+
+Use `show NormedSpace.exp (L₁ y v) * 1 = NormedSpace.exp (L₁ y' v) * 1`. Rewrite using `[this]`.
+-/
 theorem grpInj_holds : GrpInj := by
   intro D X u' hb c S ι η _ _ L L₁ ctx
   have hc := ctx.2.1

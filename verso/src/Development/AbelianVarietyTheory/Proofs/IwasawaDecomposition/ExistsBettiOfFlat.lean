@@ -7,6 +7,17 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 
 namespace GlobalTheory.ShFam.Pad
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ L k τ σ hσ`. Establish `hE` using `detEx_eq S L τ`. Establish `hD : divOf (Φ.C k) (detEx S τ) = (Φ.C k).LEx (GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw (L.ψ τ)) 0)`. Simplify using `[hE, divOf, FlagCpt.LEx]`. Take `⟨f, ⟨hf, hv⟩, -⟩` from `GlobalTheory.ShFam.existsUnique_rule_of_regular _ _ _ _ _ _ _ _ _ _ κ.e _ _ _ Φ (GlobalTheory.AllWt.exOf S.Dw (GlobalTheory.FlatLine.flatWt S.Dw (L.ψ τ)) 0) rfl (Function.update 0 k σ) (fun k' y _ => by`.
+
+Distinguish the cases in `h : k' = k`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, ← hD]`. Conclude with `(hσ y).regularAt`. Rewrite using `[Function.update_of_ne h]`.
+
+Take `⟨g, hg⟩` from `((Φ.C k').LEx _).exists_isEqn y`. Conclude with `⟨g, hg, 0, by simp⟩)`. Establish `hv' : (Φ.C k).val f = σ` using `(hv k).trans (Function.update_self _ _ _)`. Take `⟨b, hb⟩` from `GlobalTheory.T.flat_section_eq_horizontal_generator D A N j S κ s Φ k (L.ψ τ) (cmAt s L k τ).2 f hf (by rw [hv', L.ψ_val]; exact hσ)`. Establish `hc` using `pow_ne_zero S.Dw.q (Complex.ofReal_ne_zero.2 (GlobalTheory.TrueCx.hodgeC_pos _ (cmAt s L k) τ).ne')`.
+
+Use `⟨b * (Units.mk0 _ hc)⁻¹, fun x a => ?_⟩` and prove the remaining obligations. Use `letI := κ.σ₀.toAlgebra`. Establish `h1` using `GlobalTheory.ShFam.ValCoord.coordAt_val_iff _ _ _ _ _ _ _ _ _ _ κ.e (Φ.C k) ℂ ((s.U κ.σ₀).un k x) _ rfl f hf a`. Rewrite `h1` using `[hv', ← hE]`. Use `h1.trans ((and_iff_right (carriedC_un s Φ k x)).trans ?_)` and prove the remaining obligations.
+
+Establish `h2 : Formalism.L2.PjFree.rdU (s.U κ.σ₀) f k x.1 = Formalism.L2.PjFree.toC (evR s.Xo κ.c f ((s.U κ.σ₀).un k x))` using `dif_pos x.2`. Express the relevant statement in the definitionally equal form `a = Formalism.L2.PjFree.toC (evR s.Xo κ.c f ((s.U κ.σ₀).un k x)) ↔ _`. Rewrite using `[← h2, hb x.1 x.2, bettiCo, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0, mul_assoc, inv_mul_cancel_left₀ hc]`. Both sides reduce to the same expression.
+-/
 theorem exists_isBetti_of_isFlat : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (L : CmList A) (k : s.Comp) (τ : D.what₂.Tau) (σ : (Φ.C k).Y.Fn), IsFlat (Φ.C k) (DV.tauEmb D τ) σ → ∃ b, IsBetti s Φ L k τ σ b := by
   intro D A N j S κ s Φ L k τ σ hσ
   classical

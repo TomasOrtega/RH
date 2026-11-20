@@ -9,6 +9,11 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 
 namespace GlobalTheory.PerQ.Co.PtInt
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [DomWeight.natW, PerIn.sgT, Col2.shW, DomWeight.detShift]`. Use `split_ifs with h`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Conclude with `absurd i.2 (by omega)`.
+-/
 theorem natW_sgT {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.ι) (τ : B.fields.Tau) :
     ((I.perIn u a).sgT τ).natW = ((I.perIn u a).sg τ).natW := by
   funext i
@@ -18,6 +23,11 @@ theorem natW_sgT {B : Base} {X : PreX B.toPre} (I : TC B X) (u : B.Word) (a : I.
     ring
   · exact absurd i.2 (by omega)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Establish `h1` using `GlobalTheory.LvT.BuiltChain.invTrK_embGL_apply emb γ τ a b`. Establish `h2` using `GlobalTheory.LvT.BuiltChain.invTrK_embGL_apply (embAt σ emb) γ τ a b`. Rewrite using `[h2]`.
+
+Use `show σ (((invTrK (embGL emb γ) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b) = _`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+-/
 theorem invTrK_bc {E K ι : Type} [Field E] [Field K] (emb : ι → E →+* K) (σ : K →+* ℂ) {n : ℕ} (γ : GL (Fin n) E) :
     (fun τ => Formalism.UG.bc σ (invTrK (embGL emb γ) τ)) = invTrK (embGL (embAt σ emb) γ) := by
   funext τ
@@ -31,6 +41,23 @@ theorem invTrK_bc {E K ι : Type} [Field E] [Field K] (emb : ι → E →+* K) (
 
 end GlobalTheory.PerQ.Co.PtInt
 
+/- English proof (translation)
+Introduce `B X I hI l Z l0 u a w z hz hco`. Establish `hOk : (I.perIn u a).S'.Ok` using `(l.per u a).step`. Establish `hz' : z ∈ (I.perIn u a).S'.Fi B.fields.emb B.embLL (I.perIn u a).sgT` using `hz`. Establish `key : ∀ c : (I.perIn u a).S'.Cl, ∃ v : Formalism.L2.DIV.VV B.fields.K (I.perIn u a).sgT, z c = evV B.fields.emb (1 : Matrix _ _ B.fields.E) (I.perIn u a).sgT B.embLL v ∧ v ∈ locW B.places w (delAtr B.fields.emb (I.perIn u a).sgT ((I.perIn u a).S'.Lsh c.1 ((I.perIn u a).S'.rep c)) …`. Introduce `c`.
+
+Take `⟨P, hP, hPz⟩` from `(hz' c).1`. Take `⟨G, hG, hGe⟩` from `(GlobalTheory.LvT.Built.ValLat.mem_intSpan_iff (I.rec7 l Z) w _ (I.perIn u a).sgT (fun τ => (GlobalTheory.PerQ.Co.PtInt.natW_sgT I u a τ).symm) _).1 (hco c)`. Establish `hGV : G ∈ Formalism.L2.DIV.VV B.fields.K (I.perIn u a).sgT` using `GlobalTheory.LvT.Built.ValLat.mem_VV_of_locP _ _ hG`. Establish `hspec` using `GlobalTheory.T.localBasisRepLattice_integralCoords_spec I hI l u a w c`. Use `⟨rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c) ⟨G, hGV⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hPz] show fnOf (Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (shiftOf (I.perIn u a).sgT) 1 P = fnOf (Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (shiftOf (I.perIn u a).sgT) 1 (MvPolynomial.map B.embLL (rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c) ⟨G, h …`. Use `congr 1`. Establish `e1 : (rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c) ⟨G, hGV⟩).1 = actP (I.perIn u a).sgT (invTrK (embGL B.fields.emb (GlobalTheory.PerQ.Co.bP I u a w c))) G` using `rfl`. Rewrite using `[e1]`. Establish `e3` using `GlobalTheory.LvT.Built.ValLat.map_actP B.embLL (I.perIn u a).sgT (invTrK (embGL B.fields.emb (GlobalTheory.PerQ.Co.bP I u a w c))) G`.
+
+Rewrite `e3` using `[GlobalTheory.PerQ.Co.PtInt.invTrK_bc]`. Use `Eq.trans ?_ e3.symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (actP (I.perIn u a).sgT (invTrK (embGL (embAt B.embLL B.fields.emb) (GlobalTheory.PerQ.Co.bP I u a w c)))) hGe)` and prove the remaining obligations. Use `show P = actP (I.perIn u a).sgT (invTrK (embGL (embAt B.embLL B.fields.emb) (GlobalTheory.PerQ.Co.bP I u a w c))) (actP (I.perIn u a).sgT (invTrK (embGL (embAt B.embLL B.fields.emb) (GlobalTheory.PerQ.Co.bP I u a w c)⁻¹)) (polOf (Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (shiftO …`. Rewrite using `[← polyAction_mul, map_inv, map_inv, mul_inv_cancel, polyAction_one₂, ← hPz]`.
+
+Establish `h` using `polOf_fnOf (Gr B.fields.emb B.embLL (B.R.N B.R.m - 1)) (shiftOf (I.perIn u a).sgT) (fr0 B.fields.emb B.embLL (B.R.N B.R.m - 1)) P`. Establish `e : (fun τ => ((fr0 B.fields.emb B.embLL (B.R.N B.R.m - 1)).1 τ)⁻¹) = 1` using `funext fun τ => inv_one`. Rewrite `h` using `[e]`. Conclude with `h.symm`. Establish `hinv : rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c)⁻¹ (rhoVr B.fields.emb (I.perIn u a).sgT (GlobalTheory.PerQ.Co.bP I u a w c) ⟨G, hGV⟩) = ⟨G, hGV⟩`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[GlobalTheory.T.mem_locW_delAtr_iff' B.fields.emb B.embLL B.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq (I.perIn u a).sgT (I.perIn u a).sg (GlobalTheory.PerQ.Co.PtInt.natW_sgT I u a) _ (hOk.lsh_lat c.1 _) w _ hspec.1, hinv]`. Establish `h` using `hco c`. Rewrite `h` using `[hGe]`. Conclude with `h`.
+
+Use `choose v hv1 hv2 using key`. Take `⟨y, hy1, hy2⟩` from `GlobalTheory.T.exists_hermitianForm_descent_coefficientField B.fields.emb B.embLL (I.perIn u a).S' (I.perIn u a).sgT (l.fmL u a).famP z hz' v hv1`. Use `⟨y, ?_, hy2⟩` and prove the remaining obligations. Use `show y ∈ locW B.places w ((I.perIn u a).S'.hlat B.fields.emb (I.perIn u a).sgT (l.fmL u a).famP).L`. Rewrite using `[GlobalTheory.T.mem_locW_hlat_iff' B.fields.emb B.places (I.rec7 l Z).plEq (I.rec7 l Z).val_eq (I.perIn u a).S' (I.perIn u a).sgT (l.fmL u a).famP hOk w y]`.
+
+Introduce `c`. Rewrite using `[hy1 c]`. Conclude with `hv2 c`.
+-/
 theorem GlobalTheory.PerQ.Co.PtInt.exists_mem_SP_of_coP_mem : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (l0 : I.Law0 l) (u : B.Word) (a : I.ι) (w : B.places.Pl), ∀ z ∈ ((I.tw l l0 Z).fm u a).ptC, (∀ c, GlobalTheory.PerQ.Co.coP I u a w z c ∈ Formalism.MainNotions.product_first_zeroth_parts.IntSpan (I.rec7 l Z) w ((I.rec7 l Z).fm u).sg) → ∃ y ∈ ((I.tw l l0 Z).fm u a).SP w, ((I.tw l l0 Z).fm u a).ptEmb y = z := by
   intro B X I hI l Z l0 u a w z hz hco
   have hOk : (I.perIn u a).S'.Ok := (l.per u a).step

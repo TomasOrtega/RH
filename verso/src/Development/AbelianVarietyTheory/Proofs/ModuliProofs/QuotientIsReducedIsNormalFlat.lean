@@ -11,6 +11,11 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce and unpack `Γ _ _ X X' ρ π ⟨_, hπ, hV⟩`. Establish `h : IsAffineQuotient ρ π` using `⟨hπ, ‹_›, fun W ↦ (hV W).1, fun W s hs ↦ (hV W).2 s fun g _ ↦ (hs g).2⟩`. Use `⟨fun _ ↦ h.isReduced, fun _ hN ↦ ?_, fun R _ _ s' _ ↦ ?_⟩` and prove the remaining obligations. Use `IsNormalScheme.of_pred hN` as an intermediate fact. Use `h.isNormalScheme` as an intermediate fact.
+
+Conclude with `IsNormalScheme.pred X'`. Use `h.isSchemeTheoreticallyDominant` as an intermediate fact. Conclude with `flat_of_isSchemeTheoreticallyDominant (fun _ _ _ h ↦ IsDedekindDomain.flat_iff_torsion_eq_bot.mpr h) π s'`.
+-/
 theorem quotient_isReduced_isNormal_flat :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' : Scheme.{0}) (ρ : Γ →* Aut X) (π : X ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → (IsReduced X → IsReduced X') ∧ (IsLocallyNoetherian X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X') ∧ ∀ (R : Type) [CommRing R] [IsDedekindDomain R] (s' : X' ⟶ Sp R), Flat (π ≫ s') → Flat s' := by
   rintro Γ _ _ X X' ρ π ⟨_, hπ, hV⟩

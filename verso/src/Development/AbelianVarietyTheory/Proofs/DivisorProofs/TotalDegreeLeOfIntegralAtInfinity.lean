@@ -8,23 +8,35 @@ variable {K : Type} [Field K] {D : ℕ}
 def Good (y : Fin D → K) (j : Fin D) (N : ℕ) (b : K) : Prop :=
   ∃ C : MvPolynomial (Fin D) ℤ, C.totalDegree ≤ N ∧ b * y j ^ N = aeval y C
 
+/- English proof (translation)
+Take `⟨C, hC, he⟩` from `h`. Use `⟨C * X j ^ M, (totalDegree_mul _ _).trans (by rw [totalDegree_X_pow]; omega), ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, ← mul_assoc, he, map_mul, map_pow, aeval_X]`.
+-/
 lemma good_mono {y : Fin D → K} {j : Fin D} {N : ℕ} {b : K} (h : Good y j N b) (M : ℕ) :
     Good y j (N + M) b := by
   obtain ⟨C, hC, he⟩ := h
   refine ⟨C * X j ^ M, (totalDegree_mul _ _).trans (by rw [totalDegree_X_pow]; omega), ?_⟩
   rw [pow_add, ← mul_assoc, he, map_mul, map_pow, aeval_X]
 
+/- English proof (translation)
+Take `⟨M, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Conclude with `good_mono h M`.
+-/
 lemma good_le {y : Fin D → K} {j : Fin D} {N N' : ℕ} {b : K} (h : Good y j N b) (hN : N ≤ N') :
     Good y j N' b := by
   obtain ⟨M, rfl⟩ := Nat.exists_eq_add_of_le hN
   exact good_mono h M
 
+/- English proof (translation)
+Take `⟨C, hC, he⟩` from `h`. Take `⟨C', hC', he'⟩` from `h'`. Conclude with `⟨C + C', (totalDegree_add _ _).trans (max_le hC hC'), by rw [add_mul, he, he', map_add]⟩`.
+-/
 lemma good_add {y : Fin D → K} {j : Fin D} {N : ℕ} {b b' : K} (h : Good y j N b)
     (h' : Good y j N b') : Good y j N (b + b') := by
   obtain ⟨C, hC, he⟩ := h
   obtain ⟨C', hC', he'⟩ := h'
   exact ⟨C + C', (totalDegree_add _ _).trans (max_le hC hC'), by rw [add_mul, he, he', map_add]⟩
 
+/- English proof (translation)
+Take `⟨C, hC, he⟩` from `h`. Take `⟨C', hC', he'⟩` from `h'`. Use `⟨C * C', (totalDegree_mul _ _).trans (add_le_add hC hC'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← he, ← he', pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma good_mul {y : Fin D → K} {j : Fin D} {N N' : ℕ} {b b' : K} (h : Good y j N b)
     (h' : Good y j N' b') : Good y j (N + N') (b * b') := by
   obtain ⟨C, hC, he⟩ := h
@@ -32,9 +44,17 @@ lemma good_mul {y : Fin D → K} {j : Fin D} {N N' : ℕ} {b b' : K} (h : Good y
   refine ⟨C * C', (totalDegree_mul _ _).trans (add_le_add hC hC'), ?_⟩
   rw [map_mul, ← he, ← he', pow_add]; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨MvPolynomial.C r, by rw [totalDegree_C], by rw [pow_zero, mul_one, aeval_C]⟩`.
+-/
 lemma good_algebraMap (y : Fin D → K) (j : Fin D) (r : ℤ) : Good y j 0 (algebraMap ℤ K r) :=
   ⟨MvPolynomial.C r, by rw [totalDegree_C], by rw [pow_zero, mul_one, aeval_C]⟩
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on (motive := fun a => ∃ N, Good y j N (aeval z a)) a ?_ ?_ ?_` and prove the remaining obligations. Introduce `r; exact ⟨0, by rw [aeval_C]; exact good_algebraMap y j r⟩`. Introduce and unpack `p p' ⟨N, hN⟩ ⟨N', hN'⟩`. Use `⟨N + N', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+
+Conclude with `good_add (good_mono hN N') (by rw [add_comm]; exact good_mono hN' N)`. Introduce and unpack `p i ⟨N, hN⟩`. Take `⟨M, hM⟩` from `hz i`. Conclude with `⟨N + M, by rw [map_mul, aeval_X]; exact good_mul hN hM⟩`.
+-/
 lemma aeval_good {ι : Type} {y : Fin D → K} {j : Fin D} {z : ι → K}
     (hz : ∀ i, ∃ N, Good y j N (z i)) (a : MvPolynomial ι ℤ) : ∃ N, Good y j N (aeval z a) := by
   refine MvPolynomial.induction_on (motive := fun a => ∃ N, Good y j N (aeval z a)) a ?_ ?_ ?_
@@ -47,6 +67,11 @@ lemma aeval_good {ι : Type} {y : Fin D → K} {j : Fin D} {z : ι → K}
     obtain ⟨M, hM⟩ := hz i
     exact ⟨N + M, by rw [map_mul, aeval_X]; exact good_mul hN hM⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, fun k hk => absurd hk (Nat.not_lt_zero _)⟩`. Consider the case `succ n ih`. Take `⟨N, hN⟩` from `ih`. Take `⟨M, hM⟩` from `hc n`.
+
+Use `⟨N + M, fun k hk => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.mp hk with hk | rfl` into its components or cases. Conclude with `good_mono (hN k hk) M`. Conclude with `good_le hM (Nat.le_add_left _ _)`.
+-/
 lemma common_order {y : Fin D → K} {j : Fin D} (c : ℕ → K) (hc : ∀ k, ∃ N, Good y j N (c k))
     (n : ℕ) : ∃ N, ∀ k < n, Good y j N (c k) := by
   induction n with
@@ -63,6 +88,37 @@ end GlobalTheory.DegreeBound
 
 open GlobalTheory.DegreeBound in
 
+/- English proof (translation)
+Introduce `K _ D y hind j hu T₀ q ι z hz f hf heq`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hw : y j ^ q ≠ 0` using `pow_ne_zero _ hu`. Generalize the expression as in `hs : aeval y T₀ / y j ^ q = s at heq`.
+
+Establish `ht : aeval y T₀ = s * y j ^ q` using `by rw [← hs, div_mul_cancel₀ _ hw]`. Use `set c : ℕ → K := fun k => aeval z (f.coeff k) with hc`. Establish `hsum : (∑ k ∈ Finset.range f.natDegree, c k * s ^ k) + s ^ f.natDegree = 0`. Rewrite `heq` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, hf.coeff_natDegree]`. Simplify `heq` using `[c]`.
+
+Generalize the expression as in `hn : f.natDegree = n at hsum`. Break down `Nat.eq_zero_or_pos n with hn0 | hnpos` into its components or cases. Substitute `hn0` using the available equality. Simplify using `at hsum`. Take `⟨N, hN⟩` from `common_order (y := y) (j := j) c (fun k => aeval_good hz (f.coeff k)) n`.
+
+Establish `hC : ∀ k, ∃ C : MvPolynomial (Fin D) ℤ, k < n → C.totalDegree ≤ N ∧ c k * y j ^ N = aeval y C`. Introduce `k`. Distinguish the cases in `hk : k < n`. Take `⟨C, h1, h2⟩` from `hN k hk`. Conclude with `⟨C, fun _ => ⟨h1, h2⟩⟩`.
+
+Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose Cf hCf using hC`. Establish `hT0 : T₀ ≠ 0` using `by rintro rfl; simp at hlt`. Use `set A : MvPolynomial (Fin D) ℤ := X j ^ (N * n) * T₀ ^ n with hA`. Use `set B : MvPolynomial (Fin D) ℤ := ∑ k ∈ Finset.range n, Cf k * T₀ ^ k * X j ^ (q * (n - k) + N * (n - 1)) with hB`.
+
+Establish `hP : aeval y (B + A) = aeval y (0 : MvPolynomial (Fin D) ℤ)`. Rewrite using `[map_zero]`. Establish `: aeval y (B + A) = y j ^ (q * n + N * n) * ((∑ k ∈ Finset.range n, c k * s ^ k) + s ^ n)`. Rewrite using `[mul_add, Finset.mul_sum, map_add, map_sum]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk'` using `Finset.mem_range.mp hk`. Take `⟨m, hm⟩ : ∃ m, n = k + m + 1` from `⟨n - k - 1, by omega⟩`. Establish `h1 : n - k = m + 1` using `by omega`. Establish `h2 : n - 1 = k + m` using `by omega`.
+
+Rewrite using `[map_mul, map_mul, map_pow, map_pow, aeval_X, ht, ← (hCf k hk').2, h1, h2, hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hA, map_mul, map_pow, map_pow, aeval_X, ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hsum, mul_zero]`.
+
+Establish `hBA : B + A = 0` using `algebraicIndependent_iff_injective_aeval.mp hind hP`. Establish `hpow : ∀ m, (T₀ ^ m).totalDegree = m * T₀.totalDegree`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+
+Consider the case `succ m ih`. Rewrite using `[pow_succ, totalDegree_mul_of_isDomain (pow_ne_zero _ hT0) hT0, ih]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAdeg : A.totalDegree = N * n + n * T₀.totalDegree`. Rewrite using `[hA, totalDegree_mul_of_isDomain (pow_ne_zero _ (X_ne_zero _)) (pow_ne_zero _ hT0), totalDegree_X_pow, hpow]`.
+
+Establish `hpos : 0 < N * n + n * T₀.totalDegree`. Use `Nat.mul_pos hnpos (show 0 < T₀.totalDegree by omega); omega` as an intermediate fact. Establish `hBdeg : B.totalDegree < N * n + n * T₀.totalDegree`. Use `lt_of_le_of_lt (totalDegree_finset_sum _ _) ?_` and prove the remaining obligations. Rewrite using `[Finset.sup_lt_iff (by simpa using hpos)]`.
+
+Introduce `k hk`. Establish `hk'` using `Finset.mem_range.mp hk`. Take `⟨m, hm⟩ : ∃ m, n = k + m + 1` from `⟨n - k - 1, by omega⟩`. Establish `h1 : n - k = m + 1` using `by omega`. Establish `h2 : n - 1 = k + m` using `by omega`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X_pow]`. Use `(totalDegree_mul (Cf k) (T₀ ^ k)).trans (add_le_add (hCf k hk').1 (totalDegree_pow T₀ k))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ < N * n + n * T₀.totalDegree := by`. Rewrite using `[h1, h2, hm]`. Establish `h3 : q * (m + 1) < T₀.totalDegree * (m + 1)` using `Nat.mul_lt_mul_of_pos_right hlt (Nat.succ_pos m)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hAB : A = -B` using `eq_neg_of_add_eq_zero_right hBA`.
+
+Use `congrArg MvPolynomial.totalDegree hAB` as an intermediate fact. Rewrite `this` using `[totalDegree_neg, hAdeg]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem GlobalTheory.totalDegree_le_of_integral_at_infinity : ∀ {K : Type} [Field K] {D : ℕ} (y : Fin D → K),
     AlgebraicIndependent ℤ y → ∀ (j : Fin D), y j ≠ 0 → ∀ (T₀ : MvPolynomial (Fin D) ℤ) (q : ℕ)
     {ι : Type} (z : ι → K), (∀ i, ∃ (N : ℕ) (C : MvPolynomial (Fin D) ℤ), C.totalDegree ≤ N ∧

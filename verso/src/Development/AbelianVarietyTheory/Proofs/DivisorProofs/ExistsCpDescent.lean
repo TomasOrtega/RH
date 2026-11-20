@@ -18,6 +18,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.CPDesc
 
+/- English proof (translation)
+Establish `hb : a.base = b.base`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `π.surjective y`. Conclude with `congr($hab x)`. Use `Scheme.Hom.ext hb fun U ↦ ?_` and prove the remaining obligations.
+
+Establish `: Mono (π.app (b ⁻¹ᵁ U))` using `ConcreteCategory.mono_of_injective _ (h _)`. Rewrite using `[← cancel_mono (π.app _)]`. Simplify using `only [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map, Scheme.Hom.appLE_comp_appLE, hab]`.
+-/
 theorem cancel_of_surjective {X Y : Scheme.{0}} (π : X ⟶ Y) [Surjective π]
     (h : ∀ W, Function.Injective (π.app W)) {Z : Scheme.{0}} (a b : Y ⟶ Z) (hab : π ≫ a = π ≫ b) : a = b := by
   have hb : a.base = b.base := by
@@ -34,9 +39,47 @@ end GlobalTheory.Mum.CPDesc
 namespace GlobalTheory.Mum
 open CPDesc
 
+/- English proof (translation)
+Use `show Flat (pullback.fst G.hom H.hom ≫ G.hom)`. Use `infer_instance`.
+-/
 theorem flat_tensor {S : Scheme.{0}} (G H : Over S) [Flat G.hom] [Flat H.hom] : Flat (G ⊗ H).hom := by
   show Flat (pullback.fst G.hom H.hom ≫ G.hom); infer_instance
 
+/- English proof (translation)
+Introduce `R _ _ _ hR M G' _ _ _ P' G _ _ β hG h L hL hLw`. Take `⟨w, hw⟩` from `hLw`. Take `⟨_, -, _, -⟩` from `hR`. Establish `hp` using `(isGen_iff w).1 hw`. Take `⟨hbijπ, hsurjπ⟩` from `GlobalTheory.T.appTop_bijective_and_surjective_normalDomain R M`.
+
+Use `M.proper` as an intermediate fact. Establish `hf1 : Flat G.hom` using `by have := hG.smooth; infer_instance`. Establish `hf2 : Flat (G2 G).hom` using `flat_tensor _ _`. Establish `hf3 : Flat (G3 G).hom` using `by have := hf2; exact flat_tensor _ _`. Establish `hf4 : Flat (G4 G).hom` using `by have := hf3; exact flat_tensor _ _`.
+
+Establish `key : ∀ {Y Z : Scheme.{0}} (y : Y ⟶ Sp R) (p : Z ⟶ Y) (q : Z ⟶ M.S), Flat y → IsPullback p q y M.π → (∀ V, Function.Bijective (p.app V).hom) ∧ (∀ {X : Scheme.{0}} (a b : Y ⟶ X), p ≫ a = p ≫ b → a = b)`. Introduce `Y Z y p q hy hpb`. Establish `hb` using `GlobalTheory.T.app_bijective_of_flat_baseChange_globalFunctions R M.S Y Z M.π y p q inferInstance inferInstance hbijπ hy hpb`. Establish `: Surjective p` using `MorphismProperty.of_isPullback hpb.flip hsurjπ`. Conclude with `⟨hb, fun a b e => cancel_of_surjective p (fun V => (hb V).1) a b e⟩`.
+
+Take `⟨A2, A3, A4⟩` from `GlobalTheory.T.isPullback_powers_cartesian_group_square h`. Establish `k0` using `key (𝟙 (Sp R)) M.π (𝟙 M.S) inferInstance (IsPullback.id_vert M.π)`. Establish `k1` using `key G.hom β G'.hom hf1 h.1`. Establish `k2` using `key _ _ _ hf2 A2`. Establish `k3` using `key _ _ _ hf3 A3`.
+
+Establish `k4` using `key _ _ _ hf4 A4`. Take `⟨rig, hr, -⟩` from `GlobalTheory.T.exists_transported_generator_descend_bijective_app hp hL P'.L.isLB M.π k0.1 (K := PUnit) (φ' := fun _ => eSec G') (φ := fun _ => eSec G) (fun _ => (cubeMapOf h).e_comm) P'.L.rig P'.L.rigGen`. Establish `hι : (ι[G']).left ≫ β = β ≫ (ι[G]).left`. Establish `e` using `congrArg (fun q => q.left) (map_inv (pushHom h G') (𝟙 G'))`. Simplify using `only [Hom.inv_def, Category.id_comp] at e`.
+
+Use `e.trans ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ β) ≫ _ = _`. Rewrite using `[Category.id_comp]`. Establish `hc₂ : ∀ k : Fin 2, ![(ι[G']).left, 𝟙 G'.left] k ≫ β = β ≫ ![(ι[G]).left, 𝟙 G.left] k` using `fun k => by fin_cases k`. Conclude with `hι`.
+
+Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨s, hs, vs⟩` from `GlobalTheory.T.exists_transported_generator_descend_bijective_app hp hL P'.L.isLB β k1.1 hc₂ P'.sym P'.sym_gen`. Establish `hc : ∀ I : thK.{0}, thφ G' (x3 G') I ≫ β = (cubeMapOf h).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf h).psum_comm I.down`. Take `⟨t, ht, vt⟩` from `GlobalTheory.T.exists_transported_generator_descend_bijective_app hp hL P'.L.isLB (cubeMapOf h).F3 k3.1 hc P'.c.t P'.c.isGen`. Set `L₁ : RigLB G` to `⟨L, rig, hL, hr⟩`.
+
+Set `Wf : ∀ {T : Over M.S} (z : T.left), ((T.left ⟶ G.left) → L.ι) → ((T.left ⟶ G'.left) → P'.L.L.ι) → (T ⟶ G') → (T.left.presheaf.stalk z)ˣ` to `fun z I J x => gw w x.left z (I (x.left ≫ β)) (J x.left)`. Establish `vcub : ∀ (T : Over M.S) (z : T.left) (I J), Good L z I → Good P'.L.L z J → ∀ a b d : T ⟶ G', GlobalTheory.CubTransport.thV (L` using `L₁) t z I (pushHom h T a) (pushHom h T b) (pushHom h T d) = Wf z I J (a * b * d) * (Wf z I J (a * b))⁻¹ * (Wf z I J (a * d))⁻¹ * (Wf z I J (b * d))⁻¹ * Wf z I J a * Wf z I J b * Wf z I J d * (Wf z I J 1)⁻¹ * cubV P'.c z J a b d := by`. Introduce `T z I J hI hJ a b d`. Establish `q : (lift a (lift b d)).left ≫ (cubeMapOf h).F3 = (lift (pushHom h T a) (lift (pushHom h T b) (pushHom h T d))).left` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`.
+
+Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Establish `e` using `vt _ (lift a (lift b d)).left z I J hI hJ`. Rewrite `e` using `[q]`. Conclude with `e.trans (congrArg₂ (· * ·) (prod_cub a b d (fun q => gw w q z (I (q ≫ β)) (J q))) rfl)`. Establish `vsym : ∀ (T : Over M.S) (z : T.left) (I J), Good L z I → Good P'.L.L z J → ∀ a : T ⟶ G', val s (pushHom h T a).left z I = Wf z I J a⁻¹ * (Wf z I J a)⁻¹ * val P'.sym a.left z J`.
+
+Introduce `T z I J hI hJ a`. Conclude with `(vs _ a.left z I J hI hJ).trans (congrArg₂ (· * ·) (GlobalTheory.UU.prod_sym a (fun q => gw w q z (I (q ≫ β)) (J q))) rfl)`. Take `⟨c, hct⟩` from `GlobalTheory.T.cubicalStructure_of_pushed_point_values_cube_function h L₁ t ht (fun U => (k2.1 U).1) k2.2 (fun U => (k3.1 U).1) k3.2 (fun U => (k4.1 U).1) k4.2 fun T z I hI => by`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt P'.L.isLB z`. Use `GlobalTheory.CubTransport.isCub_of_twist (isCub_cubV P'.c hJ) (MonoidHom.id _) (fun a => (Wf z I J a)⁻¹) fun a b d => ?_` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.id_apply, MonoidHom.id_apply, MonoidHom.id_apply, vcub T z I J hI hJ]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, inv_inv]`. Normalize the expressions using the abelian group laws. Substitute `hct` using the available equality.
+
+Establish `symCub` using `GlobalTheory.T.cubeSymm_compat_descends_from_pushed_points h L₁ c s hs (fun U => (k3.1 U).1) k3.2 fun T z I hI x y u => by`. Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt P'.L.isLB z`. Use `GlobalTheory.UU.sym_cub_alg (MonoidHom.id _) (fun a => (Wf z I J a)⁻¹) (θ := cubV P'.c z J) (θ' := fun a b d => cubV c z I (pushHom h T a) (pushHom h T b) (pushHom h T d)) (σ := fun a => val P'.sym a.left z J) (σ' := fun a => val s (pushHom h T a).left z I) (fun a b d => ?_) (fun …` and prove the remaining obligations. Use `vcub T z I J hI hJ a b d show cubV P'.c z J a b d = _` as an intermediate fact. Rewrite using `[show cubV c z I (pushHom h T a) (pushHom h T b) (pushHom h T d) = GlobalTheory.CubTransport.thV (L := L₁) c.t z I (pushHom h T a) (pushHom h T b) (pushHom h T d) from rfl, this]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, inv_inv]`. Normalize the expressions using the abelian group laws. Use `show val P'.sym a.left z J = _`. Rewrite using `[vsym T z I J hI hJ a]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, inv_inv]`. Normalize the expressions using the abelian group laws. Establish `symRig : LB.Gen.Corr L₁.L _ _ _ _ (LB.pullGen L₁.L _ _ s (eSec G)) (LB.oneGen L₁.L)`. Use `GlobalTheory.GtTorsionPoints.corr_of_val_pull hL M.π (fun U => (k0.1 U).1) (fun a b e => k0.2 a b e) fun z I hI => ?_` and prove the remaining obligations.
+
+Take `⟨J, hJ⟩` from `GlobalTheory.UU.exists_good_pt P'.L.isLB z`. Establish `e₁ : M.π ≫ eSec G = eSec G' ≫ β` using `(cubeMapOf h).e_comm.symm`. Establish `e₂ : eSec G' ≫ (ι[G']).left = eSec G'`. Rewrite using `[eSec, ← Over.comp_left, GrpObj.one_inv]`. Establish `e₃` using `vs _ (eSec G') z I J hI hJ`.
+
+Establish `e₄ : val P'.sym (eSec G') z J = 1`. Use `(val_pull hJ P'.sym (eSec G') (𝟙 _)).symm.trans ((val_corr hJ P'.sym_rig (𝟙 _)).trans (val_one _))` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Rewrite using `[val_pull hI, e₁, e₃, e₄, Fin.prod_univ_two, val_one]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, e₂, Category.comp_id, zpow_one, zpow_neg, mul_inv_cancel, _root_.one_mul]`.
+
+Conclude with `⟨⟨L₁, c, s, hs, symRig, fun T x y u z J hJ => symCub T x y u z J hJ⟩, rfl⟩`.
+-/
 theorem exists_cp_descent : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) →
     ∀ (M : Modif R) (G' : Over M.S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (P' : GlobalTheory.UU.CP G')
     (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (β : G'.left ⟶ G.left), IsSemiAbelian G →

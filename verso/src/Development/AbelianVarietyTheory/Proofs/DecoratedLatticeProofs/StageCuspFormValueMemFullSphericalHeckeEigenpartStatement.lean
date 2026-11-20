@@ -8,5 +8,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.ChainOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ChainOnto.ValPart.valPart_mem | exact GlobalTheory.ChainOnto.ValPart.valPart_mem | (intros; apply GlobalTheory.ChainOnto.ValPart.valPart_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stageCuspFormValue_mem_fullSphericalHecke_eigenpart : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, MetEx D → LevFacts D → ForStage D fun c _ s => ∀ (u : s.CC c) w B, PiLocalization₂.val u w ≠ 0 → ParFun c s (PiLocalization₂.val u w) B → ∃ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, PiTensorProduct.lift.symm (u : SmT s.M →ₗ[ℂ] (GA D s.V → ℂ)) ∈ partFull c.θ s.M (levS s.V s.β s.L) (Lev.levChi s.V s.β s.L) c.S e := by
   first | exact @GlobalTheory.ChainOnto.ValPart.valPart_mem | exact GlobalTheory.ChainOnto.ValPart.valPart_mem | (intros; apply GlobalTheory.ChainOnto.ValPart.valPart_mem <;> assumption)

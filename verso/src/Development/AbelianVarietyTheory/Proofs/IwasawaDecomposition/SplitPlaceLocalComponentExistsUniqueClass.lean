@@ -34,12 +34,18 @@ def rtRep {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (S : Submodule �
     show f.1 (g * (x * y)) = f.1 (g * x * y)
     rw [mul_assoc])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rtRep_apply {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (S : Submodule ℂ (GAf L n → W))
     (hS : ∀ h, ∀ f ∈ S, NG.rt L n h f ∈ S) (h : GAf L n) (f : S) :
     ((rtRep S hS h f : S) : GAf L n → W) = NG.rt L n h f := rfl
 
 def rtOf {n : ℕ} (π : NG.AutRep L n) : Representation ℂ (GAf L n) π.S := rtRep π.S π.irrS.1.stable
 
+/- English proof (translation)
+Take `⟨hnt, hρ⟩` from `(GlobalTheory.CuspRep.isIrreducible_iff ρ).1 h`. Use `(GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨hnt, fun W hW => hρ W fun g v hv => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `hφ g`. Conclude with `hW k v hv`.
+-/
 theorem isIrreducible_comp_of_surjective {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (φ : H →* G) (hφ : Function.Surjective φ) (h : ρ.IsIrreducible) :
     Representation.IsIrreducible (ρ.comp φ) := by
@@ -48,6 +54,11 @@ theorem isIrreducible_comp_of_surjective {G H V : Type} [Group G] [Group H] [Add
   obtain ⟨k, rfl⟩ := hφ g
   exact hW k v hv
 
+/- English proof (translation)
+Use `(GlobalTheory.CuspRep.isIrreducible_iff (rtOf π)).2 ⟨Submodule.nontrivial_iff_ne_bot.2 π.irrS.2.1, fun W hW => ?_⟩` and prove the remaining obligations. Establish `hsub : NG.IsSubrep π.ρ (W.map π.S.subtype)`. Use `⟨(Submodule.map_subtype_le _ _).trans π.irrS.1.le, ?_⟩` and prove the remaining obligations. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Conclude with `⟨rtOf π h f, hW h f hf, rtRep_apply π.S π.irrS.1.stable h f⟩`.
+
+Establish `hi` using `Submodule.map_injective_of_injective π.S.injective_subtype`. Break down `π.irrS.2.2 (W.map π.S.subtype) hsub (Submodule.map_subtype_le _ _) with h | h` into its components or cases. Conclude with `Or.inl (hi (h.trans (Submodule.map_bot _).symm))`. Conclude with `Or.inr (hi (h.trans (Submodule.map_subtype_top _).symm))`.
+-/
 theorem rtOf_irreducible {n : ℕ} (π : NG.AutRep L n) : (rtOf π).IsIrreducible := by
   refine (GlobalTheory.CuspRep.isIrreducible_iff (rtOf π)).2 ⟨Submodule.nontrivial_iff_ne_bot.2 π.irrS.2.1, fun W hW => ?_⟩
   have hsub : NG.IsSubrep π.ρ (W.map π.S.subtype) := by
@@ -59,6 +70,49 @@ theorem rtOf_irreducible {n : ℕ} (π : NG.AutRep L n) : (rtOf π).IsIrreducibl
   · exact Or.inl (hi (h.trans (Submodule.map_bot _).symm))
   · exact Or.inr (hi (h.trans (Submodule.map_subtype_top _).symm))
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℂ π.W := π.alg.1`. Establish `hirrG : (rtOf π).IsIrreducible` using `rtOf_irreducible π`. Establish `hlev : ∀ f : π.S, ∃ N, 0 < N ∧ ∀ κ, NG.Cong L n N κ → (rtOf π) κ f = f`. Introduce `f`. Take `⟨-, N, hN, hf⟩` from `π.irrS.1.le f.2`.
+
+Conclude with `⟨N, hN, fun κ hκ => Subtype.ext (funext fun g => hf κ hκ g)⟩`. Establish `hcongE : ∀ (N : ℕ), 0 < N → ∀ g : GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L)), (∀ i j, Valued.v ((g : Matrix (Fin n) (Fin n) _) i j - (1 : Matrix (Fin n) (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L))) i j) ≤ Valued.v ((N : s.v.adicComple …`. Introduce `N hN g h1 h2`. Use `GlobalTheory.CongSplit.cong_of_loc L n s N hN (e g) (he1 g) (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations. Rewrite using `[he2]`.
+
+Conclude with `h1 i j`. Rewrite using `[map_inv, he2]`. Conclude with `h2 i j`. Establish `hcpt : ∀ N, 0 < N → ∃ K : Subgroup (GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L))), IsOpen (K : Set (GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L)))) ∧ IsCompact (K : Set (GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L …`. Introduce `N hN`.
+
+Take `⟨K, hKo, hKc, hK⟩` from `GlobalTheory.GLCongrCptOpen.exists_compactOpen_congr _ s.v n (N : s.v.adicCompletion (NumberField.maximalRealSubfield L)) (by`. Rewrite using `[← map_natCast (algebraMap (NumberField.maximalRealSubfield L) (s.v.adicCompletion (NumberField.maximalRealSubfield L)))]`. Conclude with `(_root_.map_ne_zero _).2 (Nat.cast_ne_zero.2 hN.ne'))`. Conclude with `⟨K, hKo, hKc, fun g hg => hcongE N hN g (hK g hg) (hK g⁻¹ (K.inv_mem hg))⟩`. Establish `hsm : GlobalTheory.PRep.IsSmooth ((rtOf π).comp e)`.
+
+Introduce `f`. Take `⟨N, hN, hf⟩` from `hlev f`. Take `⟨K, hKo, -, hK⟩` from `hcpt N hN`. Establish `hle : K ≤ GlobalTheory.CuspRep.LocEx.stab ((rtOf π).comp e) f` using `fun g hg => hf _ (hK g hg)`. Conclude with `Subgroup.isOpen_mono hle hKo`.
+
+Establish `hcomm : ∀ (x : GAf L n) g, Commute ((e (s.loc n x))⁻¹ * x) (e g)` using `fun x g => GlobalTheory.SplitLocComm.commute_of_loc_eq_one L n s _ _ (by rw [map_mul, map_inv, he2, inv_mul_cancel]) (he1 g)`. Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.irrS.2.1`. Take `⟨v0, hv0e⟩ : ∃ v0 : π.S, v0 = ⟨φ, hφ⟩` from `⟨_, rfl⟩`. Establish `hv0 : v0 ≠ 0` using `fun h => h0 (by rw [hv0e] at h; exact congrArg Subtype.val h)`. Take `⟨N0, hN0, hv0N⟩` from `hlev v0`.
+
+Take `⟨K0, hK0o, hK0c, hK0⟩` from `hcpt N0 hN0`. Establish `hT : ∀ (x : GAf L n) g (y : π.S), (rtOf π) ((e (s.loc n x))⁻¹ * x) (((rtOf π).comp e) g y) = ((rtOf π).comp e) g ((rtOf π) ((e (s.loc n x))⁻¹ * x) y)` using `fun x g y => by show (rtOf π) _ ((rtOf π) (e g) y) = (rtOf π) (e g) ((rtOf π) _ y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, (hcomm x g).eq, map_mul, Module.End.mul_apply]`. Establish `hnull : ∀ x, ∀ y ∈ GlobalTheory.CuspRep.LocEx.nullPart ((rtOf π).comp e) K0, (rtOf π) x y ∈ GlobalTheory.CuspRep.LocEx.nullPart ((rtOf π).comp e) K0`. Introduce `x y hy`.
+
+Establish `h1` using `GlobalTheory.CuspRep.LocEx.nullPart_act ((rtOf π).comp e) K0 (s.loc n x) (GlobalTheory.CuspRep.LocEx.nullPart_comm ((rtOf π).comp e) K0 ((rtOf π) ((e (s.loc n x))⁻¹ * x)) (hT x) hy)`. Establish `e1 : (rtOf π) x y = ((rtOf π).comp e) (s.loc n x) ((rtOf π) ((e (s.loc n x))⁻¹ * x) y)` using `by show _ = (rtOf π) (e (s.loc n x)) _`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Rewrite using `[e1]`. Conclude with `h1`.
+
+Establish `hv0K : v0 ∈ GlobalTheory.PRep.fixed ((rtOf π).comp e) K0` using `GlobalTheory.CuspRep.LocEx.mem_fix.2 fun k hk => hv0N _ (hK0 k hk)`. Establish `h2 : ∀ W : Submodule ℂ π.S, (∀ g, ∀ v ∈ W, ((rtOf π).comp e) g v ∈ W) → W ⊓ GlobalTheory.PRep.fixed ((rtOf π).comp e) K0 = ⊥ → W = ⊥`. Introduce `W hW h`. Break down `((GlobalTheory.CuspRep.isIrreducible_iff _).1 hirrG).2 (GlobalTheory.CuspRep.LocEx.nullPart ((rtOf π).comp e) K0) hnull with h1 | h1` into its components or cases. Conclude with `le_bot_iff.1 (h1 ▸ GlobalTheory.CuspRep.LocEx.le_nullPart hsm hK0c W hW h)`.
+
+Conclude with `absurd (GlobalTheory.CuspRep.LocEx.eq_zero_of_mem_nullPart hsm hK0c hv0K (h1 ▸ Submodule.mem_top)) hv0`. Take `⟨U, hUe⟩ : ∃ U : Submodule ℂ π.S, U = ⨅ (κ : GAf L n) (_ : NG.Cong L n N0 κ ∧ s.loc n κ = 1), LinearMap.ker ((rtOf π) κ - 1)` from `⟨_, rfl⟩`. Establish `hmemU : ∀ f, f ∈ U ↔ ∀ κ, NG.Cong L n N0 κ → s.loc n κ = 1 → (rtOf π) κ f = f`. Introduce `f`. Simplify using `only [hUe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`.
+
+Conclude with `⟨fun h κ h1 h2 => h κ ⟨h1, h2⟩, fun h κ hκ => h κ hκ.1 hκ.2⟩`. Establish `hU : ∀ g, ∀ f ∈ U, ((rtOf π).comp e) g f ∈ U`. Introduce `g f hf`. Rewrite `hf`, the goal using `[hmemU]`. Introduce `κ h1 h2`.
+
+Establish `hc : Commute κ (e g)` using `GlobalTheory.SplitLocComm.commute_of_loc_eq_one L n s κ (e g) h2 (he1 g)`. Use `show (rtOf π) κ ((rtOf π) (e g) f) = (rtOf π) (e g) f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc.eq, map_mul, Module.End.mul_apply, hf κ h1 h2]`. Establish `hU0 : U ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨v0, (hmemU v0).2 fun κ h1 _ => hv0N κ h1, hv0⟩`. Establish `hfin : ∀ K' : Subgroup (GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L))), IsOpen (K' : Set (GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L)))) → FiniteDimensional ℂ ↥(U ⊓ GlobalTheory.PRep.fixed ((rtOf π).comp e) K')`.
+
+Introduce `K' hK'`. Take `⟨M, hM, hMK⟩` from `GlobalTheory.exists_nat_congruence_le_open_subgroup_GL _ s.v n K' hK'`. Establish `hN' : 0 < N0 * M` using `Nat.mul_pos hN0 hM`. Establish `hvM : Valued.v (((N0 * M : ℕ) : s.v.adicCompletion (NumberField.maximalRealSubfield L))) ≤ Valued.v ((M : s.v.adicCompletion (NumberField.maximalRealSubfield L)))`. Rewrite using `[Nat.cast_mul, map_mul]`.
+
+Conclude with `mul_le_of_le_one_left' (GlobalTheory.valued_natCast_adicCompletion_le_one _ s.v N0)`. Establish `hvN : Valued.v (((N0 * M : ℕ) : s.v.adicCompletion (NumberField.maximalRealSubfield L))) ≤ Valued.v ((N0 : s.v.adicCompletion (NumberField.maximalRealSubfield L)))`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (GlobalTheory.valued_natCast_adicCompletion_le_one _ s.v M)`. Establish `hcong1 : NG.Cong L n (N0 * M) 1`.
+
+Use `⟨(Umax L n).one_mem, fun i j => ⟨0, Subring.zero_mem _, ?_⟩⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hkey : ∀ f ∈ U ⊓ GlobalTheory.PRep.fixed ((rtOf π).comp e) K', ∀ κ, NG.Cong L n (N0 * M) κ → (rtOf π) κ f = f`. Introduce `f hf κ hκ`. Take `⟨hfU, hfK⟩` from `Submodule.mem_inf.1 hf`.
+
+Establish `hκinv : NG.Cong L n (N0 * M) κ⁻¹`. Simplify using `using GlobalTheory.principalCong_inv_mul L n (N0 * M) κ 1 hκ hcong1`. Establish `hl1` using `GlobalTheory.splitPlace_loc_congr_one L n s (N0 * M) κ hκ`. Establish `hl2` using `GlobalTheory.splitPlace_loc_congr_one L n s (N0 * M) κ⁻¹ hκinv`. Establish `hlK : s.loc n κ ∈ K'` using `hMK _ (fun i j => (hl1 i j).trans hvM) (fun i j => by rw [← map_inv]; exact (hl2 i j).trans hvM)`.
+
+Establish `hce : NG.Cong L n N0 (e (s.loc n κ))` using `hcongE N0 hN0 _ (fun i j => (hl1 i j).trans hvN) (fun i j => by rw [← map_inv]; exact (hl2 i j).trans hvN)`. Establish `hκ0 : NG.Cong L n N0 ((e (s.loc n κ))⁻¹ * κ)` using `GlobalTheory.principalCong_inv_mul L n N0 _ _ hce (NG.Cong.of_mul_left L n hκ)`. Establish `hl0 : s.loc n ((e (s.loc n κ))⁻¹ * κ) = 1` using `by rw [map_mul, map_inv, he2, inv_mul_cancel]`. Establish `e1 : (rtOf π) κ f = (rtOf π) (e (s.loc n κ)) ((rtOf π) ((e (s.loc n κ))⁻¹ * κ) f)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+
+Rewrite using `[e1, (hmemU f).1 hfU _ hκ0 hl0]`. Conclude with `GlobalTheory.CuspRep.LocEx.mem_fix.1 hfK _ hlK`. Establish `hfd` using `GlobalTheory.LevelForms.finiteDimensional_of_level L n π.ρ (N0 * M) hN' ((U ⊓ GlobalTheory.PRep.fixed ((rtOf π).comp e) K').map π.S.subtype) (by`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨π.irrS.1.le f.2, fun κ hκ => congrArg Subtype.val (hkey f hf κ hκ)⟩)`.
+
+Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective _ π.S.injective_subtype _).symm`. Take `⟨σ, ⟨f, hf0, hf⟩, hadm⟩` from `GlobalTheory.CuspRep.LocEx.exists_irred hsm hK0o h2 U hU hU0 hfin`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot]`. Break down `((GlobalTheory.CuspRep.isIrreducible_iff σ.ρ).1 σ.irred).2 (LinearMap.ker f) (fun g v hv => by` into its components or cases.
+
+Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, map_zero]) with h | h`. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hf0`. Use `⟨⟨σ.V, σ.ρ, hadm.1, σ.irred⟩, π.S.subtype ∘ₗ f, π.S.injective_subtype.comp hinj, fun a => (f a).2, fun g a => ?_⟩` and prove the remaining obligations.
+
+Use `show ((f (σ.ρ g a) : π.S) : GAf L n → π.W) = _`. Rewrite using `[hf]`. Both sides reduce to the same expression.
+-/
 theorem exists_local {n : ℕ} (π : NG.AutRep L n) (s : SplitPlace L)
     (e : GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L)) →* GAf L n)
     (he1 : ∀ g, TrivOutside {s.v} (e g)) (he2 : ∀ g, s.loc n (e g) = g) :
@@ -196,16 +250,27 @@ namespace GlobalTheory.LocCompSplit
 
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem gl_map_symm_map {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (i : A ≃+* B) (g : GL (Fin n) A) :
     Matrix.GeneralLinearGroup.map i.symm.toRingHom (Matrix.GeneralLinearGroup.map i.toRingHom g) = g := by
   ext
   simp
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules.
+-/
 theorem gl_map_map_symm {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (i : A ≃+* B) (g : GL (Fin n) B) :
     Matrix.GeneralLinearGroup.map i.toRingHom (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) = g := by
   ext
   simp
 
+/- English proof (translation)
+Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s`. Take `⟨i, hi, hi', hiL⟩` from `GlobalTheory.SplitComplHomeo.exists_complEquiv L s`. Take `⟨σ₀, T, hTi, hTm, hTe⟩` from `exists_local π s e he1 he2`. Set `ψ : GL (Fin n) (s.w.adicCompletion L) →* GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L))` to `Matrix.GeneralLinearGroup.map i.symm.toRingHom`. Establish `hψc : Continuous ψ` using `Continuous.units_map _ (continuous_id.matrix_map hi')`.
+
+Establish `hψs : Function.Surjective ψ` using `fun g => ⟨Matrix.GeneralLinearGroup.map i.toRingHom g, gl_map_symm_map i g⟩`. Set `σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))` to `⟨σ₀.V, σ₀.ρ.comp ψ, fun v => (σ₀.smooth v).preimage hψc, isIrreducible_comp_of_surjective σ₀.ρ ψ hψs σ₀.irr⟩`. Use `⟨σ, i, T, hi, hiL, hTi, hTm, fun x hx a => ?_⟩` and prove the remaining obligations. Use `show T (σ₀.ρ (ψ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x))) a) = _`. Rewrite using `[gl_map_symm_map i, hTe, GlobalTheory.SplitLocEq.eq_of_trivOutside_of_loc_eq L n s _ _ (he1 _) hx (he2 _)]`.
+-/
 theorem exists_isLocS {n : ℕ} (π : NG.AutRep L n) (s : SplitPlace L) : ∃ σ, IsLocS π.S s σ := by
   obtain ⟨e, he1, he2⟩ := GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s
   obtain ⟨i, hi, hi', hiL⟩ := GlobalTheory.SplitComplHomeo.exists_complEquiv L s
@@ -220,6 +285,29 @@ theorem exists_isLocS {n : ℕ} (π : NG.AutRep L n) (s : SplitPlace L) : ∃ σ
   show T (σ₀.ρ (ψ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x))) a) = _
   rw [gl_map_symm_map i, hTe, GlobalTheory.SplitLocEq.eq_of_trivOutside_of_loc_eq L n s _ _ (he1 _) hx (he2 _)]
 
+/- English proof (translation)
+Take `⟨i, T, hi, hiL, hTi, hTm, hTe⟩` from `hσ`. Take `⟨i', T', hi', hiL', hTi', hTm', hTe'⟩` from `hσ'`. Take `rfl` from `GlobalTheory.splitPlace_completion_equiv_unique L s i' i hi' hi hiL' hiL`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s`. Take `⟨-, T0, hT0⟩` from `hπ`.
+
+Set `φ : GL (Fin n) (s.v.adicCompletion (NumberField.maximalRealSubfield L)) →* GL (Fin n) (s.w.adicCompletion L)` to `Matrix.GeneralLinearGroup.map i'.toRingHom`. Establish `hφ : Function.Surjective φ` using `fun h => ⟨Matrix.GeneralLinearGroup.map i'.symm.toRingHom h, gl_map_map_symm i' h⟩`. Establish `hirr : ∀ (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), Representation.IsIrreducible (τ.ρ.comp φ)` using `fun τ => isIrreducible_comp_of_surjective τ.ρ φ hφ τ.irr`. Establish `hloc : ∀ g, Matrix.GeneralLinearGroup.map i'.toRingHom (s.loc n (e g)) = φ g` using `fun g => by rw [he2]`. Set `F : Representation.IntertwiningMap (σ.ρ.comp φ) ((rtOf π).comp e)` to `⟨T.codRestrict π.S hTm, fun g => LinearMap.ext fun a => Subtype.ext (by show T (σ.ρ (φ g) a) = NG.rt L n (e g) (T a)`.
+
+Rewrite using `[← hloc]`. Conclude with `hTe (e g) (he1 g) a)⟩`. Establish `hT0s : ∀ (h : GAf L n) (y : π'.S) (hy : NG.rt L n h (y : GAf L n → π'.W) ∈ π'.S), T0.symm ⟨NG.rt L n h y, hy⟩ = rtOf π h (T0.symm y)`. Introduce `h y hy`. Apply `T0.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT0 h (T0.symm y) (rtOf π h (T0.symm y)) rfl, LinearEquiv.apply_symm_apply]`. Establish `hT'e : ∀ g a, T' (σ'.ρ (φ g) a) = NG.rt L n (e g) (T' a)` using `fun g a => by`. Rewrite using `[← hloc]`.
+
+Conclude with `hTe' (e g) (he1 g) a`. Set `F' : Representation.IntertwiningMap (σ'.ρ.comp φ) ((rtOf π).comp e)` to `⟨T0.symm.toLinearMap ∘ₗ T'.codRestrict π'.S hTm', fun g => LinearMap.ext fun a => by`. Establish `h1 : (⟨T' (σ'.ρ (φ g) a), hTm' _⟩ : π'.S) = ⟨NG.rt L n (e g) (T' a), (hT'e g a) ▸ hTm' _⟩` using `Subtype.ext (hT'e g a)`. Use `show T0.symm ⟨T' (σ'.ρ (φ g) a), hTm' _⟩ = rtOf π (e g) (T0.symm ⟨T' a, hTm' a⟩)`. Rewrite using `[h1]`.
+
+Conclude with `hT0s (e g) ⟨T' a, hTm' a⟩ _⟩`. Establish `hnt : ∀ (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))), Nontrivial τ.V` using `fun τ => ((GlobalTheory.CuspRep.isIrreducible_iff τ.ρ).1 τ.irr).1`. Establish `hF0 : F ≠ 0`. Introduce `h`. Take `⟨a, ha⟩` from `@exists_ne σ.V (hnt σ) 0`.
+
+Apply `ha` to reduce the goal to its premises. Apply `hTi` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrArg Subtype.val (DFunLike.congr_fun h a)`. Establish `hF'0 : F' ≠ 0`.
+
+Introduce `h`. Take `⟨a, ha⟩` from `@exists_ne σ'.V (hnt σ') 0`. Apply `ha` to reduce the goal to its premises. Apply `hTi'` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Establish `h2` using `DFunLike.congr_fun h a`. Establish `h3 : T0.symm ⟨T' a, hTm' a⟩ = 0` using `h2`. Establish `h4` using `congrArg (fun y => ((T0 y : π'.S) : GAf L n → π'.W)) h3`. Simplify using `using h4`. Establish `hcomm : ∀ (x : GAf L n), ∃ u, ∀ y, Commute ((e u)⁻¹ * x) (e y)` using `fun x => ⟨s.loc n x, fun y => GlobalTheory.SplitLocComm.commute_of_loc_eq_one L n s _ _ (by rw [map_mul, map_inv, he2, inv_mul_cancel]) (he1 y)⟩`.
+
+Take `⟨-, hiso⟩` from `GlobalTheory.CuspRep.CompUniq.isotypic (GAf L n) _ π.S σ.V σ'.V (rtOf π) e (σ.ρ.comp φ) (σ'.ρ.comp φ) (rtOf_irreducible π) (hirr σ) (hirr σ') hcomm F hF0`. Take `⟨E⟩` from `hiso F' hF'0`. Set `E2 : σ.ρ.Equiv σ'.ρ` to `Representation.Equiv.mk' ⟨E.toLinearEquiv.toLinearMap, fun h => by`. Take `⟨g, rfl⟩` from `hφ h`. Conclude with `E.isIntertwining' g⟩ E.invFun E.left_inv E.right_inv`.
+
+Conclude with `GlobalTheory.SmGL.IrrRep.cl_eq_iff.2 ⟨E2.symm⟩`.
+-/
 theorem isLocS_unique {n : ℕ} (π π' : NG.AutRep L n) (s : SplitPlace L)
     (σ σ' : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))) (hπ : π.Iso π')
     (hσ : IsLocS π.S s σ) (hσ' : IsLocS π'.S s σ') : σ'.cl = σ.cl := by
@@ -286,6 +374,9 @@ theorem isLocS_unique {n : ℕ} (π π' : NG.AutRep L n) (s : SplitPlace L)
       exact E.isIntertwining' g⟩ E.invFun E.left_inv E.right_inv
   exact GlobalTheory.SmGL.IrrRep.cl_eq_iff.2 ⟨E2.symm⟩
 
+/- English proof (translation)
+Introduce `L _ _ _ n π s`. Take `⟨σ, hσ⟩` from `exists_isLocS π s`. Use `⟨σ, hσ, fun π' s' h σ' hπ hσ' => ?_⟩` and prove the remaining obligations. Take `rfl` from `GlobalTheory.SplitPlaceExt.eq_of_w_eq L s s' h`. Conclude with `heq_of_eq (isLocS_unique π π' s' σ σ' hπ hσ hσ')`.
+-/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.AutRep L n) (s : SplitPlace L),
     ∃ σ, IsLocS π.S s σ ∧ ∀ (π' : NG.AutRep L n) (s' : SplitPlace L) (h : s'.w = s.w) σ', π.Iso π' →
       IsLocS π'.S s' σ' → HEq σ'.cl σ.cl := by

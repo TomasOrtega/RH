@@ -23,6 +23,9 @@ namespace GlobalTheory.Core.Rk.FinDim
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `h` using `hD.maj_eq τ`. Rewrite `h` using `[Matrix.mul_one]`. Rewrite using `[frameInv, Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem frameInv_eq_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {a : GL (Fin A.rank) (AE D)} (hD : Defin θ A cA a)
     (τ : D.what₂.Tau) : frameInv θ A a τ = 1 := by
   have h := hD.maj_eq τ
@@ -30,6 +33,11 @@ theorem frameInv_eq_one {θ : InfFam D} {A : HSp D} {cA : CptF A} {a : GL (Fin A
   rw [frameInv, Matrix.mul_assoc]
   exact mul_eq_one_comm.1 h
 
+/- English proof (translation)
+Establish `e : (Kmax A a : Set (GA D A)) = levelOpen D.sp.cm.sig A.gram (frameLat A)`. Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, hD.maj.mem_Kmax_iff hD.inf, SetLike.mem_coe]`. Simplify using `[frameInv_eq_one hD]`. Rewrite using `[e]`.
+
+Conclude with `isOpen_levelOpen _ _ _`.
+-/
 theorem isOpen_Kmax {θ : InfFam D} {A : HSp D} {cA : CptF A} {a : GL (Fin A.rank) (AE D)} (hD : Defin θ A cA a) :
     IsOpen (Kmax A a : Set (GA D A)) := by
   have e : (Kmax A a : Set (GA D A)) = levelOpen D.sp.cm.sig A.gram (frameLat A) := by
@@ -43,6 +51,17 @@ end GlobalTheory.Core.Rk.FinDim
 
 namespace GlobalTheory.Core.Rk.FinDim
 
+/- English proof (translation)
+Introduce `D ψ θ A cA a hD W χ omh _ φ hφ K hK`. Use `set V₀ := Submodule.span ℂ {f : WO (dblSp A) W → ℂ | ∃ k ∈ Khat A a, f = omh (k, 1) φ} with hV₀`. Use `haveI : FiniteDimensional ℂ V₀ := hφ`. Establish `hU : ∀ x : GA D A, IsOpen {y : GA D A | x⁻¹ * y ∈ Kmax A a}` using `fun x => (isOpen_Kmax hD).preimage (continuous_const.mul continuous_id)`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x : GA D A => {y : GA D A | x⁻¹ * y ∈ Kmax A a}) hU (fun y _ => Set.mem_iUnion.2 ⟨y, by simp⟩)`.
+
+Establish `hcov : ∀ g ∈ K, ∃ x ∈ t, ∃ k ∈ Kmax A a, g = x * k`. Introduce `g hg`. Take `⟨x, hx, hgx⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Conclude with `⟨x, hx, x⁻¹ * g, hgx, by group⟩`. Set `S : Submodule ℂ (WO (dblSp A) W → ℂ)` to `⨆ p : {x // x ∈ t} × {x // x ∈ t}, V₀.map (omh (io A ((p.1 : GA D A), (p.2 : GA D A)), 1))`.
+
+Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_iSup _`. Use `Submodule.finiteDimensional_of_le (Submodule.span_le.2 ?_ : _ ≤ S)` and prove the remaining obligations. Introduce and unpack `f ⟨g₁, hg₁, g₂, hg₂, rfl⟩`. Take `⟨x₁, hx₁, k₁, hk₁, rfl⟩` from `hcov g₁ hg₁`. Take `⟨x₂, hx₂, k₂, hk₂, rfl⟩` from `hcov g₂ hg₂`.
+
+Establish `e : omh (io A (x₁ * k₁, x₂ * k₂), 1) φ = omh (io A (x₁, x₂), 1) (omh (io A (k₁, k₂), 1) φ)`. Establish `: ((io A (x₁ * k₁, x₂ * k₂), (1 : GA D W)) : GA D (dblSp A) × GA D W) = (io A (x₁, x₂), 1) * (io A (k₁, k₂), 1)`. Rewrite using `[Prod.mk_mul_mk, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[this, map_mul, Module.End.mul_apply]`. Rewrite using `[SetLike.mem_coe, e]`.
+
+Use `(Submodule.mem_iSup_of_mem (⟨⟨x₁, hx₁⟩, ⟨x₂, hx₂⟩⟩ : {x // x ∈ t} × {x // x ∈ t}) ?_)` and prove the remaining obligations. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨_, (io_mem_Khat A a).2 ⟨hk₁, hk₂⟩, rfl⟩)`.
+-/
 theorem finiteDimensional_span_io : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A : HSp D) (cA : CptF A) (a : GL (Fin A.rank) (AE D)), Defin θ A cA a → ∀ (W : HSp D) (χ : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) W), IsWeilDatumO ψ (dblSp A) W 1 χ omh → ∀ φ, IsKFinVec omh (Khat A a) φ → ∀ K : Set (GA D A), IsCompact K → FiniteDimensional ℂ (Submodule.span ℂ {f : WO (dblSp A) W → ℂ | ∃ g₁ ∈ K, ∃ g₂ ∈ K, f = omh (io A (g₁, g₂), 1) φ}) := by
   intro D ψ θ A cA a hD W χ omh _ φ hφ K hK
   set V₀ := Submodule.span ℂ {f : WO (dblSp A) W → ℂ | ∃ k ∈ Khat A a, f = omh (k, 1) φ} with hV₀

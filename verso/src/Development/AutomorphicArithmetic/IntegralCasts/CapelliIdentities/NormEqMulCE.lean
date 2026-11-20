@@ -4,6 +4,13 @@ noncomputable def UpperTheory.Reformulated.B.Qh29.cE :
     (E : Type) → [inst : Field E] → [inst_1 : NumberField E] → [NumberField.IsCMField E] → E ≃+* E :=
     fun (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] ↦ (NumberField.IsCMField.complexConj E).toRingEquiv
 
+/- English proof (translation)
+Introduce `K _ _ _ y`. Establish `hne` using `NumberField.IsCMField.complexConj_ne_one K`. Establish `hcard : Nat.card (K ≃ₐ[NumberField.maximalRealSubfield K] K) = 2`. Rewrite using `[IsGalois.card_aut_eq_finrank, Algebra.IsQuadraticExtension.finrank_eq_two]`. Establish `huniv : (Finset.univ : Finset (K ≃ₐ[NumberField.maximalRealSubfield K] K)) = {1, NumberField.IsCMField.complexConj K}`.
+
+Use `symm`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[Finset.card_pair hne.symm, ← Nat.card_eq_fintype_card, hcard]`. Establish `h` using `Algebra.norm_eq_prod_automorphisms (NumberField.maximalRealSubfield K) y`. Rewrite `h` using `[huniv, Finset.prod_pair hne.symm]`.
+
+Conclude with `h`.
+-/
 theorem UpperTheory.Reformulated.B.Qh29.norm_eq_mul_cE :
     ∀ (K : Type) [inst : Field K] [inst_1 : NumberField K] [inst_2 : NumberField.IsCMField K] (y : K),
       (Algebra.algebraMap (↥(NumberField.maximalRealSubfield K)) K : ↥(NumberField.maximalRealSubfield K) → K)

@@ -6,6 +6,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 private def dmk {K : Type} [CommRing K] {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) :
     Matrix (Fin n) (Fin n) (DualNumber K) := Matrix.of fun i j => (⟨A i j, B i j⟩ : DualNumber K)
 
+/- English proof (translation)
+Establish `hf : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.fst (dmk P Q i j) = P i j` using `fun _ _ _ _ => rfl`. Establish `hs : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.snd (dmk P Q i j) = Q i j` using `fun _ _ _ _ => rfl`. Use extensionality with `i j`. Rewrite using `[hf, Matrix.mul_apply, TrivSqZeroExt.fst_sum, Matrix.mul_apply]`. Simplify using `only [TrivSqZeroExt.fst_mul, hf]`.
+
+Rewrite using `[hs, Matrix.mul_apply, TrivSqZeroExt.snd_sum, Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [TrivSqZeroExt.snd_mul, hf, hs, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`.
+-/
 private theorem dmk_mul {K : Type} [CommRing K] {n : ℕ} (A B C D : Matrix (Fin n) (Fin n) K) :
     dmk A B * dmk C D = dmk (A * C) (A * D + B * C) := by
   have hf : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.fst (dmk P Q i j) = P i j := fun _ _ _ _ => rfl
@@ -17,6 +22,9 @@ private theorem dmk_mul {K : Type} [CommRing K] {n : ℕ} (A B C D : Matrix (Fin
     refine Finset.sum_congr rfl fun k _ => ?_
     simp only [TrivSqZeroExt.snd_mul, hf, hs, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]
 
+/- English proof (translation)
+Establish `hf : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.fst (dmk P Q i j) = P i j` using `fun _ _ _ _ => rfl`. Establish `hs : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.snd (dmk P Q i j) = Q i j` using `fun _ _ _ _ => rfl`. Use extensionality with `i j`. Apply the tactic sequence `rw [hf, Matrix.one_apply, Matrix.one_apply] split_ifs <;> simp`. Apply the tactic sequence `rw [hs, Matrix.one_apply, Matrix.zero_apply] split_ifs <;> simp`.
+-/
 private theorem dmk_one {K : Type} [CommRing K] {n : ℕ} :
     dmk (1 : Matrix (Fin n) (Fin n) K) 0 = 1 := by
   have hf : ∀ (P Q : Matrix (Fin n) (Fin n) K) i j, TrivSqZeroExt.fst (dmk P Q i j) = P i j := fun _ _ _ _ => rfl
@@ -27,6 +35,17 @@ private theorem dmk_one {K : Type} [CommRing K] {n : ℕ} :
   · rw [hs, Matrix.one_apply, Matrix.zero_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `K H _ _ n ρ y ρ' X hT hy`. Unfold `IsTan at hT`. Establish `hinv : dmk (1 : Matrix (Fin n) (Fin n) K) (-X) * dmk 1 X = 1`. Rewrite using `[dmk_mul]`. Simplify using `[dmk_one]`.
+
+Establish `hinv' : dmk (1 : Matrix (Fin n) (Fin n) K) X * dmk 1 (-X) = 1`. Rewrite using `[dmk_mul]`. Simplify using `[dmk_one]`. Use `⟨⟨dmk 1 (-X), dmk 1 X, hinv, hinv'⟩, fun g => ?_⟩` and prove the remaining obligations. Establish `hp : ((W.pushRep (algebraMap K (DualNumber K)) ρ g : GL (Fin n) (DualNumber K)) : Matrix (Fin n) (Fin n) (DualNumber K)) = dmk (ρ g : Matrix (Fin n) (Fin n) K) 0`.
+
+Use extensionality with `i j`. Simplify using `[W.pushRep, TrivSqZeroExt.algebraMap_eq_inl]`. Both sides reduce to the same expression. Simplify using `[W.pushRep, TrivSqZeroExt.algebraMap_eq_inl]`. Both sides reduce to the same expression.
+
+Establish `hyg : y g * (ρ g : Matrix (Fin n) (Fin n) K) = 1 * (ρ g : Matrix (Fin n) (Fin n) K) * X + (1 * 0 + -X * (ρ g : Matrix (Fin n) (Fin n) K)) * 1`. Rewrite using `[hy g]`. Simplify using `only [Loc.adGL, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, sub_mul, mul_assoc, ← Matrix.coe_units_inv, Units.inv_mul, mul_one, one_mul, mul_zero, zero_add, neg_mul, sub_eq_add_neg]`. Rewrite using `[add_mul, mul_assoc, mul_assoc, Units.inv_mul, mul_one, neg_mul]`. Use extensionality with `i j : 2`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, hp, Units.inv_mk]`. Rewrite using `[dmk_mul, dmk_mul, hT g i j, ← hyg]`. Simplify using `only [one_mul, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Ws.Eb.conjOf :
     ∀ {K H : Type} [CommRing K] [Group H] {n : ℕ} (ρ : H →* GL (Fin n) K) (y : H → Matrix (Fin n) (Fin n) K) (ρ' : H →* GL (Fin n) (DualNumber K)) (X : Matrix (Fin n) (Fin n) K), IsTan ρ y ρ' → (∀ g, y g = Loc.adGL ρ g X - X) →
         ∃ Q : GL (Fin n) (DualNumber K), ∀ g, ρ' g = Q * W.pushRep (algebraMap K (DualNumber K)) ρ g * Q⁻¹ := by

@@ -19,6 +19,11 @@ namespace GlobalTheory.SecLift
 
 variable {X Y Z : Scheme.{0}} {A : Type} [CommRing A]
 
+/- English proof (translation)
+Establish `h : Surjective (Spec.map (CommRingCat.ofHom g))` using `⟨fun p => by`. Establish `: p ∈ Set.range (PrimeSpectrum.comap g)`. Rewrite using `[range_comap_of_surjective _ g hg]`. Introduce `x hx`. Take `⟨n, hx⟩` from `hn x hx`.
+
+Conclude with `p.isPrime.mem_of_pow_mem n (by rw [hx]; exact Ideal.zero_mem _)`. Conclude with `this⟩`. Conclude with `(MorphismProperty.of_isPullback (P := @Surjective) P.flip h).1`.
+-/
 theorem surj_of_nil {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : Function.Surjective g)
     (hn : ∀ x ∈ RingHom.ker g, IsNilpotent x) {f : X ⟶ Spec (CommRingCat.of A)} {j : Y ⟶ X}
     {f₀ : Y ⟶ Spec (CommRingCat.of A₀)} (P : IsPullback j f₀ f (Spec.map (CommRingCat.ofHom g))) :
@@ -32,6 +37,9 @@ theorem surj_of_nil {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : Funct
     exact this⟩
   exact (MorphismProperty.of_isPullback (P := @Surjective) P.flip h).1
 
+/- English proof (translation)
+Establish `: IsClosedImmersion (Spec.map (CommRingCat.ofHom g))` using `IsClosedImmersion.spec_of_surjective _ hg`. Establish `: IsClosedImmersion j` using `MorphismProperty.of_isPullback P.flip this`. Conclude with `j.isClosedEmbedding.isInducing`.
+-/
 theorem inducing_of_surj {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : Function.Surjective g)
     {f : X ⟶ Spec (CommRingCat.of A)} {j : Y ⟶ X}
     {f₀ : Y ⟶ Spec (CommRingCat.of A₀)} (P : IsPullback j f₀ f (Spec.map (CommRingCat.ofHom g))) :
@@ -41,6 +49,9 @@ theorem inducing_of_surj {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : 
   have : IsClosedImmersion j := MorphismProperty.of_isPullback P.flip this
   exact j.isClosedEmbedding.isInducing
 
+/- English proof (translation)
+Take `⟨U, hU, e⟩` from `hF.isOpen_iff.1 O.isOpen`. Use `⟨⟨U, hU⟩, ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(Set.ext_iff.1 e y).2 hy`. Conclude with `(Set.ext_iff.1 e z).1 hz`.
+-/
 theorem exists_open {F : Y ⟶ X} (hF : Topology.IsInducing F) {y : Y} {O : Y.Opens} (hy : y ∈ O) :
     ∃ U : X.Opens, F y ∈ U ∧ F ⁻¹ᵁ U ≤ O := by
   obtain ⟨U, hU, e⟩ := hF.isOpen_iff.1 O.isOpen
@@ -48,6 +59,11 @@ theorem exists_open {F : Y ⟶ X} (hF : Topology.IsInducing F) {y : Y} {O : Y.Op
   · exact (Set.ext_iff.1 e y).2 hy
   · exact (Set.ext_iff.1 e z).1 hz
 
+/- English proof (translation)
+Take `⟨W, hW, iU, iV, e⟩` from `Y.presheaf.germ_eq (U := F ⁻¹ᵁ U) (V := F ⁻¹ᵁ U) y h h ((F.app U).hom s) 0 (hs.trans (map_zero _).symm)`. Take `⟨O, hO, hle⟩` from `exists_open hF hW`. Take `⟨V, hV, hxV, hl⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show F y ∈ O ⊓ U from ⟨hO, h⟩)`. Use `⟨V, hl.trans inf_le_right, hV, hxV, gr_ext fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : (𝟙 Y : Y ⟶ Y) z ∈ W` using `hle (hl hz).1`.
+
+Rewrite using `[gr_app, gr_res, map_zero, ← gr_app (𝟙 Y) F z U (hl hz).2, ← gr_res (𝟙 Y) z iU.le hz']`. Conclude with `(congrArg (gr (𝟙 Y) z W hz') (e.trans (map_zero _))).trans (map_zero _)`.
+-/
 theorem exists_affine_zero {F : Y ⟶ X} (hF : Topology.IsInducing F) (y : Y) (U : X.Opens)
     (h : (𝟙 Y ≫ F) y ∈ U) (s : Γ(X, U)) (hs : gr (𝟙 Y ≫ F) y U h s = 0) :
     ∃ (V : X.Opens) (hle : V ≤ U), IsAffineOpen V ∧ F y ∈ V ∧ (F.app V).hom (rs X hle s) = 0 := by
@@ -61,10 +77,18 @@ theorem exists_affine_zero {F : Y ⟶ X} (hF : Topology.IsInducing F) (y : Y) (U
   rw [gr_app, gr_res, map_zero, ← gr_app (𝟙 Y) F z U (hl hz).2, ← gr_res (𝟙 Y) z iU.le hz']
   exact (congrArg (gr (𝟙 Y) z W hz') (e.trans (map_zero _))).trans (map_zero _)
 
+/- English proof (translation)
+The claim follows from `j.germ_stalkMap_apply U y h s`.
+-/
 theorem stalkMap_gr (j : Y ⟶ X) (y : Y) (U : X.Opens) (h : j y ∈ U) (s : Γ(X, U)) :
     (j.stalkMap y).hom (gr (𝟙 X) (j y) U h s) = gr (𝟙 Y ≫ j) y U h s :=
   j.germ_stalkMap_apply U y h s
 
+/- English proof (translation)
+Use `letI := c.toAlgebra`. Use `haveI : Module.Flat A B := hf`. Take `⟨l, d, y, hy, hc⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero (R := A) (M := B) (f := fun _ : Unit => a) (x := fun _ => b) (by rw [Fintype.sum_unique, Algebra.smul_def]; exact hb)`. Establish `: b = ∑ j, d () j • y j` using `hy ()`. Rewrite using `[this]`.
+
+Use `Ideal.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem c (hI _ ?_))` and prove the remaining obligations. Establish `h` using `hc j`. Rewrite `h` using `[Fintype.sum_unique]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_flat' {a : A} {I : Ideal A} (hI : ∀ x, a * x = 0 → x ∈ I) {B : Type} [CommRing B]
     (c : A →+* B) (hf : c.Flat) (b : B) (hb : c a * b = 0) : b ∈ I.map c := by
   letI := c.toAlgebra
@@ -80,6 +104,15 @@ theorem mem_of_flat' {a : A} {I : Ideal A} (hI : ∀ x, a * x = 0 → x ∈ I) {
   have h := hc j
   rwa [Fintype.sum_unique] at h
 
+/- English proof (translation)
+Take `⟨U, h, s, rfl⟩` from `X.presheaf.exists_germ_eq e`. Express the relevant statement in the definitionally equal form `_ * gr (𝟙 X) (j y) U h s = 0 ↔ (j.stalkMap y).hom (gr (𝟙 X) (j y) U h s) = 0`. Rewrite using `[stalkMap_gr]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+
+Rewrite `H` using `[← gr_cst (𝟙 X) f (j y) U h, ← map_mul]`. Take `⟨V, hle, hV, hy, e⟩` from `exists_affine_zero (F := 𝟙 X) Topology.IsInducing.id (j y) U h _ H`. Establish `e' : cst f V a * rs X hle s = 0` using `gr_ext fun x hx => by`. Use `congrArg (gr (𝟙 X) x V hx) (show rs X hle (cst f U a * s) = 0 from e)` as an intermediate fact. Rewrite `this` using `[gr_res, map_mul, gr_cst]`.
+
+Rewrite using `[map_mul, gr_res, gr_cst, this]`. Establish `hm` using `mem_of_flat' (fun x => (ha x).1) _ (cst_flat f hV) _ e'`. Establish `e₀ : (j.app V).hom (rs X hle s) = 0`. Use `(show _ ≤ RingHom.ker (j.app V).hom from Ideal.map_le_iff_le_comap.2 fun r hr => ?_) hm` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, app_cst P.w, (RingHom.mem_ker).1 hr, map_zero]`.
+
+Rewrite using `[← gr_res (𝟙 Y ≫ j) y hle hy, ← gr_app (𝟙 Y) j y V hy, e₀, map_zero]`. Introduce `H`. Take `⟨V, hle, hV, hy, e⟩` from `exists_affine_zero (inducing_of_surj hg P) y U h s H`. Use `mul_eq_zero_of_mem (cst f V) (ε := a) (fun x hx => by rw [mul_comm]; exact (ha x).2 hx) (mem_of_app_eq_zero hg P hV _ e)` as an intermediate fact. Rewrite using `[← gr_res (𝟙 X) (j y) hle hy, ← gr_cst (𝟙 X) f (j y) V hy, ← map_mul, this, map_zero]`.
+-/
 theorem stalk_iff {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : Function.Surjective g) {a : A}
     (ha : ∀ x, a * x = 0 ↔ x ∈ RingHom.ker g) {f : X ⟶ Spec (CommRingCat.of A)} [Flat f]
     {j : Y ⟶ X} {f₀ : Y ⟶ Spec (CommRingCat.of A₀)}
@@ -108,6 +141,15 @@ theorem stalk_iff {A₀ : Type} [CommRing A₀] {g : A →+* A₀} (hg : Functio
       (mem_of_app_eq_zero hg P hV _ e)
     rw [← gr_res (𝟙 X) (j y) hle hy, ← gr_cst (𝟙 X) f (j y) V hy, ← map_mul, this, map_zero]
 
+/- English proof (translation)
+Set `I` to `{V : X.Opens // IsAffineOpen V ∧ V ≤ W}`. Use `choose e he using fun V : I => hd V.1 V.2.2 V.2.1`. Establish `he' : ∀ (V : I) (x : X) (h : x ∈ V.1), gr (𝟙 X) x W (V.2.2 h) d = cstS (𝟙 X ≫ f) x a * gr (𝟙 X) x V.1 h (e V)` using `fun V x h => by`. Rewrite using `[← gr_res (𝟙 X) x V.2.2 h, ← gr_cst (𝟙 X) f x V.1 h, ← map_mul, ← he]`. Establish `cov : ∀ x ∈ W, ∃ V : I, x ∈ V.1` using `fun x hx => by`.
+
+Take `⟨V, hV, hxV, hl⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hx`. Conclude with `⟨⟨V, hV, hl⟩, hxV⟩`. Take `⟨φ, hφ, -⟩` from `Y.sheaf.existsUnique_gluing' (fun V : I => j ⁻¹ᵁ V.1) (j ⁻¹ᵁ W) (fun V => homOfLE (fun _ h => V.2.2 h)) (fun y hy => Opens.mem_iSup.2 (cov _ hy)) (fun V => (j.app V.1).hom (e V)) (fun V V' => gr_ext (V := j ⁻¹ᵁ V.1 ⊓ j ⁻¹ᵁ V'.1) fun y hy => by`. Use `(gr_res _ y inf_le_left hy _).trans (Eq.trans ?_ (gr_res _ y inf_le_right hy _).symm)` and prove the remaining obligations. Rewrite using `[gr_app, gr_app, ← stalkMap_gr, ← stalkMap_gr, ← sub_eq_zero, ← map_sub]`.
+
+Use `hS y _ ?_` and prove the remaining obligations. Rewrite using `[mul_sub, ← he' V (j y) hy.1, ← he' V' (j y) hy.2, sub_self])`. Use `⟨φ, fun y h => ?_⟩` and prove the remaining obligations. Take `⟨V, hV⟩` from `cov _ h`. Use `⟨_, he' V _ hV, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[stalkMap_gr, ← gr_app (𝟙 Y) j y V.1 hV]`. Conclude with `(congrArg (gr (𝟙 Y) y _ hV) (hφ V)).symm.trans (gr_res (𝟙 Y) y _ hV φ)`.
+-/
 theorem exists_div {f : X ⟶ Spec (CommRingCat.of A)} {j : Y ⟶ X} {a : A}
     (hS : ∀ (y : Y) (e : X.presheaf.stalk (j y)),
       cstS (𝟙 X ≫ f) (j y) a * e = 0 → (j.stalkMap y).hom e = 0)
@@ -137,6 +179,15 @@ theorem exists_div {f : X ⟶ Spec (CommRingCat.of A)} {j : Y ⟶ X} {a : A}
   rw [stalkMap_gr, ← gr_app (𝟙 Y) j y V.1 hV]
   exact (congrArg (gr (𝟙 Y) y _ hV) (hφ V)).symm.trans (gr_res (𝟙 Y) y _ hV φ)
 
+/- English proof (translation)
+Establish `glue : ∀ i : M.ι, ∃ s : Γ(X, M.U i), ∀ a (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (hi : r z ∈ M.U i) (ha : r z ∈ V a), gr r z _ hi s = gr r z (M.U i ⊓ M.U (j a)) ⟨hi, hj a ha⟩ (M.g i (j a)).val * gr r z _ ha (w a)`. Introduce `i`. Set `u : ∀ a, Γ(X, M.U i ⊓ V a)` to `fun a => (X.presheaf.map (homOfLE (inf_le_inf_left _ (hj a))).op).hom (M.g i (j a)).val * (X.presheaf.map (homOfLE inf_le_right).op).hom (w a)`. Establish `hu : ∀ a (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (h : r z ∈ M.U i ⊓ V a), gr r z _ h (u a) = gr r z (M.U i ⊓ M.U (j a)) ⟨h.1, hj a h.2⟩ (M.g i (j a)).val * gr r z _ h.2 (w a)` using `fun a Z r x h => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gr_res _ x _ h _) (gr_res _ x _ h _))`. Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' (fun a => M.U i ⊓ V a) (M.U i) (fun a => homOfLE inf_le_left) (fun x hx => by`.
+
+Take `⟨a, ha⟩` from `cov x`. Conclude with `Opens.mem_iSup.2 ⟨a, hx, ha⟩) u`. Use the proof step `(fun a b => gr_ext (V := (M.U i ⊓ V a) ⊓ (M.U i ⊓ V b)) fun x hx => by`. Use `(gr_res _ x inf_le_left hx _).trans (Eq.trans ?_ (gr_res _ x inf_le_right hx _).symm)` and prove the remaining obligations. Use `(hu a _ _ x hx.1).trans (Eq.trans ?_ (hu b _ _ x hx.2).symm)` and prove the remaining obligations.
+
+Rewrite using `[H a b x hx.1.2 hx.2.2, ← _root_.mul_assoc, gr_cocycle hM _ x hx.1.1 (hj a hx.1.2) (hj b hx.2.2)])`. Use `⟨s, fun a Z r x hi ha => ?_⟩` and prove the remaining obligations. Establish `hm : r x ∈ M.U i ⊓ V a` using `⟨hi, ha⟩`. Conclude with `(gr_res _ x inf_le_left hm s).symm.trans ((congrArg (gr _ x _ hm) (hs a)).trans (hu a _ r x hm))`. Use `choose s hs using glue`.
+
+Use `⟨⟨s, fun i k => gr_ext fun x hx => ?_⟩, hs⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `cov x`. Use `(gr_res _ x inf_le_left hx (s i)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gr_res _ x inf_le_right hx (s k)))).symm)` and prove the remaining obligations. Rewrite using `[hs i a _ _ x hx.1 ha, hs k a _ _ x hx.2 ha, ← _root_.mul_assoc, ← gr_cocycle hM _ x hx.1 hx.2 (hj a ha)]`.
+-/
 theorem sec_of_refine {M : LB X} (hM : M.IsLB) {I : Type} (V : I → X.Opens)
     (cov : ∀ x : X, ∃ a, x ∈ V a)
     (j : I → M.ι) (hj : ∀ a, V a ≤ M.U (j a)) (w : ∀ a, Γ(X, V a))
@@ -182,6 +233,9 @@ theorem sec_of_refine {M : LB X} (hM : M.IsLB) {I : Type} (V : I → X.Opens)
 section Iso
 variable {N : LB X} {N' : LB Y} {F : Y ⟶ X}
 
+/- English proof (translation)
+Establish `h` using `(isGen_iff w).1 hw _ (𝟙 Y) y k l k' l' hk hl hk' hl'`. Establish `e₁` using `gm_val (𝟙 Y) y (N'.U k' ⊓ N'.U l') ⟨hk', hl'⟩ (N'.g k' l')`. Establish `e₂` using `gm_val (𝟙 Y ≫ F) y (N.U k ⊓ N.U l) ⟨hk, hl⟩ (N.g k l)`. Use `(congrArg _ e₁.symm).trans (Eq.trans ?_ (congrArg (· * _) e₂))` and prove the remaining obligations. Rewrite using `[h, ← Units.val_mul, ← Units.val_mul, mul_right_comm, inv_mul_cancel_right]`.
+-/
 theorem iso_rel {w : LB.Iso N' (N.pull F)} (hw : w.IsGen) (y : Y) {k l : N.ι} {k' l' : N'.ι}
     (hk : F y ∈ N.U k) (hl : F y ∈ N.U l) (hk' : y ∈ N'.U k') (hl' : y ∈ N'.U l') :
     (Geo.Tor.gw w (𝟙 Y) y k k').val * gr (𝟙 Y) y (N'.U k' ⊓ N'.U l') ⟨hk', hl'⟩ (N'.g k' l').val =
@@ -192,6 +246,9 @@ theorem iso_rel {w : LB.Iso N' (N.pull F)} (hw : w.IsGen) (y : Y) {k l : N.ι} {
   refine (congrArg _ e₁.symm).trans (Eq.trans ?_ (congrArg (· * _) e₂))
   rw [h, ← Units.val_mul, ← Units.val_mul, mul_right_comm, inv_mul_cancel_right]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨res (le_inf (pull_le N F k h) h') (w.s (fun _ => k, k')), fun y hy => (gm_val (𝟙 Y) y (F ⁻¹ᵁ V) hy _).symm.trans (congrArg Units.val (gm_res (𝟙 Y) y _ hy _))⟩`.
+-/
 theorem exists_unit (w : LB.Iso N' (N.pull F)) (k : N.ι) (k' : N'.ι) {V : X.Opens}
     (h : V ≤ N.U k) (h' : F ⁻¹ᵁ V ≤ N'.U k') :
     ∃ ω : Γ(Y, F ⁻¹ᵁ V)ˣ, ∀ (y : Y) (hy : F y ∈ V),
@@ -199,12 +256,26 @@ theorem exists_unit (w : LB.Iso N' (N.pull F)) (k : N.ι) (k' : N'.ι) {V : X.Op
   ⟨res (le_inf (pull_le N F k h) h') (w.s (fun _ => k, k')), fun y hy =>
     (gm_val (𝟙 Y) y (F ⁻¹ᵁ V) hy _).symm.trans (congrArg Units.val (gm_res (𝟙 Y) y _ hy _))⟩
 
+/- English proof (translation)
+Use `congrArg (gr (𝟙 X) x (N.U k ⊓ N.U l) ⟨hk, hl⟩) (s.compat k l)` as an intermediate fact. Rewrite `this` using `[map_mul, gr_res, gr_res]`. Then use the resulting hypothesis.
+-/
 theorem sec_rel (s : LB.Sec N) (x : X) {k l : N.ι} (hk : x ∈ N.U k) (hl : x ∈ N.U l) :
     gr (𝟙 X) x _ hk (s.f k) =
       gr (𝟙 X) x (N.U k ⊓ N.U l) ⟨hk, hl⟩ (N.g k l).val * gr (𝟙 X) x _ hl (s.f l) := by
   have := congrArg (gr (𝟙 X) x (N.U k ⊓ N.U l) ⟨hk, hl⟩) (s.compat k l)
   rwa [map_mul, gr_res, gr_res] at this
 
+/- English proof (translation)
+Use `choose ω hω using fun a => exists_unit w (k a) (k' a) (h a) (h' a)`. Establish `hi : ∀ a (y : Y) (ha : F y ∈ V a), (Geo.Tor.gw w (𝟙 Y) y (k a) (k' a)).val * gr (𝟙 Y) y (F ⁻¹ᵁ V a) ha (ω a)⁻¹.val = 1` using `fun a y ha => by`. Rewrite using `[← hω a y ha, ← map_mul, Units.mul_inv, map_one]`. Set `χ : ∀ a b, Γ(Y, F ⁻¹ᵁ V a ⊓ F ⁻¹ᵁ V b)` to `fun a b => rs Y inf_le_left (ω a)⁻¹.val * rs Y (show F ⁻¹ᵁ V a ⊓ F ⁻¹ᵁ V b ≤ F ⁻¹ᵁ (V a ⊓ V b) from fun _ h => h) (φ a b)`. Establish `hχ : ∀ a b (y : Y) (hy : y ∈ F ⁻¹ᵁ V a ⊓ F ⁻¹ᵁ V b), gr (𝟙 Y) y _ hy (χ a b) = gr (𝟙 Y) y (F ⁻¹ᵁ V a) hy.1 (ω a)⁻¹.val * gr (𝟙 Y) y (F ⁻¹ᵁ (V a ⊓ V b)) hy (φ a b)` using `fun a b y hy => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gr_res _ y _ hy _) (gr_res _ y _ hy _))`.
+
+Use `clear_value χ`. Take `⟨ψ, hψ⟩` from `H I (fun a => F ⁻¹ᵁ V a) k' h' (eq_top_iff.2 fun y _ => Opens.mem_iSup.2 (cov (F y))) χ (fun a b d => gr_ext fun y hy => by`. Rewrite using `[map_add, gr_res, gr_res, map_mul, gr_res, gr_res, hχ, hχ, hχ]`. Establish `e₁` using `hφ a b d y hy.1.1 hy.1.2 hy.2`. Establish `e₂` using `iso_rel hw y (h a hy.1.1) (h b hy.1.2) (h' a hy.1.1) (h' b hy.1.2)`.
+
+Establish `e₃` using `hi a y hy.1.1`. Establish `e₄` using `hi b y hy.1.2`. Use `(Units.isUnit (Geo.Tor.gw w (𝟙 Y) y (k a) (k' a))).mul_left_cancel ?_` and prove the remaining obligations. Take the linear combination `e₁ + (gr (𝟙 Y) y (F ⁻¹ᵁ (V a ⊓ V b)) hy.1 (φ a b) - gr (𝟙 Y) y (F ⁻¹ᵁ (V a ⊓ V d)) ⟨hy.1.1, hy.2⟩ (φ a d)) * e₃ + (gr (𝟙 Y) y (F ⁻¹ᵁ V b) hy.1.2 (ω b)⁻¹.val * gr (𝟙 Y) y (F ⁻¹ᵁ (V b ⊓ V d)) ⟨hy.1.2, hy.2⟩ (φ b d)) * e₂ + (gr (𝟙 Y ≫ F) y (N.U (k a) ⊓ N.U (k b)) ⟨h a hy.1.1, h b hy …`. Use `⟨fun a => (ω a).val * ψ a, fun a b y ha hb => ?_⟩` and prove the remaining obligations.
+
+Establish `e₁` using `congrArg (gr (𝟙 Y) y (F ⁻¹ᵁ V a ⊓ F ⁻¹ᵁ V b) ⟨ha, hb⟩) (hψ a b)`. Rewrite `e₁` using `[hχ, map_sub, map_mul, gr_res, gr_res, gr_res]`. Establish `e₂` using `iso_rel hw y (h a ha) (h b hb) (h' a ha) (h' b hb)`. Establish `e₃` using `hi a y ha`. Rewrite using `[map_mul, map_mul, hω, hω]`.
+
+Take the linear combination `(Geo.Tor.gw w (𝟙 Y) y (k a) (k' a)).val * e₁ - gr (𝟙 Y) y (F ⁻¹ᵁ (V a ⊓ V b)) ⟨ha, hb⟩ (φ a b) * e₃ - gr (𝟙 Y) y (F ⁻¹ᵁ V b) hb (ψ b) * e₂`.
+-/
 theorem split_cocycle {w : LB.Iso N' (N.pull F)} (hw : w.IsGen) (H : FirstCohomologyVanishes N') {I : Type}
     (V : I → X.Opens) (cov : ∀ x : X, ∃ a, x ∈ V a) (k : I → N.ι) (k' : I → N'.ι)
     (h : ∀ a, V a ≤ N.U (k a)) (h' : ∀ a, F ⁻¹ᵁ V a ≤ N'.U (k' a))
@@ -251,6 +322,9 @@ theorem split_cocycle {w : LB.Iso N' (N.pull F)} (hw : w.IsGen) (H : FirstCohomo
   linear_combination (Geo.Tor.gw w (𝟙 Y) y (k a) (k' a)).val * e₁ -
     gr (𝟙 Y) y (F ⁻¹ᵁ (V a ⊓ V b)) ⟨ha, hb⟩ (φ a b) * e₃ - gr (𝟙 Y) y (F ⁻¹ᵁ V b) hb (ψ b) * e₂
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hs x`. Take `⟨k', hk'⟩` from `exists_chart hN' y`. Take `⟨U, hU, hle⟩` from `exists_open hF hk'`. Conclude with `⟨U, k', hU, hle⟩`.
+-/
 theorem exists_nbhd (hN' : N'.IsLB) (hF : Topology.IsInducing F) (hs : Function.Surjective F)
     (x : X) : ∃ (U : X.Opens) (k' : N'.ι), x ∈ U ∧ F ⁻¹ᵁ U ≤ N'.U k' := by
   obtain ⟨y, rfl⟩ := hs x
@@ -260,6 +334,31 @@ theorem exists_nbhd (hN' : N'.IsLB) (hF : Topology.IsInducing F) (hs : Function.
 
 end Iso
 
+/- English proof (translation)
+Introduce `A A₀ A' _ _ _ g₀ g' a hg₀ hg' hn hk' ha hann X X₀ X' f f₀ f' j β _ P₀ P' N N₀ w₀ hN hN₀ hw₀ H N' w' hN' hw' s'`. Establish `nil : ∀ x ∈ RingHom.ker g₀, IsNilpotent x` using `fun x hx => by`. Take `⟨n, hn⟩` from `hn`. Conclude with `⟨n, by simpa [hn] using Ideal.pow_mem_pow hx n⟩`. Establish `sj` using `surj_of_nil hg₀ nil P₀`.
+
+Establish `sβ` using `surj_of_nil hg' (fun x hx => nil x (by`. Rewrite `hx` using `[hk']`. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 ha hx)) P'`. Establish `hS` using `stalk_iff hg₀ hann P₀`. Set `I` to `{q : N.ι × N₀.ι × N'.ι × X.Opens // IsAffineOpen q.2.2.2 ∧ q.2.2.2 ≤ N.U q.1 ∧ j ⁻¹ᵁ q.2.2.2 ≤ N₀.U q.2.1 ∧ β ⁻¹ᵁ q.2.2.2 ≤ N'.U q.2.2.1}`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨I, V, k, k₀, k', hV, h, h₀, h', cov⟩ : ∃ (I : Type) (V : I → X.Opens) (k : I → N.ι) (k₀ : I → N₀.ι) (k' : I → N'.ι), (∀ i, IsAffineOpen (V i)) ∧ (∀ i, V i ≤ N.U (k i)) ∧ (∀ i, j ⁻¹ᵁ V i ≤ N₀.U (k₀ i)) ∧ (∀ i, β ⁻¹ᵁ V i ≤ N'.U (k' i)) ∧ ∀ x, ∃ i, x ∈ V i := by`. Use `⟨I, fun q => q.1.2.2.2, fun q => q.1.1, fun q => q.1.2.1, fun q => q.1.2.2.1, fun q => q.2.1, fun q => q.2.2.1, fun q => q.2.2.2.1, fun q => q.2.2.2.2, fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hN x`. Take `⟨U₀, k₀, m₀, l₀⟩` from `exists_nbhd hN₀ (inducing_of_surj hg₀ P₀) sj x`. Take `⟨U', k', m', l'⟩` from `exists_nbhd hN' (inducing_of_surj hg' P') sβ x`.
+
+Take `⟨V, hV, hx, hl⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show x ∈ N.U k ⊓ U₀ ⊓ U' from ⟨⟨hk, m₀⟩, m'⟩)`. Conclude with `⟨⟨(k, k₀, k', V), hV, fun _ hy => (hl hy).1.1, fun _ hy => l₀ (hl hy).1.2, fun _ hy => l' (hl hy).2⟩, hx⟩`. Use `choose ω hω using fun i => exists_unit w' (k i) (k' i) (h i) (h' i)`. Use `choose u hu using fun i => app_surj hg' P' (hV i) ((ω i).val * rs X' (h' i) (s'.f (k' i)))`. Establish `hu' : ∀ i (z : X') (hz : β z ∈ V i), gr (𝟙 X' ≫ β) z (V i) hz (u i) = (Geo.Tor.gw w' (𝟙 X') z (k i) (k' i)).val * gr (𝟙 X') z _ (h' i hz) (s'.f (k' i))` using `fun i z hz => by rw [← gr_app (𝟙 X') β z (V i) hz, hu, map_mul, hω, gr_res]`.
+
+Establish `key : ∀ (l : N.ι) (l' : N'.ι) i (z : X') (hl : β z ∈ N.U l) (hl' : z ∈ N'.U l') (hz : β z ∈ V i), gr (𝟙 X' ≫ β) z (N.U l ⊓ N.U (k i)) ⟨hl, h i hz⟩ (N.g l (k i)).val * gr (𝟙 X' ≫ β) z (V i) hz (u i) = (Geo.Tor.gw w' (𝟙 X') z l l').val * gr (𝟙 X') z _ hl' (s'.f l')` using `fun l l' i z hl hl' hz => by`. Rewrite using `[hu', sec_rel s' z hl' (h' i hz), ← _root_.mul_assoc, ← _root_.mul_assoc, iso_rel hw' z hl (h i hz) hl' (h' i hz)]`. Set `d : ∀ i l, Γ(X, V i ⊓ V l)` to `fun i l => rs X inf_le_left (u i) - rs X (inf_le_inf (h i) (h l)) (N.g (k i) (k l)).val * rs X inf_le_right (u l)`. Establish `hd : ∀ i l (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (hz : r z ∈ V i ⊓ V l), gr r z _ hz (d i l) = gr r z (V i) hz.1 (u i) - gr r z (N.U (k i) ⊓ N.U (k l)) ⟨h i hz.1, h l hz.2⟩ (N.g (k i) (k l)).val * gr r z (V l) hz.2 (u l)` using `fun i l Z r z hz => by`. Simplify using `only [d]`.
+
+Rewrite using `[map_sub, map_mul, gr_res, gr_res, gr_res]`. Use `choose φ hφ using fun i l => exists_div (a := a) (f := f) (j := j) (fun y e => (hS y e).1) (V i ⊓ V l) (d i l) (fun W hle hW => by`. Use `mem_of_app_eq_zero hg' P' hW (rs X hle (d i l)) (gr_ext fun z hz => by` as an intermediate fact. Rewrite using `[gr_app, gr_res, hd, map_zero, key (k i) (k' i) l z (h i (hle hz).1) (h' i (hle hz).1) (hle hz).2, hu' i z (hle hz).1, sub_self])`. Rewrite using `[hk', Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton] at this)` and apply the resulting hypothesis.
+
+Take `⟨ψ, hψ⟩` from `split_cocycle hw₀ H V cov k k₀ h h₀ φ (fun i l m y hi hl hm => by`. Take `⟨e₁, p₁, q₁⟩` from `hφ i l y ⟨hi, hl⟩`. Take `⟨e₂, p₂, q₂⟩` from `hφ l m y ⟨hl, hm⟩`. Take `⟨e₃, p₃, q₃⟩` from `hφ i m y ⟨hi, hm⟩`. Rewrite using `[← q₁, ← q₂, ← q₃, ← stalkMap_gr, ← map_mul, ← map_add, ← sub_eq_zero, ← map_sub, ← hS]`.
+
+Rewrite `p₁`, `p₂`, `p₃` using `[hd]`. Establish `c` using `gr_cocycle hN (𝟙 X) (j y) (h i hi) (h l hl) (h m hm)`. Take the linear combination `p₃ - p₁ - gr (𝟙 X) (j y) (N.U (k i) ⊓ N.U (k l)) ⟨h i hi, h l hl⟩ (N.g (k i) (k l)).val * p₂ - gr (𝟙 X) (j y) (V m) hm (u m) * c)`. Use `choose v hv using fun i => app_surj hg₀ P₀ (hV i) (ψ i)`. Take `⟨s, hs⟩` from `sec_of_refine hN V cov k h (fun i => u i - cst f (V i) a * v i) (fun i l x hi hl => by`.
+
+Take `⟨y, rfl⟩` from `sj x`. Take `⟨e, p, q⟩` from `hφ i l y ⟨hi, hl⟩`. Establish `c` using `hψ i l y hi hl`. Rewrite `c` using `[← q, ← hv, ← hv, gr_app, gr_app, ← stalkMap_gr, ← stalkMap_gr, ← stalkMap_gr, ← map_mul, ← map_sub, ← sub_eq_zero, ← map_sub, ← hS]`. Rewrite `p` using `[hd]`.
+
+Rewrite using `[map_sub, map_sub, map_mul, map_mul, gr_cst, gr_cst]`. Take the linear combination `p + c)`. Use `⟨s, fun z l l' hl hl' => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `cov (β z)`. Establish `c` using `hs l i _ (𝟙 X' ≫ β) z hl hi`.
+
+Establish `ha' : g' a = 0`. Rewrite using `[← RingHom.mem_ker, hk']`. Conclude with `Ideal.mem_span_singleton_self a`. Rewrite `c` using `[map_sub, map_mul, gr_cst, Category.assoc, P'.w, ← Category.assoc, cstS_comp, ha', map_zero, zero_mul, sub_zero, key l l' i z hl hl' hi]`. Rewrite using `[gs_eq β z _ hl, gs_eq (𝟙 X') z _ hl']`.
+
+Conclude with `c`.
+-/
 theorem exists_sec_lift : ∀ (A A₀ A' : Type) [CommRing A] [CommRing A₀] [CommRing A'] (g₀ : A →+* A₀) (g' : A →+* A') (a : A), Function.Surjective g₀ → Function.Surjective g' → IsNilpotent (RingHom.ker g₀) → RingHom.ker g' = Ideal.span {a} → a ∈ RingHom.ker g₀ → (∀ x, a * x = 0 ↔ x ∈ RingHom.ker g₀) → ∀ (X X₀ X' : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of A)) (f₀ : X₀ ⟶ Spec (CommRingCat.of A₀)) (f' : X' ⟶ Spec (CommRingCat.of A')) (j₀ : X₀ ⟶ X) (β : X' ⟶ X), Flat f → IsPullback j₀ f₀ f (Spec.map (CommRingCat.ofHom g₀)) → IsPullback β f' f (Spec.map (CommRingCat.ofHom g')) → ∀ (N : LB X) (N₀ : LB X₀) (w₀ : LB.Iso N₀ (N.pull j₀)), N.IsLB → N₀.IsLB → w₀.IsGen → FirstCohomologyVanishes N₀ → ∀ (N' : LB X') (w' : LB.Iso N' (N.pull β)), N'.IsLB → w'.IsGen → ∀ s' : LB.Sec N', ∃ s : LB.Sec N, (∀ z (k : (N).ι) (k' : (N').ι), (β) z ∈ (N).U k → z ∈ (N').U k' → gs (β) z _ ((s).f k) = (Geo.Tor.gw (w') (𝟙 _) z k k').val * gs (𝟙 _) z _ ((s').f k')) := by
   intro A A₀ A' _ _ _ g₀ g' a hg₀ hg' hn hk' ha hann X X₀ X' f f₀ f' j β _ P₀ P' N N₀ w₀ hN hN₀ hw₀
     H N' w' hN' hw' s'

@@ -14,6 +14,9 @@ open scoped ENNReal
 def supConst2 (E : Type) [Field E] [NumberField E] (r d M : ℕ) (w : ℝ) : ℝ :=
   locConst E r w (epsLev E d M w) * MainStatements.Tam.massLev2 E r M
 
+/- English proof (translation)
+Unfold `supConst2 locConst multBd`. Establish `h2 : Even (2 * fdeg E * r ^ 2)` using `by rw [mul_assoc]; exact even_two_mul _`. Use `mul_nonneg (mul_nonneg (div_nonneg (by positivity) (pow_nonneg (mul_nonneg Real.pi_pos.le (sq_nonneg _)) _)) (h2.pow_nonneg _)) ?_` and prove the remaining obligations. Unfold `MainStatements.Tam.massLev2 MainStatements.Tam.massB`. Check the signs of the components of the expression.
+-/
 theorem supConst_nonneg2 (E : Type) [Field E] [NumberField E] (r d M : ℕ) (w : ℝ) : 0 ≤ supConst2 E r d M w := by
   unfold supConst2 locConst multBd
   have h2 : Even (2 * fdeg E * r ^ 2) := by rw [mul_assoc]; exact even_two_mul _
@@ -25,6 +28,33 @@ theorem supConst_nonneg2 (E : Type) [Field E] [NumberField E] (r d M : ℕ) (w :
 section
 open ReciprocityTheory.L2DbarEstimates GlobalTheory.SupConstSize Real
 
+/- English proof (translation)
+Introduce `E _ _ _ r d M w L hr hd hM hL hw hfr hlM hdE hld hlw`. Establish `hn` using `finrank_eq_two_fdeg E`. Establish `hf1 : 1 ≤ fdeg E`. Establish `: 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hfR : (1 : ℝ) ≤ fdeg E` using `by exact_mod_cast hf1`. Establish `hrR : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hMR : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hdR : (1 : ℝ) ≤ d` using `by exact_mod_cast hd`. Establish `hfr' : Real.log (fdeg E) + Real.log r ≤ L`.
+
+Rewrite using `[← Real.log_mul (by positivity) (by positivity)]; exact hfr`. Establish `hf0 : 0 ≤ Real.log (fdeg E)` using `Real.log_nonneg hfR`. Establish `hr0 : 0 ≤ Real.log r` using `Real.log_nonneg (by linarith)`. Take `⟨hε0, hε1, hεB⟩` from `epsLev_bounds E d M w hfR hd hM hw`. Use `set B : ℝ := 3 * fdeg E * w * M * Real.sqrt d with hB`.
+
+Establish `sd : 1 ≤ Real.sqrt d` using `Real.one_le_sqrt.mpr hdR`. Establish `hB1 : 1 ≤ B`. Establish `a : 1 ≤ (fdeg E : ℝ) * w` using `one_le_mul_of_one_le_of_one_le hfR hw`. Establish `b : 1 ≤ (fdeg E : ℝ) * w * M` using `one_le_mul_of_one_le_of_one_le a hMR`. Establish `c : 1 ≤ (fdeg E : ℝ) * w * M * Real.sqrt d` using `one_le_mul_of_one_le_of_one_le b sd`.
+
+Rewrite using `[hB]`. Use the polynomial consequences of the given equalities and inequalities. Establish `l2b` using `Real.log_two_lt_d9`. Establish `l2a` using `Real.log_two_gt_d9`. Establish `l3 : Real.log 3 ≤ 2 * Real.log 2`.
+
+Rewrite using `[← Real.log_rpow (by norm_num)]; exact Real.log_le_log (by norm_num) (by norm_num)`. Establish `l16 : Real.log 16 = 4 * Real.log 2`. Rewrite using `[show (16 : ℝ) = 2 ^ 4 by norm_num, Real.log_pow]; norm_num`. Establish `hlB : Real.log B ≤ 2 * Real.log 2 + 35 * L`. Rewrite using `[hB, Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), Real.log_mul (by norm_num) (by positivity), Real.log_sqrt (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hm1, hml⟩` from `multBd_size E r (epsLev E d M w) B hfR (by linarith) hε0 hB1 hεB`. Take `⟨hc1, hcl⟩` from `chart_factor_size E r w L hfR hr hw hL hfr' hlw`. Take `⟨hM1, hMl⟩` from `size E r M L hr hM hL hfr hlM hdE`. Establish `hs : supConst2 E r d M w = (8 * ((dimFl E r).factorial : ℝ) / (Real.pi * chartRad E r w ^ 2) ^ dimFl E r) * multBd E r (epsLev E d M w) * MainStatements.Tam.massLev2 E r M`.
+
+Unfold `supConst2 locConst`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hs]`. Use `⟨one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hc1 hm1) hM1, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity)]`.
+
+Establish `hX0 : 0 ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2` using `by positivity`. Establish `b1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (12 * L + 16 * Real.log 2) ≤ (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `b2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (Real.log 16 + 2 * (Real.log (fdeg E) + Real.log r) + Real.log (dE E) + Real.log B) ≤ 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L)` using `mul_le_mul_of_nonneg_left (by linarith) (by positivity)`. Establish `hXY : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L`. Establish `: 0 ≤ (r : ℝ) ^ 2 * L` using `by positivity`.
+
+Establish `h` using `mul_le_mul_of_nonneg_right hfR (by positivity : (0:ℝ) ≤ (fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))`. Establish `e1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 1 * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))` using `by ring`. Establish `e2 : (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = (fdeg E : ℝ) * ((fdeg E : ℝ) * ((r : ℝ) ^ 2 * L))` using `by ring`. Rewrite using `[e1, e2]`. Conclude with `h`.
+
+Establish `hLY : L ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L`. Establish `h1 : 1 ≤ (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2`. Establish `a : 1 ≤ (fdeg E : ℝ) ^ 2` using `one_le_pow₀ hfR`. Establish `b : 1 ≤ (r : ℝ) ^ 2` using `one_le_pow₀ (by linarith)`. Conclude with `one_le_mul_of_one_le_of_one_le a b`.
+
+Use `mul_le_mul_of_nonneg_right h1 (by linarith : (0:ℝ) ≤ L)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `c1 : (fdeg E : ℝ) * (r : ℝ) ^ 2 / 2 * (28 * L) = 14 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L)` using `by ring`. Establish `c2 : 2 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * (43 * L + 4 * fdeg E * L) = 86 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L) + 8 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L)` using `by ring`. Establish `c3 : 130 * (fdeg E : ℝ) * (r : ℝ) ^ 2 * L = 130 * ((fdeg E : ℝ) * (r : ℝ) ^ 2 * L)` using `by ring`.
+
+Establish `c4 : 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L = 250 * ((fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L)` using `by ring`. Rewrite using `[c4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem supremum_constant_log_bound_alt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r d M : ℕ) (w L : ℝ), 2 ≤ r → 1 ≤ d → 1 ≤ M → 1 ≤ L → 1 ≤ w → Real.log (fdeg E * r) ≤ L → Real.log M ≤ 30 * L → Real.log (dE E) ≤ 4 * fdeg E * L → Real.log d ≤ 4 * L → Real.log w ≤ 2 * L → 1 ≤ supConst2 E r d M w ∧ Real.log (supConst2 E r d M w) ≤ 250 * (fdeg E : ℝ) ^ 2 * (r : ℝ) ^ 2 * L := by
   intro E _ _ _ r d M w L hr hd hM hL hw hfr hlM hdE hld hlw
   have hn := finrank_eq_two_fdeg E

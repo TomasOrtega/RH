@@ -12,22 +12,43 @@ namespace GlobalTheory.UnitLemma.Desc
 
 open GlobalTheory.UnitLemma Polynomial
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_isIntegral_smallElement_pow_smul`.
+-/
 theorem exists_isIntegral_pow_smul : ∀ (K : UQ) (B : InvAlg K) (a : K.O), K.Small a → ∀ x : B.A,
     ∃ k : ℕ, IsIntegral K.O ((al K a ^ k) • x) := GlobalTheory.T.exists_isIntegral_smallElement_pow_smul
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.isIntegral_or_isIntegral_inv_in_fieldFactor`.
+-/
 theorem isIntegral_or_of_fieldFactor : ∀ (K : UQ) (B : InvAlg K) (f y z : B.A), IsIdempotentElem f →
     (∀ w, f * w ≠ 0 → ∃ v, f * w * v = f) → f * y * z = f →
     IsIntegral K.O (f * y) ∨ IsIntegral K.O (f * z) := GlobalTheory.T.isIntegral_or_isIntegral_inv_in_fieldFactor
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.exists_pow_smul_mem_adjoin_gen_of_separable`.
+-/
 theorem exists_pow_smul_mem_adjoin_g : ∀ (K : UQ) (B : InvAlg K) (a : K.O), B.P.Separable → K.Small a →
     ∃ N : ℕ, ∀ r : B.A, IsIntegral K.O r → (al K a ^ N) • r ∈ Algebra.adjoin K.O {B.g} := GlobalTheory.T.exists_pow_smul_mem_adjoin_gen_of_separable
 
 variable {K : UQ} (B : InvAlg K)
 
+/- English proof (translation)
+Introduce `h`. Conclude with `ha.1 ((IsFractionRing.injective K.O K.E) (by simpa using h))`.
+-/
 theorem al_ne (a : K.O) (ha : K.Small a) : al K a ≠ 0 := by
   intro h
   exact ha.1 ((IsFractionRing.injective K.O K.E) (by simpa using h))
 
+/- English proof (translation)
+Take `⟨q, hq, h0⟩` from `hr`. Establish `hsub : ∀ x : K.O, K.c (algebraMap K.O K.E x) ∈ (algebraMap K.O K.E).range` using `fun x => by`. Take `⟨y, hy⟩` from `K.c_int x`. Conclude with `⟨y, hy.symm⟩`. Set `ψ : K.O ≃+* (algebraMap K.O K.E).range` to `RingEquiv.ofBijective (algebraMap K.O K.E).rangeRestrict ⟨fun x y h => IsFractionRing.injective K.O K.E (congrArg Subtype.val h), (algebraMap K.O K.E).rangeRestrict_surjective⟩`.
+
+Set `cO : K.O →+* K.O` to `ψ.symm.toRingHom.comp (((K.c : K.E →+* K.E).comp (algebraMap K.O K.E)).codRestrict _ hsub)`. Establish `hcO : ∀ x, algebraMap K.O K.E (cO x) = K.c (algebraMap K.O K.E x)` using `fun x => by`. Use `ψ.apply_symm_apply ⟨K.c (algebraMap K.O K.E x), hsub x⟩` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hcomp : (algebraMap K.O B.A).comp cO = (B.σ : B.A →+* B.A).comp (algebraMap K.O B.A)`.
+
+Use extensionality with `x`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A, IsScalarTower.algebraMap_apply K.O K.E B.A x, B.σ_alg, hcO]`. Use `⟨q.map cO, hq.map cO, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_map, hcomp]`.
+
+Use `hom_eval₂ q (algebraMap K.O B.A) (B.σ : B.A →+* B.A) r` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+-/
 theorem isIntegral_sigma {r : B.A} (hr : IsIntegral K.O r) : IsIntegral K.O (B.σ r) := by
   obtain ⟨q, hq, h0⟩ := hr
   have hsub : ∀ x : K.O, K.c (algebraMap K.O K.E x) ∈ (algebraMap K.O K.E).range := fun x => by
@@ -50,20 +71,40 @@ theorem isIntegral_sigma {r : B.A} (hr : IsIntegral K.O r) : IsIntegral K.O (B.�
   rw [h0, map_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, B.σ_alg]`.
+-/
 theorem sigma_smul (c : K.E) (x : B.A) : B.σ (c • x) = K.c c • B.σ x := by
   rw [Algebra.smul_def, Algebra.smul_def, map_mul, B.σ_alg]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨X ^ 2 - X, by have : (X ^ 2 - X : K.O[X]) = X ^ 2 - C 1 * X ^ 1 := by simp rw [this]; exact monic_X_pow_sub (by simp), by simp [sq, hf.eq]⟩`.
+-/
 theorem isIntegral_idem {f : B.A} (hf : IsIdempotentElem f) : IsIntegral K.O f :=
   ⟨X ^ 2 - X, by
     have : (X ^ 2 - X : K.O[X]) = X ^ 2 - C 1 * X ^ 1 := by simp
     rw [this]; exact monic_X_pow_sub (by simp), by simp [sq, hf.eq]⟩
 
+/- English proof (translation)
+Establish `: (al K a ^ n) • x = algebraMap K.O B.A (a ^ n) * x`. Simplify using `only [al, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A, map_pow]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap.mul hx`.
+-/
 theorem isIntegral_pow_smul (a : K.O) (n : ℕ) {x : B.A} (hx : IsIntegral K.O x) :
     IsIntegral K.O ((al K a ^ n) • x) := by
   have : (al K a ^ n) • x = algebraMap K.O B.A (a ^ n) * x := by
     simp only [al, Algebra.smul_def, IsScalarTower.algebraMap_apply K.O K.E B.A, map_pow]
   rw [this]; exact isIntegral_algebraMap.mul hx
 
+/- English proof (translation)
+Introduce `h`. Set `I : Ideal B.A` to `Ideal.span {1 - f}`. Establish `hI : I ≠ ⊤`. Introduce `hT`. Establish `: (1 : B.A) ∈ I` using `hT ▸ Submodule.mem_top`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 this`. Apply `hf0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `haveI : Nontrivial (B.A ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hI`. Establish `hmk : Ideal.Quotient.mk I f = 1`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk I), eq_comm, Ideal.Quotient.eq]`. Conclude with `Ideal.subset_span rfl`. Establish `h2 : IsIntegral K.O (algebraMap K.E (B.A ⧸ I) (al K a ^ (-1 : ℤ)))`. Use `h.map (Ideal.Quotient.mkₐ K.O I)` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.mkₐ_eq_mk, Algebra.smul_def, map_mul, hmk, mul_one, Ideal.Quotient.mk_algebraMap]`. Then use the resulting hypothesis.
+
+Establish `h3 : IsIntegral K.O (al K a ^ (-1 : ℤ))` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom K.O K.E (B.A ⧸ I)) (algebraMap K.E (B.A ⧸ I)).injective).1 h2`. Take `⟨t, ht⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h3`. Establish `hne` using `al_ne a ha`. Establish `h4 : algebraMap K.O K.E (a * t) = algebraMap K.O K.E 1`. Rewrite using `[map_mul, ht, map_one, zpow_neg_one]`.
+
+Conclude with `mul_inv_cancel₀ hne`. Establish `h5 : a * t = 1` using `IsFractionRing.injective K.O K.E h4`. Conclude with `(IsLocalRing.mem_maximalIdeal a).1 ha.2.1 (⟨⟨a, t, h5, by rw [mul_comm]; exact h5⟩, rfl⟩)`.
+-/
 theorem not_isIntegral_inv_smul (a : K.O) (ha : K.Small a) {f : B.A} (hf : IsIdempotentElem f)
     (hf0 : f ≠ 0) : ¬ IsIntegral K.O ((al K a ^ (-1 : ℤ)) • f) := by
   intro h
@@ -94,6 +135,11 @@ theorem not_isIntegral_inv_smul (a : K.O) (ha : K.Small a) {f : B.A} (hf : IsIde
   have h5 : a * t = 1 := IsFractionRing.injective K.O K.E h4
   exact (IsLocalRing.mem_maximalIdeal a).1 ha.2.1 (⟨⟨a, t, h5, by rw [mul_comm]; exact h5⟩, rfl⟩)
 
+/- English proof (translation)
+Set `T : Subalgebra K.O B.A` to `{ carrier := {s | ∀ m ∈ M, s * m ∈ M} mul_mem' := fun {x y} hx hy m hm => by rw [mul_assoc]; exact hx _ (hy m hm) one_mem' := fun m hm => by rw [one_mul]; exact hm add_mem' := fun {x y} hx hy m hm => by rw [add_mul]; exact M.add_mem (hx m hm) (hy m hm) zero_mem' := fun m hm => by …`. Establish `: Algebra.adjoin K.O {B.g} ≤ T` using `Algebra.adjoin_le (by`. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.1 hx]`. Conclude with `hM)`.
+
+Conclude with `this hs`.
+-/
 theorem smul_mem_of_adjoin (M : Submodule K.O B.A) (hM : ∀ y ∈ M, B.g * y ∈ M) {s : B.A}
     (hs : s ∈ Algebra.adjoin K.O {B.g}) : ∀ m ∈ M, s * m ∈ M := by
   let T : Subalgebra K.O B.A :=
@@ -107,6 +153,53 @@ theorem smul_mem_of_adjoin (M : Submodule K.O B.A) (hM : ∀ y ∈ M, B.g * y �
     intro x hx; rw [Set.mem_singleton_iff.1 hx]; exact hM)
   exact this hs
 
+/- English proof (translation)
+Introduce `K B ι _ e π S a hP ha hF`. Take `⟨N0, hN0⟩` from `exists_pow_smul_mem_adjoin_g K B a hP ha`. Use `⟨N0 + 1, fun M hM => ?_⟩` and prove the remaining obligations. Use `set t := al K a with ht_def`. Establish `ht : t ≠ 0` using `al_ne a ha`.
+
+Establish `hct : K.c t = t` using `ha.2.2`. Establish `hRM : ∀ r : B.A, IsIntegral K.O r → ∀ m ∈ M, (t ^ N0) • (r * m) ∈ M` using `fun r hr m hm => by`. Rewrite using `[← smul_mul_assoc]`. Conclude with `smul_mem_of_adjoin B M hM.2.1 (hN0 r hr) m hm`. Establish `core : ∀ f : B.A, IsIdempotentElem f → (∀ w, f * w ≠ 0 → ∃ v, f * w * v = f) → ∀ (q : ℤ) (m : B.A), m ∈ M → ¬ IsIntegral K.O ((t ^ (-q)) • (f * m)) → ∀ r : B.A, IsIntegral K.O r → (t ^ (q + N0)) • (f * r) ∈ M`.
+
+Introduce `f hf hfld q m hm hni r hr`. Establish `hy0 : f * ((t ^ (-q)) • m) ≠ 0`. Introduce `h0`. Apply `hni` to reduce the goal to its premises. Rewrite using `[← mul_smul_comm, h0]`.
+
+Conclude with `isIntegral_zero`. Take `⟨z, hz⟩` from `hfld _ hy0`. Establish `hfz : IsIntegral K.O (f * z)`. Break down `isIntegral_or_of_fieldFactor K B f ((t ^ (-q)) • m) z hf hfld hz with h | h` into its components or cases. Conclude with `(hni (by rwa [mul_smul_comm] at h)).elim`.
+
+Conclude with `h`. Establish `key : (t ^ (q + N0)) • (f * r) = (t ^ N0) • ((r * (f * z)) * m)`. Establish `e1 : f * r = (t ^ (-q)) • ((r * (f * z)) * m)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, smul_smul, ← zpow_add₀ ht, show q + N0 + -q = (N0 : ℤ) by ring, zpow_natCast]`.
+
+Rewrite using `[key]`. Conclude with `hRM _ (hr.mul hfz) m hm`. Establish `hpos : ∀ i, ∃ pi : ℤ, (∀ r : B.A, IsIntegral K.O r → (t ^ (pi + ↑(N0 + 1))) • (e i * r) ∈ M) ∧ ∀ m ∈ M, IsIntegral K.O ((t ^ (-pi)) • (e i * m))`. Introduce `i`. Take `⟨f, hf, hf0, hfld, hS, hnS⟩` from `hF.1.2 i`.
+
+Establish `hfe : f * e i = f`. Distinguish the cases in `hi : i ∈ S`. Rewrite using `[(hS hi).1, hf.eq]`. Rewrite using `[(hnS hi).2, mul_add, hf.eq, (hnS hi).1, add_zero]`. Set `P : Set ℤ` to `{p | ∀ m ∈ M, IsIntegral K.O ((t ^ (-p)) • (e i * m))}`.
+
+Establish `hne : P.Nonempty`. Take `⟨s, hs⟩` from `hM.1.1`. Use `choose k hk using fun x : B.A => exists_isIntegral_pow_smul K B a ha (e i * x)`. Use `⟨-((s.sup k : ℕ) : ℤ), fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[neg_neg, zpow_natCast]`.
+
+Rewrite `hm` using `[← hs]`. Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `hle : k x ≤ s.sup k` using `Finset.le_sup hx`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, ← smul_smul]`.
+
+Conclude with `isIntegral_pow_smul B a _ (hk x)`. Consider the case `zero => rw [mul_zero, smul_zero]`. Conclude with `isIntegral_zero`. Consider the case `add x y _ _ hx hy => rw [mul_add, smul_add]`. Conclude with `hx.add hy`.
+
+Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def c x, ← mul_assoc, mul_comm (e i), mul_assoc, ← mul_smul_comm]`. Conclude with `isIntegral_algebraMap.mul hx`. Establish `hbdd : BddAbove P`. Establish `hm0 : ∃ m ∈ M, f * m ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : Submodule.span K.E (M : Set B.A) ≤ LinearMap.ker (LinearMap.mulLeft K.E f)`. Rewrite using `[Submodule.span_le]`. Introduce `m hm`.
+
+Conclude with `hcon m hm`. Rewrite `hle` using `[hM.1.2]`. Use `hle (Submodule.mem_top : (1 : B.A) ∈ ⊤)` as an intermediate fact. Simplify using `at this`. Conclude with `hf0 this`.
+
+Take `⟨m0, hm0, hfm0⟩` from `hm0`. Take `⟨z, hz⟩` from `hfld m0 hfm0`. Take `⟨k, hk⟩` from `exists_isIntegral_pow_smul K B a ha (f * z)`. Use `⟨k, fun p hp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Establish `h1 : IsIntegral K.O ((t ^ (-p)) • (e i * m0))` using `hp m0 hm0`. Establish `h2 : IsIntegral K.O ((t ^ (-p)) • (e i * m0) * (t ^ k • (f * z)) * f)` using `(h1.mul hk).mul (isIntegral_idem B hf)`. Establish `hq : e i * m0 * (f * z) * f = f`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h3 : (t ^ (-p)) • (e i * m0) * (t ^ k • (f * z)) * f = (t ^ ((k : ℤ) - p)) • f`. Rewrite using `[sub_eq_add_neg, zpow_add₀ ht, zpow_natCast]`. Simplify using `only [Algebra.smul_def, map_mul]`. Take the linear combination `(algebraMap K.E B.A (t ^ (-p)) * algebraMap K.E B.A (t ^ k)) * hq`. Establish `h4 : (t ^ (-1 : ℤ)) • f = (t ^ ((p - k - 1 : ℤ).toNat)) • ((t ^ ((k : ℤ) - p)) • f)`.
+
+Rewrite using `[smul_smul, ← zpow_natCast, ← zpow_add₀ ht, Int.toNat_of_nonneg (by omega), show (p - k - 1 : ℤ) + (k - p) = -1 by ring]`. Conclude with `not_isIntegral_inv_smul B a ha hf hf0 (h4 ▸ isIntegral_pow_smul B a _ (h3 ▸ h2))`. Take `⟨pi, hmem, hnot⟩ : ∃ pi, pi ∈ P ∧ pi + 1 ∉ P` from `⟨sSup P, Int.csSup_mem hne hbdd, fun h => by have := le_csSup hbdd h; omega⟩`. Use `⟨pi, fun r hr => ?_, hmem⟩` and prove the remaining obligations. Establish `hnot' : ¬ ∀ m ∈ M, IsIntegral K.O ((t ^ (-(pi + 1))) • (e i * m))` using `hnot`.
+
+Use `push_neg at hnot'`. Take `⟨m, hm, hni⟩` from `hnot'`. Establish `hexp : pi + ↑(N0 + 1) = (pi + 1) + N0` using `by push_cast; ring`. Rewrite using `[hexp]`. Distinguish the cases in `hi : i ∈ S`.
+
+Rewrite `hni`, the goal using `[(hS hi).1]`. Conclude with `core f hf hfld (pi + 1) m hm hni r hr`. Take `⟨hff, hei⟩` from `hnS hi`. Establish `Hf : ∀ r : B.A, IsIntegral K.O r → (t ^ (pi + 1 + N0)) • (f * r) ∈ M`. Distinguish the cases in `h1 : IsIntegral K.O ((t ^ (-(pi + 1))) • (f * m))`.
+
+Establish `h2 : ¬ IsIntegral K.O ((t ^ (-(pi + 1))) • (B.σ f * m))`. Introduce `h2`. Apply `hni` to reduce the goal to its premises. Rewrite using `[hei, add_mul, smul_add]`. Conclude with `h1.add h2`.
+
+Establish `h3 : ¬ IsIntegral K.O ((t ^ (-(pi + 1))) • (f * B.σ m))`. Introduce `h3`. Apply `h2` to reduce the goal to its premises. Use `isIntegral_sigma B h3` as an intermediate fact. Rewrite `this` using `[sigma_smul, map_mul, B.σ_σ, map_zpow₀, hct]`. Then use the resulting hypothesis.
+
+Conclude with `core f hf hfld (pi + 1) (B.σ m) (hM.2.2 m hm) h3`. Conclude with `core f hf hfld (pi + 1) m hm h1`. Rewrite using `[hei, add_mul, smul_add]`. Use `M.add_mem (Hf r hr) ?_` and prove the remaining obligations. Use `hM.2.2 _ (Hf (B.σ r) (isIntegral_sigma B hr))` as an intermediate fact.
+
+Rewrite `this` using `[sigma_smul, map_mul, B.σ_σ, map_zpow₀, hct]`. Then use the resulting hypothesis. Use `choose p hp using hpos`. Conclude with `⟨p, hp⟩`.
+-/
 theorem exists_pos : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] (e π : ι → B.A) (S : Finset ι)
     (a : K.O), B.P.Separable → K.Small a → IsFrame B e π S →
     ∃ N : ℕ, ∀ M ∈ B.Lin, ∃ p : ι → ℤ, Pos B a e N M p := by

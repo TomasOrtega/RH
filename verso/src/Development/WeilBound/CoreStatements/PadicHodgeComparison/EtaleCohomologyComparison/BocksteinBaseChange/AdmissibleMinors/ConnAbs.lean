@@ -6,6 +6,15 @@ open TensorProduct
 
 namespace CrystallineSemistableComparison.Inj
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `P.sum_mem fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `P.sum_mem fun s' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : w s + w' s' ≤ d`.
+
+Establish `h1` using `hC1 (w s) (b.coord s) (hb s).2`. Establish `h2` using `hC2 (w' s') (b'.coord s') (hb' s').2`. Establish `e : t ^ d * (C1 (b.coord s) * C2 (b'.coord s') * o (φ (cup (b s) (b' s')))) = t ^ (d - (w s + w' s')) * (t ^ w s * C1 (b.coord s)) * (t ^ w' s' * C2 (b'.coord s')) * o (φ (cup (b s) (b' s')))`. Establish `: d = (d - (w s + w' s')) + w s + w' s'` using `by omega`. Use `conv_lhs => rw [this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `P.mul_mem (P.mul_mem (P.mul_mem (P.pow_mem ht _) h1) h2) (ho _)`. Establish `h0 : cup (b s) (b' s') = 0` using `hd _ (by omega) _ (hcup _ _ _ (hb s).1 _ (hb' s').1)`. Rewrite using `[h0, map_zero, map_zero, mul_zero, mul_zero]`.
+
+Conclude with `P.zero_mem`.
+-/
 theorem cup_fil {K B : Type*} [Field K] [CommRing B] (P : Subring B) (t : B) (ht : t ∈ P) (o : K →+* B)
     (ho : ∀ k, o k ∈ P) {H1 H2 H3 : Type*} [AddCommGroup H1] [Module K H1] [AddCommGroup H2] [Module K H2]
     [AddCommGroup H3] [Module K H3] (F1 : ℕ → Set H1) (F2 : ℕ → Set H2) (F3 : ℕ → Set H3)
@@ -39,6 +48,15 @@ theorem cup_fil {K B : Type*} [Field K] [CommRing B] (P : Subring B) (t : B) (ht
     rw [h0, map_zero, map_zero, mul_zero, mul_zero]
     exact P.zero_mem
 
+/- English proof (translation)
+Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, by simp⟩`. Consider the case `tmul q y`. Take `⟨⟨ζ, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors ℤ_[p]) q`. Use `⟨s, nonZeroDivisors.ne_zero s.2, ζ • y, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only at hs`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Consider the case `add v v' hv hv'`.
+
+Take `⟨s, hs, x, hx⟩` from `hv`. Take `⟨s', hs', x', hx'⟩` from `hv'`. Use `⟨s * s', mul_ne_zero hs hs', s' • x + s • x', ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_smul, TensorProduct.tmul_smul, ← hx, ← hx', smul_add]`. Simplify using `only [PadicInt.coe_mul]`.
+
+Rewrite using `[← algebraMap_smul ℚ_[p] s', ← algebraMap_smul ℚ_[p] s, smul_smul, smul_smul]`. Apply the tactic sequence `congr 2 <;> simp [PadicInt.algebraMap_apply] <;> ring`.
+-/
 theorem exists_int_mul {p : ℕ} [Fact p.Prime] {T : Type*} [AddCommGroup T] [Module ℤ_[p] T]
     (v : ℚ_[p] ⊗[ℤ_[p]] T) : ∃ s : ℤ_[p], s ≠ 0 ∧ ∃ x : T, (s : ℚ_[p]) • v = (1 : ℚ_[p]) ⊗ₜ x := by
   induction v using TensorProduct.induction_on with

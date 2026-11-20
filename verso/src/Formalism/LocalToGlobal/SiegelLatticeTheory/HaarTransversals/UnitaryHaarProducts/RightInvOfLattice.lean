@@ -23,6 +23,19 @@ section Abs
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
 
+/- English proof (translation)
+Take `⟨hHaar, -, -⟩` from `haarOnSet_isHaar N hN μ hσ h0 hc hinv`. Establish `hcl : IsClosedEmbedding ((↑) : N → G)` using `hN.isClosedEmbedding_subtypeVal`. Use `haveI : LocallyCompactSpace N := hcl.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := inferInstanceAs (SecondCountableTopology (N : Set G))`. Use `haveI := hHaar`.
+
+Set `Γ' : Subgroup N` to `Γ.comap N.subtype`. Set `ι : Γ' → Γ` to `fun g => ⟨((g : N) : G), g.2⟩`. Establish `hιinj : Function.Injective ι`. Introduce `a b h`. Establish `h1 : ((a : N) : G) = ((b : N) : G)` using `congrArg (fun y : Γ => (y : G)) h`.
+
+Conclude with `Subtype.ext (Subtype.ext h1)`. Establish `hιc : Continuous ι` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Use `haveI : Countable Γ := hΓc.to_subtype`. Use `haveI : Countable Γ' := hιinj.countable`. Use `haveI : DiscreteTopology Γ' := DiscreteTopology.of_continuous_injective hιc hιinj`.
+
+Establish `hK' : IsCompact (((↑) : N → G) ⁻¹' C)` using `hcl.isCompact_preimage hC`. Establish `hcov' : ∀ x : N, ∃ s ∈ Γ', s * x ∈ ((↑) : N → G) ⁻¹' C`. Introduce `x`. Take `⟨s, hs, c, hcC, hx⟩` from `hcov x x.2`. Use `⟨⟨s⁻¹, N.inv_mem (hΓN hs)⟩, Γ.inv_mem hs, ?_⟩` and prove the remaining obligations.
+
+Use `show s⁻¹ * (x : G) ∈ C`. Rewrite using `[hx, inv_mul_cancel_left]`. Conclude with `hcC`. Introduce `t ht`. Establish `hR` using `Formalism.L2.SG.CovariantRepresentation.haar_map_mul_right_of_lattice (μ.comap ((↑) : N → G)) Γ' hK' hcov' ⟨t, ht⟩`.
+
+Establish `hmap : (μ.comap ((↑) : N → G)).map ((↑) : N → G) = μ` using `map_comap_subgroup N hN μ hc`. Establish `hmeas : Measurable ((↑) : N → G)` using `measurable_subtype_coe`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem rightInv_of_lattice (N : Subgroup G) (hN : IsClosed (N : Set G)) (μ : Measure G) (hσ : SigmaFinite μ)
     (h0 : μ ≠ 0) (hc : μ (N : Set G)ᶜ = 0) (hinv : ∀ s ∈ N, μ.map (fun x => s * x) = μ)
     (Γ : Subgroup G) (hΓN : Γ ≤ N) (hΓc : (Γ : Set G).Countable) [DiscreteTopology Γ]
@@ -66,6 +79,11 @@ end Abs
 
 section Grp
 
+/- English proof (translation)
+Establish `hc : ∀ (x : Fin n → ℂ) (S : Submodule ℂ (Fin n → ℂ)), IsClosed {M : Matrix (Fin n) (Fin n) ℂ | (M - 1) *ᵥ x ∈ S}` using `fun x S => (Submodule.closed_of_finiteDimensional S).preimage ((continuous_id.sub continuous_const).matrix_mulVec continuous_const)`. Establish `e2 : {M : Matrix (Fin n) (Fin n) ℂ | InN ε e z M} = {M | InS e z M} ∩ ⋂ y, ⋂ (_ : ∀ a, hJ ε (e a) y = 0), {M : Matrix (Fin n) (Fin n) ℂ | (M - 1) *ᵥ y ∈ spanLt e r}`. Use extensionality with `M`. Simplify using `[InN]`. Rewrite using `[e2]`.
+
+Conclude with `(WuDecayPf.isClosed_inS e z).inter (isClosed_iInter fun y => isClosed_iInter fun _ => hc _ _)`.
+-/
 theorem isClosed_inN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) :
     IsClosed {M : Matrix (Fin n) (Fin n) ℂ | InN ε e z M} := by
   have hc : ∀ (x : Fin n → ℂ) (S : Submodule ℂ (Fin n → ℂ)),
@@ -80,6 +98,9 @@ theorem isClosed_inN {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → 
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Establish `: X.NinfU u = ⋂ v, (fun s : X.B.I.Ginf => uMat (s v)) ⁻¹' {M | InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) M}`. Use extensionality with `s`. Simplify using `[HidaSetting.NinfU, Ninf]`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun v => (isClosed_inN _ _ _).preimage (WuDecayPf.continuous_uMat.comp (continuous_apply v))`.
+-/
 theorem isClosed_ninfU : IsClosed (X.NinfU u) := by
   have : X.NinfU u = ⋂ v, (fun s : X.B.I.Ginf => uMat (s v)) ⁻¹'
       {M | InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) M} := by
@@ -88,6 +109,9 @@ theorem isClosed_ninfU : IsClosed (X.NinfU u) := by
   exact isClosed_iInter fun v =>
     (isClosed_inN _ _ _).preimage (WuDecayPf.continuous_uMat.comp (continuous_apply v))
 
+/- English proof (translation)
+Establish `hi : h⁻¹ ∈ Hinf X u` using `(Hinf X u).inv_mem hh`. Establish `hfix : ∀ v, ∀ x ∈ fixSet X u, uMat (h⁻¹ v) *ᵥ rv X.B.I v x = rv X.B.I v x` using `hi`. Use `Formalism.L2.SG.CovariantRepresentation.ninf_conj X u h⁻¹ (fun v a => hfix v _ (Or.inl (Or.inl ⟨a, rfl⟩))) (fun v => hfix v _ (Or.inr rfl)) hn` as an intermediate fact. Simplify using `using this`.
+-/
 theorem conj_ninf {h : X.B.I.Ginf} (hh : h ∈ Hinf X u) {n : X.B.I.Ginf} (hn : n ∈ X.NinfU u) :
     h * n * h⁻¹ ∈ X.NinfU u := by
   have hi : h⁻¹ ∈ Hinf X u := (Hinf X u).inv_mem hh
@@ -98,6 +122,19 @@ theorem conj_ninf {h : X.B.I.Ginf} (hh : h ∈ Hinf X u) {n : X.B.I.Ginf} (hn : 
 
 open PI.SchurPlaces.LeviLA in
 
+/- English proof (translation)
+Simplify using `only [HidaSetting.eR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ee, map_zero]`. Use `ef a b := by`. Apply the tactic sequence `simp only [HidaSetting.eR, HidaSetting.fR]; rw [Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ef]; split_ifs <;> simp`. Use `ff a b := by`.
+
+Simplify using `only [HidaSetting.fR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.ff, map_zero]`. Use `ez a := by`. Simplify using `only [HidaSetting.eR, HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).1, map_zero]`.
+
+Use `fz a := by`. Simplify using `only [HidaSetting.fR, HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, (X.zu_orth u a).2, map_zero]`. Use `ew a b := ((X.wfr_perp u v b).1 a).1`. Use `fw a b := ((X.wfr_perp u v b).1 a).2`.
+
+Use `zw b := (X.wfr_perp u v b).2`. Use `ww := X.wfr_on u v`. Use `zz := by`. Simplify using `only [HidaSetting.zR]`. Rewrite using `[Formalism.L2.SG.PoincareInHH.Cut.hJ_crd, X.zu_norm, map_neg, map_natCast]`.
+
+Conclude with `neg_ne_zero.2 (Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero)`. Use `card := by`. Establish `h1` using `X.n_eq`. Establish `h2` using `D.R.r_eq`. Establish `h3` using `D.R.rS_two`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem frameAt (v : InfinitePlace X.B.I.F) :
     Frame (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u))
       (X.wfr u v) where
@@ -124,6 +161,15 @@ theorem frameAt (v : InfinitePlace X.B.I.F) :
 
 open PI.SchurPlaces.LeviLA in
 
+/- English proof (translation)
+Establish `hS : ∀ v, InS (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat (t v))` using `ht`. Use `choose V hVu hVe hVf hVz hVw hVN using fun v => levi_place (frameAt X u v) ((t v : Formalism.REAL.UJ (X.B.I.ε v)) : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) (t v).2 (hS v)`. Set `s0 : X.B.I.Ginf` to `fun v => ⟨V v, hVu v⟩`. Establish `hs0 : ∀ v, uMat (s0 v) = (V v : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)` using `fun v => rfl`. Establish `hnN : s0⁻¹ * t ∈ X.NinfU u` using `fun v => by`.
+
+Establish `e : uMat ((s0⁻¹ * t) v) = (((V v)⁻¹ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) * uMat (t v)` using `rfl`. Rewrite using `[e]`. Conclude with `hVN v`. Establish `hs0H : s0 ∈ Hinf X u` using `by show ∀ v, ∀ x ∈ fixSet X u, uMat (s0 v) *ᵥ rv X.B.I v x = rv X.B.I v x`. Introduce `v p hp`.
+
+Rewrite using `[hs0]`. Break down `hp with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hp` into its components or cases. Conclude with `hVe v a`. Conclude with `hVf v a`. Rewrite `hp` using `[Set.mem_singleton_iff]`.
+
+Substitute `hp` using the available equality. Conclude with `hVz v`. Conclude with `⟨s0, hs0H, s0⁻¹ * t, hnN, by rw [mul_inv_cancel_left]⟩`.
+-/
 theorem levi {t : X.B.I.Ginf} (ht : t ∈ X.SinfU u) : ∃ h ∈ Hinf X u, ∃ n ∈ X.NinfU u, t = h * n := by
   have hS : ∀ v, InS (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat (t v)) := ht
   choose V hVu hVe hVf hVz hVw hVN using fun v =>
@@ -152,9 +198,21 @@ section Meas
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+The claim follows from `(haarOnSet_isHaar_inst X.B.I (NinfSub X.eR (X.zR u)) (isClosed_ninfU X u) (X.muN u) (X.muN_haar u)).2.1 K hK`.
+-/
 theorem muN_compact {K : Set X.B.I.Ginf} (hK : IsCompact K) : X.muN u K < ⊤ :=
   (haarOnSet_isHaar_inst X.B.I (NinfSub X.eR (X.zR u)) (isClosed_ninfU X u) (X.muN u) (X.muN_haar u)).2.1 K hK
 
+/- English proof (translation)
+Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Use `haveI := NOsub_discrete X u hK`. Take `⟨C, hC, hcov⟩` from `hNO`. Establish `hle : NOsub X u hK ≤ NinfSub X.eR (X.zR u)`. Introduce `s hs`.
+
+Establish `h' : s ∈ NOinf X u` using `by rw [← NOsub_coe X u hK]; exact hs`. Take `⟨γ, -, rfl, h1, -⟩` from `h'`. Conclude with `h1`. Establish `hcount : ((NOsub X u hK : Subgroup X.B.I.Ginf) : Set X.B.I.Ginf).Countable`. Rewrite using `[NOsub_coe]`.
+
+Conclude with `noCount_holds X u`. Use `rightInv_of_lattice (NinfSub X.eR (X.zR u)) (isClosed_ninfU X u) (X.muN u) (X.muN_haar u).1 (X.muN_haar u).2.1 (X.muN_haar u).2.2.1 (X.muN_haar u).2.2.2 (NOsub X u hK) hle hcount C hC ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, c, hc, rfl⟩` from `hcov x hx`. Use `⟨s, ?_, c, hc, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[← SetLike.mem_coe, NOsub_coe]`. Conclude with `hs`.
+-/
 theorem muN_right (hNO : NOCocompact X u) :
     ∀ t ∈ X.NinfU u, (X.muN u).map (fun y => y * t) = X.muN u := by
   have hK := Formalism.L2.SG.Closed.level_subgroup_is_group X
@@ -180,12 +238,21 @@ section Sec
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+The claim follows from `(SinfSub X.B.I X.eR (X.zR u)).mul_mem ha hb`.
+-/
 theorem sinf_mul' {a b : X.B.I.Ginf} (ha : a ∈ X.SinfU u) (hb : b ∈ X.SinfU u) : a * b ∈ X.SinfU u :=
   (SinfSub X.B.I X.eR (X.zR u)).mul_mem ha hb
 
+/- English proof (translation)
+The claim follows from `(SinfSub X.B.I X.eR (X.zR u)).inv_mem ha`.
+-/
 theorem sinf_inv' {a : X.B.I.Ginf} (ha : a ∈ X.SinfU u) : a⁻¹ ∈ X.SinfU u :=
   (SinfSub X.B.I X.eR (X.zR u)).inv_mem ha
 
+/- English proof (translation)
+The claim follows from `(SinfSub X.B.I X.eR (X.zR u)).one_mem`.
+-/
 theorem sinf_one' : (1 : X.B.I.Ginf) ∈ X.SinfU u := (SinfSub X.B.I X.eR (X.zR u)).one_mem
 
 end Sec
@@ -198,6 +265,55 @@ open Formalism.L2.SG Formalism.L2.SG.PoincareInHH Formalism.L2.SG.Pf.Sinf
 
 variable {D : D7} (X : HidaSetting D) (u : D.what₂.Word)
 
+/- English proof (translation)
+Introduce `C hC`. Establish `: SigmaFinite (X.muN u)` using `(X.muN_haar u).1`. Establish `: SigmaFinite (X.muH u)` using `(X.muH_haar u).1`. Establish `hSc : IsClosed (X.SinfU u)` using `WuDecayPf.isClosed_sinfU X u`. Use `set C' := C ∩ X.SinfU u with hC'def`.
+
+Establish `hC' : IsCompact C'` using `hC.inter_right hSc`. Take `⟨V, hVc, hV1⟩` from `exists_compact_mem_nhds (1 : X.B.I.Ginf)`. Establish `hUo : IsOpen (interior V)` using `isOpen_interior`. Establish `hU1 : (1 : X.B.I.Ginf) ∈ interior V` using `mem_interior_iff_mem_nhds.2 hV1`. Establish `hUV : interior V ⊆ V` using `interior_subset`.
+
+Take `⟨T, hTc, hTcov⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun g : X.B.I.Ginf => {y | y * g⁻¹ ∈ interior V}) (fun g => hUo.preimage (continuous_mul_const g⁻¹))`. Establish `hall : ∀ x : X.B.I.Ginf, x ∈ ⋃ g ∈ T, {y : X.B.I.Ginf | y * g⁻¹ ∈ interior V}`. Introduce `x`. Rewrite using `[hTcov]`. Conclude with `Set.mem_iUnion.2 ⟨x, by simpa using hU1⟩`.
+
+Establish `hTne : T.Nonempty`. Take `⟨g, hg, -⟩` from `Set.mem_iUnion₂.1 (hall 1)`. Conclude with `⟨g, hg⟩`. Take `⟨g, hg⟩` from `hTc.exists_eq_range hTne`. Establish `hcov : ∀ x : X.B.I.Ginf, ∃ i, x * (g i)⁻¹ ∈ interior V`.
+
+Introduce `x`. Take `⟨y, hyT, hy⟩` from `Set.mem_iUnion₂.1 (hall x)`. Rewrite `hyT` using `[hg]`. Take `⟨i, rfl⟩` from `hyT`. Conclude with `⟨i, hy⟩`.
+
+Use `set W : ℕ → Set X.B.I.Ginf := fun i => {y | y * (g i)⁻¹ ∈ interior V} with hWdef`. Use `set O : ℕ → Set X.B.I.Ginf := fun i => {y | ∃ s ∈ X.SinfU u, s * y ∈ W i} with hOdef`. Use `set P : ℕ → Set X.B.I.Ginf := fun i => {y | ∃ c ∈ C', c⁻¹ * y ∈ W i} with hPdef`. Use `set A : Set X.B.I.Ginf := ⋃ i, (P i \ ⋃ j, ⋃ (_ : j < i), O j) with hAdef`. Establish `hWo : ∀ i, IsOpen (W i)` using `fun i => hUo.preimage (continuous_mul_const _)`.
+
+Establish `hOo : ∀ i, IsOpen (O i)`. Introduce `i`. Establish `e : O i = ⋃ s ∈ X.SinfU u, (fun y => s * y) ⁻¹' W i`. Use extensionality with `y`. Simplify using `[hOdef]`.
+
+Rewrite using `[e]`. Conclude with `isOpen_biUnion fun s _ => (hWo i).preimage (continuous_const_mul s)`. Establish `hPo : ∀ i, IsOpen (P i)`. Introduce `i`. Establish `e : P i = ⋃ c ∈ C', (fun y => c⁻¹ * y) ⁻¹' W i`.
+
+Use extensionality with `y`. Simplify using `[hPdef]`. Rewrite using `[e]`. Conclude with `isOpen_biUnion fun c _ => (hWo i).preimage (continuous_const_mul c⁻¹)`. Establish `hAm : MeasurableSet A` using `MeasurableSet.iUnion fun i => (hPo i).measurableSet.diff (isOpen_iUnion fun j => isOpen_iUnion fun _ => hOo j).measurableSet`.
+
+Establish `hOinv : ∀ j (y s : X.B.I.Ginf), s ∈ X.SinfU u → s * y ∈ O j → y ∈ O j`. Introduce and unpack `j y s hs ⟨s', hs', h⟩`. Conclude with `⟨s' * s, sinf_mul' X u hs' hs, by simpa [mul_assoc] using h⟩`. Establish `hkey : ∀ x, ∃ i, ∃ t ∈ X.SinfU u, t * x ∈ W i ∧ ∀ j < i, x ∉ O j`. Introduce `x`.
+
+Establish `hex : ∃ i, x ∈ O i`. Take `⟨i, hi⟩` from `hcov x`. Conclude with `⟨i, 1, sinf_one' X u, by simpa [hWdef] using hi⟩`. Take `⟨t, ht, htx⟩` from `Nat.find_spec hex`. Conclude with `⟨Nat.find hex, t, ht, htx, fun j hj => Nat.find_min hex hj⟩`.
+
+Use `set KN : Set X.B.I.Ginf := (C' * V * V⁻¹ * (Hinf X u : Set X.B.I.Ginf)) ∩ X.NinfU u with hKNdef`. Establish `hKN : IsCompact KN` using `(((hC'.mul hVc).mul hVc.inv).mul (hinf_compact X u)).inter_right (isClosed_ninfU X u)`. Establish `hKNm : MeasurableSet KN` using `hKN.isClosed.measurableSet`. Establish `hHae : ∀ᵐ h ∂(X.muH u), h ∈ (Hinf X u : Set X.B.I.Ginf)` using `ae_iff.2 (show (X.muH u) ((Hinf X u : Set X.B.I.Ginf))ᶜ = 0 from (X.muH_haar u).2.2.1)`. Use `⟨A.indicator 1, X.muN u KN * X.muH u Set.univ, measurable_one.indicator hAm, fun x => ?_, ENNReal.mul_lt_top (muN_compact X u hKN) (hFinite_holds X u), fun x => ?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `by_cases hx : x ∈ A <;> simp [Set.indicator, hx]`. Take `⟨i, t, ht, htx, hmin⟩` from `hkey x`. Take `⟨ht', hht, nt, hnt, rfl⟩` from `levi X u ht`. Establish `hpt : ∀ n ∈ X.NinfU u, ∀ h ∈ (Hinf X u : Set X.B.I.Ginf), A.indicator 1 (n * h * x) ≤ KN.indicator (1 : X.B.I.Ginf → ℝ≥0∞) (n * (h * nt⁻¹ * h⁻¹))`. Introduce `n hn h hh`.
+
+Distinguish the cases in `hA : n * h * x ∈ A`. Take `⟨j, ⟨c, ⟨hcC, hcS⟩, hcw⟩, hnot⟩` from `Set.mem_iUnion.1 hA`. Establish `hnhS : n * h ∈ X.SinfU u` using `sinf_mul' X u (ninf_sinf X u hn) (hinf_le_sinf X u h hh)`. Establish `hxj : x ∈ O j` using `⟨c⁻¹ * (n * h), sinf_mul' X u (sinf_inv' X u hcS) hnhS, by`. Simplify `hcw⟩` using `[mul_assoc]`.
+
+Establish `hij : i ≤ j`. Assume the negation of the conclusion as `hlt`. Conclude with `hmin j (not_le.1 hlt) hxj`. Establish `hji : j = i`. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : i < j` using `lt_of_le_of_ne hij (Ne.symm hne)`. Apply `hnot` to reduce the goal to its premises. Use `Set.mem_iUnion.2 ⟨i, Set.mem_iUnion.2 ⟨hlt, ?_⟩⟩` and prove the remaining obligations. Use `⟨ht' * nt * (n * h)⁻¹, sinf_mul' X u ht (sinf_inv' X u hnhS), ?_⟩` and prove the remaining obligations. Establish `e : ht' * nt * (n * h)⁻¹ * (n * h * x) = ht' * nt * x` using `by group`.
+
+Rewrite using `[e]`. Conclude with `htx`. Substitute `hji` using the available equality. Establish `hu1 : c⁻¹ * (n * h * x) * (g j)⁻¹ ∈ interior V` using `hcw`. Establish `hu2 : ht' * nt * x * (g j)⁻¹ ∈ interior V` using `htx`.
+
+Establish `hmem : n * (h * nt⁻¹ * h⁻¹) ∈ KN`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : n * (h * nt⁻¹ * h⁻¹) = c * (c⁻¹ * (n * h * x) * (g j)⁻¹) * (ht' * nt * x * (g j)⁻¹)⁻¹ * (ht' * h⁻¹)` using `by group`. Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul (Set.mul_mem_mul ⟨hcC, hcS⟩ (hUV hu1)) (Set.inv_mem_inv.2 (hUV hu2))) ((Hinf X u).mul_mem hht ((Hinf X u).inv_mem hh))`.
+
+Conclude with `(NinfSub X.eR (X.zR u)).mul_mem hn (conj_ninf X u hh ((NinfSub X.eR (X.zR u)).inv_mem hnt))`. Simplify using `[Set.indicator, hA, hmem]`. Simplify using `[Set.indicator, hA]`. Establish `hFm : Measurable fun p : X.B.I.Ginf × X.B.I.Ginf => KN.indicator (1 : X.B.I.Ginf → ℝ≥0∞) (p.1 * (p.2 * nt⁻¹ * p.2⁻¹))` using `(measurable_one.indicator hKNm).comp (measurable_fst.mul ((measurable_snd.mul_const _).mul measurable_snd.inv))`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_NH X u] with p hp`. Conclude with `hpt p.1 hp.1 p.2 hp.2`. Use `_ = ∫⁻ h, ∫⁻ n, KN.indicator (1 : X.B.I.Ginf → ℝ≥0∞) (n * (h * nt⁻¹ * h⁻¹)) ∂(X.muN u) ∂(X.muH u) := lintegral_prod_symm _ hFm.aemeasurable`. Use `_ ≤ ∫⁻ _h, X.muN u KN ∂(X.muH u) := by`.
+
+Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hHae] with h hh`. Establish `hm : h * nt⁻¹ * h⁻¹ ∈ X.NinfU u` using `conj_ninf X u hh ((NinfSub X.eR (X.zR u)).inv_mem hnt)`. Rewrite using `[← lintegral_map (measurable_one.indicator hKNm) (measurable_mul_const _), muN_right X u hNO _ hm, lintegral_indicator_one hKNm]`. Use `_ = X.muN u KN * X.muH u Set.univ := lintegral_const _`.
+
+Take `⟨i, t, ht, htx, hmin⟩` from `hkey x`. Use `⟨t, ht, fun c hcC hcS => ?_⟩` and prove the remaining obligations. Establish `hmem : c * t * x ∈ A`. Use `Set.mem_iUnion.2 ⟨i, ⟨c, ⟨hcC, hcS⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : c⁻¹ * (c * t * x) = t * x` using `by group`.
+
+Rewrite using `[e]`. Conclude with `htx`. Simplify using `only [Set.mem_iUnion, not_exists]`. Introduce `j hj hO`. Conclude with `hmin j hj (hOinv j x (c * t) (sinf_mul' X u hcS ht) (by simpa [mul_assoc] using hO))`.
+
+Simplify using `[Set.indicator, hmem]`.
+-/
 theorem sinfSection_of (hNO : NOCocompact X u) : SinfSection X u := by
   intro C hC
   classical
@@ -344,8 +460,42 @@ def NDenseAt : Prop :=
   ∀ n ∈ X.NfinU u, ∀ U : Set X.B.I.Gf, IsOpen U → n ∈ U →
     ∃ ν ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I, ν.1 ∈ X.NinfU u ∧ ν.2 ∈ X.NfinU u ∧ ν.2 ∈ U
 
+/- English proof (translation)
+The claim follows from `h D X u`.
+-/
 theorem nDenseAt_of (h : Formalism.L2.SG.Pf.SlabCoverPf.NDense) : NDenseAt X u := h D X u
 
+/- English proof (translation)
+Establish `hK` using `Formalism.L2.SG.Closed.level_subgroup_is_group X`. Establish `hCF` using `Formalism.L2.SG.Closed.ClassFin_holds X u hK`. Unfold `Cut.ClassFin at hCF`. Establish `hsurj : ∀ c : Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u hK), ∃ g : Hfin X u, DoubleCoset.mk (iotaF X u).range (Ku X u hK) g = c`. Introduce `c`.
+
+Proceed by induction on `c using Quotient.inductionOn' with`. Consider the case `h g => exact ⟨g, rfl⟩`. Use `choose sr hsr using hsurj`. Use `haveI := Fintype.ofFinite (Formalism.L2.SG.ColsDim.Classes (iotaF X u) (Ku X u hK))`. Take `⟨CN, hCN, hNcov⟩` from `hNO`.
+
+Establish `hK2c : IsCompact X.K2` using `(level_subgroup_compact_open X).2`. Establish `hK2o : IsOpen X.K2` using `(level_subgroup_compact_open X).1`. Use `set KK : Set X.B.I.Gf := (fun k => X.xu u * k * (X.xu u)⁻¹) '' X.K2 with hKKdef`. Establish `hKK : IsCompact KK` using `hK2c.image ((continuous_const_mul _).mul continuous_const)`. Use `set CH : Set X.B.I.Gf := ⋃ c, (fun k => ((sr c : Hfin X u) : X.B.I.Gf) * k) '' KK with hCHdef`.
+
+Establish `hCH : IsCompact CH` using `isCompact_iUnion fun c => hKK.image (continuous_const_mul _)`. Establish `hKKmem : ∀ k, (X.xu u)⁻¹ * k * X.xu u ∈ X.K2 → k ∈ KK`. Introduce `k hk`. Conclude with `⟨_, hk, by group⟩`. Use `⟨(CN * (Hinf X u : Set X.B.I.Ginf)) ×ˢ (KK * CH), (hCN.mul (hinf_compact X u)).prod (hKK.mul hCH), ?_⟩` and prove the remaining obligations.
+
+Introduce `y hy1 hy2`. Take `⟨hi, hhi, ni, hni, hyi⟩` from `Sinf.levi X u hy1`. Take `⟨hf, nf, hnf, hyf⟩` from `hFL y.2 hy2`. Take `⟨⟨γ', κ⟩, hrep⟩` from `Formalism.UG.P.exists_rep (iotaF X u).range (Ku X u hK) sr hsr hf`. Take `⟨γ, hγ⟩` from `MonoidHom.mem_range.1 γ'.2`.
+
+Use `set c := DoubleCoset.mk (iotaF X u).range (Ku X u hK) hf with hc`. Use `set g0 : X.B.I.GA := (γ : X.B.I.GA) with hg0`. Establish `hg0G : g0 ∈ Gam X u` using `γ.2`. Establish `hg0F : g0 ∈ Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I` using `(Subgroup.mem_inf.1 hg0G).1`. Establish `hg0H` using `Subgroup.mem_prod.1 (Subgroup.mem_inf.1 hg0G).2`.
+
+Establish `hhf : (hf : X.B.I.Gf) = g0.2 * ((sr c : Hfin X u) : X.B.I.Gf) * ((κ : Hfin X u) : X.B.I.Gf)`. Establish `e` using `congrArg Subtype.val hrep`. Rewrite `e` using `[← hγ]`. Conclude with `e`. Use `set ai : X.B.I.Ginf := g0.1⁻¹ * hi with hai`.
+
+Establish `hai_H : ai ∈ Hinf X u` using `(Hinf X u).mul_mem ((Hinf X u).inv_mem hg0H.1) hhi`. Use `set mi : X.B.I.Ginf := ai * ni * ai⁻¹ with hmi`. Establish `hmi_N : mi ∈ X.NinfU u` using `Sinf.conj_ninf X u hai_H hni`. Use `set af : Hfin X u := sr c * (κ : Hfin X u) with haf`. Use `set mf : X.B.I.Gf := (af : X.B.I.Gf) * nf * (af : X.B.I.Gf)⁻¹ with hmf`.
+
+Establish `hmf_N : mf ∈ X.NfinU u` using `(Cut.nfinConj_holds X u af nf hnf).1`. Use `set U : Set X.B.I.Gf := {w | (X.xu u)⁻¹ * (w⁻¹ * mf) * X.xu u ∈ X.K2} with hUdef`. Establish `hUo : IsOpen U` using `hK2o.preimage ((continuous_const.mul (continuous_inv.mul continuous_const)).mul continuous_const)`. Establish `hmfU : mf ∈ U` using `by show (X.xu u)⁻¹ * (mf⁻¹ * mf) * X.xu u ∈ X.K2`. Simplify using `using hK.1`.
+
+Take `⟨ν, hνF, hν1, hν2, hνU⟩` from `hND mf hmf_N U hUo hmfU`. Establish `hνm : ν.1⁻¹ * mi ∈ X.NinfU u` using `(NinfSub X.eR (X.zR u)).mul_mem ((NinfSub X.eR (X.zR u)).inv_mem hν1) hmi_N`. Take `⟨s, hs, cN, hcN, hsc⟩` from `hNcov _ hνm`. Take `⟨γs, hγsF, hγs1, hγsN, hγsNf, hγsK⟩` from `hs`. Use `⟨g0 * ν * γs, ?_, (cN * ai, (γs.2⁻¹ * ν.2⁻¹ * mf) * (af : X.B.I.Gf)), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `Subgroup.mem_inf.2 ⟨(Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem ((Formalism.MainNotions.LeviCoordinates.rr_GF X.B.I).mul_mem hg0F hνF) hγsF, ?_⟩` and prove the remaining obligations. Use `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.subset_closure ?_) (Subgroup.subset_closure ?_)) (Subgroup.subset_closure ?_)` and prove the remaining obligations. Conclude with `⟨hinf_le_sinf X u _ hg0H.1, hfin_sfin X u ⟨g0.2, hg0H.2⟩⟩`. Conclude with `⟨ninf_sinf X u hν1, nfin_sfin X u hν2⟩`. Conclude with `⟨ninf_sinf X u (hγs1 ▸ hγsN), nfin_sfin X u hγsNf⟩`.
+
+Conclude with `Set.mul_mem_mul hcN hai_H`. Use `Set.mul_mem_mul (hKKmem _ ?_) ?_` and prove the remaining obligations. Establish `e : (X.xu u)⁻¹ * (γs.2⁻¹ * ν.2⁻¹ * mf) * X.xu u = ((X.xu u)⁻¹ * γs.2 * X.xu u)⁻¹ * ((X.xu u)⁻¹ * (ν.2⁻¹ * mf) * X.xu u)` using `by group`. Rewrite using `[e]`. Conclude with `hK.2.1 _ (hK.2.2.1 _ hγsK) _ hνU`.
+
+Use `Set.mem_iUnion.2 ⟨c, (κ : Hfin X u), hKKmem _ κ.2, ?_⟩` and prove the remaining obligations. Simplify using `[haf]`. Establish `hsc' : ν.1⁻¹ * mi = γs.1 * cN` using `by rw [hsc, hγs1]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show y.1 = g0.1 * ν.1 * γs.1 * (cN * ai)`.
+
+Establish `e : g0.1 * ν.1 * γs.1 * (cN * ai) = g0.1 * ν.1 * (γs.1 * cN) * ai` using `by group`. Rewrite using `[e, ← hsc', hyi, hmi, hai]`. Use `group`. Use `show y.2 = g0.2 * ν.2 * γs.2 * (γs.2⁻¹ * ν.2⁻¹ * mf * (af : X.B.I.Gf))`. Rewrite using `[hyf, hhf, hmf, haf]`.
+
+Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+-/
 theorem sCompact_of (hFL : FinLevi X u) (hNO : NOCocompact X u) (hND : NDenseAt X u) : SCompact X u := by
   classical
   have hK := Formalism.L2.SG.Closed.level_subgroup_is_group X
@@ -433,14 +583,23 @@ theorem sCompact_of (hFL : FinLevi X u) (hNO : NOCocompact X u) (hND : NDenseAt 
       simp only [Subgroup.coe_mul]
       group
 
+/- English proof (translation)
+Introduce `n _` and use `le_of_eq (Formalism.L2.SG.TermOp.KExpCut.psiUnit X _)`.
+-/
 theorem psiUnit_holds : PsiUnit X u := fun n _ =>
   le_of_eq (Formalism.L2.SG.TermOp.KExpCut.psiUnit X _)
 
+/- English proof (translation)
+The claim follows from `iUnfold_holds_of' X u hK (sCompact_of X u hFL hNO hND) (psiUnit_holds X u) (Formalism.L2.SG.Closed.ColBound_holds X u hK) (sinfSection_of X u hNO)`.
+-/
 theorem iUnfold_of_NO (hK : X.LevelSubgroupCharacter) (hFL : FinLevi X u) (hNO : NOCocompact X u) (hND : NDenseAt X u) :
     Cut.IUnfold X u hK :=
   iUnfold_holds_of' X u hK (sCompact_of X u hFL hNO hND) (psiUnit_holds X u)
     (Formalism.L2.SG.Closed.ColBound_holds X u hK) (sinfSection_of X u hNO)
 
+/- English proof (translation)
+Introduce `D X u hK` and use `iUnfold_of_NO X u hK (hFL D X u) (hNO D X u) (nDenseAt_of X u hND)`.
+-/
 theorem iUnfoldAll_of (hFL : FinLeviC) (hNO : NOCocompactC) (hND : Formalism.L2.SG.Pf.SlabCoverPf.NDense) :
     ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (hK : X.LevelSubgroupCharacter), Cut.IUnfold X u hK :=
   fun D X u hK => iUnfold_of_NO X u hK (hFL D X u) (hNO D X u) (nDenseAt_of X u hND)

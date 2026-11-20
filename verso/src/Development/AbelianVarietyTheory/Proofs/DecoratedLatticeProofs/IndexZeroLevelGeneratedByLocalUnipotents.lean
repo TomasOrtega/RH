@@ -12,6 +12,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.LevZeroInd in
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D c v cm st b G h0 hB Q hmul hN hU hred`. Establish `hst` using `hB.mem`. Take `⟨hr, ξ, hL⟩` from `hst.lev`. Establish `hn : (c.V 0).rank = D.R.r` using `by rw [hst.rank]; show D.R.r + 0 * D.R.t = D.R.r; simp`. Establish `key` using `fun x => GlobalTheory.LevYZero.lev_datY_zero (c.V 0) st.β st.L D.R.r D.R.t hr hn cm.Pg cm.P cm.chi ξ hL (Lev.finE (c.V 0) x) (GlobalTheory.LevSplit.finE_mem_UA _ x)`.
+
+Establish `hSt : ∀ x ∈ levS (c.V 0) st.β st.L, Lev.finE (c.V 0) x ∈ St st.β` using `fun x hx => ((key x).1.1 hx.2).1`. Establish `hRed : ∀ x ∈ levS (c.V 0) st.β st.L, ∀ PP : cm.Pg, ∃ z, GlobalTheory.LevZero.Red (G PP) PP.1 z (upperLeftBlock hr (redFn st.β PP.1 (Lev.finE (c.V 0) x)))` using `fun x hx PP => (hB.grp _).1 ((key x).1.1 hx.2).2 PP`. Establish `hmulm : ∀ x ∈ levS (c.V 0) st.β st.L, ∀ y ∈ levS (c.V 0) st.β st.L, x * y ∈ levS (c.V 0) st.β st.L` using `fun x hx y hy => Subgroup.mul_mem _ hx hy`. Establish `hinvm : ∀ x ∈ levS (c.V 0) st.β st.L, x⁻¹ ∈ levS (c.V 0) st.β st.L` using `fun x hx => Subgroup.inv_mem _ hx`. Establish `claim : ∀ s : Finset (Pl D.host.E), ∀ k ∈ levS (c.V 0) st.β st.L, (∀ PP ∈ cm.Pg, PP ∉ s → redFn st.β PP (Lev.finE (c.V 0) k) = 1) → Q k`.
+
+Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `k hk h`. Conclude with `hred k hk fun PP hPP => h PP hPP (Finset.notMem_empty _)`. Introduce `a s ha ih k hk h`.
+
+Distinguish the cases in `haP : a ∈ cm.Pg`. Take `⟨z, hz⟩` from `hRed k hk ⟨a, haP⟩`. Take `⟨m, hm0, hQm, hmr, hmo⟩` from `GlobalTheory.T.exists_indexZeroLevel_element_given_reduction_at_place cm st b G h0 hB Q hmul hN hU ⟨a, haP⟩ z`. Establish `e1 : redFn st.β a (Lev.finE (c.V 0) m) = redFn st.β a (Lev.finE (c.V 0) k)` using `reductionBlock_injective_of_eq hr hn ((GlobalTheory.LevZeroUniq.main (G ⟨a, haP⟩) a (hB.loc ⟨a, haP⟩).idem).2 z z _ _ (hmr hr) hz (by rw [inv_mul_cancel]; exact one_mem _))`. Establish `hk1 : m⁻¹ * k ∈ levS (c.V 0) st.β st.L` using `hmulm _ (hinvm m hm0) k hk`.
+
+Establish `hred1 : ∀ PP, redFn st.β PP (Lev.finE (c.V 0) (m⁻¹ * k)) = (redFn st.β PP (Lev.finE (c.V 0) m))⁻¹ * redFn st.β PP (Lev.finE (c.V 0) k)` using `fun PP => by`. Rewrite using `[map_mul, map_inv, redFn_mul _ _ (inv_mem (hSt m hm0)) (hSt k hk), redFn_inv _ _ (hSt m hm0)]`. Establish `hQ1` using `ih (m⁻¹ * k) hk1 fun PP hPP hPs => by`. Rewrite using `[hred1]`. Distinguish the cases in `hPa : PP = a`.
+
+Substitute `hPa` using the available equality. Rewrite using `[e1, inv_mul_cancel]`. Rewrite using `[hmo PP hPP hPa, h PP hPP (by simp [hPa, hPs]), inv_one, one_mul]`. Use `hmul m hm0 _ hk1 hQm hQ1` as an intermediate fact. Simplify using `using this`.
+
+Conclude with `ih k hk fun PP hPP hPs => h PP hPP (by`. Simplify using `only [Finset.mem_insert, not_or]`. Conclude with `⟨fun e => haP (e ▸ hPP), hPs⟩)`. Introduce `k hk`. Conclude with `claim cm.Pg k hk fun PP hPP h => absurd hPP h`.
+-/
 theorem GlobalTheory.LevZero.gen : ∀ {D : D7} {c : Comm D} {v : VCom c} (cm : GlobalTheory.ChainOnto.Com D) (st : StAt (c.V 0)) (b : GA D (c.V 0)) (G : cm.Pg → GLoc v) (h0 : 0 + 2 * D.R.rS + 2 = D.R.m), GlobalTheory.LevZero.Bot cm st b G → ∀ Q : GA D (c.V 0) → Prop, (∀ k ∈ levS (c.V 0) st.β st.L, ∀ k' ∈ levS (c.V 0) st.β st.L, Q k → Q k' → Q (k * k')) → (∀ (PP : cm.Pg) (n : GA D (c.V 0)) (q : GL (XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin ((G PP).s + 1)) (G PP).k), n ∈ flagN (c.bes 0 D.R.rS h0).d → q ∈ GlobalTheory.RootEx.N (G PP).k _ ((G PP).s + 1) (D.R.rS + 1) → (ofSplit (G PP).q).IsLoc ((G PP).FY 0 ((G PP).s + 1) (Nat.zero_add _)) n q → b⁻¹ * n * b ∈ levS (c.V 0) st.β st.L → Q (b⁻¹ * n * b)) → (∀ x ∈ GfC (c.X 0), b⁻¹ * embA (c.bes 0 D.R.rS h0).d (c.bes 0 D.R.rS h0).o x * b ∈ levS (c.V 0) st.β st.L → Q (b⁻¹ * embA (c.bes 0 D.R.rS h0).d (c.bes 0 D.R.rS h0).o x * b)) → (∀ k ∈ levS (c.V 0) st.β st.L, (∀ PP ∈ cm.Pg, redFn st.β PP (finE (c.V 0) k) = 1) → Q k) → ∀ k ∈ levS (c.V 0) st.β st.L, Q k := by
   intro D c v cm st b G h0 hB Q hmul hN hU hred
   classical

@@ -8,6 +8,9 @@ noncomputable section
 
 namespace PI.OddDualWeyl.Uniq
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right_alt.goal1 .. | (apply Bl.general_b_fact_right_alt.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_alt.goal1 <;> assumption)`.
+-/
 theorem aeval_smul_hom {K S : Type*} [CommRing K] [CommRing S] [Algebra K S] {ι : Type*} [Fintype ι]
     {G : MvPolynomial ι K} {d : ℕ} (hG : IsHomogeneous G d) (c : S) (f : ι → S) :
     aeval (fun v => c * f v) G = c ^ d * aeval f G := by
@@ -18,24 +21,46 @@ def P (Rg : Type*) [CommRing Rg] (k : ℕ) : Matrix (Fin k) (Fin k) Rg :=
 
 variable {Rg : Type*} [CommRing Rg] {k : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[P, Matrix.mul_apply]`.
+-/
 theorem mul_P (B : Matrix (Fin k) (Fin k) Rg) : B * P Rg k = Matrix.of fun i j => B i (Fin.rev j) := by
   ext i j; simp [P, Matrix.mul_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [P, Matrix.transpose_apply, Matrix.of_apply]`. Use `congr 1`. Conclude with `propext ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`.
+-/
 theorem P_transpose : (P Rg k)ᵀ = P Rg k := by
   ext i j
   simp only [P, Matrix.transpose_apply, Matrix.of_apply]
   congr 1
   exact propext ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩
 
+/- English proof (translation)
+Rewrite using `[mul_P]`. Use extensionality with `i j`. Simplify using `[P, Matrix.one_apply]`.
+-/
 theorem P_mul_P : P Rg k * P Rg k = 1 := by
   rw [mul_P]; ext i j; simp [P, Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[mul_P]`. Use extensionality with `i j`. Simplify using `[dualM]`.
+-/
 theorem dualM_eq : dualM Rg k = (adjugate (genM Rg k))ᵀ * P _ k := by
   rw [mul_P]; ext i j; simp [dualM]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[genM, dualSub]`.
+-/
 theorem map_genM : (dualSub Rg k).toRingHom.mapMatrix (genM Rg k) = dualM Rg k := by
   ext i j; simp [genM, dualSub]
 
+/- English proof (translation)
+Establish `h1 : dualSub Rg k (dualM Rg k i j) = adjugate (dualM Rg k) (Fin.rev j) i`. Establish `e : (dualSub Rg k).toRingHom.mapMatrix (adjugate (genM Rg k)) (Fin.rev j) i = adjugate (dualM Rg k) (Fin.rev j) i`. Rewrite using `[RingHom.map_adjugate, map_genM]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+
+Establish `h2 : (adjugate (dualM Rg k))ᵀ * P _ k = ((P _ k).det * (genM Rg k).det ^ (k - 2)) • genM Rg k`. Rewrite using `[dualM_eq, adjugate_mul_distrib, ← adjugate_transpose, adjugate_adjugate _ (by simpa using hk), Matrix.transpose_mul, Matrix.transpose_transpose, adjugate_transpose, P_transpose, Matrix.mul_assoc, adjugate_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, Fintype.card_fin]`. Establish `h3` using `congrArg (fun M => M i j) h2`. Simplify using `only [mul_P, Matrix.of_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul] at h3`. Rewrite using `[h1, h3]`.
+
+Simplify using `[genM]`.
+-/
 theorem dualSub_dualM (hk : k ≠ 1) (i j : Fin k) :
     dualSub Rg k (dualM Rg k i j) = (P _ k).det * (genM Rg k).det ^ (k - 2) * X (i, j) := by
   have h1 : dualSub Rg k (dualM Rg k i j) = adjugate (dualM Rg k) (Fin.rev j) i := by
@@ -51,12 +76,28 @@ theorem dualSub_dualM (hk : k ≠ 1) (i j : Fin k) :
   simp only [mul_P, Matrix.of_apply, Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul] at h3
   rw [h1, h3]; simp [genM]
 
+/- English proof (translation)
+Rewrite using `[← det_mul, P_mul_P, det_one]`.
+-/
 theorem det_P_ne : (P Rg k).det * (P Rg k).det = 1 := by
   rw [← det_mul, P_mul_P, det_one]
 
 end Uniq
 
 open Uniq in
+/- English proof (translation)
+Introduce `K _ k d G hG h0`. Distinguish the cases in `hk : k = 1`. Substitute `hk` using the available equality. Establish `hD : ∀ v : Fin 1 × Fin 1, dualM K 1 v.1 v.2 = 1`. Introduce `v`.
+
+Simplify using `only [dualM, adjugate_fin_one, Matrix.of_apply]`. Rewrite using `[Subsingleton.elim v.2.rev v.1, Matrix.one_apply_eq]`. Establish `hS : dualSub K 1 G = aeval (fun _ => (1 : MvPolynomial (Fin 1 × Fin 1) K)) G`. Simplify using `only [dualSub, hD]`. Establish `e : G = aeval (fun v : Fin 1 × Fin 1 => X (0, 0) * (1 : MvPolynomial (Fin 1 × Fin 1) K)) G` using `by conv_lhs => rw [← aeval_X_left_apply G]`.
+
+Conclude with `congrArg (fun f => aeval f G) (funext fun v => by rw [mul_one, Subsingleton.elim v (0, 0)])`. Rewrite using `[e, aeval_smul_hom hG, ← hS, h0, mul_zero]`. Use `set c : MvPolynomial (Fin k × Fin k) K := (P _ k).det * (genM K k).det ^ (k - 2)`. Establish `hc : c ≠ 0`. Use `mul_ne_zero ?_ (pow_ne_zero _ ?_)` and prove the remaining obligations.
+
+Introduce `h`. Use `det_P_ne (Rg := MvPolynomial (Fin k × Fin k) K) (k := k)` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`. Conclude with `det_mvPolynomialX_ne_zero (Fin k) K`.
+
+Establish `e : dualSub K k (dualSub K k G) = c ^ d * G`. Establish `: (dualSub K k).comp (dualSub K k) = aeval fun v => c * X v`. Rewrite using `[dualSub, comp_aeval]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Conclude with `dualSub_dualM hk v.1 v.2`. Rewrite using `[← AlgHom.comp_apply, this, aeval_smul_hom hG, aeval_X_left_apply]`. Rewrite `e` using `[h0, map_zero]`. Conclude with `(mul_eq_zero.mp e.symm).resolve_left (pow_ne_zero _ hc)`.
+-/
 theorem highest_weight_vector_unique : Uniq := by
   intro K _ k d G hG h0
   by_cases hk : k = 1

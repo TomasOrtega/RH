@@ -16,17 +16,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `HeisenbergWeilMatrices.gramA HeisenbergWeilMatrices.gramInvA`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem gram_mul_inv (V : HSp D) : HeisenbergWeilMatrices.gramA V * HeisenbergWeilMatrices.gramInvA V = 1 := by
   unfold HeisenbergWeilMatrices.gramA HeisenbergWeilMatrices.gramInvA
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (gram_det_ne V))]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.1 (gram_mul_inv V)`.
+-/
 theorem inv_mul_gram (V : HSp D) : HeisenbergWeilMatrices.gramInvA V * HeisenbergWeilMatrices.gramA V = 1 := mul_eq_one_comm.1 (gram_mul_inv V)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `(DualPairCheck.cA_incA _).trans (congrArg (incA D) (DualPairCheck.gram_star V j i))`.
+-/
 theorem gram_conj (V : HSp D) : ((HeisenbergWeilMatrices.gramA V).map (cA D))ᵀ = HeisenbergWeilMatrices.gramA V := by
   ext i j
   exact (DualPairCheck.cA_incA _).trans (congrArg (incA D) (DualPairCheck.gram_star V j i))
 
+/- English proof (translation)
+Establish `h : HeisenbergWeilMatrices.gramA V * ((HeisenbergWeilMatrices.gramInvA V).map (cA D))ᵀ = 1`. Rewrite using `[← gram_conj, ← Matrix.transpose_mul, ← Matrix.map_mul, inv_mul_gram, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gramInv_conj (V : HSp D) : ((HeisenbergWeilMatrices.gramInvA V).map (cA D))ᵀ = HeisenbergWeilMatrices.gramInvA V := by
   have h : HeisenbergWeilMatrices.gramA V * ((HeisenbergWeilMatrices.gramInvA V).map (cA D))ᵀ = 1 := by
     rw [← gram_conj, ← Matrix.transpose_mul, ← Matrix.map_mul, inv_mul_gram,
@@ -43,18 +55,35 @@ def kap (A B : HSp D) : WA A B ≃+ WA A B where
     simp only [← Matrix.mul_assoc, ← Matrix.transpose_mul, gram_mul_inv, Matrix.transpose_one, Matrix.one_mul]
   map_add' x y := Matrix.mul_add _ _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kap_apply (A B : HSp D) (x : WA A B) : kap A B x = HMul.hMul (HeisenbergWeilMatrices.gramInvA A)ᵀ x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kap_symm_apply (A B : HSp D) (x : WA A B) : (kap A B).symm x = HMul.hMul (HeisenbergWeilMatrices.gramA A)ᵀ x := rfl
 
 def kapT (A B : HSp D) : WA A B ≃+ WA B A := (kap A B).trans (Matrix.transposeAddEquiv _ _ _)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kapT_apply (A B : HSp D) (x : WA A B) : kapT A B x = (kap A B x)ᵀ := rfl
 
+/- English proof (translation)
+The claim follows from `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩ IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`.
+-/
 theorem topRing (D : D7) : IsTopologicalRing (AE D) :=
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
 
+/- English proof (translation)
+Establish `s` using `DualPairCheck.sum_small (cA D) (HeisenbergWeilMatrices.gramA A) (HeisenbergWeilMatrices.gramA B) (kap A B y) (kap A B x)`. Unfold `hHom`. Rewrite using `[if_pos hr]`. Use `Eq.trans s ?_` and prove the remaining obligations. Simplify using `only [kap_apply, HeisenbergWeilMatrices.herm, HeisenbergWeilMatrices.adj, HeisenbergWeilMatrices.colMat, Formalism.UG.cT, Matrix.transpose_transpose, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_map, gramInv_conj, Matrix.mul_assoc, inv_mul_gram, Matrix.mul_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hHom_kap {A B : HSp D} (hr : A.rank ≤ B.rank) (x y : WA A B) :
     hHom A B (kap A B y) (kap A B x) = HeisenbergWeilMatrices.herm x y := by
   have s := DualPairCheck.sum_small (cA D) (HeisenbergWeilMatrices.gramA A) (HeisenbergWeilMatrices.gramA B) (kap A B y) (kap A B x)
@@ -65,6 +94,15 @@ theorem hHom_kap {A B : HSp D} (hr : A.rank ≤ B.rank) (x y : WA A B) :
     Matrix.transpose_mul, Matrix.transpose_map, gramInv_conj, Matrix.mul_assoc, inv_mul_gram, Matrix.mul_one]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ((mt A g).map (cA D))ᵀ * HeisenbergWeilMatrices.gramA A * mt A g = HeisenbergWeilMatrices.gramA A` using `mt_rel A g`. Establish `h2 : mt A g * HeisenbergWeilMatrices.gMat g⁻¹ = 1`. Express the relevant statement in the definitionally equal form `HeisenbergWeilMatrices.gMat g * _ = 1`. Rewrite using `[← HeisenbergWeilMatrices.gMat_mul, mul_inv_cancel, HeisenbergWeilMatrices.gMat_one]`. Establish `h3 : HeisenbergWeilMatrices.gramInvA A * ((mt A g).map (cA D))ᵀ = HeisenbergWeilMatrices.gMat g⁻¹ * HeisenbergWeilMatrices.gramInvA A`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_one, gram_mul_inv, Matrix.mul_one]`. Use `_ = HeisenbergWeilMatrices.gramInvA A * (((mt A g).map (cA D))ᵀ * HeisenbergWeilMatrices.gramA A * mt A g) * (HeisenbergWeilMatrices.gMat g⁻¹ * HeisenbergWeilMatrices.gramInvA A) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, inv_mul_gram, Matrix.one_mul]`.
+
+Establish `h4` using `congrArg Matrix.transpose h3`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at h4`. Unfold `actHom`. Rewrite using `[if_pos hr]`. Simplify using `only [kap_apply, HeisenbergWeilMatrices.act, HeisenbergWeilMatrices.colMat, cM, Matrix.transpose_mul, Matrix.transpose_transpose, ← Matrix.mul_assoc, h4]`.
+
+Both sides reduce to the same expression.
+-/
 theorem actHom_kap {A B : HSp D} (hr : A.rank ≤ B.rank) (g : GA D A) (h : GA D B) (x : WA A B) :
     actHom A B g h (kap A B x) = kap A B (HeisenbergWeilMatrices.act (g, h) x) := by
   have h1 : ((mt A g).map (cA D))ᵀ * HeisenbergWeilMatrices.gramA A * mt A g = HeisenbergWeilMatrices.gramA A := mt_rel A g
@@ -89,6 +127,13 @@ def IsChange {A B V W : HSp D} (κ : WA A B ≃+ WA V W) (σ : GA D V × GA D W 
     (∀ x, κ x ∈ ratL V W ↔ x ∈ HeisenbergWeilMatrices.WQ A B) ∧ (∀ (c : AE D) x, κ (c • x) = c • κ x) ∧
     ∀ g h x, actHom V W g h (κ x) = κ (HeisenbergWeilMatrices.act (σ (g, h)) x)
 
+/- English proof (translation)
+Use `topRing D` as an intermediate fact. Use `⟨continuous_const.matrix_mul continuous_id, continuous_const.matrix_mul continuous_id, fun x y => ?_, fun x => ⟨?_, ?_⟩, fun c x => Matrix.mul_smul (HeisenbergWeilMatrices.gramInvA A)ᵀ c x, actHom_kap hr⟩` and prove the remaining obligations. Unfold `symplH sympl`. Rewrite using `[hHom_kap hr]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨γ, hγ⟩`. Use `⟨A.gramᵀ * γ, ?_⟩` and prove the remaining obligations. Rewrite using `[← (kap A B).symm_apply_apply x, ← hγ]`. Conclude with `Matrix.map_mul (f := incA D)`. Introduce and unpack `⟨γ, rfl⟩`.
+
+Conclude with `⟨(A.gram⁻¹)ᵀ * γ, Matrix.map_mul (f := incA D)⟩`.
+-/
 theorem isChange_kap {A B : HSp D} (hr : A.rank ≤ B.rank) : IsChange (kap A B) id := by
   have := topRing D
   refine ⟨continuous_const.matrix_mul continuous_id, continuous_const.matrix_mul continuous_id, fun x y => ?_,
@@ -103,6 +148,13 @@ theorem isChange_kap {A B : HSp D} (hr : A.rank ≤ B.rank) : IsChange (kap A B)
   · rintro ⟨γ, rfl⟩
     exact ⟨(A.gram⁻¹)ᵀ * γ, Matrix.map_mul (f := incA D)⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3, h4, h5, h6⟩` from `isChange_kap hr.le`. Use `⟨h1.matrix_transpose, h2.comp continuous_id.matrix_transpose, fun x y => ?_, fun x => ?_, fun c x => ?_, fun g h x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Unfold `symplH sympl`. Rewrite using `[kapT_apply, kapT_apply, hHom_transpose A B hr.ne]`.
+
+Rewrite using `[← h4]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Conclude with `⟨γᵀ, congrArg Matrix.transpose hγ⟩`. Introduce and unpack `⟨γ, hγ⟩`.
+
+Conclude with `⟨γᵀ, congrArg Matrix.transpose hγ⟩`. Rewrite using `[kapT_apply, h5]`. Both sides reduce to the same expression. Rewrite using `[kapT_apply, actHom_swap A B hr.ne, h6]`. Both sides reduce to the same expression.
+-/
 theorem isChange_kapT {A B : HSp D} (hr : A.rank < B.rank) : IsChange (kapT A B) Prod.swap := by
   obtain ⟨h1, h2, h3, h4, h5, h6⟩ := isChange_kap hr.le
   refine ⟨h1.matrix_transpose, h2.comp continuous_id.matrix_transpose, fun x y => ?_, fun x => ?_, fun c x => ?_,
@@ -119,11 +171,21 @@ theorem isChange_kapT {A B : HSp D} (hr : A.rank < B.rank) : IsChange (kapT A B)
   · rw [kapT_apply, h5]; rfl
   · rw [kapT_apply, actHom_swap A B hr.ne, h6]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp, Heisenberg₂, HeisenbergWeilMatrices.rho_apply, hκ.2.2.1, map_add]`.
+-/
 theorem heis_change {A B V W : HSp D} {κ : WA A B ≃+ WA V W} {σ} (hκ : IsChange κ σ) (ψ : AddChar (AF D.host.F) ℂ)
     (u : WA A B) (f : WA V W → ℂ) : Heisenberg₂ ψ V W (κ u) f ∘ κ = HeisenbergWeilMatrices.rho ψ u (f ∘ κ) := by
   funext w
   simp only [Function.comp, Heisenberg₂, HeisenbergWeilMatrices.rho_apply, hκ.2.2.1, map_add]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, v, ε, ⟨α, rfl, hv, hv'⟩, h3⟩`. Use `⟨v, h1, h2, h3.trans ?_⟩` and prove the remaining obligations. Establish `: α = singleV D.host.F v 1`. Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `hv.trans (RestrictedProduct.single_eq_same _ _ _).symm`. Conclude with `(hv' w hw).trans (RestrictedProduct.single_eq_of_ne _ _ hw).symm`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨v, h1, h2, h3⟩`. Conclude with `⟨h1, h2, v, _, ⟨singleV D.host.F v 1, rfl, RestrictedProduct.single_eq_same (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) v 1, fun w hw => RestrictedProduct.single_eq_of_ne (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host. …`.
+-/
 theorem isSplitIdem_iff (e : AE D) : IsSplitIdem D e ↔ ∃ v, HeisenbergWeilMatrices.IsSplitIdem D v e := by
   classical
   constructor
@@ -142,6 +204,11 @@ theorem isSplitIdem_iff (e : AE D) : IsSplitIdem D e ↔ ∃ v, HeisenbergWeilMa
       fun w hw => RestrictedProduct.single_eq_of_ne
         (fun w : HeightOneSpectrum (𝓞 D.host.F) => w.adicCompletionIntegers D.host.F) 1 hw⟩, h3⟩
 
+/- English proof (translation)
+Rewrite using `[← he.sum]`. Unfold `SuppAt HeisenbergWeilMatrices.IsAt`. Rewrite using `[← Matrix.ext_iff]`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e + cA D e) * (mt V g i j - (1 : Matrix _ _ (AE D)) i j) = mt V g i j - (1 : Matrix _ _ (AE D)) i j ↔ (1 - (e + cA D e)) * mt V g i j = (1 - (e + cA D e)) * (1 : Matrix _ _ (AE D)) i j`.
+
+Apply the tactic sequence `constructor <;> intro h <;> linear_combination -h`.
+-/
 theorem suppAt_iff {v} {e : AE D} (he : HeisenbergWeilMatrices.IsSplitIdem D v e) (V : HSp D) (g : GA D V) :
     SuppAt e V g ↔ HeisenbergWeilMatrices.IsAt (HeisenbergWeilMatrices.idemFin D v) g := by
   rw [← he.sum]
@@ -152,10 +219,16 @@ theorem suppAt_iff {v} {e : AE D} (he : HeisenbergWeilMatrices.IsSplitIdem D v e
     (1 - (e + cA D e)) * mt V g i j = (1 - (e + cA D e)) * (1 : Matrix _ _ (AE D)) i j
   constructor <;> intro h <;> linear_combination -h
 
+/- English proof (translation)
+Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem isDetAt_iff {e : AE D} (he : IsIdempotentElem e) (V : HSp D) (g : GA D V) (x : (AE D)ˣ) :
     IsDetAt e V g x ↔ x = HeisenbergWeilMatrices.atIdem he (HeisenbergWeilMatrices.detA V g) := by
   rw [Units.ext_iff]; rfl
 
+/- English proof (translation)
+Unfold `HeisenbergWeilMatrices.IsRoot`. Rewrite using `[mul_inv_eq_iff_eq_mul, Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem isDetRoot_iff (V : HSp D) (g : GA D V) (x : (AE D)ˣ) :
     IsDetRoot V g x ↔ HeisenbergWeilMatrices.IsRoot D x (HeisenbergWeilMatrices.detA V g) := by
   unfold HeisenbergWeilMatrices.IsRoot

@@ -7,6 +7,19 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hL : 0 ≤ L` using `(abs_nonneg _).trans hm`. Establish `hz : 0 ≤ ‖z‖` using `norm_nonneg z`. Establish `key : ∀ x : ℤ, |(x : ℝ)| - ‖z‖ ≤ ‖z + x‖`. Introduce `x`. Establish `h1 : ‖(x : ℂ)‖ ≤ ‖z + x‖ + ‖z‖`.
+
+Use `norm_sub_le (z + x) z` as an intermediate fact. Simplify using `using this`. Establish `h2 : ‖(x : ℂ)‖ = |(x : ℝ)|` using `Complex.norm_intCast x`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdm : |(d : ℝ)| - L ≤ |(m : ℝ)|`.
+
+Use `abs_sub_abs_le_abs_sub (d : ℝ) m` as an intermediate fact. Rewrite `this` using `[abs_sub_comm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : 0 < |(d : ℝ)| / 2` using `by linarith`. Establish `h1 : |(d : ℝ)| / 2 ≤ ‖z + d‖` using `by have := key d; linarith`.
+
+Establish `h2 : |(d : ℝ)| / 2 ≤ ‖z + m‖` using `by have := key m; linarith`. Establish `n1 : z + d ≠ 0` using `norm_pos_iff.1 (hD.trans_le h1)`. Establish `n2 : z + m ≠ 0` using `norm_pos_iff.1 (hD.trans_le h2)`. Establish `e : (z + d)⁻¹ - (z + m)⁻¹ = ((m - d : ℤ) : ℂ) / ((z + d) * (z + m))`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_div, norm_mul, Complex.norm_intCast]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `: |(d : ℝ)| ≠ 0` using `(by linarith : 0 < |(d : ℝ)|).ne'`. Rewrite using `[← sq_abs (d : ℝ)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_inv_add_int_sub_inv_add_int_le (z : ℂ) (L : ℝ) (d m : ℤ)
     (hm : |(m : ℝ) - d| ≤ L) (hd : 2 * (‖z‖ + L) + 1 ≤ |(d : ℝ)|) :
     ‖(z + d)⁻¹ - (z + m)⁻¹‖ ≤ 4 * L * (1 / (d : ℝ) ^ 2) := by
@@ -43,6 +56,19 @@ theorem norm_inv_add_int_sub_inv_add_int_le (z : ℂ) (L : ℝ) (d m : ℤ)
         field_simp
         ring
 
+/- English proof (translation)
+Introduce `L φ z hL _`. Use `haveI : NeZero L := ⟨hL.ne'⟩`. Use `set M : ℝ := ∑ y, ‖φ y‖ with hM`. Establish `hφ : ∀ y, ‖φ y‖ ≤ M` using `fun y => Finset.single_le_sum (f := fun y => ‖φ y‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ y)`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hφ 0)`.
+
+Establish `hs : Summable (fun d : ℤ => M * (4 * (L : ℝ) * (1 / (d : ℝ) ^ 2)))` using `((Real.summable_one_div_int_pow.2 one_lt_two).mul_left _).mul_left _`. Use `Summable.of_norm_bounded_eventually hs ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_nat_ge (2 * (‖z‖ + L) + 1)`. Establish `hfin : (Set.Icc (-(N : ℤ)) N).Finite` using `Set.finite_Icc _ _`. Use `Filter.mem_of_superset hfin.compl_mem_cofinite ?_` and prove the remaining obligations.
+
+Introduce `d hd`. Establish `hd' : (N : ℤ) ≤ |d|`. Simplify using `only [Set.mem_compl_iff, Set.mem_Icc, not_and_or, not_le] at hd`. Break down `hd with h | h` into its components or cases. Conclude with `le_abs.2 (Or.inr (by omega))`.
+
+Conclude with `le_abs.2 (Or.inl h.le)`. Establish `hd'' : (N : ℝ) ≤ |(d : ℝ)|` using `by exact_mod_cast hd'`. Establish `hL' : (0 : ℤ) < L` using `by exact_mod_cast hL`. Establish `hm : |(L : ℤ) * (d / L) - d| ≤ L`. Establish `a` using `Int.emod_nonneg d hL'.ne'`.
+
+Establish `b` using `Int.emod_lt_of_pos d hL'`. Establish `c` using `Int.emod_def d L`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hm' : |(((L : ℤ) * (d / L) : ℤ) : ℝ) - d| ≤ (L : ℝ)` using `by exact_mod_cast hm`.
+
+Use `norm_inv_add_int_sub_inv_add_int_le z L d _ hm' (hN.trans hd'')` as an intermediate fact. Use `show ‖_‖ ≤ _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hφ _) this (norm_nonneg _) hM0`.
+-/
 theorem summable_periodic_mul_inv_sub_inv_floor :
     ∀ (L : ℕ) (φ : ZMod L → ℂ) (z : ℂ), 0 < L → 0 < z.im →
       Summable (fun d : ℤ => φ d * ((z + d)⁻¹ - (z + (L * (d / L) : ℤ))⁻¹)) := by

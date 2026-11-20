@@ -20,10 +20,19 @@ open PositivityTheory.RgBcC
 
 namespace PositivityTheory.Rg.BcB.CG
 
+/- English proof (translation)
+The claim follows from `smoothOf tensTest`.
+-/
 theorem smoothOf_holds : SmoothOf := smoothOf tensTest
 
+/- English proof (translation)
+The claim follows from `actVal h compatFub tensTest`.
+-/
 theorem actVal_of (h : MultAlg) : ActVal := actVal h compatFub tensTest
 
+/- English proof (translation)
+The claim follows from `pack_of tensTest typeOf smoothOf_holds (growthOf hS) hG infEx (PAut.autOf hB)`.
+-/
 theorem pack_of_gel (hS : SizeBasic) (hB : Bridge.BridgeSt) (hG : GelOf) : Pack :=
   pack_of tensTest typeOf smoothOf_holds (growthOf hS) hG infEx (PAut.autOf hB)
 

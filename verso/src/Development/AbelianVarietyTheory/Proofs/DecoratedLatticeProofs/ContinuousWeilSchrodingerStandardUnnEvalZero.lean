@@ -21,6 +21,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec)
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, _, _, hκ, hW, hT⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ hstd θ hθ A V μ 𝓕 hμ).2.1 Φ.1 Φ.2`. Establish `key : ∀ g : G D n, (ω g Φ).1 0 = swSec A V omh μ 𝓕 f (κ.symm g)`.
+
+Introduce `g`. Establish `h` using `hT (κ.symm g) f hf Φ hfΦ.symm`. Establish `e : κ (κ.symm g) = g` using `κ.apply_symm_apply g`. Rewrite `h` using `[e]`. Conclude with `(congrFun h 0).trans (mixS_dblDec_zero A V ψ₀ μ 𝓕 _ 0)`.
+
+Establish `hc` using `(GlobalTheory.Core.Rk.IP.swSec_integrable_continuous D ψ₀ A V χ⁻¹ omh hW μ 𝓕 hμ f hf).2`. Establish `hk` using `(GlobalTheory.StdUnn.chart_continuous D A μ' hsk κ hκ).2`. Repeatedly rewrite using `[key]`. Conclude with `hc.comp hk`.
+-/
 theorem weilSch_apply_zero_continuous : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ → ∀ (μ : Measure (Mx D V.rank n)) (𝓕 : Set (Mx D V.rank n)), IsCovolOne (ratMx D V.rank n) μ 𝓕 → ∀ ω : G D n →* Module.End ℂ (schwartzA θ V.rank n), IsWeilSch ψ χ θ V μ ω → ∀ Φ : schwartzA θ V.rank n, Continuous fun g : G D n => (ω g Φ).1 0 := by
   intro D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ
   let A : HSp D := Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n

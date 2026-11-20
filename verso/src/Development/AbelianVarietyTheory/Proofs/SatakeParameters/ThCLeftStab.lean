@@ -21,6 +21,21 @@ noncomputable section
 
 namespace GlobalTheory.KerLaw
 
+/- English proof (translation)
+Establish `hre : ∀ x y, (H y x).re = (H x y).re` using `fun x y => by rw [hH x y]; simp`. Establish `him : ∀ x y, altE H y x = -altE H x y` using `GlobalTheory.ThetaInter.altE_swap hH`. Establish `hadd : ∀ x y, alphaQ (s / 2) H (x + y) = alphaQ (s / 2) H x * alphaQ (s / 2) H y * Complex.exp (Real.pi * Complex.I * ((s * (H x y).re : ℝ) : ℂ))` using `fun x y => by`. Simplify using `only [alphaQ, Formalism.L2.Th1.H.qOf, ← Complex.exp_add, map_add, LinearMap.add_apply, Complex.add_re, hre x y]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ x, alphaQ (s / 2) H x ≠ 0` using `fun x => Complex.exp_ne_zero _`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx y hy`.
+
+Establish `h1` using `h.2 y hy x hx`. Rewrite `h1` using `[hadd, mul_right_inj' (mul_ne_zero (hne _) (hne _)), Complex.exp_eq_exp_iff_exists_int]`. Take `⟨n, hn⟩` from `h1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Complex.im hn`.
+
+Rewrite `h2` using `[him x y, hre x y]`. Simplify using `at h2`. Apply `mul_left_cancel₀ Real.pi_ne_zero` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+
+Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `h x hx x hx`. Establish `h0 : altE H x x = 0` using `by have := him x x; linarith`. Establish `h1 : Formalism.L2.Th1.H.qOf (s / 2) H x = n` using `by rw [← hn, h0, Formalism.L2.Th1.H.qOf]; ring`. Rewrite using `[← mul_self_eq_one_iff, alphaQ, h1, ← Complex.exp_add, Complex.exp_eq_one_iff]`.
+
+Conclude with `⟨n, by push_cast; ring⟩`. Take `⟨n, hn⟩` from `h y hy x hx`. Rewrite using `[hadd, show s * (H x y).re = altE H x y + 2 * n by rw [← hn, him x y, hre x y]; ring]`. Use `congr 1`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`.
+
+Conclude with `⟨n, by push_cast; ring⟩`.
+-/
 theorem semi_iff {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V} (hH : IsHerm H) (s : ℝ) (A : AddSubgroup V) :
     IsSemiChar H A (alphaQ (s / 2) H) ↔ ∀ x ∈ A, ∀ y ∈ A, ∃ n : ℤ, (s * (H x y).re + altE H x y) / 2 = n := by
   have hre : ∀ x y, (H y x).re = (H x y).re := fun x y => by rw [hH x y]; simp
@@ -60,27 +75,44 @@ section Tw
 
 variable {E : Type} [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module E W] [Module (𝓞 E) W] [IsScalarTower (𝓞 E) E W]
 
+/- English proof (translation)
+Simplify using `[twist₂, Submodule.mem_iInf]`.
+-/
 theorem mem_tw (M : Submodule (𝓞 E) W) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) (y : W) :
     y ∈ twist₂ M c e ↔ ∀ Q : HeightOneSpectrum (𝓞 E), ((c : E) ^ e Q)⁻¹ • y ∈ localization₂ Q.asIdeal M := by
   simp [twist₂, Submodule.mem_iInf]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le hk`. Rewrite using `[zpow_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hy _`.
+-/
 theorem zpow_mem (M : Submodule (𝓞 E) W) (c : ℕ) {k : ℤ} (hk : 0 ≤ k) {y : W} (hy : y ∈ M) : ((c : E) ^ k) • y ∈ M := by
   obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le hk
   rw [zpow_natCast, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
   exact nsmul_mem hy _
 
+/- English proof (translation)
+The claim follows from `mem_of_locP fun Q => by have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne' have := zpow_mem _ c (k := 1 + e Q) (by have := he Q; omega) ((mem_tw M c e x).1 hx Q) rwa [smul_smul, zpow_add₀ hcE, zpow_one, mul_inv_cancel_right₀ (zpow_ne_zero _ hcE), Nat.cast_smul_eq_nsmul] at this`.
+-/
 theorem nsmul_of_tw {M : Submodule (𝓞 E) W} {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ} (he : ∀ Q, -1 ≤ e Q) {x : W}
     (hx : x ∈ twist₂ M c e) : c • x ∈ M := mem_of_locP fun Q => by
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
   have := zpow_mem _ c (k := 1 + e Q) (by have := he Q; omega) ((mem_tw M c e x).1 hx Q)
   rwa [smul_smul, zpow_add₀ hcE, zpow_one, mul_inv_cancel_right₀ (zpow_ne_zero _ hcE), Nat.cast_smul_eq_nsmul] at this
 
+/- English proof (translation)
+The claim follows from `(mem_tw M c e _).2 fun Q => by have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne' have := zpow_mem _ c (k := 1 - e Q) (by have := he Q; omega) (mem_localization_of_mem Q hx) rwa [zpow_sub₀ hcE, zpow_one, div_eq_mul_inv, mul_comm, ← smul_smul, Nat.cast_smul_eq_nsmul] at this`.
+-/
 theorem nsmul_mem_tw {M : Submodule (𝓞 E) W} {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 E) → ℤ} (he : ∀ Q, e Q ≤ 1) {x : W}
     (hx : x ∈ M) : c • x ∈ twist₂ M c e := (mem_tw M c e _).2 fun Q => by
   have hcE : (c : E) ≠ 0 := by exact_mod_cast hc.ne'
   have := zpow_mem _ c (k := 1 - e Q) (by have := he Q; omega) (mem_localization_of_mem Q hx)
   rwa [zpow_sub₀ hcE, zpow_one, div_eq_mul_inv, mul_comm, ← smul_smul, Nat.cast_smul_eq_nsmul] at this
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx`, the goal using `[mem_tw]`. Introduce `Q`. Take `⟨s, hs, h⟩` from `hx Q`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Use `hM _ h` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul E s, map_smul, map_smul, algebraMap_smul]`. Then use the resulting hypothesis.
+-/
 theorem tw_stab (f : W →ₗ[E] W) {M : Submodule (𝓞 E) W} (hM : ∀ x ∈ M, f x ∈ M) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ) :
     ∀ x ∈ twist₂ M c e, f x ∈ twist₂ M c e := by
   intro x hx
@@ -93,6 +125,11 @@ theorem tw_stab (f : W →ₗ[E] W) {M : Submodule (𝓞 E) W} (hM : ∀ x ∈ M
 
 end Tw
 
+/- English proof (translation)
+Establish `hfg : A.FG`. Establish `h1 : (AddSubgroup.toIntSubmodule Λ).FG` using `(Submodule.fg_iff_addSubgroup_fg _).2 hΛ`. Use `(Submodule.fg_iff_addSubgroup_fg (AddSubgroup.toIntSubmodule A)).1 ?_` and prove the remaining obligations. Use `Submodule.fg_of_fg_map_injective (c • (LinearMap.id : V →ₗ[ℤ] V)) (fun x y h => ?_) (Submodule.FG.of_le h1 ?_)` and prove the remaining obligations. Establish `h2 : (c : ℂ) • x = (c : ℂ) • y` using `by simpa [Nat.cast_smul_eq_nsmul] using h`.
+
+Conclude with `smul_right_injective V (Nat.cast_ne_zero.2 hc.ne') h2`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hA x hx`. Use `GlobalTheory.ThetaInter.finite_quot hfg fun x hx => ⟨c, hc, hB x hx⟩` as an intermediate fact. Conclude with `Classical.epsilon_spec ((GlobalTheory.RepsMod.reps_facts V).1 B A (AddSubgroup.index_ne_zero_of_finite))`.
+-/
 theorem exists_reps {V : Type} [AddCommGroup V] [Module ℂ V] {Λ A B : AddSubgroup V} (hΛ : Λ.FG) {c : ℕ} (hc : 0 < c)
     (hA : ∀ x ∈ A, c • x ∈ Λ) (hB : ∀ x ∈ A, c • x ∈ B) : IsReps B A (repsOf B A) := by
   have hfg : A.FG := by
@@ -113,21 +150,33 @@ variable {X : Fields} (A : Amb X) {a b : ℕ}
 def leftV (f : Sp X.E b →ₗ[X.E] Sp X.E b) (z : VCx X.Tau a b) : VCx X.Tau a b :=
   fun τ => (((LinearMap.toMatrix' f).map (X.embC A.σ₀ τ)) * Matrix.of (z τ) : Matrix _ _ ℂ)
 
+/- English proof (translation)
+Simplify using `[leftV, Matrix.mul_apply]`.
+-/
 theorem leftV_apply (f : Sp X.E b →ₗ[X.E] Sp X.E b) (z : VCx X.Tau a b) (τ i j) :
     leftV A f z τ i j = ∑ k, X.embC A.σ₀ τ (f (Pi.single k 1) i) * z τ k j := by
   simp [leftV, Matrix.mul_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix' f).map (X.embC A.σ₀ τ) * ((LinearMap.toMatrix' g).map (X.embC A.σ₀ τ) * Matrix.of (z τ)) = (LinearMap.toMatrix' (f ∘ₗ g)).map (X.embC A.σ₀ τ) * Matrix.of (z τ)`. Rewrite using `[LinearMap.toMatrix'_comp, Matrix.map_mul, Matrix.mul_assoc]`.
+-/
 theorem leftV_comp (f g : Sp X.E b →ₗ[X.E] Sp X.E b) (z : VCx X.Tau a b) : leftV A f (leftV A g z) = leftV A (f ∘ₗ g) z := by
   funext τ
   change (LinearMap.toMatrix' f).map (X.embC A.σ₀ τ) * ((LinearMap.toMatrix' g).map (X.embC A.σ₀ τ) * Matrix.of (z τ)) =
     (LinearMap.toMatrix' (f ∘ₗ g)).map (X.embC A.σ₀ τ) * Matrix.of (z τ)
   rw [LinearMap.toMatrix'_comp, Matrix.map_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(LinearMap.toMatrix' LinearMap.id).map (X.embC A.σ₀ τ) * Matrix.of (z τ) = Matrix.of (z τ)`. Rewrite using `[LinearMap.toMatrix'_id, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+-/
 theorem leftV_id (z : VCx X.Tau a b) : leftV A LinearMap.id z = z := by
   funext τ
   change (LinearMap.toMatrix' LinearMap.id).map (X.embC A.σ₀ τ) * Matrix.of (z τ) = Matrix.of (z τ)
   rw [LinearMap.toMatrix'_id, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Rewrite using `[leftV_apply, emb_apply, LinearMap.comp_apply, ← LinearMap.toMatrix'_mulVec f]`. Simplify using `only [emb_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, LinearMap.toMatrix'_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+-/
 theorem leftV_emb (f : Sp X.E b →ₗ[X.E] Sp X.E b) (x : HomE X.E a b) : leftV A f (emb A x) = emb A (f ∘ₗ x) := by
   funext τ i j
   rw [leftV_apply, emb_apply, LinearMap.comp_apply, ← LinearMap.toMatrix'_mulVec f]
@@ -145,6 +194,13 @@ def leftE (g : Sp X.E b ≃ₗ[X.E] Sp X.E b) : VCx X.Tau a b ≃+ VCx X.Tau a b
     funext τ i j
     simp only [leftV_apply, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `key : ∀ w, HV A.sc (leftE A a γ.1 z) w = HV A.sc z ((leftE A a γ.1).symm w)` using `fun w => by`. Express the relevant statement in the definitionally equal form `HV A.sc (leftV A _ z) w = HV A.sc z (leftV A _ w)`. Rewrite using `[hv_apply, hv_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [leftV_apply, LinearEquiv.coe_coe, GlobalTheory.Mem.Col2.JetEx.VacEqPf.symm_single, hconj, map_sum, map_mul, Complex.conj_conj, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[key, AddEquiv.symm_apply_apply]`.
+-/
 theorem hv_leftE (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ (X.embC A.σ₀ τ x)) (γ : UF X.E b) (z w : VCx X.Tau a b) :
     HV A.sc (leftE A a γ.1 z) (leftE A a γ.1 w) = HV A.sc z w := by
   have key : ∀ w, HV A.sc (leftE A a γ.1 z) w = HV A.sc z ((leftE A a γ.1).symm w) := fun w => by
@@ -161,6 +217,9 @@ theorem hv_leftE (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
   rw [key, AddEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Conclude with `⟨_, h' x hx, (leftV_emb A _ x).symm.trans ((congrArg _ e).trans ((leftE A a g).left_inv v))⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨_, h x hx, (leftV_emb A _ x).symm⟩`.
+-/
 theorem leftE_mem (g : Sp X.E b ≃ₗ[X.E] Sp X.E b) {M : Submodule (𝓞 X.E) (HomE X.E a b)} (h : ∀ x ∈ M, g.toLinearMap ∘ₗ x ∈ M)
     (h' : ∀ x ∈ M, g.symm.toLinearMap ∘ₗ x ∈ M) (v : VCx X.Tau a b) :
     leftE A a g v ∈ laV (X.embC A.σ₀) A.δ M ↔ v ∈ laV (X.embC A.σ₀) A.δ M := by
@@ -172,6 +231,13 @@ theorem leftE_mem (g : Sp X.E b ≃ₗ[X.E] Sp X.E b) {M : Submodule (𝓞 X.E) 
 
 variable {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
 
+/- English proof (translation)
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, y, hy, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨r, hr, f ∘ₗ y, fun n hn => hf _ (hy n hn), LinearMap.comp_smul _ _ _⟩`.
+
+Consider the case `zero => rw [LinearMap.comp_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [LinearMap.comp_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`.
+
+Rewrite using `[← algebraMap_smul X.E r, LinearMap.comp_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem per_stab (f : Sp X.E b →ₗ[X.E] Sp X.E b) (hf : ∀ y ∈ N', f y ∈ N') : ∀ x ∈ per A N N', f ∘ₗ x ∈ per A N N' := by
   intro x hx
   induction hx using Submodule.span_induction with
@@ -184,6 +250,9 @@ theorem per_stab (f : Sp X.E b →ₗ[X.E] Sp X.E b) (hf : ∀ y ∈ N', f y ∈
     rw [← algebraMap_smul X.E r, LinearMap.comp_smul, algebraMap_smul]
     exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Establish `h : ∃ y, embH (X.embC A.σ₀) A.δ y = emb A x` using `⟨x, rfl⟩`. Unfold `onV`. Rewrite using `[dif_pos h]`. Conclude with `congrArg Ξ (embH_injective _ hδ h.choose_spec)`.
+-/
 theorem onV_emb (hδ : A.δ ≠ 0) [Nonempty X.Tau] (Ξ : HomE X.E a b → ℂ) (x : HomE X.E a b) :
     onV (X.embC A.σ₀) A.δ Ξ (emb A x) = Ξ x := by
   have h : ∃ y, embH (X.embC A.σ₀) A.δ y = emb A x := ⟨x, rfl⟩
@@ -191,6 +260,11 @@ theorem onV_emb (hδ : A.δ ≠ 0) [Nonempty X.Tau] (Ξ : HomE X.E a b → ℂ) 
   rw [dif_pos h]
   exact congrArg Ξ (embH_injective _ hδ h.choose_spec)
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ x, embH (X.embC A.σ₀) A.δ x = v`. Take `⟨x, rfl⟩` from `h`. Rewrite using `[show leftE A a g (embH (X.embC A.σ₀) A.δ x) = _ from leftV_emb A _ x, onV_emb A hδ, hk, ← onV_emb A hδ Ξ x]`. Both sides reduce to the same expression. Establish `h2 : ¬ ∃ x, embH (X.embC A.σ₀) A.δ x = leftE A a g v`.
+
+Introduce and unpack `⟨y, hy⟩`. Conclude with `h ⟨_, (leftV_emb A _ y).symm.trans ((congrArg _ hy).trans ((leftE A a g).left_inv v))⟩`. Unfold `onV`. Rewrite using `[dif_neg h, dif_neg h2, mul_zero]`.
+-/
 theorem onV_leftE (hδ : A.δ ≠ 0) [Nonempty X.Tau] (g : Sp X.E b ≃ₗ[X.E] Sp X.E b) {Ξ : HomE X.E a b → ℂ} {k : ℂ}
     (hk : ∀ x, Ξ (g.toLinearMap ∘ₗ x) = k * Ξ x) (v : VCx X.Tau a b) :
     onV (X.embC A.σ₀) A.δ Ξ (leftE A a g v) = k * onV (X.embC A.σ₀) A.δ Ξ v := by
@@ -204,6 +278,11 @@ theorem onV_leftE (hδ : A.δ ≠ 0) [Nonempty X.Tau] (g : Sp X.E b ≃ₗ[X.E] 
     unfold onV
     rw [dif_neg h, dif_neg h2, mul_zero]
 
+/- English proof (translation)
+Establish `: HV A.sc (emb A (r • x)) (emb A y) = HV A.sc (emb A x) (emb A (star r • y))`. Rewrite using `[hv_apply, hv_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [emb_apply, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul, hconj, Complex.conj_conj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [coc, imH, altE, this]`.
+-/
 theorem coc_smul (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ (X.embC A.σ₀ τ x)) (r : X.E) (x y : HomE X.E a b) :
     coc A (r • x) y = coc A x (star r • y) := by
   have : HV A.sc (emb A (r • x)) (emb A y) = HV A.sc (emb A x) (emb A (star r • y)) := by
@@ -214,6 +293,21 @@ theorem coc_smul (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ
     ring
   simp only [coc, imH, altE, this]
 
+/- English proof (translation)
+Establish `h0 : ∀ x ∈ M, ∀ y ∈ M, ∃ n : ℤ, coc A x y = n` using `fun x hx y hy => (semi_iff (isHerm_HV A.sc) _ _).1 hM (emb A x) ⟨x, hx, rfl⟩ (emb A y) ⟨y, hy, rfl⟩`. Use `(semi_iff (isHerm_HV A.sc) _ _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ _ ⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `∃ n : ℤ, coc A x y = n`. Set `I : Ideal (𝓞 X.E)` to `{ carrier := {r | ∀ s : 𝓞 X.E, ∃ n : ℤ, coc A ((s * r) • x) y = n} zero_mem' := fun s => ⟨0, by simp [coc_zero_left]⟩ add_mem' := fun {r r'} hr hr' s => by`.
+
+Take `⟨n, hn⟩` from `hr s`. Take `⟨m, hm⟩` from `hr' s`. Conclude with `⟨n + m, by rw [mul_add, add_smul, coc_add_left, hn, hm, Int.cast_add]⟩`. Use the proof step `smul_mem' := fun c r hr s => by`. Rewrite using `[smul_eq_mul, ← mul_assoc]`.
+
+Conclude with `hr _ }`. Establish `hI : I = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `Q : HeightOneSpectrum (𝓞 X.E)` to `⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField X.E)⟩`.
+
+Establish `hk : (c : X.E) ^ e Q ≠ 0` using `zpow_ne_zero _ (Nat.cast_ne_zero.2 hc.ne')`. Take `⟨u, hu, hx⟩` from `(mem_locP _ _ _).1 ((mem_tw _ _ _ _).1 hx Q)`. Take `⟨v, hv, hy⟩` from `(mem_locP _ _ _).1 ((mem_tw _ _ _ _).1 hy (conjPrime₂ Q))`. Rewrite `hy` using `[he, zpow_neg, inv_inv]`. Establish `hmem : u * cO X.E v ∈ I`.
+
+Introduce `s`. Take `⟨n, hn⟩` from `h0 _ (Submodule.smul_mem _ s hx) _ hy`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[← hn]`. Establish `e1 : (s * (u * cO X.E v)) • x = (star (algebraMap (𝓞 X.E) X.E v) * (c : X.E) ^ e Q) • (s • u • ((c : X.E) ^ e Q)⁻¹ • x)`.
+
+Rewrite using `[← algebraMap_smul X.E s, ← algebraMap_smul X.E u, ← algebraMap_smul X.E (s * _), smul_smul, smul_smul, smul_smul, map_mul, map_mul, algebraMap_cO]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, coc_smul A hconj, star_mul', star_star, star_zpow₀, star_natCast, mul_smul, algebraMap_smul]`. Break down `hm.isPrime.mem_or_mem (hle hmem) with h' | h'` into its components or cases.
+
+Conclude with `hu h'`. Conclude with `hv h'`. Establish `: (1 : 𝓞 X.E) ∈ I` using `hI ▸ Submodule.mem_top`. Simplify using `using this 1`.
+-/
 theorem semi_tw (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ (X.embC A.σ₀ τ x)) {M : Submodule (𝓞 X.E) (HomE X.E a b)}
     (hM : IsSemiChar (HV A.sc) (laV (X.embC A.σ₀) A.δ M) (alV A.d A.sc)) {c : ℕ} (hc : 0 < c) {e : HeightOneSpectrum (𝓞 X.E) → ℤ}
     (he : ∀ Q, e (conjPrime₂ Q) = -e Q) : IsSemiChar (HV A.sc) (laV (X.embC A.σ₀) A.δ (twist₂ M c e)) (alV A.d A.sc) := by
@@ -259,6 +353,15 @@ theorem semi_tw (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ 
   have : (1 : 𝓞 X.E) ∈ I := hI ▸ Submodule.mem_top
   simpa using this 1
 
+/- English proof (translation)
+Establish `key : ∀ x ∈ per A N N', ∀ v ∈ N, x v ∈ localization₂ P.asIdeal N'`. Introduce `x hx v hv`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, y, hy, rfl⟩` from `hz`.
+
+Take `⟨s, hs, h⟩` from `hP hr`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 h`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← smul_assoc, ← ho, algebraMap_smul]`. Conclude with `N'.smul_mem _ (hy v hv)`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul r x _ hx => exact Submodule.smul_mem _ r hx`. Introduce and unpack `v ⟨t, ht, hv⟩`. Take `⟨s, hs, hx⟩` from `hx`.
+
+Rewrite using `[← localization_localization₂]`. Use `⟨s * t, P.asIdeal.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Use `key _ hx _ hv` as an intermediate fact. Rewrite `this` using `[LinearMap.smul_apply, ← algebraMap_smul X.E t, map_smul, algebraMap_smul, smul_smul]`. Then use the resulting hypothesis.
+-/
 theorem per_loc {P : HeightOneSpectrum (𝓞 X.E)} (hP : A.AA ≤ localization₂ P.asIdeal (1 : Submodule (𝓞 X.E) X.E)) {x : HomE X.E a b}
     (hx : x ∈ localization₂ P.asIdeal (per A N N')) : ∀ v ∈ localization₂ P.asIdeal N, x v ∈ localization₂ P.asIdeal N' := by
   have key : ∀ x ∈ per A N N', ∀ v ∈ N, x v ∈ localization₂ P.asIdeal N' := by
@@ -281,6 +384,17 @@ theorem per_loc {P : HeightOneSpectrum (𝓞 X.E)} (hP : A.AA ≤ localization�
   have := key _ hx _ hv
   rwa [LinearMap.smul_apply, ← algebraMap_smul X.E t, map_smul, algebraMap_smul, smul_smul] at this
 
+/- English proof (translation)
+Establish `hcE : (c : X.E) ≠ 0` using `Nat.cast_ne_zero.2 hc.ne'`. Establish `q1 : ∀ x ∈ per A N N', γ.1.toLinearMap ∘ₗ x ∈ per A N N'` using `per_stab A _ fun y hy => by`. Rewrite using `[← hγ]`. Conclude with `⟨y, hy, rfl⟩`. Establish `q2 : ∀ x ∈ per A N N', γ.1.symm.toLinearMap ∘ₗ x ∈ per A N N'` using `per_stab A _ fun y hy => by`.
+
+Rewrite `hy` using `[← hγ, mem_gmap]`. Conclude with `hy`. Establish `tw : ∀ e v, leftE A a γ.1 v ∈ laV (X.embC A.σ₀) A.δ (twist₂ (per A N N') c e) ↔ v ∈ laV (X.embC A.σ₀) A.δ (twist₂ (per A N N') c e)` using `fun e => leftE_mem A _ (tw_stab (LinearMap.llcomp X.E _ _ _ γ.1.toLinearMap) q1 c e) (tw_stab (LinearMap.llcomp X.E _ _ _ γ.1.symm.toLinearMap) q2 c e)`. Establish `dn : ∀ e : HeightOneSpectrum (𝓞 X.E) → ℤ, (∀ Q, -1 ≤ e Q) → ∀ v ∈ laV (X.embC A.σ₀) A.δ (twist₂ (per A N N') c e), c • v ∈ lam A N N'`. Introduce and unpack `e he _ ⟨x, hx, rfl⟩`.
+
+Conclude with `⟨_, nsmul_of_tw hc he hx, map_nsmul _ _ _⟩`. Establish `dA` using `dn (fun Q => -expS SS Q) fun Q => by have := expS_bound SS Q; omega`. Establish `dB` using `dn (expS SS) fun Q => (expS_bound SS Q).1`. Use `xiL_stab (isHerm_HV A.sc) (semi_tw A hconj hΛ hc fun Q => by rw [TwistSd.expS_conjP hSS]) (semi_tw A hconj hΛ hc (TwistSd.expS_conjP hSS)) hΛ (exists_reps hfg hc dA dA) (exists_reps hfg hc (fun x hx => nsmul_mem hx.1 c) ?_) (exists_reps hfg hc dB dB) 1 hθ ?_ (leftE A a γ.1) (hv_l …` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, hx, rfl⟩, -⟩`.
+
+Conclude with `⟨_, nsmul_mem_tw hc (fun Q => (expS_bound SS Q).2) hx, map_nsmul _ _ _⟩`. Introduce and unpack `_ ⟨x, -, rfl⟩ _ - ⟨y, hy, rfl⟩`. Rewrite using `[← map_add]`. Use `(onV_emb A hδ Ξ _).trans ((hΞ x y ⟨(c : X.E)⁻¹ • y, fun P hP => per_loc A (hAA P hP) ?_, ?_⟩).trans (onV_emb A hδ Ξ x).symm)` and prove the remaining obligations. Use `(mem_tw _ _ _ _).1 hy P` as an intermediate fact.
+
+Rewrite `this` using `[expS, if_pos hP, zpow_one]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `(c : 𝓞 X.E) • (c : X.E)⁻¹ • y = y`. Rewrite using `[← algebraMap_smul X.E (c : 𝓞 X.E), map_natCast, smul_smul, mul_inv_cancel₀ hcE, one_smul]`.
+-/
 theorem core (hconj : ∀ τ x, X.embC A.σ₀ τ (star x) = starRingEnd ℂ (X.embC A.σ₀ τ x)) (hδ : A.δ ≠ 0) [Nonempty X.Tau]
     {SS : Finset (HeightOneSpectrum (𝓞 X.E))} {c : ℕ} (hc : 0 < c) (hSS : ∀ P ∈ SS, conjPrime₂ P ∉ SS)
     (hAA : ∀ P ∈ SS, A.AA ≤ localization₂ P.asIdeal (1 : Submodule (𝓞 X.E) X.E))
@@ -329,6 +443,11 @@ open GlobalTheory.ThetaMove.SeamMoves GlobalTheory.Mem.Col2.JetEx.VacEqPf
 variable {D : D7} {X : Fields} (s : Seam D X) {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ)
   (cD : D.what₂.Tau → ℂ)
 
+/- English proof (translation)
+Establish `s0` using `Moved.sd_stdL D a`. Establish `s0'` using `Moved.sd_stdL D b`. Establish `h0` using `GlobalTheory.Mem.Col2.WeilVac.thZero_mem B (GlobalTheory.FourthRootStd.stdOK_of_crv D cc δ B hC) a b`. Establish `h1` using `(GlobalTheory.theta_translation_intertwiner_unitary D cc δ hC a b _ _ (Or.inr ⟨_, _, s0, s0', rfl⟩) (Or.inr ⟨_, _, h, s0', rfl⟩) _ h0).2.1`. Establish `h2` using `(GlobalTheory.theta_translation_intertwiner_unitary D cc δ hC a b _ _ (Or.inr ⟨_, _, h, s0', rfl⟩) (Or.inr ⟨_, _, h, h', rfl⟩) _ h1).2.1`.
+
+Conclude with `Submodule.smul_mem _ (Base.chiFac χ a b L L') (x := B.thMoved a b L L') h2.2`.
+-/
 theorem eNat_mem (hC : StandardLatticesGL3.Crv D cc δ) {a b : ℕ} {L L'} (h : StandardLatticesGL3.SD D L) (h' : StandardLatticesGL3.SD D L') :
     B.eNat χ a b L L' ∈ fixedBy (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (TaylorLogMetric.al D B.tor) (TaylorLogMetric.La D B.tor L L') := by
   have s0 := Moved.sd_stdL D a
@@ -340,6 +459,15 @@ theorem eNat_mem (hC : StandardLatticesGL3.Crv D cc δ) {a b : ℕ} {L L'} (h : 
     (Or.inr ⟨_, _, h, h', rfl⟩) _ h1).2.1
   exact Submodule.smul_mem _ (Base.chiFac χ a b L L') (x := B.thMoved a b L L') h2.2
 
+/- English proof (translation)
+Set `j : 𝓞 D.host.E →+* 𝓞 X.E` to `RingOfIntegers.mapRingHom (s.iE.symm : D.host.E →+* X.E)`. Establish `hj : ∀ a : 𝓞 D.host.E, ((j a : 𝓞 X.E) : X.E) = s.iE.symm (a : D.host.E)` using `fun _ => rfl`. Use `haveI := P.isPrime`. Establish `: Finite (𝓞 X.E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`. Establish `hl : (ringChar (𝓞 X.E ⧸ P.asIdeal)).Prime` using `CharP.char_is_prime (𝓞 X.E ⧸ P.asIdeal) _`.
+
+Establish `hP : ((ringChar (𝓞 X.E ⧸ P.asIdeal) : ℕ) : 𝓞 X.E) ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `CharP.cast_eq_zero _ _`. Take `⟨z, hz, hden⟩` from `GlobalTheory.AAUnitAway.exists_den D (P.asIdeal.comap j) hl (UpperTheory.Ram.notMem_small_of_QS_notMem D.host hP h2) (fun e => hq (e ▸ hP)) (by rw [Ideal.mem_comap, map_natCast]; exact hP)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `r ⟨c, -, t, ht, rfl⟩`. Take `⟨w, hw⟩` from `hden t ht`. Use `(mem_locP P _ _).2 ⟨j z, hz, Submodule.mem_one.2 ⟨j (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `((j _ : 𝓞 X.E) : X.E) = ((j z : 𝓞 X.E) : X.E) * _`.
+
+Rewrite using `[hj, hj, ← map_mul]`. Use `congr 1`. Establish `e : ((algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c * w : 𝓞 D.host.E) : D.host.E) = ((c : D.host.K) : D.host.E) * (w : D.host.E)` using `rfl`. Rewrite using `[e, hw]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem aa_le {P : HeightOneSpectrum (𝓞 X.E)} (h2 : ((D.host.QS : ℕ) : 𝓞 X.E) ∉ P.asIdeal) (hq : ((D.host.q : ℕ) : 𝓞 X.E) ∉ P.asIdeal) :
     (ambOf s B χ cD : Amb X).AA ≤ localization₂ P.asIdeal (1 : Submodule (𝓞 X.E) X.E) := by
   let j : 𝓞 D.host.E →+* 𝓞 X.E := RingOfIntegers.mapRingHom (s.iE.symm : D.host.E →+* X.E)
@@ -365,6 +493,17 @@ theorem aa_le {P : HeightOneSpectrum (𝓞 X.E)} (h2 : ((D.host.QS : ℕ) : 𝓞
   rw [e, hw]
   ring
 
+/- English proof (translation)
+Use `letI := D.host.cmStar`. Establish `h` using `hE.1 a b ⟨s.lat N, hA.2.2.1⟩ ⟨s.lat N', hA.2.2.2⟩ hA.1 hA.2.1 1 ⟨matOf s γ.1, matOf_unitary s hok γ⟩`. Establish `h1 : SDLat.smulLat ((1 : Matrix.unitaryGroup (Fin a) D.host.E) : Matrix (Fin a) (Fin a) D.host.E) (s.lat N) = s.lat N`. Express the relevant statement in the definitionally equal form `SDLat.smulLat (1 : Matrix (Fin a) (Fin a) D.host.E) _ = _`. Unfold `SDLat.smulLat`.
+
+Rewrite using `[Matrix.toLin'_one]`. Conclude with `Submodule.map_id _`. Establish `h2` using `smulLat_matOf s γ.1 N'`. Rewrite `h2` using `[hγ]`. Simplify using `only at h`.
+
+Rewrite `h` using `[h1, h2]`. Take `⟨w, rfl⟩` from `(leftE (ambOf s B χ cD : Amb X) a γ.1).symm.surjective z`. Rewrite using `[AddEquiv.apply_symm_apply]`. Use `(congrFun h _).symm.trans ?_` and prove the remaining obligations. Use `show B.eNat χ a b (s.lat N) (s.lat N') _ = B.eNat χ a b (s.lat N) (s.lat N') _`.
+
+Use `congr 1`. Use function extensionality and compare the values at `τ`. Establish `e1 : ((1 : Matrix.unitaryGroup (Fin a) D.host.E) : Matrix (Fin a) (Fin a) D.host.E).map (B.tor.emb τ) = 1` using `Matrix.map_one _ (map_zero (TaylorLogMetric.embT D τ)) (map_one (TaylorLogMetric.embT D τ))`. Rewrite using `[e1, Matrix.mul_one]`. Use function extensionality and compare the values at `i j`.
+
+Use `Eq.trans ?_ (leftV_apply (ambOf s B χ cD : Amb X) γ.1.symm.toLinearMap w (s.iT.symm τ) i j).symm` and prove the remaining obligations. Use `show ∑ k, star (TaylorLogMetric.embT D τ (s.iE (γ.1 (Pi.single i 1) k))) * w (s.iT.symm τ) k j = ∑ k, s.σ₀ (X.emb (s.iT.symm τ) (γ.1.symm (Pi.single k 1) i)) * w (s.iT.symm τ) k j`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hok.1, Equiv.apply_symm_apply, symm_single, hok.2, GlobalTheory.InertSign.embT_conj]`. Both sides reduce to the same expression.
+-/
 theorem vac_leftE (hok : s.Ok) (hE : B.EqP χ) {a b : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E a)} {N' : Submodule (𝓞 X.E) (Sp X.E b)}
     (hA : TaylorLogMetric.admitted D a b (s.lat N) (s.lat N')) (γ : UF X.E b) (hγ : gmap γ.1 N' = N') (z : VCx X.Tau a b) :
     (ambOf s B χ cD : Amb X).e a b N N' (leftE (ambOf s B χ cD : Amb X) a γ.1 z) = (ambOf s B χ cD : Amb X).e a b N N' z := by
@@ -400,6 +539,19 @@ end Record
 
 open GlobalTheory.ThetaMove.SeamMoves in
 
+/- English proof (translation)
+Introduce `D X s cc δ B χ cD hok hcc hδ hχ a b N N' hA SS c Ξ hc hSS h2q hΞ γ hγ k hk z`. Establish `hC : StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hT : Nonempty X.Tau` using `(⟨D.eTau.symm (Classical.arbitrary _)⟩ : Nonempty D.what₂.Tau).map s.iT.symm`. Establish `hK : StandardLatticesGL3.KLat D (TaylorLogMetric.tor0 D cc δ) (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (s.lat N) (s.lat N'))` using `Or.inr ⟨_, _, hA.2.2.1, hA.2.2.2, rfl⟩`. Take `⟨f1, -, f3, f4⟩` from `GlobalTheory.ThetaInter.klat_facts hC hK`.
+
+Establish `hq` using `(GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 cc δ hC a b _ hK).2.2.2.2.2.2`. Establish `hlam` using `(GlobalTheory.PeriodTransport.seam_lattices X D s cc δ B χ cD hok).2 a b N N'`. Take `⟨-, h2, h3⟩` from `(Transport.inter_transport _ _ (reidx s a b) (Formalism.L2.Ker.HV (ambOf s B χ cD).sc) (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau a b) (alV (ambOf s B χ cD).d (ambOf s B χ cD).sc) (TaylorLogMetric.al D B.tor) (lam (ambOf s B χ cD) N N') (lam (ambOf s …`. Take `⟨m, hm⟩` from `hq (reidx s a b x) ((hlam x).1 hx)`. Conclude with `alV_eq s B x hm)`.
+
+Use the proof step `(isHerm_formV _ _ _ _) f3 f4).1`. Establish `hfg : (lam (ambOf s B χ cD) N N').FG`. Establish `e : lam (ambOf s B χ cD) N N' = (TaylorLogMetric.La D B.tor (s.lat N) (s.lat N')).map (reidx s a b).symm.toLinearMap.toAddMonoidHom`. Use extensionality with `x`. Rewrite using `[hlam]`.
+
+Use `⟨fun h => ⟨_, h, (reidx s a b).symm_apply_apply x⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Express the relevant statement in the definitionally equal form `reidx s a b ((reidx s a b).symm y) ∈ _`. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis. Rewrite using `[e]`.
+
+Take `⟨S, hS⟩` from `f1`. Conclude with `⟨S.image _, by rw [Finset.coe_image, ← AddMonoidHom.map_closure, hS]⟩`. Conclude with `core (ambOf s B χ cD) (fun τ x => by`. Express the relevant statement in the definitionally equal form `s.σ₀ (X.emb τ (star x)) = starRingEnd ℂ (s.σ₀ (X.emb τ x))`. Rewrite using `[hok.1, hok.1, hok.2, GlobalTheory.InertSign.embT_conj]) (delta_ne_zero B) hc hSS`.
+
+Use the proof step `(fun P hP => aa_le s B χ cD (h2q P hP).1 (h2q P hP).2) h2 hfg (h3 _ (eNat_mem B χ hC hA.2.2.1 hA.2.2.2)) hΞ γ hγ`. Use the proof step `(vac_leftE s B χ cD hok (GlobalTheory.Mem.NatEqui.eqP D cc δ B χ hcc hδ hχ) hA γ hγ) hk z`.
+-/
 theorem thC_left_stab : ∀ (D : D7) (X : Fields) (s : Seam D X) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ), s.Ok → TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → TaylorLogMetric.IsChi D χ → ∀ (a b : ℕ) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)), TaylorLogMetric.admitted D a b (s.lat N) (s.lat N') → ∀ (SS : Finset (HeightOneSpectrum (𝓞 X.E))) (c : ℕ) (Ξ : HomE X.E a b → ℂ), 0 < c → (∀ P ∈ SS, conjPrime₂ P ∉ SS) → (∀ P ∈ SS, ((D.host.QS : ℕ) : 𝓞 X.E) ∉ P.asIdeal ∧ ((D.host.q : ℕ) : 𝓞 X.E) ∉ P.asIdeal) → (∀ x, ∀ z ∈ mulLat c (homAt SS N N'), Ξ (x + z) = Ξ x) → ∀ (γ : UF X.E b), gmap γ.1 N' = N' → ∀ k : ℂ, (∀ x, Ξ (γ.1.toLinearMap ∘ₗ x) = k * Ξ x) → ∀ z : VCx X.Tau a b, thC (X.embC (ambOf s B χ cD : Amb X).σ₀) (ambOf s B χ cD : Amb X).δ (ambOf s B χ cD : Amb X).d (ambOf s B χ cD : Amb X).sc (ambOf s B χ cD : Amb X).AA SS N N' c Ξ ((ambOf s B χ cD : Amb X).e a b N N') (fun τ => (((LinearMap.toMatrix' γ.1.toLinearMap).map (X.embC (ambOf s B χ cD : Amb X).σ₀ τ)) * Matrix.of (z τ) : Matrix _ _ ℂ)) = k * thC (X.embC (ambOf s B χ cD : Amb X).σ₀) (ambOf s B χ cD : Amb X).δ (ambOf s B χ cD : Amb X).d (ambOf s B χ cD : Amb X).sc (ambOf s B χ cD : Amb X).AA SS N N' c Ξ ((ambOf s B χ cD : Amb X).e a b N N') z := by
   intro D X s cc δ B χ cD hok hcc hδ hχ a b N N' hA SS c Ξ hc hSS h2q hΞ γ hγ k hk z
   have hC : StandardLatticesGL3.Crv D cc δ := ⟨hcc, hδ⟩

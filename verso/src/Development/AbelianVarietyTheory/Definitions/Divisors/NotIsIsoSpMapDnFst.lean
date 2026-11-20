@@ -15,6 +15,9 @@ variable {S : Scheme.{0}}
 def ptMap {C C' : Type} [CommRing C] [CommRing C'] (s : Sp C ⟶ S) (φ : C →+* C') :
     Over.mk (spMap φ ≫ s) ⟶ Over.mk s := Over.homMk (spMap φ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ptMap_left {C C' : Type} [CommRing C] [CommRing C'] (s : Sp C ⟶ S) (φ : C →+* C') :
     (ptMap s φ).left = spMap φ := rfl
 
@@ -49,12 +52,21 @@ def SmallLift : Prop :=
 
 variable {A M}
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ _ T _ N hN ↦ h.chart T N hN`.
+-/
 theorem FieldChart.of_isChart (h : IsChart A M) : FieldChart A M := fun _ _ _ _ T _ N hN ↦ h.chart T N hN
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance, rfl, by simpa using IsPullback.of_id_fst (f := 𝟙 Γ(T, ⊤))⟩`.
+-/
 theorem Milnor.id (T : Scheme.{0}) [IsAffine T] : Milnor (𝟙 T) (𝟙 T) (𝟙 T) (𝟙 T) :=
   ⟨inferInstance, inferInstance, inferInstance, inferInstance, rfl, by
     simpa using IsPullback.of_id_fst (f := 𝟙 Γ(T, ⊤))⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance aff₁ := inferInstance aff₂ := inferInstance closed := IsClosedImmersion.spec_of_surjective d hd w := by rw [← Spec.map_comp, ← Spec.map_comp, h.w] cart := h.of_iso (Scheme.ΓSpecIso R).symm (Scheme.ΓSpecIso R₁).symm (Scheme.ΓSpecIso R₂).symm (Scheme.ΓSpecIso R₀).symm …`.
+-/
 theorem Milnor.of_isPullback {R R₁ R₂ R₀ : CommRingCat.{0}} {a : R ⟶ R₁} {b : R ⟶ R₂} {c : R₁ ⟶ R₀} {d : R₂ ⟶ R₀}
     (h : IsPullback a b c d) (hd : Function.Surjective d) :
     Milnor (Spec.map a) (Spec.map b) (Spec.map c) (Spec.map d) where
@@ -66,14 +78,23 @@ theorem Milnor.of_isPullback {R R₁ R₂ R₀ : CommRingCat.{0}} {a : R ⟶ R�
   cart := h.of_iso (Scheme.ΓSpecIso R).symm (Scheme.ΓSpecIso R₁).symm (Scheme.ΓSpecIso R₂).symm
     (Scheme.ΓSpecIso R₀).symm (by simp) (by simp) (by simp) (by simp)
 
+/- English proof (translation)
+The claim follows from `fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩`.
+-/
 theorem dnFst_surjective (k : Type) [CommRing k] : Function.Surjective (dnFst k) :=
   fun x ↦ ⟨TrivSqZeroExt.inl x, rfl⟩
 
+/- English proof (translation)
+The claim follows from `fun h ↦ by have h1 : (DualNumber.eps : DualNumber k) = 0 := h (by rw [map_zero]; rfl) have h2 := congrArg TrivSqZeroExt.snd h1 simp at h2`.
+-/
 theorem dnFst_not_injective (k : Type) [CommRing k] [Nontrivial k] : ¬ Function.Injective (dnFst k) := fun h ↦ by
   have h1 : (DualNumber.eps : DualNumber k) = 0 := h (by rw [map_zero]; rfl)
   have h2 := congrArg TrivSqZeroExt.snd h1
   simp at h2
 
+/- English proof (translation)
+The claim follows from `Milnor.of_isPullback (IsPullback.of_hasPullback _ _) (dnFst_surjective k)`.
+-/
 theorem Milnor.dualNumber (k : Type) [CommRing k] :
     Milnor (Spec.map (pullback.fst (CommRingCat.ofHom (dnFst k)) (CommRingCat.ofHom (dnFst k))))
       (Spec.map (pullback.snd (CommRingCat.ofHom (dnFst k)) (CommRingCat.ofHom (dnFst k))))
@@ -82,6 +103,13 @@ theorem Milnor.dualNumber (k : Type) [CommRing k] :
 
 omit [GrpObj A] in
 
+/- English proof (translation)
+Take `⟨W, hW⟩` from `h`. Use `(hW _ (𝟙 _)).2 fun z ↦ ?_` and prove the remaining obligations. Use `haveI : IsLocalRing C' := IsLocalRing.of_surjective' φ hφ`. Use `haveI : IsLocalHom φ := IsLocalHom.of_surjective φ hφ`. Establish `h1` using `(hW _ (ptMap s φ)).1 ⟨u₀, h₀⟩ (IsLocalRing.closedPoint C')`.
+
+Establish `h2 : IsLocalRing.closedPoint C ∈ (W : TopologicalSpace.Opens (PrimeSpectrum C))`. Rewrite using `[← IsLocalRing.comap_closedPoint φ]`. Conclude with `h1`. Establish `h3` using `(IsLocalRing.closedPoint_mem_iff (R := C) W).1 h2`. Rewrite using `[h3]`.
+
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem lift_of_chartAt {C C' : Type} [CommRing C] [IsLocalRing C] [CommRing C'] [Nontrivial C'] (s : Sp C ⟶ S)
     (φ : C →+* C') (hφ : Function.Surjective φ) (N : LB (A ⊗ Over.mk s).left) (h : ChartAt A M N)
     (u₀ : Over.mk (spMap φ ≫ s) ⟶ U) (h₀ : Same A N M (ptMap s φ) u₀) :
@@ -96,14 +124,25 @@ theorem lift_of_chartAt {C C' : Type} [CommRing C] [IsLocalRing C] [CommRing C']
   have h3 := (IsLocalRing.closedPoint_mem_iff (R := C) W).1 h2
   rw [h3]; trivial
 
+/- English proof (translation)
+The claim follows from `fun k _ _ N hN u₀ h₀ ↦ lift_of_chartAt _ (dnFst k) (dnFst_surjective k) N (h.chart _ N hN) u₀ h₀`.
+-/
 theorem TanLift.of_isChart (h : IsChart A M) : TanLift A M := fun k _ _ N hN u₀ h₀ ↦
   lift_of_chartAt _ (dnFst k) (dnFst_surjective k) N (h.chart _ N hN) u₀ h₀
 
+/- English proof (translation)
+The claim follows from `fun C _ _ e he _ s N hN u₀ h₀ ↦ by haveI : Nontrivial (C ⧸ Ideal.span {e}) := Ideal.Quotient.nontrivial_iff.2 (by rw [Ne, Ideal.span_singleton_eq_top]; exact he) exact lift_of_chartAt s _ Ideal.Quotient.mk_surjective N (h.chart _ N hN) u₀ h₀`.
+-/
 theorem SmallLift.of_isChart (h : IsChart A M) : SmallLift A M := fun C _ _ e he _ s N hN u₀ h₀ ↦ by
   haveI : Nontrivial (C ⧸ Ideal.span {e}) := Ideal.Quotient.nontrivial_iff.2 (by
     rw [Ne, Ideal.span_singleton_eq_top]; exact he)
   exact lift_of_chartAt s _ Ideal.Quotient.mk_surjective N (h.chart _ N hN) u₀ h₀
 
+/- English proof (translation)
+Introduce `h`. Establish `: IsIso (CommRingCat.ofHom (dnFst k)).op`. Establish `: IsIso (Scheme.Spec.map (CommRingCat.ofHom (dnFst k)).op)` using `h`. Conclude with `isIso_of_reflects_iso _ Scheme.Spec`. Establish `: IsIso (CommRingCat.ofHom (dnFst k))` using `(isIso_op_iff _).1 this`.
+
+Conclude with `dnFst_not_injective k (ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom (dnFst k))).1`.
+-/
 theorem not_isIso_spMap_dnFst (k : Type) [CommRing k] [Nontrivial k] : ¬ IsIso (spMap (dnFst k)) := by
   intro h
   have : IsIso (CommRingCat.ofHom (dnFst k)).op := by
@@ -112,6 +151,9 @@ theorem not_isIso_spMap_dnFst (k : Type) [CommRing k] [Nontrivial k] : ¬ IsIso 
   have : IsIso (CommRingCat.ofHom (dnFst k)) := (isIso_op_iff _).1 this
   exact dnFst_not_injective k (ConcreteCategory.bijective_of_isIso (CommRingCat.ofHom (dnFst k))).1
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem dnFst_comp_dnInl (k : Type) [CommRing k] : (dnFst k).comp (dnInl k) = RingHom.id k := by
   ext x; rfl
 

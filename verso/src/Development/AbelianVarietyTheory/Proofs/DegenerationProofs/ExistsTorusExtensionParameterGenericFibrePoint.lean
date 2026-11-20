@@ -19,6 +19,17 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Introduce `hL hT o Ω _ _ _ _ S ρ p _ y₀ u l a`. Establish `hN : 4 ≤ S.N`. Rewrite using `[ρ.N_eq]`. Establish `h1 : 2 ≤ ρ.n ^ ρ.k` using `le_trans ρ.n_prime.two_le (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `haveI : CharZero u.V := RingHom.charZero ((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V)))`. Take `⟨k, hk, hint⟩` from `GlobalTheory.T.theta_test_power_integral hL o Ω S ρ p y₀ u a`. Take `⟨a₁, ⟨c, hc, hca⟩, hpow⟩` from `GlobalTheory.T.exists_integral_nthRoot_testModel_point hL o Ω S ρ p y₀ u (a ^ k) k hk hint`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.T.exists_torusExtensionPoint_of_integralModelPoint hL o Ω S ρ p y₀ u c hc`. Establish `hpar` using `(GlobalTheory.T.torusCoord_unit_and_section_eq_expansion hL o Ω S ρ p y₀ u c g₁ a₁ hc hca hg₁).2`.
+
+Establish `hNk : 1 ≤ S.N * k` using `Nat.mul_pos (by omega) hk`. Take `⟨f, hf, hsurj, -⟩` from `hT u.V u.complete u.A u.G u.D u.U (PadicAlgCl p) (S.N * k) hNk`. Use `haveI : IsMonHom u.U.gen.hom := u.U.gen_hom`. Establish `hk' : (a₁ ≫ u.U.gen.hom) ^ k = (a ≫ u.U.gen.hom) ^ k`. Rewrite using `[← MonObj.pow_comp, ← MonObj.pow_comp, hpow]`.
+
+Establish `hx : ((a ≫ u.U.gen.hom) * (a₁ ≫ u.U.gen.hom)⁻¹) ^ (S.N * k) = 1`. Rewrite using `[mul_comm S.N k, pow_mul, mul_pow, inv_pow, hk', mul_inv_cancel, one_pow]`. Take `⟨pk, hpk⟩` from `hsurj _ hx`. Take `⟨g, hg⟩` from `(gt_add_iota_sub_exist hL o Ω S ρ p y₀ u).1 pk.g g₁`. Use `⟨g, GlobalTheory.T.thetaParameter_of_thetaParameter_mul_degree hL o Ω S ρ p y₀ u l S.N k a g hN hk ?_⟩` and prove the remaining obligations.
+
+Conclude with `ParTranslate.parAt_translate hL o Ω S ρ p y₀ u (S.N * k) pk _ a₁ a g₁ g hNk ((hf pk _).2 hpk.symm) (by rw [inv_mul_cancel_right]) hg (hpar _ hNk)`.
+-/
 theorem exists_parAt : GlobalTheory.UT.LL → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab) (a : u.PtC), ∃ g, u.ParAt S.N a g := by
   intro hL hT o Ω _ _ _ _ S ρ p _ y₀ u l a
   have hN : 4 ≤ S.N := by

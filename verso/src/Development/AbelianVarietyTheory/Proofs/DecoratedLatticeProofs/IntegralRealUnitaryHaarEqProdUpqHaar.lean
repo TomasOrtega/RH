@@ -16,6 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HaarReal
 open Formalism.IndefR.Eqv
 
+/- English proof (translation)
+Establish `hsum : ∀ x : AE D, psiT D τ x = ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) * psiT D τ (basAF D c)`. Introduce `x`. Use `conv_lhs => rw [← (basAF D).sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, map_mul]`. Establish `hc : ∀ c, Continuous fun x : AE D => (basAF D).repr x c` using `fun c => (continuous_apply c).comp (G5.tensCoordH (basE D) (AF D.host.F)).continuous`. Establish `halg : Continuous fun a : AF D.host.F => psiT D τ (algebraMap (AF D.host.F) (AE D) a)`. Establish `e : (fun a : AF D.host.F => psiT D τ (algebraMap (AF D.host.F) (AE D) a)) = fun a => thetaC D τ ((fstA D.host.F a) ⊗ₜ[D.host.F] (1 : D.host.E))`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [psiT, RingHom.comp_apply, Algebra.TensorProduct.algebraMap_apply, infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `((isInfFam_thetaC D) τ).2.comp continuous_fst`. Establish `hfun : (⇑(psiT D τ) : AE D → ℂ) = fun x => ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) * psiT D τ (basAF D c)` using `funext hsum`.
+
+Rewrite using `[hfun]`. Conclude with `continuous_finset_sum _ fun c _ => (halg.comp (hc c)).mul continuous_const`.
+-/
 theorem continuous_psiT (D : D7) (τ : D.what₂.Tau) : Continuous (psiT D τ) := by
   have hsum : ∀ x : AE D, psiT D τ x = ∑ c, psiT D τ (algebraMap (AF D.host.F) (AE D) ((basAF D).repr x c)) *
       psiT D τ (basAF D c) := by
@@ -48,15 +57,24 @@ open Formalism.IndefR.Eqv Formalism.MainNotions.StandardLattice
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
+/- English proof (translation)
+The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ))`.
+-/
 theorem fr_mul_inv (τ : D.what₂.Tau) : M.fr τ * (M.fr τ)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ))
 
+/- English proof (translation)
+The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ))`.
+-/
 theorem inv_mul_fr (τ : D.what₂.Tau) : (M.fr τ)⁻¹ * M.fr τ = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ))
 
 def toJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ :=
   M.fr τ * g * (M.fr τ)⁻¹
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr toJ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ofFr_toJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (toJ M τ g) = g := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr toJ
@@ -64,6 +82,9 @@ theorem ofFr_toJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
       = ((M.fr τ)⁻¹ * M.fr τ) * g * ((M.fr τ)⁻¹ * M.fr τ) := by simp only [Matrix.mul_assoc]
     _ = g := by rw [inv_mul_fr, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr toJ`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem toJ_ofFr (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     toJ M τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ u) = u := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr toJ
@@ -71,6 +92,9 @@ theorem toJ_ofFr (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ)
       = (M.fr τ * (M.fr τ)⁻¹) * u * (M.fr τ * (M.fr τ)⁻¹) := by simp only [Matrix.mul_assoc]
     _ = u := by rw [fr_mul_inv, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Unfold `toJ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_fr, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = M.fr τ * g * (M.fr τ)⁻¹ * (M.fr τ * h * (M.fr τ)⁻¹) := by simp only [Matrix.mul_assoc]`.
+-/
 theorem toJ_mul (τ : D.what₂.Tau) (g h : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     toJ M τ (g * h) = toJ M τ g * toJ M τ h := by
   unfold toJ
@@ -78,9 +102,17 @@ theorem toJ_mul (τ : D.what₂.Tau) (g h : Matrix (Fin V.rank) (Fin V.rank) ℂ
         rw [inv_mul_fr, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = M.fr τ * g * (M.fr τ)⁻¹ * (M.fr τ * h * (M.fr τ)⁻¹) := by simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Unfold `toJ`. Rewrite using `[Matrix.mul_one, fr_mul_inv]`.
+-/
 theorem toJ_one (τ : D.what₂.Tau) : toJ M τ 1 = 1 := by
   unfold toJ; rw [Matrix.mul_one, fr_mul_inv]
 
+/- English proof (translation)
+Establish `hG` using `M.fr_gram τ`. Establish `h1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, fr_mul_inv, Matrix.conjTranspose_one]`. Unfold `Formalism.REAL.inUJ toJ`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`. Rewrite using `[hG, hg, ← hG]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (M.ε τ) := by rw [h1, fr_mul_inv, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem inUJ_toJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) : Formalism.REAL.inUJ (M.ε τ) (toJ M τ g) := by
   have hG := M.fr_gram τ
@@ -94,6 +126,13 @@ theorem inUJ_toJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ)
         rw [hG, hg, ← hG]; simp only [Matrix.mul_assoc]
     _ = Formalism.REAL.Jm (M.ε τ) := by rw [h1, fr_mul_inv, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hG` using `M.fr_gram τ`. Establish `h1 : ((M.fr τ)⁻¹)ᴴ * (M.fr τ)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, fr_mul_inv, Matrix.conjTranspose_one]`. Unfold `Formalism.REAL.inUJ at hu`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr`.
+
+Rewrite using `[← hG]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * (uᴴ * Formalism.REAL.Jm (M.ε τ) * u) * M.fr τ := by`. Rewrite using `[h1, fr_mul_inv, Matrix.mul_one, Matrix.mul_one]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ := by rw [hu]`.
+-/
 theorem unit_ofFr (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hu : Formalism.REAL.inUJ (M.ε τ) u) :
     (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ u)ᴴ * gramAt D V τ * GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ u = gramAt D V τ := by
   have hG := M.fr_gram τ
@@ -109,6 +148,9 @@ theorem unit_ofFr (τ : D.what₂.Tau) (u : Matrix (Fin V.rank) (Fin V.rank) ℂ
         rw [h1, fr_mul_inv, Matrix.mul_one, Matrix.mul_one]; simp only [Matrix.mul_assoc]
     _ = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ := by rw [hu]
 
+/- English proof (translation)
+The claim follows from `u.2`.
+-/
 theorem inUJ_umat {n : ℕ} {ε : Fin n → Bool} (u : Formalism.REAL.UJ ε) : Formalism.REAL.inUJ ε (umat u) := u.2
 
 def uJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : gᴴ * gramAt D V τ * g = gramAt D V τ) :
@@ -116,6 +158,9 @@ def uJ (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hg : g�
   ⟨⟨toJ M τ g, toJ M τ (ginv D V τ g), by rw [← toJ_mul, mul_ginv D V τ g hg, toJ_one],
     by rw [← toJ_mul, ginv_mul D V τ g hg, toJ_one]⟩, inUJ_toJ M τ g hg⟩
 
+/- English proof (translation)
+Rewrite using `[infMat_thetaC, infMat_thetaC, infMat_thetaC, matA_mul, Matrix.map_mul]`.
+-/
 theorem infMat_mul (τ : D.what₂.Tau) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram (thetaC D τ) (g * h) =
       infMat D.sp.cm.sig V.gram (thetaC D τ) g * infMat D.sp.cm.sig V.gram (thetaC D τ) h := by
@@ -124,6 +169,9 @@ theorem infMat_mul (τ : D.what₂.Tau) (g h : GA D V) :
 def fwd (g : GinfC V) : ∀ τ, Formalism.REAL.UJ (M.ε τ) := fun τ =>
   uJ M τ (infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V)) (infMat_unitary' D V _ τ)
 
+/- English proof (translation)
+Introduce `τ` and use `unit_ofFr M τ _ (inUJ_umat (us τ))`.
+-/
 theorem unitFam_ofFr (us : ∀ τ, Formalism.REAL.UJ (M.ε τ)) :
     IsUnitFam D V fun τ => GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (us τ)) :=
   fun τ => unit_ofFr M τ _ (inUJ_umat (us τ))
@@ -132,14 +180,25 @@ def bwd (us : ∀ τ, Formalism.REAL.UJ (M.ε τ)) : GinfC V :=
   ⟨famH D V (fun τ => GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (us τ))) (unitFam_ofFr M us),
     famH_mem_GinfC D V _ _⟩
 
+/- English proof (translation)
+The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+-/
 theorem continuous_matA : Continuous (matA D V) :=
   Units.continuous_val.comp continuous_subtype_val
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_glueA D _).comp ((continuous_splitInv D).comp (continuous_pi fun τ => (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))))`.
+-/
 theorem continuous_famM : Continuous (famM D V) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   exact (continuous_glueA D _).comp ((continuous_splitInv D).comp (continuous_pi fun τ =>
     (continuous_apply j).comp ((continuous_apply i).comp (continuous_apply τ))))
 
+/- English proof (translation)
+Use `continuous_pi fun τ => Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Use `(((continuous_const (y := M.fr τ)).matrix_mul (((continuous_matA).comp continuous_subtype_val).matrix_map (continuous_psiT D τ))).matrix_mul (continuous_const (y := (M.fr τ)⁻¹))).congr fun g => ?_ show M.fr τ * _ * _ = toJ M τ (infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V))` and prove the remaining obligations. Rewrite using `[toJ, infMat_thetaC]`. Both sides reduce to the same expression. Establish `c0 : Continuous fun g : GinfC V => (matA D V (g : GA D V)).map (psiT D τ)` using `((continuous_matA).comp continuous_subtype_val).matrix_map (continuous_psiT D τ)`.
+
+Use `(((continuous_const (y := M.fr τ)).matrix_mul (((continuous_const (y := (gramAt D V τ)⁻¹)).matrix_mul c0.matrix_conjTranspose).matrix_mul (continuous_const (y := gramAt D V τ)))).matrix_mul (continuous_const (y := (M.fr τ)⁻¹))).congr fun g => ?_` and prove the remaining obligations. Use `show M.fr τ * _ * _ = toJ M τ (ginv D V τ (infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V)))`. Rewrite using `[toJ, ginv, infMat_thetaC]`.
+-/
 theorem continuous_fwd : Continuous (fwd M) := by
   refine continuous_pi fun τ => Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
   · refine (((continuous_const (y := M.fr τ)).matrix_mul (((continuous_matA).comp continuous_subtype_val).matrix_map
@@ -154,6 +213,11 @@ theorem continuous_fwd : Continuous (fwd M) := by
     show M.fr τ * _ * _ = toJ M τ (ginv D V τ (infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V)))
     rw [toJ, ginv, infMat_thetaC]
 
+/- English proof (translation)
+Establish `hu : ∀ τ, Continuous fun us : (∀ τ, Formalism.REAL.UJ (M.ε τ)) => umat (us τ)` using `fun τ => (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply τ)`. Establish `hg : Continuous fun us : (∀ τ, Formalism.REAL.UJ (M.ε τ)) => fun τ => GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (us τ))` using `continuous_pi fun τ => (continuous_const.matrix_mul (hu τ)).matrix_mul continuous_const`. Use `Continuous.subtype_mk (continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)) _` and prove the remaining obligations. Conclude with `continuous_famM.comp hg`. Establish `hi : Continuous fun us : (∀ τ, Formalism.REAL.UJ (M.ε τ)) => fun τ => ginv D V τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (us τ)))` using `continuous_pi fun τ => (continuous_const.matrix_mul ((continuous_apply τ).comp hg).matrix_conjTranspose).matrix_mul continuous_const`.
+
+Conclude with `continuous_famM.comp hi`.
+-/
 theorem continuous_bwd : Continuous (bwd M) := by
   have hu : ∀ τ, Continuous fun us : (∀ τ, Formalism.REAL.UJ (M.ε τ)) => umat (us τ) := fun τ =>
     (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply τ)
@@ -190,6 +254,9 @@ def eqv : GinfC V ≃ₜ* (∀ τ, Formalism.REAL.UJ (M.ε τ)) where
   continuous_toFun := continuous_fwd M
   continuous_invFun := continuous_bwd M
 
+/- English proof (translation)
+The claim follows from `ofFr_toJ M τ _`.
+-/
 theorem ofFr_eqv (g : GinfC V) (τ : D.what₂.Tau) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (eqv M g τ)) = infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V) :=
   ofFr_toJ M τ _
@@ -200,6 +267,17 @@ namespace GlobalTheory.HaarReal
 
 open Formalism.IndefR.Eqv Formalism.MainNotions.StandardLattice
 
+/- English proof (translation)
+Introduce `D V S M θ hθ mR μ hmR hμ`. Take `rfl : θ = thetaC D` from `eq_thetaC D hθ`. Use `set e := eqv M`. Use `haveI : (mR.map e).IsHaarMeasure := e.isHaarMeasure_map mR`. Use `set c := (mR.map e).haarScalarFactor (Measure.pi μ)`.
+
+Establish `hc : 0 < c` using `Measure.haarScalarFactor_pos_of_isHaarMeasure _ _`. Establish `key : mR.map e = c • Measure.pi μ` using `Measure.isMulLeftInvariant_eq_smul _ _`. Use `set E : GinfC V ≃ᵐ (∀ τ, Formalism.REAL.UJ (M.ε τ)) := e.toHomeomorph.toMeasurableEquiv`. Establish `hmap : mR.map E = c • Measure.pi μ` using `key`. Use `⟨c, hc, fun F hF => ?_⟩` and prove the remaining obligations.
+
+Use `set f' : (∀ τ, Formalism.REAL.UJ (M.ε τ)) → ℂ := fun us => ∏ τ, F τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat (us τ)))`. Establish `hf : (fun g : GinfC V => ∏ τ, F τ (infMat D.sp.cm.sig V.gram (thetaC D τ) (g : GA D V))) = f' ∘ E`. Use function extensionality and compare the values at `g`. Simplify using `only [f', Function.comp_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← ofFr_eqv M g τ]`. Both sides reduce to the same expression. Establish `hpi : Integrable f' (Measure.pi μ)` using `Integrable.fintype_prod_dep (f := fun τ (u : Formalism.REAL.UJ (M.ε τ)) => F τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat u))) hF`. Rewrite using `[hf]`. Use `⟨(integrable_map_equiv E f').mp (by rw [hmap]; exact hpi.smul_measure_nnreal), ?_⟩` and prove the remaining obligations.
+
+Use `show ∫ x, f' (E x) ∂mR = _`. Rewrite using `[← integral_map_equiv E f', hmap, integral_smul_nnreal_measure, integral_fintype_prod_eq_prod (f := fun τ (u : Formalism.REAL.UJ (M.ε τ)) => F τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat u)))]`. Rewrite using `[NNReal.smul_def, Complex.real_smul]`.
+-/
 theorem integral_prod_eq : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (θ : InfFam D), IsInfFam θ → ∀ (mR : Measure (GinfC V)) (μ : ∀ τ, Measure (Formalism.REAL.UJ (M.ε τ))), mR.IsHaarMeasure → (∀ τ, (μ τ).IsHaarMeasure) → ∃ c : ℝ, 0 < c ∧ ∀ F : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ → ℂ, (∀ τ, Integrable (fun u : Formalism.REAL.UJ (M.ε τ) => F τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat u))) (μ τ)) → Integrable (fun g : GinfC V => ∏ τ, F τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) (g : GA D V))) mR ∧ ∫ g : GinfC V, ∏ τ, F τ (Formalism.MainNotions.StandardLattice.infMat D.sp.cm.sig V.gram (θ τ) (g : GA D V)) ∂mR = (c : ℂ) * ∏ τ, ∫ u : Formalism.REAL.UJ (M.ε τ), F τ (GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.ofFr M τ (umat u)) ∂μ τ := by
   intro D V S M θ hθ mR μ hmR hμ
   obtain rfl : θ = thetaC D := eq_thetaC D hθ

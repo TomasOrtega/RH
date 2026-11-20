@@ -78,6 +78,9 @@ def IwLoc : Prop :=
 
 variable (c₀ : DiaG X.E (Pr.vT u)) (s : DecoCl n (Pr.vT u) Pr.vGs Λ.grp → DecoSet X.E n (Pr.vT u) Pr.vGs)
 
+/- English proof (translation)
+Take `⟨n', hn, J, rfl, f, rfl, bad, rfl, lat, hlat⟩` from `H`. Substitute `hn` using the available equality. Take `rfl : lat = fun c => (s c).1.L` from `funext fun c => (hlat c).trans (Formalism.L2.Forms.reL_rfl _)`. Conclude with `hI`.
+-/
 theorem levPack_iw (hS : DecoPtSurj hc n (Pr.vT u) Pr.vGs) (hs : ∀ c, decoCls n (Pr.vT u) Pr.vGs Λ.grp (s c) = c)
     (hK : LocalLevelIsKOneAtT hc u Λ) (hI : IwLoc hc u Λ spl) (H : HCrd Pr n fun c => (s c).1.L) :
     ∀ (i : Fin 2) (v : HeightOneSpectrum (𝓞 X.F)) (h : (Pr.g i : 𝓞 X.F) ∈ v.asIdeal),
@@ -92,6 +95,11 @@ def th_resMap (P : Pl X.E) : 𝓞 X.F ⧸ (underPl X.F P).asIdeal →+* 𝓞 X.E
   Ideal.quotientMap P.asIdeal (algebraMap (𝓞 X.F) (𝓞 X.E)) (le_of_eq rfl)
 
 include hPr in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `Ideal.quotientMap_injective' (le_of_eq rfl)`. Introduce `b haveI : Fact (Pr.T u).Prime := ⟨hPr.T_prime u⟩ haveI : Nontrivial (𝓞 X.E ⧸ P.1.asIdeal) := Ideal.Quotient.nontrivial_iff.2 P.1.isPrime.ne_top`. Establish `hcard : Nat.card (𝓞 X.E ⧸ P.1.asIdeal) = Pr.T u` using `hPr.vT_norm u P.1 P.2`. Take `⟨k, hk⟩` from `mem_zmultiples_of_prime_card hcard (g := (1 : 𝓞 X.E ⧸ P.1.asIdeal)) (g' := b) one_ne_zero`.
+
+Use `⟨(k : 𝓞 X.F ⧸ (underPl X.F P.1).asIdeal), ?_⟩` and prove the remaining obligations. Rewrite using `[map_intCast, ← hk]`. Simplify using the standard rewrite rules.
+-/
 theorem th_resMap_bij (P : {P // P ∈ Pr.vT u}) : Function.Bijective (th_resMap (X := X) P.1) := by
   constructor
   · exact Ideal.quotientMap_injective' (le_of_eq rfl)
@@ -107,12 +115,20 @@ theorem th_resMap_bij (P : {P // P ∈ Pr.vT u}) : Function.Bijective (th_resMap
 def tieFv (P : {P // P ∈ Pr.vT u}) : (𝓞 X.E ⧸ P.1.asIdeal) ≃+* (𝓞 X.F ⧸ (tieEV hc hX hPr u P).1.asIdeal) :=
   (RingEquiv.ofBijective (th_resMap (X := X) P.1) (th_resMap_bij hPr u P)).symm
 
+/- English proof (translation)
+The claim follows from `(RingEquiv.ofBijective (th_resMap (X := X) P.1) (th_resMap_bij hPr u P)).symm_apply_apply (Ideal.Quotient.mk _ x)`.
+-/
 theorem tieFv_mk (P : {P // P ∈ Pr.vT u}) (x : 𝓞 X.F) :
     tieFv hc hX hPr u P (Ideal.Quotient.mk P.1.asIdeal (algebraMap (𝓞 X.F) (𝓞 X.E) x)) = Ideal.Quotient.mk _ x :=
   (RingEquiv.ofBijective (th_resMap (X := X) P.1) (th_resMap_bij hPr u P)).symm_apply_apply (Ideal.Quotient.mk _ x)
 
 include hX hPr in
 
+/- English proof (translation)
+Establish `hcard : 0 < (Pr.vG 0).card` using `by rw [hPr.vG_card 0]; exact hX.f_pos`. Take `⟨P, hP⟩` from `Finset.card_pos.1 hcard`. Use `⟨underPl X.F P, ?_⟩` and prove the remaining obligations. Use `show (Pr.g 0 : 𝓞 X.F) ∈ P.asIdeal.comap (algebraMap (𝓞 X.F) (𝓞 X.E))`. Rewrite using `[Ideal.mem_comap, map_natCast, ← hPr.piG_norm 0]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (decoFin_mem_of_mem_divs hP)`.
+-/
 theorem exists_place_over_first_prime : ∃ v : HeightOneSpectrum (𝓞 X.F), (Pr.g 0 : 𝓞 X.F) ∈ v.asIdeal := by
   have hcard : 0 < (Pr.vG 0).card := by rw [hPr.vG_card 0]; exact hX.f_pos
   obtain ⟨P, hP⟩ := Finset.card_pos.1 hcard

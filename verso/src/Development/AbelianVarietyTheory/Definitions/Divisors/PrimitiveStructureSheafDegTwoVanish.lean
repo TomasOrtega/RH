@@ -67,6 +67,9 @@ def IsPullbackH2Structure {R' : Type} [CommRing R'] {t : X' ⟶ Sp R'} {σ : R�
 
 end Ext
 
+/- English proof (translation)
+Rewrite using `[Cris.spMap_id, Category.comp_id]`. Conclude with `Over.w f`.
+-/
 theorem overW {R₀ : Type} [CommRing R₀] {A B : Over (Sp R₀)} (f : A ⟶ B) :
     f.left ≫ B.hom = A.hom ≫ spMap (RingHom.id R₀) := by
   rw [Cris.spMap_id, Category.comp_id]; exact Over.w f
@@ -164,9 +167,15 @@ def ofSys {X₀ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} (S : Sys I π s₀) : Pr
   ρ a := mp S.F a
   nat a b := S.nat a b
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ a b x ↦ mp_comp S.F a b x`.
+-/
 theorem ofSys_isFun {X₀ : Scheme.{0}} {s₀ : X₀ ⟶ Sp R₀} (S : Sys I π s₀) : (ofSys S).IsFun :=
   fun _ _ _ a b x ↦ mp_comp S.F a b x
 
+/- English proof (translation)
+The claim follows from `fun _ _ _ a b x ↦ by change L.ρ (G.map (a ≫ b)) x = L.ρ (G.map b) (L.ρ (G.map a) x) rw [G.map_comp]; exact h _ _ x`.
+-/
 theorem Pre.IsFun.restrict {F : C ⥤ CommAlgCat.{0} R₀} {L : Pre I π F} (h : L.IsFun) (G : C' ⥤ C) :
     (L.restrict G).IsFun := fun _ _ _ a b x ↦ by
   change L.ρ (G.map (a ≫ b)) x = L.ρ (G.map b) (L.ρ (G.map a) x)

@@ -24,6 +24,19 @@ def FormGC : Prop :=
               OO (ν (Formalism.L2.SG.RealObj.gamW X u u w)) Set.univ (X.Wu u) (X.Wu u)
                 (Formalism.L2.SG.RealObj.gamW X u u w)).comp B)
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨a₀, b₀, h2⟩` from `h Cg cb Cw cT CT C0`. Use `⟨a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u hc ν hν t ht hJ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Take `⟨⟨w, hw, hrep⟩, hform⟩` from `h2 C' Cl e1 e2 D large₂ X Y u hc ν hν t ht hv`.
+
+Establish `hex : ∃ w' : Point D.host.E (D.R.rS + 1), toPts w' = ptPN t ∧ ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u w' g` using `⟨w, hw, hrep⟩`. Unfold `J2of at hJ`. Rewrite `hJ` using `[dif_pos hex]`. Establish `hJw : Jw Y u u ν hex.choose = 0` using `Formalism.L2.SG.NGVanish.hsEmb_eq_zero _ (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 hJ))`. Take `⟨c, A, B, hO⟩` from `hform hex.choose hex.choose_spec.1 hex.choose_spec.2`.
+
+Establish `key : ∀ (k χ c : ℂ) (A : X.Vpi u →L[ℂ] X.Vpi u) (Z : X.Vpi u →L[ℂ] X.Vpi u) (B : X.Vpi u →L[ℂ] X.Vpi u), k • Z = 0 → k • (χ • (c • A.comp (Z.comp B))) = 0`. Introduce `k χ c A Z B hZ`. Establish `hy : ∀ y, k • Z y = 0` using `fun y => by simpa using congrArg (fun T => T y) hZ`. Use extensionality with `x`. Simplify using `only [smul_apply, ContinuousLinearMap.comp_apply, zero_apply]`.
+
+Rewrite using `[smul_comm k χ, smul_comm k c, ← map_smul A k, hy]`. Simplify using the standard rewrite rules. Establish `hamp : ampN (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t = 0`. Unfold `ampN`. Rewrite using `[hO]`.
+
+Unfold `Jw at hJw`. Conclude with `key _ _ _ _ _ _ hJw`. Apply `hv` to reduce the goal to its premises. Use `show vec (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) t = 0`. Unfold `vec`.
+
+Rewrite using `[hamp]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem stepTermVanishG_of_form (h : FormGC) : StepTermVanishG := by
   intro Cg cb Cw cT CT C0
   obtain ⟨a₀, b₀, h2⟩ := h Cg cb Cw cT CT C0

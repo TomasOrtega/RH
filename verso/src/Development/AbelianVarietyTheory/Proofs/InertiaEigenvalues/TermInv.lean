@@ -16,6 +16,9 @@ noncomputable section
 
 namespace GlobalTheory.TermInvProof
 
+/- English proof (translation)
+Introduce `D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS Y s I hI hY n hn f₁ f₂ hf₁ hf₂`. Take `⟨ν, 𝓨, hν⟩` from `GlobalTheory.MixModel.exists_isCovolOne (D := D) (m := s) (n := V.rank)`. Conclude with `GlobalTheory.T.doubledLagrangian_term_depends_only_on_isotropic_means D ψ hS.weil.std V W μ 𝓕 hS.covol Y (fr Y) (hS.frame Y) s I hI hY ν 𝓨 hν _ _ f₂ (hS.weil.om_pres _ f₁ hf₁) hf₁ hf₂ (fun x hx => GlobalTheory.T.thetaFun_isotropic_mean_unipotent_invariant D ψ V W χV χW om hS.weil …`.
+-/
 theorem termInv : ∀ D : D7, TermInv D := by
   intro D ψ V W χV χW om νV 𝓗 νW 𝓖 μ 𝓕 fr hS Y s I hI hY n hn f₁ f₂ hf₁ hf₂
   obtain ⟨ν, 𝓨, hν⟩ := GlobalTheory.MixModel.exists_isCovolOne (D := D) (m := s) (n := V.rank)

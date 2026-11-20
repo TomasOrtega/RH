@@ -20,6 +20,9 @@ section General
 
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext e`. Conclude with `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+-/
 theorem wchart_le_of_eq {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} (h : Y' ⟶ Y) (e : ∀ k, h ≫ φ k = φ' k)
     (j : K → L.ι) : LB.wchart L φ' j ≤ h ⁻¹ᵁ LB.wchart L φ j := by
   obtain rfl : (fun k => h ≫ φ k) = φ' := funext e
@@ -32,12 +35,18 @@ def pullTo {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)} (s :
     obtain rfl : (fun k => h ≫ φ k) = φ' := funext e
     exact (H1.SectionArithmetic.pullSec s h).compat
 
+/- English proof (translation)
+Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext e`. Conclude with `H1.SectionArithmetic.sval_pullSec s h r z hJ`.
+-/
 theorem sval_pullTo {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)} (s : LB.Sec (LB.LinComb L φ ε))
     (h : Y' ⟶ Y) (e : ∀ k, h ≫ φ k = φ' k) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι}
     (hJ : Good L z J) : sval (pullTo s h e) r z J = sval s (r ≫ h) z J := by
   obtain rfl : (fun k => h ≫ φ k) = φ' := funext e
   exact H1.SectionArithmetic.sval_pullSec s h r z hJ
 
+/- English proof (translation)
+Take `rfl : (fun k => h ≫ φ k) = φ'` from `funext e`. Conclude with `⟨LB.pullGen L φ ε t h, LB.isGen_pullGen L φ ε t ht h, fun Z r z J hJ => val_pull hJ t h r⟩`.
+-/
 theorem exists_gen_pullTo {φ : K → (Y ⟶ X)} {ε : K → ℤ} {φ' : K → (Y' ⟶ X)}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (h : Y' ⟶ Y) (e : ∀ k, h ≫ φ k = φ' k) :
     ∃ t' : LB.Gen (LB.LinComb L φ' ε), t'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (J),
@@ -50,6 +59,9 @@ end General
 variable {S : Scheme.{0}} (A : Over S) [GrpObj A] {L : LB A.left}
 
 omit [GrpObj A] in
+/- English proof (translation)
+Rewrite using `[← Over.comp_left, whiskerRight_snd]`.
+-/
 theorem whisker_snd_left {T T' : Over S} (h : T' ⟶ T) :
     (h ▷ A).left ≫ (snd T A).left = (snd T' A).left := by
   rw [← Over.comp_left, whiskerRight_snd]
@@ -61,6 +73,9 @@ abbrev sv {a : ℤ} {T : Over S} (s : LB.Sec (LPow A L a T)) {Z : Scheme.{0}} (r
     (J : (Z ⟶ A.left) → L.ι) : Z.presheaf.stalk z :=
   sval (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s r z J
 
+/- English proof (translation)
+The claim follows from `sval_pullTo (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s (h ▷ A).left (fun _ => whisker_snd_left A h) r z hJ`.
+-/
 theorem sv_pullS (a : ℤ) {T T' : Over S} (h : T' ⟶ T) (s : LB.Sec (LPow A L a T)) {Z : Scheme.{0}}
     (r : Z ⟶ (T' ⊗ A).left) (z : Z) {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) :
     sv A (pullS A a h s) r z J = sv A s (r ≫ (h ▷ A).left) z J :=
@@ -72,6 +87,9 @@ section Twist
 variable {T : Over S} {ψ : T ⊗ A ⟶ T ⊗ A} {m : T ⊗ A ⟶ A} {hm : ψ ≫ snd T A = m} {a b : ℤ}
   {α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])}
 
+/- English proof (translation)
+Establish `e : ψ.left ≫ (snd T A).left = m.left` using `by rw [← Over.comp_left, hm]`. Establish `hz` using `hJ.mem ![(snd T A).left, m.left] r`. Establish `key : ∀ j : Fin 2 → L.ι, r z ∈ LB.wchart L ![(snd T A).left, m.left] j → gs r z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 0)) (s'.f (fun _ => j 0)) = (gm r z (LB.wchart L ![(snd T A).left, m.left] j) (α.s j)).val * gs (r ≫ ψ.left) z (LB.wchart L (fun _ : Fin 1 => …` using `fun j hz => (gs_res r z _ hz _).symm.trans ((congrArg (gs r z _) (H j)).trans ((gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) (gs_unit r z _ hz _) ((gs_res r z _ hz _).trans (gs_pull r ψ.left z (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 1)) (chart_le_pull A L ψ m …`. Establish `e₁` using `sval_of (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => b) s (r ≫ ψ.left) z J (fun _ => J (r ≫ m.left)) (fun _ => by rw [Category.assoc, e])`. Conclude with `(key _ hz).trans (congrArg _ e₁.symm)`.
+-/
 theorem sv_of_isTwistPull {s : LB.Sec (LPow A L b T)} {s' : LB.Sec (LPow A L a T)}
     (H : IsTwistPull A L ψ m hm a b α s s') {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z)
     {J : (Z ⟶ A.left) → L.ι} (hJ : Good L z J) :
@@ -91,6 +109,15 @@ theorem sv_of_isTwistPull {s : LB.Sec (LPow A L b T)} {s' : LB.Sec (LPow A L a T
     (fun _ => J (r ≫ m.left)) (fun _ => by rw [Category.assoc, e])
   exact (key _ hz).trans (congrArg _ e₁.symm)
 
+/- English proof (translation)
+Introduce `j`. Establish `e : ψ.left ≫ (snd T A).left = m.left` using `by rw [← Over.comp_left, hm]`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose J hJ using fun χ : (T ⊗ A).left ⟶ A.left => exists_chart hL (χ y)`. Establish `h0` using `chart_le_zero A L m j hy`.
+
+Establish `h1` using `chart_le_pull A L ψ m hm j hy`. Use `(gs_res _ y _ hy _).trans (Eq.trans ?_ ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hy _) ((gs_res _ y _ hy _).trans (gs_pull _ ψ.left y _ h1 _)))).symm)` and prove the remaining obligations. Use `(sec_trans (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) s' (𝟙 _) y h0 (Good.mem hJ _ _)).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg₂ (· * ·) (congrArg Units.val (gen_trans hα (𝟙 _) y hy (Good.mem hJ _ _))) (sec_trans (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => b) s (𝟙 _ ≫ ψ.left) y h1 (Good.mem hJ _ _))).symm` and prove the remaining obligations. Use `(congrArg _ (H y J hJ)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul]`. Use `Eq.trans ?_ (_root_.mul_mul_mul_comm _ _ _ _)` and prove the remaining obligations. Rewrite using `[← Units.val_mul]`. Use `congrArg₂ (· * ·) (congrArg Units.val ?_) rfl` and prove the remaining obligations. Establish `e' : (𝟙 _ ≫ ψ.left) ≫ (snd T A).left = 𝟙 _ ≫ m.left` using `by rw [Category.assoc, e]`.
+
+Simplify using `only [trF, Fin.prod_univ_two, Fin.prod_univ_one, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg]`. Rewrite using `[e']`. Conclude with `(inv_mul_cancel_right _ _).symm`.
+-/
 theorem isTwistPull_of_sv (hL : L.IsLB) (hα : α.IsGen) {s : LB.Sec (LPow A L b T)}
     {s' : LB.Sec (LPow A L a T)}
     (H : ∀ y J, Good L y J → sv A s' (𝟙 _) y J = (val α (𝟙 _) y J).val * sv A s (𝟙 _ ≫ ψ.left) y J) :
@@ -120,6 +147,9 @@ theorem isTwistPull_of_sv (hL : L.IsLB) (hα : α.IsGen) {s : LB.Sec (LPow A L b
   rw [e']
   exact (inv_mul_cancel_right _ _).symm
 
+/- English proof (translation)
+Establish `e : ψ.left ≫ (snd T A).left = m.left` using `by rw [← Over.comp_left, hm]`. Take `⟨s', hs'⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => (snd T A).left) (ε' := fun _ => a) (fun U _ h => by`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_two, Fin.prod_univ_one, e, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, mul_inv_cancel_comm_assoc])`. Use the proof step `(pullMulSec (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => b) s ψ.left α hα)`. Conclude with `⟨s', isTwistPull_of_sv A hL hα fun y J hJ => (hs' _ _ y J hJ).trans ((sval_pullMulSec _ _ α hα _ y hJ).trans (mul_comm _ _))⟩`.
+-/
 theorem exists_isTwistPull (hL : L.IsLB) (hα : α.IsGen) (s : LB.Sec (LPow A L b T)) :
     ∃ s' : LB.Sec (LPow A L a T), IsTwistPull A L ψ m hm a b α s s' := by
   have e : ψ.left ≫ (snd T A).left = m.left := by rw [← Over.comp_left, hm]
@@ -131,6 +161,11 @@ theorem exists_isTwistPull (hL : L.IsLB) (hα : α.IsGen) (s : LB.Sec (LPow A L 
   exact ⟨s', isTwistPull_of_sv A hL hα fun y J hJ =>
     (hs' _ _ y J hJ).trans ((sval_pullMulSec _ _ α hα _ y hJ).trans (mul_comm _ _))⟩
 
+/- English proof (translation)
+Take `⟨α', h₁, h₂⟩` from `exists_gen_pullTo (φ' := ![(snd T' A).left, m'.left]) α hα (h ▷ A).left (fun k => by fin_cases k`. Conclude with `whisker_snd_left A h`. Express the relevant statement in the definitionally equal form `(h ▷ A).left ≫ m.left = m'.left`. Rewrite using `[← Over.comp_left, ← hm, ← hm', ← Category.assoc, ← e, Category.assoc, whiskerRight_snd])`. Use `⟨α', h₁, fun s s' H => isTwistPull_of_sv A hL h₁ fun y J hJ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[sv_pullS A a h s' _ y hJ, sv_pullS A b h s _ y hJ, h₂ _ _ y J hJ, sv_of_isTwistPull A H _ y hJ, Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, e]`.
+-/
 theorem exists_twist_pull (hL : L.IsLB) (hα : α.IsGen) {T' : Over S} (h : T' ⟶ T)
     {ψ' : T' ⊗ A ⟶ T' ⊗ A} {m' : T' ⊗ A ⟶ A} (hm' : ψ' ≫ snd T' A = m')
     (e : ψ' ≫ h ▷ A = h ▷ A ≫ ψ) :
@@ -149,6 +184,9 @@ theorem exists_twist_pull (hL : L.IsLB) (hα : α.IsGen) {T' : Over S} (h : T' �
 
 end Twist
 
+/- English proof (translation)
+Take `⟨α', h₁, h₂⟩` from `exists_twist_pull A (ψ := translT A θ.pt) (hm := lift_snd _ _) hL θ.isGen h (ψ' := translT A (h ≫ θ.pt)) (m' := translPt A (h ≫ θ.pt)) (lift_snd _ _) (by ext1`. Simplify using `[translT]`. Simplify using `[translT, translPt, comp_lift_assoc])`. Conclude with `⟨⟨h ≫ θ.pt, α', h₁⟩, rfl, h₂⟩`.
+-/
 theorem exists_theta_pull (hL : L.IsLB) {k : ℤ} {T T' : Over S} (h : T' ⟶ T) (θ : ThetaGrp A L k T) :
     ∃ θ' : ThetaGrp A L k T', θ'.pt = h ≫ θ.pt ∧
       ∀ s s', IsActOf A L k θ s s' → IsActOf A L k θ' (pullS A k h s) (pullS A k h s') := by
@@ -159,12 +197,18 @@ theorem exists_theta_pull (hL : L.IsLB) {k : ℤ} {T T' : Over S} (h : T' ⟶ T)
       · simp [translT, translPt, comp_lift_assoc])
   exact ⟨⟨h ≫ θ.pt, α', h₁⟩, rfl, h₂⟩
 
+/- English proof (translation)
+Use `ext1`. Simplify using `[mulT]`. Simplify using `[mulT, MonObj.comp_pow]`.
+-/
 theorem mulT_comm {T T' : Over S} (h : T' ⟶ T) (n : ℕ) :
     mulT A T' n ≫ h ▷ A = h ▷ A ≫ mulT A T n := by
   ext1
   · simp [mulT]
   · simp [mulT, MonObj.comp_pow]
 
+/- English proof (translation)
+Take `⟨th, s1, α, U, hα, h₁, h₂⟩` from `ht`. Take `⟨α', k₁, k₂⟩` from `exists_twist_pull P.A (ψ := mulT P.A T n) (hm := lift_snd _ _) (b := 1) P.isLB hα h (ψ' := mulT P.A T' n) (lift_snd _ _) (mulT_comm P.A h n)`. Take `⟨U', -, k₃⟩` from `exists_theta_pull P.A P.isLB h U`. Conclude with `⟨_, _, α', U', k₁, k₂ _ _ h₁, k₃ _ _ h₂⟩`.
+-/
 theorem isVVGen_pull (P : PolAV S) (N n : ℕ) {T T' : Over S} (h : T' ⟶ T)
     {t : LB.Sec (LPow P.A P.L N T)} (ht : IsVVGen P N n t) : IsVVGen P N n (pullS P.A N h t) := by
   obtain ⟨th, s1, α, U, hα, h₁, h₂⟩ := ht
@@ -173,10 +217,16 @@ theorem isVVGen_pull (P : PolAV S) (N n : ℕ) {T T' : Over S} (h : T' ⟶ T)
   obtain ⟨U', -, k₃⟩ := exists_theta_pull P.A P.isLB h U
   exact ⟨_, _, α', U', k₁, k₂ _ _ h₁, k₃ _ _ h₂⟩
 
+/- English proof (translation)
+The claim follows from `exists_isTwistPull A hL θ.isGen s`.
+-/
 theorem exists_isActOf (hL : L.IsLB) {k : ℤ} {T : Over S} (θ : ThetaGrp A L k T)
     (s : LB.Sec (LPow A L k T)) : ∃ s', IsActOf A L k θ s s' :=
   exists_isTwistPull A hL θ.isGen s
 
+/- English proof (translation)
+The claim follows from `sec_ext_val hL (fun y _ hJ => (sv_of_isTwistPull A h₁ _ y hJ).trans (sv_of_isTwistPull A h₂ _ y hJ).symm) j`.
+-/
 theorem isActOf_unique (hL : L.IsLB) {k : ℤ} {T : Over S} {θ : ThetaGrp A L k T}
     {s s₁ s₂ : LB.Sec (LPow A L k T)} (h₁ : IsActOf A L k θ s s₁) (h₂ : IsActOf A L k θ s s₂) (j) :
     s₁.f j = s₂.f j :=
@@ -187,16 +237,25 @@ section Pull
 
 variable {A} {a : ℤ} {T T' T'' : Over S}
 
+/- English proof (translation)
+The claim follows from `Secs.ext fun j => ev_ev (u' ▷ A).left (u ▷ A).left ((u' ≫ u) ▷ A).left (by rw [comp_whiskerRight, Over.comp_left]) _ _ _ (s.f j)`.
+-/
 theorem pullSec_comp (u' : T'' ⟶ T') (u : T' ⟶ T) (s : Secs A L a T) :
     pullSec u' (pullSec u s) = pullSec (u' ≫ u) s :=
   Secs.ext fun j => ev_ev (u' ▷ A).left (u ▷ A).left ((u' ≫ u) ▷ A).left
     (by rw [comp_whiskerRight, Over.comp_left]) _ _ _ (s.f j)
 
+/- English proof (translation)
+The claim follows from `Secs.ext (sec_ext_val hL fun y J hJ => by refine (sv_pullS A a _ _ _ y hJ).trans ?_ rw [id_whiskerRight, Over.id_left, Category.comp_id])`.
+-/
 theorem pullSec_id (hL : L.IsLB) (s : Secs A L a T) : pullSec (𝟙 T) s = s :=
   Secs.ext (sec_ext_val hL fun y J hJ => by
     refine (sv_pullS A a _ _ _ y hJ).trans ?_
     rw [id_whiskerRight, Over.id_left, Category.comp_id])
 
+/- English proof (translation)
+The claim follows from `Secs.ext h`.
+-/
 theorem eq_pullSec {u : T' ⟶ T} {s : Secs A L a T} {s' : Secs A L a T'}
     (h : IsPullSec A L a (u ▷ A) (whiskerRight_snd _ _) s s') : s' = pullSec u s := Secs.ext h
 
@@ -205,10 +264,16 @@ def pullL (u : T' ⟶ T) : Secs A L a T →ₛₗ[u.left.appTop.hom] Secs A L a 
   map_add' := pullSec_add u
   map_smul' := pullSec_smul u
 
+/- English proof (translation)
+The claim follows from `(map_sum (pullL u) _ _).trans (Finset.sum_congr rfl fun l _ => pullSec_smul u (c l) (b l))`.
+-/
 theorem pullSec_sum {κ : Type} [Fintype κ] (u : T' ⟶ T) (c : κ → Γ(T.left, ⊤)) (b : κ → Secs A L a T) :
     pullSec u (∑ l, c l • b l) = ∑ l, u.left.appTop.hom (c l) • pullSec u (b l) :=
   (map_sum (pullL u) _ _).trans (Finset.sum_congr rfl fun l _ => pullSec_smul u (c l) (b l))
 
+/- English proof (translation)
+The claim follows from `map_sum (AddMonoidHom.mk' (fun s : Secs A L a T => LB.Sec.f s j) fun s t => add_f s t j) b F`.
+-/
 theorem sum_f {κ : Type} (F : Finset κ) (b : κ → Secs A L a T) (j) :
     LB.Sec.f (∑ l ∈ F, b l : Secs A L a T) j = ∑ l ∈ F, LB.Sec.f (b l) j :=
   map_sum (AddMonoidHom.mk' (fun s : Secs A L a T => LB.Sec.f s j) fun s t => add_f s t j) b F
@@ -219,6 +284,9 @@ def resHom (u : T' ⟶ T) (V : T.left.Opens) (V' : T'.left.Opens) (e : V' ≤ u.
     change u.left.resLE V V' e ≫ V.ι ≫ T.hom = V'.ι ≫ T'.hom
     rw [Scheme.Hom.resLE_comp_ι_assoc, Over.w u])
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (Scheme.Hom.resLE_comp_ι u.left e)`.
+-/
 theorem resHom_ι (u : T' ⟶ T) (V : T.left.Opens) (V' : T'.left.Opens) (e : V' ≤ u.left ⁻¹ᵁ V) :
     resHom u V V' e ≫ overResι V = overResι V' ≫ u :=
   Over.OverMorphism.ext (Scheme.Hom.resLE_comp_ι u.left e)
@@ -232,6 +300,11 @@ variable (P : PolAV S) (N m : ℕ) {T T' : Over S}
 def genSpan (T : Over S) : Submodule Γ(T.left, ⊤) (Secs P.A P.L N T) :=
   Submodule.span Γ(T.left, ⊤) {t | IsVVGen P N m t}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, r, t, ht, hs⟩`. Establish `: s = ∑ l, r l • (show Secs P.A P.L N T from t l)` using `Secs.ext fun j => (hs j).trans (sum_f _ (fun l => r l • (show Secs P.A P.L N T from t l)) j).symm`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span (ht l))`.
+
+Introduce `hs`. Take `⟨n, r, t, rfl⟩` from `Submodule.mem_span_set'.1 hs`. Conclude with `⟨n, r, fun l => (t l).1, fun l => (t l).2, fun j => sum_f _ _ j⟩`.
+-/
 theorem inVVOver_iff (s : Secs P.A P.L N T) : InVVOver P N m s ↔ s ∈ genSpan P N m T := by
   constructor
   · rintro ⟨n, r, t, ht, hs⟩
@@ -243,6 +316,9 @@ theorem inVVOver_iff (s : Secs P.A P.L N T) : InVVOver P N m s ↔ s ∈ genSpan
     obtain ⟨n, r, t, rfl⟩ := Submodule.mem_span_set'.1 hs
     exact ⟨n, r, fun l => (t l).1, fun l => (t l).2, fun j => sum_f _ _ j⟩
 
+/- English proof (translation)
+Take `⟨n, r, t, rfl⟩` from `Submodule.mem_span_set'.1 hs`. Rewrite using `[pullSec_sum]`. Conclude with `Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span (isVVGen_pull P N m u (t l).2))`.
+-/
 theorem pullSec_mem_genSpan (u : T' ⟶ T) {s : Secs P.A P.L N T} (hs : s ∈ genSpan P N m T) :
     pullSec u s ∈ genSpan P N m T' := by
   obtain ⟨n, r, t, rfl⟩ := Submodule.mem_span_set'.1 hs
@@ -250,6 +326,9 @@ theorem pullSec_mem_genSpan (u : T' ⟶ T) {s : Secs P.A P.L N T} (hs : s ∈ ge
   exact Submodule.sum_mem _ fun l _ => Submodule.smul_mem _ _
     (Submodule.subset_span (isVVGen_pull P N m u (t l).2))
 
+/- English proof (translation)
+Use `forall_congr' fun p => exists_congr fun V => and_congr_right fun _ => ⟨?_, fun h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨sV, h₁, h₂⟩`. Rewrite using `[← eq_pullSec h₁]`. Conclude with `(inVVOver_iff P N m _).1 h₂`. Conclude with `⟨_, isPullSec_pullSec _ s, (inVVOver_iff P N m _).2 h⟩`.
+-/
 theorem inVV_iff (s : Secs P.A P.L N T) : InVV P N m s ↔
     ∀ p : T.left, ∃ V : T.left.Opens, p ∈ V ∧ pullSec (overResι V) s ∈ genSpan P N m (overRes V) := by
   refine forall_congr' fun p => exists_congr fun V => and_congr_right fun _ => ⟨?_, fun h => ?_⟩
@@ -258,6 +337,9 @@ theorem inVV_iff (s : Secs P.A P.L N T) : InVV P N m s ↔
     exact (inVVOver_iff P N m _).1 h₂
   · exact ⟨_, isPullSec_pullSec _ s, (inVVOver_iff P N m _).2 h⟩
 
+/- English proof (translation)
+Rewrite using `[pullSec_comp, ← resHom_ι u V V' e, ← pullSec_comp]`. Conclude with `pullSec_mem_genSpan P N m _ hs`.
+-/
 theorem genSpan_res (u : T' ⟶ T) {V : T.left.Opens} {V' : T'.left.Opens} (e : V' ≤ u.left ⁻¹ᵁ V)
     {s : Secs P.A P.L N T} (hs : pullSec (overResι V) s ∈ genSpan P N m (overRes V)) :
     pullSec (overResι V') (pullSec u s) ∈ genSpan P N m (overRes V') := by
@@ -300,9 +382,17 @@ def secIncl (L : LB A.left) (a : ℤ) (T : Over S) :
     Secs A L a T →ₗ[Γ(T.left, ⊤)] (∀ j, Γ((T ⊗ A).left, (LPow A L a T).U j)) :=
   (SecM A L a T).subtype ∘ₗ (secEquiv A L a T).symm.toLinearMap
 
+/- English proof (translation)
+Introduce `_ _ h` and use `Secs.ext (congrFun h)`.
+-/
 theorem secIncl_injective (L : LB A.left) (a : ℤ) (T : Over S) : Function.Injective (secIncl A L a T) :=
   fun _ _ h => Secs.ext (congrFun h)
 
+/- English proof (translation)
+Rewrite using `[Submodule.map_span]`. Use `congrArg _ (Set.ext fun f => ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨h, hQ⟩`. Conclude with `⟨_, hQ, rfl⟩`. Introduce and unpack `⟨s, hs, rfl⟩`.
+
+Conclude with `⟨s.compat, hs⟩`.
+-/
 theorem span_eq_map (L : LB A.left) (a : ℤ) (T : Over S) (Q : LB.Sec (LPow A L a T) → Prop) :
     Submodule.span Γ(T.left, ⊤) {f | ∃ h : f ∈ SecM A L a T, Q (SecM.toSec A ⟨f, h⟩)} =
       (Submodule.span Γ(T.left, ⊤) {s : Secs A L a T | Q s}).map (secIncl A L a T) := by
@@ -315,6 +405,9 @@ theorem span_eq_map (L : LB A.left) (a : ℤ) (T : Over S) (Q : LB.Sec (LPow A L
 
 variable (P : PolAV S) (N m : ℕ)
 
+/- English proof (translation)
+The claim follows from `span_eq_map P.A P.L N T (InVV P N m)`.
+-/
 theorem vvSub_eq_map (T : Over S) : VVsub P N m T = (VV P N m T).map (secIncl P.A P.L N T) :=
   span_eq_map P.A P.L N T (InVV P N m)
 

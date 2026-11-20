@@ -30,6 +30,13 @@ def TN (k r : ℕ) : Submodule ℝ (Mat k r) where
     refine ⟨?_, fun a i h => by simp [h2 a i h], fun i j a b c => by simp [h3 i j a b c]⟩
     rw [conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, star_trivial, ← smul_add, h1, smul_zero]
 
+/- English proof (translation)
+Establish `hc : ∀ i j c, (∀ t, γ t i j = c) → X i j = 0` using `fun i j c hc => (hd i j).unique (by simp only [hc]; exact hasDerivAt_const _ _)`. Use `⟨?_, fun a i hi => hc _ _ _ fun t => (h t).2.1 a i hi, fun i j a b c => hc _ _ _ fun t => (h t).2.2 i j a b c⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1 : HasDerivAt (fun t => ∑ l, (∑ m, star (γ t m i) * Hpk k r m l) * γ t l j) (∑ l, ((∑ m, star (X m i) * Hpk k r m l) * γ 0 l j + (∑ m, star (γ 0 m i) * Hpk k r m l) * X l j)) 0` using `HasDerivAt.fun_sum fun l _ => (HasDerivAt.fun_sum fun m _ => ((hd m i).star).mul_const _).fun_mul (hd l j)`. Establish `h2 : (fun t => ∑ l, (∑ m, star (γ t m i) * Hpk k r m l) * γ t l j) = fun _ => Hpk k r i j`.
+
+Use function extensionality and compare the values at `t`. Establish `: (γ t)ᴴ * Hpk k r * γ t = Hpk k r` using `(h t).1`. Simplify `congrFun (congrFun this i) j` using `[Matrix.mul_apply]`. Rewrite `h1` using `[h2]`. Establish `h3` using `h1.unique (hasDerivAt_const _ _)`.
+
+Rewrite `h3` using `[h0]`. Simplify `h3` using `[Matrix.mul_apply, Matrix.one_apply, Finset.sum_add_distrib, apply_ite star]`.
+-/
 theorem tangent_mem {γ : ℝ → Mat k r} {X : Mat k r} (h : ∀ t, γ t ∈ Nset k r) (h0 : γ 0 = 1)
     (hd : ∀ i j, HasDerivAt (fun t => γ t i j) (X i j) 0) : X ∈ TN k r := by
   have hc : ∀ i j c, (∀ t, γ t i j = c) → X i j = 0 := fun i j c hc =>
@@ -48,6 +55,11 @@ theorem tangent_mem {γ : ℝ → Mat k r} {X : Mat k r} (h : ∀ t, γ t ∈ Ns
   rw [h0] at h3
   simpa [Matrix.mul_apply, Matrix.one_apply, Finset.sum_add_distrib, apply_ite star] using h3
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hX.1 i) j`. Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `(hpkFacts k r).1`. Establish `: Xᴴ * Hpk k r = (Hpk k r * X)ᴴ` using `by rw [conjTranspose_mul, hH]`. Rewrite `h` using `[this]`. Simplify using `only [Matrix.add_apply, conjTranspose_apply, Matrix.mul_apply, Matrix.zero_apply] at h`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Take the linear combination `h`.
+-/
 theorem TN_rel {X : Mat k r} (hX : X ∈ TN k r) (i j : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ fun l => X l j) i = -star ((Hpk k r *ᵥ fun l => X l i) j) := by
   have h := congrFun (congrFun hX.1 i) j
@@ -58,14 +70,23 @@ theorem TN_rel {X : Mat k r} (hX : X ∈ TN k r) (i j : Fin (2 * r + k + 1)) :
   simp only [Matrix.mulVec, dotProduct]
   linear_combination h
 
+/- English proof (translation)
+Simplify `TN_rel hX (eI k r a) (esI k r b)` using `only [H_e, H_es]`.
+-/
 theorem TN_ss {X : Mat k r} (hX : X ∈ TN k r) (a b : Fin r) :
     X (esI k r a) (esI k r b) = -star (X (eI k r b) (eI k r a)) := by
   simpa only [H_e, H_es] using TN_rel hX (eI k r a) (esI k r b)
 
+/- English proof (translation)
+Simplify `TN_rel hX (esI k r a) (esI k r b)` using `only [H_e, H_es]`.
+-/
 theorem TN_es {X : Mat k r} (hX : X ∈ TN k r) (a b : Fin r) :
     X (eI k r a) (esI k r b) = -star (X (eI k r b) (esI k r a)) := by
   simpa only [H_e, H_es] using TN_rel hX (esI k r a) (esI k r b)
 
+/- English proof (translation)
+Establish `h` using `TN_rel hX (esI k r a) (wI k r j)`. Rewrite `h` using `[H_es, H_w, Hb, Matrix.mulVec_diagonal]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem TN_ew {X : Mat k r} (hX : X ∈ TN k r) (a : Fin r) (j : Fin (k + 1)) :
     ‖X (eI k r a) (wI k r j)‖ = ‖X (wI k r j) (esI k r a)‖ := by
   have h := TN_rel hX (esI k r a) (wI k r j)
@@ -73,6 +94,13 @@ theorem TN_ew {X : Mat k r} (hX : X ∈ TN k r) (a : Fin r) (j : Fin (k + 1)) :
   rw [h]
   split_ifs <;> simp
 
+/- English proof (translation)
+Break down `idx_cases j with ⟨b, rfl⟩ | ⟨b, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `hX.2.1 b i h`. Use `b.isLt` as an intermediate fact. Establish `h1 : (wI k r b).val = r + b.val` using `rfl`. Conclude with `hX.2.2 _ _ (by omega) (by omega) (by omega)`.
+
+Use `b.isLt` as an intermediate fact. Establish `h1 : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Use `i.isLt` as an intermediate fact. Take `⟨a, rfl⟩ : ∃ a, i = esI k r a` from `⟨⟨2 * r + k - i.val, by omega⟩, Fin.ext (by simp [esI]; omega)⟩`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`.
+
+Use `a.isLt` as an intermediate fact. Rewrite using `[TN_ss hX, hX.2.1 a (eI k r b) (by show a.val ≤ b.val; omega)]`. Simplify using the standard rewrite rules.
+-/
 theorem TN_upper {X : Mat k r} (hX : X ∈ TN k r) (i j : Fin (2 * r + k + 1)) (h : j.val ≤ i.val) : X i j = 0 := by
   rcases idx_cases j with ⟨b, rfl⟩ | ⟨b, rfl⟩ | ⟨b, rfl⟩
   · exact hX.2.1 b i h
@@ -88,6 +116,11 @@ theorem TN_upper {X : Mat k r} (hX : X ∈ TN k r) (i j : Fin (2 * r + k + 1)) (
     rw [TN_ss hX, hX.2.1 a (eI k r b) (by show a.val ≤ b.val; omega)]
     simp
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper`. Consider the case `exact _root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper`. Consider the case `(apply _root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper ..)`.
+-/
 theorem pow_upper {m : ℕ} {X : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j : Fin m, j.val ≤ i.val → X i j = 0) (n : ℕ) :
     ∀ i j : Fin m, j.val < i.val + n → (X ^ n) i j = 0 := by
   first
@@ -98,6 +131,11 @@ theorem pow_upper {m : ℕ} {X : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j : Fin
   | (intros; apply @_root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.StrictUpperNilpotentFlagMeasures.pow_apply_eq_zero_of_strictUpper ..)
 
+/- English proof (translation)
+Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`. Use `tsum_eq_sum fun n hn => ?_` and prove the remaining obligations. Establish `: X ^ n = 0`. Use extensionality with `i j`. Rewrite `hn` using `[Finset.mem_range]`.
+
+Conclude with `pow_upper hX n i j (by omega)`. Rewrite using `[this, smul_zero]`.
+-/
 theorem exp_upper {m : ℕ} {X : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j : Fin m, j.val ≤ i.val → X i j = 0) :
     NormedSpace.exp X = ∑ n ∈ Finset.range (m + 2), ((n.factorial : ℂ)⁻¹) • X ^ n := by
   rw [NormedSpace.exp_eq_tsum ℂ]
@@ -108,6 +146,15 @@ theorem exp_upper {m : ℕ} {X : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j : Fin
     exact pow_upper hX n i j (by omega)
   rw [this, smul_zero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Set `P : Matrix (Fin m) (Fin m) ℂ → Polynomial ℂ` to `fun Z => ∑ n ∈ Finset.range (m + 2), Polynomial.monomial n ((n.factorial : ℂ)⁻¹ * (Z ^ n) i j)`. Establish `hP : ∀ Z : Matrix (Fin m) (Fin m) ℂ, (∀ i j : Fin m, j.val ≤ i.val → Z i j = 0) → ∀ t : ℕ, (P Z).eval (t : ℂ) = (NormedSpace.exp Z ^ t) i j`. Introduce `Z hZ t`. Rewrite using `[← Matrix.exp_nsmul, exp_upper (X := t • Z) (fun i j h => by simp [hZ i j h]), Matrix.sum_apply, Polynomial.eval_finset_sum]`.
+
+Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_pow]`. Simplify using `only [Polynomial.eval_monomial, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ∀ Z : Matrix (Fin m) (Fin m) ℂ, (P Z).coeff 1 = Z i j`.
+
+Introduce `Z`. Simplify using `[P, Polynomial.coeff_monomial]`. Establish `: P X = P Y`. Use `Polynomial.eq_of_infinite_eval_eq _ _ (Set.infinite_of_injective_forall_mem (f := fun t : ℕ => (t : ℂ)) Nat.cast_injective fun t => ?_)` and prove the remaining obligations. Use `show (P X).eval (t : ℂ) = (P Y).eval (t : ℂ)`.
+
+Rewrite using `[hP X hX, hP Y hY, h]`. Rewrite using `[← hc X, this, hc]`.
+-/
 theorem exp_inj_upper {m : ℕ} {X Y : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j : Fin m, j.val ≤ i.val → X i j = 0)
     (hY : ∀ i j : Fin m, j.val ≤ i.val → Y i j = 0) (h : NormedSpace.exp X = NormedSpace.exp Y) : X = Y := by
   ext i j
@@ -132,6 +179,15 @@ theorem exp_inj_upper {m : ℕ} {X Y : Matrix (Fin m) (Fin m) ℂ} (hX : ∀ i j
     rw [hP X hX, hP Y hY, h]
   rw [← hc X, this, hc]
 
+/- English proof (translation)
+Establish `hH : Hpk k r * Hpk k r = 1` using `(hpkFacts k r).2.1`. Establish `key : ∀ i j : Fin (2 * r + k + 1), (∀ l : Fin (2 * r + k + 1), i.val ≤ l.val → X l j = 0) → NormedSpace.exp X i j = if i = j then 1 else 0`. Introduce `i j h`. Rewrite using `[exp_upper (TN_upper hX), Finset.sum_range_succ', Matrix.add_apply, Matrix.sum_apply, Finset.sum_eq_zero]`. Simplify using `[Matrix.one_apply]`.
+
+Introduce `n _`. Rewrite using `[Matrix.smul_apply, pow_succ, Matrix.mul_apply, Finset.sum_eq_zero, smul_zero]`. Introduce `l _`. Distinguish the cases in `hl : l.val < i.val`. Rewrite using `[pow_upper (TN_upper hX) n i l (by omega), zero_mul]`.
+
+Rewrite using `[h l (by omega), mul_zero]`. Use `⟨?_, fun a i hi => key _ _ fun l hl => hX.2.1 a l (by omega), fun i j a b c => key _ _ fun l hl => hX.2.2 l j a b (by omega)⟩` and prove the remaining obligations. Use `show (NormedSpace.exp X)ᴴ * Hpk k r * NormedSpace.exp X = Hpk k r`. Establish `hi : (Hpk k r)⁻¹ = Hpk k r` using `Matrix.inv_eq_left_inv hH`. Establish `h1 : Xᴴ = Hpk k r * (-X) * (Hpk k r)⁻¹`.
+
+Establish `h2 : Xᴴ * Hpk k r = Hpk k r * (-X)` using `by rw [Matrix.mul_neg]; exact eq_neg_of_add_eq_zero_left hX.1`. Rewrite using `[hi, ← h2, Matrix.mul_assoc, hH, Matrix.mul_one]`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ ((Matrix.isUnit_iff_isUnit_det _).2 (Matrix.isUnit_det_of_left_inverse hH)), hi, Matrix.mul_assoc _ (Hpk k r) (Hpk k r), hH, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_left, neg_add_c …`.
+-/
 theorem exp_mem {X : Mat k r} (hX : X ∈ TN k r) : NormedSpace.exp X ∈ Nset k r := by
   have hH : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
   have key : ∀ i j : Fin (2 * r + k + 1), (∀ l : Fin (2 * r + k + 1), i.val ≤ l.val → X l j = 0) →
@@ -157,6 +213,9 @@ theorem exp_mem {X : Mat k r} (hX : X ∈ TN k r) : NormedSpace.exp X ∈ Nset k
     ← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_left, neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Set `e : Matrix (Fin m) (Fin m) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `e.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+-/
 theorem deriv_exp {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) (X i j) 0 := by
   have h := hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)
@@ -164,6 +223,11 @@ theorem deriv_exp {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) (i j : Fin m) :
   let e : Matrix (Fin m) (Fin m) ℂ →L[ℝ] ℂ := LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)
   exact e.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
+/- English proof (translation)
+Use extensionality with `X`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `tangent_mem (γ := fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) h (by simp) (deriv_exp X)`. Introduce `h t`.
+
+Conclude with `exp_mem ((TN k r).smul_mem t h)`.
+-/
 theorem lieOf_eq : lieOf (Nset k r) = TN k r := by
   ext X
   constructor
@@ -177,9 +241,15 @@ def rl (m : ℕ) : Matrix (Fin m) (Fin m) ℂ →ₗ[ℝ] EuclideanSpace ℝ (Fi
   map_add' X Y := by ext p; simp only [realifyFun, PiLp.add_apply]; split_ifs <;> simp
   map_smul' c X := by ext p; simp only [realifyFun, PiLp.smul_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify, rl, realifyFun]`.
+-/
 theorem unrealify_rl {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : unrealify (rl m X) = X := by
   ext i j; apply Complex.ext <;> simp [unrealify, rl, realifyFun]
 
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [Fintype.sum_prod_type, Fintype.sum_bool, rl, realifyFun, LinearMap.coe_mk, AddHom.coe_mk, Real.norm_eq_abs, sq_abs, Complex.sq_norm, Complex.normSq_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_rl {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : ‖rl m X‖ ^ 2 = ∑ i, ∑ j, ‖X i j‖ ^ 2 := by
   rw [EuclideanSpace.norm_sq_eq]
   simp only [Fintype.sum_prod_type, Fintype.sum_bool, rl, realifyFun, LinearMap.coe_mk, AddHom.coe_mk,
@@ -187,22 +257,41 @@ theorem norm_rl {m : ℕ} (X : Matrix (Fin m) (Fin m) ℂ) : ‖rl m X‖ ^ 2 = 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   simp; ring
 
+/- English proof (translation)
+Rewrite using `[lieE, lieOf_eq, ← Submodule.span_eq ((TN k r).map (rl _))]`. Both sides reduce to the same expression.
+-/
 theorem lieE_eq : lieE (Nset k r) = (TN k r).map (rl _) := by
   rw [lieE, lieOf_eq, ← Submodule.span_eq ((TN k r).map (rl _))]
   rfl
 
+/- English proof (translation)
+Rewrite `hx` using `[lieE_eq]`. Take `⟨X, hX, rfl⟩` from `hx`. Rewrite using `[unrealify_rl]` and apply the resulting hypothesis.
+-/
 theorem mem_lieE {x : EuclideanSpace ℝ _} (hx : x ∈ lieE (Nset k r)) : unrealify x ∈ TN k r := by
   rw [lieE_eq] at hx
   obtain ⟨X, hX, rfl⟩ := hx
   rwa [unrealify_rl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext ⟨i, j, b⟩; cases b <;> simp [unrealify, rl, realifyFun]`.
+-/
 theorem rl_unrealify {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) : rl m (unrealify x) = x := by
   ext ⟨i, j, b⟩; cases b <;> simp [unrealify, rl, realifyFun]
 
+/- English proof (translation)
+Conclude with `sum_three fun i => (f i : ℂ)` after adjusting the coercions.
+-/
 theorem sum_three' (f : Fin (2 * r + k + 1) → ℝ) :
     ∑ i, f i = ∑ a, f (eI k r a) + ∑ j, f (wI k r j) + ∑ a, f (esI k r a) := by
   exact_mod_cast sum_three fun i => (f i : ℂ)
 
+/- English proof (translation)
+Establish `h : ∀ g : Fin r → Fin r → ℝ, ∑ p : UT r, g p.1.1 p.1.2 = ∑ a, ∑ b, if a < b then g a b else 0`. Introduce `g`. Rewrite using `[← Fintype.sum_prod_type' (fun a b => if a < b then g a b else 0), ← Finset.sum_filter]`. Conclude with `(Finset.sum_subtype (p := fun p : Fin r × Fin r => p.1 < p.2) _ (by simp) fun p => g p.1 p.2).symm`. Rewrite using `[h f, h fun a b => f b a, Finset.sum_comm (f := fun a b => if a < b then f b a else 0), ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[show f a a = ∑ b, if a = b then f a b else 0 by simp, ← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Simplify using `[h, h.not_gt, h.ne]`.
+
+Simplify using `[h]`. Simplify using `[h, h.not_gt, h.ne']`.
+-/
 theorem sum_UT (f : Fin r → Fin r → ℝ) :
     ∑ a, ∑ b, f a b = ∑ p : UT r, f p.1.1 p.1.2 + ∑ p : UT r, f p.1.2 p.1.1 + ∑ a, f a a := by
   have h : ∀ g : Fin r → Fin r → ℝ, ∑ p : UT r, g p.1.1 p.1.2 = ∑ a, ∑ b, if a < b then g a b else 0 := by
@@ -219,12 +308,24 @@ theorem sum_UT (f : Fin r → Fin r → ℝ) :
   · simp [h]
   · simp [h, h.not_gt, h.ne']
 
+/- English proof (translation)
+Establish `h` using `sum_UT (r := r) fun _ _ => 1`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one] at h`. Establish `h' : r * r = Fintype.card (UT r) + Fintype.card (UT r) + r` using `by exact_mod_cast h`. Rewrite using `[Nat.mul_sub_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_UT : 2 * Fintype.card (UT r) = r * (r - 1) := by
   have h := sum_UT (r := r) fun _ _ => 1
   simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one] at h
   have h' : r * r = Fintype.card (UT r) + Fintype.card (UT r) + r := by exact_mod_cast h
   rw [Nat.mul_sub_one]; omega
 
+/- English proof (translation)
+Establish `hwe : ∀ j a, X (wI k r j) (eI k r a) = 0` using `fun j a => hX.2.1 a _ (by simp [wI]; omega)`. Establish `hse : ∀ b a, X (esI k r b) (eI k r a) = 0` using `fun j a => hX.2.1 a _ (by simp [esI]; omega)`. Establish `hww : ∀ j l, X (wI k r j) (wI k r l) = 0` using `fun j l => hX.2.2 _ _ (by simp [wI]) (by simp [wI]; omega) (by simp [wI])`. Establish `hsw : ∀ b l, X (esI k r b) (wI k r l) = 0` using `fun j l => hX.2.2 _ _ (by simp [wI]) (by simp [wI]; omega) (by simp [esI]; omega)`. Establish `hee : ∑ a, ∑ b, ‖X (eI k r a) (eI k r b)‖ ^ 2 = ∑ p : UT r, ‖X (eI k r p.1.1) (eI k r p.1.2)‖ ^ 2`.
+
+Rewrite using `[sum_UT, Finset.sum_eq_zero (s := Finset.univ) (f := fun a => ‖X (eI k r a) (eI k r a)‖ ^ 2) fun a _ => by simp [hX.2.1 a (eI k r a) le_rfl], Finset.sum_eq_zero (s := Finset.univ) (f := fun p : UT r => ‖X (eI k r p.1.2) (eI k r p.1.1)‖ ^ 2) fun p _ => by simp [hX.2.1 p.1.1 (eI k …`. Establish `hes : ∑ a, ∑ b, ‖X (eI k r a) (esI k r b)‖ ^ 2 = 2 * ∑ p : UT r, ‖X (eI k r p.1.1) (esI k r p.1.2)‖ ^ 2 + ∑ a, (X (eI k r a) (esI k r a)).im ^ 2`. Rewrite using `[sum_UT, two_mul]`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun p _ => by rw [TN_es hX]; simp`.
+
+Use function extensionality and compare the values at `a`. Use `congrArg Complex.re (TN_es hX a a)` as an intermediate fact. Simplify using `at this`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, show (X (eI k r a) (esI k r a)).re = 0 by linarith]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[norm_rl]`. Simplify using `only [sum_three' (k := k) (r := r), Finset.sum_add_distrib, hwe, hse, hww, hsw, TN_ew hX, TN_ss hX, norm_neg, norm_star]`. Rewrite using `[hes, Finset.sum_comm (f := fun a b => ‖X (eI k r b) (eI k r a)‖ ^ 2), hee, Finset.sum_comm (f := fun j b => ‖X (wI k r j) (esI k r b)‖ ^ 2)]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_TN {X : Mat k r} (hX : X ∈ TN k r) : ‖rl _ X‖ ^ 2 =
     2 * ∑ p : UT r, ‖X (eI k r p.1.1) (eI k r p.1.2)‖ ^ 2 + (2 * ∑ b, ∑ j, ‖X (wI k r j) (esI k r b)‖ ^ 2 +
       (2 * ∑ p : UT r, ‖X (eI k r p.1.1) (esI k r p.1.2)‖ ^ 2 + ∑ a, (X (eI k r a) (esI k r a)).im ^ 2)) := by
@@ -260,22 +361,39 @@ abbrev EE (k r : ℕ) := (UT r → ℂ) × PPar k r
 
 def Phi (q : EE k r) : Mat k r := uEmb k r (upper q.1) * pOf k r q.2
 
+/- English proof (translation)
+The claim follows from `(coord_homeo k r).1.mapsTo trivial`.
+-/
 theorem Phi_mem (q : EE k r) : Phi q ∈ Nset k r := (coord_homeo k r).1.mapsTo trivial
 
+/- English proof (translation)
+Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a < b <;> simp [upper, h, Matrix.one_apply]`. Conclude with `h.ne`.
+-/
 theorem upper_zero : upper (0 : UT r → ℂ) = 1 := by
   ext a b
   by_cases h : a < b <;> simp [upper, h, Matrix.one_apply]
   exact h.ne
 
+/- English proof (translation)
+Rewrite using `[Phi, Prod.fst_zero, upper_zero, GlobalTheory.Amp.UEmb.uEmb_one, Matrix.one_mul]`. Use extensionality with `i j`. Simplify using `[pOf, pEl, skewM, herm, Matrix.one_apply]`.
+-/
 theorem Phi_zero : Phi (0 : EE k r) = 1 := by
   rw [Phi, Prod.fst_zero, upper_zero, GlobalTheory.Amp.UEmb.uEmb_one, Matrix.one_mul]
   ext i j
   simp [pOf, pEl, skewM, herm, Matrix.one_apply]
 
+/- English proof (translation)
+Unfold `upper`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem smooth_upper (a b : Fin r) : ContDiff ℝ 1 fun x : UT r → ℂ => upper x a b := by
   unfold upper
   split_ifs <;> fun_prop
 
+/- English proof (translation)
+Establish `: (fun x : UT r → ℂ => (upper x)⁻¹ a b) = fun x => (upper x).adjugate a b`. Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.inv_def, det_upper]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Simplify using `only [Matrix.adjugate_apply, Matrix.det_apply', Matrix.updateRow_apply]`. Use `ContDiff.sum fun σ _ => contDiff_const.mul (contDiff_prod fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `contDiff_const`. Conclude with `smooth_upper _ _`.
+-/
 theorem smooth_upper_inv (a b : Fin r) : ContDiff ℝ 1 fun x : UT r → ℂ => (upper x)⁻¹ a b := by
   have : (fun x : UT r → ℂ => (upper x)⁻¹ a b) = fun x => (upper x).adjugate a b := by
     funext x; rw [Matrix.inv_def, det_upper]; simp
@@ -286,9 +404,23 @@ theorem smooth_upper_inv (a b : Fin r) : ContDiff ℝ 1 fun x : UT r → ℂ => 
   · exact contDiff_const
   · exact smooth_upper _ _
 
+/- English proof (translation)
+The claim follows from `Complex.conjCLE.contDiff.comp hf`.
+-/
 theorem smooth_star {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {f : E → ℂ} (hf : ContDiff ℝ 1 f) :
     ContDiff ℝ 1 fun x => star (f x) := Complex.conjCLE.contDiff.comp hf
 
+/- English proof (translation)
+Simplify using `only [Phi, Matrix.mul_apply]`. Use `ContDiff.sum fun l _ => ContDiff.mul ?_ ?_` and prove the remaining obligations. Use `ContDiff.comp (g := fun x => uEmb k r (upper x) i l) ?_ contDiff_fst` and prove the remaining obligations. Unfold `uEmb`. Use `split_ifs`.
+
+Conclude with `smooth_upper _ _`. Conclude with `smooth_star (smooth_upper_inv _ _)`. Apply the tactic sequence `all_goals exact contDiff_const`. Use `ContDiff.comp (g := fun x => pOf k r x l j) ?_ contDiff_snd` and prove the remaining obligations. Establish `hB : ∀ a b, ContDiff ℝ 1 fun x : PPar k r => x.1 a b` using `fun a b => by fun_prop`.
+
+Establish `hS : ∀ a b, ContDiff ℝ 1 fun x : PPar k r => skewM x.2.1 x.2.2 a b` using `fun a b => by`. Unfold `skewM`. Use `split_ifs`. Use `fun_prop`. Conclude with `(smooth_star (by fun_prop)).neg`.
+
+Conclude with `(Complex.ofRealCLM.contDiff.comp (by fun_prop)).mul contDiff_const`. Unfold `pOf pEl herm Matrix.mulVec dotProduct`. Simplify using `only [Pi.star_apply]`. Use `split_ifs`. Conclude with `contDiff_const`.
+
+Conclude with `(ContDiff.sum fun _ _ => (smooth_star (hB _ _)).mul contDiff_const).neg`. Conclude with `hB _ _`. Conclude with `(hS _ _).sub ((ContDiff.sum fun _ _ => (smooth_star (hB _ _)).mul (ContDiff.sum fun _ _ => contDiff_const.mul (hB _ _))).div_const _)`. Conclude with `contDiff_const`.
+-/
 theorem smooth_Phi (i j : Fin (2 * r + k + 1)) : ContDiff ℝ 1 fun q : EE k r => Phi q i j := by
   simp only [Phi, Matrix.mul_apply]
   refine ContDiff.sum fun l _ => ContDiff.mul ?_ ?_
@@ -321,18 +453,30 @@ def Dm (k r : ℕ) : EE k r →ₗ[ℝ] Mat k r where
   map_add' v w := by ext i j; simp
   map_smul' c v := by ext i j; simp
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun t : ℝ => t • v) v 0` using `by simpa using (hasDerivAt_id (0 : ℝ)).smul_const v`. Establish `h2` using `((smooth_Phi (k := k) (r := r) i j).differentiable (by simp) 0).hasFDerivAt`. Conclude with `h2.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp)`.
+-/
 theorem deriv_Phi (v : EE k r) (i j : Fin (2 * r + k + 1)) :
     HasDerivAt (fun t : ℝ => Phi (t • v) i j) (Dm k r v i j) 0 := by
   have h1 : HasDerivAt (fun t : ℝ => t • v) v 0 := by simpa using (hasDerivAt_id (0 : ℝ)).smul_const v
   have h2 := ((smooth_Phi (k := k) (r := r) i j).differentiable (by simp) 0).hasFDerivAt
   exact h2.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by simp)
 
+/- English proof (translation)
+The claim follows from `tangent_mem (γ := fun t : ℝ => Phi (t • v)) (fun _ => Phi_mem _) (by simp [Phi_zero]) (deriv_Phi v)`.
+-/
 theorem Dm_mem (v : EE k r) : Dm k r v ∈ TN k r :=
   tangent_mem (γ := fun t : ℝ => Phi (t • v)) (fun _ => Phi_mem _) (by simp [Phi_zero]) (deriv_Phi v)
 
+/- English proof (translation)
+Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const c`.
+-/
 theorem deriv_lin (c : ℂ) : HasDerivAt (fun t : ℝ => t • c) c 0 := by
   simpa using (hasDerivAt_id (0 : ℝ)).smul_const c
 
+/- English proof (translation)
+Use `(deriv_Phi v _ _).unique ?_` and prove the remaining obligations. Establish `: ∀ q : EE k r, Phi q (eI k r p.1.1) (eI k r p.1.2) = q.1 p` using `fun q => congrFun (congrArg Prod.fst (cOf_coord q)) p`. Simplify using `only [this]`. Conclude with `deriv_lin _`.
+-/
 theorem Dm_ee (v : EE k r) (p : UT r) : Dm k r v (eI k r p.1.1) (eI k r p.1.2) = v.1 p := by
   refine (deriv_Phi v _ _).unique ?_
   have : ∀ q : EE k r, Phi q (eI k r p.1.1) (eI k r p.1.2) = q.1 p := fun q =>
@@ -340,6 +484,11 @@ theorem Dm_ee (v : EE k r) (p : UT r) : Dm k r v (eI k r p.1.1) (eI k r p.1.2) =
   simp only [this]
   exact deriv_lin _
 
+/- English proof (translation)
+Use `(deriv_Phi v _ _).unique ?_` and prove the remaining obligations. Establish `: ∀ q : EE k r, Phi q (wI k r j) (esI k r b) = q.2.1 b j` using `fun q => by`. Rewrite using `[Phi, Matrix.mul_apply, GlobalTheory.Amp.UEmb.sum_idx]`. Establish `h` using `congrFun (congrFun (Bof_pEl q.2.1 (skewM q.2.2.1 q.2.2.2)) b) j`. Express the relevant statement in the definitionally equal form `∑ a, uEmb k r _ (GlobalTheory.Amp.UEmb.mI k r j) _ * _ + (∑ a, uEmb k r _ (GlobalTheory.Amp.UEmb.mI k r j) _ * _ + ∑ a, uEmb k r _ (GlobalTheory.Amp.UEmb.mI k r j) _ * _) = _`.
+
+Simplify using `[GlobalTheory.Amp.UEmb.u_me, GlobalTheory.Amp.UEmb.u_mm, GlobalTheory.Amp.UEmb.u_ms]`. Conclude with `h`. Simplify using `only [this]`. Conclude with `deriv_lin _`.
+-/
 theorem Dm_ws (v : EE k r) (j : Fin (k + 1)) (b : Fin r) : Dm k r v (wI k r j) (esI k r b) = v.2.1 b j := by
   refine (deriv_Phi v _ _).unique ?_
   have : ∀ q : EE k r, Phi q (wI k r j) (esI k r b) = q.2.1 b j := fun q => by
@@ -352,6 +501,17 @@ theorem Dm_ws (v : EE k r) (j : Fin (k + 1)) (b : Fin r) : Dm k r v (wI k r j) (
   simp only [this]
   exact deriv_lin _
 
+/- English proof (translation)
+Use `(deriv_Phi v _ _).unique ?_` and prove the remaining obligations. Establish `h1 : ∀ q : EE k r, Phi q (eI k r a) (esI k r b) = ∑ c, upper q.1 a c * (skewM q.2.2.1 q.2.2.2 c b - herm (Hb k) (q.2.1 b) (q.2.1 c) / 2)` using `fun q => by`. Rewrite using `[Phi, Matrix.mul_apply, GlobalTheory.Amp.UEmb.sum_idx]`. Simplify using `only [GlobalTheory.Amp.UEmb.u_ee, GlobalTheory.Amp.UEmb.u_em, GlobalTheory.Amp.UEmb.u_es, zero_mul, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Establish `h` using `congrFun (congrFun (Sof_pEl q.2.1 (skewM q.2.2.1 q.2.2.2)) c) b`. Rewrite `h` using `[Sof, Bof_pEl]`. Rewrite using `[← h, pOf]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ∀ t : ℝ, Phi (t • v) (eI k r a) (esI k r b) = ∑ c, ((1 : Matrix (Fin r) (Fin r) ℂ) a c + t • (upper v.1 a c - (1 : Matrix (Fin r) (Fin r) ℂ) a c)) * (t • skewM v.2.2.1 v.2.2.2 c b - (t • (1 : ℂ)) * (t • (herm (Hb k) (v.2.1 b) (v.2.1 c) / 2)))` using `fun t => by`.
+
+Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `h : a < c`. Simplify using `[upper, h, Matrix.one_apply, h.ne]`.
+
+Simplify using `[upper, h, Matrix.one_apply]`. Use `congr 1`. Apply the tactic sequence `unfold skewM split_ifs <;> simp [mul_assoc]`. Simplify using `[herm, Matrix.mulVec_smul, mul_div_assoc]`. Simplify using `only [h2]`.
+
+Establish `h3` using `HasDerivAt.fun_sum (u := Finset.univ) fun (c : Fin r) _ => ((deriv_lin (upper v.1 a c - (1 : Matrix (Fin r) (Fin r) ℂ) a c)).const_add ((1 : Matrix (Fin r) (Fin r) ℂ) a c)).fun_mul ((deriv_lin (skewM v.2.2.1 v.2.2.2 c b)).fun_sub ((deriv_lin 1).fun_mul (deriv_lin (herm (Hb k) (v. …`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `[Matrix.one_apply]`.
+-/
 theorem Dm_es (v : EE k r) (a b : Fin r) : Dm k r v (eI k r a) (esI k r b) = skewM v.2.2.1 v.2.2.2 a b := by
   refine (deriv_Phi v _ _).unique ?_
   have h1 : ∀ q : EE k r, Phi q (eI k r a) (esI k r b) =
@@ -383,6 +543,11 @@ theorem Dm_es (v : EE k r) (a b : Fin r) : Dm k r v (eI k r a) (esI k r b) = ske
   convert h3 using 1
   simp [Matrix.one_apply]
 
+/- English proof (translation)
+Rewrite using `[norm_TN (Dm_mem v)]`. Simplify using `only [Dm_ee, Dm_ws, Dm_es]`. Use `congr 5`. Use function extensionality and compare the values at `p`. Simplify using `[skewM, p.2]`.
+
+Use function extensionality and compare the values at `a`. Simplify using `[skewM]`.
+-/
 theorem norm_Dm (v : EE k r) : ‖rl _ (Dm k r v)‖ ^ 2 =
     2 * ∑ p, ‖v.1 p‖ ^ 2 + (2 * ∑ b, ∑ j, ‖v.2.1 b j‖ ^ 2 + (2 * ∑ p, ‖v.2.2.1 p‖ ^ 2 + ∑ a, v.2.2.2 a ^ 2)) := by
   rw [norm_TN (Dm_mem v)]
@@ -391,6 +556,13 @@ theorem norm_Dm (v : EE k r) : ‖rl _ (Dm k r v)‖ ^ 2 =
   · funext p; simp [skewM, p.2]
   · funext a; simp [skewM]
 
+/- English proof (translation)
+Set `v : EE k r` to `(fun p => X (eI k r p.1.1) (eI k r p.1.2), fun b j => X (wI k r j) (esI k r b), fun p => X (eI k r p.1.1) (esI k r p.1.2), fun a => (X (eI k r a) (esI k r a)).im)`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `h` using `norm_TN ((TN k r).sub_mem (Dm_mem v) hX)`. Simplify using `only [Matrix.sub_apply, Dm_ee, Dm_ws, Dm_es] at h`. Establish `h1 : ∀ p : UT r, skewM v.2.2.1 v.2.2.2 p.1.1 p.1.2 = X (eI k r p.1.1) (esI k r p.1.2)` using `fun p => by`.
+
+Simplify using `[skewM, p.2, v]`. Establish `h2 : ∀ a, (skewM v.2.2.1 v.2.2.2 a a).im = (X (eI k r a) (esI k r a)).im` using `fun p => by`. Simplify using `[skewM, v]`. Simplify using `only [h1, h2, Complex.sub_im, v, sub_self] at h`. Establish `h3 : rl _ (Dm k r v - X) = 0` using `by simpa using h`.
+
+Rewrite using `[← sub_eq_zero, ← unrealify_rl (Dm k r v - X), h3, ← map_zero (rl _), unrealify_rl]`.
+-/
 theorem Dm_surj {X : Mat k r} (hX : X ∈ TN k r) : ∃ v, Dm k r v = X := by
   let v : EE k r := (fun p => X (eI k r p.1.1) (eI k r p.1.2), fun b j => X (wI k r j) (esI k r b),
     fun p => X (eI k r p.1.1) (esI k r p.1.2), fun a => (X (eI k r a) (esI k r a)).im)
@@ -405,6 +577,11 @@ theorem Dm_surj {X : Mat k r} (hX : X ∈ TN k r) : ∃ v, Dm k r v = X := by
   have h3 : rl _ (Dm k r v - X) = 0 := by simpa using h
   rw [← sub_eq_zero, ← unrealify_rl (Dm k r v - X), h3, ← map_zero (rl _), unrealify_rl]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero ((rl _).comp (Dm k r))).2 fun v hv => ?_` and prove the remaining obligations. Establish `hv' : Dm k r v = 0`. Rewrite using `[← unrealify_rl (Dm k r v), show rl _ (Dm k r v) = 0 from hv, ← map_zero (rl _), unrealify_rl]`. Take `⟨x, B, s, t⟩` from `v`. Simplify using `only [Prod.mk_eq_zero]`.
+
+Use `⟨funext fun p => ?_, funext fun b => funext fun j => ?_, funext fun p => ?_, funext fun a => ?_⟩` and prove the remaining obligations. Simplify `(Dm_ee (x, B, s, t) p).symm` using `[hv']`. Simplify `(Dm_ws (x, B, s, t) j b).symm` using `[hv']`. Simplify `(Dm_es (x, B, s, t) p.1.1 p.1.2).symm` using `[hv', skewM, p.2]`. Simplify `(Dm_es (x, B, s, t) a a).symm` using `[hv', skewM]`.
+-/
 theorem Dm_inj : Function.Injective fun v : EE k r => rl _ (Dm k r v) := by
   refine (injective_iff_map_eq_zero ((rl _).comp (Dm k r))).2 fun v hv => ?_
   have hv' : Dm k r v = 0 := by
@@ -424,8 +601,14 @@ def LL (k r : ℕ) : EE k r ≃L[ℝ] lieE (Nset k r) :=
       obtain ⟨v, hv⟩ := Dm_surj (mem_lieE x.2)
       exact ⟨v, Subtype.ext (by show rl _ (Dm k r v) = _; rw [hv, rl_unrealify])⟩⟩).toContinuousLinearEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem LL_val (v : EE k r) : (LL k r v : EuclideanSpace ℝ _) = rl _ (Dm k r v) := rfl
 
+/- English proof (translation)
+Establish `h` using `GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) (b := 2) two_pos`. Establish `h2` using `integral_fintype_prod_volume_eq_pow (ι := ι) fun z : ℂ => Real.exp (-2 * ‖z‖ ^ 2)`. Rewrite `h2` using `[h]`. Simplify using `only [← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum, neg_mul] at h2`. Simplify `h2` using `[← Finset.mul_sum]`.
+-/
 theorem gauss_pi (ι : Type) [Fintype ι] :
     ∫ x : ι → ℂ, Real.exp (-(2 * ∑ p, ‖x p‖ ^ 2)) = (Real.pi / 2) ^ Fintype.card ι := by
   have h := GaussianFourier.integral_rexp_neg_mul_sq_norm (V := ℂ) (b := 2) two_pos
@@ -434,18 +617,29 @@ theorem gauss_pi (ι : Type) [Fintype ι] :
   simp only [← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum, neg_mul] at h2
   simpa [← Finset.mul_sum] using h2
 
+/- English proof (translation)
+Establish `h2` using `integral_fintype_prod_volume_eq_pow (ι := ι) fun z : κ → ℂ => Real.exp (-(2 * ∑ j, ‖z j‖ ^ 2))`. Rewrite `h2` using `[gauss_pi, ← pow_mul, mul_comm]`. Simplify `h2` using `only [← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum]`.
+-/
 theorem gaussian_integral_complex_matrix (ι κ : Type) [Fintype ι] [Fintype κ] :
     ∫ x : ι → κ → ℂ, Real.exp (-(2 * ∑ p, ∑ j, ‖x p j‖ ^ 2)) = (Real.pi / 2) ^ (Fintype.card ι * Fintype.card κ) := by
   have h2 := integral_fintype_prod_volume_eq_pow (ι := ι) fun z : κ → ℂ => Real.exp (-(2 * ∑ j, ‖z j‖ ^ 2))
   rw [gauss_pi, ← pow_mul, mul_comm] at h2
   simpa only [← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum] using h2
 
+/- English proof (translation)
+Establish `h2` using `integral_fintype_prod_volume_eq_pow (ι := ι) fun z : ℝ => Real.exp (-1 * z ^ 2)`. Rewrite `h2` using `[integral_gaussian]`. Simplify `h2` using `[← Real.exp_sum]`.
+-/
 theorem gauss_re (ι : Type) [Fintype ι] :
     ∫ x : ι → ℝ, Real.exp (-(∑ p, x p ^ 2)) = √Real.pi ^ Fintype.card ι := by
   have h2 := integral_fintype_prod_volume_eq_pow (ι := ι) fun z : ℝ => Real.exp (-1 * z ^ 2)
   rw [integral_gaussian] at h2
   simpa [← Real.exp_sum] using h2
 
+/- English proof (translation)
+Establish `: ∀ v : EE k r, Real.exp (-1 * ‖LL k r v‖ ^ 2) = Real.exp (-(2 * ∑ p, ‖v.1 p‖ ^ 2)) * (fun q : PPar k r => Real.exp (-(2 * ∑ b, ∑ j, ‖q.1 b j‖ ^ 2)) * (fun w : (UT r → ℂ) × (Fin r → ℝ) => Real.exp (-(2 * ∑ p, ‖w.1 p‖ ^ 2)) * Real.exp (-(∑ a, w.2 a ^ 2))) q.2) v.2` using `fun v => by`. Rewrite using `[Submodule.coe_norm, LL_val, norm_Dm]`. Simplify using `only [← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [this]`. Rewrite using `[Measure.volume_eq_prod, integral_prod_mul (fun x : UT r → ℂ => Real.exp (-(2 * ∑ p, ‖x p‖ ^ 2))) (fun q : PPar k r => Real.exp (-(2 * ∑ b, ∑ j, ‖q.1 b j‖ ^ 2)) * (Real.exp (-(2 * ∑ p, ‖q.2.1 p‖ ^ 2)) * Real.exp (-(∑ a, q.2.2 a ^ 2)))), Measure.volume_eq_prod, integral_prod_mul ( …`. Simplify using `only [Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gauss_EE : ∫ v : EE k r, Real.exp (-1 * ‖LL k r v‖ ^ 2) =
     (Real.pi / 2) ^ (r * (k + 1) + r * (r - 1)) * √Real.pi ^ r := by
   have : ∀ v : EE k r, Real.exp (-1 * ‖LL k r v‖ ^ 2) = Real.exp (-(2 * ∑ p, ‖v.1 p‖ ^ 2)) *
@@ -466,6 +660,9 @@ theorem gauss_EE : ∫ v : EE k r, Real.exp (-1 * ‖LL k r v‖ ^ 2) =
   simp only [Fintype.card_fin]
   ring
 
+/- English proof (translation)
+Rewrite using `[← (LL k r).toLinearEquiv.finrank_eq, ← card_UT]`. Simplify using `[Module.finrank_prod, Module.finrank_pi_fintype]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_lieE : Module.finrank ℝ (lieE (Nset k r)) = 2 * (r * (k + 1) + r * (r - 1)) + r := by
   rw [← (LL k r).toLinearEquiv.finrank_eq, ← card_UT]
   simp [Module.finrank_prod, Module.finrank_pi_fintype]
@@ -481,6 +678,17 @@ instance haarPPar : (volume : Measure (PPar k r)).IsAddHaarMeasure := Measure.pr
 
 instance haarEE : (volume : Measure (EE k r)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _
 
+/- English proof (translation)
+Establish `hm : MeasurableEmbedding (LL k r)` using `(LL k r).toHomeomorph.measurableEmbedding`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul ((volume : Measure (EE k r)).map (LL k r)) volume`. Use `set c := Measure.addHaarScalarFactor ((volume : Measure (EE k r)).map (LL k r)) volume`. Establish `h1` using `gauss_EE (k := k) (r := r)`. Rewrite `h1` using `[← hm.integral_map (fun y => Real.exp (-1 * ‖y‖ ^ 2)), h, integral_smul_nnreal_measure, GaussianFourier.integral_rexp_neg_mul_sq_norm one_pos, finrank_lieE]`.
+
+Use `set N := r * (k + 1) + r * (r - 1)`. Establish `h2 : (Real.pi / 1) ^ (((2 * N + r : ℕ) : ℝ) / 2) = Real.pi ^ N * √Real.pi ^ r`. Rewrite using `[div_one, Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul Real.pi_pos.le, ← Real.rpow_add Real.pi_pos]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[h2, NNReal.smul_def, smul_eq_mul, div_pow]`. Establish `h3 : (2 : NNReal) ^ N * c = 1`. Use `Real.pi_pos` as an intermediate fact. Apply `NNReal.coe_injective` to reduce the goal to its premises.
+
+Use `push_cast`. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : volume A = c * volume (LL k r '' A)`. Use `congrArg (fun μ : Measure _ => μ (LL k r '' A)) h` as an intermediate fact.
+
+Simplify `this` using `[hm.map_apply, Set.preimage_image_eq _ (LL k r).injective]`. Rewrite using `[h4, ← mul_assoc]`. Establish `h5 : (2 : ℝ≥0∞) ^ N * c = 1` using `by exact_mod_cast h3`. Rewrite using `[h5, one_mul]`.
+-/
 theorem vol_LL {A : Set (EE k r)} :
     volume (LL k r '' A) = (2 ^ (r * (k + 1) + r * (r - 1)) : ℝ≥0∞) * volume A := by
   have hm : MeasurableEmbedding (LL k r) := (LL k r).toHomeomorph.measurableEmbedding
@@ -508,6 +716,11 @@ theorem vol_LL {A : Set (EE k r)} :
   have h5 : (2 : ℝ≥0∞) ^ N * c = 1 := by exact_mod_cast h3
   rw [h5, one_mul]
 
+/- English proof (translation)
+Establish `he : ∀ i j c, IsClosed {g : Mat k r | g i j = c}` using `fun i j c => isClosed_eq (continuous_id.matrix_elem i j) continuous_const`. Use `IsClosed.and (isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const) (IsClosed.and ?_ ?_)` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => he _ _ _`. Simplify using `only [Set.setOf_forall]`.
+
+Conclude with `isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => he _ _ _`.
+-/
 theorem closed_N : IsClosed (Nset k r) := by
   have he : ∀ i j c, IsClosed {g : Mat k r | g i j = c} := fun i j c =>
     isClosed_eq (continuous_id.matrix_elem i j) continuous_const
@@ -519,14 +732,29 @@ theorem closed_N : IsClosed (Nset k r) := by
     exact isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ =>
       isClosed_iInter fun _ => he _ _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨closed_N, (nSubgroup k r).1, (nSubgroup k r).2.1, fun a ha => ⟨(nSubgroup k r).2.2 a ha, Matrix.mul_nonsing_inv _ ((uHGroup _ _ (Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1)).2.2 a ha.1).1⟩⟩`.
+-/
 theorem matGroup_N : PI.IsMatGroup (Nset k r) :=
   ⟨closed_N, (nSubgroup k r).1, (nSubgroup k r).2.1, fun a ha => ⟨(nSubgroup k r).2.2 a ha,
     Matrix.mul_nonsing_inv _ ((uHGroup _ _ (Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1)).2.2 a ha.1).1⟩⟩
 
 open scoped Matrix.Norms.Operator in
+/- English proof (translation)
+The claim follows from `NormedSpace.exp_continuous`.
+-/
 theorem cont_exp {m : ℕ} : Continuous (NormedSpace.exp : Matrix (Fin m) (Fin m) ℂ → _) :=
   NormedSpace.exp_continuous
 
+/- English proof (translation)
+Set `f : lieE (Nset k r) → Mt k r` to `fun x i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j`. Establish `hu : Continuous fun x : lieE (Nset k r) => unrealify (m` using `2 * r + k + 1) x.1 := by`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [unrealify, Complex.mk_eq_add_mul_I]`. Use `fun_prop`.
+
+Establish `hf : Continuous f` using `cont_exp.comp hu`. Establish `hi : Function.Injective f` using `fun x y h => by`. Use `exp_inj_upper (TN_upper (mem_lieE x.2)) (TN_upper (mem_lieE y.2)) h` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← rl_unrealify x.1, this, rl_unrealify]`.
+
+Establish `hm : MeasurableEmbedding f` using `hf.measurableEmbedding hi`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ρ hρ`. Establish `: haarLie (Nset k r) 1 (expSet (Nset k r) (Metric.ball 0 ρ)) = volume (Metric.ball (0 : lieE (Nset k r)) ρ)`. Rewrite using `[haarLie, one_smul]`.
+
+Conclude with `(hm.map_apply _ _).trans (congrArg _ (Set.preimage_image_eq _ hi))`. Rewrite using `[this, ENNReal.div_self (Metric.measure_ball_pos _ _ hρ).ne' measure_ball_lt_top.ne]`.
+-/
 theorem dens_one : HasDens (Nset k r) (haarLie (Nset k r) 1) 1 := by
   let f : lieE (Nset k r) → Mt k r := fun x i j => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ _)) i j
   have hu : Continuous fun x : lieE (Nset k r) => unrealify (m := 2 * r + k + 1) x.1 := by
@@ -546,6 +774,15 @@ theorem dens_one : HasDens (Nset k r) (haarLie (Nset k r) 1) 1 := by
     exact (hm.map_apply _ _).trans (congrArg _ (Set.preimage_image_eq _ hi))
   rw [this, ENNReal.div_self (Metric.measure_ball_pos _ _ hρ).ne' measure_ball_lt_top.ne]
 
+/- English proof (translation)
+Introduce `k r`. Establish `hH` using `GlobalTheory.T.haarLie_isHaarOn_unipotentRadical k r 1 one_pos ENNReal.one_lt_top`. Take `⟨c, -, -, hc⟩` from `GlobalTheory.T.closedSubgroupBesselUnitary_haar_unique k r (Nset k r) _ _ ⟨fun _ h => h.1, closed_N, (nSubgroup k r).1, (nSubgroup k r).2.1, (nSubgroup k r).2.2⟩ (GlobalTheory.T.flagUnipotentLebesgueMeasure_isHaarOn k r) hH`. Establish `hT` using `GlobalTheory.T.tendsto_measure_image_ball_div_volume _ (Nset k r) _ 1 matGroup_N hH dens_one (EE k r) Phi (LL k r) Phi_zero (Eventually.of_forall Phi_mem) fun i j => ⟨_, (smooth_Phi i j).contDiffAt.hasStrictFDerivAt (by simp), fun v => by rw [LL_val, unrealify_rl]; rfl⟩`. Establish `hi : Function.Injective fun q : EE k r => (Matrix.of.symm (Phi q) : Mt k r)` using `fun q q' h => (coord_homeo k r).1.injOn trivial trivial h`.
+
+Use `haveI : PolishSpace (EE k r) := by haveI : SecondCountableTopology (EE k r) := inferInstance haveI : TopologicalSpace.IsCompletelyMetrizableSpace (EE k r) := MetricSpace.toIsCompletelyMetrizableSpace`. Conclude with `{}`. Establish `hm : MeasurableEmbedding fun q : EE k r => (Matrix.of.symm (Phi q) : Mt k r)` using `Continuous.measurableEmbedding (f := fun q : EE k r => (Matrix.of.symm (Phi q) : Mt k r)) (continuous_pi fun i => continuous_pi fun j => (smooth_Phi i j).continuous) hi`. Use `set N : ℝ≥0∞ := 2 ^ (r * (k + 1) + r * (r - 1)) with hN`. Establish `hN0 : N ≠ 0` using `by simp [hN]`.
+
+Establish `hN1 : N ≠ ⊤` using `by simp [hN]`. Establish `h1 : c / N = 1`. Use `tendsto_nhds_unique (tendsto_const_nhds.congr' ?_) hT` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ρ hρ`. Establish `: lebN k r ((fun q : EE k r => Matrix.of.symm (Phi q)) '' Metric.ball 0 ρ) = volume (Metric.ball (0 : EE k r) ρ)` using `(hm.map_apply _ _).trans (congrArg _ (Set.preimage_image_eq _ hi))`.
+
+Rewrite using `[vol_LL, hc, Measure.smul_apply, this, smul_eq_mul, ENNReal.mul_div_mul_right _ _ (Metric.measure_ball_pos _ _ hρ).ne' measure_ball_lt_top.ne]`. Rewrite using `[hc, (ENNReal.div_eq_one_iff hN0 hN1).1 h1]`.
+-/
 theorem haarLie_eq_lebN : ∀ k r : ℕ,
     haarLie (Nset k r) 1 = (2 ^ (r * (k + 1) + r * (r - 1)) : ℝ≥0∞) • lebN k r := by
   intro k r

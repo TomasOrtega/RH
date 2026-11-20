@@ -27,6 +27,11 @@ def colEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTh
 
 open GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns in
 
+/- English proof (translation)
+Unfold `prodP polyH`. Rewrite using `[map_prod]`. Repeatedly rewrite using `[MvPolynomial.rename_rename]`. Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun f : Lt1 Dw => cx f ≠ 0)]`. Establish `h1 : ∏ f : {f : Lt1 Dw // ¬ cx f ≠ 0}, MvPolynomial.rename (fun ℓ : (Σ _ : Fin (rk f.1), Fin (rk f.1)) => (⟨⟨f.1, ℓ.1⟩, ℓ.2⟩ : Σ b : (Σ f : Lt1 Dw, Fin (rk f)), Fin (rk b.1))) (GlobalTheory.FGDepth.detPow C (rk f.1) (cx f.1)) = 1`.
+
+Use `Finset.prod_eq_one fun f _ => ?_` and prove the remaining obligations. Establish `h0 : cx f.1 = 0` using `not_not.1 f.2`. Rewrite using `[GlobalTheory.FGDepth.detPow, h0, pow_zero, map_one]`. Rewrite using `[h1, mul_one]`. Both sides reduce to the same expression.
+-/
 theorem prodP_eq_rename_polyH {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} (C : Type) [Field C] (cx : Lt1 Dw → ℕ) :
     prodP C cx = MvPolynomial.rename (fun x : Let cx =>
@@ -44,6 +49,21 @@ theorem prodP_eq_rename_polyH {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [h1, mul_one]
   rfl
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p _ T io y Ch X cx`. Establish `hfac` using `(GlobalTheory.T.detFactorDepth_eq_chart_value_and_sum E H Dw l Xo c p T io y Ch X).1`. Establish `hsum : nuP p y cx = ∑ f, nuFacC Ch X f (cx f)` using `Finset.sum_congr rfl fun f _ => hfac f (cx f)`.
+
+Establish `hbd : ∀ f, 0 ≤ nuFacC Ch X f (cx f) ∧ nuFacC Ch X f (cx f) ≤ ((((rk f * cx f : ℕ) : ℝ) / (p - 1) : ℝ) : EReal)` using `fun f => by`. Establish `h` using `GlobalTheory.T.formalGroupDeterminantPowDepth_bounds X.C (vX_vp X) p Fact.out (vX_vp_p X) (rk f) (chD Ch.ch) (cx f) (fgl Ch X) (frame Ch X f) (isSatFrame_frame Ch X f)`. Use `⟨h.1, h.2.2.trans (le_of_eq ?_)⟩` and prove the remaining obligations. Use `push_cast`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum, ← GlobalTheory.FactorDepthProd.nuProdC_eq_sum]`. Unfold `nuProdC GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuH_vp`. Rewrite using `[prodP_eq_rename_polyH]`. Conclude with `(GlobalTheory.FGDepth.depth_restrict X.C (vX_vp X) (Σ f : Lt1 Dw, Fin (rk f)) (fun _ => chD Ch.ch) (fun _ => fgl Ch X) (fun b => Fin (rk b.1)) (fun b => frame Ch X b.1) (GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.Col cx) (colEmb cx) (GlobalTheory.IndefiniteRowS …`.
+
+Rewrite using `[hsum]`. Conclude with `Finset.sum_nonneg fun f _ => (hbd f).1`. Rewrite using `[hsum]`. Establish `hreal : ∃ r : ℝ, ∑ f, nuFacC Ch X f (cx f) = (r : EReal)`. Use `Finset.sum_induction _ (fun x : EReal => ∃ r : ℝ, x = r) ?_ ⟨0, rfl⟩ ?_` and prove the remaining obligations.
+
+Introduce and unpack `a b ⟨r, rfl⟩ ⟨s, rfl⟩`. Conclude with `⟨r + s, (EReal.coe_add r s).symm⟩`. Introduce `f _`. Establish `h0` using `(hbd f).1`. Establish `h1` using `(hbd f).2`.
+
+Use `⟨(nuFacC Ch X f (cx f)).toReal, (EReal.coe_toReal ?_ ?_).symm⟩` and prove the remaining obligations. Conclude with `ne_top_of_le_ne_top (EReal.coe_ne_top _) h1`. Conclude with `ne_bot_of_le_ne_bot (by simp) h0`. Take `⟨r, hr⟩` from `hreal`. Rewrite using `[hr]`.
+
+Conclude with `EReal.coe_ne_top r`.
+-/
 theorem nuH_vp_eq_nuP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (Ch : IntegralChartA3 Xo c T io y) (X : ValExt T p) (cx : Lt1 Dw → ℕ), GlobalTheory.IndefiniteRowSideFullHecke.LocalValuationColumns.nuH_vp Ch X cx = nuP p y cx ∧ 0 ≤ nuP p y cx ∧ nuP p y cx ≠ ⊤ := by
   intro E _ _ _ H Dw l Xo c
   classical

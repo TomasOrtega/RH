@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RootsOfUnity
 open NumberField
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AbsDifferent.abs_traceDual | exact GlobalTheory.AbsDifferent.abs_traceDual | (intros; apply GlobalTheory.AbsDifferent.abs_traceDual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.different_valuation_bound : ∀ (E : Type) [Field E] [NumberField E] [IsGalois ℚ E] (K : Type) [Field K] (w : AbsoluteValue K ℝ),
     IsNonarchimedean w → ∀ p : ℕ, p.Prime → w (p : K) < 1 → ∀ φ : E →+* K,
     (∀ k, w (φ ((integralBasis E).traceDual k)) ≤ w (p : K) ^ (-GlobalTheory.ShFam.Pad.vDiff E p)) ∧

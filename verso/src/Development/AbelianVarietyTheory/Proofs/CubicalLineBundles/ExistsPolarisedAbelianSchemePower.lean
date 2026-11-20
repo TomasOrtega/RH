@@ -12,6 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CM
 
+/- English proof (translation)
+Introduce `R _ P n`. Use `P.isAb.comm` as an intermediate fact. Take `⟨hL, hS, hr⟩` from `BoxPower.boxPower_basic R P n`. Take `⟨rig, hrig⟩` from `P.rigid`. Conclude with `⟨{ A := Out.powObj P.A n isAb := (PowGrp.powers _ _ _ n (Out.powIsPowGrp P.A n)).2.2.2.1 P.isAb g := n * P.g smoothDim := powObj_smoothOfRelativeDimension_mul _ _ _ n P.smoothDim L := Out.boxLB P.L (Out.powPr P.A (n := n)) isLB := hL rigid := ⟨_, hr rig hrig⟩ sym := hS ample := r …`.
+-/
 theorem exists_polAV_isPowGrp : ∀ (R : Type) [CommRing R] (P : Out.PolAV (Sp R)) (n : ℕ), ∃ (Q : Out.PolAV (Sp R)) (_ : Out.IsPowGrp Q.A P.A n), Q.g = n * P.g := by
   intro R _ P n
   have := P.isAb.comm

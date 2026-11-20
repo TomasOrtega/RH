@@ -11,6 +11,9 @@ open GlobalTheory.CompanionTheory.CocProd
 
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `z`. Take `rfl : x = _` from `h`. Both sides reduce to the same expression.
+-/
 theorem sqMap_val {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) {T T' : C} (φ : T ⟶ T') (z : sqM a b T)
     (u : A.obj T) (h : z.1 = Ideal.Quotient.mk _ u) :
     (sqMap a b φ z).1 = Ideal.Quotient.mk _ ((A.map φ).hom u) := by
@@ -20,6 +23,9 @@ theorem sqMap_val {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) {T T' : C} (φ : T 
 
 variable {d : ℕ} (Q : Poly Φ) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
 
+/- English proof (translation)
+Conclude with `(Cut.mapA_comp _ _ u).symm.trans ((congrArg (fun f => (Φ.A.map f).hom u) (Cut.Pmap_j Q (X := (Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ)).trans (Cut.mapA_comp _ _ u))`.
+-/
 theorem Pmap_j_apply {T T' : C} (φ : T ⟶ T') (u : Φ.A.obj T) :
     (Φ.A.map (Cut.Pmap Q (X := (Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ)).hom ((Φ.A.map (Q.j T)).hom u) =
       (Φ.A.map (Q.j T')).hom ((Φ.A.map φ).hom u) := by
@@ -27,6 +33,9 @@ theorem Pmap_j_apply {T T' : C} (φ : T ⟶ T') (u : Φ.A.obj T) :
     ((congrArg (fun f => (Φ.A.map f).hom u) (Cut.Pmap_j Q (X := (Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ)).trans
       (Cut.mapA_comp _ _ u))
 
+/- English proof (translation)
+Establish `h : (Φ.A.map (Cut.Pmap Q (X` using `(Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ)).hom (Q.X T) = Q.X T' + (Φ.A.map (Q.j T')).hom (E.a σ 0 φ) := Cut.Pmap_X Q (X := (Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ`. Rewrite using `[map_add, Pmap_j_apply, a_comp, map_add, h]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Pmap_shift {T₀ T T' : C} (ψ : T₀ ⟶ T) (φ : T ⟶ T') :
     (Φ.A.map (Cut.Pmap Q (X := (Pt.Sσ σ).obj T) (Y := (Pt.Sσ σ).obj T') φ)).hom
       (Q.X T + (Φ.A.map (Q.j T)).hom (E.a σ 0 ψ)) =
@@ -40,12 +49,20 @@ theorem Pmap_shift {T₀ T T' : C} (ψ : T₀ ⟶ T) (φ : T ⟶ T') :
 def Bv {n : ℕ} (s : ComposableArrows C n) (p : Fin (n + 1)) : Φ.A.obj (Q.P (s.obj (Fin.last n))) :=
   Q.X _ + (Φ.A.map (Q.j _)).hom (E.a σ 0 (s.map (homOfLE (Fin.le_last p))))
 
+/- English proof (translation)
+Establish `h : Bv Q E σ s p ∈ Φ.J.S _` using `Ideal.add_mem _ (Q.X_mem _) (Φ.J.map_mem _ (E.mem 0 _ _))`. Rewrite using `[Nat.cast_one, hF.one]`. Conclude with `h`.
+-/
 theorem Bv_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {n : ℕ} (s : ComposableArrows C n) (p : Fin (n + 1)) :
     Bv Q E σ s p ∈ (Fil ((1 : ℕ) : ℤ)).S _ := by
   have h : Bv Q E σ s p ∈ Φ.J.S _ := Ideal.add_mem _ (Q.X_mem _) (Φ.J.map_mem _ (E.mem 0 _ _))
   rw [Nat.cast_one, hF.one]
   exact h
 
+/- English proof (translation)
+Use `(sqMap_val (Fil r) (Fil (r + 1)) (Cut.Pmap Q (X := (Pt.Sσ σ).obj _) (Y := (Pt.Sσ σ).obj _) (toLast i s)) (y (face i s)) _ (hy (face i s))).trans ?_` and prove the remaining obligations. Establish `e : (face i s).map (homOfLE (Fin.zero_le (Fin.last j))) ≫ toLast i s = s.map (homOfLE (Fin.le_last (i.succAbove 0)))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression.
+
+Establish `h1` using `Pmap_shift Q E σ ((face i s).map (homOfLE (Fin.zero_le (Fin.last j)))) (toLast i s)`. Establish `h2` using `Pmap_j_apply Q E σ (toLast i s) (E.form σ (Fin.succ ∘ I) x (face i s))`. Rewrite `h1` using `[e]`. Conclude with `congrArg (Ideal.Quotient.mk _) ((map_mul _ _ _).trans (congrArg₂ (· * ·) h1 h2))`.
+-/
 theorem term_val {Fil : ℤ → IdF Φ.A} {j : ℕ} {r : ℤ} (I : Fin j → Fin d) (x : Φ.A.obj E.D)
     (y : CH.Cn (Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil r) j)
     (hy : ∀ s, (show sqM _ _ _ from y s).1 = Ideal.Quotient.mk _
@@ -67,6 +84,11 @@ theorem term_val {Fil : ℤ → IdF Φ.A} {j : ℕ} {r : ℤ} (I : Fin j → Fin
   rw [e] at h1
   exact congrArg (Ideal.Quotient.mk _) ((map_mul _ _ _).trans (congrArg₂ (· * ·) h1 h2))
 
+/- English proof (translation)
+Establish `e : s.map (homOfLE (Fin.le_last (0 : Fin (n + 2)))) = s.map (homOfLE (Fin.zero_le (1 : Fin (n + 2)))) ≫ s.map (homOfLE (Fin.le_last (1 : Fin (n + 2))))`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Unfold `Bv ga`. Rewrite using `[e, a_comp, map_add]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem Bv_zero {n : ℕ} (s : ComposableArrows C (n + 1)) :
     Bv Q E σ s 0 = Bv Q E σ s 1 + (Φ.A.map (Q.j _)).hom (ga E σ 0 s 0 1 (Fin.zero_le _)) := by
   have e : s.map (homOfLE (Fin.le_last (0 : Fin (n + 2)))) =
@@ -76,6 +98,11 @@ theorem Bv_zero {n : ℕ} (s : ComposableArrows C (n + 1)) :
   rw [e, a_comp, map_add]
   abel
 
+/- English proof (translation)
+Rewrite using `[face_form]`. Establish `hl : (0 : Fin (j + 2)).succAbove (Fin.last j) = Fin.last (j + 1)` using `by simp`. Establish `hW : (Φ.A.map (toLast 0 s)).hom ((Φ.A.map (σ _)).hom x) = (Φ.A.map (σ (s.obj (Fin.last (j + 1))))).hom x`. Rewrite using `[map_map, show σ _ ≫ toLast 0 s = σ (s.obj (Fin.last (j + 1))) from sec_last E σ s _ hl]`. Rewrite using `[hW]`.
+
+Unfold `Frame.form`. Rewrite using `[Fin.prod_univ_succ, mul_assoc]`. Use `congr 2`.
+-/
 theorem form_cons {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : ComposableArrows C (j + 1)) :
     E.form σ (Fin.cons 0 (Fin.succ ∘ I)) x s =
       ga E σ 0 s 0 1 (Fin.zero_le _) * (Φ.A.map (toLast 0 s)).hom (E.form σ (Fin.succ ∘ I) x (face 0 s)) := by
@@ -88,6 +115,11 @@ theorem form_cons {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : Compos
   rw [Fin.prod_univ_succ, mul_assoc]
   congr 2
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.mul_sum, Fin.sum_univ_succ, Fin.sum_univ_succ (f := fun i : Fin (n + 1) => B * J ((-1 : ℤ) ^ (i : ℕ) • t i))]`. Establish `h : ∀ k : Fin n, (-1 : ℤ) ^ (k.succ : ℕ) • (b k.succ * J (t k.succ)) = B * J ((-1 : ℤ) ^ (k.succ : ℕ) • t k.succ)`. Introduce `k`. Rewrite using `[hs, map_zsmul, mul_smul_comm]`. Rewrite using `[Finset.sum_congr rfl fun k _ => h k]`.
+
+Simplify using `only [Fin.val_zero, pow_zero, one_smul, map_mul, h0]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem alt_sum {S S' F : Type*} [CommRing S] [CommRing S'] [FunLike F S S'] [RingHomClass F S S'] (J : F) (n : ℕ)
     (t : Fin (n + 1) → S) (b : Fin (n + 1) → S') (B : S') (g : S) (h0 : B = b 0 + J g)
     (hs : ∀ k : Fin n, b k.succ = B) :
@@ -101,6 +133,17 @@ theorem alt_sum {S S' F : Type*} [CommRing S] [CommRing S'] [FunLike F S S'] [Ri
   simp only [Fin.val_zero, pow_zero, one_smul, map_mul, h0]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `hL : Subtype.val (CH.d _ j y s : sqM (Fil r) (Fil (r + 1)) (Q.P (s.obj (Fin.last (j + 1))))) = Ideal.Quotient.mk _ (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Bv Q E σ s (i.succAbove 0) * (Φ.A.map (Q.j _)).hom ((Φ.A.map (toLast i s)).hom (E.form σ (Fin.succ ∘ I) x (face i s)))))`. Express the relevant statement in the definitionally equal form `Subtype.val (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • ((Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil r).map (toLast i s)).hom (y (face i s)) : sqM (Fil r) (Fil (r + 1)) (Q.P (s.obj (Fin.last (j + 1))))) = _`. Rewrite using `[AddSubmonoidClass.coe_finsetSum, map_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `Eq.trans ?_ (congrArg (fun z => (-1 : ℤ) ^ (i : ℕ) • z) (term_val Q E σ I x y hy s i))` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hR : Subtype.val ((-(CH.Mor.ofNatTrans (Functor.whiskerRight (Cut.jσ Q σ) (gr Fil r))).pullC (j + 1) w) s : sqM (Fil r) (Fil (r + 1)) (Q.P (s.obj (Fin.last (j + 1))))) = -Ideal.Quotient.mk _ ((Φ.A.map (Q.j _)).hom (E.form σ (Fin.cons 0 (Fin.succ ∘ I)) x s))` using `congrArg Neg.neg (sqMap_val (Fil r) (Fil (r + 1)) (Q.j (s.obj (Fin.last (j + 1)))) (w s) _ (hw s))`.
+
+Use `hL.trans (Eq.trans ?_ hR.symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk ((Fil (r + 1)).S (Q.P (s.obj (Fin.last (j + 1))))) _ = -Ideal.Quotient.mk ((Fil (r + 1)).S (Q.P (s.obj (Fin.last (j + 1))))) _`. Rewrite using `[alt_sum (Φ.A.map (Q.j _)).hom (j + 1) _ (fun i => Bv Q E σ s (i.succAbove 0)) (Bv Q E σ s 0) (ga E σ 0 s 0 1 (Fin.zero_le _)) (by simpa using Bv_zero Q E σ s) (fun k => by simp), ← map_neg, Ideal.Quotient.eq, form_cons]`. Establish `hD` using `d_form_mem E σ hF hc j q (Fin.succ ∘ I) x hx s`. Establish `hJ` using `(Fil (((j : ℤ) + q) + 1)).map_mem (Q.j (s.obj (Fin.last (j + 1)))) hD`.
+
+Establish `e1 : (((j + q + 1 : ℕ) : ℤ)) = ((j : ℤ) + q) + 1` using `by push_cast; ring`. Rewrite `hJ` using `[← e1]`. Establish `hm` using `hF.mul 1 (j + q + 1) _ (Bv_mem Q E σ hF s 0) hJ`. Establish `e2 : (((1 + (j + q + 1) : ℕ) : ℤ)) = r + 1` using `by rw [hr]; push_cast; ring`. Rewrite `hm` using `[e2]`.
+
+Use `hm using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gr_delta {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ) {Fil : ℤ → IdF Φ.A}
     (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ)
     (hr : r = j + 1 + q) (I : Fin j → Fin d) (x : Φ.A.obj E.D) (hx : x ∈ (Fil q).S E.D)

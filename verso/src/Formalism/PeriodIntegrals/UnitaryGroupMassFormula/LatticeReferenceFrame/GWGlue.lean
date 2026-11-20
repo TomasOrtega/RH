@@ -15,6 +15,11 @@ section Lemmas
 
 variable (I : Formalism.MainNotions.S.AutInst)
 
+/- English proof (translation)
+Unfold `hG Formalism.UG.hform`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_add_left (x y z : Fin I.n → I.E) : hG I (x + y) z = hG I x z + hG I y z := by
   unfold hG Formalism.UG.hform
   rw [← Finset.sum_add_distrib]
@@ -24,6 +29,11 @@ theorem hG_add_left (x y z : Fin I.n → I.E) : hG I (x + y) z = hG I x z + hG I
   simp only [Pi.add_apply, map_add]
   ring
 
+/- English proof (translation)
+Unfold `hG Formalism.UG.hform`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.add_apply, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_add_right (x y z : Fin I.n → I.E) : hG I x (y + z) = hG I x y + hG I x z := by
   unfold hG Formalism.UG.hform
   rw [← Finset.sum_add_distrib]
@@ -33,6 +43,11 @@ theorem hG_add_right (x y z : Fin I.n → I.E) : hG I x (y + z) = hG I x y + hG 
   simp only [Pi.add_apply, map_add]
   ring
 
+/- English proof (translation)
+Unfold `hG Formalism.UG.hform`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_zsmul_left (q : ℤ) (x y : Fin I.n → I.E) : hG I (q • x) y = (q : I.E) * hG I x y := by
   unfold hG Formalism.UG.hform
   rw [Finset.mul_sum]
@@ -42,6 +57,11 @@ theorem hG_zsmul_left (q : ℤ) (x y : Fin I.n → I.E) : hG I (q • x) y = (q 
   simp only [Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast]
   ring
 
+/- English proof (translation)
+Unfold `hG Formalism.UG.hform`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_zsmul_right (q : ℤ) (x y : Fin I.n → I.E) : hG I x (q • y) = (q : I.E) * hG I x y := by
   unfold hG Formalism.UG.hform
   rw [Finset.mul_sum]
@@ -51,9 +71,15 @@ theorem hG_zsmul_right (q : ℤ) (x y : Fin I.n → I.E) : hG I x (q • y) = (q
   simp only [Pi.smul_apply, zsmul_eq_mul, map_mul, map_intCast]
   ring
 
+/- English proof (translation)
+Simplify using `[hG, Formalism.UG.hform]`.
+-/
 theorem hG_zero_right (x : Fin I.n → I.E) : hG I x 0 = 0 := by
   simp [hG, Formalism.UG.hform]
 
+/- English proof (translation)
+Simplify using `only [hG_add_left, hG_add_right, hG_zsmul_left, hG_zsmul_right]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_comb (q₁ q₂ : ℤ) (x₁ x₂ y₁ y₂ : Fin I.n → I.E) :
     hG I (q₁ • x₁ + q₂ • x₂) (q₁ • y₁ + q₂ • y₂) =
       (q₁ : I.E) ^ 2 * hG I x₁ y₁ + (q₁ : I.E) * (q₂ : I.E) * (hG I x₁ y₂ + hG I x₂ y₁) +
@@ -61,23 +87,40 @@ theorem hG_comb (q₁ q₂ : ℤ) (x₁ x₂ y₁ y₂ : Fin I.n → I.E) :
   simp only [hG_add_left, hG_add_right, hG_zsmul_left, hG_zsmul_right]
   ring
 
+/- English proof (translation)
+The claim follows from `(I.L_dual y).mp hy x hx`.
+-/
 theorem hG_int {x y : Fin I.n → I.E} (hx : x ∈ I.L) (hy : y ∈ I.L) :
     hG I x y ∈ (algebraMap (𝓞 I.E) I.E).range := (I.L_dual y).mp hy x hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨θ, rfl⟩`.
+-/
 theorem theta_mem (θ : 𝓞 I.E) : (θ : I.E) ∈ (algebraMap (𝓞 I.E) I.E).range := ⟨θ, rfl⟩
 
+/- English proof (translation)
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem ite_mem {p : Prop} [Decidable p] :
     (if p then (1 : I.E) else 0) ∈ (algebraMap (𝓞 I.E) I.E).range := by
   split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `ht`. Rewrite using `[algebraMap_smul]`. Conclude with `I.L.smul_mem s hv`.
+-/
 theorem osmul_mem {t : I.E} (ht : t ∈ (algebraMap (𝓞 I.E) I.E).range) {v : Fin I.n → I.E}
     (hv : v ∈ I.L) : t • v ∈ I.L := by
   obtain ⟨s, rfl⟩ := ht
   rw [algebraMap_smul]
   exact I.L.smul_mem s hv
 
+/- English proof (translation)
+Take `⟨t1, ht1⟩` from `h₁`. Take `⟨t2, ht2⟩` from `h₂`. Take `⟨s, hs⟩` from `h₁₂`. Establish `hc : ∀ u : 𝓞 I.E, (u : I.E) = algebraMap (𝓞 I.E) I.E u` using `fun u => rfl`. Use `⟨(g₂ : 𝓞 I.E) * (B : 𝓞 I.E) ^ 2 * t1 + (B : 𝓞 I.E) * (A : 𝓞 I.E) * s + (g₁ : 𝓞 I.E) * (A : 𝓞 I.E) ^ 2 * t2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hx, hq₁, hq₂, ht1, ht2, ← hs]`. Simplify using `only [hc, map_add, map_mul, map_pow, map_natCast, map_intCast]`. Use `push_cast`. Apply the tactic sequence `try ring`.
+-/
 theorem crt_ge {g₁ g₂ : ℕ} {A B q₁ q₂ : ℤ} (hq₁ : q₁ = g₂ * B) (hq₂ : q₂ = g₁ * A)
     {x X₁₁ X₁₂ X₂₂ : I.E} (h₁ : GE I g₁ X₁₁) (h₂ : GE I g₂ X₂₂)
     (h₁₂ : X₁₂ ∈ (algebraMap (𝓞 I.E) I.E).range)
@@ -94,6 +137,9 @@ theorem crt_ge {g₁ g₂ : ℕ} {A B q₁ q₂ : ℤ} (hq₁ : q₁ = g₂ * B)
   push_cast
   try ring
 
+/- English proof (translation)
+Take `⟨s, rfl⟩` from `hx`. Conclude with `⟨s, by rw [Nat.cast_one, one_mul]⟩`.
+-/
 theorem ge_one {x : I.E} (hx : x ∈ (algebraMap (𝓞 I.E) I.E).range) : GE I 1 x := by
   obtain ⟨s, rfl⟩ := hx
   exact ⟨s, by rw [Nat.cast_one, one_mul]⟩
@@ -103,14 +149,39 @@ def SS (r k M : ℕ) (e f : Fin r → Fin I.n → I.E) (θ : 𝓞 I.E) (z : Fin 
   Set.range (fun a => M • e a) ∪ Set.range (fun a => M • f a) ∪ {z} ∪
     Set.range (fun i => (θ : I.E) • b i) ∪ Set.range (fun i => star (θ : I.E) • bd i)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+-/
 theorem gL_mem (G : ℕ) {x : Fin I.n → I.E} (hx : x ∈ I.L) : (G : I.E) • x ∈ gL I G := Submodule.subset_span ⟨x, hx, rfl⟩
 
+/- English proof (translation)
+Establish `h : IsIntegral ℤ (star (θ : I.E))` using `(NumberField.RingOfIntegers.isIntegral_coe θ).map (starRingEnd I.E).toIntAlgHom`. Conclude with `⟨⟨star (θ : I.E), h⟩, rfl⟩`.
+-/
 private theorem star_coe_mem_range_algebraMap (θ : 𝓞 I.E) :
     star (θ : I.E) ∈ (algebraMap (𝓞 I.E) I.E).range := by
   have h : IsIntegral ℤ (star (θ : I.E)) :=
     (NumberField.RingOfIntegers.isIntegral_coe θ).map (starRingEnd I.E).toIntAlgHom
   exact ⟨⟨star (θ : I.E), h⟩, rfl⟩
 
+/- English proof (translation)
+Use `set S' := Submodule.span (𝓞 I.E) (SS I r k M e f θ z b bd) ⊔ gL I G with hS'`. Establish `hsp' : ∀ v ∈ SS I r k M e f θ z b bd, v ∈ S'` using `fun v hv => Submodule.mem_sup_left (Submodule.subset_span hv)`. Establish `hG' : ∀ x ∈ I.L, (G : I.E) • x ∈ S'` using `fun x hx => Submodule.mem_sup_right (gL_mem I G hx)`. Establish `hzs : ∀ (q : ℤ) {v : Fin I.n → I.E}, v ∈ S' → q • v ∈ S'` using `fun q v hv => zsmul_mem hv q`. Establish `hwab : (wab : I.E) ∈ (algebraMap (𝓞 I.E) I.E).range` using `⟨(wab : 𝓞 I.E), by simp⟩`.
+
+Set `φ : (Fin I.n → I.E) →ₗ[𝓞 I.E] (Fin I.n → I.E)` to `{ toFun := fun v => qa • v map_add' := fun a c => smul_add qa a c map_smul' := fun c v => smul_comm qa c v }`. It suffices to establish `h : Submodule.span (𝓞 I.E) (SS I r k M e f θ za ba bda) ⊔ gL I ga ≤ S'.comap φ from h hsp`. Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `v hv`.
+
+Simplify using `only [SS, Set.mem_union, Set.mem_range, Set.mem_singleton_iff] at hv`. Use `show qa • v ∈ S'`. Break down `hv with ((((⟨a, rfl⟩ | ⟨a, rfl⟩) | hvz) | ⟨i, rfl⟩) | ⟨i, rfl⟩)` into its components or cases. Conclude with `hzs qa (hsp' _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨a, rfl⟩)))))`. Conclude with `hzs qa (hsp' _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨a, rfl⟩)))))`.
+
+Rewrite using `[hvz]`. Establish `hv : qa • za = qa • z + (G : I.E) • ((wab : I.E) • (za - zb))`. Use extensionality with `j`. Simplify using `only [hz, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, Pi.intCast_apply, zsmul_eq_mul, smul_eq_mul]`. Take the linear combination `(za j - zb j) * hprod - ((qa : I.E) * za j) * hsum`.
+
+Rewrite using `[hv]`. Conclude with `S'.add_mem (hzs qa (hsp' z (Or.inl (Or.inl (Or.inr rfl))))) (hG' _ (osmul_mem I hwab (I.L.sub_mem hza hzb)))`. Establish `hv : qa • ((θ : I.E) • ba i) = qa • ((θ : I.E) • b i) + (G : I.E) • ((wab : I.E) • ((θ : I.E) • (ba i - bb i)))`. Use extensionality with `j`. Simplify using `only [hb, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, Pi.intCast_apply, zsmul_eq_mul, smul_eq_mul]`.
+
+Take the linear combination `(θ : I.E) * (ba i j - bb i j) * hprod - ((θ : I.E) * (qa : I.E) * ba i j) * hsum`. Rewrite using `[hv]`. Conclude with `S'.add_mem (hzs qa (hsp' _ (Or.inl (Or.inr ⟨i, rfl⟩)))) (hG' _ (osmul_mem I hwab (osmul_mem I (theta_mem I θ) (I.L.sub_mem (hbL i).1 (hbL i).2.1))))`. Establish `hv : qa • (star (θ : I.E) • bda i) = qa • (star (θ : I.E) • bd i) + (G : I.E) • ((wab : I.E) • (star (θ : I.E) • (bda i - bdb i)))`. Use extensionality with `j`.
+
+Simplify using `only [hbd, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Pi.mul_apply, Pi.intCast_apply, zsmul_eq_mul, smul_eq_mul]`. Take the linear combination `star (θ : I.E) * (bda i j - bdb i j) * hprod - (star (θ : I.E) * (qa : I.E) * bda i j) * hsum`. Rewrite using `[hv]`. Conclude with `S'.add_mem (hzs qa (hsp' _ (Or.inr ⟨i, rfl⟩))) (hG' _ (osmul_mem I hwab (osmul_mem I (star_coe_mem_range_algebraMap I θ) (I.L.sub_mem (hbL i).2.2.1 (hbL i).2.2.2))))`. Rewrite using `[gL, Submodule.span_le]`.
+
+Introduce and unpack `v ⟨x, hx, rfl⟩`. Use `show qa • ((ga : I.E) • x) ∈ S'`. Establish `hv : qa • ((ga : I.E) • x) = (G : I.E) • ((w : I.E) • x)`. Use extensionality with `j`. Simplify using `only [Pi.smul_apply, Pi.mul_apply, Pi.intCast_apply, zsmul_eq_mul, smul_eq_mul]`.
+
+Take the linear combination `(x j) * hga`. Rewrite using `[hv]`. Conclude with `hG' _ (osmul_mem I ⟨(w : 𝓞 I.E), by simp⟩ hx)`.
+-/
 theorem side_mem {r k M : ℕ} (e f : Fin r → Fin I.n → I.E) (θ : 𝓞 I.E) (G ga : ℕ) (qa qb w wab : ℤ)
     (z za zb : Fin I.n → I.E) (b ba bb bd bda bdb : Fin k → Fin I.n → I.E)
     (hza : za ∈ I.L) (hzb : zb ∈ I.L)
@@ -178,6 +249,31 @@ theorem side_mem {r k M : ℕ} (e f : Fin r → Fin I.n → I.E) (θ : 𝓞 I.E)
 
 end Lemmas
 
+/- English proof (translation)
+Introduce `I g₁ g₂ r k θ e f M hcop _ hC1 hC2`. Take `⟨A, B, hAB⟩` from `Nat.isCoprime_iff_coprime.mpr hcop`. Take `⟨za, ba, bda, hza, hbaL, hoza, hoba, hGa, hTa, hTTa, hspa⟩` from `hC1`. Take `⟨zb, bb, bdb, hzb, hbbL, hozb, hobb, hGb, hTb, hTTb, hspb⟩` from `hC2`. Use `set qa : ℤ := (g₂ : ℤ) * B with hqa`.
+
+Use `set qb : ℤ := (g₁ : ℤ) * A with hqb`. Establish `hsumZ : qa + qb = 1` using `by rw [hqa, hqb]; linarith`. Establish `hsum : (qa : I.E) + (qb : I.E) = 1` using `by exact_mod_cast hsumZ`. Establish `hprod : (qa : I.E) * (qb : I.E) = ((g₁ * g₂ : ℕ) : I.E) * ((A * B : ℤ) : I.E)`. Rewrite using `[hqa, hqb]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hga : (qa : I.E) * (g₁ : I.E) = ((g₁ * g₂ : ℕ) : I.E) * (B : I.E)`. Rewrite using `[hqa]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hgb : (qb : I.E) * (g₂ : I.E) = ((g₁ * g₂ : ℕ) : I.E) * (A : I.E)`. Rewrite using `[hqb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsum' : (qb : I.E) + (qa : I.E) = 1` using `by rw [add_comm]; exact hsum`. Establish `hprod' : (qb : I.E) * (qa : I.E) = ((g₁ * g₂ : ℕ) : I.E) * ((A * B : ℤ) : I.E)`. Rewrite using `[mul_comm]`. Conclude with `hprod`. Establish `two_mem : (2 : I.E) ∈ (algebraMap (𝓞 I.E) I.E).range` using `⟨2, map_ofNat _ 2⟩`.
+
+Use `⟨qa • za + qb • zb, fun i => qa • ba i + qb • bb i, fun i => qa • bda i + qb • bdb i, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `I.L.add_mem (zsmul_mem hza qa) (zsmul_mem hzb qb)`. Conclude with `fun i => ⟨I.L.add_mem (zsmul_mem (hbaL i).1 qa) (zsmul_mem (hbbL i).1 qb), I.L.add_mem (zsmul_mem (hbaL i).2 qa) (zsmul_mem (hbbL i).2 qb)⟩`. Introduce `a`. Take `⟨h1, h2⟩` from `hoza a`.
+
+Take `⟨h3, h4⟩` from `hozb a`. Apply the tactic sequence `constructor <;> simp only [hG_add_right, hG_zsmul_right, h1, h2, h3, h4, mul_zero, add_zero]`. Introduce `a i`. Take `⟨h1, h2, h3, h4⟩` from `hoba a i`. Take `⟨h5, h6, h7, h8⟩` from `hobb a i`.
+
+Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;>`. Simplify using `only [hG_add_right, hG_zsmul_right, h1, h2, h3, h4, h5, h6, h7, h8, mul_zero, add_zero]`. Use `crt_ge I hqa hqb hGa hGb (add_mem (add_mem (hG_int I hza hzb) (hG_int I hzb hza)) two_mem) ?_` and prove the remaining obligations. Rewrite using `[hG_comb]`. Take the linear combination `(-((qa : I.E) + qb + 1)) * hsum`.
+
+Introduce `i`. Prove the components needed by the constructor for the conclusion. Use `crt_ge I hqa hqb (hTa i).1 (hTb i).1 (mul_mem (theta_mem I θ) (add_mem (hG_int I hza (hbbL i).1) (hG_int I hzb (hbaL i).1))) ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[hG_comb]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `crt_ge I hqa hqb (hTa i).2 (hTb i).2 (mul_mem (star_coe_mem_range_algebraMap I θ) (add_mem (hG_int I hza (hbbL i).2) (hG_int I hzb (hbaL i).2))) ?_ beta_reduce` and prove the remaining obligations. Rewrite using `[hG_comb]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j`. Use `crt_ge I hqa hqb (hTTa i j) (hTTb i j) (mul_mem (theta_mem I θ) (sub_mem (add_mem (hG_int I (hbaL i).2 (hbbL j).1) (hG_int I (hbbL i).2 (hbaL j).1)) (mul_mem two_mem (ite_mem I (p := i = j))))) ?_` and prove the remaining obligations.
+
+Use `beta_reduce`. Rewrite using `[hG_comb]`. Take the linear combination `((θ : I.E) * (if i = j then (1 : I.E) else 0) * ((qa : I.E) + qb + 1)) * hsum`. Introduce `y hy`. Establish `h1` using `side_mem I e f θ (g₁ * g₂) g₁ qa qb B (A * B) (qa • za + qb • zb) za zb (fun i => qa • ba i + qb • bb i) ba bb (fun i => qa • bda i + qb • bdb i) bda bdb hza hzb (fun i => ⟨(hbaL i).1, (hbbL i).1, (hbaL i).2, (hbbL i).2⟩) hsum hprod hga rfl (fun i => rfl) (fun i => rfl) (hspa y h …`.
+
+Establish `h2` using `side_mem I e f θ (g₁ * g₂) g₂ qb qa A (A * B) (qa • za + qb • zb) zb za (fun i => qa • ba i + qb • bb i) bb ba (fun i => qa • bda i + qb • bdb i) bdb bda hzb hza (fun i => ⟨(hbbL i).1, (hbaL i).1, (hbbL i).2, (hbaL i).2⟩) hsum' hprod' hgb (add_comm _ _) (fun i => add_comm _ _) (f …`. Establish `hy' : y = qa • y + qb • y` using `by rw [← add_smul, hsumZ, one_smul]`. Rewrite using `[hy']`. Conclude with `add_mem h1 h2`.
+-/
 theorem chinese_remainder_gluing : GWcrt := by
   intro I g₁ g₂ r k θ e f M hcop _ hC1 hC2
   obtain ⟨A, B, hAB⟩ := Nat.isCoprime_iff_coprime.mpr hcop
@@ -248,6 +344,13 @@ theorem chinese_remainder_gluing : GWcrt := by
     rw [hy']
     exact add_mem h1 h2
 
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hd`. Establish `hc : ∀ u : 𝓞 I.E, (u : I.E) = algebraMap (𝓞 I.E) I.E u` using `fun u => rfl`. Establish `hGE : ∀ x, GE I (g' * c) x → GE I g' x`. Introduce and unpack `x ⟨t, rfl⟩`. Use `⟨(c : 𝓞 I.E) * t, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hc, map_mul, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨_, hS, hT, hn, he, hf, hef, hM, hL⟩` from `h`. Use `⟨h1, ?_, ⟨hGE _ hT.1, hGE _ hT.2.1, hGE _ hT.2.2⟩, hn, he, hf, hef, Nat.Coprime.coprime_dvd_right (Dvd.intro c rfl) hM, hL⟩` and prove the remaining obligations.
+
+Introduce `v hv`. Apply `hS v` to reduce the goal to its premises. Rewrite using `[Nat.cast_mul]`. Conclude with `v.asIdeal.mul_mem_right _ hv`.
+-/
 theorem hyp_dvd {I : Formalism.MainNotions.S.AutInst} {g g' r k : ℕ} {θ : 𝓞 I.E} {e f : Fin r → Fin I.n → I.E} {M : ℕ}
     (h : Hyp I g r k θ e f M) (hd : g' ∣ g) (h1 : 1 ≤ g') : Hyp I g' r k θ e f M := by
   obtain ⟨c, rfl⟩ := hd
@@ -266,6 +369,13 @@ theorem hyp_dvd {I : Formalism.MainNotions.S.AutInst} {g g' r k : ℕ} {θ : �
   rw [Nat.cast_mul]
   exact v.asIdeal.mul_mem_right _ hv
 
+/- English proof (translation)
+Establish `hz0 : ∀ x : Fin I.n → I.E, hG I x 0 = 0` using `hG_zero_right I`. Use `⟨0, fun _ => 0, fun _ => 0, I.L.zero_mem, fun _ => ⟨I.L.zero_mem, I.L.zero_mem⟩, fun a => ⟨hz0 _, hz0 _⟩, fun a i => ⟨hz0 _, hz0 _, hz0 _, hz0 _⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz0, zero_add]`. Conclude with `ge_one I (one_mem _)`. Introduce `i`.
+
+Simplify using `only [hz0, mul_zero]`. Conclude with `⟨ge_one I (zero_mem _), ge_one I (zero_mem _)⟩`. Introduce `i j`. Conclude with `ge_one I (mul_mem (theta_mem I θ) (sub_mem (by rw [hz0]; exact zero_mem _) (ite_mem I (p := i = j))))`. Introduce `y hy`.
+
+Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Use `gL_mem I 1 hy` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem concl_one (I : Formalism.MainNotions.S.AutInst) (r k : ℕ) (θ : 𝓞 I.E) (e f : Fin r → Fin I.n → I.E) (M : ℕ) :
     Concl I 1 r k θ e f M := by
   have hz0 : ∀ x : Fin I.n → I.E, hG I x 0 = 0 := hG_zero_right I
@@ -282,6 +392,13 @@ theorem concl_one (I : Formalism.MainNotions.S.AutInst) (r k : ℕ) (θ : 𝓞 I
     have := gL_mem I 1 hy
     rwa [Nat.cast_one, one_smul] at this
 
+/- English proof (translation)
+Establish `key : ∀ (I : Formalism.MainNotions.S.AutInst) (r k : ℕ) (θ : 𝓞 I.E) (e f : Fin r → Fin I.n → I.E) (M : ℕ) (g : ℕ), Hyp I g r k θ e f M → Concl I g r k θ e f M`. Introduce `I r k θ e f M g`. Proceed by induction on `g using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p n hp hn => exact h1 I p n r k θ e f M hp hn`. Consider the case `zero => intro h; exact absurd h.1 (by norm_num)`.
+
+Consider the case `one => intro _`. Conclude with `concl_one I r k θ e f M`. Consider the case `coprime a b ha hb hab iha ihb`. Introduce `h`. Conclude with `h2 I a b r k θ e f M hab h (iha (hyp_dvd h (Dvd.intro b rfl) (by omega))) (ihb (hyp_dvd h (Dvd.intro_left a rfl) (by omega)))`.
+
+Introduce `I g r k θ e f M hg hS hT hn he hf hef hM hL`. Conclude with `key I r k θ e f M g ⟨hg, hS, hT, hn, he, hf, hef, hM, hL⟩`.
+-/
 theorem globW_of (h1 : GWpp) (h2 : GWcrt) : GlobW := by
   have key : ∀ (I : Formalism.MainNotions.S.AutInst) (r k : ℕ) (θ : 𝓞 I.E) (e f : Fin r → Fin I.n → I.E) (M : ℕ)
       (g : ℕ), Hyp I g r k θ e f M → Concl I g r k θ e f M := by

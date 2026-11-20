@@ -24,6 +24,9 @@ open scoped Classical
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HermLB.isometric_pull_fs_toProj | exact GlobalTheory.HermLB.isometric_pull_fs_toProj | (intros; apply GlobalTheory.HermLB.isometric_pull_fs_toProj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.hermitian_metric_unitary_gauge : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (L : GlobalTheory.HermLB p) (m : ℕ) (t : Fin (m + 1) → L.B.Sec) (ht : ⨆ j, nonzeroLocus (t j) = ⊤)
     (A : (k →+* ℂ) → Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ) (hA : ∀ σ, (A σ).det ≠ 0)
     (hc : ∀ σ, ∃ U ∈ Matrix.unitaryGroup (Fin (m + 1)) ℂ, A ((starRingEnd ℂ).comp σ) = (A σ).map (starRingEnd ℂ) * U),

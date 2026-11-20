@@ -19,6 +19,11 @@ def AreaGraph.LebesgueForm : Prop :=
       μH[(k : ℝ)] (GroundTheory.Heights₂.Heights.realGraphPt F '' A) =
         ∫⁻ x in A, ENNReal.ofReal (graphDensity F x)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h k m F U A hU hF hA hAU`. Rewrite using `[graphOver_eq]`. Conclude with `h k m U F hU hF A hAU hA`. Introduce `h k m U F hU hF A hAU hA`.
+
+Establish `key` using `h k m F U A hU hF hA hAU`. Rewrite `key` using `[graphOver_eq]`. Conclude with `key`.
+-/
 theorem AreaGraph.statement_iff :
     GroundTheory.Heights₂.Heights.AreaGraph.Statement ↔ AreaGraph.Statement := by
   constructor
@@ -30,6 +35,9 @@ theorem AreaGraph.statement_iff :
     rw [graphOver_eq] at key
     exact key
 
+/- English proof (translation)
+The claim follows from `AreaGraph.statement_iff.1`.
+-/
 theorem AreaGraph.rowPoisson_half_implies_one :
     GroundTheory.Heights₂.Heights.AreaGraph.Statement → AreaGraph.Statement :=
   AreaGraph.statement_iff.1

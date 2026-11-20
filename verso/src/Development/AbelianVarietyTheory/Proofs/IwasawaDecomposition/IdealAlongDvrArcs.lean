@@ -17,6 +17,11 @@ open GlobalTheory.FlagMod
 
 variable {X : Scheme.{0}}
 
+/- English proof (translation)
+Establish `h'` using `le_preimage_comp (spMap φ) h`. Establish `e : φ (ev y U h a) = ev (spMap φ ≫ y) U h' a` using `by rw [ev_spMap φ y U h h']; rfl`. Rewrite using `[e, gs_eq _ z U (h' trivial)]`. Use `show _ = ((Sp F).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom _))`. Rewrite using `[Iso.hom_inv_id_apply]`.
+
+Conclude with `(TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE h') z trivial _).symm`.
+-/
 theorem gs_spMap_eq {A F : Type} [CommRing A] [Field F] (φ : A →+* F) (y : Sp A ⟶ X) (U : X.Opens)
     (h : ⊤ ≤ y ⁻¹ᵁ U) (z : Sp F) (a : Γ(X, U)) : gs (spMap φ ≫ y) z U a = toStk z (φ (ev y U h a)) := by
   have h' := le_preimage_comp (spMap φ) h
@@ -27,6 +32,13 @@ theorem gs_spMap_eq {A F : Type} [CommRing A] [Field F] (φ : A →+* F) (y : Sp
   rw [Iso.hom_inv_id_apply]
   exact (TopCat.Presheaf.germ_res_apply (Sp F).presheaf (homOfLE h') z trivial _).symm
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `DVR.exists_gen_of_local L hL (fun _ : PUnit => y) (fun _ => 1)`. Establish `hle : ⊤ ≤ LB.wchart L (fun _ : PUnit => y) fun _ => k` using `fun p hp => Set.mem_iInter.2 fun _ => hk hp`. Set `C : Γ(Sp A, ⊤)ˣ` to `Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.toMonoidHom c`. Use `⟨Geo.Tor.scaleGen t (C * res hle (t.s fun _ => k)⁻¹), scaleGen_isGen hL t ht _, fun F _ φ z => ?_⟩` and prove the remaining obligations. Establish `e` using `gm_scaleGen t (C * res hle (t.s fun _ => k)⁻¹) (spMap φ) z (fun _ => k) (hle trivial)`.
+
+Establish `e' : gm (spMap φ) z ⊤ (C * res hle (t.s fun _ => k)⁻¹) = gm (spMap φ) z ⊤ C * (gm (spMap φ) z (LB.wchart L (fun _ : PUnit => y) fun _ => k) (t.s fun _ => k))⁻¹` using `(map_mul _ _ _).trans (congrArg _ ((gm_res _ z hle trivial _).trans (map_inv _ _)))`. Use `(congrArg Units.val ((e.trans (congrArg (· * _) e')).trans (inv_mul_cancel_right _ _))).trans ?_` and prove the remaining obligations. Rewrite using `[gm_val _ z ⊤ trivial]`. Establish `e2` using `congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at e2`.
+
+Conclude with `congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom e2.symm`.
+-/
 theorem exists_gen_const {L : LB X} (hL : L.IsLB) {A : Type} [CommRing A] [IsLocalRing A] (y : Sp A ⟶ X) (k : L.ι)
     (hk : ⊤ ≤ y ⁻¹ᵁ L.U k) (c : Aˣ) : ∃ e : LB.Gen (L.pull y), e.IsGen ∧
       ∀ (F : Type) [Field F] (φ : A →+* F) (z : Sp F),
@@ -45,6 +57,11 @@ theorem exists_gen_const {L : LB X} (hL : L.IsLB) {A : Type} [CommRing A] [IsLoc
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at e2
   exact congrArg ((Sp F).presheaf.germ ⊤ z trivial).hom e2.symm
 
+/- English proof (translation)
+Establish `hm : (r ≫ y) z ∈ D.U i ⊓ D.U j` using `⟨hi, hj⟩`. Establish `e₁` using `gen_trans ht r z (j := fun _ => i) (j' := fun _ => j) (Set.mem_iInter.2 fun _ => hi) (Set.mem_iInter.2 fun _ => hj)`. Establish `e₂ : trF (L` using `CechPic.dual D.lb) (fun _ : PUnit => y) (fun _ => 1) r z (fun _ => i) (fun _ => j) = (gm (r ≫ y) z (D.U i ⊓ D.U j) (D.trans i j))⁻¹ := by`. Conclude with `(Fintype.prod_unique _).trans ((zpow_one _).trans (map_inv _ _))`. Establish `e₃ : gs (r ≫ y) z (D.U i) (D.f i) = (gm (r ≫ y) z (D.U i ⊓ D.U j) (D.trans i j)).val * gs (r ≫ y) z (D.U j) (D.f j)` using `(gs_res _ z _ hm _).symm.trans ((congrArg (gs (r ≫ y) z _) (D.trans_spec i j)).trans ((gs_mul _ z _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit _ z _ hm _) (gs_res _ z _ hm _))))`.
+
+Rewrite using `[e₁, e₂, e₃, Units.val_mul, mul_comm (Units.val _⁻¹), _root_.mul_assoc, Units.inv_mul_cancel_left]`.
+-/
 theorem pairing_eq (D : EffCartierData X) {Y Z : Scheme.{0}} {y : Y ⟶ X} {t : LB.Gen ((CechPic.dual D.lb).pull y)}
     (ht : t.IsGen) (r : Z ⟶ Y) (z : Z) {i j : D.ι} (hi : (r ≫ y) z ∈ D.U i) (hj : (r ≫ y) z ∈ D.U j) :
     (gm r z (LB.wchart (CechPic.dual D.lb) (fun _ : PUnit => y) fun _ => i) (t.s fun _ => i)).val *
@@ -63,6 +80,9 @@ theorem pairing_eq (D : EffCartierData X) {Y Z : Scheme.{0}} {y : Y ⟶ X} {t : 
       (congrArg₂ (· * ·) (gs_unit _ z _ hm _) (gs_res _ z _ hm _))))
   rw [e₁, e₂, e₃, Units.val_mul, mul_comm (Units.val _⁻¹), _root_.mul_assoc, Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Take `⟨e, he, hc⟩` from `exists_gen_const (CechPic.isLB_dual D.isLB_lb) y k hk c`. Use `⟨e, he, fun F _ φ z i hi => (pairing_eq D he (spMap φ) z hi (hk trivial)).trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Conclude with `congrArg₂ (· * ·) (hc F φ z) (gs_spMap_eq φ y _ hk z _)`.
+-/
 theorem exists_gen_pairing (D : EffCartierData X) {A : Type} [CommRing A] [IsLocalRing A] (y : Sp A ⟶ X) (k : D.ι)
     (hk : ⊤ ≤ y ⁻¹ᵁ D.U k) (c : Aˣ) : ∃ e : LB.Gen ((CechPic.dual D.lb).pull y), e.IsGen ∧
       ∀ (F : Type) [Field F] (φ : A →+* F) (z : Sp F) (i : D.ι), (spMap φ ≫ y) z ∈ D.U i →
@@ -73,6 +93,9 @@ theorem exists_gen_pairing (D : EffCartierData X) {A : Type} [CommRing A] [IsLoc
   rw [map_mul, map_mul]
   exact congrArg₂ (· * ·) (hc F φ z) (gs_spMap_eq φ y _ hk z _)
 
+/- English proof (translation)
+Take `⟨W, hW, hle⟩` from `EffCartierData.exists_affine_le (show y (closedPoint A) ∈ D.U k from hk trivial)`. Establish `hW' : ⊤ ≤ y ⁻¹ᵁ W.1` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hW).ge`. Rewrite using `[TraitOrder.idlAlong_eq_map _ y W hW', D.ideal_idealSheaf W k hle, Ideal.map_span, Set.image_singleton, ← ev_res y hle hW' hk]`. Both sides reduce to the same expression.
+-/
 theorem idlAlong_idealSheaf_eq (D : EffCartierData X) {A : Type} [CommRing A] [IsLocalRing A] (y : Sp A ⟶ X) (k : D.ι)
     (hk : ⊤ ≤ y ⁻¹ᵁ D.U k) : idlAlong D.idealSheaf y = Ideal.span {ev y (D.U k) hk (D.f k)} := by
   obtain ⟨W, hW, hle⟩ := EffCartierData.exists_affine_le (show y (closedPoint A) ∈ D.U k from hk trivial)
@@ -81,6 +104,19 @@ theorem idlAlong_idealSheaf_eq (D : EffCartierData X) {A : Type} [CommRing A] [I
     ← ev_res y hle hW' hk]
   rfl
 
+/- English proof (translation)
+Introduce `X BD R _ _ u hu x n H`. Take `⟨k, hk⟩` from `exists_chart_of_isLocalRing BD.cover x`. Establish `hu' : algebraMap R (FractionRing R) u ^ n ≠ 0` using `pow_ne_zero _ ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hu)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : (FractionRing R)ˣ, ev x (BD.U k) hk (BD.f k) ≠ 0 → c * ev x (BD.U k) hk (BD.f k) = algebraMap R (FractionRing R) u ^ n := by`. Distinguish the cases in `ha : ev x (BD.U k) hk (BD.f k) = 0`.
+
+Conclude with `⟨1, fun h => (h ha).elim⟩`. Conclude with `⟨Units.mk0 _ (div_ne_zero hu' ha), fun _ => div_mul_cancel₀ _ ha⟩`. Take `⟨e, he, hp⟩` from `exists_gen_pairing BD x k hk c`. Use `⟨e, he, fun V _ _ _ hV ψ gam hg χ hsq => ?_⟩` and prove the remaining obligations. Take `⟨k', hk'⟩` from `exists_chart_of_isLocalRing BD.cover χ`.
+
+Take `⟨w, hw⟩` from `Ideal.span_singleton_eq_span_singleton.1 ((idlAlong_idealSheaf_eq BD χ k' hk').symm.trans (H V hV ψ gam hg χ hsq))`. Take `⟨e', he', hp'⟩` from `exists_gen_pairing BD χ k' hk' w`. Use `⟨e', he', fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `hv : toStk z (algebraMap V (FractionRing V) (w * ev χ (BD.U k') hk' (BD.f k'))) = toStk z (gam (algebraMap R (FractionRing R) u ^ n))`. Rewrite using `[mul_comm, hw, map_pow, map_pow gam, hg]`.
+
+Establish `hne : IsUnit (toStk z (gam (algebraMap R (FractionRing R) u ^ n)))` using `((Ne.isUnit hu').map gam).map _`. Establish `q' : ∀ i, (spMap gam ≫ x) z ∈ BD.U i → (gm (Out.jK V) z (LB.wchart (CechPic.dual BD.lb) (fun _ : PUnit => χ) fun _ => i) (e'.s fun _ => i)).val * gs (spMap gam ≫ x) z (BD.U i) (BD.f i) = toStk z (gam (algebraMap R (FractionRing R) u ^ n))`. Rewrite using `[hsq]`. Conclude with `fun i hi => (hp' _ (algebraMap V (FractionRing V)) z i hi).trans hv`. Establish `ha : ev x (BD.U k) hk (BD.f k) ≠ 0` using `fun h0 => by`.
+
+Use `q' k (hk trivial)` as an intermediate fact. Rewrite `this` using `[gs_spMap_eq gam x _ hk, h0, map_zero, map_zero, mul_zero]`. Conclude with `hne.ne_zero this.symm`. Establish `q` using `hp _ gam z _ (hJ (spMap gam ≫ x))`. Rewrite `q` using `[hc ha]`.
+
+Establish `q₂` using `q' _ (hJ (spMap gam ≫ x))`. Rewrite using `[val_of e' (Out.jK V) z J (fun _ => J (spMap gam ≫ x)) (fun _ => congrArg J hsq.symm)]`. Establish `hU : IsUnit (gs (spMap gam ≫ x) z (BD.U (J (spMap gam ≫ x))) (BD.f (J (spMap gam ≫ x))))` using `isUnit_of_mul_isUnit_right (q ▸ hne)`. Conclude with `Units.ext (hU.mul_right_cancel (q.trans q₂.symm))`.
+-/
 theorem exists_dual_gen_extAt : ∀ (X : Scheme.{0}) (BD : GlobalTheory.EffCartierData X) (R : Type) [CommRing R] [IsDomain R] (u : R), u ≠ 0 →
     ∀ (x : Sp (FractionRing R) ⟶ X) (n : ℕ),
     (∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], CDvr V →

@@ -7,6 +7,15 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F _ _ _ δ O T N N' hN' hN hT m`. Proceed by induction on `m with`. Consider the case `zero => exact hN`. Consider the case `succ m ih`. Establish `hb` using `fkBasic F O`.
+
+Establish `hmono : O.Fk N' m ≤ O.Fk N' (m + 1)` using `hb.1 N' N' le_rfl m (m + 1) (Nat.le_succ m)`. Establish `key : O.Fk N (m + 1) ≤ (O.Fk N' (m + 1)).comap T`. Establish `hu : O.Fk N (m + 1) = O.Fk N m ⊔ ⨆ w, ⨆ i, (O.Fk N m).map (O.x w i)` using `rfl`. Rewrite using `[hu]`. Use `sup_le (fun φ hφ => hmono (ih φ hφ)) (iSup_le fun w => iSup_le fun i => ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Establish `hs : Submodule.span ℂ {χ : S4 F | ∃ w' j, χ = O.x w' j (T φ) ∨ χ = O.d w' j (T φ)} ≤ O.Fk N' (m + 1)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `χ ⟨w', j, rfl | rfl⟩`. Conclude with `hb.2.1 N' m w' j _ (ih φ hφ)`.
+
+Conclude with `fkD F δ O N' hN' m w' j _ (ih φ hφ)`. Conclude with `hs (hT w i φ)`. Conclude with `fun φ hφ => key hφ`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.fkStab :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (O : Ops F) (T : Module.End ℂ (S4 F)) (N N' : Submodule ℂ (S4 F)), N' ≤ Vac δ → (∀ φ ∈ N, T φ ∈ N') →
     (∀ w i φ, T (O.x w i φ) ∈ Submodule.span ℂ {χ : S4 F | ∃ w' j, χ = O.x w' j (T φ) ∨ χ = O.d w' j (T φ)}) → ∀ m, ∀ φ ∈ O.Fk N m, T φ ∈ O.Fk N' m := by

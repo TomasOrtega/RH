@@ -8,6 +8,15 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Take `⟨hp, -, hinj, -⟩` from `UpperTheory.heightOneSpectrum_rat_correspond_primes`. Establish `hfin : ∀ n : ℕ, (Function.mulSupport fun v : H.P ℚ => pv v ^ (n.factorization (normV v))).Finite`. Introduce `n`. Establish `h1 : ((fun v : H.P ℚ => normV v) ⁻¹' (n.factorization.support : Set ℕ)).Finite` using `Set.Finite.preimage (fun a _ b _ h => hinj a b h) (Finset.finite_toSet _)`. Use `h1.subset fun v hv => ?_` and prove the remaining obligations.
+
+Simplify using `only [Set.mem_preimage, Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`. Conclude with `hv (by simp only [h0, pow_zero])`. Use `⟨fun m n hm hn => ?_, fun v k => ?_⟩` and prove the remaining obligations. Unfold `pin`.
+
+Rewrite using `[← finprod_mul_distrib (hfin m) (hfin n), Nat.factorization_mul hm.ne' hn.ne']`. Conclude with `finprod_congr fun v => by rw [Finsupp.add_apply, pow_add]`. Unfold `pin`. Rewrite using `[(hp v).factorization_pow, finprod_eq_single _ v]`. Rewrite using `[Finsupp.single_eq_same]`.
+
+Introduce `w hw`. Rewrite using `[Finsupp.single_eq_of_ne (fun h => hw (hinj _ _ h)), pow_zero]`.
+-/
 theorem UpperTheory.ideleOfNat_mul_and_prime_pow :
     (∀ m n : ℕ, 0 < m → 0 < n → pin (m * n) = pin m * pin n) ∧ (∀ (v : H.P ℚ) (k : ℕ), pin (normV v ^ k) = pv v ^ k) := by
   obtain ⟨hp, -, hinj, -⟩ := UpperTheory.heightOneSpectrum_rat_correspond_primes

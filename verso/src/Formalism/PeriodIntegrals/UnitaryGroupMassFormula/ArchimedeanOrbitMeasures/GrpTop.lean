@@ -9,12 +9,21 @@ noncomputable section
 
 namespace PI.AprimeInfW
 
+/- English proof (translation)
+The claim follows from `grpDens_of (ginfDens_of (placeCharts_of (placeChartV_of hE))) unimodInf_holds`.
+-/
 theorem grpDens_of_exp (hE : ExpProdU) : GrpDens :=
   grpDens_of (ginfDens_of (placeCharts_of (placeChartV_of hE))) unimodInf_holds
 
+/- English proof (translation)
+The claim follows from `grpStd_of (grpPiecesStd_of blockEx_holds chiStab' (grpDens_of_exp hE) hH grpInj_holds)`.
+-/
 theorem grpStd_of_leaves (hE : ExpProdU) (hH : GrpHaarH) : GrpStd :=
   grpStd_of (grpPiecesStd_of blockEx_holds chiStab' (grpDens_of_exp hE) hH grpInj_holds)
 
+/- English proof (translation)
+The claim follows from `grpStd_of_leaves hE (grpHaarH_of hBH)`.
+-/
 theorem grpStd_of_exp_block (hE : ExpProdU) (hBH : BlockHaarV) : GrpStd :=
   grpStd_of_leaves hE (grpHaarH_of hBH)
 

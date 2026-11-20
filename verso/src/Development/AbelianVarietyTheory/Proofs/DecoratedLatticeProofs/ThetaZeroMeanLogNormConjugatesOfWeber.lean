@@ -23,6 +23,47 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Gl
 open scoped nonZeroDivisors
 open GlobalTheory.Theta0MeanProof (lemA lemD log_normSq log_area sum_log_nonneg bound_le_half log_d_le half_le_log_v)
 
+/- English proof (translation)
+Establish `hArea` using `GlobalTheory.T.mean_log_covolume_conjugateLattices_eq D cc δ M t hS`. Take `⟨X, hX0, hXi, hXρ⟩` from `GlobalTheory.T.exists_integral_thetaEta_twelfth_power_conjugates hP hW D hJ cc δ M t hS`. Establish `hInt` using `sum_log_nonneg M X hX0 hXi`. Establish `hB` using `GlobalTheory.T.conjugateIdealLattice_discr_one_homothetic_ideal D cc δ M t hS`. Establish `hT0` using `hS.2.2.2`.
+
+Use `set Λ := lamOf D cc δ with hΛ`. Use `choose hdisc c hc x hx hΛeq using hB`. Establish `hA` using `fun ρ => lemA D (c ρ) (hc ρ) (x ρ) (hx ρ)`. Use `choose hstab ω τ hω hτ hLat hy1 hy2 using hA`. Establish `hLat' : ∀ ρ, JacobiThetaHalfCharacteristic.IsPeriodLattice (lamConj M ρ Λ) (ω ρ) (τ ρ)`.
+
+Introduce `ρ`. Rewrite using `[hΛeq ρ]`. Conclude with `hLat ρ`. Establish `htn : ∀ ρ, t ρ ∉ lamConj M ρ Λ`. Introduce `ρ ht`.
+
+Apply `(hT0 ρ).2.1` to reduce the goal to its premises. Rewrite `ht`, the goal using `[hΛeq ρ]`. Conclude with `hstab ρ _ ht`. Establish `hNρ` using `fun ρ => GlobalTheory.Proof.ThetaZeroNormGlobalInterpolation.normTheta0 _ (ω ρ) (τ ρ) (t ρ) (hω ρ) (hτ ρ) (hLat' ρ) (hT0 ρ).1 (htn ρ)`. Establish `hex : ∀ ρ, ∃ ab : Fin 2 × Fin 2, JacobiThetaHalfCharacteristic.IsEvenChar ab.1 ab.2 ∧ JacobiThetaHalfCharacteristic.thetaChar ab.1 ab.2 (t ρ / ω ρ) (τ ρ) = 0` using `fun ρ => (hNρ ρ).1.exists`.
+
+Use `choose ab hab0 hab1 using hex`. Use `set th : (M →ₐ[ℚ] ℂ) → ℝ := fun ρ => ‖JacobiThetaHalfCharacteristic.thetaChar (ab ρ).1 (ab ρ).2 0 (τ ρ)‖ with hthdef`. Use `set et : (M →ₐ[ℚ] ℂ) → ℝ := fun ρ => ‖ModularForm.eta (τ ρ)‖ with hetdef`. Establish `F1 : ∀ ρ, 0 < th ρ ∧ Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)) = -(1 / 2) * Real.log 2 - (1 / 2) * Real.log (τ ρ).im - 2 * Real.log (th ρ)` using `fun ρ => log_normSq (hNρ ρ).2.1 (hτ ρ) ((hNρ ρ).2.2 _ _ (hab0 ρ) (hab1 ρ))`. Establish `F2` using `fun ρ => log_area hP (hω ρ) (hτ ρ) (hLat' ρ) (hdisc ρ)`.
+
+Establish `F3 : ∀ ρ, Real.log ‖ρ X‖ = 12 * (Real.log (th ρ) - Real.log (et ρ))`. Introduce `ρ`. Rewrite using `[hXρ ρ (ω ρ) (τ ρ) (hω ρ) (hτ ρ) (hLat' ρ) _ _ (hab0 ρ) (hab1 ρ), Real.log_pow, Real.log_div (F1 ρ).1.ne' (F2 ρ).1.ne']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `set n : ℝ := (Module.finrank ℚ M : ℝ) with hn`. Establish `hcard : (Finset.univ : Finset (M →ₐ[ℚ] ℂ)).card = Module.finrank ℚ M`. Rewrite using `[Finset.card_univ]`. Conclude with `AlgHom.card ℚ M ℂ`. Establish `hnpos : 0 < n` using `by rw [hn]; exact_mod_cast Module.finrank_pos`.
+
+Use `set St := ∑ ρ, Real.log (th ρ)`. Use `set Se := ∑ ρ, Real.log (et ρ)`. Use `set Sy := ∑ ρ, Real.log (τ ρ).im`. Establish `e1 : ∑ ρ, Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)) = -(1 / 2) * Real.log 2 * n - (1 / 2) * Sy - 2 * St`. Rewrite using `[Finset.sum_congr rfl fun ρ _ => (F1 ρ).2]`.
+
+Simplify using `only [Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, hcard, nsmul_eq_mul]`. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ ρ, Real.log (area (lamConj M ρ Λ)) = (Real.log 4 + 2 * Real.log Real.pi) * n + Sy + 4 * Se`. Rewrite using `[Finset.sum_congr rfl fun ρ _ => (F2 ρ).2]`.
+
+Simplify using `only [Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, hcard, nsmul_eq_mul]`. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : 0 ≤ St - Se`. Establish `: ∑ ρ : M →ₐ[ℚ] ℂ, Real.log ‖ρ X‖ = 12 * (St - Se)`.
+
+Rewrite using `[Finset.sum_congr rfl fun ρ _ => F3 ρ, ← Finset.mul_sum, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hArea` using `[e2]`. Establish `hA2 : (Real.log 4 + 2 * Real.log Real.pi) * n + Sy + 4 * Se = (Real.log Real.pi + ClassMeanPeriods.classMeanValue D) * n`. Rewrite using `[← hArea]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `hsd : 0 < Real.sqrt (D.host.d : ℝ)` using `Real.sqrt_pos.2 (by`. Use `GlobalTheory.Theta0MeanCompare.one_le_d D` as an intermediate fact. Use the proof step `linarith)`. Establish `hcmv : ClassMeanPeriods.classMeanValue D = Real.eulerMascheroniConstant + Real.log 2 + Real.log Real.pi - Real.log (Real.sqrt D.host.d) - logDerivativeAtOne D`.
+
+Unfold `ClassMeanPeriods.classMeanValue`. Rewrite using `[Real.log_div (by positivity) hsd.ne', Real.log_mul two_ne_zero Real.pi_ne_zero]; ring`. Establish `hl4 : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; push_cast; ring`. Prove the components needed by the constructor for the conclusion.
+
+Unfold `SignedLogMeans.meanLog`. Rewrite using `[div_le_iff₀ hnpos]`. Express the relevant statement in the definitionally equal form `∑ ρ, Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)) ≤ _`. Rewrite using `[e1]`. Unfold `SignedLogMeans.bound`.
+
+Rewrite `hA2` using `[hcmv, hl4]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hK : ∀ ρ, max 0 (Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ))) ≤ Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)) + ((1 / 4) * Real.log D.host.d + max 0 (2 * Real.log C₀))`. Introduce `ρ`. Establish `hd1 : 0 ≤ Real.log (D.host.d : ℝ)` using `Real.log_nonneg (GlobalTheory.Theta0MeanCompare.one_le_d D)`.
+
+Establish `hm` using `le_max_right 0 (2 * Real.log C₀)`. Establish `hm0` using `le_max_left 0 (2 * Real.log C₀)`. Establish `h1` using `(F1 ρ).2`. Establish `h2 : Real.log (th ρ) ≤ Real.log C₀` using `Real.log_le_log (F1 ρ).1 (hth _ _ _ (hy1 ρ))`. Establish `h3 : Real.log (2 * (τ ρ).im) ≤ Real.log (Real.sqrt D.host.d)` using `Real.log_le_log (by linarith [hτ ρ]) (hy2 ρ)`.
+
+Rewrite `h3` using `[Real.log_mul two_ne_zero (hτ ρ).ne']`. Establish `h4 : Real.log (Real.sqrt (D.host.d : ℝ)) = (1 / 2) * Real.log D.host.d`. Rewrite using `[Real.log_sqrt (by positivity)]; ring`. Apply `max_le` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≤ Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)) + _`.
+
+Rewrite using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `set K := (1 / 4) * Real.log D.host.d + max 0 (2 * Real.log C₀)`. Establish `hs` using `Finset.sum_le_sum fun ρ (_ : ρ ∈ (Finset.univ : Finset (M →ₐ[ℚ] ℂ))) => hK ρ`.
+
+Rewrite `hs` using `[Finset.sum_add_distrib, Finset.sum_const, hcard, nsmul_eq_mul]`. Unfold `SignedLogMeans.meanPosLog SignedLogMeans.meanLog`. Express the relevant statement in the definitionally equal form `(∑ ρ, max 0 (Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ)))) / n ≤ (∑ ρ, Real.log (SignedLogMeans.conjNormSq M Λ ρ (t ρ))) / n + K`. Rewrite using `[div_add' _ _ _ hnpos.ne', div_le_div_iff_of_pos_right hnpos]`. Rewrite using `[hn]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem core (hP : PeriodLatticeAgreement.LatticePeriodEta) (hW : ThetaConstantWeber.ThetaWeberStatement) {C₀ : ℝ} (hC₀ : 0 < C₀)
     (hth : ∀ (a b : Fin 2) (τ : ℂ), 1 / 2 ≤ τ.im → ‖JacobiThetaHalfCharacteristic.thetaChar a b 0 τ‖ ≤ C₀)
     (D : D7) (hJ : Formalism.MainNotions.GL3Theta.admJ D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ)
@@ -129,6 +170,15 @@ theorem core (hP : PeriodLatticeAgreement.LatticePeriodEta) (hW : ThetaConstantW
     rw [div_add' _ _ _ hnpos.ne', div_le_div_iff_of_pos_right hnpos]
     rw [hn]; linarith
 
+/- English proof (translation)
+Establish `hJ : ∀ D : D7, Formalism.MainNotions.GL3Theta.admJ D` using `fun D => (GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D ⟨GlobalTheory.InducedType.restrict_K D, GlobalTheory.InducedType.sum_eq_trace D⟩).1`. Take `⟨C₀, hC₀, hth⟩` from `lemD`. Use `set C := max 0 (2 * Real.log C₀) with hCdef`. Establish `hC0 : 0 ≤ C` using `le_max_left _ _`. Use `⟨⟨fun D cc δ M _ t hS => (core hP hW hC₀ hth D (hJ D) cc δ M t hS).1, fun D cc δ M _ t hS L hL => ?_, ⟨1 / 2, by norm_num, fun D cc δ M _ t hS L hL => ?_⟩⟩, ⟨C, hC0, fun D cc δ M _ t hS => ?_⟩, ⟨1 + 2 * C, by linarith, fun D cc δ M _ t hS L hL => ?_⟩⟩` and prove the remaining obligations.
+
+Use `(core hP hW hC₀ hth D (hJ D) cc δ M t hS).1` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Theta0MeanCompare.bound_eq]`. Conclude with `this.trans (GlobalTheory.Theta0MeanCompare.kronBound_le D hL)`. Conclude with `(core hP hW hC₀ hth D (hJ D) cc δ M t hS).1.trans (bound_le_half D hL)`. Take `⟨h1, h2⟩` from `core hP hW hC₀ hth D (hJ D) cc δ M t hS`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h1, h2⟩` from `core hP hW hC₀ hth D (hJ D) cc δ M t hS`. Establish `a1` using `bound_le_half D hL`. Establish `a2` using `log_d_le D hL`. Establish `a3 : 1 / 2 ≤ L` using `by have := half_le_log_v D; have := abs_nonneg (logDerivativeAtOne D); linarith`.
+
+Establish `a4 : C ≤ 2 * C * L` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem theta0Mean (hP : PeriodLatticeAgreement.LatticePeriodEta) (hW : ThetaConstantWeber.ThetaWeberStatement) :
     SignedLogMeans.Theta0Mean := by
   have hJ : ∀ D : D7, Formalism.MainNotions.GL3Theta.admJ D := fun D =>

@@ -3,6 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.QuadraticExtension
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Two
 open scoped Pointwise
 
+/- English proof (translation)
+Unfold `Subgroup.relIndex Subgroup.index`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (Quotient.map' (Subgroup.inclusion (le_sup_left : K ≤ K ⊔ D)) fun a b h => ?_) ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite `h`, the goal using `[QuotientGroup.leftRel_apply]`. Simplify `h` using `[Subgroup.mem_subgroupOf]`.
+
+Use `Quotient.ind' fun a => Quotient.ind' fun b => ?_` and prove the remaining obligations. Introduce `h`. Simplify using `only [Quotient.map'_mk''] at h`. Rewrite `h`, the goal using `[Quotient.eq'']`. Rewrite `h`, the goal using `[QuotientGroup.leftRel_apply]`.
+
+Simplify `h` using `[Subgroup.mem_subgroupOf]`. Use `Quotient.ind' fun y => ?_` and prove the remaining obligations. Take `⟨k, hk, d, hd, hkd⟩` from `Subgroup.mem_sup_of_normal_left.mp y.2`. Use `⟨Quotient.mk'' ⟨k, hk⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Quotient.map'_mk'']`.
+
+Apply `Quotient.sound'` to reduce the goal to its premises. Rewrite using `[QuotientGroup.leftRel_apply, Subgroup.mem_subgroupOf]`. Establish `hy : (y : Γ) = k * d` using `hkd.symm`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inclusion, hy, inv_mul_cancel_left]`. Conclude with `hD hd`.
+-/
 private theorem relIndex_sup_normal {Γ : Type} [Group Γ] (K D H : Subgroup Γ) [K.Normal] (hD : D ≤ H) :
     H.relIndex (K ⊔ D) = H.relIndex K := by
   classical
@@ -28,6 +37,15 @@ private theorem relIndex_sup_normal {Γ : Type} [Group Γ] (K D H : Subgroup Γ)
     simp only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inclusion, hy, inv_mul_cancel_left]
     exact hD hd
 
+/- English proof (translation)
+Introduce `Γ _ K W D _ _ hW hKD`. Establish `hLKD : (W ⊓ K) ⊔ D ≤ K ⊔ D` using `sup_le_sup_right inf_le_right D`. Establish `hDL : D ≤ (W ⊓ K) ⊔ D` using `le_sup_right`. Establish `hWKL : W ⊓ K ≤ (W ⊓ K) ⊔ D` using `le_sup_left`. Establish `h1 : ((W ⊓ K) ⊔ D).index = ((W ⊓ K) ⊔ D).relIndex K * (K ⊔ D).index`.
+
+Rewrite using `[← relIndex_sup_normal K D _ hDL, Subgroup.relIndex_mul_index hLKD]`. Establish `h2 : ((W ⊓ K) ⊔ D).relIndex K ∣ W.index`. Establish `h` using `Subgroup.relIndex_dvd_of_le_left K hWKL`. Rewrite `h` using `[Subgroup.inf_relIndex_right]`. Conclude with `h.trans (Subgroup.relIndex_dvd_index_of_normal W K)`.
+
+Establish `h3 : ((W ⊓ K) ⊔ D).relIndex K ≠ 0` using `fun h => hW (Nat.eq_zero_of_zero_dvd (h ▸ h2))`. Establish `h4 : ((W ⊓ K) ⊔ D).relIndex K ≤ W.index` using `Nat.le_of_dvd (Nat.pos_of_ne_zero hW) h2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `mul_ne_zero h3 hKD`.
+
+Rewrite using `[h1]`. Conclude with `Nat.mul_le_mul_right _ h4`.
+-/
 theorem UpperTheory.V.Two.supIndex :
     ∀ (Γ : Type) [Group Γ] (K W D : Subgroup Γ) [K.Normal] [W.Normal], W.index ≠ 0 → (K ⊔ D).index ≠ 0 → ((W ⊓ K) ⊔ D).index ≠ 0 ∧ ((W ⊓ K) ⊔ D).index ≤ W.index * (K ⊔ D).index := by
   intro Γ _ K W D _ _ hW hKD

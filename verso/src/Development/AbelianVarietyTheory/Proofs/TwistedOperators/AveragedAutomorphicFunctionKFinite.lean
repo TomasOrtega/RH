@@ -52,6 +52,11 @@ namespace GlobalTheory.CuspKFin
 
 open Formalism.REAL Matrix MeasureTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg`. Consider the case `exact _root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg`. Consider the case `(apply _root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LeftRegularRepresentation.kFinAt_avg ..)`.
+-/
 theorem kFinAt_avg : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ),
     IsAutFunSm θ N.V ψ → ∀ (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e →
     GlobalTheory.CuspKFin.KFinAt θ N τ (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by

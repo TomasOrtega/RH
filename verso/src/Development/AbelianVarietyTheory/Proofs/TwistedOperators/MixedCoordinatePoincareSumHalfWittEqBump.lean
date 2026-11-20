@@ -18,6 +18,11 @@ namespace GlobalTheory.BumpMixSum
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨hg, hlc, hsc, ht2, hdisc, -⟩` from `lattice_Mx D m n`. Establish `hcl : IsClosed (ratMx D m n : Set (Mx D m n))` using `AddSubgroup.isClosed_of_discrete`. Establish `hS : IsCompact ((Subtype.val : ratMx D m n → Mx D m n) ⁻¹' K)` using `hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK`. Establish `hfin` using `(hS.finite_of_discrete.image Subtype.val).preimage (rat_injective (D := D) (m := m) (n := n)).injOn`. Use `hfin.subset fun γ hγ => ?_` and prove the remaining obligations.
+
+Conclude with `⟨⟨rat γ, γ, rfl⟩, hγ, rfl⟩`.
+-/
 theorem finite_rat_mem {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) :
     {γ : Matrix (Fin m) (Fin n) D.host.E | rat γ ∈ K}.Finite := by
   obtain ⟨hg, hlc, hsc, ht2, hdisc, -⟩ := lattice_Mx D m n
@@ -28,6 +33,21 @@ theorem finite_rat_mem {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) :
   refine hfin.subset fun γ hγ => ?_
   exact ⟨⟨rat γ, γ, rfl⟩, hγ, rfl⟩
 
+/- English proof (translation)
+Introduce `D ψ hψ S S₀ T ρ d v β hβ x`. Establish `h` using `v.covol`. Establish `hψc : Continuous ψ` using `hψ.1.1`. Establish `hn : ∀ t, ‖ψ t‖ = 1` using `hψ.1.2.1`. Establish `hY : Continuous (d.extY T)` using `continuous_id.matrix_mul continuous_const`.
+
+Take `⟨i1, i2, i3, -⟩` from `lattice_Mx D T.rank ρ`. Use `haveI : BorelSpace (Mx D T.rank ρ) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := ⟨by rw [Measure.restrict_apply_univ, h.2.2]; exact ENNReal.one_lt_top⟩`. Use `haveI : Countable D.host.E := Finsupp.Countable.of_moduleFinite (R := ℚ)`. Use `haveI : Countable (Matrix (Fin T.rank) (Fin ρ) D.host.E) := inferInstanceAs (Countable (_ → _ → D.host.E))`.
+
+Use `haveI : ContinuousSub (Mx D T.rank ρ) := @IsTopologicalAddGroup.to_continuousSub _ _ _ i1`. Establish `hone : v.μ.real v.𝓕 = 1` using `by rw [Measure.real, h.2.2, ENNReal.toReal_one]`. Establish `hfin : {ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E | β (x + rat ξ) ≠ 0}.Finite`. Use `(finite_rat_mem _ (hβ.supp.isCompact.image (continuous_sub_right x))).subset fun ξ hξ => ?_` and prove the remaining obligations. Conclude with `⟨x + rat ξ, subset_tsupport β hξ, add_sub_cancel_left x (rat ξ)⟩`.
+
+Establish `key : ∀ a, heisO ψ S T (d.extY T a) (heisO ψ S T (d.extX T x) (heisO ψ S T (d.ext0 T 0) (poinX ψ d T β))) 0 = ∑' ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E, ψ (symplO S T (d.extX T (rat ξ)) (d.extY T a)) * β (x + rat ξ)`. Introduce `a`. Rewrite using `[d.integrandS_eq, poinX_coords, ← tsum_mul_left]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, symplOH_Y_X, ← d.symplOH_extX_extY T x a, ← d.symplOH_extX_extY T (x + 2 • rat ξ) a, map_add (d.extX T), two_nsmul, map_add (d.extX T), GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.OrientedHeis.symplOH_add_left, GlobalTheory.Cor …`.
+
+Establish `hF` using `hasSum_integral_of_summable_integral_norm (μ := v.μ.restrict v.𝓕) (F := fun (ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E) a => ψ (symplO S T (d.extX T (rat ξ)) (d.extY T a)) * β (x + rat ξ)) (fun ξ => ?_) ?_`. Rewrite using `[HypDec.mixS]`. Simplify using `only [key]`. Use `hF.unique ?_` and prove the remaining obligations. Establish `h0 : ∫ a in v.𝓕, ψ (symplO S T (d.extX T (rat 0)) (d.extY T a)) * β (x + rat 0) ∂v.μ = β x`.
+
+Simplify using `only [rat_zero, map_zero, GlobalTheory.Core.Rk.ThetaOf.symplO_eq_add, symplOH_zero_left, add_zero, AddChar.map_zero_eq_one, one_mul, setIntegral_const, hone, one_smul]`. Rewrite using `[← h0]`. Use `hasSum_single (f := fun ξ : Matrix (Fin T.rank) (Fin ρ) D.host.E => ∫ a in v.𝓕, ψ (symplO S T (d.extX T (rat ξ)) (d.extY T a)) * β (x + rat ξ) ∂v.μ) 0 fun ξ hξ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const, GlobalTheory.Core.Rk.ThetaOf.integral_pair hψ d T h hξ, zero_mul]`. Use `Integrable.mul_const (Integrable.of_bound ?_ 1 (Filter.Eventually.of_forall fun a => (hn _).le)) _` and prove the remaining obligations.
+
+Conclude with `(hψc.comp (GlobalTheory.Core.Rk.ThetaOf.continuous_symplO continuous_const hY)).measurable.aestronglyMeasurable`. Simplify using `only [norm_mul, hn, one_mul, setIntegral_const, hone, one_smul]`. Use `summable_of_finite_support (hfin.subset fun ξ hξ => ?_)` and prove the remaining obligations. Conclude with `fun h0 => (Function.mem_support.1 hξ) (by simp only [h0, norm_zero])`.
+-/
 theorem mixS_poinX : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ) (β : Mx D T.rank ρ → ℂ), IsBump β → ∀ x, d.mixS T ψ v.μ v.𝓕 (poinX ψ d T β) x 0 = β x := by
   intro D ψ hψ S S₀ T ρ d v β hβ x
   have h := v.covol

@@ -17,6 +17,11 @@ section Conj
 
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
+/- English proof (translation)
+Apply the tactic sequence `cases b <;> cases b'`. Conclude with `⟨a, rfl, rfl⟩`. Use `⟨-a, Int.natAbs_neg a, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, zpow_neg]`. Use `⟨-a, Int.natAbs_neg a, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[Formalism.MainNotions.BlochKatoReduction.Gen.psiAt, zpow_neg]`. Conclude with `⟨a, rfl, rfl⟩`.
+-/
 theorem psiAt_side_zpow {Γ A : Type} [Group Γ] [CommGroup A] (b b' : Bool) (ψ : Γ →* A) (a : ℤ) :
     ∃ a' : ℤ, a'.natAbs = a.natAbs ∧ Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b' (ψ ^ a) = Formalism.MainNotions.BlochKatoReduction.Gen.psiAt b (ψ ^ a') := by
   cases b <;> cases b'
@@ -39,11 +44,17 @@ def TwGoodAll (D : D7) (I : TwIn D) (i : D.ntw.Tw) (b : Bool) (Q : Finset (PlE D
     (ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ) : Prop :=
   ∀ a : ℤ, Nat.Coprime a.natAbs (D.ntw.l i) → TwGoodOne D I i b Q k' (ψ ^ a)
 
+/- English proof (translation)
+Use `h 1 (by simp)` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Then use the resulting hypothesis.
+-/
 theorem TwGoodAll.one {D : D7} {I : TwIn D} {i : D.ntw.Tw} {b : Bool} {Q : Finset (PlE D.host)} {k' : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ} (h : TwGoodAll D I i b Q k' ψ) : TwGoodOne D I i b Q k' ψ := by
   have := h 1 (by simp)
   rwa [zpow_one] at this
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨a', h1, h2⟩` from `psiAt_side_zpow b b' ψ a`. Unfold `TwGoodOne`. Rewrite using `[h2]`. Conclude with `h a' (by rw [h1]; exact ha)`.
+-/
 theorem TwGoodAll.side {D : D7} {I : TwIn D} {i : D.ntw.Tw} {b : Bool} {Q : Finset (PlE D.host)} {k' : ℕ}
     {ψ : D.ntw.RCG i Q →* (D.ntw.Ok i k')ˣ} (h : TwGoodAll D I i b Q k' ψ) (b' : Bool) :
     TwGoodAll D I i b' Q k' ψ := by
@@ -198,6 +209,9 @@ namespace Formalism.MainNotions.N.TwAll
 
 open Formalism.MainNotions.BlochKatoReduction.Gen (nval)
 
+/- English proof (translation)
+Unfold `nval`. Simplify using the standard rewrite rules.
+-/
 theorem nval_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (l : ℕ) : nval O l 0 = 0 := by
   unfold nval
   simp

@@ -11,6 +11,13 @@ open GlobalTheory.FlagMod (ev tau tau_le spMap_ev ev_res ev_spMap le_preimage_in
 
 namespace GlobalTheory.DRFlag
 
+/- English proof (translation)
+Establish `h : ∀ x : PrimeSpectrum R, ∃ g : R, g ∉ x.asIdeal ∧ ∃ α, ∀ y : PrimeSpectrum R, g ∉ y.asIdeal → χ y ∈ C.B α`. Introduce `x`. Take `⟨α, hα⟩` from `C.cover (χ x)`. Take `⟨_, ⟨g, rfl⟩, hx, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open (a := x) (u := ((χ ⁻¹ᵁ C.B α : (Sp R).Opens) : Set (Sp R))) hα (χ ⁻¹ᵁ C.B α).2`. Conclude with `⟨g, hx, α, fun y hy => hsub hy⟩`.
+
+Use `choose g hg hα using h`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : PrimeSpectrum R => (PrimeSpectrum.basicOpen (g x) : Set (PrimeSpectrum R))) (fun x => (PrimeSpectrum.basicOpen (g x)).2) (fun x _ => Set.mem_iUnion.2 ⟨x, hg x⟩)`. Use `⟨t.image g, fun a ha => ?_, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `hα x`.
+
+Take `⟨y, hy, hx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Conclude with `⟨g y, Finset.mem_image_of_mem g hy, hx⟩`.
+-/
 theorem exists_finset_basicOpen_le {X : Scheme.{0}} (C : Coc X) {R : Type} [CommRing R] (χ : Sp R ⟶ X) :
     ∃ s : Finset R, (∀ g ∈ s, ∃ α, ∀ x : PrimeSpectrum R, g ∉ x.asIdeal → χ x ∈ C.B α) ∧
       ∀ x : PrimeSpectrum R, ∃ g ∈ s, g ∉ x.asIdeal := by
@@ -31,14 +38,45 @@ theorem exists_finset_basicOpen_le {X : Scheme.{0}} (C : Coc X) {R : Type} [Comm
   · obtain ⟨y, hy, hx⟩ := Set.mem_iUnion₂.1 (ht (Set.mem_univ x))
     exact ⟨g y, Finset.mem_image_of_mem g hy, hx⟩
 
+/- English proof (translation)
+The claim follows from `IsOpenImmersion.of_isLocalization g`.
+-/
 theorem isOpenImmersion_spMap_away {R : Type} [CommRing R] (g : R) :
     IsOpenImmersion (spMap (algebraMap R (Localization.Away g))) :=
   IsOpenImmersion.of_isLocalization g
 
+/- English proof (translation)
+The claim follows from `Set.ext_iff.1 (PrimeSpectrum.localization_away_comap_range (Localization.Away g) g) x`.
+-/
 theorem mem_range_spMap_away {R : Type} [CommRing R] (g : R) (x : PrimeSpectrum R) :
     x ∈ Set.range (spMap (algebraMap R (Localization.Away g))) ↔ g ∉ x.asIdeal :=
   Set.ext_iff.1 (PrimeSpectrum.localization_away_comap_range (Localization.Away g) g) x
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V _ M X π ty A C`. Use `choose s hs hcov using fun a => exists_finset_basicOpen_le C (A.ch.χ a)`. Set `P : PreAtlas M X` to `{ ch := { ι := Σ a : A.ch.ι, {g // g ∈ s a} R := fun k => Localization.Away k.2.1 χ := fun k => spMap (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)) ≫ A.ch.χ k.1 opn := fun k => by`. Use `isOpenImmersion_spMap_away k.2.1` as an intermediate fact. Use `infer_instance }`.
+
+Use `alg := fun k => (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)).comp (A.alg k.1)`. Use `fr := fun k => (A.fr k.1).bc (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)) }`. Establish `key : ∀ (K : Type) [Field K] (w : Sp K ⟶ X) (u : Vecs Dw M.t K), P.FlagAt π ty w u ↔ A.FlagAt w u`. Introduce `K _ w u`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨k, φ, e, hf, hS⟩`. Use `⟨k.1, φ.comp (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)), ?_, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp', Category.assoc]`. Conclude with `e`. Rewrite using `[← Vecs.bc_bc]`.
+
+Conclude with `hS`. Introduce and unpack `⟨a, φ, e, hf, hS⟩`. Take `⟨g, hg, hφ⟩` from `hcov a ⟨RingHom.ker φ, RingHom.ker_isPrime φ⟩`. Establish `hu : IsUnit (φ g)` using `IsUnit.mk0 _ hφ`. Establish `hψ : (IsLocalization.Away.lift (S` using `Localization.Away g) g hu).comp (algebraMap _ _) = φ := IsLocalization.Away.lift_comp g hu`.
+
+Use `⟨⟨a, g, hg⟩, IsLocalization.Away.lift (S := Localization.Away g) g hu, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show spMap _ ≫ spMap _ ≫ _ = _`. Rewrite using `[← Category.assoc, spMap_comp', hψ, e]`. Use `show LocM.IsFrame M.t (RingHom.comp _ (RingHom.comp _ _)) _ _`. Rewrite using `[← RingHom.comp_assoc, hψ]`.
+
+Conclude with `hf`. Use `show SameFlag ty M.t _ (((A.fr a).bc _).bc _) _`. Rewrite using `[Vecs.bc_bc, hψ]`. Conclude with `hS`. Use `⟨{ toPreAtlas := P, cover := ?_, alg_s := fun k => ?_, smooth := fun k => ?_, frame := fun k => ?_, glue := fun K _ k k' φ φ' e => ?_, bij := fun K _ f y hy u hu => ?_ }, key, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← A.cover]`. Use extensionality with `x`. Simplify using `only [Charts.carrier, Set.mem_iUnion]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, y, rfl⟩`.
+
+Conclude with `⟨k.1, spMap (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)) y, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Introduce and unpack `⟨a, y, rfl⟩`. Take `⟨g, hg, hy⟩` from `hcov a y`. Take `⟨z, rfl⟩` from `(mem_range_spMap_away g y).2 hy`. Conclude with `⟨⟨a, g, hg⟩, z, Scheme.Hom.comp_apply _ _ _⟩`.
+
+Conclude with `A.affineOpenChart_comp_structure_eq_spMap (a := k.1) rfl`. Use `isOpenImmersion_spMap_away k.2.1` as an intermediate fact. Use `A.smooth k.1` as an intermediate fact. Use `show Smooth ((spMap (algebraMap (A.ch.R k.1) (Localization.Away k.2.1)) ≫ A.ch.χ k.1) ≫ π)`. Rewrite using `[Category.assoc]`.
+
+Use `infer_instance`. Conclude with `A.isFrame_bc (a := k.1) rfl`. Establish `e' : spMap φ ≫ spMap _ ≫ A.ch.χ k.1 = spMap φ' ≫ spMap _ ≫ A.ch.χ k'.1` using `e`. Rewrite `e'` using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp']`. Establish `h` using `A.glue K k.1 k'.1 _ _ e'`.
+
+Rewrite `h` using `[← Vecs.bc_bc, ← Vecs.bc_bc, ← spMap_comp', Category.assoc]`. Use `show SameFlag ty M.t (spMap φ ≫ (spMap _ ≫ A.ch.χ k.1) ≫ π) _ _`. Rewrite using `[Category.assoc]`. Conclude with `h`. Conclude with `(existsUnique_congr fun w => and_congr_right' (key K w u)).2 (A.bij K f y hy u hu)`.
+
+Use `choose α hα using fun k : P.ch.ι => hs k.1 k.2.1 k.2.2`. Use `⟨α, fun k z _ => ?_⟩` and prove the remaining obligations. Use `hα k _ ((mem_range_spMap_away k.2.1 _).1 ⟨z, rfl⟩)` as an intermediate fact. Rewrite `this` using `[← Scheme.Hom.comp_apply]`. Conclude with `this`.
+-/
 theorem Atlas.exists_refine : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : ValuationSubring c.F) [IsDiscreteValuationRing V] (M : Model Xo c V.subtype) (X : Scheme.{0}) (π : X ⟶ M.X) (ty : (E →+* ℂ) → Finset ℕ) (A : Atlas M π ty) (C : Coc X), ∃ A' : Atlas M π ty, (∀ (K : Type) [Field K] (w : Sp K ⟶ X) (u : Vecs Dw M.t K), A'.FlagAt w u ↔ A.FlagAt w u) ∧ ∃ α : A'.ch.ι → C.A, ∀ a, ⊤ ≤ A'.ch.χ a ⁻¹ᵁ C.B (α a) := by
   intro E _ _ _ H Dw l Xo c V _ M X π ty A C
   choose s hs hcov using fun a => exists_finset_basicOpen_le C (A.ch.χ a)

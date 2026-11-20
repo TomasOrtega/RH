@@ -25,12 +25,20 @@ def datum (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y : Formal
   gen_order d hd := (hζ d hd).1
   gen_norm d e hd he := (hζ d hd).2 (d * e) (dvd_mul_right d e) (Nat.mul_pos hd he)
 
+/- English proof (translation)
+Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[mem_roots (Polynomial.map_ne_zero hP), IsRoot, Polynomial.eval_map, ← aeval_def]`. Conclude with `hx`.
+-/
 theorem mem_rootsBar_of_aeval {P : (ZMod g)[X]} (hP : P ≠ 0) {x : Formalism.CyclotomicNorms.Fbar g}
     (hx : aeval x P = 0) : x ∈ Formalism.CyclotomicNorms.rootsBar P := by
   unfold Formalism.CyclotomicNorms.rootsBar
   rw [mem_roots (Polynomial.map_ne_zero hP), IsRoot, Polynomial.eval_map, ← aeval_def]
   exact hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨h1, h2, ?_, h4⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `h3 (by simp)`.
+
+Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨h1, h2, fun h0 => h3 ?_, h4⟩` and prove the remaining obligations. Establish `hd : (X : (ZMod g)[X]) ∣ P` using `X_dvd_iff.2 h0`. Conclude with `(eq_of_monic_of_associated monic_X h1 (irreducible_X.associated_of_dvd h2 hd)).symm`.
+-/
 theorem isPrimeLab_iff (d : ℕ) (P : (ZMod g)[X]) :
     IsPrimeLab d P ↔ P.Monic ∧ Irreducible P ∧ P ≠ X ∧ P.natDegree = d := by
   constructor
@@ -43,6 +51,9 @@ theorem isPrimeLab_iff (d : ℕ) (P : (ZMod g)[X]) :
     have hd : (X : (ZMod g)[X]) ∣ P := X_dvd_iff.2 h0
     exact (eq_of_monic_of_associated monic_X h1 (irreducible_X.associated_of_dvd h2 hd)).symm
 
+/- English proof (translation)
+Use `⟨Matrix.charpoly_monic _, hy, fun h0 => ?_, by simp [Matrix.charpoly_natDegree_eq_dim]⟩` and prove the remaining obligations. Establish `hdet` using `Matrix.det_eq_sign_charpoly_coeff (y : Mt g d)`. Rewrite `hdet` using `[h0, mul_zero]`. Conclude with `(Matrix.isUnits_det_units y).ne_zero hdet`.
+-/
 theorem isPrimeLab_charpoly {d : ℕ} (y : Gn g d) (hy : Irreducible (y : Mt g d).charpoly) :
     IsPrimeLab d (y : Mt g d).charpoly := by
   refine ⟨Matrix.charpoly_monic _, hy, fun h0 => ?_, by simp [Matrix.charpoly_natDegree_eq_dim]⟩
@@ -50,6 +61,11 @@ theorem isPrimeLab_charpoly {d : ℕ} (y : Gn g d) (hy : Irreducible (y : Mt g d
   rw [h0, mul_zero] at hdet
   exact (Matrix.isUnits_det_units y).ne_zero hdet
 
+/- English proof (translation)
+Establish `h1 : 1 < g ^ d` using `Nat.one_lt_pow hd.ne' (Fact.out : g.Prime).one_lt`. Use `haveI : NeZero (g ^ d - 1) := ⟨by omega⟩`. Establish `hp : IsPrimitiveRoot (L.gen d) (g ^ d - 1)`. Rewrite using `[← L.gen_order d hd]`. Conclude with `IsPrimitiveRoot.orderOf _`.
+
+Take `⟨m, -, hm⟩` from `hp.eq_pow_of_pow_eq_one hz`. Conclude with `⟨m, hm⟩`.
+-/
 theorem exists_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {z : Formalism.CyclotomicNorms.Fbar g}
     (hz : z ^ (g ^ d - 1) = 1) : ∃ m : ℕ, L.gen d ^ m = z := by
   have h1 : 1 < g ^ d := Nat.one_lt_pow hd.ne' (Fact.out : g.Prime).one_lt
@@ -59,6 +75,9 @@ theorem exists_gen_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {z : Formalism.
   obtain ⟨m, -, hm⟩ := hp.eq_pow_of_pow_eq_one hz
   exact ⟨m, hm⟩
 
+/- English proof (translation)
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hw : L.teich x ^ (g ^ d - 1) = 1` using `by rw [← map_pow, pow_sub_one_eq_one hP hx, map_one]`. Rewrite using `[← pow_mul, thetaOf_gen_pow L d hd x hw]`.
+-/
 theorem sum_thetaOf (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {P : (ZMod g)[X]} (hP : IsPrimeLab d P)
     {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ∈ Formalism.CyclotomicNorms.rootsBar P) (m : ℕ) :
     ∑ i ∈ Finset.range d, thetaOf L d x ((L.gen d ^ m) ^ (g ^ i)) =
@@ -67,6 +86,15 @@ theorem sum_thetaOf (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {P : (ZMod g)[X]} 
   have hw : L.teich x ^ (g ^ d - 1) = 1 := by rw [← map_pow, pow_sub_one_eq_one hP hx, map_one]
   rw [← pow_mul, thetaOf_gen_pow L d hd x hw]
 
+/- English proof (translation)
+Establish `hd : 0 < d` using `hV.1`. Unfold `HasCuspLabel`. Simplify using `only [Fintype.card_fin, ZMod.card]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3, h4, h5⟩`.
+
+Establish `hP : IsPrimeLab d P` using `(isPrimeLab_iff d P).2 ⟨h1, h2, h3, h4⟩`. Use `⟨hP, hV, fun x hx y hy z hz => ?_⟩` and prove the remaining obligations. Establish `hy'` using `isPrimeLab_charpoly y hy`. Take `⟨m, rfl⟩` from `exists_gen_pow (datum t ht ζ hζ) hd (pow_sub_one_eq_one hy' hz)`. Rewrite using `[sum_thetaOf _ hd hP hx]`.
+
+Conclude with `h5 x (aeval_eq_zero_of_mem h1.ne_zero hx) y hy _ (aeval_eq_zero_of_mem hy.ne_zero hz) m rfl`. Introduce and unpack `⟨hP, -, h5⟩`. Take `⟨h1, h2, h3, h4⟩` from `(isPrimeLab_iff d P).1 hP`. Use `⟨h1, h2, h3, h4, fun x hx y hy z hz m hm => ?_⟩` and prove the remaining obligations. Establish `hx'` using `mem_rootsBar_of_aeval h1.ne_zero hx`.
+
+Establish `h` using `h5 x hx' y hy z (mem_rootsBar_of_aeval hy.ne_zero hz)`. Establish `hm' : (datum t ht ζ hζ).gen d ^ m = z` using `hm`. Rewrite `h` using `[← hm', sum_thetaOf _ hd hP hx']`. Conclude with `h`.
+-/
 theorem hasCuspLabel_iff (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y)
     (ζ : ℕ → Formalism.CyclotomicNorms.Fbar g) (hζ : IsGenSys ζ) {d : ℕ} (V : FDRep ℂ (GL (Fin d) (ZMod g)))
@@ -92,6 +120,11 @@ theorem hasCuspLabel_iff (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     rw [← hm', sum_thetaOf _ hd hP hx'] at h
     exact h
 
+/- English proof (translation)
+Use `haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (by exact_mod_cast Nat.card_pos.ne')`. Use `haveI : Invertible (Fintype.card G : ℂ) := invertibleOfNonzero (by exact_mod_cast Fintype.card_pos.ne')`. Establish `h1` using `FDRep.char_orthonormal V W`. Establish `h2` using `FDRep.char_orthonormal V V`. Rewrite `h1` using `[← h, h2, if_pos ⟨Iso.refl V⟩]`.
+
+Assume the negation of the conclusion as `h3`. Rewrite `h1` using `[if_neg h3]`. Conclude with `one_ne_zero h1`.
+-/
 theorem nonempty_iso_of_character {G : Type} [Group G] [Fintype G] (V W : FDRep ℂ G) [Simple V] [Simple W]
     (h : V.character = W.character) : Nonempty (V ≅ W) := by
   haveI : Invertible (Nat.card G : ℂ) := invertibleOfNonzero (by exact_mod_cast Nat.card_pos.ne')
@@ -103,6 +136,21 @@ theorem nonempty_iso_of_character {G : Type} [Group G] [Fintype G] (V W : FDRep 
   rw [if_neg h3] at h1
   exact one_ne_zero h1
 
+/- English proof (translation)
+Introduce `hG g _ t ht ζ hζ d hd`. Take `⟨τ, hτ, -, hall⟩` from `hG g (datum t ht ζ hζ) d hd`. Establish `huniq` using `GlobalTheory.GLq.LabelUniqueAll.label_eq (datum t ht ζ hζ) d`. Use `⟨fun V hs hc => ?_, fun P h1 h2 h3 h4 => ?_, fun V W P hs hc hs' hc' hP hP' => ?_⟩` and prove the remaining obligations. Establish `hV` using `(GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc`.
+
+Take `⟨Q, hQ, hVQ⟩` from `hall _ hV`. Use `⟨⟨Q, ?_, fun P hP => ?_⟩, ?_⟩` and prove the remaining obligations. Use `(hasCuspLabel_iff t ht ζ hζ V hV Q).2 ?_` and prove the remaining obligations. Rewrite using `[hVQ]`. Conclude with `(hτ Q hQ).1`.
+
+Use `huniq P Q _ ((hasCuspLabel_iff t ht ζ hζ V hV P).1 hP) ?_` and prove the remaining obligations. Rewrite using `[hVQ]`. Conclude with `(hτ Q hQ).1`. Establish `h1 : V.character 1 = τ Q 1` using `congrFun hVQ 1`. Rewrite `h1` using `[FDRep.char_one, (hτ Q hQ).2]`.
+
+Simplify using `only [q, ZMod.card]`. Conclude with `h1` after adjusting the coercions. Establish `hP : IsPrimeLab d P` using `(isPrimeLab_iff d P).2 ⟨h1, h2, h3, h4⟩`. Establish `hc` using `(hτ P hP).1`. Take `⟨V, hs, hVχ⟩` from `hc.2.1.2.1`.
+
+Establish `he : (fun x => V.character x) = τ P` using `funext hVχ`. Establish `hV : IsCusp (fun x => V.character x)` using `he ▸ hc.2.1`. Conclude with `⟨V, hs, (GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).1 hV, (hasCuspLabel_iff t ht ζ hζ V hV P).2 (he ▸ hc)⟩`. Establish `hV` using `(GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d V hd hs).2 hc`. Establish `hW` using `(GlobalTheory.T.isCuspidalCharacter_iff_isCuspidal_GLnFiniteField g d W hd hs').2 hc'`.
+
+Take `⟨Q, hQ, hVQ⟩` from `hall _ hV`. Take `⟨Q', hQ', hWQ⟩` from `hall _ hW`. Establish `e1 : P = Q` using `huniq P Q _ ((hasCuspLabel_iff t ht ζ hζ V hV P).1 hP) (hVQ ▸ (hτ Q hQ).1)`. Establish `e2 : P = Q'` using `huniq P Q' _ ((hasCuspLabel_iff t ht ζ hζ W hW P).1 hP') (hWQ ▸ (hτ Q' hQ').1)`. Use `nonempty_iso_of_character V W ?_` and prove the remaining obligations.
+
+Conclude with `hVQ.trans ((e1.symm.trans e2) ▸ hWQ.symm)`.
+-/
 theorem cuspParam_of_green : GlobalTheory.Published.GreenCuspidal → ∀ (g : ℕ) [Fact g.Prime] (t : Formalism.CyclotomicNorms.Fbar g →* ℂ)
     (ht : ∀ x y : Formalism.CyclotomicNorms.Fbar g, x ≠ 0 → y ≠ 0 → t x = t y → x = y) (ζ : ℕ → Formalism.CyclotomicNorms.Fbar g)
     (hζ : IsGenSys ζ), Formalism.IrreducibleCountingLemmas.TYPES.CuspParam (ZMod g) (convC t ht ζ hζ) := by

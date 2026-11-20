@@ -23,12 +23,18 @@ def blockDiagEmbedRingHom (k j ρ : ℕ) : B.Mat k ρ × Matrix (Fin j) (Fin j) 
     rw [Formalism.FourierDecayAlt.P.Ux4.block3_add]
     simp
 
+/- English proof (translation)
+Use `show Continuous (fun x : B.Mat k ρ × Matrix (Fin j) (Fin j) ℂ => blk3 x.2 0 0 0 x.1 0 0 0 x.2)`. Simplify using `only [blk3]`. Conclude with `((continuous_snd.matrix_fromBlocks continuous_const continuous_const continuous_fst).matrix_fromBlocks continuous_const continuous_const continuous_snd).matrix_reindex _ _`.
+-/
 theorem continuous_blockDiagEmbedRingHom : Continuous (blockDiagEmbedRingHom k j ρ) := by
   show Continuous (fun x : B.Mat k ρ × Matrix (Fin j) (Fin j) ℂ => blk3 x.2 0 0 0 x.1 0 0 0 x.2)
   simp only [blk3]
   exact ((continuous_snd.matrix_fromBlocks continuous_const continuous_const continuous_fst).matrix_fromBlocks
     continuous_const continuous_const continuous_snd).matrix_reindex _ _
 
+/- English proof (translation)
+Use `open scoped Norms.Operator in`. Use `ext1`. Conclude with `Prod.fst_exp _`. Conclude with `(Prod.snd_exp _).trans NormedSpace.exp_zero`.
+-/
 theorem exp_pair (Y : B.Mat k ρ) :
     NormedSpace.exp ((Y, 0) : B.Mat k ρ × Matrix (Fin j) (Fin j) ℂ) = (NormedSpace.exp Y, 1) := by
   open scoped Norms.Operator in
@@ -36,12 +42,18 @@ theorem exp_pair (Y : B.Mat k ρ) :
   · exact Prod.fst_exp _
   · exact (Prod.snd_exp _).trans NormedSpace.exp_zero
 
+/- English proof (translation)
+Establish `h` using `(open scoped Norms.Operator in NormedSpace.map_exp (blockDiagEmbedRingHom k j ρ) continuous_blockDiagEmbedRingHom ((Y, 0) : B.Mat k ρ × Matrix (Fin j) (Fin j) ℂ))`. Conclude with `(congrArg (blockDiagEmbedRingHom k j ρ) (exp_pair (j := j) Y)).symm.trans h`.
+-/
 theorem embG_exp (Y : B.Mat k ρ) :
     embG k j ρ (NormedSpace.exp Y) = NormedSpace.exp (blk3 0 0 0 0 Y 0 0 0 0 : B.Mat k (j + ρ)) := by
   have h := (open scoped Norms.Operator in
     NormedSpace.map_exp (blockDiagEmbedRingHom k j ρ) continuous_blockDiagEmbedRingHom ((Y, 0) : B.Mat k ρ × Matrix (Fin j) (Fin j) ℂ))
   exact (congrArg (blockDiagEmbedRingHom k j ρ) (exp_pair (j := j) Y)).symm.trans h
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [blk3, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply]`. Generalize the expression as in `(eB k j ρ).symm a = x`. Generalize the expression as in `(eB k j ρ).symm b = y`. Apply the tactic sequence `rcases x with (x | x) | x <;> rcases y with (y | y) | y <;> simp`.
+-/
 theorem blockDiag3_smul_middle (c : ℂ) (Y : B.Mat k ρ) :
     (blk3 0 0 0 0 (c • Y) 0 0 0 0 : B.Mat k (j + ρ)) = c • blk3 0 0 0 0 Y 0 0 0 0 := by
   ext a b
@@ -50,10 +62,18 @@ theorem blockDiag3_smul_middle (c : ℂ) (Y : B.Mat k ρ) :
   generalize (eB k j ρ).symm b = y
   rcases x with (x | x) | x <;> rcases y with (y | y) | y <;> simp
 
+/- English proof (translation)
+The claim follows from `(Matrix.exp_conj' n X ((Matrix.isUnit_iff_isUnit_det n).2 (Matrix.isUnit_det_of_right_inverse hn))).symm`.
+-/
 theorem conj_exp {m : ℕ} (n X : Matrix (Fin m) (Fin m) ℂ) (hn : n * n⁻¹ = 1) :
     n⁻¹ * NormedSpace.exp X * n = NormedSpace.exp (n⁻¹ * X * n) :=
   (Matrix.exp_conj' n X ((Matrix.isUnit_iff_isUnit_det n).2 (Matrix.isUnit_det_of_right_inverse hn))).symm
 
+/- English proof (translation)
+Apply `Matrix.mul_nonsing_inv` to reduce the goal to its premises. Establish `h0 : (Matrix.fromCols (0 : Matrix (Fin j) (Fin j) ℂ) (0 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ)) = 0`. Apply the tactic sequence `ext a b; rcases b with b | b <;> rfl`. Simplify using `only [Rn, blk3, Matrix.det_reindex_self]`. Rewrite using `[h0, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁]`.
+
+Simplify using the standard rewrite rules.
+-/
 private lemma Rn_mul_inv' (x : RC k j ρ) : Rn k j ρ x * (Rn k j ρ x)⁻¹ = 1 := by
   apply Matrix.mul_nonsing_inv
   have h0 : (Matrix.fromCols (0 : Matrix (Fin j) (Fin j) ℂ) (0 : Matrix (Fin j) (Fin (2 * ρ + k + 1)) ℂ)) = 0 := by
@@ -62,6 +82,9 @@ private lemma Rn_mul_inv' (x : RC k j ρ) : Rn k j ρ x * (Rn k j ρ x)⁻¹ = 1
   rw [h0, Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁]
   simp
 
+/- English proof (translation)
+Rewrite using `[embG_exp, blockDiag3_smul_middle, conj_exp _ _ (Rn_mul_inv' x), Matrix.mul_smul, Matrix.smul_mul]`. Both sides reduce to the same expression.
+-/
 theorem conj_letter (x : RC k j ρ) (Y : B.Mat k ρ) (c : ℂ) :
     (Rn k j ρ x)⁻¹ * embG k j ρ (NormedSpace.exp (c • Y)) * Rn k j ρ x =
       NormedSpace.exp (c • cj k j ρ x Y) := by
@@ -75,6 +98,9 @@ section comp
 variable {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ} {ξ : Xi k p s ρ σ} {Z : G.Mat s}
   {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `γ'`. Simplify using `only [RdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hR k p s ρ σ d ξ Z γ' _, conj_letter]`.
+-/
 theorem rdv_comp (hR : SliceRight) (H : B.Mat k (p + s + ρ) → E) (Y : B.Mat k ρ) :
     RdV Y (fun γ' => H (gaXi k ρ σ d ξ Z γ')) =
       fun γ' => RdV (cj k (p + s) ρ ξ.1.2 Y) H (gaXi k ρ σ d ξ Z γ') := by
@@ -84,6 +110,9 @@ theorem rdv_comp (hR : SliceRight) (H : B.Mat k (p + s + ρ) → E) (Y : B.Mat k
   funext t
   rw [hR k p s ρ σ d ξ Z γ' _, conj_letter]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `γ'`. Simplify using `only [B.LdV]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hL k p s ρ σ d ξ Z γ' _, ← neg_smul, conj_letter, neg_smul]`.
+-/
 theorem ldv_comp (hL : SliceLeft) (H : B.Mat k (p + s + ρ) → E) (Y : B.Mat k ρ) :
     B.LdV Y (fun γ' => H (gaXi k ρ σ d ξ Z γ')) =
       fun γ' => B.LdV (cj k (p + s) ρ ξ.1.1 Y) H (gaXi k ρ σ d ξ Z γ') := by
@@ -93,6 +122,9 @@ theorem ldv_comp (hL : SliceLeft) (H : B.Mat k (p + s + ρ) → E) (Y : B.Mat k 
   funext t
   rw [hL k p s ρ σ d ξ Z γ' _, ← neg_smul, conj_letter, neg_smul]
 
+/- English proof (translation)
+The claim follows from `| [], _ => rfl | Y :: v, F => by simp only [B.Rw, List.foldr_cons, List.map_cons] at * have ih := rw_comp hR v F simp only [B.Rw] at ih rw [ih] exact rdv_comp hR _ Y`.
+-/
 theorem rw_comp (hR : SliceRight) :
     ∀ (v : List (B.Mat k ρ)) (F : B.Mat k (p + s + ρ) → E),
       B.Rw v (fun γ' => F (gaXi k ρ σ d ξ Z γ')) =
@@ -105,6 +137,9 @@ theorem rw_comp (hR : SliceRight) :
     rw [ih]
     exact rdv_comp hR _ Y
 
+/- English proof (translation)
+The claim follows from `| [] => by simp only [B.dLR, List.foldr_nil, List.map_nil] exact rw_comp hR v F | Y :: u => by have ih := dLR_comp hL hR v F u simp only [B.dLR, List.foldr_cons, List.map_cons] at ih ⊢ rw [ih] exact ldv_comp hL _ Y`.
+-/
 theorem dLR_comp (hL : SliceLeft) (hR : SliceRight) (v : List (B.Mat k ρ)) (F : B.Mat k (p + s + ρ) → E) :
     ∀ u : List (B.Mat k ρ),
       B.dLR u v (fun γ' => F (gaXi k ρ σ d ξ Z γ')) =
@@ -120,6 +155,9 @@ theorem dLR_comp (hL : SliceLeft) (hR : SliceRight) (v : List (B.Mat k ρ)) (F :
 
 end comp
 
+/- English proof (translation)
+Introduce `hL hR k p s ρ σ d ξ Z E _ _ F u v`. Conclude with `dLR_comp hL hR v F u`.
+-/
 theorem wordsId : WordsId := by
   intro hL hR k p s ρ σ d ξ Z E _ _ F u v
   exact dLR_comp hL hR v F u

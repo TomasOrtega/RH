@@ -56,12 +56,25 @@ def actR (k : ℕ) : Mat P Q →ₗ[ℂ] Module.End ℂ (Mdl P Q) :=
 def actS (k' : ℕ) : Mat P Q →ₗ[ℂ] Module.End ℂ (Mdl P Q) :=
   ∑ i, ∑ j, (Matrix.entryLinearMap ℂ ℂ i j).smulRight (opS P Q S k' i j)
 
+/- English proof (translation)
+Simplify using `[actR, LinearMap.sum_apply]`.
+-/
 theorem actR_apply (k : ℕ) (Z : Mat P Q) : actR P Q R k Z = ∑ i, ∑ j, Z i j • opR P Q R k i j := by
   simp [actR, LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[actS, LinearMap.sum_apply]`.
+-/
 theorem actS_apply (k' : ℕ) (Z : Mat P Q) : actS P Q S k' Z = ∑ i, ∑ j, Z i j • opS P Q S k' i j := by
   simp [actS, LinearMap.sum_apply]
 
+/- English proof (translation)
+Set `g : Fin P × Fin P → Ix P Q × Ix R 0` to `fun ac => (Sum.inl ac.1, Sum.inl (Fin.castLE h ac.2))`. Establish `hf : Function.Injective g`. Introduce and unpack `⟨a, c⟩ ⟨a', c'⟩ hac`. Simplify using `only [g, Prod.mk.injEq, Sum.inl.injEq] at hac`. Conclude with `Prod.ext hac.1 (Fin.castLE_injective h hac.2)`.
+
+Establish `: detR P Q R h = rename g (Matrix.det (Matrix.mvPolynomialX (Fin P) (Fin P) ℂ))`. Rewrite using `[detR, ← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a c`. Simplify using `[g, Matrix.mvPolynomialX]`.
+
+Rewrite using `[this]`. Introduce `h0`. Conclude with `Matrix.det_mvPolynomialX_ne_zero _ _ ((map_eq_zero_iff _ (rename_injective _ hf)).1 h0)`.
+-/
 theorem detR_ne_zero (P Q R : ℕ) (h : P ≤ R) : detR P Q R h ≠ 0 := by
   let g : Fin P × Fin P → Ix P Q × Ix R 0 := fun ac => (Sum.inl ac.1, Sum.inl (Fin.castLE h ac.2))
   have hf : Function.Injective g := by
@@ -73,6 +86,13 @@ theorem detR_ne_zero (P Q R : ℕ) (h : P ≤ R) : detR P Q R h ≠ 0 := by
   rw [this]; intro h0
   exact Matrix.det_mvPolynomialX_ne_zero _ _ ((map_eq_zero_iff _ (rename_injective _ hf)).1 h0)
 
+/- English proof (translation)
+Set `g : Fin Q × Fin Q → Ix P Q × Ix 0 S` to `fun bc => (Sum.inr bc.1, Sum.inr (Fin.castLE h bc.2))`. Establish `hf : Function.Injective g`. Introduce and unpack `⟨b, c⟩ ⟨b', c'⟩ hbc`. Simplify using `only [g, Prod.mk.injEq, Sum.inr.injEq] at hbc`. Conclude with `Prod.ext hbc.1 (Fin.castLE_injective h hbc.2)`.
+
+Establish `: detS P Q S h = rename g (Matrix.det (Matrix.mvPolynomialX (Fin Q) (Fin Q) ℂ))`. Rewrite using `[detS, ← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `b c`. Simplify using `[g, Matrix.mvPolynomialX]`.
+
+Rewrite using `[this]`. Introduce `h0`. Conclude with `Matrix.det_mvPolynomialX_ne_zero _ _ ((map_eq_zero_iff _ (rename_injective _ hf)).1 h0)`.
+-/
 theorem detS_ne_zero (P Q S : ℕ) (h : Q ≤ S) : detS P Q S h ≠ 0 := by
   let g : Fin Q × Fin Q → Ix P Q × Ix 0 S := fun bc => (Sum.inr bc.1, Sum.inr (Fin.castLE h bc.2))
   have hf : Function.Injective g := by

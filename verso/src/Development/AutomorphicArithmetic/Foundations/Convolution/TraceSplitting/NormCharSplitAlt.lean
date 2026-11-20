@@ -13,6 +13,11 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep Formalism.L2.Host Formali
 
 namespace UpperTheory.ConvolutionTheory.T.Ncs
 
+/- English proof (translation)
+Use `GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x` and prove the remaining obligations. Establish `h2` using `unif_spec w`. Establish `h3` using `hu (y * (atFin w (unif w))⁻¹) (by`. Unfold `IsUnitAt`. Unfold `IsUnifAt at hy h2`.
+
+Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, hy, h2]`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero)`. Rewrite `h3` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h3.trans hv`.
+-/
 private theorem loc_one_of {L : Type} [Field L] [NumberField L] (ψ : HChar L) (w : HeightOneSpectrum (𝓞 L))
     (hu : ψ.UnrAt w) (hv : ψ.val w = 1) (x : (w.adicCompletion L)ˣ) : ψ.loc w x = 1 := by
   refine GlobalTheory.FrobDense.eq_one_of_unif (ψ.loc w) (fun y hy => ?_) x
@@ -25,6 +30,11 @@ private theorem loc_one_of {L : Type} [Field L] [NumberField L] (ψ : HChar L) (
   rw [map_mul, map_inv, mul_inv_eq_one] at h3
   exact h3.trans hv
 
+/- English proof (translation)
+Establish `hfr : Module.finrank A B = 1`. Use `(LinearEquiv.ofBijective (Algebra.linearMap A B) ⟨(algebraMap A B).injective, hs⟩).finrank_eq` as an intermediate fact. Simplify using `using this.symm`. Use `⟨Units.map (algebraMap A B).toMonoidHom x, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.LocalField.coe_normUnits]`.
+
+Express the relevant statement in the definitionally equal form `Algebra.norm A (algebraMap A B x) = x`. Rewrite using `[Algebra.norm_algebraMap, hfr, pow_one]`.
+-/
 private theorem norm_surj {A B : Type} [Field A] [Field B] [Algebra A B] (hs : Function.Surjective (algebraMap A B))
     (x : Aˣ) : ∃ y : Bˣ, GroundTheory.LocalField.normUnits A B y = x := by
   have hfr : Module.finrank A B = 1 := by
@@ -35,6 +45,17 @@ private theorem norm_surj {A B : Type} [Field A] [Field B] [Algebra A B] (hs : F
   change Algebra.norm A (algebraMap A B x) = x
   rw [Algebra.norm_algebraMap, hfr, pow_one]
 
+/- English proof (translation)
+Set `ψ : HChar E` to `⟨η.1.comp (GroundTheory.Global.ideleNorm F E), η.2.1.comp GroundTheory.Global.continuous_ideleNorm, fun k => (congrArg η.1 (GroundTheory.Global.ideleNorm_diagonal (K := F) k)).trans (η.2.2 _)⟩`. Establish `hψ : ∀ x, ψ.1 x = η.1 (GroundTheory.Global.ideleNorm F E x)` using `fun _ => rfl`. Establish `hev : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ψ.UnrAt w ∧ ψ.val w = 1` using `by filter_upwards [hη.2.2, (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under F E).eventually (Filter.eventually_cofinite.2 (GlobalTheory.Mem.UnrAe.finite_ramified η))] with w h1 h2`. Establish `hf` using `GlobalTheory.ArtinTransport.normV_eq_pow (E := F) (E' := E) (v := w.under (𝓞 F)) (w := w) rfl`. Take `⟨a, b⟩` from `GlobalTheory.NormValGen.unrAt_val_of_comp_norm F E η ψ hψ w _ hf h2`.
+
+Conclude with `⟨a, b.trans (h1 _ hf)⟩`. Establish `h1 : ψ.1 = 1` using `GlobalTheory.FrobDense.eq_one_of_away ψ.1 ψ.2.1 ψ.2.2 (Filter.eventually_cofinite.1 hev).toFinset fun w hw y => by`. Use `not_not.1 (fun h => hw ((Set.Finite.mem_toFinset _).2 h))` as an intermediate fact. Conclude with `loc_one_of ψ w this.1 this.2 y`. Take `⟨⟨w, hw⟩⟩` from `GroundTheory.Global.nonempty_placesOver E v`.
+
+Take `rfl : GroundTheory.Global.AdeleBaseChange.below F w = v` from `(GroundTheory.Global.AdeleBaseChange.below_eq_iff w v).2 hw`. Use `haveI := hw`. Establish `hsurj` using `hs ⟨w, hw⟩`. Take `⟨y, hn⟩` from `norm_surj (A := (GroundTheory.Global.AdeleBaseChange.below F w).adicCompletion F) (B := w.adicCompletion E) hsurj x`. Establish `h2` using `GroundTheory.Global.ideleNorm_finiteEmbedding (K := F) w y`.
+
+Rewrite `h2` using `[hn]`. Establish `h3 : η.1 (GroundTheory.Global.ideleNorm F E (GroundTheory.Global.IdeleGroup.finiteEmbedding w y)) = 1`. Rewrite using `[← hψ, h1]`. Both sides reduce to the same expression. Rewrite `h3` using `[h2]`.
+
+Conclude with `h3`.
+-/
 private theorem loc_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (η : HChar F) (hη : IsNormChar E η) (v : HeightOneSpectrum (𝓞 F)) (hs : GM.Split E v)
     (x : (v.adicCompletion F)ˣ) : η.loc v x = 1 := by
@@ -63,6 +84,9 @@ private theorem loc_eq_one {F E : Type} [Field F] [NumberField F] [Field E] [Num
   rw [h2] at h3
   exact h3
 
+/- English proof (translation)
+Establish `hd : CuspSub.locDet n η v g = 1` using `h _`. Rewrite using `[CuspSub.locRep_eq, CuspSub.op_toTwist, ← CuspSub.locRep_eq]`. Simplify using `only [opAdd, zero_smul, add_zero]`. Establish `e : opMul η (Op.fin (locGL F n v g)) = 1` using `(CuspSub.chiDet_locGL η v g).trans hd`. Rewrite using `[e, Units.val_one, one_smul]`.
+-/
 private theorem twist_inter {F : Type} [Field F] [NumberField F] [IsTotallyComplex F] {n : ℕ} (π : CuspSub F n) (η : HChar F)
     (v : HeightOneSpectrum (𝓞 F)) (h : ∀ x, η.loc v x = 1) (g : GL (Fin n) (v.adicCompletion F)) (φ : π.V) :
     (π.twist η).locRep v g (π.toTwist η φ) = π.toTwist η (π.locRep v g φ) := by
@@ -75,6 +99,15 @@ private theorem twist_inter {F : Type} [Field F] [NumberField F] [IsTotallyCompl
 end UpperTheory.ConvolutionTheory.T.Ncs
 
 open UpperTheory.ConvolutionTheory.T.Ncs in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ _ σ _ _ n _ η hη v hs π τ`. Establish `hl` using `loc_eq_one η hη v hs`. Express the relevant statement in the definitionally equal form `(π.twist η).IsLocComp v τ ↔ π.IsLocComp v τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, h0, hf⟩`.
+
+Use `⟨(π.toTwist η).symm.toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun x => (π.toTwist η).symm.injective ?_), fun g x => (π.toTwist η).injective ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun h x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[← twist_inter π η v hl, LinearEquiv.apply_symm_apply, hf]`.
+
+Introduce and unpack `⟨f, h0, hf⟩`. Use `⟨(π.toTwist η).toLinearMap ∘ₗ f, fun h => h0 (LinearMap.ext fun x => (π.toTwist η).injective ?_), fun g x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply, map_zero]`. Conclude with `LinearMap.congr_fun h x`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[twist_inter π η v hl, hf]`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.normCharSplit :
     UpperTheory.ConvolutionTheory.T.NormCharSplit := by
   intro F E _ _ _ _ _ _ _ _ σ _ _ n _ η hη v hs π τ

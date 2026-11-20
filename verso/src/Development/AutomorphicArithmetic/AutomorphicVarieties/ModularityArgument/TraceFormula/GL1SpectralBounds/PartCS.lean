@@ -5,6 +5,11 @@ import Development.WeilBound.RepresentationTheoryGL.JacquetShalikaBounds.Absolut
 
 open PositivityTheory.RgJS UpperTheory.V.Z.Tf.GOne
 
+/- English proof (translation)
+Establish `hA : 0 ≤ ∑' i, a i` using `tsum_nonneg ha0`. Establish `hB : 0 ≤ ∑' i, b i` using `tsum_nonneg hb0`. Establish `key : ∑' i, f i ≤ Real.sqrt ((∑' i, a i) * ∑' i, b i)`. Apply `Real.tsum_le_of_sum_le hf0` to reduce the goal to its premises. Introduce `s`.
+
+Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `h1 : (∑ i ∈ s, f i) ^ 2 ≤ (∑ i ∈ s, a i) * ∑ i ∈ s, b i` using `Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul s (fun i _ => ha0 i) (fun i _ => hb0 i) (fun i _ => (h i).le)`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul (ha.sum_le_tsum s fun i _ => ha0 i) (hb.sum_le_tsum s fun i _ => hb0 i) (Finset.sum_nonneg fun i _ => hb0 i) hA`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem tsum_cs {ι : Type} (f a b : ι → ℝ) (hf0 : ∀ i, 0 ≤ f i) (ha0 : ∀ i, 0 ≤ a i) (hb0 : ∀ i, 0 ≤ b i)
     (h : ∀ i, f i ^ 2 = a i * b i) (ha : Summable a) (hb : Summable b) :
     (∑' i, f i) ^ 2 ≤ (∑' i, a i) * ∑' i, b i := by
@@ -24,6 +29,9 @@ private theorem tsum_cs {ι : Type} (f a b : ι → ℝ) (hf0 : ∀ i, 0 ≤ f i
     _ = _ := Real.sq_sqrt (mul_nonneg hA hB)
 
 open DiagonalEntryNormBounds in
+/- English proof (translation)
+Rewrite using `[norm_lterm q hq, norm_lterm q hq, norm_lterm q hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem norm_lterm_sq {W A B : Type} [Fintype A] [Fintype B] (q : W → ℕ) (hq : ∀ w, 2 ≤ q w)
     (α : W → A → ℂ) (β : W → B → ℂ) (σ : ℝ) (p : W × ℕ) :
     ‖lterm q α β σ p‖ ^ 2 = ‖lterm q α α σ p‖ * ‖lterm q β β σ p‖ := by
@@ -31,11 +39,23 @@ private theorem norm_lterm_sq {W A B : Type} [Fintype A] [Fintype B] (q : W → 
   ring
 
 open DiagonalEntryNormBounds in
+/- English proof (translation)
+Rewrite using `[norm_lterm_diag q hq, lterm_diag q hq]`.
+-/
 private theorem lterm_diag_norm {W A : Type} [Fintype A] (q : W → ℕ) (hq : ∀ w, 2 ≤ q w)
     (α : W → A → ℂ) (σ : ℝ) (p : W × ℕ) :
     lterm q α α σ p = ((‖lterm q α α σ p‖ : ℝ) : ℂ) := by
   rw [norm_lterm_diag q hq, lterm_diag q hq]
 
+/- English proof (translation)
+Introduce `W q X d A hS x y I σ hσ`. Establish `hq` using `hS.primes.two`. Establish `hc` using `convergence_of_landau_euler landauL euler_product_log_bound W q X d A hS`. Establish `hxy` using `(hc x y).1 σ hσ`. Establish `hxx` using `(hc x x).1 σ hσ`.
+
+Establish `hyy` using `(hc y y).1 σ hσ`. Establish `sxy : Summable fun p : {p : W × ℕ // p.1 ∈ I} => ‖lterm q (A x) (A y) σ p.1‖` using `hxy.subtype _`. Establish `sxx : Summable fun p : {p : W × ℕ // p.1 ∈ I} => ‖lterm q (A x) (A x) σ p.1‖` using `hxx.subtype _`. Establish `syy : Summable fun p : {p : W × ℕ // p.1 ∈ I} => ‖lterm q (A y) (A y) σ p.1‖` using `hyy.subtype _`. Establish `e1 : (∑' p : {p : W × ℕ // p.1 ∈ I}, lterm q (A x) (A x) σ p.1).re = ∑' p : {p : W × ℕ // p.1 ∈ I}, ‖lterm q (A x) (A x) σ p.1‖`.
+
+Rewrite using `[tsum_congr fun p : {p : W × ℕ // p.1 ∈ I} => lterm_diag_norm q hq (A x) σ p.1, ← Complex.ofReal_tsum, Complex.ofReal_re]`. Establish `e2 : (∑' p, lterm q (A y) (A y) σ p).re = ∑' p, ‖lterm q (A y) (A y) σ p‖`. Rewrite using `[tsum_congr fun p => lterm_diag_norm q hq (A y) σ p, ← Complex.ofReal_tsum, Complex.ofReal_re]`. Rewrite using `[e1, e2]`. Establish `h1` using `norm_tsum_le_tsum_norm sxy`.
+
+Establish `h2` using `tsum_cs _ _ _ (fun _ => norm_nonneg _) (fun _ => norm_nonneg _) (fun _ => norm_nonneg _) (fun p : {p : W × ℕ // p.1 ∈ I} => norm_lterm_sq q hq (A x) (A y) σ p.1) sxx syy`. Establish `h3 : ∑' p : {p : W × ℕ // p.1 ∈ I}, ‖lterm q (A y) (A y) σ p.1‖ ≤ ∑' p, ‖lterm q (A y) (A y) σ p‖` using `Summable.tsum_le_tsum_of_inj Subtype.val Subtype.val_injective (fun _ _ => norm_nonneg _) (fun _ => le_rfl) syy hyy`. Use `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans (h2.trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left h3 (tsum_nonneg fun _ => norm_nonneg _)`.
+-/
 theorem UpperTheory.V.Z.Tf.GOne.partCS :
     PartCS := by
   intro W q X d A hS x y I σ hσ

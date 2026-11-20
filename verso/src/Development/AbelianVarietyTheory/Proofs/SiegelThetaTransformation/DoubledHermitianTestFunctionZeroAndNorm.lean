@@ -21,6 +21,11 @@ section Ip
 variable {K κ ι : Type} [Field K] [NumberField K] [Fintype κ] [Fintype ι]
   {φ φ' ψ ψ' : Matrix κ ι K → ℂ}
 
+/- English proof (translation)
+Take `⟨R, hR, h⟩` from `h`. Take `⟨h1, h2, h3, -⟩` from `ip_self_nonneg_and_bounds K κ ι R φ hR h`. Use `⟨(ip φ φ).re, lt_of_le_of_ne h2 fun e => h0 (funext fun x => ?_), ?_⟩` and prove the remaining obligations. Use `h3 x` as an intermediate fact. Rewrite `this` using `[← e, mul_zero]`.
+
+Simplify using `using le_antisymm this (sq_nonneg _)`. Conclude with `Complex.ext (by simp) (by simpa using h1)`.
+-/
 theorem ip_self_pos (h : IsSB φ) (h0 : φ ≠ 0) : ∃ t : ℝ, 0 < t ∧ ip φ φ = t := by
   obtain ⟨R, hR, h⟩ := h
   obtain ⟨h1, h2, h3, -⟩ := ip_self_nonneg_and_bounds K κ ι R φ hR h
@@ -30,23 +35,38 @@ theorem ip_self_pos (h : IsSB φ) (h0 : φ ≠ 0) : ∃ t : ℝ, 0 < t ∧ ip φ
     simpa using le_antisymm this (sq_nonneg _)
   · exact Complex.ext (by simp) (by simpa using h1)
 
+/- English proof (translation)
+Take `⟨t, ht, e⟩` from `ip_self_pos h h0`. Rewrite using `[e]`. Conclude with `ht.ne'` after adjusting the coercions.
+-/
 theorem ip_self_ne_zero (h : IsSB φ) (h0 : φ ≠ 0) : ip φ φ ≠ 0 := by
   obtain ⟨t, ht, e⟩ := ip_self_pos h h0
   rw [e]; exact_mod_cast ht.ne'
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1`.
+-/
 theorem isSB_mul_conj (h : IsSB φ) (h' : IsSB ψ) : IsSB fun x => φ x * conj (ψ x) :=
   (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h' h').2.2.2.1).2.2.1
 
+/- English proof (translation)
+Rewrite using `[ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[add_mul]`.
+-/
 theorem ip_add_left (h : IsSB φ) (h' : IsSB φ') (k : IsSB ψ) :
     ip (φ + φ') ψ = ip φ ψ + ip φ' ψ := by
   rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h' k)).2.2.2.2.1]
   congr 1; funext x; simp [add_mul]
 
+/- English proof (translation)
+Rewrite using `[ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[mul_add]`.
+-/
 theorem ip_add_right (h : IsSB φ) (k : IsSB ψ) (k' : IsSB ψ') :
     ip φ (ψ + ψ') = ip φ ψ + ip φ ψ' := by
   rw [ip, ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k')).2.2.2.2.1]
   congr 1; funext x; simp [mul_add]
 
+/- English proof (translation)
+Rewrite using `[ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ip_smul (h : IsSB φ) (k : IsSB ψ) (a b : ℂ) :
     ip (a • φ) (b • ψ) = a * conj b * ip φ ψ := by
   rw [ip, ip, ← (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.1]
@@ -63,6 +83,11 @@ noncomputable def cosetInd (R : ℕ) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι 
 
 omit [DecidableEq ι] [Fintype κ] [Fintype ι] in
 
+/- English proof (translation)
+Use `⟨fun x hx => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `h : (x : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hx (if_neg h)`. Take `⟨y, hy, rfl⟩` from `IpPos.exists_of_mem_perSub ((QuotientAddGroup.eq_zero_iff _).1 h)`.
+
+Conclude with `IpPos.intM_natCast_smul _ (IpPos.intM_natCast_smul _ hy)`. Establish `h : (((R : ℚ) • y : Matrix κ ι ℚ) : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = 0` using `(QuotientAddGroup.eq_zero_iff _).2 (AddSubgroup.subset_closure ⟨y, hy, rfl⟩)`. Simplify using `only [cosetInd, QuotientAddGroup.mk_add, h, add_zero]`.
+-/
 theorem hasLevel_cosetInd_zero (R : ℕ) : HasLevel R (cosetInd (κ := κ) (ι := ι) R 0) := by
   refine ⟨fun x hx => ?_, fun x y hy => ?_⟩
   · have h : (x : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = 0 := by
@@ -75,17 +100,32 @@ theorem hasLevel_cosetInd_zero (R : ℕ) : HasLevel R (cosetInd (κ := κ) (ι :
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h : ∀ k, (0 : Matrix κ ι ℚ) k = 0` using `fun _ => rfl`. Simplify using `[heisS, cosetInd, h, sub_eq_zero]`.
+-/
 theorem heisS_cosetInd_zero (R : ℕ) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) :
     heisS 0 q.out (cosetInd R 0) = cosetInd R q := by
   funext x
   have h : ∀ k, (0 : Matrix κ ι ℚ) k = 0 := fun _ => rfl
   simp [heisS, cosetInd, h, sub_eq_zero]
 
+/- English proof (translation)
+Rewrite using `[← heisS_cosetInd_zero]`. Conclude with `(GlobalTheory.T.heisenbergOperatorRationalPoint_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1`.
+-/
 theorem isSB_cosetInd {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) :
     IsSB (cosetInd R q) := by
   rw [← heisS_cosetInd_zero]
   exact (GlobalTheory.T.heisenbergOperatorRationalPoint_laws _ _ _ _ _ ⟨R, hR, hasLevel_cosetInd_zero R⟩).1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Establish `h : ∀ k, (0 : Matrix κ ι ℚ) k = 0` using `fun _ => rfl`. Establish `hs : (∑ k', (2 * (x k' ⬝ᵥ Matrix.single k i (R : ℚ)⁻¹ k') - Matrix.single k i (R : ℚ)⁻¹ k' ⬝ᵥ (0 : Matrix κ ι ℚ) k') : ℚ) = 2 * (x k i / R)`. Simplify using `[h, dotProduct, Matrix.single, ite_and, div_eq_mul_inv, ← Finset.mul_sum]`. Rewrite using `[heisS, hs, sub_zero, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+
+Distinguish the cases in `hx : (x : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = q`. Use `congr 1`. Establish `h1 : ((q.out : Matrix κ ι ℚ) : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) = x`. Rewrite using `[QuotientAddGroup.out_eq', hx]`. Take `⟨y, hy, e⟩` from `IpPos.exists_of_mem_perSub (QuotientAddGroup.eq.1 h1)`.
+
+Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (hy k i)`. Establish `e1` using `congrFun (congrFun e k) i`. Simplify using `only [Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply, smul_eq_mul, ← hm, algebraMap_int_eq, eq_intCast] at e1`. Establish `hR' : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `e2 : x k i / R = q.out k i / R + m` using `by field_simp; linear_combination e1`.
+
+Rewrite using `[e2, Complex.exp_eq_exp_iff_exists_int]`. Conclude with `⟨m, by push_cast; ring⟩`. Simplify using `[cosetInd, hx]`.
+-/
 theorem heisS_cosetInd_char {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ perSub ℚ κ ι R) (k : κ) (i : ι) :
     heisS (Matrix.single k i (R : ℚ)⁻¹) 0 (cosetInd R q) =
       cexp (2 * π * I * ((q.out k i / R : ℚ) : ℂ)) • cosetInd R q := by
@@ -113,6 +153,11 @@ theorem heisS_cosetInd_char {R : ℕ} (hR : 0 < R) (q : Matrix κ ι ℚ ⧸ per
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, cosetInd, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq]`. Use `split_ifs with h`. Conclude with `(IpPos.apply_out_mk hφ x).symm`.
+
+Assume the negation of the conclusion as `hx`. Use `h ?_` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `hφ.1 _ (by rwa [IpPos.apply_out_mk hφ x])`.
+-/
 theorem eq_sum_cosetInd {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ} (hφ : HasLevel R φ) :
     φ = ∑ q ∈ (IpPos.classes_finite_card (K := ℚ) (κ := κ) (ι := ι) hR).1.toFinset,
       φ q.out • cosetInd R q := by
@@ -128,6 +173,9 @@ theorem eq_sum_cosetInd {R : ℕ} (hR : 0 < R) {φ : Matrix κ ι ℚ → ℂ} (
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨by simpa using isSB_zero, by simpa using h0⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hadd _ _ (hf a) ih.1, ih.2]`. Conclude with `⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩`.
+-/
 theorem map_sum_of_isSB {α : Type} (m : (Matrix κ ι ℚ → ℂ) → ℂ) (h0 : m 0 = 0)
     (hadd : ∀ φ ψ, IsSB φ → IsSB ψ → m (φ + ψ) = m φ + m ψ) (f : α → Matrix κ ι ℚ → ℂ)
     (hf : ∀ a, IsSB (f a)) (s : Finset α) :
@@ -138,6 +186,29 @@ theorem map_sum_of_isSB {α : Type} (m : (Matrix κ ι ℚ → ℂ) → ℂ) (h0
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd _ _ (hf a) ih.1, ih.2]
     exact ⟨(GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (hf a) ih.1).1, rfl⟩
 
+/- English proof (translation)
+Establish `sm : ∀ (c : ℂ) (φ : Matrix κ ι ℚ → ℂ), IsSB φ → IsSB (c • φ)` using `fun c φ h => (GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ h h).2.1 c`. Establish `lev : ∀ R : ℕ, 0 < R → ∃ c : ℂ, ∀ φ ψ, HasLevel R φ → HasLevel R ψ → l φ ψ = c * ip φ ψ`. Introduce `R hR`. Establish `hRQ : (R : ℚ) ≠ 0` using `by exact_mod_cast hR.ne'`. Establish `hRC : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`.
+
+Establish `sb` using `isSB_cosetInd (κ := κ) (ι := ι) hR`. Establish `diag : ∀ q, l (cosetInd R q) (cosetInd R q) = l (cosetInd R 0) (cosetInd R 0)`. Introduce `q`. Rewrite using `[← heisS_cosetInd_zero, hi _ _ _ _ (sb 0) (sb 0)]`. Establish `off : ∀ q q', q ≠ q' → l (cosetInd R q) (cosetInd R q') = 0`.
+
+Introduce `q q' hne`. Assume the negation of the conclusion as `h0`. Apply `hne` to reduce the goal to its premises. Establish `key : ∀ k i, IsIntegral ℤ ((R : ℚ)⁻¹ * (-q'.out + q.out) k i)`. Introduce `k i`.
+
+Use `hi (Matrix.single k i (R : ℚ)⁻¹) 0 _ _ (sb q) (sb q')` as an intermediate fact. Rewrite `this` using `[heisS_cosetInd_char hR, heisS_cosetInd_char hR, hs _ _ _ _ (sb q) (sb q'), mul_eq_right₀ h0, ← Complex.exp_conj, ← Complex.exp_add, Complex.exp_eq_one_iff]`. Take `⟨m, hm⟩` from `this`. Simplify using `only [map_mul, map_ofNat, conj_ofReal, conj_I, map_ratCast] at hm`. Establish `e : (((R : ℚ)⁻¹ * (-q'.out + q.out) k i : ℚ) : ℂ) = ((m : ℚ) : ℂ)`.
+
+Apply `mul_left_cancel₀ Complex.two_pi_I_ne_zero` to reduce the goal to its premises. Simplify using `only [Matrix.add_apply, Matrix.neg_apply]`. Move the coercions through the operations in `at hm ⊢`. Take the linear combination `hm`. Rewrite using `[Rat.cast_injective e]`.
+
+Conclude with `isIntegral_algebraMap (R := ℤ) (x := m)`. Rewrite using `[← Quotient.out_eq q, ← Quotient.out_eq q']`. Use `symm`. Apply `QuotientAddGroup.eq.2` to reduce the goal to its premises. Use `AddSubgroup.subset_closure ⟨(R : ℚ)⁻¹ • (-q'.out + q.out), key, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_inv_smul₀ hRQ]`. Use `⟨l (cosetInd R 0) (cosetInd R 0) * (R : ℂ) ^ (Module.finrank ℚ ℚ * (Fintype.card κ * Fintype.card ι)), fun φ ψ hφ hψ => ?_⟩` and prove the remaining obligations. Establish `z1 : ∀ ψ, IsSB ψ → l 0 ψ = 0` using `fun ψ h => by`. Simplify using `using hs 0 1 0 ψ isSB_zero h`. Establish `z2 : ∀ ψ, IsSB ψ → l ψ 0 = 0` using `fun ψ h => by`.
+
+Simplify using `using hs 1 0 ψ 0 h isSB_zero`. Rewrite using `[IpPos.ip_eq_sum hR hφ hψ, mul_assoc, mul_inv_cancel_left₀ (pow_ne_zero _ hRC), Finset.mul_sum]`. Use `conv_lhs => rw [eq_sum_cosetInd hR hφ]`. Rewrite using `[(map_sum_of_isSB (fun φ => l φ ψ) (z1 _ ⟨R, hR, hψ⟩) (fun _ _ a b => h1 _ _ _ a b ⟨R, hR, hψ⟩) _ (fun q => sm _ _ (sb q)) _).2]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Use `conv_lhs => rw [eq_sum_cosetInd hR hψ]`. Rewrite using `[(map_sum_of_isSB (l _) (z2 _ (sm _ _ (sb q))) (fun _ _ a b => h2 _ _ _ (sm _ _ (sb q)) a b) _ (fun q => sm _ _ (sb q)) _).2, Finset.sum_eq_single_of_mem q hq, hs _ _ _ _ (sb q) (sb q), diag, mul_comm]`. Introduce `q' _ hne`. Rewrite using `[hs _ _ _ _ (sb q) (sb q'), off _ _ hne.symm, mul_zero]`. Take `⟨c, hc⟩` from `lev 1 one_pos`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce and unpack `φ ψ ⟨R, hR, hφ⟩ ⟨S, hS, hψ⟩`. Take `⟨c', hc'⟩` from `lev (R * S) (Nat.mul_pos hR hS)`. Establish `hl : HasLevel (R * S) (fun x : Matrix κ ι ℚ => if IntM x then (1 : ℂ) else 0)`. Simplify using `using IpPos.hasLevel_mul (ind_sb (K := ℚ) (κ := κ) (ι := ι)) (R * S)`.
+
+Establish `e` using `(hc' _ _ hl hl).symm.trans (hc _ _ ind_sb ind_sb)`. Rewrite `e` using `[mul_left_inj' (ip_self_ne_zero ind_isSB ind_ne_zero)]`. Rewrite using `[← e]`. Conclude with `hc' _ _ (IpPos.hasLevel_mul hφ S) (mul_comm S R ▸ IpPos.hasLevel_mul hψ R)`.
+-/
 theorem exists_eq_mul_ip (l : (Matrix κ ι ℚ → ℂ) → (Matrix κ ι ℚ → ℂ) → ℂ)
     (h1 : ∀ φ φ' ψ, IsSB φ → IsSB φ' → IsSB ψ → l (φ + φ') ψ = l φ ψ + l φ' ψ)
     (h2 : ∀ φ ψ ψ', IsSB φ → IsSB ψ → IsSB ψ' → l φ (ψ + ψ') = l φ ψ + l φ ψ')
@@ -214,6 +285,11 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} {X : Data E r}
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
 
+/- English proof (translation)
+Rewrite using `[ip, ip, ← ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `e : ∀ t : ℚ, cexp (π * I * t) * conj (cexp (π * I * t)) = 1` using `fun t => by`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`.
+
+Simplify using the standard rewrite rules. Simplify using `only [heisH, map_mul]`. Rewrite using `[mul_mul_mul_comm, e, mul_one]`.
+-/
 theorem ip_heisH (d b : Matrix (Fin n) (Fin r) E) {φ ψ : Matrix (Fin n) (Fin r) E → ℂ}
     (h : IsSB φ) (k : IsSB ψ) : ip (heisH d b φ) (heisH d b ψ) = ip φ ψ := by
   rw [ip, ip, ← ((GlobalTheory.T.rationalSchwartzBruhat_algebra_integral_linear _ _ _ _ _ (isSB_mul_conj h k) (isSB_mul_conj h k)).2.2.2.2.2.2.2 d).2]
@@ -223,16 +299,29 @@ theorem ip_heisH (d b : Matrix (Fin n) (Fin r) E) {φ ψ : Matrix (Fin n) (Fin r
   simp only [heisH, map_mul]
   rw [mul_mul_mul_comm, e, mul_one]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun k => vecQ X bas (Sum.elim (a k) (b k)), fun φ => by simp only [heisG, crd_vecQ hs]; rfl⟩`.
+-/
 theorem exists_heisG (hs : IsSympl X bas) (a b : Matrix (Fin n) (Fin g) ℚ) :
     ∃ y : Matrix (Fin n) (Fin r) E, ∀ φ, heisG X bas y φ = heisS a b φ :=
   ⟨fun k => vecQ X bas (Sum.elim (a k) (b k)), fun φ => by
     simp only [heisG, crd_vecQ hs]; rfl⟩
 
+/- English proof (translation)
+Rewrite using `[dblT, Matrix.fromCols_mul_fromBlocks, Matrix.toCols₁_fromCols]`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem toCols₁_dblT (y₁ y₂ : Matrix (Fin n) (Fin r) E) :
     (Matrix.fromCols y₁ y₂ * dblT X).toCols₁ = y₁ - y₂ := by
   rw [dblT, Matrix.fromCols_mul_fromBlocks, Matrix.toCols₁_fromCols]
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
+
+Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+-/
 theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
   choose P hP hg using X.signature
   have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num
@@ -248,6 +337,11 @@ theorem dom_nonempty (X : Data E r) : X.dom.Nonempty := by
   have h0 : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => hs a
   exact mul_self_pos.2 h0
 
+/- English proof (translation)
+Introduce `e`. Take `⟨x, hx⟩` from `dom_nonempty X`. Establish `hd` using `(GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn φ φ h h).2.1 x hx x hx`. Use `h0 (eq_of_thS_eq _ _ φ 0 h isSB_zero _ ⟨tauMat_isSymm idx hs hx, tauMat_im_posDef idx hs hx⟩ fun ζ => ?_)` and prove the remaining obligations. Establish `h1` using `hd (fun k => perMat X bas idx Sum.inl x *ᵥ ζ k) (fun k i => conj ((perMat X bas idx Sum.inl x *ᵥ ζ k) i))`.
+
+Simplify using `only [Complex.conj_conj, e, thH, Pi.zero_apply, zero_mul, tsum_zero, mul_zero, mul_eq_zero, map_eq_zero, or_self] at h1`. Establish `hdet : (hMat X bas idx x).det ≠ 0` using `(Matrix.isUnit_det_of_right_inverse (hMat_mul_perMat idx hs hx)).ne_zero`. Simplify using `only [thA, mulVec_mulVec, hMat_mul_perMat idx hs hx, one_mulVec, mul_eq_zero, Complex.exp_ne_zero, pow_ne_zero _ hdet, false_or] at h1`. Rewrite using `[show thS φ _ ζ = 0 from h1]`. Simplify using `[thS]`.
+-/
 theorem dbl_self_ne_zero (hs : IsSympl X bas) (hn : Even n) {φ : TF n g} (h : IsSB φ)
     (h0 : φ ≠ 0) : dbl X bas idx φ φ ≠ 0 := by
   intro e
@@ -272,6 +366,33 @@ end GlobalTheory.SW.DblZero
 
 open GlobalTheory.SW.DblZero in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n hs hn`. Establish `sb` using `fun φ ψ h k => (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn φ ψ h k).1`. Establish `lin` using `GlobalTheory.T.doubledThetaTestFunction_sesquilinear_heisenberg E r X g bas idx n hs hn`. Establish `law` using `(heisG_laws E r X g bas idx n hs hn).2.2.2`. Establish `add1` using `fun φ φ' ψ h h' k => ((lin φ ψ h k).1 φ' h').1`.
+
+Establish `add2` using `fun φ ψ ψ' h k k' => ((lin φ ψ h k).1 ψ' k').2`. Establish `sm1 : ∀ (a : ℂ) φ ψ, IsSB φ → IsSB ψ → dbl X bas idx (a • φ) ψ = a • dbl X bas idx φ ψ (n` using `n) := fun a φ ψ h k => by`. Simplify using `using (lin φ ψ h k).2.1 a 1`. Establish `sm2 : ∀ (a : ℂ) φ ψ, IsSB φ → IsSB ψ → dbl X bas idx φ (a • ψ) = conj a • dbl X bas idx φ ψ (n` using `n) := fun a φ ψ h k => by`. Simplify using `using (lin φ ψ h k).2.1 1 a`.
+
+Establish `hl : ∀ y : Matrix (Fin n) (Fin r) E, ∃ b, ∀ φ ψ, IsSB φ → IsSB ψ → dbl X bas idx (heisG X bas y φ) ψ = heisH y b (dbl X bas idx φ ψ)` using `fun y => ⟨_, fun φ ψ h k => by`. Use `(lin φ ψ h k).2.2 y 0` as an intermediate fact. Rewrite using `[(law 0 ψ k).2.1, toCols₁_dblT, sub_zero] at this⟩` and apply the resulting hypothesis. Establish `hr : ∀ y : Matrix (Fin n) (Fin r) E, ∃ d b, ∀ φ ψ, IsSB φ → IsSB ψ → dbl X bas idx φ (heisG X bas y ψ) = heisH d b (dbl X bas idx φ ψ)` using `fun y => ⟨_, _, fun φ ψ h k => by`. Use `(lin φ ψ h k).2.2 0 y` as an intermediate fact.
+
+Rewrite using `[(law 0 φ h).2.1] at this⟩` and apply the resulting hypothesis. Take `⟨u, hu, hu0⟩ : ∃ u : TF n g, IsSB u ∧ u ≠ 0` from `⟨_, ind_isSB, ind_ne_zero⟩`. Establish `hd0` using `dbl_self_ne_zero idx hs hn hu hu0`. Take `⟨a, ha⟩` from `exists_eq_mul_ip (fun φ ψ : TF n g => dbl X bas idx φ ψ 0) (fun _ _ _ h h' k => by simp only [add1 _ _ _ h h' k, Pi.add_apply]) (fun _ _ _ h k k' => by simp only [add2 _ _ _ h k k', Pi.add_apply]) (fun a b _ _ h k => by simp only [(lin _ _ h k).2.1 a b, Pi.smul_apply, smul_eq_mul …`. Take `⟨y, hy⟩` from `exists_heisG hs a b`.
+
+Simplify using `only [← hy, (lin _ _ h k).2.2 y y, toCols₁_dblT, sub_self, heisH]`. Simplify using `[cc])`. Establish `first : ∀ ψ ψ' : TF n g, IsSB ψ → IsSB ψ' → ∃ c : ℂ, ∀ φ φ', IsSB φ → IsSB φ' → ip (dbl X bas idx φ ψ) (dbl X bas idx φ' ψ') = c * ip φ φ'` using `fun ψ ψ' k k' => exists_eq_mul_ip (fun φ φ' : TF n g => ip (dbl X bas idx φ ψ) (dbl X bas idx φ' ψ')) (fun _ _ _ h h' l => by`. Simplify using `only [add1 _ _ _ h h' k, ip_add_left (sb _ _ h k) (sb _ _ h' k) (sb _ _ l k')])`. Use the proof step `(fun _ _ _ h l l' => by`.
+
+Simplify using `only [add1 _ _ _ l l' k', ip_add_right (sb _ _ h k) (sb _ _ l k') (sb _ _ l' k')])`. Use the proof step `(fun a b _ _ h l => by`. Simplify using `only [sm1 _ _ _ h k, sm1 _ _ _ l k', ip_smul (sb _ _ h k) (sb _ _ l k')])`. Use the proof step `(fun a b φ φ' h l => by`. Take `⟨y, hy⟩` from `exists_heisG hs a b`.
+
+Take `⟨b', hb⟩` from `hl y`. Simplify using `only [← hy, hb _ _ h k, hb _ _ l k', ip_heisH _ _ (sb _ _ h k) (sb _ _ l k')])`. Take `⟨c, hc⟩` from `exists_eq_mul_ip (fun ψ' ψ : TF n g => ip (dbl X bas idx u ψ) (dbl X bas idx u ψ')) (fun _ _ _ h h' l => by`. Simplify using `only [add2 _ _ _ hu h h', ip_add_right (sb _ _ hu l) (sb _ _ hu h) (sb _ _ hu h')])`. Use the proof step `(fun _ _ _ h l l' => by`.
+
+Simplify using `only [add2 _ _ _ hu l l', ip_add_left (sb _ _ hu l) (sb _ _ hu l') (sb _ _ hu h)])`. Use the proof step `(fun a b _ _ h l => by`. Simplify using `only [sm2 _ _ _ hu h, sm2 _ _ _ hu l, ip_smul (sb _ _ hu l) (sb _ _ hu h), Complex.conj_conj, mul_comm a])`. Use the proof step `(fun a b φ φ' h l => by`. Take `⟨y, hy⟩` from `exists_heisG hs a b`.
+
+Take `⟨d, b', hb⟩` from `hr y`. Simplify using `only [← hy, hb _ _ hu h, hb _ _ hu l, ip_heisH _ _ (sb _ _ hu l) (sb _ _ hu h)])`. Take `⟨t, ht, et⟩` from `ip_self_pos hu hu0`. Take `⟨s, hs0, es⟩` from `ip_self_pos (sb _ _ hu hu) hd0`. Establish `htC : (t : ℂ) ≠ 0` using `by exact_mod_cast ht.ne'`.
+
+Use `⟨a, fun h0 => hd0 (funext fun d => ?_), s / t ^ 2, by positivity, fun φ ψ h k => ⟨ha _ _ h k, ?_⟩⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hl (-d)`. Use `ha _ _ (law (-d) u hu).1 hu` as an intermediate fact. Simplify using `only [hb _ _ hu hu, h0, zero_mul, heisH, mul_eq_zero, Complex.exp_ne_zero, or_false, zero_sub, neg_neg] at this`. Conclude with `this`.
+
+Take `⟨c', hc'⟩` from `first ψ ψ k k`. Establish `e1` using `hc' u u hu hu`. Establish `e2` using `hc ψ ψ k k`. Establish `e3` using `hc u u hu hu`. Rewrite `e1` using `[e2, et]`.
+
+Rewrite `e3` using `[es, et]`. Rewrite using `[hc' _ _ h h]`. Use `push_cast`. Rewrite using `[e3]`. Clear the denominators using the available nonvanishing facts.
+
+Take the linear combination `(-ip φ φ) * e1`.
+-/
 theorem GlobalTheory.SW.dbl_zero_and_norm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∃ a : ℂ, a ≠ 0 ∧ ∃ b : ℝ, 0 < b ∧ ∀ φ₁ φ₂ : TF n g, IsSB φ₁ → IsSB φ₂ → dbl X bas idx φ₁ φ₂ 0 = a * ip φ₁ φ₂ ∧ ip (dbl X bas idx φ₁ φ₂) (dbl X bas idx φ₁ φ₂) = b * (ip φ₁ φ₁ * ip φ₂ φ₂) := by
   intro E _ _ _ r X g bas idx n hs hn
   have sb := fun φ ψ h k => (GlobalTheory.T.doubledHermitianTestFunction_spec E r X g bas idx n hs hn φ ψ h k).1

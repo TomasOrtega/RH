@@ -10,6 +10,9 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `D` and use `Formalism.L2.Ker.KS.kappaSplit D`.
+-/
 theorem kappaSplit_all : ∀ D : D7, KappaSplit D :=
   fun D => Formalism.L2.Ker.KS.kappaSplit D
 

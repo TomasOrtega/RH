@@ -14,6 +14,23 @@ namespace GlobalTheory.TameLabels
 
 open NumberField IsDedekindDomain Polynomial Formalism.BasicNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
+/- English proof (translation)
+Take `⟨hc, -⟩` from `Formalism.MainNotions.ModuliIntegralCharts.H1.GSplit.split_of_ncard hp h`. Use `set I : Ideal (𝓞 E) := Ideal.span {((p : ℕ) : 𝓞 E)} with hI`. Establish `hI0 : I ≠ ⊥`. Rewrite using `[hI, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+
+Use `set M := UniqueFactorizationMonoid.normalizedFactors I with hM`. Establish `hN : Ideal.absNorm I = p ^ Module.finrank ℚ E`. Rewrite using `[hI, Ideal.absNorm_span_singleton]`. Establish `: ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, RingOfIntegers.rank]`.
+
+Simplify using the standard rewrite rules. Establish `hprod : M.prod = I` using `Ideal.prod_normalizedFactors_eq_self hI0`. Establish `hge : ∀ P ∈ M, p ≤ Ideal.absNorm P`. Introduce `P hP`. Take `⟨hPp, hIP⟩` from `(Ideal.mem_normalizedFactors_iff hI0).1 hP`.
+
+Establish `hd : Ideal.absNorm P ∣ p ^ Module.finrank ℚ E` using `hN ▸ Ideal.absNorm_dvd_absNorm_of_le hIP`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 hd`. Establish `h1 : Ideal.absNorm P ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact hPp.ne_top`. Rewrite `h1`, the goal using `[hj]`. Conclude with `Nat.le_self_pow (by rintro rfl; simp at h1) p`.
+
+Establish `hwM : w.asIdeal ∈ M` using `(Ideal.mem_normalizedFactors_iff hI0).2 ⟨w.isPrime, by rw [hI, Ideal.span_singleton_le_iff_mem]; exact hw⟩`. Establish `e : normV w = Ideal.absNorm w.asIdeal` using `rfl`. Rewrite using `[e]`. Use `le_antisymm ?_ (hge _ hwM)` and prove the remaining obligations. Take `⟨M', hM'⟩` from `Multiset.exists_cons_of_mem hwM`.
+
+Establish `h2 : p ^ M'.card ≤ (M'.map Ideal.absNorm).prod`. Use `Multiset.pow_card_le_prod (s := M'.map Ideal.absNorm) (a := p) (fun x hx => by` as an intermediate fact. Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.1 hx`. Conclude with `hge P (hM' ▸ Multiset.mem_cons_of_mem hP))`. Simplify using `using this`.
+
+Establish `h3 : Ideal.absNorm w.asIdeal * (M'.map Ideal.absNorm).prod = p * p ^ M'.card`. Rewrite using `[← pow_succ', ← Multiset.card_cons w.asIdeal, ← hM', hc, ← hN, ← hprod, hM', Multiset.prod_cons, map_mul, map_multiset_prod]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hpos : 0 < p ^ M'.card` using `pow_pos hp.pos _`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem normV_eq_of_split {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime)
     (h : (placesOver E p).ncard = Module.finrank ℚ E) {w : HeightOneSpectrum (𝓞 E)} (hw : w ∈ placesOver E p) :
     normV w = p := by
@@ -61,6 +78,19 @@ section Tame
 
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] {A : ValuationSubring Ω}
 
+/- English proof (translation)
+Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `key : ∀ τ : G E Ω, τ ∈ Dec (F` using `E) A → ∀ z : Ω, z ≠ 0 → ¬ A.valuation (τ z) < A.valuation z := by`. Introduce `τ hτ z hz hlt`. Establish `hz0 : ∀ i : ℕ, (τ ^ i) z ≠ 0` using `fun i => (map_ne_zero (τ ^ i)).2 hz`.
+
+Establish `hv0 : ∀ x : Ω, x ≠ 0 → 0 < A.valuation x` using `fun x hx => zero_lt_iff.mpr (by simpa using hx)`. Establish `h1 : A.valuation (τ z / z) < 1` using `by rwa [map_div₀, div_lt_one₀ (hv0 z hz)]`. Establish `hs : StrictAnti fun i : ℕ => A.valuation ((τ ^ i) z)`. Use `strictAnti_nat_of_succ_lt fun i => ?_` and prove the remaining obligations. Establish `h2` using `(valuation_apply_lt_one_iff ((Dec (F := E) A).pow_mem hτ i) _).2 h1`.
+
+Rewrite `h2` using `[map_div₀, map_div₀, div_lt_one₀ (hv0 _ (hz0 i))]`. Rewrite using `[pow_succ, AlgEquiv.mul_apply]` and apply the resulting hypothesis. Establish `hint : IsIntegral E z` using `Algebra.IsIntegral.isIntegral z`. Establish `hfin : Set.Finite (Set.range fun i : ℕ => (τ ^ i) z)`. Use `((minpoly E z).rootSet_finite Ω).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[mem_rootSet]`. Use `⟨minpoly.ne_zero hint, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Use `Set.infinite_range_of_injective (f := fun i : ℕ => (τ ^ i) z) (fun i j hij => hs.injective ?_) hfin` and prove the remaining obligations.
+
+Simplify using `only at hij ⊢`. Rewrite using `[hij]`. Break down `lt_trichotomy (A.valuation (σ y)) (A.valuation y) with h | h | h` into its components or cases. Conclude with `absurd h (key σ hσ y hy)`. Conclude with `h`.
+
+Use `absurd ?_ (key σ⁻¹ ((Dec (F := E) A).inv_mem hσ) (σ y) ((map_ne_zero σ).2 hy))` and prove the remaining obligations. Establish `: (σ⁻¹ : G E Ω) (σ y) = y` using `by show (σ⁻¹ * σ) y = y`. Simplify using the standard rewrite rules. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem valuation_apply_of_mem_Dec [IsAlgClosure E Ω] {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (y : Ω) :
     A.valuation (σ y) = A.valuation y := by
   rcases eq_or_ne y 0 with rfl | hy
@@ -94,6 +124,11 @@ theorem valuation_apply_of_mem_Dec [IsAlgClosure E Ω] {σ : G E Ω} (hσ : σ �
       simp
     rwa [this]
 
+/- English proof (translation)
+Establish `e : a * c - b * d = (a - b) * c + b * (c - d)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hc) hab`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hb) hcd`.
+-/
 theorem cong_mul {a b c d : Ω} (hab : A.valuation (a - b) < 1) (hcd : A.valuation (c - d) < 1)
     (hb : A.valuation b ≤ 1) (hc : A.valuation c ≤ 1) : A.valuation (a * c - b * d) < 1 := by
   have e : a * c - b * d = (a - b) * c + b * (c - d) := by ring
@@ -102,6 +137,13 @@ theorem cong_mul {a b c d : Ω} (hab : A.valuation (a - b) < 1) (hcd : A.valuati
   · rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_right' hc) hab
   · rw [map_mul]; exact lt_of_le_of_lt (mul_le_of_le_one_left' hb) hcd
 
+/- English proof (translation)
+Establish `hy0 : A.valuation y ≠ 0` using `by simpa using hy`. Establish `hz : z ≠ 0`. Introduce `hz`. Rewrite `h` using `[hz, map_zero]`. Conclude with `hy0 h.symm`.
+
+Establish `hu : A.valuation (z / y) = 1` using `by rw [map_div₀, h, div_self hy0]`. Establish `h1` using `ht.2 _ hu.le`. Establish `hty : t y ≠ 0` using `(map_ne_zero t).2 hy`. Establish `e : t z / z - t y / y = (t (z / y) - z / y) * (t y / z)`. Rewrite using `[map_div₀]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, map_div₀ A.valuation, valuation_apply_of_mem_Dec ht.1, h, div_self hy0, mul_one]`. Conclude with `h1`.
+-/
 theorem cong_of_valuation_eq [IsAlgClosure E Ω] {t : G E Ω} (ht : t ∈ Ine (F := E) A) {y z : Ω} (hy : y ≠ 0)
     (h : A.valuation z = A.valuation y) : A.valuation (t z / z - t y / y) < 1 := by
   have hy0 : A.valuation y ≠ 0 := by simpa using hy
@@ -115,6 +157,13 @@ theorem cong_of_valuation_eq [IsAlgClosure E Ω] {t : G E Ω} (ht : t ∈ Ine (F
   rw [e, map_mul, map_div₀ A.valuation, valuation_apply_of_mem_Dec ht.1, h, div_self hy0, mul_one]
   exact h1
 
+/- English proof (translation)
+Establish `hy0 : A.valuation y ≠ 0` using `by simpa using hy`. Proceed by induction on `n with`. Consider the case `zero => simp [div_self hy]`. Consider the case `succ n ih`. Establish `hv : A.valuation ((t ^ n) y) = A.valuation y` using `valuation_apply_of_mem_Dec ((Dec (F := E) A).pow_mem ht.1 n) y`.
+
+Establish `hz : (t ^ n) y ≠ 0` using `(_root_.map_ne_zero _).2 hy`. Establish `e : (t ^ (n + 1)) y / y = t ((t ^ n) y) / (t ^ n) y * ((t ^ n) y / y)`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, pow_succ']`.
+
+Use `cong_mul (cong_of_valuation_eq ht hy hv) ih ?_ ?_` and prove the remaining obligations. Rewrite using `[map_div₀, valuation_apply_of_mem_Dec ht.1, div_self hy0]`. Rewrite using `[map_div₀, hv, div_self hy0]`.
+-/
 theorem cong_pow [IsAlgClosure E Ω] {t : G E Ω} (ht : t ∈ Ine (F := E) A) {y : Ω} (hy : y ≠ 0) (n : ℕ) :
     A.valuation ((t ^ n) y / y - (t y / y) ^ n) < 1 := by
   have hy0 : A.valuation y ≠ 0 := by simpa using hy
@@ -131,6 +180,21 @@ theorem cong_pow [IsAlgClosure E Ω] {t : G E Ω} (ht : t ∈ Ine (F := E) A) {y
     · rw [map_div₀, valuation_apply_of_mem_Dec ht.1, div_self hy0]
     · rw [map_div₀, hv, div_self hy0]
 
+/- English proof (translation)
+Establish `hy0 : A.valuation y ≠ 0` using `by simpa using hy`. Establish `hφD : φ ∈ Dec (F` using `E) A := hφ.1`. Establish `htq : t ^ q ∈ Dec (F` using `E) A := (Dec (F := E) A).pow_mem ht.1 q`. Use `set z := (φ⁻¹ : G E Ω) y with hz`. Establish `hzv : A.valuation z = A.valuation y` using `valuation_apply_of_mem_Dec ((Dec (F := E) A).inv_mem hφD) y`.
+
+Establish `hφz : φ z = y` using `mul_inv_apply y`. Establish `hu : A.valuation (t z / z) = 1`. Rewrite using `[map_div₀, valuation_apply_of_mem_Dec ht.1, hzv, div_self hy0]`. Establish `hu' : A.valuation (t y / y) = 1`. Rewrite using `[map_div₀, valuation_apply_of_mem_Dec ht.1, div_self hy0]`.
+
+Establish `h1 : A.valuation (φ (t z) / y - (t z / z) ^ q) < 1`. Use `hφ.2 _ hu.le` as an intermediate fact. Rewrite `this` using `[map_div₀, hφz]`. Then use the resulting hypothesis. Establish `h2 : ∀ n : ℕ, A.valuation ((t z / z) ^ n - (t y / y) ^ n) < 1`. Introduce `n`.
+
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `cong_mul ih (cong_of_valuation_eq ht hy hzv) (by rw [map_pow, hu', one_pow]) hu.le`.
+
+Establish `h3 : A.valuation (φ (t z) / y - (t ^ q) y / y) < 1`. Establish `e : φ (t z) / y - (t ^ q) y / y = (φ (t z) / y - (t z / z) ^ q) + (((t z / z) ^ q - (t y / y) ^ q) - ((t ^ q) y / y - (t y / y) ^ q))` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_add_lt _ h1 (Valuation.map_sub_lt _ (h2 q) (cong_pow ht hy q))`. Rewrite using `[← valuation_apply_lt_one_iff htq]`.
+
+Establish `hty : (t ^ q) y ≠ 0` using `(_root_.map_ne_zero _).2 hy`. Establish `e : (t ^ q) (((t ^ q)⁻¹ * (φ * t * φ⁻¹)) y / y - 1) = (φ (t z) / y - (t ^ q) y / y) * (y / (t ^ q) y)`. Rewrite using `[map_sub, map_div₀, map_one, AlgEquiv.mul_apply, mul_inv_apply]`. Use `show φ (t z) / _ - 1 = _`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e, map_mul, map_div₀ A.valuation, valuation_apply_of_mem_Dec htq, div_self hy0, mul_one]`. Conclude with `h3`.
+-/
 theorem wild_of_frob [IsAlgClosure E Ω] {t φ : G E Ω} {q : ℕ} (ht : t ∈ Ine (F := E) A) (hφ : IsFrob A q φ)
     (y : Ω) (hy : y ≠ 0) : A.valuation (((t ^ q)⁻¹ * (φ * t * φ⁻¹)) y / y - 1) < 1 := by
   have hy0 : A.valuation y ≠ 0 := by simpa using hy
@@ -174,9 +238,15 @@ section Roots
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Rewrite using `[Formalism.CyclotomicNorms.rootsBar, IsAlgClosed.card_roots_eq_natDegree, natDegree_map]`.
+-/
 theorem card_rootsBar (f : (ZMod g)[X]) : Multiset.card (Formalism.CyclotomicNorms.rootsBar f) = f.natDegree := by
   rw [Formalism.CyclotomicNorms.rootsBar, IsAlgClosed.card_roots_eq_natDegree, natDegree_map]
 
+/- English proof (translation)
+Establish `hcard` using `IsAlgClosed.card_roots_eq_natDegree (p := f.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)))`. Use `roots_map_of_injective_of_card_eq_natDegree (f := frobenius (Formalism.CyclotomicNorms.Fbar g) g) (RingHom.injective _) hcard` as an intermediate fact. Rewrite `this` using `[Polynomial.map_map, RingHom.ext_zmod ((frobenius _ _).comp _) (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))]`. Conclude with `this`.
+-/
 theorem rootsBar_frob (f : (ZMod g)[X]) :
     (Formalism.CyclotomicNorms.rootsBar f).map (fun x => x ^ g) = Formalism.CyclotomicNorms.rootsBar f := by
   have hcard := IsAlgClosed.card_roots_eq_natDegree (p := f.map (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g)))
@@ -186,6 +256,9 @@ theorem rootsBar_frob (f : (ZMod g)[X]) :
     (algebraMap (ZMod g) (Formalism.CyclotomicNorms.Fbar g))] at this
   exact this
 
+/- English proof (translation)
+Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.map_mul, roots_mul]`. Rewrite using `[← Polynomial.map_mul]`. Conclude with `Polynomial.map_ne_zero h`.
+-/
 theorem rootsBar_mul {f f' : (ZMod g)[X]} (h : f * f' ≠ 0) :
     Formalism.CyclotomicNorms.rootsBar (f * f') = Formalism.CyclotomicNorms.rootsBar f + Formalism.CyclotomicNorms.rootsBar f' := by
   unfold Formalism.CyclotomicNorms.rootsBar
@@ -193,6 +266,11 @@ theorem rootsBar_mul {f f' : (ZMod g)[X]} (h : f * f' ≠ 0) :
   rw [← Polynomial.map_mul]
   exact Polynomial.map_ne_zero h
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `haveI := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite (IntermediateField.adjoin (ZMod g) {x}) := Module.finite_of_finite (ZMod g)`. Set `y : IntermediateField.adjoin (ZMod g) {x}` to `IntermediateField.AdjoinSimple.gen (ZMod g) x`. Establish `hy : y ≠ 0` using `fun h => hx (congrArg Subtype.val h)`.
+
+Establish `h1 : IsOfFinOrder (Units.mk0 y hy)` using `isOfFinOrder_of_finite _`. Conclude with `((IntermediateField.adjoin (ZMod g) {x}).val.toMonoidHom.comp (Units.coeHom _)).isOfFinOrder h1`.
+-/
 theorem isOfFinOrder_of_ne_zero {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ≠ 0) : IsOfFinOrder x := by
   have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
   haveI := IntermediateField.adjoin.finiteDimensional hint
@@ -202,6 +280,9 @@ theorem isOfFinOrder_of_ne_zero {x : Formalism.CyclotomicNorms.Fbar g} (hx : x �
   have h1 : IsOfFinOrder (Units.mk0 y hy) := isOfFinOrder_of_finite _
   exact ((IntermediateField.adjoin (ZMod g) {x}).val.toMonoidHom.comp (Units.coeHom _)).isOfFinOrder h1
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (Formalism.CyclotomicNorms.Fbar g))`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hx`. Assume the negation of the conclusion as `h0`. Establish `h1 : t 0 * t x = t 0 * t 1` using `by rw [← map_mul, ← map_mul, zero_mul, zero_mul]`. Conclude with `hx.2 (ht x 1 hx.1 one_ne_zero (mul_left_cancel₀ h0 h1))`.
+-/
 theorem teich_zero (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) : t 0 = 0 := by
   classical
   obtain ⟨x, hx⟩ := Infinite.exists_notMem_finset ({0, 1} : Finset (Formalism.CyclotomicNorms.Fbar g))
@@ -210,6 +291,11 @@ theorem teich_zero (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y
   have h1 : t 0 * t x = t 0 * t 1 := by rw [← map_mul, ← map_mul, zero_mul, zero_mul]
   exact hx.2 (ht x 1 hx.1 one_ne_zero (mul_left_cancel₀ h0 h1))
 
+/- English proof (translation)
+Establish `h0` using `teich_zero t ht`. Establish `hne : ∀ x, x ≠ 0 → t x ≠ 0` using `fun x hx => ((IsUnit.mk0 x hx).map t).ne_zero`. Introduce `x y h`. Distinguish the cases in `hx : x = 0`. Assume the negation of the conclusion as `hxy`.
+
+Conclude with `hne y (fun hy => hxy (hx.trans hy.symm)) (by rw [← h, hx, h0])`. Distinguish the cases in `hy : y = 0`. Conclude with `absurd (by rw [h, hy, h0]) (hne x hx)`. Conclude with `ht x y hx hy h`.
+-/
 theorem teich_injective (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) :
     Function.Injective t := by
   have h0 := teich_zero t ht
@@ -224,6 +310,9 @@ theorem teich_injective (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : �
 
 end Roots
 
+/- English proof (translation)
+Take `⟨a, -, -, -, -, h⟩` from `GlobalTheory.TameRed.part_spec (Fact.out : l.Prime) hx`. Establish `h1 : (ι (Formalism.CyclotomicNorms.primeToPart l x) - ι x) ^ (l ^ a) = 0`. Rewrite using `[sub_pow_char_pow, ← map_pow, ← map_pow, h, sub_self]`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h1)`.
+-/
 theorem map_primeToPart {M k : Type} [Monoid M] [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (ι : M →* k)
     {x : M} (hx : IsOfFinOrder x) : ι (Formalism.CyclotomicNorms.primeToPart l x) = ι x := by
   obtain ⟨a, -, -, -, -, h⟩ := GlobalTheory.TameRed.part_spec (Fact.out : l.Prime) hx
@@ -231,6 +320,9 @@ theorem map_primeToPart {M k : Type} [Monoid M] [Field k] {l : ℕ} [Fact l.Prim
     rw [sub_pow_char_pow, ← map_pow, ← map_pow, h, sub_self]
   exact sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero _ (Fact.out : l.Prime).ne_zero) |>.1 h1)
 
+/- English proof (translation)
+Establish `h1 : aeval M ((X - 1 : k[X]) ^ N) = 0` using `hc ▸ Matrix.aeval_self_charpoly M`. Take `⟨c, hcN⟩` from `Nat.exists_eq_add_of_le (Nat.lt_pow_self (Fact.out : l.Prime).one_lt (n := N)).le`. Establish `h2 : aeval M ((X - 1 : k[X]) ^ (l ^ N)) = 0` using `by rw [hcN, pow_add, map_mul, h1, zero_mul]`. Rewrite `h2` using `[sub_pow_char_pow]`. Simplify `h2` using `[sub_eq_zero]`.
+-/
 theorem pow_eq_one_of_charpoly {k : Type} [Field k] {l N : ℕ} [Fact l.Prime] [CharP k l]
     (M : Matrix (Fin N) (Fin N) k) (hc : M.charpoly = (X - 1) ^ N) : M ^ (l ^ N) = 1 := by
   have h1 : aeval M ((X - 1 : k[X]) ^ N) = 0 := hc ▸ Matrix.aeval_self_charpoly M
@@ -262,6 +354,13 @@ def Full (L : D.naut.LP (D.naut.plGw k v)) : Prop :=
 def rts (L : D.naut.LP (D.naut.plGw k v)) : Multiset (Fb (D.host.g k) (D.host.g_prime k)) :=
   @Formalism.CyclotomicNorms.rootsBar _ ⟨D.host.g_prime k⟩ (D.naut.items₂ k _ L)
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨h0, h1⟩` from `hab`. Rewrite `h0`, `h1` using `[D.naut.inertiaCharpoly_add]`. Establish `ha` using `left_ne_zero_of_mul h0`. Establish `hb` using `right_ne_zero_of_mul h0`.
+
+Rewrite `h1` using `[natDegree_mul ha hb, D.naut.lpDim_sum]`. Establish `h2` using `(h k v a).1`. Establish `h3` using `(h k v b).1`. Use `⟨⟨ha, by omega⟩, ⟨hb, by omega⟩, ?_⟩` and prove the remaining obligations. Unfold `rts`.
+
+Rewrite using `[D.naut.inertiaCharpoly_add, rootsBar_mul h0]`.
+-/
 theorem full_sum (h : DepthZeroLabels D) {a b : D.naut.LP (D.naut.plGw k v)} (hab : Full (D.naut.lpSum a b)) :
     Full a ∧ Full b ∧ rts (D.naut.lpSum a b) = rts a + rts b := by
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -276,6 +375,13 @@ theorem full_sum (h : DepthZeroLabels D) {a b : D.naut.LP (D.naut.plGw k v)} (ha
   unfold rts
   rw [D.naut.inertiaCharpoly_add, rootsBar_mul h0]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Simplify using `[rts, D.naut.inertiaCharpoly_zero, Formalism.CyclotomicNorms.rootsBar]`. Consider the case `cons x l ih`. Take `⟨h1, h2, h3⟩` from `full_sum h hl`.
+
+Take `⟨h4, h5⟩` from `ih h2`. Use `⟨fun y hy => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `h1`. Conclude with `h4 y hy`.
+
+Rewrite using `[List.foldr_cons, h3, h5, List.map_cons, List.sum_cons]`.
+-/
 theorem full_foldr (h : DepthZeroLabels D) {ι : Type} (F : ι → D.naut.LP (D.naut.plGw k v)) (l : List ι)
     (hl : Full (l.foldr (fun x acc => D.naut.lpSum (F x) acc) (D.naut.lpZero _))) :
     (∀ x ∈ l, Full (F x)) ∧
@@ -293,11 +399,19 @@ theorem full_foldr (h : DepthZeroLabels D) {ι : Type} (F : ι → D.naut.LP (D.
       · exact h4 y hy
     · rw [List.foldr_cons, h3, h5, List.map_cons, List.sum_cons]
 
+/- English proof (translation)
+Simplify using `only [spehLoc, bind_pure_comp, List.map_eq_map, List.foldr_map]`.
+-/
 theorem spehLoc_eq (p : Part D.naut.CG) (w : PlE D.host) :
     spehLoc D.nd D.naut p w = (List.range p.d).foldr (fun (j : ℕ) acc =>
       D.naut.lpSum (D.naut.lpTw (D.naut.locG p.π w) (((p.d : ℝ) - 1) / 2 - j)) acc) (D.naut.lpZero w) := by
   simp only [spehLoc, bind_pure_comp, List.map_eq_map, List.foldr_map]
 
+/- English proof (translation)
+Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Establish `h1` using `D.ntypes.inertiaCharpoly_type k v _ hs.2`. Establish `h2` using `D.ntypes.inertiaCharpoly_type k v _ hs'.2`. Rewrite `h1`, `h2` using `[D.naut.inePol_tw _ _ _ (D.ntypes.tg_mem k v)]`. Establish `h3` using `congrArg Polynomial.roots (h1.symm.trans h2)`.
+
+Establish `e : ∀ m : Multiset (Formalism.CyclotomicNorms.Fbar (D.host.g k)), ((m.map fun x => X - C (D.ntypes.teichC k x)).prod).roots = m.map (D.ntypes.teichC k)` using `fun m => by`. Rewrite using `[← roots_multiset_prod_X_sub_C (m.map (D.ntypes.teichC k)), Multiset.map_map]`. Both sides reduce to the same expression. Rewrite `h3` using `[e, e]`. Conclude with `Multiset.map_injective (teich_injective _ (D.ntypes.teichC_inj k)) h3`.
+-/
 theorem rts_tw (L : D.naut.LP (D.naut.plGw k v)) {s s' : ℝ} (hs : Full (D.naut.lpTw L s))
     (hs' : Full (D.naut.lpTw L s')) : rts (D.naut.lpTw L s) = rts (D.naut.lpTw L s') := by
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -311,6 +425,9 @@ theorem rts_tw (L : D.naut.LP (D.naut.plGw k v)) {s s' : ℝ} (hs : Full (D.naut
   rw [e, e] at h3
   exact Multiset.map_injective (teich_injective _ (D.ntypes.teichC_inj k)) h3
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ ∃ L : List (ℕ × ℕ × Multiset (Formalism.CyclotomicNorms.Fbar (D.host.g k))), (L.map fun p => (p.1, p.2.1)) = (Sig.map fun p => (p.a, p.d)) ∧ (∀ p ∈ L, Multiset.card p.2.2 = p.1 ∧ p.2.2.map (fun x => x ^ D.host.g k) = p.2.2) ∧ rts (k := k) (v := v) (isoLoc D.nd …`.
+-/
 theorem blocks (h : DepthZeroLabels D) (Sig : List (Part D.naut.CG)) (hd : ∀ p ∈ Sig, 1 ≤ p.d)
     (hf : Full (k := k) (v := v) (isoLoc D.nd D.naut Sig _)) :
     haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -344,10 +461,18 @@ section TameClause
 
 variable {D} {k : Fin 2} {v : D.nd.PlG k}
 
+/- English proof (translation)
+Simplify using `[isoLoc, spehLoc_eq, D.naut.lpSum_zero, D.naut.lpTw_zero]`.
+-/
 theorem isoLoc_single {a : ℕ} (π : D.naut.CG a) (w : PlE D.host) :
     isoLoc D.nd D.naut [⟨a, π, 1⟩] w = D.naut.locG π w := by
   simp [isoLoc, spehLoc_eq, D.naut.lpSum_zero, D.naut.lpTw_zero]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : ((l : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `h`. Establish `h2 : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `D.naut.plGw_over k v`. Take `⟨a, b, hab⟩ : IsCoprime ((l : ℕ) : 𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.E)` from `Nat.Coprime.cast ((Nat.coprime_primes hl (D.host.g_prime k)).2 hne)`. Use `(D.naut.plGw k v).isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations.
+
+Rewrite using `[← hab]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`.
+-/
 theorem not_mem_of_ne {l : ℕ} (hl : l.Prime) (hne : l ≠ D.host.g k) :
     D.naut.plGw k v ∉ placesOver D.host.E l := by
   intro h
@@ -388,6 +513,9 @@ open GlobalTheory.Proof.ListFormLabels (ListFormAt)
 
 variable {D}
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `R.k_even`. Take `⟨b, hb⟩` from `R.m_even`. Establish `h2` using `R.two_le_m`. Conclude with `⟨a + b - 1, by simp only [Ranks.r]; omega⟩`.
+-/
 theorem odd_r (R : Ranks) : Odd R.r := by
   obtain ⟨a, ha⟩ := R.k_even
   obtain ⟨b, hb⟩ := R.m_even

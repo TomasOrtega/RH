@@ -13,6 +13,15 @@ namespace GlobalTheory.MuNPi
 
 open Formalism.L2.SG.RealObj.InfCut.ProductExactness
 
+/- English proof (translation)
+Introduce `D X θ C u`. Establish `hloc : ∀ v, QPK.InvOn (muNl C (X.pl v) v) (NGv X u v : Set _)`. Establish `h : ∀ τ w, vOf X τ = w → QPK.InvOn (muNl C τ w) (NGv X u w : Set _)`. Introduce and unpack `τ _ rfl`. Conclude with `invOn_muNl C u τ`.
+
+Conclude with `fun v => h (X.pl v) v (X.pl.symm_apply_apply v)`. Use `haveI : ∀ v, SigmaFinite (muNl C (X.pl v) v) := fun v => (hloc v).1`. Take `⟨hσ, h0, hc, hi⟩` from `X.muN_haar u`. Use `haveI := hσ`. Rewrite `hc`, `hi` using `[← NinfG_coe]`.
+
+Use `PiM.uniq_on_closed (NinfG X u) (NinfG_closed X u) _ _ hc ?_ hi ?_ h0 ?_` and prove the remaining obligations. Rewrite using `[NinfG, Subgroup.coe_pi]`. Conclude with `PiM.pi_conc _ _ fun v => (hloc v).2.2.1`. Introduce `g hg`. Conclude with `PiM.pi_map_mul_left _ g fun v => (hloc v).2.2.2 (g v) (hg v (Set.mem_univ v))`.
+
+Conclude with `PiM.pi_ne_zero _ fun v => (hloc v).2.1`.
+-/
 theorem muN_eq_pi_muNl : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (u : D.what₂.Word),
     ∃ κ : ℝ≥0∞, κ ≠ 0 ∧ κ ≠ ∞ ∧ X.muN u = κ • Measure.pi (fun v => muNl C (X.pl v) v) := by
   intro D X θ C u

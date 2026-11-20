@@ -17,6 +17,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
+/- English proof (translation)
+Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e}`. Establish `h` using `hy e (Finset.mem_singleton_self e)`. Establish `hpos : 0 < y.natAbs` using `Int.natAbs_pos.2 hy0`. Use `⟨y.natAbs * y.natAbs, Nat.mul_pos hpos hpos, ?_⟩` and prove the remaining obligations. Establish `e1 : ((y.natAbs * y.natAbs : ℕ) : E) * e = (y : E) * ((y : E) * e)`.
+
+Establish `h2` using `Int.natAbs_mul_self' y`. Rewrite using `[← mul_assoc, ← Int.cast_natCast, Nat.cast_mul, h2, Int.cast_mul]`. Rewrite using `[e1]`. Rewrite `h` using `[zsmul_eq_mul]`. Use `IsIntegral.mul ?_ h` and prove the remaining obligations.
+
+Simplify using `using (isIntegral_algebraMap (R := ℤ) (A := E) (x := y))`.
+-/
 theorem exists_nat_mul_isIntegral (e : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral ℤ ((n : E) * e) := by
   obtain ⟨y, hy0, hy⟩ := exists_integral_multiples ℤ ℚ (L := E) {e}
   have h := hy e (Finset.mem_singleton_self e)
@@ -30,6 +37,9 @@ theorem exists_nat_mul_isIntegral (e : E) : ∃ n : ℕ, 0 < n ∧ IsIntegral �
   refine IsIntegral.mul ?_ h
   simpa using (isIntegral_algebraMap (R := ℤ) (A := E) (x := y))
 
+/- English proof (translation)
+Use `choose n hn hx using h`. Use `⟨∏ i, n i, Finset.prod_pos fun i _ => hn i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_smul]`. Conclude with `nsmul_mem (hx i) _`.
+-/
 theorem exists_common_nat {M : Type} [AddCommMonoid M] {ι : Type} [Fintype ι] (S : AddSubmonoid M) (x : ι → M)
     (h : ∀ i, ∃ n : ℕ, 0 < n ∧ n • x i ∈ S) : ∃ n : ℕ, 0 < n ∧ ∀ i, n • x i ∈ S := by
   classical
@@ -38,6 +48,15 @@ theorem exists_common_nat {M : Type} [AddCommMonoid M] {ι : Type} [Fintype ι] 
   rw [← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_smul]
   exact nsmul_mem (hx i) _
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_pos, by rw [mul_zero]; exact zero_mem _⟩`. Consider the case `tmul e a`. Take `⟨n, hn, he⟩` from `exists_nat_mul_isIntegral e`. Take `⟨d, hd, ha⟩` from `GlobalTheory.HolDict.ShortVec.exists_denom_adele (F := F) a`.
+
+Use `⟨n * d, Nat.mul_pos hn hd, ?_⟩` and prove the remaining obligations. Establish `e1 : ((n * d : ℕ) : E ⊗[F] 𝔸) * (e ⊗ₜ[F] a) = (((n : E) * e) ⊗ₜ[F] (1 : 𝔸)) * ((1 : E) ⊗ₜ[F] ((d : 𝔸) * a))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, Nat.cast_mul, Algebra.TensorProduct.natCast_def, Algebra.TensorProduct.natCast_def', mul_assoc, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul]`. Rewrite using `[e1]`. Use `mul_mem (Subring.subset_closure (Or.inl ⟨⟨(n : E) * e, ⟨⟨_, he⟩, rfl⟩⟩, rfl⟩)) (Subring.subset_closure (Or.inr ⟨⟨(d : 𝔸) * a, fun v => Subring.mem_iInf.1 ha v⟩, rfl⟩))` and prove the remaining obligations.
+
+Consider the case `add x y hx hy`. Take `⟨n₁, h₁, hx⟩` from `hx`. Take `⟨n₂, h₂, hy⟩` from `hy`. Use `⟨n₁ * n₂, Nat.mul_pos h₁ h₂, ?_⟩` and prove the remaining obligations. Establish `e1 : ((n₁ * n₂ : ℕ) : E ⊗[F] 𝔸) * (x + y) = (n₂ : E ⊗[F] 𝔸) * ((n₁ : E ⊗[F] 𝔸) * x) + (n₁ : E ⊗[F] 𝔸) * ((n₂ : E ⊗[F] 𝔸) * y)` using `by push_cast; ring`.
+
+Rewrite using `[e1]`. Conclude with `add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)`.
+-/
 theorem exists_nat_mul_mem_intAf (z : E ⊗[F] 𝔸) :
     ∃ n : ℕ, 0 < n ∧ (n : E ⊗[F] 𝔸) * z ∈ Formalism.L2.Herm.intAf F E := by
   induction z using TensorProduct.induction_on with
@@ -64,6 +83,13 @@ theorem exists_nat_mul_mem_intAf (z : E ⊗[F] 𝔸) :
     rw [e1]
     exact add_mem (mul_mem (natCast_mem _ _) hx) (mul_mem (natCast_mem _ _) hy)
 
+/- English proof (translation)
+Use `first`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `@_root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem`. Consider the case `(run_tac Lean.Elab.Tactic.liftMetaTactic (fun g => do pure [← g.revertAll]))`. Conclude with `_root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem`.
+
+Consider the case `exact @_root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem`. Consider the case `exact _root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem`. Consider the case `(apply _root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem <;> first | assumption | infer_instance)`.
+
+Consider the case `(intros; exact _root_.GlobalTheory.NatMulIsIntegralSatakeParameters.exists_nsmul_mem ..)`.
+-/
 theorem exists_nsmul_mem_of_mem_span {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) {v : Fin N → E}
     (hv : v ∈ Submodule.span E (Lb : Set (Fin N → E))) : ∃ n : ℕ, 0 < n ∧ n • v ∈ Lb := by
   first
@@ -86,6 +112,15 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 open Matrix
 
+/- English proof (translation)
+Take `⟨d₁, hd₁, h₁⟩` from `exists_common_nat Lb.toAddSubmonoid (fun i : Fin N => (Pi.single i (1 : E) : Fin N → E)) fun i => exists_nsmul_mem_of_mem_span Lb (by rw [hspan]; exact Submodule.mem_top)`. Take `⟨d₂, hd₂, h₂⟩` from `exists_common_nat (Formalism.L2.Herm.intAf F E).toAddSubgroup.toAddSubmonoid z fun i => by`. Take `⟨n, hn, h⟩` from `exists_nat_mul_mem_intAf (F := F) (E := E) (z i)`. Conclude with `⟨n, hn, by rw [nsmul_eq_mul]; exact h⟩`. Use `⟨d₁ * d₂, Nat.mul_pos hd₁ hd₂, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : (d₁ * d₂) • z = ∑ i, (⟨d₂ • z i, h₂ i⟩ : Formalism.L2.Herm.intAf F E) • (fun j => inclE (F` using `F) 𝔸 ((d₁ • (Pi.single i (1 : E) : Fin N → E)) j)) := by`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Simplify using `only [Submonoid.smul_def, Pi.smul_apply, smul_eq_mul, Pi.single_eq_same, nsmul_eq_mul, mul_one, map_natCast] show _ = ((d₂ : E ⊗[F] 𝔸) * z j) * _`. Rewrite using `[Nat.cast_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `i _ hij show (d₂ • z i) * inclE (F := F) 𝔸 ((d₁ • (Pi.single i (1 : E) : Fin N → E)) j) = 0`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hij.symm, smul_zero, map_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+
+Rewrite using `[e1]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h₁ i, rfl⟩)` and prove the remaining obligations.
+-/
 theorem exists_nsmul_mem_hatL {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E))
     (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) (z : Fin N → E ⊗[F] 𝔸) :
     ∃ n : ℕ, 0 < n ∧ n • z ∈ Formalism.L2.Herm.hatL (F := F) Lb := by
@@ -111,6 +146,21 @@ theorem exists_nsmul_mem_hatL {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E))
   rw [e1]
   refine Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h₁ i, rfl⟩)
 
+/- English proof (translation)
+Use `haveI : Module.Finite ℤ Lb := Module.Finite.trans (𝓞 E) Lb`. Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Lb)`. Take `⟨D, hD, hDj⟩` from `exists_common_nat (Formalism.L2.Herm.hatL (F := F) Lb).toAddSubmonoid (fun j => M *ᵥ fun i => inclE (F := F) 𝔸 ((s j : Fin N → E) i)) fun j => exists_nsmul_mem_hatL Lb hspan _`. Use `⟨D, hD, fun u hu => ?_⟩` and prove the remaining obligations. Set `Q : Submodule (Formalism.L2.Herm.intAf F E) (Fin N → E ⊗[F] 𝔸)` to `{ carrier := {u | D • (M *ᵥ u) ∈ Formalism.L2.Herm.hatL (F := F) Lb} add_mem' := fun {a b} ha hb => by show D • (M *ᵥ (a + b)) ∈ Formalism.L2.Herm.hatL (F := F) Lb`.
+
+Establish `ha : D • (M *ᵥ a) ∈ Formalism.L2.Herm.hatL (F` using `F) Lb := ha`. Establish `hb : D • (M *ᵥ b) ∈ Formalism.L2.Herm.hatL (F` using `F) Lb := hb`. Rewrite using `[Matrix.mulVec_add, smul_add]`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show D • (M *ᵥ 0) ∈ Formalism.L2.Herm.hatL (F := F) Lb`.
+
+Rewrite using `[Matrix.mulVec_zero, smul_zero]`. Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun t a ha => by show D • (M *ᵥ (t • a)) ∈ Formalism.L2.Herm.hatL (F := F) Lb`. Establish `ha : D • (M *ᵥ a) ∈ Formalism.L2.Herm.hatL (F` using `F) Lb := ha`. Rewrite using `[Submonoid.smul_def, Matrix.mulVec_smul, smul_comm]`.
+
+Conclude with `Submodule.smul_mem _ t ha }`. Establish `hle : Formalism.L2.Herm.hatL (F` using `F) Lb ≤ Q := by show Submodule.span _ _ ≤ Q`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : (⟨w, hw⟩ : Lb) ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`.
+
+Take `⟨m, hm⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hw'`. Establish `e : w = ∑ j, m j • (s j : Fin N → E)` using `by simpa using (congrArg Subtype.val hm).symm`. Establish `e2 : (fun i => inclE (F` using `F) 𝔸 (w i)) = ∑ j, m j • fun i => inclE (F := F) 𝔸 ((s j : Fin N → E) i) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[e]`.
+
+Simplify using `[Finset.sum_apply, map_sum, map_zsmul]`. Use `show (fun i => inclE (F := F) 𝔸 (w i)) ∈ Q`. Rewrite using `[e2]`. Establish `hj : ∀ j, (fun i => inclE (F` using `F) 𝔸 ((s j : Fin N → E) i)) ∈ Q := fun j => hDj j`. Conclude with `Submodule.sum_mem Q fun j _ => Q.toAddSubgroup.zsmul_mem (hj j) (m j)`.
+
+Conclude with `hle hu`.
+-/
 theorem exists_nsmul_mulVec_mem_hatL {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb)
     (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) (M : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) :
     ∃ D : ℕ, 0 < D ∧ ∀ u ∈ Formalism.L2.Herm.hatL (F := F) Lb, D • (M *ᵥ u) ∈ Formalism.L2.Herm.hatL (F := F) Lb := by
@@ -162,6 +212,15 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 open Matrix
 
+/- English proof (translation)
+Establish `hD0 : (D : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 hD.ne'`. Use `set L := WithZero.log (w.intValuation (D : 𝓞 F))`. Use `⟨(-L).toNat, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `(HeightOneSpectrum.intValuation_le_pow_iff_mem w c _).2 hc`. Establish `h2 : WithZero.exp (-(((-L).toNat : ℕ) : ℤ)) ≤ w.intValuation (D : 𝓞 F)`.
+
+Rewrite using `[← WithZero.exp_log (HeightOneSpectrum.intValuation_ne_zero w _ hD0), WithZero.exp_le_exp]`. Use `Int.self_le_toNat (-L)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hc' : w.intValuation c ≤ w.intValuation (D : 𝓞 F)` using `h1.trans h2`. Establish `hDw : (D : w.adicCompletion F) ≠ 0` using `Nat.cast_ne_zero.2 hD.ne'`.
+
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_div₀]`. Establish `e1 : Valued.v (algebraMap F (w.adicCompletion F) (c : F)) = w.intValuation c`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `e2 : Valued.v (D : w.adicCompletion F) = w.intValuation (D : 𝓞 F)`. Rewrite using `[← map_natCast (algebraMap F (w.adicCompletion F)), Formalism.UG.P.levelaf_valued_algebraMap, ← map_natCast (algebraMap (𝓞 F) F), HeightOneSpectrum.valuation_of_algebraMap]`.
+
+Rewrite using `[e1, e2]`. Conclude with `div_le_one_of_le₀ hc' zero_le'`.
+-/
 theorem exists_pow_div_mem (w : HeightOneSpectrum (𝓞 F)) {D : ℕ} (hD : 0 < D) :
     ∃ m : ℕ, ∀ c : 𝓞 F, c ∈ w.asIdeal ^ m →
       algebraMap F (w.adicCompletion F) (c : F) / (D : w.adicCompletion F) ∈ w.adicCompletionIntegers F := by
@@ -194,17 +253,36 @@ local notation "𝔸" => FiniteAdeleRing (𝓞 F) F
 
 open Matrix
 
+/- English proof (translation)
+Use `show algebraMap F E a ⊗ₜ[F] (1 : R) = _`. Rewrite using `[← Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`.
+-/
 theorem inclE_algebraMap (R : Type) [CommRing R] [Algebra F R] (a : F) :
     inclE (F := F) R (algebraMap F E a) = (1 : E) ⊗ₜ[F] algebraMap F R a := by
   show algebraMap F E a ⊗ₜ[F] (1 : R) = _
   rw [← Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map (AlgHom.id F E) (evalV F v) (a ⊗ₜ[F] (1 : 𝔸)) = a ⊗ₜ[F] 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+-/
 theorem prV_inclE (v : HeightOneSpectrum (𝓞 F)) (a : E) :
     prV (E := E) v (inclE (F := F) 𝔸 a) = inclE (F := F) (v.adicCompletion F) a := by
   show Algebra.TensorProduct.map (AlgHom.id F E) (evalV F v) (a ⊗ₜ[F] (1 : 𝔸)) = a ⊗ₜ[F] 1
   rw [Algebra.TensorProduct.map_tmul, map_one]
   rfl
 
+/- English proof (translation)
+Use `haveI := hfin`. Take `⟨D, hD, hDK⟩` from `exists_nsmul_mulVec_mem_hatL Lb hfin hspan K`. Take `⟨m, hm⟩` from `exists_pow_div_mem w hD`. Use `⟨m, fun c hc u hu => ?_⟩` and prove the remaining obligations. Establish `hu'` using `(GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Lb u).1 hu`.
+
+Establish `hy'` using `(GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Lb _).1 (hDK u hu)`. Establish `hcE : IsIntegral ℤ (algebraMap F E (c : F))` using `c.2.map (algebraMap F E).toIntAlgHom`. Use `(GlobalTheory.LatticeStabLocal.mem_latS_adele_iff Lb _).2 fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = w`. Substitute `hv set t := algebraMap F (v.adicCompletion F) (c : F) / (D : v.adicCompletion F)` using the available equality.
+
+Establish `ht : t ∈ v.adicCompletionIntegers F` using `hm c hc`. Establish `hDw : (D : v.adicCompletion F) ≠ 0` using `Nat.cast_ne_zero.2 hD.ne'`. Establish `e1 : (fun i => prV (E` using `E) v ((inclE (F := F) 𝔸 (algebraMap F E (c : F)) • (K *ᵥ u)) i)) = (⟨(1 : E) ⊗ₜ[F] t, Subring.subset_closure (Or.inr ⟨⟨t, ht⟩, rfl⟩)⟩ : tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring) • (fun i => prV (E := E) v ((D • (K *ᵥ u)) i)) := by`. Use function extensionality and compare the values at `i`. Use `show _ = ((1 : E) ⊗ₜ[F] t) * prV (E := E) v ((D • (K *ᵥ u)) i)`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, prV_inclE, inclE_algebraMap, Pi.smul_apply, map_nsmul, nsmul_eq_mul, ← mul_assoc]`. Use `congr 1`. Rewrite using `[Algebra.TensorProduct.natCast_def', Algebra.TensorProduct.tmul_mul_tmul, one_mul, div_mul_cancel₀ _ hDw]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (hy' v)`.
+
+Establish `e1 : (fun i => prV (E` using `E) v ((inclE (F := F) 𝔸 (algebraMap F E (c : F)) • (K *ᵥ u)) i)) = (⟨inclE (F := F) (v.adicCompletion F) (algebraMap F E (c : F)), Subring.subset_closure (Or.inl ⟨⟨_, ⟨⟨_, hcE⟩, rfl⟩⟩, rfl⟩)⟩ : tensInt (F := F) (v.adicCompletion F) (intOE E) (v.adicCompletionIntegers F).toSubring …`. Use function extensionality and compare the values at `i`. Use `show _ = inclE (F := F) (v.adicCompletion F) (algebraMap F E (c : F)) * prV (E := E) v (u i)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, prV_inclE]`. Use `congr 1`.
+
+Establish `h2` using `congrFun (GlobalTheory.LatticeStabLocal.prV_mulVec v K u) i`. Rewrite using `[h2, hK v hv, Matrix.one_mulVec]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem _ _ (hu' v)`.
+-/
 theorem smul_mulVec_mem_hatL_of_oneOff {N : ℕ} (Lb : Submodule (𝓞 E) (Fin N → E)) (hfin : Module.Finite (𝓞 E) Lb)
     (hspan : Submodule.span E (Lb : Set (Fin N → E)) = ⊤) (w : HeightOneSpectrum (𝓞 F))
     (K : Matrix (Fin N) (Fin N) (E ⊗[F] 𝔸)) (hK : ∀ w', w' ≠ w → K.map (prV (E := E) w') = 1) :
@@ -255,6 +333,19 @@ namespace GlobalTheory.TwV.Xc
 
 open Matrix
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ N Lb hfin hspan w x x' hx`. Use `set K : Matrix (Fin N) (Fin N) (AfE F E) := ((x'⁻¹ * x : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) with hKdef`. Establish `hK : ∀ w', w' ≠ w → K.map (prV (E` using `E) w') = 1 := by`. Introduce `w' hw'`. Establish `h` using `hx w' hw'`.
+
+Establish `h1 : Formalism.UG.bc (prV (E` using `E) w') (x'⁻¹ * x) = 1 := by rw [map_mul, map_inv, h, inv_mul_cancel]`. Use `show (Formalism.UG.bc (prV (E := E) w') (x'⁻¹ * x)).val = 1`. Rewrite using `[h1]`. Both sides reduce to the same expression. Take `⟨m, hm⟩` from `smul_mulVec_mem_hatL_of_oneOff Lb hfin hspan w K hK`.
+
+Use `⟨m, fun c hc y hy => ?_⟩` and prove the remaining obligations. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Apply `Submodule.subset_span` to reduce the goal to its premises. Establish `hz : ((x⁻¹ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) *ᵥ (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (z a)) ∈ Formalism.L2.Herm.hatL (F := F) Lb := hz`.
+
+Use `show ((x'⁻¹ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) *ᵥ (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) ((algebraMap F E (c : F) • z) a)) ∈ Formalism.L2.Herm.hatL (F := F) Lb`. Establish `e1 : (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) ((algebraMap F E (c : F) • z) a)) = inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (algebraMap F E (c : F)) • (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a)) := by`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Establish `e2 : ((x'⁻¹ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) *ᵥ (fun a => inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (z a)) = K *ᵥ (((x⁻¹ : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) *ᵥ (fun a => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (z a))) := by`.
+
+Rewrite using `[Matrix.mulVec_mulVec, hKdef, Units.val_mul, Matrix.mul_assoc, ← Units.val_mul x, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Rewrite using `[e1, Matrix.mulVec_smul, e2]`. Conclude with `hm c hc _ hz`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul b z _ hz => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ b hz`.
+-/
 theorem latAd_smul_mem_of_sameOff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (N : ℕ) (Lb : Submodule (𝓞 E) (Fin N → E)), Module.Finite (𝓞 E) Lb → Submodule.span E (Lb : Set (Fin N → E)) = ⊤ → ∀ (w : HeightOneSpectrum (𝓞 F)) (x x' : GL (Fin N) (AfE F E)), SameOff w x x' → ∃ m : ℕ, ∀ c : 𝓞 F, c ∈ w.asIdeal ^ m → ∀ y ∈ latAd x Lb, (algebraMap F E (c : F)) • y ∈ latAd x' Lb := by
   intro F E _ _ _ _ _ N Lb hfin hspan w x x' hx
   set K : Matrix (Fin N) (Fin N) (AfE F E) := ((x'⁻¹ * x : GL (Fin N) (AfE F E)) : Matrix (Fin N) (Fin N) (AfE F E)) with hKdef

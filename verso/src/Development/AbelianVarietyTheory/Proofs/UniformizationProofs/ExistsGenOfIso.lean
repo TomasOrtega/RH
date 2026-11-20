@@ -22,6 +22,13 @@ namespace GlobalTheory.UU.Transl
 section General
 variable {X X' W Y Y₂ : Scheme.{0}} {L : LB X} {L' : LB X'} {K : Type} [Fintype K]
 
+/- English proof (translation)
+Take `rfl : (fun k => y k ≫ F') = φ'` from `funext ha`. Take `⟨a, ga, H⟩` from `CubTransport.exists_pmaps ((isGen_iff w).1 hw) hL (pull_isLB hL' F') (φ' := y) h hb t ht`. Establish `le : ∀ j : K → L'.ι, LB.wchart L' (fun k => y k ≫ F') j ≤ LB.wchart (L'.pull F') y (fun k _ => j k)` using `fun j p hp => Set.mem_iInter.2 fun k => mem_pull.2 (Set.mem_iInter.1 hp k)`. Use `⟨⟨fun j => res (le j) (a.s fun k _ => j k)⟩, isGen_of_gm _ fun p j j' hj hj' => ?_, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Use `(gm_res _ p (le j) hj _).trans ((gen_trans ga (𝟙 Y) p (le j hj) (le j' hj')).trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_) (gm_res _ p (le j') hj' _).symm))` and prove the remaining obligations.
+
+Use `(gm_pull_g L' F' (𝟙 Y ≫ y k) p _ _ (Set.mem_iInter.1 (le j hj) k) (Set.mem_iInter.1 (le j' hj') k)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Establish `g' : Good (L'.pull F') z (fun ψ _ => J' (ψ ≫ F'))` using `fun ψ => mem_pull.2 (hJ' (ψ ≫ F'))`. Use `(CubTransport.val_pmaps hb H r hJ g').trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Rewrite using `[val_of _ r z J' (fun k => J' ((r ≫ y k) ≫ F')) (fun k => by rw [Category.assoc])]`.
+
+Conclude with `(gm_res r z (le _) (Set.mem_iInter.2 fun k => hJ' ((r ≫ y k) ≫ F')) _).symm`.
+-/
 theorem exists_gen_of_iso (hL : L.IsLB) (hL' : L'.IsLB) {F : W ⟶ X} {F' : W ⟶ X'}
     (w : LB.Iso (L'.pull F') (L.pull F)) (hw : w.IsGen) (y : K → (Y ⟶ W)) (h : Y ⟶ Y₂) {φ : K → (Y₂ ⟶ X)}
     {φ' : K → (Y ⟶ X')} {ε : K → ℤ} (ha : ∀ k, y k ≫ F' = φ' k) (hb : ∀ k, y k ≫ F = h ≫ φ k)
@@ -44,6 +51,11 @@ theorem exists_gen_of_iso (hL : L.IsLB) (hL' : L'.IsLB) {F : W ⟶ X} {F' : W �
     rw [val_of _ r z J' (fun k => J' ((r ≫ y k) ≫ F')) (fun k => by rw [Category.assoc])]
     exact (gm_res r z (le _) (Set.mem_iInter.2 fun k => hJ' ((r ≫ y k) ≫ F')) _).symm
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `hp a.val`. Establish `e₁ : e.appTop.hom a.val = c`. Rewrite using `[← hc, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, he]`. Simplify using the standard rewrite rules. Use `⟨Units.map e.appTop.hom.toMonoidHom a, fun Z r z => ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans (congrArg (gm r z ⊤) (Units.ext ?_)) (gm_pull r p z ⊤ trivial _)` and prove the remaining obligations. Conclude with `hc.symm.trans (congrArg p.appTop.hom e₁.symm)`.
+-/
 theorem exists_unit_base {S₀ : Scheme.{0}} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (he : e ≫ p = 𝟙 _)
     (hp : Function.Surjective p.appTop.hom) (a : Γ(Y, ⊤)ˣ) :
     ∃ c : Γ(S₀, ⊤)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z), gm r z ⊤ a = gm (r ≫ p) z ⊤ c := by
@@ -54,6 +66,11 @@ theorem exists_unit_base {S₀ : Scheme.{0}} (p : Y ⟶ S₀) (e : S₀ ⟶ Y) (
   refine Eq.trans (congrArg (gm r z ⊤) (Units.ext ?_)) (gm_pull r p z ⊤ trivial _)
   exact hc.symm.trans (congrArg p.appTop.hom e₁.symm)
 
+/- English proof (translation)
+Establish `e : (fst T A).left = (β_ T A).hom.left ≫ (snd A T).left`. Rewrite using `[← Over.comp_left, braiding_hom_snd]`. Rewrite using `[e]`. Establish `: IsIso (β_ T A).hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map (β_ T A).hom))`. Establish `: IsIso (β_ T A).hom.left.appTop` using `inferInstanceAs (IsIso ((β_ T A).hom.left.app ⊤))`.
+
+Conclude with `surj_comp (ConcreteCategory.bijective_of_isIso (β_ T A).hom.left.appTop).2 (surj_snd hG hA T)`.
+-/
 theorem surj_fst (hG : GlobalFnsSt) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) (T : Over S) :
     Function.Surjective (fst T A).left.appTop.hom := by
   have e : (fst T A).left = (β_ T A).hom.left ≫ (snd A T).left := by
@@ -76,6 +93,9 @@ def zeroSec (M : LB Y) : LB.Sec M where
   f _ := 0
   compat i j := by rw [map_zero, map_zero, mul_zero]
 
+/- English proof (translation)
+Unfold `sval gs`. Use `split_ifs`. Conclude with `(congrArg _ (map_zero _)).trans (map_zero _)`. Both sides reduce to the same expression.
+-/
 theorem sval_zeroSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) (J) :
     sval (zeroSec (LB.LinComb L φ ε)) r z J = 0 := by
   unfold sval gs
@@ -83,12 +103,24 @@ theorem sval_zeroSec {φ : K → (Y ⟶ X)} {ε : K → ℤ} {Z : Scheme.{0}} (r
   · exact (congrArg _ (map_zero _)).trans (map_zero _)
   · rfl
 
+/- English proof (translation)
+The claim follows from `gs_pull r p z ⊤ trivial _`.
+-/
 theorem gs_scal {R : Type} [CommRing R] {Z : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of R)) (r : Z ⟶ Y) (z : Z)
     (c : R) : gs r z ⊤ (scal p c) = gs (r ≫ p) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c) :=
   gs_pull r p z ⊤ trivial _
 
 end General
 
+/- English proof (translation)
+Establish `key : ∀ n : ℕ, cubN θ n 1 (β m) (β y) * W (m ^ n) * W y * W (m * y) ^ n * W 1 ^ n = W (m ^ n * y) * W 1 * W y ^ n * W m ^ n * cubN θ' n 1 (κ m) (κ y)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [cubN, mul_comm]`. Consider the case `succ n ih`.
+
+Establish `c` using `h (m ^ n) m y`. Simplify using `only [cubN, Finset.prod_range_succ, _root_.one_mul, map_pow, ← pow_succ m] at ih c ⊢`. Simplify using `only [pow_succ (W _)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `ih'` using `congrArg Additive.ofMul ih`.
+
+Establish `c'` using `congrArg Additive.ofMul c`. Simplify using `only [ofMul_mul] at ih' c' ⊢`. Take the linear combination `(norm := abel) ih' + c'`. Establish `k` using `key N`. Rewrite `k` using `[hm, _root_.one_mul y]`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `k'` using `congrArg Additive.ofMul k`. Simplify using `only [ofMul_mul] at k' ⊢`. Take the linear combination `(norm := abel) k'`.
+-/
 theorem cubN_twist {A B C U : Type} [CommGroup A] [CommGroup B] [CommGroup C] [CommGroup U] (β : A →* B) (κ : A →* C)
     (W : A → U) {θ : B → B → B → U} {θ' : C → C → C → U}
     (h : ∀ a b c, θ (β a) (β b) (β c) * W (a * b) * W (a * c) * W (b * c) * W 1 =
@@ -118,6 +150,15 @@ theorem cubN_twist {A B C U : Type} [CommGroup A] [CommGroup B] [CommGroup C] [C
 section Theta
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L)
 
+/- English proof (translation)
+Take `⟨n, hn, vn⟩` from `exists_cubN c 1 (fst T G ≫ x) (snd T G) N`. Establish `hm : (fst T G ≫ x) ^ N = 1` using `by rw [← MonObj.comp_pow, hx, MonObj.comp_one]`. Take `⟨t, ht, vt⟩` from `exists_gen L.isLB (φ' := ![(snd T G).left, ((fst T G ≫ x) * snd T G).left]) (ε' := ![(N : ℤ), -(N : ℤ)]) (fun U _ h => by`. Establish `q : (fst T G).left ≫ (1 : T ⟶ G).left = (1 : T ⊗ G ⟶ G).left` using `congrArg (fun q : T ⊗ G ⟶ G => q.left) (MonObj.comp_one (M := G) (fst T G))`. Establish `p : ∏ k : Fin 2, h ((fst T G).left ≫ ![(1 : T ⟶ G).left, x.left] k) ^ (![(N : ℤ), -(N : ℤ)] k) = h (1 : T ⊗ G ⟶ G).left ^ (N : ℤ) * h (fst T G ≫ x).left ^ (-(N : ℤ))`.
+
+Rewrite using `[Fin.prod_univ_two, ← q]`. Both sides reduce to the same expression. Use `(DVR.prod_sum₂ (K := Fin 8) (K' := Fin 2) (U := U) _ rfl p).trans ?_` and prove the remaining obligations. Rewrite using `[hm]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+
+Simplify using `[Fin.prod_univ_succ, ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen L.L _ _ _ _ n (LB.pullGen L.L _ _ f (fst T G).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ hn (DVR.pullGen_isGen _ _ _ _ hf _))`. Use `⟨t, ht, fun T' τ y z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `(vt _ _ z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((vn T' _ z J hJ).trans ?_) ((val_pull hJ _ _ _).trans ?_)))` and prove the remaining obligations. Rewrite using `[MonObj.comp_one, lift_fst_assoc, lift_snd]`. Rewrite using `[← Over.comp_left, lift_fst]`.
+-/
 theorem exists_thetaGen {T : Over S} (x : T ⟶ G) {N : ℕ} (hx : x ^ N = 1)
     (f : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(1 : T ⟶ G).left, x.left] ![(N : ℤ), -(N : ℤ)])) (hf : f.IsGen) :
     ∃ t : LB.Gen (LB.LinComb L.L (K := Fin 2) ![(snd T G).left, ((fst T G ≫ x) * snd T G).left] ![(N : ℤ), -(N : ℤ)]),
@@ -150,6 +191,11 @@ end Theta
 section ThetaSec
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left}
 
+/- English proof (translation)
+Take `⟨σ', v⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => (snd T G).left) (ε' := fun _ => N) (fun U _ h => by`. Establish `q : (lift (toUnit (T ⊗ G)) ((fst T G ≫ x) * snd T G)).left ≫ (snd (𝟙_ _) G).left = ((fst T G ≫ x) * snd T G).left` using `by rw [← Over.comp_left, lift_snd]`. Use `(DVR.prod_sum₂ (K := Fin 1) (K' := Fin 2) (U := U) _ (Fin.prod_univ_one _) (Fin.prod_univ_two _)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`. Use `show h (_ ≫ _) ^ N * (h (snd T G).left ^ N * h ((fst T G ≫ x) * snd T G).left ^ (-N)) = _`.
+
+Rewrite using `[q, zpow_neg, mul_left_comm, mul_inv_cancel, _root_.mul_one])`. Use the proof step `(pullMulSec σ (lift (toUnit (T ⊗ G)) ((fst T G ≫ x) * snd T G)).left t ht)`. Use `⟨σ', fun T' τ y z J hJ => (v _ _ z J hJ).trans ((sval_pullMulSec _ _ _ _ _ z hJ).trans ?_)⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, MonObj.comp_mul, lift_fst_assoc, lift_snd, toUnit_unique (_ ≫ _) (toUnit T')]`.
+-/
 theorem exists_translSec (hL : L.IsLB) {T : Over S} (x : T ⟶ G) {N : ℤ}
     (t : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T G).left, ((fst T G ≫ x) * snd T G).left] ![N, -N]))
     (ht : t.IsGen) (σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => (snd (𝟙_ _) G).left) (fun _ => N))) :
@@ -174,6 +220,11 @@ section Base
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 open ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Establish `e₁ : ρ.left ≫ famφT D T α 1 = (cP D T' α * (ρ ≫ snd _ _)).left` using `congrArg (fun q => q.left) ((MonObj.comp_mul ρ (snd _ _) (cP D _ α)).trans (by rw [comp_cP, mul_comm]))`. Establish `e₂ : ρ.left ≫ famφT D T α 2 = (cP D T' α).left` using `congrArg (fun q => q.left) (comp_cP D ρ α)`. Establish `e₃ : ρ.left ≫ famφT D T α 3 = (1 : T' ⟶ D.P.A).left` using `congrArg (fun q : T' ⟶ D.P.A => q.left) (MonObj.comp_one (M := D.P.A) ρ)`. Rewrite using `[Fin.prod_univ_four, e₁, e₂, e₃]`. Use `show _ ^ ((k : ℤ) - 1) * _ ^ (1 : ℤ) * _ ^ (-1 : ℤ) * _ ^ (1 : ℤ) = _`.
+
+Rewrite using `[zpow_one, zpow_one, zpow_neg_one]`. Both sides reduce to the same expression.
+-/
 theorem prod_famT {T T' : Over (Spec (CommRingCat.of R))} (ρ : T' ⟶ T ⊗ D.P.A) (α : D.X) (k : ℕ) {U : Type}
     [CommGroup U] (h : (T'.left ⟶ D.P.A.left) → U) : ∏ i, h (ρ.left ≫ famφT D T α i) ^ DegPre.famε k i =
       h (ρ ≫ snd _ _).left ^ ((k : ℤ) - 1) * h (cP D T' α * (ρ ≫ snd _ _)).left * (h (cP D T' α).left)⁻¹ *
@@ -194,6 +245,17 @@ def fac {T T' : Over (Spec (CommRingCat.of R))} (g : GtPt D T) (N : ℕ)
   cubN (th D z J) N 1 (τ ≫ g.b) y * val w τ.left z J * val (g.s α) τ.left z J *
     (th D z J (cP D T' α) (τ ≫ g.b) y)⁻¹
 
+/- English proof (translation)
+Take `⟨t, ht, vt⟩` from `exists_thetaGen D.cub g.b hb w hw`. Set `a : T ⊗ D.P.A ⟶ D.P.A` to `cP D _ α`. Set `m : T ⊗ D.P.A ⟶ D.P.A` to `fst _ _ ≫ g.b`. Set `x : T ⊗ D.P.A ⟶ D.P.A` to `snd _ _`. Set `u` to `LB.mulGen D.P.L _ _ _ _ (LB.mulGen D.P.L _ _ _ _ t (LB.pullGen D.P.L _ _ (g.s α) (fst T D.P.A).left)) (LB.invGen D.P.L _ _ (LB.pullGen D.P.L (thφ D.P.A (x3 D.P.A)) thε D.cub.t (lift a (lift m x)).left))`.
+
+Establish `hu : u.IsGen` using `mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ ht (pullGen_isGen _ _ _ _ (g.isGen α) _)) (invGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.cub.isGen _))`. Take `⟨f', v⟩` from `exists_sec D.P.isLB (φ' := famφT D T α) (ε' := DegPre.famε N) (fun U _ h => by`. Establish `p₁` using `prod_cub a m x h`. Establish `p₂` using `FormalPoint.prod_gtφT (fst T D.P.A) g.b α h`. Establish `p₃` using `prod_famT (𝟙 (T ⊗ D.P.A)) α N h`.
+
+Establish `p₄` using `prod_famT (lift (toUnit (T ⊗ D.P.A)) (m * x)) α N h`. Establish `p₅ : ∏ k : Fin 2, h (![x.left, (m * x).left] k) ^ (![(N : ℤ), -(N : ℤ)] k) = h x.left ^ (N : ℤ) * h (m * x).left ^ (-(N : ℤ))` using `Fin.prod_univ_two _`. Simplify using `only [Over.id_left, Category.id_comp] at p₃`. Rewrite `p₄` using `[lift_snd, ← _root_.mul_assoc (cP D _ α)]`. Use `Eq.trans (prod_sum₂ (K := Fin 4) (K' := (Fin 2 ⊕ Fin 4) ⊕ thK) (U := U) _ p₄ (prod_sum₂ (K := Fin 2 ⊕ Fin 4) (K' := thK) (U := U) _ (prod_sum₂ (K := Fin 2) (K' := Fin 4) (U := U) _ p₅ p₂) (prod_neg _ _ p₁))) (Eq.trans ?_ p₃.symm)` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, a, m, x]`. Use the proof step `module)`. Use the proof step `(pullMulSec f (lift (toUnit (T ⊗ D.P.A)) (m * x)).left u hu)`. Use `⟨f', fun T' τ y z J hJ => (v _ _ z J hJ).trans ((sval_pullMulSec _ _ _ _ _ z hJ).trans ?_)⟩` and prove the remaining obligations.
+
+Establish `e : val u (lift τ y).left z J = fac g N w α τ y z J`. Use `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (vt T' τ y z J hJ) ((val_pull hJ _ _ _).trans ?_))) ((val_inv _ _).trans (congrArg (·⁻¹) ((val_cub D.cub (lift τ y) hJ _ _ _).trans ?_))))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_fst]`. Rewrite using `[comp_cP, lift_fst_assoc, lift_snd]`. Rewrite using `[e, ← Over.comp_left, comp_lift, MonObj.comp_mul, lift_fst_assoc, lift_snd, toUnit_unique (_ ≫ _) (toUnit T')]`.
+-/
 theorem exists_translFam {T : Over (Spec (CommRingCat.of R))} (g : GtPt D T) {N : ℕ} (hb : g.b ^ N = 1)
     (w : LB.Gen (LB.LinComb D.P.L (K := Fin 2) ![(1 : T ⟶ D.P.A).left, g.b.left] ![(N : ℤ), -(N : ℤ)]))
     (hw : w.IsGen) (α : D.X) (f : SecBT D (𝟙_ _) N α) :

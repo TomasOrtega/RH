@@ -11,6 +11,11 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `K _ ι _ P e hP`. Establish `hS : ∀ j : Fin e, IsSmoothHerm ((fun _ : Fin e => fsH ι) j)` using `fun _ => GroundTheory.Heights₂.Heights.Inter.isSmoothHerm_ofMetrics_fs 1`. Establish `ha : (fun j : Fin e => ((fun _ : Fin e => fsH ι) j).a) = fun _ : Fin e => fun _ : K => (1 : ℤ)`. Use function extensionality and compare the values at `j k`. Simplify using `[fsH, HermLine.ofMetrics]`.
+
+Take `⟨hq, hd⟩` from `ZCombLimit.genericFibre hP`. Establish `hpos` using `hPos ℚ K ι _ e hq hd`. Rewrite `hpos` using `[GroundTheory.Heights₂.Heights.Targets.FibreDegreeSum.proof K ι P e _ 2 hP Nat.prime_two, finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _)]`. Rewrite using `[hDeg K ι P e (fun _ => fsH ι) 2 hP hS Nat.prime_two, ha, finsum_mem_eq_finite_toFinset_sum _ (divSupp_finite P _)]`. Conclude with `hpos` after adjusting the coercions.
+-/
 theorem FSGeomDegPos.proof (hDeg : DegreeStatement) (hPos : MultiDegreePositive.Statement) :
     FSGeomDegPos.Statement := by
   intro K _ ι _ P e hP

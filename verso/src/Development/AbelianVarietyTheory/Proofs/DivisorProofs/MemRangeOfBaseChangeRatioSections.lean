@@ -12,6 +12,13 @@ namespace GlobalTheory.ConstDescent
 
 open TensorProduct
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hl`. Establish `hx : l ∉ (K ∙ (1 : L))`. Introduce `hm`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `hl ⟨c, by rw [Algebra.algebraMap_eq_smul_one, hc]⟩`.
+
+Take `⟨f, hf, hp⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hx inferInstance`. Establish `h1 : f 1 = 0`. Establish `: f 1 ∈ (K ∙ (1 : L)).map f` using `Submodule.mem_map_of_mem (Submodule.mem_span_singleton_self 1)`. Rewrite `this` using `[hp]`. Simplify using `using this`.
+
+Establish `h2` using `congrArg ((TensorProduct.rid K B).toLinearMap ∘ₗ LinearMap.lTensor B f) h`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.lTensor_tmul, TensorProduct.rid_tmul, h1, zero_smul] at h2`. Conclude with `hb ((smul_eq_zero.1 h2.symm).resolve_left hf)`.
+-/
 theorem mem_range_of_tmul_one_eq {K L B : Type} [Field K] [Field L] [CommRing B] [Algebra K L]
     [Algebra K B] (b₁ b₂ : B) (l : L) (hb : b₂ ≠ 0) (h : b₁ ⊗ₜ[K] (1 : L) = b₂ ⊗ₜ[K] l) :
     l ∈ Set.range (algebraMap K L) := by
@@ -35,6 +42,11 @@ end GlobalTheory.ConstDescent
 
 namespace GlobalTheory.ConstDescent
 
+/- English proof (translation)
+Establish `: ∃ (x : X) (hx : x ∈ U), X.presheaf.germ U x hx f ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hf (TopCat.Presheaf.section_ext X.sheaf U f 0 (fun x hx => by rw [map_zero]; exact hc x hx))`. Take `⟨x, hx, hne⟩` from `this`.
+
+Take `⟨V, hV, hxV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := U) hx`. Use `⟨V, hV, hVU, fun h0 => hne ?_⟩` and prove the remaining obligations. Rewrite using `[← TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE hVU) x hxV, h0, map_zero]`.
+-/
 theorem exists_affine_res_ne_zero {X : Scheme.{0}} {U : X.Opens} (f : Γ(X, U)) (hf : f ≠ 0) :
     ∃ (V : X.Opens) (hV : IsAffineOpen V) (hVU : V ≤ U), X.presheaf.map (homOfLE hVU).op f ≠ 0 := by
   have : ∃ (x : X) (hx : x ∈ U), X.presheaf.germ U x hx f ≠ 0 := by
@@ -50,6 +62,11 @@ end GlobalTheory.ConstDescent
 
 namespace GlobalTheory.ConstDescent
 
+/- English proof (translation)
+Establish `: hV.fromSpec.appLE U ⊤ e ≫ (Scheme.ΓSpecIso Γ(X, V)).hom = X.presheaf.map (homOfLE hVU).op`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_of_le hV U hVU, Category.assoc, Category.assoc, Category.assoc, ← Functor.map_comp_assoc]`. Establish `h' : ((homOfLE le_top).op ≫ (homOfLE e).op : Opposite.op (⊤ : (Spec Γ(X, V)).Opens) ⟶ Opposite.op ⊤) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[h', CategoryTheory.Functor.map_id, Category.id_comp, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fromSpec_appLE_hom {X : Scheme.{0}} {U V : X.Opens} (hV : IsAffineOpen V) (hVU : V ≤ U)
     (e : ⊤ ≤ hV.fromSpec ⁻¹ᵁ U) (f : Γ(X, U)) :
     (Scheme.ΓSpecIso Γ(X, V)).hom.hom ((hV.fromSpec.appLE U ⊤ e).hom f) =
@@ -64,11 +81,17 @@ theorem fromSpec_appLE_hom {X : Scheme.{0}} {U V : X.Opens} (hV : IsAffineOpen V
   rw [← this]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+-/
 theorem appLE_top_top {X Y : Scheme.{0}} (f : X ⟶ Y) (e : (⊤ : X.Opens) ≤ f ⁻¹ᵁ ⊤) :
     f.appLE ⊤ ⊤ e = f.appTop := by
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
+/- English proof (translation)
+Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_congr {X Y : Scheme.{0}} {f g : X ⟶ Y} (hfg : f = g) (U : Y.Opens) (V : X.Opens)
     (e₁ : V ≤ f ⁻¹ᵁ U) (e₂ : V ≤ g ⁻¹ᵁ U) : f.appLE U V e₁ = g.appLE U V e₂ := by
   subst hfg; rfl
@@ -79,6 +102,33 @@ namespace GlobalTheory.ConstDescent
 
 open TensorProduct
 
+/- English proof (translation)
+Take `⟨V, hV, hVU, hne⟩` from `exists_affine_res_ne_zero f₂ hf`. Set `B : CommRingCat` to `Γ(X, V)`. Set `e : Spec B ⟶ X` to `hV.fromSpec`. Set `α : CommRingCat.of K ⟶ B` to `Spec.preimage (e ≫ h)`. Use `letI : Algebra K B := α.hom.toAlgebra`.
+
+Use `letI : Algebra K L := ψ.toAlgebra`. Set `Z : CommRingCat` to `CommRingCat.of (B ⊗[K] L)`. Set `a : Spec Z ⟶ Spec B` to `Spec.map (CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom)`. Set `b : Spec Z ⟶ Sp L` to `Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight : L →ₐ[K] B ⊗[K] L).toRingHom)`. Establish `hcomm : (a ≫ e) ≫ h = b ≫ spMap ψ`.
+
+Rewrite using `[Category.assoc, ← Spec.map_preimage (e ≫ h)]`. Simplify using `only [a, b, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Use `show (algebraMap K B x) ⊗ₜ[K] (1 : L) = (1 : B) ⊗ₜ[K] (algebraMap K L x)`.
+
+Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Set `k : Spec Z ⟶ pullback h (spMap ψ)` to `pullback.lift (a ≫ e) b hcomm`. Establish `hk1 : k ≫ pullback.fst h (spMap ψ) = a ≫ e` using `pullback.lift_fst _ _ _`. Establish `hk2 : k ≫ pullback.snd h (spMap ψ) = b` using `pullback.lift_snd _ _ _`. Establish `heU : ⊤ ≤ e ⁻¹ᵁ U`.
+
+Introduce `z _`. Use `show e z ∈ U`. Apply `hVU` to reduce the goal to its premises. Establish `hr : e z ∈ Set.range hV.fromSpec` using `⟨z, rfl⟩`. Rewrite `hr` using `[hV.range_fromSpec]`.
+
+Conclude with `hr`. Establish `hk : ⊤ ≤ k ⁻¹ᵁ ((pullback.fst h (spMap ψ)) ⁻¹ᵁ U)`. Introduce `z _`. Use `show (pullback.fst h (spMap ψ)) (k z) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hk1, Scheme.Hom.comp_apply]`.
+
+Conclude with `heU (show a z ∈ (⊤ : (Spec B).Opens) from trivial)`. Establish `heU' : ⊤ ≤ (a ≫ e) ⁻¹ᵁ U`. Introduce `z _`. Conclude with `heU (show a z ∈ (⊤ : (Spec B).Opens) from trivial)`. Establish `key1m : (pullback.fst h (spMap ψ)).app U ≫ k.appLE _ ⊤ hk = e.appLE U ⊤ heU ≫ (Scheme.ΓSpecIso B).hom ≫ CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom ≫ (Scheme.ΓSpecIso Z).inv`.
+
+Use `(Scheme.Hom.comp_appLE k _ U ⊤ hk).symm.trans ?_` and prove the remaining obligations. Use `(appLE_congr hk1 U ⊤ _ heU').trans ?_` and prove the remaining obligations. Use `(Scheme.Hom.appLE_comp_appLE a e U ⊤ ⊤ heU (fun _ _ => trivial)).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `(appLE_top_top a _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, Iso.eq_comp_inv]`. Conclude with `Scheme.ΓSpecIso_naturality _`. Establish `key2m : (Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ (pullback.snd h (spMap ψ)).appTop ≫ k.appTop = CommRingCat.ofHom (Algebra.TensorProduct.includeRight : L →ₐ[K] B ⊗[K] L).toRingHom ≫ (Scheme.ΓSpecIso Z).inv`. Rewrite using `[← Scheme.Hom.comp_appTop, hk2, ← Scheme.ΓSpecIso_inv_naturality]`. Establish `key1 : ∀ s : Γ(X, U), (k.appLE _ ⊤ hk).hom (((pullback.fst h (spMap ψ)).app U).hom s) = (Scheme.ΓSpecIso Z).inv.hom (((Scheme.ΓSpecIso B).hom.hom ((e.appLE U ⊤ heU).hom s)) ⊗ₜ[K] (1 : L))` using `fun s => congrArg (fun φ => φ.hom s) key1m`.
+
+Establish `key2 : (k.appLE _ ⊤ hk).hom (resTop _ (scal (pullback.snd h (spMap ψ)) l)) = (Scheme.ΓSpecIso Z).inv.hom ((1 : B) ⊗ₜ[K] l)`. Establish `e1 : ∀ c, (k.appLE _ ⊤ hk).hom (resTop ((pullback.fst h (spMap ψ)) ⁻¹ᵁ U) c) = k.appTop.hom c`. Introduce `c`. Use `show ((pullback h (spMap ψ)).presheaf.map _ ≫ k.appLE _ ⊤ hk).hom c = _`. Rewrite using `[Scheme.Hom.map_appLE, appLE_top_top]`.
+
+Rewrite using `[e1]`. Conclude with `congrArg (fun φ => φ.hom l) key2m`. Establish `h3` using `congrArg (k.appLE _ ⊤ hk).hom heq`. Rewrite `h3` using `[map_mul, key1, key1, key2, ← map_mul, Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Establish `inj : Function.Injective (Scheme.ΓSpecIso Z).inv.hom` using `fun x y hxy => by`.
+
+Simplify using `using congrArg (Scheme.ΓSpecIso Z).hom.hom hxy`. Establish `h4` using `inj h3`. Establish `hb : (Scheme.ΓSpecIso B).hom.hom ((e.appLE U ⊤ heU).hom f₂) ≠ 0`. Rewrite using `[fromSpec_appLE_hom hV hVU heU f₂]`. Conclude with `hne`.
+
+Take `⟨c, hc⟩` from `mem_range_of_tmul_one_eq _ _ l hb h4`. Conclude with `⟨c, hc⟩`.
+-/
 theorem mem_range_of_pullback_eq {K L : Type} [Field K] [Field L] (ψ : K →+* L) {X : Scheme.{0}}
     (h : X ⟶ Sp K) (U : X.Opens) (f₁ f₂ : Γ(X, U)) (l : L) (hf : f₂ ≠ 0)
     (heq : ((pullback.fst h (spMap ψ)).app U).hom f₁ =

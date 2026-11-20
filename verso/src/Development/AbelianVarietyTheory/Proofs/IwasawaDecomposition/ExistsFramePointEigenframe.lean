@@ -8,6 +8,17 @@ open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col d
 
 namespace GlobalTheory.ShFam.BdArc
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ hx hψ hb`. Substitute `hψ` using the available equality. Use `Z.jQ_open` as an intermediate fact. Establish `: IsLocalRing (CAt (ψ.comp φ))` using `inferInstanceAs (IsLocalRing ℂ)`. Set `ψ' : A →+* CAt (ψ.comp φ)` to `ψ`.
+
+Take `⟨g, hg⟩` from `GlobalTheory.T.exists_eigFrame_baseChange' E H Dw l Xo c O β Z A (CAt (ψ.comp φ)) φ (x ≫ genι Z) fr ψ'`. Establish `hr : Set.range (spMap ψ' ≫ x) ⊆ Set.range Z.jQ`. Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `not_not.1 (hb s)`. Set `xF` to `IsOpenImmersion.lift Z.jQ _ hr`.
+
+Establish `hxF : xF ≫ Z.jQ = spMap ψ' ≫ x` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hs : xF ≫ pullback.snd _ _ = spMap (algebraMap c.F (CAt (ψ.comp φ)))`. Rewrite using `[← Z.jQ_over, ← Category.assoc, hxF, Category.assoc]`. Conclude with `(congrArg (spMap ψ' ≫ ·) hx).trans (OpenReg.spMap_comp _ _)`. Take `⟨y, w, hy, hw⟩` from `OpenReg.exists_frPt_of_eigFrame (R := CAt (ψ.comp φ)) xF hs (x := spMap ψ' ≫ x ≫ genι Z) (by rw [← Category.assoc, hxF, Category.assoc]) g`.
+
+Establish `hp : GlobalTheory.AllWt.ptF y = xF`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[← hy]`. Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[hs]`.
+
+Conclude with `pullback.lift_snd _ _ _`. Use `⟨y, by rw [hp]; exact hxF, fun τ i => ⟨w τ i, by rw [hp]; exact (hw τ i).1, (hw τ i).2.1, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hw τ i).2.2.trans (hg τ i)`.
+-/
 theorem exists_matches : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (A : Type) [CommRing A] (φ : c.F →+* A) (x : Sp A ⟶ gen Z) (fr : EigFrame Z φ (x ≫ genι Z)) (ψ : A →+* ℂ), x ≫ genStr Z = spMap φ → ψ.comp φ = σ → (∀ s, (spMap ψ ≫ x) s ∉ genBd Z) → ∃ y : FrPt Xo c (CAt σ), Matches fr ψ y := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ A _ φ x fr ψ hx hψ hb
   subst hψ

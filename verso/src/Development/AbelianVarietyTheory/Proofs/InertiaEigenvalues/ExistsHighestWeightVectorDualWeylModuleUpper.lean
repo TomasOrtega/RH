@@ -15,6 +15,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.HwUpper
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ (fun k => d k ^ f k), ← ih, mul_assoc, mul_assoc]`. Use `congr 1`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel (hf m), Finset.prod_range_succ, mul_pow]`.
+-/
 theorem telescope (d : ℕ → ℂ) (f : ℕ → ℕ) (hf : ∀ s, f (s + 1) ≤ f s) (m : ℕ) :
     (∏ s ∈ Finset.range m, (∏ k ∈ Finset.range (s + 1), d k) ^ (f s - f (s + 1))) *
       (∏ k ∈ Finset.range m, d k) ^ f m = ∏ k ∈ Finset.range m, d k ^ f k := by
@@ -25,6 +30,19 @@ theorem telescope (d : ℕ → ℂ) (f : ℕ → ℕ) (hf : ∀ s, f (s + 1) ≤
     congr 1
     rw [← pow_add, Nat.sub_add_cancel (hf m), Finset.prod_range_succ, mul_pow]
 
+/- English proof (translation)
+Use `set d : ℕ → ℂ := fun k => if h : k < n then B ⟨k, h⟩ ⟨k, h⟩ else 1 with hd`. Use `set f : ℕ → ℕ := fun k => if h : k < n then ν ⟨k, h⟩ else 0 with hfd`. Establish `hf : ∀ s, f (s + 1) ≤ f s`. Introduce `s`. Distinguish the cases in `h : s + 1 < n`.
+
+Simplify using `only [hfd, dif_pos h, dif_pos (show s < n by omega)]`. Conclude with `hν (show (⟨s, by omega⟩ : Fin n) ≤ ⟨s + 1, h⟩ from Fin.mk_le_mk.mpr (by omega))`. Simplify using `only [hfd, dif_neg h]`. Conclude with `Nat.zero_le _`. Establish `hinner : ∀ s : Fin n, (∏ a : Fin (s.val + 1), B.transpose (Fin.castLE (by omega) a) (Fin.castLE (by omega) a)) = ∏ k ∈ Finset.range (s.val + 1), d k`.
+
+Introduce `s`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `ha : a.val < n` using `by omega`. Simplify using `only [hd, dif_pos ha, Matrix.transpose_apply]`.
+
+Both sides reduce to the same expression. Establish `hexp : ∀ s : Fin n, ν s - Formalism.GradedWeylDivisibility.nuNext ν s = f s.val - f (s.val + 1)`. Introduce `s`. Simplify using `only [hfd, dif_pos s.2, Formalism.GradedWeylDivisibility.nuNext]`. Unfold `Formalism.BasicNotions.Examples₂.NZ.hwScal`.
+
+Repeatedly rewrite using `[hinner, hexp]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun s => (∏ k ∈ Finset.range (s + 1), d k) ^ (f s - f (s + 1))) n]`. Establish `hfn : f n = 0` using `by simp [hfd]`. Establish `ht` using `telescope d f hf n`. Rewrite `ht` using `[hfn, pow_zero, mul_one]`.
+
+Rewrite using `[ht, ← Fin.prod_univ_eq_prod_range (fun k => d k ^ f k) n]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [hd, hfd, dif_pos i.2]`.
+-/
 theorem hwScal_transpose {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (B : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.BasicNotions.Examples₂.NZ.hwScal ℂ (le_refl n) ν B.transpose = ∏ i, B i i ^ ν i := by
   classical
@@ -58,6 +76,23 @@ theorem hwScal_transpose {n : ℕ} (ν : Fin n → ℕ) (hν : Antitone ν) (B :
   refine Finset.prod_congr rfl fun i _ => ?_
   simp only [hd, hfd, dif_pos i.2]
 
+/- English proof (translation)
+Introduce `n lam`. Establish `ha : Antitone lam.natW` using `fun i j hij => by`. Use `lam.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨⟨extremal ℂ n lam, Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ ha⟩, fun h => Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl lam.natW (congrArg Subtype.val h), fun B hB => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `set M : Matrix (Fin n) (Fin n) ℂ := (B : Matrix (Fin n) (Fin n) ℂ) with hM`. Establish `hl : ∀ i j : Fin n, i < j → M.transpose i j = 0` using `fun i j hij => by`. Rewrite using `[Matrix.transpose_apply]`.
+
+Conclude with `hB hij`. Establish `hdet : M.det = ∏ i, M i i` using `Matrix.det_of_upperTriangular hB`. Establish `hne : ∀ i, M i i ≠ 0`. Establish `h0 : M.det ≠ 0`. Use `(Matrix.GeneralLinearGroup.det B).ne_zero` as an intermediate fact.
+
+Simplify `this` using `[hM]`. Rewrite `h0` using `[hdet, Finset.prod_ne_zero_iff]`. Conclude with `fun i => h0 i (Finset.mem_univ i)`. Establish `hw_eq : ∀ i, (lam.natW i : ℤ) + lam.detShift = lam.w i`. Introduce `i`.
+
+Establish `hle : lam.detShift ≤ lam.w i`. Unfold `DomWeight.detShift`. Establish `hn : 0 < n` using `Fin.pos i`. Rewrite using `[dif_pos hn]`. Conclude with `lam.anti (Fin.mk_le_mk.mpr (by omega) : i ≤ ⟨n - 1, by omega⟩)`.
+
+Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[GlobalTheory.Branching.sqRep_coe, Submodule.coe_smul]`. Use `show detPow ℂ n B lam.detShift • Formalism.GradedWeylDivisibility.rowAct ℂ (n := n) M.transpose (extremal ℂ n lam) = _`. Unfold `extremal`.
+
+Rewrite using `[Formalism.BasicNotions.Examples₂.NZ.rowAct_hw ℂ le_rfl lam.natW M.transpose hl, hwScal_transpose lam.natW ha M, smul_smul]`. Use `congr 1`. Unfold `detPow`. Rewrite using `[Units.val_zpow_eq_zpow_val, Matrix.GeneralLinearGroup.val_det_apply, ← hM, hdet, ← Finset.prod_zpow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_natCast, ← zpow_add₀ (hne i), add_comm, hw_eq]`.
+-/
 theorem exists_hw_upper : ∀ (n : ℕ) (lam : DomWeight n), ∃ v : nablaSq ℂ n lam, v ≠ 0 ∧
     ∀ B : GL (Fin n) ℂ, (B : Matrix (Fin n) (Fin n) ℂ).BlockTriangular id →
       GlobalTheory.Branching.sqRep ℂ n lam B v = (∏ i, ((B : Matrix (Fin n) (Fin n) ℂ) i i) ^ (lam.w i)) • v := by

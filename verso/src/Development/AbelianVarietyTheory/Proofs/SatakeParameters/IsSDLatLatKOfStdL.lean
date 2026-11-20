@@ -16,6 +16,13 @@ open scoped TensorProduct Matrix
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.KerSelfDual
 
+/- English proof (translation)
+Introduce `D i hi T bad lev co a hco hstd x`. Establish `hc : IsOrthCo ((sigD D : D.host.E →ₐ[D.host.F] D.host.E) : D.host.E →+* D.host.E) (gramN D i hi) (toLE co)` using `GlobalTheory.TwV.isOrthCo_toLE_of_cT_mul_self _ _ co hco`. Establish `hc' : ∃ c, IsOrthCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i hi) c` using `⟨toLE co, hc⟩`. Establish `hJ` using `GlobalTheory.isLat_dl_of_isOrthCo D.sp (gramN D i hi) hc'`. Establish `hLb : Formalism.L2.GlobalTheoryTheory.Comp.IsLat lev.Lb` using `⟨lev.Lb_fin, lev.Lb_span⟩`.
+
+Establish `h1 : Formalism.L2.PairingIndexBounds.F.latAd (1 : GL (Fin (D.R.N i)) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F)) lev.Lb = lev.Lb`. Rewrite using `[GlobalTheory.SDCompan.latAd_eq]`. Conclude with `Formalism.L2.GlobalTheoryTheory.Comp.glob_one hLb`. Establish `hm : mvL co (compan (sp` using `D.sp) (gramN D i hi) a lev.Lb) = StandardLatticesGL3.stdL D (D.R.N i) := by`. Rewrite using `[← hstd, latCo, h1]`.
+
+Establish `hsd` using `GlobalTheory.FourthRootStd.stdL_isSD D (D.R.N i)`. Rewrite `hsd` using `[← hm]`. Take `⟨hM, hdl⟩` from `GlobalTheory.OrthSelfDual.isLat_and_dl_eq_of_isSDLat_mvL D.sp (gramN D i hi) co _ hc hsd`. Conclude with `GlobalTheory.SDCompan.isSDLat_latK D.sp (gramN D i hi) hJ hc' x.1 x.2 lev.Lb a hLb hM hdl`.
+-/
 theorem isSDLat_latK_of_stdL : ∀ {D : D7} {i : ℕ} {hi : i ≤ D.R.m} {T : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))} (lev : StepLevel D.host.F D.host.E (sigD D) (gramN D i hi) T D.R.f bad) (co : GL (Fin (D.R.N i)) D.host.E) (a : 𝓞 D.host.E), cT (sigD D : D.host.E →+* D.host.E) co.1 * co.1 = gramN D i hi → latCo D.sp (gramN D i hi) co a 1 lev.Lb = StandardLatticesGL3.stdL D (D.R.N i) → ∀ x : UPts (sigD D) (gramN D i hi) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), IsSDLat D.host.E (D.R.N i) (latK D.sp (gramN D i hi) a x.1 lev.Lb) := by
   intro D i hi T bad lev co a hco hstd x
   have hc : IsOrthCo ((sigD D : D.host.E →ₐ[D.host.F] D.host.E) : D.host.E →+* D.host.E) (gramN D i hi) (toLE co) :=

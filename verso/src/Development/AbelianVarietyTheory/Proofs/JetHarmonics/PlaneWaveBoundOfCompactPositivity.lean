@@ -32,6 +32,11 @@ open scoped ComplexOrder in
 open Filter Topology in
 open scoped ComplexConjugate ENNReal in
 open Classical in
+/- English proof (translation)
+Take `⟨φ, -, -, hφ, hint⟩` from `_root_.Formalism.FourierDecayAlt.P.PBO.pStdCpt_of_heads hQ _root_.Formalism.FourierDecayAlt.P.radial_head _root_.Formalism.FourierDecayAlt.P.head_top Wp Wq P p F j hj w h h hh hh Cb hI hF hw`. Rewrite using `[← hint s, ← integral_const_mul]`. Apply `integral_congr_ae` to reduce the goal to its premises. Establish `h0 : ∀ᵐ c : ℂ, c ≠ 0`. Rewrite using `[ae_iff]`.
+
+Simplify using `using (measure_singleton (μ := (volume : Measure ℂ)) (0 : ℂ))`. Use `filter_upwards [h0] with c hc`. Rewrite using `[hφ c hc, ← _root_.Formalism.FourierDecayAlt.P.TBBx5.wv_np p nn F j hj h hh w c]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma integral_planeWave_eq_lemma_3 (hQ : _root_.Formalism.FourierDecayAlt.P5.ThmPActualCpt) {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : _root_.Formalism.FourierDecayAlt.M.Par) (p : _root_.Formalism.FourierDecayAlt.KB.Pl P Wp Wq)
@@ -57,6 +62,17 @@ open scoped ComplexOrder in
 open Filter Topology in
 open scoped ComplexConjugate ENNReal in
 open Classical in
+/- English proof (translation)
+Establish `hx : ∀ e, _root_.Formalism.FourierDecayAlt.KB.CptCoef (p.T.bs j) (_root_.Formalism.FourierDecayAlt.KB.slv p.T F j hj (_root_.Formalism.FourierDecayAlt.KB.plusW ys w) h (And.right hh) e)` using `fun e => _root_.Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj _ h hh hF e`. Establish `hx' : ∀ e, _root_.Formalism.FourierDecayAlt.KB.CptCoef (p.T.bs j) (_root_.Formalism.FourierDecayAlt.KB.slv p.T F j hj (_root_.Formalism.FourierDecayAlt.KB.minusW ys w) h (And.right hh) e)` using `fun e => _root_.Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj _ h hh hF e`. Take `⟨hθ, hbd⟩` from `hS hQ Wp Wq P p j hj w ys h₁ h₂ hys`. Establish `hU` using `hV hQ Wp Wq P p j hj (_root_.Formalism.FourierDecayAlt.KB.plusW ys w) h₁ s _ _ hx hx`. Establish `key` using `hbd _ _ hU.1 hx'`.
+
+Rewrite `key` using `[hU.2]`. Establish `f₁` using `(Complex.nonneg_iff.mp (hPos hQ Wp Wq P p j hj _ h₁ _ hx)).1`. Establish `f₂` using `(Complex.nonneg_iff.mp (hPos hQ Wp Wq P p j hj _ h₂ _ hx')).1`. Establish `hJL` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.weighted_auxiliary_norm_nonneg P j hj h hh`. Establish `hN` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.normC_pos nn hnn w`.
+
+Establish `hQ₁` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.prod_map_pos nn hnn ys`. Establish `hQ₂` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.prod_map_pos (fun y => nn (y + 1)) (fun y => hnn _) ys`. Establish `hq : 0 < (ys.map fun y : ℝ => (_root_.Formalism.FourierDecayAlt.Wd.qw (_root_.Formalism.FourierDecayAlt.M.qC P) (_root_.Formalism.FourierDecayAlt.D.positionted w) (y : ℂ)).re).prod`. Apply `List.prod_pos` to reduce the goal to its premises. Introduce `a ha`.
+
+Take `⟨y, hy, rfl⟩` from `List.mem_map.mp ha`. Conclude with `hθ y hy`. Establish `hα : 0 ≤ _root_.Formalism.FourierDecayAlt.C.nAux P.k P.r 0 (fun _ _ => 1) 1 h / _root_.Formalism.FourierDecayAlt.TBB.normC nn w` using `div_nonneg hJL hN.le`. Establish `hcs` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.scal_cs _ _ _ _ _ _ _ _ _ hα (by ring) hα hα hq hQ₁ hQ₂ (norm_nonneg _) f₁ f₂ key`. Use `hcs.trans (mul_le_mul_of_nonneg_left ?_ (Real.sqrt_nonneg _))` and prove the remaining obligations.
+
+Rewrite using `[_root_.Formalism.FourierDecayAlt.P.TBBx5.wv_ew p nn F j hj _ h hh, _root_.Formalism.FourierDecayAlt.P.TBBx5.wv_ew p nn F j hj _ h hh, _root_.Formalism.FourierDecayAlt.P.TBBx5.normC_plusW, _root_.Formalism.FourierDecayAlt.P.TBBx5.normC_minusW]`. Use `le_trans (le_of_eq ?_) (_root_.Formalism.FourierDecayAlt.P.TBBx5.sqrt_mul_le_max _ _ ?_ ?_)` and prove the remaining obligations. Apply the tactic sequence `congr 1 <;> field_simp`. Conclude with `mul_nonneg (div_nonneg hJL (mul_pos hQ₁ hN).le) f₁`. Conclude with `mul_nonneg (div_nonneg hJL (mul_pos hQ₂ hN).le) f₂`.
+-/
 private lemma shiftedPairing_bound_lemma_4 (hQ : _root_.Formalism.FourierDecayAlt.P5.ThmPActualCpt) (hV : _root_.Formalism.FourierDecayAlt.KB.VIsoCpt) (hS : _root_.Formalism.FourierDecayAlt.KB.SizeStdCpt)
     (hPos : _root_.Formalism.FourierDecayAlt.P.PBL.FormPosCpt) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -106,6 +122,13 @@ open scoped ComplexOrder in
 open Filter Topology in
 open scoped ComplexConjugate ENNReal in
 open Classical in
+/- English proof (translation)
+Establish `hα : 0 ≤ _root_.Formalism.FourierDecayAlt.C.nAux P.k P.r 0 (fun _ _ => 1) 1 h / _root_.Formalism.FourierDecayAlt.TBB.normC nn w` using `div_nonneg (_root_.Formalism.FourierDecayAlt.P.TBBx5.weighted_auxiliary_norm_nonneg P j hj h hh) (_root_.Formalism.FourierDecayAlt.P.TBBx5.normC_pos nn hnn w).le`. Establish `hdeg` using `_root_.Formalism.FourierDecayAlt.P.degree_of_plane_wave Wp Wq P p F j hj w h h hh hh K grid s LinearMap.id (fun _ _ hx e => hx e) hF hinj`. Simplify using `only [LinearMap.id_apply, _root_.Formalism.FourierDecayAlt.P.PBL.onOld_id] at hdeg`. Rewrite using `[integral_planeWave_eq_lemma_3 hQ P p nn F Cb hI hF j hj h hh w hw s, norm_mul, Complex.norm_real, Real.norm_of_nonneg hα]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul, norm_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Rewrite using `[hdeg]`. Use `(mul_le_mul_of_nonneg_left (norm_sum_le _ _) hα).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun n _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (shiftedPairing_bound_lemma_4 hQ hV hS hPos P p nn F hF hnn j hj h hh w s _ (hcut n).1 (hcut n).2.1 (hcut n).2.2) (abs_nonneg _)`.
+-/
 private lemma planeWave_grid_bound_lemma (hQ : _root_.Formalism.FourierDecayAlt.P5.ThmPActualCpt) (hV : _root_.Formalism.FourierDecayAlt.KB.VIsoCpt) (hS : _root_.Formalism.FourierDecayAlt.KB.SizeStdCpt)
     (hPos : _root_.Formalism.FourierDecayAlt.P.PBL.FormPosCpt) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -153,6 +176,9 @@ open scoped ComplexOrder in
 open Filter Topology in
 open scoped ComplexConjugate ENNReal in
 open Classical in
+/- English proof (translation)
+Rewrite using `[_root_.Formalism.FourierDecayAlt.P.TBBx5.wv_ew p nn F j hj w h hh]`. Establish `h1` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.weighted_auxiliary_norm_nonneg P j hj h hh`. Establish `h2` using `_root_.Formalism.FourierDecayAlt.P.TBBx5.normC_pos nn hnn w`. Establish `h3` using `hPos hQ Wp Wq P p j hj w hw _ (fun e => _root_.Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj w h hh hF e)`. Conclude with `mul_nonneg (div_nonneg h1 h2.le) (Complex.nonneg_iff.mp h3).1`.
+-/
 private lemma normalizedWeight_nonneg_lemma_2 (hQ : _root_.Formalism.FourierDecayAlt.P5.ThmPActualCpt) (hPos : _root_.Formalism.FourierDecayAlt.P.PBL.FormPosCpt) {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : _root_.Formalism.FourierDecayAlt.M.Par)
@@ -172,6 +198,17 @@ open Filter Topology in
 open scoped ComplexConjugate ENNReal in
 open Classical in
 
+/- English proof (translation)
+Introduce `hQ hV hS hPos Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N Cb hI hF hnn hgrid`. Unfold `_root_.Formalism.FourierDecayAlt.TBB.KernelFourierIntegralBound`. Introduce `j hj h hh w hw hlen s`. Establish `hw0 : _root_.Formalism.FourierDecayAlt.KB.CutWord P p.l0 w`. Unfold `_root_.Formalism.FourierDecayAlt.TBB.AdmW at hw`.
+
+Conclude with `hw.1`. Unfold `_root_.Formalism.FourierDecayAlt.P.TBBx5.WaveGrid at hgrid`. Take `⟨grid, hg⟩` from `hgrid j hj w hw hlen`. Unfold `_root_.Formalism.FourierDecayAlt.P.TBBx5.GridOK at hg`. Take `⟨hinj, hmem, hcut, hsum⟩` from `hg`.
+
+Establish `hE₁ : ‖∫ c : ℂ, _root_.Formalism.FourierDecayAlt.P5.fsv s c * _root_.Formalism.FourierDecayAlt.TBB.NP p nn F (j + 1) w (h ++ [(1, c)]) (h ++ [(1, c)])‖ ≤ _root_.Formalism.FourierDecayAlt.TBB.Ew p nn F j w h`. Establish `hnil : ∀ n : Fin 0 → Fin (2 * j + 1), _root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf (fun a => Fin.elim0 a : Fin 0 → Fin (2 * j + 1) → ℝ) n = []` using `fun n => List.ofFn_zero`. Establish `hb` using `planeWave_grid_bound_lemma hQ hV hS hPos P p nn F Cb hI hF hnn j hj h hh w hw0 s 0 (fun a => Fin.elim0 a) (fun a => Fin.elim0 a) (fun n => by simp only [hnil, _root_.Formalism.FourierDecayAlt.P.TBBx5.plusW_eq, _root_.Formalism.FourierDecayAlt.P.TBBx5.minusW_eq, List.map_nil, List …`. Simplify `hb` using `[hnil, _root_.Formalism.FourierDecayAlt.P.TBBx5.plusW_eq, _root_.Formalism.FourierDecayAlt.P.TBBx5.minusW_eq]`. Take `⟨n₀, hn₀⟩` from `_root_.Formalism.FourierDecayAlt.P.TBBx5.sum_le_max (fun n => |∏ a, _root_.Formalism.FourierDecayAlt.F7.lagCo (grid a) (n a)| * √(((_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n).map nn).prod * ((_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n).map fun y : ℝ => nn (y …`.
+
+Establish `hE₂ : 0 < ‖s‖ → ‖s‖ ^ K * ‖∫ c : ℂ, _root_.Formalism.FourierDecayAlt.P5.fsv s c * _root_.Formalism.FourierDecayAlt.TBB.NP p nn F (j + 1) w (h ++ [(1, c)]) (h ++ [(1, c)])‖ ≤ Λ ^ K * max (_root_.Formalism.FourierDecayAlt.TBB.Ew p nn F j (_root_.Formalism.FourierDecayAlt.KB.plusW ( …` using `fun _ => (planeWave_grid_bound_lemma hQ hV hS hPos P p nn F Cb hI hF hnn j hj h hh w hw0 s K grid hinj hcut).trans (by simpa only [mul_assoc] using hn₀)`. Establish `hlenK : (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n₀).length = K` using `List.length_ofFn`. Break down `_root_.Formalism.FourierDecayAlt.P.TBBx5.mn_pick Λ ‖s‖ _ _ _ K (norm_nonneg s) hE₁ hE₂ with H | H` into its components or cases. Conclude with `⟨w, _root_.Formalism.FourierDecayAlt.P.TBBx5.isExt_self P p.l0 Y N K w hw (by omega), H⟩`. Distinguish the cases in `hm : _root_.Formalism.FourierDecayAlt.TBB.Ew p nn F j (_root_.Formalism.FourierDecayAlt.KB.minusW (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n₀) w) h ≤ _root_.Formalism.FourierDecayAlt.TBB.Ew p nn F j (_root_.Formalism.FourierDecayAlt.KB.plusW (_root_.Formalism.FourierDe …`.
+
+Use `⟨_root_.Formalism.FourierDecayAlt.KB.plusW (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n₀) w, _root_.Formalism.FourierDecayAlt.P.TBBx5.isExt_plusW P p.l0 Y N K w _ hlen hlenK (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf_mem grid hmem n₀) (hcut n₀).1, ?_⟩` and prove the remaining obligations. Rewrite `H` using `[max_eq_left hm]`. Then use the resulting hypothesis. Use `⟨_root_.Formalism.FourierDecayAlt.KB.minusW (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf grid n₀) w, _root_.Formalism.FourierDecayAlt.P.TBBx5.isExt_minusW P p.l0 Y N K w _ hlen hlenK (_root_.Formalism.FourierDecayAlt.P.TBBx5.ysOf_mem grid hmem n₀) (hcut n₀).2.1, ?_⟩` and prove the remaining obligations. Rewrite `H` using `[max_eq_right (le_of_not_ge hm)]`. Then use the resulting hypothesis.
+-/
 theorem _root_.GlobalTheory.planeWave_bound_of_xiExists (hXi : _root_.Formalism.FourierDecayAlt.B.XiExists) :
     _root_.Formalism.FourierDecayAlt.P5.ThmPActualCpt → _root_.Formalism.FourierDecayAlt.KB.VIsoCpt → _root_.Formalism.FourierDecayAlt.KB.SizeStdCpt → _root_.Formalism.FourierDecayAlt.P.PBL.FormPosCpt → ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : _root_.Formalism.FourierDecayAlt.M.Par) (p : _root_.Formalism.FourierDecayAlt.KB.Pl P Wp Wq) (nn : ℝ → ℝ) (F : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (Y : Finset ℝ) (Λ : ℝ) (K N : ℕ) (Cb : ℝ), _root_.Formalism.FourierDecayAlt.KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → _root_.Formalism.FourierDecayAlt.KB.CptCoef p.T.base F → (∀ y, 0 < nn y) → _root_.Formalism.FourierDecayAlt.P.TBBx5.WaveGrid p nn Y Λ K N → _root_.Formalism.FourierDecayAlt.TBB.KernelFourierIntegralBound p nn F Y Λ K N := by
   intro hQ hV hS hPos Wp Wq _ _ _ _ _ _ P p nn F Y Λ K N Cb hI hF hnn hgrid

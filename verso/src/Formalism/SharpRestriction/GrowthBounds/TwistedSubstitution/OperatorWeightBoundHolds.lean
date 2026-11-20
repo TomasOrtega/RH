@@ -15,6 +15,9 @@ namespace Formalism.MainNotions.TestSideWords
 
 open Formalism.GradedWeylDivisibility
 
+/- English proof (translation)
+Unfold `PI.RW.initMinor`. Rewrite using `[← Matrix.det_permute σ]`. Both sides reduce to the same expression.
+-/
 private theorem initMinor_comp_perm_eq_sign_mul {R : Type} [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n)
     (σ : Equiv.Perm (Fin s)) :
     PI.RW.initMinor R (I ∘ σ) hs =
@@ -23,6 +26,11 @@ private theorem initMinor_comp_perm_eq_sign_mul {R : Type} [CommRing R] {r n s :
   rw [← Matrix.det_permute σ]
   rfl
 
+/- English proof (translation)
+Unfold `PI.RW.initMinor`. Simplify using `only [Function.Injective, not_forall] at hI`. Take `⟨i, j, hij, hne⟩` from `hI`. Conclude with `Matrix.det_zero_of_row_eq (Ne.symm (Ne.symm hne)) (by`. Use function extensionality and compare the values at `q`.
+
+Simplify using `[hij])`.
+-/
 private theorem initMinor_eq_zero_of_not_injective {R : Type} [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n)
     (hI : ¬ Function.Injective I) : PI.RW.initMinor R I hs = 0 := by
   unfold PI.RW.initMinor
@@ -32,6 +40,9 @@ private theorem initMinor_eq_zero_of_not_injective {R : Type} [CommRing R] {r n 
     funext q
     simp [hij])
 
+/- English proof (translation)
+Rewrite using `[initMinor_comp_perm_eq_sign_mul, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 private theorem initMinor_eq_sign_sort_mul {R : Type} [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n)
     (hI : Function.Injective I) :
     PI.RW.initMinor R I hs =
@@ -40,6 +51,15 @@ private theorem initMinor_eq_sign_sort_mul {R : Type} [CommRing R] {r n s : ℕ}
   rw [initMinor_comp_perm_eq_sign_mul, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]
   simp
 
+/- English proof (translation)
+Introduce `R _ _ k n ν`. Rewrite using `[show PI.RW.dualWeyl R k n ν = Formalism.GradedWeylDivisibility.dualWeyl R k n ν from rfl, Formalism.GradedWeylDivisibility.standardMonomialSpanDomain R k n ν]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `f ⟨K, sz, hsz, I, hν, rfl⟩`. Distinguish the cases in `hinj : ∀ i, Function.Injective (I i)`.
+
+Establish `hb : Formalism.GradedWeylDivisibility.bideterminant R sz hsz I = (∏ i, ((((Equiv.Perm.sign (Tuple.sort (I i)) : ℤˣ) : ℤ) : MvPolynomial (Fin k × Fin n) R))) * PI.RW.bideterminant R sz hsz (fun i => I i ∘ Tuple.sort (I i))` using `by show (∏ i, PI.RW.initMinor R (I i) (hsz i)) = _`. Unfold `PI.RW.bideterminant`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl (fun i _ => initMinor_eq_sign_sort_mul (I i) (hsz i) (hinj i))`. Rewrite using `[hb, ← Int.cast_prod, ← zsmul_eq_mul]`.
+
+Establish `hJ : ∀ i, StrictMono (I i ∘ Tuple.sort (I i))` using `fun i => (Tuple.monotone_sort (I i)).strictMono_of_injective ((hinj i).comp (Equiv.injective _))`. Use `zsmul_mem (Submodule.subset_span ?_) _` and prove the remaining obligations. Conclude with `⟨K, sz, hsz, fun i => I i ∘ Tuple.sort (I i), hν, hJ, rfl⟩`. Use `push_neg at hinj`. Take `⟨i, hi⟩` from `hinj`.
+
+Establish `h0 : Formalism.GradedWeylDivisibility.bideterminant R sz hsz I = 0` using `by show (∏ i, PI.RW.initMinor R (I i) (hsz i)) = 0`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (initMinor_eq_zero_of_not_injective (I i) (hsz i) hi)`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem bideterminant_span_holds : PI.RW.BideterminantSpan := by
   intro R _ _ k n ν
   rw [show PI.RW.dualWeyl R k n ν = Formalism.GradedWeylDivisibility.dualWeyl R k n ν from rfl,
@@ -67,20 +87,41 @@ theorem bideterminant_span_holds : PI.RW.BideterminantSpan := by
     rw [h0]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+The claim follows from `rowWtSpan_of bidetMem bideterminant_span_holds`.
+-/
 theorem dual_weyl_weights_bounded : Formalism.MainNotions.TestSideCounting.RestWt := rowWtSpan_of bidetMem bideterminant_span_holds
 
+/- English proof (translation)
+The claim follows from `row_letter_rule`.
+-/
 theorem letter_operators_holds : Formalism.MainNotions.TestSideCounting.RestTheta := row_letter_rule
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.TestSideCounting.onePos_of_opBound hOB letter_operators_holds dual_weyl_weights_bounded`.
+-/
 theorem onePos_of_OB (hOB : Formalism.MainNotions.TestSideCounting.OpBound) : Formalism.MainNotions.TestSideCounting.OnePos :=
   Formalism.MainNotions.TestSideCounting.onePos_of_opBound hOB letter_operators_holds dual_weyl_weights_bounded
 
+/- English proof (translation)
+The claim follows from `adjointTensorOfSingle_valid Formalism.L2.G.Model.TS.Top.fockRBlock h`.
+-/
 theorem tensor_operators_of_one_position (h : Formalism.MainNotions.TestSideCounting.OnePos) : Formalism.MainNotions.TestSideCounting.TenOp :=
   adjointTensorOfSingle_valid Formalism.L2.G.Model.TS.Top.fockRBlock h
 
+/- English proof (translation)
+The claim follows from `tensor_operators_of_one_position (onePos_of_OB hOB)`.
+-/
 theorem tenOp_of_OB (hOB : Formalism.MainNotions.TestSideCounting.OpBound) : Formalism.MainNotions.TestSideCounting.TenOp := tensor_operators_of_one_position (onePos_of_OB hOB)
 
+/- English proof (translation)
+The claim follows from `operator_words_bound`.
+-/
 theorem operator_weight_bound_holds : Formalism.MainNotions.TestSideCounting.OpBound := operator_words_bound
 
+/- English proof (translation)
+The claim follows from `tenOp_of_OB operator_weight_bound_holds`.
+-/
 theorem tensor_operators_holds : Formalism.MainNotions.TestSideCounting.TenOp := tenOp_of_OB operator_weight_bound_holds
 
 end Formalism.MainNotions.TestSideWords

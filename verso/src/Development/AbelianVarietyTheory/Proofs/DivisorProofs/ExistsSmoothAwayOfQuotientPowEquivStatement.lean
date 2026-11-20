@@ -7,5 +7,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv | exact GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv | (intros; apply GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_smooth_away_of_quotient_pow_equiv' : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (O C : Type) [CommRing O] [Algebra R O] [CommRing C] [Algebra R C], Algebra.Smooth R O → Algebra.FiniteType R C → (∀ e : ℕ, Nonempty ((O ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R O)) ≃ₐ[R] (C ⧸ (maximalIdeal R ^ (e + 1)).map (algebraMap R C)))) → ∀ q : Ideal C, q.IsPrime → q.comap (algebraMap R C) = maximalIdeal R → ∃ g : C, g ∉ q ∧ Algebra.Smooth R (Localization.Away g) := by
   first | exact @GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv | exact GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv | (intros; apply GlobalTheory.SmoothAdic.exists_smooth_away_of_quotient_pow_equiv <;> assumption)

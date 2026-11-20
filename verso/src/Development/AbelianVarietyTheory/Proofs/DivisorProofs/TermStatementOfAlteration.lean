@@ -17,6 +17,13 @@ noncomputable section
 
 namespace GlobalTheory.MixedLocalChains.TermPf
 
+/- English proof (translation)
+Introduce `hA h2 hH D O hO p _ hp2 hU hlev`. Use `choose jc hjc hnu using fun la : Formalism.L2.Geo.PlL D p => AdmTest.exists_placeW_nonunit D p la`. Use `choose z _ using fun la => admEx O.S O.κ p Fact.out (placeW D p la (jc la)) (hnu la) 3 (one_add_lt_three Fact.out)`. Use `letI := Formalism.L2.Geo.finPl D p`. Use `⟨Formalism.L2.Geo.PlL D p, Formalism.L2.Geo.finPl D p, Formalism.L2.Geo.wtL D p, fun la => placeW D p la (jc la), hnu, jc, z, fun la => (AdmTest.placeW_spec (hjc la)).2, ⟨Formalism.L2.Geo.wtL_sum D p, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `Sx R τ0 τ' hτ i i' hi G hG`. Rewrite using `[ParamTwo.arMix_eq_max_two D O hO Sx R p]`. Conclude with `GlobalTheory.T.valuation_embedding_heights_place hA h2 hH D O hO p hp2 hU hlev _ hnu jc (fun la => (AdmTest.placeW_spec (hjc la)).2) (fun la => (AdmTest.placeW_spec (hjc la)).1) z Sx (max R 2) (le_max_right _ _) τ0 τ' hτ i i' hi G hG`. Introduce `Sx R τ0 τ' hτ i i' hi G hG`. Rewrite using `[ParamTwo.arMix_eq_max_two D O hO Sx R p]`.
+
+Conclude with `GlobalTheory.T.place_valuation_integral_criterion hA h2 hH D O hO p hp2 hU hlev _ hnu jc (fun la => (AdmTest.placeW_spec (hjc la)).2) (fun la => (AdmTest.placeW_spec (hjc la)).1) z Sx (max R 2) (le_max_right _ _) τ0 τ' hτ i i' hi G hG`.
+-/
 theorem termSt_holds : GlobalTheory.Published.RegularAlteration → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → TermSt := by
   intro hA h2 hH D O hO p _ hp2 hU hlev
   classical

@@ -30,6 +30,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
   {t : SAB H X} {p : ℕ} [hp : Fact p.Prime]
 
+/- English proof (translation)
+Use `haveI : ValuationRing ↥(intO ℂ_[p]) := Guard.intO_valRing _`. Take `⟨V, g, e, hz, he⟩` from `exists_affine_isTanBasis E H X t X (𝟙 _) (x (IsLocalRing.closedPoint _))`. Take `⟨φ, hφ⟩` from `GlobalTheory.LocM.FJ.factor_affineOpen_of_closedPoint_mem X _ x V.1 V.2 hz`. Establish `h` using `WedgeMax.isTanBasis_map t φ he`. Rewrite `h` using `[Category.comp_id, hφ]`.
+
+Conclude with `⟨g, _, h⟩`.
+-/
 theorem exists_tanBasis (x : Sp ↥(intO ℂ_[p]) ⟶ X) :
     ∃ (g : ℕ) (e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)), IsTanBasis t x e := by
   haveI : ValuationRing ↥(intO ℂ_[p]) := Guard.intO_valRing _
@@ -39,6 +44,19 @@ theorem exists_tanBasis (x : Sp ↥(intO ℂ_[p]) ⟶ X) :
   rw [Category.comp_id, hφ] at h
   exact ⟨g, _, h⟩
 
+/- English proof (translation)
+Establish `hv` using `Guard.comb_tan he hb`. Establish `top : ∀ (c : TorsChar t x (p ^ n)) (D : Fin g → ↥(intO ℂ_[p])), DlogIs t p n c e D → (p : ↥(intO ℂ_[p])) ^ 2 ∣ ∑ i, D i * b i`. Introduce `c D hD`. Take `⟨w, hw⟩` from `GlobalTheory.HTLevel.red_ex (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) hv`. Establish `hwt : w ^ (p ^ n) = 1` using `GlobalTheory.HTLevel.red_tors _ (by rw [Nat.cast_pow]; exact Ideal.mem_span_singleton_self _) hv w hw`.
+
+Establish `hqR : ((p ^ n : ℕ) : ↥(intO ℂ_[p]) ⧸ Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n})), Ideal.Quotient.eq_zero_iff_mem, Nat.cast_pow]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hw' : w = GlobalTheory.DlogEx.red _ (GlobalTheory.LieMet.tanOf hv)` using `Over.OverMorphism.ext (by rw [hw, GlobalTheory.DlogEx.red_left, GlobalTheory.LieMet.left_tanOf])`. Establish `hf : ∀ m, ((χ m).χ _ w : DualNumber (↥(intO ℂ_[p]) ⧸ Ideal.span {(p : ↥(intO ℂ_[p])) ^ n})).fst = 1` using `fun m => by rw [hw']; exact GlobalTheory.DlogEx.chi_fst _ hqR (χ m) _`.
+
+Take `⟨k, hk⟩` from `hχ c`. Establish `h1` using `hD b vO hb w hw`. Rewrite `h1` using `[hk _ w hwt, Units.coe_prod]`. Simplify using `only [Units.val_pow_eq_pow_val] at h1`. Rewrite `h1` using `[(dual_prod _ _ fun m => (dual_pow _ (hf m) _).1).2]`.
+
+Establish `h2 : ∀ m, (((χ m).χ _ w : DualNumber (↥(intO ℂ_[p]) ⧸ Ideal.span {(p : ↥(intO ℂ_[p])) ^ n})) ^ k m).snd = Ideal.Quotient.mk (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) ((k m : ↥(intO ℂ_[p])) * (s m * (p : ↥(intO ℂ_[p])) ^ 2))` using `fun m => by rw [(dual_pow _ (hf m) _).2, hs m w hw, map_mul (Ideal.Quotient.mk _) (k m : ↥(intO ℂ_[p])), map_natCast]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[← map_sum, eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Establish `h3` using `((pow_dvd_pow _ hn).trans h1).add (Finset.dvd_sum fun m (_ : m ∈ Finset.univ) => ((dvd_mul_left _ (s m)).mul_left (k m : ↥(intO ℂ_[p]))))`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Introduce `k c w hw`. Choose the witnesses or unpack the hypotheses as in `⟨D, hD, r, hr⟩ : ∃ D, DlogIs t p k c e D ∧ (p : ↥(intO ℂ_[p])) ^ 2 ∣ ∑ i, D i * b i := by`. Break down `le_total k n with hk | hk` into its components or cases. Take `⟨c', hc'⟩` from `GlobalTheory.T.torsionChar_extends_divisible_level E H X t ℂ_[p] x (p ^ k) (p ^ n) (pow_ne_zero _ hp.out.ne_zero) (pow_dvd_pow _ hk) c`. Take `⟨⟨D, hD⟩, -⟩` from `GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x p n c' g e he`.
+
+Conclude with `⟨D, GlobalTheory.HTLevel.dlog_down hk c' c hc' he hD, top c' D hD⟩`. Take `⟨⟨D, hD⟩, -⟩` from `GlobalTheory.T.exists_dlog_unique_modulo_p E H X t _ x p k c g e he`. Conclude with `⟨D, hD, top (GlobalTheory.HTLevel.res (pow_dvd_pow p hk) c) D (GlobalTheory.HTLevel.dlog_down hk c _ (fun _ _ _ _ _ _ => rfl) he hD)⟩`. Rewrite using `[hD b vO hb w hw, hr, map_mul, map_pow, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+-/
 theorem dlogDvd_of_gens [IsLocallyNoetherian X] {x : Sp ↥(intO ℂ_[p]) ⟶ X} {n N g : ℕ} (hn : 2 ≤ n)
     {χ : Fin N → TorsChar t x (p ^ n)} (hχ : Gens χ) {e : Fin g → (Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left)}
     (he : ∀ i, IsTanAtG t x (e i)) {b : Fin g → ↥(intO ℂ_[p])} {vO : Sp (DualNumber ↥(intO ℂ_[p])) ⟶ t.G.left}
@@ -90,6 +108,33 @@ theorem dlogDvd_of_gens [IsLocallyNoetherian X] {x : Sp ↥(intO ℂ_[p]) ⟶ X}
   rw [hD b vO hb w hw, hr, map_mul, map_pow, map_natCast]
   exact Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)
 
+/- English proof (translation)
+Take `⟨g, e, he⟩` from `exists_tanBasis (t := t) x`. Establish `heC` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map t (intO ℂ_[p]).subtype (he.1 i)`. Take `⟨w, hwt, hw⟩` from `Guard.exists_comb hu y`. Take `⟨a, ha, -⟩` from `he.2 _ _ w hwt`. Establish `lift : ∀ s : ℂ_[p], ∀ hs : ∀ i, ‖s * a i‖ ≤ 1, ∃ vO, IsCombAtG t x e (fun i => ⟨s * a i, hs i⟩) vO ∧ spMap (dualMap (intO ℂ_[p]).subtype) ≫ vO = spMap (epsMul s) ≫ w` using `fun s hs => by`.
+
+Take `⟨vO, -, hbv⟩` from `Guard.exists_comb he.1 (fun i => (⟨s * a i, hs i⟩ : ↥(intO ℂ_[p])))`. Conclude with `⟨vO, hbv, Guard.comb_unique heC (GlobalTheory.LatDRFree.comb_map t (intO ℂ_[p]).subtype hbv) (Guard.comb_smul heC ha _)⟩`. Distinguish the cases in `hbig : ∀ i, ‖(p : ℂ_[p]) ^ 2 * a i‖ ≤ 1`. Take `⟨vO, h1, h2⟩` from `lift _ hbig`. Use `⟨vO, Guard.comb_tan he.1 h1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h2]`. Conclude with `Guard.comb_smul hu hw _`. It suffices to derive a contradiction. Use `push_neg at hbig`. Take `⟨i₀, hi₀⟩` from `hbig`.
+
+Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun i => ‖a i‖) ⟨i₀, Finset.mem_univ _⟩`. Establish `hai : 1 < ‖(p : ℂ_[p]) ^ 2 * a i‖`. Use `lt_of_lt_of_le hi₀ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hi i₀ (Finset.mem_univ _)) (norm_nonneg _)`.
+
+Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `ha0 : a i ≠ 0` using `fun h0 => by rw [h0, mul_zero, norm_zero] at hai; linarith`. Establish `hl1 : ‖((p : ℂ_[p]) ^ 2 * a i)⁻¹‖ ≤ 1` using `by rw [norm_inv]; exact inv_le_one_of_one_le₀ hai.le`. Establish `hb' : ∀ k, ‖(a i)⁻¹ * a k‖ ≤ 1` using `fun k => by`. Rewrite using `[← div_eq_inv_mul, norm_div]`.
+
+Conclude with `div_le_one_of_le₀ (hi k (Finset.mem_univ _)) (norm_nonneg _)`. Take `⟨vO, h1, h2⟩` from `lift _ hb'`. Establish `hv` using `Guard.comb_tan he.1 h1`. Establish `h3` using `hM vO (fun l => (a i)⁻¹ * y l) hv (by rw [h2]; exact Guard.comb_smul hu hw _)`. Use `choose r hr hr' using h3`.
+
+Set `s : Fin N → ↥(intO ℂ_[p])` to `fun j => ⟨((p : ℂ_[p]) ^ 2 * a i)⁻¹ * ∑ l, Mc j l * y l, by`. Express the relevant statement in the definitionally equal form `‖_‖ ≤ 1`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ hl1 (norm_nonneg _) (hy j)⟩`. Establish `hrs : ∀ j, r j = s j * (p : ↥(intO ℂ_[p])) ^ 2` using `fun j => by`.
+
+Apply `(intO ℂ_[p]).subtype_injective` to reduce the goal to its premises. Simplify using `only [map_mul, map_pow, map_natCast, Subring.subtype_apply, s, hr]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+
+Establish `hd : DlogDvd t x p 2 vO` using `dlogDvd_of_gens hn hχ he.1 h1 s fun j w' hw' => by rw [← hrs]; exact hr' j w' hw'`. Establish `hlw` using `Guard.comb_smul heC ha ((p : ℂ_[p]) ^ 2 * a i)⁻¹`. Establish `hmem : spMap (epsMul ((p : ℂ_[p]) ^ 2 * a i)⁻¹) ≫ w ∈ latHT t p (spMap (intO ℂ_[p]).subtype ≫ x)`. Use `⟨x, rfl, 2, vO, hv, ?_, hd⟩` and prove the remaining obligations. Rewrite using `[h2]`.
+
+Use `Guard.comb_unique heC (Guard.comb_smul heC ha _) ?_` and prove the remaining obligations. Use `Guard.comb_smul heC hlw ((p : ℂ_[p]) ^ 2) using 2` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Establish `hn' : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹` using `PadicComplexHost.norm_p p`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.out.two_le`.
+
+Take `⟨x', hx', vO', hv', hs'⟩` from `GlobalTheory.ShFam.Pad.HTBound.htBound E H X t p ℂ_[p] hn' x (fun x' hx' => WedgeMax.ext_intO hX x x' hx') _ hmem p (by`. Rewrite using `[hn', ← Real.rpow_neg_one]`. Use `Real.rpow_le_rpow_of_exponent_le (by linarith) (neg_le_neg ?_)` and prove the remaining obligations. Rewrite using `[div_le_one (by linarith)]`. Use the proof step `linarith)`.
+
+Take `rfl` from `WedgeMax.ext_intO hX x x' hx'`. Take `⟨b, -, hb⟩` from `GlobalTheory.HTLevel.coords he hlw _ hv' hs'`. Establish `h4 : ‖(b i : ℂ_[p])‖ ≤ 1` using `(b i).2`. Establish `e1 : (p : ℂ_[p]) * (((p : ℂ_[p]) ^ 2 * a i)⁻¹ * a i) = (p : ℂ_[p])⁻¹` using `by field_simp`. Rewrite `h4` using `[hb, e1, norm_inv, hn', inv_inv]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_integral [IsLocallyNoetherian X] (hX : X.IsSeparated) {x : Sp ↥(intO ℂ_[p]) ⟶ X} {n N m : ℕ} (hn : 2 ≤ n)
     {χ : Fin N → TorsChar t x (p ^ n)} (hχ : Gens χ) {u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)}
     (hu : ∀ l, IsTanAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (u l)) {Mc : Matrix (Fin N) (Fin m) ℂ_[p]}
@@ -160,6 +205,15 @@ theorem exists_integral [IsLocallyNoetherian X] (hX : X.IsSeparated) {x : Sp ↥
   rw [hb, e1, norm_inv, hn', inv_inv] at h4
   linarith
 
+/- English proof (translation)
+Take `⟨vO, hv, hc⟩` from `exists_integral hX (by omega) hχ hu hM y hy`. Take `⟨r, hr, h1⟩` from `hM vO _ hv hc j`. Take `⟨r', hr', h1'⟩` from `hM' vO _ hv hc j`. Take `⟨w, hw⟩` from `GlobalTheory.HTLevel.red_ex (Ideal.span {(p : ↥(intO ℂ_[p])) ^ n}) hv`. Establish `h2` using `(h1' w hw).symm.trans (h1 w hw)`.
+
+Rewrite `h2` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Take `⟨d, hd⟩` from `(pow_dvd_pow _ hn).trans h2`. Establish `hp0 : (p : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 hp.out.ne_zero`. Establish `h3 : Mc'.mulVec y j - Mc.mulVec y j = (p : ℂ_[p]) ^ k * d`. Apply `mul_left_cancel₀ (pow_ne_zero 2 hp0)` to reduce the goal to its premises.
+
+Use `congrArg (intO ℂ_[p]).subtype hd` as an intermediate fact. Simplify using `only [map_mul, map_pow, map_natCast, map_sub, Subring.subtype_apply, hr, hr'] at this`. Establish `e1 : ∀ A : Matrix (Fin N) (Fin m) ℂ_[p], ∑ l, A j l * ((p : ℂ_[p]) ^ 2 * y l) = (p : ℂ_[p]) ^ 2 * A.mulVec y j` using `fun A => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`.
+
+Rewrite `this` using `[e1, e1]`. Take the linear combination `this`. Rewrite using `[h3, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) d.2`.
+-/
 theorem norm_sub_le [IsLocallyNoetherian X] (hX : X.IsSeparated) {x : Sp ↥(intO ℂ_[p]) ⟶ X} {n N m k : ℕ} (hn : k + 2 ≤ n)
     {χ : Fin N → TorsChar t x (p ^ n)} (hχ : Gens χ) {u : Fin m → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)}
     (hu : ∀ l, IsTanAtG t (spMap (intO ℂ_[p]).subtype ≫ x) (u l)) {Mc Mc' : Matrix (Fin N) (Fin m) ℂ_[p]}
@@ -188,6 +242,11 @@ theorem norm_sub_le [IsLocallyNoetherian X] (hX : X.IsSeparated) {x : Sp ↥(int
 
 end Gen
 
+/- English proof (translation)
+Establish `hw` using `GlobalTheory.CovHt.Link.w_eq_norm_ioOf_rpow (resP v) v (residueCharacteristic_mem v) e`. Establish `hw1 : e.w ((resP v : ℕ) : AlgebraicClosure F) < 1`. Establish `e1 : ((resP v : ℕ) : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F ((resP v : ℕ) : 𝓞 F))` using `by simp`. Rewrite using `[e1, e.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 (residueCharacteristic_mem v)`.
+
+Establish `hw0 : 0 < e.w ((resP v : ℕ) : AlgebraicClosure F)` using `e.w.pos (Nat.cast_ne_zero.2 hp.out.ne_zero)`. Establish `hlp : 0 < Real.log (resP v)` using `Real.log_pos (by exact_mod_cast hp.out.one_lt)`. Rewrite using `[hw z, hw z']`. Conclude with `Real.rpow_le_rpow_iff (norm_nonneg _) (norm_nonneg _) (div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp)`.
+-/
 theorem w_le_iff {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} [hp : Fact (resP v).Prime] (e : Ext v)
     (z z' : AlgebraicClosure F) : e.w z ≤ e.w z' ↔ ‖ioOf (resP v) e z‖ ≤ ‖ioOf (resP v) e z'‖ := by
   have hw := GlobalTheory.CovHt.Link.w_eq_norm_ioOf_rpow (resP v) v (residueCharacteristic_mem v) e
@@ -201,6 +260,9 @@ theorem w_le_iff {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (�
   rw [hw z, hw z']
   exact Real.rpow_le_rpow_iff (norm_nonneg _) (norm_nonneg _) (div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp)
 
+/- English proof (translation)
+Use `supN_le _ (by positivity) fun j => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, w_le_iff, Pi.sub_apply, map_sub, RingHom.map_mulVec, RingHom.map_mulVec, map_pow, map_natCast, norm_pow]`. Use `h _ (fun r => ?_) j` and prove the remaining obligations. Rewrite using `[← RingHom.map_mulVec, ← norm_one (α := ℂ_[resP v]), ← map_one (ioOf (resP v) e), ← w_le_iff, map_one]`. Conclude with `(le_supN _ _ r).trans hu`.
+-/
 theorem supN_sub_le {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum (𝓞 F)} [hp : Fact (resP v).Prime]
     (e : Ext v) {N m k : ℕ} {A A' : Matrix (Fin N) (Fin m) (AlgebraicClosure F)}
     (h : ∀ y : Fin m → ℂ_[resP v], (∀ r, ‖(A.map (ioOf (resP v) e)).mulVec y r‖ ≤ 1) → ∀ j,
@@ -213,11 +275,19 @@ theorem supN_sub_le {F : Type} [Field F] [NumberField F] {v : HeightOneSpectrum 
   rw [← RingHom.map_mulVec, ← norm_one (α := ℂ_[resP v]), ← map_one (ioOf (resP v) e), ← w_le_iff, map_one]
   exact (le_supN _ _ r).trans hu
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.FactorDepth.isTanAtG_map _ (psiAt O c e y) ((frAt O c (below y.1)).tan _ _)`.
+-/
 theorem uAt_tan {D : D7} (O : Setup D) (c : O.s.Comp) {v : HeightOneSpectrum (𝓞 D.what₂.LL)} [Fact (resP v).Prime]
     (e : Ext v) (y : AlgPt (O.Φ.C c).Y) (l : Fin (D.R.f * O.N)) :
     Formalism.L2.Pj.IsTanAtG O.s.T.Z.t (ptAt O c e y) (uAt O c e y l) :=
   GlobalTheory.FactorDepth.isTanAtG_map _ (psiAt O c e y) ((frAt O c (below y.1)).tan _ _)
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ D O _ T R _ p _ _ c b n _ v hp e y Ch inC M hv hP k hk a a' ha ha' u hu`. Rewrite using `[← hv]`. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`. Take `⟨xO, χ, hx, hχ, -, -, hM⟩` from `hP`. Use `haveI := GlobalTheory.Toroidal.isProper_toroidalModel_structureMap O.s.T.Z`.
+
+Use `haveI : IsLocallyNoetherian O.s.T.Z.X := LocallyOfFiniteType.isLocallyNoetherian O.s.T.Z.s`. Establish `hX : O.s.T.Z.X.IsSeparated` using `⟨by rw [← Limits.terminal.comp_from O.s.T.Z.s]; infer_instance⟩`. Conclude with `supN_sub_le e (fun z hz j => norm_sub_le hX (by omega) hχ (fun l => hx ▸ uAt_tan O c e y l) (hM a ha) (hM a' ha') z hz j) u hu`.
+-/
 theorem charts_agree : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)
     (b : Module.Basis (Fin (D.R.f * O.N + D.R.f * O.N)) ℤ O.S.Dw.La) (n : ℕ), 3 ≤ n →

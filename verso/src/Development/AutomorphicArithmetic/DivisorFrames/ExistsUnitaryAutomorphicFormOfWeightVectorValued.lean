@@ -10,6 +10,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsSemilinearAct
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.WeightEqOfFinitePartNeBot
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC Formalism.BasicNotions GlobalTheory.DefU GlobalTheory.FrameAut Formalism.CohomologicalDescent.DepthNonnegative
 
+/- English proof (translation)
+Establish `c0 : Continuous (coord τ)`. Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
+
+Establish `c2 : Continuous (infEq E).symm`. Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`. Establish `c3 : Continuous (pInf E)` using `c2.comp continuous_fst`. Establish `c4 : Continuous fun a => coord τ (pInf E a)` using `c0.comp c3`.
+
+Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_map c4`. Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_map c4`.
+-/
 private theorem cont_cEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) :
     Continuous (cEmb (E := E) (n := n) τ) := by
   have c0 : Continuous (coord τ) := by
@@ -27,6 +34,25 @@ private theorem cont_cEmb {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   · exact (Units.continuous_val.comp continuous_subtype_val).matrix_map c4
   · exact (Units.continuous_coe_inv.comp continuous_subtype_val).matrix_map c4
 
+/- English proof (translation)
+Introduce `E _ _ _ n ι _ _ emb hinj mu sh lam hl B hpos hinv F1 hF0 hrat hinf hev`. Set `C : UA E n →* (ι → GL (Fin n) ℂ)` to `MonoidHom.pi fun τ => cEmb (E := E) (n := n) (emb τ)`. Set `R : UA E n →* Module.End ℂ (NablaT ℂ n mu)` to `(wtHom ℂ n mu sh).comp C`. Establish `hR : ∀ g, R g = wtOp ℂ n mu sh (C g)` using `fun _ => rfl`. Establish `hRfin : ∀ k ∈ finU E n, R k = 1` using `fun k hk => by`.
+
+Establish `h1 : C k = 1`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord (emb τ)) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Rewrite using `[hR, h1, wtOp_one]`.
+
+Take `⟨hfd, hcont⟩` from `UpperTheory.finiteDimensional_nablaT_and_continuous_wtOp n ι mu sh`. Establish `hC : Continuous C` using `continuous_pi fun τ => cont_cEmb (emb τ)`. Take `⟨P, hP0, hP⟩` from `UpperTheory.exists_invariant_nondegenerate_pairing_weightRep_nablaT n ι mu sh lam hl`. Set `f : Formalism.L2.DIV.VV ℂ lam →ₗ[ℂ] (UA E n → ℂ)` to `{ toFun := fun v g => P v (R g⁻¹ (F1 g)) map_add' := fun a b => funext fun g => by simp map_smul' := fun a b => funext fun g => by simp }`. Establish `hf : ∀ v g, f v g = P v (R g⁻¹ (F1 g))` using `fun _ _ => rfl`.
+
+Establish `hRU : ∀ (x : UA E n) (φ : UA E n → ℂ) (g : UA E n), RU E n x φ g = φ (g * x)` using `fun _ _ _ => rfl`. Establish `hfa : ∀ v, IsAutFormU (f v)` using `fun v => UpperTheory.isAutFormU_of_vectorValued_invariant E n (NablaT ℂ n mu) R hRfin (fun ℓ u => (hcont ℓ u).comp hC) F1 hrat hinf hev (P v)`. Establish `hfe : ∀ x ∈ infU E n, ∀ v, f (Formalism.L2.DIV.rhoK lam (C x) v) = RU E n x (f v)` using `fun x hx v => by`. Use function extensionality and compare the values at `g`. Rewrite using `[hRU, hf, hf, hinf x hx, ← hP (C x) v (R (g * x)⁻¹ (F1 g)), ← hR, ← Module.End.mul_apply, ← map_mul, mul_inv_rev, mul_inv_cancel_left]`.
+
+Establish `hf0 : f ≠ 0` using `fun h0 => hF0 (funext fun g => by`. Establish `h1 : R g⁻¹ (F1 g) = 0` using `hP0 _ fun v => by rw [← hf, h0]; rfl`. Establish `h2` using `congrArg (R g) h1`. Rewrite `h2` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero]`. Conclude with `h2)`.
+
+Use `haveI : Nontrivial (Formalism.L2.DIV.VV ℂ lam) := by`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hf0 (LinearMap.ext fun v => by rw [Subsingleton.elim v 0, map_zero, map_zero])`. Use `haveI : ∀ v, Finite (Formalism.GradedWeylDivisibility.ssIdx n n (lam v).natW) := fun _ => (Formalism.GradedWeylDivisibility.sSIdxFinite n n _).to_subtype`.
+
+Use `haveI : FiniteDimensional ℂ (Formalism.L2.DIV.VV ℂ lam) := Module.Finite.of_basis (Formalism.L2.DIV.bVV ℂ lam)`. Take `⟨π, hπ, f', hf'0, hf'π, hf'e, hsum⟩` from `UpperTheory.exists_admissible_equivariantFormsRep E n (Formalism.L2.DIV.VV ℂ lam) ((Formalism.L2.DIV.rhoK (K := ℂ) lam).comp (C.comp (infU E n).subtype)) (UpperTheory.span_highestWeightRep_unitaryGroup_realPoints_image_eq_top E n ι emb hinj lam) B hpos hinv f hf0 hfa (fun x v => …`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, f' v ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+
+Conclude with `hf'0 (LinearMap.ext hc)`. Use `⟨π, hπ, UpperTheory.hasWeightAt_of_ne_zero_intertwining E n ι emb hinj lam π f' hf'0 hf'π (fun x hx v => hf'e ⟨x, hx⟩ v), f' v, hf'π v, hv, fun κ s y c hy hs => hsum κ s y c hy (fun w => ?_) v⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, Pi.smul_apply, hf, ← map_smul, ← map_smul, ← hs g, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+
+Rewrite using `[hRU, hf, mul_inv_rev, map_mul, hRfin _ ((finU E n).inv_mem (hy i hi)), one_mul]`.
+-/
 theorem UpperTheory.exists_unitaryAutomorphicForm_of_weightVectorValued :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (emb : ι → (E →+* ℂ)), Function.Injective (fun τ => InfinitePlace.mk (emb τ)) →
         ∀ (mu : ι → ℕ → ℕ) (sh : ι → ℤ) (lam : ι → DomWeight n), (∀ τ (a : Fin n), (lam τ).w a = (mu τ a : ℤ) + sh τ) →

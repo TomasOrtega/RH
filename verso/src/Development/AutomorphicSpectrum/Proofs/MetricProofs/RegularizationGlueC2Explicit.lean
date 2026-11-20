@@ -17,6 +17,13 @@ section General
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Establish `hC : 0 < |C| + 1` using `by positivity`. Establish `hs' : ∀ᶠ t in l, |s t| < ε / 2 / (|C| + 1)`. Use `hs.eventually (Metric.ball_mem_nhds (0 : ℝ) (div_pos (half_pos hε) hC))` as an intermediate fact.
+
+Use `filter_upwards [this] with t ht`. Simplify `ht` using `[Real.dist_eq]`. Use `filter_upwards [h (ε / 2) (half_pos hε), hs'] with t h1 h2 z hz`. Establish `h3` using `h1 z hz`. Establish `h4 : ‖s t • q z‖ < ε / 2`.
+
+Rewrite using `[norm_smul, Real.norm_eq_abs]`. Establish `hqz : ‖q z‖ ≤ |C| + 1` using `(hq z hz).trans ((le_abs_self C).trans (by linarith))`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tendstoUniformlyOn_add_small {V α : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {N : Set α} {g₀ : ℝ → α → V} {g : α → V} {l : Filter ℝ} {s : ℝ → ℝ} {q : α → V} {C : ℝ}
     (hq : ∀ z ∈ N, ‖q z‖ ≤ C) (hs : Tendsto s l (𝓝 0)) (h : TendstoUniformlyOn g₀ g l N) :
@@ -41,6 +48,9 @@ theorem tendstoUniformlyOn_add_small {V α : Type*} [NormedAddCommGroup V] [Norm
     _ = dist (g z) (g₀ t z) + ‖s t • q z‖ := by simp [dist_eq_norm]
     _ < ε := by linarith
 
+/- English proof (translation)
+Establish `hev : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ N, G' t =ᶠ[𝓝 z] G t` using `by filter_upwards [h] with t ht z hz filter_upwards [hU.mem_nhds (hN hz)] with y hy using ht y hy`. Use `⟨hc.1.congr ?_, hc.2.1.congr ?_, hc.2.2.congr ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev] with t ht z hz using (ht z hz).eq_of_nhds`. Use `filter_upwards [hev] with t ht z hz using (ht z hz).fderiv_eq`. Use `filter_upwards [hev] with t ht z hz using (ht z hz).fderiv.fderiv_eq`.
+-/
 theorem tendstoC2On_congr {U N : Set E} (hU : IsOpen U) (hN : N ⊆ U) {G G' : ℝ → E → ℝ} {p : E → ℝ}
     (h : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ U, G' t z = G t z) (hc : TendstoC2On G' p N) :
     TendstoC2On G p N := by
@@ -52,6 +62,21 @@ theorem tendstoC2On_congr {U N : Set E} (hU : IsOpen U) (hN : N ⊆ U) {G G' : �
   · filter_upwards [hev] with t ht z hz using (ht z hz).fderiv_eq
   · filter_upwards [hev] with t ht z hz using (ht z hz).fderiv.fderiv_eq
 
+/- English proof (translation)
+Establish `hD1 : ContinuousOn (fderiv ℝ Q) U` using `hQ.continuousOn_fderiv_of_isOpen hU (by norm_num)`. Establish `hD2 : ContinuousOn (fderiv ℝ (fderiv ℝ Q)) U` using `(hQ.fderiv_of_isOpen hU (m := 1) (by norm_num)).continuousOn_fderiv_of_isOpen hU le_rfl`. Take `⟨M0, hM0⟩` from `hNc.exists_bound_of_continuousOn (hQ.continuousOn.mono hN)`. Take `⟨M1, hM1⟩` from `hNc.exists_bound_of_continuousOn (hD1.mono hN)`. Take `⟨M2, hM2⟩` from `hNc.exists_bound_of_continuousOn (f := fderiv ℝ (fderiv ℝ Q)) (by exact hD2.mono hN)`.
+
+Establish `hdiffQ : ∀ z ∈ U, DifferentiableAt ℝ Q z` using `fun z hz => (hQ.contDiffAt (hU.mem_nhds hz)).differentiableAt (by norm_num)`. Establish `hdiff2Q : ∀ z ∈ U, DifferentiableAt ℝ (fderiv ℝ Q) z` using `fun z hz => ((hQ.contDiffAt (hU.mem_nhds hz)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h1 : ∀ t, ContDiffOn ℝ 2 (a t) U → ∀ z ∈ U, fderiv ℝ (fun z => a t z + δ t * Q z) z = fderiv ℝ (a t) z + δ t • fderiv ℝ Q z`. Introduce `t ht z hz`. Establish `hd : DifferentiableAt ℝ (a t) z` using `(ht.contDiffAt (hU.mem_nhds hz)).differentiableAt (by norm_num)`.
+
+Use `(hd.hasFDerivAt.add ((hdiffQ z hz).hasFDerivAt.const_mul (δ t))).fderiv` as an intermediate fact. Conclude with `this`. Establish `h2 : ∀ t, ContDiffOn ℝ 2 (a t) U → ∀ z ∈ U, fderiv ℝ (fderiv ℝ (fun z => a t z + δ t * Q z)) z = fderiv ℝ (fderiv ℝ (a t)) z + δ t • fderiv ℝ (fderiv ℝ Q) z`. Introduce `t ht z hz`. Establish `hev : fderiv ℝ (fun z => a t z + δ t * Q z) =ᶠ[𝓝 z] fun z => fderiv ℝ (a t) z + δ t • fderiv ℝ Q z` using `by filter_upwards [hU.mem_nhds hz] with y hy using h1 t ht y hy`.
+
+Rewrite using `[hev.fderiv_eq]`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ (a t)) z` using `((ht.contDiffAt (hU.mem_nhds hz)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Conclude with `(hd.hasFDerivAt.add ((hdiff2Q z hz).hasFDerivAt.const_smul (δ t))).fderiv`. Use `⟨⟨?_, ?_, ?_⟩, |M1|, ?_⟩` and prove the remaining obligations. Use `tendstoUniformlyOn_add_small (q := Q) hM0 hδ h.1` as an intermediate fact.
+
+Simplify `this` using `[smul_eq_mul]`. Use `tendstoUniformlyOn_add_small (q := fderiv ℝ Q) hM1 hδ h.2.1` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations. Use `filter_upwards [ha] with t ht z hz`. Conclude with `(h1 t ht z (hN hz)).symm`.
+
+Use `tendstoUniformlyOn_add_small (q := fderiv ℝ (fderiv ℝ Q)) hM2 hδ h.2.2` as an intermediate fact. Use `this.congr ?_` and prove the remaining obligations. Use `filter_upwards [ha] with t ht z hz`. Conclude with `(h2 t ht z (hN hz)).symm`. Use `filter_upwards [ha] with t ht z hz`.
+
+Rewrite using `[h1 t ht z (hN hz), add_sub_cancel_left, norm_smul, Real.norm_eq_abs, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right ((hM1 z hz).trans (le_abs_self _)) (abs_nonneg _)`.
+-/
 theorem tendstoC2On_add_small {U N : Set E} (hU : IsOpen U) (hN : N ⊆ U) (hNc : IsCompact N)
     {a : ℝ → E → ℝ} {p Q : E → ℝ} {δ : ℝ → ℝ} (hδ : Tendsto δ (𝓝[>] 0) (𝓝 0))
     (hQ : ContDiffOn ℝ 2 Q U) (ha : ∀ᶠ t in 𝓝[>] (0 : ℝ), ContDiffOn ℝ 2 (a t) U)
@@ -111,6 +136,29 @@ section Chart
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Apply the tactic sequence `have h2 : (2 : WithTop ℕ∞) ≤ ∞ := by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top`. Use `set W := (A.chart jA).target ∩ (A.chart jA).symm ⁻¹' W' with hWdef`. Establish `hWo : IsOpen W` using `(A.chart jA).isOpen_inter_preimage_symm hW'`. Use `set U := ball (0 : Fin e → ℂ) (5 / 4) ∩ ((B.chart j).target ∩ (B.chart j).symm ⁻¹' (bdry s)ᶜ) with hUdef`. Establish `hUo : IsOpen U` using `isOpen_ball.inter ((B.chart j).isOpen_inter_preimage_symm hbd.isOpen_compl)`.
+
+Use `set τ := B.chart j ∘ (A.chart jA).symm with hτdef`. Establish `hτ : ∀ y ∈ W, ContDiffAt ℝ 2 τ y`. Introduce `y hy`. Establish `ha : AnalyticAt ℂ τ y` using `hAB.1 jA j y ⟨hy.1, (hWb hy.2).1⟩`. Establish `hR : AnalyticAt ℝ τ y` using `ha.restrictScalars`.
+
+Conclude with `hR.contDiffAt`. Establish `hleft : ∀ y ∈ W, (B.chart j).symm (τ y) = (A.chart jA).symm y` using `fun y hy => (B.chart j).left_inv (hWb hy.2).1`. Establish `hWU : Set.MapsTo τ W U`. Introduce `y hy`. Use `⟨(hWb hy.2).2, (B.chart j).map_source (hWb hy.2).1, ?_⟩` and prove the remaining obligations.
+
+Use `show (B.chart j).symm (τ y) ∈ (bdry s)ᶜ`. Rewrite using `[hleft y hy]`. Conclude with `hWc hy.2`. Establish `hΦ : ∀ z ∈ U, ContDiffAt ℝ 2 (ph ∘ (B.chart j).symm) z`. Introduce `z hz`.
+
+Conclude with `(((smoothOn_of_compatible hAB hbd.isOpen_compl hph) j).contDiffAt (((B.chart j).isOpen_inter_preimage_symm hbd.isOpen_compl).mem_nhds hz.2)).of_le h2`. Establish `hG : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ U, ContDiffAt ℝ 2 (f t ∘ (B.chart j).symm) z` using `by filter_upwards [hfs] with t ht z hz`. Establish `hz' : z ∈ (B.chart j).target ∩ (B.chart j).symm ⁻¹' chartBall B j (5 / 4)`. Use `⟨hz.2.1, (B.chart j).map_target hz.2.1, ?_⟩` and prove the remaining obligations. Use `show B.chart j ((B.chart j).symm z) ∈ ball (0 : Fin e → ℂ) (5 / 4)`.
+
+Rewrite using `[(B.chart j).right_inv hz.2.1]`. Conclude with `hz.1`. Conclude with `(((smoothOn_of_compatible hAB (chartBall_isOpen B j _) ht) j).contDiffAt (((B.chart j).isOpen_inter_preimage_symm (chartBall_isOpen B j _)).mem_nhds hz')).of_le h2`. Establish `hF : ∀ t, ∀ y ∈ W, (f t ∘ (A.chart jA).symm) y = (f t ∘ (B.chart j).symm) (τ y)`. Introduce `t y hy`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[hleft y hy]`. Establish `hΨ : ∀ y ∈ W, (ph ∘ (A.chart jA).symm) y = (ph ∘ (B.chart j).symm) (τ y)`. Introduce `y hy`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[hleft y hy]`. Establish `hτN : IsCompact (τ '' N)` using `hNc.image_of_continuousOn fun y hy => (hτ y (hN hy)).continuousAt.continuousWithinAt`. Establish `hτU : τ '' N ⊆ ball (0 : Fin e → ℂ) (5 / 4) ∩ (B.chart j).symm ⁻¹' (bdry s)ᶜ`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `hWU (hN hy)` as an intermediate fact.
+
+Conclude with `⟨this.1, this.2.2⟩`. Take `⟨c0, c1, c2, M, hM⟩` from `hconv _ hτU hτN`. Use `⟨GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.local_c2_convergence_pullback hWo hτ hWU hG hΦ hF hΨ hNc hN c0 c1 c2, ?_⟩` and prove the remaining obligations. Establish `hτc : ContDiffOn ℝ 2 τ W` using `fun y hy => (hτ y hy).contDiffWithinAt`. Establish `hD1 : ContinuousOn (fderiv ℝ τ) W` using `hτc.continuousOn_fderiv_of_isOpen hWo (by norm_num)`.
+
+Take `⟨M1, hM1⟩` from `hNc.exists_bound_of_continuousOn (hD1.mono hN)`. Use `⟨M * M1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hM, hG] with t ht hGt z hz`. Establish `e1` using `(GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.fderiv_fderiv_comp_eq hWo hτ hWU hGt (hF t) (hN hz)).1`. Establish `e2` using `(GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.fderiv_fderiv_comp_eq hWo hτ hWU hΦ hΨ (hN hz)).1`.
+
+Rewrite using `[e1, e2, ← ContinuousLinearMap.sub_comp]`. Establish `h3` using `ht (τ z) (Set.mem_image_of_mem τ hz)`. Establish `h4` using `hM1 z hz`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chart_C2_convergence (A B : FinHolAtlas e X) (hAB : A.Compatible B) (jA : Fin A.n) (j : Fin B.n)
     (s : X → X → ℂ) (ph : X → ℝ) (hbd : IsClosed (bdry s)) (hph : A.SmoothOn (bdry s)ᶜ ph)
     {W' : Set X} (hW' : IsOpen W') (hWb : W' ⊆ chartBall B j (5 / 4)) (hWc : W' ⊆ (bdry s)ᶜ)
@@ -210,6 +258,27 @@ section Glue
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Use `set Kc : Fin B.n → Set X := fun j => (B.chart j).symm '' closedBall (0 : Fin e → ℂ) (9 / 8)`. Establish `hKsub : ∀ j, closedBall (0 : Fin e → ℂ) (9 / 8) ⊆ (B.chart j).target` using `fun j => (closedBall_subset_closedBall (by norm_num)).trans (h2 j)`. Establish `hKcl : ∀ j, IsClosed (Kc j)` using `fun j => ((isCompact_closedBall _ _).image_of_continuousOn ((B.chart j).continuousOn_symm.mono (hKsub j))).isClosed`. Establish `hKin : ∀ j, Kc j ⊆ chartBall B j (5 / 4)`. Introduce and unpack `j _ ⟨z, hz, rfl⟩`.
+
+Use `⟨(B.chart j).map_target (hKsub j hz), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, (B.chart j).right_inv (hKsub j hz)]`. Conclude with `closedBall_subset_ball (by norm_num) hz`. Establish `hnotK : ∀ j, ∀ y, y ∉ Kc j → y ∉ chartBall B j (9 / 8)`. Introduce `j y hy hb`.
+
+Conclude with `hy ⟨B.chart j y, ball_subset_closedBall hb.2, (B.chart j).left_inv hb.1⟩`. Set `I : Finset (Fin B.n)` to `Finset.univ.filter fun j => y₀ ∈ chartBall B j (5 / 4)`. Use `⟨chartBall B k₀ 1 ∩ (⋂ j ∈ I, chartBall B j (5 / 4)) ∩ ⋂ j ∈ Iᶜ, (Kc j)ᶜ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `((chartBall_isOpen B k₀ 1).inter ?_).inter ?_` and prove the remaining obligations. Conclude with `isOpen_biInter_finset fun j _ => chartBall_isOpen B j _`.
+
+Conclude with `isOpen_biInter_finset fun j _ => (hKcl j).isOpen_compl`. Use `⟨⟨hk₀, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iInter]`. Introduce `j hj`. Simplify `hj` using `[I]`.
+
+Simplify using `only [Set.mem_iInter]`. Introduce `j hj hK`. Establish `: y₀ ∈ chartBall B j (5 / 4)` using `hKin j hK`. Simplify using `[I, this] at hj`. Conclude with `fun y hy => hy.1.1`.
+
+Introduce `j hj y hy`. Use `hy.1.2` as an intermediate fact. Simplify using `only [Set.mem_iInter] at this`. Conclude with `this j (by simpa [I] using hj)`. Introduce `f η δ Mb hδ0 hδ1 hη0 hη1 hMb hov j hj y hy`.
+
+Establish `hyK : y ∉ Kc j`. Use `hy.2` as an intermediate fact. Simplify using `only [Set.mem_iInter] at this`. Conclude with `this j (by simpa [I] using hj)`. Establish `hy0 : y ∈ chartBall B k₀ 1` using `hy.1.1`.
+
+Establish `hy5 : y ∈ chartBall B k₀ (5 / 4)` using `chartBall_mono B k₀ (by norm_num) hy0`. Establish `hk : glueArg B f η δ Mb k₀ y = f k₀ y`. Simplify using `[glueArg, hy5, hη0 k₀ y hy0]`. Rewrite using `[hk]`. Unfold `glueArg`.
+
+Use `split_ifs with hj5`. Rewrite using `[hη1 j y (hnotK j y hyK)]`. Use `hov j k₀ y ⟨hj5, hy5⟩` as an intermediate fact. Use `(abs_le.1 this).2` as an intermediate fact. Combine the linear relations using `[hδ0]`.
+
+Use `(abs_le.1 (hMb k₀ y hy5)).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma glue_local_unif [T2Space X] (B : FinHolAtlas e X)
     (h2 : ∀ j, closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target)
     (y₀ : X) (k₀ : Fin B.n) (hk₀ : y₀ ∈ chartBall B k₀ 1) :
@@ -271,6 +340,13 @@ lemma glue_local_unif [T2Space X] (B : FinHolAtlas e X)
     · have := (abs_le.1 (hMb k₀ y hy5)).1
       linarith
 
+/- English proof (translation)
+Take `⟨W, hWo, hyW, hWk, hWin, hWout⟩` from `glue_local_unif B h2 y₀ k₀ hk₀`. Set `I : Finset (Fin B.n)` to `Finset.univ.filter fun j => y₀ ∈ chartBall B j (5 / 4)`. Establish `hk₀I : k₀ ∈ I`. Simplify using `only [I, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `chartBall_mono B k₀ (by norm_num) hk₀`.
+
+Use `⟨W, I, hWo, hyW, hWk, hk₀I, fun j hj => hWin j (by simpa [I] using hj), ?_⟩` and prove the remaining obligations. Introduce `f η δ Mb hδ hδ1 hη0 hη1 hMb hov y hy`. Establish `hy5 : ∀ j ∈ I, y ∈ chartBall B j (5 / 4)` using `fun j hj => hWin j (by simpa [I] using hj) hy`. Rewrite using `[regMax_dominated (Fin B.n) δ _ k₀ I hδ hk₀I (fun j hj => hWout f η δ Mb hδ.le hδ1 hη0 hη1 hMb hov j (by simpa [I] using hj) y hy)]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Establish `hk5` using `hy5 k₀ hk₀I`. Distinguish the cases in `hj : j ∈ I`. Simplify using `[hj, glueArg, hy5 j hj]`. Simplify using `[hj, glueArg, hk5]`.
+-/
 lemma glue_loc_rep [T2Space X] (B : FinHolAtlas e X) [Nonempty (Fin B.n)]
     (h2 : ∀ j, closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target)
     (y₀ : X) (k₀ : Fin B.n) (hk₀ : y₀ ∈ chartBall B k₀ 1) :
@@ -301,6 +377,9 @@ lemma glue_loc_rep [T2Space X] (B : FinHolAtlas e X) [Nonempty (Fin B.n)]
   · simp [hj, glueArg, hy5 j hj]
   · simp [hj, glueArg, hk5]
 
+/- English proof (translation)
+The claim follows from `|ReciprocityTheory.AnForm.A.regMax δ (fun j => glueArg B f η δ Mb j y) - f j y| ≤ K * δ := by classical have hηs : ∀ j, A.Smooth (η j) := fun j => (hη j).1 have hC : ∀ j, ∃ C : ℝ, IsPsh A (LocPot.ofFun (η j) + Θ.rsmul C) := fun j => pshShift A Θ hΘ hΘpos (η j) (hηs j) choose Cj h …`.
+-/
 theorem reg_glue_explicit [CompactSpace X] [T2Space X] (A B : FinHolAtlas e X) [Nonempty (Fin B.n)]
     (Θ th : LocPot X) (hAB : A.Compatible B) (hcov : ∀ x, ∃ j, x ∈ chartBall B j 1)
     (h2 : ∀ j, closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target)
@@ -554,6 +633,39 @@ noncomputable section
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
+/- English proof (translation)
+Establish `ev : ∀ᶠ t in 𝓝[>] (0 : ℝ), 0 < t ∧ t ≤ t₀` using `by filter_upwards [Ioc_mem_nhdsGT ht₀] with t ht using ht`. Apply the tactic sequence `have h2' : (2 : WithTop ℕ∞) ≤ ∞ := by first | exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤) | simp | exact WithTop.coe_le_coe.2 le_top`. Take `⟨k₀, hk₀⟩` from `hcov ((A.chart jA).symm z₀)`. Take `⟨W, I, hWo, hyW, hWk, hk₀I, hWI, hrep⟩` from `glue_loc_rep B h2 _ k₀ hk₀`. Use `set W' := W ∩ (bdry s)ᶜ with hW'def`.
+
+Establish `hW'o : IsOpen W'` using `hWo.inter hbd.isOpen_compl`. Use `set U := (A.chart jA).target ∩ (A.chart jA).symm ⁻¹' W' with hUdef`. Establish `hUo : IsOpen U` using `(A.chart jA).isOpen_inter_preimage_symm hW'o`. Establish `hzU : z₀ ∈ U` using `⟨hz₀.1, hyW, hz₀.2⟩`. Take `⟨r, hr, hball⟩` from `Metric.mem_nhds_iff.1 (hUo.mem_nhds hzU)`.
+
+Use `set N := closedBall z₀ (r / 2) with hNdef`. Establish `hNU : N ⊆ U` using `(closedBall_subset_ball (half_lt_self hr)).trans hball`. Establish `hNc : IsCompact N` using `isCompact_closedBall _ _`. Use `⟨N, closedBall_mem_nhds z₀ (half_pos hr), ?_⟩` and prove the remaining obligations. Use `set p := ph ∘ (A.chart jA).symm with hp`.
+
+Establish `hpC : ContDiffOn ℝ 2 p U` using `((hph jA).of_le h2').mono fun z hz => ⟨hz.1, hz.2.2⟩`. Set `b : Fin B.n → Fin B.n` to `fun j => if j ∈ I then j else k₀`. Establish `hb : ∀ j, b j ∈ I`. Introduce `j`. Distinguish the cases in `hj : j ∈ I`.
+
+Simplify `hj` using `[b, hj]`. Simplify `hk₀I` using `[b, hj]`. Establish `hWb : ∀ j, W' ⊆ chartBall B (b j) (5 / 4)` using `fun j y hy => hWI _ (hb j) hy.1`. Set `Q : Fin B.n → (Fin e → ℂ) → ℝ` to `fun j z => 4 * η (b j) ((A.chart jA).symm z) - (if j ∈ I then 0 else 1)`. Establish `hQ : ∀ j, ContDiffOn ℝ 2 (Q j) U`.
+
+Introduce `j`. Establish `h1 : ContDiffOn ℝ 2 (η (b j) ∘ (A.chart jA).symm) U` using `(((hη (b j)).1 jA).of_le h2').mono fun z hz => ⟨hz.1, trivial⟩`. Conclude with `(contDiffOn_const.mul h1).sub contDiffOn_const`. Establish `hsm : ∀ t, 0 < t → t ≤ t₀ → ∀ j, ContDiffOn ℝ 2 (f t (b j) ∘ (A.chart jA).symm) U` using `fun t h0 h1 j => (((H t h0 h1).2.2.1 (b j) jA).of_le h2').mono fun z hz => ⟨hz.1, hWb j hz.2⟩`. Establish `hsmE : ∀ j, ∀ᶠ t in 𝓝[>] (0 : ℝ), ContDiffOn ℝ 2 (f t (b j) ∘ (A.chart jA).symm) U` using `fun j => ev.mono fun t ht => hsm t ht.1 ht.2 j`.
+
+Establish `hA` using `fun j => chart_C2_convergence A B hAB jA (b j) s ph hbd hph hW'o (hWb j) Set.inter_subset_right (fun t => f t (b j)) (ev.mono fun t ht => (H t ht.1 ht.2).2.2.1 (b j)) (hc (b j)) hNc hNU`. Establish `hAdd` using `fun j => tendstoC2On_add_small hUo hNU hNc hδ (hQ j) (hsmE j) (hA j).1`. Use `choose M hM using fun j => (hA j).2`. Use `choose C hC using fun j => (hAdd j).2`. Set `u : ℝ → Fin B.n → (Fin e → ℂ) → ℝ` to `fun t j z => (f t (b j) ∘ (A.chart jA).symm) z + δ t * Q j z`.
+
+Set `M' : ℝ` to `∑ j, (|C j| + |M j|)`. Establish `hM'0 : ∀ j, |C j| + |M j| ≤ M'` using `fun j => Finset.single_le_sum (f := fun j => |C j| + |M j|) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `hgrad : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ j, ∀ x ∈ N, ‖fderiv ℝ (u t j) x - fderiv ℝ p x‖ ≤ M' * δ t` using `by filter_upwards [ev, eventually_all.2 hM, eventually_all.2 hC] with t ht h1 h3 j x hx`. Establish `hle` using `(H t ht.1 ht.2).1`. Establish `hpos : 0 < δ t` using `ht.1.trans_le hle`.
+
+Establish `a1` using `h3 j x hx`. Establish `a2` using `h1 j x hx`. Establish `a3 : C j * |δ t| ≤ |C j| * δ t`. Rewrite using `[abs_of_pos hpos]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) hpos.le`.
+
+Establish `a4 : M j * t ≤ |M j| * δ t` using `(mul_le_mul_of_nonneg_right (le_abs_self _) ht.1.le).trans (mul_le_mul_of_nonneg_left hle (abs_nonneg _))`. Establish `a5 : (|C j| + |M j|) * δ t ≤ M' * δ t` using `mul_le_mul_of_nonneg_right (hM'0 j) hpos.le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_add_sub_cancel]`. Use `_ ≤ _ := norm_add_le _ _`.
+
+Use `_ ≤ C j * |δ t| + M j * t := add_le_add a1 a2`. Use `_ ≤ M' * δ t := by nlinarith`. Establish `hratio : Tendsto (fun t => (M' * δ t) ^ 2 / δ t) (𝓝[>] 0) (𝓝 0)`. Establish `h0 : Tendsto (fun t => M' ^ 2 * δ t) (𝓝[>] 0) (𝓝 0)`. Simplify using `using hδ.const_mul (M' ^ 2)`.
+
+Use `h0.congr' ?_` and prove the remaining obligations. Use `filter_upwards [ev] with t ht`. Establish `hpos : 0 < δ t` using `ht.1.trans_le (H t ht.1 ht.2).1`. Clear the denominators using the available nonvanishing facts. Establish `hucd : ∀ t, 0 < t → t ≤ t₀ → ∀ j, ContDiffOn ℝ 2 (u t j) U` using `fun t h0 h1 j => (hsm t h0 h1 j).add (contDiffOn_const.mul (hQ j))`.
+
+Establish `hreg` using `GroundTheory.Heights₂.Heights.AnalyticLimit.RegularizedMaxConvergenceC2.proof (Fin B.n) U N p u δ (fun t => M' * δ t) hUo hNU hpC (ev.mono fun t ht => ⟨ht.1.trans_le (H t ht.1 ht.2).1, hucd t ht.1 ht.2⟩) hδ (fun j => (hAdd j).1) hgrad hratio`. Establish `hevA : ∀ᶠ t in 𝓝[>] (0 : ℝ), ContDiffOn ℝ 2 (fun x => ReciprocityTheory.AnForm.A.regMax (δ t) (fun j => u t j x) + δ t / 2) U` using `by filter_upwards [ev] with t ht`. Establish `hpos : 0 < δ t` using `ht.1.trans_le (H t ht.1 ht.2).1`. Conclude with `(((ReciprocityTheory.AnForm.A.regMax_contDiff (ι := Fin B.n) hpos).of_le ReciprocityTheory.AnForm.A.two_le_inf).comp_contDiffOn (contDiffOn_pi.2 (hucd t ht.1 ht.2))).add contDiffOn_const`. Establish `hfin` using `(tendstoC2On_add_small hUo hNU hNc hδ (Q := fun _ => K₀ - 1 / 2) contDiffOn_const hevA hreg).1`.
+
+Use `tendstoC2On_congr hUo hNU ?_ hfin` and prove the remaining obligations. Use `filter_upwards [ev] with t ht z hz`. Take `⟨hle, hle1, -, hMb, hov⟩` from `H t ht.1 ht.2`. Establish `hpos : 0 < δ t` using `ht.1.trans_le hle`. Establish `hr1` using `hrep (f t) η (δ t) (Mb t) hpos hle1 (fun j => (hη j).2.2.1) (fun j => (hη j).2.2.2) hMb hov ((A.chart jA).symm z) hz.2.1`.
+
+Establish `hu : (fun j => u t j z) = fun j => if j ∈ I then f t j ((A.chart jA).symm z) + 4 * δ t * η j ((A.chart jA).symm z) else f t k₀ ((A.chart jA).symm z) + 4 * δ t * η k₀ ((A.chart jA).symm z) - δ t`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j ∈ I`. Simplify using `only [u, Q, b, hj, if_true, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [u, Q, b, hj, if_false, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp_apply]`. Rewrite using `[hu, hr1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem glue_C2_local [T2Space X] (A B : FinHolAtlas e X) [Nonempty (Fin B.n)] (s : X → X → ℂ)
     (ph : X → ℝ) (hAB : A.Compatible B) (hcov : ∀ x, ∃ j, x ∈ chartBall B j 1)
     (h2 : ∀ j, closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target)
@@ -697,6 +809,25 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 open GlobalTheory.CompanionTheory.Ar.Giv.GlueC2
 
+/- English proof (translation)
+Introduce `e X _ _ _ A B Θ th s ph hAB hcov h2 hΘ hΘpos hth hbd hph`. Take `⟨η, hη⟩` from `glue_cutoff A B hAB h2`. Distinguish the cases in `hne : Nonempty (Fin B.n)`. Use `swap`. Establish `hX : IsEmpty X` using `⟨fun x => hne ⟨(hcov x).choose⟩⟩`.
+
+Use `⟨1, one_pos, fun t₀ δ f _ _ _ _ => ⟨fun _ _ => 0, fun t _ _ => ⟨?_, ?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `fun k y _ => (hX.false ((A.chart k).symm y)).elim`. Conclude with `fun x => (hX.false x).elim`. Conclude with `fun j y _ => (hX.false y).elim`. Conclude with `fun j => (hX.false ((A.chart j).symm 0)).elim`.
+
+Take `⟨K₀, hK₀, hG⟩` from `reg_glue_explicit A B Θ th hAB hcov h2 hΘ hΘpos hth η hη`. Use `⟨2 * K₀, by positivity, ?_⟩` and prove the remaining obligations. Introduce `t₀ δ f ht₀ hδ H hc`. Establish `hMbE : ∀ t, ∃ Mb : ℝ, 0 < t → t ≤ t₀ → ∀ j, ∀ y ∈ chartBall B j (5 / 4), |f t j y| ≤ Mb`. Introduce `t`.
+
+Distinguish the cases in `ht : 0 < t ∧ t ≤ t₀`. Take `⟨Mb, h⟩` from `(H t ht.1 ht.2).2.2.2.1`. Conclude with `⟨Mb, fun _ _ => h⟩`. Conclude with `⟨0, fun h1 h3 => (ht ⟨h1, h3⟩).elim⟩`. Use `choose Mb hMb using hMbE`.
+
+Use `⟨fun t y => ReciprocityTheory.AnForm.A.regMax (δ t) (fun j => glueArg B (f t) η (δ t) (Mb t) j y) + K₀ * δ t, ?_, ?_⟩` and prove the remaining obligations. Introduce `t h0 h1`. Take `⟨hle, hle1, hsm, -, hps, hov⟩` from `H t h0 h1`. Establish `hpos : 0 < δ t` using `h0.trans_le hle`. Take `⟨s1, s2, s3⟩` from `hG (δ t) (Mb t) (f t) hpos hle1 hsm (hMb t h0 h1) hps hov`.
+
+Use `⟨fun k => (s1 k).add contDiffOn_const, s2 _, fun j y hy => ?_⟩` and prove the remaining obligations. Use `abs_le.1 (s3 j y hy)` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2]`. Introduce `jA K hKs hKc`. Establish `hO : IsOpen ((A.chart jA).target ∩ (A.chart jA).symm ⁻¹' (bdry s)ᶜ)` using `(A.chart jA).isOpen_inter_preimage_symm hbd.isOpen_compl`.
+
+Establish `hloc` using `fun z hz => glue_C2_local A B s ph hAB hcov h2 hbd hph η hη K₀ t₀ δ Mb f ht₀ hδ (fun t h0 h1 => ⟨(H t h0 h1).1, (H t h0 h1).2.1, (H t h0 h1).2.2.1, hMb t h0 h1, (H t h0 h1).2.2.2.2.2⟩) (fun j K' hK' hK'c => hc j K' hK' hK'c) jA z hz`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hO).1 (GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hKc` and prove the remaining obligations. Take `⟨N, hN, h, -, -⟩` from `hloc y hy`. Conclude with `⟨N, hN, h⟩`.
+
+Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hO).1 (GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hKc` and prove the remaining obligations. Take `⟨N, hN, -, h, -⟩` from `hloc y hy`. Conclude with `⟨N, hN, h⟩`. Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hO).1 (GroundTheory.Heights₂.Heights.AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hKc` and prove the remaining obligations. Take `⟨N, hN, -, -, h⟩` from `hloc y hy`.
+
+Conclude with `⟨N, hN, h⟩`.
+-/
 theorem regularization_glue_C2 : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] (A B : FinHolAtlas e X) (Θ th : LocPot X) (s : X → X → ℂ) (ph : X → ℝ), A.Compatible B → (∀ x, ∃ j, x ∈ chartBall B j 1) → (∀ j, closedBall (0 : Fin e → ℂ) 2 ⊆ (B.chart j).target) → IsPotential A Θ → IsPosPot A Θ → IsPotential A th → IsClosed (bdry s) → A.SmoothOn (bdry s)ᶜ ph → ∃ K : ℝ, 0 < K ∧ ∀ (t₀ : ℝ) (δ : ℝ → ℝ) (f : ℝ → Fin B.n → X → ℝ), 0 < t₀ → Tendsto δ (𝓝[>] 0) (𝓝 0) → (∀ t, 0 < t → t ≤ t₀ → t ≤ δ t ∧ δ t ≤ 1 ∧ (∀ j, A.SmoothOn (chartBall B j (5 / 4)) (f t j)) ∧ (∃ Mb : ℝ, ∀ j, ∀ y ∈ chartBall B j (5 / 4), |f t j y| ≤ Mb) ∧ (∀ j, IsPshOn A (chartBall B j (5 / 4)) (th + LocPot.ofFun (f t j))) ∧ ∀ j k, ∀ y ∈ chartBall B j (5 / 4) ∩ chartBall B k (5 / 4), |f t j y - f t k y| ≤ δ t) → (∀ j, ∀ K' ⊆ ball (0 : Fin e → ℂ) (5 / 4) ∩ (B.chart j).symm ⁻¹' (bdry s)ᶜ, IsCompact K' → TendstoUniformlyOn (fun t => f t j ∘ (B.chart j).symm) (ph ∘ (B.chart j).symm) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (f t j ∘ (B.chart j).symm)) (fderiv ℝ (ph ∘ (B.chart j).symm)) (𝓝[>] 0) K' ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (f t j ∘ (B.chart j).symm))) (fderiv ℝ (fderiv ℝ (ph ∘ (B.chart j).symm))) (𝓝[>] 0) K' ∧ ∃ M : ℝ, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ K', ‖fderiv ℝ (f t j ∘ (B.chart j).symm) z - fderiv ℝ (ph ∘ (B.chart j).symm) z‖ ≤ M * t) → ∃ F : ℝ → X → ℝ, (∀ t, 0 < t → t ≤ t₀ → A.Smooth (F t) ∧ IsPsh A (th + LocPot.ofFun (F t) + Θ.rsmul (K * δ t)) ∧ ∀ j, ∀ y ∈ chartBall B j (5 / 4), f t j y ≤ F t y ∧ F t y ≤ f t j y + K * δ t) ∧ IsRegFamilyC2 A s ph F := by
   intro e X _ _ _ A B Θ th s ph hAB hcov h2 hΘ hΘpos hth hbd hph
   obtain ⟨η, hη⟩ := glue_cutoff A B hAB h2

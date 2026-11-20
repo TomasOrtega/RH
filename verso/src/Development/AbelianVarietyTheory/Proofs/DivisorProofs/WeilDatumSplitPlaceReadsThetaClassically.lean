@@ -26,6 +26,25 @@ section Adelic
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Take `⟨U, hU, hUΛ⟩` from `hΛ`. Establish `hfin : ∀ (α : Af D.host.F) (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E), (LatVac.finTens α M : WO S T).map (infPart D) = 0` using `fun α M => Matrix.ext fun i j => LatVac.infPart_pair _ _`. Use `LatVac.latO_induction (p := fun u => ∃ γ, (LatVac.finTens 1 γ : WO S T) ∈ (latO S T LS LT fun _ => True) ∧ u - LatVac.finTens 1 γ ∈ Λ) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce `α hα M hM`. Set `φ : Af D.host.F →+ WO S T` to `AddMonoidHom.mk' (fun β => LatVac.finTens β M) fun a b => LatVac.finTens_add_left a b M`.
+
+Set `C : AddSubgroup (Af D.host.F)` to `{ carrier := {β | ∃ γ, (LatVac.finTens 1 γ : WO S T) ∈ (latO S T LS LT fun _ => True) ∧ φ β - LatVac.finTens 1 γ ∈ Λ} zero_mem' := ⟨0, by rw [LatVac.finTens_zero]; exact zero_mem _, by rw [LatVac.finTens_zero, map_zero, sub_self]; exact zero_mem _⟩ add_mem' := by`. Introduce and unpack `a b ⟨γ, h1, h2⟩ ⟨γ', h1', h2'⟩`. Use `⟨γ + γ', by rw [LatVac.finTens_add]; exact add_mem h1 h1', ?_⟩` and prove the remaining obligations. Rewrite using `[LatVac.finTens_add, map_add, add_sub_add_comm]`. Conclude with `add_mem h2 h2'`.
+
+Use the proof step `neg_mem' := by`. Introduce and unpack `a ⟨γ, h1, h2⟩`. Use `⟨-γ, by rw [LatVac.finTens_neg]; exact neg_mem h1, ?_⟩` and prove the remaining obligations. Rewrite using `[LatVac.finTens_neg, map_neg, neg_sub_neg, ← neg_sub]`. Conclude with `neg_mem h2 }`.
+
+Establish `hc` using `VacSign.continuous_finTens (D := D) M`. Establish `hop : IsOpen (C : Set (Af D.host.F))`. Use `C.isOpen_of_mem_nhds (g := 0) (Filter.mem_of_superset ((hU.preimage hc).mem_nhds ?_) fun β hβ => ⟨0, ?_, ?_⟩)` and prove the remaining obligations. Use `(hUΛ _ (hfin _ _)).1 ?_` and prove the remaining obligations. Rewrite using `[LatVac.finTens_zero_left]`.
+
+Conclude with `zero_mem _`. Rewrite using `[LatVac.finTens_zero]`. Conclude with `zero_mem _`. Rewrite using `[LatVac.finTens_zero, sub_zero]`. Conclude with `(hUΛ _ (hfin _ _)).2 hβ`.
+
+Use `IntDense.mem_of_isClosed D.host.F (C := (C : Set (Af D.host.F))) (C.isClosed_of_isOpen hop) (fun a => ?_) α hα` and prove the remaining obligations. Establish `hm : LatVac.finTens (algebraMap D.host.F (Af D.host.F) (a : D.host.F)) M ∈ latO S T LS LT fun _ => True` using `LatVac.finTens_mem_latO (fun v => by`. Rewrite using `[AlgHom.commutes]`. Conclude with `v.coe_algebraMap_mem (𝓞 D.host.F) D.host.F a) hM`. Rewrite `hm` using `[VacSign.finTens_algebraMap]`.
+
+Use `⟨_, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← VacSign.finTens_algebraMap]`. Express the relevant statement in the definitionally equal form `LatVac.finTens _ M - LatVac.finTens _ M ∈ Λ`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
+
+Conclude with `⟨0, by rw [LatVac.finTens_zero]; exact zero_mem _, by rw [LatVac.finTens_zero, sub_self]; exact zero_mem _⟩`. Introduce and unpack `a b ⟨γ, h1, h2⟩ ⟨γ', h1', h2'⟩`. Use `⟨γ + γ', by rw [LatVac.finTens_add]; exact add_mem h1 h1', ?_⟩` and prove the remaining obligations. Rewrite using `[LatVac.finTens_add, add_sub_add_comm]`. Conclude with `add_mem h2 h2'`.
+
+Introduce and unpack `a ⟨γ, h1, h2⟩`. Use `⟨-γ, by rw [LatVac.finTens_neg]; exact neg_mem h1, ?_⟩` and prove the remaining obligations. Rewrite using `[LatVac.finTens_neg, neg_sub_neg, ← neg_sub]`. Conclude with `neg_mem h2`.
+-/
 theorem exists_rat_sub_mem {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {Λ : AddSubgroup (WO S T)}
     (hΛ : ∃ U : Set (WO S T), IsOpen U ∧ ∀ u : WO S T, u.map (infPart D) = 0 → (u ∈ Λ ↔ u ∈ U))
@@ -88,6 +107,13 @@ theorem exists_rat_sub_mem {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T
     rw [LatVac.finTens_neg, neg_sub_neg, ← neg_sub]
     exact neg_mem h2
 
+/- English proof (translation)
+Establish `hfin : (QuotientAddGroup.mk '' {u | P u} : Set (G ⧸ Λ)).Finite`. Use `((s.finite_toSet).image fun i => (QuotientAddGroup.mk (a i) : G ⧸ Λ)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨i, hi, h⟩` from `h u hu`. Conclude with `⟨i, hi, (QuotientAddGroup.eq_iff_sub_mem.2 h).symm⟩`.
+
+Take `⟨t, ht, hb⟩` from `Set.exists_subset_bijOn {u | P u} (QuotientAddGroup.mk : G → G ⧸ Λ)`. Establish `htf : t.Finite` using `Set.Finite.of_finite_image (hb.image_eq ▸ hfin) hb.injOn`. Use `⟨htf.toFinset, fun u hu => ht (htf.mem_toFinset.1 hu), fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, h⟩` from `hb.surjOn ⟨u, hu, rfl⟩`. Use `⟨v, ⟨htf.mem_toFinset.2 hv, QuotientAddGroup.eq_iff_sub_mem.1 h.symm⟩, fun v' hv' => ?_⟩` and prove the remaining obligations.
+
+Conclude with `hb.injOn (htf.mem_toFinset.1 hv'.1) hv ((QuotientAddGroup.eq_iff_sub_mem.2 hv'.2).symm.trans h.symm)`.
+-/
 theorem exists_reps {G ι : Type} [AddCommGroup G] (Λ : AddSubgroup G) (P : G → Prop) (s : Finset ι) (a : ι → G)
     (h : ∀ u, P u → ∃ i ∈ s, u - a i ∈ Λ) :
     ∃ R : Finset G, (∀ u ∈ R, P u) ∧ ∀ u, P u → ∃! v, v ∈ R ∧ u - v ∈ Λ := by
@@ -105,6 +131,35 @@ theorem exists_reps {G ι : Type} [AddCommGroup G] (Λ : AddSubgroup G) (P : G �
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Establish `he'` using `isSplitIdem_conj he`. Establish `hψ` using `hW.std`. Establish `hm1 : Formalism.L2.Theta.mt T (1 : GA D T) = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`.
+
+Establish `h1 : SuppAt e T 1` using `fun i j => by rw [hm1, sub_self, Matrix.zero_apply, mul_zero]`. Establish `h1' : IsDetAt e T 1 1`. Unfold `IsDetAt`. Rewrite using `[hm1, Matrix.det_one, mul_one, add_sub_cancel, Units.val_one]`. Take `⟨R, hR, hRu⟩` from `exists_reps Λ (fun u => u ∈ Λ' ∧ IsHalf e u) s a fun u hu => hex u hu.1`.
+
+Take `⟨R', hR', hRu'⟩` from `exists_reps Λ (fun u => u ∈ Λ' ∧ IsHalf (cA D e) u) s a fun u hu => hex u hu.1`. Establish `hmain` using `om_vacuum_eq_splitFac_smul_sum D ψ θ S T χS χT om hW hθ hS hT sS sT hsS hsT ΛS ΛS' ΛT ΛT hΛS hΛS' hΛT hΛT e he h 1 hh h1 y 1 hy h1' (hΛ ▸ hΛ' ▸ hmove) R R' (hΛ' ▸ hR) (hΛ ▸ hΛ' ▸ fun u hu hue => hRu u ⟨hu, hue⟩) (hΛ' ▸ hR') (hΛ ▸ hΛ' ▸ fun u hu hue => hRu' u ⟨hu, hue⟩) f hf`. Take `⟨hd, -, hsign⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hΛS hΛT`. Take `⟨hd', -, -⟩` from `GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS' ΛT hψ hΛS' hΛT`. Take `⟨-, hom⟩` from `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T χS χT om hW hθ sS sS sT sT _ _ _ _ h 1 (fun τ => by rw [compAt_mt he hh, mul_one, one_mul]) (fun τ => by rw [compAt_mt he h1, mul_one, one_mul]) (hΛ ▸ hΛ' ▸ hmove) f hf`.
+
+Establish `hfin'` using `@latO_fin D S T ΛS' ΛT`. Take `⟨-, hf⟩` from `hf`. Rewrite `hd`, `hsign`, `hf` using `[← hΛ]`. Rewrite `hd'`, `hom`, `hfin'` using `[← hΛ']`. Establish `hdd : ∀ u ∈ Λ', ∀ u' ∈ Λ', ψ (symplO S T u u') = 1` using `fun u hu => (hd' u (hfin' hu)).1 hu`.
+
+Take `⟨G, hGdef⟩ : ∃ G, G = ∑ i ∈ s, c i • heisO ψ S T (a i) f` from `⟨_, rfl⟩`. Take `⟨k, hk⟩ : ∃ k : ℂ, k = (splitFacO χS χT y 1 : ℂ) * ((Real.sqrt ((R.card : ℝ) * R'.card) : ℝ) : ℂ)⁻¹` from `⟨_, rfl⟩`. Establish `key : (s.card : ℂ) • om (h, 1) f = (k * ((R.card : ℂ) * R'.card)) • G`. Establish `e1 : (s.card : ℂ) • om (h, 1) f = ∑ i ∈ s, c i • heisO ψ S T (a i) (om (h, 1) f)`. Rewrite using `[Finset.sum_congr rfl (hsg _ hom.theta hom.lat), Finset.sum_const, Nat.cast_smul_eq_nsmul]`.
+
+Establish `e2 : ∑ u ∈ R, ∑ u' ∈ R', heisO ψ S T u (heisO ψ S T u' G) = ((R.card : ℂ) * R'.card) • G`. Rewrite `hG` using `[← hGdef]`. Rewrite using `[Finset.sum_congr rfl fun u hu => Finset.sum_congr rfl fun u' hu' => by`. Rewrite using `[hG.2 _ he' u' (hR' u' hu').1 (hR' u' hu').2, hG.2 _ he u (hR u hu).1 (hR u hu).2],`. Use the proof step `Finset.sum_const, Finset.sum_const, mul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+
+Rewrite using `[e1, mul_smul, ← e2, hmain, ← hk, hGdef]`. Simplify using `only [heisO_smul, heisO_sum, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun u' hu' => Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[heisO_comm ψ S T (a i), hdd _ (ha i hi) _ (hR u hu).1, one_smul, heisO_comm ψ S T (a i), hdd _ (ha i hi) _ (hR' u' hu').1, one_smul, smul_comm]`. Take `⟨p, hp⟩` from `hf.norm.1`. Establish `hn : nrm2 p.1 p.2 G = s.card`. Rewrite using `[hGdef]`.
+
+Use `GlobalTheory.HeisOrtho.thetaNormSq_sum_heisenbergTranslates_distinctChars D ψ S T hψ.1 p.1 p.2 hp f hf.theta (hf.norm.2 p hp) _ _ _ _ hc fun i hi j hj hne => ?_` and prove the remaining obligations. Establish `hnot : a i - a j ∉ Λ` using `fun hm => hne (hun i hi j hj hm)`. Rewrite `hnot` using `[hd _ (hfin' (sub_mem (ha i hi) (ha j hj)))]`. Use `push Not at hnot`. Take `⟨l, hl, hne'⟩` from `hnot`.
+
+Take `⟨ε, hε, hεf⟩` from `hsign f hf.lat l hl`. Apply the tactic sequence `exact ⟨l, ε, by rcases hε with rfl | rfl <;> simp, hεf f hf.lat, hne'⟩`. Take `⟨i₀, hi₀, -⟩` from `hex 0 (zero_mem _)`. Establish `hs0 : (0 : ℝ) < s.card` using `Nat.cast_pos.2 (Finset.card_pos.2 ⟨i₀, hi₀⟩)`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = (s.card : ℝ)⁻¹ * ((Real.sqrt ((R.card : ℝ) * R'.card))⁻¹ * (R.card * R'.card))` from `⟨_, rfl⟩`.
+
+Establish `ht0 : 0 ≤ t` using `by rw [ht]; positivity`. Establish `hχ : ‖((χT y : Circle) : ℂ)⁻¹‖ = 1` using `by rw [norm_inv, Circle.norm_coe, inv_one]`. Establish `e3 : om (h, 1) f = ((χT y : Circle) : ℂ)⁻¹ • (t : ℂ) • G`. Establish `hs0' : (s.card : ℂ) ≠ 0` using `by exact_mod_cast hs0.ne'`. Rewrite using `[← inv_smul_smul₀ hs0' (om (h, 1) f), key, hk, splitFacO, map_one, mul_one, smul_smul, smul_smul, ht, Circle.coe_inv]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e4 : t ^ 2 * s.card = 1`. Use `hom.norm.2 p hp` as an intermediate fact.
+
+Rewrite using `[← hn, ← pairNorm_smul, ← this, e3]`. Unfold `nrm2`. Simplify using `only [Pi.smul_apply (((χT y : Circle) : ℂ)⁻¹), norm_smul, hχ, one_mul]`. Establish `e5 : t = (Real.sqrt (s.card : ℝ))⁻¹`. Rewrite using `[← Real.sqrt_inv, ← Real.sqrt_sq ht0, eq_inv_of_mul_eq_one_left e4]`.
+
+Rewrite using `[e3, ← hGdef, smul_smul, e5, Complex.ofReal_inv]`.
+-/
 theorem om_eq_smul_sum {θ : InfFam D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     (hS : S.SigOK) (hT : T.SigOK) {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ}
@@ -209,18 +264,30 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {V W : HSp D}
 def rowsC {E : Type} {m n : ℕ} (hr : m = r) (y : Matrix (Fin n) (Fin r) E) : Matrix (Fin m) (Fin n) E :=
   fun a b => y b (Fin.cast hr a)
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Both sides reduce to the same expression.
+-/
 theorem colsR_rowsC {E : Type} {m n : ℕ} (hr : m = r) (y : Matrix (Fin n) (Fin r) E) :
     colsR hr (rowsC hr y) = y := by
   subst hr
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem colsR_sub {E : Type} [AddCommGroup E] {m n : ℕ} (hr : m = r) (γ γ' : Matrix (Fin m) (Fin n) E) :
     colsR hr (γ - γ') = colsR hr γ - colsR hr γ' := rfl
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, LatVac.finTens_add, LatVac.finTens_neg, sub_eq_add_neg]`.
+-/
 theorem finTens_sub {m n : ℕ} (M N : Matrix (Fin m) (Fin n) D.host.E) :
     LatVac.finTens (D := D) 1 (M - N) = LatVac.finTens 1 M - LatVac.finTens 1 N := by
   rw [sub_eq_add_neg, LatVac.finTens_add, LatVac.finTens_neg, sub_eq_add_neg]
 
+/- English proof (translation)
+Simplify using `only [epsW, TensLat.EF_eq_bilin]`. Use `congr 3`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[show (-y) k = -y k from rfl, smul_neg, map_neg, map_neg, LinearMap.neg_apply, neg_neg]`.
+-/
 theorem epsW_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (X : Data E r) (w : E)
     (y : Matrix (Fin n) (Fin r) E) : epsW X w (-y) = epsW X w y := by
   simp only [epsW, TensLat.EF_eq_bilin]
@@ -228,12 +295,18 @@ theorem epsW_neg {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (X
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [show (-y) k = -y k from rfl, smul_neg, map_neg, map_neg, LinearMap.neg_apply, neg_neg]
 
+/- English proof (translation)
+Use `congrArg norm (TensVac.epsW_mul_conj (X := X) w y)` as an intermediate fact. Rewrite `this` using `[norm_mul, Complex.norm_conj, norm_one]`. Conclude with `(mul_self_eq_one_iff.1 this).resolve_right fun h => by linarith [norm_nonneg (epsW X w y)]`.
+-/
 theorem norm_epsW {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (X : Data E r) (w : E)
     (y : Matrix (Fin n) (Fin r) E) : ‖epsW X w y‖ = 1 := by
   have := congrArg norm (TensVac.epsW_mul_conj (X := X) w y)
   rw [norm_mul, Complex.norm_conj, norm_one] at this
   exact (mul_self_eq_one_iff.1 this).resolve_right fun h => by linarith [norm_nonneg (epsW X w y)]
 
+/- English proof (translation)
+Use `hl f f φ φ h h a 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul, add_zero, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem reads_smul
     (hl : ∀ (f f' : WO V W → ℂ) (φ φ' : TF V.rank g), Reads θ V W hr X bas idx f φ x →
       Reads θ V W hr X bas idx f' φ' x → ∀ a b : ℂ, Reads θ V W hr X bas idx (a • f + b • f') (a • φ + b • φ') x)
@@ -242,6 +315,11 @@ theorem reads_smul
   have := hl f f φ φ h h a 0
   rwa [zero_smul, zero_smul, add_zero, add_zero] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `reads_smul hl h₀ 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis. Consider the case `insert i s hi ih`.
+
+Use `hl _ _ _ _ (h i) ih (c i) 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, ← Finset.sum_insert (f := fun i => c i • f i) hi, ← Finset.sum_insert (f := fun i => c i • φ i) hi]`. Then use the resulting hypothesis.
+-/
 theorem reads_sum
     (hl : ∀ (f f' : WO V W → ℂ) (φ φ' : TF V.rank g), Reads θ V W hr X bas idx f φ x →
       Reads θ V W hr X bas idx f' φ' x → ∀ a b : ℂ, Reads θ V W hr X bas idx (a • f + b • f') (a • φ + b • φ') x)
@@ -261,6 +339,45 @@ end Reading
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH ΛV ΛW ΛV₁ Λ' Λ₁ L hΛV hΛV₁ hΛW hΛ' hΛ₁ hL x s hx hxs f hf φ hφ e h y he hh hy hmove`. Establish `hψ` using `hP.weil.std`. Establish `hn` using `hP.even`. Establish `hw0 : (H.w0 : D.host.E) + cc (H.w0 : D.host.E) = 1`. Establish `h1 : 2 * (H.w0 : D.host.E) = 1 + D.host.sqrtMinusD`.
+
+Rewrite using `[← hH]`. Conclude with `congrArg Subtype.val H.two_weight_eq_one_add_root`. Establish `h2` using `congrArg star h1`. Rewrite `h2` using `[star_mul', star_add, star_one, star_ofNat, SplitIdem.star_eq_conj D D.host.sqrtMinusD, D.host.conj_sqrtMinusD]`. Express the relevant statement in the definitionally equal form `(H.w0 : D.host.E) + star (H.w0 : D.host.E) = 1`.
+
+Take the linear combination `(1 / 2 : D.host.E) * h1 + (1 / 2 : D.host.E) * h2`. Establish `hwi : IsIntegral ℤ (H.w0 : D.host.E)` using `H.w0.isIntegral_coe`. Take `⟨cW, cV, -⟩` from `FrameCplx.cplx_of_frame D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs x s hx hxs`. Take `⟨l0, hSD, u0, f0⟩` from `LatOf.isLatOf_tens D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs ΛV ΛW Λ' L hΛV hΛW hΛ' hL`. Take `⟨l1, -, u1, f1⟩` from `LatOf.isLatOf_tens D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs ΛV₁ ΛW Λ₁ L hΛV₁ hΛW hΛ₁ hL`.
+
+Establish `lin` using `reads_linear_injective D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs x hx`. Establish `hl` using `fun f f' φ φ' h h' => (lin f f' φ φ' h h').1`. Establish `Heisenberg₂` using `reads_heisO_finOf D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs x hx`. Establish `eps0` using `VacSign.isLatVac_iff_epsW D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs H hH ΛV ΛW hΛV hΛW`. Establish `eps1` using `VacSign.isLatVac_iff_epsW D ψ θ V W r g hr X bas idx hψ hP.inf hP.std hn hX hs H hH ΛV₁ ΛW hΛV₁ hΛW`.
+
+Take `⟨a1, a2, a3, -⟩` from `TensLat.tens_selfDual_semichar_index _ r X g bas idx _ hs hn _ hwi hw0 L hSD 1 _ (VacProj.mem_vset ⟨Λ'⟩ u0 f0)`. Take `⟨b1, b2, b3, -⟩` from `TensLat.tens_selfDual_semichar_index _ r X g bas idx _ hs hn _ hwi hw0 L hSD 1 _ (VacProj.mem_vset ⟨Λ₁⟩ u1 f1)`. Establish `g0 : TensVac.Good X (H.w0 : D.host.E) (tens Λ' L)` using `⟨a1, a2, a3⟩`. Establish `g1 : TensVac.Good X (H.w0 : D.host.E) (tens Λ₁ L)` using `⟨b1, b2, b3⟩`. Take `⟨v, hv, hvu⟩` from `g0.vac hs`.
+
+Take `⟨v₁, hv₁, -⟩` from `g1.vac hs`. Establish `hfin : ∀ z, IsFinOf V W (rowsC hr (-z)) (LatVac.finTens 1 (rowsC hr (-z)))` using `fun z => (VacSign.isFinOf_iff _ _).2 rfl`. Establish `hrd : ∀ F φ', IsThetaFunO ψ V W F → Reads θ V W hr X bas idx F φ' x → ∀ z, Reads θ V W hr X bas idx (heisO ψ V W (LatVac.finTens 1 (rowsC hr (-z))) F) (heisG X bas z φ') x`. Introduce `F φ' hF hr' z`. Use `Heisenberg₂ F φ' hF hr' _ _ (hfin z)` as an intermediate fact.
+
+Rewrite `this` using `[colsR_rowsC, neg_neg]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨κ, rfl⟩ : ∃ κ : ℂ, φ = κ • v := by`. Use `hvu φ hφ.1 fun z hz => ?_` and prove the remaining obligations. Establish `h1` using `(eps0 f hf.2.theta).1 hf.2.lat _ _ (hfin z) ((l0.rat _ _ (hfin z)).2 (by rw [colsR_rowsC]; exact neg_mem hz))`. Rewrite `h1` using `[colsR_rowsC, epsW_neg]`.
+
+Rewrite using `[(lin _ _ _ _ (hrd f φ hf.2.theta hφ z) (reads_smul hl hφ _)).2.1 h1, smul_smul, ← sq, (a3 z hz).1, one_smul]`. Establish `hidx : (tens Λ' L).relIndex (tens Λ₁ L) ≠ 0`. Introduce `h0`. Use `g1.overlap idx hs hn g0 hv₁ hv` as an intermediate fact. Rewrite `this` using `[h0, Nat.cast_zero, zero_mul]`.
+
+Conclude with `zero_ne_one this`. Use `haveI : ((tens Λ' L).addSubgroupOf (tens Λ₁ L)).FiniteIndex := ⟨hidx⟩`. Use `haveI := Fintype.ofFinite (tens Λ₁ L ⧸ (tens Λ' L).addSubgroupOf (tens Λ₁ L))`. Take `⟨R, hR, hRu⟩` from `exists_reps (tens Λ' L) (fun z => z ∈ tens Λ₁ L) Finset.univ (fun q : tens Λ₁ L ⧸ (tens Λ' L).addSubgroupOf (tens Λ₁ L) => (q.out : Matrix (Fin V.rank) (Fin r) D.host.E)) fun z hz => ⟨QuotientAddGroup.mk ⟨z, hz⟩, Finset.mem_univ _, AddSubgroup.mem_addSubgroupOf.1 (QuotientAddGrou …`. Take `⟨c1, c2, c3, -⟩` from `VacProj.projA_gphi_eq_sum _ r g _ X bas idx hs hn _ hwi hw0 L hSD ⟨Λ'⟩ ⟨Λ₁⟩ u0 u1 f0 f1 v hv R hR hRu`.
+
+Simplify using `only at c1 c2 c3`. Take `⟨z₀, ⟨hz₀, -⟩, -⟩` from `hRu 0 (zero_mem _)`. Establish `hc0 : (0 : ℝ) < R.card` using `Nat.cast_pos.2 (Finset.card_pos.2 ⟨z₀, hz₀⟩)`. Establish `hc0' : (R.card : ℂ) ≠ 0` using `by exact_mod_cast hc0.ne'`. Establish `hsq : (Real.sqrt (R.card : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 hc0).ne'`.
+
+Establish `hproj : projA X bas (H.w0 : D.host.E) (tens Λ₁ L) (κ • v) = κ • projA X bas (H.w0 : D.host.E) (tens Λ₁ L) v`. Rewrite using `[(g1.proj idx hs hn hφ.1 hv₁).2, (g1.proj idx hs hn hv.1 hv₁).2, TensVac.ip_smul_left κ hv.1 hv₁.1, mul_smul]`. Establish `hG` using `reads_sum hl hφ R (epsW X (H.w0 : D.host.E)) (hrd f _ hf.2.theta hφ)`. Establish `hsum : ∑ z ∈ R, epsW X (H.w0 : D.host.E) z • heisG X bas z (κ • v) = (κ * (Real.sqrt (R.card : ℝ) : ℂ)) • (Real.sqrt (R.card : ℝ) : ℂ) • projA X bas (H.w0 : D.host.E) (tens Λ₁ L) v`. Rewrite using `[c2, smul_smul, smul_smul, mul_assoc κ, ← Complex.ofReal_mul, Real.mul_self_sqrt hc0.le, Complex.ofReal_natCast, mul_inv_cancel_right₀ hc0', Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun z _ => by rw [TensVac.heisG_smul, smul_comm]`. Rewrite `hG` using `[hsum]`. Establish `hGth` using `FinTranslate.isTheta_sum_heisO_fin D ψ V W hψ.1 f hf.2.theta _ R (fun z => LatVac.finTens 1 (rowsC hr (-z))) (epsW X (H.w0 : D.host.E)) fun z _ => (hfin z).1`. Establish `hmem : ∀ z ∈ R, (LatVac.finTens 1 (rowsC hr (-z)) : WO V W) ∈ latO V W (ΛV₁ : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True` using `fun z hz => (l1.rat _ _ (hfin z)).2 (by rw [colsR_rowsC]; exact neg_mem (hR z hz))`. Establish `hdiff : ∀ γ z, (LatVac.finTens 1 γ - LatVac.finTens 1 (rowsC hr (-z)) : WO V W) ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔ -colsR hr γ - z ∈ tens Λ' L`.
+
+Introduce `γ z`. Rewrite using `[← finTens_sub, l0.rat _ _ ((VacSign.isFinOf_iff _ _).2 rfl), colsR_sub, colsR_rowsC, ← neg_mem_iff]`. Use `congr! 1`. Normalize the expressions using the abelian group laws. Establish `hom` using `om_eq_smul_sum hP.weil hP.inf hP.sigV hP.sigW cV cW hΛV hΛV₁ hΛW he hh hy rfl rfl hmove hf R (fun z => LatVac.finTens 1 (rowsC hr (-z))) (epsW X (H.w0 : D.host.E)) hmem (fun z _ => norm_epsW X _ z) (fun u hu => by`.
+
+Take `⟨γ, h1, h2⟩` from `exists_rat_sub_mem l0.opn hu`. Take `⟨z, ⟨hz, h3⟩, -⟩` from `hRu _ (neg_mem ((l1.rat _ _ ((VacSign.isFinOf_iff _ _).2 rfl)).1 h1))`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_add_sub_cancel]`. Conclude with `add_mem h2 ((hdiff γ z).2 h3))`.
+
+Use the proof step `(fun z hz z' hz' hm => by`. Rewrite `hm` using `[hdiff, colsR_rowsC, neg_neg]`. Conclude with `(hRu z (hR z hz)).unique ⟨hz, by rw [sub_self]; exact zero_mem _⟩ ⟨hz', hm⟩)`. Use the proof step `(fun F hF hFl z hz => by`. Rewrite using `[(eps1 F hF).1 hFl _ _ (hfin z) (hmem z hz), colsR_rowsC, epsW_neg, smul_smul, ← sq, (b3 z (hR z hz)).1, one_smul])`.
+
+Use the proof step `((eps1 _ hGth).2 fun γ u hu hm => by`. Establish `hz` using `neg_mem ((l1.rat _ _ hu).1 hm)`. Establish `hth` using `FinTranslate.isTheta_sum_heisO_fin D ψ V W hψ.1 _ hGth Unit {()} (fun _ => u) (fun _ => 1) fun _ _ => hu.1`. Rewrite `hth` using `[Finset.sum_singleton, one_smul]`. Establish `hth'` using `FinTranslate.isTheta_sum_heisO_fin D ψ V W hψ.1 _ hGth Unit {()} (fun _ => 0) (fun _ => epsW X (H.w0 : D.host.E) (colsR hr γ)) fun _ _ => Matrix.ext fun _ _ => (infPart D).map_zero`.
+
+Rewrite `hth'` using `[Finset.sum_singleton, heisO_zero]`. Use `(lin _ _ _ _ (Heisenberg₂ _ _ hGth hG γ u hu) (reads_smul hl hG _)).2.2 hth hth' ?_` and prove the remaining obligations. Rewrite using `[TensVac.heisG_smul, smul_comm (epsW X _ _), ← epsW_neg]`. Use `congr 1`. Use `conv_rhs => rw [← c3.2.2 _ hz]`.
+
+Rewrite using `[smul_smul, ← sq, (b3 _ hz).1, one_smul])`. Use `reads_smul hl hG (((χW y : Circle) : ℂ)⁻¹ * ((Real.sqrt (R.card : ℝ) : ℝ) : ℂ)⁻¹)` as an intermediate fact. Rewrite `this` using `[← hom, smul_smul, smul_smul]`. Rewrite using `[hproj, smul_smul, ← Nat.cast_pow, ← c1]`. Use `this using 2` and compare the differences between its conclusion and the goal.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem reads_om_split : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsMod W hr X → IsSympl X bas → ∀ (H : Geo.Tor.Host D.host.E), (H.rt : D.host.E) = D.host.sqrtMinusD → ∀ (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (ΛV₁ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (Λ' Λ₁ : Lt D.host.E V.rank) (L : Lt D.host.E r), IsSelfDualC V ΛV → IsSelfDualC V ΛV₁ → IsSelfDualC W ΛW → (∀ v : Fin V.rank → D.host.E, v ∈ Λ' ↔ (fun j => star (v j)) ∈ ΛV) → (∀ v : Fin V.rank → D.host.E, v ∈ Λ₁ ↔ (fun j => star (v j)) ∈ ΛV₁) → (∀ L₀ : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E), L₀ = Submodule.span (𝓞 D.host.E) {w | ∃ a : D.host.E, a ∈ D.host.AA ∧ ∃ v ∈ ΛW, w = a • v} → L = latR hr L₀) → ∀ (x : Frame X.Ψ r) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ), IsONFr X x → IsInvOf W hr X x s → ∀ f, IsVacO ψ θ V W (fun _ => 1) s (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) f → ∀ φ : TF V.rank g, Reads θ V W hr X bas idx f φ x → ∀ (e : AE D) (h : GA D V) (y : (AE D)ˣ), IsSplitIdem D e → SuppAt e V h → IsDetAt e V h y → (∀ u : WO V W, u ∈ (latO V W (ΛV₁ : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True) ↔ ∃ u₀ ∈ (latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) fun _ => True), u = actO V W h 1 u₀) → Reads θ V W hr X bas idx (om (h, 1) f) ((((χW y : Circle) : ℂ)⁻¹ * (Real.sqrt ((((Λ₁ ⊓ Λ').toAddSubgroup.addSubgroupOf Λ₁.toAddSubgroup).index : ℝ) ^ r) : ℂ)) • projA X bas (H.w0 : D.host.E) (tens Λ₁ L) φ) x := by
   intro D ψ θ V W χV χW om hP r g hr X bas idx hX hs H hH ΛV ΛW ΛV₁ Λ' Λ₁ L hΛV hΛV₁ hΛW hΛ' hΛ₁ hL x s hx hxs f hf
     φ hφ e h y he hh hy hmove

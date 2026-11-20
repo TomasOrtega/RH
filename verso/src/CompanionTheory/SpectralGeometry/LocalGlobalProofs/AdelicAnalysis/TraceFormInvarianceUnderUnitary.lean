@@ -8,6 +8,11 @@ namespace GlobalTheory.CompanionTheory.SW.BB
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW GlobalTheory.CompanionTheory.SW.BB NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
 
+/- English proof (translation)
+Establish `hB : B.map ψ = (B.map α).map φ`. Use extensionality with `i j`. Simplify using `[hφ]`. Use `congrArg (fun X => X.map φ) h` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`.
+
+Rewrite using `[hB, ← Matrix.transpose_map]`. Simplify using `using this`.
+-/
 theorem isometry_map_ringHom {ι R S K : Type} [Fintype ι] [CommRing R] [CommRing S] [CommRing K]
     (φ : R →+* S) (α : K →+* R) (ψ : K →+* S) (hφ : ∀ x, φ (α x) = ψ x)
     (A : Matrix ι ι R) (B : Matrix ι ι K)
@@ -21,6 +26,11 @@ theorem isometry_map_ringHom {ι R S K : Type} [Fintype ι] [CommRing R] [CommRi
   rw [hB, ← Matrix.transpose_map]
   simpa using this
 
+/- English proof (translation)
+Use `⟨fun ω w => ?_, fun ω => ?_⟩` and prove the remaining obligations. Conclude with `isometry_map_ringHom ((Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp ((e : Ainf F →+* (InfinitePlace F → ℝ)).comp (fstA F : AF F →+* Ainf F))) (algebraMap F (AF F)) (ρ w) (fun x => by`. Establish `h1 : fstA F (algebraMap F (AF F) x) = algebraMap F (Ainf F) x` using `(fstA F).commutes x`. Simplify `he x w)` using `[h1]`. Use the proof step `(gmat (AF F) σ J b ω⁻¹) B (hB ω⁻¹)`.
+
+Conclude with `isometry_map_ringHom (sndA F : AF F →+* Af F) (algebraMap F (AF F)) (algebraMap F (Af F)) (fun x => (sndA F).commutes x) (gmat (AF F) σ J b ω⁻¹) B (hB ω⁻¹)`.
+-/
 theorem ginf_gfin_isometry (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (d : ℕ)
     (b : Module.Basis (Fin d) F E) (B : Matrix (Fin M × Fin d) (Fin M × Fin d) F)

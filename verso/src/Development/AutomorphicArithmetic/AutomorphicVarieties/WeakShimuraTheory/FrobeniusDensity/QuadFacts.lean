@@ -4,6 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h⟩`. Establish `hc : Fintype.card (K ≃ₐ[ℚ] K) = 2`. Rewrite using `[← Nat.card_eq_fintype_card, IsGalois.card_aut_eq_finrank, h]`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : K ≃ₐ[ℚ] K, t ≠ 1 := by`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `: Fintype.card (K ≃ₐ[ℚ] K) ≤ 1` using `Fintype.card_le_one_iff.mpr fun a b => by`. Rewrite using `[hne a, hne b]`. Use linear arithmetic over natural numbers and integers. Establish `huniq : ∀ s : K ≃ₐ[ℚ] K, s ≠ 1 → s = t`.
+
+Introduce `s hs`. Assume the negation of the conclusion as `hst`. Establish `h3 : ({1, s, t} : Finset (K ≃ₐ[ℚ] K)).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair hst]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or]`.
+
+Conclude with `⟨Ne.symm hs, Ne.symm ht⟩`. Use `Finset.card_le_univ ({1, s, t} : Finset (K ≃ₐ[ℚ] K))` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨t, ht, huniq, fun x => ?_⟩` and prove the remaining obligations. Establish `huniv : (Finset.univ : Finset (K ≃ₐ[ℚ] K)) = {1, t}`.
+
+Use extensionality with `s`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`. Distinguish the cases in `hs : s = 1`. Conclude with `Or.inl hs`. Conclude with `Or.inr (huniq s hs)`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `key` using `Algebra.norm_eq_prod_automorphisms ℚ (x : K)`. Rewrite `key` using `[huniv, Finset.prod_pair (Ne.symm ht)]`. Simplify using `only [map_mul, RingOfIntegers.mapRingEquiv_apply, map_intCast]`. Rewrite `key` using `[← Algebra.coe_norm_int]`.
+
+Simplify using `only [AlgEquiv.one_apply] at key`. Express the relevant statement in the definitionally equal form `(x : K) * t (x : K) = _`. Rewrite using `[← key]`. Simplify using the standard rewrite rules.
+-/
 private theorem exists_conj (K : Type) [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) :
     ∃ t : K ≃ₐ[ℚ] K, t ≠ 1 ∧ (∀ s : K ≃ₐ[ℚ] K, s ≠ 1 → s = t) ∧
       ∀ x : 𝓞 K, x * RingOfIntegers.mapRingEquiv t.toRingEquiv x = ((Algebra.norm ℤ x : ℤ) : 𝓞 K) := by
@@ -44,6 +59,25 @@ private theorem exists_conj (K : Type) [Field K] [NumberField K] (h : Module.fin
   rw [← key]
   simp
 
+/- English proof (translation)
+Establish `hspan : Ideal.span {((Ideal.absNorm I : ℕ) : 𝓞 K)} ≤ I * I.map τ`. Establish `h1 : Ideal.map (algebraMap ℤ (𝓞 K)) (Ideal.relNorm ℤ I) = Ideal.span {((Ideal.absNorm I : ℕ) : 𝓞 K)}`. Rewrite using `[Ideal.relNorm_int, Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules. Rewrite using `[← h1, Ideal.map_relNorm, Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Function.comp_apply, Algebra.intNorm_eq_norm, eq_intCast]`. Rewrite using `[← hτ x]`. Conclude with `Ideal.mul_mem_mul hx (Ideal.mem_map_of_mem _ hx)`. Establish `hd : Module.finrank ℤ (𝓞 K) = 2`.
+
+Establish `h2` using `hτ 2`. Rewrite `h2` using `[map_ofNat, show (2 : 𝓞 K) = algebraMap ℤ (𝓞 K) 2 by simp, Algebra.norm_algebraMap]`. Establish `h4 : ((4 : ℤ) : 𝓞 K) = ((2 ^ Module.finrank ℤ (𝓞 K) : ℤ) : 𝓞 K)`. Rewrite using `[← h2]`. Simplify using the standard rewrite rules.
+
+Evaluate the numerical expressions. Establish `h5 : (2 : ℤ) ^ Module.finrank ℤ (𝓞 K) = 2 ^ 2`. Use `Int.cast_injective (α := 𝓞 K) h4` as an intermediate fact. Rewrite using `[← this]`. Evaluate the numerical expressions.
+
+Conclude with `Nat.pow_right_injective (le_refl 2) (by exact_mod_cast h5)`. Establish `hmap : Ideal.absNorm (I.map τ) = Ideal.absNorm I`. Rewrite using `[← Ideal.absNorm_relNorm ℤ (𝓞 K) (I.map τ), ← Ideal.absNorm_relNorm ℤ (𝓞 K) I]`. Use `congr 1`. Conclude with `Ideal.relNorm_map_algEquiv τ.toIntAlgEquiv I`.
+
+Establish `habs : Ideal.absNorm (Ideal.span {((Ideal.absNorm I : ℕ) : 𝓞 K)}) = Ideal.absNorm I ^ 2`. Rewrite using `[Ideal.absNorm_span_singleton, show ((Ideal.absNorm I : ℕ) : 𝓞 K) = algebraMap ℤ (𝓞 K) (Ideal.absNorm I : ℤ) by simp, Algebra.norm_algebraMap, hd]`. Simplify using `[Int.natAbs_pow]`. Take `⟨L, hL⟩` from `Ideal.dvd_iff_le.mpr hspan`. Distinguish the cases in `hn : Ideal.absNorm I = 0`.
+
+Rewrite `hn` using `[Ideal.absNorm_eq_zero_iff]`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Establish `h3` using `congrArg Ideal.absNorm hL`. Rewrite `h3` using `[map_mul, map_mul, hmap, habs]`.
+
+Establish `hL1 : Ideal.absNorm L = 1`. Establish `hpos : 0 < Ideal.absNorm I * Ideal.absNorm I` using `Nat.mul_pos (Nat.pos_of_ne_zero hn) (Nat.pos_of_ne_zero hn)`. Establish `: Ideal.absNorm I * Ideal.absNorm I * 1 = Ideal.absNorm I * Ideal.absNorm I * Ideal.absNorm L`. Rewrite using `[mul_one, ← h3, sq]`. Conclude with `(Nat.eq_of_mul_eq_mul_left hpos this).symm`.
+
+Rewrite `hL1` using `[Ideal.absNorm_eq_one_iff]`. Rewrite using `[hL, hL1, Ideal.mul_top]`.
+-/
 private theorem mul_map {K : Type} [Field K] [NumberField K] (τ : 𝓞 K ≃+* 𝓞 K)
     (hτ : ∀ x : 𝓞 K, x * τ x = ((Algebra.norm ℤ x : ℤ) : 𝓞 K)) (I : Ideal (𝓞 K)) :
     I * I.map τ = Ideal.span {(Ideal.absNorm I : 𝓞 K)} := by
@@ -94,6 +128,9 @@ private theorem mul_map {K : Type} [Field K] [NumberField K] (τ : 𝓞 K ≃+* 
     rw [Ideal.absNorm_eq_one_iff] at hL1
     rw [hL, hL1, Ideal.mul_top]
 
+/- English proof (translation)
+Rewrite `hab` using `[Ideal.mem_span_singleton]`. Establish `hn` using `map_dvd (Algebra.norm ℤ) hab`. Rewrite `hn` using `[show (a : 𝓞 K) = algebraMap ℤ (𝓞 K) (a : ℤ) by simp, show (b : 𝓞 K) = algebraMap ℤ (𝓞 K) (b : ℤ) by simp, Algebra.norm_algebraMap, Algebra.norm_algebraMap, RingOfIntegers.rank, h, Int.pow_dvd_pow_iff two_ne_zero]`. Conclude with `hn` after adjusting the coercions.
+-/
 private theorem dvd_of_mem {K : Type} [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) {a b : ℕ}
     (hab : (b : 𝓞 K) ∈ Ideal.span {(a : 𝓞 K)}) : a ∣ b := by
   rw [Ideal.mem_span_singleton] at hab
@@ -103,6 +140,25 @@ private theorem dvd_of_mem {K : Type} [Field K] [NumberField K] (h : Module.finr
     Algebra.norm_algebraMap, RingOfIntegers.rank, h, Int.pow_dvd_pow_iff two_ne_zero] at hn
   exact_mod_cast hn
 
+/- English proof (translation)
+Use `haveI hwm : w.asIdeal.IsMaximal := w.isMaximal`. Use `haveI hτm : (w.asIdeal.map τ).IsMaximal := Ideal.map_isMaximal_of_equiv τ`. Establish `hcop : IsCoprime w.asIdeal (w.asIdeal.map τ)` using `Ideal.isCoprime_iff_sup_eq.mpr (Ideal.IsMaximal.coprime_of_ne hwm hτm hne)`. Establish `hpτ : (p : 𝓞 K) ∈ w.asIdeal.map τ`. Use `Ideal.mem_map_of_mem τ hw` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hnorm : Ideal.absNorm w.asIdeal = p`. Establish `hmem : (p : 𝓞 K) ∈ Ideal.span {((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 K)}`. Rewrite using `[← hτ, ← Ideal.inf_eq_mul_of_isCoprime hcop]`. Conclude with `⟨hw, hpτ⟩`.
+
+Establish `hdvd` using `dvd_of_mem h hmem`. Break down `(Nat.dvd_prime hp).mp hdvd with h1 | h1` into its components or cases. Conclude with `absurd (Ideal.absNorm_eq_one_iff.mp h1) hwm.ne_top`. Conclude with `h1`. Use `⟨hnorm, hcop, fun n => ?_⟩` and prove the remaining obligations.
+
+Establish `hchar : ∀ x : ℕ, (x : 𝓞 K) ∈ w.asIdeal ^ n ↔ p ^ n ∣ x`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : (x : 𝓞 K) ∈ (w.asIdeal.map τ) ^ n`.
+
+Rewrite using `[← Ideal.map_pow]`. Use `Ideal.mem_map_of_mem τ hx` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hmem : (x : 𝓞 K) ∈ Ideal.span {((p ^ n : ℕ) : 𝓞 K)}`. Rewrite using `[Nat.cast_pow, ← Ideal.span_singleton_pow, ← hnorm, ← hτ, mul_pow, ← Ideal.inf_eq_mul_of_isCoprime hcop.pow]`.
+
+Conclude with `⟨hx, hx'⟩`. Conclude with `dvd_of_mem h hmem`. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[Nat.cast_mul, Nat.cast_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hw n)`.
+
+Use `haveI : CharP (𝓞 K ⧸ w.asIdeal ^ n) (p ^ n) := ⟨fun x => by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (w.asIdeal ^ n)), Ideal.Quotient.eq_zero_iff_mem, hchar]⟩`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Establish `hcard : Nat.card (𝓞 K ⧸ w.asIdeal ^ n) = p ^ n`. Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, map_pow, hnorm]`.
+
+Use `haveI : Finite (𝓞 K ⧸ w.asIdeal ^ n) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact pow_ne_zero _ hp.ne_zero)`. Establish `hbij` using `(ZMod.castHom_injective (𝓞 K ⧸ w.asIdeal ^ n)).bijective_of_nat_card_le (by rw [hcard, Nat.card_zmod])`. Set `e` to `RingEquiv.ofBijective _ hbij`. Use `⟨e.symm.toRingHom.comp (Ideal.Quotient.mk _), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+
+Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 private theorem split_facts {K : Type} [Field K] [NumberField K] (h : Module.finrank ℚ K = 2) (τ : 𝓞 K ≃+* 𝓞 K)
     (hτ : ∀ I : Ideal (𝓞 K), I * I.map τ = Ideal.span {(Ideal.absNorm I : 𝓞 K)}) {p : ℕ} (hp : p.Prime)
     (w : HeightOneSpectrum (𝓞 K)) (hw : (p : 𝓞 K) ∈ w.asIdeal) (hne : w.asIdeal ≠ w.asIdeal.map τ) :
@@ -155,6 +211,23 @@ private theorem split_facts {K : Type} [Field K] [NumberField K] (h : Module.fin
   ext x
   simp [RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]
 
+/- English proof (translation)
+Establish `hk0 : k ≠ 0` using `hk.ne'`. Establish `htpos : 0 < k.totient` using `Nat.totient_pos.mpr hk`. Establish `bound : ∀ d, d ∣ k → d.totient ≤ 2` using `fun d hd => le_trans (Nat.le_of_dvd htpos (Nat.totient_dvd_of_dvd hd)) h`. Rewrite using `[← Nat.factorization_le_iff_dvd hk0 (by norm_num)]`. Introduce `p`.
+
+Distinguish the cases in `hp : p.Prime`. Establish `ht` using `bound _ (Nat.ordProj_dvd k p)`. Break down `Nat.eq_zero_or_pos (k.factorization p) with hm | hm` into its components or cases. Rewrite using `[hm]`. Conclude with `Nat.zero_le _`.
+
+Rewrite `ht` using `[Nat.totient_prime_pow hp hm]`. Establish `hp2` using `hp.two_le`. Establish `hpow : 1 ≤ p ^ (k.factorization p - 1)` using `Nat.one_le_pow _ _ (by omega)`. Distinguish the cases in `h2 : p = 2`. Substitute `h2` using the available equality.
+
+Establish `h4 : 2 ≤ (12 : ℕ).factorization 2` using `(Nat.prime_two.pow_dvd_iff_le_factorization (by norm_num)).mp (by norm_num)`. Assume the negation of the conclusion as `hc`. Establish `h8 : 2 ^ 2 ≤ 2 ^ (k.factorization 2 - 1)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h3 : p = 3`.
+
+Substitute `h3` using the available equality. Establish `h4 : 1 ≤ (12 : ℕ).factorization 3` using `(Nat.prime_three.pow_dvd_iff_le_factorization (by norm_num)).mp (by norm_num)`. Assume the negation of the conclusion as `hc`. Establish `h9 : 3 ^ 1 ≤ 3 ^ (k.factorization 3 - 1)` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers.
+
+It suffices to derive a contradiction. Establish `hp4 : 4 ≤ p`. Break down `(by omega : p = 2 ∨ p = 3 ∨ p = 4 ∨ 5 ≤ p) with h' | h' | h' | h'` into its components or cases. Conclude with `absurd h' h2`. Conclude with `absurd h' h3`.
+
+Substitute `h'` using the available equality. Evaluate the numerical expressions using `at hp`. Use linear arithmetic over natural numbers and integers. Establish `: 1 * (p - 1) ≤ p ^ (k.factorization p - 1) * (p - 1)` using `Nat.mul_le_mul hpow (le_refl (p - 1))`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[Nat.factorization_eq_zero_of_not_prime _ hp]`. Conclude with `Nat.zero_le _`.
+-/
 private theorem dvd_twelve_of_totient_le_two (k : ℕ) (hk : 0 < k) (h : k.totient ≤ 2) : k ∣ 12 := by
   have hk0 : k ≠ 0 := hk.ne'
   have htpos : 0 < k.totient := Nat.totient_pos.mpr hk
@@ -200,6 +273,31 @@ private theorem dvd_twelve_of_totient_le_two (k : ℕ) (hk : 0 < k) (h : k.totie
   · rw [Nat.factorization_eq_zero_of_not_prime _ hp]
     exact Nat.zero_le _
 
+/- English proof (translation)
+Establish `hr : NumberField.Units.rank K = 0`. Establish `h1` using `IsTotallyComplex.finrank K`. Establish `h0` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Unfold `NumberField.Units.rank`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, h0]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `htors : u ∈ NumberField.Units.torsion K`. Take `⟨⟨ζ, e⟩, hζ, -⟩` from `NumberField.Units.exist_unique_eq_mul_prod K u`. Use `haveI : IsEmpty (Fin (NumberField.Units.rank K)) := by`. Rewrite using `[hr]`.
+
+Use `infer_instance`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, mul_one] at hζ`. Rewrite using `[hζ]`. Conclude with `ζ.2`. Rewrite `htors` using `[← NumberField.Units.rootsOfUnity_eq_torsion, mem_rootsOfUnity]`.
+
+Establish `hx : ((u : 𝓞 K) : K) ^ NumberField.Units.torsionOrder K = 1`. Use `congrArg (fun v : (𝓞 K)ˣ => ((v : 𝓞 K) : K)) htors` as an intermediate fact. Simplify using `using this`. Establish `hfin : 0 < orderOf ((u : 𝓞 K) : K)` using `orderOf_pos_iff.mpr (isOfFinOrder_iff_pow_eq_one.mpr ⟨_, NumberField.Units.torsionOrder_pos K, hx⟩)`. Establish `htot : (orderOf ((u : 𝓞 K) : K)).totient ≤ 2`.
+
+Use `IsPrimitiveRoot.lcm_totient_le_finrank (K := ℚ) (IsPrimitiveRoot.orderOf ((u : 𝓞 K) : K)) (IsPrimitiveRoot.orderOf ((u : 𝓞 K) : K)) (by rw [Nat.lcm_self]; exact Polynomial.cyclotomic.irreducible_rat hfin)` as an intermediate fact. Rewrite `this` using `[Nat.lcm_self, h]`. Then use the resulting hypothesis. Establish `h12 : ((u : 𝓞 K) : K) ^ 12 = 1` using `orderOf_dvd_iff_pow_eq_one.mp (dvd_twelve_of_totient_le_two _ hfin htot)`. Establish `hu12 : (u : 𝓞 K) ^ 12 = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+
+Simplify using `using h12`. Establish `hfac : ((u : 𝓞 K) - 1) * ((u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 2 + 1) * ((u : 𝓞 K) ^ 2 + (u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 2 - (u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 4 - (u : 𝓞 K) ^ 2 + 1) = 0`. Establish `e : ((u : 𝓞 K) - 1) * ((u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 2 + 1) * ((u : 𝓞 K) ^ 2 + (u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 2 - (u : 𝓞 K) + 1) * ((u : 𝓞 K) ^ 4 - (u : 𝓞 K) ^ 2 + 1) = (u : 𝓞 K) ^ 12 - 1` using `by ring`. Rewrite using `[e, hu12, sub_self]`. Establish `hφ : ∀ y : ZMod 4, y ^ 2 + 1 ≠ 0 ∧ y ^ 2 + y + 1 ≠ 0 ∧ y ^ 2 - y + 1 ≠ 0 ∧ y ^ 4 - y ^ 2 + 1 ≠ 0` using `by decide`.
+
+Take `h' | h6` from `mul_eq_zero.mp hfac`. Take `h' | h5` from `mul_eq_zero.mp h'`. Take `h' | h4` from `mul_eq_zero.mp h'`. Take `h' | h3` from `mul_eq_zero.mp h'`. Take `h1 | h2` from `mul_eq_zero.mp h'`.
+
+Use `left`. Conclude with `Units.ext (sub_eq_zero.mp h1)`. Use `right`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_neg, Units.val_one]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h2`. It suffices to derive a contradiction. Use `congrArg φ h3` as an intermediate fact. Simplify using `only [map_add, map_pow, map_one, map_zero] at this`. Conclude with `(hφ _).1 this`.
+
+It suffices to derive a contradiction. Use `congrArg φ h4` as an intermediate fact. Simplify using `only [map_add, map_pow, map_one, map_zero] at this`. Conclude with `(hφ _).2.1 this`. It suffices to derive a contradiction.
+
+Use `congrArg φ h5` as an intermediate fact. Simplify using `only [map_add, map_sub, map_pow, map_one, map_zero] at this`. Conclude with `(hφ _).2.2.1 this`. It suffices to derive a contradiction. Use `congrArg φ h6` as an intermediate fact.
+
+Simplify using `only [map_add, map_sub, map_pow, map_one, map_zero] at this`. Conclude with `(hφ _).2.2.2 this`.
+-/
 private theorem units_pm {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (h : Module.finrank ℚ K = 2)
     (t : K ≃ₐ[ℚ] K) (hu : ∀ s : K ≃ₐ[ℚ] K, s ≠ 1 → s = t)
     (hτ : ∀ x : 𝓞 K, x * RingOfIntegers.mapRingEquiv t.toRingEquiv x = ((Algebra.norm ℤ x : ℤ) : 𝓞 K))
@@ -273,6 +371,59 @@ private theorem units_pm {K : Type} [Field K] [NumberField K] [IsTotallyComplex 
     exact (hφ _).2.2.2 this
 
 open Pointwise in
+/- English proof (translation)
+Introduce `Ω _ _ _ l _ hl K _ _ h`. Use `haveI : Algebra.IsQuadraticExtension ℚ K := ⟨h⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : IsAlgClosure K Ω := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Take `⟨t, ht, hu, hτ⟩` from `exists_conj K h`.
+
+Set `τ : 𝓞 K ≃+* 𝓞 K` to `RingOfIntegers.mapRingEquiv t.toRingEquiv`. Establish `hτI : ∀ I : Ideal (𝓞 K), I * I.map τ = Ideal.span {(Ideal.absNorm I : 𝓞 K)}` using `mul_map τ hτ`. Establish `hres : ∀ c : G ℚ Ω, c ∉ K.fixingSubgroup → ∀ y : K, c (y : Ω) = ((t y : K) : Ω)`. Introduce `c hc y`. Establish `hne : c.restrictNormal K ≠ 1`.
+
+Introduce `h1`. Apply `hc` to reduce the goal to its premises. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Use `AlgEquiv.restrictNormal_commutes c K ⟨x, hx⟩` as an intermediate fact.
+
+Rewrite `this` using `[h1]`. Conclude with `this.symm`. Rewrite using `[← hu _ hne]`. Conclude with `(AlgEquiv.restrictNormal_commutes c K y).symm`. Establish `hval : ∀ (c : G ℚ Ω) (B : ValuationSubring Ω) (z : Ω), (c • B).valuation (c z) < 1 ↔ B.valuation z < 1` using `fun c B z => UpperTheory.V.val_lt_one (σ := c.toRingEquiv) (fun x => ValuationSubring.smul_mem_pointwise_smul_iff (g := c) (S := B) (x := x)) z`.
+
+Establish `hle : ∀ (c : G ℚ Ω) (B : ValuationSubring Ω) (z : Ω), (c • B).valuation (c z) ≤ 1 ↔ B.valuation z ≤ 1`. Introduce `c B z`. Rewrite using `[ValuationSubring.valuation_le_one_iff, ValuationSubring.valuation_le_one_iff]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff (g := c) (S := B) (x := z)`. Establish `hsmulK : ∀ (σ : G K Ω) (B : ValuationSubring Ω), σ • B = resQ K σ • B`.
+
+Introduce `σ B`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ← map_inv]`. Both sides reduce to the same expression. Set `tw : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K)` to `fun w => ⟨w.asIdeal.map τ, by haveI := w.isPrime; exact Ideal.map_isPrime_of_equiv τ, (Ideal.map_eq_bot_iff_of_injective τ.injective).not.mpr w.ne_bot⟩`.
+
+Establish `hmemτ : ∀ (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K), x ∈ w.asIdeal.map τ ↔ τ.symm x ∈ w.asIdeal`. Introduce `w x`. Rewrite using `[← Ideal.comap_symm, Ideal.mem_comap]`. Establish `hplace : ∀ c : G ℚ Ω, c ∉ K.fixingSubgroup → ∀ (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 K)), IsPlaceOver A w → IsPlaceOver (c • A) (tw w)`. Introduce `c hc A w hA x`.
+
+Establish `e1 : algebraMap K Ω (x : K) = c (algebraMap K Ω ((τ.symm x : 𝓞 K) : K))`. Establish `h2` using `hres c hc ((τ.symm x : 𝓞 K) : K)`. Establish `h3 : t ((τ.symm x : 𝓞 K) : K) = (x : K)` using `by show t (t.symm (x : K)) = (x : K)`. Conclude with `t.apply_symm_apply _`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2.symm`. Rewrite using `[e1, hval, hA (τ.symm x)]`. Conclude with `(hmemτ w x).symm`. Establish `hnormV : ∀ w : HeightOneSpectrum (𝓞 K), normV (tw w) = normV w`. Introduce `w`.
+
+Unfold `normV`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv w.asIdeal (w.asIdeal.map τ) τ rfl).toEquiv).symm`. Establish `hfixσ : ∀ σ : G K Ω, resQ K σ ∈ K.fixingSubgroup`. Introduce `σ`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Conclude with `σ.commutes ⟨x, hx⟩`. Establish `hc0 : ∃ c : G ℚ Ω, c ∉ K.fixingSubgroup`. Use `⟨t.liftNormal Ω, fun hmem => ht ?_⟩` and prove the remaining obligations. Apply `AlgEquiv.ext` to reduce the goal to its premises.
+
+Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1` using `AlgEquiv.liftNormal_commutes t Ω y`. Rewrite `hmem` using `[IntermediateField.mem_fixingSubgroup_iff]`. Establish `h2` using `hmem (y : Ω) y.2`.
+
+Conclude with `h1.symm.trans h2`. Establish `h4 : ∀ (p : ℕ) (A : ValuationSubring Ω), p.Prime → A.valuation (p : Ω) < 1 → Dec (F` using `ℚ) A ≤ K.fixingSubgroup → ∃ w : HeightOneSpectrum (𝓞 K), IsPlaceOver A w ∧ Ideal.absNorm w.asIdeal = p ∧ IsCoprime w.asIdeal (w.asIdeal.map τ) ∧ ∀ n : ℕ, ∃ φ : 𝓞 K →+* ZMod (p ^ n), RingHom.ker φ = w.asIdeal ^ n := by`. Introduce `p A hp hA hdec`. Establish `hAtop : A ≠ ⊤`. Introduce `htop`.
+
+Rewrite `htop` using `[ValuationSubring.eq_top_iff]`. Apply `htop` to reduce the goal to its premises. Use `⟨⟨(p : Ω), ?_, ne_of_lt hA⟩⟩` and prove the remaining obligations. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+
+Take `⟨w, hw⟩` from `(places K Ω l A).1 hAtop`. Establish `hpw : (p : 𝓞 K) ∈ w.asIdeal`. Rewrite using `[← hw]`. Simplify using `using hA`. Establish `hne : w.asIdeal ≠ w.asIdeal.map τ`.
+
+Introduce `heq`. Take `⟨c, hc⟩` from `hc0`. Establish `hcA : IsPlaceOver (c • A) w`. Use `hplace c hc A w hw` as an intermediate fact. Establish `hww : tw w = w` using `HeightOneSpectrum.ext heq.symm`.
+
+Rewrite `this` using `[hww]`. Then use the resulting hypothesis. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver hw hcA`. Establish `hmem : (resQ K σ)⁻¹ * c ∈ Dec (F` using `ℚ) A := by`. Rewrite using `[mem_Dec, mul_smul, ← hσ, hsmulK, inv_smul_smul]`. Apply `hc` to reduce the goal to its premises.
+
+Use `K.fixingSubgroup.mul_mem (hfixσ σ) (hdec hmem)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis. Conclude with `⟨w, hw, split_facts h τ hτI hp w hpw hne⟩`. Use `⟨τ, ?_, hτI, ?_, h4, ?_⟩` and prove the remaining obligations. Introduce `c hc x`.
+
+Conclude with `hres c hc (x : K)`. Introduce `c hc s s' hss w A hA hF`. Use `⟨tw w, c • A, rfl, hplace c hc A w hA, ?_⟩` and prove the remaining obligations. Rewrite using `[hnormV]`. Establish `hpt : ∀ z : Ω, s' z = c (s (c⁻¹ z))` using `fun z => DFunLike.congr_fun hss z`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show s' • (c • A) = c • A`. Rewrite using `[hsmulK, hss, mul_smul, mul_smul, inv_smul_smul, ← hsmulK]`. Rewrite using `[show s • A = A from hF.1]`. Introduce `x hx`.
+
+Take `⟨y, rfl⟩ : ∃ y, c y = x` from `⟨c⁻¹ x, c.apply_symm_apply x⟩`. Rewrite `hx` using `[hle]`. Rewrite using `[hpt, show c⁻¹ (c y) = y from c.symm_apply_apply y, ← map_pow, ← map_sub, hval]`. Conclude with `hF.2 y hx`. Introduce `hall u`.
+
+Establish `h2nu : ¬ IsUnit (2 : 𝓞 K)`. Introduce `hunit`. Use `hunit.map (Algebra.norm ℤ)` as an intermediate fact. Rewrite `this` using `[show (2 : 𝓞 K) = algebraMap ℤ (𝓞 K) 2 by simp, Algebra.norm_algebraMap, RingOfIntegers.rank, h]`. Evaluate the numerical expressions using `[Int.isUnit_iff] at this`.
+
+Take `⟨M, hM, h2M⟩` from `Ideal.exists_le_maximal (Ideal.span {(2 : 𝓞 K)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Set `w0 : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, by`. Introduce `hb`. Rewrite `h2M` using `[hb]`. Use `h2M (Ideal.mem_span_singleton_self 2)` as an intermediate fact.
+
+Simplify using `at this⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w0`. Establish `hA2 : A.valuation (2 : Ω) < 1`. Use `(hA 2).mpr (h2M (Ideal.mem_span_singleton_self 2))` as an intermediate fact. Establish `e1 : ((2 : 𝓞 K) : K) = 2` using `map_ofNat (algebraMap (𝓞 K) K) 2`.
+
+Establish `e2 : algebraMap K Ω ((2 : 𝓞 K) : K) = 2`. Rewrite using `[e1]`. Conclude with `map_ofNat (algebraMap K Ω) 2`. Rewrite `this` using `[e2]`. Conclude with `this`.
+
+Take `⟨w, -, -, -, hφ⟩` from `h4 2 A Nat.prime_two (by exact_mod_cast hA2) (hall A hA2)`. Take `⟨φ, -⟩` from `hφ 2`. Conclude with `units_pm h t hu hτ φ u`.
+-/
 theorem UpperTheory.V.Ws.Tw.quadFacts :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (K : IntermediateField ℚ Ω) [NumberField K] [IsTotallyComplex K], Module.finrank ℚ K = 2 → ∃ τ : 𝓞 K ≃+* 𝓞 K, (∀ c ∉ K.fixingSubgroup, ∀ x : 𝓞 K, c ((x : K) : Ω) = ((τ x : 𝓞 K) : K)) ∧ (∀ I : Ideal (𝓞 K), I * I.map τ = Ideal.span {(Ideal.absNorm I : 𝓞 K)}) ∧ (∀ c ∉ K.fixingSubgroup, ∀ s s' : G K Ω, resQ K s' = c * resQ K s * c⁻¹ → ∀ (w : HeightOneSpectrum (𝓞 K)) (A : ValuationSubring Ω), IsPlaceOver A w → IsFrob A (normV w) s → ∃ (w' : HeightOneSpectrum (𝓞 K)) (A' : ValuationSubring Ω), w'.asIdeal = w.asIdeal.map τ ∧ IsPlaceOver A' w' ∧ IsFrob A' (normV w') s') ∧ (∀ (p : ℕ) (A : ValuationSubring Ω), p.Prime → A.valuation (p : Ω) < 1 → Dec (F := ℚ) A ≤ K.fixingSubgroup → ∃ w : HeightOneSpectrum (𝓞 K), IsPlaceOver A w ∧ Ideal.absNorm w.asIdeal = p ∧ IsCoprime w.asIdeal (w.asIdeal.map τ) ∧ ∀ n : ℕ, ∃ φ : 𝓞 K →+* ZMod (p ^ n), RingHom.ker φ = w.asIdeal ^ n) ∧ ((∀ A : ValuationSubring Ω, A.valuation (2 : Ω) < 1 → Dec (F := ℚ) A ≤ K.fixingSubgroup) → ∀ u : (𝓞 K)ˣ, u = 1 ∨ u = -1) := by
   intro Ω _ _ _ l _ hl K _ _ h

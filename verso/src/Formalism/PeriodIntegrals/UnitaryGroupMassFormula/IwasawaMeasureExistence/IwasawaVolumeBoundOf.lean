@@ -92,16 +92,35 @@ def StepF : Prop :=
     cIG X J c * nBound X J c * (∏ i, glG X (c.blocksFun i)) ≤
       gRatio X J * Formalism.L2.S.S7.DensityConstant.densityConstant X J c
 
+/- English proof (translation)
+Distinguish the cases in `ha : 0 ≤ a`. Rewrite using `[ENNReal.ofReal_mul ha]`. Rewrite using `[ENNReal.ofReal_of_nonpos (le_of_lt (not_le.mp ha)), zero_mul]`. Conclude with `zero_le`.
+-/
 theorem ofReal_mul_le (a b : ℝ) : ENNReal.ofReal a * ENNReal.ofReal b ≤ ENNReal.ofReal (a * b) := by
   by_cases ha : 0 ≤ a
   · rw [ENNReal.ofReal_mul ha]
   · rw [ENNReal.ofReal_of_nonpos (le_of_lt (not_le.mp ha)), zero_mul]
     exact zero_le
 
+/- English proof (translation)
+Unfold `AutInst.rd`. Conclude with `Real.rpow_nonneg (abs_nonneg _) _`.
+-/
 theorem rd_nonneg (X : CData) : 0 ≤ X.I.rd := by
   unfold AutInst.rd
   exact Real.rpow_nonneg (abs_nonneg _) _
 
+/- English proof (translation)
+Introduce `X n₀ A J hH c D hmul hT μK μN μM cIw FN FM Om VM pK pN pM pI pF pL`. Take `⟨sc, hs0, hsT, -, -, -, -, hG⟩` from `hEx X n₀ A J hH c D hmul hT ⟨μK, μN, μM, cIw, FN, FM, Om, VM, pK, pN, pM, pI, pF, pL⟩`. Establish `hb` using `hB X n₀ A J hH c D _ sc hG`. Establish `hc` using `hC X n₀ A J hH c D _ sc hG`. Take `⟨hv0, hd⟩` from `hD X n₀ A J hH c D _ sc hG`.
+
+Establish `he` using `hE X n₀ A J hH c D _ sc hG`. Establish `hl` using `hL X n₀ A J hH`. Establish `hf` using `hF X n₀ A J hH c hl`. Express the relevant statement in the definitionally equal form `cIw * sc.s = _ at hb`. Express the relevant statement in the definitionally equal form `sc.sN * μN FN ≤ _ at hc`.
+
+Express the relevant statement in the definitionally equal form `sc.sM * VM = _ at hd`. Establish `hfin : X.I.muA X.μf X.fund ≠ ⊤` using `hH.2.1`. Establish `hgR : 0 ≤ sc.vU0 * gRatio X J` using `mul_nonneg hv0.le (mul_nonneg (Real.rpow_nonneg (rd_nonneg X) _) hl.le)`. Rewrite using `[← ENNReal.mul_le_mul_iff_left hs0 hsT]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hd]`. Use `gcongr`. Use `_ ≤ ENNReal.ofReal (cIG X J c * (nBound X J c * ((∏ i, glG X (c.blocksFun i)) * sc.vU0))) := le_trans (by gcongr; exact ofReal_mul_le _ _) (ofReal_mul_le _ _)`. Use `_ ≤ ENNReal.ofReal (gRatio X J * Formalism.L2.S.S7.DensityConstant.densityConstant X J c * sc.vU0) := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+
+Rewrite using `[show cIG X J c * (nBound X J c * ((∏ i, glG X (c.blocksFun i)) * sc.vU0)) = (cIG X J c * nBound X J c * (∏ i, glG X (c.blocksFun i))) * sc.vU0 by ring]`. Conclude with `mul_le_mul_of_nonneg_right hf hv0.le`. Use `_ = ENNReal.ofReal (sc.vU0 * gRatio X J) * ENNReal.ofReal (Formalism.L2.S.S7.DensityConstant.densityConstant X J c) := by`. Rewrite using `[← ENNReal.ofReal_mul hgR]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ENNReal.ofReal (X.I.vol X.μf X.fund * Formalism.L2.S.S7.DensityConstant.densityConstant X J c) * sc.s := by`. Rewrite using `[← he, AutInst.vol, ENNReal.ofReal_mul ENNReal.toReal_nonneg, ENNReal.ofReal_toReal hfin]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem iwasawa_volume_bound_of (G : GPred) (hEx : StepEx G) (hB : StepB G) (hC : StepC G) (hD : StepD G)
     (hE : StepE G) (hL : LPos) (hF : StepF) : IwasawaVolumeBound := by
   intro X n₀ A J hH c D hmul hT μK μN μM cIw FN FM Om VM pK pN pM pI pF pL

@@ -14,6 +14,11 @@ open GlobalTheory.FinPlLoc
 
 variable {D : D7}
 
+/- English proof (translation)
+Apply `eq_zero_of_comp` to reduce the goal to its premises. Rewrite using `[map_mul, infPart_of_idAt ha, zero_mul]`. Introduce `v`. Rewrite using `[map_mul]`. Distinguish the cases in `hv : v = x`.
+
+Rewrite using `[compAt_of_idAt hb (w := v) (fun h' => h (h'.symm.trans hv)), mul_zero]`. Rewrite using `[compAt_of_idAt ha (w := v) hv, zero_mul]`.
+-/
 theorem mul_eq_zero_of_ne {x w : Pl D} (h : w ≠ x) {a b : AE D} (ha : a ∈ idAt D (· = x)) (hb : b ∈ idAt D (· = w)) :
     a * b = 0 := by
   apply eq_zero_of_comp
@@ -24,6 +29,11 @@ theorem mul_eq_zero_of_ne {x w : Pl D} (h : w ≠ x) {a b : AE D} (ha : a ∈ id
     · rw [compAt_of_idAt hb (w := v) (fun h' => h (h'.symm.trans hv)), mul_zero]
     · rw [compAt_of_idAt ha (w := v) hv, zero_mul]
 
+/- English proof (translation)
+Establish `hg'` using `(mem_congGrp _ g).1 hg`. Establish `h0 : (mt S g - 1) *ᵥ y = 0`. Use function extensionality and compare the values at `i`. Use `show ∑ j, (mt S g - 1) i j * y j = 0`. Conclude with `Finset.sum_eq_zero fun j _ => mul_eq_zero_of_ne h (hg' i j) (hy j)`.
+
+Rewrite `h0` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h0`.
+-/
 theorem mulVec_eq_of_ne {S : HSp D} {x w : Pl D} (h : w ≠ x) {g : GA D S} (hg : g ∈ grpAt S (· = x))
     {y : Fin S.rank → AE D} (hy : ∀ i, y i ∈ idAt D (· = w)) : mt S g *ᵥ y = y := by
   have hg' := (mem_congGrp _ g).1 hg
@@ -34,6 +44,11 @@ theorem mulVec_eq_of_ne {S : HSp D} {x w : Pl D} (h : w ≠ x) {g : GA D S} (hg 
   rw [Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero] at h0
   exact h0
 
+/- English proof (translation)
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hid` using `latV_idAt hy`. Rewrite using `[hm y hid, mulVec_eq_of_ne h hg hid]`.
+
+Conclude with `hy`. Introduce `hy`. Establish `hid` using `latV_idAt hy`. Use `(hm y hid).1 hy` as an intermediate fact. Rewrite `this` using `[mulVec_eq_of_ne h hg hid]`. Then use the resulting hypothesis.
+-/
 theorem latV_eq_off {S : HSp D} {x w : Pl D} (h : w ≠ x) {g : GA D S} (hg : g ∈ grpAt S (· = x)) {L M : Lat S}
     (hm : Moves S g L M (· = w)) : latV S M (· = w) = latV S L (· = w) := by
   ext y
@@ -47,6 +62,11 @@ theorem latV_eq_off {S : HSp D} {x w : Pl D} (h : w ≠ x) {g : GA D S} (hg : g 
     have := (hm y hid).1 hy
     rwa [mulVec_eq_of_ne h hg hid] at this
 
+/- English proof (translation)
+Introduce `y hy`. Establish `hid` using `latV_idAt hy`. Establish `hz : ∀ i, (mt S g⁻¹ *ᵥ y) i ∈ idAt D P` using `fun i => by show ∑ j, mt S g⁻¹ i j * y j ∈ idAt D P`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hid j)`. Establish `he : mt S g *ᵥ (mt S g⁻¹ *ᵥ y) = y`.
+
+Rewrite using `[Matrix.mulVec_mulVec, ← FinPlLoc.mt_mul, mul_inv_cancel, FinPlLoc.mt_one, Matrix.one_mulVec]`. Establish `h1` using `(hm _ hz).2 (by rw [he]; exact hy)`. Establish `h2` using `(hm' _ hz).1 h1`. Rewrite `h2` using `[he]`. Then use the resulting hypothesis.
+-/
 theorem latV_le_of_moves {S : HSp D} {P : Pl D → Prop} {g : GA D S} {L M M' : Lat S} (hm : Moves S g L M P)
     (hm' : Moves S g L M' P) : latV S M P ≤ latV S M' P := by
   intro y hy
@@ -60,6 +80,15 @@ theorem latV_le_of_moves {S : HSp D} {P : Pl D → Prop} {g : GA D S} {L M M' : 
   have h2 := (hm' _ hz).1 h1
   rwa [he] at h2
 
+/- English proof (translation)
+Introduce `D S L L' hL hL' Z`. Proceed by induction on `Z using Finset.induction_on with`. Consider the case `empty => exact ⟨L, hL, fun x hx => absurd hx (Finset.notMem_empty x), fun _ _ => rfl⟩`. Consider the case `insert x Z hx ih`. Take `⟨M, hM, h1, h2⟩` from `ih`.
+
+Take `⟨g, hg, hgm⟩` from `GlobalTheory.T.selfDualLattices_conjugate_at_finitePlace D S M L' hM hL' x`. Take `⟨M', hM', hmv⟩` from `(GlobalTheory.T.selfDual_image_adelicPoint_wittCore D S M hM).1 g`. Use `⟨M', hM', fun w hw => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hwx : w = x`. Substitute `hwx` using the available equality.
+
+Conclude with `le_antisymm (latV_le_of_moves (hmv _) hgm) (latV_le_of_moves hgm (hmv _))`. Rewrite using `[latV_eq_off hwx hg (hmv _)]`. Conclude with `h1 w ((Finset.mem_insert.1 hw).resolve_left hwx)`. Rewrite `hw` using `[Finset.mem_insert, not_or]`. Rewrite using `[latV_eq_off hw.1 hg (hmv _)]`.
+
+Conclude with `h2 w hw.2`.
+-/
 theorem patch : ∀ (D : D7) (S : HSp D) (L L' : Lat S), IsSelfDualC S L → IsSelfDualC S L' → ∀ Z : Finset (Pl D),
     ∃ M : Lat S, IsSelfDualC S M ∧ (∀ x ∈ Z, latV S M (· = x) = latV S L' (· = x)) ∧
       ∀ x, x ∉ Z → latV S M (· = x) = latV S L (· = x) := by

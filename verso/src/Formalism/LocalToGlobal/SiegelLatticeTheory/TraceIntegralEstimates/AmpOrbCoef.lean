@@ -12,6 +12,15 @@ namespace Formalism.L2.S.Pv.AmpOrbCoef
 
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.L2.SG.AmpOrbPf
 
+/- English proof (translation)
+Take `⟨d, hd, hS⟩` from `Formalism.FourierDecayAlt.P.schur_hermitian k r ε lam H σ μG hlam hσ hG`. Take `⟨hint, heq⟩` from `hS w w w w`. Establish `hf : (fun x : Mt k r => ⟪w, σ (Matrix.of x) w⟫_ℂ * star ⟪w, σ (Matrix.of x) w⟫_ℂ) = fun x => (((‖⟪w, σ (Matrix.of x) w⟫_ℂ‖ ^ 2 : ℝ)) : ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+
+Rewrite `heq` using `[hf, integral_complex_ofReal]`. Establish `hww : ⟪w, w⟫_ℂ = 1` using `by rw [inner_self_eq_norm_sq_to_K, hw]; simp`. Rewrite `heq` using `[hww, one_mul]`. Establish `hI : ∫ x, ‖⟪w, σ (Matrix.of x) w⟫_ℂ‖ ^ 2 ∂μG = 1 / d`. Use `congrArg Complex.re heq` as an intermediate fact.
+
+Simplify using `only [Complex.ofReal_re] at this`. Rewrite using `[this]`. Rewrite using `[show (1 : ℂ) / (d : ℂ) = ((1 / d : ℝ) : ℂ) by push_cast; rfl, Complex.ofReal_re]`. Unfold `PI.BesselPeriodGGP.fdegH`. Rewrite using `[hI, hw]`.
+
+Simplify using `only [one_pow, one_div, inv_inv]`. Conclude with `hd`.
+-/
 theorem fdegH_pos {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {H : Type}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     {μG : Measure (Mt k r)} (hlam : IsHCParam lam) (hσ : PI.UpqRep.IsDSHpk k r ε lam σ)
@@ -36,6 +45,13 @@ theorem fdegH_pos {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 
   simp only [one_pow, one_div, inv_inv]
   exact hd
 
+/- English proof (translation)
+Establish `hm : Measurable (fun p : Mt k r × Mt k r => fun i j => (Matrix.of p.1 * Matrix.of p.2) i j)`. Apply `Continuous.measurable` to reduce the goal to its premises. Conclude with `continuous_pi fun i => continuous_pi fun j => (Continuous.matrix_mul continuous_fst continuous_snd).matrix_elem i j`. Use `set m : Mt k r × Mt k r → Mt k r := fun p => fun i j => (Matrix.of p.1 * Matrix.of p.2) i j with hmdef`. Establish `hmuS : muS μW μN = (μW.prod μN).map m` using `rfl`.
+
+Establish `hset : {x : Mt k r | Matrix.of x ∉ UH (Hpk k r)} = {x : Mt k r | Matrix.of x ∈ UH (Hpk k r)}ᶜ` using `rfl`. Rewrite using `[hmuS, hset, Measure.map_apply hm (Formalism.MainNotions.BesselShellMomentBounds.measurableSet_UH k r).compl]`. Establish `g1 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae hW`. Establish `g2 : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae hN`. Establish `g : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 * Matrix.of p.2 ∈ UH (Hpk k r)` using `by filter_upwards [g1, g2] with p h1 h2`.
+
+Conclude with `WeylGroupFacts.uh_mul h1.1 h2.1`. Rewrite `g` using `[ae_iff]`. Conclude with `g`.
+-/
 theorem muS_conc {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measure (Mt k r)} [SigmaFinite μW] [SigmaFinite μN]
     (hW : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z) (hN : ∀ᵐ x ∂μN, Matrix.of x ∈ Nset k r) :
     muS μW μN {x | Matrix.of x ∉ UH (Hpk k r)} = 0 := by
@@ -54,6 +70,17 @@ theorem muS_conc {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} {μW μN : Measur
   rw [ae_iff] at g
   exact g
 
+/- English proof (translation)
+Establish `: SigmaFinite μW` using `hW.1`. Establish `hWa : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r z` using `by rw [ae_iff]; simpa using hW.2.2.1`. Establish `hS0 : muS μW μN ≠ 0`. Introduce `h0`. Establish `e` using `hq 1 measurable_one`.
+
+Rewrite `e` using `[h0]`. Simplify using `at e`. Conclude with `hG.2.1 (by simpa using e)`. Establish `hae0 : ∀ᵐ y ∂νS, Matrix.of y ∈ UH (Hpk k r)`. Rewrite using `[ae_iff]`.
+
+Simplify using `using Formalism.MainNotions.S.Pv.AmpTrans.quot_meas_not_mem_UH_eq_zero hG hS0 (muS_conc hWa hN) hq`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hσU` using `Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hσ`. Establish `hz0 : l2SG νS (fun g => B (σ g v0)) = 0`.
+
+Unfold `l2SG`. Use `(lintegral_congr_ae ?_).trans lintegral_zero` and prove the remaining obligations. Use `filter_upwards [hae0] with y hy`. Use `show (‖B (σ (Matrix.of y) v0)‖₊ : ℝ≥0∞) ^ 2 = 0`. Rewrite using `[hcon _ (Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσU hv0 hy)]`.
+
+Simplify using the standard rewrite rules. Rewrite `hz0` using `[hl2]`. Establish `hm0 : 0 < c * (Module.finrank ℂ Wp : ℝ)` using `mul_pos hc (by exact_mod_cast Module.finrank_pos)`. Conclude with `(ENNReal.ofReal_pos.2 hm0).ne' hz0`.
+-/
 theorem B_ne {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [Nontrivial Wp]
     {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
@@ -90,6 +117,55 @@ theorem B_ne {k r : ℕ} {H Wp : Type} [NormedAddCommGroup H] [InnerProductSpace
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
+/- English proof (translation)
+Introduce `Cg cb Cu cT CT C0`. Use `⟨0, 1000, fun C' Cl _ hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' => ?_⟩` and prove the remaining obligations. Establish `hI : Formalism.FourierDecayAlt.ThreeDimData.Inputs` using `Formalism.MainNotions.BridgeCS3dClosed.inputs_of Formalism.L2.SG.BesselDiscreteSeries.decInf hJ`. Establish `hAt` using `Formalism.FourierDecayAlt.P.admissible_atomic_form_one`. Establish `hl0 : l1dist (lamD D τ) (lamD D τ) ≤ 0 * D.R.k * (D.R.m : ℝ) ^ 3` using `by unfold l1dist; simp`.
+
+Take `⟨h, hg, hok, hcell⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.gap_of_hypotheses D large₂ C' Cl Cg cb Cu cT CT C0 0 hCl (by linarith) hH τ (lamD D τ) hl0`. Use `set L := toBessel D τ w w' θ W (lamD D τ) A hW hA hT hT' with hL`. Use `set w0 : A.H := (((‖A.v0‖⁻¹ : ℝ) : ℂ) • A.v0) with hw0def`. Take `⟨l, l', hl1, hl1', hOP⟩` from `ls_pair hI hAt hW hA hT hT' hg hok`. Establish `hw0 : PI.UpqRep.IsLowUnitH D.R.k D.R.rS (epsSH D.R) (lamD D τ) A.σ w0` using `lowest_K_type_unit hA`.
+
+Establish `hKS : PI.KFinSmooth` using `hI.2.2.1`. Establish `hG : IsHaarOn (UH (Hpk D.R.k D.R.rS)) W.μG` using `hW.2.2.2.2.2.2.1`. Establish `hDDs : ∀ x ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp A.σ w0, x ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.DD_smooth hKS hA.1 hA.2.1 hw0`. Take `⟨⟨x, hx, y, hy, hxy⟩, ⟨x', hx', y', hy', hxy'⟩⟩` from `Formalism.L2.S.Pv.NonVacuity.nvHyp0 D large₂ C' Cl Cg cb Cu cT CT C0 (by linarith) hH τ w w' hTT θ W hW (lamD D τ) hl0 A hA hT hT' w0 hw0`. Establish `hlx : l x ≠ 0`.
+
+Introduce `h0`. Apply `hxy` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z L.c W.π A.σ W.μW L.μN x y = (innerSL ℂ (l y)).smulRight (l x)` using `hOP.1.2.2.2.2.2.1 x hx y hy`. Rewrite using `[e, h0]`. Use `ext`.
+
+Simplify using the standard rewrite rules. Establish `hlx' : l' x' ≠ 0`. Introduce `h0`. Apply `hxy'` to reduce the goal to its premises. Establish `e : Formalism.FourierDecayAlt.ThreeDimData.be W.z' L.c W.π' A.σ W.μW' L.μN x' y' = (innerSL ℂ (l' y')).smulRight (l' x')` using `hOP.1.2.2.2.2.2.2 x' hx' y' hy'`.
+
+Rewrite using `[e, h0]`. Use `ext`. Simplify using the standard rewrite rules. Establish `hB : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π A.B := by`. Rewrite using `[psiGen_const]`.
+
+Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.1`. Establish `hB' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' A.B' := by`. Rewrite using `[psiGen_const]`. Conclude with `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff _ _ _ _ _).1 hA.2.2.2.1`. Establish `hlG : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z (fun _ => L.c)) A.σ W.π l := by`.
+
+Rewrite using `[psiGen_const]`. Conclude with `hl1`. Establish `hlG' : PI.BesselMapUniq.IsBesselMapSm (k` using `D.R.k) (r := D.R.rS) W.z' (PI.BesselMapUniq.psiGen D.R.k D.R.rS W.z' (fun _ => L.c)) A.σ W.π' l' := by`. Rewrite using `[psiGen_const]`. Conclude with `hl1'`.
+
+Take `⟨c0, hc0⟩` from `Formalism.MainNotions.S.Pv.AIsL.aIsL hJ hA.1 hA.2.1 L.hz.1 L.hz.2 (fun _ => c_ne_zero D) L.hπ hB hlG ⟨x, hDDs x hx, hlx⟩`. Take `⟨c0', hc0'⟩` from `Formalism.MainNotions.S.Pv.AIsL.aIsL hJ hA.1 hA.2.1 L.hz'.1 L.hz'.2 (fun _ => c_ne_zero D) L.hπ' hB' hlG' ⟨x', hDDs x' hx', hlx'⟩`. Establish `hW'` using `hW`. Take `⟨hc1, hc2, -, -, -, -, -, hUW, -, hUW', -, hNq, hq, hq'⟩` from `hW'`. Establish `hA'` using `hA`.
+
+Take `⟨-, -, -, -, hv0s, hv0ne, -, hcN, hl2, hl2', -⟩` from `hA'`. Establish `hNa : ∀ᵐ x ∂W.μN, Matrix.of x ∈ Nset D.R.k D.R.rS`. Rewrite using `[hNq]`. Conclude with `Formalism.MainNotions.S.Pv.AmpDDPf.ae_mem_haarLieN _`. Establish `hκtop : kapN D θ ≠ ⊤` using `ENNReal.ofReal_ne_top`.
+
+Establish `hκ0 : kapN D θ ≠ 0` using `Formalism.L2.SG.AmpOrbPf.kapN_ne_zero hW`. Establish `: SigmaFinite W.μN`. Use `(Formalism.MainNotions.BridgeCSB.haarLieN D.R.k D.R.rS _ hκ0 hκtop).1` as an intermediate fact. Rewrite using `[hNq]`. Conclude with `this`.
+
+Establish `hNt : Nontrivial W.Wp` using `by obtain ⟨g, -, hU⟩ := hc1; exact hU.1`. Establish `hNt' : Nontrivial W.Wq` using `by obtain ⟨g, -, hU⟩ := hc2; exact hU.1`. Take `⟨xb, hxb, hBx⟩` from `B_ne hA.2.1 hG hUW hNa hq hv0s hcN hl2`. Take `⟨xb', hxb', hBx'⟩` from `B_ne hA.2.1 hG hUW' hNa hq' hv0s hcN hl2'`. Establish `hc0ne : c0 ≠ 0`.
+
+Introduce `e`. Apply `hBx` to reduce the goal to its premises. Establish `h1` using `hc0 xb hxb`. Rewrite `h1` using `[e]`. Rewrite using `[h1]`.
+
+Conclude with `zero_smul ℂ _`. Establish `hc0ne' : c0' ≠ 0`. Introduce `e`. Apply `hBx'` to reduce the goal to its premises. Establish `h1` using `hc0' xb' hxb'`.
+
+Rewrite `h1` using `[e]`. Rewrite using `[h1]`. Conclude with `zero_smul ℂ _`. Use `set t : ℂ := ((‖A.v0‖ : ℝ) : ℂ) with ht`. Establish `hv0 : A.v0 = t • w0`.
+
+Rewrite using `[hw0def, ht, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hv0ne), Complex.ofReal_one, one_smul]`. Establish `htne : t ≠ 0` using `by rw [ht]; exact_mod_cast norm_ne_zero_iff.mpr hv0ne`. Establish `hw0s : w0 ∈ PI.UpqRep.smoothVecs (k` using `D.R.k) (r := D.R.rS) A.σ := Formalism.FourierDecayAlt.P.DDSmoothness.smooth_smul _ hv0s`. Establish `hΦ : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ g = (c0 * t) • l (A.σ g w0)`. Introduce `g hg'`.
+
+Use `show A.B (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0 hc0 hl1.2.1 hw0s t hg'`. Establish `hΦ' : ∀ g ∈ UH (Hpk D.R.k D.R.rS), A.Φ' g = (c0' * t) • l' (A.σ g w0)`. Introduce `g hg'`.
+
+Use `show A.B' (A.σ g A.v0) = _`. Rewrite using `[hv0]`. Conclude with `orbit_mul hA.2.1 c0' hc0' hl1'.2.1 hw0s t hg'`. Use `set s : ℂ := ⟪l x, l x⟫_ℂ * ⟪l' x', l' x'⟫_ℂ with hs`. Establish `hs0 : s ≠ 0` using `mul_ne_zero (inner_self_ne_zero.mpr hlx) (inner_self_ne_zero.mpr hlx')`.
+
+Use `set dg : ℂ := (PI.BesselPeriodGGP.fdegH W.μG A.σ w0 : ℂ) with hdg`. Establish `hdg0 : dg ≠ 0`. Rewrite using `[hdg]`. Take `⟨-, -, hn1, -⟩` from `hw0`. Conclude with `(fdegH_pos hA.1 hA.2.1 hG hn1).ne'` after adjusting the coercions.
+
+Use `set K1 : ℂ := ((A.cN : ℂ)⁻¹) * (c0 * t) * (starRingEnd ℂ) (c0' * t) with hK1`. Establish `hK1ne : K1 ≠ 0`. Rewrite using `[hK1]`. Use `mul_ne_zero (mul_ne_zero (inv_ne_zero (by exact_mod_cast hcN.ne')) (mul_ne_zero hc0ne htne)) ?_` and prove the remaining obligations. Conclude with `(map_ne_zero _).2 (mul_ne_zero hc0ne' htne)`.
+
+Use `⟨x, x', l x, l' x', l x, l' x', K1 * s⁻¹ * dg⁻¹, mul_ne_zero (mul_ne_zero hK1ne (inv_ne_zero hs0)) (inv_ne_zero hdg0), hDDs x hx, hDDs x' hx', hOP.1.2.2.2.2.2.1 x hx x hx, hOP.1.2.2.2.2.2.2 x' hx' x' hx', inner_self_ne_zero.mpr hlx, inner_self_ne_zero.mpr hlx', ?_⟩` and prove the remaining obligations. Introduce `γ hγ hGf hMono hRel μR νR ν hRH hOQ hqR`. Establish `hCD : Formalism.MainNotions.S.Pv.AmpDD.CellData L W.μG γ μR νR ν` using `⟨hγ, hGf, hMono, hRel, hRH, hOQ, hqR⟩`. Take `⟨b, hb0, hbm, hbi⟩` from `Formalism.MainNotions.S.Pv.AmpDDPf.cell_convergence _ _ L h W.μG γ μR νR ν ENNReal.ofReal_ne_top hok hcell hCD hMono`. Establish `hAmp` using `Formalism.L2.SG.AmpOrbClosed.ampDD_thm hI _ _ L h W.μG w0 l l' hOP.1 γ μR νR ν hCD b hb0 (by linarith) hbi x hx x' hx' (l x) (l' x')`.
+
+Establish `hae` using `ae_UH_conj hγ hG hRH hqR`. Establish `hJ1 : A.J νR γ = K1 • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ` using `ampJ_mul νR A.cN A.Φ _ A.Φ' _ (c0 * t) (c0' * t) γ hγ hΦ hΦ' hae`. Establish `hJ2 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = (s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`. Establish `hAmp' : s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = dg⁻¹ • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν` using `hAmp`. Establish `e1 : ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ = s⁻¹ • (s • ampJ νR 1 (fun g => l (A.σ g w0)) (fun g => l' (A.σ g w0)) γ)`.
+
+Rewrite using `[smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[e1, hAmp']`. Conclude with `smul_smul s⁻¹ dg⁻¹ _`. Rewrite using `[hJ1, hJ2]`. Establish `hO` using `orbInt_smul L (K1 * s⁻¹ * dg⁻¹) (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`.
+
+Establish `e2 : K1 • ((s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν) = (K1 * s⁻¹ * dg⁻¹) • OrbInt L (Formalism.MainNotions.S.Pv.AmpDD.coefF L x x' (l x) (l' x')) γ ν`. Rewrite using `[smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e2.trans hO.symm`.
+-/
 theorem ampOrbCoefDD_of (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.MainNotions.S.Pv.LemmaJ.AmpOrbCoefDD := by
   intro Cg cb Cu cT CT C0
   refine ⟨0, 1000, fun C' Cl _ hCl D large₂ hH τ w w' hTT θ W hW A hA hT hT' => ?_⟩
@@ -221,6 +297,9 @@ theorem ampOrbCoefDD_of (hJ : PI.BesselMapUniq.BesselMapUniq) : Formalism.MainNo
 
 variable [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] [Fact Formalism.L2.SG.LitS.PfNVG.BesselNVG] in
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.S.Pv.LemmaJ.amplitude_uniform_of_coefficients hJ hKD hRJ hRH hOQ hRA (ampOrbCoefDD_of hJ) hBI`.
+-/
 theorem amplitude_uniform_of_bessel_uniq (hJ : PI.BesselMapUniq.BesselMapUniq) (hKD : Formalism.MainNotions.S.Pv.AmpDD.KDense)
     (hRJ : Formalism.MainNotions.S.Pv.LemmaJ.RootJac) (hRH : Formalism.MainNotions.S.Pv.LemmaJ.RootHaar) (hOQ : Formalism.MainNotions.S.Pv.LemmaJ.OrbQuotEx)
     (hRA : Formalism.MainNotions.S.Pv.LemmaJ.RelAtPt) (hBI : Formalism.MainNotions.S.Pv.BetaCut.BetaInfCoefNZ) : Formalism.MainNotions.S.Pv.LemmaJ.AmpUnif :=

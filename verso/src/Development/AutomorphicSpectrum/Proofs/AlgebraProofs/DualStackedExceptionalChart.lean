@@ -11,6 +11,19 @@ open GroundTheory.Heights₂.Heights.StackedExceptionalChart GroundTheory.Height
 
 noncomputable section
 
+/- English proof (translation)
+Use `letI : Module k R := Module.compHom R σ₀`. Establish `hsm : ∀ (c : k) (r : R), c • r = σ₀ c * r` using `fun _ _ => rfl`. Establish `hwd : ∀ φ φ', E φ = E φ' → Λ φ = Λ φ'` using `fun φ φ' h => by`. Use `hker (φ - φ') (by rw [map_sub, h, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Set `V : Submodule k (Fin n → k)` to `{ carrier := Set.range E add_mem' := by rintro _ _ ⟨x, rfl⟩ ⟨y, rfl⟩; exact ⟨x + y, map_add E x y⟩ zero_mem' := ⟨0, map_zero E⟩ smul_mem' := by rintro c _ ⟨x, rfl⟩; obtain ⟨x', h, -⟩ := hact c x; exact ⟨x', h⟩ }`. Set `pre : V → A` to `fun w => Classical.choose w.2`. Establish `hpre : ∀ w : V, E (pre w) = w` using `fun w => Classical.choose_spec w.2`. Set `L : V →ₗ[k] R` to `{ toFun := fun w => Λ (pre w) map_add' := fun w w' => by`. Rewrite using `[← map_add]`.
+
+Conclude with `hwd _ _ (by rw [map_add, hpre, hpre, hpre]; rfl)`. Use the proof step `map_smul' := fun c w => by`. Take `⟨x', h, h'⟩` from `hact c (pre w)`. Rewrite using `[RingHom.id_apply, hsm, ← h']`. Conclude with `hwd _ _ (by rw [h, hpre, hpre]; rfl) }`.
+
+Take `⟨G, hG⟩` from `LinearMap.exists_extend L`. Use `⟨fun j => G (Pi.single j 1), fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : E φ = ∑ j, E φ j • (Pi.single j 1 : Fin n → k)`. Use function extensionality and compare the values at `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Establish `h2 : G (E φ) = Λ φ`. Establish `h3 : G (E φ) = L ⟨E φ, φ, rfl⟩`. Rewrite using `[← hG]`. Both sides reduce to the same expression. Rewrite using `[h3]`.
+
+Conclude with `hwd _ _ (hpre _)`. Rewrite using `[← h2]`. Use `conv_rhs => rw [h1, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, hsm]`.
+-/
 theorem exists_forms_of_linear {k R A : Type*} [Field k] [CommRing R] [AddCommGroup A] (σ₀ : k →+* R) {n : ℕ}
     (E : A →+ (Fin n → k)) (Λ : A →+ R)
     (hact : ∀ (c : k) (φ : A), ∃ φ' : A, E φ' = c • E φ ∧ Λ φ' = σ₀ c * Λ φ)
@@ -56,6 +69,11 @@ section Quad
 
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [DecidableEq T]
 
+/- English proof (translation)
+Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Establish `hp : (∑ j, C (φ₁ j) * X j : MvPolynomial (Fin i) K) * (∑ j, C (φ₂ j) * X j) = (∑ j, C (φ₃ j) * X j) * (∑ j, C (φ₄ j) * X j)`. Use `MvPolynomial.funext fun x => ?_` and prove the remaining obligations. Use `h x` as an intermediate fact. Simplify `this` using `[dotProduct, map_sum]`.
+
+Simplify using `only [formCoord, AddMonoidHom.mk'_apply, ← map_mul, hp]`.
+-/
 theorem formCoord_mul_of_quadIdentity {φ₁ φ₂ φ₃ φ₄ : Fin i → K} (h : QuadIdentity φ₁ φ₂ φ₃ φ₄) :
     (formCoord φ₁ : ProjField K i) * formCoord φ₂ = formCoord φ₃ * formCoord φ₄ := by
   haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective
@@ -66,6 +84,13 @@ theorem formCoord_mul_of_quadIdentity {φ₁ φ₂ φ₃ φ₄ : Fin i → K} (h
     simpa [dotProduct, map_sum] using this
   simp only [formCoord, AddMonoidHom.mk'_apply, ← map_mul, hp]
 
+/- English proof (translation)
+Establish `h : ∀ t, linForm (stackedDiag a) ⟨(), t⟩ = (C (a t) * X ⟨(), t⟩ : MRing (dualBlocks T))`. Introduce `t`. Simplify using `[linForm, stackedDiag]`. Establish `h2 : ∀ t, graphMap (dualIdeal b') (linForm (stackedDiag a)) (graphSecond t) = C (Ideal.Quotient.mk (dualIdeal b') (C (a t) * X ⟨(), t⟩)) * X ()`. Introduce `t`.
+
+Simplify using `only [graphMap, graphSecond, coe_eval₂Hom, eval₂_X, h]`. Simplify using `only [graphSecondForm, linD, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h3 : Ideal.Quotient.mk (dualIdeal b') (C (d t * a t) * X ⟨(), t⟩) = ((d t : ℤ) : MRing (dualBlocks T) ⧸ dualIdeal b') * Ideal.Quotient.mk (dualIdeal b') (C (a t) * X ⟨(), t⟩)`. Rewrite using `[C_mul, mul_assoc, map_mul, show (C (d t) : MRing (dualBlocks T)) = ((d t : ℤ) : MRing (dualBlocks T)) from eq_intCast _ _, map_intCast]`.
+
+Rewrite using `[map_mul, h2, show (C (d t) : MRing (stackedBlocks T)) = ((d t : ℤ) : MRing (stackedBlocks T)) from eq_intCast _ _, map_intCast, h3]`. Generalize the expression as in `Ideal.Quotient.mk (dualIdeal b') (C (a t) * X ⟨(), t⟩) = q`. Rewrite using `[map_mul, map_intCast, mul_assoc]`.
+-/
 theorem graphMap_secondForm {F' : HermLattice K i} (b' : Module.Basis T ℤ (dualLattice F')) (a : T → ℤ) (d : T → ℤ) :
     graphMap (dualIdeal b') (linForm (stackedDiag a)) (graphSecondForm d) =
       C (Ideal.Quotient.mk (dualIdeal b') (linD fun t => d t * a t)) * X () := by
@@ -87,6 +112,13 @@ theorem graphMap_secondForm {F' : HermLattice K i} (b' : Module.Basis T ℤ (dua
   generalize Ideal.Quotient.mk (dualIdeal b') (C (a t) * X ⟨(), t⟩) = q
   rw [map_mul, map_intCast, mul_assoc]
 
+/- English proof (translation)
+Introduce `K _ _ i F' T _ _ b' a`. Use `⟨fun c₁ c₂ c₃ c₄ h => ?_, fun c₁ d₂ c₃ d₄ h => ?_⟩` and prove the remaining obligations. Establish `hm` using `mem_dualIdeal_of_isLinAt_quad (isLinAt_linD b' c₁) (isLinAt_linD b' c₂) (isLinAt_linD b' c₃) (isLinAt_linD b' c₄) (formCoord_mul_of_quadIdentity h)`. Use `fstEmb_mem a hm` as an intermediate fact. Simplify `this` using `[graphFirstForm, fstEmb_linD]`.
+
+Establish `hm` using `mem_dualIdeal_of_isLinAt_quad (isLinAt_linD b' c₁) (isLinAt_linD b' fun t => d₂ t * a t) (isLinAt_linD b' c₃) (isLinAt_linD b' fun t => d₄ t * a t) (formCoord_mul_of_quadIdentity h) show _ ∈ RingHom.ker _`. Establish `e : ∀ c : T → ℤ, graphFirstForm c = fstEmb (linD c)` using `fun c => by rw [fstEmb_linD]; rfl`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_mul, graphMap_secondForm, graphMap_secondForm, e, e, graphMap_fstEmb, graphMap_fstEmb]`. Establish `h0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hm`. Rewrite `h0` using `[map_sub, map_mul, map_mul, sub_eq_zero]`.
+
+Rewrite using `[← mul_assoc, ← mul_assoc, ← C_mul, ← C_mul, h0, sub_self]`.
+-/
 theorem quadRel : DualStackedGraphQuadRel.Statement := by
   intro K _ _ i F' T _ _ b' a
   refine ⟨fun c₁ c₂ c₃ c₄ h => ?_, fun c₁ d₂ c₃ d₄ h => ?_⟩
@@ -112,24 +144,39 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [
   {F' : HermLattice K i} (b' : Module.Basis T ℤ (dualLattice F')) (a : T → ℤ) (v u : T)
 
 omit [DecidableEq T] in
+/- English proof (translation)
+Introduce `c c' h`. Rewrite `h` using `[latCombo_eq, latCombo_eq]`. Conclude with `b'.equivFun.symm.injective (Subtype.ext h)`.
+-/
 theorem latCombo_injective : Function.Injective (latCombo b') := by
   intro c c' h
   rw [latCombo_eq, latCombo_eq] at h
   exact b'.equivFun.symm.injective (Subtype.ext h)
 
 omit [DecidableEq T] in
+/- English proof (translation)
+Simplify using `only [latCombo, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+-/
 theorem latCombo_add (c c' : T → ℤ) : latCombo b' (c + c') = latCombo b' c + latCombo b' c' := by
   simp only [latCombo, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[latCombo, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, zero_smul]) (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, one_smul]`.
+-/
 theorem latCombo_single (t : T) : latCombo b' (Pi.single t 1) = (b' t : Fin i → K) := by
   rw [latCombo, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, zero_smul])
     (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, one_smul]
 
 omit [DecidableEq T] in
+/- English proof (translation)
+Simplify using `only [graphFirstForm, Pi.add_apply, C_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem graphFirstForm_add (c c' : T → ℤ) :
     graphFirstForm (c + c') = graphFirstForm c + graphFirstForm c' := by
   simp only [graphFirstForm, Pi.add_apply, C_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[graphFirstForm, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, C_0, zero_mul]) (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, C_1, one_mul]`.
+-/
 theorem graphFirstForm_single (t : T) : graphFirstForm (Pi.single t 1) = graphFirst t := by
   rw [graphFirstForm, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, C_0, zero_mul])
     (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, C_1, one_mul]
@@ -137,6 +184,9 @@ theorem graphFirstForm_single (t : T) : graphFirstForm (Pi.single t 1) = graphFi
 def scaleCoord (ω : 𝓞 K) : T → ℤ :=
   b'.equivFun ⟨algebraMap (𝓞 K) K ω • (b' v : Fin i → K), smul_mem_dual F' ω (b' v).2⟩
 
+/- English proof (translation)
+Rewrite using `[latCombo_eq, scaleCoord, LinearEquiv.symm_apply_apply]`.
+-/
 theorem latCombo_scaleCoord (ω : 𝓞 K) :
     latCombo b' (scaleCoord b' v ω) = algebraMap (𝓞 K) K ω • (b' v : Fin i → K) := by
   rw [latCombo_eq, scaleCoord, LinearEquiv.symm_apply_apply]
@@ -144,9 +194,15 @@ theorem latCombo_scaleCoord (ω : 𝓞 K) :
 def chartInv : excChartRing b' a v u :=
   ((isUnit_first b' a v u).unit⁻¹ : (excChartRing b' a v u)ˣ)
 
+/- English proof (translation)
+The claim follows from `(isUnit_first b' a v u).mul_val_inv`.
+-/
 theorem first_mul_chartInv : excChartMap b' a v u (graphFirst v) * chartInv b' a v u = 1 :=
   (isUnit_first b' a v u).mul_val_inv
 
+/- English proof (translation)
+Establish `hJ : e ∈ excChartIdeal b' a u` using `Ideal.mem_sup_left he`. Rewrite using `[excChartMap, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem.mpr hJ, map_zero]`.
+-/
 theorem chartMap_eq_zero {e : MRing (stackedBlocks T)} (he : e ∈ stackedGraph b' a) :
     excChartMap b' a v u e = 0 := by
   have hJ : e ∈ excChartIdeal b' a u := Ideal.mem_sup_left he
@@ -184,6 +240,9 @@ def chartScale : 𝓞 K →+* excChartRing b' a v u where
       rw [latCombo_add, latCombo_scaleCoord, latCombo_scaleCoord, latCombo_scaleCoord, map_add, add_smul])
     rw [h, graphFirstForm_add, map_add, add_mul]
 
+/- English proof (translation)
+Establish `h : scaleCoord b' v ω = c` using `latCombo_injective b' (by rw [latCombo_scaleCoord, hc])`. Use `show excChartMap b' a v u (graphFirstForm (scaleCoord b' v ω)) * chartInv b' a v u * _ = _`. Rewrite using `[h, mul_assoc, mul_comm (chartInv b' a v u), first_mul_chartInv, mul_one]`.
+-/
 theorem chartScale_mul_first (ω : 𝓞 K) {c : T → ℤ}
     (hc : latCombo b' c = algebraMap (𝓞 K) K ω • (b' v : Fin i → K)) :
     chartScale b' a v u ω * excChartMap b' a v u (graphFirst v) = excChartMap b' a v u (graphFirstForm c) := by
@@ -191,6 +250,9 @@ theorem chartScale_mul_first (ω : 𝓞 K) {c : T → ℤ}
   show excChartMap b' a v u (graphFirstForm (scaleCoord b' v ω)) * chartInv b' a v u * _ = _
   rw [h, mul_assoc, mul_comm (chartInv b' a v u), first_mul_chartInv, mul_one]
 
+/- English proof (translation)
+Rewrite using `[graphFirstForm, map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[C_mul, mul_assoc, map_mul (excChartMap b' a v u), first_eq_zero, mul_zero]`.
+-/
 theorem chartMap_firstForm_mul (e : T → ℤ) :
     excChartMap b' a v u (graphFirstForm fun s => e s * a s) = 0 := by
   rw [graphFirstForm, map_sum]
@@ -207,10 +269,16 @@ variable {K : Type} [Field K] [NumberField K] {i : ℕ} {T : Type} [Fintype T] [
 def evalInt {y : Fin i → K} (hy : y ∈ F.lattice) (φ : dualLattice F) : 𝓞 K :=
   Classical.choose (RingHom.mem_range.mp (φ.2 y hy))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (RingHom.mem_range.mp (φ.2 y hy))`.
+-/
 theorem algebraMap_evalInt {y : Fin i → K} (hy : y ∈ F.lattice) (φ : dualLattice F) :
     algebraMap (𝓞 K) K (evalInt hy φ) = (φ : Fin i → K) ⬝ᵥ y :=
   Classical.choose_spec (RingHom.mem_range.mp (φ.2 y hy))
 
+/- English proof (translation)
+The claim follows from `FaithfulSMul.algebraMap_injective (𝓞 K) K (h.trans (algebraMap_evalInt hy φ).symm)`.
+-/
 theorem eq_evalInt {y : Fin i → K} (hy : y ∈ F.lattice) (φ : dualLattice F) {c : 𝓞 K}
     (h : algebraMap (𝓞 K) K c = (φ : Fin i → K) ⬝ᵥ y) : c = evalInt hy φ :=
   FaithfulSMul.algebraMap_injective (𝓞 K) K (h.trans (algebraMap_evalInt hy φ).symm)
@@ -226,10 +294,16 @@ def evalVec {k : Type} [Field k] (ρ : 𝓞 K →+* k) {n : ℕ} (Y : Fin n → 
     rw [map_add, algebraMap_evalInt, algebraMap_evalInt, Submodule.coe_add, add_dotProduct])
 
 omit [DecidableEq T] in
+/- English proof (translation)
+Simplify using `only [graphSecondForm, Pi.add_apply, C_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem graphSecondForm_add (d d' : T → ℤ) :
     graphSecondForm (d + d') = graphSecondForm d + graphSecondForm d' := by
   simp only [graphSecondForm, Pi.add_apply, C_add, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Rewrite using `[graphSecondForm, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, C_0, zero_mul]) (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, C_1, one_mul]`.
+-/
 theorem graphSecondForm_single (t : T) : graphSecondForm (Pi.single t 1) = graphSecond t := by
   rw [graphSecondForm, Finset.sum_eq_single t (fun s _ hs => by rw [Pi.single_eq_of_ne hs, C_0, zero_mul])
     (fun h => absurd (Finset.mem_univ t) h), Pi.single_eq_same, C_1, one_mul]
@@ -242,6 +316,11 @@ def chartSecond (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T �
 
 omit [DecidableEq T] in
 
+/- English proof (translation)
+Establish `h` using `congrArg Subtype.val (b.sum_equivFun φ)`. Rewrite `h` using `[Submodule.coe_sum]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Rewrite using `[latCombo]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_smul, hab, mul_smul]`.
+-/
 theorem latCombo_equivFun (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (φ : dualLattice F) :
     latCombo b' (fun s => b.equivFun φ s * a s) = (φ : Fin i → K) := by
@@ -252,6 +331,13 @@ theorem latCombo_equivFun (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.
   refine Finset.sum_congr rfl fun s _ => ?_
   rw [Submodule.coe_smul, hab, mul_smul]
 
+/- English proof (translation)
+Establish `q` using `(quadRel K i F' T b' a).2 (scaleCoord b' v ω) (b.equivFun φ) (Pi.single v 1) (b.equivFun φ') (by`. Introduce `x`. Rewrite using `[latCombo_equivFun b b' hab, latCombo_equivFun b b' hab, latCombo_scaleCoord, latCombo_single, h]`. Simplify using `only [smul_dotProduct, smul_eq_mul]`. Use the proof step `ring)`.
+
+Establish `h0` using `chartMap_eq_zero b' a v u q`. Rewrite `h0` using `[map_sub, map_mul (excChartMap b' a v u), map_mul (excChartMap b' a v u), graphFirstForm_single, sub_eq_zero, ← chartScale_mul_first b' a v u ω (latCombo_scaleCoord b' v ω)]`. Use `(isUnit_first b' a v u).mul_left_cancel ?_` and prove the remaining obligations. Use `show _ * (_ * excChartMap b' a v u (graphSecondForm (b.equivFun φ))) = _ * excChartMap b' a v u (graphSecondForm (b.equivFun φ'))`. Rewrite using `[← h0]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chartScale_mul_second (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (v u : T) (ω : 𝓞 K)
     {φ φ' : dualLattice F} (h : (φ' : Fin i → K) = algebraMap (𝓞 K) K ω • (φ : Fin i → K)) :
@@ -270,6 +356,9 @@ theorem chartScale_mul_second (b : Module.Basis T ℤ (dualLattice F)) (b' : Mod
   rw [← h0]
   ring
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `exists_latCombo b b' hab hω`. Establish `h` using `chartScale_mul_first b' a v u ω he.symm`. Rewrite `h` using `[chartMap_firstForm_mul]`. Conclude with `(isUnit_first b' a v u).mul_left_eq_zero.mp h`.
+-/
 theorem chartScale_eq_zero (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (v u : T) {ω : 𝓞 K}
     (hω : algebraMap (𝓞 K) K ω • (b' v : Fin i → K) ∈ dualLattice F) : chartScale b' a v u ω = 0 := by
@@ -278,6 +367,13 @@ theorem chartScale_eq_zero (b : Module.Basis T ℤ (dualLattice F)) (b' : Module
   rw [chartMap_firstForm_mul] at h
   exact (isUnit_first b' a v u).mul_left_eq_zero.mp h
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℤ {ψ : Fin i → K | ∃ c : 𝓞 K, P c ∧ ∃ χ ∈ dualLattice F, ψ = algebraMap (𝓞 K) K c • χ} ≤ Submodule.map (dualLattice F).subtype (LinearMap.ker (chartSecond b b' a v u).toIntLinearMap)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, χ, hχ, rfl⟩`. Use `⟨⟨_, smul_mem_dual F c hχ⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `chartScale_mul_second b b' hab v u c (φ := ⟨χ, hχ⟩) (φ' := ⟨_, smul_mem_dual F c hχ⟩) rfl`.
+
+Rewrite `h` using `[hP c hc, zero_mul]`. Conclude with `h.symm`. Take `⟨x, hx, hxe⟩` from `hle hφ`. Establish `: x = φ` using `Subtype.ext hxe`. Rewrite using `[← this]`.
+
+Conclude with `hx`.
+-/
 theorem chartSecond_eq_zero (b : Module.Basis T ℤ (dualLattice F)) (b' : Module.Basis T ℤ (dualLattice F'))
     {a : T → ℤ} (hab : ∀ t, (b t : Fin i → K) = a t • (b' t : Fin i → K)) (v u : T) {P : 𝓞 K → Prop}
     (hP : ∀ ω, P ω → chartScale b' a v u ω = 0) {φ : dualLattice F}
@@ -297,6 +393,9 @@ theorem chartSecond_eq_zero (b : Module.Basis T ℤ (dualLattice F)) (b' : Modul
   rw [← this]
   exact hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨ρ.liftOfRightInverse (Function.surjInv hρ) (Function.rightInverse_surjInv hρ) ⟨τ, fun ω hω => hτ ω (RingHom.mem_ker.mp hω)⟩, fun ω => RingHom.liftOfRightInverse_comp_apply _ _ _ _ ω⟩`.
+-/
 theorem exists_lift {R k : Type*} [CommRing R] [Field k] (ρ : 𝓞 K →+* k) (hρ : Function.Surjective ρ)
     (τ : 𝓞 K →+* R) (hτ : ∀ ω, ρ ω = 0 → τ ω = 0) : ∃ σ₀ : k →+* R, ∀ ω, σ₀ (ρ ω) = τ ω :=
   ⟨ρ.liftOfRightInverse (Function.surjInv hρ) (Function.rightInverse_surjInv hρ)
@@ -305,6 +404,25 @@ theorem exists_lift {R k : Type*} [CommRing R] [Field k] (ρ : 𝓞 K →+* k) (
 
 end Forms
 
+/- English proof (translation)
+Introduce `K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hX v u`. Take `⟨hρ, -, hy₀, hg, -, hM0, hMs, -, -, h10, -, h12⟩` from `hX`. Establish `hk : ∀ ω, ρ ω = 0 → chartScale b' a v u ω = 0` using `fun ω hω => chartScale_eq_zero b b' hab v u (h10 ω hω _ (b' v).2)`. Take `⟨σ₀, hσ⟩` from `exists_lift ρ hρ (chartScale b' a v u) hk`. Use `⟨σ₀, fun ω c hc => by rw [hσ]; exact chartScale_mul_first b' a v u ω hc, ?_⟩` and prove the remaining obligations.
+
+Set `Y : Fin (m + 1) → Fin i → K` to `Fin.cons y₀ g`. Establish `hY : ∀ j, Y j ∈ F.lattice`. Use `Fin.cases ?_ fun j => ?_` and prove the remaining obligations. Conclude with `hy₀`. Conclude with `hlt.le (hg j)`.
+
+Establish `hEval : ∀ (φ : dualLattice F) (j), evalVec ρ Y hY φ j = ρ (evalInt (hY j) φ)` using `fun _ _ => rfl`. Take `⟨W, hW⟩` from `exists_forms_of_linear σ₀ (evalVec ρ Y hY) (chartSecond b b' a v u) (fun c φ => by`. Take `⟨ω, rfl⟩` from `hρ c`. Use `⟨⟨_, smul_mem_dual F ω φ.2⟩, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`.
+
+Rewrite using `[Pi.smul_apply, hEval, hEval, smul_eq_mul, ← map_mul]`. Use `congr 1`. Use `(eq_evalInt (hY j) _ ?_).symm` and prove the remaining obligations. Rewrite using `[map_mul, algebraMap_evalInt, smul_dotProduct, smul_eq_mul]`. Rewrite using `[hσ]`.
+
+Conclude with `(chartScale_mul_second b b' hab v u ω rfl).symm)`. Use the proof step `(fun φ hφ => by`. Establish `h0 : ∀ j, ρ (evalInt (hY j) φ) = 0` using `fun j => congrFun hφ j`. Use `chartSecond_eq_zero b b' hab v u (P := fun c => ρ c = 0) hk (h12 φ φ.2 (fun c hc => ?_) (fun j c hc => ?_))` and prove the remaining obligations. Rewrite using `[eq_evalInt (hY 0) φ hc]`.
+
+Conclude with `h0 0`. Rewrite using `[eq_evalInt (hY j.succ) φ hc]`. Conclude with `h0 j.succ)`. Use `⟨W, fun t => ?_⟩` and prove the remaining obligations. Establish `hE : ∀ j, evalVec ρ Y hY (b t) j = M t j`.
+
+Use `Fin.cases ?_ fun j => ?_` and prove the remaining obligations. Take `⟨c, hc, hcM⟩` from `hM0 t`. Rewrite using `[hEval, ← eq_evalInt (hY 0) (b t) hc, hcM]`. Take `⟨c, hc, hcM⟩` from `hMs t j`. Rewrite using `[hEval, ← eq_evalInt (hY j.succ) (b t) hc, hcM]`.
+
+Establish `h1` using `hW (b t)`. Simplify using `only [hE] at h1`. Rewrite using `[h1]`. Use `show excChartMap b' a v u (graphSecondForm (b.equivFun (b t))) = _`. Establish `h2 : b.equivFun (b t) = Pi.single t 1`.
+
+Use function extensionality and compare the values at `s`. Rewrite using `[Module.Basis.equivFun_self, Pi.single_apply]`. Simplify using `[eq_comm]`. Rewrite using `[h2, graphSecondForm_single]`.
+-/
 theorem chartForms : DualStackedExcChartForms.Statement := by
   intro K _ _ i F F' T _ _ b b' a hi hlt hcov hab k _ ρ π y₀ m g α M hX v u
   obtain ⟨hρ, -, hy₀, hg, -, hM0, hMs, -, -, h10, -, h12⟩ := hX
@@ -354,6 +472,9 @@ theorem chartForms : DualStackedExcChartForms.Statement := by
     simp [eq_comm]
   rw [h2, graphSecondForm_single]
 
+/- English proof (translation)
+The claim follows from `DualStackedExcChart.proof chartForms`.
+-/
 theorem dualStackedExcChart : GroundTheory.Heights₂.Heights.DualStackedExcChart.Statement :=
   DualStackedExcChart.proof chartForms
 

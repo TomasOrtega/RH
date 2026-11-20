@@ -5,6 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
+/- English proof (translation)
+Use `MulChar.ext fun u => ?_` and prove the remaining obligations. Establish `hu` using `congrArg Units.val (H u)`. Rewrite `hu` using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, Units.val_one]`. Rewrite using `[MulChar.pow_apply_coe, hu, MulChar.one_apply_coe]`.
+-/
 private theorem pow_eq_one_of {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) (m : ℕ)
     (H : ∀ u : (ZMod N)ˣ, χ.toUnitHom u ^ m = 1) : χ ^ m = 1 := by
   refine MulChar.ext fun u => ?_
@@ -12,12 +15,38 @@ private theorem pow_eq_one_of {O : Type} [CommRing O] {N : ℕ} (χ : DirichletC
   rw [Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, Units.val_one] at hu
   rw [MulChar.pow_apply_coe, hu, MulChar.one_apply_coe]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`.
+-/
 private theorem unitHom_pow_orderOf {O : Type} [CommRing O] {N : ℕ} (χ : DirichletCharacter O N) (u : (ZMod N)ˣ) :
     χ.toUnitHom u ^ orderOf χ = 1 := by
   apply Units.ext
   rw [Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply_coe, pow_orderOf_eq_one,
     MulChar.one_apply_coe, Units.val_one]
 
+/- English proof (translation)
+Introduce `h O _ _ ψ hψ`. Establish `hI` using `hostIndex h`. Establish `ho : 0 < h.o` using `hI.2.2.2.1`. Establish `hmemK : ∀ x ∈ h.H, ψ.toUnitHom x = 1` using `fun x hx => MonoidHom.mem_ker.mp (hψ hx)`. Establish `hA : ψ ^ (2 ^ (h.ex + 1) * h.o) = 1` using `pow_eq_one_of ψ _ (fun u => by`.
+
+Rewrite using `[← map_pow]`. Conclude with `hmemK _ (hI.2.2.2.2.2.2.2.2.2 u))`. Use `⟨orderOf_dvd_of_pow_eq_one hA, Nat.pos_of_dvd_of_pos (orderOf_dvd_of_pow_eq_one hA) (Nat.mul_pos (pow_pos two_pos _) ho), ?_⟩` and prove the remaining obligations. Introduce `r hr hr2`. Establish `facts` using `projFacts h.N r hr`.
+
+Establish `hca` using `compAlg O h.N r hr`. Establish `cu : ∀ u, (comp r ψ).toUnitHom u = ψ.toUnitHom (proj r h.N u)` using `hca.1 ψ`. Establish `off : ∀ (M : ℕ) (hM : M ∣ h.N), ¬ r ∣ M → ∀ u, ZMod.unitsMap hM (proj r h.N u) = 1` using `facts.2.2.2.2.2.2.2.1`. Establish `n2 : ¬ r ∣ 2 ^ (h.ex + 2)` using `fun hd => hr2 ((Nat.prime_dvd_prime_iff_eq hr Nat.prime_two).mp (hr.dvd_of_dvd_pow hd))`. Establish `sq : ¬ r ∣ h.q → comp r ψ ^ 2 = 1`.
+
+Introduce `hq`. Use `pow_eq_one_of _ 2 (fun u => ?_)` and prove the remaining obligations. Rewrite using `[cu, ← map_pow]`. Apply `hmemK` to reduce the goal to its premises. Simplify using `only [Host.H, Subgroup.mem_inf]`.
+
+Use `⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_pow, off _ (Host.two_pow_dvd h) n2 u, one_pow]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[Subgroup.mem_comap, map_pow, off _ (Host.q_dvd h) hq u, one_pow]`. Conclude with `Subgroup.one_mem _`.
+
+Rewrite using `[Subgroup.mem_comap, map_pow]`. Conclude with `⟨_, rfl⟩`. Rewrite using `[Subgroup.mem_comap, map_pow]`. Conclude with `⟨_, rfl⟩`. Establish `hcop` using `h.pair.2.2.2.2`.
+
+Establish `dq : r ∣ h.q → comp r ψ ^ h.o = 1`. Introduce `hq`. Establish `nq1 : ¬ r ∣ h.q1` using `fun hd => hr.ne_one (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left (dvd_mul_of_dvd_left hd _) hcop) hq)`. Establish `nd : ¬ r ∣ h.d` using `fun hd => hr.ne_one (Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left (dvd_mul_of_dvd_right hd _) hcop) hq)`. Use `pow_eq_one_of _ h.o (fun u => ?_)` and prove the remaining obligations.
+
+Rewrite using `[cu, ← map_pow]`. Apply `hmemK` to reduce the goal to its premises. Simplify using `only [Host.H, Subgroup.mem_inf]`. Use `⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_pow, off _ (Host.two_pow_dvd h) n2 u, one_pow]`.
+
+Conclude with `Subgroup.one_mem _`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker, map_pow, map_pow]`. Conclude with `unitHom_pow_orderOf _ _`. Rewrite using `[Subgroup.mem_comap, map_pow, off _ (Host.host_q1_dvd_N h) nq1 u, one_pow]`. Conclude with `Subgroup.one_mem _`.
+
+Rewrite using `[Subgroup.mem_comap, map_pow, off _ (Host.d_dvd h) nd u, one_pow]`. Conclude with `Subgroup.one_mem _`. Use `⟨?_, fun hq => orderOf_dvd_of_pow_eq_one (dq hq), sq, (hca.2.2.2.2.2.1 ψ).2.2.1⟩` and prove the remaining obligations. Distinguish the cases in `hq : r ∣ h.q`. Conclude with `(orderOf_dvd_of_pow_eq_one (dq hq)).trans (dvd_mul_left _ _)`.
+
+Conclude with `(orderOf_dvd_of_pow_eq_one (sq hq)).trans (dvd_mul_right _ _)`.
+-/
 theorem UpperTheory.V.HV.hostComp :
     ∀ (h : Host) (O : Type) [CommRing O] [IsDomain O] (ψ : DirichletCharacter O h.N), h.IsChar ψ →
       orderOf ψ ∣ 2 ^ (h.ex + 1) * h.o ∧ 0 < orderOf ψ ∧ ∀ r, r.Prime → r ≠ 2 →

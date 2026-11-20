@@ -13,5 +13,8 @@ attribute [local instance high] GlobalTheory.SplitWeil.matrixMeasurableSpace
 open GlobalTheory.HaarR
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ | exact GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ | (intros; apply GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isMulLeftInvariant_map_levyProductMapToFourierJacobi : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c ρ : ℕ), 1 ≤ ρ → ρ < c → ∀ (ν : Measure k), ν.IsAddHaarMeasure → ∀ m : Measure (GL n k), m.IsHaarMeasure → (((m.prod (volN ν n c (ρ + 1))).prod (Measure.pi fun _ : n => ν)).map (prodRFJ ρ)).IsMulLeftInvariant := by
   first | exact @GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ | exact GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ | (intros; apply GlobalTheory.HaarR.LeftFJ.isMulLeftInvariant_map_prodRFJ <;> assumption)

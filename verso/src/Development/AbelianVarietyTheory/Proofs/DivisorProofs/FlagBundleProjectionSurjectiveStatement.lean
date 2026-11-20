@@ -10,5 +10,8 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G Recip
 open scoped Classical
 open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalTheory.FlagAr GlobalTheory.ShFam.Pad GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlagSurj.isFlagBundle_surjective | exact GlobalTheory.FlagSurj.isFlagBundle_surjective | (intros; apply GlobalTheory.FlagSurj.isFlagBundle_surjective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.flag_bundle_projection_surjective : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → Function.Surjective π := by
   first | exact @GlobalTheory.FlagSurj.isFlagBundle_surjective | exact GlobalTheory.FlagSurj.isFlagBundle_surjective | (intros; apply GlobalTheory.FlagSurj.isFlagBundle_surjective <;> assumption)

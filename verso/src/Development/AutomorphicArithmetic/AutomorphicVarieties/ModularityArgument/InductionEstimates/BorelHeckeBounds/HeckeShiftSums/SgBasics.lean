@@ -11,6 +11,9 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 namespace UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.SiegelParabolicBlocks
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega`.
+-/
 private theorem unip_shape {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b) a → R) :
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv =
       Matrix.fromBlocks 1 ((unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂ 0 (1 : Matrix (Fin b) (Fin b) R) := by
@@ -18,6 +21,11 @@ private theorem unip_shape {a b : ℕ} {R : Type} [CommRing R] (X : UPos (a + b)
   rcases i with i | i <;> rcases j with j | j <;>
     simp [unipMatrix, blockEntry_apply, Matrix.one_apply, Matrix.toBlocks₁₂, Fin.ext_iff] <;> omega
 
+/- English proof (translation)
+Use `⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[unip_shape]`. Use `congr 1`. Use extensionality with `i j`. Establish `: (Fin.castAdd b i : Fin (a + b)) ≠ Fin.natAdd a j`.
+
+Simplify using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]`.
+-/
 private theorem unip_fill {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a) (Fin b) R) : ∃ X : UPos (a + b) a → R,
     (unipMatrix X).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks 1 B 0 (1 : Matrix (Fin b) (Fin b) R) := by
   refine ⟨fun p => Matrix.reindex finSumFinEquiv finSumFinEquiv (Matrix.fromBlocks 0 B 0 0) p.1.1 p.1.2, ?_⟩
@@ -28,6 +36,15 @@ private theorem unip_fill {a b : ℕ} {R : Type} [CommRing R] (B : Matrix (Fin a
     simp [Fin.ext_iff]; omega
   simp [unipMatrix, blockEntry_apply, Matrix.toBlocks₁₂, this]
 
+/- English proof (translation)
+Establish `e1 : g.val.submatrix finSumFinEquiv finSumFinEquiv * g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = (1 : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) R)`. Rewrite using `[Matrix.submatrix_mul_equiv, Units.mul_inv, Matrix.submatrix_one_equiv]`. Establish `hg : ∀ M : Matrix (Fin 2 ⊕ Fin 2) (Fin 2 ⊕ Fin 2) R, g.val.submatrix finSumFinEquiv finSumFinEquiv = M → g.val = M.submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Introduce and unpack `_ rfl`. Simplify using the standard rewrite rules.
+
+Generalize the expression as in `g.val.submatrix finSumFinEquiv finSumFinEquiv = M at *`. Generalize the expression as in `g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv = N at *`. Establish `hM` using `(Matrix.fromBlocks_toBlocks M).symm`. Rewrite `e1` using `[← Matrix.fromBlocks_toBlocks M, ← Matrix.fromBlocks_toBlocks N, h, h', Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add] at e1`.
+
+Take `⟨e1, -, -, e2⟩` from `e1`. Take `⟨X, hX⟩` from `unip_fill (M.toBlocks₁₂ * N.toBlocks₂₂)`. Use `⟨⟨_, _, e1, mul_eq_one_comm.1 e1⟩, ⟨_, _, e2, mul_eq_one_comm.1 e2⟩, ⟨rfl, rfl⟩, X, Units.ext ?_⟩` and prove the remaining obligations. Establish `hX' : unipMatrix X = (Matrix.fromBlocks 1 (M.toBlocks₁₂ * N.toBlocks₂₂) 0 1).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hX]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, coe_unipGL, hX', hg M rfl]`. Simplify using `only [blk, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_assoc, mul_eq_one_comm.1 e2, Matrix.mul_one]`. Rewrite using `[← h, ← hM]`.
+-/
 private theorem split_low {R : Type} [CommRing R] (g : GL (Fin (2 + 2)) R)
     (h : (g.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0)
     (h' : (g⁻¹.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0) :
@@ -60,6 +77,9 @@ private theorem split_low {R : Type} [CommRing R] (g : GL (Fin (2 + 2)) R)
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `mem_adelicBorel.1 hb ?_` and prove the remaining obligations. Use `show finSumFinEquiv (Sum.inl j) < finSumFinEquiv (Sum.inr i)`. Simplify using `only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem low_of_borel {b : AdelicGLn.AdelicGL K (2 + 2)} (hb : b ∈ adelicBorel) :
     (b.val.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₁ = 0 := by
   ext i j
@@ -68,6 +88,17 @@ private theorem low_of_borel {b : AdelicGLn.AdelicGL K (2 + 2)} (hb : b ∈ adel
   simp only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]
   omega
 
+/- English proof (translation)
+Take `⟨hlv, -, -, -, hdet, -⟩` from `blkLaws (K := K)`. Establish `h1 : detModule K 2 a * detModule K 2 c = 1`. Use `mem_normOneGL_iff_detModule.1 g.2` as an intermediate fact. Rewrite `this` using `[e, map_mul, map_mul, mem_normOneGL_iff_detModule.1 (unipGL_mem_normOneGL _), one_mul, hdet, mem_normOneGL_iff_detModule.1 (maxCompact_le_normOneGL hk), mul_one]`. Then use the resulting hypothesis. Set `k' : G1 K (2 + 2)` to `⟨k, maxCompact_le_normOneGL hk⟩`.
+
+Establish `z1 : zt K (Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 a)`. Unfold `zt`. Use `congr 1`. Conclude with `Subtype.ext (Real.exp_log (detModule K 2 a).2)`. Establish `z2 : zt K (-Real.log (detModule K 2 a).1) = centralSection K 2 (detModule K 2 c)`.
+
+Unfold `zt`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[eq_inv_of_mul_eq_one_right h1]`. Use `show Real.exp (-Real.log _) = _`.
+
+Rewrite using `[Real.exp_neg, Real.exp_log (detModule K 2 a).2]`. Both sides reduce to the same expression. Establish `e2 : g = nn X * lv (retractOne a) (retractOne c) (Real.log (detModule K 2 a).1) * k'`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, hlv, z1, z2, coe_retractOne, coe_retractOne, inv_mul_cancel_right, inv_mul_cancel_right]`.
+
+Conclude with `e`. Establish `hk' : k' ∈ KG K (2 + 2)` using `hk`. Rewrite using `[e2, hpSpec.1, (hpSpec.2.1 k' hk').1, add_zero]`.
+-/
 private theorem hh_of (g : G1 K (2 + 2)) (X : UPos (2 + 2) 2 → 𝔸[K]) (a c : AdelicGLn.AdelicGL K 2)
     {k : AdelicGLn.AdelicGL K (2 + 2)} (hk : k ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K (2 + 2))))
     (e : (g : AdelicGLn.AdelicGL K (2 + 2)) = unipGL X * blk a c * k) :
@@ -98,6 +129,9 @@ private theorem hh_of (g : G1 K (2 + 2)) (X : UPos (2 + 2) 2 → 𝔸[K]) (a c :
   have hk' : k' ∈ KG K (2 + 2) := hk
   rw [e2, hpSpec.1, (hpSpec.2.1 k' hk').1, add_zero]
 
+/- English proof (translation)
+Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[blk, Matrix.diagonal_apply, Fin.ext_iff]`.
+-/
 private theorem blk_diag {a b : ℕ} (ρ : Fin (a + b) → ℝ) (hρ : ∀ i, 0 < ρ i) :
     (diagUnits (a + b) fun i => posIdele (K := K) (ρ i) (hρ i)) =
       blk (diagUnits a fun i => posIdele (K := K) (ρ (Fin.castAdd b i)) (hρ _))
@@ -108,10 +142,24 @@ private theorem blk_diag {a b : ℕ} (ρ : Fin (a + b) → ℝ) (hρ : ∀ i, 0 
   rcases i with i | i <;> rcases j with j | j <;>
     simp [blk, Matrix.diagonal_apply, Fin.ext_iff]
 
+/- English proof (translation)
+The claim follows from `ideleModule_det_diagUnits_posIdele r hr`.
+-/
 private theorem mod_diag {n : ℕ} (r : Fin n → ℝ) (hr : ∀ i, 0 < r i) :
     (detModule K n (diagUnits n fun i => posIdele (K := K) (r i) (hr i))).1 = (∏ i, r i) ^ Module.finrank ℚ K :=
   ideleModule_det_diagUnits_posIdele r hr
 
+/- English proof (translation)
+Take `⟨hc, hB⟩` from `h`. Establish `: CompactSpace ω` using `isCompact_iff_compactSpace.1 hc`. Establish `hex : ∀ b : ω, _` using `fun b : ω => split_low b.1 (low_of_borel (hB b.2)) (low_of_borel (inv_mem (hB b.2)))`. Use `choose c d hc1 X hX using hex`. Establish `c1 : Continuous fun b : ω => (b.1 : AdelicGLn.AdelicGL K (2 + 2)).val` using `Units.continuous_val.comp continuous_subtype_val`.
+
+Establish `c2 : Continuous fun b : ω => ((b.1 : AdelicGLn.AdelicGL K (2 + 2))⁻¹).val` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `cc : Continuous c`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `e : (fun b : ω => (Units.val ∘ c) b i j) = fun b : ω => (b.1 : AdelicGLn.AdelicGL K (2 + 2)).val (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j))`.
+
+Use function extensionality and compare the values at `fun b => by simp only [Function.comp, (hc1 b).1]; rfl`. Rewrite using `[e]`. Conclude with `c1.matrix_elem _ _`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `e : (fun b : ω => ((c b)⁻¹ : AdelicGLn.AdelicGL K 2).val i j) = fun b : ω => ((b.1 : AdelicGLn.AdelicGL K (2 + 2))⁻¹).val (finSumFinEquiv (Sum.inl i)) (finSumFinEquiv (Sum.inl j))`.
+
+Use function extensionality and compare the values at `fun b => by simp only [(hc1 b).2]; rfl`. Rewrite using `[e]`. Conclude with `c2.matrix_elem _ _`. Establish `hf : Continuous fun b : ω => Real.log (detModule K 2 (c b)).1` using `(continuous_subtype_val.comp (continuous_detModule.comp cc)).log fun p => (detModule K 2 _).2.ne'`. Take `⟨B, hB'⟩` from `(isCompact_range hf.abs).bddAbove`.
+
+Conclude with `⟨B, fun b hb => ⟨X ⟨b, hb⟩, c ⟨b, hb⟩, d ⟨b, hb⟩, hX ⟨b, hb⟩, hB' ⟨⟨b, hb⟩, rfl⟩⟩⟩`.
+-/
 private theorem top_bound {ω : Set (AdelicGLn.AdelicGL K (2 + 2))} (h : Bor ω) :
     ∃ B : ℝ, ∀ b ∈ ω, ∃ (X : UPos (2 + 2) 2 → 𝔸[K]) (c d : AdelicGLn.AdelicGL K 2),
       b = unipGL X * blk c d ∧ |Real.log (detModule K 2 c).1| ≤ B := by
@@ -142,6 +190,13 @@ private theorem top_bound {ω : Set (AdelicGLn.AdelicGL K (2 + 2))} (h : Bor ω)
   obtain ⟨B, hB'⟩ := (isCompact_range hf.abs).bddAbove
   exact ⟨B, fun b hb => ⟨X ⟨b, hb⟩, c ⟨b, hb⟩, d ⟨b, hb⟩, hX ⟨b, hb⟩, hB' ⟨⟨b, hb⟩, rfl⟩⟩⟩
 
+/- English proof (translation)
+Establish `hE0 : 0 < E` using `one_pos.trans_le hE`. Establish `hR0 : 0 < R` using `one_pos.trans_le hR`. Establish `hP0 : 0 < ∏ j, r j` using `Finset.prod_pos fun j _ => hr j`. Establish `h1 : r i ^ (2 + 2) = (∏ j, r j) * ∏ j, (r i / r j)`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+
+Clear the denominators using the available nonvanishing facts. Establish `h2 : ∏ j, (r i / r j) ≤ R ^ (2 + 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : r i ^ (2 + 2) ≤ (E * R) ^ (2 + 2)`. Rewrite using `[h1, mul_pow]`.
+
+Conclude with `mul_le_mul (hP.trans (le_self_pow₀ hE (by norm_num))) h2 (Finset.prod_pos fun j _ => div_pos (hr i) (hr j)).le (by positivity)`. Conclude with `le_of_pow_le_pow_left₀ (by norm_num) (by positivity) h3`.
+-/
 private theorem box (r : Fin (2 + 2) → ℝ) (hr : ∀ i, 0 < r i) {E R : ℝ} (hE : 1 ≤ E) (hR : 1 ≤ R)
     (hP : ∏ i, r i ≤ E) (hq : ∀ i j, r i / r j ≤ R) (i : Fin (2 + 2)) : r i ≤ E * R := by
   have hE0 : 0 < E := one_pos.trans_le hE
@@ -163,6 +218,9 @@ private theorem box (r : Fin (2 + 2) → ℝ) (hr : ∀ i, 0 < r i) {E R : ℝ} 
 end UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.SiegelParabolicBlocks
 
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.SiegelParabolicBlocks in
+/- English proof (translation)
+The claim follows from `|HH z - (Module.finrank ℚ K : ℝ) * Real.log (ρ 0 * ρ 1)| ≤ C ∧ |Real.log (ρ 0 * ρ 1 * (ρ 2 * ρ 3))| ≤ C ∧ ∀ R : ℝ, 1 ≤ R → (∀ i j, ρ i / ρ j ≤ R) → AutomorphicForm.height ((z : G1 K (2 + 2)) : AdelicGLn.AdelicGL K (2 + 2)) ≤ C * R ^ c := by intro K _ _ ω hω obtain ⟨B₁, h₁⟩ := top …`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.sgBasics :
     ∀ {K : Type} [Field K] [NumberField K] (ω : Set (AdelicGLn.AdelicGL K (2 + 2))), Bor ω → ∃ (C : ℝ) (c : ℕ), 1 ≤ C ∧ ∀ (ρ : Fin (2 + 2) → ℝ) (z : G1 K (2 + 2)), Sg ω ρ z →
       |HH z - (Module.finrank ℚ K : ℝ) * Real.log (ρ 0 * ρ 1)| ≤ C ∧ |Real.log (ρ 0 * ρ 1 * (ρ 2 * ρ 3))| ≤ C ∧

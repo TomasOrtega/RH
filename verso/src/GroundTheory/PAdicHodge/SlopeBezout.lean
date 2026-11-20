@@ -10,6 +10,25 @@ section Embedding
 variable {R : Type*} [CommRing R] [IsDomain R]
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := M)`. Take `⟨I, indepI, hI⟩` from `exists_maximal_linearIndepOn R s`. Set `N` to `span R (Set.range (fun i : I => s i))`. Set `b : Basis I R N` to `Basis.span indepI`. Establish `exists_a : ∀ i : Fin k, ∃ a : R, a ≠ 0 ∧ a • s i ∈ N`.
+
+Introduce `i`. Distinguish the cases in `hi : i ∈ I`. Conclude with `⟨1, one_ne_zero, by`. Rewrite using `[one_smul]`. Conclude with `subset_span ⟨⟨i, hi⟩, rfl⟩⟩`.
+
+Take `⟨a, ha, ha'⟩` from `hI i hi`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `: s '' I = Set.range (fun i : I => s i)` using `Set.image_eq_range s I`. Rewrite `ha'` using `[this]`. Conclude with `ha'`.
+
+Use `choose a ha ha' using exists_a`. Set `A : R` to `∏ i, a i`. Establish `hA : A ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun i _ => ha i)`. Establish `hAM : ∀ x : M, A • x ∈ N`. Introduce `x`.
+
+Establish `hx : x ∈ span R (Set.range s)` using `by rw [hs]; trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, rfl⟩` from `hy`. Establish `: A • s i = (∏ j ∈ ({i}ᶜ : Finset (Fin k)), a j) • a i • s i`.
+
+Rewrite using `[← mul_smul, ← Fintype.prod_eq_prod_compl_mul i]`. Rewrite using `[this]`. Conclude with `N.smul_mem _ (ha' i)`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `N.add_mem hy hz`. Consider the case `smul r y _ hy => rw [smul_comm]`. Conclude with `N.smul_mem r hy`. Set `φ : M →ₗ[R] N` to `LinearMap.codRestrict N (A • LinearMap.id) (fun x => by simpa using hAM x)`. Establish `hφ : Function.Injective φ`.
+
+Introduce `x y hxy`. Establish `: A • x = A • y` using `by simpa [φ] using congrArg Subtype.val hxy`. Conclude with `smul_right_injective M hA this`. Establish `: Finite I` using `Set.toFinite I`. Set `b'` to `b.reindex (Finite.equivFin I)`.
+
+Conclude with `⟨Nat.card I, b'.equivFun.toLinearMap.comp φ, b'.equivFun.injective.comp hφ⟩`.
+-/
 theorem exists_injective_linearMap_pi [Module.Finite R M] [IsTorsionFree R M] :
     ∃ (n : ℕ) (f : M →ₗ[R] (Fin n → R)), Function.Injective f := by
   classical
@@ -58,6 +77,11 @@ section Bezout
 
 variable {R : Type*} [CommRing R] [IsDomain R] [IsBezout R]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `(IsBezout.isPrincipal_of_FG I hI).principal`. Distinguish the cases in `h0 : a = 0`. Substitute `h0` using the available equality. Establish `: I = ⊥` using `by rw [ha]; simp`. Substitute `this` using the available equality.
+
+Use `infer_instance`. Conclude with `Module.Free.of_equiv ((LinearEquiv.toSpanNonzeroSingleton R R a h0).trans (LinearEquiv.ofEq _ _ ha.symm))`.
+-/
 theorem free_of_fg_ideal (I : Ideal R) (hI : I.FG) : Module.Free R I := by
   obtain ⟨a, ha⟩ := (IsBezout.isPrincipal_of_FG I hI).principal
   by_cases h0 : a = 0
@@ -68,6 +92,21 @@ theorem free_of_fg_ideal (I : Ideal R) (hI : I.FG) : Module.Free R I := by
   · exact Module.Free.of_equiv
       ((LinearEquiv.toSpanNonzeroSingleton R R a h0).trans (LinearEquiv.ofEq _ _ ha.symm))
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `M _ _ _ f hf`. Establish `: Subsingleton M` using `hf.subsingleton`. Use `infer_instance`.
+
+Consider the case `succ n ih`. Introduce `M _ _ _ f hf`. Set `p : M →ₗ[R] R` to `(LinearMap.proj (Fin.last n)).comp f`. Establish `: Module.Free R (LinearMap.range p)` using `free_of_fg_ideal _ ((Module.Finite.iff_fg (R := R) (N := LinearMap.range p)).mp inferInstance)`. Set `g` to `p.rangeRestrict`.
+
+Take `⟨l, hl⟩` from `g.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict p)`. Establish `hex : Function.Exact (LinearMap.ker g).subtype g` using `LinearMap.exact_subtype_ker_map g`. Set `e` to `((hex.splitSurjectiveEquiv (LinearMap.ker g).injective_subtype) ⟨l, hl⟩).1`. Establish `: Module.Finite R (LinearMap.ker g)` using `Module.Finite.of_surjective ((LinearMap.fst R _ _).comp e.toLinearMap) (Prod.fst_surjective.comp e.surjective)`. Set `f' : LinearMap.ker g →ₗ[R] (Fin n → R)` to `(LinearMap.funLeft R R Fin.castSucc).comp (f.comp (LinearMap.ker g).subtype)`.
+
+Establish `hf' : Function.Injective f'`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+
+Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Establish `hx : g x = 0` using `x.2`. Establish `hy : g y = 0` using `y.2`. Establish `hx' : p x = 0` using `congrArg Subtype.val hx`.
+
+Establish `hy' : p y = 0` using `congrArg Subtype.val hy`. Simplify using `only [p, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval] at hx' hy'`. Rewrite using `[hx', hy']`. Consider the case `cast i => exact congrFun hxy i`. Establish `: Module.Free R (LinearMap.ker g)` using `ih _ f' hf'`.
+
+Conclude with `Module.Free.of_equiv e.symm`.
+-/
 theorem free_of_injective_linearMap_pi (n : ℕ) :
     ∀ (M : Type*) [AddCommGroup M] [Module R M] [Module.Finite R M] (f : M →ₗ[R] (Fin n → R)),
       Function.Injective f → Module.Free R M := by
@@ -110,15 +149,24 @@ theorem free_of_injective_linearMap_pi (n : ℕ) :
 
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Take `⟨n, f, hf⟩` from `exists_injective_linearMap_pi (R := R) (M := M)`. Conclude with `free_of_injective_linearMap_pi n M f hf`.
+-/
 theorem free_of_finite_of_isTorsionFree [Module.Finite R M] [IsTorsionFree R M] :
     Module.Free R M := by
   obtain ⟨n, f, hf⟩ := exists_injective_linearMap_pi (R := R) (M := M)
   exact free_of_injective_linearMap_pi n M f hf
 
+/- English proof (translation)
+The claim follows from `free_of_finite_of_isTorsionFree`.
+-/
 theorem free_of_finite_of_noZeroSMulDivisors [Module.Finite R M] [NoZeroSMulDivisors R M] :
     Module.Free R M :=
   free_of_finite_of_isTorsionFree
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => inferInstance, fun _ => free_of_finite_of_isTorsionFree⟩`.
+-/
 theorem free_iff_isTorsionFree [Module.Finite R M] : Module.Free R M ↔ IsTorsionFree R M :=
   ⟨fun _ => inferInstance, fun _ => free_of_finite_of_isTorsionFree⟩
 
@@ -129,6 +177,11 @@ section Compl
 variable {R : Type*} [CommRing R]
 variable {M P : Type*} [AddCommGroup M] [Module R M] [AddCommGroup P] [Module R P]
 
+/- English proof (translation)
+Establish `h1 : ∀ y, g (l y) = y` using `fun y => LinearMap.congr_fun hl y`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce and unpack `x hx ⟨y, rfl⟩`. Rewrite `hx` using `[LinearMap.mem_ker, h1]`.
+
+Simplify using `[hx]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce `x _`. Rewrite using `[Submodule.mem_sup]`. Conclude with `⟨x - l (g x), by simp [h1], l (g x), ⟨_, rfl⟩, by abel⟩`.
+-/
 theorem isCompl_ker_range_of_comp_eq_id (g : M →ₗ[R] P) (l : P →ₗ[R] M)
     (hl : g ∘ₗ l = LinearMap.id) : IsCompl (LinearMap.ker g) (LinearMap.range l) := by
   have h1 : ∀ y, g (l y) = y := fun y => LinearMap.congr_fun hl y
@@ -150,9 +203,15 @@ variable {R : Type*} [CommRing R] [IsDomain R] [IsBezout R]
 variable {M : Type*} [AddCommGroup M] [Module R M] [Module.Finite R M]
 variable (N : Submodule R M) [IsTorsionFree R (M ⧸ N)]
 
+/- English proof (translation)
+The claim follows from `free_of_finite_of_isTorsionFree`.
+-/
 theorem free_quotient_of_isTorsionFree : Module.Free R (M ⧸ N) :=
   free_of_finite_of_isTorsionFree
 
+/- English proof (translation)
+Use `free_quotient_of_isTorsionFree N` as an intermediate fact. Take `⟨l, hl⟩` from `N.mkQ.exists_rightInverse_of_surjective N.range_mkQ`. Use `⟨LinearMap.range l, ?_⟩` and prove the remaining obligations. Use `isCompl_ker_range_of_comp_eq_id N.mkQ l hl` as an intermediate fact. Rewrite `this` using `[Submodule.ker_mkQ]`. Then use the resulting hypothesis.
+-/
 theorem exists_isCompl_of_isTorsionFree_quotient : ∃ N' : Submodule R M, IsCompl N N' := by
   have := free_quotient_of_isTorsionFree N
   obtain ⟨l, hl⟩ := N.mkQ.exists_rightInverse_of_surjective N.range_mkQ
@@ -160,10 +219,16 @@ theorem exists_isCompl_of_isTorsionFree_quotient : ∃ N' : Submodule R M, IsCom
   have := isCompl_ker_range_of_comp_eq_id N.mkQ l hl
   rwa [Submodule.ker_mkQ] at this
 
+/- English proof (translation)
+Take `⟨N', h⟩` from `exists_isCompl_of_isTorsionFree_quotient N`. Conclude with `Module.Finite.equiv (Submodule.quotientEquivOfIsCompl N' N h.symm)`.
+-/
 theorem finite_of_isTorsionFree_quotient : Module.Finite R N := by
   obtain ⟨N', h⟩ := exists_isCompl_of_isTorsionFree_quotient N
   exact Module.Finite.equiv (Submodule.quotientEquivOfIsCompl N' N h.symm)
 
+/- English proof (translation)
+Use `finite_of_isTorsionFree_quotient N` as an intermediate fact. Conclude with `free_of_finite_of_isTorsionFree`.
+-/
 theorem free_of_isTorsionFree_quotient [IsTorsionFree R M] : Module.Free R N := by
   have := finite_of_isTorsionFree_quotient N
   exact free_of_finite_of_isTorsionFree
@@ -175,6 +240,9 @@ section Rank
 variable {R : Type*} [CommRing R] [IsDomain R]
 variable {M : Type*} [AddCommGroup M] [Module R M]
 
+/- English proof (translation)
+Rewrite using `[add_comm]`. Conclude with `N.finrank_quotient_add_finrank`.
+-/
 theorem finrank_add_finrank_quotient [Module.Finite R M] (N : Submodule R M) :
     finrank R N + finrank R (M ⧸ N) = finrank R M := by
   rw [add_comm]
@@ -203,18 +271,30 @@ def saturation (N : Submodule R M) : Submodule R M where
 
 variable {N N₁ N₂ : Submodule R M}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_saturation {x : M} : x ∈ saturation N ↔ ∃ r : R, r ≠ 0 ∧ r • x ∈ N := Iff.rfl
 
 variable (N) in
 
+/- English proof (translation)
+Introduce `x hx` and use `⟨1, one_ne_zero, by simpa using hx⟩`.
+-/
 theorem le_saturation : N ≤ saturation N := fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩
 
+/- English proof (translation)
+Introduce `_ ⟨r, hr, hx⟩` and use `⟨r, hr, h hx⟩`.
+-/
 theorem saturation_mono (h : N₁ ≤ N₂) : saturation N₁ ≤ saturation N₂ :=
   fun _ ⟨r, hr, hx⟩ => ⟨r, hr, h hx⟩
 
 variable (N) in
 
 @[simp]
+/- English proof (translation)
+Use `le_antisymm ?_ (le_saturation _)` and prove the remaining obligations. Introduce and unpack `x ⟨r, hr, s, hs, hx⟩`. Conclude with `⟨s * r, mul_ne_zero hs hr, by rw [mul_smul]; exact hx⟩`.
+-/
 theorem saturation_saturation : saturation (saturation N) = saturation N := by
   refine le_antisymm ?_ (le_saturation _)
   rintro x ⟨r, hr, s, hs, hx⟩
@@ -231,6 +311,13 @@ instance isTorsionFree_quotient_saturation : IsTorsionFree R (M ⧸ saturation N
     obtain ⟨s, hs, h⟩ := hab
     exact ⟨s * r, mul_ne_zero hs hr.ne_zero, by rw [mul_smul, smul_sub r x y]; exact h⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← h]`. Use `infer_instance`. Introduce `_`.
+
+Use `le_antisymm ?_ (le_saturation N)` and prove the remaining obligations. Introduce and unpack `x ⟨r, hr, hx⟩`. Establish `h1 : r • (N.mkQ x) = r • 0`. Rewrite using `[smul_zero, ← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`.
+
+Establish `h2 : N.mkQ x = 0` using `smul_right_injective (M ⧸ N) hr h1`. Rewrite `h2` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem saturation_eq_self_iff : saturation N = N ↔ IsTorsionFree R (M ⧸ N) := by
   constructor
   · intro h
@@ -245,11 +332,21 @@ theorem saturation_eq_self_iff : saturation N = N ↔ IsTorsionFree R (M ⧸ N) 
     have h2 : N.mkQ x = 0 := smul_right_injective (M ⧸ N) hr h1
     rwa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at h2
 
+/- English proof (translation)
+The claim follows from `saturation_eq_self_iff.mpr inferInstance`.
+-/
 theorem saturation_eq_self [IsTorsionFree R (M ⧸ N)] : saturation N = N :=
   saturation_eq_self_iff.mpr inferInstance
 
 variable (N) in
 
+/- English proof (translation)
+Set `N₀ : Submodule R (saturation N)` to `N.comap (saturation N).subtype`. Establish `h0 : Module.rank R (saturation N ⧸ N₀) = 0`. Rewrite using `[rank_eq_zero_iff]`. Introduce `q`. Take `⟨x, rfl⟩` from `N₀.mkQ_surjective q`.
+
+Take `⟨r, hr, hx⟩` from `x.2`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Establish `h` using `HasRankNullity.rank_quotient_add_rank N₀`.
+
+Rewrite `h` using `[h0, zero_add]`. Rewrite using `[← h]`. Conclude with `(Submodule.comapSubtypeEquivOfLe (le_saturation N)).rank_eq`.
+-/
 theorem rank_saturation : Module.rank R (saturation N) = Module.rank R N := by
   let N₀ : Submodule R (saturation N) := N.comap (saturation N).subtype
   have h0 : Module.rank R (saturation N ⧸ N₀) = 0 := by
@@ -267,9 +364,23 @@ theorem rank_saturation : Module.rank R (saturation N) = Module.rank R N := by
 
 variable (N) in
 
+/- English proof (translation)
+Simplify using `only [Module.finrank, rank_saturation N]`.
+-/
 theorem finrank_saturation : finrank R (saturation N) = finrank R N := by
   simp only [Module.finrank, rank_saturation N]
 
+/- English proof (translation)
+Establish `hfin : ∀ P : Submodule R M, Module.rank R P < Cardinal.aleph0` using `fun P => lt_of_le_of_lt P.rank_le (Module.rank_lt_aleph0 (R := R) (M := M))`. Set `N₀ : Submodule R N'` to `N.comap N'.subtype`. Establish `h` using `HasRankNullity.rank_quotient_add_rank N₀`. Rewrite `h` using `[(Submodule.comapSubtypeEquivOfLe hle).rank_eq]`. Establish `heq : Module.rank R N = Module.rank R N'` using `Cardinal.toNat_injOn (hfin N) (hfin N') hrank`.
+
+Take `⟨m, hm⟩` from `Cardinal.lt_aleph0.1 (hfin N)`. Rewrite `h` using `[← heq, hm]`. Establish `hq : Module.rank R (N' ⧸ N₀) < Cardinal.aleph0` using `lt_of_le_of_lt (le_self_add.trans_eq h) Cardinal.natCast_lt_aleph0`. Take `⟨j, hj⟩` from `Cardinal.lt_aleph0.1 hq`. Rewrite `h` using `[hj]`.
+
+Establish `hj0 : j = 0`. Establish `: ((j + m : ℕ) : Cardinal) = m` using `by push_cast; exact h`. Use `Nat.cast_injective this` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hzero : Module.rank R (N' ⧸ N₀) = 0` using `by rw [hj, hj0, Nat.cast_zero]`.
+
+Rewrite `hzero` using `[rank_eq_zero_iff]`. Use `le_antisymm hle ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨r, hr, hrx⟩` from `hzero (N₀.mkQ ⟨x, hx⟩)`. Rewrite `hrx` using `[← LinearMap.map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+
+Rewrite using `[← saturation_eq_self (N := N)]`. Conclude with `⟨r, hr, hrx⟩`.
+-/
 theorem eq_of_le_of_finrank_eq [Module.Finite R M] [IsTorsionFree R (M ⧸ N)] {N' : Submodule R M}
     (hle : N ≤ N') (hrank : finrank R N = finrank R N') : N = N' := by
   have hfin : ∀ P : Submodule R M, Module.rank R P < Cardinal.aleph0 :=

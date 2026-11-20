@@ -10,6 +10,9 @@ noncomputable section
 
 variable {n : ℕ} {U : Set (V n)}
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y) U` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hg).2`. Establish `h1 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y (bas n k)) U` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y (Complex.I • bas n k)) U` using `hd.clm_apply contDiffOn_const`. Use `show ContDiffOn ℝ ∞ (fun y => (fderiv ℝ g y (bas n k) + Complex.I * fderiv ℝ g y (Complex.I • bas n k)) / 2) U`. Conclude with `(h1.add (contDiffOn_const.mul h2)).div_const 2`.
+-/
 theorem wdb_contDiffOn (hU : IsOpen U) {g : V n → ℂ} (hg : ContDiffOn ℝ ∞ g U) (k : Fin n) :
     ContDiffOn ℝ ∞ (wdb n k g) U := by
   have hd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y) U :=
@@ -21,6 +24,9 @@ theorem wdb_contDiffOn (hU : IsOpen U) {g : V n → ℂ} (hg : ContDiffOn ℝ �
     (fun y => (fderiv ℝ g y (bas n k) + Complex.I * fderiv ℝ g y (Complex.I • bas n k)) / 2) U
   exact (h1.add (contDiffOn_const.mul h2)).div_const 2
 
+/- English proof (translation)
+Establish `hd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ h y) U` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hh).2`. Establish `h1 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ h y (bas n j)) U` using `hd.clm_apply contDiffOn_const`. Establish `h2 : ContDiffOn ℝ ∞ (fun y => fderiv ℝ h y (Complex.I • bas n j)) U` using `hd.clm_apply contDiffOn_const`. Use `show ContinuousOn (fun y => (fderiv ℝ h y (bas n j) - Complex.I * fderiv ℝ h y (Complex.I • bas n j)) / 2) U`. Conclude with `((h1.sub (contDiffOn_const.mul h2)).div_const 2).continuousOn`.
+-/
 theorem wd_continuousOn (hU : IsOpen U) {h : V n → ℂ} (hh : ContDiffOn ℝ ∞ h U) (j : Fin n) :
     ContinuousOn (wd n j h) U := by
   have hd : ContDiffOn ℝ ∞ (fun y => fderiv ℝ h y) U :=
@@ -32,6 +38,11 @@ theorem wd_continuousOn (hU : IsOpen U) {h : V n → ℂ} (hh : ContDiffOn ℝ �
     (fun y => (fderiv ℝ h y (bas n j) - Complex.I * fderiv ℝ h y (Complex.I • bas n j)) / 2) U
   exact ((h1.sub (contDiffOn_const.mul h2)).div_const 2).continuousOn
 
+/- English proof (translation)
+Establish `h : leviV n g z (fun j => (t : ℂ) * ξ j) = ((t ^ 2 : ℝ) : ℂ) * leviV n g z ξ`. Simplify using `only [leviV, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_ofReal]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Complex.re_ofReal_mul]`.
+-/
 theorem leviV_scale (g : V n → ℂ) (z : V n) (t : ℝ) (ξ : Fin n → ℂ) :
     (leviV n g z (fun j => (t : ℂ) * ξ j)).re = t ^ 2 * (leviV n g z ξ).re := by
   have h : leviV n g z (fun j => (t : ℂ) * ξ j) = ((t ^ 2 : ℝ) : ℂ) * leviV n g z ξ := by
@@ -42,6 +53,27 @@ theorem leviV_scale (g : V n → ℂ) (z : V n) (t : ℝ) (ξ : Fin n → ℂ) :
     ring
   rw [h, Complex.re_ofReal_mul]
 
+/- English proof (translation)
+Establish `hG : ContDiffOn ℝ ∞ (fun w => (g w : ℂ)) U` using `(Complex.ofRealCLM.contDiff.comp_contDiffOn hg).congr (fun x _ => by simp)`. Establish `hcont : ContinuousOn (fun p : V n × (Fin n → ℂ) => (leviV n (fun w => (g w : ℂ)) p.1 p.2).re) (K ×ˢ sphere (0 : Fin n → ℂ) 1)`. Use `Complex.continuous_re.comp_continuousOn (f := fun p : V n × (Fin n → ℂ) => leviV n (fun w => (g w : ℂ)) p.1 p.2) ?_` and prove the remaining obligations. Use `show ContinuousOn (fun p : V n × (Fin n → ℂ) => ∑ j, ∑ k, wd n j (wdb n k (fun w => (g w : ℂ))) p.1 * p.2 j * (starRingEnd ℂ) (p.2 k)) _`. Use `continuousOn_finset_sum _ fun j _ => continuousOn_finset_sum _ fun k _ => ?_` and prove the remaining obligations.
+
+Establish `hw : ContinuousOn (fun p : V n × (Fin n → ℂ) => wd n j (wdb n k (fun w => (g w : ℂ))) p.1) (K ×ˢ sphere (0 : Fin n → ℂ) 1)` using `(wd_continuousOn hU (wdb_contDiffOn hU hG k) j).comp continuousOn_fst (fun p hp => hKU hp.1)`. Use `(hw.mul ?_).mul ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp continuous_snd).continuousOn`. Conclude with `(Complex.continuous_conj.comp ((continuous_apply k).comp continuous_snd)).continuousOn`. Distinguish the cases in `hne : (K ×ˢ sphere (0 : Fin n → ℂ) 1).Nonempty`.
+
+Take `⟨p0, hp0, hmin⟩` from `(hK.prod (isCompact_sphere (0 : Fin n → ℂ) 1)).exists_isMinOn hne hcont`. Establish `hp0ne : p0.2 ≠ 0`. Introduce `h`. Establish `h1` using `hp0.2`. Rewrite `h1` using `[h, mem_sphere_zero_iff_norm, norm_zero]`.
+
+Conclude with `zero_ne_one h1`. Establish `hc0 : 0 < (leviV n (fun w => (g w : ℂ)) p0.1 p0.2).re` using `hpos p0.1 hp0.1 p0.2 hp0ne`. Use `⟨(leviV n (fun w => (g w : ℂ)) p0.1 p0.2).re / ((n : ℝ) + 1), div_pos hc0 (by positivity), ?_⟩` and prove the remaining obligations. Introduce `z hz ξ`. Distinguish the cases in `hξ : ξ = 0`.
+
+Substitute `hξ` using the available equality. Simplify using `[leviV]`. Establish `hr : 0 < ‖ξ‖` using `norm_pos_iff.2 hξ`. Establish `hη : ‖ξ‖⁻¹ • ξ ∈ sphere (0 : Fin n → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hr.ne']`.
+
+Establish `hm : (leviV n (fun w => (g w : ℂ)) p0.1 p0.2).re ≤ (leviV n (fun w => (g w : ℂ)) z (‖ξ‖⁻¹ • ξ)).re` using `isMinOn_iff.1 hmin (z, ‖ξ‖⁻¹ • ξ) (Set.mk_mem_prod hz hη)`. Establish `hξη : (fun j => ((‖ξ‖ : ℝ) : ℂ) * (‖ξ‖⁻¹ • ξ) j) = ξ`. Use function extensionality and compare the values at `j`. Rewrite using `[Pi.smul_apply, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul, mul_inv_cancel₀ hr.ne', Complex.ofReal_one, one_mul]`. Establish `key : (leviV n (fun w => (g w : ℂ)) z ξ).re = ‖ξ‖ ^ 2 * (leviV n (fun w => (g w : ℂ)) z (‖ξ‖⁻¹ • ξ)).re` using `(congrArg (fun v => (leviV n (fun w => (g w : ℂ)) z v).re) hξη.symm).trans (leviV_scale (fun w => (g w : ℂ)) z ‖ξ‖ (‖ξ‖⁻¹ • ξ))`.
+
+Establish `hsum : ∑ j, ‖ξ j‖ ^ 2 ≤ ((n : ℝ) + 1) * ‖ξ‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, div_mul_cancel₀ _ (by positivity : ((n : ℝ) + 1) ≠ 0)]`.
+
+Use `_ ≤ ‖ξ‖ ^ 2 * (leviV n (fun w => (g w : ℂ)) z (‖ξ‖⁻¹ • ξ)).re := by`. Use polynomial arithmetic with `[hm, sq_nonneg ‖ξ‖]`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `z hz ξ`. Distinguish the cases in `hξ : ξ = 0`.
+
+Substitute `hξ` using the available equality. Simplify using `[leviV]`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Use `⟨(z, ‖ξ‖⁻¹ • ξ), hz, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ (norm_pos_iff.2 hξ).ne']`.
+-/
 theorem levi_unif (hU : IsOpen U) {g : V n → ℝ} (hg : ContDiffOn ℝ ∞ g U) {K : Set (V n)}
     (hK : IsCompact K) (hKU : K ⊆ U)
     (hpos : ∀ z ∈ K, ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < (leviV n (fun w => (g w : ℂ)) z ξ).re) :
@@ -119,6 +151,17 @@ theorem levi_unif (hU : IsOpen U) {g : V n → ℝ} (hg : ContDiffOn ℝ ∞ g U
       rw [mem_sphere_zero_iff_norm, norm_smul, norm_inv, norm_norm,
         inv_mul_cancel₀ (norm_pos_iff.2 hξ).ne']
 
+/- English proof (translation)
+Introduce `y hy`. Distinguish the cases in `hyw : y = w`. Substitute `hyw` using the available equality. Conclude with `h0.self_of_nhds`. Establish `hρ : 0 < ρ` using `pos_of_mem_ball hy`.
+
+Establish `hd : 0 < ‖y - w‖` using `norm_pos_iff.2 (sub_ne_zero.2 hyw)`. Establish `hyd : ‖y - w‖ < ρ` using `by rw [← dist_eq_norm]; exact hy`. Establish `hmaps : Set.MapsTo (fun t : ℂ => w + t • (y - w)) (ball (0 : ℂ) (ρ / ‖y - w‖)) (ball w ρ)`. Introduce `t ht`. Rewrite `ht` using `[mem_ball, dist_zero_right, lt_div_iff₀ hd]`.
+
+Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left, norm_smul]`. Conclude with `ht`. Establish `hLd : Differentiable ℂ (fun t : ℂ => w + t • (y - w))` using `by fun_prop`. Establish `hg : DifferentiableOn ℂ (fun t : ℂ => F (w + t • (y - w))) (ball (0 : ℂ) (ρ / ‖y - w‖))` using `hF.comp hLd.differentiableOn hmaps`. Establish `hT : Filter.Tendsto (fun t : ℂ => w + t • (y - w)) (𝓝 0) (𝓝 w)`.
+
+Establish `h` using `hLd.continuous.tendsto 0`. Rewrite `h` using `[zero_smul, add_zero]`. Then use the resulting hypothesis. Establish `hg0 : (fun t : ℂ => F (w + t • (y - w))) =ᶠ[𝓝 0] 0` using `h0.comp_tendsto hT`. Establish `h1 : (1 : ℂ) ∈ ball (0 : ℂ) (ρ / ‖y - w‖)`. Rewrite using `[mem_ball, dist_zero_right, norm_one, lt_div_iff₀ hd, one_mul]`.
+
+Conclude with `hyd`. Establish `h2` using `(hg.analyticOnNhd isOpen_ball).eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball (0 : ℂ) _).isPreconnected (mem_ball_self (div_pos hρ hd)) hg0 h1`. Simplify using `using h2`.
+-/
 private theorem eq_zero_on_ball_of_eventuallyEq_zero {F : V n → ℂ} {w : V n} {ρ : ℝ}
     (hF : DifferentiableOn ℂ F (ball w ρ)) (h0 : F =ᶠ[𝓝 w] 0) :
     ∀ y ∈ ball w ρ, F y = 0 := by
@@ -148,6 +191,15 @@ private theorem eq_zero_on_ball_of_eventuallyEq_zero {F : V n → ℂ} {w : V n}
     (convex_ball (0 : ℂ) _).isPreconnected (mem_ball_self (div_pos hρ hd)) hg0 h1
   simpa using h2
 
+/- English proof (translation)
+Establish `hS : IsOpen {z : V n | F =ᶠ[𝓝 z] 0}` using `isOpen_setOf_eventually_nhds`. Establish `hcl : closure {z : V n | F =ᶠ[𝓝 z] 0} ∩ U ⊆ {z : V n | F =ᶠ[𝓝 z] 0}`. Introduce and unpack `z ⟨hzc, hzU⟩`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hU z hzU`. Take `⟨w, hwS, hzw⟩` from `Metric.mem_closure_iff.1 hzc (r / 2) (half_pos hr)`.
+
+Establish `hsub : ball w (r / 2) ⊆ U`. Introduce `y hy`. Apply `hrU` to reduce the goal to its premises. Rewrite `hy`, the goal using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hzb : z ∈ ball w (r / 2)` using `by rw [mem_ball]; exact hzw`. Establish `hw0 : F =ᶠ[𝓝 w] 0` using `hwS`. Use `show F =ᶠ[𝓝 z] 0`. Conclude with `Filter.eventually_of_mem (isOpen_ball.mem_nhds hzb) (fun y hy => eq_zero_on_ball_of_eventuallyEq_zero (hF.mono hsub) hw0 y hy)`. Establish `hUS` using `hc.subset_of_closure_inter_subset hS ⟨a, ha, h0⟩ hcl`.
+
+Introduce `z hz`. Establish `h' : F =ᶠ[𝓝 z] 0` using `hUS hz`. Conclude with `h'.self_of_nhds`.
+-/
 theorem ident_preconn (hU : IsOpen U) (hc : IsPreconnected U) {F : V n → ℂ}
     (hF : DifferentiableOn ℂ F U) {a : V n} (ha : a ∈ U) (h0 : F =ᶠ[𝓝 a] 0) : Set.EqOn F 0 U := by
   have hS : IsOpen {z : V n | F =ᶠ[𝓝 z] 0} := isOpen_setOf_eventually_nhds
@@ -172,6 +224,11 @@ theorem ident_preconn (hU : IsOpen U) (hc : IsPreconnected U) {F : V n → ℂ}
   have h' : F =ᶠ[𝓝 z] 0 := hUS hz
   exact h'.self_of_nhds
 
+/- English proof (translation)
+Introduce `W hW hWU hWne`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨y, hy⟩` from `hWne`. Establish `hy0 : F =ᶠ[𝓝 y] 0` using `Filter.eventually_of_mem (hW.mem_nhds hy) (fun x hx => hcon x hx)`.
+
+Establish `hall` using `ident_preconn hU hc hF (hWU hy) hy0`. Conclude with `hne (Filter.eventually_of_mem (hU.mem_nhds ha) (fun x hx => hall hx))`.
+-/
 theorem hgn_of (hU : IsOpen U) (hc : IsPreconnected U) {F : V n → ℂ} (hF : DifferentiableOn ℂ F U)
     {a : V n} (ha : a ∈ U) (hne : ¬ F =ᶠ[𝓝 a] 0) :
     ∀ W : Set (V n), IsOpen W → W ⊆ U → W.Nonempty → ∃ y ∈ W, F y ≠ 0 := by
@@ -183,11 +240,19 @@ theorem hgn_of (hU : IsOpen U) (hc : IsPreconnected U) {F : V n → ℂ} (hF : D
   have hall := ident_preconn hU hc hF (hWU hy) hy0
   exact hne (Filter.eventually_of_mem (hU.mem_nhds ha) (fun x hx => hall hx))
 
+/- English proof (translation)
+Conclude with `(LinearMap.isUnit_iff_ker_eq_bot _).1 ((LinearMap.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))`.
+-/
 theorem ker_bot_of_det {f' : V n →L[ℂ] V n} (hdet : f'.det ≠ 0) :
     LinearMap.ker (f' : V n →ₗ[ℂ] V n) = ⊥ := by
   exact (LinearMap.isUnit_iff_ker_eq_bot _).1
     ((LinearMap.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))
 
+/- English proof (translation)
+Take `⟨K, -, hK⟩` from `(f' : V n →ₗ[ℂ] V n).exists_antilipschitzWith (ker_bot_of_det hdet)`. Establish `hev : ∀ᶠ z in 𝓝[≠] (0 : V n), f z ≠ 0` using `hf.eventually_ne (c := 0) ⟨K, hK⟩`. Rewrite `hev` using `[eventually_nhdsWithin_iff, Metric.eventually_nhds_iff]`. Take `⟨ε, hε, hball⟩` from `hev`. Use `⟨ε / 2, half_pos hε, fun y hy hy0 => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Establish `hyd : dist y 0 < ε` using `lt_of_le_of_lt (mem_closedBall.1 hy) (half_lt_self hε)`. Conclude with `hball hyd hne hy0`.
+-/
 theorem iso_zero {f : V n → V n} {f' : V n →L[ℂ] V n} (hf : HasFDerivAt f f' 0) (hdet : f'.det ≠ 0)
     (h0 : f 0 = 0) : ∃ δ > 0, ∀ y ∈ closedBall (0 : V n) δ, f y = 0 → y = 0 := by
   obtain ⟨K, -, hK⟩ := (f' : V n →ₗ[ℂ] V n).exists_antilipschitzWith (ker_bot_of_det hdet)
@@ -199,6 +264,15 @@ theorem iso_zero {f : V n → V n} {f' : V n →L[ℂ] V n} (hf : HasFDerivAt f 
   have hyd : dist y 0 < ε := lt_of_le_of_lt (mem_closedBall.1 hy) (half_lt_self hε)
   exact hball hyd hne hy0
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hall : ∀ᶠ z in 𝓝 (0 : V n), ∀ k : Fin n, f z k = 0`. Rewrite using `[Filter.eventually_all]`. Introduce `k`.
+
+Conclude with `hcon k`. Establish `hf0 : f =ᶠ[𝓝 0] 0` using `by filter_upwards [hall] with z hz`. Use extensionality with `k`. Simplify using `using hz k`. Establish `hd : fderiv ℂ f 0 = 0`.
+
+Rewrite using `[hf0.fderiv_eq]`. Simplify using the standard rewrite rules. Apply `hdet` to reduce the goal to its premises. Rewrite using `[hd]`. Establish `hfr : Module.finrank ℂ (V n) = n` using `finrank_euclideanSpace_fin`.
+
+Use `show LinearMap.det ((0 : V n →L[ℂ] V n) : V n →ₗ[ℂ] V n) = 0`. Rewrite using `[ContinuousLinearMap.coe_zero, LinearMap.det_zero, hfr]`. Conclude with `zero_pow (by omega)`.
+-/
 theorem coord_ne_of_det {f : V n → V n} (hn : 1 ≤ n) (hdet : (fderiv ℂ f 0).det ≠ 0) :
     ∃ k : Fin n, ¬ (fun z => f z k) =ᶠ[𝓝 0] 0 := by
   by_contra hcon

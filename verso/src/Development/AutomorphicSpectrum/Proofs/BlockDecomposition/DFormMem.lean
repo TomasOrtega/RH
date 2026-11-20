@@ -7,6 +7,9 @@ open GlobalTheory.CatH (face toLast)
 noncomputable section
 namespace GlobalTheory.CompanionTheory.CocProd
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.sum_range_succ, ← add_assoc, ih]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tele {B : Type*} [CommRing B] (P : ℕ → B) (m : ℕ) :
     P 0 + ∑ i ∈ Finset.range m, (-1 : B) ^ (i + 1) * (P (i + 1) + P i) = (-1) ^ m * P m := by
   induction m with
@@ -18,6 +21,9 @@ theorem tele {B : Type*} [CommRing B] (P : ℕ → B) (m : ℕ) :
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {d : ℕ}
   (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T)
 
+/- English proof (translation)
+Unfold `Frame.a`. Rewrite using `[E.add i (σ T ≫ φ ≫ ψ) (σ T' ≫ ψ) (σ T''), ← Category.assoc, E.nat]`.
+-/
 theorem a_comp (i : Fin d) {T T' T'' : C} (φ : T ⟶ T') (ψ : T' ⟶ T'') :
     E.a σ i (φ ≫ ψ) = (Φ.A.map ψ).hom (E.a σ i φ) + E.a σ i ψ := by
   unfold Frame.a
@@ -27,6 +33,11 @@ def ga (i : Fin d) {n : ℕ} (s : ComposableArrows C n) (p q : Fin (n + 1)) (h :
     Φ.A.obj (s.obj (Fin.last n)) :=
   (Φ.A.map (s.map (homOfLE (Fin.le_last q)))).hom (E.a σ i (s.map (homOfLE h)))
 
+/- English proof (translation)
+Unfold `ga`. Establish `e : s.map (homOfLE (h.trans h')) = s.map (homOfLE h) ≫ s.map (homOfLE h')`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Establish `e2 : s.map (homOfLE (Fin.le_last q)) = s.map (homOfLE h') ≫ s.map (homOfLE (Fin.le_last r))`.
+
+Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e, a_comp, map_add, e2, Functor.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem ga_add (i : Fin d) {n : ℕ} (s : ComposableArrows C n) (p q r : Fin (n + 1)) (h : p ≤ q) (h' : q ≤ r) :
     ga E σ i s p r (h.trans h') = ga E σ i s p q h + ga E σ i s q r h' := by
   unfold ga
@@ -37,12 +48,20 @@ theorem ga_add (i : Fin d) {n : ℕ} (s : ComposableArrows C n) (p q r : Fin (n 
   rw [e, a_comp, map_add, e2, Functor.map_comp]
   rfl
 
+/- English proof (translation)
+Establish `: E.a σ i (s.map (homOfLE h)) ∈ (Fil 1).S _`. Rewrite using `[hF.one]`. Conclude with `E.mem i _ _`. Conclude with `(Fil _).map_mem _ (by simpa using this)`.
+-/
 theorem ga_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (i : Fin d) {n : ℕ} (s : ComposableArrows C n)
     (p q : Fin (n + 1)) (h : p ≤ q) : ga E σ i s p q h ∈ (Fil ((1 : ℕ) : ℤ)).S _ := by
   have : E.a σ i (s.map (homOfLE h)) ∈ (Fil 1).S _ := by
     rw [hF.one]; exact E.mem i _ _
   exact (Fil _).map_mem _ (by simpa using this)
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Simplify using `using hx`. Consider the case `succ j ih`. Rewrite using `[Fin.prod_univ_succ, mul_assoc]`.
+
+Use `hF.mul 1 (j + q) T (hf 0) (ih (fun k => f k.succ) (fun k => hf k.succ))` as an intermediate fact. Establish `e : 1 + (j + q) = j + 1 + q` using `by omega`. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem prod_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {T : C} {j : ℕ} (f : Fin j → Φ.A.obj T)
     (hf : ∀ k, f k ∈ (Fil ((1 : ℕ) : ℤ)).S T) {q : ℕ} {x : Φ.A.obj T} (hx : x ∈ (Fil (q : ℤ)).S T) :
     (∏ k, f k) * x ∈ (Fil ((j + q : ℕ) : ℤ)).S T := by
@@ -55,10 +74,20 @@ theorem prod_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {T : C} {j : ℕ} 
     have e : 1 + (j + q) = j + 1 + q := by omega
     rwa [e] at this
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem map_map {X Y Z : C} (g : X ⟶ Y) (f : Y ⟶ Z) (y : Φ.A.obj X) :
     (Φ.A.map f).hom ((Φ.A.map g).hom y) = (Φ.A.map (g ≫ f)).hom y := by
   simp
 
+/- English proof (translation)
+Unfold `Frame.form`. Rewrite using `[map_mul, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Unfold `ga`.
+
+Rewrite using `[map_map]`. Establish `e : (face i s).map (homOfLE (Fin.le_last k.succ)) ≫ toLast i s = s.map (homOfLE (Fin.le_last (i.succAbove k.succ)))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem face_form {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : ComposableArrows C (j + 1)) (i : Fin (j + 2)) :
     (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) =
       (∏ k : Fin j, ga E σ (I k) s (i.succAbove k.castSucc) (i.succAbove k.succ)
@@ -77,6 +106,9 @@ theorem face_form {j : ℕ} (I : Fin j → Fin d) (x : Φ.A.obj E.D) (s : Compos
   rw [e]
   rfl
 
+/- English proof (translation)
+Unfold `Fin.succAbove`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.lt_def]`.
+-/
 theorem sa_val {n : ℕ} (i : Fin (n + 1)) (m : Fin n) :
     ((i.succAbove m : Fin (n + 1)) : ℕ) = if (m : ℕ) < i then (m : ℕ) else m + 1 := by
   unfold Fin.succAbove
@@ -85,18 +117,59 @@ theorem sa_val {n : ℕ} (i : Fin (n + 1)) (m : Fin n) :
 local macro "fa" : tactic =>
   `(tactic| (simp only [sa_val, Fin.val_castSucc, Fin.val_succ, Fin.val_last]; split_ifs <;> omega))
 
+/- English proof (translation)
+Take `rfl` from `Fin.ext hp`. Take `rfl` from `Fin.ext hq`. Both sides reduce to the same expression.
+-/
 theorem ga_congr (i : Fin d) {n : ℕ} (s : ComposableArrows C n) {p q p' q' : Fin (n + 1)} (h : p ≤ q) (h' : p' ≤ q')
     (hp : (p : ℕ) = p') (hq : (q : ℕ) = q') : ga E σ i s p q h = ga E σ i s p' q' h' := by
   obtain rfl := Fin.ext hp
   obtain rfl := Fin.ext hq
   rfl
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Establish `: (homOfLE (Fin.le_last (Fin.last n)) : Fin.last n ⟶ Fin.last n) = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[this, s.map_id, Category.comp_id]`.
+-/
 theorem sec_last {n : ℕ} (s : ComposableArrows C n) (p : Fin (n + 1)) (hp : p = Fin.last n) :
     σ (s.obj p) ≫ s.map (homOfLE (Fin.le_last p)) = σ (s.obj (Fin.last n)) := by
   subst hp
   have : (homOfLE (Fin.le_last (Fin.last n)) : Fin.last n ⟶ Fin.last n) = 𝟙 _ := Subsingleton.elim _ _
   rw [this, s.map_id, Category.comp_id]
 
+/- English proof (translation)
+Use `set u : Fin j → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun k => ga E σ (I k) s k.castSucc.castSucc k.succ.castSucc (by rw [Fin.le_def]; simp) with hu`. Use `set v : Fin j → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun k => ga E σ (I k) s k.succ.castSucc k.succ.succ (by rw [Fin.le_def]; simp) with hv`. Use `set P : ℕ → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun n => ∏ k : Fin j, if (k : ℕ) < n then u k else v k with hP`. Use `set T : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => ∏ k : Fin j, ga E σ (I k) s (i.succAbove k.castSucc) (i.succAbove k.succ) ((Fin.strictMono_succAbove i).monotone (Fin.castSucc_lt_succ (i := k)).le) with hT`. Use `set W : Fin (j + 2) → Φ.A.obj (s.obj (Fin.last (j + 1))) := fun i => (Φ.A.map (toLast i s)).hom ((Φ.A.map (σ _)).hom x) with hW`.
+
+Use `set Y := (Φ.A.map (σ (s.obj (Fin.last (j + 1))))).hom x with hY`. Establish `hT0 : T 0 = P 0`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Nat.not_lt_zero, if_false]`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp`.
+
+Establish `hTl : T (Fin.last (j + 1)) = P j`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [k.2, if_true]`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> simp`. Establish `hTi : ∀ i : Fin j, T i.succ.castSucc = P (i + 1) + P i`.
+
+Introduce `i`. Establish `hPa : P (i + 1) = u i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i + 1 then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [Nat.lt_add_one, if_true] at this`. Conclude with `this.symm`.
+
+Establish `hPb : P i = v i * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => if (k : ℕ) < i then u k else v k) (Finset.mem_univ i)` as an intermediate fact. Simplify using `only [lt_irrefl, if_false] at this`. Conclude with `this.symm`. Establish `hTa : T i.succ.castSucc = (u i + v i) * ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`.
+
+Use `Finset.mul_prod_erase Finset.univ (fun k : Fin j => ga E σ (I k) s (i.succ.castSucc.succAbove k.castSucc) (i.succ.castSucc.succAbove k.succ) ((Fin.strictMono_succAbove _).monotone (Fin.castSucc_lt_succ (i := k)).le)) (Finset.mem_univ i)` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hu, hv] dsimp only`. Rewrite using `[← ga_add]`.
+
+Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Use `split_ifs with h`. Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`.
+
+Apply the tactic sequence `refine ga_congr E σ _ s _ _ ?_ ?_ <;> fa`. Establish `hE : ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i + 1 then u k else v k) = ∏ k ∈ Finset.univ.erase i, (if (k : ℕ) < i then u k else v k)`. Use `Finset.prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hki : (k : ℕ) ≠ i` using `fun h => Finset.ne_of_mem_erase hk (Fin.ext h)`. Establish `: (k : ℕ) < i + 1 ↔ (k : ℕ) < i` using `by omega`.
+
+Simplify using `only [this]`. Rewrite using `[hTa, hPa, hPb, hE]`. Expand and normalize the polynomial expressions, which then agree. Establish `hWY : ∀ i : Fin (j + 2), i ≠ Fin.last (j + 1) → W i = Y`. Introduce `i hi`.
+
+Establish `hi' : i.succAbove (Fin.last j) = Fin.last (j + 1)`. Establish `h1 : (i : ℕ) ≠ j + 1` using `fun h => hi (Fin.ext h)`. Establish `h2` using `i.2`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[sa_val]`.
+
+Simplify using `only [Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Combine the equalities or inequalities in the displayed calculation. Establish `hYW : Y - W (Fin.last (j + 1)) ∈ (Fil ((q : ℤ) + 1)).S _`. Establish `h` using `hc q (σ (s.obj (Fin.last (j + 1)))) (σ _ ≫ toLast (Fin.last (j + 1)) s) hx`.
+
+Rewrite using `[show W (Fin.last (j + 1)) = (Φ.A.map (σ _ ≫ toLast (Fin.last (j + 1)) s)).hom x from map_map _ _ _]` and apply the resulting hypothesis. Establish `hsum : ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) = (-1) ^ j * (P j * (Y - W (Fin.last (j + 1))))`. Establish `hterm : ∀ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) = (-1) ^ (i : ℕ) * (T i * W i)`. Introduce `i`. Rewrite using `[face_form, zsmul_eq_mul]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_congr rfl fun i _ => hterm i, Fin.sum_univ_castSucc, Fin.sum_univ_succ]`. Establish `h0 : T (Fin.castSucc 0) = P 0` using `hT0`. Establish `hne0 : Fin.castSucc (0 : Fin (j + 1)) ≠ Fin.last (j + 1)` using `(Fin.castSucc_lt_last _).ne`.
+
+Establish `hint : ∑ i : Fin j, (-1) ^ ((i.succ.castSucc : Fin (j + 2)) : ℕ) * (T i.succ.castSucc * W i.succ.castSucc) = (∑ m ∈ Finset.range j, (-1) ^ (m + 1) * (P (m + 1) + P m)) * Y`. Rewrite using `[Finset.sum_mul, ← Fin.sum_univ_eq_sum_range (fun m => (-1) ^ (m + 1) * (P (m + 1) + P m) * Y) j]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hTi, hWY _ (Fin.castSucc_lt_last _).ne]`. Simplify using `only [Fin.val_castSucc, Fin.val_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hint, h0, hWY _ hne0, hTl]`. Simplify using `only [Fin.val_castSucc, Fin.val_zero, Fin.val_last, pow_zero]`. Take the linear combination `Y * tele P j`. Rewrite using `[hsum]`.
+
+Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Establish `h` using `prod_mem hF (fun k : Fin j => if (k : ℕ) < j then u k else v k) (fun k => by split_ifs`. Conclude with `ga_mem E σ hF _ s _ _ _`. Conclude with `ga_mem E σ hF _ s _ _ _)`. Use the proof step `(q := q + 1) (x := Y - W (Fin.last (j + 1))) (by push_cast; exact hYW)`.
+
+Establish `e : ((j + (q + 1) : ℕ) : ℤ) = (j : ℤ) + q + 1` using `by push_cast; ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem d_form_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (j q : ℕ)
     (I : Fin j → Fin d) (x : Φ.A.obj E.D) (hx : x ∈ (Fil q).S E.D) (s : ComposableArrows C (j + 1)) :
     ∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.A.map (toLast i s)).hom (E.form σ I x (face i s)) ∈
@@ -199,6 +272,15 @@ theorem d_form_mem {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (hc : E.GrConst 
   have e : ((j + (q + 1) : ℕ) : ℤ) = (j : ℤ) + q + 1 := by push_cast; ring
   rwa [e] at h
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Establish `hmem : ∀ s : ComposableArrows C j, E.form σ I x s ∈ (Fil ((j : ℤ) + q)).S _`. Introduce `s`. Establish `h` using `prod_mem hF _ (fun k => ga_mem E σ hF (I k) s k.castSucc k.succ (Fin.castSucc_lt_succ (i := k)).le) ((Fil q).map_mem (σ _) hx)`. Rewrite `h` using `[Nat.cast_add]`.
+
+Conclude with `h`. Set `f : CH.Cn (sq (Fil ((j : ℤ) + q)) (Fil ((j : ℤ) + q + 1))) j` to `fun s => sqMk _ _ (E.form σ I x s) (hmem s)`. Establish `hd : CH.d _ j f = 0`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Establish `h` using `Ideal.Quotient.eq_zero_iff_mem.2 (d_form_mem E σ hF hc j q I x hx s)`. Rewrite `h` using `[map_sum]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Subtype.val (∑ i : Fin (j + 2), (-1 : ℤ) ^ (i : ℕ) • ((sq (Fil ((j : ℤ) + q)) (Fil ((j : ℤ) + q + 1))).map (toLast i s)).hom (f (face i s)) : sqM (Fil ((j : ℤ) + q)) (Fil ((j : ℤ) + q + 1)) _) = _`. Rewrite using `[AddSubmonoidClass.coe_finsetSum]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression. Conclude with `⟨_, f, hd, rfl, fun s => rfl⟩`.
+-/
 theorem rep_form {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil)
     {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ) (hr : r = j + q)
     (I : Fin j → Fin d) (x : Φ.A.obj E.D) (hx : x ∈ (Fil q).S E.D) :

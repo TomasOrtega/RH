@@ -9,6 +9,19 @@ noncomputable section
 namespace GlobalTheory.RunJoin.Inh
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.MainNotions.Gaps Formalism.MainNotions.Gaps.EtaleWeightGaps Formalism.MainNotions.Gaps.EtaleWeightGaps.Num GlobalTheory.RunJoin GlobalTheory.Survey.NumericBoundConstants
 
+/- English proof (translation)
+Establish `hs : (10 : ℝ) ^ 100 ≤ s` using `h.sb_ge`. Establish `hs1 : (40000 : ℝ) ≤ s` using `le_trans (by norm_num) hs`. Establish `hk : (1 : ℝ) ≤ k` using `by linarith [h.k8]`. Establish `hR : rd ^ 7 ≤ s` using `h.rd_pow_le (by norm_num)`. Establish `hR0 : 0 ≤ rd ^ 7` using `by have := h.rd1; positivity`.
+
+Establish `hP0 : 0 ≤ PP` using `le_trans (by positivity) h.PP_ge`. Establish `hP` using `h.PP_le_sb`. Establish `hP3` using `h.param_cube_le_bound`. Establish `hTP` using `h.hTP`. Establish `hT0 : 0 ≤ TO` using `by linarith [h.one_le_order_alt]`.
+
+Establish `hb : b = s ^ 2` using `by rw [← h.sb_sq]; ring`. Establish `hd' : d ≤ 4 * k ^ 2 * s ^ 2`. Use `h.Ak` as an intermediate fact. Rewrite `hd` using `[hb]`. Establish `: A * s ^ 2 ≤ 2 * k ^ 2 * s ^ 2` using `by gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq' : k ^ 8 * s ^ 16 ≤ q` using `by rw [hb] at hq; calc k ^ 8 * s ^ 16 = (k * s ^ 2) ^ 8 := by ring _ ≤ q := hq`. Establish `hr' : r ≤ 2 * k ^ 2` using `hr.trans h.Ak`. Establish `key : ∀ (a c : ℕ) (C : ℝ), a ≤ 8 → c ≤ 15 → 0 ≤ C → C ≤ 40000 → C * (k ^ a * s ^ c) ≤ q`. Introduce `a c C ha hc hC0 hC`.
+
+Establish `e1 : k ^ a ≤ k ^ 8` using `pow_le_pow_right₀ hk ha`. Establish `e2 : s ^ c ≤ s ^ 15` using `pow_le_pow_right₀ (by linarith) hc`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem nums {A k b s PP TO rd r d q fm : ℝ} (h : Bs A k b s PP TO rd) (hr0 : 0 ≤ r) (hr : r ≤ A) (hd0 : 0 ≤ d)
     (hd : d ≤ 2 * A * b) (hq : (k * b) ^ 8 ≤ q) (hf0 : 0 ≤ fm) (hf : fm ≤ k ^ 4) :
     (rd ^ 7) ^ 4 * PP ^ 3 * d ^ 2 ≤ q ∧ TO * (1250 * r) * rd ^ 7 * PP * d ^ 2 ≤ q ∧
@@ -53,6 +66,9 @@ theorem nums {A k b s PP TO rd r d q fm : ℝ} (h : Bs A k b s PP TO rd) (hr0 : 
 
 variable {D : D7} {L : SizeData₂ D} {P : ParameterChoice' D L}
 
+/- English proof (translation)
+Unfold `WeightFamilies.RRv`. Conclude with `Real.rpow_natCast D.host.rdE 7` after adjusting the coercions.
+-/
 theorem eRR7 : WeightFamilies.RRv D 7 = D.host.rdE ^ 7 := by
   unfold WeightFamilies.RRv; exact_mod_cast Real.rpow_natCast D.host.rdE 7
 

@@ -31,10 +31,30 @@ def KppFwd (X : HidaSetting D) : Prop :=
       (∀ kv, JPred D.R.k (D.R.m / 2 - 1) (cjM P (rhoX X x) kv)) ∧
       X.chi2 x = ∏ kv, ψ kv (phiJ D.R.k (D.R.m / 2 - 1) (cjM P (rhoX X x) kv))
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem blk_mono (rS k : ℕ) {i j : ℕ} (h : i ≤ j) : Formalism.MainNotions.StandardLattice.blk rS k i ≤ Formalism.MainNotions.StandardLattice.blk rS k j := by
   unfold Formalism.MainNotions.StandardLattice.blk
   split_ifs <;> omega
 
+/- English proof (translation)
+Substitute `hN` using the available equality. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, hz⟩`. Use `⟨fun i j hij => ?_, fun i => (hU i i).2 rfl, fun i j _ hji => (hU i j).1 hji, fun i j hj hij hbi => ?_⟩` and prove the remaining obligations. Establish `hji : j < i`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `blk_mono s kk (Fin.le_def.1 h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `(hU i j).1 hji`.
+
+Establish `hne : i.val ≠ s + kk` using `fun h => hij (Fin.ext (h.trans hj.symm))`. Establish `hi1 : s ≤ i.val ∧ i.val < s + kk`. Unfold `Formalism.MainNotions.StandardLattice.blk at hbi`. Apply the tactic sequence `split_ifs at hbi with h1 h2 <;> omega`. Establish `h5` using `hz i.val hi1.1 hi1.2`.
+
+Unfold `entN at h5`. Rewrite `h5` using `[dif_pos ⟨i.isLt, by omega⟩]`. Establish `hj' : j = ⟨s + kk, by omega⟩` using `Fin.ext hj`. Rewrite using `[hj']`. Conclude with `h5`.
+
+Introduce and unpack `⟨h1, h2, h3, h4⟩`. Use `⟨fun a b => ⟨fun hba => ?_, fun hab => by subst hab; exact h2 a⟩, fun a ha1 ha2 => ?_⟩` and prove the remaining obligations. Establish `hle` using `blk_mono s kk (Fin.le_def.1 hba.le)`. Break down `lt_or_eq_of_le hle with h | h` into its components or cases. Conclude with `h1 a b h`.
+
+Conclude with `h3 a b h.symm hba`. Unfold `entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `h4 _ _ rfl ?_ ?_` and prove the remaining obligations. Introduce `h`.
+
+Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Use `show Formalism.MainNotions.StandardLattice.blk s kk a = s`. Unfold `Formalism.MainNotions.StandardLattice.blk`.
+
+Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem jPred_iff (kk s : ℕ) {N g : ℕ} (hN : N = kk + 2 * s + 1) (M : Matrix (Fin N) (Fin N) (ZMod g)) :
     JPred kk s M ↔ Formalism.MainNotions.StandardLattice.IsRowLev kk s M := by
   subst hN
@@ -75,6 +95,9 @@ theorem jPred_iff (kk s : ℕ) {N g : ℕ} (hN : N = kk + 2 * s + 1) (M : Matrix
         unfold Formalism.MainNotions.StandardLattice.blk
         split_ifs <;> omega
 
+/- English proof (translation)
+Establish `h1` using `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Take `⟨t, ht⟩` from `h1`. Use `show D.R.k + D.R.m - 1 = _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem r_eq (D : D7) : D.R.r = D.R.k + 2 * (D.R.m / 2 - 1) + 1 := by
   have h1 := D.R.m_even
   have h2 := D.R.two_le_m
@@ -91,6 +114,11 @@ def cJ (D : D7) (g : ℕ) : ℕ :=
   Nat.card {A : GL (Fin D.R.r) (ZMod g) // Formalism.MainNotions.StandardLattice.IsRowLev D.R.k (D.R.m / 2 - 1)
     (A : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod g))}
 
+/- English proof (translation)
+Unfold `cJ`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquiv (MulAut.conj Q⁻¹).toEquiv ?_` and prove the remaining obligations. Introduce `M`. Simplify using `only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv]`.
+
+Conclude with `jPred_iff _ _ (r_eq D) _`.
+-/
 theorem card_conj (kv : Σ k : Fin 2, D.nd.PlG k) (Q : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :
     Nat.card {M : GL (Fin D.R.r) (ZMod (D.host.g kv.1)) //
       JPred D.R.k (D.R.m / 2 - 1) ((Q⁻¹ * M * Q : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :
@@ -102,11 +130,19 @@ theorem card_conj (kv : Σ k : Fin 2, D.nd.PlG k) (Q : GL (Fin D.R.r) (ZMod (D.h
   simp only [MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, inv_inv]
   exact jPred_iff _ _ (r_eq D) _
 
+/- English proof (translation)
+Rewrite using `[Fintype.prod_sigma, Fin.prod_univ_two]`. Simplify using `only [Finset.prod_const, Finset.card_univ, D.nd.card_PlG]`.
+-/
 theorem prod_sigma_const (c : Fin 2 → ℕ) :
     ∏ kv : (Σ k : Fin 2, D.nd.PlG k), c kv.1 = c 0 ^ D.R.f * c 1 ^ D.R.f := by
   rw [Fintype.prod_sigma, Fin.prod_univ_two]
   simp only [Finset.prod_const, Finset.card_univ, D.nd.card_PlG]
 
+/- English proof (translation)
+Rewrite using `[← prod_sigma_const (fun k => cJ D (D.host.g k))]`. Unfold `JJ`. Rewrite using `[← Fintype.card_subtype]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Fintype.card_pi]`.
+
+Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `card_conj kv (P kv)`.
+-/
 theorem card_JJ (P : G0g D.nd) : (JJ P).card = cJ D (D.host.g 0) ^ D.R.f * cJ D (D.host.g 1) ^ D.R.f := by
   classical
   rw [← prod_sigma_const (fun k => cJ D (D.host.g k))]
@@ -126,6 +162,11 @@ theorem card_JJ (P : G0g D.nd) : (JJ P).card = cJ D (D.host.g 0) ^ D.R.f * cJ D 
       rw [← Nat.card_eq_fintype_card]
       exact card_conj kv (P kv)
 
+/- English proof (translation)
+Use `⟨fun a b => ⟨fun hba => ?_, fun hab => ?_⟩, fun a _ ha => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_ne (ne_of_gt hba)`. Substitute `hab` using the available equality. Conclude with `Matrix.one_apply_eq a`. Unfold `entN split_ifs with h`.
+
+Conclude with `Matrix.one_apply_ne (by intro h'; have := congrArg Fin.val h'; simp at this; omega)`. Both sides reduce to the same expression.
+-/
 theorem jPred_one (kk s : ℕ) {N g : ℕ} : JPred kk s (1 : Matrix (Fin N) (Fin N) (ZMod g)) := by
   refine ⟨fun a b => ⟨fun hba => ?_, fun hab => ?_⟩, fun a _ ha => ?_⟩
   · exact Matrix.one_apply_ne (ne_of_gt hba)
@@ -136,6 +177,9 @@ theorem jPred_one (kk s : ℕ) {N g : ℕ} : JPred kk s (1 : Matrix (Fin N) (Fin
     · exact Matrix.one_apply_ne (by intro h'; have := congrArg Fin.val h'; simp at this; omega)
     · rfl
 
+/- English proof (translation)
+Unfold `cJ`. Establish `: Nonempty {A : GL (Fin D.R.r) (ZMod (D.host.g k)) // Formalism.MainNotions.StandardLattice.IsRowLev D.R.k (D.R.m / 2 - 1) (A : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g k)))}` using `⟨⟨1, (jPred_iff _ _ (r_eq D) _).1 (by rw [Units.val_one]; exact jPred_one _ _)⟩⟩`. Conclude with `Nat.card_pos`.
+-/
 theorem cJ_pos (D : D7) (k : Fin 2) : 0 < cJ D (D.host.g k) := by
   unfold cJ
   have : Nonempty {A : GL (Fin D.R.r) (ZMod (D.host.g k)) // Formalism.MainNotions.StandardLattice.IsRowLev D.R.k (D.R.m / 2 - 1)
@@ -157,17 +201,32 @@ def KgSub : Subgroup X.B.I.Gf where
 
 abbrev concreteLevelAdelicSubset : Subgroup X.B.I.Gf := levelSubgroupOfCharacter X (Formalism.L2.SG.Closed.level_subgroup_is_group X)
 
+/- English proof (translation)
+Introduce `_ hx` and use `hx.1`.
+-/
 theorem le1 : KgSub X ≤ KSub X.B.I := fun _ hx => hx.1
+/- English proof (translation)
+Introduce `x hx` and use `((Formalism.L2.SG.Closed.level_subgroup_properties X).1 x hx).1`.
+-/
 theorem le2 : KgSub X ≤ concreteLevelAdelicSubset X := fun x hx => ((Formalism.L2.SG.Closed.level_subgroup_properties X).1 x hx).1
+/- English proof (translation)
+Introduce `x hx` and use `Formalism.L2.SG.Count.level_set_le_compact X hx`.
+-/
 theorem le3 : concreteLevelAdelicSubset X ≤ KSub X.B.I := fun x hx => Formalism.L2.SG.Count.level_set_le_compact X hx
 
 def rho2 : concreteLevelAdelicSubset X →* G0g D.nd := (rhoX X).comp (Subgroup.inclusion (le3 X))
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, MonoidHom.mem_ker, rhoX_eq_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem ker1 : (KgSub X).subgroupOf (KSub X.B.I) = (rhoX X).ker := by
   ext x
   rw [Subgroup.mem_subgroupOf, MonoidHom.mem_ker, rhoX_eq_one_iff]
   rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_subgroupOf, MonoidHom.mem_ker, rho2, MonoidHom.comp_apply, rhoX_eq_one_iff]`. Both sides reduce to the same expression.
+-/
 theorem ker2 : (KgSub X).subgroupOf (concreteLevelAdelicSubset X) = (rho2 X).ker := by
   ext x
   rw [Subgroup.mem_subgroupOf, MonoidHom.mem_ker, rho2, MonoidHom.comp_apply, rhoX_eq_one_iff]
@@ -175,14 +234,23 @@ theorem ker2 : (KgSub X).subgroupOf (concreteLevelAdelicSubset X) = (rho2 X).ker
 
 variable {X}
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex, ker1, Subgroup.index_ker, MonoidHom.range_eq_top.2 hS, Subgroup.card_top, Nat.card_eq_fintype_card]`.
+-/
 theorem idx1 (hS : Function.Surjective (rhoX X)) :
     (KgSub X).relIndex (KSub X.B.I) = Fintype.card (G0g D.nd) := by
   rw [Subgroup.relIndex, ker1, Subgroup.index_ker, MonoidHom.range_eq_top.2 hS, Subgroup.card_top,
     Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Rewrite using `[Subgroup.relIndex, ker2, Subgroup.index_ker]`.
+-/
 theorem idx2 : (KgSub X).relIndex (concreteLevelAdelicSubset X) = Nat.card (rho2 X).range := by
   rw [Subgroup.relIndex, ker2, Subgroup.index_ker]
 
+/- English proof (translation)
+Rewrite using `[← prod_sigma_const (fun k => Nat.card (GL (Fin D.R.r) (ZMod (D.host.g k)))), Fintype.card_pi]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_eq_fintype_card]`.
+-/
 theorem natCard_codeWordStages_finiteGroup_eq : Fintype.card (G0g D.nd) =
     Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 0))) ^ D.R.f * Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 1))) ^ D.R.f := by
   classical
@@ -190,6 +258,23 @@ theorem natCard_codeWordStages_finiteGroup_eq : Fintype.card (G0g D.nd) =
   refine Finset.prod_congr rfl fun kv _ => ?_
   rw [Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Establish `: X.B.μf.IsHaarMeasure` using `X.B.haar`. Establish `hopen : IsOpen ((KgSub X : Set X.B.I.Gf))` using `X.B.I.topf_open X.B.g (g_pos X)`. Establish `hc1` using `idx1 hS`. Establish `hpos1 : (KgSub X).relIndex (KSub X.B.I) ≠ 0` using `by rw [hc1]; exact Fintype.card_ne_zero`. Establish `hmul` using `Subgroup.relIndex_mul_relIndex (KgSub X) (concreteLevelAdelicSubset X) (KSub X.B.I) (le2 X) (le3 X)`.
+
+Establish `hpos2 : (KgSub X).relIndex (concreteLevelAdelicSubset X) ≠ 0`. Introduce `h0`. Rewrite `hmul` using `[h0, zero_mul]`. Conclude with `hpos1 hmul.symm`. Establish `hμ1` using `Glob_measure_eq_relIndex_mul X.B.μf (KSub X.B.I) (KgSub X) (le1 X) hopen hpos1`.
+
+Establish `hμ2` using `Glob_measure_eq_relIndex_mul X.B.μf (concreteLevelAdelicSubset X) (KgSub X) (le2 X) hopen hpos2`. Establish `hD` using `Formalism.L2.SG.Pf.DstarIdxPf.dstarIdx_holds X`. Unfold `Formalism.L2.SG.Pf.RowDictPf.DstarIdx at hD`. Establish `e1 : (X.B.μf X.B.I.Kset).toReal = (Fintype.card (G0g D.nd) : ℝ) * V X`. Establish `: X.B.μf X.B.I.Kset = X.B.μf (KSub X.B.I : Set X.B.I.Gf)` using `rfl`.
+
+Rewrite using `[this, hμ1, ENNReal.toReal_mul, hc1, ENNReal.toReal_natCast]`. Both sides reduce to the same expression. Establish `e2 : X.volK2 = ((KgSub X).relIndex (concreteLevelAdelicSubset X) : ℝ) * V X`. Unfold `HidaSetting.volK2`. Establish `: X.B.μf X.K2 = X.B.μf (concreteLevelAdelicSubset X : Set X.B.I.Gf)` using `rfl`.
+
+Rewrite using `[this, hμ2, ENNReal.toReal_mul, ENNReal.toReal_natCast]`. Both sides reduce to the same expression. Rewrite `hD` using `[e1, e2]`. Unfold `Formalism.MainNotions.StandardLattice.idxSig Formalism.MainNotions.StandardLattice.idxRowLoc Formalism.MainNotions.StandardLattice.idxLoc at hD`. Rewrite `hD` using `[natCard_codeWordStages_finiteGroup_eq]`.
+
+Establish `hV` using `V_pos X`. Establish `hJ0` using `cJ_pos D 0`. Establish `hJ1` using `cJ_pos D 1`. Establish `hG0 : 0 < Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 0)))` using `Nat.card_pos`. Establish `hG1 : 0 < Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 1)))` using `Nat.card_pos`.
+
+Establish `hD' : (((Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 0))) ^ D.R.f * Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 1))) ^ D.R.f : ℕ) : ℝ) * V X) / (((KgSub X).relIndex (concreteLevelAdelicSubset X) : ℝ) * V X) = ((Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 0))) : ℝ) / (cJ D (D.host.g 0) : ℝ …` using `hD`. Establish `hc2 : (0 : ℝ) < ((KgSub X).relIndex (concreteLevelAdelicSubset X) : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hpos2`. Rewrite `hD'` using `[mul_div_mul_right _ _ hV.ne', div_pow, div_pow, div_mul_div_comm, div_eq_div_iff hc2.ne' (by positivity)]`. Move the coercions through the operations in `at hD'`. Establish `hne : ((Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 0))) : ℝ) ^ D.R.f * (Nat.card (GL (Fin D.R.r) (ZMod (D.host.g 1))) : ℝ) ^ D.R.f) ≠ 0` using `by positivity`.
+
+Establish `key` using `mul_left_cancel₀ hne hD'`. Conclude with `key.symm` after adjusting the coercions.
+-/
 theorem levelSubgroup_relIndex_eq (hS : Function.Surjective (rhoX X)) :
     (KgSub X).relIndex (concreteLevelAdelicSubset X) = cJ D (D.host.g 0) ^ D.R.f * cJ D (D.host.g 1) ^ D.R.f := by
   have : X.B.μf.IsHaarMeasure := X.B.haar
@@ -234,6 +319,19 @@ theorem levelSubgroup_relIndex_eq (hS : Function.Surjective (rhoX X)) :
   have key := mul_left_cancel₀ hne hD'
   exact_mod_cast key.symm
 
+/- English proof (translation)
+Take `⟨P, ψ, hψ, hF⟩` from `hF`. Use `⟨P, ψ, hψ, fun x => ⟨⟨fun hx => (hF x hx).1, fun hJ => ?_⟩, fun hx => (hF x hx).2⟩⟩` and prove the remaining obligations. Use `set R : Finset (G0g D.nd) := Finset.univ.filter fun γ => γ ∈ (rho2 X).range with hR`. Establish `hRsub : R ⊆ JJ P`. Introduce `γ hγ`.
+
+Rewrite `hγ` using `[hR, Finset.mem_filter]`. Take `⟨y, rfl⟩` from `hγ.2`. Unfold `JJ`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, (hF (Subgroup.inclusion (le3 X) y) y.2).1⟩`.
+
+Establish `hRcard : R.card = (JJ P).card`. Rewrite using `[card_JJ, ← levelSubgroup_relIndex_eq hS, idx2, hR, Nat.card_eq_fintype_card, ← Fintype.card_subtype]`. Establish `hEq : R = JJ P` using `Finset.eq_of_subset_of_card_le hRsub hRcard.ge`. Establish `hmem : rhoX X x ∈ R`. Rewrite using `[hEq]`.
+
+Unfold `JJ`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨Finset.mem_univ _, hJ⟩`. Rewrite `hmem` using `[hR, Finset.mem_filter]`. Take `⟨y, hy⟩` from `hmem.2`.
+
+Establish `h1 : rhoX X ((Subgroup.inclusion (le3 X) y)⁻¹ * x) = 1`. Rewrite using `[map_mul, map_inv, ← hy]`. Use `show (rhoX X (Subgroup.inclusion (le3 X) y))⁻¹ * rhoX X (Subgroup.inclusion (le3 X) y) = 1`. Conclude with `inv_mul_cancel _`. Establish `h2` using `(rhoX_eq_one_iff X _).1 h1`.
+
+Establish `h3 : ((Subgroup.inclusion (le3 X) y)⁻¹ * x : KSub X.B.I).1 ∈ concreteLevelAdelicSubset X` using `le2 X h2`. Establish `h4 : (y : X.B.I.Gf) * ((Subgroup.inclusion (le3 X) y)⁻¹ * x : KSub X.B.I).1 ∈ concreteLevelAdelicSubset X` using `(concreteLevelAdelicSubset X).mul_mem y.2 h3`. Establish `e : (y : X.B.I.Gf) * ((Subgroup.inclusion (le3 X) y)⁻¹ * x : KSub X.B.I).1 = x` using `by show (y : X.B.I.Gf) * ((y : X.B.I.Gf)⁻¹ * (x : X.B.I.Gf)) = x group`. Rewrite `h4` using `[e]`. Conclude with `h4`.
+-/
 theorem kppShape_of_fwd (hS : Function.Surjective (rhoX X)) (hF : KppFwd X) : KppShape X := by
   classical
   obtain ⟨P, ψ, hψ, hF⟩ := hF

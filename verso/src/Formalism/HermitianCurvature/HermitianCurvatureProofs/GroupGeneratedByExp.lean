@@ -14,6 +14,9 @@ section Banach
 
 variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', mul_assoc, pow_succ', mul_assoc]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ih (norm_nonneg _))`.
+-/
 theorem norm_pow_mul_le (x u : 𝔸) (n : ℕ) : ‖x ^ n * u‖ ≤ ‖x‖ ^ n * ‖u‖ := by
   induction n with
   | zero => simp
@@ -21,6 +24,11 @@ theorem norm_pow_mul_le (x u : 𝔸) (n : ℕ) : ‖x ^ n * u‖ ≤ ‖x‖ ^ n
     rw [pow_succ', mul_assoc, pow_succ', mul_assoc]
     exact (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left ih (norm_nonneg _))
 
+/- English proof (translation)
+Establish `h1 : HasSum (fun n : ℕ => (((n.factorial : ℝ)⁻¹) • x ^ n) * u) (NormedSpace.exp x * u)` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) x).mul_right u`. Establish `h2 : HasSum (fun n : ℕ => (((n.factorial : ℝ)⁻¹) • ‖x‖ ^ n) * ‖u‖) (Real.exp ‖x‖ * ‖u‖)`. Rewrite using `[Real.exp_eq_exp_ℝ]`. Conclude with `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) ‖x‖).mul_right ‖u‖`. Use `h1.norm_le_of_bounded h2 fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc, norm_smul, smul_eq_mul, mul_assoc, Real.norm_of_nonneg (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pow_mul_le x u n) (by positivity)`.
+-/
 theorem norm_exp_mul_le (x u : 𝔸) : ‖NormedSpace.exp x * u‖ ≤ Real.exp ‖x‖ * ‖u‖ := by
   have h1 : HasSum (fun n : ℕ => (((n.factorial : ℝ)⁻¹) • x ^ n) * u) (NormedSpace.exp x * u) :=
     (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℝ) x).mul_right u
@@ -31,6 +39,9 @@ theorem norm_exp_mul_le (x u : 𝔸) : ‖NormedSpace.exp x * u‖ ≤ Real.exp 
   rw [smul_mul_assoc, norm_smul, smul_eq_mul, mul_assoc, Real.norm_of_nonneg (by positivity)]
   exact mul_le_mul_of_nonneg_left (norm_pow_mul_le x u n) (by positivity)
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ', mul_assoc, pow_succ', mul_assoc]`. Conclude with `(ha _).trans (mul_le_mul_of_nonneg_left ih hq)`.
+-/
 theorem norm_pow_mul_le' {a : 𝔸} {q : ℝ} (hq : 0 ≤ q) (ha : ∀ u, ‖a * u‖ ≤ q * ‖u‖) (m : ℕ) (u : 𝔸) :
     ‖a ^ m * u‖ ≤ q ^ m * ‖u‖ := by
   induction m with
@@ -39,6 +50,15 @@ theorem norm_pow_mul_le' {a : 𝔸} {q : ℝ} (hq : 0 ≤ q) (ha : ∀ u, ‖a *
     rw [pow_succ', mul_assoc, pow_succ', mul_assoc]
     exact (ha _).trans (mul_le_mul_of_nonneg_left ih hq)
 
+/- English proof (translation)
+Establish `hq0 : 0 ≤ q` using `zero_le_one.trans hq`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e : a ^ (m + 1) - b ^ (m + 1) = a * (a ^ m - b ^ m) + (a - b) * b ^ m`.
+
+Rewrite using `[pow_succ', pow_succ']`. Use `noncomm_ring`. Establish `h1 : ‖a * (a ^ m - b ^ m)‖ ≤ q * ((m : ℝ) * q ^ m * (‖a - b‖ * ‖(1 : 𝔸)‖))` using `(ha _).trans (mul_le_mul_of_nonneg_left ih hq0)`. Establish `h2 : ‖b ^ m‖ ≤ q ^ (m + 1) * ‖(1 : 𝔸)‖`. Use `norm_pow_mul_le' hq0 hb m 1` as an intermediate fact.
+
+Rewrite `this` using `[mul_one]`. Use `this.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `pow_le_pow_right₀ hq (Nat.le_succ m)`. Establish `h3 : ‖(a - b) * b ^ m‖ ≤ ‖a - b‖ * (q ^ (m + 1) * ‖(1 : 𝔸)‖)` using `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left h2 (norm_nonneg _))`. Rewrite using `[e]`.
+
+Use `(norm_add_le _ _).trans ((add_le_add h1 h3).trans (le_of_eq ?_))` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_pow_sub_pow_le {a b : 𝔸} {q : ℝ} (hq : 1 ≤ q) (ha : ∀ u, ‖a * u‖ ≤ q * ‖u‖)
     (hb : ∀ u, ‖b * u‖ ≤ q * ‖u‖) (m : ℕ) :
     ‖a ^ m - b ^ m‖ ≤ (m : ℝ) * q ^ m * (‖a - b‖ * ‖(1 : 𝔸)‖) := by
@@ -62,6 +82,11 @@ theorem norm_pow_sub_pow_le {a b : 𝔸} {q : ℝ} (hq : 1 ≤ q) (ha : ∀ u, �
     push_cast
     ring
 
+/- English proof (translation)
+Establish `h1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0`. Establish `h2` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) Y 0`. Establish `h3` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (X + Y) 0`. Establish `h` using `(h1.mul h2).sub h3`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul, mul_one, sub_self] at h`.
+
+Conclude with `h`.
+-/
 theorem diff_hasDerivAt (X Y : 𝔸) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp (t • X) * NormedSpace.exp (t • Y) - NormedSpace.exp (t • (X + Y))) 0 0 := by
   have h1 := hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0
@@ -71,6 +96,25 @@ theorem diff_hasDerivAt (X Y : 𝔸) :
   simp only [zero_smul, NormedSpace.exp_zero, one_mul, mul_one, sub_self] at h
   exact h
 
+/- English proof (translation)
+Set `_ : NormedAlgebra ℚ 𝔸` to `NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Use `set s : ℝ := ‖X‖ + ‖Y‖ with hs`. Establish `hs0 : 0 ≤ s` using `by positivity`. Use `set F : ℝ → 𝔸 := fun t : ℝ => NormedSpace.exp (t • X) * NormedSpace.exp (t • Y) - NormedSpace.exp (t • (X + Y)) with hF`. Establish `hF0 : F 0 = 0` using `by simp [hF, NormedSpace.exp_zero]`.
+
+Establish `hsl` using `(diff_hasDerivAt X Y).tendsto_slope_zero`. Establish `hinv : Tendsto (fun n : ℕ => ((n : ℝ)⁻¹)) atTop (𝓝[≠] 0)`. Rewrite using `[tendsto_nhdsWithin_iff]`. Use `⟨tendsto_inv_atTop_nhds_zero_nat, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with n hn`.
+
+Establish `: (0 : ℝ) < n` using `by exact_mod_cast hn`. Conclude with `(inv_pos.2 this).ne'`. Establish `h1 : Tendsto (fun n : ℕ => (n : ℝ) • F ((n : ℝ)⁻¹)) atTop (𝓝 0)`. Use `hsl.comp hinv` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp, zero_add, inv_inv]`. Rewrite using `[show NormedSpace.exp ((0 : ℝ) • X) * NormedSpace.exp ((0 : ℝ) • Y) - NormedSpace.exp ((0 : ℝ) • (X + Y)) = 0 from hF0, sub_zero]`. Establish `h2 : Tendsto (fun n : ℕ => Real.exp s * ‖(1 : 𝔸)‖ * ‖(n : ℝ) • F ((n : ℝ)⁻¹)‖) atTop (𝓝 0)`. Use `(h1.norm).const_mul (Real.exp s * ‖(1 : 𝔸)‖)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun n => norm_nonneg _) ?_ h2` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with n hn`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hni : (0 : ℝ) ≤ (n : ℝ)⁻¹` using `(inv_pos.2 hn0).le`.
+
+Establish `hb : NormedSpace.exp (X + Y) = NormedSpace.exp (((n : ℝ)⁻¹) • (X + Y)) ^ n`. Rewrite using `[← NormedSpace.exp_nsmul, ← Nat.cast_smul_eq_nsmul ℝ, smul_smul, mul_inv_cancel₀ hn0.ne', one_smul]`. Establish `hq : (1 : ℝ) ≤ Real.exp ((n : ℝ)⁻¹ * s)` using `Real.one_le_exp (by positivity)`. Establish `ha : ∀ u : 𝔸, ‖NormedSpace.exp (((n : ℝ)⁻¹) • X) * NormedSpace.exp (((n : ℝ)⁻¹) • Y) * u‖ ≤ Real.exp ((n : ℝ)⁻¹ * s) * ‖u‖`. Introduce `u`.
+
+Rewrite using `[mul_assoc]`. Use `(norm_exp_mul_le _ _).trans ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_left (norm_exp_mul_le _ _) (Real.exp_pos _).le).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← Real.exp_add, norm_smul, norm_smul, Real.norm_of_nonneg hni, hs, mul_add]`. Establish `hb' : ∀ u : 𝔸, ‖NormedSpace.exp (((n : ℝ)⁻¹) • (X + Y)) * u‖ ≤ Real.exp ((n : ℝ)⁻¹ * s) * ‖u‖`.
+
+Introduce `u`. Use `(norm_exp_mul_le _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Rewrite using `[Real.exp_le_exp, norm_smul, Real.norm_of_nonneg hni]`. Conclude with `mul_le_mul_of_nonneg_left (norm_add_le _ _) hni`. Rewrite using `[hb]`.
+
+Use `(norm_pow_sub_pow_le hq ha hb' n).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul, show (n : ℝ) * ((n : ℝ)⁻¹ * s) = s by field_simp, norm_smul, Real.norm_of_nonneg hn0.le]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trotter (X Y : 𝔸) :
     Tendsto (fun n : ℕ => (NormedSpace.exp (((n : ℝ)⁻¹) • X) * NormedSpace.exp (((n : ℝ)⁻¹) • Y)) ^ n) atTop
       (𝓝 (NormedSpace.exp (X + Y))) := by
@@ -123,6 +167,11 @@ theorem trotter (X Y : 𝔸) :
 
 end Banach
 
+/- English proof (translation)
+Set `_` to `Matrix.linftyOpNormedRing (n := Fin N) (α := ℂ)`. Set `_` to `Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin N) (α := ℂ)`. Establish `hc : CompleteSpace (Matrix (Fin N) (Fin N) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `h` using `trotter X Y`. Simplify using `only [Complex.coe_smul]`.
+
+Conclude with `h`.
+-/
 theorem trotterMx (N : ℕ) (X Y : Matrix (Fin N) (Fin N) ℂ) :
     Tendsto (fun n : ℕ => (NormedSpace.exp ((((n : ℝ)⁻¹ : ℝ) : ℂ) • X) * NormedSpace.exp ((((n : ℝ)⁻¹ : ℝ) : ℂ) • Y)) ^ n) atTop
       (𝓝 (NormedSpace.exp (X + Y))) := by
@@ -137,6 +186,13 @@ section Rep
 
 variable {k r : ℕ} {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W]
 
+/- English proof (translation)
+Establish `hcW : CompleteSpace W` using `FiniteDimensional.complete ℂ W`. Set `_ : NormedAlgebra ℚ (W →L[ℂ] W)` to `NormedAlgebra.restrictScalars ℚ ℂ (W →L[ℂ] W)`. Establish `hE : ∀ s : ℝ, HasDerivAt (fun u : ℝ => NormedSpace.exp (u • (-A))) ((-A) * NormedSpace.exp (s • (-A))) s` using `fun s => hasDerivAt_exp_smul_const' (𝕂 := ℝ) (-A) s`. Establish `hψ : ∀ s : ℝ, HasDerivAt (fun u : ℝ => φ u * NormedSpace.exp (u • (-A))) 0 s`. Introduce `s`.
+
+Establish `h` using `(hA s).mul (hE s)`. Establish `e : (φ s).comp A * NormedSpace.exp (s • (-A)) + φ s * ((-A) * NormedSpace.exp (s • (-A))) = 0` using `by show φ s * A * _ + _ = 0 noncomm_ring`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hconst` using `is_const_of_deriv_eq_zero (𝕜 := ℝ) (fun s => (hψ s).differentiableAt) (fun s => (hψ s).deriv) t 0`. Simplify using `only [zero_smul, NormedSpace.exp_zero, h0, mul_one] at hconst`.
+
+Establish `hinv : NormedSpace.exp (t • (-A)) * NormedSpace.exp (t • A) = 1`. Rewrite using `[← NormedSpace.exp_add_of_commute, smul_neg, neg_add_cancel, NormedSpace.exp_zero]`. Conclude with `(((Commute.refl A).neg_left).smul_left _).smul_right _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem group_eq_exp (φ : ℝ → (W →L[ℂ] W)) (A : W →L[ℂ] W) (h0 : φ 0 = 1)
     (hA : ∀ t, HasDerivAt φ ((φ t).comp A) t) (t : ℝ) : φ t = NormedSpace.exp (t • A) := by
   have hcW : CompleteSpace W := FiniteDimensional.complete ℂ W
@@ -162,14 +218,29 @@ end Rep
 
 end GroupGeneratedByExp
 
+/- English proof (translation)
+Introduce `𝔸 _ _ _ X Y`. Conclude with `GroupGeneratedByExp.trotter X Y`.
+-/
 theorem trotter_product_formula : Qr.Trotter := by
   intro 𝔸 _ _ _ X Y
   exact GroupGeneratedByExp.trotter X Y
 
+/- English proof (translation)
+Introduce `N X Y`. Conclude with `GroupGeneratedByExp.trotterMx N X Y`.
+-/
 theorem trotter_product_matrices : Qr.TrotterMx := by
   intro N X Y
   exact GroupGeneratedByExp.trotterMx N X Y
 
+/- English proof (translation)
+Introduce `W _ _ _ k r z π hπ X hX t`. Establish `hcont : Continuous fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X))`. Establish `h1` using `Qx8.lcurve_cont X (1 : Mx k r)`. Simplify using `only [Matrix.mul_one] at h1`. Conclude with `hπ.2.comp_continuous h1 (QrD.exp_uw hX)`.
+
+Establish `h0 : (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X))) 0 = 1`. Simplify using `[NormedSpace.exp_zero, hπ.1.1]`. Take `⟨A, hA⟩` from `one_parameter_differentiable W (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X))) h0 (fun s t => by show π (NormedSpace.exp (((s + t : ℝ) : ℂ) • X)) = _`. Rewrite using `[B5.exp_add', hπ.1.2 _ (QrD.exp_uw hX s) _ (QrD.exp_uw hX t)]) hcont`. Establish `hAd : QrD.dOp π X = A`.
+
+Establish `h` using `(QrD.dOp_hasDeriv hπ.1 hπ.2 hX).unique (hA 0)`. Establish `h0' : π (NormedSpace.exp (((0 : ℝ) : ℂ) • X)) = 1` using `h0`. Rewrite using `[h, h0']`. Conclude with `ContinuousLinearMap.id_comp A`. Establish `h` using `GroupGeneratedByExp.group_eq_exp _ A h0 hA t`.
+
+Rewrite using `[hAd]`. Conclude with `h`.
+-/
 theorem representation_exp : Qr.PiExp := by
   intro W _ _ _ k r z π hπ X hX t
   have hcont : Continuous fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • X)) := by

@@ -20,6 +20,11 @@ namespace GlobalTheory.Core.Mi.LatMatch.DiUnit
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [inv_one, map_one, one_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h s`. Rewrite using `[h, GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Conclude with `⟨fun h => ⟨h, h.1⟩, fun h => h.1⟩`.
+
+Introduce `h`. Use extensionality with `s`. Rewrite using `[h, GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, h.1⟩⟩`.
+-/
 theorem eq_one_iff {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} : idV 𝔞 v = idV 1 v ↔
     ∀ s, s ∈ idV 𝔞 v ↔ incA D (1 : D.host.E)⁻¹ * s ∈ intAt D (· = v) ∧ s ∈ idAt D (· = v) := by
   simp only [inv_one, map_one, one_mul]
@@ -32,17 +37,28 @@ theorem eq_one_iff {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} : idV 𝔞 v = id
     rw [h, GlobalTheory.SeeSaw.idV_one_eq_intAt]
     exact ⟨fun h => h.1, fun h => ⟨h, h.1⟩⟩
 
+/- English proof (translation)
+Use `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔞 𝔟 1 1 one_ne_zero one_ne_zero (eq_one_iff.1 h1) (eq_one_iff.1 h2)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `eq_one_iff.2 this`.
+-/
 theorem mul_eq_one {𝔞 𝔟 : FI D} {v : GlobalTheory.FinPl.Pl D} (h1 : idV 𝔞 v = idV 1 v) (h2 : idV 𝔟 v = idV 1 v) :
     idV (𝔞 * 𝔟) v = idV 1 v := by
   have := GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔞 𝔟 1 1 one_ne_zero one_ne_zero (eq_one_iff.1 h1) (eq_one_iff.1 h2)
   rw [mul_one] at this
   exact eq_one_iff.2 this
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `mul_eq_one ih h`.
+-/
 theorem pow_eq_one {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} (h : idV 𝔞 v = idV 1 v) (n : ℕ) : idV (𝔞 ^ n) v = idV 1 v := by
   induction n with
   | zero => rw [pow_zero]
   | succ n ih => rw [pow_succ]; exact mul_eq_one ih h
 
+/- English proof (translation)
+Establish `h0 : 𝔞 ≠ 0` using `fun e => GlobalTheory.SeeSaw.LiftModel.idV_ne_bot (one_ne_zero (α := FI D)) v (by rw [← h, e, GlobalTheory.SeeSaw.idV_zero])`. Take `⟨y, hy0, hy⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔞⁻¹ (inv_ne_zero h0)`. Establish `h1` using `GlobalTheory.SeeSaw.IdVMul.idV_mul_gen D v 𝔞 𝔞⁻¹ 1 y one_ne_zero hy0 (eq_one_iff.1 h) hy`. Rewrite `h1` using `[mul_inv_cancel₀ h0, one_mul]`. Use extensionality with `s`.
+
+Rewrite using `[hy, ← h1]`.
+-/
 theorem inv_eq_one {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} (h : idV 𝔞 v = idV 1 v) : idV 𝔞⁻¹ v = idV 1 v := by
   have h0 : 𝔞 ≠ 0 := fun e =>
     GlobalTheory.SeeSaw.LiftModel.idV_ne_bot (one_ne_zero (α := FI D)) v (by rw [← h, e, GlobalTheory.SeeSaw.idV_zero])
@@ -52,6 +68,11 @@ theorem inv_eq_one {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} (h : idV 𝔞 v =
   ext s
   rw [hy, ← h1]
 
+/- English proof (translation)
+Use extensionality with `s`. Establish `h1` using `GlobalTheory.SeeSaw.idV_cA_iff D v D.host.AA (cA D s)`. Rewrite `h1` using `[GlobalTheory.SeeSaw.cA_cA, GlobalTheory.SeeSaw.conjFI_AA]`. Establish `h2` using `GlobalTheory.SeeSaw.idV_cA_iff D v 1 s`. Rewrite `h2` using `[map_one]`.
+
+Rewrite using `[← h1, hA, h2]`.
+-/
 theorem AAbar_eq_one {v : GlobalTheory.FinPl.Pl D} (hA : idV D.host.AA v = idV 1 v) : idV D.host.AAbar v = idV 1 v := by
   ext s
   have h1 := GlobalTheory.SeeSaw.idV_cA_iff D v D.host.AA (cA D s)
@@ -62,6 +83,21 @@ theorem AAbar_eq_one {v : GlobalTheory.FinPl.Pl D} (hA : idV D.host.AA v = idV 1
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Establish `hx : D.host.xi0 ≠ 0` using `Formalism.L2.Pj.cmHost_imaginaryGenerator_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Use extensionality with `s`. Rewrite using `[GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Prove the components needed by the constructor for the conclusion. Introduce `hs`.
+
+Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hαv, a, ha, rfl⟩` from `hy`. Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 ha`. Establish `e : (pairA D.host.F 0 α ⊗ₜ[D.host.F] (r • D.host.xi0) : AE D) = incA D D.host.xi0 * (pairA D.host.F 0 α ⊗ₜ[D.host.F] algebraMap (𝓞 D.host.E) D.host.E r)`.
+
+Rewrite using `[GlobalTheory.IdVGen.incA_mul_tmul, Algebra.smul_def, mul_comm (algebraMap (𝓞 D.host.E) D.host.E r)]`. Rewrite using `[e]`. Conclude with `(hp.1 _ (GlobalTheory.IdVGen.gen_mem_intAt hα hαv r)).1`. Consider the case `zero => exact GlobalTheory.IdVGen.intAt_zero' _`. Consider the case `add a b _ _ ha hb => exact GlobalTheory.IdVGen.intAt_add' ha hb`.
+
+Consider the case `neg a _ ha => exact GlobalTheory.IdVGen.intAt_neg' ha`. Introduce `hs`. Establish `h3` using `(GlobalTheory.SeeSaw.idV_one_eq_intAt D p.v _).2 (hp.1 s hs).2`. Establish `key : ∀ y ∈ idV (1 : FI D) p.v, incA D D.host.xi0 * y ∈ idV (FractionalIdeal.spanSingleton _ D.host.xi0) p.v`. Introduce `y hy`.
+
+Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hαv, a, ha, rfl⟩` from `hy`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[GlobalTheory.IdVGen.incA_mul_tmul]`.
+
+Use `AddSubgroup.subset_closure ⟨α, hα, hαv, _, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(FractionalIdeal.mem_spanSingleton _).2 ⟨o, by rw [Algebra.smul_def]; exact mul_comm _ _⟩`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [mul_add]`.
+
+Conclude with `add_mem ha hb`. Consider the case `neg a _ ha => rw [mul_neg]`. Conclude with `neg_mem ha`. Use `key _ h3` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hx, map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem fractionalIdealCompletion_xi0Span_eq_unit_at_splitPlace (p : SplitPt D k) (hp : p.UnitAA) :
     idV (FractionalIdeal.spanSingleton _ D.host.xi0) p.v = idV 1 p.v := by
   have hx : D.host.xi0 ≠ 0 := Formalism.L2.Pj.cmHost_imaginaryGenerator_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D
@@ -99,6 +135,17 @@ theorem fractionalIdealCompletion_xi0Span_eq_unit_at_splitPlace (p : SplitPt D k
     have := key _ h3
     rwa [← mul_assoc, ← map_mul, mul_inv_cancel₀ hx, map_one, one_mul] at this
 
+/- English proof (translation)
+Set `L : HSp D` to `Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1`. Set `ζ : Fin L.rank → D.host.E` to `fun _ => 1`. Establish `hζ : ζ ≠ 0` using `fun e => one_ne_zero (congrFun e (0 : Fin 1))`. Establish `e : GlobalTheory.FinPl.latA L (GlobalTheory.SeeSaw.LiftModel.lineLat L ζ 1) (· = p.v) = latV L (GlobalTheory.SeeSaw.LiftModel.lineLat L ζ D.host.AA) (· = p.v)`. Unfold `GlobalTheory.FinPl.latA GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul`.
+
+Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨α, h1, h2, a, ha, _, ⟨c, hc, rfl⟩, rfl⟩`. Use `⟨α, h1, h2, 1, rfl, _, ⟨a * c, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use `FractionalIdeal.mul_mem_mul (S := nonZeroDivisors (𝓞 D.host.E)) (I := D.host.AA) (J := 1) ha hc` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `i`. Simplify using `[mul_assoc]`. Introduce and unpack `⟨α, h1, h2, _, rfl, _, ⟨c, hc, rfl⟩, rfl⟩`.
+
+Use `⟨α, h1, h2, c, hc, _, ⟨1, FractionalIdeal.one_mem_one _, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `key : ∀ s ∈ idAt D (· = p.v), s ∈ idV D.host.AA p.v ↔ s ∈ idV 1 p.v` using `fun s hs => by`. Rewrite using `[← GlobalTheory.SeeSaw.LiftModel.lineLatAt_lineLat L hζ D.host.AA p.v s hs, ← GlobalTheory.SeeSaw.LiftModel.lineLatAt_lineLat L hζ 1 p.v s hs, ← e, hp.2]`.
+
+Use extensionality with `s`. Conclude with `⟨fun h => (key s (GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ s h)).1 h, fun h => (key s (GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ s h)).2 h⟩`.
+-/
 theorem AA_eq_one (p : SplitPt D k) (hp : p.UnitAA) : idV D.host.AA p.v = idV 1 p.v := by
   let L : HSp D := Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral 1
   let ζ : Fin L.rank → D.host.E := fun _ => 1
@@ -128,6 +175,11 @@ end GlobalTheory.Core.Mi.LatMatch.DiUnit
 
 open GlobalTheory.Core.Mi.LatMatch.DiUnit in
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ p hp n a`. Establish `hd : idV (dI D) p.v = idV 1 p.v`. Establish `hA` using `AA_eq_one p hp`. Unfold `GlobalTheory.SeeSaw.dI`. Conclude with `mul_eq_one (mul_eq_one (fractionalIdealCompletion_xi0Span_eq_unit_at_splitPlace p hp) hA) (AAbar_eq_one hA)`.
+
+Establish `h1` using `pow_eq_one hd n`. Establish `h2` using `inv_eq_one h1`. Conclude with `⟨by rw [h1, GlobalTheory.SeeSaw.idV_one_eq_intAt], by rw [h2, GlobalTheory.SeeSaw.idV_one_eq_intAt]⟩`.
+-/
 theorem GlobalTheory.Core.Mi.LatMatch.idV_dI_pow_unit : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k), p.UnitAA → ∀ (n : ℕ) (a : AE D), (a ∈ idV (dI D ^ n) p.v ↔ a ∈ intAt D (· = p.v)) ∧ (a ∈ idV (dI D ^ n)⁻¹ p.v ↔ a ∈ intAt D (· = p.v)) := by
   intro D k _ _ _ _ p hp n a
   have hd : idV (dI D) p.v = idV 1 p.v := by

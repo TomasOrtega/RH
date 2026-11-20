@@ -14,6 +14,9 @@ section Mixed
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
+-/
 theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
   change Continuous fun x : InfiniteAdeleRing F =>
     ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)),
@@ -22,6 +25,11 @@ theorem continuous_toMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
   · exact (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)
   · exact (InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)
 
+/- English proof (translation)
+Use `continuous_pi fun v => ?_` and prove the remaining obligations. Break down `v.isReal_or_isComplex with hv | hv` into its components or cases. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal hv).isEmbedding.continuous_iff]`. Conclude with `((continuous_apply _).comp continuous_fst).congr fun y => (congrFun (congrArg Prod.fst ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v).isEmbedding.continuous_iff]`.
+
+Conclude with `((continuous_apply _).comp continuous_snd).congr fun y => (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm`.
+-/
 theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm := by
   refine continuous_pi fun v => ?_
   rcases v.isReal_or_isComplex with hv | hv
@@ -32,6 +40,11 @@ theorem continuous_ofMixed : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace 
     exact ((continuous_apply _).comp continuous_snd).congr fun y =>
       (congrFun (congrArg Prod.snd ((InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply y)) ⟨v, hv⟩).symm
 
+/- English proof (translation)
+Rewrite using `[InfiniteAdeleRing.ringEquiv_mixedSpace_apply, Prod.norm_def]`. Establish `hS : 0 ≤ ∑ v, ‖y v‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `max_le ((pi_norm_le_iff_of_nonneg hS).2 fun v => ?_) ((pi_norm_le_iff_of_nonneg hS).2 fun v => ?_)` and prove the remaining obligations. Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).norm_map_of_map_zero (map_zero _)]`. Conclude with `Finset.single_le_sum (f := fun w => ‖y w‖) (fun w _ => norm_nonneg _) (Finset.mem_univ v.1)`.
+
+Rewrite using `[(InfinitePlace.Completion.isometry_extensionEmbedding v.1).norm_map_of_map_zero (map_zero _)]`. Conclude with `Finset.single_le_sum (f := fun w => ‖y w‖) (fun w _ => norm_nonneg _) (Finset.mem_univ v.1)`.
+-/
 theorem norm_toMixed_le (y : InfiniteAdeleRing F) :
     ‖InfiniteAdeleRing.ringEquiv_mixedSpace F y‖ ≤ ∑ v, ‖y v‖ := by
   rw [InfiniteAdeleRing.ringEquiv_mixedSpace_apply, Prod.norm_def]
@@ -57,16 +70,28 @@ def mixTup : (Fin n → Fin M → Fin d → Ainf F) ≃+ (Fin n → Fin M → Fi
   AddEquiv.piCongrRight fun _ => AddEquiv.piCongrRight fun _ => AddEquiv.piCongrRight fun _ =>
     (InfiniteAdeleRing.ringEquiv_mixedSpace F).toAddEquiv
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (crdTup F E b M n).toLinearMap`.
+-/
 theorem continuous_crdTup : Continuous (crdTup F E b M n) :=
   IsModuleTopology.continuous_of_linearMap (crdTup F E b M n).toLinearMap
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (crdTup F E b M n).symm.toLinearMap`.
+-/
 theorem continuous_crdTup_symm : Continuous (crdTup F E b M n).symm :=
   IsModuleTopology.continuous_of_linearMap (crdTup F E b M n).symm.toLinearMap
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => continuous_pi fun i => continuous_pi fun k => (continuous_toMixed F).comp ((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply a)))`.
+-/
 theorem continuous_mixTup : Continuous (mixTup F M n (d := d)) :=
   continuous_pi fun a => continuous_pi fun i => continuous_pi fun k =>
     (continuous_toMixed F).comp ((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply a)))
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun a => continuous_pi fun i => continuous_pi fun k => (continuous_ofMixed F).comp ((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply a)))`.
+-/
 theorem continuous_mixTup_symm : Continuous (mixTup F M n (d := d)).symm :=
   continuous_pi fun a => continuous_pi fun i => continuous_pi fun k =>
     (continuous_ofMixed F).comp ((continuous_apply k).comp ((continuous_apply i).comp (continuous_apply a)))
@@ -78,6 +103,11 @@ def tupEquiv : (Fin n → Fin M → Ainf F ⊗[F] E) ≃ₜ+ (Fin n → Fin M �
 
 set_option synthInstance.maxHeartbeats 400000 in
 set_option synthInstance.maxSize 2000 in
+/- English proof (translation)
+Establish `h0 : ∀ a i k v, 0 ≤ ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (X a i) k v‖` using `fun _ _ _ _ => norm_nonneg _`. Establish `hS : 0 ≤ sizeTup b X` using `Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun k _ => Finset.sum_nonneg fun v _ => h0 a i k v`. Use `(pi_norm_le_iff_of_nonneg hS).2 fun a => (pi_norm_le_iff_of_nonneg hS).2 fun i => (pi_norm_le_iff_of_nonneg hS).2 fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖InfiniteAdeleRing.ringEquiv_mixedSpace F ((Algebra.TensorProduct.basis (Ainf F) b).repr (X a i) k)‖ ≤ _`. Use `(norm_toMixed_le F _).trans ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_tupEquiv_le (X : Fin n → Fin M → Ainf F ⊗[F] E) : ‖tupEquiv F E b M n X‖ ≤ sizeTup b X := by
   have h0 : ∀ a i k v, 0 ≤ ‖(Algebra.TensorProduct.basis (Ainf F) b).repr (X a i) k v‖ := fun _ _ _ _ => norm_nonneg _
   have hS : 0 ≤ sizeTup b X := Finset.sum_nonneg fun a _ => Finset.sum_nonneg fun i _ =>
@@ -102,6 +132,17 @@ end Tup
 set_option synthInstance.maxHeartbeats 400000 in
 set_option synthInstance.maxSize 2000 in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d b M n μi hμ Φi hc hr`. Use `set e := tupEquiv F E b M n with he`. Establish `hmap : (μi.map e).IsAddHaarMeasure` using `ContinuousAddEquiv.isAddHaarMeasure_map μi e`. Use `set N : ℕ := Module.finrank ℝ (Fin n → Fin M → Fin d → mixedSpace F) + 1 with hN`. Establish `hint` using `integrable_one_add_norm (μ := μi.map e) (r := (N : ℝ)) (by rw [hN]; push_cast; linarith)`.
+
+Take `⟨C, hC⟩` from `hr N`. Establish `hbd : ∀ X, ‖Φi X‖ ≤ C * (1 + ‖e X‖) ^ (-(N : ℝ))`. Introduce `X`. Establish `h1 : ‖e X‖ ≤ sizeTup b X` using `norm_tupEquiv_le F E b M n X`. Establish `h2 : 0 ≤ ‖e X‖` using `norm_nonneg _`.
+
+Establish `hs : 0 < 1 + sizeTup b X` using `by linarith`. Establish `hw : 0 < 1 + ‖e X‖` using `by linarith`. Establish `hC0 : 0 ≤ C` using `le_trans (mul_nonneg (norm_nonneg _) (pow_nonneg hs.le _)) (hC X)`. Rewrite using `[Real.rpow_neg hw.le, Real.rpow_natCast, ← div_eq_mul_inv]`. Establish `h3 : ‖Φi X‖ ≤ C / (1 + sizeTup b X) ^ N`.
+
+Rewrite using `[le_div_iff₀ (pow_pos hs _)]`. Conclude with `hC X`. Conclude with `h3.trans (div_le_div_of_nonneg_left hC0 (pow_pos hw _) (pow_le_pow_left₀ hw.le (by linarith) _))`. Establish `hg : Integrable (Φi ∘ e.symm) (μi.map e)`. Use `(hint.const_mul C).mono' (hc.comp e.symm.continuous).aestronglyMeasurable (ae_of_all _ fun w => ?_)` and prove the remaining obligations.
+
+Use `hbd (e.symm w)` as an intermediate fact. Simplify using `using this`. Establish `hemb : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Rewrite `hg` using `[hemb.integrable_map_iff]`. Simplify `hg` using `[Function.comp_def]`.
+-/
 theorem integrable_of_rapidDecay : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (d : ℕ)
     (b : Module.Basis (Fin d) F E) (M n : ℕ) (μi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)), μi.IsAddHaarMeasure →
     ∀ Φi : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ, Continuous Φi → RapidDecay b Φi → Integrable Φi μi := by

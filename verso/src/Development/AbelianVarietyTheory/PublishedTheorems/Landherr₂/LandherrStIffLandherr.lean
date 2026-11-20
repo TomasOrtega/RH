@@ -19,6 +19,9 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.Published.LandherrSt.herm_eq (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y = x ⬝ᵥ (G *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y b)) := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.herm
@@ -28,6 +31,11 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.Published.LandherrSt.herm_eq, _root_.GlobalTheory.Published.LandherrSt.herm_eq]`. Establish `h : (fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((P *ᵥ y) b)) = P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc *ᵥ fun b => _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y b)`. Use function extensionality and compare the values at `b`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Simplify using `[mulVec, dotProduct, map_sum, map_mul]`.
+
+Rewrite using `[h, mulVec_mulVec, ← vecMul_transpose, ← dotProduct_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 theorem _root_.GlobalTheory.Published.LandherrSt.herm_mulVec (G P : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (P *ᵥ x) (P *ᵥ y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (Pᵀ * G * P.map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc) x y := by
   rw [_root_.GlobalTheory.Published.LandherrSt.herm_eq, _root_.GlobalTheory.Published.LandherrSt.herm_eq]
@@ -41,6 +49,9 @@ end LandherrSt
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Conclude with `map_inv₀ _ _`.
+-/
 private lemma cc_inv' {E : Type} [Field E] [NumberField E] [IsCMField E] (z : E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.cc z⁻¹ = (_root_.ReciprocityTheory.ChartRestriction.G.FD.cc z)⁻¹ := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.cc
@@ -49,6 +60,13 @@ private lemma cc_inv' {E : Type} [Field E] [NumberField E] [IsCMField E] (z : E)
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `E _ _ _ r G G' hG hG' hd hd' hsig hdet`. Take `⟨z, hz⟩` from `hdet`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_mul, zero_mul]`.
+
+Conclude with `hd' hz`. Take `⟨P, hP, hPG⟩` from `_root_.GlobalTheory.Published.Landherr.of_signature H hG hG' hd hd' Set.univ (fun _ => Or.inl trivial) (fun τ _ => hsig τ) ⟨z⁻¹, by`. Rewrite using `[hz, cc_inv']`. Clear denominators, using `[_root_.GlobalTheory.Published.cc_ne_zero hz0]⟩` for the nonvanishing conditions. Use `⟨nonsingInvUnit P (isUnit_iff_ne_zero.2 hP), fun x y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[show ((nonsingInvUnit P (isUnit_iff_ne_zero.2 hP) : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) = P from rfl, _root_.GlobalTheory.Published.LandherrSt.herm_mulVec, ← hPG]`.
+-/
 theorem _root_.GlobalTheory.Published.landherrSt_of_landherr (H : _root_.GlobalTheory.Published.Landherr) :
     _root_.GlobalTheory.Published.LandherrSt := by
   intro E _ _ _ r G G' hG hG' hd hd' hsig hdet
@@ -72,6 +90,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `hsub : Finset.Iic a ⊆ Finset.univ.filter fun b => g b = 0`. Introduce `b hb`. Simplify using `only [Finset.mem_Iic] at hb`.
+
+Simplify using `using Nat.le_zero.1 (ha ▸ hg hb)`. Use `Finset.card_le_card hsub` as an intermediate fact. Simplify using `only [Fin.card_Iic] at this`. Use linear arithmetic over natural numbers and integers. Introduce `ha`.
+
+Assume the negation of the conclusion as `hne`. Establish `hsub : (Finset.univ.filter fun b => g b = 0) ⊆ Finset.Iio a`. Introduce `b hb`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Simplify using `only [Finset.mem_Iio]`.
+
+Assume the negation of the conclusion as `hab`. Conclude with `hne (Nat.le_zero.1 (hb ▸ hg (not_lt.1 hab)))`. Use `Finset.card_le_card hsub` as an intermediate fact. Simplify using `only [Fin.card_Iio] at this`. Use linear arithmetic over natural numbers and integers.
+-/
 private lemma eq_zero_iff_lt_card_filter_eq_zero_of_monotone {r : ℕ} (g : Fin r → ℕ) (hg : Monotone g) (a : Fin r) :
     g a = 0 ↔ (a : ℕ) < (Finset.univ.filter fun b => g b = 0).card := by
   constructor
@@ -97,6 +124,11 @@ private lemma eq_zero_iff_lt_card_filter_eq_zero_of_monotone {r : ℕ} (g : Fin 
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Establish `hpos : 0 < |x|` using `abs_pos.2 hx`. Establish `hs : Real.sqrt |x| * Real.sqrt |x| = |x|` using `Real.mul_self_sqrt hpos.le`. Establish `hs0 : Real.sqrt |x| ≠ 0` using `(Real.sqrt_pos.2 hpos).ne'`. Rewrite using `[mul_comm, ← mul_assoc, ← mul_inv, hs]`. Use `split_ifs with h`.
+
+Rewrite using `[abs_of_pos h]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.1 h) hx)]`. Clear the denominators using the available nonvanishing facts.
+-/
 private lemma inv_sqrt_abs_mul_self_mul_inv_sqrt_abs_eq_sign (x : ℝ) (hx : x ≠ 0) :
     (Real.sqrt |x|)⁻¹ * x * (Real.sqrt |x|)⁻¹ = if 0 < x then 1 else -1 := by
   have hpos : 0 < |x| := abs_pos.2 hx
@@ -109,6 +141,21 @@ private lemma inv_sqrt_abs_mul_self_mul_inv_sqrt_abs_eq_sign (x : ℝ) (hx : x �
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Use `set U : Matrix (Fin r) (Fin r) ℂ := (hA.eigenvectorUnitary : Matrix (Fin r) (Fin r) ℂ) with hU`. Use `set ev := hA.eigenvalues with hev`. Establish `hspec : Uᴴ * A * U = diagonal (Complex.ofReal ∘ ev)`. Use `hA.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Simplify `this` using `[Unitary.conjStarAlgAut_apply, ← star_eq_conjTranspose]`.
+
+Establish `hne : ∀ i, ev i ≠ 0`. Introduce `i h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hA.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp [← hev, h])`.
+
+Use `set g : Fin r → ℕ := fun i => if 0 < ev i then 0 else 1 with hg`. Use `set σ := Tuple.sort g`. Establish `hmono : Monotone (g ∘ σ)` using `Tuple.monotone_sort g`. Use `⟨(Finset.univ.filter fun b => (g ∘ σ) b = 0).card, (U * diagonal fun i => (((Real.sqrt |ev i|)⁻¹ : ℝ) : ℂ)).submatrix id σ, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_submatrix, ← submatrix_id_id A, ← Equiv.coe_refl, submatrix_mul_equiv, submatrix_mul_equiv, conjTranspose_mul, diagonal_conjTranspose]`.
+
+Rewrite using `[show ∀ X Y Z : Matrix (Fin r) (Fin r) ℂ, X * Uᴴ * Y * (U * Z) = X * (Uᴴ * Y * U) * Z by`. Introduce `X Y Z`. Simplify using `only [Matrix.mul_assoc], hspec, diagonal_mul_diagonal, diagonal_mul_diagonal,`. Use the proof step `submatrix_diagonal_equiv]`. Use `congr 1`.
+
+Use extensionality with `a`. Establish `key` using `eq_zero_iff_lt_card_filter_eq_zero_of_monotone _ hmono a`. Establish `hsq` using `inv_sqrt_abs_mul_self_mul_inv_sqrt_abs_eq_sign (ev (σ a)) (hne _)`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn`. Simplify using `only [Function.comp_apply, hg] at key ⊢`.
+
+Simplify using `only [Pi.star_apply, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← Complex.ofReal_mul, ← Complex.ofReal_mul, hsq]`. Distinguish the cases in `h : 0 < ev (σ a)`. Simplify using `only [h, if_true, true_iff] at key ⊢`. Rewrite using `[if_pos key]`.
+
+Simplify using `only [h, if_false, one_ne_zero, false_iff] at key ⊢`. Rewrite using `[if_neg key]`.
+-/
 private lemma exists_conjTranspose_mul_mul_eq_sgn_diagonal {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ)
     (hA : A.IsHermitian) (hd : A.det ≠ 0) :
     ∃ (p : ℕ) (M : Matrix (Fin r) (Fin r) ℂ),
@@ -149,6 +196,9 @@ private lemma exists_conjTranspose_mul_mul_eq_sgn_diagonal {r : ℕ} (A : Matrix
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+-/
 private lemma sgn_ne_zero_published_landherr (p a : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn p a ≠ 0 := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn
   split_ifs <;> norm_num
@@ -157,6 +207,17 @@ open NumberField Matrix in
 open scoped nonZeroDivisors in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
+/- English proof (translation)
+Establish `hA : (G.map τ).IsHermitian`. Use extensionality with `i j`. Simplify using `[conjTranspose_apply, ← _root_.GlobalTheory.Published.embedding_cc, hG]`. Establish `hAd : (G.map τ).det ≠ 0`. Establish `h` using `RingHom.map_det τ G`.
+
+Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`. Conclude with `(map_ne_zero τ).2 hd`. Take `⟨p, M, hM⟩` from `exists_conjTranspose_mul_mul_eq_sgn_diagonal _ hA hAd`. Establish `hg : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ G (M.map (starRingEnd ℂ)) = diagonal fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn p (a : ℕ) : ℝ) : ℂ)`.
+
+Rewrite using `[_root_.GlobalTheory.Published.gram_eq, show (M.map (starRingEnd ℂ))ᵀ = Mᴴ from rfl]`. Use `hM using 2` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `⟨p, M.map (starRingEnd ℂ), ?_, hg⟩` and prove the remaining obligations.
+
+Introduce `h0`. Establish `h` using `congrArg det hg`. Rewrite `h` using `[_root_.GlobalTheory.Published.gram_eq, det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul, det_diagonal]`. Use `absurd h.symm (Finset.prod_ne_zero_iff.2 ?_)` and prove the remaining obligations. Introduce `a _`.
+
+Conclude with `Complex.ofReal_ne_zero.2 (sgn_ne_zero_published_landherr p (a : ℕ))`.
+-/
 theorem _root_.GlobalTheory.Published.LandherrSt.exists_gram_eq_sgn {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (G a b) = G b a) (hd : G.det ≠ 0) (τ : E →+* ℂ) :
     ∃ (p : ℕ) (Q : Matrix (Fin r) (Fin r) ℂ), Q.det ≠ 0 ∧
@@ -189,6 +250,9 @@ end LandherrSt
 
 open NumberField Matrix in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.cc`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private lemma one_map_cc {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} :
     (1 : Matrix (Fin r) (Fin r) E).map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc = 1 := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.cc
@@ -197,6 +261,21 @@ private lemma one_map_cc {E : Type} [Field E] [NumberField E] [IsCMField E] {r :
 open NumberField Matrix in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+Introduce `E _ _ _ r G G' hG hG' hd hd' hcong hdet`. Take `⟨x, hx⟩` from `hdet`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_mul]`.
+
+Conclude with `div_ne_zero hd hd' hx`. Establish `hsig : ∀ τ : E →+* ℂ, ∃ p0 : ℕ, (∃ Q : Matrix (Fin r) (Fin r) ℂ, Q.det ≠ 0 ∧ _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ G Q = Matrix.diagonal fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn p0 (a : ℕ) : ℝ) : ℂ)) ∧ (∃ Q : Matrix (Fin r) (Fin r) ℂ, …`. Introduce `τ`. Take `⟨p, Q, hQ, hgram⟩` from `_root_.GlobalTheory.Published.LandherrSt.exists_gram_eq_sgn hG hd τ`. Take `⟨R, hR, hR'⟩` from `hcong τ`.
+
+Establish `hRu : IsUnit R.det` using `isUnit_iff_ne_zero.2 hR`. Use `⟨p, ⟨Q, hQ, hgram⟩, R⁻¹ * Q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, det_nonsing_inv, Ring.inverse_eq_inv']`. Conclude with `mul_ne_zero (inv_ne_zero hR) hQ`. Establish `h1 : (R⁻¹)ᵀ * Rᵀ = 1`.
+
+Rewrite using `[← transpose_mul, mul_nonsing_inv _ hRu, transpose_one]`. Establish `h2 : R.map (starRingEnd ℂ) * (R⁻¹).map (starRingEnd ℂ) = 1`. Rewrite using `[← Matrix.map_mul, mul_nonsing_inv _ hRu, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `hgram`, the goal using `[_root_.GlobalTheory.Published.gram_eq]`. Rewrite using `[hR', transpose_mul, Matrix.map_mul, ← hgram]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hdet' : G'.det = x⁻¹ * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc x⁻¹ * G.det`. Rewrite `hx` using `[div_eq_iff hd']`. Rewrite using `[cc_inv', hx]`. Clear denominators, using `[hx0, _root_.GlobalTheory.Published.cc_ne_zero hx0]` for the nonvanishing conditions.
+
+Take `⟨γ, hγ⟩` from `H E r G G' hG hG' hd hd' hsig ⟨x⁻¹, hdet'⟩`. Use `⟨γ, ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Establish `h` using `hγ (fun k => (1 : Matrix (Fin r) (Fin r) E) k a) (fun k => (1 : Matrix (Fin r) (Fin r) E) k b)`. Rewrite `h` using `[_root_.GlobalTheory.Published.LandherrSt.herm_mulVec, _root_.GlobalTheory.Published.herm_col, _root_.GlobalTheory.Published.herm_col, one_map_cc]`.
+
+Simplify using `using h.symm`.
+-/
 theorem _root_.GlobalTheory.Published.landherr_of_landherrSt (H : _root_.GlobalTheory.Published.LandherrSt) :
     _root_.GlobalTheory.Published.Landherr := by
   intro E _ _ _ r G G' hG hG' hd hd' hcong hdet

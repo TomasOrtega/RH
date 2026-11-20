@@ -24,6 +24,11 @@ def glFrame : Frame l Unit N where
   tr := fun _ => {1}
   cst := fun _ => 1
 
+/- English proof (translation)
+Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Establish `h0 : res N (fun _ : ℕ => 0) = 0` using `rfl`. Rewrite using `[MvPolynomial.mem_weightedHomogeneousSubmodule, h0]`. Conclude with `MvPolynomial.isWeightedHomogeneous_one (R := PadicAlgCl l) (Formalism.GradedWeylDivisibility.colW N N)`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`.
+
+Introduce `a b _`. Simplify using the standard rewrite rules.
+-/
 theorem one_mem_dualWeyl :
     (1 : MvPolynomial (Fin N × Fin N) (PadicAlgCl l)) ∈ Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) N N (res N (fun _ : ℕ => 0)) := by
   refine Submodule.mem_inf.2 ⟨?_, ?_⟩
@@ -37,6 +42,9 @@ theorem one_mem_dualWeyl :
 def oneVec : NablaT (PadicAlgCl l) N (fun (_ : Unit) (_ : ℕ) => 0) :=
   PiTensorProduct.tprod (PadicAlgCl l) fun _ => ⟨1, one_mem_dualWeyl l N⟩
 
+/- English proof (translation)
+Introduce `h`. Establish `h2` using `congrArg (PiTensorProduct.subsingletonEquiv (R := PadicAlgCl l) (s := fun _ : Unit => Formalism.GradedWeylDivisibility.dualWeyl (PadicAlgCl l) N N (res N (fun _ : ℕ => 0))) ()) h`. Rewrite `h2` using `[oneVec, PiTensorProduct.subsingletonEquiv_apply_tprod, map_zero]`. Conclude with `one_ne_zero (congrArg Subtype.val h2)`.
+-/
 theorem oneVec_ne_zero : oneVec l N ≠ 0 := by
   intro h
   have h2 := congrArg (PiTensorProduct.subsingletonEquiv (R := PadicAlgCl l)
@@ -44,6 +52,11 @@ theorem oneVec_ne_zero : oneVec l N ≠ 0 := by
   rw [oneVec, PiTensorProduct.subsingletonEquiv_apply_tprod, map_zero] at h2
   exact one_ne_zero (congrArg Subtype.val h2)
 
+/- English proof (translation)
+Simplify using `only [grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, oneVec, MonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[PiTensorProduct.mapMonoidHom_apply, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[Formalism.UG.dualWeylRep_apply]`.
+-/
 theorem grp_oneVec (g : Unit → GL (Fin N) (PadicAlgCl l)) :
     grp (PadicAlgCl l) N (fun (_ : Unit) (_ : ℕ) => 0) g (oneVec l N) = oneVec l N := by
   simp only [grp, Formalism.CohomologicalDescent.RealLocalDeltaNabla.nablaRep, oneVec, MonoidHom.coe_comp, Function.comp_apply]
@@ -53,6 +66,19 @@ theorem grp_oneVec (g : Unit → GL (Fin N) (PadicAlgCl l)) :
   apply Subtype.ext
   simp [Formalism.UG.dualWeylRep_apply]
 
+/- English proof (translation)
+Use `⟨⟨?_, ⊥, inferInstance, ?_⟩, ⟨{1}, fun g => ⟨1, Subgroup.one_mem _, 1, Finset.mem_singleton_self _, g, Subgroup.mem_top g, by simp⟩⟩, fun g => ?_, fun i κ => ⟨Equiv.refl _, fun s => ⟨κ, ?_, rfl, rfl⟩⟩, fun i j => ⟨Equiv.prodComm _ _, fun x => ?_⟩⟩` and prove the remaining obligations. Introduce `x y h`. Conclude with `Subtype.val_injective ((algebraMap ℚ_[l] (PadicAlgCl l)).injective h)`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_setOf_eq, IntermediateField.mem_bot]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨⟨((show ℤ_[l] from y) : ℚ_[l]), rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ‖algebraMap ℚ_[l] (PadicAlgCl l) ((show ℤ_[l] from y) : ℚ_[l])‖ ≤ 1`. Rewrite using `[norm_algebraMap']`.
+
+Conclude with `(show ℤ_[l] from y).2`. Introduce and unpack `⟨⟨y, rfl⟩, hy⟩`. Rewrite `hy` using `[norm_algebraMap']`. Conclude with `⟨(⟨y, hy⟩ : ℤ_[l]), rfl⟩`. Establish `hu : Nat.card {γ : (glFrame l N).Γ // g⁻¹ * (γ : (glFrame l N).G) * g ∈ (glFrame l N).K} = 1`.
+
+Use `Nat.card_eq_one_iff_unique.2 ⟨⟨fun a b => Subtype.ext (Subsingleton.elim (α := (⊥ : Subgroup (GL (Fin N) ℤ_[l]))) _ _)⟩, ⟨⟨1, Subgroup.mem_top _⟩⟩⟩` and prove the remaining obligations. Use `⟨Nat.finite_of_card_ne_zero (by rw [hu]; exact one_ne_zero), ?_⟩` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `fun h => (Fact.out : l.Prime).ne_one (Nat.dvd_one.1 h)`. Establish `hs : (s : (glFrame l N).G) = 1` using `Finset.mem_singleton.1 s.2 show (κ : (glFrame l N).G) * s = s * κ`.
+
+Rewrite using `[hs, mul_one, one_mul]`. Establish `h1 : ∀ (k : Unit) (t : (glFrame l N).tr k), (t : (glFrame l N).G) = 1` using `fun k t => Finset.mem_singleton.1 t.2`. Establish `he : ((((Equiv.prodComm _ _ x).1 : (glFrame l N).G) * (Equiv.prodComm _ _ x).2)⁻¹ * ((x.1 : (glFrame l N).G) * x.2)) = 1`. Rewrite using `[h1 _ (Equiv.prodComm _ _ x).1, h1 _ (Equiv.prodComm _ _ x).2, h1 _ x.1, h1 _ x.2]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[he]`. Conclude with `⟨Subgroup.mem_top _, rfl, rfl⟩`.
+-/
 theorem ok : (glFrame l N).Ok := by
   refine ⟨⟨?_, ⊥, inferInstance, ?_⟩, ⟨{1}, fun g => ⟨1, Subgroup.one_mem _, 1, Finset.mem_singleton_self _, g, Subgroup.mem_top g, by simp⟩⟩,
     fun g => ?_, fun i κ => ⟨Equiv.refl _, fun s => ⟨κ, ?_, rfl, rfl⟩⟩, fun i j => ⟨Equiv.prodComm _ _, fun x => ?_⟩⟩

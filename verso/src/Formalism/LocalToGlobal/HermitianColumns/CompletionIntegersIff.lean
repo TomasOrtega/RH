@@ -60,6 +60,9 @@ structure GLevTie (L : ColLevel R F E sp gp C A clsLat) {p : ℕ} (G : Formalism
         (bc (inclE (F := F) (w.adicCompletion F)) (gamI i γ : GL (Fin R.k) E)) * fr w hw :
           GL (Fin R.k) (w.adicCompletion F)) : Matrix (Fin R.k) (Fin R.k) (w.adicCompletion F)) a' b'
 
+/- English proof (translation)
+Establish `: inclE (F` using `F) (w.adicCompletion F) (algebraMap F E a) = (1 : E) ⊗ₜ[F] (algebraMap F (w.adicCompletion F) a) := by show (algebraMap F E a) ⊗ₜ[F] (1 : w.adicCompletion F) = _`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one]`. Rewrite using `[this, X.spl_alg]`.
+-/
 theorem GLevTie.spl_F {L : ColLevel R F E sp gp C A clsLat} {p : ℕ} {G : Formalism.MainNotions.G.GAtP p} (X : GLevTie L G)
     (w : HeightOneSpectrum (𝓞 F)) (h : ((p : ℕ) : 𝓞 F) ∈ w.asIdeal) (a : F) :
     (X.spl w h (inclE (F := F) (w.adicCompletion F) (algebraMap F E a))).1 = algebraMap F (w.adicCompletion F) a := by

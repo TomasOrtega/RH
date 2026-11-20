@@ -10,14 +10,23 @@ namespace GlobalTheory.SelfDualUnip
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Unfold `Formalism.UG.cT`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem cT_add' (σ : L →+* L) {n : ℕ} (X Y : Matrix (Fin n) (Fin n) L) :
     Formalism.UG.cT σ (X + Y) = Formalism.UG.cT σ X + Formalism.UG.cT σ Y := by
   unfold Formalism.UG.cT; ext i j; simp
 
+/- English proof (translation)
+Unfold `Formalism.UG.cT`. Rewrite using `[Matrix.det_transpose, RingHom.map_det]`. Both sides reduce to the same expression.
+-/
 theorem det_cT (σ : L →+* L) {n : ℕ} (X : Matrix (Fin n) (Fin n) L) :
     (Formalism.UG.cT σ X).det = σ X.det := by
   unfold Formalism.UG.cT; rw [Matrix.det_transpose, RingHom.map_det]; rfl
 
+/- English proof (translation)
+Establish `h` using `hX j i`. Rewrite `h`, the goal using `[GlobalTheory.Hk3.mem_intL_iff]`. Use `show Valued.v (σ (X j i)) ≤ 1`. Rewrite using `[hσ]`. Conclude with `h`.
+-/
 theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n : ℕ} {X : Matrix (Fin n) (Fin n) L}
     (hX : ∀ i j, X i j ∈ Formalism.UG.intL L) (i j : Fin n) : Formalism.UG.cT σ X i j ∈ Formalism.UG.intL L := by
   have h := hX j i
@@ -25,10 +34,22 @@ theorem cT_int (σ : L →+* L) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {n :
   show Valued.v (σ (X j i)) ≤ 1
   rw [hσ]; exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun i j => ⟨X i j, hX i j⟩, by ext i j; rfl⟩`.
+-/
 theorem lift_int {n : ℕ} {X : Matrix (Fin n) (Fin n) L} (hX : ∀ i j, X i j ∈ Formalism.UG.intL L) :
     ∃ X' : Matrix (Fin n) (Fin n) (Formalism.UG.intL L), X'.map (Formalism.UG.intL L).subtype = X :=
   ⟨fun i j => ⟨X i j, hX i j⟩, by ext i j; rfl⟩
 
+/- English proof (translation)
+Establish `hd : Valued.v M.det * Valued.v N.det = 1`. Rewrite using `[← map_mul, ← Matrix.det_mul, hMN, Matrix.det_one, map_one]`. Take `⟨M', rfl⟩` from `lift_int hM`. Take `⟨N', rfl⟩` from `lift_int hN`. Establish `hdM : (M'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype M'.det` using `(RingHom.map_det _ _).symm`.
+
+Establish `hdN : (N'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype N'.det` using `(RingHom.map_det _ _).symm`. Establish `hM1 : Valued.v (M'.map (Formalism.UG.intL L).subtype).det ≤ 1`. Rewrite using `[hdM]`. Conclude with `(M'.det).2`. Establish `hN1 : Valued.v (N'.map (Formalism.UG.intL L).subtype).det ≤ 1`.
+
+Rewrite using `[hdN]`. Conclude with `(N'.det).2`. Assume the negation of the conclusion as `hne`. Establish `hlt` using `lt_of_le_of_ne hM1 hne`. Use `mul_lt_one_of_lt_of_le hlt hN1` as an intermediate fact.
+
+Rewrite `this` using `[hd]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem v_det_eq_one {n : ℕ} {M N : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M i j ∈ Formalism.UG.intL L)
     (hN : ∀ i j, N i j ∈ Formalism.UG.intL L) (hMN : M * N = 1) : Valued.v M.det = 1 := by
   have hd : Valued.v M.det * Valued.v N.det = 1 := by
@@ -49,6 +70,17 @@ theorem v_det_eq_one {n : ℕ} {M N : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M
   rw [hd] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Take `⟨G', rfl⟩` from `lift_int hG`. Establish `hdG : (G'.map (Formalism.UG.intL L).subtype).det = (Formalism.UG.intL L).subtype G'.det` using `(RingHom.map_det _ _).symm`. Establish `hne : (G'.map (Formalism.UG.intL L).subtype).det ≠ 0`. Introduce `h`. Rewrite `hd` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one hd`. Establish `hinv : ((G'.map (Formalism.UG.intL L).subtype).det)⁻¹ ∈ Formalism.UG.intL L`. Rewrite using `[GlobalTheory.Hk3.mem_intL_iff, map_inv₀, hd, inv_one]`. Establish `hu : IsUnit G'.det`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hinv⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show (Formalism.UG.intL L).subtype G'.det * ((G'.map (Formalism.UG.intL L).subtype).det)⁻¹ = 1`. Rewrite using `[← hdG]`. Conclude with `mul_inv_cancel₀ hne`. Establish `hGY : G'.map (Formalism.UG.intL L).subtype * (G'⁻¹).map (Formalism.UG.intL L).subtype = 1`.
+
+Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv G' hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hX : X = (G'⁻¹).map (Formalism.UG.intL L).subtype`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGY, Matrix.mul_one]`. Use `_ = _ := by rw [← Matrix.mul_assoc, hXG, Matrix.one_mul]`.
+
+Introduce `i j`. Rewrite using `[hX]`. Conclude with `(G'⁻¹ i j).2`.
+-/
 theorem int_of_left_inv {n : ℕ} {G X : Matrix (Fin n) (Fin n) L} (hG : ∀ i j, G i j ∈ Formalism.UG.intL L)
     (hd : Valued.v G.det = 1) (hXG : X * G = 1) : ∀ i j, X i j ∈ Formalism.UG.intL L := by
   obtain ⟨G', rfl⟩ := lift_int hG
@@ -72,6 +104,25 @@ theorem int_of_left_inv {n : ℕ} {G X : Matrix (Fin n) (Fin n) L} (hG : ∀ i j
   intro i j
   rw [hX]; exact (G'⁻¹ i j).2
 
+/- English proof (translation)
+Introduce `L _ _ σ hσ n JS a k E hJ ha hE hEint hEa hk hki`. Take `⟨hG0, hX0⟩` from `ha`. Establish `hKint : ∀ i j, (k : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[hk, Matrix.add_apply, Matrix.one_apply]`.
+
+Use `(Formalism.UG.intL L).add_mem ?_ (hEint i j)` and prove the remaining obligations. Use `split_ifs`. Conclude with `(Formalism.UG.intL L).one_mem`. Conclude with `(Formalism.UG.intL L).zero_mem`. Establish `hE' : ∀ X : Matrix (Fin n) (Fin n) L, Formalism.UG.cT σ E * ((JS : Matrix (Fin n) (Fin n) L) * X) = -((JS : Matrix (Fin n) (Fin n) L) * (E * X))`.
+
+Introduce `X`. Rewrite using `[← Matrix.mul_assoc, hE, Matrix.neg_mul, Matrix.mul_assoc]`. Establish `hGeq : Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) = Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * …`. Rewrite using `[hk, Formalism.UG.cT_mul, Formalism.UG.cT_mul, cT_add', Formalism.UG.cT_one]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc, hE', Matrix.mul_neg]`.
+
+Normalize the expressions using the abelian group laws. Establish `hGint : ∀ i j, (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))) i j ∈ Formalism.UG.intL L`. Introduce `i j`. Rewrite using `[hGeq, Matrix.add_apply]`. Conclude with `(Formalism.UG.intL L).add_mem (hG0 i j) (GlobalTheory.Hk3.matMul_int (GlobalTheory.Hk3.matMul_int (cT_int σ hσ hEa) hJ) hEa i j)`.
+
+Establish `hK1 : Valued.v (k : Matrix (Fin n) (Fin n) L).det = 1` using `v_det_eq_one hKint hki k.mul_inv`. Establish `hX0G0 : Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * (JS : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L) * (((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((a⁻¹ : GL (Fin n) L) : Matrix …`. Establish `e3 : Formalism.UG.cT σ (a : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((a⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Formalism.UG.cT_mul, a.inv_mul, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hG01` using `v_det_eq_one hG0 hX0 hX0G0`. Establish `hdet : Valued.v (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))).det = 1`. Establish `: (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * (JS : Matrix (Fin n) (Fin n) L) * ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L))).det = σ (k : Matrix (Fin n) (Fin n) L).det * (k : Matrix (Fin n) (Fin n) L).det * (Formali …`. Simplify using `only [Matrix.det_mul, det_cT, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this, map_mul, map_mul, hσ, hK1, hG01]`. Simplify using the standard rewrite rules. Establish `hXG : (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (Formalism.UG.cT σ ((k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)) * …`. Establish `hka : ((k * a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = (k : Matrix (Fin n) (Fin n) L) * (a : Matrix (Fin n) (Fin n) L)` using `Units.val_mul k a`. Rewrite using `[← hka]`.
+
+Establish `e3 : Formalism.UG.cT σ (((k * a)⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Formalism.UG.cT σ ((k * a : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = 1`. Rewrite using `[← Formalism.UG.cT_mul, (k * a).mul_inv, Formalism.UG.cT_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [e3, Matrix.one_mul, ← Matrix.mul_assoc ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L), JS.inv_mul, Matrix.one_mul, (k * a).inv_mul]`.
+
+Use `⟨?_, int_of_left_inv hGint hdet hXG⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Units.val_mul]`. Conclude with `hGint i j`.
+-/
 theorem selfDual_mul_of_skew : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L), (∀ x, Valued.v (σ x) = Valued.v x) →
   ∀ (n : ℕ) (JS a k : GL (Fin n) L) (E : Matrix (Fin n) (Fin n) L),
   (∀ i j, (JS : Matrix (Fin n) (Fin n) L) i j ∈ Formalism.UG.intL L) → GlobalTheory.Hk3.HoweG.SelfDual σ JS a →

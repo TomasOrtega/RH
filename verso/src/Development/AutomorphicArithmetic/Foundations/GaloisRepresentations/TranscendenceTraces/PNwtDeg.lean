@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
+/- English proof (translation)
+Introduce `hN hD hMS hBC hG Z' Z S K _ v p' p g _ _ hpb hLoc hg`. Take `⟨hW, hgen⟩` from `hN p hLoc`. Take `⟨d, hd⟩` from `hD p (nwt p) hW`. Rewrite using `[hd]`. Use `haveI : IsFinite p' := MorphismProperty.of_isPullback (P := @IsFinite) hpb inferInstance`.
+
+Set `Ω` to `AlgebraicClosure K`. Set `y : gp Ω ⟶ gp K` to `Spec.map (CommRingCat.ofHom (algebraMap K Ω))`. Establish `hval` using `congrArg (fun w : Wt S => w Ω (y ≫ g)) hd`. Simplify using `only [Wt.const] at hval`. Establish `h1 : Wt.push p (nwt p) Ω (y ≫ g) = Wt.push p (mult p) Ω (y ≫ g)`.
+
+Simplify using `only [Wt.push]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `z`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `hz`.
+
+Apply `hgen` to reduce the goal to its premises. Establish `hz' : z ≫ p = y ≫ g` using `hz`. Rewrite using `[hz', pt_comp, Subsingleton.elim (pt y) (IsLocalRing.closedPoint K)]`. Conclude with `(hG.2.2 S _).mpr hg`. Establish `h2 : Wt.push p (mult p) Ω (y ≫ g) = Wt.push p' (mult p') Ω y`.
+
+Simplify using `only [Wt.push]`. Use `symm`. Rewrite using `[finsum_mem_eq_of_bijOn (fun z => z ≫ v) (fib_bijOn hpb y) (g := fun z => mult p Ω z)]`. Introduce `z _`. Rewrite using `[hBC v p' p g hpb]`.
+
+Both sides reduce to the same expression. Establish `h3` using `hMS p' Ω y`. Establish `h4 : pt y = IsLocalRing.closedPoint K` using `Subsingleton.elim _ _`. Rewrite `hval` using `[h1, h2, h3, h4]`. Rewrite using `[hval]`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.nwtDeg_of :
     WtNormal → WtDegConst → MultSum → MultBC → GenBasic → NwtDeg := by
   intro hN hD hMS hBC hG Z' Z S K _ v p' p g _ _ hpb hLoc hg

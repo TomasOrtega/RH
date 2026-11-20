@@ -7,6 +7,13 @@ open Finset
 
 namespace GlobalTheory.HermitianFormFacts
 
+/- English proof (translation)
+Introduce `ι _ n w`. Use `set S : ℝ := ∑ v : ι, ∑ i, ‖w v i‖ ^ 2 with hS`. Establish `hprod : ∏ v : ι, GlobalTheory.GaussMean.gauss (w v) = Real.exp (-S)`. Unfold `GlobalTheory.GaussMean.gauss`. Rewrite using `[← Real.exp_sum, hS, ← Finset.sum_neg_distrib]`.
+
+Rewrite using `[hprod, Real.exp_le_exp, neg_le_neg_iff]`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `hle : ‖w‖ ≤ Real.sqrt S`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun v => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations.
+
+Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem main : ∀ {ι : Type} [inst : Fintype ι] {n : ℕ} (w : ι → Fin n → ℂ),
     ∏ v : ι, GlobalTheory.GaussMean.gauss (w v) ≤ Real.exp (-‖w‖ ^ (2 : ℕ)) := by
   intro ι _ n w

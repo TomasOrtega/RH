@@ -20,12 +20,24 @@ set_option autoImplicit false
 
 namespace GlobalTheory.MixHt
 
+/- English proof (translation)
+The claim follows from `funext fun y => congrArg (fun a => Real.log a / 2) ((N.φ σ).nsq_pull_secPull i rfl t y)`.
+-/
 theorem logSec_restr_secPull {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} (N : HermLB p) (t : N.B.Sec)
     (i : Y ⟶ X) (σ : k →+* ℂ) :
     (MLine.ofHerm (N.restr i) σ).logSec (Cartier.secPull t i) =
       fun y => (MLine.ofHerm N σ).logSec t (ptMap i rfl σ y) :=
   funext fun y => congrArg (fun a => Real.log a / 2) ((N.φ σ).nsq_pull_secPull i rfl t y)
 
+/- English proof (translation)
+Introduce `hP k _ X _ _ p e hX L N t z hz htz`. Establish `hamb : IsAmb p` using `isAmb_of_isArithVar hX`. Establish `hgen : genericPoint (clo z) ∈ nonzeroLocus (Cartier.secPull t (cloι z))`. Rewrite using `[Cartier.nonzeroLocus_secPull]`. Use `show cloι z (genericPoint (clo z)) ∈ nonzeroLocus t`.
+
+Rewrite using `[cloι_genericPoint]`. Conclude with `htz`. Establish `hd : topologicalKrullDim (clo z) = (e + 1 : ℕ)` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k X p hamb (e + 1) hX.dim_eq).2 z (genericPoint (clo z)) hz).1`. Establish `hamb' : IsAmb (cloι z ≫ p)` using `hamb.sub (cloι z)`. Establish `hc (σ : k →+* ℂ)` using `(GlobalTheory.T.mixed_chern_integral_point_closure_closed_subscheme k X (clo z) p (cloι z ≫ p) σ hX.isProjOver (cloι z) rfl e (fun i => MLine.ofHerm (L i) σ) ((MLine.ofHerm N σ).logSec t)).2`.
+
+Simplify using `only [cloι_genericPoint] at hc`. Use `(dif_pos hgen).trans ?_` and prove the remaining obligations. Break down `isArithVar_or_isEmpty hamb' hd with hv | hE` into its components or cases. Use `(GlobalTheory.T.mixedArchLogNormIntegral_eq_sum_embeddings hP k (clo z) (cloι z ≫ p) e hv (fun a => (L a).restr (cloι z)) (N.restr (cloι z)) (Cartier.secPull t (cloι z)) hgen).trans (finsum_congr fun σ => ?_)` and prove the remaining obligations. Rewrite using `[hc σ, logSec_restr_secPull]`.
+
+Both sides reduce to the same expression. Use `(mixArch_eq_zero_of_isEmpty hE _ _ _).trans (finsum_eq_zero_of_forall_eq_zero fun σ => ?_).symm` and prove the remaining obligations. Rewrite using `[hc σ]`. Use `haveI := hE σ`. Simplify using `only [Mix.int, MeasureTheory.integral_of_isEmpty, sub_zero]`.
+-/
 theorem resArch_eq_finsum_cycInt : GlobalTheory.Published.Principalisation → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (e : ℕ), IsArithVar p (e + 1) → ∀ (L : Fin e → HermLB p) (N : HermLB p) (t : N.B.Sec) (z : X), Order.coheight z = 1 → z ∈ nonzeroLocus t → MixHt.resArch L N t z = ∑ᶠ σ : k →+* ℂ, cycInt (fun i => MLine.ofHerm (L i) σ) ((MLine.ofHerm N σ).logSec t) z := by
   intro hP k _ X _ _ p e hX L N t z hz htz
   have hamb : IsAmb p := isAmb_of_isArithVar hX

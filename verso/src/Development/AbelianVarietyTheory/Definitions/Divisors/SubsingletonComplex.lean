@@ -11,13 +11,33 @@ def conjC : ℂ →ₐ[ℝ] ℂ := (Complex.conjAe : ℂ →ₐ[ℝ] ℂ)
 
 def conjCC : (ℂ × ℂ) →ₐ[ℝ] (ℂ × ℂ) := AlgHom.prodMap conjC conjC
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjC_apply (z : ℂ) : conjC z = (starRingEnd ℂ) z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjCC_apply (z : ℂ × ℂ) : conjCC z = ((starRingEnd ℂ) z.1, (starRingEnd ℂ) z.2) := rfl
 
+/- English proof (translation)
+Simplify using `[conjCC_apply]`.
+-/
 theorem conjCC_invol (z : ℂ × ℂ) : conjCC (conjCC z) = z := by
   simp [conjCC_apply]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem a ha => exact ha`. Consider the case `one => exact ⟨1, 1, by simp⟩`.
+
+Consider the case `mul a b _ _ ha hb`. Take `⟨s, x, hs⟩` from `ha`. Take `⟨t, y, ht⟩` from `hb`. Use `⟨s * t, x * y, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, map_mul, hs, ht]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `inv a _ ha`. Take `⟨s, x, hs⟩` from `ha`. Use `⟨s⁻¹, x⁻¹, ?_⟩` and prove the remaining obligations. Establish `h1 : ((a : Aˣ) : A) * (algebraMap k A ((s⁻¹ : kˣ) : k) * (((x⁻¹ : Aˣ) : A) * c ((x⁻¹ : Aˣ) : A))) = 1`.
+
+Rewrite using `[hs]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_inv]`. Conclude with `Units.inv_eq_of_mul_eq_one_right h1`. Introduce `h`.
+
+Conclude with `Subgroup.subset_closure h`.
+-/
 theorem mem_normSub_iff {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k A] (c : A →ₐ[k] A)
     (a : fixU k c) :
     a ∈ normSub k c ↔ ∃ (t : kˣ) (x : Aˣ), ((a : Aˣ) : A) = algebraMap k A t * (x * c x) := by
@@ -45,6 +65,13 @@ theorem mem_normSub_iff {k : Type} [Field k] {A : Type} [CommRing A] [Algebra k 
   · intro h
     exact Subgroup.subset_closure h
 
+/- English proof (translation)
+Establish `: normSub ℝ conjC = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `a _`. Rewrite using `[mem_normSub_iff]`. Establish `ha : (starRingEnd ℂ) ((a : ℂˣ) : ℂ) = ((a : ℂˣ) : ℂ)` using `a.2`.
+
+Establish `hre : (((a : ℂˣ) : ℂ).re : ℂ) = ((a : ℂˣ) : ℂ)` using `Complex.conj_eq_iff_re.mp ha`. Establish `hne : ((a : ℂˣ) : ℂ).re ≠ 0`. Introduce `h`. Rewrite `hre` using `[h]`. Conclude with `(a : ℂˣ).ne_zero (by simpa using hre.symm)`.
+
+Conclude with `⟨Units.mk0 _ hne, 1, by simp [hre]⟩`. Unfold `H1`. Rewrite using `[this]`. Conclude with `QuotientGroup.subsingleton_quotient_top`.
+-/
 theorem subsingleton_complex : Subsingleton (H1 ℝ conjC) := by
   have : normSub ℝ conjC = ⊤ := by
     rw [eq_top_iff]
@@ -63,10 +90,20 @@ theorem subsingleton_complex : Subsingleton (H1 ℝ conjC) := by
 
 def u : (ℂ × ℂ)ˣ := ⟨(1, -1), (1, -1), by ext <;> simp, by ext <;> simp⟩
 
+/- English proof (translation)
+Use `show conjCC ((1, -1) : ℂ × ℂ) = (1, -1)`. Simplify using `[conjCC_apply]`.
+-/
 theorem u_mem : u ∈ fixU ℝ conjCC := by
   show conjCC ((1, -1) : ℂ × ℂ) = (1, -1)
   simp [conjCC_apply]
 
+/- English proof (translation)
+Rewrite using `[mem_normSub_iff]`. Introduce and unpack `⟨t, x, h⟩`. Establish `h' : ((1, -1) : ℂ × ℂ) = algebraMap ℝ (ℂ × ℂ) t * (x * conjCC x)` using `h`. Establish `h1` using `congrArg (fun z : ℂ × ℂ => z.1.re) h'`. Establish `h2` using `congrArg (fun z : ℂ × ℂ => z.2.re) h'`.
+
+Simplify using `only [conjCC_apply, Prod.fst_mul, Prod.snd_mul, Complex.mul_conj, Prod.algebraMap_apply, Complex.coe_algebraMap, ← Complex.ofReal_mul, Complex.ofReal_re, Complex.one_re, Complex.neg_re] at h1 h2`. Establish `a` using `Complex.normSq_nonneg (x : ℂ × ℂ).1`. Establish `b` using `Complex.normSq_nonneg (x : ℂ × ℂ).2`. Break down `le_total 0 (t : ℝ) with ht | ht` into its components or cases. Use polynomial arithmetic with `[mul_nonneg ht b]`.
+
+Use polynomial arithmetic with `[mul_nonneg_of_nonpos_of_nonpos ht (neg_nonpos.mpr a)]`.
+-/
 theorem u_not_mem : (⟨u, u_mem⟩ : fixU ℝ conjCC) ∉ normSub ℝ conjCC := by
   rw [mem_normSub_iff]
   rintro ⟨t, x, h⟩
@@ -81,10 +118,20 @@ theorem u_not_mem : (⟨u, u_mem⟩ : fixU ℝ conjCC) ∉ normSub ℝ conjCC :=
   · nlinarith [mul_nonneg ht b]
   · nlinarith [mul_nonneg_of_nonpos_of_nonpos ht (neg_nonpos.mpr a)]
 
+/- English proof (translation)
+Unfold `H1`. Conclude with `⟨⟨QuotientGroup.mk ⟨u, u_mem⟩, 1, fun h => u_not_mem ((QuotientGroup.eq_one_iff _).mp h)⟩⟩`.
+-/
 theorem nontrivial_prod : Nontrivial (H1 ℝ conjCC) := by
   unfold H1
   exact ⟨⟨QuotientGroup.mk ⟨u, u_mem⟩, 1, fun h => u_not_mem ((QuotientGroup.eq_one_iff _).mp h)⟩⟩
 
+/- English proof (translation)
+Introduce `h`. Apply the tactic sequence `have hm : (⟨(1, 2), (1, 2⁻¹), by ext <;> simp, by ext <;> simp⟩ : (ℂ × ℂ)ˣ) ∈ simT ℝ conjCC := by`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨t, ht⟩` from `hm`.
+
+Establish `h' : ((1, 2) : ℂ × ℂ) * conjCC (1, 2) = algebraMap ℝ (ℂ × ℂ) t` using `ht`. Establish `h1` using `congrArg (fun z : ℂ × ℂ => z.1.re) h'`. Establish `h2` using `congrArg (fun z : ℂ × ℂ => z.2.re) h'`. Simplify using `only [conjCC_apply, Prod.fst_mul, Prod.snd_mul, Complex.mul_conj, Prod.algebraMap_apply, Complex.coe_algebraMap, Complex.ofReal_re] at h1 h2`. Simplify using `[Complex.normSq_apply] at h1 h2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem simT_ne_top : simT ℝ conjCC ≠ ⊤ := by
   intro h
   have hm : (⟨(1, 2), (1, 2⁻¹), by ext <;> simp, by ext <;> simp⟩ : (ℂ × ℂ)ˣ) ∈ simT ℝ conjCC := by

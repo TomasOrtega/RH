@@ -35,20 +35,42 @@ def IsSum (a b c : Y ⟶ B.left) : Prop :=
 
 variable {B}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨T.hom, a, b, rfl, rfl, rfl⟩`.
+-/
 theorem isSum_mul {T : Over S} (a b : T ⟶ B) : IsSum B a.left b.left (a * b).left := ⟨T.hom, a, b, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Take `⟨s, a₀, b₀, rfl, rfl, rfl⟩` from `h`. Take `⟨s', a₁, b₁, ha, hb, rfl⟩` from `h'`. Take `rfl : s = s'` from `(Over.w a₀).symm.trans ((congrArg (· ≫ B.hom) ha.symm).trans (Over.w a₁))`. Rewrite using `[Over.OverMorphism.ext ha, Over.OverMorphism.ext hb]`.
+-/
 theorem IsSum.unique {a b c c' : Y ⟶ B.left} (h : IsSum B a b c) (h' : IsSum B a b c') : c = c' := by
   obtain ⟨s, a₀, b₀, rfl, rfl, rfl⟩ := h
   obtain ⟨s', a₁, b₁, ha, hb, rfl⟩ := h'
   obtain rfl : s = s' := (Over.w a₀).symm.trans ((congrArg (· ≫ B.hom) ha.symm).trans (Over.w a₁))
   rw [Over.OverMorphism.ext ha, Over.OverMorphism.ext hb]
 
+/- English proof (translation)
+Take `⟨s, a₀, b₀, rfl, rfl, rfl⟩` from `h`. Set `ρ : Over.mk (r ≫ s) ⟶ Over.mk s` to `Over.homMk r rfl`. Conclude with `⟨r ≫ s, ρ ≫ a₀, ρ ≫ b₀, ha.symm, hb.symm, congrArg (fun q => q.left) (MonObj.comp_mul ρ a₀ b₀).symm⟩`.
+-/
 theorem IsSum.comp {a b c : Y ⟶ B.left} (h : IsSum B a b c) (r : Y' ⟶ Y) {a' b' : Y' ⟶ B.left} (ha : a' = r ≫ a)
     (hb : b' = r ≫ b) : IsSum B a' b' (r ≫ c) := by
   obtain ⟨s, a₀, b₀, rfl, rfl, rfl⟩ := h
   let ρ : Over.mk (r ≫ s) ⟶ Over.mk s := Over.homMk r rfl
   exact ⟨r ≫ s, ρ ≫ a₀, ρ ≫ b₀, ha.symm, hb.symm, congrArg (fun q => q.left) (MonObj.comp_mul ρ a₀ b₀).symm⟩
 
+/- English proof (translation)
+Establish `H₁` using `hasGen_sum_of_lbIso L _ _ _ _ H`. Set `T : Over S` to `Over.mk f`. Set `x₀ : T ⟶ B` to `Over.homMk x hx`. Set `y₀ : T ⟶ B` to `Over.homMk y hy`. Set `w : T ⊗ B ⟶ B` to `(fst T B ≫ y₀⁻¹) * snd T B`.
+
+Set `h : (T ⊗ B).left ⟶ Y` to `pb.lift w.left (fst T B).left ((Over.w w).trans (Over.w (fst T B)).symm)`. Establish `hb : h ≫ b = w.left` using `pb.lift_fst _ _ _`. Establish `hp : h ≫ p = (fst T B).left` using `pb.lift_snd _ _ _`. Establish `key : ∀ (d : T ⟶ B) (σ : Y ⟶ B.left), IsSum B (p ≫ d.left) b σ → h ≫ σ = (translPt B (d * y₀⁻¹)).left` using `fun d σ hσ => by`. Establish `e : (fst T B ≫ d) * w = translPt B (d * y₀⁻¹)`.
+
+Express the relevant statement in the definitionally equal form `_ = (fst T B ≫ (d * y₀⁻¹)) * snd T B`. Rewrite using `[MonObj.comp_mul, _root_.mul_assoc]`. Rewrite using `[← e]`. Conclude with `(hσ.comp h (by rw [← Category.assoc, hp]; rfl) hb.symm).unique (isSum_mul (fst T B ≫ d) w)`. Establish `k₁ : h ≫ τ' = (snd T B).left`.
+
+Rewrite using `[key y₀ τ' hτ', mul_inv_cancel, KerPow.translPt_one]`. Establish `H₂` using `H₁.pull h (φ' := Sum.elim ![(snd T B).left, w.left] ![(translPt B (x₀ * y₀⁻¹)).left, w.left]) fun k => by`. Apply the tactic sequence `rcases k with k | k <;> fin_cases k`. Use `exacts [k₁, hb, key x₀ τ hτ, hb]`. Establish `triv : KerPow.HasGen L (Y` using `(T ⊗ B).left) (K := Fin 0) ![] ![] := KerPow.hasGen_of_trivial hL fun U _ h => by simp`.
+
+Establish `H₃` using `H₂.comb hL triv (φ'' := ![(translPt B (x₀ * y₀⁻¹)).left, (snd T B).left]) (ε'' := ![1, -1]) fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+
+Normalize the expressions using the abelian group laws. Conclude with `congrArg (fun q => q.left) (mul_inv_eq_one.1 (KerPow.eq_one_of_locGen hK (x₀ * y₀⁻¹) fun _ => ⟨⊤, trivial, H₃.pull _ fun _ => rfl⟩))`.
+-/
 theorem point_eq_of_lbIso {L : LB B.left} (hL : L.IsLB) (hK : KTriv B L) {S' : Scheme.{0}} {f : S' ⟶ S}
     {b : Y ⟶ B.left} {p : Y ⟶ S'} (pb : IsPullback b p B.hom f) {x y : S' ⟶ B.left} (hx : x ≫ B.hom = f)
     (hy : y ≫ B.hom = f) {τ τ' : Y ⟶ B.left} (hτ : IsSum B (p ≫ x) b τ) (hτ' : IsSum B (p ≫ y) b τ')
@@ -96,6 +118,9 @@ def HasWtGen (i : splitTorus S X ⟶ G) (M : LB G.left) (χ : X) : Prop :=
 
 variable {i : splitTorus S X ⟶ G} {χ : X}
 
+/- English proof (translation)
+Take `⟨t, ht, hw⟩` from `H`. Use `⟨⟨fun i => res (a.le i) (pullU F _ (t.s (a.idx i)))⟩, fun i j => unit_ext fun y hy => ?_, fun j => (hw _).pull hF hi (a.le j)⟩` and prove the remaining obligations. Establish `hm : F y ∈ M.U (a.idx i) ⊓ M.U (a.idx j)` using `⟨a.le i hy.1, a.le j hy.2⟩`. Establish `e` using `(gm_res F y _ hm _).symm.trans ((congrArg (gm F y _) (ht (a.idx i) (a.idx j))).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res F y _ hm _))))`. Conclude with `((gm_res _ y _ hy _).trans (gm_rp₁ F y _ _ (a.le i) hy.1 _)).trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (a.g y i j hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_rp₁ F y _ _ (a.le j) hy.2 _)))).symm)`.
+-/
 theorem HasWtGen.chartPull {f : S' ⟶ S} {F : G'.left ⟶ G.left} (hF : IsGrpPullback G' G f F)
     {i' : splitTorus S' X ⟶ G'} (hi : TorusCompat f F i' i) {M : LB G.left} {M' : LB G'.left} (a : ChartPull M' M F)
     (H : HasWtGen i M χ) : HasWtGen i' M' χ := by
@@ -108,22 +133,40 @@ theorem HasWtGen.chartPull {f : S' ⟶ S} {F : G'.left ⟶ G.left} (hF : IsGrpPu
   exact ((gm_res _ y _ hy _).trans (gm_rp₁ F y _ _ (a.le i) hy.1 _)).trans (e.trans ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) (a.g y i j hy.1 hy.2) ((gm_res _ y _ hy _).trans (gm_rp₁ F y _ _ (a.le j) hy.2 _)))).symm)
 
+/- English proof (translation)
+The claim follows from `have : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G)) H.chartPull (isGrpPullback_of_iso (Iso.refl G)) (TorusCompat.refl i) a`.
+-/
 theorem HasWtGen.chart {M M' : LB G.left} (a : ChartPull M' M (𝟙 _)) (H : HasWtGen i M χ) : HasWtGen i M' χ :=
   have : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G))
   H.chartPull (isGrpPullback_of_iso (Iso.refl G)) (TorusCompat.refl i) a
 
+/- English proof (translation)
+Take `rfl : ψ = fun k => F ≫ φ k` from `funext e`. Conclude with `⟨.chart (chartPullIn L φ ε F), .chart (chartPullOut L φ ε F _ fun _ => rfl)⟩`.
+-/
 theorem hasWtGen_pull_iff {A Y : Scheme.{0}} {L : LB A} {K : Type} [Fintype K] {φ : K → (Y ⟶ A)} {ε : K → ℤ}
     {F : G.left ⟶ Y} {ψ : K → (G.left ⟶ A)} (e : ∀ k, ψ k = F ≫ φ k) :
     HasWtGen i ((LB.LinComb L φ ε).pull F) χ ↔ HasWtGen i (LB.LinComb L ψ ε) χ := by
   obtain rfl : ψ = fun k => F ≫ φ k := funext e
   exact ⟨.chart (chartPullIn L φ ε F), .chart (chartPullOut L φ ε F _ fun _ => rfl)⟩
 
+/- English proof (translation)
+Take `rfl : ε' = fun k => -ε k` from `funext e`. Take `⟨t, ht, hw⟩` from `H`. Conclude with `⟨LB.invGen L φ ε t, DVR.invGen_isGen _ _ _ _ ht, fun j => neg_neg χ ▸ (hw j).inv⟩`.
+-/
 theorem HasWtGen.inv {A : Scheme.{0}} {L : LB A} {K : Type} [Fintype K] {φ : K → (G.left ⟶ A)} {ε ε' : K → ℤ}
     (e : ∀ k, ε' k = -ε k) (H : HasWtGen i (LB.LinComb L φ ε) (-χ)) : HasWtGen i (LB.LinComb L φ ε') χ := by
   obtain rfl : ε' = fun k => -ε k := funext e
   obtain ⟨t, ht, hw⟩ := H
   exact ⟨LB.invGen L φ ε t, DVR.invGen_isGen _ _ _ _ ht, fun j => neg_neg χ ▸ (hw j).inv⟩
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `H.chartPull (chartPullId N) (Geo.Tor.chartPullPull N' (𝟙 Y) (𝟙 Y) rfl)`. Take `⟨a, ha, hχ⟩` from `h`. Take `⟨u, hu, hv⟩` from `exists_up ((isGen_iff w).1 hw) hN' hN a ha`. Rewrite using `[← Category.comp_id F]`. Use `⟨u, hu, fun p => isWt_of_gm _ _ fun Z t g z m₂ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨q, hq⟩` from `exists_chart hN (F (g.left z))`. Establish `e : F (((t ≫ i) * g).left z) = F (g.left z)` using `congrArg (fun q => q z) (hF Z t g)`. Establish `n₂ : g.left z ∈ (N.pull F).U fun _ => q` using `mem_pull.2 hq`. Establish `n₁ : ((t ≫ i) * g).left z ∈ (N.pull F).U fun _ => q` using `mem_pull.2 (e ▸ hq)`. Establish `m₁ : ((t ≫ i) * g).left z ∈ (N'.pull (F ≫ 𝟙 Y)).U p`.
+
+Establish `: F (g.left z) ∈ N'.U (p PUnit.unit)` using `mem_pull.1 m₂`. Conclude with `mem_pull.2 (show F _ ∈ N'.U (p PUnit.unit) from e ▸ this)`. Use `(hv _ _ z p _ m₁ n₁).trans (Eq.trans ?_ (congrArg _ (hv _ _ z p _ m₂ n₂).symm))` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congrArg₂ (· * ·) ?_ (gm_eq_of_isWt (hχ _) t g z n₁ n₂)` and prove the remaining obligations.
+
+Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.pw`. Simplify using `only [hF]`.
+-/
 theorem HasWtGen.of_lbIso {Y : Scheme.{0}} {F : G.left ⟶ Y}
     (hF : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G), ((t ≫ i) * g).left ≫ F = g.left ≫ F)
     {N N' : LB Y} (hN : N.IsLB) (hN' : N'.IsLB) (H : LBIso N N') (h : HasWtGen i (N.pull F) χ) :
@@ -158,6 +201,9 @@ def Rep (Q : TQ G X) (L : LB B.left) (b : Q.B.left ⟶ B.left) (x : S' ⟶ B.lef
 
 variable {Q : TQ G X} {L : LB B.left} {b : Q.B.left ⟶ B.left} {χ : X}
 
+/- English proof (translation)
+Take `⟨τ, hτ, u, hu⟩` from `h`. Take `⟨τ', hτ', u', hu'⟩` from `h'`. Conclude with `point_eq_of_lbIso hL hK pb hx hy hτ hτ' (lbIso_of_genWt _ _ _ Q _ _ u u' χ (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL _ _) hu hu')`.
+-/
 theorem Rep.unique (hL : L.IsLB) (hK : KTriv B L) {f : S' ⟶ S} (pb : IsPullback b Q.B.hom B.hom f)
     {x y : S' ⟶ B.left} (hx : x ≫ B.hom = f) (hy : y ≫ B.hom = f) (h : Rep Q L b x χ) (h' : Rep Q L b y χ) :
     x = y := by
@@ -166,6 +212,11 @@ theorem Rep.unique (hL : L.IsLB) (hK : KTriv B L) {f : S' ⟶ S} (pb : IsPullbac
   exact point_eq_of_lbIso hL hK pb hx hy hτ hτ' (lbIso_of_genWt _ _ _ Q _ _ u u' χ (DVR.linComb_isLB _ hL _ _)
     (DVR.linComb_isLB _ hL _ _) hu hu')
 
+/- English proof (translation)
+Take `⟨τ, hτ, h⟩` from `h`. Use `⟨β ≫ τ, hτ.comp β (by rw [← Category.assoc, ← hβ, Category.assoc]) hb.symm, (hasWtGen_pull_iff fun _ => rfl).2 (((hasWtGen_pull_iff fun _ => rfl).1 h).chartPull hF hi (chartPullSame L _ _ _ F fun k => ?_))⟩` and prove the remaining obligations. Use `fin_cases k`. Use `show Q'.q.left ≫ β ≫ τ = F ≫ Q.q.left ≫ τ`. Rewrite using `[reassoc_of% hq]`.
+
+Use `show Q'.q.left ≫ b' = F ≫ Q.q.left ≫ b`. Rewrite using `[← hb, reassoc_of% hq]`.
+-/
 theorem Rep.pull {Q' : TQ G' X} {g : S'' ⟶ S'} {F : G'.left ⟶ G.left} (hF : IsGrpPullback G' G g F)
     (hi : TorusCompat g F Q'.i Q.i) {β : Q'.B.left ⟶ Q.B.left} (hβ : β ≫ Q.B.hom = Q'.B.hom ≫ g)
     (hq : Q'.q.left ≫ β = F ≫ Q.q.left) {b' : Q'.B.left ⟶ B.left} (hb : β ≫ b = b') {x : S' ⟶ B.left}
@@ -180,6 +231,11 @@ theorem Rep.pull {Q' : TQ G' X} {g : S'' ⟶ S'} {F : G'.left ⟶ G.left} (hF : 
   · show Q'.q.left ≫ b' = F ≫ Q.q.left ≫ b
     rw [← hb, reassoc_of% hq]
 
+/- English proof (translation)
+Take `⟨τ, hτ, h⟩` from `h`. Establish `e : τ = b ≫ ((toUnit B ≫ c) * 𝟙 B).left` using `hτ.unique ((isSum_mul (toUnit B ≫ c) (𝟙 B)).comp b (by`. Rewrite using `[Over.comp_left, Rosenlicht.toUnit_left, ← Category.assoc, ← w, Category.assoc]) (Category.comp_id b).symm)`. Use `(hasWtGen_pull_iff (ψ := fun k => Q.q.left ≫ ![τ, b] k) fun k => ?_).2 ((hasWtGen_pull_iff fun _ => rfl).1 h)` and prove the remaining obligations. Use `fin_cases k`.
+
+Conclude with `(congrArg (Q.q.left ≫ ·) e).trans (Category.assoc _ _ _).symm`. Conclude with `(Category.comp_id _).symm`.
+-/
 theorem Rep.section {f : S' ⟶ S} (w : b ≫ B.hom = Q.B.hom ≫ f) (c : 𝟙_ _ ⟶ B) (h : Rep Q L b (f ≫ c.left) χ) :
     HasWtGen Q.i ((LB.LinComb L (K := Fin 2) ![((toUnit B ≫ c) * 𝟙 B).left, 𝟙 B.left] ![-1, 1]).pull
       (Q.q.left ≫ b)) χ := by
@@ -194,6 +250,15 @@ theorem Rep.section {f : S' ⟶ S} (w : b ≫ B.hom = Q.B.hom ≫ f) (c : 𝟙_ 
 
 end Rep
 
+/- English proof (translation)
+Establish `hL` using `M.L.isLB`. Establish `hL'` using `pull_isLB hL b`. Establish `hw` using `(isGen_iff _).1 (pullIso_isGen hL b)`. Take `⟨g, hg⟩` from `AbelianDim.exists_relDim A Q.B Q.isAb`. Establish `hs : Sym B M.L.L` using `fun _ => ⟨⊤, trivial, by`.
+
+Take `⟨u, hu, -⟩` from `exists_gen (φ' := ![(B.hom ⁻¹ᵁ ⊤).ι ≫ (GrpObj.inv : B ⟶ B).left, (B.hom ⁻¹ᵁ ⊤).ι]) (ε' := ![1, -1]) hL (fun U _ h => Finset.prod_congr rfl fun k _ => by fin_cases k exacts [rfl, congrArg (fun q => h q ^ (-1 : ℤ)) (Category.comp_id _)]) _ (DVR.pullGen_isGen _ _ _ _ M.sym_gen (B.ho …`. Conclude with `⟨u, hu⟩⟩`. Set `P : PolAV (Spec (CommRingCat.of A))` to `⟨Q.B, Q.isAb, g, hg, M.L.L.pull b, hL', PolBaseChange.rigidified_pull pb ⟨M.L.rig, M.L.rigGen⟩, PolBaseChange.sym_pull pb hs, relAmple_pull pb.1 hL hL' hw ⊤ (isAffineOpen_top _) (fun _ => trivial) hA, kTriv_pull pb hL hL' hw hK⟩`. Take `⟨N, t, hN, ht, hΛ⟩` from `WtBundle.exists_genWt Q (-χ)`. Take `⟨x, hx⟩` from `hP A P N hN hΛ`.
+
+Use `replace hx : LBIso N (LB.LinComb (M.L.L.pull b) (K := Fin 2) ![((toUnit Q.B ≫ x) * 𝟙 Q.B).left, 𝟙 Q.B.left] ![1, -1]) := hx`. Establish `H` using `hx.trans hN (DVR.linComb_isLB _ hL' _ _) (DVR.linComb_isLB _ hL _ _) (iso_linComb hw _ _)`. Establish `H₁` using `HasWtGen.of_lbIso (i := Q.i) (fun Z x g => by`. Rewrite using `[← Over.comp_left, ← Over.comp_left, TQ.mul_comp_q]) hN (DVR.linComb_isLB _ hL _ _) H ⟨t, ht⟩`. Apply the tactic sequence `refine ⟨x.left ≫ b, ?_, ((toUnit Q.B ≫ x) * 𝟙 Q.B).left ≫ b, ?_, (hasWtGen_pull_iff fun _ => rfl).2 (HasWtGen.inv (ε := ![1, -1]) (fun k => by fin_cases k <;> rfl) ((hasWtGen_pull_iff fun k => ?_).1 H₁))⟩`.
+
+Rewrite using `[Category.assoc, pb.1.w, ← Category.assoc, Over.w x]`. Conclude with `Category.id_comp _`. Use `⟨_, pushPt pb.1.w (toUnit Q.B ≫ x), pushPt pb.1.w (𝟙 Q.B), ?_, Category.id_comp b, pb.2 _ _ _ _ _ rfl rfl⟩ show (toUnit Q.B ≫ x).left ≫ b = _` and prove the remaining obligations. Rewrite using `[Over.comp_left, Rosenlicht.toUnit_left, Category.assoc]`. Use `fin_cases k exacts [rfl, congrArg (Q.q.left ≫ ·) (Category.id_comp b).symm]`.
+-/
 theorem exists_rep (hP : PicardZeroDegenerationCondition) {R A : Type} [CommRing R] [CommRing A] [IsLocalRing A] [IsNoetherianRing A]
     {B : Over (Spec (CommRingCat.of R))} [GrpObj B] [IsCommMonObj B] (M : CP B) (hA : RelAmple B M.L.L)
     (hK : KTriv B M.L.L) {G : Over (Spec (CommRingCat.of A))} [GrpObj G] [IsCommMonObj G] {X : Type} [AddCommGroup X]

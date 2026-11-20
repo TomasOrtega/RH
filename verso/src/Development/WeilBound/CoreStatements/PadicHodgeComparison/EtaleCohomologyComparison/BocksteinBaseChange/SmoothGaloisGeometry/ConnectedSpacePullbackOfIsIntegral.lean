@@ -9,6 +9,15 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 
 namespace CrystallineSemistableComparison
 
+/- English proof (translation)
+Establish `hne : Nonempty ↥(pullback p j)`. Take `⟨x⟩` from `(inferInstance : Nonempty X)`. Establish `hη : genericPoint (Spec (CommRingCat.of O)) ⤳ p x` using `genericPoint_specializes _`. Take `⟨x', -, hx'⟩` from `hp hη`. Establish `hmem : genericPoint (Spec (CommRingCat.of O)) ∈ Set.range j`.
+
+Take `⟨t⟩` from `(inferInstance : Nonempty T)`. Conclude with `((genericPoint_spec (Spec (CommRingCat.of O))).mem_open_set_iff j.isOpenEmbedding.isOpen_range).mpr ⟨j t, trivial, t, rfl⟩`. Take `⟨t, ht⟩` from `hmem`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback x' t (hx'.trans ht.symm)`. Conclude with `⟨z⟩`.
+
+Establish `hirr : IsPreirreducible (Set.univ : Set ↥(pullback p j))`. Establish `h` using `(IrreducibleSpace.isIrreducible_univ X).2.preimage (pullback.fst p j).isOpenEmbedding`. Simplify using `using h`. Establish `: PreirreducibleSpace ↥(pullback p j)` using `⟨hirr⟩`. Establish `: IrreducibleSpace ↥(pullback p j)` using `⟨hne⟩`.
+
+Use `infer_instance`.
+-/
 theorem connectedSpace_pullback_of_isIntegral {O : Type} [CommRing O] [IsDomain O] {X T : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of O)) (j : T ⟶ Spec (CommRingCat.of O)) [IsOpenImmersion j] [Nonempty T]
     [IsIntegral X] (hp : GeneralizingMap p) : ConnectedSpace ↥(pullback p j) := by
@@ -34,6 +43,21 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 abbrev Model.sub (M : Model l K) (U : M.X.Opens) : Model l K := ⟨U.toScheme, U.ι ≫ M.p⟩
 
+/- English proof (translation)
+Introduce `M hM`. Use `hN M hM` as an intermediate fact. Take `⟨r, U, hU, hc⟩` from `exists_isSum_components M.X`. Establish `hcl : ∀ a, IsClosed (U a : Set M.X)`. Introduce `a`.
+
+Establish `hrange` using `hU.2.1`. Establish `: (U a : Set M.X)ᶜ = ⋃ b ∈ {b | b ≠ a}, (U b : Set M.X)`. Use extensionality with `x`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hx`. Take `⟨b, hb⟩` from `hU.2.1 x`. Rewrite `hb` using `[Scheme.Opens.range_ι]`. Conclude with `⟨b, fun h ↦ hx (h ▸ hb), hb⟩`. Introduce and unpack `⟨b, hba, hb⟩ hx`.
+
+Use `hU.2.2 b a hba` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Conclude with `Set.disjoint_left.mp this hb hx`. Rewrite using `[← isOpen_compl_iff, this]`. Conclude with `isOpen_biUnion fun b _ ↦ (U b).isOpen`.
+
+Establish `hG : ∀ a, G (M.sub (U a))` using `fun a ↦ hsub M hM (U a) (hcl a)`. Establish `hconn : ∀ a, ∃ d, (M.sub (U a)).Conn d`. Introduce `a`. Take `⟨hnorm, hnoeth, hgen, hsm⟩` from `hF _ (hG a)`. Establish `: ConnectedSpace (M.sub (U a)).X` using `hc a`.
+
+Establish `: IsIntegral (M.sub (U a)).X` using `GlobalTheory.IsNormalScheme.isIntegral_of_connectedSpace _`. Establish `: ConnectedSpace (M.sub (U a)).gen` using `connectedSpace_pullback_of_isIntegral (M.sub (U a)).p _ hgen`. Take `⟨d, hd⟩` from `exists_smoothOfRelativeDimension (M.sub (U a)).q`. Conclude with `⟨d, inferInstance, hd⟩`. Use `choose d hd using hconn`.
+
+Conclude with `⟨r, fun a ↦ M.sub (U a), d, fun a ↦ (U a).ι, fun a ↦ rfl, hU, fun a ↦ ⟨hG a, hd a⟩⟩`.
+-/
 theorem compM_of (G : Model l K → Prop)
     (hj : IsOpenImmersion (Spec.map (CommRingCat.ofHom (OK l K).subtype)))
     (hsub : ∀ M, G M → ∀ U : M.X.Opens, IsClosed (U : Set M.X) → G (M.sub U))

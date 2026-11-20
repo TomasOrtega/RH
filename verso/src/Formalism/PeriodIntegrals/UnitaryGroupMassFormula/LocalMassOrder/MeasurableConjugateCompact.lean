@@ -48,28 +48,46 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+The claim follows from `(Kloc (E := E) v Λ).mul_mem ha hb`.
+-/
 theorem kvc_mul {a b : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (hb : b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) : a * b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   (Kloc (E := E) v Λ).mul_mem ha hb
 
+/- English proof (translation)
+The claim follows from `(Kloc (E := E) v Λ).inv_mem ha`.
+-/
 theorem kvc_inv {a : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) :
     a⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   (Kloc (E := E) v Λ).inv_mem ha
 
+/- English proof (translation)
+The claim follows from `(hk z).1 hz`.
+-/
 theorem kvc_mem_lat {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     {z : Fin n → Fv F v ⊗[F] E} (hz : z ∈ latLoc (E := E) v Λ) :
     lin (Fv F v) σ J k z ∈ latLoc (E := E) v Λ :=
   (hk z).1 hz
 
+/- English proof (translation)
+Simplify using `[sc, Algebra.TensorProduct.tmul_mul_tmul]`.
+-/
 theorem sc_mul (a b : Fv F v) : sc (E := E) v a * sc (E := E) v b = sc (E := E) v (a * b) := by
   simp [sc, Algebra.TensorProduct.tmul_mul_tmul]
 
+/- English proof (translation)
+Unfold `dV`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+-/
 theorem dV_ne : dV v ≠ 0 := by
   unfold dV
   split_ifs with h
   · exact h.choose_spec.1
   · exact one_ne_zero
 
+/- English proof (translation)
+Unfold `alp`. Use `split_ifs`. Conclude with `pow_ne_zero _ (inv_ne_zero (dV_ne v))`. Conclude with `one_ne_zero`.
+-/
 theorem alp_ne (r : ℕ) (a : Fin (r + 1)) : alp v r a ≠ 0 := by
   unfold alp
   split_ifs
@@ -84,6 +102,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
   (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (P : Frame E n r) (Λ : Set (Fin n → E))
 
+/- English proof (translation)
+Use `set X : TupV (E := E) v n (r + 1) := y • ratTup (Fv F v) (F0 P) with hX`. Establish `hXa : ∀ a, X a = lin (Fv F v) σ J y (ratV (F` using `F) (Fv F v) (F0 P a)) := fun a => rfl`. Establish `hs0 : ∀ a, lin (Fv F v) σ J (s0 : HA (Fv F v) σ J) (ratV (F` using `F) (Fv F v) (F0 P a)) = ratV (F := F) (Fv F v) (F0 P a) := fun a => congrFun (s0.2 : (s0 : HA (Fv F v) σ J) • ratTup (Fv F v) (F0 P) = ratTup (Fv F v) (F0 P)) a`. Establish `hkX : ∀ b, lin (Fv F v) σ J (y * ((s0 : HA (Fv F v) σ J) * g) * y⁻¹) (X b) = ∑ a, uMat v x a b • X a`. Introduce `b`.
+
+Rewrite using `[hXa, lin_mul, lin_inv_lin, lin_mul, lin_mul, hg, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hs0, map_smul, hXa]`. Introduce `p`. Take `⟨⟨a, b⟩, hab⟩` from `p`.
+
+Set `c : Fin (r + 1) → Fv F v ⊗[F] E` to `fun a => sc (E := E) v ((alp v r a)⁻¹ * alp v r b) * uMat v x a b`. Establish `key : ∑ a, c a • locF v X a = lin (Fv F v) σ J (y * ((s0 : HA (Fv F v) σ J) * g) * y⁻¹) (locF v X b)`. Simplify using `only [locF, map_smul, hkX, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Establish `e1 : sc (E` using `E) v ((alp v r a)⁻¹ * alp v r b) * sc (E := E) v (alp v r a) = sc (E := E) v (alp v r b) := by`. Rewrite using `[sc_mul]`. Use `congr 1`. Clear denominators, using `[alp_ne v r a]` for the nonvanishing conditions. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hmem : ∑ a, c a • locF v X a ∈ latLoc (E` using `E) v Λ := by`. Rewrite using `[key]`. Conclude with `kvc_mem_lat σ J v Λ hk (hy.1 b)`. Use `hy.2 c hmem a` as an intermediate fact. Simplify using `only [c, uMat, if_neg hab.ne, dif_pos hab] at this`.
+
+Conclude with `this`.
+-/
 theorem uo_of_mem {y : HA (Fv F v) σ J}
     (hy : IsPrim v Λ (locF v (y • ratTup (Fv F v) (F0 P))))
     (s0 : S0 (Fv F v) σ J P) (g : HA (Fv F v) σ J) (x : UIdx r → Fv F v ⊗[F] E)
@@ -129,6 +160,29 @@ theorem uo_of_mem {y : HA (Fv F v) σ J}
 
 end Main
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, _, _, _, hpu, hy⟩` from `id h`. Establish `hC` using `hC0`. Use `set C := {g : HA (Fv F v) σ J | y * g * y⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v} with hCdef`. Set `t : (UIdx r → Fv F v ⊗[F] E) → HA (Fv F v) σ J` to `fun x => if hx : x ∈ UO (E := E) v r then (hK0 x hx).choose else (hE0 x).choose`. Establish `ht : ∀ x b, lin (Fv F v) σ J (t x) (ratV (F` using `F) (Fv F v) (F0 P b)) = ∑ a, uMat v x a b • ratV (F := F) (Fv F v) (F0 P a) := by`.
+
+Introduce `x b`. Distinguish the cases in `hx : x ∈ UO (E := E) v r`. Simplify using `only [t, dif_pos hx]`. Conclude with `(hK0 x hx).choose_spec.1 b`. Simplify using `only [t, dif_neg hx]`.
+
+Conclude with `(hE0 x).choose_spec b`. Establish `htK : ∀ x ∈ UO (E` using `E) v r, y * t x * y⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v := by`. Introduce `x hx`. Simplify using `only [t, dif_pos hx]`. Conclude with `(hK0 x hx).choose_spec.2`.
+
+Establish `hiff : ∀ x (s0 : S0 (Fv F v) σ J P), (s0 : HA (Fv F v) σ J) * t x ∈ C ↔ x ∈ UO (E` using `E) v r ∧ s0 ∈ stabilizerConjugateCompact σ J v P Λ y := by`. Introduce `x s0`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Establish `hx` using `uo_of_mem σ J v P Λ hy s0 (t x) x (ht x) hk`.
+
+Use `⟨hx, ?_⟩` and prove the remaining obligations. Use `kvc_mul σ J v Λ hk (kvc_inv σ J v Λ (htK x hx))` as an intermediate fact. Express the relevant statement in the definitionally equal form `y * (s0 : HA (Fv F v) σ J) * y⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Introduce and unpack `⟨hx, hs⟩`. Use `kvc_mul σ J v Λ hs (htK x hx)` as an intermediate fact. Rewrite using `[hCdef, Set.mem_ofPred_eq]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+
+Establish `hL : μS (KSvT σ J v P Λ y) = ∫⁻ g, C.indicator 1 g ∂(amb μS)`. Rewrite using `[lintegral_indicator_one hC, Measure.map_apply measurable_subtype_coe hC]`. Both sides reduce to the same expression. Rewrite using `[hL, hpu (C.indicator 1) (measurable_one.indicator hC) t ht]`. Establish `hs0m : MeasurableSet (stabilizerConjugateCompact σ J v P Λ y)` using `measurable_subtype_coe hC`.
+
+Establish `hpt : ∀ x, ∫⁻ s0, C.indicator 1 ((s0 : HA (Fv F v) σ J) * t x) ∂μS0 = (UO (E` using `E) v r).indicator 1 x * μS0 (stabilizerConjugateCompact σ J v P Λ y) := by`. Introduce `x`. Establish `hq : ∀ s0 : S0 (Fv F v) σ J P, C.indicator (1 : HA (Fv F v) σ J → ENNReal) ((s0 : HA (Fv F v) σ J) * t x) = (UO (E` using `E) v r).indicator 1 x * (stabilizerConjugateCompact σ J v P Λ y).indicator 1 s0 := by`. Introduce `s0`. Distinguish the cases in `h1 : (s0 : HA (Fv F v) σ J) * t x ∈ C`.
+
+Take `⟨a1, a2⟩` from `(hiff x s0).1 h1`. Rewrite using `[Set.indicator_of_mem h1, Set.indicator_of_mem a1, Set.indicator_of_mem a2]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem h1]`. Distinguish the cases in `a1 : x ∈ UO (E := E) v r`.
+
+Establish `a2 : s0 ∉ stabilizerConjugateCompact σ J v P Λ y` using `fun a2 => h1 ((hiff x s0).2 ⟨a1, a2⟩)`. Rewrite using `[Set.indicator_of_notMem a2, mul_zero]`. Rewrite using `[Set.indicator_of_notMem a1, zero_mul]`. Repeatedly rewrite using `[hq]`. Rewrite using `[lintegral_const_mul _ (measurable_one.indicator hs0m), lintegral_indicator_one hs0m]`.
+
+Repeatedly rewrite using `[hpt]`. Rewrite using `[lintegral_mul_const _ (measurable_one.indicator hU0), lintegral_indicator_one hU0, mul_comm]`.
+-/
 theorem stepC_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
     (v : HeightOneSpectrum (𝓞 F)) {r : ℕ} (P : Frame E n r) (Λ : Set (Fin n → E))
@@ -206,6 +260,9 @@ theorem stepC_at {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   rw [lintegral_mul_const _ (measurable_one.indicator hU0), lintegral_indicator_one hU0,
     mul_comm]
 
+/- English proof (translation)
+Establish `hc : Continuous fun g : HA (Fv F v) σ J => y * g * y⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hc.measurable (LocMassOrdKv.kv_measurableSet σ J v Λ hSD)`.
+-/
 theorem measConj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F))
     (Λ : Set (Fin n → E)) (hSD : IsSDLoc σ J v Λ) (y : HA (Fv F v) σ J) :
@@ -214,10 +271,18 @@ theorem measConj {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
     (continuous_const.mul continuous_id).mul continuous_const
   exact hc.measurable (LocMassOrdKv.kv_measurableSet σ J v Λ hSD)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ v r P Λ μG μS μS0 y h`. Conclude with `measConj σ J v Λ h.2.2.1 y`.
+-/
 theorem measurable_conjugate_compact : MeasConjK := by
   intro F E _ _ _ _ _ σ n J ψ v r P Λ μG μS μS0 y h
   exact measConj σ J v Λ h.2.2.1 y
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ v r`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `hset : UO (E` using `E) v r = ⋂ p : UIdx r, (fun x : UIdx r → Fv F v ⊗[F] E => x p) ⁻¹' ((fun z : Fv F v ⊗[F] E => sc (E := E) v ((alp v r p.1.1)⁻¹ * alp v r p.1.2) * z) ⁻¹' OEv (E := E) v) := by`. Use extensionality with `x`. Simplify using `[UO]`.
+
+Rewrite using `[hset]`. Use `MeasurableSet.iInter fun p => measurable_pi_apply p ?_` and prove the remaining obligations. Conclude with `((LocMassOrdKv.isClosed_oev v).preimage (continuous_const.mul continuous_id)).measurableSet`.
+-/
 theorem measurable_unipotent_orbit : MeasUO := by
   intro F E _ _ _ _ _ v r
   have : BorelSpace (Fv F v ⊗[F] E) := ⟨rfl⟩
@@ -231,6 +296,9 @@ theorem measurable_unipotent_orbit : MeasUO := by
   exact ((LocMassOrdKv.isClosed_oev v).preimage
     (continuous_const.mul continuous_id)).measurableSet
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ v r P Λ μG μS μS0 y h`. Conclude with `stepC_at σ J ψ v P Λ μG μS μS0 y h (measConj σ J v Λ h.2.2.1 y) (measurable_unipotent_orbit v r) (hE σ J ψ v P Λ μG μS μS0 y h) (hK σ J ψ v P Λ μG μS μS0 y h)`.
+-/
 theorem stepC_of (hE : UnipExists) (hK : KUnip) : StepC := by
   intro F E _ _ _ _ _ σ n J ψ v r P Λ μG μS μS0 y h
   exact stepC_at σ J ψ v P Λ μG μS μS0 y h (measConj σ J v Λ h.2.2.1 y) (measurable_unipotent_orbit v r)

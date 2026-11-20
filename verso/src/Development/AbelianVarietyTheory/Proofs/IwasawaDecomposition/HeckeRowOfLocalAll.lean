@@ -16,6 +16,9 @@ section Gen
 variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type}
   {A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+Substitute `h` using the available equality. Consider the cases of `hu`. Consider the cases of `hv`. Conclude with `hec`.
+-/
 theorem hkRow_move (Rl : RealDat3 D A3 Ks) {i' i : Fin D.R.m} (h : i' = i) (k : ℕ) (P : PlE D.host)
     (u v : Fin (Rl.nW i') → D.what₂.LL) (u' v' : Fin (Rl.nW i) → D.what₂.LL) (hu : HEq u u') (hv : HEq v v')
     (hec : ∀ (α : GA D (Wc D i')) (R : Finset (GA D (Wc D i'))), IsHeckeAt (Wc D i') P k α →
@@ -31,6 +34,9 @@ theorem hkRow_move (Rl : RealDat3 D A3 Ks) {i' i : Fin D.R.m} (h : i' = i) (k : 
   cases hv
   exact hec
 
+/- English proof (translation)
+Use `⟨fun i k P hsp _ hoff h2 hkr α R hα hR x _ => ?_⟩` and prove the remaining obligations. Take `⟨i', hi'⟩` from `hoff`. Conclude with `hkRow_move Rl (idxOf_succ D i) k P (H.hL ((i : ℕ) + 1) k P x) x ((Y.fi i).e (H.hL ((i : ℕ) + 1) k P x)) ((Y.fi i).e x) (hfi i _).symm (hfi i _).symm (fun α' R' hα' hR' => hec ((i : ℕ) + 1) k P α' R' (by omega) (by have := i.2; omega) ⟨hsp, fun h => hi' (hS i' h), h2, hkr, hα', hR …`.
+-/
 theorem hkRow_of_ad (Rl : RealDat3 D A3 Ks) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (kKs : Ks →+* ↥D.LL0)
     (hk : ∀ x : Ks, ((kKs x : ↥D.LL0) : D.what₂.LL) = algebraMap Ks D.what₂.LL x)
     (Y : NExpRealS Rl cG (ratDatR Rl cG kKs hk)) (H : NExpRealH Rl cG _ Y) (Sb : Finset (PlE D.host))
@@ -51,9 +57,15 @@ end Gen
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w}
 
+/- English proof (translation)
+The claim follows from `hkRow_of_ad x.m.z.R x.m.z.cG l.rat.kKs l.rat.hk l.b.YS (hkH l) l.rat.In.Sb l.b.fi l.b.Sb_le l.rat.rat.hecke`.
+-/
 theorem hkRowX {x : St P} (l : LC hL x) : NExpHeckeRowX x.m.z.R x.m.z.cG _ l.b.YS (hkH l) fun _ => LinearMap.id :=
   hkRow_of_ad x.m.z.R x.m.z.cG l.rat.kKs l.rat.hk l.b.YS (hkH l) l.rat.In.Sb l.b.fi l.b.Sb_le l.rat.rat.hecke
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(by with_unfolding_all exact ((hkRowX l).tie :))⟩`.
+-/
 theorem hkRowL {x : St P} (L : LocAll (lay0 (Dof x))) (l : LC hL x) :
     NExpHeckeRowX (datL x L).R (datL x L).cG _ (ysL L l) (hkHL L l) fun _ => LinearMap.id :=
   ⟨(by with_unfolding_all exact ((hkRowX l).tie :))⟩

@@ -2,6 +2,15 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ConstOneMem
 open GlobalTheory.UseLoc.Cases
 
+/- English proof (translation)
+Introduce `O LL _ _ _ _ lam a hlam`. Establish `hK : algebraMap O LL (lam ^ a) ≠ 0`. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hlam`. Establish `hmem : ∀ s : LL, Submodule.Quotient.mk (p` using `intO (O := O) LL) s ∈ Xq LL lam a ↔ ∃ c : O, algebraMap O LL c = lam ^ a • s := by`.
+
+Introduce `s`. Simplify using `only [Xq, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `Iff.rfl`. Use `⟨⟨Submodule.Quotient.mk (algebraMap O LL (lam ^ a))⁻¹, (hmem _).2 ⟨1, ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_inv_cancel₀ hK, map_one]`. Introduce and unpack `⟨x, hx⟩`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨c, hc⟩` from `(hmem s).1 hx`. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations.
+
+Establish `hs : s = c • (algebraMap O LL (lam ^ a))⁻¹`. Rewrite using `[Algebra.smul_def, hc, Algebra.smul_def, mul_comm (algebraMap O LL (lam ^ a)) s, mul_assoc, mul_inv_cancel₀ hK, mul_one]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk s = c • Submodule.Quotient.mk (p := intO (O := O) LL) (algebraMap O LL (lam ^ a))⁻¹`. Rewrite using `[← Submodule.Quotient.mk_smul, ← hs]`.
+-/
 theorem _root_.UpperTheory.KN.exists_cyclic_generator_lam_power_quotient :
     ∀ {O : Type} (LL : Type) [CommRing O] [Field LL] [Algebra O LL], Function.Injective (algebraMap O LL) →
       ∀ (lam : O) (a : ℕ), algebraMap O LL lam ≠ 0 → ∃ x₀ : ↥(Xq LL lam a), ∀ x : ↥(Xq LL lam a), ∃ c : O, x = c • x₀ := by

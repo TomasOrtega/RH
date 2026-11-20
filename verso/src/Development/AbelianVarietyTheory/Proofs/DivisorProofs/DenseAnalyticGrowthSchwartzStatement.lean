@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.DenseAnalyticGrowth
 import Mathlib
 open SchwartzMap
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ExpTypeDense.dense_expType | exact GlobalTheory.ExpTypeDense.dense_expType | (intros; apply GlobalTheory.ExpTypeDense.dense_expType <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.dense_analytic_growth_schwartz : (∀ (W : Type) [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W],
       Dense {φ : SchwartzMap W ℂ | HasCompactSupport (⇑φ)}) →
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V],

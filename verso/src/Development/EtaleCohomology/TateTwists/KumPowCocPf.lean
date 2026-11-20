@@ -18,15 +18,36 @@ abbrev LevDelta : Prop := ∀ (R : Type) [CommRing R] {E : Spc} {I : Cx R} {n m 
     ev (δ n m α) (p + 1) t ht U x = Sec.map (I.d s t) (ev α (p + 1) s hs U x) +
       m.negOnePow • ∑ i : Fin (p + 2), (-1 : ℤ) ^ (i : ℕ) • ev α p t (by omega) U (x.face i)
 
+/- English proof (translation)
+Use `ext`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 lemma units_map_appTop_comp {V U X : Scheme.{0}} (g : V ⟶ U) (x : U ⟶ X) (u : (Γ(X, ⊤))ˣ) :
     Units.map g.appTop.hom.toMonoidHom (Units.map x.appTop.hom.toMonoidHom u) =
       Units.map (g ≫ x).appTop.hom.toMonoidHom u := by
   ext; simp; rfl
 
+/- English proof (translation)
+Simplify using `using hq.map x.appTop.hom`.
+-/
 lemma isUnit_q_pull {U X : Scheme.{0}} (q : ℕ) (x : U ⟶ X) (hq : IsUnit (q : Γ(X, ⊤))) :
     IsUnit (q : Γ(U, ⊤)) := by
   simpa using hq.map x.appTop.hom
 
+/- English proof (translation)
+Introduce `q _ X u hq`. Set `I` to `res _ (tw q 1)`. Set `a : ∀ (p : ℕ) (s : ℤ), -(p : ℤ) + 0 = s → ∀ U : Scheme.{0}, Sx (sch.obj X) p U → Sec (I.X s) U` to `fun p s _ U x => if hs : s = 0 then (by subst hs; exact kumT q U (Units.map (x : U ⟶ X).appTop.hom.toMonoidHom u)) else 0`. Establish `ha : ∀ p s h (V U : Scheme.{0}) (g : V ⟶ U) (x : Sx (sch.obj X) p U), Sec.res g (a p s h U x) = a p s h V (x.res g)`. Introduce `p s h V U g x`.
+
+Distinguish the cases in `hs : s = 0`. Substitute `hs` using the available equality. Simplify using `only [a, dif_pos]`. Rewrite using `[(hk q).1 V U g _ (isUnit_q_pull q x hq)]`. Conclude with `congrArg (kumT q V) (units_map_appTop_comp g x u)`.
+
+Simplify using `only [a, dif_neg hs, map_zero]`. Take `⟨α, hα⟩` from `hmk (ZMod q) a ha`. Use `⟨Cocycle.mk (δ 0 1 α) 2 (by norm_num) (δ_δ 0 1 2 α), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (U : Scheme.{0}) (x : Sx (sch.obj X) (0 + 1) U), ev (δ 0 1 α) (0 + 1) 0 (by simp) U x = 0`. Introduce `U x`.
+
+Rewrite using `[(hd (ZMod q) (n := 0) (m := 1) (by norm_num) α U).2 0 (-1) 0 (by simp) (by simp) x, hα]`. Establish `z : a (0 + 1) (-1) (by simp) U x = 0` using `dif_neg (by norm_num)`. Establish `f0 : x.face 0 = x.face 1` using `rfl`. Rewrite using `[z, Fin.sum_univ_two, f0]`. Simplify using `[Sec.map]`.
+
+Conclude with `fun U x => key U x`. Introduce `U x v hv`. Take `⟨γ0, _, hγ0⟩` from `he q X (u ^ q) hq`. Establish `e1` using `hγ0 U x v hv`. Establish `e2` using `hγ0 U x (Units.map x.appTop.hom.toMonoidHom u) (by rw [map_pow])`.
+
+Establish `h1` using `(hd (ZMod q) (n := 0) (m := 1) (by norm_num) α U).1 x`. Use `h1.trans ?_` and prove the remaining obligations. Use `erw [hα]`. Simplify using `only [a, dif_pos]`. Conclude with `e2.symm.trans e1`.
+
+Rewrite using `[CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨0, by norm_num, α, rfl⟩`.
+-/
 theorem kum_pow_coc_of (hk : LkumTex) (hmk : LevMk) (hd : LevDelta) (he : kum_exists) : kum_pow_coc := by
   intro q _ X u hq
   let I := res _ (tw q 1)

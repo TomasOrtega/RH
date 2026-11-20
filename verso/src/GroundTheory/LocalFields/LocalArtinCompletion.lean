@@ -12,6 +12,9 @@ section Restrict
 
 variable {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] [IsGalois F Ω]
 
+/- English proof (translation)
+Use extensionality with `y`. Use `congrArg (fun ρ : E' ≃ₐ[F] E' => ((ρ ⟨y, hEE' y.2⟩ : E') : Ω)) h` as an intermediate fact. Simplify using `only [restrictAb_apply] at this ⊢`. Conclude with `this`.
+-/
 theorem restrictAb_eq_of_le {E E' : IntermediateField F Ω} [Normal F E] [Normal F E']
     (hE' : E' ≤ maximalAbelianExtension F Ω) (hEE' : E ≤ E')
     {σ τ : maximalAbelianExtension F Ω ≃ₐ[F] maximalAbelianExtension F Ω}
@@ -34,11 +37,19 @@ variable (K Ω) in
 def classField (H : openFiniteIndex Kˣ) : finiteAbelianExtensions K Ω :=
   (normGroupOrderIso K Ω).symm (OrderDual.toDual ⟨H.1, H.2⟩)
 
+/- English proof (translation)
+The claim follows from `congrArg (fun y => (OrderDual.ofDual y).1) ((normGroupOrderIso K Ω).apply_symm_apply (OrderDual.toDual ⟨H.1, H.2⟩))`.
+-/
 theorem range_normUnits_classField (H : openFiniteIndex Kˣ) :
     (normUnits K (classField K Ω H : IntermediateField K Ω)).range = H.1 :=
   congrArg (fun y => (OrderDual.ofDual y).1)
     ((normGroupOrderIso K Ω).apply_symm_apply (OrderDual.toDual ⟨H.1, H.2⟩))
 
+/- English proof (translation)
+Use `(classField K Ω H).2.1` as an intermediate fact. Use `(classField K Ω H).2.2` as an intermediate fact. Use `(classField K Ω H').2.1` as an intermediate fact. Use `(classField K Ω H').2.2` as an intermediate fact. Rewrite using `[← range_normUnits_le_iff, range_normUnits_classField, range_normUnits_classField]`.
+
+Conclude with `h`.
+-/
 theorem classField_anti {H H' : openFiniteIndex Kˣ} (h : H.1 ≤ H'.1) :
     (classField K Ω H' : IntermediateField K Ω) ≤ classField K Ω H := by
   have := (classField K Ω H).2.1
@@ -48,6 +59,9 @@ theorem classField_anti {H H' : openFiniteIndex Kˣ} (h : H.1 ≤ H'.1) :
   rw [← range_normUnits_le_iff, range_normUnits_classField, range_normUnits_classField]
   exact h
 
+/- English proof (translation)
+Use `(classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩).2.1` as an intermediate fact. Use `(classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩).2.2` as an intermediate fact. Rewrite using `[← range_normUnits_le_iff, range_normUnits_classField]`.
+-/
 theorem le_classField (L : IntermediateField K Ω) [FiniteDimensional K L] [IsAbelianGalois K L] :
     L ≤ classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩ := by
   have := (classField K Ω ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩).2.1
@@ -68,6 +82,9 @@ def artinCoord (H : openFiniteIndex Kˣ) :
     ((localReciprocityAbelian (classField K Ω H : IntermediateField K Ω)).toMonoidHom.comp
       (restrictAb _ (le_maximalAbelianExtension _)))
 
+/- English proof (translation)
+Use `(classField K Ω H).2.1` as an intermediate fact. Use `(classField K Ω H).2.2` as an intermediate fact. Simplify using `only [artinCoord, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom]`. Rewrite using `[h, restrictAb_localArtinMap, MulEquiv.apply_symm_apply, QuotientGroup.quotientMulEquivOfEq_mk]`.
+-/
 theorem artinCoord_eq_of (H : openFiniteIndex Kˣ)
     (σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω) (x : Kˣ)
     (h : have := (classField K Ω H).2.1; have := (classField K Ω H).2.2
@@ -79,10 +96,18 @@ theorem artinCoord_eq_of (H : openFiniteIndex Kˣ)
   simp only [artinCoord, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom]
   rw [h, restrictAb_localArtinMap, MulEquiv.apply_symm_apply, QuotientGroup.quotientMulEquivOfEq_mk]
 
+/- English proof (translation)
+The claim follows from `artinCoord_eq_of H _ x rfl`.
+-/
 theorem artinCoord_localArtinMap (H : openFiniteIndex Kˣ) (x : Kˣ) :
     artinCoord K Ω H (localArtinMap K Ω x) = (x : Kˣ ⧸ H.1) :=
   artinCoord_eq_of H _ x rfl
 
+/- English proof (translation)
+Use `(classField K Ω H).2.1` as an intermediate fact. Use `(classField K Ω H).2.2` as an intermediate fact. Use `(classField K Ω H').2.1` as an intermediate fact. Use `(classField K Ω H').2.2` as an intermediate fact. Take `⟨x, hx⟩` from `surjective_restrictAb_localArtinMap (Ω := Ω) (classField K Ω H : IntermediateField K Ω) (restrictAb _ (le_maximalAbelianExtension _) σ)`.
+
+Use `⟨x, artinCoord_eq_of H σ x hx.symm, artinCoord_eq_of H' σ x ?_⟩` and prove the remaining obligations. Conclude with `restrictAb_eq_of_le (le_maximalAbelianExtension _) (classField_anti h) hx.symm`.
+-/
 theorem exists_artinCoord_eq (H H' : openFiniteIndex Kˣ) (h : H.1 ≤ H'.1)
     (σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω) :
     ∃ x : Kˣ, artinCoord K Ω H σ = (x : Kˣ ⧸ H.1) ∧ artinCoord K Ω H' σ = (x : Kˣ ⧸ H'.1) := by
@@ -95,6 +120,9 @@ theorem exists_artinCoord_eq (H H' : openFiniteIndex Kˣ) (h : H.1 ≤ H'.1)
   refine ⟨x, artinCoord_eq_of H σ x hx.symm, artinCoord_eq_of H' σ x ?_⟩
   exact restrictAb_eq_of_le (le_maximalAbelianExtension _) (classField_anti h) hx.symm
 
+/- English proof (translation)
+Use `(classField K Ω H).2.1` as an intermediate fact. Use `(classField K Ω H).2.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `Continuous ((fun ρ => (QuotientGroup.quotientMulEquivOfEq (range_normUnits_classField H)) (localReciprocityAbelian (classField K Ω H : IntermediateField K Ω) ρ)) ∘ restrictAb _ (le_maximalAbelianExtension _))`. Conclude with `continuous_of_discreteTopology.comp (continuous_restrictAb _ _)`.
+-/
 theorem continuous_artinCoord (H : openFiniteIndex Kˣ) : Continuous (artinCoord K Ω H) := by
   have := (classField K Ω H).2.1
   have := (classField K Ω H).2.2
@@ -116,19 +144,35 @@ def galToOpenCompletion :
     change quotientMapOfLE h (artinCoord K Ω H σ) = artinCoord K Ω H' σ
     rw [hx, hx', quotientMapOfLE_mk]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galToOpenCompletion_apply (σ : maximalAbelianExtension K Ω ≃ₐ[K] maximalAbelianExtension K Ω)
     (H : openFiniteIndex Kˣ) :
     ((galToOpenCompletion K Ω σ : openCompletion Kˣ) : ∀ H : openFiniteIndex Kˣ, Kˣ ⧸ H.1) H =
       artinCoord K Ω H σ :=
   rfl
 
+/- English proof (translation)
+The claim follows from `openCompletion.ext fun H => artinCoord_localArtinMap H x`.
+-/
 theorem galToOpenCompletion_localArtinMap (x : Kˣ) :
     galToOpenCompletion K Ω (localArtinMap K Ω x) = openCompletion.of Kˣ x :=
   openCompletion.ext fun H => artinCoord_localArtinMap H x
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_pi fun H => continuous_artinCoord H) _`.
+-/
 theorem continuous_galToOpenCompletion : Continuous (galToOpenCompletion K Ω) :=
   Continuous.subtype_mk (continuous_pi fun H => continuous_artinCoord H) _
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Use `ext_restrictAb fun L _ _ => ?_` and prove the remaining obligations. Use `set H : openFiniteIndex Kˣ := ⟨(normUnits K L).range, isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L⟩`. Use `(classField K Ω H).2.1` as an intermediate fact.
+
+Use `(classField K Ω H).2.2` as an intermediate fact. Establish `hH : artinCoord K Ω H σ = 1`. Rewrite using `[← galToOpenCompletion_apply, hσ]`. Both sides reduce to the same expression. Establish `h1 : restrictAb (classField K Ω H : IntermediateField K Ω) (le_maximalAbelianExtension _) σ = restrictAb (classField K Ω H : IntermediateField K Ω) (le_maximalAbelianExtension _) 1`.
+
+Rewrite using `[map_one]`. Simplify `hH` using `[artinCoord]`. Conclude with `restrictAb_eq_of_le (le_maximalAbelianExtension _) (le_classField L) h1`.
+-/
 theorem injective_galToOpenCompletion : Function.Injective (galToOpenCompletion K Ω) := by
   rw [injective_iff_map_eq_one]
   intro σ hσ
@@ -145,6 +189,11 @@ theorem injective_galToOpenCompletion : Function.Injective (galToOpenCompletion 
     simpa [artinCoord] using hH
   exact restrictAb_eq_of_le (le_maximalAbelianExtension _) (le_classField L) h1
 
+/- English proof (translation)
+Establish `hc : IsClosed (Set.range (galToOpenCompletion K Ω))` using `(isCompact_range continuous_galToOpenCompletion).isClosed`. Establish `hsub : Set.range (openCompletion.of Kˣ) ⊆ Set.range (galToOpenCompletion K Ω)`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, galToOpenCompletion_localArtinMap x⟩`. Use `(openCompletion.denseRange_of (G := Kˣ)).closure_range` as an intermediate fact.
+
+Introduce `a`. Establish `ha : a ∈ closure (Set.range (openCompletion.of Kˣ))` using `by rw [this]; trivial`. Conclude with `hc.closure_subset_iff.2 hsub ha`.
+-/
 theorem surjective_galToOpenCompletion : Function.Surjective (galToOpenCompletion K Ω) := by
   have hc : IsClosed (Set.range (galToOpenCompletion K Ω)) :=
     (isCompact_range continuous_galToOpenCompletion).isClosed

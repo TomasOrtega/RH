@@ -38,6 +38,13 @@ open GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.GJStandardLCuspi
 
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
+/- English proof (translation)
+Establish `hD0 : D ≠ 0` using `fun e => hD (by simp [e])`. Use `set R := algebraMap ℂ[X] (RatFunc ℂ) N / algebraMap ℂ[X] (RatFunc ℂ) D with hR`. Establish `h1 : R.denom ∣ D` using `RatFunc.denom_div_dvd N D`. Establish `h2 : R.denom.eval x ≠ 0` using `fun e => by`. Take `⟨u, hu⟩` from `h1`.
+
+Conclude with `hD (by rw [hu, eval_mul, e, zero_mul])`. Establish `h3 : R.num * D = N * R.denom` using `(RatFunc.num_mul_eq_mul_denom_iff hD0).2 hR`. Establish `h4` using `congrArg (eval x) h3`. Simplify using `only [eval_mul] at h4`. Simplify using `only [RatFunc.eval, eval₂_id]`.
+
+Rewrite using `[div_eq_div_iff h2 hD, h4]`.
+-/
 private theorem eval_quot (N D : ℂ[X]) (x : ℂ) (hD : D.eval x ≠ 0) :
     (algebraMap ℂ[X] (RatFunc ℂ) N / algebraMap ℂ[X] (RatFunc ℂ) D).eval (RingHom.id ℂ) x = N.eval x / D.eval x := by
   have hD0 : D ≠ 0 := fun e => hD (by simp [e])
@@ -52,6 +59,17 @@ private theorem eval_quot (N D : ℂ[X]) (x : ℂ) (hD : D.eval x ≠ 0) :
   simp only [RatFunc.eval, eval₂_id]
   rw [div_eq_div_iff h2 hD, h4]
 
+/- English proof (translation)
+Take `⟨R, s₁, h1, h2⟩` from `h`. Establish `hR : R = RatFunc.C b` using `eq_of_eval_qs_eq_right (F := F) (s₁ := s₁) fun s hs => by`. Rewrite using `[← h1 s hs, hA, RatFunc.eval_C]`. Both sides reduce to the same expression. Establish `hD0 : P.comp (C Q * X) ≠ 0` using `fun e => by`.
+
+Use `congrArg (eval 0) e` as an intermediate fact. Simplify using `[eval_comp, hP] at this`. Take `⟨Bd, hB, h4⟩` from `exists_norm_gt_eval_ne_zero hD0`. Establish `hq : (1 : ℝ) < GroundTheory.LocalField.residueCard F` using `by exact_mod_cast GroundTheory.LocalField.one_lt_residueCard`. Use `⟨max s₁ (Real.logb (GroundTheory.LocalField.residueCard F) Bd), fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hs1` using `le_max_left s₁ (Real.logb (GroundTheory.LocalField.residueCard F) Bd)`. Establish `hs2` using `le_max_right s₁ (Real.logb (GroundTheory.LocalField.residueCard F) Bd)`. Establish `h5 : (P.comp (C Q * X)).eval (qs F s) ≠ 0` using `h4 _ (by`. Rewrite using `[norm_qs]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hx : qs F s ≠ 0` using `qs_ne_zero s`. Establish `hj : j = (j.toNat : ℤ) - ((-j).toNat : ℤ)` using `(Int.toNat_sub_toNat_neg j).symm`. Establish `e : RatFunc.C c * RatFunc.X ^ j * algebraMap ℂ[X] (RatFunc ℂ) P / algebraMap ℂ[X] (RatFunc ℂ) (P.comp (C Q * X)) * RatFunc.C b = algebraMap ℂ[X] (RatFunc ℂ) (C c * C b * X ^ j.toNat * P) / algebraMap ℂ[X] (RatFunc ℂ) (X ^ (-j).toNat * P.comp (C Q * X))`. Simplify using `only [map_mul, map_pow, RatFunc.algebraMap_C, RatFunc.algebraMap_X]`. Rewrite using `[hj, zpow_sub₀ RatFunc.X_ne_zero, zpow_natCast, zpow_natCast, ← hj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2 s (by linarith), hR, e, eval_quot _ _ _ (by rw [eval_mul, eval_pow, eval_X]; exact mul_ne_zero (pow_ne_zero _ hx) h5)]`. Simplify using `only [eval_mul, eval_pow, eval_X, eval_C, eval_comp]`. Rewrite using `[hj, zpow_sub₀ hx, zpow_natCast, zpow_natCast, ← hj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem loc_dual {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     (P : ℂ[X]) (c Q b : ℂ) (j : ℤ) (hP : P.eval 0 = 1) {A B : ℂ → ℂ}
     (h : RatFE F (RatFunc.C c * RatFunc.X ^ j * algebraMap ℂ[X] (RatFunc ℂ) P /
@@ -88,6 +106,21 @@ private theorem loc_dual {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpac
   rw [hj, zpow_sub₀ hx, zpow_natCast, zpow_natCast, ← hj]
   ring
 
+/- English proof (translation)
+Establish `h1 : ∀ v ∈ S, d v = 0 → P v = 1` using `fun v hv e => by`. Establish `a` using `eq_C_of_natDegree_eq_zero ((h v hv).2.2.1.trans e)`. Establish `b` using `(h v hv).2.1`. Rewrite `b` using `[a, eval_C]`. Rewrite using `[a, b, C_1]`.
+
+Establish `h0 : ∀ v ∈ S, ((P v).comp (X ^ f v)).eval 0 = 1` using `fun v hv => by`. Distinguish the cases in `e : d v = 0`. Simplify using `[h1 v hv e]`. Establish `hf : f v ≠ 0` using `fun e' => by`. Use `(h v hv).2.2.2 e` as an intermediate fact.
+
+Use `(h v hv).1` as an intermediate fact. Rewrite `*` using `[e', pow_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[eval_comp, eval_pow, eval_X, zero_pow hf, (h v hv).2.1]`. Establish `hev : ∀ v ∈ S, ∀ u : ℂ, ((P v).comp (X ^ f v)).eval (((q : ℝ) : ℂ) ^ u) = (P v).eval ((N v : ℂ) ^ u)` using `fun v hv u => by`.
+
+Distinguish the cases in `e : d v = 0`. Simplify using `[h1 v hv e]`. Rewrite using `[eval_comp, eval_pow, eval_X, (h v hv).2.2.2 e, Nat.cast_pow, ← Complex.natCast_cpow_natCast_mul, Complex.ofReal_natCast, Complex.cpow_nat_mul]`. Use `⟨∏ v ∈ S, (P v).comp (X ^ f v), ∏ v ∈ S, c v, ∑ v ∈ S, -(j v * Real.log (N v)), ?_, ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_prod]`.
+
+Conclude with `Finset.prod_eq_one h0`. Rewrite using `[natDegree_prod _ _ fun v hv e => by simpa [e] using h0 v hv]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[natDegree_comp, natDegree_X_pow, (h v hv).2.2.1, mul_comm]`. Rewrite using `[fac, eval_prod, eval_prod, Complex.ofReal_sum, Finset.sum_mul, Complex.exp_sum, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_div_distrib]`.
+
+Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hN : (N v : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (by have := (h v hv).1; omega)`. Rewrite using `[hev v hv, hev v hv, sub_eq_add_neg, Complex.cpow_add _ _ hN, Complex.cpow_one]`. Use `congr 3`. Rewrite using `[Complex.cpow_def_of_ne_zero hN, ← Complex.exp_int_mul, ← Complex.natCast_log]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem comb {I : Type} (S : Finset I) (N : I → ℕ) (P : I → ℂ[X]) (c : I → ℂ) (j : I → ℤ) (q : ℕ) (f d : I → ℕ)
     (hq : 1 < q) (h : ∀ v ∈ S, 1 < N v ∧ (P v).eval 0 = 1 ∧ (P v).natDegree = d v ∧ (d v ≠ 0 → N v = q ^ f v)) :
     ∃ (P₀ : ℂ[X]) (c₀ : ℂ) (t : ℝ), P₀.eval 0 = 1 ∧ P₀.natDegree = ∑ v ∈ S, f v * d v ∧ ∀ s : ℂ,
@@ -129,6 +162,9 @@ private theorem comb {I : Type} (S : Finset I) (N : I → ℕ) (P : I → ℂ[X]
     push_cast
     ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `h0 (funext fun x => AnalyticOnNhd.eqOn_zero_of_preconnected_of_eventuallyEq_zero (hA.differentiableOn.analyticOnNhd isOpen_univ) isPreconnected_univ (Set.mem_univ ((c + 1 : ℝ) : ℂ)) ?_ trivial)` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show c < ((c + 1 : ℝ) : ℂ).re by simp)] with s hs using h s hs`.
+-/
 private theorem far_ne {A : ℂ → ℂ} (hA : Differentiable ℂ A) (h0 : A ≠ 0) (c : ℝ) : ∃ s : ℂ, c < s.re ∧ A s ≠ 0 := by
   by_contra h
   push Not at h
@@ -138,6 +174,49 @@ private theorem far_ne {A : ℂ → ℂ} (hA : Differentiable ℂ A) (h0 : A ≠
     (show c < ((c + 1 : ℝ) : ℂ).re by simp)] with s hs using h s hs
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `hGL hLI K _ _ _ n hn σ h S hRS B hB sp q f hq hsp`. Establish `hLU` using `locUnr`. Establish `hSD` using `satDict`. Establish `hCS` using `coefSm`. Establish `hAS` using `archOf (shiftOf (ptwOf weyl) parts) fourD testEx (bridgeOf haarL)`.
+
+Use `choose m hm using fun τ : K →+* ℂ => (GlobalTheory.ResW.IrrInfChar.main K n τ).1 σ`. Establish `hn1 : 1 ≤ n` using `by omega`. Take `⟨D⟩` from `(Cm.toRep σ h).nonempty_adelicDecomposition`. Set `μ : Measure (Reduction.normOneGL K n)` to `Measure.haar`. Take `⟨a, x, hx, ha, hx0, hxK⟩` from `exists_pureTensor_spherical _ D`.
+
+Take `⟨ℓ, fi, hℓs, hℓ1, hℓK, hf, hF1⟩` from `matrixCoeff_factorization_of_pureTensor _ D μ a x hx ha hx0`. Establish `hfix : ∀ v ∉ S, x v ∈ fixedVectors (D.finite.π v) (integralGL (v.adicCompletion K) n)` using `fun v hv => hxK v ((hLI K n σ h D v).2 _ (hB v hv))`. Establish `hsm : ∀ v, x v ∈ smoothVectors (D.finite.π v)` using `fun v => (D.finite.isAdmissible v).1 (x v)`. Use `set φ₀ : cuspForms K n := Phi0 _ D a x hx with hφ₀`. Establish `hmem : φ₀ ∈ Cm.carrier σ` using `(phi D a x hx).2`.
+
+Establish `hf' : ∀ g, GJGlobal.matrixCoeff μ φ₀.1 φ₀.1 g = fi (archComp K n g) * ∏ᶠ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F` using `v.adicCompletion K) (D.finite.π v) (x v) (ℓ v) (localComp n v g) := hf`. Establish `hF1' : GJGlobal.matrixCoeff μ φ₀.1 φ₀.1 1 ≠ 0` using `hF1`. Establish `hone : ∀ v : HeightOneSpectrum (𝓞 K), Parabolic.matrixCoeff (F` using `v.adicCompletion K) (D.finite.π v) (x v) (ℓ v) 1 = 1 := fun v => by`. Simplify `hℓ1 v` using `[Parabolic.matrixCoeff]`. Take `⟨T, hT, hTc⟩` from `hCS K n hn1 μ σ h φ₀`.
+
+Set `p : σ.V` to `⟨Cm.ofCusp K n φ₀, hmem⟩`. Establish `hfi : ∀ y, fi y = (T p).1 ((AdelicGLn.prodEquiv K n).symm (y, 1))` using `fun y => by`. Establish `e1 : archComp K n ((AdelicGLn.prodEquiv K n).symm (y, 1)) = y` using `congrArg Prod.fst ((AdelicGLn.prodEquiv K n).apply_symm_apply (y, 1))`. Establish `e2 : ∀ v, localComp n v ((AdelicGLn.prodEquiv K n).symm (y, 1)) = 1` using `fun v => by`. Establish `e : finComp K n ((AdelicGLn.prodEquiv K n).symm (y, 1)) = 1` using `congrArg Prod.snd ((AdelicGLn.prodEquiv K n).apply_symm_apply (y, 1))`.
+
+Express the relevant statement in the definitionally equal form `AdelicGLn.finiteRestrictedEquiv K n (finComp K n _) v = 1`. Rewrite using `[e, map_one, RestrictedProduct.one_apply]`. Rewrite using `[hT]`. Express the relevant statement in the definitionally equal form `_ = GJGlobal.matrixCoeff μ φ₀.1 φ₀.1 _`. Rewrite using `[hf', e1]`.
+
+Simplify using `[e2, hone]`. Establish `hfi0 : ∃ y, fi y ≠ 0` using `⟨_, left_ne_zero_of_mul (hf' 1 ▸ hF1')⟩`. Take `⟨φ, φ', k, k', hk, hk', hAd, hA0, hsh, hsh'⟩` from `hAS K n hn1 (T p) m (fun τ u => by`. Apply the tactic sequence `rw [← hTc τ u p (((m τ).map (u + ·)).prod • p) (show _ = _ by first | exact (hm τ u _ hmem).symm | exact ((hm τ).2 u _ hmem).symm | exact (hm τ _ hmem u).symm | exact ((hm τ).2 _ hmem u).symm), map_smul]) fi hfi hfi0 Measure.haar`. Establish `hz : ∀ v, ∃ z : Fin n → ℂˣ, v ∉ S → Spherical.IsSatakeParameter (F` using `v.adicCompletion K) (D.finite.π v) (localHaar n v) z ∧ B v = Finset.univ.val.map z := fun v => by`.
+
+Distinguish the cases in `hv : v ∈ S`. Conclude with `⟨1, fun e => absurd hv e⟩`. Conclude with `(hSD K n σ h D v _ (hB v hv)).imp fun z hz _ => hz`. Use `choose z hz using hz`. Establish `hb` using `fun v : HeightOneSpectrum (𝓞 K) => exists_localBump (localHaar n v) (D.finite.π v) (hsm v) (ℓ v) (g₀ := 1) (by rw [hone]; exact one_ne_zero)`.
+
+Use `choose Φb hΦb b hb0 hb using hb`. Set `Φ : ∀ v : HeightOneSpectrum (𝓞 K), Matrix (Fin n) (Fin n) (v.adicCompletion K) → ℂ` to `fun v => if v ∈ S then Φb v else integralIndicator (v.adicCompletion K) n`. Establish `hΦS : ∀ v ∈ S, Φ v = Φb v` using `fun v hv => if_pos hv`. Take `⟨c, c', hc, hc', hSB1, hG⟩` from `genFE hn μ φ₀.2 φ₀.2 (h hmem) S hRS D.finite.π x ℓ hsm hℓs (fun v hv => ⟨hfix v hv, hℓ1 v⟩) (fun v hv => hℓK v (hfix v hv)) D.finite.isIrreducible D.finite.isAdmissible z (fun v hv => (hz v hv).1) fi hf' ⟨1, hF1'⟩ Φ (fun v hv => hΦS v hv ▸ hΦb v) (fun v hv => if_neg hv)`. Take `⟨σ₁, Λ, hΛ, h1⟩` from `hG φ`.
+
+Take `⟨σ₂, Λ', hΛ', h2⟩` from `hG φ'`. Establish `hloc : ∀ s, ∏ v ∈ S, zetaIntegral (localHaar n v) (Φ v) (Parabolic.matrixCoeff (F` using `v.adicCompletion K) (D.finite.π v) (x v) (ℓ v)) s = ∏ v ∈ S, b v := fun s => Finset.prod_congr rfl fun v hv => by rw [hΦS v hv, (hb v s).2.2, detPow, GodementJacquet.absDet]; simp`. Establish `hU` using `fun v (hv : v ∉ S) => hLU K n hn1 v _ (D.finite.π v) (D.finite.isIrreducible v) (D.finite.isAdmissible v) (fun e => hx0 v (by simpa [e] using hfix v hv)) (z v) (hz v hv).1`. Establish `hL : ∀ s, partialL S D.finite.π s = eulerL K (cx B) S s` using `fun s => tprod_congr fun v => by`. Rewrite using `[(hU v.1 v.2 s).1, cx, (hz v.1 v.2).2, Multiset.map_map, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Establish `hL' : ∀ s, dualPartialL S D.finite.π (1 - s) = eulerLd K (cx B) S s` using `fun s => tprod_congr fun v => by`. Rewrite using `[(hU v.1 v.2 (1 - s)).2]`. Simplify using `only [cx]`. Rewrite using `[(hz v.1 v.2).2, Multiset.map_map, Multiset.map_map, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Establish `hd : ∀ v, ∃ (P : ℂ[X]) (e : ℂ) (j : ℤ) (c : ℝ), v ∈ S → P.eval 0 = 1 ∧ P.natDegree = cnt (sp v) 1 ∧ ∀ s : ℂ, s.re < -c → zetaIntegral (localHaar n v) (GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ v)) (fun g => Parabolic.matrixCoeff (F` using `v.adicCompletion K) (D.finite.π v) (x v) (ℓ v) g⁻¹) (1 - s) = e * (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s)) ^ j * P.eval (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s)) / P.eval (((Ideal.absNorm v.asIdeal : ℕ) : ℂ) * ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s)) := fun v => by`. Distinguish the cases in `hv : v ∈ S`. Take `⟨P, e, j, hP0, hPd, -, hγ⟩` from `hGL K n hn1 v _ (D.finite.π v) (sp v) ((hLI K n σ h D v).1 _ (hsp v hv).1)`. Take `⟨r, hr⟩` from `loc_dual P e _ (b v) j hP0 (hγ (Φ v) (hΦS v hv ▸ hΦb v) (x v) (ℓ v) (hℓs v)) fun s => by`.
+
+Rewrite using `[hΦS v hv, (hb v s).2.2, detPow, GodementJacquet.absDet]`. Simplify using the standard rewrite rules. Use `⟨P, e * b v, j, r, fun _ => ⟨hP0, hPd, fun s hs => ?_⟩⟩` and prove the remaining obligations. Establish `hqs : qs (v.adicCompletion K) s = ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-s)`. Rewrite using `[qs, GroundTheory.Global.residueCard_adicCompletion]`.
+
+Rewrite using `[← hqs]`. Conclude with `hr s hs`. Conclude with `⟨0, 0, 0, 0, fun e => absurd e hv⟩`. Use `choose P e j cv hd using hd`. Take `⟨P₀, c₀, t, hP0, hPd, hfac⟩` from `comb S (fun v => Ideal.absNorm v.asIdeal) P e j q f (fun v => cnt (sp v) 1) hq fun v hv => ⟨NumberField.HeightOneSpectrum.one_lt_absNorm v, (hd v hv).1, (hd v hv).2.1, (hsp v hv).2⟩`.
+
+Establish `hb' : ∏ v ∈ S, b v ≠ 0` using `Finset.prod_ne_zero_iff.2 fun v _ => hb0 v`. Use `set r : ℝ := |σ₁| + |σ₂| + ∑ v ∈ S, |cv v| + 2 with hr`. Establish `hs0 : 0 ≤ ∑ v ∈ S, |cv v|` using `Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `a1` using `le_abs_self σ₁`. Establish `a2` using `le_abs_self σ₂`.
+
+Establish `a3` using `abs_nonneg σ₁`. Establish `a4` using `abs_nonneg σ₂`. Establish `hND : ∀ s : ℂ, s.re < -r + 1 → (∏ v ∈ S, zetaIntegral (localHaar n v) (GJMatrix.localMatrixFourier (GroundTheory.Global.localAdelicChar K v) (Φ v)) (fun g => Parabolic.matrixCoeff (F` using `v.adicCompletion K) (D.finite.π v) (x v) (ℓ v) g⁻¹) (1 - s)) = fac c₀ t q P₀ s := fun s hs => by`. Rewrite using `[← hfac]`. Use `Finset.prod_congr rfl fun v hv => (hd v hv).2.2 s ?_` and prove the remaining obligations.
+
+Use `Finset.single_le_sum (f := fun v => |cv v|) (fun _ _ => abs_nonneg _) hv` as an intermediate fact. Combine the linear relations using `[le_abs_self (cv v)]`. Use `⟨linPoly (∑ τ, m τ), P₀, (monic_multiset_prod_of_monic _ _ fun z _ => monic_X_add_C z).ne_zero, hP0, hPd, Λ, fun s => Λ' (s + 1), fun s => c * archZeta Measure.haar φ fi s * ∏ v ∈ S, b v, fun s => c' * archZeta Measure.haar (archMatrixFourier φ) (fun y => fi y⁻¹) (1 - s), k, k', …` and prove the remaining obligations. Take `⟨s, hs, hA⟩` from `far_ne hAd hA0 σ₁`. Introduce `e`.
+
+Use `(h1 s hs).2.1` as an intermediate fact. Rewrite `this` using `[e, hloc]`. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero hc hA) hb') (h1 s hs).1 this.symm`. Rewrite using `[(h1 s (by linarith)).2.1, hloc, hL]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `beta_reduce`. Rewrite using `[(h2 (s + 1) (by simp; linarith)).2.1, hloc, hL, hsh]`. Expand and normalize the polynomial expressions, which then agree. Use `(h1 (1 - s) (by simp; linarith)).2.2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel, hL', hND s (by linarith)]`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Use `(h2 (1 - (s + 1)) (by simp; linarith)).2.2` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel, hL', hND (s + 1) (by simp; linarith), hsh', show 1 - (s + 1) + 1 = 1 - s by ring]`. Use `beta_reduce`.
+
+Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Gam.sideGCenOf :
     UpperTheory.V.Z.Gam.SideGCenOf := by
   intro hGL hLI K _ _ _ n hn σ h S hRS B hB sp q f hq hsp

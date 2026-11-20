@@ -22,17 +22,26 @@ variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 variable {w} in
 
+/- English proof (translation)
+Establish `h0 : ϖ ≠ 0` using `fun e => by simp [IsUnifV, e] at hϖ`. Rewrite using `[diagJ, Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun i _ => by split_ifs <;> simp [h0]`.
+-/
 theorem diagJ_det_ne {n : ℕ} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (j : ℕ) :
     (diagJ n ϖ j).det ≠ 0 := by
   have h0 : ϖ ≠ 0 := fun e => by simp [IsUnifV, e] at hϖ
   rw [diagJ, Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.2 fun i _ => by split_ifs <;> simp [h0]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.glMap_standardLattice_eq_iff_mem_GLint_adic E w n g`.
+-/
 theorem stab_iff (n : ℕ) (g : GL (Fin n) (w.adicCompletion E)) :
     glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 =
       (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ↔ g ∈ GLint (Fin n) (Ov E w) :=
   GlobalTheory.T.glMap_standardLattice_eq_iff_mem_GLint_adic E w n g
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowSatakeBound.finite_residue w glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem j (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) → ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), (g : Matrix (Fin n) …`.
+-/
 theorem coset_of_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (j : ℕ) (hj : j ≤ n)
     (g : GL (Fin n) (w.adicCompletion E)) :
     haveI := GlobalTheory.RowSatakeBound.finite_residue w
@@ -42,6 +51,9 @@ theorem coset_of_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ)
       (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) _) :=
   GlobalTheory.T.mem_cartanDoubleCoset_of_lattice_between_uniformizer E w n ϖ hϖ j hj g
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowSatakeBound.finite_residue w glMap d (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem S.card (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) := GlobalTheory.T.glMap_diagUniformizer_elementarySublattice E w n ϖ hϖ S d h …`.
+-/
 theorem diag_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (S : Finset (Fin n))
     (d : GL (Fin n) (w.adicCompletion E))
     (hd : (d : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal (fun i => if i ∈ S then ϖ else 1)) :
@@ -50,6 +62,9 @@ theorem diag_elem (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (S 
       Subtype.val '' subElem S.card (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) :=
   GlobalTheory.T.glMap_diagUniformizer_elementarySublattice E w n ϖ hϖ S d hd
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.RowSatakeBound.finite_residue w (∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin n) (Fin n) _)) → glMap g (std (w.adicCompletionIntegers E) …`.
+-/
 theorem elem_of_coset (n : ℕ) (ϖ : w.adicCompletion E) (hϖ : IsUnifV E w ϖ) (j : ℕ) (hj : j ≤ n)
     (g : GL (Fin n) (w.adicCompletion E)) :
     haveI := GlobalTheory.RowSatakeBound.finite_residue w
@@ -81,6 +96,11 @@ end Lemmas
 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+Unfold `Tj dosetInd`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`. Use `exists_congr fun a => and_congr_right fun _ => exists_congr fun b => and_congr_right fun _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.ext_iff]`. Simplify using `[Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+-/
 theorem Tj_eq_dosetInd {n : ℕ} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (j : ℕ) :
     Tj ℂ n (Ov E w) ϖ j = dosetInd ℂ (GLint (Fin n) (Ov E w))
       (Matrix.GeneralLinearGroup.mkOfDetNeZero (diagJ n ϖ j) (diagJ_det_ne hϖ j)) := by
@@ -92,6 +112,15 @@ theorem Tj_eq_dosetInd {n : ℕ} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ
   rw [Units.ext_iff]
   simp [Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
+/- English proof (translation)
+Use `haveI := GlobalTheory.RowSatakeBound.finite_residue w`. Use `set D := Matrix.GeneralLinearGroup.mkOfDetNeZero (diagJ n ϖ j) (diagJ_det_ne hϖ j)`. Establish `hD : ∀ g : GL (Fin n) (w.adicCompletion E), g ∈ DoubleCoset.doubleCoset D (KGL w n : Set _) (KGL w n) ↔ ∃ a ∈ GLint (Fin n) (Ov E w), ∃ b ∈ GLint (Fin n) (Ov E w), (g : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = (a : Matrix (Fin n) (Fin n) _) * diagJ n ϖ j * (b : Matrix (Fin …`. Introduce `g`. Simplify using `only [DoubleCoset.mem_doubleCoset, SetLike.mem_coe]`.
+
+Use `exists_congr fun a => and_congr_right fun _ => exists_congr fun b => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[Units.ext_iff]`. Simplify using `[D, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Rewrite using `[Tj_eq_dosetInd hϖ j]`. Use `heckeVec_dosetInd hx (fun γ hγ => (hD γ).2 (coset_of_elem w n ϖ hϖ j hj γ (hs.mapsTo hγ))) fun g hg => ?_` and prove the remaining obligations.
+
+Take `⟨γ, hγ, e⟩` from `hs.surjOn (elem_of_coset w n ϖ hϖ j hj g ((hD g).1 hg))`. Establish `hmem : ∀ γ' : GL (Fin n) (w.adicCompletion E), γ'⁻¹ * g ∈ KGL w n ↔ glMap γ' (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 = glMap g (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1` using `fun γ' => by`. Rewrite using `[← stab_iff w n, glMap_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `h conv_lhs => rw [← h]`.
+
+Rewrite using `[← glMap_mul, mul_inv_cancel, glMap_one]`. Introduce `h`. Rewrite using `[← h, ← glMap_mul, inv_mul_cancel, glMap_one]`. Use `⟨γ, ⟨hγ, (hmem γ).2 e⟩, fun γ' ⟨hγ', h'⟩ => hs.injOn hγ' hγ ?_⟩` and prove the remaining obligations. Conclude with `((hmem γ').1 h').trans e.symm`.
+-/
 theorem heckeVec_Tj_eq_sum {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) {x : V} (hx : x ∈ fixed ρ (KGL w n))
     {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) {j : ℕ} (hj : j ≤ n)
@@ -155,6 +184,9 @@ end GlobalTheory.SatHecke
 
 namespace GlobalTheory.SatHecke
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.LocalData.isLocalField w; ∀ (π : Irr (w.adicCompletion E) n) (α : Fin n → ℂˣ), HasSatake π.π α → IsUnitarisable π.π → GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w n (Finset.univ.val.map fun i => (α i : ℂ)) := by intro E _ _ w n letI := GlobalTheory.LocalData.compl …`.
+-/
 theorem isUnitarySatakeAt_of_hasSatake : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ), letI := GlobalTheory.LocalData.complRel w; haveI := GlobalTheory.LocalData.isLocalField w; ∀ (π : Irr (w.adicCompletion E) n) (α : Fin n → ℂˣ), HasSatake π.π α → IsUnitarisable π.π → GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w n (Finset.univ.val.map fun i => (α i : ℂ)) := by
   intro E _ _ w n
   letI := GlobalTheory.LocalData.complRel w

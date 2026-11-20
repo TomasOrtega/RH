@@ -23,10 +23,16 @@ def cubeProj (θ : Fin n → ℝ) : Cube n :=
     fun i => (projIcc 0 (2 * π) Real.two_pi_pos.le (θ i)).2.1,
     fun i => (projIcc 0 (2 * π) Real.two_pi_pos.le (θ i)).2.2⟩
 
+/- English proof (translation)
+Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (continuous_projIcc.comp (continuous_apply i))`.
+-/
 theorem continuous_cubeProj : Continuous (cubeProj (n := n)) := by
   refine continuous_induced_rng.2 (continuous_pi fun i => ?_)
   exact continuous_subtype_val.comp (continuous_projIcc.comp (continuous_apply i))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `show ((projIcc 0 (2 * π) Real.two_pi_pos.le (θ i) : ℝ)) = θ i`. Establish `hi : θ i ∈ Icc (0 : ℝ) (2 * π)` using `⟨hθ.1 i, hθ.2 i⟩`. Rewrite using `[projIcc_of_mem _ hi]`.
+-/
 theorem cubeProj_of_mem {θ : Fin n → ℝ} (hθ : θ ∈ Icc (0 : Fin n → ℝ) (fun _ => 2 * π)) :
     (cubeProj θ : Fin n → ℝ) = θ := by
   funext i
@@ -41,25 +47,40 @@ def cubeCoord (c : Fin n → ℂ) (r : ℝ) (i : Fin n) : C(Cube n, ℂ) :=
 def kern (c : Fin n → ℂ) (r : ℝ) (z : Fin n → ℂ) : C(Cube n, ℂ) :=
   ∏ i, Ring.inverse (cubeCoord c r i - z i • (1 : C(Cube n, ℂ)))
 
+/- English proof (translation)
+Simplify using `[cubeCoord]`.
+-/
 private theorem cubeCoord_sub_smul_one_apply (c z : Fin n → ℂ) (r : ℝ) (i : Fin n) (θ : Cube n) :
     (cubeCoord c r i - z i • (1 : C(Cube n, ℂ))) θ = torusMap c (fun _ => r) θ.1 i - z i := by
   simp [cubeCoord]
 
+/- English proof (translation)
+Rewrite using `[cubeCoord_sub_smul_one_apply]`. Conclude with `torusMap_sub_ne hr hz θ.1 i`.
+-/
 private theorem cubeCoord_sub_smul_one_ne_zero_of_mem_ball {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) (hz : z ∈ ball c r) (i : Fin n)
     (θ : Cube n) : (cubeCoord c r i - z i • (1 : C(Cube n, ℂ))) θ ≠ 0 := by
   rw [cubeCoord_sub_smul_one_apply]
   exact torusMap_sub_ne hr hz θ.1 i
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨g, ⟨fun x => (g x)⁻¹, g.continuous.inv₀ hg⟩, by ext x; simp [hg x], by ext x; simp [hg x]⟩, rfl⟩`.
+-/
 private theorem continuousMap_isUnit_of_forall_ne_zero {X : Type*} [TopologicalSpace X] (g : C(X, ℂ)) (hg : ∀ x, g x ≠ 0) :
     IsUnit g :=
   ⟨⟨g, ⟨fun x => (g x)⁻¹, g.continuous.inv₀ hg⟩, by ext x; simp [hg x], by ext x; simp [hg x]⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `continuousMap_isUnit_of_forall_ne_zero g hg`. Rewrite using `[Ring.inverse_unit]`. Conclude with `eq_inv_of_mul_eq_one_right (by rw [← ContinuousMap.mul_apply, Units.mul_inv, ContinuousMap.one_apply])`.
+-/
 private theorem continuousMap_ring_inverse_apply {X : Type*} [TopologicalSpace X] (g : C(X, ℂ)) (hg : ∀ x, g x ≠ 0)
     (x : X) : Ring.inverse g x = (g x)⁻¹ := by
   obtain ⟨u, rfl⟩ := continuousMap_isUnit_of_forall_ne_zero g hg
   rw [Ring.inverse_unit]
   exact eq_inv_of_mul_eq_one_right (by rw [← ContinuousMap.mul_apply, Units.mul_inv, ContinuousMap.one_apply])
 
+/- English proof (translation)
+Unfold `kern`. Simplify using `only [ContinuousMap.coe_prod, Finset.prod_apply]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[continuousMap_ring_inverse_apply _ (cubeCoord_sub_smul_one_ne_zero_of_mem_ball hr hz i) θ, cubeCoord_sub_smul_one_apply]`.
+-/
 theorem kern_apply {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) (hz : z ∈ ball c r) (θ : Cube n) :
     kern c r z θ = ∏ i, (torusMap c (fun _ => r) θ.1 i - z i)⁻¹ := by
   unfold kern
@@ -67,6 +88,11 @@ theorem kern_apply {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) (hz : z ∈ ball
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [continuousMap_ring_inverse_apply _ (cubeCoord_sub_smul_one_ne_zero_of_mem_ball hr hz i) θ, cubeCoord_sub_smul_one_apply]
 
+/- English proof (translation)
+Establish `hK : kern c r = ∏ i ∈ Finset.univ, fun z : Fin n → ℂ => Ring.inverse (cubeCoord c r i - z i • (1 : C(Cube n, ℂ)))`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.prod_apply]`. Both sides reduce to the same expression. Rewrite using `[hK]`.
+
+Use `Finset.analyticAt_prod _ fun i _ => ?_` and prove the remaining obligations. Establish `hlin : AnalyticAt ℂ (fun z : Fin n → ℂ => z i • (1 : C(Cube n, ℂ))) c` using `((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin n => ℂ) i).smulRight (1 : C(Cube n, ℂ))).analyticAt c`. Take `⟨u, hu⟩` from `continuousMap_isUnit_of_forall_ne_zero _ (cubeCoord_sub_smul_one_ne_zero_of_mem_ball hr (mem_ball_self hr) i)`. Conclude with `(analyticAt_inverse (𝕜 := ℂ) u).comp_of_eq (analyticAt_const.sub hlin) hu.symm`.
+-/
 theorem kern_analyticAt (c : Fin n → ℂ) {r : ℝ} (hr : 0 < r) : AnalyticAt ℂ (kern c r) c := by
   have hK : kern c r = ∏ i ∈ Finset.univ,
       fun z : Fin n → ℂ => Ring.inverse (cubeCoord c r i - z i • (1 : C(Cube n, ℂ))) := by
@@ -86,10 +112,16 @@ def jac (r : ℝ) (θ : Fin n → ℝ) : ℂ := ∏ i, (r : ℂ) * exp (θ i * I
 def fctl (c : Fin n → ℂ) (r : ℝ) (f : (Fin n → ℂ) → ℂ) (g : C(Cube n, ℂ)) : ℂ :=
   ∫ θ in Icc (0 : Fin n → ℝ) (fun _ => 2 * π), jac r θ * g (cubeProj θ) * f (torusMap c (fun _ => r) θ)
 
+/- English proof (translation)
+Unfold `jac`. Conclude with `continuous_finsetProd _ fun i _ => by fun_prop`.
+-/
 theorem continuous_jac (r : ℝ) : Continuous (jac (n := n) r) := by
   unfold jac
   exact continuous_finsetProd _ fun i _ => by fun_prop
 
+/- English proof (translation)
+The claim follows from `(((continuous_jac r).mul (g.continuous.comp continuous_cubeProj)).mul (continuous_comp_torusMap hr.le hf)).integrableOn_Icc`.
+-/
 theorem integrableOn_fctl {c : Fin n → ℂ} {r : ℝ} (hr : 0 < r) {f : (Fin n → ℂ) → ℂ}
     (hf : ∀ ζ ∈ closedBall c r, DifferentiableAt ℂ f ζ) (g : C(Cube n, ℂ)) :
     IntegrableOn (fun θ => jac r θ * g (cubeProj θ) * f (torusMap c (fun _ => r) θ))
@@ -123,6 +155,11 @@ def fctlCLM (c : Fin n → ℂ) {r : ℝ} (hr : 0 < r) (f : (Fin n → ℂ) → 
             mul_le_mul_of_nonneg_right (g.norm_coe_le_norm _) (norm_nonneg _)
         _ ≤ ‖g‖ * M := mul_le_mul_of_nonneg_left h1 (norm_nonneg _))
 
+/- English proof (translation)
+Rewrite using `[← cauchy_polydisc n f c r hr hf z hz]`. Use `show fctl c r f (kern c r z) = _`. Unfold `fctl torusIntegral`. Use `setIntegral_congr_fun measurableSet_Icc fun θ hθ => ?_` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[kern_apply hr hz, cubeProj_of_mem hθ, smul_eq_mul, jac]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fctlCLM_kern {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) {f : (Fin n → ℂ) → ℂ}
     (hf : ∀ ζ ∈ closedBall c r, DifferentiableAt ℂ f ζ) (hz : z ∈ ball c r) :
     fctlCLM c hr f hf (kern c r z) = (2 * π * I) ^ n * f z := by
@@ -134,6 +171,11 @@ theorem fctlCLM_kern {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) {f : (Fin n �
   rw [kern_apply hr hz, cubeProj_of_mem hθ, smul_eq_mul, jac]
   ring
 
+/- English proof (translation)
+Introduce `e U f hU hf x hx`. Take `⟨r, hr, hrU⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx)`. Establish `hfd : ∀ ζ ∈ closedBall x r, DifferentiableAt ℂ f ζ` using `fun ζ hζ => hf.differentiableAt (hU.mem_nhds (hrU hζ))`. Establish `hne : ((2 * π * I) ^ e : ℂ) ≠ 0` using `pow_ne_zero _ (mul_ne_zero (mul_ne_zero two_ne_zero (ofReal_ne_zero.2 Real.pi_ne_zero)) I_ne_zero)`. Establish `hA : AnalyticAt ℂ (fun z => ((2 * π * I) ^ e)⁻¹ * fctlCLM x hr f hfd (kern x r z)) x` using `analyticAt_const.mul (((fctlCLM x hr f hfd).analyticAt _).comp (kern_analyticAt x hr))`.
+
+Use `hA.congr ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds x hr] with z hz`. Rewrite using `[fctlCLM_kern hr hfd hz, inv_mul_cancel_left₀ hne]`.
+-/
 theorem osgood : OsgoodStatement := by
   intro e U f hU hf x hx
   obtain ⟨r, hr, hrU⟩ := Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx)

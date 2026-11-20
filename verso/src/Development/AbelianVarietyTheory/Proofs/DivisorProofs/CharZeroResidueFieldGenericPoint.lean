@@ -22,6 +22,9 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} [IsIntegral X
 
 omit [IsIntegral X] in
 
+/- English proof (translation)
+Establish `h₁ : CharZero Y.functionField` using `charZero_of_injective_ringHom (f := (Y.presheaf.germ ⊤ (genericPoint Y) trivial).hom) (germ_injective_of_isIntegral _ _ _)`. Set `f : Y.functionField →+* Y.residueField (genericPoint Y)` to `(Y.residue (genericPoint Y)).hom`. Conclude with `charZero_of_injective_ringHom f.injective`.
+-/
 theorem charZero_residueField_genericPoint (Y : Scheme.{0}) [IsIntegral Y] (hc : CharZero Γ(Y, ⊤)) :
     CharZero (Y.residueField (genericPoint Y)) := by
   have h₁ : CharZero Y.functionField := charZero_of_injective_ringHom
@@ -29,6 +32,23 @@ theorem charZero_residueField_genericPoint (Y : Scheme.{0}) [IsIntegral Y] (hc :
   let f : Y.functionField →+* Y.residueField (genericPoint Y) := (Y.residue (genericPoint Y)).hom
   exact charZero_of_injective_ringHom f.injective
 
+/- English proof (translation)
+Take `⟨z, z₁, z₂, d₁, d₂⟩` from `GlobalTheory.T.pullback_point_residue_nonzero X C₁.Y C₂.Y C₁.ρ C₂.ρ _ _ (C₁.generic.trans C₂.generic.symm) C₁.finite C₂.finite`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `hs : IsSeparated p`. Take `⟨N, j, _, e⟩` from `hp.isProjOver`. Use `isProper_str k N` as an intermediate fact.
+
+Rewrite using `[← e]`. Use `infer_instance`. Establish `hP : IsProjOver (Limits.pullback.fst C₁.ρ C₂.ρ ≫ C₁.ρ ≫ p)`. Establish `e : Limits.pullback.fst C₁.ρ C₂.ρ ≫ C₁.ρ ≫ p = Limits.pullback.mapDesc C₁.ρ C₂.ρ p ≫ Limits.pullback.fst (C₁.ρ ≫ p) (C₂.ρ ≫ p) ≫ C₁.ρ ≫ p`. Rewrite using `[Limits.pullback.lift_fst_assoc, Category.comp_id]`.
+
+Rewrite using `[e]`. Conclude with `ProjSpace.isProjOver_comp_of_isClosedImmersion _ (ProjSpace.isProjOver_pullback C₁.reg.isProjOver C₂.reg.isProjOver)`. Establish `hZ : IsProjOver ((i ≫ Limits.pullback.fst C₁.ρ C₂.ρ ≫ C₁.ρ) ≫ p)`. Use `ProjSpace.isProjOver_comp_of_isClosedImmersion i hP` as an intermediate fact. Simplify using `using this`.
+
+Establish `g₁ : (i ≫ Limits.pullback.fst C₁.ρ C₂.ρ) (genericPoint Z) = genericPoint C₁.Y`. Simplify using `[hi, z₁]`. Establish `g₂ : (i ≫ Limits.pullback.snd C₁.ρ C₂.ρ) (genericPoint Z) = genericPoint C₂.Y`. Simplify using `[hi, z₂]`. Establish `r₁ : (i ≫ Limits.pullback.fst C₁.ρ C₂.ρ).residueDegree (genericPoint Z) ≠ 0`.
+
+Rewrite using `[CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion i, mul_one, hi]`. Conclude with `d₁`. Establish `r₂ : (i ≫ Limits.pullback.snd C₁.ρ C₂.ρ).residueDegree (genericPoint Z) ≠ 0`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, GlobalTheory.Published.residueDegree_of_isClosedImmersion i, mul_one, hi]`. Conclude with `d₂`.
+
+Establish `hfl : Flat (((i ≫ Limits.pullback.fst C₁.ρ C₂.ρ ≫ C₁.ρ) ≫ p) ≫ spMap (Int.castRingHom k))`. Rewrite using `[flat_int_iff_charZero]`. Establish `c₁ : CharZero Γ(C₁.Y, ⊤)` using `(flat_int_iff_charZero _).1 C₁.reg.flat`. Establish `c₂` using `charZero_residueField_genericPoint C₁.Y c₁`. Establish `c₃ : CharZero (Z.residueField (genericPoint Z))`.
+
+Establish `: ∀ y : C₁.Y, y = genericPoint C₁.Y → CharZero (C₁.Y.residueField y)`. Introduce and unpack `_ rfl`. Conclude with `c₂`. Use `this _ g₁` as an intermediate fact. Conclude with `(RingHom.charZero_iff (Scheme.Hom.residueFieldMap _ _).hom.injective).1 this`.
+
+Conclude with `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hq : IsArithVar ((i ≫ Limits.pullback.fst C₁.ρ C₂.ρ ≫ C₁.ρ) ≫ p) 1` using `⟨hp.isDomain, hp.finite, inferInstance, hZ, hfl, GlobalTheory.T.dimension_of_dominant_flat_cover k C₁.Y Z (C₁.ρ ≫ p) _ 1 C₁.reg.toIsArithVar hZ hfl (i ≫ Limits.pullback.fst C₁.ρ C₂.ρ) (by simp) g₁ r₁⟩`. Use `⟨Z, inferInstance, i ≫ Limits.pullback.fst C₁.ρ C₂.ρ, i ≫ Limits.pullback.snd C₁.ρ C₂.ρ, ?_, ?_, g₁, g₂, r₁, r₂⟩` and prove the remaining obligations. Simplify using `[Limits.pullback.condition]`. Simplify using `using hq`.
+-/
 theorem RegCover.exists_common (hp : IsArithVar p 1) (C₁ C₂ : RegCover p) :
     ∃ (Z : Scheme.{0}) (_ : IsIntegral Z) (t₁ : Z ⟶ C₁.Y) (t₂ : Z ⟶ C₂.Y),
       t₁ ≫ C₁.ρ = t₂ ≫ C₂.ρ ∧ IsArithVar ((t₁ ≫ C₁.ρ) ≫ p) 1 ∧

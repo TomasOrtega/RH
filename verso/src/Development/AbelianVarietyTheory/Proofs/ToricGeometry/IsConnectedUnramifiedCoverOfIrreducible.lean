@@ -18,10 +18,16 @@ noncomputable def partialProd (p : Polynomial (MvPolynomial (Fin d) ℂ))
     (u : Set ((Fin d → ℂ) × ℂ)) (x : Fin d → ℂ) : ℂ[X] :=
   (((p.map (MvPolynomial.eval x)).roots.filter fun y => (x, y) ∈ u).map fun y => X - C y).prod
 
+/- English proof (translation)
+Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, hp.natDegree_map]`.
+-/
 theorem card_roots_map {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : p.Monic) (x : Fin d → ℂ) :
     (p.map (MvPolynomial.eval x)).roots.card = p.natDegree := by
   rw [IsAlgClosed.card_roots_eq_natDegree, hp.natDegree_map]
 
+/- English proof (translation)
+Unfold `partialProd`. Rewrite using `[Polynomial.natDegree_multiset_prod_X_sub_C_eq_card, ← card_roots_map hp x]`. Conclude with `Multiset.card_le_card (Multiset.filter_le _ _)`.
+-/
 theorem natDegree_partialProd_le {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : p.Monic)
     (u : Set ((Fin d → ℂ) × ℂ)) (x : Fin d → ℂ) : (partialProd p u x).natDegree ≤ p.natDegree := by
   classical
@@ -29,6 +35,9 @@ theorem natDegree_partialProd_le {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp
   rw [Polynomial.natDegree_multiset_prod_X_sub_C_eq_card, ← card_roots_map hp x]
   exact Multiset.card_le_card (Multiset.filter_le _ _)
 
+/- English proof (translation)
+Unfold `partialProd`. Rewrite using `[← Multiset.prod_add, ← Multiset.map_add]`. Use `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (hp.map (MvPolynomial.eval x)) (by rw [card_roots_map hp x, hp.natDegree_map]) using 3` and compare the differences between its conclusion and the goal. Use `Multiset.filter_add_not (fun y => (x, y) ∈ u) (p.map (MvPolynomial.eval x)).roots using 2` and compare the differences between its conclusion and the goal. Use `congr 1`.
+-/
 theorem partialProd_mul_compl {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : p.Monic)
     (u : Set ((Fin d → ℂ) × ℂ)) (x : Fin d → ℂ) :
     partialProd p u x * partialProd p uᶜ x = p.map (MvPolynomial.eval x) := by
@@ -40,6 +49,13 @@ theorem partialProd_mul_compl {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : 
   convert Multiset.filter_add_not (fun y => (x, y) ∈ u) (p.map (MvPolynomial.eval x)).roots using 2
   congr 1
 
+/- English proof (translation)
+Take `⟨C₀, m₀, hC₀, hroot⟩` from `exists_norm_root_le hp`. Use `⟨(1 + C₀) ^ p.natDegree, m₀ * p.natDegree, fun k x => ?_⟩` and prove the remaining obligations. Use `set R := C₀ * (1 + ‖x‖) ^ m₀ with hR`. Establish `ht : 1 ≤ (1 + ‖x‖) ^ m₀` using `one_le_pow₀ (by linarith [norm_nonneg x])`. Establish `hR0 : 0 ≤ R` using `mul_nonneg hC₀ (by linarith)`.
+
+Establish `hbound` using `norm_coeff_prod_le ((p.map (MvPolynomial.eval x)).roots.filter fun y => (x, y) ∈ u) hR0 (fun y hy => hroot x y ((Polynomial.mem_roots (hp.map _).ne_zero).mp (Multiset.mem_of_mem_filter hy))) k`. Establish `hcard : Multiset.card ((p.map (MvPolynomial.eval x)).roots.filter fun y => (x, y) ∈ u) ≤ p.natDegree`. Rewrite using `[← card_roots_map hp x]`. Conclude with `Multiset.card_le_card (Multiset.filter_le _ _)`. Establish `h1R : 1 + R ≤ (1 + C₀) * (1 + ‖x‖) ^ m₀`.
+
+Rewrite using `[hR]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_norm_coeff_partialProd_le {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : p.Monic)
     (u : Set ((Fin d → ℂ) × ℂ)) :
     ∃ (C : ℝ) (m : ℕ), ∀ k x, ‖(partialProd p u x).coeff k‖ ≤ C * (1 + ‖x‖) ^ m := by
@@ -65,6 +81,17 @@ theorem exists_norm_coeff_partialProd_le {p : Polynomial (MvPolynomial (Fin d) �
     _ ≤ ((1 + C₀) * (1 + ‖x‖) ^ m₀) ^ p.natDegree := pow_le_pow_left₀ (by linarith) h1R _
     _ = (1 + C₀) ^ p.natDegree * (1 + ‖x‖) ^ (m₀ * p.natDegree) := by rw [mul_pow, ← pow_mul]
 
+/- English proof (translation)
+Take `⟨ψ, hψ, hroots⟩` from `exists_analytic_roots hp h`. Use `set R₀ := (p.map (MvPolynomial.eval x₀)).roots with hR₀`. Establish `hψc : ∀ y ∈ R₀, ∀ᶠ x in 𝓝 x₀, (p.map (MvPolynomial.eval x)).eval (ψ y x) = 0 → ((x, ψ y x) ∈ u ↔ (x₀, y) ∈ u)`. Introduce `y hy`. Establish `hy0 : (p.map (MvPolynomial.eval x₀)).eval y = 0` using `(Polynomial.mem_roots (hp.map _).ne_zero).mp hy`.
+
+Establish `ht : Tendsto (fun x => (x, ψ y x)) (𝓝 x₀) (𝓝 (x₀, y))`. Use `(continuousAt_id.prodMk (hψ y hy).1.continuousAt).tendsto` as an intermediate fact. Simplify `this` using `[(hψ y hy).2]`. Conclude with `ht.eventually (hu y hy0)`. Establish `hall : ∀ᶠ x in 𝓝 x₀, ∀ y ∈ R₀.toFinset, (p.map (MvPolynomial.eval x)).eval (ψ y x) = 0 → ((x, ψ y x) ∈ u ↔ (x₀, y) ∈ u)` using `(Filter.eventually_all_finset _).mpr fun y hy => hψc y (Multiset.mem_toFinset.mp hy)`.
+
+Establish `heq : (fun x => (partialProd p u x).coeff k) =ᶠ[𝓝 x₀] fun x => ((R₀.filter fun y => (x₀, y) ∈ u).map fun y => X - C (ψ y x)).prod.coeff k` using `by filter_upwards [hroots, hall] with x hx hxa`. Unfold `partialProd`. Rewrite using `[hx, Multiset.filter_map, Multiset.map_map]`. Use `congr 3`. Use `Multiset.filter_congr fun y hy => ?_` and prove the remaining obligations.
+
+Use `hxa y (Multiset.mem_toFinset.mpr hy) ?_` and prove the remaining obligations. Establish `hmem : ψ y x ∈ (p.map (MvPolynomial.eval x)).roots`. Rewrite using `[hx]`. Conclude with `Multiset.mem_map_of_mem _ hy`. Conclude with `(Polynomial.mem_roots (hp.map _).ne_zero).mp hmem`.
+
+Use `DifferentiableAt.congr_of_eventuallyEq ?_ heq` and prove the remaining obligations. Conclude with `differentiableAt_coeff_prod _ ψ (fun y hy => (hψ y (Multiset.mem_of_mem_filter hy)).1.differentiableAt) k`.
+-/
 theorem differentiableAt_coeff_partialProd {p : Polynomial (MvPolynomial (Fin d) ℂ)} (hp : p.Monic)
     {u : Set ((Fin d → ℂ) × ℂ)} {x₀ : Fin d → ℂ}
     (h : ∀ y, (p.map (MvPolynomial.eval x₀)).eval y = 0 →
@@ -102,6 +129,11 @@ theorem differentiableAt_coeff_partialProd {p : Polynomial (MvPolynomial (Fin d)
   exact differentiableAt_coeff_prod _ ψ
     (fun y hy => (hψ y (Multiset.mem_of_mem_filter hy)).1.differentiableAt) k
 
+/- English proof (translation)
+Use extensionality with `i`. Establish `hfun : (fun x => MvPolynomial.eval x (a.coeff i)) = fun x => MvPolynomial.eval x (b.coeff i)`. Use `Continuous.ext_on hU (MvPolynomial.continuous_eval _) (MvPolynomial.continuous_eval _) ?_` and prove the remaining obligations. Introduce `x hx`. Use `congrArg (fun P => Polynomial.coeff P i) (h x hx)` as an intermediate fact.
+
+Simplify `this` using `[Polynomial.coeff_map]`. Conclude with `congrArg (fun c => MvPolynomial.coeff _ c) (MvPolynomial.funext fun x => congrFun hfun x)`.
+-/
 theorem eq_of_map_eval_eq_of_dense {a b : Polynomial (MvPolynomial (Fin d) ℂ)}
     {U : Set (Fin d → ℂ)} (hU : Dense U)
     (h : ∀ x ∈ U, a.map (MvPolynomial.eval x) = b.map (MvPolynomial.eval x)) : a = b := by
@@ -119,6 +151,27 @@ namespace GlobalTheory
 
 open SimpleRoots
 
+/- English proof (translation)
+Introduce `H1 H2 d p q hp hirr hq hsimp`. Take `⟨hΩc, hΩd⟩` from `H1 d q hq`. Establish `hΩo : IsOpen {x : Fin d → ℂ | MvPolynomial.eval x q ≠ 0}` using `isOpen_ne_fun (MvPolynomial.continuous_eval q) continuous_const`. Establish `hdeg : p.natDegree ≠ 0`. Introduce `h0`.
+
+Conclude with `hirr.not_isUnit (by rw [hp.natDegree_eq_zero.mp h0]; exact isUnit_one)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hΩc.nonempty`. Take `⟨y, hy⟩` from `Multiset.card_pos_iff_exists_mem.mp (by rw [card_roots_map hp x]; omega : 0 < Multiset.card (p.map (MvPolynomial.eval x)).roots)`. Conclude with `⟨(x, y), hx, (Polynomial.mem_roots (hp.map _).ne_zero).mp hy⟩`.
+
+Introduce `u v hu hv hZ hZu hZv`. Assume the negation of the conclusion as `hne`. Establish `hdisj : ∀ z : (Fin d → ℂ) × ℂ, MvPolynomial.eval z.1 q ≠ 0 → (p.map (MvPolynomial.eval z.1)).eval z.2 = 0 → z ∈ u → z ∉ v` using `fun z hzq hz0 hzu hzv => hne ⟨z, ⟨hzq, hz0⟩, hzu, hzv⟩`. Establish `hloc : ∀ x₀, MvPolynomial.eval x₀ q ≠ 0 → ∀ y, (p.map (MvPolynomial.eval x₀)).eval y = 0 → ∀ᶠ w in 𝓝 (x₀, y), (p.map (MvPolynomial.eval w.1)).eval w.2 = 0 → (w ∈ u ↔ (x₀, y) ∈ u)`. Introduce `x₀ hx₀ y hy`.
+
+Distinguish the cases in `hyu : (x₀, y) ∈ u`. Use `filter_upwards [hu.mem_nhds hyu] with w hw _ using iff_of_true hw hyu`. Establish `hyv : (x₀, y) ∈ v` using `(@hZ (x₀, y) ⟨hx₀, hy⟩).resolve_left hyu filter_upwards [hv.mem_nhds hyv, continuous_fst.continuousAt.preimage_mem_nhds (hΩo.mem_nhds hx₀)] with w hwv hwq hw0`. Conclude with `iff_of_false (fun hwu => hdisj w hwq hw0 hwu hwv) hyu`. Establish `hpoly : ∀ s : Set ((Fin d → ℂ) × ℂ), (∀ x₀, MvPolynomial.eval x₀ q ≠ 0 → ∀ y, (p.map (MvPolynomial.eval x₀)).eval y = 0 → ∀ᶠ w in 𝓝 (x₀, y), (p.map (MvPolynomial.eval w.1)).eval w.2 = 0 → (w ∈ s ↔ (x₀, y) ∈ s)) → ∃ A : Polynomial (MvPolynomial (Fin d) ℂ), ∀ x, MvPolynomial.eval x …`.
+
+Introduce `s hs`. Take `⟨C₁, m, hC₁⟩` from `exists_norm_coeff_partialProd_le hp s`. Establish `hk : ∀ k, ∃ a : MvPolynomial (Fin d) ℂ, ∀ x, MvPolynomial.eval x q ≠ 0 → (partialProd p s x).coeff k = MvPolynomial.eval x a` using `fun k => H2 d m q (fun x => (partialProd p s x).coeff k) C₁ hq (fun x hx => (differentiableAt_coeff_partialProd hp (fun y hy => hsimp x y hx hy) (hs x hx) k).differentiableWithinAt) (fun x _ => hC₁ k x)`. Use `choose a ha using hk`. Use `⟨∑ k ∈ Finset.range (p.natDegree + 1), Polynomial.monomial k (a k), fun x hx => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `k`. Rewrite using `[Polynomial.coeff_map, Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial, Finset.sum_ite_eq', Finset.mem_range]`. Use `split_ifs with hk'`. Conclude with `(ha k x hx).symm`.
+
+Use `natDegree_partialProd_le hp s x` as an intermediate fact. Rewrite using `[map_zero]`. Conclude with `(Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)).symm`. Take `⟨A, hA⟩` from `hpoly u hloc`. Take `⟨B, hB⟩` from `hpoly uᶜ fun x₀ hx₀ y hy => (hloc x₀ hx₀ y hy).mono fun w hw h0 => not_congr (hw h0)`.
+
+Establish `hAB : A * B = p` using `eq_of_map_eval_eq_of_dense hΩd fun x hx => by`. Rewrite using `[Polynomial.map_mul, hA x hx, hB x hx, partialProd_mul_compl hp]`. Establish `hnot : ∀ (s : Set ((Fin d → ℂ) × ℂ)) (A' : Polynomial (MvPolynomial (Fin d) ℂ)), (∀ x, MvPolynomial.eval x q ≠ 0 → A'.map (MvPolynomial.eval x) = partialProd p s x) → ∀ z : (Fin d → ℂ) × ℂ, MvPolynomial.eval z.1 q ≠ 0 → (p.map (MvPolynomial.eval z.1)).eval z.2 = 0 → z ∈ s → ¬ IsU …`. Introduce `s A' hA' z hzq hz0 hzs hunit`. Establish `hu' : IsUnit (A'.map (MvPolynomial.eval z.1))` using `hunit.map (Polynomial.mapRingHom (MvPolynomial.eval z.1))`.
+
+Rewrite `hu'` using `[hA' z.1 hzq]`. Establish `h2` using `Polynomial.natDegree_eq_zero_of_isUnit hu'`. Unfold `partialProd at h2`. Rewrite `h2` using `[Polynomial.natDegree_multiset_prod_X_sub_C_eq_card, Multiset.card_eq_zero]`. Conclude with `Multiset.filter_eq_nil.mp h2 z.2 ((Polynomial.mem_roots (hp.map _).ne_zero).mpr hz0) hzs`.
+
+Take `⟨z, ⟨hzq, hz0⟩, hzu⟩` from `hZu`. Take `⟨z', ⟨hzq', hz0'⟩, hzv'⟩` from `hZv`. Break down `hirr.isUnit_or_isUnit hAB.symm with h | h` into its components or cases. Conclude with `hnot u A hA z hzq hz0 hzu h`. Conclude with `hnot uᶜ B hB z' hzq' hz0' (fun hzu' => hdisj z' hzq' hz0' hzu' hzv') h`.
+-/
 theorem isConnected_unramified_cover_of_irreducible :
     (∀ (d : ℕ) (q : MvPolynomial (Fin d) ℂ), q ≠ 0 →
       IsConnected {x : Fin d → ℂ | MvPolynomial.eval x q ≠ 0} ∧

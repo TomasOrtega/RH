@@ -15,12 +15,22 @@ section Sums
 
 variable {κ : ℕ}
 
+/- English proof (translation)
+Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem brw_last_ne_zero (hκ : 1 ≤ κ) : (Fin.last κ : Fin (κ + 1)) ≠ 0 := by
   intro e
   have := congrArg Fin.val e
   simp at this
   omega
 
+/- English proof (translation)
+Establish `h0` using `brw_last_ne_zero hκ`. Establish `e1 : ∑ i, f i = f 0 + ∑ i ∈ Finset.univ.erase (0 : Fin (κ + 1)), f i` using `(Finset.add_sum_erase _ f (Finset.mem_univ 0)).symm`. Establish `e2 : ∑ i ∈ Finset.univ.erase (0 : Fin (κ + 1)), f i = f (Fin.last κ) + ∑ i ∈ (Finset.univ.erase (0 : Fin (κ + 1))).erase (Fin.last κ), f i` using `(Finset.add_sum_erase _ f (Finset.mem_erase.mpr ⟨h0, Finset.mem_univ _⟩)).symm`. Establish `e3 : ∑ i ∈ (Finset.univ.erase (0 : Fin (κ + 1))).erase (Fin.last κ), f i ≤ ((Finset.univ.erase (0 : Fin (κ + 1))).erase (Fin.last κ)).card • c` using `Finset.sum_le_card_nsmul _ _ _ fun i hi => h i (Finset.mem_erase.mp (Finset.mem_erase.mp hi).2).1 (Finset.mem_erase.mp hi).1`. Establish `e4 : ((Finset.univ.erase (0 : Fin (κ + 1))).erase (Fin.last κ)).card = κ - 1`.
+
+Rewrite using `[Finset.card_erase_of_mem (Finset.mem_erase.mpr ⟨h0, Finset.mem_univ _⟩), Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Rewrite `e3` using `[e4, nsmul_eq_mul, Nat.cast_sub hκ]`. Move the coercions through the operations in `at e3`. Rewrite using `[e1, e2]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem brw_sum_le (hκ : 1 ≤ κ) (f : Fin (κ + 1) → ℝ) (c : ℝ) (h : ∀ i, i ≠ 0 → i ≠ Fin.last κ → f i ≤ c) :
     ∑ i, f i ≤ f 0 + f (Fin.last κ) + ((κ : ℝ) - 1) * c := by
   classical
@@ -43,11 +53,19 @@ theorem brw_sum_le (hκ : 1 ≤ κ) (f : Fin (κ + 1) → ℝ) (c : ℝ) (h : �
   rw [e1, e2]
   linarith
 
+/- English proof (translation)
+Unfold `wt`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem brw_wt_cast (lam : Fin (κ + 1) → ℤ) : (wt lam : ℝ) = ∑ i, (lam i : ℝ) := by
   unfold wt
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[brw_wt_cast, brw_wt_cast]`. Unfold `plus`. Use `push_cast`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem brw_wt_plus (lam : Fin (κ + 1) → ℤ) :
     (wt (plus lam) : ℝ) = (wt lam : ℝ) - ((κ : ℝ) + 1) * (lam (Fin.last κ) : ℝ) := by
   rw [brw_wt_cast, brw_wt_cast]
@@ -65,6 +83,13 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
 def kIdx (i : Fin (kap R + 1)) : Fin R.k := Fin.cast (kap_succ_k R) i
 
+/- English proof (translation)
+Establish `hi : i.1 < R.k` using `lt_of_lt_of_eq i.2 (kap_succ_k R)`. Establish `h1 : ((lamZ W u τ i : ℤ) : ℚ) = (W.hc u τ).u (kIdx i) - (((R.k : ℚ) - 1) / 2 - (i.1 : ℚ))`. Unfold `lamZ castW`. Rewrite using `[Wts.lamTrue_zero, Wts.lamN_eq W u (Nat.zero_le _) τ]`. Establish `hi' : (Fin.cast (kap_succ R) i).1 < R.k` using `hi`.
+
+Rewrite using `[dif_pos hi']`. Both sides reduce to the same expression. Establish `h2 : (((lamZ W u τ i : ℤ) : ℚ) : ℝ) = (((W.hc u τ).u (kIdx i) - (((R.k : ℚ) - 1) / 2 - (i.1 : ℚ)) : ℚ) : ℝ)` using `by rw [h1]`. Move the coercions through the operations in `at h2`. Rewrite using `[h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lamZ_eq_hc (u : Pr.Word) (τ : X.Tau) (i : Fin (kap R + 1)) :
     (lamZ W u τ i : ℝ) = (((W.hc u τ).u (kIdx i) : ℚ) : ℝ) - ((R.k : ℝ) - 1) / 2 + (i.1 : ℝ) := by
   have hi : i.1 < R.k := lt_of_lt_of_eq i.2 (kap_succ_k R)
@@ -84,10 +109,18 @@ def kFirst (R : Ranks) : Fin R.k := ⟨0, by have := R.m_add_three_le_k; omega�
 
 def kLast (R : Ranks) : Fin R.k := ⟨R.k - 1, by have := R.m_add_three_le_k; omega⟩
 
+/- English proof (translation)
+Use `kap_cast R` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem brw_kap_cast' (R : Ranks) : (kap R : ℝ) = (R.k : ℝ) - 1 := by
   have := kap_cast R
   linarith
 
+/- English proof (translation)
+Establish `h` using `lamZ_eq_hc W u τ 0`. Rewrite `h` using `[lamZ_zero]`. Establish `e : kIdx (0 : Fin (kap R + 1)) = kFirst R` using `rfl`. Rewrite `h` using `[e]`. Simplify using `only [Fin.val_zero, Nat.cast_zero] at h`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem aTop_eq_hc (u : Pr.Word) (τ : X.Tau) :
     (((W.hc u τ).u (kFirst R) : ℚ) : ℝ) = (W.aTop u τ : ℝ) + ((R.k : ℝ) - 1) / 2 := by
   have h := lamZ_eq_hc W u τ 0
@@ -97,6 +130,13 @@ theorem aTop_eq_hc (u : Pr.Word) (τ : X.Tau) :
   simp only [Fin.val_zero, Nat.cast_zero] at h
   linarith
 
+/- English proof (translation)
+Establish `h` using `lamZ_eq_hc W u τ (Fin.last (kap R))`. Rewrite `h` using `[lamZ_last]`. Establish `e : kIdx (Fin.last (kap R)) = kLast R`. Apply `Fin.ext` to reduce the goal to its premises. Use `show kap R = R.k - 1`.
+
+Use `kap_succ_k R` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[e]`. Simplify using `only [Fin.val_last] at h`. Rewrite `h` using `[brw_kap_cast']`.
+
+Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bTop_eq_hc (u : Pr.Word) (τ : X.Tau) :
     (((W.hc u τ).u (kLast R) : ℚ) : ℝ) = -(W.bTop u τ : ℝ) - ((R.k : ℝ) - 1) / 2 := by
   have h := lamZ_eq_hc W u τ (Fin.last (kap R))
@@ -134,6 +174,11 @@ structure HCCloud (u : Pr.Word) (S : ℝ) : Prop where
 
 variable {W}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[h.last τ hτ]`. Use `(h.v_cloud τ hτ ⟨R.k - 2, by have := R.m_add_three_le_k; omega⟩).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `h.first τ hτ`.
+
+Establish `h2` using `(h.v_cloud τ hτ ⟨0, by have := R.m_add_three_le_k; omega⟩).2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HCCloud.ext {u : Pr.Word} {S : ℝ} (h : HCCloud W u S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
     -(1 / 2 : ℝ) ≤ (((W.hc u τ).u (kLast R) : ℚ) : ℝ) ∧ (((W.hc u τ).u (kFirst R) : ℚ) : ℝ) ≤ 3 * S := by
   constructor
@@ -148,17 +193,28 @@ section Proofs
 
 variable {u : Pr.Word} {a b' S : ℝ}
 
+/- English proof (translation)
+Establish `h1` using `R.m_add_three_le_k`. Establish `h2` using `R.two_le_m`. Conclude with `(by omega : 5 ≤ R.k)` after adjusting the coercions.
+-/
 theorem brw_k_ge (R : Ranks) : (5 : ℝ) ≤ (R.k : ℝ) := by
   have h1 := R.m_add_three_le_k
   have h2 := R.two_le_m
   exact_mod_cast (by omega : 5 ≤ R.k)
 
+/- English proof (translation)
+Establish `h1` using `R.m_add_three_le_k`. Establish `h2` using `R.two_le_m`. Establish `h3` using `kap_succ_k R`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem brw_one_le_kap (R : Ranks) : 1 ≤ kap R := by
   have h1 := R.m_add_three_le_k
   have h2 := R.two_le_m
   have h3 := kap_succ_k R
   omega
 
+/- English proof (translation)
+Establish `hk` using `kap_succ_k R`. Establish `i0 : 0 < i.1` using `Nat.pos_of_ne_zero fun e => h0 (Fin.ext e)`. Establish `i1 : i.1 < kap R` using `lt_of_le_of_ne (Nat.le_of_lt_succ i.2) fun e => h1 (Fin.ext e)`. Establish `hc` using `h.cloud τ (kIdx i) i0 (by show i.1 < R.k - 1; omega)`. Rewrite using `[lamZ_eq_hc]`.
+
+Establish `c0 : (1 : ℝ) ≤ (i.1 : ℝ)` using `by exact_mod_cast i0`. Establish `c1 : (i.1 : ℝ) + 1 ≤ (kap R : ℝ)` using `by exact_mod_cast i1`. Rewrite `c1` using `[brw_kap_cast']`. Apply the tactic sequence `constructor <;> linarith [hc.1, hc.2]`.
+-/
 theorem HCShape.mid (h : HCShape W u a b' S) (τ : X.Tau) (i : Fin (kap R + 1)) (h0 : i ≠ 0) (h1 : i ≠ Fin.last (kap R)) :
     -((R.k : ℝ) / 2) ≤ (lamZ W u τ i : ℝ) ∧ (lamZ W u τ i : ℝ) ≤ S + (R.k : ℝ) / 2 - 3 / 2 := by
   have hk := kap_succ_k R
@@ -171,6 +227,11 @@ theorem HCShape.mid (h : HCShape W u a b' S) (τ : X.Tau) (i : Fin (kap R + 1)) 
   rw [brw_kap_cast'] at c1
   constructor <;> linarith [hc.1, hc.2]
 
+/- English proof (translation)
+Rewrite using `[brw_wt_cast]`. Establish `h1` using `brw_sum_le (brw_one_le_kap R) (fun i => (lamZ W u τ i : ℝ)) (S + (R.k : ℝ) / 2 - 3 / 2) fun i h0 h1 => (h.mid τ i h0 h1).2`. Simplify using `only [lamZ_zero, lamZ_last] at h1`. Rewrite `h1` using `[brw_kap_cast']`. Move the coercions through the operations in `at h1`.
+
+Establish `hb` using `(h.top τ hτ).2.2.1`. Establish `hk` using `brw_k_ge R`. Establish `h4` using `h.k_le`. Establish `h5` using `h.kS_le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem HCShape.c1 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∈ W.tops) :
     (wt (lamZ W u τ) : ℝ) ≤ W.aTop u τ + (R.k : ℝ) * S := by
   rw [brw_wt_cast]
@@ -185,6 +246,9 @@ theorem HCShape.c1 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∈ W.tops) :
   have h5 := h.kS_le
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[brw_wt_plus, lamZ_last, kap_cast]`. Use `h.c1 τ hτ` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HCShape.c2 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∈ W.tops) :
     (wt (plus (lamZ W u τ)) : ℝ) ≤ W.aTop u τ + (R.k : ℝ) * (W.bTop u τ + S) := by
   rw [brw_wt_plus, lamZ_last, kap_cast]
@@ -192,18 +256,31 @@ theorem HCShape.c2 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∈ W.tops) :
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `h1` using `h.oth_last τ hτ`. Rewrite `h1` using `[bTop_eq_hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HCShape.last_nonneg (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
     ((R.k : ℝ) - 2) / 2 ≤ -(W.bTop u τ : ℝ) := by
   have h1 := h.oth_last τ hτ
   rw [bTop_eq_hc] at h1
   linarith
 
+/- English proof (translation)
+Establish `h1` using `h.oth_first τ hτ`. Rewrite `h1` using `[aTop_eq_hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HCShape.first_le (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
     (W.aTop u τ : ℝ) ≤ 3 * S - ((R.k : ℝ) - 1) / 2 := by
   have h1 := h.oth_first τ hτ
   rw [aTop_eq_hc] at h1
   linarith
 
+/- English proof (translation)
+Establish `hκ` using `brw_one_le_kap R`. Establish `hk1` using `R.m_add_three_le_k`. Establish `hk2` using `R.two_le_m`. Establish `hk3` using `kap_succ_k R`. Set `i : Fin (kap R + 1)` to `⟨1, by omega⟩`.
+
+Establish `i0 : i ≠ 0` using `fun e => by have := congrArg Fin.val e; simp [i] at this`. Establish `i1 : i ≠ Fin.last (kap R)` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `[i] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h1` using `(h.mid τ i i0 i1).2`. Establish `h2 : lamZ W u τ (Fin.last (kap R)) ≤ lamZ W u τ i` using `lamZ_anti W u τ (Fin.le_last i)`. Rewrite `h2` using `[lamZ_last]`. Establish `h3 : (-(W.bTop u τ : ℝ)) ≤ (lamZ W u τ i : ℝ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem HCShape.last_le (h : HCShape W u a b' S) (τ : X.Tau) : -(W.bTop u τ : ℝ) ≤ S + (R.k : ℝ) / 2 - 3 / 2 := by
   have hκ := brw_one_le_kap R
   have hk1 := R.m_add_three_le_k
@@ -221,6 +298,21 @@ theorem HCShape.last_le (h : HCShape W u a b' S) (τ : X.Tau) : -(W.bTop u τ : 
   have h3 : (-(W.bTop u τ : ℝ)) ≤ (lamZ W u τ i : ℝ) := by exact_mod_cast h2
   linarith
 
+/- English proof (translation)
+Rewrite using `[brw_wt_cast]`. Establish `hl` using `h.oth_last τ hτ`. Establish `hmid : ∀ i : Fin (kap R + 1), i ≠ 0 → i ≠ Fin.last (kap R) → ((plus (lamZ W u τ) i : ℤ) : ℝ) ≤ S + 1 / 2`. Introduce `i h0 h1`. Establish `hk` using `kap_succ_k R`.
+
+Establish `i0 : 0 < i.1` using `Nat.pos_of_ne_zero fun e => h0 (Fin.ext e)`. Establish `i1 : i.1 < kap R` using `lt_of_le_of_ne (Nat.le_of_lt_succ i.2) fun e => h1 (Fin.ext e)`. Establish `hc` using `h.cloud τ (kIdx i) i0 (by show i.1 < R.k - 1; omega)`. Establish `c1 : (i.1 : ℝ) + 1 ≤ (kap R : ℝ)` using `by exact_mod_cast i1`. Rewrite `c1` using `[brw_kap_cast']`.
+
+Unfold `plus`. Use `push_cast`. Rewrite using `[lamZ_eq_hc, lamZ_last]`. Rewrite `hl` using `[bTop_eq_hc]`. Use `push_cast`.
+
+Combine the linear relations using `[hc.2]`. Establish `h1` using `brw_sum_le (brw_one_le_kap R) (fun i => ((plus (lamZ W u τ) i : ℤ) : ℝ)) (S + 1 / 2) hmid`. Establish `e0 : ((plus (lamZ W u τ) 0 : ℤ) : ℝ) = (W.aTop u τ : ℝ) + (W.bTop u τ : ℝ)`. Unfold `plus`. Rewrite using `[lamZ_zero, lamZ_last]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ((plus (lamZ W u τ) (Fin.last (kap R)) : ℤ) : ℝ) = 0`. Unfold `plus`. Simplify using the standard rewrite rules.
+
+Simplify using `only [e0, e1] at h1`. Rewrite `h1` using `[brw_kap_cast']`. Establish `f1` using `h.first_le τ hτ`. Establish `f2` using `h.last_nonneg τ hτ`. Establish `hk` using `brw_k_ge R`.
+
+Establish `h4` using `h.k_le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem HCShape.c3 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
     (wt (plus (lamZ W u τ)) : ℝ) ≤ ((R.k : ℝ) + 3) * S := by
   rw [brw_wt_cast]
@@ -256,6 +348,11 @@ theorem HCShape.c3 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
   have h4 := h.k_le
   nlinarith
 
+/- English proof (translation)
+Rewrite using `[brw_wt_cast]`. Establish `h1` using `brw_sum_le (brw_one_le_kap R) (fun i => (lamZ W u τ i : ℝ)) (S + (R.k : ℝ) / 2 - 3 / 2) fun i h0 h1 => (h.mid τ i h0 h1).2`. Simplify using `only [lamZ_zero, lamZ_last] at h1`. Rewrite `h1` using `[brw_kap_cast']`. Move the coercions through the operations in `at h1`.
+
+Establish `f1` using `h.first_le τ hτ`. Establish `f2` using `h.last_le τ`. Establish `hk` using `brw_k_ge R`. Establish `h4` using `h.k_le`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem HCShape.c4 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
     (wt (lamZ W u τ) : ℝ) ≤ 2 * (R.k : ℝ) * S := by
   rw [brw_wt_cast]
@@ -270,6 +367,9 @@ theorem HCShape.c4 (h : HCShape W u a b' S) (τ : X.Tau) (hτ : τ ∉ W.tops) :
   have h4 := h.k_le
   nlinarith
 
+/- English proof (translation)
+The claim follows from `h.top top_wt := h.c1 top_plus := h.c2 oth_plus := h.c3 oth_wt τ hτ := by have h1 := h.c4 τ hτ have hk := brw_k_ge R have h4 := h.k_le have : 0 ≤ (R.k : ℝ) * S := by nlinarith nlinarith oth_last τ hτ := by have f1 := h.last_nonneg τ hτ have f2 := h.last_le τ have hk := brw_k_ge R …`.
+-/
 theorem wtWin_of_shape (h : HCShape W u a b' S) {C₀ : ℝ} (hC : 2 ≤ C₀) : WtWin W u C₀ a b' S where
   top := h.top
   top_wt := h.c1

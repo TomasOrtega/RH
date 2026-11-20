@@ -11,6 +11,11 @@ open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.Counti
 def ta_covR (A : Type) [CommRing A] (m : ℕ) (i : Fin (m + 1)) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) A :=
   (-1) ^ (i : ℕ) * Matrix.det (fun a b : Fin m => (X (i.succAbove a, b.castSucc) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) A))
 
+/- English proof (translation)
+Unfold `ta_covR`. Rewrite using `[map_mul, map_pow, map_neg, map_one]`. Use `congr 1`. Conclude with `(RingHom.map_det (map φ) (Matrix.of fun a b : Fin m => (X (i.succAbove a, b.castSucc) : MvPolynomial (Fin (m + 1) × Fin (m + 1)) A))).trans (by`. Use `congr 1`.
+
+Use extensionality with `a b`. Use the proof step `simp)`.
+-/
 theorem ta_covR_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (m : ℕ) (i : Fin (m + 1)) :
     map φ (ta_covR A m i) = ta_covR B m i := by
   unfold ta_covR
@@ -22,8 +27,14 @@ theorem ta_covR_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (m :
       ext a b
       simp)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ta_covR_eq (K : Type) [Field K] (m : ℕ) : ta_covR K m = covY K m := rfl
 
+/- English proof (translation)
+Proceed by induction on `β using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => simp only [map_mul, hp, map_X, aeval_X, ta_covR_map]`.
+-/
 theorem ta_aeval_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (m : ℕ) (β : MvPolynomial (Fin (m + 1)) A) :
     map φ (aeval (ta_covR A m) β) = aeval (ta_covR B m) (map φ β) := by
   induction β using MvPolynomial.induction_on with
@@ -38,11 +49,17 @@ variable {O K : Type} [CommRing O] [Field K] [Algebra O K]
 def ta_Int (O : Type) {K : Type} [CommRing O] [Field K] [Algebra O K] {σ : Type} (F : MvPolynomial σ K) : Prop :=
   ∃ β : MvPolynomial σ O, map (algebraMap O K) β = F
 
+/- English proof (translation)
+Take `⟨β, rfl⟩` from `h`. Conclude with `⟨coeff u β, (coeff_map _ _ _).symm⟩`.
+-/
 theorem ta_Int_coeff {σ : Type} {F : MvPolynomial σ K} (h : ta_Int O F) (u : σ →₀ ℕ) :
     coeff u F ∈ Set.range (algebraMap O K) := by
   obtain ⟨β, rfl⟩ := h
   exact ⟨coeff u β, (coeff_map _ _ _).symm⟩
 
+/- English proof (translation)
+Use `choose c hc using h`. Use `⟨∑ u ∈ F.support, monomial u (c u), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_monomial, hc]`. Conclude with `F.support_sum_monomial_coeff`.
+-/
 theorem ta_Int_of_coeff {σ : Type} {F : MvPolynomial σ K} (h : ∀ u, coeff u F ∈ Set.range (algebraMap O K)) :
     ta_Int O F := by
   classical
@@ -51,33 +68,54 @@ theorem ta_Int_of_coeff {σ : Type} {F : MvPolynomial σ K} (h : ∀ u, coeff u 
   simp only [map_sum, map_monomial, hc]
   exact F.support_sum_monomial_coeff
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h1`. Take `⟨b, rfl⟩` from `h2`. Conclude with `⟨a + b, map_add _ _ _⟩`.
+-/
 theorem ta_Int_add {σ : Type} {F G : MvPolynomial σ K} (h1 : ta_Int O F) (h2 : ta_Int O G) : ta_Int O (F + G) := by
   obtain ⟨a, rfl⟩ := h1
   obtain ⟨b, rfl⟩ := h2
   exact ⟨a + b, map_add _ _ _⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h1`. Take `⟨b, rfl⟩` from `h2`. Conclude with `⟨a * b, map_mul _ _ _⟩`.
+-/
 theorem ta_Int_mul {σ : Type} {F G : MvPolynomial σ K} (h1 : ta_Int O F) (h2 : ta_Int O G) : ta_Int O (F * G) := by
   obtain ⟨a, rfl⟩ := h1
   obtain ⟨b, rfl⟩ := h2
   exact ⟨a * b, map_mul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `⟨C c * a, by rw [map_mul, map_C, smul_eq_C_mul]⟩`.
+-/
 theorem ta_Int_smul {σ : Type} {F : MvPolynomial σ K} (c : O) (h : ta_Int O F) : ta_Int O (algebraMap O K c • F) := by
   obtain ⟨a, rfl⟩ := h
   exact ⟨C c * a, by rw [map_mul, map_C, smul_eq_C_mul]⟩
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `h`. Conclude with `⟨rename e a, map_rename _ _ _⟩`.
+-/
 theorem ta_Int_rename {σ τ : Type} (e : σ → τ) {F : MvPolynomial σ K} (h : ta_Int O F) : ta_Int O (rename e F) := by
   obtain ⟨a, rfl⟩ := h
   exact ⟨rename e a, map_rename _ _ _⟩
 
+/- English proof (translation)
+Use `ta_Int_of_coeff fun u => ?_` and prove the remaining obligations. Rewrite using `[← coeff_rename_mapDomain e he]`. Conclude with `ta_Int_coeff h _`.
+-/
 theorem ta_Int_of_rename {σ τ : Type} (e : σ → τ) (he : Function.Injective e) {F : MvPolynomial σ K}
     (h : ta_Int O (rename e F)) : ta_Int O F := by
   refine ta_Int_of_coeff fun u => ?_
   rw [← coeff_rename_mapDomain e he]
   exact ta_Int_coeff h _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨∏ i, X i ^ a i, by simp [map_prod]⟩`.
+-/
 theorem ta_Int_prodX {k : ℕ} (a : Fin k → ℕ) : ta_Int O (∏ i, X i ^ a i : MvPolynomial (Fin k) K) :=
   ⟨∏ i, X i ^ a i, by simp [map_prod]⟩
 
+/- English proof (translation)
+Take `⟨β, rfl⟩` from `h`. Conclude with `⟨aeval (ta_covR O m) β, by rw [ta_aeval_map, ta_covR_eq]⟩`.
+-/
 theorem ta_Int_aeval (m : ℕ) {b : MvPolynomial (Fin (m + 1)) K} (h : ta_Int O b) : ta_Int O (aeval (covY K m) b) := by
   obtain ⟨β, rfl⟩ := h
   exact ⟨aeval (ta_covR O m) β, by rw [ta_aeval_map, ta_covR_eq]⟩
@@ -88,6 +126,13 @@ section Sat
 
 variable {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] [IsFractionRing O K]
 
+/- English proof (translation)
+Take `⟨⟨s, hs⟩, hsI⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors O) (b.support.image fun u => coeff u b)`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Take `⟨n, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hw`. Use `⟨n, ta_Int_of_coeff fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul]`.
+
+Distinguish the cases in `hu : u ∈ b.support`. Take `⟨r, hr⟩` from `hsI _ (Finset.mem_image_of_mem _ hu)`. Use `⟨(↑v⁻¹ : O) * r, ?_⟩` and prove the remaining obligations. Establish `hr' : algebraMap O K r = algebraMap O K s * coeff u b`. Rewrite using `[hr]`.
+
+Conclude with `Algebra.smul_def _ _`. Rewrite using `[map_mul, hr', hv, map_mul, map_pow, ← mul_assoc, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`. Rewrite `hu` using `[mem_support_iff, not_not]`. Conclude with `⟨0, by rw [hu, mul_zero, map_zero]⟩`.
+-/
 theorem ta_exists_pow (w : O) (hw : Irreducible w) {σ : Type} (b : MvPolynomial σ K) :
     ∃ n : ℕ, ta_Int O ((algebraMap O K w ^ n) • b) := by
   classical
@@ -107,6 +152,23 @@ theorem ta_exists_pow (w : O) (hw : Irreducible w) {σ : Type} (b : MvPolynomial
   · rw [mem_support_iff, not_not] at hu
     exact ⟨0, by rw [hu, mul_zero, map_zero]⟩
 
+/- English proof (translation)
+Establish `hw0 : w ≠ 0` using `hw.ne_zero`. Establish `hinjOK : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Establish `hW0 : algebraMap O K w ≠ 0` using `fun h0 => hw0 (hinjOK (by rw [h0, map_zero]))`. Take `⟨γ, hγ⟩` from `h`. Use `haveI hmax : (Ideal.span {w}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hw`.
+
+Use `letI : Field (O ⧸ Ideal.span {w}) := Ideal.Quotient.field _`. Establish `hind : Function.Injective (aeval (R` using `O ⧸ Ideal.span {w}) (covY (O ⧸ Ideal.span {w}) m)) := by`. Use `Formalism.MainNotions.flipOneThree.Pf.ShapeCovering.signed_minors_alg_independent (O ⧸ Ideal.span {w}) m hm` as an intermediate fact. Rewrite `this` using `[covY_eq]`. Conclude with `this`.
+
+Establish `step : ∀ n : ℕ, ta_Int O (algebraMap O K w ^ (n + 1) • b) → ta_Int O (algebraMap O K w ^ n • b)`. Introduce `n hn`. Take `⟨β, hβ⟩` from `hn`. Establish `e1 : map (algebraMap O K) (aeval (ta_covR O m) β) = map (algebraMap O K) (C (w ^ (n + 1)) * γ)`. Rewrite using `[ta_aeval_map, ta_covR_eq, hβ, map_smul, map_mul, map_C, hγ, smul_eq_C_mul]`.
+
+Simplify using `only [map_pow]`. Establish `e2` using `map_injective _ hinjOK e1`. Establish `e3 : aeval (R` using `O ⧸ Ideal.span {w}) (covY (O ⧸ Ideal.span {w}) m) (map (Ideal.Quotient.mk (Ideal.span {w})) β) = 0 := by`. Rewrite using `[← ta_covR_eq, ← ta_aeval_map, e2, map_mul, map_C, map_pow, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self w), zero_pow (Nat.succ_ne_zero n), C_0, zero_mul]`. Establish `e4 : map (Ideal.Quotient.mk (Ideal.span {w})) β = 0` using `hind (by rw [e3, map_zero])`.
+
+Apply `ta_Int_of_coeff` to reduce the goal to its premises. Introduce `u`. Establish `hu : coeff u β ∈ Ideal.span {w}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `congrArg (coeff u) e4` as an intermediate fact.
+
+Rewrite `this` using `[coeff_map, coeff_zero]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hu`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e5` using `congrArg (coeff u) hβ`. Rewrite `e5` using `[coeff_map, ← hc, map_mul, coeff_smul, smul_eq_mul]`.
+
+Rewrite using `[coeff_smul, smul_eq_mul]`. Apply `mul_right_cancel₀ hW0` to reduce the goal to its premises. Rewrite using `[e5]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨n, hn⟩` from `ta_exists_pow w hw b`.
+
+Proceed by induction on `n with`. Consider the case `zero => simpa using hn`. Consider the case `succ n ih => exact ih (step n hn)`.
+-/
 theorem ta_sat (w : O) (hw : Irreducible w) (m : ℕ) (hm : 1 ≤ m) (b : MvPolynomial (Fin (m + 1)) K)
     (h : ta_Int O (aeval (covY K m) b)) : ta_Int O b := by
   classical
@@ -158,6 +220,9 @@ section Act
 
 variable {K : Type} [Field K] {m : ℕ}
 
+/- English proof (translation)
+Establish `key : (PsiXY K m).comp ((Formalism.CountingSumsFrames.glAct g').comp (rename Sum.inl)) = (blockEmb K true).comp ((rowAct K (g' : Matrix (Fin (m + 1)) (Fin (m + 1)) K)).comp (rename fun i => (i, (0 : Fin (m + 1)))))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[PsiXY, Formalism.CountingSumsFrames.glAct, blockEmb, rowAct, algebraMap_eq]`. Conclude with `DFunLike.congr_fun key a`.
+-/
 theorem ta_Psi_gl_alt (g' : GL (Fin (m + 1)) K) (a : MvPolynomial (Fin (m + 1)) K) :
     PsiXY K m (glAct g' (rename Sum.inl a)) =
       blockEmb K true (rowAct K (g' : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (rename (fun i => (i, (0 : Fin (m + 1)))) a)) := by
@@ -169,6 +234,15 @@ theorem ta_Psi_gl_alt (g' : GL (Fin (m + 1)) K) (a : MvPolynomial (Fin (m + 1)) 
     simp [PsiXY, Formalism.CountingSumsFrames.glAct, blockEmb, rowAct, algebraMap_eq]
   exact DFunLike.congr_fun key a
 
+/- English proof (translation)
+Establish `hinv : IsUnit (g⁻¹).det` using `Matrix.isUnit_nonsing_inv_det g hg`. Establish `hd0 : g.det ≠ 0` using `hg.ne_zero`. Establish `key : (PsiXY K m).comp ((Formalism.CountingSumsFrames.glAct g').comp (rename Sum.inr)) = (blockEmb K false).comp (aeval fun i => C g.det * rowAct K g⁻¹ (covY K m i))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+
+Establish `h5` using `Formalism.MainNotions.flipOneThree.Pf.ShapeCovering.signed_minors_cofactor_transform K m g⁻¹ i hinv`. Rewrite `h5` using `[covY_eq]`. Establish `hgg : ((g'⁻¹ : GL (Fin (m + 1)) K) : Matrix (Fin (m + 1)) (Fin (m + 1)) K) = g`. Rewrite using `[Matrix.coe_units_inv, hg', Matrix.nonsing_inv_nonsing_inv g hg]`. Simplify using `only [AlgHom.comp_apply, rename_X, aeval_X, Formalism.CountingSumsFrames.glAct, Sum.elim_inr, map_sum, map_mul, hgg]`.
+
+Rewrite using `[h5, ← map_mul, ← mul_assoc, ← C_mul, Matrix.nonsing_inv_nonsing_inv g hg, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', mul_inv_cancel₀ hd0, C_1, one_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Unfold `PsiXY blockEmb`. Rewrite using `[aeval_C, aeval_X, Sum.elim_inr, rename_C, algebraMap_eq]`.
+
+Conclude with `DFunLike.congr_fun key b`.
+-/
 theorem ta_Psi_gl_y (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det) (g' : GL (Fin (m + 1)) K)
     (hg' : (g' : Matrix (Fin (m + 1)) (Fin (m + 1)) K) = g⁻¹) (b : MvPolynomial (Fin (m + 1)) K) :
     PsiXY K m (glAct g' (rename Sum.inr b)) =
@@ -192,6 +266,13 @@ theorem ta_Psi_gl_y (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.de
     rw [aeval_C, aeval_X, Sum.elim_inr, rename_C, algebraMap_eq]
   exact DFunLike.congr_fun key b
 
+/- English proof (translation)
+Use `conv_lhs => rw [b.as_sum]`. Use `conv_rhs => rw [b.as_sum]`. Simplify using `only [map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Establish `hdeg` using `hb (mem_support_iff.mp hu)`.
+
+Simplify using `only [aeval_monomial, Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[smul_eq_C_mul, ← map_pow]`. Establish `hQ : ∑ i ∈ u.support, u i = Q`. Rewrite using `[← hdeg]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ta_aeval_scale {τ : Type} {k Q : ℕ} (d : K) (z : Fin k → MvPolynomial τ K) (b : MvPolynomial (Fin k) K)
     (hb : b.IsHomogeneous Q) : aeval (fun i => C d * z i) b = d ^ Q • aeval z b := by
   classical
@@ -208,10 +289,16 @@ theorem ta_aeval_scale {τ : Type} {k Q : ℕ} (d : K) (z : Fin k → MvPolynomi
   rw [hQ]
   ring
 
+/- English proof (translation)
+Conclude with `(DFunLike.congr_fun (comp_aeval (covY K m) (rowAct K h)) b).symm`.
+-/
 theorem ta_aeval_rowAct (h : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (b : MvPolynomial (Fin (m + 1)) K) :
     aeval (fun i => rowAct K h (covY K m i)) b = rowAct K h (aeval (covY K m) b) := by
   exact (DFunLike.congr_fun (comp_aeval (covY K m) (rowAct K h)) b).symm
 
+/- English proof (translation)
+Rewrite using `[map_mul, map_mul, ta_Psi_gl_alt, ta_Psi_gl_y g hg g' hg', hg', ta_aeval_scale g.det _ b hb, ta_aeval_rowAct]`.
+-/
 theorem ta_Psi_gl (g : Matrix (Fin (m + 1)) (Fin (m + 1)) K) (hg : IsUnit g.det) (g' : GL (Fin (m + 1)) K)
     (hg' : (g' : Matrix (Fin (m + 1)) (Fin (m + 1)) K) = g⁻¹) (Q : ℕ) (a b : MvPolynomial (Fin (m + 1)) K)
     (hb : b.IsHomogeneous Q) :

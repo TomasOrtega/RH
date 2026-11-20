@@ -37,6 +37,11 @@ def WeylStatement : Prop :=
     ∀ (T : KType ε (fun a => (Λ a : ℝ))) (k : KG ε) (t : Fin n → ℂ), toMK k = Matrix.diagonal t →
       wdenK ε t * kChar T k = numK ε (Λ + rhoK ε) t
 
+/- English proof (translation)
+Unfold `toMK toM at hk`. Establish `hu : IsUnit (Matrix.diagonal t)`. Rewrite using `[← hk]`. Use `first`. Consider the case `exact Units.isUnit _`.
+
+Consider the case `exact (unitary.toUnits _).isUnit`. Consider the case `exact (Matrix.isUnit_iff_isUnit_det _).mpr (Units.isUnit _)`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp hu`. Rewrite `hdet` using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mp hdet.ne_zero i (Finset.mem_univ i)`.
+-/
 theorem ne_zero_of_toMK_diag {n : ℕ} {ε : Fin n → Bool} (k : KG ε) {t : Fin n → ℂ}
     (hk : toMK k = Matrix.diagonal t) (i : Fin n) : t i ≠ 0 := by
   unfold toMK toM at hk
@@ -50,6 +55,11 @@ theorem ne_zero_of_toMK_diag {n : ℕ} {ε : Fin n → Bool} (k : KG ε) {t : Fi
   rw [Matrix.det_diagonal] at hdet
   exact Finset.prod_ne_zero_iff.mp hdet.ne_zero i (Finset.mem_univ i)
 
+/- English proof (translation)
+Establish `hmem : ∀ r, ε (blk ε b r) = b`. Introduce `r`. Establish `hr` using `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl r`. Use `show ε ((univ.filter fun i : Fin n => ε i = b).orderEmbOfFin rfl r) = b`. Simplify using `using hr`.
+
+Establish `hsm : StrictMono (blk ε b)` using `(Finset.orderEmbOfFin (univ.filter fun i : Fin n => ε i = b) rfl).strictMono`. Introduce `i j hij`. Break down `hij.lt_or_eq with h | h` into its components or cases. Conclude with `hdom _ _ (hsm h) ((hmem i).trans (hmem j).symm)`. Rewrite using `[h]`.
+-/
 theorem antitone_blk {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℤ}
     (hdom : ∀ a b, a < b → ε a = ε b → Λ b ≤ Λ a) (b : Bool) : Antitone (Λ ∘ blk ε b) := by
   have hmem : ∀ r, ε (blk ε b r) = b := by
@@ -64,6 +74,13 @@ theorem antitone_blk {n : ℕ} {ε : Fin n → Bool} {Λ : Fin n → ℤ}
   · exact hdom _ _ (hsm h) ((hmem i).trans (hmem j).symm)
   · rw [h]
 
+/- English proof (translation)
+Establish `hW : WeylGTStatement` using `weylGT`. Introduce `n ε Λ hdom T k t hk`. Rewrite using `[hK n ε Λ hdom T k t hk]`. Take `⟨hw, hnum, hrho⟩` from `hB ℂ n ε (Λ + rhoK ε) t`. Rewrite using `[hw, hnum]`.
+
+Establish `hG : ∀ b : Bool, wden (cnt ε b) (t ∘ blk ε b) * gtChar (cnt ε b) (Λ ∘ blk ε b) (t ∘ blk ε b) = alt (cnt ε b) ((Λ + rhoK ε) ∘ blk ε b) (t ∘ blk ε b)`. Introduce `b`. Establish `hc : (Λ + rhoK ε) ∘ blk ε b = Λ ∘ blk ε b + delta (cnt ε b)`. Rewrite using `[← hrho b]`. Both sides reduce to the same expression.
+
+Rewrite using `[hc]`. Conclude with `hW ℂ _ _ (antitone_blk hdom b) _ (fun i => ne_zero_of_toMK_diag k hk _)`. Rewrite using `[← hG true, ← hG false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem weyl_of (hK : KCharGTStatement) (hB : BlockCombStatement) : WeylStatement := by
   have hW : WeylGTStatement := weylGT
   intro n ε Λ hdom T k t hk

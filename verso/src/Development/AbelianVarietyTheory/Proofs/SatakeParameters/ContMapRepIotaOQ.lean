@@ -29,6 +29,9 @@ def PstTie (T : GlobalTheory.RowTie.WDTie N A) : Prop :=
       IsdRAt (P i) (br i w hw) (resDec N.plOm.1 r w) ∧
         T.e w (A.wdOf i r w) = wdAt (P i) (A.iotaQC i) (br i w hw) (N.plOm.2 w) (hj i w hw) (resDec N.plOm.1 r w)
 
+/- English proof (translation)
+The claim follows from `continuous_matrix fun p q => (GlobalTheory.T.continuous_iotaOQ' N A i).comp (hτ.matrix_elem p q)`.
+-/
 theorem cont_mapRep_iotaOQ (i : N.Loc) {b : ℕ} (τ : G H.E N.Om →* GL (Fin b) (N.O i)) (hτ : Cont N i τ) :
     Continuous (fun g => ((mapRep (iotaOQ N A i) τ g : GL (Fin b) (Qbar (N.l i))) :
       Matrix (Fin b) (Fin b) (Qbar (N.l i)))) :=

@@ -10,6 +10,9 @@ open PositivityTheory.RgUd.Form PositivityTheory.RgUd.Form.U PositivityTheory.Rg
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[blkAt_apply]`. Simplify using `[a.2, b.2]`.
+-/
 theorem blkAt_self (N : ℕ) (h : N ≤ N) (g : GL (Fin N) k) : blkAt k N N h g = g := by
   ext a b
   rw [blkAt_apply]
@@ -29,6 +32,9 @@ variable (hUD : UDens k) (hUA : UAtom k) {ψ : AddChar k Circle} (hψc : Continu
   {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (hs : IsSmooth π)
   (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
 
+/- English proof (translation)
+Establish `hh : ∃ hN : d + 2 ≤ N, Lvl k ψ π (N - 2 - d) (by omega) (d : ℝ) (chain hUD hψc hψ1 π hs B d)` using `⟨hN, hL⟩`. Establish `e : atom hUD hUA hψc hψ1 π hs B d = Classical.choose (hUA ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) hL)`. Rewrite using `[atom, dif_pos hh]`. Rewrite using `[e]`. Conclude with `Classical.choose_spec (hUA ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) hL)`.
+-/
 theorem atom_spec (d : ℕ) (hN : d + 2 ≤ N)
     (hL : Lvl k ψ π (N - 2 - d) (by omega) (d : ℝ) (chain hUD hψc hψ1 π hs B d)) :
     IsAtom (by omega : N - 2 - d + 2 ≤ N) π (chain hUD hψc hψ1 π hs B d) (atom hUD hUA hψc hψ1 π hs B d) ∧
@@ -44,6 +50,9 @@ theorem atom_spec (d : ℕ) (hN : d + 2 ≤ N)
   rw [e]
   exact Classical.choose_spec (hUA ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) hL)
 
+/- English proof (translation)
+The claim follows from `| 0, hd, C, _, _, hC3, _ => by obtain ⟨n, rfl⟩ : ∃ n, N = n + 1 := ⟨N - 1, by omega⟩ have hM : MirEq π n (by omega) ((0 : ℕ) : ℝ) C := mirEq_congr (by omega) rfl hC3 refine hTB n V π hs hirr B hB C fun p hp v w => ?_ have := hM p hp v w rw [blkAt_self] at this simpa using this | …`.
+-/
 theorem lift (hUL : ULift k) (hTB : ThmB k) (hirr : π.IsIrreducible) (hB : IsInvForm π B) :
     ∀ d (hd : d + 1 ≤ N) (C : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ), IsPsd C → Kills ψ π (N - d) C →
       MirEq π (N - d - 1) (by omega) (d : ℝ) C →
@@ -66,6 +75,9 @@ theorem lift (hUL : ULift k) (hTB : ThmB k) (hirr : π.IsIrreducible) (hB : IsIn
       (mirEq_congr (by omega) rfl hIL.2.2) hIle
     exact ⟨c, isDens_smul hD hID c hc⟩
 
+/- English proof (translation)
+The claim follows from `| 0, _, v, hv => by have : v = 0 := by by_contra hne have := hB.2.1 v hne rw [chain_zero] at hv rw [hv] at this simp at this rw [this] exact zero_mem _ | d + 1, hd, v, hv => by have hL := chain_lvl hUD hψc hψ1 π hs B hB d (by omega) obtain ⟨-, -, -, -, hR⟩ := chain_succ hUD hψc h …`.
+-/
 theorem chain_rad (hB : IsInvForm π B) :
     ∀ d (hd : d + 1 ≤ N) v, chain hUD hψc hψ1 π hs B d v v = 0 →
       v ∈ twKer π (derUnip k N (N - d)) (lvlChar k ψ N (N - d))
@@ -96,6 +108,11 @@ theorem chain_rad (hB : IsInvForm π B) :
     exact twKer_derUnip_le ψ π (a := N - d) (b := N - (d + 1)) (x := N - d - 1) (y := N - (d + 1) - 1)
       (by omega) (by omega) (by omega) hK
 
+/- English proof (translation)
+Establish `hL` using `chain_lvl hUD hψc hψ1 π hs B hB d hd`. Take `⟨-, hA1, hA2, hA3, -, hA5⟩` from `atom_spec hUD hUA hψc hψ1 π hs B d hd hL`. Use `lift hUD hψc hψ1 π hs B hUL hTB hirr hB d (by omega) _ hA1 ?_ (mirEq_congr (by omega) rfl hA5) hA2` and prove the remaining obligations. Introduce `v hv w`. Use `hA3 v ?_ w` and prove the remaining obligations.
+
+Simplify using `only [DerKer]`. Rewrite `hv` using `[lvlChar_def]`. Rewrite using `[derChar_def]`. Conclude with `twKer_derUnip_le ψ π (a := N - d) (b := N - 2 - d + 1) (x := N - d - 1) (y := N - 2 - d + 1) (by omega) (by omega) (by omega) hv`.
+-/
 theorem atom_prop (hUL : ULift k) (hTB : ThmB k) (hirr : π.IsIrreducible) (hB : IsInvForm π B) (d : ℕ)
     (hd : d + 2 ≤ N) : ∃ c : ℂ, ∀ v w, atom hUD hUA hψc hψ1 π hs B d v w = c * chain hUD hψc hψ1 π hs B d v w := by
   have hL := chain_lvl hUD hψc hψ1 π hs B hB d hd
@@ -109,6 +126,11 @@ theorem atom_prop (hUL : ULift k) (hTB : ThmB k) (hirr : π.IsIrreducible) (hB :
   exact twKer_derUnip_le ψ π (a := N - d) (b := N - 2 - d + 1) (x := N - d - 1) (y := N - 2 - d + 1)
     (by omega) (by omega) (by omega) hv
 
+/- English proof (translation)
+Establish `hL` using `chain_lvl hUD hψc hψ1 π hs B hB d hd`. Take `⟨hAt, -⟩` from `atom_spec hUD hUA hψc hψ1 π hs B d hd hL`. Take `⟨hD, -⟩` from `chain_succ hUD hψc hψ1 π hs B d hd hL`. Take `⟨c, hc⟩` from `atom_prop hUD hUA hψc hψ1 π hs B hUL hTB hirr hB d hd`. Establish `h0` using `(hUS ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) (atom hUD hUA hψc hψ1 π hs B d) (chain hUD hψc hψ1 π hs B (d + 1)) (lat0 k (N - 2 - d)) hL (isLattice_standard_lattice _) hAt hD).2 c hc hne`.
+
+Introduce `v w`. Rewrite using `[hc, h0, zero_mul]`.
+-/
 theorem atom_eq_zero (hUS : USplit k) (hUL : ULift k) (hTB : ThmB k) (hirr : π.IsIrreducible) (hB : IsInvForm π B)
     (d : ℕ) (hd : d + 2 ≤ N) (hne : ∃ v, chain hUD hψc hψ1 π hs B (d + 1) v v ≠ 0) :
     ∀ v w, atom hUD hUA hψc hψ1 π hs B d v w = 0 := by
@@ -122,6 +144,9 @@ theorem atom_eq_zero (hUS : USplit k) (hUL : ULift k) (hTB : ThmB k) (hirr : π.
   intro v w
   rw [hc, h0, zero_mul]
 
+/- English proof (translation)
+Establish `hL` using `chain_lvl hUD hψc hψ1 π hs B hB d hd`. Take `⟨hAt, -⟩` from `atom_spec hUD hUA hψc hψ1 π hs B d hd hL`. Take `⟨hD, -⟩` from `chain_succ hUD hψc hψ1 π hs B d hd hL`. Conclude with `(hUS ψ hψc hψ1 (N - 2 - d) N (by omega) V π hs (d : ℝ) (chain hUD hψc hψ1 π hs B d) (atom hUD hUA hψc hψ1 π hs B d) (chain hUD hψc hψ1 π hs B (d + 1)) (lat0 k (N - 2 - d)) hL (isLattice_standard_lattice _) hAt hD).1 h0`.
+-/
 theorem atom_eq_self (hUS : USplit k) (hB : IsInvForm π B) (d : ℕ) (hd : d + 2 ≤ N)
     (h0 : ∀ v, chain hUD hψc hψ1 π hs B (d + 1) v v = 0) :
     atom hUD hUA hψc hψ1 π hs B d = chain hUD hψc hψ1 π hs B d := by

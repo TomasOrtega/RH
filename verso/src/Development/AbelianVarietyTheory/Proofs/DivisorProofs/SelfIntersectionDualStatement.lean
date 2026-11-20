@@ -14,5 +14,8 @@ open GlobalTheory.CxForm (IsRegVar hermMat eval₂ bas relCot dRel IsRelAcyclic)
 open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.DualHeight.isSelfInter_dual | exact GlobalTheory.DualHeight.isSelfInter_dual | (intros; apply GlobalTheory.DualHeight.isSelfInter_dual <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.self_intersection_dual : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X] (L : HermLB p) (x : ℝ), IsRegSurf p → L.IsSelfInter x → L.dual.IsSelfInter x := by
   first | exact @GlobalTheory.DualHeight.isSelfInter_dual | exact GlobalTheory.DualHeight.isSelfInter_dual | (intros; apply GlobalTheory.DualHeight.isSelfInter_dual <;> assumption)

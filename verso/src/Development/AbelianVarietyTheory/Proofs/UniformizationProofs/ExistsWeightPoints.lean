@@ -19,6 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.UU
 
+/- English proof (translation)
+Introduce `hL V _ _ _ A G _ _ s`. Establish `h1` using `GlobalTheory.T.exists_point_representing_weight_mumfordQuotient hL V A G s`. Establish `h2` using `GlobalTheory.T.mumfordTower_repWt_unique hL V A G s`. Establish `h3` using `GlobalTheory.T.mumfordTower_repWt_mul_add V A G s`. Introduce `t a hK`.
+
+Use `choose c hc using h1 t a hK`. Use `⟨c, fun χ χ' => ?_, hc⟩` and prove the remaining obligations. Conclude with `h2 t a hK (χ + χ') _ _ (hc _) fun e => h3 t a χ χ' _ _ e (hc χ e) (hc χ' e)`.
+-/
 theorem exists_weightPoints : Laws → AllSet fun s => ∀ (t : Tower s) (a : t.Alg), KTriv a.B a.M.L.L → ∃ c : s.X → (𝟙_ _ ⟶ a.B), (∀ χ χ', c (χ + χ') = c χ * c χ') ∧ ∀ χ e, a.RepWt (c χ) χ e := by
   intro hL V _ _ _ A G _ _ s
   have h1 := GlobalTheory.T.exists_point_representing_weight_mumfordQuotient hL V A G s

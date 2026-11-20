@@ -2,6 +2,17 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `W _ _ g Λ P hspan Q hQ O T χ hΛ hT ψ hψ w hw`. Set `D : O → (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `fun a => { toFun := fun v j => χ a j * v j map_add' := by intro u v; funext j; simp [mul_add] map_smul' := by intro c v; funext j; simp; ring }`. Establish `hcomm : ∀ a, Q ∘ₗ T a = D a ∘ₗ Q`. Introduce `a`. Use `LinearMap.ext_on_range hspan ?_` and prove the remaining obligations.
+
+Introduce `x`. Establish `h1 : T a (P x) = P ⟨_, hΛ a x⟩` using `hT a x ⟨_, hΛ a x⟩ rfl`. Simplify using `only [LinearMap.comp_apply, h1, hQ]`. Both sides reduce to the same expression. Rewrite using `[LinearMap.mem_ker]`.
+
+Establish `hw' : ∀ a, T a w = ψ a • w`. Introduce `a`. Use `(Submodule.mem_iInf _).1 hw a` as an intermediate fact. Conclude with `Module.End.mem_eigenspace_iff.1 this`. Use function extensionality and compare the values at `j`.
+
+Take `⟨a, ha⟩` from `hψ j`. Establish `h2` using `congrArg (fun f => f w) (hcomm a)`. Simplify using `only [LinearMap.comp_apply, hw', map_smul] at h2`. Establish `h3` using `congrFun h2 j`. Express the relevant statement in the definitionally equal form `ψ a * Q w j = χ a j * Q w j at h3`.
+
+Establish `h4 : (χ a j - ψ a) * Q w j = 0` using `by rw [sub_mul, ← h3]; ring`. Break down `mul_eq_zero.1 h4 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h) ha`. Simplify using `using h`.
+-/
 theorem eigenvector_mem_ker_of_ne_coord_char :
     ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (P : Λ →+ W),
     Submodule.span ℂ (Set.range P) = ⊤ → ∀ (Q : W →ₗ[ℂ] (Fin g → ℂ)), (∀ x, Q (P x) = x) →

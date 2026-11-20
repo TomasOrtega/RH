@@ -30,6 +30,15 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Establish `hl : (BlowupSequenceData.ofSequenceOfBlowups B).length = 0`. Rewrite using `[BlowupSequenceData.ofSequenceOfBlowups_length]`. Conclude with `h`. Establish `hl' : (BlowupSequenceData.ofSequenceOfBlowups B').length = 0`. Rewrite using `[BlowupSequenceData.ofSequenceOfBlowups_length]`.
+
+Conclude with `h'`. Establish `hz : ∀ i : ℕ, i ≤ (BlowupSequenceData.ofSequenceOfBlowups B).length → i = 0`. Introduce `i hi`. Rewrite `hi` using `[hl]`. Conclude with `Nat.le_zero.mp hi`.
+
+Establish `hrfl1 : ∀ p : (BlowupSequenceData.ofSequenceOfBlowups B).obj 0 = (BlowupSequenceData.ofSequenceOfBlowups B).obj 0, eqToIso p = Iso.refl ((BlowupSequenceData.ofSequenceOfBlowups B).obj 0)` using `fun _ => rfl`. Establish `hrfl2 : ∀ p : (BlowupSequenceData.ofSequenceOfBlowups B').obj 0 = (BlowupSequenceData.ofSequenceOfBlowups B').obj 0, eqToIso p = Iso.refl ((BlowupSequenceData.ofSequenceOfBlowups B').obj 0)` using `fun _ => rfl`. Establish `key : (BlowupSequenceData.ofSequenceOfBlowups B).toSequenceOfBlowups.Isomorphic (BlowupSequenceData.ofSequenceOfBlowups B').toSequenceOfBlowups`. Use `BlowupSequenceData.toSequenceOfBlowups_isomorphic_of_iso (BlowupSequenceData.ofSequenceOfBlowups B) (BlowupSequenceData.ofSequenceOfBlowups B') (by rw [hl, hl']) (fun i hi => eqToIso (congrArg (BlowupSequenceData.ofSequenceOfBlowups B).obj (hz i hi)) ≪≫ (BlowupSequenceData.ofSequ …` and prove the remaining obligations. Simplify using `only [hrfl1, hrfl2, Iso.trans_hom, Iso.refl_hom, Iso.symm_hom, Category.assoc, Category.id_comp, Category.comp_id, Iso.inv_hom_id]`.
+
+Introduce `i hi`. Conclude with `absurd hi (by rw [hl]; exact Nat.not_lt_zero i)`. Introduce `i hi`. Conclude with `absurd hi (by rw [hl]; exact Nat.not_lt_zero i)`. Conclude with `((BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic B).symm.trans key).trans (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic B')`.
+-/
 theorem SequenceOfBlowups.isomorphic_of_length_eq_zero {X : Scheme.{u}} (B B' : SequenceOfBlowups X)
     (h : B.length = 0) (h' : B'.length = 0) : B.Isomorphic B' := by
   have hl : (BlowupSequenceData.ofSequenceOfBlowups B).length = 0 := by
@@ -58,6 +67,9 @@ theorem SequenceOfBlowups.isomorphic_of_length_eq_zero {X : Scheme.{u}} (B B' : 
       exact absurd hi (by rw [hl]; exact Nat.not_lt_zero i)
   exact ((BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic B).symm.trans key).trans (BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic B')
 
+/- English proof (translation)
+Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Conclude with `SequenceOfBlowups.isomorphic_refl _`.
+-/
 theorem principalizationAssignment_mk_isomorphic (f : PrincipalizationAssignment.{u}) (T : MarkedIdealWithBoundary.{u})
     (p : T.scheme ⟶ Spec (CommRingCat.of T.base)) (I : T.scheme.IdealSheafData) (m : ℕ)
     (E : List T.scheme.IdealSheafData) (hp : p = T.structMap) (hI : I = T.ideal)
@@ -70,6 +82,9 @@ theorem principalizationAssignment_mk_isomorphic (f : PrincipalizationAssignment
   subst hE
   exact SequenceOfBlowups.isomorphic_refl _
 
+/- English proof (translation)
+Establish `hlen : (s.append t hinv).length = s.length + t.length` using `MarkedBlowupSequenceData.append_length s t hinv`. Rewrite using `[hlen, MarkedBlowupSequenceData.append_ideal_length_add_length s t hinv ht]`. Conclude with `orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ h`.
+-/
 private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedBlowupSequenceData p I m E)
@@ -82,6 +97,61 @@ private theorem orderAtLeastLocus_append_eq_empty {k : Type u} [Field k] {X : Sc
   rw [hlen, MarkedBlowupSequenceData.append_ideal_length_add_length s t hinv ht]
   exact orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ h
 
+/- English proof (translation)
+Distinguish the cases in `hcs : orderAtLeastLocus T.ideal T.mult = ∅`. Conclude with `SequenceOfBlowups.isomorphic_of_length_eq_zero _ _ (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A hcs) (hspec.trivial_of_coSupport_empty T hT hdim hord hcs)`. Take `⟨x₁, hx₁⟩ : (orderAtLeastLocus T.ideal T.mult).Nonempty` from `Set.nonempty_iff_ne_empty.mpr hcs`. Establish `: Nonempty ↥T.scheme` using `⟨x₁⟩`. Take `⟨x₀, hx₀⟩` from `exists_orderAt_eq_maxOrder T.ideal hord`.
+
+Establish `hmax : maxOrder T.ideal = T.mult`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Establish `h` using `hord x₀`. Rewrite `h` using `[hx₀]`. Conclude with `h` after adjusting the coercions.
+
+Establish `h1 : (T.mult : ℕ∞) ≤ orderAt T.ideal x₁` using `hx₁`. Establish `h2` using `orderAt_le_maxOrder T.ideal hord x₁`. Establish `h3 : (T.mult : ℕ∞) ≤ ((maxOrder T.ideal : ℕ) : ℕ∞)` using `le_trans h1 h2`. Conclude with `h3` after adjusting the coercions. Establish `hJ0 : lastNonMonomialPart T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) = T.ideal` using `hG.nonMonomialPart_eq_ideal_of_boundary_eq_nil T hT hE`.
+
+Establish `hμ0 : maxOrderNonMonomial T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) = T.mult`. Establish `h` using `congrArg (fun N => maxOrder N) hJ0`. Conclude with `h.trans hmax`. Establish `hmem : ((maxOrderNonMonomial T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) : ℕ) : ℕ∞) ≤ orderAt (lastNonMonomialPart T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)) x₁`. Rewrite using `[hμ0, hJ0]`.
+
+Conclude with `hx₁`. Establish `hcont : NonMonomialOrderReductionContinues T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)` using `⟨le_of_eq hμ0.symm, ⟨x₁, hmem⟩⟩`. Establish `hlt` using `maxOrderNonMonomial_extendByNonMonomialPart_lt hG hinv hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont`. Rewrite `hlt` using `[hμ0]`. Establish `hnot : ¬ NonMonomialOrderReductionContinues T (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))`.
+
+Introduce `hc`. Establish `h1 : T.mult ≤ maxOrderNonMonomial T (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))` using `hc.1`. Use linear arithmetic over natural numbers and integers. Establish `hzero : nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) 0 = emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary`. Simplify using `only [nonMonomialOrderReductionIter]`.
+
+Establish `hstepc : ∀ j : ℕ, NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j) → nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (j + 1) = extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (nonMonomialOr …`. Introduce `j hj`. Simplify using `only [nonMonomialOrderReductionIter]`. Use `split_ifs with h`. Both sides reduce to the same expression.
+
+Conclude with `absurd hj h`. Establish `hstepn : ∀ j : ℕ, ¬ NonMonomialOrderReductionContinues T (nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j) → nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (j + 1) = nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) j`. Introduce `j hj`. Simplify using `only [nonMonomialOrderReductionIter]`. Use `split_ifs with h`.
+
+Conclude with `absurd h hj`. Both sides reduce to the same expression. Establish `hloop : ∀ j : ℕ, nonMonomialOrderReductionIter hinv T (principalizationOfDimLe T A) (j + 1) = extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)`. Introduce `j`. Proceed by induction on `j with`.
+
+Consider the case `zero`. Rewrite using `[hstepc 0 (by rw [hzero]; exact hcont), hzero]`. Consider the case `succ j ih`. Rewrite using `[hstepn (j + 1) (by rw [ih]; exact hnot), ih]`. Establish `hnonMonomialEq : nonMonomialOrderReduction hinv T (principalizationOfDimLe T A) = extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)`.
+
+Simplify using `only [nonMonomialOrderReduction]`. Conclude with `hloop _`. Establish `hconcat` using `extendByNonMonomialPart_eq_append hG hinv hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont`. Establish `ht1pos : 0 < (continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).length`. Rewrite using `[continuationByNonMonomialPart_length hG hspec hT hdim _ hcont]`.
+
+Conclude with `seqAtEnd_lastNonMonomialPart_length_pos hG hspec hT hdim _ hcont`. Establish `hcong : ∀ (Y : Scheme.{u}) (d : BlowupSequenceData Y) (I₁ I₂ : Y.IdealSheafData) (m₁ m₂ j : ℕ), I₁ = I₂ → m₁ = m₂ → d.controlledTransform I₁ m₁ j = d.controlledTransform I₂ m₂ j`. Introduce `Y d I₁ I₂ m₁ m₂ j h1 h2`. Rewrite using `[h1, h2]`. Establish `hcs2 : ∀ (Y : Scheme.{u}) (Jy : Y.IdealSheafData) (m₁ m₂ : ℕ), m₁ = m₂ → orderAtLeastLocus Jy m₁ = ∅ → orderAtLeastLocus Jy m₂ = ∅`.
+
+Introduce `Y Jy m₁ m₂ h hh`. Substitute `h` using the available equality. Conclude with `hh`. Establish `hnonMonomialLast : (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)).IsAdmissible` using `isAdmissible_nonMonomialTriple hG hT _ hcont`. Establish `hdimLast : (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)).krullDimSucc ≤ n` using `le_trans (tripleAtLength_dim_le hG hT _ _ _) hdim`.
+
+Establish `hboundaryLast : (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)).IsOrderBoundedByMult`. Rewrite using `[MarkedIdealWithBoundary.IsOrderBoundedByMult.eq_def]`. Introduce `x`. Conclude with `orderAt_lastNonMonomialPart_le_maxOrderNonMonomial hG hT (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) x`. Establish `hresolves : MarkedSequenceOfBlowups.IsResolution (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)))` using `hspec.resolves _ hnonMonomialLast hdimLast hboundaryLast`.
+
+Establish `hlocus : orderAtLeastLocus ((A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))).ideal (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))).length) T.mult = ∅`. Establish `h` using `(MarkedSequenceOfBlowups.isResolution_iff _).mp hresolves`. Rewrite `h` using `[MarkedSequenceOfBlowups.lastIdeal_eq]`. Conclude with `hcs2 _ _ _ _ hμ0 h`. Establish `hid : (continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).ideal (continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).length = (A (nonMo …`.
+
+Establish `h1` using `MarkedBlowupSequenceData.toBlowupSequenceData_controlledTransform_eq (MarkedBlowupSequenceData.ofMarkedSequence (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)))) (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.id …`. Establish `h2` using `MarkedBlowupSequenceData.ofMarkedSequence_ideal (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))) (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))).length`. Establish `h3` using `hcong _ (MarkedBlowupSequenceData.ofMarkedSequence (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)))).toBlowupSequenceData ((emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).ideal (emptyMarkedBlowupSequenceData T.s …`. Conclude with `h3.trans (h1.trans h2)`. Establish `hG1 : orderAtLeastLocus ((continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).ideal (continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont) …`.
+
+Rewrite using `[hid]`. Conclude with `hlocus`. Establish `hG2 : orderAtLeastLocus ((extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary)).ideal (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.m …`. Rewrite using `[hconcat]`. Conclude with `orderAtLeastLocus_append_eq_empty _ _ hinv ht1pos hG1`.
+
+Establish `hmaxOn : ∀ (Y : Scheme.{u}) (N : Y.IdealSheafData), maxOrderOn N (∅ : Set ↥Y) = 0`. Introduce `Y N`. Rewrite using `[maxOrderOn.eq_def]`. Simplify using the standard rewrite rules. Establish `hnc2 : ¬ CompanionIdealReductionContinues T (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))`.
+
+Introduce `hc`. Establish `h1 : 1 ≤ maxOrderOn (lastNonMonomialPart T (extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))) (orderAtLeastLocus ((extendByNonMonomialPart hinv T (principalizationOfDimLe T A) (emptyMarkedBlowupSeq …` using `hc`. Rewrite `h1` using `[hG2, hmaxOn]`. Use linear arithmetic over natural numbers and integers. Establish `hnc2' : ¬ CompanionIdealReductionContinues T (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A))`.
+
+Rewrite using `[hnonMonomialEq]`. Conclude with `hnc2`. Establish `hcompanionStep : ∀ (s : MarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) (j : ℕ), ¬ CompanionIdealReductionContinues T (companionIdealReductionIter hinv T (principalizationOfDimLe T A) s j) → companionIdealReductionIter hinv T (principalizationOfDimLe T A) s (j + 1 …`. Introduce `s j hj`. Simplify using `only [companionIdealReductionIter]`.
+
+Use `split_ifs with h`. Conclude with `absurd h hj`. Both sides reduce to the same expression. Establish `hcompanionIter : ∀ j : ℕ, companionIdealReductionIter hinv T (principalizationOfDimLe T A) (nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)) j = nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero => simp only [companionIdealReductionIter]`. Consider the case `succ j ih`. Rewrite using `[hcompanionStep _ j (by rw [ih]; exact hnc2'), ih]`. Establish `hcompanionEq : companionIdealReduction hinv T (principalizationOfDimLe T A) = nonMonomialOrderReduction hinv T (principalizationOfDimLe T A)`.
+
+Simplify using `only [companionIdealReduction]`. Conclude with `hcompanionIter _`. Establish `hG3 : orderAtLeastLocus ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimLe T A)).length) T.mult = ∅`. Rewrite using `[hcompanionEq, hnonMonomialEq]`. Conclude with `hG2`.
+
+Establish `hmonomialLen : (orderReductionMonomialSequence hinv T A).length = 0` using `by show (MarkedBlowupSequenceData.ofMarkedSequence (monomialPrincipalization hinv (orderReductionMonomialTriple hinv T A))).length = 0`. Rewrite using `[MarkedBlowupSequenceData.ofMarkedSequence_length]`. Conclude with `hmon.trivial_of_coSupport_empty _ (isLocallyMonomialTriple_tripleAtLength_companionIdealReduction hG hinv hspec hT hdim) hG3`. Establish `hAlg : orderReductionSeq hinv T (principalizationOfDimLe T A) = (orderReductionData hinv T (principalizationOfDimLe T A)).toMarkedSequenceOfBlowups`. Unfold `orderReductionSeq`.
+
+Rewrite using `[if_neg hcs]`. Rewrite using `[hAlg]`. Establish `e1 : ((orderReductionData hinv T (principalizationOfDimLe T A)).toMarkedSequenceOfBlowups).toSequenceOfBlowups.Isomorphic ((companionIdealReduction hinv T (principalizationOfDimLe T A)).toMarkedSequenceOfBlowups).toSequenceOfBlowups`. Rewrite using `[orderReductionData_eq_append hinv T A]`. Conclude with `MarkedBlowupSequenceData.append_isomorphic_of_length_eq_zero _ _ hinv hmonomialLen`.
+
+Establish `e2 : ((companionIdealReduction hinv T (principalizationOfDimLe T A)).toMarkedSequenceOfBlowups).toSequenceOfBlowups.Isomorphic ((continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).toMarkedSequenceOfBlowups). …`. Rewrite using `[hcompanionEq, hnonMonomialEq, hconcat]`. Conclude with `MarkedBlowupSequenceData.emptyMarkedBlowupSequenceData_append_isomorphic T.structMap T.ideal T.mult T.boundary _ hinv`. Establish `e3 : ((continuationByNonMonomialPart hG hspec hT hdim (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary) hcont).toMarkedSequenceOfBlowups).toSequenceOfBlowups.Isomorphic (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundar …`. Simplify using `only [continuationByNonMonomialPart, BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups, MarkedBlowupSequenceData.blowupSequenceData_ofMarkedSequence]`.
+
+Conclude with `BlowupSequenceData.ofSequenceOfBlowups_toSequenceOfBlowups_isomorphic _`. Establish `e4 : (A (nonMonomialTriple T (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary))).toSequenceOfBlowups.Isomorphic (A T).toSequenceOfBlowups` using `principalizationAssignment_mk_isomorphic A T ((emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).proj (emptyMarkedBlowupSequenceData T.structMap T.ideal T.mult T.boundary).length ≫ T.structMap) (lastNonMonomialPart T (emptyMarkedBlowupSequenceData T.structMap T …`. Conclude with `e1.trans (e2.trans (e3.trans e4))`.
+-/
 theorem orderReductionSeq_isomorphic_of_boundary_nil (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)

@@ -8,6 +8,13 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Finsupp
 
 namespace ReciprocityTheory.ChartRestriction.G.TB.WickVanishing
 
+/- English proof (translation)
+Establish `step1 : betaH k (u, fun i => φ i - s.mulVec u i) (u', fun i => φ' i - s.mulVec u' i) = ∑ i, (φ' i * u i - φ i * u' i) - ∑ i, ∑ j, s i j * u i * u' j + ∑ i, ∑ j, s i j * u j * u' i`. Simplify using `only [betaH, Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, sub_mul, Finset.sum_mul, Finset.sum_mul]`.
+
+Establish `e1 : ∑ j, s i j * u' j * u i = ∑ j, s i j * u i * u' j` using `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e1]`. Expand and normalize the polynomial expressions, which then agree. Establish `step2 : ∑ i, ∑ j, s i j * u j * u' i = ∑ i, ∑ j, s j i * u i * u' j` using `Finset.sum_comm`. Rewrite using `[step1, step2]`.
+
+Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem betaH_expand {k : Type} [CommRing k] {d : ℕ} (s : Matrix (Fin d) (Fin d) k) (u φ u' φ' : Fin d → k) :
     betaH k (u, fun i => φ i - s.mulVec u i) (u', fun i => φ' i - s.mulVec u' i) =
       ∑ i, (φ' i * u i - φ i * u' i) + ∑ i, ∑ j, (s j i - s i j) * u i * u' j := by

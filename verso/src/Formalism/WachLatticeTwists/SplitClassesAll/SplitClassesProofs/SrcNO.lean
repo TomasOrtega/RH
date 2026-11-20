@@ -7,6 +7,11 @@ namespace Formalism.RepresentationBoundsCohomology.SplitClassesAll
 
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.N2 Formalism.RepresentationBoundsCohomology.JL Formalism.RepresentationBoundsCohomology.JN
 
+/- English proof (translation)
+Introduce `ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS`. Take `⟨A, _, _, S, ι, _, pr, D₀, D₁, D₂, _, _, _, _, _, _, _, _, _, _, _, _, W₀, W₁, W₂, E, M, h, M₀, H, u, jumps, R, P, ρ, κ, _, _, _, _, _, _, _, L, _, hℓ, hc, hu, hR, hD, a0, a1, a2, b0, b1, b2, c0, c1, c2, hP6, hM, hH, hreg, hnt, hP4, hT, hj, hGal, hrat, he⟩` from `hS`. Take `⟨V₀, V₁, V₂, Sq, v0, v1, v2, hi, hp, hX⟩` from `short_exact_sequence_holds ℤ_[ℓ] A S ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 hM hH`. Take `⟨cl₁, cl₂, hnat, hc1, hc2, hinj, he1, he2⟩` from `hGal V₀ V₁ V₂ Sq v0 v1 v2 hi hp`. Take `⟨q1, q2, q3, q4, q5, q6, q7, q8, q9, q10⟩` from `base_case_b ℓ A S hℓ`.
+
+Take `⟨l1, l2, l3⟩` from `wach_lattice_holds ℓ A S ι pr D₀ W₀ M₀ V₀ hℓ v0`. Establish `hcomp : IsAdicComplete (mI S) V₀.N` using `by rw [v0.1]; infer_instance`. Conclude with `⟨A, inferInstance, inferInstance, S.base, M₀, u, S.s, H, jumps, (ι → D₀), (ι → D₁), (ι → D₂), inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, V₀, V₁ …`.
+-/
 theorem srcNB : StatSrcNB := by
   intro ℓ _ H₁ H₂ _ _ _ _ Hf₁ Hf₂ g e hS
   obtain ⟨A, _, _, S, ι, _, pr, D₀, D₁, D₂, _, _, _, _, _, _, _, _, _, _, _, _, W₀, W₁, W₂, E, M, h, M₀, H, u,

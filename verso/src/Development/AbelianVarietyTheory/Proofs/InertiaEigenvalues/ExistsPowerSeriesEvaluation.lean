@@ -11,6 +11,13 @@ open scoped Formalism.Per
 
 namespace Bridge.TateSpanAlt
 
+/- English proof (translation)
+Use `letI : WithIdeal A := ⟨Ideal.span {t}⟩`. Use `letI : UniformSpace L := ⊥`. Use `haveI : DiscreteUniformity L := ⟨rfl⟩`. Establish `hadic : IsAdic (Ideal.span {t})` using `rfl`. Take `⟨h1, h2⟩` from `(hadic.isAdicComplete_iff).1 hc`.
+
+Use `haveI : IsLinearTopology A A := Ideal.isLinearTopology (Ideal.span {t})`. Establish `hι : Continuous ι` using `continuous_of_discreteTopology`. Establish `ht : PowerSeries.HasEval t`. Use `(WithIdeal.isTopologicallyNilpotent_of_mem ?_)` and prove the remaining obligations. Conclude with `Ideal.mem_span_singleton_self t`.
+
+Use `⟨PowerSeries.eval₂Hom hι ht, fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coe_eval₂Hom]`. Conclude with `PowerSeries.eval₂_C _ _ _`. Rewrite using `[PowerSeries.coe_eval₂Hom]`. Conclude with `PowerSeries.eval₂_X _ _`.
+-/
 theorem exists_ev {L A : Type*} [Field L] [CommRing A] (t : A)
     [hc : IsAdicComplete (Ideal.span {t}) A] (ι : L →+* A) :
     ∃ ev : PowerSeries L →+* A, (∀ c, ev (PowerSeries.C c) = ι c) ∧ ev PowerSeries.X = t := by
@@ -28,6 +35,11 @@ theorem exists_ev {L A : Type*} [Field L] [CommRing A] (t : A)
   · rw [PowerSeries.coe_eval₂Hom]; exact PowerSeries.eval₂_C _ _ _
   · rw [PowerSeries.coe_eval₂Hom]; exact PowerSeries.eval₂_X _ _
 
+/- English proof (translation)
+Establish `h : (PowerSeries.X : PowerSeries L) ^ M ∣ f - ∑ k ∈ Finset.range M, PowerSeries.C (PowerSeries.coeff k f) * PowerSeries.X ^ k`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Simplify using `[map_sum, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow, hm]`. Use `map_dvd ev h` as an intermediate fact.
+
+Simplify `this` using `[map_sum, hC, hX]`.
+-/
 theorem ev_sub {L A : Type*} [Field L] [CommRing A] (t : A) (ι : L →+* A)
     (ev : PowerSeries L →+* A) (hC : ∀ c, ev (PowerSeries.C c) = ι c) (hX : ev PowerSeries.X = t)
     (f : PowerSeries L) (M : ℕ) :
@@ -40,6 +52,13 @@ theorem ev_sub {L A : Type*} [Field L] [CommRing A] (t : A) (ι : L →+* A)
   have := map_dvd ev h
   simpa [map_sum, hC, hX] using this
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Introduce `h`.
+
+Take `⟨g, rfl⟩` from `ih ((pow_dvd_pow t n.le_succ).trans h)`. Rewrite `h` using `[map_mul, map_pow, hX, pow_succ, mul_dvd_mul_iff_left (pow_ne_zero n ht0)]`. Rewrite using `[pow_succ]`. Use `mul_dvd_mul_left _ ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.X_dvd_iff]`.
+
+Assume the negation of the conclusion as `hg`. Establish `hu : IsUnit g` using `PowerSeries.isUnit_iff_constantCoeff.2 (Ne.isUnit hg)`. Conclude with `htu (isUnit_of_dvd_unit h (hu.map ev))`. Introduce `h`. Simplify `map_dvd ev h` using `[hX]`.
+-/
 theorem ev_dvd_iff {L A : Type*} [Field L] [CommRing A] [IsDomain A] (t : A) (ht0 : t ≠ 0)
     (htu : ¬ IsUnit t) (ι : L →+* A)
     (ev : PowerSeries L →+* A) (hC : ∀ c, ev (PowerSeries.C c) = ι c) (hX : ev PowerSeries.X = t)
@@ -64,6 +83,19 @@ theorem ev_dvd_iff {L A : Type*} [Field L] [CommRing A] [IsDomain A] (t : A) (ht
 open Reformulated.AutPerF Formalism in
 open scoped Formalism.Per in
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (algebraMap (BdRPlus l (Per.OC l)) (BdR l (Per.OC l)))` using `BdR.algebraMap_injective`. Establish `h0` using `BdR.algebraMap_ne_zero hπ`. Establish `hirr` using `(BdRPlus.irreducible_iff π).2 hπ`. Use `choose j hj using fun x => (BdR.mem_fil_zero_iff _).1 ((hF _ _).1 (hι x))`. Set `ι₀ : L →+* BdRPlus l (Per.OC l)` to `{ toFun := j map_one' := hinj (by rw [hj]; simp) map_mul' := fun x y => hinj (by rw [map_mul, hj, hj, hj, map_mul, map_mul]) map_zero' := hinj (by rw [hj]; simp) map_add' := fun x y => hinj (by rw [map_add, hj, hj, hj, map_add, map_add]) }`.
+
+Establish `hj' : ∀ x, algebraMap _ (BdR l (Per.OC l)) (ι₀ x) = e (ι x)` using `hj`. Use `haveI : IsAdicComplete (Ideal.span {π}) (BdRPlus l (Per.OC l)) := by`. Rewrite using `[← hπ]`. Use `infer_instance`. Take `⟨ev, hC, hX⟩` from `exists_ev π ι₀`.
+
+Establish `key : ∀ (M : ℕ) (y : BdRPlus l (Per.OC l)), algebraMap _ (BdR l (Per.OC l)) y ∈ BdR.fil l (Per.OC l) M ↔ π ^ M ∣ y` using `fun M y => by`. Rewrite using `[BdR.algebraMap_mem_fil_iff, BdRPlus.fil, hπ, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Use `⟨e.symm.toRingHom.comp ((algebraMap _ (BdR l (Per.OC l))).comp ev), fun f M => ?_, fun f M => ?_, ?_, fun a b => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Use `(key M _).2 (ev_sub π ι₀ ev hC hX f M)` as an intermediate fact. Rewrite using `[hF]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[map_sum, hj', ht]`. Rewrite using `[hF, ← ev_dvd_iff π hirr.ne_zero hirr.not_isUnit ι₀ ev hC hX, ← key]`. Simplify using the standard rewrite rules. Use `(h0.isUnit).map e.symm` as an intermediate fact.
+
+Rewrite `this` using `[← ht, e.symm_apply_apply]`. Then use the resulting hypothesis. Rewrite using `[hF, hF, map_mul, ht, BdR.mem_fil_iff hπ, BdR.mem_fil_iff hπ]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[zpow_add_one₀ h0, mul_comm _ (algebraMap _ _ π), mul_assoc, mul_right_inj' h0]`. Conclude with `e.injective (by`.
+
+Rewrite using `[map_zero]`. Conclude with `BdR.eq_zero_of_forall_mem_fil fun a => (hF _ _).1 (hb a))`.
+-/
 theorem main (l : ℕ) [Fact l.Prime] {B L : Type*} [CommRing B] [Field L]
     (e : B ≃+* BdR l (Per.OC l)) (Fil : ℤ → B → Prop)
     (hF : ∀ a x, Fil a x ↔ e x ∈ BdR.fil l (Per.OC l) a) (t : B) (π : BdRPlus l (Per.OC l))
@@ -111,6 +143,11 @@ theorem main (l : ℕ) [Fact l.Prime] {B L : Type*} [CommRing B] [Field L]
 open Reformulated.AutPerF Formalism in
 open scoped Formalism.Per in
 
+/- English proof (translation)
+Take `⟨ϖ⟩ : Nonempty (PFlat l (Per.OC l))` from `inferInstance`. Establish `hξ` using `BdRPlus.ker_theta ϖ`. Take `⟨c, hc⟩` from `(BdR.mem_fil_iff hξ 1 x).1 h1`. Establish `hu : IsUnit c`. Rewrite using `[BdRPlus.isUnit_iff_theta_ne_zero, Ne, BdRPlus.theta_eq_zero_iff_dvd ϖ]`.
+
+Introduce and unpack `⟨d, rfl⟩`. Conclude with `h2 ((BdR.mem_fil_iff hξ 2 x).2 ⟨d, by rw [hc, map_mul, zpow_one, zpow_two, mul_assoc]⟩)`. Conclude with `⟨BdRPlus.xi ϖ * c, by rw [Ideal.span_singleton_mul_right_unit hu, hξ], by rw [hc, zpow_one, map_mul]⟩`.
+-/
 theorem exists_gen (l : ℕ) [Fact l.Prime] (x : BdR l (Per.OC l))
     (h1 : x ∈ BdR.fil l (Per.OC l) 1) (h2 : x ∉ BdR.fil l (Per.OC l) 2) :
     ∃ π : BdRPlus l (Per.OC l), RingHom.ker (BdRPlus.theta l (Per.OC l)) = Ideal.span {π} ∧
@@ -127,6 +164,9 @@ theorem exists_gen (l : ℕ) [Fact l.Prime] (x : BdR l (Per.OC l))
 
 open Reformulated.AutPerF Formalism in
 open scoped Formalism.Per in
+/- English proof (translation)
+Take `⟨π, hπ, ht⟩` from `exists_gen l (e t) ((hF _ _).1 h1) (fun h => h2 ((hF _ _).2 h))`. Conclude with `main l e Fil hF t π hπ ht ι hι`.
+-/
 theorem main' (l : ℕ) [Fact l.Prime] {B L : Type*} [CommRing B] [Field L]
     (e : B ≃+* Per.BdR l) (Fil : ℤ → B → Prop)
     (hF : ∀ a x, Fil a x ↔ e x ∈ Per.FilD l a) (t : B) (h1 : Fil 1 t) (h2 : ¬ Fil 2 t)
@@ -140,6 +180,13 @@ theorem main' (l : ℕ) [Fact l.Prime] {B L : Type*} [CommRing B] [Field L]
 
 open Reformulated.AutPerF in
 
+/- English proof (translation)
+Rewrite using `[BdR.mem_fil_zero_iff, ← IsIntegrallyClosed.isIntegral_iff]`. Take `⟨q, hq, h0⟩` from `hx`. Establish `hl : q.map (e.toRingHom.comp (algebraMap F B)) ∈ Polynomial.lifts (algebraMap (BdRPlus l (Per.OC l)) (BdR l (Per.OC l)))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+
+Rewrite using `[Polynomial.coeff_map]`. Conclude with `h _`. Take `⟨r, hr, -, hm⟩` from `Polynomial.lifts_and_degree_eq_and_monic hl (hq.map _)`. Use `⟨r, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_eq_eval_map, hr, ← Polynomial.eval₂_eq_eval_map]`.
+
+Use `Polynomial.hom_eval₂ q (algebraMap F B) e.toRingHom x` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+-/
 theorem mem_zero_of_isIntegral (l : ℕ) [Fact l.Prime] {F B : Type*} [Field F] [CommRing B]
     [Algebra F B] (e : B ≃+* BdR l (Per.OC l))
     (h : ∀ c : F, ∃ y : BdRPlus l (Per.OC l), algebraMap _ _ y = e (algebraMap F B c))
@@ -159,6 +206,9 @@ theorem mem_zero_of_isIntegral (l : ℕ) [Fact l.Prime] {F B : Type*} [Field F] 
   rw [h0, map_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Use `(T.fil K 0 x).2 (mem_zero_of_isIntegral l _ (fun c => ?_) hx)` and prove the remaining obligations. Take `⟨y, h1, -⟩` from `T.om (algebraMap ℚ_[l] (Om l) c)`. Rewrite `h1` using `[← IsScalarTower.algebraMap_apply]`. Conclude with `⟨y, h1.symm⟩`.
+-/
 theorem mem_zero (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K : FinExt l) {x : P.R.BdR} (hx : IsIntegral ℚ_[l] x) : x ∈ (P.PD K).Fil 0 := by
   refine (T.fil K 0 x).2 (mem_zero_of_isIntegral l _ (fun c => ?_) hx)
@@ -166,6 +216,9 @@ theorem mem_zero (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T
   rw [← IsScalarTower.algebraMap_apply] at h1
   exact ⟨y, h1.symm⟩
 
+/- English proof (translation)
+The claim follows from `main' l _ (fun a x => x ∈ (P.PD K).Fil a) (fun a x => T.fil K a x) _ h1 h2 ι.toRingHom (fun x => by haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2 exact mem_zero l P AI T K ((IsIntegral.of_finite ℚ_[l] x).map ι))`.
+-/
 theorem reduction (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K LL : FinExt l) (s : ℕ) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR)
     (h1 : GlobalTheory.NL.tS P s ∈ (P.PD K).Fil 1) (h2 : GlobalTheory.NL.tS P s ∉ (P.PD K).Fil 2) :
@@ -181,6 +234,11 @@ theorem reduction (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (
       haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2
       exact mem_zero l P AI T K ((IsIntegral.of_finite ℚ_[l] x).map ι))
 
+/- English proof (translation)
+Establish `h0` using `(T.fil K 0 _).1 (mem_zero l P AI T K (isIntegral_algebraMap (x := c)))`. Use `(T.fil K a _).2 ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Use `Reformulated.AutPerF.BdR.mul_mem_fil (p := l) (R := Per.OC l) h0 ((T.fil K a _).1 hx)` as an intermediate fact. Rewrite `this` using `[zero_add]`.
+
+Conclude with `this`.
+-/
 theorem smul_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K : FinExt l) (c : ℚ_[l]) (a : ℤ) (x : P.R.BdR) (hx : x ∈ (P.PD K).Fil a) :
     c • x ∈ (P.PD K).Fil a := by
@@ -191,6 +249,9 @@ theorem smul_mem (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T
   rw [zero_add] at this
   exact this
 
+/- English proof (translation)
+Use `⟨fun h => ?_, smul_mem l P AI T K _ a _⟩` and prove the remaining obligations. Use `smul_mem l P AI T K ((l : ℚ_[l]) ^ s) a _ h` as an intermediate fact. Rewrite `this` using `[GlobalTheory.NL.tS, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)), one_smul]`. Then use the resulting hypothesis.
+-/
 theorem tS_mem_iff (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K : FinExt l) (s : ℕ) (a : ℤ) :
     GlobalTheory.NL.tS P s ∈ (P.PD K).Fil a ↔ P.ιB P.tB ∈ (P.PD K).Fil a := by
@@ -199,6 +260,9 @@ theorem tS_mem_iff (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
   rwa [GlobalTheory.NL.tS, smul_smul, mul_inv_cancel₀
     (pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)), one_smul] at this
 
+/- English proof (translation)
+The claim follows from `reduction l P AI T K LL s ι ((tS_mem_iff l P AI T K s 1).2 h1) (fun h => h2 ((tS_mem_iff l P AI T K s 2).1 h))`.
+-/
 theorem reduction' (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K LL : FinExt l) (s : ℕ) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR)
     (h1 : P.ιB P.tB ∈ (P.PD K).Fil 1) (h2 : P.ιB P.tB ∉ (P.PD K).Fil 2) :
@@ -214,6 +278,9 @@ theorem reduction' (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) 
 
 end Bridge.TateSpanAlt
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL s ι`. Establish `h1` using `(P.PD K).mem_filtration_one`. Establish `h2` using `(P.PD K).not_mem_filtration_two`. Rewrite `h1`, `h2` using `[P.PD_ι, P.period_datum_t_eq]`. Conclude with `Bridge.TateSpanAlt.reduction' l P AI T K LL s ι h1 h2`.
+-/
 theorem Bridge.exists_power_series_evaluation : ∀ (l : ℕ) [inst : Fact (Nat.Prime l)] (P : Formalism.BasicNotions.LocPrime l) (AI : Formalism.BasicNotions.LocAinf l P) (T : Formalism.BasicNotions.LocTied l P AI) (K LL : Formalism.BasicNotions.Loc.FinExt l) (s : ℕ) (ι : ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K)) →ₐ[ℚ_[l]] P.R.BdR), ∃ (ev : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K)) →+* P.R.BdR), (∀ (f : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (M : ℕ), HSub.hSub (α := P.R.BdR) (β := P.R.BdR) (DFunLike.coe (β := fun (x : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) ↦ P.R.BdR) ev f : P.R.BdR) (∑ k ∈ Finset.range M, HMul.hMul (α := P.R.BdR) (DFunLike.coe (α := ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (β := fun (x : ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) ↦ P.R.BdR) ι (DFunLike.coe (F := LinearMap (R := ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (RingHom.id ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (β := fun (x : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) ↦ ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (PowerSeries.coeff k) f : ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) : P.R.BdR) (GlobalTheory.NL.tS P s ^ k) : P.R.BdR) ∈ (P.PD K).Fil M.cast) ∧ (∀ (f : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) (M : ℕ), Membership.mem (α := P.R.BdR) ((P.PD K).Fil M.cast) (DFunLike.coe (β := fun (x : PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) ↦ P.R.BdR) ev f : P.R.BdR) ↔ HPow.hPow (α := PowerSeries ↥(LL.val (p := fun (K : IntermediateField ℚ_[l] (Formalism.BasicNotions.Loc.Om l)) ↦ FiniteDimensional ℚ_[l] ↥K))) PowerSeries.X M ∣ f) ∧ IsUnit (GlobalTheory.NL.tS P s) ∧ (∀ (a : ℤ) (b : P.R.BdR), GlobalTheory.NL.tS P s * b ∈ (P.PD K).Fil (a + OfNat.ofNat 1) ↔ b ∈ (P.PD K).Fil a) ∧ ∀ (b : P.R.BdR), (∀ (a : ℤ), b ∈ (P.PD K).Fil a) → b = OfNat.ofNat 0 := by
   intro l _ P AI T K LL s ι
   have h1 := (P.PD K).mem_filtration_one
@@ -236,6 +303,11 @@ variable {L A : Type*} [Field L] [CommRing A] (c : L →+* A) (t : A)
 
 def part (M : ℕ) (f : PowerSeries L) : A := Polynomial.eval₂RingHom c t (PowerSeries.trunc M f)
 
+/- English proof (translation)
+Establish `h1 : Polynomial.X ^ M ∣ PowerSeries.trunc M f - q`. Rewrite using `[Polynomial.X_pow_dvd_iff]`. Introduce `k hk`. Rewrite using `[Polynomial.coeff_sub, PowerSeries.coeff_trunc, if_pos hk, h k hk, sub_self]`. Establish `h2` using `map_dvd (Polynomial.eval₂RingHom c t) h1`.
+
+Rewrite `h2` using `[map_sub, map_pow, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X]`. Conclude with `h2`.
+-/
 theorem dvd_part_sub (M : ℕ) (f : PowerSeries L) (q : Polynomial L)
     (h : ∀ k < M, PowerSeries.coeff k f = q.coeff k) :
     t ^ M ∣ part c t M f - Polynomial.eval₂RingHom c t q := by
@@ -247,15 +319,24 @@ theorem dvd_part_sub (M : ℕ) (f : PowerSeries L) (q : Polynomial L)
   rw [map_sub, map_pow, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X] at h2
   exact h2
 
+/- English proof (translation)
+Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+-/
 theorem mem_iff (n : ℕ) (x : A) : x ∈ (Ideal.span {t} ^ n • ⊤ : Submodule A A) ↔ t ^ n ∣ x := by
   rw [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]
 
 variable [IsAdicComplete (Ideal.span {t}) A]
 
+/- English proof (translation)
+The claim follows from `IsHausdorff.haus (I := Ideal.span {t}) inferInstance x fun n => by rw [SModEq.zero, mem_iff]; exact h n`.
+-/
 theorem eq_zero_of_dvd (x : A) (h : ∀ n, t ^ n ∣ x) : x = 0 :=
   IsHausdorff.haus (I := Ideal.span {t}) inferInstance x fun n => by
     rw [SModEq.zero, mem_iff]; exact h n
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `IsPrecomplete.prec (I := Ideal.span {t}) inferInstance (f := fun M => part c t M f) fun {m n} h => by`. Rewrite using `[SModEq.sub_mem, mem_iff]`. Conclude with `dvd_part_sub c t m f _ fun k hk => by`. Rewrite using `[PowerSeries.coeff_trunc, if_pos (hk.trans_le h)]`. Conclude with `⟨x, fun M => by rw [← mem_iff, ← SModEq.sub_mem]; exact (hx M).symm⟩`.
+-/
 theorem exists_lim (f : PowerSeries L) : ∃ x : A, ∀ M, t ^ M ∣ x - part c t M f := by
   obtain ⟨x, hx⟩ := IsPrecomplete.prec (I := Ideal.span {t}) inferInstance
     (f := fun M => part c t M f) fun {m n} h => by
@@ -264,6 +345,17 @@ theorem exists_lim (f : PowerSeries L) : ∃ x : A, ∀ M, t ^ M ∣ x - part c 
         rw [PowerSeries.coeff_trunc, if_pos (hk.trans_le h)]
   exact ⟨x, fun M => by rw [← mem_iff, ← SModEq.sub_mem]; exact (hx M).symm⟩
 
+/- English proof (translation)
+Use `choose e he using exists_lim c t`. Establish `key : ∀ f x, (∀ M, t ^ M ∣ x - part c t M f) → e f = x` using `fun f x h => by`. Use `sub_eq_zero.1 (eq_zero_of_dvd t _ fun n => ?_)` and prove the remaining obligations. Use `dvd_sub (he f n) (h n)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+
+Use `⟨⟨⟨⟨e, key _ _ fun M => ?_⟩, fun f g => key _ _ fun M => ?_⟩, key _ _ fun M => ?_, fun f g => key _ _ fun M => ?_⟩, he⟩` and prove the remaining obligations. Use `dvd_part_sub c t M 1 1 fun k _ => by` as an intermediate fact. Rewrite using `[PowerSeries.coeff_one, Polynomial.coeff_one]`. Rewrite `this` using `[map_one]`. Conclude with `dvd_sub_comm.1 this`.
+
+Establish `h` using `dvd_part_sub c t M (f * g) (PowerSeries.trunc M f * PowerSeries.trunc M g) fun k hk => by`. Rewrite using `[PowerSeries.coeff_mul, Polynomial.coeff_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.1 hp` as an intermediate fact. Rewrite using `[PowerSeries.coeff_trunc, PowerSeries.coeff_trunc, if_pos (by omega), if_pos (by omega)]`.
+
+Rewrite `h` using `[map_mul]`. Establish `h'` using `dvd_sub (dvd_add ((he f M).mul_right (e g)) ((he g M).mul_left (part c t M f))) h`. Use `h' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [part]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[part]`. Establish `h'` using `dvd_add (he f M) (he g M)`. Use `h' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [part, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_ev : ∃ ev : PowerSeries L →+* A, ∀ f M, t ^ M ∣ ev f - part c t M f := by
   choose e he using exists_lim c t
   have key : ∀ f x, (∀ M, t ^ M ∣ x - part c t M f) → e f = x := fun f x h => by
@@ -294,6 +386,9 @@ theorem exists_ev : ∃ ev : PowerSeries L →+* A, ∀ f M, t ^ M ∣ ev f - pa
 
 end General
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bridge.exists_power_series_evaluation | exact Bridge.exists_power_series_evaluation .. | (intros; apply Bridge.exists_power_series_evaluation <;> assumption)`.
+-/
 theorem exists_ev_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K LL : FinExt l) (s : ℕ) (ι : ↥LL.1 →ₐ[ℚ_[l]] P.R.BdR) :
     ∃ ev : PowerSeries ↥LL.1 →+* P.R.BdR,
@@ -305,6 +400,9 @@ theorem exists_ev_tied (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l
       ∀ b : P.R.BdR, (∀ a : ℤ, b ∈ (P.PD K).Fil a) → b = 0 := by
   first | exact Bridge.exists_power_series_evaluation | exact Bridge.exists_power_series_evaluation .. | (intros; apply Bridge.exists_power_series_evaluation <;> assumption)
 
+/- English proof (translation)
+Introduce `D l _ K LL s ι` and use `exists_ev_tied l _ _ (D.locT l) K LL s ι`.
+-/
 theorem exists_ev_dR : ∀ (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (s : ℕ) (ι : ↥LL.1 →ₐ[ℚ_[l]] (D.loc l).R.BdR), ∃ ev : PowerSeries ↥LL.1 →+* (D.loc l).R.BdR, (∀ (f : PowerSeries ↥LL.1) (M : ℕ), ev f - ∑ k ∈ Finset.range M, ι (PowerSeries.coeff k f) * tS (D.loc l) s ^ k ∈ ((D.loc l).PD K).Fil (M : ℤ)) ∧ (∀ (f : PowerSeries ↥LL.1) (M : ℕ), ev f ∈ ((D.loc l).PD K).Fil (M : ℤ) ↔ PowerSeries.X ^ M ∣ f) ∧ IsUnit (tS (D.loc l) s) ∧ (∀ (a : ℤ) (b : (D.loc l).R.BdR), tS (D.loc l) s * b ∈ ((D.loc l).PD K).Fil (a + 1) ↔ b ∈ ((D.loc l).PD K).Fil a) ∧ ∀ b : (D.loc l).R.BdR, (∀ a : ℤ, b ∈ ((D.loc l).PD K).Fil a) → b = 0 :=
   fun D l _ K LL s ι => exists_ev_tied l _ _ (D.locT l) K LL s ι
 

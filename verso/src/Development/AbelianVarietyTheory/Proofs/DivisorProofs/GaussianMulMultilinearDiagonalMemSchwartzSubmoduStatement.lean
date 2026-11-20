@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PowForm
 open MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConvSeries.gauss_mul_diag_mem | exact GlobalTheory.ConvSeries.gauss_mul_diag_mem | (intros; apply GlobalTheory.ConvSeries.gauss_mul_diag_mem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.gaussian_mul_multilinear_diagonal_mem_schwartzSubmodule : ∀ (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (M : Submodule ℂ (SchwartzMap E ℂ)),
     (∀ (ℓ : E →L[ℝ] ℝ) (f f₁ : SchwartzMap E ℂ), f ∈ M → (∀ x, f₁ x = (ℓ x : ℂ) * f x) → f₁ ∈ M) →

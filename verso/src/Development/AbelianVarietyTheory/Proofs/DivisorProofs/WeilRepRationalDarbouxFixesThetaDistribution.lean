@@ -13,6 +13,9 @@ open scoped Matrix TensorProduct
 noncomputable section
 namespace GlobalTheory.WeilThetaRat
 
+/- English proof (translation)
+Introduce `φ hφ`. Take `⟨p, q, p', p₀, q₀, p₀', t, s, t', hp, hq, hp', ht, hs, ht', rfl⟩` from `GlobalTheory.T.doubledUnitary_rational_eq_diagonalFixers_product F E σ hσ b JB ε hJ hdet g g₀ hg`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[GlobalTheory.T.thetaSum_doubledWeil_fixed_diagonalStabilizer F E σ hσ ψ hψ a b JA JB κ hκ d hd dd hdd χ hχ omd hS hR p p₀ hp t ht _ (hS.pres _ _ (hS.pres _ _ hφ)), GlobalTheory.T.adelicThetaSum_doubledWeil_antidiagonal_invariant F E σ hσ ψ hψ a b JA JB κ hκ d hd dd hdd χ hχ omd …`. Conclude with `GlobalTheory.T.thetaSum_doubledWeil_fixed_diagonalStabilizer F E σ hσ ψ hψ a b JA JB κ hκ d hd dd hdd χ hχ omd hS hR p' p₀' hp' t' ht' φ hφ`.
+-/
 theorem dbl_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {a b : ℕ} (JA : Matrix (Fin a) (Fin a) E)
     (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ) (hJ : ∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) (hdet : JB.det ≠ 0)
@@ -35,6 +38,13 @@ theorem dbl_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     GlobalTheory.T.adelicThetaSum_doubledWeil_antidiagonal_invariant F E σ hσ ψ hψ a b JA JB κ hκ d hd dd hdd χ hχ omd hS hR q q₀ hq s hs _ (hS.pres _ _ hφ)]
   exact GlobalTheory.T.thetaSum_doubledWeil_fixed_diagonalStabilizer F E σ hσ ψ hψ a b JA JB κ hκ d hd dd hdd χ hχ omd hS hR p' p₀' hp' t' ht' φ hφ
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Take `⟨hom, dd, omd, hdd, ⟨-, hS, hR⟩, hres⟩` from `h`. Take `⟨gd, hgd⟩` from `GlobalTheory.unitary_diag_one_mem_dbl (AF F) (AE F E) (cA σ) (Fin b) (incM F JB) γ`. Establish `hgd0 : ((gd : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F (Matrix.fromBlocks γ₀ 0 0 1)`. Rewrite using `[hgd, hγ]`.
+
+Simplify using `only [incM, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨φ₂, hφ₂, hθ⟩` from `GlobalTheory.T.exists_adelicSchwartz_thetaDistributionSum_ne_zero F κ`. Establish `hb` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ Φ hΦ φ₂ hφ₂`. Establish `e1` using `dbl_rat σ hσ ψ hψ JA JB ε hJ hdet hκ d hd dd hdd χ hχ omd hS.toIsSplitting hR gd _ hgd0 _ hb`. Rewrite `e1` using `[hres γ gd hgd Φ hΦ φ₂ hφ₂, GlobalTheory.T.adelicThetaDistributionSum_productFunction F κ κ _ (hom.pres γ Φ hΦ) φ₂ hφ₂, GlobalTheory.T.adelicThetaDistributionSum_productFunction F κ κ Φ hΦ φ₂ hφ₂]`.
+
+Conclude with `mul_right_cancel₀ hθ e1`.
+-/
 theorem member_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) {a b : ℕ} (JA : Matrix (Fin a) (Fin a) E)
     (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ) (hJ : ∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) (hdet : JB.det ≠ 0)
@@ -59,6 +69,9 @@ theorem member_rat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   rw [hres γ gd hgd Φ hΦ φ₂ hφ₂, GlobalTheory.T.adelicThetaDistributionSum_productFunction F κ κ _ (hom.pres γ Φ hΦ) φ₂ hφ₂, GlobalTheory.T.adelicThetaDistributionSum_productFunction F κ κ Φ hΦ φ₂ hφ₂] at e1
   exact mul_right_cancel₀ hθ e1
 
+/- English proof (translation)
+Take `⟨g₀, hg₀⟩` from `Subgroup.mem_subgroupOf.mp hγ`. Use `⟨(g₀ : Matrix (Fin n) (Fin n) E), ?_⟩` and prove the remaining obligations. Rewrite using `[← hg₀]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem rat_mat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {γ : UA σ J} (hγ : γ ∈ ratU σ J) :
     ∃ γ₀ : Matrix (Fin n) (Fin n) E, ((γ.1 : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = incM F γ₀ := by
@@ -68,6 +81,15 @@ theorem rat_mat {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {
   ext i j
   rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ ψ hψ n d JX JW hX hXd hW hWd co hco χX χW hχX hχW om hom γ hγ γ' hγ' Φ hΦ`. Take `⟨hB, ⟨d', hd', hA⟩, -⟩` from `hom`. Take `⟨g₀, hg₀⟩` from `rat_mat hγ`. Take `⟨g₀', hg₀'⟩` from `rat_mat hγ'`. Establish `eW : ∀ i j, σ (JW j i) = (((-1 : ℤˣ) : ℤ) : E) * JW i j` using `fun i j => by simp [hW i j]`.
+
+Establish `eX : ∀ i j, σ (JX j i) = (((1 : ℤˣ) : ℤ) : E) * JX i j` using `fun i j => by simp [hX i j]`. Establish `hco' : ∀ x : Matrix (Fin d) (Fin n) E, ∃ y z : Fin n × Fin d → F, d'.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun x => by`. Establish `e : incM F x = (incM F xᵀ)ᵀ` using `by simp [incM, Matrix.transpose_map]`. Rewrite using `[e, hd']`. Conclude with `hco xᵀ`.
+
+Establish `hx : (γ, γ') = (γ, 1) * (1, γ')` using `by simp`. Rewrite using `[hx, map_mul, Module.End.mul_apply]`. Establish `e1 : om (γ, 1) = (om.comp (MonoidHom.inl _ _)) γ` using `rfl`. Establish `e2 : om (1, γ') = (om.comp (MonoidHom.inr _ _)) γ'` using `rfl`. Establish `hΦ' : om (1, γ') Φ ∈ schA F (Fin n × Fin d)` using `hB.1.pres γ' Φ hΦ`.
+
+Rewrite using `[e1, member_rat σ hσ ψ hψ JW JX 1 eX hXd (by simp [Nat.mul_comm]) d' hco' χW hχW _ hA γ g₀ hg₀ _ hΦ', e2]`. Conclude with `member_rat σ hσ ψ hψ JX JW (-1) eW hWd (by simp) co hco χX hχX _ hB γ' g₀' hg₀' Φ hΦ`.
+-/
 theorem thetaSum_om_rat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (n d : ℕ) (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E), (∀ i j, σ (JX j i) = JX i j) → JX.det ≠ 0 → (∀ i j, σ (JW j i) = -JW i j) → JW.det ≠ 0 → ∀ (co : Darboux (symp (R := AF F) (cA σ) (-1) (incM F JX) (incM F JW)) (Fin n × Fin d)), (∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F, co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) → ∀ χX χW : Chr F E, IsHecke F E χX → IsHecke F E χW → ∀ om : UA σ JX × UA σ JW →* Module.End ℂ ((Fin n × Fin d → AF F) → ℂ), IsUWeilPair (cA σ) (adeleClass F) ψ (-1) (incM F JX) (incM F JW) co χX χW om → ∀ γ ∈ ratU σ JX, ∀ γ' ∈ ratU σ JW, ∀ Φ ∈ schA F (Fin n × Fin d), thetaSum F (om (γ, γ') Φ) = thetaSum F Φ := by
   intro F E _ _ _ _ _ σ hσ ψ hψ n d JX JW hX hXd hW hWd co hco χX χW hχX hχW om hom γ hγ γ' hγ' Φ hΦ
   obtain ⟨hB, ⟨d', hd', hA⟩, -⟩ := hom

@@ -13,6 +13,11 @@ section
 noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT Formalism.L2.Top3 Formalism.L2.Top4
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `𝒜 sel selS hWu hRF hTF c30 hc30 sTy sNG sM sLp sO h30 hInstR`. Establish `hC0 : (3 : ℝ) ≤ 3` using `le_refl _`. Establish `hC0' : (0 : ℝ) < 3` using `by norm_num`. Establish `hCe : Real.exp 1 ≤ 3` using `le_trans (le_of_lt (lt_trans Real.exp_one_lt_d9 (by norm_num))) hC0`. Establish `sRes : Closed (D3 3 𝒜) fun Fm _ => Formalism.MainNotions.S.ResidEv Fm` using `Formalism.L2.SG.ResidEvFree.residEv_closed_free (D3 3 𝒜)`.
+
+Set `ssel : Formalism.L2.SG.ThmSOwn.SSel (D3 3 𝒜)` to `fun Fm hc => ⟨(sel Fm (d3_a hc)).1, fun x hx h i => (selS Fm (d3_a hc) x hx h i).toSTies⟩`. Establish `lS` using `Formalism.L2.SG.ThmSOwn.theoremS_transport_link_zero (C0 := 3) (D3 3 𝒜) ssel hWu hRF (fun Fm hc x hx h i => (selS Fm (d3_a hc) x hx h i).locTied) (fun Fm hc x hx h i => Formalism.L2.SG.ThmSOwn.instTie_of_record (selS Fm (d3_a hc) x hx h i).inst (Formalism.MainNotions.RT.volTie_of …`. Conclude with `lS`.
+-/
 theorem GlobalTheory.Top.link_alt_alt_bis : ∀ (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)
     (selS : _root_.Formalism.L2.Top4.SelectionSpectralCondition 𝒜 sel)

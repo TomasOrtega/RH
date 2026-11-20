@@ -18,6 +18,9 @@ section Cochains
 
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cochainOf_cochainsMap_f (f : A ⟶ B) {i : ℕ} (a : (cochainsComplex A).X i) :
     cochainOf B ((cochainsMap f).f i a) = fun σ => f.hom (cochainOf A a σ) :=
   rfl
@@ -29,6 +32,9 @@ section Connecting
 variable {S : ShortComplex (Rep.{u} k G)} [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂]
   [IsDiscreteRep S.X₃]
 
+/- English proof (translation)
+Establish `hx₃ : (cochainsComplex S.X₃).d i j (cocycleι S.X₃ i x₃) = 0` using `ConcreteCategory.congr_hom ((cochainsComplex S.X₃).iCycles_d i j) x₃`. Establish `key` using `(cochainsShortComplex_shortExact hS).δ_apply i j hij (cocycleι S.X₃ i x₃) hx₃ x₂ hx₂ (cocycleι S.X₁ j x₁) hx₁ (j + 1) (by simp)`. Establish `e3 : (cochainsComplex S.X₃).cyclesMk (cocycleι S.X₃ i x₃) j ((ComplexShape.up ℕ).next_eq' hij) hx₃ = x₃` using `cocycleι_injective ((cochainsComplex S.X₃).i_cyclesMk _ _ _ _)`. Establish `e1 : (cochainsComplex S.X₁).cyclesMk (cocycleι S.X₁ j x₁) (j + 1) (by simp) ((cochainsShortComplex_shortExact hS).d_eq_zero_of_f_eq_d_apply i j x₂ (cocycleι S.X₁ j x₁) hx₁ (j + 1)) = x₁` using `cocycleι_injective ((cochainsComplex S.X₁).i_cyclesMk _ _ _ _)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem δ_cohomologyπ_of_lift (hS : S.ShortExact) {i j : ℕ} (hij : i + 1 = j)
     (x₃ : cocycles S.X₃ i) (x₂ : (cochainsComplex S.X₂).X i)
     (hx₂ : (cochainsMap S.g).f i x₂ = cocycleι S.X₃ i x₃) (x₁ : cocycles S.X₁ j)
@@ -54,6 +60,13 @@ theorem δ_cohomologyπ_of_lift (hS : S.ShortExact) {i j : ℕ} (hij : i + 1 = j
             (cocycleι S.X₁ j x₁) hx₁ (j + 1))) := key
     _ = cohomologyπ S.X₁ j x₁ := by rw [e1]
 
+/- English proof (translation)
+Establish `hex` using `(HomologicalComplex.exact_iff_degreewise_exact _).1 (cochainsShortComplex_shortExact hS).exact j`. Rewrite `hex` using `[ShortComplex.moduleCat_exact_iff]`. Establish `hz : ((cochainsMap S.g).f j).hom ((cochainsComplex S.X₂).d i j x₂) = 0`. Establish `hc` using `ConcreteCategory.congr_hom ((cochainsMap S.g).comm i j) x₂`. Establish `hd` using `ConcreteCategory.congr_hom ((cochainsComplex S.X₃).iCycles_d i j) x₃`.
+
+Rewrite `hc` using `[ConcreteCategory.comp_apply, ConcreteCategory.comp_apply]`. Rewrite `hd` using `[ConcreteCategory.comp_apply]`. Rewrite using `[← hc, hx₂]`. Conclude with `hd`. Take `⟨x₁, hx₁⟩` from `hex _ hz`.
+
+Establish `hx₁' : (cochainsMap S.f).f j x₁ = (cochainsComplex S.X₂).d i j x₂` using `hx₁`. Use `⟨(cochainsComplex S.X₁).cyclesMk x₁ (j + 1) (by simp) ((cochainsShortComplex_shortExact hS).d_eq_zero_of_f_eq_d_apply i j x₂ x₁ hx₁' (j + 1)), ?_⟩` and prove the remaining obligations. Establish `e : cocycleι S.X₁ j ((cochainsComplex S.X₁).cyclesMk x₁ (j + 1) (by simp) ((cochainsShortComplex_shortExact hS).d_eq_zero_of_f_eq_d_apply i j x₂ x₁ hx₁' (j + 1))) = x₁` using `(cochainsComplex S.X₁).i_cyclesMk _ _ _ _`. Rewrite using `[e]`. Conclude with `hx₁'`.
+-/
 theorem exists_cocycle_map_f_eq_d (hS : S.ShortExact) {i : ℕ} (j : ℕ)
     (x₃ : cocycles S.X₃ i) (x₂ : (cochainsComplex S.X₂).X i)
     (hx₂ : (cochainsMap S.g).f i x₂ = cocycleι S.X₃ i x₃) :
@@ -98,6 +111,17 @@ instance isDiscreteRep_map_tensorRight_X₃ : IsDiscreteRep (S.map (tensorRight 
 
 variable {B}
 
+/- English proof (translation)
+Substitute `hp hn` using the available equality. Take `⟨x₃, rfl⟩` from `cohomologyπ_surjective S.X₃ p x`. Take `⟨y, rfl⟩` from `cohomologyπ_surjective B q y`. Use `hS.epi_g` as an intermediate fact. Take `⟨x₂, hx₂⟩` from `(ModuleCat.epi_iff_surjective ((cochainsMap S.g).f p)).1 inferInstance (cocycleι S.X₃ p x₃)`.
+
+Take `⟨x₁, hx₁⟩` from `exists_cocycle_map_f_eq_d hS (p + 1) x₃ x₂ hx₂`. Establish `hx₂' : (fun σ => S.g.hom (cochainOf S.X₂ x₂ σ)) = cochainOf S.X₃ (cocycleι S.X₃ p x₃)` using `congrArg (cochainOf S.X₃) hx₂`. Establish `hx₁' : (fun σ => S.f.hom (cochainOf S.X₁ (cocycleι S.X₁ (p + 1) x₁) σ)) = (inhomogeneousCochains.d S.X₂ p).hom (cochainOf S.X₂ x₂)` using `(congrArg (cochainOf S.X₂) hx₁).trans (cochainOf_d x₂)`. Rewrite using `[δ_cohomologyπ_of_lift hS rfl x₃ x₂ hx₂ x₁ hx₁, cup_cohomologyπ, cup_cohomologyπ]`. Use `δ_cohomologyπ_of_lift hSB rfl (cupCocycles h x₃ y) (cupLocallyConstant h x₂ (cocycleι B q y)) ?_ (cupCocycles h' x₁ y) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(cochainsMap (S.g ▷ B)).f n (cupLocallyConstant h x₂ (cocycleι B q y)) = cocycleι (S.X₃ ⊗ B) n (cupCocycles h x₃ y)`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, ← hx₂']`. Use function extensionality and compare the values at `σ`. Rewrite using `[← tensorHom_id, tensorHom_cupCochain]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(cochainsMap (S.f ▷ B)).f (n + 1) (cocycleι (S.X₁ ⊗ B) (n + 1) (cupCocycles h' x₁ y)) = (cochainsComplex (S.X₂ ⊗ B)).d n (n + 1) (cupLocallyConstant h x₂ (cocycleι B q y))`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_d, cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι, cupCochain_zero_right, smul_zero, add_zero, ← hx₁']`. Use function extensionality and compare the values at `σ`.
+
+Rewrite using `[← tensorHom_id, tensorHom_cupCochain]`. Both sides reduce to the same expression.
+-/
 theorem δ_cup_of_shortExact_tensorRight (hS : S.ShortExact)
     (hSB : (S.map (tensorRight B)).ShortExact) {p p' q n n' : ℕ} (hp : p + 1 = p')
     (hn : n + 1 = n') (h : p + q = n) (h' : p' + q = n') (x : cohomology S.X₃ p)
@@ -154,6 +178,17 @@ instance isDiscreteRep_map_tensorLeft_X₃ : IsDiscreteRep (S.map (tensorLeft B)
 
 variable {B}
 
+/- English proof (translation)
+Substitute `hp hn` using the available equality. Take `⟨x₃, rfl⟩` from `cohomologyπ_surjective S.X₃ p x`. Take `⟨y, rfl⟩` from `cohomologyπ_surjective B q y`. Use `hS.epi_g` as an intermediate fact. Take `⟨x₂, hx₂⟩` from `(ModuleCat.epi_iff_surjective ((cochainsMap S.g).f p)).1 inferInstance (cocycleι S.X₃ p x₃)`.
+
+Take `⟨x₁, hx₁⟩` from `exists_cocycle_map_f_eq_d hS (p + 1) x₃ x₂ hx₂`. Establish `hx₂' : (fun σ => S.g.hom (cochainOf S.X₂ x₂ σ)) = cochainOf S.X₃ (cocycleι S.X₃ p x₃)` using `congrArg (cochainOf S.X₃) hx₂`. Establish `hx₁' : (fun σ => S.f.hom (cochainOf S.X₁ (cocycleι S.X₁ (p + 1) x₁) σ)) = (inhomogeneousCochains.d S.X₂ p).hom (cochainOf S.X₂ x₂)` using `(congrArg (cochainOf S.X₂) hx₁).trans (cochainOf_d x₂)`. Rewrite using `[δ_cohomologyπ_of_lift hS rfl x₃ x₂ hx₂ x₁ hx₁, cup_cohomologyπ, cup_cohomologyπ, ← map_smul]`. Use `δ_cohomologyπ_of_lift hSB rfl (cupCocycles h y x₃) (cupLocallyConstant h (cocycleι B q y) x₂) ?_ ((-1 : k) ^ q • cupCocycles h' y x₁) ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(cochainsMap (B ◁ S.g)).f n (cupLocallyConstant h (cocycleι B q y) x₂) = cocycleι (B ⊗ S.X₃) n (cupCocycles h y x₃)`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_cupLocallyConstant, ← hx₂']`. Use function extensionality and compare the values at `σ`. Rewrite using `[← id_tensorHom, tensorHom_cupCochain]`.
+
+Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(cochainsMap (B ◁ S.f)).f (n + 1) (cocycleι (B ⊗ S.X₁) (n + 1) ((-1 : k) ^ q • cupCocycles h' y x₁)) = (cochainsComplex (B ⊗ S.X₂)).d n (n + 1) (cupLocallyConstant h (cocycleι B q y) x₂)`. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[cochainOf_cochainsMap_f, map_smul, cochainOf_smul, cocycleι_cupCocycles, cochainOf_cupLocallyConstant, cochainOf_d, cochainOf_cupLocallyConstant, d_cupCochain, d_cocycleι, cupCochain_zero_left, zero_add, ← hx₁']`. Use function extensionality and compare the values at `σ`.
+
+Rewrite using `[Pi.smul_apply, Pi.smul_apply, map_smul, ← id_tensorHom, tensorHom_cupCochain]`. Both sides reduce to the same expression.
+-/
 theorem δ_cup_of_shortExact_tensorLeft (hS : S.ShortExact)
     (hSB : (S.map (tensorLeft B)).ShortExact) {p p' q n n' : ℕ} (hp : p + 1 = p')
     (hn : n + 1 = n') (h : q + p = n) (h' : q + p' = n') (y : cohomology B q)

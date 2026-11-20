@@ -21,10 +21,16 @@ namespace UpperTheory.Zero.ConvolutionTheory.EB
 
 attribute [local instance] borelG borelF borelA borelH
 
+/- English proof (translation)
+The claim follows from `VC.vcOf wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.2 GlobalTheory.CompanionTheory.GelC.gelComm GlobalTheory.CompanionTheory.GelFlagPf.gelFlag_holds GlobalTheory.CompanionTheory.FlagHerm.flagField_holds GlobalThe …`.
+-/
 private theorem vcSt_holds : VCSt :=
   VC.vcOf wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.2 GlobalTheory.CompanionTheory.GelC.gelComm GlobalTheory.CompanionTheory.GelFlagPf.gelFlag_holds
     GlobalTheory.CompanionTheory.FlagHerm.flagField_holds GlobalTheory.CompanionTheory.NilUnimod.nilUni GlobalTheory.CompanionTheory.KerZeroPf.main
 
+/- English proof (translation)
+The claim follows from `LfSt.lOf_of_kChain LfSt.kChain_holds wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.1 wave_existence_speed_multiplicity.2.2.2 (LfSt.chainOf'_holds wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicit …`.
+-/
 private theorem lSt_holds : LSt :=
   LfSt.lOf_of_kChain LfSt.kChain_holds wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 wave_existence_speed_multiplicity.2.2.1 wave_existence_speed_multiplicity.2.2.2
     (LfSt.chainOf'_holds wave_existence_speed_multiplicity.1 wave_existence_speed_multiplicity.2.1 GlobalTheory.CompanionTheory.GelC.gelComm GlobalTheory.CompanionTheory.KerZeroPf.main)
@@ -43,11 +49,19 @@ abbrev LefConcl {n : ℕ} (lam : Fin n → ℤ) (M : KMod n) (Tθ : M.V →L[ℂ
           ∫ x, phiOf M Tθ k (PositivityTheory.RgTw.tw x d) ∂μ =
             val (infOf lam) * starRingEnd ℂ (weylChar lam fun a => z a ^ 2)
 
+/- English proof (translation)
+Establish `h` using `cxData_model lam hlam`. Conclude with `⟨h.TK, h.Tiso, h.Tsq, fun μ _ k val τ hk => ⟨vcSt_holds n lam _ _ _ _ _ _ _ h μ k val τ hk, lSt_holds n lam _ _ _ _ _ _ _ h μ k val τ hk⟩⟩`.
+-/
 theorem lefModel (n : ℕ) (lam : Fin n → ℤ) (hlam : Antitone lam) : LefConcl lam (lefE n lam) (lefT n lam) := by
   have h := cxData_model lam hlam
   exact ⟨h.TK, h.Tiso, h.Tsq, fun μ _ k val τ hk =>
     ⟨vcSt_holds n lam _ _ _ _ _ _ _ h μ k val τ hk, lSt_holds n lam _ _ _ _ _ _ _ h μ k val τ hk⟩⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ a b l₁ l₂ D A`. Establish `LA` using `fun v : InfinitePlace E => lefModel a (l₁ v).w (l₁ v).anti`. Establish `LB` using `fun v : InfinitePlace E => lefModel b (l₂ v).w (l₂ v).anti`. Use `haveI := A.ha`. Use `haveI := A.hb`.
+
+Use `haveI : BorelSpace (G a) := ⟨rfl⟩`. Use `haveI : BorelSpace (G b) := ⟨rfl⟩`. Use `⟨⟨fun v k val T hm => vcBridge a A.μa (Ml l₁ v) (Tl l₁ v) k val T (LA v).1 hm ((LA v).2.2.2 A.μa k val T hm).1, fun v k val T hm => vcBridge b A.μb (Ml l₂ v) (Tl l₂ v) k val T (LB v).1 hm ((LB v).2.2.2 A.μb k val T hm).1⟩, ?_⟩` and prove the remaining obligations. Introduce `v k k' val val' T hm hm'`. Conclude with `lefschetz_pair_holds a b A.μa A.μb (l₁ v) (l₂ v) _ _ _ _ ⟨(F0.phiOf_cs A.μa (Ml l₁ v) (Tl l₁ v) k val T hm).1, (F0.phiOf_cs A.μa (Ml l₁ v) (Tl l₁ v) k val T hm).2, fun d z hd hz hi => ((LA v).2.2.2 A.μa k val T hm).2 d z hd hz hi |>.2⟩ ⟨(F0.phiOf_cs A.μb (Ml l₂ v) (Tl l₂ v) k' va …`.
+-/
 theorem lefL : LefL := by
   intro E _ _ _ a b l₁ l₂ D A
   have LA := fun v : InfinitePlace E => lefModel a (l₁ v).w (l₁ v).anti

@@ -9,6 +9,13 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 
 namespace GlobalTheory.FlagModelExists
 
+/- English proof (translation)
+Introduce `k _ X p _ hreg hp E r h hN`. Take `⟨Y, ρ, hY, g, ⟨fl⟩⟩` from `exists_modif_flag r k X p E hp h.isVB`. Use `haveI := hY.isIntegral`. Take `⟨C⟩` from `hreg Y (ρ ≫ p) hY`. Take `⟨a, b⟩` from `g`.
+
+Set `D : RegCover p` to `{ Y := C.Y ρ := C.ρ ≫ ρ reg := by rw [Category.assoc]; exact C.reg generic := by show (C.ρ ≫ ρ) (genericPoint C.Y) = genericPoint X`. Rewrite using `[Scheme.Hom.comp_apply, C.generic, a]`. Use `finite := by show (C.ρ ≫ ρ).residueDegree (genericPoint C.Y) ≠ 0`. Rewrite using `[CurveDegreesCompare.residueDegree_comp, C.generic]`. Conclude with `mul_ne_zero b C.finite }`.
+
+Take `⟨fl'⟩` from `flag_pullback _ _ C.ρ _ r fl`. Conclude with `⟨⟨D, GlobalTheory.VMetric.pull_regCover_isCInf k X p E r h hN D, fl'.ofIso ((Scheme.Modules.pullbackComp C.ρ ρ).app E)⟩⟩`.
+-/
 theorem nonempty_flagModel : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsIntegral X],
     (∀ (Y : Scheme.{0}) (q : Y ⟶ Sp k) [IsIntegral Y], IsArithVar q 1 → Nonempty (RegCover q)) →
     IsArithVar p 1 → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r), h.IsCInfNorm →

@@ -11,10 +11,16 @@ open MvPolynomial Finset Filter Topology
 def restCoeffBound (d : IndexData) (Q : ℕ → Fin d.f → XPoly d) (τ : Fin d.f) (k : ℕ) : ℝ :=
   ∑ e : Emb d, |((((k : ℚ) * intFl d (liePowerSum d (k - 1) e * Q k τ) : ℚ) : ℝ))|
 
+/- English proof (translation)
+The claim follows from `sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem restCoeffBound_nonneg (d : IndexData) (Q : ℕ → Fin d.f → XPoly d) (τ : Fin d.f) (k : ℕ) :
     0 ≤ restCoeffBound d Q τ k :=
   sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+The claim follows from `|restSeries d p φ Q τ k n| ≤ restCoeffBound d Q τ k * ((p : ℝ) ^ 2)⁻¹ ^ (n + 1) := by have hp' : (1 : ℝ) ≤ p := by exact_mod_cast hp have hpos : (0 : ℝ) < p := by linarith calc |restSeries d p φ Q τ k n| = |((((k : ℚ) * intFl d (liePowerSum d (k - 1) ((φ ^ (n + 1)) (τ, false)) * …`.
+-/
 theorem restSeries_abs_le (d : IndexData) (p : ℕ) (hp : 1 ≤ p) (φ : Equiv.Perm (Emb d))
     (Q : ℕ → Fin d.f → XPoly d) (τ : Fin d.f) (k : ℕ) (hk : 2 ≤ k) (n : ℕ) :
     |restSeries d p φ Q τ k n| ≤ restCoeffBound d Q τ k * ((p : ℝ) ^ 2)⁻¹ ^ (n + 1) := by
@@ -39,6 +45,9 @@ theorem restSeries_abs_le (d : IndexData) (p : ℕ) (hp : 1 ≤ p) (φ : Equiv.P
         · positivity
         · exact restCoeffBound_nonneg d Q τ k
 
+/- English proof (translation)
+The claim follows from `|∑' n : ℕ, restSeries d p φ Q τ k n| ≤ restCoeffBound d Q τ k * (2 * ((p : ℝ) ^ 2)⁻¹) := by obtain ⟨r, hr⟩ : ∃ r : ℝ, r = ((p : ℝ) ^ 2)⁻¹ := ⟨_, rfl⟩ rw [← hr] have hp2 : (2 : ℝ) ≤ p := by exact_mod_cast hp.two_le have hr0 : 0 ≤ r := by rw [hr]; positivity have hr1 : r ≤ 1 / 2 := …`.
+-/
 theorem restSeries_tsum_bound (d : IndexData) (p : ℕ) (hp : p.Prime) (φ : Equiv.Perm (Emb d))
     (Q : ℕ → Fin d.f → XPoly d) (τ : Fin d.f) (k : ℕ) (hk : 2 ≤ k) :
     Summable (restSeries d p φ Q τ k) ∧
@@ -80,6 +89,15 @@ theorem restSeries_tsum_bound (d : IndexData) (p : ℕ) (hp : p.Prime) (φ : Equ
         calc r * (1 - r)⁻¹ ≤ r * 2 := mul_le_mul_of_nonneg_left hinv hr0
           _ = 2 * r := mul_comm _ _
 
+/- English proof (translation)
+Introduce `d vol F Q _`. Use `⟨2 * |vol| * ∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, restCoeffBound d Q τ k, ?_⟩` and prove the remaining obligations. Introduce `p φ hp`. Establish `key : ∀ τ : Fin d.f, ∀ k ∈ Icc 2 d.N, Summable (restSeries d p φ Q τ k) ∧ |∑' n : ℕ, restSeries d p φ Q τ k n| ≤ restCoeffBound d Q τ k * (2 * ((p : ℝ) ^ 2)⁻¹)` using `fun τ k hk => restSeries_tsum_bound d p hp φ Q τ k (mem_Icc.mp hk).1`. Use `⟨fun τ k hk => (key τ k hk).1, ?_⟩` and prove the remaining obligations.
+
+Establish `hlog : 0 ≤ Real.log p` using `Real.log_nonneg (by exact_mod_cast hp.one_lt.le)`. Establish `hsum : |∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, ∑' n : ℕ, restSeries d p φ Q τ k n| ≤ ∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, restCoeffBound d Q τ k * (2 * ((p : ℝ) ^ 2)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Unfold `rest₂`.
+
+Rewrite using `[abs_mul, abs_mul, abs_of_nonneg hlog]`. Use `_ ≤ Real.log p * |vol| * ∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, restCoeffBound d Q τ k * (2 * ((p : ℝ) ^ 2)⁻¹) := mul_le_mul_of_nonneg_left hsum (mul_nonneg hlog (abs_nonneg _))`. Use `_ = 2 * |vol| * (∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, restCoeffBound d Q τ k) * Real.log p / (p : ℝ) ^ 2 := by`. Simplify using `only [← Finset.sum_mul]`. Rewrite using `[div_eq_mul_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RestPBound.proof : RestPBound.Statement := by
   intro d vol F Q _
   refine ⟨2 * |vol| * ∑ τ : Fin d.f, ∑ k ∈ Icc 2 d.N, restCoeffBound d Q τ k, ?_⟩

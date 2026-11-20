@@ -12,6 +12,9 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Coc
 
+/- English proof (translation)
+Establish `hval : Continuous fun g : GL (Fin n) k => GlobalTheory.BZMir.glEmbMat k n (g : Matrix (Fin n) (Fin n) k)` using `GlobalTheory.CompanionTheory.LeibPhi.continuous_glEmbMat_comp n Units.continuous_val`. Establish `hinv : Continuous fun g : GL (Fin n) k => GlobalTheory.BZMir.glEmbMat k n ((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)` using `GlobalTheory.CompanionTheory.LeibPhi.continuous_glEmbMat_comp n Units.continuous_coe_inv`. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hval`. Conclude with `hinv`.
+-/
 theorem continuous_levi_mir (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : Continuous (levi k n) := by
   have hval : Continuous fun g : GL (Fin n) k => GlobalTheory.BZMir.glEmbMat k n (g : Matrix (Fin n) (Fin n) k) :=
@@ -23,6 +26,11 @@ theorem continuous_levi_mir (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
   · exact hval
   · exact hinv
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t`. Use `⟨GlobalTheory.BZMir.levi k ((i + 1) + t) '' (GlobalTheory.SplitWeil.KO k (Fin ((i + 1) + t)) : Set (GL (Fin ((i + 1) + t)) k)), GlobalTheory.SplitFlip.isCompact_KO.image (GlobalTheory.CompanionTheory.BZPhiPG.Coc.continuous_levi_mir k _), ?_⟩` and prove the remaining obligations. Introduce `g`. Take `⟨p, w, hw, hx⟩` from `GlobalTheory.SmGL.MultiIrr.exists_parab_mul (GlobalTheory.SmGL.two (GlobalTheory.SmGL.stdSum (rfl : (i + 1) + t = (i + 1) + t))) (GlobalTheory.BZMir.mirabolicProjection k ((i + 1) + t) g)`. Use `⟨g * (GlobalTheory.BZMir.levi k _ w)⁻¹, ?_, GlobalTheory.BZMir.levi k _ w, ⟨w, hw, rfl⟩, (inv_mul_cancel_right g _).symm⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.CompanionTheory.GPMem.mem_mirabolicParabolic_iff_mirabolicProj_mem_parabolic]`. Establish `hproj : GlobalTheory.BZMir.mirabolicProjection k ((i + 1) + t) (g * (GlobalTheory.BZMir.levi k _ w)⁻¹) = p`. Rewrite using `[map_mul, map_inv, GlobalTheory.CompanionTheory.MirLevi.mirProj_levi, hx, mul_inv_cancel_right]`. Rewrite using `[hproj]`. Conclude with `p.2`.
+-/
 theorem hgp_cocompact : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ), ∃ C : Set (Mir k ((i + 1) + t)), IsCompact C ∧
       ∀ g : Mir k ((i + 1) + t), ∃ h ∈ MirabolicParabolic k (i + 1) t, ∃ c ∈ C, g = h * c := by

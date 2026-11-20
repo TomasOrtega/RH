@@ -9,6 +9,9 @@ namespace GlobalTheory.Survey.CongruenceSpanLevel
 
 open GlobalTheory.RunIn
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.Survey.ArchimedeanCompatibility.gam_iff T).1 (GlobalTheory.Survey.ArchimedeanCompatibility.gam_of_laws T h)`.
+-/
 theorem gamAt_of_lawsM {D : D7} (T : Core D) (h : LawsM T) : GamAt T :=
   (GlobalTheory.Survey.ArchimedeanCompatibility.gam_iff T).1 (GlobalTheory.Survey.ArchimedeanCompatibility.gam_of_laws T h)
 

@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.ExistsFiniteDime
 import Mathlib
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.exists_finiteDimensional_orbit_of_generated | exact GlobalTheory.exists_finiteDimensional_orbit_of_generated | (intros; apply GlobalTheory.exists_finiteDimensional_orbit_of_generated <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finiteDimensional_orbit_of_boundedRank_generated : ∀ (V ι K : Type) [AddCommGroup V] [Module ℂ V] (U : Set ι) (G : Set V) (P : Submodule ℂ V) (D : ι → V →ₗ[ℂ] V)
     (m : ℕ) (L : Fin m → V →ₗ[ℂ] V) (T : K → V →ₗ[ℂ] V) (a : K → ι → ι),
     FiniteDimensional ℂ (Submodule.span ℂ G) →

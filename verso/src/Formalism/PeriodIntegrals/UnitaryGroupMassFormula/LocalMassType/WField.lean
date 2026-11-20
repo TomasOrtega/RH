@@ -21,6 +21,33 @@ def fB {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)} (D : SD σ v) {n m 
     (Z : Fin m → Fin n → Fv F v ⊗[F] E) : Matrix (Fin n) (Fin m) (Fv F v) :=
   Matrix.of fun i a => D.π₂ (Z a i)
 
+/- English proof (translation)
+Use `set Qm : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (Q : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQm`. Use `set Qi : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := ((Q⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQi`. Establish `hQQi : Qm * Qi = 1` using `Q.mul_inv`. Establish `hQiQ : Qi * Qm = 1` using `Q.inv_mul`. Establish `hgram : (fA D Z0)ᵀ * fB D Z0 = (fA D Z)ᵀ * fB D Z`.
+
+Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `congrArg D.π₂ (hstd a b)` as an intermediate fact. Rewrite `this` using `[D.snd_proj_standard_hermitian_form, D.snd_proj_standard_hermitian_form]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, fA, fB, Matrix.of_apply]`. Simplify using `only [dotProduct] at this`.
+
+Conclude with `this.symm`. Take `⟨k1, hk1u, hk1A, hk1B⟩` from `transitiveOverLocalRings (Fv F v) n m (fA D Z0) (fA D Z) (fB D Z0) (fB D Z) hA0 hA1 hB0 hB1 hgram`. Establish `hdet : IsUnit k1.det` using `(Matrix.isUnit_iff_isUnit_det k1).1 hk1u`. Establish `hki : k1 * k1⁻¹ = 1` using `Matrix.mul_nonsing_inv k1 hdet`. Establish `hik : k1⁻¹ * k1 = 1` using `Matrix.nonsing_inv_mul k1 hdet`.
+
+Establish `e1 : (k1⁻¹)ᵀᵀ * k1 = 1` using `by rw [transpose_transpose, hik]`. Establish `e2 : k1ᵀ * (k1⁻¹)ᵀ = 1` using `by rw [← transpose_mul, hik, transpose_one]`. Establish `e3 : (k1⁻¹)ᵀ * k1ᵀ = 1` using `by rw [← transpose_mul, hki, transpose_one]`. Use `set kstd := D.kS k1 (k1⁻¹)ᵀ with hkstd`. Use `set kstd' := D.kS k1⁻¹ k1ᵀ with hkstd'`.
+
+Establish `hkk : kstd * kstd' = 1`. Rewrite using `[hkstd, hkstd', SD.kS_mul, hki, e3, SD.kS_one]`. Establish `hk'k : kstd' * kstd = 1` using `mul_eq_one_comm.mp hkk`. Establish `hkU : ∀ x y, stdH σ (kstd *ᵥ x) (kstd *ᵥ y) = stdH σ x y` using `fun x y => D.stdH_kS _ _ e1 e2 x y`. Establish `hkZ : ∀ a, kstd *ᵥ Z0 a = Z a`.
+
+Introduce `a`. Apply `D.extV` to reduce the goal to its premises. Introduce `i`. Rewrite using `[hkstd, SD.fst_proj_split_matrix_mulVec]`. Use `congrArg (fun M => M i a) hk1A` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply, fA, Matrix.of_apply] at this`. Simplify using `only [mulVec, dotProduct]`. Conclude with `this`. Introduce `i`. Establish `hB : (k1⁻¹)ᵀ * fB D Z0 = fB D Z`.
+
+Rewrite using `[← hk1B, ← Matrix.mul_assoc, e3, Matrix.one_mul]`. Rewrite using `[hkstd, SD.snd_proj_split_matrix_mulVec]`. Use `congrArg (fun M => M i a) hB` as an intermediate fact. Simplify using `only [Matrix.mul_apply, fB, Matrix.of_apply] at this`. Simplify using `only [mulVec, dotProduct]`.
+
+Conclude with `this`. Use `set kM := Qm * kstd * Qi with hkM`. Use `set kMi := Qm * kstd' * Qi with hkMi`. Establish `hkMM : kM * kMi = 1`. Rewrite using `[hkM, hkMi]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hQiQ, Matrix.mul_one, hkk, Matrix.mul_one, hQQi]`. Establish `hkMM' : kMi * kM = 1` using `mul_eq_one_comm.mp hkMM`. Set `kG : GL (Fin n) (Fv F v ⊗[F] E)` to `⟨kM, kMi, hkMM, hkMM'⟩`.
+
+Establish `hkx : ∀ x, kM *ᵥ x = Qm *ᵥ (kstd *ᵥ (Qi *ᵥ x))`. Introduce `x`. Rewrite using `[hkM, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Establish `hmem : kG ∈ HR (Fv F v) σ J` using `by show Formalism.UG.cT (sigR (Fv F v) σ) kM * JR (Fv F v) J * kM = JR (Fv F v) J`. Apply `hform_ext (sigR (Fv F v) σ)` to reduce the goal to its premises.
+
+Introduce `x y`. Rewrite using `[← hform_mulVec]`. Use `show hR (Fv F v) σ J (kM *ᵥ x) (kM *ᵥ y) = hR (Fv F v) σ J x y`. Rewrite using `[hkx, hkx, hQh, ← stdH, hkU, stdH, ← hQh, mulVec_mulVec, mulVec_mulVec, hQQi, one_mulVec, one_mulVec]`. Set `kH : HA (Fv F v) σ J` to `(⟨kG, hmem⟩ : HR (Fv F v) σ J)`.
+
+Use `⟨kH, fun a => ?_⟩` and prove the remaining obligations. Use `show kM *ᵥ (Qm *ᵥ Z0 a) = Qm *ᵥ Z a`. Rewrite using `[hkx, mulVec_mulVec (Z0 a) Qi Qm, hQiQ, one_mulVec, hkZ a]`.
+-/
 theorem witt_genF {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     {v : HeightOneSpectrum (𝓞 F)} (D : SD σ v) (Q : GL (Fin n) (Fv F v ⊗[F] E))
     (hQh : ∀ x y : Fin n → Fv F v ⊗[F] E,
@@ -105,6 +132,13 @@ theorem witt_genF {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
   show kM *ᵥ (Qm *ᵥ Z0 a) = Qm *ᵥ Z a
   rw [hkx, mulVec_mulVec (Z0 a) Qi Qm, hQiQ, one_mulVec, hkZ a]
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `hA`. Use `set U := (uMat v x).map π with hU`. Establish `hdet : U.det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => ?_)]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[hU, uMat]`. Establish `h1 : ¬ i = j` using `fun h => (lt_irrefl _ (h ▸ hij))`. Establish `h2 : ¬ i < j` using `fun h => (lt_asymm h hij)`. Simplify using `[hU, uMat, h1, h2]`. Establish `hu : IsUnit U.det` using `by rw [hdet]; exact isUnit_one`.
+
+Use `⟨U⁻¹ * L, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc L, hL, Matrix.one_mul, Matrix.nonsing_inv_mul _ hu]`.
+-/
 theorem leftInv_mul_uMat {v : HeightOneSpectrum (𝓞 F)} {n r : ℕ}
     (π : Fv F v ⊗[F] E →+* Fv F v) (x : UIdx r → Fv F v ⊗[F] E)
     (A : Matrix (Fin n) (Fin (r + 1)) (Fv F v))
@@ -145,6 +179,47 @@ def UnipSplitF : Prop :=
       lin (Fv F v) σ J g (ratV (F := F) (Fv F v) (F0 P b)) =
         ∑ a, uMat v x a b • ratV (F := F) (Fv F v) (F0 P a)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J ψ v r P Λ T hStd hP hSD hUn hEta hL hPr x`. Take `⟨e, π₁, π₂, _he, _hσe, h1, h2, hπe1, hπe2, hπsc, hσ2, hσ1, hO⟩` from `hS σ J ψ v hStd hUn hEta`. Set `D : SD σ v` to `⟨e, π₁, π₂, h1, h2, hπe1, hπe2, hπsc, hσ1, hσ2, hO⟩`. Take `⟨Q, hQΛ, hQh⟩` from `hLs σ J ψ v Λ hStd hSD hUn hEta hL`. Use `set Qm : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := (Q : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQm`.
+
+Use `set Qi : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) := ((Q⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) with hQi`. Establish `hQQi : Qm * Qi = 1` using `Q.mul_inv`. Establish `hQiQ : Qi * Qm = 1` using `Q.inv_mul`. Establish `memΛ : ∀ y, y ∈ latLoc (E` using `E) v Λ ↔ IntV v (Qi *ᵥ y) := by`. Introduce `y`.
+
+Rewrite using `[hQΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite using `[mulVec_mulVec, hQiQ, one_mulVec]` and apply the resulting hypothesis. Introduce `hy`.
+
+Conclude with `⟨Qi *ᵥ y, hy, by rw [mulVec_mulVec, hQQi, one_mulVec]⟩`. Establish `linQ : ∀ {m : ℕ} (c : Fin m → Fv F v ⊗[F] E) (W : Fin m → Fin n → Fv F v ⊗[F] E), Qi *ᵥ (∑ a, c a • W a) = ∑ a, c a • (Qi *ᵥ W a)`. Introduce `m c W`. Use `show Matrix.mulVecLin Qi (∑ a, c a • W a) = _`. Rewrite using `[map_sum]`.
+
+Simplify using `only [map_smul, Matrix.mulVecLin_apply]`. Establish `primT : ∀ W : Fin (r + 1) → Fin n → Fv F v ⊗[F] E, IsPrim v Λ W → ∀ c : Fin (r + 1) → Fv F v ⊗[F] E, IntV v (∑ a, c a • (Qi *ᵥ W a)) → ∀ a, c a ∈ OEv (E` using `E) v := by`. Introduce `W hW c hc`. Apply `hW.2 c` to reduce the goal to its premises. Rewrite using `[memΛ, linQ]`.
+
+Conclude with `hc`. Use `set U := uMat v x with hU`. Use `set Y0 : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun a => ratV (F := F) (Fv F v) (F0 P a) with hY0`. Use `set Yu : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun b => ∑ a, U a b • Y0 a with hYu`. Use `set Z0 : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun a => Qi *ᵥ Y0 a with hZ0`.
+
+Use `set Z : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun b => Qi *ᵥ Yu b with hZ`. Establish `hZe : ∀ b i, Z b i = ∑ a, U a b * Z0 a i`. Introduce `b i`. Simplify using `only [hZ, hYu, linQ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hZ0]`. Use `set Wl := locF v (ratTup (F := F) (Fv F v) (F0 P)) with hWl`.
+
+Use `set Zl : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun a => Qi *ᵥ Wl a with hZl`. Establish `hZlZ0 : ∀ a i, Zl a i = sc (E` using `E) v (alp v r a) * Z0 a i := by`. Introduce `a i`. Simplify using `only [hZl, hWl, locF, hZ0, hY0, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
+
+Establish `hZlI : ∀ a, IntV v (Zl a)` using `fun a => (memΛ _).1 (hPr.1 a)`. Establish `pZl` using `primT Wl hPr`. Set `Ao : Matrix (Fin n) (Fin (r + 1)) (v.adicCompletionIntegers F)` to `Matrix.of fun i a => ⟨D.π₁ (Zl a i), ((D.hO _).1 (hZlI a i)).1⟩`. Set `Bo : Matrix (Fin n) (Fin (r + 1)) (v.adicCompletionIntegers F)` to `Matrix.of fun i a => ⟨D.π₂ (Zl a i), ((D.hO _).1 (hZlI a i)).2⟩`. Take `⟨LA, hLA⟩` from `saturated_split_lattice v n (r + 1) Ao (fun t ht => D.sat₁ Zl pZl t ht)`.
+
+Take `⟨LB, hLB⟩` from `saturated_split_lattice v n (r + 1) Bo (fun t ht => D.sat₂ Zl pZl t ht)`. Use `set f := (v.adicCompletionIntegers F).subtype with hf`. Establish `hAo : Ao.map f = fA D Z0 * Matrix.diagonal (alp v r)`. Use `Matrix.ext fun i a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`.
+
+Use `show D.π₁ (Zl a i) = D.π₁ (Z0 a i) * alp v r a`. Rewrite using `[hZlZ0, map_mul, (D.hsc _).1, mul_comm]`. Establish `hBo : Bo.map f = fB D Z0 * Matrix.diagonal (alp v r)`. Use `Matrix.ext fun i a => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_diagonal]`.
+
+Use `show D.π₂ (Zl a i) = D.π₂ (Z0 a i) * alp v r a`. Rewrite using `[hZlZ0, map_mul, (D.hsc _).2, mul_comm]`. Establish `lift : ∀ (M0 : Matrix (Fin n) (Fin (r + 1)) (Fv F v)) (Mo : Matrix (Fin n) (Fin (r + 1)) (v.adicCompletionIntegers F)) (Lo : Matrix (Fin (r + 1)) (Fin n) (v.adicCompletionIntegers F)), Lo * Mo = 1 → Mo.map f = M0 * Matrix.diagonal (alp v r) → ∃ L : Matrix (Fin (r + 1)) (Fin n) (F …`. Introduce `M0 Mo Lo hLo hMo`. Establish `h0 : (Lo.map f * M0) * Matrix.diagonal (alp v r) = 1`.
+
+Rewrite using `[Matrix.mul_assoc, ← hMo, ← Matrix.map_mul, hLo, Matrix.map_one f (map_zero f) (map_one f)]`. Use `⟨Matrix.diagonal (alp v r) * Lo.map f, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.mp h0`. Establish `hA0` using `lift _ _ _ hLA hAo`.
+
+Establish `hB0` using `lift _ _ _ hLB hBo`. Establish `hAZ : fA D Z = fA D Z0 * U.map D.π₁`. Use `Matrix.ext fun i b => ?_` and prove the remaining obligations. Simplify using `only [fA, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hZe, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+
+Establish `hBZ : fB D Z = fB D Z0 * U.map D.π₂`. Use `Matrix.ext fun i b => ?_` and prove the remaining obligations. Simplify using `only [fB, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, hZe, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Establish `hA1 : ∃ L : Matrix (Fin (r + 1)) (Fin n) (Fv F v), L * fA D Z = 1`.
+
+Rewrite using `[hAZ]`. Conclude with `leftInv_mul_uMat D.π₁ x _ hA0`. Establish `hB1 : ∃ L : Matrix (Fin (r + 1)) (Fin n) (Fv F v), L * fB D Z = 1`. Rewrite using `[hBZ]`. Conclude with `leftInv_mul_uMat D.π₂ x _ hB0`.
+
+Establish `hstdR : ∀ y y' : Fin n → Fv F v ⊗[F] E, stdH σ (Qi *ᵥ y) (Qi *ᵥ y') = hR (Fv F v) σ J y y'`. Introduce `y y'`. Rewrite using `[stdH, ← hQh, mulVec_mulVec, mulVec_mulVec, hQQi, one_mulVec, one_mulVec]`. Establish `hstd : ∀ a b, stdH σ (Z a) (Z b) = stdH σ (Z0 a) (Z0 b)`. Introduce `a b`.
+
+Rewrite using `[hZ, hZ0]`. Simplify using `only`. Rewrite using `[hstdR, hstdR]`. Conclude with `hG σ J ψ v P T hStd hP x a b`. Take `⟨k, hk⟩` from `witt_genF (J := J) D Q hQh Z0 Z hA0 hB0 hA1 hB1 hstd`.
+
+Use `⟨k, fun b => ?_⟩` and prove the remaining obligations. Use `hk b` as an intermediate fact. Express the relevant statement in the definitionally equal form `(HA.mat (Fv F v) σ J k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ (Qm *ᵥ (Qi *ᵥ Y0 b)) = Qm *ᵥ (Qi *ᵥ Yu b) at this`. Rewrite `this` using `[mulVec_mulVec (Y0 b) Qm Qi, mulVec_mulVec (Yu b) Qm Qi, hQQi, one_mulVec, one_mulVec]`. Use `show (HA.mat (Fv F v) σ J k : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) *ᵥ Y0 b = Yu b`.
+
+Conclude with `this`.
+-/
 theorem unipSplitF_of (hG : GramU) (hS : SplitR) (hLs : LatStd) : UnipSplitF := by
   classical
   intro F E _ _ _ _ _ σ n J ψ v r P Λ T hStd hP hSD hUn hEta hL hPr x

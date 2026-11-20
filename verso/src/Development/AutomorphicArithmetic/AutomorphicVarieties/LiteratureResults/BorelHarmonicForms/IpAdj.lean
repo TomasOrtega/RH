@@ -2,6 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.AlgRepEndIrreducible UpperTheory.V.Lit UpperTheory.V.Lit.Bor
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `E _ _ _ a n e M _ _ _ _ L L' H N hadj q ω η hω hη`. Establish `key : ∀ i : Fin (q + 1), ∑ I : Fin (q + 1) → Fin n, H (ω fun k => e (I k)) ((-1 : ℤ) ^ (i : ℕ) • L (toL (e (I i)).1) (η (i.removeNth fun k => e (I k)))) = ip e H (del L' e ω) η` using `fun i => by`. Rewrite using `[← (Fin.insertNthEquiv (fun _ => Fin n) i).sum_comp, Fintype.sum_prod_type, Finset.sum_comm, ip]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[del_apply, map_sum, LinearMap.sum_apply]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (fun k => e ((Fin.insertNthEquiv (fun _ => Fin n) i (j, J)) k)) = i.insertNth (α` using `fun _ => Herm E a) (e j) (fun k => e (J k)) := by`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.succAboveCases i ?_ (fun k => ?_) k <;> simp [Fin.insertNthEquiv]`. Establish `h2 : (Fin.insertNthEquiv (fun _ => Fin n) i (j, J)) i = j` using `by simp [Fin.insertNthEquiv]`.
+
+Rewrite using `[h1, h2, Fin.removeNth_insertNth, AlternatingMap.map_insertNth, ← hadj _ _ (hω _) _ (hη _), map_zsmul, map_zsmul, LinearMap.smul_apply, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules. Establish `h0 : ip e H ω (dCo L η) = ∑ i : Fin (q + 1), ∑ I : Fin (q + 1) → Fin n, H (ω fun k => e (I k)) ((-1 : ℤ) ^ (i : ℕ) • L (toL (e (I i)).1) (η (i.removeNth fun k => e (I k))))`. Rewrite using `[Finset.sum_comm, ip]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[dCo_apply, map_sum]`. Rewrite using `[h0, Finset.sum_congr rfl fun i _ => key i]`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Lit.Bor.ipAdj :
     UpperTheory.V.Lit.Bor.IpAdj := by
   intro E _ _ _ a n e M _ _ _ _ L L' H N hadj q ω η hω hη

@@ -79,6 +79,43 @@ structure SameForms {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Take `⟨br, Y₁⟩` from `B`. Take `⟨br', Y₁'⟩` from `B'`. Take `⟨E, hE₁⟩` from `E`. Take `⟨E', hE₁'⟩` from `E'`. Simplify using `only at hB hY hY' hE`.
+
+Substitute `Y₁` using the available equality. Substitute `Y₁'` using the available equality. Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Take `⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩` from `h3`.
+
+Consider the cases of `D`. Consider the cases of `D'`. Simplify using `only at a1 a2 a3`. Substitute `a1` using the available equality. Substitute `a2` using the available equality.
+
+Substitute `a3` using the available equality. Consider the cases of `N`. Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality.
+
+Substitute `ninstOm` using the available equality. Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Consider the cases of `X`.
+
+Consider the cases of `X'`. Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`. Substitute `xcc` using the available equality. Substitute `xTw` using the available equality. Substitute `xl` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality.
+
+Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality. Substitute `xOk` using the available equality. Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality.
+
+Substitute `xzk` using the available equality. Substitute `xpD` using the available equality. Substitute `xchi1` using the available equality. Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality.
+
+Substitute `xjS` using the available equality. Substitute `xside` using the available equality. Substitute `xrhoS` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality.
+
+Substitute `xLam` using the available equality. Substitute `xsideL` using the available equality. Substitute `xRCG` using the available equality. Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality.
+
+Substitute `xart` using the available equality. Substitute `xth` using the available equality. Consider the cases of `Y`. Consider the cases of `Y'`. Simplify using `only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF`.
+
+Substitute `yFm` using the available equality. Substitute `yacgFm` using the available equality. Substitute `ymodFmK` using the available equality. Substitute `ymodFmO` using the available equality. Substitute `yactG` using the available equality.
+
+Substitute `yU` using the available equality. Substitute `ypsiU` using the available equality. Substitute `yeAlg` using the available equality. Substitute `yDat` using the available equality. Substitute `yth` using the available equality.
+
+Substitute `ylev` using the available equality. Substitute `ythPsi` using the available equality. Substitute `yMtV` using the available equality. Substitute `yacgMt` using the available equality. Substitute `ymodMtK` using the available equality.
+
+Substitute `ymodMtO` using the available equality. Substitute `yMtLat` using the available equality. Substitute `ythP` using the available equality. Substitute `yhkF` using the available equality. Substitute `hB` using the available equality.
+
+Substitute `hE` using the available equality. Substitute `hN` using the available equality. Substitute `hi` using the available equality. Substitute `hS` using the available equality. Substitute `hA` using the available equality.
+
+Substitute `hQ` using the available equality. Substitute `hψ` using the available equality. Use `delta IntegralHeckeForms.GoodTw IntegralHeckeForms.eG IntegralHeckeForms.eO IntegralHeckeForms.Fm0 IntegralHeckeForms.V0 IntegralHeckeForms.Th IntegralHeckeForms.ThPsi IntegralHeckeForms.eTh IntegralHeckeForms.eThPsi IntegralHeckeForms.eThPMt IntegralHeckeForms.levs IntegralHecke …`. Simplify using `only at h ⊢`. Conclude with `h`.
+-/
 theorem goodTw_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -124,6 +161,41 @@ theorem goodTw_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Use `delta IntegralHeckeForms.FullRk IntegralHeckeForms.BasisOf IntegralHeckeForms.AO at h ⊢`. Rewrite `h` using `[N.restN_card_levelGroup_eq]`. Rewrite using `[N'.restN_card_levelGroup_eq]`. Take `⟨E, hE₁⟩` from `E`. Take `⟨E', hE₁'⟩` from `E'`.
+
+Simplify using `only at hE`. Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Take `⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩` from `h3`. Consider the cases of `D`.
+
+Consider the cases of `D'`. Simplify using `only at a1 a2 a3`. Substitute `a1` using the available equality. Substitute `a2` using the available equality. Substitute `a3` using the available equality.
+
+Consider the cases of `N`. Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality.
+
+Substitute `nalgOm` using the available equality. Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Consider the cases of `X`. Consider the cases of `X'`.
+
+Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`. Substitute `xcc` using the available equality. Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality.
+
+Substitute `xalgO` using the available equality. Substitute `xOk` using the available equality. Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality.
+
+Substitute `xpD` using the available equality. Substitute `xchi1` using the available equality. Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality.
+
+Substitute `xside` using the available equality. Substitute `xrhoS` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality.
+
+Substitute `xsideL` using the available equality. Substitute `xRCG` using the available equality. Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality.
+
+Substitute `xth` using the available equality. Consider the cases of `Y`. Consider the cases of `Y'`. Simplify using `only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF`. Substitute `yFm` using the available equality.
+
+Substitute `yacgFm` using the available equality. Substitute `ymodFmK` using the available equality. Substitute `ymodFmO` using the available equality. Substitute `yactG` using the available equality. Substitute `yU` using the available equality.
+
+Substitute `ypsiU` using the available equality. Substitute `yeAlg` using the available equality. Substitute `yDat` using the available equality. Substitute `yth` using the available equality. Substitute `ylev` using the available equality.
+
+Substitute `ythPsi` using the available equality. Substitute `yMtV` using the available equality. Substitute `yacgMt` using the available equality. Substitute `ymodMtK` using the available equality. Substitute `ymodMtO` using the available equality.
+
+Substitute `yMtLat` using the available equality. Substitute `ythP` using the available equality. Substitute `yhkF` using the available equality. Substitute `hE` using the available equality. Substitute `hi` using the available equality.
+
+Substitute `hS` using the available equality. Conclude with `h`.
+-/
 theorem fullRk_basisOf_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -160,6 +232,41 @@ theorem fullRk_basisOf_transfer {D D' : D7} {N : NData D.R D.host D.what₂} {N'
 set_option maxHeartbeats 4000000 in
 set_option maxRecDepth 100000 in
 
+/- English proof (translation)
+Take `⟨a1, a2, a3, nOm, ninstOm, nalgOm, nplOm, nPlG⟩` from `h1`. Take `⟨xcc, xTw, xl, fixedFieldTransport_baseIntegerRing_heq, fixedFieldTransport_baseIntegerCommRing_heq, fixedFieldTransport_baseIntegerAlgebra_heq, fixedFieldTransport_baseIntegerTopology_heq, xO, xcrO, xalgO, xOk, xcrOk, xalgOk, xzk, xpD, xchi1, xSig, xfinSig, xjS, xside, xrhoS, fi …` from `h2`. Take `⟨yFm, yacgFm, ymodFmK, ymodFmO, yactG, yU, ypsiU, yeAlg, yDat, yth, ylev, ythPsi, yMtV, yacgMt, ymodMtK, ymodMtO, yMtLat, ythP, yhkF⟩` from `h3`. Consider the cases of `D`. Consider the cases of `D'`.
+
+Simplify using `only at a1 a2 a3`. Substitute `a1` using the available equality. Substitute `a2` using the available equality. Substitute `a3` using the available equality. Consider the cases of `N`.
+
+Consider the cases of `N'`. Simplify using `only at nOm ninstOm nalgOm nplOm nPlG`. Substitute `nOm` using the available equality. Substitute `ninstOm` using the available equality. Substitute `nalgOm` using the available equality.
+
+Substitute `nplOm` using the available equality. Substitute `nPlG` using the available equality. Consider the cases of `X`. Consider the cases of `X'`. Simplify using `only at xcc xTw xl fixedFieldTransport_baseIntegerRing_heq fixedFieldTransport_baseIntegerCommRing_heq fixedFieldTransport_baseIntegerAlgebra_heq fixedFieldTransport_baseIntegerTopology_heq xO xcrO xalgO xOk xcrOk xalgOk xzk xpD xchi1 xSig xfinSig xjS xside xrhoS fixedFieldTransp …`.
+
+Substitute `xcc` using the available equality. Substitute `xTw` using the available equality. Substitute `xl` using the available equality. Substitute `fixedFieldTransport_baseIntegerRing_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerCommRing_heq` using the available equality.
+
+Substitute `fixedFieldTransport_baseIntegerAlgebra_heq` using the available equality. Substitute `fixedFieldTransport_baseIntegerTopology_heq` using the available equality. Substitute `xO` using the available equality. Substitute `xcrO` using the available equality. Substitute `xalgO` using the available equality.
+
+Substitute `xOk` using the available equality. Substitute `xcrOk` using the available equality. Substitute `xalgOk` using the available equality. Substitute `xzk` using the available equality. Substitute `xpD` using the available equality.
+
+Substitute `xchi1` using the available equality. Substitute `xSig` using the available equality. Substitute `xfinSig` using the available equality. Substitute `xjS` using the available equality. Substitute `xside` using the available equality.
+
+Substitute `xrhoS` using the available equality. Substitute `fixedFieldTransport_initialPlaceSet_heq` using the available equality. Substitute `xhEig` using the available equality. Substitute `xLam` using the available equality. Substitute `xsideL` using the available equality.
+
+Substitute `xRCG` using the available equality. Substitute `xgrpRCG` using the available equality. Substitute `xfinRCG` using the available equality. Substitute `xart` using the available equality. Substitute `xth` using the available equality.
+
+Consider the cases of `Y`. Consider the cases of `Y'`. Simplify using `only at yFm yacgFm ymodFmK ymodFmO yactG yU ypsiU yeAlg yDat yth ylev ythPsi yMtV yacgMt ymodMtK ymodMtO yMtLat ythP yhkF`. Substitute `yFm` using the available equality. Substitute `yacgFm` using the available equality.
+
+Substitute `ymodFmK` using the available equality. Substitute `ymodFmO` using the available equality. Substitute `yactG` using the available equality. Substitute `yU` using the available equality. Substitute `ypsiU` using the available equality.
+
+Substitute `yeAlg` using the available equality. Substitute `yDat` using the available equality. Substitute `yth` using the available equality. Substitute `ylev` using the available equality. Substitute `ythPsi` using the available equality.
+
+Substitute `yMtV` using the available equality. Substitute `yacgMt` using the available equality. Substitute `ymodMtK` using the available equality. Substitute `ymodMtO` using the available equality. Substitute `yMtLat` using the available equality.
+
+Substitute `ythP` using the available equality. Substitute `yhkF` using the available equality. Use `⟨rfl, rfl, rfl, fun p p' hp => ?_, fun i i' hi => ?_⟩` and prove the remaining obligations. Substitute `hp` using the available equality. Conclude with `⟨HEq.rfl, HEq.rfl, rfl, HEq.rfl⟩`.
+
+Substitute `hi` using the available equality. Use `⟨rfl, fun S S' hS => ?_, fun a a' ha => ?_⟩` and prove the remaining obligations. Substitute `hS` using the available equality. Conclude with `⟨HEq.rfl, fun _ _ => HEq.rfl⟩`. Substitute `ha` using the available equality.
+
+Conclude with `Iff.rfl`.
+-/
 theorem same_basic {D D' : D7} {N : NData D.R D.host D.what₂} {N' : NData D'.R D'.host D'.what₂}
     {X : NTw D.R D.host D.what₂ D.LL0 N} {X' : NTw D'.R D'.host D'.what₂ D'.LL0 N'}
     {Y : NExp D.R D.host D.what₂ D.LL0 N X} {Y' : NExp D'.R D'.host D'.what₂ D'.LL0 N' X'}
@@ -209,15 +316,24 @@ structure SameExport (D D' : D7) : Prop where
   br : HEq D.ntwbr D'.ntwbr
   av : avPrimes D = avPrimes D'
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, rfl⟩`.
+-/
 theorem SameExport.refl (D : D7) : SameExport D D :=
   ⟨by constructor <;> rfl, by constructor <;> rfl, by constructor <;> rfl, HEq.rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨h.gal.R.trans h'.gal.R, h.gal.host.trans h'.gal.host, h.gal.loc.trans h'.gal.loc, h.gal.Om.trans h'.gal.Om, h.gal.instOm.trans h'.gal.instOm, h.gal.algOm.trans h'.gal.algOm, h.gal.plOm.trans h'.gal.plOm, h.gal.PlG.trans h'.gal.PlG⟩, ⟨h.set.cc.trans h'.set.cc, h.set.Tw.trans h'. …`.
+-/
 theorem SameExport.trans {D D' D'' : D7} (h : SameExport D D') (h' : SameExport D' D'') : SameExport D D'' :=
   ⟨⟨h.gal.R.trans h'.gal.R, h.gal.host.trans h'.gal.host, h.gal.loc.trans h'.gal.loc, h.gal.Om.trans h'.gal.Om, h.gal.instOm.trans h'.gal.instOm, h.gal.algOm.trans h'.gal.algOm, h.gal.plOm.trans h'.gal.plOm, h.gal.PlG.trans h'.gal.PlG⟩,
     ⟨h.set.cc.trans h'.set.cc, h.set.Tw.trans h'.set.Tw, h.set.l.trans h'.set.l, h.set.O0.trans h'.set.O0, h.set.crO0.trans h'.set.crO0, h.set.algO0.trans h'.set.algO0, h.set.topO0.trans h'.set.topO0, h.set.O.trans h'.set.O, h.set.crO.trans h'.set.crO, h.set.algO.trans h'.set.algO, h.set.Ok.trans h'.set.Ok, h.set.crOk.trans h'.set.crOk, h.set.algOk.trans h'.set.algOk, h.set.zk.trans h'.set.zk, h.set.pD.trans h'.set.pD, h.set.chi1.trans h'.set.chi1, h.set.Sig.trans h'.set.Sig, h.set.finSig.trans h'.set.finSig, h.set.jS.trans h'.set.jS, h.set.side.trans h'.set.side, h.set.rhoS.trans h'.set.rhoS, h.set.S0.trans h'.set.S0, h.set.hEig.trans h'.set.hEig, h.set.abelian₂.trans h'.set.abelian₂, h.set.sideL.trans h'.set.sideL, h.set.RCG.trans h'.set.RCG, h.set.grpRCG.trans h'.set.grpRCG, h.set.finRCG.trans h'.set.finRCG, h.set.art.trans h'.set.art, h.set.th.trans h'.set.th⟩,
     ⟨h.frm.Fm.trans h'.frm.Fm, h.frm.acgFm.trans h'.frm.acgFm, h.frm.modFmK.trans h'.frm.modFmK, h.frm.modFmO.trans h'.frm.modFmO, h.frm.actG.trans h'.frm.actG, h.frm.U.trans h'.frm.U, h.frm.psiU.trans h'.frm.psiU, h.frm.eAlg.trans h'.frm.eAlg, h.frm.Dat.trans h'.frm.Dat, h.frm.th.trans h'.frm.th, h.frm.lev.trans h'.frm.lev, h.frm.thPsi.trans h'.frm.thPsi, h.frm.MtV.trans h'.frm.MtV, h.frm.acgMt.trans h'.frm.acgMt, h.frm.modMtK.trans h'.frm.modMtK, h.frm.modMtO.trans h'.frm.modMtO, h.frm.MtLat.trans h'.frm.MtLat, h.frm.thP.trans h'.frm.thP, h.frm.hkF.trans h'.frm.hkF⟩,
     h.br.trans h'.br, h.av.trans h'.av⟩
 
+/- English proof (translation)
+Substitute `hR` using the available equality. Substitute `hH` using the available equality. Conclude with `heq_of_eq (Finset.ext fun v => (h v).trans (h' v).symm)`.
+-/
 theorem heq_places {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH : HEq H H') {A : Finset (PlE H)}
     {A' : Finset (PlE H')} {s : Finset ℕ} (h : ∀ v, v ∈ A ↔ ∃ p ∈ s, v ∈ placesOver H.E p)
     (h' : ∀ v, v ∈ A' ↔ ∃ p ∈ s, v ∈ placesOver H'.E p) : HEq A A' := by
@@ -225,9 +341,19 @@ theorem heq_places {R R' : Ranks} (hR : R = R') {H : Host R} {H' : Host R'} (hH 
   subst hH
   exact heq_of_eq (Finset.ext fun v => (h v).trans (h' v).symm)
 
+/- English proof (translation)
+The claim follows from `heq_places h.gal.R h.gal.host mem_avRec (by rw [h.av]; exact mem_avRec)`.
+-/
 theorem SameExport.avRec {D D' : D7} (h : SameExport D D') : HEq (AvRec D) (AvRec D') :=
   heq_places h.gal.R h.gal.host mem_avRec (by rw [h.av]; exact mem_avRec)
 
+/- English proof (translation)
+Take `⟨-, -, -, h1, h2⟩` from `same_basic h.gal h.set h.frm`. Take `⟨h3, h4, h5, h6⟩` from `h1 p p' hp`. Take `⟨h7, h8, -⟩` from `h2 _ _ h3`. Take `⟨i, Q, k, ψ⟩` from `p`. Take `⟨i', Q', k', ψ'⟩` from `p'`.
+
+Simplify using `only at h3 h4 h5 h6 h7 h8 hg ⊢`. Substitute `h5` using the available equality. Establish `hm : D'.R.m = D.R.m` using `by rw [h.gal.R]`. Establish `h9` using `fun j (hj : j ∈ Finset.Icc 1 D'.R.m) b => fullRk_basisOf_transfer h.gal h.set h.frm hE h3 j b ((h8 _ _ hS).2 j b) ⟨hg.1.1 j (hm ▸ hj) b, hg.1.2 j (hm ▸ hj) b⟩`. Establish `he : twEps D' i' = twEps D i` using `by rw [twEps, twEps, h7]`.
+
+Rewrite using `[he]`. Conclude with `⟨⟨fun j hj b => (h9 j hj b).1, fun j hj b => (h9 j hj b).2⟩, goodTw_transfer h.gal h.set h.frm (B := BlochKatoReduction.bk0 D) (B' := BlochKatoReduction.bk0 D') h.br rfl rfl hE hN h3 _ (h8 _ _ hS).1 h.avRec h4 k h6 hg.2⟩`.
+-/
 theorem SameExport.good {D D' : D7} (h : SameExport D D') {I : TwIn D} {I' : TwIn D'} (hE : HEq I.E.Dat0 I'.E.Dat0)
     (hN : HEq I.N0 I'.N0) (hS : HEq I.S I'.S) {p : TwPack D} {p' : TwPack D'} (hp : HEq p p')
     (hg : I.Ok p.1 ∧ IntegralHeckeForms.GoodTw D.nexp (BlochKatoReduction.bk0 D) I.E I.N0 p.1 (twEps D p.1) (I.S p.1) (AvRec D) p.2.1 p.2.2.1 p.2.2.2) :
@@ -256,6 +382,9 @@ structure SameField (D D' : D7) : Prop where
   emb0b : HEq D.ntw.emb0b D'.ntw.emb0b
   tw : ∀ w w', HEq w w' → (TwistedAt D w ↔ TwistedAt D' w')
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, fun _ _ h => by rw [eq_of_heq h]⟩`.
+-/
 theorem SameField.refl (D : D7) : SameField D D :=
   ⟨rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, fun _ _ h => by rw [eq_of_heq h]⟩
 

@@ -8,6 +8,15 @@ namespace GlobalTheory.CompanionTheory.Ar.LatDual
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
   {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `he`. Set `N : Submodule (regAt ξ p) E` to `{ carrier := {x | ∀ i, B.repr x i ∈ regAt ξ p} add_mem' := fun ha hb i => by simpa using add_mem (ha i) (hb i) zero_mem' := fun i => by simp smul_mem' := fun c x hx i => by show B.repr ((c : Ω) • x) i ∈ regAt ξ p`. Simplify using `using mul_mem c.2 (hx i) }`. Establish `hle : Submodule.span (regAt ξ p) (Set.range B) ≤ N`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `show ∀ i, B.repr (B j) i ∈ regAt ξ p`. Introduce `i`. Rewrite using `[B.repr_self, Finsupp.single_apply]`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `hle he`. Introduce `h`.
+
+Rewrite using `[← B.sum_repr e]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hc : B.repr e i • B i = (⟨B.repr e i, h i⟩ : regAt ξ p) • B i` using `rfl`. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_span_basis_iff (p : Cpt ξ) {r : ℕ} (B : Module.Basis (Fin r) Ω E) (e : E) :
     e ∈ Submodule.span (regAt ξ p) (Set.range B) ↔ ∀ i, B.repr e i ∈ regAt ξ p := by
   constructor
@@ -36,6 +45,15 @@ theorem mem_span_basis_iff (p : Cpt ξ) {r : ℕ} (B : Module.Basis (Fin r) Ω E
     rw [hc]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Use `show (∀ e ∈ L p, w e ∈ regAt ξ p) ↔ _`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `hw i`. Conclude with `hw _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Introduce `hw`. Set `N : Submodule (regAt ξ p) E` to `{ carrier := {x | w x ∈ regAt ξ p} add_mem' := fun {a c} ha hc => by show w (a + c) ∈ regAt ξ p`. Rewrite using `[map_add]`. Conclude with `add_mem ha hc`. Use the proof step `zero_mem' := by show w 0 ∈ regAt ξ p`.
+
+Simplify using the standard rewrite rules. Use the proof step `smul_mem' := fun c x hx => by show w ((c : Ω) • x) ∈ regAt ξ p`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_mem c.2 hx }`. Establish `hle : Submodule.span (regAt ξ p) (Set.range b) ≤ N`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hw i`. Introduce `e he`. Conclude with `hle he`.
+-/
 theorem mem_dual_iff (L : Lat ξ E) (p : Cpt ξ) {r : ℕ} (b : Fin r → E)
     (h : L p = Submodule.span (regAt ξ p) (Set.range b)) (w : Module.Dual Ω E) :
     w ∈ L.dual p ↔ ∀ i, w (b i) ∈ regAt ξ p := by
@@ -65,6 +83,9 @@ theorem mem_dual_iff (L : Lat ξ E) (p : Cpt ξ) {r : ℕ} (b : Fin r → E)
     intro e he
     exact hle he
 
+/- English proof (translation)
+Use extensionality with `w`. Rewrite using `[mem_dual_iff L p B h w, mem_span_basis_iff p B.dualBasis w]`. Simplify using `only [Module.Basis.dualBasis_repr]`.
+-/
 theorem dual_eq_span (L : Lat ξ E) (p : Cpt ξ) {r : ℕ} (B : Module.Basis (Fin r) Ω E)
     (h : L p = Submodule.span (regAt ξ p) (Set.range B)) :
     L.dual p = Submodule.span (regAt ξ p) (Set.range B.dualBasis) := by
@@ -78,6 +99,19 @@ namespace GlobalTheory.CompanionTheory.Ar
 
 open LatDual
 
+/- English proof (translation)
+Introduce `X Ω _ ξ E _ _ L T r hL`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Take `⟨U, hpU, b, hspan, hfr⟩` from `hL p hp`. Take `⟨hli, -⟩` from `hfr p hp hpU`.
+
+Take `⟨B, hB⟩ : ∃ B : Module.Basis (Fin r) Ω E, ⇑B = b` from `⟨Module.Basis.mk hli hspan.ge, Module.Basis.coe_mk hli _⟩`. Use `⟨U, hpU, ⇑B.dualBasis, B.dualBasis.span_eq, ?_⟩` and prove the remaining obligations. Introduce `q hq hqU`. Take `⟨-, hLq⟩` from `hfr q hq hqU`. Use `And.intro B.dualBasis.linearIndependent ?_` and prove the remaining obligations.
+
+Conclude with `LatDual.dual_eq_span L q B (by rw [hB]; exact hLq)`. Introduce `p hp e`. Take `⟨U, hpU, b, hspan, hfr⟩` from `hL p hp`. Take `⟨hli, hLp0⟩` from `hfr p hp hpU`. Take `⟨B, hB⟩ : ∃ B : Module.Basis (Fin r) Ω E, ⇑B = b` from `⟨Module.Basis.mk hli hspan.ge, Module.Basis.coe_mk hli _⟩`.
+
+Establish `hLp : L p = Submodule.span (regAt ξ p) (Set.range B)` using `by rw [hB]; exact hLp0`. Prove the components needed by the constructor for the conclusion. Introduce `he w hw`. Conclude with `hw e he`. Introduce `h`.
+
+Rewrite using `[hLp, LatDual.mem_span_basis_iff p B e]`. Introduce `i`. Establish `hmem : B.dualBasis i ∈ L.dual p`. Rewrite using `[LatDual.dual_eq_span L p B hLp]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+
+Establish `hi` using `h _ hmem`. Rewrite `hi` using `[Module.Basis.dualBasis_apply]`. Then use the resulting hypothesis.
+-/
 theorem Lat.isVBOn_dual_and_bidual :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (L : Lat ξ E) (T : Set (Cpt ξ)) (r : ℕ), L.IsVBOn T r ⊤ → L.dual.IsVBOn T r ⊤ ∧ ∀ p ∈ T, ∀ e : E, e ∈ L p ↔ ∀ w ∈ L.dual p, w e ∈ regAt ξ p := by
   intro X Ω _ ξ E _ _ L T r hL

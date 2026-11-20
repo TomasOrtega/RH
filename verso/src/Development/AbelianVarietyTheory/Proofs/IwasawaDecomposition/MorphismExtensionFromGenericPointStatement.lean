@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HomExtNormal
 open AlgebraicGeometry CategoryTheory Limits IsLocalRing TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.extension_descends_of_flat | exact GlobalTheory.extension_descends_of_flat | (intros; apply GlobalTheory.extension_descends_of_flat <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.morphism_extension_from_generic_point : ∀ (A R : Type) [CommRing A] [IsDomain A] [IsLocalRing A] [CommRing R] [IsDomain R] [IsLocalRing R]
     (φ : A →+* R), φ.Flat → IsLocalHom φ → ∀ (γ : FractionRing A →+* FractionRing R),
     (∀ a, γ (algebraMap A _ a) = algebraMap R _ (φ a)) → ∀ (Y : Scheme.{0})

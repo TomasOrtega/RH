@@ -1,5 +1,10 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `A _ _ n f v w hv hw hne h`. Apply `hne` to reduce the goal to its premises. Establish `key : finFunctionFinEquiv (fun i => (⟨v i, hv i⟩ : Fin (2 + f.totalDegree))) = finFunctionFinEquiv (fun i => (⟨w i, hw i⟩ : Fin (2 + f.totalDegree)))`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[finFunctionFinEquiv_apply, finFunctionFinEquiv_apply]`.
+
+Simplify `h` using `only [mul_comm]`. Establish `hfun` using `finFunctionFinEquiv.injective key`. Use extensionality with `i`. Conclude with `congrArg Fin.val (congrFun hfun i)`.
+-/
 theorem UpperTheory.Reformulated.B.Qn10.sum_r_mul_ne.{u_1} :
     ∀ {A : Type u_1} [inst : CommRing A] [IsDomain A]
     {n : ℕ} (f : MvPolynomial (Fin (n + (1 : ℕ))) A) (v w : Fin (n + (1 : ℕ)) →₀ ℕ),

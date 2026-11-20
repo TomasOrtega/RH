@@ -6,6 +6,13 @@ import Formalism.SharpRestriction.LevelLetterCocycles.DataN
 import Formalism.SharpRestriction.LevelLetterCocycles.QuotientHomNonvanishingBound
 import Formalism.SharpRestriction.RamificationFrobenius.TotientGaloisClasses.ConjEMemHostFIff
 
+/- English proof (translation)
+Introduce `R H what₂ N i X' T' rep a b ha hb`. Take `⟨m, f, g, hf, rfl⟩` from `ha`. Take `⟨n, f', g', hf', rfl⟩` from `hb`. Use `⟨m + n, Fin.append f f', Fin.append g g', fun k => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) k` and prove the remaining obligations.
+
+Rewrite using `[Fin.append_left]`. Conclude with `hf j`. Rewrite using `[Fin.append_right]`. Conclude with `hf' j`. Rewrite using `[Fin.sum_univ_add]`.
+
+Simplify using `only [Fin.append_left, Fin.append_right]`.
+-/
 theorem UpperTheory.Reformulated.B.Qj25.inSpan_add :
     ∀ {R : Formalism.BasicNotions.Ranks} {H : Formalism.BasicNotions.Host R} {what₂ : Formalism.BasicNotions.Rows.Data R}
     (N : Formalism.BasicNotions.NData R H what₂) {i : N.Loc} {X' : Type} (T' : Subalgebra (N.O i) (X' → N.O i))

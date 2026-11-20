@@ -17,9 +17,17 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
+/- English proof (translation)
+The claim follows from `hx ▸ hg ▸ h`.
+-/
 theorem nearAt_congr' {n : ℕ} {x x' : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {g g' : GL (Fin N) E}
     (h : GlobalTheory.TwU.NearAt P n x g) (hx : x = x') (hg : g = g') : GlobalTheory.TwU.NearAt P n x' g' := hx ▸ hg ▸ h
 
+/- English proof (translation)
+Substitute `hh` using the available equality. Unfold `GlobalTheory.TwU.NearAt at *`. Use `GlobalTheory.CplPt.congAt_conj n (GlobalTheory.LevFrame.congAt_inv F E N n P _ hn hx) hint` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_inv]`.
+
+Use `group`.
+-/
 theorem nearAt_inv_int {n : ℕ} (hn : 1 ≤ n) {x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)} {g h : GL (Fin N) E}
     (hx : GlobalTheory.TwU.NearAt P n x g) (hh : h = g⁻¹)
     (hint : ∀ a b, IntAt P ((h : Matrix (Fin N) (Fin N) E) a b) ∧ IntAt P (((h⁻¹ : GL (Fin N) E) : Matrix (Fin N) (Fin N) E) a b)) :
@@ -38,6 +46,11 @@ section Near
 variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
   (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))
 
+/- English proof (translation)
+Establish `hL` using `hI.idx_ok a`. Establish `e : B.R.m - 1 = B.R.m - 2 + 1` using `by have := hL.hm; omega`. Take `⟨b, -⟩` from `hL.last_uniq`. Establish `h` using `hL.int _ b P`. Rewrite `h` using `[hL.last_h]`.
+
+Rewrite using `[e]`. Conclude with `h`.
+-/
 theorem prCat_last_le_int (hI : I.Ok) (P : SBof I a) :
     prCat (Pr := B.primes X) (I.cst a).sharp (B.R.m - 1) P.1 1 ≤ GLint B.fields.E (B.R.N (B.R.m - 1)) P.1 := by
   have hL := hI.idx_ok a
@@ -48,10 +61,16 @@ theorem prCat_last_le_int (hI : I.Ok) (P : SBof I a) :
   rw [e]
   exact h
 
+/- English proof (translation)
+Unfold `NearV`. Conclude with `nearAt_congr' (GlobalTheory.TwU.nearAt_self (F := (I.rec7 l Z).host.F) _ _ 1) ((map_one _).trans (map_one _).symm) (map_one _).symm`.
+-/
 theorem nearV_one (P : SBof I a) : NearV I l Z a v P 1 1 := by
   unfold NearV
   exact nearAt_congr' (GlobalTheory.TwU.nearAt_self (F := (I.rec7 l Z).host.F) _ _ 1) ((map_one _).trans (map_one _).symm) (map_one _).symm
 
+/- English proof (translation)
+Unfold `NearV at *`. Conclude with `nearAt_congr' (GlobalTheory.CplPt.nearAt_mul_int _ hx hy (GlobalTheory.CplPt.seamGL_int (sm I l Z) ⟨g', hg'⟩)) (map_mul _ _ _).symm (map_mul _ _ _).symm`.
+-/
 theorem nearV_mul (P : SBof I a) {x y} {g g' : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))}
     (hx : NearV I l Z a v P x g) (hy : NearV I l Z a v P y g') (hg' : g' ∈ GLint B.fields.E (B.R.N (B.R.m - 1)) P.1) :
     NearV I l Z a v P (x * y) (g * g') := by
@@ -59,6 +78,9 @@ theorem nearV_mul (P : SBof I a) {x y} {g g' : Sp B.fields.E (B.R.N (B.R.m - 1))
   exact nearAt_congr' (GlobalTheory.CplPt.nearAt_mul_int _ hx hy (GlobalTheory.CplPt.seamGL_int (sm I l Z) ⟨g', hg'⟩))
     (map_mul _ _ _).symm (map_mul _ _ _).symm
 
+/- English proof (translation)
+Unfold `NearV at *`. Conclude with `nearAt_congr' (nearAt_inv_int hD hx (map_inv _ _) (GlobalTheory.CplPt.seamGL_int (sm I l Z) ⟨g⁻¹, hg⟩)) (map_inv _ _).symm rfl`.
+-/
 theorem nearV_inv (P : SBof I a) (hD : 1 ≤ (I.cst a).D P) {x}
     {g : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))}
     (hx : NearV I l Z a v P x g) (hg : g⁻¹ ∈ GLint B.fields.E (B.R.N (B.R.m - 1)) P.1) :
@@ -67,11 +89,17 @@ theorem nearV_inv (P : SBof I a) (hD : 1 ≤ (I.cst a).D P) {x}
   exact nearAt_congr' (nearAt_inv_int hD hx (map_inv _ _) (GlobalTheory.CplPt.seamGL_int (sm I l Z) ⟨g⁻¹, hg⟩))
     (map_inv _ _).symm rfl
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g).1 ⟨z, h⟩`.
+-/
 theorem mem_of_midLev (P : SBof I a) {g : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))} {z : B.fields.K}
     (h : GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g z) :
     g ∈ prCat (Pr := B.primes X) (I.cst a).sharp (B.R.m - 1) P.1 1 :=
   (GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g).1 ⟨z, h⟩
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.TwU.exists_midLev_iff (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g).2 h`.
+-/
 theorem exists_midLev_of_mem (P : SBof I a) {g : Sp B.fields.E (B.R.N (B.R.m - 1)) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N (B.R.m - 1))}
     (h : g ∈ prCat (Pr := B.primes X) (I.cst a).sharp (B.R.m - 1) P.1 1) :
     ∃ z, GlobalTheory.TwU.MidLev (R := B.R) I.Ch I.sel (I.tup a) (I.cst a) (B.R.m - 1) P 1 g z :=
@@ -79,6 +107,13 @@ theorem exists_midLev_of_mem (P : SBof I a) {g : Sp B.fields.E (B.R.N (B.R.m - 1
 
 end Near
 
+/- English proof (translation)
+Introduce `B X I hI l Z a v`. Use `⟨fun P _ => ?_, fun x y hx hy P hP => ?_, fun x hx P hP => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `exists_midLev_of_mem I a P (one_mem _)`. Conclude with `⟨1, z, hz, nearV_one I l Z a v P⟩`. Take `⟨g, z, hgz, hxg⟩` from `hx P hP`.
+
+Take `⟨g', z', hgz', hyg'⟩` from `hy P hP`. Establish `hg` using `mem_of_midLev I a P hgz`. Establish `hg'` using `mem_of_midLev I a P hgz'`. Take `⟨z'', hz''⟩` from `exists_midLev_of_mem I a P (mul_mem hg hg')`. Conclude with `⟨g * g', z'', hz'', nearV_mul I l Z a v P hxg hyg' (prCat_last_le_int I a hI P hg')⟩`.
+
+Take `⟨g, z, hgz, hxg⟩` from `hx P hP`. Establish `hgi` using `inv_mem (mem_of_midLev I a P hgz)`. Take `⟨z', hz'⟩` from `exists_midLev_of_mem I a P hgi`. Conclude with `⟨g⁻¹, z', hz', nearV_inv I l Z a v P ((hI.idx_ok a).cst_ok.D_pos P) hxg (prCat_last_le_int I a hI P hgi)⟩`.
+-/
 theorem nearSet_closed : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (a : I.ι)
     (v : HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F)), 1 ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v ∧
       (∀ x y, x ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v → y ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v → x * y ∈ GlobalTheory.Mem.Col2.QChi.NearSet I l Z a v) ∧

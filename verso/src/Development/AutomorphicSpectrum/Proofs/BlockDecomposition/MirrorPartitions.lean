@@ -18,32 +18,53 @@ variable {K : Type} [Field K] [Fintype K] [DecidableEq K] {C : LabelConv K}
 variable {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
   [Fintype γ] [DecidableEq γ]
 
+/- English proof (translation)
+Take `⟨e, φ⟩` from `id h`. Conclude with `(GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β β lam lam mu mu e).1 h`.
+-/
 theorem cuspIso_symm {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)} (h : CuspIso K lam mu) :
     CuspIso K mu lam := by
   obtain ⟨e, φ⟩ := id h
   exact (GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β β lam lam mu mu e).1 h
 
+/- English proof (translation)
+Take `⟨e, φ⟩` from `id h`. Conclude with `(GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β γ lam lam mu nu e).2.1 h h'`.
+-/
 theorem cuspIso_trans {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)} {nu : FDRep ℂ (GL γ K)}
     (h : CuspIso K lam mu) (h' : CuspIso K mu nu) : CuspIso K lam nu := by
   obtain ⟨e, φ⟩ := id h
   exact (GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β γ lam lam mu nu e).2.1 h h'
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α α α lam lam' lam lam (Equiv.refl α)).2.2.1 h`.
+-/
 theorem cuspIso_of_iso {lam lam' : FDRep ℂ (GL α K)} (h : Nonempty (lam ≅ lam')) :
     CuspIso K lam lam' :=
   (GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α α α lam lam' lam lam (Equiv.refl α)).2.2.1 h
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β β lam lam (transp e lam) (transp e lam) e).2.2.2.1`.
+-/
 theorem cuspIso_transp (e : α ≃ β) (lam : FDRep ℂ (GL α K)) : CuspIso K lam (transp e lam) :=
   (GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts K α β β lam lam (transp e lam) (transp e lam) e).2.2.2.1
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.CompanionTheory.TyFin.IpIso.main K α β lam mu e hl hm).2`.
+-/
 theorem cuspIso_iff_transp (e : α ≃ β) {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)}
     (hl : Simple lam) (hm : Simple mu) : CuspIso K lam mu ↔ Nonempty (transp e lam ≅ mu) :=
   (GlobalTheory.CompanionTheory.TyFin.IpIso.main K α β lam mu e hl hm).2
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `O.lab_iso _ _ _ ((cuspIso_iff_transp (finCongr rfl) hX hX).1 (cuspIso_of_iso ⟨Iso.refl X⟩))`.
+-/
 theorem lab_cast (O : LabelMap K C) {a b : ℕ} (h : a = b) (X : FDRep ℂ (GL (Fin a) K))
     (hX : Simple X) : O.lab b (transp (finCongr h) X) = O.lab a X := by
   subst h
   exact O.lab_iso _ _ _ ((cuspIso_iff_transp (finCongr rfl) hX hX).1 (cuspIso_of_iso ⟨Iso.refl X⟩))
 
+/- English proof (translation)
+Take `⟨e, φ⟩` from `id h`. Establish `hab : a = b` using `by simpa using Fintype.card_congr e`. Rewrite using `[← lab_cast O hab X hX]`. Conclude with `O.lab_iso b _ _ ((cuspIso_iff_transp (finCongr hab) hX hY).1 h)`.
+-/
 theorem lab_eq_of_cuspIso (O : LabelMap K C) {a b : ℕ} {X : FDRep ℂ (GL (Fin a) K)}
     {Y : FDRep ℂ (GL (Fin b) K)} (hX : Simple X) (hY : Simple Y) (h : CuspIso K X Y) :
     O.lab a X = O.lab b Y := by
@@ -52,16 +73,29 @@ theorem lab_eq_of_cuspIso (O : LabelMap K C) {a b : ℕ} {X : FDRep ℂ (GL (Fin
   rw [← lab_cast O hab X hX]
   exact O.lab_iso b _ _ ((cuspIso_iff_transp (finCongr hab) hX hY).1 h)
 
+/- English proof (translation)
+The claim follows from `(lab_eq_of_cuspIso O hσ (transp_simple _ _ (transp_simple _ _ hσ)) (cuspIso_trans (cuspIso_transp e σ) (cuspIso_transp (Fintype.equivFin β) (transp e σ)))).symm`.
+-/
 theorem labO_transp (O : LabelMap K C) {d : ℕ} (e : Fin d ≃ β) {σ : FDRep ℂ (GL (Fin d) K)}
     (hσ : Simple σ) : labO O (transp e σ) = O.lab d σ :=
   (lab_eq_of_cuspIso O hσ (transp_simple _ _ (transp_simple _ _ hσ))
     (cuspIso_trans (cuspIso_transp e σ) (cuspIso_transp (Fintype.equivFin β) (transp e σ)))).symm
 
+/- English proof (translation)
+The claim follows from `lab_eq_of_cuspIso O (transp_simple _ _ hl) (transp_simple _ _ hm) (cuspIso_trans (cuspIso_symm (cuspIso_transp _ lam)) (cuspIso_trans h (cuspIso_transp _ mu)))`.
+-/
 theorem labO_eq_of_cuspIso (O : LabelMap K C) {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)}
     (hl : Simple lam) (hm : Simple mu) (h : CuspIso K lam mu) : labO O lam = labO O mu :=
   lab_eq_of_cuspIso O (transp_simple _ _ hl) (transp_simple _ _ hm)
     (cuspIso_trans (cuspIso_symm (cuspIso_transp _ lam)) (cuspIso_trans h (cuspIso_transp _ mu)))
 
+/- English proof (translation)
+Establish `sX` using `transp_simple (Fintype.equivFin α) lam hl`. Establish `cX` using `transp_cusp (Fintype.equivFin α) lam hlc`. Establish `sY` using `transp_simple (Fintype.equivFin β) mu hm`. Establish `cY` using `transp_cusp (Fintype.equivFin β) mu hmc`. Establish `dα` using `(O.lab_spec _ _ Fintype.card_pos sX cX).2.2.2`.
+
+Establish `dβ` using `(O.lab_spec _ _ Fintype.card_pos sY cY).2.2.2`. Establish `hab : Fintype.card α = Fintype.card β`. Rewrite using `[← dα, ← dβ]`. Conclude with `congrArg Polynomial.natDegree h`. Establish `h' : O.lab _ (transp (finCongr hab) (transp (Fintype.equivFin α) lam)) = O.lab _ (transp (Fintype.equivFin β) mu)`.
+
+Rewrite using `[lab_cast O hab _ sX]`. Conclude with `h`. Establish `hi` using `O.lab_inj _ _ _ Fintype.card_pos (transp_simple _ _ sX) (transp_cusp _ _ cX) sY cY h'`. Conclude with `cuspIso_trans (cuspIso_transp _ lam) (cuspIso_trans (cuspIso_transp (finCongr hab) _) (cuspIso_trans (cuspIso_of_iso hi) (cuspIso_symm (cuspIso_transp _ mu))))`.
+-/
 theorem cuspIso_of_labO_eq (O : LabelMap K C) [Nonempty α] [Nonempty β] {lam : FDRep ℂ (GL α K)}
     {mu : FDRep ℂ (GL β K)} (hl : Simple lam) (hlc : IsCuspidal K lam) (hm : Simple mu)
     (hmc : IsCuspidal K mu) (h : labO O lam = labO O mu) : CuspIso K lam mu := by
@@ -82,16 +116,27 @@ theorem cuspIso_of_labO_eq (O : LabelMap K C) [Nonempty α] [Nonempty β] {lam :
   exact cuspIso_trans (cuspIso_transp _ lam) (cuspIso_trans (cuspIso_transp (finCongr hab) _)
     (cuspIso_trans (cuspIso_of_iso hi) (cuspIso_symm (cuspIso_transp _ mu))))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨cuspIso_of_labO_eq O hl hlc hm hmc, labO_eq_of_cuspIso O hl hm⟩`.
+-/
 theorem labO_eq_iff (O : LabelMap K C) [Nonempty α] [Nonempty β] {lam : FDRep ℂ (GL α K)}
     {mu : FDRep ℂ (GL β K)} (hl : Simple lam) (hlc : IsCuspidal K lam) (hm : Simple mu)
     (hmc : IsCuspidal K mu) : labO O lam = labO O mu ↔ CuspIso K lam mu :=
   ⟨cuspIso_of_labO_eq O hl hlc hm hmc, labO_eq_of_cuspIso O hl hm⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨i, hi⟩ := hb c ⟨⟨i, hi⟩⟩`.
+-/
 theorem fiber_nonempty {ι : Type} {s : ℕ} {b : ι → Fin s} (hb : Function.Surjective b) (c : Fin s) :
     Nonempty {i // b i = c} :=
   let ⟨i, hi⟩ := hb c
   ⟨⟨i, hi⟩⟩
 
+/- English proof (translation)
+Introduce `n hn τ hτ`. Use `haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Prove the components needed by the constructor for the conclusion. Take `⟨s, b, lam, hb, hl, hc⟩` from `hE τ hτ`. Conclude with `⟨_, s, b, lam, hb, hl, hc, rfl⟩`.
+
+Introduce and unpack `f f' ⟨s, b, lam, hb, hl, hc, rfl⟩ ⟨s', b', mu, hb', hl', hc', rfl⟩`. Take `⟨π, hπ⟩` from `hU n s s' b b' lam mu τ hτ ⟨hb, hl, hc⟩ ⟨hb', hl', hc'⟩`. Rewrite using `[Finset.prod_congr rfl (fun c _ => labO_eq_of_cuspIso O (hl c).1 (hl' _).1 (hπ c))]`. Conclude with `Equiv.prod_comp π (fun c => labO O (mu c))`.
+-/
 theorem hcLabelO (hE : HC.HCSupportExists K) (hU : SupportUnique K) (O : LabelMap K C) :
     HCLabelO O := by
   intro n hn τ hτ
@@ -104,6 +149,21 @@ theorem hcLabelO (hE : HC.HCSupportExists K) (hU : SupportUnique K) (O : LabelMa
     rw [Finset.prod_congr rfl (fun c _ => labO_eq_of_cuspIso O (hl c).1 (hl' _).1 (hπ c))]
     exact Equiv.prod_comp π (fun c => labO O (mu c))
 
+/- English proof (translation)
+Introduce `n hn f hfm hfn hf0`. Establish `hf0' : f ≠ 0` using `hfm.ne_zero`. Set `L` to `(UniqueFactorizationMonoid.normalizedFactors f).toList`. Set `s` to `L.length`. Set `P : Fin s → K[X]` to `fun c => L.get c`.
+
+Establish `hmem : ∀ c, P c ∈ UniqueFactorizationMonoid.normalizedFactors f` using `fun c => Multiset.mem_toList.mp (List.get_mem L c)`. Establish `hirr : ∀ c, Irreducible (P c)` using `fun c => UniqueFactorizationMonoid.irreducible_of_normalized_factor _ (hmem c)`. Establish `hmon : ∀ c, (P c).Monic` using `fun c => by`. Rewrite using `[← UniqueFactorizationMonoid.normalize_normalized_factor _ (hmem c)]`. Conclude with `Polynomial.monic_normalize (hirr c).ne_zero`.
+
+Establish `hX : ∀ c, P c ≠ X` using `fun c h => hf0 (Polynomial.X_dvd_iff.mp (h ▸ UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors (hmem c)))`. Establish `hprod : ∏ c, P c = f`. Rewrite using `[show ∏ c, P c = L.prod by rw [← List.prod_ofFn]; exact congrArg List.prod (List.ofFn_get L)]`. Rewrite using `[Multiset.prod_toList, UniqueFactorizationMonoid.prod_normalizedFactors_eq hf0', hfm.normalize_eq_self]`. Set `d : Fin s → ℕ` to `fun c => (P c).natDegree`.
+
+Establish `hd : ∀ c, 1 ≤ d c` using `fun c => Polynomial.natDegree_pos_iff_degree_pos.mpr (Polynomial.degree_pos_of_irreducible (hirr c))`. Establish `hsum : ∑ c, d c = n`. Rewrite using `[← Polynomial.natDegree_prod_of_monic _ _ (fun c _ => hmon c), hprod, hfn]`. Set `E : (Σ c : Fin s, Fin (d c)) ≃ Fin n` to `finSigmaFinEquiv.trans (finCongr hsum)`. Set `b : Fin n → Fin s` to `fun i => (E.symm i).1`.
+
+Set `e : ∀ c, Fin (d c) ≃ {i // b i = c}` to `fun c => ((E.symm.subtypeEquiv (p := fun i => b i = c) (q := fun x => x.1 = c) (fun _ => Iff.rfl)).trans (Equiv.sigmaSubtype c)).symm`. Establish `hb : Function.Surjective b` using `fun c => ⟨E ⟨c, ⟨0, hd c⟩⟩, by simp [b]⟩`. Use `choose σ hσ using fun c => (hC (d c) (hd c)).1 (P c) (hmon c) (hirr c) (hX c) rfl`. Set `lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)` to `fun c => transp (e c) (σ c)`. Establish `hlam : ∀ c, Simple (lam c) ∧ IsCuspidal K (lam c)` using `fun c => ⟨transp_simple _ _ (hσ c).1, transp_cusp _ _ (hσ c).2.1⟩`.
+
+Use `haveI : Nontrivial (hcSpace K b lam) := hcSpace_nontrivial b lam (fun c => nontrivial_of_simple _ (hlam c).1)`. Take `⟨τ, hτ, hcon⟩` from `exists_simple_constituent (hcRep K b lam)`. Use `⟨τ, hτ, s, b, lam, hb, hlam, hcon, ?_⟩` and prove the remaining obligations. Rewrite using `[← hprod]`. Conclude with `Finset.prod_congr rfl fun c _ => by`.
+
+Rewrite using `[show labO O (lam c) = O.lab (d c) (σ c) from labO_transp O (e c) (hσ c).1, (hσ c).2.2]`.
+-/
 theorem labelSurjO (O : LabelMap K C) (hC : CuspParamO O) : LabelSurjO O := by
   classical
   intro n hn f hfm hfn hf0
@@ -147,6 +207,11 @@ theorem labelSurjO (O : LabelMap K C) (hC : CuspParamO O) : LabelSurjO O := by
   exact Finset.prod_congr rfl fun c _ => by
     rw [show labO O (lam c) = O.lab (d c) (σ c) from labO_transp O (e c) (hσ c).1, (hσ c).2.2]
 
+/- English proof (translation)
+Introduce `c c' h`. Assume the negation of the conclusion as `hne`. Establish `hd : P c * P c ∣ ∏ x, P x`. Establish `h1` using `Finset.prod_dvd_prod_of_subset {c, c'} Finset.univ P (Finset.subset_univ _)`. Rewrite `h1` using `[Finset.prod_pair hne, ← h]`.
+
+Conclude with `h1`. Conclude with `(hi c).not_isUnit (hf _ hd)`.
+-/
 theorem injective_of_squarefree_prod {s : ℕ} {P : Fin s → K[X]} (hi : ∀ c, Irreducible (P c))
     (hf : Squarefree (∏ c, P c)) : Function.Injective P := by
   intro c c' h
@@ -157,6 +222,9 @@ theorem injective_of_squarefree_prod {s : ℕ} {P : Fin s → K[X]} (hi : ∀ c,
     exact h1
   exact (hi c).not_isUnit (hf _ hd)
 
+/- English proof (translation)
+Establish `hd : P c ∣ ∏ x, P' x` using `h ▸ Finset.dvd_prod_of_mem P (Finset.mem_univ c)`. Take `⟨c', -, hc'⟩` from `(hi c).prime.exists_mem_finset_dvd hd`. Conclude with `⟨c', Polynomial.eq_of_monic_of_associated (hm' c') (hm c) ((hi c).associated_of_dvd (hi' c') hc').symm⟩`.
+-/
 theorem exists_factor_eq {s s' : ℕ} {P : Fin s → K[X]} {P' : Fin s' → K[X]}
     (hi : ∀ c, Irreducible (P c)) (hm : ∀ c, (P c).Monic) (hi' : ∀ c, Irreducible (P' c))
     (hm' : ∀ c, (P' c).Monic) (h : ∏ c, P c = ∏ c, P' c) (c : Fin s) : ∃ c', P' c' = P c := by
@@ -165,6 +233,11 @@ theorem exists_factor_eq {s s' : ℕ} {P : Fin s → K[X]} {P' : Fin s' → K[X]
   exact ⟨c', Polynomial.eq_of_monic_of_associated (hm' c') (hm c)
     ((hi c).associated_of_dvd (hi' c') hc').symm⟩
 
+/- English proof (translation)
+Use `choose m hmP using exists_factor_eq hi hm hi' hm' h`. Use `choose m' hmP' using exists_factor_eq hi' hm' hi hm h.symm`. Establish `i1 : Function.Injective m` using `fun x y hxy => hj (by rw [← hmP x, ← hmP y, hxy])`. Establish `i2 : Function.Injective m'` using `fun x y hxy => hj' (by rw [← hmP' x, ← hmP' y, hxy])`. Establish `hcard : s = s'` using `le_antisymm (by simpa using Fintype.card_le_of_injective m i1) (by simpa using Fintype.card_le_of_injective m' i2)`.
+
+Establish `bij : Function.Bijective m` using `(Fintype.bijective_iff_injective_and_card m).2 ⟨i1, by simp [hcard]⟩`. Conclude with `⟨Equiv.ofBijective m bij, hmP⟩`.
+-/
 theorem exists_equiv_factors {s s' : ℕ} {P : Fin s → K[X]} {P' : Fin s' → K[X]}
     (hi : ∀ c, Irreducible (P c)) (hm : ∀ c, (P c).Monic) (hi' : ∀ c, Irreducible (P' c))
     (hm' : ∀ c, (P' c).Monic) (hj : Function.Injective P) (hj' : Function.Injective P')
@@ -179,12 +252,24 @@ theorem exists_equiv_factors {s s' : ℕ} {P : Fin s → K[X]} {P' : Fin s' → 
     (Fintype.bijective_iff_injective_and_card m).2 ⟨i1, by simp [hcard]⟩
   exact ⟨Equiv.ofBijective m bij, hmP⟩
 
+/- English proof (translation)
+The claim follows from `let h := O.lab_spec _ _ Fintype.card_pos (transp_simple (Fintype.equivFin α) lam hl) (transp_cusp (Fintype.equivFin α) lam hc) ⟨h.1, h.2.1⟩`.
+-/
 theorem labO_spec (O : LabelMap K C) [Nonempty α] {lam : FDRep ℂ (GL α K)} (hl : Simple lam)
     (hc : IsCuspidal K lam) : (labO O lam).Monic ∧ Irreducible (labO O lam) :=
   let h := O.lab_spec _ _ Fintype.card_pos (transp_simple (Fintype.equivFin α) lam hl)
     (transp_cusp (Fintype.equivFin α) lam hc)
   ⟨h.1, h.2.1⟩
 
+/- English proof (translation)
+Take `⟨hI, hD, hU⟩` from `hC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `n s b lam hb hl hinj`. Use `⟨hI n s b lam hb hl fun c c' h => hinj (labO_eq_of_cuspIso O (hl c).1 (hl c').1 h), ?_⟩` and prove the remaining obligations. Use `hD n s b lam hb fun c => ?_` and prove the remaining obligations.
+
+Use `haveI := fiber_nonempty hb c`. Conclude with `(hP (Fintype.card {i // b i = c}) Fintype.card_pos).2 (transp (Fintype.equivFin _) (lam c)) (transp_simple _ _ (hl c).1) (transp_cusp _ _ (hl c).2)`. Introduce and unpack `n f τ τ' hf hτ hτ' ⟨s, b, lam, hb, hl, hc, rfl⟩ ⟨s', b', mu, hb', hl', hc', hf'⟩`. Establish `sp : ∀ c, (labO O (lam c)).Monic ∧ Irreducible (labO O (lam c))` using `fun c => haveI := fiber_nonempty hb c labO_spec O (hl c).1 (hl c).2`. Establish `sp' : ∀ c, (labO O (mu c)).Monic ∧ Irreducible (labO O (mu c))` using `fun c => haveI := fiber_nonempty hb' c labO_spec O (hl' c).1 (hl' c).2`.
+
+Establish `hj : Function.Injective fun c => labO O (lam c)` using `injective_of_squarefree_prod (fun c => (sp c).2) hf`. Establish `hj' : Function.Injective fun c => labO O (mu c)` using `injective_of_squarefree_prod (fun c => (sp' c).2) (hf' ▸ hf)`. Take `⟨π, hπ⟩` from `exists_equiv_factors (fun c => (sp c).2) (fun c => (sp c).1) (fun c => (sp' c).2) (fun c => (sp' c).1) hj hj' hf'`. Use `hU n s s' b b' lam mu τ τ' hτ hτ' ⟨hb, hl, hc⟩ ⟨hb', hl', hc'⟩ (fun c c' h => hj (labO_eq_of_cuspIso O (hl c).1 (hl c').1 h)) ⟨π, fun c => ?_⟩` and prove the remaining obligations. Use `haveI := fiber_nonempty hb c`.
+
+Use `haveI := fiber_nonempty hb' (π c)`. Conclude with `cuspIso_of_labO_eq O (hl c).1 (hl c).2 (hl' _).1 (hl' _).2 (hπ c).symm`.
+-/
 theorem sqfreeO (hC : SqfreeCore K) (O : LabelMap K C) (hP : CuspParamO O) : SqfreeO O := by
   obtain ⟨hI, hD, hU⟩ := hC
   refine ⟨?_, ?_⟩
@@ -213,6 +298,9 @@ theorem sqfreeO (hC : SqfreeCore K) (O : LabelMap K C) (hP : CuspParamO O) : Sqf
     haveI := fiber_nonempty hb' (π c)
     exact cuspIso_of_labO_eq O (hl c).1 (hl c).2 (hl' _).1 (hl' _).2 (hπ c).symm
 
+/- English proof (translation)
+Introduce `K _ _ _ C O hE hU hS`. Conclude with `⟨hcLabelO hE hU O, fun hP => ⟨labelSurjO O hP, sqfreeO hS O hP⟩⟩`.
+-/
 theorem main : ReciprocityTheory.Ty.Fin.St.MirrorsOf := by
   intro K _ _ _ C O hE hU hS
   exact ⟨hcLabelO hE hU O, fun hP => ⟨labelSurjO O hP, sqfreeO hS O hP⟩⟩

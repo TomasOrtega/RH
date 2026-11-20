@@ -28,12 +28,24 @@ variable {D : D7} {m n : ℕ}
 def rowMat (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) : Matrix (Fin n) (Fin n) ℂ :=
   if (i : ℕ) < p τ then ((g τ)⁻¹).val else ((g τ).val)ᵀ
 
+/- English proof (translation)
+Rewrite using `[fockSubst, aeval_X, rowMat]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem fockSubst_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (v : FVar D m n) :
     fockSubst p g (X v) = ∑ b, C (rowMat p g v.1 v.2.1 v.2.2 b) * X (v.1, v.2.1, b) := by
   rw [fockSubst, aeval_X, rowMat]
   split_ifs <;> simp
 
 open Classical in
+/- English proof (translation)
+Rewrite using `[fockSubst_X]`. Simplify using `only [map_sum, Derivation.leibniz, pderiv_C, smul_zero, add_zero, pderiv_X, smul_eq_mul]`. Use `split_ifs with h`. Take `⟨h1, h2⟩` from `h`. Substitute `h1` using the available equality.
+
+Substitute `h2` using the available equality. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[Pi.single_apply]`. Introduce `c _ hc`. Simplify using `[Pi.single_apply, Prod.ext_iff, hc]`.
+
+Simplify using the standard rewrite rules. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `: (u.1, u.2.1, c) ≠ (τ, i, b)`. Introduce `e`. Simplify using `[Prod.ext_iff] at e`.
+
+Conclude with `h ⟨e.1, e.2.1⟩`. Simplify using `[Pi.single_apply, this]`.
+-/
 theorem pderiv_fockSubst_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (b : Fin n)
     (u : FVar D m n) :
     pderiv (τ, i, b) (fockSubst p g (X u)) = if u.1 = τ ∧ u.2.1 = i then C (rowMat p g τ i u.2.2 b) else 0 := by
@@ -51,6 +63,17 @@ theorem pderiv_fockSubst_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.wha
       intro e; simp [Prod.ext_iff] at e; exact h ⟨e.1, e.2.1⟩
     simp [Pi.single_apply, this]
 
+/- English proof (translation)
+Simplify using `only [pderiv_fockSubst_X]`. Rewrite using `[pderiv_X]`. Distinguish the cases in `h : u.1 = τ ∧ u.2.1 = i`. Simplify using `only [if_pos h]`. Establish `e : (∑ b, C' b c • C (rowMat p g τ i u.2.2 b) : PolF D m n) = C ((rowMat p g τ i * C') u.2.2 c)`.
+
+Rewrite using `[Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, ← map_mul, mul_comm]`. Rewrite using `[e, hC]`. Take `⟨u1, u2, u3⟩` from `u`.
+
+Take `⟨h1, h2⟩` from `h`. Simplify using `only at h1 h2`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Distinguish the cases in `h3 : u3 = c`.
+
+Substitute `h3` using the available equality. Simplify using the standard rewrite rules. Establish `: ((u1, u2, u3) : FVar D m n) ≠ (u1, u2, c)` using `by simp [h3]`. Simplify using `[Pi.single_apply, this, Matrix.one_apply, h3]`. Simplify using `only [if_neg h, smul_zero, Finset.sum_const_zero]`.
+
+Establish `: u ≠ (τ, i, c)`. Introduce and unpack `rfl`. Conclude with `h ⟨rfl, rfl⟩`. Simplify using `[Pi.single_apply, this]`.
+-/
 theorem chain_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (c : Fin n)
     (C' : Matrix (Fin n) (Fin n) ℂ) (hC : rowMat p g τ i * C' = 1) (u : FVar D m n) :
     fockSubst p g (pderiv (τ, i, c) (X u)) = ∑ b, C' b c • pderiv (τ, i, b) (fockSubst p g (X u)) := by
@@ -77,6 +100,11 @@ theorem chain_X (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (
       rintro rfl; exact h ⟨rfl, rfl⟩
     simp [Pi.single_apply, this]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [pderiv_C]`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, hP, hQ, smul_add, Finset.sum_add_distrib]`. Consider the case `mul_X P u ih`.
+
+Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul, smul_add, Finset.sum_add_distrib]`. Rewrite using `[ih, chain_X p g τ i c C' hC u, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [mul_smul_comm]`.
+-/
 theorem chain (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (c : Fin n)
     (C' : Matrix (Fin n) (Fin n) ℂ) (hC : rowMat p g τ i * C' = 1) (P : PolF D m n) :
     fockSubst p g (pderiv (τ, i, c) P) = ∑ b, C' b c • pderiv (τ, i, b) (fockSubst p g P) := by
@@ -90,6 +118,13 @@ theorem chain (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i 
     simp only [mul_smul_comm]
 
 open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators in
+/- English proof (translation)
+Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Distinguish the cases in `h : (i : ℕ) < p τ`. Simplify using `only [raiO, sgn, h, decide_true, if_true, one_smul, Module.End.mul_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, map_mul, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[fockSubst_X, Finset.sum_mul]`. Simplify using `only`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[rowMat, h, smul_eq_C_mul, mul_assoc]`. Establish `hC : rowMat p g τ i * (((g τ)⁻¹).val)ᵀ = 1`. Rewrite using `[rowMat, if_neg h, ← Matrix.transpose_mul]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [raiO, sgn, h, decide_false, if_true, one_smul, Module.End.mul_apply, AlgHom.toLinearMap_apply, LinearMap.neg_apply, map_neg, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, Derivation.coeFn_coe, Bool.false_eq_true, if_false]`. Rewrite using `[chain p g τ i c _ hC, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[smul_neg]`.
+-/
 theorem rai_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i : Fin m) (c : Fin n) :
     (fockSubst p g).toLinearMap * raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) i c =
       ∑ b, ((g τ)⁻¹).val c b • (raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) i b *
@@ -113,6 +148,13 @@ theorem rai_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) 
     simp [smul_neg]
 
 open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators in
+/- English proof (translation)
+Use `LinearMap.ext fun P => ?_` and prove the remaining obligations. Distinguish the cases in `h : (l : ℕ) < p τ`. Establish `hC : rowMat p g τ l * (g τ).val = 1`. Rewrite using `[rowMat, if_pos h]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [lowO, sgn, h, decide_true, if_true, one_smul, Module.End.mul_apply, AlgHom.toLinearMap_apply, LinearMap.sum_apply, LinearMap.smul_apply, Derivation.coeFn_coe]`. Rewrite using `[chain p g τ l c _ hC]`. Simplify using `only [lowO, sgn, h, decide_false, if_true, one_smul, Module.End.mul_apply, AlgHom.toLinearMap_apply, LinearMap.mulLeft_apply, map_mul, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply, Bool.false_eq_true, if_false]`. Rewrite using `[fockSubst_X, Finset.sum_mul]`. Simplify using `only`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[rowMat, h, smul_eq_C_mul, mul_assoc]`.
+-/
 theorem low_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (l : Fin m) (c : Fin n) :
     (fockSubst p g).toLinearMap * lowO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) l c =
       ∑ b, (g τ).val b c • (lowO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) l b *
@@ -134,6 +176,21 @@ theorem low_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) 
     simp [rowMat, h, smul_eq_C_mul, mul_assoc]
 
 open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators in
+/- English proof (translation)
+Use `set σ := (fockSubst p g).toLinearMap`. Use `set R := raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) i`. Use `set L := lowO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) l`. Establish `hR : ∀ c, σ * R c = ∑ b, ((g τ)⁻¹).val c b • (R b * σ)` using `rai_comm p g τ i`. Establish `hL : ∀ c, σ * L c = ∑ b, (g τ).val b c • (L b * σ)` using `low_comm p g τ l`.
+
+Establish `hGG : ∀ c b, ∑ j, (g τ).val c j * ((g τ)⁻¹).val j b = (1 : Matrix (Fin n) (Fin n) ℂ) c b`. Introduce `c b`. Rewrite using `[← Matrix.mul_apply]`. Simplify using the standard rewrite rules. Unfold `Commute SemiconjBy`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, hR, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_mul_assoc, mul_assoc, hL, Finset.mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_smul, ← mul_assoc]`. Use `_ = ∑ b, ∑ c, (∑ j, (g τ).val c j * ((g τ)⁻¹).val j b) • (R b * L c * σ) := by`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Use `_ = (∑ j, R j * L j) * σ := by`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [hGG, Matrix.one_apply, ite_smul, one_smul, zero_smul]`.
+
+Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem pair_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau) (i l : Fin m) :
     Commute (fockSubst p g).toLinearMap
       (∑ j, raiO τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) i j *
@@ -174,6 +231,11 @@ theorem pair_comm (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau)
 
 open GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators in
 
+/- English proof (translation)
+Establish `hc : Commute (fockSubst p g).toLinearMap (fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) Y)`. Unfold `fockT`. Use `Commute.sum_right _ _ _ fun i _ => Commute.sum_right _ _ _ fun l _ => Commute.smul_right ?_ _` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Use `Commute.add_right (pair_comm p g τ i l) (Commute.sum_right _ _ _ fun j _ => ?_)` and prove the remaining obligations.
+
+Use `split_ifs`. Conclude with `Commute.smul_right (Commute.one_right _) _`. Conclude with `Commute.zero_right _`. Use `LinearMap.congr_fun hc.eq P` as an intermediate fact. Simplify `this` using `only [Module.End.mul_apply, AlgHom.toLinearMap_apply]`.
+-/
 theorem fockSubst_fockT (D : D7) (m n : ℕ) (p : D.what₂.Tau → ℕ) (g : GLR D n) (τ : D.what₂.Tau)
     (Y : Matrix (Fin m) (Fin m) ℂ) (P : PolF D m n) :
     fockSubst p g (fockT τ (fun _ : Fin n => true) (fun j : Fin m => decide ((j : ℕ) < p τ)) Y P) =

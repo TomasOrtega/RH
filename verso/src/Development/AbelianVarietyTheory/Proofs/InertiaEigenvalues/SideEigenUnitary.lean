@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.EigPlace
 
+/- English proof (translation)
+Substitute `hQ` using the available equality. Establish `hi : i ∈ D.nd.locs (D.nd.j i) (D.nd.w i)` using `(D.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.EigFinite.eigSet_finite hstd D _ _ _ _ _ (badPl D i) ?_ ?_` and prove the remaining obligations. Conclude with `hypOutside_transport (D.nd.mu_w i) rfl (D.nd.j_range i).1 (D.nd.j_range i).2 _ _ _ (HT.J_hyp i)`.
+
+Introduce `v k s hg hc`. Rewrite `hg` using `[T.Q_eq _ _ i hi]`. Conclude with `genOutBad_of T _ _ i hi v k s hg hc`. Rewrite using `[D.nd.w_l i]`. Conclude with `GlobalTheory.FitHecke.mt_transport M (fun μ j m => ptSys D i x ∈ EigSet m (D.nd.l i) (D.nd.Q i)) (D.nd.mu_w i) rfl (D.nd.j_range i).1 (D.nd.j_range i).2 _ _ (GlobalTheory.PointEigen.ptSys_mem_eigSet D M av i x)`.
+-/
 theorem finite_and_mem (hstd : HeckeStdPlain) {D : D7} {M : MtFam D} (HT : HeckeTied D M) (av : AVTied D M)
     (T : NormalizedLocalCompatibility D M) (i : D.nd.Loc) (x : D.nd.X i) (Q : Finset (PlE D.host)) (hQ : D.nd.Q i = Q) :
     (EigSet (M (D.what₂.muTw (D.nd.w i)) (D.nd.j i) (D.nd.j_range i).1 (D.nd.j_range i).2)
@@ -33,6 +38,9 @@ theorem finite_and_mem (hstd : HeckeStdPlain) {D : D7} {M : MtFam D} (HT : Hecke
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hstd D cf jE A low Pq S hL eig θ Bs M C tp hCh hMt hstar hexp hsplit hcheb big L hB i x`. Take `⟨Sp, ⟨Au⟩, -⟩` from `hB`. Take `⟨Hk, -⟩` from `GlobalTheory.FitHecke.heckeOpen_withLoc D cf jE A low Pq S hL eig θ Bs M C tp hCh hMt hstar hexp hsplit hcheb big L Sp Au`. Establish `hQ : L.X.nd.Q i = C.Q (L.X.nd.w i)` using `(Sp.Q_eq _ _ i ((L.X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩)).trans (Sp.Qc_eq _ _)`. Conclude with `finite_and_mem hstd (D := withLoc L) Hk.hecke Hk.av Hk.cover i x (C.Q (L.X.nd.w i)) hQ`.
+-/
 theorem built_finite_and_mem : HeckeStdPlain → ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C), ChoiceSide D cf M Bs.exp C tp → MtInput D M tp.tup C.Q → (∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) → (∀ j g, ∃ z : ℤ, eExp D j g = z) → (∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) → GlobalTheory.RowTie.ChebSplit D.nd →
     ∀ (big : D.what₂.places.Pl → Finset ℂ) (L : LocAll (lay0 D)), Built A M C tp.tup big L →
     ∀ (i : L.X.nd.Loc) (x : L.X.nd.X i),

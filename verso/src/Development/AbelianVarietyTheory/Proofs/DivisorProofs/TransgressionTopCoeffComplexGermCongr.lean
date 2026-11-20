@@ -9,11 +9,17 @@ open scoped ContDiff Matrix
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Conclude with `curv_congr h _ _`.
+-/
 theorem curvAt_germ_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {G G' : V n → Matrix r r ℂ} {v : V n}
     (h : G =ᶠ[𝓝 v] G') : curvAt G v = curvAt G' v := by
   funext a b
   exact curv_congr h _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Establish `hc : (fun x => (ρ x : ℂ)) =ᶠ[𝓝 v] fun x => (ρ' x : ℂ)` using `hρ.mono fun x hx => by simp only [hx]`. Simplify using `only [cutForm]`. Rewrite using `[dbar_congr hc, conn_congr h₀, conn_congr h₁]`.
+-/
 theorem cutForm_germ_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {ρ ρ' : V n → ℝ}
     {G₀ G₁ G₀' G₁' : V n → Matrix r r ℂ} {v : V n} (hρ : ρ =ᶠ[𝓝 v] ρ') (h₀ : G₀ =ᶠ[𝓝 v] G₀')
     (h₁ : G₁ =ᶠ[𝓝 v] G₁') : cutForm ρ G₀ G₁ v = cutForm ρ' G₀' G₁' v := by
@@ -22,6 +28,9 @@ theorem cutForm_germ_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {ρ 
   simp only [cutForm]
   rw [dbar_congr hc, conn_congr h₀, conn_congr h₁]
 
+/- English proof (translation)
+Simplify using `only [corrC]`. Rewrite using `[curvAt_germ_congr h₀, curvAt_germ_congr h₁, cutForm_germ_congr hρ h₀ h₁]`.
+-/
 theorem corrC_germ_congr {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] {ρ ρ' : V n → ℝ}
     {G₀ G₁ G₀' G₁' : V n → Matrix r r ℂ} {v : V n} (hρ : ρ =ᶠ[𝓝 v] ρ') (h₀ : G₀ =ᶠ[𝓝 v] G₀')
     (h₁ : G₁ =ᶠ[𝓝 v] G₁') : corrC ρ G₀ G₁ v = corrC ρ' G₀' G₁' v := by

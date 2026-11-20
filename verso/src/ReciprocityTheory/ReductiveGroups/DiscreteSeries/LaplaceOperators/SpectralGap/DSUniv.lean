@@ -18,6 +18,9 @@ variable {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H�
   [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂] {ε : Fin n → Bool}
   {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
 
+/- English proof (translation)
+Introduce `g hg`. Establish `h1 : gᴴ * g = 1` using `Matrix.mem_unitaryGroup_iff'.1 hg.1`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+-/
 theorem dsu_kset_subset (ε : Fin n → Bool) : Formalism.REAL.Kset ε ⊆ Formalism.MainNotions.S.UJset ε := by
   intro g hg
   have h1 : gᴴ * g = 1 := Matrix.mem_unitaryGroup_iff'.1 hg.1
@@ -26,6 +29,9 @@ theorem dsu_kset_subset (ε : Fin n → Bool) : Formalism.REAL.Kset ε ⊆ Forma
 
 abbrev dsuL (U : H₁ ≃ₗᵢ[ℂ] H₂) : H₁ →ₗ[ℂ] H₂ := (U.toLinearEquiv : H₁ →ₗ[ℂ] H₂)
 
+/- English proof (translation)
+Introduce `g hg y`. Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`.
+-/
 theorem dsu_symm_intertwines (U : H₁ ≃ₗᵢ[ℂ] H₂)
     (hU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)) :
     ∀ g ∈ Formalism.REAL.Kset ε, ∀ y, U.symm (σ₂ g y) = σ₁ g (U.symm y) := by
@@ -33,18 +39,37 @@ theorem dsu_symm_intertwines (U : H₁ ≃ₗᵢ[ℂ] H₂)
   apply U.injective
   rw [hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ₁ g x, hS g hg x hx, hU g hg x⟩`.
+-/
 theorem dsu_kStable_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
     (hU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)) {S : Submodule ℂ H₁}
     (hS : Formalism.MainNotions.S.IsKStableOn ε σ₁ S) : Formalism.MainNotions.S.IsKStableOn ε σ₂ (S.map (dsuL U)) := by
   rintro g hg _ ⟨x, hx, rfl⟩
   exact ⟨σ₁ g x, hS g hg x hx, hU g hg x⟩
 
+/- English proof (translation)
+Introduce `θ hθ`. Rewrite using `[← hU _ hθ, hv θ hθ, map_smul]`.
+-/
 theorem dsu_isWtOn_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
     (hU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)) {μ : Fin n → ℝ} {v : H₁}
     (hv : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ₁ μ v) : Formalism.MainNotions.S.IsWtOn (Formalism.REAL.Kset ε) σ₂ μ (U v) := by
   intro θ hθ
   rw [← hU _ hθ, hv θ hθ, map_smul]
 
+/- English proof (translation)
+Establish `hU'` using `dsu_symm_intertwines U hU`. Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `⟨inferInstance, dsu_kStable_map U hU hst, ?_, ⟨U v, ⟨v, hvS, rfl⟩, ?_, dsu_isWtOn_map U hU hvw⟩, ?_⟩` and prove the remaining obligations. Introduce `S' hle hst'`. Establish `hst''` using `dsu_kStable_map U.symm hU' hst'`.
+
+Establish `hle' : S'.map (dsuL U.symm) ≤ S`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, hx, rfl⟩` from `hle hy`. Use `show U.symm (U x) ∈ S`. Rewrite using `[LinearIsometryEquiv.symm_apply_apply]`.
+
+Conclude with `hx`. Establish `hback : (S'.map (dsuL U.symm)).map (dsuL U) = S'`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨z, hz, rfl⟩, rfl⟩ show U (U.symm z) ∈ S'`.
+
+Rewrite using `[LinearIsometryEquiv.apply_symm_apply]`. Conclude with `hz`. Introduce `hy`. Conclude with `⟨U.symm y, ⟨y, hy, rfl⟩, U.apply_symm_apply y⟩`. Break down `hirr _ hle' hst'' with h | h` into its components or cases.
+
+Use `left`. Rewrite using `[← hback, h, Submodule.map_bot]`. Use `right`. Rewrite using `[← hback, h]`. Introduce `h`.
+
+Conclude with `hv0 (U.injective (h.trans (map_zero U).symm))`. Introduce and unpack `μ _ ⟨x, hx, rfl⟩ hx0 hw`. Use `hdom μ x hx (fun h => hx0 (by simp [h])) ?_` and prove the remaining obligations. Use `dsu_isWtOn_map U.symm hU' hw` as an intermediate fact. Simplify using `using this`.
+-/
 theorem dsu_isKTypeOf_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
     (hU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)) {Λ : Fin n → ℝ} {S : Submodule ℂ H₁}
     (hS : Formalism.MainNotions.S.IsKTypeOf ε σ₁ Λ S) : Formalism.MainNotions.S.IsKTypeOf ε σ₂ Λ (S.map (dsuL U)) := by
@@ -80,6 +105,9 @@ theorem dsu_isKTypeOf_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
     have := dsu_isWtOn_map U.symm hU' hw
     simpa using this
 
+/- English proof (translation)
+Establish `hle : Formalism.MainNotions.S.lowKSub ε lam σ₁ ≤ (Formalism.MainNotions.S.lowKSub ε lam σ₂).comap (dsuL U)`. Use `sSup_le fun S hS => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.map_le_iff_le_comap]`. Conclude with `le_sSup (dsu_isKTypeOf_map U hU hS)`. Conclude with `hle hx`.
+-/
 theorem dsu_lowKSub_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
     (hU : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)) (lam : Fin n → ℝ) {x : H₁}
     (hx : x ∈ Formalism.MainNotions.S.lowKSub ε lam σ₁) : U x ∈ Formalism.MainNotions.S.lowKSub ε lam σ₂ := by
@@ -91,6 +119,11 @@ theorem dsu_lowKSub_map (U : H₁ ≃ₗᵢ[ℂ] H₂)
 
 end Transport
 
+/- English proof (translation)
+Introduce `ε lam hlam h hgap H₁ _ _ _ σ₁ H₂ _ _ _ σ₂ hDS₁ hDS₂ w₁ hw₁`. Establish `hh : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h`. Establish `h1 : 2 + max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)) ≤ hNeed ε` using `le_max_left _ _`. Establish `h2` using `le_max_right (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))`. Combine the linear relations using `[hgap.2.2]`.
+
+Take `⟨U, hU⟩` from `(isDS_props_of_gap n ε lam hlam h hgap.2.1 hh H₁ σ₁ hDS₁).2.2.2.2 H₂ σ₂ hDS₂`. Establish `hUK : ∀ g ∈ Formalism.REAL.Kset ε, ∀ x, U (σ₁ g x) = σ₂ g (U x)` using `fun g hg x => hU g (dsu_kset_subset ε hg) x`. Use `⟨U w₁, ⟨by rw [LinearIsometryEquiv.norm_map]; exact hw₁.1, dsu_lowKSub_map U hUK lam hw₁.2⟩, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[← hU g hg, LinearIsometryEquiv.inner_map_map]`.
+-/
 theorem dsUniv (n : ℕ) : DSUnivStatement n := by
   intro ε lam hlam h hgap H₁ _ _ _ σ₁ H₂ _ _ _ σ₂ hDS₁ hDS₂ w₁ hw₁
   have hh : (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1 < h := by

@@ -16,6 +16,9 @@ def FreeOpen : Prop := InCtx fun F E _ _ _ _ _ _σ M _J a _X0 _hT =>
   ∀ v : HeightOneSpectrum (𝓞 F),
     IsOpen {X : Fin a → Fin M → Fv F v ⊗[F] E | LinearIndependent (Fv F v ⊗[F] E) X}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, isClosed_HermR (R := R) σ a, continuous_gramR (R := R) σ J, fun X => gramR_mem (R := R) σ hσ J hJ X, hfree⟩`.
+-/
 theorem tensFacts_of_fib {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (a : ℕ) (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [T2Space R]
@@ -24,6 +27,11 @@ theorem tensFacts_of_fib {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteD
     TensFacts F E σ M J a R := ⟨inferInstance, inferInstance, inferInstance, isClosed_HermR (R := R) σ a,
   continuous_gramR (R := R) σ J, fun X => gramR_mem (R := R) σ hσ J hJ X, hfree⟩
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hT hdet`. Establish `hF` using `h F E σ hCM M J hJ h1 h2 a ha haM X0 hT hdet`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Establish `hσ : ∀ x, σ (σ x) = x`. Introduce `x`.
+
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2, hCM.2.2.2, star_star]`. Conclude with `⟨tensFacts_of_fib σ M J a (Ainf F) hσ hJ.1 hF.1, fun v => by haveI : LocallyCompactSpace (Fv F v) := locallyCompact_Fv (F := F) (v := v) haveI : SecondCountableTopology (Fv F v) := secondCountable_Fv (F := F) (v := v)`. Conclude with `tensFacts_of_fib σ M J a (Fv F v) hσ hJ.1 (hF.2 v)⟩`.
+-/
 theorem tensAll_of (h : FreeOpen) : TensAll := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a ha haM X0 hT hdet
   have hF := h F E σ hCM M J hJ h1 h2 a ha haM X0 hT hdet
@@ -39,10 +47,19 @@ theorem tensAll_of (h : FreeOpen) : TensAll := by
       haveI : SecondCountableTopology (Fv F v) := secondCountable_Fv (F := F) (v := v)
       exact tensFacts_of_fib σ M J a (Fv F v) hσ hJ.1 (hF.2 v)⟩
 
+/- English proof (translation)
+The claim follows from `fibInfEx_of DiscreteGroups.fibOfDens_holds (tensAll_of h1) h2`.
+-/
 theorem fibInfEx_of_core (h1 : FreeOpen) (h2 : DensInf) : FibInfEx := fibInfEx_of DiscreteGroups.fibOfDens_holds (tensAll_of h1) h2
 
+/- English proof (translation)
+The claim follows from `fibVEx_of DiscreteGroups.fibOfDens_holds (tensAll_of h1) h2`.
+-/
 theorem fibVEx_of_core (h1 : FreeOpen) (h2 : DensV) : FibVEx := fibVEx_of DiscreteGroups.fibOfDens_holds (tensAll_of h1) h2
 
+/- English proof (translation)
+The claim follows from `exOmT_of_open (fibInfEx_of_core h1 h2) (fibVEx_of_core h1 h3) h4 h5`.
+-/
 theorem exOmT_of_core (h1 : FreeOpen) (h2 : DensInf) (h3 : DensV) (h4 : SdUniq) (h5 : RestrProd) :
     ExOmT := exOmT_of_open (fibInfEx_of_core h1 h2) (fibVEx_of_core h1 h3) h4 h5
 

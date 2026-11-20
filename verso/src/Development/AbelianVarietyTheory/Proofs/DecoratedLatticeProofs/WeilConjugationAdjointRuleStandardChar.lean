@@ -22,20 +22,38 @@ open GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger GlobalTheory
 
 variable {D : D7} {S T : HSp D}
 
+/- English proof (translation)
+Use `cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f` as an intermediate fact. Simplify `this` using `[conjTarget]`.
+-/
 theorem conjTarget_cj (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjTarget om (g, negGA T h) (cj id f) = cj id (om (g, h) f) := by
   have := cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f
   simpa [conjTarget] using this
 
+/- English proof (translation)
+Use `cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f` as an intermediate fact. Simplify `this` using `[conjSource]`.
+-/
 theorem conjSource_cj (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjSource om (negGA S g, h) (cj id f) = cj id (om (g, h) f) := by
   have := cjEnd_cj (Equiv.refl (WO S T)) (om (g, h)) f
   simpa [conjSource] using this
 
+/- English proof (translation)
+The claim follows from `cjEnd_cj (daggerEquiv S T) (om (g, h)) f`.
+-/
 theorem conjAdjoint_cj (om : Rep S T) (g : GA D S) (h : GA D T) (f : WO S T → ℂ) :
     conjAdjoint om (h, g) (cj (dagger T S) f) = cj (dagger T S) (om (g, h) f) :=
   cjEnd_cj (daggerEquiv S T) (om (g, h)) f
 
+/- English proof (translation)
+Introduce `D ψ hψ S T`. Take `⟨hθ, hH⟩` from `GlobalTheory.T.thetaHeisenberg_conjugation_negHermitianSpace D ψ hψ S T`. Take `⟨d1, d2, d3, d4⟩` from `GlobalTheory.T.hermitianAdjoint_symplectic_action_theta_heisenberg D ψ hψ S T`. Use `⟨hθ, hH, fun χS χT om H => ?_, fun χS χT om H => ?_, d1, d2, d3, d4, fun χS χT om H => ?_⟩` and prove the remaining obligations. Establish `H1` using `(GlobalTheory.T.isWeilDatum_conj_negHermitianSpaces D ψ S T χS χT om H).1`.
+
+Use `⟨H1, fun om' H' g h f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← conjTarget_cj]`. Conclude with `GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ S (negSp T) _ _ om' _ H' H1 _ _ ((hθ f).1.2 hf)`. Establish `H1` using `(GlobalTheory.T.isWeilDatum_conj_negHermitianSpaces D ψ S T χS χT om H).2`. Use `⟨H1, fun om' H' g h f hf => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← conjSource_cj]`. Conclude with `GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ (negSp S) T _ _ om' _ H' H1 _ _ ((hθ f).2.2 hf)`. Establish `H1` using `GlobalTheory.T.conj_weil_datum_via_adjoint_exchanged_pair D ψ S T χS χT om H`. Use `⟨H1, fun om' H' g h f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← conjAdjoint_cj]`.
+
+Conclude with `GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ T S _ _ om' _ H' H1 _ _ ((d3 f).2 hf)`.
+-/
 theorem conjAdjoint_holds : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ S T : HSp D, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.ConjAdjoint ψ S T := by
   intro D ψ hψ S T

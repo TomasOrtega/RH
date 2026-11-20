@@ -3,6 +3,15 @@ import GroundTheory.GlobalFields.TateThesis.AdelePoissonUniform
 
 open NumberField IsDedekindDomain
 
+/- English proof (translation)
+Introduce `E _ _ C T hT`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_mul_mem_integralFiniteAdeles_of_isCompact (K := E) hT`. Establish `hdE : algebraMap (𝓞 E) E d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mpr hd0`. Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le E ℂ ((∑ w : InfinitePlace E, w (algebraMap (𝓞 E) E d)) * C)`. Use `Set.Finite.of_finite_image (f := fun x => algebraMap (𝓞 E) E d * x) (hfin.subset ?_) (mul_right_injective₀ hdE).injOn` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, ⟨hx, hxT⟩, rfl⟩`. Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `h` using `hd _ hxT`. Rewrite `h` using `[← map_mul]`. Take `⟨z, hz⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 E) E (algebraMap (𝓞 E) E d * x) fun v => by`.
+
+Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v]`. Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.1 h v`. Use `beta_reduce`. Rewrite using `[← hz]`. Conclude with `RingOfIntegers.isIntegral_coe _`.
+
+Use `beta_reduce`. Rewrite using `[← InfinitePlace.apply, map_mul]`. Conclude with `mul_le_mul (Finset.single_le_sum (f := fun w : InfinitePlace E => w (algebraMap (𝓞 E) E d)) (fun w _ => apply_nonneg w _) (Finset.mem_univ _)) (hx _) (apply_nonneg _ _) (Finset.sum_nonneg fun w _ => apply_nonneg w _)`.
+-/
 theorem UpperTheory.V.Lit.Dr.finField : UpperTheory.V.Lit.Dr.FinField := by
   intro E _ _ C T hT
   obtain ⟨d, hd0, hd⟩ := GroundTheory.Global.exists_mul_mem_integralFiniteAdeles_of_isCompact (K := E) hT

@@ -13,6 +13,13 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.LvCover
 
+/- English proof (translation)
+Introduce `E _ _ _ H D Xo Z l₁ c₁ h₁ l₂ c₂ h₂`. Use `haveI := (coeffTop c₁ c₂).fin`. Choose the witnesses or unpack the hypotheses as in `⟨r₁, hr₁⟩ : ∃ r, GoodMap (le_coeffF₁ c₁ c₂) (Z (top l₁ l₂) (coeffTop c₁ c₂) h₁) (Z l₁ c₁ h₁) r := by`. Distinguish the cases in `hD : D.p + D.q = 0`. Conclude with `GlobalTheory.T.exists_good_map_level_cover_weight_zero E H D hD _ _ _ _ _ _ _ _ _`.
+
+Conclude with `GlobalTheory.T.exists_good_map_level_divides E H D (by omega) _ _ (dvd_top l₁ l₂) _ _ _ _ _ _ _`. Choose the witnesses or unpack the hypotheses as in `⟨r₂, hr₂⟩ : ∃ r, GoodMap (le_coeffF₂ c₁ c₂) (Z (top l₁ l₂) (coeffTop c₁ c₂) h₁) (Z l₂ c₂ h₂) r := by`. Distinguish the cases in `hD : D.p + D.q = 0`. Conclude with `GlobalTheory.T.exists_good_map_level_cover_weight_zero E H D hD _ _ _ _ _ _ _ _ _`. Take `⟨a, ha⟩` from `GlobalTheory.T.exists_good_map_side_cover E H D l₁ l₂ (Xo _) (Xo (side l₁ l₂)) c₁ c₂ (Z _ _ h₁) (Z (side l₁ l₂) (coeffSide c₁ c₂) h₂)`.
+
+Take `⟨b, hb⟩` from `GlobalTheory.T.exists_good_map_level_divides E H D (by omega) _ _ (dvd_side l₁ l₂) (Xo _) (Xo l₂) (coeffSide c₁ c₂) c₂ (le_coeffF₂ c₁ c₂) (Z (side l₁ l₂) (coeffSide c₁ c₂) h₂) (Z l₂ c₂ h₂)`. Conclude with `⟨a ≫ b, ha.comp hb⟩`. Take `⟨⟨m₁⟩, s₁, e₁⟩` from `hr₁`. Take `⟨⟨m₂⟩, s₂, e₂⟩` from `hr₂`. Conclude with `⟨top l₁ l₂, coeffTop c₁ c₂, h₁, intMap (le_coeffF₁ c₁ c₂), intMap (le_coeffF₂ c₁ c₂), r₁, r₂, m₁, m₂, intMap_finite _, intMap_finite _, s₁, s₂, j_s_of_snd _ _ _ _ e₁, j_s_of_snd _ _ _ _ e₂⟩`.
+-/
 theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l)
     (Z : ∀ (l : Level H) (c : Coeff l), (∀ p : ℕ, p.Prime → l.GoodAt p) → GMod (Xo l) c)
     (l₁ : Level H) (c₁ : Coeff l₁) (h₁ : ∀ p : ℕ, p.Prime → l₁.GoodAt p)

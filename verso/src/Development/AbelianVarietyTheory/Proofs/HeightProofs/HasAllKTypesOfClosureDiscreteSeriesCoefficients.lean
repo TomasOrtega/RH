@@ -20,6 +20,11 @@ namespace GlobalTheory.ClosureSeries
 
 open Formalism.REAL GlobalTheory.SmoothGlob GlobalTheory.TypeSum
 
+/- English proof (translation)
+Introduce `hHC hCW n ε lam _ H _ _ σ hDS f hf hU happ`. Use `haveI : CompleteSpace H := hDS.1`. Establish `hstd : Std ε σ` using `std_of_isDS hHC hDS`. Use `GlobalTheory.T.discreteSeriesCoeffSeries_of_kTypeProjections hHC hCW n ε H σ hstd f hf hU ?_` and prove the remaining obligations. Introduce `e he hK`.
+
+Take `⟨hc, hu⟩` from `GlobalTheory.T.compactAverage_continuousOn_uniformModerateGrowth n ε f hf hU e he`. Take `⟨d, w, hw, hap⟩` from `GlobalTheory.T.kProjection_limit_discreteSeriesCoeffs n ε H σ hstd f hf happ e he hK`. Take `⟨L, hL, heq⟩` from `GlobalTheory.T.eq_matrixCoeff_of_locallyUniform_limit_kFinite hHC hCW n ε H σ hstd d w hw _ hc hu hap`. Conclude with `⟨d, L, w, hL, hw, heq⟩`.
+-/
 theorem hasTypeAll_of_closure : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
     ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),

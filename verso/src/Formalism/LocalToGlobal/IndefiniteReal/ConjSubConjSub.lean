@@ -41,9 +41,17 @@ def conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) : Submodule �
     rw [this]
     exact U.smul_mem _ hf
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_conjSub {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} {f : Formalism.AUTREP.GAf L n → ℂ} :
     f ∈ conjSub U ↔ (fun g => star (f g)) ∈ U := Iff.rfl
 
+/- English proof (translation)
+Use extensionality with `f`. Establish `hf : (fun g => star (star (f g))) = f`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Use `show (fun g => star (star (f g))) ∈ U ↔ f ∈ U`.
+
+Rewrite using `[hf]`.
+-/
 theorem conjSub_conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) : conjSub (conjSub U) = U := by
   ext f
   have hf : (fun g => star (star (f g))) = f := by
@@ -52,9 +60,19 @@ theorem conjSub_conjSub (U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) :
   show (fun g => star (star (f g))) ∈ U ↔ f ∈ U
   rw [hf]
 
+/- English proof (translation)
+Introduce `_ hf` and use `h hf`.
+-/
 theorem conjSub_mono {U U' : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (h : U ≤ U') : conjSub U ≤ conjSub U' :=
   fun _ hf => h hf
 
+/- English proof (translation)
+Use extensionality with `f`. Rewrite using `[mem_conjSub, Submodule.mem_bot, Submodule.mem_bot]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `g`.
+
+Use `congrFun h g` as an intermediate fact. Simplify using `using this`. Introduce `h`. Substitute `h` using the available equality. Use function extensionality and compare the values at `g`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem conjSub_bot : conjSub (⊥ : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)) = ⊥ := by
   ext f
   rw [mem_conjSub, Submodule.mem_bot, Submodule.mem_bot]
@@ -68,9 +86,15 @@ theorem conjSub_bot : conjSub (⊥ : Submodule ℂ (Formalism.AUTREP.GAf L n →
     funext g
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conj_rt (h : Formalism.AUTREP.GAf L n) (f : Formalism.AUTREP.GAf L n → ℂ) :
     (fun g => star (Formalism.L2.NG.rt L n h f g)) = Formalism.L2.NG.rt L n h (fun g => star (f g)) := rfl
 
+/- English proof (translation)
+Introduce `h f hf`. Rewrite `hf`, the goal using `[mem_conjSub]`. Rewrite using `[conj_rt]`. Conclude with `hU h _ hf`.
+-/
 theorem conjSub_stable {U : Submodule ℂ (Formalism.AUTREP.GAf L n → ℂ)} (hU : ∀ h, ∀ f ∈ U, Formalism.L2.NG.rt L n h f ∈ U) :
     ∀ h, ∀ f ∈ conjSub U, Formalism.L2.NG.rt L n h f ∈ conjSub U := by
   intro h f hf
@@ -102,6 +126,9 @@ def FinTyp.conjT (π : Formalism.L2.NG.FinTyp L n) : Formalism.L2.NG.FinTyp L n 
     · right
       rw [← conjSub_conjSub S', h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjT_S (π : Formalism.L2.NG.FinTyp L n) : (FinTyp.conjT π).S = conjSub π.S := rfl
 
 end Conj
@@ -139,6 +166,9 @@ def actM (P : RowPsi V n) (M : Mult.DSModel V Sp) : Formalism.AUTREP.GAf D.host.
     show T v (g * (P.ψ a * P.ψ b)) = T v (g * P.ψ a * P.ψ b)
     rw [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actM_apply (P : RowPsi V n) (M : Mult.DSModel V Sp) (h : Formalism.AUTREP.GAf D.host.E n) (T : Mult.MMap M) (v : M.Vec)
     (g : GA D V) : actM P M h T v g = T v (g * P.ψ h) := rfl
 
@@ -171,10 +201,16 @@ def rowRepR {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)}
     {e : Bool → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} (σ : FTR θ P M J χ e) : Formalism.L2.NG.FinTyp D.host.E n :=
   Formalism.L2.Col.finTypRep _ σ
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Col.finTypRep_mem _ σ`.
+-/
 theorem rowRepR_occ {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)} {χ : Bool → GA D V → ℂ}
     {e : Bool → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} (σ : FTR θ P M J χ e) : rowRepR θ σ ∈ OccRows θ P M J χ e :=
   Formalism.L2.Col.finTypRep_mem _ σ
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.Col.finTypRep_inj h`.
+-/
 theorem rowRepR_inj {P : RowPsi V n} {M : Mult.DSModel V Sp} {J : Bool → Set (GA D V)} {χ : Bool → GA D V → ℂ}
     {e : Bool → (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ)} (σ σ' : FTR θ P M J χ e)
     (h : (rowRepR θ σ).Iso (rowRepR θ σ')) : σ = σ' :=

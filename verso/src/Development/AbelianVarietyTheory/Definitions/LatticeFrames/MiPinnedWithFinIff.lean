@@ -38,6 +38,13 @@ namespace Link
 
 variable {D : D7} {u : D.what₂.Word} {W : Tower D} (L : Link D u W)
 
+/- English proof (translation)
+Introduce `y`. Take `⟨T₀, rfl⟩` from `L.jE_onto y`. Take `⟨T, hT, h1, h2⟩` from `h T₀.1 T₀.2`. Take `⟨F, hF⟩` from `L.eT_onto ⟨T, hT⟩`. Take `⟨T₁, ⟨h3, h4⟩, h5⟩` from `L.Θ_eq F`.
+
+Use `⟨F, ?_⟩` and prove the remaining obligations. Rewrite using `[h5]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `e : (⟨(L.eT F).1, h3⟩ : W.CX) = ⟨T, h1⟩` using `Subtype.ext (show (L.eT F).1 = T by rw [hF])`.
+
+Rewrite using `[h4, h2, e]`.
+-/
 theorem ontoAll (h : W.Onto L.P) : OntoAll D u L.Θ := by
   intro y
   obtain ⟨T₀, rfl⟩ := L.jE_onto y
@@ -154,12 +161,18 @@ structure World {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.
 def TrueD (D : D7) : Prop :=
   ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)), D = I.rec7 l Z ∧ Nonempty (World I l Z)
 
+/- English proof (translation)
+Take `⟨B, X, I, l, Z, rfl, ⟨w⟩⟩` from `hD`. Conclude with `h B X I l Z w`.
+-/
 theorem TrueD.elim {Q : D7 → Prop}
     (h : ∀ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)), World I l Z → Q (I.rec7 l Z))
     {D : D7} (hD : TrueD D) : Q D := by
   obtain ⟨B, X, I, l, Z, rfl, ⟨w⟩⟩ := hD
   exact h B X I l Z w
 
+/- English proof (translation)
+The claim follows from `TrueD.elim (Q := fun D => ∃ S : STies D, FinX S.Y ∧ Formalism.L2.SG.Pf.LocCP.LocTied D) (fun _ _ _ _ _ w => ⟨w.S.toSTies, w.S.hF, w.S.locTied⟩) hD`.
+-/
 theorem TrueD.sTies {D : D7} (hD : TrueD D) :
     ∃ S : STies D, FinX S.Y ∧ Formalism.L2.SG.Pf.LocCP.LocTied D :=
   TrueD.elim (Q := fun D => ∃ S : STies D, FinX S.Y ∧ Formalism.L2.SG.Pf.LocCP.LocTied D)
@@ -185,9 +198,15 @@ def World0.withFin (w : World0 I l Z) (hF : FinX w.S.Y) : World I l Z := ⟨w.ok
 
 end Maps
 
+/- English proof (translation)
+The claim follows from `let ⟨B, X, I, l, Z, e, ⟨w⟩⟩ := hD; ⟨B, X, I, l, Z, e, ⟨w.bare⟩⟩`.
+-/
 theorem TrueD.bare {D : D7} (hD : TrueD D) : IsTrueColumnDatum D :=
   let ⟨B, X, I, l, Z, e, ⟨w⟩⟩ := hD; ⟨B, X, I, l, Z, e, ⟨w.bare⟩⟩
 
+/- English proof (translation)
+Use `⟨TrueD.bare, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨B, X, I, l, Z, rfl, ⟨w⟩⟩`. Conclude with `⟨B, X, I, l, Z, rfl, ⟨w.withFin (h w.S.toSTies)⟩⟩`.
+-/
 theorem trueD_iff {D : D7} (h : ∀ T : STies D, FinX T.Y) : TrueD D ↔ IsTrueColumnDatum D := by
   refine ⟨TrueD.bare, ?_⟩
   rintro ⟨B, X, I, l, Z, rfl, ⟨w⟩⟩
@@ -203,9 +222,15 @@ def MIKerTower : Prop := ∃ (W : Tower D) (L : Link D u W), W.Is ∧ MIKer D u 
 
 def OntoTower : Prop := ∀ W : Tower D, W.Is → ∀ P : W.Lv, W.Onto P
 
+/- English proof (translation)
+The claim follows from `let ⟨W, L, h1, h2⟩ := h; ⟨W, L, h1, MIMap.miKer D u h2⟩`.
+-/
 theorem MITower.ker (h : MITower D u) : MIKerTower D u :=
   let ⟨W, L, h1, h2⟩ := h; ⟨W, L, h1, MIMap.miKer D u h2⟩
 
+/- English proof (translation)
+The claim follows from `let ⟨W, L, h1, h2⟩ := h kerIncl_of D u h2 (OntoAll.ontoP D u (L.ontoAll (h' W h1 L.P)))`.
+-/
 theorem kerIncl_of_tower (h : MIKerTower D u) (h' : OntoTower D) : KerIncl D u :=
   let ⟨W, L, h1, h2⟩ := h
   kerIncl_of D u h2 (OntoAll.ontoP D u (L.ontoAll (h' W h1 L.P)))
@@ -220,6 +245,9 @@ def MIPinned0 {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I
   ∃ (W : Tower (I.rec7 l Z)) (L : Link (I.rec7 l Z) u W), W.Is ∧ L.TopPin (w.C.forms u) ∧
     (∀ hF : FinX w.S.Y, L.RowPinE w.S.toSTies hF) ∧ MIMap (I.rec7 l Z) u L.Θ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨W, L, h1, h2, h3, h4⟩ => ⟨W, L, h1, h2, fun _ => h3, h4⟩, fun ⟨W, L, h1, h2, h3, h4⟩ => ⟨W, L, h1, h2, h3 hF, h4⟩⟩`.
+-/
 theorem miPinned_withFin_iff {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : GlobalTheory.Mem.Col2.TC B X} {l : I.Laws}
     {Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)} (w : World0 I l Z) (hF : FinX w.S.Y) (u : (I.rec7 l Z).what₂.Word) :
     MIPinned (w.withFin hF) u ↔ MIPinned0 w u :=

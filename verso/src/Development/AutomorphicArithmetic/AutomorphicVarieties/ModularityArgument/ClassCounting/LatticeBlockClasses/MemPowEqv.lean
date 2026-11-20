@@ -2,9 +2,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Cl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_eqv {R : Type} [CommRing R] (e : R ≃+* R) (P : HeightOneSpectrum R) (y : R) :
     y ∈ (HeightOneSpectrum.equivOfRingEquiv e P).asIdeal ↔ e.symm y ∈ P.asIdeal := Iff.rfl
 
+/- English proof (translation)
+Establish `h : (HeightOneSpectrum.equivOfRingEquiv e P).asIdeal = Ideal.map (e : R →+* R) P.asIdeal`. Rewrite using `[Ideal.map_comap_of_equiv]`. Both sides reduce to the same expression. Rewrite using `[h, ← Ideal.map_pow, Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Simplify using the standard rewrite rules.
+-/
 private theorem mem_pow_eqv {R : Type} [CommRing R] (e : R ≃+* R) (P : HeightOneSpectrum R) (y : R) (n : ℕ) :
     e y ∈ (HeightOneSpectrum.equivOfRingEquiv e P).asIdeal ^ n ↔ y ∈ P.asIdeal ^ n := by
   have h : (HeightOneSpectrum.equivOfRingEquiv e P).asIdeal = Ideal.map (e : R →+* R) P.asIdeal := by
@@ -13,6 +19,15 @@ private theorem mem_pow_eqv {R : Type} [CommRing R] (e : R ≃+* R) (P : HeightO
   rw [h, ← Ideal.map_pow, Ideal.map_comap_of_equiv, Ideal.mem_comap]
   simp
 
+/- English proof (translation)
+Use `set Q := HeightOneSpectrum.equivOfRingEquiv e P`. Establish `key : ∀ n : ℕ, Q.intValuation (e y) ≤ WithZero.exp (-(n : ℤ)) ↔ P.intValuation y ≤ WithZero.exp (-(n : ℤ))`. Introduce `n`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_dvd, HeightOneSpectrum.intValuation_le_pow_iff_dvd, Ideal.dvd_iff_le, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem, Ideal.span_singleton_le_iff_mem]`. Conclude with `mem_pow_eqv e P y n`.
+
+Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hey : e y ≠ 0` using `by simpa using hy`. Establish `form : ∀ (v : HeightOneSpectrum R) (r : R), r ≠ 0 → ∃ m : ℕ, v.intValuation r = WithZero.exp (-(m : ℤ))` using `fun v r hr => ⟨_, by rw [HeightOneSpectrum.intValuation_def, if_neg hr]⟩`. Take `⟨m1, h1⟩` from `form Q _ hey`.
+
+Take `⟨m2, h2⟩` from `form P _ hy`. Rewrite `key`, the goal using `[h1, h2]`. Establish `a` using `(key m1).1 le_rfl`. Establish `b` using `(key m2).2 le_rfl`. Rewrite `a`, `b` using `[WithZero.exp_le_exp]`.
+
+Establish `: m1 = m2` using `by omega`. Rewrite using `[this]`.
+-/
 private theorem intVal_eqv {R : Type} [CommRing R] [IsDedekindDomain R] (e : R ≃+* R) (P : HeightOneSpectrum R) (y : R) :
     (HeightOneSpectrum.equivOfRingEquiv e P).intValuation (e y) = P.intValuation y := by
   set Q := HeightOneSpectrum.equivOfRingEquiv e P
@@ -38,6 +53,31 @@ private theorem intVal_eqv {R : Type} [CommRing R] [IsDedekindDomain R] (e : R �
   have : m1 = m2 := by omega
   rw [this]
 
+/- English proof (translation)
+Introduce `L F _ _ _ _ _`. Establish `val : ∀ (σ : Gal(F/L)) (P : HeightOneSpectrum (𝓞 F)) (x : F), HeightOneSpectrum.valuation F (actP σ P) (σ x) = HeightOneSpectrum.valuation F P x`. Introduce `σ P x`. Take `⟨p, q, -, hpq⟩` from `IsFractionRing.div_surjective (𝓞 F) x`. Establish `hpq' : (p : F) / q = x` using `hpq`.
+
+Establish `hσ : ∀ a : 𝓞 F, σ (a : F) = ((RingOfIntegers.mapRingEquiv σ.toRingEquiv a : 𝓞 F) : F)` using `fun a => by rw [RingOfIntegers.mapRingEquiv_apply]; rfl`. Rewrite using `[← hpq', map_div₀, hσ, hσ, map_div₀, map_div₀, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Unfold `actP`. Rewrite using `[intVal_eqv, intVal_eqv]`. Establish `sym : ∀ (σ : Gal(F/L)) (y : 𝓞 F), (((RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm y : 𝓞 F) : F) = σ.symm (y : F)`.
+
+Introduce `σ y`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[AlgEquiv.apply_symm_apply]`. Use `RingOfIntegers.mapRingEquiv_apply σ.toRingEquiv ((RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm y)` as an intermediate fact. Rewrite `this` using `[RingEquiv.apply_symm_apply]`.
+
+Conclude with `this.symm`. Establish `memA : ∀ (σ : Gal(F/L)) (P : HeightOneSpectrum (𝓞 F)) (y : 𝓞 F), y ∈ (actP σ P).asIdeal ↔ (RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm y ∈ P.asIdeal` using `fun σ P y => mem_eqv _ P y`. Use `⟨val, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ τ P`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+
+Use extensionality with `y`. Rewrite using `[memA, memA, memA]`. Establish `h : (((RingOfIntegers.mapRingEquiv (σ * τ).toRingEquiv).symm y : 𝓞 F) : F) = (((RingOfIntegers.mapRingEquiv τ.toRingEquiv).symm ((RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm y) : 𝓞 F) : F)`. Rewrite using `[sym, sym, sym]`. Both sides reduce to the same expression.
+
+Rewrite using `[show (RingOfIntegers.mapRingEquiv (σ * τ).toRingEquiv).symm y = (RingOfIntegers.mapRingEquiv τ.toRingEquiv).symm ((RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm y) from by exact_mod_cast h]`. Introduce `P`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `y`. Rewrite using `[memA]`.
+
+Establish `h : (((RingOfIntegers.mapRingEquiv (1 : Gal(F/L)).toRingEquiv).symm y : 𝓞 F) : F) = (y : F)`. Rewrite using `[sym]`. Both sides reduce to the same expression. Rewrite using `[show (RingOfIntegers.mapRingEquiv (1 : Gal(F/L)).toRingEquiv).symm y = y from by`. Conclude with `h]` after adjusting the coercions.
+
+Introduce `σ P b`. Rewrite using `[memA]`. Establish `h1 : algebraMap (𝓞 L) F b = ((algebraMap (𝓞 L) (𝓞 F) b : 𝓞 F) : F)`. Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 L) (𝓞 F) F]`. Establish `h2 : algebraMap (𝓞 L) F b = algebraMap L F (b : L)`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 L) L F]`. Establish `hc : ((algebraMap (𝓞 L) (𝓞 F) b : 𝓞 F) : F) = algebraMap L F (b : L)`. Rewrite using `[← h1, h2]`. Establish `h : (((RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm (algebraMap (𝓞 L) (𝓞 F) b) : 𝓞 F) : F) = ((algebraMap (𝓞 L) (𝓞 F) b : 𝓞 F) : F)`. Rewrite using `[sym, hc, AlgEquiv.commutes]`.
+
+Rewrite using `[show (RingOfIntegers.mapRingEquiv σ.toRingEquiv).symm (algebraMap (𝓞 L) (𝓞 F) b) = algebraMap (𝓞 L) (𝓞 F) b from by exact_mod_cast h]`. Introduce `σ P α`. Unfold `ordP`. Establish `: ((actU σ α : Fˣ) : F) = σ (α : F)` using `rfl`. Rewrite using `[this, val]`.
+
+Introduce `P α β`. Unfold `ordP`. Rewrite using `[Units.val_mul, map_mul, WithZero.log_mul (by simp) (by simp)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `P α n`.
+
+Unfold `ordP`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, WithZero.log_zpow, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.ZK.Cl.cAct :
     UpperTheory.V.ZK.Cl.CAct := by
   intro L F _ _ _ _ _

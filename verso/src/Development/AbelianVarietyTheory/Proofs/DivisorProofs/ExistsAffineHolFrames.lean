@@ -12,6 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.ShFam.HolFrames
 
+/- English proof (translation)
+Take `⟨U, hU, φ, f, hy, hφ, -⟩` from `GlobalTheory.ShFam.EigSpread.exists_stable_eigFrame E H D l Xo c O β Y (io y)`. Take `⟨_, ⟨W, hW, rfl⟩, hyW, hWU⟩` from `T.isBasis_affineOpens.exists_subset_of_mem_open (a := y) (u := (io ⁻¹ᵁ U : T.Opens)) hy (io ⁻¹ᵁ U).2`. Establish `hW : IsAffineOpen W` using `hW`. Establish `e : (show Sp Γ(T, W) ⟶ T from hW.fromSpec) ≫ io = spMap (io.appLE U W hWU).hom ≫ (show Sp Γ(gen Y, U) ⟶ gen Y from hU.fromSpec)` using `(IsAffineOpen.SpecMap_appLE_fromSpec io hU hW hWU).symm`. Take `⟨g, -⟩` from `exists_bc f (io.appLE U W hWU).hom (φ' := (io.appLE U W hWU).hom.comp φ) (x' := ((show Sp Γ(T, W) ⟶ T from hW.fromSpec) ≫ io) ≫ genι Y) rfl (by rw [e, Category.assoc])`.
+
+Use `⟨W, hW, _, g, hyW, ?_⟩` and prove the remaining obligations. Rewrite using `[e, Category.assoc, spMap_comp₂]`. Conclude with `congrArg _ hφ`.
+-/
 theorem exists_affine_frame {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Y : Model Xo c β) {T : Scheme.{0}} (io : T ⟶ gen Y) (y : T) :
@@ -33,6 +38,17 @@ theorem exists_affine_frame {E : Type} [Field E] [NumberField E] [IsCMField E] {
 
 open GlobalTheory.Points GlobalTheory.ShFam.EigLoc in
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y e B io _ hio`. Use `choose U hU φ fr hy hφ using fun y => exists_affine_frame Y io y`. Establish `hov : ∀ p : GlobalTheory.CxPts B.str e, (p.1 ≫ io) ≫ genStr Y = spMap e` using `fun p => by`. Rewrite using `[Category.assoc, hio, p.2]`. Establish `hp : ∀ y (p : GlobalTheory.CxPts B.str e) (h : p ∈ GlobalTheory.CxPts.ptsIn _ _ (U y)), spMap (GlobalTheory.CxPts.evHom h) ≫ (show Sp Γ(B.X, U y) ⟶ B.X from (hU y).fromSpec) = p.1` using `fun y p h => specMap_valMap_fromSpec (hU y) p.1 h`.
+
+Establish `hx : ∀ y (p : GlobalTheory.CxPts B.str e) (h : p ∈ GlobalTheory.CxPts.ptsIn _ _ (U y)), (p.1 ≫ io) ≫ genι Y = spMap (GlobalTheory.CxPts.evHom h) ≫ ((show Sp Γ(B.X, U y) ⟶ B.X from (hU y).fromSpec) ≫ io) ≫ genι Y` using `fun y p h => by`. Rewrite using `[← hp y p h]`. Simplify using `only [Category.assoc]`. Establish `ex : ∀ y (p : GlobalTheory.CxPts B.str e), ∃ g : EigFrame Y e ((p.1 ≫ io) ≫ genι Y), ∀ h : p ∈ GlobalTheory.CxPts.ptsIn _ _ (U y), ∀ ρ i, g.v ρ i = spMap (Chart.dualMapR (GlobalTheory.CxPts.evHom h)) ≫ (fr y).v ρ i` using `fun y p => by`. Distinguish the cases in `h : p ∈ GlobalTheory.CxPts.ptsIn _ _ (U y)`.
+
+Take `⟨g, hg⟩` from `exists_bc (fr y) (GlobalTheory.CxPts.evHom h) (φ' := e) (spMap_inj (by`. Rewrite using `[spMap_comp₂, ← hφ y, ← hov p, ← hp y p h]`. Simplify using `only [Category.assoc])) (hx y p h)`. Conclude with `⟨g, fun _ => hg⟩`. Take `⟨g⟩` from `exists_eigFrame E H D l Xo c O β Y ℂ e _ (hov p)`.
+
+Conclude with `⟨g, fun h' => (h h').elim⟩`. Use `choose g hg using ex`. Use `⟨U, hU, φ, fr, fun y p => ⟨⟨p.1 ≫ io, hov p⟩, g y p⟩, hy, hφ, fun _ _ => rfl, hg, fun y V _ _ _ A x hA hol hm => ⟨fun W f => by` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_comp]`. Conclude with `hol (io ⁻¹ᵁ W) ((io.app W).hom f), fun ρ i => ?_⟩⟩`.
+
+Conclude with `holTan_dualMap hA ((fr y).v ρ i) (fun b hb => GlobalTheory.CxPts.evHom (hm hb)) (fun a => ⟨_, (hol (U y) a).2.mono fun b hb => ⟨hb, hm hb⟩, fun b hb => (GlobalTheory.CxPts.ev_eq (hm hb) a).symm⟩) fun b hb => hg y _ (hm hb) ρ i`.
+-/
 theorem exists_affine_holFrames : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (e : c.F →+* ℂ) (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y), IsOpenImmersion io → io ≫ genStr Y = B.str → ∃ (W : B.X → B.X.Opens) (hW : ∀ y, IsAffineOpen (W y)) (φ : ∀ y, c.F →+* Γ(B.X, W y)) (fr : ∀ y, EigFrame Y (φ y) (((show Sp Γ(B.X, W y) ⟶ B.X from (hW y).fromSpec) ≫ io) ≫ genι Y)) (a : B.X → GlobalTheory.CxPts B.str e → CxFr Y e), (∀ y, y ∈ W y) ∧ (∀ y, ((show Sp Γ(B.X, W y) ⟶ B.X from (hW y).fromSpec) ≫ io) ≫ genStr Y = spMap (φ y)) ∧ (∀ y p, (a y p).1.1 = p.1 ≫ io) ∧ (∀ y p (h : p ∈ GlobalTheory.CxPts.ptsIn B.str e (W y)) ρ i, (a y p).2.v ρ i = spMap (Chart.dualMapR (GlobalTheory.CxPts.evHom h)) ≫ (fr y).v ρ i) ∧ ∀ y (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (A : Set V) (x : V → GlobalTheory.CxPts B.str e), IsOpen A → IsHolTo A (fun b => (x b).1) → Set.MapsTo x A (GlobalTheory.CxPts.ptsIn B.str e (W y)) → HolFam A (fun b => a y (x b)) := by
   intro E _ _ _ H D l Xo c O _ β Y e B io _ hio
   choose U hU φ fr hy hφ using fun y => exists_affine_frame Y io y

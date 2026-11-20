@@ -8,6 +8,11 @@ namespace Formalism.L2.Th1.Top
 open Formalism.L2.Th1.D
 open Formalism.L2.Th1.CM (cm4)
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev ιr _ _ om oms hO hT hζ n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`.
+
+Rewrite using `[hΘ]`. Conclude with `theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+-/
 theorem ThmAEntryEveryPh_of (hS : HypShape) : ThmAEntryEveryPh := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
   obtain ⟨s2, hs2, hc2, hN⟩ :=
@@ -20,6 +25,11 @@ theorem ThmAEntryEveryPh_of (hS : HypShape) : ThmAEntryEveryPh := by
   exact theorem_a_entry_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev ιr om oms hO hT hζ
     U0 Φ hU hΦ hsim
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF d N0 N1 _ hd2 hev ιr _ _ om oms hO hT hζ n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) N0 N1 ιr n f f' hH Θ hInt`.
+
+Rewrite using `[hΘ]`. Conclude with `theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev ιr om oms hO hT hζ U0 Φ hU hΦ hsim`.
+-/
 theorem ThmAGaussEveryPh_of (hS : HypShape) : ThmAGaussEveryPh := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
   obtain ⟨s2, hs2, hc2, hN⟩ :=
@@ -32,6 +42,11 @@ theorem ThmAGaussEveryPh_of (hS : HypShape) : ThmAGaussEveryPh := by
   exact theorem_a_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) d N0 N1 hd2 hev ιr om oms hO hT hζ
     U0 Φ hU hΦ hsim
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF ν r0 r1 _ om oms hO hT n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) r0 r1 (Fin ν) n f f' hH Θ hInt`.
+
+Rewrite using `[hΘ]`. Conclude with `kernel_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) ν r0 r1 om oms hO hT U0 Φ hU hΦ hsim`.
+-/
 theorem KernelEveryPh_of (hS : HypShape) : KernelEveryPh := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
   obtain ⟨s2, hs2, hc2, hN⟩ :=
@@ -44,6 +59,15 @@ theorem KernelEveryPh_of (hS : HypShape) : KernelEveryPh := by
   exact kernel_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) ν r0 r1 om oms hO hT
     U0 Φ hU hΦ hsim
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, hc2, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, hs2, hc2, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF N0 N1 C Θ hInt`. Establish `h0 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries (Fin N0 × Fin N1) ℂ_[l]) = 0`.
+
+Unfold `Formalism.L2.Th1.E.phSum`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Use `Pair.constantCoeff_inVar_eq_zero x ?_` and prove the remaining obligations. Unfold `phL`.
+
+Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, FAux.cc_phFF (by omega), map_zero]`. Establish `hΘ : Θ = Formalism.DworkPowerSeriesWeights.mvExp (-(Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries (Fin N0 × Fin N1) ℂ_[l])) * (Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε)) * Θ)`. Take `⟨e0, -, eadd, -⟩` from `Formalism.L2.Th1.C.mvExpLaws ℂ_[l] (Fin N0 × Fin N1)`. Establish `h1` using `eadd (-(Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε))) (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε)) (by rw [map_neg, h0, neg_zero]) h0`. Rewrite `h1` using `[neg_add_cancel, e0]`.
+
+Rewrite using `[← mul_assoc]`. Express the relevant statement in the definitionally equal form `Θ = (Formalism.L2.Th1.C.mvExp _ * Formalism.L2.Th1.C.mvExp _) * Θ`. Rewrite using `[← h1, one_mul]`. Rewrite using `[hΘ]`. Conclude with `one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) N0 N1 C _ _ hInt h0 (InverseCommuting.sim_refl _)`.
+-/
 theorem one_letter_gauss_every_ph : OneLetterGaussEveryPh := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
   obtain ⟨s2, hs2, hc2, hN⟩ :=
@@ -73,6 +97,13 @@ theorem one_letter_gauss_every_ph : OneLetterGaussEveryPh := by
   exact one_letter_gauss_all l h5 g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ) N0 N1 C
     _ _ hInt h0 (InverseCommuting.sim_refl _)
 
+/- English proof (translation)
+Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF ν r0 r1 _`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+
+Establish `: CompleteSpace (CM.MaximalUnramifiedExtension l)` using `kurComplete l`. Take `⟨cS, h1, h2, h3⟩` from `thmSOfF (CM.MaximalUnramifiedExtension l) ℂ_[l] (CM.MaximalUnramifiedExtension l).subtype l ν r0 r1 σ (FAux.norm_coe l) hσ (FAux.exists_root2 l) F hF _ a1 a2`. Use `⟨cS, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `om oms ϖ μ hϖ hO hT hμ0 hμ n _ f f' hH Θ hInt`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) r0 r1 (Fin ν) n f f' hH Θ hInt`.
+
+Rewrite using `[hΘ]`. Conclude with `h3 om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU hΦ hsim`.
+-/
 theorem ThmSEveryPh_of (hS : HypShape) : ThmSEveryPh := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
   obtain ⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩ :=

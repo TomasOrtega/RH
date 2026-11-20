@@ -17,9 +17,17 @@ noncomputable section
 
 namespace GlobalTheory.GridJoin
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem lattice_heq_of_eq_hermitianSpaceWithLattice_mk {D : D7} {x : LSp D} {s : HSp D} {l : Submodule (𝓞 D.host.E) (Fin s.rank → D.host.E)}
     (e : x = ⟨s, l⟩) : HEq l x.lat := by subst e; rfl
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc G' W hW j hj`. Break down `Nat.lt_or_ge j D.R.m with h | h` into its components or cases. Rewrite using `[← nodeY_eq_chainVertexAtRowZero_of_lt R h]`. Establish `e : G'.node (.grid 0 j) = ⟨Yc D j, R.ΛY j⟩` using `colY_lt R.toLevCh h`. Conclude with `⟨(congrArg LSp.sp e).symm, lattice_heq_of_eq_hermitianSpaceWithLattice_mk e, (hW.cartY j h).symm, (hW.onbY j h).symm⟩`.
+
+Take `rfl : j = D.R.m` from `le_antisymm hj h`. Rewrite using `[← nodeX_eq_chainVertexAtRowZero_top R]`. Establish `e : G'.node (.grid 0 D.R.m) = ⟨D.sp.X', R.ΛX⟩` using `colY_m R.toLevCh`. Conclude with `⟨(congrArg LSp.sp e).symm, lattice_heq_of_eq_hermitianSpaceWithLattice_mk e, hW.cartX.symm, hW.onbX.symm⟩`.
+-/
 theorem nodeAgree_grid0_of_weil_over : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ j, j ≤ D.R.m → NodeAgree (GlobalTheory.Grid.row0 R j) W (.grid 0 j) := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc G' W hW j hj
   rcases Nat.lt_or_ge j D.R.m with h | h

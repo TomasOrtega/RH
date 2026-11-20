@@ -19,6 +19,15 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [IsDomain O] [Algebra ℤ_[l] O] [TopologicalSpace O]
   (Bw : LocBridge l E Ω Gw O)
 
+/- English proof (translation)
+Introduce `y`. Establish `halg : IsAlgebraic ℚ_[l] y` using `Algebra.IsAlgebraic.isAlgebraic y`. Establish `halg' : IsAlgebraic ℤ_[l] y` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] (Br.LLw Bw)).mpr halg`. Take `⟨n, hn, hint⟩` from `IsAlgebraic.exists_integral_multiple halg'`. Set `x : Formalism.BasicNotions.Loc.OL Bw.LL` to `⟨n • y, hint⟩`.
+
+Establish `hn' : algebraMap ℤ_[l] (Br.LLw Bw) n ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises. Establish `: algebraMap ℚ_[l] (Br.LLw Bw) (algebraMap ℤ_[l] ℚ_[l] n) = 0`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+
+Conclude with `h0`. Establish `h2` using `(algebraMap ℚ_[l] (Br.LLw Bw)).injective (this.trans (map_zero _).symm)`. Conclude with `(IsFractionRing.injective ℤ_[l] ℚ_[l]) (h2.trans (map_zero _).symm)`. Use `⟨algebraMap O (FractionRing O) (Bw.eO.symm x) / algebraMap O (FractionRing O) (Bw.eO.symm (algebraMap ℤ_[l] (Formalism.BasicNotions.Loc.OL Bw.LL) n)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀, Br.toLLK_alg, Br.toLLK_alg, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply, div_eq_iff hn']`. Express the relevant statement in the definitionally equal form `n • y = y * _`. Rewrite using `[Algebra.smul_def, mul_comm]`.
+-/
 theorem toLLK_surj : Function.Surjective (Br.toLLK Bw) := by
   intro y
   have halg : IsAlgebraic ℚ_[l] y := Algebra.IsAlgebraic.isAlgebraic y
@@ -42,6 +51,9 @@ theorem toLLK_surj : Function.Surjective (Br.toLLK Bw) := by
 def eK : FractionRing O ≃+* Br.LLw Bw :=
   RingEquiv.ofBijective (Br.toLLK Bw) ⟨(Br.toLLK Bw).injective, toLLK_surj Bw⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem eK_apply (k : FractionRing O) : eK Bw k = Br.toLLK Bw k := rfl
 
 end Onto
@@ -58,6 +70,9 @@ instance : AddCommGroup (TrV e V) := ‹AddCommGroup V›
 
 instance instModLL : Module LL (TrV e V) := Module.compHom V e.symm.toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smulLL_def (c : LL) (v : TrV e V) : c • v = (e.symm c • (show V from v) : V) := rfl
 
 variable {Qp : Type} [Field Qp] [Algebra Qp LL]
@@ -91,6 +106,9 @@ instance : IsTopologicalAddGroup (TrV e V) where
 variable [Module O V] [IsScalarTower O (FractionRing O) V]
   {W : Type} [AddCommGroup W] [Module (FractionRing O) W] [Module O W] [IsScalarTower O (FractionRing O) W]
 
+/- English proof (translation)
+The claim follows from `(LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O) f).map_smul k v`.
+-/
 theorem smulK (f : V →ₗ[O] W) (k : FractionRing O) (v : V) : f (k • v) = k • f v :=
   (LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O) f).map_smul k v
 
@@ -99,8 +117,14 @@ def trL (f : V →ₗ[O] W) : TrV e V →ₗ[LL] TrV e W where
   map_add' u v := f.map_add u v
   map_smul' c v := smulK f (e.symm c) v
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trL_apply (f : V →ₗ[O] W) (v : TrV e V) : trL e f v = (f v : W) := rfl
 
+/- English proof (translation)
+The claim follows from `IsModuleTopology.continuous_of_linearMap (trL e f)`.
+-/
 theorem trL_cont (f : V →ₗ[O] W) : Continuous (trL e f) :=
   IsModuleTopology.continuous_of_linearMap (trL e f)
 
@@ -117,6 +141,9 @@ def repL (ρ : Representation O Γ V) (ι : G →* Γ) : Representation LL G (Tr
     simp only [map_mul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem repL_apply (ρ : Representation O Γ V) (ι : G →* Γ) (g : G) (v : TrV e V) :
     repL e ρ ι g v = (ρ (ι g) v : V) := rfl
 
@@ -142,9 +169,15 @@ def finZ (ρ : Representation O Γ V) (ι : G →* Γ) : Submodule (FractionRing
     rw [heq]
     exact h
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_finZ (ρ : Representation O Γ V) (ι : G →* Γ) (c : Γ → V) :
     c ∈ finZ e PD ρ ι ↔ (fun g => (c (ι g) : TrV e V)) ∈ finiteCocycles PD (repL e ρ ι) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `(cocyclesFunctorial_holds G Qp K₀ Kk B BdR PD LL (TrV e V) (TrV e W) (repL e ρ ι) (repL e ρ' ι) (trL e f) (trL_cont e f) (fun g v => hf (ι g) v) _).2 hc`.
+-/
 theorem finZ_map (ρ : Representation O Γ V) (ρ' : Representation O Γ W) (ι : G →* Γ) (f : V →ₗ[O] W)
     (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (c : Γ → V) (hc : c ∈ finZ e PD ρ ι) :
     (fun g => f (c g)) ∈ finZ e PD ρ' ι :=
@@ -198,6 +231,9 @@ def locRep (ρM : Representation O Γ M) : Representation O Γ (MK (O := O) M) w
       rw [LocalizedModule.map_mk, LocalizedModule.map_mk, LocalizedModule.map_mk, map_mul]
       rfl
 
+/- English proof (translation)
+The claim follows from `LocalizedModule.map_mk _ _ _ _`.
+-/
 theorem locRep_mkK (ρM : Representation O Γ M) (g : Γ) (m : M) :
     locRep ρM g (mkK m) = mkK (ρM g m) :=
   LocalizedModule.map_mk _ _ _ _
@@ -212,6 +248,13 @@ def finiteClassesContinuousLattice [TopologicalSpace Γ] [TopologicalSpace M] [I
     (ρM : Representation O Γ M) : Submodule O (ReciprocityTheory.Gal.H1 ρM) :=
   finiteClassesContinuous e PD ι (locRep ρM) ρM mkK
 
+/- English proof (translation)
+Establish `hs : algebraMap O (FractionRing O) (s : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Rewrite using `[Module.End.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hab' : algebraMap O (FractionRing O) (s : O) • a = algebraMap O (FractionRing O) (s : O) • b`.
+
+Simplify `hab` using `[algebraMap_smul]`. Conclude with `smul_right_injective V hs hab'`. Introduce `y`. Use `⟨(algebraMap O (FractionRing O) (s : O))⁻¹ • y, ?_⟩` and prove the remaining obligations. Use `show (s : O) • ((algebraMap O (FractionRing O) (s : O))⁻¹ • y) = y`.
+
+Rewrite using `[← algebraMap_smul (FractionRing O) (s : O), smul_smul, mul_inv_cancel₀ hs, one_smul]`.
+-/
 theorem isUnit_end (s : nonZeroDivisors O) :
     IsUnit ((algebraMap O (Module.End O V)) (s : O)) := by
   have hs : algebraMap O (FractionRing O) (s : O) ≠ 0 :=
@@ -230,9 +273,17 @@ theorem isUnit_end (s : nonZeroDivisors O) :
 def liftK (f : M →ₗ[O] V) : MK (O := O) M →ₗ[O] V :=
   IsLocalizedModule.lift (nonZeroDivisors O) mkK f (isUnit_end (V := V))
 
+/- English proof (translation)
+The claim follows from `IsLocalizedModule.lift_apply _ _ _ _ _`.
+-/
 theorem liftK_mkK (f : M →ₗ[O] V) (m : M) : liftK f (mkK m) = f m :=
   IsLocalizedModule.lift_apply _ _ _ _ _
 
+/- English proof (translation)
+Establish `h : (liftK f) ∘ₗ (locRep ρM g) = (ρ g) ∘ₗ (liftK f)`. Apply `IsLocalizedModule.ext (nonZeroDivisors O) (mkK (O := O) (M := M)) (isUnit_end (V := V))` to reduce the goal to its premises. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[locRep_mkK, liftK_mkK, liftK_mkK, hf]`.
+
+Conclude with `congrArg (fun F : MK (O := O) M →ₗ[O] V => F x) h`.
+-/
 theorem liftK_equiv (ρM : Representation O Γ M) (f : M →ₗ[O] V) (hf : ∀ g m, f (ρM g m) = ρ g (f m))
     (g : Γ) (x : MK (O := O) M) : liftK f (locRep ρM g x) = ρ g (liftK f x) := by
   have h : (liftK f) ∘ₗ (locRep ρM g) = (ρ g) ∘ₗ (liftK f) := by
@@ -242,6 +293,11 @@ theorem liftK_equiv (ρM : Representation O Γ M) (f : M →ₗ[O] V) (hf : ∀ 
     rw [locRep_mkK, liftK_mkK, liftK_mkK, hf]
   exact congrArg (fun F : MK (O := O) M →ₗ[O] V => F x) h
 
+/- English proof (translation)
+Establish `h` using `finZ_map e PD (locRep ρM) ρ ι (liftK f) (liftK_equiv ρ ρM f hf) _ hc`. Establish `e2 : (fun g => f (c g)) = (fun g => liftK f (mkK (c g)))`. Use function extensionality and compare the values at `g`. Rewrite using `[liftK_mkK]`. Rewrite using `[e2]`.
+
+Conclude with `h`.
+-/
 theorem finLoc_map (ρM : Representation O Γ M) (f : M →ₗ[O] V) (hf : ∀ g m, f (ρM g m) = ρ g (f m))
     (c : Γ → M) (hc : c ∈ finLoc e PD ι ρM) : (fun g => f (c g)) ∈ finZ e PD ρ ι := by
   have h := finZ_map e PD (locRep ρM) ρ ι (liftK f) (liftK_equiv ρ ρM f hf) _ hc
@@ -274,6 +330,9 @@ variable {n : ℕ} {V : Type} [AddCommGroup V] [Module (FractionRing (D.nd.O i))
     [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) V] (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V)
   {M : Type} [AddCommGroup M] [Module (D.nd.O i) M]
 
+/- English proof (translation)
+The claim follows from `dif_pos hn`.
+-/
 theorem fZ_pos (hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)) :
     fZ i dc n ρ = finZ (eK (D.nbr i _ hn)) (Br.PD D.loc D.nbr i _ hn) ρ (Br.iota D.nbr i _ hn) :=
   dif_pos hn
@@ -319,6 +378,9 @@ open Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain 
 
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a c v => by rw [← algebraMap_smul (FractionRing (D.nd.O i)) c v, ← algebraMap_smul (FractionRing (D.nd.O i)) c (a • v), smul_comm]⟩`.
+-/
 theorem smulComm_O {A V : Type} [Ring A] [AddCommGroup V] [Module A V] [Module (FractionRing (D.nd.O i)) V]
     [SMulCommClass A (FractionRing (D.nd.O i)) V] [Module (D.nd.O i) V]
     [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) V] : SMulCommClass A (D.nd.O i) V :=
@@ -405,6 +467,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   {R' : Subalgebra (D.nd.O i) (X' → Matrix d d (FractionRing (D.nd.O i)))} {Tc : Type} [CommRing Tc] [Algebra Tc R']
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
+/- English proof (translation)
+The claim follows from `letI := evalModO i (R' := R') x' ⟨fun a b v => by show (a • b) • v = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a • (b • v) rw [Algebra.smul_def, mul_smul]⟩`.
+-/
 theorem evalTower (x' : X') :
     letI := evalModO i (R' := R') x'
     IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) (EvalSp (D.nd.O i) d R' x') :=
@@ -413,6 +478,9 @@ theorem evalTower (x' : X') :
     show (a • b) • v = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) a • (b • v)
     rw [Algebra.smul_def, mul_smul]⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun a c v => by show (Formalism.NG.matEnd (FractionRing (D.nd.O i)) (FractionRing (D.nd.O i)) d (Formalism.NG.evalAt (D.nd.O i) d R' x' a)) (c • v) = c • (Formalism.NG.matEnd (FractionRing (D.nd.O i)) (FractionRing (D.nd.O i)) d (Formalism.NG.evalAt (D.nd.O i) d R' x' a)) v exac …`.
+-/
 theorem evalComm (x' : X') : SMulCommClass R' (FractionRing (D.nd.O i)) (EvalSp (D.nd.O i) d R' x') :=
   ⟨fun a c v => by
     show (Formalism.NG.matEnd (FractionRing (D.nd.O i)) (FractionRing (D.nd.O i)) d (Formalism.NG.evalAt (D.nd.O i) d R' x' a))
@@ -499,6 +567,11 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
     [IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) W]
   {M : Type} [AddCommGroup M] [Module (D.nd.O i) M]
 
+/- English proof (translation)
+Distinguish the cases in `hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)`. Rewrite `hc` using `[fZ_pos i dc ρ hn]`. Rewrite using `[fZ_pos i dc ρ' hn]`. Conclude with `finZ_map _ _ ρ ρ' _ f hf c hc`. Unfold `fZ`.
+
+Rewrite using `[dif_neg hn]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem fZ_map (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V) (ρ' : Representation (D.nd.O i) ↥(Γn i dc n) W)
     (f : V →ₗ[D.nd.O i] W) (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (c : ↥(Γn i dc n) → V)
     (hc : c ∈ fZ i dc n ρ) : (fun g => f (c g)) ∈ fZ i dc n ρ' := by
@@ -510,6 +583,11 @@ theorem fZ_map (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V) (ρ' : Represe
     rw [dif_neg hn]
     trivial
 
+/- English proof (translation)
+Distinguish the cases in `hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)`. Unfold `fPre at hc`. Rewrite `hc` using `[fZ_pos i dc (locRep ρM) hn]`. Rewrite using `[fZ_pos i dc ρ hn]`. Conclude with `finLoc_map _ _ _ ρ ρM f hf c hc`.
+
+Unfold `fZ`. Rewrite using `[dif_neg hn]`. Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem fLoc_map (ρM : Representation (D.nd.O i) ↥(Γn i dc n) M) (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V)
     (f : M →ₗ[D.nd.O i] V) (hf : ∀ g m, f (ρM g m) = ρ g (f m)) (c : ↥(Γn i dc n) → M)
     (hc : c ∈ fPre i dc n (locRep ρM) mkK) : (fun g => f (c g)) ∈ fZ i dc n ρ := by
@@ -526,6 +604,11 @@ def OrbC (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V) : Prop :=
   ∀ hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i), ∀ v : TrV (eK (D.nbr i _ hn)) V,
     Continuous fun g => repL (eK (D.nbr i _ hn)) ρ (Br.iota D.nbr i _ hn) g v
 
+/- English proof (translation)
+Distinguish the cases in `hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)`. Rewrite using `[fZ_pos i dc ρ hn]`. Conclude with `coboundaryMap_mem_finiteCocycles (PD := Br.PD D.loc D.nbr i _ hn) (h hn) v`. Unfold `fZ`. Rewrite using `[dif_neg hn]`.
+
+Discharge the goal by the elementary cases of `trivial`.
+-/
 theorem cob_mem_fZ (ρ : Representation (D.nd.O i) ↥(Γn i dc n) V) (h : OrbC i dc ρ) (v : V) :
     (fun g => ρ g v - v) ∈ fZ i dc n ρ := by
   by_cases hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i)
@@ -557,6 +640,13 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   [∀ w, Module (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat w).ρT')]
   [∀ w, IsScalarTower (D.nd.O i) (FractionRing (D.nd.O i)) (ReciprocityTheory.Gal.H1 (Dat w).ρT')]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨z, hz, rfl⟩` from `hx`. Set `f : T₁ →ₗ[D.nd.O i] VT' w` to `(Dat w).T'.subtype ∘ₗ vD.toLinearMap ∘ₗ π`. Establish `hf : ∀ g t, f (resRep ρ₁ (Γn i dc w) g t) = (Dat w).ρT' g (f t)`. Introduce `g t`.
+
+Use `show (((vD (π (resRep ρ₁ (Γn i dc w) g t)) : (Dat w).T') : VT' w)) = _`. Rewrite using `[heD]`. Both sides reduce to the same expression. Establish `hmem` using `fLoc_map i dc (resRep ρ₁ (Γn i dc w)) (Dat w).ρT' f hf _ hz`. Use `show _ ∈ Hf₂ i dc VT VT' Dat w`.
+
+Use `Submodule.subset_span ⟨ReciprocityTheory.Gal.cocycles1MapOfEquivariant (Dat w).ρTl' (Dat w).ρT' (Dat w).T'.subtype continuous_subtype_val (fun _ _ => rfl) (ReciprocityTheory.Gal.cocycles1MapOfEquivariant _ _ (vD.toLinearMap ∘ₗ π) hpD heD z), hmem, rfl⟩` and prove the remaining obligations.
+-/
 theorem im_le_Fs (w : ℕ) {T₁ T₂ : Type} [AddCommGroup T₁] [Module (D.nd.O i) T₁] [TopologicalSpace T₁]
     [IsTopologicalAddGroup T₁] [ContinuousConstSMul (D.nd.O i) T₁] [AddCommGroup T₂] [Module (D.nd.O i) T₂]
     (ρ₁ : Representation (D.nd.O i) (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) T₁) (π : T₁ →ₗ[D.nd.O i] T₂)
@@ -589,6 +679,9 @@ variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D 
   {R' : Subalgebra (D.nd.O i) (X' → Matrix d d (FractionRing (D.nd.O i)))} {Tc : Type} [CommRing Tc] [Algebra Tc R']
   (r : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* R') (χ : (D.nd.Om ≃ₐ[D.host.E] D.nd.Om) →* Tcˣ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show ∑ k, (Formalism.NG.evalAt (D.nd.O i) d R' x' (algebraMap (D.nd.O i) R' c)) j k • v k = algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) c • v j`. Simplify using `[Formalism.NG.evalAt, Matrix.algebraMap_matrix_apply, Finset.sum_ite_eq, Pi.algebraMap_apply]`.
+-/
 theorem evalScalar (x' : X') (c : D.nd.O i) (v : EvalSp (D.nd.O i) d R' x') :
     (algebraMap (D.nd.O i) R' c) • v = (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) c) • v := by
   funext j
@@ -596,6 +689,9 @@ theorem evalScalar (x' : X') (c : D.nd.O i) (v : EvalSp (D.nd.O i) d R' x') :
     algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) c • v j
   simp [Formalism.NG.evalAt, Matrix.algebraMap_matrix_apply, Finset.sum_ite_eq, Pi.algebraMap_apply]
 
+/- English proof (translation)
+The claim follows from `evalTower i (R' := R') x' OrbC i dc (repE i dc r χ x' (K.colIdx i dc l)) → LinearMap.range (colD (K := FractionRing (D.nd.O i)) (V := EvalSp (D.nd.O i) d R' x') r χ (Γn i dc (K.colIdx i dc l))) ≤ Lx i dc r χ x' l := by letI := evalModO i (R' := R') x' haveI := evalTower i (R' := …`.
+-/
 theorem colD_le_Lx (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'
     haveI := evalTower i (R' := R') x'
@@ -608,6 +704,9 @@ theorem colD_le_Lx (x' : X') (l : K.Col i dc) :
   rintro _ ⟨η, rfl⟩
   exact cob_mem_fZ i dc _ hO η
 
+/- English proof (translation)
+The claim follows from `evalTower i (R' := R') x' OrbC i dc (repE i dc r χ x' (K.colIdx i dc l)) → ∀ (f : P →ₗ[R'] EvalSp (D.nd.O i) d R' x') (z : coZ1s (resRep (uRep (D.nd.O i) (M := P) r χ) (Γn i dc (K.colIdx i dc l)))), Submodule.mkQ _ z ∈ Hfe₁ i dc r χ (Pe := P) l → (fun g : Γn i dc (K.colIdx i dc l …`.
+-/
 theorem comp_mem_Lx {P : Type} [AddCommGroup P] [Module R' P] [Module (D.nd.O i) P] [SMulCommClass R' (D.nd.O i) P]
     (hP : ∀ (c : D.nd.O i) (m : P), c • m = (algebraMap (D.nd.O i) R' c) • m) (x' : X') (l : K.Col i dc) :
     letI := evalModO i (R' := R') x'

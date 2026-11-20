@@ -25,6 +25,15 @@ def ExactAt : Prop :=
       Real.sqrt (ratAt p i) * petW (p.T.U ((i : ℕ) + 1)) (xiR D) (p.T.V ((i : ℕ) + 1)) (p.T.dict ((i : ℕ) + 1)) (Gk p i)
         (σ.comp (algebraMap p.T.Q.c.F D.what₂.LL)) f
 
+/- English proof (translation)
+Introduce `σ`. Use `⟨Real.sqrt (ratAt p i), Real.sqrt_pos.2 hr, ?_, fun f => h σ f⟩` and prove the remaining obligations. Rewrite using `[Real.log_sqrt hr.le]`. Establish `key : |Real.log (ratAt p i)| ≤ (K₁ + K₂) * unitE p`. Break down `le_or_gt 0 (unitE p) with hu0 | hu0` into its components or cases.
+
+Apply the tactic sequence `rw [abs_le]; constructor <;> nlinarith`. Establish `hs : K₁ + K₂ = 0` using `by nlinarith`. Establish `e1 : K₁ = 0` using `by linarith`. Establish `e2 : K₂ = 0` using `by linarith`. Substitute `e1 e2` using the available equality.
+
+Establish `: Real.log (ratAt p i) = 0`. Apply the tactic sequence `apply le_antisymm <;> simp_all`. Rewrite using `[this, hs]`. Simplify using the standard rewrite rules. Rewrite using `[abs_div, abs_two]`.
+
+Establish `: |Real.log (ratAt p i)| / 2 ≤ (K₁ + K₂) * unitE p / 2` using `by linarith`. Combine the linear relations using `[this, show (K₁ + K₂) * unitE p / 2 = (K₁ + K₂) / 2 * unitE p by ring]`.
+-/
 theorem measAt_of (h : ExactAt p i) (hr : 0 < ratAt p i) {K₁ K₂ : ℝ} (h1 : 0 ≤ K₁) (h2 : 0 ≤ K₂)
     (hu : Real.log (ratAt p i) ≤ K₁ * unitE p) (hl : -(K₂ * unitE p) ≤ Real.log (ratAt p i)) :
     MeasAt p i ((K₁ + K₂) / 2) := by

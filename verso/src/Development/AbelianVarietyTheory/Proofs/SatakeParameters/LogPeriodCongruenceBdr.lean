@@ -10,6 +10,11 @@ noncomputable section
 
 namespace GlobalTheory.Pst.StLat
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.PolynomialNormBound.main`. Consider the case `exact _root_.GlobalTheory.PolynomialNormBound.main`. Consider the case `(apply _root_.GlobalTheory.PolynomialNormBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PolynomialNormBound.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.PolynomialNormBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PolynomialNormBound.main ..)`.
+-/
 theorem exists_mul_eq_pow_pred {l : ℕ} [Fact l.Prime] {j m : ℕ} (hj : j ≠ 0) (hm : ¬ l ^ m ∣ j) :
     ∃ c : ℤ_[l], ((j : ℕ) : ℤ_[l]) * c = (l : ℤ_[l]) ^ (m - 1) := by
   first
@@ -20,6 +25,11 @@ theorem exists_mul_eq_pow_pred {l : ℕ} [Fact l.Prime] {j m : ℕ} (hj : j ≠ 
   | (intros; apply @_root_.GlobalTheory.PolynomialNormBound.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.PolynomialNormBound.main ..)
 
+/- English proof (translation)
+Introduce and unpack `⟨t, rfl⟩`. Break down `t with _ | _ | t` into its components or cases. Simplify using `at h1`. Simplify using `at h3`. Establish `: l ^ m * 2 ≤ l ^ m * (t + 1 + 1)` using `Nat.mul_le_mul_left _ (by omega)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_pow_dvd {l m j : ℕ} (h1 : j ≠ 0) (h2 : j < 2 * l ^ m) (h3 : j ≠ l ^ m) : ¬ l ^ m ∣ j := by
   rintro ⟨t, rfl⟩
   rcases t with _ | _ | t
@@ -28,6 +38,45 @@ theorem not_pow_dvd {l m j : ℕ} (h1 : j ≠ 0) (h2 : j < 2 * l ^ m) (h3 : j �
   · have : l ^ m * 2 ≤ l ^ m * (t + 1 + 1) := Nat.mul_le_mul_left _ (by omega)
     omega
 
+/- English proof (translation)
+Introduce `l _ ϖ hker hfil u hu m hm`. Take `⟨m, rfl⟩ : ∃ m', m = m' + 1` from `⟨m - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Use `set M := l ^ (m + 1) with hM`. Use `set n := 2 * M with hn`.
+
+Establish `hlpos : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hMpos : 0 < M` using `pow_pos hlpos _`. Use `set β := beta ϖ with hβ`. Establish `hc : ∀ j : ℕ, ∃ c : ℤ_[l], (j ≠ 0 ∧ j < n ∧ j ≠ M) → ((j : ℕ) : ℤ_[l]) * c = (l : ℤ_[l]) ^ m`. Introduce `j`.
+
+Distinguish the cases in `h : j ≠ 0 ∧ j < n ∧ j ≠ M`. Take `⟨c, hc⟩` from `exists_mul_eq_pow_pred (l := l) (m := m + 1) h.1 (not_pow_dvd h.1 h.2.1 h.2.2)`. Conclude with `⟨c, fun _ => by simpa using hc⟩`. Conclude with `⟨0, fun h' => (h h').elim⟩`. Use `choose c hc using hc`.
+
+Set `d : ℕ → ℤ_[l]` to `fun j => if j = M ∨ j = n then 0 else c j`. Set `a : ℕ → Per.AinfP l` to `fun k => (-1) ^ k * Per.zP l (d (k + 1)) * β ^ (k + 1)`. Set `S : Per.AinfP l` to `∑ k ∈ Finset.range n, a k`. Set `e0 : Per.AinfP l` to `(-1) ^ (M - 1)`. Set `T : Per.AinfP l` to `(-1) ^ (n - 1) * ((l : ℕ) : Per.AinfP l) ^ (m + 1) * ((n.factorial / (n - 1 + 1) : ℕ) : Per.AinfP l) * β ^ (n - 1 + 1)`.
+
+Establish `hS : S ∈ Sa ϖ`. Use `Subalgebra.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ ?_ _) ?_) (Subalgebra.pow_mem _ ?_ _)` and prove the remaining obligations. Conclude with `Subalgebra.neg_mem _ (Subalgebra.one_mem _)`. Use `first`.
+
+Consider the case `exact Subalgebra.algebraMap_mem _ _`. Consider the case `(rw [GlobalTheory.RingIface.padicIntMap_eq_algebraMap_comp]; exact Subalgebra.algebraMap_mem _ _)`. Conclude with `Algebra.subset_adjoin (Set.mem_singleton _)`. Establish `hterm : ∀ k ∈ Finset.range n, ((l : ℕ) : Per.AinfP l) ^ (m + 1) * ((-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * β ^ (k + 1)) = ((n.factorial : ℕ) : Per.AinfP l) * ((l : ℕ) : Per.AinfP l) * a k + (if k = M - 1 then ((n.factorial : ℕ) : Per.AinfP l) * ((-1) ^ k * β ^ (k …`. Introduce `k hk`.
+
+Rewrite `hk` using `[Finset.mem_range]`. Establish `hdvd : (k + 1) ∣ n.factorial` using `Nat.dvd_factorial (by omega) (by omega)`. Establish `hq : (((n.factorial / (k + 1) : ℕ) : Per.AinfP l)) * ((k + 1 : ℕ) : Per.AinfP l) = ((n.factorial : ℕ) : Per.AinfP l)`. Rewrite using `[← Nat.cast_mul, Nat.div_mul_cancel hdvd]`. Distinguish the cases in `h1 : k = M - 1`.
+
+Establish `h2 : ¬ k = n - 1` using `by omega`. Establish `hk1 : k + 1 = M` using `by omega`. Establish `hda : d (k + 1) = 0` using `by simp [d, hk1]`. Rewrite using `[if_pos h1, if_neg h2]`. Simplify using `only [a, hda, map_zero, mul_zero, zero_mul, add_zero, zero_add]`.
+
+Rewrite using `[← hq, hk1, hM, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : k = n - 1`. Establish `hk1 : k + 1 = n` using `by omega`. Establish `hda : d (k + 1) = 0` using `by simp [d, hk1]`.
+
+Rewrite using `[if_neg h1, if_pos h2]`. Simplify using `only [a, hda, map_zero, mul_zero, zero_mul, add_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ¬ (k + 1 = M ∨ k + 1 = n)` using `by omega`. Establish `hda : d (k + 1) = c (k + 1)` using `by simp only [d, hne, if_false]`.
+
+Establish `hck` using `hc (k + 1) ⟨by omega, by omega, by omega⟩`. Establish `hck'` using `congrArg (Per.zP l) hck`. Rewrite `hck'` using `[map_mul, map_natCast, map_pow, map_natCast]`. Rewrite using `[if_neg h1, if_neg h2]`. Simplify using `only [a, hda, add_zero]`.
+
+Rewrite using `[← hq]`. Take the linear combination `-(-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * β ^ (k + 1) * ((l : ℕ) : Per.AinfP l) * hck'`. Establish `hsum : ((l : ℕ) : Per.AinfP l) ^ (m + 1) * ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) * β ^ (k + 1) = ((n.factorial : ℕ) : Per.AinfP l) * (((l : ℕ) : Per.AinfP l) * S + e0 * β ^ M) + T`. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl hterm, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', ← Finset.mul_sum]`. Establish `hm1 : M - 1 ∈ Finset.range n` using `Finset.mem_range.2 (by omega)`.
+
+Establish `hn1 : n - 1 ∈ Finset.range n` using `Finset.mem_range.2 (by omega)`. Rewrite using `[if_pos hm1, if_pos hn1, Nat.sub_add_cancel (by omega : 1 ≤ M)]`. Simplify using `only [S, e0, T]`. Expand and normalize the polynomial expressions, which then agree. Establish `hβI : β ∈ Per.kerP l` using `by rw [hker]; exact Ideal.mem_span_singleton_self _`.
+
+Establish `hT : T ∈ Per.kerP l ^ n`. Establish `: β ^ (n - 1 + 1) ∈ Per.kerP l ^ n`. Rewrite using `[Nat.sub_add_cancel (by omega : 1 ≤ n)]`. Conclude with `Ideal.pow_mem_pow hβI n`. Conclude with `Ideal.mul_mem_left _ _ this`.
+
+Set `s : Per.BdRp l` to `algebraMap (Per.AinfP l) (Per.BdRp l) S`. Use `⟨s, Subring.mem_map.2 ⟨S, hS, rfl⟩, algebraMap (Per.AinfP l) (Per.BdRp l) e0, ?_, ?_⟩` and prove the remaining obligations. Break down `neg_one_pow_eq_or (Per.AinfP l) (M - 1) with h | h` into its components or cases. Use `left`. Simplify using `[e0, h]`.
+
+Use `right`. Simplify using `[e0, h]`. Rewrite using `[← Ideal.mem_span_singleton, ← hfil]`. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow]`. Establish `hev : ∀ x : Per.AinfP l, Per.ev l n (algebraMap (Per.AinfP l) (Per.BdRp l) x) = Ideal.Quotient.mk _ x` using `fun x => GlobalTheory.RingIface.ev_alg l n x`.
+
+Set `q : Per.AinfP l →+* Per.AinfP l ⧸ Per.kerP l ^ n` to `Ideal.Quotient.mk _`. Establish `hunit : IsUnit ((n.factorial : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n)`. Use `(GlobalTheory.RingBasics.isUnit_nat l n.factorial n.factorial_ne_zero).map q` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hqT : q T = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hT`.
+
+Establish `hs2` using `congrArg q hsum`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, hqT, add_zero] at hs2`. Establish `hun` using `hu n`. Apply `hunit.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[mul_zero]`.
+
+Simplify using `only [betaD, map_sub, map_mul, map_pow, map_natCast, s, hev]`. Express the relevant statement in the definitionally equal form `((n.factorial : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) * (((l : ℕ) : _) * (((l : ℕ) : _) ^ m * Per.ev l n u - q S) - q e0 * q β ^ M) = 0`. Express the relevant statement in the definitionally equal form `_ = q _ at hun`. Take the linear combination `((l : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) ^ (m + 1) * hun + hs2`.
+-/
 theorem log_trunc_pow : ∀ (l : ℕ) [Fact l.Prime] (ϖ : Per.Fl l), Per.kerP l = Ideal.span {beta ϖ} →
   (∀ n : ℕ, Per.FilP l n = Ideal.span {betaD ϖ ^ n}) → ∀ u : Per.BdRp l, IsLogP (beta ϖ) u →
   ∀ m : ℕ, 1 ≤ m → ∃ s ∈ Sg ϖ, ∃ e : Per.BdRp l, (e = 1 ∨ e = -1) ∧

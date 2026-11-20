@@ -14,6 +14,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 
 omit [SecondCountableTopology G] [DiscreteTopology Γ] [LocallyCompactSpace N] in
 
+/- English proof (translation)
+Use `letI : MeasurableSpace E := borel E`. Use `haveI : BorelSpace E := ⟨rfl⟩`. Establish `hl : LeftInv (Γ.subgroupOf N) (fun n : N => Φ (n * g))` using `fun γ hγ n => by`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ hγ _`.
+
+Establish `hm : Measurable (fun n : N => Φ (n * g))` using `(hΦ.comp ((continuous_subtype_val).mul continuous_const)).measurable`. Establish `hq : Measurable (descend (Γ.subgroupOf N) (fun n : N => Φ (n * g)))`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Establish `e : (descend (Γ.subgroupOf N) (fun n : N => Φ (n * g))) ∘ Quotient.mk'' = fun n : N => Φ (n * g)` using `hl.lift_descend`. Rewrite using `[e]`.
+
+Conclude with `hm`. Conclude with `hq.aestronglyMeasurable`.
+-/
 theorem aestronglyMeasurable_out {E : Type} [NormedAddCommGroup E] [SecondCountableTopology E]
     {Φ : G → E} (hΦ : Continuous Φ) (hinv : ∀ γ ∈ Γ, ∀ x, Φ (γ * x) = Φ x) (g : G)
     (μ : Measure (Quot (Γ.subgroupOf N))) :
@@ -33,6 +40,11 @@ theorem aestronglyMeasurable_out {E : Type} [NormedAddCommGroup E] [SecondCounta
 
 omit [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [DiscreteTopology Γ] [LocallyCompactSpace N] in
 
+/- English proof (translation)
+Take `⟨K, hK, hs⟩` from `hc`. Take `⟨C, hC⟩` from `(hK.prod hS).exists_bound_of_continuousOn (f := fun p : N × T => Ψ (p.1 * g) p.2) (hΨ.comp (((continuous_subtype_val.comp continuous_fst).mul continuous_const).prodMk continuous_snd)).continuousOn`. Use `⟨C, fun n t ht => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs n`. Establish `e : Ψ (((γ * n : N) : G) * g) t = Ψ (n * g) t`.
+
+Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ hγ _ _`. Conclude with `e ▸ hC (γ * n, t) ⟨hk, ht⟩`.
+-/
 theorem exists_bound {T E : Type} [TopologicalSpace T] [NormedAddCommGroup E] (hc : Cocompact Γ N)
     {Ψ : G → T → E} (hΨ : Continuous fun p : G × T => Ψ p.1 p.2) (hinv : ∀ γ ∈ Γ, ∀ x t, Ψ (γ * x) t = Ψ x t)
     (g : G) {S : Set T} (hS : IsCompact S) : ∃ C, ∀ (n : N) t, t ∈ S → ‖Ψ (n * g) t‖ ≤ C := by
@@ -45,6 +57,11 @@ theorem exists_bound {T E : Type} [TopologicalSpace T] [NormedAddCommGroup E] (h
     simp only [Subgroup.coe_mul, mul_assoc]; exact hinv _ hγ _ _
   exact e ▸ hC (γ * n, t) ⟨hk, ht⟩
 
+/- English proof (translation)
+Use `hc.isProbabilityMeasure` as an intermediate fact. Establish `hinv' : ∀ γ ∈ Γ, ∀ x t, fderiv ℝ (H (γ * x)) t = fderiv ℝ (H x) t` using `fun γ hγ x t => by`. Rewrite using `[show H (γ * x) = H x from funext (hinv γ hγ x)]`. Take `⟨C, hC⟩` from `exists_bound (Ψ := fun x t => fderiv ℝ (H x) t) hc h1 hinv' g (isCompact_closedBall t₀ 1)`. Take `⟨C0, hC0⟩` from `exists_bound (Ψ := H) hc h0 hinv g (isCompact_closedBall t₀ 1)`.
+
+Establish `hm : ∀ t, AEStronglyMeasurable (fun q : Quot (Γ.subgroupOf N) => H ((q.out : N) * g) t) (probMeasure Γ N)` using `fun t => aestronglyMeasurable_out (Φ := fun x => H x t) (h0.comp (continuous_id.prodMk continuous_const)) (fun γ hγ x => hinv γ hγ x t) g _`. Establish `hm' : AEStronglyMeasurable (fun q : Quot (Γ.subgroupOf N) => fderiv ℝ (H ((q.out : N) * g)) t₀) (probMeasure Γ N)` using `aestronglyMeasurable_out (Φ := fun x => fderiv ℝ (H x) t₀) (h1.comp (continuous_id.prodMk continuous_const)) (fun γ hγ x => hinv' γ hγ x t₀) g _`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) (Metric.ball_mem_nhds t₀ one_pos) (.of_forall hm) (Integrable.of_bound (hm t₀) C0 (.of_forall fun q => hC0 _ t₀ (Metric.mem_closedBall_self zero_le_one))) hm' (.of_forall fun q t ht => hC _ t (Metric.ball_subset …`.
+-/
 theorem hasFDerivAt_param {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (hc : Cocompact Γ N) (H : G → (Fin k → ℝ) → E)
     (hinv : ∀ γ ∈ Γ, ∀ x t, H (γ * x) t = H x t) (hd : ∀ x, Differentiable ℝ (H x))
@@ -72,6 +89,9 @@ theorem hasFDerivAt_param {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpa
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Rewrite using `[iteratedFDeriv_succ_eq_comp_right]`. Simplify using the standard rewrite rules.
+-/
 theorem iteratedFDeriv_fderiv_eq {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : (Fin k → ℝ) → E) (m : ℕ) (t : Fin k → ℝ) :
     iteratedFDeriv ℝ m (fderiv ℝ f) t =
@@ -81,6 +101,9 @@ theorem iteratedFDeriv_fderiv_eq {k : ℕ} {E : Type} [NormedAddCommGroup E] [No
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Establish `e : (fun p : X × (Fin k → ℝ) => H p.1 p.2) = fun p => continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E (iteratedFDeriv ℝ 0 (H p.1) p.2)`. Use function extensionality and compare the values at `p`. Simplify using `[continuousMultilinearCurryFin0_apply, iteratedFDeriv_zero_apply]`. Rewrite using `[e]`. Conclude with `(continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E).continuous.comp h`.
+-/
 theorem continuous_of_iteratedFDeriv_zero {X : Type} [TopologicalSpace X] {k : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {H : X → (Fin k → ℝ) → E}
     (h : Continuous fun p : X × (Fin k → ℝ) => iteratedFDeriv ℝ 0 (H p.1) p.2) :
@@ -90,6 +113,15 @@ theorem continuous_of_iteratedFDeriv_zero {X : Type} [TopologicalSpace X] {k : �
     funext p; simp [continuousMultilinearCurryFin0_apply, iteratedFDeriv_zero_apply]
   rw [e]; exact (continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E).continuous.comp h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ _ H hinv hs hm`. Establish `h1 : Continuous fun p : G × (Fin k → ℝ) => fderiv ℝ (H p.1) p.2`. Use `continuous_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) ?_` and prove the remaining obligations.
+
+Simplify using `only [iteratedFDeriv_fderiv_eq]`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ 0 (Fin k → ℝ) E).continuous.comp (hm 1)`. Use `contDiff_zero.2 (continuous_iff_continuousAt.2 fun t => ?_)` and prove the remaining obligations. Conclude with `(hasFDerivAt_param hc H hinv (fun x => (hs x).differentiable (by simp)) (continuous_of_iteratedFDeriv_zero (hm 0)) h1 g t).continuousAt`. Consider the case `succ n ih`.
+
+Introduce `E _ _ _ H hinv hs hm`. Establish `hm' : ∀ m : ℕ, Continuous fun p : G × (Fin k → ℝ) => iteratedFDeriv ℝ m (fderiv ℝ (H p.1)) p.2`. Introduce `m`. Simplify using `only [iteratedFDeriv_fderiv_eq]`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ m (Fin k → ℝ) E).continuous.comp (hm (m + 1))`.
+
+Establish `hinv' : ∀ γ ∈ Γ, ∀ x t, fderiv ℝ (H (γ * x)) t = fderiv ℝ (H x) t` using `fun γ hγ x t => by`. Rewrite using `[show H (γ * x) = H x from funext (hinv γ hγ x)]`. Use `contDiff_succ_iff_hasFDerivAt.2 ⟨_, ih (fun x => fderiv ℝ (H x)) hinv' (fun x => (contDiff_infty_iff_fderiv.1 (hs x)).2) hm', fun t => ?_⟩` and prove the remaining obligations. Conclude with `hasFDerivAt_param hc H hinv (fun x => (contDiff_infty_iff_fderiv.1 (hs x)).1) (continuous_of_iteratedFDeriv_zero (hm 0)) (continuous_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) (hm' 0)) g t`.
+-/
 theorem contDiff_param (hc : Cocompact Γ N) (g : G) {k : ℕ} (n : ℕ) :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (H : G → (Fin k → ℝ) → E),
       (∀ γ ∈ Γ, ∀ x t, H (γ * x) t = H x t) → (∀ x, ContDiff ℝ ∞ (H x)) →
@@ -121,6 +153,9 @@ theorem contDiff_param (hc : Cocompact Γ N) (g : G) {k : ℕ} (n : ℕ) :
 
 end GlobalTheory.Cusp.SmoothParam
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ Γ N _ _ hc k F hinv hs hm g`. Conclude with `contDiff_infty.2 fun n => GlobalTheory.Cusp.SmoothParam.contDiff_param hc g n F hinv hs hm`.
+-/
 theorem GlobalTheory.Cusp.contDiff_constTermOn_param : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {Γ N : Subgroup G} [DiscreteTopology Γ]
     [LocallyCompactSpace N], GlobalTheory.Cusp.Cocompact Γ N → ∀ {k : ℕ} (F : G → (Fin k → ℝ) → ℂ),

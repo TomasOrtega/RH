@@ -18,6 +18,11 @@ section Smooth
 
 variable {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
+/- English proof (translation)
+Introduce `g₀ hg`. Take `⟨U₁, F₁, o₁, m₁, c₁, e₁⟩` from `hf g₀ hg`. Take `⟨U₂, F₂, o₂, m₂, c₂, e₂⟩` from `hf' g₀ hg`. Use `⟨U₁ ∩ U₂, fun x => F₁ x + c • F₂ x, o₁.inter o₂, ⟨m₁, m₂⟩, (c₁.mono Set.inter_subset_left).add ((c₂.mono Set.inter_subset_right).const_smul c), ?_⟩` and prove the remaining obligations. Introduce `g hgU hgJ`.
+
+Simplify using `only`. Rewrite using `[e₁ g hgU.1 hgJ, e₂ g hgU.2 hgJ]`.
+-/
 theorem puniq_smooth_add_smul {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : Formalism.REAL.SmoothOnGV ε f)
     (hf' : Formalism.REAL.SmoothOnGV ε f') (c : ℂ) : Formalism.REAL.SmoothOnGV ε (fun x => f x + c • f' x) := by
   intro g₀ hg
@@ -29,6 +34,13 @@ theorem puniq_smooth_add_smul {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : Fo
   dsimp only
   rw [e₁ g hgU.1 hgJ, e₂ g hgU.2 hgJ]
 
+/- English proof (translation)
+Establish `hm : ∀ t : ℝ, Formalism.REAL.inUJ ε (g * NormedSpace.exp ((t : ℂ) • X))`. Introduce `t`. Establish `h2` using `Formalism.REAL.exp_indefinite_unitary_holds n ε X hX t`. Unfold `Formalism.REAL.inUJ at hg h2 ⊢`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hg, h2]`. Use `show deriv (fun t : ℝ => ψ (g * NormedSpace.exp ((t : ℂ) • X))) 0 = deriv (fun t : ℝ => φ (g * NormedSpace.exp ((t : ℂ) • X))) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+
+Conclude with `he _ (hm t)`.
+-/
 theorem puniq_rdV_congr {φ ψ : Matrix (Fin n) (Fin n) ℂ → E} (hφ : Formalism.REAL.SmoothOnGV ε φ)
     (he : ∀ x, Formalism.REAL.inUJ ε x → ψ x = φ x) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (hX : Formalism.REAL.inG ε X) : Formalism.REAL.RdV X ψ g = Formalism.REAL.RdV X φ g := by
@@ -46,6 +58,9 @@ theorem puniq_rdV_congr {φ ψ : Matrix (Fin n) (Fin n) ℂ → E} (hφ : Formal
   funext t
   exact he _ (hm t)
 
+/- English proof (translation)
+Establish `hc` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Simplify using `only [Formalism.REAL.EabV, Formalism.REAL.EcV]`. Rewrite using `[puniq_rdV_congr hφ he hg hc.1, puniq_rdV_congr hφ he hg hc.2.1]`.
+-/
 theorem puniq_eabV_congr {φ ψ : Matrix (Fin n) (Fin n) ℂ → E} (hφ : Formalism.REAL.SmoothOnGV ε φ)
     (he : ∀ x, Formalism.REAL.inUJ ε x → ψ x = φ x) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (a b : Fin n) : Formalism.REAL.EabV ε a b ψ g = Formalism.REAL.EabV ε a b φ g := by
@@ -53,6 +68,11 @@ theorem puniq_eabV_congr {φ ψ : Matrix (Fin n) (Fin n) ℂ → E} (hφ : Forma
   simp only [Formalism.REAL.EabV, Formalism.REAL.EcV]
   rw [puniq_rdV_congr hφ he hg hc.1, puniq_rdV_congr hφ he hg hc.2.1]
 
+/- English proof (translation)
+Establish `hc` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Simplify using `only [Formalism.REAL.EabV, Formalism.REAL.EcV]`. Rewrite using `[(Formalism.REAL.rdLinV n ε E f f' _ _ 0 c g hf hf' hc.1 hc.1 hg).2.2, (Formalism.REAL.rdLinV n ε E f f' _ _ 0 c g hf hf' hc.2.1 hc.2.1 hg).2.2]`. Simplify using `only [smul_add]`. Rewrite using `[smul_comm Complex.I c]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem puniq_eabV_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : Formalism.REAL.SmoothOnGV ε f)
     (hf' : Formalism.REAL.SmoothOnGV ε f') (c : ℂ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g)
     (a b : Fin n) :
@@ -66,12 +86,20 @@ theorem puniq_eabV_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : Formalism
   rw [smul_comm Complex.I c]
   abel
 
+/- English proof (translation)
+Establish `hc` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)`. Conclude with `puniq_smooth_add_smul (Formalism.REAL.rdSmoothV n ε E φ _ hφ hc.1) (Formalism.REAL.rdSmoothV n ε E φ _ hφ hc.2.1) Complex.I`.
+-/
 theorem puniq_eabV_smooth (a b : Fin n) {φ : Matrix (Fin n) (Fin n) ℂ → E}
     (hφ : Formalism.REAL.SmoothOnGV ε φ) : Formalism.REAL.SmoothOnGV ε (Formalism.REAL.EabV ε a b φ) := by
   have hc := Formalism.REAL.complex_parts_mem_lie_algebra_holds n ε (Matrix.single a b 1)
   exact puniq_smooth_add_smul (Formalism.REAL.rdSmoothV n ε E φ _ hφ hc.1)
     (Formalism.REAL.rdSmoothV n ε E φ _ hφ hc.2.1) Complex.I
 
+/- English proof (translation)
+Establish `hsm : ∀ (a b : Fin n) {φ : Matrix (Fin n) (Fin n) ℂ → E}, Formalism.REAL.SmoothOnGV ε φ → Formalism.REAL.SmoothOnGV ε (Formalism.REAL.EabV ε a b φ)` using `fun a b _ h => puniq_eabV_smooth a b h`. Establish `hg' : Formalism.REAL.inUJ ε g` using `hg`. Establish `step : ∀ a b : Fin n, Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a (fun x => f x + c • f' x)) g = Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a f) g + c • Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a f') g`. Introduce `a b`. Rewrite using `[puniq_eabV_congr (φ := fun x => Formalism.REAL.EabV ε b a f x + c • Formalism.REAL.EabV ε b a f' x) (puniq_smooth_add_smul (hsm b a hf) (hsm b a hf') c) (fun x hx => puniq_eabV_lin hf hf' c hx b a) hg' a b]`.
+
+Conclude with `puniq_eabV_lin (hsm b a hf) (hsm b a hf') c hg' a b`. Use `show (∑ a, ∑ b, Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a (fun x => f x + c • f' x)) g) = (∑ a, ∑ b, Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a f) g) + c • ∑ a, ∑ b, Formalism.REAL.EabV ε a b (Formalism.REAL.EabV ε b a f') g`. Simplify using `only [step, Finset.sum_add_distrib, Finset.smul_sum]`.
+-/
 theorem puniq_casimirV_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : S7.SmoothOnGV ε f)
     (hf' : S7.SmoothOnGV ε f') (c : ℂ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) :
     S7.casimirV ε (fun x => f x + c • f' x) g = S7.casimirV ε f g + c • S7.casimirV ε f' g := by
@@ -92,6 +120,15 @@ theorem puniq_casimirV_lin {f f' : Matrix (Fin n) (Fin n) ℂ → E} (hf : S7.Sm
 
 end Smooth
 
+/- English proof (translation)
+Use `letI := T.instNACG`. Use `letI := T.instIPS`. Use `letI := T.instFD`. Use `haveI : Nontrivial T.V := ⟨⟨T.w, 0, fun h => by`. Establish `hw` using `T.w_norm`.
+
+Rewrite `hw` using `[h, norm_zero]`. Conclude with `zero_ne_one hw⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue A`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ k : S7.KG ε, ∀ v ∈ Module.End.eigenspace A c, ((T.τ k : unitary (T.V →L[ℂ] T.V)) : T.V →L[ℂ] T.V) v ∈ Module.End.eigenspace A c`.
+
+Introduce `k v hv`. Rewrite `hv`, the goal using `[Module.End.mem_eigenspace_iff]`. Use `hA k v` as an intermediate fact. Simplify using `only [S7.KType.op] at this`. Rewrite using `[this, hv, map_smul]`.
+
+Break down `T.irred _ hinv with h | h` into its components or cases. Conclude with `absurd h (Module.End.hasEigenvalue_iff.mp hc)`. Establish `hv : v ∈ Module.End.eigenspace A c` using `by rw [h]; trivial`. Conclude with `Module.End.mem_eigenspace_iff.mp hv`.
+-/
 theorem puniq_schur {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε Λ) (A : T.V →ₗ[ℂ] T.V)
     (hA : ∀ (k : S7.KG ε) (v : T.V), A (T.op k v) = T.op k (A v)) : ∃ c : ℂ, ∀ v, A v = c • v := by
   letI := T.instNACG
@@ -115,6 +152,11 @@ theorem puniq_schur {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : S7.KType ε 
   · have hv : v ∈ Module.End.eigenspace A c := by rw [h]; trivial
     exact Module.End.mem_eigenspace_iff.mp hv
 
+/- English proof (translation)
+Take `⟨hu, hc⟩` from `hg`. Establish `hu' : gᴴ * g = 1`. Use `Matrix.mem_unitaryGroup_iff'.mp hu` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`.
+
+Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hu', Matrix.one_mul]`.
+-/
 theorem puniq_kset {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     g ∈ UJset ε := by
   obtain ⟨hu, hc⟩ := hg
@@ -124,6 +166,23 @@ theorem puniq_kset {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : 
   show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hu', Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨hfd, hst, hmin, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `set f : H₁ →ₗ[ℂ] H₂ := (U.toLinearEquiv : H₁ →ₗ[ℂ] H₂) with hf`. Establish `hfU : ∀ x, f x = U x` using `fun x => rfl`. Establish `hback : ∀ g ∈ Formalism.REAL.Kset ε, ∀ y, σ₁ g (U.symm y) = U.symm (σ₂ g y)`. Introduce `g hg y`.
+
+Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`. Establish `memS : ∀ x, f x ∈ S.map f → x ∈ S`. Introduce and unpack `x ⟨y, hy, hxy⟩`. Rewrite using `[← U.injective hxy]` and apply the resulting hypothesis.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `haveI := hfd`. Conclude with `(U.toLinearEquiv.submoduleMap S).finiteDimensional`. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨σ₁ g x, hst g hg x hx, hU g hg x⟩`.
+
+Introduce `S'' hle hst''`. Establish `hc` using `hmin (S''.comap f) (fun x hx => memS x (hle hx)) (fun g hg x hx => by show f (σ₁ g x) ∈ S''`. Rewrite using `[hfU, hU g hg]`. Conclude with `hst'' g hg _ hx)`. Establish `hsurj : Function.Surjective f` using `U.surjective`.
+
+Break down `hc with h | h` into its components or cases. Use `left`. Rewrite using `[← Submodule.map_comap_eq_of_surjective hsurj S'', h, Submodule.map_bot]`. Use `right`. Rewrite using `[← Submodule.map_comap_eq_of_surjective hsurj S'', h]`.
+
+Use `⟨U v, ⟨v, hvS, rfl⟩, fun h => hv0 (U.injective (by rw [h, map_zero])), fun θ hθ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hU _ hθ, hvw θ hθ, map_smul]`. Introduce `μ' w hw hw0 hww`. Use `hdom μ' (U.symm w) ?_ ?_ ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `hw`.
+
+Rewrite using `[hfU, LinearIsometryEquiv.symm_apply_apply]`. Conclude with `hx`. Introduce `h`. Apply `hw0` to reduce the goal to its premises. Rewrite using `[← U.apply_symm_apply w, h, map_zero]`.
+
+Introduce `θ hθ`. Rewrite using `[hback _ hθ, hww θ hθ, map_smul]`.
+-/
 theorem puniq_isKTypeOf_map {ε : Fin n → Bool} {H₁ H₂ : Type*} [NormedAddCommGroup H₁]
     [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂] [InnerProductSpace ℂ H₂]
     {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
@@ -169,6 +228,9 @@ theorem puniq_isKTypeOf_map {ε : Fin n → Bool} {H₁ H₂ : Type*} [NormedAdd
     · intro θ hθ
       rw [hback _ hθ, hww θ hθ, map_smul]
 
+/- English proof (translation)
+Establish `hF' : MemLp (fun g : S7.UJ ε => F (S7.toM g)) 2 (Measure.haar : Measure (S7.UJ ε))` using `hF`. Rewrite using `[MeasureTheory.Measure.isMulLeftInvariant_eq_smul μ (Measure.haar : Measure (S7.UJ ε))]`. Conclude with `hF'.smul_measure ENNReal.coe_ne_top`.
+-/
 theorem puniq_memLp_haar {ε : Fin n → Bool} {X : Type*} [NormedAddCommGroup X]
     (F : Matrix (Fin n) (Fin n) ℂ → X)
     (hF : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))

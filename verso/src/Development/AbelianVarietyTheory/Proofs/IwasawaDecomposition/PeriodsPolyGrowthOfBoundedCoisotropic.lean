@@ -22,6 +22,11 @@ noncomputable section
 
 namespace GlobalTheory.ShFam.Hor.LogCh.PerGrowth
 
+/- English proof (translation)
+Simplify using `only [Matrix.det_apply']`. Use `DifferentiableOn.fun_sum fun σ _ => DifferentiableOn.const_mul ?_ _` and prove the remaining obligations. Establish `key : ∀ t : Finset (Fin d), DifferentiableOn ℂ (fun b => ∏ i ∈ t, A b (σ i) i) B`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`.
+
+Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hA _ _).mul ih`. Conclude with `key _`.
+-/
 theorem differentiableOn_matrix_det_of_entries_normedSpace {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {B : Set V} {d : ℕ}
     {A : V → Matrix (Fin d) (Fin d) ℂ} (hA : ∀ i j, DifferentiableOn ℂ (fun b => A b i j) B) :
     DifferentiableOn ℂ (fun b => (A b).det) B := by
@@ -36,6 +41,11 @@ theorem differentiableOn_matrix_det_of_entries_normedSpace {V : Type*} [NormedAd
       exact (hA _ _).mul ih
   exact key _
 
+/- English proof (translation)
+Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply]`. Use `((differentiableOn_matrix_det_of_entries_normedSpace hA).inv hd).mul (differentiableOn_matrix_det_of_entries_normedSpace fun a b => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `differentiableOn_const _`.
+
+Conclude with `hA _ _`.
+-/
 theorem differentiableOn_matrix_inv_apply_of_entries {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {B : Set V} {d : ℕ}
     {A : V → Matrix (Fin d) (Fin d) ℂ} (hA : ∀ i j, DifferentiableOn ℂ (fun b => A b i j) B)
     (hd : ∀ b ∈ B, (A b).det ≠ 0) (i j : Fin d) :
@@ -47,6 +57,39 @@ theorem differentiableOn_matrix_inv_apply_of_entries {V : Type*} [NormedAddCommG
   · exact differentiableOn_const _
   · exact hA _ _
 
+/- English proof (translation)
+Introduce `n a g r lam M W hd hs hW hb`. Distinguish the cases in `hne : (logDom n a).Nonempty`. Use `swap`. Conclude with `⟨0, 0, fun s hs' => absurd ⟨s, hs'⟩ hne⟩`. Take `⟨s0, hs0⟩` from `hne`.
+
+Take `⟨hli0, hsp0, Hm0, hH0, hP0, hM0⟩` from `hs s0 hs0`. Take `⟨hMa, hMd, hr⟩` from `GlobalTheory.T.hermForm_periods_alternating_nondeg_rank_eq_two_mul g r (lam s0) M Hm0 hli0 hsp0 hH0 hP0 hM0`. Take `⟨d, e, f, heW, hee, hfe, hsp⟩` from `GlobalTheory.T.exists_lagrangian_dual_pair_in_coisotropic r M W hMa hMd hW`. Take `⟨hli, hrd⟩` from `GlobalTheory.T.isotropicDual_family_linearIndependent_rank_eq_two_mul r d M e f hee hfe hsp`. Take `rfl : d = g` from `by omega`.
+
+Take `⟨E, hE⟩ : ∃ E : (Fin n → ℂ) → Fin d → Fin d → ℂ, E = fun s i => ∑ m, (e i m : ℂ) • lam s m` from `⟨_, rfl⟩`. Take `⟨F, hF⟩ : ∃ F : (Fin n → ℂ) → Fin d → Fin d → ℂ, F = fun s j => ∑ m, (f j m : ℂ) • lam s m` from `⟨_, rfl⟩`. Take `⟨Em, hEm⟩ : ∃ Em : (Fin n → ℂ) → Matrix (Fin d) (Fin d) ℂ, Em = fun s => Matrix.of fun k i => E s i k` from `⟨_, rfl⟩`. Take `⟨Fm, hFm⟩ : ∃ Fm : (Fin n → ℂ) → Matrix (Fin d) (Fin d) ℂ, Fm = fun s => Matrix.of fun k j => F s j k` from `⟨_, rfl⟩`. Take `⟨τ, hτ⟩ : ∃ τ : (Fin n → ℂ) → Fin d → Fin d → ℂ, τ = fun s i j => ((Em s)⁻¹ * Fm s) i j` from `⟨_, rfl⟩`.
+
+Establish `hlinE : LinearIndependent ℝ e` using `hli.comp Sum.inl Sum.inl_injective`. Establish `hpt : ∀ s ∈ logDom n a, (Em s).det ≠ 0 ∧ (∀ j, F s j = ∑ i, τ s i j • E s i) ∧ (∀ v : Fin d → ℝ, v ≠ 0 → 0 < (∑ i, ∑ j, (v i : ℂ) * τ s i j * (v j : ℂ)).im) ∧ ∀ i j, τ s i j - τ s j i = ((f i ⬝ᵥ M *ᵥ f j : ℝ) : ℂ)`. Introduce `s hs'`. Take `⟨hli1, -, Hm, hH, hP, hMs⟩` from `hs s hs'`. Establish `h6` using `GlobalTheory.T.hermForm_im_real_combination_eq_dotProduct d r (lam s) M Hm hMs`.
+
+Establish `hEE : ∀ i j, (hermForm Hm (E s i) (E s j)).im = 0` using `fun i j => by`. Rewrite using `[hE]`. Conclude with `(h6 _ _).trans (hee i j)`. Establish `hFE : ∀ i j, (hermForm Hm (F s i) (E s j)).im = if i = j then 1 else 0` using `fun i j => by`. Rewrite using `[hE, hF]`.
+
+Conclude with `(h6 _ _).trans (hfe i j)`. Establish `hFF : ∀ i j, (hermForm Hm (F s i) (F s j)).im = f i ⬝ᵥ M *ᵥ f j` using `fun i j => by`. Rewrite using `[hF]`. Conclude with `h6 _ _`. Establish `hEli : LinearIndependent ℝ (E s)`.
+
+Rewrite using `[hE]`. Conclude with `GlobalTheory.T.linearIndependent_real_combinations_of_independent d r d (lam s) e hli1 hlinE`. Establish `hdet : (Em s).det ≠ 0` using `by rw [hEm]; exact GlobalTheory.T.det_ne_zero_of_real_independent_isotropic_hermitian d Hm (E s) hP hEli hEE`. Establish `hFt : ∀ j, F s j = ∑ i, τ s i j • E s i`. Introduce `j`.
+
+Establish `hm` using `Matrix.mul_nonsing_inv_cancel_left (Em s) (Fm s) (Ne.isUnit hdet)`. Use function extensionality and compare the values at `k`. Use `congrFun (congrFun hm k) j` as an intermediate fact. Establish `hEmk : ∀ k i, Em s k i = E s i k` using `fun k i => by simp [hEm]`. Establish `hFmk : ∀ k i, Fm s k i = F s i k` using `fun k i => by simp [hFm]`.
+
+Rewrite `this` using `[Matrix.mul_apply]`. Simplify using `only [hEmk, hFmk] at this`. Rewrite using `[hτ]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← this]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Take `⟨h4a, h4b⟩` from `GlobalTheory.T.riemann_relations_period_matrix_hermitian d d Hm (E s) (F s) (τ s) hH hP hFt hEE hFE`. Conclude with `⟨hdet, hFt, h4a, fun i j => (h4b i j).trans (by rw [hFF])⟩`. Establish `hlam : ∀ m k, DifferentiableOn ℂ (fun s => lam s m k) (logDom n a)` using `fun m k => differentiableOn_pi.1 (differentiableOn_pi.1 hd m) k`. Establish `hEmd : ∀ k i, DifferentiableOn ℂ (fun s => Em s k i) (logDom n a)` using `fun k i => by`.
+
+Simplify using `only [hEm, hE, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `DifferentiableOn.fun_sum fun m _ => (hlam m k).const_mul _`. Establish `hFmd : ∀ k i, DifferentiableOn ℂ (fun s => Fm s k i) (logDom n a)` using `fun k i => by`. Simplify using `only [hFm, hF, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `DifferentiableOn.fun_sum fun m _ => (hlam m k).const_mul _`.
+
+Establish `hτd : DifferentiableOn ℂ τ (logDom n a)`. Use `differentiableOn_pi.2 fun i => differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [hτ, Matrix.mul_apply]`. Conclude with `DifferentiableOn.fun_sum fun l _ => (differentiableOn_matrix_inv_apply_of_entries hEmd (fun s hs' => (hpt s hs').1) i l).mul (hFmd l j)`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.periodMatrix_polynomialGrowth_puncturedPolydisc n a d τ (fun i j => ((f i ⬝ᵥ M *ᵥ f j : ℝ) : ℂ)) hτd (fun s hs' => (hpt s hs').2.2.1) (fun s hs' => (hpt s hs').2.2.2)`.
+
+Use `set R : Set (Fin n → ℂ) := {s | s ∈ logDom n a ∧ ‖logExp a s‖ ≤ 1 / 2 ∧ ∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi} with hR`. Establish `hEb : ∀ i, ∃ C : ℝ, ∀ s ∈ R, ‖E s i‖ ≤ C` using `fun i => by`. Take `⟨C, hC⟩` from `hb (e i) (heW i)`. Conclude with `⟨C, fun s hs' => by rw [hE]; exact hC s hs'.1 hs'.2.1⟩`. Establish `h9` using `GlobalTheory.T.polynomial_growth_matrix_mul_bounded_vectors n d d R τ E ⟨C, k, fun s hs' => hC s hs'.1 hs'.2.1 hs'.2.2⟩ hEb`.
+
+Take `⟨C', k', h8⟩` from `GlobalTheory.T.polynomial_growth_of_spanning_combinations n d r (Fin d ⊕ Fin d) R lam (Sum.elim e f) hsp (fun i => by`. Break down `i with i | j` into its components or cases. Take `⟨C, hC⟩` from `hEb i`. Conclude with `⟨C, 0, fun s hs' => by simpa [hE] using hC s hs'⟩`. Take `⟨C, k, hC⟩` from `h9 j`.
+
+Use `⟨C, k, fun s hs' => ?_⟩` and prove the remaining obligations. Use `(hpt s hs'.1).2.1 j` as an intermediate fact. Simplify using `only [hF] at this`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[this]`.
+
+Conclude with `hC s hs')`. Conclude with `⟨C', k', fun s hs' h1 h2 => h8 s ⟨hs', h1, h2⟩⟩`.
+-/
 theorem lam_polyGrowth_of_coisotropic : ∀ (n a g r : ℕ) (lam : (Fin n → ℂ) → Fin r → Fin g → ℂ) (M : Matrix (Fin r) (Fin r) ℝ) (W : Submodule ℝ (Fin r → ℝ)), DifferentiableOn ℂ lam (logDom n a) → (∀ s ∈ logDom n a, LinearIndependent ℝ (lam s) ∧ Submodule.span ℝ (Set.range (lam s)) = ⊤ ∧ ∃ Hm : Matrix (Fin g) (Fin g) ℂ, Hm.IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ i j, (hermForm Hm (lam s i) (lam s j)).im = M i j) → (∀ v : Fin r → ℝ, (∀ w ∈ W, v ⬝ᵥ M *ᵥ w = 0) → v ∈ W) → (∀ w ∈ W, ∃ C : ℝ, ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → ‖∑ j, (w j : ℂ) • lam s j‖ ≤ C) → ∃ (C : ℝ) (k : ℕ), ∀ s ∈ logDom n a, ‖logExp a s‖ ≤ 1 / 2 → (∀ j : Fin n, (j : ℕ) < a → |(s j).im| ≤ Real.pi) → ‖lam s‖ ≤ C * (1 + ‖s‖) ^ k := by
   intro n a g r lam M W hd hs hW hb
   by_cases hne : (logDom n a).Nonempty

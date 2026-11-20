@@ -21,6 +21,31 @@ noncomputable section
 
 namespace GlobalTheory.NrmVol
 
+/- English proof (translation)
+Introduce `D v a b r`. Use `haveI : BorelSpace (Fv D.host.F v) := ⟨rfl⟩`. Use `haveI := GlobalTheory.SplitWeil.secondCountable (Fv D.host.F v)`. Use `haveI : OpensMeasurableSpace (Matrix (Fin b) (Fin a) (Fv D.host.F v)) := inferInstanceAs (OpensMeasurableSpace (Fin b → Fin a → Fv D.host.F v))`. Apply the tactic sequence `have hentry : ∀ i j, Continuous fun x : Matrix (Fin b) (Fin a) (Fv D.host.F v) => x i j := fun i j => (continuous_apply j).comp (continuous_apply i)`.
+
+Establish `htop : Continuous fun x : Matrix (Fin b) (Fin a) (Fv D.host.F v) => topL r x`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Unfold `topL`. Distinguish the cases in `h : i.val < b ∧ j.val < a`. Simplify using `only [dif_pos h]`.
+
+Apply the tactic sequence `exact hentry _ _`. Simplify using `only [dif_neg h]`. Conclude with `continuous_const`. Establish `hdet : Continuous fun x : Matrix (Fin b) (Fin a) (Fv D.host.F v) => (topL r x).det` using `htop.matrix_det`. Establish `hball : IsOpen {y : Fv D.host.F v | Valued.v y < 1}`.
+
+Simplify using `using Valued.isOpen_ball (Fv D.host.F v) 1`. Establish `hsph : IsOpen {y : Fv D.host.F v | Valued.v y = 1}`. Simplify using `using Valued.isOpen_sphere (Fv D.host.F v) (r := 1) one_ne_zero`. Establish `hcb : IsOpen {y : Fv D.host.F v | Valued.v y ≤ 1}`. Simplify using `using Valued.isOpen_closedBall (Fv D.host.F v) (r := 1) one_ne_zero`.
+
+Establish `h1 : MeasurableSet {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | IsUnit (topL r x).det}`. Establish `: {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | IsUnit (topL r x).det} = (fun x => (topL r x).det) ⁻¹' {0}ᶜ`. Use extensionality with `x`. Simplify using `[isUnit_iff_ne_zero]`. Rewrite using `[this]`.
+
+Conclude with `(isOpen_compl_singleton.preimage hdet).measurableSet`. Establish `h2 : MeasurableSet {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | Valued.v (topL r x).det = 1}` using `(hsph.preimage hdet).measurableSet`. Establish `h3 : MeasurableSet {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F}`. Establish `: {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F} = ⋂ i, ⋂ j, (fun x : Matrix (Fin b) (Fin a) (Fv D.host.F v) => x i j) ⁻¹' {y | Valued.v y ≤ 1}`. Use extensionality with `x`.
+
+Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage, HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[this]`. Apply the tactic sequence `exact MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => (hcb.preimage (hentry i j)).measurableSet`. Establish `h4 : MeasurableSet {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, r ≤ i.val → j.val < r → Valued.v (x i j) < 1}`. Establish `: {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | ∀ i j, r ≤ i.val → j.val < r → Valued.v (x i j) < 1} = ⋂ i, ⋂ j, {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | r ≤ i.val → j.val < r → Valued.v (x i j) < 1}`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[this]`. Use `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : r ≤ i.val ∧ j.val < r`.
+
+Establish `: {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | r ≤ i.val → j.val < r → Valued.v (x i j) < 1} = (fun x : Matrix (Fin b) (Fin a) (Fv D.host.F v) => x i j) ⁻¹' {y | Valued.v y < 1}`. Use extensionality with `x`. Simplify using `[hij.1, hij.2]`. Rewrite using `[this]`. Apply the tactic sequence `exact (hball.preimage (hentry i j)).measurableSet`.
+
+Establish `: {x : Matrix (Fin b) (Fin a) (Fv D.host.F v) | r ≤ i.val → j.val < r → Valued.v (x i j) < 1} = Set.univ`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_univ, iff_true]`. Introduce `h h'`. Conclude with `absurd ⟨h, h'⟩ hij`.
+
+Rewrite using `[this]`. Conclude with `MeasurableSet.univ`. Establish `: suppQ (a` using `a) (b := b) v r = {x | IsUnit (topL r x).det} ∩ {x | Valued.v (topL r x).det = 1} ∩ {x | ∀ i j, x i j ∈ v.adicCompletionIntegers D.host.F} ∩ {x | ∀ i j, r ≤ i.val → j.val < r → Valued.v (x i j) < 1} := by`. Use extensionality with `x`. Simplify using `only [suppQ, Set.mem_setOf_eq, Set.mem_inter_iff, and_assoc]`.
+
+Rewrite using `[this]`. Conclude with `((h1.inter h2).inter h3).inter h4`.
+-/
 theorem measurableSet_suppQ : ∀ (D : D7) (v : FinPl D) (a b r : ℕ),
     MeasurableSet (GlobalTheory.NrmVol.suppQ (a := a) (b := b) v r) := by
   intro D v a b r

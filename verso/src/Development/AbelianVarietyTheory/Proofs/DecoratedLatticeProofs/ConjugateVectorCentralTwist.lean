@@ -16,6 +16,25 @@ namespace GlobalTheory.MiTop
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hDS hCR D L hT Gi Gl Kc Yd cX ex W hB hPu z hzf hzc v hv u`. Take `⟨-, hInf, -, hMatch, -, -⟩` from `GlobalTheory.T.bottom_hypothesis_matching_central W hB`. Establish `hEv` using `GlobalTheory.T.evalAll_and_norm_eq_one_of_conjVec hDS hCR D W.S.X W.Q.instEq W.Q.Rl.θ _ (W.Q.Rl.MY 0) (rJ W) (rChi W) (z * (show GA D (D.sp.Y 0) from W.Q.tS)) v (by simp) hInf hB.gap hB.idE (hMatch z hzf hzc) hv`. Take `⟨⟨j, hjbij, hj⟩, -⟩` from `hEv`. Establish `hF` using `hB.fin`.
+
+Establish `hram : (D.mem u).A.Mram ≤ (D.mem u).A.Mu0` using `inf_le_left`. Establish `hpair : ∀ (Tm : MultT W.Q.Rl.θ (W.Q.Rl.MY 0) (rJ W) (rChi W)) (C : Cu W.S.X u W.S.Y.hK), IsPair W u (z * (show GA D (D.sp.Y 0) from W.Q.tS)) (Tm.1 (PiTensorProduct.tprod ℂ v)) C ⟪((j Tm : HHX W.S.X) : L2X W.S.X), PuFun W.S.X u W.S.Y.hK (W.S.Y.Dt u) C⟫_ℂ`. Introduce `Tm C`. Unfold `IsPair`. Set `g : L2X W.S.X` to `((j Tm : HHX W.S.X) : L2X W.S.X)`.
+
+Establish `hg : (g : W.S.X.B.I.GA → ℂ) =ᵐ[muX W.S.X] fun x => star (evS W.S.X W.Q.instEq (z * (show GA D (D.sp.Y 0) from W.Q.tS)) (Tm.1 (PiTensorProduct.tprod ℂ v)) x)` using `hj Tm`. Use `⟨star g, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ((star g : L2X W.S.X) : W.S.X.B.I.GA → ℂ) =ᵐ[muX W.S.X] star (g : W.S.X.B.I.GA → ℂ)` using `MeasureTheory.Lp.coeFn_star g`. Use `h1.trans ((hg.fun_comp star).trans (Filter.EventuallyEq.of_eq ?_))` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+
+Conclude with `star_star _`. Rewrite using `[star_star]`. Use `⟨fun φ => ?_, fun T hT C => ⟨_, hpair ⟨T, hT⟩ C⟩, ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `(W.S.bij u).2 (D.eMu u φ).1 (hram (D.eMu u φ).2)`. Conclude with `⟨C, hC⟩`.
+
+Take `⟨φr, hφr⟩` from `hPu u`. Set `x` to `(D.s_Cu u).symm ⟨φr.1, φr.2.1⟩`. Set `C : Cu W.S.X u W.S.Y.hK` to `(W.S.hI hF).eCu u x`. Establish `hpin` using `W.S.colPin hF u x`. Establish `hC : IsCol W u C ((D.eMu u).symm φr)` using `by show Formalism.L2.SG.ColDict.colDictL W.S.X (W.S.tr u) W.S.Y.hK C = _`.
+
+Rewrite using `[LinearEquiv.apply_symm_apply, ← Formalism.L2.SG.ColDict.colDict_apply W.S.X (W.S.tr u) W.S.Y.hK (W.S.into u) (W.S.bij u)]`. Establish `hpin' : Formalism.L2.SG.ColDict.colDict W.S.X (W.S.tr u) W.S.Y.hK (W.S.into u) (W.S.bij u) C = D.s_Cu u x` using `hpin`. Rewrite using `[hpin', LinearEquiv.apply_symm_apply]`. Set `P : HHX W.S.X` to `(Formalism.L2.SG.PackageTie2.sOf hF).Pu u C`. Establish `hP : P ≠ 0`.
+
+Establish `e` using `(W.S.hI hF).Pu_eq u x`. Introduce `h0`. Apply `hφr` to reduce the goal to its premises. Establish `: (W.S.hI hF).eHH (D.s.Pu u x) = 0` using `e.trans h0`. Conclude with `(LinearIsometryEquiv.map_eq_zero_iff _).1 this`.
+
+Take `⟨Tm, hTm⟩` from `hjbij.2 P`. Use `⟨(D.eMu u).symm φr, C, _, Tm.1, Tm.2, hC, hpair Tm C, ?_⟩` and prove the remaining obligations. Rewrite using `[hTm]`. Establish `hPv : ((P : HHX W.S.X) : L2X W.S.X) = PuFun W.S.X u W.S.Y.hK (W.S.Y.Dt u) C` using `rfl`. Rewrite using `[hPv]`.
+
+Use `inner_self_ne_zero.2 ?_` and prove the remaining obligations. Rewrite using `[← hPv]`. Conclude with `fun h => hP (Subtype.ext h)`.
+-/
 theorem anchor_pairs : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex), BotHyp W → PuNZ D → ∀ z ∈ GfC (D.sp.Y 0), z ∈ Subgroup.center (GA D (D.sp.Y 0)) → ∀ v : (W.Q.Rl.MY 0).Vec, ConjVec W.S.X W.Q.instEq W.Q.Rl.θ (W.Q.Rl.MY 0) v → ∀ u, (∀ φ, ∃ C, IsCol W u C φ) ∧ (∀ T ∈ ThetaLiftSpaceZero W, ∀ C, ∃ b, IsPair W u (z * (show GA D (D.sp.Y 0) from W.Q.tS)) (T (PiTensorProduct.tprod ℂ v)) C b) ∧ ∃ (φ : D.what₂.Mu u) (C : _) (b : ℂ), ∃ T ∈ ThetaLiftSpaceZero W, IsCol W u C φ ∧ IsPair W u (z * (show GA D (D.sp.Y 0) from W.Q.tS)) (T (PiTensorProduct.tprod ℂ v)) C b ∧ b ≠ 0 := by
   intro hDS hCR D L hT Gi Gl Kc Yd cX ex W hB hPu z hzf hzc v hv u
   obtain ⟨-, hInf, -, hMatch, -, -⟩ := GlobalTheory.T.bottom_hypothesis_matching_central W hB

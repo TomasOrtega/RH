@@ -24,11 +24,29 @@ def intZ (D : D7) {H : Host D.host.E} (Dw : Datum H) (l : Level H) (n : ℕ) (w 
   Nat.card (Fin n → LevQ Dw l) * (NumberField.discr D.host.E).natAbs ^ Formalism.L2.Pj.DF Dw w *
     l.M ^ Formalism.L2.Pj.DF Dw w
 
+/- English proof (translation)
+Rewrite using `[intZ, GlobalTheory.PlaceInt.card_fun_levQ]`.
+-/
 theorem intZ_eq (D : D7) {H : Host D.host.E} (Dw : Datum H) (l : Level H) (n : ℕ) (w : (D.host.E →+* ℂ) × ℕ → ℕ) :
     intZ D Dw l n w = l.M ^ (Module.finrank ℚ D.host.E / 2 * (Dw.p + Dw.q) * n) *
       (NumberField.discr D.host.E).natAbs ^ Formalism.L2.Pj.DF Dw w * l.M ^ Formalism.L2.Pj.DF Dw w := by
   rw [intZ, GlobalTheory.PlaceInt.card_fun_levQ]
 
+/- English proof (translation)
+Establish `h1 : v 1 = 0` using `by have := hv 1 1 one_ne_zero one_ne_zero; rw [Nat.mul_one] at this; omega`. Establish `key : ∀ N : ℕ, N ≠ 0 → ∑ p ∈ s, (padicValNat p N : ℤ) * v p ≤ v N`. Introduce `N`. Proceed by induction on `N using Nat.recOnMul with`. Consider the case `zero => exact fun h => absurd rfl h`.
+
+Consider the case `one => intro _`. Simplify using `[h1]`. Consider the case `prime l hl`. Introduce `_`. Establish `: ∀ p ∈ s, (padicValNat p l : ℤ) * v p = if p = l then v l else 0`.
+
+Introduce `p hp`. Use `haveI := Fact.mk (hs p hp)`. Use `haveI := Fact.mk hl`. Use `split_ifs with h`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[padicValNat_primes h]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_ite_eq']`. Use `split_ifs`.
+
+Use `exacts [le_rfl, h0 _]`. Consider the case `mul a b iha ihb`. Introduce `hab`. Establish `ha` using `left_ne_zero_of_mul hab`. Establish `hb` using `right_ne_zero_of_mul hab`.
+
+Establish `: ∀ p ∈ s, (padicValNat p (a * b) : ℤ) * v p = (padicValNat p a : ℤ) * v p + (padicValNat p b : ℤ) * v p`. Introduce `p hp`. Use `haveI := Fact.mk (hs p hp)`. Rewrite using `[padicValNat.mul ha hb]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_add_distrib, hv a b ha hb]`. Conclude with `add_le_add (iha ha) (ihb hb)`. Conclude with `key N hN`.
+-/
 theorem sum_padicValNat_mul_le (v : ℕ → ℤ) (hv : ∀ a b, a ≠ 0 → b ≠ 0 → v (a * b) = v a + v b) (h0 : ∀ a, 0 ≤ v a)
     {N : ℕ} (hN : N ≠ 0) (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) :
     ∑ p ∈ s, (padicValNat p N : ℤ) * v p ≤ v N := by
@@ -63,6 +81,17 @@ theorem sum_padicValNat_mul_le (v : ℕ → ℤ) (hv : ∀ a b, a ≠ 0 → b �
       exact add_le_add (iha ha) (ihb hb)
   exact key N hN
 
+/- English proof (translation)
+Use `haveI : CharZero T.Fr := algebraRat.charZero _`. Establish `hN : (NumberField.discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero E)`. Establish `h0 : ∀ a : ℕ, 0 ≤ vV T.V (a : T.Fr)` using `fun a => GlobalTheory.PlaceInt.HostChart.vV_nat_nonneg T a`. Establish `h1` using `sum_padicValNat_mul_le (fun a => vV T.V (a : T.Fr)) (fun a b ha hb => by`. Simplify using `only [Nat.cast_mul]`.
+
+Conclude with `vV_mul (Nat.cast_ne_zero.2 ha) (Nat.cast_ne_zero.2 hb)) h0 hN s hs`. Establish `h2 : ∑ p ∈ s, (padicValNat p (NumberField.discr E).natAbs : ℝ) * (vV T.V (p : T.Fr) : ℝ) ≤ (vV T.V (((NumberField.discr E).natAbs : ℕ) : T.Fr) : ℝ)`. Establish `h` using `(Int.cast_le (R := ℝ)).2 h1`. Rewrite `h` using `[Int.cast_sum]`. Simplify `h` using `only [Int.cast_mul, Int.cast_natCast]`.
+
+Establish `hk : (1 : ℝ) ≤ (Module.finrank ℚ E : ℝ)` using `by exact_mod_cast (Module.finrank_pos (R := ℚ) (M := E))`. Rewrite using `[Nat.cast_pow, GlobalTheory.ShortBound.vV_pow (Nat.cast_ne_zero.2 hN), Int.cast_mul, Int.cast_natCast]`. Establish `hX : (0 : ℝ) ≤ (X : ℝ) / e` using `by positivity`. Use `le_trans ?_ ((mul_le_mul_of_nonneg_left h2 hX).trans (le_of_eq (by ring)))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_le_sum fun p _ => ?_` and prove the remaining obligations. Establish `h3 : (0 : ℝ) ≤ (vV T.V (p : T.Fr) : ℝ)` using `by exact_mod_cast h0 p`. Establish `h4 : (padicValNat p (NumberField.discr E).natAbs : ℝ) / (Module.finrank ℚ E : ℝ) ≤ (padicValNat p (NumberField.discr E).natAbs : ℝ)` using `div_le_self (Nat.cast_nonneg _) hk`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 (mul_nonneg hX h3)`. Establish `h6 : (0 : ℝ) ≤ (X : ℝ) / e * (vV T.V (p : T.Fr) : ℝ) * (padicValNat p (NumberField.discr E).natAbs : ℝ)` using `mul_nonneg (mul_nonneg hX h3) (Nat.cast_nonneg _)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem ram_sum_le_vV_discr (E : Type) [Field E] [NumberField E] (T : CDVR) (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime)
     (e X : ℕ) :
     ∑ p ∈ s, (vV T.V (p : T.Fr) : ℝ) / e *
@@ -97,6 +126,9 @@ theorem ram_sum_le_vV_discr (E : Type) [Field E] [NumberField E] (T : CDVR) (s :
     _ ≤ (X : ℝ) / e * (vV T.V (p : T.Fr) : ℝ) * (padicValNat p (NumberField.discr E).natAbs : ℝ) := by linarith
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hk : (0 : ℝ) < (Module.finrank ℚ E : ℝ)` using `by exact_mod_cast (Module.finrank_pos (R := ℚ) (M := E))`. Establish `h` using `(div_le_iff₀ hk).1 (log_rd_le_fieldSz E)`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_discr_natAbs_le (E : Type) [Field E] [NumberField E] :
     Real.log ((NumberField.discr E).natAbs : ℝ) ≤ (Module.finrank ℚ E : ℝ) * fieldSz E := by
   have hk : (0 : ℝ) < (Module.finrank ℚ E : ℝ) := by exact_mod_cast (Module.finrank_pos (R := ℚ) (M := E))
@@ -104,6 +136,11 @@ theorem log_discr_natAbs_le (E : Type) [Field E] [NumberField E] :
   rw [Nat.cast_natAbs, Int.cast_abs]
   linarith
 
+/- English proof (translation)
+Unfold `x0Dat`. Use `⟨Polynomial.X ^ l.M - 1, Polynomial.monic_X_pow_sub_C 1 hM, ?_⟩` and prove the remaining obligations. Establish `h1 : zetaM c ^ l.M = 1` using `GlobalTheory.Survey.BaseClassMove.zetaM_pow c`. Establish `h2 : (zetaM c ^ pairL (l` using `l) x0 (fun b => levRep (q b))) ^ l.M = 1 := by`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, h1, one_zpow]`.
+
+Simplify using `[h2]`.
+-/
 theorem isIntegral_fourierCoeff_classIndicator_levelPoint {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     (c : Coeff l) (hM : l.M ≠ 0) {n : ℕ} (x0 : Fin n → Dw.La) (q : Fin n → LevQ Dw l) : IsIntegral ℤ (x0Dat c x0 q) := by
   unfold x0Dat

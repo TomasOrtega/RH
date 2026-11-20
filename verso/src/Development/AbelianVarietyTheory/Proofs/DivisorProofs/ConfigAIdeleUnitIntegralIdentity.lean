@@ -22,6 +22,11 @@ section General
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
   {α β : Type} [Fintype α] [Fintype β]
 
+/- English proof (translation)
+Unfold `hTens`. Simplify using `only [Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hTens_vecMulVec (JA : Matrix α α A) (JB : Matrix β β A) (x : Matrix α β A) (p : α → A) (q : β → A) :
     hTens c JA JB x (Matrix.vecMulVec p q) =
       ∑ i, ∑ k, JA i k * c (p k) * (x *ᵥ (JB *ᵥ fun l => c (q l))) i := by
@@ -36,9 +41,21 @@ end General
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[cA, inclR]`.
+-/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
+/- English proof (translation)
+Establish `hU : (incM F JW *ᵥ fun l => cA σ (incV F w' l)) = incV F (JW *ᵥ fun i => σ (w' i))`. Use extensionality with `i`. Simplify using `only [incV, incM, Matrix.mulVec, dotProduct, Matrix.map_apply, cA_inclR, map_sum, map_mul]`. Establish `hQ : incM F (Matrix.vecMulVec (JW *ᵥ fun i => σ (w' i)) w) *ᵥ incV F (JW *ᵥ fun i => σ (w' i)) = incV F (JW *ᵥ fun i => σ (w' i))`. Use extensionality with `i`.
+
+Establish `h1 : (∑ j, inclR (F` using `F) (AF F) (w j) * inclR (F := F) (AF F) ((JW *ᵥ fun i => σ (w' i)) j)) = 1 := by`. Establish `h` using `congrArg (inclR (F := F) (AF F)) hw`. Rewrite `h` using `[map_one]`. Rewrite using `[← h, form, dotProduct, map_sum]`. Simplify using `only [map_mul]`.
+
+Generalize the expression as in `(JW *ᵥ fun i => σ (w' i)) = u at h1 ⊢`. Simplify using `only [incV, incM, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.vecMulVec_apply, map_mul]`. Repeatedly rewrite using `[mul_assoc, ← Finset.mul_sum, h1, mul_one]`. Establish `hs : a • Matrix.vecMulVec p (incV F w') = Matrix.vecMulVec (a • p) (incV F w')`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.vecMulVec_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[hs]`. Unfold `symp`. Rewrite using `[hTens_vecMulVec, hTens_vecMulVec, hU, ← Matrix.mulVec_mulVec, hQ]`.
+-/
 theorem symp_proj (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (w w' : Fin d → E) (hw : form σ JW w w' = 1) (ξ a : AE F E) (p : Fin n → AE F E)
     (γ : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -64,6 +81,13 @@ theorem symp_proj (σ : E →ₐ[F] E) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) 
   unfold symp
   rw [hTens_vecMulVec, hTens_vecMulVec, hU, ← Matrix.mulVec_mulVec, hQ]
 
+/- English proof (translation)
+Establish `hc : ∀ z, cA σ (cA σ z) = z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Establish `hA : ∀ i j, cA σ (incM F JX j i) = incM F JX i j` using `fun i j => by`. Simplify using `only [incM, Matrix.map_apply, cA_inclR, hX]`. Establish `hB : ∀ i j, cA σ (incM F JW j i) = -incM F JW i j` using `fun i j => by`. Simplify using `only [incM, Matrix.map_apply, cA_inclR, hW, map_neg]`. Unfold `symp`.
+
+Rewrite using `[neg_one_mul, neg_one_mul, map_neg, map_neg, neg_neg, ← GlobalTheory.VacCocycle.trace_conj (cA σ) hc (hTens (cA σ) (incM F JX) (incM F JW) y x), GlobalTheory.VacCocycle.conj_hTens (cA σ) hc hA hB, map_neg]`.
+-/
 theorem symp_antisymm [NumberField E] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {n d : ℕ} (JX : Matrix (Fin n) (Fin n) E)
     (JW : Matrix (Fin d) (Fin d) E) (hX : ∀ i j, σ (JX j i) = JX i j) (hW : ∀ i j, σ (JW j i) = -JW i j)
     (x y : Matrix (Fin n) (Fin d) (AE F E)) :
@@ -89,6 +113,11 @@ namespace GlobalTheory.SuppOut
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Establish `hadd : ∀ a b : Fin n → E, form σ Y.J (a + b) H.y = form σ Y.J a H.y + form σ Y.J b H.y` using `fun a b => by`. Simplify using `only [form, add_dotProduct]`. Establish `hsm : ∀ (c : E) (a : Fin n → E), form σ Y.J (c • a) H.y = c * form σ Y.J a H.y` using `fun c a => by`. Simplify using `only [form, smul_dotProduct, smul_eq_mul]`. Rewrite using `[hadd, hadd, hsm, hsm, hH.xy, (hH.orth u).2, hH.yy]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_split_y (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {i₀ i₁ : ℕ} (hH : Plane.IsAdapted σ B H Y Y₁ i₀ i₁) (s t : E) (u : Fin n₁ → E) :
     form σ Y.J (s • H.x + H.ι *ᵥ u + t • H.y) H.y = s := by
@@ -99,6 +128,9 @@ theorem form_split_y (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} {H : Pla
   rw [hadd, hadd, hsm, hsm, hH.xy, (hH.orth u).2, hH.yy]
   ring
 
+/- English proof (translation)
+Take `⟨s, t, u, hs, -, -, rfl⟩` from `hH.split z hz`. Rewrite using `[form_split_y σ B hH]`. Conclude with `⟨hs, (hH.ideal s).2 hs⟩`.
+-/
 theorem form_mem_ideal (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} {H : Plane E n n₁} {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {i₀ i₁ : ℕ} (hH : Plane.IsAdapted σ B H Y Y₁ i₀ i₁) {z : Fin n → E} (hz : z ∈ Y.L) :
     form σ Y.J z H.y • H.x ∈ Y.L ∧ form σ Y.J z H.y ∈ H.𝔟 := by
@@ -106,6 +138,15 @@ theorem form_mem_ideal (σ : E →ₐ[F] E) (B : Base F E) {n n₁ : ℕ} {H : P
   rw [form_split_y σ B hH]
   exact ⟨hs, (hH.ideal s).2 hs⟩
 
+/- English proof (translation)
+Proceed by induction on `hγ using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, x, hx, y, hy, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨a, ha, hav, x, hx, form σ W.J y H'.y • H'.x, (form_mem_ideal σ B hH' hy).1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, incM, incM, incM, ← Matrix.map_mul]`.
+
+Use `congr 2`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.vecMulVec_apply, Pi.smul_apply, smul_eq_mul, form, dotProduct]`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [Matrix.zero_mul]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx => rw [Matrix.neg_mul]`. Conclude with `neg_mem hx`.
+-/
 theorem proj_mem [NumberField E] (σ : E →ₐ[F] E) (B : Base F E) {n d d₁ : ℕ} (X : Spc F E n) (W : Spc F E d)
     (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ) (hH' : Plane.IsAdapted σ B H' W W₁ i₀ i₁) (v : Pl F)
     (γ : Matrix (Fin n) (Fin d) (AE F E)) (hγ : γ ∈ latAtV X W v) :
@@ -131,6 +172,19 @@ namespace GlobalTheory.SuppOut
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, hav, x, hx, y, hy, rfl⟩` from `hz`. Establish `hform : ∀ {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (x y : Fin m → E), inclR (F` using `F) (AF F) (form σ J x y) = ∑ i, incV F x i * incV F (J *ᵥ fun k => σ (y k)) i := by`. Introduce `m J x y`.
+
+Simplify using `only [form, dotProduct, map_sum, map_mul, incV]`. Establish `he : (∑ i, ∑ j, (a • incM F (Matrix.vecMulVec x y)) i j * incV F (X.J *ᵥ fun k => σ (H.y k)) i * incV F (W.J *ᵥ fun k => σ (w k)) j) = a ⊗ₜ[F] (form σ X.J x H.y * form σ W.J y w)`. Establish `h1 : a ⊗ₜ[F] (form σ X.J x H.y * form σ W.J y w) = a • (inclR (F` using `F) (AF F) (form σ X.J x H.y) * inclR (F := F) (AF F) (form σ W.J y w)) := by`. Rewrite using `[← map_mul]`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[F] _ = a • ((1 : AF F) ⊗ₜ[F] _)`.
+
+Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h1, hform, hform, Finset.sum_mul_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [incM, incV, Matrix.smul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, map_mul, smul_mul_assoc, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) (a ⊗ₜ[F] _) ∈ _`. Rewrite using `[Algebra.TensorProduct.map_tmul]`.
+
+Conclude with `AddSubgroup.subset_closure ⟨_, hav, _, FractionalIdeal.mul_mem_mul (form_mem_ideal σ B hH hx).2 (hI y hy), rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Simplify using `only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add]`. Conclude with `add_mem hx hy`.
+
+Consider the case `neg x _ hx`. Simplify using `only [Matrix.neg_apply, neg_mul, Finset.sum_neg_distrib, map_neg]`. Conclude with `neg_mem hx`.
+-/
 theorem coef_mem [NumberField E] (σ : E →ₐ[F] E) (B : Base F E) {n n₁ d : ℕ} (X : Spc F E n) (X₁ : Spc F E n₁)
     (W : Spc F E d) (H : Plane E n n₁) (w : Fin d → E) (i₀ i₁ : ℕ) (hH : Plane.IsAdapted σ B H X X₁ i₀ i₁)
     (I : FractionalIdeal (𝓞 E)⁰ E) (hI : ∀ y ∈ W.L, form σ W.J y w ∈ I) (v : Pl F)
@@ -175,6 +229,37 @@ end GlobalTheory.SuppOut
 
 namespace GlobalTheory.SuppOut
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' hT hC v l _hl hnot`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hB` using `hT.base`. Establish `hσ : ∀ x : E, σ (σ x) = x` using `fun x => by`.
+
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hB.cm.2.2.2, hB.cm.2.2.2, star_star]`. Use `set s := shiftA H H' l with hs`. Use `set e : AF F := GlobalTheory.LatVac.liftV v 1 with he`.
+
+Establish `heat : At (evFin F v) e` using `GlobalTheory.LatVac.at_liftV v 1`. Establish `hev : evFin F v e = 1` using `GlobalTheory.LatVac.evFin_liftV v 1`. Establish `hsat : At (evFin F v) (e • s)` using `fun u hu => by`. Rewrite using `[smul_smul, ← smul_eq_mul u e, heat u hu, zero_smul]`. Establish `hsv : e • s ∈ latAtV G.V G.W v`.
+
+Rewrite using `[GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V G.W _ _ _ _ hB hT.geo.hV hT.geo.hW v _ hsat]`. Introduce `γ hγ`. Use `set γ' := γ * incM F (Matrix.vecMulVec (G.W.J *ᵥ fun i => σ (H'.y i)) H'.x) with hγ'`. Establish `hγ'L : γ' ∈ latAtV G.V G.W v` using `proj_mem σ B G.V G.W G₁.W H' 0 (b + 1) hC.hH' v γ hγ`. Establish `hγ'at : At (evFin F v) γ'` using `(GlobalTheory.LatVac.latAtV_at_stable G.V G.W v).1 γ' hγ'L`.
+
+Establish `hγ'iso : γ' ∈ iso0 (F` using `F) (b + 2) H' := by`. Establish `key : ∀ u w : Fin (b + 2 + a') → E, γ * incM F (Matrix.vecMulVec u w) = Matrix.vecMulVec (γ *ᵥ incV F u) (incV F w)`. Introduce `u w`. Use extensionality with `i j`. Simplify using `only [incM, incV, Matrix.mul_apply, Matrix.map_apply, Matrix.vecMulVec_apply, Matrix.mulVec, dotProduct, Finset.sum_mul, map_mul]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨_, key _ _⟩`. Establish `h1` using `hall γ' hγ'at hγ'iso hγ'L`. Establish `h2 : symp (R` using `AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) (e • s) γ = -(e * symp (R := AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) γ' s) := by`.
+
+Use `GlobalTheory.LatVac.symp_smul_smul σ (incM F G.V.J) (incM F G.W.J) (-1) e 1 s γ` as an intermediate fact. Rewrite `this` using `[one_smul, mul_one]`. Rewrite using `[this, symp_antisymm σ hσ G.V.J G.W.J hT.geo.hV.herm hT.geo.hW.skew s γ, hs, shiftA, symp_proj σ G.V.J G.W.J H'.x H'.y hC.hH'.xy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hat2 : At (evFin F v) (e * symp (R` using `AF F) (cA σ) (-1) (incM F G.V.J) (incM F G.W.J) γ' s) := fun u hu => by`.
+
+Rewrite using `[smul_eq_mul, ← mul_assoc, ← smul_eq_mul u e, heat u hu, zero_mul]`. Rewrite using `[h2, AddChar.map_neg_eq_inv, GlobalTheory.VacIndic.psi_of_at _ hat2, map_mul, hev, one_mul]`. Rewrite using `[← GlobalTheory.LatVac.psiAt_apply, h1, inv_one]`. Establish `hc` using `coef_mem σ B G.V G₁.V G.W H H'.x 0 (b + 1) hC.hH _ (GlobalTheory.T.adapted_plane_form_mem_inverse_different σ B G.W G₁.W H' hC.hH' hT.geo.hW) v _ hsv`. Establish `hid : idA σ H.𝔟 H'.𝔟 = H.𝔟 * ((conjI σ H'.𝔟)⁻¹ * (diffE E)⁻¹)`.
+
+Rewrite using `[idA, mul_assoc]`. Rewrite `hnot` using `[hid]`. Establish `hf1 : form σ G.V.J H.x H.y = 1` using `hC.hH.xy`. Establish `hf2 : form σ G.W.J H'.y H'.x = -1`. Establish `h` using `hC.hH'.xy`.
+
+Establish `hsk` using `hT.geo.hW.skew`. Establish `: σ (form σ G.W.J H'.x H'.y) = -form σ G.W.J H'.y H'.x`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hsk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[h, map_one]`. Take the linear combination `this`. Establish `hΦ : (∑ i, ∑ j, (e • s) i j * incV F (G.V.J *ᵥ fun k => σ (H.y k)) i * incV F (G.W.J *ᵥ fun k => σ (H'.x k)) j) = e • (l : AE F E) * inclR (F` using `F) (AF F) (form σ G.V.J H.x H.y) * inclR (F := F) (AF F) (form σ G.W.J H'.y H'.x) := by`.
+
+Establish `hform : ∀ {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (x y : Fin m → E), inclR (F` using `F) (AF F) (form σ J x y) = ∑ i, incV F x i * incV F (J *ᵥ fun k => σ (y k)) i := by`. Introduce `m J x y`. Simplify using `only [form, dotProduct, map_sum, map_mul, incV]`. Rewrite using `[hform, hform, mul_assoc, Finset.sum_mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hs, shiftA, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hc` using `[hΦ, hf1, hf2, map_one, map_neg, map_one, mul_one, mul_neg_one, map_neg]`.
+
+Establish `hce : compFin F E v (e • (l : AE F E)) = (unitFin F E v l : Fv F v ⊗[F] E)`. Rewrite using `[Algebra.smul_def, map_mul]`. Establish `: compFin F E v (algebraMap (AF F) (AE F E) e) = 1`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map (evFin F v) (AlgHom.id F E) (e ⊗ₜ[F] (1 : E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul, hev]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, one_mul]`. Both sides reduce to the same expression. Rewrite `hc` using `[hce]`. Conclude with `hnot (by simpa using neg_mem hc)`.
+-/
 theorem exists_lat_pair_ne_one : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) {b a' : ℕ}
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')) (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → CfgA B G G₁ H H' →

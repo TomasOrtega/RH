@@ -23,6 +23,13 @@ noncomputable section
 
 namespace GlobalTheory.EqvAct
 
+/- English proof (translation)
+Introduce `hext X' V _ hS ℓ _ _ σ σ' hσ G' _ hG A _ κ hκ ν hν`. Establish `hGσ : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian ((Over.pullback σ').obj G')` using `IsSemiAbelian.pullback _ _ hG`. Establish `h1 : IsGrpPullback A G' (ℓ ≫ σ') (ν ≫ κ)` using `(hν.comp hκ).congr hσ rfl`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor σ' ℓ h1`. Establish `: IsMonHom (Iso.refl A).hom` using `inferInstanceAs (IsMonHom (𝟙 A))`.
+
+Take `⟨e, ⟨he, he'⟩, -⟩` from `hext.existsUnique_iso_of_isGrpPullback hS hG hGσ hκ h2 (Iso.refl A)`. Use `haveI := he`. Use `⟨e.hom.left ≫ pullback.fst _ _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G' σ')).congr (Category.id_comp _) rfl`. Rewrite using `[← Category.assoc, ← he']`.
+
+Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem exists_isGrpPullback_extend : GlobalTheory.Published.SemiAbelianHomExtension → ∀ (X' V : Scheme.{0}) [AlgebraicGeometry.IsNoetherian X'], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' → ∀ (ℓ : V ⟶ X') [IsOpenImmersion ℓ] [IsDominant ℓ] (σ : V ⟶ V) (σ' : X' ⟶ X'), σ ≫ ℓ = ℓ ≫ σ' → ∀ (G' : Over X') [GrpObj G'], ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian G' → ∀ (A : Over V) [GrpObj A] (κ : A.left ⟶ G'.left), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback A G' ℓ κ → ∀ ν : A.left ⟶ A.left, ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback A A σ ν → ∃ M : G'.left ⟶ G'.left, ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback G' G' σ' M ∧ κ ≫ M = ν ≫ κ := by
   intro hext X' V _ hS ℓ _ _ σ σ' hσ G' _ hG A _ κ hκ ν hν
   have hGσ : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian ((Over.pullback σ').obj G') := IsSemiAbelian.pullback _ _ hG
@@ -36,6 +43,9 @@ theorem exists_isGrpPullback_extend : GlobalTheory.Published.SemiAbelianHomExten
   · rw [← Category.assoc, ← he']
     exact pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Take `⟨_, _⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.quasiCompact_and_dominant hS ℓ`. Take `⟨_, _⟩` from `GlobalTheory.ExtUnique.flat_and_isSeparated_of_isSemiAbelian G' hG`. Establish `: IsSchemeTheoreticallyDominant κ` using `.of_isPullback hκ.1.flip`. Conclude with `GlobalTheory.ExtUnique.hom_ext_of_dominant G'.hom h κ hfg`.
+-/
 theorem eq_of_comp_eq_of_isGrpPullback {X' V : Scheme.{0}} [AlgebraicGeometry.IsNoetherian X']
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X') (ℓ : V ⟶ X') [IsOpenImmersion ℓ] [IsDominant ℓ]
     (G' : Over X') [GrpObj G'] (hG : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian G') (A : Over V) [GrpObj A]
@@ -46,6 +56,31 @@ theorem eq_of_comp_eq_of_isGrpPullback {X' V : Scheme.{0}} [AlgebraicGeometry.Is
   have : IsSchemeTheoreticallyDominant κ := .of_isPullback hκ.1.flip
   exact GlobalTheory.ExtUnique.hom_ext_of_dominant G'.hom h κ hfg
 
+/- English proof (translation)
+Introduce `hP E _ _ _ H Dw l Xo c TF Z hpq hA1 Γ _ ι ρ hact X' _ φ ℓ ρ' hN hproj hℓ hℓφ hρ`. Establish `hA : l.A.Coprime l.M` using `by rw [hA1]; exact Nat.coprime_one_left _`. Take `⟨n, hn, hη⟩` from `GlobalTheory.T.exists_level_stabilizer_action hP E H Dw l Xo c TF Z hpq hA Γ ι ρ (GlobalTheory.T.interiorLevelAction_eq_restriction_levelMove_inv E H Dw l Xo c TF Z hpq hA Γ ι ρ hact)`. Use `haveI := hℓ`. Use `haveI : AlgebraicGeometry.IsNoetherian X' := isNoetherian_of_isProjOver hproj`.
+
+Establish `hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X'` using `(isNormalScheme_iff_pred X').mp hN`. Establish `hne : Nonempty (V₀ TF.Y Z)` using `⟨⟨genPt Z, (j_mem_barComp Z _).2 (CompSplitPfB.cspB_genPt_mem Z)⟩⟩`. Use `haveI : IsDominant ℓ := ⟨ℓ.isOpenEmbedding.isOpen_range.dense (Set.range_nonempty _)⟩`. Establish `hG' : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian (pullG TF Z φ)` using `IsSemiAbelian.pullback _ _ TF.Y.t.semi`. Establish `hcomp : j₀ TF.Y Z ≫ (barComp TF.Y Z).ι = ℓ ≫ φ ≫ (barComp TF.Y Z).ι`.
+
+Rewrite using `[← Category.assoc, hℓφ]`. Establish `hκ` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor (φ ≫ (barComp TF.Y Z).ι) ℓ ((isGrpPullback_pullψ TF Z (j₀ TF.Y Z)).congr hcomp rfl)`. Take `⟨κ, hκ, hκψ⟩ : ∃ κ : (pullG TF Z (j₀ TF.Y Z)).left ⟶ (pullG TF Z φ).left, IsGrpPullback (pullG TF Z (j₀ TF.Y Z)) (pullG TF Z φ) ℓ κ ∧ κ ≫ pullψ TF Z φ = pullψ TF Z (j₀ TF.Y Z)` from `⟨_, hκ, pullback.lift_fst _ _ _⟩`. Establish `hκw : κ ≫ (pullG TF Z φ).hom = (pullG TF Z (j₀ TF.Y Z)).hom ≫ ℓ` using `hκ.1.w`. Establish `hM : ∀ γ, ∃ M : (pullG TF Z φ).left ⟶ (pullG TF Z φ).left, IsGrpPullback (pullG TF Z φ) (pullG TF Z φ) (ρ' γ).hom M ∧ κ ≫ M = n γ ≫ κ` using `fun γ => exists_isGrpPullback_extend hP.p22 X' (V₀ TF.Y Z) hS ℓ (ρ γ).hom (ρ' γ).hom (hρ γ) (pullG TF Z φ) hG' (pullG TF Z (j₀ TF.Y Z)) κ hκ (n γ) (hn.1 γ)`.
+
+Use `choose m hm hmκ using hM`. Establish `huniq` using `eq_of_comp_eq_of_isGrpPullback hS ℓ (pullG TF Z φ) hG' (pullG TF Z (j₀ TF.Y Z)) κ hκ`. Establish `hact' : ∀ a : 𝓞 E, κ ≫ ((pullAct TF Z φ).act a).left = ((pullAct TF Z (j₀ TF.Y Z)).act a).left ≫ κ`. Introduce `a`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `κ ≫ (((pullAct TF Z φ).act a).left ≫ pullψ TF Z φ) = _ ≫ (κ ≫ pullψ TF Z φ)`. Rewrite using `[pullAct_pullψ, ← Category.assoc, hκψ, pullAct_pullψ]`. Rewrite using `[Category.assoc, Category.assoc]`. Express the relevant statement in the definitionally equal form `κ ≫ (((pullAct TF Z φ).act a).left ≫ (pullG TF Z φ).hom) = _ ≫ (κ ≫ (pullG TF Z φ).hom)`.
+
+Rewrite using `[Over.w, hκw, ← Category.assoc, Over.w]`. Use `⟨m, ⟨hm, fun γ a => ?_, fun γ₁ γ₂ => ?_⟩, ?_⟩` and prove the remaining obligations. Use `huniq _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, Over.w, (hm γ).1.w, ← Category.assoc, Over.w]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Category.assoc, hn.2.1 γ a, Category.assoc]`. Use `_ = n γ ≫ κ ≫ ((pullAct TF Z φ).act a).left := by rw [hact']`. Use `_ = κ ≫ m γ ≫ ((pullAct TF Z φ).act a).left := by rw [← Category.assoc, ← hmκ, Category.assoc]`. Use `huniq _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[(hm _).1.w, Category.assoc, (hm γ₁).1.w, ← Category.assoc, (hm γ₂).1.w, Category.assoc, map_mul, Aut.Aut_mul_def]`.
+
+Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Introduce `γ a b hab w w' hw hw' hwb hwa`. Establish `lift : ∀ v : V₀ TF.Y Z ⟶ (pullG TF Z φ).left, v ≫ (pullG TF Z φ).hom = ℓ → ∃ u : V₀ TF.Y Z ⟶ (pullG TF Z (j₀ TF.Y Z)).left, u ≫ (pullG TF Z (j₀ TF.Y Z)).hom = 𝟙 _ ∧ u ≫ pullψ TF Z (j₀ TF.Y Z) = v ≫ pullψ TF Z φ ∧ u ≫ κ = v`. Introduce `v hv`.
+
+Establish `e : (v ≫ pullψ TF Z φ) ≫ TF.Y.t.G.hom = 𝟙 _ ≫ j₀ TF.Y Z ≫ (barComp TF.Y Z).ι`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(v ≫ (pullG TF Z φ).hom) ≫ _ = _`. Rewrite using `[hv, Category.id_comp, hcomp]`. Use `⟨pullback.lift _ _ e, pullback.lift_snd _ _ _, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `_ ≫ (κ ≫ pullψ TF Z φ) = v ≫ pullψ TF Z φ`. Rewrite using `[hκψ]`. Conclude with `pullback.lift_fst _ _ _`.
+
+Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `_ ≫ (κ ≫ (pullG TF Z φ).hom) = v ≫ (pullG TF Z φ).hom`. Rewrite using `[hκw, ← Category.assoc]`. Express the relevant statement in the definitionally equal form `(pullback.lift _ _ e ≫ pullback.snd _ _) ≫ ℓ = _`. Rewrite using `[pullback.lift_snd, Category.id_comp, hv]`.
+
+Take `⟨u, hu1, hu2, hu3⟩` from `lift w hw`. Take `⟨u', hu1', hu2', hu3'⟩` from `lift w' hw'`. Use `hη γ a b hab u u' hu1 hu1' (by rw [hu2, hwb]) (by rw [hu2', hwa])` as an intermediate fact. Rewrite using `[← hu3, ← hu3', Category.assoc, hmκ, ← Category.assoc, this, Category.assoc]`.
+-/
 theorem eqvAct_ext : Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), 1 ≤ Dw.p + Dw.q → l.A = 1 → ∀ (Γ : Type) [Group Γ] (ι : Γ →* LevelAut Dw l) (ρ : Γ →* Aut (V₀ TF.Y Z)), ActsBy ι ρ → ∀ (X' : Scheme.{0}) [IsIntegral X'] (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X') (ρ' : Γ →* Aut X'), GlobalTheory.IsNormalScheme X' → IsProjOver (φ ≫ s₀ TF.Y Z) → IsOpenImmersion ℓ → ℓ ≫ φ = j₀ TF.Y Z → (∀ γ, (ρ γ).hom ≫ ℓ = ℓ ≫ (ρ' γ).hom) → ∃ m : Γ → ((GlobalTheory.EqvAct.pullG TF Z φ).left ⟶ (GlobalTheory.EqvAct.pullG TF Z φ).left), GlobalTheory.EqvAct.IsEqvAct ρ' (GlobalTheory.EqvAct.pullG TF Z φ) (GlobalTheory.EqvAct.pullAct TF Z φ) m ∧ GlobalTheory.EqvAct.MovesEta TF Z ι ρ ℓ (GlobalTheory.EqvAct.pullG TF Z φ) (GlobalTheory.EqvAct.pullψ TF Z φ) m := by
   intro hP E _ _ _ H Dw l Xo c TF Z hpq hA1 Γ _ ι ρ hact X' _ φ ℓ ρ' hN hproj hℓ hℓφ hρ
   have hA : l.A.Coprime l.M := by rw [hA1]; exact Nat.coprime_one_left _

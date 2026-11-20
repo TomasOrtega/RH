@@ -22,6 +22,21 @@ open GlobalTheory.AffineQuotient GlobalTheory.AbelianQuotient
 
 set_option backward.isDefEq.respectTransparency false in
 
+/- English proof (translation)
+Introduce `R _ _ A _ H _ i hA _ _ _ _`. Use `hA.comm` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.geomConnected` as an intermediate fact.
+
+Establish `: IsCommMonObj H` using `⟨by`. Rewrite using `[← cancel_mono i, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]⟩`. Take `⟨N, hN, hH⟩` from `GlobalTheory.FiniteFlatKilled.main R H ‹_› ‹_›`. Establish `: IsLocallyNoetherian A.left` using `LocallyOfFiniteType.isLocallyNoetherian A.hom`. Use `(GlobalTheory.AbTorsionAnyBase.isFinite_and_flat_mulA _ A hA N hN).1` as an intermediate fact.
+
+Take `⟨Λ, _, _, _, _, e, _⟩` from `exists_hopfAlgebra R H`. Establish `hi : i ^ N = 1`. Rewrite using `[← Category.id_comp i, ← MonObj.pow_comp, hH, MonObj.one_comp]`. Take `⟨Q, q, π, h₁, h₂, h₃, h₄, h₅⟩` from `exists_quotient_hopf (GlobalTheory.HopfQuot.affine_quotient GlobalTheory.exists_basis_mem_of_span_eq_top_of_semilocal) (e.hom ≫ i) (mulA A N) (by`. Rewrite using `[mulA, comp_pow, comp_pow, Category.comp_id, Category.comp_id, mul_pow, ← comp_pow, ← comp_pow i, hi, comp_one, comp_one, _root_.one_mul])`.
+
+Establish `hq : IsPullback ((fst H A ≫ i) * snd H A) (snd H A) q q`. Apply the tactic sequence `refine h₅.of_iso (whiskerRightIso e A) (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [comp_mul]`. Take `⟨inst, hcomm, hhom, -⟩` from `exists_grpObj i q hq`. Use `⟨Q, inst, q, π, ?_, hhom, h₂, h₃, h₄, h₁, hq⟩` and prove the remaining obligations. Establish `: IsSeparated Q.hom` using `by rw [← Over.w π]; infer_instance`.
+
+Establish `: LocallyOfFiniteType Q.hom` using `by rw [← Over.w π]; infer_instance`. Establish `hw : q.left ≫ Q.hom = A.hom` using `Over.w q`. Use `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Establish `: Flat (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: UniversallyClosed (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`.
+
+Establish `: GeometricallyReduced (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Establish `: GeometricallyConnected (q.left ≫ Q.hom)` using `by rw [hw]; infer_instance`. Use `flat_of_comp_of_flat_of_surjective q.left Q.hom` as an intermediate fact. Use `UniversallyClosed.of_comp_surjective q.left Q.hom` as an intermediate fact. Use `geometricallyReduced_of_comp q.left Q.hom` as an intermediate fact.
+
+Establish `: LocallyOfFinitePresentation Q.hom` using `inferInstance`. Conclude with `⟨hcomm, smooth_of_grpObj_of_flat Q, ⟨⟩, geometricallyConnected_of_comp q.left Q.hom⟩`.
+-/
 theorem exists_quotient_abelianScheme :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (H : Over (Sp R)) [GrpObj H] (i : H ⟶ A), IsAbelianScheme A → IsMonHom i → Mono i → IsFinite H.hom → Flat H.hom → ∃ (B : Over (Sp R)) (_ : GrpObj B) (q : A ⟶ B) (π : B ⟶ A), IsAbelianScheme B ∧ IsMonHom q ∧ IsFinite q.left ∧ Flat q.left ∧ Surjective q.left ∧ IsFinite π.left ∧ IsPullback ((fst H A ≫ i) * snd H A) (snd H A) q q := by
   intro R _ _ A _ H _ i hA _ _ _ _

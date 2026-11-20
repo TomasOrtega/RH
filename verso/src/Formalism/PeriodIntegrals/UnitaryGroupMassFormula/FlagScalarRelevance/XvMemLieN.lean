@@ -10,8 +10,20 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.L2.SG.
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem xv_apply (x v y : S.V) : xv S x v y = S.hT v y • x - S.hT x y • v := rfl
 
+/- English proof (translation)
+Establish `hxX : x ∈ F.X` using `fXa_le_X F _ hx`. Simplify using `only [FlagG.LieN, LieU, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w y`. Establish `h1` using `S.herm.eq v w`.
+
+Establish `h2` using `S.herm.eq x w`. Simplify using `only [xv_apply, map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a _ _ w hw`. Establish `hwX : w ∈ F.X` using `fXa_le_X F a hw`.
+
+Rewrite using `[xv_apply, hT_X_X F hxX hwX, zero_smul, sub_zero]`. Distinguish the cases in `hna : n + 1 ≤ a - 1`. Conclude with `Submodule.smul_mem _ _ (Xa_mono F hna hx)`. Rewrite using `[hv w (Xa_mono F (by omega) hw), zero_smul]`. Conclude with `zero_mem _`.
+
+Introduce `w hw`. Establish `h0 : S.hT x w = 0` using `hw x hxX`. Rewrite using `[xv_apply, h0, zero_smul, sub_zero]`. Conclude with `Submodule.smul_mem _ _ hxX`.
+-/
 theorem xv_mem_LieN (F : FlagG S r T) (n : ℕ) (x v : S.V) (hx : x ∈ F.Xa (n + 1))
     (hv : ∀ y ∈ F.Xa (n + 1), S.hT v y = 0) : xv S x v ∈ F.LieN := by
   have hxX : x ∈ F.X := fXa_le_X F _ hx
@@ -35,6 +47,11 @@ theorem xv_mem_LieN (F : FlagG S r T) (n : ℕ) (x v : S.V) (hx : x ∈ F.Xa (n 
     rw [xv_apply, h0, zero_smul, sub_zero]
     exact Submodule.smul_mem _ _ hxX
 
+/- English proof (translation)
+Unfold `FlagG.ell`. Establish `hterm : ∀ k : Fin r, F.coefX (xv S (F.e i) v (F.fvec k.succ)) k = if i = k then S.hT v (F.fvec k.succ) else 0`. Introduce `k`. Rewrite using `[xv_apply, hT_X_fvec F (fe_mem_X F i), zero_smul, sub_zero, hS E S r T F _ _ k (fe_mem_X F i), hE E S r T F i k]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Simplify using `only [hterm]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+-/
 theorem ell_xv (hS : CoefSmul) (hE : CoefE) (F : FlagG S r T) (i : Fin r) (v : S.V) :
     F.ell (xv S (F.e i) v) = S.hT v (F.fvec i.succ) := by
   unfold FlagG.ell
@@ -48,6 +65,23 @@ theorem ell_xv (hS : CoefSmul) (hE : CoefE) (F : FlagG S r T) (i : Fin r) (v : S
   rw [Finset.sum_ite_eq]
   simp
 
+/- English proof (translation)
+Establish `hXa` using `Xa_eq_of_same F F' c hs`. Establish `hX` using `X_eq_of_same F F' c hs`. Establish `heX' : F.e i ∈ F'.X` using `hX ▸ fe_mem_X F i`. Establish `hir` using `i.2`. Establish `hcoef : c i.castSucc * F'.coefX (F.e i) i = 1`.
+
+Establish `hsi` using `hs i.castSucc`. Rewrite `hsi` using `[fvec_castSucc, fvec_castSucc, Fin.val_castSucc]`. Establish `hsi' : F'.e i + (-c i.castSucc) • F.e i ∈ F'.Xa i.val`. Rewrite using `[neg_smul, ← sub_eq_add_neg, hXa i.val (by omega)]`. Conclude with `hsi`.
+
+Establish `h0` using `hL E S r T' F' i.val _ i hsi' le_rfl`. Rewrite `h0` using `[hA E S r T' F' _ _ i (fe_mem_X F' i) (Submodule.smul_mem _ _ heX'), hS E S r T' F' _ _ i heX', hE E S r T' F' i i, if_pos rfl]`. Take the linear combination `-h0`. Establish `hterm : ∀ k : Fin r, F'.coefX (xv S (F.e i) v (F'.fvec k.succ)) k = S.hT v (F'.fvec k.succ) * F'.coefX (F.e i) k`. Introduce `k`.
+
+Rewrite using `[xv_apply, hT_X_fvec F' heX', zero_smul, sub_zero, hS E S r T' F' _ _ k heX']`. Establish `hzero : ∀ k : Fin r, k ≠ i → S.hT v (F'.fvec k.succ) * F'.coefX (F.e i) k = 0`. Introduce `k hk`. Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne hk) with h | h` into its components or cases. Establish `hm : (k.succ).val < r` using `by rw [Fin.val_succ]; omega`.
+
+Establish `hmem : F'.fvec k.succ ∈ F'.Xa (k.val + 1 + 1)`. Use `fvec_mem_Xa F' k.succ hm` as an intermediate fact. Rewrite `this` using `[Fin.val_succ]`. Then use the resulting hypothesis. Rewrite `hmem` using `[hXa (k.val + 1 + 1) (by omega)]`. Rewrite using `[hv _ (Xa_mono F (show k.val + 1 + 1 ≤ i.val + 1 by omega) hmem), zero_mul]`.
+
+Establish `hmem : F.e i ∈ F'.Xa (i.val + 1)`. Rewrite using `[hXa (i.val + 1) (by omega)]`. Conclude with `e_mem_Xa F (by omega)`. Rewrite using `[hL E S r T' F' (i.val + 1) _ k hmem (by omega), mul_zero]`. Unfold `FlagG.ell`.
+
+Simplify using `only [hterm]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => hzero k hk) (fun h => absurd (Finset.mem_univ i) h)]`. Establish `hsucc : S.hT v (F'.fvec i.succ) = c i.succ * S.hT v (F.fvec i.succ)`. Establish `h` using `hs i.succ`. Rewrite `h` using `[Fin.val_succ]`.
+
+Establish `h2` using `hv _ h`. Rewrite `h2` using `[map_sub, map_smul, smul_eq_mul, sub_eq_zero]`. Conclude with `h2`. Rewrite using `[hsucc]`. Take the linear combination `(c i.succ * S.hT v (F.fvec i.succ)) * hcoef`.
+-/
 theorem ell'_xv (hA : CoefAdd) (hS : CoefSmul) (hE : CoefE) (hL : CoefLow)
     (F : FlagG S r T) (F' : FlagG S r T') (c : Fin (r + 1) → E) (hs : SameFlag F F' c)
     (i : Fin r) (v : S.V) (hv : ∀ y ∈ F.Xa (i.val + 1), S.hT v y = 0) :

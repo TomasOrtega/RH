@@ -48,6 +48,9 @@ def CcIs (θ : InfFam D) (V W : HSp D) {r : ℕ} (hr : W.rank = r) {H : Reciproc
             (zOf θ V W hr (U.X (dict h).1) idx (dict h).2 w b) (zOf θ V W hr (U.X (dict h).1) idx (dict h).2 w b)) *
           ∏ b, ϑ (zOf θ V W hr (U.X (dict h).1) idx (dict h).2 w b)
 
+/- English proof (translation)
+The claim follows from `h.1 k`.
+-/
 theorem CcIs.norm {θ : InfFam D} {V W : HSp D} {r : ℕ} {hr : W.rank = r} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E}
     {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {U : Unf Xo c σ r}
     {dict : GA D W → Σ k, Frame (U.X k).Ψ r} {mu : GA D W → ℂ} {x₀ : (D.host.E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ}

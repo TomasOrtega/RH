@@ -8,11 +8,23 @@ open Matrix TensorProduct NumberField IsDedekindDomain
 
 namespace PI.UnitaryApproxFinWork
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_right_ter.goal1 .. | (apply Bl.general_b_fact_right_ter.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_ter.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_ter.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_t …`.
+-/
 theorem exists_common {F : Type} [Field F] [NumberField F] {ι : Type} (s : Finset ι)
     (Q : ι → 𝓞 F → Prop) (hQ : ∀ i c r, Q i c → Q i (c * r)) (h : ∀ i ∈ s, ∃ c, c ≠ 0 ∧ Q i c) :
     ∃ c : 𝓞 F, c ≠ 0 ∧ ∀ i ∈ s, Q i c := by
   first | exact Bl.general_b_fact_right_ter.goal1 .. | (apply Bl.general_b_fact_right_ter.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_right_ter.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_ter.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_right_ter.goal1 <;> assumption) | (apply @Bl.general_b_fact_right_ter.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Take `⟨Δ, rfl⟩ : ∃ Δ, XR = X + Δ` from `⟨XR - X, by abel⟩`. Establish `hΔ : Δ * (1 + g) = (2 : R) • W` using `by rwa [add_sub_cancel_left] at hΔ'`. Establish `hγ : γR * (1 + (X + Δ)) = 1 - (X + Δ)` using `hγ'`. Establish `h2m : (2 : Matrix n n R) = (2 : R) • 1` using `by rw [two_smul, one_add_one_eq_two]`. Establish `hQP : (1 + (X + Δ)) * (1 + g) = (2 : R) • (1 + W)`.
+
+Rewrite using `[← add_assoc, Matrix.add_mul, hXP, hΔ, h2m, smul_add]`. Establish `key : (2 : R) • (γR * (1 + W)) = (2 : R) • ((1 + g) - (1 + W))`. Establish `e1 : γR * ((2 : R) • (1 + W)) = (1 - (X + Δ)) * (1 + g)`. Rewrite using `[← hQP, ← Matrix.mul_assoc, hγ]`. Rewrite using `[← Matrix.mul_smul, e1, smul_sub, ← hQP]`.
+
+Establish `e2 : (1 - (X + Δ)) * (1 + g) = (2 : R) • (1 + g) - (1 + (X + Δ)) * (1 + g)`. Rewrite using `[two_smul]`. Use `noncomm_ring`. Rewrite using `[e2]`. Establish `k2` using `h2.smul_left_cancel.mp key`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem local_err {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (h2 : IsUnit (2 : R)) (g X XR W N γR : Matrix n n R)
     (hXP : (1 + X) * (1 + g) = 2) (hΔ' : (XR - X) * (1 + g) = (2 : R) • W) (hN : (1 + W) * N = 1)
@@ -36,6 +48,11 @@ theorem local_err {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     _ = g * ((1 + W) * N) - (γR * (1 + W)) * N := by rw [Matrix.mul_assoc]
     _ = (1 + g) * W * N := by rw [k2]; noncomm_ring
 
+/- English proof (translation)
+Establish `h2m : (2 : Matrix n n R) = (2 : R) • 1` using `by rw [two_smul, one_add_one_eq_two]`. Establish `hQP : (1 + XR) * (1 + g) = (2 : R) • (1 + W)`. Establish `: 1 + XR = (1 + X) + (XR - X)` using `by abel`. Rewrite using `[this, Matrix.add_mul, hXP, hΔ, h2m, smul_add]`. Establish `hd` using `congrArg Matrix.det hQP`.
+
+Rewrite `hd` using `[Matrix.det_mul, Matrix.det_smul]`. Establish `hu : IsUnit ((1 + XR).det * (1 + g).det)`. Rewrite using `[hd]`. Conclude with `(h2.pow _).mul hW`. Conclude with `isUnit_of_mul_isUnit_left hu`.
+-/
 theorem local_unit {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
     (h2 : IsUnit (2 : R)) (g X XR W : Matrix n n R)
     (hXP : (1 + X) * (1 + g) = 2) (hΔ : (XR - X) * (1 + g) = (2 : R) • W) (hW : IsUnit (1 + W).det) :
@@ -50,6 +67,53 @@ theorem local_unit {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n
     rw [hd]; exact (h2.pow _).mul hW
   exact isUnit_of_mul_isUnit_left hu
 
+/- English proof (translation)
+Introduce `hAE hB hU F E _ _ _ _ _ n _ _ σ J h1 hJ hdet T g hg hP D hD`. Break down `T.eq_empty_or_nonempty with hT | ⟨v0, hv0⟩` into its components or cases. Conclude with `⟨1, Subgroup.one_mem _, by simp [hT]⟩`. Establish `hJJi : J * J⁻¹ = 1` using `Matrix.mul_nonsing_inv J hdet`. Establish `hJiJ : J⁻¹ * J = 1` using `Matrix.nonsing_inv_mul J hdet`.
+
+Establish `hJiH : PI.UnitaryApproxDefs.cT (σ : E →+* E) J⁻¹ = J⁻¹`. Establish `hcTJ : PI.UnitaryApproxDefs.cT (σ : E →+* E) J = J` using `hJ`. Establish `: PI.UnitaryApproxDefs.cT (σ : E →+* E) J⁻¹ * J = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcTJ]`.
+
+Use `_ = PI.UnitaryApproxDefs.cT (σ : E →+* E) (J * J⁻¹) := (PI.UnitaryApproxDefs.cT_mul _ _ _).symm`. Use `_ = 1 := by rw [hJJi, PI.UnitaryApproxDefs.cT_one]`. Conclude with `(Matrix.inv_eq_left_inv this).symm`. Take `⟨cJ, hcJ0, hcJ⟩` from `exists_common (F := F) (Finset.univ : Finset (n × n)) (fun p c => algebraMap F E (c : F) * J⁻¹ p.1 p.2 ∈ PI.UnitaryApproxDefs.intOE E) (fun p c r h => by`. Rewrite using `[show ((c * r : 𝓞 F) : F) = (c : F) * (r : F) from map_mul (algebraMap (𝓞 F) F) c r, map_mul, mul_comm (algebraMap F E (c : F)), mul_assoc]`.
+
+Conclude with `Subring.mul_mem _ (algebraMap_mem_intOE r) h)`. Use the proof step `(fun p _ => exists_int_mul (J⁻¹ p.1 p.2))`. Take `⟨cP, hcP0, hcP⟩` from `exists_common (F := F) (T ×ˢ (Finset.univ : Finset (n × n))) (fun q c => dv E q.1 c * (1 + (g q.1 : Matrix n n (E ⊗[F] q.1.adicCompletion F))) q.2.1 q.2.2 ∈ Sv E q.1) (fun q c r h => by`. Rewrite using `[dv_mul, mul_comm (dv E q.1 c), mul_assoc]`. Conclude with `Subring.mul_mem _ (dv_mem_Sv _ r) h)`.
+
+Use the proof step `(fun q _ => hB F E q.1 _)`. Take `⟨π, hπ0, hπ⟩` from `exists_common (F := F) T (fun v c => c ∈ v.asIdeal) (fun v c r h => Ideal.mul_mem_right r _ h) (fun v _ => Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot |>.imp fun c hc => ⟨hc.2, hc.1⟩)`. Use `set e : 𝓞 F := 2 * (cP * D * π) with he`. Use `set δ : 𝓞 F := cJ * cP * e with hδ`. Establish `he0 : e ≠ 0` using `mul_ne_zero two_ne_zero (mul_ne_zero (mul_ne_zero hcP0 hD) hπ0)`.
+
+Establish `hδ0 : δ ≠ 0` using `mul_ne_zero (mul_ne_zero hcJ0 hcP0) he0`. Set `Xl : (v : HeightOneSpectrum (𝓞 F)) → Matrix n n (E ⊗[F] v.adicCompletion F)` to `fun v => (1 - (g v : Matrix n n _)) * (1 + (g v : Matrix n n _))⁻¹`. Establish `hJR : ∀ v : HeightOneSpectrum (𝓞 F), PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F)) (J.map (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F))) = J.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) := by`. Introduce `v`. Rewrite using `[cT_map]`.
+
+Rewrite using `[show PI.UnitaryApproxDefs.cT (σ : E →+* E) J = J from hJ]`. Establish `hlie : ∀ v ∈ T, PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F)) (Xl v) * J.map (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F)) + J.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) * Xl v = 0 := fun v hv => lie_of_unitary _ _ _ (hg v hv) (hP v hv)`. Establish `hskew : ∀ v ∈ T, PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ (v.adicCompletion F)) (J.map (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F)) * Xl v) = -(J.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) * Xl v) := by`. Introduce `v hv`. Rewrite using `[PI.UnitaryApproxDefs.cT_mul, hJR]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left (hlie v hv)`. Take `⟨Y', hY'skew, hY'⟩` from `skew_approx hAE σ h1 T (fun v => J.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) * Xl v) hskew δ hδ0`. Use `set X' : Matrix n n E := J⁻¹ * Y' with hX'`. Establish `hX'lie : PI.UnitaryApproxDefs.cT (σ : E →+* E) X' * J + J * X' = 0`. Rewrite using `[hX', PI.UnitaryApproxDefs.cT_mul, hJiH, hY'skew, Matrix.mul_assoc, hJiJ, Matrix.mul_one, ← Matrix.mul_assoc, hJJi, Matrix.one_mul, neg_add_cancel]`.
+
+Establish `hloc : ∀ v ∈ T, ∃ W N : Matrix n n (E ⊗[F] v.adicCompletion F), (1 + Xl v) * (1 + (g v : Matrix n n _)) = 2 ∧ (X'.map (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F)) - Xl v) * (1 + (g v : Matrix n n _)) = (2 : E ⊗[F] v.adicCompletion F) • W ∧ (1 + W) * N = 1 ∧ IsUnit (1 + W).det ∧ MC E v D ((1 + (g v : Matrix n n _)) * W * N) := by`. Introduce `v hv`. Use `set ι : E →+* E ⊗[F] v.adicCompletion F := PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) with hι`. Use `set P : Matrix n n (E ⊗[F] v.adicCompletion F) := 1 + (g v : Matrix n n _) with hPdef`. Establish `hXP : (1 + Xl v) * P = 2` using `by show (1 + (1 - (g v : Matrix n n _)) * P⁻¹) * P = 2`.
+
+Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (hP v hv), Matrix.mul_one, hPdef]`. Rewrite using `[← one_add_one_eq_two]`. Normalize the expressions using the abelian group laws. Establish `hJiJR : J⁻¹.map ι * J.map ι = 1`. Rewrite using `[← Matrix.map_mul, hJiJ, Matrix.map_one _ (map_zero ι) (map_one ι)]`.
+
+Establish `hXR : X'.map ι = J⁻¹.map ι * Y'.map ι` using `by rw [hX', Matrix.map_mul]`. Take `⟨A, hAS, hAeq⟩` from `hY' v hv`. Establish `hAeq' : Y'.map ι - J.map ι * Xl v = dv E v δ • A` using `hAeq`. Establish `hΔ1 : X'.map ι - Xl v = J⁻¹.map ι * (Y'.map ι - J.map ι * Xl v)`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hJiJR, Matrix.one_mul, hXR]`.
+
+Use `set B : Matrix n n (E ⊗[F] v.adicCompletion F) := dv E v cJ • J⁻¹.map ι with hBdef`. Establish `hBS : MS E v B` using `fun i j => by`. Rewrite using `[hBdef, Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, hι, dv, ← map_mul]`. Conclude with `inclE_mem_Sv v (hcJ (i, j) (Finset.mem_univ _))`. Use `set P' : Matrix n n (E ⊗[F] v.adicCompletion F) := dv E v cP • P with hP'def`.
+
+Establish `hP'S : MS E v P'` using `fun i j => by`. Rewrite using `[hP'def, Matrix.smul_apply, smul_eq_mul]`. Conclude with `hcP (v, (i, j)) (Finset.mem_product.mpr ⟨hv, Finset.mem_univ _⟩)`. Establish `hc : dv E v (cJ * cP) • ((X'.map ι - Xl v) * P) = dv E v (cJ * cP * e) • (B * A * P')`. Rewrite using `[hΔ1, hAeq', hBdef, hP'def, hδ]`.
+
+Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, dv_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hΔP` using `MC_cancel (mul_ne_zero hcJ0 hcP0) hc`. Use `set W1 : Matrix n n (E ⊗[F] v.adicCompletion F) := dv E v (cP * D) • (B * A * P') with hW1def`.
+
+Establish `hW1S : MS E v W1` using `MS_smul (dv_mem_Sv v _) (MS_mul (MS_mul hBS hAS) hP'S)`. Take `⟨s, hs, hdet1⟩` from `det_one_add π hW1S`. Take `⟨u, hu, hu1⟩` from `hU F E v π (hπ v hv) s hs`. Use `⟨dv E v π • W1, u • (1 + dv E v π • W1).adjugate, hXP, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hΔP, he, hW1def, dv_mul, dv_two, dv_mul v (cP * D) π]`.
+
+Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.mul_smul, Matrix.mul_adjugate, hdet1, smul_smul, mul_comm u, hu1, one_smul]`. Rewrite using `[hdet1]`.
+
+Conclude with `IsUnit.of_mul_eq_one _ hu1`. Use `⟨(dv E v π • (P' * (B * A * P'))) * (u • (1 + dv E v π • W1).adjugate), MS_mul (MS_smul (dv_mem_Sv v π) (MS_mul hP'S (MS_mul (MS_mul hBS hAS) hP'S))) (MS_smul hu (MS_adjugate (MS_add MS_one (MS_smul (dv_mem_Sv v π) hW1S)))), ?_⟩` and prove the remaining obligations. Rewrite using `[hW1def, hP'def]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc, dv_mul]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h2u : ∀ v : HeightOneSpectrum (𝓞 F), IsUnit (2 : E ⊗[F] v.adicCompletion F)`. Introduce `v`. Use `(IsUnit.mk0 (2 : E) two_ne_zero).map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+
+Establish `hQ : IsUnit (1 + X').det`. Take `⟨W, N, hXP, hΔ, -, hWu, -⟩` from `hloc v0 hv0`. Establish `hl` using `local_unit (h2u v0) _ _ _ _ hXP hΔ hWu`. Establish `hmap : (1 + X'.map (PI.UnitaryApproxDefs.inclE (F` using `F) (v0.adicCompletion F))).det = PI.UnitaryApproxDefs.inclE (F := F) (v0.adicCompletion F) (1 + X').det := by`. Rewrite using `[RingHom.map_det, map_add, map_one]`.
+
+Both sides reduce to the same expression. Rewrite `hl` using `[hmap]`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `hl` using `[h0, map_zero, isUnit_zero_iff]`. Establish `hinj : Function.Injective (PI.UnitaryApproxDefs.inclE (F` using `F) (v0.adicCompletion F) : E → _) := Algebra.TensorProduct.includeLeft_injective (R := F) (S := F) (A := E) (B := v0.adicCompletion F) (algebraMap F _).injective`.
+
+Conclude with `zero_ne_one (hinj (by rw [map_zero, map_one]; exact hl))`. Take `⟨γ, hγU, hγ⟩` from `cayley_mem_UJ (σ : E →+* E) J X' hdet hX'lie hQ`. Use `⟨γ, hγU, fun v hv i j => ?_⟩` and prove the remaining obligations. Take `⟨W, N, hXP, hΔ, hN, -, hMC⟩` from `hloc v hv`. Establish `hγQ : (γ : Matrix n n E) * (1 + X') = 1 - X'`.
+
+Rewrite using `[hγ, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hQ, Matrix.mul_one]`. Establish `hγR : (γ : Matrix n n E).map (PI.UnitaryApproxDefs.inclE (F` using `F) (v.adicCompletion F)) * (1 + X'.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F))) = 1 - X'.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)) := by`. Use `congrArg (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F)).mapMatrix hγQ` as an intermediate fact. Simplify `this` using `[map_mul, map_add, map_sub, map_one]`. Establish `herr` using `local_err (h2u v) _ _ _ _ _ _ hXP hΔ hN hγR`.
+
+Rewrite `hMC` using `[← herr]`. Conclude with `MC_entries hMC i j`.
+-/
 theorem cayleyStep : CayleyStep := by
   intro hAE hB hU F E _ _ _ _ _ n _ _ σ J h1 hJ hdet T g hg hP D hD
   classical

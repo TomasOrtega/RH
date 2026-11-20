@@ -24,6 +24,9 @@ noncomputable section
 
 namespace GlobalTheory.GenericSpread
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (chartPullSame M _ _ _ h fun _ => e) (chartPullSame N _ _ _ h fun _ => e) H`.
+-/
 theorem lbIso_pull_of_comp {X Y Z : Scheme.{0}} {M N : LB X} {a : Y ⟶ X} {c : Z ⟶ X} (h : Z ⟶ Y) (e : c = h ≫ a)
     (H : LBIso (M.pull a) (N.pull a)) : LBIso (M.pull c) (N.pull c) :=
   LBIso.chartPull (chartPullSame M _ _ _ h fun _ => e) (chartPullSame N _ _ _ h fun _ => e) H
@@ -35,6 +38,11 @@ variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] 
 def sqMap (h : IsGrpPullback G' G f φ) : Over.mk ((G' ⊗ G').hom ≫ f) ⟶ G ⊗ G :=
   lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))
 
+/- English proof (translation)
+Establish `e₁ : (sqMap h).left ≫ (fst G G).left = (fst G' G').left ≫ φ` using `congrArg (fun z => z.left) (lift_fst (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')))`. Establish `e₂ : (sqMap h).left ≫ (snd G G).left = (snd G' G').left ≫ φ` using `congrArg (fun z => z.left) (lift_snd (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G')))`. Establish `a' : IsPullback (fst G' G').left (snd G' G').left G'.hom G'.hom` using `IsPullback.of_hasPullback _ _`. Establish `a : IsPullback (fst G G).left (snd G G).left G.hom G.hom` using `IsPullback.of_hasPullback _ _`. Establish `b` using `a'.paste_horiz h.1`.
+
+Rewrite `b` using `[← e₁, ← h.1.w]`. Establish `c` using `(IsPullback.of_right b e₂ a).paste_vert h.1`. Rewrite `c` using `[Over.w, Over.w]`. Conclude with `c`.
+-/
 theorem isPullback_sqMap (h : IsGrpPullback G' G f φ) :
     IsPullback (sqMap h).left (G' ⊗ G').hom (G ⊗ G).hom f := by
   have e₁ : (sqMap h).left ≫ (fst G G).left = (fst G' G').left ≫ φ :=
@@ -49,12 +57,20 @@ theorem isPullback_sqMap (h : IsGrpPullback G' G f φ) :
   rw [Over.w, Over.w] at c
   exact c
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _ rw [Category.assoc, hw, Category.assoc])`.
+-/
 theorem pushPt_comp (h : IsGrpPullback G' G f φ) {w' : G' ⟶ G'} {w : G ⟶ G} (hw : w'.left ≫ φ = φ ≫ w.left)
     {T : Over S'} (x : T ⟶ G') : pushPt h.1.w (x ≫ w') = pushPt h.1.w x ≫ w :=
   Over.OverMorphism.ext (by
     show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _
     rw [Category.assoc, hw, Category.assoc])
 
+/- English proof (translation)
+Establish `b : pushPt h.1.w (w' * v') = pushPt h.1.w w' * pushPt h.1.w v'` using `map_mul (pushHom h G') _ _`. Establish `c` using `pushPt_comp h hw (𝟙 G')`. Establish `d` using `pushPt_comp h hv (𝟙 G')`. Rewrite `c`, `d` using `[Category.id_comp]`. Rewrite `b` using `[c, d, ← MonObj.comp_mul]`.
+
+Establish `e` using `congrArg (fun z => z.left) b`. Use `e.trans ?_` and prove the remaining obligations. Use `show (𝟙 _ ≫ φ) ≫ _ = _`. Rewrite using `[Category.id_comp]`.
+-/
 theorem mul_left_comp (h : IsGrpPullback G' G f φ) {w' v' : G' ⟶ G'} {w v : G ⟶ G} (hw : w'.left ≫ φ = φ ≫ w.left)
     (hv : v'.left ≫ φ = φ ≫ v.left) : (w' * v').left ≫ φ = φ ≫ (w * v).left := by
   have b : pushPt h.1.w (w' * v') = pushPt h.1.w w' * pushPt h.1.w v' := map_mul (pushHom h G') _ _
@@ -69,6 +85,9 @@ theorem mul_left_comp (h : IsGrpPullback G' G f φ) {w' v' : G' ⟶ G'} {w v : G
 
 variable [IsCommMonObj G] [IsCommMonObj G'] {L : LB G.left} {L' : LB G'.left}
 
+/- English proof (translation)
+The claim follows from `LBIso.trans (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ (pull_isLB hL φ) _ _) (pull_isLB (DVR.linComb_isLB L hL _ _) _) (GlobalTheory.PowPrimitive.lbIso_linComb hb _ _) (LBIso.chartPull (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U hx I.down) (ReciprocityThe …`.
+-/
 theorem lbIso_cube_pull (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hb : LBIso L' (L.pull φ))
     {T' : Over S'} {T : Over S} {n : ℕ} (x' : Fin n → (T' ⟶ G')) (x : Fin n → (T ⟶ G))
     (U : Over.mk (T'.hom ≫ f) ⟶ T) (hx : ∀ i, pushPt h.1.w (x' i) = U ≫ x i) :
@@ -78,6 +97,11 @@ theorem lbIso_cube_pull (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.Is
     (LBIso.chartPull (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U hx I.down)
       (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ _ _ rfl) (PolBaseChange.lbIso_refl (DVR.linComb_isLB L hL _ _)))
 
+/- English proof (translation)
+Establish `a` using `lbIso_cube_pull h hL hL' hb ![fst G' G' ≫ w', snd G' G'] ![fst G G ≫ w, snd G G] (sqMap h) fun i => by fin_cases i`. Conclude with `(pushPt_comp h hw _).trans (by simp [sqMap])`. Simplify using `[sqMap]`. Establish `b` using `lbIso_cube_pull h hL hL' hb ![fst G' G', snd G' G' ≫ v'] ![fst G G, snd G G ≫ v] (sqMap h) fun i => by fin_cases i`. Simplify using `[sqMap]`.
+
+Conclude with `(pushPt_comp h hv _).trans (by simp [sqMap])`. Establish `i' : ∀ x : Fin 2 → (G' ⊗ G' ⟶ G'), (cubeLB G' x L').IsLB` using `fun x => DVR.linComb_isLB L' hL' _ _`. Establish `i : ∀ x : Fin 2 → (G ⊗ G ⟶ G), ((cubeLB G x L).pull (Y` using `(G' ⊗ G').left) (sqMap h).left).IsLB := fun x => pull_isLB (DVR.linComb_isLB L hL _ _) _`. Conclude with `⟨fun H => LBIso.trans (i _) (i' _) (i _) a.symm (LBIso.trans (i' _) (i' _) (i _) H b), fun H => LBIso.trans (i' _) (i _) (i' _) a (LBIso.trans (i _) (i _) (i' _) H b.symm)⟩`.
+-/
 theorem adj_iff (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hb : LBIso L' (L.pull φ))
     {w' v' : G' ⟶ G'} {w v : G ⟶ G} (hw : w'.left ≫ φ = φ ≫ w.left) (hv : v'.left ≫ φ = φ ≫ v.left) :
     LBIso (cubeLB G' ![fst G' G' ≫ w', snd G' G'] L') (cubeLB G' ![fst G' G', snd G' G' ≫ v'] L') ↔
@@ -97,6 +121,11 @@ theorem adj_iff (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hb 
   exact ⟨fun H => LBIso.trans (i _) (i' _) (i _) a.symm (LBIso.trans (i' _) (i' _) (i _) H b),
     fun H => LBIso.trans (i' _) (i _) (i' _) a (LBIso.trans (i _) (i _) (i' _) H b.symm)⟩
 
+/- English proof (translation)
+Establish `a` using `lbIso_cube_pull h hL hL' hb ![𝟙 G', w'] ![𝟙 G, w] (pushPt h.1.w (𝟙 G')) fun i => by fin_cases i`. Simplify using the standard rewrite rules. Conclude with `(congrArg (pushPt h.1.w) (Category.id_comp _).symm).trans (pushPt_comp h hw _)`. Establish `e : (pushPt h.1.w (𝟙 G')).left = φ` using `Category.id_comp _`. Rewrite `a` using `[e]`.
+
+Establish `i' : (cubeLB G' ![𝟙 G', w'] L').IsLB` using `DVR.linComb_isLB L' hL' _ _`. Establish `i : ((cubeLB G ![𝟙 G, w] L).pull φ).IsLB` using `pull_isLB (DVR.linComb_isLB L hL _ _) _`. Establish `j` using `pull_isLB hL φ`. Conclude with `⟨fun H => LBIso.trans j hL' i hb.symm (LBIso.trans hL' i' i H a), fun H => LBIso.trans hL' j i' hb (LBIso.trans j i i' H a.symm)⟩`.
+-/
 theorem prim_iff (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hb : LBIso L' (L.pull φ))
     {w' : G' ⟶ G'} {w : G ⟶ G} (hw : w'.left ≫ φ = φ ≫ w.left) :
     LBIso L' (cubeLB G' ![𝟙 G', w'] L') ↔ LBIso (L.pull φ) ((cubeLB G ![𝟙 G, w] L).pull φ) := by
@@ -114,6 +143,9 @@ theorem prim_iff (h : IsGrpPullback G' G f φ) (hL : L.IsLB) (hL' : L'.IsLB) (hb
 
 end Grp
 
+/- English proof (translation)
+Take `⟨f, hf, Hf⟩` from `GlobalTheory.T.lbIso_generic_spreads_out_alt R K B pB M N inferInstance inferInstance hM hN (lbIso_pull_of_comp h.isoPullback.inv h.isoPullback_inv_fst.symm H)`. Conclude with `⟨f, hf, fun R' _ φ hu B' U' p' e => lbIso_pull_of_comp (pullback.lift U' p' e) (pullback.lift_fst _ _ _).symm (Hf R' φ hu)⟩`.
+-/
 theorem spread_lbIso (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K]
     [IsFractionRing R K] {B BK : Scheme.{0}} (pB : B ⟶ Sp R) [QuasiCompact pB] [QuasiSeparated pB] {M N : LB B}
     (hM : M.IsLB) (hN : N.IsLB) {U : BK ⟶ B} {p : BK ⟶ Sp K} (h : IsPullback U p pB (spMap (algebraMap R K)))
@@ -125,6 +157,19 @@ theorem spread_lbIso (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R]
   exact ⟨f, hf, fun R' _ φ hu B' U' p' e =>
     lbIso_pull_of_comp (pullback.lift U' p' e) (pullback.lift_fst _ _ _).symm (Hf R' φ hu)⟩
 
+/- English proof (translation)
+Take `⟨ψ, h, hb, -, ha⟩` from `hm`. Take `⟨h₁, h₂, h₃⟩` from `hp`. Use `letI := t.ab.comm`. Use `letI := t'.ab.comm`. Use `haveI : IsProper t'.A.hom := t'.ab.proper`.
+
+Use `haveI : Smooth t'.A.hom := t'.ab.smooth`. Use `haveI : IsProper (t'.A ⊗ t'.A).hom := by`. Rewrite using `[← Over.w (fst t'.A t'.A)]`. Use `haveI : IsProper (fst t'.A t'.A).left := inferInstanceAs (IsProper (pullback.fst t'.A.hom t'.A.hom))`. Use `infer_instance`.
+
+Take `⟨q₁, q₂⟩` from `GlobalTheory.ExtUnique.spec_fractionRing R K`. Establish `e₁ : t'.act w * t'.act w' = 𝟙 t'.A`. Use `GlobalTheory.ExtUnique.over_hom_ext_of_isPullback h.1 ?_` and prove the remaining obligations. Rewrite using `[← mul_left_comp h (ha w) (ha w'), h₁]`. Simplify using the standard rewrite rules.
+
+Take `⟨f₂, hf₂, H₂⟩` from `spread_lbIso R K (t'.A ⊗ t'.A).hom (DVR.linComb_isLB _ t'.isLB _ _) (DVR.linComb_isLB _ t'.isLB _ _) (isPullback_sqMap h) ((adj_iff h t'.isLB t.isLB hb (ha w) (ha w')).1 h₂)`. Take `⟨f₃, hf₃, H₃⟩` from `spread_lbIso R K t'.A.hom t'.isLB (DVR.linComb_isLB _ t'.isLB _ _) h.1 ((prim_iff h t'.isLB t.isLB hb (ha w)).1 h₃)`. Use `⟨f₂ * f₃, mul_ne_zero hf₂ hf₃, fun R' _ φ s'' t'' hu ⟨ψ', h', hb', _, ha'⟩ => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[map_mul]`. Use `letI := t''.ab.comm`.
+
+Use `⟨?_, (adj_iff h' t'.isLB t''.isLB hb' (ha' w) (ha' w')).2 (H₂ R' φ (isUnit_of_mul_isUnit_left hu) (isPullback_sqMap h').w), (prim_iff h' t'.isLB t''.isLB hb' (ha' w)).2 (H₃ R' φ (isUnit_of_mul_isUnit_right hu) h'.1.w)⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h'.1.hom_ext` to reduce the goal to its premises. Rewrite using `[mul_left_comp h' (ha' w) (ha' w'), e₁]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Over.w, Over.w]`.
+-/
 theorem spread_prim {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {w w' : J} (R K : Type) [CommRing R]
     [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] {s : Sp R ⟶ Sp o}
     {s' : Sp K ⟶ Sp o} (t' : TObj g k J b s) (t : TObj g k J b s') (hm : TMap t t' (spMap (algebraMap R K)))
@@ -162,6 +207,11 @@ theorem spread_prim {o : Type} [CommRing o] {g k : ℕ} {J : Type} {b : TBase o 
     simp
   · rw [Over.w, Over.w]
 
+/- English proof (translation)
+Take `⟨h₁, h₂, h₃⟩` from `H`. Use `⟨h₁, h₂, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, th, s1, α, τ, U, s2, w, u, a₁, a₂, a₃, a₄, a₅, a₆, a₇, a₈⟩` from `h₃ p`. Take `⟨u', hu⟩ : ∃ u' : Γ((Out.overRes V).left, ⊤)ˣ, u'.val = V.ι.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom c)` from `(hc.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom).map V.ι.appTop.hom`. Use `⟨V, hV, th, s1, α, τ, U, s2, w, u' * u, a₁, a₂, a₃, a₄, a₅, a₆, a₇, fun i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, _root_.mul_assoc, ← a₈ i, hu]`. Use `beta_reduce`. Rewrite using `[e, map_mul]`. Conclude with `map_mul V.ι.appTop.hom _ _`.
+-/
 theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)} {S : Scheme.{0}}
     {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {R : Type} [CommRing R] {x : Sp R ⟶ S} {v v' : Ix g (N' ^ 2) → R}
     (c : R) (hc : IsUnit c) (e : ∀ a, v' a = c * v a) (H : t.HasTh x v) : t.HasTh x v' := by
@@ -177,6 +227,11 @@ theorem hasTh_unit_mul {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBas
   rw [e, map_mul]
   exact map_mul V.ι.appTop.hom _ _
 
+/- English proof (translation)
+Establish `key : ∀ z : Ix g (N' ^ 2) → K, Ideal.span (Set.range z) = ⊤ ∨ ∀ a, z a = 0` using `fun z => (Ideal.eq_bot_or_top (Ideal.span (Set.range z))).symm.imp id fun h a => Ideal.span_eq_bot.1 h _ (Set.mem_range_self a)`. Break down `key v with h | h` into its components or cases. Take `⟨u, hu⟩` from `GlobalTheory.T.thetaConstants_unique_up_to_unit hL hL2 o g N' J b S s t K x v v' H H' h`. Conclude with `⟨(u : K), u.ne_zero, hu⟩`. Break down `key v' with h' | h'` into its components or cases.
+
+Take `⟨u, hu⟩` from `GlobalTheory.T.thetaConstants_unique_up_to_unit hL hL2 o g N' J b S s t K x v' v H' H h'`. Conclude with `⟨(u⁻¹ : Kˣ), (u⁻¹).ne_zero, fun a => by rw [hu, Units.inv_mul_cancel_left]⟩`. Conclude with `⟨1, one_ne_zero, fun a => by rw [h, h', mul_zero]⟩`.
+-/
 theorem exists_eq_mul_of_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {S : Scheme.{0}} {s : S ⟶ Sp o} {t : TObj g (N' ^ 2) J b s} {K : Type} [Field K]
     {x : Sp K ⟶ S} {v v' : Ix g (N' ^ 2) → K} (H : t.HasTh x v) (H' : t.HasTh x v') :
@@ -192,6 +247,13 @@ theorem exists_eq_mul_of_field (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [Com
     exact ⟨(u⁻¹ : Kˣ), (u⁻¹).ne_zero, fun a => by rw [hu, Units.inv_mul_cancel_left]⟩
   · exact ⟨1, one_ne_zero, fun a => by rw [h, h', mul_zero]⟩
 
+/- English proof (translation)
+Set `p : Sp R` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum R)`. Take `⟨R₁, _, x, w, hx, hp, H⟩` from `GlobalTheory.T.exists_thetaConstants_locally_on_base hL hL2 o g N' J b _ s t hN p`. Take `⟨_, ⟨f, rfl⟩, hf, hsub⟩` from `(PrimeSpectrum.isTopologicalBasis_basic_opens (R := R)).exists_subset_of_mem_open hp x.isOpenEmbedding.isOpen_range`. Establish `hr : Set.range (spMap (algebraMap R (Localization.Away f))) ⊆ Set.range x`. Use `subset_trans (le_of_eq ?_) hsub` and prove the remaining obligations.
+
+Conclude with `PrimeSpectrum.localization_away_comap_range (Localization.Away f) f`. Set `y` to `IsOpenImmersion.lift x (spMap (algebraMap R (Localization.Away f))) hr`. Establish `hy : spMap (Spec.preimage y).hom ≫ x = spMap (algebraMap R (Localization.Away f))`. Rewrite using `[← IsOpenImmersion.lift_fac x (spMap (algebraMap R (Localization.Away f))) hr]`. Use `congr 1`.
+
+Conclude with `Spec.map_preimage y`. Use `⟨f, fun h => hf (by subst h; exact Ideal.zero_mem _), fun a => (Spec.preimage y).hom (w a), ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Conclude with `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R₁ _ _ x w H`.
+-/
 theorem exists_hasTh_away (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} {R : Type} [CommRing R] [IsDomain R] {s : Sp R ⟶ Sp o} (t : TObj g (N' ^ 2) J b s)
     (hN : Odd N') : ∃ f : R, f ≠ 0 ∧ ∃ w : Ix g (N' ^ 2) → Localization.Away f,
@@ -212,10 +274,28 @@ theorem exists_hasTh_away (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing
   rw [← hy]
   exact GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t R₁ _ _ x w H
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Take `⟨f, hf, w, Hw⟩` from `exists_hasTh_away hL hL2 t H.1`. Establish `pull : ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (hu : IsUnit (φ f)), t.HasTh (spMap φ) (fun a => IsLocalization.Away.lift f hu (w a))` using `fun R' _ φ hu => by`. Use `GlobalTheory.T.hasThetaConstants_ring_baseChange hL2 o g N' J b _ s t _ R' (IsLocalization.Away.lift f hu) _ w Hw` as an intermediate fact. Rewrite `this` using `[spMap_comp, IsLocalization.Away.lift_comp]`. Then use the resulting hypothesis. Establish `inj` using `IsFractionRing.injective R K`.
+
+Establish `hK : IsUnit (algebraMap R K f)` using `((map_ne_zero_iff _ inj).2 hf).isUnit`. Take `⟨c, hc, e⟩` from `exists_eq_mul_of_field hL hL2 (pull K _ hK) H`. Take `⟨a, a', ha', rfl⟩` from `IsFractionRing.div_surjective (A := R) c`. Establish `ha0' : a' ≠ 0` using `nonZeroDivisors.ne_zero ha'`. Establish `ha0 : a ≠ 0` using `fun h => hc (by rw [h, map_zero, zero_div])`.
+
+Establish `linj : Function.Injective (IsLocalization.Away.lift (S` using `Localization.Away f) f hK) := by`. Unfold `IsLocalization.Away.lift`. Rewrite using `[IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Rewrite using `[IsLocalization.injective _ (powers_le_nonZeroDivisors_of_noZeroDivisors hf) h]`. Introduce `h`. Rewrite using `[inj h]`. Establish `e' : ∀ i, algebraMap R (Localization.Away f) (a' * v i) = algebraMap R _ a * w i` using `fun i => by`.
+
+Apply `linj` to reduce the goal to its premises. Use `e i` as an intermediate fact. Use `beta_reduce at this`. Rewrite using `[IsLocalization.Away.lift_eq, map_mul (IsLocalization.Away.lift f hK), IsLocalization.Away.lift_eq, map_mul, this, ← _root_.mul_assoc, mul_div_cancel₀ _ ((map_ne_zero_iff _ inj).2 ha0')]`. Use `⟨f * (a * a'), mul_ne_zero hf (mul_ne_zero ha0 ha0'), fun R' _ φ hu => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hu` using `[map_mul, map_mul]`. Establish `u₁` using `isUnit_of_mul_isUnit_left hu`. Establish `u₂` using `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_right hu)`. Take `⟨u₃, hu₃⟩` from `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right hu)`. Use `hasTh_unit_mul ((u₃⁻¹ : R'ˣ) * φ a) ((u₃⁻¹).isUnit.mul u₂) (fun i => ?_) (pull R' φ u₁)` and prove the remaining obligations.
+
+Use `congrArg (IsLocalization.Away.lift f u₁) (e' i)` as an intermediate fact. Rewrite `this` using `[map_mul (IsLocalization.Away.lift f u₁), IsLocalization.Away.lift_eq, IsLocalization.Away.lift_eq, map_mul, ← hu₃]`. Use `beta_reduce`. Rewrite using `[_root_.mul_assoc, ← this, Units.inv_mul_cancel_left]`.
+-/
 theorem spread_hasTh (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {g N' : ℕ} {J : Type}
     {b : TBase o (N' ^ 2)} (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     {s : Sp R ⟶ Sp o} (t : TObj g (N' ^ 2) J b s) (v : Ix g (N' ^ 2) → R)
@@ -260,6 +340,11 @@ theorem spread_hasTh (hL : Out.Laws) (hL2 : Out.Laws2) {o : Type} [CommRing o] {
   beta_reduce
   rw [_root_.mul_assoc, ← this, Units.inv_mul_cancel_left]
 
+/- English proof (translation)
+Establish `e : ∀ q : Sp K, spMap (algebraMap R K) q = genericPoint (Sp R)` using `fun q => by`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap R K) q.asIdeal = ⊥`. Rewrite using `[(Ideal.eq_bot_or_top q.asIdeal).resolve_right q.isPrime.ne_top]`.
+
+Conclude with `Ideal.comap_bot_of_injective _ (IsFractionRing.injective R K)`. Use `Set.eq_singleton_iff_unique_mem.2 ⟨⟨(default : PrimeSpectrum K), e _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `e q`.
+-/
 theorem range_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] :
     Set.range (spMap (algebraMap R K)) = {genericPoint (Sp R)} := by
   have e : ∀ q : Sp K, spMap (algebraMap R K) q = genericPoint (Sp R) := fun q => by
@@ -272,6 +357,13 @@ theorem range_spMap_fractionRing (R K : Type) [CommRing R] [IsDomain R] [Field K
   rintro _ ⟨q, rfl⟩
   exact e q
 
+/- English proof (translation)
+Introduce `hL hL2 o _ g N' J b Mat κ w w' R K _ _ _ _ _ _ s s' t' t v hm hT hS hP`. Establish `hS' : t'.Shape Mat κ` using `GlobalTheory.T.thetaLevelShape_of_generic_point hL hL2 o g _ J b Mat κ _ s t' K _ s' t (range_spMap_fractionRing R K) hm hS`. Establish `hT'` using `(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ s t' _ s' t _ K _ _ hm).1 hT`. Rewrite `hT'` using `[Category.id_comp]`. Take `⟨f₁, hf₁, H₁⟩` from `spread_hasTh hL hL2 R K t' v hT'`.
+
+Take `⟨f₂, hf₂, H₂⟩` from `spread_prim R K t' t hm hP`. Use `⟨f₁ * f₂, mul_ne_zero hf₁ hf₂, fun R' _ φ s'' t'' hu hm' => ?_⟩` and prove the remaining obligations. Rewrite `hu` using `[map_mul]`. Use `⟨(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ s t' _ s'' t'' _ R' _ _ hm').2 ?_, (GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g _ J b Mat κ w w' _ _ s s'' _ t' t'' hm').1 hS', H₂ R' φ s'' t'' (isUnit_of_mul_isUnit_right hu) hm'⟩` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+
+Conclude with `H₁ R' φ (isUnit_of_mul_isUnit_left hu)`.
+-/
 theorem exists_ne_zero_hasTh_shape_prim : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) Mat κ (w w' : J) (R K : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [Field K] [Algebra R K] [IsFractionRing R K] (s : Sp R ⟶ Sp o) (s' : Sp K ⟶ Sp o) (t' : TObj g (N' ^ 2) J b s) (t : TObj g (N' ^ 2) J b s') (v : Ix g (N' ^ 2) → R), TMap t t' (spMap (algebraMap R K)) → t.HasTh (𝟙 _) (fun a => algebraMap R K (v a)) → t.Shape Mat κ → t.Prim w w' → ∃ f : R, f ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (φ : R →+* R') (s'' : Sp R' ⟶ Sp o) (t'' : TObj g (N' ^ 2) J b s''), IsUnit (φ f) → TMap t'' t' (spMap φ) → t''.HasTh (𝟙 _) (fun a => φ (v a)) ∧ t''.Shape Mat κ ∧ t''.Prim w w' := by
   intro hL hL2 o _ g N' J b Mat κ w w' R K _ _ _ _ _ _ s s' t' t v hm hT hS hP
   have hS' : t'.Shape Mat κ :=

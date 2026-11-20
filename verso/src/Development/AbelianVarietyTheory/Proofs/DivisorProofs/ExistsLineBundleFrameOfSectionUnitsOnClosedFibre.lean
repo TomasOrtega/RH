@@ -10,11 +10,33 @@ noncomputable section
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Rewrite using `[gs_eq (𝟙 X) z U h, X.mem_basicOpen a z h]`. Both sides reduce to the same expression.
+-/
 theorem isUnit_gs_id_iff {X : Scheme.{0}} (z : X) (U : X.Opens) (h : z ∈ U) (a : Γ(X, U)) :
     IsUnit (gs (𝟙 X) z U a) ↔ z ∈ X.basicOpen a := by
   rw [gs_eq (𝟙 X) z U h, X.mem_basicOpen a z h]
   rfl
 
+/- English proof (translation)
+Introduce `X Y β hβ L hL V s hs y hy hu`. Set `N : X.Opens` to `⨆ k, X.basicOpen (s k)`. Establish `hN : ∀ z : X, β z = y → z ∈ N`. Introduce `z hz`. Take `⟨k, hk⟩` from `exists_chart hL z`.
+
+Establish `hm : z ∈ β ⁻¹ᵁ V ⊓ L.U k` using `⟨show β z ∈ V from hz ▸ hy, hk⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨k, (isUnit_gs_id_iff z _ hm _).1 (hu z k hz hk)⟩`. Set `V₀ : Y.Opens` to `⟨(β '' (N : Set X)ᶜ)ᶜ, (hβ _ N.2.isClosed_compl).isOpen_compl⟩`. Establish `hy₀ : y ∈ V₀`. Introduce and unpack `⟨p, hp, e⟩`.
+
+Conclude with `hp (hN p e)`. Establish `hV₀ : ∀ p : X, β p ∈ V₀ → p ∈ N`. Introduce `p hp`. Assume the negation of the conclusion as `h`. Conclude with `hp ⟨p, h, rfl⟩`.
+
+Establish `hle : ∀ k, β ⁻¹ᵁ (V ⊓ V₀) ⊓ L.U k ≤ β ⁻¹ᵁ V ⊓ L.U k` using `fun k z hz => ⟨hz.1.1, hz.2⟩`. Establish `hunit : ∀ k, IsUnit ((X.presheaf.map (homOfLE (hle k)).op).hom (s k))`. Introduce `k`. Apply `X.toRingedSpace.isUnit_of_isUnit_germ` to reduce the goal to its premises. Introduce `z hz`.
+
+Take `⟨k', hk'⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hV₀ z hz.1.2)`. Establish `hm' : z ∈ β ⁻¹ᵁ V ⊓ L.U k'` using `X.basicOpen_le _ hk'`. Establish `h1 : IsUnit (gs (𝟙 X) z _ (s k))`. Rewrite using `[hs z k k' hm'.1 hz.2 hm'.2]`. Conclude with `(Units.isUnit _).mul ((isUnit_gs_id_iff z _ hm' _).2 hk')`.
+
+Rewrite `h1` using `[← gs_res (𝟙 X) z (hle k) hz, gs_eq (𝟙 X) z _ hz]`. Conclude with `h1`. Establish `key : ∀ (f : X ⟶ X) (z : X) (k : L.ι), f z ∈ β ⁻¹ᵁ (V ⊓ V₀) → f z ∈ L.U k → (gm f z _ (hunit k).unit : X.presheaf.stalk z) = gs f z _ (s k)`. Introduce `f z k h1 h2`. Establish `hm : f z ∈ β ⁻¹ᵁ (V ⊓ V₀) ⊓ L.U k` using `⟨h1, h2⟩`.
+
+Rewrite using `[← gs_unit f z _ hm, IsUnit.unit_spec, gs_res f z (hle k) hm]`. Use `⟨V ⊓ V₀, ⟨hy, hy₀⟩, inf_le_left, fun k => (hunit k).unit, ?_, ?_⟩` and prove the remaining obligations. Introduce `k k'`. Use `unit_ext fun z hz => ?_` and prove the remaining obligations. Rewrite using `[map_mul, gm_res _ z _ hz, gm_res _ z _ hz, gm_res _ z _ hz]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, key (𝟙 X) z k hz.1.1 hz.1.2, key (𝟙 X) z k' hz.2.1 hz.2.2]`. Conclude with `hs z k k' hz.1.1.1 hz.1.2 hz.2.2`. Introduce `f w hw z j k hz hfz hk hj`. Apply `Units.ext` to reduce the goal to its premises.
+
+Rewrite using `[Units.val_mul, key f z j hfz hj, key (𝟙 X) z k hz hk]`. Conclude with `hw z j k hz.1 hfz.1 hk hj`.
+-/
 theorem exists_frame_of_isUnit_on_fibre : ∀ (X Y : Scheme.{0}) (β : X ⟶ Y), IsClosedMap β.base → ∀ (L : LB X), L.IsLB → ∀ (V : Y.Opens) (s : ∀ k : L.ι, Γ(X, β ⁻¹ᵁ V ⊓ L.U k)), IsSecOver L (β ⁻¹ᵁ V) s → ∀ y : Y, y ∈ V → (∀ (z : X) (k : L.ι), β z = y → z ∈ L.U k → IsUnit (gs (𝟙 X) z (β ⁻¹ᵁ V ⊓ L.U k) (s k))) → ∃ V' : Y.Opens, y ∈ V' ∧ V' ≤ V ∧ ∃ T : ∀ k : L.ι, Γ(X, β ⁻¹ᵁ V' ⊓ L.U k)ˣ, IsFrameOver L (β ⁻¹ᵁ V') T ∧ ∀ (f : X ⟶ X) (w : LB.Iso L (L.pull f)), SecCarriedOver L (β ⁻¹ᵁ V) s f w → FrameCarried L (β ⁻¹ᵁ V') T f w := by
   intro X Y β hβ L hL V s hs y hy hu
   let N : X.Opens := ⨆ k, X.basicOpen (s k)

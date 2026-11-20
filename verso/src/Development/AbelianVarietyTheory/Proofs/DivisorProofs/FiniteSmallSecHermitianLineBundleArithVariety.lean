@@ -12,6 +12,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.SmallFin
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX M`. Take `⟨P, hL, -⟩` from `GlobalTheory.VolBr.exists_pair M M`. Substitute `hL` using the available equality. Establish `hrep : P.Rep 1 0 P.L` using `(GlobalTheory.VolBr.Pair.rep_base k X p P).1`. Take `⟨e, he, hrange, hnorm, -⟩` from `GlobalTheory.VolBr.RepDict.rep_dict k X p P 1 0 P.L hrep`.
+
+Establish `hfin : (P.Bl 1 0 1).Finite` using `GlobalTheory.T.hermLineBundlePair_sectionBall_finite k X p D hX P 1 0 1`. Use `(hfin.preimage he.injOn).subset ?_` and prove the remaining obligations. Introduce `u hu`. Use `⟨?_, fun σ y => ?_⟩` and prove the remaining obligations. Establish `hm : e u ∈ Set.range e` using `Set.mem_range_self u`.
+
+Rewrite `hm` using `[hrange]`. Conclude with `hm`. Establish `h0 : 0 ≤ P.nu 1 0 σ y (e u)`. Unfold `Pair.nu`. Check the signs of the components of the expression.
+
+Establish `h1 : P.nu 1 0 σ y (e u) ^ 2 ≤ 1`. Rewrite using `[hnorm]`. Conclude with `hu σ y`. Conclude with `(pow_le_one_iff_of_nonneg h0 two_ne_zero).1 h1`.
+-/
 theorem smallSec_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ M : HermLB p, M.smallSec.Finite := by
   intro k _ X _ p D hX M

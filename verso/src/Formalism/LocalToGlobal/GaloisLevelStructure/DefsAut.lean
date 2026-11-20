@@ -16,11 +16,17 @@ def Cong (N : ℕ) (κ : GAf L n) : Prop :=
   κ ∈ Umax L n ∧ ∀ i j, ∃ y ∈ ALint L,
     (κ.1 : Matrix (Fin n) (Fin n) (AL L)) i j - (1 : Matrix (Fin n) (Fin n) (AL L)) i j = (N : AL L) * y
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, fun i j => by obtain ⟨y, hy, e⟩ := h.2 i j exact ⟨(N' : AL L) * y, Subring.mul_mem _ (natCast_mem _ _) hy, by rw [e]; push_cast; ring⟩⟩`.
+-/
 theorem Cong.of_mul_left {N N' : ℕ} {κ : GAf L n} (h : Cong L n (N * N') κ) : Cong L n N κ :=
   ⟨h.1, fun i j => by
     obtain ⟨y, hy, e⟩ := h.2 i j
     exact ⟨(N' : AL L) * y, Subring.mul_mem _ (natCast_mem _ _) hy, by rw [e]; push_cast; ring⟩⟩
 
+/- English proof (translation)
+The claim follows from `Cong.of_mul_left L n (N := N') (N' := N) (by rwa [Nat.mul_comm])`.
+-/
 theorem Cong.of_mul_right {N N' : ℕ} {κ : GAf L n} (h : Cong L n (N * N') κ) : Cong L n N' κ :=
   Cong.of_mul_left L n (N := N') (N' := N) (by rwa [Nat.mul_comm])
 

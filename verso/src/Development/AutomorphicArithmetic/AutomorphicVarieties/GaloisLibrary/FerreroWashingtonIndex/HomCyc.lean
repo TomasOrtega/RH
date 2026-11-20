@@ -3,6 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 
 open UpperTheory.V.FW
 
+/- English proof (translation)
+Establish `key : ∀ (φ : G → ZMod l), (∀ a b, φ (a * b) = φ a + φ b) → (∀ u, P u → φ u = 0) → ∀ x y, π x = π y → φ x = φ y`. Introduce `φ hadd hker x y hxy`. Establish `h0 : φ (y⁻¹ * x) = 0` using `hker _ ((hP _).mpr (by rw [map_mul, map_inv, hxy, inv_mul_cancel]))`. Combine the equalities or inequalities in the displayed calculation. Use `symm`.
+
+Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.ofBijective (fun f => ⟨fun g => Multiplicative.toAdd (f (π g)), ?_, ?_⟩) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Simplify using `[map_mul]`. Introduce `u hu show Multiplicative.toAdd (f (π u)) = 0`.
+
+Rewrite using `[(hP u).mp hu, map_one, toAdd_one]`. Introduce `f f' h`. Use extensionality with `a`. Take `⟨g, rfl⟩` from `hπ a`. Use `congrArg (fun φ => φ.1 g) h` as an intermediate fact.
+
+Simplify using `using this`. Introduce and unpack `⟨φ, hadd, hker⟩`. Use `⟨{ toFun := fun a => Multiplicative.ofAdd (φ (Function.surjInv hπ a)), map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Use `show Multiplicative.ofAdd (φ (Function.surjInv hπ 1)) = 1`. Rewrite using `[key φ hadd hker _ 1 (by rw [Function.surjInv_eq hπ, map_one]), hker 1 ((hP 1).mpr (map_one π)), ofAdd_zero]`.
+
+Introduce `a b show Multiplicative.ofAdd (φ (Function.surjInv hπ (a * b))) = Multiplicative.ofAdd (φ (Function.surjInv hπ a)) * Multiplicative.ofAdd (φ (Function.surjInv hπ b))`. Establish `e : φ (Function.surjInv hπ (a * b)) = φ (Function.surjInv hπ a * Function.surjInv hπ b)` using `key φ hadd hker _ _ (by simp only [map_mul, Function.surjInv_eq hπ])`. Rewrite using `[e, hadd, ofAdd_add]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+
+Use `show Multiplicative.toAdd (Multiplicative.ofAdd (φ (Function.surjInv hπ (π g)))) = φ g`. Rewrite using `[toAdd_ofAdd]`. Conclude with `key φ hadd hker _ _ (Function.surjInv_eq hπ _)`.
+-/
 private theorem card_hom_surj (l : ℕ) {G A : Type} [Group G] [Group A] (π : G →* A) (hπ : Function.Surjective π)
     (P : G → Prop) (hP : ∀ u, P u ↔ π u = 1) :
     Nat.card {φ : G → ZMod l // (∀ a b, φ (a * b) = φ a + φ b) ∧ ∀ u, P u → φ u = 0} =
@@ -42,6 +55,11 @@ private theorem card_hom_surj (l : ℕ) {G A : Type} [Group G] [Group A] (π : G
       rw [toAdd_ofAdd]
       exact key φ hadd hker _ _ (Function.surjInv_eq hπ _)
 
+/- English proof (translation)
+Rewrite using `[(cardTors B).2 l, (cardTors A).2 l, (cardTors B).1 l, (cardTors A).1 l]`. Use `Nat.card_le_card_of_injective (fun x => ⟨((x : B) : A), ?_⟩) ?_` and prove the remaining obligations. Establish `hx` using `x.2`. Rewrite `hx`, the goal using `[MonoidHom.mem_ker]`. Simplify using `only [powMonoidHom_apply] at hx ⊢`.
+
+Rewrite using `[← Subgroup.coe_pow, hx, Subgroup.coe_one]`. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h`.
+-/
 private theorem card_hom_sub_le (l : ℕ) [Fact l.Prime] (A : Type) [CommGroup A] [Finite A] (B : Subgroup A) :
     Nat.card (B →* Multiplicative (ZMod l)) ≤ Nat.card (A →* Multiplicative (ZMod l)) := by
   rw [(cardTors B).2 l, (cardTors A).2 l, (cardTors B).1 l, (cardTors A).1 l]
@@ -55,6 +73,23 @@ private theorem card_hom_sub_le (l : ℕ) [Fact l.Prime] (A : Type) [CommGroup A
     apply Subtype.ext
     simpa using congrArg Subtype.val h
 
+/- English proof (translation)
+Introduce `l _ Γ _ U N _ _ _ hNU hcyc hcomm`. Establish `hU : ∀ (h : Γ ⧸ N) (u : Γ), u ∈ U → Commute h (u : Γ ⧸ N)`. Introduce `h u hu`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective h`. Use `hcomm g u hu` as an intermediate fact.
+
+Rewrite `this` using `[← QuotientGroup.eq_one_iff]`. Simplify using `only [QuotientGroup.mk_mul, QuotientGroup.mk_inv] at this`. Rewrite `this` using `[mul_inv_eq_one, mul_inv_eq_iff_eq_mul]`. Conclude with `this`. Take `⟨gU, hgen⟩` from `IsCyclic.exists_generator (α := Γ ⧸ U)`.
+
+Take `⟨g0, rfl⟩` from `QuotientGroup.mk_surjective gU`. Establish `hdecomp : ∀ x : Γ, ∃ i : ℤ, ∃ u ∈ U, x = g0 ^ i * u`. Introduce `x`. Take `⟨i, hi⟩` from `Subgroup.mem_zpowers_iff.mp (hgen (x : Γ ⧸ U))`. Use `⟨i, (g0 ^ i)⁻¹ * x, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations.
+
+Rewrite `hi` using `[← QuotientGroup.mk_zpow]`. Conclude with `QuotientGroup.eq.mp hi`. Establish `hcomm' : ∀ a b : Γ ⧸ N, a * b = b * a`. Introduce `a b`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective a`.
+
+Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective b`. Take `⟨i, u1, hu1, rfl⟩` from `hdecomp x`. Take `⟨j, u2, hu2, rfl⟩` from `hdecomp y`. Simplify using `only [QuotientGroup.mk_mul, QuotientGroup.mk_zpow]`. Establish `c12 : Commute ((g0 : Γ ⧸ N) ^ i) ((g0 : Γ ⧸ N) ^ j)` using `Commute.zpow_zpow_self _ _ _`.
+
+Apply `Commute.eq` to reduce the goal to its premises. Conclude with `Commute.mul_left (c12.mul_right (hU _ u2 hu2)) (((hU _ u1 hu1).symm).mul_right (hU _ u2 hu2))`. Use `letI : CommGroup (Γ ⧸ N) := { (inferInstance : Group (Γ ⧸ N)) with mul_comm := hcomm' }`. Set `f : U →* Γ ⧸ N` to `(QuotientGroup.mk' N).comp U.subtype`. Establish `h1` using `card_hom_surj l f.rangeRestrict f.rangeRestrict_surjective (fun u : U => u.1 ∈ N) (by`.
+
+Introduce `u`. Rewrite using `[← Subtype.coe_inj]`. Simplify using `[f, QuotientGroup.eq_one_iff])`. Establish `h2` using `card_hom_surj l (QuotientGroup.mk' N) (QuotientGroup.mk'_surjective N) (fun u => u ∈ N) (by intro u; simp [QuotientGroup.eq_one_iff])`. Use `beta_reduce at h1 h2`.
+
+Rewrite using `[h1, h2]`. Conclude with `card_hom_sub_le l (Γ ⧸ N) f.range`.
+-/
 theorem UpperTheory.V.FW.homCyc :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (U N : Subgroup Γ) [U.Normal] [N.Normal] [N.FiniteIndex], N ≤ U → IsCyclic (Γ ⧸ U) → (∀ g, ∀ u ∈ U, g * u * g⁻¹ * u⁻¹ ∈ N) → Nat.card {φ : U → ZMod l // (∀ a b, φ (a * b) = φ a + φ b) ∧ ∀ u : U, u.1 ∈ N → φ u = 0} ≤ Nat.card {φ : Γ → ZMod l // (∀ a b, φ (a * b) = φ a + φ b) ∧ ∀ u ∈ N, φ u = 0} := by
   intro l _ Γ _ U N _ _ _ hNU hcyc hcomm

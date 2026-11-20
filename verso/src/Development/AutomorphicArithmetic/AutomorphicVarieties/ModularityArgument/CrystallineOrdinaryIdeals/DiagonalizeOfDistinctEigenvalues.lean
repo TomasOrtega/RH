@@ -11,6 +11,47 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.CrystallineOrdinaryIdeals.FinrankCocyclesEqCrysAddDualInvOfPositiveStatement
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 
+/- English proof (translation)
+Introduce `hP l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ e he κ hκc hine x hx hxc hcr y z hzy hy`. Use `haveI : ContinuousConstSMul E B := contConstSMul_alg E`. Use `haveI : Module.Finite E B := Module.Finite.of_restrictScalars_finite ℚ_[l] E B`. Establish `w0 : wt1 0 = 1` using `rfl`. Establish `w1 : wt1 1 = 0` using `rfl`.
+
+Establish `w2 : wt1 2 = -1` using `rfl`. Establish `cd : ∀ i j, Continuous fun g => (((κ i / κ j) g : Bˣ) : B)` using `fun i j => cont_char_div (hκc i) (hκc j)`. Establish `ined : ∀ i j g, φ g ∈ Iq l → (κ i / κ j) g = cycA l l B (φ g) ^ ((e : ℤ) * wt1 i - (e : ℤ) * wt1 j)` using `fun i j g hg => by`. Rewrite using `[MonoidHom.div_apply, hine g hg i, hine g hg j, zpow_sub, div_eq_mul_inv]`. Establish `crk : ∀ i, IsCr φ (chRep (κ i))` using `fun i => crUnr φ hφ _ (contAction_chRep (hκc i)) ((e : ℤ) * wt1 i) fun g hg v => by`.
+
+Rewrite using `[chRep_apply, hine g hg, smul_eq_mul]`. Establish `crd : ∀ i j, IsCr φ (chRep (κ i / κ j))` using `fun i j => crUnr φ hφ _ (contAction_chRep (cd i j)) ((e : ℤ) * wt1 i - (e : ℤ) * wt1 j) fun g hg v => by`. Rewrite using `[chRep_apply, ined i j g hg, smul_eq_mul]`. Establish `hxf` using `(UpperTheory.isCrystalline_extension_iff_mem_finiteCocycles φ hφ _ _ (hκc 0) (hκc 1) x hx hxc (crk 0) (crk 1)).1 hcr`. Establish `ed : (κ 0 / κ 2) / (κ 1 / κ 2) = κ 0 / κ 1` using `div_div_div_cancel_right _ _ _`.
+
+Establish `hx' : ∀ g h, x (g * h) = x g + (((κ 0 / κ 2) / (κ 1 / κ 2)) g : Bˣ) * x h` using `by rw [ed]; exact hx`. Establish `eM : twist (κ 2)⁻¹ (ext2 (κ 0) (κ 1) x hx) = ext2 (κ 0 / κ 2) (κ 1 / κ 2) x hx'`. Use `MonoidHom.ext fun g => LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [twist_apply, characterExtensionRep_apply, div_eq_mul_inv, MonoidHom.mul_apply, Units.val_mul, Prod.smul_mk, smul_eq_mul]`. Apply the tactic sequence `ext <;> simp only [] <;> ring`.
+
+Rewrite `hzy`, the goal using `[eM]`. Use `set M := ext2 (κ 0 / κ 2) (κ 1 / κ 2) x hx' with hM`. Establish `cM : ContAction M` using `contAction_charExtension_of_continuous_cocycle (cd 0 2) (cd 1 2) hx' hxc`. Establish `crM : IsCr φ M` using `(UpperTheory.isCrystalline_extension_iff_mem_finiteCocycles φ hφ _ _ (cd 0 2) (cd 1 2) x hx' hxc (crd 0 2) (crd 1 2)).2 (by rw [ed]; exact hxf)`. Establish `hin02 : ∀ g, φ g ∈ Iq l → (κ 0 / κ 2) g = cycA l l B (φ g) ^ (2 * (e : ℤ))` using `fun g hg => by`.
+
+Rewrite using `[ined 0 2 g hg, w0, w2]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hin12 : ∀ g, φ g ∈ Iq l → (κ 1 / κ 2) g = cycA l l B (φ g) ^ (e : ℤ)` using `fun g hg => by`. Rewrite using `[ined 1 2 g hg, w1, w2]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `pM : Positive φ (resCoef E M)` using `⟨(isCrys_isDR_restrict_openSubgroup φ hφ _ cM).1 crM, GlobalTheory.T.filtBy_positiveWeight_of_two_character_extension φ hφ π hπ (κ 0 / κ 2) (κ 1 / κ 2) (cd 0 2) (cd 1 2) (2 * (e : ℤ)) e (by omega) (by exact_mod_cast he) hin02 hin12 x hx'⟩`. Take `⟨c, hc, hcy⟩` from `(posExact hP φ hφ (resCoef E M) (resCoef E (chRep (κ 1 / κ 2))) cM (contAction_chRep (cd 1 2)) pM (LinearMap.snd E B B) (fun g v => rfl)).1 Prod.snd_surjective y hy`. Establish `hcM : c ∈ UpperTheory.V.Loc.finiteCocycles φ M` using `hc`.
+
+Establish `hc2 : ∀ g, (c g).2 = y g` using `fun g => congrFun hcy g`. Establish `hzc : Continuous z` using `hzy.1.fst`. Establish `hcc : Continuous fun g => (c g).1` using `hcM.1.1.fst`. Establish `hzm : ∀ g h, z (g * h) = z g + ((((κ 0 / κ 2) g : Bˣ) : B) * z h + x g * ((κ 1 / κ 2) g : Bˣ) * y h)` using `fun g h => congrArg Prod.fst (hzy.2 g h)`. Establish `hcm : ∀ g h, (c (g * h)).1 = (c g).1 + ((((κ 0 / κ 2) g : Bˣ) : B) * (c h).1 + x g * ((κ 1 / κ 2) g : Bˣ) * y h)` using `fun g h => by`.
+
+Rewrite using `[← hc2 h]`. Conclude with `congrArg Prod.fst (hcM.1.2 g h)`. Establish `hd : z - (fun g => (c g).1) ∈ Z1 (chRep (κ 0 / κ 2))`. Use `⟨hzc.sub hcc, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, hzm, hcm, chRep_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd' : z - (fun g => (c g).1) ∈ Z1 (resCoef E (chRep (κ 0 / κ 2)))` using `hd`. Take `⟨hcχ, pχ⟩` from `GlobalTheory.T.positive_scalar_rep_of_character_positive_weight φ hφ π hπ (κ 0 / κ 2) (cd 0 2) (2 * (e : ℤ)) (by omega) hin02 (resCoef E (chRep (κ 0 / κ 2))) (fun g v => rfl)`. Take `⟨hfin, hdim⟩` from `GlobalTheory.T.finrank_cocycles_eq_crys_add_dual_inv_of_positive hP φ hφ (resCoef E (chRep (κ 0 / κ 2))) hcχ pχ`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] E)`.
+
+Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] E]`. Conclude with `(algebraMap ℚ_[l] E).injective.comp Subtype.val_injective`. Establish `hD : H0dual ((cycA l l E).comp φ) (resCoef E (chRep (κ 0 / κ 2))) = ⊥`. Establish `hopen : IsOpen ((φ.range : Subgroup (GQ l)) : Set (GQ l))`. Rewrite using `[MonoidHom.coe_range]`.
+
+Conclude with `hφ.isOpen_range`. Take `⟨s, ⟨⟨g, rfl⟩, hs⟩, hfo⟩` from `((cycInertia l).2 φ.range hopen).2`. Use `eq_bot_iff.2 fun F hF => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot]`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `h1` using `hF g v`. Simplify using `only [MonoidHom.comp_apply] at h1`. Establish `hχg : (((κ 0 / κ 2) g : Bˣ) : B) = algebraMap E B (((cycA l l E (φ g)) ^ (2 * (e : ℤ)) : Eˣ) : E)`. Rewrite using `[hin02 g hs, ← algebraMap_cycA (E := E) (B := B), ← map_zpow]`. Both sides reduce to the same expression.
+
+Establish `h2 : F (resCoef E (chRep (κ 0 / κ 2)) g v) = (((cycA l l E (φ g)) ^ (2 * (e : ℤ)) : Eˣ) : E) * F v`. Express the relevant statement in the definitionally equal form `F ((((κ 0 / κ 2) g : Bˣ) : B) * v) = _`. Rewrite using `[hχg, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Rewrite `h1` using `[h2]`. Establish `hne : cycA l l E (φ g) ^ (2 * (e : ℤ)) ≠ cycA l l E (φ g)`.
+
+Introduce `h`. Establish `h3 : cyc l l (φ g) ^ (2 * (e : ℤ) - 1) = 1`. Apply `Units.map_injective (f := (algebraMap ℤ_[l] E : ℤ_[l] →* E)) hinj` to reduce the goal to its premises. Rewrite using `[map_zpow, map_one]`. Express the relevant statement in the definitionally equal form `cycA l l E (φ g) ^ (2 * (e : ℤ) - 1) = 1`.
+
+Rewrite using `[zpow_sub_one, h, mul_inv_cancel]`. Conclude with `hfo (isOfFinOrder_iff_zpow_eq_one.2 ⟨_, by omega, h3⟩)`. Establish `h4 : ((((cycA l l E (φ g)) ^ (2 * (e : ℤ)) : Eˣ) : E) - (cycA l l E (φ g) : E)) * F v = 0`. Rewrite using `[sub_mul, h1, sub_self]`. Break down `mul_eq_zero.1 h4 with h5 | h5` into its components or cases.
+
+Conclude with `absurd (Units.ext (sub_eq_zero.1 h5)) hne`. Simplify using `using h5`. Rewrite `hdim` using `[hD, finrank_bot, add_zero]`. Establish `hle : UpperTheory.V.Loc.finiteCocycles φ (resCoef E (chRep (κ 0 / κ 2))) ≤ Z1 (resCoef E (chRep (κ 0 / κ 2)))` using `fun c h => h.1`. Use `haveI := hfin`.
+
+Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hdim.symm`. Establish `hdf : z - (fun g => (c g).1) ∈ UpperTheory.V.Loc.finiteCocycles φ (chRep (κ 0 / κ 2))`. Rewrite `hd'` using `[← heq]`. Conclude with `(z1fMap φ (resCoef E (chRep (κ 0 / κ 2))) (chRep (κ 0 / κ 2))).2 LinearMap.id (fun _ _ => rfl) _ hd'`. Establish `inl : ∀ g v, LinearMap.inl E B B (chRep (κ 0 / κ 2) g v) = M g (LinearMap.inl E B B v)` using `fun g v => by`.
+
+Simplify using `[hM, characterExtensionRep_apply, chRep_apply]`. Establish `h1` using `(z1fMap φ (chRep (κ 0 / κ 2)) M).2 ((LinearMap.inl E B B).restrictScalars ℚ_[l]) inl _ hdf`. Establish `h2` using `add_mem h1 hcM`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Apply the tactic sequence `ext <;> simp [hc2]`.
+-/
 theorem GlobalTheory.crystalline_cocycle_twisted_extension_of_quotient : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (e : ℕ), 1 ≤ e → ∀ (κ : Fin 3 → G →* Bˣ), (∀ i, Continuous fun g => (κ i g : B)) → (∀ g, φ g ∈ Iq l → ∀ i, κ i g = cycA l l B (φ g) ^ ((e : ℤ) * wt1 i)) → ∀ (x : G → B) (hx : ∀ g h, x (g * h) = x g + ((κ 0 / κ 1) g : Bˣ) * x h), Continuous x → IsCr φ (ext2 (κ 0) (κ 1) x hx) → ∀ y z : G → B, (fun g => (z g, y g)) ∈ Z1 (twist (κ 2)⁻¹ (ext2 (κ 0) (κ 1) x hx)) → y ∈ finiteCocycles φ (chRep (κ 1 / κ 2)) → (fun g => (z g, y g)) ∈ finiteCocycles φ (twist (κ 2)⁻¹ (ext2 (κ 0) (κ 1) x hx)) := by
   intro hP l _ G _ _ _ φ hφ E _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ e he κ hκc hine x hx hxc hcr y z hzy hy
   haveI : ContinuousConstSMul E B := contConstSMul_alg E

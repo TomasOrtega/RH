@@ -14,6 +14,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [MeasurableSpace F] [BorelSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Rewrite using `[rW, rW]`. Use `split_ifs with hc`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ∫ u, (χ ((a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : ℂ) * (k * Φ u) ∂μE = k * ∫ u, (χ ((a * Algebra.norm F z + d * Algebra.norm F u - Algebra.trace F E (σ z * u)) / c) : ℂ) * Φ u ∂μE`. Rewrite using `[← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show (χ _ : ℂ) * (k * Φ u) = k * ((χ _ : ℂ) * Φ u)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rW_const_mul (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure E) (lam : ℂ) (a b c d : F)
     (k : ℂ) (Φ : E → ℂ) (z : E) :
     rW χ σ μE lam a b c d (fun y => k * Φ y) z = k * rW χ σ μE lam a b c d Φ z := by
@@ -33,6 +38,15 @@ theorem rW_const_mul (χ : AddChar F Circle) (σ : E ≃ₐ[F] E) (μE : Measure
 
 end Lin
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη c Φ hΦ g t ht`. Establish `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det` using `⟨t, ht⟩`. Establish `h0 : Algebra.norm F (h.choose : E) = (g.val).det` using `h.choose_spec`. Establish `hne : Algebra.norm F (h.choose : E) ≠ 0` using `(h.choose.isUnit.map (Algebra.norm F : E →* F)).ne_zero`. Take `⟨u, hu⟩ : ∃ u : Eˣ, t = h.choose * u` from `⟨h.choose⁻¹ * t, by group⟩`.
+
+Establish `hN : Algebra.norm F (u : E) = 1`. Establish `e : Algebra.norm F (h.choose : E) * Algebra.norm F (u : E) = Algebra.norm F (h.choose : E) * 1`. Rewrite using `[← map_mul, ← Units.val_mul, ← hu, ht, h0, mul_one]`. Conclude with `mul_left_cancel₀ hne e`. Establish `hfun : (fun y => Φ (y * (t : E))) = fun y => (((c u)⁻¹ : ℂˣ) : ℂ) * Φ (y * (h.choose : E))`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hu, Units.val_mul, ← mul_assoc]`. Conclude with `hΦ.2.2 u hN _`. Establish `hcu : ((c u : ℂˣ) : ℂ) * (((c u)⁻¹ : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Use `show Wc χ σ (muE E χ) (lamE E χ η) c Φ g = _`. Rewrite using `[Wc, dif_pos h, hfun, rW_const_mul, hu, map_mul, Units.val_mul]`. Take the linear combination `(-(((c h.choose : ℂˣ) : ℂ) * (((modulus (g.val).det : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * rW χ σ (muE E χ) (lamE E χ η) (g.val 0 0 / (g.val).det) (g.val 0 1) (g.val 1 0 / (g.val).det) (g.val 1 1) (fun x => Φ (x * (h.choose : E))) 1)) * hcu`.
+-/
 theorem wchoice : Ad3.K.GL2LocalData.WChoice := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 E _ _ _ _ _ _ _ hfr hcont σ hσ η hη c Φ hΦ g t ht
   have h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det := ⟨t, ht⟩

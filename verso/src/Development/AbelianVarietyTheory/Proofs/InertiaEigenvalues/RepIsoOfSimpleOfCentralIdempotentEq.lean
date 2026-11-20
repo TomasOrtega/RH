@@ -8,6 +8,23 @@ open Polynomial CategoryTheory
 
 namespace GlobalTheory.SerOSys
 
+/- English proof (translation)
+Establish `hc0 : (Fintype.card Γ : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `: Invertible (Nat.card Γ : ℂ)` using `invertibleOfNonzero (by rw [Nat.card_eq_fintype_card]; exact hc0)`. Establish `hco : ∀ γ, (Module.finrank ℂ τ : ℂ) * τ.character γ = (Module.finrank ℂ τ' : ℂ) * τ'.character γ`. Introduce `γ`. Establish `h1` using `congrArg (fun z => z.coeff γ⁻¹) he`.
+
+Simplify using `only [zIdem_coeff, inv_inv] at h1`. Establish `h2` using `congrArg (fun x => (Fintype.card Γ : ℂ) * x) h1`. Simplify using `only [div_mul_eq_mul_div, mul_div_cancel₀ _ hc0, mul_div_assoc'] at h2`. Simplify `h2` using `[FDRep.character, mul_div_cancel_left₀ _ hc0]`. Establish `hd : Module.finrank ℂ τ = Module.finrank ℂ τ'`.
+
+Establish `h1` using `hco 1`. Rewrite `h1` using `[FDRep.char_one, FDRep.char_one]`. Establish `h2 : Module.finrank ℂ τ * Module.finrank ℂ τ = Module.finrank ℂ τ' * Module.finrank ℂ τ'` using `by exact_mod_cast h1`. Conclude with `Nat.mul_self_inj.1 h2`. Establish `hs0` using `FDRep.char_orthonormal τ τ`.
+
+Rewrite `hs0` using `[if_pos ⟨Iso.refl _⟩]`. Establish `hpos : (Module.finrank ℂ τ : ℂ) ≠ 0`. Introduce `h0`. Establish `h1 : Module.finrank ℂ τ = 0` using `by exact_mod_cast h0`. Establish `: Subsingleton τ` using `Module.finrank_zero_iff.1 h1`.
+
+Establish `hz : ∀ g, τ.character g = 0` using `fun g => by`. Establish `: τ.ρ g = 0` using `Subsingleton.elim _ _`. Simplify using `[FDRep.character, this]`. Simplify using `[hz] at hs0`. Establish `hch : ∀ γ, τ'.character γ = τ.character γ` using `fun γ => by`.
+
+Establish `h1` using `hco γ`. Rewrite `h1` using `[← hd]`. Conclude with `(mul_left_cancel₀ hpos h1).symm`. Establish `hs` using `FDRep.char_orthonormal τ τ'`. Simplify using `only [hch] at hs`.
+
+Rewrite `hs` using `[hs0]`. Establish `hne : Nonempty (τ ≅ τ')`. Assume the negation of the conclusion as `hn`. Rewrite `hs` using `[if_neg hn]`. Conclude with `one_ne_zero hs`.
+
+Take `⟨i⟩` from `hne`. Use `⟨FDRep.isoToLinearEquiv i, fun γ v => ?_⟩` and prove the remaining obligations. Rewrite using `[FDRep.Iso.conj_ρ i γ]`. Simplify using `[LinearEquiv.conj_apply]`.
+-/
 theorem repIso_of_zIdem_eq_of_simple {Γ : Type} [Group Γ] [Fintype Γ] (τ τ' : FDRep ℂ Γ)
     (h : Simple τ) (h' : Simple τ') (he : zIdem τ = zIdem τ') : RepIso τ.ρ τ'.ρ := by
   classical

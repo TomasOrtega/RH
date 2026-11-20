@@ -5,6 +5,19 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.Amp
 
+/- English proof (translation)
+Introduce `r R₀ De hr hR hD`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Establish `hm : 2 * ((s + 1) * (s + 1 - 1) / 2) ≤ (s + 1) * s`. Rewrite using `[Nat.add_sub_cancel]`. Use linear arithmetic over natural numbers and integers.
+
+Generalize the expression as in `(s + 1) * (s + 1 - 1) / 2 = m at hm ⊢`. Establish `e1 : 4 * (s + 1) - 2 = 4 * s + 2` using `by omega`. Establish `e2 : 2 * (s + 1) - 1 = 2 * s + 1` using `by omega`. Rewrite using `[e1, e2]`. Establish `hx : (1 : ℝ) ≤ ((s + 1 : ℕ) : ℝ)` using `by exact_mod_cast hr`.
+
+Generalize the expression as in `((s + 1 : ℕ) : ℝ) = x at hx ⊢`. Establish `hpi : Real.pi ≤ 4` using `Real.pi_le_four`. Establish `hpi0 : 0 ≤ Real.pi` using `Real.pi_pos.le`. Establish `h24 : (2 : ℝ) ≤ 4` using `by norm_num`. Establish `hms : 2 * m * s ≤ (s + 1) * s * s` using `Nat.mul_le_mul_right s hm`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_pow, ← pow_mul]`. Generalize the expression as in `(4 : ℝ) = c`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (4 : ℝ) ^ (11 * (s + 1) ^ 2) * x ^ (11 * (s + 1) ^ 2) * R₀ ^ (20 * (s + 1) ^ 3) * De ^ (12 * (s + 1) ^ 2) := by`.
+
+Establish `h4 : (1 : ℝ) ≤ 4` using `by norm_num`. Use `gcongr`. Use polynomial arithmetic with `[Nat.zero_le s, Nat.zero_le (s * s)]`. Use polynomial arithmetic with `[Nat.zero_le s, Nat.zero_le (s * s)]`. Use polynomial arithmetic with `[Nat.zero_le s, Nat.zero_le (s * s), Nat.zero_le (s * s * s)]`.
+
+Use polynomial arithmetic with `[Nat.zero_le s, Nat.zero_le (s * s)]`. Use `_ = _ := by rw [mul_pow]`.
+-/
 theorem volume_product_le : ∀ (r : ℕ) (R₀ De : ℝ), 1 ≤ r → 1 ≤ R₀ → 1 ≤ De → (Real.pi * (R₀ ^ (2 * r) * De) ^ 2) ^ (r * (r - 1) / 2) * ((Real.pi * (r * R₀ ^ (4 * r - 2) * De ^ 2) ^ 2) ^ (r * (r - 1) / 2) * (2 * (r * R₀ ^ (4 * r - 2) * De ^ 2)) ^ r) * ((Real.pi * (r * R₀ ^ (2 * r - 1) * De) ^ 2) ^ (3 * r) * 4 * (r * R₀ ^ (2 * r - 1) * De) ^ (2 * r ^ 2 + 2 * r) * Real.pi ^ (r ^ 2)) ≤ (4 * r : ℝ) ^ (11 * r ^ 2) * R₀ ^ (20 * r ^ 3) * De ^ (12 * r ^ 2) := by
   intro r R₀ De hr hR hD
   obtain ⟨s, rfl⟩ : ∃ s, r = s + 1 := ⟨r - 1, by omega⟩

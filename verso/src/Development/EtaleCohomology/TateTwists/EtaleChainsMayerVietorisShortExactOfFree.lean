@@ -10,6 +10,11 @@ def EtaleFreePresheafMayerVietorisShortExact : Prop :=
     ∃ w, (ShortComplex.mk (biprod.lift ((free R).map (pullback.fst f g)) (-(free R).map (pullback.snd f g)))
       (biprod.desc ((free R).map f) ((free R).map g)) w).Exact
 
+/- English proof (translation)
+Establish `h` using `HomologicalComplex.extendMap_f ((chainsN R).map φ) ComplexShape.embeddingDownNat (i := p) (i' := -(p:ℤ)) rfl`. Establish `h2 : ((chains R).map φ).f (-(p:ℤ)) = (HomologicalComplex.extendMap ((chainsN R).map φ) ComplexShape.embeddingDownNat).f (-(p:ℤ))` using `rfl`. Rewrite using `[h2, h]`. Simplify using `only [chainsXIso]`. Use `erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chainsXIso_nat (R : Type) [CommRing R] {E E' : Spc} (φ : E ⟶ E') (p : ℕ) :
     ((chains R).map φ).f (-(p : ℤ)) ≫ (chainsXIso R E' p).hom =
       (chainsXIso R E p).hom ≫ (free R).map (φ.app (op (SimplexCategory.mk p))) := by
@@ -20,6 +25,9 @@ theorem chainsXIso_nat (R : Type) [CommRing R] {E E' : Spc} (φ : E ⟶ E') (p :
   erw [Category.assoc, Category.assoc, Iso.inv_hom_id, Category.comp_id]
   rfl
 
+/- English proof (translation)
+Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `i h`. Express the relevant statement in the definitionally equal form `-(i:ℤ) = n at h`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n) :
     IsZero (((chains R).obj E).X n) := by
   apply HomologicalComplex.isZero_extend_X
@@ -27,11 +35,19 @@ theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (n : ℤ) (hn : 0 < n) :
   change -(i:ℤ) = n at h
   omega
 
+/- English proof (translation)
+Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← chainsXIso_nat, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+-/
 theorem chainsXIso_nat' (R : Type) [CommRing R] {E E' : Spc} (φ : E ⟶ E') (p : ℕ) :
     (chainsXIso R E p).inv ≫ ((chains R).map φ).f (-(p : ℤ)) =
       (free R).map (φ.app (op (SimplexCategory.mk p))) ≫ (chainsXIso R E' p).inv := by
   rw [Iso.inv_comp_eq, ← Category.assoc, ← chainsXIso_nat, Category.assoc, Iso.hom_inv_id, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (HomologicalComplex.biprodXIso ((chains R).obj U) ((chains R).obj V) (-(p:ℤ))).hom]`. Apply `biprod.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id, HomologicalComplex.biprodXIso_hom_fst, biprod.map_fst, biprod.lift_fst_assoc]`. Rewrite using `[← HomologicalComplex.comp_f, biprod.lift_fst, chainsXIso_nat', ← Category.assoc, ← Functor.map_comp, pullbackObjIso_inv_comp_fst]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id, HomologicalComplex.biprodXIso_hom_snd, biprod.map_snd, biprod.lift_snd_assoc]`.
+
+Rewrite using `[← HomologicalComplex.comp_f, biprod.lift_snd, HomologicalComplex.neg_f_apply, Preadditive.comp_neg, chainsXIso_nat']`. Simplify using `only [Preadditive.neg_comp, Preadditive.comp_neg]`. Rewrite using `[← Category.assoc, ← Functor.map_comp, pullbackObjIso_inv_comp_snd]`.
+-/
 theorem sq1 (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (p : ℕ) :
     ((free R).map (pullbackObjIso f g (op (SimplexCategory.mk p))).inv ≫ (chainsXIso R (pullback f g) p).inv) ≫
       (biprod.lift ((chains R).map (pullback.fst f g)) (-(chains R).map (pullback.snd f g))).f (-(p:ℤ)) =
@@ -52,6 +68,11 @@ theorem sq1 (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (p
     simp only [Preadditive.neg_comp, Preadditive.comp_neg]
     rw [← Category.assoc, ← Functor.map_comp, pullbackObjIso_inv_comp_snd]
 
+/- English proof (translation)
+Apply `biprod.hom_ext'` to reduce the goal to its premises. Establish `h1 : biprod.inl ≫ (HomologicalComplex.biprodXIso ((chains R).obj U) ((chains R).obj V) (-(p:ℤ))).inv = (biprod.inl : (chains R).obj U ⟶ _).f (-(p:ℤ))`. Apply the tactic sequence `rw [Iso.comp_inv_eq]; apply biprod.hom_ext <;> simp [HomologicalComplex.biprodXIso_hom_fst, HomologicalComplex.biprodXIso_hom_snd, ← HomologicalComplex.comp_f]`. Simplify using `only [Category.assoc]`. Rewrite using `[biprod.inl_map_assoc, reassoc_of% h1, ← HomologicalComplex.comp_f, biprod.inl_desc, chainsXIso_nat', biprod.inl_desc_assoc]`.
+
+Establish `h1 : biprod.inr ≫ (HomologicalComplex.biprodXIso ((chains R).obj U) ((chains R).obj V) (-(p:ℤ))).inv = (biprod.inr : (chains R).obj V ⟶ _).f (-(p:ℤ))`. Apply the tactic sequence `rw [Iso.comp_inv_eq]; apply biprod.hom_ext <;> simp [HomologicalComplex.biprodXIso_hom_fst, HomologicalComplex.biprodXIso_hom_snd, ← HomologicalComplex.comp_f]`. Simplify using `only [Category.assoc]`. Rewrite using `[biprod.inr_map_assoc, reassoc_of% h1, ← HomologicalComplex.comp_f, biprod.inr_desc, chainsXIso_nat', biprod.inr_desc_assoc]`.
+-/
 theorem sq2 (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (p : ℕ) :
     (biprod.map (chainsXIso R U p).inv (chainsXIso R V p).inv ≫
         (HomologicalComplex.biprodXIso ((chains R).obj U) ((chains R).obj V) (-(p:ℤ))).inv) ≫
@@ -74,6 +95,21 @@ theorem sq2 (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (p
     rw [biprod.inr_map_assoc, reassoc_of% h1, ← HomologicalComplex.comp_f, biprod.inr_desc,
       chainsXIso_nat', biprod.inr_desc_assoc]
 
+/- English proof (translation)
+Introduce `R _ U V E f g hc`. Take `⟨hf, hg, hep⟩` from `hc`. Establish `w : biprod.lift ((chains R).map (pullback.fst f g)) (-(chains R).map (pullback.snd f g)) ≫ biprod.desc ((chains R).map f) ((chains R).map g) = 0`. Rewrite using `[biprod.lift_desc, ← Functor.map_comp, Preadditive.neg_comp, ← Functor.map_comp, pullback.condition]`. Simplify using the standard rewrite rules.
+
+Use `⟨w, ?_⟩` and prove the remaining obligations. Apply `HomologicalComplex.shortExact_of_degreewise_shortExact` to reduce the goal to its premises. Introduce `n`. Distinguish the cases in `hn : 0 < n`. Establish `h1` using `chains_isZero R (pullback f g) n hn`.
+
+Establish `h3` using `chains_isZero R E n hn`. Establish `h2 : IsZero ((HomologicalComplex.eval (Shv R) (ComplexShape.up ℤ) n).obj ((chains R).obj U ⊞ (chains R).obj V))`. Use `by`. Establish `hU` using `chains_isZero R U n hn`. Establish `hV` using `chains_isZero R V n hn`.
+
+Use `IsZero.of_iso ?_ (HomologicalComplex.biprodXIso _ _ n)` and prove the remaining obligations. Rewrite using `[IsZero.iff_id_eq_zero, ← biprod.total, hU.eq_of_tgt biprod.fst 0, hV.eq_of_tgt biprod.snd 0]`. Simplify using the standard rewrite rules. Use `ShortComplex.ShortExact.mk' (ShortComplex.exact_of_isZero_X₂ _ h2) ?_ ?_` and prove the remaining obligations. Conclude with `⟨fun a b _ => h1.eq_of_tgt a b⟩`.
+
+Conclude with `⟨fun a b _ => h3.eq_of_src a b⟩`. Take `⟨p, rfl⟩ : ∃ p : ℕ, n = -(p : ℤ)` from `⟨(-n).toNat, by omega⟩`. Take `⟨hmono, w', hex⟩` from `hfree R (f.app (op (SimplexCategory.mk p))) (g.app (op (SimplexCategory.mk p)))`. Establish `hT` using `ShortComplex.ShortExact.mk' hex hmono (hep _)`. Use `ShortComplex.shortExact_of_iso ?_ hT` and prove the remaining obligations.
+
+Use `ShortComplex.isoMk ?e1 ?e2 ?e3 ?c1 ?c2` and prove the remaining obligations. Use `case e1 =>`. Use `?_ ≪≫ (chainsXIso R _ p).symm` and prove the remaining obligations. Conclude with `(free R).mapIso (pullbackObjIso f g _).symm`. Use `case e2 => exact biprod.mapIso (chainsXIso R U p).symm (chainsXIso R V p).symm ≪≫ (HomologicalComplex.biprodXIso _ _ _).symm`.
+
+Use `case e3 => exact (chainsXIso R E p).symm`. Use `case c1 => exact sq1 R f g p`. Use `case c2 => exact sq2 R f g p`.
+-/
 theorem etale_chains_mayer_vietoris_short_exact_of_free (hfree : EtaleFreePresheafMayerVietorisShortExact) : EtaleMayerVietorisChainsShortExact := by
   intro R _ U V E f g hc
   obtain ⟨hf, hg, hep⟩ := hc

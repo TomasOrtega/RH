@@ -19,6 +19,9 @@ def ideleCircle (χ : HChar E) (hu : IsUnitary χ) : GroundTheory.Global.IdeleGr
     simp only [map_mul, Units.val_mul]
     rfl
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (Units.continuous_val.comp χ.2.1) _`.
+-/
 theorem continuous_ideleCircle (χ : HChar E) (hu : IsUnitary χ) : Continuous (ideleCircle χ hu) :=
   Continuous.subtype_mk (Units.continuous_val.comp χ.2.1) _
 
@@ -33,12 +36,21 @@ def toHecke (χ : HChar E) (hu : IsUnitary χ) : GroundTheory.Global.HeckeCharac
   continuous_toFun := (QuotientGroup.isQuotientMap_mk (GroundTheory.Global.IdeleGroup.diagonal E).range).continuous_iff.2
     (continuous_ideleCircle χ hu)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_toIdele (χ : HChar E) (hu : IsUnitary χ) (x : GroundTheory.Global.IdeleGroup E) :
     (((toHecke χ hu).toIdele x : Circle) : ℂ) = ((χ.1 x : ℂˣ) : ℂ) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_localComponent (χ : HChar E) (hu : IsUnitary χ) (v : HeightOneSpectrum (𝓞 E)) (x : (v.adicCompletion E)ˣ) :
     (((toHecke χ hu).localComponent v x : Circle) : ℂ) = ((χ.loc v x : ℂˣ) : ℂ) := rfl
 
+/- English proof (translation)
+Use extensionality with `c`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective c`. Use `show (((toHecke χ⁻¹ hu').toIdele x : Circle) : ℂ) = ((((toHecke χ hu).toIdele x)⁻¹ : Circle) : ℂ)`. Rewrite using `[coe_toIdele, Circle.coe_inv, coe_toIdele]`. Conclude with `Units.val_inv_eq_inv_val (χ.1 x)`.
+-/
 theorem toHecke_inv (χ : HChar E) (hu : IsUnitary χ) (hu' : IsUnitary χ⁻¹) : toHecke χ⁻¹ hu' = (toHecke χ hu)⁻¹ := by
   ext c
   obtain ⟨x, rfl⟩ := QuotientGroup.mk_surjective c

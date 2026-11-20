@@ -26,6 +26,9 @@ namespace GlobalTheory.TiesTrue
 def baseCast {D : D7} {cc cc' : Ideal (𝓞 D.host.K)} (e : cc = cc') {δ : ℂ} (Bs : Formalism.L2.Ker.Base D cc δ) :
     Formalism.L2.Ker.Base D cc' δ := e ▸ Bs
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ambOf_baseCast {D : D7} {X : Fields} (s : Seam D X) {cc cc' : Ideal (𝓞 D.host.K)} (e : cc = cc') {δ : ℂ}
     (Bs : Formalism.L2.Ker.Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) :
     ambOf s (baseCast e Bs) χ cD = ambOf s Bs χ cD := by
@@ -37,6 +40,9 @@ def exOf {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : Gl
   ⟨X.piG, h1 ▸ EX.piG_K, h1 ▸ EX.piG_norm, X.piT, h2 ▸ EX.piT_K, h2 ▸ EX.piT_norm, h2 ▸ EX.piT_cong, EX.vPl, EX.vPl_inj,
     EX.norm_mem_place_ideal⟩
 
+/- English proof (translation)
+Take `⟨piG, _, _, piT, _, _, _, _, _, _⟩` from `EX`. Take `rfl : piG = X.piG` from `h1`. Take `rfl : piT = X.piT` from `h2`. Both sides reduce to the same expression.
+-/
 theorem exOf_eq {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : GlobalTheory.Mem.Col2.TC B X} {l : I.Laws}
     {Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)} (EX : ErrX (I.rec7 l Z)) (h1 : EX.piG = X.piG) (h2 : EX.piT = X.piT) :
     exOf EX h1 h2 = EX := by
@@ -45,6 +51,11 @@ theorem exOf_eq {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} 
   obtain rfl : piT = X.piT := h2
   rfl
 
+/- English proof (translation)
+Introduce and unpack `p (hp | ⟨u, rfl⟩ | hp)`. Break down `hp with rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `h.two_q_d_mem.1`. Conclude with `h.two_q_d_mem.2.1`. Conclude with `h.two_q_d_mem.2.2`.
+
+Conclude with `h.g_mem 0`. Conclude with `h.g_mem 1`. Conclude with `h.T_mem u`. Conclude with `h.small_mem (Finset.mem_coe.1 hp)`.
+-/
 theorem badS_subset {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : GlobalTheory.Mem.Col2.TC B X} (h : I.Ok) (l : I.Laws)
     (Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)) : badS (I.rec7 l Z) ⊆ I.S := by
   rintro p (hp | ⟨u, rfl⟩ | hp)
@@ -57,6 +68,9 @@ theorem badS_subset {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toP
   · exact h.T_mem u
   · exact h.small_mem (Finset.mem_coe.1 hp)
 
+/- English proof (translation)
+Take `⟨h1, h4⟩` from `Subgroup.mem_inf.1 hx`. Use `Subgroup.mem_inf.2 ⟨h1, Subgroup.mem_iInf.2 fun v => Subgroup.mem_iInf.2 fun hv => ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h4 v) fun hg => hv ⟨hg.1, hg.2.1, fun hm => hg.2.2 (hS hm)⟩`.
+-/
 theorem mem_tupGrp_of_subset {F E L : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field L]
     {S S' : Set ℕ} (hS : S' ⊆ S) {x : Chr F E L} (hx : x ∈ tupGrp F E L S) : x ∈ tupGrp F E L S' := by
   obtain ⟨h1, h4⟩ := Subgroup.mem_inf.1 hx
@@ -109,6 +123,9 @@ def ChainTieS (Dx : DivX D) (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D.host.
     cst.sharp = true ∧ TwistTieS Dx μ ξ ∧ FieldTieS sel A ξ cst u ∧ ColTie Ch u eM ∧ RowTieS Ch sel μ ξ jA ∧
       PerTieS Ch sel u μ ξ hP (colMu (recWts EX) Ch sel ξ cst I A u (D.R.m - 2) b hY (rPsymF Ch) hK hF hI) eM jA
 
+/- English proof (translation)
+Take `⟨cst, I, hI, b, hY, hK, hF, hP, eM, jA, h1, h2, h3, h4, h5, h6⟩` from `H`. Conclude with `⟨@Subtype.mk _ (IsTwist _ _ _ (badS D)) χ h', cst, I, { hI with }, b, ⟨hY.fin⟩, hK, hF, hP, eM, jA, h1, ⟨h2.1, fun e => Subtype.ext (h2.2 e)⟩, h3, h4, h5, h6⟩`.
+-/
 theorem chainPeriodRelation_read_for_character_avoiding_primes (Dx : DivX D) (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D.host.E) (A : Amb (recFields D))
     (u : D.what₂.Word) (μ : D.what₂.Tup) {S : Set ℕ} (χ : Chr (recFields D).F (recFields D).E (recFields D).K)
     (h : IsTwist (recFields D).F (recFields D).E (recFields D).K S χ)
@@ -118,6 +135,9 @@ theorem chainPeriodRelation_read_for_character_avoiding_primes (Dx : DivX D) (mu
   exact ⟨@Subtype.mk _ (IsTwist _ _ _ (badS D)) χ h', cst, I, { hI with }, b, ⟨hY.fin⟩, hK, hF, hP, eM, jA, h1,
     ⟨h2.1, fun e => Subtype.ext (h2.2 e)⟩, h3, h4, h5, h6⟩
 
+/- English proof (translation)
+Take `⟨χ, h⟩` from `ξ`. Conclude with `chainPeriodRelation_read_for_character_avoiding_primes Ch sel Dx mu0 A u μ χ h hξ H`.
+-/
 theorem chainTie_of (Dx : DivX D) (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D.host.E) (A : Amb (recFields D))
     (u : D.what₂.Word) (μ : D.what₂.Tup) {S : Set ℕ} (ξ : Tup (recFields D).F (recFields D).E (recFields D).K S)
     (hξ : (ξ : Chr (recFields D).F (recFields D).E (recFields D).K) ∈
@@ -128,15 +148,26 @@ theorem chainTie_of (Dx : DivX D) (mu0 : Fin D.R.m → Formalism.L2.Host.HChar D
 
 end Gen
 
+/- English proof (translation)
+The claim follows from `h`.
+-/
 theorem colTie_of_addEquiv {D : D7} {EX : ErrX D} (Ch : Chars (recFields D) (recPrimes EX) D.R.m) (u : D.what₂.Word)
     (eM : (D.div.Nu u).V ≃+ MramV (recWts EX) Ch u) (hs : ∀ (r : D.what₂.LL) x, eM (r • x) = r • eM x)
     (h : ∀ x, x ∈ DV.MramL D u ↔ eM x ∈ MramL (recWts EX) Ch u) : ColTie Ch u (eM.toLinearEquiv hs) := h
 
+/- English proof (translation)
+Rewrite using `[LinearMap.coe_comp, Set.range_comp, Submodule.span_image, h, Submodule.map_top, LinearEquiv.range]`.
+-/
 theorem span_range_comp_eq_top {K V W U : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] {σ : K →+* ℂ} (f : V →ₛₗ[σ] W) (e : W ≃ₗ[ℂ] U)
     (h : Submodule.span ℂ (Set.range f) = ⊤) : Submodule.span ℂ (Set.range (e.toLinearMap.comp f)) = ⊤ := by
   rw [LinearMap.coe_comp, Set.range_comp, Submodule.span_image, h, Submodule.map_top, LinearEquiv.range]
 
+/- English proof (translation)
+Establish `hj` using `(I.rec7 l Z).nuIn_jN u φ`. Rewrite `hj` using `[heM3 φ]`. Distinguish the cases in `ha : a = (I.rec7 l Z).what₂.mu0`. Substitute `ha` using the available equality. Establish `e1 : e = (I.rec7 l Z).eMt u` using `eq_of_heq (he1 rfl)`.
+
+Rewrite using `[(I.rec7 l Z).perCol_base_eq_PtilCol u, hj, e1]`. Use `erw [LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression. Rewrite using `[(I.rec7 l Z).perCol_tie u a ha, hj, he2 ha] erw [LinearEquiv.symm_apply_apply]`. Conclude with `congrArg (fun w => (I.per l u a).PtilCol w (KerRat.rowForm I l h u a z)) (heM4 a (eM φ).1).symm`.
+-/
 theorem perCol_eq {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : GlobalTheory.Mem.Col2.TC B X) (h : I.Ok) (l : I.Laws)
     (Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)) (u : B.Word) (a : (I.rec7 l Z).what₂.Tup)
     (eM : ((I.rec7 l Z).div.Nu u).V ≃+ MramV (Pr := B.primes X) B.wts I.Ch u)
@@ -163,6 +194,29 @@ theorem perCol_eq {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre
 
 set_option maxHeartbeats 40000000 in
 
+/- English proof (translation)
+Introduce `B X I h l Z l0 hJ EX Dx a h1 h2 hQ hR`. Express the relevant statement in the definitionally equal form `(I.rec7 l Z).what₂.Tup at a`. Rewrite using `[← exOf_eq EX h1 h2]`. Establish `hA : ambOf (recSeam (I.rec7 l Z)) (baseCast B.ccK_top.symm (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G)) I.chi I.J.cD = I.A` using `(ambOf_baseCast _ _ _ _ _).trans (AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J I.chi).symm`. Establish `hX` using `base_fields_primes_ok B X`.
+
+Establish `hcc : TaylorLogMetric.IsCurveIdeal (I.rec7 l Z) ⊤` using `⟨top_ne_bot, by simp⟩`. Establish `hδ` using `(I.J.ok_iff B (I.cols l) Z.W Z.V Z.S Z.N Z.G).1 h.amb_ok`. Establish `hχ : TaylorLogMetric.IsChi (I.rec7 l Z) I.chi` using `GlobalTheory.Mem.ChiIdeal.isChi_chiId _ _ I.C.isChi`. Establish `hFL : KerRat.FamilyLaws I l Z` using `⟨GlobalTheory.Mem.NatEqui.eqP _ _ _ (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi hcc hδ.1 hχ, (GlobalTheory.NatFamily.family _ _ _ (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G) I.chi hcc hδ.1 hχ).1⟩`. Establish `hFam` using `KerRat.kernels_rational I l Z h hJ (Or.inr (hFL))`.
+
+Use `⟨I.Ch, I.C.mu0, I.C.eta, I.sel, I.J.δ, baseCast B.ccK_top.symm (I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G), I.chi, I.J.cD, ?_, ?_, ?_, fun u => ?_⟩` and prove the remaining obligations. Take `⟨c1, c2, c3, c4, -, -, c7, -⟩` from `GlobalTheory.Core.Ht2.host_fields_primes_ties I h hX.1 l Z`. Conclude with `⟨c1, c2, c3, c4, c7⟩`. Conclude with `⟨h.ch_ok, h.ch_tied, h.weil, h.sel_ok⟩`. Conclude with `⟨by rw [show (I.rec7 l Z).host.ccK = ⊤ from B.ccK_top]; exact hδ.1, hχ, hδ.2⟩`.
+
+Establish `hC : ∀ A : Amb B.fields, A = I.A → ChainTie (D` using `I.rec7 l Z) (EX := exOf EX h1 h2) I.Ch I.sel Dx I.C.mu0 A u a := by`. Introduce and unpack `A rfl`. Take `⟨hne, hb⟩` from `(hFam.1 u a).period`. Take `⟨hY, hK, hF, hM, hper⟩` from `hb hne.some`. Take `⟨eM, heM1, heM2, heM3, heM4⟩` from `GlobalTheory.T.ramifiedColumns_trueColumns_eq_concrete I h l Z l0 u`.
+
+Take `⟨e, he1, he2, he3, he4⟩` from `hR u`. Set `rE` to `GlobalTheory.PeriodOnStep.rowEmb (Pr := B.primes X) (I := I.chIn u a) B.wts I.Ch I.sel (I.tup a) I.Ps (I.perIn u a).b0 (I.perIn u a).til (I.perIn u a).ext (I.perIn u a).tz (I.perIn u a).H (KerRat.tilOk I h u a).2.2 B.embLL`. Establish `hrf : ⇑rE = KerRat.rowForm I l h u a` using `rfl`. Use `chainTie_of (D := I.rec7 l Z) (EX := exOf EX h1 h2) I.Ch I.sel Dx I.C.mu0 I.A u a (I.tup a) (mem_tupGrp_of_subset (badS_subset h l Z) (I.tup a).2) ?_` and prove the remaining obligations. Use `⟨I.cst a, I.idx a, h.idx_ok a, hne.some, hY, hK, hF, hM, (show ((I.rec7 l Z).div.Nu u).V ≃+ MramV (recWts (exOf EX h1 h2)) I.Ch u from eM).toLinearEquiv heM1, LinearMap.comp (σ₁₃ := B.embLL) e.toLinearMap rE, h.sharp a, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `⟨?_, fun e0 => by rw [e0]; exact congrArg Subtype.val I.trueColumn_tuple_trivial_eq_one⟩` and prove the remaining obligations. Establish `hfin : (Qprime (I.tup a : Chr B.fields.F B.fields.E B.fields.K)).Finite` using `GlobalTheory.OpenChrRam.qprime_finite _ _ _ _ (I.tup a).2.1.1.1.1.2`. Use extensionality with `p`. Rewrite using `[Finset.mem_coe, hQ a p]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hp, P, hP, hpP⟩`. Take `⟨v, hv, rfl, -⟩` from `I.exists_of_mem_Q hP`. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := B.host.F) (I.sel v) hp).2 hpP` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mem.LevTwist.under_sel h v]`. Then use the resulting hypothesis.
+
+Introduce and unpack `⟨v, hv, rfl⟩`. Establish `hmem : I.sel v ∈ I.Q a` using `by classical`. Unfold `ColIn.Q QE`. Rewrite using `[dif_pos hfin]`. Use `Finset.mem_image_of_mem I.sel (hfin.mem_toFinset.2 hv)` and compare the differences between its conclusion and the goal.
+
+Establish `hu` using `(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := B.host.F) (I.sel v) (Formalism.L2.DIV.plc_prime' v)).1`. Rewrite `hu` using `[GlobalTheory.Mem.LevTwist.under_sel h v]`. Conclude with `⟨Formalism.L2.DIV.plc_prime' v, I.sel v, hmem, hu rfl⟩`. Conclude with `fun i hi => hJ a u i hi`. Conclude with `colTie_of_addEquiv (EX := exOf EX h1 h2) I.Ch u eM heM1 heM2`.
+
+Take `⟨r1, r2⟩` from `GlobalTheory.T.rowForms_coefficientField_form_complexPeriodRows I h l u a`. Use `⟨fun s hs => (r1 s hs).map' e.toLinearMap e.ker, span_range_comp_eq_top rE e r2, fun v hv => ?_, he4⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `he3 v hv`. Conclude with `⟨z, hz⟩`. Introduce `φ x`.
+
+Conclude with `(perCol_eq I h l Z u a eM heM3 heM4 e he1 he2 φ x).trans (hper (eM φ).1 x)`. Conclude with `hC _ hA`.
+-/
 theorem tiesAt_true : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} (I : GlobalTheory.Mem.Col2.TC B X) (h : I.Ok) (l : I.Laws) (Z : GlobalTheory.Mem.Col2.TC.Later B (I.cols l)) (l0 : I.Law0 l), GlobalTheory.Mem.Col2.ColIn.JetsIn I → ∀ (EX : ErrX (I.rec7 l Z)) (Dx : DivX (I.rec7 l Z)) (a : I.ι), EX.piG = X.piG → EX.piT = X.piT → I.QpIs Dx.Qp → RowPin I h l Z a → TiesAt (I.rec7 l Z) EX Dx a := by
   intro B X I h l Z l0 hJ EX Dx a h1 h2 hQ hR
   change (I.rec7 l Z).what₂.Tup at a

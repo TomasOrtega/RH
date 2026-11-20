@@ -37,6 +37,11 @@ def LevelShape (π : NG.AutRep L n) : Prop :=
           ∀ u : (s₀.v.adicCompletion (maximalRealSubfield L))ˣ,
             Valued.v ((u : s₀.v.adicCompletion (maximalRealSubfield L)) - 1) < 1 → ξ u = 1))
 
+/- English proof (translation)
+Take `⟨J, χ, B, hc, hH, ⟨f, hf, hfT, hf0⟩, hB⟩` from `h`. Introduce `s σ hσ`. Distinguish the cases in `hs : s.v ∈ B`. Take `⟨s₀, hv, hB'⟩` from `hB s hs`. Break down `hB' with ⟨r, ξ, hP⟩ | ⟨hk, r, ψ₀, ξ, hU, hψ, ht⟩` into its components or cases.
+
+Conclude with `GlobalTheory.AVGood.good_of_toral (GlobalTheory.ParaToral.toral_of_levelPara hBZ hZ L n π.toAlgWt π.S π.irrS J χ hc s₀ r ξ hP f hf hfT hf0 s hv.symm σ hσ)`. Conclude with `GlobalTheory.AVGood.good_of_fixed_KOne hZ hk _ (GlobalTheory.UniDepthZero.main L n π.toAlgWt π.S π.irrS J χ hc s₀ r ψ₀ ξ hU hψ ht f hf hfT hf0 s hv.symm σ hσ)`. Conclude with `GlobalTheory.AVGood.good_of_isSpherical hBZ _ (GlobalTheory.SphHyp.isSpherical_of_hypOutside L n π.toAlgWt π.S π.irrS J χ hc B hH f hf hfT hf0 s hs σ hσ)`.
+-/
 theorem good_of_levelShape (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing)
     (π : NG.AutRep L n) (h : LevelShape π) :
     ∀ (s : SplitPlace L) (σ : IrrRep (GL (Fin n) (s.w.adicCompletion L))), IsLocS π.S s σ →

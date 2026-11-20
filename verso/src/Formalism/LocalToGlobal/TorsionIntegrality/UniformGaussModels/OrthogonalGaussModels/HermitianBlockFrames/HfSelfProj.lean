@@ -14,28 +14,46 @@ def Γp (Γ : Matrix ι ι K) (a : ι → K) : Matrix ι ι K := Γ - vecMulVec 
 
 def proj (Γ : Matrix ι ι K) (a y : ι → K) : ι → K := y - S.hf Γ a y • a
 
+/- English proof (translation)
+The claim follows from `dotProduct_mulVec _ _ _`.
+-/
 theorem hf_eq_vecMul (Γ : Matrix ι ι K) (x y : ι → K) : S.hf Γ x y = (S.cv x ᵥ* Γ) ⬝ᵥ y :=
   dotProduct_mulVec _ _ _
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+-/
 private theorem vecMulVec_mulVec_hermitian_block_frames (u v y : ι → K) : vecMulVec u v *ᵥ y = (v ⬝ᵥ y) • u := by
   ext i
   simp only [mulVec, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun j _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Γp, sub_mulVec, vecMulVec_mulVec_hermitian_block_frames, hf_eq_vecMul]`.
+-/
 theorem Γp_mulVec (Γ : Matrix ι ι K) (a y : ι → K) :
     S.Γp Γ a *ᵥ y = Γ *ᵥ y - S.hf Γ a y • (Γ *ᵥ a) := by
   rw [Γp, sub_mulVec, vecMulVec_mulVec_hermitian_block_frames, hf_eq_vecMul]
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [vecMul, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 private theorem vecMul_vecMulVec' (u v x : ι → K) : x ᵥ* vecMulVec u v = (x ⬝ᵥ u) • v := by
   ext j
   simp only [vecMul, dotProduct, vecMulVec_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Rewrite using `[Γp, vecMul_sub, vecMul_vecMulVec']`. Both sides reduce to the same expression.
+-/
 theorem vecMul_Γp (Γ : Matrix ι ι K) (a x : ι → K) :
     S.cv x ᵥ* S.Γp Γ a = S.cv x ᵥ* Γ - S.hf Γ x a • (S.cv a ᵥ* Γ) := by
   rw [Γp, vecMul_sub, vecMul_vecMulVec']
   rfl
 
+/- English proof (translation)
+Use `show S.cv x ⬝ᵥ (S.Γp Γ a *ᵥ y) = _`. Rewrite using `[Γp_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+-/
 theorem hf_Γp (Γ : Matrix ι ι K) (a x y : ι → K) :
     S.hf (S.Γp Γ a) x y = S.hf Γ x y - S.hf Γ a y * S.hf Γ x a := by
   show S.cv x ⬝ᵥ (S.Γp Γ a *ᵥ y) = _
@@ -44,12 +62,23 @@ theorem hf_Γp (Γ : Matrix ι ι K) (a x y : ι → K) :
 
 variable {Γ : Matrix ι ι K} {a : ι → K}
 
+/- English proof (translation)
+Rewrite using `[Γp_mulVec, haa, one_smul, sub_self]`.
+-/
 theorem Γp_mulVec_self (haa : S.hf Γ a a = 1) : S.Γp Γ a *ᵥ a = 0 := by
   rw [Γp_mulVec, haa, one_smul, sub_self]
 
+/- English proof (translation)
+Rewrite using `[vecMul_Γp, haa, one_smul, sub_self]`.
+-/
 theorem vecMul_Γp_self (haa : S.hf Γ a a = 1) : S.cv a ᵥ* S.Γp Γ a = 0 := by
   rw [vecMul_Γp, haa, one_smul, sub_self]
 
+/- English proof (translation)
+Introduce `i j`. Establish `h1 : (Γ *ᵥ a) i ∈ S.O` using `S.IntV_mulVec hΓ ha i`. Establish `h2 : (S.cv a ᵥ* Γ) j ∈ S.O`. Simplify using `only [vecMul, dotProduct]`. Conclude with `S.O.sum_mem fun k _ => S.O.mul_mem (S.IntV_cv ha k) (hΓ k j)`.
+
+Simplify using `only [Γp, Matrix.sub_apply, vecMulVec_apply]`. Conclude with `S.O.sub_mem (hΓ i j) (S.O.mul_mem h1 h2)`.
+-/
 theorem IntM_Γp (hΓ : S.IntM Γ) (ha : S.IntV a) : S.IntM (S.Γp Γ a) := by
   intro i j
   have h1 : (Γ *ᵥ a) i ∈ S.O := S.IntV_mulVec hΓ ha i
@@ -59,45 +88,79 @@ theorem IntM_Γp (hΓ : S.IntM Γ) (ha : S.IntV a) : S.IntM (S.Γp Γ a) := by
   simp only [Γp, Matrix.sub_apply, vecMulVec_apply]
   exact S.O.sub_mem (hΓ i j) (S.O.mul_mem h1 h2)
 
+/- English proof (translation)
+Introduce `i j`. Simplify using `only [Γp, Matrix.sub_apply, vecMulVec_apply, map_sub, map_mul, hH i j, S.σ_mulVec hH, S.σ_vecMul hH ha]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Herm_Γp (hΓ : S.IntM Γ) (hH : S.Herm Γ) (ha : S.IntV a) : S.Herm (S.Γp Γ a) := by
   intro i j
   simp only [Γp, Matrix.sub_apply, vecMulVec_apply, map_sub, map_mul, hH i j, S.σ_mulVec hH,
     S.σ_vecMul hH ha]
   ring
 
+/- English proof (translation)
+Rewrite using `[proj, mulVec_sub, mulVec_smul, Γp_mulVec]`.
+-/
 theorem mulVec_proj (Γ : Matrix ι ι K) (a y : ι → K) : Γ *ᵥ S.proj Γ a y = S.Γp Γ a *ᵥ y := by
   rw [proj, mulVec_sub, mulVec_smul, Γp_mulVec]
 
+/- English proof (translation)
+The claim follows from `S.IntV_sub hy (S.IntV_smul (S.hf_mem hΓ ha hy) ha)`.
+-/
 theorem IntV_proj (hΓ : S.IntM Γ) (ha : S.IntV a) {y : ι → K} (hy : S.IntV y) : S.IntV (S.proj Γ a y) :=
   S.IntV_sub hy (S.IntV_smul (S.hf_mem hΓ ha hy) ha)
 
+/- English proof (translation)
+Use extensionality with `j`. Simplify using `only [vecMul, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_mul, Finset.sum_sub_distrib, Finset.mul_sum, mul_assoc]`.
+-/
 private theorem sub_smul_vecMul (x b : ι → K) (c : K) (M : Matrix ι ι K) :
     (x - c • b) ᵥ* M = x ᵥ* M - c • (b ᵥ* M) := by
   ext j
   simp only [vecMul, dotProduct, Pi.sub_apply, Pi.smul_apply, smul_eq_mul, sub_mul,
     Finset.sum_sub_distrib, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Use `show S.cv x ⬝ᵥ (Γ *ᵥ S.proj Γ a y) = S.cv x ⬝ᵥ (S.Γp Γ a *ᵥ y)`. Rewrite using `[mulVec_proj]`.
+-/
 private theorem hf_proj_right_eq_hf_Γp (Γ : Matrix ι ι K) (a x y : ι → K) :
     S.hf Γ x (S.proj Γ a y) = S.hf (S.Γp Γ a) x y := by
   show S.cv x ⬝ᵥ (Γ *ᵥ S.proj Γ a y) = S.cv x ⬝ᵥ (S.Γp Γ a *ᵥ y)
   rw [mulVec_proj]
 
+/- English proof (translation)
+Rewrite using `[hf_proj_right_eq_hf_Γp, hf_eq_vecMul, hf_eq_vecMul, proj, cv_sub, cv_smul, sub_smul_vecMul, S.vecMul_Γp_self haa, smul_zero, sub_zero]`.
+-/
 theorem hf_proj_proj (haa : S.hf Γ a a = 1) (x y : ι → K) :
     S.hf Γ (S.proj Γ a x) (S.proj Γ a y) = S.hf (S.Γp Γ a) x y := by
   rw [hf_proj_right_eq_hf_Γp, hf_eq_vecMul, hf_eq_vecMul, proj, cv_sub, cv_smul,
     sub_smul_vecMul, S.vecMul_Γp_self haa, smul_zero, sub_zero]
 
+/- English proof (translation)
+Rewrite using `[hf_proj_right_eq_hf_Γp, hf_Γp, haa, mul_one, sub_self]`.
+-/
 theorem hf_self_proj (haa : S.hf Γ a a = 1) (y : ι → K) : S.hf Γ a (S.proj Γ a y) = 0 := by
   rw [hf_proj_right_eq_hf_Γp, hf_Γp, haa, mul_one, sub_self]
 
+/- English proof (translation)
+Rewrite using `[S.hf_swap hΓ hH ha (S.IntV_proj hΓ ha hy), S.hf_self_proj haa, map_zero]`.
+-/
 theorem hf_proj_self (hΓ : S.IntM Γ) (hH : S.Herm Γ) (ha : S.IntV a) (haa : S.hf Γ a a = 1) {y : ι → K}
     (hy : S.IntV y) : S.hf Γ (S.proj Γ a y) a = 0 := by
   rw [S.hf_swap hΓ hH ha (S.IntV_proj hΓ ha hy), S.hf_self_proj haa, map_zero]
 
+/- English proof (translation)
+Rewrite using `[proj, cv_sub, cv_smul, sub_smul_vecMul, vecMul_Γp, S.hf_swap hΓ hH ha hy]`.
+-/
 theorem vecMul_proj (hΓ : S.IntM Γ) (hH : S.Herm Γ) (ha : S.IntV a) {y : ι → K} (hy : S.IntV y) :
     S.cv (S.proj Γ a y) ᵥ* Γ = S.cv y ᵥ* S.Γp Γ a := by
   rw [proj, cv_sub, cv_smul, sub_smul_vecMul, vecMul_Γp, S.hf_swap hΓ hH ha hy]
 
+/- English proof (translation)
+Introduce `x hx hPx`. Establish `hz` using `S.IntV_proj hΓ ha hx`. Establish `hΓz : ∀ i, S.NU ((Γ *ᵥ S.proj Γ a x) i)`. Introduce `i`. Rewrite using `[mulVec_proj]`.
+
+Conclude with `hPx i`. Take `⟨z, hz', hzz⟩` from `hU _ hz hΓz`. Use `⟨z, hz', ?_⟩` and prove the remaining obligations. Establish `h0 : S.hf Γ a z = 0`. Establish `h1 : S.hf Γ a (S.proj Γ a x) = S.p * S.hf Γ a z` using `by show S.cv a ⬝ᵥ (Γ *ᵥ S.proj Γ a x) = S.p * (S.cv a ⬝ᵥ (Γ *ᵥ z))`.
+
+Rewrite using `[hzz, dotProduct_smul, smul_eq_mul]`. Rewrite `h1` using `[S.hf_self_proj haa]`. Conclude with `(mul_eq_zero.mp h1.symm).resolve_left S.hp0`. Rewrite using `[← S.mulVec_proj Γ a x, hzz, Γp_mulVec, h0, zero_smul, sub_zero]`.
+-/
 theorem UM_Γp (hΓ : S.IntM Γ) (hH : S.Herm Γ) (hU : S.UM Γ) (ha : S.IntV a) (haa : S.hf Γ a a = 1) :
     S.UM (S.Γp Γ a) := by
   intro x hx hPx

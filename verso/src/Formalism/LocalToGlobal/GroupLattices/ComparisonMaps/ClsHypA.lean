@@ -12,17 +12,38 @@ variable {T K : Type} [CommRing T] [CommRing K] {n : Type} [Fintype n] [Decidabl
   (hΛ : ∀ y, y ∈ Λ ↔ ∀ z ∈ Λ, hform σ J z y ∈ S)
 
 include hσ in
+/- English proof (translation)
+Simplify using `[hform, map_sum, map_mul, Prod.fst_sum, hσ, swapR]`.
+-/
 theorem hform_fst (z y : n → T) :
     (φ (hform σ J z y)).1 = ∑ i, ∑ j, (φ (z i)).2 * (φ (J i j)).1 * (φ (y j)).1 := by
   simp [hform, map_sum, map_mul, Prod.fst_sum, hσ, swapR]
 
 include hσ in
+/- English proof (translation)
+Simplify using `[hform, map_sum, map_mul, Prod.snd_sum, hσ, swapR]`.
+-/
 theorem hform_snd (z y : n → T) :
     (φ (hform σ J z y)).2 = ∑ i, ∑ j, (φ (z i)).1 * (φ (J i j)).2 * (φ (y j)).2 := by
   simp [hform, map_sum, map_mul, Prod.snd_sum, hσ, swapR]
 
 include hσ hS hΛ in
 
+/- English proof (translation)
+Establish `key : ∀ (K' : Matrix n n T) (a b : n → T), hform σ K' a b = (fun i => σ (a i)) ᵥ* K' ⬝ᵥ b`. Introduce `K' a b`. Simplify using `only [hform, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Establish `hgen : ∀ (M : Matrix n n T) (a b : n → T), hform σ J (M *ᵥ a) (M *ᵥ b) = hform σ (cT σ M * J * M) a b`.
+
+Introduce `M a b`. Establish `hmap : (fun i => σ ((M *ᵥ a) i)) = (M.map σ) *ᵥ (fun i => σ (a i))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[key, key, hmap, Matrix.dotProduct_mulVec, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, Matrix.vecMul_vecMul]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hU : cT σ (x : Matrix n n T) * J * (x : Matrix n n T) = J` using `hx`. Establish `hz' : ∀ z : n → T, z = (x : Matrix n n T) *ᵥ (((x⁻¹ : GL n T) : Matrix n n T) *ᵥ z)`. Introduce `z`.
+
+Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[hΛ]`. Introduce `z hz`. Rewrite using `[hS]`. Establish `hinv : hform σ J z ((x : Matrix n n T) *ᵥ y) = hform σ J (((x⁻¹ : GL n T) : Matrix n n T) *ᵥ z) y` using `by nth_rewrite 1 [hz' z]`.
+
+Rewrite using `[hgen, hU]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨y', hy'Λ, hy'⟩` from `h1 y hy`. Establish `e : (φ (hform σ J z ((x : Matrix n n T) *ᵥ y))).1 = (φ (hform σ J z y')).1`. Rewrite using `[hform_fst φ σ hσ J, hform_fst φ σ hσ J]`.
+
+Simplify using `only [hy']`. Rewrite using `[e]`. Conclude with `((hS _).1 ((hΛ y').1 hy'Λ z hz)).1`. Take `⟨z', hz'Λ, hz'e⟩` from `h2 z hz`. Establish `e : (φ (hform σ J z ((x : Matrix n n T) *ᵥ y))).2 = (φ (hform σ J z' y)).2`.
+
+Rewrite using `[hinv, hform_snd φ σ hσ J, hform_snd φ σ hσ J]`. Simplify using `only [hz'e]`. Rewrite using `[e]`. Conclude with `((hS _).1 ((hΛ y).1 hy z' hz'Λ)).2`.
+-/
 theorem map_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     (h1 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ (((x : Matrix n n T) *ᵥ y) a)).1)
     (h2 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ ((((x⁻¹ : GL n T) : Matrix n n T) *ᵥ y) a)).1)
@@ -68,6 +89,11 @@ theorem map_of_first (x : GL n T) (hx : x ∈ UJ σ J)
 
 include hσ hS hΛ in
 
+/- English proof (translation)
+Use `show ∀ y : n → T, y ∈ Λ ↔ (x : Matrix n n T) *ᵥ y ∈ Λ`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Conclude with `map_of_first φ σ hσ Ov S hS J Λ hΛ x hx h1 h2 y`. Introduce `hxy`.
+
+Establish `hxi : x⁻¹ ∈ UJ σ J` using `inv_mem hx`. Use `map_of_first φ σ hσ Ov S hS J Λ hΛ x⁻¹ hxi h2 (by simpa using h1) _ hxy` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+-/
 theorem stab_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     (h1 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ (((x : Matrix n n T) *ᵥ y) a)).1)
     (h2 : ∀ y ∈ Λ, ∃ y' ∈ Λ, ∀ a, (φ (y' a)).1 = (φ ((((x⁻¹ : GL n T) : Matrix n n T) *ᵥ y) a)).1) :
@@ -81,6 +107,17 @@ theorem stab_of_first (x : GL n T) (hx : x ∈ UJ σ J)
     have := map_of_first φ σ hσ Ov S hS J Λ hΛ x⁻¹ hxi h2 (by simpa using h1) _ hxy
     rwa [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this
 
+/- English proof (translation)
+Establish `hmat : ∀ t : n → K, ((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((g : Matrix n n K) *ᵥ t) = ((fr⁻¹ * g * fr : GL n K) : Matrix n n K) *ᵥ (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ t)`. Introduce `t`. Simplify using `only [Units.val_mul, Matrix.mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `H a b`.
+
+Establish `he : ((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((fr : Matrix n n K) *ᵥ Pi.single b 1) = Pi.single b 1`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h0 : ∀ c, (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((fr : Matrix n n K) *ᵥ Pi.single b 1)) c ∈ Ov`. Introduce `c`. Rewrite using `[he]`.
+
+Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hc]`. Use `H _ h0 a` as an intermediate fact.
+
+Rewrite `this` using `[hmat, he]`. Simplify `this` using `[Matrix.mulVec_single]`. Introduce `H t ht a`. Rewrite using `[hmat]`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+
+Conclude with `sum_mem fun b _ => mul_mem (H a b) (ht b)`.
+-/
 theorem int_conj_iff {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n] (Ov : Subring K) (fr g : GL n K) :
     (∀ t : n → K, (∀ a, (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ t) a ∈ Ov) →
       ∀ a, (((fr⁻¹ : GL n K) : Matrix n n K) *ᵥ ((g : Matrix n n K) *ᵥ t)) a ∈ Ov) ↔

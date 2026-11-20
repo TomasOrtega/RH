@@ -6,6 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsScalarTowerCenAlg
 open scoped TensorProduct
 open GlobalTheory.LKInvGood
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | (exact @GlobalTheory.LocMatrix.locOrder_free) | (exact GlobalTheory.LocMatrix.locOrder_free) | (intros; apply GlobalTheory.LocMatrix.locOrder_free <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.localOrderTensorPadic_free_almost_all : ∀ (F B : Type) [Field F] [NumberField F] [Ring B] [Algebra F B] [Algebra ℚ B]
     [IsScalarTower ℚ F B] [FiniteDimensional F B] (Λ : Subring B)
     (hΛ : ∀ a : NumberField.RingOfIntegers F, algebraMap F B (a : F) ∈ Λ),

@@ -5,15 +5,28 @@ open UpperHalfPlane hiding I
 
 namespace UpperTheory.V.Af.Rs
 
+/- English proof (translation)
+Establish `hre : Continuous fun z : ℍ => z.re` using `Complex.continuous_re.comp UpperHalfPlane.continuous_coe`. Conclude with `(measurableSet_le measurable_const hre.measurable).inter (measurableSet_lt hre.measurable measurable_const)`.
+-/
 private lemma strip_meas : MeasurableSet strip := by
   have hre : Continuous fun z : ℍ => z.re := Complex.continuous_re.comp UpperHalfPlane.continuous_coe
   exact (measurableSet_le measurable_const hre.measurable).inter
     (measurableSet_lt hre.measurable measurable_const)
 
+/- English proof (translation)
+Rewrite using `[pt, ← UpperHalfPlane.coe_re, UpperHalfPlane.ofComplex_apply_of_im_pos (by simpa using hy)]`. Simplify using the standard rewrite rules.
+-/
 private lemma pt_re (x y : ℝ) (hy : 0 < y) : (pt x y).re = x := by
   rw [pt, ← UpperHalfPlane.coe_re, UpperHalfPlane.ofComplex_apply_of_im_pos (by simpa using hy)]
   simp
 
+/- English proof (translation)
+Take `⟨hm, hv⟩` from `hV`. Establish `hS` using `hm strip_meas`. Establish `h1 : ((volume : Measure ℝ).prod ((volume : Measure ℝ).restrict (Ioi 0))) = ((volume : Measure ℝ).prod (volume : Measure ℝ)).restrict (univ ×ˢ Ioi 0)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Establish `h2 : (fun p : ℝ × ℝ => pt p.1 p.2) ⁻¹' strip ∩ univ ×ˢ Ioi 0 = Ico 0 1 ×ˢ Ioi 0`.
+
+Use extensionality with `⟨x, y⟩`. Simplify using `only [mem_inter_iff, mem_preimage, mem_prod, mem_univ, true_and, mem_Ioi, mem_Ico, strip, mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hy⟩`. Rewrite `h` using `[pt_re x y hy]`.
+
+Conclude with `⟨h, hy⟩`. Introduce and unpack `⟨h, hy⟩`. Rewrite using `[pt_re x y hy]`. Conclude with `⟨h, hy⟩`. Rewrite using `[hv, Measure.restrict_map hm strip_meas, restrict_withDensity hS, h1, Measure.restrict_restrict hS, h2, Measure.prod_restrict]`.
+-/
 private lemma vol_strip (hV : VolMap) :
     (volume : Measure ℍ).restrict strip = Measure.map (fun p : ℝ × ℝ => pt p.1 p.2)
       ((((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0))).withDensity
@@ -40,6 +53,19 @@ private lemma vol_strip (hV : VolMap) :
 end UpperTheory.V.Af.Rs
 
 open UpperTheory.V.Af.Rs in
+/- English proof (translation)
+Introduce `hV H hH`. Establish `hf : Measurable fun p : ℝ × ℝ => pt p.1 p.2` using `hV.1`. Establish `hg : Measurable fun p : ℝ × ℝ => ENNReal.ofReal (1 / p.2 ^ 2)` using `by fun_prop`. Establish `hlt : ∀ᵐ p ∂(((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0))), ENNReal.ofReal (1 / p.2 ^ 2) < ⊤` using `Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top`. Establish `hμ` using `vol_strip hV`.
+
+Establish `hI : Integrable H ((volume : Measure ℍ).restrict strip)` using `hH`. Rewrite `hI` using `[hμ]`. Establish `hHm` using `hI.1`. Rewrite `hI` using `[integrable_map_measure hHm hf.aemeasurable, integrable_withDensity_iff_integrable_smul' hg hlt]`. Establish `hpt : ∀ p : ℝ × ℝ, (ENNReal.ofReal (1 / p.2 ^ 2)).toReal • (H ∘ fun p : ℝ × ℝ => pt p.1 p.2) p = ((1 / p.2 ^ 2 : ℝ) : ℂ) * H (pt p.1 p.2)`.
+
+Introduce `p`. Rewrite using `[ENNReal.toReal_ofReal (by positivity), Complex.real_smul]`. Both sides reduce to the same expression. Establish `hF : Integrable (fun p : ℝ × ℝ => ((1 / p.2 ^ 2 : ℝ) : ℂ) * H (pt p.1 p.2)) (((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0)))` using `hI.congr (Filter.Eventually.of_forall hpt)`. Establish `hinner : ∀ y : ℝ, ∫ x, ((1 / y ^ 2 : ℝ) : ℂ) * H (pt x y) ∂(volume.restrict (Ico (0:ℝ) 1)) = (∫ x in (0:ℝ)..1, H (pt x y)) / ((y ^ 2 : ℝ) : ℂ)`.
+
+Introduce `y`. Rewrite using `[integral_const_mul, intervalIntegral.integral_of_le zero_le_one, integral_Ico_eq_integral_Ioc, one_div, Complex.ofReal_inv, div_eq_inv_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hF.integral_prod_right` as an intermediate fact. Simplify using `only [hinner] at this`.
+
+Conclude with `this`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hμ, integral_map hf.aemeasurable hHm]`. Use `_ = ∫ p, ((1 / p.2 ^ 2 : ℝ) : ℂ) * H (pt p.1 p.2) ∂(((volume : Measure ℝ).restrict (Ico 0 1)).prod (volume.restrict (Ioi 0))) := by`. Rewrite using `[integral_withDensity_eq_integral_toReal_smul hg hlt]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall hpt)`. Use `_ = ∫ y in Ioi 0, ∫ x, ((1 / y ^ 2 : ℝ) : ℂ) * H (pt x y) ∂(volume.restrict (Ico (0:ℝ) 1)) := integral_prod_symm _ hF`. Use `_ = _ := by simp only [hinner]`.
+-/
 theorem UpperTheory.V.Af.Rs.stripFub :
     UpperTheory.V.Af.Rs.VolMap → UpperTheory.V.Af.Rs.StripFub := by
   intro hV H hH

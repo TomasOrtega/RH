@@ -11,6 +11,21 @@ open MeasureTheory NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheor
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.CuspidalSpectrum PositivityTheory.Rg.Fx UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.BW
 
+/- English proof (translation)
+Introduce `E _ _ _ S r b V hV hf`. Take `⟨π, hπ, -⟩` from `Dp.exCusp E r (mu1 E r) V hV`. Establish `hc : (⟨b.f.1, b.cusp⟩ : AutomorphicForm.cuspForms E r) ∈ AutomorphicForm.centralCuspForms E r` using `fun s x => by`. Use `b.cen (Real.log s.1) x` as an intermediate fact. Unfold `zt at this`.
+
+Simplify `this` using `only [Real.exp_log s.2]`. Establish `hm : b.f ∈ π.V`. Establish `: (⟨b.f.1, b.cusp⟩ : AutomorphicForm.cuspForms E r) ∈ UpperTheory.V.Cm.carrier π`. Rewrite using `[hπ.carrier_eq]`. Conclude with `⟨hc, hf⟩`.
+
+Conclude with `this`. Use `⟨fun τ => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨m, h1, -⟩` from `Dp.sInfEx E r (mu1 E r) V hV τ`. Establish `h2 : GlobalTheory.UnitaryBC.HasInfCharGL π.V τ m` using `(Dp.sInfIff E r (mu1 E r) π V hπ τ m).1 h1`. Establish `hs : Submodule.span ℂ {b.f} ≠ ⊥` using `by simpa using b.ne`.
+
+Establish `e : m = Finset.univ.val.map (b.Λ τ)`. Use `GlobalTheory.BcSpehProof.hasInfCharGL_unique hs (τ := τ) ⟨h2.1, fun u φ hφ => h2.2 u φ ?_⟩ ⟨by simp, fun u φ hφ => ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_le.2 (Set.singleton_subset_iff.2 hm) hφ`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Rewrite using `[map_smul, b.inf, smul_comm, Multiset.map_map]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Conclude with `h1`. Establish `h0` using `b.isSat w hw`. Establish `hx : (⟨b.f, hm⟩ : π.V) ∈ GlobalTheory.PRep.fixed (π.locRep w) (GlobalTheory.LFun.KGL w r)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (GlobalTheory.LGrp.mem_fixed.1 h0.2.1 k hk)`.
+
+Establish `hne : (⟨b.f, hm⟩ : π.V) ≠ 0` using `fun e => b.ne (congrArg Subtype.val e)`. Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.SatAe.exists_hasSatGL_locRep π w ((Submodule.ne_bot_iff _).2 ⟨_, hx, hne⟩)`. Establish `h1 : GlobalTheory.LFun.IsSatVecGL w (BW.rw r w) b.f B` using `(hB.2 _ hx hne).map π.V.subtype (fun _ _ => rfl) b.ne`. Establish `e` using `h1.unique h0`. Substitute `e` using the available equality.
+
+Conclude with `(Dp.sSatIff E r (mu1 E r) π V hπ w _).2 ⟨_, rfl, hB⟩`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.KX.bloAt :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (S : Set (BW.Pl E)) (r : ℕ) (b : Blo S r) (V : Submodule ℂ (LL (mu1 E r))),
       IsSummand (mu1 E r) V → ((cuspToL2 (mu1 E r) ⟨b.f.1, b.cusp⟩ : cuspidalL2 (mu1 E r)) : LL (mu1 E r)) ∈ V →

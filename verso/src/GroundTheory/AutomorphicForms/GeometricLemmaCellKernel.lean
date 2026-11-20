@@ -16,6 +16,9 @@ open Matrix Iwasawa GLnLocal ValuativeRel Topology Set DoubleCoset Filter
 variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   {n : ℕ} {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)}
 
+/- English proof (translation)
+Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `isClosed_cellUnipotent.isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_unipotentCompactG e)`.
+-/
 theorem isCompact_subgroupOf_cellUnipotent (e : ℕ) :
     IsCompact (((unipotentCompactG (F := F) γ e).subgroupOf (cellUnipotent F β γ w) :
       Subgroup (cellUnipotent F β γ w)) : Set (cellUnipotent F β γ w)) := by
@@ -23,6 +26,11 @@ theorem isCompact_subgroupOf_cellUnipotent (e : ℕ) :
   exact isClosed_cellUnipotent.isClosedEmbedding_subtypeVal.isCompact_preimage
     (isCompact_unipotentCompactG e)
 
+/- English proof (translation)
+Establish `: (unipotentCompactG (F` using `F) γ e).subgroupOf (cellUnipotent F β γ w) = ((integralGL F n).comap (MulAut.conj (rankTorus F n γ e)).toMonoidHom).subgroupOf (cellUnipotent F β γ w) := by`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, unipotentCompactG_eq, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.2, fun h => ⟨cellUnipotent_le_unipotentRadical x.2, h⟩⟩`. Rewrite using `[this, Subgroup.coe_subgroupOf]`.
+
+Conclude with `(isOpen_conj_integralGL _).preimage continuous_subtype_val`.
+-/
 theorem isOpen_subgroupOf_cellUnipotent (e : ℕ) :
     IsOpen (((unipotentCompactG (F := F) γ e).subgroupOf (cellUnipotent F β γ w) :
       Subgroup (cellUnipotent F β γ w)) : Set (cellUnipotent F β γ w)) := by
@@ -35,6 +43,9 @@ theorem isOpen_subgroupOf_cellUnipotent (e : ℕ) :
   rw [this, Subgroup.coe_subgroupOf]
   exact (isOpen_conj_integralGL _).preimage continuous_subtype_val
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, v⟩, rfl⟩`. Conclude with `sub_mem_coinvariantsKer (h x.2) v`.
+-/
 theorem coinvariantsKer_mono {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} {H H' : Subgroup G} (h : H ≤ H') :
     coinvariantsKer ρ H ≤ coinvariantsKer ρ H' := by
@@ -46,6 +57,33 @@ section Vanishing
 
 variable {W : Type*} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (levi F n β) W)
 
+/- English proof (translation)
+Use `set A := cellUnipotent F β γ w`. Use `set θ := cellRepA β γ w σ`. Use `set h := cellFun w σ f t`. Take `⟨e, he⟩` from `exists_cellSupp σ hYo hCY hf ht`. Establish `hK` using `isCellCompact_unipotentCompactG (F := F) (γ := γ) e`.
+
+Use `set v := avgOver (unipotentCompactG γ e) h 1`. Establish `hv : v ∈ Representation.Coinvariants.ker θ`. Establish `h1` using `cellJacquet_eq_cellEv σ hYo hCY hf ht hK he`. Rewrite `h1` using `[h0]`. Unfold `cellEv at h1`.
+
+Establish `hc : ((cellNorm F β γ w (unipotentCompactG γ e) : ℝ) : ℂ) ≠ 0`. Conclude with `(cellNorm_pos (w := w) (β := β) hK).ne'` after adjusting the coercions. Establish `h2 : Representation.Coinvariants.mk θ v = 0` using `(smul_eq_zero.1 h1.symm).resolve_left hc`. Conclude with `(Representation.Coinvariants.mk_eq_zero _).1 h2`. Take `⟨A', hA'c, hA'o, hvA'⟩` from `exists_mem_coinvariantsKer θ (fun s => exists_compactOpen_subgroupOf isClosed_cellUnipotent cellUnipotent_le_unipotentRadical s) hv`.
+
+Take `⟨e₁, he₁⟩` from `exists_unipotentCompactG_of_isCompact (γ := γ) (hA'c.image continuous_subtype_val) (by rintro _ ⟨x, -, rfl⟩; exact cellUnipotent_le_unipotentRadical x.2)`. Use `set e' := max e e₁`. Establish `hK'` using `isCellCompact_unipotentCompactG (F := F) (γ := γ) e'`. Establish `hKK' : unipotentCompactG (F` using `F) γ e ≤ unipotentCompactG γ e' := unipotentCompactG_mono (le_max_left _ _)`. Establish `hf' : AvgFinite (unipotentCompactG γ e) h` using `avgFinite_cellFun σ f t hK.2.1`.
+
+Establish `hhA : ∀ a : A, ∀ y, h ((a : GL (Fin n) F) * y) = θ a (h y)` using `cellFun_mul_left σ f t`. Use `⟨e', he.mono hKK', ?_⟩` and prove the remaining obligations. Rewrite using `[avgOver_eq_smul_avgOver_inf (A := A) hKK' hf' (hK.relIndex_ne_zero hK') (fun y hy hy0 => he y (hK'.1 hy) hy0)]`. Use `set B : Subgroup A := (unipotentCompactG (F := F) γ e').subgroupOf A`. Establish `hBc : IsCompact (B : Set A)` using `isCompact_subgroupOf_cellUnipotent e'`.
+
+Establish `hBo : IsOpen (B : Set A)` using `isOpen_subgroupOf_cellUnipotent e'`. Use `set h' := avgOver (unipotentCompactG γ e) h`. Establish `hh' : ∀ a : A, ∀ y, h' ((a : GL (Fin n) F) * y) = θ a (h' y)` using `fun a y => avgOver_mul_left_eq (fun a => θ a) hhA hf' a y`. Establish `hfin' : AvgFinite (unipotentCompactG γ e' ⊓ A) h'`. Establish `h2 : (unipotentCompactG (F` using `F) γ e ⊓ A).relIndex (unipotentCompactG γ e' ⊓ A) ≠ 0 := relIndex_inf_ne_zero (hK.relIndex_ne_zero hK')`.
+
+Introduce `h0`. Conclude with `h2 (Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.relIndex_dvd_of_le_left _ (le_trans inf_le_left (le_rightStab_avgOver hf'))))`. Establish `: LocallyCompactSpace A` using `isClosed_cellUnipotent.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `set u := avgOver (unipotentCompactG γ e' ⊓ A) h' 1`. Establish `hu : u ∈ fixedVectors θ B`.
+
+Introduce `b hb`. Establish `hbK : (b : GL (Fin n) F) ∈ unipotentCompactG γ e' ⊓ A` using `⟨Subgroup.mem_subgroupOf.1 hb, b.2⟩`. Use `show θ b (avgOver (unipotentCompactG γ e' ⊓ A) h' 1) = avgOver (unipotentCompactG γ e' ⊓ A) h' 1`. Rewrite using `[← avgOver_comp_linearMap hfin']`. Establish `: (fun y => θ b (h' y)) = fun y => h' ((b : GL (Fin n) F) * y)`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[hh']`. Rewrite using `[this, avgOver_comp_mul_left, show (b : GL (Fin n) F) * 1 = 1 * (b : GL (Fin n) F) by group, avgOver_mul_right hfin' hbK]`. Establish `hsub : v - u ∈ coinvariantsKer θ B`. Establish `hspan` using `sub_avgOver_mem_span hfin'`.
+
+Establish `hev` using `Submodule.mem_map_of_mem (f := LinearMap.proj (R := ℂ) (φ := fun _ : GL (Fin n) F => W) 1) hspan`. Rewrite `hev` using `[Submodule.map_span]`. Use `Submodule.span_le.2 ?_ hev` and prove the remaining obligations. Introduce and unpack `_ ⟨g, ⟨k, hk, rfl⟩, rfl⟩`. Establish `hkA : (k : GL (Fin n) F) ∈ A` using `(Subgroup.mem_inf.1 hk).2`.
+
+Establish `hkB : (⟨k, hkA⟩ : A) ∈ B` using `Subgroup.mem_subgroupOf.2 (Subgroup.mem_inf.1 hk).1`. Simplify using `only [LinearMap.proj_apply, Pi.sub_apply, one_mul]`. Establish `: h' k = θ ⟨k, hkA⟩ (h' 1)`. Use `hh' ⟨k, hkA⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+
+Rewrite using `[this]`. Conclude with `sub_mem_coinvariantsKer hkB _`. Establish `hproj : (fixedProj θ (isSmooth_cellRepA hσ) hBc hBo v : W) = u`. Use `(fixedProj_eq_iff (isSmooth_cellRepA hσ) hBc hBo (w := ⟨u, hu⟩)).2 hsub` as an intermediate fact. Rewrite using `[this]`.
+
+Establish `hA'B : A' ≤ B` using `fun x hx => Subgroup.mem_subgroupOf.2 (unipotentCompactG_mono (le_max_right _ _) (he₁ ⟨x, hx, rfl⟩))`. Establish `hzero` using `fixedProj_apply_of_mem_coinvariantsKer (isSmooth_cellRepA hσ) hBc hBo (coinvariantsKer_mono hA'B hvA')`. Rewrite using `[← hproj, hzero]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_avgOver_cellFun_eq_zero (hσ : IsSmooth σ) {Y : Set (GL (Fin n) F)}
     (hYo : IsOpen Y)
     (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))
@@ -143,6 +181,11 @@ section AvgConj
 
 variable {G : Type*} [Group G] {W : Type*} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `h1` using `avgOver_map_conj k hf (k * y)`. Rewrite `h1` using `[hk]`. Establish `h2 : (fun z => f (k⁻¹ * z * k)) = fun z => f (k⁻¹ * z)`. Use function extensionality and compare the values at `z`. Conclude with `hkf _`.
+
+Rewrite `h1` using `[h2, avgOver_comp_mul_left]`. Rewrite `h1` using `[show k⁻¹ * (k * y) * k = y * k by group]`. Rewrite using `[← h1]`. Use `congr 1`. Use `group`.
+-/
 theorem avgOver_mul_right_of_normalizes {K : Subgroup G} {f : G → W} (hf : AvgFinite K f) {k : G}
     (hk : K.map (MulAut.conj k).toMonoidHom = K) (hkf : ∀ y, f (y * k) = f y) (y : G) :
     avgOver K f (y * k) = avgOver K f y := by
@@ -157,6 +200,11 @@ theorem avgOver_mul_right_of_normalizes {K : Subgroup G} {f : G → W} (hf : Avg
   congr 1
   group
 
+/- English proof (translation)
+Introduce `h0`. Establish `hle : rightStab f ≤ rightStab (fun y => f (h * y))` using `fun g hg => by`. Rewrite `hg`, the goal using `[mem_rightStab]`. Introduce `x`. Rewrite using `[← mul_assoc, hg]`.
+
+Conclude with `hf (Nat.eq_zero_of_zero_dvd (h0 ▸ Subgroup.relIndex_dvd_of_le_left _ hle))`.
+-/
 theorem avgFinite_comp_mul_left {K : Subgroup G} {f : G → W} (hf : AvgFinite K f) (h : G) :
     AvgFinite K (fun y => f (h * y)) := by
   intro h0
@@ -172,6 +220,13 @@ section Kernel
 
 variable {W : Type*} [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (levi F n β) W)
 
+/- English proof (translation)
+Establish `h0` using `avgFinite_comp_mul_left hf (permGL F w * t)`. Establish `h1` using `avgOver_map_conj t h0 u`. Rewrite `h1` using `[ht]`. Establish `h2 : (fun y => (fun z => (f : GL (Fin n) F → W) (permGL F w * t * z)) (t⁻¹ * y * t)) = cellFun w σ f t`. Use function extensionality and compare the values at `y`.
+
+Unfold `cellFun`. Use `group`. Rewrite `h1` using `[h2]`. Rewrite using `[h1, avgOver_comp_mul_left]`. Use `congr 1`.
+
+Use `group`.
+-/
 theorem avgOver_permGL_mul_mul (f : parabolicIndSpace F n β σ) {K : Subgroup (GL (Fin n) F)}
     (hf : AvgFinite K (f : GL (Fin n) F → W)) {t : GL (Fin n) F}
     (ht : K.map (MulAut.conj t).toMonoidHom = K) (u : GL (Fin n) F) :
@@ -189,6 +244,51 @@ theorem avgOver_permGL_mul_mul (f : parabolicIndSpace F n β σ) {K : Subgroup (
   congr 1
   group
 
+/- English proof (translation)
+Take `⟨U, hU, hUf⟩` from `exists_rightStab_parabolicInd σ f`. Take `⟨j, -, hj⟩` from `(hasBasis_nhds_one F n).mem_iff.1 (hU.mem_nhds U.one_mem)`. Take `⟨T, hT, hTcov⟩` from `exists_finset_levi_eq_mul (F := F) (β := β) (γ := γ) (w := w) j`. Establish `hTe : ∀ t ∈ T, ∃ e, CellSupp γ w σ f t (unipotentCompactG (F` using `F) γ e) ∧ avgOver (unipotentCompactG (F := F) γ e) (cellFun w σ f t) 1 = 0 := fun t ht => exists_avgOver_cellFun_eq_zero σ hσ hYo hCY hf (hT t ht).1 (h0 t (hT t ht).1)`. Use `choose! et het using hTe`.
+
+Use `set E := T.sup et`. Use `set NE := unipotentCompactG (F := F) γ E`. Establish `hNEc : IsCompact (NE : Set (GL (Fin n) F))` using `isCompact_unipotentCompactG E`. Establish `hffin : AvgFinite NE (f : GL (Fin n) F → W)` using `avgFinite_of_isOpen hNEc hU (fun k hk => mem_rightStab.2 fun y => hUf k hk y)`. Establish `hconj : ∀ k, k ∈ levi F n γ → k ∈ integralGL F n → NE.map (MulAut.conj k).toMonoidHom = NE`.
+
+Introduce `k hk hk'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `conj_mem_unipotentCompactG hk hk' hu`. Introduce `u hu`.
+
+Use `⟨k⁻¹ * u * k, ?_, by show k * (k⁻¹ * u * k) * k⁻¹ = u; group⟩` and prove the remaining obligations. Use `conj_mem_unipotentCompactG ((levi F n γ).inv_mem hk) ((integralGL F n).inv_mem hk') hu` as an intermediate fact. Simplify using `using this`. Use `set gfun := avgOver NE (f : GL (Fin n) F → W)`. Establish `hgmem : gfun ∈ parabolicIndSpace F n β σ` using `avgOver_mem hffin (fun k hk => by`.
+
+Establish `: (fun y => (f : GL (Fin n) F → W) (y * k)) = ((parabolicInd F n β σ k f : parabolicIndSpace F n β σ) : GL (Fin n) F → W)`. Use function extensionality and compare the values at `y`. Rewrite using `[coe_indRep_apply]`. Rewrite using `[this]`. Conclude with `(parabolicInd F n β σ k f).2)`.
+
+Use `set g : parabolicIndSpace F n β σ := ⟨gfun, hgmem⟩`. Establish `hgP` using `((mem_parabolicIndSpace σ).1 hgmem).1`. Establish `hvanT : ∀ t ∈ T, ∀ u ∈ unipotentRadical F n γ, gfun (permGL F w * u * t) = 0`. Introduce `t ht u hu`. Establish `htM` using `(hT t ht).1`.
+
+Establish `htK` using `(hT t ht).2`. Use `show avgOver NE (f : GL (Fin n) F → W) (permGL F w * u * t) = 0`. Rewrite using `[avgOver_permGL_mul_mul σ f hffin (hconj t htM htK) u]`. Take `⟨hsupp, hzero⟩` from `het t ht`. Establish `hle : unipotentCompactG (F` using `F) γ (et t) ≤ NE := unipotentCompactG_mono (Finset.le_sup ht)`.
+
+Establish `hK1` using `isCellCompact_unipotentCompactG (F := F) (γ := γ) (et t)`. Establish `hKE` using `isCellCompact_unipotentCompactG (F := F) (γ := γ) E`. Establish `hfin1 : AvgFinite (unipotentCompactG γ (et t)) (cellFun w σ f t)` using `avgFinite_cellFun σ f t hK1.2.1`. Establish `hz : avgOver NE (cellFun w σ f t) 1 = 0` using `avgOver_eq_zero_of_le (fun a => cellRepA β γ w σ a) (cellFun_mul_left σ f t) hle hfin1 (hK1.relIndex_ne_zero hKE) (fun y hy hy0 => hsupp y (hKE.1 hy) hy0) hzero`. Establish `hfinE : AvgFinite NE (cellFun w σ f t)` using `avgFinite_cellFun σ f t hKE.2.1`.
+
+Distinguish the cases in `hAN : ∃ a ∈ cellUnipotent F β γ w, ∃ k ∈ NE, u = a * k`. Take `⟨a, ha, k, hk, rfl⟩` from `hAN`. Rewrite using `[avgOver_mul_right hfinE hk, show a = a * 1 by group, avgOver_mul_left_eq (fun a => cellRepA β γ w σ a) (cellFun_mul_left σ f t) hfinE ⟨a, ha⟩ 1, hz, map_zero]`. Apply `avgOver_eq_zero_of_forall` to reduce the goal to its premises. Introduce `k hk`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨a, ha, k₁, hk₁, he⟩` from `hsupp (u * k) ((unipotentRadical F n γ).mul_mem hu (unipotentCompactG_le E hk)) hne`. Conclude with `hAN ⟨a, ha, k₁ * k⁻¹, NE.mul_mem (hle hk₁) (NE.inv_mem hk), by`. Rewrite using `[← mul_assoc, ← he]`. Use the proof step `group⟩`.
+
+Establish `hvanC : ∀ x ∈ doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ), gfun x = 0`. Introduce `x hx`. Take `⟨p, hp, q, hq, rfl⟩` from `mem_doubleCoset.1 hx`. Use `set m₀ := leviProj F n γ ⟨q, hq⟩`. Establish `hn₀ : q * ((m₀ : levi F n γ) : GL (Fin n) F)⁻¹ ∈ unipotentRadical F n γ`.
+
+Rewrite using `[show q * ((m₀ : levi F n γ) : GL (Fin n) F)⁻¹ = ((⟨q, hq⟩ * (leviIncl m₀)⁻¹ : blockUpper F n γ) : GL (Fin n) F) from rfl, mem_unipotentRadical_iff_leviProj, map_mul, map_inv, leviProj_leviIncl, mul_inv_cancel]`. Take `⟨b, hb, t, htT, k, hk, hm₀⟩` from `hTcov _ m₀.2`. Use `set n₀ := q * ((m₀ : levi F n γ) : GL (Fin n) F)⁻¹`. Establish `hq' : q = n₀ * (b * t * k)`. Rewrite using `[← hm₀]`.
+
+Simplify using `only [n₀]`. Use `group`. Establish `hbM : b ∈ levi F n γ` using `cellLeviParabolic_le_levi hb`. Use `set n₁ := b⁻¹ * n₀ * b`. Establish `hn₁ : n₁ ∈ unipotentRadical F n γ`.
+
+Use `conj_mem_unipotentRadical ((blockUpper F n γ).inv_mem (levi_le_blockUpper hbM)) hn₀` as an intermediate fact. Simplify `this` using `[n₁]`. Establish `hkM : k ∈ levi F n γ` using `(Subgroup.mem_inf.1 hk).1`. Establish `hkK : k ∈ congruenceSubgroup F n j` using `(Subgroup.mem_inf.1 hk).2`. Establish `hxeq : p * permGL F w * q = (p * (permGL F w * b * (permGL F w)⁻¹)) * (permGL F w * n₁ * t) * k`.
+
+Rewrite using `[hq']`. Simplify using `only [n₁]`. Use `group`. Establish `hpb : p * (permGL F w * b * (permGL F w)⁻¹) ∈ blockUpper F n β` using `(blockUpper F n β).mul_mem hp ((conj_permGL_mem_blockUpper_iff w).2 (cellLeviParabolic_le_blockUpper hb))`. Rewrite using `[hxeq]`.
+
+Use `show avgOver NE (f : GL (Fin n) F → W) _ = 0`. Rewrite using `[avgOver_mul_right_of_normalizes hffin (hconj k hkM (congruenceSubgroup_le F n j hkK)) (fun y => hUf k (hj hkK) y)]`. Use `show gfun (((⟨_, hpb⟩ : blockUpper F n β) : GL (Fin n) F) * (permGL F w * n₁ * t)) = 0`. Rewrite using `[hgP ⟨_, hpb⟩, hvanT t htT n₁ hn₁, map_zero, smul_zero]`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx show gfun x = 0`. Distinguish the cases in `hxY : x ∈ Y`. Conclude with `hvanC x (by by_contra hxC; exact hx ⟨hxY, hxC⟩)`. Apply `avgOver_eq_zero_of_forall` to reduce the goal to its premises. Introduce `k hk`.
+
+Apply `hf` to reduce the goal to its premises. Introduce `hxk`. Apply `hxY` to reduce the goal to its premises. Use `hYQ _ hxk k⁻¹ ((blockUpper F n γ).inv_mem (unipotentRadical_le_blockUpper (unipotentCompactG_le E hk)))` as an intermediate fact. Simplify using `using this`.
+
+Establish `: ((rightStab (f : GL (Fin n) F → W)).subgroupOf NE).FiniteIndex` using `⟨hffin⟩`. Set `_` to `Fintype.ofFinite (NE ⧸ (rightStab (f : GL (Fin n) F → W)).subgroupOf NE)`. Establish `hI : (((rightStab (f : GL (Fin n) F → W)).relIndex NE : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hffin`. Establish `hcard : Fintype.card (NE ⧸ (rightStab (f : GL (Fin n) F → W)).subgroupOf NE) = (rightStab (f : GL (Fin n) F → W)).relIndex NE`. Rewrite using `[Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card]`.
+
+Establish `hkN : ∀ q : NE ⧸ (rightStab (f : GL (Fin n) F → W)).subgroupOf NE, ((Quotient.out q : NE) : GL (Fin n) F) ∈ unipotentRadical F n γ` using `fun q => unipotentCompactG_le E (Quotient.out q).2`. Establish `key : f - g = (((rightStab (f : GL (Fin n) F → W)).relIndex NE : ℂ)⁻¹) • ∑ q : NE ⧸ (rightStab (f : GL (Fin n) F → W)).subgroupOf NE, -(((parabolicInd F n β σ).comp (unipotentRadical F n γ).subtype) ⟨_, hkN q⟩ f - f)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sub, Submodule.coe_smul, Submodule.coe_sum, neg_sub]`. Use `show (f : GL (Fin n) F → W) - gfun = _`.
+
+Simplify using `only [gfun]`. Rewrite using `[avgOver_eq_sum_translates]`. Establish `e1 : ∀ q : NE ⧸ (rightStab (f : GL (Fin n) F → W)).subgroupOf NE, ((((parabolicInd F n β σ).comp (unipotentRadical F n γ).subtype) ⟨_, hkN q⟩ f : parabolicIndSpace F n β σ) : GL (Fin n) F → W) = fun y => (f : GL (Fin n) F → W) (y * ((Quotient.out q : NE) : GL (Fin n) F))`. Introduce `q`. Use function extensionality and compare the values at `y`.
+
+Conclude with `coe_indRep_apply _ _ _ _ _`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, hcard, ← Nat.cast_smul_eq_nsmul ℂ, smul_sub, smul_smul, inv_mul_cancel₀ hI, one_smul]`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => Submodule.neg_mem _ (Representation.Coinvariants.sub_mem_ker (ρ := (parabolicInd F n β σ).comp (unipotentRadical F n γ).subtype) ⟨_, hkN q⟩ f))`.
+-/
 theorem exists_sub_mem_ker_of_cellJacquet_eq_zero (hσ : IsSmooth σ) {Y : Set (GL (Fin n) F)}
     (hYo : IsOpen Y)
     (hCY : closure (doubleCoset (permGL F w) (blockUpper F n β : Set (GL (Fin n) F))

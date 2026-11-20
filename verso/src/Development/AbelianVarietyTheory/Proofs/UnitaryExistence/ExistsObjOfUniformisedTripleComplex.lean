@@ -27,11 +27,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def negZeta (n : ℕ) : ℂˣ := Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) / n)) (Complex.exp_ne_zero _)
 
+/- English proof (translation)
+Rewrite using `[← IsPrimitiveRoot.coe_units_iff]`. Use `(Complex.isPrimitiveRoot_exp n hn.ne').inv` as an intermediate fact. Rewrite `this` using `[← Complex.exp_neg, ← neg_div]`. Then use the resulting hypothesis.
+-/
 theorem negZeta_prim {n : ℕ} (hn : 0 < n) : IsPrimitiveRoot (negZeta n) n := by
   rw [← IsPrimitiveRoot.coe_units_iff]
   have := (Complex.isPrimitiveRoot_exp n hn.ne').inv
   rwa [← Complex.exp_neg, ← neg_div] at this
 
+/- English proof (translation)
+Establish `h₁ : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `h₂ : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, negZeta, negZeta, Units.val_mk0, Units.val_mk0, ← Complex.exp_nat_mul]`. Use `congr 1`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem negZeta_pow {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : negZeta (n * m) ^ m = negZeta n := by
   have h₁ : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hn.ne'
   have h₂ : (m : ℂ) ≠ 0 := Nat.cast_ne_zero.2 hm.ne'
@@ -41,12 +49,32 @@ theorem negZeta_pow {n m : ℕ} (hn : 0 < n) (hm : 0 < m) : negZeta (n * m) ^ m 
   push_cast
   field_simp
 
+/- English proof (translation)
+Rewrite using `[Units.val_zpow_eq_zpow_val, negZeta, Units.val_mk0, ← Complex.exp_int_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem negZeta_zpow (n : ℕ) (j : ℤ) :
     ((negZeta n ^ j : ℂˣ) : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (j : ℂ) / n) := by
   rw [Units.val_zpow_eq_zpow_val, negZeta, Units.val_mk0, ← Complex.exp_int_mul]
   congr 1
   ring
 
+/- English proof (translation)
+Establish `e0 : e 0 = 1` using `(hker 0).2 (zero_mem _)`. Establish `epow : ∀ (m : ℕ) z, e z ^ m = e ((m : ℂ) • z)` using `fun m z => by`. Proceed by induction on `m with`. Consider the case `zero => simp [e0]`. Consider the case `succ m ih => rw [pow_succ, ih, ← hadd, Nat.cast_succ, add_smul, one_smul]`.
+
+Establish `eP : ∀ a, e (P' a) = 1` using `fun a => (hker _).2 ⟨a, rfl⟩`. Establish `div : ∀ n : ℕ, 0 < n → ∀ a, (n : ℂ)⁻¹ • P' (n • a) = P' a` using `fun n hn a => by`. Rewrite using `[map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`. Establish `md : ∀ n : ℕ, 0 < n → ∀ a c, e ((n : ℂ)⁻¹ • P' (a + n • c)) = e ((n : ℂ)⁻¹ • P' a)` using `fun n hn a c => by`. Rewrite using `[map_add, smul_add, hadd, div n hn, eP, _root_.mul_one]`.
+
+Use `⟨{ ζ := negZeta ζ_prim := fun n hn => negZeta_prim hn ζ_pow := fun n m hn hm => negZeta_pow hn hm ev := fun n a => e ((n : ℂ)⁻¹ • P' (f n a)) add := fun n a b => by rw [map_add, map_add, smul_add, hadd] lin := fun n c a => ?_ ker := fun n hn a => ?_ onto := fun n hn x => ?_ tower …` and prove the remaining obligations. Rewrite using `[← hact, map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, hlin, smul_eq_mul, smul_eq_mul, mul_left_comm]`.
+
+Rewrite using `[← (hbij n hn).1, hker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_nsmul, hc, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`.
+
+Introduce and unpack `⟨c, hc⟩`. Conclude with `⟨c, by rw [hc, div n hn]⟩`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨z, rfl⟩` from `hsur x`.
+
+Rewrite `hx` using `[epow, hker]`. Take `⟨a', ha'⟩` from `hx`. Take `⟨a, c, rfl⟩` from `(hbij n hn).2 a'`. Conclude with `⟨a, by rw [← md n hn _ c, ha', inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]⟩`. Introduce and unpack `⟨a, rfl⟩`.
+
+Rewrite using `[epow, smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne'), eP]`. Take `⟨c, hc⟩` from `htow n m hn hm a`. Establish `h₂ : (m : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Rewrite using `[epow, smul_smul, ← md n hn _ c, ← hc, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ h₂, _root_.mul_one]`. Rewrite using `[← negZeta_zpow]`.
+
+Use `congr 1`. Take `⟨j, hj⟩` from `hiso n hn a b`. Rewrite using `[sub_eq_iff_eq_add.1 hj, zpow_add, zpow_mul, zpow_natCast, (negZeta_prim hn).pow_eq_one, one_zpow, _root_.one_mul]`.
+-/
 theorem exists_tateIso (D D' : Datum H) {g : ℕ} (ty : Fin g → (E →+* ℂ)) (P' : D'.La →+ (Fin g → ℂ))
     {Q : Type} [Group Q] (act : 𝓞 E → Q → Q) (w : ℕ → Q → Q → ℂˣ → Prop) (e : (Fin g → ℂ) → Q)
     (f : ℕ → D.La →ₗ[𝓞 E] D'.La) (hlin : ∀ (a : 𝓞 E) x i, P' (a • x) i = ty i (a : E) * P' x i)
@@ -135,10 +163,16 @@ def tateExtend {D : Datum H} {k K : Type} [Field k] [Field K] (φ : k →+* K) {
     rw [← map_zpow]
     exact hw _ _ _ _ (I.isom n hn a b)
 
+/- English proof (translation)
+The claim follows from `Units.ext (congrArg (fun q => q.hom (c : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm`.
+-/
 theorem unitOn_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (c : Aˣ) :
     Units.map (spMap φ).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map φ.toMonoidHom c) :=
   Units.ext (congrArg (fun q => q.hom (c : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm
 
+/- English proof (translation)
+Use `Submodule.smul_mem_smul hc ha` as an intermediate fact. Rewrite `this` using `[← Submodule.mul_smul, h, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨b, -, hb⟩` from `this`. Conclude with `⟨b, by rw [← hb, Nat.cast_smul_eq_nsmul]⟩`.
+-/
 theorem exists_smul_eq {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {I J : Ideal O} {n : ℕ}
     (h : I * J = Ideal.span {(n : O)}) {c : O} (hc : c ∈ I) {a : M} (ha : a ∈ J • (⊤ : Submodule O M)) :
     ∃ b : M, c • a = n • b := by
@@ -147,6 +181,17 @@ theorem exists_smul_eq {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {
   obtain ⟨b, -, hb⟩ := this
   exact ⟨b, by rw [← hb, Nat.cast_smul_eq_nsmul]⟩
 
+/- English proof (translation)
+Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨u, hu, π, hπ, huπ⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 l.coprime)`. Establish `hη : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), I.ev l.M (π • a) = I.ev l.M a` using `fun a h => by conv_rhs => rw [← one_smul (𝓞 E) a, ← huπ, add_smul, I.add, (I.ker _ hM _).2 (exists_smul_eq l.prod hu h), _root_.one_mul]`. Use `t.semi.smooth` as an intermediate fact. Use `⟨{ t := t proper := hp ample := ha ktriv := hk eta := fun a => I.ev l.M (π • a) eta_add := fun a c => by rw [smul_add, I.add] eta_ker := fun a h => (I.ker _ hM _).2 (exists_smul_eq ((mul_comm _ _).trans l.prod) hπ h) etaA := fun _ => 1 etaA_add := fun _ _ => (_root_.mul_one _).sy …` and prove the remaining obligations.
+
+Take `⟨φ, rfl⟩ : ∃ φ : k →+* K, x = spMap φ` from `⟨(Spec.preimage x).hom, (Spec.map_preimage x).symm⟩`. Take `rfl : φ.comp σ = β` from `congrArg CommRingCat.Hom.hom (Spec.map_injective ((Spec.map_comp _ _).trans hx))`. Establish `: CharZero K` using `charZero_of_injective_ringHom φ.injective`. Set `J : TateIso D K (Over.mk (spMap φ) ⟶ t.G) (fun a x => x ≫ t.act.act a) (fun n x y c => Out.WeilIs t.G t.PP.L n x y (unitOn c))` to `tateExtend φ I (MonoidHom.mk' (fun z => toUnit (Over.mk (spMap φ)) ≫ z) fun _ _ => MonObj.comp_mul _ _ _) (HeckePoint.toUnit_comp_injective _ _) (fun n hn y hy => HeckePoint.exists_of_torsion hL.mulN (HeckePoint.polOf t hp ha hk hg) _ (Nat.cast_ne_zero.2 hn.ne') (Nat.cast_ne_zero …`. Use `CommPairing.weilIs_pull hL.globalFns (HeckePoint.isAbelianScheme_of_proper t hp) t.PP.isLB (toUnit (Over.mk (spMap φ))) h` as an intermediate fact.
+
+Rewrite `this` using `[Over.toUnit_left]`. Rewrite using `[← unitOn_map]`. Conclude with `this)`. Use `⟨LieExt.detCond_extend D φ t.G t.act hdet, J, ?_, fun a => ?_, fun a h => ?_⟩` and prove the remaining obligations. Establish `h₁` using `J.ζ_prim _ l.A_pos`.
+
+Establish `h₂` using `b.ζ_prim`. Rewrite `h₁`, `h₂` using `[hA, IsPrimitiveRoot.one_right_iff]`. Rewrite using `[hA, h₁, h₂, map_one, Units.val_one]`. Rewrite using `[hA, MonObj.comp_one]`. Conclude with `((J.ker 1 one_pos a).2 ⟨a, (one_smul _ _).symm⟩).symm`.
+
+Conclude with `congrArg (toUnit (Over.mk (spMap φ)) ≫ ·) (hη a h)`. Conclude with `(Category.comp_id _).trans (congrArg (fun q => q.left) (hη a h).symm)`.
+-/
 theorem exists_obj (hL : Out.Laws) {D : Datum H} {l : Level H} (hA : l.A = 1) {B k : Type} [CommRing B] [Field k]
     [IsAlgClosed k] [CharZero k] (b : Base l B) (σ : B →+* k) (t : SAB H (Sp k)) {g : ℕ} (hp : IsProper t.G.hom)
     (hg : SmoothOfRelativeDimension g t.G.hom) (ha : Out.RelAmple t.G t.PP.L) (hk : Out.KTriv t.G t.PP.L)
@@ -200,6 +245,11 @@ theorem exists_obj (hL : Out.Laws) {D : Datum H} {l : Level H} (hA : l.A = 1) {B
     · exact congrArg (toUnit (Over.mk (spMap φ)) ≫ ·) (hη a h)
   · exact (Category.comp_id _).trans (congrArg (fun q => q.left) (hη a h).symm)
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H D D' l σ g ty P' t e f hA hσ hp hq hP ⟨h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉, _, hw⟩ ⟨htow, hbij⟩ hiso`. Establish `hd : DetCond D t.act (𝟙 (Sp ℂ)) (σ (baseKA l).ρ)` using `fun τ => by`. Rewrite using `[hσ, ← hp, ← hq]`. Conclude with `h₅ τ`. Take `⟨I, hI⟩` from `exists_tateIso D D' ty P' (fun a x => x ≫ t.act.act a) (fun n x y c => Out.WeilIs t.G t.PP.L n x y (unitOn c)) e f hP.1 hP.2.1 h₆ h₇ h₈ h₉ (fun k a b c hk hc => by have := hw k a b c hk hc; beta_reduce; exact this) htow hbij hiso`.
+
+Take `⟨o, m, h⟩` from `exists_obj hL hA (baseKA l) σ t h₁ h₂ h₃ h₄ hd I`. Use `⟨o, m, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun q => q.left ≫ m.φ) (hI l.M a).symm).trans (h a ha)`.
+-/
 theorem exists_obj_of_uniformised : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D D' : Datum H) (l : Level H) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (P' : D'.La →+ (Fin g → ℂ)) (t : SAB H (Sp ℂ)) (e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ t.G)) (f : ℕ → D.La →ₗ[𝓞 E] D'.La), l.A = 1 → σ (baseKA l).ρ = H.rt0 → D'.p = D.p → D'.q = D.q → IsPeriod D' ty P' → (IsProper t.G.hom ∧ SmoothOfRelativeDimension g t.G.hom ∧ Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L ∧ DetCond D' t.act (𝟙 (Sp ℂ)) H.rt0 ∧ (∀ z w, e (z + w) = e z * e w) ∧ Function.Surjective e ∧ (∀ z, e z = 1 ↔ z ∈ P'.range) ∧ (∀ (a : 𝓞 E) z, e (fun k => ty k (a : E) * z k) = e z ≫ t.act.act a) ∧ IsHolTo Set.univ (fun z => (e z).left) ∧ ∀ (k : ℕ) (a b : D'.La) (c : ℂˣ), 0 < k → (c : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (D'.EF a b : ℂ) / k) → Out.WeilIs t.G t.PP.L k (e ((k : ℂ)⁻¹ • P' a)) (e ((k : ℂ)⁻¹ • P' b)) (unitOn c)) → (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) → (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ D'.EF (f n a) (f n a') - D.EF a a') → ∃ (o : Obj D l (baseKA l) (spMap σ)) (m : SABMap t o.t (𝟙 _)), ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), (e ((l.M : ℂ)⁻¹ • P' (f l.M a))).left ≫ m.φ = (o.eta a).left := by
   intro hL E _ _ _ H D D' l σ g ty P' t e f hA hσ hp hq hP ⟨h₁, h₂, h₃, h₄, h₅, h₆, h₇, h₈, h₉, _, hw⟩ ⟨htow, hbij⟩ hiso
   have hd : DetCond D t.act (𝟙 (Sp ℂ)) (σ (baseKA l).ρ) := fun τ => by

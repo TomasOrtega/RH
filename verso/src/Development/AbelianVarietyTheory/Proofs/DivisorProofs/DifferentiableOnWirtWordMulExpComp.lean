@@ -10,12 +10,18 @@ open Complex
 
 variable {Φ I : Type} [Fintype Φ] [Fintype I]
 
+/- English proof (translation)
+Establish `hd` using `((contDiffOn_infty_iff_fderiv_of_isOpen hV).1 hg).2`. Unfold `wirt`. Conclude with `((hd.clm_apply contDiffOn_const).add (contDiffOn_const.mul (hd.clm_apply contDiffOn_const))).div_const 2`.
+-/
 theorem contDiffOn_wirt' {V : Set (Φ → ℂ)} (hV : IsOpen V) {g : (Φ → ℂ) → ℂ} (hg : ContDiffOn ℝ ∞ g V)
     (τ : Φ) (bar : Bool) : ContDiffOn ℝ ∞ (wirt τ bar g) V := by
   have hd := ((contDiffOn_infty_iff_fderiv_of_isOpen hV).1 hg).2
   unfold wirt
   exact ((hd.clm_apply contDiffOn_const).add (contDiffOn_const.mul (hd.clm_apply contDiffOn_const))).div_const 2
 
+/- English proof (translation)
+Proceed by induction on `w with`. Consider the case `nil => simpa [wirtWord_nil] using hg`. Consider the case `cons a w ih => rw [wirtWord_cons]`. Conclude with `contDiffOn_wirt' hV ih _ _`.
+-/
 theorem contDiffOn_wirtWord' {V : Set (Φ → ℂ)} (hV : IsOpen V) {g : (Φ → ℂ) → ℂ} (hg : ContDiffOn ℝ ∞ g V)
     (w : List (Φ × Bool)) : ContDiffOn ℝ ∞ (wirtWord w g) V := by
   induction w with
@@ -23,6 +29,17 @@ theorem contDiffOn_wirtWord' {V : Set (Φ → ℂ)} (hV : IsOpen V) {g : (Φ →
   | cons a w ih => rw [wirtWord_cons]; exact contDiffOn_wirt' hV ih _ _
 
 open Classical in
+/- English proof (translation)
+Establish `hu : u = ∑ τ, ((u τ).re • (Pi.single τ (1:ℂ) : Φ → ℂ) + (u τ).im • (Pi.single τ I : Φ → ℂ))`. Use extensionality with `τ'`. Simplify using `only [Finset.sum_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_ite, smul_zero]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq]`. Simplify using `[Complex.re_add_im]`.
+
+Use `conv_lhs => rw [hu]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul]`. Simplify using `only [wirt, Bool.false_eq_true, if_false, if_true, real_smul]`.
+
+Use `set A := fderiv ℝ h y (Pi.single τ 1)`. Use `set B := fderiv ℝ h y (Pi.single τ I)`. Establish `hc : (starRingEnd ℂ) (u τ) = (u τ).re - (u τ).im * I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `hu' : u τ = (u τ).re + (u τ).im * I` using `(Complex.re_add_im _).symm`.
+
+Establish `key : ∀ (a c : ℝ) (A B : ℂ), (a:ℂ) * A + (c:ℂ) * B = ((a:ℂ) + (c:ℂ) * I) * ((A + -I * B) / 2) + ((a:ℂ) - (c:ℂ) * I) * ((A + I * B) / 2)`. Introduce `a c A B`. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `key (u τ).re (u τ).im A B` as an intermediate fact. Rewrite `this` using `[← hu', ← hc]`. Take the linear combination `this`.
+-/
 theorem fderiv_eq_sum_wirt' (h : (Φ → ℂ) → ℂ) (y u : Φ → ℂ) :
     fderiv ℝ h y u = ∑ τ, (u τ * wirt τ false h y + (starRingEnd ℂ) (u τ) * wirt τ true h y) := by
   have hu : u = ∑ τ, ((u τ).re • (Pi.single τ (1:ℂ) : Φ → ℂ) + (u τ).im • (Pi.single τ I : Φ → ℂ)) := by
@@ -62,6 +79,11 @@ inductive ExpSum : (ℂ → (I → ℂ) → ℂ) → Prop
 
 variable {U G t l}
 
+/- English proof (translation)
+Proceed by induction on `hF with`. Consider the case `zero => simpa using ExpSum.zero (U := U) (G := G) (t := t) (l := l)`. Consider the case `term n β w hβ`. Establish `h` using `ExpSum.term (U := U) (G := G) (t := t) (l := l) n (fun z => c * β z) w (contDiffOn_const.mul hβ)`. Use `h using 2` and compare the differences between its conclusion and the goal.
+
+Put the polynomial expressions in normal form. Consider the case `add _ _ h₁ h₂`. Establish `h` using `ExpSum.add h₁ h₂`. Use `h using 2` and compare the differences between its conclusion and the goal. Put the polynomial expressions in normal form.
+-/
 theorem ExpSum.const_mul {F : ℂ → (I → ℂ) → ℂ} (hF : ExpSum U G t l F) (c : ℂ) :
     ExpSum U G t l fun σ z => c * F σ z := by
   induction hF with
@@ -75,6 +97,9 @@ theorem ExpSum.const_mul {F : ℂ → (I → ℂ) → ℂ} (hF : ExpSum U G t l 
     convert h using 2
     ring_nf
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ExpSum.zero (U := U) (G := G) (t := t) (l := l)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `ExpSum.add (hF a (Finset.mem_insert_self a s)) (ih fun b hb => hF b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem ExpSum.sum {α : Type} (s : Finset α) (F : α → ℂ → (I → ℂ) → ℂ) (hF : ∀ a ∈ s, ExpSum U G t l (F a)) :
     ExpSum U G t l fun σ z => ∑ a ∈ s, F a σ z := by
   classical
@@ -84,6 +109,9 @@ theorem ExpSum.sum {α : Type} (s : Finset α) (F : α → ℂ → (I → ℂ) �
     simp only [Finset.sum_insert ha]
     exact ExpSum.add (hF a (Finset.mem_insert_self a s)) (ih fun b hb => hF b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Proceed by induction on `hF with`. Consider the case `zero => exact differentiableOn_const _`. Consider the case `term n β w hβ`. Conclude with `(((differentiableOn_id.pow n).mul (differentiableOn_const _)).mul ((differentiableOn_id.neg.mul_const (l z)).cexp)).mul (hGh w (t z) (hmaps hz))`. Consider the case `add _ _ h₁ h₂ => exact h₁.add h₂`.
+-/
 theorem ExpSum.holo {D : Set ℂ} {V : Set (Φ → ℂ)} (hmaps : Set.MapsTo t U V)
     (hGh : ∀ w : List (Φ × Bool), ∀ y ∈ V, DifferentiableOn ℂ (fun σ => wirtWord w (G σ) y) D)
     {F : ℂ → (I → ℂ) → ℂ} (hF : ExpSum U G t l F) {z : I → ℂ} (hz : z ∈ U) :
@@ -95,6 +123,9 @@ theorem ExpSum.holo {D : Set ℂ} {V : Set (Φ → ℂ)} (hmaps : Set.MapsTo t U
       ((differentiableOn_id.neg.mul_const (l z)).cexp)).mul (hGh w (t z) (hmaps hz))
   | add _ _ h₁ h₂ => exact h₁.add h₂
 
+/- English proof (translation)
+Proceed by induction on `hF with`. Consider the case `zero => exact contDiffOn_const`. Consider the case `term n β w hβ`. Conclude with `((contDiffOn_const.mul hβ).mul (contDiffOn_const.mul hl).cexp).mul ((contDiffOn_wirtWord' hV (hGs σ hσ) w).comp ht hmaps)`. Consider the case `add _ _ h₁ h₂ => exact h₁.add h₂`.
+-/
 theorem ExpSum.smooth {D : Set ℂ} {V : Set (Φ → ℂ)} (hV : IsOpen V) (hmaps : Set.MapsTo t U V)
     (ht : ContDiffOn ℝ ∞ t U) (hl : ContDiffOn ℝ ∞ l U)
     (hGs : ∀ σ ∈ D, ContDiffOn ℝ ∞ (G σ) V)
@@ -113,6 +144,25 @@ section Deriv
 
 variable {U : Set (I → ℂ)} {G : ℂ → (Φ → ℂ) → ℂ} {t : (I → ℂ) → Φ → ℂ} {l : (I → ℂ) → ℂ}
 
+/- English proof (translation)
+Establish `hdt` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 ht).2`. Establish `hdl` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hl).2`. Establish `hdtv : ContDiffOn ℝ ∞ (fun z => fderiv ℝ t z v) U` using `hdt.clm_apply contDiffOn_const`. Establish `hdlv : ContDiffOn ℝ ∞ (fun z => fderiv ℝ l z v) U` using `hdl.clm_apply contDiffOn_const`. Proceed by induction on `hF with`.
+
+Consider the case `zero => exact ⟨fun _ _ => 0, ExpSum.zero, fun σ _ z _ => by simp⟩`. Consider the case `@add F₁ F₂ h₁ h₂ ih₁ ih₂`. Take `⟨F₁', h₁', e₁⟩` from `ih₁`. Take `⟨F₂', h₂', e₂⟩` from `ih₂`. Use `⟨fun σ z => F₁' σ z + F₂' σ z, ExpSum.add h₁' h₂', fun σ hσ z hz => ?_⟩` and prove the remaining obligations.
+
+Establish `d₁` using `((h₁.smooth hV hmaps ht hl hGs hσ).differentiableOn (by simp)).differentiableAt (hU.mem_nhds hz)`. Establish `d₂` using `((h₂.smooth hV hmaps ht hl hGs hσ).differentiableOn (by simp)).differentiableAt (hU.mem_nhds hz)`. Use `show fderiv ℝ (fun y => F₁ σ y + F₂ σ y) z v = F₁' σ z + F₂' σ z`. Establish `hsum : HasFDerivAt (fun y => F₁ σ y + F₂ σ y) _ z` using `d₁.hasFDerivAt.add d₂.hasFDerivAt`. Rewrite using `[hsum.fderiv, ContinuousLinearMap.add_apply, e₁ σ hσ z hz, e₂ σ hσ z hz]`.
+
+Consider the case `term n β w hβ`. Establish `hdb` using `((contDiffOn_infty_iff_fderiv_of_isOpen hU).1 hβ).2`. Establish `hdbv : ContDiffOn ℝ ∞ (fun z => fderiv ℝ β z v) U` using `hdb.clm_apply contDiffOn_const`. Use `⟨fun σ z => (σ ^ n * fderiv ℝ β z v * Complex.exp (-σ * l z) * wirtWord w (G σ) (t z) + σ ^ (n + 1) * (-(β z * fderiv ℝ l z v)) * Complex.exp (-σ * l z) * wirtWord w (G σ) (t z)) + ∑ τ : Φ, (σ ^ n * (β z * fderiv ℝ t z v τ) * Complex.exp (-σ * l z) * wirtWord ((τ, false) :: w) (G …` and prove the remaining obligations. Use `ExpSum.add (ExpSum.add (ExpSum.term n _ w hdbv) (ExpSum.term (n + 1) _ w (hβ.mul hdlv).neg)) (ExpSum.sum Finset.univ _ fun τ _ => ExpSum.add (ExpSum.term n _ _ (hβ.mul (contDiffOn_pi.1 hdtv τ))) (ExpSum.term n _ _ (hβ.mul ?_)))` and prove the remaining obligations.
+
+Use `Complex.conjCLE.contDiff.comp_contDiffOn (contDiffOn_pi.1 hdtv τ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Introduce `σ hσ z hz`. Establish `hzn` using `hU.mem_nhds hz`. Use `set W := wirtWord w (G σ) with hWdef`.
+
+Establish `hWs : ContDiffOn ℝ ∞ W V` using `contDiffOn_wirtWord' hV (hGs σ hσ) w`. Establish `hb' : HasFDerivAt β (fderiv ℝ β z) z` using `((hβ.differentiableOn (by simp)).differentiableAt hzn).hasFDerivAt`. Establish `hl' : HasFDerivAt l (fderiv ℝ l z) z` using `((hl.differentiableOn (by simp)).differentiableAt hzn).hasFDerivAt`. Establish `ht' : HasFDerivAt t (fderiv ℝ t z) z` using `((ht.differentiableOn (by simp)).differentiableAt hzn).hasFDerivAt`. Establish `hW' : HasFDerivAt W (fderiv ℝ W (t z)) (t z)` using `((hWs.differentiableOn (by simp)).differentiableAt (hV.mem_nhds (hmaps hz))).hasFDerivAt`.
+
+Establish `hE` using `(hl'.const_mul (-σ)).cexp`. Establish `hWt` using `hW'.comp z ht'`. Establish `hall` using `((hb'.const_mul (σ ^ n)).mul hE).mul hWt`. Establish `hall' : HasFDerivAt (fun y => σ ^ n * β y * Complex.exp (-σ * l y) * W (t y)) _ z` using `hall`. Rewrite using `[hall'.fderiv]`.
+
+Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ContinuousLinearMap.comp_apply, Function.comp_apply, Pi.mul_apply]`. Rewrite using `[fderiv_eq_sum_wirt' W (t z) (fderiv ℝ t z v)]`. Simplify using `only [wirtWord_cons]`. Rewrite using `[← hWdef]`. Establish `hs : ∀ τ : Φ, σ ^ n * β z * Complex.exp (-σ * l z) * (fderiv ℝ t z v τ * wirt τ false W (t z) + (starRingEnd ℂ) (fderiv ℝ t z v τ) * wirt τ true W (t z)) = σ ^ n * (β z * fderiv ℝ t z v τ) * Complex.exp (-σ * l z) * wirt τ false W (t z) + σ ^ n * (β z * (starRingEnd ℂ) (fderiv ℝ …` using `fun τ => by ring`.
+
+Rewrite using `[Finset.mul_sum]`. Simplify using `only [hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ExpSum.deriv {D : Set ℂ} {V : Set (Φ → ℂ)} (hU : IsOpen U) (hV : IsOpen V) (hmaps : Set.MapsTo t U V)
     (ht : ContDiffOn ℝ ∞ t U) (hl : ContDiffOn ℝ ∞ l U)
     (hGs : ∀ σ ∈ D, ContDiffOn ℝ ∞ (G σ) V)
@@ -181,6 +231,15 @@ end Deriv
 
 open Classical in
 
+/- English proof (translation)
+Introduce `Φ I _ _ U V D G t b l hU hV hmaps ht hb hl hGs hGh w z hz`. Establish `key : ∀ w : List (I × Bool), ∃ F, ExpSum U G t l F ∧ ∀ σ ∈ D, Set.EqOn (wirtWord w (fun z' => b z' * Complex.exp (-σ * l z') * G σ (t z'))) (F σ) U`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil`.
+
+Use `⟨_, ExpSum.term 0 b [] hb, fun σ _ z _ => ?_⟩` and prove the remaining obligations. Simplify using `[wirtWord_nil]`. Consider the case `cons a w ih`. Take `⟨F, hF, hEq⟩` from `ih`. Take `⟨F₁, hF₁, hd₁⟩` from `hF.deriv hU hV hmaps ht hl hGs (Pi.single a.1 1)`.
+
+Take `⟨F₂, hF₂, hd₂⟩` from `hF.deriv hU hV hmaps ht hl hGs (Pi.single a.1 Complex.I)`. Use `⟨fun σ z => (1 / 2 : ℂ) * (F₁ σ z + (if a.2 then Complex.I else -Complex.I) * F₂ σ z), (ExpSum.add hF₁ (hF₂.const_mul _)).const_mul _, fun σ hσ z hz => ?_⟩` and prove the remaining obligations. Establish `hev : wirtWord w (fun z' => b z' * Complex.exp (-σ * l z') * G σ (t z')) =ᶠ[nhds z] F σ` using `Filter.eventually_of_mem (hU.mem_nhds hz) fun y hy => hEq σ hσ hy`. Rewrite using `[wirtWord_cons]`. Simplify using `only [wirt]`.
+
+Rewrite using `[hev.fderiv_eq, hd₁ σ hσ z hz, hd₂ σ hσ z hz]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨F, hF, hEq⟩` from `key w`. Conclude with `(hF.holo hmaps hGh hz).congr fun σ hσ => hEq σ hσ hz`.
+-/
 theorem differentiableOn_wirtWord_mul_exp_comp : ∀ (Φ I : Type) [Fintype Φ] [Fintype I] (U : Set (I → ℂ)) (V : Set (Φ → ℂ)) (D : Set ℂ) (G : ℂ → (Φ → ℂ) → ℂ) (t : (I → ℂ) → Φ → ℂ) (b l : (I → ℂ) → ℂ), IsOpen U → IsOpen V → Set.MapsTo t U V → ContDiffOn ℝ ∞ t U → ContDiffOn ℝ ∞ b U → ContDiffOn ℝ ∞ l U → (∀ σ ∈ D, ContDiffOn ℝ ∞ (G σ) V) → (∀ w : List (Φ × Bool), ∀ y ∈ V, DifferentiableOn ℂ (fun σ => wirtWord w (G σ) y) D) → ∀ w : List (I × Bool), ∀ z ∈ U, DifferentiableOn ℂ (fun σ => wirtWord w (fun z' => b z' * Complex.exp (-σ * l z') * G σ (t z')) z) D := by
   intro Φ I _ _ U V D G t b l hU hV hmaps ht hb hl hGs hGh w z hz
   have key : ∀ w : List (I × Bool), ∃ F, ExpSum U G t l F ∧ ∀ σ ∈ D,

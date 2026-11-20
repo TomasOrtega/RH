@@ -13,6 +13,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerPureTe
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerLinearityStatement
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.WhittakerLocalTateIntegralStatement
 
+/- English proof (translation)
+The claim follows from `Ad3.SchwartzSpaceL2.top' GlobalTheory.T.whittaker_additive_character_equivariance GlobalTheory.T.whittaker_central_character GlobalTheory.T.whittaker_right_translation GlobalTheory.T.whittaker_smoothness GlobalTheory.T.whittaker_gauge_bound GlobalTheory.T.whittaker_nonvanishing A …`.
+-/
 theorem Ad3.loc2 : Ad3.Loc2 :=
   Ad3.SchwartzSpaceL2.top' GlobalTheory.T.whittaker_additive_character_equivariance GlobalTheory.T.whittaker_central_character GlobalTheory.T.whittaker_right_translation GlobalTheory.T.whittaker_smoothness GlobalTheory.T.whittaker_gauge_bound GlobalTheory.T.whittaker_nonvanishing
     Ad3.SchwartzSpaceL2.punr GlobalTheory.T.whittaker_vanishing_at_zero GlobalTheory.T.whittaker_well_defined GlobalTheory.T.whittaker_pure_tensor_formula GlobalTheory.T.whittaker_linearity GlobalTheory.T.whittaker_local_tate_integral Ad3.SchwartzSpaceL2.pfe

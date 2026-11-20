@@ -16,5 +16,8 @@ open GlobalTheory.IndefiniteRowSideFullHecke.BoundaryPolynomialFunctions (IsProj
 open Formalism.BasicNotions Formalism.L2.Pj GlobalTheory.Toroidal GlobalTheory.ShFam GlobalTheory.ShFam.Hor GlobalTheory.Mean4O
 open scoped ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FubCell.lintegral_cell | exact GlobalTheory.FubCell.lintegral_cell | (intros; apply GlobalTheory.FubCell.lintegral_cell <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lintegral_fibre_over_cell : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (π : Y ⟶ B) (w : π ≫ q = p) (n r D : ℕ) (ε : Fin D ≃ Fin n ⊕ Low r) (σ : k →+* ℂ) [IsIntegral Y] (c : AlgChart q σ n) (c' : AlgChart p σ D), IsArithVar p D → IsCell ε π w c c' → ∀ ρ : AlgChart p σ D → CxPts p σ → ℝ, IsDens ρ → ∀ A : Set (CxPts q σ), MeasurableSet A → A ⊆ c.e.source → ∀ h : CxPts q σ → ℝ≥0∞, Measurable h → (∫⁻ y in PtsOver.map π w (spMap σ) ⁻¹' A, h (PtsOver.map π w (spMap σ) y) ∂part ρ = ∫⁻ u in c.e '' A, ∫⁻ x : Low r → ℂ, h (c.e.symm u) * ENNReal.ofReal (ρ c' (c'.e.symm (pt ε u x)))) ∧ AEMeasurable (fun u => ∫⁻ x : Low r → ℂ, h (c.e.symm u) * ENNReal.ofReal (ρ c' (c'.e.symm (pt ε u x)))) (volume.restrict (c.e '' A)) := by
   first | exact @GlobalTheory.FubCell.lintegral_cell | exact GlobalTheory.FubCell.lintegral_cell | (intros; apply GlobalTheory.FubCell.lintegral_cell <;> assumption)

@@ -21,6 +21,9 @@ variable {R K V W : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K]
   [AddCommGroup V] [Module K V] [Module R V] [IsScalarTower R K V]
   [AddCommGroup W] [Module K W] [Module R W] [IsScalarTower R K W]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_map, LinearMap.coe_restrictScalars, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, adj]`.
+-/
 theorem dual_map (hV : V →ₗ⋆[K] V →ₗ[K] K) (hW : W →ₗ⋆[K] W →ₗ[K] K) (E : W →ₗ[K] V)
     (P : V →ₗ[K] W) (adj : ∀ x z, hW (P x) z = hV x (E z)) (A : Submodule R V) :
     Formalism.HermitianLatticesTheory.dual hW (A.map (P.restrictScalars R)) =
@@ -29,12 +32,24 @@ theorem dual_map (hV : V →ₗ⋆[K] V →ₗ[K] K) (hW : W →ₗ⋆[K] W →�
   simp only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, Submodule.mem_map,
     LinearMap.coe_restrictScalars, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂, adj]
 
+/- English proof (translation)
+Use `⟨hB.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hB.span_eq_top, Submodule.map_top, LinearMap.range_eq_top.mpr hP]`.
+-/
 theorem map_isLattice (P : V →ₗ[K] W) (hP : Function.Surjective P) (B : Submodule R V)
     (hB : Submodule.IsLattice K B) : Submodule.IsLattice K (B.map (P.restrictScalars R)) := by
   refine ⟨hB.fg.map _, ?_⟩
   rw [Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hB.span_eq_top,
     Submodule.map_top, LinearMap.range_eq_top.mpr hP]
 
+/- English proof (translation)
+Take `⟨hL, hdd, -⟩` from `Formalism.HermitianLatticesTheory.dualLattice R K V hV hVs hVn hstar A hA`. Establish `h1` using `dual_map (R := R) hV hW E P adj (Formalism.HermitianLatticesTheory.dual hV A)`. Rewrite `h1` using `[hdd]`. Establish `hsep : hW.SeparatingRight`. Introduce `z hz`.
+
+Apply `hE` to reduce the goal to its premises. Rewrite using `[map_zero]`. Apply `hVn.2` to reduce the goal to its premises. Introduce `x`. Rewrite using `[← adj]`.
+
+Conclude with `hz _`. Establish `hWn : hW.Nondegenerate`. Use `⟨fun x hx => hsep x fun y => ?_, hsep⟩` and prove the remaining obligations. Rewrite using `[← hWs.eq x y, hx y, map_zero]`. Establish `hBP` using `map_isLattice (R := R) P hP _ hL`.
+
+Rewrite using `[← h1]`. Conclude with `(Formalism.HermitianLatticesTheory.dualLattice R K W hW hWs hWn hstar _ hBP).2.1`.
+-/
 theorem dual_comap [IsDedekindDomain R] [IsFractionRing R K] [FiniteDimensional K V]
     [FiniteDimensional K W] (hV : V →ₗ⋆[K] V →ₗ[K] K) (hVs : hV.IsSymm) (hVn : hV.Nondegenerate)
     (hW : W →ₗ⋆[K] W →ₗ[K] K) (hWs : hW.IsSymm)
@@ -68,21 +83,35 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 open RationalHermitianForm
 
+/- English proof (translation)
+Introduce `r` and use `(IsIntegralClosure.isIntegral_iff (R := ℤ) (A := 𝓞 K)).mp (((IsIntegralClosure.isIntegral_iff (R := ℤ) (A := 𝓞 K)).mpr ⟨r, rfl⟩).map (starRingEnd K).toIntAlgHom)`.
+-/
 theorem hstar : ∀ r : 𝓞 K, star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) := fun r =>
   (IsIntegralClosure.isIntegral_iff (R := ℤ) (A := 𝓞 K)).mp
     (((IsIntegralClosure.isIntegral_iff (R := ℤ) (A := 𝓞 K)).mpr ⟨r, rfl⟩).map
       (starRingEnd K).toIntAlgHom)
 
+/- English proof (translation)
+Establish `h` using `congrFun (congrFun hH j) i`. Rewrite `h` using `[Matrix.conjTranspose_apply]`. Conclude with `h.symm`.
+-/
 theorem herm_entry' {n : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H) (i j : Fin n) :
     H j i = star (H i j) := by
   have h := congrFun (congrFun hH j) i
   rw [Matrix.conjTranspose_apply] at h
   exact h.symm
 
+/- English proof (translation)
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`.
+-/
 theorem herm_cut {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
     (E : Matrix (Fin n) (Fin d) K) : (Eᴴ * H * E)ᴴ = Eᴴ * H * E := by
   simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h2 : Eᴴ * H = Eᴴ * H * (E * Pr)`. Establish `h` using `hO.2`. Rewrite `h` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Conclude with `h`. Establish `h3` using `congrArg Matrix.conjTranspose h2`.
+
+Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH] at h3`. Rewrite using `[h3]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem orth_eq {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
     {E : Matrix (Fin n) (Fin d) K} {Pr : Matrix (Fin d) (Fin n) K} (hO : IsOrthProj H E Pr) :
     H * E = Prᴴ * (Eᴴ * H * E) := by
@@ -95,6 +124,9 @@ theorem orth_eq {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
   rw [h3]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `key : ∀ {m : ℕ} (M : Matrix (Fin m) (Fin m) K) (u v : Fin m → K), hform M u v = star u ⬝ᵥ (M *ᵥ v)`. Introduce `m M u v`. Simplify using `only [hform_apply, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Rewrite using `[key, key, Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← orth_eq hH hO]`.
+-/
 theorem adj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
     {E : Matrix (Fin n) (Fin d) K} {Pr : Matrix (Fin d) (Fin n) K} (hO : IsOrthProj H E Pr)
     (x : Fin n → K) (z : Fin d → K) :
@@ -106,6 +138,9 @@ theorem adj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} (hH : Hᴴ = H)
   rw [key, key, Matrix.mulVecLin_apply, Matrix.mulVecLin_apply, Matrix.star_mulVec,
     ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← orth_eq hH hO]
 
+/- English proof (translation)
+Introduce `x y hxy`. Establish `h` using `congrArg (Matrix.mulVec Pr) hxy`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec] at h`. Conclude with `h`.
+-/
 theorem E_inj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
     {E : Matrix (Fin n) (Fin d) K} {Pr : Matrix (Fin d) (Fin n) K} (hO : IsOrthProj H E Pr) :
     Function.Injective (Matrix.mulVecLin E) := by
@@ -114,6 +149,9 @@ theorem E_inj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
   simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec] at h
   exact h
 
+/- English proof (translation)
+Introduce `z`. Use `⟨E.mulVec z, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec]`.
+-/
 theorem Pr_surj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
     {E : Matrix (Fin n) (Fin d) K} {Pr : Matrix (Fin d) (Fin n) K} (hO : IsOrthProj H E Pr) :
     Function.Surjective (Matrix.mulVecLin Pr) := by
@@ -121,6 +159,9 @@ theorem Pr_surj {n d : ℕ} {H : Matrix (Fin n) (Fin n) K}
   refine ⟨E.mulVec z, ?_⟩
   simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hO.1, Matrix.one_mulVec]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hZ]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, ← Matrix.mul_assoc (Eᴴ * H) E, ← Matrix.mul_assoc (Eᴴ * H * E), Matrix.mul_nonsing_inv _ hZ, Matrix.one_mul]`.
+-/
 theorem isOrthProj_formula {n d : ℕ} (H : Matrix (Fin n) (Fin n) K) (E : Matrix (Fin n) (Fin d) K)
     (hZ : IsUnit (Eᴴ * H * E).det) : IsOrthProj H E ((Eᴴ * H * E)⁻¹ * (Eᴴ * H)) := by
   constructor
@@ -128,6 +169,9 @@ theorem isOrthProj_formula {n d : ℕ} (H : Matrix (Fin n) (Fin n) K) (E : Matri
   · rw [Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, ← Matrix.mul_assoc (Eᴴ * H) E,
       ← Matrix.mul_assoc (Eᴴ * H * E), Matrix.mul_nonsing_inv _ hZ, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `h2 : Eᴴ * H = Eᴴ * H * E * Pr`. Establish `h` using `hO.2`. Rewrite `h` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero, ← Matrix.mul_assoc (Eᴴ * H) E Pr]`. Conclude with `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem isOrthProj_unique {n d : ℕ} {H : Matrix (Fin n) (Fin n) K} {E : Matrix (Fin n) (Fin d) K}
     {Pr : Matrix (Fin d) (Fin n) K} (hZ : IsUnit (Eᴴ * H * E).det) (hO : IsOrthProj H E Pr) :
     Pr = (Eᴴ * H * E)⁻¹ * (Eᴴ * H) := by
@@ -142,10 +186,16 @@ end exponent_index_lattice
 
 open exponent_index_lattice RationalHermitianForm
 
+/- English proof (translation)
+Introduce `K _ _ _ n d H hH E Pr hO A`. Conclude with `dual_map (hform H) (hform (Eᴴ * H * E)) (Matrix.mulVecLin E) (Matrix.mulVecLin Pr) (adj hH hO) A`.
+-/
 theorem projection_dual_lattice : ProjDualLat := by
   intro K _ _ _ n d H hH E Pr hO A
   exact dual_map (hform H) (hform (Eᴴ * H * E)) (Matrix.mulVecLin E) (Matrix.mulVecLin Pr) (adj hH hO) A
 
+/- English proof (translation)
+Introduce `K _ _ _ n d H hH hdet E Pr hO A hA`. Establish `hs` using `hform_isSymm H (herm_entry' hH)`. Conclude with `dual_comap (hform H) hs (hform_nondeg H hs hdet.ne_zero) (hform (Eᴴ * H * E)) (hform_isSymm _ (herm_entry' (herm_cut hH E))) hstar (Matrix.mulVecLin E) (Matrix.mulVecLin Pr) (adj hH hO) (E_inj hO) (Pr_surj hO) A hA`.
+-/
 theorem sectioned_dual_lattice : CutDualLat := by
   intro K _ _ _ n d H hH hdet E Pr hO A hA
   have hs := hform_isSymm H (herm_entry' hH)
@@ -157,6 +207,11 @@ namespace exponent_index_lattice
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Establish `hH : (1 : Matrix (Fin D) (Fin D) K)ᴴ = 1` using `Matrix.conjTranspose_one`. Establish `hs` using `hform_isSymm (1 : Matrix (Fin D) (Fin D) K) (herm_entry' hH)`. Establish `hn` using `hform_nondeg (1 : Matrix (Fin D) (Fin D) K) hs (by simp)`. Establish `: w.asIdeal.IsMaximal` using `w.isMaximal`. Establish `h` using `Formalism.HermitianLatticesTheory.indexBasic (𝓞 K) K (Fin D → K) (hform 1) hs hn hstar w.asIdeal A B C hA hB hC`.
+
+Conclude with `⟨h.2.1, h.2.2.1, h.2.2.2.1⟩`.
+-/
 theorem idxB {D : ℕ} (w : HeightOneSpectrum (𝓞 K)) (A B C : Submodule (𝓞 K) (Fin D → K))
     (hA : Submodule.IsLattice K A) (hB : Submodule.IsLattice K B) (hC : Submodule.IsLattice K C) :
     idx w A B = - idx w B A ∧ idx w A C = idx w A B + idx w B C ∧
@@ -170,6 +225,9 @@ theorem idxB {D : ℕ} (w : HeightOneSpectrum (𝓞 K)) (A B C : Submodule (𝓞
 
 def sm (D : ℕ) (a : K) : (Fin D → K) →ₗ[K] (Fin D → K) := a • LinearMap.id
 
+/- English proof (translation)
+Introduce `y`. Use `⟨a⁻¹ • y, ?_⟩` and prove the remaining obligations. Simplify using `[sm, smul_smul, ha]`.
+-/
 theorem sm_surj (D : ℕ) {a : K} (ha : a ≠ 0) : Function.Surjective (sm D a) := by
   intro y
   refine ⟨a⁻¹ • y, ?_⟩
@@ -178,12 +236,24 @@ theorem sm_surj (D : ℕ) {a : K} (ha : a ≠ 0) : Function.Surjective (sm D a) 
 def smLat {D : ℕ} (a : K) (A : Submodule (𝓞 K) (Fin D → K)) : Submodule (𝓞 K) (Fin D → K) :=
   A.map ((sm D a).restrictScalars (𝓞 K))
 
+/- English proof (translation)
+Unfold `smLat`. Rewrite using `[Submodule.mem_map]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_smLat {D : ℕ} (a : K) (A : Submodule (𝓞 K) (Fin D → K)) (x : Fin D → K) :
     x ∈ smLat a A ↔ ∃ y ∈ A, a • y = x := by
   unfold smLat
   rw [Submodule.mem_map]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) p, s • x ∈ smLat a L := hx`. Take `⟨s, hs, hsx⟩` from `hx'`. Take `⟨y, hy, hya⟩` from `(mem_smLat a L _).mp hsx`. Use `show ∃ t ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, t • x ∈ smLat a L'`.
+
+Distinguish the cases in `ha : a = 0`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← hya, ha, zero_smul]`. Conclude with `Submodule.zero_mem _`. Establish `hyloc : a⁻¹ • x ∈ Formalism.HermitianLatticesTheory.loc (K` using `K) p L := by show ∃ s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) p, s • a⁻¹ • x ∈ L`.
+
+Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, ← hya, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Conclude with `hy`. Establish `hty : ∃ t ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `K) p, t • a⁻¹ • x ∈ L' := h hyloc`. Take `⟨t, ht, htL⟩` from `hty`.
+
+Use `⟨t, ht, (mem_smLat a L' _).mpr ⟨t • a⁻¹ • x, htL, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[smul_comm a t, smul_smul, mul_inv_cancel₀ ha, one_smul]`.
+-/
 theorem loc_smLat_le {D : ℕ} (a : K) (p : Ideal (𝓞 K)) {L L' : Submodule (𝓞 K) (Fin D → K)}
     (h : Formalism.HermitianLatticesTheory.loc (K := K) p L ≤ Formalism.HermitianLatticesTheory.loc (K := K) p L') :
     Formalism.HermitianLatticesTheory.loc (K := K) p (smLat a L) ≤ Formalism.HermitianLatticesTheory.loc (K := K) p (smLat a L') := by
@@ -206,6 +276,19 @@ theorem loc_smLat_le {D : ℕ} (a : K) (p : Ideal (𝓞 K)) {L L' : Submodule (�
     refine ⟨t, ht, (mem_smLat a L' _).mpr ⟨t • a⁻¹ • x, htL, ?_⟩⟩
     rw [smul_comm a t, smul_smul, mul_inv_cancel₀ ha, one_smul]
 
+/- English proof (translation)
+Take `⟨f, hf⟩` from `semilocal_basis_exists K D A hA w`. Establish `haA : Submodule.IsLattice K (smLat a A)` using `map_isLattice (sm D a) (sm_surj D ha) A hA`. Establish `hspK : Submodule.span K (Set.range f) = ⊤` using `hf.1.span_eq_top_of_card_eq_finrank' (by simp)`. Establish `hspan_f : Submodule.IsLattice K (Submodule.span (𝓞 K) (Set.range f))` using `⟨Submodule.fg_span (Set.finite_range f), by rw [Submodule.span_span_of_tower, hspK]⟩`. Establish `hone_f : (fun i => ∑ k, (1 : Matrix (Fin D) (Fin D) K) k i • f k) = f`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply]`. Establish `ha_f : (fun i => ∑ k, (a • (1 : Matrix (Fin D) (Fin D) K)) k i • f k) = fun i => a • f i`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.one_apply]`.
+
+Establish `i1` using `(index_change_formula K D A hA f hf.1 w 1 (by rw [hone_f]; exact hf)).1`. Establish `hspan_af : Submodule.span (𝓞 K) (Set.range fun i => a • f i) = smLat a (Submodule.span (𝓞 K) (Set.range f))`. Unfold `smLat`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+
+Establish `hloc : IsLocBasis (smLat a A) w (fun i => a • f i)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hf.1.units_smul (fun _ => Units.mk0 a ha)`. Rewrite using `[hspan_af]`. Conclude with `le_antisymm (loc_smLat_le a _ hf.2.le) (loc_smLat_le a _ hf.2.ge)`.
+
+Establish `i2` using `(index_change_formula K D (smLat a A) haA f hf.1 w (a • 1) (by rw [ha_f]; exact hloc)).1`. Rewrite `i1` using `[Matrix.det_one, ValuationRepresentative.vw_one]`. Rewrite `i2` using `[Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin, ReductionFirst.vw_pow]`. Establish `h` using `idxB w A (Submodule.span (𝓞 K) (Set.range f)) (smLat a A) hA hspan_f haA`. Rewrite using `[h.2.1, h.1, i1, i2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem idx_smLat {D : ℕ} (w : HeightOneSpectrum (𝓞 K)) (A : Submodule (𝓞 K) (Fin D → K))
     (hA : Submodule.IsLattice K A) {a : K} (ha : a ≠ 0) :
     idx w A (smLat a A) = (D : ℤ) * vw w a := by
@@ -241,6 +324,19 @@ theorem idx_smLat {D : ℕ} (w : HeightOneSpectrum (𝓞 K)) (A : Submodule (�
 
 end exponent_index_lattice
 
+/- English proof (translation)
+Introduce `K _ _ _ D A B hA hB w a ha hAB`. Establish `ha' : (a : K) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ha`. Establish `hC : Submodule.IsLattice K (smLat (a : K) A)` using `map_isLattice (sm D (a : K)) (sm_surj D ha') A hA`. Take `⟨-, hsum, -⟩` from `idxB w A (smLat (a : K) A) B hA hC hB`. Rewrite using `[hsum, idx_smLat w A hA ha']`.
+
+Establish `htop : (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A ⊓ B)).comap (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A)).subtype = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply]`. Take `⟨s, hs, hsx⟩ : ∃ s ∈ w.asIdeal.primeCompl, s • x ∈ smLat (a : K) A` from `hx`.
+
+Take `⟨y, hy, hyx⟩` from `(mem_smLat (a : K) A _).mp hsx`. Take `⟨t, ht, htB⟩ : ∃ t ∈ w.asIdeal.primeCompl, t • a • y ∈ B` from `hAB y hy`. Use `show ∃ u ∈ w.asIdeal.primeCompl, u • x ∈ smLat (a : K) A ⊓ B`. Use `⟨t * s, w.asIdeal.primeCompl.mul_mem ht hs, Submodule.mem_inf.mpr ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ t hsx`. Rewrite using `[mul_smul, ← hyx, show ((a : K)) • y = a • y from algebraMap_smul K a y]`. Conclude with `htB`. Establish `hz : Formalism.HermitianLatticesTheory.locLen w.asIdeal (smLat (a : K) A) (smLat (a : K) A ⊓ B) = 0`. Unfold `Formalism.HermitianLatticesTheory.locLen`.
+
+Establish `hsub : Subsingleton (↥(Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A)) ⧸ (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A ⊓ B)).comap (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (smLat (a : K) A)).subtype)`. Use the proof step `⟨fun u v => Submodule.Quotient.induction_on _ u (fun x => Submodule.Quotient.induction_on _ v (fun y => (Submodule.Quotient.eq _).mpr (by rw [htop]; trivial)))⟩`. Rewrite using `[Module.length_eq_zero_iff.mpr hsub]`. Both sides reduce to the same expression. Establish `hle : idx w (smLat (a : K) A) B ≤ 0`.
+
+Unfold `idx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exponent_index_local : ExpIndexLoc := by
   intro K _ _ _ D A B hA hB w a ha hAB
   have ha' : (a : K) ≠ 0 := (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr ha
@@ -282,6 +378,11 @@ section Abs2
 variable {K V W : Type} [Field K] [StarRing K]
   [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
 
+/- English proof (translation)
+Establish `hR : hW.SeparatingRight`. Introduce `z hz`. Apply `hE` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hVn.2 (E z) (fun x => by rw [← adj]; exact hz (P x))`.
+
+Conclude with `⟨fun w hw => hR w (fun z => hWs.isRefl w z (hw z)), hR⟩`.
+-/
 theorem nondeg_of_adj (hV : V →ₗ⋆[K] V →ₗ[K] K) (hVn : hV.Nondegenerate)
     (hW : W →ₗ⋆[K] W →ₗ[K] K) (hWs : hW.IsSymm) (E : W →ₗ[K] V) (P : V →ₗ[K] W)
     (adj : ∀ x z, hW (P x) z = hV x (E z)) (hE : Function.Injective E) : hW.Nondegenerate := by
@@ -296,16 +397,34 @@ end Abs2
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_cutLat {n d : ℕ} (E : Matrix (Fin n) (Fin d) K) (A : Submodule (𝓞 K) (Fin n → K))
     (z : Fin d → K) : z ∈ cutLat E A ↔ E.mulVec z ∈ A := Iff.rfl
 
+/- English proof (translation)
+Conclude with `Iff.rfl`.
+-/
 theorem mem_matLat {n d : ℕ} (P : Matrix (Fin d) (Fin n) K) (A : Submodule (𝓞 K) (Fin n → K))
     (z : Fin d → K) : z ∈ matLat P A ↔ ∃ x ∈ A, P.mulVec x = z := by
   exact Iff.rfl
 
+/- English proof (translation)
+The claim follows from `Matrix.mulVec_smul E r z`.
+-/
 theorem mulVec_osmul {n d : ℕ} (E : Matrix (Fin n) (Fin d) K) (r : 𝓞 K) (z : Fin d → K) :
     E.mulVec (r • z) = r • E.mulVec z := Matrix.mulVec_smul E r z
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hN : IsNoetherian (𝓞 K) A` using `isNoetherian_of_fg_of_noetherian A hA.fg`. Apply `Submodule.fg_of_fg_map_injective ((Matrix.mulVecLin E).restrictScalars (𝓞 K)) hE` to reduce the goal to its premises. Conclude with `isNoetherian_submodule.mp hN _ (Submodule.map_comap_le _ _)`. Rewrite using `[eq_top_iff]`.
+
+Introduce `z _`. Establish `hv : E.mulVec z ∈ Submodule.span K (A : Set (Fin n → K))`. Rewrite using `[hA.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hv` using `[IsLocalization.mem_span_iff (M := nonZeroDivisors (𝓞 K))]`.
+
+Take `⟨y, hy, r, hr⟩` from `hv`. Rewrite `hy` using `[Submodule.span_eq]`. Establish `hmem : (r : 𝓞 K) • z ∈ cutLat E A`. Rewrite using `[mem_cutLat, mulVec_osmul, hr, ← smul_assoc, Algebra.smul_def (r : 𝓞 K) (IsLocalization.mk' K (1 : 𝓞 K) r), IsLocalization.mk'_spec', map_one, one_smul]`. Conclude with `hy`.
+
+Establish `hr0 : algebraMap (𝓞 K) K r ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors r.2`. Establish `hz : z = (algebraMap (𝓞 K) K r)⁻¹ • ((r : 𝓞 K) • z)`. Rewrite using `[← algebraMap_smul K (r : 𝓞 K) z, smul_smul, inv_mul_cancel₀ hr0, one_smul]`. Rewrite using `[hz]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+-/
 theorem cut_isLattice {n d : ℕ} (E : Matrix (Fin n) (Fin d) K)
     (hE : Function.Injective (Matrix.mulVecLin E)) (A : Submodule (𝓞 K) (Fin n → K))
     (hA : Submodule.IsLattice K A) : Submodule.IsLattice K (cutLat E A) := by
@@ -332,10 +451,30 @@ theorem cut_isLattice {n d : ℕ} (E : Matrix (Fin n) (Fin d) K)
     rw [hz]
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem coe_natCast (m : ℕ) : (((m : 𝓞 K)) : K) = (m : K) := by simp
 
 end exponent_index_lattice
 
+/- English proof (translation)
+Introduce `K _ _ _ n d H hH hdet E Pr hO A B hA DG hDG hB w a ha haB`. Establish `hs` using `hform_isSymm H (herm_entry' hH)`. Establish `hn` using `hform_nondeg H hs hdet.ne_zero`. Establish `hsZ` using `hform_isSymm _ (herm_entry' (herm_cut hH E))`. Establish `hnZ` using `nondeg_of_adj (hform H) hn (hform (Eᴴ * H * E)) hsZ (Matrix.mulVecLin E) (Matrix.mulVecLin Pr) (adj hH hO) (E_inj hO)`.
+
+Establish `hT : Submodule.IsLattice K (matLat Pr A)` using `map_isLattice (Matrix.mulVecLin Pr) (Pr_surj hO) A hA`. Establish `hC : Submodule.IsLattice K (cutLat E A)` using `cut_isLattice E (E_inj hO) A hA`. Establish `hCT : cutLat E A ≤ matLat Pr A`. Introduce `z hz`. Conclude with `(mem_matLat _ _ _).mpr ⟨E.mulVec z, hz, by simp [Matrix.mulVec_mulVec, hO.1]⟩`.
+
+Use `⟨hT, hC, hCT, ?_⟩` and prove the remaining obligations. Establish `hTh : Submodule.IsLattice K (Formalism.HermitianLatticesTheory.dual (hform (Eᴴ * H * E)) (matLat Pr A))` using `(Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K (Fin d → K) _ hsZ hnZ hstar _ hT).1`. Establish `hL1` using `projection_dual_lattice K n d H hH E Pr hO A`. Establish `hDG0 : (DG : 𝓞 K) ≠ 0` using `by exact_mod_cast hDG.ne'`. Establish `ha' : (a : K) ≠ 0` using `by simpa using ha`.
+
+Establish `hDG' : (DG : K) ≠ 0` using `by exact_mod_cast hDG.ne'`. Establish `h2` using `exponent_index_local K d (cutLat E A) _ hC hTh w (a * (DG : 𝓞 K)) (mul_ne_zero ha hDG0) (by`. Introduce `z hz`. Take `⟨s, hs, hsz⟩` from `haB z hz`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hsz` using `[mem_cutLat, mulVec_osmul, mulVec_osmul]`. Rewrite using `[hL1, mem_cutLat, mulVec_osmul, mulVec_osmul]`. Use `hB _ hsz` as an intermediate fact. Establish `e : s • (a * (DG : 𝓞 K)) • E.mulVec z = (DG : 𝓞 K) • s • a • E.mulVec z`. Simplify using `only [smul_smul]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `this)`. Establish `hv : vw w ((a * (DG : 𝓞 K) : 𝓞 K) : K) = vw w (a : K) + vw w (DG : K)`.
+
+Rewrite using `[show ((a * (DG : 𝓞 K) : 𝓞 K) : K) = (a : K) * ((DG : 𝓞 K) : K) from map_mul (algebraMap (𝓞 K) K) a _, coe_natCast, ValuationRepresentative.vw_mul w _ _ ha' hDG']`. Rewrite `h2` using `[hv]`. Establish `h3` using `idxB w (matLat Pr A) (cutLat E A) _ hT hC hTh`. Express the relevant statement in the definitionally equal form `idx w (matLat Pr A) (Formalism.HermitianLatticesTheory.dual (hform (Eᴴ * H * E)) (matLat Pr A)) ≤ _`. Rewrite using `[h3.2.1, h3.2.2 hCT]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem ValuationLatticeDual : BoundsIVGen := by
   intro K _ _ _ n d H hH hdet E Pr hO A B hA DG hDG hB w a ha haB
   have hs := hform_isSymm H (herm_entry' hH)
@@ -379,6 +518,13 @@ theorem ValuationLatticeDual : BoundsIVGen := by
   rw [h3.2.1, h3.2.2 hCT]
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ n d H hH hdet E Pr hO A B hA DG hDG hB w ϖ J hv hJ`. Establish `hϖ : ϖ ≠ 0`. Introduce and unpack `rfl`. Simplify using `[vw, FractionalIdeal.count_zero] at hv`. Establish `hvJ : vw w (((ϖ ^ J : 𝓞 K)) : K) = J`.
+
+Establish `e : (((ϖ ^ J : 𝓞 K)) : K) = (ϖ : K) ^ J` using `by exact map_pow (algebraMap (𝓞 K) K) ϖ J`. Unfold `vw`. Rewrite using `[e, ← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`. Unfold `vw at hv`. Rewrite using `[hv, mul_one]`.
+
+Take `⟨h1, h2, h3, h4⟩` from `ValuationLatticeDual K n d H hH hdet E Pr hO A B hA DG hDG hB w (ϖ ^ J) (pow_ne_zero J hϖ) hJ`. Rewrite `h4` using `[hvJ]`. Conclude with `⟨h1, h2, h3, h4⟩`.
+-/
 theorem bounds_fourth : BoundsIV := by
   intro K _ _ _ n d H hH hdet E Pr hO A B hA DG hDG hB w ϖ J hv hJ
   have hϖ : ϖ ≠ 0 := by
@@ -395,6 +541,11 @@ theorem bounds_fourth : BoundsIV := by
   rw [hvJ] at h4
   exact ⟨h1, h2, h3, h4⟩
 
+/- English proof (translation)
+Introduce `K _ _ _ n' n H' hH hdet E Pr hO A B hA s hs G hG`. Use `⟨cut_isLattice E (E_inj hO) A hA, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[sectioned_dual_lattice K n' n H' hH hdet E Pr hO A hA]`. Take `⟨y, hy, rfl⟩` from `(mem_matLat Pr _ x).mp hx`.
+
+Rewrite using `[mem_cutLat]`. Establish `h1` using `hG _ (hs y hy)`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mulVec_osmul, mulVec_osmul, Matrix.mulVec_mulVec, Nat.cast_mul, smul_smul]`.
+-/
 theorem divisor_bounds_first : BoundsI := by
   intro K _ _ _ n' n H' hH hdet E Pr hO A B hA s hs G hG
   refine ⟨cut_isLattice E (E_inj hO) A hA, ?_⟩
@@ -406,6 +557,11 @@ theorem divisor_bounds_first : BoundsI := by
   convert h1 using 1
   rw [mulVec_osmul, mulVec_osmul, Matrix.mulVec_mulVec, Nat.cast_mul, smul_smul]
 
+/- English proof (translation)
+Introduce `K _ _ _ _ K0 hcm v0 hv0 n' n D H' hH hdet E Pr hO hK0 hpos P hP A B hA s hs0 hAB G hG0 hG w e he`. Take `⟨hL, hincl⟩` from `divisor_bounds_first K n' n H' hH hdet E Pr hO A B hA s hAB G hG`. Establish `h` using `reduction_lemma_first K K0 hcm v0 hv0 n D (Eᴴ * H' * E) hK0 hpos P hP (cutLat E A) hL (G * s) 1 (Nat.mul_pos hG0 hs0) (by intro x hx; rw [pow_one]; exact hincl x hx) w e he`. Establish `hG' : (G : K) ≠ 0` using `by exact_mod_cast hG0.ne'`. Establish `hs' : (s : K) ≠ 0` using `by exact_mod_cast hs0.ne'`.
+
+Rewrite `h` using `[Nat.cast_mul, ValuationRepresentative.vw_mul w _ _ hG' hs']`. Simplify using `using h`.
+-/
 theorem bounds_fourth_general : BoundsIVal := by
   intro K _ _ _ _ K0 hcm v0 hv0 n' n D H' hH hdet E Pr hO hK0 hpos P hP A B hA s hs0 hAB G hG0 hG
     w e he
@@ -417,6 +573,13 @@ theorem bounds_fourth_general : BoundsIVal := by
   rw [Nat.cast_mul, ValuationRepresentative.vw_mul w _ _ hG' hs'] at h
   simpa using h
 
+/- English proof (translation)
+Introduce `K _ _ _ n G0 _ r c G hc B hB x hx`. Use `choose a ha using hc`. Establish `hs : ∀ s (w : Fin n → K), a s • w = ((a s : K)) • w` using `fun s w => (algebraMap_smul K (a s) w).symm`. Establish `hsum : (∑ s, c s • r s).mulVec x = ∑ s, c s • (r s).mulVec x`. Establish `h` using `map_sum (Matrix.mulVec.addMonoidHomLeft x) (fun s => c s • r s) Finset.univ`.
+
+Express the relevant statement in the definitionally equal form `(∑ s, c s • r s).mulVec x = ∑ s, (c s • r s).mulVec x at h`. Rewrite using `[h]`. Use `Finset.sum_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+
+Rewrite using `[Nat.cast_smul_eq_nsmul, hsum, Finset.smul_sum]`. Use `Submodule.sum_mem _ (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, ← ha s, ← hs]`. Conclude with `B.smul_mem (a s) (hB s x hx)`.
+-/
 theorem projection_integral : ProjIntegral := by
   intro K _ _ _ n G0 _ r c G hc B hB x hx
   choose a ha using hc
@@ -448,12 +611,18 @@ def invSub : Submodule K V where
   zero_mem' := fun γ => map_zero _
   smul_mem' := fun c v hv γ => by rw [map_smul, hv γ]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Establish `h : ∀ δ, ρ γ (ρ δ v) = ρ (γ * δ) v` using `fun δ => by rw [map_mul]; rfl`. Repeatedly rewrite using `[h]`. Conclude with `Fintype.sum_bijective (γ * ·) (Group.mulLeft_bijective γ) _ _ (fun _ => rfl)`.
+-/
 theorem tr_inv (v : V) (γ : Γ) : ρ γ (∑ δ, ρ δ v) = ∑ δ, ρ δ v := by
   rw [map_sum]
   have h : ∀ δ, ρ γ (ρ δ v) = ρ (γ * δ) v := fun δ => by rw [map_mul]; rfl
   simp_rw [h]
   exact Fintype.sum_bijective (γ * ·) (Group.mulLeft_bijective γ) _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Introduce `γ`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, map_smul, tr_inv]`.
+-/
 theorem avg_mem (v : V) :
     (((Fintype.card Γ : K)⁻¹) • ∑ δ, ρ δ : V →ₗ[K] V) v ∈ invSub ρ := by
   intro γ
@@ -462,12 +631,25 @@ theorem avg_mem (v : V) :
 def avg : V →ₗ[K] invSub ρ :=
   LinearMap.codRestrict (invSub ρ) (((Fintype.card Γ : K)⁻¹) • ∑ δ, ρ δ) (avg_mem ρ)
 
+/- English proof (translation)
+Simplify using `only [avg, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.sum_apply]`.
+-/
 theorem avg_coe (v : V) : ((avg ρ v : invSub ρ) : V) = ((Fintype.card Γ : K)⁻¹) • ∑ δ, ρ δ v := by
   simp only [avg, LinearMap.codRestrict_apply, LinearMap.smul_apply, LinearMap.sum_apply]
 
+/- English proof (translation)
+Conclude with `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
+-/
 theorem card_ne : (Fintype.card Γ : K) ≠ 0 := by
   exact Nat.cast_ne_zero.mpr Fintype.card_ne_zero
 
+/- English proof (translation)
+Use `dual_comap (R := 𝓞 K) pair hs hn (pair.domRestrict₁₂ (invSub ρ) (invSub ρ)) ⟨fun x y => hs.eq _ _⟩ hstar (invSub ρ).subtype (avg ρ) ?_ (Submodule.subtype_injective _) ?_ A hA` and prove the remaining obligations. Introduce `x z`. Rewrite using `[LinearMap.domRestrict₁₂_apply, avg_coe, map_smulₛₗ, LinearMap.smul_apply, map_sum, LinearMap.sum_apply]`. Establish `: ∀ δ, pair (ρ δ x) (z : V) = pair x (z : V)`. Introduce `δ`.
+
+Use `conv_lhs => rw [← z.2 δ]`. Conclude with `hiso δ x z`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, smul_eq_mul, map_inv₀, map_natCast, Submodule.subtype_apply]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (card_ne (K := K) (Γ := Γ)), one_mul]`. Introduce `z`.
+
+Use `⟨z, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[avg_coe]`. Establish `hz : ∀ δ, ρ δ (z : V) = z` using `z.2`. Simplify using `only [hz, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ (card_ne (K := K) (Γ := Γ)), one_smul]`.
+-/
 theorem inv_dual [FiniteDimensional K V] (pair : V →ₗ⋆[K] V →ₗ[K] K) (hs : pair.IsSymm)
     (hn : pair.Nondegenerate) (hiso : ∀ γ x y, pair (ρ γ x) (ρ γ y) = pair x y)
     (A : Submodule (𝓞 K) V) (hA : Submodule.IsLattice K A) :
@@ -504,6 +686,23 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 end exponent_index_lattice
 
+/- English proof (translation)
+Introduce `K _ _ _ v0 hc0 n d H hPD E hE`. Establish `hc : ∀ a : K, v0.embedding (star a) = starRingEnd ℂ (v0.embedding a)` using `hc0`. Establish `hH : Hᴴ = H`. Use extensionality with `i j`. Apply `v0.embedding.injective` to reduce the goal to its premises.
+
+Establish `h1` using `hPD.1.apply i j`. Simplify using `only [Matrix.map_apply] at h1`. Simplify using `only [Matrix.conjTranspose_apply]`. Rewrite using `[hc, starRingEnd_apply, h1]`. Establish `hdet : IsUnit H.det`.
+
+Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1` using `hPD.det_pos`. Rewrite `h1` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h0, map_zero]`. Conclude with `lt_irrefl _ h1`.
+
+Establish `hmap : ∀ u : Fin n → K, star (fun i => v0.embedding (u i)) ⬝ᵥ ((H.map v0.embedding) *ᵥ (fun i => v0.embedding (u i))) = v0.embedding (star u ⬝ᵥ (H *ᵥ u))`. Introduce `u`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, Pi.star_apply, hc, starRingEnd_apply, Matrix.map_apply]`. Establish `hZ : IsUnit (Eᴴ * H * E).det`. Rewrite using `[isUnit_iff_ne_zero]`.
+
+Introduce `h0`. Take `⟨z, hz, hz0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Rewrite `hz0` using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `h2 : star (E *ᵥ z) ⬝ᵥ (H *ᵥ (E *ᵥ z)) = 0`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, hz0]`.
+
+Simplify using the standard rewrite rules. Establish `hu : E *ᵥ z ≠ 0` using `fun h => hz (hE (by rw [h, Matrix.mulVec_zero]))`. Establish `hne : (fun i => v0.embedding ((E *ᵥ z) i)) ≠ 0`. Introduce `h`. Apply `hu` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `i`. Establish `h5` using `congrFun h i`. Simplify using `only [Pi.zero_apply, map_eq_zero] at h5`. Simplify using `using h5`. Establish `h3 : 0 < star (fun i => v0.embedding ((E *ᵥ z) i)) ⬝ᵥ ((H.map v0.embedding) *ᵥ (fun i => v0.embedding ((E *ᵥ z) i)))` using `by first`.
+
+Consider the case `exact hPD.dotProduct_mulVec_pos hne`. Consider the case `exact (Matrix.posDef_iff_dotProduct_mulVec.mp hPD).2 _ hne`. Rewrite `h3` using `[hmap, h2, map_zero]`. Conclude with `lt_irrefl _ h3`. Conclude with `⟨hH, hdet, hZ, isOrthProj_formula H E hZ, fun Pr hO => isOrthProj_unique hZ hO⟩`.
+-/
 theorem orthogonal_projection_exists : OrthProjExists := by
   intro K _ _ _ v0 hc0 n d H hPD E hE
   have hc : ∀ a : K, v0.embedding (star a) = starRingEnd ℂ (v0.embedding a) := hc0

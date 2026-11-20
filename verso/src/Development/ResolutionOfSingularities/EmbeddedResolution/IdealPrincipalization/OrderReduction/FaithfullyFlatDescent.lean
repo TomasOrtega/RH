@@ -37,18 +37,27 @@ noncomputable section
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Conclude with `h`.
+-/
 theorem IsStrictPullbackBlowupSeq.congr_hom {X' X : Scheme.{u}} {g g' : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq g t s) (hg : g = g') :
     IsStrictPullbackBlowupSeq g' t s := by
   subst hg
   exact h
 
+/- English proof (translation)
+Substitute `ht` using the available equality. Conclude with `h`.
+-/
 theorem IsStrictPullbackBlowupSeq.congr_sourceSeq {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t t' : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (h : IsStrictPullbackBlowupSeq g t s) (ht : t = t') :
     IsStrictPullbackBlowupSeq g t' s := by
   subst ht
   exact h
 
+/- English proof (translation)
+Establish `ht : IsStrictPullbackBlowupSeq h (s.baseChange h) s` using `isStrictPullbackSequenceOfBlowups_baseChange s h`. Establish `hw : IsStrictPullbackBlowupSeq φ ((s.baseChange h).baseChange φ) (s.baseChange h)` using `isStrictPullbackSequenceOfBlowups_baseChange (s.baseChange h) φ`. Establish `hwc : IsStrictPullbackBlowupSeq (φ ≫ h) ((s.baseChange h).baseChange φ) s` using `hw.comp ht`. Conclude with `hw.of_isomorphic_pullback (hwc.isomorphic hu)`.
+-/
 theorem IsStrictPullbackBlowupSeq.baseChange_of_comp {Q Y X : Scheme.{u}} {φ : Q ⟶ Y} {h : Y ⟶ X}
     [AlgebraicGeometry.Flat φ] [AlgebraicGeometry.Flat h]
     {u : SequenceOfBlowups Q} {s : SequenceOfBlowups X}
@@ -61,6 +70,17 @@ theorem IsStrictPullbackBlowupSeq.baseChange_of_comp {Q Y X : Scheme.{u}} {φ : 
   have hwc : IsStrictPullbackBlowupSeq (φ ≫ h) ((s.baseChange h).baseChange φ) s := hw.comp ht
   exact hw.of_isomorphic_pullback (hwc.isomorphic hu)
 
+/- English proof (translation)
+Establish `hsurj : Function.Surjective f.base` using `AlgebraicGeometry.Surjective.surj`. Establish `htop : (⊤ : Y.IdealSheafData).comap f = ⊤` using `by simp`. Establish `hpre : ((J.comap f).support : Set ↥X) = f.base ⁻¹' ((J.support : Set ↥Y))` using `by simp`. Establish `hbot : J.support = ⊥ → J = ⊤` using `by simp`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h hJ`. Apply `h` to reduce the goal to its premises. Rewrite using `[hJ, htop]`. Introduce `hJ h`. Apply `hJ` to reduce the goal to its premises.
+
+Apply `hbot` to reduce the goal to its premises. Apply `SetLike.ext'` to reduce the goal to its premises. Establish `hsupp : ((J.support : Set ↥Y)) = ∅`. Rewrite using `[← Set.not_nonempty_iff_eq_empty]`. Introduce and unpack `⟨y, hy⟩`.
+
+Take `⟨x, rfl⟩` from `hsurj y`. Establish `hx : x ∈ ((J.comap f).support : Set ↥X)`. Rewrite using `[hpre]`. Conclude with `Set.mem_preimage.mpr hy`. Rewrite `hx` using `[h]`.
+
+Simplify using `at hx`. Simplify using `using hsupp`.
+-/
 theorem comap_ne_top_iff_of_surjective {X Y : Scheme.{u}} (f : X ⟶ Y)
     [AlgebraicGeometry.Surjective f] (J : Y.IdealSheafData) :
     J.comap f ≠ ⊤ ↔ J ≠ ⊤ := by
@@ -89,6 +109,9 @@ theorem comap_ne_top_iff_of_surjective {X Y : Scheme.{u}} (f : X ⟶ Y)
 
 namespace MaxContactFunctoriality
 
+/- English proof (translation)
+The claim follows from `hft₁; IsMaxContactHypersurface T₁.base T₁.structMap T₁.ideal T₁.mult H₁ := by subst hT have hHe : H₁ = H₂ := eq_of_heq hH subst hHe exact h`.
+-/
 theorem isMaxContactHypersurface_of_triple_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (hT : T₁ = T₂)
     (hft₁ : AlgebraicGeometry.LocallyOfFiniteType T₁.structMap)
     (hft₂ : AlgebraicGeometry.LocallyOfFiniteType T₂.structMap)
@@ -102,6 +125,9 @@ theorem isMaxContactHypersurface_of_triple_eq {T₁ T₂ : MarkedIdealWithBounda
   subst hHe
   exact h
 
+/- English proof (translation)
+Substitute `hT` using the available equality. Establish `hLe : L₁ = L₂` using `eq_of_heq hL`. Substitute `hLe` using the available equality. Conclude with `h`.
+-/
 theorem inStrictNormalCrossingPosition_of_triple_eq {T₁ T₂ : MarkedIdealWithBoundary.{u}} (hT : T₁ = T₂)
     (L₁ : List T₁.scheme.IdealSheafData) (L₂ : List T₂.scheme.IdealSheafData) (hL : HEq L₁ L₂)
     (h : InStrictNormalCrossingPosition T₂.structMap L₂) :
@@ -111,6 +137,11 @@ theorem inStrictNormalCrossingPosition_of_triple_eq {T₁ T₂ : MarkedIdealWith
   subst hLe
   exact h
 
+/- English proof (translation)
+Establish `hcz : CharZero T.base`. Consider the cases of `hv`. Use the matching hypothesis. Establish `hsm : AlgebraicGeometry.Smooth T.structMap`. Consider the cases of `hv`.
+
+Use the matching hypothesis. Rewrite using `[orderAtLeastLocus_comap T.base T.structMap h T.ideal T.mult, hemp, Set.preimage_empty]`.
+-/
 theorem orderAtLeastLocus_comap_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv : T.IsAdmissible) {Y : Scheme.{u}}
     (h : Y ⟶ T.scheme) [AlgebraicGeometry.Smooth h]
     (hemp : orderAtLeastLocus T.ideal T.mult = (∅ : Set ↥T.scheme)) :
@@ -123,6 +154,9 @@ theorem orderAtLeastLocus_comap_eq_empty (T : MarkedIdealWithBoundary.{u}) (hv :
     assumption
   rw [orderAtLeastLocus_comap T.base T.structMap h T.ideal T.mult, hemp, Set.preimage_empty]
 
+/- English proof (translation)
+The claim follows from `hstar.schemeDim_level_le S hV s.toMarkedSequenceOfBlowups s.length le_rfl`.
+-/
 private theorem derivedTriple_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -131,6 +165,9 @@ private theorem derivedTriple_dim_le (hstar : _root_.FunctorialResolution.Embedd
     (MaxContactCoverData.derivedTriple S s hft extra keep).krullDimSucc ≤ S.krullDimSucc :=
   hstar.schemeDim_level_le S hV s.toMarkedSequenceOfBlowups s.length le_rfl
 
+/- English proof (translation)
+Distinguish the cases in `hft : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap)`. Establish `h1 : (MaxContactCoverData.derivedTriple S s hft extra keep).krullDimSucc ≤ T₁.krullDimSucc` using `le_trans (derivedTriple_dim_le hstar S hV s hft extra keep) hS`. Conclude with `(MaxContactCoverData.appendLowerDimReduction_eq_concatOfIsMarked hinv T₁ (lowerDimensionalFamily A T₁) S s extra keep n hft h1).trans (MaxContactCoverData.appendLowerDimReduction_eq_concatOfIsMarked hinv T₂ (lowerDimensionalFamily A T₂) S s extra keep n hft (le_trans h1 hdim)).sy …`. Conclude with `(MaxContactCoverData.appendLowerDimReduction_of_not_locallyOfFiniteType hinv T₁ (lowerDimensionalFamily A T₁) S s extra keep n hft).trans (MaxContactCoverData.appendLowerDimReduction_of_not_locallyOfFiniteType hinv T₂ (lowerDimensionalFamily A T₂) S s extra keep n hft).symm`.
+-/
 private theorem appendLowerDimReduction_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (T₁ T₂ : MarkedIdealWithBoundary.{u}) (hdim : T₁.krullDimSucc ≤ T₂.krullDimSucc)
@@ -151,6 +188,11 @@ private theorem appendLowerDimReduction_congr_of_dim_le (hstar : _root_.Functori
       (MaxContactCoverData.appendLowerDimReduction_of_not_locallyOfFiniteType hinv T₂ (lowerDimensionalFamily A T₂) S s extra
         keep n hft).symm
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[MaxContactCoverData.separateBoundary_zero hinv T₁ (lowerDimensionalFamily A T₁) S, MaxContactCoverData.separateBoundary_zero hinv T₂ (lowerDimensionalFamily A T₂) S]`. Consider the case `succ n ih`. Rewrite using `[MaxContactCoverData.separateBoundary_succ hinv T₁ (lowerDimensionalFamily A T₁) S n, MaxContactCoverData.separateBoundary_succ hinv T₂ (lowerDimensionalFamily A T₂) S n, ih]`.
+
+Conclude with `appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS (MaxContactReduction.separateBoundary hinv T₂ (lowerDimensionalFamily A T₂) S n) [] 0 n`.
+-/
 private theorem separateBoundary_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (T₁ T₂ : MarkedIdealWithBoundary.{u}) (hdim : T₁.krullDimSucc ≤ T₂.krullDimSucc)
@@ -167,6 +209,9 @@ private theorem separateBoundary_congr_of_dim_le (hstar : _root_.FunctorialResol
     exact appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS
       (MaxContactReduction.separateBoundary hinv T₂ (lowerDimensionalFamily A T₂) S n) [] 0 n
 
+/- English proof (translation)
+Rewrite using `[MaxContactCoverData.reduceAlongHypersurface_eq_appendLowerDimReduction hinv T₁ (lowerDimensionalFamily A T₁) S H, MaxContactCoverData.reduceAlongHypersurface_eq_appendLowerDimReduction hinv T₂ (lowerDimensionalFamily A T₂) S H, separateBoundary_congr_of_dim_le hstar hinv A T₁ T₂ …`. Conclude with `appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS _ _ S.boundary.length 0`.
+-/
 theorem reduceAlongHypersurface_congr_of_dim_le (hstar : _root_.FunctorialResolution.EmbeddedResolution.MaxContactCoverProperties.{u})
     (hinv : ComapIsoInvariance.{u})
     (A : ℕ → PrincipalizationAssignment.{u}) (T₁ T₂ : MarkedIdealWithBoundary.{u}) (hdim : T₁.krullDimSucc ≤ T₂.krullDimSucc)
@@ -179,6 +224,9 @@ theorem reduceAlongHypersurface_congr_of_dim_le (hstar : _root_.FunctorialResolu
     separateBoundary_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS S.boundary.length]
   exact appendLowerDimReduction_congr_of_dim_le hstar hinv A T₁ T₂ hdim S hV hS _ _ S.boundary.length 0
 
+/- English proof (translation)
+Substitute `hS` using the available equality. Establish `hHe : H₁ = H₂` using `eq_of_heq hH`. Substitute `hHe` using the available equality. Conclude with `HEq.refl _`.
+-/
 theorem reduceAlongHypersurface_toSequenceOfBlowups_heq (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (resolveLower : (S : MarkedIdealWithBoundary.{u}) → S.krullDimSucc ≤ T.krullDimSucc → ℕ → S.SequenceOfBlowups)
     {S₁ S₂ : MarkedIdealWithBoundary.{u}} (hS : S₁ = S₂)
@@ -210,6 +258,9 @@ def MarkedOfMarkedDropTrivialBoundary : Prop :=
     d.IsMarked T.structMap T.ideal T.mult (MaxContactReduction.dropTrivialBoundary T).boundary →
       d.IsMarked T.structMap T.ideal T.mult T.boundary
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, htv T h.valid⟩` and prove the remaining obligations. Conclude with `h.dim_prop`. Conclude with `h.orderLE`. Conclude with `h.coSupport_nonempty`.
+-/
 theorem OrderReductionHypotheses.of_dropTrivialBoundaryAdmissible {P : ℕ → Prop} {T : MarkedIdealWithBoundary.{u}} (h : OrderReductionHypotheses P T)
     (htv : DropTrivialBoundaryAdmissible.{u}) : OrderReductionHypotheses P (MaxContactReduction.dropTrivialBoundary T) := by
   refine ⟨?_, ?_, ?_, htv T h.valid⟩
@@ -217,6 +268,11 @@ theorem OrderReductionHypotheses.of_dropTrivialBoundaryAdmissible {P : ℕ → P
   · exact h.orderLE
   · exact h.coSupport_nonempty
 
+/- English proof (translation)
+Take `⟨d0, hd0⟩` from `hstar.descends (MaxContactReduction.dropTrivialBoundary T) (h.of_dropTrivialBoundaryAdmissible htv)`. Take `⟨d, hdsome⟩` from `MaxContactCoverData.exists_descendStrictPullback_eq_some (T := MaxContactReduction.dropTrivialBoundary T) (S := MaxContactCoverData.coverTriple (MaxContactReduction.dropTrivialBoundary T) (h.of_dropTrivialBoundaryAdmissible htv).valid) (MaxContactCoverData.coverMap (MaxContactRed …`. Establish `hpb : IsStrictPullbackBlowupSeq (MaxContactCoverData.coverMap (MaxContactReduction.dropTrivialBoundary T) (h.of_dropTrivialBoundaryAdmissible htv).valid) (MaxContactCoverData.coverMarkedBlowupData (MaxContactReduction.dropTrivialBoundary T) (h.of_dropTrivialBoundaryAdmissible htv …` using `MaxContactCoverData.isStrictPullbackBlowupSeq_of_descendStrictPullback_eq_some _ _ hdsome`. Establish `hm0 : d.IsMarked (MaxContactReduction.dropTrivialBoundary T).structMap (MaxContactReduction.dropTrivialBoundary T).ideal (MaxContactReduction.dropTrivialBoundary T).mult (MaxContactReduction.dropTrivialBoundary T).boundary` using `hdesc (MaxContactReduction.dropTrivialBoundary T) (h.of_dropTrivialBoundaryAdmissible htv) d hpb`. Establish `hm : d.IsMarked T.structMap T.ideal T.mult T.boundary` using `htm T h.valid d hm0`.
+
+Use `⟨d, hpb, ?_⟩` and prove the remaining obligations. Rewrite using `[maxContactPrincipalization_apply, MaxContactCoverData.reduceOrder_eq_asMarkedSeq hinv T (lowerDimensionalFamily A T) h.valid h.orderAtLeastLocus_ne_empty (h.of_dropTrivialBoundaryAdmissible htv).valid d hdsome]`. Conclude with `MaxContactCoverData.asMarkedSeq_toSequenceOfBlowups T d hm`.
+-/
 theorem exists_isStrictPullback_cover_dropTrivialBoundary {hinv : ComapIsoInvariance.{u}} {P : ℕ → Prop}
     {A : ℕ → PrincipalizationAssignment.{u}} (hstar : CoverSequenceProperties hinv P A)
     (hdesc : MarkingDescends hinv P A) (htv : DropTrivialBoundaryAdmissible.{u}) (htm : MarkedOfMarkedDropTrivialBoundary.{u})

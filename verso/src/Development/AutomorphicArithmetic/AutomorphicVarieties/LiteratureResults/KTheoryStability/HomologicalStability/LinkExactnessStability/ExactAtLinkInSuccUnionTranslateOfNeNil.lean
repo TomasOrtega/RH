@@ -9,10 +9,18 @@ open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Conclude with `((T.subClosed_and_perm_and_linearEquiv_invariant_uniM R M).2.2 ψ τ).mpr hτ`.
+-/
 theorem uniM_map_equiv {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (ψ : M ≃ₗ[R] M)
     {τ : List M} (hτ : τ ∈ uniM R M) : τ.map ψ ∈ uniM R M := by
   exact ((T.subClosed_and_perm_and_linearEquiv_invariant_uniM R M).2.2 ψ τ).mpr hτ
 
+/- English proof (translation)
+Introduce `R _ s hs n hn hL j hj τ hτ hne p hp`. Take `⟨v, rest, rfl⟩` from `List.exists_cons_of_ne_nil hne`. Establish `hv : [v] ∈ uniM R (ℕ →₀ R)` using `(T.subClosed_and_perm_and_linearEquiv_invariant_uniM R (ℕ →₀ R)).1 _ hτ [v] (by simp)`. Take `⟨ψ, hlow, haff, hψv⟩` from `T.exists_automorphism_preserving_translates_coord_one R s hs n hn v hv`. Use `T.exactAt_linkIn_uniM_of_exactAt_map_linearEquiv R (ℕ →₀ R) ψ (low R (n + 1) ∪ aff R (n + 1) j) ?_ _ p ?_` and prove the remaining obligations.
+
+Introduce `x`. Simplify using `only [Set.mem_union, hlow, haff]`. Use `T.exactAt_link_succ_union_translate_of_coord_one R s n hL j hj _ (uniM_map_equiv ψ hτ) (ψ v) (by simp) hψv p ?_` and prove the remaining obligations. Simplify using `using hp`.
+-/
 theorem linkExact_low_union_aff_of_ne_nil : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, s ≤ n →
     LinkExactAff R s n → ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), τ ≠ [] → ∀ p : ℕ,
     p + s + τ.length ≤ n + 2 →
@@ -31,6 +39,9 @@ end GlobalTheory
 
 section
 open GlobalTheory.SeqCx Matrix UpperTheory.V.KL
+/- English proof (translation)
+Use `first`. Consider the case `exact @GlobalTheory.linkExact_low_union_aff_of_ne_nil`. Consider the case `exact @GlobalTheory.uniM_map_equiv`.
+-/
 theorem _root_.GlobalTheory.T.exactAt_linkIn_succ_union_translate_of_ne_nil : ∀ (R : Type) [CommRing R] (s : ℕ), StableRangeLe R s → ∀ n : ℕ, s ≤ n → LinkExactAff R s n → ∀ j : ℕ, n + 1 ≤ j → ∀ τ ∈ uniM R (ℕ →₀ R), τ ≠ [] → ∀ p : ℕ, p + s + τ.length ≤ n + 2 → ExactAt (linkIn (uniM R (ℕ →₀ R)) (low R (n + 1) ∪ aff R (n + 1) j) τ) p := by
   first
   | exact @GlobalTheory.linkExact_low_union_aff_of_ne_nil

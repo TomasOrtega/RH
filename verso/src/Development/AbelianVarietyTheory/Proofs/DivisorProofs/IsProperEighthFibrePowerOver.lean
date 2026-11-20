@@ -3,6 +3,9 @@ open AlgebraicGeometry CategoryTheory Limits
 
 namespace GlobalTheory.FibrePowerProper
 
+/- English proof (translation)
+Establish `hw : X.hom = e.hom.left ≫ Y.hom` using `(Over.w e.hom).symm`. Use `haveI : IsIso e.hom.left := (Over.forget T).map_isIso e.hom`. Rewrite using `[hw]`. Use `infer_instance`.
+-/
 theorem isProper_hom_of_iso {T : Scheme.{0}} {X Y : Over T} (e : X ≅ Y) (h : IsProper Y.hom) :
     IsProper X.hom := by
   have hw : X.hom = e.hom.left ≫ Y.hom := (Over.w e.hom).symm
@@ -10,6 +13,11 @@ theorem isProper_hom_of_iso {T : Scheme.{0}} {X Y : Over T} (e : X ≅ Y) (h : I
   rw [hw]
   infer_instance
 
+/- English proof (translation)
+Establish `h1 : (X ⨯ Y).hom = (Over.prodLeftIsoPullback X Y).hom ≫ pullback.fst X.hom Y.hom ≫ X.hom`. Rewrite using `[← Category.assoc, Over.prodLeftIsoPullback_hom_fst]`. Conclude with `(Over.w (prod.fst : X ⨯ Y ⟶ X)).symm`. Establish `hfst : IsProper (pullback.fst X.hom Y.hom)` using `by haveI := hY; infer_instance`. Rewrite using `[h1]`.
+
+Use `infer_instance`.
+-/
 theorem isProper_prod_hom {T : Scheme.{0}} (X Y : Over T) (hX : IsProper X.hom)
     (hY : IsProper Y.hom) : IsProper (X ⨯ Y).hom := by
   have h1 : (X ⨯ Y).hom = (Over.prodLeftIsoPullback X Y).hom ≫ pullback.fst X.hom Y.hom ≫ X.hom := by
@@ -19,6 +27,9 @@ theorem isProper_prod_hom {T : Scheme.{0}} (X Y : Over T) (hX : IsProper X.hom)
   rw [h1]
   infer_instance
 
+/- English proof (translation)
+The claim follows from `| 0, f, _, c, hc => by have h0 : IsLimit (Fan.mk (Over.mk (𝟙 T)) (fun i => i.elim0 : ∀ i, Over.mk (𝟙 T) ⟶ f i)) := Fan.IsLimit.mk _ (fun _ => Over.mkIdTerminal.from _) (fun _ k => k.elim0) (fun _ _ _ => Over.mkIdTerminal.hom_ext _ _) exact isProper_hom_of_iso (hc.conePointUniqueU …`.
+-/
 theorem isProper_fan_pt {T : Scheme.{0}} : ∀ (n : ℕ) (f : Fin n → Over T),
     (∀ i, IsProper (f i).hom) → ∀ (c : Fan f), IsLimit c → IsProper c.pt.hom
   | 0, f, _, c, hc => by
@@ -34,6 +45,9 @@ theorem isProper_fan_pt {T : Scheme.{0}} : ∀ (n : ℕ) (f : Fin n → Over T),
         (prodIsProd (f 0) c₁.pt)
       exact isProper_hom_of_iso (hc.conePointUniqueUpToIso hl) (isProper_prod_hom _ _ (hf 0) h1)
 
+/- English proof (translation)
+Introduce `T B C pr hu hC`. Establish `hl : IsLimit (Fan.mk B pr)` using `Fan.IsLimit.mk _ (fun s => (hu s.pt s.proj).choose) (fun s a => (hu s.pt s.proj).choose_spec.1 a) (fun s m hm => (hu s.pt s.proj).choose_spec.2 m hm)`. Conclude with `isProper_fan_pt 8 (fun _ => C) (fun _ => hC) _ hl`.
+-/
 theorem isProper_eighth_fibre_power : ∀ {T : Scheme.{0}} {B C : Over T} (pr : Fin 8 → (B ⟶ C)),
     (∀ (T' : Over T) (y : Fin 8 → (T' ⟶ C)), ∃! x : T' ⟶ B, ∀ a, x ≫ pr a = y a) →
     IsProper C.hom → IsProper B.hom := by

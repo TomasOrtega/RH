@@ -19,6 +19,11 @@ def ThetaRationalInvariance : Prop :=
             W.Om γA γA' F = fun z => (∏ τ, embT D τ γ.det ^ (-(a τ)) * embT D τ γ'.det ^ (-(a' τ))) *
               pull D (tor0 D cc δ) γ γ' F z
 
+/- English proof (translation)
+Introduce `D cc δ hc N N' hN e0 he W`. Establish `h : ∀ (ε n : ℤ) (k : ℕ), (ε = 1 ∨ ε = -1) → Even (n - k) → (∃ a, 2 * a = ε * n + k) ∧ ∃ a, 2 * a = ε * n - k`. Introduce and unpack `ε n k (rfl | rfl) ⟨j, hj⟩`. Conclude with `⟨⟨j + k, by omega⟩, ⟨j, by omega⟩⟩`. Conclude with `⟨⟨-j, by omega⟩, ⟨-j - k, by omega⟩⟩`.
+
+Use `choose a' ha' using fun τ => (h _ _ N W.ep_pm.1 (W.chV.par τ)).1`. Use `choose a ha using fun τ => (h _ _ N' W.ep_pm.2 (W.chV'.par τ)).2`. Conclude with `⟨a, a', ha, ha', fun g g' γ γ' hr hr' => GlobalTheory.OddRank.oddEq_of_mem hc hN he W g g' γ γ' a a' hr hr' ha' ha⟩`.
+-/
 theorem thetaRationalInvariance_holds : ThetaRationalInvariance := by
   intro D cc δ hc N N' hN e0 he W
   have h : ∀ (ε n : ℤ) (k : ℕ), (ε = 1 ∨ ε = -1) → Even (n - k) →
@@ -31,6 +36,9 @@ theorem thetaRationalInvariance_holds : ThetaRationalInvariance := by
   exact ⟨a, a', ha, ha', fun g g' γ γ' hr hr' =>
     GlobalTheory.OddRank.oddEq_of_mem hc hN he W g g' γ γ' a a' hr hr' ha' ha⟩
 
+/- English proof (translation)
+Take `⟨W, h1, h2, -⟩` from `GlobalTheory.FinWeil.exists_weil D cc δ hc N N' hN hN' e0 he h0 χ χ'`. Conclude with `⟨W, h1, h2⟩`.
+-/
 theorem ThetaRationalInvariance.exists_datum (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hc : Crv D cc δ) (N N' : ℕ)
     (hN : Even N) (hN' : Even N') (e0 : VC D N N' → ℂ) (he : e0 ∈ Th D (tor0 D cc δ) (stdL D N) (stdL D N'))
     (h0 : e0 ≠ 0) (χ : HeckeU D N) (χ' : HeckeU D N') :

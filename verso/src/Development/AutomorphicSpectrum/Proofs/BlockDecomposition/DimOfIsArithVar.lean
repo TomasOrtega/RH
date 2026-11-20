@@ -31,9 +31,17 @@ open GlobalTheory
 
 namespace GlobalTheory.CompanionTheory.MPDict
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Amb.isArithVar_mp ℤ inferInstance m n`.
+-/
 theorem isArithVar_mpStr (m : ℕ) (n : Fin (m + 1) → ℕ) : GlobalTheory.IsArithVar (mpStr ℤ m n) (∑ i, n i) :=
   GlobalTheory.Amb.isArithVar_mp ℤ inferInstance m n
 
+/- English proof (translation)
+Take `⟨d', hd'⟩` from `(isArithVar_mpStr m n).exists_dim_eq i`. Take `⟨-, -, h₃, -⟩` from `hD m n Z i d' hd'`. Establish `h₄` using `h₃ hd.2.2.1`. Establish `e : d' + Fintype.card (Fin (m + 1)) = d + Fintype.card (Fin (m + 1))`. Conclude with `h₄.2.2.2.symm.trans hd.2.2.2` after adjusting the coercions.
+
+Rewrite using `[hd', Nat.add_right_cancel e]`.
+-/
 theorem dim_of_isArithVar (hD : GlobalTheory.CompanionTheory.MixZ.PtDict) {m : ℕ} {n : Fin (m + 1) → ℕ} {Z : Scheme.{0}} [IsIntegral Z]
     (i : Z ⟶ MP ℤ m n) [IsClosedImmersion i] {d : ℕ} (hd : Geo.IsArithVar (ptIdeal (i (genericPoint Z))) d) :
     topologicalKrullDim Z = d := by

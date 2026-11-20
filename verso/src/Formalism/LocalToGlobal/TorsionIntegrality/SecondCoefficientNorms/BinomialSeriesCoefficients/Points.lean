@@ -14,15 +14,24 @@ section Toolkit
 
 variable {K : Type} [Field K] {σ : Type} {l linv : PowerSeries K}
 
+/- English proof (translation)
+The claim follows from `PowerSeries.HasSubst.of_constantCoeff_zero hx`.
+-/
 theorem hasSubst {x : MvPowerSeries σ K} (hx : MvPowerSeries.constantCoeff x = 0) :
     PowerSeries.HasSubst x := PowerSeries.HasSubst.of_constantCoeff_zero hx
 
+/- English proof (translation)
+The claim follows from `PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hg) (hasSubst hx) f`.
+-/
 theorem subst_subst {g : PowerSeries K} (hg : PowerSeries.constantCoeff g = 0)
     {x : MvPowerSeries σ K} (hx : MvPowerSeries.constantCoeff x = 0) (f : PowerSeries K) :
     PowerSeries.subst x (PowerSeries.subst g f) = PowerSeries.subst (PowerSeries.subst x g) f :=
   PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hg)
     (hasSubst hx) f
 
+/- English proof (translation)
+Rewrite using `[PowerSeries.subst_def, PowerSeries.subst_def]`. Conclude with `MvPowerSeries.subst_comp_subst_apply (hasSubst hg).const (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) f`.
+-/
 theorem substMv_subst {τ : Type} [Finite σ] {g : MvPowerSeries σ K}
     (hg : MvPowerSeries.constantCoeff g = 0) {a : σ → MvPowerSeries τ K}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : PowerSeries K) :
@@ -32,136 +41,222 @@ theorem substMv_subst {τ : Type} [Finite σ] {g : MvPowerSeries σ K}
   exact MvPowerSeries.subst_comp_subst_apply (hasSubst hg).const
     (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) f
 
+/- English proof (translation)
+The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hx f hf`.
+-/
 theorem constantCoeff_subst {x : MvPowerSeries σ K} (hx : MvPowerSeries.constantCoeff x = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst x f) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero hx f hf
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst hx h.1`.
+-/
 theorem constantCoeff_subst_l (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst x l) = 0 :=
   constantCoeff_subst hx h.1
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst hx h.2.2.1`.
+-/
 theorem constantCoeff_subst_linv (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst x linv) = 0 :=
   constantCoeff_subst hx h.2.2.1
 
+/- English proof (translation)
+Rewrite using `[← subst_subst h.2.2.1 hg, h.2.2.2.2, PowerSeries.subst_X (hasSubst hg)]`.
+-/
 theorem subst_l_linv (h : IsLogPair l linv) {g : MvPowerSeries σ K}
     (hg : MvPowerSeries.constantCoeff g = 0) :
     PowerSeries.subst (PowerSeries.subst g linv) l = g := by
   rw [← subst_subst h.2.2.1 hg, h.2.2.2.2, PowerSeries.subst_X (hasSubst hg)]
 
+/- English proof (translation)
+Rewrite using `[← subst_subst h.1 hx, h.2.2.2.1, PowerSeries.subst_X (hasSubst hx)]`.
+-/
 theorem subst_linv_l (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     PowerSeries.subst (PowerSeries.subst x l) linv = x := by
   rw [← subst_subst h.1 hx, h.2.2.2.1, PowerSeries.subst_X (hasSubst hx)]
 
+/- English proof (translation)
+Rewrite using `[map_add, constantCoeff_subst_l h hx, constantCoeff_subst_l h hy, add_zero]`.
+-/
 theorem constantCoeff_add_l (h : IsLogPair l linv) {x y : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     MvPowerSeries.constantCoeff (PowerSeries.subst x l + PowerSeries.subst y l) = 0 := by
   rw [map_add, constantCoeff_subst_l h hx, constantCoeff_subst_l h hy, add_zero]
 
+/- English proof (translation)
+Rewrite using `[map_mul, constantCoeff_subst_l h hx, mul_zero]`.
+-/
 theorem constantCoeff_C_mul_l (h : IsLogPair l linv) (a : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (MvPowerSeries.C a * PowerSeries.subst x l) = 0 := by
   rw [map_mul, constantCoeff_subst_l h hx, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => constantCoeff_C_mul_l h (c j) (hu j)`.
+-/
 theorem constantCoeff_sum_l (h : IsLogPair l linv) {n : Type} [Fintype n] (c : n → K)
     {u : n → MvPowerSeries σ K} (hu : ∀ j, MvPowerSeries.constantCoeff (u j) = 0) :
     MvPowerSeries.constantCoeff (∑ j, MvPowerSeries.C (c j) * PowerSeries.subst (u j) l) = 0 := by
   rw [map_sum]
   exact Finset.sum_eq_zero fun j _ => constantCoeff_C_mul_l h (c j) (hu j)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_linv h (constantCoeff_add_l h hx hy)`.
+-/
 theorem constantCoeff_fadd (h : IsLogPair l linv) {x y : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     MvPowerSeries.constantCoeff (fadd l linv x y) = 0 :=
   constantCoeff_subst_linv h (constantCoeff_add_l h hx hy)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_linv h (constantCoeff_C_mul_l h a hx)`.
+-/
 theorem constantCoeff_fmul (h : IsLogPair l linv) (a : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     MvPowerSeries.constantCoeff (fmul l linv a x) = 0 :=
   constantCoeff_subst_linv h (constantCoeff_C_mul_l h a hx)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_linv h (constantCoeff_sum_l h c hu)`.
+-/
 theorem constantCoeff_flin (h : IsLogPair l linv) {n : Type} [Fintype n] (c : n → K)
     {u : n → MvPowerSeries σ K} (hu : ∀ j, MvPowerSeries.constantCoeff (u j) = 0) :
     MvPowerSeries.constantCoeff (flin l linv c u) = 0 :=
   constantCoeff_subst_linv h (constantCoeff_sum_l h c hu)
 
+/- English proof (translation)
+The claim follows from `subst_l_linv h (constantCoeff_add_l h hx hy)`.
+-/
 theorem l_fadd (h : IsLogPair l linv) {x y : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     PowerSeries.subst (fadd l linv x y) l = PowerSeries.subst x l + PowerSeries.subst y l :=
   subst_l_linv h (constantCoeff_add_l h hx hy)
 
+/- English proof (translation)
+The claim follows from `subst_l_linv h (constantCoeff_C_mul_l h a hx)`.
+-/
 theorem l_fmul (h : IsLogPair l linv) (a : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     PowerSeries.subst (fmul l linv a x) l = MvPowerSeries.C a * PowerSeries.subst x l :=
   subst_l_linv h (constantCoeff_C_mul_l h a hx)
 
+/- English proof (translation)
+The claim follows from `subst_l_linv h (constantCoeff_sum_l h c hu)`.
+-/
 theorem l_flin (h : IsLogPair l linv) {n : Type} [Fintype n] (c : n → K)
     {u : n → MvPowerSeries σ K} (hu : ∀ j, MvPowerSeries.constantCoeff (u j) = 0) :
     PowerSeries.subst (flin l linv c u) l =
       ∑ j, MvPowerSeries.C (c j) * PowerSeries.subst (u j) l :=
   subst_l_linv h (constantCoeff_sum_l h c hu)
 
+/- English proof (translation)
+Rewrite using `[fmul, l_fmul h b hx, fmul, map_mul, mul_assoc]`.
+-/
 theorem fmul_fmul (h : IsLogPair l linv) (a b : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     fmul l linv a (fmul l linv b x) = fmul l linv (a * b) x := by
   rw [fmul, l_fmul h b hx, fmul, map_mul, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[fmul, map_one, one_mul, subst_linv_l h hx]`.
+-/
 theorem fmul_one (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) : fmul l linv 1 x = x := by
   rw [fmul, map_one, one_mul, subst_linv_l h hx]
 
+/- English proof (translation)
+Rewrite using `[fmul, map_zero, zero_mul, PowerSeries.subst_zero_of_constantCoeff_zero h.2.2.1]`.
+-/
 theorem fmul_zero_left (h : IsLogPair l linv) (x : MvPowerSeries σ K) : fmul l linv 0 x = 0 := by
   rw [fmul, map_zero, zero_mul, PowerSeries.subst_zero_of_constantCoeff_zero h.2.2.1]
 
+/- English proof (translation)
+Establish `h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0` using `by rw [map_mul, h.1, mul_zero]`. Conclude with `constantCoeff_subst h0 h.2.2.1`.
+-/
 theorem constantCoeff_mulBy (h : IsLogPair l linv) (a : K) :
     PowerSeries.constantCoeff (mulBy l linv a) = 0 := by
   have h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0 := by rw [map_mul, h.1, mul_zero]
   exact constantCoeff_subst h0 h.2.2.1
 
+/- English proof (translation)
+Establish `h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0` using `by rw [map_mul, h.1, mul_zero]`. Rewrite using `[mulBy, subst_subst h0 hx, PowerSeries.subst_mul (hasSubst hx), PowerSeries.subst_C, fmul]`.
+-/
 theorem fmul_eq_subst_mulBy (h : IsLogPair l linv) (a : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     fmul l linv a x = PowerSeries.subst x (mulBy l linv a) := by
   have h0 : PowerSeries.constantCoeff (PowerSeries.C a * l) = 0 := by rw [map_mul, h.1, mul_zero]
   rw [mulBy, subst_subst h0 hx, PowerSeries.subst_mul (hasSubst hx), PowerSeries.subst_C, fmul]
 
+/- English proof (translation)
+Rewrite using `[fmul, PowerSeries.X_subst]`. Both sides reduce to the same expression.
+-/
 theorem mulBy_eq_fmul (a : K) : mulBy l linv a = fmul l linv a (PowerSeries.X : PowerSeries K) := by
   rw [fmul, PowerSeries.X_subst]
   rfl
 
+/- English proof (translation)
+Rewrite using `[fadd, fadd, add_comm]`.
+-/
 theorem fadd_comm (x y : MvPowerSeries σ K) : fadd l linv x y = fadd l linv y x := by
   rw [fadd, fadd, add_comm]
 
+/- English proof (translation)
+Rewrite using `[fadd, PowerSeries.subst_zero_of_constantCoeff_zero h.1, add_zero, subst_linv_l h hx]`.
+-/
 theorem fadd_zero (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) : fadd l linv x 0 = x := by
   rw [fadd, PowerSeries.subst_zero_of_constantCoeff_zero h.1, add_zero, subst_linv_l h hx]
 
+/- English proof (translation)
+Rewrite using `[fadd_comm, fadd_zero h hx]`.
+-/
 theorem zero_fadd (h : IsLogPair l linv) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) : fadd l linv 0 x = x := by
   rw [fadd_comm, fadd_zero h hx]
 
+/- English proof (translation)
+Rewrite using `[fmul, l_fadd h hx hy, fadd, l_fmul h a hx, l_fmul h a hy, mul_add]`.
+-/
 theorem fmul_fadd (h : IsLogPair l linv) (a : K) {x y : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     fmul l linv a (fadd l linv x y) = fadd l linv (fmul l linv a x) (fmul l linv a y) := by
   rw [fmul, l_fadd h hx hy, fadd, l_fmul h a hx, l_fmul h a hy, mul_add]
 
+/- English proof (translation)
+Rewrite using `[fadd, l_fmul h a hx, l_fmul h b hx, fmul, map_add, add_mul]`.
+-/
 theorem fmul_add (h : IsLogPair l linv) (a b : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     fmul l linv (a + b) x = fadd l linv (fmul l linv a x) (fmul l linv b x) := by
   rw [fadd, l_fmul h a hx, l_fmul h b hx, fmul, map_add, add_mul]
 
+/- English proof (translation)
+Rewrite using `[← fmul_add h a (-a) hx, add_neg_cancel, fmul_zero_left h]`.
+-/
 theorem fadd_fmul_neg (h : IsLogPair l linv) (a : K) {x : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) :
     fadd l linv (fmul l linv a x) (fmul l linv (-a) x) = 0 := by
   rw [← fmul_add h a (-a) hx, add_neg_cancel, fmul_zero_left h]
 
+/- English proof (translation)
+Rewrite using `[be0, be0, fadd_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem addDefect_comm (ph : PowerSeries K) (x y : MvPowerSeries σ K) :
     be0 l linv ph x y = be0 l linv ph y x := by
   rw [be0, be0, fadd_comm]
   ring
 
+/- English proof (translation)
+Establish `ha : ∀ s : Fin 2, MvPowerSeries.constantCoeff (![x, y] s) = 0`. Introduce `s`. Use `fin_cases s`. Conclude with `hx`. Conclude with `hy`.
+
+Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X 0`. Establish `h1 : MvPowerSeries.constantCoeff (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X 1`. Rewrite using `[fadd, fadd, substMv_subst (constantCoeff_add_l h h0 h1) ha, MvPowerSeries.subst_add hs, substMv_subst h0 ha, substMv_subst h1 ha, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs]`. Both sides reduce to the same expression.
+-/
 theorem fadd_eq_substMv (h : IsLogPair l linv) {x y : MvPowerSeries σ K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0) :
     fadd l linv x y = MvPowerSeries.subst ![x, y]
@@ -180,6 +275,11 @@ theorem fadd_eq_substMv (h : IsLogPair l linv) {x y : MvPowerSeries σ K}
     substMv_subst h0 ha, substMv_subst h1 ha, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs]
   rfl
 
+/- English proof (translation)
+Establish `hc` using `coeff_subst_congr (g := linv) (h := PowerSeries.C (PowerSeries.coeff 1 linv) * PowerSeries.X) (a := l) h.1 (Finsupp.single () 1) (fun k hk => by`. Rewrite `hk` using `[Finsupp.degree_single]`. Use `interval_cases k`. Simplify using `[h.2.2.1]`. Use the proof step `simp)`.
+
+Rewrite `hc` using `[h.2.2.2.1, PowerSeries.subst_mul (hasSubst h.1), PowerSeries.subst_C, PowerSeries.subst_X (hasSubst h.1)]`. Establish `h1 : PowerSeries.coeff 1 (PowerSeries.X : PowerSeries K) = PowerSeries.coeff 1 (PowerSeries.C (PowerSeries.coeff 1 linv) * l)` using `hc`. Rewrite `h1` using `[PowerSeries.coeff_one_X, PowerSeries.coeff_C_mul, h.2.1, mul_one]`. Conclude with `h1.symm`.
+-/
 theorem coeff_one_linv (h : IsLogPair l linv) : PowerSeries.coeff 1 linv = 1 := by
   have hc := coeff_subst_congr (g := linv)
     (h := PowerSeries.C (PowerSeries.coeff 1 linv) * PowerSeries.X) (a := l) h.1
@@ -201,6 +301,11 @@ section Integral
 
 variable {K : Type} [Field K] {σ : Type} {R : Subring K} {l linv : PowerSeries K}
 
+/- English proof (translation)
+Introduce `n`. Establish `: n = Finsupp.single () (n ())`. Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+
+Conclude with `hf (n ())`.
+-/
 theorem intMv_of_intPS {f : PowerSeries K} (hf : IntPS R f) : IntMv R (f : MvPowerSeries Unit K) := by
   intro n
   have : n = Finsupp.single () (n ()) := by
@@ -209,9 +314,15 @@ theorem intMv_of_intPS {f : PowerSeries K} (hf : IntPS R f) : IntMv R (f : MvPow
   rw [this]
   exact hf (n ())
 
+/- English proof (translation)
+Introduce `n` and use `hf (Finsupp.single () n)`.
+-/
 theorem intPS_of_intMv {f : PowerSeries K} (hf : IntMv R (f : MvPowerSeries Unit K)) : IntPS R f :=
   fun n => hf (Finsupp.single () n)
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`.
+-/
 theorem intMv_X (s : σ) : IntMv R (MvPowerSeries.X s : MvPowerSeries σ K) := by
   classical
   intro n
@@ -220,6 +331,11 @@ theorem intMv_X (s : σ) : IntMv R (MvPowerSeries.X s : MvPowerSeries σ K) := b
   · exact R.one_mem
   · exact R.zero_mem
 
+/- English proof (translation)
+Use `⟨constantCoeff_fadd h hx.1 hy.1, ?_⟩` and prove the remaining obligations. Rewrite using `[fadd_eq_substMv h hx.1 hy.1]`. Use `intMv_substMv hF fun s => ?_` and prove the remaining obligations. Use `fin_cases s`. Conclude with `hx`.
+
+Conclude with `hy`.
+-/
 theorem isPt_fadd (h : IsLogPair l linv) (hF : FGInt R l linv) {x y : MvPowerSeries σ K}
     (hx : IsPt R x) (hy : IsPt R y) : IsPt R (fadd l linv x y) := by
   refine ⟨constantCoeff_fadd h hx.1 hy.1, ?_⟩
@@ -229,37 +345,58 @@ theorem isPt_fadd (h : IsLogPair l linv) (hF : FGInt R l linv) {x y : MvPowerSer
   · exact hx
   · exact hy
 
+/- English proof (translation)
+Use `⟨constantCoeff_fmul h a hx.1, ?_⟩` and prove the remaining obligations. Rewrite using `[fmul_eq_subst_mulBy h a hx.1]`. Conclude with `intMv_subst ha hx`.
+-/
 theorem isPt_fmul (h : IsLogPair l linv) {a : K} (ha : EndInt R l linv a) {x : MvPowerSeries σ K}
     (hx : IsPt R x) : IsPt R (fmul l linv a x) := by
   refine ⟨constantCoeff_fmul h a hx.1, ?_⟩
   rw [fmul_eq_subst_mulBy h a hx.1]
   exact intMv_subst ha hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PowerSeries.constantCoeff_X, intMv_X ()⟩`.
+-/
 theorem isPt_X : IsPt R (PowerSeries.X : MvPowerSeries Unit K) :=
   ⟨PowerSeries.constantCoeff_X, intMv_X ()⟩
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[mulBy_eq_fmul, fmul_zero_left h, map_zero]`. Conclude with `R.zero_mem`.
+-/
 theorem endInt_zero (h : IsLogPair l linv) : EndInt R l linv 0 := by
   intro n
   rw [mulBy_eq_fmul, fmul_zero_left h, map_zero]
   exact R.zero_mem
 
+/- English proof (translation)
+Unfold `EndInt`. Rewrite using `[mulBy_eq_fmul, fmul_one h PowerSeries.constantCoeff_X]`. Conclude with `intPS_of_intMv isPt_X.2`.
+-/
 theorem endInt_one (h : IsLogPair l linv) : EndInt R l linv 1 := by
   unfold EndInt
   rw [mulBy_eq_fmul, fmul_one h PowerSeries.constantCoeff_X]
   exact intPS_of_intMv isPt_X.2
 
+/- English proof (translation)
+Unfold `EndInt`. Rewrite using `[mulBy_eq_fmul, fmul_add h a b PowerSeries.constantCoeff_X]`. Conclude with `intPS_of_intMv (isPt_fadd h hF (isPt_fmul h ha isPt_X) (isPt_fmul h hb isPt_X)).2`.
+-/
 theorem endInt_add (h : IsLogPair l linv) (hF : FGInt R l linv) {a b : K}
     (ha : EndInt R l linv a) (hb : EndInt R l linv b) : EndInt R l linv (a + b) := by
   unfold EndInt
   rw [mulBy_eq_fmul, fmul_add h a b PowerSeries.constantCoeff_X]
   exact intPS_of_intMv (isPt_fadd h hF (isPt_fmul h ha isPt_X) (isPt_fmul h hb isPt_X)).2
 
+/- English proof (translation)
+Unfold `EndInt`. Rewrite using `[mulBy_eq_fmul, ← fmul_fmul h a b PowerSeries.constantCoeff_X]`. Conclude with `intPS_of_intMv (isPt_fmul h ha (isPt_fmul h hb isPt_X)).2`.
+-/
 theorem endInt_mul (h : IsLogPair l linv) {a b : K}
     (ha : EndInt R l linv a) (hb : EndInt R l linv b) : EndInt R l linv (a * b) := by
   unfold EndInt
   rw [mulBy_eq_fmul, ← fmul_fmul h a b PowerSeries.constantCoeff_X]
   exact intPS_of_intMv (isPt_fmul h ha (isPt_fmul h hb isPt_X)).2
 
+/- English proof (translation)
+Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha)]`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]`.
+-/
 theorem coeff_substMv_two {τ : Type} (F : MvPowerSeries (Fin 2) K) {a : Fin 2 → MvPowerSeries τ K}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (e : τ →₀ ℕ) :
     MvPowerSeries.coeff e (MvPowerSeries.subst a F) =
@@ -269,6 +406,25 @@ theorem coeff_substMv_two {τ : Type} (F : MvPowerSeries (Fin 2) K) {a : Fin 2 �
   refine finsum_congr fun d => ?_
   rw [smul_eq_mul, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fin.prod_univ_two]
 
+/- English proof (translation)
+Establish `hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0` using `PowerSeries.constantCoeff_X`. Establish `ha : ∀ s : Fin 2, MvPowerSeries.constantCoeff ((![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) s) = 0`. Introduce `s`. Use `fin_cases s`. Conclude with `map_zero _`.
+
+Conclude with `hX`. Establish `key` using `coeff_substMv_two (fadd l linv (MvPowerSeries.X (0 : Fin 2)) (MvPowerSeries.X (1 : Fin 2))) ha (Finsupp.single () (d 1))`. Rewrite `key` using `[← fadd_eq_substMv h (map_zero _) hX, zero_fadd h hX, finsum_eq_single _ d]`. Establish `e1 : MvPowerSeries.coeff (Finsupp.single () (d 1)) ((![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 0 ^ d 0 * (![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 1 ^ d 1) = 1`. Rewrite using `[hd, pow_zero, one_mul]`.
+
+Conclude with `PowerSeries.coeff_X_pow_self (d 1)`. Rewrite `key` using `[e1, mul_one]`. Rewrite using `[← key, MvPowerSeries.coeff_X]`. Establish `e2 : MvPowerSeries.coeff (Finsupp.single () (d 1)) (PowerSeries.X : MvPowerSeries Unit K) = if d 1 = 1 then 1 else 0` using `PowerSeries.coeff_X (d 1)`. Rewrite using `[e2]`.
+
+Use `congr 1`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use extensionality with `s`.
+
+Use `fin_cases s`. Simplify using `using hd`. Simplify using `using h1`. Introduce `h1`. Rewrite using `[h1]`.
+
+Simplify using the standard rewrite rules. Introduce `d' hd'`. Distinguish the cases in `h0 : d' 0 = 0`. Establish `h1 : d' 1 ≠ d 1`. Introduce `h1`.
+
+Apply `hd'` to reduce the goal to its premises. Use extensionality with `s`. Use `fin_cases s`. Simplify `h0` using `[hd]`. Simplify using `using h1`.
+
+Establish `e1 : MvPowerSeries.coeff (Finsupp.single () (d 1)) ((![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 0 ^ d' 0 * (![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 1 ^ d' 1) = 0`. Rewrite using `[h0, pow_zero, one_mul]`. Use `PowerSeries.coeff_X_pow (R := K) (d 1) (d' 1)` as an intermediate fact. Rewrite `this` using `[if_neg (fun hh => h1 hh.symm)]`. Conclude with `this`.
+
+Rewrite using `[e1, mul_zero]`. Establish `: (![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 0 ^ d' 0 = 0` using `zero_pow h0`. Rewrite using `[this, zero_mul, map_zero, mul_zero]`.
+-/
 theorem coeff_law_of_zero (h : IsLogPair l linv) (d : Fin 2 →₀ ℕ) (hd : d 0 = 0) :
     MvPowerSeries.coeff d
         (fadd l linv (MvPowerSeries.X (0 : Fin 2)) (MvPowerSeries.X (1 : Fin 2))) =
@@ -327,6 +483,13 @@ theorem coeff_law_of_zero (h : IsLogPair l linv) (d : Fin 2 →₀ ℕ) (hd : d 
     · have : (![0, PowerSeries.X] : Fin 2 → MvPowerSeries Unit K) 0 ^ d' 0 = 0 := zero_pow h0
       rw [this, zero_mul, map_zero, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `m _`. Rewrite using `[pow_zero, PowerSeries.coeff_one]`. Use `split_ifs`.
+
+Conclude with `R.one_mem`. Conclude with `R.zero_mem`. Consider the case `succ k ih`. Introduce `m hm`. Rewrite using `[pow_succ, PowerSeries.coeff_mul]`.
+
+Use `Subring.sum_mem _ fun p hp => ?_` and prove the remaining obligations. Use `Finset.HasAntidiagonal.mem_antidiagonal.mp hp` as an intermediate fact. Conclude with `R.mul_mem (ih _ (by omega)) (hi _ (by omega))`.
+-/
 theorem coeff_pow_mem {i : PowerSeries K} {n : ℕ} (hi : ∀ m < n, PowerSeries.coeff m i ∈ R)
     (k : ℕ) : ∀ m < n, PowerSeries.coeff m (i ^ k) ∈ R := by
   induction k with
@@ -343,6 +506,19 @@ theorem coeff_pow_mem {i : PowerSeries K} {n : ℕ} (hi : ∀ m < n, PowerSeries
     have := Finset.HasAntidiagonal.mem_antidiagonal.mp hp
     exact R.mul_mem (ih _ (by omega)) (hi _ (by omega))
 
+/- English proof (translation)
+Establish `ha : ∀ s : Fin 2, MvPowerSeries.constantCoeff ((![PowerSeries.X, i] : Fin 2 → MvPowerSeries Unit K) s) = 0`. Introduce `s`. Use `fin_cases s`. Conclude with `PowerSeries.constantCoeff_X`. Conclude with `hi`.
+
+Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Establish `hi' : i = - MvPowerSeries.subst (![PowerSeries.X, i] : Fin 2 → MvPowerSeries Unit K) (F - MvPowerSeries.X (1 : Fin 2))`. Rewrite using `[MvPowerSeries.subst_sub hs, hz, MvPowerSeries.subst_X hs, zero_sub, neg_neg]`. Both sides reduce to the same expression. Introduce `n`.
+
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `hc : PowerSeries.coeff n i = - MvPowerSeries.coeff (Finsupp.single () n) (MvPowerSeries.subst (![PowerSeries.X, i] : Fin 2 → MvPowerSeries Unit K) (F - MvPowerSeries.X (1 : Fin 2)))` using `by conv_lhs => rw [hi']`. Conclude with `map_neg _ _`. Rewrite using `[hc, coeff_substMv_two _ ha]`.
+
+Use `R.neg_mem (finsum_induction (· ∈ R) R.zero_mem (fun _ _ => R.add_mem) fun d => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : d 0 = 0`. Rewrite using `[map_sub, hF0 d h0, sub_self, zero_mul]`. Conclude with `R.zero_mem`. Use `R.mul_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sub]`. Conclude with `R.sub_mem (hF d) (intMv_X 1 d)`. Establish `e1 : MvPowerSeries.coeff (Finsupp.single () n) ((![PowerSeries.X, i] : Fin 2 → MvPowerSeries Unit K) 0 ^ d 0 * (![PowerSeries.X, i] : Fin 2 → MvPowerSeries Unit K) 1 ^ d 1) = if d 0 ≤ n then PowerSeries.coeff (n - d 0) (i ^ d 1) else 0` using `PowerSeries.coeff_X_pow_mul' (i ^ d 1) (d 0) n`. Rewrite using `[e1]`. Use `split_ifs with hle`.
+
+Conclude with `coeff_pow_mem ih (d 1) _ (by omega)`. Conclude with `R.zero_mem`.
+-/
 theorem intPS_of_law_eq_zero {F : MvPowerSeries (Fin 2) K} (hF : IntMv R F)
     (hF0 : ∀ d : Fin 2 →₀ ℕ, d 0 = 0 → MvPowerSeries.coeff d F =
       MvPowerSeries.coeff d (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K))
@@ -386,6 +562,9 @@ theorem intPS_of_law_eq_zero {F : MvPowerSeries (Fin 2) K} (hF : IntMv R F)
         · exact coeff_pow_mem ih (d 1) _ (by omega)
         · exact R.zero_mem
 
+/- English proof (translation)
+Establish `hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0` using `PowerSeries.constantCoeff_X`. Use `intPS_of_law_eq_zero hF (coeff_law_of_zero h) (constantCoeff_mulBy h (-1)) ?_` and prove the remaining obligations. Rewrite using `[← fadd_eq_substMv h hX (constantCoeff_mulBy h (-1)), mulBy_eq_fmul]`. Use `fadd_fmul_neg h 1 hX` as an intermediate fact. Rewrite `this` using `[fmul_one h hX]`. Then use the resulting hypothesis.
+-/
 theorem endInt_neg_one (h : IsLogPair l linv) (hF : FGInt R l linv) : EndInt R l linv (-1) := by
   have hX : MvPowerSeries.constantCoeff (PowerSeries.X : MvPowerSeries Unit K) = 0 :=
     PowerSeries.constantCoeff_X
@@ -394,11 +573,21 @@ theorem endInt_neg_one (h : IsLogPair l linv) (hF : FGInt R l linv) : EndInt R l
   have := fadd_fmul_neg h 1 hX
   rwa [fmul_one h hX] at this
 
+/- English proof (translation)
+Rewrite using `[← neg_one_mul]`. Conclude with `endInt_mul h (endInt_neg_one h hF) ha`.
+-/
 theorem endInt_neg (h : IsLogPair l linv) (hF : FGInt R l linv) {a : K}
     (ha : EndInt R l linv a) : EndInt R l linv (-a) := by
   rw [← neg_one_mul]
   exact endInt_mul h (endInt_neg_one h hF) ha
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset n, IsPt R (PowerSeries.subst (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (u j) l) linv)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, PowerSeries.subst_zero_of_constantCoeff_zero h.2.2.1]`.
+
+Conclude with `⟨map_zero _, fun _ => by rw [map_zero]; exact R.zero_mem⟩`. Consider the case `insert j s hj ih`. Establish `h0 : MvPowerSeries.constantCoeff (∑ j ∈ s, MvPowerSeries.C (c j) * PowerSeries.subst (u j) l) = 0`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => constantCoeff_C_mul_l h (c j) (hu j).1`.
+
+Use `isPt_fadd h hF (isPt_fmul h (hc j) (hu j)) ih` as an intermediate fact. Rewrite `this` using `[fadd, l_fmul h (c j) (hu j).1, subst_l_linv h h0]`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `this`. Conclude with `key Finset.univ`.
+-/
 theorem isPt_flin (h : IsLogPair l linv) (hF : FGInt R l linv) {n : Type} [Fintype n]
     {c : n → K} (hc : ∀ j, EndInt R l linv (c j)) {u : n → MvPowerSeries σ K}
     (hu : ∀ j, IsPt R (u j)) : IsPt R (flin l linv c u) := by
@@ -426,6 +615,9 @@ end Integral
 end Pts
 
 open Pts in
+/- English proof (translation)
+Introduce `K _ R l linv h hF`. Conclude with `⟨fun σ x y hx hy => isPt_fadd h hF hx hy, fun a ha σ x hx => isPt_fmul h ha hx, endInt_zero h, endInt_one h, endInt_neg_one h hF, fun a b ha hb => endInt_add h hF ha hb, fun a b ha hb => endInt_mul h ha hb⟩`.
+-/
 theorem integralPointClosure' : PtClosure := by
   intro K _ R l linv h hF
   exact ⟨fun σ x y hx hy => isPt_fadd h hF hx hy, fun a ha σ x hx => isPt_fmul h ha hx,

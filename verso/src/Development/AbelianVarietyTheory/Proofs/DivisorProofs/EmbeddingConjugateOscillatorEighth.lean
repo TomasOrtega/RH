@@ -15,6 +15,13 @@ section General
 
 open MvPolynomial Formalism.BasicNotions Formalism.L2.DIV
 
+/- English proof (translation)
+Establish `hu : ∀ a, (bVV K lam).repr u a ∈ Formalism.DivisionValues.cmMax K`. Use `fk_descent _ (bVVfun K lam) (bVVfun_spec K lam).1 (fun k => ?_) _ ?_` and prove the remaining obligations. Take `⟨Pk, hPk⟩` from `bVVfun_int K lam k`. Rewrite using `[hPk]`. Conclude with `fk_int_mem _ _`.
+
+Establish `h` using `congrArg (fun x : VV K lam => (x : Pol K I n)) ((bVV K lam).sum_repr u)`. Simplify using `only [bVV_coe, Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[h, hP]`. Conclude with `fk_int_mem _ _`. Generalize the expression as in `bVV K lam = b at hp hu`.
+
+Use `conv_lhs => rw [← b.sum_repr u, ← b.sum_repr v]`. Use `conv_rhs => rw [← b.sum_repr u, ← b.sum_repr v]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply, sum_inner, inner_sum, inner_smul_left, inner_smul_right, hp, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply (b.repr u a'), hu a' σ]`.
+-/
 theorem inner_of_int {K : Type} [Field K] [StarRing K] {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n) {W : Type}
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] (σ : K →+* ℂ) (c₁ : VV K lam →ₛₗ[σ] W)
     (pr : VV K lam →ₗ⋆[K] VV K lam →ₗ[K] K)
@@ -38,15 +45,24 @@ theorem inner_of_int {K : Type} [Field K] [StarRing K] {I : Type} [Fintype I] {n
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun a' _ => ?_
   rw [starRingEnd_apply (b.repr u a'), hu a' σ]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (map_add (MvPolynomial.map φ) _ _)`.
+-/
 theorem up_add {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n)
     (x y : VV K lam) : GlobalTheory.AdTh.CoefExt.up φ lam (x + y) = GlobalTheory.AdTh.CoefExt.up φ lam x + GlobalTheory.AdTh.CoefExt.up φ lam y :=
   Subtype.ext (map_add (MvPolynomial.map φ) _ _)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [GlobalTheory.AdTh.CoefExt.up, Submodule.coe_smul, smul_eq_C_mul, map_mul, map_C]`.
+-/
 theorem up_smul {K K' : Type} [Field K] [Field K'] (φ : K →+* K') {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n)
     (a : K) (x : VV K lam) : GlobalTheory.AdTh.CoefExt.up φ lam (a • x) = φ a • GlobalTheory.AdTh.CoefExt.up φ lam x := by
   apply Subtype.ext
   simp only [GlobalTheory.AdTh.CoefExt.up, Submodule.coe_smul, smul_eq_C_mul, map_mul, map_C]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (MvPolynomial.map_id _)`.
+-/
 theorem up_id {K : Type} [Field K] {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n)
     (x : VV K lam) : GlobalTheory.AdTh.CoefExt.up (RingHom.id K) lam x = x :=
   Subtype.ext (MvPolynomial.map_id _)
@@ -74,19 +90,34 @@ def toG (lt : LtN Dw n → FVar D m n) : MvPolynomial (LtN Dw n) c.F →+* MvPol
 
 variable {lt : LtN Dw n → FVar D m n}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toG_apply (P : MvPolynomial (LtN Dw n) c.F) :
     toG c φ lt P = MvPolynomial.rename lt (MvPolynomial.map φ P) := rfl
 
+/- English proof (translation)
+Simplify using `[toG_apply]`.
+-/
 theorem toG_X (ℓ : LtN Dw n) : toG c φ lt (MvPolynomial.X ℓ) = MvPolynomial.X (lt ℓ) := by
   simp [toG_apply]
 
+/- English proof (translation)
+Simplify using `[toG_apply]`.
+-/
 theorem toG_C (a : c.F) : toG c φ lt (MvPolynomial.C a) = MvPolynomial.C (φ a) := by
   simp [toG_apply]
 
+/- English proof (translation)
+The claim follows from `(MvPolynomial.rename_injective _ fun _ _ hh => hl.injective h (congrArg (fun k : FVar D m n => (e k.1, k.2)) hh)).comp (MvPolynomial.map_injective _ φ.injective)`.
+-/
 theorem toG_injective (hl : IsLt (mv e lt)) (h : IsTyp D H) : Function.Injective (toG c φ lt) :=
   (MvPolynomial.rename_injective _ fun _ _ hh => hl.injective h (congrArg (fun k : FVar D m n => (e k.1, k.2)) hh)).comp
     (MvPolynomial.map_injective _ φ.injective)
 
+/- English proof (translation)
+Rewrite using `[minorPolynomial, RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use `ext1 b s`. Conclude with `toG_X c φ _`.
+-/
 theorem toG_minorP (σ : D.host.E →+* ℂ) (i : ℕ) (hi : i < Dw.mult σ) (col : Fin (i + 1) → Fin n) :
     toG c φ lt (minorPolynomial c σ i hi col) =
       (Matrix.of fun b s : Fin (i + 1) =>
@@ -96,6 +127,29 @@ theorem toG_minorP (σ : D.host.E →+* ℂ) (i : ℕ) (hi : i < Dw.mult σ) (co
   ext1 b s
   exact toG_X c φ _
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (Sum.elim (tauE D) fun t => conjEmb (tauE D t))`. Use `⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Introduce and unpack `(s | s) (t | t) e`. Conclude with `congrArg _ (GlobalTheory.SmoothForms.RealPts.tauE_injective D e)`. Conclude with `absurd e (h.ne _ _)`.
+
+Conclude with `absurd (Eq.symm e) (h.ne _ _)`. Conclude with `congrArg _ (GlobalTheory.SmoothForms.RealPts.tauE_injective D (conjEmb_inj e))`. Distinguish the cases in `hσ : InPsi H σ`. Take `⟨t, ht⟩` from `(h.1 σ).1 hσ`. Conclude with `⟨Sum.inl t, ht.symm⟩`.
+
+Take `⟨t, ht⟩` from `(h.2 σ).1 hσ`. Conclude with `⟨Sum.inr t, ht.symm⟩`. Establish `hprod : ∀ f : (D.host.E →+* ℂ) → MvPolynomial (FVar D m n) ℂ, ∏ σ, f σ = ∏ t, f (tauE D (e t)) * f (conjEmb (tauE D (e t)))` using `fun f => by`. Rewrite using `[← hb.prod_comp, Fintype.prod_sum_type, ← Finset.prod_mul_distrib, ← he.prod_comp]`. Both sides reduce to the same expression.
+
+Rewrite using `[pG, map_prod, hprod, Formalism.IndefR.Datum.delta]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `m1` using `h.mult_pos Dw (e t)`. Establish `m2` using `h.mult_neg Dw (e t)`. Rewrite using `[deltaAt, hp, hq]`.
+
+Use `congr 1`. Rewrite using `[map_prod] conv_rhs => rw [← m1, Finset.prod_range]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : (i : ℕ) < Dw.p` using `lt_of_lt_of_eq i.2 m1`. Rewrite using `[map_pow, dif_pos (by omega), if_pos ((h.1 _).2 ⟨e t, rfl⟩), toG_minorP]`.
+
+Use `congr 1`. Rewrite using `[minorPlus]`. Use `congr 1`. Use `ext1 b s`. Establish `h1` using `hl.pos h (ℓ := ⟨tauE D (e t), ⟨s.val, by have := s.2; omega⟩, Fin.castLE (by omega) b⟩) rfl`.
+
+Conclude with `X_eq_varF _ (he.1 h1.1) h1.2.1 (congrArg Fin.val (hl _).1)`. Use `show aStep Dw a (tauE D (e t)) i = _`. Rewrite using `[aStep, hap t i hi]`. Use `congr 1`. Use `split_ifs with h1`.
+
+Conclude with `hap t _ (by omega)`. Both sides reduce to the same expression. Rewrite using `[map_prod] conv_rhs => rw [← m2, Finset.prod_range]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hi : (i : ℕ) < Dw.q` using `lt_of_lt_of_eq i.2 m2`.
+
+Rewrite using `[map_pow, dif_pos (by omega), if_neg ((h.2 _).2 ⟨e t, rfl⟩), toG_minorP]`. Use `congr 1`. Rewrite using `[minorMinus]`. Use `congr 1`. Use `ext1 b s`.
+
+Establish `h1` using `hl.neg h (ℓ := ⟨conjEmb (tauE D (e t)), ⟨s.val, by have := s.2; omega⟩, Fin.cast (by omega) (Fin.natAdd (n - (i.val + 1)) b)⟩) rfl`. Conclude with `X_eq_varF _ (he.1 h1.1) h1.2 (congrArg Fin.val (hl _).1)`. Use `show aStep Dw a (conjEmb (tauE D (e t))) i = _`. Rewrite using `[aStep, ham t i hi]`. Use `congr 1`.
+
+Use `split_ifs with h1`. Conclude with `ham t _ (by omega)`. Both sides reduce to the same expression.
+-/
 theorem toG_pG (he : Function.Bijective e) (hl : IsLt (mv e lt)) (h : IsTyp D H) (hn : Dw.p + Dw.q ≤ n)
     (a : (D.host.E →+* ℂ) × ℕ → ℕ)
     (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ) (hp : ∀ t, p t = Dw.p) (hq : ∀ t, q t = Dw.q)
@@ -160,6 +214,17 @@ theorem toG_pG (he : Function.Bijective e) (hl : IsLt (mv e lt)) (h : IsTyp D H)
       · exact ham t _ (by omega)
       · rfl
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => rw [MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq, toG_C, MvPolynomial.algHom_C, MvPolynomial.algebraMap_eq]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `mul_X P ℓ hP`. Simplify using `only [map_mul, hP]`.
+
+Use `congr 1`. Rewrite using `[toG_X, gaStar, MvPolynomial.aeval_X, MvPolynomial.aeval_X, letB, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hc : lt ⟨ℓ.1, ℓ.2.1, j⟩ = ((lt ℓ).1, (lt ℓ).2.1, j)` using `Prod.ext (he (congrArg Prod.fst (hl.col h ℓ j))) (congrArg Prod.snd (hl.col h ℓ j) :)`. Establish `h0 : (lt ℓ).2.2 = ℓ.2.2` using `(hl ℓ).1`.
+
+Rewrite using `[map_mul, toG_C, toG_X, hc, hU, hp, h0]`. Use `congr 2`. Use `show relab c φ ℓ.1 (IsCMField.complexConj D.host.E (ga j ℓ.2.2)) = _`. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Break down `(hl ℓ).2 with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases.
+
+Use `replace h2 : ((lt ℓ).2.1 : ℕ) = ℓ.2.1 := h2`. Rewrite using `[if_pos (h2 ▸ (hl.pos h h1).2.2)]`. Conclude with `congrArg (fun σ : D.host.E →+* ℂ => conj (σ _)) ((congrArg (relab c φ) h1).trans (r1 _))`. Use `replace h2 : ((lt ℓ).2.1 : ℕ) = Dw.p + ℓ.2.1 := h2`. Rewrite using `[if_neg (by omega)]`.
+
+Conclude with `congrArg (fun σ : D.host.E →+* ℂ => conj (σ _)) ((congrArg (relab c φ) h1).trans (r2 _))`.
+-/
 theorem toG_gaStar (he : Function.Injective e) (hl : IsLt (mv e lt)) (h : IsTyp D H)
     (r1 : ∀ t, relab c φ (tauE D (e t)) = tauE D t) (r2 : ∀ t, relab c φ (conjEmb (tauE D (e t))) = conjEmb (tauE D t))
     (pW : D.what₂.Tau → ℕ) (hp : ∀ t, pW t = Dw.p)

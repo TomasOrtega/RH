@@ -13,6 +13,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ t P W _ _ _ t' P' V _ _ _ ψ _ tV mV Ω _ α β hβ tΩ n n' j _ t₀ m₀ h₀ m₀' ρ hα hj _ h₀j`. Use `letI := H.starRing`. Establish `key : ∀ a : 𝓞 E, j ≫ tV.act.act a = SplitTorus.torusMap _ (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a)) ≫ j`. Introduce `a`. Establish `: IsSchemeTheoreticallyDominant (spMap α)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective _ hα`.
+
+Establish `: IsSeparated tV.G.hom` using `tV.semi.separated`. Establish `: Flat (splitTorusAff ZU P'.D.toPre.X).hom` using `(ExtUnique.splitTorusAff_flat_and_isSeparated _ _).1`. Establish `: Flat (splitTorus (Sp V) P'.D.toPre.X).hom` using `inferInstanceAs (Flat (pullback.snd _ _))`. Use `ExtUnique.over_hom_ext_of_isPullback (SplitTorus.isPullback_bcMap (spMap α) _) ?_` and prove the remaining obligations. Establish `e1` using `TorusPart.pullTorus_comp n.cart n.cart (tV.act.act a) (tΩ.act.act a) (n.act a) j`.
+
+Establish `e2` using `TorusPart.pullTorus_torusMap_comp n.cart j (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a))`. Establish `e3` using `TorusPart.PELUnif.torus_comp_act P' hβ n' a`. Rewrite `e1` using `[hj, e3]`. Rewrite `e2` using `[hj]`. Rewrite using `[← TorusPart.pullTorus_left n.cart, ← TorusPart.pullTorus_left n.cart, e1, e2]`.
+
+Establish `hmono` using `(GlobalTheory.T.uniformisationTorus_mono_and_factor E H R (maximalIdeal R) t P (ResidueField V) ((residue V).comp ψ) 0 (TorusPart.map_pow_one_eq_zero h₀) t₀.G m₀'.φ m₀'.cart).1`. Establish `key2 : ∀ a : 𝓞 E, ρ.comp (DistribSMul.toAddMonoidHom P.D.toPre.X (H.bar a)) = (DistribSMul.toAddMonoidHom P'.D.toPre.X (H.bar a)).comp ρ`. Introduce `a`. Establish `e` using `congrArg (TorusPart.pullTorus m₀.cart) (key a)`. Rewrite `e` using `[TorusPart.pullTorus_comp m₀.cart m₀.cart (tV.act.act a) (t₀.act.act a) (m₀.act a) j, TorusPart.pullTorus_torusMap_comp m₀.cart j, h₀j, Category.assoc, TorusPart.PELUnif.torus_comp_act P h₀ m₀' a, ← Category.assoc, ← Category.assoc, ← SplitTorus.torusMap_comp, ← SplitTorus.torusM …`.
+
+Use `haveI : Mono (TorusPart.PELUnif.torus P h₀ m₀') := hmono`. Establish `: Nonempty (Sp (ResidueField V))` using `inferInstance`. Conclude with `SplitTorus.torusMap_injective ((cancel_mono _).1 e)`. Introduce `a x`. Establish `k` using `DFunLike.congr_fun (key2 (H.bar a)) x`.
+
+Rewrite `k` using `[show H.bar (H.bar a) = a from star_star a]`. Conclude with `k`.
+-/
 theorem restrict_torus_smul_comm : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (t' : SAB H (Sp W)) (P' : PELUnif (maximalIdeal W) t')
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ψ : R →+* V) [IsLocalHom ψ]
     (tV : SAB H (Sp V)) (mV : SABMap tV t (spMap ψ))

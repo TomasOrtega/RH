@@ -30,6 +30,11 @@ namespace GlobalTheory.Fam.Inhab
 
 variable {D : D7}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Conclude with `⟨GlobalTheory.OrientedHeis.theta_zero, GlobalTheory.FockFiniteHeis.pureTensorO_zero ψ θ S T hψ hθ sS BS sT BT φ⟩`. Consider the case `insert i s hi ih`.
+
+Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Use `⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (hg i)) ih.1, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (a i) (hg i) ih.1 φ, ih.2]`.
+-/
 theorem pt_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ)
     (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     {ι : Type} (s : Finset ι) (a : ι → ℂ) (g : ι → WO S T → ℂ) (hg : ∀ i, IsThetaFunO ψ S T (g i)) (φ : PolF D T.rank S.rank) :
@@ -44,6 +49,9 @@ theorem pt_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (h
     refine ⟨GlobalTheory.OrientedHeis.theta_add (GlobalTheory.OrientedHeis.theta_smul _ (hg i)) ih.1, ?_⟩
     rw [GlobalTheory.FockFiniteHeis.pureTensorO_lin ψ θ S T hψ hθ sS BS sT BT (a i) (hg i) ih.1 φ, ih.2]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.OrientedHeis.om_pureTensorO D ψ θ S T χS χT om hom hθ sS sS BS BS sT sT BT BT k 1 (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hk, Matrix.mul_one, Matrix.one_mul]) (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ (one_mem _), Matr …`.
+-/
 theorem pt_om {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {k : GA D S}
@@ -55,6 +63,15 @@ theorem pt_om {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χ
     (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ hk, Matrix.one_mul])
     (fun τ => by rw [GlobalTheory.FiniteFock.compAt_mt_of_finite θ τ (one_mem _), Matrix.one_mul]) f hf φ).2.symm
 
+/- English proof (translation)
+Establish `e : ∀ g h, thetaKO om g h (pureTensorO ψ θ S T sS sT BS BT f' φ) * F h = ∑ i, (a i)⁻¹ * (thetaKO om (g * κ i) h (pureTensorO ψ θ S T sS sT BS BT f φ) * F h)` using `fun g h => by`. Rewrite using `[hf', (pt_sum hom.std hθ sS BS sT BT _ _ _ (fun i => hom.om_pres _ _ hf) φ).2]`. Unfold `thetaKO`. Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[pt_om hom hθ sS BS sT BT hf (hκ i), map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Use `⟨fun g => ?_, funext fun g => ?_⟩` and prove the remaining obligations. Simplify using `only [e]`. Conclude with `integrable_finset_sum _ fun i _ => (hi _).const_mul _`. Use `show ∫ h in 𝓕, thetaKO om g h (pureTensorO ψ θ S T sS sT BS BT f' φ) * F h ∂ν = _`.
+
+Simplify using `only [e]`. Rewrite using `[integral_finset_sum _ fun i _ => (hi _).const_mul _]`. Establish `: ∀ i, ∫ h in 𝓕, (a i)⁻¹ * (thetaKO om (g * κ i) h (pureTensorO ψ θ S T sS sT BS BT f φ) * F h) ∂ν = U g` using `fun i => by`. Rewrite using `[integral_const_mul]`. Establish `h1` using `hU (g * κ i)`.
+
+Unfold `Lift.liftInt at h1`. Rewrite using `[h1, hl, ← mul_assoc, inv_mul_cancel₀ (ha i), one_mul]`. Simplify using `only [this, Finset.sum_const, Finset.card_univ, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+-/
 theorem lift_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T}
     (hom : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ) (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ)
     (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) {f f' : WO S T → ℂ} (hf : IsThetaFunO ψ S T f)
@@ -86,12 +103,18 @@ theorem lift_sum {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} 
       rw [h1, hl, ← mul_assoc, inv_mul_cancel₀ (ha i), one_mul]
     simp only [this, Finset.sum_const, Finset.card_univ, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, Nat.card_eq_fintype_card]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hκ.1, hκ.2.1, by show rTup β L (finE V κ) ∈ P.H rw [hκ.2.2]; exact p.2⟩`.
+-/
 theorem levChi_lift {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} (P : LevelP L.Pg L.r ℂ) (p : P.H)
     {κ : GA D V} (hκ : IsLevelLift V β L p.1 κ) : κ ∈ levS V β (withP L P) :=
   ⟨hκ.1, hκ.2.1, by
     show rTup β L (finE V κ) ∈ P.H
     rw [hκ.2.2]; exact p.2⟩
 
+/- English proof (translation)
+Use `GlobalTheory.ChainEquiv.step ψ θ hθ χS χT om hom sS BS sT BT f hpt M β L hL μ hμ.1 𝓔 hμ.2 (GlobalTheory.MultFinite.schurMult hCR _ _) It hIt CC hCC β' L' ν hν.1 𝓕 hν.2 io hio g0 κ hκ g0' κ' hκ' a' hf F (c • F) (fun v h => (hF v h).symm) v g` as an intermediate fact. Rewrite using `[← this, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem step_eigen {S T : HSp D} {Sp : D.what₂.Tau → SPar} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} (hθ : IsInfFam θ)
     (hCR : GlobalTheory.Published.CuspRapidDecay) {χS χT : (AE D)ˣ →* Circle} {om : Om S T} (hom : IsWeilDatumO ψ S T χS χT om)
     {sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}

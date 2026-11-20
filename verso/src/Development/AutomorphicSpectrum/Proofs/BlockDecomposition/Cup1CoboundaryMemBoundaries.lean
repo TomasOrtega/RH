@@ -44,20 +44,32 @@ def bv {N p q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1)
 
 variable {F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pr_apply {n m : ℕ} (e : Fin (n + 1) →o Fin (m + 1)) (f : Cn F n) (c : Fin (m + 1) ⥤ C) :
     pr F e f c = mp F (c.map (homOfLE (Fin.le_last (e (Fin.last n))))) (f (e.monotone.functor ⋙ c)) := rfl
 
+/- English proof (translation)
+Rewrite using `[← mp_comp, ← c.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem push_push {l : ℕ} (c : Fin (l + 1) ⥤ C) {i j k : Fin (l + 1)} (h₁ : i ≤ j) (h₂ : j ≤ k)
     (b : F.obj (c.obj i)) :
     mp F (c.map (homOfLE h₂)) (mp F (c.map (homOfLE h₁)) b) = mp F (c.map (homOfLE (h₁.trans h₂))) b := by
   rw [← mp_comp, ← c.map_comp]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Conclude with `push_push c _ _ _`.
+-/
 theorem pr_pr {n m l : ℕ} (e : Fin (n + 1) →o Fin (m + 1)) (e' : Fin (m + 1) →o Fin (l + 1)) (f : Cn F n) :
     pr F e' (pr F e f) = pr F (e'.comp e) f := by
   funext c
   exact push_push c _ _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Establish `h : c.map (homOfLE (Fin.le_last (Fin.last n))) = 𝟙 _`. Rewrite using `[show homOfLE (Fin.le_last (Fin.last n)) = 𝟙 _ from Subsingleton.elim _ _, c.map_id]`. Use `show mp F (c.map (homOfLE (Fin.le_last (Fin.last n)))) (f c) = f c`. Rewrite using `[h, mp_id]`.
+-/
 theorem pr_id {n : ℕ} (f : Cn F n) : pr F OrderHom.id f = f := by
   funext c
   have h : c.map (homOfLE (Fin.le_last (Fin.last n))) = 𝟙 _ := by
@@ -65,20 +77,37 @@ theorem pr_id {n : ℕ} (f : Cn F n) : pr F OrderHom.id f = f := by
   show mp F (c.map (homOfLE (Fin.le_last (Fin.last n)))) (f c) = f c
   rw [h, mp_id]
 
+/- English proof (translation)
+Rewrite using `[show e = e' from OrderHom.ext _ _ (funext h)]`.
+-/
 theorem pr_congr {n m : ℕ} {e e' : Fin (n + 1) →o Fin (m + 1)} (h : ∀ i, e i = e' i) (f : Cn F n) :
     pr F e f = pr F e' f := by
   rw [show e = e' from OrderHom.ext _ _ (funext h)]
 
+/- English proof (translation)
+Simplify using `only [dn, LinearMap.sum_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+-/
 theorem dn_eq (n : ℕ) (f : Cn F n) : dn F n f = ∑ i : Fin (n + 2), ((-1 : R) ^ (i : ℕ)) • pr F (dl i) f := by
   simp only [dn, LinearMap.sum_apply, LinearMap.smul_apply]
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cup1_apply (n : ℕ) (x : Cn F 1) (z : Cn F n) :
     cup1 F n x z = pr F (fr n) x * pr F (dl 0) z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cup0_apply (n : ℕ) (β : Cn F 0) (z : Cn F n) :
     cup0 F n β z = pr F (cst 0 0) β * z := rfl
 
+/- English proof (translation)
+Use `show ((Fin.succAbove i t : Fin (n + 1 + 1)) : ℕ) = _`. Rewrite using `[Fin.succAbove]`. Use `split_ifs with h₁ h₂ h₂`. Both sides reduce to the same expression. Conclude with `absurd h₁ h₂`.
+
+Conclude with `absurd h₂ h₁`. Both sides reduce to the same expression.
+-/
 theorem val_dl {n : ℕ} (i : Fin (n + 1 + 1)) (t : Fin (n + 1)) :
     ((dl i t : Fin (n + 1 + 1)) : ℕ) = if t.1 < i.1 then t.1 else t.1 + 1 := by
   show ((Fin.succAbove i t : Fin (n + 1 + 1)) : ℕ) = _
@@ -89,18 +118,38 @@ theorem val_dl {n : ℕ} (i : Fin (n + 1 + 1)) (t : Fin (n + 1)) :
   · exact absurd h₂ h₁
   · rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem val_fr (n : ℕ) (t : Fin (1 + 1)) : ((fr n t : Fin (n + 1 + 1)) : ℕ) = t.1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cst_apply {n : ℕ} (m : ℕ) (i : Fin (n + 1)) (t : Fin (m + 1)) : cst m i t = i := rfl
 
 macro "fin_order" : tactic =>
   `(tactic| (apply Fin.ext; simp only [OrderHom.comp_coe, Function.comp_apply, val_dl, val_fr, cst_apply,
     Fin.val_succ, Fin.val_zero, Fin.val_one]; grind))
 
+/- English proof (translation)
+Rewrite using `[cup1_apply, map_mul, pr_pr, pr_pr]`.
+-/
 theorem face_projection_cup1 {n m : ℕ} (e : Fin (n + 2) →o Fin (m + 1)) (x : Cn F 1) (z : Cn F n) :
     pr F e (cup1 F n x z) = pr F (e.comp (fr n)) x * pr F (e.comp (dl 0)) z := by
   rw [cup1_apply, map_mul, pr_pr, pr_pr]
 
+/- English proof (translation)
+Set `E : Fin 3 →o Fin (n + 3)` to `(Fin.castLEOrderEmb (by omega)).toOrderHom`. Establish `hx' : pr F ((dl (0 : Fin (n + 3))).comp (fr n)) x - pr F ((dl (1 : Fin (n + 3))).comp (fr n)) x + pr F (fr (n + 1)) x = 0`. Establish `h0` using `congrArg (pr F E) hx`. Rewrite `h0` using `[dn_eq, Fin.sum_univ_three, map_zero]`. Simplify using `only [map_add, map_smul, pr_pr] at h0`.
+
+Apply the tactic sequence `have e0 : pr F (E.comp (dl 0)) x = pr F ((dl (0 : Fin (n + 3))).comp (fr n)) x := pr_congr (fun i ↦ by fin_cases i <;> rfl) x`. Apply the tactic sequence `have e1 : pr F (E.comp (dl 1)) x = pr F ((dl (1 : Fin (n + 3))).comp (fr n)) x := pr_congr (fun i ↦ by fin_cases i <;> rfl) x`. Apply the tactic sequence `have e2 : pr F (E.comp (dl 2)) x = pr F (fr (n + 1)) x := pr_congr (fun i ↦ by fin_cases i <;> rfl) x`. Rewrite `h0` using `[e0, e1, e2]`. Simplify `h0` using `[sub_eq_add_neg]`.
+
+Rewrite using `[dn_eq (n + 1), dn_eq n, map_sum]`. Simplify using `only [map_smul, map_mul, cup1_apply, pr_pr]`. Establish `e1 : pr F ((dl (1 : Fin (n + 3))).comp (dl 0)) z = pr F ((dl (0 : Fin (n + 3))).comp (dl 0)) z` using `pr_congr (fun i ↦ by fin_order) z`. Establish `e2 : ∀ j : Fin (n + 1), pr F ((dl j.succ.succ).comp (fr n)) x = pr F (fr (n + 1)) x` using `fun j ↦ pr_congr (fun i ↦ by fin_order) x`. Establish `e3 : ∀ j : Fin (n + 1), pr F ((dl j.succ.succ).comp (dl 0)) z = pr F ((dl 0).comp (dl j.succ)) z` using `fun j ↦ pr_congr (fun i ↦ by fin_order) z`.
+
+Establish `hs : ∑ j : Fin (n + 1), ((-1 : R) ^ (j.succ.succ : ℕ)) • (pr F ((dl j.succ.succ).comp (fr n)) x * pr F ((dl j.succ.succ).comp (dl 0)) z) = -∑ j : Fin (n + 1), ((-1 : R) ^ (j.succ : ℕ)) • (pr F (fr (n + 1)) x * pr F ((dl 0).comp (dl j.succ)) z)`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[e2, e3]`. Simplify using `[pow_succ]`.
+
+Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ, hs, Fin.sum_univ_succ (n := n + 1)]`. Simplify using `only [e1, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, zero_add, pow_one, neg_smul, Fin.succ_zero_eq_one, Fin.val_one]`. Take the linear combination `(pr F ((dl (0 : Fin (n + 3))).comp (dl 0)) z) * hx'`.
+-/
 theorem coboundary_cup1 (n : ℕ) {x : Cn F 1} (hx : dn F 1 x = 0) (z : Cn F n) :
     dn F (n + 1) (cup1 F n x z) = -cup1 F (n + 1) x (dn F n z) := by
   let E : Fin 3 →o Fin (n + 3) := (Fin.castLEOrderEmb (by omega)).toOrderHom
@@ -136,6 +185,13 @@ theorem coboundary_cup1 (n : ℕ) {x : Cn F 1} (hx : dn F 1 x = 0) (z : Cn F n) 
   simp only [e1, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, zero_add, pow_one, neg_smul, Fin.succ_zero_eq_one, Fin.val_one]
   linear_combination (pr F ((dl (0 : Fin (n + 3))).comp (dl 0)) z) * hx'
 
+/- English proof (translation)
+Establish `e1 : pr F (fr n) (dn F 0 β) = pr F ((dl (0 : Fin (n + 2))).comp (cst 0 0)) β - pr F (cst 0 0) β`. Rewrite using `[dn_eq, Fin.sum_univ_two]`. Simplify using `only [map_add, map_smul, pr_pr, Fin.val_zero, pow_zero, one_smul, Fin.val_one, pow_one, neg_smul, map_neg]`. Rewrite using `[sub_eq_add_neg]`. Use `congr 1`.
+
+Conclude with `pr_congr (fun i ↦ by fin_order) β`. Use `congr 1`. Conclude with `pr_congr (fun i ↦ by fin_order) β`. Establish `e2 : ∀ j : Fin (n + 1), pr F ((dl j.succ).comp (cst 0 0)) β = pr F (cst 0 0) β` using `fun j ↦ pr_congr (fun i ↦ by fin_order) β`. Rewrite using `[cup1_apply, e1, dn_eq n (cup0 F n β z), dn_eq n z, cup0_apply, cup0_apply]`.
+
+Simplify using `only [map_mul, pr_pr, map_smul, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[Fin.sum_univ_succ]`. Use `conv_rhs => rw [Fin.sum_univ_succ]`. Simplify using `only [e2, Fin.val_zero, pow_zero, one_smul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coboundary_cup0 (n : ℕ) (β : Cn F 0) (z : Cn F n) :
     dn F n (cup0 F n β z) = cup1 F n (dn F 0 β) z + cup0 F (n + 1) β (dn F n z) := by
   have e1 : pr F (fr n) (dn F 0 β) = pr F ((dl (0 : Fin (n + 2))).comp (cst 0 0)) β - pr F (cst 0 0) β := by
@@ -172,20 +228,37 @@ instance (n : ℕ) : Module R (HH F n) := inferInstanceAs (Module R (_ ⧸ BZ F 
 
 def HH.mk (n : ℕ) : Zc F n →ₗ[R] HH F n := Submodule.mkQ _
 
+/- English proof (translation)
+The claim follows from `Submodule.mkQ_surjective _`.
+-/
 theorem HH.mk_surjective (n : ℕ) : Function.Surjective (HH.mk F n) := Submodule.mkQ_surjective _
 
 variable {F}
 
+/- English proof (translation)
+The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem HH.mk_eq_zero {n : ℕ} {z : Zc F n} : HH.mk F n z = 0 ↔ z.1 ∈ Bd F n :=
   Submodule.Quotient.mk_eq_zero _
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← map_sub, HH.mk_eq_zero]`. Both sides reduce to the same expression.
+-/
 theorem HH.mk_eq_mk {n : ℕ} {z z' : Zc F n} : HH.mk F n z = HH.mk F n z' ↔ z.1 - z'.1 ∈ Bd F n := by
   rw [← sub_eq_zero, ← map_sub, HH.mk_eq_zero]; rfl
 
+/- English proof (translation)
+Establish `hz : dn F n z.1 = 0` using `z.2`. Rewrite using `[LinearMap.mem_ker, coboundary_cup1 n x.2, hz, map_zero, neg_zero]`.
+-/
 theorem cup1_mem_cocycles (n : ℕ) (x : Zc F 1) (z : Zc F n) : cup1 F n x.1 z.1 ∈ Zc F (n + 1) := by
   have hz : dn F n z.1 = 0 := z.2
   rw [LinearMap.mem_ker, coboundary_cup1 n x.2, hz, map_zero, neg_zero]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `: z = 0` using `hz`. Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+
+Consider the case `succ n`. Take `⟨v, rfl⟩` from `hz`. Conclude with `⟨-cup1 F n x.1 v, by rw [map_neg, coboundary_cup1 n x.2, neg_neg]⟩`.
+-/
 theorem cup1_mem_boundaries (n : ℕ) (x : Zc F 1) (z : Cn F n) (hz : z ∈ Bd F n) : cup1 F n x.1 z ∈ Bd F (n + 1) := by
   cases n with
   | zero =>
@@ -196,6 +269,9 @@ theorem cup1_mem_boundaries (n : ℕ) (x : Zc F 1) (z : Cn F n) (hz : z ∈ Bd F
     obtain ⟨v, rfl⟩ := hz
     exact ⟨-cup1 F n x.1 v, by rw [map_neg, coboundary_cup1 n x.2, neg_neg]⟩
 
+/- English proof (translation)
+Establish `hz : dn F n z.1 = 0` using `z.2`. Use `⟨cup0 F n β z.1, ?_⟩` and prove the remaining obligations. Rewrite using `[coboundary_cup0, hz, map_zero, add_zero]`.
+-/
 theorem cup1_coboundary_mem_boundaries (n : ℕ) (β : Cn F 0) (z : Zc F n) : cup1 F n (dn F 0 β) z.1 ∈ Bd F (n + 1) := by
   have hz : dn F n z.1 = 0 := z.2
   refine ⟨cup0 F n β z.1, ?_⟩
@@ -210,6 +286,9 @@ def cz (n : ℕ) : Zc F 1 →ₗ[R] Zc F n →ₗ[R] Zc F (n + 1) :=
     (fun x z z' ↦ Subtype.ext (by simp))
     (fun r x z ↦ Subtype.ext (by simp))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cz_val (n : ℕ) (x : Zc F 1) (z : Zc F n) : (cz F n x z).1 = cup1 F n x.1 z.1 := rfl
 
 def Lc (n : ℕ) : HH F 1 →ₗ[R] HH F n →ₗ[R] HH F (n + 1) :=
@@ -226,6 +305,9 @@ def Lc (n : ℕ) : HH F 1 →ₗ[R] HH F n →ₗ[R] HH F (n + 1) :=
       refine LinearMap.mem_ker.2 (LinearMap.ext fun x ↦ ?_)
       exact HH.mk_eq_zero.2 (cup1_mem_boundaries n x z.1 hz))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Lc_mk (n : ℕ) (x : Zc F 1) (z : Zc F n) :
     Lc F n (HH.mk F 1 x) (HH.mk F n z) = HH.mk F (n + 1) (cz F n x z) := rfl
 
@@ -233,33 +315,56 @@ section Pull
 
 variable {F} {D : Type} [Category.{0} D] {G : D ⥤ CommAlgCat.{0} R}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pulln_apply (m : CoefMap (RingHom.id R) F G) (n : ℕ) (f : Cn F n) (c : Fin (n + 1) ⥤ D) :
     pulln m n f c = m.α (c.obj (Fin.last n)) (f (c ⋙ m.G)) := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Conclude with `m.naturality _ _`.
+-/
 theorem pulln_pr (m : CoefMap (RingHom.id R) F G) {n k : ℕ} (e : Fin (n + 1) →o Fin (k + 1)) (f : Cn F n) :
     pulln m k (pr F e f) = pr G e (pulln m n f) := by
   funext c
   exact m.naturality _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Conclude with `map_mul (m.α (c.obj (Fin.last n))) _ _`.
+-/
 theorem pulln_mul (m : CoefMap (RingHom.id R) F G) (n : ℕ) (f f' : Cn F n) :
     pulln m n (f * f') = pulln m n f * pulln m n f' := by
   funext c
   exact map_mul (m.α (c.obj (Fin.last n))) _ _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `c`. Conclude with `map_one (m.α (c.obj (Fin.last n)))`.
+-/
 theorem pulln_one (m : CoefMap (RingHom.id R) F G) (n : ℕ) : pulln m n (1 : Cn F n) = 1 := by
   funext c
   exact map_one (m.α (c.obj (Fin.last n)))
 
+/- English proof (translation)
+Rewrite using `[dn_eq, dn_eq, map_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, pulln_pr]`.
+-/
 theorem pulln_dn (m : CoefMap (RingHom.id R) F G) (n : ℕ) (f : Cn F n) :
     pulln m (n + 1) (dn F n f) = dn G n (pulln m n f) := by
   rw [dn_eq, dn_eq, map_sum]
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [map_smul, pulln_pr]
 
+/- English proof (translation)
+Rewrite using `[cup1_apply, cup1_apply, pulln_mul, pulln_pr, pulln_pr]`.
+-/
 theorem pullback_cup1 (m : CoefMap (RingHom.id R) F G) (n : ℕ) (x : Cn F 1) (z : Cn F n) :
     pulln m (n + 1) (cup1 F n x z) = cup1 G n (pulln m 1 x) (pulln m n z) := by
   rw [cup1_apply, cup1_apply, pulln_mul, pulln_pr, pulln_pr]
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Establish `: z = 0` using `hz`. Substitute `this` using the available equality. Rewrite using `[map_zero]`.
+
+Conclude with `Submodule.zero_mem _`. Consider the case `succ n`. Take `⟨v, rfl⟩` from `hz`. Conclude with `⟨pulln m n v, (pulln_dn m n v).symm⟩`.
+-/
 theorem pulln_mem_Bd (m : CoefMap (RingHom.id R) F G) (n : ℕ) (z : Cn F n) (hz : z ∈ Bd F n) :
     pulln m n z ∈ Bd G n := by
   cases n with
@@ -272,6 +377,9 @@ theorem pulln_mem_Bd (m : CoefMap (RingHom.id R) F G) (n : ℕ) (z : Cn F n) (hz
     obtain ⟨v, rfl⟩ := hz
     exact ⟨pulln m n v, (pulln_dn m n v).symm⟩
 
+/- English proof (translation)
+Establish `hz : dn F n z.1 = 0` using `z.2`. Rewrite using `[LinearMap.mem_ker, ← pulln_dn, hz, map_zero]`.
+-/
 theorem pulln_mem_Zc (m : CoefMap (RingHom.id R) F G) (n : ℕ) (z : Zc F n) : pulln m n z.1 ∈ Zc G n := by
   have hz : dn F n z.1 = 0 := z.2
   rw [LinearMap.mem_ker, ← pulln_dn, hz, map_zero]
@@ -282,9 +390,15 @@ def pullZ (m : CoefMap (RingHom.id R) F G) (n : ℕ) : Zc F n →ₗ[R] Zc G n :
 def pullH (m : CoefMap (RingHom.id R) F G) (n : ℕ) : HH F n →ₗ[R] HH G n :=
   Submodule.mapQ (BZ F n) (BZ G n) (pullZ m n) fun z hz ↦ pulln_mem_Bd m n z.1 hz
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pullH_mk (m : CoefMap (RingHom.id R) F G) (n : ℕ) (z : Zc F n) :
     pullH m n (HH.mk F n z) = HH.mk G n (pullZ m n z) := rfl
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `HH.mk_surjective F 1 x`. Take `⟨z, rfl⟩` from `HH.mk_surjective F n z`. Rewrite using `[Lc_mk, pullH_mk, pullH_mk, pullH_mk, Lc_mk]`. Use `congr 1`. Conclude with `Subtype.ext (pullback_cup1 m n x.1 z.1)`.
+-/
 theorem pullH_Lc (m : CoefMap (RingHom.id R) F G) (n : ℕ) (x : HH F 1) (z : HH F n) :
     pullH m (n + 1) (Lc F n x z) = Lc G n (pullH m 1 x) (pullH m n z) := by
   obtain ⟨x, rfl⟩ := HH.mk_surjective F 1 x
@@ -309,21 +423,33 @@ def prB {p q q' : ℕ} (e : Fin (q + 1) →o Fin (q' + 1)) : Bi F p q →ₐ[R] 
 
 variable {F}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem bv_apply {N p q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1)) (w : Cn (box F) N)
     (a : Fin (p + 1) ⥤ C) (b : Fin (q + 1) ⥤ C) :
     bv F ρ₁ ρ₂ w a b = Algebra.TensorProduct.map (mp F (a.map (homOfLE (Fin.le_last (ρ₁ (Fin.last N))))))
       (mp F (b.map (homOfLE (Fin.le_last (ρ₂ (Fin.last N)))))) (w (bichain ρ₁ ρ₂ a b)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prA_apply {p p' q : ℕ} (e : Fin (p + 1) →o Fin (p' + 1)) (B : Bi F p q) (a : Fin (p' + 1) ⥤ C)
     (b : Fin (q + 1) ⥤ C) :
     prA F e B a b = Algebra.TensorProduct.map (mp F (a.map (homOfLE (Fin.le_last (e (Fin.last p)))))) (AlgHom.id R _)
       (B (e.monotone.functor ⋙ a) b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem prB_apply {p q q' : ℕ} (e : Fin (q + 1) →o Fin (q' + 1)) (B : Bi F p q) (a : Fin (p + 1) ⥤ C)
     (b : Fin (q' + 1) ⥤ C) :
     prB F e B a b = Algebra.TensorProduct.map (AlgHom.id R _) (mp F (b.map (homOfLE (Fin.le_last (e (Fin.last q))))))
       (B a (e.monotone.functor ⋙ b)) := rfl
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tmap_tmap {A A' A'' B B' B'' : Type} [CommRing A] [CommRing A'] [CommRing A''] [CommRing B] [CommRing B']
     [CommRing B''] [Algebra R A] [Algebra R A'] [Algebra R A''] [Algebra R B] [Algebra R B'] [Algebra R B'']
     (f : A →ₐ[R] A') (f' : A' →ₐ[R] A'') (g : B →ₐ[R] B') (g' : B' →ₐ[R] B'') (t : A ⊗[R] B) :
@@ -334,10 +460,16 @@ theorem tmap_tmap {A A' A'' B B' B'' : Type} [CommRing A] [CommRing A'] [CommRin
   | tmul x y => simp
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+The claim follows from `AlgHom.ext fun b ↦ push_push c h₁ h₂ b`.
+-/
 theorem mp_push {l : ℕ} (c : Fin (l + 1) ⥤ C) {i j k : Fin (l + 1)} (h₁ : i ≤ j) (h₂ : j ≤ k) :
     (mp F (c.map (homOfLE h₂))).comp (mp F (c.map (homOfLE h₁))) = mp F (c.map (homOfLE (h₁.trans h₂))) :=
   AlgHom.ext fun b ↦ push_push c h₁ h₂ b
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Rewrite using `[prA_apply, bv_apply, bv_apply]`. Use `(tmap_tmap _ _ _ _ (w (bichain (e.comp ρ₁) ρ₂ a b))).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain (e.comp ρ₁) ρ₂ a b))) (mp_push a _ _) (AlgHom.id_comp _)`.
+-/
 theorem prA_bv {N p p' q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1))
     (e : Fin (p + 1) →o Fin (p' + 1)) (w : Cn (box F) N) :
     prA F e (bv F ρ₁ ρ₂ w) = bv F (e.comp ρ₁) ρ₂ w := by
@@ -347,6 +479,9 @@ theorem prA_bv {N p p' q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : 
   exact congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain (e.comp ρ₁) ρ₂ a b)))
     (mp_push a _ _) (AlgHom.id_comp _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Rewrite using `[prB_apply, bv_apply, bv_apply]`. Use `(tmap_tmap _ _ _ _ (w (bichain ρ₁ (e.comp ρ₂) a b))).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain ρ₁ (e.comp ρ₂) a b))) (AlgHom.id_comp _) (mp_push b _ _)`.
+-/
 theorem prB_bv {N p q q' : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1))
     (e : Fin (q + 1) →o Fin (q' + 1)) (w : Cn (box F) N) :
     prB F e (bv F ρ₁ ρ₂ w) = bv F ρ₁ (e.comp ρ₂) w := by
@@ -356,6 +491,9 @@ theorem prB_bv {N p q q' : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : 
   exact congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain ρ₁ (e.comp ρ₂) a b)))
     (AlgHom.id_comp _) (mp_push b _ _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Rewrite using `[bv_apply, bv_apply, pr_apply]`. Use `(tmap_tmap _ _ _ _ (w (bichain (ρ₁.comp e) (ρ₂.comp e) a b))).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain (ρ₁.comp e) (ρ₂.comp e) a b))) (mp_push a _ _) (mp_push b _ _)`.
+-/
 theorem bv_pr {N N' p q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1))
     (e : Fin (N' + 1) →o Fin (N + 1)) (w : Cn (box F) N') :
     bv F ρ₁ ρ₂ (pr (box F) e w) = bv F (ρ₁.comp e) (ρ₂.comp e) w := by
@@ -365,6 +503,9 @@ theorem bv_pr {N N' p q : ℕ} (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : F
   exact congrArg₂ (fun f g ↦ Algebra.TensorProduct.map f g (w (bichain (ρ₁.comp e) (ρ₂.comp e) a b)))
     (mp_push a _ _) (mp_push b _ _)
 
+/- English proof (translation)
+Rewrite using `[show ρ₁ = ρ₁' from OrderHom.ext _ _ (funext h₁), show ρ₂ = ρ₂' from OrderHom.ext _ _ (funext h₂)]`.
+-/
 theorem bv_congr {N p q : ℕ} {ρ₁ ρ₁' : Fin (N + 1) →o Fin (p + 1)} {ρ₂ ρ₂' : Fin (N + 1) →o Fin (q + 1)}
     (h₁ : ∀ i, ρ₁ i = ρ₁' i) (h₂ : ∀ i, ρ₂ i = ρ₂' i) (w : Cn (box F) N) : bv F ρ₁ ρ₂ w = bv F ρ₁' ρ₂' w := by
   rw [show ρ₁ = ρ₁' from OrderHom.ext _ _ (funext h₁), show ρ₂ = ρ₂' from OrderHom.ext _ _ (funext h₂)]
@@ -391,12 +532,20 @@ def con {I : Type} [Finite I] (V : I → Type) [∀ i, AddCommGroup (V i)] [∀ 
   letI := Classical.decEq I
   (TensorProduct.lid R M).toLinearMap ∘ₗ LinearMap.rTensor M Ξ ∘ₗ (TensorProduct.piLeft R M V).symm.toLinearMap
 
+/- English proof (translation)
+Simplify using `[TensorProduct.piLeft]`. Both sides reduce to the same expression.
+-/
 theorem piLeft_pure {I : Type} [Fintype I] [DecidableEq I] (V : I → Type) [∀ i, AddCommGroup (V i)]
     [∀ i, Module R (V i)] (M : Type) [AddCommGroup M] [Module R M] (f : ∀ i, V i) (m : M) :
     TensorProduct.piLeft R M V (f ⊗ₜ m) = fun i ↦ f i ⊗ₜ m := by
   simp [TensorProduct.piLeft]
   rfl
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite I`. Use `letI := Classical.decEq I`. Establish `h : (TensorProduct.piLeft R M V).symm (fun i ↦ f i ⊗ₜ m) = f ⊗ₜ m`. Rewrite using `[LinearEquiv.symm_apply_eq, piLeft_pure]`. Simplify using `only [con, LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules.
+-/
 theorem con_pure {I : Type} [Finite I] (V : I → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module R (V i)] (M : Type)
     [AddCommGroup M] [Module R M] (Ξ : (∀ i, V i) →ₗ[R] R) (f : ∀ i, V i) (m : M) :
     con V M Ξ (fun i ↦ f i ⊗ₜ m) = Ξ f • m := by
@@ -408,6 +557,11 @@ theorem con_pure {I : Type} [Finite I] (V : I → Type) [∀ i, AddCommGroup (V 
   rw [h]
   simp
 
+/- English proof (translation)
+Use `letI := Fintype.ofFinite I`. Use `letI := Classical.decEq I`. Take `⟨t, rfl⟩` from `(TensorProduct.piLeft R M V).surjective u`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`.
+
+Consider the case `tmul f m => rw [piLeft_pure]`. Conclude with `hp f m`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `ha _ _ hx hy`.
+-/
 theorem pure_induction {I : Type} [Finite I] (V : I → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module R (V i)] (M : Type)
     [AddCommGroup M] [Module R M] {P : (∀ i, V i ⊗[R] M) → Prop} (h0 : P 0)
     (hp : ∀ (f : ∀ i, V i) (m : M), P fun i ↦ f i ⊗ₜ m) (ha : ∀ u v, P u → P v → P (u + v)) (u : ∀ i, V i ⊗[R] M) :

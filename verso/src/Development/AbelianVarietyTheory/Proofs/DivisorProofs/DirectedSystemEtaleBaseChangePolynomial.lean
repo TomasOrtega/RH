@@ -3,6 +3,25 @@ open IsLocalRing Polynomial TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `h : ∀ k l, k ≤ l → P k ⊗[R] E₀ →+* P l ⊗[R] E₀` to `fun k l hkl => (Algebra.TensorProduct.map (inc k l hkl) (AlgHom.id R E₀)).toRingHom`. Set `e : ∀ k, P k ⊗[R] E₀ →+* Q ⊗[R] E₀` to `fun k => (Algebra.TensorProduct.map (sub k) (AlgHom.id R E₀)).toRingHom`. Establish `hh : ∀ k l (hkl : k ≤ l) (p : P k) (y : E₀), h k l hkl (p ⊗ₜ y) = inc k l hkl p ⊗ₜ y` using `fun k l hkl p y => by simp [h]`. Establish `he : ∀ k (p : P k) (y : E₀), e k (p ⊗ₜ y) = sub k p ⊗ₜ y` using `fun k p y => by simp [e]`. Establish `hcompat : ∀ k l (hkl : k ≤ l) (y : P k ⊗[R] E₀), e l (h k l hkl y) = e k y`.
+
+Introduce `k l hkl y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p z => rw [hh, he, he, hsub_comp]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add]`.
+
+Use `⟨h, e, hh, he, hcompat, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hkk y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p z => rw [hh, hinc_id]`.
+
+Consider the case `add a b ha hb => rw [map_add, ha, hb]`. Introduce `k l m hkl hlm hkm y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p z => rw [hh, hh, hh, hinc_comp k l m hkl hlm hkm]`.
+
+Consider the case `add a b ha hb => rw [map_add, map_add, map_add, ha, hb]`. Introduce `k`. Establish `hfun : ⇑(e k) = ⇑(LinearMap.rTensor E₀ (sub k).toLinearMap)`. Use function extensionality and compare the values at `z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul p y => rw [he, LinearMap.rTensor_tmul, AlgHom.toLinearMap_apply]`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Rewrite using `[hfun]`. Conclude with `Module.Flat.rTensor_preserves_injective_linearMap _ (hsub_inj k)`.
+
+Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨k₀, 0, map_zero _⟩`. Consider the case `tmul q y`. Take `⟨k, p, rfl⟩` from `hcov q`.
+
+Conclude with `⟨k, p ⊗ₜ y, he k p y⟩`. Consider the case `add a b ha hb`. Take `⟨k₁, y₁, rfl⟩` from `ha`. Take `⟨k₂, y₂, rfl⟩` from `hb`. Take `⟨m, h₁, h₂⟩` from `directed_of (· ≤ ·) k₁ k₂`.
+
+Conclude with `⟨m, h k₁ m h₁ y₁ + h k₂ m h₂ y₂, by rw [map_add, hcompat, hcompat]⟩`.
+-/
 theorem tensor_directedSystem_of_flat (R : Type) [CommRing R] {ι : Type} [Preorder ι]
     [IsDirected ι (· ≤ ·)] (k₀ : ι) (P : ι → Type) [∀ k, CommRing (P k)]
     [instP : ∀ k, Algebra R (P k)] (Q : Type) [CommRing Q] [Algebra R Q]
@@ -69,6 +88,39 @@ theorem tensor_directedSystem_of_flat (R : Type) [CommRing R] {ι : Type} [Preor
       obtain ⟨m, h₁, h₂⟩ := directed_of (· ≤ ·) k₁ k₂
       exact ⟨m, h k₁ m h₁ y₁ + h k₂ m h₂ y₂, by rw [map_add, hcompat, hcompat]⟩
 
+/- English proof (translation)
+Introduce `T _ ι _ _ 𝒜 hA hcov i₀ h₀ E _ _ E₀ _ _ _ hφ`. Take `⟨φ⟩` from `hφ`. Use `letI instA : ∀ k, Algebra (𝒜 i₀)[X] (𝒜 k)[X] := fun k => (mapRingHom (Subring.inclusion (hA (h₀ k)))).toAlgebra`. Use `letI instT : Algebra (𝒜 i₀)[X] T[X] := (mapRingHom (𝒜 i₀).subtype).toAlgebra`. Establish `hincl : ∀ {a b c : ι} (hab : a ≤ b) (hbc : b ≤ c), (Subring.inclusion (hA hbc)).comp (Subring.inclusion (hA hab)) = Subring.inclusion (hA (hab.trans hbc))`.
+
+Introduce `a b c hab hbc`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hsub : ∀ {a b : ι} (hab : a ≤ b), (𝒜 b).subtype.comp (Subring.inclusion (hA hab)) = (𝒜 a).subtype`. Introduce `a b hab`.
+
+Use extensionality with `x`. Both sides reduce to the same expression. Set `inc : ∀ k l, k ≤ l → (𝒜 k)[X] →ₐ[(𝒜 i₀)[X]] (𝒜 l)[X]` to `fun k l hkl => { toRingHom := mapRingHom (Subring.inclusion (hA hkl)) commutes' := fun p => by`. Express the relevant statement in the definitionally equal form `Polynomial.map _ (Polynomial.map _ p) = Polynomial.map _ p`. Rewrite using `[Polynomial.map_map, hincl (h₀ k) hkl] }`.
+
+Set `sub : ∀ k, (𝒜 k)[X] →ₐ[(𝒜 i₀)[X]] T[X]` to `fun k => { toRingHom := mapRingHom (𝒜 k).subtype commutes' := fun p => by`. Express the relevant statement in the definitionally equal form `Polynomial.map _ (Polynomial.map _ p) = Polynomial.map _ p`. Rewrite using `[Polynomial.map_map, hsub (h₀ k)] }`. Use `haveI : Module.Flat (𝒜 i₀)[X] E₀ := inferInstance`. Establish `hcovT : ∀ q : T[X], ∃ k p, sub k p = q`.
+
+Introduce `q`. Establish `hq : ∃ k, ∀ n, q.coeff n ∈ 𝒜 k`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨k₁, h₁⟩` from `hp`.
+
+Take `⟨k₂, h₂⟩` from `hq`. Take `⟨m, hm₁, hm₂⟩` from `directed_of (· ≤ ·) k₁ k₂`. Conclude with `⟨m, fun n => by`. Rewrite using `[coeff_add]`. Conclude with `add_mem (hA hm₁ (h₁ n)) (hA hm₂ (h₂ n))⟩`.
+
+Consider the case `monomial n c`. Take `⟨j, hj⟩` from `hcov c`. Use `⟨j, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_monomial]`. Use `split_ifs`.
+
+Conclude with `hj`. Conclude with `zero_mem _`. Take `⟨k, hk⟩` from `hq`. Establish `hsubset : (↑q.coeffs : Set T) ⊆ 𝒜 k`. Introduce `c hc`.
+
+Take `⟨n, -, rfl⟩` from `Polynomial.mem_coeffs_iff.mp hc`. Conclude with `hk n`. Use `⟨k, q.toSubring (𝒜 k) hsubset, ?_⟩` and prove the remaining obligations. Use `show Polynomial.map (𝒜 k).subtype _ = q`. Conclude with `Polynomial.map_toSubring _ _ _`.
+
+Take `⟨h, e', hh, he, hcompat, hid, hcomp, hinj, hcov'⟩` from `tensor_directedSystem_of_flat (𝒜 i₀)[X] i₀ (fun k => (𝒜 k)[X]) (instP := instA) T[X] E₀ inc sub (fun k hkk p => by`. Establish `hid : Subring.inclusion (hA hkk) = RingHom.id _` using `by ext; rfl`. Use `show Polynomial.map _ p = p`. Rewrite using `[hid, Polynomial.map_id])`. Use the proof step `(fun k l m hkl hlm hkm p => by show Polynomial.map _ p = Polynomial.map _ (Polynomial.map _ p)`.
+
+Rewrite using `[Polynomial.map_map, hincl hkl hlm])`. Use the proof step `(fun k l hkl p => by show Polynomial.map _ (Polynomial.map _ p) = Polynomial.map _ p`. Rewrite using `[Polynomial.map_map, hsub hkl])`. Use the proof step `(fun k p q hpq => Polynomial.map_injective _ Subtype.val_injective hpq)`. Use `hcovT`.
+
+Set `instC : ∀ k, Algebra (𝒜 k) (TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀)` to `fun k => ((algebraMap (𝒜 k)[X] (TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀)).comp (Polynomial.C)).toAlgebra`. Establish `instS : ∀ k, @IsScalarTower (𝒜 k) (𝒜 k)[X] (TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀) _ _ (instC k).toSMul` using `fun k =>`. Use `letI := instC k`. Use the proof step `IsScalarTower.of_algebraMap_eq (fun a => by`. Express the relevant statement in the definitionally equal form `(algebraMap (𝒜 k)[X] (TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀)) (Polynomial.C a) = (algebraMap (𝒜 k)[X] (TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀)) (algebraMap (𝒜 k) (𝒜 k)[X] a)`.
+
+Rewrite using `[Polynomial.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply])`. Use `⟨fun k => TensorProduct (𝒜 i₀)[X] (𝒜 k)[X] E₀, fun k => inferInstance, fun k => inferInstance, instC, instS, fun k => inferInstance, fun k => φ.toRingHom.comp (e' k), h, ?_, ?_, ?_, hid, hcomp, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Use `show φ (e' k (p ⊗ₜ 1)) = algebraMap T[X] E (Polynomial.map (𝒜 k).subtype p)`.
+
+Rewrite using `[he, ← φ.commutes]`. Both sides reduce to the same expression. Introduce `k l hkl a show h k l hkl (C a ⊗ₜ 1) = C (Subring.inclusion (hA hkl) a) ⊗ₜ 1`. Rewrite using `[hh]`. Use `show Polynomial.map _ (C a) ⊗ₜ 1 = _`.
+
+Rewrite using `[Polynomial.map_C]`. Introduce `k l hkl y`. Conclude with `congrArg φ (hcompat k l hkl y)`. Introduce `k`. Conclude with `φ.injective.comp (hinj k)`.
+
+Introduce `x`. Take `⟨k, y, hy⟩` from `hcov' (φ.symm x)`. Use `⟨k, y, ?_⟩` and prove the remaining obligations. Use `show φ (e' k y) = x`. Rewrite using `[hy, AlgEquiv.apply_symm_apply]`.
+-/
 theorem directedSystem_etaleBaseChange : ∀ (T : Type) [CommRing T] (ι : Type) [Preorder ι] [IsDirected ι (· ≤ ·)]
     (𝒜 : ι → Subring T) (hA : Monotone 𝒜), (∀ x : T, ∃ i, x ∈ 𝒜 i) →
     ∀ (i₀ : ι), (∀ k, i₀ ≤ k) →

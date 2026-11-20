@@ -25,10 +25,34 @@ section Poly
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[coeff_pderiv, mul_comm]`.
+-/
 theorem coeff_pderiv_eq {σ : Type} (s : σ) (γ : σ →₀ ℕ) (f : MvPolynomial σ ℂ) :
     coeff γ (pderiv s f) = ((γ s : ℂ) + 1) * coeff (γ + Finsupp.single s 1) f := by
   rw [coeff_pderiv, mul_comm]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Use `set n := ∑ i, α₀ (e (i, c₀)) with hn`. Take `⟨i₀, -, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (s := Finset.univ) (f := fun i => α₀ (e (i, c₀))) (by omega)`. Take `⟨α, hα, hmax⟩` from `Finset.exists_max_image (f.support.filter fun γ => ∑ i, γ (e (i, c₀)) = n) (fun γ => γ (e (i₀, c₀))) ⟨α₀, by simp [hα₀, hn]⟩`.
+
+Simplify using `only [Finset.mem_filter, mem_support_iff] at hα hmax`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi, hi0⟩ : ∃ i, i ≠ i₀ ∧ α (e (i, c₀)) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `hα.2` as an intermediate fact.
+
+Rewrite `this` using `[Finset.sum_eq_single i₀ (fun j _ hj => hc j hj) (by simp)]`. Use `hrow α hα.1 i₀` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsg : ∀ (j j' : I) (c c' : K), (Finsupp.single (e (j, c)) 1 : σ →₀ ℕ) (e (j', c')) = if j = j' ∧ c = c' then 1 else 0`. Introduce `j j' c c'`.
+
+Simplify using `[Finsupp.single_apply, he.eq_iff]`. Set `δ : σ →₀ ℕ` to `α - Finsupp.single (e (i, c₀)) 1`. Establish `hδ : δ + Finsupp.single (e (i, c₀)) 1 = α`. Use extensionality with `s`. Distinguish the cases in `hs : s = e (i, c₀)`.
+
+Substitute `hs` using the available equality. Simplify using `[δ]`. Use linear arithmetic over natural numbers and integers. Simplify using `[δ, Finsupp.single_apply, Ne.symm hs]`. Establish `h` using `congrArg (coeff (Finsupp.single (e (i₀, c₀)) 1 + δ)) (hE i₀ i hi.symm)`.
+
+Rewrite `h` using `[coeff_sum, coeff_zero, Finset.sum_eq_single c₀, coeff_X_mul, coeff_pderiv_eq, hδ]`. Use `hα.1 ((mul_eq_zero.1 h).resolve_left ?_)` and prove the remaining obligations. Conclude with `Nat.cast_add_one_ne_zero _`. Introduce `c _ hc`. Rewrite using `[coeff_X_mul']`.
+
+Use `split_ifs`. Rewrite using `[coeff_pderiv_eq]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Establish `hv : ∀ j, (Finsupp.single (e (i₀, c₀)) 1 + δ - Finsupp.single (e (i₀, c)) 1 + Finsupp.single (e (i, c)) 1 : σ →₀ ℕ) (e (j, c₀)) = (if i₀ = j then 1 else 0) + δ (e (j, c₀))`.
+
+Introduce `j`. Simplify using `only [Finsupp.add_apply, Finsupp.tsub_apply, hsg, hc, and_false, if_false, and_true, Nat.sub_zero, add_zero]`. Establish `hαv : ∀ j, α (e (j, c₀)) = δ (e (j, c₀)) + (if i = j then 1 else 0)`. Introduce `j`. Rewrite using `[← hδ, Finsupp.add_apply, hsg]`.
+
+Simplify using the standard rewrite rules. Establish `h1` using `hmax _ ⟨h0, by`. Rewrite using `[← hα.2]`. Simplify using `only [hv, hαv, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use the proof step `ring⟩`.
+
+Rewrite `h1` using `[hv, hαv, if_pos rfl, if_neg hi]`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+-/
 theorem col_le {σ I K : Type} [Fintype I] [Fintype K] (e : I × K → σ) (he : Function.Injective e) (f : MvPolynomial σ ℂ)
     (k : ℕ) (c₀ : K) (hrow : ∀ α, coeff α f ≠ 0 → ∀ i, α (e (i, c₀)) ≤ k)
     (hE : ∀ i i', i ≠ i' → ∑ c, X (e (i, c)) * pderiv (e (i', c)) f = 0) (α₀ : σ →₀ ℕ) (hα₀ : coeff α₀ f ≠ 0) :
@@ -82,6 +106,11 @@ theorem col_le {σ I K : Type} [Fintype I] [Fintype K] (e : I × K → σ) (he :
     · rfl
   · simp
 
+/- English proof (translation)
+Establish `hne : (a, c) ≠ (b, c)` using `fun h => hab (Prod.ext_iff.1 h).1`. Use `⟨fun h1 h2 => ?_, fun h1 h2 h0 => ?_⟩` and prove the remaining obligations. Simplify using `[omE, raiB, lowB, h1, h2, hne]`. Establish `hd : pderiv (a, c) f = 0`. Use extensionality with `γ`.
+
+Rewrite using `[coeff_pderiv_eq, coeff_zero]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `using h0 _ h`. Simplify using `[omE, raiB, lowB, h1, h2, hne, hd, pderiv_X_of_ne hne.symm]`.
+-/
 theorem omE_off {P Q R S : ℕ} {a b : Ix P Q} (hab : a ≠ b) (c : Ix R S) (f : Formalism.BasicNotions.TH.Pol P Q R S) :
     (linePos (a, c) = true → linePos (b, c) = true → omE (a, c) (b, c) f = X (a, c) * pderiv (b, c) f) ∧
     (linePos (a, c) = false → linePos (b, c) = false → (∀ α, coeff α f ≠ 0 → α (a, c) = 0) → omE (a, c) (b, c) f = 0) := by
@@ -96,9 +125,39 @@ theorem omE_off {P Q R S : ℕ} {a b : Ix P Q} (hab : a ≠ b) (c : Ix R S) (f :
       simpa using h0 _ h
     simp [omE, raiB, lowB, h1, h2, hne, hd, pderiv_X_of_ne hne.symm]
 
+/- English proof (translation)
+Simplify using `[Eab, Matrix.trace_single_eq_of_ne _ _ _ hab]`.
+-/
 theorem trace_Eab_off {P Q : ℕ} {a b : Ix P Q} (hab : a ≠ b) : (Eab a b : Mat P Q).trace = 0 := by
   simp [Eab, Matrix.trace_single_eq_of_ne _ _ _ hab]
 
+/- English proof (translation)
+Introduce `f hf`. Establish `hun` using `GlobalTheory.FockLowWt.support_unmixed x k k' hk hk' f hf`. Rewrite `hf` using `[GlobalTheory.KFixIrr.mem_lowOne, GlobalTheory.KFixIrr.mem_chiOne]`. Establish `hval : ∀ α, coeff α f ≠ 0 → ∀ a : Ix P Q, GlobalTheory.FockLowDeg.cartanVal a α = (x : ℂ)`. Introduce `α hα a`.
+
+Establish `h` using `congrArg (coeff α) (hf.1 _ (GlobalTheory.FockLowDeg.isKC_Eab_diag a))`. Rewrite `h` using `[GlobalTheory.FockLowDeg.coeff_cartan, GlobalTheory.FockLowDeg.trace_Eab_diag, mul_one, coeff_smul, smul_eq_mul]`. Conclude with `mul_right_cancel₀ hα h`. Establish `hkC : (x : ℂ) - ((R : ℂ) - S) / 2 = k`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk` as an intermediate fact.
+
+Simplify `this` using `[cPair]`. Establish `hk'C : (x : ℂ) + ((R : ℂ) - S) / 2 = k'`. Use `congrArg (fun t : ℚ => (t : ℂ)) hk'` as an intermediate fact. Simplify `this` using `[cPair]`. Establish `hP : ∀ α, coeff α f ≠ 0 → ∀ i : Fin P, α (Sum.inl i, Sum.inl r) ≤ k`.
+
+Introduce `α hα i`. Establish `h` using `hval α hα (Sum.inl i)`. Simplify using `only [GlobalTheory.FockLowDeg.cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, (hun α hα).1, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Nat.cast_zero, zero_add, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `e : ((∑ c : Fin R, α (Sum.inl i, Sum.inl c) : ℕ) : ℂ) = (k : ℂ)`. Use `push_cast`.
+
+Take the linear combination `h + hkC`. Rewrite using `[← Nat.cast_injective e]`. Conclude with `Finset.single_le_sum (f := fun c => α (Sum.inl i, Sum.inl c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ r)`. Establish `hQ : ∀ α, coeff α f ≠ 0 → ∀ j : Fin Q, α (Sum.inr j, Sum.inr s) ≤ k'`. Introduce `α hα j`.
+
+Establish `h` using `hval α hα (Sum.inr j)`. Simplify using `only [GlobalTheory.FockLowDeg.cartanVal, Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, (hun α hα).2, Finset.sum_add_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Nat.cast_zero, zero_add, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `e : ((∑ c : Fin S, α (Sum.inr j, Sum.inr c) : ℕ) : ℂ) = (k' : ℂ)`. Use `push_cast`. Take the linear combination `h + hk'C`.
+
+Rewrite using `[← Nat.cast_injective e]`. Conclude with `Finset.single_le_sum (f := fun c => α (Sum.inr j, Sum.inr c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ s)`. Establish `hoff : ∀ a b : Ix P Q, a ≠ b → sameBlock a b → ∑ c, omE (a, c) (b, c) f = 0`. Introduce `a b hab hs`. Use `hf.1 _ (isKC_Eab hs)` as an intermediate fact.
+
+Rewrite `this` using `[trace_Eab_off hab, mul_zero, zero_smul, fockAct1_Eab, LinearMap.sum_apply]`. Then use the resulting hypothesis. Establish `cP` using `col_le (fun p : Fin P × Fin R => ((Sum.inl p.1, Sum.inl p.2) : Ln P Q R S)) (fun p p' h => by simpa [Prod.ext_iff] using h) f k r hP fun i i' hii => by`. Establish `hne : (Sum.inl i : Ix P Q) ≠ Sum.inl i'` using `by simpa using hii`. Use `hoff _ _ hne trivial` as an intermediate fact. Rewrite `this` using `[Fintype.sum_sum_type, Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin S))) fun c _ => (omE_off hne _ f).2 rfl rfl fun α hα => (hun α hα).1 i c, add_zero]`.
+
+Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun c _ => ((omE_off hne _ f).1 rfl rfl).symm`. Establish `cQ` using `col_le (fun p : Fin Q × Fin S => ((Sum.inr p.1, Sum.inr p.2) : Ln P Q R S)) (fun p p' h => by simpa [Prod.ext_iff] using h) f k' s hQ fun i i' hii => by`. Establish `hne : (Sum.inr i : Ix P Q) ≠ Sum.inr i'` using `by simpa using hii`. Use `hoff _ _ hne trivial` as an intermediate fact.
+
+Rewrite `this` using `[Fintype.sum_sum_type, Finset.sum_eq_zero (s := (Finset.univ : Finset (Fin R))) fun c _ => (omE_off hne _ f).2 rfl rfl fun α hα => (hun α hα).2 i c, zero_add]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun c _ => ((omE_off hne _ f).1 rfl rfl).symm`. Rewrite using `[← MvPolynomial.support_sum_monomial_coeff f]`. Use `Submodule.sum_mem _ fun α hα => ?_` and prove the remaining obligations.
+
+Establish `hα'` using `mem_support_iff.mp hα`. Establish `e : (monomial α (coeff α f) : Formalism.BasicNotions.TH.Pol P Q R S) = coeff α f • monomial α 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e]`. Use `Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem (k - ∑ i : Fin P, α (Sum.inl i, Sum.inl r), k' - ∑ j : Fin Q, α (Sum.inr j, Sum.inr s)) ?_)` and prove the remaining obligations.
+
+Establish `h` using `GlobalTheory.FockLowWt.monomial_mem_eig α (hun α hα').1 (hun α hα').2 r s`. Establish `h1` using `cP α hα'`. Establish `h2` using `cQ α hα'`. Simplify using `only at h1 h2`. Rewrite using `[Nat.cast_sub h1, Nat.cast_sub h2]`.
+
+Apply the tactic sequence `convert h using 3 <;> ring`.
+-/
 theorem lowOne_le_top {P Q R S : ℕ} (x : ℚ) (k k' : ℕ) (hk : x - cPair R S = k) (hk' : x + cPair R S = k')
     (r : Fin R) (s : Fin S) : GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') ≤ ⨆ n : ℕ × ℕ,
       Module.End.eigenspace (fockAct2 P Q R S (Eab (.inl r) (.inl r))) (((P : ℂ) - Q) / 2 + k - n.1) ⊓
@@ -180,6 +239,13 @@ section Alg
 
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `h` using `bottom_of_sum (a • 1 - D₁) (b • 1 - D₂) 0 (v := v) (SetLike.le_def.1 (iSup_mono fun n => ?_) hv) ?_`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, neg_zero, zero_smul, sub_eq_zero] at h`. Conclude with `⟨h.1.symm, h.2.symm⟩`. Introduce and unpack `x ⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite `h1`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, h1, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`.
+
+Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, h2, ← sub_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[sub_add_sub_comm, h0, add_smul, sub_self]`.
+-/
 theorem top_of_sum (D₁ D₂ : Module.End ℂ V) (a b : ℂ) {v : V}
     (hv : v ∈ ⨆ n : ℕ × ℕ, D₁.eigenspace (a - n.1) ⊓ D₂.eigenspace (b - n.2)) (h0 : D₁ v + D₂ v = (a + b) • v) :
     D₁ v = a • v ∧ D₂ v = b • v := by
@@ -197,6 +263,11 @@ theorem top_of_sum (D₁ D₂ : Module.End ℂ V) (a b : ℂ) {v : V}
   · simp only [LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]
     rw [sub_add_sub_comm, h0, add_smul, sub_self]
 
+/- English proof (translation)
+Use `eq_zero_of_below (-D) (-a) f N (fun i x hx => ?_) hv ?_` and prove the remaining obligations. Use `Module.End.mem_eigenspace_iff.1 (hN i hx)` as an intermediate fact. Rewrite using `[Module.End.mem_eigenspace_iff, LinearMap.neg_apply, this, ← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[LinearMap.neg_apply, h, ← neg_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eq_zero_of_above (D : Module.End ℂ V) (a : ℂ) {ι : Type} (f : ι → ℕ) (N : ι → Submodule ℂ V)
     (hN : ∀ i, N i ≤ D.eigenspace (a - f i)) {v : V} (hv : v ∈ ⨆ i, N i) (h : D v = (a + 1) • v) : v = 0 := by
   refine eq_zero_of_below (-D) (-a) f N (fun i x hx => ?_) hv ?_
@@ -218,6 +289,43 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.KFixIrr in
 
+/- English proof (translation)
+Take `⟨hb, hg, hc, hw, hw'⟩` from `hM.triple`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V.J) (incM F G.W.J) G.M.co X.β (X.β / X.α) om` using `hw`. Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Establish `hW1` using `Main.i_liefirst (lieSecond hKP) F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std hD.1.1 hD.2 hd hB1 (Main.hasExp_div B.emb hc.expβ hc.expα)`. Set `c : InfinitePlace F → ℚ` to `fun w => ((B.mα w - B.mβ w : ℤ) : ℚ) / 2`.
+
+Establish `ec : (fun w => -((c w : ℚ) : ℂ)) = fun w => ((B.mβ w - B.mα w : ℤ) : ℂ) / 2`. Use function extensionality and compare the values at `w`. Simplify using `only [c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hW1' : ActsBy B.emb A (om.comp (MonoidHom.inl _ _)) Φ (fockAct1 _ _ _ _) (fun w => -((c w : ℚ) : ℂ))`. Rewrite using `[ec]`. Conclude with `hW1`. Establish `hinj : Function.Injective Φ` using `hD.2.1`. Establish `L1` using `GlobalTheory.T.archimedean_theta_polynomial_lift_exists Main.i_actslaws Main.i_derex (Main.i_vacline Main.i_derex) F E σ _ _ _ _ _ _ G.V G.W G.M B.ψ B.emb A C Φ hb.cm hb.std hD.1.1 hD.1.2.1 hD.1.2.2 hD.2`.
+
+Establish `L2` using `GlobalTheory.T.archimedean_polynomial_tensor_character Main.i_actslaws Main.i_lineex (Main.i_kline Main.i_lineex) F E σ B _ _ _ _ _ _ G.V G.W om A Φ c hb.cm hD.1.1.2.1 hD.1.2.1 hinj hW1' (admissible_weil_action hM.triple)`. Establish `key : ∀ k, fixPart B G.M om k = (chiPart (InfinitePlace F) _ _ _ _ c ⊓ degLE (InfinitePlace F) _ _ _ _ k).map Φ`. Introduce `k`. Establish `hs : {f | f ∈ fockDeg G.M B.ψ B.emb k ∧ IsKFix B om f} = Φ '' ((chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ degLE (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) k : Submodule ℂ _) : Set _)`. Use extensionality with `f`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hf, hfix⟩`. Rewrite `hf` using `[L1 k]`. Take `⟨T, hT, rfl⟩` from `hf`. Conclude with `⟨T, ⟨(L2 T).1 hfix, hT⟩, rfl⟩`.
+
+Introduce and unpack `⟨T, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨by rw [L1 k]; exact ⟨T, h2, rfl⟩, (L2 T).2 h1⟩`. Rewrite using `[fixPart, hs, Submodule.span_image, Submodule.span_eq]`. Establish `bot : ∀ k < fixDeg B G.M om, chiPart (InfinitePlace F) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) c ⊓ degLE (InfinitePlace F) _ _ _ _ k = ⊥`. Introduce `k hk`.
+
+Establish `h0` using `fixPart_eq_bot_of_lt B G.M om hk`. Rewrite `h0` using `[key]`. Rewrite using `[← Submodule.comap_map_eq_of_injective hinj (_ ⊓ _), h0, Submodule.comap_bot, LinearMap.ker_eq_bot.2 hinj]`. Establish `hPR : a - G.p ≤ a + a' - (G.p + G.q)` using `by have := hg.aBig; omega`. Establish `hQS : G.p ≤ G.p + G.q` using `Nat.le_add_right _ _`.
+
+Establish `hnum : ∀ w, ∃ k k' : ℕ, 0 < k ∧ 0 < k' ∧ c w - cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k ∧ c w + cPair (a + a' - (G.p + G.q)) (G.p + G.q) = k'`. Introduce `w`. Establish `hk` using `hg.kappa w`. Take `⟨j, hj⟩` from `Main.i_parity F E σ B a a' G X om om' hM.triple w`. Take `⟨i, hi⟩` from `hg.even`.
+
+Establish `h1` using `hg.eBig`. Establish `h2` using `hg.aBig`. Establish `hle : G.p + G.q ≤ a + a'` using `by omega`. Establish `hR : ((a + a' - (G.p + G.q) : ℕ) : ℚ) = (i : ℚ) + i - ((G.p : ℚ) + G.q)`. Rewrite using `[Nat.cast_sub hle, hi]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(j - i + (G.p + G.q : ℕ)).toNat, (j + i - (G.p + G.q : ℕ)).toNat, by omega, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show (((j - i + (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j - i + (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions.
+
+Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[show (((j + i - (G.p + G.q : ℕ)).toNat : ℕ) : ℚ) = ((j + i - (G.p + G.q : ℕ) : ℤ) : ℚ) from by`. Conclude with `Int.toNat_of_nonneg (by omega)]` after adjusting the coercions.
+
+Simplify using `only [c, cPair, hj, hR]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `choose k k' hk hk' ek ek' using hnum`. Use `⟨fun w => (((a - G.p : ℕ) : ℂ) - G.p) / 2 + k w, fun w => -((((a - G.p : ℕ) : ℂ) - G.p) / 2) + k' w, fun w => ?_, fun w r s => ?_⟩` and prove the remaining obligations.
+
+Establish `h : ((k w : ℚ) + k' w) = (B.mα w : ℚ) - B.mβ w`. Rewrite using `[← ek, ← ek']`. Simplify using `only [c]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h' : ((k w : ℂ) + k' w) = (B.mα w : ℂ) - B.mβ w` using `by exact_mod_cast h`. Take the linear combination `h'`. Establish `hdeg` using `GlobalTheory.T.low_degree_le_fixed_degree hKP F E σ B a a' G X om om' Rm Rf hM`. Use `(GlobalTheory.T.low_part_le_fixed_part_image hKP F E σ B a a' G X om om' Rm Rf hM).trans ?_` and prove the remaining obligations. Rewrite using `[key, ← Submodule.map_comp, Submodule.map_le_iff_le_comap]`.
+
+Use `(chi_le_tensSpan c hPR hQS k k' hk hk' ek ek' _ fun m' hm' => bot m' (hm'.trans_le hdeg)).trans ?_` and prove the remaining obligations. Rewrite using `[tensSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg', rfl⟩`. Establish `hwt` using `lowOne_le_top (c w) (k w) (k' w) (ek w) (ek' w) r s (hg' w)`. Set `ℓ` to `(Rm.p ∘ₗ Φ) ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap g w`.
+
+Establish `hℓ : ∀ Z f, fockOp (Rm.p ∘ₗ Φ) w Z (ℓ f) = ℓ (fockAct2 _ _ _ _ Z f)` using `fun Z f => by`. Simplify using `only [ℓ, LinearMap.comp_apply _ ((PiTensorProduct.tprod ℂ).toLinearMap g w), MultilinearMap.toLinearMap_apply]`. Rewrite using `[fockOp_apply (surj_q hM hD) (keeps_q hKP hM hD w), GlobalTheory.TensIrr.atPl_tprod]`. Simplify using the standard rewrite rules. Establish `e : (Rm.p ∘ₗ Φ) (PiTensorProduct.tprod ℂ g) = ℓ (g w)` using `by simp [ℓ]`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, e]`. Establish `h2` using `Submodule.mem_map_of_mem (f := ℓ) hwt`. Rewrite `h2` using `[Submodule.map_iSup]`. Use `SetLike.le_def.1 (iSup_mono fun n => ?_) h2` and prove the remaining obligations. Introduce and unpack `_ ⟨f, ⟨h1, h2⟩, rfl⟩`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `h1`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[hℓ, h1, map_smul]`. Rewrite `h2`, the goal using `[SetLike.mem_coe, Module.End.mem_eigenspace_iff]`. Rewrite using `[hℓ, h2, map_smul]`.
+-/
 theorem top_weights (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockData B G.M A C Φ) :
     ∃ x₁ y₁ : InfinitePlace F → ℂ, (∀ w, x₁ w + y₁ w = (B.mα w : ℂ) - B.mβ w) ∧
     ∀ (w : InfinitePlace F) (r : Fin (a + a' - (G.p + G.q))) (s : Fin (G.p + G.q)),
@@ -312,9 +420,27 @@ theorem top_weights (hKP : KP) (hM : IsMatched B G X om om' Rm Rf) (hD : IsFockD
 
 end Weights
 
+/- English proof (translation)
+Simplify using `[Eab, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ h]`.
+-/
 theorem eab_lie_up {R S : ℕ} {a b : Ix R S} (h : b ≠ a) : Eab a a * Eab a b - Eab a b * Eab a a = Eab a b := by
   simp [Eab, Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne _ _ _ _ h]
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hCfg X om om' Rm Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C r₀ s₀ Φ hD hAd`. Establish `hb` using `hM.triple.base`. Establish `hg` using `hM.triple.geo`. Establish `hg₁` using `hM₁.triple.geo`. Establish `hq` using `surj_q hM hD`.
+
+Establish `hK` using `keeps_q hKP hM hD`. Take `⟨x₁, y₁, hxy, hwt⟩` from `top_weights hKP hM hD`. Use `set q := Rm.p ∘ₗ Φ with hqdef`. Establish `htw : ∀ v, v ∈ twPart B G.M om Rm.p G₁.W H' X.α ((a' : ℝ) / 2) (lowPartInf B G.M Rm.p) ↔ v ∈ lowPartInf B G.M Rm.p ∧ ∀ w, fockOp q w (Eab (.inl r₀) (.inl r₀)) v = x₁ w • v ∧ fockOp q w (Eab (.inr s₀) (.inr s₀)) v = y₁ w • v`. Establish `hs : {x | x ∈ lowPartInf B G.M Rm.p ∧ IsTwEig B G.M om Rm.p G₁.W H' X.α ((a' : ℝ) / 2) x} = ((lowPartInf B G.M Rm.p ⊓ ⨅ w, (fockOp q w (cen r₀ s₀)).eigenspace (x₁ w + y₁ w) : Submodule ℂ Rm.Pi) : Set Rm.Pi)`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Rewrite using `[isTwEig_iff hb hg.hW hg₁.hW hCfg.hH' hD.1.1.2.2 hD.1.2.2 hAd (actsBy_second hKP hM.triple hD) (admissible_weil_action hM.triple) (range_eq hM.triple hD) hq hK hM.triple.chars.expα]`. Simplify using `only [mul_div_cancel₀ _ (two_ne_zero (α := ℂ)), hxy]`. Both sides reduce to the same expression.
+
+Introduce `v`. Rewrite using `[twPart, hs, Submodule.span_eq]`. Simplify using `only [Submodule.mem_inf, Submodule.mem_iInf, Module.End.mem_eigenspace_iff, cen, map_add, LinearMap.add_apply]`. Use `and_congr_right fun hv => forall_congr' fun w => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Conclude with `top_of_sum _ _ _ _ (hwt w r₀ s₀ hv) h`.
+
+Rewrite using `[h.1, h.2, add_smul]`. Establish `hup : ∀ w (i j : Ix _ _) (μ : ℂ) (v : Rm.Pi), j ≠ i → fockOp q w (Eab i i) v = μ • v → fockOp q w (Eab i i) (fockOp q w (Eab i j) v) = (μ + 1) • fockOp q w (Eab i j) v`. Introduce `w i j μ v hji hv`. Use `LinearMap.congr_fun (fockOp_lie hq (hK w) (Eab i i) (Eab i j)) v` as an intermediate fact. Rewrite `this` using `[eab_lie_up hji, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hv, map_smul, eq_sub_iff_add_eq]`.
+
+Rewrite using `[← this, add_smul, one_smul]`. Conclude with `add_comm _ _`. Use `⟨x₁, y₁, htw, Or.inl fun v hv w => ⟨fun i hi => ?_, fun j hj => ?_⟩⟩` and prove the remaining obligations. Take `⟨hv1, hv2⟩` from `(htw v).1 hv`. Conclude with `eq_zero_of_above _ (x₁ w) Prod.fst _ (fun _ => inf_le_left) (hwt w r₀ s₀ (low_stab hKP hM hD w _ (isKC_Eab (by trivial)) hv1)) (hup w _ _ _ v (by simpa using hi) (hv2 w).1)`.
+
+Take `⟨hv1, hv2⟩` from `(htw v).1 hv`. Conclude with `eq_zero_of_above _ (y₁ w) Prod.snd _ (fun _ => inf_le_right) (hwt w r₀ s₀ (low_stab hKP hM hD w _ (isKC_Eab (by trivial)) hv1)) (hup w _ _ _ v (by simpa using hj) (hv2 w).2)`.
+-/
 theorem _root_.GlobalTheory.T.configuration_a_global_zeta_identity : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)
     (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

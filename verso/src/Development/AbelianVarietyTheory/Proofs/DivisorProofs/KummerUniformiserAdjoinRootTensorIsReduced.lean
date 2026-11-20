@@ -11,10 +11,16 @@ namespace KummerRootTensor
 
 variable {E : Type} [CommRing E] (B : Type) [CommRing B] [Algebra E B]
 
+/- English proof (translation)
+Rewrite using `[← Polynomial.aeval_map_algebraMap B, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]`.
+-/
 theorem aeval_root_map (Q : E[X]) :
     Polynomial.aeval (AdjoinRoot.root (Q.map (algebraMap E B))) Q = 0 := by
   rw [← Polynomial.aeval_map_algebraMap B, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self]
 
+/- English proof (translation)
+Establish `h : (1 : B) ⊗ₜ[E] AdjoinRoot.root Q = (Algebra.TensorProduct.includeRight : AdjoinRoot Q →ₐ[E] B ⊗[E] AdjoinRoot Q) (AdjoinRoot.root Q)` using `rfl`. Rewrite using `[Polynomial.aeval_map_algebraMap, h, Polynomial.aeval_algHom_apply, AdjoinRoot.aeval_eq, AdjoinRoot.mk_self, map_zero]`.
+-/
 theorem aeval_one_tmul_root (Q : E[X]) :
     Polynomial.aeval ((1 : B) ⊗ₜ[E] AdjoinRoot.root Q) (Q.map (algebraMap E B)) = 0 := by
   have h : (1 : B) ⊗ₜ[E] AdjoinRoot.root Q =
@@ -32,10 +38,16 @@ noncomputable def fromMap (Q : E[X]) :
   AdjoinRoot.liftAlgHom _ (Algebra.ofId B _) ((1 : B) ⊗ₜ[E] AdjoinRoot.root Q)
     (aeval_one_tmul_root B Q)
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.liftAlgHom_root _ _ _ _`.
+-/
 theorem toMap_root (Q : E[X]) :
     toMap B Q (AdjoinRoot.root Q) = AdjoinRoot.root (Q.map (algebraMap E B)) :=
   AdjoinRoot.liftAlgHom_root _ _ _ _
 
+/- English proof (translation)
+The claim follows from `AdjoinRoot.liftAlgHom_root _ _ _ _`.
+-/
 theorem fromMap_root (Q : E[X]) :
     fromMap B Q (AdjoinRoot.root (Q.map (algebraMap E B))) = (1 : B) ⊗ₜ[E] AdjoinRoot.root Q :=
   AdjoinRoot.liftAlgHom_root _ _ _ _
@@ -44,6 +56,9 @@ noncomputable def toTensorMap (Q : E[X]) :
     B ⊗[E] AdjoinRoot Q →ₐ[B] AdjoinRoot (Q.map (algebraMap E B)) :=
   Algebra.TensorProduct.lift (Algebra.ofId B _) (toMap B Q) (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Rewrite using `[toTensorMap, Algebra.TensorProduct.lift_tmul, map_one, one_mul, toMap_root]`.
+-/
 theorem toTensorMap_one_tmul_root (Q : E[X]) :
     toTensorMap B Q ((1 : B) ⊗ₜ[E] AdjoinRoot.root Q) = AdjoinRoot.root (Q.map (algebraMap E B)) := by
   rw [toTensorMap, Algebra.TensorProduct.lift_tmul, map_one, one_mul, toMap_root]
@@ -64,6 +79,15 @@ noncomputable def tensorEquiv (Q : E[X]) :
 
 end KummerRootTensor
 
+/- English proof (translation)
+Introduce `S K L _ _ _ _ _ _ _ _ _ _ _ _ π e D _ _ hφ hπ he`. Take `⟨φ⟩` from `hφ`. Use `set f : S[X] := X ^ e - C π with hf`. Establish `hinj : Function.Injective (algebraMap S L)`. Rewrite using `[IsScalarTower.algebraMap_eq S K L]`.
+
+Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective S K)`. Establish `hπ' : algebraMap S L π ≠ 0` using `(map_ne_zero_iff _ hinj).2 hπ.ne_zero`. Establish `he' : (e : L) ≠ 0`. Use `he.map (algebraMap S L)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+
+Conclude with `this.ne_zero`. Establish `hmap : f.map (algebraMap S L) = X ^ e - C (algebraMap S L π)`. Simplify using `[hf, Polynomial.map_sub, Polynomial.map_pow]`. Establish `hsep : (f.map (algebraMap S L)).Separable`. Rewrite using `[hmap]`.
+
+Conclude with `separable_X_pow_sub_C _ he' hπ'`. Establish `hred : IsReduced (AdjoinRoot (f.map (algebraMap S L)))` using `(Ideal.isRadical_iff_quotient_reduced _).1 (isRadical_iff_span_singleton.1 hsep.squarefree.isRadical)`. Set `ψ : TensorProduct S D L ≃ₐ[S] AdjoinRoot (f.map (algebraMap S L))` to `(Algebra.TensorProduct.comm S D L).trans ((Algebra.TensorProduct.congr AlgEquiv.refl φ).trans ((KummerRootTensor.tensorEquiv L f).restrictScalars S))`. Conclude with `isReduced_of_injective ψ.toRingHom ψ.injective`.
+-/
 theorem kummer_uniformiser_tensor_isReduced : ∀ (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]
     [FiniteDimensional K L] [Algebra.IsSeparable K L] (π : S) (e : ℕ) (D : Type) [CommRing D] [Algebra S D],

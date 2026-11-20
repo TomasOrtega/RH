@@ -10,6 +10,11 @@ namespace GlobalTheory.CuspRep.AlgExpo
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `e : atEmb τ (-Complex.I) = -atEmb τ Complex.I`. Rewrite using `[atEmb_eq]`. Simplify using the standard rewrite rules. Rewrite using `[atEmb_eq, map_add, map_smul, map_smul]`. Simplify using `only [expo, atEmb_conj, map_one, Complex.conj_I, e, map_neg, Complex.real_smul]`.
+
+Use `conv_rhs => rw [← Complex.re_add_im z]`. Simplify using `only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Take the linear combination `(z.im * dchi χ (atEmb τ Complex.I)) * Complex.I_mul_I`.
+-/
 theorem dchi_atEmb (χ : HChar E) (τ : E →+* ℂ) (z : ℂ) :
     dchi χ (atEmb τ z) = expo χ τ * z + expo χ (ComplexEmbedding.conjugate τ) * starRingEnd ℂ z := by
   have e : atEmb τ (-Complex.I) = -atEmb τ Complex.I := by
@@ -20,6 +25,11 @@ theorem dchi_atEmb (χ : HChar E) (τ : E →+* ℂ) (z : ℂ) :
   simp only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I]
   linear_combination (z.im * dchi χ (atEmb τ Complex.I)) * Complex.I_mul_I
 
+/- English proof (translation)
+Establish `hx : x = ∑ w : InfinitePlace E, atEmb w.embedding (x w)` using `by conv_lhs => rw [← Finset.univ_sum_single x]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `atEmb`. Rewrite using `[InfinitePlace.mk_embedding, if_pos rfl]`. Rewrite using `[hx, map_sum]`.
+
+Simplify using `only [map_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[dchi_atEmb]`. Simplify using `only [coord_atEmb', mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem dchi_eq_sum (χ : HChar E) (x : Cinf E) : dchi χ x = ∑ φ : E →+* ℂ, expo χ φ * coord φ x := by
   classical
   have hx : x = ∑ w : InfinitePlace E, atEmb w.embedding (x w) := by
@@ -35,12 +45,18 @@ theorem dchi_eq_sum (χ : HChar E) (x : Cinf E) : dchi χ x = ∑ φ : E →+* �
   simp only [coord_atEmb', mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ,
     if_true]
 
+/- English proof (translation)
+Rewrite using `[← expU_log u, chiInf_expU, dchi_eq_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations. Rewrite using `[coord_expU, hn, ← Complex.exp_int_mul]`.
+-/
 theorem chiInf_eq_prod (χ : HChar E) (n : (E →+* ℂ) → ℤ) (hn : ∀ τ, expo χ τ = n τ) (u : (Cinf E)ˣ) :
     ((chiInf χ u : ℂˣ) : ℂ) = ∏ φ : E →+* ℂ, coord φ (u : Cinf E) ^ n φ := by
   rw [← expU_log u, chiInf_expU, dchi_eq_sum, Complex.exp_sum]
   refine Finset.prod_congr rfl fun φ _ => ?_
   rw [coord_expU, hn, ← Complex.exp_int_mul]
 
+/- English proof (translation)
+Introduce `E _ _ _ χ n hn k _`. Establish `e` using `chiInf_eq_prod χ n hn (Units.map (diagInf E).toMonoidHom k)`. Rewrite using `[HChar.inf, MonoidHom.comp_apply, infDiag_eq]`. Use `e.trans (Finset.prod_congr rfl fun φ _ => ?_)` and prove the remaining obligations. Conclude with `congrArg (· ^ n φ) (coord_algebraMap φ (k : E))`.
+-/
 theorem isAlgPos_of_expo : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (χ : HChar E)
     (n : (E →+* ℂ) → ℤ), (∀ τ, expo χ τ = n τ) → IsAlgPos χ n := by
   intro E _ _ _ χ n hn k _

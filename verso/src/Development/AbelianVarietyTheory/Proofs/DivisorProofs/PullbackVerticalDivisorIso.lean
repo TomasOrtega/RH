@@ -12,11 +12,27 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.DivPullStr
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.appLE, CommRingCat.comp_apply, GlobalTheory.LB.resG_resG]`.
+-/
 theorem resG_appLE {X Y : Scheme.{0}} (g : Y ⟶ X) (U : X.Opens) (V W : Y.Opens) (e : V ≤ g ⁻¹ᵁ U)
     (h' : W ≤ V) (h : W ≤ g ⁻¹ᵁ U) (a : Γ(X, U)) :
     resG Y h' ((g.appLE U V e).hom a) = resG Y h ((g.app U).hom a) := by
   rw [Scheme.Hom.appLE, CommRingCat.comp_apply, GlobalTheory.LB.resG_resG]
 
+/- English proof (translation)
+Introduce `O _ _ _ B B' f I`. Use `set D := Model.effData I with hD`. Establish `hk : D.KeepsRegular f.f` using `Model.keepsRegular f.comp_str (Model.idealSheaf_effData I)`. Establish `hL' : (D.lb.pull f.f).IsLB` using `Semi.LB.isLB_pull D.isLB_lb f.f`. Take `⟨e₁⟩` from `nonempty_cut_iso D`.
+
+Rewrite `e₁` using `[Model.idealSheaf_effData]`. Take `⟨e₂⟩` from `GlobalTheory.T.pullback_twisted_section_iso f.f (GlobalTheory.structureModule B.X) D.isLB_lb D.canonical hL'`. Take `⟨eO⟩` from `AbLaw.LbSheafModel.pullback_unit (X := B.X) f.f`. Set `G` to `(Scheme.Modules.pullback f.f).obj (GlobalTheory.structureModule B.X)`. Use `haveI : G.IsQuasicoherent := isQuasicoherent_pullback f.f _`.
+
+Use `haveI := Twist.isQuasicoherent_twist (F := G) (isLB_lbZPow hL' (-1))`. Set `φ : twistZ G (D.lb.pull f.f) (-1) ⟶ GlobalTheory.structureModule B'.X` to `cutHom G hL' (secPull D.canonical f.f) ≫ eO.hom`. Establish `hM : IsMulBy φ (D.pull f.f hk).canonical`. Introduce `i V h`. Establish `h' : V ≤ (D.lb.pull f.f).U (fun _ => i)` using `fun y hy => mem_pull.2 (h hy)`.
+
+Take `⟨e, he⟩` from `isMulBy_cutHom G hL' (secPull D.canonical f.f) (fun _ => i) V h'`. Use `⟨e ≪≫ₗ LB.appLinearEquiv eO V, fun t => ?_⟩` and prove the remaining obligations. Establish `hs : resG B'.X h' ((secPull D.canonical f.f).f (fun _ => i)) = resG B'.X h ((D.pull f.f hk).canonical.f i)`. Conclude with `resG_appLE f.f (D.U i) _ V _ h' h (D.f i)`. Express the relevant statement in the definitionally equal form `eO.hom.app V ((cutHom G hL' (secPull D.canonical f.f)).app V t) = _`.
+
+Rewrite using `[he, hs]`. Conclude with `(LB.appLinearEquiv eO V).map_smul _ _`. Take `⟨e₃⟩` from `nonempty_cokernel_iso (D.pull f.f hk) hM`. Establish `hI : (D.pull f.f hk).idealSheaf = (GlobalTheory.Vert.Model.effPull f.comp_str I).1`. Rewrite using `[EffCartierData.idealSheaf_pull, hD, Model.idealSheaf_effData]`.
+
+Both sides reduce to the same expression. Rewrite `e₃` using `[hI]`. Conclude with `⟨(Scheme.Modules.pullback f.f).mapIso e₁.symm ≪≫ e₂ ≪≫ (cokernelCompIsIso _ _).symm ≪≫ e₃⟩`.
+-/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (B B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B) (I : B.effVert), Nonempty ((Scheme.Modules.pullback f.f).obj (divMod I.1) ≅ divMod (GlobalTheory.Vert.Model.effPull f.comp_str I).1) := by
   intro O _ _ _ B B' f I
   set D := Model.effData I with hD

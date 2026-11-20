@@ -15,6 +15,9 @@ namespace GlobalTheory.UnrCycExt
 
 variable {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Use `(A.valuation_le_one_iff _).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A ?_)` and prove the remaining obligations. Conclude with `x.2.map (IsScalarTower.toAlgHom ℤ K Ω)`.
+-/
 theorem val_le_one_of_int {K : Type} [Field K] [NumberField K] [Algebra K Ω] (A : ValuationSubring Ω)
     (x : 𝓞 K) : A.valuation (algebraMap K Ω (x : K)) ≤ 1 := by
   refine (A.valuation_le_one_iff _).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A ?_)
@@ -34,6 +37,9 @@ def idealBelow (K : Type) [Field K] [NumberField K] [Algebra K Ω] (A : Valuatio
         ≤ 1 * A.valuation (algebraMap K Ω (b : K)) := mul_le_mul_left (val_le_one_of_int A c) _
       _ < 1 := by rw [one_mul]; exact hb
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_idealBelow {K : Type} [Field K] [NumberField K] [Algebra K Ω] {A : ValuationSubring Ω} {x : 𝓞 K} :
     x ∈ idealBelow K A ↔ A.valuation (algebraMap K Ω (x : K)) < 1 := Iff.rfl
 
@@ -62,10 +68,16 @@ def placeBelow (K : Type) [Field K] [NumberField K] [Algebra K Ω] (A : Valuatio
     rw [h] at this
     simpa using this)
 
+/- English proof (translation)
+Introduce `_` and use `Iff.rfl`.
+-/
 theorem isPlaceOver_placeBelow (K : Type) [Field K] [NumberField K] [Algebra K Ω] (A : ValuationSubring Ω)
     (x₀ : 𝓞 K) (h0 : x₀ ≠ 0) (hv : A.valuation (algebraMap K Ω (x₀ : K)) < 1) :
     IsPlaceOver A (placeBelow K A x₀ h0 hv) := fun _ => Iff.rfl
 
+/- English proof (translation)
+Introduce `x hx`. Rewrite `hx` using `[← IntermediateField.mem_toSubalgebra, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hβ.isAlgebraic]`. Establish `hle : Algebra.adjoin E ({β} : Set Ω) ≤ AlgHom.equalizer (τ : Ω →ₐ[E] Ω) (AlgHom.id E Ω)` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr hτ)`. Conclude with `hle hx`.
+-/
 theorem fix_adjoin {E : Type} [Field E] [Algebra E Ω] (β : Ω) (hβ : IsIntegral E β) (τ : Ω ≃ₐ[E] Ω)
     (hτ : τ β = β) : ∀ x ∈ IntermediateField.adjoin E ({β} : Set Ω), τ x = x := by
   intro x hx
@@ -74,12 +86,18 @@ theorem fix_adjoin {E : Type} [Field E] [Algebra E Ω] (β : Ω) (hβ : IsIntegr
     Algebra.adjoin_le (Set.singleton_subset_iff.mpr hτ)
   exact hle hx
 
+/- English proof (translation)
+Use `Polynomial.aeval_algHom_apply ((τ : Ω →ₐ[E] Ω).restrictScalars ℤ) β f` as an intermediate fact. Simplify using `only [AlgHom.coe_restrictScalars', AlgHom.coe_coe] at this`. Conclude with `this.trans (by rw [h, map_zero])`.
+-/
 theorem aeval_apply_eq_zero {E : Type} [Field E] [Algebra E Ω] (τ : Ω ≃ₐ[E] Ω) (f : ℤ[X]) {β : Ω}
     (h : aeval β f = 0) : aeval (τ β) f = 0 := by
   have := Polynomial.aeval_algHom_apply ((τ : Ω →ₐ[E] Ω).restrictScalars ℤ) β f
   simp only [AlgHom.coe_restrictScalars', AlgHom.coe_coe] at this
   exact this.trans (by rw [h, map_zero])
 
+/- English proof (translation)
+Apply `Subalgebra.map_injective (f := (IntermediateField.adjoin E ({β} : Set Ω)).val) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[AlgHom.map_adjoin, Set.image_singleton, Algebra.map_top, IntermediateField.range_val, IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hβ.isAlgebraic]`. Both sides reduce to the same expression.
+-/
 theorem adjoin_gen_eq_top (E : Type) [Field E] [Algebra E Ω] (β : Ω) (hβ : IsIntegral E β) :
     Algebra.adjoin E {(IntermediateField.AdjoinSimple.gen E β : IntermediateField.adjoin E ({β} : Set Ω))} = ⊤ := by
   apply Subalgebra.map_injective (f := (IntermediateField.adjoin E ({β} : Set Ω)).val) Subtype.val_injective
@@ -89,6 +107,49 @@ theorem adjoin_gen_eq_top (E : Type) [Field E] [Algebra E Ω] (β : Ω) (hβ : I
 
 open IntermediateField in
 
+/- English proof (translation)
+Establish `hAC : IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hgp : g.Prime` using `Fact.out`. Establish `hq2 : 2 ≤ g ^ n` using `le_trans hgp.two_le (Nat.le_self_pow hn.ne' g)`. Establish `hβint : IsIntegral ℤ β` using `⟨f, hf, by rw [← aeval_def]; exact hfβ⟩`.
+
+Establish `hβA : A.valuation β ≤ 1` using `(A.valuation_le_one_iff β).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A hβint)`. Establish `hβE : IsIntegral E β` using `Algebra.IsIntegral.isIntegral β`. Set `E'` to `IntermediateField.adjoin E ({β} : Set Ω)`. Establish `hfd : FiniteDimensional E E'` using `IntermediateField.adjoin.finiteDimensional hβE`. Establish `: FiniteDimensional ℚ E'` using `Module.Finite.trans E E'`.
+
+Use `haveI hNF : NumberField E' := ⟨⟩`. Use `haveI hAC' : IsAlgClosure E' Ω := ⟨hAC, Algebra.IsAlgebraic.tower_top (K := E) E'⟩`. Establish `hroot : ∀ τ : Ω ≃ₐ[E] Ω, τ ∈ ReciprocityTheory.Gal.Dec (F` using `E) A → A.valuation (τ β - β) < 1 → τ β = β := by`. Introduce `τ hτ hlt`. Establish `hτA : A.valuation (τ β) ≤ 1`.
+
+Rewrite using `[A.valuation_le_one_iff, ReciprocityTheory.Gal.apply_mem_iff_of_mem_Dec hτ, ← A.valuation_le_one_iff]`. Conclude with `hβA`. Use `(GlobalTheory.T.eq_of_roots_congr_of_derivative_unit A f β (τ β) hβA hτA hfβ (aeval_apply_eq_zero τ f hfβ) hu ?_).symm` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hlt`.
+
+Establish `hine : ∀ t ∈ Ine (F` using `E) A, ∀ e : E', t (algebraMap E' Ω e) = algebraMap E' Ω e := by`. Introduce `t ht e`. Establish `htβ : t β = β` using `hroot t ht.1 (ht.2 β hβA)`. Conclude with `fix_adjoin β hβE t htβ _ e.2`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob (F := E) h`.
+
+Rewrite `hσ` using `[hN]`. Establish `hσn : ∀ x : Ω, A.valuation x ≤ 1 → A.valuation ((σ ^ n) x - x ^ (g ^ n)) < 1` using `GlobalTheory.T.frobenius_pow_apply_sub_pow_lt_one A g σ hσ n`. Establish `hσnD : σ ^ n ∈ ReciprocityTheory.Gal.Dec (F` using `E) A := Subgroup.pow_mem _ hσ.1 n`. Establish `hσβ : (σ ^ n) β = β`. Use `hroot _ hσnD ?_` and prove the remaining obligations.
+
+Establish `e1 : (σ ^ n) β - β = ((σ ^ n) β - β ^ (g ^ n)) + (β ^ (g ^ n) - β)` using `by ring`. Rewrite using `[e1]`. Conclude with `Valuation.map_add_lt _ (hσn β hβA) hq`. Establish `hfix : ∀ x ∈ E', (σ ^ n) x = x` using `fix_adjoin β hβE (σ ^ n) hσβ`. Establish `hpowq : ∀ y : 𝓞 E', A.valuation (algebraMap E' Ω ((y : E') ^ (g ^ n) - (y : E'))) < 1`.
+
+Introduce `y`. Establish `hyA` using `val_le_one_of_int A y`. Use `hσn _ hyA` as an intermediate fact. Establish `hy2 : (σ ^ n) (algebraMap E' Ω (y : E')) = algebraMap E' Ω (y : E')` using `hfix _ (y : E').2`. Rewrite `this` using `[hy2]`.
+
+Rewrite using `[map_sub, map_pow, Valuation.map_sub_swap]`. Conclude with `this`. Establish `hg0 : ((g : ℕ) : 𝓞 E') ≠ 0` using `by exact_mod_cast hgp.ne_zero`. Establish `hgΩ : A.valuation ((g : ℕ) : Ω) < 1`. Use `(h ((g : ℕ) : 𝓞 E)).mpr hg1` as an intermediate fact.
+
+Simplify using `using this`. Establish `hgv : A.valuation (algebraMap E' Ω (((g : ℕ) : 𝓞 E') : E')) < 1`. Simplify using `using hgΩ`. Set `w'` to `placeBelow E' A ((g : ℕ) : 𝓞 E') hg0 hgv`. Establish `hw' : IsPlaceOver A w'` using `isPlaceOver_placeBelow E' A _ hg0 hgv`.
+
+Set `ζE : E'` to `⟨ζ, hζβ⟩`. Establish `hζE : IsPrimitiveRoot ζE (g ^ n - 1)` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap E' Ω) hζ (algebraMap E' Ω).injective`. Use `⟨E', inferInstance, hNF, ?_, inferInstance, inferInstance, inferInstance, hAC', w', hw', hgv, ?_, ?_, ⟨ζE, hζE⟩, hine⟩` and prove the remaining obligations. Break down `hTC with h3 | ⟨a, b, hab, hlt⟩` into its components or cases. Conclude with `GlobalTheory.T.isTotallyComplex_of_primitiveRoot_three_le E' ζE (g ^ n - 1) hζE h3`.
+
+Use `GlobalTheory.T.isTotallyComplex_of_root_quadratic_neg_disc E' (AdjoinSimple.gen E β) a b ?_ hlt` and prove the remaining obligations. Apply `(algebraMap E' Ω).injective` to reduce the goal to its premises. Simplify using `using hab`. Establish `hβ'int : IsIntegral ℤ (AdjoinSimple.gen E β)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ E' Ω) (algebraMap E' Ω).injective).mp hβint`. Set `β' : 𝓞 E'` to `⟨AdjoinSimple.gen E β, hβ'int⟩`.
+
+Establish `hmap : ∀ p : ℤ[X], algebraMap E' Ω ((aeval β' p : 𝓞 E') : E') = aeval β p`. Introduce `p`. Establish `h1 : ((aeval β' p : 𝓞 E') : E') = aeval (β' : E') p` using `(Polynomial.aeval_algebraMap_apply E' β' p).symm`. Rewrite using `[h1, ← Polynomial.aeval_algebraMap_apply]`. Both sides reduce to the same expression.
+
+Establish `hfβ' : aeval β' f = 0`. Establish `h2` using `hmap f`. Rewrite `h2` using `[hfβ, ← map_zero (algebraMap E' Ω)]`. Conclude with `(algebraMap E' Ω).injective h2` after adjusting the coercions. Establish `hover : ∀ x : 𝓞 E, algebraMap (𝓞 E) (𝓞 E') x ∈ w'.asIdeal ↔ x ∈ w.asIdeal`.
+
+Introduce `x`. Rewrite using `[← h x]`. Use `show A.valuation (algebraMap E' Ω ((algebraMap (𝓞 E) (𝓞 E') x : 𝓞 E') : E')) < 1 ↔ _`. Rewrite using `[show ((algebraMap (𝓞 E) (𝓞 E') x : 𝓞 E') : E') = algebraMap E E' (x : E) from rfl, ← IsScalarTower.algebraMap_apply]`. Establish `hder : aeval β' (derivative f) ∉ w'.asIdeal` using `fun hm => hu (by`.
+
+Rewrite using `[← hmap]`. Conclude with `hm)`. Use `GlobalTheory.T.algebraMap_not_mem_sq_of_derivative_not_mem E E' w w' β' f hf hfβ' (adjoin_gen_eq_top E β hβE) hover hder _ hg2` as an intermediate fact. Simplify using `using this`. Use `show Nat.card (𝓞 E' ⧸ w'.asIdeal) = g ^ n`.
+
+Establish `hqΩ : A.valuation ((g ^ n : ℕ) : Ω) < 1`. Rewrite using `[Nat.cast_pow, Valuation.map_pow]`. Conclude with `pow_lt_one₀ zero_le hgΩ hn.ne'`. Establish `hN' : ¬ A.valuation (((g ^ n - 1 : ℕ)) : Ω) < 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one, ← neg_sub, Valuation.map_neg, Valuation.map_one_sub_of_lt _ hqΩ]`.
+
+Conclude with `lt_irrefl 1`. Establish `hζint : IsIntegral ℤ ζE` using `hζE.isIntegral (by omega)`. Set `ζ' : 𝓞 E'` to `⟨ζE, hζint⟩`. Use `haveI : w'.asIdeal.IsMaximal := w'.isMaximal`. Use `GlobalTheory.T.card_quotient_eq_of_pow_sub_self_mem' w'.asIdeal (g ^ n) ζ' hq2 ?_ ?_ ?_` and prove the remaining obligations.
+
+Apply `FaithfulSMul.algebraMap_injective (𝓞 E') E'` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Conclude with `hζE.pow_eq_one`. Introduce `j hj0 hjq hm`. Establish `hm1 : A.valuation (algebraMap E' Ω (algebraMap (𝓞 E') E' (ζ' ^ j - 1))) < 1` using `hm`.
+
+Rewrite `hm1` using `[map_sub, map_pow, map_one, map_sub, map_pow, map_one]`. Establish `hm' : A.valuation (ζ ^ j - 1) < 1` using `hm1`. Use `ReciprocityTheory.Gal.eq_of_pow_eq_one A hN' (by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]) (one_pow _) hm'` as an intermediate fact. Establish `hd` using `hζ.dvd_of_pow_eq_one j this`. Conclude with `absurd (Nat.le_of_dvd hj0 hd) (by omega)`.
+
+Introduce `y`. Use `hpowq y` as an intermediate fact. Use `show A.valuation (algebraMap E' Ω (((y ^ (g ^ n) - y : 𝓞 E')) : E')) < 1`. Simplify using `using this`.
+-/
 theorem core {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E Ω] {g : ℕ} [Fact g.Prime]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w)
     (hg1 : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (hg2 : ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2) (hN : normV w = g)
@@ -222,6 +283,43 @@ theorem core {E : Type} [Field E] [NumberField E] [Algebra E Ω] [IsAlgClosure E
       show A.valuation (algebraMap E' Ω (((y ^ (g ^ n) - y : 𝓞 E')) : E')) < 1
       simpa using this
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ g _ A w h i hi n hn`. Take `⟨hg1, hg2, hN⟩` from `GlobalTheory.T.padic_ringEquiv_adicCompletion_place_unramified_degree_one E g w i hi`. Establish `hAC : IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `hgp : g.Prime` using `Fact.out`.
+
+Establish `hgΩ : A.valuation ((g : ℕ) : Ω) < 1`. Use `(h ((g : ℕ) : 𝓞 E)).mpr hg1` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `h4 : 4 ≤ g ^ n`. Establish `hqΩ : A.valuation ((g ^ n : ℕ) : Ω) < 1`.
+
+Rewrite using `[Nat.cast_pow, Valuation.map_pow]`. Conclude with `pow_lt_one₀ zero_le hgΩ hn.ne'`. Establish `hN' : A.valuation (((g ^ n - 1 : ℕ)) : Ω) = 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_one, ← neg_sub, Valuation.map_neg, Valuation.map_one_sub_of_lt _ hqΩ]`. Use `haveI : NeZero (((g ^ n - 1 : ℕ)) : Ω) := ⟨by exact_mod_cast (show g ^ n - 1 ≠ 0 by omega)⟩`.
+
+Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (g ^ n - 1)`. Establish `hζ1 : A.valuation ζ = 1` using `ReciprocityTheory.Gal.valuation_eq_one_of_pow_eq_one A (by omega) hζ.pow_eq_one`. Use `GlobalTheory.UnrCycExt.core h hg1 hg2 hN n hn ζ (X ^ (g ^ n - 1) - C 1) (monic_X_pow_sub_C 1 (by omega)) ?_ ?_ ?_ ζ hζ (IntermediateField.mem_adjoin_simple_self E ζ) (Or.inl (by omega))` and prove the remaining obligations. Simplify using `[hζ.pow_eq_one]`. Rewrite using `[derivative_sub, derivative_X_pow, derivative_C, sub_zero, map_mul, aeval_C, map_pow, aeval_X, Valuation.map_mul, Valuation.map_pow, hζ1, one_pow, mul_one]`.
+
+Establish `e : algebraMap ℤ Ω (((g ^ n - 1 : ℕ) : ℤ)) = (((g ^ n - 1 : ℕ)) : Ω)` using `by simp`. Rewrite using `[e, hN']`. Conclude with `lt_irrefl 1`. Establish `e : ζ ^ (g ^ n) = ζ`. Rewrite using `[show g ^ n = (g ^ n - 1) + 1 by omega, pow_succ, hζ.pow_eq_one, one_mul]`.
+
+Rewrite using `[e, sub_self, Valuation.map_zero]`. Conclude with `zero_lt_one`. Establish `hn1 : n = 1`. Assume the negation of the conclusion as `hne`. Establish `h2 : g ^ 2 ≤ g ^ n` using `Nat.pow_le_pow_right hgp.pos (by omega)`.
+
+Establish `h3 : 4 ≤ g ^ 2` using `by nlinarith [hgp.two_le]`. Use linear arithmetic over natural numbers and integers. Substitute `hn1` using the available equality. Establish `hg3 : g < 4` using `by simpa using (show ¬ 4 ≤ g ^ 1 from h4)`. Establish `hg23 : g = 2 ∨ g = 3`.
+
+Use `hgp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Break down `hg23 with rfl | rfl` into its components or cases. Set `f : ℤ[X]` to `X ^ 2 - X + C 2`. Establish `hfm : f.Monic` using `by show (X ^ 2 - X + C 2 : ℤ[X]).Monic monicity!`.
+
+Establish `hfd : (f.map (algebraMap ℤ Ω)).degree ≠ 0`. Rewrite using `[degree_map_eq_of_leadingCoeff_ne_zero _ (by rw [hfm.leadingCoeff]; simp)]`. Establish `e : (X ^ 2 - X + C 2 : ℤ[X]).degree = 2` using `by compute_degree!`. Use `show (X ^ 2 - X + C 2 : ℤ[X]).degree ≠ 0`. Rewrite using `[e]`.
+
+Evaluate the decidable proposition. Take `⟨α, hα⟩` from `IsAlgClosed.exists_root _ hfd`. Establish `hαf : aeval α f = 0` using `by rw [aeval_def, ← eval_map]; exact hα`. Establish `hα' : α ^ 2 - α + 2 = 0` using `by simpa [f, map_ofNat] using hαf`. Establish `h2Ω : A.valuation (2 : Ω) < 1` using `by simpa using hgΩ`.
+
+Use `GlobalTheory.UnrCycExt.core h hg1 hg2 hN 1 hn α f hfm hαf ?_ ?_ 1 (by simpa using IsPrimitiveRoot.one) (IntermediateField.one_mem _) (Or.inr ⟨-1, 2, by rw [← hα']; push_cast; ring, by norm_num⟩)` and prove the remaining obligations. Establish `hd : aeval α (derivative f) = -(1 - 2 * α)`. Simplify using `[f, derivative_X_pow, map_ofNat]`. Rewrite using `[hd, Valuation.map_neg]`. Establish `hαA : A.valuation α ≤ 1` using `(A.valuation_le_one_iff α).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A ⟨f, hfm, by rw [← aeval_def]; exact hαf⟩)`.
+
+Establish `h2α : A.valuation (2 * α) < 1`. Rewrite using `[Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hαA) h2Ω`. Rewrite using `[Valuation.map_one_sub_of_lt _ h2α]`. Conclude with `lt_irrefl 1`.
+
+Establish `e : α ^ (2 ^ 1) - α = -2` using `by linear_combination hα'`. Rewrite using `[e, Valuation.map_neg]`. Conclude with `h2Ω`. Set `f : ℤ[X]` to `X ^ 2 + C 2`. Establish `hfm : f.Monic` using `by show (X ^ 2 + C 2 : ℤ[X]).Monic monicity!`.
+
+Establish `hfd : (f.map (algebraMap ℤ Ω)).degree ≠ 0`. Rewrite using `[degree_map_eq_of_leadingCoeff_ne_zero _ (by rw [hfm.leadingCoeff]; simp)]`. Establish `e : (X ^ 2 + C 2 : ℤ[X]).degree = 2` using `by compute_degree!`. Use `show (X ^ 2 + C 2 : ℤ[X]).degree ≠ 0`. Rewrite using `[e]`.
+
+Evaluate the decidable proposition. Take `⟨α, hα⟩` from `IsAlgClosed.exists_root _ hfd`. Establish `hαf : aeval α f = 0` using `by rw [aeval_def, ← eval_map]; exact hα`. Establish `hα' : α ^ 2 + 2 = 0` using `by simpa [f, map_ofNat] using hαf`. Establish `h3Ω : A.valuation (3 : Ω) < 1` using `by simpa using hgΩ`.
+
+Establish `h2Ω : A.valuation (2 : Ω) = 1`. Rewrite using `[show (2 : Ω) = -(1 - 3) by ring, Valuation.map_neg, Valuation.map_one_sub_of_lt _ h3Ω]`. Establish `hαA : A.valuation α ≤ 1` using `(A.valuation_le_one_iff α).mpr (ReciprocityTheory.Gal.mem_of_isIntegral_int A ⟨f, hfm, by rw [← aeval_def]; exact hαf⟩)`. Use `GlobalTheory.UnrCycExt.core h hg1 hg2 hN 1 hn α f hfm hαf ?_ ?_ (-1) (by simpa using IsPrimitiveRoot.neg_one 0 (by norm_num)) (neg_mem (IntermediateField.one_mem _)) (Or.inr ⟨0, 2, by rw [← hα']; push_cast; ring, by norm_num⟩)` and prove the remaining obligations. Establish `hd : aeval α (derivative f) = 2 * α`.
+
+Simplify using `[f, derivative_X_pow, map_ofNat]`. Rewrite using `[hd]`. Introduce `hlt`. Establish `hsq` using `pow_lt_one₀ zero_le hlt (two_ne_zero)`. Rewrite `hsq` using `[← Valuation.map_pow, show (2 * α) ^ 2 = -(2 * 2 * 2) by linear_combination 4 * hα', Valuation.map_neg, Valuation.map_mul, Valuation.map_mul, h2Ω]`.
+
+Simplify using `at hsq`. Establish `e : α ^ (3 ^ 1) - α = -(3 * α)` using `by linear_combination α * hα'`. Rewrite using `[e, Valuation.map_neg, Valuation.map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hαA) h3Ω`.
+-/
 theorem exists_unramified_ext : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (g : ℕ)
     [Fact g.Prime] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w)
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (n : ℕ) (hn : 0 < n),

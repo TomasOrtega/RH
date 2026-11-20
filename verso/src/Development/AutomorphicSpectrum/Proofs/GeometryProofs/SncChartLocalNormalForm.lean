@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.Ar.ChartGeo
 
 open Topology
 
+/- English proof (translation)
+Take `⟨hc, v, ⟨d, g, h, hg, hh, hy, hgh, hhz, rfl⟩, hv⟩` from `hz`. Establish `hgz : MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) g) ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Rewrite using `[h0, zero_div]`.
+
+Establish `c1 : ∀ᶠ w in 𝓝 z, MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) g) ≠ 0` using `(MvPolynomial.continuous_eval _).continuousAt.eventually_ne hgz`. Establish `c2 : ∀ᶠ w in 𝓝 z, MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) h) ≠ 0` using `(MvPolynomial.continuous_eval _).continuousAt.eventually_ne hhz`. Establish `c3 : ∀ᶠ w : (Σ k, J k) → ℂ in 𝓝 z, ∀ k, w ⟨k, cc k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (continuous_apply _).continuousAt.eventually_ne (hc k)`. Use `filter_upwards [c1, c2, c3] with w h1 h2 h3`. Conclude with `⟨h3, _, ⟨d, g, h, hg, hh, hy, hgh, h2, rfl⟩, div_ne_zero h1 h2⟩`.
+-/
 theorem inFrameDomain_eventually {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
     (y : (Σ k, J k) → Ω) (cc : (k : K) → J k) (f : Ω) {z : (Σ k, J k) → ℂ} (hz : InFrameDomain y cc f z) :
     ∀ᶠ w in 𝓝 z, InFrameDomain y cc f w := by
@@ -27,6 +32,9 @@ theorem inFrameDomain_eventually {K : Type} [Fintype K] {J : K → Type} [∀ k,
   filter_upwards [c1, c2, c3] with w h1 h2 h3
   exact ⟨h3, _, ⟨d, g, h, hg, hh, hy, hgh, h2, rfl⟩, div_ne_zero h1 h2⟩
 
+/- English proof (translation)
+Establish `hle : A.card ≤ n` using `by simpa using A.card_le_univ`. Set `e : {x // x ∈ A} ≃ {j : Fin n // (j : ℕ) < A.card}` to `A.equivFin.trans (Fin.castLEOrderIso hle).toEquiv`. Use `⟨e.extendSubtype, fun i => ⟨fun h => ?_, fun h => e.extendSubtype_mem i h⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hi`. Conclude with `e.extendSubtype_not_mem i hi h`.
+-/
 theorem exists_perm_prefix {n : ℕ} (A : Finset (Fin n)) :
     ∃ π : Equiv.Perm (Fin n), ∀ i, ((π i : Fin n) : ℕ) < A.card ↔ i ∈ A := by
   classical
@@ -37,10 +45,18 @@ theorem exists_perm_prefix {n : ℕ} (A : Finset (Fin n)) :
   by_contra hi
   exact e.extendSubtype_not_mem i hi h
 
+/- English proof (translation)
+Simplify using `[HodgeMetric.recentre]`.
+-/
 theorem recentre_apply {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) (u : Fin n → ℂ) (i : Fin n) :
     HodgeMetric.recentre t₀ ρ π u i = t₀ i + (ρ : ℂ) * u (π i) := by
   simp [HodgeMetric.recentre]
 
+/- English proof (translation)
+Rewrite using `[mem_ball_iff_norm]`. Use `lt_of_lt_of_le ?_ hε` and prove the remaining obligations. Rewrite using `[pi_norm_lt_iff hρ]`. Introduce `i`. Establish `h1 : ‖u (π i)‖ < 1` using `lt_of_le_of_lt (norm_le_pi_norm u (π i)) (by simpa using hu)`.
+
+Establish `h2 : (HodgeMetric.recentre t₀ ρ π u - t₀) i = (ρ : ℂ) * u (π i)`. Simplify using `[recentre_apply]`. Rewrite using `[h2, norm_mul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem recentre_mem_ball {n : ℕ} {t₀ u : Fin n → ℂ} {ρ ε : ℝ} (hρ : 0 < ρ) (hε : ρ ≤ ε) (π : Equiv.Perm (Fin n))
     (hu : u ∈ Metric.ball (0 : Fin n → ℂ) 1) : HodgeMetric.recentre t₀ ρ π u ∈ Metric.ball t₀ ε := by
   rw [mem_ball_iff_norm]
@@ -54,6 +70,23 @@ theorem recentre_mem_ball {n : ℕ} {t₀ u : Fin n → ℂ} {ρ ε : ℝ} (hρ 
   rw [h2, norm_mul, Complex.norm_real, Real.norm_of_nonneg hρ.le]
   nlinarith
 
+/- English proof (translation)
+Introduce `K _ J _ Ω _ y P n Bd χ t₀ cc f ht₀ hF`. Set `A : Finset (Fin n)` to `Finset.univ.filter (fun i => (i : ℕ) < χ.a ∧ t₀ i = 0)`. Establish `hA : ∀ i, i ∈ A ↔ (i : ℕ) < χ.a ∧ t₀ i = 0` using `fun i => by simp [A]`. Take `⟨π, hπ⟩` from `exists_perm_prefix A`. Establish `hγ : ContinuousAt χ.γ t₀` using `(χ.analytic t₀ ht₀).continuousAt`.
+
+Establish `e1 : ∀ᶠ t in 𝓝 t₀, InFrameDomain y cc f (χ.γ t)` using `hγ.eventually (inFrameDomain_eventually y cc f hF)`. Establish `e2 : ∀ᶠ t : Fin n → ℂ in 𝓝 t₀, ∀ i : Fin n, t₀ i ≠ 0 → t i ≠ 0`. Use `Filter.eventually_all.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `hi : t₀ i = 0`. Conclude with `Filter.Eventually.of_forall fun t h => absurd hi h`.
+
+Use `filter_upwards [(continuous_apply i).continuousAt.eventually_ne hi] with t ht _ using ht`. Establish `e3 : ∀ᶠ t in 𝓝 t₀, t ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.isOpen_ball.mem_nhds ht₀`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (e1.and (e2.and e3))`. Establish `hle : A.card ≤ n` using `by simpa using A.card_le_univ`. Use `⟨A.card, π, min ε 1, hle, lt_min hε one_pos, min_le_right _ _, fun i hi => ?_, fun ρ hρ hρ₀ u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `: π.symm i ∈ A` using `(hπ _).1 (by simpa using hi)`. Conclude with `(hA _).1 this`. Take `⟨hF', hne, hb⟩` from `hball _ (recentre_mem_ball hρ (hρ₀.trans (min_le_left _ _)) π hu)`. Use `⟨hb, hF', ?_⟩` and prove the remaining obligations. Establish `hρc : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`.
+
+Rewrite using `[χ.boundary _ hb]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨by simpa using hu, fun j hj => fun h0 => h ?_⟩` and prove the remaining obligations. Establish `hm : π.symm j ∈ A` using `(hπ _).1 (by simpa using hj)`.
+
+Take `⟨h1, h2⟩` from `(hA _).1 hm`. Use `⟨π.symm j, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[recentre_apply, h2]`. Simplify using `[h0]`. Introduce and unpack `⟨-, hu'⟩ ⟨i, hi, h0⟩`.
+
+Distinguish the cases in `hti : t₀ i = 0`. Establish `hm : i ∈ A` using `(hA i).2 ⟨hi, hti⟩`. Use `hu' (π i) ((hπ i).2 hm)` as an intermediate fact. Rewrite `h0` using `[recentre_apply, hti, zero_add]`. Conclude with `(mul_ne_zero hρc this) h0`.
+
+Conclude with `hne i hti h0`.
+-/
 theorem exists_recentre_chart : ∀ (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] (y : (Σ k, J k) → Ω) (P : Ideal (MRing J)) (n : ℕ) (Bd : Set ((Σ k, J k) → ℂ)) (χ : SncChart P n Bd) (t₀ : Fin n → ℂ) (cc : (k : K) → J k) (f : Ω), t₀ ∈ Metric.ball (0 : Fin n → ℂ) 1 → InFrameDomain y cc f (χ.γ t₀) → ∃ (a₀ : ℕ) (π : Equiv.Perm (Fin n)) (ρ₀ : ℝ), a₀ ≤ n ∧ 0 < ρ₀ ∧ ρ₀ ≤ 1 ∧ (∀ i : Fin n, (i : ℕ) < a₀ → ((π.symm i : Fin n) : ℕ) < χ.a ∧ t₀ (π.symm i) = 0) ∧ ∀ ρ : ℝ, 0 < ρ → ρ ≤ ρ₀ → ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, HodgeMetric.recentre t₀ ρ π u ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ InFrameDomain y cc f (χ.γ (HodgeMetric.recentre t₀ ρ π u)) ∧ (χ.γ (HodgeMetric.recentre t₀ ρ π u) ∉ Bd ↔ u ∈ Flat.punct n a₀ 1) := by
   intro K _ J _ Ω _ y P n Bd χ t₀ cc f ht₀ hF
   classical

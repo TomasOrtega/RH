@@ -54,10 +54,16 @@ open scoped ContDiff
 
 namespace GlobalTheory.ThetaRR
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨PullbackMain.baseChange, OneVec.oneVector, Gauge.isometryInv_holds, TranslInv.translationInv, symplecticInv, TorsionFormCover.coverSum, FlatAcyc.flatAcyclic⟩`.
+-/
 theorem naturality : Naturality :=
   ⟨PullbackMain.baseChange, OneVec.oneVector, Gauge.isometryInv_holds, TranslInv.translationInv,
     symplecticInv, TorsionFormCover.coverSum, FlatAcyc.flatAcyclic⟩
 
+/- English proof (translation)
+Take `⟨F, hF, hU⟩` from `GlobalTheory.T.universal_torsion_hermitian_function HB naturality g`. Take `⟨t, l, h⟩` from `GlobalTheory.T.symplectic_invariant_hermitian_function g F hF (GlobalTheory.T.invariance_rational_to_real_symplectic g F hF fun γ hγ s hs v => by`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.universal_torsion_rational_symplectic_invariance HB naturality g γ hγ s hs`. Conclude with `(hU s hs v _).1 (h₂ v _ ((hU _ h₁ _ _).2 rfl)))`. Conclude with `⟨t, l, fun s hs v T hT => (hU s hs v T).1 hT ▸ h s hs v⟩`.
+-/
 theorem univ_torsion (HB : Published.BismutKoehlerTorsion) (g : ℕ) : ∃ t l : ℝ, ∀ s ∈ siegel g,
     ∀ (v : symMat g) (T : Ext (1 + 1)), IsUnivTorsion g s v T →
       T ∅ = t ∧ T Finset.univ = Complex.I * (l * sdens (tauU s) (tauU v) : ℝ) := by
@@ -69,6 +75,19 @@ theorem univ_torsion (HB : Published.BismutKoehlerTorsion) (g : ℕ) : ∃ t l :
 
 variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k}
 
+/- English proof (translation)
+Establish `hA` using `GlobalTheory.T.abelian_scheme_arith_variety k S p hS P`. Take `⟨B, hB⟩` from `GlobalTheory.T.exists_theta_line_bundle k S p hS P hT`. Take `⟨L, rfl⟩` from `GlobalTheory.T.exists_hermitian_metric_line_bundle k _ _ _ hA B hB.1`. Take `⟨w, hw⟩` from `GlobalTheory.T.theta_pullback_doubling_fourth_power k S p hS P L hB`. Take `⟨u, uc, uj, hu⟩` from `GlobalTheory.T.exists_tate_weight_doubling k _ _ _ hA (dbl P) (dbl_comp P p) L w hw`.
+
+Establish `hF` using `GlobalTheory.T.dual_riemann_framed_charts k S p hS P h hh L w hw`. Establish `us : ∀ σ x, CInfAt (u σ) x` using `fun σ x => by`. Take `⟨c, τ, ex, j, m, hy, -, hc, hf, hd⟩` from `hF σ ⟨x.1 ≫ P.A.hom, by rw [Category.assoc]; exact x.2⟩`. Establish `hm` using `(GlobalTheory.T.tate_weight_period_chart k S p hS P hA h L hB w hw u uc hu σ c τ ex j m hc hf hd (GlobalTheory.T.period_chart_framed_theta k S p hS P h hh L hB σ c τ ex j m hc hf hd)).1`. Establish `hv` using `c.e.map_source hy`.
+
+Take `⟨z, hz⟩` from `(hc.2.2 _ hv).2.2.1 (Over.homMk x.1 (by rw [c.e.left_inv hy]; rfl))`. Establish `e : x = ex (c.e _, z)` using `Subtype.ext hz`. Rewrite using `[e]`. Use `GlobalTheory.T.smooth_on_period_chart_cover k S p hS P h σ c τ ex hc (u σ) ?_ _ ⟨hv, trivial⟩` and prove the remaining obligations. Use `((hd.2.2.2.1.log fun Q hQ => (hd.2.2.2.2.1 Q hQ).ne').sub (hm.1.log fun Q hQ => (hm.2.1 Q hQ).ne')).congr fun Q hQ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.log_mul (hd.2.2.2.2.1 Q hQ).ne' (Real.exp_pos _).ne', Real.log_exp]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨L.raise u us uj, hB, hu.isometric hw us uj, fun σ y => ?_⟩` and prove the remaining obligations. Take `⟨c, τ, ex, j, m, hy, hv, hc, hf, hd⟩` from `hF σ y`. Take `⟨hm, hfl⟩` from `GlobalTheory.T.tate_weight_period_chart k S p hS P hA h L hB w hw u uc hu σ c τ ex j m hc hf hd (GlobalTheory.T.period_chart_framed_theta k S p hS P h hh L hB σ c τ ex j m hc hf hd)`.
+
+Use `⟨c, τ, ex, j, _, hy, hv, hc, ?_, ⟨hd.1, hd.2.1, hd.2.2.1, hm⟩, hfl⟩` and prove the remaining obligations. Take `⟨fr, hfr⟩` from `hf`. Use `⟨fr, fun i => ⟨(hfr i).1, fun Q hQ hi => ?_⟩⟩` and prove the remaining obligations. Take `⟨h₁, h₂, h₃, h₄⟩` from `(hfr i).2 Q hQ hi`. Use `⟨h₁, h₂, ?_, h₄⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `m Q * Real.exp (-u σ (ex Q)) = _ * Real.exp (-((L.φ σ).φ i (ex Q) + u σ (ex Q)))`. Rewrite using `[h₃, neg_add, Real.exp_add, mul_assoc]`.
+-/
 theorem exists_cubical (hS : IsRegSurf p) (P : PPAS S) {h : VMetric p (omega P.A) P.g}
     (hh : P.IsDualRiemann (1 / 2) h) (hT : P.HasTheta) : ∃ L : HermLB (P.A.hom ≫ p), IsTheta P L.B ∧
       (L.pull (dbl P) (dbl_comp P p)).Isometric (L.pow 4) ∧ FlatCharts P h L := by
@@ -103,6 +122,27 @@ theorem exists_cubical (hS : IsRegSurf p) (P : PPAS S) {h : VMetric p (omega P.A
   change m Q * Real.exp (-u σ (ex Q)) = _ * Real.exp (-((L.φ σ).φ i (ex Q) + u σ (ex Q)))
   rw [h₃, neg_add, Real.exp_add, mul_assoc]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Establish `hA` using `GlobalTheory.T.abelian_scheme_arith_variety k S p hS P`. Use `hA.isIntegral` as an intermediate fact. Take `⟨L, hL, hI, hF⟩` from `exists_cubical hS P hh hT`. Take `⟨M, hM, ⟨ψ⟩⟩` from `GlobalTheory.T.theta_pushforward_line_bundle k S p hS P L.B hL`.
+
+Take `⟨φ, h₁, h₂, h₃⟩` from `GlobalTheory.T.theta_pushforward_metric_weights k S p hS P h hh L hL M hM ψ`. Take `⟨hd₁, hd₂⟩` from `GlobalTheory.T.doubling_map_generic_degree k S p hS P L.B hL`. Take `⟨t', ρ, I, -, hρ, hc, hR⟩` from `HR k S p hS P.A P.g P.isAb P.smoothDim hA h H L hL.2.2.2.1 ⟨M, hM, φ, h₁, h₂⟩ ψ h₃`. Establish `key (σ : k →+* ℂ) (y : CxPts p σ) : t' σ y = t ∧ ∃ c : AlgChart p σ 1, y ∈ c.e.source ∧ ρ σ c y = 8 * Real.pi * l * c.chernDens ((VMetric.det H).φ σ) y`. Take `⟨c, τ, ex, j, m, hy, hv, hp, hf, hd, hfl⟩` from `hF σ y`.
+
+Establish `hb` using `c.e.map_source hy`. Establish `hs` using `hd.1.2.2 _ hb`. Establish `e : tauU (symPart (τ (c.e y))) = τ (c.e y)`. Use extensionality with `a b`. Express the relevant statement in the definitionally equal form `(τ (c.e y) a b + τ (c.e y) b a) / 2 = _`.
+
+Rewrite using `[hs.1.apply a b]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e₁, e₂⟩` from `hU _ (by change IsSiegel _; rwa [e]) _ _ (GlobalTheory.T.torsion_form_universal_flat_chern naturality _ _ _ τ j m hv hd hfl _ hb _ _ (hc σ c τ ex j m hp hf y hy))`. Establish `n : (Finset.univ : Finset (Fin (1 + 1))) ≠ ∅` using `by decide`. Simplify using `only [curveForm, if_true, if_neg n] at e₁ e₂`.
+
+Use `⟨by exact_mod_cast e₁, c, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.chern_density_siegel_period k S p σ P h H c τ ex hp y hy, ← e]`. Establish `e₃ : (ρ σ c y : ℂ) = ((2 * (l * sdens (tauU (symPart (τ (c.e y)))) (tauU (fderiv ℂ (fun x => symPart (τ x)) (c.e y) (EuclideanSpace.single 0 1)))) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_mul]`. Use `mul_left_cancel₀ Complex.I_ne_zero ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_left_comm, ← e₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.ofReal_injective e₃]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `eI` using `GlobalTheory.T.top_form_integral_degree k S p hS (VMetric.det H) ρ I _ hρ fun σ y => (key σ y).2`. Establish `et (N : HermLB p) : chInt N 1 t' = t * gdeg N 1`. Rewrite using `[show t' = fun _ _ => t * 1 from funext fun σ => funext fun y => (key σ y).1.trans (mul_one _).symm]`. Simplify using `only [gdeg, chInt, Weight.chernInt_const_mul, mul_finsum]`.
+
+Use `GlobalTheory.T.arithmetic_functional_quadratic_relations HA k S p hS ⟨M, hM, φ, h₁, h₂⟩ (VMetric.det H) t I a rOne fun N Ψ hΨ => by` as an intermediate fact. Take `⟨Φ, hΦ⟩` from `((HA.arExists k _ (P.A.hom ≫ p) _ hA).2 (Fin 3) ![L, (VMetric.det H).pull P.A.hom rfl, N.pull P.A.hom rfl]).1`. Apply the tactic sequence `obtain ⟨z₁, z₂, z₃⟩ := GlobalTheory.T.arithmetic_functional_doubling_isometry HA k _ S (P.A.hom ≫ p) p P.A.hom rfl P.g hA (dbl P) (dbl_comp P p) (dbl_hom P) hd₁ hd₂ L _ N hI Φ hΦ`. Take `⟨r₁, r₂⟩` from `hR N Ψ Φ hΨ hΦ`. Establish `r₃` using `r₂ fl a ha`.
+
+Rewrite `r₁` using `[z₁, et, zero_div]`. Rewrite `r₃` using `[z₂, z₃, zero_div, zero_div]`. Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[this, eI]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem flagCh2_flat (HA : Published.ArCalc) (HR : Published.ArithRiemannRochAbelian) {g : ℕ} {t l : ℝ}
     (hU : ∀ s ∈ siegel g, ∀ (v : symMat g) (T : Ext (1 + 1)), IsUnivTorsion g s v T →
       T ∅ = t ∧ T Finset.univ = Complex.I * (l * sdens (tauU s) (tauU v) : ℝ))
@@ -164,6 +204,9 @@ theorem flagCh2_flat (HA : Published.ArCalc) (HR : Published.ArithRiemannRochAbe
   rw [this, eI]
   ring
 
+/- English proof (translation)
+Establish `key (q : S ⟶ Sp k) (w : 𝟙 S ≫ p = q) : (h.pull (𝟙 S) w).IsCInf`. Substitute `w` using the available equality. Conclude with `VMetric.pull_regCover_isCInf k S p E r h H (.self hS)`. Rewrite using `[(VMetric.isIsometry_iff _).1 (VMetric.isIsometry_pull_id_comp k S p E r h).1]`. Conclude with `(key p _).map _`.
+-/
 theorem isCInf_of_norm [IsIntegral S] (hS : IsRegSurf p) {E : S.Modules} {r : ℕ} {h : VMetric p E r}
     (H : h.IsCInfNorm) : h.IsCInf := by
   have key (q : S ⟶ Sp k) (w : 𝟙 S ≫ p = q) : (h.pull (𝟙 S) w).IsCInf := by
@@ -172,6 +215,13 @@ theorem isCInf_of_norm [IsIntegral S] (hS : IsRegSurf p) {E : S.Modules} {r : �
   rw [(VMetric.isIsometry_iff _).1 (VMetric.isIsometry_pull_id_comp k S p E r h).1]
   exact (key p _).map _
 
+/- English proof (translation)
+Take `⟨h, hh, hn, hc, hd⟩` from `PPAS.exists_isHodge_ch2Omega HP.p4 k S p (fun Y q _ hq => RegCoverExists.nonempty_regCover HD k Y q hq) hS.toIsArithVar P`. Establish `H` using `isCInf_of_norm hS hn`. Establish `h₁ : VMetric.IsFlagCh2 H fl (P.ch2Omega p)`. Establish `I` using `IsometryPullback.isIsometry_symm (VMetric.isIsometry_pull_id_comp k S p _ _ h).1`. Take `⟨M, e₁, e₂⟩` from `IsometryPullback.exists_flagModel_of_eq (h := h) (𝟙 S) (Category.id_comp p) hS rfl ((Scheme.Hom.residueDegree_id _).trans_ne one_ne_zero) (H.pull _ _) (fl.ofIso _)`.
+
+Establish `e₃` using `(e₂ _).1 (hc.2 M)`. Rewrite `e₃` using `[e₁, Scheme.Hom.residueDegree_id, Nat.cast_one, one_mul]`. Conclude with `(VMetric.isFlagCh2_ofIso k S p _ _ _ _ _ _ H (H.pull _ _) fl _ I).2 e₃`. Establish `h₂` using `GlobalTheory.T.flag_chern_scaling_degree HP.p4 k S p hS _ _ h H fl _ (Real.log (2 * Real.pi)) h₁`. Establish `h₃` using `flagCh2_flat HP.p4 HR hU hS P hg hT (H.scale _) hh.flat fl h₂`.
+
+Establish `h₄ : gdeg (VMetric.det (H.scale (Real.log (2 * Real.pi)))) 1 = P.degOmega p` using `(ChernDegree.first_chern_integral_eq_degree k S p hS.toIsArithVar _ _ _ (H.scale _).isCInfNorm).2`. Rewrite `h₃` using `[h₄, ← VMetric.firstChernIntegral_eq_degree H, hd]`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use `hc using 1` and compare the differences between its conclusion and the goal. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isCh2Omega_of_flag (HP : CovTop.Hypotheses2) (HD : Published.RegularAlteration)
     (HR : Published.ArithRiemannRochAbelian) {g : ℕ} {t l : ℝ}
     (hU : ∀ s ∈ siegel g, ∀ (v : symMat g) (T : Ext (1 + 1)), IsUnivTorsion g s v T →
@@ -199,6 +249,13 @@ theorem isCh2Omega_of_flag (HP : CovTop.Hypotheses2) (HD : Published.RegularAlte
   convert hc using 1
   linarith
 
+/- English proof (translation)
+Introduce `HP HD HR g`. Take `⟨t, l, hU⟩` from `univ_torsion HR.1 g`. Use `⟨2 * (48 * Real.pi * l + 6 * rOne + 3 * t) + Real.log (2 * Real.pi), fun k _ S p _ hS P hg hT => ?_⟩` and prove the remaining obligations. Take `⟨h, -, -, ⟨⟨M⟩, -⟩, -⟩` from `PPAS.exists_isHodge_ch2Omega HP.p4 k S p (fun Y q _ hq => RegCoverExists.nonempty_regCover HD k Y q hq) hS.toIsArithVar P`. Take `⟨P', φ, hg', hP⟩` from `PPAS.exists_pull S M.Y P M.ρ`.
+
+Take `⟨hd, hc⟩` from `CoverHodge.degOmega_ch2Omega_cover HP HD k S p hS.toIsArithVar P M.toRegCover P' φ hP`. Establish `fl : Vert.Flag (omega P'.A) P'.g`. Rewrite using `[hg']`. Conclude with `M.flag.ofIso (ShFam.Pad.omegaPullIso hP)`. Establish `e` using `hc _ (isCh2Omega_of_flag HP HD (GlobalTheory.T.arithmetic_riemann_roch_abelian_quoted HP HD HR) hU M.reg P' (hg'.trans hg) (hT.of_isPull hP) fl)`.
+
+Establish `hn : (M.deg : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.deg_pos.ne'`. Use `e using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hd]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_const_ch2Omega : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ArithRiemannRoch → ∀ g : ℕ, ∃ r : ℝ, ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S], IsRegSurf p → ∀ P : PPAS S, P.g = g → P.HasTheta → P.IsCh2Omega p (r / 2 * (P.degOmega p : ℝ)) := by
   intro HP HD HR g
   obtain ⟨t, l, hU⟩ := univ_torsion HR.1 g

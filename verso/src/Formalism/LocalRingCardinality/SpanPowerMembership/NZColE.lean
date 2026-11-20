@@ -16,6 +16,31 @@ variable {A K : Type*} [CommRing A] [IsDedekindDomain A] [Field K] [Algebra A K]
 
 include hσ in
 
+/- English proof (translation)
+Establish `h1 : (1 : A) ∉ w.asIdeal` using `fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨1, h1, by rw [hx0, smul_zero]; exact B.zero_mem⟩`. Establish `hφx : φ x ≠ 0` using `(FBC.li_of_basis_li σ φ hφ b hb (fun _ : Unit => x) (LinearIndependent.of_subsingleton () hx0)).ne_zero ()`. Establish `h2` using `(FBC.flat_ext w σ hσ φ hφ b hb).2 B (Submodule.span K {x})`.
+
+Establish `h3 : φ x ∈ Submodule.span O (φ '' ((B ⊓ (Submodule.span K {x}).restrictScalars A : Submodule A V) : Set V))`. Rewrite using `[← h2]`. Conclude with `⟨hx, Submodule.subset_span ⟨x, Submodule.mem_span_singleton_self x, rfl⟩⟩`. Assume the negation of the conclusion as `hno`. Establish `hlt : ∀ k : K, k • x ∈ B → w.valuation K k < 1`.
+
+Introduce `k hk`. Assume the negation of the conclusion as `hge`. Rewrite `hge` using `[not_lt]`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hge`. Take `⟨n, d, hnd⟩` from `w.exists_primeCompl_mul_eq_of_integer k⁻¹ (by`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hge)`. Use `hno ⟨d, d.2, ?_⟩` and prove the remaining obligations.
+
+Establish `: (d : A) • x = n • (k • x)`. Rewrite using `[← algebraMap_smul K (d : A), ← algebraMap_smul K n, smul_smul, ← hnd, mul_assoc, mul_comm _ k, ← mul_assoc, inv_mul_cancel₀ hk0, one_mul]`. Rewrite using `[this]`. Conclude with `B.smul_mem _ hk`. Establish `h4 : Submodule.span O (φ '' ((B ⊓ (Submodule.span K {x}).restrictScalars A : Submodule A V) : Set V)) ≤ IsLocalRing.maximalIdeal O • Submodule.span O {φ x}`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, ⟨hyB, hyU⟩, rfl⟩`. Take `⟨k, rfl⟩` from `Submodule.mem_span_singleton.mp hyU`. Establish `hk` using `hlt k hyB`. Take `⟨o, ho⟩` from `(hσ k).1 hk.le`.
+
+Use `Submodule.mem_smul_span_singleton.mpr ⟨o, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Take `⟨o', ho'⟩` from `hu.exists_right_inv`. Establish `hk0 : k ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `ho` using `[map_zero]`. Establish `: o = 0` using `IsFractionRing.injective O Kf (by rw [ho, map_zero])`. Rewrite `ho'` using `[this, zero_mul]`. Conclude with `zero_ne_one ho'`.
+
+Establish `h5 : σ k⁻¹ = algebraMap O Kf o'`. Use `congrArg (algebraMap O Kf) ho'` as an intermediate fact. Rewrite `this` using `[map_mul, map_one, ho]`. Rewrite using `[map_inv₀]`. Conclude with `inv_eq_of_mul_eq_one_right this`.
+
+Establish `h6` using `(hσ k⁻¹).2 ⟨o', h5.symm⟩`. Rewrite `h6` using `[map_inv₀, inv_le_one₀ ((Valuation.pos_iff (w.valuation K)).mpr hk0)]`. Conclude with `absurd hk (not_lt.mpr h6)`. Rewrite using `[hφ, ← ho, algebraMap_smul]`. Take `⟨m, hm, hmx⟩` from `Submodule.mem_smul_span_singleton.mp (h4 h3)`.
+
+Establish `hu : IsUnit (1 - m)`. Assume the negation of the conclusion as `hnu`. Establish `: (1 - m) + m ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.maximalIdeal O).add_mem ((IsLocalRing.mem_maximalIdeal _).mpr hnu) hm`. Rewrite `this` using `[sub_add_cancel]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 this)`.
+
+Establish `h7 : (1 - m) • φ x = 0` using `by rw [sub_smul, one_smul, hmx, sub_self]`. Conclude with `hφx ((hu.smul_eq_zero).mp h7)`.
+-/
 theorem desc {V W ι : Type*} [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V]
     [AddCommGroup W] [Module Kf W] [Module O W] [IsScalarTower O Kf W]
     (φ : V →+ W) (hφ : ∀ (a : K) x, φ (a • x) = σ a • φ x) (b : Basis ι K V)

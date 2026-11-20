@@ -15,5 +15,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab | exact GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab | (intros; apply GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_eigen_index_labeling_at_member : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ T w Z Wt _ t _ _ _ => ∃ (Xd : DivX (w.D Z)) (E : EigIdx (w.D Z) Xd), Nonempty (E.Pi → (famR (w.st Z) w.I t.hX (usedOf w.I T Wt) t.r.z.Xg t.r.z.tr).A.fam.base.Ix) := by
   first | exact @GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab | exact GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab | (intros; apply GlobalTheory.HeightCounting.Up.IdxAt.exists_divX_eigIdx_lab <;> assumption)

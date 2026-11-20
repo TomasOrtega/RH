@@ -10,11 +10,19 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 open scoped ComplexConjugate Classical InnerProductSpace
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+-/
 private theorem cont_int {X : Type*} [TopologicalSpace X] [CompactSpace X] [SecondCountableTopology X]
     [MeasurableSpace X] [OpensMeasurableSpace X] (μ : Measure X) [IsFiniteMeasure μ] {f : X → ℂ}
     (hf : Continuous f) : Integrable f μ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
+/- English proof (translation)
+Establish `h1 : Integrable (Function.uncurry fun a v₁ => ∫ v₂, G a v₁ v₂ ∂ρ) (κ.prod ρ)`. Establish `h : Integrable (fun p : (A × V) × V => G p.1.1 p.1.2 p.2) ((κ.prod ρ).prod ρ)` using `cont_int _ (hG.comp (f := fun q : (A × V) × V => (q.1.1, q.1.2, q.2)) (by fun_prop))`. Conclude with `h.integral_prod_left`. Rewrite using `[integral_integral_swap h1]`. Use `integral_congr_ae (ae_of_all _ fun v₁ => ?_)` and prove the remaining obligations.
+
+Use `integral_integral_swap ?_` and prove the remaining obligations. Conclude with `cont_int _ (hG.comp (f := fun q : A × V => (q.1, v₁, q.2)) (by fun_prop))`.
+-/
 private theorem swap3 {A V : Type*} [TopologicalSpace A] [CompactSpace A] [SecondCountableTopology A]
     [MeasurableSpace A] [BorelSpace A] [TopologicalSpace V] [CompactSpace V] [SecondCountableTopology V]
     [MeasurableSpace V] [BorelSpace V] (κ : Measure A) (ρ : Measure V) [IsFiniteMeasure κ] [IsFiniteMeasure ρ]
@@ -29,6 +37,23 @@ private theorem swap3 {A V : Type*} [TopologicalSpace A] [CompactSpace A] [Secon
   refine integral_integral_swap ?_
   exact cont_int _ (hG.comp (f := fun q : A × V => (q.1, v₁, q.2)) (by fun_prop))
 
+/- English proof (translation)
+Introduce `K _ _ ρ hρ Ψ hΨ φ₁ φ₂ h₁ h₂ _ _ f hf`. Take `⟨-, -, -, hlvc, -, -, -, -, -, -, hlvK, hcomp⟩` from `blkLaws (K := K)`. Take `⟨α, β, -, -, -, -, harc, hfin⟩` from `UpperTheory.maximalCompact_unique_arch_finite_decomposition (K := K) (2 + 2)`. Use `haveI : CompactSpace (KG K 2) := isCompact_iff_compactSpace.1 (hcomp 2).1`. Use `⟨fun κ e he hfix g => ?_, fun U hU hfix u hu g => ?_⟩` and prove the remaining obligations.
+
+Use `haveI := he.haar.prob`. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Establish `harc1 : Continuous fun a : archCompact K (2 + 2) => arc1 a` using `continuous_archP.comp continuous_subtype_val`. Establish `hfa : ∀ a : archCompact K (2 + 2), e a * f (nn X * lv m₁ m₂ t * k * arc1 a) = ∫ v₁ : KG K 2, ∫ v₂ : KG K 2, e a * (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k * arc1 a)) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹)) ∂ρ ∂ρ`. Introduce `a`.
+
+Rewrite using `[mul_assoc (nn X * lv m₁ m₂ t) k, hf X m₁ m₂ t _ (mul_mem hk (harc a)), ← integral_const_mul]`. Use `integral_congr_ae (ae_of_all _ fun v₁ => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_const_mul]`. Establish `hlv : Continuous fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => lv (p.2.1 : G1 K 2) (p.2.2 : G1 K 2) 0` using `hlvc.comp (f := fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => ((p.2.1 : G1 K 2), (p.2.2 : G1 K 2), (0 : ℝ))) (by fun_prop)`.
+
+Establish `hpsi : Continuous fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => Ψ (lv (p.2.1 : G1 K 2) (p.2.2 : G1 K 2) 0 * (k * arc1 p.1))` using `hΨ.comp (Continuous.subtype_mk (hlv.mul (continuous_const.mul (harc1.comp continuous_fst))) fun p => mul_mem (hlvK _ p.2.1.2 _ p.2.2.2) (mul_mem hk (harc p.1)))`. Establish `hc₁ : Continuous fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => φ₁ (m₁ * (p.2.1 : G1 K 2)⁻¹)` using `h₁.comp (continuous_const.mul (by fun_prop))`. Establish `hc₂ : Continuous fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => φ₂ (m₂ * (p.2.2 : G1 K 2)⁻¹)` using `h₂.comp (continuous_const.mul (by fun_prop))`. Establish `he' : Continuous fun p : archCompact K (2 + 2) × KG K 2 × KG K 2 => e p.1` using `he.cont.comp continuous_fst`. Repeatedly rewrite using `[hfa]`.
+
+Rewrite using `[swap3 κ ρ (fun a v₁ v₂ => e a * (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k * arc1 a)) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹))) (he'.mul ((hpsi.mul hc₁).mul hc₂)), hf X m₁ m₂ t k hk]`. Use `integral_congr_ae (ae_of_all _ fun v₁ => integral_congr_ae (ae_of_all _ fun v₂ => ?_))` and prove the remaining obligations. Establish `hfx` using `hfix _ (mul_mem (hlvK _ v₁.2 _ v₂.2) hk)`. Establish `hsplit : ∀ a : archCompact K (2 + 2), e a * (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k * arc1 a)) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹)) = e a * Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k * arc1 a) * (φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹))`. Introduce `a`.
+
+Rewrite using `[← mul_assoc (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0) k]`. Expand and normalize the polynomial expressions, which then agree. Use `show ∫ a, e a * (Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k * arc1 a)) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹)) ∂κ = _`. Repeatedly rewrite using `[hsplit]`. Rewrite using `[integral_mul_const, hfx, mul_assoc]`.
+
+Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `iwa g`. Establish `hu' : fin1 u ∈ KG K (2 + 2)` using `hfin ⟨u, hU hu⟩`. Rewrite using `[mul_assoc (nn X * lv m₁ m₂ t) k, hf X m₁ m₂ t _ (mul_mem hk hu'), hf X m₁ m₂ t k hk]`. Use `integral_congr_ae (ae_of_all _ fun v₁ => integral_congr_ae (ae_of_all _ fun v₂ => ?_))` and prove the remaining obligations. Use `show Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * (k * fin1 u)) * _ * _ = Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * _ * _`.
+
+Rewrite using `[← mul_assoc, hfix _ (mul_mem (hlvK _ v₁.2 _ v₂.2) hk) u hu]`.
+-/
 theorem UpperTheory.leviInducedSection_fixed_by_archIdempotent_and_level :
     ∀ {K : Type} [Field K] [NumberField K] (ρ : Measure (KG K 2)), IsProbabilityMeasure ρ → ∀ Ψ : G1 K (2 + 2) → ℂ, (Continuous fun k : KG K (2 + 2) => Ψ k) → ∀ φ₁ φ₂ : G1 K 2 → ℂ, Continuous φ₁ → Continuous φ₂ → (∃ B : ℝ, ∀ m, ‖φ₁ m‖ ≤ B) → (∃ B : ℝ, ∀ m, ‖φ₂ m‖ ≤ B) → ∀ f : G1 K (2 + 2) → ℂ, (∀ X m₁ m₂ t, ∀ k ∈ KG K (2 + 2), f (nn X * lv m₁ m₂ t * k) = ∫ v₁ : KG K 2, ∫ v₂ : KG K 2, Ψ (lv (v₁ : G1 K 2) (v₂ : G1 K 2) 0 * k) * φ₁ (m₁ * (v₁ : G1 K 2)⁻¹) * φ₂ (m₂ * (v₂ : G1 K 2)⁻¹) ∂ρ ∂ρ) → (∀ (κ : Measure (archCompact K (2 + 2))) (e : archCompact K (2 + 2) → ℂ), IdemA κ e → (∀ k ∈ KG K (2 + 2), ∫ a, e a * Ψ (k * arc1 a) ∂κ = Ψ k) → FixA κ e f) ∧ ∀ U : Subgroup (FA K (2 + 2)), U ≤ AdelicGLn.integralFiniteGL K (2 + 2) → (∀ k ∈ KG K (2 + 2), ∀ u ∈ U, Ψ (k * fin1 u) = Ψ k) → FixF U f := by
   intro K _ _ ρ hρ Ψ hΨ φ₁ φ₂ h₁ h₂ _ _ f hf

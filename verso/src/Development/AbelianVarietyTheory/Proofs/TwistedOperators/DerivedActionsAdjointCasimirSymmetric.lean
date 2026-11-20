@@ -6,6 +6,15 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 
 namespace GlobalTheory.FockTensor
 
+/- English proof (translation)
+Establish `hreal : ∀ Y ∈ upq p q, ∀ x y, inner ℂ (E₁ (a₁ Y x)) (E₂ y) = - inner ℂ (E₁ x) (E₂ (a₂ Y y))`. Introduce `Y hY x y`. Establish `h` using `(h₁ Y hY x).inner ℂ (h₂ Y hY y)`. Simplify using `only [inner_pi_pi] at h`. Establish `h0` using `h.unique (hasDerivAt_const (0 : ℝ) _)`.
+
+Simplify using `only [zero_smul, T.expt_zero, map_one, ContinuousLinearMap.one_apply] at h0`. Take the linear combination `h0`. Establish `hZ : ∀ Z x y, inner ℂ (E₁ (a₁ Z x)) (E₂ y) = inner ℂ (E₁ x) (E₂ (a₂ (adjZ Z) y))`. Introduce `Z x y`. Take `⟨X, hX, Y, hY, rfl⟩` from `exists_upq_add Z`.
+
+Rewrite using `[adjZ_add, adjZ_smul, (mem_upq_iff X).1 hX, (mem_upq_iff Y).1 hY]`. Simplify using `only [map_add, map_smul, map_neg, LinearMap.add_apply, LinearMap.smul_apply, LinearMap.neg_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, inner_neg_right, hreal X hX, hreal Y hY]`. Both sides reduce to the same expression. Use `⟨hZ, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [casimir, LinearMap.sum_apply, map_sum, sum_inner, inner_sum, Module.End.mul_apply]`.
+
+Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hZ, hZ, adjZ_Eab, adjZ_Eab]`. Simplify using `only [map_smul, LinearMap.smul_apply, inner_smul_right]`. Take the linear combination `(sgnIx b * sgnIx b * inner ℂ (E₁ x) (E₂ (a₂ (Eab a b) (a₂ (Eab b a) y)))) * sgnIx_mul_self a + inner ℂ (E₁ x) (E₂ (a₂ (Eab a b) (a₂ (Eab b a) y))) * sgnIx_mul_self b`.
+-/
 theorem derived_adjoint_and_casimir (p q : ℕ) (T : GrpData p q) (πU : URep T) (V₁ V₂ : Type)
     [AddCommGroup V₁] [Module ℂ V₁] [AddCommGroup V₂] [Module ℂ V₂]
     (a₁ : Mat p q →ₗ[ℂ] Module.End ℂ V₁) (a₂ : Mat p q →ₗ[ℂ] Module.End ℂ V₂)

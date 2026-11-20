@@ -17,12 +17,32 @@ noncomputable section
 
 namespace GlobalTheory.RealPar.CoverFactor
 
+/- English proof (translation)
+Introduce and unpack `(a | a)`. Simplify using `using h.1 a`. Simplify using `using h.2.1 a`.
+-/
 theorem signCompat_of_blockOrd {p q n : ℕ} {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} (h : BlockOrd e ε) :
     SignCompat ε e := by
   rintro (a | a)
   · simpa using h.1 a
   · simpa using h.2.1 a
 
+/- English proof (translation)
+Introduce `p q n e ε T U σ h hF`. Establish `hφ : IsFormIso ε (plainMat e)` using `isFormIso_plainMat (signCompat_of_blockOrd h)`. Use `⟨⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `hF 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one]`.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `a ha b hb`. Take `⟨x, rfl⟩` from `h.cov_surj T ha`. Take `⟨y, rfl⟩` from `h.cov_surj T hb`.
+
+Use `hF (x * y)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, hF x, hF y]`. Rewrite using `[← ContinuousLinearMap.mul_def, this]`. Simplify using `[Matrix.submatrix_mul_equiv]`. Introduce `g hg v`.
+
+Take `⟨x, rfl⟩` from `h.cov_surj T hg`. Rewrite using `[← hF x]`. Conclude with `U.isom x v`. Introduce `v`. Use `CoverURep.continuousOn_of_cover h T _ ?_` and prove the remaining obligations.
+
+Simplify `U.cont v` using `only [← hF _]`. Introduce `hI S hS hst`. Use `hI.2 S hS fun x v hv => ?_` and prove the remaining obligations. Rewrite using `[hF x]`. Conclude with `hst _ (h.cov_mem T x) v hv`.
+
+Introduce `x`. Use `kFin_iff (s := RingHom.id ℂ) hφ (T := T) (π := U.π) (σ := σ) (LinearIsometryEquiv.refl ℂ U.H) (c := fun _ => 1) (fun _ => one_ne_zero) (fun g y => by rw [one_smul, hF g]; rfl) x` as an intermediate fact. Conclude with `this.symm`. Introduce `Y`. Conclude with `(hφ.mem_lie Y).symm`.
+
+Introduce `Y hY t`. Rewrite using `[hF, T.expt_cov _ (KStabLie.smul_mem_upq hY t)]`. Conclude with `congrArg σ (hφ.exp Y t).symm`. Introduce `k hk`. Take `⟨x, hx⟩` from `hφ.surj T (mem_K_iff.1 hk).1`.
+
+Use `⟨x, (hφ.mem_K T x).1 (hx ▸ hk), ?_⟩` and prove the remaining obligations. Rewrite using `[hF x]`. Conclude with `congrArg σ hx`.
+-/
 theorem dictionary : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (U : URep T) (σ : Matrix (Fin n) (Fin n) ℂ → (U.H →L[ℂ] U.H)), BlockOrd e ε → Factors U e σ → IsURepOn (UJset ε) σ ∧ (IrrU U → IsIrredOn (UJset ε) σ) ∧ (∀ x, KFin T U.π x ↔ IsKFin ε σ x) ∧ (∀ Y, Y ∈ upq p q ↔ Formalism.REAL.inG ε (Matrix.reindex e e Y)) ∧ (∀ Y ∈ upq p q, ∀ t : ℝ, U.π (T.expt (t • Y)) = σ (NormedSpace.exp (t • Matrix.reindex e e Y))) ∧ ∀ k ∈ Formalism.REAL.Kset ε, ∃ x ∈ T.Kset, U.π x = σ k := by
   intro p q n e ε T U σ h hF
   have hφ : IsFormIso ε (plainMat e) := isFormIso_plainMat (signCompat_of_blockOrd h)

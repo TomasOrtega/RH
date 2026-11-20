@@ -22,6 +22,17 @@ namespace GlobalTheory.PsCo.Plug
 open MainStatements.WeightKernel
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hCA hAZ hRS D V lam S M T U μa μf μ _ _ fa ff hTD γ hreg hirr hna`. Take `⟨Φ, L, a, hgood⟩` from `exists_isGood V`. Take `⟨g, P, hpar, hne, hmem⟩` from `GlobalTheory.T.exists_conj_mem_standardLevi_of_reducible_charpoly hTD.1.pos hRS Φ γ hreg hirr hna`. Use `GlobalTheory.SplitTorusZero.zeroClause_of_conj μ _ γ g ?_` and prove the remaining obligations. Use `set γ0 := g * γ * g⁻¹ with hγ0`.
+
+Establish `hreg0 : IsRegSS γ0.1.1` using `by show IsRegSS ((g.1 : Matrix (Fin V.rank) (Fin V.rank) D.host.E) * γ.1.1 * ((g.1)⁻¹ : GL (Fin V.rank) D.host.E).1)`. Unfold `IsRegSS`. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `hreg`. Take `⟨hodd, -, -, hNF, hRP, hA, hF⟩` from `hTD`.
+
+Establish `hff` using `hF.isFinFamily`. Use `haveI : ∀ w, (μa w).IsHaarMeasure := hRP.haar_arch`. Use `haveI : ∀ v, (μf v).IsHaarMeasure := hRP.haar_loc`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `hnc` using `(GlobalTheory.T.centralizer_regular_levi_commutative_noncompact D V Φ P hpar γ0 hreg0 hmem).2.2 (Finset.nonempty_iff_ne_empty.1 hne) w`.
+
+Establish `hcm` using `isCMExt_host D`. Establish `horb : ∀ (ds : Measure (cent (projArch D.sp.cm.sig V.gram w (rat V γ0)))) [ds.IsHaarMeasure] [ds.IsMulRightInvariant], HasOrbInt (μa w) (projArch D.sp.cm.sig V.gram w (rat V γ0)) ds (fa w) 0`. Take `⟨ρ, rfl⟩` from `(placeOf_bijective D).2 w`. Introduce `ds _ _`. Use `haveI := (M.ds ρ).1`.
+
+Establish `hs : IsRegSS (matAt V ρ (projArch D.sp.cm.sig V.gram (placeOf D ρ) (rat V γ0)))` using `(isRegSS_archMat_iff hcm (embOverOf D ρ)).2 (isRegSS_projArch_ratEmb hreg0 _)`. Conclude with `(hA ρ).orb_noncompact _ hs hnc ds`. Take `⟨ds, hds1, hds2⟩ : ∃ ds : Measure (cent (projArch D.sp.cm.sig V.gram w (rat V γ0))), ds.IsHaarMeasure ∧ ds.IsMulRightInvariant` from `by haveI : LocallyCompactSpace (cent (projArch D.sp.cm.sig V.gram w (rat V γ0))) := (isClosed_cent _).locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance, isMulRightInvariant_cent (isMulCommutative_cent_projArch_ratEmb (σ := D.sp.cm.sig) (J := V.gram) hreg0 w) _⟩`. Conclude with `hAZ D V μ fa ff hA.mem hff (fun fa' hfa' => hCA D V hodd T U hNF μf hRP.haar_loc ff hF fa' hfa') γ0 hreg0 w (μa w) ds (horb ds)`.
+-/
 theorem hyperX : CuspAny → ArchZero → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → HyperZeroX := by
   intro hCA hAZ hRS D V lam S M T U μa μf μ _ _ fa ff hTD γ hreg hirr hna
   obtain ⟨Φ, L, a, hgood⟩ := exists_isGood V
@@ -69,6 +80,9 @@ open GlobalTheory.TrMult GlobalTheory.TruncKer
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PsCo.Plug
 open MainStatements.WeightKernel
+/- English proof (translation)
+The claim follows from `hyperX cuspAny (archZero bumpOn (weight (weightDiag lagr shiftT boundT)) (vanish (kerSwap (kerUnif smoothSum closedGraph)) identOne identTwo) fdRight archGroup archUnimod hI) hRS`.
+-/
 theorem hyperZero_of_intX (hI : MainStatements.RegularCuspidalTrace.RegClassInt) (hRS : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple) : HyperZeroX :=
   hyperX cuspAny (archZero bumpOn (weight (weightDiag lagr shiftT boundT))
     (vanish (kerSwap (kerUnif smoothSum closedGraph)) identOne identTwo) fdRight archGroup archUnimod hI) hRS
@@ -89,6 +103,35 @@ namespace GlobalTheory.PsCo.Plug
 open GlobalTheory.CompanionTheory.EllTrace
 open GlobalTheory.TruncKer
 
+/- English proof (translation)
+Introduce `hInt hFinC hCO hPC hIw _hRS hNF hHZ D V lam S M T U μa μf μ _ _ fa ff hT`. Establish `hT'` using `hT`. Take `⟨hodd, -, -, hnf, hμ, harch, hfin⟩` from `hT'`. Establish `hμ'` using `hμ`. Take `⟨hμa, hμf, -, -⟩` from `hμ'`.
+
+Use `set f := tensor D.sp.cm.sig V.gram fa ff with hfdef`. Establish `hcc : f ∈ CcGA V` using `tensor_mem_ccAd harch.mem hfin.isFinFamily`. Establish `hcs` using `continuous_of_mem_ccAd hcc`. Take `⟨hH, -⟩` from `GlobalTheory.T.typeHypothesis_forms_agree D V T hnf`. Use `haveI := hμa`.
+
+Use `haveI := hμf`. Establish `hconst` using `hPC.2 D V hodd S M T hH U μa μf f ⟨fa, ff, harch, hfin, rfl⟩`. Establish `hcusp : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.IsCuspidalOp V μ f` using `hCO D V μ f hcc (fun 𝔉 h𝔉 ν hν x y => ((hconst 𝔉 h𝔉).1 ν x y).2) (fun 𝔉 h𝔉 ν hν x y => ((hconst 𝔉 h𝔉).2 ν x y).2)`. Establish `hcuspFn : MainStatements.RegularCuspidalTrace.IsCuspFn f` using `fun 𝔉 h => (hconst 𝔉 h).1`. Use `⟨hcusp.traceClass, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hcusp.trace_eq_integral]`. Use `haveI : Countable (GF V) := countable_GF V`. Set `ι` to `{𝔬 : Set (GF V) // ∃ γ : GF V, IsRegSS γ.1.1 ∧ 𝔬 = {δ | IsConj γ δ}}`. Use `haveI : Countable ι := by`. Establish `hs : Function.Surjective (fun γ : {γ : GF V // IsRegSS γ.1.1} => (⟨{δ | IsConj γ.1 δ}, γ.1, γ.2, rfl⟩ : ι))`.
+
+Introduce and unpack `⟨_, γ, hγ, rfl⟩`. Conclude with `⟨⟨γ, hγ⟩, rfl⟩`. Conclude with `hs.countable`. Set `k : ι → GlobalTheory.AutomorphicL2Unitary.Quot (GQ V) → ℂ` to `fun i => GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (fun x => ∑' δ : i.1, f (x⁻¹ * rat V δ * x))`. Establish `hkint : ∀ i : ι, Integrable (k i) (autMeasure V μ)`.
+
+Introduce and unpack `⟨_, γ, hγ, rfl⟩`. Take `⟨hcl, -⟩` from `(GlobalTheory.T.regularSemisimple_rational_class_kernel_integrals D V γ hγ).2 f`. Use `hInt D V μ f hcc hcuspFn γ hγ` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f = fun x => ∑' δ : {δ | IsConj γ δ}, f (x⁻¹ * rat V δ * x) from funext hcl]`. Conclude with `this`.
+
+Establish `hreg : ∀ (δ : GF V) (x : GA D V), f (x⁻¹ * rat V δ * x) ≠ 0 → IsRegSS δ.1.1` using `fun δ x h => GlobalTheory.T.isRegularSemisimple_of_testFunction_ne_zero hIw D V T U μf ff hfin fa δ x h`. Establish `hPc : ∀ a b : GF V, IsConj a b → Irreducible a.1.1.charpoly → Irreducible b.1.1.charpoly` using `fun a b h ha => charpoly_eq_of_isConj h ▸ ha`. Use `GlobalTheory.T.integral_hasSum_eq_integral_indicator_hasSum' (autMeasure V μ) k hkint ?_ {i : ι | ∀ δ ∈ i.1, Irreducible δ.1.1.charpoly} _ _ (fun q => ?_) (fun q => ?_) ?_` and prove the remaining obligations. Use `((hFinC D V f hcc).preimage Subtype.val_injective.injOn).subset fun i hi => ⟨i.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+
+Apply `hi` to reduce the goal to its premises. Establish `hz : ∀ q, k i q = 0`. Introduce `q`. Express the relevant statement in the definitionally equal form `(∑' δ : i.1, f (q.out⁻¹ * rat V δ * q.out)) = 0`. Establish `: ∀ δ : i.1, f (q.out⁻¹ * rat V δ * q.out) = 0` using `fun δ => by`.
+
+Assume the negation of the conclusion as `h`. Conclude with `hno ⟨q.out, δ.1, δ.2, h⟩`. Simplify using `[this]`. Simplify using `[hz]`. Take `⟨hsupp, hsum⟩` from `kernel_diag_hasSum V hcc q.out`.
+
+Use `(GlobalTheory.T.hasSum_conjClasses_regroup_with_invariant_selection _ hsupp (fun δ => IsRegSS δ.1.1) (fun δ => Irreducible δ.1.1.charpoly) (fun δ h => hreg δ _ h) hPc).1` as an intermediate fact. Rewrite `this` using `[hsum.tsum_eq]`. Conclude with `this`. Take `⟨hsupp, -⟩` from `kernel_diag_hasSum V hcc q.out`. Use `(GlobalTheory.T.hasSum_conjClasses_regroup_with_invariant_selection _ hsupp (fun δ => IsRegSS δ.1.1) (fun δ => Irreducible δ.1.1.charpoly) (fun δ h => hreg δ _ h) hPc).2` as an intermediate fact.
+
+Establish `hfs : (Function.support fun δ : {δ : GF V // Irreducible δ.1.1.charpoly} => f (q.out⁻¹ * rat V δ.1 * q.out)).Finite` using `(hsupp.preimage Subtype.val_injective.injOn).subset fun δ hδ => hδ`. Establish `e : GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (ellKernel V f) q = ∑' δ : {δ : GF V // Irreducible δ.1.1.charpoly}, f (q.out⁻¹ * rat V δ.1 * q.out)`. Express the relevant statement in the definitionally equal form `ellKernel V f q.out = _`. Rewrite using `[ellKernel, tsum_eq_finsum hfs]`. Rewrite using `[e]`.
+
+Conclude with `this`. Introduce and unpack `⟨_, γ, hγ, rfl⟩ hi`. Establish `hirr : ¬ Irreducible γ.1.1.charpoly` using `fun h => hi fun δ hδ => hPc γ δ hδ h`. Establish `hZ : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.ZeroClause μ f (ratEmb D.sp.cm.sig V.gram γ)`. Distinguish the cases in `hA : GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.IsNonFieldAniso D.sp.cm.sig V.gram γ.1.1`.
+
+Conclude with `hNF.zero hodd hH hμ ⟨fa, ff, harch, hfin, rfl⟩ hA`. Conclude with `hHZ D V lam S M T U μa μf μ fa ff hT γ hγ hirr hA`. Take `⟨hcl, hiff⟩` from `(GlobalTheory.T.regularSemisimple_rational_class_kernel_integrals D V γ hγ).2 f`. Use `((hiff hcs.1 hcs.2 μ 0).1 hZ).2` as an intermediate fact. Rewrite `this` using `[show GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.classKernel (GQ V) (rat V γ) f = fun x => ∑' δ : {δ | IsConj γ δ}, f (x⁻¹ * rat V δ * x) from funext hcl]`.
+
+Conclude with `this`.
+-/
 theorem ellTrace_of_middleX : MainStatements.RegularCuspidalTrace.RegClassInt → MainStatements.RegularCuspidalTrace.RegClassFin → (∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.CuspidalOperators V μ) → GlobalTheory.IndefiniteRowSideFullHecke.ConstantTermVanishing.ParabolicAndConstTermX → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup.IwahoriEigenvalues → GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeVanishingAlt.NonFieldTypeVanishingX → HyperZeroX → EllTraceX := by
   intro hInt hFinC hCO hPC hIw _hRS hNF hHZ D V lam S M T U μa μf μ _ _ fa ff hT
   have hT' := hT
@@ -183,6 +226,9 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `tc` and use `GlobalTheory.PsCo.Plug.ellTrace_of_middleX MainStatements.WeightKernel.regClassInt_holds (GlobalTheory.T.siegel_implies_regular_class_finite CompanionTheory.Prw.siegelCore_holds) (GlobalTheory.T.cuspidalOperators_vanishingRadicalIntegrals_unitaryGroup tc) GlobalTheory.PsCo.Plug.p …`.
+-/
 theorem GlobalTheory.PsCo.Plug.ellipticSideDirect : GlobalTheory.Published.CuspTraceClass → EllTraceX := fun tc =>
   GlobalTheory.PsCo.Plug.ellTrace_of_middleX MainStatements.WeightKernel.regClassInt_holds (GlobalTheory.T.siegel_implies_regular_class_finite CompanionTheory.Prw.siegelCore_holds) (GlobalTheory.T.cuspidalOperators_vanishingRadicalIntegrals_unitaryGroup tc)
     GlobalTheory.PsCo.Plug.parabolicT GlobalTheory.IwahoriEigenObj.iwahoriEigenvalues GlobalTheory.T.regularSemisimple_unitaryGroup_concrete GlobalTheory.PsCo.Plug.nonFieldT

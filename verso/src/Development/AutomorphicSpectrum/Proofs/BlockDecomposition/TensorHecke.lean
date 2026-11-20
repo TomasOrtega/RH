@@ -12,10 +12,18 @@ open PositivityTheory.Rg.BcB.F.Tail.PExp
 
 variable {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extTensor_apply_eq (ρ : Representation ℂ G V) (σ : Representation ℂ H W) (m : G × H) :
     extTensor ρ σ m = TensorProduct.map (ρ m.1) (σ m.2) := by
   rfl
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.BcB.F.Tail.PExp.hkE`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `q hq`. Rewrite `hq` using `[Function.mem_support]`. Rewrite using `[Set.Finite.coe_toFinset, Set.mem_ofPred_eq]`.
+
+Introduce `h0`. Conclude with `hq (by simp [h0])`.
+-/
 theorem hkE_eq_sum (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ)
     (hs : {q : G ⧸ K | f q.out ≠ 0}.Finite) :
     hkE ρ K f = ∑ q ∈ hs.toFinset, f q.out • ρ q.out := by
@@ -27,6 +35,11 @@ theorem hkE_eq_sum (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ
   intro h0
   exact hq (by simp [h0])
 
+/- English proof (translation)
+Establish `hB : ∀ (P' : Module.End ℂ V) (Q' : Module.End ℂ W), TensorProduct.map P' Q' v = TensorProduct.mapBilinear (RingHom.id ℂ) V W V W P' Q' v` using `fun P' Q' => by`. Rewrite using `[TensorProduct.mapBilinear_apply]`. Simplify using `only [hB, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_product, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`.
+-/
 theorem map_sum_sum_apply {A B : Type} (s : Finset A) (t : Finset B) (a : A → ℂ) (b : B → ℂ)
     (P : A → Module.End ℂ V) (Q : B → Module.End ℂ W) (v : V ⊗[ℂ] W) :
     TensorProduct.map (∑ i ∈ s, a i • P i) (∑ j ∈ t, b j • Q j) v =
@@ -40,6 +53,15 @@ theorem map_sum_sum_apply {A B : Type} (s : Finset A) (t : Finset B) (a : A → 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   rw [mul_comm]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q1, r1⟩ ⟨q2, r2⟩ h`. Simplify using `only at h`. Rewrite `h` using `[QuotientGroup.eq, Subgroup.mem_prod]`. Take `⟨h1, h2⟩` from `h`.
+
+Simplify using `only [Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv] at h1 h2`. Establish `e1 : (QuotientGroup.mk q1.out : G ⧸ K) = QuotientGroup.mk q2.out` using `QuotientGroup.eq.mpr h1`. Establish `e2 : (QuotientGroup.mk r1.out : H ⧸ L) = QuotientGroup.mk r2.out` using `QuotientGroup.eq.mpr h2`. Rewrite `e1`, `e2` using `[QuotientGroup.out_eq', QuotientGroup.out_eq']`. Rewrite using `[e1, e2]`.
+
+Introduce `z`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective z`. Use `⟨((QuotientGroup.mk x.1 : G ⧸ K), (QuotientGroup.mk x.2 : H ⧸ L)), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_prod]`.
+
+Simplify using `only [Prod.fst_mul, Prod.snd_mul, Prod.fst_inv, Prod.snd_inv]`. Conclude with `⟨QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x.1 : G ⧸ K)), QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x.2 : H ⧸ L))⟩`.
+-/
 theorem bijective_mk_out_prod (K : Subgroup G) (L : Subgroup H) :
     Function.Bijective (fun p : (G ⧸ K) × (H ⧸ L) =>
       (QuotientGroup.mk (p.1.out, p.2.out) : (G × H) ⧸ K.prod L)) := by
@@ -62,6 +84,9 @@ theorem bijective_mk_out_prod (K : Subgroup G) (L : Subgroup H) :
     exact ⟨QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x.1 : G ⧸ K)),
       QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x.2 : H ⧸ L))⟩
 
+/- English proof (translation)
+Establish `hk : x⁻¹ * (QuotientGroup.mk x : G ⧸ K).out ∈ K` using `QuotientGroup.eq.mp (QuotientGroup.out_eq' (QuotientGroup.mk x : G ⧸ K)).symm`. Establish `e` using `hΦ x _ hk`. Rewrite `e` using `[mul_inv_cancel_left]`. Conclude with `e`.
+-/
 theorem apply_out_mk {X : Type} (K : Subgroup G) (Φ : G → X) (hΦ : ∀ x, ∀ k ∈ K, Φ (x * k) = Φ x) (x : G) :
     Φ (QuotientGroup.mk x : G ⧸ K).out = Φ x := by
   have hk : x⁻¹ * (QuotientGroup.mk x : G ⧸ K).out ∈ K :=
@@ -70,6 +95,19 @@ theorem apply_out_mk {X : Type} (K : Subgroup G) (Φ : G → X) (hΦ : ∀ x, �
   rw [mul_inv_cancel_left] at e
   exact e
 
+/- English proof (translation)
+Introduce `G H V W _ _ _ _ _ _ ρ σ K L f e hf he hsf hse v hv`. Establish `hfix : ∀ k ∈ K.prod L, extTensor ρ σ k v = v`. Introduce `k hk`. Establish `h1` using `hv ⟨k, hk⟩`. Simplify using `using h1`.
+
+Establish `hinv : ∀ x : G × H, ∀ k ∈ K.prod L, (f (x * k).1 * e (x * k).2) • extTensor ρ σ (x * k) v = (f x.1 * e x.2) • extTensor ρ σ x v`. Introduce `x k hk`. Establish `hk'` using `Subgroup.mem_prod.mp hk`. Rewrite using `[Prod.fst_mul, Prod.snd_mul, hf _ _ hk'.1, he _ _ hk'.2, map_mul, Module.End.mul_apply, hfix k hk]`. Establish `key : (∑ᶠ q : (G × H) ⧸ K.prod L, (f q.out.1 * e q.out.2) • extTensor ρ σ q.out v) = ∑ᶠ p : (G ⧸ K) × (H ⧸ L), (f p.1.out * e p.2.out) • TensorProduct.map (ρ p.1.out) (σ p.2.out) v`.
+
+Rewrite using `[← finsum_comp_equiv (Equiv.ofBijective _ (bijective_mk_out_prod K L))]`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `p`. Rewrite using `[Equiv.ofBijective_apply]`. Establish `h2` using `apply_out_mk (K.prod L) (fun m : G × H => (f m.1 * e m.2) • extTensor ρ σ m v) hinv (p.1.out, p.2.out)`.
+
+Simplify using `only at h2`. Rewrite `h2` using `[extTensor_apply_eq]`. Conclude with `h2`. Unfold `PositivityTheory.Rg.BcB.F.Tail.PExp.hkS`. Use `show (∑ᶠ q : (G × H) ⧸ K.prod L, (f q.out.1 * e q.out.2) • extTensor ρ σ q.out v) = _`.
+
+Rewrite using `[key, hkE_eq_sum ρ K f hsf, hkE_eq_sum σ L e hse, map_sum_sum_apply]`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[Function.mem_support]`. Rewrite using `[Finset.coe_product, Set.mem_prod, Set.Finite.coe_toFinset, Set.Finite.coe_toFinset, Set.mem_ofPred_eq, Set.mem_ofPred_eq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Conclude with `hp (by simp [h0])`. Introduce `h0`. Conclude with `hp (by simp [h0])`.
+-/
 theorem tensHk : TensHk := by
   intro G H V W _ _ _ _ _ _ ρ σ K L f e hf he hsf hse v hv
   have hfix : ∀ k ∈ K.prod L, extTensor ρ σ k v = v := by

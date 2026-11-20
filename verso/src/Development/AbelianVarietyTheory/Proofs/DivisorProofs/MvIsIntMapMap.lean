@@ -41,18 +41,30 @@ def LogUnit [CharZero C] (v : AddValuation C (WithTop ℝ)) (s : MvPowerSeries �
 
 variable (G : LogFGL v d)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hw) hw ((isExp_expOf G).1 i)`.
+-/
 theorem cc_expPt {w : Fin d → MvPowerSeries σ C} (hw : ∀ i, constantCoeff (w i) = 0) (i : Fin d) :
     constantCoeff (expPt G w i) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hw) hw ((isExp_expOf G).1 i)
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hx) hx (G.lg_const i)`.
+-/
 theorem cc_lgPt {x : Fin d → MvPowerSeries σ C} (hx : ∀ i, constantCoeff (x i) = 0) (i : Fin d) :
     constantCoeff (lgPt G x i) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hx) hx (G.lg_const i)
 
+/- English proof (translation)
+Simplify using `[mv, hw]`.
+-/
 theorem cc_mv (A : Matrix (Fin d) (Fin d) C) {w : Fin d → MvPowerSeries σ C} (hw : ∀ i, constantCoeff (w i) = 0)
     (i : Fin d) : constantCoeff (mv A w i) = 0 := by
   simp [mv, hw]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero G.lg_const) (hasSubst_of_constantCoeff_zero hx) (expOf G i)`. Rewrite `h` using `[subst_lg_expOf, subst_X (hasSubst_of_constantCoeff_zero hx)]`. Conclude with `h.symm`.
+-/
 theorem expPt_lgPt {x : Fin d → MvPowerSeries σ C} (hx : ∀ i, constantCoeff (x i) = 0) :
     expPt G (lgPt G x) = x := by
   funext i
@@ -61,6 +73,9 @@ theorem expPt_lgPt {x : Fin d → MvPowerSeries σ C} (hx : ∀ i, constantCoeff
   rw [subst_lg_expOf, subst_X (hasSubst_of_constantCoeff_zero hx)] at h
   exact h.symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `h` using `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero (isExp_expOf G).1) (hasSubst_of_constantCoeff_zero hw) (G.lg i)`. Rewrite `h` using `[(isExp_expOf G).2, subst_X (hasSubst_of_constantCoeff_zero hw)]`. Conclude with `h.symm`.
+-/
 theorem lgPt_expPt {w : Fin d → MvPowerSeries σ C} (hw : ∀ i, constantCoeff (w i) = 0) :
     lgPt G (expPt G w) = w := by
   funext i
@@ -69,20 +84,32 @@ theorem lgPt_expPt {w : Fin d → MvPowerSeries σ C} (hw : ∀ i, constantCoeff
   rw [(isExp_expOf G).2, subst_X (hasSubst_of_constantCoeff_zero hw)] at h
   exact h.symm
 
+/- English proof (translation)
+The claim follows from `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hw) ht _`.
+-/
 theorem subst_expPt {τ : Type} {t : σ → MvPowerSeries τ C} (ht : HasSubst t) {w : Fin d → MvPowerSeries σ C}
     (hw : ∀ i, constantCoeff (w i) = 0) (i : Fin d) :
     subst t (expPt G w i) = expPt G (fun e => subst t (w e)) i :=
   subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hw) ht _
 
+/- English proof (translation)
+The claim follows from `subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hx) ht _`.
+-/
 theorem subst_lgPt {τ : Type} {t : σ → MvPowerSeries τ C} (ht : HasSubst t) {x : Fin d → MvPowerSeries σ C}
     (hx : ∀ i, constantCoeff (x i) = 0) (i : Fin d) :
     subst t (lgPt G x i) = lgPt G (fun e => subst t (x e)) i :=
   subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hx) ht _
 
+/- English proof (translation)
+Simplify using `only [mv, ← coe_substAlgHom ht, map_sum, map_smul]`.
+-/
 theorem subst_mv {τ : Type} {t : σ → MvPowerSeries τ C} (ht : HasSubst t) (A : Matrix (Fin d) (Fin d) C)
     (w : Fin d → MvPowerSeries σ C) (i : Fin d) : subst t (mv A w i) = mv A (fun e => subst t (w e)) i := by
   simp only [mv, ← coe_substAlgHom ht, map_sum, map_smul]
 
+/- English proof (translation)
+Use `⟨cc_lgPt G (by simp), fun i α => ?_⟩` and prove the remaining obligations. Rewrite using `[expPt_lgPt G (by simp)]`. Unfold `IsIntV`. Rewrite using `[coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem intLog_lgPt_X (s : Fin d → σ) : IntLog G (lgPt G fun i => (X (s i) : MvPowerSeries σ C)) := by
   classical
   refine ⟨cc_lgPt G (by simp), fun i α => ?_⟩
@@ -127,11 +154,23 @@ def frameX (n : ℕ) : PS X.C n (chD Ch.ch) :=
   letI : Algebra T.Fr X.C := X.ιF.toAlgebra
   frameSer Ch.ch.B (MvPowerSeries.map X.ιF Ch.ch.h) H.w0 n
 
+/- English proof (translation)
+Introduce `α` and use `by rw [coeff_map, coeff_map] exact isIntV_jX X _`.
+-/
 theorem mvIsInt_map_map {σ : Type} (f : MvPowerSeries σ T.V) :
     MvIsInt (vX_vp X) (MvPowerSeries.map X.ιF (MvPowerSeries.map (algebraMap T.V T.Fr) f)) := fun α => by
   rw [coeff_map, coeff_map]
   exact isIntV_jX X _
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Take `⟨-, h2, h3, h4, -, h6, -⟩` from `Ch.gen.1`. Use `⟨(fgl Ch X).F_int, fun a i => ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Unfold `FB.actK`.
+
+Rewrite using `[h2]`. Conclude with `mvIsInt_map_map X _`. Unfold `FB.toK`. Rewrite using `[h3]`. Conclude with `mvIsInt_map_map X _`.
+
+Unfold `FB.toK`. Rewrite using `[h4]`. Conclude with `mvIsInt_map_map X _`. Unfold `FB.toK`. Rewrite using `[h6]`.
+
+Conclude with `mvIsInt_map_map X _`.
+-/
 theorem isIntFB_chart :
     letI := io.toAlgebra
     letI : Algebra T.Fr X.C := X.ιF.toAlgebra
@@ -145,11 +184,17 @@ theorem isIntFB_chart :
   · unfold FB.toK; rw [h4]; exact mvIsInt_map_map X _
   · unfold FB.toK; rw [h6]; exact mvIsInt_map_map X _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fgl_eq_fglOf :
     letI := io.toAlgebra
     letI : Algebra T.Fr X.C := X.ιF.toAlgebra
     fgl Ch X = fglOf (isIntFB_chart Ch X) := rfl
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI : Algebra T.Fr X.C := X.ιF.toAlgebra`. Conclude with `(GlobalTheory.canonGauge_nabVal_baseChange T.Fr _ _ Ch.ch.B T.Fr X.C (Algebra.ofId T.Fr X.C) _ Ch.ch.gauge).1`.
+-/
 theorem gauge_chart :
     letI := io.toAlgebra
     letI : Algebra T.Fr X.C := X.ιF.toAlgebra
@@ -160,6 +205,9 @@ theorem gauge_chart :
 
 include X in
 
+/- English proof (translation)
+Introduce `h` and use `X.nonunit.out (by simpa using h.map X.ι)`.
+-/
 theorem not_isUnit_p : ¬ IsUnit (p : T.V) := fun h => X.nonunit.out (by simpa using h.map X.ι)
 
 end Chart

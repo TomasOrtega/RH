@@ -9,14 +9,27 @@ namespace UpperTheory.Esk.AutomorphyFactorLemmas
 
 open UpperTheory.Esk
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast n 2, ← Real.rpow_mul hn, ← Real.rpow_natCast n k]`. Use `congr 1`. Apply the tactic sequence `push_cast <;> ring`.
+-/
 theorem a_sq_rpow {n : ℝ} (hn : 0 ≤ n) (k : ℕ) : (n ^ 2) ^ ((k : ℝ) / 2) = n ^ k := by
   rw [← Real.rpow_natCast n 2, ← Real.rpow_mul hn, ← Real.rpow_natCast n k]
   congr 1
   push_cast <;> ring
 
+/- English proof (translation)
+Rewrite using `[← Real.mul_rpow ha ha, ← sq, a_sq_rpow ha]`.
+-/
 theorem a_rpow_half_sq {a : ℝ} (ha : 0 ≤ a) (k : ℕ) : a ^ ((k : ℝ) / 2) * a ^ ((k : ℝ) / 2) = a ^ k := by
   rw [← Real.mul_rpow ha ha, ← sq, a_sq_rpow ha]
 
+/- English proof (translation)
+Establish `hden : den g z.1 ≠ 0` using `den_ne g z.2`. Establish `hD : 0 < ‖den g z.1‖` using `norm_pos_iff.mpr hden`. Establish `hdet : 0 < |g.val.det|` using `abs_pos.mpr g.det_ne_zero`. Establish `him : (g • z).1.im = g.val.det * z.1.im / Complex.normSq (den g z.1)`. Rewrite using `[coe_smul, im_div]`.
+
+Establish `hns : Complex.normSq (den g z.1) = ‖den g z.1‖ ^ 2` using `Complex.normSq_eq_norm_sq _`. Establish `habs : |(g • z).1.im| = |g.val.det| * |z.1.im| / ‖den g z.1‖ ^ 2`. Rewrite using `[him, hns, abs_div, abs_mul, abs_of_nonneg (by positivity : (0:ℝ) ≤ ‖den g z.1‖ ^ 2)]`. Establish `hj : ‖j1 k g z‖ = ‖den g z.1‖ ^ k * |g.val.det| ^ (-(k : ℝ) / 2)`. Rewrite using `[j1, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _)]`.
+
+Establish `hinv : |g.val.det| ^ (-(k : ℝ) / 2) * |g.val.det| ^ ((k : ℝ) / 2) = 1`. Rewrite using `[neg_div, Real.rpow_neg (abs_nonneg _), inv_mul_cancel₀ (Real.rpow_pos_of_pos hdet _).ne']`. Establish `hDk : ‖den g z.1‖ ^ k ≠ 0` using `pow_ne_zero _ hD.ne'`. Rewrite using `[hj, habs, Real.div_rpow (by positivity) (by positivity), Real.mul_rpow (abs_nonneg _) (abs_nonneg _), a_sq_rpow (norm_nonneg _)]`. Rewrite using `[show ∀ A B C E : ℝ, A * B * (C * E / A) = (B * C) * E * (A / A) from fun _ _ _ _ => by ring, hinv, div_self hDk, one_mul, mul_one]`.
+-/
 theorem p5 (k : ℕ) (g : GL (Fin 2) ℝ) (z : P) : ‖j1 k g z‖ * |(g • z).1.im| ^ ((k : ℝ) / 2) = |z.1.im| ^ ((k : ℝ) / 2) := by
   have hden : den g z.1 ≠ 0 := den_ne g z.2
   have hD : 0 < ‖den g z.1‖ := norm_pos_iff.mpr hden
@@ -36,6 +49,11 @@ theorem p5 (k : ℕ) (g : GL (Fin 2) ℝ) (z : P) : ‖j1 k g z‖ * |(g • z).
   rw [show ∀ A B C E : ℝ, A * B * (C * E / A) = (B * C) * E * (A / A) from fun _ _ _ _ => by ring,
     hinv, div_self hDk, one_mul, mul_one]
 
+/- English proof (translation)
+Introduce `h0`. Establish `him` using `congrArg Complex.im h0`. Simplify using `only [Complex.sub_im, Complex.conj_im, Complex.zero_im] at him`. Establish `hzw : z.1.im = -w.1.im` using `by linarith`. Rewrite `h` using `[hzw]`.
+
+Use polynomial arithmetic with `[sq_nonneg w.1.im]`.
+-/
 theorem a_sub_conj_ne (z w : P) (h : 0 < z.1.im * w.1.im) : z.1 - conj w.1 ≠ 0 := by
   intro h0
   have him := congrArg Complex.im h0
@@ -44,6 +62,19 @@ theorem a_sub_conj_ne (z w : P) (h : 0 < z.1.im * w.1.im) : z.1 - conj w.1 ≠ 0
   rw [hzw] at h
   nlinarith [sq_nonneg w.1.im]
 
+/- English proof (translation)
+Establish `hk1 : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hk0 : (k : ℝ) / 2 ≠ 0`. Introduce `h0`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h : 0 < z.1.im * w.1.im`.
+
+Establish `hq : q1 k z w = ((k : ℂ) - 1) / (4 * Real.pi) * ((w.1 - conj w.1) / (z.1 - conj w.1)) ^ k`. Rewrite using `[q1, if_pos h]`. Establish `hkap : kap z w = 4 * (z.1.im * w.1.im) / ‖z.1 - conj w.1‖ ^ 2`. Rewrite using `[kap, if_pos h]`. Establish `hd : z.1 - conj w.1 ≠ 0` using `a_sub_conj_ne z w h`.
+
+Establish `hdn : 0 < ‖z.1 - conj w.1‖` using `norm_pos_iff.mpr hd`. Establish `hww : ‖w.1 - conj w.1‖ = 2 * |w.1.im|`. Rewrite using `[Complex.sub_conj, norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_two]`. Establish `hc : ‖((k : ℂ) - 1) / (4 * Real.pi)‖ = ((k : ℝ) - 1) / (4 * Real.pi)`. Establish `hpi` using `Real.pi_pos`.
+
+Establish `e : ((k : ℂ) - 1) / (4 * Real.pi) = ((((k : ℝ) - 1) / (4 * Real.pi) : ℝ) : ℂ)`. Apply the tactic sequence `push_cast <;> ring`. Apply the tactic sequence `rw [e, Complex.norm_real, Real.norm_of_nonneg (by apply div_nonneg <;> linarith)]`. Establish `hzw : z.1.im * w.1.im = |z.1.im| * |w.1.im|`. Rewrite using `[← abs_mul, abs_of_pos h]`.
+
+Establish `h4 : (4 : ℝ) ^ ((k : ℝ) / 2) = 2 ^ k`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, a_sq_rpow (by norm_num : (0 : ℝ) ≤ 2)]`. Rewrite using `[hq, norm_mul, hc, norm_pow, norm_div, hww, hkap, hzw, Real.div_rpow (by positivity) (by positivity), a_sq_rpow hdn.le, Real.mul_rpow (by norm_num) (by positivity), Real.mul_rpow (abs_nonneg _) (abs_nonneg _), h4, div_pow, mul_pow, ← a_rpow_half_sq (abs_nonneg w.1.im) k]`. Expand and normalize the polynomial expressions, which then agree. Establish `hq : q1 k z w = 0`.
+
+Rewrite using `[q1, if_neg h]`. Establish `hkap : kap z w = 0`. Rewrite using `[kap, if_neg h]`. Rewrite using `[hq, hkap, norm_zero, zero_mul, Real.zero_rpow hk0, mul_zero, zero_mul]`.
+-/
 theorem p6 (k : ℕ) (z w : P) (hk : 1 ≤ k) : ‖q1 k z w‖ * |z.1.im| ^ ((k : ℝ) / 2) = ((k : ℝ) - 1) / (4 * Real.pi) * kap z w ^ ((k : ℝ) / 2) * |w.1.im| ^ ((k : ℝ) / 2) := by
   have hk1 : (1 : ℝ) ≤ k := by exact_mod_cast hk
   have hk0 : (k : ℝ) / 2 ≠ 0 := by

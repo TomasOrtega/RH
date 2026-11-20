@@ -15,6 +15,17 @@ namespace GlobalTheory.CompanionTheory.WittFrame
 
 open Matrix
 
+/- English proof (translation)
+Establish `hc : ∀ {a : ℕ} (A : Matrix (Fin V.rank) (Fin a) D.host.E), Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) A = Aᴴ`. Introduce `a A`. Conclude with `Matrix.ext fun i j => rfl`. Establish `hxx : Xfᴴ * V.gram * Xf = 0` using `by rw [← hc]; exact hW.xx`. Establish `hxy : Xfᴴ * V.gram * Yf = 1` using `by rw [← hc]; exact hW.xy`.
+
+Establish `hG : V.gramᴴ = V.gram`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `V.herm.eq _ _`. Establish `hyx : Yfᴴ * V.gram * Xf = 1`. Establish `h` using `congrArg conjTranspose hxy`.
+
+Simplify `h` using `[conjTranspose_mul, hG, Matrix.mul_assoc]`. Set `f : (Fin r → D.host.E) →ₗ[D.host.E] V.V` to `V.frame.equivFun.symm.toLinearMap.comp Xf.mulVecLin`. Establish `hf : Function.Injective f`. Use `V.frame.equivFun.symm.injective.comp (g := V.frame.equivFun.symm) (f := Xf.mulVec) fun v w hvw => ?_` and prove the remaining obligations. Use `congrArg (Yfᴴ * V.gram).mulVec hvw` as an intermediate fact.
+
+Simplify `this` using `[mulVec_mulVec, hyx]`. Use `le_csSup (GlobalTheory.SiegelFormula.Model.bddAbove_witt V) ⟨LinearMap.range f, by simpa using LinearMap.finrank_range_of_inj hf, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩ _ ⟨w, rfl⟩`. Express the relevant statement in the definitionally equal form `V.hT (V.frame.equivFun.symm (Xf *ᵥ v)) (V.frame.equivFun.symm (Xf *ᵥ w)) = 0`. Rewrite using `[GlobalTheory.ParallelWitt.form_eq, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, hxx]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem length_le_wittIdx (D : D7) (V : HSp D) {r : ℕ} (Xf Yf : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hW : GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram Xf Yf) : r ≤ Formalism.MainNotions.SchurIrreducible.wittIdx V := by
   have hc : ∀ {a : ℕ} (A : Matrix (Fin V.rank) (Fin a) D.host.E),

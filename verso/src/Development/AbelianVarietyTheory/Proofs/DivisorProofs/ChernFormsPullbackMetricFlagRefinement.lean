@@ -20,6 +20,9 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Rewrite using `[contDiffOn_piLp]`. Introduce `i`. Conclude with `ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ U hU ((EuclideanSpace.proj i : V d →L[ℂ] ℂ).differentiable.comp_differentiableOn hp)`.
+-/
 theorem contDiffOn_holoMap {n d : ℕ} {U : Set (V n)} (hU : IsOpen U) {p : V n → V d}
     (hp : DifferentiableOn ℂ p U) : ContDiffOn ℂ ∞ p U := by
   rw [contDiffOn_piLp]
@@ -27,6 +30,17 @@ theorem contDiffOn_holoMap {n d : ℕ} {U : Set (V n)} (hU : IsOpen U) {p : V n 
   exact ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ U hU
     ((EuclideanSpace.proj i : V d →L[ℂ] ℂ).differentiable.comp_differentiableOn hp)
 
+/- English proof (translation)
+Establish `hp : p.pt ∈ p.ch.source` using `p.2`. Establish `hinv : p.ch.symm p.crd = p.pt` using `p.ch.left_inv hp`. Establish `hU : IsOpen (p.ch.target ∩ p.ch.symm ⁻¹' (f ⁻¹' (A.e c).source))` using `p.ch.isOpen_inter_preimage_symm ((A.e c).open_source.preimage hf.1)`. Establish `hmem : p.crd ∈ p.ch.target ∩ p.ch.symm ⁻¹' (f ⁻¹' (A.e c).source)` using `⟨p.ch.map_source hp, by rw [Set.mem_preimage, hinv]; exact hc⟩`. Use `set ψ : V n' → V n := A.e c ∘ f ∘ p.ch.symm with hψ`.
+
+Establish `hs : ContDiffAt ℂ ∞ ψ p.crd` using `(contDiffOn_holoMap hU (hf.2 p.1.1 c)).contDiffAt (hU.mem_nhds hmem)`. Establish `hv : ψ p.crd = A.e c (f p.pt)` using `by simp only [hψ, Function.comp_apply, hinv]`. Establish `hg : MContDiffAt ∞ (fun u => G ((A.e c).symm u)) (ψ p.crd)` using `hv ▸ (hG.2 c hc).self_of_nhds`. Establish `hu : IsUnit (G ((A.e c).symm (ψ p.crd))).det` using `by rw [hv, (A.e c).left_inv hc]; exact hG.1`. Establish `h1` using `((GlobalTheory.T.curvature_power_pullback_holomorphic n n' r (fun u => G ((A.e c).symm u)) ψ p.crd (hs.of_le (by norm_cast)) hg hu).2 j).2`.
+
+Establish `hg' : MContDiffAt ∞ (fun x => G ((A.e c).symm (ψ x))) p.crd` using `fun a b => (hg a b).comp p.crd (hs.restrict_scalars ℝ)`. Establish `hTu : IsUnit (T (p.ch.symm p.crd)).det` using `by rw [hinv]; exact hT.1`. Establish `hTd` using `hT.2 p.1.1 hp`. Establish `ht : Tendsto p.ch.symm (𝓝 p.crd) (𝓝 p.pt)`. Use `p.ch.continuousAt_symm (p.ch.map_source hp)` as an intermediate fact.
+
+Rewrite `this` using `[ContinuousAt, p.ch.left_inv hp]`. Then use the resulting hypothesis. Establish `he : ∀ᶠ x in 𝓝 p.crd, G' (p.ch.symm x) = T (p.ch.symm x) * G ((A.e c).symm (ψ x)) * (T (p.ch.symm x))ᴴ` using `by filter_upwards [ht.eventually h, hU.mem_nhds hmem] with x hx hx'`. Rewrite using `[hx]`. Simplify using `only [hψ, Function.comp_apply]`. Rewrite using `[(A.e c).left_inv hx'.2]`.
+
+Establish `h2` using `(GlobalTheory.T.chernTransgression_forms_frame_invariant n' r _ _ (fun x => G' (p.ch.symm x)) (fun x => G' (p.ch.symm x)) (fun x => T (p.ch.symm x)) (fun x => T (p.ch.symm x)) (fun x => T (p.ch.symm x)) p.crd hg' hu hg' hu hTd hTu hTd hTu hTd hTu (he.mono fun x hx => ⟨hx, hx⟩) j) …`. Use `show pull _ (chernAt _ (A.e c (f p.pt)) j : Alt n) = (chernAt (fun v => G' (p.ch.symm v)) p.crd j : Alt n')`. Rewrite using `[h2, h1, hv]`.
+-/
 theorem pull_chern_of_eventually {M M' : Type} [TopologicalSpace M] [TopologicalSpace M'] {n n' : ℕ} (A : HolAtlas M n)
     (A' : HolAtlas M' n') {r : Type} [Fintype r] [DecidableEq r] {f : M' → M} (hf : A.IsHolo A' f) (G : M → Matrix r r ℂ)
     (G' T : M' → Matrix r r ℂ) (p : A'.Pt) (c : A.ι) (hc : f p.pt ∈ (A.e c).source) (hG : SmoothUnitAt A G (f p.pt))
@@ -63,6 +77,13 @@ theorem pull_chern_of_eventually {M M' : Type} [TopologicalSpace M] [Topological
   show pull _ (chernAt _ (A.e c (f p.pt)) j : Alt n) = (chernAt (fun v => G' (p.ch.symm v)) p.crd j : Alt n')
   rw [h2, h1, hv]
 
+/- English proof (translation)
+Introduce `F _ σ X Y ι _ m E E' φ f hf hR H hH x`. Use function extensionality and compare the values at `p`. Establish `hol` using `GlobalTheory.T.varietyComplexPointsMap_isHolomorphic F σ X Y f hf`. Establish `hE` using `GlobalTheory.T.pulled_back_gram_matrices_independent_of_frame F σ X Y ι m E E' φ f hf hR H hH`. Establish `hA` using `(E.nonempty (under (ptMap σ f hf p.pt))).choose_spec`.
+
+Establish `hB` using `(E'.nonempty (under p.pt)).choose_spec`. Establish `hP` using `hR.sub (under p.pt) _ hB _ (by`. Use `hA` as an intermediate fact. Conclude with `(congrArg (fun w => (E.nonempty (under (ptMap σ f hf p.pt))).choose ∈ E.S w) (hE p.pt).1).mp this) x.1`. Use `pull_chern_of_eventually (atlas X σ) (atlas Y σ) hol (gramAt E H x.1 (ptMap σ f hf p.pt)) (gramAt E' (pullGram E H φ f hf) x.1 p.pt) (fun z => (((E'.nonempty (under p.pt)).choose * (Mat.map (E.nonempty (under (ptMap σ f hf p.pt))).choose φ)⁻¹) x.1).map (ratVal · z)) p _ _ (Global …` and prove the remaining obligations.
+
+Use `filter_upwards [(hol.1.tendsto p.pt).eventually (GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ X ι m 0 E _ _ hA), GlobalTheory.T.adaptedFrame_eventually_frame_near_complex_point F σ Y ι m m E' _ _ hB] with z h1 h2`. Conclude with `(hE z).2 _ ((congrArg (fun w => (E.nonempty (under (ptMap σ f hf p.pt))).choose ∈ E.S w) (hE z).1).mp h1) _ h2 x.1`.
+-/
 theorem pullback_chernF : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X Y : Var F) (ι : Type) [Finite ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X) (hf : f ≫ X.str = Y.str), Refines E E' φ f → ∀ H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ, IsMetricOn E ⊤ H → ∀ x : ι × ℕ, (atlas X σ).pullback (atlas Y σ) (ptMap σ f hf) (fld (atlas X σ) (chernF E H x)) = fld (atlas Y σ) (chernF E' (pullGram E H φ f hf) x) := by
   intro F _ σ X Y ι _ m E E' φ f hf hR H hH x
   funext p

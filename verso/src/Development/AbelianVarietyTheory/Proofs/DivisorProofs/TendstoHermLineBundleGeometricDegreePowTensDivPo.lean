@@ -14,6 +14,9 @@ namespace GlobalTheory.DegGrowth
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[add_pow, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← map_pow, ← smul_eq_mul (a := t ^ _), ← map_smul, MvPolynomial.smul_eq_C_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem expand (Ψ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : ℝ) :
     Ψ ((X 0 + C t * X 1) ^ D) = ∑ m ∈ Finset.range (D + 1),
       t ^ (D - m) * Ψ (X 0 ^ m * X 1 ^ (D - m) * (D.choose m : MvPolynomial (Fin 2) ℝ)) := by
@@ -23,6 +26,21 @@ theorem expand (Ψ : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ) (D : ℕ) (t : �
   congr 1
   ring
 
+/- English proof (translation)
+Introduce `hC k _ Y _ p D hX L A`. Take `⟨Ψ, hΨ⟩` from `((hC.arExists k Y p D hX).2 (Fin 2) ![L, A]).2`. Establish `hlin (n : ℕ) : (lin fun i => (((![(n : ℤ), 1] : Fin 2 → ℤ) i : ℤ) : ℝ)) = C (n : ℝ) * X 0 + C 1 * X 1`. Simplify using `[lin, Fin.sum_univ_two]`. Establish `hiso (n : ℕ) : (comb ![L, A] ![(n : ℤ), 1]).Isometric ((L.pow n).tens A)`.
+
+Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Simplify using `[icls_comb, HermLB.icls_tens, HermLB.icls_pow, Fin.sum_univ_two, natCast_zsmul]`. Establish `hiso0 : (comb ![L, A] ![1, 0]).Isometric L`. Use `HermLB.icls_eq_iff.1 ?_` and prove the remaining obligations. Simplify using `[icls_comb, Fin.sum_univ_two]`.
+
+Establish `hlin0 : (lin fun i => (((![1, 0] : Fin 2 → ℤ) i : ℤ) : ℝ)) = (X 0 : MvPolynomial (Fin 2) ℝ)`. Simplify using `[lin, Fin.sum_univ_two]`. Establish `h0 : Ψ (X 0 ^ D) = gdeg L D`. Rewrite using `[← hlin0, hΨ.1, hiso0.gdeg_eq]`. Establish `hn_eq (n : ℕ) : gdeg ((L.pow n).tens A) D = Ψ ((C (n : ℝ) * X 0 + C 1 * X 1) ^ D)`.
+
+Rewrite using `[← (hiso n).gdeg_eq, ← hΨ.1, hlin]`. Use `set f : ℝ → ℝ := fun t => Ψ ((X 0 + C t * X 1) ^ D) with hf`. Establish `hfc : Continuous f`. Establish `: f = fun t => ∑ m ∈ Finset.range (D + 1), t ^ (D - m) * Ψ (X 0 ^ m * X 1 ^ (D - m) * (D.choose m : MvPolynomial (Fin 2) ℝ))`. Use function extensionality and compare the values at `fun t => expand Ψ D t`.
+
+Rewrite using `[this]`. Use `fun_prop`. Establish `hf0 : f 0 = gdeg L D` using `by simp [hf, h0]`. Establish `hev : ∀ᶠ n : ℕ in atTop, f (1 / (n : ℝ)) = gdeg ((L.pow n).tens A) D / (n : ℝ) ^ D` using `by filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn' : (n : ℝ) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.1 hn)`.
+
+Establish `e : C (n : ℝ) * X 0 + C 1 * X 1 = C (n : ℝ) * (X 0 + C (1 / (n : ℝ)) * X 1 : MvPolynomial (Fin 2) ℝ)`. Rewrite using `[mul_add, ← mul_assoc, ← map_mul, mul_one_div_cancel hn']`. Rewrite using `[hn_eq, e, mul_pow, ← map_pow, ← MvPolynomial.smul_eq_C_mul, map_smul, smul_eq_mul, mul_div_cancel_left₀ _ (pow_ne_zero _ hn')]`. Establish `ht` using `(hfc.tendsto 0).comp tendsto_one_div_atTop_nhds_zero_nat`. Rewrite `ht` using `[hf0]`.
+
+Conclude with `ht.congr' hev`.
+-/
 theorem main : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ L A : HermLB p, Tendsto (fun n : ℕ => gdeg ((L.pow n).tens A) D / (n : ℝ) ^ D) atTop (𝓝 (gdeg L D)) := by
   intro hC k _ Y _ p D hX L A
   obtain ⟨Ψ, hΨ⟩ := ((hC.arExists k Y p D hX).2 (Fin 2) ![L, A]).2

@@ -17,12 +17,20 @@ variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ) (u u' : D.wha
 def g0 (γ : X.B.I.Ginf) (τ : D.what₂.Tau) : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS :=
   Formalism.L2.SG.RealObj.trG (C.Q τ) (C.Qi τ) (γ (vOf X τ))
 
+/- English proof (translation)
+Simplify using `only [Formalism.BasicNotions.Host.rdE]`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Rewrite using `[abs_pos]`. Conclude with `NumberField.discr_ne_zero (K := D.host.E)` after adjusting the coercions.
+-/
 private theorem rdE_pos_rank_point_counts (D : D7) : 0 < D.host.rdE := by
   simp only [Formalism.BasicNotions.Host.rdE]
   apply Real.rpow_pos_of_pos
   rw [abs_pos]
   exact_mod_cast NumberField.discr_ne_zero (K := D.host.E)
 
+/- English proof (translation)
+Establish `hne` using `(rdE_pos_rank_point_counts D).ne'`. Establish `hpi` using `Real.pi_ne_zero`. Establish `h : D.host.ka / (2 * Real.pi) = D.host.rdE⁻¹`. Simplify using `only [Formalism.BasicNotions.Host.ka, Formalism.BasicNotions.Host.v]`. Apply the tactic sequence `field_simp <;> ring`.
+
+Simplify using `only [frS, h, Complex.ofReal_inv]`.
+-/
 private theorem frS_eq_inv_rdE (D : D7) : frS D = ((D.host.rdE : ℝ) : ℂ)⁻¹ := by
   have hne := (rdE_pos_rank_point_counts D).ne'
   have hpi := Real.pi_ne_zero
@@ -31,6 +39,9 @@ private theorem frS_eq_inv_rdE (D : D7) : frS D = ((D.host.rdE : ℝ) : ℂ)⁻�
     field_simp <;> ring
   simp only [frS, h, Complex.ofReal_inv]
 
+/- English proof (translation)
+Establish `hpos` using `rdE_pos_rank_point_counts D`. Establish `ha : (a : ℕ) ≤ D.R.rS` using `Nat.lt_succ_iff.mp a.isLt`. Rewrite using `[frS_eq_inv_rdE]`. Simplify using `only [rhoF]`. Rewrite using `[show (-((D.R.rS : ℝ) - ((a : ℕ) : ℝ))) = -(((D.R.rS - (a : ℕ) : ℕ) : ℝ)) by rw [Nat.cast_sub ha], Real.rpow_neg hpos.le, Real.rpow_natCast, Complex.ofReal_inv, Complex.ofReal_pow, inv_pow]`.
+-/
 private theorem rhoF_eq_frS_pow (D : D7) (a : Fin (D.R.rS + 1)) :
     ((rhoF D a : ℝ) : ℂ) = frS D ^ (D.R.rS - (a : ℕ)) := by
   have hpos := rdE_pos_rank_point_counts D
@@ -40,6 +51,11 @@ private theorem rhoF_eq_frS_pow (D : D7) (a : Fin (D.R.rS + 1)) :
   rw [show (-((D.R.rS : ℝ) - ((a : ℕ) : ℝ))) = -(((D.R.rS - (a : ℕ) : ℕ) : ℝ)) by rw [Nat.cast_sub ha],
     Real.rpow_neg hpos.le, Real.rpow_natCast, Complex.ofReal_inv, Complex.ofReal_pow, inv_pow]
 
+/- English proof (translation)
+Take `⟨-, h2, -, h4⟩` from `C.isT τ`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Formalism.QuantumDeterminants.fvec, Fin.val_last, lt_self_iff_false, dite_false, zB, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, rhoF_eq_frS_pow, Nat.sub_self, pow_zero, one_smul, Formalism.L2.SG.RealObj.frm, Formalism.L2.SG.RealObj.famSc, Formalism.L2.SG.RealObj.fam, Fin. …`. Consider the case `cast i`.
+
+Take `⟨hq, -⟩` from `h4 i i rfl`. Simplify using `only [Formalism.QuantumDeterminants.fvec, Fin.coe_castSucc, i.isLt, dite_true, Fin.eta, Formalism.QuantumDeterminants.bvec, hq, rhoF_eq_frS_pow, Formalism.L2.SG.RealObj.frm, Formalism.L2.SG.RealObj.famSc, Formalism.L2.SG.RealObj.fam, Fin.snoc_castSucc, Complex.ofReal_one, one_pow …`.
+-/
 private theorem Q_mulVec_fvec_eq_smul_frm (τ : D.what₂.Tau) (a : Fin (D.R.rS + 1)) :
     C.Q τ *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u τ) a =
       ((rhoF D a : ℝ) : ℂ) • Formalism.L2.SG.RealObj.frm X u 1 (vOf X τ) a := by
@@ -55,6 +71,9 @@ private theorem Q_mulVec_fvec_eq_smul_frm (τ : D.what₂.Tau) (a : Fin (D.R.rS 
       Formalism.L2.SG.RealObj.frm, Formalism.L2.SG.RealObj.famSc, Formalism.L2.SG.RealObj.fam, Fin.snoc_castSucc,
       Complex.ofReal_one, one_pow, inv_one, one_smul]
 
+/- English proof (translation)
+Take `⟨-, -, h3, -⟩` from `C.isT τ`. Rewrite using `[← h3]`. Simplify using `only [Formalism.QuantumDeterminants.herm, hJ, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+-/
 private theorem herm_Hpk_eq_hJ_Q_mulVec (τ : D.what₂.Tau) (x y : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) x y =
       hJ (X.B.I.ε (vOf X τ)) (C.Q τ *ᵥ y) (C.Q τ *ᵥ x) := by
@@ -63,12 +82,20 @@ private theorem herm_Hpk_eq_hJ_Q_mulVec (τ : D.what₂.Tau) (x y : Fin (2 * D.R
   simp only [Formalism.QuantumDeterminants.herm, hJ, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec,
     Matrix.mul_assoc]
 
+/- English proof (translation)
+Take `⟨-, h2, -, -⟩` from `C.isT τ`. Simplify using `only [g0, Formalism.L2.SG.RealObj.trG, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 private theorem Q_mulVec_g0_mulVec_eq (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (w : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) :
     C.Q τ *ᵥ ((g0 C γ τ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) *ᵥ w) =
       uMat (γ (vOf X τ)) *ᵥ (C.Q τ *ᵥ w) := by
   obtain ⟨-, h2, -, -⟩ := C.isT τ
   simp only [g0, Formalism.L2.SG.RealObj.trG, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Simplify using `only [Formalism.QuantumDeterminants.Zhat]`. Rewrite using `[herm_Hpk_eq_hJ_Q_mulVec C τ, Q_mulVec_g0_mulVec_eq C γ τ, Q_mulVec_fvec_eq_smul_frm C u τ, Q_mulVec_fvec_eq_smul_frm C u' τ]`. Establish `hs : ∀ x : ℝ, star (x : ℂ) = (x : ℂ)` using `fun x => Complex.conj_ofReal x`. Simplify using `only [Formalism.L2.SG.RealObj.ZX, Formalism.L2.SG.RealObj.Zhat, hJ, Matrix.mulVec_smul, star_smul, hs, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_conjugator_scaled (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (a b : Fin (D.R.rS + 1)) :
     Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (g0 C γ τ) a b =
       ((rhoF D a * rhoF D b : ℝ) : ℂ) * Formalism.L2.SG.RealObj.ZX X u u' 1 γ (vOf X τ) a b := by
@@ -80,6 +107,19 @@ theorem zhat_conjugator_scaled (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (a b : Fin
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hne : D.host.rdE ≠ 0` using `(rdE_pos_rank_point_counts D).ne'`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `A i j`.
+
+Simplify using `only [locBlocksFrom, ptEntry, map_zero, mul_zero]`. Consider the case `cons p bs ih`. Take `⟨t, s⟩` from `p`. Introduce `A i j`. Simplify using `only [locBlocksFrom, ptEntry]`.
+
+Distinguish the cases in `h1 : i < s ∧ j < s`. Rewrite using `[if_pos h1, if_pos h1]`. Distinguish the cases in `h2 : i + j + 1 = s`. Rewrite using `[if_pos h2, if_pos h2]`. Establish `hz : rhoReal D (A + 1) s = D.host.rdE ^ (-((D.R.rS : ℤ) - ((A + i : ℕ) : ℤ))) * D.host.rdE ^ (-((D.R.rS : ℤ) - ((A + j : ℕ) : ℤ)))`.
+
+Rewrite using `[← zpow_add₀ hne]`. Simplify using `only [rhoReal]`. Use `congr 1`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[hz]`. Rewrite using `[if_neg h2, if_neg h2, map_zero, mul_zero]`. Rewrite using `[if_neg h1, if_neg h1]`. Distinguish the cases in `h3 : s ≤ i ∧ s ≤ j`. Rewrite using `[if_pos h3, if_pos h3, ih]`.
+
+Take `⟨h3i, h3j⟩` from `h3`. Rewrite using `[show A + s + (i - s) = A + i by omega, show A + s + (j - s) = A + j by omega]`. Rewrite using `[if_neg h3, if_neg h3, map_zero, mul_zero]`.
+-/
 private theorem ptEntry_locBlocksFrom_eq (D : D7) (τ : D.what₂.Tau) :
     ∀ (L : List (D.host.E × ℕ)) (A i j : ℕ),
       ptEntry (locBlocksFrom D (rhoReal D) τ A L) i j =
@@ -115,6 +155,13 @@ private theorem ptEntry_locBlocksFrom_eq (D : D7) (τ : D.what₂.Tau) :
         rw [show A + s + (i - s) = A + i by omega, show A + s + (j - s) = A + j by omega]
       · rw [if_neg h3, if_neg h3, map_zero, mul_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a b`. Establish `hv : X.pl (vOf X τ) = τ` using `X.pl.apply_symm_apply τ`. Establish `hpe : ∀ x, plEmb D τ x = embS D τ x` using `fun x => rfl`. Establish `hρ : ∀ c : Fin (D.R.rS + 1), rhoF D c = D.host.rdE ^ (-((D.R.rS : ℤ) - ((c : ℕ) : ℤ)))`. Introduce `c`.
+
+Simplify using `only [rhoF]`. Rewrite using `[← Real.rpow_intCast]`. Evaluate the numerical expressions. Establish `hr` using `congrFun (congrFun (hrep (vOf X τ)) a) b`. Simplify using `only [Formalism.L2.SG.RealObj.ZhatO, Formalism.L2.SG.RealObj.ptC, Matrix.map_apply, X.φ_eq, RingEquiv.apply_symm_apply, hv, ptMat] at hr`.
+
+Simplify using `only [ZhatO, zhat_conjugator_scaled C u u' γ τ, ptMat, ptLoc, ptLocS, locBlocks, ptEntry_locBlocksFrom_eq, Nat.zero_add, hpe, hρ]`. Rewrite using `[← hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem zhat_conjugator_eq_point (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (hrep : Formalism.L2.SG.RealObj.IsPtRep X u u' w γ)
     (τ : D.what₂.Tau) :
     ZhatO D.R.k D.R.rS (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (g0 C γ τ) = ptMat (ptLoc D τ w) := by
@@ -134,14 +181,27 @@ theorem zhat_conjugator_eq_point (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.G
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[frS_eq_inv_rdE]`. Conclude with `inv_mul_cancel₀ (by exact_mod_cast (rdE_pos_rank_point_counts D).ne')`.
+-/
 theorem frS_mul_rd (D : D7) : frS D * (D.host.rdE : ℂ) = 1 := by
   rw [frS_eq_inv_rdE]
   exact inv_mul_cancel₀ (by exact_mod_cast (rdE_pos_rank_point_counts D).ne')
 
+/- English proof (translation)
+Rewrite using `[rhoF_eq_frS_pow, frS_eq_inv_rdE, inv_pow]`.
+-/
 theorem rho_eq (D : D7) (b : Fin (D.R.rS + 1)) :
     ((rhoF D b : ℝ) : ℂ) = ((D.host.rdE : ℂ) ^ (D.R.rS - b.val))⁻¹ := by
   rw [rhoF_eq_frS_pow, frS_eq_inv_rdE, inv_pow]
 
+/- English proof (translation)
+Establish `ha` using `a.isLt`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single (Formalism.QuantumDeterminants.eI k r a)]`. Establish `h1 : Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.esI k r a) (Formalism.QuantumDeterminants.eI k r a) = 1`. Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Formalism.QuantumDeterminants.eI, Fin.ext_iff, Fin.val_mk]`.
+
+Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[h1, one_mul]`. Introduce `j _ hj`. Establish `hj' : j.val ≠ a.val` using `fun h => hj (Fin.ext (by simp [Formalism.QuantumDeterminants.eI, h]))`. Establish `h0 : Formalism.QuantumDeterminants.Hpk k r (Formalism.QuantumDeterminants.esI k r a) j = 0`.
+
+Simplify using `only [Formalism.QuantumDeterminants.Hpk, Formalism.QuantumDeterminants.esI, Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Rewrite using `[h0, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem hpk_esI (k r : ℕ) (a : Fin r) (v : Fin (2 * r + k + 1) → ℂ) :
     (Formalism.QuantumDeterminants.Hpk k r *ᵥ v) (Formalism.QuantumDeterminants.esI k r a) = v (Formalism.QuantumDeterminants.eI k r a) := by
   have ha := a.isLt
@@ -164,6 +224,9 @@ def cMg (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (y : Formalism.REAL.UJ (X.B.I.ε 
     Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ :=
   C.Qi τ * ((uMat (γ (vOf X τ)))⁻¹ * uMat y * uMat (γ (vOf X τ))) * C.Q τ
 
+/- English proof (translation)
+Establish `hs : star (Pi.single i 1 : Fin m → ℂ) = Pi.single i 1`. Use extensionality with `j`. Apply the tactic sequence `by_cases h : j = i <;> simp [Pi.single_apply, h]`. Simplify using `[Formalism.QuantumDeterminants.herm, hs, dotProduct, Pi.single_apply]`.
+-/
 private theorem mulVec_apply_eq_herm_single {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → ℂ) (i : Fin m) :
     (H *ᵥ x) i = Formalism.QuantumDeterminants.herm H x (Pi.single i 1) := by
   have hs : star (Pi.single i 1 : Fin m → ℂ) = Pi.single i 1 := by
@@ -171,6 +234,9 @@ private theorem mulVec_apply_eq_herm_single {m : ℕ} (H : Matrix (Fin m) (Fin m
     by_cases h : j = i <;> simp [Pi.single_apply, h]
   simp [Formalism.QuantumDeterminants.herm, hs, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Take `⟨-, h2, -, -⟩` from `C.isT τ`. Simplify using `only [cMg, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h2, Matrix.one_mul]`.
+-/
 private theorem Q_mulVec_cMg_mulVec_eq (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (f : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) :
     C.Q τ *ᵥ (cMg C γ τ y *ᵥ f) =
@@ -178,6 +244,13 @@ private theorem Q_mulVec_cMg_mulVec_eq (γ : X.B.I.Ginf) (τ : D.what₂.Tau) (y
   obtain ⟨-, h2, -, -⟩ := C.isT τ
   simp only [cMg, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, h2, Matrix.one_mul]
 
+/- English proof (translation)
+Take `⟨-, -, -, h4⟩` from `C.isT τ`. Establish `hlt : p.1.1.1 < D.R.rS` using `by have := p.2.1; have := p.1.2.isLt; omega`. Establish `hs : ∀ x : ℝ, star (x : ℂ) = (x : ℂ)` using `fun x => Complex.conj_ofReal x`. Establish `hU : uMat ((γ (vOf X τ))⁻¹ * y * γ (vOf X τ)) = (uMat (γ (vOf X τ)))⁻¹ * uMat y * uMat (γ (vOf X τ))`. Simplify using `[uMat, Matrix.coe_units_inv]`.
+
+Establish `hc : (star (frS D ^ (D.R.rS - ((⟨p.1.1.1, hlt⟩ : Fin D.R.rS) : ℕ))))⁻¹ = (D.host.rdE : ℂ) ^ (D.R.rS - p.1.1.1)`. Rewrite using `[frS_eq_inv_rdE, ← Complex.ofReal_inv, ← Complex.ofReal_pow, hs, Complex.ofReal_pow, Complex.ofReal_inv, inv_pow, inv_inv]`. Take `⟨-, hf⟩` from `h4 ⟨p.1.1.1, hlt⟩ ⟨p.1.1.1, hlt⟩ rfl`. Rewrite using `[← hpk_esI D.R.k D.R.rS ⟨p.1.1.1, hlt⟩ (cMg C γ τ y *ᵥ Formalism.QuantumDeterminants.fvec D.R.k D.R.rS (zB X (C.Qi τ) u' τ) p.1.2), mulVec_apply_eq_herm_single, herm_Hpk_eq_hJ_Q_mulVec C τ, hf, hc, Q_mulVec_cMg_mulVec_eq C γ τ, Q_mulVec_fvec_eq_smul_frm C u' τ]`. Simplify using `only [Formalism.L2.SG.NGPin.stCoordV, hU, rho_eq, Formalism.L2.SG.RealObj.frm, Formalism.L2.SG.RealObj.famSc, Complex.ofReal_one, one_pow, inv_one, one_smul, hJ, Matrix.mulVec_smul, star_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, hs, star_pow]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem stCoordV_eq (w : Point D.host.E (D.R.rS + 1)) (γ : X.B.I.Ginf) (τ : D.what₂.Tau)
     (y : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (p : Formalism.L2.SG.RealObj.FreeE w) :
     Formalism.L2.SG.NGPin.stCoordV X u' w γ (vOf X τ) y p =

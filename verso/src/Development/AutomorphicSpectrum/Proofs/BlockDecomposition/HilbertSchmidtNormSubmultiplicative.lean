@@ -5,6 +5,13 @@ open Finset Matrix PositivityTheory.RgHe.Frame
 
 namespace GlobalTheory.CompanionTheory.RgHe
 
+/- English proof (translation)
+Establish `key : ∀ i j, ‖(P * Q) i j‖ ^ 2 ≤ (∑ k, ‖P i k‖ ^ 2) * (∑ k, ‖Q k j‖ ^ 2)`. Introduce `i j`. Establish `h1 : ‖(P * Q) i j‖ ≤ ∑ k, ‖P i k‖ * ‖Q k j‖`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ => norm_mul_le _ _)`.
+
+Conclude with `(pow_le_pow_left₀ (norm_nonneg _) h1 2).trans (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)`. Establish `hQ : Formalism.REAL.hs Q = ∑ j, ∑ k, ‖Q k j‖ ^ 2`. Unfold `Formalism.REAL.hs`. Conclude with `Finset.sum_comm`. Rewrite using `[hQ]`.
+
+Unfold `Formalism.REAL.hs`. Rewrite using `[Finset.sum_mul_sum]`. Conclude with `Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => key i j`.
+-/
 theorem hs_mul_le_mul {m : ℕ} (P Q : Matrix (Fin m) (Fin m) ℂ) :
     Formalism.REAL.hs (P * Q) ≤ Formalism.REAL.hs P * Formalism.REAL.hs Q := by
   have key : ∀ i j, ‖(P * Q) i j‖ ^ 2 ≤ (∑ k, ‖P i k‖ ^ 2) * (∑ k, ‖Q k j‖ ^ 2) := by

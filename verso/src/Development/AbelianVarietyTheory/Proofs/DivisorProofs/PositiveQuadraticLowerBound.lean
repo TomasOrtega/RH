@@ -3,6 +3,21 @@ open SchwartzMap
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Distinguish the cases in `hV : ∃ x : V, x ≠ 0`. Use `haveI : Nontrivial V := ⟨⟨_, 0, hV.choose_spec⟩⟩`. Set `Q1 : V →ₗ[ℝ] (V →L[ℝ] ℂ)` to `(LinearMap.toContinuousLinearMap : (V →ₗ[ℝ] ℂ) ≃ₗ[ℝ] (V →L[ℝ] ℂ)).toLinearMap ∘ₗ Q`. Set `Q2 : V →L[ℝ] (V →L[ℝ] ℂ)` to `LinearMap.toContinuousLinearMap Q1`. Establish `hQ2 : ∀ x y, Q2 x y = Q x y` using `fun x y => rfl`.
+
+Establish `hcont : Continuous fun u : V => (Q u u).re`. Establish `: Continuous fun u : V => Q2 u u` using `Q2.continuous.clm_apply continuous_id`. Conclude with `Complex.continuous_re.comp this`. Take `⟨u0, hu0, hmin⟩` from `(isCompact_sphere (0 : V) 1).exists_isMinOn (NormedSpace.sphere_nonempty.mpr zero_le_one) hcont.continuousOn`. Establish `hu0ne : u0 ≠ 0`.
+
+Introduce `h`. Rewrite `hu0` using `[h, mem_sphere_zero_iff_norm, norm_zero]`. Conclude with `zero_ne_one hu0`. Use `⟨(Q u0 u0).re, hQ u0 hu0ne, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+
+Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `set u : V := ‖x‖⁻¹ • x with hu`. Establish `hus : u ∈ Metric.sphere (0 : V) 1`.
+
+Rewrite using `[mem_sphere_zero_iff_norm, hu, norm_smul, norm_inv, norm_norm, inv_mul_cancel₀ hn.ne']`. Establish `hxu : x = ‖x‖ • u`. Rewrite using `[hu, smul_smul, mul_inv_cancel₀ hn.ne', one_smul]`. Establish `hsc : ∀ (r : ℝ) (v : V), (Q (r • v) (r • v)).re = r ^ 2 * (Q v v).re`. Introduce `r v`.
+
+Simplify using `only [map_smul, LinearMap.smul_apply, smul_smul, Complex.smul_re, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : (Q x x).re = ‖x‖ ^ 2 * (Q u u).re`. Rewrite using `[← hsc, ← hxu]`. Rewrite using `[key]`.
+
+Conclude with `mul_comm (Q u0 u0).re (‖x‖ ^ 2) ▸ mul_le_mul_of_nonneg_left (hmin hus) (by positivity)`. Use `push_neg at hV`. Use `⟨1, one_pos, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hV x]`. Simplify using the standard rewrite rules.
+-/
 theorem coercive_of_re_pos (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Q : V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (hQ : ∀ x, x ≠ 0 → 0 < (Q x x).re) :
     ∃ c : ℝ, 0 < c ∧ ∀ x, c * ‖x‖ ^ 2 ≤ (Q x x).re := by

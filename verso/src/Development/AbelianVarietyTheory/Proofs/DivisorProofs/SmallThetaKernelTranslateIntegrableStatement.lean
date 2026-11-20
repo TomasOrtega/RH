@@ -12,6 +12,9 @@ open GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.StdFrames
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SmallConv.exists_translates_integrableOn | exact GlobalTheory.SmallConv.exists_translates_integrableOn | (intros; apply GlobalTheory.SmallConv.exists_translates_integrableOn <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.small_theta_kernel_translate_integrable : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     ∃ z, zdeg z ≠ 0 ∧ IntegrableOn (translates z (kerSmall ch.W Θ' g g₁)) (M.fd _) (M.ν _) := by
   first | exact @GlobalTheory.SmallConv.exists_translates_integrableOn | exact GlobalTheory.SmallConv.exists_translates_integrableOn | (intros; apply GlobalTheory.SmallConv.exists_translates_integrableOn <;> assumption)

@@ -33,6 +33,9 @@ end ShortIntegers
 
 open NumberField Module Submodule in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Establish `h` using `Equiv.sum_comp (NumberField.ComplexEmbedding.involutive_conjugate K).toPerm f`. Simplify using `only [Function.Involutive.coe_toPerm, hf, Finset.sum_neg_distrib] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma sum_embeddings_eq_zero_of_conjugate_neg {K : Type} [Field K] [NumberField K] (f : (K →+* ℂ) → ℝ)
     (hf : ∀ σ, f (NumberField.ComplexEmbedding.conjugate σ) = - f σ) : ∑ σ, f σ = 0 := by
   have h := Equiv.sum_comp (NumberField.ComplexEmbedding.involutive_conjugate K).toPerm f
@@ -41,6 +44,11 @@ private lemma sum_embeddings_eq_zero_of_conjugate_neg {K : Type} [Field K] [Numb
 
 open NumberField Module Submodule in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Establish `ht` using `congrArg Complex.re (_root_.GlobalTheory.trace_eq_sum_complexEmbeddings (x * y))`. Simplify using `[PiLp.inner_apply, _root_.GlobalTheory.ShortIntegers.realCoords]`. Simplify using `at ht`. Rewrite using `[ht, Equiv.sum_comp e (fun σ => ((σ y).re + -(σ y).im) * ((σ x).re + (σ x).im)), ← Finset.sum_sub_distrib]`. Establish `h0` using `sum_embeddings_eq_zero_of_conjugate_neg (K := K) (fun σ => (σ x).im * (σ y).re - (σ x).re * (σ y).im) (by intro σ; simp [NumberField.ComplexEmbedding.conjugate_coe_eq]; ring)`.
+
+Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib, ← h0]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma inner_realCoords_one_neg_one_eq_trace {K : Type} [Field K] [NumberField K] {M : ℕ}
     (e : Fin M ≃ (K →+* ℂ)) (x y : K) :
     inner ℝ (_root_.GlobalTheory.ShortIntegers.realCoords e 1 x) (_root_.GlobalTheory.ShortIntegers.realCoords e (-1) y)
@@ -58,6 +66,11 @@ private lemma inner_realCoords_one_neg_one_eq_trace {K : Type} [Field K] [Number
 
 open NumberField Module Submodule in
 open scoped nonZeroDivisors in
+/- English proof (translation)
+Rewrite using `[EuclideanSpace.norm_sq_eq]`. Simplify using `only [_root_.GlobalTheory.ShortIntegers.realCoords, LinearMap.coe_mk, AddHom.coe_mk, Real.norm_eq_abs, sq_abs]`. Rewrite using `[Equiv.sum_comp e (fun σ => ((σ x).re + ε * (σ x).im) ^ 2)]`. Establish `h0` using `sum_embeddings_eq_zero_of_conjugate_neg (K := K) (fun σ => 2 * ε * (σ x).re * (σ x).im) (by intro σ; simp [NumberField.ComplexEmbedding.conjugate_coe_eq])`. Rewrite using `[← sub_eq_zero, ← Finset.sum_sub_distrib, ← h0]`.
+
+Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Take the linear combination `(σ x).im ^ 2 * hε`.
+-/
 private lemma norm_sq_realCoords_eq_sum_norm_sq {K : Type} [Field K] [NumberField K] {M : ℕ}
     (e : Fin M ≃ (K →+* ℂ)) {ε : ℝ} (hε : ε ^ 2 = 1) (x : K) :
     ‖_root_.GlobalTheory.ShortIntegers.realCoords e ε x‖ ^ 2 = ∑ σ : K →+* ℂ, ‖σ x‖ ^ 2 := by
@@ -75,6 +88,9 @@ private lemma norm_sq_realCoords_eq_sum_norm_sq {K : Type} [Field K] [NumberFiel
 open NumberField Module Submodule in
 open scoped nonZeroDivisors in
 
+/- English proof (translation)
+The claim follows from `|((NumberField.discr K : ℤ) : ℝ)| ^ (1 / (Module.finrank ℚ K : ℝ)) := by set n := Module.finrank ℚ K with hn let e : Fin n ≃ (K →+* ℂ) := (Fintype.equivFinOfCardEq (NumberField.Embeddings.card K ℂ)).symm let φ := _root_.GlobalTheory.ShortIntegers.realCoords e 1 let ψ := _root_.Gl …`.
+-/
 theorem _root_.GlobalTheory.exists_short_independent_integers (K : Type) [Field K] [NumberField K] :
     ∃ ω : Fin (Module.finrank ℚ K) → 𝓞 K, LinearIndependent ℚ (fun k => (ω k : K)) ∧
       ∀ (s : K →+* ℂ) k, ‖s (ω k : K)‖ ≤ (Module.finrank ℚ K : ℝ) ^ 3 *

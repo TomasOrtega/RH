@@ -10,6 +10,19 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 
 variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {F : Type*} [Field F]
 
+/- English proof (translation)
+Establish `hWp : W.IsPrime` using `hW.isPrime`. Establish `h1` using `Ideal.map_height_le_one_of_mem_minimalPrimes hW`. Use `set q := Ideal.Quotient.mk V`. Establish `hker : RingHom.ker q = V` using `Ideal.mk_ker`. Establish `hW'm : (W'.map q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [hker]; exact hVW'.le)`.
+
+Establish `hWm : (W.map q).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [hker]; exact hVW'.le.trans hW'W.le)`. Establish `hlt : W'.map q < W.map q`. Use `lt_of_le_of_ne (Ideal.map_mono hW'W.le) fun he => hW'W.ne ?_` and prove the remaining obligations. Use `congrArg (Ideal.comap q) he` as an intermediate fact. Rewrite `this` using `[Ideal.comap_map_of_surjective' q Ideal.Quotient.mk_surjective, Ideal.comap_map_of_surjective' q Ideal.Quotient.mk_surjective, hker, sup_eq_left.mpr hVW'.le, sup_eq_left.mpr (hVW'.le.trans hW'W.le)]`. Then use the resulting hypothesis.
+
+Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `h0 : (W'.map q).height = 0`. Establish `h3` using `h2.trans h1`. Generalize the expression as in `(W'.map q).height = a at h3`. Consider the cases of `a with`.
+
+Consider the case `top => simp at h3`. Consider the case `coe a => norm_cast at h3 ⊢`. Use linear arithmetic over natural numbers and integers. Use `haveI : IsDomain (MRingOver F ι ⧸ V) := Ideal.Quotient.isDomain V`. Rewrite `h0` using `[Ideal.height_eq_zero_iff_eq_bot]`.
+
+Apply `hVW'.ne` to reduce the goal to its premises. Apply `le_antisymm hVW'.le` to reduce the goal to its premises. Introduce `y hy`. Establish `: q y ∈ W'.map q` using `Ideal.mem_map_of_mem q hy`. Rewrite `this` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `this`.
+-/
 theorem not_lt_lt_of_mem_minimalPrimes {V W W' : Ideal (MRingOver F ι)} [V.IsPrime] [W'.IsPrime]
     {x : MRingOver F ι} (hW : W ∈ (V ⊔ Ideal.span {x}).minimalPrimes) (hVW' : V < W')
     (hW'W : W' < W) : False := by
@@ -44,6 +57,13 @@ theorem not_lt_lt_of_mem_minimalPrimes {V W W' : Ideal (MRingOver F ι)} [V.IsPr
   rw [h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem] at this
   exact this
 
+/- English proof (translation)
+Introduce `hfW`. Use `haveI hVp : V.IsPrime := hV.1.1`. Establish `hWp : W.IsPrime` using `hW.1.isPrime`. Establish `hle : V ⊔ Ideal.span {f} ≤ W` using `sup_le (le_sup_left.trans hW.1.1.2) (Ideal.span_le.mpr (by simpa using hfW))`. Take `⟨W', hW', hW'W⟩` from `Ideal.exists_minimalPrimes_le hle`.
+
+Use `haveI : W'.IsPrime := hW'.isPrime`. Establish `hVW' : V < W'` using `lt_of_le_of_ne (le_sup_left.trans hW'.1.2) fun he => hfV (he ▸ hW'.1.2 (le_sup_right (a := V) (Ideal.subset_span rfl)))`. Break down `hW'W.lt_or_eq with hlt | heq` into its components or cases. Conclude with `not_lt_lt_of_mem_minimalPrimes hW.1 hVW' hlt`. Substitute `heq` using the available equality.
+
+Conclude with `hft W' ⟨hW', hW.2⟩ (hW.1.1.2 (le_sup_right (a := V) (Ideal.subset_span rfl)))`.
+-/
 theorem not_mem_of_mem_divSupp_swap {V W : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRingOver F ι}
     {α β : K → ℕ} (hV : IsProjVarF V (n + 1)) (hf : IsMultiHomog f α) (ht : IsMultiHomog t β)
     (hfV : f ∉ V) (htV : t ∉ V) (hft : ∀ W ∈ divSupp V f, t ∉ W) (hW : W ∈ divSupp V t) :
@@ -66,6 +86,13 @@ open SwapLoc
 
 namespace DivisorCycleSwap
 
+/- English proof (translation)
+Take `⟨z, hzQ, hzP⟩` from `SetLike.exists_of_lt hlt`. Establish `hz : Ideal.Quotient.mk P z ∈ nonZeroDivisors (R ⧸ P)` using `mem_nonZeroDivisors_of_ne_zero (by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem])`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor hz`. Establish `hle : Ideal.span {Ideal.Quotient.mk P z} ≤ Q.map (Ideal.Quotient.mk P)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `Ideal.mem_map_of_mem _ hzQ`. Set `e : (R ⧸ P) ⧸ Q.map (Ideal.Quotient.mk P) ≃+* R ⧸ Q` to `(DoubleQuot.quotQuotEquivQuotSup P Q).trans (Ideal.quotEquivOfEq (sup_eq_right.mpr hlt.le))`. Establish `h2 : ringKrullDim (R ⧸ Q) ≤ ringKrullDim ((R ⧸ P) ⧸ Ideal.span {Ideal.Quotient.mk P z})` using `ringKrullDim_le_of_surjective ((e : _ →+* R ⧸ Q).comp (Ideal.Quotient.factor hle)) (e.surjective.comp (Ideal.Quotient.factor_surjective hle))`. Rewrite `h1` using `[hPd]`. Rewrite `h2` using `[hQd]`.
+
+Establish `h3 : (d : WithBot ℕ∞) + 1 ≤ (d : WithBot ℕ∞)` using `le_trans (by gcongr) h1`. Establish `h4 : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ (d : WithBot ℕ∞)` using `by exact_mod_cast h3`. Establish `h5 : d + 1 ≤ d` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem not_lt_of_dim_eq {R : Type*} [CommRing R] {P Q : Ideal R} [hP : P.IsPrime] [Q.IsPrime]
     (hlt : P < Q) {d : ℕ} (hPd : ringKrullDim (R ⧸ P) = (d : WithBot ℕ∞))
     (hQd : ringKrullDim (R ⧸ Q) = (d : WithBot ℕ∞)) : False := by
@@ -87,23 +114,40 @@ theorem not_lt_of_dim_eq {R : Type*} [CommRing R] {P Q : Ideal R} [hP : P.IsPrim
   have h5 : d + 1 ≤ d := by exact_mod_cast h4
   omega
 
+/- English proof (translation)
+Introduce `k` and use `by obtain ⟨i, hi⟩ := hZ k exact ⟨i, fun h => hi (hY h)⟩`.
+-/
 theorem isRelevant_of_le {Y Z : Ideal (MRingOver F ι)} (hZ : IsRelevant Z) (hY : Y ≤ Z) :
     IsRelevant Y := fun k => by
   obtain ⟨i, hi⟩ := hZ k
   exact ⟨i, fun h => hi (hY h)⟩
 
+/- English proof (translation)
+Simplify using `[divCycle, Finsupp.ofSupportFinite_coe, hW]`.
+-/
 theorem divCycle_apply_of_mem {V W : Ideal (MRingOver F ι)} {f : MRingOver F ι}
     (hW : W ∈ divSupp V f) : divCycle V f W = multAt (V ⊔ Ideal.span {f}) W := by
   simp [divCycle, Finsupp.ofSupportFinite_coe, hW]
 
+/- English proof (translation)
+Simplify using `[divCycle, Finsupp.ofSupportFinite_coe, hW]`.
+-/
 theorem divCycle_apply_of_not_mem {V W : Ideal (MRingOver F ι)} {f : MRingOver F ι}
     (hW : W ∉ divSupp V f) : divCycle V f W = 0 := by
   simp [divCycle, Finsupp.ofSupportFinite_coe, hW]
 
+/- English proof (translation)
+Simplify using `[ratDiv, divCycle_one]`.
+-/
 theorem ratDiv_one_eq (X : Ideal (MRingOver F ι)) (g : MRingOver F ι) :
     ratDiv X g 1 = Finsupp.mapRange (fun n : ℕ => (n : ℤ)) Nat.cast_zero (divCycle X g) := by
   simp [ratDiv, divCycle_one]
 
+/- English proof (translation)
+Establish `hs : (divCycle V f).support ⊆ (divSupp_finite V f).toFinset`. Introduce `W hW`. Rewrite `hW` using `[Finsupp.mem_support_iff]`. Conclude with `(divSupp_finite V f).mem_toFinset.mpr (mem_divSupp_of_divCycle_ne_zero hW)`. Rewrite using `[ratDiv_one_eq, Finsupp.sum_mapRange_index (fun _ => by simp), Finsupp.sum_of_support_subset _ hs _ (fun _ _ => by simp)]`.
+
+Use `push_cast`. Use `Finset.sum_congr rfl fun W _ => ?_` and prove the remaining obligations. Rewrite using `[ratDiv_one_eq, Finsupp.mapRange_apply]`.
+-/
 theorem sum_ratDiv_eq (V Z : Ideal (MRingOver F ι)) (f t : MRingOver F ι) :
     (ratDiv V f 1).sum (fun W m => m * ratDiv W t 1 Z) =
       ((∑ W ∈ (divSupp_finite V f).toFinset, divCycle V f W * divCycle W t Z : ℕ) : ℤ) := by
@@ -118,11 +162,17 @@ theorem sum_ratDiv_eq (V Z : Ideal (MRingOver F ι)) (f t : MRingOver F ι) :
   refine Finset.sum_congr rfl fun W _ => ?_
   rw [ratDiv_one_eq, Finsupp.mapRange_apply]
 
+/- English proof (translation)
+Rewrite using `[multAt_eq J W hW, ENat.coe_toNat (locLen_ne_top hJ), lenAt_eq]`. Both sides reduce to the same expression.
+-/
 theorem cast_multAt {J W : Ideal (MRingOver F ι)} [hW : W.IsPrime] (hJ : W ∈ J.minimalPrimes) :
     ((multAt J W : ℕ) : ℕ∞) = lenAt J W := by
   rw [multAt_eq J W hW, ENat.coe_toNat (locLen_ne_top hJ), lenAt_eq]
   rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨hZ.1.1, sup_le hWZ (le_sup_right.trans hZ.1.2)⟩, fun _ ⟨hQ, hQle⟩ hQZ => hZ.2 ⟨hQ, sup_le (hW.1.2.trans (le_sup_left.trans hQle)) (le_sup_right.trans hQle)⟩ hQZ⟩`.
+-/
 theorem mem_minimalPrimes_sup_of_le {V W Z : Ideal (MRingOver F ι)} {f t : MRingOver F ι}
     (hZ : Z ∈ (V ⊔ Ideal.span {f} ⊔ Ideal.span {t}).minimalPrimes)
     (hW : W ∈ (V ⊔ Ideal.span {f}).minimalPrimes) (hWZ : W ≤ Z) :
@@ -130,6 +180,15 @@ theorem mem_minimalPrimes_sup_of_le {V W Z : Ideal (MRingOver F ι)} {f t : MRin
   ⟨⟨hZ.1.1, sup_le hWZ (le_sup_right.trans hZ.1.2)⟩, fun _ ⟨hQ, hQle⟩ hQZ =>
     hZ.2 ⟨hQ, sup_le (hW.1.2.trans (le_sup_left.trans hQle)) (le_sup_right.trans hQle)⟩ hQZ⟩
 
+/- English proof (translation)
+Establish `hWd` using `isProjVarF_of_mem_divSupp (n := n + 1) hV hf hfV hW`. Establish `hZd` using `isProjVarF_of_mem_divSupp hWd ht (hft W hW) hZ`. Establish `hWZ : W ≤ Z` using `le_sup_left.trans hZ.1.1.2`. Establish `hle : V ⊔ Ideal.span {f} ⊔ Ideal.span {t} ≤ Z` using `sup_le (hW.1.1.2.trans hWZ) (le_sup_right.trans hZ.1.1.2)`. Use `⟨⟨hZ.1.1.1, hle⟩, fun Q ⟨hQ, hQle⟩ hQZ => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hZQ`. Establish `hlt : Q < Z` using `lt_of_le_of_ne hQZ fun e => hZQ (e ▸ le_rfl)`. Take `⟨W', hW', hW'Q⟩` from `Ideal.exists_minimalPrimes_le (le_sup_left.trans hQle)`. Establish `hW'd : W' ∈ divSupp V f` using `⟨hW', isRelevant_of_le hZ.2 (hW'Q.trans hQZ)⟩`. Take `⟨Q', hQ', hQ'Q⟩` from `Ideal.exists_minimalPrimes_le (sup_le hW'Q (le_sup_right.trans hQle) : W' ⊔ Ideal.span {t} ≤ Q)`.
+
+Establish `hQ'd : Q' ∈ divSupp W' t` using `⟨hQ', isRelevant_of_le hZ.2 (hQ'Q.trans hQZ)⟩`. Establish `h1` using `isProjVarF_of_mem_divSupp (n := n + 1) hV hf hfV hW'd`. Establish `h2` using `isProjVarF_of_mem_divSupp h1 ht (hft W' hW'd) hQ'd`. Use `haveI := hQ'.1.1`. Use `haveI := hZ.1.1.1`.
+
+Conclude with `not_lt_of_dim_eq (hQ'Q.trans_lt hlt) h2.2 hZd.2`.
+-/
 theorem mem_minimalPrimes_of_mem_divSupp_divSupp {V W Z : Ideal (MRingOver F ι)} {n : ℕ}
     {f t : MRingOver F ι} {α β : K → ℕ} (hV : IsProjVarF V (n + 2)) (hf : IsMultiHomog f α)
     (ht : IsMultiHomog t β) (hfV : f ∉ V) (hft : ∀ W ∈ divSupp V f, t ∉ W)
@@ -155,6 +214,9 @@ theorem mem_minimalPrimes_of_mem_divSupp_divSupp {V W Z : Ideal (MRingOver F ι)
   haveI := hZ.1.1.1
   exact not_lt_of_dim_eq (hQ'Q.trans_lt hlt) h2.2 hZd.2
 
+/- English proof (translation)
+Use `Finset.sum_eq_zero fun W hW => ?_` and prove the remaining obligations. Rewrite `hW` using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `hne`. Establish `hZ'` using `mem_divSupp_of_divCycle_ne_zero (right_ne_zero_of_mul hne)`. Conclude with `hZ ⟨hZ'.2, mem_minimalPrimes_of_mem_divSupp_divSupp hV hf ht hfV hft hW hZ'⟩`.
+-/
 theorem sum_eq_zero_of_not {V Z : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRingOver F ι}
     {α β : K → ℕ} (hV : IsProjVarF V (n + 2)) (hf : IsMultiHomog f α) (ht : IsMultiHomog t β)
     (hfV : f ∉ V) (hft : ∀ W ∈ divSupp V f, t ∉ W)
@@ -166,6 +228,21 @@ theorem sum_eq_zero_of_not {V Z : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRing
   have hZ' := mem_divSupp_of_divCycle_ne_zero (right_ne_zero_of_mul hne)
   exact hZ ⟨hZ'.2, mem_minimalPrimes_of_mem_divSupp_divSupp hV hf ht hfV hft hW hZ'⟩
 
+/- English proof (translation)
+Establish `hVZ : V ≤ Z` using `le_sup_left.trans (le_sup_left.trans hZ.1.2)`. Establish `h` using `isLocData_atPrime_quot V Z hVZ`. Establish `hex : ∀ Q : Ideal (MRingOver F ι), Q.IsPrime → V ≤ Q → Q ≤ Z → ∃ p : Ideal (Localization.AtPrime (Z.map (Ideal.Quotient.mk V))), p.IsPrime ∧ p.comap (algebraMap (MRingOver F ι) _) = Q` using `fun Q hQ hVQ hQZ => exists_prime_comap_atPrime_quot V Z Q hQ hVQ hQZ`. Establish `hterm : ∀ W ∈ (divSupp_finite V f).toFinset, divCycle V f W * divCycle W t Z = if W ≤ Z then multAt (V ⊔ Ideal.span {f}) W * multAt (W ⊔ Ideal.span {t}) Z else 0`. Introduce `W hW`.
+
+Rewrite `hW` using `[Set.Finite.mem_toFinset]`. Rewrite using `[divCycle_apply_of_mem hW]`. Use `split_ifs with hWZ`. Rewrite using `[divCycle_apply_of_mem ⟨mem_minimalPrimes_sup_of_le hZ hW.1 hWZ, hZr⟩]`. Rewrite using `[divCycle_apply_of_not_mem (fun h' => hWZ (le_sup_left.trans h'.1.1.2)), mul_zero]`.
+
+Rewrite using `[Finset.sum_congr rfl hterm, ← Finset.sum_filter]`. Use `push_cast`. Rewrite using `[← finsum_mem_coe_finset]`. Use `symm`. Use `finsum_mem_eq_of_bijOn (fun p => p.asIdeal.comap (algebraMap (MRingOver F ι) _)) ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations.
+
+Introduce `p hp`. Establish `hm` using `(h.height_eq_one_iff hVZ hex hfV p.asIdeal).mp hp`. Establish `hle` using `h.comap_le p.asIdeal`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`. Conclude with `⟨⟨hm, isRelevant_of_le hZr hle⟩, hle⟩`.
+
+Introduce `p _ p' _ e`. Conclude with `PrimeSpectrum.ext (h.eq_of_comap_eq e)`. Introduce `W hW`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hW`. Take `⟨p, hp, hpW⟩` from `hex W hW.1.1.1.1 (le_sup_left.trans hW.1.1.1.2) hW.2`.
+
+Use `haveI := hp`. Conclude with `⟨⟨p, hp⟩, (h.height_eq_one_iff hVZ hex hfV p).mpr (hpW ▸ hW.1.1), hpW⟩`. Introduce `p hp`. Establish `hm` using `(h.height_eq_one_iff hVZ hex hfV p.asIdeal).mp hp`. Establish `hle` using `h.comap_le p.asIdeal`.
+
+Rewrite using `[cast_multAt hm, cast_multAt (mem_minimalPrimes_sup_of_le hZ hm hle), lenAt_eq, lenAt_eq, (h.atPrime p.asIdeal).length_eq f, (h.quot p.asIdeal).length_eq t, ordLoc, ordMod, ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (MRingOver F ι) (Localization.AtPrime (Z.m …`.
+-/
 theorem sum_eq_finsum {V Z : Ideal (MRingOver F ι)} [V.IsPrime] [hZp : Z.IsPrime]
     [(Z.map (Ideal.Quotient.mk V)).IsPrime] {f t : MRingOver F ι} (hZr : IsRelevant Z)
     (hZ : Z ∈ (V ⊔ Ideal.span {f} ⊔ Ideal.span {t}).minimalPrimes) (hfV : f ∉ V) :
@@ -222,6 +299,15 @@ end DivisorCycleSwap
 
 open DivisorCycleSwap
 
+/- English proof (translation)
+Use `haveI : V.IsPrime := hV.1.1`. Establish `hft' : ∀ W ∈ divSupp V t, f ∉ W` using `fun W hW => not_mem_of_mem_divSupp_swap (n := n + 1) hV hf ht hfV htV hft hW`. Rewrite using `[sum_ratDiv_eq, sum_ratDiv_eq, Nat.cast_inj]`. Distinguish the cases in `hZ : IsRelevant Z ∧ Z ∈ (V ⊔ Ideal.span {f} ⊔ Ideal.span {t}).minimalPrimes`. Take `⟨hZr, hZm⟩` from `hZ haveI : Z.IsPrime := hZm.1.1`.
+
+Establish `hVZ : V ≤ Z` using `le_sup_left.trans (le_sup_left.trans hZm.1.2)`. Use `haveI : (Z.map (Ideal.Quotient.mk V)).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hVZ)`. Establish `hZm' : Z ∈ (V ⊔ Ideal.span {t} ⊔ Ideal.span {f}).minimalPrimes`. Rewrite using `[sup_right_comm]` and apply the resulting hypothesis. Establish `h` using `isLocData_atPrime_quot V Z hVZ`.
+
+Establish `hex : ∀ Q : Ideal (MRingOver F ι), Q.IsPrime → V ≤ Q → Q ≤ Z → ∃ p : Ideal (Localization.AtPrime (Z.map (Ideal.Quotient.mk V))), p.IsPrime ∧ p.comap (algebraMap (MRingOver F ι) _) = Q` using `fun Q hQ hVQ hQZ => exists_prime_comap_atPrime_quot V Z Q hQ hVQ hQZ`. Establish `hdim` using `h.ringKrullDim_eq_two hVZ hex hfV hZm (fun W hW hWZ => hft W ⟨hW, isRelevant_of_le hZr hWZ⟩)`. Establish `hlen` using `length_quot_ne_top_of_mem_minimalPrimes _ (h.maximalIdeal_mem_minimalPrimes (hex Z inferInstance hVZ le_rfl) hZm)`. Establish `key` using `(len2 _ _ _ hdim (fun e => hfV ((h.map_eq_zero_iff hVZ f).mp e)) (fun e => htV ((h.map_eq_zero_iff hVZ t).mp e)) hlen).2.2`. Establish `e : ((∑ W ∈ (divSupp_finite V f).toFinset, divCycle V f W * divCycle W t Z : ℕ) : ℕ∞) = ((∑ W ∈ (divSupp_finite V t).toFinset, divCycle V t W * divCycle W f Z : ℕ) : ℕ∞)`.
+
+Rewrite using `[sum_eq_finsum hZr hZm hfV, sum_eq_finsum hZr hZm' htV]`. Conclude with `key`. Conclude with `e` after adjusting the coercions. Rewrite using `[sum_eq_zero_of_not hV hf ht hfV hft hZ, sum_eq_zero_of_not hV ht hf htV hft' (by rwa [sup_right_comm])]`.
+-/
 theorem swap_coeff {V Z : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRingOver F ι} {α β : K → ℕ}
     (hV : IsProjVarF V (n + 2)) (hf : IsMultiHomog f α) (ht : IsMultiHomog t β) (hfV : f ∉ V)
     (htV : t ∉ V) (hft : ∀ W ∈ divSupp V f, t ∉ W) :
@@ -259,6 +345,9 @@ theorem swap_coeff {V Z : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRingOver F �
   · rw [sum_eq_zero_of_not hV hf ht hfV hft hZ,
       sum_eq_zero_of_not hV ht hf htV hft' (by rwa [sup_right_comm])]
 
+/- English proof (translation)
+Use extensionality with `Z`. Establish `h` using `swap_coeff hV hf ht hfV htV hft (Z := Z)`. Simplify using `only [Finsupp.sum, Finsupp.finset_sum_apply, Finsupp.smul_apply, smul_eq_mul] at h ⊢`. Conclude with `h`.
+-/
 theorem swap_cycle {V : Ideal (MRingOver F ι)} {n : ℕ} {f t : MRingOver F ι} {α β : K → ℕ}
     (hV : IsProjVarF V (n + 2)) (hf : IsMultiHomog f α) (ht : IsMultiHomog t β) (hfV : f ∉ V)
     (htV : t ∉ V) (hft : ∀ W ∈ divSupp V f, t ∉ W) :

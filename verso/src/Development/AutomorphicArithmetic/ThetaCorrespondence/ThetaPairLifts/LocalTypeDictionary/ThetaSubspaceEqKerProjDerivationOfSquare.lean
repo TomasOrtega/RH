@@ -18,6 +18,13 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Use `⟨kerPD ψ θ A₁ B Bs Γ cB p', fun Φ₀D => mem_kerPD hstd θ A₁ B Bs Γ cB p' Φ₀D, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ le := fun Φ hΦ => ((mem_kerPD hstd θ A₁ B Bs Γ cB p' Φ).1 hΦ).1 fin := _root_.GlobalTheory.T.polarization_kernel_finiteDimensional hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hTr hO hT Pi rf rl p p' hm lie := _root_.GlobalTheory.T.ker_polarizationProjec …`. Introduce `hEq haveI : Nontrivial Pi := hm.irred.1`.
+
+Take `⟨x, hx⟩` from `exists_ne (0 : Pi)`. Establish `hxm : x ∈ (algF ψ θ false A₁ B).map p'` using `by rw [hm.mapB.onto]; trivial`. Take `⟨Φ₀, hΦ₀, rfl⟩` from `hxm`. Take `⟨ΦD, hD, hDat⟩` from `hO.algB Φ₀ hΦ₀`. Establish `hD' : ΦD ∈ kerPD ψ θ A₁ B Bs Γ cB p'` using `hEq ▸ hD`.
+
+Take `⟨-, Φ₁, -, hDat1, h0⟩` from `(mem_kerPD hstd θ A₁ B Bs Γ cB p' ΦD).1 hD'`. Establish `he : Φ₀ = Φ₁` using `IsDatum.fun_eq Γ.M' ψ (⇑cB) cB.surjective hDat hDat1`. Conclude with `hx (he ▸ h0)`.
+-/
 theorem GlobalTheory.SquareAgree.exists_ker_projDerivation_thetaSubspace : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))
@@ -63,6 +70,9 @@ open scoped TensorProduct GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.exists_ker_projDerivation_thetaSubspace | exact _root_.GlobalTheory.SquareAgree.exists_ker_projDerivation_thetaSubspace | (intros; apply _root_.GlobalTheory.SquareAgree.exists_ker_projDerivation_thetaSubspace <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaSubspace_eq_ker_projDerivation_of_square : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

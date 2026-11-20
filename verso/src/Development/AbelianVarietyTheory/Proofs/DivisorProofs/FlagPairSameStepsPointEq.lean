@@ -22,6 +22,9 @@ section Flags
 
 variable {X : Scheme.{0}} {E : X.Modules} {N : ℕ} {fl fl' : Flag E N}
 
+/- English proof (translation)
+Rewrite using `[← cancel_mono (fl'.ι i.succ)]`. Simplify using `only [Category.assoc, h₁, Flag.step_ι, h₀]`.
+-/
 theorem step_comm (i : Fin N) (e₀ : fl.F i.castSucc ≅ fl'.F i.castSucc)
     (e₁ : fl.F i.succ ≅ fl'.F i.succ) (h₀ : e₀.hom ≫ fl'.ι i.castSucc = fl.ι i.castSucc)
     (h₁ : e₁.hom ≫ fl'.ι i.succ = fl.ι i.succ) :
@@ -33,11 +36,17 @@ def grMap (i : Fin N) (e₀ : fl.F i.castSucc ≅ fl'.F i.castSucc) (e₁ : fl.F
     (w : fl.step i ≫ e₁.hom = e₀.hom ≫ fl'.step i) : fl.gr i ≅ fl'.gr i :=
   cokernel.mapIso _ _ e₀ e₁ w
 
+/- English proof (translation)
+Simplify using `[grMap, Flag.π, Flag.gr]`.
+-/
 theorem π_grMap_hom (i : Fin N) (e₀ : fl.F i.castSucc ≅ fl'.F i.castSucc)
     (e₁ : fl.F i.succ ≅ fl'.F i.succ) (w : fl.step i ≫ e₁.hom = e₀.hom ≫ fl'.step i) :
     fl.π i ≫ (grMap i e₀ e₁ w).hom = e₁.hom ≫ fl'.π i := by
   simp [grMap, Flag.π, Flag.gr]
 
+/- English proof (translation)
+The claim follows from `(smallCls_eq_iff _ _).2 ((fl.isVB_gr i).lbIso_det_of_iso (grMap i e₀ e₁ w))`.
+-/
 theorem smallCls_root_eq (i : Fin N) (e₀ : fl.F i.castSucc ≅ fl'.F i.castSucc)
     (e₁ : fl.F i.succ ≅ fl'.F i.succ) (w : fl.step i ≫ e₁.hom = e₀.hom ≫ fl'.step i) :
     smallCls _ (fl.isLB_root i) = smallCls _ (fl'.isLB_root i) :=
@@ -50,6 +59,9 @@ section Pairs
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Model O}
   {E E' : B.X.Modules} {φ : B.GenIso E E'} {N : ℕ}
 
+/- English proof (translation)
+Use `(P'.gen_unique j _ ?_).symm` and prove the remaining obligations. Establish `h1 : e.inv ≫ P.fl.ι j = P'.fl.ι j` using `by rw [← he, Iso.inv_hom_id_assoc]`. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom, Category.assoc]`. Rewrite using `[← Functor.map_comp, he', P.gen_ι, ← Functor.map_comp_assoc, h1]`.
+-/
 theorem gen_eq (P P' : FlagPair φ N) (j : Fin (N + 1)) (e : P.fl.F j ≅ P'.fl.F j)
     (he : e.hom ≫ P'.fl.ι j = P.fl.ι j) (e' : P.fl'.F j ≅ P'.fl'.F j)
     (he' : e'.hom ≫ P'.fl'.ι j = P.fl'.ι j) :
@@ -59,6 +71,11 @@ theorem gen_eq (P P' : FlagPair φ N) (j : Fin (N + 1)) (e : P.fl.F j ≅ P'.fl.
   simp only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom, Category.assoc]
   rw [← Functor.map_comp, he', P.gen_ι, ← Functor.map_comp_assoc, h1]
 
+/- English proof (translation)
+Use `Iso.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_epi (B.genRes.map (P'.fl.π i)), P'.π_grIso_hom i, hg]`. Establish `a : P'.fl.π i ≫ β.inv = e₁.inv ≫ P.fl.π i`. Rewrite using `[Iso.comp_inv_eq, Category.assoc, hβ, Iso.inv_hom_id_assoc]`. Simplify using `only [Iso.trans_hom, Iso.symm_hom, Functor.mapIso_hom, Functor.mapIso_inv, Category.assoc]`.
+
+Rewrite using `[← Functor.map_comp_assoc, a, Functor.map_comp_assoc, reassoc_of% (P.π_grIso_hom i), ← Functor.map_comp, ← hβ', Functor.map_comp]`.
+-/
 theorem grIso_eq (P P' : FlagPair φ N) (i : Fin N) (β : P.fl.gr i ≅ P'.fl.gr i)
     (β' : P.fl'.gr i ≅ P'.fl'.gr i) (e₁ : P.fl.F i.succ ≅ P'.fl.F i.succ)
     (e₁' : P.fl'.F i.succ ≅ P'.fl'.F i.succ) (hβ : P.fl.π i ≫ β.hom = e₁.hom ≫ P'.fl.π i)
@@ -75,6 +92,9 @@ theorem grIso_eq (P P' : FlagPair φ N) (i : Fin N) (β : P.fl.gr i ≅ P'.fl.gr
 
 end Pairs
 
+/- English proof (translation)
+Establish `hg` using `gen_eq P P' i.succ e₁ he₁ e₁' he₁'`. Simplify using `only [FlagPair.div]`. Rewrite using `[ grIso_eq P P' i _ _ e₁ e₁' (π_grMap_hom i e₀ e₁ w) (π_grMap_hom i e₀' e₁' w') hg, GenIso.cls_div_trans (hE' := P.fl.isVB_gr i), GenIso.cls_div_trans (hE' := P.fl'.isVB_gr i), ← Functor.mapIso_symm, GlobalTheory.Vert.FlagPairPull.cls_div_mapIso, GlobalTheory.Vert.FlagPairPull.cl …`.
+-/
 theorem cls_div_eq {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Model O}
     {E E' : B.X.Modules} {φ : B.GenIso E E'} {N : ℕ} (P P' : FlagPair φ N) (i : Fin N)
     (e₀ : P.fl.F i.castSucc ≅ P'.fl.F i.castSucc) (e₁ : P.fl.F i.succ ≅ P'.fl.F i.succ)
@@ -101,6 +121,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 set_option linter.overlappingInstances false in
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B E E' φ r P P' i h₀ h₁ h₀' h₁'`. Take `⟨e₀, he₀⟩` from `h₀`. Take `⟨e₁, he₁⟩` from `h₁`. Take `⟨e₀', he₀'⟩` from `h₀'`. Take `⟨e₁', he₁'⟩` from `h₁'`.
+
+Establish `w` using `GlobalTheory.Vert.FlagSame.step_comm i e₀ e₁ he₀ he₁`. Establish `w'` using `GlobalTheory.Vert.FlagSame.step_comm i e₀' e₁' he₀' he₁'`. Use `⟨GlobalTheory.Vert.FlagSame.smallCls_root_eq i e₀ e₁ w, GlobalTheory.Vert.FlagSame.smallCls_root_eq i e₀' e₁' w', ?_⟩` and prove the remaining obligations. Conclude with `congrArg GlobalTheory.Vert.Model.toQ (GlobalTheory.Vert.FlagSame.cls_div_eq P P' i e₀ e₁ he₁ w e₀' e₁' he₁' w')`.
+-/
 theorem GlobalTheory.Vert.FlagSame.toFPair_eq_of_sameStep : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O) (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P P' : GlobalTheory.Vert.Model.FlagPair φ r) (i : Fin r), P.fl.SameStep P'.fl i.castSucc → P.fl.SameStep P'.fl i.succ → P.fl'.SameStep P'.fl' i.castSucc → P.fl'.SameStep P'.fl' i.succ → (P.toFPair p).x i = (P'.toFPair p).x i ∧ (P.toFPair p).x' i = (P'.toFPair p).x' i ∧ (P.toFPair p).Dv i = (P'.toFPair p).Dv i := by
   intro O _ _ _ p _ _ _ B E E' φ r P P' i h₀ h₁ h₀' h₁'
   obtain ⟨e₀, he₀⟩ := h₀

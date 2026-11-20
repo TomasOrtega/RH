@@ -11,6 +11,9 @@ open Formalism.MainNotions.DIV.Cons (intO)
 open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LieFilt.exists_genCoord | exact GlobalTheory.LieFilt.exists_genCoord | (intros; apply GlobalTheory.LieFilt.exists_genCoord <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.toroidal_model_height_comparison : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz]

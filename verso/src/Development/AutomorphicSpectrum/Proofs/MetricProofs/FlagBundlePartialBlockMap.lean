@@ -27,6 +27,13 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl
 
+/- English proof (translation)
+Establish `h' : ∀ x : PtsOf P, ∃ C : OrbitChart P e, x ∈ srcOf C` using `fun x => hcov _ (rep_mem_mcPts x)`. Use `choose Cx hCx using h'`. Use `haveI : CompactSpace (PtsOf P) := Top.compactSpace_pts (isMultiHomogIdeal_pC hP)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_nhds_subcover (fun x => srcOf (Cx x)) (fun x _ => (isOpen_srcOf hP _).mem_nhds (hCx x))`. Establish `hc : ∀ x, ∃ y ∈ t, x ∈ srcOf (Cx y)` using `fun x => by`.
+
+Simplify using `using ht.2 (Set.mem_univ x)`. Use `⟨resOf hP hnd Cx hCx t hc, fun C hne => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hne`. Establish `ho : ∀ x : PtsOf P, SameOrbit ((Cx x).φ ((Cx x).ρ (rep x))) (rep x)` using `fun x => (Cx x).φ_ρ _ (hCx x)`. Establish `hm : ∀ x : PtsOf P, (Cx x).φ ((Cx x).ρ (rep x)) ∈ mcPts P` using `fun x => (Cx x).mem _ ((Cx x).ρ_mem _ (hCx x))`.
+
+Use `⟨orbChart hP C (cls z hz), isCompat_orbChart hP Cx t hc C _, rfl, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun h => mem_O_of_orbit C hP h (ho x) (rep_mem_mcPts x), fun h => mem_O_of_orbit C hP h (Proj.orbit_symm (ho x)) (hm x)⟩`. Conclude with `Proj.orbit_trans (C.φ_ρ _ hx) (Proj.orbit_symm (ho x))`.
+-/
 theorem exists_res {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} {e : ℕ}
     (hP : IsMultiHomogIdeal P) (hnd : ¬ (⊤ : Ideal (MRing ι)) ≤ P)
     (hcov : ∀ z ∈ mcPts P, ∃ C : OrbitChart P e, z ∈ C.O) :
@@ -49,11 +56,53 @@ theorem exists_res {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι 
       fun h => mem_O_of_orbit C hP h (Proj.orbit_symm (ho x)) (hm x)⟩
   · exact Proj.orbit_trans (C.φ_ρ _ hx) (Proj.orbit_symm (ho x))
 
+/- English proof (translation)
+Introduce `h` and use `by have := h.2 1 trivial simp at this`.
+-/
 theorem not_mem_top {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] (z : (Σ k, ι k) → ℂ) :
     z ∉ mcPts (⊤ : Ideal (MRing ι)) := fun h => by
   have := h.2 1 trivial
   simp at this
 
+/- English proof (translation)
+Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n d Rb hd keep Kk _ ιk _ κ v hb hrng`. Take `⟨e, he, ⟨ε⟩⟩ : ∃ e, e = n + Nat.card (PIdx j keep) ∧ Nonempty (Fin n ⊕ PIdx j keep ≃ Fin e)` from `⟨_, rfl, ⟨(Equiv.sumCongr (Equiv.refl _) (Finite.equivFin _)).trans finSumFinEquiv⟩⟩`. Establish `hP : IsMultiHomogIdeal (mCoordIdeal (y ∘ v))` using `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal _`. Establish `hnd : ¬ (⊤ : Ideal (MRing ιk)) ≤ mCoordIdeal (y ∘ v)` using `fun h => (RingHom.ker_isPrime _ : (mCoordIdeal (y ∘ v)).IsPrime).ne_top (top_le_iff.mp h)`. Establish `hcov` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Cover.main K ι Φ y Ψ N j M n Rb keep Kk ιk κ v hb hrng`.
+
+Establish `mk : ∀ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ), IsPCtx M Rb keep κ v F kb V bl r h → ∃ C : OrbitChart (mCoordIdeal (y ∘ …`. Introduce `F kb V bl r h hc`. Establish `hV : IsOpen V` using `hc.2.2.2.1.1`. Establish `hh` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Holo.pPhi_holo K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hr` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.ChartRead.chart_reads K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`.
+
+Establish `ho` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Onto.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hO` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.POpn.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hb'` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Orb.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `ht` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.PCont.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hi` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Imm.chart_immersion K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`.
+
+Conclude with `⟨{ D := pD ε V isOpen_D := hV.preimage (continuous_pi fun i => continuous_apply _) φ := pPhi M F keep v bl h ε holo := hh mem := fun w hw => (hr w hw).1.1 O := pO M Rb keep v F kb V r h O_open := hO O_orbit := fun z hz z' hz' e => (hb' z hz z' hz' e).1 ρ := pRho M Rb keep v F kb …`. Take `⟨R, hR⟩` from `exists_res (e := e) hP hnd (fun z hz => by`. Take `⟨F, kb, V, bl, r, h, hc, hzO⟩` from `hcov z hz`. Take `⟨C, -, -, hO⟩` from `mk F kb V bl r h hc`. Conclude with `⟨C, hO ▸ hzO⟩)`.
+
+Establish `key : ∀ x : R.X, ∃ (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ψ : OpenPartialHomeomorph R.X (Fin e → ℂ)), IsPCtx M Rb kee …`. Introduce `x`. Take `⟨F, kb, V, bl, r, h, hc, hzO⟩` from `hcov _ (R.mem x x (R.mem_U x))`. Take `⟨C, hD, hφ, hO⟩` from `mk F kb V bl r h hc`. Take `⟨ψ, h1, h2, h3, h4⟩` from `hR C ⟨_, R.mem x x (R.mem_U x)⟩`.
+
+Conclude with `⟨F, kb, V, bl, r, h, ψ, hc, h1, h2.trans hD, (h3 x).2 (hO ▸ hzO), fun x' hx' => hφ ▸ h4 x' hx'⟩`. Establish `hob` using `(GlobalTheory.CompanionTheory.Ar.PB.PFl.PtsBase.main K ι Φ y Ψ N j M keep Kk ιk κ v hb hrng).2`. Establish `hbase : ∀ x : R.X, ∃ x' : Rb.X, SameOrbit (Rb.lift x' x') (pBase M v (R.lift x x))`. Introduce `x`. Take `⟨F, kb, V, bl, r, h, ψ, hc, -, hT, hx, hs⟩` from `key x`.
+
+Establish `hB : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`. Establish `hw : ψ x ∈ pD ε V` using `hT ▸ ψ.map_source hx`. Establish `hE` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw`. Use `⟨(Rb.A.chart kb).symm (pB ε (ψ x)), orbit_trans (hB.2.2.2.2 _ hw).2.2.2 ?_⟩` and prove the remaining obligations. Use `hob _ _ (hs x hx)` as an intermediate fact.
+
+Rewrite `this` using `[hE.2.1]`. Then use the resulting hypothesis. Use `choose pr hpr using hbase`. Establish `hcoord : ∀ (x : R.X) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ψ : OpenPartialHomeomorph R.X (Fin e → ℂ)), IsPCtx M Rb k …`. Introduce `x F kb V bl r h ψ hc hT hx hs`. Establish `hB : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`.
+
+Establish `hw : ψ x ∈ pD ε V` using `hT ▸ ψ.map_source hx`. Establish `hE` using `GlobalTheory.CompanionTheory.Ar.PB.PFl.Exact.chart_points K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw`. Establish `h1 : SameOrbit (bl (pB ε (ψ x))) (pBase M v (R.lift x x))`. Use `hob _ _ hs` as an intermediate fact. Rewrite `this` using `[hE.2.1]`. Then use the resulting hypothesis.
+
+Establish `h2` using `orbit_trans (hB.2.2.2.2 _ hw).2.2.2 (orbit_trans h1 (orbit_symm (hpr x)))`. Establish `h3 : (Rb.A.chart kb).symm (pB ε (ψ x)) = pr x` using `Rb.inj _ _ (not_mem_top _) h2`. Establish `hwt : pB ε (ψ x) ∈ (Rb.A.chart kb).target` using `hB.2.1 hw`. Rewrite using `[← h3]`. Conclude with `⟨rfl, (Rb.A.chart kb).map_target hwt, fun i => by`.
+
+Rewrite using `[(Rb.A.chart kb).right_inv hwt]`. Use the proof step `rfl⟩`. Establish `hlast : ∀ x, ∃ (ψ : OpenPartialHomeomorph R.X (Fin e → ℂ)) (kb : Fin Rb.A.n) (σ : Fin n ↪ Fin e), IsCompatChart R.A ψ ∧ x ∈ ψ.source ∧ (∀ x' ∈ ψ.source, pr x' ∈ (Rb.A.chart kb).source ∧ ∀ i, Rb.A.chart kb (pr x') i = ψ x' (σ i))`. Introduce `x`. Take `⟨F, kb, V, bl, r, h, ψ, hc, hψ, hT, hx, hs⟩` from `key x`.
+
+Use `⟨ψ, kb, ⟨fun i => ε (Sum.inl i), fun a b e' => Sum.inl_injective (ε.injective e')⟩, hψ, hx, fun x' hx' => ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2⟩` from `hcoord x' F kb V bl r h ψ hc hT hx' (hs x' hx')`. Conclude with `⟨h1, h2⟩`. Use `⟨e, R, ?_, pr, ?_, ?_, hlast⟩` and prove the remaining obligations. Introduce `hall`.
+
+Rewrite using `[he, GlobalTheory.CompanionTheory.Ar.PB.PFl.AllKept.card_pIdx_of_all Ψ N j keep M.j_le hall, hd]`. Use `GlobalTheory.CompanionTheory.Ar.PB.WMan.Coord.holoMap_of_coord e n R.X Rb.X R.A Rb.A pr fun x => ?_` and prove the remaining obligations. Take `⟨ψ, kb, σ, h1, h2, h3⟩` from `hlast x`. Conclude with `⟨ψ, kb, σ, h1, h2, h3⟩`. Introduce `x`.
+
+Take `⟨F, kb, V, bl, r, h, ψ, hc, -, hT, hx, hs⟩` from `key x`. Establish `hB : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`. Establish `hw : ψ x ∈ pD ε V` using `hT ▸ ψ.map_source hx`. Take `⟨z₀, hz₀, hzv, hzb⟩` from `GlobalTheory.CompanionTheory.Ar.PB.PFl.Ext.main K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc _ hw`. Take `⟨hpe, -, -⟩` from `hcoord x F kb V bl r h ψ hc hT hx (hs x hx)`.
+
+Take `⟨c, hc0, hce⟩` from `orbit_symm (hs x hx)`. Set `c' : K → ℂ` to `fun k => if hk : ∃ k', κ k' = k then c hk.choose else 1`. Establish `hc'0 : ∀ k, c' k ≠ 0` using `fun k => by`. Simplify using `only [c']`. Use `split_ifs`.
+
+Conclude with `hc0 _`. Conclude with `one_ne_zero`. Establish `hc'κ : ∀ k', c' (κ k') = c k'` using `fun k' => by`. Establish `hk : ∃ k'', κ k'' = κ k'` using `⟨k', rfl⟩`. Simplify using `only [c']`.
+
+Rewrite using `[dif_pos hk, hb.1 hk.choose_spec]`. Establish `hyP : IsMultiHomogIdeal (mCoordIdeal y)` using `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal _`. Use `⟨fun p => c' p.1 * z₀ p, mcPts_smul hyP c' hc'0 hz₀, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Establish `e1 : z₀ (v q) = pPhi M F keep v bl h ε (ψ x) q` using `congrFun hzv q`.
+
+Establish `e2` using `congrFun hce q`. Use `show c' (v q).1 * z₀ (v q) = _`. Rewrite using `[e2, e1, hb.2.2.1 q, hc'κ]`. Establish `h1 : SameOrbit (fun q => c' q.1.1 * basePart M.blk z₀ q) (bl (pB ε (ψ x)))`. Rewrite using `[hzb]`.
+
+Conclude with `⟨fun k => c' k.1, fun k => hc'0 _, rfl⟩`. Establish `h2 : (basePart M.blk fun p => c' p.1 * z₀ p) = fun q => c' q.1.1 * basePart M.blk z₀ q` using `rfl`. Rewrite using `[h2, hpe]`. Conclude with `orbit_trans h1 (orbit_symm (hB.2.2.2.2 _ hw).2.2.2)`.
+-/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n d : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n), d = n + Fintype.card Ψ * (j.choose 2 + (N - j).choose 2) → ∀ (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)), IsBlockMap κ v → (∀ k, k ∈ Set.range κ ↔ ((∀ p, M.blk p ≠ some k) ∨ ∃ p, keep p ∧ M.blk p = some k)) → ∃ (e : ℕ) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e), ((∀ p, keep p) → e = d) ∧ ∃ pr : R.X → Rb.X, HoloMap R.A Rb.A pr ∧ (∀ x, ∃ z ∈ mcPts (mCoordIdeal y), z ∘ v = R.lift x x ∧ SameOrbit (basePart M.blk z) (Rb.lift (pr x) (pr x))) ∧ ∀ x, ∃ (ψ : OpenPartialHomeomorph R.X (Fin e → ℂ)) (kb : Fin Rb.A.n) (σ : Fin n ↪ Fin e), IsCompatChart R.A ψ ∧ x ∈ ψ.source ∧ (∀ x' ∈ ψ.source, pr x' ∈ (Rb.A.chart kb).source ∧ ∀ i, Rb.A.chart kb (pr x') i = ψ x' (σ i)) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n d Rb hd keep Kk _ ιk _ κ v hb hrng
   obtain ⟨e, he, ⟨ε⟩⟩ : ∃ e, e = n + Nat.card (PIdx j keep) ∧ Nonempty (Fin n ⊕ PIdx j keep ≃ Fin e) :=

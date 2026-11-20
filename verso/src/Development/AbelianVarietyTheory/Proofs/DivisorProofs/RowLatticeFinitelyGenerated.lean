@@ -9,12 +9,18 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.LatAllFG
 
+/- English proof (translation)
+Substitute `hC` using the available equality. Conclude with `h`.
+-/
 theorem fg_latOf_congr {K : Type} [Field K] [NumberField K] {R : Type} [CommRing R] [Algebra K R] [Algebra (𝓞 K) R]
     [IsScalarTower (𝓞 K) K R] {C C' : Submodule K R} (hC : C = C')
     (Vs : IsDedekindDomain.HeightOneSpectrum (𝓞 K) → Set (R → EReal)) (hV : ∀ la, ∀ v ∈ Vs la, IsVal la v)
     (h : (latOf C Vs hV).FG) : (latOf C' Vs hV).FG := by
   subst hC; exact h
 
+/- English proof (translation)
+Establish `h` using `(GlobalTheory.SupFull.fullAt_of_pins D T.toCore hT.pins j hj (hT.unf j hj _ T.good_σ₀) w hn).1`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.KappaLatticeEvaluation.supLat GlobalTheory.IndefiniteRowSideFullHecke.KappaLatticeEvaluation.latIn at h`. Establish `h2` using `Submodule.fg_of_fg_map_injective _ Subtype.val_injective h`. Conclude with `fg_latOf_congr (cuspW_wtZ (Xo := T.Q.Xo j) (c := T.Q.c) (U := T.U j) (wtA w) w.n).symm _ _ h2`.
+-/
 theorem latW_fg {D : D7} (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j) (hn : 0 < w.n) :
     (latW (T.U j) (wtZ (wtA w) w.n)).FG := by
   have h := (GlobalTheory.SupFull.fullAt_of_pins D T.toCore hT.pins j hj (hT.unf j hj _ T.good_σ₀) w hn).1
@@ -22,6 +28,15 @@ theorem latW_fg {D : D7} (T : CoreJ D) (hT : LawsJ T) (j : ℕ) (hj : InR D j) (
   have h2 := Submodule.fg_of_fg_map_injective _ Subtype.val_injective h
   exact fg_latOf_congr (cuspW_wtZ (Xo := T.Q.Xo j) (c := T.Q.c) (U := T.U j) (wtA w) w.n).symm _ _ h2
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hM`. Use `⟨s.image ι, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`. Conclude with `Submodule.span_mono (Set.image_mono (hs ▸ Submodule.subset_span))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span (by rw [Finset.coe_image]; exact ⟨y, hy, rfl⟩)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Establish `e : ι (c • y) = (RingOfIntegers.mapRingHom (algebraMap K L) c) • ι y`. Rewrite using `[← algebraMap_smul K c y, ι.map_smulₛₗ, ← algebraMap_smul L (RingOfIntegers.mapRingHom (algebraMap K L) c) (ι y)]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ hy`.
+-/
 theorem fg_span_image {K L V W : Type} [Field K] [Field L] [Algebra K L] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] [AddCommGroup W] [Module L W] [Module (𝓞 L) W] [IsScalarTower (𝓞 L) L W]
     (ι : V →ₛₗ[algebraMap K L] W) (M : Submodule (𝓞 K) V) (hM : M.FG) :
@@ -49,6 +64,13 @@ end GlobalTheory.CovTop.LatAllFG
 
 open GlobalTheory.CovTop.LatAllFG in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p _ _ i`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, i.2⟩`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hn : 0 < (p.κ i).n`. Rewrite using `[(p.fw.kap i τ).2.2]`.
+
+Use `D.R.three_m_lt_t` as an intermediate fact. Rewrite using `[Ranks.nV]`. Use linear arithmetic over natural numbers and integers. Establish `hW` using `latW_fg p.T p.fw.laws _ hj (p.κ i) hn`. Take `⟨ι, -, -, himg⟩` from `GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ _ _ _ _ p.fw i`.
+
+Unfold `latAll`. Rewrite using `[← himg]`. Conclude with `fg_span_image ι _ hW`.
+-/
 theorem GlobalTheory.CovTop.latAll_fg_at : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),
     p.Rows → RecTied D L → ∀ i : Fin D.R.m, (latAll p.R.toRealDat i).FG := by

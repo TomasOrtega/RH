@@ -10,15 +10,27 @@ namespace CompanionTheory.Lime.T3
 
 variable {n : ℕ} {ε : Fin (n + 1) → Bool} {ε' : Fin n → Bool} {e : Fin n ⊕ Unit ≃ Fin (n + 1)}
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`.
+-/
 theorem emb_mul (a b : Matrix (Fin n) (Fin n) ℂ) : emb e (a * b) = emb e a * emb e b := by
   simp [emb, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.fromBlocks_one]`.
+-/
 theorem emb_one : emb e (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   simp [emb, Matrix.fromBlocks_one]
 
+/- English proof (translation)
+Simplify using `[emb, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]`.
+-/
 theorem emb_conjT (a : Matrix (Fin n) (Fin n) ℂ) : (emb e a)ᴴ = emb e aᴴ := by
   simp [emb, Matrix.reindex_apply, Matrix.conjTranspose_submatrix, Matrix.fromBlocks_conjTranspose]
 
+/- English proof (translation)
+Use extensionality with `i j`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Establish `h1 : ε (e (Sum.inr ())) = true` using `hF.1`. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;> simp [emb, Jm, Matrix.diagonal_apply, hF.2, h1]`.
+-/
 theorem emb_J (hF : Fits ε ε' e) : emb e (Jm ε') = Jm ε := by
   ext i j
   obtain ⟨i, rfl⟩ := e.surjective i
@@ -26,6 +38,9 @@ theorem emb_J (hF : Fits ε ε' e) : emb e (Jm ε') = Jm ε := by
   have h1 : ε (e (Sum.inr ())) = true := hF.1
   rcases i with i | i <;> rcases j with j | j <;> simp [emb, Jm, Matrix.diagonal_apply, hF.2, h1]
 
+/- English proof (translation)
+Unfold `hs`. Rewrite using `[← e.sum_comp]`. Repeatedly rewrite using `[← e.sum_comp (fun j => ‖Matrix.reindex e e (Matrix.fromBlocks a 0 0 d) _ j‖ ^ 2)]`. Simplify using `[Fintype.sum_sum_type]`.
+-/
 theorem hs_block (a : Matrix (Fin n) (Fin n) ℂ) (d : Matrix Unit Unit ℂ) :
     hs (Matrix.reindex e e (Matrix.fromBlocks a 0 0 d)) = hs a + ‖d () ()‖ ^ 2 := by
   unfold hs
@@ -33,6 +48,9 @@ theorem hs_block (a : Matrix (Fin n) (Fin n) ℂ) (d : Matrix Unit Unit ℂ) :
   simp_rw [← e.sum_comp (fun j => ‖Matrix.reindex e e (Matrix.fromBlocks a 0 0 d) _ j‖ ^ 2)]
   simp [Fintype.sum_sum_type]
 
+/- English proof (translation)
+Unfold `colSq`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, ← e.sum_comp]`. Simplify using `[emb, zi, Fintype.sum_sum_type]`.
+-/
 theorem col_emb (g : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) (a : Matrix (Fin n) (Fin n) ℂ) :
     colSq (g * emb e a) (zi e) = colSq g (zi e) := by
   unfold colSq
@@ -49,17 +67,31 @@ def embG (hF : Fits ε ε' e) : UJ ε' →* UJ ε where
   map_one' := Subtype.ext (Units.ext emb_one)
   map_mul' a b := Subtype.ext (Units.ext (emb_mul _ _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uMat_embG (hF : Fits ε ε' e) (h : UJ ε') : uMat (embG hF h) = emb e (uMat h) := rfl
 
+/- English proof (translation)
+Unfold `nG`. Rewrite using `[uMat_embG, emb, hs_block]`. Conclude with `Real.sqrt_le_sqrt (le_add_of_nonneg_right (by positivity))`.
+-/
 theorem nG_le_embG (hF : Fits ε ε' e) (h : UJ ε') : nG h ≤ nG (embG hF h) := by
   unfold nG
   rw [uMat_embG, emb, hs_block]
   exact Real.sqrt_le_sqrt (le_add_of_nonneg_right (by positivity))
 
+/- English proof (translation)
+The claim follows from `Finset.sum_le_sum fun i _ => Finset.single_le_sum (f := fun k => ‖g i k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ j)`.
+-/
 theorem colSq_le_hs {m : ℕ} (g : Matrix (Fin m) (Fin m) ℂ) (j : Fin m) : colSq g j ≤ hs g :=
   Finset.sum_le_sum fun i _ =>
     Finset.single_le_sum (f := fun k => ‖g i k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ j)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Establish `h0 : colSq (uMat g) j = 0` using `le_antisymm (not_lt.1 h) (Finset.sum_nonneg fun _ _ => by positivity)`. Establish `h1 : ∀ i, uMat g i j = 0` using `fun i => by`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => by positivity).1 h0 i (Finset.mem_univ i)` as an intermediate fact. Simplify using `using this`.
+
+Establish `h2 : uMat g⁻¹ * uMat g = 1` using `Units.inv_mul (g : (Matrix (Fin m) (Fin m) ℂ)ˣ)`. Establish `h3` using `congrFun (congrFun h2 j) j`. Simplify using `[Matrix.mul_apply, h1] at h3`.
+-/
 theorem colSq_pos {m : ℕ} {η : Fin m → Bool} (g : UJ η) (j : Fin m) : 0 < colSq (uMat g) j := by
   by_contra h
   have h0 : colSq (uMat g) j = 0 := le_antisymm (not_lt.1 h) (Finset.sum_nonneg fun _ _ => by positivity)
@@ -70,6 +102,9 @@ theorem colSq_pos {m : ℕ} {η : Fin m → Bool} (g : UJ η) (j : Fin m) : 0 < 
   have h3 := congrFun (congrFun h2 j) j
   simp [Matrix.mul_apply, h1] at h3
 
+/- English proof (translation)
+Establish `h1` using `one_le_nG hm g`. Rewrite using `[← nG_sq, ← Real.rpow_natCast, ← Real.rpow_mul (by linarith), inv_pow, ← Real.rpow_natCast, ← Real.rpow_neg (by linarith)]`. Conclude with `Real.rpow_le_rpow_of_exponent_le h1 (by push_cast; linarith)`.
+-/
 theorem rpow_hs {m : ℕ} (hm : 1 ≤ m) {η : Fin m → Bool} (g : UJ η) (k : ℕ) {a : ℝ} (ha : (k : ℝ) ≤ 2 * a) :
     hs (uMat g) ^ (-a) ≤ (nG g)⁻¹ ^ k := by
   have h1 := one_le_nG hm g
@@ -77,6 +112,13 @@ theorem rpow_hs {m : ℕ} (hm : 1 ≤ m) {η : Fin m → Bool} (g : UJ η) (k : 
     ← Real.rpow_neg (by linarith)]
   exact Real.rpow_le_rpow_of_exponent_le h1 (by push_cast; linarith)
 
+/- English proof (translation)
+Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hsq : Real.sqrt m ≤ m` using `Real.sqrt_le_iff.2 ⟨by linarith, by nlinarith⟩`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm, ← ENNReal.ofReal_mul hC]`.
+
+Conclude with `ENNReal.ofReal_le_ofReal (hd g)`. Use `_ = ENNReal.ofReal C * ∫⁻ g, ENNReal.ofReal ((Real.sqrt (hsG g))⁻¹ ^ (2 * m ^ 2 + 1)) ∂μ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ ≤ ENNReal.ofReal C * (ENNReal.ofReal (2 * (16 * (m : ℝ) ^ 2 / δ) ^ (2 * m ^ 2)) * μ (nearSet η δ)) := by`. Use `mul_le_mul_right ((int_ratio hm η μ hδ (by linarith) le_rfl).trans (mul_le_mul_left ?_ _)) _` and prove the remaining obligations. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ _) zero_le_two)` and prove the remaining obligations.
+
+Conclude with `div_le_div_of_nonneg_right (by nlinarith) hδ.le`. Use `_ = _ := by rw [← mul_assoc, ← ENNReal.ofReal_mul hC]`.
+-/
 theorem lint_le {m : ℕ} (hm : 1 ≤ m) {η : Fin m → Bool} (μ : Measure (UJ η)) [μ.IsHaarMeasure] {f : UJ η → ℂ} {C δ : ℝ}
     (hC : 0 ≤ C) (hδ : 0 < δ) (hδ1 : δ ≤ 1) (hd : ∀ g, ‖f g‖ ≤ C * (nG g)⁻¹ ^ (2 * m ^ 2 + 1)) :
     ∫⁻ g, ‖f g‖ₑ ∂μ ≤ ENNReal.ofReal (C * (2 * (16 * (m : ℝ) ^ 2 / δ) ^ (2 * m ^ 2))) * μ (nearSet η δ) := by
@@ -94,6 +136,35 @@ theorem lint_le {m : ℕ} (hm : 1 ≤ m) {η : Fin m → Bool} (μ : Measure (UJ
         exact div_le_div_of_nonneg_right (by nlinarith) hδ.le
     _ = _ := by rw [← mul_assoc, ← ENNReal.ofReal_mul hC]
 
+/- English proof (translation)
+Introduce `n ε ε' e ν hν hF hn φ C δ hC hδ hδ1 hd g`. Use `set b : ℕ := 2 * n ^ 2 + 1 with hb`. Use `set a : ℕ := 2 * (n + 1) + 5 with ha`. Establish `hn1 : 1 ≤ n + 1` using `by omega`. Establish `hbd : BddBelow (Set.range fun h => nG (g * embG hF h))` using `⟨1, by rintro _ ⟨h, rfl⟩; exact one_le_nG hn1 _⟩`.
+
+Establish `hi1 : 1 ≤ ⨅ h, nG (g * embG hF h)` using `le_ciInf fun h => one_le_nG hn1 _`. Take `⟨h1, hh1⟩` from `exists_lt_of_ciInf_lt (show (⨅ h, nG (g * embG hF h)) < 2 * ⨅ h, nG (g * embG hF h) by linarith)`. Use `set g1 := g * embG hF h1 with hg1`. Use `set y := colSq (uMat g) (zi e) with hy`. Establish `hy0 : 0 < y` using `colSq_pos g _`.
+
+Establish `hG1` using `one_le_nG hn1 g1`. Establish `hyG : Real.sqrt y ≤ nG g1`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Rewrite using `[hy, ← col_emb (e := e) (uMat g) (uMat h1)]`. Conclude with `colSq_le_hs _ _`.
+
+Establish `hsy : 0 < Real.sqrt y` using `Real.sqrt_pos.2 hy0`. Establish `hpt : ∀ h : UJ ε', ‖φ (um g * emb e (um (h1 * h)))‖ ≤ (C * 2 ^ (a + b) * (Real.sqrt y)⁻¹ ^ a) * (nG h)⁻¹ ^ b`. Introduce `h`. Establish `e1 : um g * emb e (um (h1 * h)) = uMat (g1 * embG hF h)`. Rewrite using `[hg1, mul_assoc, ← map_mul]`.
+
+Both sides reduce to the same expression. Use `set t := nG (g1 * embG hF h) with ht`. Establish `ht1 : 1 ≤ t` using `one_le_nG hn1 _`. Establish `hh` using `one_le_nG (by omega : 1 ≤ n) h`. Establish `t1 : nG g1 ≤ 2 * t`.
+
+Use `ciInf_le hbd (h1 * h)` as an intermediate fact. Rewrite `this` using `[map_mul, ← mul_assoc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `t2 : nG h ≤ nG g1 * t`. Use `(nG_le_embG hF h).trans ?_` and prove the remaining obligations.
+
+Use `nG_mul g1⁻¹ (g1 * embG hF h)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_left, nG_inv]`. Then use the resulting hypothesis. Establish `s1 : t⁻¹ ≤ 2 * (nG g1)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by linarith), inv_mul_le_iff₀ (by linarith)]; linarith`. Establish `s2 : t⁻¹ ≤ nG g1 * (nG h)⁻¹`.
+
+Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (by linarith), inv_mul_le_iff₀ (by linarith)]; linarith`. Establish `s3` using `rpow_hs hn1 (g1 * embG hF h) (a + b + b) (a := 3 * ((n : ℝ) + 1) ^ 2) (by`. Simplify using `only [ha, hb]; push_cast; have : (2 : ℝ) ≤ n := by exact_mod_cast hn`. Use the proof step `nlinarith)`. Establish `s4 : t⁻¹ ^ (a + b + b) ≤ (2 * (nG g1)⁻¹) ^ (a + b) * (nG g1 * (nG h)⁻¹) ^ b`.
+
+Rewrite using `[pow_add _ (a + b)]`. Conclude with `mul_le_mul (pow_le_pow_left₀ (by positivity) s1 _) (pow_le_pow_left₀ (by positivity) s2 _) (by positivity) (by positivity)`. Establish `s5 : (2 * (nG g1)⁻¹) ^ (a + b) * (nG g1 * (nG h)⁻¹) ^ b = 2 ^ (a + b) * (nG g1)⁻¹ ^ a * (nG h)⁻¹ ^ b`. Establish `: (nG g1)⁻¹ ^ b * nG g1 ^ b = 1` using `by rw [← mul_pow, inv_mul_cancel₀ (by linarith), one_pow]`. Rewrite using `[mul_pow, mul_pow, pow_add (nG g1)⁻¹]`.
+
+Take the linear combination `(2 ^ (a + b) * (nG g1)⁻¹ ^ a * (nG h)⁻¹ ^ b) * this`. Establish `s6 : (nG g1)⁻¹ ^ a ≤ (Real.sqrt y)⁻¹ ^ a` using `pow_le_pow_left₀ (by positivity) (inv_anti₀ hsy hyG) a`. Rewrite using `[e1]`. Use `(hd _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `mul_le_mul_of_nonneg_left (s3.trans (s4.trans (s5.le.trans ?_))) hC` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by ring`. Rewrite using `[← lintegral_mul_left_eq_self (fun h : UJ ε' => ‖φ (um g * emb e (um h))‖ₑ) h1]`. Use `(lint_le (by omega) ν (by positivity) hδ hδ1 hpt).trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal ?_) _)` and prove the remaining obligations.
+
+Establish `e2 : (Real.sqrt y)⁻¹ ^ a = y ^ (-((2 * ((n : ℝ) + 1) + 5) / 2))`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_neg hy0.le, ← Real.rpow_natCast, ← Real.rpow_mul hy0.le]`. Use `congr 1`. Simplify using `only [ha]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `set T : ℝ := 100 * ((n : ℝ) + 1) ^ 2 / δ with hT`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `T1 : 16 * (n : ℝ) ^ 2 / δ ≤ T` using `div_le_div_of_nonneg_right (by nlinarith) hδ.le`. Establish `T2 : 2 ≤ T` using `by rw [hT, le_div_iff₀ hδ]; nlinarith`.
+
+Establish `T3 : (2 : ℝ) ^ (a + b) * (2 * (16 * (n : ℝ) ^ 2 / δ) ^ (2 * n ^ 2)) ≤ T ^ (10 * (n + 1) ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem h_integrability : HInt := by
   intro n ε ε' e ν hν hF hn φ C δ hC hδ hδ1 hd g
   set b : ℕ := 2 * n ^ 2 + 1 with hb

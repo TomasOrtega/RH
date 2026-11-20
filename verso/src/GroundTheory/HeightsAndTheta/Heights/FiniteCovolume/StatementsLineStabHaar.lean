@@ -45,6 +45,9 @@ def lineStab (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
         _ = c⁻¹ • vecAt v x₀ w := by rw [← hc, ← hz]
 
 omit [NumberField E] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lineStab {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W} {g : archUnitary h v} :
     g ∈ lineStab h v x₀ ↔ ∀ w, ∃ c : ℂ,
       ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w = c • vecAt v x₀ w :=
@@ -52,11 +55,19 @@ theorem mem_lineStab {h : HermitianForm F E W} {v : Basis ι E W} {x₀ : W} {g 
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Introduce `g hg w` and use `⟨1, by rw [one_smul]; exact hg w⟩`.
+-/
 theorem vecFixGroup_le_lineStab (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     vecFixGroup h v x₀ ≤ lineStab h v x₀ := fun g hg w => ⟨1, by rw [one_smul]; exact hg w⟩
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Establish `: (lineStab h v x₀ : Set (archUnitary h v)) = ⋂ w, (fun g : archUnitary h v => ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ vecAt v x₀ w) ⁻¹' (Submodule.span ℂ {vecAt v x₀ w} : Set (ι → ℂ))`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe, Submodule.mem_span_singleton, mem_lineStab]`. Conclude with `forall_congr' fun w => ⟨fun ⟨c, hc⟩ => ⟨c, hc.symm⟩, fun ⟨c, hc⟩ => ⟨c, hc.symm⟩⟩`. Rewrite using `[this]`.
+
+Use `isClosed_iInter fun w => IsClosed.preimage ?_ (Submodule.closed_of_finiteDimensional _)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp ((continuous_apply w).comp continuous_subtype_val)).matrix_mulVec continuous_const`.
+-/
 theorem isClosed_lineStab (h : HermitianForm F E W) (v : Basis ι E W) (x₀ : W) :
     IsClosed (lineStab h v x₀ : Set (archUnitary h v)) := by
   have : (lineStab h v x₀ : Set (archUnitary h v)) = ⋂ w, (fun g : archUnitary h v =>

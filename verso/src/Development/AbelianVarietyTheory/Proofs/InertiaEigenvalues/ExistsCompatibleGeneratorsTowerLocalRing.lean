@@ -4,6 +4,15 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `k` to `IsLocalRing.ResidueField Λ`. Set `b` to `Module.finBasis k (k ⊗[Λ] A)`. Establish `hs : Function.Surjective (TensorProduct.mk Λ k A 1)` using `TensorProduct.mk_surjective Λ A k IsLocalRing.residue_surjective`. Use `choose v hv using fun i => hs (b i)`. Establish `hv' : ∀ i, (1 : k) ⊗ₜ[Λ] v i = b i` using `hv`.
+
+Establish `hspan : Submodule.span Λ (Set.range v) = ⊤` using `IsLocalRing.span_eq_top_of_tmul_eq_basis v b hv'`. Use `⟨_, Fintype.linearCombination Λ v, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hspan]`. Introduce `x hx i`. Establish `h1 : ∑ j, algebraMap Λ k (x j) • b j = 0`.
+
+Establish `h2` using `congrArg (TensorProduct.mk Λ k A 1) hx`. Rewrite `h2` using `[Fintype.linearCombination_apply, map_sum, map_zero]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hv, algebraMap_smul]`.
+
+Establish `h3` using `Fintype.linearIndependent_iff.1 b.linearIndependent _ h1 i`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).1 h3`.
+-/
 private theorem tower_minimal_presentation (Λ : Type) [CommRing Λ] [IsLocalRing Λ] (A : Type)
     [AddCommGroup A] [Module Λ A] [Module.Finite Λ A] :
     ∃ (d : ℕ) (p : (Fin d → Λ) →ₗ[Λ] A), Function.Surjective p ∧
@@ -29,6 +38,11 @@ private theorem tower_minimal_presentation (Λ : Type) [CommRing Λ] [IsLocalRin
     have h3 := Fintype.linearIndependent_iff.1 b.linearIndependent _ h1 i
     exact (IsLocalRing.residue_eq_zero_iff _).1 h3
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `Module.projective_lifting_property t p ht`. Use `⟨q, ?_, hq⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff]`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := IsLocalRing.maximalIdeal Λ) Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) fun y _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hp (t y)`.
+
+Establish `h1 : y - q x ∈ LinearMap.ker t`. Rewrite using `[LinearMap.mem_ker, map_sub, ← hx, ← hq, LinearMap.comp_apply, sub_self]`. Establish `h2 : y = q x + (y - q x)` using `by abel`. Rewrite using `[h2]`. Conclude with `Submodule.add_mem_sup (LinearMap.mem_range_self q x) (hk h1)`.
+-/
 theorem exists_surjective_lift_of_ker_le_maximalIdeal_smul {Λ : Type} [CommRing Λ] [IsLocalRing Λ]
     {A B : Type} [AddCommGroup A] [Module Λ A] [Module.Finite Λ A] [AddCommGroup B] [Module Λ B]
     (t : A →ₗ[Λ] B) (ht : Function.Surjective t)
@@ -47,6 +61,9 @@ theorem exists_surjective_lift_of_ker_le_maximalIdeal_smul {Λ : Type} [CommRing
   rw [h2]
   exact Submodule.add_mem_sup (LinearMap.mem_range_self q x) (hk h1)
 
+/- English proof (translation)
+Introduce `Λ _ _ M _ _ _ t ht hk`. Take `⟨a, p0, hp0, hmin⟩` from `tower_minimal_presentation Λ (M 0)`. Use `choose q hq hq' using fun (n : ℕ) (p : (Fin a → Λ) →ₗ[Λ] M n) (hp : Function.Surjective p) => exists_surjective_lift_of_ker_le_maximalIdeal_smul (t n) (ht n) (hk n) p hp`. Set `P : ∀ n, {p : (Fin a → Λ) →ₗ[Λ] M n // Function.Surjective p}` to `fun n => Nat.rec (motive := fun n => {p : (Fin a → Λ) →ₗ[Λ] M n // Function.Surjective p}) ⟨p0, hp0⟩ (fun n p => ⟨q n p.1 p.2, hq n p.1 p.2⟩) n`. Conclude with `⟨a, fun n => (P n).1, fun n => (P n).2, fun n => hq' n (P n).1 (P n).2, hmin⟩`.
+-/
 theorem exists_compatible_generators_tower :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] (M : ℕ → Type) [∀ n, AddCommGroup (M n)] [∀ n, Module Λ (M n)] [∀ n, Module.Finite Λ (M n)]
   (t : ∀ n, M (n + 1) →ₗ[Λ] M n), (∀ n, Function.Surjective (t n)) →

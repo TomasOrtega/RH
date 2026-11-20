@@ -9,6 +9,27 @@ private def UpperTheory.V.Cj.A.idxEquiv (Γ J : Type) : Γ × J ≃ Idx Γ J whe
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Introduce `Γ V S J _ _ _ d G u hu ψ hψs hψf hψ1`. Take `⟨hus, huf, hu1⟩` from `hu`. Establish `hlf : ∀ s, ∀ p ∈ G.Y, ∃ N ∈ nhds p, {i : Idx Γ J | ∃ x ∈ N, u ((G.σ i.g⁻¹) s) ((G.ρ i.g⁻¹) x) * ψ ((G.σ i.g⁻¹) s) i.j ((G.ρ i.g⁻¹) x) ≠ 0}.Finite`. Introduce `s p hp`. Take `⟨N₁, hN₁, hF⟩` from `huf s p hp`.
+
+Establish `key : ∀ γ : Γ, ∃ M ∈ nhds p, {j | ∃ x ∈ M, ψ ((G.σ γ⁻¹) s) j ((G.ρ γ⁻¹) x) ≠ 0}.Finite`. Introduce `γ`. Take `⟨M, hM, hMf⟩` from `hψf ((G.σ γ⁻¹) s) ((G.ρ γ⁻¹) p) (G.maps _ p hp)`. Use `⟨(G.ρ γ⁻¹) ⁻¹' M, (G.ρ γ⁻¹).continuous.continuousAt.preimage_mem_nhds hM, ?_⟩` and prove the remaining obligations. Use `hMf.subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `j ⟨x, hx, hne⟩`. Conclude with `⟨_, hx, hne⟩`. Use `choose M hM hMf using key`. Use `⟨N₁ ∩ ⋂ γ ∈ hF.toFinset, M γ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Filter.inter_mem hN₁ ((Filter.biInter_finset_mem _).2 fun γ _ => hM γ)`.
+
+Use `((hF.toFinset.finite_toSet.biUnion fun γ _ => (Set.finite_singleton γ).prod (hMf γ)).image (idxEquiv Γ J)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨g, j⟩ ⟨x, ⟨hx1, hx2⟩, hne⟩`. Establish `hu0 : u ((G.σ g⁻¹) s) ((G.ρ g⁻¹) x) ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hψ0 : ψ ((G.σ g⁻¹) s) j ((G.ρ g⁻¹) x) ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hgF : g ∈ hF.toFinset` using `hF.mem_toFinset.2 ⟨x, hx1, hu0⟩`.
+
+Use `⟨(g, j), Set.mem_biUnion (x := g) hgF ⟨Set.mem_singleton _, x, ?_, hψ0⟩, rfl⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter₂.1 hx2 g hgF`. Use `⟨?_, hlf, ?_, ?_⟩` and prove the remaining obligations. Introduce `i s`. Establish `hmap : Set.MapsTo (G.ρ i.g⁻¹) G.Y G.Y` using `fun p hp => G.maps _ p hp`.
+
+Conclude with `((hus _).comp (G.ρ i.g⁻¹).contDiff.contDiffOn hmap).mul ((hψs _ _).comp (G.ρ i.g⁻¹).contDiff.contDiffOn hmap)`. Introduce `s p hp`. Establish `hfin : (Function.support fun x : Γ × J => u ((G.σ x.1⁻¹) s) ((G.ρ x.1⁻¹) p) * ψ ((G.σ x.1⁻¹) s) x.2 ((G.ρ x.1⁻¹) p)).Finite`. Take `⟨N, hN, hNf⟩` from `hlf s p hp`. Use `(hNf.preimage (idxEquiv Γ J).injective.injOn).subset ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Conclude with `⟨p, mem_of_mem_nhds hN, hx⟩`. Rewrite using `[← finsum_comp_equiv (idxEquiv Γ J)]`. Use `show ∑ᶠ x : Γ × J, u ((G.σ x.1⁻¹) s) ((G.ρ x.1⁻¹) p) * ψ ((G.σ x.1⁻¹) s) x.2 ((G.ρ x.1⁻¹) p) = 1`. Rewrite using `[finsum_curry _ (by exact hfin)]`.
+
+Establish `hin : ∀ a : Γ, ∑ᶠ b : J, u ((G.σ a⁻¹) s) ((G.ρ a⁻¹) p) * ψ ((G.σ a⁻¹) s) b ((G.ρ a⁻¹) p) = u ((G.σ a⁻¹) s) ((G.ρ a⁻¹) p)`. Introduce `a`. Rewrite using `[← mul_finsum, hψ1 _ _ (G.maps _ _ hp), mul_one]`. Rewrite using `[finsum_congr hin]`. Conclude with `hu1 s p hp`.
+
+Introduce `γ i s p`. Establish `h1 : (G.σ γ⁻¹) ((G.σ γ) s) = s`. Rewrite using `[← Equiv.Perm.mul_apply, ← map_mul, inv_mul_cancel, map_one, Equiv.Perm.one_apply]`. Establish `h2 : (G.ρ γ⁻¹) ((G.ρ γ) p) = p`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one, ContinuousLinearMap.one_apply]`.
+
+Use `show u ((G.σ (γ * i.g)⁻¹) ((G.σ γ) s)) ((G.ρ (γ * i.g)⁻¹) ((G.ρ γ) p)) * ψ ((G.σ (γ * i.g)⁻¹) ((G.σ γ) s)) i.j ((G.ρ (γ * i.g)⁻¹) ((G.ρ γ) p)) = _`. Rewrite using `[mul_inv_rev, map_mul, map_mul, Equiv.Perm.mul_apply, ContinuousLinearMap.mul_apply, h1, h2]`.
+-/
 theorem UpperTheory.V.Cj.A.partProd :
     PartProd := by
   intro Γ V S J _ _ _ d G u hu ψ hψs hψf hψ1

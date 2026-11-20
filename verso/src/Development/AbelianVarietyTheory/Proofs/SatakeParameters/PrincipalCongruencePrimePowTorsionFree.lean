@@ -8,6 +8,11 @@ open Finset
 
 variable {R : Type} [CommRing R] {a : ℕ}
 
+/- English proof (translation)
+Rewrite using `[add_comm, (Commute.one_right (t • z)).add_pow, sum_range_succ', add_comm]`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.cast_one]`. Use `congr 1`. Rewrite using `[smul_sum]`. Use `sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← nsmul_eq_mul', smul_pow, smul_smul, ← pow_succ', smul_comm]`.
+-/
 lemma one_add_smul_pow (t : R) (z : Matrix (Fin a) (Fin a) R) (n : ℕ) :
     (1 + t • z) ^ n = 1 + t • ∑ m ∈ range n, t ^ m • ((n.choose (m + 1)) • z ^ (m + 1)) := by
   rw [add_comm, (Commute.one_right (t • z)).add_pow, sum_range_succ', add_comm]
@@ -17,6 +22,21 @@ lemma one_add_smul_pow (t : R) (z : Matrix (Fin a) (Fin a) R) (n : ℕ) :
   refine sum_congr rfl fun m _ => ?_
   rw [← nsmul_eq_mul', smul_pow, smul_smul, ← pow_succ', smul_comm]
 
+/- English proof (translation)
+Establish `h` using `one_add_smul_pow t z p`. Rewrite `h` using `[hz]`. Establish `hS : t • ∑ m ∈ range p, t ^ m • ((p.choose (m + 1)) • z ^ (m + 1)) = 0`. Use `congrArg (fun A => A - 1) h` as an intermediate fact. Simplify using `using this.symm`.
+
+Rewrite `hS` using `[smul_eq_zero]`. Establish `hS` using `hS.resolve_left ht0`. Take `⟨q, rfl⟩ : ∃ q, p = q + 1` from `⟨p - 1, by have := hp.two_le; omega⟩`. Rewrite `hS` using `[sum_range_succ']`. Establish `he` using `congrFun (congrFun hS i) j`.
+
+Simplify using `only [Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, pow_zero, one_smul, zero_add, Nat.choose_one_right, pow_one, Matrix.zero_apply] at he`. Simplify using `only [nsmul_eq_mul] at he`. Establish `hdiv : (l : R) ^ 2 ∣ ((q + 1 : ℕ) : R) * z i j`. Establish `: ((q + 1 : ℕ) : R) * z i j = -(∑ m ∈ range q, t ^ (m + 1) * (((q + 1).choose (m + 1 + 1) : R) * (z ^ (m + 1 + 1)) i j))`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
+
+Conclude with `he`. Rewrite using `[this, dvd_neg]`. Conclude with `dvd_sum fun m _ => dvd_mul_of_dvd_left (ht.trans (dvd_pow_self t (Nat.succ_ne_zero m))) _`. Establish `hl0 : (l : R) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Distinguish the cases in `hpl : q + 1 = l`.
+
+Rewrite `hdiv` using `[hpl, pow_two]`. Conclude with `(mul_dvd_mul_iff_left hl0).mp hdiv`. Establish `hcop : Nat.Coprime (q + 1) l` using `(Nat.coprime_primes hp hl).mpr hpl`. Establish `hc : IsCoprime ((q + 1 : ℕ) : R) (l : R)`. Use `(Nat.isCoprime_iff_coprime.mpr hcop).map (Int.castRingHom R)` as an intermediate fact.
+
+Simplify using `using this`. Take `⟨u, v, huv⟩` from `hc`. Establish `hpu : IsUnit ((q + 1 : ℕ) : R)`. Break down `IsLocalRing.isUnit_or_isUnit_of_add_one huv with h1 | h1` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h1`.
+
+Conclude with `absurd (isUnit_of_mul_isUnit_right h1) hlu`. Conclude with `(dvd_pow_self (l : R) two_ne_zero).trans ((hpu.dvd_mul_left).mp hdiv)`.
+-/
 lemma dvd_entries_of_pow_eq_one [IsDomain R] [IsLocalRing R] [CharZero R] {l p : ℕ} (hl : l.Prime)
     (hlu : ¬ IsUnit (l : R)) (hp : p.Prime) {t : R} (ht : (l : R) ^ 2 ∣ t) (ht0 : t ≠ 0)
     {z : Matrix (Fin a) (Fin a) R} (hz : (1 + t • z) ^ p = 1) (i j : Fin a) : (l : R) ∣ z i j := by
@@ -54,6 +74,13 @@ lemma dvd_entries_of_pow_eq_one [IsDomain R] [IsLocalRing R] [CharZero R] {l p :
       · exact absurd (isUnit_of_mul_isUnit_right h1) hlu
     exact (dvd_pow_self (l : R) two_ne_zero).trans ((hpu.dvd_mul_left).mp hdiv)
 
+/- English proof (translation)
+Establish `hl0 : (l : R) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Proceed by induction on `N with`. Consider the case `zero => intro t z _ _ _ i j`. Simplify using the standard rewrite rules. Consider the case `succ N ih`.
+
+Introduce `t z ht ht0 hz i j`. Establish `hd` using `dvd_entries_of_pow_eq_one hl hlu hp ht ht0 hz`. Use `choose w hw using hd`. Establish `hzz : z = (l : R) • Matrix.of w` using `by ext i j; simp [hw i j]`. Establish `htz : t • z = (t * l) • Matrix.of w` using `by rw [hzz, smul_smul]`.
+
+Establish `h'` using `ih (t * l) (Matrix.of w) (dvd_mul_of_dvd_left ht _) (mul_ne_zero ht0 hl0) (by rw [← htz]; exact hz) i j`. Rewrite using `[hw i j, pow_succ']`. Conclude with `mul_dvd_mul_left _ (by simpa using h')`.
+-/
 lemma pow_dvd_entries_of_pow_eq_one [IsDomain R] [IsLocalRing R] [CharZero R] {l p : ℕ}
     (hl : l.Prime) (hlu : ¬ IsUnit (l : R)) (hp : p.Prime) (N : ℕ) :
     ∀ (t : R) (z : Matrix (Fin a) (Fin a) R), (l : R) ^ 2 ∣ t → t ≠ 0 → (1 + t • z) ^ p = 1 →
@@ -72,6 +99,9 @@ lemma pow_dvd_entries_of_pow_eq_one [IsDomain R] [IsLocalRing R] [CharZero R] {l
     rw [hw i j, pow_succ']
     exact mul_dvd_mul_left _ (by simpa using h')
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hb`. Take `⟨n, hn⟩` from `FiniteMultiplicity.of_not_isUnit hc hb`. Conclude with `hn (h _)`.
+-/
 lemma eq_zero_of_forall_pow_dvd [IsDomain R] [IsDiscreteValuationRing R] {c b : R}
     (hc : ¬ IsUnit c) (h : ∀ N, c ^ N ∣ b) : b = 0 := by
   by_contra hb
@@ -84,6 +114,19 @@ namespace GlobalTheory
 
 open GlobalTheory.CongTorsion in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ l m a hl hlu hm x n hn hx`. Establish `hl0 : (l : R) ≠ 0` using `Nat.cast_ne_zero.mpr hl.ne_zero`. Establish `hc0 : (l : R) ^ m ≠ 0` using `pow_ne_zero _ hl0`. Establish `hc2 : (l : R) ^ 2 ∣ (l : R) ^ m` using `pow_dvd_pow _ hm`. Proceed by induction on `n using Nat.strong_induction_on generalizing x with`.
+
+Consider the case `_ n ih`. Distinguish the cases in `h1 : n = 1`. Substitute `h1` using the available equality. Rewrite `hx` using `[pow_one, add_eq_left, smul_eq_zero]`. Conclude with `hx.resolve_left hc0`.
+
+Use `set p := n.minFac with hpdef`. Establish `hp : p.Prime` using `Nat.minFac_prime h1`. Take `⟨k, hk⟩` from `Nat.minFac_dvd n`. Establish `hkpos : 0 < k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases.
+
+Rewrite `hk` using `[h, mul_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Establish `hklt : k < n`. Rewrite using `[hk]`.
+
+Conclude with `lt_mul_left hkpos hp.one_lt`. Establish `he` using `one_add_smul_pow ((l : R) ^ m) x p`. Rewrite `hx` using `[hk, pow_mul, he]`. Establish `hx'` using `ih k hklt _ hkpos hx`. Rewrite `he` using `[hx', smul_zero, add_zero]`.
+
+Use extensionality with `i j`. Conclude with `eq_zero_of_forall_pow_dvd hlu (fun N => pow_dvd_entries_of_pow_eq_one hl hlu hp N _ x hc2 hc0 he i j)`.
+-/
 theorem principalCongruence_torsionFree :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CharZero R] (l m a : ℕ),
       l.Prime → ¬ IsUnit (l : R) → 2 ≤ m → ∀ (x : Matrix (Fin a) (Fin a) R) (n : ℕ), 0 < n →

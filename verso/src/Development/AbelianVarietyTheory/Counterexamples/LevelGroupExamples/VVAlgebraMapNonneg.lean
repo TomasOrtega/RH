@@ -13,6 +13,11 @@ section Dvr
 variable {V K' : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K'] [Algebra V K']
   [IsFractionRing V K']
 
+/- English proof (translation)
+Distinguish the cases in `ha : algebraMap V K' a = 0`. Rewrite using `[ha]`. Simplify using `[vV]`. Establish `hv : valV V (algebraMap V K' a) ≤ 1` using `(IsDiscreteValuationRing.maximalIdeal V).valuation_le_one a`. Use `(WithZero.log_le_log (valV_ne_zero (V := V) ha) one_ne_zero).2 hv` as an intermediate fact.
+
+Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_algebraMap_nonneg (a : V) : 0 ≤ vV V (algebraMap V K' a) := by
   by_cases ha : algebraMap V K' a = 0
   · rw [ha]; simp [vV]
@@ -22,8 +27,14 @@ theorem vV_algebraMap_nonneg (a : V) : 0 ≤ vV V (algebraMap V K' a) := by
     simp only [WithZero.log_one] at this
     simp only [vV]; omega
 
+/- English proof (translation)
+Simplify using `[vV]`.
+-/
 theorem vV_one : vV V (1 : K') = 0 := by simp [vV]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp [vV]`. Consider the case `succ n ih => rw [pow_succ, vV_mul (pow_ne_zero n hx) hx, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := by
   induction n with
   | zero => simp [vV]
@@ -32,6 +43,11 @@ theorem vV_pow {x : K'} (hx : x ≠ 0) (n : ℕ) : vV V (x ^ n) = n * vV V x := 
 variable {V' K'' : Type} [CommRing V'] [IsDomain V'] [IsDiscreteValuationRing V'] [Field K''] [Algebra V' K'']
   [IsFractionRing V' K'']
 
+/- English proof (translation)
+Establish `hne : ∀ w : Vˣ, i (algebraMap V K' w) ≠ 0` using `fun w => ((w.isUnit.map (algebraMap V K')).map i).ne_zero`. Establish `h0 : ∀ w : Vˣ, 0 ≤ vV V' (i (algebraMap V K' w))` using `fun w => by`. Take `⟨b, hb⟩` from `hi w`. Rewrite using `[← hb]`. Conclude with `vV_algebraMap_nonneg b`.
+
+Establish `h1` using `vV_mul (V := V') (hne u) (hne u⁻¹)`. Rewrite `h1` using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one, vV_one]`. Use `h0 u` as an intermediate fact. Use `h0 u⁻¹` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem vV_map_unit (i : K' →+* K'') (hi : ∀ a : V, i (algebraMap V K' a) ∈ Set.range (algebraMap V' K''))
     (u : Vˣ) : vV V' (i (algebraMap V K' u)) = 0 := by
   have hne : ∀ w : Vˣ, i (algebraMap V K' w) ≠ 0 := fun w =>
@@ -45,6 +61,23 @@ theorem vV_map_unit (i : K' →+* K'') (hi : ∀ a : V, i (algebraMap V K' a) �
   have := h0 u⁻¹
   omega
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hp0 : algebraMap V K' p ≠ 0`. Simplify using `using hp.ne_zero`. Establish `hr : 0 ≤ vV V' (i (algebraMap V K' p))`. Take `⟨b, hb⟩` from `hi p`.
+
+Rewrite using `[← hb]`. Conclude with `vV_algebraMap_nonneg b`. Establish `hp1 : vV V (algebraMap V K' p) = 1`. Establish `h : valV V (algebraMap V K' p) = WithZero.exp (-1 : ℤ)`. Unfold `valV`.
+
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Use `HeightOneSpectrum.intValuation_singleton _ hp.ne_zero ?_` and prove the remaining obligations. Conclude with `hp.maximalIdeal_eq`. Simplify using `[vV, h]`. Use `⟨(vV V' (i (algebraMap V K' p))).toNat, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Int.toNat_of_nonneg hr]`. Establish `key : ∀ a : V, a ≠ 0 → vV V' (i (algebraMap V K' a)) = vV V' (i (algebraMap V K' p)) * vV V (algebraMap V K' a)`. Introduce `a ha`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hp`. Establish `hu : algebraMap V K' u ≠ 0` using `(u.isUnit.map (algebraMap V K')).ne_zero`.
+
+Establish `hu0 : vV V (algebraMap V K' u) = 0` using `vV_map_unit (V' := V) (RingHom.id K') (fun a => ⟨a, rfl⟩) u`. Rewrite using `[map_mul, map_pow, map_mul, map_pow, vV_mul ((map_ne_zero i).2 hu) (pow_ne_zero n ((map_ne_zero i).2 hp0)), vV_mul hu (pow_ne_zero n hp0), vV_pow ((map_ne_zero i).2 hp0), vV_pow hp0, vV_map_unit i hi u, hu0, hp1]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+
+Substitute `hx` using the available equality. Simplify using `[vV]`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb' : algebraMap V K' b ≠ 0` using `by simpa using hb0`.
+
+Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hx`. Establish `e : algebraMap V K' a / algebraMap V K' b * algebraMap V K' b = algebraMap V K' a` using `div_mul_cancel₀ _ hb'`. Establish `h1` using `vV_mul (V := V) hx hb'`. Establish `h2` using `vV_mul (V := V') ((map_ne_zero i).2 hx) ((map_ne_zero i).2 hb')`. Rewrite `h2` using `[← map_mul, e, key a ha0, key b hb0]`.
+
+Rewrite `h1` using `[e]`. Rewrite `h2` using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_vV_map (i : K' →+* K'') (hi : ∀ a : V, i (algebraMap V K' a) ∈ Set.range (algebraMap V' K'')) :
     ∃ r : ℕ, ∀ x, vV V' (i x) = (r : ℤ) * vV V x := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible V
@@ -91,6 +124,13 @@ theorem exists_vV_map (i : K' →+* K'') (hi : ∀ a : V, i (algebraMap V K' a) 
 
 end Dvr
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `exists_vV_map i hi`. Take `⟨a, ha⟩` from `la.valuation_exists_uniformizer K`. Establish `h1 : vLa la a = 1` using `by simp [vLa, ha]`. Establish `h2` using `hr (io a)`. Rewrite `h2` using `[hc, ho'.2, ho.2, h1]`.
+
+Establish `he : e' = r * e`. Establish `: (e' : ℤ) = (r * e : ℕ)` using `by push_cast; linarith`. Conclude with `this` after adjusting the coercions. Establish `hr0 : 0 < r`. Break down `Nat.eq_zero_or_pos r with h | h` into its components or cases.
+
+Use `ho'.1` as an intermediate fact. Rewrite `this` using `[he, h]`. Simplify using `at this`. Conclude with `h`. Conclude with `⟨r, hr0, he, hr, fun x => he ▸ nval_bc i hr0 hr e x⟩`.
+-/
 theorem nval_map_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)}
     {T T' : CDVR} {io : K →+* T.Fr} {io' : K →+* T'.Fr} {e e' : ℕ}
     (ho : OverLa la T.V io e) (ho' : OverLa la T'.V io' e') (i : T.Fr →+* T'.Fr)
@@ -114,6 +154,9 @@ theorem nval_map_of_overLa {K : Type} [Field K] [NumberField K] {la : HeightOneS
 
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
+/- English proof (translation)
+Take `⟨T', io', e', y', ho', hf', φ, z, t, hφ, hz, hb⟩` from `h la T io e ho hf y`. Set `_` to `io.toAlgebra`. Set `_` to `io'.toAlgebra`. Take `⟨r, hr, rfl, h1, h2⟩` from `nval_map_of_overLa ho ho' φ.toRingHom (fun a => φ.commutes a) hφ`. Conclude with `⟨T', io', r, y', hr, ho', hf', φ, z, t, h1, h2, hz, hb⟩`.
+-/
 theorem intAll_ramified {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (h : Formalism.L2.PjFree.IntAll Xo c)
     (la : HeightOneSpectrum (𝓞 c.F)) (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (ho : OverLa la T.V io e)

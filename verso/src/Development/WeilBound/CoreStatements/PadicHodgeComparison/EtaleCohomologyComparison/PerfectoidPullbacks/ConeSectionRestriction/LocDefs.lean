@@ -31,15 +31,24 @@ def jacSpan {V V' : X.Opens} (h : V ≤ V') {A : Type} [CommRing A] (ι : Γ(X, 
 section KS
 variable {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
+/- English proof (translation)
+Introduce `x hx` and use `h (hT hx)`.
+-/
 theorem inU_mono {V V' : X.Opens} (h : V ≤ V') {T : Thick (smFun X q)} (hT : InU V T) : InU V' T :=
   fun x hx => h (hT hx)
 
+/- English proof (translation)
+Introduce and unpack `T ⟨hT, W, hW, hTW⟩`. Rewrite `hW` using `[Set.mem_singleton_iff]`. Substitute `hW` using the available equality. Conclude with `⟨hT, V', rfl, inU_mono q h hTW⟩`.
+-/
 theorem ks_le (s : ℕ) {V V' : X.Opens} (h : V ≤ V') : KS q s {V} ≤ KS q s {V'} := by
   rintro T ⟨hT, W, hW, hTW⟩
   rw [Set.mem_singleton_iff] at hW
   subst hW
   exact ⟨hT, V', rfl, inU_mono q h hTW⟩
 
+/- English proof (translation)
+Introduce and unpack `T ⟨-, W, hW, hTW⟩`. Rewrite `hW` using `[Set.mem_singleton_iff]`. Conclude with `hW ▸ hTW`.
+-/
 theorem ks_in (s : ℕ) (V : X.Opens) : ∀ T, KS q s {V} T → InU V T := by
   rintro T ⟨-, W, hW, hTW⟩
   rw [Set.mem_singleton_iff] at hW

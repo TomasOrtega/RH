@@ -14,9 +14,15 @@ def ofHSpace {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.Ba
   herm x y := S.herm.eq y x
   nondeg x h := S.nondeg.2 x h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem ofHSpace_B {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E)
     (x y : S.V) : (ofHSpace S).B x y = S.hT y x := rfl
 
+/- English proof (translation)
+The claim follows from `isUnimod_iff _ _`.
+-/
 theorem isUnimod_ofHSpace {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E)
     (Λ : Submodule (NumberField.RingOfIntegers E) S.V) :
     IsUnimod (ofHSpace S) Λ ↔ Submodule.IsLattice E Λ ∧ Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ :=
@@ -76,18 +82,32 @@ def fixSp (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) : Submodule K V where
     · rw [← smul_sub]; exact Submodule.smul_mem _ c h1
     · rw [map_smul, ← smul_sub]; exact Submodule.smul_mem _ c h2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => by rw [← H.herm, h, star_zero], fun h => by rw [← H.herm, h, star_zero]⟩`.
+-/
 theorem B_eq_zero_comm {x y : V} : H.B x y = 0 ↔ H.B y x = 0 :=
   ⟨fun h => by rw [← H.herm, h, star_zero], fun h => by rw [← H.herm, h, star_zero]⟩
 
+/- English proof (translation)
+Introduce `y hy` and use `(mem_perp_iff H S y).2 fun x hx => (mem_perp_iff H S' y).1 hy x (h hx)`.
+-/
 theorem perp_anti {S S' : Submodule K V} (h : S ≤ S') : perp H S' ≤ perp H S := fun y hy =>
   (mem_perp_iff H S y).2 fun x hx => (mem_perp_iff H S' y).1 hy x (h hx)
 
+/- English proof (translation)
+Use `le_antisymm (le_inf (perp_anti le_sup_left) (perp_anti le_sup_right)) fun y hy => ?_` and prove the remaining obligations. Use `(mem_perp_iff H _ y).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add, (mem_perp_iff H _ y).1 hy.1 a ha, (mem_perp_iff H _ y).1 hy.2 b hb, add_zero]`.
+-/
 theorem perp_sup (S S' : Submodule K V) : perp H (S ⊔ S') = perp H S ⊓ perp H S' := by
   refine le_antisymm (le_inf (perp_anti le_sup_left) (perp_anti le_sup_right)) fun y hy => ?_
   refine (mem_perp_iff H _ y).2 fun x hx => ?_
   obtain ⟨a, ha, b, hb, rfl⟩ := Submodule.mem_sup.1 hx
   rw [map_add, (mem_perp_iff H _ y).1 hy.1 a ha, (mem_perp_iff H _ y).1 hy.2 b hb, add_zero]
 
+/- English proof (translation)
+Rewrite using `[mem_perp_iff]`. Use `⟨fun h x hx => h x (Submodule.subset_span hx), fun h x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => simp`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [LinearMap.map_smulₛₗ, ha, smul_zero]`.
+-/
 theorem mem_perp_span (s : Set V) (y : V) :
     y ∈ perp H (Submodule.span K s) ↔ ∀ x ∈ s, H.B y x = 0 := by
   rw [mem_perp_iff]
@@ -98,6 +118,9 @@ theorem mem_perp_span (s : Set V) (y : V) :
   | add a b _ _ ha hb => rw [map_add, ha, hb, add_zero]
   | smul c a _ ha => rw [LinearMap.map_smulₛₗ, ha, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[FlagD.X, FlagD.Xa, ← Set.image_univ]`. Use `congr 2`. Use extensionality with `b`. Simplify using the standard rewrite rules.
+-/
 theorem X_eq_span (F : FlagD H r) :
     F.X = Submodule.span K (Set.range fun a : Fin r => F.e a.castSucc) := by
   rw [FlagD.X, FlagD.Xa, ← Set.image_univ]
@@ -105,44 +128,77 @@ theorem X_eq_span (F : FlagD H r) :
   ext b
   simp
 
+/- English proof (translation)
+Rewrite using `[X_eq_span, mem_perp_span, Set.forall_mem_range]`.
+-/
 theorem mem_perp_X (F : FlagD H r) (y : V) :
     y ∈ perp H F.X ↔ ∀ a : Fin r, H.B y (F.e a.castSucc) = 0 := by
   rw [X_eq_span, mem_perp_span, Set.forall_mem_range]
 
+/- English proof (translation)
+Introduce `x hx`. Use `(mem_perp_X F x).2 fun a => B_eq_zero_comm.1 ?_` and prove the remaining obligations. Conclude with `(mem_perp_iff H _ _).1 ((mem_perp_X F _).2 fun b => F.iso a b) x hx`.
+-/
 theorem X_le_perp (F : FlagD H r) : F.X ≤ perp H F.X := by
   intro x hx
   refine (mem_perp_X F x).2 fun a => B_eq_zero_comm.1 ?_
   exact (mem_perp_iff H _ _).1 ((mem_perp_X F _).2 fun b => F.iso a b) x hx
 
+/- English proof (translation)
+The claim follows from `(mem_perp_X F _).2 fun a => B_eq_zero_comm.1 (F.zperp a)`.
+-/
 theorem z_mem_perp (F : FlagD H r) : F.z ∈ perp H F.X :=
   (mem_perp_X F _).2 fun a => B_eq_zero_comm.1 (F.zperp a)
 
+/- English proof (translation)
+The claim follows from `F.zz`.
+-/
 theorem form_flag_vector_self (F : FlagD H r) : H.B F.z F.z = -F.T := F.zz
 
+/- English proof (translation)
+The claim follows from `le_sup_left`.
+-/
 theorem X_le_xPlus (F : FlagD H r) : F.X ≤ xPlus F := le_sup_left
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`.
+-/
 theorem z_mem_xPlus (F : FlagD H r) : F.z ∈ xPlus F :=
   Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)
 
+/- English proof (translation)
+Rewrite using `[xPlus, X_eq_span, ← Submodule.span_union]`. Use `congr 1`. Use extensionality with `v`. Simplify using `only [Set.mem_union, Set.mem_range, Set.mem_singleton_iff, Fin.exists_fin_succ', FlagD.z, eq_comm]`.
+-/
 theorem xPlus_eq_span (F : FlagD H r) : xPlus F = Submodule.span K (Set.range F.e) := by
   rw [xPlus, X_eq_span, ← Submodule.span_union]
   congr 1
   ext v
   simp only [Set.mem_union, Set.mem_range, Set.mem_singleton_iff, Fin.exists_fin_succ', FlagD.z, eq_comm]
 
+/- English proof (translation)
+Rewrite using `[xPlus, perp_sup, Submodule.mem_inf, mem_perp_span]`. Simplify using the standard rewrite rules.
+-/
 theorem mem_perp_xPlus (F : FlagD H r) (y : V) :
     y ∈ perp H (xPlus F) ↔ y ∈ perp H F.X ∧ H.B y F.z = 0 := by
   rw [xPlus, perp_sup, Submodule.mem_inf, mem_perp_span]
   simp
 
+/- English proof (translation)
+Introduce `x hx` and use `(mem_perp_xPlus F x).2 ⟨X_le_perp F hx, B_eq_zero_comm.1 ((mem_perp_iff H _ _).1 (z_mem_perp F) x hx)⟩`.
+-/
 theorem X_le_perp_xPlus (F : FlagD H r) : F.X ≤ perp H (xPlus F) := fun x hx =>
   (mem_perp_xPlus F x).2 ⟨X_le_perp F hx, B_eq_zero_comm.1 ((mem_perp_iff H _ _).1 (z_mem_perp F) x hx)⟩
 
+/- English proof (translation)
+Establish `h1` using `((mem_perp_xPlus F _).1 (X_le_perp_xPlus F h)).2`. Rewrite `h1` using `[map_smul, LinearMap.smul_apply, form_flag_vector_self, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_right (neg_ne_zero.2 F.hT)`.
+-/
 theorem eq_zero_of_smul_z_mem (F : FlagD H r) {a : K} (h : a • F.z ∈ F.X) : a = 0 := by
   have h1 := ((mem_perp_xPlus F _).1 (X_le_perp_xPlus F h)).2
   rw [map_smul, LinearMap.smul_apply, form_flag_vector_self, smul_eq_mul] at h1
   exact (mul_eq_zero.1 h1).resolve_right (neg_ne_zero.2 F.hT)
 
+/- English proof (translation)
+Establish `e1 : H.B x (y₁ - y) = 0` using `(mem_perp_iff H _ _).1 hx _ h2`. Establish `e2 : H.B (x₁ - x) y = 0` using `B_eq_zero_comm.1 ((mem_perp_iff H _ _).1 hy _ h1)`. Establish `e3 : H.B (x₁ - x) (y₁ - y) = 0` using `(mem_perp_iff H _ _).1 (X_le_perp F h1) _ h2`. Simplify using `only [map_sub, LinearMap.sub_apply] at e1 e2 e3`. Take the linear combination `e1 + e2 + e3`.
+-/
 theorem B_congr (F : FlagD H r) {x x₁ y y₁ : V} (hx : x ∈ perp H F.X) (hy : y ∈ perp H F.X)
     (h1 : x₁ - x ∈ F.X) (h2 : y₁ - y ∈ F.X) : H.B x₁ y₁ = H.B x y := by
   have e1 : H.B x (y₁ - y) = 0 := (mem_perp_iff H _ _).1 hx _ h2
@@ -153,9 +209,15 @@ theorem B_congr (F : FlagD H r) {x x₁ y y₁ : V} (hx : x ∈ perp H F.X) (hy 
 
 omit [IsScalarTower R K V] [Algebra R K] [StarRing K] [Field K] [Module K V] in
 
+/- English proof (translation)
+Simplify using `[smulLat]`.
+-/
 theorem mem_smulLat (g : R) (Λ : Submodule R V) (x : V) : x ∈ smulLat g Λ ↔ ∃ y ∈ Λ, g • y = x := by
   simp [smulLat]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_gL, mem_smulLat]`. Use `exists_congr fun y => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[int_smul_eq]`. Both sides reduce to the same expression.
+-/
 theorem gL_eq_smulLat {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E}
     (Λ : Submodule (NumberField.RingOfIntegers E) S.V) (g : ℕ) :
     gL Λ g = smulLat (g : NumberField.RingOfIntegers E) Λ := by
@@ -167,10 +229,21 @@ theorem gL_eq_smulLat {E : Type} [Field E] [NumberField E] [StarRing E] {S : For
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_imLat (s : V ≃ₗ[K] V) (M : Submodule R V) (x : V) : x ∈ imLat s M ↔ ∃ y ∈ M, s y = x := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latX (F : FlagD H r) (Λ : Submodule R V) (x : V) : x ∈ latX F Λ ↔ x ∈ Λ ∧ x ∈ F.X := Iff.rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨l, hl, a, ha, rfl⟩` from `Submodule.mem_sup.1 h`. Conclude with `⟨add_mem hl.2 (X_le_perp F ha), -a, neg_mem ha, by simpa using hl.1⟩`. Introduce and unpack `⟨h, a, ha, hl⟩`.
+
+Conclude with `Submodule.mem_sup.2 ⟨x + a, ⟨hl, add_mem h (X_le_perp F ha)⟩, -a, neg_mem ha, by simp⟩`.
+-/
 theorem mem_redLat (F : FlagD H r) (Λ : Submodule R V) (x : V) :
     x ∈ redLat F Λ ↔ x ∈ perp H F.X ∧ ∃ a ∈ F.X, x + a ∈ Λ := by
   constructor
@@ -180,33 +253,67 @@ theorem mem_redLat (F : FlagD H r) (Λ : Submodule R V) (x : V) :
   · rintro ⟨h, a, ha, hl⟩
     exact Submodule.mem_sup.2 ⟨x + a, ⟨hl, add_mem h (X_le_perp F ha)⟩, -a, neg_mem ha, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[xPlus, xPlus, V0, Submodule.span_insert, sup_sup_sup_comm]`.
+-/
 theorem xPlus_sup (F F' : FlagD H r) : xPlus F ⊔ xPlus F' = V0 F F' := by
   rw [xPlus, xPlus, V0, Submodule.span_insert, sup_sup_sup_comm]
 
+/- English proof (translation)
+Rewrite using `[← xPlus_sup, ← xPlus_sup, sup_comm]`.
+-/
 theorem jointSpan_comm (F F' : FlagD H r) : V0 F' F = V0 F F' := by
   rw [← xPlus_sup, ← xPlus_sup, sup_comm]
 
+/- English proof (translation)
+Rewrite using `[wSp, wSp, jointSpan_comm]`.
+-/
 theorem wSp_comm (F F' : FlagD H r) : wSp F' F = wSp F F' := by rw [wSp, wSp, jointSpan_comm]
 
+/- English proof (translation)
+Rewrite using `[wSp, ← xPlus_sup, perp_sup]`.
+-/
 theorem wSp_eq (F F' : FlagD H r) : wSp F F' = perp H (xPlus F) ⊓ perp H (xPlus F') := by
   rw [wSp, ← xPlus_sup, perp_sup]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_norLift (F F' : FlagD H r) (y : V) :
     y ∈ norLift F F' ↔ y ∈ V0 F F' ∧ y ∈ perp H (xPlus F) := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `le_inf (le_sup_of_le_left le_sup_left) (X_le_perp_xPlus F)`.
+-/
 theorem X_le_norLift (F F' : FlagD H r) : F.X ≤ norLift F F' :=
   le_inf (le_sup_of_le_left le_sup_left) (X_le_perp_xPlus F)
 
+/- English proof (translation)
+Rewrite using `[norLift, norLift, wSp_eq, jointSpan_comm F F', inf_inf_inf_comm, inf_idem]`.
+-/
 theorem norLift_inf (F F' : FlagD H r) : norLift F F' ⊓ norLift F' F = V0 F F' ⊓ wSp F F' := by
   rw [norLift, norLift, wSp_eq, jointSpan_comm F F', inf_inf_inf_comm, inf_idem]
 
+/- English proof (translation)
+Rewrite using `[IsTransv, jointSpan_comm, wSp_comm]`. Conclude with `h`.
+-/
 theorem IsTransv.symm {F F' : FlagD H r} (h : IsTransv F F') : IsTransv F' F := by
   rw [IsTransv, jointSpan_comm, wSp_comm]; exact h
 
+/- English proof (translation)
+Rewrite using `[disjoint_iff, norLift_inf]`. Conclude with `h.2.eq_bot`.
+-/
 theorem IsTransv.disjoint_norLift {F F' : FlagD H r} (h : IsTransv F F') :
     Disjoint (norLift F F') (norLift F' F) := by
   rw [disjoint_iff, norLift_inf]; exact h.2.eq_bot
 
+/- English proof (translation)
+Establish `hf : ∀ G : FlagD H r, Module.Finite K (xPlus G)` using `fun G => by`. Rewrite using `[xPlus_eq_span]`. Conclude with `Module.Finite.span_of_finite K (Set.finite_range _)`. Establish `hd : ∀ G : FlagD H r, Module.finrank K (xPlus G) ≤ r + 1` using `fun G => by`. Rewrite using `[xPlus_eq_span]; exact (finrank_range_le_card (R := K) G.e).trans (by simp)`.
+
+Use `hf F` as an intermediate fact. Use `hf F'` as an intermediate fact. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (xPlus F) (xPlus F')`. Rewrite `h1` using `[xPlus_sup, h.1]`. Establish `h2` using `hd F`.
+
+Establish `h3` using `hd F'`. Establish `: Module.Finite K ↥(xPlus F ⊓ xPlus F')` using `Submodule.finiteDimensional_inf_left _ _`. Rewrite using `[disjoint_iff, ← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem IsTransv.disjoint_xPlus {F F' : FlagD H r} (h : IsTransv F F') : Disjoint (xPlus F) (xPlus F') := by
   have hf : ∀ G : FlagD H r, Module.Finite K (xPlus G) := fun G => by
     rw [xPlus_eq_span]; exact Module.Finite.span_of_finite K (Set.finite_range _)
@@ -222,6 +329,17 @@ theorem IsTransv.disjoint_xPlus {F F' : FlagD H r} (h : IsTransv F F') : Disjoin
   rw [disjoint_iff, ← Submodule.finrank_eq_zero]
   omega
 
+/- English proof (translation)
+Establish `hV : V0 F F' = Submodule.span K (Set.range (Sum.elim F.e F'.e))`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, ← xPlus_eq_span, ← xPlus_eq_span, xPlus_sup]`. Establish `hW : ∀ c : Fin (r + 1) ⊕ Fin (r + 1) → K, ∑ p, c p • Sum.elim F.e F'.e p ∈ wSp F F' ↔ Matrix.vecMul c (Gram F F') = 0` using `fun c => by`. Rewrite using `[wSp, hV, mem_perp_span, Set.forall_mem_range, funext_iff]`. Use `forall_congr' fun q => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, LinearMap.sum_apply]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul, Matrix.vecMul, dotProduct, Gram, Matrix.of_apply, Pi.zero_apply]`. Establish `hcard : Fintype.card (Fin (r + 1) ⊕ Fin (r + 1)) = 2 * r + 2` using `by simp; omega`. Establish `hli : LinearIndependent K (Sum.elim F.e F'.e) ↔ Module.finrank K (V0 F F') = 2 * r + 2`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, hV, hcard, eq_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[IsTransv, ← hli, Fintype.linearIndependent_iff, Ne, ← Matrix.exists_vecMul_eq_zero_iff, Submodule.disjoint_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ ⟨c, hc, h0⟩`. Use `hc (funext (h1 c (h2 _ ?_ ((hW c).2 h0))))` and prove the remaining obligations.
+
+Rewrite using `[hV]`. Conclude with `Submodule.sum_mem _ fun p _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨p, rfl⟩)`. Introduce `h`. Establish `k : ∀ c : Fin (r + 1) ⊕ Fin (r + 1) → K, ∑ p, c p • Sum.elim F.e F'.e p ∈ wSp F F' → c = 0` using `fun c hc => by_contra fun hne => h ⟨c, hne, (hW c).1 hc⟩`. Use `⟨fun c hc => congrFun (k c (hc ▸ zero_mem _)), fun x hx hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hx` using `[hV]`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hx`. Simplify using `[k c hw]`.
+-/
 theorem isTransv_iff_gram (F F' : FlagD H r) : IsTransv F F' ↔ (Gram F F').det ≠ 0 := by
   classical
   have hV : V0 F F' = Submodule.span K (Set.range (Sum.elim F.e F'.e)) := by
@@ -251,6 +369,11 @@ theorem isTransv_iff_gram (F F' : FlagD H r) : IsTransv F F' ↔ (Gram F F').det
     obtain ⟨c, rfl⟩ := (Submodule.mem_span_range_iff_exists_fun K).1 hx
     simp [k c hw]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, a', h⟩`. Conclude with `Submodule.mem_sup.2 ⟨_, h, a • F.z + a' • F'.z, Submodule.mem_span_pair.2 ⟨a, a', rfl⟩, by abel⟩`. Introduce `h`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 h`.
+
+Take `⟨a, a', rfl⟩` from `Submodule.mem_span_pair.1 hy`. Use `⟨a, a', ?_⟩` and prove the remaining obligations. Unfold `IsComp`. Use `hx using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem exists_isComp_iff (F F' : FlagD H r) (u : V) : (∃ a a', IsComp F F' u a a') ↔ u ∈ V0 F F' := by
   constructor
   · rintro ⟨a, a', h⟩
@@ -263,6 +386,11 @@ theorem exists_isComp_iff (F F' : FlagD H r) (u : V) : (∃ a a', IsComp F F' u 
     convert hx using 1
     abel
 
+/- English proof (translation)
+Rewrite using `[IsComp, Submodule.mem_sup]`. Use `exists_congr fun ξ => and_congr_right fun _ => exists_congr fun ξ' => and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[add_right_comm ξ, h]`.
+
+Normalize the expressions using the abelian group laws. Introduce and unpack `rfl`. Normalize the expressions using the abelian group laws.
+-/
 theorem isComp_iff (F F' : FlagD H r) (u : V) (a a' : K) :
     IsComp F F' u a a' ↔ ∃ ξ ∈ F.X, ∃ ξ' ∈ F'.X, u = ξ + a • F.z + ξ' + a' • F'.z := by
   rw [IsComp, Submodule.mem_sup]
@@ -272,32 +400,57 @@ theorem isComp_iff (F F' : FlagD H r) (u : V) (a a' : K) :
     rw [add_right_comm ξ, h]; abel
   · rintro rfl; abel
 
+/- English proof (translation)
+Rewrite using `[IsComp, sub_right_comm, sup_comm]`. Conclude with `h`.
+-/
 theorem IsComp.swap {F F' : FlagD H r} {u : V} {a a' : K} (h : IsComp F F' u a a') : IsComp F' F u a' a := by
   rw [IsComp, sub_right_comm, sup_comm]; exact h
 
+/- English proof (translation)
+Simplify using `[IsComp]`.
+-/
 theorem isComp_zero_iff (F F' : FlagD H r) (u : V) : IsComp F F' u 0 0 ↔ u ∈ F.X ⊔ F'.X := by
   simp [IsComp]
 
+/- English proof (translation)
+Unfold `IsComp at *`. Use `add_mem h k using 1` and compare the differences between its conclusion and the goal. Rewrite using `[add_smul, add_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem IsComp.add {F F' : FlagD H r} {u v : V} {a a' b b' : K} (h : IsComp F F' u a a')
     (k : IsComp F F' v b b') : IsComp F F' (u + v) (a + b) (a' + b') := by
   unfold IsComp at *
   convert add_mem h k using 1
   rw [add_smul, add_smul]; abel
 
+/- English proof (translation)
+Unfold `IsComp at *`. Use `Submodule.smul_mem _ c h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_sub, smul_sub, mul_smul, mul_smul]`.
+-/
 theorem IsComp.smul {F F' : FlagD H r} {u : V} {a a' : K} (h : IsComp F F' u a a') (c : K) :
     IsComp F F' (c • u) (c * a) (c * a') := by
   unfold IsComp at *
   convert Submodule.smul_mem _ c h using 1
   rw [smul_sub, smul_sub, mul_smul, mul_smul]
 
+/- English proof (translation)
+Simplify `h.add (k.smul (-1))` using `[sub_eq_add_neg]`.
+-/
 theorem IsComp.sub {F F' : FlagD H r} {u v : V} {a a' b b' : K} (h : IsComp F F' u a a')
     (k : IsComp F F' v b b') : IsComp F F' (u - v) (a - b) (a' - b') := by
   simpa [sub_eq_add_neg] using h.add (k.smul (-1))
 
+/- English proof (translation)
+Simplify using `using h.add ((isComp_zero_iff F F' _).2 k)`.
+-/
 theorem IsComp.congr {F F' : FlagD H r} {u v : V} {a a' : K} (h : IsComp F F' u a a')
     (k : v - u ∈ F.X ⊔ F'.X) : IsComp F F' v a a' := by
   simpa using h.add ((isComp_zero_iff F F' _).2 k)
 
+/- English proof (translation)
+Establish `key : ∀ {G G' : FlagD H r} {c c' : K}, Disjoint (xPlus G) (xPlus G') → IsComp G G' 0 c c' → c = 0`. Introduce `G G' c c' hG hc`. Take `⟨ξ, hξ, ξ', hξ', e⟩` from `(isComp_iff _ _ _ _ _).1 hc`. Establish `h1 : ξ + c • G.z ∈ xPlus G` using `add_mem (X_le_xPlus G hξ) (Submodule.smul_mem _ c (z_mem_xPlus G))`. Establish `h2 : ξ + c • G.z ∈ xPlus G'`.
+
+Rewrite `e` using `[add_assoc (ξ + c • G.z)]`. Rewrite using `[eq_neg_of_add_eq_zero_left e.symm]`. Conclude with `neg_mem (add_mem (X_le_xPlus G' hξ') (Submodule.smul_mem _ c' (z_mem_xPlus G')))`. Establish `h3` using `Submodule.disjoint_def.1 hG _ h1 h2`. Use `eq_zero_of_smul_z_mem G ?_` and prove the remaining obligations.
+
+Rewrite using `[eq_neg_of_add_eq_zero_right h3]`. Conclude with `neg_mem hξ`. Establish `h0` using `h.sub k`. Rewrite `h0` using `[sub_self]`. Conclude with `⟨sub_eq_zero.1 (key hd h0), sub_eq_zero.1 (key hd.symm h0.swap)⟩`.
+-/
 theorem IsComp.unique {F F' : FlagD H r} (hd : Disjoint (xPlus F) (xPlus F')) {u : V} {a a' b b' : K}
     (h : IsComp F F' u a a') (k : IsComp F F' u b b') : a = b ∧ a' = b' := by
   have key : ∀ {G G' : FlagD H r} {c c' : K}, Disjoint (xPlus G) (xPlus G') → IsComp G G' 0 c c' → c = 0 := by
@@ -316,11 +469,17 @@ theorem IsComp.unique {F F' : FlagD H r} (hd : Disjoint (xPlus F) (xPlus F')) {u
   rw [sub_self] at h0
   exact ⟨sub_eq_zero.1 (key hd h0), sub_eq_zero.1 (key hd.symm h0.swap)⟩
 
+/- English proof (translation)
+Take `⟨a, a', h⟩` from `(exists_isComp_iff F F' (y - y')).2 (sub_mem hy.1 (jointSpan_comm F F' ▸ hy'.1))`. Conclude with `⟨a, a', hy, hy', h⟩`.
+-/
 theorem exists_isSig {F F' : FlagD H r} {y y' : V} (hy : y ∈ norLift F F') (hy' : y' ∈ norLift F' F) :
     ∃ a a', IsSig F F' y y' a a' := by
   obtain ⟨a, a', h⟩ := (exists_isComp_iff F F' (y - y')).2 (sub_mem hy.1 (jointSpan_comm F F' ▸ hy'.1))
   exact ⟨a, a', hy, hy', h⟩
 
+/- English proof (translation)
+Use `⟨by simpa using add_mem (X_le_norLift F F' h1) h.1, by simpa using add_mem (X_le_norLift F' F h2) h.2.1, h.2.2.congr ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem_sup h1 (neg_mem h2) using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+-/
 theorem IsSig.congr {F F' : FlagD H r} {y y' y₁ y₁' : V} {a a' : K} (h : IsSig F F' y y' a a')
     (h1 : y₁ - y ∈ F.X) (h2 : y₁' - y' ∈ F'.X) : IsSig F F' y₁ y₁' a a' := by
   refine ⟨by simpa using add_mem (X_le_norLift F F' h1) h.1,
@@ -328,26 +487,47 @@ theorem IsSig.congr {F F' : FlagD H r} {y y' y₁ y₁' : V} {a a' : K} (h : IsS
   convert Submodule.add_mem_sup h1 (neg_mem h2) using 1
   abel
 
+/- English proof (translation)
+The claim follows from `h.2.2.unique hd k.2.2`.
+-/
 theorem IsSig.unique {F F' : FlagD H r} (hd : Disjoint (xPlus F) (xPlus F')) {y y' : V} {a a' b b' : K}
     (h : IsSig F F' y y' a a') (k : IsSig F F' y y' b b') : a = b ∧ a' = b' := h.2.2.unique hd k.2.2
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨add_mem h.1 k.1, add_mem h.2.1 k.2.1, by rw [add_sub_add_comm]; exact h.2.2.add k.2.2⟩`.
+-/
 theorem IsSig.add {F F' : FlagD H r} {y y' w w' : V} {a a' b b' : K} (h : IsSig F F' y y' a a')
     (k : IsSig F F' w w' b b') : IsSig F F' (y + w) (y' + w') (a + b) (a' + b') :=
   ⟨add_mem h.1 k.1, add_mem h.2.1 k.2.1, by rw [add_sub_add_comm]; exact h.2.2.add k.2.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Submodule.smul_mem _ c h.1, Submodule.smul_mem _ c h.2.1, by rw [← smul_sub]; exact h.2.2.smul c⟩`.
+-/
 theorem IsSig.smul {F F' : FlagD H r} {y y' : V} {a a' : K} (h : IsSig F F' y y' a a') (c : K) :
     IsSig F F' (c • y) (c • y') (c * a) (c * a') :=
   ⟨Submodule.smul_mem _ c h.1, Submodule.smul_mem _ c h.2.1, by rw [← smul_sub]; exact h.2.2.smul c⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.2.1, h.1, by simpa using (h.2.2.smul (-1)).swap⟩`.
+-/
 theorem IsSig.swap {F F' : FlagD H r} {y y' : V} {a a' : K} (h : IsSig F F' y y' a a') :
     IsSig F' F y' y (-a') (-a) :=
   ⟨h.2.1, h.1, by simpa using (h.2.2.smul (-1)).swap⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, by simp⟩`.
+-/
 theorem IsCong.refl (F : FlagD H r) (Λ : Submodule R V) (g : R) : IsCong F F Λ g := ⟨rfl, by simp⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1.symm, by rw [h.1, ← neg_sub]; exact neg_mem h.2⟩`.
+-/
 theorem IsCong.symm {F F' : FlagD H r} {Λ : Submodule R V} {g : R} (h : IsCong F F' Λ g) : IsCong F' F Λ g :=
   ⟨h.1.symm, by rw [h.1, ← neg_sub]; exact neg_mem h.2⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨k.1.trans h.1, by rw [← sub_add_sub_cancel _ F'.z]; exact add_mem (h.1.le k.2) h.2⟩`.
+-/
 theorem IsCong.trans {F F' F'' : FlagD H r} {Λ : Submodule R V} {g : R} (h : IsCong F F' Λ g)
     (k : IsCong F' F'' Λ g) : IsCong F F'' Λ g :=
   ⟨k.1.trans h.1, by rw [← sub_add_sub_cancel _ F'.z]; exact add_mem (h.1.le k.2) h.2⟩
@@ -356,18 +536,34 @@ section Pair
 
 variable {F F' F'' : FlagD H r} {Λ : Submodule R V} {g : R} {β : V ≃ₗ[K] V}
 
+/- English proof (translation)
+Rewrite using `[← h.1]`. Simplify using the standard rewrite rules.
+-/
 theorem IsPairMap.mem_X_iff (h : IsPairMap F F' F'' Λ g β) (x : V) : β x ∈ F''.X ↔ x ∈ F'.X := by
   rw [← h.1]; simp
 
+/- English proof (translation)
+Rewrite using `[← h.2.1]`. Simplify using the standard rewrite rules.
+-/
 theorem IsPairMap.mem_perp_iff (h : IsPairMap F F' F'' Λ g β) (x : V) :
     β x ∈ perp H F''.X ↔ x ∈ perp H F'.X := by
   rw [← h.2.1]; simp
 
+/- English proof (translation)
+Rewrite using `[← h.2.2.2.1, mem_imLat]`. Conclude with `⟨fun ⟨y, hy, e⟩ => β.injective e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩`.
+-/
 theorem IsPairMap.mem_redLat_iff (h : IsPairMap F F' F'' Λ g β) (x : V) :
     β x ∈ redLat F'' Λ ↔ x ∈ redLat F' Λ := by
   rw [← h.2.2.2.1, mem_imLat]
   exact ⟨fun ⟨y, hy, e⟩ => β.injective e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩
 
+/- English proof (translation)
+Establish `k : ∀ {S S' : Submodule K V}, (∀ x, β x ∈ S' ↔ x ∈ S) → S.map (β : V →ₗ[K] V) = S'`. Introduce `S S' hS`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `β.surjective y`. Rewrite using `[hS]`.
+
+Simplify using the standard rewrite rules. Use `⟨k h1, k h2, h3, ?_, h5, h6⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨x, rfl⟩` from `β.surjective y`. Rewrite using `[h4, mem_imLat]`.
+
+Conclude with `⟨fun ⟨y, hy, e⟩ => β.injective e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩`.
+-/
 theorem isPairMap_of_mem_iff (h1 : ∀ x, β x ∈ F''.X ↔ x ∈ F'.X)
     (h2 : ∀ x, β x ∈ perp H F''.X ↔ x ∈ perp H F'.X)
     (h3 : ∀ x ∈ perp H F'.X, ∀ y ∈ perp H F'.X, H.B (β x) (β y) = H.B x y)
@@ -385,6 +581,11 @@ theorem isPairMap_of_mem_iff (h1 : ∀ x, β x ∈ F''.X ↔ x ∈ F'.X)
   rw [h4, mem_imLat]
   exact ⟨fun ⟨y, hy, e⟩ => β.injective e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩
 
+/- English proof (translation)
+Use `isPairMap_of_mem_iff (fun x => by rw [← h.mem_X_iff]; simp) (fun x => by rw [← h.mem_perp_iff]; simp) (fun x hx y hy => ?_) (fun x => by rw [← h.mem_redLat_iff]; simp) ?_ fun l hl l' hl' e => ?_` and prove the remaining obligations. Rewrite using `[← h.2.2.1 _ (by rw [← h.mem_perp_iff]; simpa using hx) _ (by rw [← h.mem_perp_iff]; simpa using hy)]`. Simplify using the standard rewrite rules. Rewrite using `[← h.mem_X_iff, map_sub, β.apply_symm_apply, ← neg_sub]`. Conclude with `neg_mem h.2.2.2.2.1`.
+
+Rewrite `e` using `[← h.mem_X_iff, map_sub, β.apply_symm_apply, ← neg_sub, neg_mem_iff]`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (h.2.2.2.2.2 l' hl' l hl e)`.
+-/
 theorem IsPairMap.symm (h : IsPairMap F F' F'' Λ g β) : IsPairMap F F'' F' Λ g β.symm := by
   refine isPairMap_of_mem_iff (fun x => by rw [← h.mem_X_iff]; simp) (fun x => by rw [← h.mem_perp_iff]; simp)
     (fun x hx y hy => ?_) (fun x => by rw [← h.mem_redLat_iff]; simp) ?_ fun l hl l' hl' e => ?_
@@ -396,6 +597,11 @@ theorem IsPairMap.symm (h : IsPairMap F F' F'' Λ g β) : IsPairMap F F'' F' Λ 
     rw [← neg_sub]
     exact neg_mem (h.2.2.2.2.2 l' hl' l hl e)
 
+/- English proof (translation)
+Establish `k2 : ∀ x, β₁ x ∈ perp H F''.X ↔ x ∈ perp H F'.X` using `fun x => by rw [← h2]; simp`. Use `isPairMap_of_mem_iff (fun x => by rw [← h1]; simp) k2 (fun x hx y hy => ?_) (fun x => ?_) ?_ fun l hl l' hl' e => h.2.2.2.2.2 l hl l' hl' ?_` and prove the remaining obligations. Rewrite using `[B_congr F'' ((h.mem_perp_iff x).2 hx) ((h.mem_perp_iff y).2 hy) (he x hx) (he y hy), h.2.2.1 x hx y hy]`. Establish `k : x ∈ perp H F'.X → (β₁ x ∈ redLat F'' Λ ↔ x ∈ redLat F' Λ)` using `fun hx => by`. Establish `hm : β₁ x - β x ∈ redLat F'' Λ` using `Submodule.mem_sup_right (he x hx)`.
+
+Rewrite using `[← h.mem_redLat_iff, ← Submodule.add_mem_iff_right _ hm (y := β x), sub_add_cancel]`. Conclude with `⟨fun hx => (k ((k2 x).1 ((mem_redLat _ _ _).1 hx).1)).1 hx, fun hx => (k ((mem_redLat _ _ _).1 hx).1).2 hx⟩`. Simplify using `using add_mem (he _ (z_mem_perp F')) h.2.2.2.2.1`. Simplify using `using sub_mem e (he l hl.2)`.
+-/
 theorem IsPairMap.congr (h : IsPairMap F F' F'' Λ g β) {β₁ : V ≃ₗ[K] V}
     (h1 : F'.X.map (β₁ : V →ₗ[K] V) = F''.X) (h2 : (perp H F'.X).map (β₁ : V →ₗ[K] V) = perp H F''.X)
     (he : ∀ x ∈ perp H F'.X, β₁ x - β x ∈ F''.X) : IsPairMap F F' F'' Λ g β₁ := by
@@ -411,6 +617,13 @@ theorem IsPairMap.congr (h : IsPairMap F F' F'' Λ g β) {β₁ : V ≃ₗ[K] V}
   · simpa using add_mem (he _ (z_mem_perp F')) h.2.2.2.2.1
   · simpa using sub_mem e (he l hl.2)
 
+/- English proof (translation)
+Establish `hB` using `(mem_isomGrp H β).1 hβ`. Establish `k0 : ∀ x, β x ∈ Λ ↔ x ∈ Λ` using `fun x => by conv_lhs => rw [← hΛ, mem_imLat]`. Conclude with `⟨fun ⟨y, hy, e⟩ => β.injective e ▸ hy, fun hx => ⟨x, hx, rfl⟩⟩`. Establish `k1 : ∀ x, β x ∈ F''.X ↔ x ∈ F'.X` using `fun x => by rw [← hX]; simp`. Establish `k2 : ∀ x, β x ∈ perp H F''.X ↔ x ∈ perp H F'.X` using `fun x => by`.
+
+Rewrite using `[mem_perp_iff, mem_perp_iff, β.surjective.forall]`. Simplify using `only [k1, hB]`. Use `isPairMap_of_mem_iff k1 k2 (fun x _ y _ => hB x y) (fun x => ?_) hz fun l hl l' hl' e => ?_` and prove the remaining obligations. Rewrite using `[mem_redLat, mem_redLat, k2, β.surjective.exists]`. Simplify using `only [k1, ← map_add, k0]`.
+
+Establish `h1 : β l - l' ∈ latX F Λ ⊔ smulLat g Λ` using `hc.1 ▸ Submodule.mem_sup_left ⟨sub_mem ((k0 l).2 hl.1) hl'.1, e⟩`. Simplify using `using sub_mem (hι l hl) h1`.
+-/
 theorem isPairMap_of_aut (hc : IsCong F F'' Λ g) (hβ : β ∈ isomGrp H) (hΛ : imLat β Λ = Λ)
     (hX : F'.X.map (β : V →ₗ[K] V) = F''.X) (hz : β F'.z - F''.z ∈ F''.X)
     (hι : ∀ l' ∈ Λ ⊓ rs R (perp H F'.X), β l' - l' ∈ latX F Λ ⊔ smulLat g Λ) :
@@ -430,12 +643,21 @@ theorem isPairMap_of_aut (hc : IsCong F F'' Λ g) (hβ : β ∈ isomGrp H) (hΛ 
       hc.1 ▸ Submodule.mem_sup_left ⟨sub_mem ((k0 l).2 hl.1) hl'.1, e⟩
     simpa using sub_mem (hι l hl) h1
 
+/- English proof (translation)
+The claim follows from `isPairMap_of_aut hc ((mem_isomGrp H _).2 fun _ _ => rfl) (by ext x; simp [mem_imLat]) (by simp) (by simp) (by simp)`.
+-/
 theorem isPairMap_refl (hc : IsCong F F' Λ g) : IsPairMap F F' F' Λ g (LinearEquiv.refl K V) :=
   isPairMap_of_aut hc ((mem_isomGrp H _).2 fun _ _ => rfl) (by ext x; simp [mem_imLat]) (by simp) (by simp)
     (by simp)
 
+/- English proof (translation)
+Introduce `_ h` and use `h.1`.
+-/
 theorem fixSp_le (F F' F'' : FlagD H r) (β : V ≃ₗ[K] V) : fixSp F F' F'' β ≤ wSp F F' := fun _ h => h.1
 
+/- English proof (translation)
+Use extensionality with `x`. Use `and_congr_right fun hx => exists_congr fun y => and_congr_right fun _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `h1` using `he x (perp_anti (S := F'.X) (S' := V0 F F') (le_sup_of_le_left le_sup_right) hx)`. Rewrite using `[← Submodule.add_mem_iff_right _ h1 (y := β x - y), sub_add_sub_cancel]`.
+-/
 theorem fixSp_congr {β₁ : V ≃ₗ[K] V} (he : ∀ x ∈ perp H F'.X, β₁ x - β x ∈ F''.X) :
     fixSp F F' F'' β₁ = fixSp F F' F'' β := by
   ext x
@@ -443,6 +665,11 @@ theorem fixSp_congr {β₁ : V ≃ₗ[K] V} (he : ∀ x ∈ perp H F'.X, β₁ x
   have h1 := he x (perp_anti (S := F'.X) (S' := V0 F F') (le_sup_of_le_left le_sup_right) hx)
   rw [← Submodule.add_mem_iff_right _ h1 (y := β x - y), sub_add_sub_cancel]
 
+/- English proof (translation)
+Establish `key : ∀ {G G' : FlagD H r} {γ : V ≃ₗ[K] V}, IsPairMap F G G' Λ g γ → fixSp F G G' γ ⊔ F.X ≤ fixSp F G' G γ.symm ⊔ F.X`. Introduce `G G' γ k`. Use `sup_le ?_ le_sup_right` and prove the remaining obligations. Introduce and unpack `x ⟨hx, y, hy, h1, h2⟩`. Use `Submodule.mem_sup.2 ⟨y, ⟨hy, x, hx, by rw [← neg_sub]; exact neg_mem h1, ?_⟩, x - y, h1, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[← k.mem_X_iff, map_sub, γ.apply_symm_apply, ← neg_sub]`. Conclude with `neg_mem h2`. Conclude with `le_antisymm (key h.symm) (key h)`.
+-/
 theorem IsPairMap.fixSp_sup_X (h : IsPairMap F F' F'' Λ g β) :
     fixSp F F'' F' β.symm ⊔ F.X = fixSp F F' F'' β ⊔ F.X := by
   have key : ∀ {G G' : FlagD H r} {γ : V ≃ₗ[K] V}, IsPairMap F G G' Λ g γ →
@@ -469,6 +696,11 @@ def vec (v : Fin 5 → ℤ) : (wittSpace E 2 1).V := (fun i => (v i : E) : Fin 5
 
 def co (x : (wittSpace E 2 1).V) : Fin 5 → E := x
 
+/- English proof (translation)
+Use `show ∑ i : Fin 5, star (co E y i) * sgn (wittSigns 2 1 i) * co E x i = _`. Establish `h0 : wittSigns 2 1 (0 : Fin 5) = true` using `rfl`. Establish `h1 : wittSigns 2 1 (1 : Fin 5) = true` using `rfl`. Establish `h2 : wittSigns 2 1 (2 : Fin 5) = false` using `rfl`. Establish `h3 : wittSigns 2 1 (3 : Fin 5) = false` using `rfl`.
+
+Establish `h4 : wittSigns 2 1 (4 : Fin 5) = false` using `rfl`. Rewrite using `[Fin.sum_univ_five, h0, h1, h2, h3, h4]`. Simplify using `only [sgn, if_true, Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sp_B (x y : (wittSpace E 2 1).V) : (sp E).B x y =
     -(star (co E y 0) * co E x 0) - star (co E y 1) * co E x 1 + star (co E y 2) * co E x 2 +
       star (co E y 3) * co E x 3 + star (co E y 4) * co E x 4 := by
@@ -482,14 +714,23 @@ theorem sp_B (x y : (wittSpace E 2 1).V) : (sp E).B x y =
   simp only [sgn, if_true, Bool.false_eq_true, if_false]
   ring
 
+/- English proof (translation)
+Rewrite using `[sp_B]`. Simplify using `[co, vec]`.
+-/
 theorem sp_B_vec (v w : Fin 5 → ℤ) : (sp E).B (vec E v) (vec E w) =
     ((-(w 0 * v 0) - w 1 * v 1 + w 2 * v 2 + w 3 * v 3 + w 4 * v 4 : ℤ) : E) := by
   rw [sp_B]; simp [co, vec]
 
+/- English proof (translation)
+The claim follows from `(Pi.basisFun E (Fin 5)).mem_span_iff_repr_mem (𝓞 E) (co E x)`.
+-/
 theorem mem_lat (x : (wittSpace E 2 1).V) :
     x ∈ (wittSpace E 2 1).L0 ↔ ∀ i, co E x i ∈ Set.range (algebraMap (𝓞 E) E) :=
   (Pi.basisFun E (Fin 5)).mem_span_iff_repr_mem (𝓞 E) (co E x)
 
+/- English proof (translation)
+The claim follows from `(mem_lat E _).2 fun i => ⟨v i, by simp [co, vec]⟩`.
+-/
 theorem vec_mem (v : Fin 5 → ℤ) : vec E v ∈ (wittSpace E 2 1).L0 :=
   (mem_lat E _).2 fun i => ⟨v i, by simp [co, vec]⟩
 
@@ -525,13 +766,27 @@ abbrev flNeg : FlagD (sp E) 1 := fl E 1 (-1) rfl rfl
 
 variable {m s : ℤ} (h1 : m * m = m) (h2 : s * s = m)
 
+/- English proof (translation)
+Rewrite using `[X_eq_span, Set.range_unique]`. Both sides reduce to the same expression.
+-/
 theorem fl_X : (fl E m s h1 h2).X = Submodule.span E {vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]} := by
   rw [X_eq_span, Set.range_unique]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem symmetricFlagBasisVectors_apply_centre : (fl E m s h1 h2).z = vec E ![0, 1 + 2 * m, 0, 2 * s, -2 * m] := rfl
 
+/- English proof (translation)
+The claim follows from `vec_mem E _`.
+-/
 theorem fl_z_mem : (fl E m s h1 h2).z ∈ (wittSpace E 2 1).L0 := vec_mem E _
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[mem_latX, fl_X, Submodule.mem_span_singleton, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, a, rfl⟩`. Take `⟨c, hc⟩` from `(mem_lat E _).1 hx 2`.
+
+Establish `e : co E (a • vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]) 2 = a * ((1 : ℤ) : E)` using `rfl`. Rewrite `hc` using `[e, Int.cast_one, mul_one]`. Conclude with `⟨c, by rw [← hc, algebraMap_smul]⟩`. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨Submodule.smul_mem _ c (vec_mem E _), algebraMap _ E c, by rw [algebraMap_smul]⟩`.
+-/
 theorem fl_latX : latX (fl E m s h1 h2) (wittSpace E 2 1).L0 =
     Submodule.span (𝓞 E) {vec E ![1 + 2 * m, 0, 1, 2 * s, 2 * m]} := by
   ext x
@@ -545,6 +800,9 @@ theorem fl_latX : latX (fl E m s h1 h2) (wittSpace E 2 1).L0 =
   · rintro ⟨c, rfl⟩
     exact ⟨Submodule.smul_mem _ c (vec_mem E _), algebraMap _ E c, by rw [algebraMap_smul]⟩
 
+/- English proof (translation)
+Rewrite using `[← gL_eq_smulLat, mem_gL]`. Use `⟨vec E u, vec_mem E u, funext fun i : Fin 5 => ?_⟩` and prove the remaining obligations. Use `show ((2 : ℕ) : E) * (u i : E) = (v i : E) - (w i : E)`. Conclude with `(h i).symm` after adjusting the coercions.
+-/
 theorem vec_sub_mem (v w u : Fin 5 → ℤ) (h : ∀ i, v i - w i = 2 * u i) :
     vec E v - vec E w ∈ smulLat ((2 : ℕ) : 𝓞 E) (wittSpace E 2 1).L0 := by
   rw [← gL_eq_smulLat, mem_gL]
@@ -552,6 +810,11 @@ theorem vec_sub_mem (v w u : Fin 5 → ℤ) (h : ∀ i, v i - w i = 2 * u i) :
   show ((2 : ℕ) : E) * (u i : E) = (v i : E) - (w i : E)
   exact_mod_cast (h i).symm
 
+/- English proof (translation)
+Apply the tactic sequence `have he := vec_sub_mem E ![1 + 2 * m, 0, 1, 2 * s, 2 * m] ![1 + 2 * 0, 0, 1, 2 * 0, 2 * 0] ![m, 0, 0, s, m] (fun i => by fin_cases i <;> simp)`. Apply the tactic sequence `refine ⟨?_, Submodule.mem_sup_right (vec_sub_mem E _ _ ![0, m, 0, s, -m] fun i => by fin_cases i <;> simp)⟩`. Rewrite using `[fl_latX, fl_latX]`. Apply the tactic sequence `refine le_antisymm (sup_le ?_ le_sup_right) (sup_le ?_ le_sup_right) <;>`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`.
+
+Conclude with `Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, he, add_sub_cancel _ _⟩`. Conclude with `Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, neg_mem he, by abel⟩`.
+-/
 theorem isCong_fl : IsCong (flZero E) (fl E m s h1 h2) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) := by
   have he := vec_sub_mem E ![1 + 2 * m, 0, 1, 2 * s, 2 * m] ![1 + 2 * 0, 0, 1, 2 * 0, 2 * 0] ![m, 0, 0, s, m]
     (fun i => by fin_cases i <;> simp)
@@ -562,6 +825,13 @@ theorem isCong_fl : IsCong (flZero E) (fl E m s h1 h2) (wittSpace E 2 1).L0 ((2 
   · exact Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, he, add_sub_cancel _ _⟩
   · exact Submodule.mem_sup.2 ⟨_, Submodule.mem_span_singleton_self _, _, neg_mem he, by abel⟩
 
+/- English proof (translation)
+Establish `hZ : Zhat (flZero E) (fl E 1 s rfl h2) = !![-2, 0; 0, -3]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> refine (sp_B_vec E _ _).trans ?_ <;> simp`. Establish `d2 : Dl (flZero E) (fl E 1 s rfl h2) (1 + 1) le_rfl = 6`. Rewrite using `[Dl, hZ, Matrix.det_fin_two]`.
+
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish `d1 : Dl (flZero E) (fl E 1 s rfl h2) 1 (Nat.le_succ 1) = -2`. Rewrite using `[Dl, hZ, Matrix.det_unique]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Gval, d1, d2]`. Use `show (6 : E) * star 6 - 1 * 1 * (-2 * star (-2)) = 32`. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
+-/
 theorem gval_fl {s : ℤ} (h2 : s * s = 1) : Gval (flZero E) (fl E 1 s rfl h2) = 32 := by
   have hZ : Zhat (flZero E) (fl E 1 s rfl h2) = !![-2, 0; 0, -3] := by
     ext a b
@@ -574,6 +844,13 @@ theorem gval_fl {s : ℤ} (h2 : s * s = 1) : Gval (flZero E) (fl E 1 s rfl h2) =
   show (6 : E) * star 6 - 1 * 1 * (-2 * star (-2)) = 32
   simp; norm_num
 
+/- English proof (translation)
+Establish `h3 : (s : E) * s = 1` using `by exact_mod_cast h2`. Establish `hG : Gram (flZero E) (fl E 1 s rfl h2) = Matrix.fromBlocks !![0, 0; 0, -1] !![-2, 0; 0, -3] !![-2, 0; 0, -3] !![0, 0; 0, -1]`. Apply the tactic sequence `ext (a | a) (b | b) <;> fin_cases a <;> fin_cases b <;> refine (sp_B_vec E _ _).trans ?_ <;>`. Apply the tactic sequence `simp <;> linear_combination 4 * h3`. Rewrite using `[isTransv_iff_gram, hG, Ne, ← Matrix.exists_vecMul_eq_zero_iff]`.
+
+Introduce and unpack `⟨c, hc, h⟩`. Establish `a0` using `congrFun h (Sum.inl 0)`. Establish `a1` using `congrFun h (Sum.inl 1)`. Establish `b0` using `congrFun h (Sum.inr 0)`. Establish `b1` using `congrFun h (Sum.inr 1)`.
+
+Simplify using `[Matrix.vecMul, dotProduct] at a0 a1 b0 b1`. Establish `c1 : c (Sum.inr 1) = 0` using `by linear_combination (1 / 8 : E) * b1 - (3 / 8 : E) * a1`. Establish `c0 : c (Sum.inl 1) = 0` using `by linear_combination (1 / 8 : E) * a1 - (3 / 8 : E) * b1`. Use `hc (funext fun p => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases p with p | p <;> fin_cases p <;> assumption`.
+-/
 theorem isTransv_fl {s : ℤ} (h2 : s * s = 1) : IsTransv (flZero E) (fl E 1 s rfl h2) := by
   have h3 : (s : E) * s = 1 := by exact_mod_cast h2
   have hG : Gram (flZero E) (fl E 1 s rfl h2) =
@@ -596,15 +873,34 @@ def flip : (wittSpace E 2 1).V ≃ₗ[E] (wittSpace E 2 1).V :=
   LinearEquiv.piCongrRight (R := E) (φ := fun _ : Fin 5 => E) (ψ := fun _ : Fin 5 => E)
     fun i => if i = 3 then LinearEquiv.neg E else LinearEquiv.refl E E
 
+/- English proof (translation)
+Use `show (if i = 3 then LinearEquiv.neg E else LinearEquiv.refl E E : E ≃ₗ[E] E) (co E x i) = _`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem co_flip (x : (wittSpace E 2 1).V) (i : Fin 5) :
     co E (flip E x) i = if i = 3 then -co E x i else co E x i := by
   show (if i = 3 then LinearEquiv.neg E else LinearEquiv.refl E E : E ≃ₗ[E] E) (co E x i) = _
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `funext fun i : Fin 5 => (co_flip E _ i).trans ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [co, vec]`.
+-/
 theorem flip_vec (a b c d e : ℤ) : flip E (vec E ![a, b, c, d, e]) = vec E ![a, b, c, -d, e] := by
   refine funext fun i : Fin 5 => (co_flip E _ i).trans ?_
   fin_cases i <;> simp [co, vec]
 
+/- English proof (translation)
+Establish `hL : ∀ x, flip E x ∈ (wittSpace E 2 1).L0 ↔ x ∈ (wittSpace E 2 1).L0` using `fun x => by`. Rewrite using `[mem_lat, mem_lat]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[co_flip]`. Use `split_ifs`.
+
+Conclude with `neg_mem_iff (H := (algebraMap (𝓞 E) E).range)`. Both sides reduce to the same expression. Use `isPairMap_of_aut (isCong_fl E _ _) ((mem_isomGrp _ _).2 fun x y => ?_) ?_ ?_ ?_ fun l hl => ?_` and prove the remaining obligations. Rewrite using `[sp_B, sp_B]`. Simplify using `[co_flip]`.
+
+Use extensionality with `y`. Take `⟨x, rfl⟩` from `(flip E).surjective y`. Rewrite using `[mem_imLat]`. Conclude with `⟨fun ⟨y, hy, e⟩ => e ▸ (hL y).2 hy, fun hx => ⟨x, (hL x).1 hx, rfl⟩⟩`. Rewrite using `[fl_X, fl_X, Submodule.map_span, Set.image_singleton, LinearEquiv.coe_coe, flip_vec]`.
+
+Both sides reduce to the same expression. Establish `e : flip E (flPos E).z = (flNeg E).z` using `flip_vec E _ _ _ _ _`. Rewrite using `[e, sub_self]`. Conclude with `zero_mem _`. Use `Submodule.mem_sup_right ?_` and prove the remaining obligations.
+
+Rewrite using `[← gL_eq_smulLat, mem_gL]`. Use `⟨(fun i => if i = 3 then -co E l i else 0 : Fin 5 → E), (mem_lat E _).2 fun i => ?_,` and prove the remaining obligations. Use function extensionality and compare the values at `fun i : Fin 5 => ?_⟩`. Use `show (if i = 3 then -co E l i else 0) ∈ (algebraMap (𝓞 E) E).range split_ifs`. Conclude with `neg_mem ((mem_lat E l).1 hl.1 i)`.
+
+Conclude with `zero_mem _`. Use `show ((2 : ℕ) : E) * (if i = 3 then -co E l i else 0) = co E (flip E l) i - co E l i`. Rewrite using `[co_flip]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+-/
 theorem isPairMap_flip :
     IsPairMap (flZero E) (flPos E) (flNeg E) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E) (flip E) := by
   have hL : ∀ x, flip E x ∈ (wittSpace E 2 1).L0 ↔ x ∈ (wittSpace E 2 1).L0 := fun x => by
@@ -636,6 +932,11 @@ theorem isPairMap_flip :
       rw [co_flip]
       split_ifs <;> push_cast <;> ring
 
+/- English proof (translation)
+Introduce `h`. Establish `hm : vec E ![1 + 2 * 1, 0, 1, 2 * 1, 2 * 1] ∈ (flNeg E).X`. Rewrite using `[← h, fl_X]`. Conclude with `Submodule.mem_span_singleton_self _`. Establish `h0` using `(mem_perp_X (flNeg E) _).1 (X_le_perp _ hm) 0`.
+
+Establish `h1` using `(sp_B_vec E _ _).symm.trans h0`. Simplify using `at h1`.
+-/
 theorem X_ne : (flPos E).X ≠ (flNeg E).X := by
   intro h
   have hm : vec E ![1 + 2 * 1, 0, 1, 2 * 1, 2 * 1] ∈ (flNeg E).X := by
@@ -644,6 +945,9 @@ theorem X_ne : (flPos E).X ≠ (flNeg E).X := by
   have h1 := (sp_B_vec E _ _).symm.trans h0
   simp at h1
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨flZero E, flPos E, flNeg E, flip E, (isUnimod_ofHSpace _ _).2 ⟨(wittSpace E 2 1).standardTuple_isLattice, (wittSpace E 2 1).baseLattice_isUnimodular⟩, fl_z_mem E _ _, fl_z_mem E _ _, fl_z_mem E _ _, rfl, rfl, rfl, isCong_fl E _ _, isCong_fl E _ _, by rw [gval_fl]; norm_num, by r …`.
+-/
 theorem exists_pair : ∃ (F F' F'' : FlagD (ofHSpace (wittSpace E 2 1)) 1)
     (β : (wittSpace E 2 1).V ≃ₗ[E] (wittSpace E 2 1).V),
     IsUnimod (ofHSpace (wittSpace E 2 1)) (wittSpace E 2 1).L0 ∧
@@ -658,9 +962,17 @@ theorem exists_pair : ∃ (F F' F'' : FlagD (ofHSpace (wittSpace E 2 1)) 1)
     by rw [gval_fl]; norm_num, by rw [gval_fl]; norm_num, isTransv_fl E _, isTransv_fl E _, X_ne E,
     isPairMap_flip E⟩
 
+/- English proof (translation)
+Introduce `h` and use `X_ne E (by simpa using h.1)`.
+-/
 example : ¬ IsPairMap (flZero E) (flPos E) (flNeg E) (wittSpace E 2 1).L0 ((2 : ℕ) : 𝓞 E)
     (LinearEquiv.refl E _) := fun h => X_ne E (by simpa using h.1)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[wSp_eq, Submodule.mem_inf, xPlus_eq_span, xPlus_eq_span, mem_perp_span, mem_perp_span, Set.forall_mem_range, Set.forall_mem_range]`. Apply the tactic sequence `constructor <;> intro a <;> fin_cases a <;> refine (sp_B_vec E _ _).trans ?_ <;> simp`. Introduce and unpack `⟨-, y, hy, h, -⟩`. Rewrite `h` using `[fl_X, Submodule.mem_span_singleton]`.
+
+Take `⟨t, ht⟩` from `h`. Rewrite `hy` using `[wSp_eq]`. Establish `h1` using `((mem_perp_xPlus _ _).1 hy.2).2`. Rewrite `h1` using `[← sub_sub_cancel (vec E ![2, 0, 2, 1, 1]) y, ← ht, map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, symmetricFlagBasisVectors_apply_centre, sp_B_vec, sp_B_vec]`. Simplify using `at h1`.
+-/
 example : vec E ![2, 0, 2, 1, 1] ∈ wSp (flZero E) (flPos E) ∧
     vec E ![2, 0, 2, 1, 1] ∉ fixSp (flZero E) (flPos E) (flNeg E) (flip E) := by
   constructor
@@ -676,6 +988,9 @@ example : vec E ![2, 0, 2, 1, 1] ∈ wSp (flZero E) (flPos E) ∧
       LinearMap.smul_apply, symmetricFlagBasisVectors_apply_centre, sp_B_vec, sp_B_vec] at h1
     simp at h1
 
+/- English proof (translation)
+Simplify using `[IsComp]`.
+-/
 example : IsComp (flZero E) (flPos E) ((flPos E).z - (flZero E).z) (-1) 1 := by simp [IsComp]
 
 end FlagExample

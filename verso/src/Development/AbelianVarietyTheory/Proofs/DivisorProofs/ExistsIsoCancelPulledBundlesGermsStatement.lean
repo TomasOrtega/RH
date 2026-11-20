@@ -13,6 +13,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.IsoComp.isoCancelGerm | exact GlobalTheory.IsoComp.isoCancelGerm | (intros; apply GlobalTheory.IsoComp.isoCancelGerm <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_iso_cancel_pulled_bundles_germs : ∀ {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (fst : Y ⟶ XG), θ ≫ φ = fst →
     ∀ (LP : LB XA) (LL LM : LB XG), LP.IsLB → LL.IsLB → LM.IsLB →
     ∀ (ψ : LB.Iso LP (LL.pull φ)) (e : LB.Iso LM LL), ψ.IsGen → e.IsGen →

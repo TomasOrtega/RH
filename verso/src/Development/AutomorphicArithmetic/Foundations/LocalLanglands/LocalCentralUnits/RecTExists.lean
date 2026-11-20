@@ -17,6 +17,21 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h`. Take `⟨a, ha, -⟩` from `UpperTheory.Zero.LLC.artEx E Ω A w h`. Take `⟨r, hr⟩` from `UpperTheory.Zero.LLC.cuspEx E Ω A w h a ha`. Take `⟨⟨rc, hrc⟩, hcu⟩` from `GlobalTheory.LocLanglands.exists_isLExt UpperTheory.Zero.LLC.Pr.exh UpperTheory.Zero.LLC.Pr.multi E Ω A w h r`. Establish `hcusp : ∀ x : IrrGL (HeightOneSpectrum.adicCompletion E w), x.IsCusp → rc x = r x` using `hcu rc hrc`.
+
+Establish `hD` using `UpperTheory.Zero.LLC.extDim E Ω A w h a ha r rc hr hrc`. Establish `hT` using `UpperTheory.Zero.LLC.extTw E Ω A w h a ha r rc hr hrc`. Use `⟨rc, a, ha, ?_⟩` and prove the remaining obligations. Use `{ dim := fun x => (hD x).1.1 one := fun χ hχ => (hcusp _ (IrrGL.isCusp_ofChar χ hχ)).trans (hr.one χ hχ) langlands := ?_ cusp := ?_ nu := hT.1 absCentral := fun x ω hω σ => ((hD x).2 ω hω σ).1 twist := ?_ central := fun x ω hg hω σ => ((hD x).2 ω hω σ).2 hg dual := UpperTheory.Ze …` and prove the remaining obligations. Introduce `l x hl`.
+
+Rewrite using `[hrc l x hl]`. Unfold `GlobalTheory.LocLanglands.segSum`. Use `congr 1`. Use `List.map_congr_left ?_` and prove the remaining obligations. Introduce `Δ _`.
+
+Rewrite using `[hcusp _ Δ.isCusp_first]`. Introduce `x hx`. Rewrite using `[hcusp x hx]`. Conclude with `hr.irr x hx`. Introduce `x χ hχ hg`.
+
+Rewrite using `[hcusp _ (IrrGL.isCusp_ofChar χ hχ), hr.one χ hχ]`. Conclude with `hT.2 x χ hχ hg`. Use `(UpperTheory.Zero.LLC.typeIff E Ω A w h rc).2 ?_` and prove the remaining obligations. Introduce `x`. Unfold `UpperTheory.Zero.LLC.TypeAt`.
+
+Introduce `g _ i hi n hn D R hR θ hθ τ hτ hN σ hσ hinf`. Establish `hx : x.IsCusp`. Substitute `hσ` using the available equality. Conclude with `IrrGL.isCusp_of.2 ⟨hn, DiscreteGroups.sglob.DzLc.isCuspidal_of_inflates i hi τ hτ σ hinf⟩`. Rewrite using `[hcusp x hx]`.
+
+Conclude with `hr.type x hx g i hi n hn D R hR θ hθ τ hτ hN σ hσ hinf`.
+-/
 theorem UpperTheory.Zero.LLC.recTExists :
     UpperTheory.Zero.LLC.RecTExists := by
   intro E Ω _ _ _ _ _ A w h

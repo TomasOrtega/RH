@@ -17,6 +17,15 @@ set_option synthInstance.maxHeartbeats 200000
 
 namespace GlobalTheory.LeftUniQmp
 
+/- English proof (translation)
+Introduce `D ρ n μ hμ u`. Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D ρ n`. Use `haveI : BorelSpace (Mx D ρ n) := ⟨rfl⟩`. Establish `hc : Continuous (fun b : Mx D ρ n => u.1.1 ⬝ b)` using `continuous_const.matrix_mul continuous_id`. Establish `hc' : Continuous (fun b : Mx D ρ n => (u.1⁻¹).1 ⬝ b)` using `continuous_const.matrix_mul continuous_id`.
+
+Set `T : Mx D ρ n ≃+ Mx D ρ n` to `{ toFun := fun b => u.1.1 ⬝ b invFun := fun b => (u.1⁻¹).1 ⬝ b left_inv := fun b => by show (u.1⁻¹).1 ⬝ (u.1.1 ⬝ b) = b`. Rewrite using `[← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Use `right_inv := fun b => by show u.1.1 ⬝ ((u.1⁻¹).1 ⬝ b) = b`. Rewrite using `[← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Use the proof step `map_add' := fun a b => Matrix.mul_add _ _ _ }`.
+
+Use `haveI : (μ.map T).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map μ T hc hc'`. Use `⟨hc.measurable, ?_⟩` and prove the remaining obligations. Establish `e` using `Measure.isAddLeftInvariant_eq_smul (μ.map T) μ`. Use `show μ.map T ≪ μ`. Rewrite using `[e]`.
+
+Conclude with `Measure.smul_absolutelyContinuous`.
+-/
 theorem qmp_left_uni : ∀ (D : D7) (ρ n : ℕ) (μ : Measure (Mx D ρ n)), μ.IsAddHaarMeasure → ∀ u : UX D ρ, Measure.QuasiMeasurePreserving (fun b : Mx D ρ n => u.1.1 ⬝ b) μ μ := by
   intro D ρ n μ hμ u
   obtain ⟨i1, i2, i3, i4, -⟩ := lattice_Mx D ρ n

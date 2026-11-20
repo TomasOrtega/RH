@@ -29,6 +29,15 @@ def WeilDet : Prop :=
       y ^ n = 1 → Out.WeilIs P.A P.L n x y (unitOn c) → Out.WeilIs P'.A P'.L n (x ≫ α) (y ≫ α) (unitOn (c ^ d))) →
     LBIso (abelian₂ P.A (lbPow P.L d)) (abelian₂ P.A (P'.L.pull α.left))
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Q.rigid`. Take `⟨r', hr'⟩` from `Q'.rigid`. Take `⟨u, -⟩` from `hT Q r hr`. Take `⟨u₁, -⟩` from `hT Q' r' hr'`. Establish `u' : HolUnif Q'.A Q'.L Q.g` using `hg ▸ u₁`.
+
+Take `⟨h, hh⟩` from `he _ u`. Take `⟨h', hh'⟩` from `he' _ u'`. Take `⟨α, hα, hu⟩` from `hA Q Q' Q.g u u' (h'.symm.toLinearMap ∘ₗ F ∘ₗ h.toLinearMap) rfl hg fun z hz => (u'.ker _).1 (by`. Rewrite using `[← hh']`. Use `show e' (h' (h'.symm (F (h z)))) = 1`.
+
+Rewrite using `[h'.apply_symm_apply]`. Conclude with `hF _ ((hh z).trans ((u.ker z).2 hz)))`. Use `⟨α, hα, fun z => ?_⟩` and prove the remaining obligations. Establish `k` using `hu (h.symm z)`. Rewrite `k` using `[← hh', ← hh, h.apply_symm_apply]`.
+
+Rewrite using `[← k]`. Use `show _ = e' (h' (h'.symm (F (h (h.symm z)))))`. Rewrite using `[h'.apply_symm_apply, h.apply_symm_apply]`.
+-/
 theorem exists_hom (hT : ThetaUnifAV) (hA : HomAlg) (Q Q' : Out.PolAV (Sp ℂ)) (hg : Q'.g = Q.g)
     {e : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ Q.A)} {e' : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ Q'.A)}
     (he : ∀ (g₀ : ℕ) (u : HolUnif Q.A Q.L g₀), ∃ h : (Fin g₀ → ℂ) ≃ₗ[ℂ] (Fin g → ℂ), ∀ z, e (h z) = u.ex z)
@@ -61,6 +70,25 @@ abbrev objPol {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B}
   { A := o.t.G, isAb := h.1, g := n, smoothDim := h.2.1, L := o.t.PP.L, isLB := o.t.PP.isLB, rigid := h.2.2.1,
     sym := h.2.2.2, ample := o.ample, ktriv := o.ktriv }
 
+/- English proof (translation)
+Take `⟨α, hα, hα'⟩ : ∃ α : o₁.t.G ⟶ o₂.t.G, IsMonHom α ∧ ∀ z, e₂ (h z) = e₁ z ≫ α` from `exists_hom hT hA (objPol o₁ p₁) (objPol o₂ p₂) rfl u₁ u₂ h.toLinearMap fun z hz => by`. Take `⟨a, rfl⟩` from `(r₁.1 z).1 hz`. Conclude with `(r₂.1 _).2 ⟨gam a, hh a⟩`. Take `⟨β, -, hβ'⟩ : ∃ β : o₂.t.G ⟶ o₁.t.G, IsMonHom β ∧ ∀ z, e₁ (h.symm z) = e₂ z ≫ β` from `exists_hom hT hA (objPol o₂ p₂) (objPol o₁ p₁) rfl u₂ u₁ h.symm.toLinearMap fun z hz => by`. Take `⟨a, rfl⟩` from `(r₂.1 z).1 hz`.
+
+Use `(r₁.1 _).2 ⟨gam.symm a, h.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hh, gam.apply_symm_apply]`. Conclude with `(h.apply_symm_apply _).symm`. Use `p₁.1.smooth` as an intermediate fact. Use `p₂.1.smooth` as an intermediate fact.
+
+Use `p₁.1.proper` as an intermediate fact. Use `p₂.1.proper` as an intermediate fact. Establish `: IsReduced o₁.t.G.left` using `isReduced_of_smooth_complex _ o₁.t.G.hom inferInstance`. Establish `: IsReduced o₂.t.G.left` using `isReduced_of_smooth_complex _ o₂.t.G.hom inferInstance`. Set `ψ : o₁.t.G ≅ o₂.t.G` to `{ hom := α inv := β hom_inv_id := ComplexPoints.over_hom_ext_of_complexPoints fun x => by`.
+
+Take `⟨z, rfl⟩` from `s₁ x`. Rewrite using `[← Category.assoc, ← hα', ← hβ', h.symm_apply_apply, Category.comp_id]`. Use `inv_hom_id := ComplexPoints.over_hom_ext_of_complexPoints fun x => by`. Take `⟨z, rfl⟩` from `s₂ x`. Rewrite using `[← Category.assoc, ← hβ', ← hα', h.apply_symm_apply, Category.comp_id] }`.
+
+Establish `hcomm : ∀ (a : 𝓞 E) z, h (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * h z k` using `fun a z => by`. Establish `k : (h.toLinearMap.restrictScalars ℝ) ∘ₗ LinearMap.mulLeft ℝ (fun k => ty k (a : E)) = LinearMap.mulLeft ℝ (fun k => ty k (a : E)) ∘ₗ (h.toLinearMap.restrictScalars ℝ)`. Use `LinearMap.ext_on_range hP₁.2.2.2.1 fun x => ?_` and prove the remaining obligations. Use `show h (fun k => ty k (a : E) * P₁ x k) = fun k => ty k (a : E) * h (P₁ x) k`. Rewrite using `[← funext (hP₁.1 a x), ← hh, ← hh, map_smul]`.
+
+Conclude with `funext (hP₂.1 a _)`. Conclude with `DFunLike.congr_fun k z`. Establish `hact : ∀ a, o₁.t.act.act a ≫ α = α ≫ o₂.t.act.act a` using `fun a => ComplexPoints.over_hom_ext_of_complexPoints fun x => by`. Take `⟨z, rfl⟩` from `s₁ x`. Rewrite using `[← Category.assoc, ← Category.assoc, ← r₁.2.1, ← hα', ← hα', ← r₂.2.1, hcomm]`.
+
+Establish `hlam` using `hD ℂ (objPol o₁ p₁) (objPol o₂ p₂) α 2 1 hα Nat.prime_two inferInstance fun k x y c hk _ hx hy hw => by`. Take `⟨a, rfl⟩` from `exists_div_of_pow a₁ s₁ r₁.1 hk hx`. Take `⟨a', rfl⟩` from `exists_div_of_pow a₁ s₁ r₁.1 hk hy`. Establish `w` using `r₁.2.2 k a a' (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Take `rfl` from `weilIs_unique_fieldPoint _ _ _ o₁.t.PP.isLB ℂ (𝟙 _) k _ _ _ _ hw w`.
+
+Establish `w'` using `r₂.2.2 k (gam a) (gam a') (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Rewrite `w'` using `[hh, hh, ← map_smul h, ← map_smul h, hα', hα', hEF]`. Rewrite using `[pow_one]`. Conclude with `w'`. Establish `: IsMonHom ψ.hom` using `hα`.
+
+Conclude with `⟨⟨CubeMap.ofHom α, isGrpPullback_of_iso ψ, rfl, fun a => congrArg (fun z => z.left) (hact a), HeckePoint.isPullCubical_of_iso hG p₁.1 α o₁.t.cub o₂.t.cub (HeckePoint.iso_of_lam o₁.t o₂.t α hact hlam)⟩, fun z => congrArg (fun q => q.left) (hα' z).symm⟩`.
+-/
 theorem exists_sabMap (hT : ThetaUnifAV) (hG : Out.GlobalFnsSt) (hA : HomAlg) (hD : WeilDet) {D D₁ D₂ : Datum H}
     {l : Level H} {b : Base l ℂ} {s : Sp ℂ ⟶ Sp ℂ} (o₁ o₂ : Obj D l b s) {n : ℕ}
     (p₁ : IsAbelianScheme o₁.t.G ∧ SmoothOfRelativeDimension n o₁.t.G.hom ∧
@@ -131,6 +159,11 @@ theorem exists_sabMap (hT : ThetaUnifAV) (hG : Out.GlobalFnsSt) (hA : HomAlg) (h
     HeckePoint.isPullCubical_of_iso hG p₁.1 α o₁.t.cub o₂.t.cub (HeckePoint.iso_of_lam o₁.t o₂.t α hact hlam)⟩,
     fun z => congrArg (fun q => q.left) (hα' z).symm⟩
 
+/- English proof (translation)
+Use `⟨⟨m, fun a => ?_, fun a => (h₂ a).trans (Category.id_comp _).symm⟩⟩` and prove the remaining obligations. Establish `ha : a ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La) ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)`. Rewrite using `[← Submodule.sup_smul, l.coprime, Submodule.top_smul]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.1 ha`.
+
+Rewrite using `[o₁.eta_add, o₂.eta_add, o₁.eta_ker x hx, o₂.eta_ker x hx, _root_.one_mul, _root_.one_mul]`. Conclude with `(h₁ y hy).trans (Category.id_comp _).symm`.
+-/
 theorem exists_objMap {D : Datum H} {l : Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}}
     {s : S ⟶ Sp B} (o₁ o₂ : Obj D l b s) (m : SABMap o₁.t o₂.t (𝟙 S))
     (h₁ : ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La),

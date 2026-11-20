@@ -12,6 +12,13 @@ open PI.PhNormUnits PI.PhNormUnits.UnitaryGroupMassFormula
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst a` using `by first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero ha`. Establish `h1 : PowerSeries.coeff 1 (PowerSeries.subst a f : PowerSeries ℂ_[p]) = ∑ᶠ k : ℕ, PowerSeries.coeff k f * PowerSeries.coeff 1 (a ^ k)` using `(PowerSeries.coeff_subst hs f (Finsupp.single () 1)).trans (finsum_congr fun k => smul_eq_mul _ _)`. Establish `hz : ∀ k, 2 ≤ k → PowerSeries.coeff 1 (a ^ k) = 0`.
+
+Introduce `k hk`. Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr ha`. Rewrite using `[mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`. Rewrite using `[h1, finsum_eq_sum_of_support_subset _ (s := Finset.range 2)]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_one, pow_zero, pow_one, PowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_mul, zero_add]`.
+
+Introduce `k hk`. Rewrite `hk` using `[Function.mem_support]`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Conclude with `hk (by rw [hz k (by omega), mul_zero])`.
+-/
 theorem coeff_one_subst (a f : PowerSeries ℂ_[p]) (ha : PowerSeries.constantCoeff a = 0)
     (hf : PowerSeries.constantCoeff f = 0) :
     PowerSeries.coeff 1 (PowerSeries.subst a f : PowerSeries ℂ_[p]) = PowerSeries.coeff 1 f * PowerSeries.coeff 1 a := by
@@ -35,6 +42,13 @@ theorem coeff_one_subst (a f : PowerSeries ℂ_[p]) (ha : PowerSeries.constantCo
     by_contra h
     exact hk (by rw [hz k (by omega), mul_zero])
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst a` using `by first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' ha`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero ha`. Establish `h1 : PowerSeries.coeff 0 (PowerSeries.subst a f : PowerSeries ℂ_[p]) = ∑ᶠ k : ℕ, PowerSeries.coeff k f * PowerSeries.coeff 0 (a ^ k)` using `(PowerSeries.coeff_subst hs f (Finsupp.single () 0)).trans (finsum_congr fun k => smul_eq_mul _ _)`. Rewrite using `[h1, finsum_eq_sum_of_support_subset _ (s := Finset.range 1)]`.
+
+Simplify using the standard rewrite rules. Introduce `k hk`. Rewrite `hk` using `[Function.mem_support]`. Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`.
+
+Apply `hk` to reduce the goal to its premises. Take `⟨g, rfl⟩` from `PowerSeries.X_dvd_iff.mpr ha`. Rewrite using `[mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega), mul_zero]`.
+-/
 private theorem coeff_zero_subst_of_constantCoeff_eq_zero (a f : PowerSeries ℂ_[p]) (ha : PowerSeries.constantCoeff a = 0) :
     PowerSeries.coeff 0 (PowerSeries.subst a f : PowerSeries ℂ_[p]) = PowerSeries.coeff 0 f := by
   have hs : PowerSeries.HasSubst a := by
@@ -54,6 +68,17 @@ private theorem coeff_zero_subst_of_constantCoeff_eq_zero (a f : PowerSeries ℂ
     obtain ⟨g, rfl⟩ := PowerSeries.X_dvd_iff.mpr ha
     rw [mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega), mul_zero]
 
+/- English proof (translation)
+Introduce `q _ l ex hex hle c`. Establish `hl0 : PowerSeries.constantCoeff l = 0`. Establish `h` using `coeff_zero_subst_of_constantCoeff_eq_zero ex l hex`. Rewrite `h` using `[hle, PowerSeries.coeff_zero_X, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `h.symm`.
+
+Establish `hprod : PowerSeries.coeff 1 l * PowerSeries.coeff 1 ex = 1`. Establish `h` using `coeff_one_subst ex l hex hl0`. Rewrite `h` using `[hle, PowerSeries.coeff_one_X]`. Conclude with `h.symm`. Establish `hX0 : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries ℂ_[q]) = 0` using `PowerSeries.constantCoeff_X`.
+
+Establish `hsX0 : PowerSeries.constantCoeff (PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[q]) l : PowerSeries ℂ_[q]) = 0`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_zero_subst_of_constantCoeff_eq_zero _ _ hX0, PowerSeries.coeff_zero_eq_constantCoeff_apply, hl0]`. Establish `hsX1 : PowerSeries.coeff 1 (PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[q]) l : PowerSeries ℂ_[q]) = PowerSeries.coeff 1 l`. Rewrite using `[coeff_one_subst _ _ hX0 hl0, PowerSeries.coeff_one_X, mul_one]`. Establish `hc0 : PowerSeries.constantCoeff (PowerSeries.C c * PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[q]) l : PowerSeries ℂ_[q]) = 0`.
+
+Rewrite using `[map_mul, hsX0, mul_zero]`. Establish `key` using `coeff_one_subst (PowerSeries.C c * PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[q]) l : PowerSeries ℂ_[q]) ex hc0 hex`. Rewrite `key` using `[PowerSeries.coeff_C_mul, hsX1]`. Use `show PowerSeries.coeff 1 (PowerSeries.subst (PowerSeries.C c * PowerSeries.subst (PowerSeries.X : PowerSeries ℂ_[q]) l : PowerSeries ℂ_[q]) ex : PowerSeries ℂ_[q]) = c`. Rewrite using `[key]`.
+
+Take the linear combination `c * hprod`.
+-/
 theorem linear_coeff_padic : LinCoeff := by
   intro q _ l ex hex hle c
   have hl0 : PowerSeries.constantCoeff l = 0 := by
@@ -82,6 +107,21 @@ theorem linear_coeff_padic : LinCoeff := by
   rw [key]
   linear_combination c * hprod
 
+/- English proof (translation)
+Introduce `p _ l ex ph hl0 hex0 hinv hph S hswap hadd hintS hIA hnm hdec hnorm hB`. Establish `hE` using `norm_units_equivalence`. Establish `hSub` using `norm_units_substitution`. Establish `hC` using `norm_units_closed_form`. Establish `hD` using `natCast_dense_p_adic`.
+
+Establish `z0` using `constantCoeff_var (p := p) (0 : Fin 2)`. Establish `z1` using `constantCoeff_var (p := p) (1 : Fin 2)`. Establish `hInv : ∀ c : ℂ_[p], ‖c‖ = 1 → IntegralMv (mulBy l ex c (Xv ()) : MvPowerSeries Unit ℂ_[p]) → IntegralMv (mulBy l ex c⁻¹ (Xv ()) : MvPowerSeries Unit ℂ_[p])`. Introduce `c hc hcI`. Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hc`.
+
+Establish `hs0 : ∀ i : Unit, MvPowerSeries.constantCoeff ((fun _ => (mulBy l ex c (Xv ()) : MvPowerSeries Unit ℂ_[p])) i) = 0` using `fun _ => constantCoeff_formalSMul hex0 hinv _ _ (constantCoeff_var ())`. Establish `hcomp` using `sb_mulBy (fun _ => (mulBy l ex c (Xv ()) : MvPowerSeries Unit ℂ_[p])) hs0 hex0 hinv c⁻¹ (Xv ()) (constantCoeff_var ())`. Rewrite `hcomp` using `[sb_X _ hs0]`. Rewrite `hcomp` using `[mulBy_mulBy hex0 hinv _ _ _ (constantCoeff_var ()), inv_mul_cancel₀ hc0, mulBy_one hex0 hinv _ (constantCoeff_var ())]`. Establish `key` using `hI p (mulBy l ex c (Xv ())) (mulBy l ex c⁻¹ (Xv ())) (constantCoeff_formalSMul hex0 hinv _ _ (constantCoeff_var ())) (constantCoeff_formalSMul hex0 hinv _ _ (constantCoeff_var ())) (by rw [hL p l ex hex0 hinv c]; exact hc) (fun n => hcI _) hcomp`.
+
+Introduce `e`. Establish `he : e = Finsupp.single () (e ())` using `Finsupp.ext fun u => by cases u; simp`. Unfold `IsIntP`. Rewrite using `[he]`. Conclude with `key (e ())`.
+
+Establish `hU : ∀ β ∈ S, ‖β.1‖ = 1 → Simeq (be l ex ph (mulBy l ex β.1 (Xv 0)) (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p]) (be l ex ph (Xv 0) (mulBy l ex β.2 (Xv 1)))`. Introduce `β hβ h1`. Take `⟨n, hn⟩` from `hnm β hβ`. Establish `hβ1 : β.1 ≠ 0` using `by intro h0; rw [h0, norm_zero] at h1; exact zero_ne_one h1`. Establish `hw : IntegralMv (mulBy l ex β.1⁻¹ (Xv 1) : MvPowerSeries (Fin 2) ℂ_[p])` using `int_mulBy_of hSub hex0 hinv β.1⁻¹ (hInv β.1 h1 (hintS β hβ)) _ z1 (int_X 1)`.
+
+Conclude with `units_iv hE hSub hex0 hinv β.1 β.2 hβ1 hw (sTrans hE (units_i hE hSub hex0 hinv hIA _ _ (hnorm β hβ)) (units_ii hE hSub hC hD hex0 hinv hph hIA hB _ _ n hn))`. Introduce `α hα`. Take `⟨β, hβ, γ, hγ, hb1, hg1, rfl⟩` from `hdec α hα`. Establish `iM : ∀ c, IntegralMv (mulBy l ex c (Xv ()) : MvPowerSeries Unit ℂ_[p]) → ∀ i : Fin 2, IntegralMv (mulBy l ex c (Xv i) : MvPowerSeries (Fin 2) ℂ_[p])` using `fun c hc i => int_mulBy_of hSub hex0 hinv c hc _ (constantCoeff_var i) (int_X i)`. Simplify using `only [Prod.fst_add, Prod.snd_add]`.
+
+Rewrite using `[← add_mulBy hex0 hinv _ _ _ z0, ← add_mulBy hex0 hinv _ _ _ z1]`. Use `sTrans hE (be_add_left hSub hex0 hinv hB _ _ _ (constantCoeff_formalSMul hex0 hinv _ _ z0) (constantCoeff_formalSMul hex0 hinv _ _ z0) z1 (iM _ (hintS β hβ) 0) (iM _ (hintS γ hγ) 0) (int_X 1)) ?_` and prove the remaining obligations. Use `sTrans hE (sAdd hE (hU β hβ hb1) (hU γ hγ hg1)) ?_` and prove the remaining obligations. Conclude with `sSymm hE (be_add_right hSub hex0 hinv hB _ _ _ (constantCoeff_formalSMul hex0 hinv _ _ z1) (constantCoeff_formalSMul hex0 hinv _ _ z1) z0 (iM β.2 (hintS β.swap (hswap β hβ)) 1) (iM γ.2 (hintS γ.swap (hswap γ hγ)) 1) (int_X 0))`.
+-/
 theorem core_of (hI : IntInv) (hL : LinCoeff) : StepCore := by
   intro p _ l ex ph hl0 hex0 hinv hph S hswap hadd hintS hIA hnm hdec hnorm hB
   have hE := norm_units_equivalence
@@ -131,6 +171,9 @@ theorem core_of (hI : IntInv) (hL : LinCoeff) : StepCore := by
   exact sSymm hE (be_add_right hSub hex0 hinv hB _ _ _ (constantCoeff_formalSMul hex0 hinv _ _ z1) (constantCoeff_formalSMul hex0 hinv _ _ z1) z0
     (iM β.2 (hintS β.swap (hswap β hβ)) 1) (iM γ.2 (hintS γ.swap (hswap γ hγ)) 1) (int_X 0))
 
+/- English proof (translation)
+The claim follows from `beConjNorm_of (core_of hI linear_coeff_padic)`.
+-/
 theorem beConjNorm_of_intInv (hI : IntInv) : PI.BeConjNorm.BeConjNorm :=
   beConjNorm_of (core_of hI linear_coeff_padic)
 

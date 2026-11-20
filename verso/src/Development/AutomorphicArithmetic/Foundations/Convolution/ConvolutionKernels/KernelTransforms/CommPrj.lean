@@ -5,6 +5,13 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Establish `hc : V.topologicalClosure = V` using `hV.submodule_topologicalClosure_eq`. Establish `hm : ∀ v, v ∈ V.topologicalClosure ↔ v ∈ V` using `fun v => by rw [hc]`. Establish `a1 : ∀ v, prj V v ∈ V` using `fun v => (hm _).1 (Submodule.starProjection_apply_mem _ v)`. Establish `a3 : ∀ v, ∀ w ∈ V, ⟪v - prj V v, w⟫_ℂ = 0` using `fun v w hw => Submodule.starProjection_inner_eq_zero v w ((hm _).2 hw)`. Use `⟨a1, fun v hv => Submodule.starProjection_eq_self_iff.2 ((hm _).2 hv), a3, ?_⟩` and prove the remaining obligations.
+
+Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Use `show T (prj V v) = prj V (T v)`. Use `symm`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ((hm _).2 (h1 _ (a1 v))) fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← map_sub, ← ContinuousLinearMap.adjoint_inner_right]`.
+
+Conclude with `a3 v _ (h2 w ((hm _).1 hw))`.
+-/
 private theorem commute_prj {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (V : Submodule ℂ H) (hV : IsClosed (V : Set H)) (T : H →L[ℂ] H) (h1 : ∀ v ∈ V, T v ∈ V)
     (h2 : ∀ v ∈ V, ContinuousLinearMap.adjoint T v ∈ V) :
@@ -22,6 +29,23 @@ private theorem commute_prj {H : Type*} [NormedAddCommGroup H] [InnerProductSpac
   rw [← map_sub, ← ContinuousLinearMap.adjoint_inner_right]
   exact a3 v _ (h2 w ((hm _).1 hw))
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ U`. Establish `hmem : ∀ v, v ∈ fixF μ U ↔ ∀ u ∈ U, rhoF μ u v = v` using `fun v => by`. Simplify using `only [fixF, Submodule.mem_iInf, LinearMap.mem_eqLocus, ContinuousLinearMap.coe_coe, LinearMap.id_apply]`. Establish `hcl : IsClosed (fixF μ U : Set (LL μ))`. Establish `: (fixF μ U : Set (LL μ)) = ⋂ u ∈ U, {v | rhoF μ u v = v}`.
+
+Use extensionality with `v`. Simplify using `only [SetLike.mem_coe, hmem, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun u _ => isClosed_eq (rhoF μ u).continuous continuous_id`. Establish `hmul : ∀ h h', rhoF μ (h * h') = rhoF μ h ∘L rhoF μ h'` using `fun h h' => by`.
+
+Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [rhoF, map_mul, UnitaryRep.map_mul_apply, ContinuousLinearMap.comp_apply]`. Establish `hone : rhoF μ 1 = 1`. Simplify using `only [rhoF, map_one, UnitaryRep.map_one]`. Establish `hadj : ∀ h, ContinuousLinearMap.adjoint (rhoF μ h) = rhoF μ h⁻¹` using `fun h => by`.
+
+Unfold `rhoF`. Rewrite using `[UnitaryRep.adjoint_map, map_inv (MultiplicityOne.finProj K n)]`. Establish `hpres : ∀ T : LL μ →L[ℂ] LL μ, (∀ u ∈ U, Commute T (rhoF μ u)) → ∀ v ∈ fixF μ U, T v ∈ fixF μ U`. Introduce `T hT v hv`. Rewrite `hv`, the goal using `[hmem]`.
+
+Introduce `u hu`. Use `congrArg (fun S : LL μ →L[ℂ] LL μ => S v) (hT u hu).eq` as an intermediate fact. Simplify using `only [ContinuousLinearMap.mul_apply, hv u hu] at this`. Conclude with `this.symm`. Establish `hT : ∀ T : LL μ →L[ℂ] LL μ, (∀ u ∈ U, Commute T (rhoF μ u)) → Commute T (prj (fixF μ U))`.
+
+Introduce `T hT`. Use `(commute_prj _ hcl T (hpres T hT) (hpres _ fun u hu => ?_)).2.2.2` and prove the remaining obligations. Use `(hT u⁻¹ (U.inv_mem hu)).star_star` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.star_eq_adjoint, hadj, inv_inv]`. Then use the resulting hypothesis. Take `⟨a1, a2, -, -⟩` from `commute_prj _ hcl 0 (fun v _ => by simp) (fun v _ => by simp)`.
+
+Establish `hl : ∀ u ∈ U, rhoF μ u ∘L prj (fixF μ U) = prj (fixF μ U)` using `fun u hu => ContinuousLinearMap.ext fun v => (hmem _).1 (a1 v) u hu`. Use `⟨hcl, hmem, a1, a2, fun u hu => ⟨hl u hu, ?_⟩, hmul, hone, hadj, hT⟩` and prove the remaining obligations. Establish `hfix : ∀ u ∈ U, ∀ v ∈ fixF μ U, rhoF μ u v ∈ fixF μ U` using `fun u hu v hv => by`. Rewrite using `[(hmem v).1 hv u hu]`. Conclude with `hv`.
+
+Establish `hc` using `(commute_prj _ hcl (rhoF μ u) (hfix u hu) (by rw [hadj]; exact hfix _ (U.inv_mem hu))).2.2.2`. Conclude with `hc.eq.symm.trans (hl u hu)`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.commPrj :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (U : Subgroup (AdelicGLn.FiniteAdelicGL K n)),
       IsClosed (fixF μ U : Set (LL μ)) ∧ (∀ v, v ∈ fixF μ U ↔ ∀ u ∈ U, rhoF μ u v = v) ∧ (∀ v, prj (fixF μ U) v ∈ fixF μ U) ∧

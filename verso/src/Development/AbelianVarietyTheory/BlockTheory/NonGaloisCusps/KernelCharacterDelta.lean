@@ -87,6 +87,9 @@ def CyclotomicExists : Prop :=
   ∀ (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l], 5 ≤ l →
     ∃ (R : RingPG k l) (ι : k⸨X⸩ →ₐ[k] k⸨X⸩), IsCyclotomic R ι
 
+/- English proof (translation)
+Rewrite using `[binomPow, PowerSeries.binomialSeries_nat]`. Simplify using the standard rewrite rules.
+-/
 theorem binomPow_natCast (k : Type) [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (m : ℕ) :
     binomPow k l (m : ℤ_[l]) = (1 + PowerSeries.X) ^ m := by
   rw [binomPow, PowerSeries.binomialSeries_nat]

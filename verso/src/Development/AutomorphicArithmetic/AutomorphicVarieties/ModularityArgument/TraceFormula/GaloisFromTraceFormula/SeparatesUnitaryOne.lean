@@ -6,6 +6,11 @@ open PositivityTheory.Rg.BcB.G8
 open UpperTheory.V.Af.Bc (cPl)
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Cusp UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm UpperTheory.V.Z.Tf.GaloisFromTraceFormula
 
+/- English proof (translation)
+Establish `hne : satEig (qV E w) n B n ≠ 0` using `GlobalTheory.LFun.SatCompare.satEig_self_ne_zero hB`. Establish `hI : (UpperTheory.V.Z.Tf.GlobalTraceComparison.inv B).card = n` using `by simpa [UpperTheory.V.Z.Tf.GlobalTraceComparison.inv] using hB`. Use `eq_of_satEig_eq (qV_ne_zero w) hI hB fun j hj => ?_` and prove the remaining obligations. Establish `e` using `GlobalTheory.LFun.ConjPlace.satEig_inv_mul (q := qV E w) hB hj`. Rewrite `e` using `[← h j hj, mul_comm]`.
+
+Conclude with `mul_left_cancel₀ hne e`.
+-/
 private theorem inv_eq_of_eig {E : Type} [Field E] [NumberField E] [IsCMField E] (w : Pl E) {n : ℕ}
     {B : Multiset ℂˣ} (hB : B.card = n)
     (h : ∀ i ≤ n, satEig (qV E w) n B n * satEig (qV E w) n B i = satEig (qV E w) n B (n - i)) :
@@ -17,6 +22,19 @@ private theorem inv_eq_of_eig {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [← h j hj, mul_comm] at e
   exact mul_left_cancel₀ hne e
 
+/- English proof (translation)
+Introduce `E _ _ _ w a b B₁ B₂ h₁ h₂ hns`. Distinguish the cases in `hz : ∀ p : Fin (a + 1) × Fin (b + 1), ev2 a b w (dEx p) B₁ B₂ = 0`. It suffices to derive a contradiction. Establish `hs₁ : satEig (qV E w) a B₁ a ≠ 0` using `GlobalTheory.LFun.SatCompare.satEig_self_ne_zero h₁`. Establish `hs₂ : satEig (qV E w) b B₂ b ≠ 0` using `GlobalTheory.LFun.SatCompare.satEig_self_ne_zero h₂`.
+
+Establish `key : ∀ p : Fin (a + 1) × Fin (b + 1), satEig (qV E w) a B₁ a * satEig (qV E w) b B₂ b * (satEig (qV E w) a B₁ p.1 * satEig (qV E w) b B₂ p.2) = satEig (qV E w) a B₁ (a - p.1) * satEig (qV E w) b B₂ (b - p.2)`. Introduce `p`. Use `hz p` as an intermediate fact. Simplify using `only [ev2, dEx, Ex.ev, Fin.val_last, Fin.val_rev] at this`. Establish `e₁ : a + 1 - ((p.1 : ℕ) + 1) = a - p.1` using `by omega`.
+
+Establish `e₂ : b + 1 - ((p.2 : ℕ) + 1) = b - p.2` using `by omega`. Rewrite `this` using `[e₁, e₂]`. Take the linear combination `this`. Use `hns ⟨inv_eq_of_eig w h₁ fun i hi => ?_, inv_eq_of_eig w h₂ fun j hj => ?_⟩` and prove the remaining obligations. Use `key (⟨i, Nat.lt_succ_of_le hi⟩, 0)` as an intermediate fact.
+
+Simplify using `only [Fin.val_zero, GlobalTheory.LFun.ConjPlace.satEig_zero, mul_one, Nat.sub_zero] at this`. Use `mul_right_cancel₀ hs₂ ?_` and prove the remaining obligations. Take the linear combination `this`. Use `key (0, ⟨j, Nat.lt_succ_of_le hj⟩)` as an intermediate fact. Simplify using `only [Fin.val_zero, GlobalTheory.LFun.ConjPlace.satEig_zero, one_mul, Nat.sub_zero] at this`.
+
+Use `mul_left_cancel₀ hs₁ ?_` and prove the remaining obligations. Take the linear combination `this`. Use `push_neg at hz`. Take `⟨p, hp⟩` from `hz`. Use `⟨_, U1.step (-(ev2 a b w (dEx p) B₁ B₂)⁻¹) p, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ev2 a b w (Ex.add Ex.one (Ex.smul (-(ev2 a b w (dEx p) B₁ B₂)⁻¹) (dEx p))) B₁ B₂ = 1 + -(ev2 a b w (dEx p) B₁ B₂)⁻¹ * ev2 a b w (dEx p) B₁ B₂` using `rfl`. Rewrite using `[e, neg_mul, inv_mul_cancel₀ hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Z.Tf.GaloisFromTraceFormula.unitary_one_characters_separated_by_eigenvalues :
     SeparatesUnitaryOne := by
   intro E _ _ _ w a b B₁ B₂ h₁ h₂ hns

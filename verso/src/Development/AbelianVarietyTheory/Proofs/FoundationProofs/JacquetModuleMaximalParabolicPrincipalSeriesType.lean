@@ -15,6 +15,15 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 
 namespace GlobalTheory.PsType
 
+/- English proof (translation)
+Use `set e := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Take `⟨x, hx⟩` from `valuation_surjective (e.symm (WithZero.exp (-1 : ℤ)))`. Establish `hx' : e (valuation k x) = WithZero.exp (-1 : ℤ)` using `by rw [hx]; simp`. Use `⟨x, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+
+Rewrite `hx'` using `[h0, map_zero, map_zero]`. Conclude with `WithZero.zero_ne_coe hx'`. Rewrite using `[← e.strictMono.lt_iff_lt, hx', map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Introduce `y hy`.
+
+Rewrite using `[← e.strictMono.le_iff_le, hx']`. Establish `hlt : e (valuation k y) < 1` using `by rw [← map_one e]; exact e.strictMono hy`. Break down `eq_or_ne (e (valuation k y)) 0 with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `zero_le'`.
+
+Rewrite `hlt`, the goal using `[← WithZero.exp_log h]`. Rewrite `hlt` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_uniformiser_max (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     ∃ ϖ : k, ϖ ≠ 0 ∧ valuation k ϖ < 1 ∧ ∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k ϖ := by
   set e := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k
@@ -34,6 +43,17 @@ theorem exists_uniformiser_max (k : Type) [Field k] [ValuativeRel k] [Topologica
       rw [← WithZero.exp_zero, WithZero.exp_lt_exp] at hlt
       rw [WithZero.exp_le_exp]; omega
 
+/- English proof (translation)
+Introduce `k _ _ _ _ r t ψ V _ _ π hπ hψ hord hcut v hv heig`. Take `⟨ϖ, hϖ0, hϖ1, hϖmax⟩` from `exists_uniformiser_max k`. Set `z : GL (Fin (r + t)) k` to `diagT k (Fin (r + t)) (fun i => if (i : ℕ) < r then Units.mk0 ϖ hϖ0 else 1)`. Establish `hz : z.val = Matrix.diagonal (fun i : Fin (r + t) => if (i : ℕ) < r then ϖ else 1)`. Apply the tactic sequence `simp only [z]; rw [val_diagT]; congr 1; funext i; split_ifs <;> simp`.
+
+Take `⟨hD, -⟩` from `GlobalTheory.T.principalSeriesCongruenceSubgroup_smoothCharacterDatum k (r + t) ψ hψ hord`. Take `⟨hSD, hSmono⟩` from `GlobalTheory.T.compactSubgroupSmoothCharacterDatum_monotone k (r + t) ψ r ϖ hψ hϖ0 hϖ1 hϖmax`. Take `⟨h0J, hθ1, h1KO, hconj⟩` from `GlobalTheory.T.principalSeriesUnipotentStrip_properties k (r + t) ψ r ϖ hϖ0 hϖ1 hϖmax hcut`. Take `⟨m, hm⟩` from `GlobalTheory.T.twistedJacquetKernel_mem_twistedSpan_finite_stage _ V π _ (strip ψ r ϖ) hSmono (GlobalTheory.T.strips_exhaust_parabolicUnipotentRadical k r t ψ ϖ hψ hϖ0 hϖ1 hϖmax) v hv`. Use `GlobalTheory.T.eigenvector_eq_zero_of_mem_twistedSpan_chain (GL (Fin (r + t)) k) V π hπ (grp ψ) (strip ψ r ϖ) (theta ψ) z hD hSD hSmono (fun y hy => ⟨h0J y hy, hθ1 0 y hy⟩) (hconj z hz) ?_ ?_ m v hm heig` and prove the remaining obligations.
+
+Introduce `y hy`. Distinguish the cases in `hyJ : y ∈ grp ψ`. Conclude with `Or.inl ⟨hyJ, hθ1 1 y hy⟩`. Conclude with `Or.inr (GlobalTheory.T.principalSeriesType_not_intertwine_outside k (r + t) ψ hord y (h1KO y hy) hyJ)`. Introduce `j hj`.
+
+Take `⟨y, hy, hblk⟩` from `GlobalTheory.T.exists_strip_clearing_upperRight_principalSeriesCongruence k (r + t) ψ r ϖ hord hcut j hj`. Establish `hyJ : y ∈ grp ψ` using `h0J y hy`. Establish `hyinv : y⁻¹ ∈ grp ψ` using `hD.inv y hyJ`. Establish `hg : y⁻¹ * j ∈ grp ψ` using `hD.mul _ hyinv _ hj`. Take `⟨h1, h2⟩` from `GlobalTheory.T.conj_blockLower_mem_principalSeriesCongruence k (r + t) ψ r ϖ hϖ0 hϖ1 z hz (y⁻¹ * j) hg hblk`.
+
+Use `⟨y, hy, h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, GlobalTheory.T.principalSeriesTypeCharacter_mul k (r + t) ψ hord _ hyinv _ hj, hθ1 0 _ ((hSD 0).inv y hy), one_mul]`.
+-/
 theorem eig_jacquet_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r t : ℕ) (ψ : Fin (r + t) → kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin (r + t)) k) V), IsSmooth π → (∀ i, IsSmoothChar (ψ i)) → Ordered ψ → Cut ψ r → ∀ v ∈ twKer π (unipRad k (two (stdSum (rfl : r + t = r + t)))) 1, IsEig π (grp ψ) (theta ψ) v → v = 0 := by
   intro k _ _ _ _ r t ψ V _ _ π hπ hψ hord hcut v hv heig
   obtain ⟨ϖ, hϖ0, hϖ1, hϖmax⟩ := exists_uniformiser_max k

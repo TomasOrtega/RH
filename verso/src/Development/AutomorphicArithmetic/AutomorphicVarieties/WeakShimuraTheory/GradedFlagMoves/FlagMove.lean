@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Break down `lt_or_ge m i with h | h` into its components or cases. Rewrite using `[hA i m h, zero_mul]`.
+
+Rewrite using `[hB m j (lt_of_lt_of_le hij h), mul_zero]`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun m _ hm => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hm with h | h` into its components or cases. Rewrite using `[hA i m h, zero_mul]`.
+
+Rewrite using `[hB m i h, mul_zero]`.
+-/
 private theorem up_mul {k : Type} [Field k] {A B : M4 k} (hA : IsUp A) (hB : IsUp B) :
     IsUp (A * B) ∧ ∀ i, (A * B) i i = A i i * B i i := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -16,6 +23,9 @@ private theorem up_mul {k : Type} [Field k] {A B : M4 k} (hA : IsUp A) (hB : IsU
     · rw [hA i m h, zero_mul]
     · rw [hB m i h, mul_zero]
 
+/- English proof (translation)
+Establish `hA' : Matrix.BlockTriangular A id` using `fun i j hij => hA i j hij`. Use `haveI : Invertible A := invertibleOfRightInverse A B h`. Establish `h1` using `Matrix.blockTriangular_inv_of_blockTriangular hA'`. Rewrite `h1` using `[Matrix.inv_eq_right_inv h]`. Conclude with `fun i j hij => h1 hij`.
+-/
 private theorem up_inv {k : Type} [Field k] {A B : M4 k} (hA : IsUp A) (h : A * B = 1) : IsUp B := by
   have hA' : Matrix.BlockTriangular A id := fun i j hij => hA i j hij
   haveI : Invertible A := invertibleOfRightInverse A B h
@@ -23,6 +33,15 @@ private theorem up_inv {k : Type} [Field k] {A B : M4 k} (hA : IsUp A) (h : A * 
   rw [Matrix.inv_eq_right_inv h] at h1
   exact fun i j hij => h1 hij
 
+/- English proof (translation)
+Introduce `k _ X X' Z n n' hX hn hn' hB hY`. Establish `h1 : adj n * n = 1` using `by simpa [IsGSp] using hn.1`. Establish `h2 : adj n' * n' = 1` using `by simpa [IsGSp] using hn'.1`. Establish `h3 : n * adj n = 1` using `mul_eq_one_comm.mp h1`. Establish `h4 : ∀ W : M4 k, n * (adj n * W) = W` using `fun W => by rw [← mul_assoc, h3, one_mul]`.
+
+Establish `h5 : ∀ W : M4 k, X * (X' * W) = W` using `fun W => by rw [← mul_assoc, hX, one_mul]`. Establish `hBB : (adj n' * X * n) * (adj n * X' * n') = 1`. Simplify using `only [mul_assoc, h4, h5, h2]`. Establish `hB'` using `up_inv hB hBB`. Establish `e : adj n' * (X * Z * X') * n' = (adj n' * X * n) * (adj n * Z * n) * (adj n * X' * n')`.
+
+Simplify using `only [mul_assoc, h4]`. Rewrite using `[e]`. Establish `p1` using `up_mul hB hY`. Establish `p2` using `up_mul p1.1 hB'`. Use `⟨p2.1, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `q` using `(up_mul hB hB').2 i`. Rewrite `q` using `[hBB, Matrix.one_apply_eq]`. Rewrite using `[p2.2, p1.2]`. Take the linear combination `(-(adj n * Z * n) i i) * q`.
+-/
 theorem UpperTheory.V.Ws.Rt.flagMove :
     ∀ (k : Type) [Field k] (X X' Z n n' : M4 k), X * X' = 1 → IsLow n → IsLow n' → IsUp (adj n' * X * n) → IsUp (adj n * Z * n) →
       IsUp (adj n' * (X * Z * X') * n') ∧ ∀ i, (adj n' * (X * Z * X') * n') i i = (adj n * Z * n) i i := by

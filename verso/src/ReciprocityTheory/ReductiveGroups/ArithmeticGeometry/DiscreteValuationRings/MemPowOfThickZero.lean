@@ -10,6 +10,19 @@ open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction
 
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `exists_div G.hom (pow_ne_zero (e + 1) hϖ.ne_zero) U x fun y hy => by`. Take `⟨W, hW, hyW, le₀⟩` from `exists_isAffineOpen_mem_and_subset hy`. Establish `le : W ≤ U` using `le₀`. Set `alg : V →+* Γ(G.left, W)` to `(G.hom.appLE ⊤ W (fun _ _ => trivial)).hom.comp (Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom`. Establish `s₀ : hW.fromSpec ≫ G.hom = spMap alg`.
+
+Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec G.hom (isAffineOpen_top _) hW (fun _ _ => trivial), IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `J : Ideal Γ(G.left, W)` to `Ideal.span {alg (ϖ ^ (e + 1))}`. Set `q : V ⧸ maximalIdeal V ^ (e + 1) →+* Γ(G.left, W) ⧸ J` to `Ideal.quotientMap J alg (by`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.span_le, Set.singleton_subset_iff]`.
+
+Conclude with `Ideal.subset_span rfl)`. Establish `sq : (spMap (Ideal.Quotient.mk J) ≫ hW.fromSpec) ≫ G.hom = spMap q ≫ thick V (maximalIdeal V) e`. Rewrite using `[Category.assoc, s₀, ← spMap_comp]`. Conclude with `(congrArg spMap (Ideal.quotientMap_comp_mk _).symm).trans (spMap_comp _ _)`. Set `r : Sp (Γ(G.left, W) ⧸ J) ⟶ (thickObj V (maximalIdeal V) e G).left` to `pullback.lift _ _ sq`.
+
+Establish `r₁ : r ≫ fGl (maximalIdeal V) G e = spMap (Ideal.Quotient.mk J) ≫ hW.fromSpec` using `pullback.lift_fst _ _ _`. Establish `z₀ : Ideal.Quotient.mk J ((G.left.presheaf.map (homOfLE le).op).hom x) = 0` using `cst_ext fun z => by`. Establish `hm : fGl (maximalIdeal V) G e (r z) ∈ U` using `(congrArg (fun m => m z ∈ U) r₁).mpr (le (hW.range_fromSpec.le ⟨spMap (Ideal.Quotient.mk J) z, rfl⟩))`. Establish `e₁` using `(gs_fromSpec hW le (spMap (Ideal.Quotient.mk J)) z x).trans (gs_spec _ z _)`. Rewrite `e₁` using `[← r₁]`.
+
+Rewrite using `[← e₁, cst, map_zero, gs_zero _ z ⊤ trivial]`. Conclude with `(gs_pull r _ z U hm x).symm.trans ((congrArg (gs r z _) hx).trans (gs_zero r z _ hm))`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 z₀)`. Use `⟨gs (𝟙 _) y W c, (gs_res (𝟙 _) y le hyW _).symm.trans ((congrArg (gs (𝟙 _) y W) hc).trans ((gs_mul _ y W hyW _ _).trans (congrArg₂ (· * ·) ?_ rfl)))⟩` and prove the remaining obligations. Conclude with `(gs_constFn G.hom W (𝟙 _) y hyW _).trans (by rw [Category.id_comp])`.
+
+Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, hg, constFn, map_pow, map_pow]`. Conclude with `dvd_mul_right _ _`.
+-/
 theorem mem_pow_of_thick_zero' (G : Over (Spec (CommRingCat.of V))) [Flat G.hom] (ϖ : V) (hϖ : Irreducible ϖ)
     (U : G.left.Opens) (x : Γ(G.left, U)) (e : ℕ)
     (hx : ((fstG (maximalIdeal V) e G).left.app U).hom x = 0) :

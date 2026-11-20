@@ -5,13 +5,24 @@ namespace GlobalTheory.LieIwasawa
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Simplify using `[dotProduct, mul_comm]`.
+-/
 theorem star_sd (a b : Fin n → ℂ) : star (star a ⬝ᵥ b) = star b ⬝ᵥ a := by
   simp [dotProduct, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Matrix.star_mulVec, hD, Matrix.dotProduct_mulVec]`.
+-/
 theorem star_dot_mulVec (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (a b : Fin n → ℂ) :
     star a ⬝ᵥ D *ᵥ b = star (D *ᵥ a) ⬝ᵥ b := by
   rw [Matrix.star_mulVec, hD, Matrix.dotProduct_mulVec]
 
+/- English proof (translation)
+Establish `h1` using `star_dot_mulVec D hD a b`. Establish `h2` using `star_dot_mulVec D hD b a`. Rewrite `h1`, `h2` using `[ha, hb]`. Simplify using `only [dotProduct_neg, star_neg, neg_dotProduct] at h1 h2`. Prove the components needed by the constructor for the conclusion.
+
+Take the linear combination `(-1/2 : ℂ) * h1`. Take the linear combination `(1/2 : ℂ) * h2`.
+-/
 theorem orth (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (a b : Fin n → ℂ)
     (ha : D *ᵥ a = a) (hb : D *ᵥ b = -b) : star a ⬝ᵥ b = 0 ∧ star b ⬝ᵥ a = 0 := by
   have h1 := star_dot_mulVec D hD a b
@@ -22,6 +33,21 @@ theorem orth (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (a b : Fin n → �
   · linear_combination (-1/2 : ℂ) * h1
   · linear_combination (1/2 : ℂ) * h2
 
+/- English proof (translation)
+Use `set r := star x ⬝ᵥ x with hrdef`. Use `set q := star u ⬝ᵥ x with hq`. Establish `hrs : star r = r`. Rewrite using `[hrdef, star_sd]`. Establish `hqs : star q = -q`.
+
+Establish `: star q = star x ⬝ᵥ u` using `by rw [hq, star_sd]`. Rewrite using `[this]`. Take the linear combination `him`. Establish `hu' : star u ᵥ* D = s • star u`. Use `congrArg star hu` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.star_mulVec, hD, star_smul, hs]`. Conclude with `this`. Establish `hx' : star x ᵥ* D = s • star x`. Use `congrArg star hx` as an intermediate fact. Rewrite `this` using `[Matrix.star_mulVec, hD, star_smul, hs]`.
+
+Conclude with `this`. Establish `hmv : ∀ a b y : Fin n → ℂ, Matrix.vecMulVec a b *ᵥ y = (b ⬝ᵥ y) • a`. Introduce `a b y`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, Matrix.vecMulVec_apply, dotProduct, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `⟨r⁻¹ • (Matrix.vecMulVec u (star x) - Matrix.vecMulVec x (star u)) + (q / r ^ 2) • Matrix.vecMulVec x (star x), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_vecMulVec, star_star, star_inv₀, star_div₀, star_pow, hrs, hqs] module`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, hu, hx, hu', hx', Matrix.smul_vecMulVec, Matrix.vecMulVec_smul]`. Simplify using `only [Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.sub_mulVec, hmv, ← hrdef, ← hq]`.
+
+Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce `y h1 h2`.
+
+Simplify using `[Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.sub_mulVec, hmv, h1, h2]`.
+-/
 theorem exists_skew (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (s : ℂ) (hs : star s = s)
     (u x : Fin n → ℂ) (hu : D *ᵥ u = s • u) (hx : D *ᵥ x = s • x) (hr : star x ⬝ᵥ x ≠ 0)
     (him : star x ⬝ᵥ u + star u ⬝ᵥ x = 0) :
@@ -64,6 +90,31 @@ theorem exists_skew (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (s : ℂ) (
   · intro y h1 h2
     simp [Matrix.add_mulVec, Matrix.smul_mulVec, Matrix.sub_mulVec, hmv, h1, h2]
 
+/- English proof (translation)
+Establish `split : ∀ y : Fin n → ℂ, ∃ a b : Fin n → ℂ, D *ᵥ a = a ∧ D *ᵥ b = -b ∧ y = a + b`. Introduce `y`. Use `⟨(1/2 : ℂ) • (y + D *ᵥ y), (1/2 : ℂ) • (y - D *ᵥ y), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_add, Matrix.mulVec_mulVec, hDD, Matrix.one_mulVec, add_comm]`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_sub, Matrix.mulVec_mulVec, hDD, Matrix.one_mulVec] module`.
+
+Use `module`. Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, 0, by simp, by simp, by simp [h0]⟩`. Take `⟨p, m, hp, hm, hxs⟩` from `split x`. Take `⟨a, b, ha, hb, hv⟩` from `split (X *ᵥ x)`.
+
+Establish `hDx : D *ᵥ x = p - m` using `by rw [hxs, Matrix.mulVec_add, hp, hm, sub_eq_add_neg]`. Establish `hDv : D *ᵥ (X *ᵥ x) = a - b` using `by rw [hv, Matrix.mulVec_add, ha, hb, sub_eq_add_neg]`. Take `⟨pm, mp⟩` from `orth D hD p m hp hm`. Take `⟨pb, bp⟩` from `orth D hD p b hp hb`. Take `⟨am, ma⟩` from `orth D hD a m ha hm`.
+
+Establish `hrho : star p ⬝ᵥ p = star m ⬝ᵥ m`. Rewrite `hx` using `[hDx, hxs]`. Simplify using `only [star_add, add_dotProduct, dotProduct_sub, pm, mp] at hx`. Take the linear combination `hx`. Establish `hp0 : star p ⬝ᵥ p ≠ 0`.
+
+Introduce `h`. Establish `h'` using `h`. Rewrite `h'` using `[hrho]`. Rewrite `h`, `h'` using `[dotProduct_star_self_eq_zero]`. Conclude with `h0 (by rw [hxs, h, h', add_zero])`.
+
+Establish `hm0 : star m ⬝ᵥ m ≠ 0` using `hrho ▸ hp0`. Establish `hkey : star a ⬝ᵥ p + star p ⬝ᵥ a = star b ⬝ᵥ m + star m ⬝ᵥ b`. Establish `h1 : star x ⬝ᵥ (Xᴴ * D + D * X) *ᵥ x = 0` using `by simp [hX]`. Rewrite `h1` using `[Matrix.add_mulVec, dotProduct_add, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec (star x) Xᴴ, ← Matrix.star_mulVec, hDx, hDv, hv]`. Use `nth_rewrite 1 [hxs] at h1`.
+
+Simplify using `only [star_add, add_dotProduct, dotProduct_sub, pb, bp, am, ma] at h1`. Take the linear combination `h1`. Use `set r := star p ⬝ᵥ p with hr`. Use `set l : ℂ := (star a ⬝ᵥ p + star p ⬝ᵥ a) / (2 * r) with hl`. Establish `hrs : star r = r`.
+
+Rewrite using `[hr, star_sd]`. Establish `hls : star l = l`. Establish `e1 : star (star a ⬝ᵥ p) = star p ⬝ᵥ a` using `by rw [star_sd]`. Establish `e2 : star (star p ⬝ᵥ a) = star a ⬝ᵥ p` using `by rw [star_sd]`. Rewrite using `[hl, star_div₀, star_add, e1, e2, star_mul', hrs, add_comm]`.
+
+Simplify using the standard rewrite rules. Establish `hl2 : l * (2 * r) = star a ⬝ᵥ p + star p ⬝ᵥ a`. Rewrite using `[hl]`. Clear the denominators using the available nonvanishing facts. Take `⟨Z₁, s1, c1, e1, k1⟩` from `exists_skew D hD 1 (by simp) (a - l • p) p (by rw [Matrix.mulVec_sub, Matrix.mulVec_smul, ha, hp, one_smul]) (by rw [hp, one_smul]) hp0 (by`.
+
+Simplify using `only [star_sub, star_smul, hls, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, ← hr]`. Take the linear combination `-hl2)`. Take `⟨Z₂, s2, c2, e2, k2⟩` from `exists_skew D hD (-1) (by simp) (b - l • m) m (by rw [Matrix.mulVec_sub, Matrix.mulVec_smul, hb, hm]; module) (by rw [hm]; module) hm0 (by`. Simplify using `only [star_sub, star_smul, hls, dotProduct_sub, sub_dotProduct, dotProduct_smul, smul_dotProduct, smul_eq_mul, ← hrho]`. Take the linear combination `-hl2 - hkey)`.
+
+Establish `z1 : Z₁ *ᵥ m = 0` using `k1 m pm (by`. Simplify using `only [star_sub, star_smul, sub_dotProduct, smul_dotProduct, am, pm]`. Use the proof step `simp)`. Establish `z2 : Z₂ *ᵥ p = 0` using `k2 p mp (by`. Simplify using `only [star_sub, star_smul, sub_dotProduct, smul_dotProduct, bp, mp]`.
+
+Use the proof step `simp)`. Establish `hs : (Z₁ + Z₂)ᴴ = -(Z₁ + Z₂)` using `by rw [Matrix.conjTranspose_add, s1, s2, neg_add]`. Use `⟨Z₁ + Z₂, l, hs, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, Matrix.mul_add, c1, c2, Matrix.neg_mul, Matrix.add_mul, neg_add_cancel]`. Rewrite using `[Matrix.sub_mulVec, hv, hxs, Matrix.add_mulVec, Matrix.mulVec_add, Matrix.mulVec_add, e1, e2, z1, z2] module`.
+-/
 theorem decomp_of_involution (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (hDD : D * D = 1)
     (x : Fin n → ℂ) (hx : star x ⬝ᵥ D *ᵥ x = 0) (X : Matrix (Fin n) (Fin n) ℂ)
     (hX : Xᴴ * D + D * X = 0) :
@@ -138,6 +189,11 @@ theorem decomp_of_involution (D : Matrix (Fin n) (Fin n) ℂ) (hD : Dᴴ = D) (h
       e1, e2, z1, z2]
     module
 
+/- English proof (translation)
+Introduce `n ε D hD x hx X hX`. Use `decomp_of_involution D ?_ ?_ x hx X hX` and prove the remaining obligations. Rewrite using `[hD, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Apply the tactic sequence `by_cases h : ε i <;> simp [h]`. Rewrite using `[hD, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : ε i <;> simp [h]`.
+-/
 theorem decomp : ∀ (n : ℕ) (ε : Fin n → Bool) (D : Matrix (Fin n) (Fin n) ℂ),
     D = Matrix.diagonal (fun i => if ε i then 1 else -1) →
     ∀ x : Fin n → ℂ, star x ⬝ᵥ D *ᵥ x = 0 → ∀ X : Matrix (Fin n) (Fin n) ℂ, Xᴴ * D + D * X = 0 →

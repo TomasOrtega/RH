@@ -9,6 +9,13 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Use `set g : B →ₗ[A] B := Algebra.lmul A B f with hg`. Use `set p := g.charpoly`. Take `⟨q, hq⟩` from `Polynomial.X_dvd_sub_C (p := p)`. Establish `h0 : Polynomial.aeval f p = 0`. Establish `h1 : Polynomial.aeval g p = 0` using `LinearMap.aeval_self_charpoly g`.
+
+Rewrite `h1` using `[hg, Polynomial.aeval_algHom_apply]`. Establish `h2` using `congrArg (fun u : B →ₗ[A] B => u 1) h1`. Simplify using `using h2`. Establish `h3` using `congrArg (Polynomial.aeval f) hq`. Simplify using `only [map_sub, Polynomial.aeval_C, map_mul, Polynomial.aeval_X, h0, zero_sub] at h3`.
+
+Rewrite using `[Algebra.norm_apply, LinearMap.det_eq_sign_charpoly_coeff, map_mul, show algebraMap A B (g.charpoly.coeff 0) = -(f * Polynomial.aeval f q) by`. Rewrite using `[← h3, neg_neg]]`. Conclude with `Ideal.mul_mem_left _ _ (neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)))`.
+-/
 theorem algebraMap_norm_mem_span_singleton (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Finite A B] [Module.Free A B] (f : B) :
     algebraMap A B (Algebra.norm A f) ∈ Ideal.span {f} := by
@@ -27,6 +34,15 @@ theorem algebraMap_norm_mem_span_singleton (A B : Type) [CommRing A] [CommRing B
       rw [← h3, neg_neg]]
   exact Ideal.mul_mem_left _ _ (neg_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self f)))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hN Q hQ hf`. Apply `hN` to reduce the goal to its premises. Rewrite using `[← hQ, Ideal.mem_comap]`. Conclude with `(Ideal.span_singleton_le_iff_mem _).mpr hf (algebraMap_norm_mem_span_singleton A B f)`.
+
+Introduce `h hN`. Set `Rₘ` to `Localization.AtPrime P.asIdeal`. Set `Sₘ` to `Localization (Algebra.algebraMapSubmonoid B P.asIdeal.primeCompl)`. Establish `hnu : ¬ IsUnit (algebraMap B Sₘ f)`. Introduce `hu`.
+
+Establish `h1` using `hu.map (Algebra.norm Rₘ (S := Sₘ))`. Rewrite `h1` using `[Algebra.norm_localization A P.asIdeal.primeCompl]`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff Rₘ P.asIdeal _).mp h1 hN`. Take `⟨M, hM, hfM⟩` from `exists_max_ideal_of_mem_nonunits hnu`. Use `haveI : Module.Finite Rₘ Sₘ := Module.Finite.of_basis ((Module.Free.chooseBasis A B).localizationLocalization Rₘ P.asIdeal.primeCompl Sₘ)`.
+
+Establish `hMc : M.comap (algebraMap Rₘ Sₘ) = IsLocalRing.maximalIdeal Rₘ` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`. Use `h ⟨M.comap (algebraMap B Sₘ), hM.isPrime.comap _⟩ ?_ hfM` and prove the remaining obligations. Use `show (M.comap (algebraMap B Sₘ)).comap (algebraMap A B) = P.asIdeal`. Rewrite using `[Ideal.comap_comap, ← IsScalarTower.algebraMap_eq, IsScalarTower.algebraMap_eq A Rₘ Sₘ, ← Ideal.comap_comap, hMc]`. Conclude with `Localization.AtPrime.comap_maximalIdeal`.
+-/
 theorem norm_not_mem_iff (A B : Type) [CommRing A] [CommRing B] [Algebra A B]
     [Module.Finite A B] [Module.Free A B] (f : B) (P : PrimeSpectrum A) :
     Algebra.norm A f ∉ P.asIdeal ↔

@@ -49,6 +49,9 @@ def Agreement : Prop :=
       ∀ s, 0 < s → s ≤ s₀ → Real.exp (-(s ^ 2)⁻¹) ≤ S.t₀ ∧ ∀ c : σ → ℝ, ∑ a, |c a| ≤ abelian₂ →
         |eval c (Re.FT II (Real.exp (-(s ^ 2)⁻¹))) - eval c (Re.PB II)| ≤ C₃ * s
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem agreement_iff_guarded : Agreement ↔
   (Inputs → ∀ (D : ℕ) (σ : Type) [Fintype σ] (S : AnSys D σ) (abelian₂ : ℝ), 0 < S.t₀ → ∃ C₃ s₀ : ℝ, 0 < s₀ ∧
     ∀ (II : IntersectionSystem), IsFullIntersectionSystem II →

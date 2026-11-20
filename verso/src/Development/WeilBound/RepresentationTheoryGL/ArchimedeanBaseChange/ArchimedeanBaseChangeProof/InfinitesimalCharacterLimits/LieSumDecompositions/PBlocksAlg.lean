@@ -10,6 +10,25 @@ section Ker
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Proceed by induction on `L generalizing Q with`. Consider the case `nil`. Take `⟨y, hy, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hQ`. Conclude with `⟨y, hy, h0, by simp⟩`. Consider the case `cons N L ih => classical`.
+
+Take `⟨y, hy, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hQ`. Take `⟨n, hn⟩` from `hL N List.mem_cons_self`. Establish `hex : ∃ k, (N ^ k) y = 0` using `⟨n, by rw [hn]; rfl⟩`. Use `set k := Nat.find hex with hk`. Establish `hk0 : k ≠ 0`.
+
+Introduce `h`. Establish `h1` using `Nat.find_spec hex`. Rewrite `h1` using `[← hk, h, pow_zero, Module.End.one_apply]`. Conclude with `h0 h1`. Establish `hpowQ : ∀ j, (N ^ j) y ∈ Q`.
+
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using hy`. Consider the case `succ j ihj`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+
+Conclude with `hQL N List.mem_cons_self _ ihj`. Establish `hy1 : (N ^ (k - 1)) y ≠ 0` using `Nat.find_min hex (by omega)`. Establish `hNy1 : N ((N ^ (k - 1)) y) = 0`. Rewrite using `[← Module.End.mul_apply, ← pow_succ', Nat.sub_add_cancel (Nat.pos_of_ne_zero hk0)]`. Conclude with `Nat.find_spec hex`.
+
+Use `set Q' := Q ⊓ LinearMap.ker N with hQ'`. Establish `hQ'0 : Q' ≠ ⊥`. Introduce `h`. Establish `hm : (N ^ (k - 1)) y ∈ Q'` using `⟨hpowQ _, hNy1⟩`. Rewrite `hm` using `[h]`.
+
+Conclude with `hy1 ((Submodule.mem_bot ℂ).1 hm)`. Establish `hLQ' : ∀ N' ∈ L, ∀ z ∈ Q', N' z ∈ Q'`. Introduce `N' hN' z hz`. Use `⟨hQL N' (List.mem_cons_of_mem _ hN') z hz.1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `N (N' z) = 0`.
+
+Rewrite using `[← Module.End.mul_apply, (hc N List.mem_cons_self N' (List.mem_cons_of_mem _ hN')).eq, Module.End.mul_apply]`. Establish `: N z = 0` using `hz.2`. Rewrite using `[this, map_zero]`. Take `⟨z, hz, hz0, hzL⟩` from `ih (fun N' hN' => hL N' (List.mem_cons_of_mem _ hN')) (fun N' hN' N'' hN'' => hc N' (List.mem_cons_of_mem _ hN') N'' (List.mem_cons_of_mem _ hN'')) Q' hQ'0 hLQ'`. Use `⟨z, hz.1, hz0, fun N' hN' => ?_⟩` and prove the remaining obligations.
+
+Break down `List.mem_cons.1 hN' with rfl | h` into its components or cases. Conclude with `hz.2`. Conclude with `hzL N' h`.
+-/
 theorem common_ker (L : List (Module.End ℂ M)) (hL : ∀ N ∈ L, IsNilpotent N)
     (hc : ∀ N ∈ L, ∀ N' ∈ L, Commute N N') (Q : Submodule ℂ M) (hQ : Q ≠ ⊥)
     (hQL : ∀ N ∈ L, ∀ y ∈ Q, N y ∈ Q) : ∃ y ∈ Q, y ≠ 0 ∧ ∀ N ∈ L, N y = 0 := by
@@ -66,6 +85,25 @@ section Poly
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Use `set P : ℂ[X] := (σ.map fun x => X + C x).prod with hP`. Establish `hPm : P.Monic` using `monic_multiset_prod_of_monic _ _ fun x _ => monic_X_add_C x`. Establish `hPd : P.natDegree = n`. Rewrite using `[hP, natDegree_multiset_prod_of_monic _ fun x hx => by`. Take `⟨y, -, rfl⟩` from `Multiset.mem_map.1 hx`.
+
+Conclude with `monic_X_add_C y]`. Simplify using `[hc]`. Establish `hPe : ∀ w : ℂ, P.eval w = (σ.map (w + ·)).prod` using `fun w => by`. Simplify using `[hP, eval_multiset_prod, Multiset.map_map]`. Establish `hPsum : ∀ w : ℂ, P.eval w = ∑ k ∈ Finset.range (n + 1), P.coeff k * w ^ k` using `fun w => by`.
+
+Rewrite using `[eval_eq_sum_range, hPd]`. Establish `hPn : P.coeff n = 1` using `by rw [← hPd]; exact hPm.coeff_natDegree`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun f => ?_` and prove the remaining obligations.
+
+Use `set g : ℂ[X] := ∑ i : Fin n, C (f (a i y) - f y * P.coeff i) * X ^ (i : ℕ) with hg`. Establish `hge : ∀ w : ℂ, g.eval w = f ((∑ k ∈ Finset.range (n + 1), w ^ k • a k) y) - f y * P.eval w`. Introduce `w`. Rewrite using `[hPsum, hg, eval_finsetSum, Finset.sum_range_succ, Finset.sum_range_succ, hPn, ha, LinearMap.add_apply, map_add, LinearMap.sum_apply, map_sum, ← Fin.sum_univ_eq_sum_range (fun k => f ((w ^ k • a k) y)), ← Fin.sum_univ_eq_sum_range (fun k => P.coeff k * w ^ k)]`. Simplify using `only [eval_mul, eval_C, eval_pow, eval_X, LinearMap.smul_apply, map_smul, smul_eq_mul, Module.End.one_apply, mul_add, Finset.mul_sum]`.
+
+Simplify using `only [sub_mul, Finset.sum_sub_distrib, one_mul]`. Establish `h1 : ∑ x : Fin n, f (a x y) * w ^ (x : ℕ) = ∑ x : Fin n, w ^ (x : ℕ) * f (a x y)` using `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `h2 : ∑ x : Fin n, f y * P.coeff x * w ^ (x : ℕ) = ∑ i : Fin n, f y * (P.coeff i * w ^ (i : ℕ))` using `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hg0 : g = 0`. Assume the negation of the conclusion as `hne`. Establish `hdeg : g.natDegree < n`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+
+Conclude with `absurd (by simp [hg]) hne`. Rewrite using `[natDegree_lt_iff_degree_lt hne]`. Conclude with `degree_sum_fin_lt _`. Use `hne (eq_zero_of_natDegree_lt_card_of_eval_eq_zero' g (σ.map Neg.neg).toFinset (fun w hw => ?_) ?_)` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `Multiset.mem_map.1 (Multiset.mem_toFinset.1 hw)`.
+
+Rewrite using `[hge, h x hx, LinearMap.zero_apply, map_zero, hPe]`. Establish `: (σ.map (-x + ·)).prod = 0` using `Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨x, hx, by ring⟩)`. Rewrite using `[this, mul_zero, sub_zero]`. Rewrite using `[Multiset.toFinset_card_of_nodup (hσ.map neg_injective), Multiset.card_map, hc]`. Conclude with `hdeg`.
+
+Use `hge u` as an intermediate fact. Rewrite `this` using `[hg0, eval_zero, hPe]`. Rewrite using `[map_sub, LinearMap.smul_apply, Module.End.one_apply, map_smul, smul_eq_mul]`. Take the linear combination `-this`.
+-/
 theorem poly_eq (n : ℕ) (a : ℕ → Module.End ℂ M) (ha : a n = 1) (σ : Multiset ℂ) (hσ : σ.Nodup)
     (hc : Multiset.card σ = n) (h : ∀ x ∈ σ, (∑ k ∈ Finset.range (n + 1), (-x) ^ k • a k) = 0) (u : ℂ) :
     (∑ k ∈ Finset.range (n + 1), u ^ k • a k) = (σ.map (u + ·)).prod • (1 : Module.End ℂ M) := by
@@ -119,6 +157,13 @@ theorem poly_eq (n : ℕ) (a : ℕ → Module.End ℂ M) (ha : a n = 1) (σ : Mu
   rw [map_sub, LinearMap.smul_apply, Module.End.one_apply, map_smul, smul_eq_mul]
   linear_combination -this
 
+/- English proof (translation)
+Use `set c := ∑ k ∈ Finset.range (n + 1), w ^ k * χ k with hc`. Use `set N := ∑ k ∈ Finset.range (n + 1), w ^ k • (a k - χ k • 1) with hN`. Establish `hNn : IsNilpotent N`. Use `Commute.isNilpotent_sum (fun k _ => (hnil k).smul _) fun i j _ _ => ?_` and prove the remaining obligations. Use `((((hcomm i j).sub_right (Commute.smul_right (Commute.one_right _) _)).sub_left (Commute.smul_left (Commute.one_left _) _))).smul_left _ |>.smul_right _` and prove the remaining obligations.
+
+Establish `e : (∑ k ∈ Finset.range (n + 1), w ^ k • a k) = algebraMap ℂ _ c * (1 + c⁻¹ • N)`. Rewrite using `[mul_add, mul_one, ← Algebra.smul_def, smul_smul, mul_inv_cancel₀ hw, one_smul, hN, hc, Algebra.algebraMap_eq_smul_one, Finset.sum_smul, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, smul_smul, mul_comm, add_sub_cancel]`. Rewrite using `[e]`.
+
+Conclude with `((Units.mk0 c hw).isUnit.map (algebraMap ℂ (Module.End ℂ M))).mul (IsNilpotent.isUnit_one_add (hNn.smul _))`.
+-/
 theorem isUnit_poly (n : ℕ) (a : ℕ → Module.End ℂ M) (χ : ℕ → ℂ) (hcomm : ∀ k l, Commute (a k) (a l))
     (hnil : ∀ k, IsNilpotent (a k - χ k • 1)) (w : ℂ) (hw : (∑ k ∈ Finset.range (n + 1), w ^ k * χ k) ≠ 0) :
     IsUnit (∑ k ∈ Finset.range (n + 1), w ^ k • a k) := by
@@ -142,10 +187,16 @@ section Piece
 
 variable {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+The claim follows from `((h.sub_right (Commute.smul_right (Commute.one_right _) _)).sub_left ((Commute.smul_left (Commute.one_left _) _).sub_right (Commute.smul_right (Commute.one_right _) _)))`.
+-/
 theorem comm_sub {x y : Module.End ℂ M} (h : Commute x y) (c d : ℂ) : Commute (x - c • 1) (y - d • 1) :=
   ((h.sub_right (Commute.smul_right (Commute.one_right _) _)).sub_left
     ((Commute.smul_left (Commute.one_left _) _).sub_right (Commute.smul_right (Commute.one_right _) _)))
 
+/- English proof (translation)
+Rewrite using `[LinearMap.sum_apply, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, hy k hk, smul_smul]`.
+-/
 theorem apply_eig (n : ℕ) (a : ℕ → Module.End ℂ M) (χ : ℕ → ℂ) (y : M)
     (hy : ∀ k ∈ Finset.range (n + 1), a k y = χ k • y) (u : ℂ) :
     (∑ k ∈ Finset.range (n + 1), u ^ k • a k) y = (∑ k ∈ Finset.range (n + 1), u ^ k * χ k) • y := by
@@ -155,14 +206,23 @@ theorem apply_eig (n : ℕ) (a : ℕ → Module.End ℂ M) (χ : ℕ → ℂ) (y
 
 def spoly (n : ℕ) (χ : ℕ → ℂ) : ℂ[X] := X ^ n + ∑ i : Fin n, C (χ i) * X ^ (i : ℕ)
 
+/- English proof (translation)
+The claim follows from `monic_X_pow_add (degree_sum_fin_lt _)`.
+-/
 theorem spoly_monic (n : ℕ) (χ : ℕ → ℂ) : (spoly n χ).Monic :=
   monic_X_pow_add (degree_sum_fin_lt _)
 
+/- English proof (translation)
+Rewrite using `[spoly, natDegree_add_eq_left_of_degree_lt]`. Simplify using the standard rewrite rules. Conclude with `(degree_sum_fin_lt _).trans_eq (by simp)`.
+-/
 theorem spoly_natDegree (n : ℕ) (χ : ℕ → ℂ) : (spoly n χ).natDegree = n := by
   rw [spoly, natDegree_add_eq_left_of_degree_lt]
   · simp
   · exact (degree_sum_fin_lt _).trans_eq (by simp)
 
+/- English proof (translation)
+Rewrite using `[spoly, eval_add, eval_finsetSum, Finset.sum_range_succ, h, mul_one, add_comm, ← Fin.sum_univ_eq_sum_range (fun k => u ^ k * χ k)]`. Simplify using `only [eval_mul, eval_C, eval_pow, eval_X]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem spoly_eval (n : ℕ) (χ : ℕ → ℂ) (h : χ n = 1) (u : ℂ) :
     (spoly n χ).eval u = ∑ k ∈ Finset.range (n + 1), u ^ k * χ k := by
   rw [spoly, eval_add, eval_finsetSum, Finset.sum_range_succ, h, mul_one, add_comm,
@@ -171,6 +231,53 @@ theorem spoly_eval (n : ℕ) (χ : ℕ → ℂ) (h : χ n = 1) (u : ℂ) :
   congr 1
   exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Use `set L : List (Module.End ℂ M) := ((List.range (r + 1)).map fun k => a k - χa k • 1) ++ (List.range (s + 1)).map fun l => b l - χb l • 1 with hL`. Establish `hLn : ∀ N ∈ L, IsNilpotent N`. Introduce `N hN`. Break down `List.mem_append.1 hN with h | h` into its components or cases. Take `⟨k, -, rfl⟩` from `List.mem_map.1 h`.
+
+Conclude with `hna k`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 h`. Conclude with `hnb l`. Establish `hLc : ∀ N ∈ L, ∀ N' ∈ L, Commute N N'`. Introduce `N hN N' hN'`.
+
+Apply the tactic sequence `rcases List.mem_append.1 hN with h | h <;> rcases List.mem_append.1 hN' with h' | h'`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 h`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 h'`. Conclude with `comm_sub (haa k l) _ _`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 h`.
+
+Take `⟨l, -, rfl⟩` from `List.mem_map.1 h'`. Conclude with `comm_sub (hab k l) _ _`. Take `⟨k, -, rfl⟩` from `List.mem_map.1 h`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 h'`. Conclude with `comm_sub (hab l k).symm _ _`.
+
+Take `⟨k, -, rfl⟩` from `List.mem_map.1 h`. Take `⟨l, -, rfl⟩` from `List.mem_map.1 h'`. Conclude with `comm_sub (hbb k l) _ _`. Take `⟨y, -, hy0, hyL⟩` from `common_ker L hLn hLc ⊤ top_ne_bot (fun _ _ _ _ => Submodule.mem_top)`. Establish `hya : ∀ k ∈ Finset.range (r + 1), a k y = χa k • y` using `fun k hk => by`.
+
+Use `hyL _ (List.mem_append_left _ (List.mem_map.2 ⟨k, List.mem_range.2 (Finset.mem_range.1 hk), rfl⟩))` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hyb : ∀ l ∈ Finset.range (s + 1), b l y = χb l • y` using `fun l hl => by`. Use `hyL _ (List.mem_append_right _ (List.mem_map.2 ⟨l, List.mem_range.2 (Finset.mem_range.1 hl), rfl⟩))` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+
+Establish `hχa : χa r = 1`. Establish `h1` using `hya r (Finset.self_mem_range_succ r)`. Rewrite `h1` using `[ha, Module.End.one_apply]`. Conclude with `(smul_left_injective ℂ hy0 (h1.symm.trans (one_smul ℂ y).symm))`. Establish `hχb : χb s = 1`.
+
+Establish `h1` using `hyb s (Finset.self_mem_range_succ s)`. Rewrite `h1` using `[hb, Module.End.one_apply]`. Conclude with `(smul_left_injective ℂ hy0 (h1.symm.trans (one_smul ℂ y).symm))`. Use `set pC := spoly r χa with hpC`. Use `set pD := spoly s χb with hpD`.
+
+Use `set S : ℂ[X] := (m.map fun x => X - C (-x)).prod with hS`. Establish `hSe : ∀ u, S.eval u = (m.map (u + ·)).prod` using `fun u => by`. Simplify using `[hS, eval_multiset_prod, Multiset.map_map, sub_neg_eq_add]`. Establish `hscal : ∀ u, pC.eval u * pD.eval u = S.eval u`. Introduce `u`.
+
+Establish `h1` using `congrArg (fun T : Module.End ℂ M => T y) (hrel u)`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply] at h1`. Rewrite `h1` using `[apply_eig s b χb y hyb, map_smul, apply_eig r a χa y hya, smul_smul]`. Rewrite using `[spoly_eval r χa hχa, spoly_eval s χb hχb, hSe, mul_comm]`. Conclude with `smul_left_injective ℂ hy0 h1`.
+
+Establish `hCD : pC * pD = S` using `Polynomial.funext fun u => by rw [eval_mul, hscal]`. Establish `hSm : S.Monic` using `monic_multiset_prod_of_monic _ _ fun x _ => monic_X_sub_C _`. Establish `hS0 : S ≠ 0` using `hSm.ne_zero`. Establish `hSr : S.roots = m.map Neg.neg`. Establish `e : (m.map fun x => X - C (-x)) = (m.map Neg.neg).map (fun x => X - C x)`.
+
+Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[hS, e, roots_multiset_prod_X_sub_C]`. Establish `hroots : pC.roots + pD.roots = m.map Neg.neg`. Rewrite using `[← roots_mul (hCD ▸ hS0), hCD, hSr]`.
+
+Establish `hnd : (pC.roots + pD.roots).Nodup` using `hroots ▸ hm.map neg_injective`. Establish `hdisj` using `(Multiset.nodup_add.1 hnd).2.2`. Establish `hpC0 : pC ≠ 0` using `(spoly_monic r χa).ne_zero`. Establish `hpD0 : pD ≠ 0` using `(spoly_monic s χb).ne_zero`. Use `set σ := pC.roots.map Neg.neg with hσ`.
+
+Establish `hσm : σ ≤ m`. Establish `h1 : pC.roots ≤ m.map Neg.neg` using `hroots ▸ Multiset.le_add_right _ _`. Establish `h2` using `Multiset.map_le_map (f := Neg.neg) h1`. Rewrite `h2` using `[Multiset.map_map, show (Neg.neg ∘ Neg.neg : ℂ → ℂ) = id from funext neg_neg, Multiset.map_id]`. Then use the resulting hypothesis. Establish `hσc : Multiset.card σ = r`.
+
+Rewrite using `[hσ, Multiset.card_map, IsAlgClosed.card_roots_eq_natDegree, spoly_natDegree]`. Establish `hσn : σ.Nodup` using `Multiset.nodup_of_le hσm hm`. Establish `hCr : pC.roots = σ.map Neg.neg`. Rewrite using `[hσ, Multiset.map_map, show (Neg.neg ∘ Neg.neg : ℂ → ℂ) = id from funext neg_neg, Multiset.map_id]`. Use `set τ := m - σ with hτ`.
+
+Establish `hmστ : m = σ + τ` using `(add_tsub_cancel_of_le hσm).symm`. Establish `hDr : pD.roots = τ.map Neg.neg`. Establish `h1 : pC.roots + pD.roots = pC.roots + τ.map Neg.neg`. Rewrite using `[hroots, hCr, ← Multiset.map_add, ← hmστ]`. Conclude with `add_left_cancel h1`.
+
+Establish `hτn : τ.Nodup` using `Multiset.nodup_of_le tsub_le_self hm`. Establish `hmc : Multiset.card m = r + s`. Establish `h1` using `congrArg natDegree hCD`. Rewrite `h1` using `[natDegree_mul hpC0 hpD0, spoly_natDegree, spoly_natDegree]`. Rewrite using `[h1, ← IsAlgClosed.card_roots_eq_natDegree, hSr, Multiset.card_map]`.
+
+Establish `hτc : Multiset.card τ = s`. Rewrite using `[hτ, Multiset.card_sub hσm, hmc, hσc]`. Use linear arithmetic over natural numbers and integers. Establish `hCe : ∀ w, (∑ k ∈ Finset.range (r + 1), w ^ k * χa k) = pC.eval w` using `fun w => (spoly_eval r χa hχa w).symm`. Establish `hDe : ∀ w, (∑ k ∈ Finset.range (s + 1), w ^ k * χb k) = pD.eval w` using `fun w => (spoly_eval s χb hχb w).symm`.
+
+Establish `hzero : ∀ x ∈ m, (∑ k ∈ Finset.range (r + 1), (-x) ^ k • a k) * (∑ l ∈ Finset.range (s + 1), (-x) ^ l • b l) = 0`. Introduce `x hx`. Rewrite using `[hrel, Multiset.prod_eq_zero (Multiset.mem_map.2 ⟨x, hx, by ring⟩), zero_smul]`. Use `⟨σ, hσm, hσc, fun u => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `poly_eq r a ha σ hσn hσc (fun x hx => ?_) u` and prove the remaining obligations.
+
+Establish `hD : IsUnit (∑ l ∈ Finset.range (s + 1), (-x) ^ l • b l)`. Use `isUnit_poly s b χb hbb hnb (-x) ?_` and prove the remaining obligations. Rewrite using `[hDe]`. Introduce `h0`. Establish `h1 : -x ∈ pD.roots` using `(mem_roots hpD0).2 h0`.
+
+Establish `h2 : -x ∈ pC.roots` using `by rw [hCr]; exact Multiset.mem_map.2 ⟨x, hx, rfl⟩`. Conclude with `Multiset.disjoint_left.1 hdisj h2 h1`. Conclude with `(hD.mul_left_eq_zero).1 (hzero x (Multiset.mem_of_le hσm hx))`. Use `poly_eq s b hb τ hτn hτc (fun x hx => ?_) u` and prove the remaining obligations. Establish `hC : IsUnit (∑ k ∈ Finset.range (r + 1), (-x) ^ k • a k)`.
+
+Use `isUnit_poly r a χa haa hna (-x) ?_` and prove the remaining obligations. Rewrite using `[hCe]`. Introduce `h0`. Establish `h1 : -x ∈ pC.roots` using `(mem_roots hpC0).2 h0`. Establish `h2 : -x ∈ pD.roots` using `by rw [hDr]; exact Multiset.mem_map.2 ⟨x, hx, rfl⟩`.
+
+Conclude with `Multiset.disjoint_left.1 hdisj h1 h2`. Conclude with `(hC.mul_right_eq_zero).1 (hzero x (Multiset.mem_of_le tsub_le_self hx))`.
+-/
 theorem piece [Nontrivial M] (r s : ℕ) (a b : ℕ → Module.End ℂ M) (haa : ∀ k l, Commute (a k) (a l))
     (hab : ∀ k l, Commute (a k) (b l)) (hbb : ∀ k l, Commute (b k) (b l))
     (ha : a r = 1) (hb : b s = 1) (m : Multiset ℂ) (hm : m.Nodup)
@@ -295,6 +402,65 @@ end Piece
 
 section Main
 
+/- English proof (translation)
+Set `A' : ι → ℕ → Module.End ℂ W` to `fun i k => (A i k).restrict (fun w hw => hAW i k w hw)`. Set `B' : ι → ℕ → Module.End ℂ W` to `fun i k => (B i k).restrict (fun w hw => hBW i k w hw)`. Establish `cAA : ∀ i k j l, Commute (A' i k) (A' j l)` using `fun i k j l => LinearMap.ext fun w => Subtype.ext (hAA i k j l w.1 w.2)`. Establish `cAB : ∀ i k j l, Commute (A' i k) (B' j l)` using `fun i k j l => LinearMap.ext fun w => Subtype.ext (hAB i k j l w.1 w.2)`. Establish `cBB : ∀ i k j l, Commute (B' i k) (B' j l)` using `fun i k j l => LinearMap.ext fun w => Subtype.ext (hBB i k j l w.1 w.2)`.
+
+Set `Gs : Set (Module.End ℂ W)` to `Set.range (fun p : ι × ℕ => A' p.1 p.2) ∪ Set.range (fun p : ι × ℕ => B' p.1 p.2)`. Establish `hGs : ∀ x ∈ Gs, ∀ y ∈ Gs, Commute x y`. Introduce and unpack `_ (⟨⟨i, k⟩, rfl⟩ | ⟨⟨i, k⟩, rfl⟩) _ (⟨⟨j, l⟩, rfl⟩ | ⟨⟨j, l⟩, rfl⟩)`. Conclude with `cAA i k j l`. Conclude with `cAB i k j l`.
+
+Conclude with `(cAB j l i k).symm`. Conclude with `cBB i k j l`. Set `R` to `Algebra.adjoin ℂ Gs`. Establish `hRc : ∀ x ∈ R, ∀ y ∈ R, Commute x y` using `fun x hx y hy => Algebra.commute_of_mem_adjoin_of_forall_mem_commute hy fun b hb => (Algebra.commute_of_mem_adjoin_of_forall_mem_commute hx fun c hc => hGs b hb c hc).symm`. Establish `hAR : ∀ i k, A' i k ∈ R` using `fun i k => Algebra.subset_adjoin (Or.inl ⟨(i, k), rfl⟩)`.
+
+Establish `hBR : ∀ i k, B' i k ∈ R` using `fun i k => Algebra.subset_adjoin (Or.inr ⟨(i, k), rfl⟩)`. Set `Cop : ι → ℂ → Module.End ℂ W` to `fun i u => ∑ k ∈ Finset.range (r + 1), u ^ k • A' i k`. Set `Dop : ι → ℂ → Module.End ℂ W` to `fun i u => ∑ l ∈ Finset.range (s + 1), u ^ l • B' i l`. Establish `hCR : ∀ i u, Cop i u ∈ R` using `fun i u => R.sum_mem fun k _ => R.smul_mem (hAR i k) _`. Establish `hDR : ∀ i u, Dop i u ∈ R` using `fun i u => R.sum_mem fun k _ => R.smul_mem (hBR i k) _`.
+
+Establish `hCv : ∀ i u (w : W), ((Cop i u w : W) : V) = (∑ k ∈ Finset.range (r + 1), u ^ k • A i k) w`. Introduce `i u w`. Simplify using `[Cop, A', LinearMap.sum_apply, Submodule.coe_sum]`. Establish `hDv : ∀ i u (w : W), ((Dop i u w : W) : V) = (∑ l ∈ Finset.range (s + 1), u ^ l • B i l) w`. Introduce `i u w`.
+
+Simplify using `[Dop, B', LinearMap.sum_apply, Submodule.coe_sum]`. Set `v' : W` to `⟨v, hv⟩`. Set `W' : Submodule ℂ W` to `(Subalgebra.toSubmodule R).map (LinearMap.applyₗ v')`. Establish `hW'm : ∀ w, w ∈ W' ↔ ∃ a ∈ R, a v' = w` using `fun w => Submodule.mem_map.trans Iff.rfl`. Establish `hW'inv : ∀ x ∈ R, ∀ w ∈ W', x w ∈ W'`.
+
+Introduce `x hx w hw`. Take `⟨a, ha, rfl⟩` from `(hW'm w).1 hw`. Conclude with `(hW'm _).2 ⟨x * a, R.mul_mem hx ha, rfl⟩`. Establish `hrelv : ∀ i u, Cop i u (Dop i u v') = ((m i).map (u + ·)).prod • v'` using `fun i u => Subtype.ext (by rw [hCv, hDv]; exact hrel i u)`. Establish `hrelW' : ∀ i u, ∀ w ∈ W', Cop i u (Dop i u w) = ((m i).map (u + ·)).prod • w`.
+
+Introduce `i u w hw`. Take `⟨a, ha, rfl⟩` from `(hW'm w).1 hw`. Establish `e1 : Dop i u (a v') = a (Dop i u v')`. Rewrite using `[← Module.End.mul_apply, (hRc _ (hDR i u) _ ha).eq, Module.End.mul_apply]`. Establish `e2 : Cop i u (a (Dop i u v')) = a (Cop i u (Dop i u v'))`.
+
+Rewrite using `[← Module.End.mul_apply, (hRc _ (hCR i u) _ ha).eq, Module.End.mul_apply]`. Rewrite using `[e1, e2, hrelv, map_smul]`. Set `f : (ι × ℕ) ⊕ (ι × ℕ) → Module.End ℂ W'` to `Sum.elim (fun p => (A' p.1 p.2).restrict (fun w hw => hW'inv _ (hAR p.1 p.2) w hw)) (fun p => (B' p.1 p.2).restrict (fun w hw => hW'inv _ (hBR p.1 p.2) w hw))`. Establish `hfR : ∀ j, ∃ x ∈ R, ∀ w : W', (f j w : W) = x w`. Introduce and unpack `(⟨i, k⟩ | ⟨i, k⟩)`.
+
+Conclude with `⟨A' i k, hAR i k, fun w => rfl⟩`. Conclude with `⟨B' i k, hBR i k, fun w => rfl⟩`. Establish `hfc : ∀ j j', Commute (f j) (f j')`. Introduce `j j'`. Take `⟨x, hx, hxe⟩` from `hfR j`.
+
+Take `⟨y, hy, hye⟩` from `hfR j'`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f j (f j' w) : W) = (f j' (f j w) : W)`. Rewrite using `[hxe, hye, hye, hxe, ← Module.End.mul_apply, (hRc x hx y hy).eq, Module.End.mul_apply]`. Establish `hT` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute f (fun j j' _ => hfc j j') (fun j => Module.End.iSup_maxGenEigenspace_eq_top _)`.
+
+Set `v'' : W'` to `⟨v', (hW'm v').2 ⟨1, R.one_mem, rfl⟩⟩`. Establish `hv'' : v'' ∈ ⨆ χ : (ι × ℕ) ⊕ (ι × ℕ) → ℂ, ⨅ j, (f j).maxGenEigenspace (χ j)`. Rewrite using `[hT]`. Conclude with `Submodule.mem_top`. Take `⟨Fs, hFs⟩` from `Submodule.mem_iSup_iff_exists_finset.1 hv''`.
+
+Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum _ _).1 hFs`. Set `P : ((ι × ℕ) ⊕ (ι × ℕ) → ℂ) → Submodule ℂ W'` to `fun χ => ⨅ j, (f j).maxGenEigenspace (χ j)`. Establish `hPf : ∀ χ j, ∀ x ∈ P χ, f j x ∈ P χ`. Introduce `χ j x hx`. Simplify using `only [P, Submodule.mem_iInf] at hx ⊢`.
+
+Introduce `j'`. Conclude with `Module.End.mapsTo_maxGenEigenspace_of_comm (hfc j' j) (χ j') (hx j')`. Set `xx : ((ι × ℕ) ⊕ (ι × ℕ) → ℂ) → V` to `fun χ => (((μ χ : W') : W) : V)`. Establish `key : ∀ χ : (ι × ℕ) ⊕ (ι × ℕ) → ℂ, ∃ σ : ι → Multiset ℂ, (μ χ : W') ≠ 0 → ∀ i, σ i ≤ m i ∧ Multiset.card (σ i) = r ∧ ∀ u : ℂ, (∑ k ∈ Finset.range (r + 1), u ^ k • A i k) (xx χ) = ((σ i).map (u + ·)).prod • xx χ ∧ (∑ l ∈ Finset.range (s + 1), u ^ l • B i l) (xx χ) = ((m i - σ i).m …`. Introduce `χ`.
+
+Distinguish the cases in `h0 : (μ χ : W') = 0`. Conclude with `⟨fun _ => 0, fun h => absurd h0 h⟩`. Establish `hpc : ∀ i, ∃ σi : Multiset ℂ, σi ≤ m i ∧ Multiset.card σi = r ∧ ∀ u : ℂ, (∑ k ∈ Finset.range (r + 1), u ^ k • A i k) (xx χ) = (σi.map (u + ·)).prod • xx χ ∧ (∑ l ∈ Finset.range (s + 1), u ^ l • B i l) (xx χ) = ((m i - σi).map (u + ·)).prod • xx χ`. Introduce `i`. Establish `: Nontrivial (P χ)` using `⟨⟨μ χ, 0, fun h => h0 (congrArg Subtype.val h)⟩⟩`.
+
+Set `a : ℕ → Module.End ℂ (P χ)` to `fun k => (f (Sum.inl (i, k))).restrict (hPf χ _)`. Set `b : ℕ → Module.End ℂ (P χ)` to `fun l => (f (Sum.inr (i, l))).restrict (hPf χ _)`. Establish `hcr : ∀ j j', Commute ((f j).restrict (hPf χ j)) ((f j').restrict (hPf χ j'))` using `fun j j' => LinearMap.ext fun w => Subtype.ext (LinearMap.congr_fun (hfc j j').eq w.1)`. Establish `ha : a r = 1` using `LinearMap.ext fun w => Subtype.ext (Subtype.ext (Subtype.ext (hA1 i _ w.1.1.2)))`. Establish `hb : b s = 1` using `LinearMap.ext fun w => Subtype.ext (Subtype.ext (Subtype.ext (hB1 i _ w.1.1.2)))`.
+
+Establish `hval : ∀ u (w : P χ), ((((∑ k ∈ Finset.range (r + 1), u ^ k • a k) w : P χ) : W') : W) = Cop i u w`. Introduce `u w`. Simplify using `[a, f, Cop, LinearMap.sum_apply, Submodule.coe_sum]`. Establish `hvalD : ∀ u (w : P χ), ((((∑ l ∈ Finset.range (s + 1), u ^ l • b l) w : P χ) : W') : W) = Dop i u w`. Introduce `u w`.
+
+Simplify using `[b, f, Dop, LinearMap.sum_apply, Submodule.coe_sum]`. Establish `hrelP : ∀ u : ℂ, (∑ k ∈ Finset.range (r + 1), u ^ k • a k) * (∑ l ∈ Finset.range (s + 1), u ^ l • b l) = ((m i).map (u + ·)).prod • (1 : Module.End ℂ (P χ))`. Introduce `u`. Use `LinearMap.ext fun w => Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hval]`.
+
+Establish `e : ((((∑ l ∈ Finset.range (s + 1), u ^ l • b l) w : P χ) : W')) = ⟨Dop i u w, hW'inv _ (hDR i u) _ w.1.2⟩` using `Subtype.ext (hvalD u w)`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `Cop i u (Dop i u w.1.1) = _`. Rewrite using `[hrelW' i u _ w.1.2]`. Both sides reduce to the same expression.
+
+Establish `hnil : ∀ j, IsNilpotent ((f j).restrict (hPf χ j) - χ j • 1)`. Introduce `j`. Establish `h1` using `Module.End.isNilpotent_restrict_maxGenEigenspace_sub_algebraMap (f j) (χ j)`. Establish `hp : Set.MapsTo (f j - algebraMap ℂ (Module.End ℂ W') (χ j)) (P χ) (P χ)` using `fun x hx => by`. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply]`.
+
+Conclude with `(P χ).sub_mem (hPf χ j x hx) ((P χ).smul_mem _ hx)`. Establish `e : (f j).restrict (hPf χ j) - χ j • 1 = (f j - algebraMap ℂ (Module.End ℂ W') (χ j)).restrict hp`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `Module.End.isNilpotent_restrict_of_le (hp := hp) (iInf_le _ j) h1`. Take `⟨σi, h1, h2, h3⟩` from `piece r s a b (fun k l => hcr _ _) (fun k l => hcr _ _) (fun k l => hcr _ _) ha hb (m i) (hm i) hrelP (fun k => χ (Sum.inl (i, k))) (fun l => χ (Sum.inr (i, l))) (fun k => hnil _) (fun l => hnil _)`. Use `⟨σi, h1, h2, fun u => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun T : Module.End ℂ (P χ) => ((((T (μ χ) : P χ) : W') : W) : V)) (h3 u).1`. Rewrite `e` using `[hval, hCv]`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression. Establish `e` using `congrArg (fun T : Module.End ℂ (P χ) => ((((T (μ χ) : P χ) : W') : W) : V)) (h3 u).2`. Rewrite `e` using `[hvalD, hDv]`. Rewrite using `[e]`.
+
+Both sides reduce to the same expression. Use `choose σ hσ using hpc`. Conclude with `⟨σ, fun _ i => hσ i⟩`. Use `choose sig hsig using key`. Use `set Fs' := Fs.filter (fun χ => (μ χ : W') ≠ 0) with hFs'`.
+
+Use `⟨Fs'.image sig, fun σ => ∑ χ ∈ Fs'.filter (fun χ => sig χ = σ), xx χ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ _`. Conclude with `W.sum_mem fun χ _ => ((μ χ : W') : W).2`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun χ hχ => Finset.mem_image_of_mem sig hχ)]`. Establish `e1 : v = (((v'' : W') : W) : V)` using `rfl`.
+
+Rewrite using `[e1, ← hμ, Submodule.coe_sum, Submodule.coe_sum, hFs', Finset.sum_filter]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite `h` using `[not_not]`.
+
+Simplify using `[h]`. Introduce and unpack `σ hσ i`. Take `⟨χ₀, hχ₀, rfl⟩` from `Finset.mem_image.1 hσ`. Take `⟨h1, h2, -⟩` from `hsig χ₀ (Finset.mem_filter.1 hχ₀).2 i`. Use `⟨h1, h2, fun u => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Take `⟨hχF, hχe⟩` from `Finset.mem_filter.1 hχ`. Rewrite using `[← hχe]`. Conclude with `((hsig χ (Finset.mem_filter.1 hχF).2 i).2.2 u).1`.
+
+Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun χ hχ => ?_` and prove the remaining obligations. Take `⟨hχF, hχe⟩` from `Finset.mem_filter.1 hχ`. Rewrite using `[← hχe]`. Conclude with `((hsig χ (Finset.mem_filter.1 hχF).2 i).2.2 u).2`.
+-/
 theorem decomp {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Type} [Fintype ι] (r s : ℕ)
     (A B : ι → ℕ → Module.End ℂ V) (m : ι → Multiset ℂ) (W : Submodule ℂ V) [FiniteDimensional ℂ W]
     (hAW : ∀ i k, ∀ w ∈ W, A i k w ∈ W) (hBW : ∀ i k, ∀ w ∈ W, B i k w ∈ W)

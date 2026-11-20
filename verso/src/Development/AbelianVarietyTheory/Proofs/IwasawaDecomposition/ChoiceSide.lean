@@ -93,7 +93,13 @@ def Mv.cg {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} (x : C
     (tw := (x.tw))
     (inf := (x.inf))
     (csd := (x.csd))
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.au {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} (x : AUTrue hL D A.wdT A.au) : AUTrue hL m.D (m.sideA A).wdT (m.sideA A).au := (x)
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.row {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {rep} (x : RowTrue hL D rep (fun σ w ↦ (A.wdT.e w) (A.row.locR σ w)) A.row.satR) : RowTrue hL m.D rep (fun σ w ↦ ((m.sideA A).wdT.e w) ((m.sideA A).row.locR σ w)) (m.sideA A).row.satR := (x)
 
 def Mv.sideB {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {low Pq S hk eig θ} (x : SideB D cf A.row low Pq S hk eig θ) : SideB m.D (m.cf cf) (m.sideA A).row low Pq S hk eig θ := @_root_.GlobalTheory.HeightCounting.SideB.mk (_) (_) (_) (_) (_) (_) (_) (_) (_)
@@ -213,6 +219,9 @@ def Mv.sideB {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {lo
 
 section
 variable {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : SideA D cf jE} {M : Formalism.L2.MtFam D} {C : NChoice D} {tp : TupTied D cf C}
+/- English proof (translation)
+The claim follows from `@_root_.GlobalTheory.HeightCounting.ChoiceSide.mk (_) (_) (_) (_) (_) (_) (nct := @_root_.Formalism.BasicNotions.NChTie.mk (_) (_) (twOf_eq := (x.nct.twOf_eq)) (twSide_eq := (x.nct.twSide_eq)) (Q_eq := (x.nct.Q_eq)) (psi_eq := (x.nct.psi_eq)) (embedding_baseField_condition := (x. …`.
+-/
 theorem Mv.choiceSide {low Pq S hk eig θ} {Bs : SideB D cf A.row low Pq S hk eig θ} (x : ChoiceSide D cf M Bs.exp C tp) : ChoiceSide m.D (m.cf cf) (m.mt M) (m.sideB Bs).exp (m.ch C) (m.tp tp) := @_root_.GlobalTheory.HeightCounting.ChoiceSide.mk (_) (_) (_) (_) (_) (_)
     (nct := @_root_.Formalism.BasicNotions.NChTie.mk (_) (_)
       (twOf_eq := (x.nct.twOf_eq))
@@ -231,6 +240,9 @@ theorem Mv.choiceSide {low Pq S hk eig θ} {Bs : SideB D cf A.row low Pq S hk ei
     (adm := (x.adm))
     (psi := (x.psi))
     (eMt_level := (x.eMt_level))
+/- English proof (translation)
+The claim follows from `@_root_.GlobalTheory.HeightCounting.MtInput.mk (_) (_) (_) (_) (prod := (x.prod)) (para := (x.para)) (uni := (x.uni)) (hyp := (x.hyp)) (wt := (x.wt)) (rat := (x.rat)) (int := (x.int)) (full := (x.full))`.
+-/
 theorem Mv.mtInput (x : MtInput D M tp.tup C.Q) : MtInput m.D (m.mt M) (m.tp tp).tup (m.ch C).Q := @_root_.GlobalTheory.HeightCounting.MtInput.mk (_) (_) (_) (_)
     (prod := (x.prod))
     (para := (x.para))
@@ -333,7 +345,13 @@ def Mv.ratIn {S} (x : RatIn D S) : RatIn m.D S := @_root_.GlobalTheory.HeightCou
     (eig := (x.eig))
     (span := (x.span))
     (hL_int := (x.hL_int))
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.rowDepth {rep} (x : RowDepth D rep) : RowDepth m.D rep := (x)
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.labConj (x : LabConj D A.wdT) : LabConj m.D (m.sideA A).wdT := (x)
 end
 
@@ -355,28 +373,54 @@ def Mv.chrN (x : NCharTied D cf C tp) : NCharTied m.D (m.cf cf) (m.ch C) (m.tp t
     (etaT := (x.etaT))
     (etaTinv := (x.etaTinv))
     (plGw := (x.plGw))
+/- English proof (translation)
+The claim follows from `@_root_.Formalism.L2.Host.NGalChrTied.mk (_) (_) (_) (_) (psi_is := (x.psi_is)) (psiL := (x.psiL)) (deltaRead := (x.deltaRead))`.
+-/
 theorem Mv.chrGal (x : NGalChrTied D cf C tp) : NGalChrTied m.D (m.cf cf) (m.ch C) (m.tp tp) := @_root_.Formalism.L2.Host.NGalChrTied.mk (_) (_) (_) (_)
     (psi_is := (x.psi_is))
     (psiL := (x.psiL))
     (deltaRead := (x.deltaRead))
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.oSplit (x : GlobalTheory.SplitCoef.OSplit D) : GlobalTheory.SplitCoef.OSplit m.D := (x)
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.large (x : GlobalTheory.CoefDuty.Large D) : GlobalTheory.CoefDuty.Large m.D := (x)
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.bkLaw (x : BkLaw D) : BkLaw m.D := (x)
 
 def Mv.omFrame (x : Formalism.L2.OmFrame D) : Formalism.L2.OmFrame m.D := @_root_.Formalism.L2.OmFrame.mk (_)
     (jE := (x.jE))
     (eOm := (x.eOm))
     (comm := (x.comm))
+/- English proof (translation)
+The claim follows from `@_root_.GlobalTheory.HeightCounting.PhtOn.mk (_) (_) (_) (_) (_) (card := (x.card))`.
+-/
 theorem Mv.phtOn {jE : D.host.E →+* Qb} {A : SideA D cf jE} {fr : Formalism.L2.OmFrame D} (x : PhtOn A.wd fr fun _ _ _ _ => True) : PhtOn (m.sideA A).wd (m.omFrame fr) fun _ _ _ _ => True := @_root_.GlobalTheory.HeightCounting.PhtOn.mk (_) (_) (_) (_) (_)
     (card := (x.card))
+/- English proof (translation)
+The claim follows from `(x)`.
+-/
 theorem Mv.tauTrue {a : NAllC D C} (x : TauTrue a.exp) : TauTrue (m.all a).exp := (x)
 end
 
+/- English proof (translation)
+The claim follows from `(@Eq.refl (@Sigma D7 fun D ↦ @Sigma (CharFrame D) fun c ↦ @Sigma (NChoice D) fun C ↦ TupTied D c C) (@Sigma.mk D7 (fun D ↦ @Sigma (CharFrame D) fun c ↦ @Sigma (NChoice D) fun C ↦ TupTied D c C) (@D (@withLoc D₀ L) m) (@Sigma.mk (CharFrame (@D (@withLoc D₀ L) m)) (fun c ↦ @Sigma ( …`.
+-/
 theorem Mv.pack_pre {D₀ : D7} {L : LocAll (lay0 D₀)} (m : Mv (withLoc L)) {cf : CharFrame D₀} {C : NChoice D₀} (tp : TupTied D₀ cf C) :
     (⟨m.D, m.cf (cfL L cf), m.ch (chL L C), m.tp (tpL L tp)⟩ : Σ D : D7, Σ c : CharFrame D, Σ C : NChoice D, TupTied D c C) =
       ⟨withLoc (m.pre.loc L), cfL (m.pre.loc L) (m.pre.cf cf), chL (m.pre.loc L) (m.pre.ch C), tpL (m.pre.loc L) (m.pre.tp tp)⟩ :=
   (@Eq.refl (@Sigma D7 fun D ↦ @Sigma (CharFrame D) fun c ↦ @Sigma (NChoice D) fun C ↦ TupTied D c C) (@Sigma.mk D7 (fun D ↦ @Sigma (CharFrame D) fun c ↦ @Sigma (NChoice D) fun C ↦ TupTied D c C) (@D (@withLoc D₀ L) m) (@Sigma.mk (CharFrame (@D (@withLoc D₀ L) m)) (fun c ↦ @Sigma (NChoice (@D (@withLoc D₀ L) m)) fun C ↦ TupTied (@D (@withLoc D₀ L) m) c C) (@Mv.cf (@withLoc D₀ L) m (@cfL D₀ L cf)) (@Sigma.mk (NChoice (@D (@withLoc D₀ L) m)) (fun C ↦ TupTied (@D (@withLoc D₀ L) m) (@Mv.cf (@withLoc D₀ L) m (@cfL D₀ L cf)) C) (@ch (@withLoc D₀ L) m (@chL D₀ L C)) (@Mv.tp (@withLoc D₀ L) m (@cfL D₀ L cf) (@chL D₀ L C) (@tpL D₀ L cf C tp))))))
 
+/- English proof (translation)
+Take `⟨⟨nb, pack⟩, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, hlow, split, ratIn, r1, r2, r3, depth⟩` from `a`. Take `⟨D0, cf0, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C0, tp0, ch, mt, big, L, Sp, Au, ss, eq⟩` from `nb`. Substitute `eq` using the available equality. Simplify using `only [Sigma.mk.injEq, heq_eq_eq, true_and] at pack`. Take `⟨rfl, rfl, rfl⟩` from `pack`.
+
+Establish `hmt : mtL L M = all.gal.mt` using `eq_of_heq mt_eq`. Use `⟨@NAt.mk hL m.D _ _ _ (⟨@NBuilt.mk hL m.D m.pre.D (m.pre.cf cf0) jE (m.pre.sideA A) (m.pre.cg cg) (m.pre.au au) rep (m.pre.row row) low Pq S hk eig θ (m.pre.sideB Bs) (m.pre.mt M) (m.pre.ch C0) (m.pre.tp tp0) (m.pre.choiceSide ch) (m.pre.mtInput mt) big (m.pre.loc L) (m.pre.ndSpe …` and prove the remaining obligations. Use `⟨HEq.rfl, (HEq.refl Pq'), (HEq.refl (ratL L S)), (HEq.refl hk), (HEq.refl rep), (HEq.refl eig), ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨h1, h2, fr, h3, h4⟩`. Conclude with `⟨(@labConj D0 (@pre D0 L m) cf0 jE A h1), (h2), (m.pre.omFrame fr), (h3), (@phtOn D0 (@pre D0 L m) cf0 jE A fr h4)⟩`.
+-/
 theorem Mv.exists_at {cf : CharFrame D} {C : NChoice D} {tp : TupTied D cf C} (a : NAt hL D cf C tp) :
     ∃ a' : NAt hL m.D (m.cf cf) (m.ch C) (m.tp tp), AtSame m a a' := by
   obtain ⟨⟨nb, pack⟩, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, hlow, split, ratIn,

@@ -7,5 +7,8 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ExtensionDescent.Sec
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Frames.secNZ_of_secGen | exact GlobalTheory.Frames.secNZ_of_secGen | (intros; apply GlobalTheory.Frames.secNZ_of_secGen <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.fibreSectionNowhereZero_of_generates : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (s : LB.Sec (PPx x)), SecGen x s → SecNZ x s := by
   first | exact @GlobalTheory.Frames.secNZ_of_secGen | exact GlobalTheory.Frames.secNZ_of_secGen | (intros; apply GlobalTheory.Frames.secNZ_of_secGen <;> assumption)

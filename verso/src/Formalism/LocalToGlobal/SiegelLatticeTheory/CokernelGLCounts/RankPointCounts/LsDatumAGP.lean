@@ -14,6 +14,21 @@ section GP
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
 
+/- English proof (translation)
+Use `⟨fun a => hv.1 (e a), hv.2.1.comp e he, fun x hx hxs => ?_⟩` and prove the remaining obligations. Establish `hxv : x ∈ Submodule.span E (Set.range v)` using `Submodule.span_mono (Set.range_comp_subset_range e v) hxs`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).1 (hv.2.2 x hx hxv)`. Take `⟨d, hd⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hxs`. Establish `ha' : ∑ i, ((a i : M.L.O) : E) • v i = x` using `ha`.
+
+Set `d' : ι → E` to `fun i => ∑ j, if e j = i then d j else 0`. Establish `hd' : ∑ i, d' i • v i = ∑ j, d j • v (e j)`. Simplify using `only [d', Finset.sum_smul, ite_smul, zero_smul]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `j _`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Establish `hcoef : ∀ i, ((a i : M.L.O) : E) = d' i`. Establish `h0 : ∑ i, (((a i : M.L.O) : E) - d' i) • v i = 0`.
+
+Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[hd', ha']`. Simplify using `using hd.symm ▸ sub_self x`. Introduce `i`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hv.2.1 _ h0 i)`.
+
+Establish `hzero : ∀ i, i ∉ Set.range e → a i = 0`. Introduce `i hi`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hcoef i]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `j _`. Rewrite using `[if_neg (fun h => hi ⟨j, h⟩)]`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨fun j => a (e j), ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`.
+
+Conclude with `(Fintype.sum_of_injective e he (fun j => a (e j) • (v ∘ e) j) (fun i => a i • v i) (fun i hi => by rw [hzero i hi, zero_smul]) (fun j => rfl))`.
+-/
 theorem prim_comp {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V)
     {Λ : Submodule M.L.O V} {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι] {v : ι → V} (hv : H.Prim Λ v)
     (e : κ → ι) (he : Function.Injective e) : H.Prim Λ (v ∘ e) := by
@@ -50,6 +65,49 @@ theorem prim_comp {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : 
   exact (Fintype.sum_of_injective e he (fun j => a (e j) • (v ∘ e) j) (fun i => a i • v i)
     (fun i hi => by rw [hzero i hi, zero_smul]) (fun j => rfl))
 
+/- English proof (translation)
+Introduce `_ V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD₂ Λ₂ hsd hprim`. Take `⟨hg₁, hF₂, hF₂', hI, -, -⟩` from `hyp`. Establish `hT1` using `hg₁.1`. Establish `hD₁ : IsUnit (H.Dl t₁.f t₁.f' (r + 1))` using `hT1.2.2.2.1`. Establish `hG₁ : IsUnit (H.Gdet t₁.f t₁.f' t₁.T t₁.T')` using `isUnit_Gdet H _ _ _ _ hT1.2.2.2.2.1`.
+
+Establish `hG₂ : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T')`. Establish `e` using `Gdet_rel H t₁.f t₁.f' f₂ f₂' t₁.T t₁.T' hI.2.2.2.2.2`. Establish `hN₂ : IsUnit (H.normE (H.Dl f₂ f₂' (r + 1)))` using `hD₂.mul (hD₂.map M.L.cj)`. Establish `h3 : IsUnit (H.Gdet f₂ f₂' t₁.T t₁.T' * H.normE (H.Dl t₁.f t₁.f' (r + 1)))`. Rewrite using `[e]`.
+
+Conclude with `hN₂.mul hG₁`. Conclude with `isUnit_of_mul_isUnit_left h3`. Establish `hnt : Nontrivial E`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_nontrivial_iff_subsingleton]`.
+
+Establish `h0` using `Module.finrank_zero_of_subsingleton (R := F) (M := E)`. Rewrite `h0` using `[M.L.rank]`. Conclude with `absurd h0 (by norm_num)`. Establish `hfam_inl : (H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r)) ∘ Sum.inl = f₂`. Use function extensionality and compare the values at `a`.
+
+Unfold `HermSp.MMfam`. Apply the tactic sequence `rcases M.split with _ | g <;> rfl`. Establish `hPf : H.Prim Λ₂ f₂`. Use `prim_comp H hprim Sum.inl Sum.inl_injective` as an intermediate fact. Rewrite `this` using `[hfam_inl]`. Then use the resulting hypothesis.
+
+Establish `hPf' : H.Prim Λ₂ f₂'`. Break down `hs : M.split with _ | g` into its components or cases. Establish `hfam_inr : (H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r)) ∘ Sum.inr = f₂'`. Use function extensionality and compare the values at `a`. Unfold `HermSp.MMfam`.
+
+Rewrite using `[hs]`. Both sides reduce to the same expression. Use `prim_comp H hprim Sum.inr Sum.inr_injective` as an intermediate fact. Rewrite `this` using `[hfam_inr]`. Then use the resulting hypothesis. Use `set Q : E := algebraMap F E (g.q : F) set qi : E := algebraMap F E ((g.q : F)⁻¹)`.
+
+Establish `hq0 : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (Subtype.ext h0)`. Establish `hQqi : Q * qi = 1`. Simplify using `only [Q, qi]`. Rewrite using `[← map_mul, mul_inv_cancel₀ hq0, map_one]`. Establish `hQO : Q ∈ M.L.O` using `Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O M.L g.q`.
+
+Establish `hMM : H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) = Sum.elim f₂ (fun a => qi • (f₂' a - f₂ a))`. Unfold `HermSp.MMfam`. Rewrite using `[hs]`. Rewrite `hprim` using `[hMM]`. Take `⟨hmem, hli, hsat⟩` from `hprim`.
+
+Use `set y : Fin (r + 1) → V := fun a => qi • (f₂' a - f₂ a)`. Establish `hf' : ∀ a, f₂' a = f₂ a + Q • y a`. Introduce `a`. Simplify using `only [y]`. Rewrite using `[smul_smul, hQqi, one_smul]`.
+
+Normalize the expressions using the abelian group laws. Use `⟨fun a => ?_, ?_, fun x hx hxs => ?_⟩` and prove the remaining obligations. Rewrite using `[hf' a]`. Use `Submodule.add_mem _ (hmem (Sum.inl a)) ?_` and prove the remaining obligations. Use `Λ₂.smul_mem (⟨Q, hQO⟩ : M.L.O) (hmem (Sum.inr a))` as an intermediate fact.
+
+Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `d hd a`. Establish `h0 : ∑ i, (Sum.elim d (fun b => d b * Q) i) • Sum.elim f₂ y i = 0`. Rewrite using `[Fintype.sum_sum_type]`.
+
+Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← hd, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hf' b, smul_add, mul_smul]`. Conclude with `(Fintype.linearIndependent_iff.1 hli) _ h0 (Sum.inl a)`.
+
+Take `⟨d, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hxs`. Establish `hx2 : ∑ a, d a • f₂' a ∈ Submodule.span E (Set.range (Sum.elim f₂ y))`. Use `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[hf' a]`. Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨Sum.inl a, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr a, rfl⟩))`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun M.L.O).1 (hsat _ hx hx2)`. Establish `hcoef` using `(Fintype.linearIndependent_iff.1 hli) (fun i => (c i : E) - Sum.elim d (fun b => d b * Q) i) (by`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Establish `e1 : ∑ i, (c i : E) • Sum.elim f₂ y i = ∑ a, d a • f₂' a`. Rewrite using `[← hc]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => (Subring.smul_def _ _).symm`. Rewrite using `[e1, Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← Finset.sum_add_distrib, sub_eq_zero]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hf' b, smul_add, mul_smul])`. Establish `hdO : ∀ a, d a ∈ M.L.O`. Introduce `a`. Use `hcoef (Sum.inl a)` as an intermediate fact. Simplify using `only [Sum.elim_inl] at this`.
+
+Rewrite using `[← sub_eq_zero.1 this]`. Conclude with `(c _).2`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Use `Submodule.smul_mem (Submodule.span M.L.O (Set.range f₂')) (⟨d a, hdO a⟩ : M.L.O) (Submodule.subset_span ⟨a, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+
+Use `⟨⟨hsd, ⟨hPf, hF₂.1, hF₂.2, hT1.2.1.2.2.2⟩, ⟨hPf', hF₂'.1, hF₂'.2, hT1.2.2.1.2.2.2⟩, hD₂, hG₂.ne_zero, fun g hs => ⟨(hT1.2.2.2.2.2 g hs).1, (hT1.2.2.2.2.2 g hs).2.1, fun b => ?_⟩⟩, hprim⟩` and prove the remaining obligations. Establish `hq0 : (g.q : F) ≠ 0` using `fun h0 => g.q_irr.ne_zero (Subtype.ext h0)`. Establish `hMM : H.MMfam (⟨⊥, f₂, f₂', t₁.T, t₁.T'⟩ : Term V M r) = Sum.elim f₂ (fun a => algebraMap F E ((g.q : F)⁻¹) • (f₂' a - f₂ a))`. Unfold `HermSp.MMfam`. Rewrite using `[hs]`.
+
+Establish `hy : algebraMap F E ((g.q : F)⁻¹) • (f₂' b - f₂ b) ∈ Λ₂`. Use `hprim.1 (Sum.inr b)` as an intermediate fact. Rewrite `this` using `[hMM]`. Conclude with `this`. Establish `e : f₂' b - f₂ b = algebraMap F E (g.q : F) • (algebraMap F E ((g.q : F)⁻¹) • (f₂' b - f₂ b))`.
+
+Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ hq0, map_one, one_smul]`. Use `show f₂' b - f₂ b ∈ H.smulLat (algebraMap F E (g.q : F)) Λ₂`. Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, hy, rfl⟩`.
+-/
 theorem genOfPrim_holds (M : Model F E) (r n : ℕ) : GenOfPrim M r n := by
   intro _ V _ _ H hn t₁ f₂ f₂' φ φ' hyp hD₂ Λ₂ hsd hprim
   obtain ⟨hg₁, hF₂, hF₂', hI, -, -⟩ := hyp

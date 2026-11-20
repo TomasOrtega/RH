@@ -16,6 +16,11 @@ def cmp' {A B C : Scheme.{0}} (u : A ⟶ B) (v : B ⟶ C) (w : A ⟶ C) (h : u �
     Scheme.Modules.pullback v ⋙ Scheme.Modules.pullback u ≅ Scheme.Modules.pullback w :=
   Scheme.Modules.pullbackComp u v ≪≫ Scheme.Modules.pullbackCongr h
 
+/- English proof (translation)
+Substitute `h₁ h₂ h₃` using the available equality. Establish `e` using `congr_app (Scheme.Modules.pseudofunctor_associativity u v t) M`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at e`. Simplify using `only [cmp', Scheme.Modules.pullbackCongr, Iso.trans_hom, eqToIso.hom, NatTrans.comp_app, eqToHom_app, eqToHom_refl, Category.comp_id, Functor.map_comp, Category.assoc]`. Rewrite using `[← e]`.
+
+Simplify using `only [Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.hom_inv_id_app, Functor.map_id, Category.id_comp]`. Use `erw [CategoryTheory.Functor.map_id, Category.id_comp]`.
+-/
 theorem cmp'_assoc {A B C D : Scheme.{0}} (u : A ⟶ B) (v : B ⟶ C) (t : C ⟶ D) (uv : A ⟶ C)
     (vt : B ⟶ D) (uvt : A ⟶ D) (h₁ : u ≫ v = uv) (h₂ : v ≫ t = vt) (h₃ : uv ≫ t = uvt)
     (h₄ : u ≫ vt = uvt) (M : D.Modules) :
@@ -32,6 +37,9 @@ theorem cmp'_assoc {A B C D : Scheme.{0}} (u : A ⟶ B) (v : B ⟶ C) (t : C ⟶
     Category.id_comp]
   erw [CategoryTheory.Functor.map_id, Category.id_comp]
 
+/- English proof (translation)
+Simplify using `[cmp', Scheme.Modules.pullbackCongr]`.
+-/
 theorem cmp'_rfl_hom_app {A B C : Scheme.{0}} (u : A ⟶ B) (v : B ⟶ C) (M : C.Modules) :
     (cmp' u v (u ≫ v) rfl).hom.app M = (Scheme.Modules.pullbackComp u v).hom.app M := by
   simp [cmp', Scheme.Modules.pullbackCongr]
@@ -43,12 +51,22 @@ def sqIso {X X₁ G G₁ : Scheme.{0}} (f : X₁ ⟶ X) (ι : G ⟶ X) (ι₁ : 
   Scheme.Modules.pullbackComp _ f ≪≫ Scheme.Modules.pullbackCongr h ≪≫
     (Scheme.Modules.pullbackComp _ _).symm
 
+/- English proof (translation)
+Simplify using `[sqIso, cmp', Scheme.Modules.pullbackCongr]`.
+-/
 theorem sqIso_hom_app {X X₁ G G₁ : Scheme.{0}} (f : X₁ ⟶ X) (ι : G ⟶ X) (ι₁ : G₁ ⟶ X₁)
     (a : G₁ ⟶ G) (h : ι₁ ≫ f = a ≫ ι) (M : X.Modules) :
     (sqIso f ι ι₁ a h).hom.app M =
       (cmp' ι₁ f (a ≫ ι) h).hom.app M ≫ (cmp' a ι (a ≫ ι) rfl).inv.app M := by
   simp [sqIso, cmp', Scheme.Modules.pullbackCongr]
 
+/- English proof (translation)
+Establish `hK : b ≫ (a ≫ ι) = c ≫ ι` using `by rw [← hc, Category.assoc]`. Establish `hK' : (b ≫ ι₁) ≫ f = c ≫ ι` using `by rw [Category.assoc, h₁, ← Category.assoc, hc]`. Establish `A₁` using `cmp'_assoc ι₂ g f (b ≫ ι₁) (g ≫ f) (c ≫ ι) h₂ rfl hK' h₃ M`. Establish `A₂` using `cmp'_assoc b ι₁ f (b ≫ ι₁) (a ≫ ι) (c ≫ ι) rfl h₁ hK' hK M`. Establish `A₃` using `cmp'_assoc b a ι c (a ≫ ι) (c ≫ ι) hc rfl rfl hK M`.
+
+Rewrite using `[← cancel_mono ((Scheme.Modules.pullback b).map ((cmp' a ι (a ≫ ι) rfl).hom.app M) ≫ (cmp' b (a ≫ ι) (c ≫ ι) hK).hom.app M)]`. Rewrite using `[sqIso_hom_app, sqIso_hom_app, sqIso_hom_app]`. Establish `e₀ : (Scheme.Modules.pullback b).map ((cmp' a ι (a ≫ ι) rfl).inv.app M) ≫ (Scheme.Modules.pullback b).map ((cmp' a ι (a ≫ ι) rfl).hom.app M) = 𝟙 _`. Rewrite using `[← CategoryTheory.Functor.map_comp, Iso.inv_hom_id_app]`. Conclude with `CategoryTheory.Functor.map_id _ _`.
+
+Simplify using `only [Category.assoc, CategoryTheory.Functor.map_comp]`. Rewrite using `[reassoc_of% e₀, ← A₂, Iso.inv_hom_id_app_assoc, A₁, ← A₃, Iso.inv_hom_id_app_assoc, Iso.inv_hom_id_app, Category.comp_id, cmp'_rfl_hom_app]`.
+-/
 theorem sqIso_comp {X X₁ X₂ G G₁ G₂ : Scheme.{0}} (f : X₁ ⟶ X) (g : X₂ ⟶ X₁) (ι : G ⟶ X)
     (ι₁ : G₁ ⟶ X₁) (ι₂ : G₂ ⟶ X₂) (a : G₁ ⟶ G) (b : G₂ ⟶ G₁) (c : G₂ ⟶ G)
     (h₁ : ι₁ ≫ f = a ≫ ι) (h₂ : ι₂ ≫ g = b ≫ ι₁) (h₃ : ι₂ ≫ (g ≫ f) = c ≫ ι) (hc : b ≫ a = c)
@@ -74,6 +92,13 @@ theorem sqIso_comp {X X₁ X₂ G G₁ G₂ : Scheme.{0}} (f : X₁ ⟶ X) (g : 
   rw [reassoc_of% e₀, ← A₂, Iso.inv_hom_id_app_assoc, A₁, ← A₃, Iso.inv_hom_id_app_assoc,
     Iso.inv_hom_id_app, Category.comp_id, cmp'_rfl_hom_app]
 
+/- English proof (translation)
+Establish `K` using `sqIso_comp f g ι ι₁ ι₂ a b c h₁ h₂ h₃ hc E`. Establish `K'` using `sqIso_comp f g ι ι₁ ι₂ a b c h₁ h₂ h₃ hc E'`. Establish `T : (Scheme.Modules.pullback b).map ((sqIso f ι ι₁ a h₁).inv.app E') ≫ (sqIso g ι₁ ι₂ b h₂).inv.app ((Scheme.Modules.pullback f).obj E') ≫ (Scheme.Modules.pullback ι₂).map ((Scheme.Modules.pullbackComp g f).hom.app E') = (cmp' b a c hc).hom.app ((Scheme.Modules.pullback ι).obj E' …`. Rewrite using `[← cancel_epi ((sqIso g ι₁ ι₂ b h₂).hom.app ((Scheme.Modules.pullback f).obj E') ≫ (Scheme.Modules.pullback b).map ((sqIso f ι ι₁ a h₁).hom.app E'))]`. Use `conv_rhs => rw [← Category.assoc, K']`.
+
+Simplify using `only [Category.assoc, ← CategoryTheory.Functor.map_comp_assoc, Iso.hom_inv_id_app, Iso.hom_inv_id_app_assoc, Iso.inv_hom_id_app_assoc, CategoryTheory.Functor.map_id, Category.id_comp, Category.comp_id]`. Use `erw [CategoryTheory.Functor.map_id, Category.id_comp, Iso.hom_inv_id_app_assoc]`. Conclude with `(Category.comp_id _).symm`. Establish `nat` using `(cmp' b a c hc).hom.naturality φ`. Simplify using `only [Functor.comp_map] at nat`.
+
+Simplify using `only [CategoryTheory.Functor.map_comp, Category.assoc]`. Rewrite using `[reassoc_of% K, T, reassoc_of% nat, Iso.inv_hom_id_app_assoc]`.
+-/
 theorem sqIso_pull_comp {X X₁ X₂ G G₁ G₂ : Scheme.{0}} (f : X₁ ⟶ X) (g : X₂ ⟶ X₁) (ι : G ⟶ X)
     (ι₁ : G₁ ⟶ X₁) (ι₂ : G₂ ⟶ X₂) (a : G₁ ⟶ G) (b : G₂ ⟶ G₁) (c : G₂ ⟶ G)
     (h₁ : ι₁ ≫ f = a ≫ ι) (h₂ : ι₂ ≫ g = b ≫ ι₁) (h₃ : ι₂ ≫ (g ≫ f) = c ≫ ι) (hc : b ≫ a = c)
@@ -115,6 +140,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 namespace GenIso
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pull_hom_eq {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.str)
     {E E' : Z.X.Modules} (φ : Z.GenIso E E') :
     (φ.pull hf).hom = (PullCoh.sqIso f Z.gen.ι Z₁.gen.ι (genMap hf)
@@ -123,6 +151,9 @@ theorem pull_hom_eq {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = 
         (PullCoh.sqIso f Z.gen.ι Z₁.gen.ι (genMap hf)
           (f.resLE_comp_ι (preimage_gen hf).ge).symm).inv.app E' := rfl
 
+/- English proof (translation)
+Establish `e₁ : genMap hf ≫ Z.gen.ι = Z₁.gen.ι ≫ f` using `f.resLE_comp_ι _`. Establish `e₂ : genMap hg ≫ Z₁.gen.ι = Z₂.gen.ι ≫ g` using `g.resLE_comp_ι _`. Establish `e₃ : genMap hfg ≫ Z.gen.ι = Z₂.gen.ι ≫ (g ≫ f)` using `(g ≫ f).resLE_comp_ι _`. Rewrite using `[← cancel_mono Z.gen.ι, Category.assoc, e₁, ← Category.assoc, e₂, Category.assoc, e₃]`.
+-/
 theorem genMap_comp' {Z Z₁ Z₂ : Model O} {f : Z₁.X ⟶ Z.X} {g : Z₂.X ⟶ Z₁.X}
     (hf : f ≫ Z.str = Z₁.str) (hg : g ≫ Z₁.str = Z₂.str) (hfg : (g ≫ f) ≫ Z.str = Z₂.str) :
     genMap hfg = genMap hg ≫ genMap hf := by
@@ -131,6 +162,9 @@ theorem genMap_comp' {Z Z₁ Z₂ : Model O} {f : Z₁.X ⟶ Z.X} {g : Z₂.X �
   have e₃ : genMap hfg ≫ Z.gen.ι = Z₂.gen.ι ≫ (g ≫ f) := (g ≫ f).resLE_comp_ι _
   rw [← cancel_mono Z.gen.ι, Category.assoc, e₁, ← Category.assoc, e₂, Category.assoc, e₃]
 
+/- English proof (translation)
+Rewrite using `[pull_hom_eq hg, pull_hom_eq hf, pull_hom_eq hfg]`. Conclude with `PullCoh.sqIso_pull_comp f g Z.gen.ι Z₁.gen.ι Z₂.gen.ι (genMap hf) (genMap hg) (genMap hfg) (f.resLE_comp_ι (preimage_gen hf).ge).symm (g.resLE_comp_ι (preimage_gen hg).ge).symm ((g ≫ f).resLE_comp_ι (preimage_gen hfg).ge).symm (genMap_comp' hf hg hfg).symm φ.hom`.
+-/
 theorem pull_pull_hom' {Z Z₁ Z₂ : Model O} {f : Z₁.X ⟶ Z.X} {g : Z₂.X ⟶ Z₁.X}
     (hf : f ≫ Z.str = Z₁.str) (hg : g ≫ Z₁.str = Z₂.str) (hfg : (g ≫ f) ≫ Z.str = Z₂.str)
     {E E' : Z.X.Modules} (φ : Z.GenIso E E') :
@@ -157,6 +191,9 @@ def transport {Z : Model O} {E₁ E₁' E₂ E₂' : Z.X.Modules} {φ₁ : Z.Gen
     rw [CategoryTheory.Functor.map_comp, CategoryTheory.Functor.map_comp, reassoc_of% (P.gen_ι i),
       h, Category.assoc]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨P.transport ((Scheme.Modules.pullbackComp g.f f.f).app E) ((Scheme.Modules.pullbackComp g.f f.f).app E') (GenIso.pull_pull_hom' f.comp_str g.comp_str (g.comp f).comp_str φ)⟩`.
+-/
 theorem nonempty_pull_comp (Z Z₁ Z₂ : Model O) (f : Hom Z₁ Z) (g : Hom Z₂ Z₁)
     (E E' : Z.X.Modules) (φ : Z.GenIso E E') (N : ℕ)
     (P : FlagPair ((φ.pull f.comp_str).pull g.comp_str) N) :

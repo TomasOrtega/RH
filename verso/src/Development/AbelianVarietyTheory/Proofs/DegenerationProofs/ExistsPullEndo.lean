@@ -14,6 +14,11 @@ noncomputable section
 
 namespace GlobalTheory.Ex.Arch
 
+/- English proof (translation)
+Establish `inj : ∀ {T : Over S'} {x y : T ⟶ G'}, pushPt hg.1.w x = pushPt hg.1.w y → x = y` using `fun {T x y} h => Over.OverMorphism.ext (hg.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Set `f' : G' ⟶ G'` to `Over.homMk (hg.1.lift (φ ≫ f.left) G'.hom (by rw [Category.assoc, Over.w, hg.1.w])) (hg.1.lift_snd _ _ _)`. Establish `ha : f'.left ≫ φ = φ ≫ f.left` using `hg.1.lift_fst _ _ _`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ G'), pushPt hg.1.w (x ≫ f') = pushPt hg.1.w x ≫ f` using `fun x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`.
+
+Establish `pm : ∀ {T : Over S'} (x y : T ⟶ G'), pushPt hg.1.w (x * y) = pushPt hg.1.w x * pushPt hg.1.w y` using `fun x y => map_mul (pushHom hg _) x y`. Use `⟨f', isMonHom_of_mul _ fun T x y => inj ?_, ha⟩` and prove the remaining obligations. Rewrite using `[pa, pm, pm, pa, pa, MonObj.mul_comp]`.
+-/
 theorem exists_pull_endo {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {b : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hg : IsGrpPullback G' G b φ) (f : G ⟶ G) (hf : IsMonHom f) :
     ∃ f' : G' ⟶ G', IsMonHom f' ∧ f'.left ≫ φ = φ ≫ f.left := by
@@ -31,6 +36,23 @@ theorem exists_pull_endo {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj
   refine ⟨f', isMonHom_of_mul _ fun T x y => inj ?_, ha⟩
   rw [pa, pm, pm, pa, pa, MonObj.mul_comp]
 
+/- English proof (translation)
+Introduce `R _ _ _ D J g Λ Hm χ ex fr hF`. Take `⟨-, P', φ, w, u, hΛ, hg, -, hAH, -, -, hlift, hex, hfr⟩` from `hF`. Substitute `hΛ` using the available equality. Take `⟨e, he⟩` from `LiePull.exists_pushEquiv hg (𝟙_ (Over (Sp ℂ))) (TF (R := R) ℂ).hom (Category.id_comp _).symm`. Establish `hee : ∀ z, ex z = e (u.ex z)` using `fun z => Over.OverMorphism.ext ((hex z).trans (he _).symm)`.
+
+Establish `hadd : ∀ z w, ex (z + w) = ex z * ex w` using `fun z w => by`. Rewrite using `[hee, hee, hee, u.ex_add]`. Conclude with `map_mul e _ _`. Establish `hker : ∀ z, ex z = 1 ↔ z ∈ u.Λ` using `fun z => by`. Rewrite using `[hee, ← u.ker]`.
+
+Conclude with `e.map_eq_one_iff`. Use `⟨u.discrete, u.full, hAH.1, hAH.2.1, hAH.2.2.1, fun l m => FrameValue.chi_add P'.isLB hAH l m, hadd, fun y => ?_, hker, fun l z => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `e.surjective y`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Conclude with `⟨z, (hee z).trans hx⟩`.
+
+Establish `hi` using `FrameValue.le_chartAt P'.isLB (u.ex z).left set i := FrameValue.chartAt P'.isLB (u.ex z).left`. Establish `h₁ : u.ex (z + l) = u.ex z` using `by rw [u.ex_add, (u.ker _).2 l.2, _root_.mul_one]`. Establish `h₂ : ex (z + l) = ex z` using `by rw [hee, hee, h₁]`. Establish `a` using `hfr z i hi`. Establish `b` using `hfr (z + l) i (by rw [h₁]; exact hi)`.
+
+Rewrite `b` using `[h₁, h₂]`. Rewrite using `[a, b, hAH.2.2.2 l i z hi]`. Simplify using `only [hermForm]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨f', hf', hc⟩` from `exists_pull_endo hg f hf`.
+
+Take `⟨F, hF⟩` from `hlift f' hf'`. Establish `hF' : ∀ z, ex (F z) = ex z ≫ f` using `fun z => Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, hex, hex, hF, Over.comp_left, Category.assoc, hc, Category.assoc])`. Use `⟨F, hF', fun G hG => ?_⟩` and prove the remaining obligations. Establish `hm : ∀ z, (G - F) z ∈ u.Λ` using `fun z => by`.
+
+Rewrite using `[← hker]`. Establish `h` using `hadd ((G - F) z) (F z)`. Rewrite `h` using `[LinearMap.sub_apply, sub_add_cancel, hG, hF']`. Conclude with `mul_eq_right.1 h.symm`. Use `haveI := u.discrete`.
+
+Establish `hc : Continuous fun w => (⟨(G - F) w, hm w⟩ : u.Λ)` using `(G - F).continuous_of_finiteDimensional.subtype_mk _`. Use `sub_eq_zero.1 (LinearMap.ext fun z => ?_)` and prove the remaining obligations. Use `PreconnectedSpace.constant inferInstance hc (x := z) (y := 0)` as an intermediate fact. Simplify using `using congrArg Subtype.val this`.
+-/
 theorem fibGrp : FibGrpSt := by
   intro R _ _ _ D J g Λ Hm χ ex fr hF
   obtain ⟨-, P', φ, w, u, hΛ, hg, -, hAH, -, -, hlift, hex, hfr⟩ := hF

@@ -20,6 +20,9 @@ def killersEquiv {k : Type} [Field k] {m n : ℕ} (A : Matrix (Fin n) (Fin n) k)
   left_inv w := by ext i l; rfl
   right_inv f := by ext i l; rfl
 
+/- English proof (translation)
+Establish `h1 : Module.finrank k (LinearMap.range (Aᵀ).mulVecLin) = Module.finrank k (LinearMap.range A.mulVecLin)` using `Matrix.rank_transpose A`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (Aᵀ).mulVecLin`. Rewrite `h2` using `[h1, Module.finrank_fin_fun]`. Establish `h3 : Module.finrank k (LinearMap.ker (Aᵀ).mulVecLin) = j` using `by omega`. Rewrite using `[Nat.card_congr (killersEquiv A), Nat.card_fun, Module.natCard_eq_pow_finrank (K := k), h3, Nat.card_eq_fintype_card (α := Fin m), Fintype.card_fin, pow_mul]`.
+-/
 theorem natCard_matrices_mul_eq_zero (k : Type) [Field k] [Finite k] (m n j : ℕ)
     (A : Matrix (Fin n) (Fin n) k)
     (h : Module.finrank k (LinearMap.range A.mulVecLin) + j = n) :

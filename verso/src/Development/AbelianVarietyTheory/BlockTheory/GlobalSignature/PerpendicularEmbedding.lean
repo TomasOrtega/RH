@@ -20,6 +20,9 @@ def qf {P Q : ℕ} (x : Sp P Q) : ℝ :=
 
 open MeasureTheory Matrix in
 open scoped ENNReal in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm, _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf, Complex.star_def, Complex.mul_conj]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_self {P Q : ℕ} (x : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm x x = (_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf x : ℂ) := by
   simp [_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm, _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.qf, Complex.star_def,
@@ -27,6 +30,9 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.he
 
 open MeasureTheory Matrix in
 open scoped ENNReal in
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm, _root_.Formalism.UG.hform, _root_.Formalism.UG.Jpq, Fintype.sum_sum_type, fromBlocks_apply₁₁, fromBlocks_apply₁₂, fromBlocks_apply₂₁, fromBlocks_apply₂₂, Matrix.one_apply, Matrix.neg_apply, Matrix.z …`. Simplify using `[mul_comm, sub_eq_add_neg, Finset.sum_neg_distrib]`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm_eq_hform {P Q : ℕ} (x y : _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.Sp P Q) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm x y = _root_.Formalism.UG.hform (starRingEnd ℂ) (_root_.Formalism.UG.Jpq P Q) y x := by
   simp only [_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.herm, _root_.Formalism.UG.hform, _root_.Formalism.UG.Jpq, Fintype.sum_sum_type,
@@ -40,6 +46,9 @@ def cM (M : ℕ) : ℝ := (2 * Real.pi) ^ M / ((M - 1).factorial : ℝ)
 
 open MeasureTheory Matrix in
 open scoped ENNReal in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.cM`. Check the signs of the components of the expression.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.cM_pos (M : ℕ) : 0 < _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.cM M := by
   unfold _root_.GlobalTheory.IndefiniteRowSideFullHecke.PerpendicularEmbedding.cM
   positivity
@@ -87,8 +96,14 @@ def SphereMass : Prop :=
   ∀ M : ℕ, 1 ≤ M → AllSome (fun fib : ℝ → Measure (Sp M 0) => IsDxDq fib)
     (fun fib => fib 1 Set.univ = ENNReal.ofReal (cM M))
 
+/- English proof (translation)
+Simplify using `[cM]`.
+-/
 example : cM 1 = 2 * Real.pi := by simp [cM]
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [qf, Fin.sum_univ_succ, Pi.single_apply]`.
+-/
 example (P Q : ℕ) : qf (Pi.single (Sum.inl 0) 1 : Sp (P + 1) Q) = 1 ∧
     qf (Pi.single (Sum.inr 0) 1 : Sp P (Q + 1)) = -1 := by
   constructor <;> simp [qf, Fin.sum_univ_succ, Pi.single_apply]

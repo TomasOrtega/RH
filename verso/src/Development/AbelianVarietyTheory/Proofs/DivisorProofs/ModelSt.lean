@@ -23,6 +23,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and runModel_arch GlobalTheory.BigOn.typePrimes_gt_three_r) ?_` and prove the remaining obligations. Introduce `eps Fm CH _ hx0`. Take `⟨x0, hx0⟩` from `EvPt.and hx0.1 hx0.2`. Use `⟨x0, fun x hx hle ι p hrows hmore r hr hown i => ?_⟩` and prove the remaining obligations. Take `⟨harch, hg⟩` from `hx0 x hx hle ι p hrows`.
+
+Take `⟨C, hfin, hact, M, ka, hRM⟩` from `exists_runModel p hmore r hr hown i`. Establish `hb0 : 0 < badN (Fm.D x ι)`. Take `⟨v, -⟩` from `hRM`. Conclude with `(GlobalTheory.TrivLevel.badN_pos_iff _).2 (hmore.2.1.fieldAt v).bad`. Take `⟨hcard, ρ, σ, f, h1, h2, h3, h4⟩` from `Reading.reading_of_runModel p r hr i M ka hb0 (Fm.parT x hx ι).nV_ge hRM`.
+
+Conclude with `⟨C, hfin, hact, M, ka, ρ, σ, f, h1, h2, h3, h4, levelCondition_restrict_of_halfUnipotent p r hr i M ka (hg hmore) hRM, hcard, harch hmore r hr hown i C M ka hRM⟩`.
+-/
 theorem modelSt : ModelSt := by
   refine Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and runModel_arch GlobalTheory.BigOn.typePrimes_gt_three_r) ?_
   intro eps Fm CH _ hx0

@@ -11,17 +11,36 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker Formalism.L2.
 
 namespace GlobalTheory.KerJ
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q : DecoF X.E n ST SG Q => q.deco.1.N) h`.
+-/
 theorem gmap_of_fix {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} {Λ : LevFam X.E X.K n SG}
     {Θ : LevQFam X.E X.K n Q} (a : FrmG Λ Θ) (p : DecoF X.E n ST SG Q) (h : a • p = p) :
     gmap a.1.1 p.deco.1.N = p.deco.1.N :=
   congrArg (fun q : DecoF X.E n ST SG Q => q.deco.1.N) h
 
+/- English proof (translation)
+Introduce and unpack `z ⟨w, hw, rfl⟩`. Use `⟨((a : 𝓞 E)) • w, M.smul_mem _ hw, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, Nat.cast_mul, mul_comm]`.
+-/
 theorem mulLat_mul_le {E : Type} [Field E] [NumberField E] {H : Type} [AddCommGroup H] [Module (𝓞 E) H] (a b : ℕ)
     (M : Submodule (𝓞 E) H) : mulLat (a * b) M ≤ mulLat b M := by
   rintro z ⟨w, hw, rfl⟩
   refine ⟨((a : 𝓞 E)) • w, M.smul_mem _ hw, ?_⟩
   simp only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul, Nat.cast_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl K Y cX ex t hC u μ G hG i hi c c' g hg`. Establish `hok` using `t.idx_ok μ`. Establish `hm` using `hok.hm`. Take `⟨hSS, hlev, -⟩` from `t.rd_chain u μ`. Take `⟨pt, ix, yb, pT, hN, hyb, hE, hC1, hTop, hGi, hGm, hGT⟩` from `hG`.
+
+Establish `dat` using `GlobalTheory.T.pairKernelLaw_of_finiteDatumLaw D L hT Gi Gl K Y cX ex t hC.fields hC.sel hC.bad.1 hC.bad.2.1 hC.bad.2.2.1 hC.bad.2.2.2 hC.chars u μ i hi c c'`. Establish `fin : ∀ (f : HomE t.X.E (D.R.N i) (D.R.N (i + 1)) → t.X.K) (N : Submodule (𝓞 t.X.E) (Sp t.X.E (D.R.N i))) (N' : Submodule (𝓞 t.X.E) (Sp t.X.E (D.R.N (i + 1)))) (γ : UF t.X.E (D.R.N (i + 1))) (k : t.X.K), (t.rd u μ).N i c = N → (t.rd u μ).N (i + 1) c' = N' → (∀ x, (t.rd u μ).Xi i …`. Introduce `f N N' γ k hN1 hN2 hf hγ hinv hlaw`. Substitute `hN1 hN2` using the available equality. Use `dat γ k hγ (fun x z hz => ?_) fun x => ?_` and prove the remaining obligations.
+
+Rewrite `hz` using `[hlev, hSS]`. Rewrite using `[hf, hf, hinv x z (mulLat_mul_le _ _ _ hz)]`. Rewrite using `[hf, hf, ← map_mul, ← map_mul, hlaw]`. Break down `lt_trichotomy i t.m2 with hlt | heq | hgt` into its components or cases. Rewrite `hg` using `[hGi (i + 1) (by omega) (by omega) c']`.
+
+Take `⟨a, hfix, -, rfl⟩` from `hg`. Conclude with `fin _ _ _ a.1 _ (hN i (by omega) c) (hN (i + 1) (by omega) c') (hE i hlt c c') (gmap_of_fix a _ hfix) (fun x z hz => xiEntry_invA t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.pr_ok hok i hlt _ _ _ _ x z hz) (GlobalTheory.FiLaw.xiEntry_stab t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t …`. Substitute `heq` using the available equality. Take `⟨b, -⟩` from `hok.last_uniq`. Rewrite `hg` using `[hGm b c']`.
+
+Take `⟨a, hfix, hY, rfl⟩` from `hg`. Conclude with `fin _ _ _ a.1 _ (hN _ (Nat.le_succ _) c) (hN _ le_rfl c') (hC1 c c') (gmap_of_fix a _ hfix) (fun x z hz => xiCpl1_invA t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.pr_ok hok _ _ _ _ x z hz) (GlobalTheory.StabLaw.xiCpl1_stab t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.glob _ hC.field …`. Establish `hi' : i = t.m2 + 1` using `by omega`. Substitute `hi'` using the available equality. Rewrite `hg` using `[hGT c']`.
+
+Take `⟨a, hfix, -, rfl⟩` from `hg`. Conclude with `fin _ _ _ a.1 _ (hN _ le_rfl c) (hTop.1 c') (hTop.2 c c') (gmap_of_fix a _ hfix) (fun x z hz => GlobalTheory.T.lastStep_datum_invariant_cB_hom_twist_primes t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.glob t.m2 hC.fields t.pr_ok hC.sel hC.bad.1 hC.bad.2.1 hok (t.word u) _ _ _ x z ( …`.
+-/
 theorem term_law : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : G.Inst D L) (Gl : G.LatInst D) (K : G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl K Y cX) (t : KerEntTied ex), ColSide t → ∀ u μ (G : StabDat (D.chTw u μ)), StabPin t u μ G → ∀ i < D.R.m, ∀ c c', ∀ g ∈ G (i + 1) c', TermLaw (t.O u μ) i c c' g := by
   intro D L hT Gi Gl K Y cX ex t hC u μ G hG i hi c c' g hg
   have hok := t.idx_ok μ

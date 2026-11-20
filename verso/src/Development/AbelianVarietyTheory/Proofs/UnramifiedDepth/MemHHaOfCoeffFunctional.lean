@@ -16,6 +16,9 @@ variable {σ K L : Type} [Field K] [Field L] [Algebra K L]
 def coeffMap (φ : L →ₗ[K] K) (P : MvPolynomial σ L) : MvPolynomial σ K :=
   ∑ μ ∈ P.support, monomial μ (φ (P.coeff μ))
 
+/- English proof (translation)
+Simplify using `only [coeffMap, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.notMem_support_iff.mp h, map_zero]`.
+-/
 theorem coeff_coeffMap (φ : L →ₗ[K] K) (P : MvPolynomial σ L) (μ : σ →₀ ℕ) :
     (coeffMap φ P).coeff μ = φ (P.coeff μ) := by
   classical
@@ -24,15 +27,24 @@ theorem coeff_coeffMap (φ : L →ₗ[K] K) (P : MvPolynomial σ L) (μ : σ →
   · rfl
   · rw [MvPolynomial.notMem_support_iff.mp h, map_zero]
 
+/- English proof (translation)
+Use extensionality with `μ`. Simplify using `[coeff_coeffMap]`.
+-/
 theorem coeffMap_add (φ : L →ₗ[K] K) (P Q : MvPolynomial σ L) :
     coeffMap φ (P + Q) = coeffMap φ P + coeffMap φ Q := by
   ext μ
   simp [coeff_coeffMap]
 
+/- English proof (translation)
+Use extensionality with `μ`. Simplify using `[coeff_coeffMap]`.
+-/
 theorem coeffMap_zero (φ : L →ₗ[K] K) : coeffMap φ (0 : MvPolynomial σ L) = 0 := by
   ext μ
   simp [coeff_coeffMap]
 
+/- English proof (translation)
+Use extensionality with `μ`. Rewrite using `[coeff_coeffMap, coeff_C_mul, coeff_C_mul, coeff_map, mul_comm c, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+-/
 theorem coeffMap_map_mul_C (φ : L →ₗ[K] K) (A : MvPolynomial σ K) (c : L) :
     coeffMap φ (MvPolynomial.C c * MvPolynomial.map (algebraMap K L) A) =
       MvPolynomial.C (φ c) * A := by
@@ -40,6 +52,11 @@ theorem coeffMap_map_mul_C (φ : L →ₗ[K] K) (A : MvPolynomial σ K) (c : L) 
   rw [coeff_coeffMap, coeff_C_mul, coeff_C_mul, coeff_map, mul_comm c, ← Algebra.smul_def,
     map_smul, smul_eq_mul, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, coeffMap_add, coeffMap_add, map_add, hp, hq]`. Consider the case `monomial μ c`. Establish `e : (monomial μ c : MvPolynomial σ L) = MvPolynomial.C c * MvPolynomial.map (algebraMap K L) (monomial μ 1)`. Rewrite using `[map_monomial, map_one, C_mul_monomial, mul_one]`.
+
+Rewrite using `[e, coeffMap_map_mul_C, C_mul', map_smul, h, ← C_mul', coeffMap_map_mul_C, C_mul', C_mul', map_smul]`.
+-/
 theorem coeffMap_comm (φ : L →ₗ[K] K) (f : MvPolynomial σ L →ₗ[L] MvPolynomial σ L)
     (g : MvPolynomial σ K →ₗ[K] MvPolynomial σ K)
     (h : ∀ A, f (MvPolynomial.map (algebraMap K L) A) = MvPolynomial.map (algebraMap K L) (g A))
@@ -55,6 +72,11 @@ theorem coeffMap_comm (φ : L →ₗ[K] K) (f : MvPolynomial σ L →ₗ[L] MvPo
 
 variable {T : Type} (r : T → ℕ) (n : ℕ)
 
+/- English proof (translation)
+Simplify using `only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Simplify using `[pderiv_map]`.
+
+Simplify using `[Matrix.one_apply_ne hb]`.
+-/
 theorem lap_one_map (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ'))
     (A : MvPolynomial (Letter T r n) K) :
     lap r n L 1 τ τ' a a' (MvPolynomial.map (algebraMap K L) A) =
@@ -66,6 +88,11 @@ theorem lap_one_map (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ'))
     simp [pderiv_map]
   · simp [Matrix.one_apply_ne hb]
 
+/- English proof (translation)
+Proceed by induction on `A using MvPolynomial.induction_on with`. Consider the case `C c => simp [rowShift]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p l hp`. Simplify using `only [map_mul, hp, map_X]`.
+
+Use `congr 1`. Simplify using `only [rowShift, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem rowShift_map (s : T) (i i' : Fin (r s)) (t : K) (A : MvPolynomial (Letter T r n) K) :
     rowShift r n L s i i' (algebraMap K L t) (MvPolynomial.map (algebraMap K L) A) =
       MvPolynomial.map (algebraMap K L) (rowShift r n K s i i' t A) := by
@@ -78,6 +105,15 @@ theorem rowShift_map (s : T) (i i' : Fin (r s)) (t : K) (A : MvPolynomial (Lette
     simp only [rowShift, aeval_X]
     split_ifs <;> simp
 
+/- English proof (translation)
+Introduce `T r n K L _ _ _ φ cc isX a P Q hQ hP`. Establish `hQ' : Q = coeffMap φ P`. Use extensionality with `μ`. Rewrite using `[hQ, coeff_coeffMap]`. Take `⟨h1, h2, h3⟩` from `hP`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at h1 ⊢`. Introduce `τ hτ b b'`. Rewrite using `[hQ', ← coeffMap_comm φ _ _ (lap_one_map r n τ (cc τ) b b') P, h1 τ hτ b b', coeffMap_zero]`. Introduce `s i i' hi t`.
+
+Use `coeffMap_comm φ (rowShift r n L s i i' (algebraMap K L t)).toLinearMap (rowShift r n K s i i' t).toLinearMap (rowShift_map r n s i i' t) P` as an intermediate fact. Simplify using `only [AlgHom.toLinearMap_apply] at this`. Rewrite using `[hQ', ← this, h2 s i i' hi]`. Introduce `m hm`. Use `h3 m ?_` and prove the remaining obligations.
+
+Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Conclude with `hm (by rw [hQ, h0, map_zero])`.
+-/
 theorem mem_HHa_of_coeff_functional :
     ∀ (T : Type) (r : T → ℕ) (n : ℕ) (K C : Type) [Field K] [Field C] [Algebra K C] (φ : C →ₗ[K] K) (cc : T → T) (isX : T → Prop) (a : T → ℕ → ℕ) (P : MvPolynomial (Letter T r n) C) (Q : MvPolynomial (Letter T r n) K), (∀ μ, Q.coeff μ = φ (P.coeff μ)) → P ∈ HHa r n C cc isX a → Q ∈ HHa r n K cc isX a := by
   intro T r n K L _ _ _ φ cc isX a P Q hQ hP

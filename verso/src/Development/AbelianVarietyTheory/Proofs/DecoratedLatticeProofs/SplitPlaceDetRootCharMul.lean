@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.SplitRootProd
 
+/- English proof (translation)
+Introduce `D V μ n hn hres e he s g hs x₀ x x₁ h0 hx hx1`. Establish `r0 : IsDetRoot V s x₀` using `Formalism.L2.Theta.isDetAt_root he V s hs x₀ h0`. Establish `r : IsDetRoot V (s * g) (x₀ * x)` using `GlobalTheory.Member.isDetRoot_mul V s g x₀ x r0 hx`. Take `⟨a, ha⟩` from `(GlobalTheory.Member.isDetRoot_laws D V).2.1 (s * g) (x₀ * x) x₁ r hx1`. Take `⟨⟨η, hη⟩, hall⟩` from `hres`.
+
+Establish `hμ` using `hall η hη a`. Take `⟨k, hk⟩` from `hn`. Rewrite using `[ha, map_mul, hμ, hk, ← two_mul, pow_mul, Formalism.L2.Theta.eta_sq hη a, one_pow, mul_one, map_mul]`.
+-/
 theorem mu_root_mul : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle) (n : ℕ), Even n → ResEta D μ n → ∀ e, IsSplitIdem D e → ∀ (s g : GA D V), SuppAt e V s → ∀ x₀ x x₁, IsDetAt e V s x₀ → IsDetRoot V g x → IsDetRoot V (s * g) x₁ → μ x₁ = μ x₀ * μ x := by
   intro D V μ n hn hres e he s g hs x₀ x x₁ h0 hx hx1
   have r0 : IsDetRoot V s x₀ := Formalism.L2.Theta.isDetAt_root he V s hs x₀ h0

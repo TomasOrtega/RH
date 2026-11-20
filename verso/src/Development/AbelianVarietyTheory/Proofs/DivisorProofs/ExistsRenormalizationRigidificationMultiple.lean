@@ -14,6 +14,9 @@ open GlobalTheory.Poinc.Tors
 noncomputable section
 namespace GlobalTheory.Poinc.Renorm
 
+/- English proof (translation)
+Rewrite using `[h₀, h₁, h₂, h₃]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem alg_renorm {M : Type} [CommGroup M] {q q₀ a p p₀ g g₀ x y : M} (h₀ : q = y * x⁻¹ * q₀)
     (h₁ : a = g₀ * (q₀ * p₀)⁻¹) (h₂ : p = x * p₀) (h₃ : g = y * g₀) : q * (a * p) = g := by
   rw [h₀, h₁, h₂, h₃]
@@ -28,6 +31,19 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G)
 
+/- English proof (translation)
+Set `z₀ : Spec (CommRingCat.of (FractionRing R))` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))`. Take `⟨JA₀, hA₀⟩` from `exists_good' A.isLB z₀`. Take `⟨JG₀, hG₀⟩` from `exists_good' U.LG.isLB z₀`. Set `eK : Spec (CommRingCat.of (FractionRing R)) ⟶ ((Over.pullback (jK R)).obj G).left` to `eSec ((Over.pullback (jK R)).obj G)`. Establish `h₁ : eK ≫ U.gen.hom.left = eSec A.A` using `EvalZero.eK_gen U`.
+
+Establish `h₂ : eK ≫ pullback.fst G.hom (jK R) = jK R ≫ eSec G` using `EvalZero.eK_fst`. Establish `hsurj : ∀ u : ((Spec (CommRingCat.of (FractionRing R))).presheaf.stalk z₀)ˣ, ∃ a : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤)ˣ, gm (𝟙 _) z₀ ⊤ a = u`. Introduce `u`. Take `⟨V, hV, s, hs⟩` from `(Spec (CommRingCat.of (FractionRing R))).presheaf.exists_germ_eq u.val`. Take `rfl : V = ⊤` from `eq_top_iff.2 fun y _ => (Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ y) ▸ hV`.
+
+Establish `hu : IsUnit s` using `(Spec (CommRingCat.of (FractionRing R))).toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => by`. Take `rfl : z₀ = y` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ y`. Conclude with `(congrArg IsUnit hs).mpr u.isUnit`. Conclude with `⟨hu.unit, Units.ext ((gm_val _ z₀ ⊤ trivial _).trans hs)⟩`. Take `⟨a, ha⟩` from `hsurj (val (L := U.LG.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.LG.rig (jK R) z₀ JG₀ * (pw w₀ eK z₀ (JA₀ (eSec A.A)) (JG₀ (jK R ≫ eSec G)) * val (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) (Z := Spec (CommRingCat.of (FractionRing R))) ρ (𝟙 _) z₀ JA₀) …`.
+
+Use `⟨a, hw, GlobalTheory.UU.scaleGen_isGen a hρ, fun z JA JG hA hG => ?_⟩` and prove the remaining obligations. Take `rfl : z₀ = z` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) z₀ z`. Establish `mA : ∀ J, Good A.L z₀ J → U.gen.hom.left (eK z₀) ∈ A.L.U (J (eSec A.A))` using `fun J hJ => (congrArg (fun q => q z₀ ∈ A.L.U (J (eSec A.A))) h₁).mpr (hJ _)`. Establish `mG : ∀ J, Good U.LG.L z₀ J → pullback.fst G.hom (jK R) (eK z₀) ∈ U.LG.L.U (J (jK R ≫ eSec G))` using `fun J hJ => (congrArg (fun q => q z₀ ∈ U.LG.L.U (J (jK R ≫ eSec G))) h₂).mpr (hJ _)`. Establish `b₀ : gw w₀ eK z₀ (JG (jK R ≫ eSec G)) (fun _ => JA (eSec A.A)) = pw w₀ eK z₀ (JA (eSec A.A)) (JG (jK R ≫ eSec G))` using `rfl`.
+
+Establish `b₁` using `pw_trans hw eK z₀ (mA _ hA) (mA _ hA₀) (mG _ hG) (mG _ hG₀)`. Establish `b₂` using `val_tr (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) (Z := Spec (CommRingCat.of (FractionRing R))) hρ (𝟙 _) hA hA₀`. Establish `b₃` using `val_tr (L := U.LG.L) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) U.LG.rigGen (jK R) hG hG₀`. Establish `b₄` using `GlobalTheory.UU.val_scaleGen (L := A.L) (φ := fun _ : PUnit => eSec A.A) (ε := fun _ => 1) a ρ (𝟙 _) hA`. Rewrite `b₁` using `[h₁, h₂]`.
+
+Rewrite `b₂`, `b₃` using `[Fintype.prod_unique, zpow_one]`. Rewrite `b₂` using `[Category.id_comp]`. Rewrite using `[b₀, b₄]`. Conclude with `alg_renorm b₁ ha b₂ b₃`.
+-/
 theorem exists_unit_normW (w₀ : W0 U) (hw : w₀.IsGen) (ρ : LB.Gen (A.L.pull (eSec A.A))) (hρ : ρ.IsGen) :
     ∃ a : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤)ˣ, NormW U w₀ (GlobalTheory.UU.scaleGen a ρ) := by
   let z₀ : Spec (CommRingCat.of (FractionRing R)) := (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))
@@ -72,12 +88,18 @@ theorem exists_unit_normW (w₀ : W0 U) (hw : w₀.IsGen) (ρ : LB.Gen (A.L.pull
 
 end Norm
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+-/
 theorem alg_rig {M : Type} [CommGroup M] (g v : M) (k : ℤ) :
     g ^ (k - 1) * (v ^ k * v⁻¹) = (g * v) ^ k * (g * v)⁻¹ := by
   apply Additive.ofMul.injective
   simp only [ofMul_mul, ofMul_inv, ofMul_zpow]
   module
 
+/- English proof (translation)
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace h := congrArg Additive.ofMul h`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow] at h ⊢`. Take the linear combination `(norm := module) h`.
+-/
 theorem alg_frame {M : Type} [CommGroup M] {g t α r : M} {k : ℤ} (h : t ^ k = α * r ^ (1 : ℤ)) :
     (g * t) ^ k = g ^ (k - 1) * α * (g * r) ^ (1 : ℤ) := by
   apply Additive.ofMul.injective
@@ -88,6 +110,15 @@ theorem alg_frame {M : Type} [CommGroup M] {g t α r : M} {k : ℤ} (h : t ^ k =
 section Tors
 variable {S : Scheme.{0}} {P : PolAV S}
 
+/- English proof (translation)
+Take `⟨hn, -, α, hα, hN, hc⟩` from `H`. Set `u : Γ(P.A.left, ⊤)ˣ` to `pullU P.A.hom ⊤ a ^ ((n : ℤ) ^ 2 - 1)`. Establish `hu : ∀ (Z : Scheme.{0}) (r : Z ⟶ P.A.left) (z : Z), gm r z ⊤ u = gm (r ≫ P.A.hom) z ⊤ a ^ ((n : ℤ) ^ 2 - 1)` using `fun Z r z => (map_zpow _ _ _).trans (congrArg (· ^ _) (gm_pull r P.A.hom z ⊤ trivial a))`. Establish `hr : ∀ (Z : Scheme.{0}) (r : Z ⟶ S) (z : Z) J, Good P.L z J → FrameMove.rval (GlobalTheory.UU.scaleGen a rig) r z J = gm r z ⊤ a * FrameMove.rval rig r z J` using `fun Z r z J hJ => GlobalTheory.UU.val_scaleGen (L := P.L) (φ := fun _ : PUnit => eSec P.A) (ε := fun _ => 1) a rig r hJ`. Establish `hα' : ∀ (Z : Scheme.{0}) (r : Z ⟶ P.A.left) (z : Z) J, Good P.L z J → val (GlobalTheory.UU.scaleGen u α) r z J = gm r z ⊤ u * val α r z J` using `fun Z r z J hJ => GlobalTheory.UU.val_scaleGen u α r hJ`.
+
+Establish `he : eSec P.A ≫ P.A.hom = 𝟙 S` using `Over.w η[P.A]`. Use `⟨hn, hτ', GlobalTheory.UU.scaleGen u α, GlobalTheory.UU.scaleGen_isGen u hα, corr_of_val P.isLB fun y J hJ => ?_, corr_of_val P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e0 : val α (𝟙 _ ≫ eSec P.A) y J = FrameMove.rval rig (𝟙 _) y J ^ ((n : ℤ) ^ 2) * (FrameMove.rval rig (𝟙 _) y J)⁻¹` using `(val_pull hJ α (eSec P.A) (𝟙 _)).symm.trans ((val_corr hJ hN (𝟙 _)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (map_zpow _ _ _) (val_inv _ _))))`. Establish `e1 : val (rigPow P.A P.L (GlobalTheory.UU.scaleGen a rig) ((n : ℤ) ^ 2)) (𝟙 _) y J = FrameMove.rval (GlobalTheory.UU.scaleGen a rig) (𝟙 _) y J ^ ((n : ℤ) ^ 2)` using `map_zpow _ _ _`. Rewrite using `[val_pull hJ, hα' _ _ _ _ hJ, hu, e0, val_mul hJ, e1, val_inv, hr _ _ _ _ hJ, Category.assoc, he, Category.id_comp]`.
+
+Rewrite using `[show val (L := P.L) (φ := fun _ : PUnit => eSec P.A) (ε := fun _ => 1) (GlobalTheory.UU.scaleGen a rig) (𝟙 (𝟙_ (Over S)).left) y J = _ from hr _ _ _ _ hJ]`. Conclude with `alg_rig (M := (S.presheaf.stalk y)ˣ) _ _ _`. Establish `a1 : val τ (𝟙 _) y J ^ ((n : ℤ) ^ 2) = val α (𝟙 _ ≫ x.left) y J * FrameMove.rval rig (𝟙 _ ≫ T.hom) y J ^ (1 : ℤ)` using `(map_zpow _ _ _).symm.trans ((val_corr hJ hc (𝟙 _)).trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) (FrameMove.val_rigT _ _ _ hJ))))`. Rewrite using `[FrameMove.val_powFrame, val_mul hJ, val_pull hJ, FrameMove.val_rigT _ _ _ hJ, hα' _ _ _ _ hJ, hu, hr _ _ _ _ hJ, ht y J hJ, Category.assoc, Over.w x]`. Simplify using `only [Category.id_comp] at a1 ⊢`.
+
+Conclude with `alg_frame a1`.
+-/
 theorem isTorsFrame_scale (rig : LB.Gen (P.L.pull (eSec P.A))) (a : Γ(S, ⊤)ˣ) {n : ℕ} {T : Over S} {x : T ⟶ P.A}
     {τ τ' : LB.Gen (LB.LinComb P.L (Y := T.left) (K := Fin 1) (fun _ => x.left) (fun _ => 1))}
     (H : IsTorsFrame P rig n x τ) (hτ' : τ'.IsGen)
@@ -127,6 +158,9 @@ theorem isTorsFrame_scale (rig : LB.Gen (P.L.pull (eSec P.A))) (a : Γ(S, ⊤)ˣ
 
 end Tors
 
+/- English proof (translation)
+Rewrite using `[← gs_unit _ z ⊤ trivial]`. Establish `e : a.val = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom a.val)` using `by simp`. Use `conv_lhs => rw [e]`. Conclude with `FrameMove.gs_spMap (algebraMap (FractionRing R) F) z _`.
+-/
 theorem cst_gm {R : Type} [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebra (FractionRing R) F]
     (a : Γ(Spec (CommRingCat.of (FractionRing R)), ⊤)ˣ) (z : (TFK (R := R) F).left) :
     (gm (jFK (R := R) F) z ⊤ a).val = cst (R := R) F z (algebraMap (FractionRing R) F
@@ -137,6 +171,11 @@ theorem cst_gm {R : Type} [CommRing R] [IsDomain R] (F : Type) [Field F] [Algebr
   conv_lhs => rw [e]
   exact FrameMove.gs_spMap (algebraMap (FractionRing R) F) z _
 
+/- English proof (translation)
+Introduce `R _ _ I D A G _ _ U w₀ hw ρ hρ`. Take `⟨a, ha⟩` from `exists_unit_normW U w₀ hw ρ hρ`. Use `⟨GlobalTheory.UU.scaleGen a ρ, (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom a.val, ?_, ha, fun F _ _ N x fr fr' H hfr' hv => ?_⟩` and prove the remaining obligations. Conclude with `(a.isUnit.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).hom.hom).ne_zero`. Use `isTorsFrame_scale ρ a H hfr' fun z J hJ => Units.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.val_mul, hv z J hJ]`. Conclude with `congrArg (· * _) (cst_gm F a z).symm`.
+-/
 theorem exists_renorm : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (w₀ : W0 U), w₀.IsGen → ∀ ρ : LB.Gen (A.L.pull (eSec A.A)), ρ.IsGen → ∃ (ρ' : LB.Gen (A.L.pull (eSec A.A))) (c : FractionRing R), c ≠ 0 ∧ NormW U w₀ ρ' ∧ ∀ (F : Type) [Field F] [Algebra (FractionRing R) F] (N : ℕ) (x : TFK (R := R) F ⟶ A.A) (fr fr' : FrAt x), IsTorsFrame A ρ N x fr → fr'.IsGen → (∀ z J, Good A.L z J → (val fr' (𝟙 _) z J).val = @id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z (algebraMap (FractionRing R) F c)) * (val fr (𝟙 _) z J).val) → IsTorsFrame A ρ' N x fr' := by
   intro R _ _ I D A G _ _ U w₀ hw ρ hρ
   obtain ⟨a, ha⟩ := exists_unit_normW U w₀ hw ρ hρ

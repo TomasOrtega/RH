@@ -53,6 +53,17 @@ private def before (m : GObjMap o' o e) (n : QMap o u₁ f c) : QMap o' u₁ (e 
     simp only [← Category.assoc, h₁]
     simp only [Category.assoc, h₂]
 
+/- English proof (translation)
+Establish `hw : n'.φ ≫ u₂.A.hom = (o.A.hom ≫ f) ≫ g`. Rewrite using `[n'.cart.1.w, Category.assoc]`. Set `ℓ : o.A.left ⟶ u₁.A.left` to `m.cart.1.lift n'.φ (o.A.hom ≫ f) hw`. Establish `hℓφ : ℓ ≫ m.φ = n'.φ` using `m.cart.1.lift_fst _ _ _`. Establish `hℓs : ℓ ≫ u₁.A.hom = o.A.hom ≫ f` using `m.cart.1.lift_snd _ _ _`.
+
+Take `⟨ℓ₂, hsq⟩` from `MapComp.exists_isSquare (G := u₁.A) (G' := o.A) hℓs`. Establish `hsq₂ : ℓ₂ ≫ m.φ₂ = n'.φ₂`. Apply `MapComp.isSquare_unique (MapComp.isSquare_comp hsq m.sq)` to reduce the goal to its premises. Rewrite using `[hℓφ]`. Conclude with `n'.sq`.
+
+Use `⟨⟨ℓ, ℓ₂, ?_, hsq, ?_, ?_, ?_⟩, hℓφ.symm⟩` and prove the remaining obligations. Conclude with `IsGrpPullback.cancel m.cart (IsGrpPullback.congr n'.cart rfl hℓφ.symm) hℓs`. Introduce `x`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hℓφ, m.act x, ← Category.assoc, hℓφ]`.
+
+Conclude with `n'.act x`. Rewrite using `[Category.assoc, Category.assoc, hℓs, Over.w, hℓs, ← Category.assoc, Over.w]`. Conclude with `LBIso.trans o.isLB (pull_isLB u₂.isLB _) (pull_isLB u₁.isLB _) n'.pol (MapComp.lbIso_pull_comp m.pol ℓ₂ hsq₂.symm).symm`. Introduce `y`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, Category.assoc, hℓφ, n'.eta y, m.eta y, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hℓs, ← Category.assoc, Over.w]`. Simplify using `[Over.w]`.
+-/
 private theorem factor (n' : QMap o u₂ (f ≫ g) c) (m : ObjMap u₁ u₂ g) :
     ∃ n : QMap o u₁ f c, n'.φ = n.φ ≫ m.φ := by
   have hw : n'.φ ≫ u₂.A.hom = (o.A.hom ≫ f) ≫ g := by
@@ -80,6 +91,17 @@ private theorem factor (n' : QMap o u₂ (f ≫ g) c) (m : ObjMap u₁ u₂ g) :
     · rw [Category.assoc, Category.assoc, hℓs, ← Category.assoc, Over.w]
       simp [Over.w]
 
+/- English proof (translation)
+Use `haveI hiso : IsIso n.φ := n.cart.1.isIso_fst_of_isIso`. Establish `hinvw : inv n.φ ≫ o.A.hom = u₁.A.hom ≫ inv f`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, n.cart.1.w, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`. Establish `hinv : IsGrpPullback u₁.A o.A (inv f) (inv n.φ)` using `IsGrpPullback.cancel n.cart (IsGrpPullback.congr (GlobalTheory.EndLoc.isGrpPullback_id u₁.A) (by simp) (by simp)) hinvw`. Establish `hcart : IsGrpPullback u₁.A u₂.A g (inv n.φ ≫ n'.φ)` using `IsGrpPullback.congr (IsGrpPullback.comp hinv n'.cart) (by simp) rfl`.
+
+Take `⟨ψ₂, hψ⟩` from `MapComp.exists_isSquare (G := o.A) (G' := u₁.A) hinvw`. Establish `hid : Geo.Tor.IsSquare (𝟙 u₁.A.left) (𝟙 (u₁.A ⊗ u₁.A).left)`. Apply the tactic sequence `constructor <;> simp`. Establish `hψn : ψ₂ ≫ n.φ₂ = 𝟙 _`. Apply `MapComp.isSquare_unique (MapComp.isSquare_comp hψ n.sq)` to reduce the goal to its premises.
+
+Rewrite using `[IsIso.inv_hom_id]`. Conclude with `hid`. Use `⟨⟨inv n.φ ≫ n'.φ, ψ₂ ≫ n'.φ₂, hcart, MapComp.isSquare_comp hψ n'.sq, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hx : Over.Hom.left (u₁.act.act x) ≫ inv n.φ = inv n.φ ≫ Over.Hom.left (o.act.act x)`.
+
+Rewrite using `[IsIso.comp_inv_eq, Category.assoc, n.act x, IsIso.inv_hom_id_assoc]`. Rewrite using `[← Category.assoc, hx, Category.assoc, n'.act x, Category.assoc]`. Conclude with `LBIso.trans u₁.isLB (pull_isLB u₁.isLB _) (pull_isLB u₂.isLB _) (GlobalTheory.SiegLower.lbIso_pull_id u₁.isLB) (LBIso.trans (pull_isLB u₁.isLB _) (pull_isLB o.isLB _) (pull_isLB u₂.isLB _) (MapComp.lbIso_pull_comp n.pol ψ₂ hψn.symm).symm (MapComp.lbIso_pull_comp n'.pol ψ₂ rfl))`. Introduce `y`. Establish `hy : Over.Hom.left (u₁.eta y) = inv f ≫ Over.Hom.left (o.eta (c • y)) ≫ n.φ`.
+
+Rewrite using `[n.eta y, IsIso.inv_hom_id_assoc]`. Rewrite using `[hy]`. Simplify using `only [Category.assoc, IsIso.hom_inv_id_assoc, n'.eta y, IsIso.inv_hom_id_assoc]`. Simplify using the standard rewrite rules.
+-/
 private theorem bridge [IsIso f] (n : QMap o u₁ f c) (n' : QMap o u₂ (f ≫ g) c) :
     ∃ m : ObjMap u₁ u₂ g, n'.φ = n.φ ≫ m.φ := by
   haveI hiso : IsIso n.φ := n.cart.1.isIso_fst_of_isIso
@@ -118,6 +140,9 @@ private theorem bridge [IsIso f] (n : QMap o u₁ f c) (n' : QMap o u₂ (f ≫ 
 end UpperTheory.Gal.Int.Geo.QCompPf
 
 open UpperTheory.Gal.Int.Geo.QCompPf in
+/- English proof (translation)
+Introduce `q _ D R R' _ _ _ b gb N N₀ c X X₁ X₂ s s₁ s₂ o u₁ u₂ f g`. Use `⟨fun n m => ⟨after n m, rfl⟩, fun n' m => factor n' m, fun hf n n' => bridge n n', ?_⟩` and prove the remaining obligations. Introduce `X' s' o' e m n`. Conclude with `⟨before m n, rfl⟩`.
+-/
 theorem UpperTheory.quotient_map_comp : QComp := by
   intro q _ D R R' _ _ _ b gb N N₀ c X X₁ X₂ s s₁ s₂ o u₁ u₂ f g
   refine ⟨fun n m => ⟨after n m, rfl⟩, fun n' m => factor n' m, fun hf n n' => bridge n n', ?_⟩

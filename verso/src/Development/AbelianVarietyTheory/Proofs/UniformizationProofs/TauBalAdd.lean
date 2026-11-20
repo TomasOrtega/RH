@@ -24,6 +24,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {Lr : RigLB A} (c : CubicalStr A Lr)
 
+/- English proof (translation)
+Establish `e : lift (1 : 𝟙_ (Over S) ⟶ A) (1 : 𝟙_ (Over S) ⟶ A) = lift η[A] η[A]` using `by simp [Hom.one_def]`. Use `val_corr hJ h₀ (𝟙 _)` as an intermediate fact. Rewrite `this` using `[val_pull hJ, Category.id_comp, val_one]`. Rewrite using `[val₂, e]`. Conclude with `this`.
+-/
 theorem val₂_one (f g : A ⟶ A) (u : LB.Gen (LB.LinComb Lr.L (rosatiφ A f g) rosatiε))
     (h₀ : LB.Gen.Corr Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ u (zero2 A)) (LB.oneGen Lr.L))
     {y : (𝟙_ (Over S)).left} {J} (hJ : Good Lr.L y J) : val₂ u y J (1 : 𝟙_ (Over S) ⟶ A) 1 = 1 := by
@@ -33,11 +36,27 @@ theorem val₂_one (f g : A ⟶ A) (u : LB.Gen (LB.LinComb Lr.L (rosatiφ A f g)
   rw [val₂, e]; exact this
 
 omit [IsCommMonObj A] in
+/- English proof (translation)
+Rewrite using `[val_pull hJ, ← Over.comp_left, comp_lift]`. Both sides reduce to the same expression.
+-/
 theorem val_pull₂ (f g : A ⟶ A) (u : LB.Gen (LB.LinComb Lr.L (rosatiφ A f g) rosatiε)) {T T' : Over S} (ρ : T' ⟶ T)
     {z : T'.left} {J} (hJ : Good Lr.L z J) (a b : T ⟶ A) :
     val (LB.pullGen Lr.L _ _ u (lift a b).left) ρ.left z J = val₂ u z J (ρ ≫ a) (ρ ≫ b) := by
   rw [val_pull hJ, ← Over.comp_left, comp_lift]; rfl
 
+/- English proof (translation)
+Set `p : A ⊗ A ⟶ A` to `fst A A`. Set `q : A ⊗ A ⟶ A` to `snd A A`. Set `e : 𝟙_ (Over S) ⟶ A ⊗ A` to `lift 1 1`. Establish `e₀ : e ≫ p = 1` using `lift_fst _ _`. Establish `e₁ : e ≫ q = 1` using `lift_snd _ _`.
+
+Establish `sj : Function.Surjective ((snd A A).left ≫ A.hom).appTop.hom` using `surj_comp (surj_snd hG hA _) (hG _ _ hA).2`. Establish `he : e.left ≫ (snd A A).left ≫ A.hom = 𝟙 _`. Rewrite using `[Over.w]`. Conclude with `Over.w e`. Establish `ev : ∀ {T' : Over S} (σ : T' ⟶ A ⊗ A) {z : T'.left} {J}, Good Lr.L z J → val (LB.mulGen Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ w (lift p q).left) (LB.pullGen Lr.L (thφ A (x3 A)) thε c.t (lift p (lift (q ≫ g) (q ≫ g'))).left)) σ.left z J = val₂ w z J (σ ≫ p) (σ ≫ q) * cubV c z J (σ ≫ p …` using `fun σ z J hJ => ⟨(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₂ _ _ w σ hJ _ _) (val_cub c σ hJ _ _ _)), (val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub c σ hJ _ _ _) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull₂ _ _ u σ hJ _ _) (val_pull₂ _ _ u' σ hJ _ _)) …`.
+
+Establish `key` using `(ev (lift x y) hJ).1.symm.trans (Eq.trans (gen_unique' Lr.isLB (fun V _ k => by`. Use `(prod_sum₂ (K := thK) (K' := Fin 6 ⊕ Fin 6) (U := V) _ (prod_cub (p ≫ f) (p ≫ f') q k) (prod_sum₂ (K := Fin 6) (K' := Fin 6) (U := V) _ (prod_ros f g p q k) (prod_ros f' g' p q k))).trans (Eq.trans ?_ (prod_sum₂ (K := Fin 6) (K' := thK) (U := V) _ (prod_ros (f * f') (g * g') p q …` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, _root_.mul_assoc p]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`.
+
+Use the proof step `abel) _ e.left he sj`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hw _) (pullGen_isGen _ _ _ _ c.isGen _))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ c.isGen _) (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ hu _) (pullGen_isGen _ _ _ _ hu' _))) (fun y I hI => by`. Establish `C : IsCub (cubV c y I)` using `isCub_cubV c hI`. Use `(ev e hI).1.trans (Eq.trans ?_ (ev e hI).2.symm)` and prove the remaining obligations.
+
+Rewrite using `[e₀, e₁, val₂_one _ _ w w₀ hI, val₂_one _ _ u h₀ hI, val₂_one _ _ u' h₀' hI, C.face, C.face₃]`. Use the proof step `simp) _ (lift x y).left z J hJ) (ev (lift x y) hJ).2)`. Establish `r₀ : lift x y ≫ p = x` using `lift_fst _ _`. Establish `r₁ : lift x y ≫ q = y` using `lift_snd _ _`. Simplify using `only [← Category.assoc, r₀, r₁] at key`.
+
+Conclude with `key`.
+-/
 theorem ros_sum (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (f g f' g' : A ⟶ A) [IsMonHom f] [IsMonHom g]
     (u : LB.Gen (LB.LinComb Lr.L (rosatiφ A f g) rosatiε)) (hu : u.IsGen)
     (h₀ : LB.Gen.Corr Lr.L _ _ _ _ (LB.pullGen Lr.L _ _ u (zero2 A)) (LB.oneGen Lr.L))
@@ -89,6 +108,19 @@ theorem ros_sum (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (f g f' g' : A ⟶ A
   simp only [← Category.assoc, r₀, r₁] at key
   exact key
 
+/- English proof (translation)
+Introduce `hG R _ _ D hB f g f' g' _ _ _ _ a b a' b' ca cb ca' cb' hr hr' hT hT' w hw w₀ x x'`. Take `⟨u, hu, h₀⟩` from `exists_ros hG D.P.isAb D.P.isLB f g hr`. Take `⟨u', hu', h₀'⟩` from `exists_ros hG D.P.isAb D.P.isLB f' g' hr'`. Use `corr_of_val D.P.isLB fun y J hJ => ?_` and prove the remaining obligations. Establish `lin : ∀ (f : D.P.A ⟶ D.P.A) (a : D.X → D.X), (∀ y, D.c (a y) = D.c y ≫ f) → ∀ x, cP D (TK R) x ≫ f = cP D (TK R) (a x)` using `fun f a h x => by`.
+
+Rewrite using `[cP, cP, h, Category.assoc]`. Establish `C : IsCub (cubV D.cub (T` using `TK R) y J) := isCub_cubV D.cub hJ`. Establish `key` using `ros_sum D.cub hG D.P.isAb f g f' g' u hu h₀ u' hu' h₀' w hw w₀ (T := TK R) hJ (cP D _ x) (cP D _ x')`. Rewrite `key` using `[lin f a ca, lin f' a' ca', lin g b cb, lin g' b' cb', C.s01, C.s12]`. Establish `B` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hT u hu h₀ x x') (𝟙 _))`.
+
+Establish `B'` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (hT' u' hu' h₀' x x') (𝟙 _))`. Rewrite `B`, `B'` using `[val_pull hJ, Category.id_comp]`. Establish `B₀ : val (D.tau (a x) x') (𝟙 _) y J * val₂ u y J (cP D (TK R) x) (cP D (TK R) x') = val (D.tau x (b x')) (𝟙 _) y J` using `B`. Establish `B₀' : val (D.tau (a' x) x') (𝟙 _) y J * val₂ u' y J (cP D (TK R) x) (cP D (TK R) x') = val (D.tau x (b' x')) (𝟙 _) y J` using `B'`. Establish `M` using `tauK_mul hJ hB (a x) (a' x) x'`.
+
+Establish `M'` using `tauK_mul hJ hB (b x') (b' x') x`. Rewrite `M'` using `[tauK_symm hJ _ x, tauK_symm hJ _ x, tauK_symm hJ _ x]`. Rewrite using `[val_mul hJ, val_pull hJ, Category.id_comp]`. Use `show val (D.tau (a x + a' x) x') (𝟙 _) y J * val₂ w y J (cP D (TK R) x) (cP D (TK R) x') = val (D.tau x (b x' + b' x')) (𝟙 _) y J`. Establish `E` using `fun {p q : ((TK R).left.presheaf.stalk y)ˣ} (e : p = q) => congrArg Additive.ofMul e`.
+
+Establish `k₁` using `E key`. Establish `k₂` using `E B₀`. Establish `k₃` using `E B₀'`. Establish `k₄` using `E M`. Establish `k₅` using `E M'`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at k₁ k₂ k₃ k₄ k₅ ⊢`. Take the linear combination `(norm := abel) k₁ + k₂ + k₃ + k₄ - k₅`.
+-/
 theorem tauBal_add : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ (f g f' g' : D.P.A ⟶ D.P.A) [IsMonHom f] [IsMonHom g] [IsMonHom f'] [IsMonHom g'] (a b a' b' : D.X → D.X), (∀ y, D.c (a y) = D.c y ≫ f) → (∀ y, D.c (b y) = D.c y ≫ g) → (∀ y, D.c (a' y) = D.c y ≫ f') → (∀ y, D.c (b' y) = D.c y ≫ g') → RosatiAdj D.P.A D.P.L f g → RosatiAdj D.P.A D.P.L f' g' → D.TauBal f g a b → D.TauBal f' g' a' b' → D.TauBal (f * f') (g * g') (fun y => a y + a' y) (fun y => b y + b' y) := by
   intro hG R _ _ D hB f g f' g' _ _ _ _ a b a' b' ca cb ca' cb' hr hr' hT hT' w hw w₀ x x'
   obtain ⟨u, hu, h₀⟩ := exists_ros hG D.P.isAb D.P.isLB f g hr

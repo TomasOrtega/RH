@@ -81,6 +81,9 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (hD : RingDef (D.nd.O i) (D.nd.T i) (RepresentationBoundsCohomology.repX D.nd r) π (chiU D.nd i 1) (epsU D.nd i) g0 eB e₁ s Dd)
   (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (cB : ℕ)
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Apply `QS.locClause (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c' := c') (hS := QS.locS (hE := hE) (hN := hN) (hG5 := hG5) (h5x := h5x) (c' := c'))` to reduce the goal to its premises.
+-/
 theorem locPos (hE : QS.Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r)
     (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i)
     (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) : QS.LocClause i dc Dd c := by
@@ -88,12 +91,18 @@ theorem locPos (hE : QS.Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
   apply QS.locClause (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x)
     (hQP := hQP) (c' := c') (hS := QS.locS (hE := hE) (hN := hN) (hG5 := hG5) (h5x := h5x) (c' := c'))
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression.
+-/
 theorem FS_eq (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) :
     St.FS i r π dc g0 eB e₁ s Dd hD hc c = QS.Fpos i dc Dd c := by
   obtain ⟨c', rfl⟩ := Fin.exists_succ_eq.mpr hc0
   funext w
   rfl
 
+/- English proof (translation)
+Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `[QS.c1] at h'`.
+-/
 theorem first_character_index_ne_zero : (QS.c1 (D := D)) ≠ 0 := by
   intro h
   have h' := congrArg Fin.val h
@@ -102,6 +111,9 @@ theorem first_character_index_ne_zero : (QS.c1 (D := D)) ≠ 0 := by
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hE` using `QS.ev_of (hD := hD)`. Unfold `ClauseLoc1`. Rewrite using `[FS_eq (dc := dc) (hD := hD) (hc := hc) (c := QS.c1) (hc0 := first_character_index_ne_zero)]`. Conclude with `locPos (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c := QS.c1) (hc0 := first_character_index_ne_zero)`.
+-/
 theorem first_local_clause_of (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i) :
     ClauseLoc1 i r π dc g0 eB e₁ s Dd hD hc := by
@@ -114,6 +126,11 @@ theorem first_local_clause_of (hN : RepresentationBoundsCohomology.NormAt D.nd r
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hE` using `QS.ev_of (hD := hD)`. Unfold `ClauseChi`. Introduce `c hc2`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hc2`. Use `And.intro ?_ ?_` and prove the remaining obligations. Rewrite using `[FS_eq (dc := dc) (hD := hD) (hc := hc) (c := c) (hc0 := hc0)]`. Conclude with `locPos (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c := c) (hc0 := hc0)`. Conclude with `ShaT.tieSel2_full (dc := dc) (hD := hD) (hN := hN) (F0 := St.FirstBlockLocalConditions i r π dc g0 eB e₁ s Dd hD hc) (c := c) (hc := hc2)`.
+-/
 theorem chi_of (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i) :
     ClauseChi i r π dc g0 eB e₁ s Dd hD hc := by
@@ -134,6 +151,9 @@ omit [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (Repre
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Use `show QS.Fpos i dc Dd c'.succ w = TB.Fc i dc Dd c'.succ w`. Rewrite using `[QS.Fpos_row (Dd := Dd) (c := c'.succ) (hw := hw)]`. Both sides reduce to the same expression.
+-/
 theorem FS_row (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) {w : ℕ} (hw : w ∈ rowsN i dc) :
     St.FS i r π dc g0 eB e₁ s Dd hD hc c w = TB.Fc i dc Dd c w := by
   obtain ⟨c', rfl⟩ := Fin.exists_succ_eq.mpr hc0
@@ -145,6 +165,11 @@ omit [∀ k, IsScalarTower Dd.T' Dd.R' (blockRestrictedRepresentationType (Repre
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `c hc1 w hw`. Establish `hc0 : c ≠ 0` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_zero] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hF : St.FS i r π dc g0 eB e₁ s Dd hD hc c w = TB.Fc i dc Dd c w` using `FS_row i r π dc g0 eB e₁ s Dd hD hc c hc0 hw`. Establish `hx` using `hT w hw c hc1`. Use `rewrite [← hF] at hx`. Conclude with `⟨hx.2.2.1, hx.2.2.2⟩`.
+-/
 theorem tb_of_target (hT : TB.TBTarget i dc Dd cB) : ClauseTB i r π dc g0 eB e₁ s Dd hD hc cB := by
   intro c hc1 w hw
   have hc0 : c ≠ 0 := fun h => by

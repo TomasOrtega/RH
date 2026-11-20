@@ -17,6 +17,11 @@ namespace GlobalTheory.SpMove
 section
 open Matrix ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key ReciprocityTheory.ChartRestriction.G.Key.Chi
 
+/- English proof (translation)
+Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `e : ((fun i => (l i : ℂ)) + fun i => (n i : ℂ) / 2) = shiftVec (halfVec n) l`. Use function extensionality and compare the values at `i`. Simplify using `[shiftVec, halfVec]`. Establish `e' : (fun i => (n' i : ℂ) / 2) = ofRealVec (halfVec n')`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[ofRealVec, halfVec]`. Rewrite using `[e, e', thetaTerm, eC]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thetaChar_half {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (n n' : Fin g → ℤ) (z : Fin g → ℂ) :
     thetaChar τ (fun i => (n i : ℂ) / 2) (fun i => (n' i : ℂ) / 2) z = theta (halfVec n) (halfVec n') z τ := by
   refine tsum_congr fun l => ?_
@@ -28,6 +33,13 @@ theorem thetaChar_half {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (n n' : Fin g
   congr 1
   ring
 
+/- English proof (translation)
+Establish `hj` using `jAut_isUnit hδ hτ`. Establish `hs` using `spAct_isSymm hδ hτ.1 hj`. Establish `h1 : (jAut δ τ)ᵀ * spAct δ τ = (nAut δ τ)ᵀ`. Rewrite using `[← hs.eq, ← Matrix.transpose_mul, spAct_eq, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hj, Matrix.mul_one]`. Establish `h2 : (fun i => ((δᵀ *ᵥ w) (Sum.inr i) : ℂ)) = (cMat δ).toBlocks₁₂ᵀ *ᵥ (fun i => (w (Sum.inl i) : ℂ)) + (cMat δ).toBlocks₂₂ᵀ *ᵥ (fun i => (w (Sum.inr i) : ℂ))`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, cMat, Matrix.toBlocks₁₂, Matrix.toBlocks₂₂, Fintype.sum_sum_type]`. Establish `h3 : (fun i => ((δᵀ *ᵥ w) (Sum.inl i) : ℂ)) = (cMat δ).toBlocks₁₁ᵀ *ᵥ (fun i => (w (Sum.inl i) : ℂ)) + (cMat δ).toBlocks₂₁ᵀ *ᵥ (fun i => (w (Sum.inr i) : ℂ))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, cMat, Matrix.toBlocks₁₁, Matrix.toBlocks₂₁, Fintype.sum_sum_type]`.
+
+Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, h1, h2, h3, jAut_eq, nAut_eq]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_mul, hτ.1.eq, Matrix.add_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec]`. Normalize the expressions using the abelian group laws.
+-/
 theorem jAut_transpose_mulVec_period {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hδ : δ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : τ ∈ SiegelH (Fin g)) (w : Fin g ⊕ Fin g → ℤ) :
@@ -53,6 +65,15 @@ theorem jAut_transpose_mulVec_period {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (F
     Matrix.mulVec_mulVec]
   abel
 
+/- English proof (translation)
+Establish `hj` using `jAut_isUnit hδ hτ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, h⟩`. Establish `hu : IsUnit δᵀ`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`.
+
+Conclude with `SymplecticGroup.symplectic_det hδ`. Take `⟨w, hw⟩` from `Matrix.mulVec_surjective_iff_isUnit.2 hu (Sum.elim n m)`. Establish `h1` using `jAut_transpose_mulVec_period hδ hτ w`. Rewrite `h1` using `[hw]`. Use `⟨fun i => w (Sum.inr i), fun i => w (Sum.inl i), ?_⟩` and prove the remaining obligations.
+
+Establish `hinj : Function.Injective (jAut δ τ)ᵀ.mulVec`. Rewrite using `[Matrix.mulVec_injective_iff_isUnit, Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose]`. Conclude with `hj`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[h, h1]`.
+
+Both sides reduce to the same expression. Introduce and unpack `⟨m, n, rfl⟩`. Conclude with `⟨_, _, jAut_transpose_mulVec_period hδ hτ (Sum.elim n m)⟩`.
+-/
 theorem jAut_transpose_mulVec_mem_iff {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hδ : δ ∈ Matrix.symplecticGroup (Fin g) ℤ) {τ : Matrix (Fin g) (Fin g) ℂ}
     (hτ : τ ∈ SiegelH (Fin g)) (z : Fin g → ℂ) :
@@ -77,6 +98,13 @@ theorem jAut_transpose_mulVec_mem_iff {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (
   · rintro ⟨m, n, rfl⟩
     exact ⟨_, _, jAut_transpose_mulVec_period hδ hτ (Sum.elim n m)⟩
 
+/- English proof (translation)
+Take `⟨c, hc, h⟩` from `h`. Establish `hz : Differentiable ℂ (zAct δ τ)` using `(Matrix.mulVecLin ((jAut δ τ)⁻¹)ᵀ).toContinuousLinearMap.differentiable`. Establish `hq : Differentiable ℂ fun z => Real.pi * Complex.I * expArg δ τ z`. Simplify using `only [expArg, dotProduct, mulVec]`. Use `fun_prop`.
+
+Take `⟨r, hr, H⟩` from `entire_eq_mul_of_sq_eq_mul_sq g (fun z => theta (halfVec k) (halfVec k') (zAct δ τ z) (spAct δ τ)) (fun z => theta (halfVec n) (halfVec n') z τ) _ (c * (jAut δ τ).det) ((differentiable_theta (spAct_mem hδ hτ) _ _).comp hz) (differentiable_theta hτ _ _) hq (fun z => by`. Rewrite using `[h τ hτ z, eC]`. Use `congr 3`. Use the proof step `ring)`. Use `⟨r, ?_, H⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_theta_law {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ}
     (hδ : δ ∈ Matrix.symplecticGroup (Fin g) ℤ) {n n' k k' : Fin g → ℤ}
     (h : KeyPow.ThetaLaw g δ n n' k k') {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g)) :
@@ -103,6 +131,23 @@ theorem exists_theta_law {g : ℕ} {δ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin
 
 end
 
+/- English proof (translation)
+Introduce `x τ M c sp n n' k k' hsp hlaw hc hN`. Establish `hτ` using `hN.mem_siegelH`. Take `⟨u, -, -, hΛ, hrig, hfn, hv⟩` from `hN`. Establish `hj` using `Key.Chi.jAut_isUnit hsp hτ`. Establish `hτ'` using `Key.Chi.spAct_mem hsp hτ`.
+
+Take `⟨r, hr, H⟩` from `exists_theta_law hsp hlaw hτ`. Use `set j := Key.Chi.jAut sp τ with hjdef`. Establish `hj0 : j.det ≠ 0` using `hj.ne_zero`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `pow_ne_zero 4 hj0 (by rw [← hr]; simp)`. Establish `e1 : j.transpose * (j⁻¹).transpose = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hj, Matrix.transpose_one]`. Establish `e2 : (j⁻¹).transpose * j.transpose = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hj, Matrix.transpose_one]`.
+
+Set `φ : (Fin x.P.g → ℂ) ≃ₗ[ℂ] (Fin x.P.g → ℂ)` to `Matrix.toLin'OfInv e2 e1`. Establish `hφ : ∀ z, φ z = j.transpose.mulVec z` using `fun _ => rfl`. Establish `hE : Differentiable ℂ fun z => Complex.exp (Real.pi * Complex.I * Key.Chi.expArg sp τ (φ z))`. Simplify using `only [hφ, Key.Chi.expArg, dotProduct, Matrix.mulVec]`. Use `fun_prop`.
+
+Take `⟨u', -, hΛ', hrig', hfn', hv'⟩` from `exists_holUnif_reparam x.P.A x.P.L x.P.g u φ _ hE (fun _ => Complex.exp_ne_zero _) (by simp [Key.Chi.expArg])`. Use `⟨M * j⁻¹, c / r, div_ne_zero hc hr0, ?_, u', hτ'.1, hτ'.2, fun z => ?_, hrig' _ hrig, ?_, fun i => hv' _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', div_pow, hr]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hΛ', hΛ, hφ]`.
+
+Conclude with `jAut_transpose_mulVec_mem_iff hsp hτ z`. Use `hfn' _ _ hfn using 2 with z` and compare the differences between its conclusion and the goal. Establish `h1` using `H (φ z)`. Establish `h2 : Key.Chi.zAct sp τ (φ z) = z`. Rewrite using `[Key.Chi.zAct, hφ, Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`.
+
+Rewrite `h1` using `[h2]`. Rewrite using `[thetaChar_half, thetaChar_half, h1]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : φ ((M * j⁻¹) i) = M i`. Rewrite using `[hφ, Matrix.mulVec_transpose]`.
+
+Express the relevant statement in the definitionally equal form `((M * j⁻¹) * j) i = M i`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hj, Matrix.mul_one]`. Rewrite using `[map_smul, h3]`. Conclude with `hv i`.
+-/
 theorem normalAt_spAct : ∀ (x : KeyIn ℂ) (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (c : ℂ) (sp : Matrix (Fin x.P.g ⊕ Fin x.P.g) (Fin x.P.g ⊕ Fin x.P.g) ℤ) (n n' k k' : Fin x.P.g → ℤ), sp ∈ Matrix.symplecticGroup (Fin x.P.g) ℤ → GlobalTheory.KeyPow.ThetaLaw x.P.g sp n n' k k' → c ≠ 0 → GlobalTheory.KeyPow.NormalAt x τ M (fun i => (n i : ℂ) / 2) (fun i => (n' i : ℂ) / 2) c → ∃ (M' : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (c' : ℂ), c' ≠ 0 ∧ M'.det ^ 4 / c' ^ 8 = M.det ^ 4 / c ^ 8 ∧ GlobalTheory.KeyPow.NormalAt x (Key.Chi.spAct sp τ) M' (fun i => (k i : ℂ) / 2) (fun i => (k' i : ℂ) / 2) c' := by
   intro x τ M c sp n n' k k' hsp hlaw hc hN
   have hτ := hN.mem_siegelH

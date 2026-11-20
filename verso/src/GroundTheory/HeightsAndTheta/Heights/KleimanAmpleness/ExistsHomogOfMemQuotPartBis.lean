@@ -18,16 +18,25 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type} [∀ k
 
 section Homog
 
+/- English proof (translation)
+Introduce `m hm`. Simplify using `at hm`.
+-/
 theorem isMultiHomog_zero (a : K → ℕ) : IsMultiHomog (0 : MRingOver S ι) a := by
   intro m hm
   simp at hm
 
+/- English proof (translation)
+Introduce `m hm k`. Rewrite `hm` using `[C_apply]`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Simplify using the standard rewrite rules.
+-/
 theorem isMultiHomog_C (r : S) : IsMultiHomog (C r : MRingOver S ι) 0 := by
   intro m hm k
   rw [C_apply] at hm
   rw [Finset.mem_singleton.mp (support_monomial_subset hm)]
   simp
 
+/- English proof (translation)
+Introduce `m hm k`. Break down `Finset.mem_union.mp (support_add hm) with h | h` into its components or cases. Conclude with `hp m h k`. Conclude with `hq m h k`.
+-/
 theorem isMultiHomog_add {p q : MRingOver S ι} {a : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q a) : IsMultiHomog (p + q) a := by
   classical
@@ -36,10 +45,16 @@ theorem isMultiHomog_add {p q : MRingOver S ι} {a : K → ℕ} (hp : IsMultiHom
   · exact hp m h k
   · exact hq m h k
 
+/- English proof (translation)
+Introduce `m hm k` and use `hp m (support_smul hm) k`.
+-/
 theorem isMultiHomog_smul {p : MRingOver S ι} {a : K → ℕ} (s : S) (hp : IsMultiHomog p a) :
     IsMultiHomog (s • p) a :=
   fun m hm k => hp m (support_smul hm) k
 
+/- English proof (translation)
+Introduce `m hm k`. Take `⟨m₁, h₁, m₂, h₂, rfl⟩` from `Finset.mem_add.mp (support_mul p q hm)`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ h₁ k, hq m₂ h₂ k]`.
+-/
 theorem isMultiHomog_mul {p q : MRingOver S ι} {a b : K → ℕ} (hp : IsMultiHomog p a)
     (hq : IsMultiHomog q b) : IsMultiHomog (p * q) (a + b) := by
   classical
@@ -47,6 +62,15 @@ theorem isMultiHomog_mul {p q : MRingOver S ι} {a b : K → ℕ} (hp : IsMultiH
   obtain ⟨m₁, h₁, m₂, h₂, rfl⟩ := Finset.mem_add.mp (support_mul p q hm)
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, hp m₁ h₁ k, hq m₂ h₂ k]
 
+/- English proof (translation)
+Rewrite using `[X_pow_eq_monomial]`. Introduce `m hm l`. Rewrite using `[Finset.mem_singleton.mp (support_monomial_subset hm)]`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality.
+
+Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`.
+
+Conclude with `hj (eq_of_heq (Sigma.mk.inj_iff.mp h).2).symm`. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne hl]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`.
+
+Introduce `h`. Conclude with `hl (Sigma.mk.inj_iff.mp h).1.symm`.
+-/
 theorem isMultiHomog_X_pow [DecidableEq K] (k : K) (i : ι k) (n : ℕ) :
     IsMultiHomog ((X ⟨k, i⟩ : MRingOver S ι) ^ n) (Pi.single k n) := by
   classical
@@ -68,6 +92,11 @@ theorem isMultiHomog_X_pow [DecidableEq K] (k : K) (i : ι k) (n : ℕ) :
     intro h
     exact hl (Sigma.mk.inj_iff.mp h).1.symm
 
+/- English proof (translation)
+Establish `h : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRingOver S ι) ^ e k) (∑ k ∈ s, Pi.single k (e k))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_C (S := S) (ι := ι) 1`. Consider the case `insert k s hk ih`.
+
+Rewrite using `[Finset.prod_insert hk, Finset.sum_insert hk]`. Conclude with `isMultiHomog_mul (isMultiHomog_X_pow k (c k) (e k)) ih`. Simplify `h Finset.univ` using `[Finset.univ_sum_single]`.
+-/
 theorem isMultiHomog_prod_X (c : ∀ k, ι k) (e : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRingOver S ι) ^ e k) e := by
   classical
@@ -87,6 +116,13 @@ section Eval
 
 variable {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
 
+/- English proof (translation)
+Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hX : ∏ p : Σ k, ι k, (X p.1 : MvPolynomial K Ω) ^ μ p = ∏ k, (X k : MvPolynomial K Ω) ^ d k`.
+
+Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, (X k : MvPolynomial K Ω) ^ μ ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg μ hμ k]`. Rewrite using `[mConeMapOver, aeval_monomial, aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`.
+
+Simplify using `only [mul_pow, Finset.prod_mul_distrib, MvPolynomial.algebraMap_apply, map_mul, map_prod, map_pow, hX]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mConeMapOver_homog {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHomog g d) :
     mConeMapOver S y g = C (aeval y g) * ∏ k, (X k : MvPolynomial K Ω) ^ d k := by
   classical
@@ -104,6 +140,11 @@ theorem mConeMapOver_homog {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHom
   simp only [mul_pow, Finset.prod_mul_distrib, MvPolynomial.algebraMap_apply, map_mul, map_prod, map_pow, hX]
   ring
 
+/- English proof (translation)
+Establish `h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp (mConeMapOver S y).toRingHom = (aeval y : MRingOver S ι →ₐ[S] Ω).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[mConeMapOver, MvPolynomial.algebraMap_apply]`. Introduce `p`.
+
+Simplify using `[mConeMapOver]`. Establish `h2` using `RingHom.congr_fun h f`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2`. Rewrite using `[← h2, show mConeMapOver S y f = 0 from (RingHom.mem_ker).mp hf, map_zero]`.
+-/
 theorem aeval_eq_zero_of_mem {f : MRingOver S ι} (hf : f ∈ mIdealOver S y) : aeval y f = 0 := by
   have h : (MvPolynomial.eval (fun _ : K => (1 : Ω))).comp (mConeMapOver S y).toRingHom =
       (aeval y : MRingOver S ι →ₐ[S] Ω).toRingHom := by
@@ -116,6 +157,9 @@ theorem aeval_eq_zero_of_mem {f : MRingOver S ι} (hf : f ∈ mIdealOver S y) : 
   simp only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h2
   rw [← h2, show mConeMapOver S y f = 0 from (RingHom.mem_ker).mp hf, map_zero]
 
+/- English proof (translation)
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `show g ∈ RingHom.ker (mConeMapOver S y)`. Rewrite using `[RingHom.mem_ker, mConeMapOver_homog y hg, h0, map_zero, zero_mul]`.
+-/
 theorem mk_eq_zero_of_aeval {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHomog g d) (h0 : aeval y g = 0) :
     Ideal.Quotient.mk (mIdealOver S y) g = 0 := by
   rw [Ideal.Quotient.eq_zero_iff_mem]
@@ -125,8 +169,14 @@ theorem mk_eq_zero_of_aeval {g : MRingOver S ι} {d : K → ℕ} (hg : IsMultiHo
 def ev0 : (MRingOver S ι ⧸ mIdealOver S y) →ₐ[S] Ω :=
   Ideal.Quotient.liftₐ (mIdealOver S y) (aeval y) (fun _ hf => aeval_eq_zero_of_mem y hf)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evalAtPoint_mk (p : MRingOver S ι) : ev0 y (Ideal.Quotient.mk (mIdealOver S y) p) = aeval y p := rfl
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Use `show ev0 y (Ideal.Quotient.mk _ (r * m)) = _`. Rewrite using `[evalAtPoint_mk, evalAtPoint_mk, map_mul]`.
+-/
 theorem evalAtPoint_smul (r : MRingOver S ι) (m : MRingOver S ι ⧸ mIdealOver S y) :
     ev0 y (r • m) = aeval y r * ev0 y m := by
   obtain ⟨m, rfl⟩ := Ideal.Quotient.mk_surjective m
@@ -138,6 +188,11 @@ def Good (I : ∀ k, Finset (ι k)) : Prop :=
 
 variable {y}
 
+/- English proof (translation)
+Unfold `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.cellMon at ht`. Proceed by induction on `ht using Submonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨k, i, hi, rfl⟩` from `hx`. Rewrite using `[aeval_X]`.
+
+Conclude with `hI k i hi`. Consider the case `one => simp`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`. Conclude with `mul_ne_zero hx hz`.
+-/
 theorem aeval_ne_zero_of_mem {I : ∀ k, Finset (ι k)} (hI : Good y I) {t : MRingOver S ι}
     (ht : t ∈ cellMon S I) : aeval y t ≠ 0 := by
   unfold ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.cellMon at ht
@@ -166,6 +221,9 @@ def ev (I : ∀ k, Finset (ι k)) (hI : Good y I)
     have h' := mul_left_cancel₀ hu0 h
     linear_combination h')
 
+/- English proof (translation)
+The claim follows from `LocalizedModule.liftOn_mk _ _ _`.
+-/
 theorem ev_mk (I : ∀ k, Finset (ι k)) (hI : Good y I) (m : MRingOver S ι ⧸ mIdealOver S y)
     (s : cellMon S I) : ev y I hI (LocalizedModule.mk m s) = ev0 y m / aeval y (s : MRingOver S ι) :=
   LocalizedModule.liftOn_mk _ _ _
@@ -194,6 +252,9 @@ def evMap (I : ∀ k, Finset (ι k)) :
     LocalizedModule (cellMon S I) (MRingOver S ι ⧸ mIdealOver S y) →ₗ[S] Ω :=
   if h : Good y I then evLin y I h else 0
 
+/- English proof (translation)
+Unfold `evMap`. Rewrite using `[dif_pos hI]`. Conclude with `ev_mk y I hI _ t`.
+-/
 theorem evMap_mk {I : ∀ k, Finset (ι k)} (hI : Good y I) (g : MRingOver S ι) (t : cellMon S I) :
     evMap y I (LocalizedModule.mk (Ideal.Quotient.mk (mIdealOver S y) g) t) =
       aeval y g / aeval y (t : MRingOver S ι) := by
@@ -207,6 +268,17 @@ section Rep
 
 variable {V : Ideal (MRingOver S ι)}
 
+/- English proof (translation)
+Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨p, ⟨hnn, hp⟩, rfl⟩` from `hx`. Conclude with `⟨p, hp, Or.inl hnn, rfl⟩`. Consider the case `zero => exact ⟨0, isMultiHomog_zero _, Or.inr rfl, map_zero _⟩`.
+
+Consider the case `add x x' _ _ h h'`. Take `⟨g, hg, hd, rfl⟩` from `h`. Take `⟨g', hg', hd', rfl⟩` from `h'`. Use `⟨g + g', isMultiHomog_add hg hg', ?_, map_add _ _ _⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases.
+
+Conclude with `Or.inl hd`. Break down `hd' with hd' | rfl` into its components or cases. Conclude with `Or.inl hd'`. Conclude with `Or.inr (add_zero 0)`. Consider the case `smul s x _ h`.
+
+Take `⟨g, hg, hd, rfl⟩` from `h`. Use `⟨s • g, isMultiHomog_smul s hg, ?_, ?_⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases. Conclude with `Or.inl hd`. Conclude with `Or.inr (smul_zero s)`.
+
+Rewrite using `[← Ideal.Quotient.mkₐ_eq_mk S, map_smul]`.
+-/
 theorem exists_homog_of_mem_quotPart {d : K → ℤ} {m : MRingOver S ι ⧸ V} (hm : m ∈ quotPart S V d) :
     ∃ g : MRingOver S ι, IsMultiHomog g (fun k => (d k).toNat) ∧ ((∀ k, 0 ≤ d k) ∨ g = 0) ∧
       Ideal.Quotient.mk V g = m := by
@@ -232,6 +304,27 @@ theorem exists_homog_of_mem_quotPart {d : K → ℤ} {m : MRingOver S ι ⧸ V} 
       · exact Or.inr (smul_zero s)
     · rw [← Ideal.Quotient.mkₐ_eq_mk S, map_smul]
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Take `⟨g, hg, hd, rfl⟩` from `exists_homog_of_mem_quotPart hm`. Conclude with `⟨g, t, a, ht, hg, hd, rfl⟩`.
+
+Consider the case `zero`. Use `⟨0, 1, 0, ?_, isMultiHomog_zero _, Or.inr rfl, ?_⟩` and prove the remaining obligations. Simplify using `using isMultiHomog_C (S := S) (ι := ι) 1`. Rewrite using `[map_zero, LocalizedModule.zero_mk]`. Consider the case `add x x' _ _ h h'`.
+
+Take `⟨g, t, a, ht, hg, hd, rfl⟩` from `h`. Take `⟨g', t', a', ht', hg', hd', rfl⟩` from `h'`. Break down `hd with hd | rfl` into its components or cases. Use `swap`. Conclude with `⟨g', t', a', ht', hg', hd', by rw [map_zero, LocalizedModule.zero_mk, zero_add]⟩`.
+
+Break down `hd' with hd' | rfl` into its components or cases. Use `swap`. Conclude with `⟨g, t, a, ht, hg, Or.inl hd, by rw [map_zero, LocalizedModule.zero_mk, add_zero]⟩`. Use `⟨(t' : MRingOver S ι) * g + (t : MRingOver S ι) * g', t * t', a + a', ?_, ?_, Or.inl ?_, ?_⟩` and prove the remaining obligations. Simplify using `using isMultiHomog_mul ht ht'`.
+
+Establish `e1 : (fun k => (β k + ((a + a') k : ℕ)).toNat) = a' + (fun k => (β k + a k).toNat)`. Use function extensionality and compare the values at `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `e2 : (fun k => (β k + ((a + a') k : ℕ)).toNat) = a + (fun k => (β k + a' k).toNat)`. Use function extensionality and compare the values at `k`. Use `hd' k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers.
+
+Use `isMultiHomog_add ?_ ?_` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `isMultiHomog_mul ht' hg`. Rewrite using `[e2]`. Conclude with `isMultiHomog_mul ht hg'`.
+
+Introduce `k`. Use `hd k` as an intermediate fact. Simplify using `only [Pi.add_apply, Nat.cast_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[LocalizedModule.mk_add_mk]`.
+
+Use `congr 1`. Consider the case `smul s x _ h`. Take `⟨g, t, a, ht, hg, hd, rfl⟩` from `h`. Use `⟨s • g, t, a, ht, isMultiHomog_smul s hg, ?_, ?_⟩` and prove the remaining obligations. Break down `hd with hd | rfl` into its components or cases.
+
+Conclude with `Or.inl hd`. Conclude with `Or.inr (smul_zero s)`. Rewrite using `[LocalizedModule.smul'_mk, ← Ideal.Quotient.mkₐ_eq_mk S, map_smul]`.
+-/
 theorem exists_rep {T : Submonoid (MRingOver S ι)} {β : K → ℤ}
     {x : LocalizedModule T (MRingOver S ι ⧸ V)} (hx : x ∈ locPart ι (quotPart S V) T β) :
     ∃ (g : MRingOver S ι) (t : T) (a : K → ℕ), IsMultiHomog (t : MRingOver S ι) a ∧
@@ -288,6 +381,11 @@ end Rep
 
 variable {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
 
+/- English proof (translation)
+Introduce `x hx x' hx' hxx'`. Rewrite using `[← sub_eq_zero]`. Establish `hs : x - x' ∈ locPart ι (quotPart S (mIdealOver S y)) (cellMon S I) β` using `sub_mem hx hx'`. Establish `h0 : evMap y I (x - x') = 0` using `by rw [map_sub, hxx', sub_self]`. Take `⟨g, t, a, -, hg, -, he⟩` from `exists_rep hs`.
+
+Rewrite `h0`, the goal using `[he]`. Rewrite `h0` using `[evMap_mk y hI, div_eq_zero_iff]`. Break down `h0 with h0 | h0` into its components or cases. Rewrite using `[mk_eq_zero_of_aeval y hg h0, LocalizedModule.zero_mk]`. Conclude with `absurd h0 (aeval_ne_zero_of_mem hI t.2)`.
+-/
 theorem evMap_injOn {I : ∀ k, Finset (ι k)} (hI : Good y I) (β : K → ℤ) :
     Set.InjOn (evMap (S := S) y I) (locPart ι (quotPart S (mIdealOver S y)) (cellMon S I) β) := by
   intro x hx x' hx' hxx'
@@ -303,21 +401,37 @@ theorem evMap_injOn {I : ∀ k, Finset (ι k)} (hI : Good y I) (β : K → ℤ) 
 
 def chart (c : ∀ k, ι k) : ∀ k, Finset (ι k) := fun k => {c k}
 
+/- English proof (translation)
+The claim follows from `Submonoid.prod_mem _ fun k _ => Submonoid.pow_mem _ (Submonoid.subset_closure (show (X ⟨k, c k⟩ : MRingOver S ι) ∈ {f | ∃ k, ∃ i ∈ chart c k, f = X ⟨k, i⟩} from ⟨k, c k, Finset.mem_singleton_self _, rfl⟩)) _`.
+-/
 theorem prod_X_mem (c : ∀ k, ι k) (e : K → ℕ) :
     ∏ k, (X ⟨k, c k⟩ : MRingOver S ι) ^ e k ∈ cellMon S (chart c) :=
   Submonoid.prod_mem _ fun k _ =>
     Submonoid.pow_mem _ (Submonoid.subset_closure (show (X ⟨k, c k⟩ : MRingOver S ι) ∈
       {f | ∃ k, ∃ i ∈ chart c k, f = X ⟨k, i⟩} from ⟨k, c k, Finset.mem_singleton_self _, rfl⟩)) _
 
+/- English proof (translation)
+Simplify using `[map_prod]`.
+-/
 theorem aeval_prod_X (c : ∀ k, ι k) (e : K → ℕ) :
     aeval y (∏ k, (X ⟨k, c k⟩ : MRingOver S ι) ^ e k) = ∏ k, y ⟨k, c k⟩ ^ e k := by
   simp [map_prod]
 
+/- English proof (translation)
+Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => pow_add _ _ _`.
+-/
 theorem prod_pow_add (c : ∀ k, ι k) (b b' : K → ℕ) :
     ∏ k, y ⟨k, c k⟩ ^ (b + b') k = (∏ k, y ⟨k, c k⟩ ^ b k) * ∏ k, y ⟨k, c k⟩ ^ b' k := by
   rw [← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun k _ => pow_add _ _ _
 
+/- English proof (translation)
+Rewrite using `[p.as_sum, map_sum, Finset.sum_div]`. Use `Subalgebra.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Establish `hdeg` using `hp μ hμ`. Rewrite using `[aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Establish `key : (∏ q : Σ k, ι k, y q ^ μ q) / ∏ k, y ⟨k, c k⟩ ^ d k = ∏ q : Σ k, ι k, (y q / y ⟨q.1, c q.1⟩) ^ μ q`.
+
+Rewrite using `[Finset.prod_congr rfl fun q _ => div_pow (y q) _ (μ q), Finset.prod_div_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show _ = ∏ i, y ⟨k, c k⟩ ^ μ ⟨k, i⟩`.
+
+Rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg k]`. Rewrite using `[mul_div_assoc, key, ← Algebra.smul_def]`. Conclude with `Subalgebra.smul_mem _ (Subalgebra.prod_mem _ fun q _ => Subalgebra.pow_mem _ (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) q)) _) _`.
+-/
 theorem aeval_div_mem_chartRing (c : ∀ k, ι k) {p : MRingOver S ι} {d : K → ℕ} (hp : IsMultiHomog p d) :
     aeval y p / ∏ k, y ⟨k, c k⟩ ^ d k ∈ chartRingOver S y c := by
   classical
@@ -337,6 +451,19 @@ theorem aeval_div_mem_chartRing (c : ∀ k, ι k) {p : MRingOver S ι} {d : K �
   exact Subalgebra.smul_mem _ (Subalgebra.prod_mem _ fun q _ => Subalgebra.pow_mem _
     (Algebra.subset_adjoin (Set.mem_range_self (f := fun p : Σ k, ι k => y p / y ⟨p.1, c p.1⟩) q)) _) _
 
+/- English proof (translation)
+Establish `hP : ∀ b : K → ℕ, ∏ k, y ⟨k, c k⟩ ^ b k ≠ 0` using `fun b => Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Proceed by induction on `hw using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨q, rfl⟩` from `hx`. Use `⟨Pi.single q.1 1, X q, by simpa using isMultiHomog_X_pow (S := S) q.1 q.2 1, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[aeval_X, Finset.prod_eq_single q.1]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[Pi.single_eq_of_ne hk, pow_zero]`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Consider the case `algebraMap r`. Conclude with `⟨0, C r, isMultiHomog_C r, by simp⟩`. Consider the case `add x x' _ _ h h'`. Take `⟨b, p, hp, rfl⟩` from `h`.
+
+Take `⟨b', p', hp', rfl⟩` from `h'`. Use `⟨b + b', p * ∏ k, X ⟨k, c k⟩ ^ b' k + p' * ∏ k, X ⟨k, c k⟩ ^ b k, ?_, ?_⟩` and prove the remaining obligations. Use `isMultiHomog_add (isMultiHomog_mul hp (isMultiHomog_prod_X c b')) ?_` and prove the remaining obligations. Rewrite using `[add_comm b b']`. Conclude with `isMultiHomog_mul hp' (isMultiHomog_prod_X c b)`.
+
+Rewrite using `[map_add, map_mul, map_mul, aeval_prod_X, aeval_prod_X, prod_pow_add]`. Clear denominators, using `[hP b, hP b']` for the nonvanishing conditions. Consider the case `mul x x' _ _ h h'`. Take `⟨b, p, hp, rfl⟩` from `h`. Take `⟨b', p', hp', rfl⟩` from `h'`.
+
+Use `⟨b + b', p * p', isMultiHomog_mul hp hp', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, prod_pow_add, div_mul_div_comm]`.
+-/
 theorem exists_of_mem_chartRing (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {w : Ω}
     (hw : w ∈ chartRingOver S y c) :
     ∃ (b : K → ℕ) (h : MRingOver S ι), IsMultiHomog h b ∧ w = aeval y h / ∏ k, y ⟨k, c k⟩ ^ b k := by
@@ -376,6 +503,15 @@ open CechPointVanish
 
 variable [LinearOrder K] [∀ k, LinearOrder (ι k)] {y}
 
+/- English proof (translation)
+Establish `hX : (X ⟨k, i⟩ : MRingOver S ι) ∈ cellMon S I` using `Submonoid.subset_closure ⟨k, i, hi, rfl⟩`. Establish `hmem : (X ⟨k, i⟩ : MRingOver S ι) ∈ mIdealOver S y`. Simplify using `[mIdealOver, mConeMapOver, RingHom.mem_ker, hy]`. Establish `hz : ∀ w : MRingOver S ι ⧸ mIdealOver S y, (X ⟨k, i⟩ : MRingOver S ι) • w = 0`. Introduce `w`.
+
+Take `⟨g, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ hmem`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Proceed by induction on `a using LocalizedModule.induction_on with`.
+
+Consider the case `h m t`. Proceed by induction on `b using LocalizedModule.induction_on with`. Consider the case `h m' t'`. Rewrite using `[LocalizedModule.mk_eq]`. Use `⟨⟨_, hX⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submonoid.smul_def]`. Rewrite using `[hz, hz]`.
+-/
 theorem subsingleton_of_bad {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : i ∈ I k) (hy : y ⟨k, i⟩ = 0) :
     Subsingleton (LocalizedModule (cellMon S I) (MRingOver S ι ⧸ mIdealOver S y)) := by
   have hX : (X ⟨k, i⟩ : MRingOver S ι) ∈ cellMon S I := Submonoid.subset_closure ⟨k, i, hi, rfl⟩
@@ -396,6 +532,11 @@ theorem subsingleton_of_bad {I : ∀ k, Finset (ι k)} {k : K} {i : ι k} (hi : 
       simp only [Submonoid.smul_def]
       rw [hz, hz]
 
+/- English proof (translation)
+Distinguish the cases in `h : cellMon S J ≤ cellMon S I`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h m t => rw [LocalizedModule.smul'_mk, cellRes_mk h, cellRes_mk h, LocalizedModule.smul'_mk]`. Unfold `cellRes`. Rewrite using `[dif_neg h]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem cellRes_smul {J I : ∀ k, Finset (ι k)} (s : S)
     (x : LocalizedModule (cellMon S J) (MRingOver S ι ⧸ mIdealOver S y)) :
     cellRes S _ J I (s • x) = s • cellRes S _ J I x := by
@@ -406,6 +547,13 @@ theorem cellRes_smul {J I : ∀ k, Finset (ι k)} (s : S)
     rw [dif_neg h]
     simp
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, t, a, ht, hm, rfl⟩` from `hx`. Rewrite using `[cellRes_mk h]`. Conclude with `Submodule.subset_span ⟨m, ⟨t.1, h t.2⟩, a, ht, hm, rfl⟩`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x₁ x₂ _ _ h₁ h₂ => rw [map_add]`. Conclude with `add_mem h₁ h₂`. Consider the case `smul s x _ h' => rw [cellRes_smul]`.
+
+Conclude with `Submodule.smul_mem _ s h'`.
+-/
 theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon S J ≤ cellMon S I) (β : K → ℤ)
     {x : LocalizedModule (cellMon S J) (MRingOver S ι ⧸ mIdealOver S y)}
     (hx : x ∈ locPart ι (quotPart S (mIdealOver S y)) (cellMon S J) β) :
@@ -419,6 +567,11 @@ theorem cellRes_mem_locPart {J I : ∀ k, Finset (ι k)} (h : cellMon S J ≤ ce
   | add x₁ x₂ _ _ h₁ h₂ => rw [map_add]; exact add_mem h₁ h₂
   | smul s x _ h' => rw [cellRes_smul]; exact Submodule.smul_mem _ s h'
 
+/- English proof (translation)
+Rewrite using `[cechD_apply]`. Use `Submodule.sum_mem _ fun k _ => Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `hJ : f ⟨Function.update I.1 k ((I.1 k).erase i), hc⟩ ∈ locPart ι (quotPart S (mIdealOver S y)) (cellMon S (Function.update I.1 k ((I.1 k).erase i))) β` using `Submodule.mem_pi.mp hf ⟨Function.update I.1 k ((I.1 k).erase i), hc⟩ (Set.mem_univ _)`. Establish `hm` using `cellRes_mem_locPart (J := Function.update I.1 k ((I.1 k).erase i)) (I := I.1) (cellMon_mono (face_subset I.1 k i)) β hJ`.
+
+Conclude with `zsmul_mem hm _`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem cechD_mem_locPart (β : K → ℤ) (n : ℕ) {f : CechC S ι (MRingOver S ι ⧸ mIdealOver S y) n}
     (hf : f ∈ cechCc ι (quotPart S (mIdealOver S y)) β n) (I : Cell K ι (n + 1)) :
     cechD S ι _ n f I ∈ locPart ι (quotPart S (mIdealOver S y)) (cellMon S I.1) β := by

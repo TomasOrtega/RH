@@ -26,6 +26,17 @@ noncomputable section
 
 namespace GlobalTheory.Mum.TensPol
 
+/- English proof (translation)
+Introduce `R _ _ _ hR Q D' r W pr hpr hlim xe hc w hw hψ hW hQ`. Take `⟨hN, hI, -, -⟩` from `hR`. Establish `hk0 : ∀ a b, ∃ k, Q.TauCoord a b k ∧ (a = b → a ≠ 0 → ∃ s ∈ maximalIdeal R, (k : FractionRing R) = algebraMap R _ s)`. Introduce `a b`. Distinguish the cases in `h : a = b ∧ a ≠ 0`.
+
+Take `⟨rfl, ha⟩` from `h`. Take `⟨s, hs, k, hk, hc⟩` from `hQ a ha`. Conclude with `⟨k, hc, fun _ _ => ⟨s, hs, hk⟩⟩`. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_periodScalarCoordinate_polarisedData_local R Q a b`. Conclude with `⟨k, hk, fun e ne => (h ⟨e, ne⟩).elim⟩`.
+
+Use `choose k hk hkp using hk0`. Take `⟨hs, ha⟩` from `GlobalTheory.T.periodScalarCoordinates_symm_bimult_up_to_units R Q k hk`. Take `⟨ga', a', h'⟩` from `GlobalTheory.exists_psiScal R D'`. Take `⟨hp, ht⟩` from `GlobalTheory.T.tensorData_scalars_mem_maximalIdeal_tendsto_zero R Q.X k hs ha (fun y hy => hkp y y rfl hy) W hW (fun z => a' (xe.symm z)) (fun z => by simpa only [AddEquiv.apply_symm_apply] using GlobalTheory.T.tensorData_psiScalar_eq_unit_mul_prod_periods R Q D' W pr xe w hψ k h …`. Use `⟨fun χ hχ => ?_, fun n => ((ht n).preimage xe.injective.injOn).subset fun χ hχ hm => hχ ?_⟩` and prove the remaining obligations.
+
+Take `⟨s, hs, e⟩` from `hp (xe χ) (fun h0 => hχ (xe.map_eq_zero_iff.1 h0))`. Rewrite `e` using `[AddEquiv.symm_apply_apply]`. Conclude with `(GlobalTheory.PsiScalIn.main_local D' ga' a' h' χ _).2 ⟨s, hs, e.symm⟩`. Take `⟨s, hs, e⟩` from `hm`. Rewrite `e` using `[AddEquiv.symm_apply_apply]`.
+
+Conclude with `(GlobalTheory.PsiScalIn.main_local D' ga' a' h' χ _).2 ⟨s, hs, e.symm⟩`.
+-/
 theorem psi_pos_tendsto : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ (Q : Data R) (D' : DegPre R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (pr : Fin r → (D'.P.A ⟶ Q.B)), (∀ i, IsMonHom (pr i)) → IsLimit (Fan.mk D'.P.A pr) → ∀ (xe : D'.X ≃+ (Fin r → Q.X)), (∀ z i, D'.c z ≫ pr i = Q.c (xe z i)) → ∀ (w : LB.Iso D'.P.L (LB.LinComb Q.M.L (tensφ pr) (tensε W))), w.IsGen → (∀ y z J J', Good Q.M.L z J → Good D'.P.L z J' → val (D'.psi y) (𝟙 _) z J' = gm (D'.xK y) z _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y))) * ∏ i, ∏ j, val (Q.tau (xe y i) (xe y j)) (𝟙 _) z J ^ W i j) → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → Q.IsPos (maximalIdeal R) → (∀ χ : D'.X, χ ≠ 0 → D'.PsiIn χ (maximalIdeal R)) ∧ ∀ n : ℕ, {χ : D'.X | ¬ D'.PsiIn χ (maximalIdeal R ^ n)}.Finite := by
   intro R _ _ _ hR Q D' r W pr hpr hlim xe hc w hw hψ hW hQ
   obtain ⟨hN, hI, -, -⟩ := hR

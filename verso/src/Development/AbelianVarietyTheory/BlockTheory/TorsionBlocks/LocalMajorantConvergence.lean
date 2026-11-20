@@ -70,8 +70,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 end Record
 
+/- English proof (translation)
+Introduce `_` and use `continuous_const`.
+-/
 example {G : Type} [Group G] [TopologicalSpace G] : IsUnitaryRep (1 : G →* (ℂ ≃ₗᵢ[ℂ] ℂ)) := fun _ => continuous_const
 
+/- English proof (translation)
+The claim follows from `isMajorantFrame_one w`.
+-/
 example (σ : E →ₐ[F] E) {n : ℕ} (w : InfinitePlace F) :
     IsMajorantAt σ (1 : Matrix (Fin n) (Fin n) E) w (bc (compInf F E w) 1) := isMajorantFrame_one w
 

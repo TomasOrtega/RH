@@ -9,6 +9,9 @@ open NumberField Finset
 namespace Formalism.HermitianLattices.SiegelMassBounds
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+The claim follows from `Formalism.HermitianLattices.Ext.L3.siegelMassRatio`.
+-/
 theorem siegel_mass_ratio : SiegelMassRatioThm := Formalism.HermitianLattices.Ext.L3.siegelMassRatio
 
 end Formalism.HermitianLattices.SiegelMassBounds

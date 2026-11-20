@@ -6,6 +6,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.ExistsMulO
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.Blocks
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SupportDatum.DeterminantFormIdentity
 
+/- English proof (translation)
+The claim follows from `PI.SupportDatumW.supportVecAll_of (fun D δ M p _ T T' w w' hk c hw hw' => PI.SupportDatumW.locStep_of PI.SupportDatumW.cokernel_determinant PI.SupportDatumW.determinant_form_identity PI.SupportDatumW.topNe D δ M p T T' w w' hk c hw hw') PI.SupportDatumW.topNe`.
+-/
 theorem support_vector_all : PI.SupportParts.SupportVecAll :=
   PI.SupportDatumW.supportVecAll_of
     (fun D δ M p _ T T' w w' hk c hw hw' =>

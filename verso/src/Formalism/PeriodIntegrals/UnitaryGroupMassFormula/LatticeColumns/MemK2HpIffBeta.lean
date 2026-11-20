@@ -15,6 +15,11 @@ abbrev gLam (X : HidaSetting D) (p : TypX X) :
   Ideal.span {((X.B.g : ℕ) : p.1.adicCompletionIntegers X.B.I.F)} •
     latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))
 
+/- English proof (translation)
+Establish `h0 : D.host.g 0 ≠ 0` using `(D.host.g_prime 0).ne_zero`. Establish `h1 : D.host.g 1 ≠ 0` using `(D.host.g_prime 1).ne_zero`. Establish `hp` using `(mem_typSet X.B.I.F (D.host.g 0) (D.host.g 1) h0 h1 p.1).1 p.2`. Rewrite using `[X.g_eq, Nat.cast_mul]`. Break down `hp with h | h` into its components or cases.
+
+Conclude with `Ideal.mul_mem_right _ _ h`. Conclude with `Ideal.mul_mem_left _ _ h`.
+-/
 theorem g_mem_p (X : HidaSetting D) (p : TypX X) : ((X.B.g : ℕ) : 𝓞 X.B.I.F) ∈ p.1.asIdeal := by
   have h0 : D.host.g 0 ≠ 0 := (D.host.g_prime 0).ne_zero
   have h1 : D.host.g 1 ≠ 0 := (D.host.g_prime 1).ne_zero
@@ -24,6 +29,11 @@ theorem g_mem_p (X : HidaSetting D) (p : TypX X) : ((X.B.g : ℕ) : 𝓞 X.B.I.F
   · exact Ideal.mul_mem_right _ _ h
   · exact Ideal.mul_mem_left _ _ h
 
+/- English proof (translation)
+Introduce `h`. Establish `hc' : IsCoprime ((c : ℕ) : ℤ) ((X.B.g : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hc`. Take `⟨s, t, hst⟩` from `hc'.map (Int.castRingHom (𝓞 X.B.I.F))`. Simplify using `only [eq_intCast, Int.cast_natCast] at hst`. Apply `p.1.isPrime.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, ← hst]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ (g_mem_p X p))`.
+-/
 theorem coprime_not_mem (X : HidaSetting D) (p : TypX X) (c : ℕ) (hc : Nat.Coprime c X.B.g) :
     ((c : ℕ) : 𝓞 X.B.I.F) ∉ p.1.asIdeal := by
   intro h
@@ -34,6 +44,15 @@ theorem coprime_not_mem (X : HidaSetting D) (p : TypX X) (c : ℕ) (hc : Nat.Cop
   rw [Ideal.eq_top_iff_one, ← hst]
   exact add_mem (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ (g_mem_p X p))
 
+/- English proof (translation)
+Take `⟨c, hc, hcw⟩` from `h`. Establish `h1 : InMod X.B.I X.B.g ∅ ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • w)` using `Submodule.mem_sup_right hcw`. Establish `h2` using `MassDataIdxSteps.imA_inMod_loc X p X.B.g ∅ _ h1`. Rewrite `h2` using `[Set.image_empty]`. Establish `h3 : PI.FinKW.vecV X.B.I p.1 ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • w) ∈ gLam X p`.
+
+Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 h2`. Establish `ha0 : a = 0`. Establish `hs : {w : Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E | ∃ t ∈ MassDataIdxSteps.OEp X p, ∃ s ∈ (∅ : Set (Fin X.B.I.n → Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)), w = t • s} = ∅`. Use extensionality with `w`. Simplify using the standard rewrite rules.
+
+Rewrite `ha` using `[hs, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `ha`. Rewrite using `[← e, ha0, zero_add]`. Conclude with `hb`. Rewrite `h3` using `[MassDataIdxSteps.imA_vecV_smul, map_natCast, Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul (p.1.adicCompletionIntegers X.B.I.F)]`.
+
+Take `⟨u0, hu0⟩` from `isUnit_natCast_of_not_mem p.1 c (coprime_not_mem X p c hc)`. Establish `h4` using `Submodule.smul_mem (gLam X p) ((u0⁻¹ : (p.1.adicCompletionIntegers X.B.I.F)ˣ) : p.1.adicCompletionIntegers X.B.I.F) h3`. Rewrite `h4` using `[← hu0, smul_smul, Units.inv_mul, one_smul]`. Conclude with `h4`.
+-/
 theorem loc_of_InAt (X : HidaSetting D) (p : TypX X) (w : VA X.B.I) (h : InAt X.B.I X.B.g X.B.g w) :
     PI.FinKW.vecV X.B.I p.1 w ∈ gLam X p := by
   obtain ⟨c, hc, hcw⟩ := h
@@ -59,6 +78,11 @@ theorem loc_of_InAt (X : HidaSetting D) (p : TypX X) (w : VA X.B.I) (h : InAt X.
   rw [← hu0, smul_smul, Units.inv_mul, one_smul] at h4
   exact h4
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on (p := fun v => (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ v ∈ gLam X p) hv ?_ ?_` and prove the remaining obligations. Introduce `r hr l hl`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem_smul hr ((hM l).1 hl)`. Introduce `a b ha hb`.
+
+Rewrite using `[Matrix.mulVec_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem kloc_gLam (X : HidaSetting D) (p : TypX X)
     (M : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     (hM : M ∈ Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)))
@@ -73,6 +97,9 @@ theorem kloc_gLam (X : HidaSetting D) (p : TypX X)
     rw [Matrix.mulVec_add]
     exact add_mem ha hb
 
+/- English proof (translation)
+Establish `e : ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) - 1) *ᵥ s = (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) _) *ᵥ (s - t) - (s - t)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub, ht]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (kloc_gLam X p M hM _ hst) hst`.
+-/
 theorem kill_of_fix (X : HidaSetting D) (p : TypX X)
     (M : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E))
     (hM : M ∈ Kloc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)))
@@ -86,6 +113,9 @@ theorem kill_of_fix (X : HidaSetting D) (p : TypX X)
   rw [e]
   exact sub_mem (kloc_gLam X p M hM _ hst) hst
 
+/- English proof (translation)
+Establish `h` using `MassDataIdxSteps.imA_vecV_mulVec X hb p y w`. Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec, MassDataIdxSteps.imA_vecV_sub, Matrix.sub_mulVec, Matrix.one_mulVec]`. Establish `h2` using `congrArg (· + PI.FinKW.vecV X.B.I p.1 w) h`. Simplify using `only [sub_add_cancel] at h2`. Conclude with `h2`.
+-/
 theorem vecV_fmat (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : TypX X) (y : X.B.I.Gf) (w : VA X.B.I) :
     PI.FinKW.vecV X.B.I p.1 (X.B.I.fmat y *ᵥ w) =
       ((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (PI.MassDataKppVolLemmas.piV X.B.I p.1 (finHA X hb y)) :
@@ -97,11 +127,37 @@ theorem vecV_fmat (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (p : TypX X) (y :
   simp only [sub_add_cancel] at h2
   exact h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[PI.FinKW.vecV, PI.FinKW.psiV, Formalism.L2.SG.HidaSetting.incl, ratV, inclR, Formalism.UG.inclE]`.
+-/
 theorem vecV_incl (X : HidaSetting D) (p : TypX X) (y : Fin X.B.I.n → X.B.I.E) :
     PI.FinKW.vecV X.B.I p.1 (Formalism.L2.SG.HidaSetting.incl X.B.I y) = ratV (F := X.B.I.F) (Fv X.B.I.F p.1) y := by
   funext i
   simp [PI.FinKW.vecV, PI.FinKW.psiV, Formalism.L2.SG.HidaSetting.incl, ratV, inclR, Formalism.UG.inclE]
 
+/- English proof (translation)
+Use `set A := HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (xuP X hb u p) with hA_def`. Use `set Y := HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) with hY_def`. Establish `hM : HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J ((xuP X hb u p)⁻¹ * ((x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) * xuP X hb u p) = A⁻¹ * Y * A` using `rfl`. Establish `hAK : A ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := unipotent_mem_localStabilizer X hb u p`. Establish `hYK : Y ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := x.2`.
+
+Establish `hMK : A⁻¹ * Y * A ∈ Kloc (E` using `X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := mul_mem (mul_mem (inv_mem hAK) hYK) hAK`. Establish `hxH` using `(x : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)).2`. Establish `hfix : ∀ b, (Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (tupH (frameOf X u) b) = ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (tupH (frameOf X u) b) := by`. Introduce `b`. Use `(mem_stabT (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (tupH (frameOf X u)) _).1 hxH b` as an intermediate fact.
+
+Conclude with `this`. Establish `hinv : ∀ v, (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ v = v → ((A⁻¹ : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ v = v`. Introduce `v hv`. Combine the equalities or inequalities in the displayed calculation. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `set t := ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.eX a)) with ht_def`. Establish `hAt : (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t`. Establish `h1` using `vecV_fmat X hb p (X.xu u) (Formalism.L2.SG.HidaSetting.incl X.B.I (crdOf X.B.I X.ιE X.bas (X.eX a)))`. Rewrite `h1` using `[(X.xu_fix u a).1, vecV_incl]`. Conclude with `h1.symm`.
+
+Establish `hYt : (Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t`. Use `hfix (Fin.castAdd D.R.rS (Fin.castSucc a))` as an intermediate fact. Rewrite `this` using `[tupH, Fin.append_left, F0, Fin.snoc_castSucc]`. Conclude with `this`. Establish `hMt : ((A⁻¹ * Y * A : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t`.
+
+Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hAt, hYt, hinv t hAt]`. Establish `hst : PI.FinKW.vecV X.B.I p.1 (X.e0 a) - t ∈ gLam X p`. Rewrite using `[ht_def, ← vecV_incl, ← MassDataIdxSteps.imA_vecV_sub]`. Conclude with `loc_of_InAt X p _ (X.basisApprox a).1`. Rewrite using `[hM]`.
+
+Conclude with `Submodule.mem_sup_right (kill_of_fix X p _ hMK _ t hMt hst)`. Use `set t := PI.FinKW.vecV X.B.I p.1 (X.B.I.fmat (X.xu u)⁻¹ *ᵥ Formalism.L2.SG.HidaSetting.incl X.B.I (crdOf X.B.I X.ιE X.bas (X.zu u))) with ht_def`. Establish `hz : (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) := by`. Rewrite using `[ht_def, vecV_fmat X hb p, vecV_incl, Matrix.mulVec_mulVec]`. Establish `e1 : PI.MassDataKppVolLemmas.piV X.B.I p.1 (finHA X hb (X.xu u)⁻¹) = (xuP X hb u p)⁻¹`.
+
+Rewrite using `[finHA_inv, map_inv]`. Establish `e2 : (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) * ((HA.mat (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (PI.MassDataKppVolLemmas.piV X.B.I p.1 (finHA X hb (X.xu u)⁻¹)) : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X …`. Rewrite using `[e1]`. Use `show ((A * A⁻¹ : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) = 1`. Rewrite using `[mul_inv_cancel, Units.val_one]`.
+
+Rewrite using `[e2, Matrix.one_mulVec]`. Establish `hYz : (Y : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ ratV (F` using `X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) = ratV (F := X.B.I.F) (Fv X.B.I.F p.1) (crdOf X.B.I X.ιE X.bas (X.zu u)) := by`. Use `hfix (Fin.castAdd D.R.rS (Fin.last D.R.rS))` as an intermediate fact. Rewrite `this` using `[tupH, Fin.append_left, F0, Fin.snoc_last]`. Conclude with `this`.
+
+Establish `hMt : ((A⁻¹ * Y * A : GL (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Fv X.B.I.F p.1 ⊗[X.B.I.F] X.B.I.E)) *ᵥ t = t`. Rewrite using `[Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hz, hYz, ← hz, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Establish `hst : PI.FinKW.vecV X.B.I p.1 X.z0 - t ∈ gLam X p`. Establish `h0` using `loc_of_InAt X p _ (X.xu_z u)`. Rewrite `h0` using `[MassDataIdxSteps.imA_vecV_sub]`.
+
+Establish `h1` using `neg_mem h0`. Rewrite `h1` using `[neg_sub]`. Conclude with `h1`. Rewrite using `[hM]`. Conclude with `Submodule.mem_sup_right (kill_of_fix X p _ hMK _ t hMt hst)`.
+-/
 theorem cong_head (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (p : TypX X) (x : KvH X u p.1) :
     (∀ a : Fin D.R.rS, MassDataIdxSteps.InModP X p X.B.g
       ((fun b => PI.FinKW.vecV X.B.I p.1 (X.e0 b)) '' {b | b.1 < a.1})
@@ -190,6 +246,11 @@ theorem cong_head (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
     rw [hM]
     exact Submodule.mem_sup_right (kill_of_fix X p _ hMK _ t hMt hst)
 
+/- English proof (translation)
+Rewrite using `[mem_K2Hp_iff_cong X hb hK hL u p x]`. Take `⟨h1, h2⟩` from `cong_head X hb u p x`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.2.2`.
+
+Introduce `h`. Conclude with `⟨h1, h2, h⟩`.
+-/
 theorem mem_K2Hp_iff_beta (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hL : X.LevelSubgroupNormalized)
     (u : D.what₂.Word) (p : TypX X) (x : KvH X u p.1) :
     x ∈ (unitaryLevelLocalComponent X hb u p.1).subgroupOf (KvH X u p.1) ↔

@@ -13,6 +13,33 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Φ hΦ X h`. Take `⟨Y, s, hY, rfl, hs⟩` from `lieSplit X`. Take `⟨hcen, hdadd, -, htr⟩` from `dLCen F E D O`. Take `⟨ladd, lsmul, radd, rsmul⟩` from `lin F E D W M π`. Establish `hL` using `lieL F E D O W M π f hf φ hφ Y hY Φ hΦ`.
+
+Establish `hZ` using `lieZ F E D W M π f hf φ hφ s Φ hΦ`. Establish `hH` using `moveH F E D O W M π f hf φ hφ`. Establish `hE : ∀ (w : InfinitePlace F) (i j : Fin 2), TR.Eop w i j f ∈ π.V` using `fun w i j => π.stable (.lie _) f hf`. Establish `h0 : lift W M (0 : GL (Fin 2) (A F) → ℂ) φ = 0` using `by simpa using rsmul f.1 0 φ`. Establish `hl0 : lift W M f.1 (0 : S4 F) = 0` using `by simpa using lsmul f.1 0 φ`.
+
+Establish `sumF : ∀ (S : Finset (E →+* ℂ)) (c : (E →+* ℂ) → ℂ) (g : (E →+* ℂ) → TR.Sm F 2), (∀ τ, g τ ∈ π.V) → lift W M (∑ τ ∈ S, c τ • g τ).1 φ = ∑ τ ∈ S, c τ • lift W M (g τ).1 φ`. Introduce `S c g hg`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert a S ha ih`.
+
+Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, radd _ (π.V.smul_mem _ (hg a)) _ (sum_mem fun τ _ => π.V.smul_mem _ (hg τ)) φ hφ, ih]`. Use `congr 1`. Conclude with `rsmul (g a).1 (c a) φ`. Establish `sumP : ∀ (S : Finset (E →+* ℂ)) (c : (E →+* ℂ) → ℂ) (ψ : (E →+* ℂ) → S4 F), (∀ τ, ψ τ ∈ Fock D.δ) → lift W M f.1 (∑ τ ∈ S, c τ • ψ τ) = ∑ τ ∈ S, c τ • lift W M f.1 (ψ τ)`. Introduce `S c ψ hψ`.
+
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hl0`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ladd f hf _ (Submodule.smul_mem _ _ (hψ a)) _ (sum_mem fun τ _ => Submodule.smul_mem _ _ (hψ τ)), ih, lsmul]`. Establish `hh : ∀ w, O.h w φ ∈ Fock D.δ`.
+
+Introduce `w`. Establish `e : O.h w φ = ∑ i, O.x w i (O.d w i φ) + (φ + φ)`. Establish `h2 : (2 : Module.End ℂ (S4 F)) = 1 + 1` using `one_add_one_eq_two.symm`. Simplify using `[Fo.Ops.h, h2, LinearMap.sum_apply]`. Rewrite using `[e]`.
+
+Conclude with `add_mem (sum_mem fun i _ => (opsFock F E D O w i _ (opsFock F E D O w i φ hφ).2).1) (add_mem hφ hφ)`. Establish `hd` using `dLFock F E D O Y φ hφ`. Establish `e1 : O.dL D (Y + zE s) φ = O.dL D Y φ + (-1 : ℂ) • ∑ τ : E →+* ℂ, coord τ s • O.h (Fo.pl F τ) φ`. Rewrite using `[hdadd, (hcen s)]`. Simplify using `[LinearMap.sum_apply]`.
+
+Establish `hS : ∑ τ : E →+* ℂ, coord τ s • O.h (Fo.pl F τ) φ ∈ Fock D.δ` using `sum_mem fun τ _ => Submodule.smul_mem _ _ (hh _)`. Establish `e2 : (TR.lie F 2 (zF (trI F s)) f) = ∑ τ : E →+* ℂ, coord τ s • (TR.Eop (Fo.pl F τ) 0 0 f + TR.Eop (Fo.pl F τ) 1 1 f)`. Rewrite using `[htr s]`. Simplify using `[LinearMap.sum_apply]`. Establish `ePlus : ∀ w, lift W M (TR.Eop w 0 0 f + TR.Eop w 1 1 f : TR.Sm F 2).1 φ = lift W M (TR.Eop w 0 0 f).1 φ + lift W M (TR.Eop w 1 1 f).1 φ` using `fun w => radd _ (hE w 0 0) _ (hE w 1 1) φ hφ`.
+
+Establish `eMinus : ∀ w, lift W M (TR.Eop w 0 0 f - TR.Eop w 1 1 f : TR.Sm F 2).1 φ = lift W M (TR.Eop w 0 0 f).1 φ - lift W M (TR.Eop w 1 1 f).1 φ`. Introduce `w`. Establish `e : (TR.Eop w 0 0 f - TR.Eop w 1 1 f : TR.Sm F 2) = TR.Eop w 0 0 f + (-1 : ℂ) • TR.Eop w 1 1 f`. Rewrite using `[neg_one_smul, sub_eq_add_neg]`. Rewrite using `[e, radd _ (hE w 0 0) _ (π.V.smul_mem _ (hE w 1 1)) φ hφ]`.
+
+Use `rsmul (TR.Eop w 1 1 f).1 (-1) φ` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ + lift W M ((-1 : ℂ) • (TR.Eop w 1 1 f).1) φ = _`. Rewrite using `[this, neg_one_smul, sub_eq_add_neg]`. Establish `hlhs : (lie E 2 (Y + zE s) Φ).1 h = lift W M f.1 (O.dL D Y φ) h + lift W M (TR.lie F 2 (zF (trI F s)) f).1 φ h`. Rewrite using `[map_add, LinearMap.add_apply]`.
+
+Express the relevant statement in the definitionally equal form `(lie E 2 Y Φ).1 h + (lie E 2 (zE s) Φ).1 h = _`. Rewrite using `[hL, hZ]`. Rewrite using `[hlhs, e1, ladd f hf _ hd _ (Submodule.smul_mem _ _ hS), lsmul, sumP _ _ _ (fun τ => hh _), e2, sumF _ _ _ (fun τ => add_mem (hE _ 0 0) (hE _ 1 1)), hs]`. Simplify using `only [ePlus, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Establish `hHh : ∀ w, lift W M f.1 (O.h w φ) h = -(lift W M (TR.Eop w 0 0 f).1 φ h - lift W M (TR.Eop w 1 1 f).1 φ h)` using `fun w => by`.
+
+Rewrite using `[hH w h, eMinus]`. Both sides reduce to the same expression. Simplify using `only [hHh, map_add, add_mul, Finset.mul_sum]`. Rewrite using `[add_assoc, ← Finset.sum_add_distrib]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.lieLift :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (O : Fo.Ops F) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), Fo.LieLift O W M π := by
   intro F E _ _ _ _ _ _ _ D O W M π f hf φ hφ Φ hΦ X h

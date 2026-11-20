@@ -24,9 +24,19 @@ def den (g : GL (Fin 2) ℝ) (z : ℂ) : ℂ := (g 1 0 : ℝ) * z + (g 1 1 : ℝ
 
 def num (g : GL (Fin 2) ℝ) (z : ℂ) : ℂ := (g 0 0 : ℝ) * z + (g 0 1 : ℝ)
 
+/- English proof (translation)
+Conclude with `Matrix.det_fin_two g.val`.
+-/
 theorem det_eq (g : GL (Fin 2) ℝ) : g.val.det = g 0 0 * g 1 1 - g 0 1 * g 1 0 := by
   exact Matrix.det_fin_two g.val
 
+/- English proof (translation)
+Introduce `h`. Establish `h1 : (g 1 0 : ℝ) * z.im = 0`. Establish `him` using `congrArg Complex.im h`. Simplify `him` using `[den]`. Establish `hc : (g 1 0 : ℝ) = 0`.
+
+Break down `mul_eq_zero.mp h1 with h2 | h2` into its components or cases. Conclude with `h2`. Conclude with `absurd h2 hz`. Establish `hd : (g 1 1 : ℝ) = 0`. Establish `hre` using `congrArg Complex.re h`.
+
+Simplify `hre` using `[den, hc]`. Apply `g.det_ne_zero` to reduce the goal to its premises. Rewrite using `[det_eq, hc, hd]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem den_ne (g : GL (Fin 2) ℝ) {z : ℂ} (hz : z.im ≠ 0) : den g z ≠ 0 := by
   intro h
   have h1 : (g 1 0 : ℝ) * z.im = 0 := by
@@ -43,6 +53,9 @@ theorem den_ne (g : GL (Fin 2) ℝ) {z : ℂ} (hz : z.im ≠ 0) : den g z ≠ 0 
   rw [det_eq, hc, hd]
   ring
 
+/- English proof (translation)
+Rewrite using `[Complex.div_im, det_eq]`. Simplify using `only [num, den, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_div (g : GL (Fin 2) ℝ) (z : ℂ) : (num g z / den g z).im = g.val.det * z.im / Complex.normSq (den g z) := by
   rw [Complex.div_im, det_eq]
   simp only [num, den, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.ofReal_re,
@@ -67,6 +80,9 @@ instance : MulAction (GL (Fin 2) ℝ) P where
       simp [num, den, Matrix.mul_apply, Fin.sum_univ_two]; ring
     rw [e1, e2, div_div_div_cancel_right₀ h0])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smul (g : GL (Fin 2) ℝ) (z : P) : (g • z).1 = num g z.1 / den g z.1 := rfl
 
 def j1 (k : ℕ) (g : GL (Fin 2) ℝ) (z : P) : ℂ := den g z.1 ^ k * ((|g.val.det| ^ (-(k : ℝ) / 2) : ℝ) : ℂ)

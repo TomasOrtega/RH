@@ -32,18 +32,27 @@ def transE' (n : ℕ) : Cochain P (φ ∘ U) n →+ Cochain P' U n where
   map_add' σ τ := funext fun i => by simp
 
 include he in
+/- English proof (translation)
+The claim follows from `funext fun i => by simp only [transE, AddMonoidHom.coe_mk, ZeroHom.coe_mk, d_apply, map_sum, map_zsmul, he, res_res]`.
+-/
 lemma transE_d (n : ℕ) (σ : Cochain P' U n) :
     transE φ e U hinter (n + 1) (d P' U n σ) = d P (φ ∘ U) n (transE φ e U hinter n σ) :=
   funext fun i => by
     simp only [transE, AddMonoidHom.coe_mk, ZeroHom.coe_mk, d_apply, map_sum, map_zsmul, he,
       res_res]
 
+/- English proof (translation)
+The claim follows from `funext fun i => by simp only [transE, transE', AddMonoidHom.coe_mk, ZeroHom.coe_mk, AddEquiv.apply_symm_apply, res_res, res_refl]`.
+-/
 lemma transE_transE' (n : ℕ) (σ : Cochain P (φ ∘ U) n) :
     transE φ e U hinter n (transE' φ e U hinter n σ) = σ :=
   funext fun i => by
     simp only [transE, transE', AddMonoidHom.coe_mk, ZeroHom.coe_mk, AddEquiv.apply_symm_apply,
       res_res, res_refl]
 
+/- English proof (translation)
+The claim follows from `funext fun i => by simp only [transE, transE', AddMonoidHom.coe_mk, ZeroHom.coe_mk, res_res, res_refl, AddEquiv.symm_apply_apply]`.
+-/
 lemma transE'_transE (n : ℕ) (σ : Cochain P' U n) :
     transE' φ e U hinter n (transE φ e U hinter n σ) = σ :=
   funext fun i => by
@@ -51,12 +60,20 @@ lemma transE'_transE (n : ℕ) (σ : Cochain P' U n) :
       AddEquiv.symm_apply_apply]
 
 include he in
+/- English proof (translation)
+Use `conv_lhs => rw [← transE_transE' φ e U hinter n σ, ← transE_d φ hφ e he U hinter]`. Rewrite using `[transE'_transE]`.
+-/
 lemma transE'_d (n : ℕ) (σ : Cochain P (φ ∘ U) n) :
     transE' φ e U hinter (n + 1) (d P (φ ∘ U) n σ) = d P' U n (transE' φ e U hinter n σ) := by
   conv_lhs => rw [← transE_transE' φ e U hinter n σ, ← transE_d φ hφ e he U hinter]
   rw [transE'_transE]
 
 include he in
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Rewrite `hσ`, the goal using `[coboundaries_zero, AddSubgroup.mem_bot]`. Rewrite using `[hσ, map_zero]`. Consider the case `succ n`.
+
+Take `⟨τ, rfl⟩` from `hσ`. Conclude with `⟨transE φ e U hinter n τ, (transE_d φ hφ e he U hinter n τ).symm⟩`.
+-/
 lemma transE_mem_coboundaries {n : ℕ} {σ : Cochain P' U n} (hσ : σ ∈ coboundaries P' U n) :
     transE φ e U hinter n σ ∈ coboundaries P (φ ∘ U) n := by
   cases n with
@@ -68,6 +85,11 @@ lemma transE_mem_coboundaries {n : ℕ} {σ : Cochain P' U n} (hσ : σ ∈ cobo
     exact ⟨transE φ e U hinter n τ, (transE_d φ hφ e he U hinter n τ).symm⟩
 
 include he in
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `zero`. Rewrite `hσ`, the goal using `[coboundaries_zero, AddSubgroup.mem_bot]`. Rewrite using `[hσ, map_zero]`. Consider the case `succ n`.
+
+Take `⟨τ, rfl⟩` from `hσ`. Conclude with `⟨transE' φ e U hinter n τ, (transE'_d φ hφ e he U hinter n τ).symm⟩`.
+-/
 lemma transE'_mem_coboundaries {n : ℕ} {σ : Cochain P (φ ∘ U) n}
     (hσ : σ ∈ coboundaries P (φ ∘ U) n) : transE' φ e U hinter n σ ∈ coboundaries P' U n := by
   cases n with
@@ -108,10 +130,16 @@ def cechHTransport (n : ℕ) : cechH P' U n ≃+ cechH P (φ ∘ U) n where
       (by rw [transE_transE']; exact hσ) hσ
   map_add' := map_add _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma cechHTransport_cls {n : ℕ} (σ : Cochain P' U n) (hσ : d P' U n σ = 0) :
     cechHTransport φ hφ e he U hinter n (cls σ hσ) =
       cls (transE φ e U hinter n σ) (by rw [← transE_d φ hφ e he U hinter, hσ, map_zero]) := rfl
 
+/- English proof (translation)
+Take `⟨σ, hσ, rfl⟩` from `exists_cls x`. Rewrite using `[cechHMap_cls, cechHTransport_cls, cechHTransport_cls, cechHMap_cls]`. Use `cls_congr (φ ∘ U) (funext fun i => ?_) _ _` and prove the remaining obligations. Simplify using `only [transE, push, AddMonoidHom.coe_mk, ZeroHom.coe_mk, hα]`. Conclude with `(app_res α _ _).symm`.
+-/
 lemma cechHTransport_naturality (α' : P' ⟶ P') (α : P ⟶ P)
     (hα : ∀ (W : Opens Y) (x : P'.obj (op W)), e W (α'.app (op W) x) = α.app (op (φ W)) (e W x))
     (n : ℕ) (x : cechH P' U n) :
@@ -129,6 +157,9 @@ section Scheme
 
 variable {X Y : Scheme.{u}} (i : X ⟶ Y)
 
+/- English proof (translation)
+Use `SetLike.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `i.base x ∈ inter (X := Y.toTopCat) U t ↔ _`. Rewrite using `[mem_inter_iff, mem_inter_iff]`. Both sides reduce to the same expression.
+-/
 lemma preimage_inter {κ : Type w} (U : κ → Y.Opens) {n : ℕ} (t : Fin n → κ) :
     i ⁻¹ᵁ inter (X := Y.toTopCat) U t = inter (X := X.toTopCat) (fun j => i ⁻¹ᵁ U j) t := by
   refine SetLike.ext fun x => ?_
@@ -143,6 +174,9 @@ def cechHPushforwardEquiv (F : X.Modules) {κ : Type w} (U : κ → Y.Opens) (n 
     (fun W => i ⁻¹ᵁ W) (Opens.map i.base).monotone (fun _ => AddEquiv.refl _) (fun _ _ => rfl) U
     (fun t => preimage_inter i U t) n
 
+/- English proof (translation)
+The claim follows from `cechHTransport_naturality (P := (modulesAb F).obj) (P' := (modulesAb ((Scheme.Modules.pushforward i).obj F)).obj) (fun W => i ⁻¹ᵁ W) (Opens.map i.base).monotone (fun _ => AddEquiv.refl _) (fun _ _ => rfl) U (fun t => preimage_inter i U t) α' α hα n x`.
+-/
 lemma cechHPushforwardEquiv_naturality (F : X.Modules) {κ : Type w} (U : κ → Y.Opens) (n : ℕ)
     (α' : (modulesAb ((Scheme.Modules.pushforward i).obj F)).obj ⟶
       (modulesAb ((Scheme.Modules.pushforward i).obj F)).obj)
@@ -164,12 +198,18 @@ attribute [local instance] algebraOfOver
 
 include i in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(X ↘ Spec (.of A)).appTop _ = i.appTop ((Y ↘ Spec (.of A)).appTop _)`. Rewrite using `[← CategoryTheory.comp_over i (Spec (.of A)), Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+-/
 lemma algebraMap_eq_appTop (a : A) :
     algebraMap A Γ(X, ⊤) a = i.appTop (algebraMap A Γ(Y, ⊤) a) := by
   change (X ↘ Spec (.of A)).appTop _ = i.appTop ((Y ↘ Spec (.of A)).appTop _)
   rw [← CategoryTheory.comp_over i (Spec (.of A)), Scheme.Hom.comp_appTop]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `i.app W (restrictTop W (algebraMap A Γ(Y, ⊤) a)) • (show Γ(F, i ⁻¹ᵁ W) from x) = restrictTop (i ⁻¹ᵁ W) (algebraMap A Γ(X, ⊤) a) • (show Γ(F, i ⁻¹ᵁ W) from x)`. Rewrite using `[algebraMap_eq_appTop i A a, restrictTop, restrictTop, app_resO]`. Both sides reduce to the same expression.
+-/
 lemma smulHom_pushforward_app (F : X.Modules) (a : A) (W : Y.Opens)
     (x : (modulesAb ((Scheme.Modules.pushforward i).obj F)).obj.obj (op W)) :
     (smulAbRingHom ((Scheme.Modules.pushforward i).obj F) (algebraMap A Γ(Y, ⊤) a)).hom.app (op W)

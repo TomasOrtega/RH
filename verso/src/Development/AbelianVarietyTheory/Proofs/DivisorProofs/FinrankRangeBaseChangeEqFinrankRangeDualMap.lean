@@ -12,6 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `O _ K _ _ M₁ _ _ _ _ M₂ _ _ _ _ f`. Take `⟨h1, h2⟩` from `GlobalTheory.DualFibreRank.finrank_dual_and_range_dualMap_baseChange O M₁ M₂ K f`. Conclude with `⟨h2.symm, h1.symm⟩`.
+-/
 theorem finrank_range_baseChange_eq_dualMap_and_finrank_dual :
     ∀ (O : Type) [CommRing O] (K : Type) [Field K] [Algebra O K] (M₁ : Type) [AddCommGroup M₁] [Module O M₁] [Module.Free O M₁] [Module.Finite O M₁] (M₂ : Type) [AddCommGroup M₂] [Module O M₂] [Module.Free O M₂] [Module.Finite O M₂] (f : M₁ →ₗ[O] M₂), Module.finrank K (LinearMap.range (f.baseChange K)) = Module.finrank K (LinearMap.range (f.dualMap.baseChange K)) ∧ Module.finrank K (K ⊗[O] M₁) = Module.finrank K (K ⊗[O] Module.Dual O M₁) := by
   intro O _ K _ _ M₁ _ _ _ _ M₂ _ _ _ _ f

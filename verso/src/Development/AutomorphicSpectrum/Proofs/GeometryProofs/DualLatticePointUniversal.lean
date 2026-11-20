@@ -26,10 +26,19 @@ def iota : TrivSqZeroExt R V →+* DualNumber (TrivSqZeroExt R V) where
     · simp
     · refine TrivSqZeroExt.ext ?_ ?_ <;> simp [add_comm, mul_comm]
 
+/- English proof (translation)
+Simplify using `[iota]`.
+-/
 theorem iota_fst (a : TrivSqZeroExt R V) : (iota a).fst = TrivSqZeroExt.inl a.fst := by simp [iota]
 
+/- English proof (translation)
+Simplify using `[iota]`.
+-/
 theorem iota_snd (a : TrivSqZeroExt R V) : (iota a).snd = TrivSqZeroExt.inr a.snd := by simp [iota]
 
+/- English proof (translation)
+Introduce `a b h`. Establish `h₁` using `congrArg (fun c => (TrivSqZeroExt.fst c).fst) h`. Establish `h₂` using `congrArg (fun c => (TrivSqZeroExt.snd c).snd) h`. Simplify using `only [iota_fst, iota_snd, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inr] at h₁ h₂`. Conclude with `TrivSqZeroExt.ext h₁ h₂`.
+-/
 theorem iota_injective : Function.Injective (iota : TrivSqZeroExt R V →+* _) := by
   intro a b h
   have h₁ := congrArg (fun c => (TrivSqZeroExt.fst c).fst) h
@@ -37,6 +46,15 @@ theorem iota_injective : Function.Injective (iota : TrivSqZeroExt R V →+* _) :
   simp only [iota_fst, iota_snd, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inr] at h₁ h₂
   exact TrivSqZeroExt.ext h₁ h₂
 
+/- English proof (translation)
+Introduce `p`. Set `q : PrimeSpectrum (DualNumber (TrivSqZeroExt R V))` to `PrimeSpectrum.comap (TrivSqZeroExt.fstHom (TrivSqZeroExt R V) (TrivSqZeroExt R V) (TrivSqZeroExt R V)).toRingHom p`. Use `⟨q, PrimeSpectrum.ext (Ideal.ext fun a => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(iota a).fst ∈ p.asIdeal ↔ a ∈ p.asIdeal`. Rewrite using `[iota_fst]`.
+
+Use `set b : TrivSqZeroExt R V := TrivSqZeroExt.inl a.fst with hb`. Establish `h0 : (b - a).fst = 0` using `by simp [hb]`. Establish `hm : b - a ∈ p.asIdeal`. Use `p.isPrime.mem_of_pow_mem 2 ?_` and prove the remaining obligations. Establish `: (b - a) ^ 2 = 0`.
+
+Rewrite using `[pow_two]`. Apply the tactic sequence `ext1 <;> simp [h0]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Simplify using `using p.asIdeal.sub_mem h hm`. Introduce `h`. Simplify using `using p.asIdeal.add_mem hm h`.
+-/
 theorem iota_surjective_spec :
     Function.Surjective (Spec.map (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _))) := by
   intro p
@@ -57,20 +75,37 @@ theorem iota_surjective_spec :
   · intro h; simpa using p.asIdeal.sub_mem h hm
   · intro h; simpa using p.asIdeal.add_mem hm h
 
+/- English proof (translation)
+Simplify using `[epsMul]`.
+-/
 theorem epsMul_fst {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).fst = a.fst := by
   simp [epsMul]
 
+/- English proof (translation)
+Simplify using `[epsMul]`.
+-/
 theorem epsMul_snd {A : Type} [CommRing A] (c : A) (a : DualNumber A) : (epsMul c a).snd = c * a.snd := by
   simp [epsMul]
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem dualMap_fst {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
     (dualMap f a).fst = f a.fst := by
   simp [dualMap]
 
+/- English proof (translation)
+Simplify using `[dualMap]`.
+-/
 theorem dualMap_snd {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A') (a : DualNumber A) :
     (dualMap f a).snd = f a.snd := by
   simp [dualMap]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[iota_fst, epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `only [RingHom.comp_apply, iota_snd, epsMul_snd, dualMap_snd]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+
+Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem iota_comp_map (q : V) :
     iota.comp (TrivSqZeroExt.map (LinearMap.toSpanSingleton R V q)).toRingHom =
       (epsMul (TrivSqZeroExt.inr q : TrivSqZeroExt R V)).comp (dualMap (algebraMap R (TrivSqZeroExt R V))) := by
@@ -81,11 +116,17 @@ theorem iota_comp_map (q : V) :
     · simp
     · simp [TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun a => by simp [iota_fst, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem fst_comp_iota :
     (TrivSqZeroExt.fstHom (TrivSqZeroExt R V) (TrivSqZeroExt R V) (TrivSqZeroExt R V)).toRingHom.comp iota =
       (algebraMap R (TrivSqZeroExt R V)).comp (TrivSqZeroExt.fstHom R R V).toRingHom :=
   RingHom.ext fun a => by simp [iota_fst, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[iota_fst, dualMap_fst]`. Simplify using `[iota_snd, dualMap_snd]`.
+-/
 theorem dualMap_fst_comp_iota :
     (dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp iota =
       (TrivSqZeroExt.map (0 : V →ₗ[R] R)).toRingHom := by
@@ -93,6 +134,9 @@ theorem dualMap_fst_comp_iota :
   · simp [iota_fst, dualMap_fst]
   · simp [iota_snd, dualMap_snd]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[epsMul_fst, dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[epsMul_snd, dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem reduce_epsMul (b : TrivSqZeroExt R V) :
     ((dualMap (TrivSqZeroExt.fstHom R R V).toRingHom).comp (epsMul b)).comp (dualMap (algebraMap R (TrivSqZeroExt R V))) =
       epsMul b.fst := by
@@ -130,6 +174,11 @@ def dMor : epsAt x ⟶ epsAt (xB x V) :=
     · simp [dualMap_fst, TrivSqZeroExt.algebraMap_eq_inl]
     · simp [dualMap_snd, TrivSqZeroExt.algebraMap_eq_inl])
 
+/- English proof (translation)
+Use `ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use `ext1`.
+
+Conclude with `dualMap_fst_comp_iota`.
+-/
 theorem dMor_cMor : dMor x V ≫ cMor x V = hom x (0 : V →ₗ[R] R) := by
   ext1
   change Spec.map _ ≫ Spec.map _ = Spec.map _
@@ -138,6 +187,9 @@ theorem dMor_cMor : dMor x V ≫ cMor x V = hom x (0 : V →ₗ[R] R) := by
   ext1
   exact dualMap_fst_comp_iota
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `ext1`. Conclude with `iota_comp_map q`.
+-/
 theorem cMor_hom (q : V) : (cMor x V ≫ hom x (LinearMap.toSpanSingleton R V q)).left =
     Spec.map (CommRingCat.ofHom (epsMul (TrivSqZeroExt.inr q : TrivSqZeroExt R V))) ≫
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) := by
@@ -147,6 +199,11 @@ theorem cMor_hom (q : V) : (cMor x V ≫ hom x (LinearMap.toSpanSingleton R V q)
   ext1
   exact iota_comp_map q
 
+/- English proof (translation)
+Use `ext1`. Establish `h₀ : (cMor x V).left ≫ f.left = (cMor x V).left ≫ g.left` using `congrArg CommaMorphism.left h`. Establish `h₁ : Function.Surjective (cMor x V).left` using `iota_surjective_spec`. Establish `h₂ : IsSchemeTheoreticallyDominant (cMor x V).left` using `std_of_inj (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _)) iota_injective`. Establish `h₃ : QuasiCompact (cMor x V).left` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom (iota : TrivSqZeroExt R V →+* _))))`.
+
+Conclude with `epi_of_surj (cMor x V).left h₁ f.left g.left h₀`.
+-/
 theorem cMor_cancel {Z : Over S} (f g : ob x V ⟶ Z) (h : cMor x V ≫ f = cMor x V ≫ g) : f = g := by
   ext1
   have h₀ : (cMor x V).left ≫ f.left = (cMor x V).left ≫ g.left := congrArg CommaMorphism.left h
@@ -168,10 +225,20 @@ variable {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {L L' : Type} [Add
 def extForm (hβ : IsBaseChange B β) (f : Module.Dual R L) : L' →ₗ[B] B :=
   hβ.lift (Algebra.linearMap R B ∘ₗ f)
 
+/- English proof (translation)
+The claim follows from `hβ.lift_eq _ y`.
+-/
 theorem extForm_apply (hβ : IsBaseChange B β) (f : Module.Dual R L) (y : L) :
     extForm hβ f (β y) = algebraMap R B (f y) :=
   hβ.lift_eq _ y
 
+/- English proof (translation)
+Use `hβ.inductionOn l (fun l => l = ∑ k, extForm hβ (w k) l • β (e k)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `y`. Simplify using `only [extForm_apply, algebraMap_smul]`. Use `conv_lhs => rw [← he y]`.
+
+Simplify using `only [map_sum, map_smul]`. Introduce `s n h`. Simplify using `only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum]`. Rewrite using `[← h]`. Introduce `a b ha hb`.
+
+Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[← ha, ← hb]`.
+-/
 theorem expand (hβ : IsBaseChange B β) (he : ∀ y, ∑ k, w k y • e k = y) (l : L') :
     l = ∑ k, extForm hβ (w k) l • β (e k) := by
   refine hβ.inductionOn l (fun l => l = ∑ k, extForm hβ (w k) l • β (e k)) ?_ ?_ ?_ ?_
@@ -187,11 +254,17 @@ theorem expand (hβ : IsBaseChange B β) (he : ∀ y, ∑ k, w k y • e k = y) 
     simp only [map_add, add_smul, Finset.sum_add_distrib]
     rw [← ha, ← hb]
 
+/- English proof (translation)
+Use extensionality with `y`. Use `conv_rhs => rw [← he y]`. Simplify using `[mul_comm]`.
+-/
 theorem dual_expand (he : ∀ y, ∑ k, w k y • e k = y) (f : Module.Dual R L) : ∑ k, f (e k) • w k = f := by
   ext y
   conv_rhs => rw [← he y]
   simp [mul_comm]
 
+/- English proof (translation)
+Simplify using `[extForm_apply]`.
+-/
 theorem extForm_sum (hβ : IsBaseChange B β) (f : Module.Dual R L) (b : J → B) :
     extForm hβ f (∑ k, b k • β (e k)) = ∑ k, b k * algebraMap R B (f (e k)) := by
   simp [extForm_apply]
@@ -205,10 +278,18 @@ variable {R : Type} [CommRing R] {V : Type} [AddCommGroup V] [Module R V] [Modul
   [AddCommGroup L'] [Module (TrivSqZeroExt R V) L'] [Module R L'] [IsScalarTower R (TrivSqZeroExt R V) L']
   {β : L →ₗ[R] L'} {J : Type} [Fintype J] {e : J → L} {w : J → Module.Dual R L}
 
+/- English proof (translation)
+The claim follows from `map_sum (TrivSqZeroExt.inrHom R V) s _`.
+-/
 theorem inr_sum (s : J → V) :
     (TrivSqZeroExt.inr (∑ j, s j) : TrivSqZeroExt R V) = ∑ j, TrivSqZeroExt.inr (s j) :=
   map_sum (TrivSqZeroExt.inrHom R V) s _
 
+/- English proof (translation)
+Establish `h1 : ∀ j, ∑ k, (TrivSqZeroExt.inr (w k (e j) • q j) : TrivSqZeroExt R V) • β (e k) = (TrivSqZeroExt.inr (q j) : TrivSqZeroExt R V) • β (e j)`. Introduce `j`. Use `conv_rhs => rw [← he (e j)]`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, TrivSqZeroExt.inr_smul, smul_assoc, smul_comm]`. Simplify using `only [inr_sum, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => h1 j`.
+-/
 theorem resum (he : ∀ y, ∑ k, w k y • e k = y) (q : J → V) :
     ∑ k, (TrivSqZeroExt.inr (∑ j, w k (e j) • q j) : TrivSqZeroExt R V) • β (e k) =
       ∑ j, (TrivSqZeroExt.inr (q j) : TrivSqZeroExt R V) • β (e j) := by
@@ -223,6 +304,9 @@ theorem resum (he : ∀ y, ∑ k, w k y • e k = y) (q : J → V) :
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun j _ => h1 j
 
+/- English proof (translation)
+Rewrite using `[extForm_sum]`. Use `conv_rhs => rw [← dual_expand he f]`. Rewrite using `[map_sum, inr_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, TrivSqZeroExt.inr_smul, Algebra.smul_def, mul_comm]`.
+-/
 theorem extForm_inr (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑ k, w k y • e k = y)
     (φ : Module.Dual R L →ₗ[R] V) (f : Module.Dual R L) :
     extForm hβ f (∑ k, (TrivSqZeroExt.inr (φ (w k)) : TrivSqZeroExt R V) • β (e k)) =
@@ -233,6 +317,11 @@ theorem extForm_inr (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑
   refine Finset.sum_congr rfl fun k _ => ?_
   rw [map_smul, TrivSqZeroExt.inr_smul, Algebra.smul_def, mul_comm]
 
+/- English proof (translation)
+Establish `h₁` using `congrArg (extForm hβ (w k)) (expand hβ he l)`. Rewrite `h₁` using `[extForm_sum]`. Establish `h₂` using `congrArg TrivSqZeroExt.fst h₁`. Establish `h₃` using `congrArg (w k) h`. Simplify using `only [map_sum, map_smul, map_zero, smul_eq_mul] at h₃`.
+
+Rewrite using `[h₂, ← h₃]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_sum]`.
+-/
 theorem fst_extForm (hβ : IsBaseChange (TrivSqZeroExt R V) β) (he : ∀ y, ∑ k, w k y • e k = y) (l : L')
     (h : ∑ k, (extForm hβ (w k) l).fst • e k = 0) (k : J) : (extForm hβ (w k) l).fst = 0 := by
   have h₁ := congrArg (extForm hβ (w k)) (expand hβ he l)
@@ -250,6 +339,9 @@ section Grp
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {R : Type} [CommRing R]
   {x : Spec (CommRingCat.of R) ⟶ S} {L : Type} [AddCommGroup L] [Module R L]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]`.
+-/
 theorem comp_prod {T T' : Over S} (f : T' ⟶ T) {I : Type} (s : Finset I) (g : I → (T ⟶ G)) :
     f ≫ ∏ l ∈ s, g l = ∏ l ∈ s, f ≫ g l := by
   classical
@@ -257,11 +349,17 @@ theorem comp_prod {T T' : Over S} (f : T' ⟶ T) {I : Type} (s : Finset I) (g : 
   | empty => simp
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.mp h`.
+-/
 theorem pt_zero (M : LieModel G x L) : M.pt 0 = 1 := by
   have h := M.add 0 0
   rw [add_zero] at h
   exact left_eq_mul.mp h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using pt_zero M`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, M.add, ih]`.
+-/
 theorem pt_sum (M : LieModel G x L) {I : Type} (s : Finset I) (f : I → L) :
     M.pt (∑ l ∈ s, f l) = ∏ l ∈ s, M.pt (f l) := by
   classical
@@ -269,6 +367,11 @@ theorem pt_sum (M : LieModel G x L) {I : Type} (s : Finset I) (f : I → L) :
   | empty => simpa using pt_zero M
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, M.add, ih]
 
+/- English proof (translation)
+Establish `h : LinearMap.toSpanSingleton R R c = c • LinearMap.id`. Use `ext`. Simplify using the standard rewrite rules. Use `ext1`. Rewrite using `[M.smul, h]`.
+
+Both sides reduce to the same expression.
+-/
 theorem hom_scalar_pt (M : LieModel G x L) (c : R) (y : L) :
     hom x (LinearMap.toSpanSingleton R R c) ≫ M.pt y = M.pt (c • y) := by
   have h : LinearMap.toSpanSingleton R R c = c • LinearMap.id := by
@@ -283,6 +386,9 @@ variable {J : Type} [Fintype J]
 def univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) : ob x (Module.Dual R L) ⟶ G :=
   ∏ k, hom x (LinearMap.toSpanSingleton R (Module.Dual R L) (w k)) ≫ M.pt (e k)
 
+/- English proof (translation)
+Rewrite using `[univ, comp_prod]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, zsec_hom]`. Conclude with `(isTanAt_iff x G _).1 (M.tan (e k))`.
+-/
 theorem zsec_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) : zsec x ≫ univ M e w = 1 := by
   rw [univ, comp_prod]
   refine Finset.prod_eq_one fun k _ => ?_
@@ -291,6 +397,11 @@ theorem zsec_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L)
 
 variable {V : Type} [AddCommGroup V] [Module R V] [Module Rᵐᵒᵖ V] [IsCentralScalar R V]
 
+/- English proof (translation)
+Rewrite using `[univ, comp_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, LieEx.hom_comp]`. Use `congr 2`. Use `ext`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem hom_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) (φ : Module.Dual R L →ₗ[R] V) :
     hom x φ ≫ univ M e w = ∏ k, hom x (LinearMap.toSpanSingleton R V (φ (w k))) ≫ M.pt (e k) := by
   rw [univ, comp_prod]
@@ -300,6 +411,9 @@ theorem hom_univ (M : LieModel G x L) (e : J → L) (w : J → Module.Dual R L) 
   ext
   simp
 
+/- English proof (translation)
+Rewrite using `[hom_univ]`. Use `conv_rhs => rw [← he y, pt_sum]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `hom_scalar_pt M _ _`.
+-/
 theorem eval_univ (M : LieModel G x L) {e : J → L} {w : J → Module.Dual R L}
     (he : ∀ y, ∑ k, w k y • e k = y) (y : L) :
     hom x (Module.Dual.eval R L y) ≫ univ M e w = M.pt y := by
@@ -311,6 +425,9 @@ theorem eval_univ (M : LieModel G x L) {e : J → L} {w : J → Module.Dual R L}
 variable {L' : Type} [AddCommGroup L'] [Module (TrivSqZeroExt R V) L'] [Module R L']
   [IsScalarTower R (TrivSqZeroExt R V) L'] {β : L →ₗ[R] L'}
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[M'.smul, hj, ← Category.assoc (cMor x V), Over.comp_left, cMor_hom, Category.assoc]`.
+-/
 theorem cMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) ≫ (M.pt y).left)
@@ -320,6 +437,9 @@ theorem cMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   ext1
   rw [M'.smul, hj, ← Category.assoc (cMor x V), Over.comp_left, cMor_hom, Category.assoc]
 
+/- English proof (translation)
+Use `ext1`. Rewrite using `[M.smul, Over.comp_left, M'.smul, hj, ← reduce_epsMul b]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ _ ≫ _ ≫ _ = _`. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+-/
 theorem dMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) ≫ (M.pt y).left)
@@ -330,6 +450,9 @@ theorem dMor_pt (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   change Spec.map _ ≫ _ ≫ _ ≫ _ = _
   simp only [CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]
 
+/- English proof (translation)
+Rewrite using `[hom_univ, comp_prod, pt_sum]`. Conclude with `Finset.prod_congr rfl fun k _ => cMor_pt M M' hj _ _`.
+-/
 theorem cMor_hom_univ (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) ≫ (M.pt y).left)
@@ -339,6 +462,11 @@ theorem cMor_hom_univ (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   rw [hom_univ, comp_prod, pt_sum]
   exact Finset.prod_congr rfl fun k _ => cMor_pt M M' hj _ _
 
+/- English proof (translation)
+Rewrite using `[isTanAt_iff]`. Establish `h : zsec (xB x V) ≫ cMor x V = (Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R V)))) rfl : Over.mk (xB x V) ⟶ Over.mk x) ≫ zsec x` using `by ext1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use `ext1`. Conclude with `fst_comp_iota`. Rewrite using `[← Category.assoc, h, Category.assoc, hv, MonObj.comp_one]`.
+-/
 theorem cMor_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : IsTanAt G (xB x V) (cMor x V ≫ v) := by
   rw [isTanAt_iff]
   have h : zsec (xB x V) ≫ cMor x V = (Over.homMk (Spec.map (CommRingCat.ofHom (algebraMap R (TrivSqZeroExt R V)))) rfl : Over.mk (xB x V) ⟶ Over.mk x) ≫ zsec x := by
@@ -350,9 +478,21 @@ theorem cMor_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : IsTanAt G (xB x V)
     exact fst_comp_iota
   rw [← Category.assoc, h, Category.assoc, hv, MonObj.comp_one]
 
+/- English proof (translation)
+Rewrite using `[hom_zero, Category.assoc, hv, MonObj.comp_one]`.
+-/
 theorem hom_zero_tan {v : ob x V ⟶ G} (hv : zsec x ≫ v = 1) : hom x (0 : V →ₗ[R] R) ≫ v = 1 := by
   rw [hom_zero, Category.assoc, hv, MonObj.comp_one]
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `M'.onto _ (cMor_tan hv)`. Establish `hexp` using `expand hβ he l`. Establish `h1 : M.pt (∑ k, (extForm hβ (w k) l).fst • e k) = 1`. Rewrite using `[pt_sum]`. Establish `h2 : dMor x V ≫ M'.pt l = 1`.
+
+Rewrite using `[hl, ← Category.assoc, dMor_cMor]`. Conclude with `hom_zero_tan hv`. Rewrite `h2` using `[hexp, pt_sum, comp_prod]`. Rewrite using `[← h2]`. Conclude with `Finset.prod_congr rfl fun k _ => (dMor_pt M M' hj _ _).symm`.
+
+Establish `h3` using `fst_extForm hβ he l (M.inj (h1.trans (pt_zero M).symm))`. Establish `hb : ∀ k, extForm hβ (w k) l = TrivSqZeroExt.inr (extForm hβ (w k) l).snd` using `fun k => TrivSqZeroExt.ext (by simpa using h3 k) (by simp)`. Use `⟨∑ k, (Module.Dual.eval R L (e k)).smulRight (extForm hβ (w k) l).snd, ?_⟩` and prove the remaining obligations. Apply `cMor_cancel` to reduce the goal to its premises. Rewrite using `[cMor_hom_univ M M' hj, ← hl]`.
+
+Use `congr 1`. Use `conv_rhs => rw [hexp]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smulRight_apply, Module.Dual.eval_apply]`. Rewrite using `[resum he]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [← hb]`.
+-/
 theorem exists_form (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) ≫ (M.pt y).left)
@@ -381,6 +521,11 @@ theorem exists_form (M : LieModel G x L) (M' : LieModel G (xB x V) L')
   rw [resum he]
   exact Finset.sum_congr rfl fun k _ => by rw [← hb]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (cMor x V ≫ ·) h`. Simplify using `only [cMor_hom_univ M M' hj] at h1`. Establish `h2` using `M'.inj h1`. Use extensionality with `f`. Establish `h3` using `congrArg (extForm hβ f) h2`.
+
+Rewrite `h3` using `[extForm_inr hβ he, extForm_inr hβ he]`. Conclude with `TrivSqZeroExt.inr_injective h3`.
+-/
 theorem form_unique (M : LieModel G x L) (M' : LieModel G (xB x V) L')
     (hj : ∀ y, (M'.pt (β y)).left =
       Spec.map (CommRingCat.ofHom (dualMap (algebraMap R (TrivSqZeroExt R V)))) ≫ (M.pt y).left)
@@ -397,6 +542,17 @@ theorem form_unique (M : LieModel G x L) (M' : LieModel G (xB x V) L')
 
 end Grp
 
+/- English proof (translation)
+Take `⟨hfin, hproj, hbc⟩` from `GlobalTheory.T.lie_model_finite_base_change S G R x L M`. Take `⟨n, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective R L`. Set `e : Fin n → L` to `fun k => f (Pi.single k 1)`. Set `w : Fin n → Module.Dual R L` to `fun k => LinearMap.proj k ∘ₗ g`. Establish `he : ∀ y, ∑ k, w k y • e k = y`.
+
+Introduce `y`. Establish `h` using `LinearMap.congr_fun hfg y`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h`. Use `conv_rhs => rw [← h, ← Finset.univ_sum_single (g y)]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `: Pi.single k (g y k) = g y k • (Pi.single k 1 : Fin n → R)`. Rewrite using `[← Pi.single_smul, smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul]`. Both sides reduce to the same expression.
+
+Use `⟨univ M e w, zsec_univ M e w, eval_univ M he, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ _ v hv`. Take `⟨L', _, _, ⟨M'⟩⟩` from `lieModel_exists S G (TrivSqZeroExt R V) (xB x V)`. Take `⟨j, hj1, hj2, -⟩` from `GlobalTheory.T.lie_model_base_change_map S G R (TrivSqZeroExt R V) x L L' M M'`. Use `letI : Module R L' := Module.compHom L' (algebraMap R (TrivSqZeroExt R V))`.
+
+Use `haveI : IsScalarTower R (TrivSqZeroExt R V) L' := IsScalarTower.of_algebraMap_smul fun _ _ => rfl`. Set `β : L →ₗ[R] L'` to `{ toFun := j, map_add' := j.map_add, map_smul' := hj2 }`. Establish `hB : IsBaseChange (TrivSqZeroExt R V) β` using `hbc (TrivSqZeroExt R V) L' M' β hj1`. Take `⟨φ, hφ⟩` from `exists_form M M' hj1 hB he hv`. Conclude with `⟨φ, hφ, fun φ' h => form_unique M M' hj1 hB he (h.trans hφ.symm)⟩`.
+-/
 theorem tangent_universal (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (R : Type) [CommRing R]
     (x : Spec (CommRingCat.of R) ⟶ S) (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) :
     ∃ u : ob x (Module.Dual R L) ⟶ G, zsec x ≫ u = 1 ∧

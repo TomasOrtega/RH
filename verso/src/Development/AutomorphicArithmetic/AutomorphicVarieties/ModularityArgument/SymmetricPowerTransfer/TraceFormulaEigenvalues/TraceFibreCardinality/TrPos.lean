@@ -2,6 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.SymmetricPowerTransfer.TraceFormulaEigenvalues.TraceNil
 
 open Module in
+/- English proof (translation)
+Introduce `Λ M _ _ _ u hc`. Establish `hint` using `UpperTheory.V.Z.Sym.Tf.Vg_int (u := u) hc`. Establish `hfin : {χ | UpperTheory.V.Z.Sym.Tf.Vg u χ ≠ ⊥}.Finite`. Use `(UpperTheory.V.Z.Sym.Tf.Vg_indep hc).fintypeNeBotOfFiniteDimensional` as an intermediate fact. Conclude with `Set.finite_coe_iff.mp (@Finite.of_fintype _ this)`.
+
+Use `⟨hfin.toFinset, fun χ => Module.finrank ℂ (UpperTheory.V.Z.Sym.Tf.Vg u χ), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `χ`. Simplify using `[Set.Finite.mem_toFinset, UpperTheory.V.Z.Sym.IsGenEig]`. Introduce `χ hχ`. Rewrite `hχ` using `[Set.Finite.mem_toFinset]`.
+
+Conclude with `Submodule.one_le_finrank_iff.mpr hχ`. Introduce `a`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict' hint hfin (fun χ => UpperTheory.V.Z.Sym.Tf.Vg_maps hc a χ)]`. Use `Finset.sum_congr rfl fun χ _ => ?_` and prove the remaining obligations. Establish `h1 : Set.MapsTo ⇑(1 : Module.End ℂ M) ↑(UpperTheory.V.Z.Sym.Tf.Vg u χ) ↑(UpperTheory.V.Z.Sym.Tf.Vg u χ)` using `fun v hv => hv`.
+
+Establish `key` using `UpperTheory.V.Z.Sym.Tf.trace_Vg hc χ 1 id h1 (fun b v _ => by simp) (fun b => rfl) a (by simpa using UpperTheory.V.Z.Sym.Tf.Vg_maps hc a χ)`. Simplify using `only [mul_one] at key`. Rewrite using `[key]`. Establish `h2 : LinearMap.restrict (1 : Module.End ℂ M) h1 = 1`. Use extensionality with `v`.
+
+Both sides reduce to the same expression. Rewrite using `[h2, LinearMap.trace_one, mul_comm]`.
+-/
 theorem UpperTheory.V.Z.Sym.Tf.trPos :
     UpperTheory.V.Z.Sym.Tf.TrPos := by
   intro Λ M _ _ _ u hc

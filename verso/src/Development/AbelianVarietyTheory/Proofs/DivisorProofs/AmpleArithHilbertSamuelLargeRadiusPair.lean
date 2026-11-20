@@ -10,6 +10,15 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSNef
 
+/- English proof (translation)
+Introduce `hHS k _ X _ p D hX P a b a' b' M α hM hamp hsemi hself`. Take `⟨N, hN⟩` from `GlobalTheory.T.exists_hermitianRepresentative_integerCombination k X p P a' b'`. Take `⟨Q, hQL, hQA, hQB⟩` from `GlobalTheory.T.exists_hermPairSections_change_of_isometric_combinations k X p P a b a' b' M N hM hN`. Establish `hamp' : IsAmpleLB Q.L.B` using `by rw [hQL]; exact hamp`. Establish `hsemi' : Q.L.SemiPos D` using `by rw [hQL]; exact hsemi`.
+
+Establish `hself' : Q.L.IsSelfInter α` using `by rw [hQL]; exact hself`. Take `⟨t₀, ht⟩` from `hHS k X p D hX Q α hamp' hsemi' hself'`. Use `⟨t₀, fun t htt => ?_⟩` and prove the remaining obligations. Establish `hlc : ∀ m : ℕ, Q.lc m 1 (Real.exp (t * m)) = P.lc (m * a + a') (m * b + b') (Real.exp (t * m))`. Introduce `m`.
+
+Simplify using `only [Pair.lc]`. Rewrite using `[hQB, one_mul, one_mul]`. Establish `e : (α + ((D : ℝ) + 1) * t * gdeg Q.L D) / ((D + 1).factorial : ℝ) = α / (D + 1).factorial + (((D : ℝ) + 1) * gdeg M D / (D + 1).factorial) * t`. Rewrite using `[hQL]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `ht t htt`. Rewrite `h` using `[e]`. Simplify `h` using `only [hlc]`.
+-/
 theorem ampleHS_pair : AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p) (a b a' b' : ℤ) (M : HermLB p) (α : ℝ), P.Rep a b M → IsAmpleLB M.B →
     M.SemiPos D → M.IsSelfInter α → ∃ t₀ : ℝ, ∀ t, t₀ ≤ t →

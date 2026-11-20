@@ -19,15 +19,24 @@ def actHom (X : Obj F 𝔠 S) {T : Over S} (u : T ⟶ 𝟙_ (Over S)) (z : 𝟙_
   AddMonoidHom.mk' (fun c ↦ Additive.ofMul (u ≫ z ≫ X.rm.act c)) (fun a b ↦ by
     simp only [X.rm.add, comp_mul]; rfl)
 
+/- English proof (translation)
+Simplify using `only [X.rm.add, comp_mul]`.
+-/
 theorem comp_act_add (X : Obj F 𝔠 S) {T : Over S} (u : T ⟶ 𝟙_ (Over S)) (z : 𝟙_ (Over S) ⟶ X.A) (a b : 𝓞 F) :
     u ≫ z ≫ X.rm.act (a + b) = (u ≫ z ≫ X.rm.act a) * (u ≫ z ≫ X.rm.act b) := by
   simp only [X.rm.add, comp_mul]
 
+/- English proof (translation)
+Establish `h` using `map_zsmul (actHom X u z) n c`. Conclude with `congrArg Additive.toMul h`.
+-/
 theorem comp_act_zsmul (X : Obj F 𝔠 S) {T : Over S} (u : T ⟶ 𝟙_ (Over S)) (z : 𝟙_ (Over S) ⟶ X.A) (n : ℤ)
     (c : 𝓞 F) : u ≫ z ≫ X.rm.act (n • c) = (u ≫ z ≫ X.rm.act c) ^ n := by
   have h := map_zsmul (actHom X u z) n c
   exact congrArg Additive.toMul h
 
+/- English proof (translation)
+Use `haveI := X.rm.hom c`. Rewrite using `[pow_comp, comp_pow]`.
+-/
 theorem comp_pow_act (X : Obj F 𝔠 S) {T : Over S} (u : T ⟶ 𝟙_ (Over S)) (z : 𝟙_ (Over S) ⟶ X.A) (m : ℕ)
     (c : 𝓞 F) : u ≫ (z ^ m) ≫ X.rm.act c = (u ≫ z ≫ X.rm.act c) ^ m := by
   haveI := X.rm.hom c
@@ -37,6 +46,27 @@ end GlobalTheory.RealMult.LevelComb
 
 open GlobalTheory.RealMult.LevelComb in
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 S X N N' hc β β'`. Take `⟨p, q, hpq⟩ : IsCoprime (N : ℤ) (N' : ℤ)` from `Nat.isCoprime_iff_coprime.2 hc`. Set `pt : Fin 2 → (𝟙_ (Over S) ⟶ X.A)` to `fun i ↦ β.pt i ^ q * β'.pt i ^ p`. Establish `h1 : ∀ i, pt i ^ N' = β.pt i`. Introduce `i`.
+
+Establish `hb : β.pt i ^ (q * (N' : ℤ)) = β.pt i`. Rewrite using `[show q * (N' : ℤ) = 1 - (N : ℤ) * p by linarith, zpow_sub, zpow_one, zpow_mul, zpow_natCast, β.tors i, one_zpow, inv_one, _root_.mul_one]`. Establish `hb' : β'.pt i ^ (p * (N' : ℤ)) = 1`. Rewrite using `[mul_comm, zpow_mul, zpow_natCast, β'.tors i, one_zpow]`. Use `show (β.pt i ^ q * β'.pt i ^ p) ^ N' = β.pt i`.
+
+Rewrite using `[← zpow_natCast, mul_zpow, ← zpow_mul, ← zpow_mul, hb, hb', _root_.mul_one]`. Establish `h2 : ∀ i, pt i ^ N = β'.pt i`. Introduce `i`. Establish `hb : β'.pt i ^ (p * (N : ℤ)) = β'.pt i`. Rewrite using `[show p * (N : ℤ) = 1 - (N' : ℤ) * q by linarith, zpow_sub, zpow_one, zpow_mul, zpow_natCast, β'.tors i, one_zpow, inv_one, _root_.mul_one]`.
+
+Establish `hb' : β.pt i ^ (q * (N : ℤ)) = 1`. Rewrite using `[mul_comm, zpow_mul, zpow_natCast, β.tors i, one_zpow]`. Use `show (β.pt i ^ q * β'.pt i ^ p) ^ N = β'.pt i`. Rewrite using `[← zpow_natCast, mul_zpow, ← zpow_mul, ← zpow_mul, hb, hb', _root_.one_mul]`. Use `⟨{ pt := pt, tors := ?_, inj := ?_, surj := ?_ }, h1, h2⟩` and prove the remaining obligations.
+
+Introduce `i`. Rewrite using `[mul_comm, pow_mul, h1, β.tors]`. Introduce `Ω _ _ t a b h set u := toUnit (Over.mk t)`. Establish `hβ : (u ≫ β.pt 0 ≫ X.rm.act a) * (u ≫ β.pt 1 ≫ X.rm.act b) = 1`. Rewrite using `[← h1, ← h1, comp_pow_act, comp_pow_act, ← mul_pow, h, one_pow]`.
+
+Establish `hβ' : (u ≫ β'.pt 0 ≫ X.rm.act a) * (u ≫ β'.pt 1 ≫ X.rm.act b) = 1`. Rewrite using `[← h2, ← h2, comp_pow_act, comp_pow_act, ← mul_pow, h, one_pow]`. Take `⟨ha, hb⟩` from `β.inj Ω t a b hβ`. Take `⟨ha', hb'⟩` from `β'.inj Ω t a b hβ'`. Establish `hco : IsCoprime ((N : 𝓞 F)) ((N' : 𝓞 F))`.
+
+Simplify using `using (Nat.isCoprime_iff_coprime.2 hc).map (Int.castRingHom (𝓞 F))`. Rewrite using `[Nat.cast_mul]`. Conclude with `⟨hco.mul_dvd ha ha', hco.mul_dvd hb hb'⟩`. Introduce `Ω _ _ t y hy set u := toUnit (Over.mk t)`. Establish `hy1 : (y ^ N') ^ N = 1` using `by rw [← pow_mul, mul_comm, hy]`.
+
+Establish `hy2 : (y ^ N) ^ N' = 1` using `by rw [← pow_mul, hy]`. Take `⟨a, b, hab⟩` from `β.surj Ω t (y ^ N') hy1`. Take `⟨a', b', hab'⟩` from `β'.surj Ω t (y ^ N) hy2`. Rewrite `hab` using `[← h1, ← h1, comp_pow_act, comp_pow_act]`. Rewrite `hab'` using `[← h2, ← h2, comp_pow_act, comp_pow_act]`.
+
+Use `⟨((N : ℤ) * p) • a' + ((N' : ℤ) * q) • a, ((N : ℤ) * p) • b' + ((N' : ℤ) * q) • b, ?_⟩` and prove the remaining obligations. Rewrite using `[comp_act_add, comp_act_add, comp_act_zsmul, comp_act_zsmul, comp_act_zsmul, comp_act_zsmul]`. Establish `hy0 : y = y ^ ((N : ℤ) * p + (N' : ℤ) * q)`. Rewrite using `[show (N : ℤ) * p + (N' : ℤ) * q = 1 by linarith, zpow_one]`. Rewrite using `[hy0, zpow_add, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hab, hab', mul_zpow, mul_zpow, zpow_mul, zpow_mul, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, zpow_natCast, zpow_natCast]`.
+
+Conclude with `mul_mul_mul_comm _ _ _ _`.
+-/
 theorem GlobalTheory.RealMult.Obj.Level.comb : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S : Scheme.{0}} {X : Obj F 𝔠 S} {N N' : ℕ}, Nat.Coprime N N' → ∀ (β : X.Level N) (β' : X.Level N'),
     ∃ ξ : X.Level (N * N'), (∀ i, ξ.pt i ^ N' = β.pt i) ∧ ∀ i, ξ.pt i ^ N = β'.pt i := by
   intro F _ _ 𝔠 S X N N' hc β β'

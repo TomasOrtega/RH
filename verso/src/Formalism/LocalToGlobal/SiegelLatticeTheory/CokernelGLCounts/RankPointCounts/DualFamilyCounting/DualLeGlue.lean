@@ -16,6 +16,11 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {hc : IsCompl U 
   {M T Λ Λ₀ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
   {P : Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭)}
 
+/- English proof (translation)
+Take `⟨x, -, rfl⟩` from `hG.oW b hb`. Use `first`. Consider the case `exact Submodule.projection_apply_mem _ _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _`.
+
+Consider the case `exact (orthK h U).projection_apply_mem _ _ _`. Consider the case `(unfold prO; simp)`.
+-/
 theorem memW (hG : Good hc M T 𝔭 Λ) {b : V} (hb : b ∈ locF 𝔭 (dualIn h (orthK h U) T)) :
     b ∈ orthK h U := by
   obtain ⟨x, -, rfl⟩ := hG.oW b hb
@@ -26,6 +31,13 @@ theorem memW (hG : Good hc M T 𝔭 Λ) {b : V} (hb : b ∈ locF 𝔭 (dualIn h 
   | exact (orthK h U).projection_apply_mem _ _ _
   | (unfold prO; simp)
 
+/- English proof (translation)
+Establish `hx'W : (x' : V) ∈ orthK h U` using `memW hG₀ x'.2`. Establish `hyU : prO hc y ∈ U` using `by first`. Consider the case `exact Submodule.projection_apply_mem _ _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _`.
+
+Consider the case `(unfold prO; simp)`. Establish `h0 : prO hc.symm (prO hc y) = 0` using `by first`. Consider the case `exact prO_symm_of_mem_U hyU`. Consider the case `(rw [prO_apply]; simp [hyU])`. Consider the case `(unfold prO; simp [hyU])`.
+
+Use `⟨x', ?_, y, hy, ⟨prO hc.symm y, hG₀.iW y hy⟩, rfl, ?_, hx'⟩` and prove the remaining obligations. Rewrite using `[map_add, orth_projection_symm_of_mem (hc' := hc) hx'W, h0, zero_add]`. Rewrite using `[map_add, prO_of_mem_U (hc' := hc) hyU, orth_projection_of_mem_compl (hc' := hc) hx'W, add_zero]`.
+-/
 theorem mem_glue_of (hG₀ : Good hc M T 𝔭 Λ₀) {y : V} (hy : y ∈ Λ₀)
     (x' : ↥(locF 𝔭 (dualIn h (orthK h U) T)))
     (hx' : Submodule.Quotient.mk x' = P (Submodule.Quotient.mk ⟨prO hc.symm y, hG₀.iW y hy⟩)) :
@@ -46,6 +58,29 @@ theorem mem_glue_of (hG₀ : Good hc M T 𝔭 Λ₀) {y : V} (hy : y ∈ Λ₀)
   · rw [map_add, orth_projection_symm_of_mem (hc' := hc) hx'W, h0, zero_add]
   · rw [map_add, prO_of_mem_U (hc' := hc) hyU, orth_projection_of_mem_compl (hc' := hc) hx'W, add_zero]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨b, hb, y, hy, c, hcy, hU, hPb⟩, hxU⟩`. Establish `hb0 : b = 0` using `Subtype.ext (hb.trans ((prO_symm_of_mem_U (hc' := hc) hxU).trans Submodule.coe_zero.symm))`.
+
+Rewrite `hPb` using `[hb0, Submodule.Quotient.mk_zero]`. Establish `hxy : prO hc y = x` using `by rw [hU, prO_of_mem_U (hc' := hc) hxU]`. Establish `hcW : (c : V) ∈ orthK h U`. Rewrite using `[hcy]`. Use `first`.
+
+Consider the case `exact Submodule.projection_apply_mem _ _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _`. Consider the case `(unfold prO; simp)`. Establish `hcO : ∀ u ∈ U, h u (c : V) = 0`.
+
+Introduce `u hu`. Simplify using `only [orthK, Submodule.mem_iInf, LinearMap.mem_ker] at hcW`. Conclude with `hcW u hu`. Establish `hcΛ : (c : V) ∈ Λ₀`. Rewrite using `[← hd₀]`.
+
+Introduce `z hz`. Establish `hzW` using `hG₀.iW z hz`. Take `⟨d, hd⟩` from `Submodule.Quotient.mk_surjective _ (P (Submodule.Quotient.mk (⟨prO hc.symm z, hzW⟩ : ↥(locF 𝔭 (dualIn h (orthK h U) T)))))`. Establish `h2` using `hP ⟨prO hc.symm z, hzW⟩ c d 0 hd (by rw [Submodule.Quotient.mk_zero]; exact hPb)`. Establish `e : h z (c : V) = -(h (d : V) (((0 : ↥(locF 𝔭 (dualIn h (orthK h U) T))) : V)) - h (prO hc.symm z) (c : V))`.
+
+Establish `e1 : h z (c : V) = h (prO hc z) (c : V) + h (prO hc.symm z) (c : V)` using `by conv_lhs => rw [← prO_add hc z]`. Rewrite using `[map_add, LinearMap.add_apply]`. Rewrite using `[e1, hcO (prO hc z) ?_]`. Simplify using the standard rewrite rules. Use `first`.
+
+Consider the case `exact Submodule.projection_apply_mem _ _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _`. Consider the case `(unfold prO; simp)`. Rewrite using `[e]`.
+
+Conclude with `Submodule.neg_mem _ h2`. Establish `hxΛ : x ∈ Λ₀`. Establish `e` using `prO_add hc y`. Rewrite `e` using `[hxy, ← hcy]`. Establish `ex : x = y - (c : V)` using `eq_sub_of_add_eq e`.
+
+Rewrite using `[ex]`. Conclude with `Λ₀.sub_mem hy hcΛ`. Rewrite using `[← hG₀.cU]`. Conclude with `Submodule.mem_inf.2 ⟨hxΛ, hxU⟩`. Introduce `hx`.
+
+Establish `hxΛU : x ∈ Λ₀ ⊓ U.restrictScalars (𝓞 K)`. Rewrite using `[hG₀.cU]`. Conclude with `hx`. Take `⟨hxΛ, hxU⟩` from `Submodule.mem_inf.1 hxΛU`. Establish `hxU' : x ∈ U` using `hxU`.
+
+Establish `hps : prO hc.symm x = 0` using `prO_symm_of_mem_U (hc' := hc) hxU'`. Establish `hmem : prO hc.symm x ∈ locF 𝔭 (dualIn h (orthK h U) T)` using `hG₀.iW x hxΛ`. Use `⟨⟨0, Submodule.coe_zero.trans hps.symm, x, hxΛ, ⟨prO hc.symm x, hmem⟩, rfl, rfl, ?_⟩, hxU'⟩` and prove the remaining obligations. Establish `hz : (⟨prO hc.symm x, hmem⟩ : ↥(locF 𝔭 (dualIn h (orthK h U) T))) = 0` using `Subtype.ext hps`. Rewrite using `[hz, Submodule.Quotient.mk_zero, map_zero]`.
+-/
 theorem glue_inf_U (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hP : FP P) :
     glue hc T 𝔭 Λ₀ P ⊓ U.restrictScalars (𝓞 K) = locF 𝔭 M := by
   ext x
@@ -108,6 +143,23 @@ theorem glue_inf_U (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ 
     have hz : (⟨prO hc.symm x, hmem⟩ : ↥(locF 𝔭 (dualIn h (orthK h U) T))) = 0 := Subtype.ext hps
     rw [hz, Submodule.Quotient.mk_zero, map_zero]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨b, hb, y, hy, c, hcy, hU, hP⟩, hxW⟩`. Establish `hx0 : prO hc x = 0` using `orth_projection_of_mem_compl (hc' := hc) hxW`.
+
+Establish `hxb : (b : V) = x` using `by rw [hb, orth_projection_symm_of_mem (hc' := hc) hxW]`. Establish `hyc : (c : V) = y`. Rewrite using `[hcy]`. Establish `e` using `prO_add hc y`. Rewrite `e` using `[hU, hx0, zero_add]`.
+
+Conclude with `e`. Establish `hyW : y ∈ orthK h U`. Rewrite using `[← hyc, hcy]`. Use `first`. Consider the case `exact Submodule.projection_apply_mem _ _ _ _`.
+
+Consider the case `exact Submodule.projection_apply_mem _ _ _`. Consider the case `exact Submodule.projection_apply_mem _ _`. Consider the case `(unfold prO; simp)`. Establish `hyT : y ∈ locF 𝔭 T`. Rewrite using `[← hG₀.cW]`.
+
+Conclude with `Submodule.mem_inf.2 ⟨hy, hyW⟩`. Establish `hc0 : (Submodule.Quotient.mk c : DiscMod h (orthK h U) T 𝔭) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_comap.2 (by rw [Submodule.subtype_apply, hyc]; exact hyT))`. Rewrite `hP` using `[hc0, map_zero]`. Establish `hb'` using `Submodule.mem_comap.1 ((Submodule.Quotient.mk_eq_zero _).1 hP)`. Rewrite `hb'` using `[Submodule.subtype_apply, hxb]`.
+
+Conclude with `hb'`. Introduce `hx`. Establish `hxΛW : x ∈ Λ₀ ⊓ (orthK h U).restrictScalars (𝓞 K)`. Rewrite using `[hG₀.cW]`. Conclude with `hx`.
+
+Take `⟨hxΛ, hxW⟩` from `Submodule.mem_inf.1 hxΛW`. Establish `hxW' : x ∈ orthK h U` using `hxW`. Establish `hps : prO hc.symm x = x` using `orth_projection_symm_of_mem (hc' := hc) hxW'`. Establish `hmem : prO hc.symm x ∈ locF 𝔭 (dualIn h (orthK h U) T)` using `hG₀.iW x hxΛ`. Use `⟨⟨⟨prO hc.symm x, hmem⟩, rfl, x, hxΛ, ⟨prO hc.symm x, hmem⟩, rfl, rfl, ?_⟩, hxW'⟩` and prove the remaining obligations.
+
+Establish `hc0 : (Submodule.Quotient.mk (⟨prO hc.symm x, hmem⟩ : ↥(locF 𝔭 (dualIn h (orthK h U) T))) : DiscMod h (orthK h U) T 𝔭) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_comap.2 (by rw [hps] at hmem ⊢; exact hx : prO hc.symm x ∈ locF 𝔭 T))`. Rewrite using `[hc0, map_zero]`.
+-/
 theorem glue_inf_orthK_eq_locF (hG₀ : Good hc M T 𝔭 Λ₀) :
     glue hc T 𝔭 Λ₀ P ⊓ (orthK h U).restrictScalars (𝓞 K) = locF 𝔭 T := by
   ext x
@@ -153,6 +205,15 @@ theorem glue_inf_orthK_eq_locF (hG₀ : Good hc M T 𝔭 Λ₀) :
         (Submodule.mem_comap.2 (by rw [hps] at hmem ⊢; exact hx : prO hc.symm x ∈ locF 𝔭 T))
     rw [hc0, map_zero]
 
+/- English proof (translation)
+Take `⟨ba, hba, ya, hya, ca, hca, hUa, hPa⟩` from `ha`. Take `⟨bb, hbb, yb, hyb, cb, hcb, hUb, hPb⟩` from `hb`. Rewrite using `[split hs hc a b, ← hUa, ← hUb, ← hba, ← hbb]`. Establish `hy : h (prO hc ya) (prO hc yb) = h ya yb - h ca cb`. Rewrite using `[split hs hc ya yb, ← hca, ← hcb]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy]`. Establish `h1 : h ya yb ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Establish `hmemd : yb ∈ dualF h 𝔭 Λ₀`. Rewrite using `[hd₀]`.
+
+Conclude with `hyb`. Conclude with `hmemd ya hya`. Establish `h2` using `hP ca cb ba bb hPa hPb`. Establish `e : h ya yb - h ca cb + h ba bb = h ya yb + (h ba bb - h ca cb)` using `by ring`. Rewrite using `[e]`.
+
+Conclude with `Submodule.add_mem _ h1 h2`.
+-/
 theorem glue_int (hs : h.IsSymm) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hP : FP P) {a b : V}
     (ha : a ∈ glue hc T 𝔭 Λ₀ P) (hb : b ∈ glue hc T 𝔭 Λ₀ P) :
     h a b ∈ locF 𝔭 (1 : Submodule (𝓞 K) K) := by
@@ -173,11 +234,37 @@ theorem glue_int (hs : h.IsSymm) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hP : FP P
   rw [e]
   exact Submodule.add_mem _ h1 h2
 
+/- English proof (translation)
+Introduce `x hx y hy`. Conclude with `glue_int hs hd₀ hP hy hx`.
+-/
 theorem glue_le_dual (hs : h.IsSymm) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hP : FP P) :
     glue hc T 𝔭 Λ₀ P ≤ dualF h 𝔭 (glue hc T 𝔭 Λ₀ P) := by
   intro x hx y hy
   exact glue_int hs hd₀ hP hy hx
 
+/- English proof (translation)
+Introduce `x hx`. Establish `hx' : ∀ z ∈ glue hc T 𝔭 Λ₀ P, h z x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)` using `hx`. Establish `hLM : locF 𝔭 M ≤ glue hc T 𝔭 Λ₀ P`. Introduce `m hm`. Rewrite `hm` using `[← glue_inf_U hG₀ hd₀ hP]`.
+
+Conclude with `hm.1`. Establish `hLT : locF 𝔭 T ≤ glue hc T 𝔭 Λ₀ P`. Introduce `m hm`. Rewrite `hm` using `[← glue_inf_orthK_eq_locF (P := P) hG₀]`. Conclude with `hm.1`.
+
+Establish `hxU : prO hc x ∈ locF 𝔭 (dualIn h U M)`. Apply `mem_locF_dualIn hM.1 𝔭 (prO_mem hc x)` to reduce the goal to its premises. Introduce `m hm`. Establish `hmU` using `le_of_isLatIn hM m hm`. Establish `e : h m x = h m (prO hc x) + h m (prO hc.symm x)` using `by rw [← map_add, prO_add]`.
+
+Rewrite `e` using `[h_UW hmU (prO_symm_mem hc x), add_zero]`. Rewrite using `[← e]`. Conclude with `hx' m (hLM (LocF.le_locF 𝔭 M hm))`. Establish `hxW : prO hc.symm x ∈ locF 𝔭 (dualIn h (orthK h U) T)`. Apply `mem_locF_dualIn hT.1 𝔭 (prO_symm_mem hc x)` to reduce the goal to its premises.
+
+Introduce `m hm`. Establish `hmW` using `le_of_isLatIn hT m hm`. Establish `e : h m x = h m (prO hc x) + h m (prO hc.symm x)` using `by rw [← map_add, prO_add]`. Rewrite `e` using `[h_WU hs hmW (prO_mem hc x), zero_add]`. Rewrite using `[← e]`.
+
+Conclude with `hx' m (hLT (LocF.le_locF 𝔭 T hm))`. Take `⟨y, hy, hyU⟩` from `hG₀.oU _ hxU`. Take `⟨x'', hx''⟩` from `Submodule.Quotient.mk_surjective _ (P (Submodule.Quotient.mk ⟨prO hc.symm y, hG₀.iW y hy⟩))`. Establish `hz` using `mem_glue_of hG₀ hy x'' hx''`. Establish `hx''W` using `memW hG₀ x''.2`.
+
+Establish `hdW : prO hc.symm x - (x'' : V) ∈ orthK h U` using `(orthK h U).sub_mem (prO_symm_mem hc x) hx''W`. Establish `hdx : prO hc.symm x - (x'' : V) = x - (prO hc y + x'')`. Combine the equalities or inequalities in the displayed calculation. Establish `hdT : prO hc.symm x - (x'' : V) ∈ locF 𝔭 T`. Apply `mem_T_of hG₀ hd₀ hdW` to reduce the goal to its premises.
+
+Introduce `b' hb'`. Take `⟨e, he⟩` from `hsurj (Submodule.Quotient.mk ⟨b', hb'⟩)`. Proceed by induction on `e using Submodule.Quotient.induction_on with`. Consider the case `H e₀`. Take `⟨y₁, hy₁, he₀⟩` from `hG₀.oW e₀ e₀.2`.
+
+Establish `hz₁ : prO hc y₁ + b' ∈ glue hc T 𝔭 Λ₀ P`. Use `mem_glue_of hG₀ hy₁ ⟨b', hb'⟩ ?_` and prove the remaining obligations. Rewrite using `[← he]`. Use `congr 2`. Conclude with `Subtype.ext he₀.symm`.
+
+Establish `h1` using `hx' _ hz₁`. Establish `h2` using `glue_int hs hd₀ hP hz₁ hz`. Use `sub_mem h1 h2` as an intermediate fact. Rewrite `this` using `[← map_sub, ← hdx, map_add, LinearMap.add_apply, h_UW (prO_mem hc y₁) hdW, zero_add]`. Conclude with `this`.
+
+Use `⟨⟨prO hc.symm x, hxW⟩, rfl, y, hy, ⟨prO hc.symm y, hG₀.iW y hy⟩, rfl, hyU, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx'']`. Conclude with `(mk_eq_iff _ _).2 hdT`.
+-/
 theorem dual_le_glue (hs : h.IsSymm) (hG₀ : Good hc M T 𝔭 Λ₀) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀)
     (hM : IsLatIn U M) (hT : IsLatIn (orthK h U) T) (hP : FP P) (hsurj : Function.Surjective P) :
     dualF h 𝔭 (glue hc T 𝔭 Λ₀ P) ≤ glue hc T 𝔭 Λ₀ P := by

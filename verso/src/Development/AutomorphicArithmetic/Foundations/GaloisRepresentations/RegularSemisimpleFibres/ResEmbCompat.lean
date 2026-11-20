@@ -17,8 +17,14 @@ def hcL {F : Type} [Field F] (Y : List (Σ m : ℕ, GL (Fin m) F → ℂ)) : (n 
   List.rec (motive := fun _ => (n : ℕ) → GL (Fin n) F → ℂ) (fun _ _ => 1)
     (fun p Y ih n => hc p.1 (Y.map Sigma.fst).sum p.2 (ih (Y.map Sigma.fst).sum) n) Y
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hcL_nil {F : Type} [Field F] (n : ℕ) : hcL ([] : List (Σ m : ℕ, GL (Fin m) F → ℂ)) n = fun _ => 1 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hcL_cons {F : Type} [Field F] (p : Σ m : ℕ, GL (Fin m) F → ℂ) (Y : List (Σ m : ℕ, GL (Fin m) F → ℂ)) (n : ℕ) :
     hcL (p :: Y) n = hc p.1 (Y.map Sigma.fst).sum p.2 (hcL Y (Y.map Sigma.fst).sum) n := rfl
 

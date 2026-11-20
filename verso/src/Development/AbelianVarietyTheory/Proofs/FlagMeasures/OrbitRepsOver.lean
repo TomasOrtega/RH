@@ -7,6 +7,9 @@ open scoped Classical
 
 namespace GlobalTheory.LocOver
 
+/- English proof (translation)
+Introduce `F _ _ _ E _ _ _ _ M _ V _ _ H r P`. Establish `he` using `GlobalTheory.NonGenericLocalCheck.rel_equiv P`. Use `⟨he, GlobalTheory.NonGenericLocalCheck.reps_nonempty P, ?_⟩` and prove the remaining obligations. Introduce and unpack `d d' t hdd' ⟨g, hg, d'', h1, h2⟩`. Conclude with `⟨g, hg, d'', he.trans (he.symm hdd') h1, h2⟩`.
+-/
 theorem orbit_reps_over : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type} [AddCommGroup V]
     [Module E V] (H : HermSp M V) (r : ℕ), ∀ P : FPair H r, Equivalence (Datum.Rel (P := P)) ∧ Nonempty (Reps P) ∧

@@ -31,19 +31,31 @@ def liftT {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) : viaT tk Y ⟶ 
 
 variable {tk g}
 
+/- English proof (translation)
+Rewrite using `[CategoryTheory.Hom.one_def, Over.comp_left]`. Apply the tactic sequence `first | rfl | simp`.
+-/
 theorem one_left' {T : Scheme.{0}} {X : Over T} {M : Over T} [GrpObj M] : (1 : X ⟶ M).left = X.hom ≫ η[M].left := by
   rw [CategoryTheory.Hom.one_def, Over.comp_left]
   first | rfl | simp
 
+/- English proof (translation)
+Rewrite using `[CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, ← Category.assoc, comp_toUnit]`.
+-/
 theorem comp_one'' {T : Scheme.{0}} {X Y M : Over T} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   rw [CategoryTheory.Hom.one_def, CategoryTheory.Hom.one_def, ← Category.assoc, comp_toUnit]
 
 include hc in
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `hc.1.hom_ext (h.trans h'.symm) ((Over.w w).trans (Over.w w').symm)`.
+-/
 theorem rel_uniq_w {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w' v) : w = w' := by
   apply Over.OverMorphism.ext
   exact hc.1.hom_ext (h.trans h'.symm) ((Over.w w).trans (Over.w w').symm)
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h.symm.trans h'`. Conclude with `(Over.w v).trans (Over.w v').symm`.
+-/
 theorem rel_uniq_v {X : Over (Spec (CommRingCat.of k))} {w : viaT tk X ⟶ G'} {v v' : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w v') : v = v' := by
   apply Over.OverMorphism.ext
@@ -52,6 +64,9 @@ theorem rel_uniq_v {X : Over (Spec (CommRingCat.of k))} {w : viaT tk X ⟶ G'} {
   · exact (Over.w v).trans (Over.w v').symm
 
 include hc hg in
+/- English proof (translation)
+Establish `hv : v.left ≫ pullback.snd G.hom g = X.hom` using `Over.w v`. Use `⟨Over.homMk (hc.1.lift (v.left ≫ pullback.fst G.hom g) (X.hom ≫ tk) ?_) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hv, Category.assoc, hg]`. Conclude with `hc.1.lift_snd _ _ _`. Conclude with `hc.1.lift_fst _ _ _`.
+-/
 theorem rel_exists_w {X : Over (Spec (CommRingCat.of k))} (v : X ⟶ (Over.pullback g).obj G) :
     ∃ w : viaT tk X ⟶ G', Rel (F := F) tk g w v := by
   have hv : v.left ≫ pullback.snd G.hom g = X.hom := Over.w v
@@ -61,6 +76,9 @@ theorem rel_exists_w {X : Over (Spec (CommRingCat.of k))} (v : X ⟶ (Over.pullb
   · exact hc.1.lift_fst _ _ _
 
 include hc hg in
+/- English proof (translation)
+Establish `hw : w.left ≫ G'.hom = X.hom ≫ tk` using `Over.w w`. Use `⟨Over.homMk (pullback.lift (w.left ≫ F) X.hom ?_) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hc.1.w, ← Category.assoc, hw, Category.assoc, hg]`. Conclude with `pullback.lift_snd _ _ _`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem rel_exists_v {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') :
     ∃ v : X ⟶ (Over.pullback g).obj G, Rel (F := F) tk g w v := by
   have hw : w.left ≫ G'.hom = X.hom ≫ tk := Over.w w
@@ -75,6 +93,11 @@ def iota2 (hg : tk ≫ f = g) (X : Over (Spec (CommRingCat.of k))) :
     show 𝟙 _ ≫ (X.hom ≫ tk) ≫ f = X.hom ≫ g
     rw [Category.id_comp, Category.assoc, hg])
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show v.left ≫ pullback.fst G.hom g = 𝟙 _ ≫ w.left ≫ F`. Rewrite using `[Category.id_comp]`.
+
+Conclude with `h.symm`. Introduce `h`. Establish `h2 : v.left ≫ pullback.fst G.hom g = 𝟙 _ ≫ w.left ≫ F` using `congrArg (fun u => u.left) h`. Rewrite `h2` using `[Category.id_comp]`. Conclude with `h2.symm`.
+-/
 theorem rel_iff {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') (v : X ⟶ (Over.pullback g).obj G) :
     Rel (F := F) tk g w v ↔
       pushPt (isGrpPullback_pullback G g).1.w v = iota2 hg X ≫ pushPt hc.1.w w := by
@@ -90,6 +113,11 @@ theorem rel_iff {X : Over (Spec (CommRingCat.of k))} (w : viaT tk X ⟶ G') (v :
     exact h2.symm
 
 include hc hg in
+/- English proof (translation)
+Establish `e` using `(rel_iff hc hg w v).1 h`. Establish `e'` using `(rel_iff hc hg w' v').1 h'`. Establish `h1` using `(isGrpPullback_pullback G g).2 X v v' (pushPt (isGrpPullback_pullback G g).1.w v) (pushPt (isGrpPullback_pullback G g).1.w v') rfl rfl`. Establish `h2` using `hc.2 (viaT tk X) w w' (pushPt hc.1.w w) (pushPt hc.1.w w') rfl rfl`. Use `show (w * w').left ≫ F = (v * v').left ≫ pullback.fst G.hom g`.
+
+Rewrite using `[← h1, ← h2, e, e', CategoryTheory.Hom.mul_def, CategoryTheory.Hom.mul_def, ← comp_lift, Category.assoc]`. Conclude with `(Category.id_comp _).symm`.
+-/
 theorem rel_mul {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {v v' : X ⟶ (Over.pullback g).obj G}
     (h : Rel (F := F) tk g w v) (h' : Rel (F := F) tk g w' v') : Rel (F := F) tk g (w * w') (v * v') := by
   have e := (rel_iff hc hg w v).1 h
@@ -103,6 +131,13 @@ theorem rel_mul {X : Over (Spec (CommRingCat.of k))} {w w' : viaT tk X ⟶ G'} {
   exact (Category.id_comp _).symm
 
 include hc hg in
+/- English proof (translation)
+Establish `p1 : ∀ {T : Over S'} {T' : Over S} (e : T' ⟶ Over.mk (T.hom ≫ f)), e ≫ pushPt hc.1.w (1 : T ⟶ G') = 1`. Introduce `T T' e`. Establish `hm` using `hc.2 T 1 1 (pushPt hc.1.w (1 : T ⟶ G')) (pushPt hc.1.w (1 : T ⟶ G')) rfl rfl`. Rewrite `hm` using `[_root_.mul_one]`. Establish `hp : pushPt hc.1.w (1 : T ⟶ G') * pushPt hc.1.w (1 : T ⟶ G') = pushPt hc.1.w (1 : T ⟶ G')` using `Over.OverMorphism.ext hm`.
+
+Rewrite `hp` using `[mul_eq_left]`. Rewrite using `[hp, comp_one'']`. Establish `p2 : pushPt (isGrpPullback_pullback G g).1.w (1 : X ⟶ (Over.pullback g).obj G) = 1`. Establish `hm` using `(isGrpPullback_pullback G g).2 X 1 1 (pushPt (isGrpPullback_pullback G g).1.w 1) (pushPt (isGrpPullback_pullback G g).1.w 1) rfl rfl`. Rewrite `hm` using `[_root_.mul_one]`.
+
+Establish `hp : pushPt (isGrpPullback_pullback G g).1.w (1 : X ⟶ (Over.pullback g).obj G) * pushPt (isGrpPullback_pullback G g).1.w (1 : X ⟶ (Over.pullback g).obj G) = pushPt (isGrpPullback_pullback G g).1.w (1 : X ⟶ (Over.pullback g).obj G)` using `Over.OverMorphism.ext hm`. Rewrite `hp` using `[mul_eq_left]`. Then use the resulting hypothesis. Conclude with `(rel_iff hc hg _ _).2 (p2.trans (p1 (iota2 hg X)).symm)`.
+-/
 theorem rel_one {X : Over (Spec (CommRingCat.of k))} : Rel (F := F) tk g (1 : viaT tk X ⟶ G') (1 : X ⟶ (Over.pullback g).obj G) := by
   have p1 : ∀ {T : Over S'} {T' : Over S} (e : T' ⟶ Over.mk (T.hom ≫ f)),
       e ≫ pushPt hc.1.w (1 : T ⟶ G') = 1 := by
@@ -125,6 +160,9 @@ theorem rel_one {X : Over (Spec (CommRingCat.of k))} : Rel (F := F) tk g (1 : vi
   exact (rel_iff hc hg _ _).2 (p2.trans (p1 (iota2 hg X)).symm)
 
 include hc hg in
+/- English proof (translation)
+The claim follows from `| 0, X, u, u', _ => by simpa using rel_one hc hg (X := X) | N + 1, X, u, u', h => by rw [List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons] exact rel_mul hc hg (h 0) (rel_prod (fun i => u i.succ) (fun i => u' i.succ) fun i => h i.succ)`.
+-/
 theorem rel_prod : ∀ {N : ℕ} {X : Over (Spec (CommRingCat.of k))} (u : Fin N → (viaT tk X ⟶ G'))
     (u' : Fin N → (X ⟶ (Over.pullback g).obj G)), (∀ i, Rel (F := F) tk g (u i) (u' i)) →
     Rel (F := F) tk g (List.ofFn u).prod (List.ofFn u').prod
@@ -133,12 +171,18 @@ theorem rel_prod : ∀ {N : ℕ} {X : Over (Spec (CommRingCat.of k))} (u : Fin N
     rw [List.ofFn_succ, List.prod_cons, List.ofFn_succ, List.prod_cons]
     exact rel_mul hc hg (h 0) (rel_prod (fun i => u i.succ) (fun i => u' i.succ) fun i => h i.succ)
 
+/- English proof (translation)
+Unfold `Rel at h ⊢`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, h]`. Apply the tactic sequence `first | rfl | skip`.
+-/
 theorem rel_pre {X Y : Over (Spec (CommRingCat.of k))} (φ : Y ⟶ X) {w : viaT tk X ⟶ G'}
     {v : X ⟶ (Over.pullback g).obj G} (h : Rel (F := F) tk g w v) : Rel (F := F) tk g (liftT tk φ ≫ w) (φ ≫ v) := by
   unfold Rel at h ⊢
   rw [Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, h]
   first | rfl | skip
 
+/- English proof (translation)
+Unfold `Rel at h ⊢`. Rewrite using `[Over.comp_left, Category.assoc, hab, ← Category.assoc, h, Over.comp_left, Category.assoc, Category.assoc]`. Use `congr 1`. Conclude with `(pullback.lift_fst _ _ _).symm`.
+-/
 theorem rel_act (a : G' ⟶ G') (b : G ⟶ G) (hab : a.left ≫ F = F ≫ b.left) {X : Over (Spec (CommRingCat.of k))}
     {w : viaT tk X ⟶ G'} {v : X ⟶ (Over.pullback g).obj G} (h : Rel (F := F) tk g w v) :
     Rel (F := F) tk g (w ≫ a) (v ≫ (Over.pullback g).map b) := by

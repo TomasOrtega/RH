@@ -3,6 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ConeMatchRay
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.EqZeroOfIsOrbFormConst
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PolFan.cone_match_rays | exact GlobalTheory.PolFan.cone_match_rays | (intros; apply GlobalTheory.PolFan.cone_match_rays <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.coneMatch_rays_of_linearIndependent_intForms : ∀ {X : Type} [AddCommGroup X] {k m : ℕ} (p : Fin k → LinearMap.BilinForm ℤ X) (δ : Fin m → LinearMap.BilinForm ℤ X),
   LinearIndependent ℤ p → LinearIndependent ℤ δ →
   ∀ (t : Fin k → ℝ) (c : Fin m → ℝ), (∀ i, 0 < t i) → (∀ j, 0 ≤ c j) → ∑ i, t i • toReal (p i) = ∑ j, c j • toReal (δ j) →

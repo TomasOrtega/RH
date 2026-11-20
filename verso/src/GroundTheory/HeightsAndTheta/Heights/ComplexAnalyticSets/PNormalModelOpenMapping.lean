@@ -24,6 +24,9 @@ open MvPolynomial Topology Matrix
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `q hq` and use `by rw [← M.comap_eq] at hq; exact hq`.
+-/
 theorem NormalModel.le_comap {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : NormalModel J) :
     J ≤ M.ideal.comap
       (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin M.m) ℂ).toRingHom :=
@@ -35,6 +38,21 @@ def NormalModel.quotMap {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : No
     (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin M.m) ℂ).toRingHom
     M.le_comap
 
+/- English proof (translation)
+Set `_ : Algebra (MvPolynomial (Fin n) ℂ ⧸ J) (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal)` to `M.quotMap.toAlgebra`. Establish `hf : ∀ q, algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) (Ideal.Quotient.mk J q) = Ideal.Quotient.mk M.ideal (rename Sum.inl q)` using `fun q => Ideal.quotientMap_mk (H := M.le_comap)`. Establish `hint : ∀ q : MvPolynomial (Fin n ⊕ Fin M.m) ℂ, IsIntegral (MvPolynomial (Fin n) ℂ ⧸ J) (Ideal.Quotient.mk M.ideal q)`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`.
+
+Consider the case `C c`. Establish `: Ideal.Quotient.mk M.ideal (C c) = algebraMap _ _ (Ideal.Quotient.mk J (C c))`. Rewrite using `[hf, rename_C]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`.
+
+Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`.
+
+Use `hp.mul ?_` and prove the remaining obligations. Break down `i with j | j` into its components or cases. Establish `: Ideal.Quotient.mk M.ideal (X (Sum.inl j)) = algebraMap _ _ (Ideal.Quotient.mk J (X j))`. Rewrite using `[hf, rename_X]`. Rewrite using `[this]`.
+
+Conclude with `isIntegral_algebraMap`. Take `⟨P, hPm, hP⟩` from `M.integral j`. Use `⟨P.map (Ideal.Quotient.mk J), hPm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `hcomp : (algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal)).comp (Ideal.Quotient.mk J) = (Ideal.Quotient.mk M.ideal).comp (rename Sum.inl : MvPolynomial (Fin n) ℂ →ₐ[ℂ] MvPolynomial (Fin n ⊕ Fin M.m) ℂ).toRingHom` using `RingHom.ext fun q => hf q`.
+
+Rewrite using `[hcomp, ← Polynomial.hom_eval₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hP`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin n) ℂ ⧸ J) (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal)` using `⟨fun x => by`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `hint q⟩`.
+
+Conclude with `GroundTheory.Arith.Toric.ringKrullDim_eq_of_isIntegral (Ideal.quotientMap_injective' (H := M.le_comap) (fun q hq => by rw [← M.comap_eq]; exact hq))`.
+-/
 theorem NormalModel.ringKrullDim_eq {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : NormalModel J) :
     ringKrullDim (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal) =
       ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) := by
@@ -79,6 +97,9 @@ theorem NormalModel.ringKrullDim_eq {n : ℕ} {J : Ideal (MvPolynomial (Fin n) �
   exact GroundTheory.Arith.Toric.ringKrullDim_eq_of_isIntegral
     (Ideal.quotientMap_injective' (H := M.le_comap) (fun q hq => by rw [← M.comap_eq]; exact hq))
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Heights₂.Heights.ComplexSets.GenericProjectionFinite.proof (GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjectionsContainOpen.proof GroundTheory.Heights₂.Heights.ComplexSets.ConeAvoidsFinite.proof GroundTheory.Heights₂.Heights.ComplexSets.FiniteProjHomInjective …`.
+-/
 theorem exists_isFiniteProjection {N d : ℕ} (I : Ideal (MvPolynomial (Fin N) ℂ)) (hI : I.IsPrime)
     (hdim : ringKrullDim (MvPolynomial (Fin N) ℂ ⧸ I) = d) :
     ∃ A : Matrix (Fin d) (Fin N) ℂ, GroundTheory.Heights₂.Heights.ComplexSets.IsFiniteProjection I A :=
@@ -93,6 +114,17 @@ theorem exists_isFiniteProjection {N d : ℕ} (I : Ideal (MvPolynomial (Fin N) �
         GroundTheory.Heights₂.Heights.ComplexSets.HomogDimZeroPow.proof))
     GroundTheory.Heights₂.Heights.ComplexSets.UnitaryZariskiDense.proof N d I hI hdim).2.1
 
+/- English proof (translation)
+Take `⟨U0, V0, g, -, -, hV0, hzV0, -, -, hAg, hZV0⟩` from `hP _ hPt (φ t) ⟨hφZ ht, rfl⟩`. Establish `hAd : Differentiable ℂ (fun v : Fin N → ℂ => A *ᵥ v)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).differentiable`. Establish `hWo : IsOpen (V ∩ φ ⁻¹' V0)` using `hφ.continuousOn.isOpen_inter_preimage hV hV0`. Establish `hkey : ∀ s ∈ V ∩ φ ⁻¹' V0, φ s = g (A *ᵥ φ s)`. Introduce `s hs`.
+
+Establish `hmem : φ s ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet I ∩ V0` using `⟨hφZ hs.1, hs.2⟩`. Rewrite `hmem` using `[hZV0]`. Take `⟨u, hu, hgu⟩` from `hmem`. Rewrite using `[← hgu, hAg u hu]`. Establish `hFd : DifferentiableOn ℂ (fun s => A *ᵥ φ s) (V ∩ φ ⁻¹' V0)` using `hAd.comp_differentiableOn (hφ.mono Set.inter_subset_left)`.
+
+Establish `hFi : Set.InjOn (fun s => A *ᵥ φ s) (V ∩ φ ⁻¹' V0)` using `fun s hs s' hs' hss' => hφi hs.1 hs'.1 (by rw [hkey s hs, hkey s' hs']; exact congrArg g hss')`. Establish `hΩ` using `hinj k _ _ hWo hFd hFi`. Use `⟨V0 ∩ (fun v => A *ᵥ v) ⁻¹' ((fun s => A *ᵥ φ s) '' (V ∩ φ ⁻¹' V0)), hV0.inter (hAd.continuous.isOpen_preimage _ hΩ), ⟨hzV0, t, ⟨ht, hzV0⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzZ, hzV0', s, hsW, hsz⟩`. Establish `hmem : z ∈ GroundTheory.Heights₂.Heights.ComplexSets.zeroSet I ∩ V0` using `⟨hzZ, hzV0'⟩`.
+
+Rewrite `hmem` using `[hZV0]`. Take `⟨u, hu, rfl⟩` from `hmem`. Use `⟨s, hsW.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hkey s hsW]`. Simplify using `only at hsz`.
+
+Rewrite using `[hsz, hAg u hu]`.
+-/
 theorem open_image_off_discriminant (hinj : InjectiveHolomorphicOpen.Statement) {N k : ℕ}
     {I : Ideal (MvPolynomial (Fin N) ℂ)} {A : Matrix (Fin k) (Fin N) ℂ} {P : MvPolynomial (Fin k) ℂ}
     (hP : ∀ y : Fin k → ℂ, eval y P ≠ 0 → ∀ x ∈ GroundTheory.Heights₂.Heights.ComplexSets.fibre I A y,
@@ -129,6 +161,31 @@ theorem open_image_off_discriminant (hinj : InjectiveHolomorphicOpen.Statement) 
   simp only at hsz
   rw [hsz, hAg u hu]
 
+/- English proof (translation)
+Take `⟨A, hA⟩` from `exists_isFiniteProjection I hI hdim`. Take `⟨P, hP0, hP⟩` from `GroundTheory.Heights₂.Heights.ComplexSets.DiscriminantCover.proof GroundTheory.Heights₂.Heights.ComplexSets.PrimitiveElementFibres.proof N k I A hI hdim hA`. Use `set h := GroundTheory.Heights₂.Heights.ComplexSets.pullback A P with hh`. Establish `hhe : ∀ z, eval z h = eval (A *ᵥ z) P` using `fun z => GroundTheory.Heights₂.Heights.ComplexSets.FibreBound.eval_pullback A z P`. Establish `hhI : h ∉ I`.
+
+Introduce `hmem`. Apply `hP0` to reduce the goal to its premises. Apply `hA.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hmem`.
+
+Establish `hP'` using `fun y hy => (hP y hy).2.2`. Establish `hloc : ∀ τ ∈ U, ∃ B : Set (Fin N → ℂ), IsOpen B ∧ φ τ ∈ B ∧ zeroSetIn I ∩ B ⊆ φ '' U`. Introduce `τ hτ`. Take `⟨ε, hε, hεU⟩` from `Metric.isOpen_iff.1 hU τ hτ`. Establish `hr0 : 0 < ε / 2` using `by positivity`.
+
+Establish `hKU : Metric.closedBall τ (ε / 2) ⊆ U` using `(Metric.closedBall_subset_ball (by linarith)).trans hεU`. Establish `hVU : Metric.ball τ (ε / 2) ⊆ U` using `Metric.ball_subset_closedBall.trans hKU`. Establish `hKc : IsCompact (φ '' Metric.closedBall τ (ε / 2))` using `(isCompact_closedBall τ (ε / 2)).image_of_continuousOn (hφ.continuousOn.mono hKU)`. Establish `hSc : IsCompact (φ '' Metric.sphere τ (ε / 2))` using `(isCompact_sphere τ (ε / 2)).image_of_continuousOn (hφ.continuousOn.mono (Metric.sphere_subset_closedBall.trans hKU))`. Establish `hwS : φ τ ∉ φ '' Metric.sphere τ (ε / 2)`.
+
+Introduce and unpack `⟨s, hs, hsτ⟩`. Establish `hst` using `hφi (Metric.sphere_subset_closedBall.trans hKU hs) hτ hsτ`. Rewrite `hs` using `[hst, Metric.mem_sphere, dist_self]`. Conclude with `hr0.ne hs`. Take `⟨B, hBo, hwB, hBS, hpre, hdense⟩` from `hirr (Fin N) I h (φ τ) hI hic hhI (hφZ hτ) (φ '' Metric.sphere τ (ε / 2))ᶜ (hSc.isClosed.isOpen_compl.mem_nhds hwS)`.
+
+Use `set G := ⋃₀ {O : Set (Fin N → ℂ) | IsOpen O ∧ zeroSetIn I ∩ O ⊆ φ '' Metric.ball τ (ε / 2)} with hG`. Establish `hGo : IsOpen G` using `isOpen_sUnion fun O hO => hO.1`. Establish `hGZ : zeroSetIn I ∩ G ⊆ φ '' Metric.ball τ (ε / 2)`. Introduce and unpack `z ⟨hzZ, O, hO, hzO⟩`. Conclude with `hO.2 ⟨hzZ, hzO⟩`.
+
+Establish `hVK : φ '' Metric.ball τ (ε / 2) ⊆ φ '' Metric.closedBall τ (ε / 2)` using `Set.image_mono Metric.ball_subset_closedBall`. Take `⟨t0, ⟨ht0V, ht0B⟩, ht0h⟩` from `hoff N k I h (Metric.ball τ (ε / 2) ∩ φ ⁻¹' B) φ hI hdim hhI ((hφ.continuousOn.mono hVU).isOpen_inter_preimage Metric.isOpen_ball hBo) ⟨τ, Metric.mem_ball_self hr0, hwB⟩ (hφ.mono (Set.inter_subset_left.trans hVU)) (hφi.mono (Set.inter_subset_left.trans hVU)) (fun s hs => hφZ (hVU …`. Establish `hcover : (zeroSetIn I ∩ B) \ {z | eval z h = 0} ⊆ G ∪ (φ '' Metric.closedBall τ (ε / 2))ᶜ`. Introduce and unpack `z ⟨⟨hzZ, hzB⟩, hzh⟩`. Distinguish the cases in `hzK : z ∈ φ '' Metric.closedBall τ (ε / 2)`.
+
+Use `left`. Take `⟨s, hsK, rfl⟩` from `hzK`. Establish `hsV : s ∈ Metric.ball τ (ε / 2)`. Break down `(Metric.mem_closedBall.1 hsK).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`.
+
+Conclude with `absurd ⟨s, heq, rfl⟩ (hBS hzB)`. Take `⟨O, hOo, hsO, hOZ⟩` from `open_image_off_discriminant hinj hP' Metric.isOpen_ball (hφ.mono hVU) (hφi.mono hVU) (fun s hs => hφZ (hVU hs)) hsV (by rw [← hhe]; exact hzh)`. Conclude with `⟨O, ⟨hOo, hOZ⟩, hsO⟩`. Conclude with `Or.inr hzK`. Establish `hdisj : (zeroSetIn I ∩ B) \ {z | eval z h = 0} ∩ (G ∩ (φ '' Metric.closedBall τ (ε / 2))ᶜ) = ∅` using `Set.eq_empty_iff_forall_notMem.2 fun z ⟨⟨⟨hzZ, _⟩, _⟩, hzG, hzK⟩ => hzK (hVK (hGZ ⟨hzZ, hzG⟩))`.
+
+Establish `hDG : (zeroSetIn I ∩ B) \ {z | eval z h = 0} ⊆ G`. Break down `isPreconnected_iff_subset_of_disjoint.1 hpre _ _ hGo hKc.isClosed.isOpen_compl hcover hdisj with h1 | h1` into its components or cases. Conclude with `h1`. Conclude with `absurd (hVK ⟨t0, ht0V, rfl⟩) (h1 ⟨⟨hφZ (hVU ht0V), ht0B⟩, ht0h⟩)`. Establish `hDK : (zeroSetIn I ∩ B) \ {z | eval z h = 0} ⊆ φ '' Metric.closedBall τ (ε / 2)` using `fun z hz => hVK (hGZ ⟨hz.1.1, hDG hz⟩)`.
+
+Conclude with `⟨B, hBo, hwB, fun z hz => Set.image_mono hKU (closure_minimal hDK hKc.isClosed (hdense hz))⟩`. Use `⟨⋃₀ {O : Set (Fin N → ℂ) | IsOpen O ∧ zeroSetIn I ∩ O ⊆ φ '' U}, isOpen_sUnion fun O hO => hO.1, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, hτ, rfl⟩`. Take `⟨B, hBo, hτB, hBU⟩` from `hloc τ hτ`. Conclude with `⟨hφZ hτ, B, ⟨hBo, hBU⟩, hτB⟩`.
+
+Introduce and unpack `z ⟨hzZ, O, hO, hzO⟩`. Conclude with `hO.2 ⟨hzZ, hzO⟩`.
+-/
 theorem openMapping_of_isIntegrallyClosed (hirr : NormalLocallyIrreducible.Statement)
     (hoff : BranchOffHypersurface.Statement) (hinj : InjectiveHolomorphicOpen.Statement) {N k : ℕ}
     (I : Ideal (MvPolynomial (Fin N) ℂ)) (hI : I.IsPrime) (hic : IsIntegrallyClosed (MvPolynomial (Fin N) ℂ ⧸ I))
@@ -211,6 +268,27 @@ theorem openMapping_of_isIntegrallyClosed (hirr : NormalLocallyIrreducible.State
   · rintro z ⟨hzZ, O, hO, hzO⟩
     exact hO.2 ⟨hzZ, hzO⟩
 
+/- English proof (translation)
+Introduce `n k J M U φ hJ hdim hU hφ hφi hφZ`. Use `set e : Fin n ⊕ Fin M.m ≃ Fin (n + M.m) := finSumFinEquiv with he`. Use `set RE : MvPolynomial (Fin n ⊕ Fin M.m) ℂ ≃+* MvPolynomial (Fin (n + M.m)) ℂ := (renameEquiv ℂ e).toRingEquiv with hRE`. Use `set I' := M.ideal.map (RE : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* MvPolynomial (Fin (n + M.m)) ℂ) with hI'`. Establish `QE` using `Ideal.quotientEquiv M.ideal I' RE rfl`.
+
+Use `M.isPrime` as an intermediate fact. Establish `hI'p : I'.IsPrime` using `Ideal.map_isPrime_of_equiv RE`. Use `M.isIntegrallyClosed` as an intermediate fact. Establish `hic : IsIntegrallyClosed (MvPolynomial (Fin (n + M.m)) ℂ ⧸ I')` using `IsIntegrallyClosed.of_equiv QE`. Establish `hdim' : ringKrullDim (MvPolynomial (Fin (n + M.m)) ℂ ⧸ I') = (k : ℕ)`.
+
+Rewrite using `[← ringKrullDim_eq_of_ringEquiv QE, M.ringKrullDim_eq, hdim]`. Establish `hZ : ∀ z : Fin (n + M.m) → ℂ, z ∈ zeroSetIn I' ↔ (fun i => z (e i)) ∈ zeroSetIn M.ideal`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz q hq`.
+
+Establish `h2` using `hz _ (Ideal.mem_map_of_mem _ hq)`. Express the relevant statement in the definitionally equal form `eval z (rename e q) = 0 at h2`. Rewrite `h2` using `[eval_rename]`. Then use the resulting hypothesis. Introduce `hz q' hq'`. Take `⟨q, hq, rfl⟩` from `(Ideal.mem_map_of_equiv RE q').1 hq'`.
+
+Express the relevant statement in the definitionally equal form `eval z (rename e q) = 0`. Rewrite using `[eval_rename]`. Conclude with `hz q hq`. Use `set φ' : (Fin k → ℂ) → Fin (n + M.m) → ℂ := fun t i => φ t (e.symm i) with hφ'`. Establish `hφ'd : DifferentiableOn ℂ φ' U` using `differentiableOn_pi.2 fun i => differentiableOn_pi.1 hφ (e.symm i)`.
+
+Establish `hφ'e : ∀ t, (fun i => φ' t (e i)) = φ t` using `fun t => funext fun i => by simp [hφ']`. Establish `hφ'i : Set.InjOn φ' U` using `fun s hs t ht hst => hφi hs ht (by rw [← hφ'e s, ← hφ'e t, hst])`. Establish `hφ'Z : Set.MapsTo φ' U (zeroSetIn I')` using `fun t ht => (hZ _).2 (by rw [hφ'e]; exact hφZ ht)`. Take `⟨O', hO'o, hO'⟩` from `openMapping_of_isIntegrallyClosed hirr hoff hinj I' hI'p hic hdim' U φ' hU hφ'd hφ'i hφ'Z`. Use `⟨(fun w : Fin n ⊕ Fin M.m → ℂ => fun i => w (e.symm i)) ⁻¹' O', hO'o.preimage (continuous_pi fun i => continuous_apply _), ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Establish `hmem : φ' t ∈ zeroSetIn I' ∩ O'`. Rewrite using `[← hO']`.
+
+Conclude with `⟨t, ht, rfl⟩`. Conclude with `⟨hφZ ht, hmem.2⟩`. Introduce and unpack `⟨hwZ, hwO⟩`. Establish `hw' : (fun i => w (e.symm i)) ∈ zeroSetIn I'` using `(hZ _).2 (by simpa using hwZ)`. Establish `hmem : (fun i => w (e.symm i)) ∈ φ' '' U`.
+
+Rewrite using `[hO']`. Conclude with `⟨hw', hwO⟩`. Take `⟨t, ht, hteq⟩` from `hmem`. Use `⟨t, ht, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrFun hteq (e i)` as an intermediate fact.
+
+Simplify `this` using `[hφ']`.
+-/
 theorem NormalModelOpenMapping.proof (hirr : NormalLocallyIrreducible.Statement)
     (hoff : BranchOffHypersurface.Statement) (hinj : InjectiveHolomorphicOpen.Statement) :
     NormalModelOpenMapping.Statement := by

@@ -9,11 +9,17 @@ namespace Formalism.L2.PairingIndexBounds.PowerSeriesNecessity
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Apply the tactic sequence `cases j <;> rfl`.
+-/
 theorem latAt_smul (X : Sys p) (j : ℕ) (c : X.Lv.comp j) (γ : (X.Lv.lev j c).Γ) (L : (X.Pj j).Tup) (v : X.Pl) :
     X.latAt v j ((X.Lv.lev j c).smul γ L) =
       (X.latAt v j L).map ((Matrix.mulVecLin (gamAt X j c γ v : Matrix _ _ (X.G.P.Qq v))).restrictScalars (X.G.P.W v)) := by
   cases j <;> rfl
 
+/- English proof (translation)
+Rewrite using `[← Submodule.map_comp]`. Establish `hid : ((Matrix.mulVecLin ((A⁻¹ : GL (Fin k) Qq) : Matrix (Fin k) (Fin k) Qq)).restrictScalars W).comp ((Matrix.mulVecLin (A : Matrix (Fin k) (Fin k) Qq)).restrictScalars W) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `[Matrix.mulVec_mulVec]`. Rewrite using `[hid, Submodule.map_id]`.
+-/
 theorem map_map_inv {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ} (A : GL (Fin k) Qq)
     (M : Submodule W (Fin k → Qq)) :
     (M.map ((Matrix.mulVecLin (A : Matrix (Fin k) (Fin k) Qq)).restrictScalars W)).map
@@ -46,6 +52,11 @@ def frmBack (X : Sys p) {j : ℕ} {La : X.Lt j} {La' : X.Lt (j + 1)} {L0 : (X.Pj
     rw [h, latAt_smul, h1, colSpan_mul, Units.val_mul]
   hg' := φ0.hg'
 
+/- English proof (translation)
+Consider the cases of `φ0 with`. Consider the case `mk g g' hg hg'`. Unfold `frmMove frmBack`. Use `congr 1`. Use function extensionality and compare the values at `v`.
+
+Conclude with `inv_mul_cancel_left _ _`.
+-/
 theorem frmMove_frmBack (X : Sys p) {j : ℕ} {La : X.Lt j} {La' : X.Lt (j + 1)} {L0 : (X.Pj j).Tup}
     (γ : (X.Lv.lev j La.1).Γ) (h : La.2 = (X.Lv.lev j La.1).smul γ L0) (φ0 : Frm X j (La.1, L0) La') :
     frmMove X γ h (frmBack X γ h φ0) = φ0 := by
@@ -56,6 +67,21 @@ theorem frmMove_frmBack (X : Sys p) {j : ℕ} {La : X.Lt j} {La' : X.Lt (j + 1)}
     funext v
     exact inv_mul_cancel_left _ _
 
+/- English proof (translation)
+Establish `hI : MvPowerSeries.HasSubst (invF Kc φ)` using `by apply hasSubst_invF`. Break down `z with ⟨v, s, a, b⟩` into its components or cases. Establish `hQ : Qi Kc (frmMove X γ h φ) v s = Qi Kc φ v s`. Unfold `Qi`. Both sides reduce to the same expression.
+
+Establish `hm : ∀ A B : Matrix (Fin ((X.Pj j).m + 1)) (Fin ((X.Pj j).m + 1)) (X.G.P.Qq v), mAt X Kc j v s (A * B) = mAt X Kc j v s A * mAt X Kc j v s B`. Introduce `A B`. Unfold `mAt`. Rewrite using `[Matrix.map_mul, Matrix.submatrix_mul_equiv]`. Simplify using `only [actS, invF]`.
+
+Repeatedly rewrite using `[← MvPowerSeries.smul_eq_C_mul]`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hI, map_sum]`. Repeatedly rewrite using `[map_smul, MvPowerSeries.coe_substAlgHom, MvPowerSeries.subst_X hI]`. Simplify using `only [invF]`. Repeatedly rewrite using `[← MvPowerSeries.smul_eq_C_mul, Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ab' _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Break down `ab' with ⟨c, d⟩` into its components or cases.
+
+Simplify using `only [Matrix.kroneckerMap_apply, hQ]`. Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Unfold `Pi`.
+
+Apply the tactic sequence `try dsimp only [frmMove]`. Distinguish the cases in `ho : IsOddPos s`. Simplify using `only [if_pos ho]`. Rewrite using `[Units.val_mul, hm, Matrix.mul_apply]`. Simplify using `only [if_neg ho, Matrix.transpose_apply]`.
+
+Rewrite using `[mul_inv_rev, inv_inv, Units.val_mul, hm, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
+-/
 theorem subst_invF_actS (X : Sys p) (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] {j : ℕ}
     {La : X.Lt j} {La' : X.Lt (j + 1)} {L0 : (X.Pj j).Tup} (γ : (X.Lv.lev j La.1).Γ)
     (h : La.2 = (X.Lv.lev j La.1).smul γ L0) (φ : Frm X j La La') (z : X.ZA j) :
@@ -94,6 +120,11 @@ theorem subst_invF_actS (X : Sys p) (Kc : Type) [Field Kc] [Algebra (Formalism.M
     rw [mul_inv_rev, inv_inv, Units.val_mul, hm, Matrix.mul_apply]
     exact Finset.sum_congr rfl fun _ _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hI : MvPowerSeries.HasSubst (invF Kc φ)` using `by apply hasSubst_invF`. Establish `hA : MvPowerSeries.HasSubst (actS X Kc j (gamAt X j La.1 γ))` using `by apply hasSubst_actS`. Unfold `thA SA`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hA hI]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Conclude with `subst_invF_actS X Kc γ h φ z`.
+-/
 theorem thA_SA (X : Sys p) (Kc : Type) [Field Kc] [Algebra (Formalism.MainNotions.FormalGroupSystem.K0 p) Kc] [Algebra X.G.Kf Kc] {j : ℕ}
     {La : X.Lt j} {La' : X.Lt (j + 1)} {L0 : (X.Pj j).Tup} (γ : (X.Lv.lev j La.1).Γ)
     (h : La.2 = (X.Lv.lev j La.1).smul γ L0) (φ : Frm X j La La') (f : MvPowerSeries (X.ZA j) Kc) :

@@ -19,6 +19,11 @@ variable {G : Type} [Group G] {LL : Type} [Field LL] {O : Type} [CommRing O] [Al
   {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
   {ρ : Representation LL G V}
 
+/- English proof (translation)
+Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨y, rfl⟩`. Introduce and unpack `⟨y, rfl⟩`.
+
+Conclude with `⟨y, Submodule.mem_top, rfl⟩`.
+-/
 theorem mem_span_smul_top (L : Lattice (O := O) ρ) (a : O) (x : ↥L.T) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule O ↥L.T) ↔ ∃ y : ↥L.T, x = a • y := by
   rw [Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]
@@ -26,6 +31,9 @@ theorem mem_span_smul_top (L : Lattice (O := O) ρ) (a : O) (x : ↥L.T) :
   · rintro ⟨y, -, rfl⟩; exact ⟨y, rfl⟩
   · rintro ⟨y, rfl⟩; exact ⟨y, Submodule.mem_top, rfl⟩
 
+/- English proof (translation)
+Introduce `g x hx`. Rewrite `hx`, the goal using `[mem_span_smul_top]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨actT L g y, map_smul _ _ _⟩`.
+-/
 theorem stable_span_smul_top (L : Lattice (O := O) ρ) (a : O) :
     StableSub L (Ideal.span {a} • ⊤ : Submodule O ↥L.T) := by
   intro g x hx
@@ -33,12 +41,18 @@ theorem stable_span_smul_top (L : Lattice (O := O) ρ) (a : O) :
   obtain ⟨y, rfl⟩ := hx
   exact ⟨actT L g y, map_smul _ _ _⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective I x`. Both sides reduce to the same expression.
+-/
 theorem factor_actQ (L : Lattice (O := O) ρ) {I J : Submodule O ↥L.T} (hI : StableSub L I)
     (hJ : StableSub L J) (hIJ : I ≤ J) (g : G) (x : ↥L.T ⧸ I) :
     Submodule.factor hIJ (actQ L I hI g x) = actQ L J hJ g (Submodule.factor hIJ x) := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective I x
   rfl
 
+/- English proof (translation)
+Use `⟨hz.1.comp _, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [hz.2 g h, map_add, factor_actQ L hI hJ hIJ]`.
+-/
 theorem factor_mem_Z1Q [TopologicalSpace G] (L : Lattice (O := O) ρ) {I J : Submodule O ↥L.T}
     (hI : StableSub L I) (hJ : StableSub L J) (hIJ : I ≤ J) {z : G → ↥L.T ⧸ I}
     (hz : z ∈ quotientCocycles L I hI) : (fun g => Submodule.factor hIJ (z g)) ∈ quotientCocycles L J hJ := by
@@ -47,6 +61,59 @@ theorem factor_mem_Z1Q [TopologicalSpace G] (L : Lattice (O := O) ρ) {I J : Sub
 
 end Gen
 
+/- English proof (translation)
+Introduce `hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm c hc horth`. Take `⟨hDom, hDVR, hFrac⟩` from `hO.1`. Use `haveI := hDom`. Use `haveI := hDVR`. Use `haveI := hFrac`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Use `set π := algebraMap O LL ϖ with hπdef`. Establish `hπ : π ≠ 0`. Introduce `h`. Conclude with `hϖ.ne_zero (IsFractionRing.injective O LL (by rw [← hπdef, h, map_zero]))`.
+
+Assume the negation of the conclusion as `hcB`. Take `⟨r, hr⟩` from `GlobalTheory.T.torsionCocycle_uniformizer_pow_smul_mem l K LL O hO A' LA' ϖ hϖ c hc`. Set `I : ℕ → Submodule O ↥LA.T` to `fun k => Ideal.span {ϖ ^ (r + k)} • ⊤`. Establish `hI : ∀ k, StableSub LA (I k)` using `fun k => stable_span_smul_top LA _`. Set `Φ : ∀ k, (↥(GK K) → ↥LA.T ⧸ I k) → ↥(GK K) × ↥(GK K) → LL` to `fun k z x => m (Formalism.MainNotions.LocalSituation.liftQ LA (I k) (z x.1)) (A'.ρ x.1 (liftD LA' (c x.2)))`.
+
+Set `Y : ∀ k, Set (↥(GK K) → ↥LA.T ⧸ I k)` to `fun k => {z | z ∈ quotientCocycles LA (I k) (hI k) ∧ ¬ CobO (P.PD K) L1 (Φ k z)}`. Establish `hle : ∀ k, I (k + 1) ≤ I k` using `fun k => Submodule.smul_mono_left (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (by omega)))`. Establish `hle0 : ∀ k, I k ≤ I 0` using `fun k => Submodule.smul_mono_left (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (by omega)))`. Set `f : ∀ k, (↥(GK K) → ↥LA.T ⧸ I (k + 1)) → (↥(GK K) → ↥LA.T ⧸ I k)` to `fun k z g => Submodule.factor (hle k) (z g)`. Establish `hmemPow : ∀ (j : ℕ) (x : ↥LA.T), x ∈ (Ideal.span {ϖ ^ j} • ⊤ : Submodule O ↥LA.T) → ∃ t ∈ LA.T, (x : A.V) = π ^ j • t`.
+
+Introduce `j x hx`. Take `⟨y, rfl⟩` from `(mem_span_smul_top LA _ x).1 hx`. Conclude with `⟨y, y.2, by rw [Submodule.coe_smul, hπdef, ← map_pow, algebraMap_smul]⟩`. Establish `hliftMem : ∀ (J : Submodule O ↥LA.T) (x : ↥LA.T ⧸ J), Formalism.MainNotions.LocalSituation.liftQ LA J x ∈ LA.T` using `fun J x => (Submodule.Quotient.mk_surjective J x).choose.2`. Establish `hspec : ∀ (J : Submodule O ↥LA.T) (x : ↥LA.T ⧸ J), ∃ y : ↥LA.T, (y : A.V) = Formalism.MainNotions.LocalSituation.liftQ LA J x ∧ Submodule.Quotient.mk y = x` using `fun J x => ⟨_, rfl, (Submodule.Quotient.mk_surjective J x).choose_spec⟩`.
+
+Establish `hlift2 : ∀ k (x : ↥LA.T ⧸ I k) (y : ↥LA.T), x = Submodule.Quotient.mk y → ∃ t ∈ LA.T, Formalism.MainNotions.LocalSituation.liftQ LA (I k) x - (y : A.V) = π ^ (r + k) • t`. Introduce `k x y hxy`. Take `⟨y0, hy0, hmk0⟩` from `hspec (I k) x`. Establish `hmem : y0 - y ∈ I k` using `(Submodule.Quotient.eq _).1 (hmk0.trans hxy)`. Take `⟨t, ht, he⟩` from `hmemPow (r + k) _ hmem`.
+
+Conclude with `⟨t, ht, by rw [← hy0, ← he, Submodule.coe_sub]⟩`. Establish `hcong : ∀ (k : ℕ) (a b : A.V) (y : A'.V) (t : A.V), t ∈ LA.T → a - b = π ^ k • t → π ^ k • y ∈ LA'.T → m a y - m b y ∈ Set.range (algebraMap O LL)`. Introduce `k a b y t ht hab hy`. Take `⟨e, he⟩` from `(hm.2 _).1 hy t ht`. Establish `: m a y - m b y = m t (π ^ k • y)`.
+
+Rewrite using `[← LinearMap.sub_apply, ← map_sub, hab, LinearMap.map_smul₂, (m t).map_smul]`. Conclude with `⟨e, by rw [this, he]⟩`. Establish `hcobO : ∀ z z' : ↥(GK K) × ↥(GK K) → LL, (∀ x, z x - z' x ∈ Set.range (algebraMap O LL)) → (CobO (P.PD K) L1 z → CobO (P.PD K) L1 z')`. Introduce `z z' hzz hz`. Establish `: (fun x => (Submodule.Quotient.mk (z x) : LL ⧸ L1.T)) = fun x => Submodule.Quotient.mk (z' x)`.
+
+Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.Quotient.eq, hL1]`. Take `⟨e, he⟩` from `hzz x`. Conclude with `⟨e, he⟩`. Unfold `CobO at hz ⊢`.
+
+Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hT'pow : ∀ (k : ℕ) (g h : ↥(GK K)), π ^ (r + k) • A'.ρ g (liftD LA' (c h)) ∈ LA'.T`. Introduce `k g h`. Rewrite using `[← map_smul, add_comm, pow_add, mul_smul]`. Apply `LA'.stable` to reduce the goal to its premises.
+
+Rewrite using `[hπdef, ← map_pow, algebraMap_smul]`. Conclude with `LA'.T.smul_mem _ (hr h)`. Establish `hfin : ∀ k, (Y k).Finite` using `fun k => (GlobalTheory.T.finite_latticeCocycles_mod_uniformizer_pow hT l K LL O hO A LA ϖ hϖ (r + k) (hI k)).subset (fun z hz => hz.1)`. Establish `hne : ∀ k, (Y k).Nonempty`. Introduce `k`.
+
+Establish `hI' : StableSub LA' (Ideal.span {ϖ ^ (r + k)} • ⊤ : Submodule O ↥LA'.T)` using `stable_span_smul_top LA' _`. Take `⟨c', hc'Z, hc'B, hc'l⟩` from `GlobalTheory.T.exists_torsionCocycle_finite_level_lift l K LL O hO A' LA' ϖ hϖ c hc hcB r hr (r + k) (by omega) hI'`. Establish `h2` using `(GlobalTheory.T.tate_pairing_lattice_quotients_nondegenerate hT l P K LL O hO L1 hL1 A A' LA LA' m hm ϖ hϖ (r + k) (hI k) hI').2 c' hc'Z`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Set.not_nonempty_iff_eq_empty]`.
+
+Apply `hc'B` to reduce the goal to its premises. Apply `h2` to reduce the goal to its premises. Introduce `z hz`. Establish `hzY : z ∉ Y k` using `by rw [hemp]; exact fun h => h`. Establish `hC : CobO (P.PD K) L1 (Φ k z)`.
+
+Assume the negation of the conclusion as `hn`. Conclude with `hzY ⟨hz, hn⟩`. Use `hcobO _ _ ?_ hC` and prove the remaining obligations. Introduce `x`. Take `⟨t, ht, hteq⟩` from `hc'l x.2`.
+
+Take `⟨e, he⟩` from `(hm.2 _).1 (LA'.stable x.1 t ht) _ (hliftMem (I k) (z x.1))`. Use `⟨-e, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, ← he]`. Simplify using `only [Φ, hteq, map_add, map_smul, smul_eq_mul, ← hπdef]`. Rewrite using `[inv_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hmap : ∀ k, ∀ z ∈ Y (k + 1), f k z ∈ Y k`. Introduce and unpack `k z ⟨hz, hnc⟩`. Use `⟨factor_mem_Z1Q LA (hI (k + 1)) (hI k) (hle k) hz, fun hc' => hnc (hcobO _ _ ?_ hc')⟩` and prove the remaining obligations.
+
+Introduce `x`. Take `⟨t, ht, hteq⟩` from `hlift2 k (f k z x.1) ⟨_, hliftMem (I (k + 1)) (z x.1)⟩ (by`. Take `⟨y0, hy0, hmk0⟩` from `hspec (I (k + 1)) (z x.1)`. Establish `hy : (⟨_, hliftMem (I (k + 1)) (z x.1)⟩ : ↥LA.T) = y0` using `Subtype.ext hy0.symm`. Rewrite using `[hy]`.
+
+Use `show Submodule.factor (hle k) (z x.1) = _`. Rewrite using `[← hmk0]`. Use the proof step `rfl)`. Conclude with `hcong (r + k) _ _ _ t ht hteq (hT'pow k x.1 x.2)`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_compatible_seq_of_finite_nonempty' (fun k => ↥(GK K) → ↥LA.T ⧸ I k) f Y hfin hne hmap`.
+
+Set `w : ℕ → ↥(GK K) → ↥LA.T` to `fun k g => (Submodule.Quotient.mk_surjective (I k) (s k g)).choose`. Establish `hwk : ∀ k g, (Submodule.Quotient.mk (w k g) : ↥LA.T ⧸ I k) = s k g` using `fun k g => (Submodule.Quotient.mk_surjective (I k) (s k g)).choose_spec`. Establish `hI'I : ∀ k, I k ≤ (Ideal.span {ϖ ^ k} • ⊤ : Submodule O ↥LA.T)` using `fun k => Submodule.smul_mono_left (Ideal.span_singleton_le_span_singleton.2 (pow_dvd_pow ϖ (by omega)))`. Establish `hI' : ∀ n : ℕ, StableSub LA (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T)` using `fun n => stable_span_smul_top LA _`. Establish `hwZ : ∀ n, (fun g => (Submodule.Quotient.mk (w n g) : ↥LA.T ⧸ (Ideal.span {ϖ ^ n} • ⊤ : Submodule O ↥LA.T))) ∈ quotientCocycles LA _ (hI' n)`.
+
+Introduce `n`. Use `factor_mem_Z1Q LA (hI n) (hI' n) (hI'I n) (hs n).1.1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Rewrite using `[← hwk n g]`.
+
+Both sides reduce to the same expression. Establish `hstep : ∀ k g, w (k + 1) g - w k g ∈ I k`. Introduce `k g`. Apply `(Submodule.Quotient.eq _).1` to reduce the goal to its premises. Rewrite using `[hwk k g, ← (hs k).2]`.
+
+Use `show _ = Submodule.factor (hle k) (s (k + 1) g)`. Rewrite using `[← hwk (k + 1) g]`. Both sides reduce to the same expression. Take `⟨d, hdZ, hd⟩` from `GlobalTheory.T.exists_limit_cocycle_of_compatible_mod_pow l K LL O hO A LA ϖ hϖ hI' w hwZ (fun n g => hI'I n (hstep n g))`. Establish `htele : ∀ n g, w n g - w 0 g ∈ I 0`.
+
+Introduce `n g`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `(I 0).add_mem (hle0 n (hstep n g)) ih` as an intermediate fact.
+
+Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Apply `(hs 0).1.2` to reduce the goal to its premises. Use `hcobO _ _ ?_ (horth d hdZ)` and prove the remaining obligations. Introduce `x`. Take `⟨t1, ht1, hdt⟩` from `hd r x.1`.
+
+Establish `he : t1 + (w r x.1 - w 0 x.1) ∈ I 0` using `(I 0).add_mem ht1 (htele r x.1)`. Take `⟨u, hu, hue⟩` from `hmemPow (r + 0) _ he`. Take `⟨t3, ht3, ht3e⟩` from `hlift2 0 (s 0 x.1) (w 0 x.1) (hwk 0 x.1).symm`. Use `hcong (r + 0) _ _ _ (u - t3) (LA.T.sub_mem hu ht3) ?_ (hT'pow 0 x.1 x.2)` and prove the remaining obligations. Rewrite using `[smul_sub, ← hue, ← ht3e, hdt]`.
+
+Simplify using `only [Submodule.coe_add, Submodule.coe_sub]`. Normalize the expressions using the abelian group laws.
+-/
 theorem mem_BD_of_orthogonal : Formalism.GaloisCohomology.LocalTateDualityK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ L1 : Lattice (O := O) (charRep (cycLL (P.PD K) LL)), L1.T = LinearMap.range (Algebra.linearMap O LL) → ∀ (A A' : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (LA' : Lattice (O := O) A'.ρ) (m : A.V →ₗ[LL] A'.V →ₗ[LL] LL), IsDualLat1 (P.PD K) LA LA' m → ∀ c ∈ divisibleCocycles LA', (∀ d ∈ latticeCocycles LA, CobO (P.PD K) L1 (cupLD LA' m d c)) → c ∈ BD LA' := by
   intro hT l _ P K LL _ _ _ O _ _ hO L1 hL1 A A' LA LA' m hm c hc horth
   obtain ⟨hDom, hDVR, hFrac⟩ := hO.1

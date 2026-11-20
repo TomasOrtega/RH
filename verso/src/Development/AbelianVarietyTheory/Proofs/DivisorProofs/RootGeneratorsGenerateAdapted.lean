@@ -12,6 +12,11 @@ noncomputable section
 namespace GlobalTheory.RootPotential
 open GlobalTheory.GradedNorm GlobalTheory.HermFrame
 
+/- English proof (translation)
+Establish `e1 : (firstGram (k` using `i + 1) i.2 Mᵀ).det = ReciprocityTheory.ChartRestriction.G.FD.lminor M i.succ := by`. Rewrite using `[firstGram, ← transpose_submatrix, det_transpose]`. Both sides reduce to the same expression. Establish `e0 : (firstGram i.2.le Mᵀ).det = ReciprocityTheory.ChartRestriction.G.FD.lminor M i.castSucc`. Rewrite using `[firstGram, ← transpose_submatrix, det_transpose]`.
+
+Both sides reduce to the same expression. Establish `h0 : ReciprocityTheory.ChartRestriction.G.FD.lminor M i.castSucc ≠ 0` using `(lminor_pos hM _).ne'`. Establish `h` using `det_firstGram_succ Mᵀ i (by rw [e0]; exact Ne.isUnit h0)`. Rewrite `h` using `[e1, e0]`. Rewrite using `[grSq, h, mul_div_cancel_left₀ _ h0]`.
+-/
 theorem re_gradedGram_transpose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (hM : M.PosDef) (i : Fin m) :
     (gradedGram Mᵀ i () ()).re = grSq M i := by
   have e1 : (firstGram (k := i + 1) i.2 Mᵀ).det = ReciprocityTheory.ChartRestriction.G.FD.lminor M i.succ := by
@@ -23,6 +28,11 @@ theorem re_gradedGram_transpose {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (hM :
   rw [e1, e0] at h
   rw [grSq, h, mul_div_cancel_left₀ _ h0]
 
+/- English proof (translation)
+Establish `e : ∑ k : Fin (a + b), lam k * F k = ∑ i : Fin a, lam (Fin.castAdd b i) * x i + ∑ j : Fin b, lam (Fin.natAdd a j) * x' j`. Rewrite using `[Fin.sum_univ_add]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Fin.coe_castAdd, h1]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Fin.coe_natAdd, h2]`.
+
+Rewrite using `[← e]`. Substitute `hN` using the available equality. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hul i i rfl]`.
+-/
 theorem sum_blocks {a b N : ℕ} (hN : a + b = N) (lam : Fin (a + b) → ℝ) (u : Fin N → ℝ)
     (hul : ∀ (i : Fin (a + b)) (i' : Fin N), (i : ℕ) = i' → lam i = u i') (F : ℕ → ℝ) (x : Fin a → ℝ) (x' : Fin b → ℝ)
     (h1 : ∀ i : Fin a, F i = x i) (h2 : ∀ j : Fin b, F (a + j) = x' j) :
@@ -37,6 +47,11 @@ theorem sum_blocks {a b N : ℕ} (hN : a + b = N) (lam : Fin (a + b) → ℝ) (u
   subst hN
   exact Finset.sum_congr rfl fun i _ => by rw [hul i i rfl]
 
+/- English proof (translation)
+Establish `hl : ∀ i, (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram H id (fun _ => 1) i z () ()).re = x i` using `fun i => by`. Rewrite using `[← hx i]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram, GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq`. Simplify using `only [hl]`.
+
+Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hpos i) _).ne'), ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Real.log_rpow (hpos i)]; ring`.
+-/
 theorem log_weightNormSq {n : ℕ} {e : ℕ} (H : (Fin e → ℂ) → Matrix (Fin n) (Fin n) ℂ) (lam : Fin n → ℝ) (z : Fin e → ℂ)
     (x : Fin n → ℝ) (hx : ∀ i, (gradedGram (H z) i () ()).re = x i) (hpos : ∀ i, 0 < x i) :
     Real.log (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq H id (fun _ => 1) lam z) = -∑ i, lam i * Real.log (x i) := by
@@ -48,6 +63,11 @@ theorem log_weightNormSq {n : ℕ} {e : ℕ} (H : (Fin e → ℂ) → Matrix (Fi
   rw [Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hpos i) _).ne'), ← Finset.sum_neg_distrib]
   exact Finset.sum_congr rfl fun i _ => by rw [Real.log_rpow (hpos i)]; ring
 
+/- English proof (translation)
+Establish `hl : ∀ i, (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram H id (fun _ => 1) i z () ()).re = x i` using `fun i => by`. Rewrite using `[← hx i]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.lineGram, GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.adaptedGram]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq`. Simplify using `only [hl]`.
+
+Conclude with `Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hpos i) _`.
+-/
 theorem weightNormSq_pos {n : ℕ} {e : ℕ} (H : (Fin e → ℂ) → Matrix (Fin n) (Fin n) ℂ) (lam : Fin n → ℝ) (z : Fin e → ℂ)
     (x : Fin n → ℝ) (hx : ∀ i, (gradedGram (H z) i () ()).re = x i) (hpos : ∀ i, 0 < x i) :
     0 < GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq H id (fun _ => 1) lam z := by
@@ -67,6 +87,37 @@ def lnRoot {D : D7} (O : Setup D) (c : O.s.Comp) {σ : D.what₂.LL →+* ℂ} (
       ⟨O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ)) - 1 - n, h'⟩)
   else 0
 
+/- English proof (translation)
+Introduce `D O c σ G p t g hA`. Establish `hmem : ∀ y, p ∈ GlobalTheory.ProjVar.Var.eqnSet σ (GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex y)) (prodPow t (O.ex y))` using `fun y => FlagCpt.prodPow_mem (O.ex y) (fun τ i => hA.mem_eqnSet τ i)`. Use `⟨fun y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[rootGen, Units.val_inv_eq_inv_val]`. Conclude with `GlobalTheory.Cartier.CartierDiv.isEqn_iff_generatesAt_inv.1 (hmem y)`.
+
+Establish `hln : ∀ y, lnN (C` using `cxSt D.what₂.LL) ((O.Φ.C c).met G (O.ex y)) (rootGen O c t y) p = (∑ w, (O.ex y w : ℝ) * Real.log (grSq (G.gram _ g w.1) w.2)) / 2 := by`. Introduce `y`. Unfold `lnN rootGen`. Express the relevant statement in the definitionally equal form `Real.log (GlobalTheory.ProjVar.Var.pn (O.Φ.C c).Y σ _ ((O.Φ.C c).met G (O.ex y)) ((O.Φ.C c).Y.cx σ (((prodPow t (O.ex y))⁻¹ : (O.var c).Fnˣ) : (O.var c).Fn)) p) / 2 = _`. Rewrite using `[GlobalTheory.ProjVar.Var.pn_frame (hmem y), FlagCpt.met_h G (O.ex y) hA]`.
+
+Establish `h1 : ((prodPow (1 : ∀ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ) → ℂˣ) (O.ex y) : ℂˣ) : ℂ) = 1`. Simplify using `[prodPow]`. Rewrite using `[h1, norm_one, one_pow, div_one, FlagCpt.genSq, Real.log_prod (fun z _ => zpow_ne_zero _ (grSq_pos (G.pos _ _ _) _).ne')]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun z _ => Real.log_zpow _ _`.
+
+Establish `hp` using `GlobalTheory.RootSum.mult_tau O.S`. Establish `hq` using `GlobalTheory.RootSum.mult_conj_tau O.S`. Establish `hN` using `O.S.rank_eq`. Establish `hroot : ∀ y : DV.Rt D.what₂.Tau O.N, lnN (C` using `cxSt D.what₂.LL) ((O.Φ.C c).met G (O.ex y)) (rootGen O c t y) p = lnRoot O c G g y.1 y.2 / 2 := by`. Introduce `y`.
+
+Rewrite using `[hln y]`. Use `congr 1`. Establish `e : ∀ w, (O.ex y w : ℝ) = ((if w = GlobalTheory.RootSum.rootLetter O.S y then (if (y.2 : ℕ) < O.S.Dw.p then 1 else -1) else 0 : ℤ) : ℝ)` using `fun w => by`. Use `congrArg (fun k : ℤ => (k : ℝ)) (GlobalTheory.RootSum.rootExp_eq O.S y w) using 3` and compare the differences between its conclusion and the goal. Simplify using `only [e]`.
+
+Rewrite using `[Finset.sum_eq_single (GlobalTheory.RootSum.rootLetter O.S y) (fun w _ hw => by simp [hw]) (by simp), if_pos rfl]`. Establish `hy` using `y.2.2`. Distinguish the cases in `h : (y.2 : ℕ) < O.S.Dw.p`. Establish `h' : (y.2 : ℕ) < O.S.Dw.mult (DV.tauEmb D y.1)` using `by rw [hp]; exact h`. Establish `hl : GlobalTheory.RootSum.rootLetter O.S y = ⟨DV.tauEmb D y.1, ⟨y.2, h'⟩⟩`.
+
+Rewrite using `[GlobalTheory.RootSum.rootLetter, dif_pos h]`. Rewrite using `[if_pos h, lnRoot, dif_pos h', hl, Int.cast_one, one_mul]`. Establish `h' : ¬ (y.2 : ℕ) < O.S.Dw.mult (DV.tauEmb D y.1)` using `by rw [hp]; exact h`. Establish `h'' : O.S.Dw.mult (DV.tauEmb D y.1) + O.S.Dw.mult (conjEmb (DV.tauEmb D y.1)) - 1 - y.2 < O.S.Dw.mult (conjEmb (DV.tauEmb D y.1))` using `by rw [hp, hq]; omega`. Establish `hl : GlobalTheory.RootSum.rootLetter O.S y = ⟨conjEmb (DV.tauEmb D y.1), ⟨_, h''⟩⟩`.
+
+Rewrite using `[GlobalTheory.RootSum.rootLetter, dif_neg h]`. Establish `e2 : O.S.Dw.p + O.S.Dw.q - 1 - (y.2 : ℕ) = O.S.Dw.mult (DV.tauEmb D y.1) + O.S.Dw.mult (conjEmb (DV.tauEmb D y.1)) - 1 - y.2`. Rewrite using `[hp, hq]`. Simplify using `only [e2]`. Rewrite using `[if_neg h, lnRoot, dif_neg h', dif_pos h'', hl, Int.cast_neg, Int.cast_one, neg_one_mul]`.
+
+Introduce `u lam hul e HW Hω z hW hω`. Simplify using `only [hroot]`. Rewrite using `[Fintype.sum_prod_type]`. Establish `hW' : ∀ τ i, (gradedGram (HW τ z) i () ()).re = grSq (G.gram _ g (DV.tauEmb D τ)) i` using `fun τ i => by`. Rewrite using `[hW τ]`.
+
+Conclude with `re_gradedGram_transpose _ (G.pos _ _ _) i`. Establish `hω' : ∀ τ j, (gradedGram (Hω τ z) j () ()).re = (grSq (G.gram _ g (conjEmb (DV.tauEmb D τ))) j.rev)⁻¹` using `fun τ j => by rw [hω τ]; exact GlobalTheory.T.graded_gram_dual_reverse _ (G.pos _ _ _) j`. Establish `pW : ∀ τ i, 0 < grSq (G.gram _ g (DV.tauEmb D τ)) i` using `fun τ i => grSq_pos (G.pos _ _ _) i`. Establish `pω : ∀ τ j, 0 < (grSq (G.gram _ g (conjEmb (DV.tauEmb D τ))) (Fin.rev j))⁻¹` using `fun τ j => inv_pos.2 (grSq_pos (G.pos _ _ _) _)`. Establish `key : ∀ τ, Real.log (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq (HW τ) id (fun _ => 1) (fun i => lam τ (Fin.castAdd _ i)) z * GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq (Hω τ) id (fun _ => 1) (fun i => lam τ (Fin.natAdd _ i)) z) = …`.
+
+Introduce `τ`. Rewrite using `[Real.log_mul (weightNormSq_pos _ _ _ _ (hW' τ) (pW τ)).ne' (weightNormSq_pos _ _ _ _ (hω' τ) (pω τ)).ne', log_weightNormSq _ _ _ _ (hW' τ) (pW τ), log_weightNormSq _ _ _ _ (hω' τ) (pω τ)]`. Simplify using `only [Real.log_inv]`. Rewrite using `[← sum_blocks (by rw [hp, hq]; exact hN) (lam τ) (u τ) (hul τ) (lnRoot O c G g τ) (fun i => Real.log (grSq (G.gram _ g (DV.tauEmb D τ)) i)) (fun j => -Real.log (grSq (G.gram _ g (conjEmb (DV.tauEmb D τ))) j.rev))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `i`. Rewrite using `[lnRoot, dif_pos i.2]`. Introduce `j`. Establish `h1 : ¬ (O.S.Dw.mult (DV.tauEmb D τ) + (j : ℕ) < O.S.Dw.mult (DV.tauEmb D τ))` using `by omega`. Establish `h2 : O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ)) - 1 - (O.S.Dw.mult (DV.tauEmb D τ) + j) < O.S.Dw.mult (conjEmb (DV.tauEmb D τ))` using `by omega`.
+
+Rewrite using `[lnRoot, dif_neg h1, dif_pos h2]`. Establish `h3 : (⟨_, h2⟩ : Fin (O.S.Dw.mult (conjEmb (DV.tauEmb D τ)))) = j.rev` using `by ext; simp only [Fin.val_rev]; omega`. Rewrite using `[h3]`. Establish `pos : ∀ τ, 0 < GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq (HW τ) id (fun _ => 1) (fun i => lam τ (Fin.castAdd _ i)) z * GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.weightNormSq (Hω τ) id (fun _ => 1) (fun i => lam τ (Fin.natAdd _ i)) z` using `fun τ => mul_pos (weightNormSq_pos _ _ _ _ (hW' τ) (pW τ)) (weightNormSq_pos _ _ _ _ (hω' τ) (pω τ))`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.pairWeightNormSq`.
+
+Rewrite using `[Real.log_prod (fun τ _ => (pos τ).ne')]`. Simplify using `only [key, Finset.sum_neg_distrib]`. Rewrite using `[show ∀ x : ℝ, -(1 / 2) * -x = x / 2 from fun x => by ring, Finset.sum_div]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_div]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem sum_lnN_rootGen : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (G : EigMet O.s.T.Z (embOf O.κ.e σ)) (p : Pts (O.var c) σ) (t : ∀ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ) → (O.var c).Fnˣ) (g : (O.Φ.C c).FrameAt p), (O.Φ.C c).Adapted p t g 1 → (∀ y, (GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex y)).GeneratesAt (under p) (rootGen O c t y)) ∧ ∀ (u : D.what₂.Tau → Fin O.N → ℝ) (lam : ∀ τ : D.what₂.Tau, Fin (O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ))) → ℝ), (∀ τ (i : Fin (O.S.Dw.mult (DV.tauEmb D τ) + O.S.Dw.mult (conjEmb (DV.tauEmb D τ)))) (i' : Fin O.N), (i : ℕ) = i' → lam τ i = u τ i') → ∀ (e : ℕ) (HW : ∀ τ : D.what₂.Tau, (Fin e → ℂ) → Matrix (Fin (O.S.Dw.mult (DV.tauEmb D τ))) (Fin (O.S.Dw.mult (DV.tauEmb D τ))) ℂ) (Hω : ∀ τ : D.what₂.Tau, (Fin e → ℂ) → Matrix (Fin (O.S.Dw.mult (conjEmb (DV.tauEmb D τ)))) (Fin (O.S.Dw.mult (conjEmb (DV.tauEmb D τ)))) ℂ) (z : Fin e → ℂ), (∀ τ, HW τ z = (G.gram _ g (DV.tauEmb D τ))ᵀ) → (∀ τ, Hω τ z = dualRev (G.gram _ g (conjEmb (DV.tauEmb D τ)))ᵀ) → ∑ y : DV.Rt D.what₂.Tau O.N, u y.1 y.2 * lnN (C := cxSt D.what₂.LL) ((O.Φ.C c).met G (O.ex y)) (rootGen O c t y) p = -(1 / 2) * Real.log (GlobalTheory.IndefiniteRowSideFullHecke.HodgeFrameGram.pairWeightNormSq HW Hω id (fun _ _ => 1) (fun _ _ => 1) lam z) := by
   intro D O c σ G p t g hA
   have hmem : ∀ y, p ∈ GlobalTheory.ProjVar.Var.eqnSet σ (GlobalTheory.ShFam.Pad.divOf (O.Φ.C c) (O.ex y)) (prodPow t (O.ex y)) :=

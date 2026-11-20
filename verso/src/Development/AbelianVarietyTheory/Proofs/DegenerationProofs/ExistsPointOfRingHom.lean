@@ -12,6 +12,13 @@ namespace GlobalTheory.ZH.RatModel
 
 open GlobalTheory.Points
 
+/- English proof (translation)
+Set `ψ : Γ(M.Z, U) ⟶ CommRingCat.of K` to `CommRingCat.ofHom (φ.comp (M.sectionsEquiv U hne).toRingHom)`. Establish `hx` using `le_preimage_specMap_fromSpec hU ψ`. Establish `hv : ∀ f, valR (Spec.map ψ ≫ hU.fromSpec) U f = φ (M.sectionsEquiv U hne f)` using `fun f => by`. Rewrite using `[valR_eq _ U hx, valMap_specMap_fromSpec]`. Both sides reduce to the same expression.
+
+Establish `hr` using `(top_le_preimage_iff _ _).1 hx`. Use `⟨Spec.map ψ ≫ hU.fromSpec, hr, fun a => ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, rfl⟩` from `(M.sectionsEquiv U hne).surjective a`. Rewrite using `[coe_sectionsEquiv, val_valF hr]`. Conclude with `(hv f).symm`.
+
+Rewrite using `[← Spec.map_preimage ((Spec.map ψ ≫ hU.fromSpec) ≫ M.s)]`. Use `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun b => ?_))` and prove the remaining obligations. Rewrite using `[← valR_constFn M.s _ U hx, hv]`. Conclude with `congrArg φ (Subtype.ext ((coe_sectionsEquiv U hne _).trans (M.valF_constFn hne b)))`.
+-/
 theorem exists_point_of_ringHom {o Ω K : Type} [CommRing o] [Field Ω] [Algebra o Ω] [Field K] (M : RatModel o Ω)
     {U : M.Z.Opens} (hU : IsAffineOpen U) (hne : (U : Set M.Z).Nonempty) (φ : M.ringOn U →+* K) :
     ∃ x : Sp K ⟶ M.Z, Set.range x ⊆ U ∧ (∀ a : M.ringOn U, φ a = M.val x a) ∧
@@ -31,6 +38,11 @@ theorem exists_point_of_ringHom {o Ω K : Type} [CommRing o] [Field Ω] [Algebra
     rw [← valR_constFn M.s _ U hx, hv]
     exact congrArg φ (Subtype.ext ((coe_sectionsEquiv U hne _).trans (M.valF_constFn hne b)))
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ M U hs hU hne p _ y' hy'`. Take `⟨x, hx, hv, hxs⟩` from `M.exists_point_of_ringHom hU hne y'`. Set `σ : o →+* OO p` to `(y'.comp (algebraMap o _)).codRestrict (OO p).toSubring fun b => (mem_OO_iff _).2 (hy' b)`. Take `⟨y, hy, -⟩` from `exists_valuativeExtension (V := OO p) (K := PadicAlgCl p) M.s (spMap σ) x (by`. Rewrite using `[hxs, ← Spec.map_comp]`.
+
+Use the proof step `rfl)`. Establish `hy2 : gPt p ≫ y = x` using `hy`. Conclude with `⟨_, y, ⟨rfl, hy2 ▸ hx⟩, hy2 ▸ hv⟩`.
+-/
 theorem exists_cen_of_ringHom : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     (U : M.Z.Opens), IsProper M.s → IsAffineOpen U → (U : Set M.Z).Nonempty → ∀ (p : ℕ) [Fact p.Prime]
     (y' : M.ringOn U →+* PadicAlgCl p), (∀ b : o, ‖y' (algebraMap o _ b)‖ ≤ 1) →

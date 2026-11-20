@@ -11,6 +11,9 @@ variable {F : Type} [Field F] {B : Type} [Ring B] [Algebra F B]
 
 def gen (γ : B) : Algebra.adjoin F ({γ} : Set B) := ⟨γ, Algebra.self_mem_adjoin_singleton F γ⟩
 
+/- English proof (translation)
+The claim follows from `Polynomial.aeval_subalgebra_coe p _ _`.
+-/
 theorem aeval_gen (γ : B) (p : Polynomial F) :
     ((Polynomial.aeval (gen (F := F) γ) p : Algebra.adjoin F ({γ} : Set B)) : B) = Polynomial.aeval γ p :=
   Polynomial.aeval_subalgebra_coe p _ _
@@ -64,6 +67,9 @@ def starL (hk : ∀ t : k, star (algebraMap k B t) = algebraMap k B t)
     exact hk t
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_starL (hk : ∀ t : k, star (algebraMap k B t) = algebraMap k B t)
     (hs : ∀ x ∈ Algebra.adjoin F ({γ} : Set B), star x ∈ Algebra.adjoin F ({γ} : Set B))
     (x : Algebra.adjoin F ({γ} : Set B)) : ((starL k γ hk hs x : Algebra.adjoin F ({γ} : Set B)) : B) =

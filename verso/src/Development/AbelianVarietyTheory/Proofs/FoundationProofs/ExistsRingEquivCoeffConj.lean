@@ -14,6 +14,23 @@ open ModularForm (E₄ E₆)
 
 namespace GlobalTheory.FN
 
+/- English proof (translation)
+Introduce `Ω _ ε s`. Take `⟨e, he_inj, he⟩` from `GlobalTheory.T.exists_injective_cuspExpansion_ringHom Ω ε`. Establish `hmem` using `(GlobalTheory.T.mem_modularFunctionRingOver_iff_hasSomeLevelOver ε.range).1`. Establish `key : ∀ t : Ω ≃+* Ω, ∃ c : ring ε.range → ring ε.range, ∀ a, (∀ r, (e (c a)).coeff r = t ((e a).coeff r)) ∧ ∀ h h' : HahnSeries ℚ Ω, IsExp ε a h → IsExp ε (c a : ℍ → ℂ) h' → ∀ r, h'.coeff r = t (h.coeff r)`. Introduce `t`.
+
+Establish `hex : ∀ a : ring ε.range, ∃ b : ring ε.range, ∀ h h' : HahnSeries ℚ Ω, IsExp ε a h → IsExp ε (b : ℍ → ℂ) h' → ∀ r, h'.coeff r = t (h.coeff r)`. Introduce `a`. Take `⟨f', hf', hp⟩` from `GlobalTheory.T.exists_galoisConjugate_modularFunction_someLevel Ω ε t a ((hmem a).1 a.2)`. Conclude with `⟨⟨f', (hmem f').2 hf'⟩, hp⟩`. Use `choose c hc using hex`.
+
+Conclude with `⟨c, fun a => ⟨hc a (e a) (e (c a)) (he a) (he (c a)), hc a⟩⟩`. Establish `mapc : ∀ t : Ω ≃+* Ω, ∃ Φ : HahnSeries ℚ Ω →+* HahnSeries ℚ Ω, ∀ h r, (Φ h).coeff r = t (h.coeff r)`. Introduce `t`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.T.exists_hahnSeries_scale_twist_ringHom Ω Ω t.toRingHom 1 (fun _ => 1) one_pos rfl (by simp)`. Conclude with `⟨Φ, fun h r => by simpa using hΦ h r⟩`.
+
+Take `⟨c, hc⟩` from `key s`. Take `⟨d, hd⟩` from `key s.symm`. Take `⟨Φ, hΦ⟩` from `mapc s`. Establish `ec : ∀ a, e (c a) = Φ (e a)` using `fun a => by`. Use extensionality with `r`.
+
+Rewrite using `[(hc a).1, hΦ]`. Use `⟨{ toFun := c, invFun := d, left_inv := ?_, right_inv := ?_, map_add' := ?_, map_mul' := ?_ }, fun a h h' => (hc a).2 h h'⟩` and prove the remaining obligations. Introduce `a`. Apply `he_inj` to reduce the goal to its premises. Use extensionality with `r`.
+
+Rewrite using `[(hd _).1, (hc a).1]`. Simplify using the standard rewrite rules. Introduce `a`. Apply `he_inj` to reduce the goal to its premises. Use extensionality with `r`.
+
+Rewrite using `[(hc _).1, (hd a).1]`. Simplify using the standard rewrite rules. Introduce `a b`. Apply `he_inj` to reduce the goal to its premises. Simplify using `only [map_mul, ec]`.
+
+Introduce `a b`. Apply `he_inj` to reduce the goal to its premises. Simplify using `only [map_add, ec]`.
+-/
 theorem exists_ringEquiv_coeff_conj : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (s : Ω ≃+* Ω),
     ∃ σ : GlobalTheory.FN.ring ε.range ≃+* GlobalTheory.FN.ring ε.range, ∀ (a : GlobalTheory.FN.ring ε.range) (h h' : HahnSeries ℚ Ω),
       IsExp ε a h → IsExp ε (σ a : GlobalTheory.FN.ring ε.range) h' → ∀ r, h'.coeff r = s (h.coeff r) := by

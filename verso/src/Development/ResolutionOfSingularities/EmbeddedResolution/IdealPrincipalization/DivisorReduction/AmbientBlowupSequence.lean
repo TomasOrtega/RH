@@ -35,6 +35,9 @@ noncomputable abbrev restrictTwistedToDivisor (T : MarkedIdealWithBoundary.{u}) 
     MarkedIdealWithBoundary.{u} :=
   restrictToBoundaryDivisor T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj)
 
+/- English proof (translation)
+The claim follows from `hV.isNoetherian`.
+-/
 theorem isNoetherian_scheme_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) :
     AlgebraicGeometry.IsNoetherian T.scheme :=
   hV.isNoetherian
@@ -60,6 +63,9 @@ noncomputable def embeddingIntoAmbient (hres : FunctorialResolution.Blowup.Stric
   embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
+/- English proof (translation)
+The claim follows from `ambientBlowupSequence_center (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n`.
+-/
 theorem ambientBlowupSeq_center_eq_imageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -71,6 +77,9 @@ theorem ambientBlowupSeq_center_eq_imageIdealSheaf (hres : FunctorialResolution.
   ambientBlowupSequence_center (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
+/- English proof (translation)
+The claim follows from `isClosedImmersion_embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n`.
+-/
 theorem isClosedImmersion_embeddingIntoAmbient
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -82,6 +91,9 @@ theorem isClosedImmersion_embeddingIntoAmbient
   isClosedImmersion_embeddingIntoAmbientBlowupSequence (T.boundary.get ⟨j, hj⟩).subschemeι
     (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr n
 
+/- English proof (translation)
+The claim follows from `ambientBlowupSequence_length (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr`.
+-/
 theorem ambientBlowupSeq_length (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)

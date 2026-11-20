@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain
 
 namespace UpperTheory.V.Z.Sym.Glob
 
+/- English proof (translation)
+Establish `hinv : ∀ᶠ v in Filter.cofinite, cv v d⁻¹ ∈ (v : Pl F).adicCompletionIntegers F` using `(algebraMap F (FiniteAdeleRing (𝓞 F) F) d⁻¹).2`. Establish `hev : ∀ᶠ v in Filter.cofinite, y v ∈ (v : Pl F).adicCompletionIntegers F`. Use `hinv.mono fun v hv => ?_` and prove the remaining obligations. Establish `e : y v = cv v d⁻¹ * (cv v d * y v)`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hd, map_one, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `mul_mem hv (hy v)`. Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) (K := F) (RestrictedProduct.mk y hev : FiniteAdeleRing (𝓞 F) F)`. Conclude with `⟨k, fun v => GroundTheory.Global.mem_integralFiniteAdeles.mp hk v⟩`.
+-/
 theorem apx {F : Type} [Field F] [NumberField F] (d : F) (hd : d ≠ 0) (y : ∀ v : Pl F, Kv v)
     (hy : ∀ v, cv v d * y v ∈ v.adicCompletionIntegers F) : ∃ x : F, ∀ v, y v - cv v x ∈ v.adicCompletionIntegers F := by
   classical

@@ -7,6 +7,9 @@ open scoped ComplexOrder Classical
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepW
 
+/- English proof (translation)
+Establish `h1 : D = Q / P * (P / Q * D)` using `by field_simp`. Establish `h2 : 0 ≤ Q / P` using `(div_pos hQ hP).le`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem gram_grad_scale_arith (D c P Q a : ℝ) (ha : 0 < a) (hP : 0 < P) (hQ : 0 < Q)
     (h : P / Q * D ≤ c * P ^ 3 / a) : D ≤ c * P ^ 2 * Q / a := by
   have h1 : D = Q / P * (P / Q * D) := by field_simp
@@ -15,6 +18,9 @@ theorem gram_grad_scale_arith (D c P Q a : ℝ) (ha : 0 < a) (hP : 0 < P) (hQ : 
     _ ≤ Q / P * (c * P ^ 3 / a) := mul_le_mul_of_nonneg_left h h2
     _ = c * P ^ 2 * Q / a := by field_simp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.log_det_gram_subharmonic n k E (fun u => G (t • u)) (fun u => V (t • u)) x' a P ha hP.le h1 h2 h3 h4 h5 h6`.
+-/
 theorem gram_grad_comp_smul (n k : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E]
     (G : E → Matrix (Fin n) (Fin n) ℂ) (V : E → Matrix (Fin n) (Fin k) ℂ) (x' : E) (a P t : ℝ)
     (ha : 0 < a) (hP : 0 < P)
@@ -29,6 +35,19 @@ theorem gram_grad_comp_smul (n k : ℕ) (E : Type) [NormedAddCommGroup E] [Norme
       3 * (k : ℝ) ^ 2 * (n : ℝ) ^ 2 * P ^ 3 / a :=
   GlobalTheory.T.log_det_gram_subharmonic n k E (fun u => G (t • u)) (fun u => V (t • u)) x' a P ha hP.le h1 h2 h3 h4 h5 h6
 
+/- English proof (translation)
+Introduce `n k E _ _ G V x a P Q ha hP hPQ hGd hVd hev hH hGb hVb`. Establish `hQ : 0 < Q` using `lt_of_lt_of_le hP hPQ`. Take `⟨t, ht⟩ : ∃ t : ℝ, t = P / Q` from `⟨_, rfl⟩`. Establish `ht0 : 0 < t` using `ht ▸ div_pos hP hQ`. Establish `htne : t ≠ 0` using `ht0.ne'`.
+
+Take `⟨x', hx'⟩ : ∃ x' : E, x' = t⁻¹ • x` from `⟨_, rfl⟩`. Establish `hcx : t • x' = x` using `by rw [hx', smul_smul, mul_inv_cancel₀ htne, one_smul]`. Establish `hL : DifferentiableAt ℝ (fun u : E => t • u) x'` using `(differentiableAt_id).const_smul t`. Establish `hdiff : ∀ f : E → ℂ, DifferentiableAt ℝ f x → DifferentiableAt ℝ (fun u => f (t • u)) x'`. Introduce `f hf`.
+
+Establish `hf' : DifferentiableAt ℝ f (t • x')` using `by rw [hcx]; exact hf`. Conclude with `hf'.comp x' hL`. Establish `hfd : ∀ f : E → ℂ, fderiv ℝ (fun u => f (t • u)) x' = t • fderiv ℝ f x`. Introduce `f`. Rewrite using `[fderiv_comp_smul, hcx]`.
+
+Establish `hfdR : ∀ f : E → ℝ, fderiv ℝ (fun u => f (t • u)) x' = t • fderiv ℝ f x`. Introduce `f`. Rewrite using `[fderiv_comp_smul, hcx]`. Establish `hbound : ∀ f : E → ℂ, ‖fderiv ℝ f x‖ ≤ Q → ‖fderiv ℝ (fun u => f (t • u)) x'‖ ≤ P`. Introduce `f hf`.
+
+Rewrite using `[hfd, norm_smul, Real.norm_of_nonneg ht0.le, ht]`. Combine the equalities or inequalities in the displayed calculation. Establish `htend : Tendsto (fun u : E => t • u) (nhds x') (nhds x)`. Use `hL.continuousAt.tendsto` as an intermediate fact. Rewrite `this` using `[hcx]`. Then use the resulting hypothesis.
+
+Establish `key` using `gram_grad_comp_smul n k E G V x' a P t ha hP (fun p q => hdiff (fun y => G y p q) (hGd p q)) (fun p q => hdiff (fun y => V y p q) (hVd p q)) (htend.eventually hev) (by rw [hcx]; exact hH) (fun p q => ⟨by rw [hcx]; exact (hGb p q).1, hbound (fun y => G y p q) (hGb p q).2⟩) (fun p …`. Establish `hk` using `hfdR (fun y => Real.log ((V y)ᴴ * G y * V y).det.re)`. Rewrite `key` using `[hk, norm_smul, Real.norm_of_nonneg ht0.le, ht]`. Conclude with `gram_grad_scale_arith _ _ P Q a ha hP hQ key`.
+-/
 theorem gram_grad_scaled : ∀ (n k : ℕ) (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (G : E → Matrix (Fin n) (Fin n) ℂ) (V : E → Matrix (Fin n) (Fin k) ℂ) (x : E) (a P Q : ℝ), 0 < a → 0 < P → P ≤ Q → (∀ p q, DifferentiableAt ℝ (fun y => G y p q) x) → (∀ p q, DifferentiableAt ℝ (fun y => V y p q) x) → (∀ᶠ y in nhds x, (G y).PosDef ∧ LinearIndependent ℂ (V y)ᵀ) → ((V x)ᴴ * G x * V x - (a : ℂ) • (1 : Matrix (Fin k) (Fin k) ℂ)).PosSemidef → (∀ p q, ‖G x p q‖ ≤ P ∧ ‖fderiv ℝ (fun y => G y p q) x‖ ≤ Q) → (∀ p q, ‖V x p q‖ ≤ P ∧ ‖fderiv ℝ (fun y => V y p q) x‖ ≤ Q) → ‖fderiv ℝ (fun y => Real.log ((V y)ᴴ * G y * V y).det.re) x‖ ≤ 3 * (k : ℝ) ^ 2 * (n : ℝ) ^ 2 * P ^ 2 * Q / a := by
   intro n k E _ _ G V x a P Q ha hP hPQ hGd hVd hev hH hGb hVb
   have hQ : 0 < Q := lt_of_lt_of_le hP hPQ

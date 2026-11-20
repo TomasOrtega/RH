@@ -14,6 +14,27 @@ open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.C
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Use `⟨12, 0, by norm_num, le_rfl, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ d Bg hd hBg hΘ _hCoef η F _hη hFs hFg _hFsupp U J hU hJ hagree x hx hxU`. Establish `hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π'` using `(hB.1.2.2.2.1.2 v).2.2.2.1`. Establish `hTT : (D.parOf S v).TT = Tz S.G.k S.G.r (T v).base.z * Tz S.G.k S.G.r (T v).base.z'`. Rewrite using `[hPl.2.2.2.1, hPl.2.2.2.2.1]`.
+
+Both sides reduce to the same expression. Establish `hBg0 : 0 ≤ Bg` using `le_trans (by simp) hBg`. Establish `hAg` using `LT.agreement_on_domain_holds S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base J F U hJ (fun q hq hqU => hagree q ⟨hq.1, by rw [hTT]; exact hq.2⟩ hqU)`. Use `set V : Set (B.Mat S.G.k S.G.r) := Q.OmPlus S.G.k S.G.r (T v).base.z (T v).base.z' ∩ (fun g => Gf S.G.k S.G.r (T v).base.z (T v).base.z' g) ⁻¹' U with hVdef`. Establish `hVo : IsOpen V` using `(Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open _ _).inter (hU.preimage (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.gf_cont _ _))`.
+
+Establish `hJV : ∀ y ∈ V, y ∈ B.GV S.G.k S.G.r → J y = B.JF (T v).base F y` using `fun y hy hyG => hAg y ⟨hyG, hy.1⟩ hy.2`. Establish `hq : x ∈ JF.QDom S.G.k S.G.r (T v).base.z (T v).base.z'` using `⟨hx.1, by rw [← hTT]; exact hx.2⟩`. Establish `hg0` using `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom (T v).base hq`. Establish `hg0V : B.gq (T v).base x ∈ V` using `⟨hg0.2, hxU⟩`. Establish `hJck : B.CkOn ⊤ (JF.Om S.G.k S.G.r (T v).base.z (T v).base.z') J` using `Formalism.FourierDecayAlt.P.CutMP.jdc_ckOn_om _ _ hJ.1`.
+
+Use `set UU : Set (B.Mat S.G.k S.G.r) := JF.Om S.G.k S.G.r (T v).base.z (T v).base.z' ∩ V with hUUdef`. Establish `hUU : UU ⊆ JF.Om S.G.k S.G.r (T v).base.z (T v).base.z'` using `Set.inter_subset_left`. Establish `hCkF : B.CkOn (B.opOrder Θ : ℕ∞) UU (B.JF (T v).base F)`. Introduce `g₀ hg₀`. Take `⟨U₁, f', hU₁, hgU₁, hc, he⟩` from `hJck g₀ hg₀.1`.
+
+Use `⟨U₁ ∩ V, f', hU₁.inter hVo, ⟨hgU₁, hg₀.2⟩, (hc.mono Set.inter_subset_left).of_le ?_, ?_⟩` and prove the remaining obligations. Conclude with `le_top` after adjusting the coercions. Introduce `g hg hgG`. Rewrite using `[← hJV g hg.2 hgG]`. Conclude with `he g hg.1 hgG`.
+
+Establish `hg0UU : B.gq (T v).base x ∈ UU` using `⟨hg0, hg0V⟩`. Establish `hThr : Formalism.FourierDecayAlt.P.WeakThresholdClauses.WeakDominationThreshold S.G.k S.G.r (B.AB S.G.k S.G.r + 12 * ((S.G.r : ℝ) + 1) * nDim S.G.k S.G.r ^ 2 + 6 * (S.G.r : ℝ) * ((B.opOrder Θ : ℝ) + 5) + d + 2 * Bg * ((B.opOrder Θ : ℝ) + 5) - Bg * ((B.opOrder Θ : ℕ) : ℝ)) (B.opOr …`. Establish `hAB : (0 : ℝ) ≤ B.AB S.G.k S.G.r` using `by unfold B.AB; positivity`. Establish `hr : (0 : ℝ) ≤ S.G.r` using `Nat.cast_nonneg _`. Establish `ho : (0 : ℝ) ≤ (B.opOrder Θ : ℝ)` using `Nat.cast_nonneg _`.
+
+Apply `Formalism.FourierDecayAlt.P.CutMP.jdc_thrW (B.opOrder Θ) _ (B.AB S.G.k S.G.r + 30 * (S.G.r : ℝ) + d + Bg * ((B.opOrder Θ : ℝ) + 10)) (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hT1, hT2⟩` from `hT S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) (T v).base Θ _ F UU hThr hΘ.1 hΘ.2 hFs (hFg (B.opOrder Θ)) hUU hCkF`. Establish `hg0G : B.gq (T v).base x ∈ B.GV S.G.k S.G.r` using `hg0.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hT1 _ hg0]`. Unfold `B.opApply`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `Tm _`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.rw_local Tm.word Tm.word_lie hVo hJV _ hg0V hg0G]`. Rewrite using `[← hT2 _ hg0UU]`. Unfold `B.opAdj`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+
+Introduce `Tm _`. Rewrite using `[Formalism.FourierDecayAlt.P.CutMP.JA.FFS.rw_local Tm.word.reverse (fun X hX => Tm.word_lie X (List.mem_reverse.1 hX)) hVo (f := fun y => Tm.coefAdj y (J y)) (f' := fun y => Tm.coefAdj y (B.JF (T v).base F y)) (fun y hy hyG => by simp only [hJV y hy hyG]) _ hg0V hg0G]`.
+-/
 theorem gAJComm_of_thetaJ (hT : LT.ThetaJ) : GAJComm := by
   refine ⟨12, 0, by norm_num, le_rfl, ?_⟩
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v Θ d Bg hd hBg hΘ _hCoef η F _hη hFs hFg _hFsupp
@@ -81,6 +102,9 @@ theorem gAJComm_of_thetaJ (hT : LT.ThetaJ) : GAJComm := by
       (f := fun y => Tm.coefAdj y (J y)) (f' := fun y => Tm.coefAdj y (B.JF (T v).base F y))
       (fun y hy hyG => by simp only [hJV y hy hyG]) _ hg0V hg0G]
 
+/- English proof (translation)
+The claim follows from `gAJComm_of_thetaJ (LT.thetaJ_of_adjComm hAC)`.
+-/
 theorem gAJComm_of_adjComm (hAC : Formalism.FourierDecayAlt.P.CutMP.JA.FFS.AdjComm) : GAJComm :=
   gAJComm_of_thetaJ (LT.thetaJ_of_adjComm hAC)
 

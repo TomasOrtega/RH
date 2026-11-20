@@ -25,6 +25,11 @@ namespace GlobalTheory.RowTriple.Lay.EigCopy
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Take `⟨⟨D, cf, jE, A, cg, au, rep, row, low, Pq, S, hk, eig, θ, Bs, M, C, tp, ch, mt, big, L, Sp, Au, ss, eq⟩, pack⟩` from `nt`. Substitute `eq` using the available equality. Take `⟨-, h2⟩` from `Sigma.mk.inj_iff.mp pack`. Take `⟨hcf, -⟩` from `Sigma.mk.inj_iff.mp (eq_of_heq h2)`. Substitute `hcf` using the available equality.
+
+Establish `hr : rep = rep'` using `eq_of_heq hrep`. Substitute `hr` using the available equality. Set `T : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ A.wdT with }`. Set `Rw : RowSide (withLoc L)` to `{ A.row with }`. Conclude with `⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩`.
+-/
 theorem parIn_built {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf' : CharFrame D'} {C' : NChoice D'}
     {tp' : TupTied D' cf' C'} (nt : NTrue hL D' cf' C' tp') (rep' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r)
     (hrep : HEq nt.rep rep') :
@@ -40,6 +45,9 @@ theorem parIn_built {hL : GlobalTheory.Published.LocalLanglandsGL} {D' : D7} {cf
   let Rw : RowSide (withLoc L) := { A.row with }
   exact ⟨Rw, HEq.rfl, ⟨{ T := T, lab := A.lab, chr := { A.chr with }, cg := { cg with }, A := { A.au with }, au := au, row := row }⟩⟩
 
+/- English proof (translation)
+Unfold `GlobalTheory.TwInputs.EigTrue at hT ⊢`. Rewrite using `[← h]`. Conclude with `hT`.
+-/
 theorem eigTrue_congr {D : D7} {cf : CharFrame D} {Rw Rw' : RowSide D} {Sb : Finset (PlE D.host)}
     {eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0} (h : Rw.locR = Rw'.locR) (hT : GlobalTheory.TwInputs.EigTrue D cf Rw Sb eig) :
     GlobalTheory.TwInputs.EigTrue D cf Rw' Sb eig := by
@@ -49,6 +57,15 @@ theorem eigTrue_congr {D : D7} {cf : CharFrame D} {Rw Rw' : RowSide D} {Sb : Fin
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `hN hS hL`. Use `GlobalTheory.GalLoc.atMem_imp (GlobalTheory.GalLoc.atMem_and (GlobalTheory.T.exists_enlarged_hecke_set hN hS hL) (GlobalTheory.T.level_character_of_local_langlands hN hS hL)) ?_` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n xd c hE H S hL' eig θ hS' hhL heig hθ`. Take `⟨H2, H3⟩` from `H`. Take `⟨e⟩` from `hE`.
+
+Establish `e' : NMore (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Take `⟨Sb, eg, hSb, heq, hAd⟩` from `e'.eig`. Take `⟨Sb', hsub, hS0, hlow, hrd⟩` from `H2 Sb hSb`. Take `⟨θ0, hθ0, hψ⟩` from `H3`. Take `⟨Rw0, hRw0, ⟨hpar⟩⟩` from `parIn_built c.a.nt _ c.row.rep_eq`.
+
+Establish `hT` using `GlobalTheory.TwInputs.Eig.eigTrue hL t.r.Y t.r.z.pins.char.base.lev hpar.T Rw0 hpar.row hAd hsub hlow`. Establish `hO` using `GlobalTheory.TwInputs.Eig.eigOcc t.r.Y t.r.z.pins.char.base.lev t.r.intersectionNumber_baseChange.prim.unif t.r.z.pins.char.base.models.HW t.r.z.good.2 hψ hAd hsub hlow hrd`. Rewrite `hT` using `[t.r.z.lev.C]`. Take `rfl : S = _` from `eq_of_heq (hS'.trans c.row.S_eq)`. Take `rfl : hL' = c.row.hecke.hL` from `eq_of_heq (hhL.trans c.row.hL_eq)`.
+
+Take `rfl : eig = eg` from `eq_of_heq (heig.trans heq)`. Take `rfl : θ = θ0` from `eq_of_heq (hθ.trans hθ0.symm)`. Use `⟨Sb', hS0, fun Rw hRw => ⟨eigTrue_congr ?_ hT, hO⟩⟩` and prove the remaining obligations. Conclude with `eq_of_heq (hRw0.trans hRw.symm)`.
+-/
 theorem eig_atMem : PrN → SerN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ _ _ _ c => ∀ (S : RatDat (w.D Z).ntw) (hL' : ∀ j, ℕ → PlE (w.D Z).host → Module.End (w.D Z).what₂.LL (S.WL j)) (eig : ℕ → (w.D Z).what₂.FT → ℕ → PlE (w.D Z).host → ↥(w.D Z).LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod ((w.D Z).host.g kk)) →* (↥(w.D Z).LL0)ˣ), HEq S (ratL c.a.nt.L c.a.nt.S) → HEq hL' c.a.nt.hL → HEq eig c.a.nt.eig → HEq θ c.a.nt.θ → ∃ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) ∧ ∀ Rw : RowSide (w.D Z), HEq Rw.locR c.a.nt.A.row.locR → GlobalTheory.TwInputs.EigTrue (w.D Z) (TC.cf w.I w.l Z) Rw Sb eig ∧ GlobalTheory.TwInputs.EigOcc (w.D Z) S θ hL' Sb eig := by
   intro hN hS hL
   refine GlobalTheory.GalLoc.atMem_imp (GlobalTheory.GalLoc.atMem_and (GlobalTheory.T.exists_enlarged_hecke_set hN hS hL) (GlobalTheory.T.level_character_of_local_langlands hN hS hL)) ?_

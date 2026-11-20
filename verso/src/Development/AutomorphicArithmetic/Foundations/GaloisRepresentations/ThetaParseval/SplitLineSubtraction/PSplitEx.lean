@@ -9,6 +9,9 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `E _ _ _`. Take `⟨g, w, -, hw, -⟩` from `(GlobalTheory.SplitAttUniq.dense_splitFrobInv_away E (AlgebraicClosure E) 2 Nat.prime_two ∅ Set.finite_empty).nonempty`. Conclude with `⟨w, hw⟩`.
+-/
 theorem UpperTheory.Gal.TP.Sub.splitEx_holds :
     SplitEx := by
   intro E _ _ _

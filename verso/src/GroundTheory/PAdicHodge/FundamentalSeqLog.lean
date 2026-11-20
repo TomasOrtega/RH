@@ -23,6 +23,9 @@ local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 local notation "𝔭" => Ideal.span {(p : ACris K p)}
 local notation "𝔭₀" => Ideal.span {(p : ACrisZero K p)}
 
+/- English proof (translation)
+Rewrite using `[dpow, map_zero, zero_pow hn, mul_zero]`.
+-/
 theorem dpow_zero_right {n : ℕ} (hn : n ≠ 0) : dpow n (0 : AInf K p) = 0 := by
   rw [dpow, map_zero, zero_pow hn, mul_zero]
 
@@ -43,17 +46,31 @@ def pdIdeal : Ideal (AInf K p) where
     rw [smul_eq_mul, mul_comm, dpow_mul]
     exact Subalgebra.mul_mem _ (hx n) (Subalgebra.pow_mem _ (Subalgebra.algebraMap_mem _ c) n)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_pdIdeal {x : AInf K p} : x ∈ pdIdeal K p ↔ ∀ n, dpow n x ∈ ACrisZero K p :=
   Iff.rfl
 
+/- English proof (translation)
+Introduce `_ hx n` and use `dpow_mem hx n`.
+-/
 theorem ker_le_pdIdeal : RingHom.ker θ ≤ pdIdeal K p := fun _ hx n => dpow_mem hx n
 
+/- English proof (translation)
+Introduce `n` and use `by obtain ⟨w, hw⟩ := exists_dpow_p_mul (K := K) (p := p) n 1 rw [mul_one] at hw rw [hw] exact Subalgebra.algebraMap_mem _ w`.
+-/
 theorem natCast_p_mem_pdIdeal : (p : AInf K p) ∈ pdIdeal K p := fun n => by
   obtain ⟨w, hw⟩ := exists_dpow_p_mul (K := K) (p := p) n 1
   rw [mul_one] at hw
   rw [hw]
   exact Subalgebra.algebraMap_mem _ w
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hz`. Take `⟨b, hb⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := K) p c`. Establish `hk : z - (p : AInf K p) * b ∈ RingHom.ker θ`. Rewrite using `[RingHom.mem_ker, map_sub, map_mul, map_natCast, hb, ← hc, mul_comm, sub_self]`. Establish `h` using `add_mem (ker_le_pdIdeal hk) (Ideal.mul_mem_right b _ natCast_p_mem_pdIdeal)`.
+
+Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_pdIdeal_of_theta_mem {z : AInf K p} (hz : θ z ∈ Ideal.span {(p : 𝒪)}) :
     z ∈ pdIdeal K p := by
   obtain ⟨c, hc⟩ := Ideal.mem_span_singleton'.1 hz
@@ -63,6 +80,9 @@ theorem mem_pdIdeal_of_theta_mem {z : AInf K p} (hz : θ z ∈ Ideal.span {(p : 
   have h := add_mem (ker_le_pdIdeal hk) (Ideal.mul_mem_right b _ natCast_p_mem_pdIdeal)
   rwa [sub_add_cancel] at h
 
+/- English proof (translation)
+Establish `h` using `geom_sum_mul (1 + z) p`. Rewrite `h` using `[add_sub_cancel_left]`. Rewrite using `[← h]`. Conclude with `Ideal.mul_mem_left _ _ hz`.
+-/
 theorem one_add_pow_sub_one_mem_pdIdeal {z : AInf K p} (hz : z ∈ pdIdeal K p) :
     (1 + z) ^ p - 1 ∈ pdIdeal K p := by
   have h := geom_sum_mul (1 + z) p
@@ -73,17 +93,26 @@ theorem one_add_pow_sub_one_mem_pdIdeal {z : AInf K p} (hz : z ∈ pdIdeal K p) 
 def dpowJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (n : ℕ) : ACrisZero K p :=
   ⟨dpow n x, hx n⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_dpowJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (n : ℕ) : (dpowJ hx n : 𝔸) = dpow n x :=
   rfl
 
 def logTermJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (n : ℕ) : ACrisZero K p :=
   (-1) ^ n * (n.factorial : ACrisZero K p) * dpowJ hx (n + 1)
 
+/- English proof (translation)
+Simplify using `only [logTermJ, Subalgebra.coe_mul, Subalgebra.coe_pow, Subalgebra.coe_neg, Subalgebra.coe_one, SubringClass.coe_natCast, coe_dpowJ]`.
+-/
 theorem coe_logTermJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (n : ℕ) :
     (logTermJ hx n : 𝔸) = (-1) ^ n * (n.factorial : 𝔸) * dpow (n + 1) x := by
   simp only [logTermJ, Subalgebra.coe_mul, Subalgebra.coe_pow, Subalgebra.coe_neg,
     Subalgebra.coe_one, SubringClass.coe_natCast, coe_dpowJ]
 
+/- English proof (translation)
+The claim follows from `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (natCast_mem_pow (pow_dvd_factorial h)))`.
+-/
 theorem logTermJ_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {k n : ℕ} (h : p * k ≤ n) :
     logTermJ hx n ∈ 𝔭₀ ^ k :=
   Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ (natCast_mem_pow (pow_dvd_factorial h)))
@@ -91,6 +120,9 @@ theorem logTermJ_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {k n : ℕ} (h : p 
 def logTermJA {x : AInf K p} (hx : x ∈ pdIdeal K p) (n : ℕ) : ACris K p :=
   algebraMap (ACrisZero K p) (ACris K p) (logTermJ hx n)
 
+/- English proof (translation)
+The claim follows from `exists_isAdicSum fun k => ⟨p * k, fun _ hn => algebraMap_mem_pow (logTermJ_mem hx hn)⟩`.
+-/
 theorem exists_isAdicSum_logTermJA {x : AInf K p} (hx : x ∈ pdIdeal K p) :
     ∃ s, IsAdicSum 𝔭 (logTermJA hx) s :=
   exists_isAdicSum fun k => ⟨p * k, fun _ hn => algebraMap_mem_pow (logTermJ_mem hx hn)⟩
@@ -98,18 +130,32 @@ theorem exists_isAdicSum_logTermJA {x : AInf K p} (hx : x ∈ pdIdeal K p) :
 def logJ {x : AInf K p} (hx : x ∈ pdIdeal K p) : ACris K p :=
   (exists_isAdicSum_logTermJA hx).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isAdicSum_logTermJA hx).choose_spec`.
+-/
 theorem isAdicSum_logJ {x : AInf K p} (hx : x ∈ pdIdeal K p) :
     IsAdicSum 𝔭 (logTermJA hx) (logJ hx) :=
   (exists_isAdicSum_logTermJA hx).choose_spec
 
+/- English proof (translation)
+The claim follows from `(isAdicSum_logJ hx).unique hs`.
+-/
 theorem logJ_eq_of_isAdicSum {x : AInf K p} {hx : x ∈ pdIdeal K p} {s : ACris K p}
     (hs : IsAdicSum 𝔭 (logTermJA hx) s) : logJ hx = s :=
   (isAdicSum_logJ hx).unique hs
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem logJ_congr {x y : AInf K p} (h : x = y) (hx : x ∈ pdIdeal K p) (hy : y ∈ pdIdeal K p) :
     logJ hx = logJ hy := by
   subst h; rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [logTermJ, Subalgebra.coe_mul, Subalgebra.coe_pow, Subalgebra.coe_neg, Subalgebra.coe_one, SubringClass.coe_natCast, coe_dpowJ, AddSubmonoidClass.coe_finsetSum, SubringClass.coe_intCast]`. Rewrite using `[mul_assoc, factorial_mul_dpow_eq_sum x n L hL, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [logCoeff]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logTermJ_one_add_pow {x : AInf K p} (hx : x ∈ pdIdeal K p) (n L : ℕ) (hL : p * (n + 1) ≤ L) :
     logTermJ (one_add_pow_sub_one_mem_pdIdeal hx) n =
       ∑ j ∈ Finset.range L, (logCoeff p n j : ACrisZero K p) * dpowJ hx (j + 1) := by
@@ -123,6 +169,9 @@ theorem logTermJ_one_add_pow {x : AInf K p} (hx : x ∈ pdIdeal K p) (n L : ℕ)
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_mul, ← Int.cast_sum, sum_logCoeff, logTermJ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem p_mul_logTermJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (j : ℕ) :
     (p : ACrisZero K p) * logTermJ hx j =
       ∑ n ∈ Finset.range (j + 1), (logCoeff p n j : ACrisZero K p) * dpowJ hx (j + 1) := by
@@ -130,6 +179,17 @@ theorem p_mul_logTermJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (j : ℕ) :
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hpM : M ≤ p * M` using `Nat.le_mul_of_pos_left M hp.out.pos`. Rewrite using `[Finset.sum_congr rfl fun n hn => logTermJ_one_add_pow hx n (p * M) (Nat.mul_le_mul_left p (Finset.mem_range.1 hn)), Finset.sum_congr rfl fun j _ => p_mul_logTermJ hx j]`. Establish `h1 : ∀ j ∈ Finset.range M, ∑ n ∈ Finset.range (j + 1), (logCoeff p n j : ACrisZero K p) * dpowJ hx (j + 1) = ∑ n ∈ Finset.range M, (logCoeff p n j : ACrisZero K p) * dpowJ hx (j + 1)`. Introduce `j hj`. Apply `Finset.sum_subset (Finset.range_subset_range.2 (Finset.mem_range.1 hj))` to reduce the goal to its premises.
+
+Introduce `n _ hn`. Rewrite `hn` using `[Finset.mem_range, not_lt]`. Rewrite using `[logCoeff_of_lt (by omega), Int.cast_zero, zero_mul]`. Rewrite using `[Finset.sum_congr rfl h1, Finset.sum_comm (s := Finset.range M) (t := Finset.range (p * M)), ← Finset.sum_range_add_sum_Ico _ hpM, sub_add_cancel_left]`. Use `neg_mem (Ideal.sum_mem _ fun j hj => Ideal.sum_mem _ fun n _ => ?_)` and prove the remaining obligations.
+
+Establish `hj` using `(Finset.mem_Ico.1 hj).1`. Distinguish the cases in `hc : p * (n + 1) < j + 1`. Rewrite using `[logCoeff_of_gt hc, Int.cast_zero, zero_mul]`. Conclude with `zero_mem _`. Establish `hn : p * k ≤ n`.
+
+Assume the negation of the conclusion as `hlt`. Establish `: p * (n + 1) ≤ p * (p * k)` using `Nat.mul_le_mul_left p (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨z, hz⟩` from `factorial_dvd_logCoeff (p := p) n j`. Rewrite using `[hz, Int.cast_mul, Int.cast_natCast]`.
+
+Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (natCast_mem_pow (pow_dvd_factorial hn)))`.
+-/
 theorem sum_p_mul_logTermJ_sub_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {k M : ℕ}
     (hM : p * (p * k + 1) ≤ M) :
     ∑ j ∈ Finset.range M, (p : ACrisZero K p) * logTermJ hx j -
@@ -161,6 +221,13 @@ theorem sum_p_mul_logTermJ_sub_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {k M 
     rw [hz, Int.cast_mul, Int.cast_natCast]
     exact Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (natCast_mem_pow (pow_dvd_factorial hn)))
 
+/- English proof (translation)
+Establish `hs` using `(isAdicSum_logJ hx).mul_left (p : ACris K p)`. Apply `logJ_eq_of_isAdicSum` to reduce the goal to its premises. Introduce `k`. Take `⟨N, hN⟩` from `hs k`. Use `⟨max N (p * (p * k + 1)), fun M hM => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hN M (le_of_max_le_left hM)`. Establish `h2 : ∑ n ∈ Finset.range M, (p : ACris K p) * logTermJA hx n - ∑ n ∈ Finset.range M, logTermJA (one_add_pow_sub_one_mem_pdIdeal hx) n ∈ 𝔭 ^ k`. Establish `h` using `algebraMap_mem_pow (sum_p_mul_logTermJ_sub_mem hx (le_of_max_le_right hM))`. Rewrite `h` using `[map_sub, map_sum, map_sum]`. Simplify `h` using `only [map_mul, map_natCast, logTermJA]`.
+
+Use `add_mem h1 h2` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem logJ_one_add_pow {x : AInf K p} (hx : x ∈ pdIdeal K p) :
     logJ (one_add_pow_sub_one_mem_pdIdeal hx) = (p : ACris K p) * logJ hx := by
   have hs := (isAdicSum_logJ hx).mul_left (p : ACris K p)
@@ -178,21 +245,33 @@ theorem logJ_one_add_pow {x : AInf K p} (hx : x ∈ pdIdeal K p) :
   simp only at this
   rwa [sub_add_sub_cancel] at this
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_phiZero, coe_logTermJ, coe_logTermJ, map_mul, map_mul, map_pow, map_neg, map_one, map_natCast, phiAway_dpow]`.
+-/
 theorem phiZero_logTermJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (hφ : φ x ∈ pdIdeal K p) (n : ℕ) :
     phiZero K p (logTermJ hx n) = logTermJ hφ n := by
   apply Subtype.ext
   rw [coe_phiZero, coe_logTermJ, coe_logTermJ, map_mul, map_mul, map_pow, map_neg, map_one,
     map_natCast, phiAway_dpow]
 
+/- English proof (translation)
+Rewrite using `[logTermJA, logTermJA, phi_algebraMap_zero, phiZero_logTermJ hx hφ]`.
+-/
 theorem phi_logTermJA {x : AInf K p} (hx : x ∈ pdIdeal K p) (hφ : φ x ∈ pdIdeal K p) (n : ℕ) :
     phi K p (logTermJA hx n) = logTermJA hφ n := by
   rw [logTermJA, logTermJA, phi_algebraMap_zero, phiZero_logTermJ hx hφ]
 
+/- English proof (translation)
+The claim follows from `(logJ_eq_of_isAdicSum (((isAdicSum_logJ hx).map (phi K p) span_p_le_comap_phi).congr (phi_logTermJA hx hφ))).symm`.
+-/
 theorem phi_logJ {x : AInf K p} (hx : x ∈ pdIdeal K p) (hφ : φ x ∈ pdIdeal K p) :
     phi K p (logJ hx) = logJ hφ :=
   (logJ_eq_of_isAdicSum (((isAdicSum_logJ hx).map (phi K p) span_p_le_comap_phi).congr
     (phi_logTermJA hx hφ))).symm
 
+/- English proof (translation)
+The claim follows from `mem_pdIdeal_of_theta_mem (by rwa [AInf.mu, map_sub, fontaineTheta_teichmuller, map_one])`.
+-/
 theorem mu_mem_pdIdeal {x : 𝒪♭} (hx : PreTilt.untilt x - 1 ∈ Ideal.span {(p : 𝒪)}) :
     AInf.mu (K := K) x ∈ pdIdeal K p :=
   mem_pdIdeal_of_theta_mem (by rwa [AInf.mu, map_sub, fontaineTheta_teichmuller, map_one])
@@ -200,6 +279,9 @@ theorem mu_mem_pdIdeal {x : 𝒪♭} (hx : PreTilt.untilt x - 1 ∈ Ideal.span {
 def logTeich {x : 𝒪♭} (hx : PreTilt.untilt x - 1 ∈ Ideal.span {(p : 𝒪)}) : ACris K p :=
   logJ (mu_mem_pdIdeal hx)
 
+/- English proof (translation)
+Establish `h1` using `one_add_pow_sub_one_mem_pdIdeal (mu_mem_pdIdeal hx)`. Establish `hφ : φ (AInf.mu (K` using `K) x) ∈ pdIdeal K p := by rw [frobenius_mu]; exact h1`. Rewrite using `[logTeich, phi_logJ _ hφ, logJ_congr (frobenius_mu x) hφ h1, logJ_one_add_pow]`.
+-/
 theorem phi_logTeich {x : 𝒪♭} (hx : PreTilt.untilt x - 1 ∈ Ideal.span {(p : 𝒪)}) :
     phi K p (logTeich hx) = (p : ACris K p) * logTeich hx := by
   have h1 := one_add_pow_sub_one_mem_pdIdeal (mu_mem_pdIdeal hx)
@@ -219,12 +301,26 @@ local notation "θ" => fontaineTheta (normInteger K) p
 local notation "𝔸" => Localization.Away (p : AInf K p)
 local notation "𝔭" => Ideal.span {(p : ACris K p)}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_thetaZero, coe_logTermJ, pow_zero, Nat.factorial_zero, Nat.cast_one, one_mul, one_mul, zero_add, dpow_one, thetaAway_algebraMap]`.
+-/
 theorem thetaZero_logTermJ_zero {x : AInf K p} (hx : x ∈ pdIdeal K p) :
     thetaZero K p (logTermJ hx 0) = θ x := by
   apply Subtype.ext
   rw [coe_thetaZero, coe_logTermJ, pow_zero, Nat.factorial_zero, Nat.cast_one, one_mul, one_mul,
     zero_add, dpow_one, thetaAway_algebraMap]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `exists_natCast_mul_eq_pow (K := K) (p := p) (n := m + 2) (k := 2 * m + 1) (by omega) (by have := Nat.factorization_lt p (show m + 2 ≠ 0 by omega); omega)`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨(-1) ^ (m + 1) * (θ w * c ^ (m + 2)), Subtype.ext ?_⟩` and prove the remaining obligations. Establish `hn1 : ((m + 2 : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hf : (m + 2).factorial = (m + 2) * (m + 1).factorial` using `Nat.factorial_succ (m + 1)`.
+
+Establish `e : ((m + 2 : ℕ) : 𝔸) * (((m + 1).factorial : 𝔸) * dpow (m + 2) x) = algebraMap (AInf K p) 𝔸 x ^ (m + 2)`. Rewrite using `[← mul_assoc, ← Nat.cast_mul, ← hf, factorial_mul_dpow]`. Establish `e2` using `congrArg (thetaAway K p) e`. Rewrite `e2` using `[map_mul, map_natCast, map_pow, thetaAway_algebraMap]`. Establish `hw2 : ((m + 2 : ℕ) : K) * (θ w : K) = (p : K) ^ (2 * m + 1)`.
+
+Use `congrArg (fun a => ((θ a : 𝒪) : K)) hw` as an intermediate fact. Simplify `this` using `only [map_mul, map_natCast, map_pow, MulMemClass.coe_mul, SubringClass.coe_natCast, SubmonoidClass.coe_pow]`. Establish `hc2 : (θ x : K) = (p : K) ^ 2 * (c : K)`. Use `congrArg (fun a : 𝒪 => (a : K)) hc` as an intermediate fact. Simplify `this` using `only [MulMemClass.coe_mul, SubringClass.coe_natCast, SubmonoidClass.coe_pow]`.
+
+Rewrite `e2` using `[hc2]`. Establish `e3 : thetaAway K p ((-1) ^ (m + 1) * ((m + 1).factorial : 𝔸) * dpow (m + 1 + 1) x) = (-1 : K) ^ (m + 1) * thetaAway K p (((m + 1).factorial : 𝔸) * dpow (m + 2) x)`. Rewrite using `[mul_assoc, map_mul, map_pow, map_neg, map_one]`. Rewrite using `[coe_thetaZero, coe_logTermJ, e3]`. Apply `mul_left_cancel₀ hn1` to reduce the goal to its premises.
+
+Move the coercions through the operations in `at hw2 e2 ⊢`. Take the linear combination `((-1 : K) ^ (m + 1) * (c : K) ^ (m + 2) * (p : K) ^ 3) * hw2 - (-1 : K) ^ (m + 1) * e2`.
+-/
 theorem thetaZero_logTermJ_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {c : 𝒪}
     (hc : θ x = (p : 𝒪) ^ 2 * c) (m : ℕ) :
     thetaZero K p (logTermJ hx (m + 1)) ∈ Ideal.span {(p : 𝒪) ^ 3} := by
@@ -256,6 +352,13 @@ theorem thetaZero_logTermJ_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {c : 𝒪
   linear_combination ((-1 : K) ^ (m + 1) * (c : K) ^ (m + 2) * (p : K) ^ 3) * hw2 -
     (-1 : K) ^ (m + 1) * e2
 
+/- English proof (translation)
+Establish `hle : 𝔭 ≤ (Ideal.span {(p : 𝒪)}).comap (theta K p)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨N, hN⟩` from `(isAdicSum_logJ hx).map (theta K p) hle 3`. Establish `h` using `hN (N + 1) (Nat.le_succ N)`.
+
+Establish `ht : ∀ n, theta K p (logTermJA hx n) = thetaZero K p (logTermJ hx n)` using `fun n => by`. Rewrite using `[logTermJA, AdicCompletion.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, theta_of]`. Simplify using `only [ht] at h`. Rewrite `h` using `[Finset.sum_range_succ', thetaZero_logTermJ_zero, Ideal.span_singleton_pow]`. Establish `hs : ∑ n ∈ Finset.range N, thetaZero K p (logTermJ hx (n + 1)) ∈ Ideal.span {(p : 𝒪) ^ 3}` using `Ideal.sum_mem _ fun n _ => thetaZero_logTermJ_mem hx hc n`.
+
+Use `add_mem h hs` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem theta_logJ_sub_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {c : 𝒪}
     (hc : θ x = (p : 𝒪) ^ 2 * c) : theta K p (logJ hx) - θ x ∈ Ideal.span {(p : 𝒪) ^ 3} := by
   have hle : 𝔭 ≤ (Ideal.span {(p : 𝒪)}).comap (theta K p) := by
@@ -275,6 +378,9 @@ theorem theta_logJ_sub_mem {x : AInf K p} (hx : x ∈ pdIdeal K p) {c : 𝒪}
   convert this using 1
   ring
 
+/- English proof (translation)
+Establish `hθ : θ (AInf.mu (K` using `K) x) = PreTilt.untilt x - 1 := by`. Rewrite using `[AInf.mu, map_sub, fontaineTheta_teichmuller, map_one]`. Establish `h` using `theta_logJ_sub_mem (mu_mem_pdIdeal hx) (c := c) (by rw [hθ, hc])`. Rewrite `h` using `[hθ, hc]`. Then use the resulting hypothesis.
+-/
 theorem theta_logTeich_sub_mem {x : 𝒪♭} (hx : PreTilt.untilt x - 1 ∈ Ideal.span {(p : 𝒪)})
     {c : 𝒪} (hc : PreTilt.untilt x - 1 = (p : 𝒪) ^ 2 * c) :
     theta K p (logTeich hx) - (p : 𝒪) ^ 2 * c ∈ Ideal.span {(p : 𝒪) ^ 3} := by

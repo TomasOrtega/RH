@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Ra
 
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.WeaklyAdmissibleFiltrations
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localisations_of_objectConditions | exact GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localisations_of_objectConditions | (intros; apply GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localis …`.
+-/
 theorem _root_.GlobalTheory.T.integralityFromMetric_of_designConditionAll : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.BlochKatoLocal → Formalism.GaloisCohomology.LocalTateDualityK → Formalism.GaloisCohomology.LocalEulerCharK → ∀ D : D7, Formalism.MainNotions.N.K.Rows.AllDesignConditions D → TruncatedSeriesCountingIdentities.IntegralityFromMetric D := by
   first | exact @GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localisations_of_objectConditions | exact GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localisations_of_objectConditions | (intros; apply GlobalTheory.LocalisationBoundAtPoint.boundAtPoint_all_localisations_of_objectConditions <;> assumption)

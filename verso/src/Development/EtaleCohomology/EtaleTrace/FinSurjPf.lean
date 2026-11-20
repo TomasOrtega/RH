@@ -18,6 +18,11 @@ def FSDense : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} [IsIntegral X] (
   (∀ (m : ℕ) (F : MvPolynomial (Fin (d + 1)) k), F.IsHomogeneous m → eval₂ (kHom p) w F = 0 → F = 0) →
   IsDominant π
 
+/- English proof (translation)
+Introduce `k _ X _ p hp N d ι π v w hι hπ cv cw hlin hx hind`. Establish `hsep : IsSeparated (PNto k d)` using `(h1 k d).2.1`. Establish `: IsProper (π ≫ PNto k d)` using `by rw [hπ]; exact hp`. Establish `: IsProper π` using `IsProper.of_comp π (PNto k d)`. Establish `: IsAffineHom π` using `hA k p N d ι π v w hι cv cw hlin hx`.
+
+Establish `: IsDominant π` using `hD k p d π w cw hind`. Use `⟨IsFinite.iff_isProper_and_isAffineHom.mpr ⟨inferInstance, inferInstance⟩, ?_⟩` and prove the remaining obligations. Conclude with `surjective_of_isDominant_of_isClosed_range π (π.isClosedMap.isClosed_range)`.
+-/
 theorem FinSurj_of (h1 : PNBasic) (hA : FSAffine) (hD : FSDense) : FinSurj := by
   intro k _ X _ p hp N d ι π v w hι hπ cv cw hlin hx hind
   have hsep : IsSeparated (PNto k d) := (h1 k d).2.1

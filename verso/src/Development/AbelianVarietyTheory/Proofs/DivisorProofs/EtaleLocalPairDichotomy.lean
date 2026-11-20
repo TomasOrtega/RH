@@ -7,6 +7,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.EtC.PairDich
 
+/- English proof (translation)
+Use `W.toScheme.toRingedSpace.isUnit_of_isUnit_germ ⊤ _ fun w _ => ?_` and prove the remaining obligations. Establish `hw : w ∈ W.ι ⁻¹ᵁ T.basicOpen E` using `h w.2`. Rewrite `hw` using `[Scheme.preimage_basicOpen_top]`. Conclude with `(Scheme.mem_basicOpen_top _ _ _).1 hw`.
+-/
 theorem isUnit_ι_appTop {T : Scheme.{0}} (W : T.Opens) (E : Γ(T, ⊤)) (h : W ≤ T.basicOpen E) :
     IsUnit (W.ι.appTop E) := by
   refine W.toScheme.toRingedSpace.isUnit_of_isUnit_germ ⊤ _ fun w _ => ?_
@@ -14,11 +17,17 @@ theorem isUnit_ι_appTop {T : Scheme.{0}} (W : T.Opens) (E : Γ(T, ⊤)) (h : W 
   rw [Scheme.preimage_basicOpen_top] at hw
   exact (Scheme.mem_basicOpen_top _ _ _).1 hw
 
+/- English proof (translation)
+Rewrite using `[Scheme.mem_basicOpen_top, Scheme.mem_basicOpen_top, map_sub, map_one]`. Conclude with `IsLocalRing.isUnit_or_isUnit_one_sub_self _`.
+-/
 theorem mem_basicOpen_or {T : Scheme.{0}} (E : Γ(T, ⊤)) (t : T) :
     t ∈ T.basicOpen E ∨ t ∈ T.basicOpen (1 - E) := by
   rw [Scheme.mem_basicOpen_top, Scheme.mem_basicOpen_top, map_sub, map_one]
   exact IsLocalRing.isUnit_or_isUnit_one_sub_self _
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.comp_appTop, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+-/
 theorem comp_rule {A B : Type} [CommRing A] [CommRing B] (g : A →+* B) {T : Scheme.{0}}
     (y : T ⟶ Spec (CommRingCat.of B)) (a : A) :
     ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (y ≫ Spec.map (CommRingCat.ofHom g)).appTop).hom a =
@@ -30,6 +39,27 @@ end GlobalTheory.EtC.PairDich
 
 namespace GlobalTheory.EtC.PairDich
 
+/- English proof (translation)
+Introduce `A A' _ _ _ f e u he hu T y y' hyy`. Set `φ : A' →+* Γ(T, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of A')).inv ≫ y.appTop).hom`. Set `φ' : A' →+* Γ(T, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of A')).inv ≫ y'.appTop).hom`. Establish `hA : ∀ r : A, φ (algebraMap A A' r) = φ' (algebraMap A A' r)`. Introduce `r`.
+
+Use `congrArg (fun m : T ⟶ Spec (CommRingCat.of A) => ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ m.appTop).hom r) hyy` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[comp_rule, comp_rule]`. Conclude with `this`. Use `letI : Algebra A Γ(T, ⊤) := (φ.comp (algebraMap A A')).toAlgebra`.
+
+Set `φa : A' →ₐ[A] Γ(T, ⊤)` to `⟨φ, fun _ => rfl⟩`. Set `φa' : A' →ₐ[A] Γ(T, ⊤)` to `⟨φ', fun r => (hA r).symm⟩`. Set `ψ` to `Algebra.TensorProduct.productMap φa φa'`. Establish `hE : ∀ a : A', (φ a - φ' a) * ψ e = 0`. Introduce `a`.
+
+Use `congrArg ψ (he a)` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, Algebra.TensorProduct.productMap_apply_tmul, Algebra.TensorProduct.productMap_apply_tmul, map_one, map_one, mul_one, one_mul, map_zero]`. Conclude with `this`. Establish `hF : ψ (algebraMap A _ f) * ψ u = 1 - ψ e` using `by rw [← map_mul, hu, map_sub, map_one]`. Establish `hψf : ψ (algebraMap A _ f) = φ (algebraMap A A' f)` using `by rw [AlgHom.commutes]; rfl`.
+
+Rewrite using `[GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover]`. Introduce `t`. Establish `key : ∀ G : Γ(T, ⊤), t ∈ T.basicOpen G → ∃ W : T.Opens, IsAffine W ∧ t ∈ W ∧ IsUnit (W.ι.appTop G)`. Introduce `G hG`. Take `⟨W0, hW, htW, hWle⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp T.isBasis_affineOpens) hG`.
+
+Conclude with `⟨W0, hW, htW, isUnit_ι_appTop W0 G hWle⟩`. Break down `mem_basicOpen_or (ψ e) t with h1 | h2` into its components or cases. Take `⟨W, hW, htW, hunit⟩` from `key _ h1`. Use `⟨W, W.ι, hW, inferInstance, by rw [Scheme.Opens.range_ι]; exact htW, Or.inl ?_⟩` and prove the remaining obligations. Apply `ext_to_Spec` to reduce the goal to its premises.
+
+Simplify using `only [Scheme.Γ_map_op, Scheme.Hom.comp_appTop]`. Use extensionality with `a`. Establish `h0` using `congrArg W.ι.appTop.hom (hE a)`. Rewrite `h0` using `[map_mul, map_sub, map_zero, hunit.mul_left_eq_zero, sub_eq_zero]`. Conclude with `h0`.
+
+Take `⟨W, hW, htW, hunit⟩` from `key _ h2`. Use `⟨W, W.ι, hW, inferInstance, by rw [Scheme.Opens.range_ι]; exact htW, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, comp_rule, Scheme.Hom.comp_appTop]`. Establish `h0` using `congrArg W.ι.appTop.hom hF`. Rewrite `h0` using `[map_mul, hψf]`.
+
+Rewrite `hunit` using `[← h0]`. Conclude with `isUnit_of_mul_isUnit_left hunit`. Introduce and unpack `V W g k (h | h)`. Conclude with `Or.inl (by rw [Category.assoc, h, Category.assoc])`. Use `right`.
+
+Establish `hc : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ ((k ≫ g) ≫ y ≫ Spec.map (CommRingCat.ofHom (algebraMap A A'))).appTop = ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (g ≫ y ≫ Spec.map (CommRingCat.ofHom (algebraMap A A'))).appTop) ≫ k.appTop`. Simplify using `only [Scheme.Hom.comp_appTop, Category.assoc]`. Rewrite using `[hc, CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `h.map _`.
+-/
 theorem pair_dich : ∀ (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A) (e u : A' ⊗[A] A'), (∀ a : A', (a ⊗ₜ[A] (1 : A') - (1 : A') ⊗ₜ[A] a) * e = 0) → algebraMap A (A' ⊗[A] A') f * u = 1 - e → ∀ (T : Scheme.{0}) (y y' : T ⟶ Spec (CommRingCat.of A')), y ≫ Spec.map (CommRingCat.ofHom (algebraMap A A')) = y' ≫ Spec.map (CommRingCat.ofHom (algebraMap A A')) → Loc T fun V k => k ≫ y = k ≫ y' ∨ IsUnit (((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (k ≫ y ≫ Spec.map (CommRingCat.ofHom (algebraMap A A'))).appTop).hom f) := by
   intro A A' _ _ _ f e u he hu T y y' hyy
   let φ : A' →+* Γ(T, ⊤) := ((Scheme.ΓSpecIso (CommRingCat.of A')).inv ≫ y.appTop).hom

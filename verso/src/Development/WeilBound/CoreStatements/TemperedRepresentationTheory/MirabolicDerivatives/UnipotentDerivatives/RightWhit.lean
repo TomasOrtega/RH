@@ -21,6 +21,11 @@ def rightWhit (ψ : AddChar k Circle) (n t : ℕ) : rightUnip k n t →* ℂˣ :
       map_one' := rfl
       map_mul' := fun _ _ => rfl }
 
+/- English proof (translation)
+Establish `h1 : (u : GL (Fin n) k × GL (Fin t) k).1 = 1` using `Subgroup.mem_bot.1 (Subgroup.mem_prod.1 u.2).1`. Establish `hconj : MonoidHom.inl (GL (Fin n) k) (GL (Fin t) k) m * (u : GL (Fin n) k × GL (Fin t) k) * (MonoidHom.inl (GL (Fin n) k) (GL (Fin t) k) m)⁻¹ = (u : GL (Fin n) k × GL (Fin t) k)`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;> simp [h1]`. Use `⟨by rw [hconj]; exact u.2, ?_⟩` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `Subtype.ext hconj`.
+-/
 theorem inl_stab (ψ : AddChar k Circle) (n t : ℕ) (m : GL (Fin n) k) (u : rightUnip k n t) :
     ∃ h : MonoidHom.inl (GL (Fin n) k) (GL (Fin t) k) m * (u : GL (Fin n) k × GL (Fin t) k) *
         (MonoidHom.inl (GL (Fin n) k) (GL (Fin t) k) m)⁻¹ ∈ rightUnip k n t,

@@ -30,28 +30,50 @@ section Rename₂
 
 variable {σ τ : Type} [Finite σ] (r : σ → τ)
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => constantCoeff_X _)`.
+-/
 theorem hasSubst_ren : HasSubst (fun s => (X (r s) : MvPowerSeries τ ℂ_[p])) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => constantCoeff_X _)
 
 def ren : MvPowerSeries σ ℂ_[p] →ₐ[ℂ_[p]] MvPowerSeries τ ℂ_[p] :=
   substAlgHom (hasSubst_ren r)
 
+/- English proof (translation)
+The claim follows from `substAlgHom_apply _ F`.
+-/
 theorem ren_apply (F : MvPowerSeries σ ℂ_[p]) :
     ren r F = MvPowerSeries.subst (fun s => (X (r s) : MvPowerSeries τ ℂ_[p])) F :=
   substAlgHom_apply _ F
 
+/- English proof (translation)
+Rewrite using `[ren_apply, ren_apply, PowerSeries.subst, PowerSeries.subst]`. Conclude with `MvPowerSeries.subst_comp_subst_apply (PowerSeries.hasSubst_iff.mp (PowerSeries.HasSubst.of_constantCoeff_zero hy)) (hasSubst_ren r) P`.
+-/
 theorem ren_psubst (P : PowerSeries ℂ_[p]) {y : MvPowerSeries σ ℂ_[p]} (hy : constantCoeff y = 0) :
     ren r (PowerSeries.subst y P) = PowerSeries.subst (ren r y) P := by
   rw [ren_apply, ren_apply, PowerSeries.subst, PowerSeries.subst]
   exact MvPowerSeries.subst_comp_subst_apply
     (PowerSeries.hasSubst_iff.mp (PowerSeries.HasSubst.of_constantCoeff_zero hy)) (hasSubst_ren r) P
 
+/- English proof (translation)
+Rewrite using `[ren_apply, MvPowerSeries.subst_X (hasSubst_ren r)]`.
+-/
 theorem ren_X (s : σ) : ren r (X s : MvPowerSeries σ ℂ_[p]) = X (r s) := by
   rw [ren_apply, MvPowerSeries.subst_X (hasSubst_ren r)]
 
+/- English proof (translation)
+Rewrite using `[ren_apply, MvPowerSeries.subst_C]`.
+-/
 theorem ren_C (c : ℂ_[p]) : ren r (C c : MvPowerSeries σ ℂ_[p]) = C c := by
   rw [ren_apply, MvPowerSeries.subst_C]
 
+/- English proof (translation)
+Take `⟨h0, h1⟩` from `h`. Establish `hs : ren r f - ren r g = ren r (f - g)` using `(map_sub _ _ _).symm`. Establish `hc : constantCoeff (ren r (f - g)) = 0`. Rewrite using `[ren_apply]`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (hasSubst_ren r) (fun _ => constantCoeff_X _) h0`.
+
+Use `⟨by rw [hs, hc], fun n => ?_⟩` and prove the remaining obligations. Establish `e1 : expMv (ren r (f - g)) = PI.FglPhSplit.expMv (ren r (f - g))` using `rfl`. Establish `e0 : expMv (f - g) = PI.FglPhSplit.expMv (f - g)` using `rfl`. Establish `h1' : PI.FglPhSplit.Wk.AllIn (Wp p) (PI.FglPhSplit.expMv (f - g))` using `fun n => by`. Rewrite using `[← e0]`.
+
+Conclude with `h1 n`. Rewrite using `[hs, e1, PI.FglPhSplit.Wk.expMv_eq_subst hc, ← ren_psubst r _ h0, ← PI.FglPhSplit.Wk.expMv_eq_subst h0, ren_apply]`. Conclude with `PI.FglPhSplit.Wk.allIn_subst_X r (hasSubst_ren r) h1' n`.
+-/
 theorem simeq_ren {f g : MvPowerSeries σ ℂ_[p]} (h : Simeq f g) : Simeq (ren r f) (ren r g) := by
   obtain ⟨h0, h1⟩ := h
   have hs : ren r f - ren r g = ren r (f - g) := (map_sub _ _ _).symm
@@ -72,6 +94,9 @@ variable {l ex ph : PowerSeries ℂ_[p]} (hex0 : PowerSeries.constantCoeff ex = 
 
 omit [Finite σ] in
 include hl0 in
+/- English proof (translation)
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[map_mul, lg, PI.FglPhSplit.Wk.cc_psubst _ hl0 (hw j), mul_zero]`.
+-/
 theorem cc_lin {ι' : Type} [Fintype ι'] (c : ι' → ℂ_[p]) (w : ι' → MvPowerSeries σ ℂ_[p])
     (hw : ∀ j, constantCoeff (w j) = 0) :
     constantCoeff (∑ j, C (c j) * lg l (w j)) = 0 := by
@@ -80,6 +105,9 @@ theorem cc_lin {ι' : Type} [Fintype ι'] (c : ι' → ℂ_[p]) (w : ι' → MvP
     rw [map_mul, lg, PI.FglPhSplit.Wk.cc_psubst _ hl0 (hw j), mul_zero]
 
 include hl0 in
+/- English proof (translation)
+Unfold `lin pt`. Rewrite using `[ren_psubst r _ (cc_lin hl0 c w hw), map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ren_C, lg, lg, ren_psubst r _ (hw j)]`.
+-/
 theorem ren_lin {ι' : Type} [Fintype ι'] (c : ι' → ℂ_[p]) (w : ι' → MvPowerSeries σ ℂ_[p])
     (hw : ∀ j, constantCoeff (w j) = 0) :
     ren r (lin l ex c w) = lin l ex c (fun j => ren r (w j)) := by
@@ -91,6 +119,13 @@ theorem ren_lin {ι' : Type} [Fintype ι'] (c : ι' → ℂ_[p]) (w : ι' → Mv
 
 omit [Finite σ] in
 include hex0 hl0 in
+/- English proof (translation)
+Unfold `PhOn phAt`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hw : ∀ j : Fin n, constantCoeff (Xv j : MvPowerSeries (Fin n) ℂ_[p]) = 0` using `fun j => constantCoeff_X j`. Establish `h0 : constantCoeff (lin l ex (fun j => (B (E.symm j) k).1) (fun j => (Xv j : MvPowerSeries (Fin n) ℂ_[p]))) = 0`.
+
+Unfold `lin pt`. Conclude with `PI.FglPhSplit.Wk.cc_psubst _ hex0 (cc_lin hl0 _ _ hw)`. Rewrite using `[ren_psubst _ _ h0, ren_lin _ hl0 _ _ hw]`. Simplify using `only [Xv, ren_X]`. Use `congr 1`.
+
+Unfold `lin`. Use `congr 1`. Conclude with `Equiv.sum_comp E.symm (fun e => C (B e k).1 * lg l (X e : MvPowerSeries T ℂ_[p]))`.
+-/
 theorem ren_PhOn {κ T : Type} [Fintype κ] [Fintype T] {n : ℕ} (E : T ≃ Fin n)
     (B : T → κ → ℂ_[p] × ℂ_[p]) :
     ren (p := p) E.symm (PhOn l ex ph (fun j => B (E.symm j))) = PhOn l ex ph B := by

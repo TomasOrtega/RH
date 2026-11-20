@@ -24,6 +24,9 @@ namespace GlobalTheory.LBAlg
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Use `(gm_div (AbLaw.pw H (-t)) A r z p q hm).trans ?_` and prove the remaining obligations. Use `congrArg _ ((congrArg (·⁻¹) (map_zpow _ _ _)).trans ?_)` and prove the remaining obligations. Rewrite using `[zpow_neg, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem gm_tw (A H : LB X) (t : ℤ) (r : Z ⟶ X) (z : Z) (p q : A.ι × H.ι)
     (hm : r z ∈ A.U p.1 ⊓ H.U p.2 ⊓ (A.U q.1 ⊓ H.U q.2)) :
     gm r z ((tw A H t).U p ⊓ (tw A H t).U q) ((tw A H t).g p q) =
@@ -33,6 +36,9 @@ theorem gm_tw (A H : LB X) (t : ℤ) (r : Z ⟶ X) (z : Z) (p q : A.ι × H.ι)
   rw [zpow_neg, inv_inv]
   rfl
 
+/- English proof (translation)
+Use `⟨⟨s⟩, fun p q => unit_ext fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `(gm_res _ x _ hx _).trans ((h x p q hx.1.1 hx.1.2 hx.2.1 hx.2.2).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hx) (gm_res _ x _ hx _))).symm)`.
+-/
 theorem lbIso_of_germs {A B : LB X} (s : ∀ p : B.ι × A.ι, Γ(X, B.U p.1 ⊓ A.U p.2)ˣ)
     (h : ∀ (x : X) (p q : B.ι × A.ι), x ∈ B.U p.1 → x ∈ A.U p.2 → x ∈ B.U q.1 → x ∈ A.U q.2 →
       gm (𝟙 X) x _ (s p) = gm (𝟙 X) x _ (B.g p.1 q.1) * (gm (𝟙 X) x _ (A.g p.2 q.2))⁻¹ * gm (𝟙 X) x _ (s q)) :
@@ -41,6 +47,9 @@ theorem lbIso_of_germs {A B : LB X} (s : ∀ p : B.ι × A.ι, Γ(X, B.U p.1 ⊓
   exact (gm_res _ x _ hx _).trans ((h x p q hx.1.1 hx.1.2 hx.2.1 hx.2.2).trans ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hx) (gm_res _ x _ hx _))).symm)
 
+/- English proof (translation)
+Establish `hx : (𝟙 X : X ⟶ X) x ∈ B.U p.1 ⊓ A.U p.2 ⊓ (B.U q.1 ⊓ A.U q.2)` using `⟨⟨h₁, h₂⟩, h₃, h₄⟩`. Conclude with `(gm_res _ x _ hx _).symm.trans ((congrArg (gm (𝟙 X) x _) (hw p q)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hx) (gm_res _ x _ hx _))))`.
+-/
 theorem germs_of_isGen {A B : LB X} {w : LB.Iso A B} (hw : w.IsGen) (x : X) (p q : B.ι × A.ι)
     (h₁ : x ∈ B.U p.1) (h₂ : x ∈ A.U p.2) (h₃ : x ∈ B.U q.1) (h₄ : x ∈ A.U q.2) :
     gm (𝟙 X) x (B.U p.1 ⊓ A.U p.2) (w.s p) = gm (𝟙 X) x _ (B.g p.1 q.1) * (gm (𝟙 X) x _ (A.g p.2 q.2))⁻¹ *
@@ -49,6 +58,9 @@ theorem germs_of_isGen {A B : LB X} {w : LB.Iso A B} (hw : w.IsGen) (x : X) (p q
   exact (gm_res _ x _ hx _).symm.trans ((congrArg (gm (𝟙 X) x _) (hw p q)).trans ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) (gm_div A B (𝟙 X) x p q hx) (gm_res _ x _ hx _))))
 
+/- English proof (translation)
+Use `lbIso_of_germs (fun p => A.g p.1 p.2) fun x p q h₁ h₂ h₃ h₄ => ?_` and prove the remaining obligations. Rewrite using `[← gm_cocycle hA (𝟙 X) x h₁ h₂ h₃, ← gm_cocycle hA (𝟙 X) x h₂ h₃ h₄]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lbIso_self {A : LB X} (hA : A.IsLB) : LBIso A A := by
   refine lbIso_of_germs (fun p => A.g p.1 p.2) fun x p q h₁ h₂ h₃ h₄ => ?_
   rw [← gm_cocycle hA (𝟙 X) x h₁ h₂ h₃, ← gm_cocycle hA (𝟙 X) x h₂ h₃ h₄]
@@ -65,6 +77,11 @@ def chartPullTw {A' H' : LB Y} {A H : LB X} {h : Y ⟶ X} (a : ChartPull A' A h)
       (a.idx q.1, b.idx q.2) ⟨⟨a.le _ hp.1, b.le _ hp.2⟩, a.le _ hq.1, b.le _ hq.2⟩).symm)
     rw [a.g y _ _ hp.1 hq.1, b.g y _ _ hp.2 hq.2]
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Establish `l₁ : ∀ p : (B.ι × H.ι) × (A.ι × H.ι), (tw B H t).U p.1 ⊓ (tw A H t).U p.2 ≤ B.U p.1.1 ⊓ A.U p.2.1` using `fun p x hx => ⟨hx.1.1, hx.2.1⟩`. Establish `l₂ : ∀ p : (B.ι × H.ι) × (A.ι × H.ι), (tw B H t).U p.1 ⊓ (tw A H t).U p.2 ≤ H.U p.1.2 ⊓ H.U p.2.2` using `fun p x hx => ⟨hx.1.2, hx.2.2⟩`. Establish `v : ∀ (x : X) (p : (B.ι × H.ι) × (A.ι × H.ι)), x ∈ (tw B H t).U p.1 ⊓ (tw A H t).U p.2 → gm (𝟙 X) x _ (res (l₁ p) (w.s (p.1.1, p.2.1)) * res (l₂ p) (H.g p.1.2 p.2.2) ^ t) = gm (𝟙 X) x (B.U p.1.1 ⊓ A.U p.2.1) (w.s (p.1.1, p.2.1)) * gm (𝟙 X) x _ (H.g p.1.2 p.2.2) ^ t` using `fun x p hx => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ x _ hx _) ((map_zpow _ _ _).trans (congrArg (· ^ t) (gm_res _ x _ hx _))))`. Use `lbIso_of_germs (fun p => res (l₁ p) (w.s (p.1.1, p.2.1)) * res (l₂ p) (H.g p.1.2 p.2.2) ^ t) fun x p q h₁ h₂ h₃ h₄ => ?_` and prove the remaining obligations.
+
+Use `(v x p ⟨h₁, h₂⟩).trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg₂ (· * ·) (gm_tw B H t (𝟙 X) x p.1 q.1 ⟨h₁, h₃⟩) (congrArg (·⁻¹) (gm_tw A H t (𝟙 X) x p.2 q.2 ⟨h₂, h₄⟩))) (v x q ⟨h₃, h₄⟩)).symm)` and prove the remaining obligations. Rewrite using `[germs_of_isGen hw x (p.1.1, p.2.1) (q.1.1, q.2.1) h₁.1 h₂.1 h₃.1 h₄.1, ← gm_cocycle hH (𝟙 X) x h₁.2 h₂.2 h₃.2, ← gm_cocycle hH (𝟙 X) x h₂.2 h₃.2 h₄.2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+-/
 theorem lbIso_tw_congr {A B H : LB X} (hH : H.IsLB) (t : ℤ) (h : LBIso A B) : LBIso (tw A H t) (tw B H t) := by
   obtain ⟨w, hw⟩ := h
   have l₁ : ∀ p : (B.ι × H.ι) × (A.ι × H.ι), (tw B H t).U p.1 ⊓ (tw A H t).U p.2 ≤ B.U p.1.1 ⊓ A.U p.2.1 :=
@@ -87,6 +104,11 @@ theorem lbIso_tw_congr {A B H : LB X} (hH : H.IsLB) (t : ℤ) (h : LBIso A B) : 
   simp only [ofMul_mul, ofMul_inv, ofMul_zpow]
   module
 
+/- English proof (translation)
+Establish `l₁ : ∀ p : ((A.ι × H.ι) × H.ι) × A.ι, (tw (tw A H t) H (-t)).U p.1 ⊓ A.U p.2 ≤ A.U p.1.1.1 ⊓ A.U p.2` using `fun p x hx => ⟨hx.1.1.1, hx.2⟩`. Establish `l₂ : ∀ p : ((A.ι × H.ι) × H.ι) × A.ι, (tw (tw A H t) H (-t)).U p.1 ⊓ A.U p.2 ≤ H.U p.1.1.2 ⊓ H.U p.1.2` using `fun p x hx => ⟨hx.1.1.2, hx.1.2⟩`. Establish `v : ∀ (x : X) (p : ((A.ι × H.ι) × H.ι) × A.ι), x ∈ (tw (tw A H t) H (-t)).U p.1 ⊓ A.U p.2 → gm (𝟙 X) x _ (res (l₁ p) (A.g p.1.1.1 p.2) * res (l₂ p) (H.g p.1.1.2 p.1.2) ^ t) = gm (𝟙 X) x _ (A.g p.1.1.1 p.2) * gm (𝟙 X) x _ (H.g p.1.1.2 p.1.2) ^ t` using `fun x p hx => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ x _ hx _) ((map_zpow _ _ _).trans (congrArg (· ^ t) (gm_res _ x _ hx _))))`. Use `lbIso_of_germs (fun p => res (l₁ p) (A.g p.1.1.1 p.2) * res (l₂ p) (H.g p.1.1.2 p.1.2) ^ t) fun x p q h₁ h₂ h₃ h₄ => ?_` and prove the remaining obligations. Use `(v x p ⟨h₁, h₂⟩).trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg (· * _) ((gm_tw (tw A H t) H (-t) (𝟙 X) x p.1 q.1 ⟨h₁, h₃⟩).trans (congrArg (· * _) (gm_tw A H t (𝟙 X) x p.1.1 q.1.1 ⟨h₁.1, h₃.1⟩)))) (v x q ⟨h₃, h₄⟩)).symm)` and prove the remaining obligations.
+
+Rewrite using `[← gm_cocycle hA (𝟙 X) x h₁.1.1 h₂ h₃.1.1, ← gm_cocycle hA (𝟙 X) x h₂ h₃.1.1 h₄, ← gm_cocycle hH (𝟙 X) x h₁.1.2 h₁.2 h₃.1.2, ← gm_cocycle hH (𝟙 X) x h₁.2 h₃.1.2 h₃.2]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+-/
 theorem lbIso_tw_tw {A H : LB X} (hA : A.IsLB) (hH : H.IsLB) (t : ℤ) : LBIso A (tw (tw A H t) H (-t)) := by
   have l₁ : ∀ p : ((A.ι × H.ι) × H.ι) × A.ι, (tw (tw A H t) H (-t)).U p.1 ⊓ A.U p.2 ≤ A.U p.1.1.1 ⊓ A.U p.2 :=
     fun p x hx => ⟨hx.1.1.1, hx.2⟩
@@ -108,6 +130,13 @@ theorem lbIso_tw_tw {A H : LB X} (hA : A.IsLB) (hH : H.IsLB) (t : ℤ) : LBIso A
   simp only [ofMul_mul, ofMul_inv, ofMul_zpow]
   module
 
+/- English proof (translation)
+Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h : x ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1)) : I ^ (e + 1 + 1) ≤ I ^ (e + 1))))`. Rewrite using `[range_comap_of_surjective _ _ (Ideal.Quotient.factor_surjective _)]`. Introduce `a ha`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+
+Establish `ha' : a ∈ I ^ (e + 1)` using `(GlobalTheory.SecLifts.mk_mem_ker_factor _ a).1 ha`. Establish `h2 : Ideal.Quotient.mk (I ^ (e + 1 + 1)) a ^ 2 = 0`. Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Use `Ideal.pow_mem_pow ha' 2` as an intermediate fact. Rewrite `this` using `[← pow_mul]`.
+
+Conclude with `Ideal.pow_le_pow_right (by omega) this`. Conclude with `x.isPrime.mem_of_pow_mem 2 (by rw [h2]; exact Ideal.zero_mem _)`. Conclude with `h`.
+-/
 theorem surjective_thickTrans (V : Type) [CommRing V] (I : Ideal V) (e : ℕ) : Surjective (thickTrans V I e) := by
   refine ⟨fun x => ?_⟩
   have h : x ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.factor
@@ -126,6 +155,33 @@ theorem surjective_thickTrans (V : Type) [CommRing V] (I : Ideal V) (e : ℕ) : 
 
 open GlobalTheory.MorAlg in
 
+/- English proof (translation)
+Introduce `V _ _ _ _ Y β hβ B b hB hfl hb hc N v hN`. Take `⟨H, hH, m, σ, hσ⟩` from `id hB`. Establish `hL : ∀ e, (H.pull (b e)).IsLB` using `fun e => pull_isLB hH _`. Take `⟨σ₀, w₀, hw₀, c₀⟩` from `exists_isPull (b 0) hH σ`. Establish `hva : VeryAmpleBy (Y 0).hom (H.pull (b 0)) σ₀`.
+
+Use `GlobalTheory.AbLaw.VeryAmplePull.veryAmpleBy_pull V B.left B.hom H m σ hH hσ _ (Ideal.Quotient.mk (IsLocalRing.maximalIdeal V ^ (0 + 1))) _ _ (b 0) (hb 0).w ?_ _ w₀ _ (hL 0) hw₀ c₀` and prove the remaining obligations. Establish `e : pullback.lift (b 0) (Y 0).hom (hb 0).w = (hb 0).isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[pullback.lift_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[pullback.lift_snd, IsPullback.isoPullback_hom_snd]`.
+
+Rewrite using `[e]`. Use `infer_instance`. Take `⟨t₁, ht₁⟩` from `GlobalTheory.T.serre_vanishing_very_ample.1 _ _ _ _ _ _ (hL 0) hva (N 0) (hN 0).1`. Take `⟨t₂, ht₂⟩` from `GlobalTheory.TwistGen.twist_generated _ _ _ _ _ _ (hL 0) hva (N 0) (hN 0).1`. Take `⟨t, h₁, h₂⟩ : ∃ t, t₁ ≤ t ∧ t₂ ≤ t` from `⟨max t₁ t₂, le_max_left _ _, le_max_right _ _⟩`.
+
+Take `⟨n, u, hu⟩` from `ht₂ t h₂`. Establish `hT : ∀ e, (tw (N e) (H.pull (b e)) t).IsLB` using `fun e => isLB_tw (hN e).1 (hL e) t`. Establish `hv' : ∀ e, LBIso (tw (N e) (H.pull (b e)) t) ((tw (N (e + 1)) (H.pull (b (e + 1))) t).pull (β e))` using `fun e => LBIso.trans (hT e) (isLB_tw (pull_isLB (hN (e + 1)).1 _) (hL e) t) (pull_isLB (hT (e + 1)) _) (lbIso_tw_congr (hL e) t ⟨v e, (hN e).2⟩) (LBIso.chartPull (chartPullTw (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSame H _ _ _ (β e) fun _ => (hc e).symm) t) (Geo.Tor.chartPul …`. Use `choose v' hv' using hv'`. Establish `hflY : ∀ e, Flat (Y e).hom` using `fun e => MorphismProperty.of_isPullback (P := @Flat) (hb e) hfl`.
+
+Use `choose s hs0 hs using fun j => GlobalTheory.SecLifts.exists_compatible_sections V Y β hβ hflY (fun e => tw (N e) (H.pull (b e)) t) v' (fun e => ⟨hT e, hv' e⟩) (ht₁ t h₁) (u j)`. Establish `hcov : ∀ e, ⨆ j, nonzeroLocus (s j e) = ⊤`. Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => simpa only [hs0] using hu`.
+
+Consider the case `succ e ih`. Establish `hsurj : Surjective (β e)` using `MorphismProperty.of_isPullback (P := @Surjective) (hβ e).flip (surjective_thickTrans V _ e)`. Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj.surj y`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show x ∈ ⨆ j, nonzeroLocus (s j e) by rw [ih]; trivial)`.
+
+Rewrite `hj` using `[(GlobalTheory.SecPullIso.section_pull _ _ (β e) _ _ (v' e) (hT (e + 1)) (hT e) (hv' e) (s j (e + 1))).2 _ (hs j e)]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hj⟩`. Take `⟨P, p, O, x, hO, hx, heq⟩` from `GlobalTheory.ProjQuot.exists_veryAmpleBy_of_ideal V n ⊥ (by`. Introduce `F hF d`. Rewrite `hF`, the goal using `[Ideal.mem_bot]`.
+
+Rewrite using `[hF, map_zero])`. Use `choose φ w hφ hw cw using fun e => GlobalTheory.exists_hom_of_veryAmpleBy V P p O n x hO hx (Y e).left ((Y e).hom ≫ thick V (IsLocalRing.maximalIdeal V) e) _ (fun j => s j e) (hT e) (hcov e) (by`. Introduce `d F hF h0 k`. Take `⟨i, hi⟩` from `(heq d F hF).1 h0 0`. Rewrite `hi` using `[Ideal.mem_bot, mul_eq_zero]`.
+
+Rewrite using `[hi.resolve_left (pow_ne_zero _ (MvPolynomial.X_ne_zero _)), map_zero])`. Establish `hφc : ∀ e, β e ≫ φ (e + 1) = φ e` using `fun e => by`. Take `⟨w₁, hw₁, c₁⟩` from `IsPull.comp (s := x) (s' := fun j => s j (e + 1)) (s'' := fun j => s j e) hO (hT (e + 1)) (hT e) ⟨w (e + 1), hw (e + 1), cw (e + 1)⟩ ⟨v' e, hv' e, fun j => hs j e⟩`. Use `GlobalTheory.MapUniq.hom_eq_of_pull_sections V P p O n x hO hx _ _ (fun j => s j e) _ _ w₁ (w e) (hT e) ?_ hw₁ (hw e) c₁ (cw e)` and prove the remaining obligations. Rewrite using `[Category.assoc, hφ, hφ, ← Category.assoc, (hβ e).w, Category.assoc, thickTrans_comp]`.
+
+Establish `hi : ∀ e, (hb e).isoPullback.inv ≫ β e = thickMap V (IsLocalRing.maximalIdeal V) e B ≫ (hb (e + 1)).isoPullback.inv` using `fun e => by`. Apply `(hb (e + 1)).hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hc, IsPullback.isoPullback_inv_fst, IsPullback.isoPullback_inv_fst]`. Conclude with `((pullback.lift_fst _ _ _).trans (Category.comp_id _)).symm`. Rewrite using `[Category.assoc, Category.assoc, (hβ e).w, IsPullback.isoPullback_inv_snd_assoc, IsPullback.isoPullback_inv_snd]`.
+
+Conclude with `(pullback.lift_snd _ _ _).symm`. Take `⟨g, hg⟩` from `exists_hom_of_thickenings V B (Over.mk p) hB ⟨O, hO, n, x, hx⟩ hfl (fun e => (hb e).isoPullback.inv ≫ φ e) (fun e => by`. Use `(Category.assoc _ _ _).trans ((congrArg _ (hφ e)).trans ?_)` and prove the remaining obligations. Rewrite using `[IsPullback.isoPullback_inv_snd_assoc]`. Conclude with `pullback.condition.symm) (fun e => by`.
+
+Rewrite using `[← hφc e]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ (e + 1)) (hi e).symm).trans (Category.assoc _ _ _)))`. Set `g' : B.left ⟶ P` to `g.left`. Establish `hbg : ∀ e, φ e = b e ≫ g'` using `fun e => by`. Establish `h : pullback.fst B.hom (thick V (IsLocalRing.maximalIdeal V) e) ≫ g' = (hb e).isoPullback.inv ≫ φ e` using `hg e`.
+
+Rewrite using `[← (hb e).isoPullback_hom_fst, Category.assoc, h, Iso.hom_inv_id_assoc]`. Establish `hM : (tw (O.pull g') H (-t)).IsLB` using `isLB_tw (pull_isLB hO _) hH _`. Use `⟨tw (O.pull g') H (-t), hM, fun e => ?_⟩` and prove the remaining obligations. Establish `hO' : (tw (O.pull (φ e)) (H.pull (b e)) (-t)).IsLB` using `isLB_tw (pull_isLB hO _) (hL e) _`. Conclude with `LBIso.trans (hN e).1 hO' (pull_isLB hM _) (LBIso.trans (hN e).1 (isLB_tw (hT e) (hL e) _) hO' (lbIso_tw_tw (hN e).1 (hL e) t) (lbIso_tw_congr (hL e) (-t) ⟨w e, hw e⟩)) (LBIso.chartPull (chartPullTw (chartPullSame O _ _ _ (b e) fun _ => hbg e) (Geo.Tor.chartPullPull _ _ _ rfl) (-t …`.
+-/
 theorem exists_lineBundle_of_thickenings : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans V (IsLocalRing.maximalIdeal V) e)) → ∀ (B : Over (Spec (CommRingCat.of V))) (b : ∀ e, (Y e).left ⟶ B.left), IsProjBy B.hom → Flat B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick V (IsLocalRing.maximalIdeal V) e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))), (∀ e, (N e).IsLB ∧ (v e).IsGen) → ∃ M : LB B.left, M.IsLB ∧ ∀ e, LBIso (N e) (M.pull (b e)) := by
   intro V _ _ _ _ Y β hβ B b hB hfl hb hc N v hN
   obtain ⟨H, hH, m, σ, hσ⟩ := id hB

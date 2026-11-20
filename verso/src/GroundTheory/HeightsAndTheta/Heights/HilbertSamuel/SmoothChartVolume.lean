@@ -20,14 +20,27 @@ def trans (A : FinHolAtlas e X) (j i : Fin A.n) : (Fin e → ℂ) → (Fin e →
 def overlap (A : FinHolAtlas e X) (j i : Fin A.n) : Set (Fin e → ℂ) :=
   (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart i).source
 
+/- English proof (translation)
+The claim follows from `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (A.chart i).open_source`.
+-/
 theorem isOpen_overlap (A : FinHolAtlas e X) (j i : Fin A.n) : IsOpen (overlap A j i) :=
   (A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target
     (A.chart i).open_source
 
+/- English proof (translation)
+The claim follows from `A.holo j i`.
+-/
 theorem analyticOnNhd_trans (A : FinHolAtlas e X) (j i : Fin A.n) :
     AnalyticOnNhd ℂ (trans A j i) (overlap A j i) :=
   A.holo j i
 
+/- English proof (translation)
+Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨hy, hyi⟩, rfl⟩`. Use `⟨(A.chart i).map_source hyi, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).symm (A.chart i ((A.chart j).symm y)) ∈ (A.chart j).source`.
+
+Rewrite using `[(A.chart i).left_inv hyi]`. Conclude with `(A.chart j).map_target hy`. Introduce and unpack `⟨hw, hwj⟩`. Use `⟨A.chart j ((A.chart i).symm w), ⟨(A.chart j).map_source hwj, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j ((A.chart i).symm w)) ∈ (A.chart i).source`.
+
+Rewrite using `[(A.chart j).left_inv hwj]`. Conclude with `(A.chart i).map_target hw`. Use `show A.chart i ((A.chart j).symm (A.chart j ((A.chart i).symm w))) = w`. Rewrite using `[(A.chart j).left_inv hwj, (A.chart i).right_inv hw]`.
+-/
 theorem image_trans (A : FinHolAtlas e X) (j i : Fin A.n) :
     trans A j i '' overlap A j i = overlap A i j := by
   ext w
@@ -45,9 +58,21 @@ theorem image_trans (A : FinHolAtlas e X) (j i : Fin A.n) :
     · show A.chart i ((A.chart j).symm (A.chart j ((A.chart i).symm w))) = w
       rw [(A.chart j).left_inv hwj, (A.chart i).right_inv hw]
 
+/- English proof (translation)
+Introduce `_ ha _ hb hab` and use `(A.chart j).symm.injOn ha.1 hb.1 ((A.chart i).injOn ha.2 hb.2 hab)`.
+-/
 theorem injOn_trans (A : FinHolAtlas e X) (j i : Fin A.n) : InjOn (trans A j i) (overlap A j i) :=
   fun _ ha _ hb hab => (A.chart j).symm.injOn ha.1 hb.1 ((A.chart i).injOn ha.2 hb.2 hab)
 
+/- English proof (translation)
+Introduce `y hy`. Establish `he : ∀ a k, AnalyticAt ℂ (fun y => jacC τ y a k) y`. Introduce `a k`. Set `L : ((Fin e → ℂ) →L[ℂ] (Fin e → ℂ)) →L[ℂ] ℂ` to `(ContinuousLinearMap.proj a).comp (ContinuousLinearMap.apply ℂ (Fin e → ℂ) (Pi.single k 1))`. Establish `h : (fun y => jacC τ y a k) = L ∘ fderiv ℂ τ`.
+
+Use function extensionality and compare the values at `w`. Simplify using `[jacC, L]`. Rewrite using `[h]`. Conclude with `(L.analyticAt _).comp (hτ.fderiv y hy)`. Establish `h : (fun y => (jacC τ y).det) = fun y => ∑ σ : Equiv.Perm (Fin e), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, jacC τ y (σ i) i`.
+
+Use function extensionality and compare the values at `w`. Rewrite using `[Matrix.det_apply]`. Simplify using `[Units.smul_def, zsmul_eq_mul]`. Establish `h2 : (fun y => ∑ σ : Equiv.Perm (Fin e), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, jacC τ y (σ i) i) = ∑ σ : Equiv.Perm (Fin e), (fun _ => ((Equiv.Perm.sign σ : ℤ) : ℂ)) * ∏ i, fun y => jacC τ y (σ i) i`. Use function extensionality and compare the values at `w`.
+
+Simplify using `[Finset.sum_apply, Finset.prod_apply]`. Rewrite using `[h, h2]`. Conclude with `Finset.analyticAt_sum _ fun σ _ => analyticAt_const.mul (Finset.analyticAt_prod _ fun i _ => he _ _)`.
+-/
 theorem analyticOnNhd_det_jacC {τ : (Fin e → ℂ) → (Fin e → ℂ)} {U : Set (Fin e → ℂ)}
     (hτ : AnalyticOnNhd ℂ τ U) : AnalyticOnNhd ℂ (fun y => (jacC τ y).det) U := by
   intro y hy
@@ -77,6 +102,11 @@ theorem analyticOnNhd_det_jacC {τ : (Fin e → ℂ) → (Fin e → ℂ)} {U : S
 def jac (A : FinHolAtlas e X) (j i : Fin A.n) (y : Fin e → ℂ) : ℝ :=
   Complex.normSq (jacC (trans A j i) y).det
 
+/- English proof (translation)
+Establish `h1 : ContDiffOn ℂ ∞ (fun y => (jacC (trans A j i) y).det) (overlap A j i)` using `(analyticOnNhd_det_jacC (analyticOnNhd_trans A j i)).contDiffOn (isOpen_overlap A j i).uniqueDiffOn`. Establish `h2` using `h1.restrict_scalars ℝ`. Establish `h3 : ContDiff ℝ ∞ (fun z : ℂ => ‖z‖ ^ 2)` using `contDiff_norm_sq ℝ`. Establish `h : jac A j i = (fun z : ℂ => ‖z‖ ^ 2) ∘ (fun y => (jacC (trans A j i) y).det)`. Use function extensionality and compare the values at `y`.
+
+Simplify using `[jac, Complex.normSq_eq_norm_sq]`. Rewrite using `[h]`. Conclude with `h3.comp_contDiffOn h2`.
+-/
 theorem contDiffOn_jac (A : FinHolAtlas e X) (j i : Fin A.n) :
     ContDiffOn ℝ ∞ (jac A j i) (overlap A j i) := by
   have h1 : ContDiffOn ℂ ∞ (fun y => (jacC (trans A j i) y).det) (overlap A j i) :=
@@ -90,6 +120,13 @@ theorem contDiffOn_jac (A : FinHolAtlas e X) (j i : Fin A.n) :
   rw [h]
   exact h3.comp_contDiffOn h2
 
+/- English proof (translation)
+Rewrite using `[det_jacC]`. Establish `hyi : trans A j i y ∈ overlap A i j` using `image_trans A j i ▸ mem_image_of_mem _ hy`. Establish `h1 : DifferentiableAt ℂ (trans A j i) y` using `(analyticOnNhd_trans A j i y hy).differentiableAt`. Establish `h2 : DifferentiableAt ℂ (trans A i j) (trans A j i y)` using `(analyticOnNhd_trans A i j _ hyi).differentiableAt`. Establish `hid : trans A i j ∘ trans A j i =ᶠ[𝓝 y] id` using `by filter_upwards [(isOpen_overlap A j i).mem_nhds hy] with w hw show A.chart j ((A.chart i).symm (A.chart i ((A.chart j).symm w))) = w`.
+
+Rewrite using `[(A.chart i).left_inv hw.2, (A.chart j).right_inv hw.1]`. Establish `hc` using `fderiv_comp y h2 h1`. Rewrite `hc` using `[hid.fderiv_eq, fderiv_id]`. Establish `hlin : ((fderiv ℂ (trans A i j) (trans A j i y) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)).comp (fderiv ℂ (trans A j i) y : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Establish `hv` using `congrArg (fun L : (Fin e → ℂ) →L[ℂ] (Fin e → ℂ) => L v) hc`. Simplify using `using hv.symm`. Establish `h` using `congrArg LinearMap.det hlin`. Rewrite `h` using `[LinearMap.det_comp, LinearMap.det_id]`. Conclude with `right_ne_zero_of_mul_eq_one h`.
+-/
 theorem det_jacC_trans_ne_zero (A : FinHolAtlas e X) (j i : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ overlap A j i) : (jacC (trans A j i) y).det ≠ 0 := by
   rw [det_jacC]
@@ -115,10 +152,22 @@ theorem det_jacC_trans_ne_zero (A : FinHolAtlas e X) (j i : Fin A.n) {y : Fin e 
 def pieceDens (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A.n) (y : Fin e → ℂ) : ℝ :=
   (overlap A j i).indicator (fun y => ψ.χ i ((A.chart j).symm y) * jac A j i y) y
 
+/- English proof (translation)
+The claim follows from `indicator_nonneg (fun _ _ => mul_nonneg (ψ.nonneg _ _) (Complex.normSq_nonneg _)) _`.
+-/
 theorem pieceDens_nonneg (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A.n)
     (y : Fin e → ℂ) : 0 ≤ pieceDens A ψ j i y :=
   indicator_nonneg (fun _ _ => mul_nonneg (ψ.nonneg _ _) (Complex.normSq_nonneg _)) _
 
+/- English proof (translation)
+Introduce `y hy`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `hψ : ContDiffOn ℝ ∞ (fun y => ψ.χ i ((A.chart j).symm y)) (A.chart j).target`. Establish `h` using `ψ.smooth i j`. Simplify `h` using `[FinHolAtlas.Smooth, FinHolAtlas.SmoothOn, Function.comp_def]`.
+
+Distinguish the cases in `hyo : y ∈ overlap A j i`. Establish `hev : pieceDens A ψ j i =ᶠ[𝓝 y] fun y => ψ.χ i ((A.chart j).symm y) * jac A j i y` using `by filter_upwards [(isOpen_overlap A j i).mem_nhds hyo] with w hw`. Simplify using `[pieceDens, indicator_of_mem hw]`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Conclude with `((hψ.mono inter_subset_left).mul (contDiffOn_jac A j i)).contDiffAt ((isOpen_overlap A j i).mem_nhds hyo)`.
+
+Establish `hns : (A.chart j).symm y ∉ tsupport (ψ.χ i)` using `fun h => hyo ⟨hy, ψ.tsupport_subset i h⟩`. Establish `hW : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (tsupport (ψ.χ i))ᶜ)` using `(A.chart j).continuousOn_symm.isOpen_inter_preimage (A.chart j).open_target (isClosed_tsupport _).isOpen_compl`. Establish `hev : pieceDens A ψ j i =ᶠ[𝓝 y] fun _ => 0` using `by filter_upwards [hW.mem_nhds ⟨hy, hns⟩] with w hw`. Distinguish the cases in `hwo : w ∈ overlap A j i`. Simplify using `[pieceDens, indicator_of_mem hwo, image_eq_zero_of_notMem_tsupport hw.2]`.
+
+Simplify using `[pieceDens, indicator_of_notMem hwo]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`.
+-/
 theorem contDiffOn_pieceDens (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A.n) :
     ContDiffOn ℝ ∞ (pieceDens A ψ j i) (A.chart j).target := by
   intro y hy
@@ -144,6 +193,9 @@ theorem contDiffOn_pieceDens (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i 
       · simp [pieceDens, indicator_of_notMem hwo]
     exact contDiffAt_const.congr_of_eventuallyEq hev
 
+/- English proof (translation)
+Establish `hyo : y ∈ overlap A j i` using `⟨hy, ψ.tsupport_subset i (subset_tsupport _ (Function.mem_support.mpr hi.ne'))⟩`. Rewrite using `[pieceDens, indicator_of_mem hyo]`. Conclude with `mul_pos hi (Complex.normSq_pos.mpr (det_jacC_trans_ne_zero A j i hyo))`.
+-/
 theorem pieceDens_pos (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hi : 0 < ψ.χ i ((A.chart j).symm y)) :
     0 < pieceDens A ψ j i y := by
@@ -155,12 +207,20 @@ theorem pieceDens_pos (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A
 def dens (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n) (y : Fin e → ℂ) : ℝ :=
   ∑ i, pieceDens A ψ j i y
 
+/- English proof (translation)
+Establish `h : dens A ψ j = fun y => ∑ i, pieceDens A ψ j i y` using `rfl`. Rewrite using `[h]`. Conclude with `ContDiffOn.sum fun i _ => contDiffOn_pieceDens A ψ j i`.
+-/
 theorem contDiffOn_dens (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n) :
     ContDiffOn ℝ ∞ (dens A ψ j) (A.chart j).target := by
   have h : dens A ψ j = fun y => ∑ i, pieceDens A ψ j i y := rfl
   rw [h]
   exact ContDiffOn.sum fun i _ => contDiffOn_pieceDens A ψ j i
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, 0 < ψ.χ i ((A.chart j).symm y) := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1` using `ψ.sum_eq_one ((A.chart j).symm y)`. Establish `h2 : ∑ i, ψ.χ i ((A.chart j).symm y) ≤ 0` using `Finset.sum_nonpos fun i _ => h i`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(pieceDens_pos A ψ j i hy hi).trans_le (Finset.single_le_sum (fun k _ => pieceDens_nonneg A ψ j k y) (Finset.mem_univ i))`.
+-/
 theorem dens_pos (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) : 0 < dens A ψ j y := by
   obtain ⟨i, hi⟩ : ∃ i, 0 < ψ.χ i ((A.chart j).symm y) := by
@@ -174,6 +234,11 @@ theorem dens_pos (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n) {y 
 
 variable [MeasurableSpace X] [BorelSpace X]
 
+/- English proof (translation)
+Establish `hc : Continuous ((A.chart j).target.restrict (A.chart j).symm)` using `(A.chart j).continuousOn_symm.restrict`. Establish `h` using `MeasurableSet.subtype_image (A.chart j).open_target.measurableSet (hc.measurable hS)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨hy, hyS⟩`. Conclude with `⟨⟨y, hy⟩, hyS, rfl⟩`. Introduce and unpack `⟨⟨y, hy⟩, hyS, rfl⟩`. Conclude with `⟨hy, hyS⟩`.
+-/
 theorem measurableSet_chart_preimage (A : FinHolAtlas e X) (j : Fin A.n) {S : Set X}
     (hS : MeasurableSet S) : MeasurableSet ((A.chart j).target ∩ (A.chart j).symm ⁻¹' S) := by
   have hc : Continuous ((A.chart j).target.restrict (A.chart j).symm) :=
@@ -187,6 +252,21 @@ theorem measurableSet_chart_preimage (A : FinHolAtlas e X) (j : Fin A.n) {S : Se
   · rintro ⟨⟨y, hy⟩, hyS, rfl⟩
     exact ⟨hy, hyS⟩
 
+/- English proof (translation)
+Use `set B := (A.chart i).target ∩ (A.chart i).symm ⁻¹' S with hBdef`. Use `set C := (A.chart j).target ∩ (A.chart j).symm ⁻¹' S with hCdef`. Establish `hB : MeasurableSet B` using `measurableSet_chart_preimage A i hS`. Establish `hC : MeasurableSet C` using `measurableSet_chart_preimage A j hS`. Use `set G : (Fin e → ℂ) → ENNReal := B.indicator fun z => ENNReal.ofReal (ψ.χ i ((A.chart i).symm z)) with hGdef`.
+
+Use `set H : (Fin e → ℂ) → ENNReal := C.indicator fun y => ENNReal.ofReal (pieceDens A ψ j i y) with hHdef`. Establish `hGs : Function.support G ⊆ overlap A i j`. Introduce `z hz`. Establish `hzB : z ∈ B`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hz (indicator_of_notMem h _)`. Conclude with `⟨hzB.1, hSj hzB.2⟩`. Establish `hHs : Function.support H ⊆ overlap A j i`. Introduce `y hy`. Assume the negation of the conclusion as `h`.
+
+Apply `hy` to reduce the goal to its premises. Distinguish the cases in `hyC : y ∈ C`. Simplify using `[H, indicator_of_mem hyC, pieceDens, indicator_of_notMem h]`. Conclude with `indicator_of_notMem hyC _`. Rewrite using `[← lintegral_indicator hB, ← lintegral_indicator hC, ← hGdef, ← hHdef, ← setLIntegral_eq_of_support_subset hGs, ← setLIntegral_eq_of_support_subset hHs, ← image_trans A j i, lintegral_image_eq_lintegral_normSq_det_mul _ _ (isOpen_overlap A j i) (analyticOnNhd_trans A j i) (injOn_ …`.
+
+Use `setLIntegral_congr_fun (isOpen_overlap A j i).measurableSet fun y hy => ?_` and prove the remaining obligations. Establish `hsym : (A.chart i).symm (trans A j i y) = (A.chart j).symm y` using `(A.chart i).left_inv hy.2`. Establish `htar : trans A j i y ∈ (A.chart i).target` using `(A.chart i).map_source hy.2`. Distinguish the cases in `hyS : (A.chart j).symm y ∈ S`. Establish `hB' : trans A j i y ∈ B` using `⟨htar, by rw [Set.mem_preimage, hsym]; exact hyS⟩`.
+
+Establish `hC' : y ∈ C` using `⟨hy.1, hyS⟩`. Simplify using `only [G, H, indicator_of_mem hB', indicator_of_mem hC', hsym, pieceDens, indicator_of_mem hy, jac]`. Rewrite using `[← ENNReal.ofReal_mul (Complex.normSq_nonneg _)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hB' : trans A j i y ∉ B` using `fun h => hyS (by`. Establish `h2` using `h.2`. Rewrite using `[Set.mem_preimage, hsym] at h2)` and apply the resulting hypothesis. Establish `hC' : y ∉ C` using `fun h => hyS h.2`. Simplify using `[G, H, indicator_of_notMem hB', indicator_of_notMem hC']`.
+-/
 theorem lintegral_piece (A : FinHolAtlas e X) (ψ : ChartPartition A) (j i : Fin A.n) {S : Set X}
     (hS : MeasurableSet S) (hSj : S ⊆ (A.chart j).source) :
     ∫⁻ z in (A.chart i).target ∩ (A.chart i).symm ⁻¹' S, ENNReal.ofReal (ψ.χ i ((A.chart i).symm z)) =
@@ -237,6 +317,9 @@ def piece (A : FinHolAtlas e X) (ψ : ChartPartition A) (i : Fin A.n) : Measure 
   ((volume.restrict (A.chart i).target).withDensity
     fun z => ENNReal.ofReal (ψ.χ i ((A.chart i).symm z))).map (A.chart i).symm
 
+/- English proof (translation)
+Establish `hae : AEMeasurable (A.chart i).symm (volume.restrict (A.chart i).target)` using `(A.chart i).continuousOn_symm.aemeasurable (A.chart i).open_target.measurableSet`. Rewrite using `[piece, Measure.map_apply_of_aemeasurable (hae.mono_ac (withDensity_absolutelyContinuous _ _)) hS, withDensity_apply', Measure.restrict_restrict' (A.chart i).open_target.measurableSet, inter_comm]`.
+-/
 theorem piece_apply (A : FinHolAtlas e X) (ψ : ChartPartition A) (i : Fin A.n) {S : Set X}
     (hS : MeasurableSet S) :
     piece A ψ i S = ∫⁻ z in (A.chart i).target ∩ (A.chart i).symm ⁻¹' S,
@@ -250,6 +333,11 @@ theorem piece_apply (A : FinHolAtlas e X) (ψ : ChartPartition A) (i : Fin A.n) 
 def vol (A : FinHolAtlas e X) (ψ : ChartPartition A) : Measure X :=
   ∑ i, piece A ψ i
 
+/- English proof (translation)
+Rewrite using `[vol, Measure.finsetSum_apply]`. Repeatedly rewrite using `[piece_apply A ψ _ hS, lintegral_piece A ψ j _ hS hSj]`. Rewrite using `[← lintegral_finsetSum']`. Use `setLIntegral_congr_fun (measurableSet_chart_preimage A j hS) fun y _ => ?_` and prove the remaining obligations. Rewrite using `[dens, ENNReal.ofReal_sum_of_nonneg fun i _ => pieceDens_nonneg A ψ j i y]`.
+
+Introduce `i _`. Conclude with `(((contDiffOn_pieceDens A ψ j i).continuousOn.mono inter_subset_left).aemeasurable (measurableSet_chart_preimage A j hS)).ennreal_ofReal`.
+-/
 theorem vol_apply_chart (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n) {S : Set X}
     (hS : MeasurableSet S) (hSj : S ⊆ (A.chart j).source) :
     vol A ψ S = ∫⁻ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' S,
@@ -263,6 +351,15 @@ theorem vol_apply_chart (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A
     exact (((contDiffOn_pieceDens A ψ j i).continuousOn.mono inter_subset_left).aemeasurable
       (measurableSet_chart_preimage A j hS)).ennreal_ofReal
 
+/- English proof (translation)
+Establish `hT : IsCompact (tsupport (ψ.χ i))` using `(isClosed_tsupport _).isCompact`. Establish `hK : IsCompact (A.chart i '' tsupport (ψ.χ i))` using `hT.image_of_continuousOn ((A.chart i).continuousOn.mono (ψ.tsupport_subset i))`. Establish `hKm : MeasurableSet (A.chart i '' tsupport (ψ.χ i))` using `hK.isClosed.measurableSet`. Rewrite using `[piece_apply A ψ i MeasurableSet.univ, preimage_univ, inter_univ]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `setLIntegral_mono (measurable_one.indicator hKm) fun z hz => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : ψ.χ i ((A.chart i).symm z) = 0`. Simplify using `[h0]`. Establish `hmem : z ∈ A.chart i '' tsupport (ψ.χ i)` using `⟨(A.chart i).symm z, subset_tsupport _ (Function.mem_support.mpr h0), (A.chart i).right_inv hz⟩`. Rewrite using `[indicator_of_mem hmem, Pi.one_apply, ← ENNReal.ofReal_one]`.
+
+Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← ψ.sum_eq_one ((A.chart i).symm z)]`. Conclude with `Finset.single_le_sum (fun k _ => ψ.nonneg k _) (Finset.mem_univ i)`. Use `_ ≤ ∫⁻ z, (A.chart i '' tsupport (ψ.χ i)).indicator 1 z := setLIntegral_le_lintegral _ _`. Use `_ = volume (A.chart i '' tsupport (ψ.χ i)) := lintegral_indicator_one hKm`.
+
+Use `_ < ⊤ := hK.measure_lt_top`.
+-/
 theorem piece_univ_lt_top (A : FinHolAtlas e X) (ψ : ChartPartition A) [CompactSpace X]
     (i : Fin A.n) : piece A ψ i univ < ⊤ := by
   have hT : IsCompact (tsupport (ψ.χ i)) := (isClosed_tsupport _).isCompact
@@ -286,6 +383,13 @@ theorem piece_univ_lt_top (A : FinHolAtlas e X) (ψ : ChartPartition A) [Compact
     _ = volume (A.chart i '' tsupport (ψ.χ i)) := lintegral_indicator_one hKm
     _ < ⊤ := hK.measure_lt_top
 
+/- English proof (translation)
+Establish `heq : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source = (A.chart j).target` using `inter_eq_left.mpr fun y hy => (A.chart j).map_target hy`. Rewrite using `[vol_apply_chart A ψ j (A.chart j).open_source.measurableSet subset_rfl, heq]`. Introduce `h0`. Rewrite `h0` using `[lintegral_eq_zero_iff' (((contDiffOn_dens A ψ j).continuousOn.aemeasurable (A.chart j).open_target.measurableSet).ennreal_ofReal)]`. Take `⟨x, hx⟩` from `hne`.
+
+Establish `hpos : 0 < volume (A.chart j).target` using `(A.chart j).open_target.measure_pos volume ⟨A.chart j x, (A.chart j).map_source hx⟩`. Establish `hF : ∀ᵐ y ∂(volume.restrict (A.chart j).target), False` using `by filter_upwards [h0, ae_restrict_mem (A.chart j).open_target.measurableSet] with y hy1 hy2`. Conclude with `(ENNReal.ofReal_pos.mpr (dens_pos A ψ j hy2)).ne' hy1`. Rewrite `hF` using `[ae_iff]`. Simplify using `only [not_false_eq_true, ofPred_true, Measure.restrict_apply_univ] at hF`.
+
+Conclude with `hpos.ne' hF`.
+-/
 theorem vol_source_ne_zero (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fin A.n)
     (hne : (A.chart j).source.Nonempty) : vol A ψ (A.chart j).source ≠ 0 := by
   have heq : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source = (A.chart j).target :=
@@ -304,6 +408,15 @@ theorem vol_source_ne_zero (A : FinHolAtlas e X) (ψ : ChartPartition A) (j : Fi
   simp only [not_false_eq_true, ofPred_true, Measure.restrict_apply_univ] at hF
   exact hpos.ne' hF
 
+/- English proof (translation)
+Take `⟨ψ⟩` from `GroundTheory.Heights₂.Heights.FourB.ChartPartitionExists.proof A`. Take `⟨x⟩` from `‹Nonempty X›`. Take `⟨j0, hj0⟩` from `A.cover x`. Establish `hfin : vol A ψ univ ≠ ⊤`. Rewrite using `[vol, Measure.finsetSum_apply]`.
+
+Conclude with `(ENNReal.sum_lt_top.mpr fun i _ => piece_univ_lt_top A ψ i).ne`. Establish `hpos : vol A ψ univ ≠ 0` using `fun h => vol_source_ne_zero A ψ j0 ⟨x, hj0⟩ (measure_mono_null (subset_univ _) h)`. Use `⟨(vol A ψ univ)⁻¹ • vol A ψ, ⟨?_⟩, fun j => ⟨fun y => (vol A ψ univ).toReal⁻¹ * dens A ψ j y, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hpos hfin]`. Conclude with `contDiffOn_const.mul (contDiffOn_dens A ψ j)`.
+
+Introduce `y hy`. Conclude with `mul_pos (inv_pos.mpr (ENNReal.toReal_pos hpos hfin)) (dens_pos A ψ j hy)`. Introduce `S hS hSj`. Rewrite using `[Measure.smul_apply, smul_eq_mul, vol_apply_chart A ψ j hS hSj]`. Repeatedly rewrite using `[ENNReal.ofReal_mul (inv_nonneg.mpr ENNReal.toReal_nonneg)]`.
+
+Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ENNReal.ofReal_inv_of_pos (ENNReal.toReal_pos hpos hfin), ENNReal.ofReal_toReal hfin]`.
+-/
 theorem exists_isSmoothVolume [CompactSpace X] [T2Space X] [Nonempty X] (A : FinHolAtlas e X) :
     ∃ dV : Measure X, IsSmoothVolume A dV := by
   obtain ⟨ψ⟩ := GroundTheory.Heights₂.Heights.FourB.ChartPartitionExists.proof A

@@ -5,6 +5,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
+/- English proof (translation)
+Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p r hp hr`. Establish `e : p + r - MvPolynomial.C (MvPolynomial.constantCoeff (p + r)) = (p - MvPolynomial.C (MvPolynomial.constantCoeff p)) + (r - MvPolynomial.C (MvPolynomial.constantCoeff r))`. Simplify using `only [map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Ideal.add_mem _ hp hr`. Consider the case `mul_X p i _`. Establish `e : p * MvPolynomial.X i - MvPolynomial.C (MvPolynomial.constantCoeff (p * MvPolynomial.X i)) = p * MvPolynomial.X i` using `by simp`.
+
+Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+-/
 theorem prd_sub_C_mem {σ R : Type} [CommRing R] (p : MvPolynomial σ R) :
     p - MvPolynomial.C (MvPolynomial.constantCoeff p) ∈
       Ideal.span (Set.range (MvPolynomial.X : σ → MvPolynomial σ R)) := by
@@ -20,6 +27,25 @@ theorem prd_sub_C_mem {σ R : Type} [CommRing R] (p : MvPolynomial σ R) :
         p * MvPolynomial.X i := by simp
     rw [e]; exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Use `⟨hψ, ?_⟩` and prove the remaining obligations. Establish `hQ : (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) (A ⧸ I)))).map ψ = I.map φ`. Rewrite using `[Ideal.map_span, hIB, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `key : ∀ a : A, ψ (MvPolynomial.C (Ideal.Quotient.mk I a)) - φ a ∈ (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) (A ⧸ I)))).map ψ`.
+
+Introduce `a`. Rewrite using `[hQ, ← neg_sub]`. Conclude with `(Ideal.neg_mem_iff _).2 (hl a)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+
+Introduce `x hx`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (MvPolynomial.constantCoeff p)`. Rewrite `hx` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Establish `h1` using `prd_sub_C_mem p`.
+
+Establish `h2 : ψ p - ψ (MvPolynomial.C (MvPolynomial.constantCoeff p)) ∈ (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) (A ⧸ I)))).map ψ`. Rewrite using `[← map_sub]`. Conclude with `Ideal.mem_map_of_mem _ h1`. Establish `h3 : φ a ∈ I.map φ`. Rewrite using `[← hQ]`.
+
+Establish `h5` using `Ideal.sub_mem _ hx h2`. Rewrite `h5` using `[sub_sub_cancel, ← ha]`. Establish `h6` using `Ideal.sub_mem _ h5 (key a)`. Rewrite `h6` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h4 : Ideal.Quotient.mk I a = 0`.
+
+Apply `hφ.2.1` to reduce the goal to its premises. Rewrite using `[map_zero, Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h3`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `h1` using `[← ha, h4, map_zero, sub_zero]`.
+
+Conclude with `h1`. Introduce `y`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨x, hx⟩` from `hφ.2.2 (Ideal.Quotient.mk (I.map φ) b)`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+
+Rewrite `hx` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Use `⟨Ideal.Quotient.mk _ (MvPolynomial.C (Ideal.Quotient.mk I a)), ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Establish `hx' : φ a - b ∈ (Ideal.span (Set.range (MvPolynomial.X : Fin d → MvPolynomial (Fin d) (A ⧸ I)))).map ψ`. Rewrite using `[hQ]`.
+
+Conclude with `hx`. Establish `h7` using `Ideal.add_mem _ (key a) hx'`. Rewrite `h7` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem prd_nbhd_psi {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (I : Ideal A) (φ : A →+* B)
     (ψ : MvPolynomial (Fin d) (A ⧸ I) →+* B) (hφ : Nbhd φ I) (hψ : ψ.Etale)
     (hIB : I.map φ = Ideal.span (Set.range fun j => ψ (MvPolynomial.X j)))
@@ -65,6 +91,9 @@ theorem prd_nbhd_psi {d : ℕ} {A B : Type} [CommRing A] [CommRing B] (I : Ideal
     have h7 := Ideal.add_mem _ (key a) hx'
     rwa [sub_add_sub_cancel] at h7
 
+/- English proof (translation)
+Use `⟨Discrete PUnit, inferInstance, inferInstance, (Functor.const _).obj (CommRingCat.of B), { app := fun _ => CommRingCat.ofHom φ, naturality := fun _ _ _ => by simp }, 𝟙 _, ⟨?_⟩, fun _ => ⟨h, ?_⟩⟩` and prove the remaining obligations. Conclude with `{ desc := fun s => s.ι.app ⟨⟨⟩⟩ fac := fun s j => by rcases j with ⟨⟨⟩⟩; simp uniq := fun s m hm => by simpa using hm ⟨⟨⟩⟩ }`. Simplify using the standard rewrite rules.
+-/
 theorem prd_indNbhd_of_nbhd {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (I : Ideal A) (h : Nbhd φ I) :
     IndNbhd φ I := by
   refine ⟨Discrete PUnit, inferInstance, inferInstance, (Functor.const _).obj (CommRingCat.of B),
@@ -74,6 +103,9 @@ theorem prd_indNbhd_of_nbhd {A B : Type} [CommRing A] [CommRing B] (φ : A →+*
             uniq := fun s m hm => by simpa using hm ⟨⟨⟩⟩ }
   · simp
 
+/- English proof (translation)
+Introduce `x hx h'`. Apply `hx` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(J : Set B) ⊆ x.asIdeal`. Establish `h'' : (I : Set A) ⊆ (Ideal.comap f x.asIdeal)` using `h'`. Conclude with `hJ.trans (Ideal.map_le_iff_le_comap.2 h'')`.
+-/
 theorem prd_off_le {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (I : Ideal A) (J : Ideal B)
     (hJ : J ≤ I.map f) : off B J ≤ Spec.map (CommRingCat.ofHom f) ⁻¹ᵁ off A I := by
   intro x hx h'
@@ -82,6 +114,9 @@ theorem prd_off_le {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (I : I
   have h'' : (I : Set A) ⊆ (Ideal.comap f x.asIdeal) := h'
   exact hJ.trans (Ideal.map_le_iff_le_comap.2 h'')
 
+/- English proof (translation)
+Apply `Arrow.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `sch.map _ ≫ sch.map _ = sch.map _`. Rewrite using `[← Functor.map_comp, Scheme.Hom.resLE_comp_resLE]`. Express the relevant statement in the definitionally equal form `sch.map f ≫ sch.map g = sch.map (f ≫ g)`. Rewrite using `[Functor.map_comp]`.
+-/
 theorem prd_opnMap_comp {X'' X' X : Scheme.{0}} (f : X'' ⟶ X') (g : X' ⟶ X) (U'' : X''.Opens) (U' : X'.Opens)
     (U : X.Opens) (h : U'' ≤ f ⁻¹ᵁ U') (h' : U' ≤ g ⁻¹ᵁ U) (h'' : U'' ≤ (f ≫ g) ⁻¹ᵁ U) :
     opnMap f U'' U' h ≫ opnMap g U' U h' = opnMap (f ≫ g) U'' U h'' := by
@@ -91,10 +126,16 @@ theorem prd_opnMap_comp {X'' X' X : Scheme.{0}} (f : X'' ⟶ X') (g : X' ⟶ X) 
   · change sch.map f ≫ sch.map g = sch.map (f ≫ g)
     rw [Functor.map_comp]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem prd_opnMap_congr {X' X : Scheme.{0}} {f f' : X' ⟶ X} (e : f = f') (U' : X'.Opens) (U : X.Opens)
     (h : U' ≤ f ⁻¹ᵁ U) (h' : U' ≤ f' ⁻¹ᵁ U) : opnMap f U' U h = opnMap f' U' U h' := by
   subst e; rfl
 
+/- English proof (translation)
+Introduce `n i` and use `by have e : ⇑(Hs.pull q (φ ≫ ψ) n i) = Hs.pull q φ n i ∘ Hs.pull q ψ n i := funext (hs_pull_comp q φ ψ n i) have h2 := h n i rw [e] at h2 exact (Function.Bijective.of_comp_iff _ (h' n i)).1 h2`.
+-/
 theorem prd_exc_left (q : ℕ) {P'' P' P : Arrow Spc} {φ : P'' ⟶ P'} {ψ : P' ⟶ P} (h : Exc q (φ ≫ ψ))
     (h' : Exc q ψ) : Exc q φ := fun n i => by
   have e : ⇑(Hs.pull q (φ ≫ ψ) n i) = Hs.pull q φ n i ∘ Hs.pull q ψ n i := funext (hs_pull_comp q φ ψ n i)
@@ -102,11 +143,21 @@ theorem prd_exc_left (q : ℕ) {P'' P' P : Arrow Spc} {φ : P'' ⟶ P'} {ψ : P'
   rw [e] at h2
   exact (Function.Bijective.of_comp_iff _ (h' n i)).1 h2
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `sch.map _ ≫ sch.map _ = sch.map _`. Rewrite using `[← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+-/
 theorem prd_spMap_comp {R S T : Type} [CommRing R] [CommRing S] [CommRing T] (f : R →+* S) (g : S →+* T) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   change sch.map _ ≫ sch.map _ = sch.map _
   rw [← Functor.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
+/- English proof (translation)
+Set `e` to `RingEquiv.ofBijective g hg`. Establish `hid : ∀ (T : Type) [CommRing T], spMap (RingHom.id T) = 𝟙 _` using `fun T _ => by`. Express the relevant statement in the definitionally equal form `sch.map _ = _`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, CategoryTheory.Functor.map_id]`. Establish `h1 : spMap g ≫ spMap (e.symm : S →+* R) = 𝟙 _`.
+
+Rewrite using `[prd_spMap_comp]`. Establish `: g.comp (e.symm : S →+* R) = RingHom.id S` using `by ext x; exact e.apply_symm_apply x`. Rewrite using `[this, hid]`. Establish `h2 : spMap (e.symm : S →+* R) ≫ spMap g = 𝟙 _`. Rewrite using `[prd_spMap_comp]`.
+
+Establish `: (e.symm : S →+* R).comp g = RingHom.id R` using `by ext x; exact e.symm_apply_apply x`. Rewrite using `[this, hid]`. Use `Function.bijective_iff_has_inverse.2 ⟨pull _ (spMap (e.symm : S →+* R)) (tw q i) n, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, h2, pull_id]`. Rewrite using `[← pull_comp, h1, pull_id]`.
+-/
 theorem prd_pull_bij {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) (hg : Function.Bijective g) (q : ℕ)
     (i n : ℤ) : Function.Bijective (pull _ (spMap g) (tw q i) n) := by
   let e := RingEquiv.ofBijective g hg
@@ -125,12 +176,20 @@ theorem prd_pull_bij {R S : Type} [CommRing R] [CommRing S] (g : R →+* S) (hg 
   · rw [← pull_comp, h2, pull_id]
   · rw [← pull_comp, h1, pull_id]
 
+/- English proof (translation)
+Introduce `x hx`. Establish `h2` using `h' (h hx)`. Simplify using `using h2`.
+-/
 theorem prd_le_comp {X'' X' X : Scheme.{0}} {f : X'' ⟶ X'} {g : X' ⟶ X} {U'' : X''.Opens} {U' : X'.Opens}
     {U : X.Opens} (h : U'' ≤ f ⁻¹ᵁ U') (h' : U' ≤ g ⁻¹ᵁ U) : U'' ≤ (f ≫ g) ⁻¹ᵁ U := by
   intro x hx
   have h2 := h' (h hx)
   simpa using h2
 
+/- English proof (translation)
+Use `(Function.Bijective.of_comp_iff' (hexc _ _) _).1 ?_` and prove the remaining obligations. Establish `e : (⇑(Hs.pull q (opnMap (Spec.map (CommRingCat.ofHom m)) (off C K) (off A' IA) hm) (n + 2 * d) (i + d)) ∘ fun a : Ht q (sp A') n i => Hs.act q (P` using `opn (off A' IA)) a cA) = (fun b : Ht q (sp C) n i => Hs.act q (P := opn (off C K)) b cC) ∘ ⇑(pull _ (spMap m) (tw q i) n) := by`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp]`. Establish `e2` using `hAN a6 q _ _ (opnMap (Spec.map (CommRingCat.ofHom m)) (off C K) (off A' IA) hm) n (2 * d) i d a cA`.
+
+Rewrite `e2` using `[hcl]`. Conclude with `e2`. Rewrite using `[e]`. Conclude with `(hC n i).comp (hpull n i)`.
+-/
 theorem prd_transfer (hAN : LeafActNat) (a6 : DivisorNaturality) {d q : ℕ} [NeZero q] {A' C : Type} [CommRing A'] [CommRing C]
     (IA : Ideal A') (K : Ideal C) (m : A' →+* C) (hm : off C K ≤ Spec.map (CommRingCat.ofHom m) ⁻¹ᵁ off A' IA)
     (cA : Hs q (opn (off A' IA)) (2 * d) d) (cC : Hs q (opn (off C K)) (2 * d) d)
@@ -150,6 +209,33 @@ theorem prd_transfer (hAN : LeafActNat) (a6 : DivisorNaturality) {d q : ℕ} [Ne
     exact e2
   rw [e]; exact (hC n i).comp (hpull n i)
 
+/- English proof (translation)
+Introduce `hyp H d q _ A _ I hq hI hch c hc h n i`. Establish `hyp'` using `hyp`. Take `⟨a1, -, -, a4, a6, -, -, -, b1, -, -, e1⟩` from `hyp'`. Take `⟨B, _, φ, ψ, hφ, hψ, hIB, hl⟩` from `hch`. Take `⟨th, hth⟩` from `hT hyp d`.
+
+Establish `hTh : IsThom d (thom d)` using `@pick_spec _ ⟨fun _ _ _ _ _ _ => 0⟩ _ ⟨th, hth⟩`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map φ`. Establish `hqR : IsUnit (q : A ⧸ I)` using `by simpa using hq.map (Ideal.Quotient.mk I)`. Establish `hqA' : IsUnit (q : H.obj A I)` using `by simpa using hq.map (H.η A I)`. Establish `hqC : IsUnit (q : H.obj B (I.map φ))` using `by simpa using hqB.map (H.η B (I.map φ))`.
+
+Take `⟨m, hmdef⟩ : ∃ m, m = H.map (I` from `I) (J := I.map φ) φ Ideal.le_comap_map := ⟨_, rfl⟩`. Establish `hmη : m.comp (H.η A I) = (H.η B (I.map φ)).comp φ` using `by rw [hmdef]; exact H.map_η _ _`. Establish `hK' : (I.map φ).map (H.η B (I.map φ)) = (I.map (H.η A I)).map m`. Rewrite using `[Ideal.map_map, Ideal.map_map, hmη]`. Establish `hy : Ideal.span (Set.range fun j => H.η B (I.map φ) (ψ (MvPolynomial.X j))) = (I.map φ).map (H.η B (I.map φ))`.
+
+Establish `e` using `congrArg (Ideal.map (H.η B (I.map φ))) hIB`. Rewrite using `[e, Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hm : off _ ((I.map φ).map (H.η B (I.map φ))) ≤ Spec.map (CommRingCat.ofHom m) ⁻¹ᵁ off _ (I.map (H.η A I))` using `prd_off_le _ _ _ (le_of_eq hK')`. Establish `hB : off _ ((I.map φ).map (H.η B (I.map φ))) ≤ Spec.map (CommRingCat.ofHom (H.η B (I.map φ))) ⁻¹ᵁ off B (I.map φ)` using `prd_off_le _ _ _ le_rfl`.
+
+Establish `hφo : off B (I.map φ) ≤ Spec.map (CommRingCat.ofHom φ) ⁻¹ᵁ off A I` using `prd_off_le _ _ _ le_rfl`. Establish `excA` using `hIE a1 a4 b1 q (H.η A I) I hI (H.ind A I) hq h`. Establish `excB` using `hIE a1 a4 b1 q (H.η B (I.map φ)) (I.map φ) (hI.map φ) (H.ind B _) hqB hB`. Establish `excφ` using `hIE a1 a4 b1 q φ I hI (prd_indNbhd_of_nbhd φ I hφ) hq hφo`. Establish `hSpec : Spec.map (CommRingCat.ofHom m) ≫ Spec.map (CommRingCat.ofHom (H.η A I)) = Spec.map (CommRingCat.ofHom (H.η B (I.map φ))) ≫ Spec.map (CommRingCat.ofHom φ)`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hmη]`. Establish `hΦG : opnMap _ _ _ hm ≫ opnMap _ _ _ h = opnMap _ _ _ hB ≫ opnMap _ _ _ hφo`. Rewrite using `[prd_opnMap_comp _ _ _ _ _ hm h (prd_le_comp hm h), prd_opnMap_comp _ _ _ _ _ hB hφo (prd_le_comp hB hφo)]`. Conclude with `prd_opnMap_congr hSpec _ _ _ _`. Establish `excΦ : Exc q (opnMap _ _ _ hm)`.
+
+Use `prd_exc_left q ?_ excA` and prove the remaining obligations. Rewrite using `[hΦG]`. Conclude with `exc_comp q excB excφ`. Establish `hcl : Hs.pull q (opnMap _ _ _ hm) _ _ (Hs.pull q (opnMap _ _ _ h) _ _ c) = thom d q (H.obj B (I.map φ)) ((I.map φ).map (H.η B (I.map φ))) _ hy`. Rewrite using `[← hs_pull_comp, hΦG, hs_pull_comp, hc B φ (fun j => ψ (MvPolynomial.X j)) hIB.symm hφo hφ.1]`.
+
+Conclude with `(hTh q).1 B (H.obj B (I.map φ)) (H.η B (I.map φ)) (I.map φ) _ (fun j => ψ (MvPolynomial.X j)) hIB.symm hy hB hqB`. Establish `hpull : ∀ n i : ℤ, Function.Bijective (pull _ (spMap m) (tw q i) n)`. Introduce `n i`. Use `H.hens A I` as an intermediate fact. Use `H.hens B (I.map φ)` as an intermediate fact.
+
+Establish `eA` using `e1 q (H.obj A I) (I.map (H.η A I)) hqA' i n`. Establish `eC` using `e1 q (H.obj B (I.map φ)) ((I.map φ).map (H.η B (I.map φ))) hqC i n`. Establish `hle : I.map (H.η A I) ≤ ((I.map φ).map (H.η B (I.map φ))).comap m`. Rewrite using `[hK']`. Conclude with `Ideal.le_comap_map`.
+
+Establish `hqm : Function.Bijective (Ideal.quotientMap _ m hle)`. Establish `hqA` using `hQ A (H.obj A I) (H.η A I) I (H.ind A I)`. Establish `hqB'` using `hQ B (H.obj B (I.map φ)) (H.η B (I.map φ)) (I.map φ) (H.ind _ _)`. Establish `hcomp : ⇑(Ideal.quotientMap _ m hle) ∘ ⇑(Ideal.quotientMap (I.map (H.η A I)) (H.η A I) Ideal.le_comap_map) = ⇑(Ideal.quotientMap ((I.map φ).map (H.η B (I.map φ))) (H.η B (I.map φ)) Ideal.le_comap_map) ∘ ⇑(Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map)`. Use function extensionality and compare the values at `x`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Simplify using `only [Function.comp, Ideal.quotientMap_mk]`. Rewrite using `[show m (H.η A I a) = H.η B (I.map φ) (φ a) from RingHom.congr_fun hmη a]`. Conclude with `(Function.Bijective.of_comp_iff _ hqA).1 (by rw [hcomp]; exact hqB'.comp hφ.2)`. Establish `hsq : spMap (Ideal.Quotient.mk ((I.map φ).map (H.η B (I.map φ)))) ≫ spMap m = spMap (Ideal.quotientMap _ m hle) ≫ spMap (Ideal.Quotient.mk (I.map (H.η A I)))`.
+
+Rewrite using `[prd_spMap_comp, prd_spMap_comp, Ideal.quotientMap_comp_mk]`. Establish `e : ⇑(pull _ (spMap (Ideal.Quotient.mk ((I.map φ).map (H.η B (I.map φ))))) (tw q i) n) ∘ ⇑(pull _ (spMap m) (tw q i) n) = ⇑(pull _ (spMap (Ideal.quotientMap _ m hle)) (tw q i) n) ∘ ⇑(pull _ (spMap (Ideal.Quotient.mk (I.map (H.η A I)))) (tw q i) n)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp]`. Rewrite using `[← pull_comp, ← pull_comp, hsq]`.
+
+Conclude with `(Function.Bijective.of_comp_iff' eC _).1 (by rw [e]; exact (prd_pull_bij _ hqm q i n).comp eA)`. Establish `hC` using `fun n i => hPA hyp d q (A ⧸ I) B (H.obj B (I.map φ)) ψ (H.η B (I.map φ)) hqR (prd_nbhd_psi I φ ψ hφ hψ hIB hl) (I.map φ) _ (H.ind B _) rfl (H.hens B _) hIB.symm hy n i`. Conclude with `prd_transfer hAN a6 (I.map (H.η A I)) _ m hm _ _ hcl excΦ hpull hC n i`.
+-/
 theorem LeafPrdRing_of (hQ : LeafQuot) (hIE : LeafIndExc) (hT : LeafThom) (hPA : LeafPrdAff) (hAN : LeafActNat) :
     LeafPrdRing := by
   intro hyp H d q _ A _ I hq hI hch c hc h n i

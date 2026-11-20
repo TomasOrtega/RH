@@ -22,9 +22,15 @@ variable {n : ℕ} {S : Finset ℕ} {R : Type*} [CommRing R]
 def parEntry (X : PPos n S → R) : Matrix (Fin n) (Fin n) R :=
   Matrix.of fun i j => if h : ∃ s ∈ S, (i : ℕ) < s ∧ s ≤ (j : ℕ) then X ⟨(i, j), h⟩ else 0
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem parEntry_apply (X : PPos n S → R) (i j : Fin n) :
     parEntry X i j = if h : ∃ s ∈ S, (i : ℕ) < s ∧ s ≤ (j : ℕ) then X ⟨(i, j), h⟩ else 0 := rfl
 
+/- English proof (translation)
+Rewrite using `[parEntry_apply, dif_neg]`. Introduce and unpack `⟨s, -, h1, h2⟩`. Establish `: (j : ℕ) ≤ i` using `hij`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem parEntry_apply_of_le (X : PPos n S → R) {i j : Fin n} (hij : j ≤ i) :
     parEntry X i j = 0 := by
   rw [parEntry_apply, dif_neg]
@@ -34,12 +40,18 @@ theorem parEntry_apply_of_le (X : PPos n S → R) {i j : Fin n} (hij : j ≤ i) 
 
 def parMatrix (X : PPos n S → R) : Matrix (Fin n) (Fin n) R := 1 + parEntry X
 
+/- English proof (translation)
+Introduce `i j hji`. Establish `hji' : j < i` using `hji`. Simplify using `only [parMatrix, Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hji').symm, zero_add]`. Conclude with `parEntry_apply_of_le X (le_of_lt hji')`.
+-/
 theorem parMatrix_isUpperTriangular (X : PPos n S → R) : (parMatrix X).IsUpperTriangular := by
   intro i j hji
   have hji' : j < i := hji
   simp only [parMatrix, Matrix.add_apply, Matrix.one_apply_ne (ne_of_lt hji').symm, zero_add]
   exact parEntry_apply_of_le X (le_of_lt hji')
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_of_isUpperTriangular (parMatrix_isUpperTriangular X)]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[parMatrix, parEntry_apply_of_le X (le_refl i)]`.
+-/
 theorem det_parMatrix (X : PPos n S → R) : (parMatrix X).det = 1 := by
   rw [Matrix.det_of_isUpperTriangular (parMatrix_isUpperTriangular X)]
   refine Finset.prod_eq_one fun i _ => ?_
@@ -48,9 +60,15 @@ theorem det_parMatrix (X : PPos n S → R) : (parMatrix X).det = 1 := by
 def parGL (X : PPos n S → R) : GL (Fin n) R :=
   Matrix.nonsingInvUnit (parMatrix X) (by rw [det_parMatrix]; exact isUnit_one)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem coe_parGL (X : PPos n S → R) :
     ((parGL X : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = parMatrix X := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(parMatrix X)⁻¹ = _`. Rewrite using `[Matrix.inv_def, det_parMatrix, Ring.inverse_one, one_smul]`.
+-/
 theorem coe_parGL_inv (X : PPos n S → R) :
     (((parGL X)⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = (parMatrix X).adjugate := by
   change (parMatrix X)⁻¹ = _
@@ -60,6 +78,9 @@ end Ring
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ} {S : Finset ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [AdelicGLn.diagonal_apply, coe_parGL, parMatrix, Matrix.add_apply, parEntry_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem diagonal_parGL (ξ : PPos n S → K) :
     AdelicGLn.diagonal K n (parGL ξ) = parGL (fun p => algebraMap K 𝔸[K] (ξ p)) := by
   ext i j
@@ -67,6 +88,9 @@ theorem diagonal_parGL (ξ : PPos n S → K) :
     Matrix.one_apply]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use `continuous_const.add (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Simplify using `only [parEntry_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+-/
 theorem continuous_parMatrix :
     Continuous (parMatrix : (PPos n S → 𝔸[K]) → Matrix (Fin n) (Fin n) 𝔸[K]) := by
   refine continuous_const.add (continuous_pi fun i => continuous_pi fun j => ?_)
@@ -75,6 +99,9 @@ theorem continuous_parMatrix :
   · exact continuous_apply _
   · exact continuous_const
 
+/- English proof (translation)
+Use `Units.continuous_iff.2 ⟨continuous_parMatrix, ?_⟩` and prove the remaining obligations. Establish `: (fun X : PPos n S → 𝔸[K] => (((parGL X)⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) = fun X => (parMatrix X).adjugate`. Use function extensionality and compare the values at `fun X => coe_parGL_inv X`. Rewrite using `[this]`. Conclude with `continuous_parMatrix.matrix_adjugate`.
+-/
 theorem continuous_parGL :
     Continuous (parGL : (PPos n S → 𝔸[K]) → AdelicGLn.AdelicGL K n) := by
   refine Units.continuous_iff.2 ⟨continuous_parMatrix, ?_⟩
@@ -107,12 +134,20 @@ abbrev boxMeasure : Measure 𝔸[K] :=
 
 variable {ι ι' : Type*} [Fintype ι] [Fintype ι']
 
+/- English proof (translation)
+Rewrite using `[Measure.restrict_pi_pi]`.
+-/
 theorem setIntegral_box_eq (F : (ι → 𝔸[K]) → ℂ) :
     ∫ X in Set.univ.pi (fun _ : ι => GroundTheory.Global.fundamentalSet K), F X
         ∂(Measure.pi fun _ => GroundTheory.Global.adeleMeasure K) =
       ∫ X, F X ∂(Measure.pi fun _ : ι => boxMeasure K) := by
   rw [Measure.restrict_pi_pi]
 
+/- English proof (translation)
+Use `set C : Set (ι → 𝔸[K]) := Set.univ.pi fun _ => closure (GroundTheory.Global.fundamentalSetInfinite K) ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K))`. Establish `hC : IsCompact C` using `isCompact_univ_pi fun _ => (GroundTheory.Global.isCompact_closure_fundamentalSetInfinite K).prod (GroundTheory.Global.isCompact_integralFiniteAdeles K)`. Establish `hDC : (Set.univ.pi fun _ : ι => GroundTheory.Global.fundamentalSet K) ⊆ C`. Introduce `X hX p _`. Conclude with `⟨subset_closure (hX p (mem_univ p)).1, (hX p (mem_univ p)).2⟩`.
+
+Establish `h1 : IntegrableOn F (Set.univ.pi fun _ : ι => GroundTheory.Global.fundamentalSet K) (Measure.pi fun _ => GroundTheory.Global.adeleMeasure K)` using `(hF.continuousOn.integrableOn_compact hC).mono_set hDC`. Rewrite `h1` using `[IntegrableOn, Measure.restrict_pi_pi]`. Conclude with `h1`.
+-/
 theorem integrable_box {F : (ι → 𝔸[K]) → ℂ} (hF : Continuous F) :
     Integrable F (Measure.pi fun _ : ι => boxMeasure K) := by
   set C : Set (ι → 𝔸[K]) := Set.univ.pi fun _ =>
@@ -130,6 +165,11 @@ theorem integrable_box {F : (ι → 𝔸[K]) → ℂ} (hF : Continuous F) :
   rw [IntegrableOn, Measure.restrict_pi_pi] at h1
   exact h1
 
+/- English proof (translation)
+Establish `hmp` using `measurePreserving_piCongrLeft (fun _ : ι' => boxMeasure K) e`. Rewrite using `[← hmp.integral_comp' F]`. Use `congr 1`. Use function extensionality and compare the values at `X`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i'`. Take `⟨i, rfl⟩` from `e.surjective i'`. Rewrite using `[Equiv.symm_apply_apply]`. Conclude with `Equiv.piCongrLeft_apply_apply (fun _ => 𝔸[K]) e X i`.
+-/
 theorem integral_box_reindex (e : ι ≃ ι') (F : (ι' → 𝔸[K]) → ℂ) :
     ∫ Y, F Y ∂(Measure.pi fun _ : ι' => boxMeasure K) =
       ∫ X, F (fun i' => X (e.symm i')) ∂(Measure.pi fun _ : ι => boxMeasure K) := by
@@ -145,12 +185,18 @@ theorem integral_box_reindex (e : ι ≃ ι') (F : (ι' → 𝔸[K]) → ℂ) :
 
 end Box
 
+/- English proof (translation)
+The claim follows from `setIntegral_box_eq _`.
+-/
 theorem constantTermPar_eq_integral (φ : AdelicGLn.AdelicGL K n → ℂ)
     (g : AdelicGLn.AdelicGL K n) :
     constantTermPar S φ g =
       ∫ X, φ (parGL X * g) ∂(Measure.pi fun _ : PPos n S => boxMeasure K) :=
   setIntegral_box_eq _
 
+/- English proof (translation)
+The claim follows from `setIntegral_box_eq _`.
+-/
 theorem constantTerm_eq_integral (r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ)
     (g : AdelicGLn.AdelicGL K n) :
     constantTerm r φ g =
@@ -166,6 +212,13 @@ def pposSingletonEquiv (n r : ℕ) : UPos n r ≃ PPos n {r} where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [coe_parGL, coe_unipGL, parMatrix, unipMatrix, Matrix.add_apply, parEntry_apply, blockEntry_apply]`. Use `congr 1`. Distinguish the cases in `h : (i : ℕ) < r ∧ r ≤ (j : ℕ)`.
+
+Establish `h' : ∃ s ∈ ({r} : Finset ℕ), (i : ℕ) < s ∧ s ≤ (j : ℕ)` using `⟨r, Finset.mem_singleton_self r, h⟩`. Rewrite using `[dif_pos h', dif_pos h]`. Both sides reduce to the same expression. Establish `h' : ¬ ∃ s ∈ ({r} : Finset ℕ), (i : ℕ) < s ∧ s ≤ (j : ℕ)`. Introduce and unpack `⟨s, hs, hh⟩`.
+
+Rewrite `hs` using `[Finset.mem_singleton]`. Conclude with `h (hs ▸ hh)`. Rewrite using `[dif_neg h', dif_neg h]`.
+-/
 theorem parGL_singleton {R : Type*} [CommRing R] {r : ℕ} (X : UPos n r → R) :
     parGL (fun q => X ((pposSingletonEquiv n r).symm q)) = unipGL X := by
   apply Units.ext
@@ -184,6 +237,9 @@ theorem parGL_singleton {R : Type*} [CommRing R] {r : ℕ} (X : UPos n r → R) 
       exact h (hs ▸ hh)
     rw [dif_neg h', dif_neg h]
 
+/- English proof (translation)
+Rewrite using `[constantTermPar_eq_integral, constantTerm_eq_integral, integral_box_reindex (pposSingletonEquiv n r)]`. Simplify using `only [parGL_singleton]`.
+-/
 theorem constantTermPar_singleton (r : ℕ) (φ : AdelicGLn.AdelicGL K n → ℂ)
     (g : AdelicGLn.AdelicGL K n) : constantTermPar {r} φ g = constantTerm r φ g := by
   rw [constantTermPar_eq_integral, constantTerm_eq_integral,
@@ -209,6 +265,13 @@ def joinPos (a : {q : PPos n S // IsTop r q} → R) (b : {q : PPos n S // ¬ IsT
     PPos n S → R :=
   fun q => if h : IsTop r q then a ⟨q, h⟩ else b ⟨q, h⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[blockEntry_apply, parEntry_apply]`. Use `split_ifs with h1 h2`.
+
+Take `⟨s, hs, h3, h4⟩` from `h2`. Use `hmax s hs k j h3 h4` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_zero]`. Rewrite using `[zero_mul]`.
+
+Rewrite using `[zero_mul]`.
+-/
 theorem blockEntry_mul_parEntry (hmax : ∀ s ∈ S, ∀ i j : Fin n, (i : ℕ) < s → s ≤ (j : ℕ) → s ≤ r)
     (A : UPos n r → R) (X : PPos n S → R) : blockEntry A * parEntry X = 0 := by
   ext i j
@@ -223,6 +286,15 @@ theorem blockEntry_mul_parEntry (hmax : ∀ s ∈ S, ∀ i j : Fin n, (i : ℕ) 
   · rw [zero_mul]
   · rw [zero_mul]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_parGL, coe_unipGL]`. Apply the tactic sequence `rw [unipMatrix, parMatrix, parMatrix, add_mul, one_mul, mul_add, mul_one, blockEntry_mul_parEntry hmax, add_zero]`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, parEntry_apply, blockEntry_apply, joinPos]`.
+
+Rewrite using `[add_assoc]`. Use `congr 1`. Distinguish the cases in `hP : ∃ s ∈ S, (i : ℕ) < s ∧ s ≤ (j : ℕ)`. Rewrite using `[dif_pos hP, dif_pos hP]`. Distinguish the cases in `hT : (i : ℕ) < r ∧ r ≤ (j : ℕ)`.
+
+Establish `hT' : IsTop r (⟨(i, j), hP⟩ : PPos n S)` using `hT`. Rewrite using `[dif_pos hT, dif_pos hT', dif_pos hT', Pi.zero_apply, zero_add]`. Both sides reduce to the same expression. Establish `hT' : ¬ IsTop r (⟨(i, j), hP⟩ : PPos n S)` using `hT`. Rewrite using `[dif_neg hT, dif_neg hT', dif_neg hT', add_zero]`.
+
+Rewrite using `[dif_neg hP, dif_neg hP, zero_add, dif_neg]`. Introduce and unpack `hT`. Conclude with `hP ⟨r, hr, hT⟩`.
+-/
 theorem parGL_eq_unipGL_mul (hr : r ∈ S)
     (hmax : ∀ s ∈ S, ∀ i j : Fin n, (i : ℕ) < s → s ≤ (j : ℕ) → s ≤ r)
     (a : {q : PPos n S // IsTop r q} → R) (b : {q : PPos n S // ¬ IsTop r q} → R) :
@@ -249,6 +321,11 @@ theorem parGL_eq_unipGL_mul (hr : r ∈ S)
 
 end Split
 
+/- English proof (translation)
+Use `set T := S.filter fun s => 0 < s ∧ s < n`. Establish `hT : T.Nonempty`. Take `⟨s, hs, h⟩` from `hS`. Conclude with `⟨s, Finset.mem_filter.2 ⟨hs, h⟩⟩`. Establish `hr` using `Finset.mem_filter.1 (T.max'_mem hT)`.
+
+Use `⟨T.max' hT, hr.1, hr.2.1, hr.2.2, fun s hs i j h1 h2 => ?_⟩` and prove the remaining obligations. Use `T.le_max' s (Finset.mem_filter.2 ⟨hs, ?_, ?_⟩)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use `j.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_max_break (hS : ∃ s ∈ S, 0 < s ∧ s < n) :
     ∃ r ∈ S, 0 < r ∧ r < n ∧
       ∀ s ∈ S, ∀ i j : Fin n, (i : ℕ) < s → s ≤ (j : ℕ) → s ≤ r := by
@@ -264,6 +341,19 @@ theorem exists_max_break (hS : ∃ s ∈ S, 0 < s ∧ s < n) :
   · have := j.2
     omega
 
+/- English proof (translation)
+Take `⟨r, hr, hr0, hrn, hmax⟩` from `exists_max_break hS`. Take `⟨e, he⟩ : ∃ e, e = MeasurableEquiv.piEquivPiSubtypeProd (fun _ : PPos n S => 𝔸[K]) (IsTop r)` from `⟨_, rfl⟩`. Establish `hmp : MeasurePreserving e (Measure.pi fun _ : PPos n S => boxMeasure K) ((Measure.pi fun i : {q : PPos n S // IsTop r q} => boxMeasure K).prod (Measure.pi fun i : {q : PPos n S // ¬ IsTop r q} => boxMeasure K))` using `he ▸ measurePreserving_piEquivPiSubtypeProd (fun _ : PPos n S => boxMeasure K) (IsTop r)`. Establish `hsymm : ∀ a b, e.symm (a, b) = joinPos a b`. Introduce `a b`.
+
+Substitute `he` using the available equality. Use function extensionality and compare the values at `q`. Simplify using `[MeasurableEquiv.piEquivPiSubtypeProd_symm_apply, joinPos]`. Use `set F : (PPos n S → 𝔸[K]) → ℂ := fun X => φ (parGL X * g)`. Establish `hF : Continuous F` using `hφc.comp (continuous_parGL.mul continuous_const)`.
+
+Establish `hFi` using `integrable_box (ι := PPos n S) hF`. Establish `hFe : Integrable (F ∘ e.symm) ((Measure.pi fun i : {q : PPos n S // IsTop r q} => boxMeasure K).prod (Measure.pi fun i : {q : PPos n S // ¬ IsTop r q} => boxMeasure K))` using `((hmp.symm e).integrable_comp_emb e.symm.measurableEmbedding).2 hFi`. Rewrite using `[constantTermPar_eq_integral]`. Establish `e1 : ∫ X, φ (parGL X * g) ∂(Measure.pi fun _ : PPos n S => boxMeasure K) = ∫ z, (F ∘ e.symm) z ∂((Measure.pi fun i : {q : PPos n S // IsTop r q} => boxMeasure K).prod (Measure.pi fun i : {q : PPos n S // ¬ IsTop r q} => boxMeasure K))`. Rewrite using `[← hmp.integral_comp' (F ∘ e.symm)]`.
+
+Simplify using `only [Function.comp_apply, MeasurableEquiv.symm_apply_apply, F]`. Rewrite using `[e1, integral_prod_symm _ hFe]`. Establish `h0 : ∀ b, ∫ a, (F ∘ e.symm) (a, b) ∂(Measure.pi fun i : {q : PPos n S // IsTop r q} => boxMeasure K) = 0`. Introduce `b`. Establish `e2 : ∀ a, (F ∘ e.symm) (a, b) = φ (unipGL (fun p => a ((topEquiv hr).symm p)) * (parGL (joinPos 0 b) * g))`.
+
+Introduce `a`. Simplify using `only [Function.comp_apply, F, hsymm]`. Rewrite using `[← mul_assoc, ← parGL_eq_unipGL_mul hr hmax a b]`. Repeatedly rewrite using `[e2]`. Rewrite using `[← integral_box_reindex (topEquiv hr) (fun A => φ (unipGL A * (parGL (joinPos 0 b) * g))), ← constantTerm_eq_integral]`.
+
+Conclude with `hφ r hr0 hrn _`. Repeatedly rewrite using `[h0]`. Conclude with `integral_zero _ _`.
+-/
 theorem IsCuspidal.constantTermPar_eq_zero {φ : AdelicGLn.AdelicGL K n → ℂ} (hφc : Continuous φ)
     (hφ : IsCuspidal φ) {S : Finset ℕ} (hS : ∃ s ∈ S, 0 < s ∧ s < n)
     (g : AdelicGLn.AdelicGL K n) : constantTermPar S φ g = 0 := by
@@ -309,6 +399,9 @@ theorem IsCuspidal.constantTermPar_eq_zero {φ : AdelicGLn.AdelicGL K n → ℂ}
   simp_rw [h0]
   exact integral_zero _ _
 
+/- English proof (translation)
+Use `⟨fun h S hS g => h.constantTermPar_eq_zero hφ hS g, fun h r hr hrn g => ?_⟩` and prove the remaining obligations. Rewrite using `[← constantTermPar_singleton]`. Conclude with `h {r} ⟨r, Finset.mem_singleton_self r, hr, hrn⟩ g`.
+-/
 theorem isCuspidal_iff_constantTermPar {φ : AdelicGLn.AdelicGL K n → ℂ} (hφ : Continuous φ) :
     IsCuspidal φ ↔
       ∀ S : Finset ℕ, (∃ s ∈ S, 0 < s ∧ s < n) → ∀ g, constantTermPar S φ g = 0 := by
@@ -316,6 +409,9 @@ theorem isCuspidal_iff_constantTermPar {φ : AdelicGLn.AdelicGL K n → ℂ} (h�
   rw [← constantTermPar_singleton]
   exact h {r} ⟨r, Finset.mem_singleton_self r, hr, hrn⟩ g
 
+/- English proof (translation)
+Rewrite using `[mem_cuspForms]`. Conclude with `⟨fun h => ⟨h.1, (isCuspidal_iff_constantTermPar h.1.continuous).1 h.2⟩, fun h => ⟨h.1, (isCuspidal_iff_constantTermPar h.1.continuous).2 h.2⟩⟩`.
+-/
 theorem mem_cuspForms_iff_constantTermPar {φ : AdelicGLn.AdelicGL K n → ℂ} :
     φ ∈ cuspForms K n ↔ IsAutomorphicForm φ ∧
       ∀ S : Finset ℕ, (∃ s ∈ S, 0 < s ∧ s < n) → ∀ g, constantTermPar S φ g = 0 := by

@@ -16,6 +16,23 @@ section Abs
 
 variable {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X]
 
+/- English proof (translation)
+Establish `hfin : ((fun g => τ g x) '' (J : Set G)).Finite`. Take `⟨t, -, ht⟩` from `hJ.elim_nhds_subcover (fun g => {h | τ h x = τ g x}) fun g _ => by`. Establish `h1 : IsOpen ((fun h => g⁻¹ * h) ⁻¹' {g | τ g x = x})` using `(hτ x).preimage (by fun_prop)`. Use `Filter.mem_of_superset (h1.mem_nhds (by simp)) fun h hh => ?_` and prove the remaining obligations. Establish `h2 : τ (g⁻¹ * h) x = x` using `hh`.
+
+Use `show τ h x = τ g x`. Use `conv_rhs => rw [← h2]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Use `(t.finite_toSet.image fun g => τ g x).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+
+Take `⟨i, hi, h⟩` from `Set.mem_iUnion₂.1 (ht hg)`. Conclude with `⟨i, hi, (h : τ g x = τ i x).symm⟩`. Use `set S := hfin.toFinset with hS`. Establish `hm : ∀ y, y ∈ S ↔ ∃ g ∈ J, τ g x = y` using `fun y => by simp [hS]`. Establish `hpos : 0 < S.card` using `Finset.card_pos.2 ⟨x, (hm x).2 ⟨1, J.one_mem, by simp⟩⟩`.
+
+Establish `hc' : (S.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hpos.ne'`. Establish `hst : ∀ u ∈ J, ∀ y ∈ S, τ u y ∈ S` using `fun u hu y hy => by`. Take `⟨g, hg, rfl⟩` from `(hm y).1 hy`. Conclude with `(hm _).2 ⟨u * g, J.mul_mem hu hg, by rw [map_mul]; rfl⟩`. Establish `hy : ∀ y ∈ S, ⟪v, f y⟫_ℂ = ⟪v, f x⟫_ℂ` using `fun y hy => by`.
+
+Take `⟨g, hg, rfl⟩` from `(hm y).1 hy`. Rewrite using `[hf]`. Establish `h1` using `UnitaryRep.inner_map_map π g v (f x)`. Rewrite `h1` using `[hv g hg]`. Then use the resulting hypothesis. Establish `hmem : (S.card : ℂ)⁻¹ • ∑ y ∈ S, y ∈ fixedVectors τ J` using `fun u hu => by`.
+
+Rewrite using `[map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_nbij' (τ u) (τ u⁻¹) (hst u hu) (hst _ (J.inv_mem hu)) (fun y _ => ?_) (fun y _ => ?_) fun _ _ => rfl` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression. Introduce `hb`. Rewrite `hmem` using `[hb, Submodule.mem_bot]`. Establish `h1 : ⟪v, f ((S.card : ℂ)⁻¹ • ∑ y ∈ S, y)⟫_ℂ = ⟪v, f x⟫_ℂ`.
+
+Rewrite using `[map_smul, inner_smul_right, map_sum, inner_sum, Finset.sum_congr rfl hy, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hc', one_mul]`. Rewrite `h1` using `[hmem, map_zero, inner_zero_right]`. Conclude with `h0 h1.symm`.
+-/
 private theorem fixed_of_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (π : UnitaryRep G H) (τ : Representation ℂ G X) (hτ : ∀ x, IsOpen {g | τ g x = x})
     (J : Subgroup G) (hJ : IsCompact (J : Set G)) (f : X →ₗ[ℂ] H) (hf : ∀ g x, f (τ g x) = π g (f x))
@@ -60,6 +77,25 @@ private theorem fixed_of_inner {H : Type} [NormedAddCommGroup H] [InnerProductSp
   rw [hmem, map_zero, inner_zero_right] at h1
   exact h0 h1.symm
 
+/- English proof (translation)
+Take `⟨A, hA, hfd, rfl⟩` from `hs`. Establish `hmeas : MeasurableSet (J : Set G)` using `hJ.2.measurableSet`. Use `set c : ℂ := (m.real (J : Set G) : ℂ) with hcdef`. Establish `hc : c ≠ 0`. Establish `h1 : 0 < m (J : Set G)` using `hJ.2.measure_pos m ⟨1, J.one_mem⟩`.
+
+Establish `h2 : m (J : Set G) < ⊤` using `hJ.1.measure_lt_top`. Conclude with `Complex.ofReal_ne_zero.2 (ENNReal.toReal_pos h1.ne' h2.ne).ne'`. Establish `hfix : ∀ y ∈ fixedVectors τ J, A y = c • y` using `fun y hy => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`.
+
+Rewrite using `[map_sub, (hA y l).2, map_smul, smul_eq_mul, sub_eq_zero]`. Establish `e : (fun g => (J : Set G).indicator (1 : G → ℂ) g * l (τ g y)) = (J : Set G).indicator (fun _ => l y)`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ (J : Set G)`. Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem hg, Pi.one_apply, one_mul, hy g hg]`.
+
+Rewrite using `[Set.indicator_of_notMem hg, Set.indicator_of_notMem hg, zero_mul]`. Rewrite using `[e, integral_indicator hmeas, setIntegral_const]`. Simplify using `[hcdef]`. Establish `hran : ∀ v, A v ∈ fixedVectors τ J` using `fun v h hh => by`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`.
+
+Introduce `l`. Rewrite using `[map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `(l ∘ₗ τ h) (A v) = _`. Rewrite using `[(hA v (l ∘ₗ τ h)).2, (hA v l).2]`. Use `Eq.trans ?_ (integral_mul_left_eq_self (μ := m) (fun g => (J : Set G).indicator (1 : G → ℂ) g * l (τ g v)) h)` and prove the remaining obligations.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `hi : (J : Set G).indicator (1 : G → ℂ) (h * g) = (J : Set G).indicator (1 : G → ℂ) g`. Distinguish the cases in `hg : g ∈ J`. Rewrite using `[Set.indicator_of_mem (show h * g ∈ (J : Set G) from J.mul_mem hh hg), Set.indicator_of_mem (show g ∈ (J : Set G) from hg)]`. Both sides reduce to the same expression.
+
+Rewrite using `[Set.indicator_of_notMem (show h * g ∉ (J : Set G) from fun e => hg ((Subgroup.mul_mem_cancel_left J hh).1 e)), Set.indicator_of_notMem (show g ∉ (J : Set G) from hg)]`. Use `show (J : Set G).indicator (1 : G → ℂ) g * l (τ h (τ g v)) = (J : Set G).indicator (1 : G → ℂ) (h * g) * l (τ (h * g) v)`. Rewrite using `[hi, map_mul, Module.End.mul_apply]`. Take `⟨x, hxf, hx0⟩` from `(Submodule.ne_bot_iff _).1 hx`. Establish `hxr : x ∈ LinearMap.range A` using `⟨c⁻¹ • x, by rw [map_smul, hfix x hxf, smul_smul, inv_mul_cancel₀ hc, one_smul]⟩`.
+
+Establish `hres : A.restrict (p` using `LinearMap.range A) (q := LinearMap.range A) (fun v _ => LinearMap.mem_range_self A v) = c • LinearMap.id := by`. Use `LinearMap.ext fun y => Subtype.ext ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `y.2`. Conclude with `hfix y.1 (hz ▸ hran z)`. Use `haveI : FiniteDimensional ℂ (LinearMap.range A) := hfd`.
+
+Use `haveI : Nontrivial (LinearMap.range A) := ⟨⟨⟨x, hxr⟩, 0, fun e => hx0 (congrArg Subtype.val e)⟩⟩`. Rewrite using `[hres, map_smul, LinearMap.trace_id, smul_eq_mul]`. Conclude with `mul_ne_zero hc (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`.
+-/
 private theorem trace_ne [MeasurableSpace G] [BorelSpace G] (m : Measure G) [m.IsHaarMeasure]
     (τ : Representation ℂ G X) (J : Subgroup G) (hJ : CO J) (hx : fixedVectors τ J ≠ ⊥) {s : ℂ}
     (hs : HasTrace m τ ((J : Set G).indicator 1) s) : s ≠ 0 := by
@@ -114,6 +150,23 @@ private theorem trace_ne [MeasurableSpace G] [BorelSpace G] (m : Measure G) [m.I
 
 end Abs
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ V hV w _ _ m hm τ J hocc hJ hne`. Use `haveI := hm`. Establish `hcl : IsClosed (J : Set (Gw n w))` using `J.isClosed_of_isOpen hJ.2`. Establish `hind : ∀ u ∈ J, ∀ g, (J : Set (Gw n w)).indicator (1 : Gw n w → ℂ) (u * g) = (J : Set (Gw n w)).indicator 1 g ∧ (J : Set (Gw n w)).indicator (1 : Gw n w → ℂ) (g * u) = (J : Set (Gw n w)).indicator 1 g`. Introduce `u hu g`.
+
+Establish `h1 : u * g ∈ J ↔ g ∈ J` using `Subgroup.mul_mem_cancel_left J hu`. Establish `h2 : g * u ∈ J ↔ g ∈ J` using `Subgroup.mul_mem_cancel_right J hu`. Distinguish the cases in `hg : g ∈ J`. Rewrite using `[Set.indicator_of_mem (show u * g ∈ (J : Set (Gw n w)) from h1.2 hg), Set.indicator_of_mem (show g * u ∈ (J : Set (Gw n w)) from h2.2 hg), Set.indicator_of_mem (show g ∈ (J : Set (Gw n w)) from hg)]`. Conclude with `⟨rfl, rfl⟩`.
+
+Rewrite using `[Set.indicator_of_notMem (show u * g ∉ (J : Set (Gw n w)) from fun e => hg (h1.1 e)), Set.indicator_of_notMem (show g * u ∉ (J : Set (Gw n w)) from fun e => hg (h2.1 e)), Set.indicator_of_notMem (show g ∉ (J : Set (Gw n w)) from hg)]`. Conclude with `⟨rfl, rfl⟩`. Establish `htest : Test ((J : Set (Gw n w)).indicator (1 : Gw n w → ℂ))`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro hJ.1 fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (J : Set (Gw n w))`.
+
+Conclude with `⟨_, hJ.2, hx, fun y hy => by rw [Set.indicator_of_mem hy, Set.indicator_of_mem hx]; rfl⟩`. Conclude with `⟨_, hcl.isOpen_compl, hx, fun y hy => by rw [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]⟩`. Establish `hfix : fixedVectors τ.ρ J ≠ ⊥`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hne`. Establish `hvJ : ∀ u ∈ J, locU μ w u v = v`.
+
+Establish `h1 : v ∈ fixU (locU μ w) J`. Rewrite using `[fixU_locU]`. Conclude with `hv.2`. Conclude with `h1`. Assume the negation of the conclusion as `hbot`.
+
+Establish `hle : spanAll τ.ρ (locU μ w) V ≤ (ℂ ∙ v)ᗮ`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, x, rfl⟩`. Use `Submodule.mem_orthogonal_singleton_iff_inner_right.2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `fixed_of_inner (locU μ w) τ.ρ (fun x => τ.smooth x) J hJ.1 f hf.map v hvJ x h hbot`. Establish `h2` using `Submodule.topologicalClosure_minimal _ hle (Submodule.isClosed_orthogonal _) (UpperTheory.summand_le_closure_span_local_type_images K n μ V w τ hV hocc hv.1)`. Conclude with `hv0 (inner_self_eq_zero.1 (Submodule.mem_orthogonal_singleton_iff_inner_right.1 h2))`. Take `⟨-, -, h3⟩` from `UpperTheory.ConvolutionTheory.C.occursBasics K n μ V w m hV`. Take `⟨s, hs⟩` from `h3 τ hocc _ htest`.
+
+Conclude with `⟨hfix, htest, hind, s, trace_ne m τ.ρ J hJ hfix hs, hs⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.T.unitTrace :
     UpperTheory.ConvolutionTheory.T.UnitTrace := by
   intro K _ _ n μ _ V hV w _ _ m hm τ J hocc hJ hne

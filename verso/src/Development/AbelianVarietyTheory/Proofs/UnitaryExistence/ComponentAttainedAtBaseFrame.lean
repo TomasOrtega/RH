@@ -25,6 +25,35 @@ namespace GlobalTheory.RecDict
 
 open scoped Matrix nonZeroDivisors
 
+/- English proof (translation)
+Set `ψ : A ≃ₗ[𝓞 E] LinearMap.range io` to `LinearEquiv.ofInjective io hio`. Establish `hψ : ∀ a, (ψ a : Fin n → E) = io a` using `fun a => rfl`. Set `f' : ℕ → (LinearMap.range io →ₗ[𝓞 E] Λ)` to `fun N => φ.toLinearMap ∘ₗ f N ∘ₗ ψ.symm.toLinearMap`. Establish `hf' : ∀ N a, f' N (ψ a) = φ (f N a)` using `fun N a => by simp [f']`. Take `⟨g, hg1, hg2, hg3⟩` from `AdLat.exists_adelic_matrix_of_tower F E n (LinearMap.range io) Λ f' hL hLs hΛ hΛs (fun N m hN hm a => by`.
+
+Take `⟨a, rfl⟩` from `ψ.surjective a`. Take `⟨e, he⟩` from `h1 N m hN hm a`. Conclude with `⟨φ e, by rw [hf', hf', he, map_add, map_nsmul]⟩)`. Use the proof step `(fun N hN => by`. Use `⟨fun a => ?_, fun a' => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `ψ.surjective a`. Rewrite using `[hf']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Take `⟨v, rfl⟩` from `φ.surjective v`.
+
+Take `⟨e, he⟩` from `((h2 N hN).1 a).1 ⟨v, φ.injective (by rw [hv, map_nsmul])⟩`. Conclude with `⟨ψ e, by rw [he, map_nsmul]⟩`. Introduce and unpack `⟨v, hv⟩`. Take `⟨v, rfl⟩` from `ψ.surjective v`. Take `⟨e, he⟩` from `((h2 N hN).1 a).2 ⟨v, ψ.injective (by rw [hv, map_nsmul])⟩`.
+
+Conclude with `⟨φ e, by rw [he, map_nsmul]⟩`. Take `⟨b, rfl⟩` from `φ.surjective a'`. Take `⟨a, e, he⟩` from `(h2 N hN).2 b`. Conclude with `⟨ψ a, φ e, by rw [hf', ← map_nsmul, ← map_add, ← he]⟩)`. Use `⟨g, hg1, fun N hN a => ?_, ?_⟩` and prove the remaining obligations.
+
+Take `⟨w, hw, h⟩` from `hg2 N hN (ψ a)`. Conclude with `⟨w, hw, by rw [← hf', ← h, hψ]⟩`. Set `J : FractionalIdeal (𝓞 E)⁰ E` to `FractionalIdeal.spanSingleton _ ξ⁻¹ * FractionalIdeal.dual ℤ ℚ 1`. Establish `hJ : ∀ z : E, (∀ s : 𝓞 E, ∃ k : ℤ, Algebra.trace ℚ E (ξ * ((s : E) * z)) = k) → z ∈ J`. Introduce `z hz`.
+
+Use `FractionalIdeal.mem_singleton_mul.2 ⟨ξ * z, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (𝓞 E)⁰ E) ≠ 0)]`. Introduce `a ha`. Take `⟨s, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Take `⟨k, hk⟩` from `hz s`.
+
+Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, eq_intCast, ← hk]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `ξ * ((s : E) * z) = ξ * z * (s : E)`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsm : ∀ (s : 𝓞 E) (x y : Fin n → E), (∑ a, ∑ b, (s • x) a * G a b * c (y b)) = (s : E) * ∑ a, ∑ b, x a * G a b * c (y b)`. Introduce `s x y`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((s : E) * x a) * _ * _ = _`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `hg3 c G J (fun x hx y hy => hJ _ fun s => ?_) (fun N hN x y => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `φ.surjective ⟨x, hx⟩`. Take `⟨b, hb⟩` from `φ.surjective ⟨y, hy⟩`. Use `⟨EB (s • a) b, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hB, map_smul, ha, hb, ← hsm]`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `ψ.surjective x`. Take `⟨b, rfl⟩` from `ψ.surjective y`. Rewrite using `[hf', hf', hψ, hψ]`.
+
+Establish `hN' : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `hN'' : (N : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Use `⟨(N : E)⁻¹ * ((∑ i, ∑ j, (φ (f N a) : Fin n → E) i * G i j * c ((φ (f N b) : Fin n → E) j)) - ∑ i, ∑ j, io a i * G i j * c (io b j)), hJ _ fun s => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h3 N hN (s • a) b`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Establish `hk'` using `congrArg (Int.cast : ℤ → ℚ) hk`. Move the coercions through the operations in `at hk'`. Rewrite `hk'` using `[hA, hB, map_smul, map_smul, map_smul, Submodule.coe_smul, hsm, hsm, ← map_sub]`. Apply `mul_left_cancel₀ hN''` to reduce the goal to its premises. Rewrite using `[← hk', ← nsmul_eq_mul, ← map_nsmul, nsmul_eq_mul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[nsmul_eq_mul, mul_inv_cancel_left₀ hN', add_sub_cancel]`.
+-/
 theorem comp_adelic_of_tower (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (c : E ≃ₐ[F] E) (G : Matrix (Fin n) (Fin n) E) (ξ : E) (hξ : ξ ≠ 0)
     (A B : Type) [AddCommGroup A] [Module (𝓞 E) A] [AddCommGroup B] [Module (𝓞 E) B]
@@ -119,6 +148,11 @@ theorem comp_adelic_of_tower (F E : Type) [Field F] [NumberField F] [Field E] [N
       field_simp
     · rw [nsmul_eq_mul, mul_inv_cancel_left₀ hN', add_sub_cancel]
 
+/- English proof (translation)
+Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+
+Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+-/
 theorem comp_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
   · rw [FractionalIdeal.coeIdeal_ne_zero]
@@ -132,6 +166,21 @@ theorem comp_AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Set `e : V.V →ₗ[𝓞 D.host.E] (Fin V.rank → D.host.E)` to `(V.frame.equivFun : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E)).restrictScalars (𝓞 D.host.E)`. Set `L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)` to `V.L0.map e`. Establish `hfg : L.FG` using `V.standardTuple_isLattice.fg.map e`. Establish `hsp : Submodule.span D.host.E (L : Set (Fin V.rank → D.host.E)) = ⊤`. Establish `h` using `congrArg (Submodule.map (V.frame.equivFun : V.V →ₗ[D.host.E] (Fin V.rank → D.host.E))) V.standardTuple_isLattice.span_eq_top`.
+
+Rewrite `h` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range]`. Conclude with `h`. Establish `hhat : latHat V = AdLat.hat D.host.F (L : Set (Fin V.rank → D.host.E))`. Unfold `latHat AdLat.hat`. Use `congr 1`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, e x, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`.
+
+Conclude with `⟨a, ha, x, hx, rfl⟩`. Establish `h1 : latG V 1 = Submodule.span (𝓞 D.host.E) {w | ∃ a ∈ D.host.AA, ∃ x ∈ L, w = a • x}`. Unfold `latG gLat`. Use `congr 1`. Use extensionality with `w`.
+
+Establish `hc` using `(AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank L hfg hsp).1`. Simplify using `only [map_one, Units.val_one, Set.mem_setOf_eq, hhat, Set.mem_image, Matrix.one_mulVec, exists_eq_right, SetLike.mem_coe, ← hc]`. Both sides reduce to the same expression. Establish `hs` using `fun g : GA D V => AdLat.scale_latOf D.host.F D.host.E V.rank L (finHom V g) D.host.AA (latG V 1) hfg hsp (comp_AA_ne_zero D) h1`. Use `⟨(hs 1).2.2.1, (hs 1).2.2.2, fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← (hs g).1]`. Unfold `latG gLat`. Rewrite using `[hhat]`. Both sides reduce to the same expression. Rewrite using `[← (hs g).2.1]`.
+
+Unfold `latGHat gLat`. Rewrite using `[hhat]`.
+-/
 theorem comp_latG (D : D7) (V : HSp D) :
     (latG V 1).FG ∧ Submodule.span D.host.E (latG V 1 : Set (Fin V.rank → D.host.E)) = ⊤ ∧ ∀ g : GA D V,
       (latG V g : Set (Fin V.rank → D.host.E)) = AdLat.latOf D.host.F (finHom V g).1 (latG V 1) ∧
@@ -174,6 +223,13 @@ theorem comp_latG (D : D7) (V : HSp D) :
     unfold latGHat gLat
     rw [hhat]
 
+/- English proof (translation)
+Establish `hc' : (c : E →ₐ[F] E) = σ` using `AlgHom.ext hc`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ _ * _ * _ = _`. Use extensionality with `i j`. Establish `h` using `hg (Pi.single j 1) (Pi.single i 1)`. Simplify using `only [AdLat.hermA, AdLat.sg, hc', Matrix.mulVec_single_one, Matrix.col_apply, Matrix.neg_apply, Matrix.transpose_apply, TensorProduct.tmul_neg, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_inj] at h`.
+
+Simplify using `only [Pi.single_apply, apply_ite (Algebra.TensorProduct.map (AlgHom.id F (FiniteAdeleRing (𝓞 F) F)) σ), map_one, map_zero, mul_ite, ite_mul, mul_one, mul_zero, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, JR, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (1 ⊗ₜ _) * _ = _ * _ * sigR _ σ _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem comp_mem_HR (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (c : E ≃ₐ[F] E) (σ : E →ₐ[F] E) (hc : ∀ x, c x = σ x) (G : Matrix (Fin n) (Fin n) E)
     (g : GL (Fin n) (AdLat.RA F E))
@@ -194,15 +250,36 @@ theorem comp_mem_HR (F E : Type) [Field F] [NumberField F] [Field E] [NumberFiel
   change _ * (1 ⊗ₜ _) * _ = _ * _ * sigR _ σ _
   ring
 
+/- English proof (translation)
+Rewrite using `[smul_neg, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem comp_sub_eq {A : Type} [AddCommGroup A] (N : ℕ) (x e w : A) : x - (x + N • e + N • w) = N • -(e + w) := by
   rw [smul_neg, smul_add]
   abel
 
+/- English proof (translation)
+Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.reindex_apply, Matrix.submatrix_one_equiv, one_mul]`.
+-/
 theorem comp_reindex_one {A : Type} [CommRing A] {n : ℕ} (θ : A →+* ℂ) (x : Matrix (Fin n) (Fin n) ℂ) :
     x = Matrix.reindex (finCongr rfl) (finCongr rfl) (((1 : GL (Fin n) A) : Matrix (Fin n) (Fin n) A).map θ) * x := by
   rw [Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.reindex_apply,
     Matrix.submatrix_one_equiv, one_mul]
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Take `⟨hbase, hW, ⟨hinj, hrange⟩, hEF, -, -⟩` from `h`. Take `⟨-, P, hP⟩` from `(PeriodExists.typeFn_period_exist _ H (F.Di k)).2.1 g ty (by rw [(F.sig k).1, (F.sig k).2]; exact hty)`. Take `⟨f, h1, h2, h3, h4⟩` from `familyUnif_lattice_genus _ H Dw l Xo σ' g ty F k P hP`. Set `c : D.host.E ≃ₐ[D.host.F] D.host.E` to `AlgEquiv.ofAlgHom D.sp.cm.sig D.sp.cm.sig (AlgHom.ext fun x => star_star x) (AlgHom.ext fun x => star_star x)`.
+
+Take `⟨hfg, hsp, hlat⟩` from `comp_latG D V`. Rewrite `hfg`, `hsp`, `hlat` using `[← hrange]`. Establish `hξ : -(-D.host.xi0) ≠ 0`. Rewrite using `[← (hW k).2]`. Conclude with `neg_ne_zero.2 (M.X k).ξ0_ne`.
+
+Take `⟨gf, hg1, hg2, hg3⟩` from `comp_adelic_of_tower D.host.F D.host.E V.rank c (-V.gram.transpose) (-(-D.host.xi0)) hξ Dw.La (F.Di k).La (fun x y => Dw.EF x y) (fun x y => (F.Di k).EF x y) io hinj (M.X k).Λ (M.φ k) hfg hsp (M.X k).Λ_fg (M.X k).Λ_span hEF (fun x y => by`. Use `hbase.ef k x y` as an intermediate fact. Rewrite `this` using `[(hW k).1, (hW k).2]`. Conclude with `this) f h1 h2 h3`. Take `⟨u, hu, hug⟩` from `(GlobalTheory.T.adelicUnitary_exists_with_prescribed_parts D V).1 gf (comp_mem_HR _ _ _ c _ (fun _ => rfl) _ gf hg3)`.
+
+Establish `hc` using `(AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank (M.X k).Λ (M.X k).Λ_fg (M.X k).Λ_span).1`. Use `⟨u, hu, ⟨k, fun τ => x₀ τ.1⟩, rfl, fun τ => rfl, 1, one_mem _, ?_, fun a ha => ?_, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul, (hlat u).1, hug]`. Use `Eq.trans ?_ (Set.image_id _).symm` and prove the remaining obligations. Use extensionality with `v`.
+
+Rewrite using `[AdLat.latOf, hg1]`. Conclude with `(hc v).symm`. Take `⟨e, he⟩` from `h4 a ha`. Take `⟨w, hw, hgw⟩` from `hg2 l.M (lt_of_lt_of_le (by norm_num) l.three_le) a`. Establish `hmem : ∀ z, z ∈ latGHat V u ↔ z ∈ AdLat.hat D.host.F ((M.X k).Λ : Set (Fin V.rank → D.host.E))`.
+
+Introduce `z`. Rewrite using `[← SetLike.mem_coe, (hlat u).2, hug, hg1, SetLike.mem_coe]`. Rewrite using `[one_mul, hug]`. Use `⟨-(AdLat.fv D.host.F (M.φ k e : Fin V.rank → D.host.E) + w), (hmem _).2 (neg_mem (add_mem ((hc _).2 (M.φ k e).2) hw)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AdLat.fv D.host.F (M.φ k (F.t k a) : Fin V.rank → D.host.E) - gf.1 *ᵥ AdLat.fv D.host.F (io a) = _`.
+
+Rewrite using `[hgw, he, map_add, map_nsmul, Submodule.coe_add, Submodule.coe_smul_of_tower, AdLat.cap_fv_add, AdLat.cap_fv_nsmul]`. Conclude with `comp_sub_eq _ _ _ _`. Establish `hu' : infHom V u = 1` using `hu`. Rewrite using `[one_mul, archM, hu']`. Conclude with `comp_reindex_one _ _`.
+-/
 theorem comp_attained (D : D7) (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {σ' : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (D.host.E →+* ℂ)} (F : FamilyUnif Xo σ' ty)
     (hty : IsTypeFn H Dw.p Dw.q ty) {r : ℕ} (hr : V.rank = r) (M : GlobalTheory.FrameUnif.ModelsOf F r)
@@ -255,6 +332,9 @@ theorem comp_attained (D : D7) (V : HSp D) {H : ReciprocityTheory.ChartRestricti
     rw [one_mul, archM, hu']
     exact comp_reindex_one _ _
 
+/- English proof (translation)
+Introduce `D _ _ j hj _ _ _ F _ hty M io th x₀ h k` and use `comp_attained D (D.sp.W j) F hty (D.sp.W_rank j hj.1 hj.2) M io th x₀ h k`.
+-/
 theorem component_attained_at_base_frame : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∀ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ → ∀ k : Fin F.n, ∃ g ∈ GfC (D.sp.W j), ∃ p : Σ k, Frame (M.X k).Ψ D.R.r, p.1 = k ∧ (∀ τ : (M.X p.1).Ψ, mat p.2 τ = x₀ τ.1) ∧ MarkSpec M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ g p :=
   fun D _ _ j hj _ _ _ F _ hty M io th x₀ h k =>
     comp_attained D (D.sp.W j) F hty (D.sp.W_rank j hj.1 hj.2) M io th x₀ h k

@@ -5,6 +5,13 @@ open GlobalTheory.TypeLeaf Formalism.BasicNotions Formalism.MainNotions Formalis
 
 namespace GlobalTheory.TypeLeaf
 
+/- English proof (translation)
+Establish `hle : φ.ker ≤ (Subgroup.zpowers (φ γ)).comap φ`. Introduce `x hx`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 hx]`. Conclude with `Subgroup.one_mem _`. Establish `hop : IsOpen (((Subgroup.zpowers (φ γ)).comap φ : Subgroup (G E Ω)) : Set (G E Ω))` using `Subgroup.isOpen_mono hle hk`.
+
+Establish `hcl` using `Subgroup.isClosed_of_isOpen _ hop`. Establish `hsub : Subgroup.closure (insert γ {σ : G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1}) ≤ (Subgroup.zpowers (φ γ)).comap φ`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `x (rfl | hx)`. Conclude with `Subgroup.mem_zpowers _`.
+
+Conclude with `hle (hw x hx)`. Conclude with `closure_minimal hsub hcl (h.2 h'.1)`.
+-/
 theorem tameGen_image_mem_zpowers {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (γ γ' : G E Ω) (h : TameGenAt A γ) (h' : TameGenAt A γ')
     {M : Type} [Group M] (φ : G E Ω →* M) (hk : IsOpen (φ.ker : Set (G E Ω)))
@@ -25,6 +32,15 @@ theorem tameGen_image_mem_zpowers {E Ω : Type} [Field E] [NumberField E] [Field
     · exact hle (hw x hx)
   exact closure_minimal hsub hcl (h.2 h'.1)
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A γ γ' h h' M _ φ hk hw`. Establish `h1` using `tameGen_image_mem_zpowers A γ γ' h h' φ hk hw`. Establish `h2` using `tameGen_image_mem_zpowers A γ' γ h' h φ hk hw`. Use `haveI : IsGalois E Ω := IsGalois.mk`. Use `haveI : Finite (G E Ω ⧸ φ.ker) := Subgroup.quotient_finite_of_isOpen _ hk`.
+
+Establish `hfin : IsOfFinOrder (φ γ)`. Establish `h0 : IsOfFinOrder (QuotientGroup.mk γ : G E Ω ⧸ φ.ker)` using `isOfFinOrder_of_finite _`. Use `(QuotientGroup.kerLift φ).isOfFinOrder h0` as an intermediate fact. Simplify using `using this`. Establish `hpos : 0 < orderOf (φ γ)` using `hfin.orderOf_pos`.
+
+Take `⟨n, hn⟩` from `(hfin.mem_powers_iff_mem_zpowers).2 h1`. Establish `hn : φ γ ^ n = φ γ'` using `hn`. Establish `heq : orderOf (φ γ') = orderOf (φ γ)` using `Nat.dvd_antisymm (orderOf_dvd_of_mem_zpowers h1) (orderOf_dvd_of_mem_zpowers h2)`. Use `⟨n, ?_, hpos, hn.symm⟩` and prove the remaining obligations. Rewrite `heq` using `[← hn, hfin.orderOf_pow]`.
+
+Establish `hg : (orderOf (φ γ)).gcd n = 1`. Break down `Nat.div_eq_self.1 heq with h | h` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Conclude with `Nat.Coprime.symm hg`.
+-/
 theorem tameGen_pow : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (γ γ' : G E Ω), TameGenAt A γ → TameGenAt A γ' → ∀ (M : Type) [Group M] (φ : G E Ω →* M), IsOpen (φ.ker : Set (G E Ω)) → (∀ s : G E Ω, (∀ y : Ω, y ≠ 0 → A.valuation (s y / y - 1) < 1) → φ s = 1) → ∃ n : ℕ, n.Coprime (orderOf (φ γ)) ∧ 0 < orderOf (φ γ) ∧ φ γ' = φ γ ^ n := by
   intro E Ω _ _ _ _ _ A γ γ' h h' M _ φ hk hw
   have h1 := tameGen_image_mem_zpowers A γ γ' h h' φ hk hw

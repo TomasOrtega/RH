@@ -13,11 +13,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.GenRev
 
+/- English proof (translation)
+The claim follows from `h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)`.
+-/
 theorem isSubquotient_of_equiv {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {ρ : Representation ℂ G V} {ρ' : Representation ℂ G U}
     (h : IsSubquotient σ ρ) (E : ρ.Equiv ρ') : IsSubquotient σ ρ' :=
   h.trans (IsSubquotient.of_surjective E.symm.toIntertwiningMap E.symm.surjective)
 
+/- English proof (translation)
+The claim follows from `(IsSubquotient.of_surjective E.toIntertwiningMap E.surjective).trans h`.
+-/
 theorem isSubquotient_of_equiv_left {G V W U : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [AddCommGroup U] [Module ℂ U] {σ : Representation ℂ G W} {τ : Representation ℂ G U}
     {ρ : Representation ℂ G V} (E : σ.Equiv τ) (h : IsSubquotient σ ρ) : IsSubquotient τ ρ :=
@@ -25,6 +31,15 @@ theorem isSubquotient_of_equiv_left {G V W U : Type} [Group G] [AddCommGroup V] 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hA hGK h N x hd hd' W _ _ σ _ hi hsq`. Take `⟨hdy, ⟨E1⟩⟩` from `GlobalTheory.T.contragredient_product_irreducible hA (fun a => x (Fin.rev a)) hd'`. Take `⟨hd2, ⟨E2⟩⟩` from `GlobalTheory.T.product_transpose_inverse_dual_reverse hA hGK (fun a => Zc.dualCl (x (Fin.rev a))) hdy`. Establish `ex : (fun a => Zc.dualCl ((fun a => Zc.dualCl (x (Fin.rev a))) (Fin.rev a))) = x` using `funext fun a => by`. Simplify using `only [Fin.rev_rev]`.
+
+Conclude with `GlobalTheory.T.dual_class_involutive hA (x a)`. Take `⟨E3⟩` from `GlobalTheory.CompanionTheory.LSocle.prodIrr_congr ex hd2 hd`. Establish `h1 : IsSubquotient σ ((prodIrr (fun a => Zc.dualCl (x (Fin.rev a))) hdy).comp (Zc.Cos.thetaW k N))` using `isSubquotient_of_equiv hsq (E2.trans E3).symm`. Establish `h2 : IsSubquotient (σ.comp (Zc.Cos.thetaW k N)) (prodIrr (fun a => Zc.dualCl (x (Fin.rev a))) hdy)`. Use `GlobalTheory.CompanionTheory.WordProd.RowCell.isSubquotient_pullback (Zc.Cos.thetaW k N) h1` as an intermediate fact.
+
+Rewrite `this` using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]`. Then use the resulting hypothesis. Establish `hs : IsSmooth (σ.comp (Zc.Cos.thetaW k N))` using `h2.isSmooth (isSmooth_prodIrr _ _)`. Establish `hi' : Representation.IsIrreducible (σ.comp (Zc.Cos.thetaW k N))` using `GlobalTheory.CosocleComp.isIrreducible_comp (GlobalTheory.CompanionTheory.LSocle.thetaW_surjective N) hi`. Establish `h3 : IsSubquotient (σ.comp (Zc.Cos.thetaW k N)) (contra (prodIrr (fun a => x (Fin.rev a)) hd'))` using `isSubquotient_of_equiv h2 E1.symm`. Establish `h4` using `GlobalTheory.T.isSubquotient_contra_of_isSubquotient (GlobalTheory.SqIntUnit.compactOpen_basis k N) _ _ (isSmooth_contra _) h3`.
+
+Take `⟨E4⟩` from `GlobalTheory.T.double_contragredient_of_induced_product hA (fun a => x (Fin.rev a)) hd'`. Take `⟨E5⟩` from `GlobalTheory.CompanionTheory.LSocle.equiv_contra_comp_thetaW hGK σ hs hi'`. Conclude with `isSubquotient_of_equiv_left E5.symm (isSubquotient_of_equiv h4 E4)`.
+-/
 theorem isSubquotient_prodIrr_rev : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → Zc.Cos.GKLocal k →
     ∀ {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N) (hd' : ∑ a, (x (Fin.rev a)).1 = N) {W : Type}

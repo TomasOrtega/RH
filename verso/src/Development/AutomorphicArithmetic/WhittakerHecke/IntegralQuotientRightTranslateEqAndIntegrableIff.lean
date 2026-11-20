@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open MeasureTheory NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.CompanionTheory.CTFin GlobalTheory.LFun Formalism.UG Formalism.UG.P
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace UpperTheory.ConvolutionTheory.BW
 
+/- English proof (translation)
+Introduce `E _ _ r h hh g hg`. Establish `e1 : (fun y : RightCosetSpace (rationalGLOne E r) => h ((Quotient.out y : normOneGL E r) : GA E r)) = CuspidalSpectrum.cuspQuot hh`. Use function extensionality and compare the values at `y`. Use `conv_rhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression.
+
+Establish `e2 : (fun y : RightCosetSpace (rationalGLOne E r) => h (((Quotient.out y : normOneGL E r) : GA E r) * g)) = CuspidalSpectrum.cuspQuot hh ∘ rightMul (rationalGLOne E r) ⟨g, hg⟩`. Use function extensionality and compare the values at `y`. Use `conv_rhs => rw [← Quotient.out_eq y]`. Both sides reduce to the same expression. Establish `hm` using `measurePreserving_rightMul (Γ := rationalGLOne E r) (mu1 E r) ⟨g, hg⟩`.
+
+Establish `he : MeasurableEmbedding (rightMul (rationalGLOne E r) ⟨g, hg⟩)` using `(rightMulHomeomorph (rationalGLOne E r) ⟨g, hg⟩).measurableEmbedding`. Rewrite using `[e1, e2]`. Conclude with `⟨hm.integral_comp he _, hm.integrable_comp_emb he⟩`.
+-/
 theorem UpperTheory.integral_quotient_rightTranslate_eq_and_integrable_iff :
     ∀ (E : Type) [Field E] [NumberField E] (r : ℕ) (h : GA E r → ℂ), AutomorphicForm.IsLeftInvariant h → ∀ g ∈ normOneGL E r,
       (∫ y : RightCosetSpace (rationalGLOne E r), h (((Quotient.out y : normOneGL E r) : GA E r) * g) ∂(quotientMeasure (rationalGLOne E r) (mu1 E r)) = ∫ y : RightCosetSpace (rationalGLOne E r), h ((Quotient.out y : normOneGL E r) : GA E r) ∂(quotientMeasure (rationalGLOne E r) (mu1 E r))) ∧

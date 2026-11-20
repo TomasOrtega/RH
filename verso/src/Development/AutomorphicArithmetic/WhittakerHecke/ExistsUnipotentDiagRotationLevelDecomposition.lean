@@ -7,6 +7,13 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.LFun.KGL, Formalism.UG.GLint, MonoidHom.mem_range]`. Set `M : Matrix (Fin 2) (Fin 2) (Formalism.UG.Ov ℚ v)` to `Matrix.of fun i j => ⟨_, h1 i j⟩`. Set `N : Matrix (Fin 2) (Fin 2) (Formalism.UG.Ov ℚ v)` to `Matrix.of fun i j => ⟨_, h2 i j⟩`. Establish `hM : M.map (Formalism.UG.Ov ℚ v).subtype = y.val` using `by ext i j; rfl`. Establish `hN : N.map (Formalism.UG.Ov ℚ v).subtype = (y⁻¹).val` using `by ext i j; rfl`.
+
+Establish `inj : Function.Injective (fun A : Matrix (Fin 2) (Fin 2) (Formalism.UG.Ov ℚ v) => A.map (Formalism.UG.Ov ℚ v).subtype)` using `Matrix.map_injective Subtype.val_injective`. Use `⟨⟨M, N, inj ?_, inj ?_⟩, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hN, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only`.
+
+Rewrite using `[Matrix.map_mul, hM, hN, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hM`.
+-/
 private theorem kgl_of {v : H.P ℚ} (y : GL (Fin 2) (H.Kv v)) (h1 : ∀ i j, y.val i j ∈ Formalism.UG.Ov ℚ v)
     (h2 : ∀ i j, (y⁻¹).val i j ∈ Formalism.UG.Ov ℚ v) : y ∈ GlobalTheory.LFun.KGL v 2 := by
   rw [GlobalTheory.LFun.KGL, Formalism.UG.GLint, MonoidHom.mem_range]
@@ -23,6 +30,11 @@ private theorem kgl_of {v : H.P ℚ} (y : GL (Fin 2) (H.Kv v)) (h1 : ∀ i j, y.
     rw [Matrix.map_mul, hM, hN, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]
   · exact hM
 
+/- English proof (translation)
+Establish `h : Matrix.GeneralLinearGroup.map (pFin ℚ) (rot t) = 1` using `TR.pFin_infGL _`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h2` using `congrArg (fun x : GL (Fin 2) (Af ℚ) => pLoc ℚ v (x.val i j)) h`. Express the relevant statement in the definitionally equal form `H.cp v ((rot t).val i j) = _ at h2`. Express the relevant statement in the definitionally equal form `H.cp v ((rot t).val i j) = _`.
+
+Rewrite using `[h2]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 private theorem cp_rot (v : H.P ℚ) (t : ℝ) : Matrix.GeneralLinearGroup.map (H.cp v) (rot t) = 1 := by
   have h : Matrix.GeneralLinearGroup.map (pFin ℚ) (rot t) = 1 := TR.pFin_infGL _
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -32,6 +44,17 @@ private theorem cp_rot (v : H.P ℚ) (t : ℝ) : Matrix.GeneralLinearGroup.map (
   rw [h2]
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Establish `e : ∀ v, Matrix.GeneralLinearGroup.map (H.cp v) ((rot t)⁻¹ * gl k) = Matrix.GeneralLinearGroup.map (H.cp v) (gl k)`. Introduce `v`. Rewrite using `[map_mul, map_inv, cp_rot, inv_one, one_mul]`. Use `⟨fun i j => ?_, fun v => ⟨?_, fun i j => ?_⟩⟩` and prove the remaining obligations. Establish `h : Matrix.GeneralLinearGroup.map (TR.pInf ℚ) ((rot t)⁻¹ * gl k) = Matrix.GeneralLinearGroup.map (TR.pInf ℚ) 1`.
+
+Rewrite using `[map_mul, map_inv, hr, inv_mul_cancel, map_one]`. Conclude with `(TR.infEq ℚ).symm.injective (congrArg (fun x : GL (Fin 2) (TR.Rinf ℚ) => x.val i j) h)`. Unfold `H.KAt`. Rewrite using `[e]`. Use `kgl_of _ (fun i j => hi v i j) fun i j => ?_` and prove the remaining obligations.
+
+Rewrite using `[← map_inv, ← map_inv]`. Express the relevant statement in the definitionally equal form `Valued.v (H.cp v ((k⁻¹ : G1 ℚ) i j)) ≤ 1`. Rewrite using `[Matrix.SpecialLinearGroup.SL2_inv_expl]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [hi]`. Establish `h` using `congrArg (fun x : GL (Fin 2) (H.Kv v) => x.val i j) (e v)`.
+
+Express the relevant statement in the definitionally equal form `H.cp v (((rot t)⁻¹ * gl k).val i j) = H.cp v (k i j) at h`. Establish `h2` using `hd v i j`. Unfold `Dv at h2 ⊢`. Rewrite `h2`, the goal using `[map_sub]`. Rewrite using `[h]`.
+
+Conclude with `h2`.
+-/
 private theorem lev_of (N : ℕ) (t : ℝ) (k : G1 ℚ)
     (hr : Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (gl k) = Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (rot t))
     (hi : ∀ v i j, Valued.v (H.cp v (k i j)) ≤ 1)
@@ -57,10 +80,20 @@ private theorem lev_of (N : ℕ) (t : ℝ) (k : G1 ℚ)
     rw [map_sub] at h2 ⊢
     rw [h]; exact h2
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[Subsingleton.elim w Rat.infinitePlace]`. Both sides reduce to the same expression.
+-/
 private theorem pinf_re (x : A ℚ) : TR.pInf ℚ x = fun _ => re x := by
   funext w
   rw [Subsingleton.elim w Rat.infinitePlace]; rfl
 
+/- English proof (translation)
+Set `φ : A ℚ →+* ℝ` to `(Pi.evalRingHom (fun _ : InfinitePlace ℚ => ℝ) Rat.infinitePlace).comp (TR.pInf ℚ)`. Establish `hφ : ∀ x, re x = φ x` using `fun _ => rfl`. Establish `h1 : φ ((k.1 * k.1ᵀ) 0 1) = φ ((1 : Matrix (Fin 2) (Fin 2) (A ℚ)) 0 1)` using `congrArg (fun x => (TR.infEq ℚ).symm x Rat.infinitePlace) (hk 0 1)`. Establish `h2` using `congrArg φ k.det_coe`. Rewrite `h2` using `[Matrix.det_fin_two]`.
+
+Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply, map_add, map_mul, map_sub, map_one, Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide), map_zero] at h1 h2`. Simplify using `only [hφ] at hs hc ⊢`. Rewrite `h1`, `h2` using `[hs, hc]`. Establish `h3` using `Real.sin_sq_add_cos_sq t`. Prove the components needed by the constructor for the conclusion.
+
+Take the linear combination `(Real.sin t) * h1 + (Real.cos t) * h2 - φ (k 0 0) * h3`. Take the linear combination `(Real.cos t) * h1 - (Real.sin t) * h2 - φ (k 0 1) * h3`.
+-/
 private theorem real_rot (k : G1 ℚ) (hk : InfOrth k) (t : ℝ) (hs : re (k 1 0) = Real.sin t) (hc : re (k 1 1) = Real.cos t) :
     re (k 0 0) = Real.cos t ∧ re (k 0 1) = -Real.sin t := by
   let φ : A ℚ →+* ℝ := (Pi.evalRingHom (fun _ : InfinitePlace ℚ => ℝ) Rat.infinitePlace).comp (TR.pInf ℚ)
@@ -78,6 +111,11 @@ private theorem real_rot (k : G1 ℚ) (hk : InfOrth k) (t : ℝ) (hs : re (k 1 0
   · linear_combination (Real.sin t) * h1 + (Real.cos t) * h2 - φ (k 0 0) * h3
   · linear_combination (Real.cos t) * h1 - (Real.sin t) * h2 - φ (k 0 1) * h3
 
+/- English proof (translation)
+Rewrite using `[rot, TR.pInf_infGL]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TR.pInf ℚ (k i j) = _`. Rewrite using `[pinf_re]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Conclude with `congrArg (fun x _ => x) h0`. Conclude with `congrArg (fun x _ => x) h1`. Conclude with `congrArg (fun x _ => x) hs`. Conclude with `congrArg (fun x _ => x) hc`.
+-/
 private theorem rot_of (k : G1 ℚ) (t : ℝ) (h0 : re (k 0 0) = Real.cos t) (h1 : re (k 0 1) = -Real.sin t)
     (hs : re (k 1 0) = Real.sin t) (hc : re (k 1 1) = Real.cos t) :
     Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (gl k) = Matrix.GeneralLinearGroup.map (TR.pInf ℚ) (rot t) := by
@@ -91,6 +129,17 @@ private theorem rot_of (k : G1 ℚ) (t : ℝ) (h0 : re (k 0 0) = Real.cos t) (h1
   · exact congrArg (fun x _ => x) hs
   · exact congrArg (fun x _ => x) hc
 
+/- English proof (translation)
+Break down `hn.lt_or_eq with hn' | hn'` into its components or cases. Establish `hbc : w (b * c) ≤ w n`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' hb).trans hc`. Establish `had : w a * w d = 1`.
+
+Rewrite using `[← map_mul, show a * d = 1 + b * c by linear_combination h]`. Conclude with `w.map_one_add_of_lt (hbc.trans_lt hn')`. Establish `ha1 : w a = 1` using `le_antisymm ha (had ▸ mul_le_of_le_one_right' hd)`. Establish `hd1 : w d = 1` using `by rwa [ha1, one_mul] at had`. Establish `a0 : a ≠ 0` using `by rintro rfl; simp at ha1`.
+
+Establish `d0 : d ≠ 0` using `by rintro rfl; simp at hd1`. Use `⟨a, a⁻¹, b / d, mul_inv_cancel₀ a0, ha1, by simp [ha1], by simpa [hd1] using hb, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show a⁻¹ * (a - b / d * c) - 1 = -(b * c) / (a * d) by field_simp; ring]`. Simplify `hbc` using `[ha1, hd1]`. Rewrite using `[div_mul_cancel₀ _ d0]`.
+
+Simplify using the standard rewrite rules. Simplify `hc` using `[ha1]`. Rewrite using `[show a * d - 1 = b * c by linear_combination h]; exact hbc`. Rewrite `hc`, the goal using `[hn']`. Use `⟨1, 1, 0, one_mul _, map_one _, map_one _, by simp, ?_, by simpa using hb, by simpa using hc, ?_⟩` and prove the remaining obligations.
+
+Simplify using `using w.map_sub_le ha (map_one w).le`. Simplify using `using w.map_sub_le hd (map_one w).le`.
+-/
 private theorem loc {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ) (a b c d n : K)
     (ha : w a ≤ 1) (hb : w b ≤ 1) (hc : w c ≤ w n) (hd : w d ≤ 1) (hn : w n ≤ 1) (h : a * d - b * c = 1) :
     ∃ z z' β : K, z * z' = 1 ∧ w z = 1 ∧ w z' = 1 ∧ w β ≤ 1 ∧ w (z' * (a - β * c) - 1) ≤ w n ∧
@@ -116,6 +165,27 @@ private theorem loc {K Γ : Type} [Field K] [LinearOrderedCommGroupWithZero Γ] 
     · simpa using w.map_sub_le ha (map_one w).le
     · simpa using w.map_sub_le hd (map_one w).le
 
+/- English proof (translation)
+Introduce `N _ k hk hS t hs hc`. Take `⟨h0, h1⟩` from `real_rot k hk.1 t hs hc`. Establish `hdet` using `k.det_coe`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `hint : ∀ v i j, Valued.v (H.cp v (k i j)) ≤ 1` using `fun v i j => hk.2 v i j`.
+
+Establish `hN : ∀ v : H.P ℚ, Valued.v (N : H.Kv v) ≤ 1` using `fun v => natCast_mem (v.adicCompletionIntegers ℚ) N`. Use `choose z z' β hzz hz hz' hβ e00 e01 e10 e11 using fun v : H.P ℚ => loc (Valued.v (R := H.Kv v)) (H.cp v (k 0 0)) (H.cp v (k 0 1)) (H.cp v (k 1 0)) (H.cp v (k 1 1)) (N : H.Kv v) (hint v 0 0) (hint v 0 1) (hS v) (hint v 1 1) (hN v) (by rw [← map_mul, ← map_mul, ← map_sub, hdet, map …`. Set `Z : A ℚ` to `((1, ⟨z, Eventually.of_forall fun v => (hz v).le⟩) : InfiniteAdeleRing ℚ × FiniteAdeleRing (𝓞 ℚ) ℚ)`. Set `Z' : A ℚ` to `((1, ⟨z', Eventually.of_forall fun v => (hz' v).le⟩) : InfiniteAdeleRing ℚ × FiniteAdeleRing (𝓞 ℚ) ℚ)`. Set `B : A ℚ` to `((0, ⟨β, Eventually.of_forall fun v => hβ v⟩) : InfiniteAdeleRing ℚ × FiniteAdeleRing (𝓞 ℚ) ℚ)`.
+
+Establish `hZ : ∀ v, H.cp v Z = z v` using `fun _ => rfl`. Establish `hZ' : ∀ v, H.cp v Z' = z' v` using `fun _ => rfl`. Establish `hB : ∀ v, H.cp v B = β v` using `fun _ => rfl`. Establish `hZZ : Z * Z' = 1` using `Prod.ext (mul_one _) (FiniteAdeleRing.ext _ fun v => hzz v)`. Establish `rZ : TR.pInf ℚ Z = 1` using `map_one (TR.infEq ℚ).symm`.
+
+Establish `rZ' : TR.pInf ℚ Z' = 1` using `map_one (TR.infEq ℚ).symm`. Establish `rB : TR.pInf ℚ B = 0` using `map_zero (TR.infEq ℚ).symm`. Set `ζ : (A ℚ)ˣ` to `⟨Z, Z', hZZ, (mul_comm _ _).trans hZZ⟩`. Set `k' : G1 ℚ` to `⟨!![Z' * (k 0 0 - B * k 1 0), Z' * (k 0 1 - B * k 1 1); Z * k 1 0, Z * k 1 1], by`. Rewrite using `[Matrix.det_fin_two_of]`.
+
+Take the linear combination `(k 0 0 * k 1 1 - k 0 1 * k 1 0) * hZZ + hdet⟩`. Establish `hd : ∀ v i j, Dv N v (k' i j - (1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j)`. Introduce `v i j`. Unfold `Dv`. Apply the tactic sequence `fin_cases i <;> fin_cases j`.
+
+Simplify `e00 v` using `[k', hZ, hZ', hB]`. Simplify `e01 v` using `[k', hZ, hZ', hB]`. Simplify `e10 v` using `[k', hZ, hZ', hB]`. Simplify `e11 v` using `[k', hZ, hZ', hB]`. Use `⟨B, ζ, (rot t)⁻¹ * gl k', ⟨rfl, fun v => hz v⟩, lev_of N t k' (rot_of k' t ?_ ?_ ?_ ?_) (fun v i j => ?_) hd, ?_⟩` and prove the remaining obligations.
+
+Simplify `h0` using `[k', re, rZ, rZ', rB]`. Simplify `h1` using `[k', re, rZ, rZ', rB]`. Simplify `hs` using `[k', re, rZ, rZ', rB]`. Simplify `hc` using `[k', re, rZ, rZ', rB]`. Establish `h` using `(hd v i j).trans (hN v)`.
+
+Rewrite using `[← sub_add_cancel (k' i j) ((1 : Matrix (Fin 2) (Fin 2) (A ℚ)) i j), map_add]`. Use `Valuation.map_add_le _ h ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[mul_assoc, mul_inv_cancel_left, ← map_mul, ← map_mul]`. Use `congr 1`.
+
+Use `Subtype.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (!![1, B; 0, 1] * !![Z, 0; 0, Z'] * !![Z' * (k 0 0 - B * k 1 0), Z' * (k 0 1 - B * k 1 1); Z * k 1 0, Z * k 1 1] : Matrix (Fin 2) (Fin 2) (A ℚ)) i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(-k 0 0) * hZZ`. Take the linear combination `(-k 0 1) * hZZ`.
+
+Take the linear combination `(-k 1 0) * hZZ`. Take the linear combination `(-k 1 1) * hZZ`.
+-/
 theorem UpperTheory.exists_unipotent_diag_rotation_level_decomposition :
     ∀ (N : ℕ), 0 < N → ∀ k ∈ KK ℚ, k ∈ SS N → ∀ t : ℝ, re (k 1 0) = Real.sin t → re (k 1 1) = Real.cos t →
         ∃ (b : A ℚ) (ζ : (A ℚ)ˣ) (κ : GL (Fin 2) (A ℚ)), ζ ∈ UU ∧ Lev N κ ∧ gl k = gl (nU b) * gl (mD ζ) * rot t * κ := by

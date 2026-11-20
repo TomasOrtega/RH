@@ -24,6 +24,9 @@ namespace Formalism.L2.SG.Pf
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Conclude with `stepChoiceDataC_of (fun _ _ _ _ _ _ _ _ _ _ X Y u u' _ hb X0 _ _ => level_s_at_instance X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 _ _) (fun _ _ _ _ _ _ _ _ _ _ X Y u u' _ hb X0 _ _ => MassDataX.inMassesAt_holds X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 _ _) (fun _ _ _ _ _ _ _ _ _ _ X Y u u …`.
+-/
 theorem stepChoiceDataC_of_leaves
     (hSW : ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D),
       Formalism.MainNotions.UnusedSlot34.SWa1 X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J ∧
@@ -54,6 +57,11 @@ theorem stepChoiceDataC_of_leaves
       ⟨Formalism.L2.SG.RealObj.InfCut.inNuX X u u' 1, hInf Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hb X0 ψ hT⟩)
     hPos hFV
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Take `⟨Cgs, CTs, -, -, s₀, t₀, hS⟩` from `sizes_of_hypotheses Cg cb Cw cT CT C0`. Use `⟨max s₀ 29, max t₀ 16, fun C' Cl h1 h2 D large₂ X Y u u' hc hb X0 ψ hT => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hrd, -, hg, -⟩` from `hS C' Cl (le_trans (le_max_left _ _) h1) (le_trans (le_max_left _ _) h2) D large₂ X Y u u' hc`. Establish `hGap : Formalism.L2.SG.ConcreteSettingExists.GapHyp D` using `Formalism.L2.SG.ThmSOwn.gap_hypothesis_of_hypotheses hc.1.1 (le_trans (le_max_right _ _) h2) (le_trans (le_max_right _ _) h1)`.
+
+Establish `e` using `fun {P} (h : OnTied P) => h Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hb X0 ψ hT`. Conclude with `⟨0, 0, 1, X.Fu u, Y.what₂ u, fun _ => 0, pairSys0 u u' (X.Fu u) (Y.what₂ u), fun _ => idx0 D, fun _ => idx0 D, fun _ => 0, massDataValid_bk_of X hb Y u u' X0 ψ 0 0 1 (fun _ => 0) (pairSys0 u u' (X.Fu u) (Y.what₂ u)) (fun _ => idx0 D) (fun _ => idx0 D) (fun _ => 0) hc hrd (by lina …`.
+-/
 theorem stepChoiceDataC_of_leavesG
     (hSW : ∀ {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D),
       Formalism.MainNotions.UnusedSlot34.SWa1 X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J ∧
@@ -88,6 +96,9 @@ theorem stepChoiceDataC_of_leavesG
       (Formalism.L2.SG.Pf.LocVolPrim.primX X u' locFramePrim) (Formalism.L2.SG.LocVolKap.kapX X hb u u')
       (Formalism.L2.SG.Pf.realObj_inNuX X u u' 1) (hInfG D X u u' hGap) (e hPos) (e hFV)⟩
 
+/- English proof (translation)
+Conclude with `stepChoiceDataC_of_leavesG hSW MassDataX.nTy_holds hPC hInfG (MassDataX.nPos_of hSW hPC) (MassDataX.frameVolAt_of_prodConv hPC)`.
+-/
 theorem choice_massData (hSW : PI.VolStabS.MassDataS.SWXS)
     (hPC : OnTied fun _ X _ _ u u' _ ψ => ProdConv X u u' ψ)
     (hInfG : ∀ (D : D7) (X : HidaSetting D) (u u' : D.what₂.Word), Formalism.L2.SG.ConcreteSettingExists.GapHyp D →

@@ -12,11 +12,17 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : ℕ}
 
+/- English proof (translation)
+Unfold `qZ`. Conclude with `continuous_pi fun i => (continuous_const.matrix_mul continuous_id).matrix_trace`.
+-/
 theorem continuous_qZ (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) :
     Continuous (qZ Z : Matrix (Fin n) (Fin n) k → _) := by
   unfold qZ
   exact continuous_pi fun i => (continuous_const.matrix_mul continuous_id).matrix_trace
 
+/- English proof (translation)
+Establish `: Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a}`. Use extensionality with `x`. Simplify using `[Bz]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul continuous_id) (continuous_id.matrix_mul continuous_const)`.
+-/
 theorem isClosed_Bz (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (Bz Z) := by
   have : Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a} := by
     ext x
@@ -27,6 +33,11 @@ theorem isClosed_Bz (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (Bz
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Unfold `qZ`. Establish `hb` using `hg _ ((Module.finBasis k Z) i).2`. Use `set b : Matrix (Fin n) (Fin n) k := ((Module.finBasis k Z) i : Matrix (Fin n) (Fin n) k)`. Establish `h1 : b * (g.val * x * g⁻¹.val) = g.val * (b * x) * g⁻¹.val`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hb, Matrix.mul_assoc g.val b x]`. Rewrite using `[h1, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Establish `h2 : g⁻¹.val * g.val = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[h2, Matrix.one_mul]`.
+-/
 theorem qZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     (x : Matrix (Fin n) (Fin n) k) : qZ Z (g.val * x * g⁻¹.val) = qZ Z x := by
   funext i
@@ -40,6 +51,13 @@ theorem qZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k}
     rw [← Units.val_mul, inv_mul_cancel, Units.val_one]
   rw [h2, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite `hf`, the goal using `[mem_supportedIn]`. Take `⟨hlc, -⟩` from `hf`. Establish `hlc' : IsLocallyConstant f ∧ HasCompactSupport f` using `hlc`. Use `⟨?_, subset_univ _⟩` and prove the remaining obligations. Establish `hi : IsLocallyConstant (A.indicator (1 : X → ℂ))`.
+
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ A`. Use `filter_upwards [hA.isOpen.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+
+Use `filter_upwards [hA.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Conclude with `⟨hi.mul hlc'.1, HasCompactSupport.mul_left hlc'.2⟩`.
+-/
 private theorem exists_term_d_sub_termMap_mem {X : Type} [TopologicalSpace X] {A : Set X} (hA : IsClopen A) {f : X → ℂ}
     (hf : f ∈ supportedIn (univ : Set X)) :
     (fun x => A.indicator 1 x * f x) ∈ supportedIn (univ : Set X) := by
@@ -57,6 +75,39 @@ private theorem exists_term_d_sub_termMap_mem {X : Type} [TopologicalSpace X] {A
       simp [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
   exact ⟨hi.mul hlc'.1, HasCompactSupport.mul_left hlc'.2⟩
 
+/- English proof (translation)
+Introduce `n Z hCR hfib ξ hsupp hinv f hf`. Use `haveI : TotallyDisconnectedSpace k := totallyDisconnectedSpace_localField`. Set `W : Submodule ℂ (Sp k n → ℂ)` to `{ carrier := {w | ∀ V : Set (Fin (Module.finrank k Z) → k), IsClopen V → ξ (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * w x) = 0} add_mem' := by`. Introduce `a b ha hb V hV`. Establish `e : (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * (a + b) x) = (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * a x) + (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * b x)`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_add, ha V hV, hb V hV, add_zero]`. Use the proof step `zero_mem' := by`.
+
+Introduce `V hV`. Simplify using `only [Pi.zero_apply, mul_zero]`. Conclude with `map_zero ξ`. Use the proof step `smul_mem' := by`. Introduce `c a ha V hV`.
+
+Establish `e : (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * (c • a) x) = c • (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * a x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_smul, ha V hV, smul_zero] }`.
+
+Establish `hp : Continuous (fun q : Sp k n => qZ Z q.1)` using `(continuous_qZ Z).comp continuous_fst`. Establish `hC : IsClosed (Bz Z ×ˢ (univ : Set (Fin n → k)))` using `(isClosed_Bz Z).prod isClosed_univ`. Establish `hf' : f ∈ supportedIn (univ : Set (Sp k n))`. Rewrite `hf`, the goal using `[mem_supportedIn]`. Conclude with `⟨hf.1, subset_univ _⟩`.
+
+Establish `h1 : supportedIn (univ : Set (Sp k n)) ⊓ vanishingOn (Bz Z ×ˢ (univ : Set (Fin n → k))) ≤ W`. Introduce `w hw`. Rewrite `hw` using `[Submodule.mem_inf]`. Introduce `V hV`. Use `hsupp _ (exists_term_d_sub_termMap_mem (hV.preimage hp) hw.1) ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Establish `: w x = 0` using `hw.2 x hx`. Simplify using `[this]`. Establish `h2 : ∀ V : Set (Fin (Module.finrank k Z) → k), IsClopen V → ∀ w ∈ W, (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * w x) ∈ W`. Introduce `V hV w hw V' hV'`.
+
+Use `hw (V ∩ V') (hV.inter hV')` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases ha : qZ Z x.1 ∈ V <;> by_cases hb : qZ Z x.1 ∈ V' <;> simp [Set.indicator, ha, hb]`. Establish `hfW : f ∈ W`.
+
+Use `mem_of_forall_fiber hC hp h1 h2 hf' ?_` and prove the remaining obligations. Introduce `y`. Assume the negation of the conclusion as `hny`. Take `⟨l, hlf, hlM⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hny inferInstance`. Establish `hl0 : ∀ m ∈ W ⊔ supportedIn (univ : Set (Sp k n)) ⊓ vanishingOn (Bz Z ×ˢ (univ : Set (Fin n → k)) ∩ (fun q : Sp k n => qZ Z q.1) ⁻¹' {y}), l m = 0`.
+
+Introduce `m hm`. Establish `hm' : l m ∈ Submodule.map l (W ⊔ supportedIn (univ : Set (Sp k n)) ⊓ vanishingOn (Bz Z ×ˢ (univ : Set (Fin n → k)) ∩ (fun q : Sp k n => qZ Z q.1) ⁻¹' {y}))` using `Submodule.mem_map_of_mem hm`. Rewrite `hm'` using `[hlM]`. Simplify using `using hm'`. Apply `hlf` to reduce the goal to its premises.
+
+Use `hfib y l ?_ ?_ f hf` and prove the remaining obligations. Introduce `g hg hgv`. Apply `hl0` to reduce the goal to its premises. Use `Submodule.mem_sup_right (Submodule.mem_inf.2 ⟨hg, ?_⟩)` and prove the remaining obligations. Introduce `x hx`.
+
+Apply `hgv x` to reduce the goal to its premises. Use `show x ∈ (Bz Z ∩ qZ Z ⁻¹' {y}) ×ˢ (univ : Set (Fin n → k))`. Conclude with `⟨⟨hx.1.1, hx.2⟩, trivial⟩`. Introduce `g hg h hh`. Establish `hd : (fun q => h (act g q)) - h ∈ W`.
+
+Introduce `V hV`. Establish `hc` using `exists_term_d_sub_termMap_mem (hV.preimage hp) hh`. Establish `e : (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * ((fun q => h (act g q)) - h) x) = (fun q => (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * h x) (act g q)) - (fun x => ((fun q : Sp k n => qZ Z q.1) ⁻¹' V).indicator 1 x * h x)`. Use function extensionality and compare the values at `x`. Establish `hpx : qZ Z (act g x).1 = qZ Z x.1` using `qZ_conj Z hg x.1`.
+
+Distinguish the cases in `ha : qZ Z x.1 ∈ V`. Establish `ha' : qZ Z (act g x).1 ∈ V`. Rewrite using `[hpx]`. Conclude with `ha`. Simplify using `[Set.indicator, ha, ha']`.
+
+Establish `ha' : qZ Z (act g x).1 ∉ V`. Rewrite using `[hpx]`. Conclude with `ha`. Simplify using `[Set.indicator, ha, ha']`. Rewrite using `[e, map_sub, hinv g hg _ hc, sub_self]`.
+
+Establish `hd'` using `hl0 _ (Submodule.mem_sup_left hd)`. Rewrite `hd'` using `[map_sub, sub_eq_zero]`. Conclude with `hd'`. Use `hfW univ isClopen_univ` as an intermediate fact. Simplify using `using this`.
+-/
 theorem locQ_pf : LocQ (k := k) := by
   intro n Z hCR hfib ξ hsupp hinv f hf
   haveI : TotallyDisconnectedSpace k := totallyDisconnectedSpace_localField

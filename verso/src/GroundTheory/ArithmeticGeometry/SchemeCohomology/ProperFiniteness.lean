@@ -14,12 +14,18 @@ attribute [local instance] algebraOfOver
 
 variable {A : Type u} [CommRing A] [IsNoetherianRing A]
 
+/- English proof (translation)
+The claim follows from `finiteH_of_supportedIn X ⊤ F hF (by rw [Closeds.coe_top] exact Scheme.Modules.SupportedIn.univ F)`.
+-/
 theorem finiteH_of_isProper {X : Scheme.{u}} [X.Over (Spec (.of A))]
     [IsProper (X ↘ Spec (.of A))] (F : X.Modules) (hF : IsCoherent F) : FiniteH.{u} A F :=
   finiteH_of_supportedIn X ⊤ F hF (by
     rw [Closeds.coe_top]
     exact Scheme.Modules.SupportedIn.univ F)
 
+/- English proof (translation)
+The claim follows from `finiteH_of_isProper F hF p`.
+-/
 theorem finite_H_of_isProper {X : Scheme.{u}} [X.Over (Spec (.of A))]
     [IsProper (X ↘ Spec (.of A))] (F : X.Modules) (hF : IsCoherent F) (p : ℕ) :
     Module.Finite A (Sheaf.H.{u} (modulesAb F) p) :=

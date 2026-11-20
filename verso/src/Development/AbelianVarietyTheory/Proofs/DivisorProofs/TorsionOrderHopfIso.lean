@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.GroupBplus.Aff
 
+/- English proof (translation)
+Use `GlobalTheory.T.torsion_pairing_functorial R K G hG N N hN hN (fun B _ _ x _ => σ B x - τ B x) (fun B C _ _ _ _ φ x _ => by simp only [map_sub, hσ B C φ x, hτ B C φ x]) (fun x _ => sub_eq_zero.2 (h x)) B x 1` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+-/
 theorem natFn_eq_of_eq_on {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClosed R] (K : Type) [Field K]
     [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G]
     {N : ℕ} (hG : IsSemiAbelian G) (hN : N ≠ 0)
@@ -22,6 +25,25 @@ theorem natFn_eq_of_eq_on {R : Type} [CommRing R] [IsDomain R] [IsIntegrallyClos
     (fun B C _ _ _ _ φ x _ => by simp only [map_sub, hσ B C φ x, hτ B C φ x]) (fun x _ => sub_eq_zero.2 (h x)) B x 1
   exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ io hmul`. Establish `hex : ∀ a : A, ∃ σ : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → B, IsNatFn G N σ ∧ ∀ x, σ K x = (io a : Tors G N K → K) x` using `fun a => by`. Take `⟨σ, hσ, h⟩` from `(io a).2 1`. Conclude with `⟨σ, hσ, fun x => by rw [h x, _root_.one_mul]⟩`. Use `choose σ hσ hσK using hex`.
+
+Establish `sep` using `natFn_eq_of_eq_on K hG hN`. Establish `natMul : ∀ a b : A, IsNatFn G N (fun B _ _ x => σ a B x * σ b B x)` using `fun a b B C _ _ _ _ φ z => by`. Simplify using `only [map_mul, hσ a B C φ z, hσ b B C φ z]`. Establish `natAdd : ∀ a b : A, IsNatFn G N (fun B _ _ x => σ a B x + σ b B x)` using `fun a b B C _ _ _ _ φ z => by`. Simplify using `only [map_add, hσ a B C φ z, hσ b B C φ z]`.
+
+Establish `natC : ∀ c : R, IsNatFn G N (fun B _ _ _ => algebraMap R B c)` using `fun c B C _ _ _ _ φ z => (φ.commutes c).symm`. Set `pt : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → (A →ₐ[R] B)` to `fun B _ _ x => { toFun := fun a => σ a B x map_one' := by`. Use `sep (σ 1) _ (hσ 1) (natC 1) (fun x => by simp [hσK]) B x` as an intermediate fact. Simplify using `using this`. Use the proof step `map_mul' := fun a b => sep (σ (a * b)) _ (hσ _) (natMul a b) (fun x => by simp [hσK]) B x`.
+
+Use the proof step `map_zero' := by`. Use `sep (σ 0) _ (hσ 0) (natC 0) (fun x => by simp [hσK]) B x` as an intermediate fact. Simplify using `using this`. Use the proof step `map_add' := fun a b => sep (σ (a + b)) _ (hσ _) (natAdd a b) (fun x => by simp [hσK]) B x`. Use the proof step `commutes' := fun c => sep (σ (algebraMap R A c)) _ (hσ _) (natC c) (fun x => by simp [hσK]) B x }`.
+
+Establish `ptApp : ∀ (B : Type) [CommRing B] [Algebra R B] (x : Tors G N B) (a : A), pt B x a = σ a B x` using `fun _ _ _ _ _ => rfl`. Establish `ptNat : ∀ (B C : Type) [CommRing B] [Algebra R B] [CommRing C] [Algebra R C] (φ : B →ₐ[R] C) (z : Tors G N B), pt C (torsMap φ z) = φ.comp (pt B z)` using `fun B C _ _ _ _ φ z => by`. Use extensionality with `a`. Conclude with `hσ a B C φ z`. Establish `ptK : ∀ x : Tors G N K, pt K x = ((Pi.evalAlgHom R (fun _ : Tors G N K => K) x).comp (ord G N K).val).comp io.toAlgHom` using `fun x => by`.
+
+Use extensionality with `a`. Simplify using `[ptApp, hσK]`. Use `⟨⟨pt, ptNat, fun B _ _ x y => ?_⟩, fun x a => hσK a x⟩` and prove the remaining obligations. Apply `WithConv.ofConv_injective` to reduce the goal to its premises. Use extensionality with `a`.
+
+Use `GlobalTheory.T.torsion_pairing_functorial R K G hG N N hN hN (fun B _ _ x y => σ a B (x * y) - (toConv (pt B x) * toConv (pt B y)).ofConv a) ?_ ?_ B x y` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Introduce `B C _ _ _ _ φ x y`. Establish `h1 : φ ((toConv (pt B x) * toConv (pt B y)).ofConv a) = (toConv (pt C (torsMap φ x)) * toConv (pt C (torsMap φ y))).ofConv a`. Rewrite using `[ptNat, ptNat, ← AlgHom.comp_convMul_distrib]`.
+
+Both sides reduce to the same expression. Establish `h2 : torsMap φ (x * y) = torsMap φ x * torsMap φ y`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[MonObj.comp_mul]`. Simplify using `only [map_sub, h1, ← h2, hσ a B C φ (x * y)]`.
+
+Introduce `x y`. Rewrite using `[sub_eq_zero, hσK, ptK, ptK, ← hmul]`. Both sides reduce to the same expression.
+-/
 theorem exists_torsPt_of_ord : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 → ∀ (A : Type) [CommRing A] [HopfAlgebra R A] (io : A ≃ₐ[R] ord G N K), (∀ a b : Tors G N K, toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) (a * b)).comp (ord G N K).val).comp io.toAlgHom) = toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) a).comp (ord G N K).val).comp io.toAlgHom) * toConv (((Pi.evalAlgHom R (fun _ : Tors G N K => K) b).comp (ord G N K).val).comp io.toAlgHom)) → ∃ θ : TorsPt G N A, ∀ (x : Tors G N K) (a : A), θ.pt K x a = (io a : Tors G N K → K) x := by
   intro R K _ _ _ _ _ _ _ _ G _ _ hG N hN A _ _ io hmul
   have hex : ∀ a : A, ∃ σ : ∀ (B : Type) [CommRing B] [Algebra R B], Tors G N B → B,

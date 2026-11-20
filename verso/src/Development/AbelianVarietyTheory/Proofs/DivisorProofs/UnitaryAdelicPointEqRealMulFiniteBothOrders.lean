@@ -8,6 +8,17 @@ open Formalism.IndefR.DatumF
 
 namespace GlobalTheory.WeilPartsF
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv F E`. Establish `hi : ∀ x y : AEF F E, infPartF F E x = infPartF F E y → finPartF F E x = finPartF F E y → x = y` using `fun x y h1 h2 => GlobalTheory.AdelicOrbit.parts_inj x y h1 h2`. Establish `hs : ∀ a b, ∃ x : AEF F E, infPartF F E x = a ∧ finPartF F E x = b` using `fun a b => by`. Apply the tactic sequence `refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp`. Use `set g : GL (Fin n) (AEF F E) := matHomF σ J p with hg`.
+
+Establish `hgm : g ∈ HR (AF F) σ J` using `p.2`. Establish `hparts` using `(GlobalTheory.AdelicOrbit.mem_parts σ J g).1 hgm`. Take `⟨a, a1, a2⟩` from `GlobalTheory.UnitarySplit.gl_glue (infPartF F E) (finPartF F E) hi hs (Formalism.UG.bc (infPartF F E) g) 1`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.gl_glue (infPartF F E) (finPartF F E) hi hs 1 (Formalism.UG.bc (finPartF F E) g)`. Establish `ha : a ∈ HR (AF F) σ J` using `(GlobalTheory.AdelicOrbit.mem_parts σ J a).2 ⟨a1 ▸ hparts.1, a2 ▸ one_mem _⟩`.
+
+Establish `hk : k ∈ HR (AF F) σ J` using `(GlobalTheory.AdelicOrbit.mem_parts σ J k).2 ⟨k1 ▸ one_mem _, k2 ▸ hparts.2⟩`. Use `⟨⟨a, ha⟩, ?_, ⟨k, hk⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `MonoidHom.mem_ker.2 a2`. Conclude with `MonoidHom.mem_ker.2 k1`. Use `Subtype.ext (GlobalTheory.UnitarySplit.gl_ext (infPartF F E) (finPartF F E) hi ?_ ?_)` and prove the remaining obligations.
+
+Use `show Formalism.UG.bc (infPartF F E) g = Formalism.UG.bc (infPartF F E) (a * k)`. Rewrite using `[map_mul, a1, k1, mul_one]`. Use `show Formalism.UG.bc (finPartF F E) g = Formalism.UG.bc (finPartF F E) (a * k)`. Rewrite using `[map_mul, a2, k2, one_mul]`. Use `Subtype.ext (GlobalTheory.UnitarySplit.gl_ext (infPartF F E) (finPartF F E) hi ?_ ?_)` and prove the remaining obligations.
+
+Use `show Formalism.UG.bc (infPartF F E) g = Formalism.UG.bc (infPartF F E) (k * a)`. Rewrite using `[map_mul, a1, k1, one_mul]`. Use `show Formalism.UG.bc (finPartF F E) g = Formalism.UG.bc (finPartF F E) (k * a)`. Rewrite using `[map_mul, a2, k2, mul_one]`.
+-/
 theorem exists_real_finite_mul (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (p : GAF σ J) :
     ∃ a ∈ GlobalTheory.WeilPartsF.GinfCF σ J, ∃ k ∈ GlobalTheory.WeilPartsF.GfCF σ J, p = a * k ∧ p = k * a := by
@@ -37,6 +48,9 @@ theorem exists_real_finite_mul (F E : Type) [Field F] [NumberField F] [Field E] 
     · show Formalism.UG.bc (finPartF F E) g = Formalism.UG.bc (finPartF F E) (k * a)
       rw [map_mul, a2, k2, mul_one]
 
+/- English proof (translation)
+The claim follows from `exists_real_finite_mul`.
+-/
 example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (p : GAF σ J), ∃ a ∈ GlobalTheory.WeilPartsF.GinfCF σ J, ∃ k ∈ GlobalTheory.WeilPartsF.GfCF σ J, p = a * k ∧ p = k * a := exists_real_finite_mul
 

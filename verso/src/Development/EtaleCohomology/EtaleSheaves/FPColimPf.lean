@@ -25,6 +25,9 @@ variable {R A}
 
 instance : Preorder (Idx R A) := Preorder.lift (fun i => (i.s, i.T))
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem Idx.le_iff {i j : Idx R A} : i ≤ j ↔ i.s ⊆ j.s ∧ i.T ⊆ j.T := Iff.rfl
 
 def Idx.join (i j : Idx R A) : Idx R A where
@@ -45,6 +48,9 @@ instance : IsDirected (Idx R A) (· ≤ ·) :=
 
 instance : Nonempty (Idx R A) := ⟨⟨∅, ∅, by simp, by simp⟩⟩
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsFiltered (Idx R A) := inferInstance
 
 def rel (i : Idx R A) : Ideal (MvPolynomial i.s R) :=
@@ -55,6 +61,9 @@ abbrev D (i : Idx R A) := MvPolynomial i.s R ⧸ rel i
 def retr (i : Idx R A) : MvPolynomial A R →ₐ[R] MvPolynomial i.s R :=
   aeval (fun a => if h : a ∈ i.s then X ⟨a, h⟩ else 0)
 
+/- English proof (translation)
+Rewrite using `[retr, aeval_rename]`. Use `conv_rhs => rw [← aeval_X_left_apply (R := R) p]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem retr_rename (i : Idx R A) (p : MvPolynomial i.s R) : retr i (rename Subtype.val p) = p := by
   rw [retr, aeval_rename]
   conv_rhs => rw [← aeval_X_left_apply (R := R) p]
@@ -62,12 +71,22 @@ theorem retr_rename (i : Idx R A) (p : MvPolynomial i.s R) : retr i (rename Subt
   ext x
   simp
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `exists_rename_eq_of_vars_subset_range t (Subtype.val : i.s → A) Subtype.val_injective (fun x hx => ⟨⟨x, ht hx⟩, rfl⟩)`. Rewrite using `[retr_rename]`.
+-/
 theorem rename_retr (i : Idx R A) (t : MvPolynomial A R) (ht : t.vars ⊆ i.s) :
     rename Subtype.val (retr i t) = t := by
   obtain ⟨q, rfl⟩ := exists_rename_eq_of_vars_subset_range t (Subtype.val : i.s → A)
     Subtype.val_injective (fun x hx => ⟨⟨x, ht hx⟩, rfl⟩)
   rw [retr_rename]
 
+/- English proof (translation)
+Establish `: rel i = Ideal.map (retr i) (Ideal.span (i.T : Set (MvPolynomial A R)))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `p hp`. Rewrite using `[← retr_rename i p]`. Conclude with `Ideal.mem_map_of_mem _ hp`.
+
+Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.span_le]`. Introduce `t ht`. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, rel, Ideal.mem_comap, rename_retr i t (i.hv t ht)]`. Conclude with `Ideal.subset_span ht`. Rewrite using `[this]`.
+
+Conclude with `Ideal.FG.map ⟨i.T, rfl⟩ _`.
+-/
 theorem rel_fg (i : Idx R A) : (rel i).FG := by
   have : rel i = Ideal.map (retr i) (Ideal.span (i.T : Set (MvPolynomial A R))) := by
     apply le_antisymm
@@ -99,23 +118,38 @@ def toA (i : Idx R A) : D i →ₐ[R] A :=
       exact i.hT t ht
     rwa [aeval_rename] at h0)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem trans_mk (i j : Idx R A) (h : i ≤ j) (p) :
     trans i j h (Ideal.Quotient.mk _ p) = Ideal.Quotient.mk _ (rename (fun x : i.s => (⟨x.1, h.1 x.2⟩ : j.s)) p) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem toA_mk (i : Idx R A) (p) :
     toA i (Ideal.Quotient.mk _ p) = aeval (fun x : i.s => (x : A)) p := rfl
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+-/
 theorem trans_id (i : Idx R A) : trans i i le_rfl = AlgHom.id R _ := by
   apply Ideal.Quotient.algHom_ext
   apply MvPolynomial.algHom_ext
   intro x; simp [Ideal.Quotient.mkₐ_eq_mk]
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+-/
 theorem trans_comp (i j k : Idx R A) (h₁ : i ≤ j) (h₂ : j ≤ k) :
     trans i k (h₁.trans h₂) = (trans j k h₂).comp (trans i j h₁) := by
   apply Ideal.Quotient.algHom_ext
   apply MvPolynomial.algHom_ext
   intro x; simp [Ideal.Quotient.mkₐ_eq_mk]
 
+/- English proof (translation)
+Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[Ideal.Quotient.mkₐ_eq_mk]`.
+-/
 theorem toA_trans (i j : Idx R A) (h : i ≤ j) : (toA j).comp (trans i j h) = toA i := by
   apply Ideal.Quotient.algHom_ext
   apply MvPolynomial.algHom_ext
@@ -134,9 +168,15 @@ def uHom {B C : Type} [CommRing B] [Algebra X B] [CommRing C] [Algebra X C] (φ 
     mkU X B ⟶ mkU X C :=
   Under.homMk (CommRingCat.ofHom φ.toRingHom) (by ext x; simp)
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 theorem uHom_id {B : Type} [CommRing B] [Algebra X B] : uHom (AlgHom.id X B) = 𝟙 _ := by
   ext; rfl
 
+/- English proof (translation)
+Use `ext`. Both sides reduce to the same expression.
+-/
 theorem uHom_comp {B C E : Type} [CommRing B] [Algebra X B] [CommRing C] [Algebra X C] [CommRing E] [Algebra X E]
     (φ : B →ₐ[X] C) (ψ : C →ₐ[X] E) : uHom (ψ.comp φ) = uHom φ ≫ uHom ψ := by
   ext; rfl
@@ -155,6 +195,9 @@ def cocone : Cocone (diag (X := X) A) where
            show uHom (trans i j f.le) ≫ uHom (toA j) = uHom (toA i)
            rw [← uHom_comp, toA_trans] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cocone_app (i : Idx X A) (x : D i) :
     ((Under.forget X ⋙ forget CommRingCat).mapCocone (cocone A)).ι.app i x = toA i x := rfl
 
@@ -200,14 +243,23 @@ def isColimitCocone : IsColimit (cocone (X := X) A) := by
     show r ∈ ((i.T ∪ j.T ∪ {r} : Finset _) : Set (MvPolynomial A X))
     exact Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_singleton_self _))
 
+/- English proof (translation)
+The claim follows from `show (algebraMap X (D i)).FinitePresentation from RingHom.finitePresentation_algebraMap.2 inferInstance`.
+-/
 theorem fp_diag (i : Idx X A) : FP X ((diag (X := X) A).obj i) :=
   show (algebraMap X (D i)).FinitePresentation from RingHom.finitePresentation_algebraMap.2 inferInstance
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ diag := diag A, ι := (cocone A).ι, isColimit := isColimitCocone A, prop_diag_obj := fp_diag A }⟩`.
+-/
 theorem colim_mkU : (FP X).colimitsOfShape (Idx X A) (mkU X A) :=
   ⟨{ diag := diag A, ι := (cocone A).ι, isColimit := isColimitCocone A, prop_diag_obj := fp_diag A }⟩
 
 end Cat
 
+/- English proof (translation)
+Introduce `X S`. Set `_ : Algebra X S.right` to `S.hom.hom.toAlgebra`. Conclude with `⟨Idx X S.right, inferInstance, inferInstance, colim_mkU S.right⟩`.
+-/
 theorem FPColim_of : FPColim := by
   intro X S
   let _ : Algebra X S.right := S.hom.hom.toAlgebra

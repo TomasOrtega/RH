@@ -16,6 +16,9 @@ attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Ho
 open GlobalTheory.Mem.CanonicalSurjection
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mem.RangeMinors.exists_dual_DeX_eq_minY | exact GlobalTheory.Mem.RangeMinors.exists_dual_DeX_eq_minY | (intros; apply GlobalTheory.Mem.RangeMinors.exists_dual_DeX_eq_minY <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_functional_frameMinorPolynomials_eq_minorProduct : ∀ (D : D7) (k : Type) [Field k] [CharZero k] (N : ℕ) (nu : Bool × Formalism.MainNotions.G.HH D → YoungDiagram)
     (J : KM.ColChoice N nu), ∃ ph : Module.Dual k (MvPolynomial ((Bool × Formalism.MainNotions.G.HH D) × ℕ × Fin N) k),
       ∀ y : Bool × Formalism.MainNotions.G.HH D → Fin N → ℕ → k, ph (GL3Columns.DeX N nu y) = GL3Columns.minY N nu J y := by

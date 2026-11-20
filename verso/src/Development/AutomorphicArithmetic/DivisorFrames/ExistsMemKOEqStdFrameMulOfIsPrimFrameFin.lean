@@ -5,6 +5,35 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsGLMulIsPrimit
 open GlobalTheory.SplitFlip GlobalTheory.SplitWeil ValuativeRel
 
 open Matrix in
+/- English proof (translation)
+Introduce `k _ _ _ _ A D _ _ _ _ a' σ X hX`. Establish `hXint : ∀ i j, X i j ∈ 𝒪[k]` using `mem_matLat_stdLat.1 hX.2.1`. Take `⟨R, hRint, hXR⟩` from `GlobalTheory.PrimFrameMove.exists_rightInverse hX`. Take `⟨h, hh⟩` from `(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock σ X).1 hX.1`. Use `set Y : Matrix (Fin a') D k := Y0 k σ * (h : Matrix D D k) with hYeq`.
+
+Establish `hYX : Y * X.transpose = 0`. Rewrite using `[hh]`. Conclude with `frameSecondBlock_mul_frameFirstBlock_transpose_eq_zero σ h`. Establish `hYrank : Y.rank = a'`. Establish `hY0 : Y0 k σ * (Y0 k σ).transpose = 1`.
+
+Use extensionality with `i j`. Simplify using `[Y0, Matrix.mul_apply, Matrix.one_apply, Finset.sum_ite_eq']`. Establish `hW : Y * (((h⁻¹ : GL D k) : Matrix D D k) * (Y0 k σ).transpose) = 1`. Rewrite using `[hYeq, Matrix.mul_assoc, ← Matrix.mul_assoc (h : Matrix D D k), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, hY0]`. Establish `h1` using `Matrix.rank_mul_le_left Y (((h⁻¹ : GL D k) : Matrix D D k) * (Y0 k σ).transpose)`.
+
+Rewrite `h1` using `[hW, Matrix.rank_one, Fintype.card_fin]`. Establish `h2` using `Matrix.rank_le_card_height Y`. Rewrite `h2` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨g₀, hg₀⟩` from `GlobalTheory.PrimFrameExist.exists_gl_mul_isPrimFrame k a' D (fun _ => 1) Y hYrank`.
+
+Use `set Y' : Matrix (Fin a') D k := (g₀ : Matrix (Fin a') (Fin a') k) * Y with hY'eq`. Establish `hY'prim : IsPrimFrame (stdLat k D) Y'` using `hg₀`. Establish `hY'int : ∀ i j, Y' i j ∈ 𝒪[k]` using `mem_matLat_stdLat.1 hY'prim.2.1`. Take `⟨S, hSint, hY'S⟩` from `GlobalTheory.PrimFrameMove.exists_rightInverse hY'prim`. Establish `hY'X : Y' * X.transpose = 0`.
+
+Rewrite using `[hY'eq, Matrix.mul_assoc, hYX, Matrix.mul_zero]`. Establish `hRX : R.transpose * X.transpose = 1`. Rewrite using `[← Matrix.transpose_mul, hXR, Matrix.transpose_one]`. Use `set S' : Matrix D (Fin a') k := S - X.transpose * (R.transpose * S) with hS'eq`. Establish `hRS' : R.transpose * S' = 0`.
+
+Rewrite using `[hS'eq, Matrix.mul_sub, ← Matrix.mul_assoc, hRX, Matrix.one_mul, sub_self]`. Establish `hY'S' : Y' * S' = 1`. Rewrite using `[hS'eq, Matrix.mul_sub, ← Matrix.mul_assoc, hY'X, Matrix.zero_mul, sub_zero, hY'S]`. Establish `mulInt : ∀ {m n o : Type} [Fintype n] (P : Matrix m n k) (Q : Matrix n o k), (∀ i j, P i j ∈ 𝒪[k]) → (∀ i j, Q i j ∈ 𝒪[k]) → ∀ i j, (P * Q) i j ∈ 𝒪[k]`. Introduce `m n o _ P Q hP hQ i j`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun x _ => mul_mem (hP _ _) (hQ _ _)`. Establish `hS'int : ∀ i j, S' i j ∈ 𝒪[k]`. Introduce `i j`. Rewrite using `[hS'eq, Matrix.sub_apply]`.
+
+Use `sub_mem (hSint i j) ?_` and prove the remaining obligations. Conclude with `mulInt _ _ (fun a b => hXint b a) (mulInt _ _ (fun a b => hRint b a) hSint) i j`. Set `K : Matrix D D k` to `(Matrix.fromRows R.transpose Y').submatrix σ.symm (Equiv.refl D)`. Set `N : Matrix D D k` to `(Matrix.fromCols X.transpose S').submatrix (Equiv.refl D) σ.symm`. Establish `hKN : K * N = 1`.
+
+Simplify using `only [K, N]`. Rewrite using `[Matrix.submatrix_mul_equiv, Matrix.fromRows_mul_fromCols, hRX, hRS', hY'X, hY'S', Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]`. Establish `hNK : N * K = 1` using `mul_eq_one_comm.1 hKN`. Set `κ : GL D k` to `⟨K, N, hKN, hNK⟩`. Use `⟨κ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_KO_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `e d show K e d ∈ 𝒪[k]`. Simplify using `only [K, Matrix.submatrix_apply, Equiv.refl_apply]`. Break down `σ.symm e with i | j` into its components or cases.
+
+Simplify using `using hRint d i`. Simplify using `using hY'int j d`. Introduce `d e show N d e ∈ 𝒪[k]`. Simplify using `only [N, Matrix.submatrix_apply, Equiv.refl_apply]`. Break down `σ.symm e with i | j` into its components or cases.
+
+Simplify using `using hXint i d`. Simplify using `using hS'int d j`. Use extensionality with `i d`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply]`. Use `show X i d = N d (σ (Sum.inl i))`.
+
+Simplify using `[N]`.
+-/
 theorem UpperTheory.exists_mem_KO_eq_stdFrame_mul_of_isPrimFrame_fin :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] {a' : ℕ} (σ : A ⊕ Fin a' ≃ D) (X : Matrix A D k), IsPrimFrame (GlobalTheory.SplitFlip.stdLat k D) X → ∃ κ ∈ GlobalTheory.SplitWeil.KO k D, X = X0 k σ * (invT κ).val := by
   intro k _ _ _ _ A D _ _ _ _ a' σ X hX

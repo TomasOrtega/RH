@@ -25,15 +25,26 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
     {W : LocWach PD LL O v n} (E : EtTie W RA RW inclR φR gR πA)
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a y, E.jD_smul, E.ioE_ext]`.
+-/
 theorem jD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
     E.jD T (a • y) = inclR (E.io a) • E.jD T y := by
   rw [← algebraMap_smul W.EE a y, E.jD_smul, E.ioE_ext]
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a y, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
     W.φD T (a • y) = W.φA a • W.φD T y := by
   rw [← algebraMap_smul W.EE a y, W.φD_smul, W.φE_ext, algebraMap_smul]
   rfl
 
+/- English proof (translation)
+Use `choose k hk using h`. Use `⟨Finset.univ.sup k, fun m hm i => ?_⟩` and prove the remaining obligations. Establish `: k i ≤ m` using `(Finset.le_sup (Finset.mem_univ i)).trans hm`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le this`. Rewrite using `[add_comm, pow_add, mul_smul]`.
+
+Conclude with `S.smul_mem _ (hk i)`.
+-/
 theorem uniform {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] [Fintype ι] (q : A)
     (S : Submodule A M) (w : ι → M) (h : ∀ i, ∃ k : ℕ, q ^ k • w i ∈ S) :
     ∃ k₀ : ℕ, ∀ k ≥ k₀, ∀ i, q ^ k • w i ∈ S := by
@@ -44,6 +55,15 @@ theorem uniform {A M ι : Type} [CommRing A] [AddCommGroup M] [Module A M] [Fint
   rw [add_comm, pow_add, mul_smul]
   exact S.smul_mem _ (hk i)
 
+/- English proof (translation)
+Take `⟨r, b, hb, hu⟩` from `hS`. Use `⟨r, ⟨Basis.mk (v := fun j => (⟨b j, hb j⟩ : ↥S)) ?_ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1` using `congrArg S.subtype hg`.
+
+Rewrite `h1` using `[map_sum, map_zero]`. Establish `h2 : g = 0` using `(hu 0 S.zero_mem).unique h1.symm (by simp)`. Introduce `i`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+
+Introduce `x _`. Take `⟨a, ha, -⟩` from `hu x.1 x.2`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.subtype _ = _`.
+
+Rewrite using `[map_sum]`. Conclude with `ha.symm`.
+-/
 theorem basis_of_free (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T)) (hS : FreeA W T S) :
     ∃ r : ℕ, Nonempty (Basis (Fin r) (LetA O n) ↥S) := by
   obtain ⟨r, b, hb, hu⟩ := hS
@@ -62,6 +82,9 @@ theorem basis_of_free (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T))
     rw [map_sum]
     exact ha.symm
 
+/- English proof (translation)
+Take `⟨r, ⟨b⟩⟩` from `basis_of_free T S hS`. Establish `h` using `Module.finrank_eq_card_basis (hB.basis b)`. Rewrite `h` using `[(W.DD_free T).2, Fintype.card_fin]`. Rewrite using `[h]`. Conclude with `⟨b⟩`.
+-/
 theorem basis_rank [Nontrivial W.EE] (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T))
     (hS : FreeA W T S) (hB : IsBaseChange W.EE S.subtype) :
     Nonempty (Basis (Fin (Module.finrank O ↥T.L.T)) (LetA O n) ↥S) := by
@@ -71,6 +94,49 @@ theorem basis_rank [Nontrivial W.EE] (T : LocLat G Qp LL O) (S : Submodule (LetA
   rw [h]
   exact ⟨b⟩
 
+/- English proof (translation)
+Establish `hx : φR (inclR (E.io W.X)) = inclR (E.io W.X) * inclR (E.io W.Q)`. Rewrite using `[← hφ, W.φA_X, map_mul, map_mul]`. Establish `: Module.Free O ↥T.L.T` using `T.L.free`. Establish `: Module.Finite O ↥T.L.T` using `Module.Finite.iff_fg.mpr T.L.fg`. Set `tb` to `Module.finBasis O ↥T.L.T`.
+
+Establish `hexp : ∀ y ∈ S, ∃ c : Fin (Module.finrank O ↥T.L.T) → LetA O n, y = ∑ j, c j • (b j : W.DD T)`. Introduce `y hy`. Use `⟨fun j => b.repr ⟨y, hy⟩ j, ?_⟩` and prove the remaining obligations. Use `congrArg S.subtype (b.sum_repr ⟨y, hy⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Conclude with `this.symm`. Establish `hexpE : ∀ y : W.DD T, ∃ c : Fin (Module.finrank O ↥T.L.T) → W.EE, y = ∑ j, c j • (b j : W.DD T)`. Introduce `y`. Use `⟨fun j => (hB.basis b).repr y j, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← (hB.basis b).sum_repr y]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hB.basis_apply]`. Both sides reduce to the same expression. Establish `hj : ∀ (c : Fin (Module.finrank O ↥T.L.T) → LetA O n) (w : Fin (Module.finrank O ↥T.L.T) → W.DD T), E.jD T (∑ j, c j • w j) = ∑ j, inclR (E.io (c j)) • E.jD T (w j)`. Introduce `c w`.
+
+Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => jD_smulA E T _ _`. Establish `hjE : ∀ (c : Fin (Module.finrank O ↥T.L.T) → W.EE) (w : Fin (Module.finrank O ↥T.L.T) → W.DD T), E.jD T (∑ j, c j • w j) = ∑ j, E.ioE (c j) • E.jD T (w j)`. Introduce `c w`. Rewrite using `[map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => E.jD_smul T _ _`. Establish `hsp : ⊤ ≤ Submodule.span RW (Set.range fun i => E.jD T (b i : W.DD T))`. Rewrite using `[← E.jD_span T, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨c, rfl⟩` from `hexpE y`.
+
+Rewrite using `[hjE]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hli : LinearIndependent RW fun i => E.jD T (b i : W.DD T)`. Establish `hs` using `hsp`. Rewrite `hs` using `[← Finsupp.range_linearCombination, top_le_iff, LinearMap.range_eq_top]`.
+
+Conclude with `OrzechProperty.injective_of_surjective_of_injective _ _ (Algebra.TensorProduct.basis RW tb).linearIndependent hs`. Take `⟨k₁, h1⟩` from `uniform W.Q S (fun i => W.φD T (b i : W.DD T)) (fun i => hS1 _ (b i).2)`. Take `⟨k₂, h2⟩` from `uniform W.Q (φspan W T S) (fun i => (b i : W.DD T)) (fun i => hS2 _ (b i).2)`. Use `replace h1 := h1 (max k₁ k₂) (le_max_left _ _)`. Use `replace h2 := h2 (max k₁ k₂) (le_max_right _ _)`.
+
+Use `⟨max k₁ k₂, ?_⟩` and prove the remaining obligations. Generalize the expression as in `max k₁ k₂ = m at h1 h2`. Prove the components needed by the constructor for the conclusion. Use `choose P hP using fun i => hexp _ (h1 i)`. Establish `hup` using `GlobalTheory.Sandwich.upper tb inclR φR hA _ _ hx m (fun i => E.jD T (b i : W.DD T)) (Matrix.of fun i j => E.io (P i j)) (by`.
+
+Introduce `i`. Use `congrArg (E.jD T) (hP i)` as an intermediate fact. Rewrite `this` using `[hj, jD_smulA, E.jD_φ, map_pow, map_pow]`. Conclude with `this)`. Introduce `y hy`.
+
+Take `⟨c, rfl⟩` from `hexp y hy`. Rewrite using `[jD_smulA, map_pow, map_pow, hj, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `GlobalTheory.Sandwich.incl_smul_mem inclR _ _ (hup j)`.
+
+Establish `hexp2 : ∀ y ∈ φspan W T S, ∃ c : Fin (Module.finrank O ↥T.L.T) → LetA O n, y = ∑ j, c j • W.φD T (b j : W.DD T)`. Introduce `y hy`. Establish `: φspan W T S ≤ Submodule.span (LetA O n) (Set.range fun j => W.φD T (b j : W.DD T))`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Take `⟨c, rfl⟩` from `hexp z hz`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[φD_smulA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp (this hy)`. Conclude with `⟨c, hc.symm⟩`. Use `choose U hU using fun i => hexp2 _ (h2 i)`. Set `nb : Basis (Fin (Module.finrank O ↥T.L.T)) RW (TW RW T)` to `Basis.mk hli hsp`. Establish `hnb : ∀ i, nb i = E.jD T (b i : W.DD T)` using `fun i => Basis.mk_apply _ _ i`.
+
+Establish `hlow` using `GlobalTheory.Sandwich.lower tb inclR φR hA _ _ hx m nb (Matrix.of fun i j => E.io (U i j)) (by`. Introduce `i`. Use `congrArg (E.jD T) (hU i)` as an intermediate fact. Rewrite `this` using `[hj, jD_smulA, map_pow, map_pow]`. Simplify using `only [E.jD_φ] at this`.
+
+Simplify using `only [hnb]`. Conclude with `this)`. Use `choose cc hcc using hlow`. Establish `hall : ∀ w : TW RA T, ∃ c : Fin (Module.finrank O ↥T.L.T) → RA, inclR (E.io W.X) ^ m • TWincl inclR T w = ∑ j, inclR (c j) • nb j`. Introduce `w`.
+
+Set `ta` to `Algebra.TensorProduct.basis RA tb`. Use `⟨fun j => ∑ k, ta.repr w k * cc k j, ?_⟩` and prove the remaining obligations. Establish `hk : ∀ (a : RA) k, TWincl inclR T (a • ta k) = inclR a • ((1 : RW) ⊗ₜ[O] tb k)`. Introduce `a k`. Simplify using `[ta, TWincl, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`.
+
+Use `conv_lhs => rw [← ta.sum_repr w]`. Simplify using `only [map_sum, hk, Finset.smul_sum, Finset.sum_smul, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, hcc k, Finset.smul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul]`. Introduce and unpack `y ⟨w, hw⟩`. Take `⟨c, hc⟩` from `hall w`. Take `⟨e, he⟩` from `hexpE (W.X ^ m • y)`. Establish `h3 : ∑ j, E.ioE (e j) • nb j = ∑ j, inclR (c j) • nb j`.
+
+Rewrite using `[← hc, hw, ← map_pow, ← map_pow, ← jD_smulA, he, hjE]`. Simplify using `only [hnb]`. Establish `h4 : ∀ j, E.ioE (e j) = inclR (c j)` using `fun j => (Fintype.linearIndependent_iffₛ.mp nb.linearIndependent) _ _ h3 j`. Use `choose a ha using fun j => hE (e j) ⟨c j, (h4 j).symm⟩`. Rewrite using `[he]`.
+
+Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← ha j, algebraMap_smul]`. Conclude with `S.smul_mem _ (b j).2`.
+-/
 theorem sand_of
     (hA : ∀ (p q : Type) [Fintype p] [Fintype q] (Z : Matrix p q RW) (P : Matrix p p RA)
       (P' : Matrix q q RA) (Y : Matrix p q RA),
@@ -204,6 +270,11 @@ theorem sand_of
     rw [← ha j, algebraMap_smul]
     exact S.smul_mem _ (b j).2
 
+/- English proof (translation)
+Establish `: Nontrivial W.EE` using `W.EE_inj.nontrivial`. Take `⟨b⟩` from `hb`. Take `⟨b₁⟩` from `basis_rank T S hS hB`. Take `⟨m, h1, h2⟩` from `sand_of E hA hφ hE T (W.N T) b (W.N_base T hT) (W.N_φ T) (W.N_φinv T)`. Take `⟨m', h1', h2'⟩` from `sand_of E hA hφ hE T S b₁ hB hS1 hS2`.
+
+Use `⟨m + m', fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_smul]`. Conclude with `h2 _ (h1' x hx)`. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `h2' _ (h1 x hx)`.
+-/
 theorem compare
     (hA : ∀ (p q : Type) [Fintype p] [Fintype q] (Z : Matrix p q RW) (P : Matrix p p RA)
       (P' : Matrix q q RA) (Y : Matrix p q RA),
@@ -232,6 +303,9 @@ end Generic
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h`. Establish `hio` using `GlobalTheory.NL.IoXQ.main D HW F l K s LL h`. Conclude with `fun T hT N₁ h1 h2 h3 h4 => compare ((F l).E K s LL h).tie (GlobalTheory.FrobIntegralCoeff.frobenius_integrality_coeff l LL) hio.2.2.2.2.1 hio.2.2.2.2.2.1 T hT (GlobalTheory.NL.N_basis D HW F l K s LL h T hT) N₁ h1 h2 h3 h4`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ N₁ : Submodule (AA K LL) (W.DD T), FreeA W T N₁ → IsBaseChange W.EE N₁.subtype → (∀ x ∈ N₁, ∃ k : ℕ, W.Q ^ k • W.φD T x ∈ N₁) → (∀ y ∈ N₁, ∃ k : ℕ, W.Q ^ k • y ∈ φspan W T N₁) → ∃ a : ℕ, (∀ x ∈ N₁, W.X ^ a • x ∈ W.N T) ∧ ∀ x ∈ W.N T, W.X ^ a • x ∈ N₁ := by
   intro D HW F l _ K s LL h
   have hio := GlobalTheory.NL.IoXQ.main D HW F l K s LL h

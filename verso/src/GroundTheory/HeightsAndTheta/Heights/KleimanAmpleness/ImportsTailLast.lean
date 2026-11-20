@@ -18,6 +18,9 @@ def SpecialCurvesDim.Statement : Prop :=
         NumbersDVR.specialIdeal (mIdealOver O y) ≤ W →
           relDim (baseComap (IsLocalRing.ResidueField O) k₀ e W) = relDim W
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨SpecialCurves.hyps.1, SpecialCurves.hyps.2.1, le_rfl⟩`.
+-/
 theorem SpecialCurvesDim.hyps :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () ∧
       NumbersDVR.IsMultiProjPrime (NumbersDVR.specialIdeal (mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1))) ∧
@@ -25,6 +28,9 @@ theorem SpecialCurvesDim.hyps :
         NumbersDVR.specialIdeal (mIdealOver exO (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1)) :=
   ⟨SpecialCurves.hyps.1, SpecialCurves.hyps.2.1, le_rfl⟩
 
+/- English proof (translation)
+The claim follows from `h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1 (Equiv.refl _) SpecialCurvesDim.hyps.1 _ SpecialCurvesDim.hyps.2.1 SpecialCurvesDim.hyps.2.2`.
+-/
 example (h : SpecialCurvesDim.Statement) :=
   h exO Unit (IndefiniteRowSideFullHecke.Kleiman2.pnIdx 1) (IndefiniteRowSideFullHecke.Kleiman2.pnField exF 1) (IndefiniteRowSideFullHecke.Kleiman2.pnPt exF 1) () 1
     (Equiv.refl _) SpecialCurvesDim.hyps.1 _ SpecialCurvesDim.hyps.2.1 SpecialCurvesDim.hyps.2.2

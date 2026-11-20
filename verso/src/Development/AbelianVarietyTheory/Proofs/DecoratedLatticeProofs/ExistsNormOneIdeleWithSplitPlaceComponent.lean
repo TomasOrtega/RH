@@ -15,6 +15,29 @@ namespace GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 2000000 in
 open GlobalTheory.FinPl.FrameLat in
 
+/- English proof (translation)
+Establish `hf : ∀ x : k, (p.e + cA D p.e) * p.sec x = p.sec x` using `fun x => (idem_iff p _).1 (sec_mem_idAt p x)`. Establish `hcf : ∀ x : k, (p.e + cA D p.e) * cA D (p.sec x) = cA D (p.sec x)` using `fun x => (idem_iff p _).1 (csec_mem_idAt (p := p) x)`. Establish `hee : p.e * cA D p.e = 0` using `p.split.2.1`. Establish `hce : cA D p.e * p.e = 0` using `cAe_mul_e p`. Establish `hecs : ∀ x : k, p.e * cA D (p.sec x) = 0`.
+
+Introduce `x`. Rewrite using `[← e_mul_sec p x, map_mul, ← mul_assoc, hee, zero_mul]`. Establish `hsc : ∀ x y : k, p.sec x * cA D (p.sec y) = 0`. Introduce `x y`. Rewrite using `[← e_mul_sec p x, mul_comm p.e, mul_assoc, hecs, mul_zero]`.
+
+Establish `hprc : ∀ x : k, p.pr (cA D (p.sec x)) = 0`. Introduce `x`. Establish `h1 : p.sec (p.pr (cA D (p.sec x))) = 0` using `by rw [p.sec_pr, hecs]`. Establish `h2` using `congrArg p.pr h1`. Rewrite `h2` using `[p.pr_sec, map_zero]`. Then use the resulting hypothesis.
+
+Establish `hcc : ∀ z : AE D, cA D (cA D z) = z` using `fun z => cA_cA z`. Establish `he1 : p.sec 1 = p.e` using `sec_one p`. Take `⟨f, hfdef⟩ : ∃ f : AE D, f = p.e + cA D p.e` from `⟨_, rfl⟩`. Establish `hfm : f ∈ idAt D (· = p.v)` using `hfdef ▸ sum_mem_idAt p`. Establish `hff : f * f = f`.
+
+Use `(idem_iff p f).1 hfm` as an intermediate fact. Rewrite `this` using `[← hfdef]`. Then use the resulting hypothesis. Establish `hf' : ∀ x : k, f * p.sec x = p.sec x` using `fun x => hfdef ▸ hf x`. Establish `hcf' : ∀ x : k, f * cA D (p.sec x) = cA D (p.sec x)` using `fun x => hfdef ▸ hcf x`. Take `⟨u, hu⟩ : ∃ u : AE D, u = 1 - f` from `⟨_, rfl⟩`.
+
+Establish `huf : u * f = 0` using `by rw [hu, sub_mul, one_mul, hff, sub_self]`. Establish `hus : ∀ x : k, u * p.sec x = 0` using `by intro x; rw [← hf' x, ← mul_assoc, huf, zero_mul]`. Establish `hucs : ∀ x : k, u * cA D (p.sec x) = 0` using `by intro x; rw [← hcf' x, ← mul_assoc, huf, zero_mul]`. Establish `huu : u * u = u` using `by nth_rewrite 2 [hu]; rw [mul_sub, mul_one, huf, sub_zero]`. Establish `hcu : cA D u = u`.
+
+Rewrite using `[hu, hfdef, map_sub, map_one, map_add, hcc, add_comm]`. Use `⟨u + p.sec c₀ + cA D (p.sec c₀⁻¹), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hconj : cA D (u + p.sec c₀ + cA D (p.sec c₀⁻¹)) = u + cA D (p.sec c₀) + p.sec c₀⁻¹`. Rewrite using `[map_add, map_add, hcu, hcc]`. Use `show _ * cA D _ = 1`.
+
+Rewrite using `[hconj]`. Establish `e1 : p.sec c₀ * p.sec c₀⁻¹ = p.e` using `by rw [← sec_mul p, mul_inv_cancel₀ hc₀, he1]`. Establish `e2 : cA D (p.sec c₀⁻¹) * cA D (p.sec c₀) = cA D p.e`. Rewrite using `[← map_mul (cA D), ← sec_mul p, inv_mul_cancel₀ hc₀, he1]`. Establish `s1 : p.sec c₀ * u = 0` using `by rw [mul_comm (p.sec c₀) u]; exact hus _`.
+
+Establish `s2 : cA D (p.sec c₀⁻¹) * u = 0` using `by rw [mul_comm (cA D (p.sec c₀⁻¹)) u]; exact hucs _`. Establish `s3 : cA D (p.sec c₀⁻¹) * p.sec c₀⁻¹ = 0` using `by rw [mul_comm (cA D (p.sec c₀⁻¹)) (p.sec c₀⁻¹)]; exact hsc _ _`. Establish `s4 : p.sec c₀ * cA D (p.sec c₀) = 0` using `hsc _ _`. Establish `expand : (u + p.sec c₀ + cA D (p.sec c₀⁻¹)) * (u + cA D (p.sec c₀) + p.sec c₀⁻¹) = u * u + u * cA D (p.sec c₀) + u * p.sec c₀⁻¹ + p.sec c₀ * u + p.sec c₀ * cA D (p.sec c₀) + p.sec c₀ * p.sec c₀⁻¹ + cA D (p.sec c₀⁻¹) * u + cA D (p.sec c₀⁻¹) * cA D (p.sec c₀) + cA D (p.sec c₀⁻¹) * …` using `by ring`. Rewrite using `[expand, huu, hucs, hus, s1, s4, e1, s2, e2, s3, hu, hfdef]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `: u + p.sec c₀ + cA D (p.sec c₀⁻¹) - 1 = -f + p.sec c₀ + cA D (p.sec c₀⁻¹)` using `by rw [hu]; ring`. Rewrite using `[this]`. Use `add_mem (add_mem (neg_mem hfm) (sec_mem_idAt p _)) (csec_mem_idAt (p := p) _)` and prove the remaining obligations. Rewrite using `[map_add, map_add, hprc, add_zero, hu, hfdef, map_sub, map_one, map_add, ← he1, hprc, p.pr_sec, p.pr_sec]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_normOneAt_pr (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : SplitPt D k) (c₀ : k) (hc₀ : c₀ ≠ 0) :
     ∃ c : AE D, NormOneAt p.v c ∧ p.pr c = c₀ := by

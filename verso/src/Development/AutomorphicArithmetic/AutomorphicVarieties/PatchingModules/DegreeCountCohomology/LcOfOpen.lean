@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `m`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hU : IsOpen ((Subtype.val : H → Γ) '' {z : H | ρ z m = m})` using `hH.isOpenMap_subtype_val _ ((h m).isOpen_fiber m)`. Establish `h1 : (1 : Γ) ∈ (Subtype.val : H → Γ) '' {z : H | ρ z m = m}` using `⟨1, by simp, rfl⟩`.
+
+Establish `ht : Filter.Tendsto (fun y => x⁻¹ * y) (nhds x) (nhds 1)`. Establish `h0` using `(continuous_mul_left x⁻¹).tendsto x`. Simplify using `using h0`. Use `filter_upwards [ht (hU.mem_nhds h1)] with y hy`. Take `⟨z, hz, hzy⟩` from `hy`.
+
+Establish `hz' : ρ z m = m` using `hz`. Establish `hy : y = x * z` using `by rw [hzy]; group`. Rewrite using `[hy, map_mul]`. Use `show ρ x (ρ z m) = ρ x m`. Rewrite using `[hz']`.
+-/
 private theorem lc_of_open {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     [AddCommGroup M] [Module R M] (ρ : Representation R Γ M) (H : Subgroup Γ) (hH : IsOpen (H : Set Γ))
     (h : ∀ m, IsLocallyConstant fun g : H => ρ g m) : LC ρ := by
@@ -23,6 +30,11 @@ private theorem lc_of_open {R Γ M : Type} [CommRing R] [Group Γ] [TopologicalS
   show ρ x (ρ z m) = ρ x m
   rw [hz']
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hev : ∀ᶠ y in nhds x, ∀ i j, f y i j = f x i j`. Simplify using `only [Filter.eventually_all]`. Introduce `i j`.
+
+Conclude with `(h i j).eventually_eq x`. Use `filter_upwards [hev] with y hy`. Conclude with `Matrix.ext hy`.
+-/
 private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -34,6 +46,11 @@ private theorem lc_mat {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ →
   filter_upwards [hev] with y hy
   exact Matrix.ext hy
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hev : ∀ᶠ y in nhds x, ‖y - x‖ < 1` using `by filter_upwards [Metric.ball_mem_nhds x one_pos] with y hy`. Simplify `hy` using `[dist_eq_norm]`. Use `filter_upwards [hev] with y hy`.
+
+Take `⟨z, hz⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 hy`. Establish `hyz : y = x + (l : ℤ_[l]) * z` using `by rw [← hz]; ring`. Rewrite using `[hyz, map_add, map_mul, map_natCast, hl, zero_mul, add_zero]`.
+-/
 private theorem lc_padic {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (f : ℤ_[l] →+* R) (hl : (l : R) = 0) :
     IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -46,12 +63,18 @@ private theorem lc_padic {l : ℕ} [Fact l.Prime] {R : Type} [CommRing R] (f : �
   have hyz : y = x + (l : ℤ_[l]) * z := by rw [← hz]; ring
   rw [hyz, map_add, map_mul, map_natCast, hl, zero_mul, add_zero]
 
+/- English proof (translation)
+Use extensionality with `φ`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff, PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`.
+-/
 private theorem maximalIdeal_powerSeries_eq_span_X (K : Type) [Field K] :
     IsLocalRing.maximalIdeal (PowerSeries K) = Ideal.span {(PowerSeries.X : PowerSeries K)} := by
   ext φ
   rw [IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff,
     PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hev : ∀ᶠ y in nhds x, ∀ i, f y i = f x i` using `Filter.eventually_all.2 fun i => (h i).eventually_eq x`. Use `filter_upwards [hev] with y hy`. Conclude with `funext hy`.
+-/
 private theorem isLocallyConstant_pi_of_forall_isLocallyConstant {Γ ι Y : Type} [TopologicalSpace Γ] [Finite ι] (f : Γ → ι → Y)
     (h : ∀ i, IsLocallyConstant fun g => f g i) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -61,6 +84,11 @@ private theorem isLocallyConstant_pi_of_forall_isLocallyConstant {Γ ι Y : Type
   filter_upwards [hev] with y hy
   exact funext hy
 
+/- English proof (translation)
+Establish `hI : ∀ a ∈ Ideal.span {s} ^ N, φ a = 0`. Introduce `a ha`. Rewrite `ha` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha`. Rewrite using `[map_mul, map_pow, hs, mul_zero]`.
+
+Establish `h2` using `(hf N).comp (Ideal.Quotient.lift (Ideal.span {s} ^ N) φ hI)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 private theorem isLocallyConstant_comp_of_adicCont_of_pow_eq_zero {Γ A B : Type} [TopologicalSpace Γ] [CommRing A] [CommRing B] (s : A) (N : ℕ)
     (φ : A →+* B) (hs : φ s ^ N = 0) (f : Γ → A) (hf : AdicCont (Ideal.span {s}) f) :
     IsLocallyConstant fun g => φ (f g) := by
@@ -74,6 +102,21 @@ private theorem isLocallyConstant_comp_of_adicCont_of_pow_eq_zero {Γ A B : Type
   funext g
   simp
 
+/- English proof (translation)
+Introduce `l _ L G G0 h n x k m`. Take `⟨-, -, -, -, hlD, htA, htD, -, -⟩` from `finAm l G0.frame n x m k.g`. Establish `hM : IsLocalRing.maximalIdeal (PowerSeries x.K) = Ideal.span {x.t}` using `maximalIdeal_powerSeries_eq_span_X x.K`. Establish `hp0 : Continuous h.p₀` using `continuous_induced_rng.2 (h.cont.comp continuous_subtype_val)`. Establish `hE : IsLocallyConstant fun g : G0.G₀ => DD.epM (fun j => (k.κ j g).map (algebraMap x.A (x.Am m)))`.
+
+Apply `lc_mat` to reduce the goal to its premises. Introduce `a b`. Establish `hv : IsLocallyConstant fun g : G0.G₀ => fun j => algebraMap x.A (x.Am m) (k.κ j g a b)`. Apply `isLocallyConstant_pi_of_forall_isLocallyConstant` to reduce the goal to its premises. Introduce `j`.
+
+Conclude with `isLocallyConstant_comp_of_adicCont_of_pow_eq_zero (algebraMap x.A x.A x.t) m (algebraMap x.A (x.Am m)) (by simpa using htA) _ ((k.mem j).2.1 a b)`. Conclude with `hv.comp (fun v => ({ a := 0, ep := v, ep' := 0, eta := 0 } : DD (x.Am m) k.g))`. Establish `hR : IsLocallyConstant fun g : G0.G₀ => x.ρX (DD (x.Am m) k.g) g`. Apply `lc_mat` to reduce the goal to its premises. Introduce `a b`.
+
+Simplify using `only [NP.ρX, Matrix.map_apply]`. Conclude with `isLocallyConstant_comp_of_adicCont_of_pow_eq_zero x.t m (algebraMap x.A (DD (x.Am m) k.g)) htD _ (by rw [← hM]; exact x.cont a b)`. Establish `hρ : IsLocallyConstant fun g : G0.G₀ => k.ρ1 (x.Am m) g` using `(hE.comp (fun M => 1 + M)).comp₂ hR (· * ·)`. Establish `hρ' : IsLocallyConstant fun g : G.G₀ => k.ρ1 (x.Am m) (h.p₀ g)` using `hρ.comp_continuous hp0`. Use `⟨hρ', ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hl' : ((l : ℕ) : DD (x.Am m) k.g) = 0` using `by simpa using hlD 1`. Conclude with `(lc_padic ((algebraMap x.A (DD (x.Am m) k.g)).comp (algebraMap ℤ_[l] x.A)) hl').comp_continuous (Units.continuous_val.comp (G0.ε_cont.comp h.cont))`. Introduce `χ V rep hχ hAd`. Apply `lc_of_open rep G.η.ker G.η_open` to reduce the goal to its premises. Introduce `Z`.
+
+Establish `hinv : IsLocallyConstant fun g : G.G₀ => k.ρ1 (x.Am m) (h.p₀ g⁻¹)` using `hρ'.comp_continuous continuous_inv`. Establish `hχ' : IsLocallyConstant fun g : G.G₀ => χ g` using `hχ.comp_continuous continuous_subtype_val`. Establish `key : IsLocallyConstant fun g : G.G₀ => ((rep g Z : V) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g))`. Establish `e : (fun g : G.G₀ => ((rep g Z : V) : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g))) = fun g : G.G₀ => χ g • (k.ρ1 (x.Am m) (h.p₀ g) * (Z : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * k.ρ1 (x.Am m) (h.p₀ g⁻¹))`. Use function extensionality and compare the values at `g`.
+
+Conclude with `hAd.1 g Z`. Rewrite using `[e]`. Conclude with `hχ'.comp₂ (hρ'.comp₂ hinv fun A B => A * (Z : Matrix (Fin n) (Fin n) (DD (x.Am m) k.g)) * B) fun c M => c • M`. Conclude with `(IsLocallyConstant.iff_eventually_eq _).2 fun g => (key.eventually_eq g).mono fun y hy => Subtype.ext hy`.
+-/
 theorem UpperTheory.V.Pa.lc1 :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (m : ℕ), (IsLocallyConstant fun g : G.G₀ => k.ρ1 (x.Am m) (h.p₀ g)) ∧ (IsLocallyConstant fun g : G.Γ => epsD k (x.Am m) (h.p g)) ∧ ∀ (χ : G.Γ → DD (x.Am m) k.g) (V : Submodule x.A (Matrix (Fin n) (Fin n) (DD (x.Am m) k.g))) (rep : Representation x.A G.Γ V), IsLocallyConstant χ → IsAd G.frame (fun g => k.ρ1 (x.Am m) (h.p₀ g)) χ V rep → LC rep := by
   intro l _ L G G0 h n x k m

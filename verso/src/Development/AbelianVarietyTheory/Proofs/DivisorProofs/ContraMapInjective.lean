@@ -21,6 +21,15 @@ section General
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
   {π : Representation ℂ G V}
 
+/- English proof (translation)
+Establish `h1 : S.toSubmodule ≠ ⊤` using `fun e => hS.1 (Subrepresentation.toSubmodule_injective e)`. Use `Submodule.Quotient.nontrivial_iff.2 h1` as an intermediate fact. Establish `: Nontrivial (Subrepresentation (quot S))` using `⟨⊥, ⊤, fun e => bot_ne_top (α := Submodule ℂ (V ⧸ S.toSubmodule)) (congrArg Subrepresentation.toSubmodule e)⟩`. Use `⟨fun T => ?_⟩` and prove the remaining obligations. Set `T' : Subrepresentation π` to `⟨T.toSubmodule.comap S.toSubmodule.mkQ, fun g v hv => T.apply_mem_toSubmodule g hv⟩`.
+
+Establish `hle : S ≤ T'` using `fun v hv => by show S.toSubmodule.mkQ v ∈ T.toSubmodule`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).2 hv]`. Conclude with `T.toSubmodule.zero_mem`. Break down `hS.le_iff.1 hle with e | e` into its components or cases. Use `right`.
+
+Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `S.toSubmodule.mkQ_surjective y`. Establish `: v ∈ T'` using `e ▸ trivial`. Conclude with `this`. Use `left`.
+
+Use `eq_bot_iff.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `S.toSubmodule.mkQ_surjective y`. Establish `: v ∈ T'` using `hy`. Rewrite `this` using `[e]`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 this`.
+-/
 theorem isIrreducible_quot {S : Subrepresentation π} (hS : IsCoatom S) : (quot S).IsIrreducible := by
   have h1 : S.toSubmodule ≠ ⊤ := fun e => hS.1 (Subrepresentation.toSubmodule_injective e)
   have := Submodule.Quotient.nontrivial_iff.2 h1
@@ -45,9 +54,15 @@ theorem isIrreducible_quot {S : Subrepresentation π} (hS : IsCoatom S) : (quot 
     rw [e] at this
     exact (Submodule.Quotient.mk_eq_zero _).2 this
 
+/- English proof (translation)
+The claim follows from `SetLike.ext fun _ => Submodule.Quotient.mk_eq_zero _`.
+-/
 theorem ker_quotMk (S : Subrepresentation π) : (quotMk S).ker = S :=
   SetLike.ext fun _ => Submodule.Quotient.mk_eq_zero _
 
+/- English proof (translation)
+Introduce `a b h`. Use `Subtype.ext (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hq y`. Use `congrArg (fun l : smoothPart σ.dual => (l : Module.Dual ℂ X) x) h` as an intermediate fact. Simplify `this` using `[GlobalTheory.ContraRefl.contraMap_apply]`.
+-/
 theorem contraMap_injective {X Y : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Y] [Module ℂ Y]
     {σ : Representation ℂ G X} {τ : Representation ℂ G Y} (q : σ.IntertwiningMap τ) (hq : Function.Surjective q) :
     Function.Injective (GlobalTheory.ContraRefl.contraMap q) := by
@@ -64,9 +79,19 @@ section GeneralLinearIntegers
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
   {V : Type} [AddCommGroup V] [Module ℂ V] {π : Representation ℂ (GL (Fin N) k) V}
 
+/- English proof (translation)
+The claim follows from `(IsSubquotient.of_surjective (quotMk S) S.toSubmodule.mkQ_surjective).isSmooth hπ`.
+-/
 theorem isSmooth_quot (hπ : IsSmooth π) (S : Subrepresentation π) : IsSmooth (quot S) :=
   (IsSubquotient.of_surjective (quotMk S) S.toSubmodule.mkQ_surjective).isSmooth hπ
 
+/- English proof (translation)
+Introduce `v hv`. Assume the negation of the conclusion as `hv'`. Establish `hy : S'.toSubmodule.mkQ v ≠ 0`. Rewrite using `[Ne, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Take `⟨l, hl, hlv⟩` from `GlobalTheory.SmoothForm.exists_smooth_form_ne_zero _ _ (quot S') (GlobalTheory.SqIntUnit.compactOpen_basis k N) (isSmooth_quot hπ S') _ hy`.
+
+Establish `hm : GlobalTheory.ContraRefl.contraMap (quotMk S') ⟨l, hl⟩ ∈ (GlobalTheory.ContraRefl.contraMap (quotMk S)).range` using `h ▸ ⟨⟨l, hl⟩, rfl⟩`. Take `⟨m, hm⟩` from `hm`. Establish `h1 : (m : Module.Dual ℂ (V ⧸ S.toSubmodule)) (quotMk S v) = l (quotMk S' v)` using `congrArg (fun u : smoothPart π.dual => (u : Module.Dual ℂ V) v) hm`. Establish `h2 : (quotMk S) v = 0` using `(Submodule.Quotient.mk_eq_zero _).2 hv`. Rewrite `h1` using `[h2, map_zero]`.
+
+Conclude with `hlv h1.symm`.
+-/
 theorem le_of_range_eq (hπ : IsSmooth π) {S S' : Subrepresentation π}
     (h : (GlobalTheory.ContraRefl.contraMap (quotMk S)).range = (GlobalTheory.ContraRefl.contraMap (quotMk S')).range) : S ≤ S' := by
   intro v hv
@@ -84,6 +109,21 @@ theorem le_of_range_eq (hπ : IsSmooth π) {S S' : Subrepresentation π}
   rw [h2, map_zero] at h1
   exact hlv h1.symm
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hAdm N V W _ _ _ _ π σ hπ hfl hsoc`. Take `⟨hσ, f, hf, hat⟩` from `hsoc`. Establish `hG` using `GlobalTheory.SqIntUnit.compactOpen_basis k N`. Establish `key : ∀ S : Subrepresentation π, IsCoatom S → (GlobalTheory.ContraRefl.contraMap (quotMk S)).range = f.range`. Introduce `S hS`.
+
+Establish `hirr` using `isIrreducible_quot hS`. Establish `hc` using `GlobalTheory.ContraRefl.contra_isIrreducible hG (hAdm k N _ (quot S) (isSmooth_quot hπ S) hirr) hirr`. Conclude with `hat _ (isAtom_range hc _ (contraMap_injective _ S.toSubmodule.mkQ_surjective))`. Establish `uniq : ∀ S S' : Subrepresentation π, IsCoatom S → IsCoatom S' → S = S'`. Introduce `S S' hS hS'`.
+
+Establish `hle` using `le_of_range_eq hπ ((key S hS).trans (key S' hS').symm)`. Conclude with `((hS.le_iff.1 hle).resolve_left hS'.1).symm`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hσ`. Establish `hV : Nontrivial V`. Assume the negation of the conclusion as `hV`.
+
+Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Take `⟨w, hw⟩` from `exists_ne (0 : W)`. Apply `hw` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Conclude with `Subtype.ext (LinearMap.ext fun v => by simp [Subsingleton.elim v 0])`. Establish `hbt : (⊥ : Subrepresentation π) ≠ ⊤`. Introduce `e`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `h1 : v ∈ (⊥ : Subrepresentation π)` using `e ▸ trivial`.
+
+Conclude with `hv h1`. Take `⟨hN, -⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 hfl`. Establish `hc : IsCoatomic (Subrepresentation π)` using `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := π)).isCoatomic_iff.2 inferInstance`. Take `⟨S₀, hS₀, -⟩` from `(hc.eq_top_or_exists_le_coatom ⊥).resolve_left hbt`. Use `⟨⟨_, quot S₀, isSmooth_quot hπ S₀, isIrreducible_quot hS₀⟩, isIrreducible_quot hS₀, quotMk S₀, S₀.toSubmodule.mkQ_surjective, fun S hS => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ker_quotMk]`. Conclude with `uniq S S₀ hS hS₀`.
+-/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ (N : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin N) k) V) (σ : Representation ℂ (GL (Fin N) k) W), IsSmooth π → HasFiniteLength π → IsSocle σ (contra π) → ∃ τ : IrrRep (GL (Fin N) k), IsCosocle τ.ρ π := by
   intro k _ _ _ _ hAdm N V W _ _ _ _ π σ hπ hfl hsoc
   obtain ⟨hσ, f, hf, hat⟩ := hsoc

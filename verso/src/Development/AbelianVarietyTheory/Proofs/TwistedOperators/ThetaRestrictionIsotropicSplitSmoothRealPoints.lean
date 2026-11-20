@@ -21,12 +21,22 @@ def rayHom (v : Fin k → ℝ) : ℝ →+ (Fin k → ℝ) where
   map_zero' := zero_smul _ _
   map_add' a b := add_smul a b v
 
+/- English proof (translation)
+The claim follows from `continuous_id.smul continuous_const`.
+-/
 theorem continuous_rayHom (v : Fin k → ℝ) : Continuous (rayHom v) :=
   continuous_id.smul continuous_const
 
 def coordC (i : Fin k) : (Fin k → ℝ) →L[ℝ] ℂ :=
   Complex.ofRealCLM.comp (ContinuousLinearMap.proj i)
 
+/- English proof (translation)
+Use extensionality with `v`. Establish `e : ∀ i, (Pi.single i (v i) : Fin k → ℝ) = v i • Pi.single i (1 : ℝ)`. Introduce `i`. Use extensionality with `j`. Distinguish the cases in `h : j = i`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Use `conv_lhs => rw [← Finset.univ_sum_single v]`. Simplify using `only [map_sum, e, map_smul, ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, coordC, ContinuousLinearMap.coe_comp, Function.comp_apply, ContinuousLinearMap.proj_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.real_smul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem clm_eq_sum (l : (Fin k → ℝ) →L[ℝ] ℂ) : l = ∑ i, l (Pi.single i 1) • coordC i := by
   ext v
   have e : ∀ i, (Pi.single i (v i) : Fin k → ℝ) = v i • Pi.single i (1 : ℝ) := by
@@ -39,6 +49,23 @@ theorem clm_eq_sum (l : (Fin k → ℝ) →L[ℝ] ℂ) : l = ∑ i, l (Pi.single
     ContinuousLinearMap.proj_apply, Complex.ofRealCLM_apply, smul_eq_mul, Complex.real_smul]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hs` using `hg.smooth k M hM hM0 p`. Establish `hd : HasFDerivAt (fun t' => g (p + M t')) (fderiv ℝ (fun t' => g (p + M t')) t) t` using `((hs.differentiable (by simp)) t).hasFDerivAt`. Use `hd using 1` and compare the differences between its conclusion and the goal. Use `conv_rhs => rw [clm_eq_sum (fderiv ℝ (fun t' => g (p + M t')) t)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Use `set e : Fin k → ℝ := Pi.single i 1`. Use `set N : ℝ →+ WO S T := M.comp (rayHom e)`. Establish `hN : Continuous N` using `hM.comp (continuous_rayHom e)`. Establish `hN0 : ∀ s, (N s).map (finPart D) = 0` using `fun s => hM0 _`.
+
+Establish `hN1 : N 1 = M e` using `by simp [N, rayHom]`. Use `set x := p + M t`. Use `set ph := phase lam S T (M e) x`. Establish `hline : HasDerivAt (fun s : ℝ => t + s • e) e 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const e).const_add t`.
+
+Establish `h1 : HasDerivAt (fun s : ℝ => g (p + M (t + s • e))) (fderiv ℝ (fun t' => g (p + M t')) t e) 0`. Establish `hd' : HasFDerivAt (fun t' => g (p + M t')) (fderiv ℝ (fun t' => g (p + M t')) t) (t + (0 : ℝ) • e)`. Rewrite using `[zero_smul, add_zero]`. Conclude with `hd`. Conclude with `hd'.comp_hasDerivAt (0 : ℝ) hline`.
+
+Establish `h0 : HasDerivAt (fun s : ℝ => (s : ℂ) * -ph) (-ph) 0`. Simplify using `using (HasDerivAt.ofReal_comp (hasDerivAt_id (0 : ℝ))).mul_const (-ph)`. Establish `hh` using `(hasDerivAt_zero_and_isTheta hψ hN hN0 hg).1 x`. Establish `h2` using `h0.cexp.mul hh`. Establish `eq : (fun s : ℝ => g (p + M (t + s • e))) = fun s : ℝ => Complex.exp ((s : ℂ) * -ph) * heisO ψ S T (N s) g x`.
+
+Use function extensionality and compare the values at `s`. Establish `hp` using `psi_sympl_line hl hlam hN hN0 x s`. Rewrite `hp` using `[hN1]`. Rewrite using `[heisO, hp, ← mul_assoc, ← Complex.exp_add]`. Establish `: (s : ℂ) * -ph + s * ph = 0` using `by ring`.
+
+Rewrite using `[this, Complex.exp_zero, one_mul]`. Simplify using `only [N, x, AddMonoidHom.comp_apply, rayHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, map_add, add_assoc]`. Rewrite `h1` using `[eq]`. Establish `hz : N 0 = 0` using `map_zero N`. Establish `h3 : HasDerivAt (fun s : ℝ => Complex.exp ((s : ℂ) * -ph) * heisO ψ S T (N s) g x) (dLine ψ S T N g x - ph * g x) 0`.
+
+Use `h2.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hz, heisO_zero]`. Simplify using `only [Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(h1.unique h3).symm`.
+-/
 theorem hasFDerivAt_coord (hψ : IsStdChar D ψ (-1)) {M : (Fin k → ℝ) →+ WO S T} (hM : Continuous M)
     (hM0 : ∀ t, (M t).map (finPart D) = 0) {g : WO S T → ℂ} (hg : IsThetaFunO ψ S T g)
     {lam : AF D.host.F →+ ℂ} (hl : Continuous lam)
@@ -97,6 +124,33 @@ open GlobalTheory.WeilVacMove
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {k : ℕ}
 
+/- English proof (translation)
+Take `⟨lam, hl, hlam⟩` from `exists_log hψ`. Set `a : Fin k → (Fin k → ℝ) → ℂ` to `fun i t => lam (b i) + phase lam S T (M (Pi.single i 1)) (M t)`. Establish `ha : ∀ i y t, phase lam S T (M (Pi.single i 1)) (q y + M t) = a i t`. Introduce `i y t`. Rewrite using `[map_add]`.
+
+Use `congr 1`. Use `show lam (symplOH S T (q y) (M (Pi.single i 1))) = lam (b i)`. Rewrite using `[hb]`. Establish `haC : ∀ i, ContDiff ℝ ∞ (a i)` using `fun i => contDiff_const.add (contDiff_additive ((phase lam S T (M (Pi.single i 1))).comp M) (hl.comp (continuous_symplOH S T hM continuous_const)))`. Set `G : (WO S T → ℂ) → (Fin k → ℝ) → ℂ` to `fun h t => ∫ y, h (q y + M t) ∂ν`.
+
+Set `N : Fin k → ℝ →+ WO S T` to `fun i => M.comp (rayHom (Pi.single i 1))`. Establish `hN : ∀ i, Continuous (N i)` using `fun i => hM.comp (continuous_rayHom _)`. Establish `hN0 : ∀ i s, (N i s).map (finPart D) = 0` using `fun i s => hM0 _`. Establish `hdt : ∀ h, IsThetaFunO ψ S T h → ∀ i, IsThetaFunO ψ S T (dLine ψ S T (N i) h)` using `fun h hh i => (hasDerivAt_zero_and_isTheta hψ (hN i) (hN0 i) hh).2`. Establish `hcq : ∀ t, Continuous fun y => q y + M t` using `fun t => hq.add continuous_const`.
+
+Establish `hint : ∀ h, IsThetaFunO ψ S T h → ∀ t, Integrable (fun y => h (q y + M t)) ν`. Introduce `h hh t`. Take `⟨C, hC⟩` from `exists_bound hψ hh`. Conclude with `Integrable.of_bound (hh.cont.comp (hcq t)).aestronglyMeasurable C (ae_of_all _ fun y => hC _)`. Establish `hder : ∀ h, IsThetaFunO ψ S T h → ∀ t₀, HasFDerivAt (G h) (∑ i, (G (dLine ψ S T (N i) h) t₀ - a i t₀ * G h t₀) • coordC i) t₀`.
+
+Introduce `h hh t₀`. Take `⟨C0, hC0⟩` from `exists_bound hψ hh`. Establish `hCd : ∀ i, ∃ C : ℝ, ∀ w, ‖dLine ψ S T (N i) h w‖ ≤ C` using `fun i => exists_bound hψ (hdt h hh i)`. Use `choose Cd hCd using hCd`. Establish `hA : ∀ i, ∃ C : ℝ, ∀ t ∈ Metric.closedBall t₀ 1, ‖a i t‖ ≤ C` using `fun i => (isCompact_closedBall t₀ 1).exists_bound_of_continuousOn (haC i).continuous.continuousOn`.
+
+Use `choose A hA using hA`. Establish `hA0 : ∀ i, 0 ≤ A i` using `fun i => (norm_nonneg _).trans (hA i t₀ (Metric.mem_closedBall_self zero_le_one))`. Set `F' : (Fin k → ℝ) → X → (Fin k → ℝ) →L[ℝ] ℂ` to `fun t y => ∑ i, (dLine ψ S T (N i) h (q y + M t) - a i t * h (q y + M t)) • coordC i`. Establish `hF' : ∀ y t, HasFDerivAt (fun t => h (q y + M t)) (F' t y) t`. Introduce `y t`.
+
+Use `hasFDerivAt_coord hψ hM hM0 hh hl hlam (q y) t` as an intermediate fact. Simplify using `only [ha] at this`. Conclude with `this`. Establish `hbd : ∀ y, ∀ t ∈ Metric.ball t₀ 1, ‖F' t y‖ ≤ ∑ i, (Cd i + A i * C0) * ‖coordC (k` using `k) i‖ := by`. Introduce `y t ht`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul]`. Use `mul_le_mul_of_nonneg_right ((norm_sub_le _ _).trans (add_le_add (hCd i _) ?_)) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hA i t (Metric.ball_subset_closedBall ht)) (hC0 _) (norm_nonneg _) (hA0 i)`.
+
+Establish `hF'm : AEStronglyMeasurable (F' t₀) ν`. Use `Continuous.aestronglyMeasurable ?_` and prove the remaining obligations. Use `continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(((hdt h hh i).cont.comp (hcq t₀)).sub (continuous_const.mul (hh.cont.comp (hcq t₀)))).smul continuous_const`. Establish `key` using `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := ν) (F := fun t y => h (q y + M t)) (F' := F') (x₀ := t₀) (bound := fun _ => ∑ i, (Cd i + A i * C0) * ‖coordC (k := k) i‖) (Metric.ball_mem_nhds t₀ zero_lt_one) (Filter.Eventually.of_forall fun t => (hh.cont.comp (hcq t)).aestro …`.
+
+Use `key.congr_fderiv ?_` and prove the remaining obligations. Establish `hi : ∀ i, Integrable (fun y => (dLine ψ S T (N i) h (q y + M t₀) - a i t₀ * h (q y + M t₀)) • coordC i) ν` using `fun i => ((hint _ (hdt h hh i) t₀).sub ((hint h hh t₀).const_mul _)).smul_const _`. Use `show ∫ y, (∑ i, (dLine ψ S T (N i) h (q y + M t₀) - a i t₀ * h (q y + M t₀)) • coordC i) ∂ν = _`. Rewrite using `[integral_finsetSum _ fun i _ => hi i]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[integral_smul_const, integral_sub (hint _ (hdt h hh i) t₀) ((hint h hh t₀).const_mul _), integral_const_mul]`. Establish `hn : ∀ n : ℕ, ∀ h, IsThetaFunO ψ S T h → ContDiff ℝ n (G h)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Introduce `h hh`. Conclude with `contDiff_zero.2 (continuous_iff_continuousAt.2 fun t => (hder h hh t).continuousAt)`. Consider the case `succ n ih`. Introduce `h hh`. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_hasFDerivAt]`.
+
+Use `⟨_, ?_, hder h hh⟩` and prove the remaining obligations. Use `ContDiff.sum fun i _ => ?_` and prove the remaining obligations. Conclude with `((ih _ (hdt h hh i)).sub ((contDiff_infty.1 (haC i) n).mul (ih h hh))).smul contDiff_const`. Conclude with `contDiff_infty.2 fun n => hn n g hg`.
+-/
 theorem contDiff_integral (hψ : IsStdChar D ψ (-1)) {X : Type} [MeasurableSpace X] [TopologicalSpace X]
     [OpensMeasurableSpace X] (ν : Measure X) [IsFiniteMeasure ν] {q : X → WO S T} (hq : Continuous q)
     {M : (Fin k → ℝ) →+ WO S T} (hM : Continuous M) (hM0 : ∀ t, (M t).map (finPart D) = 0)
@@ -187,6 +241,17 @@ namespace GlobalTheory.TowerSmooth
 
 open GlobalTheory.WeilVacMove
 
+/- English proof (translation)
+Introduce `D V V' W r C B hform ψ hψ μ 𝓨 hcov f hf k L hL hL0 w`. Establish `: BorelSpace (Mx D W.rank r)` using `⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by rw [Measure.restrict_apply_univ, hcov.2.2]; exact ENNReal.one_lt_top⟩`. Set `mid : WO V' W →+ WO V W` to `{ toFun := midPart V V' W B map_zero' := by simp [midPart] map_add' := fun x y => by simp [midPart, Matrix.add_mul] }`. Establish `hmid : Continuous mid` using `continuous_id.matrix_mul continuous_const`.
+
+Establish `hmid0 : ∀ x : WO V' W, x.map (finPart D) = 0 → (mid x).map (finPart D) = 0`. Introduce `x hx`. Simplify using `only [mid, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Unfold `midPart`. Rewrite using `[Matrix.map_mul, hx, Matrix.zero_mul]`.
+
+Establish `hiso0 : isoPart V W C 0 = 0` using `by simp [isoPart]`. Establish `hq : Continuous fun y : Mx D W.rank r => isoPart V W C y + midPart V V' W B w` using `(continuous_id.matrix_mul continuous_const).add continuous_const`. Establish `hb : ∀ i y, symplOH V W (isoPart V W C y + midPart V V' W B w) ((mid.comp L) (Pi.single i 1)) = symplOH V' W w (L (Pi.single i 1))`. Introduce `i y`. Use `hform y 0 w (L (Pi.single i 1))` as an intermediate fact.
+
+Rewrite `this` using `[hiso0, zero_add]`. Then use the resulting hypothesis. Establish `key` using `contDiff_integral hψ (μ.restrict 𝓨) hq (hmid.comp hL) (fun t => hmid0 _ (hL0 t)) _ hb f hf`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Use `show ∫ y in 𝓨, f (isoPart V W C y + midPart V V' W B (w + L t)) ∂μ = _`.
+
+Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `show f (isoPart V W C y + mid (w + L t)) = f (isoPart V W C y + midPart V V' W B w + mid (L t))`. Rewrite using `[map_add, add_assoc]`. Both sides reduce to the same expression.
+-/
 theorem res_smooth : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), (∀ (y y' : Mx D W.rank r) (x x' : WO V' W), symplOH V W (isoPart V W C y + midPart V V' W B x) (isoPart V W C y' + midPart V V' W B x') = symplOH V' W x x') → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ f, IsThetaFunO ψ V W f → ∀ (k : ℕ) (L : (Fin k → ℝ) →+ WO V' W), Continuous L → (∀ t, (L t).map (finPart D) = 0) → ∀ w, ContDiff ℝ ∞ fun t => res V V' W C B μ 𝓨 f (w + L t) := by
   intro D V V' W r C B hform ψ hψ μ 𝓨 hcov f hf k L hL hL0 w
   have : BorelSpace (Mx D W.rank r) := ⟨rfl⟩

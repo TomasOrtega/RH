@@ -17,14 +17,28 @@ noncomputable section
 
 namespace GlobalTheory.UCanon.EpsObj
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.commutes_of_commutes_dualNumber_agree_closed`.
+-/
 theorem act_comm_eps : ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' : Over (Sp (DualNumber k))) [GrpObj G'], IsAbelianScheme G' → ∀ (G : Over S) [GrpObj G] (g₂ : Sp (DualNumber k) ⟶ S) (φ₁ φ₂ : G'.left ⟶ G.left), IsGrpPullback G' G g₂ φ₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ G'.left) (y : Z ⟶ Sp k), x ≫ G'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ φ₁ = x ≫ φ₂) → ∀ (u : G' ⟶ G') [IsMonHom u] (v : G ⟶ G) [IsMonHom v], u.left ≫ φ₁ = φ₁ ≫ v.left → u.left ≫ φ₂ = φ₂ ≫ v.left := GlobalTheory.T.commutes_of_commutes_dualNumber_agree_closed
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.dualNumber_torsionSection_lies_over_second_map`.
+-/
 theorem sec_eps : ∀ (k : Type) [Field k] {S : Scheme.{0}} (G' : Over (Sp (DualNumber k))) [GrpObj G'], IsAbelianScheme G' → ∀ (G : Over S) [GrpObj G] (g₁ g₂ : Sp (DualNumber k) ⟶ S) (φ₁ φ₂ : G'.left ⟶ G.left), IsGrpPullback G' G g₂ φ₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ G'.left) (y : Z ⟶ Sp k), x ≫ G'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ φ₁ = x ≫ φ₂) → spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ g₁ = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ g₂ → ∀ (n : ℕ), (n : k) ≠ 0 → ∀ (σ : 𝟙_ (Over S) ⟶ G), σ ^ n = 1 → ∀ (x : 𝟙_ (Over (Sp (DualNumber k))) ⟶ G'), x ^ n = 1 → x.left ≫ φ₁ = g₁ ≫ σ.left → x.left ≫ φ₂ = g₂ ≫ σ.left := GlobalTheory.T.dualNumber_torsionSection_lies_over_second_map
 
+/- English proof (translation)
+Simplify using `[spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp_eps {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `p.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[pow_zero, zero_smul]`.
+
+Conclude with `(mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)).symm`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, p.eta_add]`.
+-/
 theorem eta_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B : Type} [CommRing B] {bb : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (p : Obj D l bb s) (a : D.La) (n : ℕ) :
     p.eta a ^ n = p.eta (n • a) := by
@@ -36,6 +50,11 @@ theorem eta_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} 
     exact (mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)).symm
   | succ n ih => rw [pow_succ, ih, succ_nsmul, p.eta_add]
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `p.etaA_add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[pow_zero, zero_smul]`.
+
+Conclude with `(mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)).symm`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, p.etaA_add]`.
+-/
 theorem etaA_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B : Type} [CommRing B] {bb : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (p : Obj D l bb s) (a : D.La) (n : ℕ) :
     p.etaA a ^ n = p.etaA (n • a) := by
@@ -47,6 +66,11 @@ theorem etaA_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     exact (mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)).symm
   | succ n ih => rw [pow_succ, ih, succ_nsmul, p.etaA_add]
 
+/- English proof (translation)
+Rewrite using `[eta_pow]`. Apply `p.eta_ker` to reduce the goal to its premises. Establish `hM : ((l.M : ℕ) : 𝓞 E) ∈ l.Mb`. Establish `: ((l.M : ℕ) : 𝓞 E) ∈ Ideal.span {((l.M : ℕ) : 𝓞 E)}` using `Ideal.subset_span rfl`. Rewrite `this` using `[← l.prod]`.
+
+Apply the tactic sequence `first | exact Ideal.mul_le_left this | exact Ideal.mul_le_right this`. Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hM Submodule.mem_top`.
+-/
 theorem eta_pow_M {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B : Type} [CommRing B] {bb : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (p : Obj D l bb s) (a : D.La) :
     p.eta a ^ l.M = 1 := by
@@ -59,12 +83,36 @@ theorem eta_pow_M {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   rw [← Nat.cast_smul_eq_nsmul (𝓞 E)]
   exact Submodule.smul_mem_smul hM Submodule.mem_top
 
+/- English proof (translation)
+Rewrite using `[etaA_pow]`. Conclude with `p.etaA_ker a`.
+-/
 theorem etaA_pow_A {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Geo.Tor.Level H}
     {B : Type} [CommRing B] {bb : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (p : Obj D l bb s) (a : D.La) :
     p.etaA a ^ l.A = 1 := by
   rw [etaA_pow]
   exact p.etaA_ker a
 
+/- English proof (translation)
+Introduce `E _ _ _ H D' l c W _ b o k _ f B' _ π₁ π₂ h₁ h₂ h0 hL`. Establish `hlow : lowMap c (f.comp b) = spMap f ≫ lowMap c b`. Unfold `lowMap`. Rewrite using `[RingHom.comp_assoc, spMap_comp_eps]`. Choose the witnesses or unpack the hypotheses as in `⟨o', ⟨m₀⟩⟩ : ∃ o' : Obj D' (LowDat.lowLevel l) (baseKA (LowDat.lowLevel l)) (lowMap c (f.comp b)), Nonempty (ObjMap o' o (spMap f)) := by`.
+
+Rewrite using `[hlow]`. Conclude with `GlobalTheory.LevelGroup.pull_univ o (spMap f)`. Set `io : o'.t.G.left ≅ B'.left` to `IsPullback.isoIsPullback _ _ m₀.cart.1 h₁.1`. Establish `io₁ : io.hom ≫ π₁ = m₀.toSABMap.φ` using `IsPullback.isoIsPullback_hom_fst _ _ _ _`. Establish `io₂ : io.hom ≫ B'.hom = o'.t.G.hom` using `IsPullback.isoIsPullback_hom_snd _ _ _ _`.
+
+Establish `hio : IsGrpPullback o'.t.G B' (𝟙 _) io.hom` using `IsGrpPullback.cancel h₁ (by rw [Category.id_comp, io₁]; exact m₀.cart) (by rw [io₂, Category.comp_id])`. Establish `hψc : IsGrpPullback o'.t.G o.t.G (spMap (GlobalTheory.RigChart.constHom f)) (io.hom ≫ π₂)`. Use `hio.comp h₂` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `h0' : ∀ (Z : Scheme.{0}) (x : Z ⟶ o'.t.G.left) (y : Z ⟶ Sp k), x ≫ o'.t.G.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ m₀.toSABMap.φ = x ≫ io.hom ≫ π₂`.
+
+Introduce `Z x y hx`. Rewrite using `[← io₁, ← Category.assoc, ← Category.assoc]`. Conclude with `h0 Z (x ≫ io.hom) y (by rw [Category.assoc, io₂, hx])`. Establish `hA' : IsAbelianScheme o'.t.G` using `⟨o'.t.semi.comm, o'.t.semi.smooth, o'.proper, o'.t.semi.geomConnected⟩`. Establish `hact : ∀ a, (o'.t.act.act a).left ≫ io.hom ≫ π₂ = (io.hom ≫ π₂) ≫ (o.t.act.act a).left` using `fun a => by haveI := o'.t.act.hom a haveI := o.t.act.hom a`.
+
+Conclude with `act_comm_eps k o'.t.G hA' o.t.G _ _ _ hψc h0' (o'.t.act.act a) (o.t.act.act a) (m₀.act a)`. Establish `hLB : LBIso o'.t.PP.L (o.t.PP.L.pull (io.hom ≫ π₂))`. Take `⟨w, hw, -⟩` from `m₀.lin`. Establish `e₁ : LBIso o'.t.PP.L (o.t.PP.L.pull (io.hom ≫ π₁))`. Rewrite using `[io₁]`.
+
+Conclude with `⟨w, hw⟩`. Establish `e₂ : LBIso (o.t.PP.L.pull (io.hom ≫ π₁)) (o.t.PP.L.pull (io.hom ≫ π₂))` using `GlobalTheory.GenSpread.lbIso_pull_comp io.hom rfl rfl hL`. Conclude with `LBIso.trans o'.t.PP.isLB (pull_isLB o.t.PP.isLB _) (pull_isLB o.t.PP.isLB _) e₁ e₂`. Take `⟨m, hm⟩` from `GlobalTheory.T.exists_sabMap_of_grpPullback_respecting_action_bundle o'.t o.t (spMap (GlobalTheory.RigChart.constHom f)) (io.hom ≫ π₂) o.proper hψc hact hLB`. Establish `hg : spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap f = spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ spMap (GlobalTheory.RigChart.constHom f)`.
+
+Rewrite using `[← spMap_comp_eps, ← spMap_comp_eps]`. Use `congr 1`. Establish `hunit : ∀ n : ℕ, 0 < n → (n : k) ≠ 0`. Introduce `n hn`. Use `((baseKA (LowDat.lowLevel l)).unit n hn).map (((TrivSqZeroExt.fstHom k k k).toRingHom.comp (f.comp b)).comp (IntermediateField.inclusion (LowDat.ka_le l c)).toRingHom)` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hsec : ∀ (σ : 𝟙_ (Over (Sp W)) ⟶ o.t.G) (x : 𝟙_ (Over (Sp (DualNumber k))) ⟶ o'.t.G) (n : ℕ), 0 < n → σ ^ n = 1 → x ^ n = 1 → x.left ≫ m₀.toSABMap.φ = spMap f ≫ σ.left → x.left ≫ io.hom ≫ π₂ = spMap (GlobalTheory.RigChart.constHom f) ≫ σ.left` using `fun σ x n hn hσ hx hx₁ => sec_eps k o'.t.G hA' o.t.G _ _ _ _ hψc h0' hg n (hunit n hn) σ hσ x hx hx₁`. Establish `hMpos : 0 < (LowDat.lowLevel l).M` using `by have := (LowDat.lowLevel l).three_le; omega`. Set `m₂ : ObjMap o' o (spMap (GlobalTheory.RigChart.constHom f))` to `{ toSABMap := m eta := fun a => by show (o'.eta a).left ≫ m.φ = _`.
+
+Rewrite using `[hm]`. Conclude with `hsec _ _ _ hMpos (eta_pow_M o a) (eta_pow_M o' a) (m₀.eta a)`. Use `etaA := fun a => by show (o'.etaA a).left ≫ m.φ = _`. Rewrite using `[hm]`. Conclude with `hsec _ _ _ (LowDat.lowLevel l).A_pos (etaA_pow_A o a) (etaA_pow_A o' a) (m₀.etaA a) }`.
+
+Conclude with `⟨o', m₀, m₂, io, io₂, io₁.symm, hm⟩`.
+-/
 theorem exists_objMaps : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} (c : Coeff l) (W : Type) [CommRing W] (b : c.F →+* W) (o : LowObj D' c b) (k : Type) [Field k] (f : W →+* DualNumber k) (B' : Over (Sp (DualNumber k))) [GrpObj B'] (π₁ π₂ : B'.left ⟶ o.t.G.left), IsGrpPullback B' o.t.G (spMap f) π₁ → IsGrpPullback B' o.t.G (spMap (GlobalTheory.RigChart.constHom f)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → LBIso (o.t.PP.L.pull π₁) (o.t.PP.L.pull π₂) → ∃ (o' : LowObj D' c (f.comp b)) (m₁ : ObjMap o' o (spMap f)) (m₂ : ObjMap o' o (spMap (GlobalTheory.RigChart.constHom f))) (io : o'.t.G.left ≅ B'.left), io.hom ≫ B'.hom = o'.t.G.hom ∧ m₁.toSABMap.φ = io.hom ≫ π₁ ∧ m₂.toSABMap.φ = io.hom ≫ π₂ := by
   intro E _ _ _ H D' l c W _ b o k _ f B' _ π₁ π₂ h₁ h₂ h0 hL
   have hlow : lowMap c (f.comp b) = spMap f ≫ lowMap c b := by

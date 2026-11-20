@@ -41,6 +41,9 @@ def EpsLimit : Prop :=
 def StepCore : Prop :=
   SymbLower → WeightDiff → ConvBound → KernelSmall → Decompose → FiniteWeighted → EpsLimit → CutCont → Step
 
+/- English proof (translation)
+Introduce `hSL hW hCB hK hPF hDE hFP hPL hWF _ hC` and use `hS hSL hW hCB hK (hD hPF hDE hFP hPL hWF) hF hE hC`.
+-/
 theorem stepOfParts_of (hD : DecomposeOf) (hF : FiniteWeighted) (hE : EpsLimit) (hS : StepCore) :
     StepOfParts :=
   fun hSL hW hCB hK hPF hDE hFP hPL hWF _ hC => hS hSL hW hCB hK (hD hPF hDE hFP hPL hWF) hF hE hC

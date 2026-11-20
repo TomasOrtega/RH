@@ -18,6 +18,11 @@ section Fields
 
 variable {g n : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K]
 
+/- English proof (translation)
+Establish `h1 : Module.Finite (ZMod g) K` using `Module.finite_of_finrank_pos (hr ▸ hn)`. Establish `h2 : Finite K` using `Module.finite_of_finite (ZMod g)`. Establish `h3 : Fintype K` using `Fintype.ofFinite K`. Establish `hc : Fintype.card K = g ^ n`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g) (V := K), ZMod.card, hr]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_pow_eq_pow_val, ← hc, FiniteField.pow_card]`.
+-/
 private theorem pow_period (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) (z : Kˣ) :
     z ^ g ^ n = z := by
   have h1 : Module.Finite (ZMod g) K := Module.finite_of_finrank_pos (hr ▸ hn)
@@ -28,6 +33,13 @@ private theorem pow_period (hn : 0 < n) (hr : Module.finrank (ZMod g) K = n) (z 
   apply Units.ext
   rw [Units.val_pow_eq_pow_val, ← hc, FiniteField.pow_card]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Rewrite using `[← ih, Finset.prod_range_succ (fun i => f (i + (j + 1))), Finset.prod_range_succ' (fun i => f (i + j))]`.
+
+Establish `e1 : f (m + (j + 1)) = f (0 + j)`. Use `hf j` as an intermediate fact. Rewrite `this` using `[show j + (m + 1) = m + (j + 1) by omega]`. Simplify using `using this`. Rewrite using `[e1]`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem prod_shift {M : Type*} [CommMonoid M] {n : ℕ} (hn : 0 < n) (f : ℕ → M)
     (hf : ∀ i, f (i + n) = f i) (j : ℕ) :
     ∏ i ∈ Finset.range n, f (i + j) = ∏ i ∈ Finset.range n, f i := by
@@ -47,6 +59,19 @@ private theorem prod_shift {M : Type*} [CommMonoid M] {n : ℕ} (hn : 0 < n) (f 
     congr 1
     omega
 
+/- English proof (translation)
+Set `v : (Kˣ →* ℂˣ) → (Kˣ → ℂ)` to `fun χ x => ((χ x : ℂˣ) : ℂ)`. Establish `hv : LinearIndependent ℂ v`. Establish `hinj : Function.Injective (fun χ : Kˣ →* ℂˣ => (Units.coeHom ℂ).comp χ)`. Introduce `χ χ' e`. Use extensionality with `x`.
+
+Conclude with `congrArg (fun f : Kˣ →* ℂ => f x) e`. Establish `h0` using `(linearIndependent_monoidHom Kˣ ℂ).comp _ hinj`. Conclude with `h0`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Set `l1 : (Kˣ →* ℂˣ) →₀ ℂ` to `∑ i ∈ Finset.range n, Finsupp.single (θ ^ g ^ i) 1`. Set `l2 : (Kˣ →* ℂˣ) →₀ ℂ` to `∑ i ∈ Finset.range n, Finsupp.single (θ' ^ g ^ i) 1`. Establish `hl : Finsupp.linearCombination ℂ v l1 = Finsupp.linearCombination ℂ v l2`. Simplify using `only [l1, l2, map_sum, Finsupp.linearCombination_single, one_smul]`. Use function extensionality and compare the values at `z`.
+
+Simplify using `only [Finset.sum_apply, v, MonoidHom.pow_apply, Units.val_pow_eq_pow_val]`. Use `h z` as an intermediate fact. Simplify `this` using `only [map_pow, Units.val_pow_eq_pow_val]`. Establish `he : l1 = l2` using `hv.finsuppLinearCombination_injective hl`. Establish `h1 : l1 θ' = 0`.
+
+Simplify using `only [l1, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Conclude with `Finset.sum_eq_zero fun i hi => if_neg fun e => hne i (Finset.mem_range.mp hi) e.symm`. Establish `h2 : l2 θ' ≠ 0`. Simplify using `only [l2, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.sum_boole]`.
+
+Establish `: (Finset.filter (fun i => θ' ^ g ^ i = θ') (Finset.range n)).card ≠ 0`. Use `Finset.card_ne_zero.mpr ⟨0, ?_⟩` and prove the remaining obligations. Simplify using `[hn]`. Conclude with `this` after adjusting the coercions. Conclude with `h2 (he ▸ h1)`.
+-/
 private theorem orbit_of_sums (hn : 0 < n) (θ θ' : Kˣ →* ℂˣ)
     (h : ∀ z : Kˣ, ∑ i ∈ Finset.range n, ((θ (z ^ g ^ i) : ℂˣ) : ℂ) =
       ∑ i ∈ Finset.range n, ((θ' (z ^ g ^ i) : ℂˣ) : ℂ)) :
@@ -90,6 +115,19 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 
 open TameWeilRepresentationIrreducibility in
 
+/- English proof (translation)
+Take `⟨γ0, hγ⟩` from `GlobalTheory.MemTame.exists_tameGenAt E Ω w A h`. Establish `e0 : ineIncl h (⟨γ0, hγ.1⟩ : Ine (F` using `E) A) = (⟨γ0, Ine_le_Weil h hγ.1⟩ : Weil h) := Subtype.ext rfl`. Use `⟨⟨γ0, hγ.1⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e0]`. Introduce `n a ha`.
+
+Establish `hT : a.Tame` using `fun σ hσ => ha σ (wild_inertia_isWild hσ)`. Use `⟨?_, fun hirr => ?_⟩` and prove the remaining obligations. Establish `hF : deg φ⁻¹ = 1` using `by simp [hφ]`. Establish `h1` using `hT.conj_eq_pow (γ := ⟨γ0, Ine_le_Weil h hγ.1⟩) (φ := φ⁻¹) hγ.1 hF`. Rewrite using `[← h1, ← map_mul, ← map_mul]`.
+
+Use `congr 1`. Use `group`. Use `irreducible_nontrivial hirr` as an intermediate fact. Use `⟨inferInstance, fun U hM hG => ?_⟩` and prove the remaining obligations. Establish `hinj : ∀ σ, Function.Injective (a.ρ σ)` using `fun σ => (Representation.apply_bijective a.ρ σ).1`.
+
+Establish `hall : ∀ σ, σ ∈ weilStabiliserSubgroup a.ρ U` using `mem_of_tame_generator_frobenius a.ρ a.smooth (fun σ hσ => ha σ (wild_inertia_isWild hσ)) hγ hφ (weilStabiliserSubgroup a.ρ U) (fun σ hσ => mem_weil_stabiliser_iff.mpr fun v => by rw [hσ, Module.End.one_apply]) (mem_weil_stabiliser_iff.mpr fun v => ⟨hM v, fun hv => mem_of_injectiv …`. Conclude with `irreducible_stable_bot_or_top hirr U (fun σ v hv => (mem_weil_stabiliser_iff.mp (hall σ) v).mp hv)`. Rewrite using `[e0]`. Introduce `n m a b ha hb hirra hirrb e hγe hφe`. Establish `hNa` using `irreducible_monodromy_zero a hirra`.
+
+Establish `hNb` using `irreducible_monodromy_zero b hirrb`. Set `f : Weil h →* Module.End ℂ (Fin n → ℂ) × Module.End ℂ (Fin m → ℂ)` to `MonoidHom.prod a.ρ b.ρ`. Establish `hf : IsSmooth f` using `IsSmooth.of_le₂ a.smooth b.smooth (fun σ h1 h2 => Prod.ext h1 h2)`. Establish `hall : ∀ σ, σ ∈ weilIntertwiningSubgroup a.ρ b.ρ e` using `mem_of_tame_generator_frobenius f hf (fun σ hσ => Prod.ext (ha σ (wild_inertia_isWild hσ)) (hb σ (wild_inertia_isWild hσ))) hγ hφ (weilIntertwiningSubgroup a.ρ b.ρ e) (fun σ hσ => mem_weil_intertwining_iff.mpr fun v => by`. Establish `h1 : a.ρ σ = 1` using `congrArg Prod.fst hσ`.
+
+Establish `h2 : b.ρ σ = 1` using `congrArg Prod.snd hσ`. Rewrite using `[h1, h2, Module.End.one_apply, Module.End.one_apply])`. Use the proof step `(mem_weil_intertwining_iff.mpr hγe) (mem_weil_intertwining_iff.mpr hφe)`. Use `show ∃ e' : (Fin n → ℂ) ≃ₗ[ℂ] (Fin m → ℂ), (∀ σ v, e' (a.ρ σ v) = b.ρ σ (e' v)) ∧ ∀ v, e' (a.N v) = b.N (e' v)`. Conclude with `⟨e, fun σ v => mem_weil_intertwining_iff.mp (hall σ) v, fun v => by rw [hNa, hNb]; simp⟩`.
+-/
 private theorem pair_of_gen (φ : Weil h) (hφ : deg φ = -1) : ∃ t₀ : Ine (F := E) A,
     (∀ (n : ℕ) (a : WDRep h (Fin n → ℂ)), (∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → a.ρ σ = 1) →
       a.ρ (ineIncl h t₀) * a.ρ φ = a.ρ φ * a.ρ (ineIncl h t₀) ^ normV w ∧
@@ -140,12 +178,18 @@ private theorem pair_of_gen (φ : Weil h) (hφ : deg φ = -1) : ∃ t₀ : Ine (
     show ∃ e' : (Fin n → ℂ) ≃ₗ[ℂ] (Fin m → ℂ), (∀ σ v, e' (a.ρ σ v) = b.ρ σ (e' v)) ∧ ∀ v, e' (a.N v) = b.N (e' v)
     exact ⟨e, fun σ v => mem_weil_intertwining_iff.mp (hall σ) v, fun v => by rw [hNa, hNb]; simp⟩
 
+/- English proof (translation)
+Use `hV t` as an intermediate fact. Rewrite `this` using `[WD.inePol_of_mem_Ine _ t.2, WD.charPol_mk]`. Then use the resulting hypothesis.
+-/
 private theorem charpoly_of_inFor {g n m : ℕ} {K : Type} [Field K] {R : Ine (F := E) A →* Kˣ}
     {θ : Kˣ →* ℂˣ} (a : WDRep h (Fin m → ℂ)) (hV : InFor g n R θ (WD.mk a)) (t : Ine (F := E) A) :
     (a.ρ (ineIncl h t)).charpoly = ∏ j ∈ Finset.range n, (X - C ((θ (R t ^ g ^ j) : ℂˣ) : ℂ)) := by
   have := hV t
   rwa [WD.inePol_of_mem_Ine _ t.2, WD.charPol_mk] at this
 
+/- English proof (translation)
+Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, charpoly_of_inFor a hV t, IsRoot.def, eval_prod, Finset.prod_eq_zero_iff]`. Simplify using `[sub_eq_zero]`.
+-/
 private theorem eigenvalue_iff {g n m : ℕ} {K : Type} [Field K] {R : Ine (F := E) A →* Kˣ}
     {θ : Kˣ →* ℂˣ} (a : WDRep h (Fin m → ℂ)) (hV : InFor g n R θ (WD.mk a)) (t : Ine (F := E) A)
     (z : ℂ) : Module.End.HasEigenvalue (a.ρ (ineIncl h t)) z ↔
@@ -157,6 +201,27 @@ private theorem eigenvalue_iff {g n m : ℕ} {K : Type} [Field K] {R : Ine (F :=
 end UpperTheory.Zero.LLC
 
 open UpperTheory.Zero.LLC in
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ A w h g _ n K _ _ R hR θ hθ V hV`. Establish `hn` using `hR.pos`. Establish `hr` using `hR.rank`. Use `⟨fun j => ?_, fun θ' hθ' => ?_, fun V' hi hi' ht ht' hV' hdet => ?_⟩` and prove the remaining obligations. Introduce `t`.
+
+Rewrite using `[hV t]`. Establish `hf : ∀ i, (X - C ((θ (R t ^ g ^ (i + n)) : ℂˣ) : ℂ) : ℂ[X]) = X - C ((θ (R t ^ g ^ i) : ℂˣ) : ℂ)`. Introduce `i`. Establish `e : R t ^ g ^ (i + n) = R t ^ g ^ i`. Rewrite using `[add_comm, pow_add, mul_comm, pow_mul, pow_period hn hr]`.
+
+Rewrite using `[e]`. Rewrite using `[← prod_shift hn (fun i => (X - C ((θ (R t ^ g ^ i) : ℂˣ) : ℂ) : ℂ[X])) hf j]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : (θ ^ g ^ j) (R t ^ g ^ i) = θ (R t ^ g ^ (i + j))`. Rewrite using `[MonoidHom.pow_apply, ← map_pow, ← pow_mul, pow_add]`.
+
+Rewrite using `[e]`. Use `orbit_of_sums hn θ θ' fun z => ?_` and prove the remaining obligations. Take `⟨t, rfl⟩` from `hR.surj z`. Establish `e` using `congrArg Polynomial.nextCoeff ((hV t).symm.trans (hθ' t))`. Rewrite `e` using `[prod_X_sub_C_nextCoeff, prod_X_sub_C_nextCoeff]`.
+
+Conclude with `neg_injective e`. Take `⟨φ, hφ⟩ : ∃ φ : Weil h, deg φ = -1` from `⟨(frob h)⁻¹, by simp [deg_frob]⟩`. Take `⟨t₀, h1, h2⟩` from `pair_of_gen φ hφ`. Take `⟨m, a, rfl, hai, hat⟩` from `PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.exists_good hi ht`. Take `⟨m', a', rfl, hai', hat'⟩` from `PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.exists_good hi' ht'`.
+
+Establish `hdim : ∀ {m : ℕ} (b : WDRep h (Fin m → ℂ)), InFor g n R θ (WD.mk b) → Module.finrank ℂ (Fin m → ℂ) = n`. Introduce `m b hb`. Establish `e` using `congrArg Polynomial.natDegree (charpoly_of_inFor b hb t₀)`. Rewrite `e` using `[LinearMap.charpoly_natDegree, natDegree_finset_prod_X_sub_C_eq_card, Finset.card_range]`. Then use the resulting hypothesis. Establish `hm` using `hdim a hV`.
+
+Establish `hm'` using `hdim a' hV'`. Take `⟨hc, hirr⟩` from `h1 m a hat`. Take `⟨hc', -⟩` from `h1 m' a' hat'`. Rewrite `hc`, `hc'` using `[hR.normV_eq]`. Take `⟨z, hz1, hz2⟩` from `st1a (Fin m → ℂ) g (a.ρ (ineIncl h t₀)) (a.ρ φ) (PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.isUnit_rho a _) (PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.isUnit_rho a _) hc (hirr hai)`.
+
+Rewrite `hz2` using `[hm]`. Take `⟨i, hin, hzi⟩` from `(eigenvalue_iff a hV t₀ z).mp hz1`. Establish `hz3 : Module.End.HasEigenvalue (a'.ρ (ineIncl h t₀)) (z ^ g ^ (n - i))`. Use `(eigenvalue_iff a' hV' t₀ _).mpr ⟨0, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[hzi, ← Units.val_pow_eq_pow_val, ← map_pow, ← pow_mul, ← pow_add, Nat.add_sub_of_le hin.le, pow_period hn hr]`.
+
+Simplify using the standard rewrite rules. Establish `hd : LinearMap.det (a.ρ φ) = LinearMap.det (a'.ρ φ)`. Rewrite using `[← PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.eig_prod, ← PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.eig_prod]`. Conclude with `hdet φ`. Take `⟨e, he1, he2⟩` from `st1b (Fin m → ℂ) (Fin m' → ℂ) g n (n - i) _ (a.ρ φ) _ (a'.ρ φ) z hn hm hm' (PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.isUnit_rho a _) (PositivityTheory.Rg.DzCount.DepthZeroEigenvalues.isUnit_rho a' _) hc hc' hz2 hz1 hz3 hd`.
+
+Conclude with `(WD.mk_eq_mk.mpr (h2 m m' a a' hat hat' hai hai' e he1 he2)).symm`.
+-/
 theorem UpperTheory.Zero.LLC.tameUniq :
     UpperTheory.Zero.LLC.TameUniq := by
   intro E Ω _ _ _ _ _ A w h g _ n K _ _ R hR θ hθ V hV

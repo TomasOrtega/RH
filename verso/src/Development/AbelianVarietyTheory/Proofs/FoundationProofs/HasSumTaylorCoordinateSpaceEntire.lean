@@ -8,6 +8,21 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.LineDerivListCom
 
 namespace GlobalTheory.EntireTaylor
 
+/- English proof (translation)
+Take `⟨R, hRdef⟩ : ∃ R : σ → ℝ, R = fun j => 2 * ‖w j‖ + 1` from `⟨_, rfl⟩`. Establish `hR : ∀ j, 0 < R j` using `fun j => by rw [hRdef]; positivity`. Take `⟨M, hM⟩ : ∃ M, ∀ z ∈ Set.univ.pi (fun j => Metric.closedBall (0 : ℂ) (R j)), ‖f z‖ ≤ M` from `(isCompact_univ_pi fun j => isCompact_closedBall (0 : ℂ) (R j)).exists_bound_of_continuousOn hf.continuous.continuousOn`. Establish `hM0 : 0 ≤ M` using `le_trans (norm_nonneg _) (hM 0 (Set.mem_univ_pi.mpr fun j => Metric.mem_closedBall.mpr (by simpa using (hR j).le)))`. Establish `hw : ∀ j, ‖w j‖ / R j ≤ 1 / 2` using `fun j => by`.
+
+Rewrite using `[div_le_iff₀ (hR j), hRdef]`. Combine the linear relations using `[norm_nonneg (w j)]`. Establish `key : ∀ α : σ →₀ ℕ, ‖c α * ∏ j, w j ^ α j‖ ≤ M * ∏ j, (1 / 2 : ℝ) ^ α j`. Introduce `α`. Establish `hP : (∏ j, ((α j).factorial : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => by exact_mod_cast Nat.factorial_ne_zero _`.
+
+Establish `hcα : c α = pderivIter α f 0 / ∏ j, ((α j).factorial : ℂ)`. Rewrite using `[← hc α, mul_div_cancel_left₀ _ hP]`. Establish `hnormP : ‖∏ j, ((α j).factorial : ℂ)‖ = ∏ j, ((α j).factorial : ℝ)`. Rewrite using `[norm_prod]`. Simplify using the standard rewrite rules.
+
+Establish `hPpos : 0 < ∏ j, ((α j).factorial : ℝ)` using `Finset.prod_pos fun j _ => by exact_mod_cast Nat.factorial_pos _`. Establish `hC : ‖pderivIter α f 0‖ ≤ (∏ k, ((α k).factorial : ℝ)) * M / ∏ k, R k ^ α k` using `GlobalTheory.norm_pderivIter_le_of_differentiable α (fun k => (hR k).le) (fun k _ => hR k) hf fun z hz => hM z (Set.mem_univ_pi.mpr fun j => Metric.mem_closedBall.mpr (by`. Establish `h` using `hz j`. Simplify using `only [Pi.zero_apply, sub_zero] at h`. Rewrite using `[dist_zero_right]`.
+
+Conclude with `h.le))`. Establish `h1 : ‖c α‖ ≤ M / ∏ j, R j ^ α j`. Rewrite using `[hcα, norm_div, hnormP, div_le_iff₀ hPpos]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul, norm_prod]`. Simplify using `[norm_pow]`. Use `_ ≤ (M / ∏ j, R j ^ α j) * ∏ j, ‖w j‖ ^ α j := mul_le_mul_of_nonneg_right h1 (Finset.prod_nonneg fun j _ => by positivity)`. Use `_ = M * ∏ j, (‖w j‖ / R j) ^ α j := by`. Simplify using `only [div_pow, Finset.prod_div_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ M * ∏ j, (1 / 2 : ℝ) ^ α j := mul_le_mul_of_nonneg_left (Finset.prod_le_prod (fun j _ => by have := (hR j).le; positivity) fun j _ => pow_le_pow_left₀ (by have := (hR j).le; positivity) (hw j) _) hM0`. Conclude with `Summable.of_norm_bounded ((GlobalTheory.ProdThetaConj.summable_prod_half_pow (σ := σ)).mul_left M) key`.
+-/
 theorem summable_of_entire {σ : Type*} [Fintype σ] [DecidableEq σ] {f : (σ → ℂ) → ℂ}
     (hf : Differentiable ℂ f) (c : (σ →₀ ℕ) → ℂ)
     (hc : ∀ α, (∏ j, ((α j).factorial : ℂ)) * c α = pderivIter α f 0) (w : σ → ℂ) :
@@ -64,6 +79,13 @@ end GlobalTheory.EntireTaylor
 open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.NormSum GlobalTheory.ThetaConj
 open scoped BigOperators
 
+/- English proof (translation)
+Introduce `D N N' F hF z`. Establish `hcd : Differentiable ℂ (fun w => F (GlobalTheory.GaussCauchy.curry D N N' w))` using `fun w => (hF _).comp w (LinearMap.toContinuousLinearMap (GlobalTheory.GaussCauchy.curry D N N')).differentiableAt`. Establish `hS` using `GlobalTheory.EntireTaylor.summable_of_entire hcd (fun α => Formalism.MainNotions.TaylorLogMetric.taylor D F α) (fun α => by`. Rewrite using `[← GlobalTheory.GaussCauchy.factorial_mul_taylor D N N' F hF α, Finsupp.prod_fintype]`. Introduce `i`.
+
+Use the proof step `simp)`. Use the proof step `(fun k => z k.1 k.2.1 k.2.2)`. Establish `hmono : ∀ α : Mono D N N', mono D α z = ∏ k, z k.1 k.2.1 k.2.2 ^ α k` using `fun α => by show (α.prod fun k n => z k.1 k.2.1 k.2.2 ^ n) = _`. Rewrite using `[Finsupp.prod_fintype]`. Introduce `i`.
+
+Simplify using the standard rewrite rules. Establish `hS' : Summable fun α : Mono D N N' => Formalism.MainNotions.TaylorLogMetric.taylor D F α * mono D α z`. Simplify `hS` using `only [hmono]`. Rewrite using `[← GlobalTheory.ProdThetaConj.tsum_taylor_mono D hF z]`. Conclude with `hS'.hasSum`.
+-/
 theorem GlobalTheory.EntireTaylor.hasSum_taylor_mono : ∀ (D : D7) (N N' : ℕ) (F : VC D N N' → ℂ), Differentiable ℂ F → ∀ z : VC D N N', HasSum (fun α : Mono D N N' => Formalism.MainNotions.TaylorLogMetric.taylor D F α * mono D α z) (F z) := by
   intro D N N' F hF z
   have hcd : Differentiable ℂ (fun w => F (GlobalTheory.GaussCauchy.curry D N N' w)) := fun w =>

@@ -4,6 +4,41 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTrip GlobalTheory.LKMid GlobalTheory.LKDef GlobalTheory.CuspRep GlobalTheory.UnitaryBC UpperTheory.Gal.W2.Seed UpperTheory.Gal.G1
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `R _ σ hσ c x y hc h m`. Set `b : Matrix (Fin 2) (Fin 2) R` to `!![x, -σ y; y, σ x]`. Set `b' : Matrix (Fin 2) (Fin 2) R` to `!![c * σ x, c * σ y; -(c * y), c * x]`. Set `M : Matrix (Fin 1 ⊕ (Fin 2 × Fin m)) (Fin 1 ⊕ (Fin 2 × Fin m)) R` to `fromBlocks 1 0 0 (blockDiagonal fun _ => b)`. Set `M' : Matrix (Fin 1 ⊕ (Fin 2 × Fin m)) (Fin 1 ⊕ (Fin 2 × Fin m)) R` to `fromBlocks 1 0 0 (blockDiagonal fun _ => b')`.
+
+Set `e : Fin 1 ⊕ (Fin 2 × Fin m) ≃ Fin (2 * m + 1)` to `((Equiv.refl (Fin 1)).sumCongr finProdFinEquiv).trans (finSumFinEquiv.trans (finCongr (by omega)))`. Establish `hbd : (fromBlocks 1 0 0 (blockDiagonal fun _ : Fin m => (1 : Matrix (Fin 2) (Fin 2) R)) : Matrix (Fin 1 ⊕ (Fin 2 × Fin m)) (Fin 1 ⊕ (Fin 2 × Fin m)) R) = 1`. Establish `h1 : (blockDiagonal fun _ : Fin m => (1 : Matrix (Fin 2) (Fin 2) R)) = 1` using `blockDiagonal_one`. Rewrite using `[h1, fromBlocks_one]`. Establish `hbb' : b * b' = 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [b, b', Matrix.mul_apply, Fin.sum_univ_two] <;>`. Apply the tactic sequence `first | linear_combination h | ring`. Establish `hb'b : b' * b = 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [b, b', Matrix.mul_apply, Fin.sum_univ_two] <;>`. Apply the tactic sequence `first | linear_combination h | ring`. Establish `hu : (b.map σ)ᵀ * diagonal (fun _ : Fin 2 => c) * b = 1`.
+
+Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [b, Matrix.mul_apply, Fin.sum_univ_two, hσ] <;>`. Apply the tactic sequence `first | linear_combination h | ring`. Establish `hM : M * M' = 1`.
+
+Simplify using `only [M, M', fromBlocks_multiply]`. Rewrite using `[← blockDiagonal_mul]`. Simplify using `only [hbb', Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Conclude with `hbd`. Establish `hM' : M' * M = 1`.
+
+Simplify using `only [M, M', fromBlocks_multiply]`. Rewrite using `[← blockDiagonal_mul]`. Simplify using `only [hb'b, Matrix.mul_one, Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]`. Conclude with `hbd`. Establish `hD : (fun i : Fin (2 * m + 1) => if (i : ℕ) = 0 then (1 : R) else c) ∘ e = Sum.elim (fun _ => 1) (fun _ => c)`.
+
+Use function extensionality and compare the values at `p`. Break down `p with p | p` into its components or cases. Establish `hp : p = 0` using `Subsingleton.elim _ _`. Substitute `hp` using the available equality. Simplify using `[e]`.
+
+Introduce `hne`. Conclude with `(hne (Fin.ext (by simp))).elim`. Simplify using `[e]`. Establish `hd2 : (diagonal fun _ : Fin 2 × Fin m => c) = blockDiagonal fun _ : Fin m => diagonal fun _ : Fin 2 => c`. Rewrite using `[blockDiagonal_diagonal]`.
+
+Establish `hcore : (M.map σ)ᵀ * diagonal ((fun i : Fin (2 * m + 1) => if (i : ℕ) = 0 then (1 : R) else c) ∘ e) * M = 1`. Rewrite using `[hD, ← fromBlocks_diagonal]`. Simplify using `only [M, fromBlocks_map, fromBlocks_transpose, blockDiagonal_map _ _ (map_zero σ), blockDiagonal_transpose, hd2]`. Simplify using `only [fromBlocks_multiply, Matrix.map_zero _ (map_zero σ), Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one]`. Rewrite using `[← blockDiagonal_mul, ← blockDiagonal_mul]`.
+
+Simplify using `only [hu]`. Simplify using `using hbd`. Establish `hbS : ∀ (S : Subring R), x ∈ S → y ∈ S → σ x ∈ S → σ y ∈ S → c ∈ S → (∀ i j, b i j ∈ S) ∧ ∀ i j, b' i j ∈ S`. Introduce `S hx hy hsx hsy hcS`. Prove the components needed by the constructor for the conclusion.
+
+Apply the tactic sequence `intro i j fin_cases i <;> fin_cases j <;> simp [b] <;> first | assumption | exact S.neg_mem hsy`. Apply the tactic sequence `intro i j fin_cases i <;> fin_cases j <;> simp [b'] <;> first | exact S.neg_mem (S.mul_mem hcS hy) | exact S.mul_mem hcS hsx | exact S.mul_mem hcS hsy | exact S.mul_mem hcS hx | exact S.mul_mem hcS hy`. Establish `hblk : ∀ (S : Subring R) (N : Matrix (Fin 2) (Fin 2) R), (∀ i j, N i j ∈ S) → ∀ p q, (fromBlocks 1 0 0 (blockDiagonal fun _ : Fin m => N) : Matrix (Fin 1 ⊕ (Fin 2 × Fin m)) (Fin 1 ⊕ (Fin 2 × Fin m)) R) p q ∈ S`. Introduce `S N hN p q`. Apply the tactic sequence `rcases p with p | ⟨i, k⟩ <;> rcases q with q | ⟨j, l⟩`.
+
+Simplify using `only [fromBlocks_apply₁₁, one_apply] split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`. Simplify using `only [fromBlocks_apply₁₂, Matrix.zero_apply]`. Conclude with `S.zero_mem`.
+
+Simplify using `only [fromBlocks_apply₂₁, Matrix.zero_apply]`. Conclude with `S.zero_mem`. Simplify using `only [fromBlocks_apply₂₂, blockDiagonal_apply] split_ifs`. Conclude with `hN _ _`. Conclude with `S.zero_mem`.
+
+Use `⟨⟨reindex e e M, reindex e e M', ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[reindex_apply, reindex_apply, submatrix_mul_equiv, hM, submatrix_one_equiv]`. Rewrite using `[reindex_apply, reindex_apply, submatrix_mul_equiv, hM', submatrix_one_equiv]`. Establish `hDD : diagonal (fun i : Fin (2 * m + 1) => if (i : ℕ) = 0 then (1 : R) else c) = (diagonal ((fun i : Fin (2 * m + 1) => if (i : ℕ) = 0 then (1 : R) else c) ∘ e)).submatrix e.symm e.symm`. Rewrite using `[submatrix_diagonal_equiv]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `show ((reindex e e M).map σ)ᵀ * diagonal (fun i : Fin (2 * m + 1) => if (i : ℕ) = 0 then (1 : R) else c) * reindex e e M = 1`. Rewrite using `[hDD, reindex_apply, ← submatrix_map, transpose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, hcore, submatrix_one_equiv]`.
+
+Introduce `S hx hy hsx hsy hcS i j`. Take `⟨h1, h2⟩` from `hbS S hx hy hsx hsy hcS`. Conclude with `⟨hblk S b h1 _ _, hblk S b' h2 _ _⟩`.
+-/
 theorem UpperTheory.Gal.G1.pBlockMat :
     BlockMat := by
   intro R _ σ hσ c x y hc h m

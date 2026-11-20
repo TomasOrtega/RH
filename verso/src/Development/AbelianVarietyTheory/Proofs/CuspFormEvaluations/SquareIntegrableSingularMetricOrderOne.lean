@@ -25,6 +25,9 @@ noncomputable def Wfree (n : ℕ) (x : Frame X.Ψ r) : ℝ≥0∞ :=
     ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) *
     ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-((n : ℝ) - 1 / 2)) else 0
 
+/- English proof (translation)
+Unfold `Wfree`. Rewrite using `[if_pos hx]`.
+-/
 theorem Wfree_of_mem (n : ℕ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Wfree Xa Fl G n x = ENNReal.ofReal (Real.exp (-phla X G x)) *
       ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) *
@@ -32,6 +35,15 @@ theorem Wfree_of_mem (n : ℕ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
   unfold Wfree
   rw [if_pos hx]
 
+/- English proof (translation)
+Establish `hw : ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2 = Real.exp (-phla X Xa.L x) * ∑ k, ‖Xa.w k x‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.Up.pnorm_sq_eq_exp hx Xa.L (Xa.w k)`. Establish `hs : ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2 = Real.exp (-phla X Xa.L x) * ∑ k, ‖Fl.s k x‖ ^ 2`. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.Up.pnorm_sq_eq_exp hx Xa.L (Fl.s k)`. Establish `he : Real.exp (-phla X (G + n • Xa.L) x) = Real.exp (-phla X G x) * Real.exp (-phla X Xa.L x) ^ n`. Rewrite using `[GlobalTheory.Up.phla_add_nsmul hx, neg_add, Real.exp_add, ← Real.exp_nat_mul, mul_neg]`. Establish `hc0 : ENNReal.ofReal (Real.exp (-phla X Xa.L x)) ≠ 0` using `(ENNReal.ofReal_pos.2 (Real.exp_pos _)).ne'`. Establish `key : ENNReal.ofReal (Real.exp (-phla X Xa.L x)) ^ n * (ENNReal.ofReal (Real.exp (-phla X Xa.L x)) ^ (-(1 / 2 : ℝ)) * ENNReal.ofReal (Real.exp (-phla X Xa.L x)) ^ (-((n : ℝ) - 1 / 2))) = 1`.
+
+Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_add _ _ hc0 ENNReal.ofReal_ne_top, ← ENNReal.rpow_add _ _ hc0 ENNReal.ofReal_ne_top]`. Use `ENNReal.rpow_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Wfree_of_mem Xa Fl G n hx, hw, hs, he, ENNReal.ofReal_mul (Real.exp_pos _).le, ENNReal.ofReal_mul (Real.exp_pos _).le, ENNReal.ofReal_mul (Real.exp_pos _).le, ENNReal.ofReal_pow (Real.exp_pos _).le, ENNReal.mul_rpow_of_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top, ENNReal. …`. Generalize the expression as in `ENNReal.ofReal (Real.exp (-phla X Xa.L x)) = c at key ⊢`.
+
+Generalize the expression as in `ENNReal.ofReal (Real.exp (-phla X G x)) = a`. Generalize the expression as in `ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) = A`. Generalize the expression as in `ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2) = B`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Wfree_eq_pnorm (n : ℕ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     Wfree Xa Fl G n x = ENNReal.ofReal (Real.exp (-phla X (G + n • Xa.L) x)) *
       ENNReal.ofReal (∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2) ^ (-(1 / 2 : ℝ)) *
@@ -73,12 +85,18 @@ noncomputable def phiW (n : ℕ) (h : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     X.dom.indicator (fun x => ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2) x ^ (-(1 / 2 : ℝ)) *
     X.dom.indicator (fun x => ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2) x ^ (-((n : ℝ) - 1 / 2)))
 
+/- English proof (translation)
+Simplify using `only [phiW, Set.indicator_of_mem hx]`.
+-/
 theorem phiW_of_mem (n : ℕ) (h : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     phiW Xa Fl G n h x = ENNReal.ofReal (X.pnorm (G + n • Xa.L) h x ^ 2 *
       (∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2) ^ (-(1 / 2 : ℝ)) *
       (∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2) ^ (-((n : ℝ) - 1 / 2))) := by
   simp only [phiW, Set.indicator_of_mem hx]
 
+/- English proof (translation)
+Establish `h1 : Measurable (X.dom.indicator fun x => X.pnorm (G + n • Xa.L) h x ^ 2)` using `GlobalTheory.Up.DivInFFPf.measurable_cut ((GlobalTheory.Up.DivInFFPf.pnorm_contOn hh).pow 2)`. Establish `h2 : Measurable (X.dom.indicator fun x => ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2)` using `GlobalTheory.Up.DivInFFPf.measurable_cut (continuousOn_finsetSum _ fun k _ => (GlobalTheory.Up.DivInFFPf.pnorm_contOn (Xa.w_van k).1.1.1).pow 2)`. Establish `h3 : Measurable (X.dom.indicator fun x => ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2)` using `GlobalTheory.Up.DivInFFPf.measurable_cut (continuousOn_finsetSum _ fun k _ => (GlobalTheory.Up.DivInFFPf.pnorm_contOn (Fl.s_van k).1.1.1).pow 2)`. Conclude with `((h1.mul (h2.pow_const _)).mul (h3.pow_const _)).ennreal_ofReal`.
+-/
 theorem measurable_phiW (n : ℕ) {h : Frame X.Ψ r → ℂ} (hh : X.IsSec (G + n • Xa.L) h) :
     Measurable (phiW Xa Fl G n h) := by
   have h1 : Measurable (X.dom.indicator fun x => X.pnorm (G + n • Xa.L) h x ^ 2) :=
@@ -91,6 +109,11 @@ theorem measurable_phiW (n : ℕ) {h : Frame X.Ψ r → ℂ} (hh : X.IsSec (G + 
       (GlobalTheory.Up.DivInFFPf.pnorm_contOn (Fl.s_van k).1.1.1).pow 2)
   exact ((h1.mul (h2.pow_const _)).mul (h3.pow_const _)).ennreal_ofReal
 
+/- English proof (translation)
+Introduce `γ hγ x hx b hb`. Establish `hxb : rmul x b ∈ X.dom` using `ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul (X := X) hx hb`. Establish `hy : lact γ (rmul x b) ∈ X.dom` using `(ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.lact_mem_dom_iff (X := X) hγ (rmul x b)).2 hxb`. Establish `inv : ∀ {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ}, X.IsSec la P → X.pnorm la P (lact γ (rmul x b)) = X.pnorm la P x` using `fun hP => (GlobalTheory.Up.DivMetricPf.pnorm_lact hN' hP hγ hxb).trans (GlobalTheory.Up.DivMetricPf.pnorm_rmul hN hP hx hb)`. Establish `hw : ∑ k, X.pnorm Xa.L (Xa.w k) (lact γ (rmul x b)) ^ 2 = ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2` using `Finset.sum_congr rfl fun k _ => by rw [inv (Xa.w_van k).1.1.1]`.
+
+Establish `hs : ∑ k, X.pnorm Xa.L (Fl.s k) (lact γ (rmul x b)) ^ 2 = ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2` using `Finset.sum_congr rfl fun k _ => by rw [inv (Fl.s_van k).1.1.1]`. Rewrite using `[phiW_of_mem Xa Fl G n h hy, phiW_of_mem Xa Fl G n h hx, inv hh, hw, hs]`.
+-/
 theorem phiW_inv (hN : NfacRmulStatement (E := E)) (hN' : NfacLactStatement (E := E)) (n : ℕ)
     {h : Frame X.Ψ r → ℂ} (hh : X.IsSec (G + n • Xa.L) h) :
     ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, phiW Xa Fl G n h (lact γ (rmul x b)) = phiW Xa Fl G n h x := by
@@ -107,6 +130,9 @@ theorem phiW_inv (hN : NfacRmulStatement (E := E)) (hN' : NfacLactStatement (E :
     Finset.sum_congr rfl fun k _ => by rw [inv (Fl.s_van k).1.1.1]
   rw [phiW_of_mem Xa Fl G n h hy, phiW_of_mem Xa Fl G n h hx, inv hh, hw, hs]
 
+/- English proof (translation)
+Establish `hw` using `GlobalTheory.Up.DivInFFPf.sum_pnorm_pos (la := Xa.L) hx (Xa.w_nz x hx)`. Establish `hs'` using `GlobalTheory.Up.DivInFFPf.sum_pnorm_pos (la := Xa.L) hx hs`. Rewrite using `[phiW_of_mem Xa Fl G n h hx, Wfree_eq_pnorm Xa Fl G n hx, GlobalTheory.Up.pnorm_sq_eq_exp hx (G + n • Xa.L) h, ENNReal.ofReal_rpow_of_pos hw, ENNReal.ofReal_rpow_of_pos hs', ENNReal.ofReal_mul, ENNReal.ofReal_mul, ENNReal.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals positivity`.
+-/
 theorem phiW_eq (n : ℕ) (h : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (hs : ∃ k, Fl.s k x ≠ 0) :
     phiW Xa Fl G n h x = ENNReal.ofReal (‖h x‖ ^ 2) * Wfree Xa Fl G n x := by
@@ -118,6 +144,17 @@ theorem phiW_eq (n : ℕ) (h : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x 
   · ring
   all_goals positivity
 
+/- English proof (translation)
+Use `le_of_eq ?_` and prove the remaining obligations. Establish `hw : ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2 = Real.exp (-phla X Xa.L x) * ∑ k, ‖Xa.w k x‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.Up.pnorm_sq_eq_exp hx Xa.L (Xa.w k)`. Establish `hs : ∑ k, X.pnorm Xa.L (Fl.s k) x ^ 2 = Real.exp (-phla X Xa.L x) * ∑ k, ‖Fl.s k x‖ ^ 2`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => GlobalTheory.Up.pnorm_sq_eq_exp hx Xa.L (Fl.s k)`. Establish `he : Real.exp (-phla X (G + n • Xa.L) x) = Real.exp (-phla X G x) * Real.exp (-phla X Xa.L x) ^ n`. Rewrite using `[GlobalTheory.Up.phla_add_nsmul hx, neg_add, Real.exp_add, ← Real.exp_nat_mul, mul_neg]`. Establish `hL` using `Real.exp_pos (-phla X Xa.L x)`.
+
+Establish `hA : 0 ≤ ∑ k, ‖Xa.w k x‖ ^ 2` using `by positivity`. Establish `hB : 0 ≤ ∑ k, ‖Fl.s k x‖ ^ 2` using `by positivity`. Establish `key : Real.exp (-phla X Xa.L x) ^ n * (Real.exp (-phla X Xa.L x) ^ (-(1 / 2 : ℝ)) * Real.exp (-phla X Xa.L x) ^ (-((n : ℝ) - 1 / 2))) = 1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_add hL, ← Real.rpow_add hL]`. Use `Real.rpow_zero _ using 2` and compare the differences between its conclusion and the goal.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hp : 0 ≤ Real.exp (-phla X G x) * (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ))` using `by positivity`. Rewrite using `[phiW_of_mem Xa Fl G n h hx, GlobalTheory.Up.pnorm_sq_eq_exp hx (G + n • Xa.L) h, hw, hs, he, Real.mul_rpow hL.le hA, Real.mul_rpow hL.le hB, ← GlobalTheory.Up.DivMetricPf.exp_neg_phla hx G, ← ENNReal.ofReal_mul hp]`. Use `congr 1`. Generalize the expression as in `Real.exp (-phla X Xa.L x) = c at key ⊢`.
+
+Take the linear combination `(Real.exp (-phla X G x) * (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) * ‖h x‖ ^ 2 * (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-((n : ℝ) - 1 / 2))) * key`.
+-/
 theorem phiW_le_local {n : ℕ} (hn : 1 ≤ n) (h : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
     phiW Xa Fl G n h x ≤
       ENNReal.ofReal (X.nfac G x ^ 2 * (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ))) *
@@ -149,6 +186,13 @@ theorem phiW_le_local {n : ℕ} (hn : 1 ≤ n) (h : Frame X.Ψ r → ℂ) {x : F
   linear_combination (Real.exp (-phla X G x) * (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) * ‖h x‖ ^ 2 *
     (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-((n : ℝ) - 1 / 2))) * key
 
+/- English proof (translation)
+Establish `hO : IsOpen (OmF X y)` using `ReciprocityTheory.ChartRestriction.G.AR.Up.ExF.isOpen_OmF X y`. Establish `h0 : (0 : V (nd X)) ∈ OmF X y` using `by show cpt X y 0 ∈ X.dom`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero X y]`. Conclude with `hy`. Establish `hwc : ContinuousOn (fun z => ∑ k, ‖Xa.w k (cpt X y z)‖ ^ 2) (OmF X y)` using `continuousOn_finsetSum _ fun k _ => ((((Xa.w_van k).1.1.1.1.continuousOn).comp (ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.cpt_cont X y).continuousOn fun z hz => hz).norm).pow 2`.
+
+Establish `hpos0 : 0 < ∑ k, ‖Xa.w k (cpt X y 0)‖ ^ 2` using `GlobalTheory.Up.sum_normSq_w_pos Xa (x := cpt X y 0) h0`. Establish `hFc : ContinuousAt (fun z => X.nfac G (cpt X y z) ^ 2 * (∑ k, ‖Xa.w k (cpt X y z)‖ ^ 2) ^ (-(1 / 2 : ℝ))) 0` using `(((ReciprocityTheory.ChartRestriction.G.AR.Up.OntoE.nfac_cont (X := X) (x0 := y) G).continuousAt (hO.mem_nhds h0)).pow 2).mul ((hwc.continuousAt (hO.mem_nhds h0)).rpow_const (Or.inl hpos0.ne'))`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 ((hFc.eventually (gt_mem_nhds (lt_add_one _))).and (hO.mem_nhds h0))`. Use `⟨min ρ ε, lt_min hρ hε, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `setLIntegral_mono' Metric.isOpen_ball.measurableSet fun z hz => ?_` and prove the remaining obligations. Establish `hz'` using `hball z (Metric.ball_subset_ball (min_le_right ρ ε) hz)`. Conclude with `(phiW_le_local Xa Fl G hn h (x := cpt X y z) hz'.2).trans (mul_le_mul' (ENNReal.ofReal_le_ofReal hz'.1.le) le_rfl)`. Use `_ = ENNReal.ofReal (X.nfac G (cpt X y 0) ^ 2 * (∑ k, ‖Xa.w k (cpt X y 0)‖ ^ 2) ^ (-(1 / 2 : ℝ)) + 1) * ∫⁻ z in Metric.ball (0 : V (nd X)) (min ρ ε), ENNReal.ofReal (‖h (cpt X y z)‖ ^ 2 * (∑ k, ‖Fl.s k (cpt X y z)‖ ^ 2) ^ (-((n : ℝ) - 1 / 2))) := lintegral_const_mul' _ _ ENNReal.o …`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top ((lintegral_mono_set (Metric.ball_subset_ball (min_le_left ρ ε))).trans_lt hint)`.
+-/
 theorem localW_int {n : ℕ} (hn : 1 ≤ n) (h : Frame X.Ψ r → ℂ) {y : Frame X.Ψ r} (hy : y ∈ X.dom)
     {ρ : ℝ} (hρ : 0 < ρ)
     (hint : ∫⁻ z in Metric.ball (0 : V (nd X)) ρ, ENNReal.ofReal (‖h (cpt X y z)‖ ^ 2 *
@@ -186,6 +230,39 @@ theorem localW_int {n : ℕ} (hn : 1 ≤ n) (h : Frame X.Ψ r → ℂ) {y : Fram
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top
         ((lintegral_mono_set (Metric.ball_subset_ball (min_le_left ρ ε))).trans_lt hint)
 
+/- English proof (translation)
+Establish `hM` using `GlobalTheory.FrameMeasureClosed.measInv_holds (E := E)`. Establish `hN` using `GlobalTheory.NormFactor.nfacRmul_holds (E := E)`. Establish `hN'` using `GlobalTheory.NormFactor.nfacLact_holds (E := E)`. Establish `hfin` using `GlobalTheory.DriftCovolume.finMu_unconditional r X`. Establish `hd : X.IsSec (G + T • Xa.L) (fun x => f x - g x)`.
+
+Use `⟨hf.1.sub hg.1, fun x hx b hb => ?_, fun γ hγ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [hf.2.1 x hx b hb, hg.2.1 x hx b hb]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf.2.2 γ hγ x hx, hg.2.2 γ hγ x hx]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hφm` using `measurable_phiW Xa Fl G T hd`. Establish `hφi` using `phiW_inv Xa Fl G hN hN' T hd`. Establish `hφB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, phiW Xa Fl G T (fun x => f x - g x) (rmul x b) = phiW Xa Fl G T (fun x => f x - g x) x`. Introduce `x hx b hb`. Use `hφi 1 X.Γ.one_mem x hx b hb` as an intermediate fact.
+
+Rewrite `this` using `[ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.lact_one]`. Then use the resulting hypothesis. Establish `hloc : ∀ j, ∃ x1 : Frame X.Ψ r, ∃ ρ1 : ℝ, IsOrth X x1 ∧ 0 < ρ1 ∧ Metric.ball (0 : V (nd X)) ρ1 ⊆ OmF X x1 ∧ (∃ b ∈ Bor X.Ψ r, Fl.xs j = rmul x1 b) ∧ ∫⁻ y in Metric.ball (0 : V (nd X)) ρ1, phiW Xa Fl G T (fun x => f x - g x) (cpt X x1 y) ∂muF X x1 < ⊤`. Introduce `j`. Take `⟨ρ, hρ, hint⟩` from `hvan j`. Establish `hexp : (-(((T - nd X : ℕ) : ℝ) + (nd X : ℝ) - 1 / 2)) = -((T : ℝ) - 1 / 2)`.
+
+Rewrite using `[Nat.cast_sub hnT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hint` using `[hexp]`. Take `⟨ρ', hρ', hint'⟩` from `localW_int Xa Fl G hT1 (fun x => f x - g x) (Fl.xs_mem j) hρ hint`. Take `⟨x1, ho1, b, hb, hxs⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Up.ortho_holds r X (Fl.xs j) (Fl.xs_mem j)`.
+
+Rewrite `hint'` using `[hxs]`. Take `⟨ρ1, hρ1, hsub, hfin1⟩` from `GlobalTheory.ChartChange.chart_change r X x1 b ho1 hb _ hφm hφB ρ' hρ' hint'`. Conclude with `⟨x1, ρ1, ho1, hρ1, hsub, ⟨b, hb, hxs⟩, hfin1⟩`. Use `choose x1 ρ1 ho1 hρ1 hsub hxb hfin1 using hloc`. Take `⟨U, hU⟩ : ∃ U : Set (Frame X.Ψ r), U = ⋃ j, {x | ∃ y ∈ Metric.ball (0 : V (nd X)) (ρ1 j), ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, x = lact γ (rmul (cpt X (x1 j) y) b)}` from `⟨_, rfl⟩`.
+
+Establish `hUo : IsOpen U`. Rewrite using `[hU]`. Conclude with `isOpen_iUnion fun j => GlobalTheory.SatOpen.isOpen_saturation r X (x1 j) (ho1 j) _ Metric.isOpen_ball (hsub j)`. Establish `hxsU : ∀ j, Fl.xs j ∈ U`. Introduce `j`.
+
+Take `⟨b, hb, hxs⟩` from `hxb j`. Rewrite using `[hU, Set.mem_iUnion]`. Use `⟨j, 0, Metric.mem_ball_self (hρ1 j), 1, X.Γ.one_mem, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.lact_one, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero]`. Conclude with `hxs`.
+
+Establish `hsat : ∀ x ∈ U, ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, lact γ (rmul x b) ∈ U`. Introduce `x hx γ hγ b hb`. Rewrite `hx`, the goal using `[hU, Set.mem_iUnion]`. Take `⟨j, y, hy, γ0, hγ0, b0, hb0, rfl⟩` from `hx`. Use `⟨j, y, hy, γ * γ0, X.Γ.mul_mem hγ hγ0, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.bmul X b0 b, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.bmul_mem (X := X) hb0 hb, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_rmul, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.lact_lact, ReciprocityTheory.ChartRestriction.G.AR.Up.IW.rmul_rmul]`. Take `⟨K, hK⟩` from `Fl.family_le_coords U hUo hxsU hsat`. Establish `hAo : IsOpen (cpt X x0 ⁻¹' U)` using `hUo.preimage (ReciprocityTheory.ChartRestriction.G.AR.Up.PairUnfoldPf.cpt_cont X x0)`. Establish `hae : (fun z => ENNReal.ofReal (‖f (cpt X x0 z) - g (cpt X x0 z)‖ ^ 2) * Wfree Xa Fl G T (cpt X x0 z)) =ᵐ[(muF X x0).restrict FF] fun z => phiW Xa Fl G T (fun x => f x - g x) (cpt X x0 z)` using `by filter_upwards [ae_restrict_of_ae (GlobalTheory.Up.DivInFFPf.ae_exists_ne Xa Fl ho), ae_restrict_mem hF.1] with z hz hzF`. Conclude with `(phiW_eq Xa Fl G T (fun x => f x - g x) (x := cpt X x0 z) (hF.2.1 hzF) (hz (hF.2.1 hzF))).symm`.
+
+Establish `h1 : ∫⁻ z in FF ∩ cpt X x0 ⁻¹' U, phiW Xa Fl G T (fun x => f x - g x) (cpt X x0 z) ∂muF X x0 < ⊤`. Establish `hsubU : FF ∩ cpt X x0 ⁻¹' U ⊆ ⋃ j, FF ∩ {z | ∃ y ∈ Metric.ball (0 : V (nd X)) (ρ1 j), ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, cpt X x0 z = lact γ (rmul (cpt X (x1 j) y) b)}`. Introduce `z hz`. Establish `hzU` using `hz.2`. Rewrite `hzU` using `[Set.mem_preimage, hU, Set.mem_iUnion]`.
+
+Take `⟨j, hj⟩` from `hzU`. Conclude with `Set.mem_iUnion.2 ⟨j, hz.1, hj⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_fintype]`. Conclude with `ENNReal.sum_lt_top.2 fun j _ => hfin1 j`.
+
+Establish `hc0 : (0 : ℝ) ≤ 2 * |K| ^ ((T : ℝ) - 1 / 2)` using `by positivity`. Establish `hpt : ∀ z ∈ FF \ cpt X x0 ⁻¹' U, phiW Xa Fl G T (fun x => f x - g x) (cpt X x0 z) ≤ ENNReal.ofReal (2 * |K| ^ ((T : ℝ) - 1 / 2)) * ENNReal.ofReal (X.pnorm (G + T • Xa.L) f (cpt X x0 z) ^ 2 * (∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2) ^ (-(T : ℝ))) + ENNReal.ofReal (2 * |K| ^ ( …`. Introduce `z hz`. Establish `hx : cpt X x0 z ∈ X.dom` using `hF.2.1 hz.1`. Establish `hxU : cpt X x0 z ∉ U` using `hz.2`.
+
+Establish `hw0` using `GlobalTheory.Up.DivInFFPf.sum_pnorm_pos (la := Xa.L) hx (Xa.w_nz _ hx)`. Establish `hs0 : 0 ≤ ∑ k, X.pnorm Xa.L (Fl.s k) (cpt X x0 z) ^ 2` using `by positivity`. Establish `key` using `GlobalTheory.Up.DivInFFPf.real_bound (a := f (cpt X x0 z)) (b := g (cpt X x0 z)) hT1 (Real.exp_pos (-phla X (G + T • Xa.L) (cpt X x0 z))).le (GlobalTheory.Up.pnorm_sq_eq_exp hx _ f) (GlobalTheory.Up.pnorm_sq_eq_exp hx _ g) hw0 hs0 (hK _ hx hxU) (hC _ hx)`. Rewrite using `[phiW_of_mem Xa Fl G T _ hx, GlobalTheory.Up.pnorm_sq_eq_exp hx (G + T • Xa.L) (fun x => f x - g x), ← ENNReal.ofReal_mul hc0]`. Conclude with `(ENNReal.ofReal_le_ofReal key).trans ENNReal.ofReal_add_le`.
+
+Establish `h2 : ∫⁻ z in FF \ cpt X x0 ⁻¹' U, phiW Xa Fl G T (fun x => f x - g x) (cpt X x0 z) ∂muF X x0 < ⊤`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_add_right _ measurable_const, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, setLIntegral_const]`. Use `_ < ⊤ := ENNReal.add_lt_top.2 ⟨ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfi, ENNReal.mul_lt_top ENNReal.ofReal_lt_top (GlobalTheory.Up.DivInFFPf.muF_lt_top hM hfin ho hF)⟩`. Use `show ∫⁻ z in FF, ENNReal.ofReal (‖f (cpt X x0 z) - g (cpt X x0 z)‖ ^ 2) * Wfree Xa Fl G T (cpt X x0 z) ∂muF X x0 < ⊤`.
+
+Rewrite using `[lintegral_congr_ae hae]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inFF_sub {T : ℕ} (hT1 : 1 ≤ T) (hnT : nd X ≤ T) {x0 : Frame X.Ψ r} (ho : IsOrth X x0)
     {FF : Set (V (nd X))} (hF : IsFundSet X x0 FF) {f g : Frame X.Ψ r → ℂ}
     (hf : X.IsSec (G + T • Xa.L) f) (hg : X.IsSec (G + T • Xa.L) g)
@@ -320,6 +397,21 @@ theorem inFF_sub {T : ℕ} (hT1 : 1 ≤ T) (hnT : nd X ≤ T) {x0 : Frame X.Ψ r
     _ ≤ _ := lintegral_union_le _ _ _
     _ < ⊤ := ENNReal.add_lt_top.2 ⟨h1, h2⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ r X Xa Fl G x0 ho FF hF f hf hbd hzero`. Take `⟨C, hC⟩` from `hbd`. Establish `hM` using `GlobalTheory.FrameMeasureClosed.measInv_holds (E := E)`. Establish `hfin` using `GlobalTheory.DriftCovolume.finMu_unconditional r X`. Establish `hfi : ∫⁻ z in FF, ENNReal.ofReal (X.pnorm (G + (nd X + 1) • Xa.L) f (cpt X x0 z) ^ 2 * (∑ k, X.pnorm Xa.L (Xa.w k) (cpt X x0 z) ^ 2) ^ (-((nd X + 1 : ℕ) : ℝ))) ∂muF X x0 < ⊤`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hF.1 fun z hz => ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hx : cpt X x0 z ∈ X.dom` using `hF.2.1 hz`. Establish `hS` using `GlobalTheory.Up.DivInFFPf.sum_pnorm_pos (la := Xa.L) hx (Xa.w_nz _ hx)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_assoc, ← Real.rpow_natCast, ← Real.rpow_add hS]`. Simplify using the standard rewrite rules. Use `_ = ENNReal.ofReal C * muF X x0 FF := setLIntegral_const _ _`. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (GlobalTheory.Up.DivInFFPf.muF_lt_top hM hfin ho hF)`. Establish `hzsec : X.IsSec (G + (nd X + 1) • Xa.L) (fun _ => (0 : ℂ))` using `⟨differentiableOn_const 0, fun x _ b _ => by simp, fun γ _ x _ => by simp⟩`.
+
+Establish `hg0 : ∀ x ∈ X.dom, X.pnorm (G + (nd X + 1) • Xa.L) (fun _ => (0 : ℂ)) x ^ 2 ≤ 0 * (∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2) ^ (nd X + 1)` using `fun x _ => by`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.Data.pnorm]`. Establish `hvan : VanS X Fl.xs Fl.s (nd X + 1 - nd X) (fun x => f x - (fun _ => (0 : ℂ)) x)`. Rewrite using `[show nd X + 1 - nd X = 1 by omega]`. Use `GlobalTheory.vanS_of_isBigO r X Xa Fl 1 _ (hf.1.continuousOn.sub continuousOn_const) fun j => ?_` and prove the remaining obligations.
+
+Establish `hyd : cpt X (Fl.xs j) 0 ∈ X.dom`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero]`. Conclude with `Fl.xs_mem j`. Establish `hd : DifferentiableAt ℂ (fun z => f (cpt X (Fl.xs j) z)) 0` using `(hf.1.differentiableAt ((ReciprocityTheory.ChartRestriction.G.AR.Up.IW.isOpen_dom X).mem_nhds hyd)).comp 0 ((ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_diff X (Fl.xs j)) 0)`. Establish `h0 : f (cpt X (Fl.xs j) 0) = 0`.
+
+Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Up.IW.cpt_zero]`. Conclude with `hzero j`. Establish `hb` using `hd.isBigO_sub.norm_right`. Simplify using `only [h0, sub_zero] at hb`. Simplify `hb` using `only [sub_zero, pow_one]`.
+
+Establish `key` using `inFF_sub Xa Fl G (T := nd X + 1) (Nat.le_add_left 1 (nd X)) (Nat.le_succ (nd X)) ho hF hf hzsec hfi (C := 0) hg0 hvan`. Simplify using `only [sub_zero] at key`. Conclude with `key`.
+-/
 theorem inFF_order_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (x0 : Frame X.Ψ r), IsOrth X x0 → ∀ FF, IsFundSet X x0 FF → ∀ f : Frame X.Ψ r → ℂ, X.IsSec (G + (nd X + 1) • Xa.L) f → (∃ C : ℝ, ∀ x ∈ X.dom, X.pnorm (G + (nd X + 1) • Xa.L) f x ^ 2 ≤ C * (∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2) ^ (nd X + 1)) → (∀ j, f (Fl.xs j) = 0) → InFF X x0 (fun x => open Classical in if x ∈ X.dom then ENNReal.ofReal (Real.exp (-phla X G x)) * ENNReal.ofReal (∑ k, ‖Xa.w k x‖ ^ 2) ^ (-(1 / 2 : ℝ)) * ENNReal.ofReal (∑ k, ‖Fl.s k x‖ ^ 2) ^ (-(((nd X + 1 : ℕ) : ℝ) - 1 / 2)) else 0) FF f := by
   intro E _ _ _ r X Xa Fl G x0 ho FF hF f hf hbd hzero
   obtain ⟨C, hC⟩ := hbd

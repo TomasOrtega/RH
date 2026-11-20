@@ -13,6 +13,11 @@ namespace GlobalTheory.QPl.ThetaPin
 
 variable {D : D7}
 
+/- English proof (translation)
+Introduce `u hu`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0`. Take `⟨α, rfl, -, -⟩` from `hε`. Use `show infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Simplify using `only [infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`.
+
+Use `show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] _ = 0`. Rewrite using `[show fstA D.host.F (pairA D.host.F 0 α) = 0 from rfl, TensorProduct.zero_tmul]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[← hc u hu i j, map_mul, h0, zero_mul]`.
+-/
 theorem isFinComb_of_half {S T : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) (c : WO S T →₀ ℂ)
     (hc : ∀ u ∈ c.support, IsHalf (algebraMap (AF D.host.F) (AE D) ε) u) : IsFinComb c := by
   intro u hu
@@ -26,6 +31,9 @@ theorem isFinComb_of_half {S T : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} 
   simp only [Matrix.map_apply, Matrix.zero_apply]
   rw [← hc u hu i j, map_mul, h0, zero_mul]
 
+/- English proof (translation)
+The claim follows from `| [], _, g, hg => by have : g = 0 := by simpa [aconv] using Finsupp.support_single_subset hg rw [this]; exact P.zero_mem | e :: l, hl, g, hg => by classical have ih := aconv_support P l (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) have he := hl e List.mem_cons_self change g …`.
+-/
 theorem aconv_support {G : Type} [AddMonoid G] (P : AddSubmonoid G) :
     ∀ (l : List (G →₀ ℂ)), (∀ e ∈ l, ∀ g ∈ e.support, g ∈ P) → ∀ g ∈ (aconv l).support, g ∈ P
   | [], _, g, hg => by
@@ -51,9 +59,15 @@ def finSub (S T : HSp D) : AddSubmonoid (WO S T) where
     change Matrix.map (a + b) (infPart D) = 0
     rw [Matrix.map_add (infPart D) (fun x y => RingHom.map_add (infPart D) x y) a b, ha, hb, add_zero]
 
+/- English proof (translation)
+The claim follows from `aconv_support (finSub S T) l hl`.
+-/
 theorem isFinComb_aconv {S T : HSp D} (l : List (WO S T →₀ ℂ)) (hl : ∀ e ∈ l, IsFinComb e) : IsFinComb (aconv l) :=
   aconv_support (finSub S T) l hl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `hx`.
+-/
 theorem isFinComb_cast {c : Comm D} {a b : ℕ} (e : a = b) (x : WO (c.V (a + 1)) c.T →₀ ℂ) (hx : IsFinComb x) :
     IsFinComb (e ▸ x : WO (c.V (b + 1)) c.T →₀ ℂ) := by
   subst e; exact hx
@@ -61,6 +75,15 @@ theorem isFinComb_cast {c : Comm D} {a b : ℕ} (e : a = b) (x : WO (c.V (a + 1)
 end GlobalTheory.QPl.ThetaPin
 
 open GlobalTheory.QPl.ThetaPin in
+/- English proof (translation)
+Introduce `D c v t w F hc hP j h Ψ₁ Ψ₂ h1 h2`. Establish `hs : ∀ i, (F.Q i).s = j` using `fun i => by have := (F.Q i).hs; omega`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP.eQ j (by omega)]`. Use `(GlobalTheory.HeisComb.main D c.ψ _ _).2.2.1 _ _ h1 ?_ hc.std` and prove the remaining obligations.
+
+Use `isFinComb_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Take `⟨ε, hε, hsum⟩` from `(F.Q i).q.above`. Establish `hat` using `((F.Q i).eL_at j 0 (by have := hs i; omega)).1`. Conclude with `isFinComb_of_half hε _ fun u hu => hsum ▸ hat u hu`.
+
+Rewrite using `[hP.eQT j h]`. Use `(GlobalTheory.HeisComb.main D c.ψ _ _).2.2.1 _ _ h2 ?_ hc.std` and prove the remaining obligations. Use `isFinComb_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Take `⟨ε, hε, hsum⟩` from `(F.Q i).q.above`.
+
+Establish `hat` using `(F.Q i).eLT_at.1`. Unfold `QAt.eT`. Conclude with `isFinComb_cast _ _ (isFinComb_of_half hε _ fun u hu => hsum ▸ hat u hu)`.
+-/
 theorem GlobalTheory.QPl.pins_keep_theta : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → F.Pins w → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (Ψ₁ : WO (c.V j) (c.V (j + 1)) → ℂ) (Ψ₂ : WO (c.V (j + 1)) c.T → ℂ), IsThetaFunO c.ψ _ _ Ψ₁ → IsThetaFunO c.ψ _ _ Ψ₂ → IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQ j) Ψ₁) ∧ IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQT j h) Ψ₂) := by
   intro D c v t w F hc hP j h Ψ₁ Ψ₂ h1 h2
   have hs : ∀ i, (F.Q i).s = j := fun i => by have := (F.Q i).hs; omega

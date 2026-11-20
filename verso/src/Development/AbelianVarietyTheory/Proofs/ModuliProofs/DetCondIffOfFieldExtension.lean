@@ -13,6 +13,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory.DetExtend
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ act := fun c => (Over.pullback f).map (a.act c) hom := fun c => by have := a.hom c; infer_instance one := by rw [a.one, CategoryTheory.Functor.map_id] mul := fun x y => by rw [a.mul, CategoryTheory.Functor.map_comp] add := fun x y => by rw [a.add]; exact CategoryTheory.Functor …`.
+-/
 theorem exists_oAct_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [GrpObj G] {O : Type} [CommRing O]
     (a : OAct O G) : ∃ a' : OAct O ((Over.pullback f).obj G), ∀ c, a'.act c = (Over.pullback f).map (a.act c) :=
   ⟨{ act := fun c => (Over.pullback f).map (a.act c)
@@ -21,6 +24,9 @@ theorem exists_oAct_pullback {S S' : Scheme.{0}} (f : S' ⟶ S) {G : Over S} [Gr
      mul := fun x y => by rw [a.mul, CategoryTheory.Functor.map_comp]
      add := fun x y => by rw [a.add]; exact CategoryTheory.Functor.map_mul _ _ _ }, fun _ => rfl⟩
 
+/- English proof (translation)
+The claim follows from `LiePull.lieMult_pull O _ _ G _ x _ a a' (isGrpPullback_pullback G x) (fun c => by rw [h]; exact pullback.lift_fst _ _ _) k' y τ n`.
+-/
 theorem lieMult_fibre {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) {G : Over S} [GrpObj G] {O : Type}
     [CommRing O] (a : OAct O G) (a' : OAct O ((Over.pullback x).obj G))
     (h : ∀ c, a'.act c = (Over.pullback x).map (a.act c)) {k' : Type} [Field k'] (y : Sp k' ⟶ Sp k)
@@ -30,6 +36,23 @@ theorem lieMult_fibre {S : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ S) {G 
 
 open ReciprocityTheory.ChartRestriction.G.Chart (prodPts scaleD tvec tmap eigLat IsUnivChart) in
 
+/- English proof (translation)
+Set `j : epsPt (𝟙 (Sp k)) ≅ epsR k` to `Over.isoMk (Iso.refl _) (by simp)`. Set `e : (epsPt (𝟙 (Sp k)) ⟶ G) ≃* (epsR k ⟶ G)` to `MulEquiv.ofBijective (preHom j.inv) (j.symm.homCongr (Iso.refl G)).symm.bijective`. Establish `he : ∀ w, (e w).left = w.left` using `fun w => Category.id_comp _`. Establish `he' : ∀ w, (e.symm w).left = w.left` using `fun w => by rw [← he, e.apply_symm_apply]`. Establish `one : (1 : Over.mk (𝟙 (Sp k)) ⟶ G).left = η[G].left` using `Category.id_comp _`.
+
+Set `P : (epsR k ⟶ G) → Prop` to `fun w => IsTangent w ∧ ∀ a, w ≫ act.act a = Chart.spMap (scaleD (τ a)) ≫ w`. Establish `hP : ∀ w, IsLieEigen act (𝟙 _) τ w ↔ P (e w)` using `fun w => and_congr (by rw [IsTangent, he, one]) (forall_congr' fun a => by`. Rewrite using `[Over.OverMorphism.ext_iff, Over.comp_left, Over.comp_left, Over.comp_left, he]`. Use the proof step `rfl)`. Establish `key : LieMult act (𝟙 (Sp k)) τ N ↔ ∃ v : Fin N → (epsR k ⟶ G), (∀ i, P (v i)) ∧ ∀ w, P w → ∃! c : Fin N → k, IsLieComb c v w` using `⟨LiePull.basis_transport e (P := IsLieEigen act (𝟙 _) τ) (Q := P) (R := fun c u v => u.left = spMap (epsScale c) ≫ v.left) (R' := fun c u v => u.left = spMap (epsScaleR c) ≫ v.left) hP (fun c u v => by rw [he, he]; rfl) N, LiePull.basis_transport e.symm (Q := IsLieEigen act (𝟙 _) …`.
+
+Establish `mem : ∀ c, c ∈ eigLat hx act.act (fun a => τ a) ↔ P (tvec (x` using `x) c) := fun c => by`. Rewrite using `[Chart.mem_eigLat_iff]`. Conclude with `⟨fun h => ⟨(Chart.isTan_iff _).1 (Chart.isTan_tvec hx c), fun a => (Chart.tvec_eig_iff hx _ _ _).2 (h a)⟩, fun h a => (Chart.tvec_eig_iff hx _ _ _).1 (h.2 a)⟩`. Establish `ex : ∀ w, P w → ∃ c : eigLat hx act.act (fun a => τ a), w = tvec (x` using `x) c := fun w hw => by`. Establish `h : w = tvec (x` using `x) _ := Chart.tcoord_spec hx w ((Chart.isTan_iff _).2 hw.1)`.
+
+Conclude with `⟨⟨_, (mem _).2 (h ▸ hw)⟩, h⟩`. Establish `comb : ∀ (b : Fin N → eigLat hx act.act (fun a => τ a)) (c : eigLat hx act.act (fun a => τ a)) (d : Fin N → k), IsLieComb d (fun i => tvec (x` using `x) (b i)) (tvec (x := x) c) ↔ Fintype.linearCombination k b d = c := fun b c d => by`. Use `(Chart.isLieComb_iff d _ _).trans ?_` and prove the remaining obligations. Take `⟨h, E⟩` from `Chart.prodPts_tan hx d (fun i => tvec (x := x) (b i)) fun i => Chart.isTan_tvec hx _`. Establish `E' : prodPts d (fun i => tvec (x` using `x) (b i)) = tvec (x := x) _ := Chart.tcoord_spec hx _ h`.
+
+Rewrite using `[E', E, Subtype.ext_iff, Fintype.linearCombination_apply]`. Simplify using `only [Chart.tcoord_tvec, AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]`. Conclude with `⟨fun h => (Chart.tvec_inj hx h).symm, fun h => by rw [h]⟩`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨v, hv, H⟩ choose b hb using fun i => ex _ (hv i)`. Take `rfl : v = fun i => tvec (x` from `x) (b i) := funext hb`. Rewrite using `[← (LinearEquiv.ofBijective (Fintype.linearCombination k b) ((Function.bijective_iff_existsUnique _).2 fun c => (existsUnique_congr (comb b c)).1 (H _ ((mem _).1 c.2)))).finrank_eq, Module.finrank_fin_fun]`. Introduce `h`. Set `b` to `Module.finBasisOfFinrankEq _ _ h`.
+
+Use `⟨fun i => tvec (x := x) (b i), fun i => (mem _).1 (b i).2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `ex w hw`. Use `(existsUnique_congr (comb b c)).2 ((Function.bijective_iff_existsUnique _).1 ?_ _)` and prove the remaining obligations. Use `b.equivFun.symm.bijective using 1` and compare the differences between its conclusion and the goal. Use extensionality with `r`.
+
+Simplify using `[Fintype.linearCombination_apply]`.
+-/
 theorem lieMult_iff_finrank {k : Type} [Field k] {O : Type} [CommRing O] {G : Over (Sp k)} [GrpObj G]
     (act : OAct O G) [∀ a, IsMonHom (act.act a)] {n : ℕ}
     {x : ∀ m : ℕ, Chart.sp (R₀ := k) (Chart.JetR k (Fin n) m) ⟶ G} (hx : IsUnivChart G n x)
@@ -90,6 +113,17 @@ theorem lieMult_iff_finrank {k : Type} [Field k] {O : Type} [CommRing O] {G : Ov
 
 open ReciprocityTheory.ChartRestriction.G.Chart (tvec tmap eigLat fB pushR dualMapA) in
 
+/- English proof (translation)
+Set `_` to `i.toAlgebra`. Take `⟨a₁, h₁⟩` from `exists_oAct_pullback x act`. Establish `E₁` using `lieMult_fibre x act a₁ h₁ (𝟙 _) τ N`. Rewrite `E₁` using `[Category.id_comp]`. Rewrite using `[← E₁, ← lieMult_fibre x act a₁ h₁]`.
+
+Establish `: Smooth ((Over.pullback x).obj G).hom` using `inferInstanceAs (Smooth (pullback.snd G.hom x))`. Use `generalize_proofs at *`. Use `set G₁ := (Over.pullback x).obj G`. Take `⟨a₂, h₂⟩` from `exists_oAct_pullback (fB K Ω) a₁`. Establish `E₂` using `lieMult_fibre (fB K Ω) a₁ a₂ h₂ (𝟙 _) (i.comp τ) N`.
+
+Rewrite `E₂` using `[Category.id_comp]`. Use `E₂.symm.trans ?_` and prove the remaining obligations. Use `a₁.hom` as an intermediate fact. Use `a₂.hom` as an intermediate fact. Take `⟨n, y, hy⟩` from `Chart.univChartLoc G₁`.
+
+Take `⟨y', hy', hc⟩` from `Chart.tanBC_alg (R' := Ω) G₁ n y hy`. Establish `hpt : ∀ c : Fin n → K, pushR G₁ (tvec (x` using `y') (algebraMap K Ω ∘ c)) = Chart.spMap (dualMapA K Ω) ≫ tvec (x := y) c := fun c => Over.OverMorphism.ext (by rw [Chart.pushR_left, hc c]; rfl)`. Establish `hL : ∀ a (c : Fin n → K), tmap hy' (a₂.act a) (algebraMap K Ω ∘ c) = algebraMap K Ω ∘ tmap hy (a₁.act a) c` using `fun a c => by`. Apply `Chart.tvec_inj hy'` to reduce the goal to its premises. Apply `Chart.pushR_inj G₁` to reduce the goal to its premises.
+
+Rewrite using `[Chart.tvec_tmap hy', h₂, Chart.pushR_map, hpt, hpt, Chart.tvec_tmap hy, Category.assoc]`. Establish `hr : Module.finrank K (eigLat hy a₁.act fun a => τ a) = Module.finrank Ω (eigLat hy' a₂.act fun a => i.comp τ a)` using `Chart.finrank_eig_bc (fun a => tmap hy (a₁.act a)) (fun a => tmap hy' (a₂.act a)) hL τ`. Rewrite using `[lieMult_iff_finrank a₂ hy', lieMult_iff_finrank a₁ hy, hr]`.
+-/
 theorem lieMult_extend {S : Scheme.{0}} {G : Over S} [GrpObj G] [Smooth G.hom] {K Ω : Type} [Field K] [Field Ω]
     (i : K →+* Ω) (x : Sp K ⟶ S) {O : Type} [CommRing O] (act : OAct O G) (τ : O →+* K) (N : ℕ) :
     LieMult act (spMap i ≫ x) (i.comp τ) N ↔ LieMult act x τ N := by
@@ -122,6 +156,11 @@ theorem lieMult_extend {S : Scheme.{0}} {G : Over S} [GrpObj G] [Smooth G.hom] {
     Chart.finrank_eig_bc (fun a => tmap hy (a₁.act a)) (fun a => tmap hy' (a₂.act a)) hL τ
   rw [lieMult_iff_finrank a₂ hy', lieMult_iff_finrank a₁ hy, hr]
 
+/- English proof (translation)
+Set `_` to `i.toAlgebra`. Establish `h : ∀ a, σ a ∈ i.range` using `fun a => by`. Establish `h₀ : IsIntegral ℤ (σ a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map σ.toIntAlgHom`. Establish `h₁ : IsIntegral K (σ a)` using `h₀.tower_top`. Conclude with `minpoly.mem_range_of_degree_eq_one K _ (IsAlgClosed.degree_eq_one_of_irreducible K (minpoly.irreducible h₁))`.
+
+Set `e : K ≃+* i.range` to `RingEquiv.ofBijective i.rangeRestrict ⟨fun a b hab => i.injective (congrArg Subtype.val hab), i.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (σ.codRestrict _ h), RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply (σ.codRestrict _ h a))`.
+-/
 theorem exists_factor {O K Ω : Type} [CommRing O] [Algebra.IsIntegral ℤ O] [Field K] [IsAlgClosed K] [Field Ω]
     (i : K →+* Ω) (σ : O →+* Ω) : ∃ τ : O →+* K, i.comp τ = σ := by
   let _ := i.toAlgebra
@@ -137,6 +176,11 @@ theorem exists_factor {O K Ω : Type} [CommRing O] [Algebra.IsIntegral ℤ O] [F
 
 end GlobalTheory.DetExtend
 
+/- English proof (translation)
+Introduce `E _ _ _ H D S G _ K Ω _ _ i x _ _ act ρ _`. Establish `key : ∀ τ : 𝓞 E →+* K, ((i.comp τ H.rt = i ρ → LieMult act (spMap i ≫ x) (i.comp τ) D.p) ∧ (i.comp τ H.rt ≠ i ρ → LieMult act (spMap i ≫ x) (i.comp τ) D.q)) ↔ ((τ H.rt = ρ → LieMult act x τ D.p) ∧ (τ H.rt ≠ ρ → LieMult act x τ D.q))` using `fun τ => by`. Rewrite using `[DetExtend.lieMult_extend, DetExtend.lieMult_extend, RingHom.comp_apply, Ne, i.injective.eq_iff]`. Use `⟨fun h τ => (key τ).1 (h _), fun h σ => ?_⟩` and prove the remaining obligations. Take `⟨τ, rfl⟩` from `DetExtend.exists_factor i σ`.
+
+Conclude with `(key τ).2 (h τ)`.
+-/
 theorem GlobalTheory.detCond_iff_of_field_extension : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (S : Scheme.{0}) (G : Over S) [GrpObj G] (K Ω : Type) [Field K] [Field Ω] (i : K →+* Ω) (x : Sp K ⟶ S) [IsAlgClosed K] [CharZero K] (act : OAct (𝓞 E) G) (ρ : K), Smooth G.hom → (DetCond D act (spMap i ≫ x) (i ρ) ↔ DetCond D act x ρ) := by
   intro E _ _ _ H D S G _ K Ω _ _ i x _ _ act ρ _
   have key : ∀ τ : 𝓞 E →+* K,

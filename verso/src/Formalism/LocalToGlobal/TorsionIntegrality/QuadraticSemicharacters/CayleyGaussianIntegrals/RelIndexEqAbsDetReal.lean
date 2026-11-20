@@ -8,6 +8,19 @@ namespace Formalism.L2.Th1.H
 
 section Real
 
+/- English proof (translation)
+Substitute `h₁ h₂` using the available equality. Rewrite `h`, the goal using `[← Submodule.span_int_eq_addSubgroupClosure, ← Submodule.span_int_eq_addSubgroupClosure]`. Establish `hle : Submodule.span ℤ (Set.range b₁) ≤ Submodule.span ℤ (Set.range b₂)` using `fun x hx => h hx`. Use `set S₁ := Submodule.span ℤ (Set.range b₁) with hS₁`. Use `set S₂ := Submodule.span ℤ (Set.range b₂) with hS₂`.
+
+Set `B₂ : Basis ι ℤ S₂` to `b₂.restrictScalars ℤ`. Set `B₁ : Basis ι ℤ S₁` to `b₁.restrictScalars ℤ`. Set `N : Submodule ℤ S₂` to `S₁.comap S₂.subtype`. Set `BN : Basis ι ℤ N` to `B₁.map (Submodule.comapSubtypeEquivOfLe hle).symm`. Use `haveI : Module.Free ℤ S₂ := Module.Free.of_basis B₂`.
+
+Use `haveI : Module.Finite ℤ S₂ := Module.Finite.of_basis B₂`. Establish `key` using `Submodule.natAbs_det_basis_change B₂ N BN`. Establish `hcard : Nat.card (S₂ ⧸ N) = S₁.toAddSubgroup.relIndex S₂.toAddSubgroup` using `rfl`. Establish `hrepr : ∀ (m : S₂) (i : ι), ((B₂.repr m i : ℤ) : ℝ) = b₂.repr (m : E) i` using `fun m i => by`. Rewrite using `[← Basis.restrictScalars_repr_apply ℤ b₂ m i]`.
+
+Simplify using `[B₂]`. Establish `hv : ∀ j, (((BN j : N) : S₂) : E) = b₁ j` using `fun j => by`. Simplify using `[BN, B₁, Basis.map_apply, Submodule.comapSubtypeEquivOfLe]`. Conclude with `Basis.restrictScalars_apply ℤ b₁ j`. Establish `hdet : ((B₂.det (Subtype.val ∘ BN) : ℤ) : ℝ) = b₂.det b₁`.
+
+Rewrite using `[Basis.det_apply, Basis.det_apply]`. Rewrite using `[show ((Matrix.det (B₂.toMatrix (Subtype.val ∘ BN)) : ℤ) : ℝ) = (Int.castRingHom ℝ) (Matrix.det (B₂.toMatrix (Subtype.val ∘ BN))) from rfl, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Basis.toMatrix_apply, Function.comp_apply, eq_intCast]`.
+
+Rewrite using `[hrepr, hv]`. Rewrite using `[← hcard, ← key, ← hdet, Nat.cast_natAbs, Int.cast_abs]`.
+-/
 theorem relIndex_eq_abs_det_real {E : Type*} [AddCommGroup E] [Module ℝ E]
     (L₁ L₂ : AddSubgroup E) (h : L₁ ≤ L₂) {ι : Type*} [DecidableEq ι] [Fintype ι]
     (b₁ b₂ : Basis ι ℝ E) (h₁ : L₁ = .closure (Set.range b₁)) (h₂ : L₂ = .closure (Set.range b₂)) :
@@ -44,6 +57,11 @@ theorem relIndex_eq_abs_det_real {E : Type*} [AddCommGroup E] [Module ℝ E]
     rw [hrepr, hv]
   rw [← hcard, ← key, ← hdet, Nat.cast_natAbs, Int.cast_abs]
 
+/- English proof (translation)
+Establish `hb : L₁.map (f : E →ₗ[ℝ] E).toAddMonoidHom = .closure (Set.range (b₁.map f))`. Rewrite using `[h₁, AddMonoidHom.map_closure, ← Set.range_comp]`. Use `congr 1`. Rewrite using `[relIndex_eq_abs_det_real _ L₂ hf (b₁.map f) b₂ hb h₂, relIndex_eq_abs_det_real L₁ L₂ h b₁ b₂ h₁ h₂]`. Establish `e : ⇑(b₁.map f) = (f : E →ₗ[ℝ] E) ∘ b₁` using `by ext i; simp`.
+
+Rewrite using `[e, Basis.det_comp, abs_mul, mul_comm]`.
+-/
 theorem relIndex_map_real {E : Type*} [AddCommGroup E] [Module ℝ E]
     (L₁ L₂ : AddSubgroup E) (h : L₁ ≤ L₂) {ι : Type*} [DecidableEq ι] [Fintype ι]
     (b₁ b₂ : Basis ι ℝ E) (h₁ : L₁ = .closure (Set.range b₁)) (h₂ : L₂ = .closure (Set.range b₂))
@@ -59,6 +77,13 @@ theorem relIndex_map_real {E : Type*} [AddCommGroup E] [Module ℝ E]
   have e : ⇑(b₁.map f) = (f : E →ₗ[ℝ] E) ∘ b₁ := by ext i; simp
   rw [e, Basis.det_comp, abs_mul, mul_comm]
 
+/- English proof (translation)
+Set `L : Submodule ℤ E` to `AddSubgroup.toIntSubmodule Λ`. Use `haveI : DiscreteTopology L := hd`. Use `haveI : IsZLattice ℝ L := ⟨hs⟩`. Use `haveI := ZLattice.module_free ℝ L`. Use `haveI : Module.Finite ℤ L := ZLattice.module_finite ℝ L`.
+
+Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex ℤ L) = finrank ℝ E`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, ZLattice.rank ℝ L]`. Set `b'` to `b.reindex (Fintype.equivFinOfCardEq hcard)`. Use `⟨Basis.ofZLatticeBasis ℝ L b', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, Basis.ofZLatticeBasis_span]`. Both sides reduce to the same expression.
+-/
 theorem exists_basis_of_lattice {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (Λ : AddSubgroup E) (hd : DiscreteTopology Λ) (hs : Submodule.span ℝ (Λ : Set E) = ⊤) :
     ∃ b : Basis (Fin (finrank ℝ E)) ℝ E, Λ = .closure (Set.range b) := by
@@ -78,6 +103,13 @@ theorem exists_basis_of_lattice {E : Type*} [NormedAddCommGroup E] [NormedSpace 
 
 end Real
 
+/- English proof (translation)
+Take `⟨hd, hs⟩` from `hL`. Use `⟨DiscreteTopology.of_subset (s := (Λ : Set V)) hd (fun x hx => hx.1), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`. Introduce `x hx`. Establish `hm : (Λ₁.relIndex Λ) • x ∈ Λ ⊓ Λ₁`.
+
+Use `⟨Λ.nsmul_mem hx _, ?_⟩` and prove the remaining obligations. Use `AddSubgroup.nsmul_index_mem (Λ₁.addSubgroupOf Λ) ⟨x, hx⟩` as an intermediate fact. Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify `this` using `[AddSubgroup.relIndex]`. Establish `hn : ((Λ₁.relIndex Λ : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr hi`.
+
+Establish `e : x = ((Λ₁.relIndex Λ : ℕ) : ℝ)⁻¹ • ((Λ₁.relIndex Λ) • x)`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℝ, smul_smul, inv_mul_cancel₀ hn, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+-/
 theorem isLat_inf {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {Λ Λ₁ : AddSubgroup V}
     (hL : IsLat Λ) (hi : Λ₁.relIndex Λ ≠ 0) : IsLat (Λ ⊓ Λ₁) := by
   obtain ⟨hd, hs⟩ := hL
@@ -95,6 +127,15 @@ theorem isLat_inf {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] {Λ Λ�
   rw [e]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
+/- English proof (translation)
+Introduce `V _ _ _ H Λ α δ Ae hL hU`. Establish `hle : latA Λ δ Ae ≤ Λ`. Introduce and unpack `y ⟨x, ⟨hxΛ, ⟨z, hz, rfl⟩⟩, rfl⟩`. Use `show Ae (δ z) ∈ Λ`. Rewrite using `[hU.cay, LinearEquiv.symm_apply_apply]`.
+
+Conclude with `Λ.sub_mem hxΛ hz`. Use `⟨hle, ?_⟩` and prove the remaining obligations. Take `⟨b₂, hb₂⟩` from `exists_basis_of_lattice Λ hL.1 hL.2`. Establish `hL1` using `isLat_inf hL hU.idx₁`. Take `⟨b₁, hb₁⟩` from `exists_basis_of_lattice (Λ ⊓ imgLat (δ : V →ₗ[ℂ] V) Λ) hL1.1 hL1.2`.
+
+Set `f : V ≃ₗ[ℝ] V` to `Ae.restrictScalars ℝ`. Establish `hmap : latA Λ δ Ae = (Λ ⊓ imgLat (δ : V →ₗ[ℂ] V) Λ).map (f : V →ₗ[ℝ] V).toAddMonoidHom` using `rfl`. Establish `key` using `relIndex_map_real (Λ ⊓ imgLat (δ : V →ₗ[ℂ] V) Λ) Λ inf_le_left b₁ b₂ hb₁ hb₂ f (by rw [← hmap]; exact hle)`. Unfold `relIdx`. Rewrite using `[hmap, key, AddSubgroup.inf_relIndex_left]`.
+
+Use `congr 1`. Establish `hd : LinearMap.det (f : V →ₗ[ℝ] V) = Algebra.norm ℝ (LinearMap.det (Ae : V →ₗ[ℂ] V))` using `LinearMap.det_restrictScalars`. Rewrite using `[hd, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`. Conclude with `abs_of_nonneg (by positivity)`.
+-/
 theorem unitary_index : UnitaryIndex := by
   intro V _ _ _ H Λ α δ Ae hL hU
   have hle : latA Λ δ Ae ≤ Λ := by

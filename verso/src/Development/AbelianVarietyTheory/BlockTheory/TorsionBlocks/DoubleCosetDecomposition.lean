@@ -15,11 +15,17 @@ section Level
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
+/- English proof (translation)
+Use `show (((1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).map _ = 1`. Rewrite using `[Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem finMat_one : finMat σ J (1 : HA (AF F) σ J) = 1 := by
   show (((1 : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).map _ = 1
   rw [Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use `show (((HA.mat (AF F) σ J g * HA.mat (AF F) σ J h : GL (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).map _ = _`. Rewrite using `[Units.val_mul]`. Conclude with `Matrix.map_mul (f := (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E)).toRingHom)`.
+-/
 theorem finMat_mul (g h : HA (AF F) σ J) : finMat σ J (g * h) = finMat σ J g * finMat σ J h := by
   show (((HA.mat (AF F) σ J g * HA.mat (AF F) σ J h : GL (Fin M) (AF F ⊗[F] E)) :
     Matrix (Fin M) (Fin M) (AF F ⊗[F] E))).map _ = _
@@ -49,6 +55,9 @@ def stabAt (K : Subgroup (HA (AF F) σ J)) (g : HA (AF F) σ J) : Subgroup (HA (
 def IsDoubleCosetReps (K : Subgroup (HA (AF F) σ J)) {n : ℕ} (g : Fin n → HA (AF F) σ J) : Prop :=
   ∀ x : HA (AF F) σ J, ∃! i : Fin n, ∃ γ ∈ ratPts σ J, ∃ k ∈ K, x = γ * g i * k
 
+/- English proof (translation)
+Unfold `stabAt`. Rewrite using `[Subgroup.mem_inf, Subgroup.mem_map]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, by simp [mul_assoc]⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, rfl⟩`. Simplify `hk` using `[mul_assoc]`.
+-/
 theorem mem_stabAt (K : Subgroup (HA (AF F) σ J)) (g γ : HA (AF F) σ J) :
     γ ∈ stabAt σ J K g ↔ γ ∈ ratPts σ J ∧ g⁻¹ * γ * g ∈ K := by
   unfold stabAt
@@ -57,6 +66,9 @@ theorem mem_stabAt (K : Subgroup (HA (AF F) σ J)) (g γ : HA (AF F) σ J) :
   rintro ⟨k, hk, rfl⟩
   simpa [mul_assoc] using hk
 
+/- English proof (translation)
+Take `⟨i, -⟩` from `h 1`. Conclude with `Fin.pos i`.
+-/
 theorem IsDoubleCosetReps.pos {K : Subgroup (HA (AF F) σ J)} {n : ℕ} {g : Fin n → HA (AF F) σ J}
     (h : IsDoubleCosetReps σ J K g) : 0 < n := by
   obtain ⟨i, -⟩ := h 1

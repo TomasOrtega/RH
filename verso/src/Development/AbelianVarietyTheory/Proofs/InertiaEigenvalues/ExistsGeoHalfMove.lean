@@ -52,12 +52,18 @@ def Moves : Prop :=
 
 variable {B c' w}
 
+/- English proof (translation)
+The claim follows from `(((B.rhoGeo i).1 (hK i) g f).choose_spec).symm`.
+-/
 theorem rho_e (hK : ∀ i, ActKeeps (κ := B.κ) B.O i) (i : Fin D.R.m) (g : G) (f : Cu T B.κ i) :
     (R.FW i).ρ g ((B.fw.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL) =
       (B.fw.e i ⟨actLev T.Q.c (B.O i).lev2 g f, hK i g f f.2⟩ : (R.FW i).WK) :=
   (((B.rhoGeo i).1 (hK i) g f).choose_spec).symm
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Rewrite using `[overEmb, if_pos hσ, rho_e hK, hM i _ hσ hV f f.2]`. Conclude with `B.fw.evaluates hJ i σ hσ hV ⟨_, hK i _ f f.2⟩`.
+-/
 theorem ev_move (hJ : JEvExists T R B.κ B.v₀) (hK : ∀ i, ActKeeps (κ := B.κ) B.O i) (hM : Moves B c' w) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) (hσ : GoodEmb T.Q.c (res T σ)) (hV : T.V ((i : ℕ) + 1) (res T σ) = Wc D i) (f : Cu T B.κ i) :
     (R.HW i σ).e ((R.FW i).j σ ((R.FW i).ρ (overEmb T w i σ) ((B.fw.e i f : (R.FW i).WK) : Fin (R.nW i) → D.what₂.LL)))
@@ -66,6 +72,9 @@ theorem ev_move (hJ : JEvExists T R B.κ B.v₀) (hK : ∀ i, ActKeeps (κ := B.
   exact B.fw.evaluates hJ i σ hσ hV ⟨_, hK i _ f f.2⟩
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Take `⟨v, hv, h⟩` from `(B.bar i σ hσ hV).1 (hJ i σ hσ hV)`. Use `⟨v, hv, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[overEmb, if_neg hσ, rho_e hK, hM i _ (good_resC T hσ) hV f f.2]`. Conclude with `h ⟨_, hK i _ f f.2⟩`.
+-/
 theorem bar_move (hJ : JEvBar T R B.κ) (hK : ∀ i, ActKeeps (κ := B.κ) B.O i) (hM : Moves B c' w) (i : Fin D.R.m)
     (σ : D.what₂.LL →+* ℂ) (hσ : ¬ GoodEmb T.Q.c (res T σ)) (hV : T.V ((i : ℕ) + 1) (resC T σ) = Wc D i) :
     ∃ v : (R.MW i σ).Vec, IsUnitV v ∧ ∀ f : Cu T B.κ i,
@@ -87,6 +96,9 @@ def tieMove (hL : LawsJ (setCE T c')) (hJ : JEvExists T R B.κ B.v₀) (hK : ∀
 
 set_option maxHeartbeats 3200000 in
 
+/- English proof (translation)
+Establish `hF'` using `@Half.fired_upd D G _ _ Pl0 T0 A (setCE T c') iA R B.κ B.v₀ R.nW (fun i => moveForms (R.FW i) (overEmb T w i)) B.O _ hF`. Use `⟨@GeoHalf.mk D G _ _ Pl0 T0 A (setCE T c') iA (moveR R (overEmb T w)) _ B.κ B.v₀ (tieMove hL hI.jEvExists hK hM) (fun i σ hσ hV => ?_) (fun i => @Half.updO D G _ _ Pl0 T0 A (setCE T c') iA R _ _ _ _ _ (B.O i)) (fun i => @Half.omPins_upd D G _ _ Pl0 T0 A (setCE T c') iA R B.κ B.v₀ …` and prove the remaining obligations. Take `⟨v, hv, h⟩` from `bar_move hI.jEvBar hK hM i σ hσ hV`. Conclude with `⟨fun _ => ⟨v, hv, h⟩, fun h' => absurd ⟨v, hv, (tieMove hL hI.jEvExists hK hM).jK i σ, h⟩ h'⟩`.
+-/
 theorem exists_geoHalf_move (hL : LawsJ (setCE T c')) (hI : InGeo B) (hK : ∀ i, ActKeeps (κ := B.κ) B.O i) (hM : Moves B c' w)
     (hF : @Fired D G _ _ Pl0 T0 A (setCE T c') iA R B.κ B.v₀ B.O fun _ => 1) :
     ∃ B' : @GeoHalf D G _ _ Pl0 T0 A (setCE T c') iA (moveR R (overEmb T w)) fun _ => 1,
@@ -102,6 +114,9 @@ theorem exists_geoHalf_move (hL : LawsJ (setCE T c')) (hI : InGeo B) (hK : ∀ i
 end Half
 
 omit iA in
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Rewrite using `[phiC_apply, phiC_apply]`. Conclude with `congrArg (fun c => (lieFac (T.Q.Dw j) (xiR D) a : ℂ) * adel W (castDict hV (T.dict j σ)) (muPin W (castDict hV (T.dict j σ)) (castDict hV (T.mu j σ)) c) (rdU (T.U j σ) f) h) e`.
+-/
 theorem phiC_setCE_of_eq {c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ} {j : ℕ} {σ : T.Q.c.F →+* ℂ} {W : HSp D}
     (hV : T.V j σ = W) (e : c' j σ = T.cE j σ) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) :
     phiC (setCE T c') hV a f = phiC T hV a f := by
@@ -112,6 +127,37 @@ theorem phiC_setCE_of_eq {c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ
 
 set_option maxHeartbeats 3200000 in
 
+/- English proof (translation)
+Use `choose c1 z hz hO hfr hs using exists_shift hP hsz hC B hU hI.jEvExists`. Establish `ht : TieIn T R B.κ B.v₀` using `⟨B.fw.laws, B.fw.alg_eq, B.fw.kap, B.fw.hv₀, B.fw.chiR, B.fw.x0⟩`. Establish `hpb : T.pb = R.C.P.pb` using `GlobalTheory.CoverHalf.primes_eq_of_halfIs T.toCore R B.fw.laws.toLawsM hC.lev ((B.pins ⟨0, by have := D.R.two_le_m; omega⟩).2.tuple ()).half`. Establish `hx` using `GlobalTheory.T.exists_equivariant_unit_constants_goodEmbedding T R B.κ B.v₀ B.O hC.lev ht hpb B.pins`. Establish `H : ∀ (n : ℕ) (σ : T.Q.c.F →+* ℂ), ∃ c : (T.U (n + 1) σ).Comp → ℂ, ∀ hn : n < D.R.m, (σ = T.σ₀ → HEq c (c1 ⟨n, hn⟩)) ∧ (σ ≠ T.σ₀ → c = T.cE (n + 1) σ)`.
+
+Introduce `n σ`. Distinguish the cases in `hσ : σ = T.σ₀`. Substitute `hσ` using the available equality. Distinguish the cases in `hn : n < D.R.m`. Conclude with `⟨c1 ⟨n, hn⟩, fun _ => ⟨fun _ => HEq.rfl, fun h => absurd rfl h⟩⟩`.
+
+Conclude with `⟨fun _ => 1, fun h => absurd h hn⟩`. Conclude with `⟨T.cE (n + 1) σ, fun _ => ⟨fun h => absurd h hσ, fun _ => rfl⟩⟩`. Use `choose c hc using H`. Establish `h0 : ∀ i : Fin D.R.m, c i T.σ₀ = c1 i` using `fun i => eq_of_heq ((hc i T.σ₀ i.2).1 rfl)`. Establish `h1 : ∀ (i : Fin D.R.m) σ, σ ≠ T.σ₀ → c i σ = T.cE ((i : ℕ) + 1) σ` using `fun i σ => (hc i σ i.2).2`.
+
+Set `c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ` to `fun j => Nat.casesOn (motive := fun j => ∀ σ : T.Q.c.F →+* ℂ, (T.U j σ).Comp → ℂ) j (fun _ _ => 1) c`. Set `w : Fin D.R.m → (T.Q.c.F →+* ℂ) → G` to `fun i σ => if σ = T.σ₀ then z i else 1`. Establish `hK : ∀ i, ActKeeps (κ` using `B.κ) B.O i := fun i g f hf => by`. Take `⟨k, hk, -⟩` from `(B.pins i).2.lift.lev g`. Conclude with `((hO i).1 g k hk f hf).1`.
+
+Establish `hL : LawsJ (setCE T c')` using `lawsJ_setCE B.fw.laws fun j hj σ hσ => by`. Consider the cases of `j with`. Consider the case `zero => exact fun _ => norm_one`. Consider the case `succ n`. Distinguish the cases in `e : σ = T.σ₀`.
+
+Substitute `e` using the available equality. Establish `h : CUnit (c1 ⟨n, hj.2⟩)` using `(hO ⟨n, hj.2⟩).2.1.2.2.2.1`. Rewrite `h` using `[← h0 ⟨n, hj.2⟩]`. Conclude with `h`. Establish `h` using `B.fw.laws.cUnit _ hj σ hσ`.
+
+Establish `e2 : c n σ = T.cE (n + 1) σ` using `h1 ⟨n, hj.2⟩ σ e`. Rewrite `h` using `[← e2]`. Conclude with `h`. Establish `hM : Moves B c' w` using `fun i σ hσ hV f hf => by`. Distinguish the cases in `e : σ = T.σ₀`.
+
+Substitute `e` using the available equality. Rewrite using `[show w i T.σ₀ = z i from if_pos rfl]`. Use function extensionality and compare the values at `h`. Rewrite using `[phiC_apply, phiC_apply]`. Establish `h2` using `hs i f hf h`.
+
+Rewrite `h2` using `[← h0 i]`. Conclude with `congrArg (_ * ·) h2`. Rewrite using `[show w i σ = 1 from if_neg e, phiC_setCE_of_eq hV (h1 i σ e)]`. Establish `h2` using `rho_e hK i 1 ⟨f, hf⟩`. Rewrite `h2` using `[map_one]`.
+
+Establish `h3` using `congrArg Subtype.val ((B.fw.e i).injective (Subtype.ext h2))`. Conclude with `congrArg _ h3`. Establish `hF : @Fired D G _ _ Pl0 T0 A (setCE T c') iA R B.κ B.v₀ B.O fun _ => 1`. Use `⟨fun i => ?_, fun i σ hσ hV => ?_⟩` and prove the remaining obligations. Establish `h` using `hO i`.
+
+Rewrite `h` using `[← h0 i]`. Conclude with `h`. Distinguish the cases in `e : σ = T.σ₀`. Substitute `e` using the available equality. Establish `h` using `GlobalTheory.RealGeoConst.eqAt_base T R B.κ B.v₀ hC.lev ht i (B.O i) (c1 i) (hO i).1 hV`.
+
+Rewrite `h` using `[← h0 i]`. Conclude with `h`. Establish `h` using `B.equivAll i σ hσ hV (hx i σ hσ hV)`. Rewrite `h` using `[← h1 i σ e]`. Conclude with `h`.
+
+Use `⟨c', overEmb T w, fun i σ => ?_, fun i hV => hfr i c' (h0 i) hV, exists_geoHalf_move hL hI hK hM hF⟩` and prove the remaining obligations. Establish `key : ∀ s, w i s ∈ Subgroup.center G` using `fun s => by`. Distinguish the cases in `e : s = T.σ₀`. Rewrite using `[show w i s = z i from if_pos e]`. Conclude with `hz i`.
+
+Rewrite using `[show w i s = 1 from if_neg e]`. Conclude with `one_mem _`. Unfold `overEmb`. Use `split_ifs`. Conclude with `key _`.
+
+Conclude with `key _`.
+-/
 theorem exists_framed_half (hP : GlobalTheory.Published.CuspRapidDecay) (hsz : 8 * D.R.f * D.R.r + 4 ≤ D.R.nV) {F : Face D A}
     (hC : GlobalTheory.Core5 R F) (B : GeoHalf T R fun _ => 1) (hU : R.LUnif) (hI : InGeo B) :
     ∃ (c' : ∀ (j : ℕ) (σ : T.Q.c.F →+* ℂ), (T.U j σ).Comp → ℂ) (w : Fin D.R.m → (D.what₂.LL →+* ℂ) → G),

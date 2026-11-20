@@ -9,8 +9,18 @@ namespace GlobalTheory.GrassTop
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rho_eq_flagMap (H : Host E) (Dw : Datum H) : rho H Dw = GlobalTheory.Schubert.flagMap Dw := rfl
 
+/- English proof (translation)
+Rewrite using `[rho_eq_flagMap]`. Unfold `GlobalTheory.GoodMetric.antisymm`. Rewrite using `[map_sum, ← GlobalTheory.Schubert.flagLin_apply, map_sum]`. Establish `hterm : ∀ w : ∀ τ, Equiv.Perm (Fin (Dw.mult τ)), GlobalTheory.Schubert.flagLin (GlobalTheory.AllWt.Psi H) (Dw.p + Dw.q) (GlobalTheory.Schubert.flagMap Dw ((((∏ τ, Equiv.Perm.sign (w τ) : ℤˣ) : ℤ)) • rename (fun x : Root Dw.mult => (⟨x.1, w x.1 x.2⟩ : Root Dw.mult)) Q)) = Formalis …`. Introduce `w`.
+
+Rewrite using `[map_zsmul, map_zsmul, GlobalTheory.Schubert.flagLin_apply, GlobalTheory.Schubert.degFl_flagMap_rename_perm, zsmul_eq_mul, ← mul_assoc]`. Establish `hs : ((((∏ τ, Equiv.Perm.sign (w τ) : ℤˣ) : ℤ) : ℝ)) * (((∏ τ, Equiv.Perm.sign (w τ) : ℤˣ) : ℤ) : ℝ) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules. Rewrite using `[hs, one_mul]`.
+
+Rewrite using `[Finset.sum_congr rfl fun w _ => hterm w, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Fintype.card_pi]`. Use `push_cast`. Simplify using `only [Fintype.card_perm, Fintype.card_fin]`.
+-/
 theorem degFl_rho_antisymm (H : Host E) (Dw : Datum H) (Q : MvPolynomial (Root Dw.mult) ℝ) :
     Formalism.DegreeFormula.degFl (GlobalTheory.AllWt.Psi H) (Dw.p + Dw.q) (rho H Dw (antisymm Q)) =
       (∏ τ, ((Dw.mult τ).factorial : ℝ)) * Formalism.DegreeFormula.degFl (GlobalTheory.AllWt.Psi H) (Dw.p + Dw.q) (rho H Dw Q) := by
@@ -34,6 +44,11 @@ theorem degFl_rho_antisymm (H : Host E) (Dw : Datum H) (Q : MvPolynomial (Root D
   push_cast
   simp only [Fintype.card_perm, Fintype.card_fin]
 
+/- English proof (translation)
+Rewrite using `[← Fintype.prod_subtype_mul_prod_subtype (fun τ : E →+* ℂ => τ (H.rt : E) = H.rt0)]`. Establish `e1 : ∀ τ : {τ : E →+* ℂ // τ (H.rt : E) = H.rt0}, ((Dw.mult τ.1).factorial : ℝ) = Dw.p.factorial`. Introduce `τ`. Simplify using `[Datum.mult, τ.2]`. Establish `e2 : ∀ τ : {τ : E →+* ℂ // ¬ τ (H.rt : E) = H.rt0}, ((Dw.mult τ.1).factorial : ℝ) = Dw.q.factorial`.
+
+Introduce `τ`. Simplify using `[Datum.mult, τ.2]`. Simplify using `only [e1, e2, Finset.prod_const, Finset.card_univ, mul_pow]`. Use `congr 2`. Conclude with `Fintype.card_congr { toFun := fun τ => (⟨conjEmb τ.1, GlobalTheory.AllWt.conj_mem τ.2⟩ : GlobalTheory.AllWt.Psi H) invFun := fun τ => ⟨conjEmb τ.1, GlobalTheory.AllWt.conj_not_mem τ⟩ left_inv := fun τ => Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1) right_inv := fun τ => S …`.
+-/
 theorem prod_factorial_mult (H : Host E) (Dw : Datum H) :
     (∏ τ, ((Dw.mult τ).factorial : ℝ)) =
       ((Dw.p.factorial * Dw.q.factorial : ℝ)) ^ Fintype.card (GlobalTheory.AllWt.Psi H) := by
@@ -50,6 +65,11 @@ theorem prod_factorial_mult (H : Host E) (Dw : Datum H) :
       left_inv := fun τ => Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1)
       right_inv := fun τ => Subtype.ext (GlobalTheory.AllWt.conjEmb_conjEmb τ.1) }
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw la R D hD hA`. Unfold `intGr`. Rewrite using `[← hA, degFl_rho_antisymm, prod_factorial_mult, map_pow, rho_eq_flagMap, GlobalTheory.Schubert.chernRootSubstitution_weightLineBundle_eq_linRoot, hD]`. Establish `hpos : ((Dw.p.factorial * Dw.q.factorial : ℝ)) ^ Fintype.card (GlobalTheory.AllWt.Psi H) ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises.
+
+Conclude with `(Nat.mul_pos (Nat.factorial_pos _) (Nat.factorial_pos _)).ne'` after adjusting the coercions. Rewrite using `[mul_div_cancel_left₀ _ hpos]`. Both sides reduce to the same expression.
+-/
 theorem intGr_eq_flagDeg : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (la : GlobalTheory.AllWt.Weight Dw) (R : MvPolynomial ((E →+* ℂ) × ℕ) ℝ) (D : ℕ),
     D = Fintype.card (GlobalTheory.AllWt.Psi H) * ((Dw.p + Dw.q) * (Dw.p + Dw.q - 1) / 2) →

@@ -39,14 +39,23 @@ def ratVal (l : ℕ) [Fact l.Prime] : AddValuation ℚ (WithTop ℝ) :=
       push_cast
       rfl)
 
+/- English proof (translation)
+Simplify using `[ratVal, hx]`.
+-/
 theorem ratVal_apply (l : ℕ) [Fact l.Prime] {x : ℚ} (hx : x ≠ 0) :
     ratVal l x = ((padicValRat l x : ℝ) : WithTop ℝ) := by
   simp [ratVal, hx]
 
+/- English proof (translation)
+Rewrite using `[ratVal_apply l (by exact_mod_cast hl.out.ne_zero)]`. Simplify using `[padicValRat.self hl.out.one_lt]`.
+-/
 theorem ratVal_l (l : ℕ) [hl : Fact l.Prime] : ratVal l (l : ℚ) = 1 := by
   rw [ratVal_apply l (by exact_mod_cast hl.out.ne_zero)]
   simp [padicValRat.self hl.out.one_lt]
 
+/- English proof (translation)
+Establish `h0 : (l : ℚ) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Rewrite using `[ratVal_apply l (inv_ne_zero h0), padicValRat.inv, padicValRat.self hl.out.one_lt]`. Simplify using the standard rewrite rules.
+-/
 theorem ratVal_l_inv (l : ℕ) [hl : Fact l.Prime] : ratVal l (l : ℚ)⁻¹ = ((-1 : ℝ) : WithTop ℝ) := by
   have h0 : (l : ℚ) ≠ 0 := by exact_mod_cast hl.out.ne_zero
   rw [ratVal_apply l (inv_ne_zero h0), padicValRat.inv, padicValRat.self hl.out.one_lt]
@@ -106,6 +115,11 @@ def exData (l i : ℕ) (hl : l.Prime) (hl3 : 3 ≤ l) (hi : Odd i) : Data ℚ Un
         exact absurd rfl hb
       · simp [h] }
 
+/- English proof (translation)
+Establish `h1 : ∀ d, N ∣ (N • A) d` using `fun d => by simp`. Establish `h2 : (N • A).mapRange (· / N) (Nat.zero_div N) = A`. Use extensionality with `d`. Simplify using `[Nat.mul_div_cancel_left _ hN]`. Use `show (if ∀ d, N ∣ (N • A) d then (coeff ((N • A).mapRange (· / N) (Nat.zero_div N)) f) ^ N else 0) = _`.
+
+Rewrite using `[if_pos h1, h2]`.
+-/
 theorem coeff_frob_smul {k : Type*} [Field k] {Z : Type*} (N : ℕ) (hN : 1 ≤ N)
     (f : MvPowerSeries Z k) (A : Z →₀ ℕ) : coeff (N • A) (frob N f) = (coeff A f) ^ N := by
   have h1 : ∀ d, N ∣ (N • A) d := fun d => by simp
@@ -116,6 +130,27 @@ theorem coeff_frob_smul {k : Type*} [Field k] {Z : Type*} (N : ℕ) (hN : 1 ≤ 
     (coeff ((N • A).mapRange (· / N) (Nat.zero_div N)) f) ^ N else 0) = _
   rw [if_pos h1, h2]
 
+/- English proof (translation)
+Introduce `l i hl hl3 hi hi3`. Use `⟨exData l i hl hl3 hi, rfl, rfl, ?_⟩` and prove the remaining obligations. Establish `: Fact l.Prime` using `⟨hl⟩`. Introduce `hW`. Establish `hK : (1 : ℕ) < Kn i`.
+
+Unfold `Kn`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `hW.1 (1 : Fin 2) hK`. Establish `hq : 1 ≤ l ^ 2` using `Nat.one_le_pow _ _ (by omega)`. Establish `hz1 : (exData l i hl hl3 hi).zvec 1 = 0`.
+
+Simplify using `[Data.zvec, exData]`. Establish `hz0 : (exData l i hl hl3 hi).zvec 0 = X ()`. Simplify using `[Data.zvec, exData]`. Establish `hm : (exData l i hl hl3 hi).m 1 1 = MvPowerSeries.C (-(l : ℚ)⁻¹) * frob (l ^ 2) (X ())` using `by show MvPowerSeries.C (-(l : ℚ)⁻¹) * ∑ c : Fin 2, frob (l ^ 2) ((exData l i hl hl3 hi).zvec c) * MvPowerSeries.C ((exData l i hl hl3 hi).g c 1) = _`. Rewrite using `[Fin.sum_univ_two, hz0, hz1]`.
+
+Simplify using `[exData]`. Establish `h2` using `h1 ((l ^ 2) • Finsupp.single () 1)`. Establish `hlev : (exData l i hl hl3 hi).lev 1 = 1` using `rfl`. Rewrite `h2` using `[hlev, hz1, hm, zero_sub, ← neg_mul, ← map_neg, neg_neg, coeff_C_mul, coeff_frob_smul _ hq]`. Establish `hX : coeff (Finsupp.single () 1) (X () : MvPowerSeries Unit ℚ) = 1`.
+
+Simplify using `[coeff_X]`. Rewrite `h2` using `[hX, one_pow, mul_one]`. Establish `hv : (exData l i hl hl3 hi).v (l : ℚ)⁻¹ = ((-1 : ℝ) : WithTop ℝ)` using `ratVal_l_inv l`. Rewrite `h2` using `[hv, ← WithTop.coe_add, WithTop.coe_le_coe]`. Establish `hdeg : (((l ^ 2) • Finsupp.single () 1 : Unit →₀ ℕ).degree : ℕ) = l ^ 2`.
+
+Simplify using the standard rewrite rules. Rewrite `h2` using `[hdeg]`. Simplify using `only [Data.top, Data.rad] at h2`. Establish `hl' : (exData l i hl hl3 hi).l = l` using `rfl`. Establish `hi' : (exData l i hl hl3 hi).i = i` using `rfl`.
+
+Rewrite `h2` using `[hl', hi']`. Establish `hlR : (3 : ℝ) ≤ (l : ℝ)` using `by exact_mod_cast hl3`. Establish `hq1 : (0 : ℝ) < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hrho : ((l ^ 2 : ℕ) : ℝ) * rho l = 1 + rho l`. Unfold `rho`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : (l : ℝ) ^ 3 ≤ (l : ℝ) ^ i` using `pow_le_pow_right₀ (by linarith) hi3`. Establish `hLpos : (0 : ℝ) < (l : ℝ) ^ i` using `by positivity`.
+
+Establish `hsg : ((l ^ 2 : ℕ) : ℝ) * sg l i < 1`. Unfold `sg`. Use `push_cast`. Rewrite using `[mul_div_assoc', div_lt_one (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg (l : ℝ)]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem base_case_false_holds : BaseCaseFalse := by
   intro l i hl hl3 hi hi3
   refine ⟨exData l i hl hl3 hi, rfl, rfl, ?_⟩
@@ -169,6 +204,17 @@ theorem base_case_false_holds : BaseCaseFalse := by
     nlinarith [sq_nonneg (l : ℝ)]
   nlinarith
 
+/- English proof (translation)
+Introduce `hi`. Establish `hK : D.K = 1` using `by simp [Data.K, Kn, hi]`. Establish `hzero : ∀ w : ℝ, D.Wt w (0 : MvPowerSeries Z k)`. Introduce `w A`. Simplify using the standard rewrite rules.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `c hc`. Rewrite `hc` using `[hK]`. Establish `: D.lev c = 0` using `by omega`. Rewrite using `[this]`.
+
+Use `show D.Wt D.top (D.zvec c - D.zvec c)`. Rewrite using `[sub_self]`. Conclude with `hzero _`. Introduce `c hc`. Rewrite `hc` using `[hK]`.
+
+Establish `: D.zvec c = 0`. Unfold `Data.zvec`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `d _`. Rewrite using `[if_neg]`.
+
+Introduce and unpack `rfl`. Rewrite `hc` using `[D.ι_lev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Conclude with `hzero _`.
+-/
 theorem Data.base_case_k_one_holds {k : Type*} [Field k] {Z C : Type*} [Fintype Z] [Fintype C]
     (D : Data k Z C) : D.FrobeniusBaseCaseIdentity := by
   intro hi

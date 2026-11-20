@@ -43,6 +43,9 @@ def Upq (r p0 : ℕ) : Subgroup (GL (Fin r) ℂ) where
 set_option autoImplicit false in
 open NumberField MeasureTheory in
 open scoped ENNReal in
+/- English proof (translation)
+Use `show IsClosed {g : GL (Fin r) ℂ | (g : Matrix (Fin r) (Fin r) ℂ).transpose * _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.sgnMat r p0 * (g : Matrix (Fin r) (Fin r) ℂ).map (starRingEnd ℂ) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.sgnMat …`. Establish `hv : Continuous fun g : GL (Fin r) ℂ => (g : Matrix (Fin r) (Fin r) ℂ)` using `Units.continuous_val`. Conclude with `isClosed_eq ((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map Complex.continuous_conj)) continuous_const`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.isClosed_Upq (r p0 : ℕ) :
     IsClosed (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.Upq r p0 : Set (GL (Fin r) ℂ)) := by
   show IsClosed {g : GL (Fin r) ℂ | (g : Matrix (Fin r) (Fin r) ℂ).transpose *
@@ -81,6 +84,9 @@ set_option autoImplicit false in
 open NumberField MeasureTheory in
 open scoped ENNReal in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Introduce `τ`. Conclude with `(X.signature τ).choose_spec.2`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.baseFr_mem :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.baseFr X ∈ _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHaarVolume.OrthFr X := by
   intro τ
@@ -166,6 +172,9 @@ def PeterssonLaws : Prop :=
   (∀ σ, GoodEmb c σ → IsUnf (U σ)) → FinVolAll U →
     SqIntegrable U ∧ Definite U ∧ IsNorm U ∧ LeSup U ∧ AdelicForm U
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a n f`. Unfold `petAt`. Rewrite using `[h]`.
+-/
 example (σ σ' : c.F →+* ℂ) (h : goodOf c σ = goodOf c σ') : petAt U σ = petAt U σ' := by
   funext a n f
   unfold petAt

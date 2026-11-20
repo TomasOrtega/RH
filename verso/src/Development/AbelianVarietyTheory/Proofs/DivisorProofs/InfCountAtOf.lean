@@ -34,6 +34,15 @@ def PureK : Prop := BigC fun _ ch C b => PureNum ch C b
 
 open IsDedekindDomain NumberField Matrix in
 
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.SumSize.InfCountK`. Take `⟨s₁, h1⟩` from `h1`. Take `⟨s₂, h2⟩` from `h2`. Take `⟨s₃, h3⟩` from `h3`. Use `⟨max s₁ (max s₂ s₃), fun CF hCF ↦ ?_⟩` and prove the remaining obligations.
+
+Take `⟨C1, h1⟩` from `h1 CF (le_trans (le_max_left _ _) hCF)`. Take `⟨C2, h2⟩` from `h2 CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C3, h3⟩` from `h3 CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C1 (max C2 C3), fun ε C hC ↦ ?_⟩` and prove the remaining obligations. Take `⟨x1, h1⟩` from `h1 ε C (le_trans (le_max_left _ _) hC)`.
+
+Take `⟨x2, h2⟩` from `h2 ε C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC)`. Take `⟨x3, h3⟩` from `h3 ε C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC)`. Use `⟨max x1 (max x2 x3), fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hR ch hch hs hf ↦ ?_⟩` and prove the remaining obligations. Establish `a1` using `h1 D large₂ he (le_trans (le_max_left _ _) hx) Γ Pl0 T A Ks R F hR ch hch hs hf`. Establish `a2` using `h2 D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) Γ Pl0 T A Ks R F hR ch hch hs hf`.
+
+Establish `a3` using `h3 D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) Γ Pl0 T A Ks R F hR ch hch hs hf`. Conclude with `⟨a1, fun Φ ↦ ⟨a2 Φ, a3 Φ⟩⟩`.
+-/
 theorem _root_.GlobalTheory.SumCount.infCountK_of (h1 : _root_.GlobalTheory.SumCount.DataK)
     (h2 : _root_.GlobalTheory.SumCount.CosK) (h3 : _root_.GlobalTheory.SumCount.PureK) :
     _root_.GlobalTheory.SumSize.InfCountK := by

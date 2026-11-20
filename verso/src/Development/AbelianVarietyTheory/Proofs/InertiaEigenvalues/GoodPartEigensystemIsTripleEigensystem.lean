@@ -11,6 +11,17 @@ noncomputable section
 
 namespace GlobalTheory.TwInputs.EigAll
 
+/- English proof (translation)
+Set `S : Submodule K V` to `{ carrier := {v | ∃ d : O, d ≠ 0 ∧ d • v ∈ N} add_mem' := by`. Introduce and unpack `a c ⟨d, hd, ha⟩ ⟨e, he, hc⟩`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `N.smul_mem _ ha`. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem _ hc`. Use the proof step `zero_mem' := ⟨1, one_ne_zero, by rw [smul_zero]; exact N.zero_mem⟩`.
+
+Use the proof step `smul_mem' := by`. Introduce and unpack `c a ⟨d, hd, ha⟩`. Take `⟨n, m, hm, rfl⟩` from `IsFractionRing.div_surjective (A := O) c`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Establish `hmK : algebraMap O K m ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hm`.
+
+Use `⟨m * d, mul_ne_zero hm0 hd, ?_⟩` and prove the remaining obligations. Establish `e1 : m • ((algebraMap O K n / algebraMap O K m) • a) = n • a`. Rewrite using `[← algebraMap_smul K m, smul_smul, mul_div_cancel₀ _ hmK, algebraMap_smul]`. Use `show (m * d) • ((algebraMap O K n / algebraMap O K m) • a) ∈ N`. Rewrite using `[mul_comm, mul_smul, e1, smul_comm]`.
+
+Conclude with `N.smul_mem _ ha }`. Establish `hle : Submodule.span K (N : Set V) ≤ S` using `Submodule.span_le.2 fun x hx => ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Conclude with `hle hv`.
+-/
 theorem exists_smul_mem_of_mem_span {O K V : Type*} [CommRing O] [IsDomain O] [Field K] [Algebra O K]
     [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V] (N : Submodule O V)
     {v : V} (hv : v ∈ Submodule.span K (N : Set V)) : ∃ d : O, d ≠ 0 ∧ d • v ∈ N := by
@@ -39,6 +50,21 @@ theorem exists_smul_mem_of_mem_span {O K V : Type*} [CommRing O] [IsDomain O] [F
     Submodule.span_le.2 fun x hx => ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩
   exact hle hv
 
+/- English proof (translation)
+Proceed by induction on `M using Finset.induction_on with`. Consider the case `empty`. Introduce `y _ _ hs`. Establish `: {z : V | ∃ μ ∈ (∅ : Finset (ι → K)), ∀ t, p t → T t z = μ t • z} = ∅`. Use extensionality with `z`.
+
+Simplify using the standard rewrite rules. Rewrite `hs` using `[this, Submodule.span_empty, Submodule.mem_bot]`. Conclude with `hs`. Consider the case `insert μ0 M _ ih`. Introduce `y hne hy hs`.
+
+Take `⟨t0, hp0, hμ0⟩` from `hne μ0 (Finset.mem_insert_self _ _)`. Set `L : V →ₗ[K] V` to `T t0 - μ0 t0 • LinearMap.id`. Establish `hL : Submodule.span K {z | ∃ μ ∈ insert μ0 M, ∀ t, p t → T t z = μ t • z} ≤ (Submodule.span K {z | ∃ μ ∈ M, ∀ t, p t → T t z = μ t • z}).comap L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨μ, hμ, hz⟩`.
+
+Rewrite using `[SetLike.mem_coe, Submodule.mem_comap]`. Break down `Finset.mem_insert.1 hμ with rfl | hμ` into its components or cases. Establish `: L z = 0`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hz t0 hp0, sub_self]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.zero_mem _`. Establish `: L z = (μ t0 - μ0 t0) • z`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hz t0 hp0, sub_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨μ, hμ, hz⟩)`.
+
+Establish `hLy : L y = (ev t0 - μ0 t0) • y`. Simplify using `only [L, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hy t0 hp0, sub_smul]`. Establish `h0` using `ih ((ev t0 - μ0 t0) • y) (fun μ hμ => hne μ (Finset.mem_insert_of_mem hμ)) (fun t ht => by rw [map_smul, hy t ht, smul_comm]) (hLy ▸ hL hs)`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h).symm hμ0`.
+
+Conclude with `h`.
+-/
 theorem eq_zero_of_joint {K V ι : Type*} [Field K] [AddCommGroup V] [Module K V]
     (T : ι → V →ₗ[K] V) (p : ι → Prop) (ev : ι → K) (M : Finset (ι → K)) :
     ∀ y : V, (∀ μ ∈ M, ∃ t, p t ∧ μ t ≠ ev t) → (∀ t, p t → T t y = ev t • y) →
@@ -88,6 +114,25 @@ def trEig (D : D7) (i : D.ntw.Tw) (j : ℕ) (b : Bool) : Set (D.nexp.Fm i j b) :
       (fun s (t : ℕ × PlE D.host) => GlobalTheory.EigTie.sigEv s t.1 t.2),
     ∀ t : ℕ × PlE D.host, HkIdx i t.1 t.2 → D.nexp.hkF i j b t.1 t.2 z = μ t • z}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Use `set K := FractionRing (D.ntw.O i)`. Set `Φ : K ⊗[D.ntw.O i] D.ntw.B i j b →ₗ[K] D.nexp.Fm i j b` to `(D.nexp.embB i j b).liftBaseChange K`. Establish `hΦ : ∀ k P, HkIdx i k P → ∀ z, Φ (((D.ntw.hk i j b k P).baseChange K) z) = D.nexp.hkF i j b k P (Φ z)`. Introduce `k P hP z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [Φ, LinearMap.baseChange_tmul, LinearMap.liftBaseChange_tmul, map_smul]`. Rewrite using `[Bs.hk_emb i j b k P x h1 h2 hP.2.2.2 hP.2.2.1 hP.2.1]`.
+
+Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Establish `hrange : ∀ x : D.ntw.B i j b, D.nexp.embB i j b x ∈ Submodule.span K (trEig D i j b)`. Introduce `x`. Establish `hx : (1 : K) ⊗ₜ[D.ntw.O i] x ∈ (⊤ : Submodule K (K ⊗[D.ntw.O i] D.ntw.B i j b))` using `trivial`. Rewrite `hx` using `[← Bs.sigSpan i j b h1 h2]`.
+
+Establish `hx'` using `Submodule.mem_map_of_mem (f := Φ) hx`. Rewrite `hx'` using `[Submodule.map_span]`. Establish `e : Φ ((1 : K) ⊗ₜ[D.ntw.O i] x) = D.nexp.embB i j b x` using `by show (D.nexp.embB i j b).liftBaseChange K ((1 : K) ⊗ₜ[D.ntw.O i] x) = _`. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul]`. Rewrite `hx'` using `[e]`.
+
+Use `Submodule.span_mono ?_ hx'` and prove the remaining obligations. Introduce and unpack `_ ⟨z, ⟨s, hs1, hs2, hz⟩, rfl⟩`. Use `⟨fun t => GlobalTheory.EigTie.sigEv s t.1 t.2, Finset.mem_image.2 ⟨s, by simp [hs1, hs2], rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Rewrite using `[← hΦ t.1 t.2 ht, hz t.1 t.2 ht.1 ht.2.1 ht.2.2.1 ht.2.2.2, map_smul]`.
+
+Both sides reduce to the same expression. Introduce `v hv`. Take `⟨d, hd, hdv⟩` from `exists_smul_mem_of_mem_span (K := K) (D.nexp.Bsup i j b) (by rw [hF i j hj b]; trivial)`. Establish `hdV : d • v ∈ V0 D.nexp i j b`. Rewrite using `[← algebraMap_smul K d v]`.
+
+Conclude with `Submodule.smul_mem _ _ hv`. Establish `hmem : d • v ∈ LinearMap.range (D.nexp.embB i j b)`. Rewrite using `[Bs.tw.B_range i j b]`. Conclude with `⟨hdv, hdV⟩`. Take `⟨x, hx⟩` from `hmem`.
+
+Establish `hdK : algebraMap (D.ntw.O i) K d ≠ 0`. Introduce `h`. Conclude with `hd (IsFractionRing.injective (D.ntw.O i) K (h.trans (map_zero _).symm))`. Establish `: v = (algebraMap (D.ntw.O i) K d)⁻¹ • (d • v)`. Rewrite using `[← algebraMap_smul K d v, smul_smul, inv_mul_cancel₀ hdK, one_smul]`.
+
+Rewrite using `[this, ← hx]`. Conclude with `Submodule.smul_mem _ _ (hrange x)`.
+-/
 theorem good_part_le_span_triple_eigenvectors (Bs : SideB D cf Rw low Pq S hL eig θ) (hF : FullAll D) (i : D.ntw.Tw) (j : ℕ)
     (hj : j ∈ Finset.Icc 1 D.R.m) (b : Bool) :
     V0 D.nexp i j b ≤ Submodule.span (FractionRing (D.ntw.O i)) (trEig D i j b) := by
@@ -134,6 +179,13 @@ theorem good_part_le_span_triple_eigenvectors (Bs : SideB D cf Rw low Pq S hL ei
   rw [this, ← hx]
   exact Submodule.smul_mem _ _ (hrange x)
 
+/- English proof (translation)
+Introduce `D cf Rw low Pq S hL eig θ Bs hN hM hC hF`. Use `EigModel.sig_all_of hN hM hC ?_` and prove the remaining obligations. Introduce and unpack `i j hj b ev ⟨y, hyV, hy0, hyE⟩`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Apply `hy0` to reduce the goal to its premises. Use `eq_zero_of_joint (fun t : ℕ × PlE D.host => D.nexp.hkF i j b t.1 t.2) (fun t => HkIdx i t.1 t.2) (fun t => ev t.1 t.2) _ y ?_ (fun t ht => hyE t.1 t.2 ht) (good_part_le_span_triple_eigenvectors Bs hF i j hj b hyV)` and prove the remaining obligations. Introduce `μ hμ`. Take `⟨s, hs, rfl⟩` from `Finset.mem_image.1 hμ`. Take `⟨hs1, hs2⟩` from `(Finset.mem_filter.1 hs).2`.
+
+Take `⟨k, P, hk, hne⟩` from `hno s hs1 hs2`. Conclude with `⟨(k, P), hk, hne⟩`.
+-/
 theorem sig_all_of_sideB : ∀ (D : D7) (cf : CharFrame D) (Rw : RowSide D) (low : Finset ℕ)
     (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw)
     (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0)

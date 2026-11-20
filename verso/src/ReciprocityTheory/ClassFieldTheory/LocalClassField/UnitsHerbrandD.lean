@@ -8,8 +8,38 @@ open Finset
 variable {K L : Type*} [NontriviallyNormedField K] [CompleteSpace K] [IsUltrametricDist K] [NormedField L]
   [NormedAlgebra K L] [FiniteDimensional K L] [IsGalois K L]
 
+/- English proof (translation)
+Check the signs of the components of the expression.
+-/
 theorem rad_nonneg {ρ : ℝ} (hρ : 0 ≤ ρ) (n : ℕ) : 0 ≤ ρ * (1 / 2 : ℝ) ^ n := by positivity
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[mem_ball]`. Use `hx.trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ]`. Use polynomial arithmetic with `[rad_nonneg hρ n]`. Use `mul n x y hx hy := by`.
+
+Rewrite `hx`, `hy`, the goal using `[mem_ball]`. Rewrite `hy` using `[pow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_right hCρ (rad_nonneg hρ n)`. Use `_ = ρ * (1 / 2 : ℝ) ^ (n + 1) := by rw [pow_succ]; ring`.
+
+Use `smul n g x hx := (norm_Phi_map g x).trans hx`. Use `comp x hx := by`. Establish `hx' : ∀ k, ‖Phi K L (x k)‖ ≤ ρ * (1 / 2 : ℝ) ^ k` using `hx`. Establish `hsum : Summable fun k => Phi K L (x k)` using `Summable.of_norm_bounded ((summable_geometric_of_lt_one (by norm_num) (by norm_num)).mul_left ρ) hx'`. Use `⟨(Phi K L).symm (∑' k, Phi K L (x k)), fun n => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_ball, map_sub, ContinuousLinearEquiv.apply_symm_apply, map_sum, ← hsum.sum_add_tsum_nat_add n, add_sub_cancel_left]`. Use `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg (rad_nonneg hρ n) fun k => ?_` and prove the remaining obligations. Use `(hx' (k + n)).trans ?_` and prove the remaining obligations. Use `gcongr ρ * ?_`. Conclude with `pow_le_pow_of_le_one (by norm_num) (by norm_num) (Nat.le_add_left n k)`.
+
+Use `sep x hx := by`. Establish `hx' : ∀ n, ‖Phi K L x‖ ≤ ρ * (1 / 2 : ℝ) ^ n` using `hx`. Establish `hlim : Filter.Tendsto (fun n : ℕ => ρ * (1 / 2 : ℝ) ^ n) Filter.atTop (nhds (ρ * 0))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)).const_mul ρ`. Establish `h0 : ‖Phi K L x‖ ≤ ρ * 0` using `ge_of_tendsto' hlim hx'`. Rewrite `h0` using `[mul_zero]`.
+
+Use `norm_le_zero_iff.1 h0` as an intermediate fact. Simplify using `using this`. Use `inv n x hx := by`. Rewrite `hx`, the goal using `[mem_ball]`. Establish `hr : ρ * (1 / 2 : ℝ) ^ n ≤ ρ`.
+
+Establish `: (1 / 2 : ℝ) ^ n ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hxlt : ‖x‖ < 1`. Use `lt_of_le_of_lt ((hA1 x).trans ?_) hAρ` and prove the remaining obligations. Use `gcongr`.
+
+Conclude with `hx.trans hr`. Establish `hne : 1 + x ≠ 0`. Introduce `h0`. Establish `: x = -1` using `by linear_combination h0`. Rewrite `hxlt` using `[this, norm_neg, norm_one]`.
+
+Conclude with `lt_irrefl _ hxlt`. Use `set y : L := (1 + x)⁻¹ - 1 with hy`. Establish `hy1 : y = -x + -(x * y)`. Rewrite using `[hy]`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖Phi K L y‖ ≤ max ‖Phi K L x‖ ‖Phi K L (x * y)‖` using `by conv_lhs => rw [hy1, map_add, map_neg, map_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_neg, norm_neg]`. Establish `h2 : ‖Phi K L (x * y)‖ ≤ (1 / 2) * ‖Phi K L y‖`.
+
+Use `(hC1 x y).trans ?_` and prove the remaining obligations. Use `gcongr`. Use `le_trans ?_ hCρ` and prove the remaining obligations. Use `gcongr`. Conclude with `hx.trans hr`.
+
+Break down `le_max_iff.1 h1 with h3 | h3` into its components or cases. Conclude with `h3.trans hx`. Establish `: ‖Phi K L y‖ ≤ 0` using `by linarith`. Conclude with `this.trans (rad_nonneg hρ n)`. Use `e_mem n x hx := (norm_Phi_proj1 x).trans hx`.
+
+Use `e_sum x := sum_proj1 x`.
+-/
 theorem filt_ball {A C ρ : ℝ} (hC : 0 ≤ C) (hρ : 0 ≤ ρ) (hA1 : ∀ x : L, ‖x‖ ≤ A * ‖Phi K L x‖) (hA : 0 ≤ A)
     (hC1 : ∀ x y : L, ‖Phi K L (x * y)‖ ≤ C * ‖Phi K L x‖ * ‖Phi K L y‖)
     (hAρ : A * ρ < 1) (hCρ : C * ρ ≤ 1 / 2) :
@@ -82,6 +112,19 @@ theorem filt_ball {A C ρ : ℝ} (hC : 0 ≤ C) (hρ : 0 ≤ ρ) (hA1 : ∀ x : 
   e_mem n x hx := (norm_Phi_proj1 x).trans hx
   e_sum x := sum_proj1 x
 
+/- English proof (translation)
+Take `⟨A, B, C, hA, hB, hC, hA1, hB1, hC1⟩` from `exists_consts (K := K) (L := L)`. Use `set ρ : ℝ := (2 * (C + A + 1))⁻¹ with hρdef`. Establish `hpos : 0 < 2 * (C + A + 1)` using `by positivity`. Establish `hρ : 0 < ρ` using `inv_pos.2 hpos`. Establish `hρ1 : ρ * (2 * (C + A + 1)) = 1` using `inv_mul_cancel₀ hpos.ne'`.
+
+Establish `hAρ : A * ρ < 1` using `by nlinarith [mul_nonneg hC hρ.le, mul_nonneg hA hρ.le]`. Establish `hCρ : C * ρ ≤ 1 / 2` using `by nlinarith [mul_nonneg hC hρ.le, mul_nonneg hA hρ.le]`. Establish `F` using `filt_ball hC hρ.le hA1 hA hC1 hAρ hCρ`. Use `⟨F.V 0, fun σ u v hu hv => ?_, fun u hu => ?_, ⟨ρ / (B + 1), by positivity, fun u hu => ?_⟩, fun u hu hfix => F.norm_surj u hu hfix, fun σ₀ hσ₀ u hu hN => F.hilbert90_matrix_subalgebra_norm_one σ₀ hσ₀ u hu hN⟩` and prove the remaining obligations. Establish `: v = act σ u` using `Units.ext hv`.
+
+Rewrite using `[this]`. Conclude with `F.act_mem σ hu`. Establish `hu' : ‖Phi K L ((u : L) - 1)‖ ≤ ρ * (1 / 2 : ℝ) ^ 0` using `hu`. Rewrite `hu'` using `[pow_zero, mul_one]`. Establish `hlt : ‖(u : L) - 1‖ < 1`.
+
+Use `lt_of_le_of_lt ((hA1 _).trans ?_) hAρ` and prove the remaining obligations. Use `gcongr`. Establish `h1 : (u : L) = 1 + ((u : L) - 1)` using `by ring`. Rewrite using `[h1, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact hlt.ne'), norm_one]`. Conclude with `max_eq_left hlt.le`.
+
+Use `show ‖Phi K L ((u : L) - 1)‖ ≤ ρ * (1 / 2 : ℝ) ^ 0`. Rewrite using `[pow_zero, mul_one]`. Use `(hB1 _).trans ?_` and prove the remaining obligations. Establish `h2 : B * ‖(u : L) - 1‖ ≤ (B + 1) * (ρ / (B + 1))` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_units_subgroup [IsUltrametricDist L] : ∃ S : Subgroup Lˣ,
     (∀ (σ : L ≃ₐ[K] L) (u v : Lˣ), u ∈ S → (v : L) = σ u → v ∈ S) ∧
     (∀ u ∈ S, ‖(u : L)‖ = 1) ∧ (∃ ε : ℝ, 0 < ε ∧ ∀ u : Lˣ, ‖(u : L) - 1‖ < ε → u ∈ S) ∧

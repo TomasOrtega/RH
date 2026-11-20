@@ -7,6 +7,9 @@ namespace GlobalTheory.UnramDiscr
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Establish `h : IsIntegral A x` using `hx.tower_top`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Conclude with `y.2`.
+-/
 theorem _root_.GlobalTheory.UnramDiscr.mem_of_isIntegral {Ω : Type*} [Field Ω] (A : ValuationSubring Ω)
     {x : Ω} (hx : IsIntegral ℤ x) : x ∈ A := by
   have h : IsIntegral A x := hx.tower_top
@@ -15,6 +18,21 @@ theorem _root_.GlobalTheory.UnramDiscr.mem_of_isIntegral {Ω : Type*} [Field Ω]
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hfg`. Use `set ι := Module.Free.ChooseBasisIndex ℤ (𝓞 K)`. Establish `hcard : Fintype.card ι = Fintype.card (K →ₐ[ℚ] Ω)`. Rewrite using `[AlgHom.card, ← RingOfIntegers.rank K, Module.finrank_eq_card_chooseBasisIndex]`. Set `e : ι ≃ (K →ₐ[ℚ] Ω)` to `Fintype.equivOfCardEq hcard`.
+
+Set `b` to `integralBasis K`. Establish `hint : ∀ (φ : K →+* Ω) (x : 𝓞 K), φ x ∈ A` using `fun φ x => _root_.GlobalTheory.UnramDiscr.mem_of_isIntegral A ((RingOfIntegers.isIntegral_coe x).map φ.toIntAlgHom)`. Set `N : Matrix ι ι A` to `Matrix.of fun i j => ⟨e j (b i), by`. Rewrite using `[integralBasis_apply]`. Conclude with `hint (e j).toRingHom _⟩`.
+
+Establish `hM : ((discr K : ℤ) : Ω) = ((N.det ^ 2 : A) : Ω)`. Establish `hdet` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ Ω b e`. Rewrite `hdet` using `[← coe_discr]`. Establish `hN : A.subtype.mapMatrix N = Algebra.embeddingsMatrixReindex ℚ Ω b e`. Use extensionality with `i j`.
+
+Simplify using `[N, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix]`. Rewrite `hdet` using `[map_intCast, ← hN, ← RingHom.map_det]`. Rewrite using `[hdet]`. Simplify using the standard rewrite rules. Establish `hF : f.toRatAlgHom ≠ g.toRatAlgHom`.
+
+Introduce `hc`. Apply `hfg` to reduce the goal to its premises. Use extensionality with `x`. Conclude with `congrArg (fun φ : K →ₐ[ℚ] Ω => φ x) hc`. Establish `hres : ((IsLocalRing.residue A).mapMatrix N).det = 0`.
+
+Apply `Matrix.det_zero_of_column_eq (i := e.symm f.toRatAlgHom) (j := e.symm g.toRatAlgHom)` to reduce the goal to its premises. Simplify using `using hF`. Introduce `k`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, N, Matrix.of_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, A.valuation_lt_one_iff]`.
+
+Simplify `h (RingOfIntegers.basis K k)` using `[b, integralBasis_apply]`. Rewrite `hres` using `[← RingHom.map_det, IsLocalRing.residue_eq_zero_iff]`. Apply `hd` to reduce the goal to its premises. Rewrite using `[hM, ← A.valuation_lt_one_iff]`. Conclude with `Ideal.pow_mem_of_mem _ hres 2 (by norm_num)`.
+-/
 theorem _root_.GlobalTheory.UnramDiscr.embedding_eq {K Ω : Type*} [Field K] [NumberField K]
     [Field Ω] [CharZero Ω] [IsAlgClosed Ω] (A : ValuationSubring Ω)
     (hd : ¬ A.valuation ((discr K : ℤ) : Ω) < 1)
@@ -57,6 +75,13 @@ theorem _root_.GlobalTheory.UnramDiscr.embedding_eq {K Ω : Type*} [Field K] [Nu
   rw [hM, ← A.valuation_lt_one_iff]
   exact Ideal.pow_mem_of_mem _ hres 2 (by norm_num)
 
+/- English proof (translation)
+Introduce `h`. Establish `hc : IsCoprime (q : ℤ) d` using `(Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hq)).mpr hd`. Take `⟨a, c, hac⟩` from `hc`. Establish `e : (a : Ω) * q + c * d = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hac`. Establish `ha : A.valuation (a : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A a)`.
+
+Establish `hc : A.valuation (c : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A c)`. Establish `h1 : A.valuation ((a : Ω) * q) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le ha) hA`. Establish `h2 : A.valuation ((c : Ω) * d) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left zero_le hc) h`. Use `Valuation.map_add_lt _ h1 h2` as an intermediate fact. Rewrite `this` using `[e, map_one]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem not_valuation_lt_one {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) {q : ℕ}
     (hq : q.Prime) (hA : A.valuation (q : Ω) < 1) {d : ℤ} (hd : ¬ (q : ℤ) ∣ d) :
     ¬ A.valuation (d : Ω) < 1 := by
@@ -77,6 +102,11 @@ theorem not_valuation_lt_one {Ω : Type*} [Field Ω] (A : ValuationSubring Ω) {
   rw [e, map_one] at this
   exact lt_irrefl _ this
 
+/- English proof (translation)
+Introduce `K _ q hq hd A ⟨v, hv, hqv⟩ σ hσ`. Establish `hA : A.valuation (q : AlgebraicClosure ℚ) < 1`. Simplify using `using (hv _).mpr hqv`. Establish `key` using `embedding_eq A (not_valuation_lt_one A hq hA hd) ((σ : AlgebraicClosure ℚ →+* AlgebraicClosure ℚ).comp K.subtype) K.subtype (fun x => by`. Use `hσ.2 _ ((A.valuation_le_one_iff _).mpr (mem_of_isIntegral A ?_))` and prove the remaining obligations.
+
+Conclude with `(RingOfIntegers.isIntegral_coe x).map (K.subtype.toIntAlgHom))`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Conclude with `DFunLike.congr_fun key ⟨x, hx⟩`.
+-/
 theorem ine_le_fixingSubgroup :
     ∀ (K : IntermediateField ℚ (AlgebraicClosure ℚ)) [NumberField K] (q : ℕ), q.Prime →
       ¬ ((q : ℤ) ∣ discr K) → ∀ A : ValuationSubring (AlgebraicClosure ℚ),

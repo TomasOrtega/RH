@@ -10,8 +10,14 @@ variable {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
 def pullAdd (f : X →+ Y) (u : LinearMap.BilinForm ℤ Y) : LinearMap.BilinForm ℤ X :=
   u.compl₁₂ f.toIntLinearMap f.toIntLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullAdd_apply (f : X →+ Y) (u : LinearMap.BilinForm ℤ Y) (x y : X) : pullAdd f u x y = u (f x) (f y) := rfl
 
+/- English proof (translation)
+Introduce `u u' h` and use `LinearMap.ext₂ fun a b => by obtain ⟨a, rfl⟩ := hf a obtain ⟨b, rfl⟩ := hf b exact LinearMap.congr_fun₂ h a b`.
+-/
 theorem pullAdd_injective {f : X →+ Y} (hf : Function.Surjective f) : Function.Injective (pullAdd f) :=
   fun u u' h => LinearMap.ext₂ fun a b => by
     obtain ⟨a, rfl⟩ := hf a
@@ -23,8 +29,14 @@ def pullAddLin (f : X →+ Y) : LinearMap.BilinForm ℤ Y →ₗ[ℤ] LinearMap.
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem pullAddLin_apply (f : X →+ Y) (u : LinearMap.BilinForm ℤ Y) : pullAddLin f u = pullAdd f u := rfl
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 example : pullAdd (zmultiplesHom ℤ 2 : ℤ →+ ℤ) mulForm 1 1 = 4 := by simp
 
 end GlobalTheory.PolFan.OrbMark

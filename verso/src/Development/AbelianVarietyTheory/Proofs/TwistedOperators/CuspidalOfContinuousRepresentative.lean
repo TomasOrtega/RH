@@ -15,6 +15,13 @@ open Formalism.MainNotions.S
 
 namespace GlobalTheory.CuspRep
 
+/- English proof (translation)
+Introduce `D V μ _ _ F hF ψ hψc hψl hFψ`. Use `(GlobalTheory.Cusp.isCuspFun_iff hψl).2 fun W hW => ?_` and prove the remaining obligations. Establish `hc` using `GlobalTheory.Cusp.cocompact_single (D := D) hW`. Use `hc.isProbabilityMeasure` as an intermediate fact. Establish `hm : StronglyMeasurable (lift (GQ V) F)` using `(Lp.stronglyMeasurable F).comp_measurable measurable_mk`.
+
+Establish `h1 : GlobalTheory.Cusp.constTermOn (GQ V) (GlobalTheory.Cusp.NA (.single hW)) (lift (GQ V) F) =ᵐ[μ] 0`. Use `GlobalTheory.CuspAE.constTermOn_ae_eq_zero hc (closure_mono ?_ hF)` and prove the remaining obligations. Introduce and unpack `F' ⟨φ, hφ, e⟩`. Conclude with `⟨φ, hφ.1, hφ.2.1, (GlobalTheory.Cusp.isCuspFun_iff hφ.2.1).1 hφ.2.2 W hW, e⟩`. Establish `hcont` using `hc.continuous_constTermOn hψl hψc`.
+
+Establish `h2 : GlobalTheory.Cusp.constTermOn (GQ V) (GlobalTheory.Cusp.NA (.single hW)) ψ =ᵐ[μ] 0`. Use `ae_eq_zero_of_forall_setIntegral_isCompact_eq_zero' hcont.locallyIntegrable fun S hS => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CuspAE.setIntegral_constTermOn hc hψl hψc.stronglyMeasurable hψc.locallyIntegrable hS]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hcont.ae_eq_iff_eq μ continuous_const).1 h2`.
+-/
 theorem isCuspFun_of_mem_L2cusp : ∀ (D : D7) (V : HSp D) (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant], ∀ F ∈ GlobalTheory.Cusp.L2cusp V μ, ∀ ψ : GA D V → ℂ, Continuous ψ → LeftInv (GQ V) ψ → lift (GQ V) F =ᵐ[μ] ψ → IsCuspFun V ψ := by
   intro D V μ _ _ F hF ψ hψc hψl hFψ
   refine (GlobalTheory.Cusp.isCuspFun_iff hψl).2 fun W hW => ?_

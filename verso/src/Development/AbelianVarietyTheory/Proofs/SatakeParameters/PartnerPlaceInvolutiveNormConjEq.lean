@@ -12,6 +12,11 @@ namespace GlobalTheory.KerStd
 
 open GlobalTheory.InertCompare GlobalTheory.Proof.IdempotentLatticeSequence
 
+/- English proof (translation)
+Establish `h : (D.eTau τ : D.R.GG) * sgm D ∈ D.R.Psi`. Rewrite using `[Formalism.HC.Frame.mem_Psi_iff]`. Use `(Formalism.HC.Frame.mem_Psi_iff _).1 (D.eTau τ).2` as an intermediate fact. Simplify using `[sgm, this]`. Unfold `tauSg`.
+
+Rewrite using `[dif_pos h, Equiv.apply_symm_apply]`.
+-/
 theorem eTau_tauSg (D : D7) (τ : D.what₂.Tau) :
     ((D.eTau (tauSg D τ) : D.R.Psi) : D.R.GG) =
       (D.eTau τ : D.R.GG) * sgm D := by
@@ -22,17 +27,47 @@ theorem eTau_tauSg (D : D7) (τ : D.what₂.Tau) :
   unfold tauSg
   rw [dif_pos h, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Simplify using `[sgm, Prod.ext_iff]`.
+-/
 theorem sgm_mul_sgm (D : D7) : sgm D * sgm D = 1 := by
   simp [sgm, Prod.ext_iff]
 
+/- English proof (translation)
+Introduce `h`. Establish `: (((sgm D).1.1 : ℤˣ) : ℤ) = 1` using `by rw [h]; rfl`. Simplify using `[sgm] at this`.
+-/
 theorem sgm_ne_one (D : D7) : sgm D ≠ 1 := by
   intro h
   have : (((sgm D).1.1 : ℤˣ) : ℤ) = 1 := by rw [h]; rfl
   simp [sgm] at this
 
+/- English proof (translation)
+Simplify using `[sgm, Formalism.HC.Frame.cc, Formalism.FrobeniusOrbits.c0, Prod.ext_iff]`.
+-/
 theorem sgm_mul_cc (D : D7) : sgm D * D.R.cc = ((1, -1), 1) := by
   simp [sgm, Formalism.HC.Frame.cc, Formalism.FrobeniusOrbits.c0, Prod.ext_iff]
 
+/- English proof (translation)
+Introduce `D p _ lam hp τ`. Substitute `hp` using the available equality. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Rewrite using `[eTau_tauSg, eTau_tauSg, mul_assoc, sgm_mul_sgm, mul_one]`. Introduce `h`. Establish `h1` using `congrArg (fun t => ((D.eTau t : D.R.Psi) : D.R.GG)) h`. Simplify using `only [eTau_tauSg] at h1`. Conclude with `sgm_ne_one D (mul_eq_left.mp h1)`.
+
+Introduce `y set g : D.R.GG := (D.eTau τ : D.R.GG) with hg`. Set `σ : D.host.E ≃ₐ[ℚ] D.host.E` to `D.host.sigmaOf ((1, -1), 1)`. Establish `hgσ : D.host.galE σ = ((1, -1), 1)`. Express the relevant statement in the definitionally equal form `D.host.galE ((D.host.gal).symm ((1, -1), 1)) = _`. Conclude with `D.host.gal.apply_symm_apply _`.
+
+Establish `hemb : embT D (tauSg D τ) (D.host.conj y) = embT D τ (σ y)`. Express the relevant statement in the definitionally equal form `D.host.emb _ (D.host.conj y) = D.host.emb g (σ y)`. Rewrite using `[eTau_tauSg, ← hg]`. Establish `e1` using `emb_mul_galE D.host (g * sgm D) D.host.conj y`. Establish `e2` using `emb_mul_galE D.host g σ y`.
+
+Establish `hc : D.host.galE D.host.conj = D.R.cc` using `D.host.galE_conjE`. Rewrite `e1` using `[hc]`. Rewrite `e2` using `[hgσ]`. Rewrite using `[← e1, ← e2, mul_assoc, sgm_mul_cc]`. Establish `hsp : SamePrime (rhoH D lam τ) ((rhoH D lam τ).comp (σ : D.host.E →+* D.host.E))`.
+
+Introduce `a`. Establish `hPp` using `primeOf_isPrime (rhoH D lam τ)`. Establish `hd : (D.host.d : 𝓞 D.host.E) ∈ primeOf (rhoH D lam τ)` using `natCast_mem_primeOf _`. Take `⟨z, hz, hze⟩` from `(Formalism.MainNotions.GlobalTheoryTheory.jnt_inertiaD D _ hPp hd σ).2 (Or.inr hgσ) a`. Establish `hz' : ‖rhoH D lam τ (σ (a : D.host.E)) - rhoH D lam τ (a : D.host.E)‖ < 1`.
+
+Rewrite using `[← map_sub, ← hze]`. Conclude with `hz`. Express the relevant statement in the definitionally equal form `‖rhoH D lam τ (a : D.host.E)‖ < 1 ↔ ‖rhoH D lam τ (σ (a : D.host.E))‖ < 1`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Rewrite using `[← sub_add_cancel (rhoH D lam τ (σ (a : D.host.E))) (rhoH D lam τ (a : D.host.E))]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt hz' h)`. Introduce `h`. Rewrite using `[← add_sub_cancel (rhoH D lam τ (σ (a : D.host.E))) (rhoH D lam τ (a : D.host.E))]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt h (by rw [norm_sub_rev]; exact hz'))`.
+
+Establish `h1` using `SamePrime.norm_eq hsp y`. Establish `h2 : tauEmb D lam (tauSg D τ) (D.host.conj y) = tauEmb D lam τ (σ y)`. Unfold `tauEmb`. Rewrite using `[hemb]`. Rewrite using `[h2, ← coe_rhoH, h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tauSg_invol_norm_conj_eq : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (lam : Qbar →+* ℂ_[p]), p = D.host.d →
     ∀ (τ : D.what₂.Tau), tauSg D (tauSg D τ) = τ ∧ tauSg D τ ≠ τ ∧
       ∀ y : D.host.E, ‖tauEmb D lam (tauSg D τ) (D.host.conj y)‖ = ‖tauEmb D lam τ y‖ := by

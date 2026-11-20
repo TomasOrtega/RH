@@ -11,6 +11,9 @@ namespace GlobalTheory.BCT.RatPt
 
 open GlobalTheory.BCT.TrKer GlobalTheory.BCT.FinPart
 
+/- English proof (translation)
+Establish `hv : (InfinitePlace.mk v.embedding) = v` using `InfinitePlace.mk_embedding v`. Establish `h : (InfinitePlace.mk v.embedding).embedding = v.embedding` using `by rw [hv]`. Simplify using `only [coord, h, if_true, Pi.evalRingHom_apply]`. Rewrite using `[pInf_algebraMap, hv]`.
+-/
 theorem coord_pInf_algebraMap {E : Type} [Field E] [NumberField E] [IsCMField E] (v : InfinitePlace E) (e : E) :
     coord v.embedding (pInf E (algebraMap E (Ad E) e)) = v.embedding e := by
   have hv : (InfinitePlace.mk v.embedding) = v := InfinitePlace.mk_embedding v
@@ -18,6 +21,11 @@ theorem coord_pInf_algebraMap {E : Type} [Field E] [NumberField E] [IsCMField E]
   simp only [coord, h, if_true, Pi.evalRingHom_apply]
   rw [pInf_algebraMap, hv]
 
+/- English proof (translation)
+Establish `hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val * 1 * γ.1.val = 1` using `γ.2`. Express the relevant statement in the definitionally equal form `cT (conjAd E) (ratGL E n γ.1).val * 1 * (ratGL E n γ.1).val = 1`. Establish `hc : cT (conjAd E) (ratGL E n γ.1).val = (algebraMap E (Ad E)).mapMatrix (cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val)`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, RingHom.mapMatrix_apply]`.
+
+Conclude with `conjAd_algebraMap _`. Establish `hr : (ratGL E n γ.1).val = (algebraMap E (Ad E)).mapMatrix γ.1.val` using `rfl`. Rewrite using `[hc, hr, mul_one, ← map_mul, ← map_one (algebraMap E (Ad E)).mapMatrix, ← hγ, mul_one]`.
+-/
 theorem ratGL_mem_UA {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (γ : UE E n) :
     ratGL E n γ.1 ∈ UA E n := by
   have hγ : cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ.1.val * 1 * γ.1.val = 1 := γ.2
@@ -30,6 +38,15 @@ theorem ratGL_mem_UA {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ
   have hr : (ratGL E n γ.1).val = (algebraMap E (Ad E)).mapMatrix γ.1.val := rfl
   rw [hc, hr, mul_one, ← map_mul, ← map_one (algebraMap E (Ad E)).mapMatrix, ← hγ, mul_one]
 
+/- English proof (translation)
+Introduce `E _ _ _ n γ`. Use `⟨⟨ratGL E n γ.1, ratGL_mem_UA γ⟩, ⟨γ.1, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Use `set r : UA E n := ⟨ratGL E n γ.1, ratGL_mem_UA γ⟩`. Establish `hpr : GeneralLinearGroup.map (pFin E) (ratGL E n γ.1) = ratF E n γ.1`. Apply `Units.ext` to reduce the goal to its premises.
+
+Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hi : (finPt γ).1⁻¹ * r ∈ infU E n`. Rewrite using `[infU, MonoidHom.mem_ker, MonoidHom.comp_apply, map_mul, map_mul, map_inv, map_inv]`. Express the relevant statement in the definitionally equal form `(pU (finPt γ))⁻¹ * GeneralLinearGroup.map (pFin E) (ratGL E n γ.1) = 1`.
+
+Rewrite using `[pU_finPt, hpr, inv_mul_cancel]`. Establish `he : r = (finPt γ).1 * (⟨_, hi⟩ : infU E n).1`. Simplify using `only [mul_inv_cancel_left]`. Rewrite using `[he, splitFin_mul]`. Introduce `v`.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `coord v.embedding (pInf E (algebraMap E (Ad E) (γ.1.val i j))) = v.embedding (γ.1.val i j)`. Conclude with `coord_pInf_algebraMap v _`.
+-/
 theorem ratPt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (γ : UE E n), ∃ r ∈ ratU E n, splitFin E n r = finPt γ ∧ ∀ v : InfinitePlace E, cEmb v.embedding r = GeneralLinearGroup.map v.embedding γ.1 := by
   intro E _ _ _ n γ
   refine ⟨⟨ratGL E n γ.1, ratGL_mem_UA γ⟩, ⟨γ.1, rfl⟩, ?_, ?_⟩

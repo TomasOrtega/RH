@@ -11,6 +11,11 @@ namespace GlobalTheory.SchwartzMajorant
 
 variable (F : Type) [Field F] [NumberField F]
 
+/- English proof (translation)
+Unfold `GlobalTheory.WeilM.pureA`. Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply]`. Rewrite using `[show (algebraMap F (AdeleRing (𝓞 F) F) (ξ j) + x j).1 = (algebraMap F (AdeleRing (𝓞 F) F) (ξ j)).1 + (x j).1 from rfl, map_add, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pureA_add_algebraMap {κ : Type} (f : (κ → mixedEmbedding.mixedSpace F) → ℂ)
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (ξ : κ → F) (x : κ → AdeleRing (𝓞 F) F) :
     GlobalTheory.WeilM.pureA F f g (fun j => algebraMap F (AdeleRing (𝓞 F) F) (ξ j) + x j) =
@@ -24,6 +29,13 @@ theorem pureA_add_algebraMap {κ : Type} (f : (κ → mixedEmbedding.mixedSpace 
     map_add, InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]
   rfl
 
+/- English proof (translation)
+Use `set u := w + a with hu`. Establish `hCk : 0 ≤ Ck` using `le_trans (by positivity) (hk 0)`. Establish `hC0 : 0 ≤ C0` using `le_trans (norm_nonneg _) (h0 0)`. Establish `h2k : (0:ℝ) < 2 ^ k` using `by positivity`. Establish `h1 : ‖φ u‖ * (1 + ‖u‖) ^ k ≤ 2 ^ k * (C0 + Ck)`.
+
+Break down `le_total ‖u‖ 1 with hu1 | hu1` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (1 + ‖w‖) ^ k ≤ (1 + ‖a‖) ^ k * (1 + ‖u‖) ^ k`. Rewrite using `[← mul_pow]`.
+
+Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Establish `: ‖w‖ ≤ ‖u‖ + ‖a‖`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[norm_nonneg u, norm_nonneg a]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_of_decay {V : Type} [NormedAddCommGroup V] {φ : V → ℂ} {k : ℕ} {C0 Ck : ℝ}
     (h0 : ∀ v, ‖φ v‖ ≤ C0) (hk : ∀ v, ‖v‖ ^ k * ‖φ v‖ ≤ Ck) (w a : V) :
     ‖φ (w + a)‖ * (1 + ‖w‖) ^ k ≤ 2 ^ k * (C0 + Ck) * (1 + ‖a‖) ^ k := by
@@ -53,6 +65,11 @@ theorem norm_le_of_decay {V : Type} [NormedAddCommGroup V] {φ : V → ℂ} {k :
     _ = (‖φ u‖ * (1 + ‖u‖) ^ k) * (1 + ‖a‖) ^ k := by ring
     _ ≤ _ := mul_le_mul_of_nonneg_right h1 (by positivity)
 
+/- English proof (translation)
+Use `Summable.of_norm_bounded_eventually (ZLattice.summable_norm_pow_inv L _ (Nat.lt_succ_self _)) ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : L)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 h0`.
+
+Use `show ‖((1 + ‖z‖) ^ (Module.finrank ℤ L + 1))⁻¹‖ ≤ ‖z‖⁻¹ ^ (Module.finrank ℤ L + 1)`. Rewrite using `[norm_inv, norm_pow, Real.norm_of_nonneg (by positivity), inv_pow]`. Conclude with `inv_anti₀ (pow_pos hz0 _) (pow_le_pow_left₀ hz0.le (by linarith) _)`.
+-/
 theorem summable_one_add_norm_pow_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (L : Submodule ℤ E) [DiscreteTopology L] :
     Summable fun z : L => ((1 + ‖z‖) ^ (Module.finrank ℤ L + 1))⁻¹ := by
@@ -65,6 +82,25 @@ theorem summable_one_add_norm_pow_inv {E : Type} [NormedAddCommGroup E] [NormedS
   rw [norm_inv, norm_pow, Real.norm_of_nonneg (by positivity), inv_pow]
   exact inv_anti₀ (pow_pos hz0 _) (pow_le_pow_left₀ hz0.le (by linarith) _)
 
+/- English proof (translation)
+Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Establish `hB0 : 0 ≤ B` using `le_trans (norm_nonneg _) (hB 0)`. Set `xf : κ → FiniteAdeleRing (𝓞 F) F` to `fun j => (x j).2`. Set `a : κ → mixedEmbedding.mixedSpace F` to `fun j => InfiniteAdeleRing.ringEquiv_mixedSpace F (x j).1`. Establish `hK : IsCompact ((fun y => y - xf) '' tsupport g)` using `hg.2.isCompact.image (continuous_id.sub continuous_const)`.
+
+Take `⟨N, hN, hKN⟩` from `GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact F hK`. Use `haveI := GlobalTheory.WeilM.discreteTopology_denomLattice F κ hN`. Set `v : (κ → F) → (κ → mixedEmbedding.mixedSpace F)` to `fun ξ j => mixedEmbedding F (ξ j)`. Set `S : Set (κ → F)` to `{ξ | v ξ ∈ GlobalTheory.WeilM.denomLattice F κ N}`. Set `k` to `Module.finrank ℤ (GlobalTheory.WeilM.denomLattice F κ N) + 1`.
+
+Use `⟨k, S.indicator fun ξ => 2 ^ k * (1 + ‖a‖) ^ k * B * ((1 + ‖v ξ‖) ^ k)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← summable_subtype_iff_indicator]`. Set `j : S → GlobalTheory.WeilM.denomLattice F κ N` to `fun ξ => ⟨v ξ, ξ.2⟩`. Establish `hj : Function.Injective j` using `fun p q h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Conclude with `((summable_one_add_norm_pow_inv (GlobalTheory.WeilM.denomLattice F κ N)).comp_injective hj).mul_left _`.
+
+Introduce `C0 Ck φ h0 hk ξ`. Rewrite using `[pureA_add_algebraMap, norm_mul]`. Distinguish the cases in `hξ : ξ ∈ S`. Rewrite using `[Set.indicator_of_mem hξ]`. Establish `hd` using `norm_le_of_decay h0 hk (v ξ) a`.
+
+Establish `hpos : 0 < (1 + ‖v ξ‖) ^ k` using `by positivity`. Establish `h1 : ‖φ (v ξ + a)‖ ≤ 2 ^ k * (C0 + Ck) * (1 + ‖a‖) ^ k * ((1 + ‖v ξ‖) ^ k)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos]`. Conclude with `hd`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Set.indicator_of_notMem hξ, mul_zero]`. Establish `hz : g ((fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)) + xf) = 0`. Assume the negation of the conclusion as `h0'`. Apply `hξ` to reduce the goal to its premises. Establish `hmem : (fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)) ∈ (fun y => y - xf) '' tsupport g` using `⟨_, subset_tsupport _ h0', add_sub_cancel_right _ _⟩`.
+
+Use `show ∀ i, (N : ℝ) • v ξ i ∈ mixedEmbedding.integerLattice F`. Introduce `i`. Take `⟨y, hy⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun w => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hKN _ hmem i w`.
+
+Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Use `show _ * ‖g ((fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)) + xf)‖ ≤ 0`.
+
+Rewrite using `[hz, norm_zero, mul_zero]`.
+-/
 theorem exists_majorant_pureA {κ : Type} [Fintype κ] {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ}
     (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F)) (x : κ → AdeleRing (𝓞 F) F) :
     ∃ k : ℕ, ∃ M : (κ → F) → ℝ, Summable M ∧ ∀ (C0 Ck : ℝ) (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ),
@@ -117,6 +153,11 @@ theorem exists_majorant_pureA {κ : Type} [Fintype κ] {g : (κ → FiniteAdeleR
       show _ * ‖g ((fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)) + xf)‖ ≤ 0
       rw [hz, norm_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `F _ _ κ _ P _ Ψ p0 m g f hg hΨ hC x`. Use `choose k M hM hbound using fun i => exists_majorant_pureA F (hg i) x`. Use `choose C hCev using hC`. Use `⟨fun ξ => ∑ i, (C 0 + C (k i)) * M i ξ, summable_sum fun i _ => (hM i).mul_left _, ?_⟩` and prove the remaining obligations. Establish `hall : ∀ᶠ p in nhds p0, ∀ i, (∀ v, ‖v‖ ^ 0 * ‖f p i v‖ ≤ C 0) ∧ (∀ v, ‖v‖ ^ k i * ‖f p i v‖ ≤ C (k i))` using `Filter.eventually_all.2 fun i => ((hCev 0).and (hCev (k i))).mono fun p hp => ⟨hp.1 i, hp.2 i⟩`.
+
+Use `filter_upwards [hΨ, hall] with p hp hb ξ`. Rewrite using `[hp, Finset.sum_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => hbound i _ _ _ (fun v => ?_) (hb i).2 ξ)` and prove the remaining obligations. Simplify using `using (hb i).1 v`.
+-/
 theorem exists_summable_majorant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] {P : Type}
     [TopologicalSpace P]
     (Ψ : P → (κ → AdeleRing (𝓞 F) F) → ℂ) (p0 : P) (m : ℕ) (g : Fin m → (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)

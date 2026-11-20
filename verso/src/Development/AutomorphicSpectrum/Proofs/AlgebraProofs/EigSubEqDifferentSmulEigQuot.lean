@@ -14,11 +14,17 @@ variable {A K : Type} [CommRing A] [Field K] [Algebra A K]
   {E : Type} [Field E] [NumberField E]
 
 omit [NumberField E] in
+/- English proof (translation)
+Use `(Submodule.mem_iInf _).1 hx a` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+-/
 theorem apply_of_mem_eigSp (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) {x : V}
     (hx : x ∈ eigSp ρ σ) (a : 𝓞 E) : ρ a x = σ (a : E) • x := by
   have := (Submodule.mem_iInf _).1 hx a
   simpa [sub_eq_zero] using this
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[eigProj, LinearMap.sum_apply, Finset.smul_sum, mul_smul]`.
+-/
 theorem sum_smul_eigProj (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) {N : ℕ} (t : Fin N → V)
     (y : Fin N → K) :
     ∑ i, y i • eigProj ρ σ (t i) =
@@ -29,6 +35,11 @@ theorem sum_smul_eigProj (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) {N 
   simp [eigProj, LinearMap.sum_apply, Finset.smul_sum, mul_smul]
 
 omit [Algebra A K] [IsScalarTower A K V] in
+/- English proof (translation)
+Establish `h1 : t i = ∑ k, (RingOfIntegers.basis E).repr 1 k • ρ (RingOfIntegers.basis E k) (t i)`. Use `congrArg (fun a => ρ a (t i)) ((RingOfIntegers.basis E).sum_repr 1)` as an intermediate fact. Simplify using `only [map_sum, map_zsmul, map_one, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.one_apply] at this`. Conclude with `this.symm`. Rewrite using `[h1, h.2.2]`.
+
+Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `zsmul_mem ?_ _` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨(i, k), rfl⟩`.
+-/
 theorem mem_of_isFreeOn (ρ : 𝓞 E →+* Module.End K V) (X : Submodule A V) {N : ℕ} (t : Fin N → V)
     (h : IsFreeOn ρ X t) (i : Fin N) : t i ∈ X := by
   have h1 : t i = ∑ k, (RingOfIntegers.basis E).repr 1 k • ρ (RingOfIntegers.basis E k) (t i) := by
@@ -41,6 +52,43 @@ theorem mem_of_isFreeOn (ρ : 𝓞 E →+* Module.End K V) (X : Submodule A V) {
   refine zsmul_mem ?_ _
   exact Submodule.subset_span ⟨(i, k), rfl⟩
 
+/- English proof (translation)
+Introduce `A K _ _ _ _ V _ _ _ _ E _ _ ρ X N t σ d hinj hσ hd hX`. Take `⟨he1, he2, -, he4⟩` from `ProjEig.eigProj_spec K V E ρ σ`. Take `⟨hd0, hd1, u, hu⟩` from `GlobalTheory.T.different_generator_dual_integral A K E σ d hinj hσ hd`. Establish `hQ : eigQuot ρ σ X = Submodule.span A (Set.range fun i => eigProj ρ σ (t i))`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Unfold `eigQuot`. Rewrite using `[hX.2.2, Submodule.map_span_le]`. Introduce and unpack `_ ⟨⟨i, k⟩, rfl⟩`. Take `⟨a, ha⟩` from `hσ (RingOfIntegers.basis E k)`. Establish `: eigProj ρ σ (ρ (RingOfIntegers.basis E k) (t i)) = a • eigProj ρ σ (t i)`.
+
+Rewrite using `[← Module.End.mul_apply, he4, Module.End.mul_apply, apply_of_mem_eigSp ρ σ (he1 _), ← ha, IsScalarTower.algebraMap_smul]`. Simplify using `only [LinearMap.restrictScalars_apply]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨t i, mem_of_isFreeOn ρ X t hX i, rfl⟩`. Establish `hli : LinearIndependent K (fun i => eigProj ρ σ (t i))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `y hy i`.
+
+Rewrite `hy` using `[sum_smul_eigProj]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hX.1 _ hy`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hu, mul_one]`. Use `_ = ∑ k, algebraMap A K (u k) * algebraMap A K d * (y i * σ (dualInt E k)) := by`.
+
+Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Use `_ = 0 := Finset.sum_eq_zero fun k _ => by`. Use `h0 (i, k)` as an intermediate fact. Simplify using `only at this`.
+
+Rewrite using `[this, mul_zero]`. Establish `hsp : Submodule.span K (Set.range fun i => eigProj ρ σ (t i)) = eigSp ρ σ`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Conclude with `he1 _`. Introduce `x hx`. Rewrite using `[← he2 x hx]`. Establish `hx' : x ∈ Submodule.span K (X : Set V)` using `by rw [hX.2.1]; trivial`. Establish `: (Submodule.span K (X : Set V)).map (eigProj ρ σ) ≤ Submodule.span K (Set.range fun i => eigProj ρ σ (t i))`.
+
+Rewrite using `[Submodule.map_span_le]`. Introduce `m hm`. Apply `Submodule.span_le_restrictScalars A K` to reduce the goal to its premises. Rewrite using `[← hQ]`. Conclude with `⟨m, hm, rfl⟩`.
+
+Conclude with `this ⟨x, hx', rfl⟩`. Use `⟨fun x => ⟨fun hx => ?_, fun hx => ?_⟩, hQ, hli, hsp⟩` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hQ, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, rfl⟩` from `hx`.
+
+Establish `: d • ∑ i, c i • eigProj ρ σ (t i) = ∑ i, (algebraMap A K (c i) * algebraMap A K d) • eigProj ρ σ (t i)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, IsScalarTower.algebraMap_smul, mul_comm, mul_smul]`. Rewrite using `[this, sum_smul_eigProj, hX.2.2]`.
+
+Use `Submodule.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hd1 q.2`. Rewrite using `[mul_assoc, ← ha, ← map_mul, IsScalarTower.algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩)`. Take `⟨m, -, rfl⟩` from `hx`.
+
+Conclude with `Submodule.smul_mem _ d (show _ ∈ (eigSp ρ σ).restrictScalars A from he1 m)`. Take `⟨hx1, hx2⟩` from `hx`. Establish `hxe : x ∈ eigSp ρ σ`. Establish `h2 : algebraMap A K d • x ∈ eigSp ρ σ`. Rewrite using `[IsScalarTower.algebraMap_smul]`.
+
+Conclude with `hx2`. Conclude with `(Submodule.smul_mem_iff _ hd0).1 h2`. Rewrite `hxe` using `[← hsp, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨y, rfl⟩` from `hxe`. Establish `hx1' : d • ∑ i, y i • eigProj ρ σ (t i) ∈ X` using `hx1`.
+
+Rewrite `hx1'` using `[hX.2.2, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hx1'`. Establish `h3 : d • ∑ i, y i • eigProj ρ σ (t i) = ∑ i, (y i * algebraMap A K d) • eigProj ρ σ (t i)`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm, mul_smul, IsScalarTower.algebraMap_smul]`. Rewrite `hc` using `[h3, sum_smul_eigProj]`. Establish `h4 : ∀ q, algebraMap A K (c q) = y q.1 * algebraMap A K d * σ (dualInt E q.2)`. Use `Fintype.linearIndependent_iffₛ.1 hX.1 _ _ ?_` and prove the remaining obligations. Rewrite using `[← hc]`.
+
+Conclude with `Finset.sum_congr rfl fun q _ => IsScalarTower.algebraMap_smul _ _ _`. Rewrite using `[hQ]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `h5 : y i = algebraMap A K (∑ k, u k * c (i, k))`. Rewrite using `[map_sum, ← mul_one (y i), ← hu, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, h4]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h5, IsScalarTower.algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem eigSub_eq_different_smul_eigQuot : ∀ (A K : Type) [CommRing A] [Field K] [Algebra A K] [CharZero K] (V : Type) [AddCommGroup V] [Module K V] [Module A V] [IsScalarTower A K V] (E : Type) [Field E] [NumberField E] (ρ : 𝓞 E →+* Module.End K V) (X : Submodule A V) (N : ℕ) (t : Fin N → V) (σ : E →+* K) (d : A), Function.Injective (algebraMap A K) → (∀ a : 𝓞 E, σ (a : E) ∈ (algebraMap A K).range) → Submodule.span A {algebraMap A K d} = Submodule.span A {y : K | ∃ x ∈ differentIdeal ℤ (𝓞 E), y = σ (x : E)} → IsFreeOn ρ X t → (∀ x, x ∈ eigQuot ρ σ X ↔ d • x ∈ eigSub ρ σ X) ∧ eigQuot ρ σ X = Submodule.span A (Set.range fun i => eigProj ρ σ (t i)) ∧ LinearIndependent K (fun i => eigProj ρ σ (t i)) ∧ Submodule.span K (Set.range fun i => eigProj ρ σ (t i)) = eigSp ρ σ := by
   intro A K _ _ _ _ V _ _ _ _ E _ _ ρ X N t σ d hinj hσ hd hX
   obtain ⟨he1, he2, -, he4⟩ := ProjEig.eigProj_spec K V E ρ σ

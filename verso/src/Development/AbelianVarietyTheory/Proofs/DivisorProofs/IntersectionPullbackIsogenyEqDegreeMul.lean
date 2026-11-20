@@ -15,6 +15,27 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AV.AbVar
 
+/- English proof (translation)
+Introduce `K _ A B f hf J _ hJ c`. Take `⟨hdim, hflat, -, hrank⟩` from `isogeny_flat_finrank K A B f hf`. Use `haveI : IsFinite f.hom.left := hf.1`. Use `haveI : Surjective f.hom.left := hf.2`. Use `haveI := (isIntegral_isLocallyNoetherian_compactSpace K A).1`.
+
+Use `haveI := (isIntegral_isLocallyNoetherian_compactSpace K B).1`. Establish `hAproj` using `(GlobalTheory.AV.AbVarProj.strHom_eq_and_isProjOver K A).2`. Establish `hBproj` using `(GlobalTheory.AV.AbVarProj.strHom_eq_and_isProjOver K B).2`. Establish `hw : f.hom.left ≫ B.X.hom = A.X.hom` using `Over.w f.hom`. Establish `hXproj : IsProjOver (f.hom.left ≫ B.X.hom)` using `by rw [hw]; exact hAproj`.
+
+Establish `hAd` using `topologicalKrullDim_eq_dim K A`. Establish `hBd` using `topologicalKrullDim_eq_dim K B`. Establish `hgen : f.hom.left (genericPoint A.X.left) = genericPoint B.X.left`. Establish `h1` using `(genericPoint_spec A.X.left).image f.hom.left.continuous`. Rewrite `h1` using `[Set.image_univ_of_surjective f.hom.left.surjective, closure_univ]`.
+
+Conclude with `h1.eq (genericPoint_spec B.X.left)`. Take `⟨V, hgV, hV, hV', hfree⟩` from `GlobalTheory.GenFree.exists_affine_finite_free K A.X.left B.X.left B.X.hom f.hom.left hXproj hBproj hgen (by rw [hAd, hBd, hdim]) _ rfl`. Use `set n := f.hom.left.residueDegree (genericPoint A.X.left)`. Establish `hn : deg f = n`. Use `letI := (f.hom.left.app V).hom.toAlgebra`.
+
+Take `⟨hfr, hfin, hrk⟩` from `hfree`. Use `haveI := hfr`. Use `haveI := hfin`. Use `haveI : Module.Flat Γ(B.X.left, V) Γ(A.X.left, f.hom.left ⁻¹ᵁ V) := inferInstance`. Take `⟨z, -⟩ : genericPoint B.X.left ∈ Set.range hV.fromSpec` from `by rwa [hV.range_fromSpec]`.
+
+Establish `e` using `Scheme.Hom.finrank_of_isPullback _ _ _ _ (GlobalTheory.isPullback_fromSpec_app f.hom.left hV hV') z`. Rewrite `e` using `[hrank]`. Establish `e2` using `(Scheme.Hom.finrank_SpecMap_algebraMap Γ(B.X.left, V) Γ(A.X.left, f.hom.left ⁻¹ᵁ V) z).symm.trans e`. Rewrite `e2` using `[Module.rankAtStalk_eq_finrank_of_free, hrk]`. Conclude with `e2.symm`.
+
+Use `choose L hL hc using fun j => cls_surj (c j)`. Take `rfl : c = fun j => cls (L j) (hL j)` from `funext fun j => (hc j).symm`. Set `e : Fin A.dim ≃ J` to `(Fintype.equivFinOfCardEq hJ).symm`. Establish `key` using `GlobalTheory.FieldProj.interNum_pull_eq_mul K A.X.left B.X.left B.X.hom f.hom.left hXproj hBproj V n hgV hV hV' hfree A.dim (by rw [hBd, hdim]) (fun i => L (e i)) (fun i => hL (e i))`. Rewrite `key` using `[hw]`.
+
+Rewrite using `[hn]`. Establish `hL' : ∀ i, ((fun i => L (e i)) i).pull f.hom.left |>.IsLB` using `fun i => Semi.LB.isLB_pull (hL (e i)) _`. Use `letI := GlobalTheory.algebraΓOfHom A.X.hom`. Use `letI := GlobalTheory.algebraΓOfHom B.X.hom`. Rewrite `key` using `[interNum_eq_multiDiff K _ hL', interNum_eq_multiDiff K _ (fun i => hL (e i))]`.
+
+Unfold `inter`. Rewrite using `[← multiDiff_comp_equiv e, ← multiDiff_comp_equiv e (fun j => cls (L j) (hL j))]`. Use `key using 3` and compare the differences between its conclusion and the goal. Name the introduced variables `i`. Conclude with `(cls_pull (hL (e i)) f.hom.left _).symm`.
+
+Both sides reduce to the same expression.
+-/
 theorem inter_pull_isogeny_eq_deg_mul : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsIsogeny f →
     ∀ (J : Type) [Fintype J], Fintype.card J = A.dim → ∀ c : J → Pic B.X.left,
     inter A (fun j => CechPic.pull f.hom.left (c j)) = deg f * inter B c := by

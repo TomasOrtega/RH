@@ -10,6 +10,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.CMTypeRestrict
 
+/- English proof (translation)
+Introduce `E _ _ _ I _ φ hφ e₀`. Establish `hreal : ∀ i, ComplexEmbedding.IsReal ((φ i).comp (algebraMap (FR E) E))` using `fun i => InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _)`. Set `g : Fin (Module.finrank ℚ (FR E)) → (FR E →+* ℝ)` to `fun j => (hreal (e₀ j)).embedding`. Establish `hg : ∀ j (x : FR E), (g j x : ℂ) = φ (e₀ j) (x : E)` using `fun j x => (hreal (e₀ j)).coe_embedding_apply x`. Establish `hinj : Function.Injective g`.
+
+Introduce `j k hjk`. Establish `hc : (φ (e₀ j)).comp (algebraMap (FR E) E) = (φ (e₀ k)).comp (algebraMap (FR E) E)`. Use extensionality with `x`. Establish `h1` using `hg j x`. Establish `h2` using `hg k x`.
+
+Rewrite `h1` using `[hjk]`. Simplify using `only [RingHom.comp_apply]`. Conclude with `h1.symm.trans h2`. Establish `hm : IsCMField.equivInfinitePlace E (InfinitePlace.mk (φ (e₀ j))) = IsCMField.equivInfinitePlace E (InfinitePlace.mk (φ (e₀ k)))`. Rewrite using `[IsCMField.equivInfinitePlace_apply, IsCMField.equivInfinitePlace_apply, InfinitePlace.comap_mk, InfinitePlace.comap_mk, hc]`.
+
+Use `(GlobalTheory.CMTypeCard.bijective_mk_of_isCMType hφ).1 ((IsCMField.equivInfinitePlace E).injective hm)` as an intermediate fact. Conclude with `e₀.injective this`. Establish `hcard : Fintype.card (Fin (Module.finrank ℚ (FR E))) = Fintype.card (FR E →+* ℝ)`. Rewrite using `[Fintype.card_fin, GlobalTheory.card_realEmbeddings]`. Conclude with `⟨Equiv.ofBijective g ((Fintype.bijective_iff_injective_and_card g).2 ⟨hinj, hcard⟩), fun j x => hg j x⟩`.
+-/
 theorem exists_equiv_realEmbeddings : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),
     IsCMType φ → ∀ (e₀ : Fin (Module.finrank ℚ (FR E)) ≃ I),
     ∃ e : Fin (Module.finrank ℚ (FR E)) ≃ (FR E →+* ℝ), ∀ j (x : FR E), (e j x : ℂ) = φ (e₀ j) (x : E) := by

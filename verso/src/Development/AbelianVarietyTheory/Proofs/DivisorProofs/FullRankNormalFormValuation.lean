@@ -11,6 +11,13 @@ namespace GlobalTheory.FullRankPair
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `hrange : LinearMap.range M.mulVecLin = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[← Matrix.rank, hM]`. Simplify using the standard rewrite rules. Establish `hs : Function.Surjective M.mulVecLin` using `LinearMap.range_eq_top.mp hrange`.
+
+Use `⟨Matrix.of fun j i => Function.surjInv hs (Pi.single i 1) j, ?_⟩` and prove the remaining obligations. Use extensionality with `a i`. Use `congrFun (Function.surjInv_eq hs (Pi.single i 1)) a` as an intermediate fact. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`.
+
+Rewrite using `[this]`. Simplify using `[Pi.single_apply, eq_comm]`.
+-/
 theorem exists_right_inv {n d : ℕ} (M : Matrix (Fin n) (Fin d) k) (hM : M.rank = n) :
     ∃ T : Matrix (Fin d) (Fin n) k, M * T = 1 := by
   have hrange : LinearMap.range M.mulVecLin = ⊤ := by
@@ -24,6 +31,13 @@ theorem exists_right_inv {n d : ℕ} (M : Matrix (Fin n) (Fin d) k) (hM : M.rank
   simp only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]
   rw [this]; simp [Pi.single_apply, eq_comm]
 
+/- English proof (translation)
+Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, one_ne_zero, fun i => (IsEmpty.false i).elim⟩`. Take `⟨i₁, -, hi₁⟩` from `Finset.exists_max_image Finset.univ (fun i => ValuativeRel.valuation k (f i)) Finset.univ_nonempty`. Distinguish the cases in `h0 : f i₁ = 0`. Use `⟨1, one_ne_zero, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `hi₁ i (Finset.mem_univ _)` as an intermediate fact. Simplify using `only [h0, map_zero] at this`. Simplify using `[le_antisymm this zero_le']`. Use `⟨(f i₁)⁻¹, inv_ne_zero h0, fun i => ?_⟩` and prove the remaining obligations. Use `hi₁ i (Finset.mem_univ _)` as an intermediate fact.
+
+Rewrite using `[map_mul, map_inv₀]`. Establish `hv : ValuativeRel.valuation k (f i₁) ≠ 0` using `by simpa using h0`. Conclude with `inv_mul_le_one_of_le₀ this zero_le'`.
+-/
 theorem exists_bound {ι : Type} [Fintype ι] (f : ι → k) [ValuativeRel k] :
     ∃ c : k, c ≠ 0 ∧ ∀ i, ValuativeRel.valuation k (c * f i) ≤ 1 := by
   rcases isEmpty_or_nonempty ι with hι | hι
@@ -40,6 +54,15 @@ theorem exists_bound {ι : Type} [Fintype ι] (f : ι → k) [ValuativeRel k] :
     have hv : ValuativeRel.valuation k (f i₁) ≠ 0 := by simpa using h0
     exact inv_mul_le_one_of_le₀ this zero_le'
 
+/- English proof (translation)
+Assume the negation of the conclusion as `H`. Use `push_neg at H`. Take `⟨T₀, hT₀⟩` from `exists_right_inv Y₂ h₂`. Take `⟨T₁, hT₁⟩` from `exists_right_inv Y₁ h₁`. Establish `hfac : Y₁ * T₀ * Y₂ = Y₁`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Matrix.toLin'_apply]`. Establish `hv : Y₂ *ᵥ (v - T₀ *ᵥ (Y₂ *ᵥ v)) = 0`.
+
+Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec, hT₀, Matrix.one_mulVec, sub_self]`. Use `H _ hv` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_sub, sub_eq_zero]`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `hab : (Y₁ * T₀) * (Y₂ * T₁) = 1`.
+
+Rewrite using `[← Matrix.mul_assoc, hfac, hT₁]`. Conclude with `hne ⟨Y₁ * T₀, Y₂ * T₁, hab, mul_eq_one_comm.mp hab⟩ hfac.symm`.
+-/
 theorem exists_ker {n d : ℕ} (Y₁ Y₂ : Matrix (Fin n) (Fin d) k) (h₁ : Y₁.rank = n)
     (h₂ : Y₂.rank = n) (hne : ∀ a : GL (Fin n) k, Y₁ ≠ a.1 * Y₂) :
     ∃ u : Fin d → k, Y₂ *ᵥ u = 0 ∧ Y₁ *ᵥ u ≠ 0 := by
@@ -64,18 +87,33 @@ theorem exists_ker {n d : ℕ} (Y₁ Y₂ : Matrix (Fin n) (Fin d) k) (h₁ : Y�
 def pivotMat {m : ℕ} (x ψ : Fin m → k) (i : Fin m) : Matrix (Fin m) (Fin m) k :=
   1 - (x i)⁻¹ • Matrix.vecMulVec x (Pi.single i 1) + Matrix.vecMulVec (Pi.single i 1) ψ
 
+/- English proof (translation)
+Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `[pivotMat, Matrix.vecMulVec_apply, hx]`. Simplify using `[pivotMat, Matrix.vecMulVec_apply, Matrix.one_apply, Pi.single_apply, hij, Ne.symm hij]`.
+-/
 theorem pivotMat_row {m : ℕ} (x ψ : Fin m → k) (i : Fin m) (hx : x i ≠ 0) (j : Fin m) :
     pivotMat x ψ i i j = ψ j := by
   by_cases hij : j = i
   · subst hij; simp [pivotMat, Matrix.vecMulVec_apply, hx]
   · simp [pivotMat, Matrix.vecMulVec_apply, Matrix.one_apply, Pi.single_apply, hij, Ne.symm hij]
 
+/- English proof (translation)
+Simplify using `only [pivotMat, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, Matrix.one_mulVec, single_dotProduct, h1, one_mul, op_smul_eq_smul, one_smul, smul_smul, inv_mul_cancel₀ hx, sub_self, zero_add]`.
+-/
 theorem pivotMat_mulVec {m : ℕ} (x ψ : Fin m → k) (i : Fin m) (hx : x i ≠ 0) (h1 : ψ ⬝ᵥ x = 1) :
     pivotMat x ψ i *ᵥ x = Pi.single i 1 := by
   simp only [pivotMat, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec,
     Matrix.one_mulVec, single_dotProduct, h1, one_mul, op_smul_eq_smul, one_smul, smul_smul,
     inv_mul_cancel₀ hx, sub_self, zero_add]
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Simplify using `only [pivotMat, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.vecMulVec_mulVec, Matrix.one_mulVec, single_dotProduct, one_mul, op_smul_eq_smul, smul_smul] at hy`. Establish `hi` using `congrFun hy i`.
+
+Establish `hc : (x i)⁻¹ * y i * x i = y i` using `by field_simp`. Simplify using `[hc] at hi`. Rewrite `hy` using `[hi, zero_smul, add_zero, sub_eq_zero]`. Establish `hψ : ψ ⬝ᵥ y = (x i)⁻¹ * y i` using `by conv_lhs => rw [hy]`. Rewrite using `[dotProduct_smul, h1, smul_eq_mul, mul_one]`.
+
+Rewrite `hψ` using `[hi]`. Establish `hyi : y i = 0`. Break down `mul_eq_zero.mp hψ.symm with h | h` into its components or cases. Conclude with `absurd h (inv_ne_zero hx)`. Conclude with `h`.
+
+Apply `hy0` to reduce the goal to its premises. Rewrite using `[hy, hyi, mul_zero, zero_smul]`.
+-/
 theorem pivotMat_isUnit {m : ℕ} (x ψ : Fin m → k) (i : Fin m) (hx : x i ≠ 0) (h1 : ψ ⬝ᵥ x = 1) :
     IsUnit (pivotMat x ψ i) := by
   rw [Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]
@@ -98,9 +136,15 @@ theorem pivotMat_isUnit {m : ℕ} (x ψ : Fin m → k) (i : Fin m) (hx : x i ≠
   apply hy0
   rw [hy, hyi, mul_zero, zero_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem row_mul {l m o : ℕ} (A : Matrix (Fin l) (Fin m) k) (B : Matrix (Fin m) (Fin o) k) (i : Fin l) :
     (A * B) i = A i ᵥ* B := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_diagonal, Pi.isUnit_iff]`. Introduce `a`. Use `split_ifs`. Conclude with `isUnit_one`. Conclude with `isUnit_iff_ne_zero.mpr hμ`.
+-/
 theorem unit_of_diag {m : ℕ} (i : Fin m) (μ : k) (hμ : μ ≠ 0) :
     IsUnit (Matrix.diagonal (fun a : Fin m => if a = i then (1 : k) else μ)) := by
   rw [Matrix.isUnit_diagonal, Pi.isUnit_iff]
@@ -113,6 +157,43 @@ end GlobalTheory.FullRankPair
 
 open GlobalTheory.FullRankPair in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n d Y₁ Y₂ h₁ h₂ hne`. Take `⟨u, hu2, hu1⟩` from `exists_ker Y₁ Y₂ h₁ h₂ hne`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hz⟩ : ∃ i, (Y₁ *ᵥ u) i ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push_neg at H`.
+
+Conclude with `hu1 (funext H)`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hu⟩ : ∃ j, u j ≠ 0 := by`. Assume the negation of the conclusion as `H`. Use `push_neg at H`. Apply `hu1` to reduce the goal to its premises.
+
+Rewrite using `[show u = 0 from funext H, Matrix.mulVec_zero]`. Take `⟨w, hw⟩ : ∃ w : Fin n → k, w = ((Y₁ *ᵥ u) i₀)⁻¹ • Pi.single i₀ 1` from `⟨_, rfl⟩`. Establish `hwz : w ⬝ᵥ (Y₁ *ᵥ u) = 1`. Rewrite using `[hw, smul_dotProduct, single_dotProduct, one_mul, smul_eq_mul, inv_mul_cancel₀ hz]`. Take `⟨φ, hφ⟩ : ∃ φ : Fin d → k, φ = w ᵥ* Y₁` from `⟨_, rfl⟩`.
+
+Establish `hφu : φ ⬝ᵥ u = 1` using `by rw [hφ, ← Matrix.dotProduct_mulVec]; exact hwz`. Take `⟨T₀, hT₀⟩` from `exists_right_inv Y₂ h₂`. Take `⟨T, hTdef⟩ : ∃ T : Matrix (Fin d) (Fin n) k, T = T₀ - Matrix.vecMulVec u (φ ᵥ* T₀)` from `⟨_, rfl⟩`. Establish `hT : Y₂ * T = 1`. Rewrite using `[hTdef, Matrix.mul_sub, Matrix.mul_vecMulVec, hu2, hT₀]`.
+
+Use extensionality with `a b`. Simplify using `[Matrix.vecMulVec_apply]`. Establish `hφT : φ ᵥ* T = 0`. Rewrite using `[hTdef, Matrix.vecMul_sub, Matrix.vecMul_vecMulVec, hφu, one_smul, sub_self]`. Establish `hPd` using `pivotMat_isUnit u φ j₀ hu hφu`.
+
+Take `⟨μ, hμ0, hμ⟩` from `exists_bound (fun p : Fin d × Fin n => (pivotMat u φ j₀ * T) p.1 p.2)`. Take `⟨Qd, hQd⟩ : ∃ Q : Matrix (Fin d) (Fin d) k, Q = Matrix.diagonal (fun a => if a = j₀ then (1 : k) else μ) * pivotMat u φ j₀` from `⟨_, rfl⟩`. Establish `hQdu : IsUnit Qd` using `hQd ▸ (unit_of_diag j₀ μ hμ0).mul hPd`. Establish `hQrow : Qd j₀ = φ`. Use extensionality with `b`.
+
+Rewrite using `[hQd, Matrix.diagonal_mul, if_pos rfl, one_mul, pivotMat_row u φ j₀ hu]`. Establish `hQu : Qd *ᵥ u = Pi.single j₀ 1`. Rewrite using `[hQd, ← Matrix.mulVec_mulVec, pivotMat_mulVec u φ j₀ hu hφu, Matrix.diagonal_mulVec_single, if_pos rfl, one_mul]`. Set `h : GL (Fin d) k` to `hQdu.unit⁻¹`. Establish `hhQ : h.1 * Qd = 1` using `hQdu.val_inv_mul`.
+
+Establish `hQh : Qd * h.1 = 1` using `hQdu.mul_val_inv`. Establish `hhe : h.1 *ᵥ Pi.single j₀ 1 = u`. Rewrite using `[← hQu, Matrix.mulVec_mulVec, hhQ, Matrix.one_mulVec]`. Establish `hφh : φ ᵥ* h.1 = Pi.single j₀ 1`. Rewrite using `[← hQrow, ← row_mul, hQh]`.
+
+Use extensionality with `b`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Establish `hPn` using `pivotMat_isUnit (Y₁ *ᵥ u) w i₀ hz hwz`. Take `⟨ν, hν0, hν⟩` from `exists_bound (fun p : Fin n × Fin d => (pivotMat (Y₁ *ᵥ u) w i₀ * Y₁ * h.1) p.1 p.2)`. Take `⟨G, hG⟩ : ∃ G : Matrix (Fin n) (Fin n) k, G = Matrix.diagonal (fun a => if a = i₀ then (1 : k) else ν) * pivotMat (Y₁ *ᵥ u) w i₀` from `⟨_, rfl⟩`.
+
+Establish `hGu : IsUnit G` using `hG ▸ (unit_of_diag i₀ ν hν0).mul hPn`. Establish `hGtu : IsUnit Gᵀ`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_transpose, ← Matrix.isUnit_iff_isUnit_det]`. Conclude with `hGu`. Establish `hGrow : G i₀ = w`.
+
+Use extensionality with `b`. Rewrite using `[hG, Matrix.diagonal_mul, if_pos rfl, one_mul, pivotMat_row _ w i₀ hz]`. Establish `hGz : G *ᵥ (Y₁ *ᵥ u) = Pi.single i₀ 1`. Rewrite using `[hG, ← Matrix.mulVec_mulVec, pivotMat_mulVec _ w i₀ hz hwz, Matrix.diagonal_mulVec_single, if_pos rfl, one_mul]`. Set `g : GL (Fin n) k` to `hGtu.unit`.
+
+Establish `hgG : (g.1)ᵀ = G` using `by simp [g]`. Establish `hrow : ∀ j, ((g.1)ᵀ * Y₁ * h.1) i₀ j = if j = j₀ then 1 else 0`. Introduce `j`. Rewrite using `[hgG, row_mul, row_mul, hGrow, ← hφ, hφh, Pi.single_apply]`. Use `⟨i₀, j₀, g, h, ?_, hrow, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j`. Distinguish the cases in `hi : i = i₀`. Apply the tactic sequence `subst hi; rw [hrow j]; split_ifs <;> simp`. Use `hν (i, j)` as an intermediate fact. Rewrite using `[hgG, hG, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.diagonal_mul, if_neg hi, ← Matrix.mul_assoc]`.
+
+Conclude with `this`. Introduce `i hi`. Establish `: ((g.1)ᵀ * Y₁ * h.1) *ᵥ Pi.single j₀ 1 = Pi.single i₀ 1`. Rewrite using `[← Matrix.mulVec_mulVec, hhe, ← Matrix.mulVec_mulVec, hgG, hGz]`. Use `congrFun this i` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mulVec_single_one]`. Simplify `this` using `[Pi.single_apply, hi]`. Introduce `i`. Use `congrFun (show (Y₂ * h.1) *ᵥ Pi.single j₀ 1 = 0 by rw [← Matrix.mulVec_mulVec, hhe, hu2]) i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_single_one]`.
+
+Simplify using `using this`. Establish `hSrow : ∀ i, (Qd * T) j₀ i = 0`. Introduce `i`. Rewrite using `[row_mul, hQrow, hφT]`. Both sides reduce to the same expression.
+
+Use `⟨Qd * T, ?_, hSrow, ?_⟩` and prove the remaining obligations. Introduce `j i`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Rewrite using `[hSrow i]`.
+
+Simplify using the standard rewrite rules. Use `hμ (j, i)` as an intermediate fact. Rewrite using `[hQd, Matrix.mul_assoc, Matrix.diagonal_mul, if_neg hj]`. Conclude with `this`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc h.1, hhQ, Matrix.one_mul, hT]`.
+-/
 theorem GlobalTheory.FullRankPair.pair_normal_form : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n d : ℕ) (Y₁ Y₂ : Matrix (Fin n) (Fin d) k), Y₁.rank = n → Y₂.rank = n →
     (∀ a : GL (Fin n) k, Y₁ ≠ a.1 * Y₂) →
     ∃ (i₀ : Fin n) (j₀ : Fin d) (g : GL (Fin n) k) (h : GL (Fin d) k),

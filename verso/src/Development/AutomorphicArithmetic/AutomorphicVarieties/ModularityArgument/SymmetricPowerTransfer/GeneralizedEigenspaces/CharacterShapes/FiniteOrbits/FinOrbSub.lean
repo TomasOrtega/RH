@@ -13,18 +13,32 @@ section SlopeTestRemainingChoices
 
 variable {G : Type} [Group G] {S U : Subgroup G}
 
+/- English proof (translation)
+Take `⟨u, hu, u', hu', rfl⟩` from `h`. Conclude with `⟨u, Subgroup.mem_subgroupOf.mp hu, u', Subgroup.mem_subgroupOf.mp hu', by simp⟩`.
+-/
 private theorem dc_up {x g : S} (h : g ∈ DC (U.subgroupOf S) x) : (g : G) ∈ DC U (x : G) := by
   obtain ⟨u, hu, u', hu', rfl⟩ := h
   exact ⟨u, Subgroup.mem_subgroupOf.mp hu, u', Subgroup.mem_subgroupOf.mp hu', by simp⟩
 
+/- English proof (translation)
+Take `⟨u, hu, u', hu', rfl⟩` from `hz`. Conclude with `⟨w * u, U.mul_mem hw hu, u', hu', by simp only [mul_assoc]⟩`.
+-/
 private theorem dc_left {b w z : G} (hw : w ∈ U) (hz : z ∈ DC U b) : w * z ∈ DC U b := by
   obtain ⟨u, hu, u', hu', rfl⟩ := hz
   exact ⟨w * u, U.mul_mem hw hu, u', hu', by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨u, hu, u', hu', rfl⟩` from `hz`. Conclude with `⟨u, hu, u' * w, U.mul_mem hu' hw, by simp only [mul_assoc]⟩`.
+-/
 private theorem dc_right {b w z : G} (hw : w ∈ U) (hz : z ∈ DC U b) : z * w ∈ DC U b := by
   obtain ⟨u, hu, u', hu', rfl⟩ := hz
   exact ⟨u, hu, u' * w, U.mul_mem hu' hw, by simp only [mul_assoc]⟩
 
+/- English proof (translation)
+Take `⟨u, hu, u', hu', rfl⟩` from `hy`. Take `⟨c, hc, hcx, hcS⟩` from `hx u hu`. Use `⟨⟨u * c⁻¹, hcS⟩, Subgroup.mem_subgroupOf.mpr (U.mul_mem hu (U.inv_mem hc)), ?_⟩` and prove the remaining obligations. Establish `e : ((⟨u * c⁻¹, hcS⟩ * x : S) : G)⁻¹ * (u * (x : G) * u') = c * u'`. Simplify using `only [Subgroup.coe_mul, mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel_left]`.
+
+Rewrite using `[← mul_assoc c, hcx]`. Use `group`. Rewrite using `[e]`. Conclude with `U.mul_mem hc hu'`.
+-/
 private theorem dc_rep {x : S} (hx : ∀ u ∈ U, ∃ c ∈ U, c * (x : G) = x * c ∧ u * c⁻¹ ∈ S)
     {y : G} (hy : y ∈ DC U (x : G)) :
     ∃ t : S, t ∈ U.subgroupOf S ∧ ((t * x : S) : G)⁻¹ * y ∈ U := by
@@ -38,17 +52,32 @@ private theorem dc_rep {x : S} (hx : ∀ u ∈ U, ∃ c ∈ U, c * (x : G) = x *
   rw [e]
   exact U.mul_mem hc hu'
 
+/- English proof (translation)
+Take `⟨t, ht, hw⟩` from `dc_rep hx hg`. Use `⟨t, ht, (t * x)⁻¹ * g, Subgroup.mem_subgroupOf.2 (by simpa using hw), ?_⟩` and prove the remaining obligations. Use `group`.
+-/
 private theorem dc_down {x g : S} (hx : ∀ u ∈ U, ∃ c ∈ U, c * (x : G) = x * c ∧ u * c⁻¹ ∈ S)
     (hg : (g : G) ∈ DC U (x : G)) : g ∈ DC (U.subgroupOf S) x := by
   obtain ⟨t, ht, hw⟩ := dc_rep hx hg
   refine ⟨t, ht, (t * x)⁻¹ * g, Subgroup.mem_subgroupOf.2 (by simpa using hw), ?_⟩
   group
 
+/- English proof (translation)
+Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using h`.
+-/
 private theorem mk_eq_of {r r' : S} (h : (r : G)⁻¹ * r' ∈ U) :
     (r : S ⧸ U.subgroupOf S) = r' := by
   rw [QuotientGroup.eq, Subgroup.mem_subgroupOf]
   simpa using h
 
+/- English proof (translation)
+Establish `inj : Function.Injective (fun q : S ⧸ U.subgroupOf S => (((Quotient.out q : S) : G) : G ⧸ U))`. Introduce `q1 q2 e`. Simplify using `only at e`. Establish `e'` using `QuotientGroup.eq.mp e`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Set.Finite.of_finite_image _ inj.injOn` to reduce the goal to its premises. Apply `h.subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨q, ⟨k, rfl⟩, rfl⟩`. Take `⟨t, ht⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (k.1 * a)`. Use `⟨⟨((k.1 : S) : G), k.2⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hq : (k • (a : S ⧸ U.subgroupOf S)) = ((k.1 * a : S) : S ⧸ U.subgroupOf S)` using `rfl`. Simplify using `only`. Rewrite using `[hq, ht]`. Use `show ((((k.1 : S) : G) * (a : G) : G) : G ⧸ U) = _`. Rewrite using `[QuotientGroup.eq]`.
+
+Use `Subgroup.mem_subgroupOf.mp t.2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Subgroup.coe_mul]`. Use `group`.
+-/
 private theorem finOrb_sub {a : S} (h : AlgebraTools.FinOrb U U (a : G)) :
     AlgebraTools.FinOrb (U.subgroupOf S) (U.subgroupOf S) a := by
   have inj : Function.Injective
@@ -73,6 +102,27 @@ private theorem finOrb_sub {a : S} (h : AlgebraTools.FinOrb U U (a : G)) :
   simp only [Subgroup.coe_mul]
   group
 
+/- English proof (translation)
+Establish `ha : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a * c ∧ u * c⁻¹ ∈ S` using `fun u hu => by`. Take `⟨c, hc, h1, -, h3, -⟩` from `hab u hu`. Conclude with `⟨c, hc, h1, h3⟩`. Establish `hb : ∀ u ∈ U, ∃ c ∈ U, c * (b : G) = b * c ∧ u * c⁻¹ ∈ S` using `fun u hu => by`. Take `⟨c, hc, -, h2, h3, -⟩` from `hab u hu`.
+
+Conclude with `⟨c, hc, h2, h3⟩`. Establish `hab' : ∀ u ∈ U, ∃ c ∈ U, c * ((a * b : S) : G) = ((a * b : S) : G) * c ∧ u * c⁻¹ ∈ S` using `fun u hu => by`. Take `⟨c, hc, h1, h2, h3, -⟩` from `hab u hu`. Use `⟨c, hc, ?_, h3⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul]`.
+
+Rewrite using `[← mul_assoc, h1, mul_assoc, h2, mul_assoc]`. Introduce `g`. Use `⟨fun hg => ?_, fun y hy hyg => ?_⟩` and prove the remaining obligations. Establish `hg' : (g : G) ∈ DC U ((a : G) * b)`. Rewrite using `[← Subgroup.coe_mul]`.
+
+Conclude with `dc_up hg`. Take `⟨Y, ⟨hY1, hY2⟩, hYu⟩` from `(hUF g).1 hg'`. Take `⟨t, ht, htY⟩` from `dc_rep ha hY1`. Establish `hrg : (t * a)⁻¹ * g ∈ DC (U.subgroupOf S) b`. Apply `dc_down hb` to reduce the goal to its premises.
+
+Establish `e : (((t * a)⁻¹ * g : S) : G) = (((t * a : S) : G)⁻¹ * Quotient.out Y) * ((Quotient.out Y)⁻¹ * g)`. Use `push_cast`. Use `group`. Rewrite using `[e]`. Conclude with `dc_left htY hY2`.
+
+Establish `hrY : ((((t * a : S) : G)) : G ⧸ U) = Y`. Rewrite using `[← QuotientGroup.out_eq' Y]`. Conclude with `QuotientGroup.eq.mpr htY`. Establish `key : ∀ s : G, s ∈ DC U a → s⁻¹ * g ∈ DC U b → (s : G ⧸ U) = Y`. Introduce `s hs1 hs2`.
+
+Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul U s`. Use `hYu _ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `dc_right k.2 hs1`. Rewrite using `[hk, mul_inv_rev, mul_assoc]`.
+
+Conclude with `dc_left (inv_mem k.2) hs2`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (t * a)`. Use `⟨((t * a : S) : S ⧸ U.subgroupOf S), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `dc_right k.2 ⟨t, ht, 1, one_mem _, (mul_one _).symm⟩`.
+
+Rewrite using `[hk, mul_inv_rev, mul_assoc]`. Conclude with `dc_left (inv_mem k.2) hrg`. Introduce and unpack `z ⟨hz1, hz2⟩`. Establish `hz : (((Quotient.out z : S) : G) : G ⧸ U) = Y` using `key _ (dc_up hz1) (by simpa using dc_up hz2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `h1` using `(hUF g).2 y (dc_up hy) (by simpa using dc_up hyg)`. Apply `dc_down hab'` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul]`. Conclude with `h1`.
+-/
 private theorem uf_sub {a b : S}
     (hab : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a * c ∧ c * (b : G) = b * c ∧ u * c⁻¹ ∈ S ∧ c⁻¹ * u ∈ S)
     (hUF : UF U (a : G) (b : G)) : UF (U.subgroupOf S) a b := by
@@ -130,6 +180,25 @@ private theorem uf_sub {a b : S}
     rw [Subgroup.coe_mul]
     exact h1
 
+/- English proof (translation)
+Establish `orb : ∀ k : S, k ∈ U.subgroupOf S → ((k * a : S) : S ⧸ U.subgroupOf S) ∈ MulAction.orbit (U.subgroupOf S) (a : S ⧸ U.subgroupOf S)` using `fun k hk => ⟨⟨k, hk⟩, rfl⟩`. Use `⟨hfin.toFinset.image (fun q => Quotient.out q), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.mp hy`. Take `⟨k, rfl⟩` from `hfin.mem_toFinset.mp hq`.
+
+Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf S) ((k : S) * a)`. Establish `hq' : k • (a : S ⧸ U.subgroupOf S) = (((k : S) * a : S) : S ⧸ U.subgroupOf S)` using `rfl`. Simplify using `only`. Rewrite using `[hq', hh]`. Conclude with `dc_right h.2 ⟨k, k.2, 1, one_mem _, (mul_one _).symm⟩`.
+
+Introduce `y hy`. Take `⟨u, hu, u', hu', rfl⟩` from `hy`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (u * a)`. Use `⟨Quotient.out ((u * a : S) : S ⧸ U.subgroupOf S), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image.mpr ⟨_, hfin.mem_toFinset.mpr (orb u hu), rfl⟩`.
+
+Rewrite using `[hh]`. Establish `e : (u * a * (h : S))⁻¹ * (u * a * u') = (h : S)⁻¹ * u'` using `by group`. Rewrite using `[e]`. Conclude with `mul_mem (inv_mem h.2) hu'`. Introduce and unpack `r ⟨hr, hry⟩`.
+
+Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `e : q = ((u * a : S) : S ⧸ U.subgroupOf S)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (u * a * u')⁻¹ * (u * a) = u'⁻¹ by group]`. Conclude with `inv_mem hu')`.
+
+Rewrite using `[e]`. Introduce `y hy`. Take `⟨t, ht, hty⟩` from `dc_rep ha hy`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (U.subgroupOf S) (t * a)`. Use `⟨Quotient.out ((t * a : S) : S ⧸ U.subgroupOf S), ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Finset.mem_image.mpr ⟨_, hfin.mem_toFinset.mpr (orb t ht), rfl⟩`. Rewrite using `[hh]`. Establish `e : ((t * a * (h : S) : S) : G)⁻¹ * y = ((h : S) : G)⁻¹ * (((t * a : S) : G)⁻¹ * y)`. Use `push_cast`. Use `group`.
+
+Rewrite using `[e]`. Conclude with `mul_mem (inv_mem (Subgroup.mem_subgroupOf.mp h.2)) hty`. Introduce and unpack `r ⟨hr, hry⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp hr`. Establish `e : q = ((t * a : S) : S ⧸ U.subgroupOf S)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `m` using `U.mul_mem hry (U.inv_mem hty)`. Use `m using 1` and compare the differences between its conclusion and the goal. Use the proof step `group)`. Rewrite using `[e]`.
+-/
 private theorem reps_sub {a : S} (ha : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a * c ∧ u * c⁻¹ ∈ S)
     (hfin : AlgebraTools.FinOrb (U.subgroupOf S) (U.subgroupOf S) a) :
     ∃ R : Finset S, (∀ y ∈ R, y ∈ DC (U.subgroupOf S) a) ∧
@@ -193,6 +262,11 @@ end SlopeTestRemainingChoices
 
 end UpperTheory.V.Z.Sym.So
 
+/- English proof (translation)
+Introduce `G V _ _ _ S U a hfin ha _`. Establish `ha' : ∀ u ∈ U, ∃ c ∈ U, c * (a : G) = a * c ∧ u * c⁻¹ ∈ S` using `fun u hu => by`. Take `⟨c, hc, h1, h2, _⟩` from `ha u hu`. Conclude with `⟨c, hc, h1, h2⟩`. Establish `hfin'` using `finOrb_sub hfin`.
+
+Conclude with `⟨hfin', fun g => ⟨dc_up, dc_down ha'⟩, fun b hb hUF => uf_sub hb hUF, reps_sub ha' hfin'⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.So.dcSub :
     UpperTheory.V.Z.Sym.So.DcSub := by
   intro G V _ _ _ S U a hfin ha _

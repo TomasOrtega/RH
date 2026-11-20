@@ -17,6 +17,13 @@ def LCGlue : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (B : Type) [CommRin
   ∃ t : Sec F (Spec (CommRingCat.of B)), ∀ (V : Scheme.{0}) (g : V ⟶ Spec (CommRingCat.of B)) (c : Y),
     (∀ v : V, φ (g.base v) = c) → Sec.res g t = Sec.res g (s c)
 
+/- English proof (translation)
+Introduce `q i V U g ζ`. Establish `h` using `(toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op`. Establish `h2` using `congrArg (fun k => k.hom (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj Γ(U, ⊤))) h`. Simplify using `only [ModuleCat.hom_comp] at h2`. Simplify using `only [LinearMap.coe_comp] at h2`.
+
+Unfold `twGen ofRings.sec`. Use `h2.symm.trans (congrArg ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V)).hom ?_)` and prove the remaining obligations. Simplify using `only [twF, Functor.comp_map]`. Rewrite using `[ModuleCat.hom_ofHom]`. Use `first`.
+
+Consider the case `(erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; done)`. Consider the case `(erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; rfl)`. Consider the case `exact congrArg (Submodule.Quotient.mk (p := twRel q i _)) (Finsupp.mapDomain_single (f := Prim.map g.appTop.hom) (a := ζ) (b := (1 : ULift (ZMod q))))`.
+-/
 theorem twNat : TwNat := by
   intro q i V U g ζ
   have h := (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op
@@ -32,6 +39,9 @@ theorem twNat : TwNat := by
   | (erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]; rfl)
   | exact congrArg (Submodule.Quotient.mk (p := twRel q i _)) (Finsupp.mapDomain_single (f := Prim.map g.appTop.hom) (a := ζ) (b := (1 : ULift (ZMod q))))
 
+/- English proof (translation)
+Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift (ZMod q))]`. Use `congr 1`. Use `ext`. Conclude with `(ULift.down_natCast _).trans (ZMod.natCast_zmod_val c)`.
+-/
 theorem nsmul_val {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (x : Sec (tw q i) U) (c : ZMod q) :
     c.val • x = (ULift.up c : ULift (ZMod q)) • x := by
   rw [← Nat.cast_smul_eq_nsmul (ULift (ZMod q))]
@@ -42,18 +52,30 @@ theorem nsmul_val {q : ℕ} [NeZero q] (i : ℤ) (U : Scheme.{0}) (x : Sec (tw q
 def sG {q : ℕ} (i : ℤ) {B : Type} [CommRing B] (ζ : Prim q B) (c : ZMod q) : Sec (tw q i) (Spec (CommRingCat.of B)) :=
   (ULift.up c : ULift (ZMod q)) • twGen i (gam ζ)
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_smul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (r : ULift R) (x : Sec F U) :
     Sec.res g (r • x) = r • Sec.res g x := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_add {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (x y : Sec F U) :
     Sec.res g (x + y) = Sec.res g x + Sec.res g y := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (x : Sec F U) :
     Sec.res (k ≫ g) x = Sec.res k (Sec.res g x) := by
   simp [Sec.res]
 
+/- English proof (translation)
+Simplify using `[Sec.res]`.
+-/
 theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (x : Sec F U) :
     Sec.res (𝟙 U) x = x := by
   simp [Sec.res]
@@ -62,11 +84,21 @@ def tG (hG : LCGlue) {q : ℕ} (i : ℤ) {B : Type} [CommRing B] (ζ : Prim q B)
     Sec (tw q i) (Spec (CommRingCat.of B)) :=
   Classical.choose (hG (ZMod q) (tw q i) B (ZMod q) φ (sG i ζ))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (hG (ZMod q) (tw q i) B (ZMod q) φ (sG i ζ)) V g c h`.
+-/
 theorem tG_spec (hG : LCGlue) {q : ℕ} (i : ℤ) {B : Type} [CommRing B] (ζ : Prim q B)
     (φ : LocallyConstant (PrimeSpectrum B) (ZMod q)) (V : Scheme.{0}) (g : V ⟶ Spec (CommRingCat.of B)) (c : ZMod q)
     (h : ∀ v : V, φ (g.base v) = c) : Sec.res g (tG hG i ζ φ) = Sec.res g (sG i ζ c) :=
   Classical.choose_spec (hG (ZMod q) (tw q i) B (ZMod q) φ (sG i ζ)) V g c h
 
+/- English proof (translation)
+Set `χ : LocallyConstant (PrimeSpectrum B) (ZMod q × ZMod q)` to `⟨fun x => (φ x, ψ x), IsLocallyConstant.comp₂ φ.2 ψ.2 Prod.mk⟩`. Use `hS (ZMod q) (tw q i) B _ χ _ _ ?_` and prove the remaining obligations. Introduce `V g c hc`. Establish `h1 : ∀ v : V, φ (g.base v) = c.1` using `fun v => congrArg Prod.fst (hc v)`. Establish `h2 : ∀ v : V, ψ (g.base v) = c.2` using `fun v => congrArg Prod.snd (hc v)`.
+
+Establish `h3 : ∀ v : V, (φ + ψ) (g.base v) = c.1 + c.2` using `fun v => by show φ (g.base v) + ψ (g.base v) = _`. Rewrite using `[h1, h2]`. Rewrite using `[tG_spec hG i ζ _ V g _ h3, res_add, tG_spec hG i ζ _ V g _ h1, tG_spec hG i ζ _ V g _ h2, ← res_add]`. Use `congr 1`. Unfold `sG`.
+
+Rewrite using `[← add_smul]`. Both sides reduce to the same expression.
+-/
 theorem tG_add (hG : LCGlue) (hS : LCSep) {q : ℕ} (i : ℤ) {B : Type} [CommRing B] (ζ : Prim q B)
     (φ ψ : LocallyConstant (PrimeSpectrum B) (ZMod q)) : tG hG i ζ (φ + ψ) = tG hG i ζ φ + tG hG i ζ ψ := by
   let χ : LocallyConstant (PrimeSpectrum B) (ZMod q × ZMod q) :=
@@ -84,6 +116,19 @@ theorem tG_add (hG : LCGlue) (hS : LCSep) {q : ℕ} (i : ℤ) {B : Type} [CommRi
   rw [← add_smul]
   rfl
 
+/- English proof (translation)
+Introduce `q _ i`. Use `⟨fun B _ ζ => AddMonoidHom.mk' (tG hG i ζ) (tG_add hG hS i ζ), ?_, ?_⟩` and prove the remaining obligations. Introduce `B C _ _ f ζ φ`. Express the relevant statement in the definitionally equal form `Sec.res _ (tG hG i ζ φ) = tG hG i (ζ.map f) (lcMap f φ)`. Use `hS (ZMod q) (tw q i) C _ (lcMap f φ) _ _ ?_` and prove the remaining obligations.
+
+Introduce `V g c hc`. Establish `hc' : ∀ v : V, φ ((g ≫ Spec.map (CommRingCat.ofHom f)).base v) = c` using `fun v => by`. Conclude with `hc v`. Rewrite using `[← res_comp, tG_spec hG i ζ φ V _ c hc', tG_spec hG i (ζ.map f) _ V g c hc]`. Unfold `sG`.
+
+Rewrite using `[res_smul, res_smul, hT, hT]`. Establish `hP : Prim.map (g ≫ Spec.map (CommRingCat.ofHom f)).appTop.hom (gam ζ) = Prim.map g.appTop.hom (gam (ζ.map f))`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(g ≫ Spec.map (CommRingCat.ofHom f)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom ζ.1) = g.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of C)).inv.hom (f ζ.1))`. Establish `hn` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f)`.
+
+Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, ← hn]`. Both sides reduce to the same expression. Rewrite using `[hP]`.
+
+Introduce `B _ ζ c`. Express the relevant statement in the definitionally equal form `tG hG i ζ _ = _`. Establish `h` using `tG_spec hG i ζ (LocallyConstant.const _ c) _ (𝟙 _) c (fun v => rfl)`. Rewrite `h` using `[res_id, res_id]`. Rewrite using `[h, nsmul_val]`.
+
+Both sides reduce to the same expression.
+-/
 theorem LCMap_of_parts (hT : TwNat) (hS : LCSep) (hG : LCGlue) : LCMap := by
   intro q _ i
   refine ⟨fun B _ ζ => AddMonoidHom.mk' (tG hG i ζ) (tG_add hG hS i ζ), ?_, ?_⟩
@@ -119,6 +164,11 @@ def fibS (B : Type) [CommRing B] {Y : Type} (φ : LocallyConstant (PrimeSpectrum
     rintro V W g ⟨c, hc⟩ k
     exact ⟨c, fun w => hc (k.base w)⟩
 
+/- English proof (translation)
+Use `(Scheme.mem_grothendieckTopology_iff (P := @Etale)).mpr ?_` and prove the remaining obligations. Set `O : PrimeSpectrum B → (Spec (CommRingCat.of B)).Opens` to `fun x => ⟨φ ⁻¹' {φ x}, φ.isLocallyConstant.isOpen_fiber _⟩`. Use `⟨Scheme.Cover.mkOfCovers (PrimeSpectrum B) (fun x => (O x).toScheme) (fun x => (O x).ι) (fun x => ⟨x, ⟨x, rfl⟩, by simp⟩), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x⟩`. Use `⟨φ x, fun v => ?_⟩` and prove the remaining obligations.
+
+Establish `hv` using `v.2`. Use `first`. Consider the case `exact hv`. Consider the case `(simp only [Scheme.Cover.mkOfCovers_f, Scheme.Opens.ι_apply]; exact hv)`. Consider the case `(simp [O, Scheme.Cover.mkOfCovers_f] at hv ⊢; exact hv)`.
+-/
 theorem fibS_mem (B : Type) [CommRing B] {Y : Type} (φ : LocallyConstant (PrimeSpectrum B) Y) :
     fibS B φ ∈ Scheme.etaleTopology (Spec (CommRingCat.of B)) := by
   refine (Scheme.mem_grothendieckTopology_iff (P := @Etale)).mpr ?_
@@ -134,17 +184,35 @@ theorem fibS_mem (B : Type) [CommRing B] {Y : Type} (φ : LocallyConstant (Prime
   | (simp only [Scheme.Cover.mkOfCovers_f, Scheme.Opens.ι_apply]; exact hv)
   | (simp [O, Scheme.Cover.mkOfCovers_f] at hv ⊢; exact hv)
 
+/- English proof (translation)
+The claim follows from `(isSheaf_iff_isSheaf_of_type _ _).1 ((sheafCompose Scheme.etaleTopology (forget (ModuleCat.{1} (ULift.{1} R)))).obj F).property`.
+-/
 theorem isSheafT {R : Type} [CommRing R] (F : Shv R) :
     Presieve.IsSheaf Scheme.etaleTopology (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) :=
   (isSheaf_iff_isSheaf_of_type _ _).1 ((sheafCompose Scheme.etaleTopology (forget (ModuleCat.{1} (ULift.{1} R)))).obj F).property
 
+/- English proof (translation)
+The claim follows from `((isSheafT F) _ (Scheme.bot_mem_grothendieckTopology Z)).isSeparatedFor.ext (fun _ _ h => h.elim)`.
+-/
 theorem sec_empty {R : Type} [CommRing R] (F : Shv R) (Z : Scheme.{0}) [IsEmpty Z] (a b : Sec F Z) : a = b :=
   ((isSheafT F) _ (Scheme.bot_mem_grothendieckTopology Z)).isSeparatedFor.ext (fun _ _ h => h.elim)
 
+/- English proof (translation)
+Introduce `R _ F B _ Y φ a b h`. Conclude with `((isSheafT F) _ (fibS_mem B φ)).isSeparatedFor.ext (fun V g hg => h V g hg.choose hg.choose_spec)`.
+-/
 theorem lcSep : LCSep := by
   intro R _ F B _ Y φ a b h
   exact ((isSheafT F) _ (fibS_mem B φ)).isSeparatedFor.ext (fun V g hg => h V g hg.choose hg.choose_spec)
 
+/- English proof (translation)
+Introduce `R _ F B _ Y φ s`. Set `x : Presieve.FamilyOfElements (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) (fibS B φ).arrows` to `fun V g hg => Sec.res g (s hg.choose)`. Establish `key : ∀ (V : Scheme.{0}) (g : V ⟶ Spec (CommRingCat.of B)) (c d : Y), (∀ v : V, φ (g.base v) = c) → (∀ v : V, φ (g.base v) = d) → Sec.res g (s c) = Sec.res g (s d)`. Introduce `V g c d hc hd`. Distinguish the cases in `hV : Nonempty V`.
+
+Take `⟨v⟩` from `hV`. Rewrite using `[← hc v, ← hd v]`. Establish `: IsEmpty V` using `not_nonempty_iff.1 hV`. Conclude with `sec_empty F V _ _`. Establish `hx : x.Compatible`.
+
+Rewrite using `[Presieve.compatible_iff_sieveCompatible]`. Introduce `V W g k hg`. Express the relevant statement in the definitionally equal form `Sec.res (k ≫ g) (s _) = Sec.res k (Sec.res g (s _))`. Rewrite using `[← res_comp]`. Conclude with `key W (k ≫ g) _ _ ((fibS B φ).downward_closed hg k).choose_spec (fun w => hg.choose_spec (k.base w))`.
+
+Take `⟨t, ht, -⟩` from `(isSheafT F) _ (fibS_mem B φ) x hx`. Use `⟨t, fun V g c hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `ht g ⟨c, hc⟩`. Use `h1.trans (key V g _ _ (Exists.choose_spec (p := fun c => ∀ v : V, φ (g.base v) = c) ⟨c, hc⟩) hc)` and prove the remaining obligations.
+-/
 theorem lcGlue : LCGlue := by
   intro R _ F B _ Y φ s
   let x : Presieve.FamilyOfElements (F.obj ⋙ forget (ModuleCat.{1} (ULift.{1} R))) (fibS B φ).arrows :=
@@ -168,6 +236,9 @@ theorem lcGlue : LCGlue := by
   have h1 := ht g ⟨c, hc⟩
   refine h1.trans (key V g _ _ (Exists.choose_spec (p := fun c => ∀ v : V, φ (g.base v) = c) ⟨c, hc⟩) hc)
 
+/- English proof (translation)
+The claim follows from `LCMap_of_parts twNat lcSep lcGlue`.
+-/
 theorem LCMap_of : LCMap := LCMap_of_parts twNat lcSep lcGlue
 
 end LateralTheory.E.LCMapPf

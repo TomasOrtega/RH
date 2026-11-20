@@ -11,6 +11,9 @@ section Tools
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Establish `ha : HasSubst s` using `HasSubst.of_constantCoeff_zero hs`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_subst' ha, finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `d hd`. Simplify using `[map_pow, hs, zero_pow hd]`.
+-/
 theorem constCoeff_subst_zero {g s : PowerSeries R} (hs : constantCoeff s = 0) :
     constantCoeff (g.subst s) = constantCoeff g := by
   have ha : HasSubst s := HasSubst.of_constantCoeff_zero hs
@@ -19,6 +22,13 @@ theorem constCoeff_subst_zero {g s : PowerSeries R} (hs : constantCoeff s = 0) :
   · intro d hd
     simp [map_pow, hs, zero_pow hd]
 
+/- English proof (translation)
+Establish `ha : HasSubst s` using `HasSubst.of_constantCoeff_zero hs`. Establish `hX : X ∣ s` using `X_dvd_iff.mpr hs`. Rewrite using `[PowerSeries.coeff_subst' ha, finsum_eq_single _ 1]`. Simplify using `[smul_eq_mul]`. Introduce `d hd`.
+
+Break down `Nat.lt_or_gt_of_ne hd with h | h` into its components or cases. Establish `: d = 0` using `by omega`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Establish `h2 : X ^ d ∣ s ^ d` using `pow_dvd_pow_of_dvd hX d`.
+
+Establish `h3` using `X_pow_dvd_iff.mp h2 1 h`. Simplify using `[h3]`.
+-/
 theorem coeffOne_subst_zero {f s : PowerSeries R} (hs : constantCoeff s = 0) :
     coeff 1 (f.subst s) = coeff 1 f * coeff 1 s := by
   have ha : HasSubst s := HasSubst.of_constantCoeff_zero hs
@@ -34,10 +44,16 @@ theorem coeffOne_subst_zero {f s : PowerSeries R} (hs : constantCoeff s = 0) :
       have h3 := X_pow_dvd_iff.mp h2 1 h
       simp [h3]
 
+/- English proof (translation)
+Rewrite using `[← smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul, ← coe_substAlgHom hP, map_smul]`.
+-/
 theorem subst_C_mul_mv {ι : Type} {P : MvPowerSeries ι R} (hP : HasSubst P) (c : R)
     (f : PowerSeries R) : (C c * f).subst P = MvPowerSeries.C c * f.subst P := by
   rw [← smul_eq_C_mul, ← MvPowerSeries.smul_eq_C_mul, ← coe_substAlgHom hP, map_smul]
 
+/- English proof (translation)
+Rewrite using `[← smul_eq_C_mul, ← smul_eq_C_mul, ← coe_substAlgHom hP, map_smul]`.
+-/
 theorem subst_C_mul_ps {P : PowerSeries R} (hP : HasSubst P) (c : R)
     (f : PowerSeries R) : (C c * f).subst P = C c * f.subst P := by
   rw [← smul_eq_C_mul, ← smul_eq_C_mul, ← coe_substAlgHom hP, map_smul]
@@ -48,6 +64,13 @@ variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {l : ℕ}
 
 variable {lam : PowerSeries K} {Φ : MvPowerSeries (Fin 2) K} {A : PowerSeries K} {a : K}
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, h.lam0, map_zero]`. Rewrite using `[coeff_map, h.lam1, map_one]`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h.Φ0, map_zero]`. Establish `h1` using `h.Φint`.
+
+Unfold `IntegralMv at h1 ⊢`. Introduce `e`. Rewrite using `[MvPowerSeries.coeff_map, hF.isom]`. Conclude with `h1 e`. Establish `h1` using `congrArg (MvPowerSeries.map σ) h.log`.
+
+Unfold `atX atY at h1 ⊢`. Rewrite `h1` using `[map_add]`. Use `erw [PowerSeries.map_subst (HasSubst.of_constantCoeff_zero h.Φ0), PowerSeries.map_subst (HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)), PowerSeries.map_subst (HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1)), MvPowerSeries.map_X, MvPowerSeries …`. Conclude with `h1`.
+-/
 theorem LawD.map (hF : FrobField K l σ) (h : LawD lam Φ) :
     LawD (PowerSeries.map σ lam) (MvPowerSeries.map σ Φ) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -70,6 +93,13 @@ theorem LawD.map (hF : FrobField K l σ) (h : LawD lam Φ) :
       MvPowerSeries.map_X, MvPowerSeries.map_X] at h1
     exact h1
 
+/- English proof (translation)
+Use `⟨h.toLawD.map hF, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, h.A0, map_zero]`. Establish `h1` using `h.Aint`. Unfold `IntegralPS at h1 ⊢`. Introduce `n`.
+
+Rewrite using `[coeff_map, hF.isom]`. Conclude with `h1 n`. Establish `h1` using `congrArg (PowerSeries.map σ) h.Alog erw [PowerSeries.map_subst (HasSubst.of_constantCoeff_zero h.A0)] at h1`. Rewrite `h1` using `[map_mul, map_C]`. Conclude with `h1`.
+
+Rewrite using `[h.a_sq, norm_sub_rev]`. Conclude with `h.a_ne`. Rewrite using `[h.a_sq]`.
+-/
 theorem HD.map (hF : FrobField K l σ) (h : HD σ lam Φ A a) :
     HD σ (PowerSeries.map σ lam) (MvPowerSeries.map σ Φ) (PowerSeries.map σ A) (σ a) := by
   refine ⟨h.toLawD.map hF, ?_, ?_, ?_, ?_, ?_⟩
@@ -88,17 +118,30 @@ theorem HD.map (hF : FrobField K l σ) (h : HD σ lam Φ A a) :
     exact h.a_ne
   · rw [h.a_sq]
 
+/- English proof (translation)
+Establish `h1` using `congrArg (coeff 1) h.Alog`. Rewrite `h1` using `[coeffOne_subst_zero h.A0, coeff_C_mul, h.lam1, one_mul, mul_one]`. Conclude with `h1`.
+-/
 theorem HD.coeff_one_A (h : HD σ lam Φ A a) : coeff 1 A = a := by
   have h1 := congrArg (coeff 1) h.Alog
   rw [coeffOne_subst_zero h.A0, coeff_C_mul, h.lam1, one_mul, mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Establish `h1` using `h.Aint`. Unfold `IntegralPS at h1`. Rewrite using `[← h.coeff_one_A]`. Conclude with `h1 1`.
+-/
 theorem HD.norm_a (h : HD σ lam Φ A a) : ‖a‖ ≤ 1 := by
   have h1 := h.Aint
   unfold IntegralPS at h1
   rw [← h.coeff_one_A]
   exact h1 1
 
+/- English proof (translation)
+Use `⟨h.lam0, h.toLawD.deriv_integral, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : lam.subst Φ - atX lam - atY lam = 0` using `by rw [h.log]; ring`. Rewrite using `[h0]`. Unfold `DivByMv`. Introduce `e`.
+
+Simplify using the standard rewrite rules. Establish `h0 : lam.subst A - C a * lam = 0` using `by rw [h.Alog]; ring`. Rewrite using `[h0]`. Unfold `DivBy`. Introduce `n`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem HD.qcls_lam (h : HD σ lam Φ A a) : QCls l Φ A a lam := by
   refine ⟨h.lam0, h.toLawD.deriv_integral, ?_, ?_⟩
   · have h0 : lam.subst Φ - atX lam - atY lam = 0 := by rw [h.log]; ring
@@ -112,6 +155,11 @@ theorem HD.qcls_lam (h : HD σ lam Φ A a) : QCls l Φ A a lam := by
     intro n
     simp
 
+/- English proof (translation)
+Establish `h0` using `h`. Unfold `DivBy at h0`. Establish `h1` using `h0 1`. Establish `e : coeff 1 D * coeff 1 A - b * coeff 1 D = coeff 1 D * (coeff 1 A - b)` using `by ring`. Rewrite `h1` using `[map_sub, coeffOne_subst_zero hA0, coeff_C_mul, e, norm_mul, hb, mul_one]`.
+
+Conclude with `h1`.
+-/
 theorem eigen_trick {A : PowerSeries K} {b : K} (hA0 : constantCoeff A = 0) (D : PowerSeries K)
     (hD0 : constantCoeff D = 0) (h : DivBy (l : K) (D.subst A - C b * D))
     (hb : ‖coeff 1 A - b‖ = 1) : ‖coeff 1 D‖ ≤ ‖(l : K)‖ := by
@@ -122,6 +170,9 @@ theorem eigen_trick {A : PowerSeries K} {b : K} (hA0 : constantCoeff A = 0) (D :
   rw [map_sub, coeffOne_subst_zero hA0, coeff_C_mul, e, norm_mul, hb, mul_one] at h1
   exact h1
 
+/- English proof (translation)
+Unfold `DivBy at *`. Introduce `n`. Rewrite using `[coeff_C_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divBy_C_mul {x c : K} (hc : ‖c‖ ≤ 1) {f : PowerSeries K} (hf : DivBy x f) :
     DivBy x (C c * f) := by
   unfold DivBy at *
@@ -130,6 +181,9 @@ theorem divBy_C_mul {x c : K} (hc : ‖c‖ ≤ 1) {f : PowerSeries K} (hf : Div
   calc ‖c‖ * ‖coeff n f‖ ≤ 1 * ‖x‖ := mul_le_mul hc (hf n) (norm_nonneg _) zero_le_one
     _ = ‖x‖ := one_mul _
 
+/- English proof (translation)
+Unfold `DivBy IntegralPS at *`. Introduce `n`. Rewrite using `[coeff_C_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem divBy_C_mul' {x c : K} (hc : ‖c‖ ≤ ‖x‖) {f : PowerSeries K} (hf : IntegralPS f) :
     DivBy x (C c * f) := by
   unfold DivBy IntegralPS at *
@@ -138,10 +192,16 @@ theorem divBy_C_mul' {x c : K} (hc : ‖c‖ ≤ ‖x‖) {f : PowerSeries K} (h
   calc ‖c‖ * ‖coeff n f‖ ≤ ‖x‖ * 1 := mul_le_mul hc (hf n) (norm_nonneg _) (norm_nonneg _)
     _ = ‖x‖ := mul_one _
 
+/- English proof (translation)
+Rewrite using `[← smul_eq_C_mul, ← smul_eq_C_mul, Derivation.map_smul]`.
+-/
 theorem derivative_C_mul' (c : K) (f : PowerSeries K) :
     derivative K (C c * f) = C c * derivative K f := by
   rw [← smul_eq_C_mul, ← smul_eq_C_mul, Derivation.map_smul]
 
+/- English proof (translation)
+Establish `h0` using `hD.dInt`. Unfold `IntegralPS at h0`. Establish `h1` using `h0 0`. Rewrite `h1` using `[coeff_derivative]`. Simplify using `using h1`.
+-/
 theorem QCls.norm_coeff_one {b : K} {D : PowerSeries K} (hD : QCls l Φ A b D) :
     ‖coeff 1 D‖ ≤ 1 := by
   have h0 := hD.dInt
@@ -150,6 +210,21 @@ theorem QCls.norm_coeff_one {b : K} {D : PowerSeries K} (hD : QCls l Φ A b D) :
   rw [coeff_derivative] at h1
   simpa using h1
 
+/- English proof (translation)
+Use `set c := coeff 1 D with hc`. Establish `hc1 : ‖c‖ ≤ 1` using `hD.norm_coeff_one`. Establish `hΦ : HasSubst Φ` using `HasSubst.of_constantCoeff_zero h.Φ0`. Establish `hA : HasSubst A` using `HasSubst.of_constantCoeff_zero h.A0`. Establish `hX0 : HasSubst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K)` using `HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 0)`.
+
+Establish `hX1 : HasSubst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)` using `HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X 1)`. Establish `sub_subst : ∀ {P : MvPowerSeries (Fin 2) K} (_ : HasSubst P) (f g : PowerSeries K), (f - g).subst P = f.subst P - g.subst P` using `fun hP f g => by`. Rewrite using `[← coe_substAlgHom hP, map_sub]`. Establish `sub_substA : (D - C c * lam).subst A = D.subst A - C c * lam.subst A`. Rewrite using `[← coe_substAlgHom hA, map_sub, coe_substAlgHom hA, subst_C_mul_ps hA]`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hD.D0, h.lam0]`. Establish `hd` using `hD.dInt`. Establish `hl` using `h.toLawD.deriv_integral`. Unfold `IntegralPS at hd hl ⊢`.
+
+Introduce `n`. Rewrite using `[map_sub, derivative_C_mul', map_sub, coeff_C_mul, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hd n) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `e : (D - C c * lam).subst Φ - atX (D - C c * lam) - atY (D - C c * lam) = (D.subst Φ - atX D - atY D) - MvPowerSeries.C c * (lam.subst Φ - atX lam - atY lam)`. Unfold `atX atY`. Rewrite using `[sub_subst hΦ, sub_subst hX0, sub_subst hX1, subst_C_mul_mv hΦ, subst_C_mul_mv hX0, subst_C_mul_mv hX1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : lam.subst Φ - atX lam - atY lam = 0` using `by rw [h.log]; ring`.
+
+Rewrite using `[e, e2, mul_zero, sub_zero]`. Conclude with `hD.add`. Establish `e : (D - C c * lam).subst A - C a * (D - C c * lam) = D.subst A - C a * D`. Rewrite using `[sub_substA, h.Alog]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `hD.eig`.
+-/
 theorem HD.qcls_sub (h : HD σ lam Φ A a) {D : PowerSeries K} (hD : QCls l Φ A a D) :
     QCls l Φ A a (D - C (coeff 1 D) * lam) := by
   set c := coeff 1 D with hc
@@ -192,6 +267,19 @@ theorem HD.qcls_sub (h : HD σ lam Φ A a) {D : PowerSeries K} (hD : QCls l Φ A
     rw [e]
     exact hD.eig
 
+/- English proof (translation)
+Establish `hl0 : l ≠ 0` using `hF.prime.ne_zero`. Use `set E : PowerSeries K := D - C (coeff 1 D) * lam with hE`. Establish `hEq : QCls l Φ A a E` using `h.qcls_sub hD`. Establish `hE' : DivBy (l : K) (derivative K E)`. Use `hon_deriv h.toLawD (l : K) D hD.add` as an intermediate fact.
+
+Rewrite using `[hE, map_sub, derivative_C_mul']` and apply the resulting hypothesis. Establish `h1 : QCls l (MvPowerSeries.map σ Φ) (PowerSeries.map σ A) a (desc l E)` using `desc_QCls hF h.Φ0 h.Φint h.A0 h.Aint h.norm_a hEq hE'`. Establish `c1` using `(desc_congr hF.prime hF.norm_l E hE').1`. Establish `hσ` using `h.map hF`. Establish `hs : ‖coeff 1 (desc l E)‖ ≤ ‖(l : K)‖` using `eigen_trick hσ.A0 _ h1.D0 h1.eig (by rw [hσ.coeff_one_A]; exact h.a_ne)`.
+
+Establish `h1' : DivBy (l : K) (derivative K (desc l E))`. Establish `h2` using `hon_deriv hσ.toLawD (l : K) _ h1.add`. Establish `h3` using `divBy_add h2 (divBy_C_mul' hs hσ.toLawD.deriv_integral)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `h2 : QCls l (MvPowerSeries.map σ (MvPowerSeries.map σ Φ)) (PowerSeries.map σ (PowerSeries.map σ A)) a (desc l (desc l E))` using `desc_QCls hF hσ.Φ0 hσ.Φint hσ.A0 hσ.Aint h.norm_a h1 h1'`.
+
+Establish `c2` using `(desc_congr hF.prime hF.norm_l _ h1').1`. Use `⟨desc l (desc l E), ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : MvPowerSeries.map (σ.comp σ) Φ = MvPowerSeries.map σ (MvPowerSeries.map σ Φ)`. Use extensionality with `d`. Simplify using the standard rewrite rules.
+
+Establish `e2 : PowerSeries.map (σ.comp σ) A = PowerSeries.map σ (PowerSeries.map σ A)`. Use extensionality with `d`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`. Conclude with `h2`.
+
+Establish `hXl : HasSubst ((X : PowerSeries K) ^ l)` using `HasSubst.of_constantCoeff_zero' (by simp [hl0])`. Establish `c3` using `(divBy_expand_iff (l : K) l hl0 _).2 c2`. Rewrite `c3` using `[subst_sub hXl, subst_comp_subst_apply hXl hXl, subst_pow hXl, subst_X hXl, ← pow_mul, ← sq]`. Establish `c4` using `divBy_add c1 c3`. Rewrite `c4` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis.
+-/
 theorem lemmaQ (hF : FrobField K l σ) (h : HD σ lam Φ A a) {D : PowerSeries K}
     (hD : QCls l Φ A a D) :
     ∃ Dp : PowerSeries K,

@@ -7,6 +7,15 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum.ThickPre
 
+/- English proof (translation)
+Establish `hs : Function.Surjective (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) : R' ⧸ I ^ (e + 1 + 1) →+* R' ⧸ I ^ (e + 1))` using `Ideal.Quotient.factor_surjective _`. Establish `hr` using `_root_.range_comap_of_surjective _ _ hs`. Establish `ht : (t : PrimeSpectrum _) ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) : R' ⧸ I ^ (e + 1 + 1) →+* R' ⧸ I ^ (e + 1)))`. Rewrite using `[hr]`. Introduce `x hx`.
+
+Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `ha : a ∈ I ^ (e + 1)`. Rewrite `hx` using `[SetLike.mem_coe, RingHom.mem_ker, Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx`. Establish `h2 : (Ideal.Quotient.mk (I ^ (e + 1 + 1)) a) ^ 2 = 0`.
+
+Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Establish `: a ^ 2 ∈ I ^ ((e + 1) * 2)` using `by rw [pow_mul]; exact Ideal.pow_mem_pow ha 2`. Conclude with `Ideal.pow_le_pow_right (by omega) this`. Conclude with `t.isPrime.mem_of_pow_mem 2 (by rw [h2]; exact Ideal.zero_mem _)`. Take `⟨t', ht'⟩` from `ht`.
+
+Conclude with `⟨t', ht'⟩`.
+-/
 lemma thickTrans_surj (R' : Type) [CommRing R'] (I : Ideal R') (e : ℕ)
     (t : Spec (CommRingCat.of (R' ⧸ I ^ (e + 1 + 1)))) : ∃ t', (thickTrans R' I e) t' = t := by
   have hs : Function.Surjective (Ideal.Quotient.factor (Ideal.pow_le_pow_right (Nat.le_succ (e + 1))) :
@@ -29,6 +38,11 @@ lemma thickTrans_surj (R' : Type) [CommRing R'] (I : Ideal R') (e : ℕ)
   obtain ⟨t', ht'⟩ := ht
   exact ⟨t', ht'⟩
 
+/- English proof (translation)
+Introduce `y`. Take `⟨t', ht'⟩` from `thickTrans_surj R' I e (pullback.snd G'.hom (thick R' I (e + 1)) y)`. Establish `hc : G'.hom (pullback.fst G'.hom (thick R' I (e + 1)) y) = thick R' I e t'`. Establish `h1 : G'.hom (pullback.fst G'.hom (thick R' I (e + 1)) y) = thick R' I (e + 1) (pullback.snd G'.hom (thick R' I (e + 1)) y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`.
+
+Rewrite using `[h1, ← ht', ← Scheme.Hom.comp_apply, thickTrans_comp]`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback _ _ hc`. Use `⟨z, (pullback.fst G'.hom (thick R' I (e + 1))).isClosedEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, thickMap, pullback.lift_fst, Category.comp_id, hz]`.
+-/
 lemma thickMap_surj (R' : Type) [CommRing R'] (I : Ideal R') (e : ℕ) (G' : Over (Sp R')) :
     Function.Surjective (thickMap R' I e G') := by
   intro y
@@ -44,6 +58,11 @@ lemma thickMap_surj (R' : Type) [CommRing R'] (I : Ideal R') (e : ℕ) (G' : Ove
 
 end GlobalTheory.Mum.ThickPre
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact h0`. Consider the case `succ e ih`. Establish `h1 : thickMap R' I e G' ⁻¹ᵁ (φ (e + 1) ⁻¹ᵁ W) = thickMap R' I e G' ⁻¹ᵁ ((pullback.fst G'.hom (thick R' I (e + 1))) ⁻¹ᵁ V)`.
+
+Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, hφ, ih, thickMap, pullback.lift_fst, Category.comp_id]`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `GlobalTheory.Mum.ThickPre.thickMap_surj R' I e G' y`. Use `congrArg (fun U : Scheme.Opens _ => x ∈ U) h1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem GlobalTheory.Mum.thick_preimage_eq (R' : Type) [CommRing R'] (I : Ideal R') (G' : Over (Sp R')) (Y : Scheme.{0})
     (φ : ∀ e : ℕ, (thickObj R' I e G').left ⟶ Y) (hφ : ∀ e, thickMap R' I e G' ≫ φ (e + 1) = φ e)
     (V : G'.left.Opens) (W : Y.Opens)
@@ -62,5 +81,8 @@ theorem GlobalTheory.Mum.thick_preimage_eq (R' : Type) [CommRing R'] (I : Ideal 
     have := congrArg (fun U : Scheme.Opens _ => x ∈ U) h1
     simpa using this
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.Mum.thick_preimage_eq`.
+-/
 example : ∀ (R' : Type) [CommRing R'] (I : Ideal R') (G' : Over (Sp R')) (Y : Scheme.{0}) (φ : ∀ e : ℕ, (thickObj R' I e G').left ⟶ Y), (∀ e, thickMap R' I e G' ≫ φ (e + 1) = φ e) → ∀ (V : G'.left.Opens) (W : Y.Opens), φ 0 ⁻¹ᵁ W = (pullback.fst G'.hom (thick R' I 0)) ⁻¹ᵁ V → ∀ e, φ e ⁻¹ᵁ W = (pullback.fst G'.hom (thick R' I e)) ⁻¹ᵁ V :=
   @GlobalTheory.Mum.thick_preimage_eq

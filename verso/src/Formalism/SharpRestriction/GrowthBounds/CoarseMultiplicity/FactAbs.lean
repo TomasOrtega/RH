@@ -7,6 +7,43 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨h1, h2⟩` from `h52 p hp h5`. Use `set t' : σ → ℕ := fun v => if odd v then t v else 0 with ht'`. Use `set ρ' : σ → ℕ := fun v => if odd v then ρ v else 0 with hρ'`. Establish `hlt : ∀ k, ρ' k < p ^ (t' k + 1)`.
+
+Introduce `k`. Distinguish the cases in `hk : odd k`. Simplify using `only [hρ', ht', if_pos hk]`. Rewrite using `[← (hodd k hk).1]`. Conclude with `(hodd k hk).2`.
+
+Simplify using `only [hρ', ht', if_neg hk]`. Conclude with `pow_pos hp.pos _`. Take `⟨hunit, -, hop⟩` from `h2 σ t' ρ' hlt`. Take `⟨T, q, hT, hq⟩` from `hop true c`. Set `E : (σ → ℕ) → (σ →₀ ℕ)` to `fun j => Finsupp.equivFunOnFinite.symm j`.
+
+Establish `hE : Function.Injective E` using `Finsupp.equivFunOnFinite.symm.injective`. Establish `hEa : ∀ j v, E j v = j v` using `fun j v => rfl`. Use `⟨(T.filter fun j => ∀ v, ¬ odd v → j v = 0).image E, fun ν => q ν, ?_, ?_⟩` and prove the remaining obligations. Introduce `ν hν`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.1 hν`.
+
+Take `⟨hjT, hj0⟩` from `Finset.mem_filter.1 hj`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Conclude with `(hT j hjT).1`. Introduce `v hv`.
+
+Assume the negation of the conclusion as `hno`. Conclude with `(Finsupp.mem_support_iff.1 hv) (hj0 v hno)`. Conclude with `(hT j hjT).2`. Introduce `μ set e' : σ → ℕ := fun v => if odd v then μ v else 0 with he' set U : ℚ := ∏ k, cUnit (p ^ (t' k + 1)) (e' k) * dUnit (p ^ (t' k + 1)) (e' k) (ρ' k) with hU set A : ℚ := ∏ k, (((ρ' k + p ^ (t' k + 1) * e' k).factorial : ℕ) : ℚ) with hA set B : ℚ := ∏ k, ((ρ' k).factorial : ℚ) * …`. Establish `hU0 : U ≠ 0` using `(hunit e').1`.
+
+Establish `hUv : padicValRat p U = 0` using `(hunit e').2`. Establish `hAB : A = B * U`. Rewrite using `[hA, hB, hU, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h1 (t' k) (ρ' k) (e' k) (hlt k)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hB0 : B ≠ 0`. Rewrite using `[hB]`. Use `Finset.prod_ne_zero_iff.2 fun k _ => ?_` and prove the remaining obligations. Establish `a1 : ((ρ' k).factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`.
+
+Establish `a2 : ((e' k).factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Establish `a3 : ((p ^ (t' k + 1)).factorial : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Conclude with `mul_ne_zero (mul_ne_zero a1 a2) (pow_ne_zero _ a3)`. Establish `hq' : PadicGe p (U⁻¹ - g) c`. Use `hq e'` as an intermediate fact.
+
+Simplify using `only [if_true] at this`. Establish `e : A / B = U` using `by rw [hAB]; field_simp`. Rewrite `this` using `[← hA, ← hB, e]`. Conclude with `this`. Establish `hgs : (∑ ν ∈ (T.filter fun j => ∀ v, ¬ odd v → j v = 0).image E, q ν * ((ν.prod fun k i => (μ k).choose i : ℕ) : ℚ)) = g`.
+
+Rewrite using `[Finset.sum_image fun a _ b _ h => hE h, hg, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ∀ v, ¬ odd v → j v = 0`. Rewrite using `[if_pos hj, Finsupp.prod_fintype _ _ (fun _ => Nat.choose_zero_right _)]`. Use `push_cast`.
+
+Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : odd k`. Simplify using `only [he', if_pos hk, hEa]`. Simplify using `only [he', if_neg hk, hEa, hj k hk, Nat.choose_zero_right]`.
+
+Rewrite `hj` using `[if_neg hj] push_neg`. Take `⟨v, hv, hjv⟩` from `hj`. Establish `: (∏ k, ((e' k).choose (j k) : ℚ)) = 0`. Use `Finset.prod_eq_zero (Finset.mem_univ v) ?_` and prove the remaining obligations. Simplify using `only [he', if_neg hv]`.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt (Nat.pos_of_ne_zero hjv)]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero]`. Use `⟨(-U) * (U⁻¹ - g), ?_, ?_⟩` and prove the remaining obligations. Establish `hU' : PadicGe p (-U) 0` using `padicGe_neg (Or.inr (by rw [hUv]; simp))`.
+
+Use `padicGe_mul hU' hq'` as an intermediate fact. Simplify using `using this`. Rewrite using `[hgs] set M : ℚ := ∏ v, (if odd v then (1 : ℚ) else ((μ v).factorial : ℚ)) with hM`. Establish `l1 : (∏ v, ((ρ v + L v * μ v).factorial : ℚ)) = A * M`. Rewrite using `[hA, hM, ← Finset.prod_mul_distrib]`.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : odd v`. Simplify using `only [hρ', ht', he', if_pos hv, (hodd v hv).1, mul_one]`. Simplify using `only [hρ', ht', he', if_neg hv, (hend v hv).1, (hend v hv).2]`. Simplify using the standard rewrite rules.
+
+Establish `l2 : (∏ v, ((ρ v).factorial : ℚ) * ((μ v).factorial : ℚ) * ((L v).factorial : ℚ) ^ (μ v)) = B * M`. Rewrite using `[hB, hM, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : odd v`. Simplify using `only [hρ', ht', he', if_pos hv, (hodd v hv).1, mul_one]`.
+
+Simplify using `only [hρ', ht', he', if_neg hv, (hend v hv).1, (hend v hv).2]`. Simplify using the standard rewrite rules. Rewrite using `[l1, l2, hAB]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fact_abs {D : Formalism.BasicNotions.D7} (h52 : Formalism.MainNotions.CovariantDegrees.FactorialUnitDecomposition D) {p : ℕ} (hp : p.Prime) (h5 : 5 ≤ p) (σ : Type)
     [Fintype σ] [DecidableEq σ] (odd : σ → Prop) [DecidablePred odd] (t ρ L : σ → ℕ)
     (hodd : ∀ v, odd v → L v = p ^ (t v + 1) ∧ ρ v < L v) (hend : ∀ v, ¬ odd v → L v = 1 ∧ ρ v = 0) (c : ℕ) :

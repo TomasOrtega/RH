@@ -13,5 +13,8 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SWLink
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SWLinkChart.exists_isChartW | exact GlobalTheory.SWLinkChart.exists_isChartW | (intros; apply GlobalTheory.SWLinkChart.exists_isChartW <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.witt_change_basis_unitary_iso : ∀ (D : D7) (n : ℕ) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E), T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n → ∃ κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n, IsChartW T κ := by
   first | exact @GlobalTheory.SWLinkChart.exists_isChartW | exact GlobalTheory.SWLinkChart.exists_isChartW | (intros; apply GlobalTheory.SWLinkChart.exists_isChartW <;> assumption)

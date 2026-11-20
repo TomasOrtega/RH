@@ -7,6 +7,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory.Mem
 
+/- English proof (translation)
+Rewrite using `[Ideal.map, IsLocalization.coeSubmodule_span, Set.image_image]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+
+Conclude with `⟨a, ha, rfl⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨a, ha, rfl⟩`.
+-/
 theorem span_image_eq_coeSubmodule_map {E K : Type} [Field E] [Field K] [NumberField K]
     (f : E →+* K) (𝔞 : Ideal (𝓞 E)) :
     Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, x = f (a : E)} =
@@ -27,6 +32,9 @@ noncomputable def extendIdealHom {E K : Type} [Field E] [Field K] [NumberField K
     rw [Ideal.one_eq_top, Ideal.map_top, IsLocalization.coeSubmodule_top]
   map_mul' a b := by rw [Ideal.map_mul, IsLocalization.coeSubmodule_mul]
 
+/- English proof (translation)
+Use `show IsLocalization.coeSubmodule K ((Ideal.span {a}).map (RingOfIntegers.mapRingHom f)) = _`. Rewrite using `[Ideal.map_span, IsLocalization.coeSubmodule_span, Set.image_singleton, Set.image_singleton]`. Both sides reduce to the same expression.
+-/
 theorem extendIdealHom_span {E K : Type} [Field E] [Field K] [NumberField K]
     (f : E →+* K) (a : 𝓞 E) :
     extendIdealHom f (Ideal.span {a}) = Submodule.span (𝓞 K) {f (a : E)} := by
@@ -34,10 +42,16 @@ theorem extendIdealHom_span {E K : Type} [Field E] [Field K] [NumberField K]
   rw [Ideal.map_span, IsLocalization.coeSubmodule_span, Set.image_singleton, Set.image_singleton]
   rfl
 
+/- English proof (translation)
+The claim follows from `Submodule.FG.map _ (IsNoetherian.noetherian _)`.
+-/
 theorem extendIdealHom_fg {E K : Type} [Field E] [Field K] [NumberField K]
     (f : E →+* K) (𝔞 : Ideal (𝓞 E)) : (extendIdealHom f 𝔞).FG :=
   Submodule.FG.map _ (IsNoetherian.noetherian _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [Submodule.one_eq_span]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, ih, Submodule.span_pow, Set.singleton_pow, Submodule.span_mul_span, Set.singleton_mul_singleton]`.
+-/
 theorem span_singleton_prod_pow {R K ι : Type} [CommRing R] [CommRing K] [Algebra R K]
     (s : Finset ι) (x : ι → K) (r : ι → ℕ) :
     ∏ i ∈ s, Submodule.span R {x i} ^ r i = Submodule.span R {∏ i ∈ s, x i ^ r i} := by
@@ -48,6 +62,11 @@ theorem span_singleton_prod_pow {R K ι : Type} [CommRing R] [CommRing K] [Algeb
     rw [Finset.prod_insert hi, Finset.prod_insert hi, ih, Submodule.span_pow, Set.singleton_pow,
       Submodule.span_mul_span, Set.singleton_mul_singleton]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi]`.
+
+Conclude with `((h i).pow _).mul ih`.
+-/
 theorem fg_prod_pow {R K ι : Type} [CommRing R] [CommRing K] [Algebra R K]
     (s : Finset ι) (I : ι → Submodule R K) (r : ι → ℕ) (h : ∀ i, (I i).FG) :
     (∏ i ∈ s, I i ^ r i).FG := by
@@ -58,6 +77,11 @@ theorem fg_prod_pow {R K ι : Type} [CommRing R] [CommRing K] [Algebra R K]
     rw [Finset.prod_insert hi]
     exact ((h i).pow _).mul ih
 
+/- English proof (translation)
+Take `⟨𝔠, h𝔠⟩` from `ClassGroup.mk0_surjective c`. Establish `h1 : ClassGroup.mk0 (𝔠 ^ Fintype.card (ClassGroup (𝓞 E))) = 1`. Rewrite using `[map_pow, pow_card_eq_one]`. Establish `h2` using `(ClassGroup.mk0_eq_one_iff (𝔠 ^ Fintype.card (ClassGroup (𝓞 E))).2).1 h1`. Take `⟨γ, hγ⟩` from `h2`.
+
+Establish `hγ' : (𝔠 : Ideal (𝓞 E)) ^ Fintype.card (ClassGroup (𝓞 E)) = Ideal.span {γ}` using `hγ`. Use `⟨𝔠, γ, h𝔠, ?_, hγ'⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hγ'` using `[Ideal.span_singleton_zero]`. Conclude with `pow_ne_zero _ (nonZeroDivisors.ne_zero 𝔠.2) hγ'`.
+-/
 theorem exists_rep_pow_classNumber (E : Type) [Field E] [NumberField E] (c : ClassGroup (𝓞 E)) :
     ∃ (𝔠 : (Ideal (𝓞 E))⁰) (γ : 𝓞 E), ClassGroup.mk0 𝔠 = c ∧ γ ≠ 0 ∧
       (𝔠 : Ideal (𝓞 E)) ^ Fintype.card (ClassGroup (𝓞 E)) = Ideal.span {γ} := by
@@ -72,6 +96,39 @@ theorem exists_rep_pow_classNumber (E : Type) [Field E] [NumberField E] (c : Cla
   rw [Ideal.span_singleton_zero] at hγ'
   exact pow_ne_zero _ (nonZeroDivisors.ne_zero 𝔠.2) hγ'
 
+/- English proof (translation)
+Introduce `E _ _ _ _ r n hr`. Use `set h := Fintype.card (ClassGroup (𝓞 E)) with hh`. Establish `hpos : 0 < h` using `Fintype.card_pos`. Use `choose 𝔠 γ h𝔠 hγ0 hγ using exists_rep_pow_classNumber E`. Establish `hex : ∀ c, ∃ z : ℂ, z ^ h = ∏ τ : E →+* ℂ, τ (γ c : E) ^ r τ` using `fun c => IsAlgClosed.exists_pow_nat_eq _ hpos`.
+
+Use `choose b hb using hex`. Use `⟨Finset.univ.image b, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hz`. Use `IsAlgebraic.of_pow hpos ?_` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Use `IsIntegral.isAlgebraic (IsIntegral.prod _ fun τ _ => IsIntegral.pow ?_ _)` and prove the remaining obligations. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ) (γ c : E)).map τ.toRatAlgHom`. Introduce `K _ hS hK 𝔞 h𝔞`. Establish `: NumberField K` using `NumberField.mk`.
+
+Set `f : (E →+* ℂ) → (E →+* K)` to `fun τ => τ.codRestrict K (hK τ)`. Set `N : 𝓞 E → K` to `fun a => ∏ τ : E →+* ℂ, f τ (a : E) ^ r τ`. Establish `hN0 : ∀ a, a ≠ 0 → N a ≠ 0` using `fun a ha => Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (by`. Rewrite using `[map_ne_zero]`. Conclude with `ha)` after adjusting the coercions.
+
+Establish `hNabs : ∀ (a : 𝓞 E) (σ : K →+* ℂ), ‖σ (N a)‖ ^ 2 = (Ideal.absNorm (Ideal.span {a}) : ℝ) ^ n`. Introduce `a σ`. Use `norm_typeNorm_sq_eq E r n hr K hK (a : E) σ` as an intermediate fact. Rewrite using `[Ideal.absNorm_span_singleton, Nat.cast_natAbs, Int.cast_abs]`. Rewrite `this` using `[← Algebra.coe_norm_int]`.
+
+Rewrite `this` using `[Rat.cast_intCast]`. Conclude with `this`. Set `Φ : Ideal (𝓞 E) → Submodule (𝓞 K) K` to `fun I => ∏ τ : E →+* ℂ, extendIdealHom (f τ) I ^ r τ`. Establish `hΦmul : ∀ I J, Φ (I * J) = Φ I * Φ J`. Introduce `I J`.
+
+Simplify using `only [Φ, map_mul, mul_pow, Finset.prod_mul_distrib]`. Establish `hΦpow : ∀ I, Φ (I ^ h) = Φ I ^ h`. Introduce `I`. Simplify using `only [Φ, map_pow, ← Finset.prod_pow, ← pow_mul, mul_comm]`. Establish `hΦspan : ∀ a, Φ (Ideal.span {a}) = Submodule.span (𝓞 K) {N a}`.
+
+Introduce `a`. Simplify using `only [Φ, N, extendIdealHom_span, span_singleton_prod_pow]`. Establish `hgoal : ∏ τ : E →+* ℂ, Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, (x : ℂ) = τ (a : E)} ^ r τ = Φ 𝔞`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `Eq.trans ?_ (span_image_eq_coeSubmodule_map (f τ) 𝔞)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Subtype.ext_iff]`. Both sides reduce to the same expression.
+
+Rewrite using `[hgoal]`. Set `𝔞' : (Ideal (𝓞 E))⁰` to `⟨𝔞, mem_nonZeroDivisors_of_ne_zero h𝔞⟩`. Use `set c := ClassGroup.mk0 𝔞' with hc`. Take `⟨x, y, hx, hy, hxy⟩` from `ClassGroup.mk0_eq_mk0_iff.1 (hc.symm.trans (h𝔠 c).symm)`. Establish `hxy' : Ideal.span {x} * 𝔞 = Ideal.span {y} * (𝔠 c : Ideal (𝓞 E))` using `hxy`.
+
+Set `βc : K` to `⟨b c, hS _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))⟩`. Establish `hβc : βc ^ h = N (γ c)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [βc, N, SubmonoidClass.coe_pow, IntermediateField.coe_prod, hb]`. Both sides reduce to the same expression.
+
+Establish `hβc0 : βc ≠ 0`. Introduce `h0`. Rewrite `hβc` using `[h0, zero_pow hpos.ne']`. Conclude with `hN0 _ (hγ0 c) hβc.symm`. Establish `hΦc : Φ (𝔠 c) = Submodule.span (𝓞 K) {βc}`.
+
+Use `GlobalTheory.submodule_eq_span_of_pow_eq_span_pow K _ βc h hpos hβc0 (fg_prod_pow _ _ _ fun τ => extendIdealHom_fg _ _) ?_` and prove the remaining obligations. Rewrite using `[← hΦpow, hγ, hΦspan, hβc]`. Establish `hcabs : ∀ σ : K →+* ℂ, ‖σ βc‖ ^ 2 = (Ideal.absNorm (𝔠 c : Ideal (𝓞 E)) : ℝ) ^ n`. Introduce `σ`. Use `hNabs (γ c) σ` as an intermediate fact.
+
+Rewrite `this` using `[← hγ, ← hβc, map_pow, map_pow, norm_pow, Nat.cast_pow, ← pow_mul, ← pow_mul, mul_comm _ 2, mul_comm _ n, pow_mul, pow_mul]`. Conclude with `(pow_left_inj₀ (by positivity) (by positivity) hpos.ne').1 this`. Use `⟨(N x)⁻¹ * (N y * βc), mul_ne_zero (inv_ne_zero (hN0 x hx)) (mul_ne_zero (hN0 y hy) hβc0), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Φ hxy'`. Rewrite `h1` using `[hΦmul, hΦmul, hΦspan, hΦspan, hΦc]`.
+
+Rewrite using `[← Set.singleton_mul_singleton, ← Set.singleton_mul_singleton, ← Submodule.span_mul_span, ← Submodule.span_mul_span, ← h1, ← mul_assoc, Submodule.span_mul_span, Set.singleton_mul_singleton, inv_mul_cancel₀ (hN0 x hx), ← Submodule.one_eq_span, one_mul]`. Introduce `σ`. Establish `h1` using `congrArg (fun I => (Ideal.absNorm I : ℝ) ^ n) hxy'`. Simplify using `only [map_mul, Nat.cast_mul, mul_pow] at h1`. Rewrite `h1` using `[← hNabs x σ, ← hNabs y σ, ← hcabs σ]`.
+
+Establish `h2 : ‖σ (N x)‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff, map_ne_zero]`. Conclude with `hN0 x hx`. Rewrite using `[map_mul, map_mul, map_inv₀, norm_mul, norm_mul, norm_inv, mul_pow, mul_pow, ← h1]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem exists_finset_typeNorm_principal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → ℕ) (n : ℕ), (∀ τ, r τ + r (ComplexEmbedding.conjugate τ) = n) → ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧ ∀ (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K], (∀ z ∈ S, z ∈ K) → (∀ (τ : E →+* ℂ) x, τ x ∈ K) → ∀ 𝔞 : Ideal (𝓞 E), 𝔞 ≠ ⊥ → ∃ β : K, β ≠ 0 ∧ Submodule.span (𝓞 K) {β} = ∏ τ : E →+* ℂ, Submodule.span (𝓞 K) {x : K | ∃ a ∈ 𝔞, (x : ℂ) = τ (a : E)} ^ r τ ∧ ∀ σ : K →+* ℂ, ‖σ β‖ ^ 2 = (Ideal.absNorm 𝔞 : ℝ) ^ n := by
   intro E _ _ _ _ r n hr
   classical

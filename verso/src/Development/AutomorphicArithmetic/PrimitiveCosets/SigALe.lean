@@ -5,6 +5,11 @@ import Development.AutomorphicArithmetic.PrimitiveCosets.CardPsiA
 open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 Formalism.RankGapBounds.WeightedMeanData Formalism.LFunctionChainParameters.WeightedSlopeBounds Formalism.LFunctionChainParameters.characterSumData Formalism.LFunctionChainParameters.ThickSetMeanBounds Formalism.LFunctionChainParameters.LErr
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
+/- English proof (translation)
+Introduce `s hs`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [PsiA, Finset.mem_filter, Finset.mem_univ, true_and] at h`. Establish `e : ((chr φ ψ (φ.tau1 s)) : ℂ) = ψ (0, s)`. Simplify using `[chr, toE, Frame.tau1, Frame.iotaInv, Frame.iota]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, Units.val_one]`. Conclude with `h s hs`.
+-/
 private theorem character_trivial_first_factor (φ : Frame) (ψ : AddChar (E0 × φ.A) ℂ) (h : ψ ∈ PsiA φ.A0) : Frame.TrivialOnFirstFactor (chr φ ψ) := by
   intro s hs
   apply Units.ext
@@ -15,6 +20,15 @@ private theorem character_trivial_first_factor (φ : Frame) (ψ : AddChar (E0 ×
   rw [e, Units.val_one]
   exact h s hs
 
+/- English proof (translation)
+Establish `hT` using `character_trivial_first_factor φ ψ h`. Establish `hsq : chr φ ψ φ.iod * chr φ ψ φ.iod = 1`. Rewrite using `[← map_mul]`. Establish `e : φ.iod * φ.iod = 1`. Simplify using `only [Frame.iod]`.
+
+Apply the tactic sequence `ext <;> simp`. Rewrite using `[e, map_one]`. Establish `hv : (chr φ ψ φ.iod : ℂ) * (chr φ ψ φ.iod : ℂ) = 1`. Rewrite using `[← Units.val_mul, hsq, Units.val_one]`. Break down `mul_self_eq_one_iff.mp hv with h1 | h1` into its components or cases.
+
+Use `left`. Use `⟨⟨hT, Units.ext (by simpa using h1)⟩, ?_⟩` and prove the remaining obligations. Introduce `hK`. Apply `hk` to reduce the goal to its premises. Simplify `hK` using `[keptA]`.
+
+Use `right`. Conclude with `⟨hT, Units.ext (by simpa using h1)⟩`.
+-/
 private theorem chr_bounded (Λ : Level) (φ : Frame) (H : HostRaw φ) (ψ : AddChar (E0 × φ.A) ℂ) (h : ψ ∈ PsiA φ.A0)
     (hk : ψ ∉ keptA Λ H) : chr φ ψ ∈ H.Bounded Λ.KEPT := by
   have hT := character_trivial_first_factor φ ψ h
@@ -35,6 +49,15 @@ private theorem chr_bounded (Λ : Level) (φ : Frame) (H : HostRaw φ) (ψ : Add
   · right
     exact ⟨hT, Units.ext (by simpa using h1)⟩
 
+/- English proof (translation)
+Introduce `Λ φ H TT x eps C ell hx hE hell`. Unfold `SigA`. Establish `hb : ∀ ψ ∈ PsiA φ.A0 \ keptA Λ H.toHostRaw, ‖GPsi (arith H.toHostRaw) ell ψ x‖ ≤ x ^ ((1 : ℝ) / 2 + eps)`. Introduce `ψ hψ`. Rewrite `hψ` using `[Finset.mem_sdiff]`.
+
+Rewrite using `[(prim_read φ H ell hell ψ).2 x]`. Conclude with `hE.bdG _ (chr_bounded Λ φ H.toHostRaw ψ hψ.1 hψ.2) _ _ (HostRaw.isPrimOf_prim _ _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ ((PsiA φ.A0).card : ℝ) * x ^ ((1 : ℝ) / 2 + eps) := by`.
+
+Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hx.le _)` to reduce the goal to its premises. Conclude with `Finset.card_le_card Finset.sdiff_subset` after adjusting the coercions. Use `_ = 4 * (Λ.o : ℝ) * x ^ ((1 : ℝ) / 2 + eps) := by`. Rewrite using `[card_PsiA, hE.o_eq]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.Comparison₂.sigA_le :
     ∀ (Λ : Level) (φ : Frame) (H : HostAx φ) (TT : Finset φ.A) (x eps C : ℝ) (ell : AddChar (E0 × φ.A) ℂ → ℂ), 0 < x →
       EAtH Λ H.toHostRaw TT x eps C → HostAddCharCompatible H.toHostRaw ell →

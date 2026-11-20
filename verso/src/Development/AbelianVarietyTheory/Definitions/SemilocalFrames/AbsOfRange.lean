@@ -7,10 +7,24 @@ open MeasureTheory Matrix Formalism.BasicNotions Formalism.QuantumDeterminants F
 open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.RangeModel
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : @HypZ = @Formalism.MainNotions.S.Cnt.Hyp0 := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : @MomIn = @Formalism.MainNotions.S.UnitaryVolumeMass.stMOM := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : @SchurSt = @Formalism.MainNotions.S.UnitaryVolumeMass.stSchur := rfl
 
+/- English proof (translation)
+Establish `h0 : ∀ τ, l1dist (lamD D τ) (lamD D τ) ≤ Cn * D.R.k * (D.R.m : ℝ) ^ 3` using `fun τ => by`. Simplify using `only [l1dist, sub_self, abs_zero, Finset.sum_const_zero]`. Check the signs of the components of the expression. Prove the components needed by the constructor for the conclusion. Introduce `τ w w' hT θ hθ W hW S hS _ γ p hp θ' hθ' ν hν hH hD`.
+
+Conclude with `(h hH.1 τ w w' hT θ hθ W hW _ (h0 τ) S hS γ p hp θ' hθ' ν hν hD).2`. Introduce `τ w w' hT θ hθ W hW S hS _ γ p hp θ' hθ' ν hν hH hD`. Conclude with `(h hH.1 τ w w' hT θ hθ W hW _ (h0 τ) S hS γ p hp θ' hθ' ν hν hD).1`.
+-/
 theorem abs_of_range (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 A Cn C1 C : ℝ) (hn : 0 ≤ Cn)
     (h : ABSr D large₂ C' Cl Cg cb Cu cT CT C0 Cn C1 C) :
     Formalism.MainNotions.S.UnitaryVolumeMass.stABS D large₂ C' Cl Cg cb Cu cT CT C0 A C1 C ∧
@@ -23,19 +37,53 @@ theorem abs_of_range (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C
   · intro τ w w' hT θ hθ W hW S hS _ γ p hp θ' hθ' ν hν hH hD
     exact (h hH.1 τ w w' hT θ hθ W hW _ (h0 τ) S hS γ p hp θ' hθ' ν hν hD).1
 
+/- English proof (translation)
+The claim follows from `Finset.prod_pos fun _ _ => Finset.prod_pos fun _ hb => sub_pos.2 (h (Finset.mem_filter.1 hb).2)`.
+-/
 theorem vand_pos {n : ℕ} {x : Fin n → ℝ} (h : StrictAnti x) : 0 < Formalism.MainNotions.S.vand x :=
   Finset.prod_pos fun _ _ => Finset.prod_pos fun _ hb => sub_pos.2 (h (Finset.mem_filter.1 hb).2)
 
+/- English proof (translation)
+The claim follows from `mul_right_cancel₀ (vand_pos h₁.1.1).ne' (h W l l A₁ A₂ h₁ h₂)`.
+-/
 theorem deg_eq (D : D7) (h : DegVand D) (W : LocW D.R.k D.R.rS) (l) (A₁ A₂ : LocS W)
     (h₁ : GoodS D l A₁) (h₂ : GoodS D l A₂) : A₂.deg = A₁.deg :=
   mul_right_cancel₀ (vand_pos h₁.1.1).ne' (h W l l A₁ A₂ h₁ h₂)
 
+/- English proof (translation)
+Take `⟨P, -, hd, -⟩` from `h₁.2.2.2.2.2.2.2.2.2.2`. Rewrite using `[div_eq_div_iff hd.ne' (vand_pos h₁.1.1).ne', h W l₁ l₂ A₁ A₂ h₁ h₂, mul_comm]`.
+-/
 theorem deg_ratio (D : D7) (h : DegVand D) (W : LocW D.R.k D.R.rS) (l₁ l₂) (A₁ A₂ : LocS W)
     (h₁ : GoodS D l₁ A₁) (h₂ : GoodS D l₂ A₂) :
     A₂.deg / A₁.deg = Formalism.MainNotions.S.vand l₂ / Formalism.MainNotions.S.vand l₁ := by
   obtain ⟨P, -, hd, -⟩ := h₁.2.2.2.2.2.2.2.2.2.2
   rw [div_eq_div_iff hd.ne' (vand_pos h₁.1.1).ne', h W l₁ l₂ A₁ A₂ h₁ h₂, mul_comm]
 
+/- English proof (translation)
+Take `⟨⟨-, -, hmf, hfk, -, -, -, -, -, -, -, hg1, hg1', hg2, hg2', -, -, -, hv, -, -, hgap, hT, hCl, hCl0⟩, -, -⟩` from `h`. Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hbe : Real.exp 1 < large₂.sc.b` using `Real.exp_lt_exp.2 hL`. Establish `hb1 : 1 < large₂.sc.b` using `lt_trans (by simpa using Real.exp_lt_exp.2 (zero_lt_one (α := ℝ))) hbe`. Establish `hm : D.R.m = 2 * D.R.rS + 2`.
+
+Use `D.R.two_le_m` as an intermediate fact. Take `⟨a, ha⟩` from `D.R.m_even`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers. Establish `hr : D.R.r = 2 * D.R.rS + D.R.k + 1` using `by unfold Ranks.r; omega`.
+
+Establish `hk : (1 : ℝ) ≤ D.R.k` using `by have := D.R.m_add_three_le_k; exact_mod_cast (by omega : 1 ≤ D.R.k)`. Establish `hkb : (1 : ℝ) ≤ D.R.k * large₂.sc.b` using `by nlinarith`. Establish `h8 : (1 : ℝ) ≤ (D.R.k * large₂.sc.b) ^ 8` using `one_le_pow₀ hkb`. Establish `hrd : D.host.rdE = 2 * D.host.v` using `by unfold Host.v; ring`. Establish `hgg : 1 ≤ gg D` using `by unfold gg; nlinarith`.
+
+Establish `hu : ∀ w τ, StrictAnti (uS D w τ)` using `fun w τ => by`. Establish `hk0 : D.R.k = (D.R.k - 1) + 1` using `by have := D.R.m_add_three_le_k; omega`. Establish `key : ∀ (i : ℕ) (hi : i + 1 < D.R.k), uS D w τ ⟨i + 1, hi⟩ < uS D w τ ⟨i, by omega⟩` using `fun i hi => by`. Establish `a` using `(D.hcW w τ).u_gt_v ⟨i, by omega⟩`. Establish `b` using `(D.hcW w τ).v_gt_u ⟨i, by omega⟩`.
+
+Unfold `uS`. Conclude with `b.trans a` after adjusting the coercions. Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Establish `hac' : a < c` using `hac`. Proceed by induction on `c, hac' using Nat.le_induction with`.
+
+Consider the case `base => exact key a hc`. Consider the case `succ c hc' ih => exact (key c hc).trans (ih (by omega) hc')`. Use `⟨hL, Real.log_exp _, hbe, hm, hr, D.what₂.card_Tau, hCl, hmf.trans hfk, hv, hrd, rfl, hrd ▸ hb, hgg, ?_, ?_, ?_, fun w => (hT w).2, fun w τ => ⟨vand_pos (hu w τ), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[two_mul, Real.rpow_add (by linarith)]`. Conclude with `mul_le_mul hg1' hg2' (by linarith) (by linarith)`.
+
+Establish `: large₂.sc.b ^ (8 : ℝ) ≤ large₂.sc.b ^ Cg`. Use `le_trans ?_ (hg1.trans hg1')` and prove the remaining obligations. Rewrite using `[show (8 : ℝ) = ((8 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by linarith) (by nlinarith) 8`. Conclude with `(Real.rpow_le_rpow_left_iff hb1).1 this`.
+
+Use `le_trans ?_ (hg1.trans hg1')` and prove the remaining obligations. Conclude with `le_trans (by nlinarith) (le_self_pow₀ hkb (by norm_num))`. Establish `h1 : 0 < D.host.ka` using `div_pos Real.pi_pos (by linarith)`. Establish `h2 : 0 < D.host.rdE` using `by linarith`. Establish `h3 : 0 < gg D` using `by linarith`.
+
+Establish `h4 : 0 < VV D τ` using `mul_pos (D.dsig_pos τ) (Finset.prod_pos fun i _ => by positivity)`. Establish `h5` using `vand_pos (hu w τ)`. Unfold `Tcrit`. Check the signs of the components of the expression. Introduce `τ`.
+
+Establish `hp : 0 ≤ Cl * D.R.k * (D.R.m : ℝ) ^ 4` using `by positivity`. Establish `key : ∀ (i : ℕ) (hi : i + 1 < 2 * D.R.rS + D.R.k + 1), Cl * D.R.k * (D.R.m : ℝ) ^ 4 < lamD D τ ⟨i, by omega⟩ - lamD D τ ⟨i + 1, hi⟩` using `fun i hi => by`. Use `hgap τ ⟨i, by omega⟩ (by simpa [hr] using hi)` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ D.R.r * (D.R.m : ℝ) ^ 10` using `by positivity`. Conclude with `lt_of_le_of_lt (le_add_of_nonneg_right h0) this`.
+
+Introduce and unpack `⟨a, ha⟩ ⟨c, hc⟩ hac`. Establish `hac' : a < c` using `hac`. Proceed by induction on `c, hac' using Nat.le_induction with`. Consider the case `base => exact key a hc`. Consider the case `succ c hc' ih`.
+
+Use `key c hc` as an intermediate fact. Use `ih (by omega) hc'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sizes_of (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : ℝ) (hb : D.host.rdE ≤ large₂.sc.b)
     (h : HypZ D large₂ C' Cl Cg cb Cu cT CT C0) : Sizes D large₂ Cl Cg CT := by
   obtain ⟨⟨-, -, hmf, hfk, -, -, -, -, -, -, -, hg1, hg1', hg2, hg2', -, -, -, hv, -, -, hgap, hT, hCl, hCl0⟩, -, -⟩ := h
@@ -94,6 +142,11 @@ theorem sizes_of (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu cT CT C0 : 
       have := ih (by omega) hc'
       linarith
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hθ`. Take `⟨-, -, -, -, -, -, hG, -, -, -, -, hN, hq, -⟩` from `h`. Establish `hv : 0 ≤ D.host.v` using `by unfold Host.v Host.rdE; positivity`. Establish `h0 : kapN D θ = 0` using `ENNReal.ofReal_eq_zero.2 (mul_nonpos_of_nonneg_of_nonpos (Real.rpow_nonneg (by linarith) _) (not_lt.1 hθ))`. Establish `hN0 : W.μN = 0` using `by rw [hN, h0]; simp [haarLie]`.
+
+Use `hq (fun _ => 1) measurable_const` as an intermediate fact. Simplify using `[muS, hN0] at this`. Conclude with `hG.2.1 this`.
+-/
 theorem theta_pos (D : D7) (τ w w') (θ : ℝ) (W : LocW D.R.k D.R.rS) (h : GoodW D τ w w' θ W) : 0 < θ := by
   by_contra hθ
   obtain ⟨-, -, -, -, -, -, hG, -, -, -, -, hN, hq, -⟩ := h

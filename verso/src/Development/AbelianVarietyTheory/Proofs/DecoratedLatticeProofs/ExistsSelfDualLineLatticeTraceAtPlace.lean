@@ -21,26 +21,52 @@ namespace GlobalTheory.Core.Mi.LineSD
 
 variable {D : D7}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 hb.2⟩`.
+-/
 theorem mul_mem_intAt {v : GlobalTheory.FinPl.Pl D} {a b : AE D} (ha : a ∈ intAt D (· = v)) (hb : b ∈ intAt D (· = v)) :
     a * b ∈ intAt D (· = v) :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 hb.2⟩
 
+/- English proof (translation)
+Introduce `w` and use `by rw [map_one]; exact one_mem _`.
+-/
 theorem one_mem_intAf : (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ∈ intAf D.host.F := fun w => by
   rw [map_one]; exact one_mem _
 
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure ⟨1, one_mem_intAf, x, rfl⟩`.
+-/
 theorem incA_mem_intAE (x : 𝓞 D.host.E) : finPart D (incA D (x : D.host.E)) ∈ intAE D :=
   AddSubgroup.subset_closure ⟨1, one_mem_intAf, x, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Ideal.mul_mem_right _ _ ha.1, by rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 (incA_mem_intAE x)⟩`.
+-/
 theorem mul_incA_mem {v : GlobalTheory.FinPl.Pl D} {a : AE D} (ha : a ∈ intAt D (· = v)) (x : 𝓞 D.host.E) :
     a * incA D (x : D.host.E) ∈ intAt D (· = v) :=
   ⟨Ideal.mul_mem_right _ _ ha.1, by
     rw [map_mul]; exact GlobalTheory.FinPl.FrameLat.mul_mem_intAE ha.2 (incA_mem_intAE x)⟩
 
+/- English proof (translation)
+Use `⟨?_, (GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 ha.2⟩` and prove the remaining obligations. Establish `h` using `(GlobalTheory.FinPlLoc.mem_idAt_iff _ a).1 ha.1`. Rewrite using `[GlobalTheory.FinPlLoc.mem_idAt_iff, ← GlobalTheory.FinPlLoc.cA_idem, ← map_mul, h]`.
+-/
 theorem cA_mem_intAt {v : GlobalTheory.FinPl.Pl D} {a : AE D} (ha : a ∈ intAt D (· = v)) : cA D a ∈ intAt D (· = v) := by
   refine ⟨?_, (GlobalTheory.FinPl.FrameLat.cA_int_iff a).2 ha.2⟩
   have h := (GlobalTheory.FinPlLoc.mem_idAt_iff _ a).1 ha.1
   rw [GlobalTheory.FinPlLoc.mem_idAt_iff, ← GlobalTheory.FinPlLoc.cA_idem, ← map_mul, h]
 
+/- English proof (translation)
+Use `⟨Ideal.mul_mem_right _ _ (GlobalTheory.FinPlLoc.idem_mem_idAt _), ?_⟩` and prove the remaining obligations. Establish `hc : ((T : D.host.E)⁻¹) = algebraMap D.host.F D.host.E ((T : D.host.F)⁻¹)` using `by simp`. Establish `e : finPart D (GlobalTheory.FinPlLoc.idem D (· = v) * incA D ((T : D.host.E)⁻¹)) = ((T : D.host.F)⁻¹ • GlobalTheory.FinPlLoc.ePl D (· = v)) ⊗ₜ[D.host.F] (1 : D.host.E)`. Rewrite using `[map_mul, GlobalTheory.FinPlLoc.idem, GlobalTheory.FinPlLoc.finPart_pair]`. Use `show (GlobalTheory.FinPlLoc.ePl D (· = v) ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) ⊗ₜ[D.host.F] ((T : D.host.E)⁻¹)) = _`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, hc, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Rewrite using `[e]`. Use `AddSubgroup.subset_closure ⟨(T : D.host.F)⁻¹ • GlobalTheory.FinPlLoc.ePl D (· = v), fun w => ?_, (1 : 𝓞 D.host.E), ?_⟩` and prove the remaining obligations. Use `swap`. Both sides reduce to the same expression.
+
+Rewrite using `[Algebra.smul_def, map_mul, AlgHom.commutes, GlobalTheory.FinPlLoc.evalV_ePl]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, if_pos rfl, mul_one]`. Use `show Valued.v (((T : D.host.F)⁻¹ : D.host.F) : w.adicCompletion D.host.F) ≤ 1`.
+
+Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀]`. Establish `h1 : w.valuation D.host.F (T : D.host.F) = 1`. Use `HeightOneSpectrum.valuation_of_algebraMap (K := D.host.F) w (T : 𝓞 D.host.F)` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.intValuation_eq_one_iff.2 hT]`. Simplify using `using this`.
+
+Rewrite using `[h1, inv_one]`. Rewrite using `[if_neg hw, mul_zero]`. Conclude with `zero_mem _`.
+-/
 theorem unit_at {v : GlobalTheory.FinPl.Pl D} {T : ℕ} (hT : (T : 𝓞 D.host.F) ∉ v.asIdeal) :
     GlobalTheory.FinPlLoc.idem D (· = v) * incA D ((T : D.host.E)⁻¹) ∈ intAt D (· = v) := by
   refine ⟨Ideal.mul_mem_right _ _ (GlobalTheory.FinPlLoc.idem_mem_idAt _), ?_⟩
@@ -82,6 +108,47 @@ def traceLine {S A L : HSp D} (o : OrthDec S A L) (M' : Lat S) (v : GlobalTheory
     show o.jB *ᵥ (-a) ∈ _
     rw [mulVec_neg]; exact neg_mem ha.2⟩
 
+/- English proof (translation)
+Introduce `D S A L o ζ M' μ T v hζ hμ hline hgram hT`. Take `⟨hr, hne⟩` from `hζ`. Take `⟨i₀, hall⟩ : ∃ i₀ : Fin L.rank, ∀ i, i = i₀` from `⟨⟨0, by omega⟩, fun i => Fin.ext (by have := i.2; simp only; omega)⟩`. Establish `hs : ∀ {M : Type} [AddCommMonoid M] (f : Fin L.rank → M), ∑ i, f i = f i₀` using `fun f => Fintype.sum_eq_single _ fun i hi => absurd (hall i) hi`. Establish `hdot : star ζ ⬝ᵥ L.gram *ᵥ ζ = star (ζ i₀) * L.gram i₀ i₀ * ζ i₀`.
+
+Simplify using `only [dotProduct, mulVec, hs, Pi.star_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz0 : ζ i₀ ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises.
+
+Rewrite using `[hdot, h, mul_zero]`. Establish `hsz : star (ζ i₀) ≠ 0` using `star_ne_zero.2 hz0`. Establish `hT0 : (T : D.host.E) ≠ 0`. Establish `: T ≠ 0` using `by rintro rfl; exact hT (by simp)`. Conclude with `this` after adjusting the coercions.
+
+Establish `hq : star (ζ i₀) * L.gram i₀ i₀ * ζ i₀ = -(μ * star μ * (T : D.host.E))` using `by rw [← hdot, hgram]`. Establish `hjB : ∀ l : Fin L.rank → AE D, o.jB *ᵥ l = (l i₀ * incA D (ζ i₀)⁻¹) • ratV (vecB o ζ)`. Introduce `l`. Use function extensionality and compare the values at `r`. Simplify using `only [OrthDec.jB, rat, vecB, ratV, mulVec, dotProduct, Matrix.map_apply, Pi.smul_apply, smul_eq_mul, hs]`.
+
+Rewrite using `[map_mul]`. Establish `h1 : incA D (ζ i₀)⁻¹ * incA D (ζ i₀) = 1` using `by rw [← map_mul, inv_mul_cancel₀ hz0, map_one]`. Take the linear combination `(-(incA D (o.iB r i₀) * l i₀)) * h1`. Establish `hK : ∀ l : Fin L.rank → AE D, (∀ i, l i ∈ idAt D (· = v)) → (o.jB *ᵥ l ∈ latV S M' (· = v) ↔ l i₀ * incA D (μ / ζ i₀) ∈ intAt D (· = v))`. Introduce `l hl`.
+
+Rewrite using `[hjB, hline _ (Ideal.mul_mem_right _ _ (hl i₀))]`. Establish `: incA D μ * (l i₀ * incA D (ζ i₀)⁻¹) = l i₀ * incA D (μ / ζ i₀)`. Rewrite using `[div_eq_mul_inv, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Set `Λ'` to `traceLine o M' v`. Establish `hmem : ∀ l, l ∈ Λ' ↔ (∀ i, l i ∈ idAt D (· = v)) ∧ o.jB *ᵥ l ∈ latV S M' (· = v)` using `fun l => Iff.rfl`. Establish `hΛ : ∀ x, x ∈ Λ' ↔ (∀ i, x i ∈ idAt D (· = v)) ∧ x i₀ * incA D (μ / ζ i₀) ∈ intAt D (· = v)` using `fun x => (hmem x).trans (and_congr_right fun hx => hK x hx)`. Use `⟨Λ', ⟨fun y hy => hy.1, ?_, ?_⟩, fun l hl => by rw [hmem]; exact ⟨fun h => h.2, fun h => ⟨hl, h⟩⟩⟩` and prove the remaining obligations. Take `⟨y, hy0, hyint⟩` from `exists_integral_multiples ℤ ℚ (L := D.host.E) {μ / ζ i₀} replace hyint := hyint _ (Finset.mem_singleton_self _)`.
+
+Establish `hn : IsIntegral ℤ ((y.natAbs : D.host.E) * (μ / ζ i₀))`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite `hyint` using `[h, zsmul_eq_mul, Int.cast_natCast]`. Conclude with `hyint`. Rewrite `hyint` using `[h, neg_smul, zsmul_eq_mul, Int.cast_natCast]`.
+
+Simplify using `using hyint.neg`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, fun x hx => ?_⟩` and prove the remaining obligations. Use `(hΛ _).2 ⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_left _ _ (hx i).1`.
+
+Establish `: ((y.natAbs : AE D) • x) i₀ * incA D (μ / ζ i₀) = x i₀ * incA D ((y.natAbs : D.host.E) * (μ / ζ i₀))`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_incA_mem (hx i₀) ⟨_, hn⟩`.
+
+Introduce `y hy`. Establish `hherm : ∀ x : Fin L.rank → AE D, GlobalTheory.IwaPlace.hermAt L y x = cA D (x i₀) * incA D (L.gram i₀ i₀) * y i₀`. Introduce `x`. Simplify using `only [GlobalTheory.IwaPlace.hermAt, hs, gA, rat, Matrix.map_apply]`. Establish `hG : L.gram i₀ i₀ = star (μ / ζ i₀) * (-(T : D.host.E)) * (μ / ζ i₀)`.
+
+Establish `h1 : L.gram i₀ i₀ = -(μ * star μ * (T : D.host.E)) / (star (ζ i₀) * ζ i₀)`. Rewrite using `[eq_div_iff (mul_ne_zero hsz hz0)]`. Take the linear combination `hq`. Rewrite using `[h1, div_eq_mul_inv μ, star_mul', star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hid : ∀ a : AE D, cA D a * incA D (L.gram i₀ i₀) * y i₀ = cA D (a * incA D (μ / ζ i₀)) * (y i₀ * incA D (μ / ζ i₀)) * incA D (-(T : D.host.E))`. Introduce `a`. Rewrite using `[hG]`. Simplify using `only [map_mul, GlobalTheory.FinPl.FrameLat.cA_incA]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hay : y i₀ * incA D (μ / ζ i₀) ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ (hy i₀)`. Establish `he : GlobalTheory.FinPlLoc.idem D (· = v) * incA D (ζ i₀ / μ) * incA D (μ / ζ i₀) = GlobalTheory.FinPlLoc.idem D (· = v)`. Rewrite using `[mul_assoc, ← map_mul, show ζ i₀ / μ * (μ / ζ i₀) = 1 by field_simp, map_one, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hyΛ x hx`.
+
+Take `⟨-, hyK⟩` from `(hΛ y).1 hyΛ`. Take `⟨-, hxK⟩` from `(hΛ x).1 hx`. Rewrite using `[hherm, hid]`. Use `mul_incA_mem (mul_mem_intAt (cA_mem_intAt hxK) hyK) (-(T : 𝓞 D.host.E))` as an intermediate fact. Simplify using `using this`.
+
+Introduce `h`. Use `(hΛ y).2 ⟨hy, ?_⟩` and prove the remaining obligations. Establish `hx₁ : (fun _ => GlobalTheory.FinPlLoc.idem D (· = v) * incA D (ζ i₀ / μ) : Fin L.rank → AE D) ∈ Λ'`. Use `(hΛ _).2 ⟨fun i => Ideal.mul_mem_right _ _ (GlobalTheory.FinPlLoc.idem_mem_idAt _), ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.FinPlLoc.idem D (· = v) * incA D (ζ i₀ / μ) * incA D (μ / ζ i₀) ∈ _`.
+
+Rewrite using `[he]`. Conclude with `GlobalTheory.FinPlLoc.idem_mem_intAt _`. Establish `h1` using `h _ hx₁`. Rewrite `h1` using `[hherm, hid]`. Rewrite `h1` using `[he, GlobalTheory.FinPlLoc.cA_idem, (GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 hay]`.
+
+Establish `h2` using `mul_incA_mem (mul_mem_intAt h1 (unit_at hT)) (-1 : 𝓞 D.host.E)`. Establish `hT' : incA D (-(T : D.host.E)) * incA D ((T : D.host.E)⁻¹) * incA D (((-1 : 𝓞 D.host.E)) : D.host.E) = 1`. Rewrite using `[← map_mul, ← map_mul]`. Use `push_cast`. Rewrite using `[neg_mul, mul_inv_cancel₀ hT0]`.
+
+Simplify using the standard rewrite rules. Establish `hay'` using `(GlobalTheory.FinPlLoc.mem_idAt_iff _ _).1 hay`. Establish `e2 : y i₀ * incA D (μ / ζ i₀) * incA D (-(T : D.host.E)) * (GlobalTheory.FinPlLoc.idem D (· = v) * incA D ((T : D.host.E)⁻¹)) * incA D (((-1 : 𝓞 D.host.E)) : D.host.E) = y i₀ * incA D (μ / ζ i₀)`. Take the linear combination `(GlobalTheory.FinPlLoc.idem D (· = v) * (y i₀ * incA D (μ / ζ i₀))) * hT' + hay'`. Rewrite `h2` using `[e2]`.
+
+Conclude with `h2`.
+-/
 theorem exists_isSDAt_line : ∀ (D : D7) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (M' : Lat S) (μ : D.host.E) (T : ℕ) (v : GlobalTheory.FinPl.Pl D), IsLineVec L ζ → μ ≠ 0 → LineAt (vecB o ζ) μ M' v → star ζ ⬝ᵥ L.gram *ᵥ ζ = -(μ * star μ * (T : D.host.E)) → (T : 𝓞 D.host.F) ∉ v.asIdeal → ∃ Λ' : AddSubgroup (Fin L.rank → AE D), GlobalTheory.IwaPlace.IsSDAt L v Λ' ∧ ∀ l : Fin L.rank → AE D, (∀ i, l i ∈ idAt D (· = v)) → (l ∈ Λ' ↔ o.jB *ᵥ l ∈ latV S M' (· = v)) := by
   intro D S A L o ζ M' μ T v hζ hμ hline hgram hT
   obtain ⟨hr, hne⟩ := hζ

@@ -15,6 +15,9 @@ private def matrixFlattenLinearEquiv (K : Type) [Field K] (n : ℕ) :
     funext i
     simp only [Prod.mk.eta, Equiv.apply_symm_apply]
 
+/- English proof (translation)
+Use `show Continuous fun (X : Matrix (Fin n) (Fin n) K) (i : Fin (n * n)) => X (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2`. Conclude with `continuous_pi fun i => (continuous_apply _).comp (continuous_apply _)`.
+-/
 private theorem continuous_matrix_flatten (K : Type) [Field K] [TopologicalSpace K] (n : ℕ) :
     Continuous (matrixFlattenLinearEquiv K n) := by
   show Continuous fun (X : Matrix (Fin n) (Fin n) K) (i : Fin (n * n)) => X (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2
@@ -36,6 +39,9 @@ private noncomputable def flattenedMatrixRepresentation {K : Type} [Field K] {G 
     refine LinearMap.ext fun v => ?_
     simp
 
+/- English proof (translation)
+Use `show Matrix.toLin' (LinearMap.toMatrix' _) _ = _`. Rewrite using `[Matrix.toLin'_toMatrix']`. Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.symm_apply_apply]`.
+-/
 private theorem matrix_rep_flatten_apply {K : Type} [Field K] {G : Type} [Group G] {n : ℕ}
     (R : Representation K G (Matrix (Fin n) (Fin n) K)) (g : G) (X : Matrix (Fin n) (Fin n) K) :
     Matrix.toLin' (flattenedMatrixRepresentation R g) (matrixFlattenLinearEquiv K n X) = matrixFlattenLinearEquiv K n (R g X) := by
@@ -43,6 +49,9 @@ private theorem matrix_rep_flatten_apply {K : Type} [Field K] {G : Type} [Group 
   rw [Matrix.toLin'_toMatrix']
   simp only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `show Continuous fun g => LinearMap.toMatrix' ((matrixFlattenLinearEquiv K n).toLinearMap ∘ₗ R g ∘ₗ (matrixFlattenLinearEquiv K n).symm.toLinearMap) i j`. Simplify using `only [LinearMap.toMatrix'_apply]`. Conclude with `(continuous_matrix_flatten K n).comp (hR _) |>.comp continuous_id |> fun h => (continuous_apply i).comp h`.
+-/
 private theorem continuous_matrix_rep_flatten {K : Type} [Field K] [TopologicalSpace K] {G : Type} [Group G]
     [TopologicalSpace G] {n : ℕ}
     (R : Representation K G (Matrix (Fin n) (Fin n) K)) (hR : ∀ X, Continuous fun g => R g X) :
@@ -52,6 +61,17 @@ private theorem continuous_matrix_rep_flatten {K : Type} [Field K] [TopologicalS
   simp only [LinearMap.toMatrix'_apply]
   exact (continuous_matrix_flatten K n).comp (hR _) |>.comp continuous_id |> fun h => (continuous_apply i).comp h
 
+/- English proof (translation)
+Introduce `l _ G _ _ _ _ _ n R hΦ hR`. Set `σ : G →* GL (Fin (n * n)) (Qbar l)` to `(flattenedMatrixRepresentation R).toHomUnits`. Establish `hσ : Continuous σ`. Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_matrix_rep_flatten R hR, ?_⟩` and prove the remaining obligations.
+
+Establish `h : (fun g => (((σ g)⁻¹ : GL (Fin (n * n)) (Qbar l)) : Matrix (Fin (n * n)) (Fin (n * n)) (Qbar l))) = fun g => flattenedMatrixRepresentation R g⁻¹`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+
+Conclude with `(continuous_matrix_rep_flatten R hR).comp continuous_inv`. Establish `hfin` using `UpperTheory.V.Th.Det.finite_cocycles_colRep_of_phiCond σ hΦ hσ`. Set `Φ : (G → Matrix (Fin n) (Fin n) (Qbar l)) →ₗ[Qbar l] (G → Fin (n * n) → Qbar l)` to `LinearMap.compLeft (matrixFlattenLinearEquiv (Qbar l) n).toLinearMap G`. Establish `hmem : ∀ f ∈ Z1 R, Φ f ∈ Z1 (UpperTheory.V.Loc.colRep σ)`. Introduce and unpack `f ⟨hc, hco⟩`.
+
+Use `⟨(continuous_matrix_flatten (Qbar l) n).comp hc, fun g h => ?_⟩` and prove the remaining obligations. Use `show matrixFlattenLinearEquiv (Qbar l) n (f (g * h)) = matrixFlattenLinearEquiv (Qbar l) n (f g) + Matrix.toLin' (flattenedMatrixRepresentation R g) (matrixFlattenLinearEquiv (Qbar l) n (f h))`. Rewrite using `[hco g h, map_add, matrix_rep_flatten_apply]`. Establish `hinj : Function.Injective (Φ.restrict hmem)`. Introduce `x y hxy`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `e` using `congrFun (congrArg Subtype.val hxy) g`. Conclude with `(matrixFlattenLinearEquiv (Qbar l) n).injective e`. Conclude with `Module.Finite.of_injective (Φ.restrict hmem) hinj`.
+-/
 theorem UpperTheory.V.Th.Det.finite_cocycles_matrixRepresentation_of_phiCond :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] {n : ℕ} (R : Representation (Qbar l) G (Matrix (Fin n) (Fin n) (Qbar l))), PhiCond G l → (∀ X, Continuous fun g => R g X) → Module.Finite (Qbar l) (Z1 R) := by
   intro l _ G _ _ _ _ _ n R hΦ hR

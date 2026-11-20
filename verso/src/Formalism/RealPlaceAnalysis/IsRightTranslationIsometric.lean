@@ -60,6 +60,9 @@ def settingQ {n : ℕ} (ε : Fin n → Bool) (S : Subgroup (UJ ε)) (E : Type) [
     [InnerProductSpace ℂ E] [CompleteSpace E] (σ : S → E →ₗᵢ[ℂ] E) (ph : UJ ε → ℝ≥0∞) : HidaSetting n ε :=
   { E := E, S := S, σ := σ, ν := (muG ε).withDensity ph }
 
+/- English proof (translation)
+Introduce `s g`. Establish `hs : (s : UJ ε) = 1` using `Subgroup.mem_bot.mp s.2`. Simplify using `only [settingG, hs, one_mul]`. Both sides reduce to the same expression.
+-/
 lemma mem_admissible_setting {n : ℕ} (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [CompleteSpace E] (F : UJ ε → E) : F ∈ (settingG ε E).adm := by
   intro s g
@@ -67,12 +70,18 @@ lemma mem_admissible_setting {n : ℕ} (ε : Fin n → Bool) (E : Type) [NormedA
   simp only [settingG, hs, one_mul]
   rfl
 
+/- English proof (translation)
+Introduce `s g`. Simplify using `only [Rs, mul_assoc]`. Conclude with `hF s (g * h)`.
+-/
 lemma rs_mem_adm {n : ℕ} {ε : Fin n → Bool} (P : HidaSetting n ε) (F : UJ ε → P.E) (hF : F ∈ P.adm)
     (h : UJ ε) : Rs h F ∈ P.adm := by
   intro s g
   simp only [Rs, mul_assoc]
   exact hF s (g * h)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `g`. Simplify using `only [Rs, mul_assoc]`.
+-/
 lemma rs_mul {n : ℕ} {ε : Fin n → Bool} {E : Type*} (h₁ h₂ : UJ ε) (F : UJ ε → E) :
     Rs (h₁ * h₂) F = Rs h₁ (Rs h₂ F) := by
   funext g

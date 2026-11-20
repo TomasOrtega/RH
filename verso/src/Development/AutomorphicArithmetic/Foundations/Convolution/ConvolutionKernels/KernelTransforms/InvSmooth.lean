@@ -19,16 +19,27 @@ open scoped Manifold ContDiff Topology
 variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸]
 variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Conclude with `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf (contMDiff_id.inv)`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.smooth_inv {f : G → ℂ} (hf : h.IsSmoothFun f) :
     h.IsSmoothFun fun g => f g⁻¹ := by
   letI := h.chartedSpace
   haveI := h.lieGroup ∞
   exact ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf (contMDiff_id.inv)
 
+/- English proof (translation)
+Use `letI := h.chartedSpace`. Conclude with `ContMDiff.continuous hf`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.smooth_cont {f : G → ℂ} (hf : h.IsSmoothFun f) : Continuous f := by
   letI := h.chartedSpace
   exact ContMDiff.continuous hf
 
+/- English proof (translation)
+Introduce `g hg`. Establish `hc : Continuous fun Y : 𝔤 => g * h.expG Y`. Use `letI := h.chartedSpace`. Conclude with `continuous_const.mul h.contMDiff_expG.continuous`. Establish `he : (fun Y : 𝔤 => f (g * h.expG Y)) =ᶠ[𝓝 0] fun _ => 0`.
+
+Establish `: (fun Y : 𝔤 => g * h.expG Y) ⁻¹' U ∈ 𝓝 (0 : 𝔤)` using `(hU.preimage hc).mem_nhds (by simpa using hg)`. Use `filter_upwards [this] with Y hY using h0 _ hY`. Simplify using `[IsExpLieAlgebra.rightDeriv, he.fderiv_eq]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.deriv_zero {f : G → ℂ} {U : Set G} (hU : IsOpen U) (h0 : ∀ g ∈ U, f g = 0)
     (X : 𝔤) : ∀ g ∈ U, h.rightDeriv X f g = 0 := by
   intro g hg
@@ -41,6 +52,15 @@ private theorem UpperTheory.ConvolutionTheory.Tf.deriv_zero {f : G → ℂ} {U :
     filter_upwards [this] with Y hY using h0 _ hY
   simp [IsExpLieAlgebra.rightDeriv, he.fderiv_eq]
 
+/- English proof (translation)
+Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction with`. Consider the case `algebraMap r`. Introduce `f hf g hg`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`.
+
+Rewrite using `[Submodule.coe_smul_of_tower, Pi.smul_apply, hf g hg, smul_zero]`. Consider the case `ι x`. Introduce `f hf g hg`. Use `show (h.rightUAction (UniversalEnvelopingAlgebra.ι ℝ x) f : G → ℂ) g = 0`. Rewrite using `[IsExpLieAlgebra.rightUAction_ι, IsExpLieAlgebra.coe_rightDerivEnd]`.
+
+Conclude with `UpperTheory.ConvolutionTheory.Tf.deriv_zero h hU hf _ g hg`. Consider the case `mul a b iha ihb`. Introduce `f hf`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`. Conclude with `iha _ (ihb f hf)`.
+
+Consider the case `add a b iha ihb`. Introduce `f hf g hg`. Rewrite using `[map_add, map_add, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, iha f hf g hg, ihb f hf g hg, add_zero]`.
+-/
 private theorem UpperTheory.ConvolutionTheory.Tf.act_zero {U : Set G} (hU : IsOpen U)
     (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) :
     ∀ f : h.smoothFuns (F := ℂ), (∀ g ∈ U, (f : G → ℂ) g = 0) →
@@ -68,6 +88,9 @@ private theorem UpperTheory.ConvolutionTheory.Tf.act_zero {U : Set G} (hU : IsOp
 
 end
 
+/- English proof (translation)
+Introduce `K _ _ n f hf`. Use `⟨UpperTheory.ConvolutionTheory.Tf.smooth_inv _ hf, UpperTheory.ConvolutionTheory.Tf.smooth_cont _ hf, fun hc => ⟨hf, hc⟩, fun hf u => ?_⟩` and prove the remaining obligations. Use `closure_minimal (fun g hg => ?_) (isClosed_tsupport f)` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `hg (UpperTheory.ConvolutionTheory.Tf.act_zero _ (isClosed_tsupport f).isOpen_compl u ⟨f, hf⟩ (fun x hx => image_eq_zero_of_notMem_tsupport hx) g hn)`.
+-/
 theorem UpperTheory.ConvolutionTheory.Tf.invSmooth :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (f : archGroup K n → ℂ), f ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ) →
       (fun g => f g⁻¹) ∈ (isExpLieAlgebra K n).smoothFuns (F := ℂ) ∧ Continuous f ∧ (HasCompactSupport f → (isExpLieAlgebra K n).IsTestFunction f) ∧

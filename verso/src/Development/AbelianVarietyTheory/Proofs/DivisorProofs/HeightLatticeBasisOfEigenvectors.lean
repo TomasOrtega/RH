@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H p _ l c _`. Use `letI := H.starRing`. Introduce `Q τ n xx g hx hb a`. Establish `hs : (∑ i, a i • ∑ j, g i j • Q.bLie (xx j)) ∈ Q.eigV (embInt c Q.integers (conjEmb τ.1))` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (bLie_mem_eigV (hx j)))`. Establish `h` using `hb.sum_mem_iff a`.
+
+Rewrite `h` using `[htLat_conj]`. Simplify using `only [_root_.one_mul, ← mem_range_iff_norm_le p]`. Rewrite using `[← h]`. Conclude with `⟨fun h1 => ⟨h1, hs⟩, fun h1 => h1.1⟩`.
+-/
 theorem eigconj_sum_mem_latT_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (p : ℕ) [Fact p.Prime]
     (l : Level H) (c : Coeff l) [Algebra c.F ℂ_[p]],
     letI := H.starRing; ∀ (Q : PtP E p) (τ : Psi H) (n : ℕ) (xx : Fin n → LieG Q.Gt) (g : Matrix (Fin n) (Fin n) ℂ_[p]),

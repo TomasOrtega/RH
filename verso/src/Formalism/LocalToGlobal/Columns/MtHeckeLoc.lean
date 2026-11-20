@@ -19,6 +19,11 @@ section MhlLoc
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨s, hs, hsa⟩` from `ha`. Take `⟨t, ht, htb⟩` from `updn_den hov (iA F E (algebraMap (𝓞 E) E s) * b) (by`. Rewrite using `[map_mul, ← h, ← map_mul]`. Conclude with `afsplit_prV_int v _ hsa)`. Use `⟨t * s, fun hm => (P.isPrime.mem_or_mem hm).elim ht hs, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, map_mul, mul_assoc]`. Conclude with `htb`.
+-/
 theorem mhl_intAt_of_prV {v : HeightOneSpectrum (𝓞 F)} {P : Pl E} (hov : IsOver v P) {a b : E ⊗[F] Formalism.L2.Herm.Af F}
     (h : prV (E := E) v a = prV (E := E) v b) (ha : IntAtA P a) : IntAtA P b := by
   obtain ⟨s, hs, hsa⟩ := ha
@@ -29,10 +34,20 @@ theorem mhl_intAt_of_prV {v : HeightOneSpectrum (𝓞 F)} {P : Pl E} (hov : IsOv
   rw [map_mul, map_mul, mul_assoc]
   exact htb
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨mhl_intAt_of_prV hov h, mhl_intAt_of_prV hov h.symm⟩`.
+-/
 theorem mhl_intAt_iff_of_prV {v : HeightOneSpectrum (𝓞 F)} {P : Pl E} (hov : IsOver v P) {a b : E ⊗[F] Formalism.L2.Herm.Af F}
     (h : prV (E := E) v a = prV (E := E) v b) : IntAtA P a ↔ IntAtA P b :=
   ⟨mhl_intAt_of_prV hov h, mhl_intAt_of_prV hov h.symm⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hz i`. Take `⟨s, hs, hsz⟩` from `pullV_den hz`. Conclude with `⟨s, hs, hsz i⟩`. Introduce `h choose s hs hsz using h`.
+
+Establish `hT : (∏ i, s i) ∉ Q.asIdeal`. Introduce `hm`. Take `⟨i, -, hi⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := Q.isPrime)).1 hm`. Conclude with `hs i hi`. Use `(mem_locP Q _ z).2 ⟨∏ i, s i, hT, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[mem_globLat]`. Introduce `i`. Rewrite using `[pullV_osmul, ← Finset.prod_erase_mul Finset.univ s (Finset.mem_univ i), map_mul, map_mul, mul_assoc]`. Conclude with `mul_mem (iA_mem _) (hsz i)`.
+-/
 theorem mem_localization_globalLattice_iff (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Q : Pl E) (z : Fin n → E) :
     z ∈ localization₂ Q.asIdeal (Formalism.UG.CS.globLat x (stdLat E n)) ↔ ∀ i, IntAtA Q (pullV x z i) := by
   classical
@@ -52,6 +67,27 @@ theorem mem_localization_globalLattice_iff (x : GL (Fin n) (E ⊗[F] Formalism.L
     rw [pullV_osmul, ← Finset.prod_erase_mul Finset.univ s (Finset.mem_univ i), map_mul, map_mul, mul_assoc]
     exact mul_mem (iA_mem _) (hsz i)
 
+/- English proof (translation)
+Establish `hπE : (algebraMap (𝓞 E) E π) ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)]`. Conclude with `hπ0`. Establish `hinv : iA F E (algebraMap (𝓞 E) E π) * iA F E ((algebraMap (𝓞 E) E π)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hπE, map_one]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsw⟩`. Establish `hu : iA F E (algebraMap (𝓞 E) E s) * u = iA F E (algebraMap (𝓞 E) E π) * (iA F E (algebraMap (𝓞 E) E s) * (iA F E ((algebraMap (𝓞 E) E π)⁻¹) * u))`. Rewrite using `[mul_left_comm, ← mul_assoc (iA F E (algebraMap (𝓞 E) E π)), hinv, one_mul]`. Establish `hm : iA F E (algebraMap (𝓞 E) E s) * u ∈ Formalism.L2.Herm.intAf F E`.
+
+Rewrite using `[hu]`. Conclude with `mul_mem (iA_mem _) hsw`. Use `⟨⟨s, hs, hm⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `redA_spec Q hs hm`. Establish `h2 : resS F Q ⟨_, hm⟩ = 0`.
+
+Establish `e : (⟨_, hm⟩ : Formalism.L2.Herm.intAf F E) = Formalism.L2.DIV.oToS F E π * ⟨_, hsw⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show iA F E (algebraMap (𝓞 E) E s) * u = iA F E (algebraMap (𝓞 E) E π) * _`. Conclude with `hu`. Rewrite using `[e, map_mul, Formalism.L2.DIV.resS_oToS, Ideal.Quotient.eq_zero_iff_mem.2 hπ, zero_mul]`.
+
+Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (mk_ne_zero hs)`. Introduce and unpack `⟨⟨s, hs, hm⟩, hred⟩`. Establish `h0 : resS F Q ⟨_, hm⟩ = 0`. Rewrite using `[← redA_spec Q hs hm, hred, mul_zero]`.
+
+Rewrite `h0` using `[Formalism.L2.DIV.resS_eq_zero_iff]`. Set `I : Ideal (Formalism.L2.Herm.intAf F E)` to `Submodule.comap (LinearMap.mulLeft (Formalism.L2.Herm.intAf F E) (Formalism.L2.DIV.oToS F E c)) (Ideal.span {Formalism.L2.DIV.oToS F E π})`. Establish `hQI : Q.asIdeal ≤ I.comap (Formalism.L2.DIV.oToS F E)`. Introduce `p hp`. Take `⟨t, ht⟩` from `hcπ p hp`.
+
+Rewrite using `[Ideal.mem_comap, Submodule.mem_comap, LinearMap.mulLeft_apply, ← map_mul, ht, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hIm : Formalism.L2.DIV.idS F Q.asIdeal ≤ I` using `Ideal.map_le_iff_le_comap.2 hQI`. Establish `h1` using `hIm h0`. Rewrite `h1` using `[Submodule.mem_comap, LinearMap.mulLeft_apply]`.
+
+Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 h1`. Use `⟨c * s, fun hm' => (Q.isPrime.mem_or_mem hm').elim hc hs, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (c * s)) * (iA F E ((algebraMap (𝓞 E) E π)⁻¹) * u) = (r : E ⊗[F] Formalism.L2.Herm.Af F)`. Establish `hr' : (r : E ⊗[F] Formalism.L2.Herm.Af F) * iA F E (algebraMap (𝓞 E) E π) = iA F E (algebraMap (𝓞 E) E c) * (iA F E (algebraMap (𝓞 E) E s) * u)` using `congrArg Subtype.val hr`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (r : E ⊗[F] Formalism.L2.Herm.Af F) := by`. Rewrite using `[← hr', mul_assoc, hinv, mul_one]`. Rewrite using `[e]`.
+
+Conclude with `r.2`.
+-/
 theorem mhl_intAt_div {Q : Pl E} {π c : 𝓞 E} (hπ : π ∈ Q.asIdeal) (hπ0 : π ≠ 0) (hc : c ∉ Q.asIdeal)
     (hcπ : ∀ p ∈ Q.asIdeal, ∃ t : 𝓞 E, c * p = π * t) (u : E ⊗[F] Formalism.L2.Herm.Af F) :
     IntAtA Q (iA F E ((algebraMap (𝓞 E) E π)⁻¹) * u) ↔ IntAtA Q u ∧ redA Q u = 0 := by
@@ -111,6 +147,23 @@ section MhlOver
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Introduce `Q hQ`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1 : ¬ Q.asIdeal ≤ Pb.asIdeal` using `fun h => hne.1 (HeightOneSpectrum.ext (Q.isMaximal.eq_of_le Pb.isPrime.ne_top h))`. Establish `h2 : ¬ Q.asIdeal ≤ (conjPrime₂ Pb).asIdeal` using `fun h => hne.2 (HeightOneSpectrum.ext (Q.isMaximal.eq_of_le (conjPrime₂ Pb).isPrime.ne_top h))`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨a, haQ, ha⟩ : ∃ a ∈ Q.asIdeal, a ∉ Pb.asIdeal ∧ a ∉ (conjPrime₂ Pb).asIdeal := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hsub : (Q.asIdeal : Set (𝓞 E)) ⊆ (Pb.asIdeal : Set (𝓞 E)) ∪ ((conjPrime₂ Pb).asIdeal : Set (𝓞 E))`. Introduce `x hx`.
+
+Distinguish the cases in `h : x ∈ Pb.asIdeal`. Conclude with `Or.inl h`. Conclude with `Or.inr (hcon x hx h)`. Break down `Ideal.subset_union.1 hsub with h | h` into its components or cases. Conclude with `h1 h`.
+
+Conclude with `h2 h`. Establish `hfix : star (algebraMap (𝓞 E) E (a * cO E a)) = algebraMap (𝓞 E) E (a * cO E a)`. Rewrite using `[map_mul, algebraMap_cO, star_mul', star_star, mul_comm]`. Take `⟨f, hf⟩` from `(hc.fixed _).1 hfix`. Establish `hfint : IsIntegral ℤ f`.
+
+Establish `h` using `RingOfIntegers.isIntegral_coe (a * cO E a)`. Rewrite `h` using `[← hf]`. Conclude with `(isIntegral_algebraMap_iff (algebraMap F E).injective).1 h`. Set `b : 𝓞 F` to `⟨f, hfint⟩`. Establish `hb : algebraMap (𝓞 F) (𝓞 E) b = a * cO E a`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `e : ((a * cO E a : 𝓞 E) : E) = algebraMap F E f` using `hf.symm`. Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hbQ : b ∈ v.asIdeal`.
+
+Rewrite using `[hQ, Ideal.mem_comap, hb]`. Conclude with `Ideal.mul_mem_right _ _ haQ`. Establish `hbP : a * cO E a ∈ Pb.asIdeal`. Rewrite using `[← hb]`. Rewrite `hbQ` using `[hov]`.
+
+Conclude with `hbQ`. Break down `Pb.isPrime.mem_or_mem hbP with h | h` into its components or cases. Conclude with `ha.1 h`. Conclude with `ha.2 ((mem_conjP Pb a).2 h)`.
+-/
 theorem mhl_over_eq (hc : Formalism.BasicNotions.CMData F E) {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (hov : IsOver v Pb) :
     ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb := by
   intro Q hQ
@@ -161,6 +214,19 @@ section MhlElt
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Establish `h1 : ¬ Q.asIdeal ≤ Q.asIdeal ^ 2` using `fun h => (Ideal.pow_lt_self Q.asIdeal Q.ne_bot Q.isPrime.ne_top 2 le_rfl).not_ge h`. Establish `h2 : ¬ Q.asIdeal ≤ P.asIdeal` using `fun h => hQP (HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top h))`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπQ, hπ⟩ : ∃ π ∈ Q.asIdeal, π ∉ Q.asIdeal ^ 2 ∧ π ∉ P.asIdeal := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+
+Establish `hsub : (Q.asIdeal : Set (𝓞 E)) ⊆ ((Q.asIdeal ^ 2 : Ideal (𝓞 E)) : Set (𝓞 E)) ∪ (P.asIdeal : Set (𝓞 E))`. Introduce `x hx`. Distinguish the cases in `h : x ∈ Q.asIdeal ^ 2`. Conclude with `Or.inl h`. Conclude with `Or.inr (hcon x hx h)`.
+
+Break down `Ideal.subset_union.1 hsub with h | h` into its components or cases. Conclude with `h1 h`. Conclude with `h2 h`. Establish `hπ0 : π ≠ 0` using `fun h => hπ.1 (h ▸ Submodule.zero_mem _)`. Establish `hle : Ideal.span {π} ≤ Q.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 hπQ`.
+
+Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hJQ : ¬ J ≤ Q.asIdeal`. Introduce `h`. Apply `hπ.1` to reduce the goal to its premises. Establish `: Ideal.span {π} ≤ Q.asIdeal ^ 2`.
+
+Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right h`. Conclude with `this (Ideal.subset_span rfl)`. Take `⟨c, hcJ, hcQ⟩` from `Set.not_subset.1 hJQ`. Use `⟨π, hπQ, hπ.2, hπ0, c, hcQ, fun p hp => ?_⟩` and prove the remaining obligations.
+
+Establish `hm : c * p ∈ Ideal.span {π}`. Rewrite using `[hJ, mul_comm]`. Conclude with `Ideal.mul_mem_mul hcJ hp`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 hm`. Conclude with `⟨t, by rw [← ht, mul_comm]⟩`.
+-/
 theorem mhl_exists_unif {Q P : Pl E} (hQP : Q ≠ P) :
     ∃ π : 𝓞 E, π ∈ Q.asIdeal ∧ π ∉ P.asIdeal ∧ π ≠ 0 ∧
       ∃ c : 𝓞 E, c ∉ Q.asIdeal ∧ ∀ p ∈ Q.asIdeal, ∃ t : 𝓞 E, c * p = π * t := by
@@ -196,6 +262,11 @@ theorem mhl_exists_unif {Q P : Pl E} (hQP : Q ≠ P) :
   obtain ⟨t, ht⟩ := Ideal.mem_span_singleton'.1 hm
   exact ⟨t, by rw [← ht, mul_comm]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s * w, fun hm => (Q.isPrime.mem_or_mem hm).elim hs hw, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, mul_assoc]`. Conclude with `h`.
+
+Introduce and unpack `⟨s, hs, h⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (iA_mem w) h`.
+-/
 theorem mhl_intAt_unit {Q : Pl E} {w : 𝓞 E} (hw : w ∉ Q.asIdeal) (u : E ⊗[F] Formalism.L2.Herm.Af F) :
     IntAtA Q (iA F E (algebraMap (𝓞 E) E w) * u) ↔ IntAtA Q u := by
   constructor
@@ -208,6 +279,9 @@ theorem mhl_intAt_unit {Q : Pl E} {w : 𝓞 E} (hw : w ∉ Q.asIdeal) (u : E ⊗
     rw [mul_left_comm]
     exact mul_mem (iA_mem w) h
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `h`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (iA_mem w) hm`.
+-/
 theorem mhl_intAt_mul_int {Q : Pl E} (w : 𝓞 E) {u : E ⊗[F] Formalism.L2.Herm.Af F} (h : IntAtA Q u) :
     IntAtA Q (iA F E (algebraMap (𝓞 E) E w) * u) := by
   obtain ⟨s, hs, hm⟩ := h
@@ -215,6 +289,13 @@ theorem mhl_intAt_mul_int {Q : Pl E} (w : 𝓞 E) {u : E ⊗[F] Formalism.L2.Her
   rw [mul_left_comm]
   exact mul_mem (iA_mem w) hm
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `h`. Establish `hw0 : algebraMap (𝓞 E) E w ≠ 0`. Introduce `h0`. Apply `hw` to reduce the goal to its premises. Rewrite `h0` using `[map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)]`.
+
+Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Use `⟨w * s, fun hm' => (Q.isPrime.mem_or_mem hm').elim hw hs, ?_⟩` and prove the remaining obligations. Establish `e : iA F E (algebraMap (𝓞 E) E (w * s)) * (iA F E ((algebraMap (𝓞 E) E w)⁻¹) * u) = iA F E (algebraMap (𝓞 E) E s) * u`. Rewrite using `[map_mul, map_mul, mul_comm (iA F E (algebraMap (𝓞 E) E w)), mul_assoc, ← mul_assoc (iA F E (algebraMap (𝓞 E) E w)), ← map_mul, mul_inv_cancel₀ hw0, map_one, one_mul]`.
+
+Rewrite using `[e]`. Conclude with `hm`.
+-/
 theorem mhl_intAt_inv_unit {Q : Pl E} {w : 𝓞 E} (hw : w ∉ Q.asIdeal) {u : E ⊗[F] Formalism.L2.Herm.Af F} (h : IntAtA Q u) :
     IntAtA Q (iA F E ((algebraMap (𝓞 E) E w)⁻¹) * u) := by
   obtain ⟨s, hs, hm⟩ := h
@@ -232,6 +313,9 @@ theorem mhl_intAt_inv_unit {Q : Pl E} {w : 𝓞 E} (hw : w ∉ Q.asIdeal) {u : E
   rw [e]
   exact hm
 
+/- English proof (translation)
+Take `⟨s, hs, hm⟩` from `h`. Conclude with `redA_smul Q hs hm w`.
+-/
 theorem mhl_redA_unit {Q : Pl E} (w : 𝓞 E) {u : E ⊗[F] Formalism.L2.Herm.Af F} (h : IntAtA Q u) :
     redA Q (iA F E (algebraMap (𝓞 E) E w) * u) = Ideal.Quotient.mk Q.asIdeal w * redA Q u := by
   obtain ⟨s, hs, hm⟩ := h
@@ -239,13 +323,22 @@ theorem mhl_redA_unit {Q : Pl E} (w : 𝓞 E) {u : E ⊗[F] Formalism.L2.Herm.Af
 
 def mhlA (π : 𝓞 E) : E := algebraMap (𝓞 E) E π * (star (algebraMap (𝓞 E) E π))⁻¹
 
+/- English proof (translation)
+Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)]`. Conclude with `hπ0`.
+-/
 theorem mhl_alg_ne {π : 𝓞 E} (hπ0 : π ≠ 0) : algebraMap (𝓞 E) E π ≠ 0 := by
   rw [Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective (𝓞 E) E)]
   exact hπ0
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero (mhl_alg_ne hπ0) (inv_ne_zero (star_ne_zero.2 (mhl_alg_ne hπ0)))`.
+-/
 theorem mhlA_ne {π : 𝓞 E} (hπ0 : π ≠ 0) : mhlA π ≠ 0 :=
   mul_ne_zero (mhl_alg_ne hπ0) (inv_ne_zero (star_ne_zero.2 (mhl_alg_ne hπ0)))
 
+/- English proof (translation)
+Establish `h1` using `mhl_alg_ne hπ0`. Establish `h2 : star (algebraMap (𝓞 E) E π) ≠ 0` using `star_ne_zero.2 h1`. Unfold `mhlA`. Rewrite using `[star_mul', star_inv₀, star_star]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem mhlA_star_mul {π : 𝓞 E} (hπ0 : π ≠ 0) : star (mhlA π) * mhlA π = 1 := by
   have h1 := mhl_alg_ne hπ0
   have h2 : star (algebraMap (𝓞 E) E π) ≠ 0 := star_ne_zero.2 h1
@@ -255,6 +348,9 @@ theorem mhlA_star_mul {π : 𝓞 E} (hπ0 : π ≠ 0) : star (mhlA π) * mhlA π
 
 def mhlDiag (n : ℕ) (π : 𝓞 E) (k : ℕ) : Fin n → E := fun i => if i.1 < k then mhlA π else 1
 
+/- English proof (translation)
+Unfold `mhlDiag`. Use `split_ifs`. Conclude with `mhlA_ne hπ0`. Conclude with `one_ne_zero`.
+-/
 theorem mhlDiag_ne {n : ℕ} {π : 𝓞 E} (hπ0 : π ≠ 0) (k : ℕ) (i : Fin n) : mhlDiag n π k i ≠ 0 := by
   unfold mhlDiag
   split_ifs
@@ -266,6 +362,11 @@ def mhlD (n : ℕ) {π : 𝓞 E} (hπ0 : π ≠ 0) (k : ℕ) : GL (Fin n) E :=
     by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; exact mul_inv_cancel₀ (mhlDiag_ne hπ0 k i),
     by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; congr 1; funext i; exact inv_mul_cancel₀ (mhlDiag_ne hπ0 k i)⟩
 
+/- English proof (translation)
+Use `show Formalism.UG.cT (hc.sig : E →+* E) (Matrix.diagonal (mhlDiag n π k)) * 1 * Matrix.diagonal (mhlDiag n π k) = 1`. Rewrite using `[Matrix.mul_one, Formalism.UG.cT, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show star (mhlDiag n π k i) * mhlDiag n π k i = 1`.
+
+Unfold `mhlDiag`. Use `split_ifs`. Conclude with `mhlA_star_mul hπ0`. Rewrite using `[star_one, one_mul]`.
+-/
 theorem mhlD_mem (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) {π : 𝓞 E} (hπ0 : π ≠ 0) (k : ℕ) : mhlD n hπ0 k ∈ URat hc n := by
   show Formalism.UG.cT (hc.sig : E →+* E) (Matrix.diagonal (mhlDiag n π k)) * 1 * Matrix.diagonal (mhlDiag n π k) = 1
   rw [Matrix.mul_one, Formalism.UG.cT, Matrix.diagonal_map (map_zero _), Matrix.diagonal_transpose, Matrix.diagonal_mul_diagonal,
@@ -282,11 +383,19 @@ def mhlEta (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) [NeZero n] (v : He
   ⟨rll_put n v (bc (prV (E := E) v) (bc (iA F E) (mhlD n hπ0 k))),
     rll_put_mem_UAd hc n v (afsplit_bc_mem hc.sig 1 v _ (ratIn hc n ⟨_, mhlD_mem hc n hπ0 k⟩).2)⟩
 
+/- English proof (translation)
+Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`.
+-/
 theorem mhl_pullV_mul {n : ℕ} (x y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin n → E) :
     pullV (x * y) z = ((y⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) _) *ᵥ pullV x z := by
   unfold pullV
   rw [_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `h1 : bc (prV (E` using `E) v) (((mhlEta hc n v hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹) = bc (prV (E := E) v) (bc (iA F E) (mhlD n hπ0 k)⁻¹) := by`. Rewrite using `[map_inv, map_inv, map_inv]`. Conclude with `congrArg (·⁻¹) (rll_put_self n v _)`. Establish `h2` using `congrArg (fun g : GL (Fin n) (E ⊗[F] v.adicCompletion F) => ((g : GL (Fin n) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) i j) h1`. Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply, Matrix.map_apply] at h2`.
+
+Rewrite using `[h2]`. Use `congr 2`.
+-/
 theorem mhl_prV_eta_inv (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] (v : HeightOneSpectrum (𝓞 F)) {π : 𝓞 E} (hπ0 : π ≠ 0) (k : ℕ)
     (i j : Fin n) :
     prV (E := E) v ((((mhlEta hc n v hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))⁻¹ :
@@ -303,6 +412,11 @@ theorem mhl_prV_eta_inv (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZe
   rw [h2]
   congr 2
 
+/- English proof (translation)
+Rewrite using `[mhl_pullV_mul]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[map_mul, mhl_prV_eta_inv, if_pos rfl, map_mul]`. Introduce `j _ hj`.
+
+Rewrite using `[map_mul, mhl_prV_eta_inv, if_neg (Ne.symm hj), map_zero, map_zero, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+-/
 theorem mhl_prV_pullV_eta (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] (v : HeightOneSpectrum (𝓞 F)) {π : 𝓞 E} (hπ0 : π ≠ 0)
     (k : ℕ) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin n → E) (i : Fin n) :
     prV (E := E) v (pullV (x * ((mhlEta hc n v hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) z i) =
@@ -323,6 +437,9 @@ section MhlNbr
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
+/- English proof (translation)
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `r`. Rewrite using `[mem_conjP, mem_conjP, cO_cO]`.
+-/
 theorem conjPrime_conjPrime (P : Pl E) : conjPrime₂ (conjPrime₂ P) = P := by
   apply HeightOneSpectrum.ext
   ext r
@@ -339,18 +456,35 @@ structure MhlUnif (Pb : Pl E) where
   hc : c ∉ Pb.asIdeal
   hcπ : ∀ p ∈ Pb.asIdeal, ∃ t : 𝓞 E, c * p = π * t
 
+/- English proof (translation)
+Take `⟨π, h1, h2, h3, c, h4, h5⟩` from `mhl_exists_unif (Q := Pb) (P := conjPrime₂ Pb) (Ne.symm hsp)`. Conclude with `⟨⟨π, c, h1, h2, h3, h4, h5⟩⟩`.
+-/
 theorem MhlUnif.nonempty {Pb : Pl E} (hsp : conjPrime₂ Pb ≠ Pb) : Nonempty (MhlUnif Pb) := by
   obtain ⟨π, h1, h2, h3, c, h4, h5⟩ := mhl_exists_unif (Q := Pb) (P := conjPrime₂ Pb) (Ne.symm hsp)
   exact ⟨⟨π, c, h1, h2, h3, h4, h5⟩⟩
 
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+Unfold `mhlA`. Rewrite using `[mul_inv, inv_inv]`. Both sides reduce to the same expression.
+-/
 theorem mhlA_inv (U : MhlUnif Pb) :
     (mhlA U.π)⁻¹ = (algebraMap (𝓞 E) E U.π)⁻¹ * algebraMap (𝓞 E) E (cO E U.π) := by
   unfold mhlA
   rw [mul_inv, inv_inv]
   rfl
 
+/- English proof (translation)
+Rewrite using `[mem_localization_globalLattice_iff, mem_localization_globalLattice_iff]`. Establish `hs : cO E U.π ∉ Pb.asIdeal` using `fun h => U.hπP ((mem_conjP Pb U.π).2 h)`. Establish `key : ∀ i, IntAtA Pb (pullV (x * ((mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) z i) ↔ IntAtA Pb (pullV x z i) ∧ (i.1 < k → redA Pb (pullV x z i) = 0)`. Introduce `i`. Rewrite using `[mhl_intAt_iff_of_prV hov (mhl_prV_pullV_eta hc v U.hπ0 k x z i)]`.
+
+Unfold `mhlDiag`. Use `split_ifs with hik`. Rewrite using `[mhlA_inv, map_mul, mul_assoc, mhl_intAt_div U.hπ U.hπ0 U.hc U.hcπ, mhl_intAt_unit hs]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+
+Use `⟨h1, fun _ => ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[mhl_redA_unit _ h1]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (mk_ne_zero hs)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, by rw [mhl_redA_unit _ h1, h2 hik, mul_zero]⟩`.
+
+Rewrite using `[inv_one, map_one, one_mul]`. Conclude with `⟨fun h => ⟨h, fun h' => absurd h' hik⟩, fun h => h.1⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun i => ((key i).1 (h i)).1, fun i hi => ((key i).1 (h i)).2 hi⟩`.
+
+Introduce and unpack `⟨h1, h2⟩ i`. Conclude with `(key i).2 ⟨h1 i, h2 i⟩`.
+-/
 theorem mhl_locP_Pb (hov : IsOver v Pb) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (z : Fin n → E) :
     z ∈ localization₂ Pb.asIdeal (Formalism.UG.CS.globLat (x * ((mhlEta hc n v U.hπ0 k : UAd hc n) :
       GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (stdLat E n)) ↔
@@ -380,6 +514,11 @@ theorem mhl_locP_Pb (hov : IsOver v Pb) (x : GL (Fin n) (E ⊗[F] Formalism.L2.H
   · rintro ⟨h1, h2⟩ i
     exact (key i).2 ⟨h1 i, h2 i⟩
 
+/- English proof (translation)
+Establish `hov'` using `tud_isOver_conj hc hov`. Rewrite `hz`, the goal using `[mem_localization_globalLattice_iff]`. Introduce `i`. Rewrite using `[mhl_intAt_iff_of_prV hov' (mhl_prV_pullV_eta hc v U.hπ0 k x z i)]`. Unfold `mhlDiag`.
+
+Use `split_ifs`. Rewrite using `[mhlA_inv, map_mul, mul_assoc]`. Conclude with `mhl_intAt_inv_unit U.hπP (mhl_intAt_mul_int _ (hz i))`. Rewrite using `[inv_one, map_one, one_mul]`. Conclude with `hz i`.
+-/
 theorem mem_localization_globalLattice_mul_of_mem (hov : IsOver v Pb) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {z : Fin n → E}
     (hz : z ∈ localization₂ (conjPrime₂ Pb).asIdeal (Formalism.UG.CS.globLat x (stdLat E n))) :
     z ∈ localization₂ (conjPrime₂ Pb).asIdeal (Formalism.UG.CS.globLat (x * ((mhlEta hc n v U.hπ0 k : UAd hc n) :
@@ -395,6 +534,21 @@ theorem mem_localization_globalLattice_mul_of_mem (hov : IsOver v Pb) (x : GL (F
   · rw [inv_one, map_one, one_mul]
     exact hz i
 
+/- English proof (translation)
+Establish `hov'` using `tud_isOver_conj hc hov`. Rewrite `hz`, the goal using `[mem_localization_globalLattice_iff]`. Introduce `i`. Establish `hzi` using `hz i`. Rewrite `hzi` using `[mhl_intAt_iff_of_prV hov' (mhl_prV_pullV_eta hc v U.hπ0 k x z i)]`.
+
+Rewrite using `[pullV_osmul]`. Unfold `mhlDiag at hzi`. Use `split_ifs at hzi with hik`. Take `⟨s, hs, hsw⟩` from `hzi`. Establish `hcP : cO E U.c ∉ (conjPrime₂ Pb).asIdeal`.
+
+Rewrite using `[mem_conjP, cO_cO]`. Conclude with `U.hc`. Take `⟨t, ht⟩` from `U.hcπ (cO E p) ((mem_conjP Pb p).1 hp)`. Establish `ht' : cO E U.c * p = cO E U.π * cO E t`. Use `congrArg (cO E) ht` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_mul, cO_cO]`. Then use the resulting hypothesis. Use `⟨s * cO E U.c, fun hm => ((conjPrime₂ Pb).isPrime.mem_or_mem hm).elim hs hcP, ?_⟩` and prove the remaining obligations. Establish `hα` using `mhl_alg_ne U.hπ0`. Establish `hE : algebraMap (𝓞 E) E s * algebraMap (𝓞 E) E (cO E U.c) * algebraMap (𝓞 E) E p = algebraMap (𝓞 E) E (cO E t) * algebraMap (𝓞 E) E U.π * (algebraMap (𝓞 E) E s * (mhlA U.π)⁻¹)`. Establish `h1` using `congrArg (algebraMap (𝓞 E) E) ht'`.
+
+Rewrite `h1` using `[map_mul, map_mul]`. Rewrite using `[mhlA_inv, mul_assoc (algebraMap (𝓞 E) E s), h1]`. Clear the denominators using the available nonvanishing facts. Establish `e : iA F E (algebraMap (𝓞 E) E (s * cO E U.c)) * (iA F E (algebraMap (𝓞 E) E p) * pullV x z i) = iA F E (algebraMap (𝓞 E) E (cO E t)) * iA F E (algebraMap (𝓞 E) E U.π) * (iA F E (algebraMap (𝓞 E) E s) * (iA F E ((mhlA U.π)⁻¹) * pullV x z i))`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = iA F E (algebraMap (𝓞 E) E (cO E t) * algebraMap (𝓞 E) E U.π * (algebraMap (𝓞 E) E s * (mhlA U.π)⁻¹)) * pullV x z i := by rw [hE]`. Use `_ = _ := by simp only [map_mul]; ring`. Rewrite using `[e]`.
+
+Conclude with `mul_mem (mul_mem (iA_mem _) (iA_mem _)) hsw`. Rewrite `hzi` using `[inv_one, map_one, one_mul]`. Conclude with `mhl_intAt_mul_int p hzi`.
+-/
 theorem mhl_smul_locP_P (hov : IsOver v Pb) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {z : Fin n → E}
     (hz : z ∈ localization₂ (conjPrime₂ Pb).asIdeal (Formalism.UG.CS.globLat (x * ((mhlEta hc n v U.hπ0 k : UAd hc n) :
       GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (stdLat E n))) {p : 𝓞 E} (hp : p ∈ (conjPrime₂ Pb).asIdeal) :
@@ -437,6 +591,11 @@ theorem mhl_smul_locP_P (hov : IsOver v Pb) (x : GL (Fin n) (E ⊗[F] Formalism.
   · rw [inv_one, map_one, one_mul] at hzi
     exact mhl_intAt_mul_int p hzi
 
+/- English proof (translation)
+Establish `hne : Formalism.L2.DIV.underPl F Q ≠ v`. Introduce and unpack `rfl`. Conclude with `hQ rfl`. Use `updn_mem_loc (v := Formalism.L2.DIV.underPl F Q) rfl ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+
+Use `show bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) x * bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) (rll_put n v _) = _`. Rewrite using `[rll_put_ne n v _ hne, mul_one]`.
+-/
 theorem localization_globalLattice_mul_of_not_isOver (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {Q : Pl E} (hQ : ¬ IsOver v Q) :
     localization₂ Q.asIdeal (Formalism.UG.CS.globLat (x * ((mhlEta hc n v U.hπ0 k : UAd hc n) :
       GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (stdLat E n)) = localization₂ Q.asIdeal (Formalism.UG.CS.globLat x (stdLat E n)) := by
@@ -455,6 +614,9 @@ section MhlHk
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, fun h1 => Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by rw [map_one, map_one, one_mul]; exact h⟩`.
+-/
 theorem mhl_intAt_of_int {Q : Pl E} {a : E ⊗[F] Formalism.L2.Herm.Af F} (h : a ∈ Formalism.L2.Herm.intAf F E) : IntAtA Q a :=
   ⟨1, fun h1 => Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), by rw [map_one, map_one, one_mul]; exact h⟩
 
@@ -476,6 +638,11 @@ def mhlPhi (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Pb : Pl E) {k : �
     rw [pullV_osmul]
     exact mhl_redA_unit r (mhl_intAt_of_int hz)
 
+/- English proof (translation)
+Introduce `c`. Establish `hOk` using `decorated_lattice_exists hc n (∅ : Finset (Pl E)) {Pb} (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) x.2`. Take `⟨z, hz, hbz⟩` from `hOk.be_surj ⟨Pb, Finset.mem_singleton_self Pb⟩ (fun i => if h : i.1 < k then c ⟨i.1, h⟩ else 0)`. Use `⟨⟨z, hz⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+
+Establish `hloc : z ∈ localization₂ Pb.asIdeal (Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n))` using `le_locP Pb _ hz`. Establish `h1` using `congrFun hbz ⟨i.1, lt_of_lt_of_le i.2 hk⟩`. Simplify using `only [decoRaw, if_pos hloc, dif_pos i.2] at h1`. Conclude with `h1`.
+-/
 theorem mhlPhi_surj (x : UAd hc n) (Pb : Pl E) {k : ℕ} (hk : k ≤ n) :
     Function.Surjective (mhlPhi (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) Pb hk) := by
   classical
@@ -491,6 +658,25 @@ theorem mhlPhi_surj (x : UAd hc n) (Pb : Pl E) {k : ℕ} (hk : k ≤ n) :
   simp only [decoRaw, if_pos hloc, dif_pos i.2] at h1
   exact h1
 
+/- English proof (translation)
+Use `set X : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hX`. Use `set η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := ((mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hη`. Use `set N := Formalism.UG.CS.globLat X (stdLat E n) with hN`. Use `set N' := Formalism.UG.CS.globLat (X * η) (stdLat E n) with hN'`. Rewrite using `[isHeckeNbr_iff, conjPrime_conjPrime]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `Formalism.L2.DIV.lc_le_of_le_locP fun Q => ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`. Introduce `p hp z hz`. Distinguish the cases in `hQ : IsOver v Q`.
+
+Break down `hov2 Q hQ with rfl | rfl` into its components or cases. Conclude with `Submodule.smul_mem _ p ((mhl_locP_Pb hc U k hov X z).1 (le_locP _ _ hz)).1`. Conclude with `mhl_smul_locP_P hc U k hov X (le_locP _ _ hz) hp`. Rewrite using `[← localization_globalLattice_mul_of_not_isOver hc U k X hQ]`. Conclude with `Submodule.smul_mem _ p (le_locP _ _ hz)`.
+
+Use `Formalism.L2.DIV.lc_le_of_le_locP fun Q => ?_` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`. Introduce `p hp z hz`. Distinguish the cases in `hQ : IsOver v Q`. Break down `hov2 Q hQ with rfl | rfl` into its components or cases.
+
+Use `(mhl_locP_Pb hc U k hov X (p • z)).2 ⟨Submodule.smul_mem _ p (le_locP _ _ hz), fun i _ => ?_⟩` and prove the remaining obligations. Rewrite using `[pullV_osmul, mhl_redA_unit p (mhl_intAt_of_int ((mem_globLat X z).1 hz i)), Ideal.Quotient.eq_zero_iff_mem.2 hp, zero_mul]`. Conclude with `mem_localization_globalLattice_mul_of_mem hc U k hov X (Submodule.smul_mem _ p (le_locP _ _ hz))`. Rewrite using `[localization_globalLattice_mul_of_not_isOver hc U k X hQ]`. Conclude with `Submodule.smul_mem _ p (le_locP _ _ hz)`.
+
+Establish `hker : LinearMap.ker (mhlPhi X Pb hk) = (N' ⊓ N).comap N.subtype`. Use extensionality with `⟨z, hz⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+
+Use `⟨?_, hz⟩` and prove the remaining obligations. Rewrite using `[← Formalism.L2.DIV.lc_iInf_locP N', Submodule.mem_iInf]`. Introduce `Q`. Distinguish the cases in `hQ : IsOver v Q`. Break down `hov2 Q hQ with rfl | rfl` into its components or cases.
+
+Use `(mhl_locP_Pb hc U k hov X z).2 ⟨le_locP _ _ hz, fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `congrFun h0 ⟨i.1, hi⟩`. Conclude with `mem_localization_globalLattice_mul_of_mem hc U k hov X (le_locP _ _ hz)`. Rewrite using `[localization_globalLattice_mul_of_not_isOver hc U k X hQ]`. Conclude with `le_locP _ _ hz`.
+
+Introduce and unpack `⟨h1, -⟩`. Use function extensionality and compare the values at `i`. Conclude with `((mhl_locP_Pb hc U k hov X z).1 (le_locP _ _ h1)).2 ⟨i.1, lt_of_lt_of_le i.2 hk⟩ i.2`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans ((mhlPhi X Pb hk).quotKerEquivOfSurjective (mhlPhi_surj hc x Pb hk))⟩`.
+-/
 theorem mhl_isHeckeNbr (hov : IsOver v Pb) (hov2 : ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb) (hk : k ≤ n)
     (x : UAd hc n) :
     IsHeckeNbr (conjPrime₂ Pb).asIdeal k (Formalism.UG.CS.globLat (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (stdLat E n))
@@ -544,6 +730,15 @@ theorem mhl_isHeckeNbr (hov : IsOver v Pb) (hov2 : ∀ Q : Pl E, IsOver v Q → 
     exact ⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans
       ((mhlPhi X Pb hk).quotKerEquivOfSurjective (mhlPhi_surj hc x Pb hk))⟩
 
+/- English proof (translation)
+Establish `e1` using `rlc_decoOf_val hc n ST SG (x * mhlEta hc n v U.hπ0 k).2`. Establish `e2` using `rlc_decoOf_val hc n ST SG x.2`. Establish `hoff : ∀ Q : Pl E, ¬ IsOver v Q → bc (prV (E` using `E) (Formalism.L2.DIV.underPl F Q)) ((x * mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by`. Introduce `Q hQ`. Establish `hne : Formalism.L2.DIV.underPl F Q ≠ v`.
+
+Introduce and unpack `rfl`. Conclude with `hQ rfl`. Rewrite using `[Subgroup.coe_mul, map_mul]`. Use `show _ * bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) (rll_put n v _) = _`. Rewrite using `[rll_put_ne n v _ hne, mul_one]`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2] show IsHeckeNbr _ k (Formalism.UG.CS.globLat _ (stdLat E n)) (Formalism.UG.CS.globLat _ (stdLat E n))`. Rewrite using `[Subgroup.coe_mul]`. Conclude with `mhl_isHeckeNbr hc U k hov hov2 hk x`. Rewrite using `[e1, e2]`.
+
+Use function extensionality and compare the values at `Q`. Conclude with `updn_f_loc ST SG (v := Formalism.L2.DIV.underPl F Q.1) Q rfl (hoff Q.1 (hST Q.1 Q.2))`. Rewrite using `[e1, e2]`. Use function extensionality and compare the values at `w`. Conclude with `updn_be_loc ST SG (v := Formalism.L2.DIV.underPl F w.1) w rfl (hoff w.1 (hSG w.1 w.2))`.
+-/
 theorem mhl_mem_heckeSet (ST SG : Finset (Pl E)) (hov : IsOver v Pb)
     (hov2 : ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb) (hST : ∀ Q ∈ ST, ¬ IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ IsOver v Q)
     (hk : k ≤ n) (x : UAd hc n) :
@@ -577,6 +772,29 @@ end MhlHk
 
 section MhlSurj
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `Submodule.exists_isCompl (LinearMap.ker ψ)`. Set `p : (Fin n → K) →ₗ[K] LinearMap.ker ψ` to `Submodule.linearProjOfIsCompl (LinearMap.ker ψ) C hC`. Establish `hrank : Module.finrank K (LinearMap.ker ψ) = n - k`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker ψ`. Rewrite `h` using `[LinearMap.range_eq_top.2 hψ, finrank_top, Module.finrank_fin_fun, Module.finrank_fin_fun]`.
+
+Use linear arithmetic over natural numbers and integers. Set `e : LinearMap.ker ψ ≃ₗ[K] (Fin (n - k) → K)` to `LinearEquiv.ofFinrankEq _ _ (by rw [hrank, Module.finrank_fin_fun])`. Set `A : (Fin n → K) →ₗ[K] (Fin n → K)` to `{ toFun := fun w j => if h : j.1 < k then ψ w ⟨j.1, h⟩ else e (p w) ⟨j.1 - k, by omega⟩ map_add' := fun w w' => by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j.1 < k`.
+
+Simplify using `only [dif_pos h, map_add, Pi.add_apply]`. Simplify using `only [dif_neg h, map_add, Pi.add_apply]`. Use the proof step `map_smul' := fun c w => by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j.1 < k`.
+
+Simplify using `only [dif_pos h, map_smul, Pi.smul_apply, RingHom.id_apply]`. Simplify using `only [dif_neg h, map_smul, Pi.smul_apply, RingHom.id_apply] }`. Establish `hA : Function.Injective A`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`.
+
+Establish `h1 : ψ w = 0`. Use function extensionality and compare the values at `i`. Establish `h` using `congrFun hw ⟨i.1, lt_of_lt_of_le i.2 hk⟩`. Simplify using `only [A, LinearMap.coe_mk, AddHom.coe_mk, dif_pos i.2, Pi.zero_apply] at h`. Conclude with `h`.
+
+Establish `h2 : e (p w) = 0`. Use function extensionality and compare the values at `m`. Establish `h` using `congrFun hw ⟨m.1 + k, by omega⟩`. Establish `hm : ¬ (m.1 + k < k)` using `by omega`. Simplify using `only [A, LinearMap.coe_mk, AddHom.coe_mk, dif_neg hm, Pi.zero_apply] at h`.
+
+Establish `e' : (⟨m.1 + k - k, by omega⟩ : Fin (n - k)) = m` using `Fin.ext (by simp)`. Rewrite `h` using `[e']`. Conclude with `h`. Establish `h3 : p w = 0` using `e.injective (h2.trans e.map_zero.symm)`. Establish `hwk : w ∈ LinearMap.ker ψ` using `h1`.
+
+Establish `h4` using `Submodule.linearProjOfIsCompl_apply_left hC ⟨w, hwk⟩`. Establish `h5 : p w = ⟨w, hwk⟩` using `h4`. Rewrite `h3` using `[h5]`. Conclude with `congrArg Subtype.val h3`. Set `A'` to `LinearEquiv.ofInjectiveEndo A hA`.
+
+Establish `hAA : ∀ w, A' w = A w` using `fun w => rfl`. Use `⟨⟨LinearMap.toMatrix' A, LinearMap.toMatrix' (A'.symm : (Fin n → K) →ₗ[K] (Fin n → K)), ?_, ?_⟩, fun w i => ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+
+Use `show A (A'.symm w) = w`. Rewrite using `[← hAA, A'.apply_symm_apply]`. Rewrite using `[← LinearMap.toMatrix'_comp, ← LinearMap.toMatrix'_id]`. Use `congr 1`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+
+Use `show A'.symm (A w) = w`. Rewrite using `[← hAA, A'.symm_apply_apply]`. Use `show (LinearMap.toMatrix' A *ᵥ w) _ = _`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Simplify using `only [A, LinearMap.coe_mk, AddHom.coe_mk, dif_pos i.2]`.
+-/
 theorem mhl_exists_adapted {K : Type} [Field K] {n k : ℕ} (hk : k ≤ n) (ψ : (Fin n → K) →ₗ[K] (Fin k → K))
     (hψ : Function.Surjective ψ) :
     ∃ G : GL (Fin n) K, ∀ (w : Fin n → K) (i : Fin k),
@@ -648,6 +866,15 @@ section MhlSurj2
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+Use extensionality with `⟨z, hz⟩`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `⟨?_, hz⟩` and prove the remaining obligations.
+
+Rewrite using `[← Formalism.L2.DIV.lc_iInf_locP (Formalism.UG.CS.globLat (X * ((mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) (stdLat E n)), Submodule.mem_iInf]`. Introduce `Q`. Distinguish the cases in `hQ : IsOver v Q`. Break down `hov2 Q hQ with rfl | rfl` into its components or cases. Use `(mhl_locP_Pb hc U k hov X z).2 ⟨le_locP _ _ hz, fun i hi => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrFun h0 ⟨i.1, hi⟩`. Conclude with `mem_localization_globalLattice_mul_of_mem hc U k hov X (le_locP _ _ hz)`. Rewrite using `[localization_globalLattice_mul_of_not_isOver hc U k X hQ]`. Conclude with `le_locP _ _ hz`. Introduce and unpack `⟨h1, -⟩`.
+
+Use function extensionality and compare the values at `i`. Conclude with `((mhl_locP_Pb hc U k hov X z).1 (le_locP _ _ h1)).2 ⟨i.1, lt_of_lt_of_le i.2 hk⟩ i.2`.
+-/
 theorem mhl_ker_phi (hov : IsOver v Pb) (hov2 : ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb) (hk : k ≤ n)
     (X : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
     LinearMap.ker (mhlPhi X Pb hk) =
@@ -672,6 +899,15 @@ theorem mhl_ker_phi (hov : IsOver v Pb) (hov2 : ∀ Q : Pl E, IsOver v Q → Q =
     funext i
     exact ((mhl_locP_Pb hc U k hov X z).1 (le_locP _ _ h1)).2 ⟨i.1, lt_of_lt_of_le i.2 hk⟩ i.2
 
+/- English proof (translation)
+Establish `hv : bc (prV (E` using `E) v) (X * rll_put n v (bc (prV (E := E) v) k'⁻¹)) = bc (prV (E := E) v) (X * k'⁻¹) := by`. Rewrite using `[map_mul, rll_put_self, ← map_mul]`. Establish `hoff : ∀ Q : Pl E, ¬ IsOver v Q → bc (prV (E` using `E) (Formalism.L2.DIV.underPl F Q)) (X * rll_put n v (bc (prV (E := E) v) k'⁻¹)) = bc (prV (E := E) (Formalism.L2.DIV.underPl F Q)) X := by`. Introduce `Q hQ`. Establish `hne : Formalism.L2.DIV.underPl F Q ≠ v`.
+
+Introduce and unpack `rfl`. Conclude with `hQ rfl`. Rewrite using `[map_mul, rll_put_ne n v _ hne, mul_one]`. Use `ext1`. Use `Formalism.L2.DIV.eq_of_forall_localized_eq fun Q => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hQ : IsOver v Q`. Conclude with `(updn_mem_loc hQ hv).trans (by rw [globLat_mul_St n X hk']; rfl)`. Conclude with `updn_mem_loc (v := Formalism.L2.DIV.underPl F Q) rfl (hoff Q hQ)`. Use function extensionality and compare the values at `Q`. Conclude with `updn_f_loc ST SG (v := Formalism.L2.DIV.underPl F Q.1) Q rfl (hoff Q.1 (hST Q.1 Q.2))`.
+
+Use function extensionality and compare the values at `w`. Conclude with `updn_be_loc ST SG (v := Formalism.L2.DIV.underPl F w.1) w rfl (hoff w.1 (hSG w.1 w.2))`.
+-/
 theorem mhl_decoRaw_loc (ST SG : Finset (Pl E)) (hST : ∀ Q ∈ ST, ¬ IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ IsOver v Q)
     (X : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) {k' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)}
     (hk' : k' ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) :
@@ -696,6 +932,9 @@ theorem mhl_decoRaw_loc (ST SG : Finset (Pl E)) (hST : ∀ Q ∈ ST, ¬ IsOver v
   · funext w
     exact updn_be_loc ST SG (v := Formalism.L2.DIV.underPl F w.1) w rfl (hoff w.1 (hSG w.1 w.2))
 
+/- English proof (translation)
+Use `rll_St_of_loc n _ fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `⟨k', hk', (rll_put_self n w _).symm⟩`. Conclude with `⟨1, Subgroup.one_mem _, by rw [map_one, rll_put_ne n v w hw]⟩`.
+-/
 theorem mhl_loc_mem_St {k' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} (hk' : k' ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))) :
     rll_put n v (bc (prV (E := E) v) k') ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) := by
   refine rll_St_of_loc n _ fun w => ?_
@@ -711,6 +950,11 @@ section MhlSurj3
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+Introduce `P1 hP1 P2 hP2 h12`. Rewrite `hP1`, `hP2` using `[Finset.mem_singleton]`. Substitute `hP1 hP2` using the available equality. Apply `hsp` to reduce the goal to its premises. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises.
+
+Use extensionality with `a`. Rewrite using `[mem_conjP]`. Conclude with `(h12 a (cO E a) rfl).symm`.
+-/
 theorem mhl_isSplitSet_single {Pb : Pl E} (hsp : conjPrime₂ Pb ≠ Pb) : Formalism.L2.DIV.IsSplitSet ({Pb} : Finset (Pl E)) := by
   intro P1 hP1 P2 hP2 h12
   rw [Finset.mem_singleton] at hP1 hP2
@@ -721,6 +965,55 @@ theorem mhl_isSplitSet_single {Pb : Pl E} (hsp : conjPrime₂ Pb ≠ Pb) : Forma
   rw [mem_conjP]
   exact (h12 a (cO E a) rfl).symm
 
+/- English proof (translation)
+Use `set X : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hX`. Use `set N := Formalism.UG.CS.globLat X (stdLat E n) with hN`. Establish `hd0 : (decoOf ST SG X).1 = decoRaw ST SG X` using `rlc_decoOf_val hc n ST SG x.2`. Take `⟨hnb, hf', hb'⟩` from `hd'`. Establish `hnbN : IsHeckeNbr (conjPrime₂ Pb).asIdeal k N d'.1.N`.
+
+Use `hnb` as an intermediate fact. Rewrite `this` using `[hd0]`. Conclude with `this`. Establish `hnb'` using `(isHeckeNbr_iff (conjPrime₂ Pb) k N d'.1.N).1 hnbN`. Rewrite `hnb'` using `[conjPrime_conjPrime]`.
+
+Take `⟨h1, h2, ⟨φ⟩⟩` from `hnb'`. Establish `hPbmax` using `Pb.isMaximal`. Use `letI : Field (𝓞 E ⧸ Pb.asIdeal) := Ideal.Quotient.field Pb.asIdeal`. Set `r` to `mhlPhi X Pb (le_refl n)`. Establish `hr : Function.Surjective r` using `mhlPhi_surj hc x Pb (le_refl n)`.
+
+Set `K'' : Submodule (𝓞 E) N` to `(d'.1.N ⊓ N).comap N.subtype`. Establish `hker : LinearMap.ker r ≤ K''`. Introduce and unpack `⟨z, hz⟩ hz0`. Establish `hOk` using `decorated_lattice_exists hc n (∅ : Finset (Pl E)) {Pb} X x.2`. Establish `hloc : z ∈ localization₂ Pb.asIdeal N` using `le_locP Pb _ hz`.
+
+Establish `hbe : (decoRaw ∅ {Pb} X).be ⟨Pb, Finset.mem_singleton_self Pb⟩ z = 0` using `by show (open Classical in if z ∈ localization₂ Pb.asIdeal (Formalism.UG.CS.globLat X (stdLat E n)) then fun i => redA Pb (pullV X z i) else 0) = 0`. Rewrite using `[if_pos hloc]`. Use function extensionality and compare the values at `i`. Conclude with `congrFun hz0 i`. Establish `hPbN` using `hOk.be_ker ⟨Pb, Finset.mem_singleton_self Pb⟩ z hz hbe`.
+
+Conclude with `⟨h2 hPbN, hz⟩`. Set `ψ₀ : (Fin n → 𝓞 E ⧸ Pb.asIdeal) →ₗ[𝓞 E] (Fin k → 𝓞 E ⧸ Pb.asIdeal)` to `φ.toLinearMap ∘ₗ (quotMapSurj r hr K'' hker).symm.toLinearMap ∘ₗ (K''.map r).mkQ`. Establish `hψ₀ : Function.Surjective ψ₀` using `φ.surjective.comp ((quotMapSurj r hr K'' hker).symm.surjective.comp (Submodule.mkQ_surjective _))`. Set `ψ : (Fin n → 𝓞 E ⧸ Pb.asIdeal) →ₗ[𝓞 E ⧸ Pb.asIdeal] (Fin k → 𝓞 E ⧸ Pb.asIdeal)` to `LinearMap.extendScalarsOfSurjective Ideal.Quotient.mk_surjective ψ₀`. Take `⟨G, hG⟩` from `mhl_exists_adapted hk ψ hψ₀`.
+
+Establish `hdef : Formalism.L2.DIV.IsDefUnimod hc (1 : Matrix (Fin n) (Fin n) E) (Formalism.UG.stdLat (n` using `Fin n) (A := E) (𝓞 E)) := by`. Establish `h` using `std_defUnimod hc n`. Rewrite `h` using `[stdLat_eq_ug]`. Conclude with `h`. Set `yG : ∀ PP : ↥({Pb} : Finset (Pl E)), GL (Fin n) (kP PP.1)` to `fun PP => (Finset.mem_singleton.1 PP.2).symm ▸ G`.
+
+Take `⟨k', hk', hky⟩` from `Formalism.L2.DIV.reduction_surjective_bis F E hc n 1 _ 1 {Pb} hdef (Formalism.L2.DIV.frame_standard F E n) (mhl_isSplitSet_single hsp) yG`. Establish `hk'S : k' ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))` using `hk'.2`. Take `⟨yk, hyk, hyr⟩` from `St_one_int hk'S`. Establish `hred : ∀ i j, (G : Matrix (Fin n) (Fin n) (𝓞 E ⧸ Pb.asIdeal)) i j = resS F Pb (yk i j)`. Introduce `i j`.
+
+Establish `h` using `hky ⟨Pb, Finset.mem_singleton_self Pb⟩`. Establish `hyG : yG ⟨Pb, Finset.mem_singleton_self Pb⟩ = G` using `rfl`. Rewrite `h` using `[Formalism.L2.DIV.redFn, Formalism.L2.DIV.extendOne_of_mem _ hk'S, hyG]`. Rewrite using `[← h, hyr Pb i j]`. Establish `hk'inv : k'⁻¹ ∈ St (1 : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))` using `Subgroup.inv_mem _ hk'S`.
+
+Set `κ : UAd hc n` to `⟨rll_put n v (bc (prV (E := E) v) k'⁻¹), rll_put_mem_UAd hc n v (afsplit_bc_mem hc.sig 1 v _ (Subgroup.inv_mem _ hk'.1))⟩`. Use `⟨κ, fun w hw => rll_put_ne n v w hw _, mhl_loc_mem_St hk'inv, ?_⟩` and prove the remaining obligations. Use `set X' : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := ((x * κ : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hX'`. Establish `hX'e : X' = X * rll_put n v (bc (prV (E` using `E) v) k'⁻¹) := Subgroup.coe_mul _ _ _`. Establish `hraw : decoRaw ST SG X' = decoRaw ST SG X`.
+
+Rewrite using `[hX'e]`. Conclude with `mhl_decoRaw_loc (v := v) ST SG hST hSG X hk'S`. Establish `hdx' : decoOf ST SG X' = decoOf ST SG X`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[rlc_decoOf_val hc n ST SG (x * κ).2, hd0, hraw]`.
+
+Establish `hN' : Formalism.UG.CS.globLat X' (stdLat E n) = N` using `congrArg Deco.N hraw`. Establish `hmem` using `mhl_mem_heckeSet hc U k ST SG hov hov2 hST hSG hk (x * κ)`. Rewrite `hmem` using `[hdx']`. Use `set η : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := ((mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hη`. Establish `hvX : bc (prV (E` using `E) v) X' = bc (prV (E := E) v) (X * k'⁻¹) := by`.
+
+Rewrite using `[hX'e, map_mul, rll_put_self, ← map_mul]`. Establish `hphi : ∀ (z : Fin n → E) (hz : z ∈ N), mhlPhi X' Pb hk ⟨z, hN' ▸ hz⟩ = ψ₀ (r ⟨z, hz⟩)`. Introduce `z hz`. Use function extensionality and compare the values at `i`. Establish `hzl : z ∈ localization₂ Pb.asIdeal (Formalism.UG.CS.globLat X' (stdLat E n))` using `le_locP _ _ (hN' ▸ hz)`.
+
+Establish `hint : ∀ j, iA F E (algebraMap (𝓞 E) E 1) * pullV X z j ∈ Formalism.L2.Herm.intAf F E` using `fun j => by`. Rewrite using `[map_one, map_one, one_mul]`. Conclude with `(mem_globLat X z).1 hz j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pullV_mul_inv, mulVec_int_apply hyk]`.
+
+Conclude with `redA_sum Pb (one_notMem Pb) _ hint _`. Use `_ = ((G : Matrix (Fin n) (Fin n) (𝓞 E ⧸ Pb.asIdeal)) *ᵥ r ⟨z, hz⟩) ⟨i.1, lt_of_lt_of_le i.2 hk⟩ := by`. Simplify using `only [Matrix.mulVec, dotProduct, hred]`. Both sides reduce to the same expression. Use `_ = ψ₀ (r ⟨z, hz⟩) i := hG _ i`.
+
+Establish `hq : ∀ z : N, quotMapSurj r hr K'' hker (Submodule.Quotient.mk z) = Submodule.Quotient.mk (r z)` using `fun z => rfl`. Establish `hψz : ∀ z : N, ψ₀ (r z) = φ (Submodule.Quotient.mk z)`. Introduce `z`. Use `show φ ((quotMapSurj r hr K'' hker).symm (Submodule.Quotient.mk (r z))) = _`. Rewrite using `[← hq, LinearEquiv.symm_apply_apply]`.
+
+Establish `hiff : ∀ (z : Fin n → E) (hz : z ∈ N), z ∈ Formalism.UG.CS.globLat (X' * η) (stdLat E n) ↔ z ∈ d'.1.N`. Introduce `z hz`. Establish `hk1` using `mhl_ker_phi hc U k hov hov2 hk X'`. Establish `e1 : (⟨z, hN' ▸ hz⟩ : Formalism.UG.CS.globLat X' (stdLat E n)) ∈ LinearMap.ker (mhlPhi X' Pb hk) ↔ z ∈ Formalism.UG.CS.globLat (X' * η) (stdLat E n) ∧ z ∈ Formalism.UG.CS.globLat X' (stdLat E n)`. Rewrite using `[hk1]`.
+
+Both sides reduce to the same expression. Rewrite `e1` using `[LinearMap.mem_ker, hphi z hz, hψz, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(e1.2 ⟨h, hN' ▸ hz⟩).1`.
+
+Introduce `h`. Conclude with `(e1.1 ⟨h, hz⟩).1`. Establish `hdN : (decoOf ST SG X).1.N = N` using `by rw [hd0]; rfl`. Establish `hd''N : (decoOf ST SG ((x * κ * mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).1.N = Formalism.UG.CS.globLat (X' * η) (stdLat E n)`. Rewrite using `[rlc_decoOf_val hc n ST SG (x * κ * mhlEta hc n v U.hπ0 k).2]`.
+
+Use `show Formalism.UG.CS.globLat _ (stdLat E n) = _`. Rewrite using `[Subgroup.coe_mul]`. Establish `hinf : (decoOf ST SG ((x * κ * mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).1.N ⊓ N = d'.1.N ⊓ N`. Rewrite using `[hd''N]`. Use extensionality with `z`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(hiff z h2).1 h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(hiff z h2).2 h1, h2⟩`.
+
+Take `⟨hnb'', hf'', hb''⟩` from `hmem`. Establish `hsp' : conjPrime₂ (conjPrime₂ Pb) ≠ conjPrime₂ Pb`. Rewrite using `[conjPrime_conjPrime]`. Conclude with `Ne.symm hsp`. Establish `e₁` using `IsHeckeNbr.eq_glue (decoOf ST SG X).2.lat (decoOf ST SG X).2.uni (decoOf ST SG ((x * κ * mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).2.uni (conjPrime₂ Pb) hsp' hnb''`.
+
+Establish `e₂` using `IsHeckeNbr.eq_glue (decoOf ST SG X).2.lat (decoOf ST SG X).2.uni d'.2.uni (conjPrime₂ Pb) hsp' hnb`. Rewrite `e₁`, `e₂` using `[hdN]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Deco.ext` to reduce the goal to its premises. Rewrite using `[e₁, e₂, hinf]`.
+
+Rewrite using `[hf'', hf']`. Rewrite using `[hb'', hb']`.
+-/
 theorem mhl_surj (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hov2 : ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb)
     (hST : ∀ Q ∈ ST, ¬ IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ IsOver v Q) (hsp : conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) (x : UAd hc n)
     {d' : DecoSet E n ST SG} (hd' : d' ∈ (decoOf ST SG (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))).heckeSet (conjPrime₂ Pb).asIdeal k) :
@@ -868,6 +1161,9 @@ section MhlBij
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 variable (hc : Formalism.BasicNotions.CMData F E) {n : ℕ} [NeZero n] {v : HeightOneSpectrum (𝓞 F)} {Pb : Pl E} (U : MhlUnif Pb) (k : ℕ)
 
+/- English proof (translation)
+The claim follows from `rll_put_ne n v w hw _`.
+-/
 theorem mhlEta_off (w : HeightOneSpectrum (𝓞 F)) (hw : w ≠ v) :
     bc (prV (E := E) w) ((mhlEta hc n v U.hπ0 k : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1 :=
   rll_put_ne n v w hw _
@@ -876,18 +1172,39 @@ def mhlCosets (v : HeightOneSpectrum (𝓞 F)) {Pb : Pl E} (U : MhlUnif Pb) (k :
   {c | ∃ κ₁ ∈ mhlKv hc n v, ∃ κ₂ ∈ mhlKv hc n v,
     (QuotientGroup.mk (κ₁ * mhlEta hc n v U.hπ0 k * κ₂) : UAd hc n ⧸ mhlKv hc n v) = c}
 
+/- English proof (translation)
+Introduce `w hw` and use `by rw [Subgroup.coe_mul, map_mul, ha w hw, hb w hw, mul_one]`.
+-/
 theorem mhl_off_mul {a b : UAd hc n}
     (ha : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → bc (prV (E := E) w) (a : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1)
     (hb : ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → bc (prV (E := E) w) (b : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1) :
     ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → bc (prV (E := E) w) ((a * b : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1 :=
   fun w hw => by rw [Subgroup.coe_mul, map_mul, ha w hw, hb w hw, mul_one]
 
+/- English proof (translation)
+Take `⟨κ₁, h₁, κ₂, h₂, rfl⟩` from `hcS`. Take `⟨h, e⟩` from `QuotientGroup.mk_out_eq_mul (mhlKv hc n v) (κ₁ * mhlEta hc n v U.hπ0 k * κ₂)`. Conclude with `⟨κ₁, h₁, κ₂ * h, Subgroup.mul_mem _ h₂ h.2, by rw [e, mul_assoc]⟩`.
+-/
 theorem mhl_cosets_out {c : UAd hc n ⧸ mhlKv hc n v} (hcS : c ∈ mhlCosets hc v U k) :
     ∃ κ₁ ∈ mhlKv hc n v, ∃ κ₂ ∈ mhlKv hc n v, c.out = κ₁ * mhlEta hc n v U.hπ0 k * κ₂ := by
   obtain ⟨κ₁, h₁, κ₂, h₂, rfl⟩ := hcS
   obtain ⟨h, e⟩ := QuotientGroup.mk_out_eq_mul (mhlKv hc n v) (κ₁ * mhlEta hc n v U.hπ0 k * κ₂)
   exact ⟨κ₁, h₁, κ₂ * h, Subgroup.mul_mem _ h₂ h.2, by rw [e, mul_assoc]⟩
 
+/- English proof (translation)
+Establish `hKdeco : ∀ (y : UAd hc n) {κ : UAd hc n}, κ ∈ mhlKv hc n v → decoOf ST SG ((y * κ : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = decoOf ST SG (y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))`. Introduce `y κ hκ`. Rewrite using `[Subgroup.coe_mul]`. Conclude with `decoOf_mul_mhlKv ST SG hST hSG _ hκ`. Establish `hOff : ∀ {c : UAd hc n ⧸ mhlKv hc n v}, c ∈ mhlCosets hc v U k → ∀ w : HeightOneSpectrum (𝓞 F), w ≠ v → bc (prV (E` using `E) w) (c.out : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = 1 := by`.
+
+Introduce `c hcS`. Take `⟨κ₁, h₁, κ₂, h₂, e⟩` from `mhl_cosets_out hc U k hcS`. Rewrite using `[e]`. Conclude with `mhl_off_mul hc (mhl_off_mul hc h₁.1 (mhlEta_off hc U k)) h₂.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `c hcS`. Take `⟨κ₁, h₁, κ₂, h₂, e⟩` from `mhl_cosets_out hc U k hcS`. Use `show decoOf ST SG ((x * c.out : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) ∈ _`. Rewrite using `[e, ← mul_assoc, ← mul_assoc, hKdeco _ h₂, ← hKdeco x h₁]`. Conclude with `mhl_mem_heckeSet hc U k ST SG hov hov2 hST hSG hk (x * κ₁)`.
+
+Introduce `c hcS c' hcS' h`. Establish `hm` using `mhl_inv_mul_mem ST SG x c.out c'.out (hOff hcS) (hOff hcS') h`. Rewrite using `[← QuotientGroup.out_eq' c, ← QuotientGroup.out_eq' c']`. Conclude with `QuotientGroup.eq.2 hm`. Introduce `d' hd'`.
+
+Take `⟨κ, hκoff, hκS, hκd⟩` from `mhl_surj hc U k ST SG hov hov2 hST hSG hsp hk x hd'`. Establish `hκK : κ ∈ mhlKv hc n v`. Use `⟨hκoff, ?_⟩` and prove the remaining obligations. Establish `hS` using `hκS`. Rewrite `hS` using `[St_one]`.
+
+Conclude with `Formalism.L2.DIV.lc_stab_loc v (stdLat E n) _ hS`. Use `⟨(QuotientGroup.mk (κ * mhlEta hc n v U.hπ0 k * 1) : UAd hc n ⧸ mhlKv hc n v), ⟨κ, hκK, 1, Subgroup.one_mem _, rfl⟩, ?_⟩` and prove the remaining obligations. Take `⟨h, e⟩` from `QuotientGroup.mk_out_eq_mul (mhlKv hc n v) (κ * mhlEta hc n v U.hπ0 k * 1)`. Use `show decoOf ST SG ((x * (QuotientGroup.mk (κ * mhlEta hc n v U.hπ0 k * 1) : UAd hc n ⧸ mhlKv hc n v).out : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = d'`. Rewrite using `[e, mul_one, ← mul_assoc, hKdeco _ h.2, ← mul_assoc]`.
+
+Conclude with `hκd`.
+-/
 theorem mhl_split_bij (ST SG : Finset (Pl E)) (hov : IsOver v Pb)
     (hov2 : ∀ Q : Pl E, IsOver v Q → Q = Pb ∨ Q = conjPrime₂ Pb) (hST : ∀ Q ∈ ST, ¬ IsOver v Q) (hSG : ∀ Q ∈ SG, ¬ IsOver v Q)
     (hsp : conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) (x : UAd hc n) :
@@ -930,6 +1247,9 @@ theorem mhl_split_bij (ST SG : Finset (Pl E)) (hov : IsOver v Pb)
     rw [e, mul_one, ← mul_assoc, hKdeco _ h.2, ← mul_assoc]
     exact hκd
 
+/- English proof (translation)
+The claim follows from `mhl_split_bij hc U k ST SG hov (mhl_over_eq hc hov) hST hSG hsp hk x`.
+-/
 theorem mhl_split_bij' (ST SG : Finset (Pl E)) (hov : IsOver v Pb) (hST : ∀ Q ∈ ST, ¬ IsOver v Q)
     (hSG : ∀ Q ∈ SG, ¬ IsOver v Q) (hsp : conjPrime₂ Pb ≠ Pb) (hk : k ≤ n) (x : UAd hc n) :
     Set.BijOn (fun c : UAd hc n ⧸ mhlKv hc n v => decoOf ST SG ((x * c.out : UAd hc n) : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)))

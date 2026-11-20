@@ -16,6 +16,9 @@ def analyticAtSubring {σ : Type} [Fintype σ] (p : σ → ℂ) : Subring ((σ �
   zero_mem' := analyticAt_const
   neg_mem' ha := AnalyticAt.neg ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_analyticAtSubring {σ : Type} [Fintype σ] {p : σ → ℂ} {g : (σ → ℂ) → ℂ} :
     g ∈ analyticAtSubring p ↔ AnalyticAt ℂ g p :=
   Iff.rfl
@@ -28,6 +31,9 @@ def analyticAtComp {σ τ : Type} [Fintype σ] [Fintype τ] (x : σ → ℂ) (L 
   map_zero' := rfl
   map_add' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem analyticAtComp_apply {σ τ : Type} [Fintype σ] [Fintype τ] (x : σ → ℂ)
     (L : (σ → ℂ) →L[ℂ] (τ → ℂ)) (g : analyticAtSubring (L x)) (z : σ → ℂ) :
     (analyticAtComp x L g : (σ → ℂ) → ℂ) z = (g : (τ → ℂ) → ℂ) (L z) :=
@@ -36,6 +42,9 @@ def analyticAtComp {σ τ : Type} [Fintype σ] [Fintype τ] (x : σ → ℂ) (L 
 def analyticAtEval {σ : Type} [Fintype σ] (p y : σ → ℂ) : analyticAtSubring p →+* ℂ :=
   (Pi.evalRingHom (fun _ : σ → ℂ => ℂ) y).comp (analyticAtSubring p).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem analyticAtEval_apply {σ : Type} [Fintype σ] (p y : σ → ℂ) (g : analyticAtSubring p) :
     analyticAtEval p y g = (g : (σ → ℂ) → ℂ) y :=
   rfl
@@ -44,16 +53,27 @@ def analyticAtGerm {σ : Type} [Fintype σ] (p : σ → ℂ) : analyticAtSubring
   ((Germ.coeRingHom (𝓝 p)).comp (analyticAtSubring p).subtype).codRestrict (holGerms p)
     fun g => ⟨g, g.2, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Subtype.ext_iff]`. Conclude with `Germ.coe_eq`.
+-/
 theorem analyticAtGerm_eq_iff {σ : Type} [Fintype σ] {p : σ → ℂ} (a b : analyticAtSubring p) :
     analyticAtGerm p a = analyticAtGerm p b ↔ (a : (σ → ℂ) → ℂ) =ᶠ[𝓝 p] b := by
   rw [Subtype.ext_iff]
   exact Germ.coe_eq
 
+/- English proof (translation)
+Introduce and unpack `⟨φ, g, hg, rfl⟩`. Conclude with `⟨⟨g, hg⟩, rfl⟩`.
+-/
 theorem analyticAtGerm_surjective {σ : Type} [Fintype σ] (p : σ → ℂ) :
     Function.Surjective (analyticAtGerm p) := by
   rintro ⟨φ, g, hg, rfl⟩
   exact ⟨⟨g, hg⟩, rfl⟩
 
+/- English proof (translation)
+Establish `he : (A.adjugate * A) *ᵥ e = 0`. Rewrite using `[← Matrix.mulVec_mulVec, hA, Matrix.mulVec_zero]`. Rewrite `he` using `[Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Use `_ = 0 := Finset.sum_eq_zero fun m _ => by`. Use `congrFun he m` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at this`. Rewrite using `[this, mul_zero]`.
+-/
 theorem det_eq_zero_of_mulVec_eq_zero {Q : Type*} [CommRing Q] {n : ℕ} (A : Matrix (Fin n) (Fin n) Q)
     (e β : Fin n → Q) (hA : A *ᵥ e = 0) (h1 : ∑ m, β m * e m = 1) : A.det = 0 := by
   have he : (A.adjugate * A) *ᵥ e = 0 := by

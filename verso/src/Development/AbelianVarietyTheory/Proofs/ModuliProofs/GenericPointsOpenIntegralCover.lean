@@ -39,6 +39,11 @@ namespace GlobalTheory.ModelSum
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Take `⟨x | x, rfl⟩` from `(coprodMk _ _).surjective x`. Conclude with `.inl ⟨x, by rw [coprodMk_inl, ← Scheme.Hom.comp_apply, coprod.inl_desc]⟩`.
+
+Conclude with `.inr ⟨x, by rw [coprodMk_inr, ← Scheme.Hom.comp_apply, coprod.inr_desc]⟩`. Introduce and unpack `(⟨x, rfl⟩ | ⟨x, rfl⟩)`. Conclude with `⟨(coprod.inl : X ⟶ X ⨿ Y) x, by rw [← Scheme.Hom.comp_apply, coprod.inl_desc]⟩`. Conclude with `⟨(coprod.inr : Y ⟶ X ⨿ Y) x, by rw [← Scheme.Hom.comp_apply, coprod.inr_desc]⟩`.
+-/
 theorem range_desc {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) :
     Set.range (coprod.desc f g) = Set.range f ∪ Set.range g := by
   ext z
@@ -51,6 +56,13 @@ theorem range_desc {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) :
     · exact ⟨(coprod.inl : X ⟶ X ⨿ Y) x, by rw [← Scheme.Hom.comp_apply, coprod.inl_desc]⟩
     · exact ⟨(coprod.inr : Y ⟶ X ⨿ Y) x, by rw [← Scheme.Hom.comp_apply, coprod.inr_desc]⟩
 
+/- English proof (translation)
+Set `α : ∀ i : ULift.{0} WalkingPair, (i.1.casesOn X Y : Scheme.{0}) ⟶ Z` to `fun i => match i with`. Consider the case `⟨.left⟩ => f`. Consider the case `⟨.right⟩ => g`. Apply the tactic sequence `have : ∀ i, IsOpenImmersion (α i) := by rintro ⟨_ | _⟩ <;> assumption`. Establish `h₁ : IsOpenImmersion (Sigma.desc α)` using `isOpenImmersion_sigmaDesc _ α (by`.
+
+Introduce and unpack `⟨_ | _⟩ ⟨_ | _⟩ hij`. Use `exacts [(hij rfl).elim, h, h.symm, (hij rfl).elim])`. Establish `e : (coprodIsoSigma X Y).inv ≫ coprod.desc f g = Sigma.desc α`. Use `Sigma.hom_ext _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨_ | _⟩`.
+
+Rewrite using `[← Category.assoc, ι_left_coprodIsoSigma_inv, coprod.inl_desc, Sigma.ι_desc]`. Rewrite using `[← Category.assoc, ι_right_coprodIsoSigma_inv, coprod.inr_desc, Sigma.ι_desc]`. Rewrite using `[(Iso.inv_comp_eq _).1 e]`. Use `infer_instance`.
+-/
 theorem isOpenImmersion_desc {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) [IsOpenImmersion f] [IsOpenImmersion g]
     (h : Disjoint (Set.range f) (Set.range g)) : IsOpenImmersion (coprod.desc f g) := by
   let α : ∀ i : ULift.{0} WalkingPair, (i.1.casesOn X Y : Scheme.{0}) ⟶ Z := fun i => match i with
@@ -68,6 +80,9 @@ theorem isOpenImmersion_desc {X Y Z : Scheme.{0}} (f : X ⟶ Z) (g : Y ⟶ Z) [I
   rw [(Iso.inv_comp_eq _).1 e]
   infer_instance
 
+/- English proof (translation)
+Apply the tactic sequence `have e : coprod.map f g = coprod.desc (f ≫ coprod.inl) (g ≫ coprod.inr) := by ext <;> simp`. Rewrite using `[e]`. Use `isOpenImmersion_desc _ _ (Set.disjoint_left.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩ ⟨y, hy⟩`. Conclude with `inr_ne_inl _ _ (f x) (g y) hy`.
+-/
 theorem isOpenImmersion_map {X Y X' Y' : Scheme.{0}} (f : X ⟶ X') (g : Y ⟶ Y') [IsOpenImmersion f] [IsOpenImmersion g] :
     IsOpenImmersion (coprod.map f g) := by
   have e : coprod.map f g = coprod.desc (f ≫ coprod.inl) (g ≫ coprod.inr) := by ext <;> simp
@@ -76,6 +91,11 @@ theorem isOpenImmersion_map {X Y X' Y' : Scheme.{0}} (f : X ⟶ X') (g : Y ⟶ Y
   rintro _ ⟨x, rfl⟩ ⟨y, hy⟩
   exact inr_ne_inl _ _ (f x) (g y) hy
 
+/- English proof (translation)
+Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨x | x, rfl⟩` from `(coprodMk _ _).surjective z`. Rewrite using `[coprodMk_inl]`. Use `closure_mono ?_ (image_closure_subset_closure_image (coprod.inl : X' ⟶ X' ⨿ Y').continuous ⟨x, f.denseRange x, rfl⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, rfl⟩, rfl⟩`.
+
+Conclude with `⟨(coprod.inl : X ⟶ X ⨿ Y) y, by rw [← Scheme.Hom.comp_apply, coprod.inl_map, Scheme.Hom.comp_apply]⟩`. Rewrite using `[coprodMk_inr]`. Use `closure_mono ?_ (image_closure_subset_closure_image (coprod.inr : Y' ⟶ X' ⨿ Y').continuous ⟨x, g.denseRange x, rfl⟩)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨(coprod.inr : Y ⟶ X ⨿ Y) y, by rw [← Scheme.Hom.comp_apply, coprod.inr_map, Scheme.Hom.comp_apply]⟩`.
+-/
 theorem isDominant_map {X Y X' Y' : Scheme.{0}} (f : X ⟶ X') (g : Y ⟶ Y') [IsDominant f] [IsDominant g] :
     IsDominant (coprod.map f g) := by
   refine ⟨fun z => ?_⟩
@@ -91,10 +111,18 @@ theorem isDominant_map {X Y X' Y' : Scheme.{0}} (f : X ⟶ X') (g : Y ⟶ Y') [I
     rintro _ ⟨_, ⟨y, rfl⟩, rfl⟩
     exact ⟨(coprod.inr : Y ⟶ X ⨿ Y) y, by rw [← Scheme.Hom.comp_apply, coprod.inr_map, Scheme.Hom.comp_apply]⟩
 
+/- English proof (translation)
+The claim follows from `(isCompl_range_inl_inr X Y).sup_eq_top.ge (Set.mem_univ z)`.
+-/
 theorem mem_inl_or_inr {X Y : Scheme.{0}} (z : (X ⨿ Y : Scheme.{0})) :
     z ∈ Set.range (coprod.inl : X ⟶ X ⨿ Y) ∨ z ∈ Set.range (coprod.inr : Y ⟶ X ⨿ Y) :=
   (isCompl_range_inl_inr X Y).sup_eq_top.ge (Set.mem_univ z)
 
+/- English proof (translation)
+Establish `key : ∀ {A : Scheme.{0}} (f : A ⟶ X ⨿ Y) [IsOpenImmersion f], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme A → ∀ a, IsDomain ((X ⨿ Y).presheaf.stalk (f a)) ∧ IsIntegrallyClosed ((X ⨿ Y).presheaf.stalk (f a))`. Introduce `A f _ hA a`. Take `⟨h₁, h₂⟩` from `hA a`. Set `e` to `(asIso (f.stalkMap a)).commRingCatIsoToRingEquiv`. Conclude with `⟨e.toMulEquiv.isDomain _, IsIntegrallyClosed.of_equiv e.symm⟩`.
+
+Introduce `z`. Take `⟨x, rfl⟩ | ⟨x, rfl⟩` from `mem_inl_or_inr z`. Use `exacts [key _ hX x, key _ hY x]`.
+-/
 theorem isNormalScheme_coprod {X Y : Scheme.{0}} (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) (hY : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Y) :
     ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (X ⨿ Y) := by
   have key : ∀ {A : Scheme.{0}} (f : A ⟶ X ⨿ Y) [IsOpenImmersion f], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme A → ∀ a,
@@ -107,10 +135,18 @@ theorem isNormalScheme_coprod {X Y : Scheme.{0}} (hX : ReciprocityTheory.ChartRe
   obtain ⟨x, rfl⟩ | ⟨x, rfl⟩ := mem_inl_or_inr z
   exacts [key _ hX x, key _ hY x]
 
+/- English proof (translation)
+The claim follows from `have := fun x => (hX x).1 isReduced_of_isReduced_stalk X`.
+-/
 theorem isReduced_of_isNormalScheme {X : Scheme.{0}} (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : IsReduced X :=
   have := fun x => (hX x).1
   isReduced_of_isReduced_stalk X
 
+/- English proof (translation)
+Take `⟨N, i, hi, rfl⟩` from `h`. Establish `: IsProper (PSpace.str O N)` using `isProper_str O N`. Establish `: IsLocallyNoetherian Z` using `LocallyOfFiniteType.isLocallyNoetherian (i ≫ PSpace.str O N)`. Establish `: CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace (i ≫ PSpace.str O N)`. Establish `: IsNoetherian Z` using `{}`.
+
+Use `infer_instance`.
+-/
 theorem noetherianSpace_of_isProjOver {O : Type} [CommRing O] [IsNoetherianRing O] {Z : Scheme.{0}} {s : Z ⟶ Sp O}
     (h : IsProjOver s) : TopologicalSpace.NoetherianSpace Z := by
   obtain ⟨N, i, hi, rfl⟩ := h
@@ -120,6 +156,9 @@ theorem noetherianSpace_of_isProjOver {O : Type} [CommRing O] [IsNoetherianRing 
   have : IsNoetherian Z := {}
   infer_instance
 
+/- English proof (translation)
+Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f t`. Conclude with `⟨_, ⟨m⟩⟩`.
+-/
 theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : SAB H S', Nonempty (SABMap t' t f) := by
   obtain ⟨_, _, _, _, _, m, -⟩ := sabPull Out.CubePf.cubePull f t
   exact ⟨_, ⟨m⟩⟩
@@ -127,27 +166,45 @@ theorem exists_pull {S S' : Scheme.{0}} (f : S' ⟶ S) (t : SAB H S) : ∃ t' : 
 section
 variable {S S' S'' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''}
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨(ObjMaps.exists_sab_comp m m').choose⟩`.
+-/
 theorem map_comp {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (m' : SABMap t'' t' g) (m : SABMap t' t f)
     (h : g ≫ f = k) : Nonempty (SABMap t'' t k) := by
   subst h
   exact ⟨(ObjMaps.exists_sab_comp m m').choose⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨(ObjMaps.exists_sab_cancel m n).choose⟩`.
+-/
 theorem map_cancel {f : S' ⟶ S} {g : S'' ⟶ S'} {k : S'' ⟶ S} (n : SABMap t'' t k) (m : SABMap t' t f)
     (h : g ≫ f = k) : Nonempty (SABMap t'' t' g) := by
   subst h
   exact ⟨(ObjMaps.exists_sab_cancel m n).choose⟩
 
+/- English proof (translation)
+The claim follows from `MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 h`.
+-/
 theorem proper_of_map {f : S' ⟶ S} (m : SABMap t' t f) (h : IsProper t.G.hom) : IsProper t'.G.hom :=
   MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 h
 
+/- English proof (translation)
+Take `⟨w, g, -⟩` from `m.lin`. Conclude with `⟨w, g⟩`.
+-/
 theorem lbIso_of_map {f : S' ⟶ S} (m : SABMap t' t f) : LBIso t'.PP.L (t.PP.L.pull m.φ) := by
   obtain ⟨w, g, -⟩ := m.lin
   exact ⟨w, g⟩
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(abLocus_pullback abLocusOne t.semi m.cart.1 x).2 fun _ _ _ _ _ => inferInstance`.
+-/
 theorem range_subset_abLocus {f : S' ⟶ S} (m : SABMap t' t f) (h : IsProper t'.G.hom) : Set.range f ⊆ abLocus t.G := by
   rintro _ ⟨x, rfl⟩
   exact (abLocus_pullback abLocusOne t.semi m.cart.1 x).2 fun _ _ _ _ _ => inferInstance
 
+/- English proof (translation)
+The claim follows from `(genericPoints_subset_range_of_isDominant f).trans (range_subset_abLocus m h)`.
+-/
 theorem genericPoints_subset_abLocus {f : S' ⟶ S} [IsDominant f] [TopologicalSpace.NoetherianSpace S']
     (m : SABMap t' t f) (h : IsProper t'.G.hom) : genericPoints S ⊆ abLocus t.G :=
   (genericPoints_subset_range_of_isDominant f).trans (range_subset_abLocus m h)
@@ -159,6 +216,9 @@ def HasModel {O : Type} [CommRing O] {M : Scheme.{0}} (sM : M ⟶ Sp O) (tM : SA
 
 variable {O : Type} [CommRing O] {M : Scheme.{0}} {sM : M ⟶ Sp O} {tM : SAB H M} {m n : ℕ} {r s : ℤ}
 
+/- English proof (translation)
+Take `⟨tW, ⟨k⟩⟩` from `exists_pull a.isoOpensRange.inv tY`. Take `⟨k₁⟩` from `map_comp k m₁ a.isoOpensRange_inv_comp`. Take `⟨k₂⟩` from `map_comp k m₂ rfl`. Conclude with `⟨⟨Z, z, h₁, h₂, h₃, t, h₄, h₅, a.opensRange, a.denseRange, a.isoOpensRange.inv ≫ j, inferInstance, inferInstance, by rw [Category.assoc, h, ← Category.assoc, a.isoOpensRange_inv_comp], tW, k₁, k₂, A⟩, rfl, rfl, rfl⟩`.
+-/
 theorem hasModel_of_maps {Y Z : Scheme.{0}} (a : Y ⟶ M) [IsOpenImmersion a] [IsDominant a] (j : Y ⟶ Z)
     [IsOpenImmersion j] [IsDominant j] (z : Z ⟶ Sp O) (h₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z) (h₂ : IsProjOver z) (h₃ : Flat z)
     (t : SAB H Z) (h₄ : IsQProjOver (t.G.hom ≫ z)) (h₅ : Models.Good t) (h : j ≫ z = a ≫ sM) {tY : SAB H Y}
@@ -170,9 +230,19 @@ theorem hasModel_of_maps {Y Z : Scheme.{0}} (a : Y ⟶ M) [IsOpenImmersion a] [I
   exact ⟨⟨Z, z, h₁, h₂, h₃, t, h₄, h₅, a.opensRange, a.denseRange, a.isoOpensRange.inv ≫ j, inferInstance, inferInstance,
     by rw [Category.assoc, h, ← Category.assoc, a.isoOpensRange_inv_comp], tW, k₁, k₂, A⟩, rfl, rfl, rfl⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rwa [DenseRange, Scheme.Opens.range_ι]⟩`.
+-/
 theorem isDominant_ι {X : Scheme.{0}} {W : X.Opens} (h : Dense (W : Set X)) : IsDominant W.ι :=
   ⟨by rwa [DenseRange, Scheme.Opens.range_ι]⟩
 
+/- English proof (translation)
+Take `⟨C, rfl, rfl, rfl⟩` from `h`. Use `isDominant_ι C.dense` as an intermediate fact. Use `C.j_open` as an intermediate fact. Use `C.j_dom` as an intermediate fact. Establish `: IsDominant (pullback.fst i C.W.ι)` using `isDominant_pullback_fst_of_isOpenMap _ _ i.isOpenEmbedding.isOpenMap`.
+
+Establish `: IsDominant (pullback.snd i C.W.ι)`. Use `isDominant_pullback_fst_of_isOpenMap i C.W.ι C.W.ι.isOpenEmbedding.isOpenMap` as an intermediate fact. Rewrite using `[← pullbackSymmetry_hom_comp_fst]`. Use `infer_instance`. Take `⟨tY, ⟨p⟩⟩` from `exists_pull (pullback.snd i C.W.ι) C.tW`.
+
+Take `⟨p₁⟩` from `map_comp p C.m₁ rfl`. Take `⟨p₂⟩` from `map_cancel p₁ k pullback.condition`. Take `⟨p₃⟩` from `map_comp p C.m₂ rfl`. Conclude with `hasModel_of_maps (pullback.fst i C.W.ι) (pullback.snd i C.W.ι ≫ C.j) C.s C.normal C.proj C.flat C.t C.qproj C.good (by rw [Category.assoc, C.j_over, pullback.condition_assoc]) p₂ p₃ C.amp`.
+-/
 theorem HasModel.shrink (h : HasModel sM tM m n r s) {V : Scheme.{0}} (i : V ⟶ M) [IsOpenImmersion i] [IsDominant i]
     {tV : SAB H V} (k : SABMap tV tM i) : HasModel (i ≫ sM) tV m n r s := by
   obtain ⟨C, rfl, rfl, rfl⟩ := h
@@ -190,6 +260,11 @@ theorem HasModel.shrink (h : HasModel sM tM m n r s) {V : Scheme.{0}} (i : V ⟶
   exact hasModel_of_maps (pullback.fst i C.W.ι) (pullback.snd i C.W.ι ≫ C.j) C.s C.normal C.proj C.flat C.t C.qproj C.good
     (by rw [Category.assoc, C.j_over, pullback.condition_assoc]) p₂ p₃ C.amp
 
+/- English proof (translation)
+Take `⟨C, rfl, rfl, rfl⟩` from `h`. Use `isDominant_ι C.dense` as an intermediate fact. Use `C.j_open` as an intermediate fact. Use `C.j_dom` as an intermediate fact. Take `⟨p⟩` from `map_comp C.m₁ k rfl`.
+
+Conclude with `hasModel_of_maps (C.W.ι ≫ i) C.j C.s C.normal C.proj C.flat C.t C.qproj C.good (by rw [Category.assoc, C.j_over]) p C.m₂ C.amp`.
+-/
 theorem HasModel.grow {V : Scheme.{0}} (i : V ⟶ M) [IsOpenImmersion i] [IsDominant i]
     {tV : SAB H V} (k : SABMap tV tM i) (h : HasModel (i ≫ sM) tV m n r s) : HasModel sM tM m n r s := by
   obtain ⟨C, rfl, rfl, rfl⟩ := h
@@ -200,6 +275,11 @@ theorem HasModel.grow {V : Scheme.{0}} (i : V ⟶ M) [IsOpenImmersion i] [IsDomi
   exact hasModel_of_maps (C.W.ι ≫ i) C.j C.s C.normal C.proj C.flat C.t C.qproj C.good
     (by rw [Category.assoc, C.j_over]) p C.m₂ C.amp
 
+/- English proof (translation)
+Establish `hp : ∀ {X : Scheme.{0}} [IsEmpty X] (f : X ⟶ Sp O), IsProjOver f` using `fun {X} _ f => ProjSpace.isProjOver_of_disjoint_cover f (fun i : Empty => i.elim) (Subsingleton.elim _ _) (fun i => i.elim) fun i => i.elim`. Establish `: IsEmpty tM.G.left` using `⟨fun x => isEmptyElim (tM.G.hom x)⟩`. Take `⟨k, -⟩` from `ObjMaps.exists_sab_id tM`. Take `⟨A, -, rfl, rfl, rfl⟩` from `exists_ampFrames (G := tM.G) (L := tM.PP.L) (N := m ^ 2) (A := ⟨PEmpty, fun i => i.elim, fun i => i.elim⟩) (n := n) (r := r) (s := s) ⟨Subsingleton.elim _ _, fun i => i.elim, fun i => i.elim⟩ (fun z => isEmptyElim z) ⟨fun i => i.elim, fun i => i.elim, fun i => i.elim, fun i => i. …`. Use `hasModel_of_maps (𝟙 M) (𝟙 M) sM (fun x => isEmptyElim x) (hp _) inferInstance tM ?_ ⟨⟨⊤, Subsingleton.elim _ _, ?_⟩, fun x => isEmptyElim x, fun x => isEmptyElim x⟩ rfl k k A` and prove the remaining obligations.
+
+Take `⟨N, i, hi, e⟩` from `hp (tM.G.hom ≫ sM)`. Conclude with `⟨N, i, inferInstance, inferInstance, e⟩`. Establish `: IsEmpty (⊤ : M.Opens).toScheme` using `⟨fun x => isEmptyElim x.1⟩ infer_instance`.
+-/
 theorem hasModel_of_isEmpty [IsEmpty M] : HasModel sM tM m n r s := by
   have hp : ∀ {X : Scheme.{0}} [IsEmpty X] (f : X ⟶ Sp O), IsProjOver f := fun {X} _ f =>
     ProjSpace.isProjOver_of_disjoint_cover f (fun i : Empty => i.elim) (Subsingleton.elim _ _)
@@ -217,6 +297,11 @@ theorem hasModel_of_isEmpty [IsEmpty M] : HasModel sM tM m n r s := by
   · have : IsEmpty (⊤ : M.Opens).toScheme := ⟨fun x => isEmptyElim x.1⟩
     infer_instance
 
+/- English proof (translation)
+Set `Y : Bool → Scheme.{0}` to `fun b => match b with | true => Z₁ | false => Z₂`. Set `f : ∀ b, Y b ⟶ Z` to `fun b => match b with | true => f₁ | false => f₂`. Set `u : ∀ b, SAB H (Y b)` to `fun b => match b with | true => t₁ | false => t₂`. Set `k : ∀ b, SABMap (u b) t (f b)` to `fun b => match b with | true => n₁ | false => n₂`. Apply the tactic sequence `have ho : ∀ b, IsOpenImmersion (f b) := by rintro (_ | _) <;> assumption`.
+
+Establish `hc : ∀ z, ∃ b, z ∈ Set.range (f b)` using `fun z => (h z).elim (fun h => ⟨true, h⟩) fun h => ⟨false, h⟩`. Apply the tactic sequence `have hg : ∀ b, Models.Good (u b) := by rintro (_ | _) <;> assumption`. Conclude with `⟨GlobalTheory.T.abelianLocus_isOpen_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).1, GlobalTheory.T.fibresSplit_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).2.1, GlobalTheory.T.hasFibrewiseTheta_of_openImmersion_cover E H Z t _ Y f u k ho hc fun …`.
+-/
 theorem good_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ ⟶ Z} [IsOpenImmersion f₁] [IsOpenImmersion f₂]
     {t : SAB H Z} {t₁ : SAB H Z₁} {t₂ : SAB H Z₂} (n₁ : SABMap t₁ t f₁) (n₂ : SABMap t₂ t f₂)
     (h : ∀ z, z ∈ Set.range f₁ ∨ z ∈ Set.range f₂) (g₁ : Models.Good t₁) (g₂ : Models.Good t₂) : Models.Good t := by
@@ -230,6 +315,11 @@ theorem good_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ 
   exact ⟨GlobalTheory.T.abelianLocus_isOpen_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).1, GlobalTheory.T.fibresSplit_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).2.1,
     GlobalTheory.T.hasFibrewiseTheta_of_openImmersion_cover E H Z t _ Y f u k ho hc fun b => (hg b).2.2⟩
 
+/- English proof (translation)
+Establish `key : ∀ {Y : Scheme.{0}} {f : Y ⟶ Z} {u : SAB H Y} (k : SABMap u t f), Set.range k.φ = t.G.hom ⁻¹' Set.range f` using `fun {Y f u} k => by`. Rewrite using `[← Scheme.Pullback.range_fst, SABMap.φ, ← k.cart.1.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, k.cart.1.isoPullback.hom.surjective.range_eq, Set.image_univ]`. Use `GlobalTheory.T.isQProjOver_of_isCompl_openImmersions O _ _ _ n₁.φ n₂.φ _ (MorphismProperty.of_isPullback (P := @IsOpenImmersion) n₁.cart.1.flip ‹_›) (MorphismProperty.of_isPullback (P := @IsOpenImmersion) n₂.cart.1.flip ‹_›) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[key, key]`. Conclude with `h.map (CompleteLatticeHom.setPreimage t.G.hom)`.
+
+Rewrite using `[← Category.assoc, n₁.cart.1.w, Category.assoc]` and apply the resulting hypothesis. Rewrite using `[← Category.assoc, n₂.cart.1.w, Category.assoc]` and apply the resulting hypothesis.
+-/
 theorem qproj_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ ⟶ Z} [IsOpenImmersion f₁] [IsOpenImmersion f₂]
     {t : SAB H Z} {t₁ : SAB H Z₁} {t₂ : SAB H Z₂} (n₁ : SABMap t₁ t f₁) (n₂ : SABMap t₂ t f₂)
     (h : IsCompl (Set.range f₁) (Set.range f₂)) (z : Z ⟶ Sp O) (g₁ : IsQProjOver (t₁.G.hom ≫ f₁ ≫ z))
@@ -245,6 +335,11 @@ theorem qproj_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂
   · rwa [← Category.assoc, n₁.cart.1.w, Category.assoc]
   · rwa [← Category.assoc, n₂.cart.1.w, Category.assoc]
 
+/- English proof (translation)
+Establish `key : ∀ {Y : Scheme.{0}} {f : Y ⟶ Z} [IsOpenImmersion f] {u : SAB H Y} (k : SABMap u t f) (A : LN.AmpFrames u.G u.PP.L N), HasFrames t.G t.PP.L N (pushLB f A.A) A.n A.r A.s` using `fun {Y f _ u} k A => GlobalTheory.T.transitionFrames_push_openImmersion_image _ _ _ _ f k.φ _ _ t.PP.isLB u.PP.isLB k.cart.1 (lbIso_of_map k) (fun x hx => (abLocus_pullback abLocusOne t.semi k.cart.1 x).1 hx) N _ _ _ _ (hasFrames_of_ampFrames A)`. Establish `h₂` using `key n₂ A₂`. Rewrite `h₂` using `[hn, hr, hs]`. Take `⟨a, b⟩` from `GlobalTheory.T.isAmpleCechLineBundle_disjointUnion_pushforward Z Z₁ Z₂ f₁ f₂ A₁.A A₂.A h A₁.isLB A₂.isLB A₁.ample A₂.ample`. Take `⟨A, -, e⟩` from `exists_ampFrames a b (GlobalTheory.T.hasFrames_disjointUnionCechData Z _ _ N _ _ _ _ _ (fun i j => le_bot_iff.1 (by`.
+
+Introduce and unpack `_ ⟨⟨x, -, rfl⟩, y, -, e⟩`. Conclude with `(Set.disjoint_left.1 h.disjoint ⟨x, rfl⟩ ⟨y, e⟩).elim)) (key n₁ A₁) h₂)`. Conclude with `⟨A, e⟩`.
+-/
 theorem amp_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ ⟶ Z} [IsOpenImmersion f₁] [IsOpenImmersion f₂]
     {t : SAB H Z} {t₁ : SAB H Z₁} {t₂ : SAB H Z₂} (n₁ : SABMap t₁ t f₁) (n₂ : SABMap t₂ t f₂)
     (h : IsCompl (Set.range f₁) (Set.range f₂)) {N : ℕ} (A₁ : LN.AmpFrames t₁.G t₁.PP.L N)
@@ -262,6 +357,31 @@ theorem amp_of_two {Z Z₁ Z₂ : Scheme.{0}} {f₁ : Z₁ ⟶ Z} {f₂ : Z₂ �
     exact (Set.disjoint_left.1 h.disjoint ⟨x, rfl⟩ ⟨y, e⟩).elim)) (key n₁ A₁) h₂)
   exact ⟨A, e⟩
 
+/- English proof (translation)
+Take `⟨C₁, rfl, rfl, rfl⟩` from `h₁`. Take `⟨C₂, hn, hr, hs⟩` from `h₂`. Use `isDominant_ι C₁.dense` as an intermediate fact. Use `C₁.j_open` as an intermediate fact. Use `C₁.j_dom` as an intermediate fact.
+
+Use `isDominant_ι C₂.dense` as an intermediate fact. Use `C₂.j_open` as an intermediate fact. Use `C₂.j_dom` as an intermediate fact. Use `C₁.flat` as an intermediate fact. Use `C₂.flat` as an intermediate fact.
+
+Establish `o₀` using `isOpenImmersion_desc i₁ i₂ hd`. Establish `d₀ : IsDominant (coprod.desc i₁ i₂)` using `⟨by rwa [DenseRange, range_desc]⟩`. Establish `o₁` using `isOpenImmersion_map C₁.W.ι C₂.W.ι`. Establish `d₁` using `isDominant_map C₁.W.ι C₂.W.ι`. Set `a` to `coprod.map C₁.W.ι C₂.W.ι ≫ coprod.desc i₁ i₂`.
+
+Establish `o₂` using `isOpenImmersion_map C₁.j (𝟙 C₂.W.toScheme)`. Establish `d₂` using `isDominant_map C₁.j (𝟙 C₂.W.toScheme)`. Establish `o₃` using `isOpenImmersion_map (𝟙 C₁.Z) C₂.j`. Establish `d₃` using `isDominant_map (𝟙 C₁.Z) C₂.j`. Establish `hZ` using `isNormalScheme_coprod C₁.normal C₂.normal`.
+
+Establish `hP` using `ProjSpace.isProjOver_coprodDesc C₁.proj C₂.proj`. Use `noetherianSpace_of_isProjOver hP` as an intermediate fact. Use `isReduced_of_isNormalScheme hZ` as an intermediate fact. Establish `: TopologicalSpace.NoetherianSpace (C₁.W.toScheme ⨿ C₂.W.toScheme : Scheme.{0})` using `(coprod.map C₁.j (𝟙 C₂.W.toScheme) ≫ coprod.map (𝟙 C₁.Z) C₂.j).isOpenEmbedding.isInducing.noetherianSpace`. Establish `: TopologicalSpace.NoetherianSpace C₁.W.toScheme` using `(coprod.inl : _ ⟶ C₁.W.toScheme ⨿ C₂.W.toScheme).isOpenEmbedding.isInducing.noetherianSpace`.
+
+Establish `: TopologicalSpace.NoetherianSpace C₂.W.toScheme` using `(coprod.inr : _ ⟶ C₁.W.toScheme ⨿ C₂.W.toScheme).isOpenEmbedding.isInducing.noetherianSpace`. Take `⟨tY, ⟨p⟩⟩` from `exists_pull a tM`. Take `⟨q₁⟩` from `map_comp C₁.m₁ k₁ rfl`. Take `⟨q₂⟩` from `map_comp C₂.m₁ k₂ rfl`. Take `⟨p₁⟩` from `map_cancel (g := coprod.inl) q₁ p (by rw [coprod.inl_map_assoc, coprod.inl_desc])`.
+
+Take `⟨p₂⟩` from `map_cancel (g := coprod.inr) q₂ p (by rw [coprod.inr_map_assoc, coprod.inr_desc])`. Establish `pY` using `proper_of_map p hp`. Take `⟨t', ⟨u₀⟩, ⟨u₁⟩⟩` from `GlobalTheory.T.exists_abelianTriple_glue_two_open_immersions E H _ _ _ _ (coprod.map C₁.j (𝟙 C₂.W.toScheme)) coprod.inl coprod.inl C₁.j _ _ _ p₁ C₁.m₂ o₂ inferInstance (isPullback_inl_inl_coprodMap _ _).flip (fun x => by`. Take `h | ⟨y, rfl⟩` from `mem_inl_or_inr x`. Conclude with `.inr h`.
+
+Conclude with `.inl ⟨(coprod.inr : _ ⟶ C₁.W.toScheme ⨿ C₂.W.toScheme) y, by`. Rewrite using `[← Scheme.Hom.comp_apply, coprod.inr_map, Category.id_comp]⟩)`. Use the proof step `⟨isReduced_of_isOpenImmersion a, fun _ _ _ _ _ _ _ => inferInstance⟩`. Use the proof step `⟨isReduced_of_isNormalScheme C₁.normal, genericPoints_subset_abLocus C₁.m₂ (proper_of_map q₁ hp)⟩`. Take `⟨v₂⟩` from `map_comp (k := coprod.inr) p₂ u₀ (by simp)`.
+
+Take `⟨t, ⟨w₀⟩, ⟨w₂⟩⟩` from `GlobalTheory.T.exists_abelianTriple_glue_two_open_immersions E H _ _ _ _ (coprod.map (𝟙 C₁.Z) C₂.j) coprod.inr coprod.inr C₂.j _ _ _ v₂ C₂.m₂ o₃ inferInstance (isPullback_inr_inr_coprodMap _ _).flip (fun x => by`. Take `⟨y, rfl⟩ | h` from `mem_inl_or_inr x`. Conclude with `.inl ⟨(coprod.inl : _ ⟶ C₁.Z ⨿ C₂.W.toScheme) y, by`. Rewrite using `[← Scheme.Hom.comp_apply, coprod.inl_map, Category.id_comp]⟩`. Conclude with `.inr h)`.
+
+Use the proof step `⟨isReduced_of_isOpenImmersion (coprod.map (𝟙 C₁.Z) C₂.j), genericPoints_subset_abLocus u₀ pY⟩`. Use the proof step `⟨isReduced_of_isNormalScheme C₂.normal, genericPoints_subset_abLocus C₂.m₂ (proper_of_map q₂ hp)⟩`. Take `⟨w₁⟩` from `map_comp (k := coprod.inl) u₁ w₀ (by simp)`. Take `⟨w⟩` from `map_comp u₀ w₀ rfl`. Take `⟨A, e₁, e₂, e₃⟩` from `amp_of_two w₁ w₂ (isCompl_range_inl_inr _ _) C₁.amp C₂.amp hn hr hs`.
+
+Rewrite using `[← e₁, ← e₂, ← e₃]`. Use `hasModel_of_maps a _ (coprod.desc C₁.s C₂.s) hZ hP ?_ t (qproj_of_two w₁ w₂ (isCompl_range_inl_inr _ _) _ (by rw [coprod.inl_desc]; exact C₁.qproj) (by rw [coprod.inr_desc]; exact C₂.qproj)) (good_of_two w₁ w₂ mem_inl_or_inr C₁.good C₂.good) ?_ p w A` and prove the remaining obligations. Establish `: IsZariskiLocalAtSource @Flat` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_openCover (P := @Flat) (coprodOpenCover.{0, 0} C₁.Z C₂.Z) ?_` and prove the remaining obligations. Introduce and unpack `(_ | _)`.
+
+Conclude with `(coprod.inl_desc C₁.s C₂.s).symm ▸ C₁.flat`. Conclude with `(coprod.inr_desc C₁.s C₂.s).symm ▸ C₂.flat`. Use `coprod.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [a, Category.assoc, coprod.inl_map_assoc, coprod.inl_desc, coprod.inl_desc_assoc, Category.id_comp, C₁.j_over]`. Simplify using `only [a, Category.assoc, coprod.inr_map_assoc, coprod.inr_desc, coprod.inr_desc_assoc, Category.id_comp, C₂.j_over]`.
+-/
 theorem HasModel.sum [IsNoetherianRing O] [IsReduced M] (hp : IsProper tM.G.hom) {V₁ V₂ : Scheme.{0}} (i₁ : V₁ ⟶ M)
     (i₂ : V₂ ⟶ M) [IsOpenImmersion i₁] [IsOpenImmersion i₂] (hd : Disjoint (Set.range i₁) (Set.range i₂))
     (hu : Dense (Set.range i₁ ∪ Set.range i₂)) {t₁ : SAB H V₁} {t₂ : SAB H V₂} (k₁ : SABMap t₁ tM i₁)
@@ -338,6 +458,17 @@ theorem HasModel.sum [IsNoetherianRing O] [IsReduced M] (hp : IsProper tM.G.hom)
     · simp only [a, Category.assoc, coprod.inr_map_assoc, coprod.inr_desc, coprod.inr_desc_assoc, Category.id_comp,
         C₂.j_over]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `t _`. Establish `: IsEmpty ((∅ : Finset I).sup V).toScheme` using `⟨fun x => x.2⟩`. Conclude with `hasModel_of_isEmpty`.
+
+Consider the case `insert a S ha ih`. Introduce `t k`. Establish `l₁ : V a ≤ (insert a S).sup V` using `Finset.le_sup (Finset.mem_insert_self a S)`. Establish `l₂ : S.sup V ≤ (insert a S).sup V` using `Finset.sup_mono (Finset.subset_insert a S)`. Establish `hD : Disjoint (V a) (S.sup V)` using `Finset.disjoint_sup_right.2 fun j hj => hd a j fun e => ha (e ▸ hj)`.
+
+Take `⟨t₁, ⟨k₁⟩⟩` from `exists_pull (M.homOfLE l₁) t`. Take `⟨t₂, ⟨k₂⟩⟩` from `exists_pull (M.homOfLE l₂) t`. Take `⟨q₁⟩` from `map_comp k₁ k (M.homOfLE_ι l₁)`. Take `⟨q₂⟩` from `map_comp k₂ k (M.homOfLE_ι l₂)`. Use `HasModel.sum (proper_of_map k hp) (M.homOfLE l₁) (M.homOfLE l₂) (Set.disjoint_left.2 ?_) (fun x => ?_) k₁ k₂ (by rw [Scheme.homOfLE_ι_assoc]; exact h a t₁ q₁) (by rw [Scheme.homOfLE_ι_assoc]; exact ih t₂ q₂)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩ ⟨y, e⟩`. Establish `e' : y.1 = x.1` using `(Scheme.homOfLE_apply l₂ y).symm.trans ((congrArg Subtype.val e).trans (Scheme.homOfLE_apply l₁ x))`. Conclude with `hD.le_bot (⟨x.2, e' ▸ y.2⟩ : x.1 ∈ V a ⊓ S.sup V)`. Use `subset_closure ?_` and prove the remaining obligations. Take `hx | hx : x.1 ∈ V a ∨ x.1 ∈ S.sup V` from `(Finset.sup_insert (s := S) (f := V) (b := a)).le x.2`.
+
+Conclude with `.inl ⟨⟨x.1, hx⟩, Subtype.ext (by simp)⟩`. Conclude with `.inr ⟨⟨x.1, hx⟩, Subtype.ext (by simp)⟩`.
+-/
 theorem hasModel_sup [IsNoetherianRing O] [IsReduced M] (hp : IsProper tM.G.hom) {I : Type} (V : I → M.Opens)
     (hd : ∀ i j, i ≠ j → Disjoint (V i) (V j))
     (h : ∀ i (t : SAB H (V i).toScheme), SABMap t tM (V i).ι → HasModel ((V i).ι ≫ sM) t m n r s) (S : Finset I) :
@@ -367,6 +498,17 @@ theorem hasModel_sup [IsNoetherianRing O] [IsReduced M] (hp : IsProper tM.G.hom)
       · exact .inl ⟨⟨x.1, hx⟩, Subtype.ext (by simp)⟩
       · exact .inr ⟨⟨x.1, hx⟩, Subtype.ext (by simp)⟩
 
+/- English proof (translation)
+Take `⟨b', hb'⟩` from `GlobalTheory.T.pulledSectionsFormBasis_id_of_pulledSectionsFormBasis Z _ _ N n _ _ h b t.PP.isLB hb`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_sectionPower_transport_cartesian_square Z _ t.G t'.G χ k'.φ _ _ t.PP.isLB t'.PP.isLB k'.cart.1 (lbIso_of_map k') N`. Set `e₀` to `e (Over.mk (𝟙 (Sp R))) (Over.mk χ) (Iso.refl _) rfl`. Establish `hb₀ : LN.BasisAlong t'.G t'.PP.L N (𝟙 (Over.mk (𝟙 (Sp R)))) (fun i => e₀.symm (b' i))` using `fun σ => by`. Establish `key : ∀ c, LN.Lin t'.G t'.PP.L N (𝟙 (Over.mk (𝟙 (Sp R)))) (fun i => e₀.symm (b' i)) c σ ↔ LN.Lin t.G t.PP.L N (𝟙 (Over.mk χ)) b' c (e₀ σ)` using `fun c => by`.
+
+Use `he _ _ _ _ (Iso.refl _) (Iso.refl _) rfl rfl (𝟙 (Over.mk (𝟙 (Sp R)))) (𝟙 (Over.mk χ)) rfl n (fun i => e₀.symm (b' i)) c σ` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Rewrite using `[show (fun i => e _ _ (Iso.refl _) rfl (e₀.symm (b' i))) = b' from funext fun i => e₀.apply_symm_apply _]`. Simplify using `only [key]`. Conclude with `hb' _`.
+
+Use `t'.semi.smooth` as an intermediate fact. Use `t'.semi.geomConnected` as an intermediate fact. Take `⟨w, gw, -⟩` from `k.lin`. Take `⟨U, hU, hc, -⟩` from `exists_isAffineOpen_mem_and_subset (X := M) (U := ⊤) (x := y (IsLocalRing.closedPoint R)) trivial`. Establish `hy : ∀ x, y x ∈ U` using `fun x => (congrArg (fun V => x ∈ V) (Scheme.preimage_eq_top_of_closedPoint_mem y hc)).mpr trivial`.
+
+Establish `am` using `relAmple_pull k.cart.1 tM.PP.isLB t'.PP.isLB ((isGen_iff w).1 gw) U hU hy hA`. Establish `kt` using `kTriv_pull k.cart tM.PP.isLB t'.PP.isLB ((isGen_iff w).1 gw) hK`. Take `⟨-, ws, gs', -⟩` from `t'.sym`. Set `P : Out.PolAV (Sp R)` to `{ A := t'.G, g := g, L := t'.PP.L, isLB := t'.PP.isLB, ample := am, ktriv := kt smoothDim := (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback k.cart.1 hg isAb := ⟨inferInstance, inferInstance, proper_of_map k hp, ‹_›⟩ rigid := ⟨t'.PP.rig, t'.PP.rigGen⟩ sym := f …`. Take `rfl | hN` from `Nat.eq_zero_or_pos N`.
+
+Rewrite using `[GlobalTheory.T.card_basis_polarisation_power_zero_eq_one hL.globalFns R P n _ hb₀, max_eq_left (pow_le_one₀ le_rfl zero_le_one)]`. Rewrite using `[GlobalTheory.T.card_pulledSectionsFormBasis_eq_pow_dim hL hL' R P N n _ hN hb₀, max_eq_right (Nat.one_le_pow _ _ hN)]`.
+-/
 theorem rank_eq (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA : Out.RelAmple tM.G tM.PP.L)
     (hK : Out.KTriv tM.G tM.PP.L) {g : ℕ} (hg : SmoothOfRelativeDimension g tM.G.hom) {R : Type} [CommRing R]
     [IsLocalRing R] {y : Sp R ⟶ M} {t' : SAB H (Sp R)} (k : SABMap t' tM y) {Z : Scheme.{0}} {t : SAB H Z}
@@ -404,6 +546,19 @@ theorem rank_eq (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA :
   · rw [GlobalTheory.T.card_basis_polarisation_power_zero_eq_one hL.globalFns R P n _ hb₀, max_eq_left (pow_le_one₀ le_rfl zero_le_one)]
   · rw [GlobalTheory.T.card_pulledSectionsFormBasis_eq_pow_dim hL hL' R P N n _ hN hb₀, max_eq_right (Nat.one_le_pow _ _ hN)]
 
+/- English proof (translation)
+It suffices to establish `h : HasFrames C.t.G C.t.PP.L (m ^ 2) A.A (max 1 ((m ^ 2) ^ g)) A.r A.s by`. Take `⟨A', -, e⟩` from `exists_ampFrames A.isLB A.ample h`. Conclude with `⟨{ C with amp := A' }, e⟩`. Distinguish the cases in `hT : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], LN.CDvr W → IsEmpty (Sp W ⟶ C.Z)`. Conclude with `GlobalTheory.T.hasTransitionCompatibleFrames_of_no_completeDVR_points _ _ _ _ _ _ _ _ _ (le_max_left _ _) hT (hasFrames_of_ampFrames A)`.
+
+Use `push Not at hT`. Take `⟨W, _, _, _, hW, ⟨χ₀⟩⟩` from `hT`. Use `hW.2.2` as an intermediate fact. Take `⟨R, _, _, _, hR, χ, hχ⟩` from `GlobalTheory.T.exists_completeDVR_point_genericPoint C.Z W χ₀`. Use `C.j_open` as an intermediate fact.
+
+Use `C.j_dom` as an intermediate fact. Establish `hj : Set.range χ ⊆ Set.range C.j`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hχ]`. Conclude with `((genericPoint_spec C.Z).mem_open_set_iff C.j.isOpenEmbedding.isOpen_range).2 (by rw [Set.univ_inter]; exact C.j.denseRange.nonempty_iff.2 inferInstance |>.elim fun x => ⟨_, x, rfl⟩)`.
+
+Take `⟨a, ha⟩` from `exists_chart A.isLB (genericPoint C.Z)`. Establish `hU : Set.range χ ⊆ Set.range (A.A.U a).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[hχ, Scheme.Opens.range_ι]`. Conclude with `ha`.
+
+Take `⟨t', ⟨p⟩⟩` from `exists_pull (IsOpenImmersion.lift C.j χ hj) C.tW`. Take `⟨q⟩` from `map_comp C.m₁ k rfl`. Take `⟨p₁⟩` from `map_comp p q rfl`. Take `⟨p₂⟩` from `map_comp (k := IsOpenImmersion.lift (A.A.U a).ι χ hU ≫ (A.A.U a).ι) p C.m₂ (by rw [IsOpenImmersion.lift_fac, IsOpenImmersion.lift_fac])`. Establish `hb` using `(A.trait a R hR (IsOpenImmersion.lift (A.A.U a).ι χ hU) (by`.
+
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `range_subset_abLocus p₂ (proper_of_map p₁ hp) ⟨_, rfl⟩)).2`. Rewrite using `[← rank_eq hL hL' hp hA hK hg p₁ p₂ _ _ hb]`. Conclude with `hasFrames_of_ampFrames A`.
+-/
 theorem hasModel_rank (hL : Out.Laws) (hL' : Out.Laws2) (hp : IsProper tM.G.hom) (hA : Out.RelAmple tM.G tM.PP.L)
     (hK : Out.KTriv tM.G tM.PP.L) {g : ℕ} (hg : SmoothOfRelativeDimension g tM.G.hom) {V : Scheme.{0}} {i : V ⟶ M}
     {tV : SAB H V} (k : SABMap tV tM i) {sV : V ⟶ Sp O} (C : ZOn sV tV m) [IsIntegral C.Z]
@@ -446,6 +601,17 @@ namespace GlobalTheory
 
 open ModelSum ZM in
 
+/- English proof (translation)
+Introduce `E _ _ _ H O _ _ M sM tM m hr hf hq h ⟨g, hg⟩ hL hL' hp hA hK`. Establish `: IsLocallyNoetherian M` using `LocallyOfFiniteType.isLocallyNoetherian sM`. Establish `: CompactSpace M` using `QuasiCompact.compactSpace_of_compactSpace sM`. Establish `: IsNoetherian M` using `{}`. Establish `hfin : (genericPoints M).Finite` using `genericPoints.finite TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`.
+
+Establish `: Fintype (genericPoints M)` using `hfin.fintype`. Use `choose V i tV k C ho hm hV hZ hs hC using fun ξ : genericPoints M => h ξ.1 ξ.2`. Take `⟨r, hb⟩` from `(Set.finite_range fun ξ => (C ξ).amp.r).bddAbove`. Establish `gen : ∀ ξ x, ξ.1 ⤳ i ξ x` using `fun ξ x => by`. Take `⟨v, hv⟩` from `hm ξ`.
+
+Establish `e : i ξ (genericPoint (V ξ)) = ξ.1` using `eq_of_specializes_of_mem_genericPoints ξ.2 (hv ▸ (genericPoint_specializes v).map (i ξ).continuous)`. Conclude with `e ▸ (genericPoint_specializes x).map (i ξ).continuous`. Establish `key` using `hasModel_sup (sM := sM) (m := m) (n := max 1 ((m ^ 2) ^ g)) (r := r) (s := 1) hp (fun ξ => (i ξ).opensRange) (fun ξ ζ hne => disjoint_iff_inf_le.2 (by`. Introduce and unpack `_ ⟨⟨x, rfl⟩, hy⟩`. Take `⟨c, hc⟩` from `(gen ξ x).mem_open (i ζ).opensRange.2 hy`.
+
+Conclude with `(hne (Subtype.ext (eq_of_specializes_of_mem_genericPoints ξ.2 (hc ▸ gen ζ c)).symm)).elim))`. Use the proof step `(fun ξ t q => by`. Take `⟨A, rfl, e⟩` from `hC ξ r (hb ⟨ξ, rfl⟩)`. Take `⟨q'⟩` from `map_cancel q (k ξ) (i ξ).isoOpensRange_inv_comp`. Use `(hasModel_rank hL hL' hp hA hK hg (k ξ) (C ξ) A).shrink (i ξ).isoOpensRange.inv q'` as an intermediate fact.
+
+Rewrite using `[← Category.assoc, (i ξ).isoOpensRange_inv_comp, e] at this) Finset.univ` and apply the resulting hypothesis. Take `⟨t, ⟨q⟩⟩` from `exists_pull (Finset.univ.sup fun ξ => (i ξ).opensRange : M.Opens).ι tM`. Use `isDominant_ι (W := Finset.univ.sup fun ξ => (i ξ).opensRange) ((dense_iff_closure_eq.2 (genericPoints.closure (α := M))).mono fun ξ hξ => Finset.le_sup (f := fun ξ => (i ξ).opensRange) (Finset.mem_univ ⟨ξ, hξ⟩) (hm ⟨ξ, hξ⟩))` as an intermediate fact. Conclude with `⟨(HasModel.grow _ q (key t q)).choose⟩`.
+-/
 theorem Models.nonempty_zOn_of_components : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (O : Type) [CommRing O] [IsNoetherianRing O] (MM : Scheme.{0}) (sM : MM ⟶ Sp O) (tM : SAB H MM) (m : ℕ), IsReduced MM → LocallyOfFiniteType sM → QuasiCompact sM → (∀ ξ ∈ genericPoints MM, ∃ (V : Scheme.{0}) (i : V ⟶ MM) (tV : SAB H V) (_ : SABMap tV tM i) (C : ZOn (i ≫ sM) tV m), IsOpenImmersion i ∧ ξ ∈ Set.range i ∧ IsIntegral V ∧ IsIntegral C.Z ∧ C.amp.s = 1 ∧ ∀ r : ℤ, C.amp.r ≤ r → ∃ A : GlobalTheory.LN.AmpFrames C.t.G C.t.PP.L (m ^ 2), A.r = r ∧ A.s = 1) → (∃ g, SmoothOfRelativeDimension g tM.G.hom) → Out.Laws → Out.Laws2 → IsProper tM.G.hom → Out.RelAmple tM.G tM.PP.L → Out.KTriv tM.G tM.PP.L → Nonempty (ZOn sM tM m) := by
   intro E _ _ _ H O _ _ M sM tM m hr hf hq h ⟨g, hg⟩ hL hL' hp hA hK
   have : IsLocallyNoetherian M := LocallyOfFiniteType.isLocallyNoetherian sM

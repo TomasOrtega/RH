@@ -20,6 +20,11 @@ private def conjHom {H R : Type} [Group H] [Monoid R] (u : Rˣ) (m : H →* R) :
   map_one' := by simp
   map_mul' s t := by simp [mul_assoc]
 
+/- English proof (translation)
+Introduce `N`. Establish `e : (fun s => Ideal.Quotient.mk (I ^ N) ((a * m s * b) i j)) = ∑ q, ∑ p, fun s => Ideal.Quotient.mk (I ^ N) (a i p) * Ideal.Quotient.mk (I ^ N) (m s p q) * Ideal.Quotient.mk (I ^ N) (b q j)`. Use function extensionality and compare the values at `s`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, map_sum, map_mul, Finset.sum_apply]`. Rewrite using `[e]`.
+
+Use `Finset.sum_induction _ IsLocallyConstant (fun _ _ hf hg => hf.add hg) (IsLocallyConstant.const 0) (fun q _ => ?_)` and prove the remaining obligations. Use `Finset.sum_induction _ IsLocallyConstant (fun _ _ hf hg => hf.add hg) (IsLocallyConstant.const 0) (fun p _ => ?_)` and prove the remaining obligations. Conclude with `((IsLocallyConstant.const _).mul (hm p q N)).mul (IsLocallyConstant.const _)`.
+-/
 private theorem cont_conj {X C : Type} [TopologicalSpace X] [CommRing C] {n : ℕ} (I : Ideal C)
     (m : X → Matrix (Fin n) (Fin n) C) (hm : ∀ i j, AdicCont I fun s => m s i j) (a b : Matrix (Fin n) (Fin n) C)
     (i j : Fin n) : AdicCont I fun s => (a * m s * b) i j := by
@@ -32,6 +37,19 @@ private theorem cont_conj {X C : Type} [TopologicalSpace X] [CommRing C] {n : �
   refine Finset.sum_induction _ IsLocallyConstant (fun _ _ hf hg => hf.add hg) (IsLocallyConstant.const 0) (fun p _ => ?_)
   exact ((IsLocallyConstant.const _).mul (hm p q N)).mul (IsLocallyConstant.const _)
 
+/- English proof (translation)
+Introduce `l _ k _ _ F C₀ n hF C _ I B hc hdg hcont`. Set `rr : F.G0 →* Matrix (Fin n) (Fin n) C` to `(Units.coeHom _).comp (glPart F.del B.r B.nu)`. Set `m : ∀ v, F.Gv v →* Matrix (Fin n) (Fin n) C` to `fun v => conjHom (B.g v) (rr.comp (F.loc0 v))`. Establish `hup : ∀ v s, UpT (m v s)` using `fun v s => B.tri v s`. Set `ψ : (v : F.V) → Fin n → F.Gv v →* Cˣ` to `fun v i => (diagHom (m v) (hup v) i).toHomUnits`.
+
+Establish `hpol : ∀ g : F.G0, rr (F.star g) = Jmat C n * (rr g)ᵀ * Jmat C n`. Introduce `g`. Establish `hcc : F.c⁻¹ = F.c` using `inv_eq_of_mul_eq_one_right hF.c_sq`. Establish `hs : ((F.star g : F.G0) : F.Γ) = F.c * (↑g)⁻¹ * F.c` using `by show ((F.conj g⁻¹ : F.G0) : F.Γ) = _`. Rewrite using `[Frame.conj, MulEquiv.coe_toMonoidHom, MulAut.conjNormal_apply, hcc]`.
+
+Both sides reduce to the same expression. Establish `hPl : (B.r F.c).left = 1` using `Units.ext hc`. Establish `hPr : (B.r F.c).right = -1` using `by rw [B.nu, hF.del_c]`. Establish `hX : (B.r (↑g)⁻¹).left = (glPart F.del B.r B.nu g)⁻¹`. Rewrite using `[← map_inv]`.
+
+Both sides reduce to the same expression. Use `show ((B.r ↑(F.star g)).left : Matrix (Fin n) (Fin n) C) = _`. Rewrite using `[hs, map_mul, map_mul, SemidirectProduct.mul_left, SemidirectProduct.mul_left]`. Simplify using `only [hPl, hPr, map_one, mul_one, one_mul, sgnAct_neg_one, hX, theta_val, inv_inv]`. Both sides reduce to the same expression.
+
+Establish `hord : ∀ v (g : Fin n → F.Gv v), ordProd (fun s => rr (F.loc0 v s)) (fun i s => ((ψ v i s : Cˣ) : C)) g = 0`. Introduce `v g`. Establish `hf : UpperTheory.V.W.HasFlag (rr.comp (F.loc0 v)).toHomUnits (ψ v)` using `⟨B.g v, fun s => ⟨fun i j hij => hup v s i j hij, fun i => rfl⟩⟩`. Conclude with `(ord_of_flag (rr.comp (F.loc0 v)) (ψ v) hf).1 g`. Use `⟨⟨rr, ψ, hpol, fun i j hij => hdg i j hij, hord⟩, ⟨hc, fun s => rfl, fun v i s => rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i j N`. Conclude with `(hcont i j N).comp_continuous continuous_subtype_val`. Introduce `v i`. Conclude with `cont_conj I (fun s => (B.r (F.loc v s)).mat) (fun p q N => (hcont p q N).comp_continuous (continuous_subtype_val.comp (hF.loc_cont v))) ↑(B.g v) ↑(B.g v)⁻¹ i i`.
+-/
 theorem UpperTheory.V.Fr.pr_ofbox :
     ∀ {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ n : ℕ}, F.Ok C₀ → ∀ (C : Type) [CommRing C] (I : Ideal C) (B : Box F n C), (B.r F.c).mat = 1 → (∀ i j, i ≠ j → ((B.r F.g0).mat - (B.r (F.star F.g0)).mat) i j = 0) → B.Cont I → ∃ ρ : NRep F n C, B.Of ρ ∧ ρ.Cont I := by
   intro l _ k _ _ F C₀ n hF C _ I B hc hdg hcont

@@ -11,6 +11,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance (DegOneUnra
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, h⟩`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hs`.
+
+Establish `h2` using `congrArg (P.valuation E) h`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `P.valuation_le_one r`. Introduce `h`.
+
+Take `⟨n, d, hnd⟩` from `P.exists_primeCompl_mul_eq_of_integer a h`. Conclude with `⟨n, d, d.2, by rw [mul_comm]; exact hnd⟩`.
+-/
 theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
   constructor
   · rintro ⟨r, s, hs, h⟩
@@ -25,6 +32,11 @@ theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P
     obtain ⟨n, d, hnd⟩ := P.exists_primeCompl_mul_eq_of_integer a h
     exact ⟨n, d, d.2, by rw [mul_comm]; exact hnd⟩
 
+/- English proof (translation)
+Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) : x ≤ WithZero.exp (-1) := by
   rcases eq_or_ne x 0 with rfl | hx
   · exact zero_le
@@ -33,6 +45,13 @@ theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1)
     rw [WithZero.exp_le_exp]
     omega
 
+/- English proof (translation)
+Establish `e : (qOf P : E) = algebraMap (𝓞 E) E (qOf P : 𝓞 E)` using `by rw [map_natCast]`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h1 : P.intValuation (qOf P : 𝓞 E) < 1` using `(P.intValuation_lt_one_iff_mem _).2 (Ideal.absNorm_mem _)`. Establish `h2 : ¬ P.intValuation (qOf P : 𝓞 E) ≤ WithZero.exp (-((2 : ℕ) : ℤ))`. Rewrite using `[HeightOneSpectrum.intValuation_le_pow_iff_mem]`.
+
+Conclude with `hP.2`. Establish `hx : P.intValuation (qOf P : 𝓞 E) ≠ 0`. Introduce `h0`. Conclude with `h2 (h0 ▸ zero_le)`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hx]`.
+
+Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem val_q {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) :
     P.valuation E (qOf P : E) = WithZero.exp (-1) := by
   have e : (qOf P : E) = algebraMap (𝓞 E) E (qOf P : 𝓞 E) := by rw [map_natCast]
@@ -51,9 +70,23 @@ theorem val_q {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) :
   congr 1
   omega
 
+/- English proof (translation)
+The claim follows from `Nat.cast_ne_zero.2 hP.1.ne_zero`.
+-/
 theorem q_ne_zero {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) : (qOf P : E) ≠ 0 :=
   Nat.cast_ne_zero.2 hP.1.ne_zero
 
+/- English proof (translation)
+Take `⟨r, s, hs, h⟩` from `hu`. Use `haveI : Fact (qOf P).Prime := ⟨hP.1⟩`. Establish `hc : Nat.card (𝓞 E ⧸ P.asIdeal) = qOf P`. Rewrite using `[qOf, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.1 (mem_zmultiples_of_prime_card (g' := Ideal.Quotient.mk P.asIdeal r) hc (mk_ne_zero hs))`.
+
+Establish `hm : r - k * s ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, map_intCast, ← hk, zsmul_eq_mul, sub_self]`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hs`.
+
+Establish `h2 : algebraMap (𝓞 E) E s * (u - k) = algebraMap (𝓞 E) E (r - k * s)`. Rewrite using `[map_sub, map_mul, map_intCast, ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : P.valuation E (u - k) < 1`. Use `congrArg (P.valuation E) h2` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, h1, one_mul, HeightOneSpectrum.valuation_of_algebraMap]`. Rewrite using `[this]`. Conclude with `(P.intValuation_lt_one_iff_mem _).2 hm`. Establish `hq` using `q_ne_zero hP`. Use `⟨k, (u - k) / qOf P, ?_, by field_simp; ring⟩` and prove the remaining obligations.
+
+Rewrite using `[intAt_iff_val, map_div₀, val_q hP]`. Conclude with `div_le_one_of_le₀ (le_exp_neg_one_of_lt_one h3) zero_le`.
+-/
 theorem exists_int_add_q_mul {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) {u : E} (hu : IntAt P u) :
     ∃ (k : ℤ) (u' : E), IntAt P u' ∧ u = k + (qOf P : E) * u' := by
   obtain ⟨r, s, hs, h⟩ := hu
@@ -79,6 +112,11 @@ theorem exists_int_add_q_mul {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram 
   rw [intAt_iff_val, map_div₀, val_q hP]
   exact div_le_one_of_le₀ (le_exp_neg_one_of_lt_one h3) zero_le
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, u, hu, by simp⟩`. Consider the case `succ j ih`. Take `⟨k, u', hu', e⟩` from `ih`. Take `⟨k', u'', hu'', e'⟩` from `exists_int_add_q_mul hP hu'`.
+
+Use `⟨k + (qOf P : ℤ) ^ j * k', u'', hu'', ?_⟩` and prove the remaining obligations. Rewrite using `[e, e']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_int_add_q_pow_mul {P : HeightOneSpectrum (𝓞 E)} (hP : DegOneUnram P) (j : ℕ) {u : E}
     (hu : IntAt P u) : ∃ (k : ℤ) (u' : E), IntAt P u' ∧ u = k + (qOf P : E) ^ j * u' := by
   induction j with

@@ -19,6 +19,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 
 namespace GlobalTheory.RunIn
 
+/- English proof (translation)
+Take `⟨k, hk, hle, -⟩` from `h`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Rewrite `hk` using `[Nat.coprime_zero_left]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hstd : (stdLat E n).FG`. Unfold `stdLat`. Conclude with `Submodule.fg_pi fun _ => Submodule.fg_unit 1`. Establish `hkO : (k : 𝓞 E) ≠ 0` using `by exact_mod_cast hk0`. Establish `hinj : Function.Injective (LinearMap.lsmul (𝓞 E) (Fin n → E) (k : 𝓞 E))` using `LinearMap.lsmul_injective hkO`.
+
+Use `Submodule.fg_of_fg_map_injective _ hinj ?_` and prove the remaining obligations. Establish `hN` using `isNoetherian_of_fg_of_noetherian _ hstd`. Use `isNoetherian_submodule.1 hN _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hle (Submodule.smul_mem_smul (Ideal.subset_span rfl) hv)`.
+-/
 theorem fg_of_trivAt_even {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : GenLat E n) {bad : ℕ}
     (h2 : 2 ∣ bad) (h : Λ.TrivAt bad) : Λ.La.FG := by
   obtain ⟨k, hk, hle, -⟩ := h
@@ -38,6 +45,19 @@ theorem fg_of_trivAt_even {E : Type} [Field E] [NumberField E] {n : ℕ} (Λ : G
   rintro _ ⟨v, hv, rfl⟩
   exact hle (Submodule.smul_mem_smul (Ideal.subset_span rfl) hv)
 
+/- English proof (translation)
+Introduce `hCI D T h hG large₂ j hj w hP hL hrn hlp hS hA g hg`. Take `⟨hgs, Λ, N, x0, P, hU, hT1, hT2, hLev, hAdm, hPh, hR⟩` from `hg`. Take `⟨-, -, -, -, -, hfd, -, hrd, hfr, hf1, -⟩` from `GlobalTheory.T.exists_clearing_integers_principalDatum_host D large₂.sc.L hL hP.2.1 hP.2.2.1 hP.2.2.2.1`. Establish `hr : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r` using `((GlobalTheory.T.numerical_consequences_of_pins D T.Q h.pins).2.2.2.2.2.2 j hj).1`. Establish `hfg : Λ.La.FG` using `fg_of_trivAt_even Λ (by`.
+
+Unfold `badN`. Establish `h2 : 2 ∣ D.host.QS` using `(D.host.mem_small_iff.1 D.host.two_mem_small).2`. Conclude with `((h2.mul_right _).mul_right _).mul_right _) hT1`. Establish `hdf : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ (Formalism.MainNotions.WeightAlgebra.DF w : ℝ)`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.DF_wtA_le T j w` after adjusting the coercions.
+
+Establish `e : ((Formalism.MainNotions.WeightAlgebra.DF w : ℕ) : ℝ) = absA w`. Unfold `absA Formalism.MainNotions.WeightAlgebra.DF degP`. Use `push_cast`. Both sides reduce to the same expression. Take `⟨S, hS1, hS2, -⟩` from `GlobalTheory.T.exists_short_harmonic_family_unimodular D.host.E T.Q.H (T.Q.Dw j) T.Q.l T.Q.c w.n Λ hU hfg (hr ▸ hrn) (wtA w) large₂.sc.L hL hrd (by rw [hfd]; exact hP.2.2.2.2.1) ((Real.log_le_log (by positivity) (by linarith)).trans hP.2.2.2.2.2.2.2.1) hP.2.2.2.2.2.2.2.2`.
+
+Take `⟨m, cf, Q, hsum⟩` from `Submodule.mem_span_set'.1 (hS2 P hPh.1)`. Establish `hQ : ∀ i, (Q i).1 ∈ harmL T.Q.c Λ (wtA w)` using `fun i => (hS1 _ (Q i).2).1`. Use `choose gs hgs1 hgs2 using fun i => (hS.shTot j hj (wtA w) w.n (dom_wtA w) Λ N x0 (Q i).1 hU hT1 hT2 hLev hAdm (hQ i)).2`. Establish `hlin` using `GlobalTheory.T.shortThetaRule_linear_in_harmonic_polynomial hCI D T h hS j hj w Λ N x0 hU hT2 hLev m cf (fun i => (Q i).1) g gs hQ hgs hgs1 (by rw [hsum]; exact hR) hgs2`. Rewrite using `[hlin]`.
+
+Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨hgs1 i, Λ, N, x0, (Q i).1, hU, hT1, hT2, hLev, hAdm, hQ i, hgs2 i⟩, fun σ => ?_⟩)` and prove the remaining obligations. Establish `hL0 : 0 ≤ large₂.sc.L` using `by linarith`. Establish `hA0 : 0 ≤ absA w` using `by rw [← e]; positivity`. Establish `hb : Real.log (l1At σ (Q i).1) ≤ 140 * D.R.r * large₂.sc.L * absA w`. Use `((hS1 _ (Q i).2).2 σ).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[hr, ← e]`. Conclude with `mul_le_mul_of_nonneg_left hdf (by positivity)`. Establish `hl1 : l1At σ (Q i).1 ≤ Real.exp (140 * D.R.r * large₂.sc.L * absA w)` using `(Real.le_exp_log _).trans (Real.exp_le_exp.2 hb)`. Establish `hsup` using `GlobalTheory.T.log_supNorm_shortThetaGenerator_le hCI D T h hG large₂ j hj w hP hL hrn (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.lastPos_wtA h hj w hlp) hS hA Λ N x0 (Q i).1 (gs i) hU hT1 hT2 hLev hAdm (hQ i) (hgs2 i) (hgs1 i) σ _ (by positivity) hl1`. Conclude with `hsup.trans (GlobalTheory.T.supBounds_le_generatorConstant_mul_size D (recB h.toLawsCore) large₂ j w 0 hL (by omega)).1`.
+-/
 theorem sh_mem_span_small : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T), GamAt T.toCore → ∀ (large₂ : SizeData₂ D) (j : ℕ) (hj : InR D j) (w : WeightFamilies.Wt D j), ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ w → 2 ≤ large₂.sc.L → D.R.r ≤ w.n → w.LastPos → LawsSh T → (T.dδ j w.n).l₂.A = 1 → ∀ g ∈ T.sh j w, g ∈ Submodule.span T.Q.c.F {g' : T.R j | g' ∈ T.sh j w ∧ ∀ σ, Real.log (T.Ns j w σ g') ≤ 400 * Zb D large₂ * w.size} := by
   intro hCI D T h hG large₂ j hj w hP hL hrn hlp hS hA g hg
   obtain ⟨hgs, Λ, N, x0, P, hU, hT1, hT2, hLev, hAdm, hPh, hR⟩ := hg

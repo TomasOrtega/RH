@@ -2,6 +2,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Establish `hs' : (s : Matrix (Fin n) (Fin n) R) * (γ : Matrix (Fin n) (Fin n) F).map f = (γ : Matrix (Fin n) (Fin n) F).map f * (s : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← hD]`. Conclude with `congrArg Units.val hs`. Establish `ht' : (t : Matrix (Fin n) (Fin n) R) * (γ : Matrix (Fin n) (Fin n) F).map f = (γ : Matrix (Fin n) (Fin n) F).map f * (t : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← hD]`.
+
+Conclude with `congrArg Units.val ht`. Conclude with `Units.ext (hC F R f n _ hγ _ _ hs' ht')`.
+-/
 private theorem cent_comm_of {F R : Type} [Field F] [CharZero F] [CommRing R] (hC : CentComm) (f : F →+* R) {n : ℕ}
     (γ : GL (Fin n) F) (hγ : (γ : Matrix (Fin n) (Fin n) F).charpoly.Separable) (D : GL (Fin n) R)
     (hD : (D : Matrix (Fin n) (Fin n) R) = (γ : Matrix (Fin n) (Fin n) F).map f) (s t : GL (Fin n) R)
@@ -17,6 +22,15 @@ private theorem cent_comm_of {F R : Type} [Field F] [CharZero F] [CommRing R] (h
   exact Units.ext (hC F R f n _ hγ _ _ hs' ht')
 
 open NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction in
+/- English proof (translation)
+Introduce `hC F _ _ n γ hγ`. Establish `hsep : (γ : Matrix (Fin n) (Fin n) F).charpoly.Separable` using `hγ`. Establish `hA : ∀ s t : GA F n, s * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * s → t * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * t → s * t = t * s`. Use `cent_comm_of hC (algebraMap F _) γ hsep _ ?_` and prove the remaining obligations. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Use `⟨fun s t => ?_, fun s t => ?_, fun v s t => ?_, fun γ₁ h₁ s t => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (hA _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))`. Use `Subtype.ext (cent_comm_of hC (algebraMap F (InfiniteAdeleRing F)) γ hsep _ ?_ _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))` and prove the remaining obligations. Use extensionality with `a b`.
+
+Both sides reduce to the same expression. Use `Subtype.ext (cent_comm_of hC (algebraMap F (v.adicCompletion F)) γ hsep _ ?_ _ _ (Subgroup.mem_centralizer_singleton_iff.1 s.2) (Subgroup.mem_centralizer_singleton_iff.1 t.2))` and prove the remaining obligations. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `key : ∀ u : Subgroup.centralizer {γ₁}, u.1.1 * AdelicGLn.diagonal F n γ = AdelicGLn.diagonal F n γ * u.1.1`.
+
+Introduce `u`. Rewrite using `[← h₁]`. Conclude with `congrArg Subtype.val (Subgroup.mem_centralizer_singleton_iff.1 u.2)`. Conclude with `Subtype.ext (Subtype.ext (hA _ _ (key s) (key t)))`.
+-/
 theorem UpperTheory.torusCommutative_of_centralizerCommutative :
     CentComm → TComm := by
   intro hC F _ _ n γ hγ

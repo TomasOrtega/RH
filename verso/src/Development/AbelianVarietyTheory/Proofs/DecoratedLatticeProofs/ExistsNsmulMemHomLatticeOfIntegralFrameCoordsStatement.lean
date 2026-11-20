@@ -8,5 +8,8 @@ open GlobalTheory.FinPl
 open scoped TensorProduct Pointwise
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int | exact GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int | (intros; apply GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_nsmul_mem_homLattice_of_integral_frameCoords : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D) (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∃ N : ℕ, 0 < N ∧ ∀ t : WO S T, IsHalf p.e t → (∀ i j, rd α β t i j ∈ 𝒪[k]) → N • t ∈ latO S T (LS : Set _) (LT : Set _) (· = p.v) := by
   first | exact @GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int | exact GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int | (intros; apply GlobalTheory.FinPl.exists_nsmul_mem_latO_of_rd_int <;> assumption)

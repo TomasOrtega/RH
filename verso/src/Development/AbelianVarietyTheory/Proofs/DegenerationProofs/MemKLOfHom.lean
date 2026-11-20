@@ -17,6 +17,17 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `S A B _ _ ψ hψ L M hL hM hw T x hx`. Take `⟨w, hw⟩` from `hw`. Use `replace hw := (isGen_iff w).1 hw`. Introduce `p`. Take `⟨V, hV, c, hc⟩` from `hx p`.
+
+Use `⟨V, hV, ?_⟩` and prove the remaining obligations. Set `U : T ⊗ A ⟶ T ⊗ B` to `lift (fst T A) (snd T A ≫ ψ)`. Establish `k₁ : U ≫ fst T B = fst T A` using `lift_fst _ _`. Establish `k₂ : U ≫ snd T B = snd T A ≫ ψ` using `lift_snd _ _`. Establish `k₃ : U ≫ ((fst T B ≫ x ≫ ψ) * snd T B) = ((fst T A ≫ x) * snd T A) ≫ ψ`.
+
+Rewrite using `[MonObj.comp_mul, k₂, ← Category.assoc, k₁, MonObj.mul_comp, Category.assoc]`. Take `⟨n, hn⟩ : ∃ n : ((fst T A).left ⁻¹ᵁ V).toScheme ⟶ ((fst T B).left ⁻¹ᵁ V).toScheme, n ≫ ((fst T B).left ⁻¹ᵁ V).ι = ((fst T A).left ⁻¹ᵁ V).ι ≫ U.left` from `⟨IsOpenImmersion.lift _ (((fst T A).left ⁻¹ᵁ V).ι ≫ U.left) (by`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(congrArg (fun q => q.left y.1 ∈ V) k₁).mpr y.2), IsOpenImmersion.lift_fac _ _ _⟩`.
+
+Take `⟨c₁, h₁⟩` from `gen_chartPull (chartPullIn M _ _ _) c hc`. Set `φ' : Fin 2 → (((fst T A).left ⁻¹ᵁ V).toScheme ⟶ A.left)` to `fun k => ((fst T A).left ⁻¹ᵁ V).ι ≫ (![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] : Fin 2 → _) k`. Take `⟨c₂, h₂⟩` from `gen_chartPull (chartPullSame M (fun k => φ' k ≫ ψ.left) _ ![1, -1] n (fun k => by show (_ ≫ _) ≫ ψ.left = n ≫ _ ≫ _`. Rewrite using `[← Category.assoc n, hn, Category.assoc, Category.assoc]`. Use `fin_cases k`.
+
+Use `exacts [congrArg (fun q => _ ≫ q.left) k₃.symm, congrArg (fun q => _ ≫ q.left) k₂.symm])) c₁ h₁`. Take `⟨c₃, h₃⟩` from `exists_down hw hM hL c₂ h₂`. Conclude with `gen_chartPull (chartPullOut L _ _ _ φ' fun _ => rfl) c₃ h₃`.
+-/
 theorem memKL_of_hom : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] [GrpObj B] (ψ : A ⟶ B), IsMonHom ψ → ∀ (L : LB A.left) (M : LB B.left), L.IsLB → M.IsLB → LBIso L (M.pull ψ.left) → ∀ (T : Over S) (x : T ⟶ A), GlobalTheory.MemKL B M (x ≫ ψ) → GlobalTheory.MemKL A L x := by
   intro S A B _ _ ψ hψ L M hL hM hw T x hx
   obtain ⟨w, hw⟩ := hw

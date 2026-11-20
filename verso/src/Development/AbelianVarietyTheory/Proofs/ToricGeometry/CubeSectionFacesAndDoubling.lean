@@ -7,6 +7,13 @@ open scoped BigOperators Real
 namespace GlobalTheory
 namespace CubeFace
 
+/- English proof (translation)
+Use `choose s hs using hcov`. Establish `hG : ∀ k x, x ∈ U k → f (s x) x = f k x` using `fun k x hx => hagree _ _ _ (hs x) hx`. Establish `hd : Differentiable ℂ (fun x => f (s x) x)`. Introduce `x`. Establish `h1 : DifferentiableAt ℂ (f (s x)) x` using `(hf _).differentiableAt ((hU _).mem_nhds (hs x))`.
+
+Use `h1.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(hU _).mem_nhds (hs x)] with y hy using hG _ _ hy`. Use `entire_apply_eq_of_periodic_of_span_real hd hS (fun x l hl => by` as an intermediate fact. Take `⟨h1, h2⟩` from `hper (s x) x l hl (hs x)`. Rewrite using `[hG _ _ h1, h2]) x y`.
+
+Rewrite using `[← hG k x hx, ← hG k' y hy]`. Conclude with `this`.
+-/
 theorem glue_const {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {κ : Type*} (U : κ → Set E) (f : κ → E → ℂ)
     (hU : ∀ k, IsOpen (U k)) (hcov : ∀ x, ∃ k, x ∈ U k)
@@ -29,6 +36,13 @@ theorem glue_const {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [Norme
   rw [← hG k x hx, ← hG k' y hy]
   exact this
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `h1 : x a ∈ Submodule.span ℝ (Λ : Set V)` using `by rw [h]; trivial`.
+
+Establish `h2` using `Submodule.mem_map_of_mem (f := LinearMap.single ℝ (fun _ : Fin 3 => V) a) h1`. Rewrite `h2` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩ b`. Distinguish the cases in `hb : b = a`.
+
+Substitute `hb` using the available equality. Simplify using `using hv`. Simplify using `[Pi.single_eq_of_ne hb]`.
+-/
 theorem span_triples {V : Type*} [AddCommGroup V] [Module ℝ V] (Λ : Submodule ℤ V)
     (h : Submodule.span ℝ (Λ : Set V) = ⊤) :
     Submodule.span ℝ {l : Fin 3 → V | ∀ a, l a ∈ Λ} = ⊤ := by
@@ -45,6 +59,9 @@ theorem span_triples {V : Type*} [AddCommGroup V] [Module ℝ V] (Λ : Submodule
   · subst hb; simpa using hv
   · simp [Pi.single_eq_of_ne hb]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using differentiableOn_const (1 : ℂ)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hf a (Finset.mem_insert_self _ _)).fun_mul (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem differentiableOn_prod {E α : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {U : Set E} (s : Finset α) (f : α → E → ℂ) (hf : ∀ i ∈ s, DifferentiableOn ℂ (f i) U) :
     DifferentiableOn ℂ (fun y => ∏ i ∈ s, f i y) U := by
@@ -56,6 +73,9 @@ theorem differentiableOn_prod {E α : Type*} [NormedAddCommGroup E] [NormedSpace
     exact (hf a (Finset.mem_insert_self _ _)).fun_mul
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Establish `: (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}}` using `by decide`. Rewrite using `[this, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_subsets (f : Finset (Fin 3) → ℂ) :
     ∏ I, f I = f ∅ * f {0} * f {1} * f {2} * f {0, 1} * f {0, 2} * f {1, 2} * f {0, 1, 2} := by
   have : (Finset.univ : Finset (Finset (Fin 3))) =
@@ -66,6 +86,11 @@ theorem prod_subsets (f : Finset (Fin 3) → ℂ) :
     Finset.prod_insert (by decide), Finset.prod_singleton]
   ring
 
+/- English proof (translation)
+Rewrite using `[prod_subsets]`. Establish `h01 : ({0, 1} : Finset (Fin 3)).card = 2` using `by decide`. Establish `h02 : ({0, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `h12 : ({1, 2} : Finset (Fin 3)).card = 2` using `by decide`. Establish `h012 : ({0, 1, 2} : Finset (Fin 3)).card = 3` using `by decide`.
+
+Rewrite using `[h01, h02, h12, h012]`. Evaluate the numerical expressions.
+-/
 theorem prod_alt (f : Finset (Fin 3) → ℂ) :
     ∏ I : Finset (Fin 3), f I ^ ((-1 : ℤ) ^ (3 - I.card)) =
       (f ∅)⁻¹ * f {0} * f {1} * f {2} * (f {0, 1})⁻¹ * (f {0, 2})⁻¹ * (f {1, 2})⁻¹ *
@@ -78,6 +103,23 @@ theorem prod_alt (f : Finset (Fin 3) → ℂ) :
   rw [h01, h02, h12, h012]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[prod_alt (fun I => f (I.erase a))]`. Use `hf ∅` as an intermediate fact. Use `hf {0}` as an intermediate fact. Use `hf {1}` as an intermediate fact. Use `hf {2}` as an intermediate fact.
+
+Use `hf {0, 1}` as an intermediate fact. Use `hf {0, 2}` as an intermediate fact. Use `hf {1, 2}` as an intermediate fact. Use `fin_cases a`. Establish `e1 : ({0, 1} : Finset (Fin 3)).erase 0 = {1}` using `by decide`.
+
+Establish `e2 : ({0, 2} : Finset (Fin 3)).erase 0 = {2}` using `by decide`. Establish `e3 : ({1, 2} : Finset (Fin 3)).erase 0 = {1, 2}` using `by decide`. Establish `e4 : ({0, 1, 2} : Finset (Fin 3)).erase 0 = {1, 2}` using `by decide`. Establish `e5 : ({0} : Finset (Fin 3)).erase 0 = ∅` using `by decide`. Establish `e6 : ({1} : Finset (Fin 3)).erase 0 = {1}` using `by decide`.
+
+Establish `e7 : ({2} : Finset (Fin 3)).erase 0 = {2}` using `by decide`. Simplify using `only [Fin.zero_eta, e1, e2, e3, e4, e5, e6, e7, Finset.erase_empty]`. Clear the denominators using the available nonvanishing facts. Establish `e1 : ({0, 1} : Finset (Fin 3)).erase 1 = {0}` using `by decide`. Establish `e2 : ({0, 2} : Finset (Fin 3)).erase 1 = {0, 2}` using `by decide`.
+
+Establish `e3 : ({1, 2} : Finset (Fin 3)).erase 1 = {2}` using `by decide`. Establish `e4 : ({0, 1, 2} : Finset (Fin 3)).erase 1 = {0, 2}` using `by decide`. Establish `e5 : ({0} : Finset (Fin 3)).erase 1 = {0}` using `by decide`. Establish `e6 : ({1} : Finset (Fin 3)).erase 1 = ∅` using `by decide`. Establish `e7 : ({2} : Finset (Fin 3)).erase 1 = {2}` using `by decide`.
+
+Simplify using `only [Fin.mk_one, e1, e2, e3, e4, e5, e6, e7, Finset.erase_empty]`. Clear the denominators using the available nonvanishing facts. Establish `e1 : ({0, 1} : Finset (Fin 3)).erase 2 = {0, 1}` using `by decide`. Establish `e2 : ({0, 2} : Finset (Fin 3)).erase 2 = {0}` using `by decide`. Establish `e3 : ({1, 2} : Finset (Fin 3)).erase 2 = {1}` using `by decide`.
+
+Establish `e4 : ({0, 1, 2} : Finset (Fin 3)).erase 2 = {0, 1}` using `by decide`. Establish `e5 : ({0} : Finset (Fin 3)).erase 2 = {0}` using `by decide`. Establish `e6 : ({1} : Finset (Fin 3)).erase 2 = {1}` using `by decide`. Establish `e7 : ({2} : Finset (Fin 3)).erase 2 = ∅` using `by decide`. Simplify using `only [Fin.reduceFinMk, e1, e2, e3, e4, e5, e6, e7, Finset.erase_empty]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem prod_alt_erase (a : Fin 3) (f : Finset (Fin 3) → ℂ) (hf : ∀ I, f I ≠ 0) :
     ∏ I : Finset (Fin 3), f (I.erase a) ^ ((-1 : ℤ) ^ (3 - I.card)) = 1 := by
   rw [prod_alt (fun I => f (I.erase a))]
@@ -121,9 +163,15 @@ def diagChart {ι : Type*} (a b d o : ι) (J : Finset (Fin 3)) : ι :=
   if J = {2} then b else if J = {0, 1} then d
   else if J = {0} ∨ J = {1} ∨ J = {0, 1, 2} then a else o
 
+/- English proof (translation)
+Use function extensionality and compare the values at `J`. Simplify using `[diagChart]`.
+-/
 theorem diagChart_self {ι : Type*} (o : ι) : diagChart o o o o = fun _ => o := by
   funext J; simp [diagChart]
 
+/- English proof (translation)
+Establish `: J ∈ ({∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} : Finset (Finset (Fin 3)))` using `by revert J; decide`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at this`. Apply the tactic sequence `rcases this with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>`. Simplify using `(config := {decide := true}) [diagChart, two_smul]`.
+-/
 theorem sum_diag {V : Type*} [AddCommGroup V] [Module ℂ V] (z : V) (J : Finset (Fin 3)) :
     ∑ a ∈ J, (![z, z, -z] : Fin 3 → V) a = diagChart z (-z) ((2 : ℂ) • z) 0 J := by
   have : J ∈ ({∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} :
@@ -132,6 +180,9 @@ theorem sum_diag {V : Type*} [AddCommGroup V] [Module ℂ V] (z : V) (J : Finset
   rcases this with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl <;>
     simp (config := {decide := true}) [diagChart, two_smul]
 
+/- English proof (translation)
+Rewrite using `[sum_diag]`. Unfold `diagChart`. Apply the tactic sequence `split_ifs <;> assumption`.
+-/
 theorem diag_mem {V ι : Type*} [AddCommGroup V] [Module ℂ V] (W : ι → Set V) {a b d o : ι}
     {z : V} (ha : z ∈ W a) (hb : -z ∈ W b) (hd : (2 : ℂ) • z ∈ W d) (ho : (0 : V) ∈ W o)
     (J : Finset (Fin 3)) :
@@ -140,6 +191,9 @@ theorem diag_mem {V ι : Type*} [AddCommGroup V] [Module ℂ V] (W : ι → Set 
   unfold diagChart
   split_ifs <;> assumption
 
+/- English proof (translation)
+Simplify using `only [sum_diag]`. Rewrite using `[prod_alt (fun J => c (diagChart a b d o J) (diagChart a' b' d' o J) (diagChart z (-z) ((2 : ℂ) • z) 0 J))]`. Simplify using `(config := {decide := true}) only [diagChart, if_true, if_false, ho]`. Simplify using `only [inv_one, mul_one, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem diag_prod {V ι : Type*} [AddCommGroup V] [Module ℂ V] (c : ι → ι → V → ℂ)
     (a b d a' b' d' o : ι) (ho : c o o 0 = 1) (z : V) :
     ∏ J : Finset (Fin 3), c (diagChart a b d o J) (diagChart a' b' d' o J)
@@ -152,6 +206,9 @@ theorem diag_prod {V ι : Type*} [AddCommGroup V] [Module ℂ V] (c : ι → ι 
   simp only [inv_one, mul_one, one_mul]
   ring
 
+/- English proof (translation)
+Rewrite using `[Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun I => ?_` and prove the remaining obligations. Conclude with `(hW _).preimage (f := fun x : Fin 3 → Fin g → ℂ => ∑ a ∈ I, x a) (by fun_prop)`.
+-/
 theorem isOpen_sums {g : ℕ} {ι : Type} (W : ι → Set (Fin g → ℂ)) (hW : ∀ i, IsOpen (W i))
     (j : Finset (Fin 3) → ι) :
     IsOpen {x : Fin 3 → Fin g → ℂ | ∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)} := by
@@ -179,6 +236,25 @@ variable {g : ℕ} {ι : Type} (W : ι → Set (Fin g → ℂ)) (c : ι → ι �
 
 include hW hcov hc0 hT hTT hΛ hWp hTp h0 in
 
+/- English proof (translation)
+Establish `hsum : ∀ (y : Fin 3 → Fin g → ℂ) (I : Finset (Fin 3)), ∑ b ∈ I, Function.update y a 0 b = ∑ b ∈ I.erase a, Function.update y a 0 b` using `fun y I => (Finset.sum_erase I (by simp)).symm`. Establish `hPd : Differentiable ℂ (fun y : Fin 3 → Fin g → ℂ => Function.update y a 0)`. Use `differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `only [Function.update_of_ne hb]`. Use `fun_prop`. Establish `hadd : ∀ y l : Fin 3 → Fin g → ℂ, Function.update (y + l) a 0 = Function.update y a 0 + Function.update l a 0`. Introduce `y l`.
+
+Rewrite using `[← Function.update_add, add_zero]`. Establish `hl : ∀ l : Fin 3 → Fin g → ℂ, (∀ b, l b ∈ Λ) → ∀ b, Function.update l a 0 b ∈ Λ`. Introduce `l hl b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify `hl b` using `[Function.update_of_ne hb]`. Establish `key` using `glue_const (κ := Finset (Fin 3) → ι) (fun j => (fun y : Fin 3 → Fin g → ℂ => Function.update y a 0) ⁻¹' {x | ∀ I : Finset (Fin 3), ∑ b ∈ I, x b ∈ W (j (I.erase a))}) (fun j y => T (fun I => j (I.erase a)) (Function.update y a 0)) (fun j => (isOpen_sums W hW _).preimage hPd.contin …`. Use `⟨fun I => s (∑ b ∈ I, Function.update y a 0 b), fun I => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`.
+
+Conclude with `hs _)`. Use the proof step `(fun j => (hT _).comp hPd.differentiableOn (fun y hy => hy))`. Use the proof step `(fun j j' y hy hy' => by beta_reduce`. Rewrite using `[hTT _ _ _ hy hy']`. Use `prod_alt_erase a (fun I => c (j (I.erase a)) (j' (I.erase a)) (∑ b ∈ I, Function.update y a 0 b)) (fun I => hc0 _ _ _ (hy I) (hy' I))` as an intermediate fact.
+
+Simplify using `only [Finset.erase_idem, ← hsum] at this`. Rewrite using `[this, one_mul])`. Use the proof step `(span_triples Λ hΛ)`. Use the proof step `(fun j y l hlm hy => by`. Use `⟨fun I => ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [hadd, Pi.add_apply, Finset.sum_add_distrib]`. Conclude with `(hWp _ _ _ (Λ.sum_mem fun b _ => hl l hlm b)).2 (hy I)`. Simplify using `only [hadd]`. Conclude with `hTp _ _ _ (hl l hlm))`. Use the proof step `(fun _ => i₀) (fun _ => i₀) x 0`.
+
+Use the proof step `(by`. Establish `: Function.update x a 0 = x` using `by rw [← hxa]; simp`. Rewrite using `[Set.mem_preimage, this]`. Conclude with `hx)`. Use the proof step `(by intro I; simpa using h0)`.
+
+Establish `: Function.update x a 0 = x` using `by rw [← hxa]; simp`. Simplify `key` using `[this]`.
+-/
 theorem face (a : Fin 3) (x : Fin 3 → Fin g → ℂ)
     (hx : ∀ I : Finset (Fin 3), ∑ b ∈ I, x b ∈ W i₀) (hxa : x a = 0) :
     T (fun _ => i₀) x = T (fun _ => i₀) 0 := by
@@ -235,6 +311,41 @@ theorem face (a : Fin 3) (x : Fin 3 → Fin g → ℂ)
 
 include hW hcov hc0 hcc hT hT0 hTT hΛ hWp hTp h0 in
 
+/- English proof (translation)
+Establish `hone : c i₀ i₀ 0 = 1` using `mul_left_cancel₀ (hc0 _ _ _ h0 h0) (by rw [hcc _ _ _ _ h0 h0 h0, mul_one])`. Establish `sneg : ∀ (y : Fin 3 → Fin g → ℂ) (I : Finset (Fin 3)), ∑ b ∈ I, (-y) b = -∑ b ∈ I, y b` using `fun y I => by simp`. Establish `stwo : ∀ (y : Fin 3 → Fin g → ℂ) (I : Finset (Fin 3)), ∑ b ∈ I, ((2 : ℂ) • y) b = (2 : ℂ) • ∑ b ∈ I, y b` using `fun y I => by`. Simplify using `[Finset.smul_sum]`. Set `κ` to `(Finset (Fin 3) → ι) × (Finset (Fin 3) → ι) × (Finset (Fin 3) → ι)`.
+
+Set `U : κ → Set (Fin 3 → Fin g → ℂ)` to `fun k => {y | (∀ I : Finset (Fin 3), ∑ b ∈ I, y b ∈ W (k.1 I)) ∧ (∀ I : Finset (Fin 3), ∑ b ∈ I, (-y) b ∈ W (k.2.1 I)) ∧ (∀ I : Finset (Fin 3), ∑ b ∈ I, ((2 : ℂ) • y) b ∈ W (k.2.2 I))}`. Set `D : κ → Finset (Fin 3) → (Fin 3 → Fin g → ℂ) → ℂ` to `fun k I y => T (diagChart (k.1 I) (k.2.1 I) (k.2.2 I) i₀) ![∑ a ∈ I, y a, ∑ a ∈ I, y a, -∑ a ∈ I, y a]`. Set `R : κ → (Fin 3 → Fin g → ℂ) → ℂ` to `fun k y => T k.2.2 ((2 : ℂ) • y) * (∏ I : Finset (Fin 3), D k I y ^ ((-1 : ℤ) ^ (3 - I.card))) / (T k.1 y ^ 3 * T k.2.1 (-y))`. Establish `hDm : ∀ k y, y ∈ U k → ∀ I J : Finset (Fin 3), ∑ i ∈ J, (![∑ a ∈ I, y a, ∑ a ∈ I, y a, -∑ a ∈ I, y a] : Fin 3 → Fin g → ℂ) i ∈ W (diagChart (k.1 I) (k.2.1 I) (k.2.2 I) i₀ J)` using `fun k y hy I => diag_mem W (hy.1 I) (sneg y I ▸ hy.2.1 I) (stwo y I ▸ hy.2.2 I) h0`. Establish `hD0 : ∀ k y, y ∈ U k → ∀ I, D k I y ≠ 0` using `fun k y hy I => hT0 _ _ (hDm k y hy I)`.
+
+Establish `key` using `glue_const U R (fun k => (isOpen_sums W hW k.1).inter (((isOpen_sums W hW k.2.1).preimage continuous_neg).inter ((isOpen_sums W hW k.2.2).preimage (continuous_const_smul (2 : ℂ))))) (fun y => by choose s hs using hcov`. Conclude with `⟨(fun I => s _, fun I => s _, fun I => s _), fun I => hs _, fun I => hs _, fun I => hs _⟩)`. Use the proof step `(fun k => by`. Establish `h1 : DifferentiableOn ℂ (T k.1) (U k)` using `(hT _).mono fun y hy => hy.1`. Establish `h2 : DifferentiableOn ℂ (fun y => T k.2.1 (-y)) (U k)` using `(hT _).comp (f := fun y : Fin 3 → Fin g → ℂ => -y) (by fun_prop) fun y hy => hy.2.1`.
+
+Establish `h3 : DifferentiableOn ℂ (fun y => T k.2.2 ((2 : ℂ) • y)) (U k)` using `(hT _).comp (f := fun y : Fin 3 → Fin g → ℂ => (2 : ℂ) • y) (by fun_prop) fun y hy => hy.2.2`. Establish `h4 : ∀ I, DifferentiableOn ℂ (D k I) (U k)` using `fun I => by`. Use `(hT _).comp (f := fun y : Fin 3 → Fin g → ℂ => (![∑ a ∈ I, y a, ∑ a ∈ I, y a, -∑ a ∈ I, y a] : Fin 3 → Fin g → ℂ)) ?_ fun y hy => hDm k y hy I` and prove the remaining obligations. Use `Differentiable.differentiableOn (differentiable_pi.2 fun b => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases b <;> simp <;> fun_prop`.
+
+Establish `h5 : DifferentiableOn ℂ (fun y => ∏ I : Finset (Fin 3), D k I y ^ ((-1 : ℤ) ^ (3 - I.card))) (U k)` using `differentiableOn_prod _ _ fun I _ => (h4 I).zpow (Or.inl fun y hy => hD0 k y hy I)`. Establish `h6 : DifferentiableOn ℂ (fun y => (T k.1 y ^ 3 * T k.2.1 (-y))⁻¹) (U k)` using `DifferentiableOn.fun_inv ((h1.fun_pow 3).fun_mul h2) fun y (hy : y ∈ U k) => mul_ne_zero (pow_ne_zero _ (hT0 _ _ hy.1)) (hT0 _ _ hy.2.1)`. Conclude with `((h3.fun_mul h5).fun_mul h6).congr fun y _ => div_eq_mul_inv _ _)`. Use the proof step `(fun k k' y hy hy' => by`. Establish `e1` using `hTT _ _ _ hy.1 hy'.1`.
+
+Establish `e2` using `hTT _ _ _ hy.2.1 hy'.2.1`. Establish `e3` using `hTT _ _ _ hy.2.2 hy'.2.2`. Establish `e4 : ∀ I, D k I y = c (k.1 I) (k'.1 I) (∑ a ∈ I, y a) ^ 3 * c (k.2.1 I) (k'.2.1 I) (∑ a ∈ I, (-y) a) * (c (k.2.2 I) (k'.2.2 I) (∑ a ∈ I, ((2 : ℂ) • y) a))⁻¹ * D k' I y` using `fun I => by`. Rewrite using `[sneg, stwo, ← diag_prod c _ _ _ _ _ _ i₀ hone]`. Conclude with `hTT _ _ _ (hDm k y hy I) (hDm k' y hy' I)`.
+
+Establish `n1 : (∏ I : Finset (Fin 3), c (k.1 I) (k'.1 I) (∑ a ∈ I, y a) ^ ((-1 : ℤ) ^ (3 - I.card))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (hc0 _ _ _ (hy.1 I) (hy'.1 I))`. Establish `n2 : (∏ I : Finset (Fin 3), c (k.2.1 I) (k'.2.1 I) (∑ a ∈ I, (-y) a) ^ ((-1 : ℤ) ^ (3 - I.card))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (hc0 _ _ _ (hy.2.1 I) (hy'.2.1 I))`. Establish `n3 : (∏ I : Finset (Fin 3), c (k.2.2 I) (k'.2.2 I) (∑ a ∈ I, ((2 : ℂ) • y) a) ^ ((-1 : ℤ) ^ (3 - I.card))) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (hc0 _ _ _ (hy.2.2 I) (hy'.2.2 I))`. Establish `m1` using `hT0 _ _ hy'.1`. Establish `m2` using `hT0 _ _ hy'.2.1`.
+
+Establish `e5 : (∏ I : Finset (Fin 3), D k I y ^ ((-1 : ℤ) ^ (3 - I.card))) = (∏ I : Finset (Fin 3), c (k.1 I) (k'.1 I) (∑ a ∈ I, y a) ^ ((-1 : ℤ) ^ (3 - I.card))) ^ 3 * (∏ I : Finset (Fin 3), c (k.2.1 I) (k'.2.1 I) (∑ a ∈ I, (-y) a) ^ ((-1 : ℤ) ^ (3 - I.card))) * (∏ I : Finset (Fin 3), c ( …`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[e4 I, mul_zpow, mul_zpow, mul_zpow, _root_.inv_zpow, pow_three, pow_three, mul_zpow, mul_zpow]`. Express the relevant statement in the definitionally equal form `T k.2.2 ((2 : ℂ) • y) * _ / (T k.1 y ^ 3 * T k.2.1 (-y)) = T k'.2.2 ((2 : ℂ) • y) * _ / (T k'.1 y ^ 3 * T k'.2.1 (-y))`.
+
+Rewrite using `[e5, e1, e2, e3]`. Generalize the expression as in `(∏ I : Finset (Fin 3), c (k.1 I) (k'.1 I) (∑ a ∈ I, y a) ^ ((-1 : ℤ) ^ (3 - I.card))) = A at n1 ⊢`. Generalize the expression as in `(∏ I : Finset (Fin 3), c (k.2.1 I) (k'.2.1 I) (∑ a ∈ I, (-y) a) ^ ((-1 : ℤ) ^ (3 - I.card))) = B at n2 ⊢`. Generalize the expression as in `(∏ I : Finset (Fin 3), c (k.2.2 I) (k'.2.2 I) (∑ a ∈ I, ((2 : ℂ) • y) a) ^ ((-1 : ℤ) ^ (3 - I.card))) = C at n3 ⊢`. Use the proof step `field_simp)`.
+
+Use the proof step `(span_triples Λ hΛ)`. Use the proof step `(fun k y l hl hy => by`. Establish `hl1 : ∀ a, (-l) a ∈ Λ` using `fun a => Λ.neg_mem (hl a)`. Establish `hl2 : ∀ a, ((2 : ℂ) • l) a ∈ Λ` using `fun a => by`. Rewrite using `[Pi.smul_apply, two_smul]`.
+
+Conclude with `Λ.add_mem (hl a) (hl a)`. Establish `hs : ∀ (j : Finset (Fin 3) → ι) (y l : Fin 3 → Fin g → ℂ), (∀ a, l a ∈ Λ) → (∀ I : Finset (Fin 3), ∑ b ∈ I, y b ∈ W (j I)) → ∀ I : Finset (Fin 3), ∑ b ∈ I, (y + l) b ∈ W (j I)` using `fun j y l hl hy I => by`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Conclude with `(hWp _ _ _ (Λ.sum_mem fun b _ => hl b)).2 (hy I)`. Establish `hD : ∀ I, D k I (y + l) = D k I y` using `fun I => by`.
+
+Establish `hm : ∑ a ∈ I, l a ∈ Λ` using `Λ.sum_mem fun b _ => hl b`. Use `hTp (diagChart (k.1 I) (k.2.1 I) (k.2.2 I) i₀) ![∑ a ∈ I, y a, ∑ a ∈ I, y a, -∑ a ∈ I, y a] ![∑ a ∈ I, l a, ∑ a ∈ I, l a, -∑ a ∈ I, l a] (fun a => by fin_cases a` as an intermediate fact. Conclude with `hm`. Conclude with `hm`. Conclude with `Λ.neg_mem hm)`.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Use `congrArg (T _) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Apply the tactic sequence `fin_cases b <;> simp [Finset.sum_add_distrib, add_comm]`. Use `⟨⟨hs _ _ _ hl hy.1, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[neg_add]`. Conclude with `hs _ _ _ hl1 hy.2.1`. Rewrite using `[smul_add]`. Conclude with `hs _ _ _ hl2 hy.2.2`. Simplify using `only [R, hD]`.
+
+Rewrite using `[neg_add, smul_add, hTp _ _ _ hl, hTp _ _ _ hl1, hTp _ _ _ hl2])`. Use the proof step `(fun _ => i₀, fun _ => i₀, fun _ => i₀) (fun _ => i₀, fun _ => i₀, fun _ => i₀) x 0`. Use the proof step `⟨hx, hx', hx''⟩`. Use the proof step `⟨fun I => by simpa using h0, fun I => by simpa using h0, fun I => by simpa using h0⟩`. Establish `m0 : T (fun _ => i₀) 0 ≠ 0` using `hT0 _ _ fun I => by simpa using h0`.
+
+Establish `m1` using `hT0 (fun _ => i₀) _ hx`. Establish `m2` using `hT0 (fun _ => i₀) _ hx'`. Establish `hz : (![0, 0, -0] : Fin 3 → Fin g → ℂ) = 0`. Apply the tactic sequence `funext b; fin_cases b <;> simp`. Establish `hp` using `prod_alt_erase 0 (fun _ => T (fun _ => i₀) 0) fun _ => m0`.
+
+Simplify using `only [R, D, diagChart_self, smul_zero, Pi.zero_apply, Finset.sum_const_zero, hz, hp] at key`. Rewrite `key` using `[neg_zero, div_eq_div_iff (mul_ne_zero (pow_ne_zero _ m1) m2) (mul_ne_zero (pow_ne_zero _ m0) m0)]`. Use `mul_right_cancel₀ m0 ?_` and prove the remaining obligations. Take the linear combination `key`.
+-/
 theorem doubling (x : Fin 3 → Fin g → ℂ)
     (hx : ∀ I : Finset (Fin 3), ∑ b ∈ I, x b ∈ W i₀)
     (hx' : ∀ I : Finset (Fin 3), ∑ b ∈ I, (-x) b ∈ W i₀)
@@ -383,6 +494,13 @@ end Main
 
 end CubeFace
 
+/- English proof (translation)
+Introduce `g ι W c hW hcov _ hc0 hcc T hT hT0 hTT Λ _ hΛ hWp _ hTp i₀ h0 F hF`. Substitute `hF` using the available equality. Establish `hO` using `CubeFace.isOpen_sums W hW (fun _ => i₀)`. Establish `hn : ∀ᶠ x in 𝓝 (0 : Fin 3 → Fin g → ℂ), ∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W i₀` using `hO.mem_nhds fun I => by simpa using h0`. Establish `hn1 : ∀ᶠ x in 𝓝 (0 : Fin 3 → Fin g → ℂ), ∀ I : Finset (Fin 3), ∑ a ∈ I, (-x) a ∈ W i₀` using `(hO.preimage continuous_neg).mem_nhds fun I => by simpa using h0`.
+
+Establish `hn2 : ∀ᶠ x in 𝓝 (0 : Fin 3 → Fin g → ℂ), ∀ I : Finset (Fin 3), ∑ a ∈ I, ((2 : ℂ) • x) a ∈ W i₀` using `(hO.preimage (continuous_const_smul (2 : ℂ))).mem_nhds fun I => by simpa using h0`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hn] with x hx hxa`. Conclude with `CubeFace.face W c hW hcov hc0 T hT hTT Λ hΛ hWp hTp i₀ h0 a x hx hxa`. Use `filter_upwards [hn, hn1, hn2] with x hx hx1 hx2`.
+
+Conclude with `CubeFace.doubling W c hW hcov hc0 hcc T hT hT0 hTT Λ hΛ hWp hTp i₀ h0 x hx hx1 hx2`.
+-/
 theorem cube_section_faces_and_doubling : (∀ (g : ℕ) {ι : Type} (W : ι → Set (Fin g → ℂ)) (c : ι → ι → (Fin g → ℂ) → ℂ), (∀ i, IsOpen (W i)) → (∀ z, ∃ i, z ∈ W i) → (∀ i j, DifferentiableOn ℂ (c i j) (W i ∩ W j)) → (∀ i j z, z ∈ W i → z ∈ W j → c i j z ≠ 0) → (∀ i j k z, z ∈ W i → z ∈ W j → z ∈ W k → c i j z * c j k z = c i k z) → ∀ (T : (Finset (Fin 3) → ι) → (Fin 3 → Fin g → ℂ) → ℂ), (∀ j, DifferentiableOn ℂ (T j) {x | (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I))}) → (∀ j x, (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)) → T j x ≠ 0) → (∀ j j' x, (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j I)) → (∀ I : Finset (Fin 3), ∑ a ∈ I, x a ∈ W (j' I)) → T j x = (∏ I : Finset (Fin 3), c (j I) (j' I) (∑ a ∈ I, x a) ^ ((-1 : ℤ) ^ (3 - I.card))) * T j' x) → ∀ (Λ : Submodule ℤ (Fin g → ℂ)), DiscreteTopology Λ → Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤ → (∀ i z, ∀ l ∈ Λ, z + l ∈ W i ↔ z ∈ W i) → (∀ i j z, ∀ l ∈ Λ, c i j (z + l) = c i j z) → (∀ j x (l : Fin 3 → Fin g → ℂ), (∀ a, l a ∈ Λ) → T j (x + l) = T j x) → ∀ (i₀ : ι), 0 ∈ W i₀ → ∀ F : (Fin 3 → Fin g → ℂ) → ℂ, F = T (fun _ => i₀) → (∀ a : Fin 3, ∀ᶠ x in 𝓝 (0 : Fin 3 → Fin g → ℂ), x a = 0 → F x = F 0) ∧ (∀ᶠ x in 𝓝 (0 : Fin 3 → Fin g → ℂ), F ((2 : ℂ) • x) * (∏ I : Finset (Fin 3), F ![∑ a ∈ I, x a, ∑ a ∈ I, x a, -∑ a ∈ I, x a] ^ ((-1 : ℤ) ^ (3 - I.card))) * F 0 ^ 3 = F x ^ 3 * F (-x))) := by
   intro g ι W c hW hcov _ hc0 hcc T hT hT0 hTT Λ _ hΛ hWp _ hTp i₀ h0 F hF
   subst hF

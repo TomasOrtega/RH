@@ -12,6 +12,27 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
+/- English proof (translation)
+Introduce `K _ _ n m _ r`. Establish `hfree : ∀ (u v : Pl K), u ≠ v → ∀ (y : Gw n v) (x : AdelicGLn.FiniteAdelicGL K n), finAt u (finEmb K n (AdelicGLn.localEmbedding v y * x)) = finAt u (finEmb K n x)`. Introduce `u v huv y x`. Rewrite using `[map_mul, finAt_mul, (UpperTheory.ConvolutionTheory.Tf.locEmb K n v).2.2.1 u huv, one_mul]`. Proceed by induction on `r with`.
+
+Consider the case `zero`. Introduce `w hw _ _ mw _ J hJ ψ hψ R hR e₀ he₀`. Use `⟨e₀, fun x => ?_, ?_, fun H _ _ _ π => ?_⟩` and prove the remaining obligations. Simplify using `[he₀]`. Simplify using the standard rewrite rules.
+
+Simplify using `only [List.ofFn_zero, List.prod_nil]`. Both sides reduce to the same expression. Consider the case `succ r ih`. Introduce `w hw inst1 inst2 mw inst3 J hJ ψ hψ R hR e₀ he₀`. Establish `hne : ∀ i : Fin r, w i.succ ≠ w 0` using `fun i h => Fin.succ_ne_zero i (hw h)`.
+
+Set `R' : AdelicGLn.FiniteAdelicGL K n → ℂ` to `fun x => R x * (J 0 : Set (Gw n (w 0))).indicator 1 (finAt (w 0) (finEmb K n x))`. Establish `hR' : ∀ (i : Fin r) (y : Gw n (w i.succ)) (x : AdelicGLn.FiniteAdelicGL K n), R' (AdelicGLn.localEmbedding (w i.succ) y * x) = R' x`. Introduce `i y x`. Simplify using `only [R']`. Rewrite using `[hR i.succ y x, hfree _ _ (hne i).symm]`.
+
+Establish `he₀' : ∀ x, e₀ x = R' x * ∏ i : Fin r, (J i.succ : Set (Gw n (w i.succ))).indicator 1 (finAt (w i.succ) (finEmb K n x))`. Introduce `x`. Rewrite using `[he₀, Fin.prod_univ_succ]`. Simplify using `only [R']`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨g', hg', hgi', hgo'⟩` from `@ih (fun i => w i.succ) (hw.comp (Fin.succ_injective r)) (fun i => inst1 i.succ) (fun i => inst2 i.succ) (fun i => mw i.succ) (fun i => inst3 i.succ) (fun i => J i.succ) (fun i => hJ i.succ) (fun i => ψ i.succ) (fun i => hψ i.succ) R' hR' e₀ he₀'`. Set `R'' : AdelicGLn.FiniteAdelicGL K n → ℂ` to `fun x => (∏ i : Fin r, ((mw i.succ).real (J i.succ) : ℂ)) * (R x * ∏ i : Fin r, ψ i.succ (finAt (w i.succ) (finEmb K n x)))`. Establish `hR'' : ∀ (y : Gw n (w 0)) (x : AdelicGLn.FiniteAdelicGL K n), R'' (AdelicGLn.localEmbedding (w 0) y * x) = R'' x`. Introduce `y x`. Simplify using `only [R'']`.
+
+Rewrite using `[hR 0 y x]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [hfree _ _ (hne i)]`. Establish `hg's : ∀ x, g' x = R'' x * (J 0 : Set (Gw n (w 0))).indicator 1 (finAt (w 0) (finEmb K n x))`. Introduce `x`.
+
+Rewrite using `[hg' x]`. Simplify using `only [R', R'']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨g, hg, hgi, hgo⟩` from `UpperTheory.exists_testFunction_integral_local_factor K n m (w 0) (mw 0) (J 0) (hJ 0) (ψ 0) (hψ 0) R'' hR'' g' hg's`. Use `⟨g, fun x => ?_, ?_, fun H _ _ _ π => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hg x, Fin.prod_univ_succ, Fin.prod_univ_succ]`. Simplify using `only [R'']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hgi, hgi', Fin.prod_univ_succ]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hgo H π, hgo' H π, List.ofFn_succ, List.prod_cons, ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_assoc]`.
+-/
 theorem UpperTheory.exists_testFunction_integral_prod_local_factors :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (r : ℕ) (w : Fin r → Pl K),
           Function.Injective w → ∀ [∀ i, MeasurableSpace (Gw n (w i))] [∀ i, BorelSpace (Gw n (w i))] (mw : ∀ i, Measure (Gw n (w i))) [∀ i, (mw i).IsHaarMeasure]

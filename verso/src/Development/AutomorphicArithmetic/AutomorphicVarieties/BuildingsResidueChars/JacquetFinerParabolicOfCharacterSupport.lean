@@ -10,6 +10,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel
 
+/- English proof (translation)
+Introduce `hG hZ k _ _ _ _ N V _ _ π s hs hs1 r d e j hj hJ`. Establish `hπ : IsSmooth π`. Take `⟨h, x, -, hi, hc, e, hsub⟩` from `hs`. Conclude with `hsub.isSmooth (isSmooth_parInd _ _)`. Establish `hJs : IsSmooth (jac e π)` using `isSmooth_jac e hπ`.
+
+Take `⟨Y, _, _, τ, hτ, hτs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (jac e π) hJ`. Establish `hτsm : IsSmooth τ` using `hτs.isSmooth hJs`. Establish `hy : ∀ j, ∃ y : IrrRep (GL (Fin (d j)) k), IsSubquotient y.ρ (τ.comp (MonoidHom.mulSingle (fun j => GL (Fin (d j)) k) j) : Representation ℂ (GL (Fin (d j)) k) Y)`. Introduce `j`. Take `⟨X, _, _, υ, hυ, hυs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (τ.comp (MonoidHom.mulSingle (fun j => GL (Fin (d j)) k) j)) (GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτ)`.
+
+Conclude with `⟨⟨X, υ, hυs.isSmooth (isSmooth_comp hτsm _ (continuous_mulSingle (A := fun j => GL (Fin (d j)) k) j)), hυ⟩, hυs⟩`. Use `choose y hy using hy`. Take `⟨u, hu, rfl⟩` from `SupportUnique.exists_sum_of_jac hG hZ hs e hτ hτs y hy`. Establish `hnc : ¬ IsCuspidal (IrrGL.of (y j).ρ (y j).smooth (y j).irr).rep`. Introduce `hc`.
+
+Establish `hx : (IrrGL.of (y j).ρ (y j).smooth (y j).irr).IsCusp` using `⟨show 0 < d j by omega, hc⟩`. Establish `h1` using `SupportUnique.eq_singleton_of_isCusp hx ((hu j).of_equiv (IrrGL.equivOf _ _ _))`. Establish `h2 : IrrGL.of (y j).ρ (y j).smooth (y j).irr ∈ ∑ i, u i` using `Multiset.mem_sum.2 ⟨j, Finset.mem_univ _, h1 ▸ Multiset.mem_singleton_self _⟩`. Establish `h3 : d j = 1` using `hs1 _ h2`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨r', d', e', hU, hJ'⟩ : ∃ (r' : ℕ) (d' : Fin r' → ℕ) (e' : (Σ a, Fin (d' a)) ≃ Fin (d j)), unipRad k e' ≠ ⊥ ∧ ¬ Subsingleton (Jacquet (IrrGL.of (y j).ρ (y j).smooth (y j).irr).rep (unipRad k e'))` from `by by_contra! hn`. Conclude with `hnc ⟨(IrrGL.of (y j).ρ (y j).smooth (y j).irr).2.rep.smooth, hn⟩`. Take `⟨t, c, f, hf⟩` from `UpperTheory.exists_refinement_block_order N r r' d e j d' e'`. Use `⟨t, c, f, ?_, fun p q h => (hf p q).2 (Or.inl h), ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`.
+
+Establish `h0` using `UpperTheory.weilDeligne_unipotent_monodromy k N V π r r' d e j d' e' t c f (fun p q => (hf p q).1) (not_nontrivial_iff_subsingleton.1 hn)`. Set `φ` to `(IrrGL.equivOf (y j).ρ (y j).smooth (y j).irr).symm`. Establish `h1 : IsSubquotient (IrrGL.of (y j).ρ (y j).smooth (y j).irr).rep (y j).ρ` using `.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective`. Establish `h2` using `(h1.trans (hy j)).trans (SupportUnique.isSubquotient_comp hτs (MonoidHom.mulSingle (fun j => GL (Fin (d j)) k) j))`. Take `⟨S, g, hg⟩` from `GlobalTheory.JacquetExact.isSubquotient_jac e' (isSmooth_comp hJs _ (continuous_mulSingle (A := fun j => GL (Fin (d j)) k) j)) h2`.
+
+Use `haveI : Subsingleton S.toSubmodule := ⟨fun a b => Subtype.ext (h0.elim _ _)⟩`. Conclude with `hJ' (Function.Surjective.subsingleton hg)`. Take `⟨p, q, hpq⟩` from `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.1 hU`. Use `⟨e ⟨j, p⟩, e ⟨j, q⟩, (hf _ _).2 (Or.inr ⟨p, q, rfl, rfl, hpq⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[blk_apply, blk_apply]`.
+
+Conclude with `lt_irrefl _`.
+-/
 theorem UpperTheory.jacquet_finer_parabolic_of_character_support :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
     (s : Multiset (IrrGL k)), HasSupport π s → (∀ y ∈ s, y.1 = 1) →

@@ -27,6 +27,15 @@ open MvPolynomial GlobalTheory.Capelli GlobalTheory.Harm GlobalTheory.Harm.Highe
 
 namespace GlobalTheory.CompactHarm
 
+/- English proof (translation)
+Establish `hac` using `ha c`. Use `split_ifs with h`. Rewrite using `[mixedWeight_apply]`. Simplify using `only [c.2, dif_pos, Fin.eta]`. Use `split_ifs with h2`.
+
+Establish `hb' : (0 : ℤ) ≤ (b ⟨N - 1 - c, h2⟩ : ℤ)` using `by positivity`. Establish `h4 : (c : ℕ) < N` using `h`. Distinguish the cases in `hcp : (c : ℕ) < p`. Establish `hbc` using `hb ⟨N - 1 - c, h2⟩`. Establish `: b ⟨N - 1 - c, h2⟩ = 0` using `by simp only at hbc; omega`.
+
+Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers. Establish `: a c = 0` using `by omega`. Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fst_eq_of_mixedWeight {k l p q : ℕ} (N : ℕ) (a : Fin k → ℕ) (b : Fin l → ℕ)
     (hpq : p + q ≤ N) (ha : ∀ c, 0 < a c ↔ (c : ℕ) < p) (hb : ∀ d, 0 < b d ↔ (d : ℕ) < q)
     (c : Fin k) :
@@ -47,6 +56,15 @@ theorem fst_eq_of_mixedWeight {k l p q : ℕ} (N : ℕ) (a : Fin k → ℕ) (b :
     · omega
   · omega
 
+/- English proof (translation)
+Establish `hbd` using `hb d`. Use `split_ifs with h`. Rewrite using `[mixedWeight_apply]`. Establish `e : N - 1 - (N - 1 - (d : ℕ)) = d` using `by omega`. Establish `hd : N - 1 - (N - 1 - (d : ℕ)) < l` using `by omega`.
+
+Rewrite using `[dif_pos hd]`. Establish `hbe : b ⟨N - 1 - (N - 1 - (d : ℕ)), hd⟩ = b d` using `congrArg b (Fin.ext e)`. Simplify using `only [hbe]`. Use `split_ifs with h1`. Establish `ha' : (0 : ℤ) ≤ (a ⟨N - 1 - d, h1⟩ : ℤ)` using `by positivity`.
+
+Establish `hac` using `ha ⟨N - 1 - d, h1⟩`. Distinguish the cases in `hdq : (d : ℕ) < q`. Establish `: a ⟨N - 1 - d, h1⟩ = 0` using `by simp only at hac; omega`. Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `: b d = 0` using `by omega`. Rewrite using `[this]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+-/
 theorem snd_eq_of_mixedWeight {k l p q : ℕ} (N : ℕ) (a : Fin k → ℕ) (b : Fin l → ℕ)
     (hpq : p + q ≤ N) (ha : ∀ c, 0 < a c ↔ (c : ℕ) < p) (hb : ∀ d, 0 < b d ↔ (d : ℕ) < q)
     (d : Fin l) :
@@ -70,6 +88,21 @@ theorem snd_eq_of_mixedWeight {k l p q : ℕ} (N : ℕ) (a : Fin k → ℕ) (b :
     · omega
   · omega
 
+/- English proof (translation)
+Introduce `σ k l N z y hz hy hzy hs κ`. Distinguish the cases in `hex : ∃ α β f, f ≠ 0 ∧ JointTop z y κ α β f`. Take `⟨α₀, β₀, f₀, hf0, hJ0⟩` from `hex`. Take `⟨a, b, p, q, hpq, hp, hq, hpa, hqb, hκ, rfl, rfl, hhom⟩` from `weights_of_jointTop z hz y hy hzy hs κ α₀ β₀ hf0 hJ0`. Establish `hbij : Function.Bijective (Sum.elim z y)`.
+
+Use `⟨hz.sumElim hy hzy, fun s => ?_⟩` and prove the remaining obligations. Break down `hs s with ⟨u, rfl⟩ | ⟨u, rfl⟩` into its components or cases. Conclude with `⟨.inl u, rfl⟩`. Conclude with `⟨.inr u, rfl⟩`. Establish `: Finite σ` using `Finite.of_surjective _ hbij.2`.
+
+Use `finite_homog (σ := σ) (∑ c, a c + ∑ d, b d)` as an intermediate fact. Establish `ha : Antitone a` using `fun i j hij => by`. Use `highest_weight_antitone (rowOp ℂ z) (rowOp_lie z hz) (homogeneousSubmodule σ ℂ _) (fun i j w hw => by rw [rowOp_eq_colOp]; exact colOp_homog _ _ _ hw) f₀ hhom hf0 (fun c => a c) hJ0.2.2.1 (fun c => by simpa using hJ0.2.2.2.1 c) hij` as an intermediate fact. Conclude with `Int.ofNat_le.1 this`. Establish `hb : Antitone b` using `fun i j hij => by`.
+
+Use `highest_weight_antitone (rowOp ℂ y) (rowOp_lie y hy) (homogeneousSubmodule σ ℂ _) (fun i j w hw => by rw [rowOp_eq_colOp]; exact colOp_homog _ _ _ hw) f₀ hhom hf0 (fun c => b c) hJ0.2.2.2.2.1 (fun c => by simpa using hJ0.2.2.2.2.2.1 c) hij` as an intermediate fact. Conclude with `Int.ofNat_le.1 this`. Take `⟨P₀, -, -, hu⟩` from `exists_unique_jointTop z hz y hy hzy hs hpq hp hq a b ha hb (fun c hc => by have := hpa c; omega) (fun d hd => by have := hqb d; omega)`. Substitute `hκ` using the available equality. Use `⟨P₀, fun α β f hJ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hf : f = 0`. Conclude with `⟨0, by simp [hf]⟩`. Take `⟨a', b', p', q', hpq', -, -, hpa', hqb', hκ', rfl, rfl, -⟩` from `weights_of_jointTop z hz y hy hzy hs _ α β hf hJ`. Establish `hw : mixedWeight N a b = mixedWeight N a' b'`. Use function extensionality and compare the values at `fun i => by exact_mod_cast congrFun hκ' i`.
+
+Establish `e1 : a' = a` using `funext fun c => by`. Rewrite using `[fst_eq_of_mixedWeight N a' b' hpq' hpa' hqb' c, fst_eq_of_mixedWeight N a b hpq hpa hqb c, hw]`. Establish `e2 : b' = b` using `funext fun d => by`. Rewrite using `[snd_eq_of_mixedWeight N a' b' hpq' hpa' hqb' d, snd_eq_of_mixedWeight N a b hpq hpa hqb d, hw]`. Substitute `e1 e2` using the available equality.
+
+Conclude with `hu f hJ`. Use `⟨0, fun α β f hJ => ⟨0, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hf`. Conclude with `hex ⟨α, β, f, by simpa using hf, hJ⟩`.
+-/
 theorem jointTop_line : ∀ {σ : Type} {k l N : ℕ} (z : Fin k × Fin N → σ) (y : Fin l × Fin N → σ),
     Function.Injective z → Function.Injective y → (∀ u w, z u ≠ y w) →
     (∀ s, (∃ u, z u = s) ∨ ∃ w, y w = s) → ∀ κ : Fin N → ℂ, ∃ Q₀ : MvPolynomial σ ℂ,

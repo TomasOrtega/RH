@@ -5,6 +5,13 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal Re
 
 namespace GlobalTheory.NLocPlace
 
+/- English proof (translation)
+Establish `hv0 : (D.plEq w).valuation D.what₂.LL (a : D.what₂.LL) ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hle : (D.plEq w).valuation D.what₂.LL (algebraMap (𝓞 D.what₂.LL) D.what₂.LL a) ≤ 1` using `(D.plEq w).valuation_le_one a`. Establish `hmem` using `(D.plEq w).valuation_lt_one_iff_mem (K := D.what₂.LL) a`. Express the relevant statement in the definitionally equal form `(D.plEq w).valuation D.what₂.LL (a : D.what₂.LL) ≤ 1 at hle`. Express the relevant statement in the definitionally equal form `(D.plEq w).valuation D.what₂.LL (a : D.what₂.LL) < 1 ↔ _ at hmem`.
+
+Unfold `vAdd`. Rewrite `hle` using `[← WithZero.exp_log hv0, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `hmem` using `[← WithZero.exp_log hv0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmem]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem vAdd_int (D : D7) (w : D.what₂.places.Pl) (a : 𝓞 D.what₂.LL) (ha : (a : D.what₂.LL) ≠ 0) :
     0 ≤ vAdd (D.plEq w) (a : D.what₂.LL) ∧ (a ∈ (D.plEq w).asIdeal ↔ 0 < vAdd (D.plEq w) (a : D.what₂.LL)) := by
   have hv0 : (D.plEq w).valuation D.what₂.LL (a : D.what₂.LL) ≠ 0 := (Valuation.ne_zero_iff _).2 ha
@@ -24,6 +31,31 @@ end GlobalTheory.NLocPlace
 
 namespace GlobalTheory.NLocPlace
 
+/- English proof (translation)
+Introduce `D M B j w`. Establish `hinj : Function.Injective (algebraMap (B.Oc j w) (FractionRing (B.Oc j w)))` using `IsFractionRing.injective _ _`. Establish `hval : ∀ x : D.what₂.LL, x ≠ 0 → D.what₂.places.val w x = ((vAdd (D.plEq w) x : ℤ) : WithTop ℤ)` using `fun x hx => D.val_eq w x hx`. Establish `hsum : ∀ x : D.what₂.LL, x ≠ 0 → vAdd (D.plEq w) x + vAdd (D.plEq w) x⁻¹ = 0`. Introduce `x hx`.
+
+Establish `h1 : D.what₂.places.val w (x * x⁻¹) = 0` using `by rw [mul_inv_cancel₀ hx, AddValuation.map_one]`. Rewrite `h1` using `[AddValuation.map_mul, hval x hx, hval x⁻¹ (inv_ne_zero hx), ← WithTop.coe_add]`. Conclude with `h1` after adjusting the coercions. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`.
+
+Apply `(B.ec_w j w _).1` to reduce the goal to its premises. Distinguish the cases in `ha : (a : D.what₂.LL) = 0`. Rewrite using `[ha, AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[hval _ ha]`.
+
+Conclude with `(vAdd_int D w a ha).1` after adjusting the coercions. Establish `hp0 : (((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) : D.what₂.LL) ≠ 0` using `by push_cast; exact Nat.cast_ne_zero.2 (D.what₂.places.resChar_prime w).ne_zero`. Rewrite using `[(vAdd_int D w _ hp0).2]`. Establish `h1` using `D.what₂.places.val_resChar w`. Establish `hc : (((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) : D.what₂.LL) = ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)` using `by push_cast; rfl`.
+
+Rewrite `h1` using `[← hc, hval _ hp0]`. Establish `h2 : vAdd (D.plEq w) (((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) : D.what₂.LL) = (D.what₂.places.ramIdx w : ℤ)` using `WithTop.coe_injective h1`. Rewrite using `[h2]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions. Introduce `a z hz`.
+
+Distinguish the cases in `ha : (a : D.what₂.LL) = 0`. Establish `ha' : a = 0` using `by exact_mod_cast ha`. Establish `hz0 : z = 0` using `hinj (by rw [hz, ha, map_zero, map_zero])`. Substitute `ha' hz0` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hec : B.ec j w (a : D.what₂.LL) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `ha`. Take `⟨hnn, hiff⟩` from `vAdd_int D w a ha`. Establish `hs` using `hsum _ ha`.
+
+Rewrite using `[hiff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `hpos ⟨u, hu⟩`. Establish `h1 : algebraMap (B.Oc j w) (FractionRing (B.Oc j w)) (↑u⁻¹ : B.Oc j w) = B.ec j w (a : D.what₂.LL)⁻¹`. Rewrite using `[map_inv₀, ← hz, ← hu]`.
+
+Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2` using `(B.ec_w j w (a : D.what₂.LL)⁻¹).2 ⟨_, h1⟩`. Rewrite `h2` using `[hval _ (inv_ne_zero ha)]`. Establish `h3 : (0 : ℤ) ≤ vAdd (D.plEq w) (a : D.what₂.LL)⁻¹` using `by exact_mod_cast h2`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hnu`. Assume the negation of the conclusion as `hle`. Establish `h0 : vAdd (D.plEq w) (a : D.what₂.LL)⁻¹ = 0` using `by omega`. Establish `h2 : 0 ≤ D.what₂.places.val w (a : D.what₂.LL)⁻¹`.
+
+Rewrite using `[hval _ (inv_ne_zero ha), h0]`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `(B.ec_w j w _).1 h2`. Apply `hnu` to reduce the goal to its premises. Establish `hzy : z * y = 1` using `hinj (by rw [map_mul, map_one, hz, hy, ← map_mul, mul_inv_cancel₀ ha, map_one])`.
+
+Conclude with `⟨⟨z, y, hzy, by rw [mul_comm]; exact hzy⟩, rfl⟩`.
+-/
 theorem ec_int_resChar_unit : ∀ (D : D7) (M : MtFam D) (B : NLocBase D M) (j : ℕ) (w : D.what₂.places.Pl),
     (∀ a : 𝓞 D.what₂.LL, B.ec j w (a : D.what₂.LL) ∈ (algebraMap (B.Oc j w) (FractionRing (B.Oc j w))).range) ∧
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal ∧

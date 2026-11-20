@@ -9,6 +9,9 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleC
 open GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShellPiece.setIntegral_coset_eq_zero | exact GlobalTheory.ShellPiece.setIntegral_coset_eq_zero | (intros; apply GlobalTheory.ShellPiece.setIntegral_coset_eq_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.setIntegral_leftCoset_shellIntegrand_eq_zero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ), IsUnif ϖ → ∀ (ν : kˣ →* ℂˣ) (a : ℕ) (μ : Measure (GL (Fin a) k))
     [μ.IsHaarMeasure] (φ : Matrix (Fin a) (Fin a) k → ℂ) (M : ℤ), IsPeriodic ϖ M φ →

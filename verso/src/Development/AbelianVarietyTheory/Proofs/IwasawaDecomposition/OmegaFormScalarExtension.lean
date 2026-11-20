@@ -32,6 +32,21 @@ namespace GlobalTheory.OneMapRef.FrameConst
 
 variable {D : D7} {S T : HSp D} {r : ℕ}
 
+/- English proof (translation)
+Introduce `u hu`. Establish `hA` using `Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D`. Establish `key : ∀ b ∈ D.host.AA⁻¹, ∀ x ∈ Λ, b • x ∈ L'`. Introduce `b hb x hx`. Establish `hx'` using `(h' x).1 hx`.
+
+Use `clear hx`. Proceed by induction on `hx' using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, w, hw, rfl⟩` from `hv`. Establish `: b * a ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+
+Rewrite using `[← inv_mul_cancel₀ hA]`. Conclude with `FractionalIdeal.mul_mem_mul hb ha`. Take `⟨z, hz⟩` from `(FractionalIdeal.mem_one_iff _).1 this`. Rewrite using `[smul_smul, ← hz, algebraMap_smul]`. Conclude with `L'.smul_mem z hw`.
+
+Consider the case `zero => simp`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `neg v _ hv => rw [smul_neg]`. Conclude with `neg_mem hv`.
+
+Establish `h1 : (1 : D.host.E) ∈ D.host.AA⁻¹ * D.host.AA`. Rewrite using `[inv_mul_cancel₀ hA]`. Conclude with `FractionalIdeal.one_mem_one _`. Establish `: ∀ c ∈ D.host.AA⁻¹ * D.host.AA, c • u ∈ L'`. Introduce `c hc`.
+
+Use `FractionalIdeal.mul_induction_on hc (C := fun c => c • u ∈ L') ?_ ?_` and prove the remaining obligations. Introduce `b hb a ha`. Rewrite using `[mul_smul]`. Conclude with `key b hb _ ((h _).2 (AddSubgroup.subset_closure ⟨a, ha, u, hu, rfl⟩))`. Introduce `x y hx hy`.
+
+Rewrite using `[add_smul]`. Conclude with `add_mem hx hy`. Simplify using `using this 1 h1`.
+-/
 theorem le_of_isAA {k : ℕ} {Λ L L' : Lt D.host.E k} (h : GlobalTheory.Ker.IsAA Λ L) (h' : GlobalTheory.Ker.IsAA Λ L') : L ≤ L' := by
   intro u hu
   have hA := Formalism.L2.Pj.AA_ne_zero Formalism.IndefR.Fin.factPrincipalDatum D
@@ -62,18 +77,34 @@ theorem le_of_isAA {k : ℕ} {Λ L L' : Lt D.host.E k} (h : GlobalTheory.Ker.IsA
       rw [add_smul]; exact add_mem hx hy
   simpa using this 1 h1
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(finHom T (g * h)).1 = (finHom T g).1 * (finHom T h).1`. Rewrite using `[map_mul, Units.val_mul]`.
+-/
 theorem fmt_mul (g h : GA D T) : GlobalTheory.Ker.fmt T (g * h) = GlobalTheory.Ker.fmt T g * GlobalTheory.Ker.fmt T h := by
   change (finHom T (g * h)).1 = (finHom T g).1 * (finHom T h).1
   rw [map_mul, Units.val_mul]
 
+/- English proof (translation)
+The claim follows from `congrArg Units.val (show finHom T a = 1 from ha)`.
+-/
 theorem fmt_real {a : GA D T} (ha : a ∈ GinfC T) : GlobalTheory.Ker.fmt T a = 1 :=
   congrArg Units.val (show finHom T a = 1 from ha)
 
+/- English proof (translation)
+Introduce `u`. Rewrite using `[fmt_real (one_mem _)]`. Simplify using `only [Matrix.one_mulVec, exists_eq_right']`.
+-/
 theorem isMov_one (L : Lt D.host.E T.rank) : GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt T 1) L L := by
   intro u
   rw [fmt_real (one_mem _)]
   simp only [Matrix.one_mulVec, exists_eq_right']
 
+/- English proof (translation)
+Establish `e1 : GlobalTheory.Ker.fmt T g⁻¹ * GlobalTheory.Ker.fmt T g = 1` using `by rw [← fmt_mul, inv_mul_cancel, fmt_real (one_mem _)]`. Introduce `u`. Rewrite using `[_root_.mul_inv_rev, fmt_mul, fmt_mul, fmt_real (inv_mem ha), mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+
+Take `⟨u₀, h0, e⟩` from `(h' _).1 ((h _).2 ⟨u, hu, rfl⟩)`. Use `⟨u₀, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← e, Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Introduce and unpack `⟨u₀, h0, rfl⟩`. Take `⟨u₁, h1, e⟩` from `(h _).1 ((h' _).2 ⟨u₀, h0, rfl⟩)`.
+
+Rewrite using `[← Matrix.mulVec_mulVec, e, Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Conclude with `h1`.
+-/
 theorem isMov_quot {g g' a : GA D T} (ha : a ∈ GinfC T) {L L' : Lt D.host.E T.rank}
     (h : GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt T g) L L') (h' : GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt T g') L L') :
     GlobalTheory.Ker.IsMov (GlobalTheory.Ker.fmt T ((a * g)⁻¹ * g')) L L := by
@@ -90,6 +121,13 @@ theorem isMov_quot {g g' a : GA D T} (ha : a ∈ GinfC T) {L L' : Lt D.host.E T.
     rw [← Matrix.mulVec_mulVec, e, Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]
     exact h1
 
+/- English proof (translation)
+Take `⟨ga, hga, hδ'⟩` from `id h1`. Establish `hm : Formalism.L2.Theta.mt T δ = (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map (incA D)` using `(congrArg Units.val hδ').symm`. Establish `h3 : (Formalism.L2.Theta.mt T δ).map (infPart D) = 1` using `congrArg Units.val (show infHom T δ = 1 from h2)`. Establish `ρ : D.what₂.Tau` using `D.eTau.symm 1`. Establish `h4 : (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E) = 1`.
+
+Use `Matrix.ext fun i j => (tauE D ρ).injective ?_` and prove the remaining obligations. Establish `h5` using `congrArg (θ ρ) (congrFun (congrFun h3 i) j)`. Rewrite `h5` using `[hm]`. Use `((hθ ρ).1 _).symm.trans (h5.trans ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+
+Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.mt T δ = 1`. Rewrite using `[hm, h4, Matrix.map_one _ (map_zero _) (map_one _)]`.
+-/
 theorem eq_one_of_rat {θ : InfFam D} (hθ : IsInfFam θ) {δ : GA D T} (h1 : δ ∈ GQ T) (h2 : δ ∈ GfC T) : δ = 1 := by
   obtain ⟨ga, hga, hδ'⟩ := id h1
   have hm : Formalism.L2.Theta.mt T δ = (ga : Matrix (Fin T.rank) (Fin T.rank) D.host.E).map (incA D) :=
@@ -106,6 +144,11 @@ theorem eq_one_of_rat {θ : InfFam D} (hθ : IsInfFam θ) {δ : GA D T} (h1 : δ
   change Formalism.L2.Theta.mt T δ = 1
   rw [hm, h4, Matrix.map_one _ (map_zero _) (map_one _)]
 
+/- English proof (translation)
+Substitute `hr` using the available equality. Use function extensionality and compare the values at `ρ`. Use `congrFun h (eT ρ)` as an intermediate fact. Unfold `frOf at this`. Rewrite `this` using `[Equiv.symm_apply_apply]`.
+
+Conclude with `this`.
+-/
 theorem frOf_injective (hr : T.rank = r) {X : Data D.host.E r} (eT : D.what₂.Tau ≃ X.Ψ) {Z Z' : Fam T}
     (h : frOf hr eT Z = frOf hr eT Z') : Z = Z' := by
   subst hr
@@ -115,18 +158,31 @@ theorem frOf_injective (hr : T.rank = r) {X : Data D.host.E r} (eT : D.what₂.T
   rw [Equiv.symm_apply_apply] at this
   exact this
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.Ker.thR, thA, SW.thS, show ∀ y, (a • φ) y = a * φ y from fun _ => rfl, _root_.mul_assoc, tsum_mul_left]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem thR_smul {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : Data E r)
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (a : ℂ) (φ : TF n g) (x : Frame X.Ψ r)
     (p : GlobalTheory.Ker.WR X n) : GlobalTheory.Ker.thR X bas idx (a • φ) x p = a * GlobalTheory.Ker.thR X bas idx φ x p := by
   simp only [GlobalTheory.Ker.thR, thA, SW.thS, show ∀ y, (a • φ) y = a * φ y from fun _ => rfl, _root_.mul_assoc, tsum_mul_left]
   ring
 
+/- English proof (translation)
+Use `congrArg (algebraMap (𝓞 E) E) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` as an intermediate fact. Rewrite `this` using `[map_add, map_one]`. Conclude with `(congrArg _ (H.bar_eq _).symm).trans this`.
+-/
 theorem hostHalfRoot_add_conj_eq_one {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     (H.w0 : E) + cc (H.w0 : E) = 1 := by
   have := congrArg (algebraMap (𝓞 E) E) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)
   rw [map_add, map_one] at this
   exact (congrArg _ (H.bar_eq _).symm).trans this
 
+/- English proof (translation)
+Take `⟨k, hk⟩ : ∃ k, H.d = 16 * k + 7` from `⟨H.d / 16, by have := H.d_mod; omega⟩`. Establish `h1` using `hostHalfRoot_add_conj_eq_one H`. Establish `h2 : 2 * (H.w0 : E) = 1 + (H.rt : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.two_weight_eq_one_add_root` as an intermediate fact. Rewrite `this` using `[map_mul, map_add, map_one, map_ofNat]`. Then use the resulting hypothesis.
+
+Establish `h3 : (H.rt : E) ^ 2 = -(16 * k + 7)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast, hk]`. Conclude with `this.trans (by push_cast; rfl)`. Use `⟨((2 * k + 1 : ℕ) : E), isIntegral_natCast _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[eq_sub_of_add_eq' h1]`. Use `push_cast`. Take the linear combination `(-(1 / 4 : E)) * h3 - (1 / 4 : E) * (2 * (H.w0 : E) - 1 + (H.rt : E)) * h2`.
+-/
 theorem isRelTraceOneIdempotentModTwo_hostElement {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Geo.Tor.Host E) :
     GlobalTheory.Ker.IdemTwo (H.w0 : E) := by
   obtain ⟨k, hk⟩ : ∃ k, H.d = 16 * k + 7 := ⟨H.d / 16, by have := H.d_mod; omega⟩
@@ -143,22 +199,42 @@ theorem isRelTraceOneIdempotentModTwo_hostElement {E : Type} [Field E] [NumberFi
   push_cast
   linear_combination (-(1 / 4 : E)) * h3 - (1 / 4 : E) * (2 * (H.w0 : E) - 1 + (H.rt : E)) * h2
 
+/- English proof (translation)
+Establish `: finPart D (1 : AE D) ∈ intAE D`. Rewrite using `[map_one]`. Conclude with `AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩`. Conclude with `⟨map_one _, this, this⟩`.
+-/
 theorem finUnit_one : FinUnit (1 : (AE D)ˣ) := by
   have : finPart D (1 : AE D) ∈ intAE D := by
     rw [map_one]
     exact AddSubgroup.subset_closure ⟨1, fun v => by rw [map_one]; exact one_mem _, 1, rfl⟩
   exact ⟨map_one _, this, this⟩
 
+/- English proof (translation)
+Unfold `IsDetRoot`. Simplify using the standard rewrite rules.
+-/
 theorem isDetRoot_one : IsDetRoot S 1 1 := by
   unfold IsDetRoot
   simp
 
 open scoped ComplexOrder in
+/- English proof (translation)
+Establish `: gramAt D S τ = 1` using `by rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[this]`. Conclude with `⟨Matrix.mul_one _, by simp, by rw [Matrix.mul_one]; exact Matrix.PosDef.one⟩`.
+-/
 theorem isCartanInv_one (h : S.gram = 1) (τ : D.what₂.Tau) : IsCartanInv (gramAt D S τ) 1 := by
   have : gramAt D S τ = 1 := by rw [gramAt, h, Matrix.map_one _ (map_zero _) (map_one _)]
   rw [this]
   exact ⟨Matrix.mul_one _, by simp, by rw [Matrix.mul_one]; exact Matrix.PosDef.one⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, hc, hF⟩` from `oneg_frames D S T r g hr ψ θ X eT bas idx hS Z₀ hZ`. Establish `h0` using `(hF g₀).1`. Take `⟨a, ha, hae⟩` from `((oneg_frames D S T r g hr ψ θ X eT bas idx hS _ h0).2.2.2.2 1).2.2.2.2.2 _ (hF g₁).1`. Establish `hk : (a * g₀)⁻¹ * g₁ ∈ GfC T`. Apply `(hF _).2.2.2.2.1` to reduce the goal to its premises.
+
+Rewrite using `[(hF g₁).2.2.1, hae, ← (hF g₀).2.2.1, ← (hF _).2.2.1, inv_mul_cancel]`. Conclude with `(hF 1).2.2.2.1 (one_mem _)`. Establish `hmov` using `isMov_quot ha m₀ m₁`. Take `⟨k, hke⟩ : ∃ k, k = (a * g₀)⁻¹ * g₁` from `⟨_, rfl⟩`. Rewrite `hk`, `hmov` using `[← hke]`.
+
+Establish `e1 : g₁ = a * g₀ * k` using `by rw [hke, mul_inv_cancel_left]`. Take `⟨y, hy, hyk⟩` from `GlobalTheory.LatticeUnitRoot.exists_finUnit_isDetRoot D T ΛT dT k hk hmov`. Establish `h1` using `GlobalTheory.T.weil_vacuum_finite_selfDualLattice_splitting D S T ψ θ hS.2.1 sS sT χS χT om hW hη hun (fun _ => 1) _ (isCartanInv_one hS.2.2.1) hc ΛS ΛT dS dT f₀ hf 1 (one_mem _) k hk (isMov_one _) hmov 1 y finUnit_one hy isDetRoot_one hyk`. Take `⟨ya, hya⟩` from `hmu.1 a`. Take `⟨y₀, hy₀⟩` from `hmu.1 g₀`.
+
+Establish `h2` using `(GlobalTheory.T.real_point_moves_adelic_theta_by_det_character D S T r g hr ψ θ X eT bas idx hS χS χT om hW hη _ h0 a ha ya hya φ hφ _ hz).2 w hw`. Establish `h3 : om (1, g₁) f₀ = om (1, a) (om (1, g₀) (om (1, k) f₀))`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, e1]`. Simplify using the standard rewrite rules. Establish `h4 : mu g₁ = (χS ya : ℂ) * mu g₀ * χS y`.
+
+Rewrite using `[hmu.2 g₀ y₀ hy₀, hmu.2 g₁ (ya * y₀ * y) (e1 ▸ detRootMul_holds T _ _ _ _ (detRootMul_holds T _ _ _ _ hya hy₀) hyk)]`. Simplify using the standard rewrite rules. Establish `h5 : mu g₀ ≠ 0` using `norm_ne_zero_iff.1 (by rw [hmu.norm]; exact one_ne_zero)`. Rewrite using `[h3, h1, map_smul, map_smul, Pi.smul_apply, h2, thR_smul, ← hae, h4, map_one, inv_one, one_mul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem om_vac_move {g : ℕ} {hr : T.rank = r} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {X : Data D.host.E r}
     {eT : D.what₂.Tau ≃ X.Ψ} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
     (hS : IsSet ψ θ S T hr X eT bas) (sS : S.SigOK) (sT : T.SigOK) {χS χT : (AE D)ˣ →* Circle}
@@ -204,6 +280,13 @@ section Geo
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
   {σ : c.F →+* ℂ}
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `(TensVac.vacua _ _ _ _ bas idx n hs hn _ H.w0.isIntegral_coe (hostHalfRoot_add_conj_eq_one H) _ hsd 1 _ (Base.stdL_mem_Vset n 1)).1`. Take `⟨C, hC⟩` from `exists_const_ortho D H Dw l Xo c σ r U hσ hU hr1 hA k t ht n hn g bas idx e hs hm v hv`. Use `⟨C • v, TensVac.sb_smul _ hv.1, fun x hx ho g' bas' idx' e' hs' hm' A th hth p => ?_⟩` and prove the remaining obligations. Establish `key` using `anFib_move_renum D H Dw l Xo c σ r g g' (U.X k) (U.X k) ⟨rfl, rfl, rfl, rfl, rfl⟩ bas' idx' e' bas idx e hs' hs hm' hm x hx _ hsd 1 (fun a b => by simp) _ A th hth`. Establish `e1 : lact (1 : GL (Fin r) D.host.E) (castFr (rfl : (U.X k).Ψ = (U.X k).Ψ) x) = x`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `only [lact, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Both sides reduce to the same expression. Establish `e2 : mapL (1 : GL (Fin r) D.host.E) (U.X k).Λ = (U.X k).Λ`. Simplify using `[mapL]`.
+
+Rewrite `key` using `[e1, e2]`. Take `⟨A₁, th₁, h1, -, h2⟩` from `key`. Rewrite using `[← h2 n p p fun τ j => by simp, hC ⟨x, hx⟩ ho A₁ th₁ h1, thR_smul, GlobalTheory.Ker.thR]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_const (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (hr1 : 1 ≤ r) (hA : l.A = 1) (k : U.Comp)
     {t : ℝ} (ht : ∀ τ, (U.X k).c τ = t) (hsd : SelfD (U.X k) (U.X k).Λ) {n : ℕ} (hn : Even n) {g : ℕ}
     (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw)
@@ -243,6 +326,23 @@ def IsPt (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S : HSp D) (hr : T.ra
     ∃ (A : AnFib (U.X k) bas idx e x (U.X k).Λ (ptC U k ⟨x, hx⟩)) (th : (Fin g → ℂ) → ℂ),
       A.Reads 1 (ptC U k ⟨x, hx⟩).s th ∧ MeanOne (U.X k) bas idx x (U.X k).Λ th
 
+/- English proof (translation)
+Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `key : ∀ k : U.Comp, ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ (x : Frame (U.X k).Ψ r) (h : GA D T), IsPt ψ θ S hr U q Z₀ k x h → ∀ γ ∈ GQ T, ∀ (g : ℕ) (eT : D.what₂.Tau ≃ (U.X k).Ψ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw), IsSet ψ θ S T hr (U …`. Introduce `k`. Distinguish the cases in `hk : ∃ x h, IsPt ψ θ S hr U q Z₀ k x h`. Use `swap`.
+
+Conclude with `⟨1, norm_one, fun x h hp => absurd ⟨x, h, hp⟩ hk⟩`. Take `⟨x₀, h₀, γ₀, hγ₀, g₀, eT, bas₀, idx₀, e₀, hx₀, hS, hm₀, rfl, hsd, hL₀, rfl, A₀, th₀, hr₀, hmean⟩` from `hk`. Take `⟨-, -, -, -, hF⟩` from `oneg_frames D S T r g₀ hr ψ θ _ eT bas₀ idx₀ hS Z₀ hZ`. Establish `hortho` using `fun h => (oneg_frames D S T r g₀ hr ψ θ _ eT bas₀ idx₀ hS _ (hF h).1).2.2.1`. Establish `hs₀` using `hS.2.2.2.2.2.2.2`.
+
+Take `⟨L₀, a₀, m₀, l₀⟩` from `hlat (γ₀ * h₀)`. Establish `hv` using `GlobalTheory.WeilVacMove.isVacO_om D ψ θ S T χS χT om hW hS.2.1 (fun _ => 1) (fun _ => 1) _ _ _ _ _ _ 1 (γ₀ * h₀) (fun τ => by rw [Matrix.one_mul, Matrix.mul_one]) (hF _).2.1 l₀ f₀ hf`. Take `⟨a, ha, hval⟩` from `VacUnit.vac_eq_unit_mul D S T r g₀ hr ψ θ _ eT bas₀ idx₀ hS _ H.w0.isIntegral_coe (hostHalfRoot_add_conj_eq_one H) (isRelTraceOneIdempotentModTwo_hostElement H) _ (hF (γ₀ * h₀)).1 L₀ _ hsd (hL₀ ▸ a₀) _ hv th₀ (isTheta1_of_reads_generator _ H Dw l Xo c r g₀ _ bas₀ idx₀ e₀ _ _ _ A₀ …`. Take `⟨φ, hφ, hall⟩` from `exists_const U hσ hU hr1 hA k (ht k) hsd hS.2.2.2.1 bas₀ idx₀ e₀ hs₀ hm₀`. Establish `hz : Zak ψ θ hr eT bas₀ idx₀ (frOf hr eT (mvZ θ (γ₀ * h₀) Z₀)) (a • φ) (om (1, γ₀ * h₀) f₀)` using `⟨hv.2.theta, fun w hw => by`.
+
+Rewrite using `[hval w hw, thR_smul, hall _ hx₀ (hortho _) g₀ bas₀ idx₀ e₀ hs₀ hm₀ A₀ th₀ hr₀]⟩`. Use `⟨a / mu h₀, by rw [norm_div, ha, hmu.norm, div_one], ?_⟩` and prove the remaining obligations. Introduce and unpack `x h ⟨γ₁, hγ₁, g₁, eT₁, bas₁, -, -, -, hS₁, -, -, -, hL₁, hx₁, -⟩ γ hγ g eT₂ bas idx e hS₂ hm hx₂ hx A th hth w hw`. Establish `he : ∀ {g' : ℕ} {eT' : D.what₂.Tau ≃ (U.X k).Ψ} {bas' : (Fin g' ⊕ Fin g' → ℤ) ≃ₗ[ℤ] (U.X k).Λ}, IsSet ψ θ S T hr (U.X k) eT' bas' → eT = eT'` using `fun h' => Equiv.ext fun ρ => Subtype.ext ((hS.2.2.2.2.2.2.1 ρ).trans (h'.2.2.2.2.2.2.1 ρ).symm)`. Take `rfl` from `he hS₁`.
+
+Take `rfl` from `he hS₂`. Establish `e1` using `frOf_injective hr eT (hx₁.symm.trans hx₂)`. Establish `hfin : (γ * h)⁻¹ * (γ₁ * h) ∈ GfC T`. Apply `(hF _).2.2.2.2.1` to reduce the goal to its premises. Rewrite using `[(hF (γ₁ * h)).2.2.1, e1, ← (hF _).2.2.1, inv_mul_cancel]`.
+
+Conclude with `(hF 1).2.2.2.1 (one_mem _)`. Establish `e2 : γ⁻¹ * γ₁ = 1`. Use `eq_one_of_rat hS.2.1 (mul_mem (inv_mem hγ) hγ₁) ?_` and prove the remaining obligations. Use `(MonoidHom.normal_ker (infHom T)).conj_mem _ hfin h` as an intermediate fact. Rewrite `this` using `[show h * ((γ * h)⁻¹ * (γ₁ * h)) * h⁻¹ = γ⁻¹ * γ₁ by group]`. Then use the resulting hypothesis.
+
+Take `rfl : γ = γ₁` from `inv_mul_eq_one.1 e2`. Take `⟨L₁, a₁, m₁, -⟩` from `hlat (γ * h)`. Rewrite `a₁` using `[← hL₁]`. Rewrite `a₀` using `[← hL₀]`. Take `rfl : L₀ = L₁` from `le_antisymm (le_of_isAA a₀ a₁) (le_of_isAA a₁ a₀)`.
+
+Substitute `hx₂` using the available equality. Rewrite using `[om_vac_move idx₀ hS sS sT hW hη hun hZ dS dT hf hmu m₀ m₁ (TensVac.sb_smul a hφ) hz w hw, thR_smul, hall _ hx (hortho _) g bas idx e hS₂.2.2.2.2.2.2.2 hm A th hth, hQ _ hγ, hQ _ hγ₀]`. Expand and normalize the polynomial expressions, which then agree. Use `choose cc hcc hkey using key`. Conclude with `⟨cc, hcc, fun h γ hγ => hkey _ _ h (hpt h) γ hγ⟩`.
+-/
 theorem exists_frConst {hr : T.rank = r} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (sS : S.SigOK) (sT : T.SigOK) {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om) (hη : ∃ η, IsEtaTilde D η)
@@ -316,6 +416,9 @@ theorem exists_frConst {hr : T.rank = r} {ψ : AddChar (AF D.host.F) ℂ} {θ : 
 
 end Geo
 
+/- English proof (translation)
+Substitute `hV` using the available equality. Conclude with `h`.
+-/
 theorem mu_rat_cast {V W : HSp D} (hV : V = W) {mu : GA D V → ℂ} (h : ∀ γ ∈ GQ V, ∀ h, mu (γ * h) = mu h) :
     ∀ γ ∈ GQ W, ∀ h, castDict hV mu (γ * h) = castDict hV mu h := by
   subst hV; exact h

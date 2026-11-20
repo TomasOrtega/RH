@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.CharacterBoxes.TwistForm
 
 open Formalism.HC UpperTheory.Top
 
+/- English proof (translation)
+Establish `hθ' : θ ∈ φ.Xp ∧ ¬H.Kept (Level.cyc ψ).KEPT θ ∨ θ ∈ φ.Xm` using `hθ`. Establish `hχ' : An.Induces χ (H.dirAt θ) H.condN` using `hχ`. Establish `htriv : Frame.TrivialOnFirstFactor θ`. Break down `hθ' with ⟨h, -⟩ | h` into its components or cases. Conclude with `h.1`.
+
+Conclude with `h.1`. Take `⟨ξ, hξ, i, j, hiod, heq⟩` from `htw θ htriv`. Establish `hNc : ψ.N ∣ H.condN` using `Dvd.dvd.mul_right (Dvd.dvd.mul_right hdiv _) _`. Use `⟨ξ, i, j, ?_, hχ'.1, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hij push_neg at hij`.
+
+Take `⟨rfl, rfl⟩` from `hij`. Break down `hθ' with ⟨-, hnk⟩ | hm` into its components or cases. Apply `hnk` to reduce the goal to its premises. Use `⟨PChar.of ξ, (Level.mem_ofSub _ _).2 ⟨ξ, hξ, rfl⟩, (PChar.of ξ).prim, fun a ha => ?_⟩` and prove the remaining obligations. Establish `ha' : a.Coprime ψ.N` using `Nat.Coprime.coprime_dvd_right hNc ha`.
+
+Rewrite using `[(An.induces_of ξ).2 a ha', heq a ha]`. Simplify using `[tw]`. Establish `h1` using `hm.2`. Rewrite `hiod` using `[h1]`. Establish `h2` using `congrArg Units.val hiod`.
+
+Evaluate the numerical expressions using `at h2`. Introduce `a ha`. Establish `hq : a.Coprime H.q` using `Nat.Coprime.coprime_dvd_right (dvd_mul_of_dvd_left (dvd_mul_left _ _) _) ha`. Establish `hd : a.Coprime H.d` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left _ _) ha`. Establish `hQ : a.Coprime H.QS`.
+
+Apply `Nat.coprime_of_dvd` to reduce the goal to its premises. Introduce `l hl hla hlQ`. Establish `hl2 : l ∣ 2 * ψ.N * H.q * H.d` using `dvd_mul_of_dvd_left (dvd_mul_of_dvd_left (hpr l hl hlQ) _) _`. Conclude with `hl.not_dvd_one (ha.gcd_eq_one ▸ Nat.dvd_gcd hla hl2)`. Establish `hc : a.Coprime H.condN` using `Nat.Coprime.mul_right (Nat.Coprime.mul_right hQ hq) hd`.
+
+Rewrite using `[hχ'.2 a hc, heq a hc]`.
+-/
 private theorem UpperTheory.Top.boundedTw_key (ψ : PChar) (φ : Frame) (H : HostRaw φ) (htw : TwistForm ψ H) (hdiv : ψ.N ∣ H.QS)
     (hpr : ∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * ψ.N) (θ : φ.Char) (hθ : θ ∈ H.Bounded (Level.cyc ψ).KEPT)
     (N : ℕ) (χ : DirichletCharacter ℂ N) (hχ : H.IsPrimOf θ χ) :
@@ -42,6 +57,11 @@ private theorem UpperTheory.Top.boundedTw_key (ψ : PChar) (φ : Frame) (H : Hos
     have hc : a.Coprime H.condN := Nat.Coprime.mul_right (Nat.Coprime.mul_right hQ hq) hd
     rw [hχ'.2 a hc, heq a hc]
 
+/- English proof (translation)
+Introduce `ψ φ H eps Y x he hx hY htw hdiv hpr hg`. Use `⟨fun θ hθ N _ χ hχ => ?_, fun θ hθ N _ χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨ξ, i, j, hij, hI⟩` from `UpperTheory.Top.boundedTw_key ψ φ H htw hdiv hpr θ hθ N χ hχ`. Conclude with `(hg.bounds ξ i j hij N χ hI x hY le_rfl).1.trans (Real.rpow_le_rpow_of_exponent_le hx (by linarith))`. Take `⟨ξ, i, j, hij, hI⟩` from `UpperTheory.Top.boundedTw_key ψ φ H htw hdiv hpr θ hθ N χ hχ`.
+
+Conclude with `(hg.bounds ξ i j hij N χ hI x hY le_rfl).2`.
+-/
 theorem UpperTheory.Top.boundedTw :
     ∀ (ψ : PChar) (φ : Frame) (H : HostRaw φ) (eps Y x : ℝ), 0 < eps → 1 ≤ x → Y ≤ x → TwistForm ψ H → ψ.N ∣ H.QS →
       (∀ l : ℕ, l.Prime → l ∣ H.QS → l ∣ 2 * ψ.N) → PairGood ψ.N eps Y x H.q H.d →

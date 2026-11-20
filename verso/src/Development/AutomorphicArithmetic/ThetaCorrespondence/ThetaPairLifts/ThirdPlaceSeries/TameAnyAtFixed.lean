@@ -14,6 +14,17 @@ end GlobalTheory.IneAway
 namespace GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 open GlobalTheory.TameLabels
+/- English proof (translation)
+Introduce `D hA hF i π ρ hc hr hfull hρ k hk v`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨ι, hinj, hred⟩` from `GlobalTheory.T.exists_reduction_teichmullerEmbedding_at_localisation D i k hk`. Establish `hpol` using `_root_.GlobalTheory.IneAway.ineAt' D hA hF i π ρ hc hr hfull hρ k v _ rfl (tameAnyFix_not_over D i k hk v) _ (D.ntypes.tg_mem k v)`. Establish `hlab` using `D.ntypes.inertiaCharpoly_type k v _ (_root_.UpperTheory.GalS.fl0' hfull k v)`.
+
+Rewrite `hpol` using `[← tameAnyFix_isoLoc D π, hlab]`. Establish `h1` using `hred _ _ hpol`. Establish `hchar : Matrix.charpoly ((redF D i ρ (D.nd.gam0 i (D.naut.plGw k v)) : GL (Fin D.R.r) _) : Matrix (Fin D.R.r) (Fin D.R.r) (Formalism.CyclotomicNorms.Fbar (D.nd.l i))) = ((Formalism.CyclotomicNorms.rootsBar (labSig D [⟨D.R.r, π, 1⟩] k v)).map fun x => X - C (ι (Formalism.Cyclotomi …`. Rewrite using `[D.ntypes.heckeLoc_gamma_places]`. Simplify using `only [zpow_one, tameAnyFix_map_primeToPart]`.
+
+Rewrite using `[← h1, ← Matrix.charpoly_map]`. Both sides reduce to the same expression. Establish `hval : ∀ y : Fb (D.host.g k) (D.host.g_prime k), iotaO D.nd D.naut i (chi1 D.nd i (D.ntypes.tg k v)) = D.ntypes.teichC k y → D.naut.kFbar i (IsLocalRing.residue (D.nd.O i) (chi1 D.nd i (D.nd.gam0 i (D.naut.plGw k v)))) = ι y`. Introduce `y hy`. Establish `h2` using `hred (X - C (chi1 D.nd i (D.ntypes.tg k v))) {y} (by simp [hy])`.
+
+Rewrite using `[D.ntypes.heckeLoc_gamma_places]`. Simplify using `using h2`. Break down `D.ntypes.chiT_tg i k v hk with h | h` into its components or cases. Use `⟨v, ⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩, ι, 1, 1, Or.inl rfl, Or.inl rfl, hinj, hchar, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_one, tameAnyFix_map_primeToPart]`.
+
+Conclude with `hval _ h`. Use `⟨v, ⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩, ι, 1, -1, Or.inl rfl, Or.inr rfl, hinj, hchar, ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_neg_one, tameAnyFix_map_primeToPart, hval _ h]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]`.
+-/
 theorem tameAnyAt_fixed_alt_alt : ∀ D : D7, _root_.UpperTheory.GalS.GalAwayN D → FrobDense D → ∀ (i : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)), D.naut.csd π → D.naut.ralg π → _root_.UpperTheory.GalS.FullLabS D [⟨D.R.r, π, 1⟩] → IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ → ∀ k : Fin 2, D.nd.l i ≠ D.host.g k → ∀ v : D.nd.PlG k, TameAnyAt D i [⟨D.R.r, π, 1⟩] ρ k (D.naut.plGw k v) := by
   intro D hA hF i π ρ hc hr hfull hρ k hk v
   haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩

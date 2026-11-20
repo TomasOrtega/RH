@@ -7,6 +7,37 @@ open NumberField
 
 namespace Formalism.L2.SG.NGCut.TorsionTotientBound
 
+/- English proof (translation)
+Break down `S.eq_empty_or_nonempty with rfl | ⟨x0, hx0⟩` into its components or cases. Simplify using `only [Finset.card_empty, Nat.cast_zero, zero_mul]`. Check the signs of the components of the expression. Take `⟨a, ha⟩ : ∃ a : 𝓞 E, a = (J.den : 𝓞 E)` from `⟨_, rfl⟩`. Establish `hcoe : ∀ y : 𝓞 E, algebraMap (𝓞 E) E y = (y : E)` using `fun _ => rfl`.
+
+Establish `ha0 : algebraMap (𝓞 E) E a ≠ 0`. Rewrite using `[ha]`. Conclude with `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors J.den.2`. Establish `hmem : ∀ x ∈ S, ∃ y ∈ J.num, algebraMap (𝓞 E) E y = algebraMap (𝓞 E) E a * x`. Introduce `x hx`.
+
+Establish `h1 : J.den • x ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) J.num`. Rewrite using `[← J.den_mul_self_eq_num]`. Conclude with `Submodule.smul_mem_pointwise_smul x _ _ (hS x hx).1`. Take `⟨y, hy, hy'⟩` from `Submodule.mem_map.1 h1`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[ha]`. Simplify `hy'` using `[Algebra.smul_def, Submonoid.smul_def]`. Use `choose! g hgI hg using hmem`. Establish `hginj : Set.InjOn g S`. Introduce `x hx y hy hxy`.
+
+Establish `h` using `(hg x hx).symm.trans ((congrArg (algebraMap (𝓞 E) E) hxy).trans (hg y hy))`. Conclude with `mul_left_cancel₀ ha0 h`. Establish `hTcard : (S.image g).card = S.card` using `Finset.card_image_of_injOn hginj`. Establish `hgm : ∀ x ∈ S, algebraMap (𝓞 E) E (g x * cO E (g x)) = algebraMap (𝓞 E) E a * IsCMField.complexConj E (algebraMap (𝓞 E) E a) * m`. Introduce `x hx`.
+
+Rewrite using `[map_mul, hcoe (cO E (g x)), cO_coe, ← hcoe, hg x hx, map_mul, ← (hS x hx).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT : ∀ y ∈ S.image g, y ∈ J.num ∧ y * cO E y = g x0 * cO E (g x0)`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`.
+
+Use `⟨hgI x hx, ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective (𝓞 E) E` to reduce the goal to its premises. Rewrite using `[hgm x hx, hgm x0 hx0]`. Establish `hnum : J.num ≠ ⊥`. Introduce `h`.
+
+Apply `hJ` to reduce the goal to its premises. Rewrite using `[← FractionalIdeal.num_eq_zero_iff]`. Conclude with `h`. Establish `hc0 : IsCMField.complexConj E (algebraMap (𝓞 E) E a) ≠ 0` using `(map_ne_zero_iff _ (IsCMField.complexConj E).injective).2 ha0`. Establish `hm'0 : g x0 * cO E (g x0) ≠ 0`.
+
+Introduce `h`. Establish `h2` using `hgm x0 hx0`. Rewrite `h2` using `[h, map_zero]`. Conclude with `(mul_ne_zero (mul_ne_zero ha0 hc0) hm) h2.symm`. Establish `key` using `count_int J.num hnum (g x0 * cO E (g x0)) hm'0 (S.image g) hT`.
+
+Establish `key' : ((((S.image g).card * Ideal.absNorm J.num ^ 2 : ℕ)) : ℝ) ≤ ((2 * Module.finrank ℚ E ^ 2 * (Algebra.norm ℤ (g x0 * cO E (g x0))).natAbs : ℕ) : ℝ)`. Conclude with `key` after adjusting the coercions. Move the coercions through the operations in `[Nat.cast_natAbs, Int.cast_abs] at key'`. Rewrite `key'` using `[hTcard]`. Establish `hconj : ∀ y : E, Algebra.norm ℚ (IsCMField.complexConj E y) = Algebra.norm ℚ y`.
+
+Introduce `y`. Conclude with `Algebra.norm_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) y`. Establish `hNaQ : ((Algebra.norm ℤ a : ℤ) : ℚ) = Algebra.norm ℚ (algebraMap (𝓞 E) E a)` using `Algebra.coe_norm_int a`. Establish `hNa0 : ((Algebra.norm ℤ a : ℤ) : ℝ) ≠ 0`. Establish `h : Algebra.norm ℚ (algebraMap (𝓞 E) E a) ≠ 0` using `Algebra.norm_ne_zero_iff.2 ha0`.
+
+Rewrite `h` using `[← hNaQ]`. Conclude with `h` after adjusting the coercions. Establish `hNm' : ((Algebra.norm ℤ (g x0 * cO E (g x0)) : ℤ) : ℝ) = ((Algebra.norm ℤ a : ℤ) : ℝ) ^ 2 * ((Algebra.norm ℚ m : ℚ) : ℝ)`. Establish `h : ((Algebra.norm ℤ (g x0 * cO E (g x0)) : ℤ) : ℚ) = Algebra.norm ℚ (algebraMap (𝓞 E) E a) ^ 2 * Algebra.norm ℚ m`. Rewrite using `[Algebra.coe_norm_int, ← hcoe, hgm x0 hx0, map_mul (Algebra.norm ℚ), map_mul (Algebra.norm ℚ), hconj]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ((Algebra.norm ℤ (g x0 * cO E (g x0)) : ℤ) : ℝ) = (((Algebra.norm ℤ (g x0 * cO E (g x0)) : ℤ) : ℚ) : ℝ)` using `by norm_cast`. Rewrite using `[h3, h, ← hNaQ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hJn : ((FractionalIdeal.absNorm J : ℚ) : ℝ) = ((Ideal.absNorm J.num : ℕ) : ℝ) / |((Algebra.norm ℤ a : ℤ) : ℝ)|`. Rewrite using `[FractionalIdeal.absNorm_eq, ha]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hpos : (0 : ℝ) < ((Algebra.norm ℤ a : ℤ) : ℝ) ^ 2` using `lt_of_le_of_ne (sq_nonneg _) (Ne.symm (pow_ne_zero 2 hNa0))`.
+
+Rewrite using `[hJn, div_pow, sq_abs, mul_div_assoc', div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hNm', abs_mul, abs_of_nonneg (sq_nonneg _)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_mul_conj_eq_le_of_fractionalIdeal (E : Type) [Field E] [NumberField E] [IsCMField E]
     (J : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (m : E) (hJ : J ≠ 0) (hm : m ≠ 0)
     (S : Finset E) (hS : ∀ x ∈ S, x ∈ J ∧ x * IsCMField.complexConj E x = m) :

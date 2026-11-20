@@ -9,6 +9,15 @@ namespace GlobalTheory.TwLatRat
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[s.mem_lat]`. Unfold `mvL`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx` using `[Formalism.L2.Col.mem_gmap]`. Use `⟨s.vec (g.symm x), (s.mem_lat N _).2 ⟨_, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show (seamGL s g : Matrix (Fin n) (Fin n) D.host.E) *ᵥ (fun l => s.iE (g.symm x l)) = fun l => s.iE (x l)`. Rewrite using `[seamGL_mulVec, LinearEquiv.apply_symm_apply]`.
+
+Introduce and unpack `⟨w, hw, rfl⟩`. Take `⟨x0, hx0, rfl⟩` from `(s.mem_lat N w).1 hw`. Use `⟨g x0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Col.mem_gmap, LinearEquiv.symm_apply_apply]`. Conclude with `hx0`.
+
+Use `show (fun l => s.iE (g x0 l)) = (seamGL s g : Matrix (Fin n) (Fin n) D.host.E) *ᵥ (fun l => s.iE (x0 l))`. Rewrite using `[seamGL_mulVec]`.
+-/
 theorem seam_lat_gmap {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n)
     (N : Submodule (𝓞 X.E) (Sp X.E n)) : s.lat (Formalism.HermitianLatticesTheory.gmap g N) = mvL (seamGL s g) (s.lat N) := by
   ext y
@@ -30,6 +39,9 @@ theorem seam_lat_gmap {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D _ _ _ _ _ _ _ _ t u μ St A dtU a _ _ i hi β x x₁ γ hγ hx g hg p hp`. Establish `e1 : ((((g, 1, 1) : UF t.X.E (D.R.N i) × GLG t.X.E (D.R.N i) t.Pr.vGs × GLQ t.X.E (D.R.N i) (QE t.sel (t.tup μ : Chr t.X.F t.X.E t.X.K))) • p)).deco.1.N = Formalism.HermitianLatticesTheory.gmap g.1 p.deco.1.N` using `rfl`. Rewrite using `[e1, seam_lat_gmap, hg, hp.lat, hx, latCo_rat _ _ _ hγ]`.
+-/
 theorem lat_moved : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (γ : GL (Fin (D.R.N i)) D.host.E),
       γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i hi) → x₁.1 = ratA D.host.F γ * x.1 →

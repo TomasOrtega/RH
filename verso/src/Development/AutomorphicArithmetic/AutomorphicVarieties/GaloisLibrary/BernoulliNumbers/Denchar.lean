@@ -4,6 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 
 open Finset UpperTheory.V.Bern
 
+/- English proof (translation)
+Introduce `R _ _ N k Φ A hN hΦ`. Unfold `genB`. Rewrite using `[Finset.mul_sum]`. Use `A.sum_mem fun a _ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `b_denint N k a hN`.
+
+Establish `h : (den N k : R) * algebraMap ℚ R (bcoef N k a) = (z : R)`. Rewrite using `[← map_natCast (algebraMap ℚ R), ← map_mul, hz, map_intCast]`. Rewrite using `[mul_left_comm, h]`. Conclude with `A.mul_mem (hΦ _) (intCast_mem A z)`.
+-/
 theorem UpperTheory.V.Bern.b_denchar :
     ∀ {R : Type} [CommRing R] [Algebra ℚ R] {N : ℕ} (k : ℕ) (Φ : ZMod N → R) (A : Subring R), 0 < N → (∀ a, Φ a ∈ A) → (den N k : R) * genB k Φ ∈ A := by
   intro R _ _ N k Φ A hN hΦ

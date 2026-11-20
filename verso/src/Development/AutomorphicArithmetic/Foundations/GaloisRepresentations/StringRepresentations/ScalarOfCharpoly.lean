@@ -11,6 +11,11 @@ namespace UpperTheory.GalN
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Establish `h1 : IsNilpotent (f - algebraMap ℂ (End ℂ V) c)` using `⟨t, by`. Use `LinearMap.aeval_self_charpoly f` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `using this⟩`. Establish `h2 : (f - algebraMap ℂ (End ℂ V) c).IsSemisimple` using `End.isSemisimple_sub_algebraMap_iff.2 hf`.
+
+Establish `h3` using `sub_eq_zero.1 (End.eq_zero_of_isNilpotent_isSemisimple h1 h2)`. Rewrite using `[h3]`. Both sides reduce to the same expression.
+-/
 theorem scalar_of_charpoly {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] {f : End ℂ V}
     (hf : f.IsSemisimple) {c : ℂ} {t : ℕ} (e : f.charpoly = (X - C c) ^ t) (v : V) : f v = c • v := by
   have h1 : IsNilpotent (f - algebraMap ℂ (End ℂ V) c) := ⟨t, by
@@ -21,6 +26,27 @@ theorem scalar_of_charpoly {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDim
   have h3 := sub_eq_zero.1 (End.eq_zero_of_isNilpotent_isSemisimple h1 h2)
   rw [h3]; rfl
 
+/- English proof (translation)
+Set `M : End ℂ (Va × Vb)` to `g.conj x.N`. Establish `hM : ∀ v, M (g v) = g (x.N v)` using `fun v => by simp [M, LinearEquiv.conj_apply]`. Establish `hc : ∀ σ z, (a.sum b).ρ σ (M z) = ((normV w : ℕ) : ℂ) ^ deg σ • M ((a.sum b).ρ σ z)` using `fun σ z => by`. Take `⟨v, rfl⟩` from `g.surjective z`. Use `LinearMap.congr_fun (x.comm σ) v` as an intermediate fact.
+
+Simplify using `only [End.mul_apply, LinearMap.smul_apply] at this`. Rewrite using `[hM, ← hg, ← hg, hM, this, map_smul]`. Establish `hs : Function.Surjective (a.ρ γ - c • (1 : End ℂ Va))`. Rewrite using `[← LinearMap.injective_iff_surjective, injective_iff_map_eq_zero]`. Introduce `v hv`.
+
+Conclude with `haγ v (by simpa [sub_eq_zero] using hv)`. Establish `h1 : ∀ v, M (0, v) = 0` using `fun v => by`. Rewrite using `[← g.apply_symm_apply (0, v), hM, h0, map_zero]`. Establish `h2 : ∀ v, (M (v, 0)).2 = 0` using `fun v => by`. Take `⟨u, rfl⟩` from `hs v`.
+
+Establish `e : (((a.ρ γ - c • (1 : End ℂ Va)) u, 0) : Va × Vb) = (a.sum b).ρ γ (u, 0) - c • (u, 0)` using `by simp`. Establish `k` using `hc γ (u, 0)`. Rewrite `k` using `[hγ, zpow_zero, one_smul]`. Rewrite using `[e, map_sub, map_smul, ← k]`. Simplify using `[hbγ]`.
+
+Set `Na : End ℂ Va` to `LinearMap.fst ℂ Va Vb ∘ₗ M ∘ₗ LinearMap.inl ℂ Va Vb`. Establish `h3 : ∀ v, M (v, 0) = (Na v, 0)` using `fun v => Prod.ext rfl (h2 v)`. Establish `h4 : ∀ (k : ℕ) v, (M ^ k) (v, 0) = ((Na ^ k) v, 0)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => intro v`.
+
+Simplify using the standard rewrite rules. Consider the case `succ k ih => intro v`. Rewrite using `[pow_succ', pow_succ', End.mul_apply, End.mul_apply, ih, h3]`. Establish `h5 : ∀ (k : ℕ) v, (M ^ k) (g v) = g ((x.N ^ k) v)` using `fun k => by`. Proceed by induction on `k with`.
+
+Consider the case `zero => intro v`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro v`. Rewrite using `[pow_succ', pow_succ', End.mul_apply, End.mul_apply, ih, hM]`. Use `⟨{ ρ := a.ρ, N := Na, smooth := a.smooth, semisimple := a.semisimple, nilpotent := ?_, comm := fun σ => ?_ }, WD.sound ⟨g, hg, fun v => ?_⟩⟩` and prove the remaining obligations.
+
+Take `⟨k, hk⟩` from `x.nilpotent`. Use `⟨k, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Use `h4 k v` as an intermediate fact. Rewrite `this` using `[← g.apply_symm_apply (v, 0), h5, hk]`. Simplify using `using (congrArg Prod.fst this).symm`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `k` using `hc σ (v, 0)`. Establish `e : (a.sum b).ρ σ (v, 0) = (a.ρ σ v, 0)` using `by simp`. Rewrite `k` using `[e, h3, h3]`. Simplify using `using congrArg Prod.fst k`.
+
+Rewrite using `[← hM]`. Take `⟨p, q⟩` from `g v`. Establish `e : ((p, q) : Va × Vb) = (p, 0) + (0, q)` using `by simp`. Use `conv_lhs => rw [e, map_add, h1, h3, add_zero]`. Simplify using `[hb]`.
+-/
 theorem exists_sum {W Va Vb : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     [AddCommGroup Va] [Module ℂ Va] [FiniteDimensional ℂ Va] [AddCommGroup Vb] [Module ℂ Vb] [FiniteDimensional ℂ Vb]
     (x : WDRep h W) (a : WDRep h Va) (b : WDRep h Vb) (g : W ≃ₗ[ℂ] Va × Vb)
@@ -75,6 +101,27 @@ theorem exists_sum {W Va Vb : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimen
     conv_lhs => rw [e, map_add, h1, h3, add_zero]
     simp [hb]
 
+/- English proof (translation)
+Use `⟨hp, h0, fun u c t γ hγ hm ⟨a, b, e, d, m, p⟩ => ?_⟩` and prove the remaining obligations. Take `⟨n, x, rfl⟩` from `x.exists_rep`. Take `⟨n', y, rfl⟩` from `y.exists_rep`. Choose the witnesses or unpack the hypotheses as in `rfl : n = n' := by`. Establish `h1` using `WD.charPol_natDegree (WD.mk x) 1`.
+
+Rewrite `h1` using `[hp, WD.charPol_natDegree]`. Simplify using `using h1.symm`. Take `⟨k, u, rfl⟩` from `u.exists_rep`. Take `⟨i, a, rfl⟩` from `a.exists_rep`. Take `⟨j, b, rfl⟩` from `b.exists_rep`.
+
+Take `⟨ε, hε⟩` from `GlobalTheory.AboveL.weil_rep_equiv_of_charpoly_eq E Ω A w h n n x y fun σ => by simpa using hp σ`. Rewrite `hm` using `[e, WD.inePol_of_mem_Ine _ hγ, WD.lpSum_mk, WD.charPol_mk]`. Rewrite `e` using `[WD.lpSum_mk, WD.lpSum_mk, WD.mk_eq_mk]`. Take `⟨f, f1, f2⟩` from `e`. Establish `hbN : b.N = 0` using `(WD.monodromyZero_ofWeilDeligneRepClass_iff b).1 m`.
+
+Establish `hbc : ∀ s : ↥(Ine (F` using `E) A), (b.ρ (ineIncl h s)).charpoly = (X - C (c s)) ^ t := fun s => by`. Use `p s s.2` as an intermediate fact. Rewrite `this` using `[WD.inePol_of_mem_Ine _ s.2, WD.charPol_mk]`. Then use the resulting hypothesis. Establish `hb : ∀ (s : ↥(Ine (F` using `E) A)) v, b.ρ (ineIncl h s) v = c s • v := fun s => scalar_of_charpoly (b.semisimple _) (hbc s)`. Establish `ha : ∀ v, a.ρ (ineIncl h ⟨γ, hγ⟩) v = c γ • v → v = 0` using `fun v hv => by`.
+
+Assume the negation of the conclusion as `hv0`. Establish `hev : End.HasEigenvalue (a.ρ (ineIncl h ⟨γ, hγ⟩)) (c γ)` using `End.hasEigenvalue_of_hasEigenvector ⟨End.mem_eigenspace_iff.2 hv, hv0⟩`. Establish `hr` using `(End.hasEigenvalue_iff_isRoot_charpoly _ _).1 hev`. Establish `hne` using `(LinearMap.charpoly_monic (a.ρ (ineIncl h ⟨γ, hγ⟩))).ne_zero`. Rewrite `hm` using `[WDRep.sum_ρ, LinearMap.charpoly_prodMap, hbc ⟨γ, hγ⟩, rootMultiplicity_mul (mul_ne_zero hne ((monic_X_sub_C _).pow _).ne_zero), rootMultiplicity_X_sub_C_pow]`.
+
+Use `(rootMultiplicity_pos hne).2 hr` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hz : ∀ z, (y.sum u).ρ (ineIncl h ⟨γ, hγ⟩) z = c γ • z → (y.sum u).N z = 0` using `fun z hz => by`. Apply `f.injective` to reduce the goal to its premises. Establish `k1` using `f1 (ineIncl h ⟨γ, hγ⟩) z`.
+
+Rewrite `k1` using `[hz, map_smul]`. Establish `k2 : (f z).1 = 0` using `ha _ (congrArg Prod.fst k1).symm`. Rewrite using `[f2, map_zero]`. Conclude with `Prod.ext (by simp [k2]) (by simp [hbN])`. Establish `hy : ∀ v, (∀ s, y.ρ (ineIncl h s) v = c s • v) → y.N v = 0` using `fun v hv => congrArg Prod.fst (hz (v, 0) (Prod.ext (hv ⟨γ, hγ⟩) (by simp)))`.
+
+Establish `hx` using `hi n x y rfl rfl (fun s => c s) hy`. Set `g` to `(ε.prodCongr (LinearEquiv.refl ℂ (Fin k → ℂ))).trans f`. Establish `hg : ∀ σ v, g ((x.sum u).ρ σ v) = (a.sum b).ρ σ (g v)` using `fun σ v => by show f _ = (a.sum b).ρ σ (f _)`. Rewrite using `[← f1]`. Conclude with `congrArg f (Prod.ext (hε σ v.1) rfl)`.
+
+Take `⟨a', e'⟩` from `exists_sum (x.sum u) a b g hg hbN (ineIncl h ⟨γ, hγ⟩) (deg_ineIncl _) (c γ) (hb ⟨γ, hγ⟩) ha fun v => by`. Establish `q : ∀ s : ↥(Ine (F` using `E) A), (x.sum u).ρ (ineIncl h s) (g.symm (0, v)) = c s • g.symm (0, v) := fun s => by`. Apply `g.injective` to reduce the goal to its premises. Rewrite using `[hg, map_smul, g.apply_symm_apply]`. Conclude with `Prod.ext (by simp) (hb s v)`.
+
+Use `Prod.ext (hx _ fun s => congrArg Prod.fst (q s)) ?_` and prove the remaining obligations. Establish `q2` using `congrArg Prod.snd (q ⟨γ, hγ⟩)`. Establish `q3` using `congrArg Prod.snd (hz (0, (g.symm (0, v)).2) (Prod.ext (by simp) q2))`. Conclude with `q3`. Conclude with `⟨WD.mk a', WD.mk b, by rw [WD.lpSum_mk, WD.lpSum_mk, e'], d, m, p⟩`.
+-/
 theorem aw_of_eigen {x y : WD h} (hp : ∀ g : Weil h, x.charPol g = y.charPol g) (h0 : y.mono0 → x = y)
     (hi : ∀ (n : ℕ) (x' y' : WDRep h (Fin n → ℂ)), WD.mk x' = x → WD.mk y' = y →
       ∀ χ : ↥(Ine (F := E) A) → ℂ, (∀ v, (∀ s, y'.ρ (ineIncl h s) v = χ s • v) → y'.N v = 0) →

@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 open GlobalTheory.EigenGenerator in
 
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S ι hι τ`. Establish `h5` using `hg.2.1`. Establish `hc` using `hg.2.2.1`. Establish `hk` using `(primeClass_eq_inert_iff D.host.toHostRaw).1 hc`. Establish `h2 : D.what₂.places.resChar w ∉ D.host.small` using `hk.1`.
+
+Establish `hq : D.what₂.places.resChar w ≠ D.host.q` using `hk.2.1`. Take `⟨M, hMnf, hM, hs⟩` from `J.dgen`. Take `⟨s, hsc, hsp⟩` from `hs τ`. Establish `h1 : ι (s : ℂ) = lamM M S.lam s` using `hι ⟨(s : ℂ), mem_Qbar M s⟩`. Rewrite using `[t.O_dgen u μ, ← hsc, h1, lamM_apply]`.
+
+Conclude with `norm_generator_eq_one D _ S.lam h2 hq M hM τ s hsp`.
+-/
 theorem GlobalTheory.TwV.DelB.dgen_unit : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → ∀ τ, ‖ι ((t.O u μ).dgen τ)‖ = 1) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S ι hι τ
   have h5 := hg.2.1

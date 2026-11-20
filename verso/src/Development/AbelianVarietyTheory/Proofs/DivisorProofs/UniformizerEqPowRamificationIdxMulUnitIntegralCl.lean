@@ -3,6 +3,19 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hπ hπP`. Use `haveI : IsDedekindDomain (integralClosure S L) := integralClosure.isDedekindDomain S K L`. Establish `hπ0 : π ≠ 0` using `hπ.ne_zero`. Establish `hO0 : algebraMap S (integralClosure S L) π ≠ 0`. Introduce `h`.
+
+Establish `h2 : algebraMap (integralClosure S L) L (algebraMap S (integralClosure S L) π) = 0` using `by rw [h, map_zero]`. Rewrite `h2` using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply S K L]`. Rewrite `h2` using `[map_eq_zero_iff _ (algebraMap K L).injective, map_eq_zero_iff _ (IsFractionRing.injective S K)]`. Conclude with `hπ0 h2`. Establish `hPbot : P ≠ ⊥` using `fun h => hO0 (by rw [h] at hπP; simpa using hπP)`.
+
+Use `haveI hA : IsDiscreteValuationRing (Localization.AtPrime P) := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (integralClosure S L) hPbot (Localization.AtPrime P)`. Establish `hinj : Function.Injective (algebraMap (integralClosure S L) (Localization.AtPrime P))` using `IsLocalization.injective (Localization.AtPrime P) P.primeCompl_le_nonZeroDivisors`. Establish `hx0 : algebraMap S (Localization.AtPrime P) π ≠ 0`. Rewrite using `[IsScalarTower.algebraMap_apply S (integralClosure S L) (Localization.AtPrime P)]`. Conclude with `fun h => hO0 (hinj (by rw [h, map_zero]))`.
+
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (Localization.AtPrime P)`. Take `⟨n, u, hn⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hunder : P.under S = Ideal.span {π}`. Establish `hmem : π ∈ P.under S` using `by simpa [Ideal.under] using hπP`. Establish `hne : P.under S ≠ ⊥` using `fun h => hπ0 (by rw [h] at hmem; simpa using hmem)`.
+
+Establish `hmax : (P.under S).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hne`. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax, hπ.maximalIdeal_eq]`. Establish `hram : P.ramificationIdx S = n`. Rewrite using `[Ideal.ramificationIdx_def, hunder, Ideal.map_span, Set.image_singleton, hn, Ideal.span_singleton_mul_left_unit u.isUnit, ← Ideal.span_singleton_pow, ← hϖ.maximalIdeal_eq, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal, ENat.toNat_natCast]`. Use `⟨ϖ, hϖ, u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hram, hn, mul_comm]`.
+-/
 theorem pi_eq_pow_ramificationIdx_mul_unit
     (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

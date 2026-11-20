@@ -16,13 +16,24 @@ namespace GlobalTheory.GdegPow
 
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k}
 
+/- English proof (translation)
+The claim follows from `HermLB.icls_eq_iff.1 (by rw [icls_comb, HermLB.icls_pow, Fintype.sum_unique, natCast_zsmul])`.
+-/
 theorem isometric_comb_unit (L : HermLB p) (n : ℕ) :
     (comb (fun _ : Unit => L) fun _ => (n : ℤ)).Isometric (L.pow n) :=
   HermLB.icls_eq_iff.1 (by rw [icls_comb, HermLB.icls_pow, Fintype.sum_unique, natCast_zsmul])
 
+/- English proof (translation)
+Rewrite using `[lin, Fintype.sum_unique, MvPolynomial.C_mul']`.
+-/
 theorem lin_unit (c : ℝ) : (lin fun _ : Unit => c) = c • (MvPolynomial.X () : MvPolynomial Unit ℝ) := by
   rw [lin, Fintype.sum_unique, MvPolynomial.C_mul']
 
+/- English proof (translation)
+Introduce `hC k _ X _ p D hX L n`. Take `⟨Ψ, hΨ, -⟩` from `((hC.arExists k X p D hX).2 Unit fun _ => L).2`. Establish `key (m : ℕ) : gdeg (L.pow m) D = (m : ℝ) ^ D * Ψ ((MvPolynomial.X () : MvPolynomial Unit ℝ) ^ D)`. Rewrite using `[← (isometric_comb_unit L m).gdeg_eq, ← hΨ fun _ => (m : ℤ)]`. Simplify using `only [Int.cast_natCast]`.
+
+Rewrite using `[lin_unit, smul_pow, map_smul, smul_eq_mul]`. Establish `h1 : gdeg L D = Ψ ((MvPolynomial.X () : MvPolynomial Unit ℝ) ^ D)`. Rewrite using `[← (HermLB.icls_eq_iff.1 (by rw [HermLB.icls_pow, one_smul]) : (L.pow 1).Isometric L).gdeg_eq, key 1]`. Simplify using the standard rewrite rules. Rewrite using `[key n, h1]`.
+-/
 theorem gdeg_pow : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (L : HermLB p) (n : ℕ), gdeg (L.pow n) D = (n : ℝ) ^ D * gdeg L D := by
   intro hC k _ X _ p D hX L n

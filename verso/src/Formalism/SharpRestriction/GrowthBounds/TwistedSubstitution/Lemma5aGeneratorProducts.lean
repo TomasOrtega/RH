@@ -21,6 +21,9 @@ def pairSet (O : Type) [CommRing O] (r K : ℕ) [NeZero r] [NeZero K] {n' : ℕ}
         geR (valS LZ {y | y < x} A) (th x)) ∧
       P = plEmb O r K A * nmEmb O r K G}
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_inf.1 hx).1`.
+-/
 theorem XX'_le_span (O : Type) [CommRing O] (r K : ℕ) [NeZero r] [NeZero K] {n' : ℕ} [NeZero n'] (F : Frames n' r)
     (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ) {x : SegRing O r K} (hx : x ∈ XX' O r K F j m th o) :
     x ∈ Submodule.span O (pairSet O r K F j m th) :=
@@ -36,6 +39,9 @@ def symG (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ) 
   MvPolynomial.map (algebraMap O (KK O))
     (rename (castV hk) ((∏ j ∈ Finset.range F.J, phSeg O K p F (j : ℤ) (x j)) * monomial l 1) * monomial ga 1)
 
+/- English proof (translation)
+Unfold `symG`. Establish `he : ∏ j ∈ (Finset.range F.J).erase k, phSeg O K p F (j : ℤ) (Function.update x (k : ℤ) y j) = ∏ j ∈ (Finset.range F.J).erase k, phSeg O K p F (j : ℤ) (x j)` using `Finset.prod_congr rfl fun j hj => by`. Rewrite using `[Function.update_of_ne (by exact_mod_cast Finset.ne_of_mem_erase hj)]`. Rewrite using `[← Finset.mul_prod_erase _ _ hk', he, Function.update_self, mul_assoc]`.
+-/
 theorem symG_update (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ) (x : ℤ → SegRing O r K) (k : ℕ)
     (hk' : k ∈ Finset.range F.J) (y : SegRing O r K) :
     symG p O hk F l ga (Function.update x (k : ℤ) y) =
@@ -49,11 +55,17 @@ theorem symG_update (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) �
       rw [Function.update_of_ne (by exact_mod_cast Finset.ne_of_mem_erase hj)]
   rw [← Finset.mul_prod_erase _ _ hk', he, Function.update_self, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[symG_update p O hk F l ga x k hk' 0]`. Simplify using the standard rewrite rules.
+-/
 theorem symG_zero (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ) (x : ℤ → SegRing O r K) (k : ℕ)
     (hk' : k ∈ Finset.range F.J) : symG p O hk F l ga (Function.update x (k : ℤ) 0) = 0 := by
   rw [symG_update p O hk F l ga x k hk' 0]
   simp
 
+/- English proof (translation)
+Rewrite using `[symG_update p O hk F l ga x k hk', symG_update p O hk F l ga x k hk', symG_update p O hk F l ga x k hk', map_add, add_mul, map_add, add_mul, map_add]`.
+-/
 theorem symG_add (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ) (x : ℤ → SegRing O r K) (k : ℕ)
     (hk' : k ∈ Finset.range F.J) (a b : SegRing O r K) :
     symG p O hk F l ga (Function.update x (k : ℤ) (a + b)) =
@@ -61,6 +73,9 @@ theorem symG_add (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →�
   rw [symG_update p O hk F l ga x k hk', symG_update p O hk F l ga x k hk',
     symG_update p O hk F l ga x k hk', map_add, add_mul, map_add, add_mul, map_add]
 
+/- English proof (translation)
+Rewrite using `[symG_update p O hk F l ga x k hk', symG_update p O hk F l ga x k hk', map_smul, smul_mul_assoc, map_smul, smul_mul_assoc, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`.
+-/
 theorem symG_smul (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ) (x : ℤ → SegRing O r K) (k : ℕ)
     (hk' : k ∈ Finset.range F.J) (c : O) (a : SegRing O r K) :
     symG p O hk F l ga (Function.update x (k : ℤ) (c • a)) =
@@ -69,6 +84,23 @@ theorem symG_smul (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →
     map_smul, smul_mul_assoc, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C,
     ← MvPolynomial.smul_eq_C_mul]
 
+/- English proof (translation)
+Establish `key : ∀ k : ℕ, ∀ x : ℤ → SegRing O r K, (∀ j : ℕ, j < F.J → (j < k → x j ∈ Submodule.span O (Sj j)) ∧ (k ≤ j → x j ∈ Sj j)) → symG p O hk F l ga x ∈ Q`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `x hx`.
+
+Conclude with `h x (fun j hj => (hx j hj).2 (Nat.zero_le j))`. Consider the case `succ k ih`. Introduce `x hx`. Distinguish the cases in `hkJ : k < F.J`. Establish `hk' : k ∈ Finset.range F.J` using `Finset.mem_range.2 hkJ`.
+
+Establish `hspan : ∀ y ∈ Submodule.span O (Sj k), symG p O hk F l ga (Function.update x (k : ℤ) y) ∈ Q`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hyS`. Apply `ih` to reduce the goal to its premises.
+
+Introduce `j hj`. Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk, Function.update_self]`. Conclude with `⟨fun h' => absurd h' (lt_irrefl _), fun _ => hyS⟩`. Establish `hne : (j : ℤ) ≠ (k : ℤ)` using `by exact_mod_cast hjk`.
+
+Rewrite using `[Function.update_of_ne hne]`. Conclude with `⟨fun h' => (hx j hj).1 (by omega), fun h' => (hx j hj).2 (by omega)⟩`. Consider the case `zero`. Rewrite using `[symG_zero p O hk F l ga x k hk']`. Conclude with `Q.zero_mem`.
+
+Consider the case `add a b _ _ ha hb`. Rewrite using `[symG_add p O hk F l ga x k hk']`. Conclude with `Q.add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[symG_smul p O hk F l ga x k hk']`.
+
+Conclude with `Q.smul_mem _ ha`. Establish `h1` using `hspan (x k) ((hx k hkJ).1 (Nat.lt_succ_self k))`. Rewrite `h1` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Apply `ih` to reduce the goal to its premises. Introduce `j hj`.
+
+Conclude with `⟨fun h' => (hx j hj).1 (by omega), fun h' => absurd h' (by omega)⟩`. Introduce `x hx`. Conclude with `key F.J x (fun j hj => ⟨fun _ => hx j hj, fun h' => absurd h' (by omega)⟩)`.
+-/
 theorem symG_span (Q : Submodule (KK O) (MvPolynomial (TV n' (m + 1)) (KK O))) (Sj : ℤ → Set (SegRing O r K))
     (l : Fin n' × Fin (r + K) →₀ ℕ) (ga : TV n' (m + 1) →₀ ℕ)
     (h : ∀ x : ℤ → SegRing O r K, (∀ j : ℕ, j < F.J → x j ∈ Sj j) → symG p O hk F l ga x ∈ Q) :
@@ -124,6 +156,9 @@ def g2mg (p n' : ℕ) [NeZero n'] (r K : ℕ) (F : Frames n' r) (deg : Fin n' �
 def g2th (p n' : ℕ) [NeZero n'] {r : ℕ} (F : Frames n' r) (deg : Fin n' → ℕ) (j x : ℤ) : ℝ :=
   (deg (posOf n' (F.oldest j x)) : ℝ) / (p : ℝ) ^ F.dist j (F.oldest j x) / 2
 
+/- English proof (translation)
+The claim follows from `(Submodule.mem_inf.1 hx).1`.
+-/
 theorem symbol_spaces_le_pair_span (CLa : ℝ) (p n' : ℕ) [NeZero n'] (O : Type) [CommRing O] (r K : ℕ) [NeZero r] [NeZero K]
     (F : Frames n' r) (deg : Fin n' → ℕ) (L₁ Ns mS : ℕ) (a Y : ℝ) (j : ℤ) {x : SegRing O r K}
     (hx : x ∈ symbolSpaces CLa p n' O r K F deg L₁ Ns mS a Y j) :
@@ -148,6 +183,11 @@ def Lemma5aGeneratorProductsAt (C CLa : ℝ) : Prop :=
       MemAtG 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h x) (goodG' r de h x) (cPrime n' r TT.card c0 cpp cStar)
         (symG p O hk F l ga xs)
 
+/- English proof (translation)
+Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD b ga hga`. Establish `hGen` using `hD.2.2.2.1.choose_spec.2 b`. Take `⟨xs, hxs, l, hl, hB, -⟩` from `hGen`. Establish `e1 : MvPolynomial.map (algebraMap O (KK O)) (rename (castV hk) (B b) * monomial ga 1) = symG p O hk F l ga xs` using `by rw [hB]; rfl`. Rewrite using `[e1]`.
+
+Set `mS : ℕ` to `mStar p F (r + K) (orbitWindowCount r de h' x) (p ^ goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar)`. Set `Sj : ℤ → Set (SegRing O r K)` to `fun jj => pairSet O r K F jj (g2mg p n' r K F (flatDeg lam0) mS Y jj) (g2th p n' F (flatDeg lam0) jj)`. Establish `hspan : ∀ i : ℕ, i < F.J → xs i ∈ Submodule.span O (Sj i)` using `fun i _ => symbol_spaces_le_pair_span CLa p n' O r K F (flatDeg lam0) L₁ (min (orbitWindowCount r de h' x) (2 * TT.card)) mS a Y (i : ℤ) (hxs i)`. Conclude with `symG_span p O hk F (memSub 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h' x) (goodG' r de h' x) (cPrime n' r TT.card c0 cpp cStar)) Sj l ga (fun xs' hxs' => h p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD xs' hxs' l h …`.
+-/
 theorem monomialAt_of_generatorProductsAt (C CLa : ℝ) (h : Lemma5aGeneratorProductsAt C CLa) : Lemma5aMonomialAt C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h' x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk
     F nb B hD b ga hga
@@ -170,6 +210,9 @@ theorem monomialAt_of_generatorProductsAt (C CLa : ℝ) (h : Lemma5aGeneratorPro
 def Lemma5aGeneratorProducts (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → Lemma5aGeneratorProductsAt C CLa
 
+/- English proof (translation)
+Introduce `hA`. Take `⟨C1, hC1, hst⟩` from `h hA`. Conclude with `⟨C1, hC1, fun C hC => monomialAt_of_generatorProductsAt C CLa (hst C hC)⟩`.
+-/
 theorem monomial_of_generatorProducts (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h : Lemma5aGeneratorProducts D CLa Ck Crk Cdeg) :
     Lemma5aMonomial D CLa Ck Crk Cdeg := by
   intro hA

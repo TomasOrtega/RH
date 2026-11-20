@@ -8,6 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LiftDim
 
+/- English proof (translation)
+Use `⟨fun P => ?_⟩` and prove the remaining obligations. Establish `: P ∈ Set.range (PrimeSpectrum.comap π)`. Rewrite using `[range_comap_of_surjective _ _ hπ]`. Introduce `x hx`. Take `⟨n, hn⟩` from `hnil`.
+
+Use `(P : PrimeSpectrum R).2.mem_of_pow_mem n ?_` and prove the remaining obligations. Establish `h : x ^ n ∈ RingHom.ker π ^ n` using `Ideal.pow_mem_pow hx n`. Rewrite `h` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Rewrite using `[h]`. Conclude with `zero_mem _`.
+
+Conclude with `this`.
+-/
 theorem surjective_spMap_of_nilpotent {R R₀ : Type} [CommRing R] [CommRing R₀] (π : R →+* R₀)
     (hπ : Function.Surjective π) (hnil : IsNilpotent (RingHom.ker π)) : Surjective (spMap π) := by
   refine ⟨fun P => ?_⟩
@@ -21,6 +28,13 @@ theorem surjective_spMap_of_nilpotent {R R₀ : Type} [CommRing R] [CommRing R�
     rw [h]; exact zero_mem _
   exact this
 
+/- English proof (translation)
+Introduce `R R₀ _ _ π hπ hnil g X X₀ i hpb hsm hg`. Establish `hs : Surjective (spMap π)` using `surjective_spMap_of_nilpotent π hπ hnil`. Establish `hi : Surjective i` using `MorphismProperty.of_isPullback hpb.flip hs`. Establish `key : ∀ x : X.left, ∃ W : X.left.Opens, x ∈ W ∧ SmoothOfRelativeDimension g (W.ι ≫ X.hom)`. Introduce `x`.
+
+Take `⟨n, W, hx, hW⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim X.hom x`. Take `⟨x₀, hx₀⟩` from `hi.surj x`. Establish `hn : n = g` using `ReciprocityTheory.ChartRestriction.G.H1.dim_base hpb hW hg x₀ (by rw [hx₀]; exact hx)`. Substitute `hn` using the available equality. Conclude with `⟨W, hx, hW⟩`.
+
+Use `choose W hW hd using key`. Use `haveI : IsZariskiLocalAtSource (@SmoothOfRelativeDimension.{0} g) := HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension g) W ?_ hd` and prove the remaining obligations. Conclude with `top_unique fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hW x⟩`.
+-/
 theorem smoothOfRelativeDimension_of_reduction : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀), Function.Surjective π → IsNilpotent (RingHom.ker π) →
     ∀ (g : ℕ) (X : Over (Sp R)) (X₀ : Over (Sp R₀)) (i : X₀.left ⟶ X.left), IsPullback i X₀.hom X.hom (spMap π) → Smooth X.hom →
     SmoothOfRelativeDimension g X₀.hom → SmoothOfRelativeDimension g X.hom := by

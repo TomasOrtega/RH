@@ -11,12 +11,27 @@ section NoF
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conjO_coe (x : 𝓞 K) : ((conjO K x : 𝓞 K) : K) = star (x : K) := rfl
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe, conjO_coe, star_star]`.
+-/
 theorem conjO_conjO (x : 𝓞 K) : conjO K (conjO K x) = x := by
   apply RingOfIntegers.ext
   rw [conjO_coe, conjO_coe, star_star]
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `r ⟨s, hs, hrs⟩`. Establish `hr : conjO K r = s`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe]`. Establish `h2 : (r : K) = star (s : K)` using `hrs`. Rewrite using `[h2, star_star]`. Use `show conjO K r ∈ P`.
+
+Rewrite using `[hr]`. Conclude with `hs`. Introduce `x hx`. Apply `Ideal.subset_span` to reduce the goal to its premises. Use `⟨conjO K x, hx, ?_⟩` and prove the remaining obligations.
+
+Use `show (x : K) = star ((conjO K x : 𝓞 K) : K)`. Rewrite using `[conjO_coe, star_star]`.
+-/
 theorem conjIdeal_eq_comap (P : Ideal (𝓞 K)) :
     Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P.comap (conjO K) := by
   unfold Formalism.HermitianLatticesTheory.conjIdeal
@@ -37,6 +52,11 @@ theorem conjIdeal_eq_comap (P : Ideal (𝓞 K)) :
     show (x : K) = star ((conjO K x : 𝓞 K) : K)
     rw [conjO_coe, star_star]
 
+/- English proof (translation)
+Take `⟨θ, t, ht, hθ⟩` from `hK.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `hθt : conjO K θ = t`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe]`.
+
+Conclude with `ht.symm`. Rewrite using `[hθt]` and apply the resulting hypothesis.
+-/
 theorem exists_sub_conjO_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     ∃ θ : 𝓞 K, θ - conjO K θ ∉ P := by
   obtain ⟨θ, t, ht, hθ⟩ := hK.2.2 P hP
@@ -48,23 +68,37 @@ theorem exists_sub_conjO_notMem (hK : Formalism.HermitianLatticesTheory.IsCMUnra
   rwa [hθt]
 
 omit [StarRing K] in
+/- English proof (translation)
+Use `first`. Consider the case `rfl`. Consider the case `(rw [Ideal.absNorm_apply]; rfl)`. Consider the case `(rw [Ideal.absNorm_apply, Submodule.cardQuot_apply])`.
+-/
 theorem absNorm_eq_card (I : Ideal (𝓞 K)) : Ideal.absNorm I = Nat.card (𝓞 K ⧸ I) := by
   first
   | rfl
   | (rw [Ideal.absNorm_apply]; rfl)
   | (rw [Ideal.absNorm_apply, Submodule.cardQuot_apply])
 
+/- English proof (translation)
+Rewrite using `[conjIdeal_eq_comap]`. Use `haveI := hP`. Conclude with `Ideal.comap_isMaximal_of_surjective (conjO K) (fun y => ⟨conjO K y, conjO_conjO y⟩)`.
+-/
 theorem conjIdeal_isMaximal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P).IsMaximal := by
   rw [conjIdeal_eq_comap]
   haveI := hP
   exact Ideal.comap_isMaximal_of_surjective (conjO K) (fun y => ⟨conjO K y, conjO_conjO y⟩)
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [conjIdeal_eq_comap, Ideal.mem_comap, conjO_conjO]`.
+-/
 theorem conjIdeal_conjIdeal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (P : Ideal (𝓞 K)) :
     Formalism.HermitianLatticesTheory.conjIdeal (K := K) (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P) = P := by
   ext x
   simp only [conjIdeal_eq_comap, Ideal.mem_comap, conjO_conjO]
 
+/- English proof (translation)
+Rewrite using `[conjIdeal_eq_comap]`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `h` using `Ideal.mem_map_of_mem (conjO K) (show conjO K x ∈ P from hx)`. Rewrite `h` using `[conjO_conjO]`. Then use the resulting hypothesis.
+
+Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Simplify `hx` using `only [Ideal.mem_comap, conjO_conjO]`.
+-/
 theorem conjIdeal_eq_map (P : Ideal (𝓞 K)) : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P.map (conjO K) := by
   rw [conjIdeal_eq_comap]
   apply le_antisymm
@@ -75,6 +109,11 @@ theorem conjIdeal_eq_map (P : Ideal (𝓞 K)) : Formalism.HermitianLatticesTheor
     intro x hx
     simpa only [Ideal.mem_comap, conjO_conjO] using hx
 
+/- English proof (translation)
+Rewrite using `[absNorm_eq_card, absNorm_eq_card]`. Set `e : 𝓞 K ≃+* 𝓞 K` to `{ conjO K with invFun := conjO K left_inv := fun x => conjO_conjO x right_inv := fun x => conjO_conjO x }`. Establish `h : Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P = P.map (e : 𝓞 K →+* 𝓞 K) := by`. Rewrite using `[conjIdeal_eq_map]`. Both sides reduce to the same expression.
+
+Conclude with `(Nat.card_congr (Ideal.quotientEquiv P _ e h).toEquiv).symm`.
+-/
 theorem absNorm_conjIdeal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (P : Ideal (𝓞 K)) :
     Ideal.absNorm (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P) = Ideal.absNorm P := by
   rw [absNorm_eq_card, absNorm_eq_card]
@@ -88,6 +127,9 @@ theorem absNorm_conjIdeal (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (
     rfl
   exact (Nat.card_congr (Ideal.quotientEquiv P _ e h).toEquiv).symm
 
+/- English proof (translation)
+Rewrite `hc` using `[conjIdeal_eq_comap]`. Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Rewrite using `[absNorm_eq_card]`. Conclude with `SplitPrimeIdeals.exists_sq_card_quot conjO_conjO hP hc hθ`.
+-/
 theorem exists_sq_absNorm_of_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) :
     ∃ q : ℕ, Ideal.absNorm P = q ^ 2 := by
@@ -102,6 +144,15 @@ section WithF
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hfix : star (x : K) = x` using `by rw [← conjO_coe, hx]`. Take `⟨a, ha⟩` from `(hF _).1 hfix`. Establish `hint : IsIntegral ℤ (algebraMap F K a)`.
+
+Rewrite using `[ha]`. Use `first`. Consider the case `exact RingOfIntegers.isIntegral_coe x`. Consider the case `exact x.2`. Establish `ha' : IsIntegral ℤ a` using `(isIntegral_algebraMap_iff (algebraMap F K).injective).1 hint`.
+
+Use `⟨⟨a, ha'⟩, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show algebraMap F K a = (x : K)`. Conclude with `ha`. Introduce and unpack `⟨y, rfl⟩`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[conjO_coe]`. Establish `hy : ((algebraMap (𝓞 F) (𝓞 K) y : 𝓞 K) : K) = algebraMap F K (y : F)` using `rfl`. Rewrite using `[hy]`. Conclude with `(hF _).2 ⟨_, rfl⟩`.
+-/
 theorem conjO_eq_iff_mem_range (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) (x : 𝓞 K) :
     conjO K x = x ↔ x ∈ Set.range (algebraMap (𝓞 F) (𝓞 K)) := by
   constructor
@@ -125,12 +176,22 @@ theorem conjO_eq_iff_mem_range (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (
     rw [hy]
     exact (hF _).2 ⟨_, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[conjIdeal_eq_comap]`. Conclude with `SplitPrimeIdeals.comap_eq_comap_iff conjO_conjO (conjO_eq_iff_mem_range hF) hP hQ`.
+-/
 theorem comap_eq_comap_iff (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {P Q : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hQ : Q.IsMaximal) :
     P.comap (algebraMap (𝓞 F) (𝓞 K)) = Q.comap (algebraMap (𝓞 F) (𝓞 K)) ↔ Q = P ∨ Q = Formalism.HermitianLatticesTheory.conjIdeal (K := K) P := by
   rw [conjIdeal_eq_comap]
   exact SplitPrimeIdeals.comap_eq_comap_iff conjO_conjO (conjO_eq_iff_mem_range hF) hP hQ
 
+/- English proof (translation)
+Use `haveI := h𝔭`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) (𝓞 K))` using `by first`. Consider the case `exact NoZeroSMulDivisors.algebraMap_injective _ _`. Consider the case `exact FaithfulSMul.algebraMap_injective _ _`. Consider the case `(intro a b hab`.
+
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Apply `(algebraMap F K).injective` to reduce the goal to its premises. Conclude with `congrArg (fun z : 𝓞 K => (z : K)) hab)`. Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 K)) ≤ 𝔭`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hinj]`.
+
+Conclude with `bot_le`. Conclude with `Ideal.exists_ideal_over_maximal_of_isIntegral 𝔭 hker`.
+-/
 theorem exists_maximal_over (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) : ∃ P : Ideal (𝓞 K), P.IsMaximal ∧ P.comap (algebraMap (𝓞 F) (𝓞 K)) = 𝔭 := by
   haveI := h𝔭
@@ -147,6 +208,9 @@ theorem exists_maximal_over (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     exact bot_le
   exact Ideal.exists_ideal_over_maximal_of_isIntegral 𝔭 hker
 
+/- English proof (translation)
+Rewrite `hc` using `[conjIdeal_eq_comap]`. Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Rewrite using `[absNorm_eq_card, absNorm_eq_card]`. Conclude with `SplitPrimeIdeals.card_quot_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP hc hθ`.
+-/
 theorem absNorm_comap_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) :
     Ideal.absNorm (P.comap (algebraMap (𝓞 F) (𝓞 K))) ^ 2 = Ideal.absNorm P := by
@@ -155,6 +219,9 @@ theorem absNorm_comap_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
   rw [absNorm_eq_card, absNorm_eq_card]
   exact SplitPrimeIdeals.card_quot_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP hc hθ
 
+/- English proof (translation)
+Rewrite `hc` using `[conjIdeal_eq_comap]`. Rewrite using `[absNorm_eq_card, absNorm_eq_card]`. Conclude with `SplitPrimeIdeals.card_quot_split conjO_conjO (conjO_eq_iff_mem_range hF) hP hc`.
+-/
 theorem absNorm_comap_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {P : Ideal (𝓞 K)} (hP : P.IsMaximal)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) :
     Ideal.absNorm (P.comap (algebraMap (𝓞 F) (𝓞 K))) = Ideal.absNorm P := by
@@ -162,6 +229,11 @@ theorem absNorm_comap_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
   rw [absNorm_eq_card, absNorm_eq_card]
   exact SplitPrimeIdeals.card_quot_split conjO_conjO (conjO_eq_iff_mem_range hF) hP hc
 
+/- English proof (translation)
+Rewrite using `[conjIdeal_eq_comap]`. Unfold `etaF`. Distinguish the cases in `hc : P.comap (conjO K) = P`. Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Rewrite using `[SplitPrimeIdeals.map_comap_of_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP hc hθ, if_pos hP.isPrime, if_pos hc]`.
+
+Rewrite using `[if_neg (SplitPrimeIdeals.not_isPrime_map_of_split conjO_conjO (conjO_eq_iff_mem_range hF) hP hc), if_neg hc]`.
+-/
 theorem etaF_comap (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : ∀ a : K, star a = a ↔ a ∈ Set.range (algebraMap F K)) {P : Ideal (𝓞 K)} (hP : P.IsMaximal) :
     etaF K F (P.comap (algebraMap (𝓞 F) (𝓞 K))) = if Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P then -1 else 1 := by
   rw [conjIdeal_eq_comap]

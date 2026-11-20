@@ -9,6 +9,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.FrameDet
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d₁ r' s' i₀ i₁ W W₁ H' Q hW hH hι hx hy`. Use `haveI := hW.lat`. Establish `hrange : LinearMap.range Q.mulVecLin = ⊤`. Rewrite using `[eq_top_iff, ← Submodule.IsLattice.span_eq_top (M := W.L), Submodule.span_le]`. Introduce `z hz`.
+
+Take `⟨s, t, u, -, -, -, rfl⟩` from `hH.split z hz`. Use `⟨Fin.addCases u ![s, t], ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_add, Fin.addCases_left, Fin.addCases_right, Fin.sum_univ_two, hι, hx, hy, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hsurj : Function.Surjective Q.mulVec`. Introduce `z`. Take `⟨v, hv⟩ : z ∈ LinearMap.range Q.mulVecLin` from `hrange ▸ Submodule.mem_top`. Conclude with `⟨v, hv⟩`. Conclude with `((Matrix.isUnit_iff_isUnit_det Q).mp (Matrix.mulVec_surjective_iff_isUnit.mp hsurj)).ne_zero`.
+-/
 theorem frame_det_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d₁ r' s' i₀ i₁ : ℕ) (W : Spc F E (d₁ + 2)) (W₁ : Spc F E d₁) (H' : Plane E (d₁ + 2) d₁)
     (Q : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) E), W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ →

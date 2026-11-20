@@ -12,6 +12,11 @@ namespace GlobalTheory.HeckeOrthSum
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E)` using `by haveI := D.host.isCMField_hostE`. Conclude with `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`.
+
+Rewrite using `[this]` and apply the resulting hypothesis. Use `haveI := P.isPrime`. Conclude with `not_dvd_differentIdeal_iff.2 (Algebra.unramified_iff_forall.1 hU ⟨P.asIdeal, P.isPrime⟩)`.
+-/
 theorem not_dvd_different (D : D7) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     ¬ P.asIdeal ∣ differentIdeal (𝓞 D.host.F) (𝓞 D.host.E) := by
   have hU : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by

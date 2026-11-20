@@ -9,6 +9,9 @@ namespace GlobalTheory.Pat.CplMap
 variable {R S S' : Type} [CommRing R] [CommRing S] [IsLocalRing S] [CommRing S'] [IsLocalRing S']
   {q : Ideal R} {φ : R →+* S} {ψ : R →+* S'}
 
+/- English proof (translation)
+Establish `h1 : IsUnit (ψ b)`. Assume the negation of the conclusion as `h`. Conclude with `hb (hψ ▸ (Ideal.mem_comap.mpr ((mem_maximalIdeal _).mpr h)))`. Conclude with `h1.map _`.
+-/
 theorem isUnit_mk (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) {b : R} (hb : b ∉ q) :
     IsUnit (Ideal.Quotient.mk (maximalIdeal S' ^ n) (ψ b)) := by
   have h1 : IsUnit (ψ b) := by
@@ -16,6 +19,9 @@ theorem isUnit_mk (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) {b : R} (hb :
     exact hb (hψ ▸ (Ideal.mem_comap.mpr ((mem_maximalIdeal _).mpr h)))
   exact h1.map _
 
+/- English proof (translation)
+Establish `h : (q ^ n).map ψ ≤ maximalIdeal S' ^ n`. Rewrite using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hψ.ge) n`. Conclude with `h (Ideal.mem_map_of_mem ψ ha)`.
+-/
 theorem map_mem_pow (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) {a : R} (ha : a ∈ q ^ n) :
     ψ a ∈ maximalIdeal S' ^ n := by
   have h : (q ^ n).map ψ ≤ maximalIdeal S' ^ n := by
@@ -23,6 +29,11 @@ theorem map_mem_pow (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) {a : R} (ha
     exact Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr hψ.ge) n
   exact h (Ideal.mem_map_of_mem ψ ha)
 
+/- English proof (translation)
+Establish `h1 : (maximalIdeal S).map F ≤ maximalIdeal S'`. Rewrite using `[hφ.max_eq, Ideal.map_map, hF]`. Conclude with `Ideal.map_le_iff_le_comap.mpr hψ.ge`. Establish `h2 : (maximalIdeal S ^ n).map F ≤ maximalIdeal S' ^ n`. Rewrite using `[Ideal.map_pow]`.
+
+Conclude with `Ideal.pow_right_mono h1 n`. Conclude with `h2 (Ideal.mem_map_of_mem F hx)`.
+-/
 theorem ext_mem_pow (hφ : IsCplAt q φ) (hψ : (maximalIdeal S').comap ψ = q) {F : S →+* S'}
     (hF : F.comp φ = ψ) (n : ℕ) {x : S} (hx : x ∈ maximalIdeal S ^ n) :
     F x ∈ maximalIdeal S' ^ n := by
@@ -41,6 +52,13 @@ def IsVal (q : Ideal R) (φ : R →+* S) (ψ : R →+* S') (n : ℕ) (s : S)
   ∀ a b : R, b ∉ q → φ b * s - φ a ∈ maximalIdeal S ^ n →
     Ideal.Quotient.mk (maximalIdeal S' ^ n) (ψ b) * t = Ideal.Quotient.mk (maximalIdeal S' ^ n) (ψ a)
 
+/- English proof (translation)
+Take `⟨a0, b0, hb0, h0⟩` from `(isCplAt_approx R S q φ hφ n).1 s`. Take `⟨u, hu⟩` from `isUnit_mk hψ n hb0`. Use `⟨Ideal.Quotient.mk _ (ψ a0) * (↑u⁻¹ : S' ⧸ maximalIdeal S' ^ n), fun a b _ h => ?_⟩` and prove the remaining obligations. Establish `hm : φ (b * a0 - b0 * a) ∈ maximalIdeal S ^ n`. Establish `: φ (b * a0 - b0 * a) = φ b0 * (φ b * s - φ a) - φ b * (φ b0 * s - φ a0)`.
+
+Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ h) (Ideal.mul_mem_left _ _ h0)`. Take `⟨c, hc, hcq⟩` from `(isCplAt_approx R S q φ hφ n).2 _ hm`.
+
+Establish `h1` using `Ideal.Quotient.eq_zero_iff_mem.mpr (map_mem_pow hψ n hcq)`. Simplify using `only [map_mul, map_sub] at h1`. Establish `h2` using `sub_eq_zero.mp ((isUnit_mk hψ n hc).mul_right_eq_zero.mp h1)`. Rewrite using `[← mul_assoc, h2, ← hu, mul_right_comm, Units.mul_inv, one_mul]`.
+-/
 theorem exists_val (hφ : IsCplAt q φ) (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) (s : S) :
     ∃ t, IsVal q φ ψ n s t := by
   obtain ⟨a0, b0, hb0, h0⟩ := (isCplAt_approx R S q φ hφ n).1 s
@@ -58,6 +76,9 @@ theorem exists_val (hφ : IsCplAt q φ) (hψ : (maximalIdeal S').comap ψ = q) (
   rw [← mul_assoc, h2, ← hu, mul_right_comm, Units.mul_inv, one_mul]
 
 omit hq in
+/- English proof (translation)
+The claim follows from `(isUnit_mk hψ n hb).mul_left_cancel ((ht a b hb h).trans e.symm)`.
+-/
 theorem val_unique_of_pair (hψ : (maximalIdeal S').comap ψ = q) {n : ℕ} {s : S}
     {t t' : S' ⧸ maximalIdeal S' ^ n} (ht : IsVal q φ ψ n s t) {a b : R} (hb : b ∉ q)
     (h : φ b * s - φ a ∈ maximalIdeal S ^ n)
@@ -65,8 +86,26 @@ theorem val_unique_of_pair (hψ : (maximalIdeal S').comap ψ = q) {n : ℕ} {s :
       Ideal.Quotient.mk (maximalIdeal S' ^ n) (ψ a)) : t = t' :=
   (isUnit_mk hψ n hb).mul_left_cancel ((ht a b hb h).trans e.symm)
 
+/- English proof (translation)
+Introduce `h` and use `hq.ne_top ((Ideal.eq_top_iff_one q).mpr h)`.
+-/
 theorem one_notMem : (1 : R) ∉ q := fun h => hq.ne_top ((Ideal.eq_top_iff_one q).mpr h)
 
+/- English proof (translation)
+Use `choose f hf using exists_val hφ hψ n`. Establish `ap` using `(isCplAt_approx R S q φ hφ n).1`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hf⟩` and prove the remaining obligations. Conclude with `val_unique_of_pair hψ (hf 1) (a := 1) (b := 1) one_notMem (by simp) (by simp)`. Introduce `x y`.
+
+Take `⟨a1, b1, hb1, h1⟩` from `ap x`. Take `⟨a2, b2, hb2, h2⟩` from `ap y`. Establish `hb : b1 * b2 ∉ q` using `fun h => (hq.mem_or_mem h).elim hb1 hb2`. Use `val_unique_of_pair hψ (hf (x * y)) (a := a1 * a2) hb ?_ ?_` and prove the remaining obligations. Establish `: φ (b1 * b2) * (x * y) - φ (a1 * a2) = (φ b1 * x - φ a1) * (φ b2 * y) + φ a1 * (φ b2 * y - φ a2)`.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ h1) (Ideal.mul_mem_left _ _ h2)`. Simplify using `only [map_mul]`.
+
+Rewrite using `[← hf x a1 b1 hb1 h1, ← hf y a2 b2 hb2 h2]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `val_unique_of_pair hψ (hf 0) (a := 0) (b := 1) one_notMem (by simp) (by simp)`. Introduce `x y`. Take `⟨a1, b1, hb1, h1⟩` from `ap x`.
+
+Take `⟨a2, b2, hb2, h2⟩` from `ap y`. Establish `hb : b1 * b2 ∉ q` using `fun h => (hq.mem_or_mem h).elim hb1 hb2`. Use `val_unique_of_pair hψ (hf (x + y)) (a := a1 * b2 + a2 * b1) hb ?_ ?_` and prove the remaining obligations. Establish `: φ (b1 * b2) * (x + y) - φ (a1 * b2 + a2 * b1) = φ b2 * (φ b1 * x - φ a1) + φ b1 * (φ b2 * y - φ a2)`. Simplify using `only [map_mul, map_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)`. Simplify using `only [map_mul, map_add]`. Rewrite using `[← hf x a1 b1 hb1 h1, ← hf y a2 b2 hb2 h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_levHom (hφ : IsCplAt q φ) (hψ : (maximalIdeal S').comap ψ = q) (n : ℕ) :
     ∃ f : S →+* S' ⧸ maximalIdeal S' ^ n, ∀ s, IsVal q φ ψ n s (f s) := by
   choose f hf using exists_val hφ hψ n
@@ -105,6 +144,19 @@ namespace GlobalTheory.Pat
 
 open CplMap
 
+/- English proof (translation)
+Introduce `R S S' _ _ _ _ _ _ q _ φ ψ hφ hψ`. Use `choose f hf using exists_levHom hφ hψ`. Establish `hc : ∀ {m n : ℕ} (hle : m ≤ n), (Ideal.Quotient.factorPow (maximalIdeal S') hle).comp (f n) = f m`. Introduce `m n hle`. Use extensionality with `s`.
+
+Take `⟨a, b, hb, h⟩` from `(isCplAt_approx R S q φ hφ n).1 s`. Use `(val_unique_of_pair hψ (hf m s) hb (Ideal.pow_le_pow_right hle h) ?_).symm` and prove the remaining obligations. Establish `e` using `congrArg (Ideal.Quotient.factorPow (maximalIdeal S') hle) (hf n s a b hb h)`. Rewrite `e` using `[map_mul]`. Conclude with `e`.
+
+Establish `hcomp : (IsAdicComplete.liftRingHom (maximalIdeal S') f hc).comp φ = ψ`. Use extensionality with `r`. Use `congrFun (IsHausdorff.funext' (maximalIdeal S') (f := fun r => IsAdicComplete.liftRingHom (maximalIdeal S') f hc (φ r)) (g := fun r => ψ r) (fun n r => ?_)) r` and prove the remaining obligations. Rewrite using `[IsAdicComplete.mk_liftRingHom]`. Conclude with `val_unique_of_pair hψ (hf n (φ r)) (a := r) (b := 1) one_notMem (by simp) (by simp)`.
+
+Use `⟨IsAdicComplete.liftRingHom (maximalIdeal S') f hc, ⟨⟨fun s hs => ?_⟩, hcomp⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `h1` using `ext_mem_pow hφ hψ hcomp 1 (x := s) (by`. Rewrite using `[pow_one]`. Conclude with `(mem_maximalIdeal _).mpr hn)`.
+
+Rewrite `h1` using `[pow_one]`. Conclude with `(mem_maximalIdeal _).mp h1 hs`. Introduce and unpack `F ⟨-, hF⟩`. Use `IsAdicComplete.eq_liftRingHom _ f hc F (fun n => ?_)` and prove the remaining obligations. Use extensionality with `s`.
+
+Take `⟨a, b, hb, h⟩` from `(isCplAt_approx R S q φ hφ n).1 s`. Use `(val_unique_of_pair hψ (hf n s) hb h ?_).symm` and prove the remaining obligations. Establish `h1` using `ext_mem_pow hφ hψ hF n h`. Rewrite using `[RingHom.comp_apply, ← map_mul, Ideal.Quotient.eq, ← hF]`. Simplify using `using h1`.
+-/
 theorem isCplAt_existsUnique_map : ∀ (R S S' : Type) [CommRing R] [CommRing S] [IsLocalRing S]
     [CommRing S'] [IsLocalRing S'] [IsAdicComplete (maximalIdeal S') S'] (q : Ideal R) [q.IsPrime]
     (φ : R →+* S) (ψ : R →+* S'), IsCplAt q φ → (maximalIdeal S').comap ψ = q →

@@ -8,10 +8,20 @@ universe u_1
 
 variable {𝔸 : Type u_1} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸]
 
+/- English proof (translation)
+Conclude with `(hc.integral_hasStrictDerivAt 0 t).hasDerivAt`.
+-/
 theorem hasDerivAt_primitive (M : ℝ → 𝔸) (hc : Continuous M) (t : ℝ) :
     HasDerivAt (fun u : ℝ => ∫ s in (0 : ℝ)..u, M s) (M t) t := by
   exact (hc.integral_hasStrictDerivAt 0 t).hasDerivAt
 
+/- English proof (translation)
+Establish `hd` using `(hasDerivAt_primitive M hc 0).tendsto_slope_zero`. Rewrite `hd` using `[h0]`. Establish `hev` using `hd.eventually (Units.isOpen.mem_nhds isUnit_one)`. Take `⟨δ, hδU, hδ0⟩` from `(hev.and self_mem_nhdsWithin).exists`. Establish `hδ0' : δ ≠ 0` using `Set.mem_compl_singleton_iff.1 hδ0`.
+
+Simplify using `only [zero_add, intervalIntegral.integral_same, sub_zero] at hδU`. Use `⟨δ, ?_⟩` and prove the remaining obligations. Establish `e : (∫ s in (0 : ℝ)..δ, M s) = algebraMap ℝ 𝔸 δ * (δ⁻¹ • ∫ s in (0 : ℝ)..δ, M s)`. Rewrite using `[← Algebra.smul_def, smul_smul, mul_inv_cancel₀ hδ0', one_smul]`. Rewrite using `[e]`.
+
+Conclude with `((isUnit_iff_ne_zero.2 hδ0').map (algebraMap ℝ 𝔸)).mul hδU`.
+-/
 theorem exists_isUnit_integral (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 = 1) :
     ∃ δ : ℝ, IsUnit (∫ s in (0 : ℝ)..δ, M s) := by
   have hd := (hasDerivAt_primitive M hc 0).tendsto_slope_zero
@@ -26,6 +36,9 @@ theorem exists_isUnit_integral (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 
   rw [e]
   exact ((isUnit_iff_ne_zero.2 hδ0').map (algebraMap ℝ 𝔸)).mul hδU
 
+/- English proof (translation)
+Establish `hL` using `((ContinuousLinearMap.mul ℝ 𝔸) (M t)).intervalIntegral_comp_comm (hc.intervalIntegrable (μ := MeasureTheory.volume) 0 δ)`. Simplify using `only [ContinuousLinearMap.mul_apply'] at hL`. Rewrite using `[← hL]`. Repeatedly rewrite using `[← hadd]`. Rewrite using `[intervalIntegral.integral_comp_add_left (fun s => M s) t, add_zero, intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable (μ := MeasureTheory.volume) _ _) (hc.intervalIntegrable (μ := MeasureTheory.volume) _ _)]`.
+-/
 theorem mul_integral (M : ℝ → 𝔸) (hc : Continuous M)
     (hadd : ∀ s t : ℝ, M (s + t) = M s * M t) (t δ : ℝ) :
     M t * (∫ s in (0 : ℝ)..δ, M s)
@@ -37,6 +50,13 @@ theorem mul_integral (M : ℝ → 𝔸) (hc : Continuous M)
   rw [intervalIntegral.integral_comp_add_left (fun s => M s) t, add_zero,
     intervalIntegral.integral_interval_sub_left (hc.intervalIntegrable (μ := MeasureTheory.volume) _ _) (hc.intervalIntegrable (μ := MeasureTheory.volume) _ _)]
 
+/- English proof (translation)
+Take `⟨δ, hA⟩` from `exists_isUnit_integral M hc h0`. Establish `hAA : (∫ s in (0 : ℝ)..δ, M s) * ↑(hA.unit⁻¹) = 1` using `hA.mul_val_inv`. Use `⟨(M δ - 1) * ↑(hA.unit⁻¹), fun t => ?_⟩` and prove the remaining obligations. Establish `hM : ∀ u, M u = ((∫ s in (0 : ℝ)..(u + δ), M s) - ∫ s in (0 : ℝ)..u, M s) * ↑(hA.unit⁻¹)` using `fun u => by`. Rewrite using `[← mul_integral M hc hadd u δ, mul_assoc, hAA, mul_one]`.
+
+Establish `hP : HasDerivAt (fun u => ∫ s in (0 : ℝ)..(u + δ), M s) (M (t + δ)) t` using `by first`. Consider the case `exact (hasDerivAt_primitive M hc (t + δ)).comp_add_const t δ`. Consider the case `exact HasDerivAt.comp_add_const t δ (hasDerivAt_primitive M hc (t + δ))`. Establish `hF` using `(hP.sub (hasDerivAt_primitive M hc t)).mul_const (↑(hA.unit⁻¹) : 𝔸)`. Establish `hF'` using `hF.congr_of_eventuallyEq (Eventually.of_forall hM)`.
+
+Use `hF'.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hadd, ← mul_assoc, mul_sub, mul_one]`.
+-/
 theorem exists_hasDerivAt (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 = 1)
     (hadd : ∀ s t : ℝ, M (s + t) = M s * M t) :
     ∃ X : 𝔸, ∀ t : ℝ, HasDerivAt M (M t * X) t := by
@@ -54,6 +74,15 @@ theorem exists_hasDerivAt (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M 0 = 1)
   refine hF'.congr_deriv ?_
   rw [hadd, ← mul_assoc, mul_sub, mul_one]
 
+/- English proof (translation)
+Use `letI : NormedAlgebra ℚ 𝔸 := NormedAlgebra.restrictScalars ℚ ℝ 𝔸`. Take `⟨X, hX⟩` from `exists_hasDerivAt M hc h0 hadd`. Use `⟨X, fun t => ?_⟩` and prove the remaining obligations. Establish `hN : ∀ u : ℝ, HasDerivAt (fun v => M v * NormedSpace.exp (v • (-X))) 0 u` using `fun u => by`. Establish `h3` using `(hX u).mul (hasDerivAt_exp_smul_const (-X) u)`.
+
+Use `h3.congr_deriv ?_` and prove the remaining obligations. Establish `hcomm : Commute (NormedSpace.exp (u • (-X))) X` using `(((Commute.refl X).neg_left).smul_left u).exp_left`. Rewrite using `[mul_neg, hcomm.eq, mul_neg, ← mul_assoc, add_neg_cancel]`. Establish `hconst : ∀ u, M u * NormedSpace.exp (u • (-X)) = 1` using `fun u => by`. Establish `h4` using `is_const_of_deriv_eq_zero (fun v => (hN v).differentiableAt) (fun v => (hN v).deriv) u 0`.
+
+Rewrite using `[h4, h0, zero_smul, NormedSpace.exp_zero, one_mul]`. Establish `hinv : NormedSpace.exp (t • (-X)) * NormedSpace.exp (t • X) = 1`. Rewrite using `[← NormedSpace.exp_add_of_commute ((((Commute.refl X).neg_left).smul_left t).smul_right t), smul_neg, neg_add_cancel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hconst t, one_mul]`.
+
+Use `_ = M t := by rw [mul_assoc, hinv, mul_one]`.
+-/
 theorem exists_exp_eq (M : ℝ → 𝔸) (hc : Continuous M) (h0 : M (0 : ℝ) = (1 : 𝔸))
     (hadd : ∀ s t : ℝ, M (s + t) = M s * M t) :
     ∃ X : 𝔸, ∀ t : ℝ, NormedSpace.exp (t • X) = M t := by

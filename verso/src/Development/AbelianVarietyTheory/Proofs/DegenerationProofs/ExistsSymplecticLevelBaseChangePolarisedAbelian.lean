@@ -14,6 +14,23 @@ open GlobalTheory.ThetaReal
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hL S S' _ _ f P P' φ h hiso hg k ze ze' hz hprim lev`. Establish `e : 2 * P'.g = 2 * P.g` using `congrArg (2 * ·) hg`. Establish `cast : ∀ {n n' : ℕ} (e : n' = n) {T : Over S} (y : Fin n → (T ⟶ P.A)) (a : Fin n' → ℕ), linComb (fun i => y (Fin.cast e i)) a = linComb y (fun i => a (Fin.cast e.symm i))`. Introduce `n n' e T y a`. Substitute `e` using the available equality.
+
+Both sides reduce to the same expression. Use `choose pt hpt using fun i => ThetaObjPull.exists_sec h (lev.pt (Fin.cast e i))`. Establish `hpt' : ∀ i, (pt i).left ≫ φ = f ≫ (lev.pt (Fin.cast e i)).left` using `fun i => congrArg (fun z => z.left) (hpt i)`. Establish `key : ∀ (K : Type) [Field K] (x : Spec (CommRingCat.of K) ⟶ S') (c : Fin (2 * P'.g) → ℕ), pushHom h (Over.mk x) (linComb (fun i => (Over.homMk x (by simp) : Over.mk x ⟶ baseOver S') ≫ pt i) c) = linComb (fun i => (Over.homMk (x ≫ f) (by simp) : Over.mk (x ≫ f) ⟶ baseOver S) ≫ lev …` using `fun K _ x c => by`. Rewrite using `[ThetaObjPull.map_linComb]`.
+
+Use `Eq.trans ?_ (cast e _ c)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (x ≫ (pt i).left) ≫ _ = (x ≫ f) ≫ (lev.pt _).left`.
+
+Rewrite using `[Category.assoc, hpt', Category.assoc]`. Use `P.isAb.comm` as an intermediate fact. Use `⟨{ pt := pt prim := hprim torsion := fun i => ThetaObjPull.pushHom_injective h _ ?_ indep := fun K _ _ x c c' hc => ?_ span := fun K _ _ x y hy => ?_ pairing := fun i j => ?_ }, fun i i' hi => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, map_one, hpt]`. Conclude with `(map_pow (preHom (ThetaObjPull.toBase f)) _ _).symm.trans (by rw [lev.torsion, map_one])`.
+
+Establish `q` using `lev.indep K (x ≫ f) (fun i => c (Fin.cast e.symm i)) (fun i => c' (Fin.cast e.symm i)) ((key K x _).symm.trans ((congrArg (pushHom h (Over.mk x)) hc).trans (key K x _)))`. Use function extensionality and compare the values at `i`. Conclude with `congrFun q (Fin.cast e i)`. Establish `hy' : pushHom h (Over.mk x) y ^ k = 1` using `by rw [← map_pow, hy, map_one]`. Take `⟨c, hc⟩` from `lev.span K (x ≫ f) (pushHom h (Over.mk x) y) hy'`.
+
+Conclude with `⟨fun i => c (Fin.cast e i), ThetaObjPull.pushHom_injective h _ ((key K x _).trans hc)⟩`. Use `(weilIs_grpPullback_of_comm _ _ _ _ f _ _ _ P.isLB P'.isLB h hiso (baseOver S') k (pt i) (pt j) (ThetaObjPull.toBase f ≫ lev.pt _) (ThetaObjPull.toBase f ≫ lev.pt _) _ (hpt' i).symm (hpt' j).symm).2 ?_` and prove the remaining obligations. Establish `w` using `CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB (ThetaObjPull.toBase f) (lev.pairing (Fin.cast e i) (Fin.cast e j))`. Rewrite `w` using `[map_zpow]`. Establish `e₁ : Units.map (ThetaObjPull.toBase f).left.appTop.hom.toMonoidHom ze = ze'` using `Units.ext hz`.
+
+Establish `e₂ : stdSymp P.g (Fin.cast e i) (Fin.cast e j) = stdSymp P'.g i j`. Simplify using `only [stdSymp, Fin.val_cast, hg]`. Rewrite `w` using `[e₁, e₂]`. Conclude with `w`. Take `rfl : i = Fin.cast e i'` from `Fin.ext hi`.
+
+Conclude with `hpt' i'`.
+-/
 theorem exists_level_baseChange : Laws → ∀ (S S' : Scheme.{0}) [IsLocallyNoetherian S] [IsLocallyNoetherian S'] (f : S' ⟶ S) (P : PolAV S) (P' : PolAV S') (φ : P'.A.left ⟶ P.A.left), IsGrpPullback P'.A P.A f φ → LBIso P'.L (P.L.pull φ) → P'.g = P.g → ∀ (k : ℕ) (ze : Γ(S, ⊤)ˣ) (ze' : Γ(S', ⊤)ˣ), f.appTop.hom ze.val = ze'.val → IsPrimitiveRoot ze' k → ∀ lev : Out.Level P k ze, ∃ lev' : Out.Level P' k ze', ∀ (i : Fin (2 * P.g)) (i' : Fin (2 * P'.g)), (i : ℕ) = i' → (lev'.pt i').left ≫ φ = f ≫ (lev.pt i).left := by
   intro hL S S' _ _ f P P' φ h hiso hg k ze ze' hz hprim lev
   have e : 2 * P'.g = 2 * P.g := congrArg (2 * ·) hg

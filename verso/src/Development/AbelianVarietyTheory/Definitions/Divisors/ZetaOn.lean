@@ -43,8 +43,14 @@ variable (E) in
 def denInv (n : ℕ) (v : Pl F) (s : ℂ) : ℂ :=
   ∏ j ∈ Finset.Icc 1 n, (1 - etaAt E v ^ (n - j) * ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-(2 * s + (j : ℂ))))
 
+/- English proof (translation)
+Simplify using `[denInv]`.
+-/
 example (v : Pl F) (s : ℂ) : denInv E 0 v s = 1 := by simp [denInv]
 
+/- English proof (translation)
+Simplify using `[zetaOn]`.
+-/
 example {X : Spc F E n} {W : Spc F E d} [MeasurableSpace (Fin n × Fin d → AF F)] (m : Measure (Fin n × Fin d → AF F))
     (om : Rep σ X W) (Φ : Fn F n d) {X₂ : Spc F E (n + n)} (i : UA σ X.J × UA σ X.J →* UA σ X₂.J)
     (K₂ : Subgroup (UA σ X₂.J)) (H : Subgroup (UA σ X.J)) (s : ℂ) : zetaOn m om Φ i K₂ H 0 s = 0 := by simp [zetaOn]

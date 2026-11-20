@@ -9,6 +9,25 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `Ω Ω' _ _ i R R' V V' _ _ _ _ j W W' O _ σ 𝔡 d₀ D D' hsemi hR hW' hd₀ hσd₀ hdiv hDW hD'`. Establish `hj : ∀ (a : Ω) (v : V), j (a • v) = i a • j v` using `hsemi.1`. Substitute `hW' hD'` using the available equality. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `e ⟨-, he⟩`. Establish `hu : i (σ d₀) ≠ 0` using `(map_ne_zero i).mpr hσd₀`. Establish `key : ∀ y ∈ Submodule.span R' (j '' (D : Set V)), (i (σ d₀))⁻¹ • y ∈ Submodule.span R' (j '' (Submodule.span R {e | e ∈ W ∧ ∀ d ∈ 𝔡, σ d • e ∈ D} : Set V))`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨(σ d₀)⁻¹ • x, Submodule.subset_span ⟨W.smul_mem (σ d₀)⁻¹ (hDW x hx), fun d hd => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, ← div_eq_mul_inv]`.
+
+Conclude with `D.smul_mem ⟨σ d / σ d₀, hdiv d hd⟩ hx`. Rewrite using `[hj, map_inv₀]`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`. Establish `e1 : (i (σ d₀))⁻¹ • (a • y) = a • ((i (σ d₀))⁻¹ • y)` using `show (i (σ d₀))⁻¹ • ((a : Ω') • y) = (a : Ω') • ((i (σ d₀))⁻¹ • y) by`. Rewrite using `[smul_smul, smul_smul, mul_comm]`. Rewrite using `[e1]`.
+
+Conclude with `Submodule.smul_mem _ a hy`. Establish `h1` using `key _ (he d₀ hd₀)`. Rewrite `h1` using `[RingHom.comp_apply, inv_smul_smul₀ hu]`. Then use the resulting hypothesis. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨Submodule.subset_span ⟨v, hv.1, rfl⟩, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← hj]`.
+
+Conclude with `Submodule.subset_span ⟨_, hv.2 d hd, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+
+Consider the case `smul a x _ hx => show j ((a : Ω) • x) ∈ _`. Rewrite using `[hj]`. Conclude with `Submodule.smul_mem _ ⟨i a, hR a a.2⟩ hx`.
+-/
 theorem scale_pull_ext : ∀ (Ω Ω' : Type) [Field Ω] [Field Ω'] (i : Ω →+* Ω') (R : Subring Ω) (R' : Subring Ω') (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (j : V →+ V') (W : Submodule Ω V) (W' : Submodule Ω' V') (O : Type) [CommRing O] (σ : O →+* Ω) (𝔡 : Ideal O) (d₀ : O) (D : Submodule R V) (D' : Submodule R' V'), IsExtOver i j → (∀ a ∈ R, i a ∈ R') → W' = Submodule.span Ω' (j '' (W : Set V)) → d₀ ∈ 𝔡 → σ d₀ ≠ 0 → (∀ d ∈ 𝔡, σ d / σ d₀ ∈ R) → (∀ e ∈ D, e ∈ W) → D' = Submodule.span R' (j '' (D : Set V)) → Submodule.span R' {e | e ∈ W' ∧ ∀ d ∈ 𝔡, (i.comp σ) d • e ∈ D'} = Submodule.span R' (j '' (Submodule.span R {e | e ∈ W ∧ ∀ d ∈ 𝔡, σ d • e ∈ D} : Set V)) := by
   intro Ω Ω' _ _ i R R' V V' _ _ _ _ j W W' O _ σ 𝔡 d₀ D D' hsemi hR hW' hd₀ hσd₀ hdiv hDW hD'
   have hj : ∀ (a : Ω) (v : V), j (a • v) = i a • j v := hsemi.1

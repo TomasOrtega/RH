@@ -23,6 +23,9 @@ variable {R : Type} [CommRing R] [IsDomain R] {j : ℕ}
 abbrev prK (pG : IsPowGrp G' G j) (i : Fin j) : pullback G'.hom (jK R) ⟶ pullback G.hom (jK R) :=
   ((Over.pullback (jK R)).map (pG.pr i)).left
 
+/- English proof (translation)
+Simplify using `only [prK, Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 lemma prK_fst (pG : IsPowGrp G' G j) (i : Fin j) :
     prK pG i ≫ pullback.fst G.hom (jK R) = pullback.fst G'.hom (jK R) ≫ (pG.pr i).left := by
   simp only [prK, Over.pullback_map_left]
@@ -30,11 +33,19 @@ lemma prK_fst (pG : IsPowGrp G' G j) (i : Fin j) :
 
 variable {LG : LB G.left} {LG' : LB G'.left}
 
+/- English proof (translation)
+Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy.2`.
+-/
 lemma boxSec_le_a (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) :
     pullback.fst G'.hom (jK R) ⁻¹ᵁ (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤
       LB.wchart LG' (fun _ : Fin 1 => pullback.fst G'.hom (jK R)) (fun _ => jL) :=
   fun _ hy => Set.mem_iInter.2 fun _ => hy.2
 
+/- English proof (translation)
+Introduce `y hy`. Establish `h` using `Set.mem_iInter.1 hy.1 i`. Use `Set.mem_iInter.2 fun _ => ?_` and prove the remaining obligations. Use `show (pullback.fst G.hom (jK R)).base ((prK pG i).base y) ∈ (LG.U (jN i) : Set G.left)`. Rewrite using `[← Scheme.Hom.comp_apply, prK_fst, Scheme.Hom.comp_apply]`.
+
+Conclude with `h`.
+-/
 lemma boxSec_le_b (pG : IsPowGrp G' G j) (jN : Fin j → LG.ι) (jL : LG'.ι) (i : Fin j) :
     pullback.fst G'.hom (jK R) ⁻¹ᵁ (LB.div (boxLB LG pG.pr) LG').U (jN, jL) ≤
       prK pG i ⁻¹ᵁ LB.wchart LG (fun _ : Fin 1 => pullback.fst G.hom (jK R)) (fun _ => jN i) := by
@@ -61,6 +72,11 @@ end BoxSec
 
 section BoxFam
 
+/- English proof (translation)
+Introduce `y hy`. Use `Set.mem_iInter.2 fun a => ?_` and prove the remaining obligations. Establish `h1` using `Set.mem_iInter.1 hy a`. Establish `h2` using `Set.mem_iInter.1 h1 i`. Use `show (φ a).base (p.base y) ∈ (L.U (jN a i) : Set X)`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← hφ a, Scheme.Hom.comp_apply]`. Conclude with `h2`.
+-/
 lemma box_le_of_comp {X X' Y Y' : Scheme.{0}} (L : LB X) {j : ℕ} {Kx : Type} [Fintype Kx]
     (pr : Fin j → (X' ⟶ X)) (φ' : Kx → (Y' ⟶ X')) (φ : Kx → (Y ⟶ X)) (p : Y' ⟶ Y) (i : Fin j)
     (hφ : ∀ a, φ' a ≫ pr i = p ≫ φ a) (jN : Kx → Fin j → L.ι) :

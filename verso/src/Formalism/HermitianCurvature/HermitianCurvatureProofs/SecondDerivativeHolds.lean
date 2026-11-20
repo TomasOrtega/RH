@@ -10,6 +10,9 @@ open scoped ComplexOrder ComplexConjugate
 
 open Classical
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.Final.jx_pSDAgree, Formalism.FourierDecayAlt.Final.jx_schurProduct, Formalism.FourierDecayAlt.Final.jx_productDomination, Formalism.FourierDecayAlt.Final.jx_diagScale, Formalism.FourierDecayAlt.Final.jx_diagPhase, Formalism.FourierDecayAlt.Final.jx_bloc …`.
+-/
 theorem localCores : Formalism.FourierDecayAlt.PB.LocalCores :=
   ⟨Formalism.FourierDecayAlt.Final.jx_pSDAgree,
    Formalism.FourierDecayAlt.Final.jx_schurProduct,
@@ -44,6 +47,9 @@ theorem localCores : Formalism.FourierDecayAlt.PB.LocalCores :=
    Formalism.FourierDecayAlt.Final.ns_block_diagonal,
    Formalism.FourierDecayAlt.Final.latticeAverage_of_gram⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.Final.tc_theoremAAfter, Formalism.FourierDecayAlt.Final.tc_recursionWithDens, Formalism.FourierDecayAlt.Final.tc_domScaleTop, Formalism.FourierDecayAlt.Final.tc_sumBoundMax, Formalism.FourierDecayAlt.Final.tc_recHypScaleTop, Formalism.FourierDecayAlt.Fi …`.
+-/
 theorem globalCores : Formalism.FourierDecayAlt.PB.GlobalCores :=
   ⟨Formalism.FourierDecayAlt.Final.tc_theoremAAfter,
    Formalism.FourierDecayAlt.Final.tc_recursionWithDens,

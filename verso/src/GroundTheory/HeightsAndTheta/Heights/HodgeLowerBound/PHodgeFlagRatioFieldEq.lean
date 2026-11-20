@@ -16,6 +16,19 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B c hc`. Establish `hq : ∀ (τ : Ψ) (i : Fin (D.N - 1)), IntermediateField.adjoin Ω (Set.range fun m => Pl.pluecker0 B τ i m / Pl.pluecker0 B τ i (c (Sum.inr (τ, i)))) = IntermediateField.adjoin Ω (Set.range fun S : PluckerBlocks D.N D.N i => flagMinor (genMat0Fr Ω Ψ D.N D.j τ) i S / leadMinor (genMa …`. Introduce `τ i`. Establish `hspan` using `h₂ II Ψ K ι Ω E D Pl H B τ i`. Take `⟨S₀, hS₀⟩` from `h₃ _ D.N (genMat0Fr Ω Ψ D.N D.j τ) i (Fin.castLE (Nat.sub_le D.N 1) i) le_rfl`.
+
+Use `h₁ Ω Pl.ΩY _ _ _ _ _ _ hspan (Submodule.subset_span ⟨_, rfl⟩) ?_ (hc (Sum.inr (τ, i))) (h₄ Ω Ψ D.N D.j τ i)` and prove the remaining obligations. Rewrite using `[hspan]`. Conclude with `Submodule.subset_span ⟨S₀, by rw [leadMinor, hS₀]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨⟨k | q, t⟩, rfl⟩`. Use `show Pl.ofΩ (D.y ⟨k, t⟩) / Pl.ofΩ (D.y ⟨k, c (Sum.inl k)⟩) ∈ _`. Rewrite using `[PlueckerData.ofΩ_eq, PlueckerData.ofΩ_eq, ← map_div₀]`. Conclude with `IntermediateField.algebraMap_mem _ _`. Establish `hmem : Pl.pluecker0 B q.1 q.2 t / Pl.pluecker0 B q.1 q.2 (c (Sum.inr (q.1, q.2))) ∈ IntermediateField.adjoin Ω (Set.range fun m => Pl.pluecker0 B q.1 q.2 m / Pl.pluecker0 B q.1 q.2 (c (Sum.inr (q.1, q.2))))` using `IntermediateField.subset_adjoin _ _ ⟨t, rfl⟩`.
+
+Rewrite `hmem` using `[hq]`. Use `IntermediateField.adjoin.mono _ _ _ ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨S, rfl⟩`. Conclude with `⟨(q.1, ⟨q.2, S⟩), rfl⟩`. Rewrite using `[IntermediateField.adjoin_le_iff]`.
+
+Introduce and unpack `_ ⟨⟨τ, i, S⟩, rfl⟩`. Establish `hmem : flagMinor (genMat0Fr Ω Ψ D.N D.j τ) i S / leadMinor (genMat0Fr Ω Ψ D.N D.j τ) i ∈ IntermediateField.adjoin Ω (Set.range fun S : PluckerBlocks D.N D.N i => flagMinor (genMat0Fr Ω Ψ D.N D.j τ) i S / leadMinor (genMat0Fr Ω Ψ D.N D.j τ) i)` using `IntermediateField.subset_adjoin _ _ ⟨S, rfl⟩`. Rewrite `hmem` using `[← hq]`. Use `IntermediateField.adjoin.mono _ _ _ ?_ hmem` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`.
+
+Conclude with `⟨⟨Sum.inr (τ, i), m⟩, rfl⟩`.
+-/
 theorem HodgeFlagRatioFieldEq.proof (h₁ : RatioFieldSpan.Statement) (h₂ : HodgeFlagSpan.Statement)
     (h₃ : PivotMinorFlag.Statement) (h₄ : GenLeadMinor0NeZero.Statement) : HodgeFlagRatioFieldEq.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl H B c hc
@@ -57,6 +70,9 @@ theorem HodgeFlagRatioFieldEq.proof (h₁ : RatioFieldSpan.Statement) (h₂ : Ho
     rintro _ ⟨m, rfl⟩
     exact ⟨⟨Sum.inr (τ, i), m⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `HodgeFlagRatioFieldEq.proof RatioFieldSpan.full HodgeFlagSpan.full PivotMinorFlag.full GenLeadMinor0NeZero.full`.
+-/
 theorem HodgeFlagRatioFieldEq.full : HodgeFlagRatioFieldEq.Statement :=
   HodgeFlagRatioFieldEq.proof RatioFieldSpan.full HodgeFlagSpan.full PivotMinorFlag.full GenLeadMinor0NeZero.full
 

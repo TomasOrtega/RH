@@ -38,6 +38,17 @@ def lieB (ε : V → Fin n → Bool) (S : V → Finset (Fin n)) : Submodule ℝ 
     · show c • A v i j = 0
       rw [(hA v).2 i j hij, smul_zero]
 
+/- English proof (translation)
+Use `set K' : Submodule ℝ (EuclideanSpace ℂ (V × Fin n × Fin n)) := (lieB ε S).map (entL V n).toLinearMap with hK'`. Set `b` to `stdOrthonormalBasis ℝ K'`. Set `L : EuclideanSpace ℝ (Fin (Module.finrank ℝ K')) →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)` to `(entL V n).symm.toLinearMap ∘ₗ K'.subtype ∘ₗ b.repr.symm.toLinearEquiv.toLinearMap`. Establish `hLe : ∀ x, entL V n (L x) = (b.repr.symm x : EuclideanSpace ℂ (V × Fin n × Fin n))`. Introduce `x`.
+
+Simplify using `[L]`. Establish `hLK : ∀ x, L x ∈ lieB ε S`. Introduce `x`. Take `⟨M, hM, hMe⟩` from `(b.repr.symm x).2`. Establish `: L x = M`.
+
+Apply `(entL V n).injective` to reduce the goal to its premises. Rewrite using `[hLe]`. Conclude with `hMe.symm`. Rewrite using `[this]`. Conclude with `hM`.
+
+Use `⟨Fin (Module.finrank ℝ K'), inferInstance, L, fun x v => hLK x v, fun x => ?_, fun M hM => ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_entL_sq, hLe]`. Conclude with `congrArg (· ^ 2) (b.repr.symm.norm_map x)`. Establish `hM' : entL V n M ∈ K'` using `⟨M, hM, rfl⟩`. Use `⟨b.repr ⟨entL V n M, hM'⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `(entL V n).injective` to reduce the goal to its premises. Rewrite using `[hLe, LinearIsometryEquiv.symm_apply_apply]`.
+-/
 theorem exists_lieBlock (ε : V → Fin n → Bool) (S : V → Finset (Fin n)) :
     ∃ (η : Type) (_ : Fintype η) (L : EuclideanSpace ℝ η →ₗ[ℝ] (V → Matrix (Fin n) (Fin n) ℂ)),
       (∀ x v, (L x v)ᴴ * Formalism.REAL.Jm (ε v) + Formalism.REAL.Jm (ε v) * L x v = 0 ∧
@@ -69,6 +80,9 @@ theorem exists_lieBlock (ε : V → Fin n → Bool) (S : V → Finset (Fin n)) :
 
 end Block
 
+/- English proof (translation)
+Introduce `D X S`. Take `⟨η, hη, L, h1, h2, h3⟩` from `exists_lieBlock X.B.I.ε S`. Conclude with `⟨η, hη, L, h1, h2, h3⟩`.
+-/
 theorem blockEx_holds : BlockEx := by
   intro D X S
   obtain ⟨η, hη, L, h1, h2, h3⟩ := exists_lieBlock X.B.I.ε S

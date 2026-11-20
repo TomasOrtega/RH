@@ -16,11 +16,27 @@ open CategoryTheory AlgebraicGeometry
 
 namespace FunctorialResolution.EmbeddedResolution
 
+/- English proof (translation)
+The claim follows from `AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian q`.
+-/
 private theorem isLocallyNoetherian_of_smooth_over_field (k : Type u) [Field k]
     {Y : Scheme.{u}} (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q] :
     IsLocallyNoetherian Y :=
   AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian q
 
+/- English proof (translation)
+Use `revert ht`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[BlowupSequenceData.projectionToBase_zero] infer_instance`. Introduce `x`. Rewrite using `[BlowupSequenceData.controlledTransform_zero, orderAt_comap_of_isOpenImmersion]`. Conclude with `hI _`. Consider the case `succ s ih`.
+
+Introduce `hs`. Establish `hs' : s < d.length` using `hs`. Take `⟨ihsm, ihord⟩` from `ih (le_of_lt hs')`. Establish `: AlgebraicGeometry.Smooth (d.projectionToBase s ≫ p)` using `ihsm`. Establish `hπ : Blowup.IsBlowupAlongIdealSheaf (d.map s) (d.center s)` using `d.isBlowup s hs'`.
+
+Establish `hsnc : HasStrictNormalCrossingsWith (d.projectionToBase s ≫ p) (d.center s) (d.boundaryFrom E s)` using `hd.center_snc s hs'`. Establish `hsm1 : AlgebraicGeometry.Smooth (d.projectionToBase (s + 1) ≫ p)`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, Category.assoc]`. Conclude with `smooth_comp_of_isBlowupAlongIdealSheaf hsnc hπ`. Use `⟨hsm1, ?_⟩` and prove the remaining obligations.
+
+Establish `: AlgebraicGeometry.Smooth (d.projectionToBase (s + 1) ≫ p)` using `hsm1`. Establish `: IsLocallyNoetherian (d.obj (s + 1))` using `isLocallyNoetherian_of_smooth_over_field k (d.projectionToBase (s + 1) ≫ p)`. Establish `hIle : d.controlledTransform I m s ≤ (d.center s) ^ m` using `le_pow_of_hasStrictNormalCrossingsWith (d.projectionToBase s ≫ p) (d.center s) (d.controlledTransform I m s) (d.boundaryFrom E s) hsnc m (hd.center_order s hs')`. Establish `hEq : d.controlledTransform I m (s + 1) = controlledTransform (d.map s) (d.center s) (d.controlledTransform I m s) m hπ hIle` using `eq_controlledTransform_of_mul_eq_comap (d.map s) (d.center s) (d.controlledTransform I m s) m hπ hIle (d.controlledTransform I m (s + 1)) (d.pow_exceptionalIdeal_mul_controlledTransform_succ I m s (hd.divisible s hs'))`. Introduce `x`.
+
+Rewrite using `[hEq]`. Conclude with `orderAt_controlledTransform_le_of_forall_le k (d.projectionToBase s ≫ p) (d.map s) (d.center s) (d.boundaryFrom E s) hsnc hπ (d.controlledTransform I m s) m hIle ihord x`.
+-/
 theorem smooth_projectionToBase_comp_and_orderAt_controlledTransform_le (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (d : BlowupSequenceData X)
@@ -64,6 +80,9 @@ theorem smooth_projectionToBase_comp_and_orderAt_controlledTransform_le (k : Typ
       exact orderAt_controlledTransform_le_of_forall_le k (d.projectionToBase s ≫ p) (d.map s) (d.center s)
         (d.boundaryFrom E s) hsnc hπ (d.controlledTransform I m s) m hIle ihord x
 
+/- English proof (translation)
+The claim follows from `(smooth_projectionToBase_comp_and_orderAt_controlledTransform_le k p I m E d hd hI t ht).2 x`.
+-/
 theorem orderAt_controlledTransform_le_of_isMarked (k : Type u) [Field k] [CharZero k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
     (I : X.IdealSheafData) (m : ℕ) (E : List X.IdealSheafData) (d : BlowupSequenceData X)

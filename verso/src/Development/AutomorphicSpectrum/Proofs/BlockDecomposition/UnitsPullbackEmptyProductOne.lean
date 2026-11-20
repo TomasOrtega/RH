@@ -11,6 +11,9 @@ namespace GlobalTheory.CompanionTheory.BetaPull
 
 universe u₁ v₁ u₂ v₂ u₃ v₃ u₄ v₄ w₁ w₂ w₃ w₄
 
+/- English proof (translation)
+Rewrite using `[← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) m b n x).1, ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) b' q n x).1]`. Conclude with `CrystallineSemistableComparison.P.prism (m.comp b) (b'.comp q) η hτ n x`.
+-/
 theorem pull_square {R : Type} [CommRing R]
     {C₁ : Type u₁} [Category.{v₁} C₁] {C₂ : Type u₂} [Category.{v₂} C₂]
     {C₃ : Type u₃} [Category.{v₃} C₃] {C₄ : Type u₄} [Category.{v₄} C₄]
@@ -25,6 +28,9 @@ theorem pull_square {R : Type} [CommRing R]
     ← (CrystallineSemistableComparison.P.pull_comp (σ'' := RingHom.id R) b' q n x).1]
   exact CrystallineSemistableComparison.P.prism (m.comp b) (b'.comp q) η hτ n x
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Rewrite using `[P'.map_id]`. Conclude with `ConcreteCategory.congr_hom (a.naturality f) y`.
+-/
 theorem pt_nat {P P' : CommRingCat.{0} ⥤ Type} (a : P ⟶ P') {B C : CommRingCat.{0}} (f : B ⟶ C)
     (g : C ⟶ C) (hg : g = 𝟙 C) (y : P.obj B) :
     P'.map g (a.app C (P.map f y)) = P'.map f (a.app B y) := by
@@ -35,6 +41,9 @@ theorem pt_nat {P P' : CommRingCat.{0} ⥤ Type} (a : P ⟶ P') {B C : CommRingC
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F F' : Fn O} (κ : O →+* OC l)
   (u : Fn.Map F F') (k : Bool) (n : ℕ)
 
+/- English proof (translation)
+Substitute `ha` using the available equality. Simplify using the standard rewrite rules.
+-/
 theorem units_pullback_empty_product_one {B B' : Type} [CommRing B] [CommRing B'] (i : B' →+* B) (a : B'ˣ) (ha : a = 1)
     (e : Empty → Bˣ) : (1 : Bˣ) =
       (∏ j, e j) * Units.map (RingHom.id B).toMonoidHom ((1 : Bˣ) ^ 1 * (Units.map i.toMonoidHom a)⁻¹) := by
@@ -62,6 +71,9 @@ def cmpNat : gT F κ k n ⋙ (pullMorC κ u k n).G ⟶ (pullMor (u.pt κ) n).G �
   app T := cmpHom κ u k n T
   naturality T T' f := Thick.Hom.ext rfl (funext fun j => j.elim)
 
+/- English proof (translation)
+The claim follows from `pull_square (pullMorC κ u k n) (βMor F κ k n) (βMor F' κ k n) (pullMor (u.pt κ) n) (cmpNat κ u k n) (fun _ _ => rfl) j x`.
+-/
 theorem beta_pull {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {F F' : Fn O} (κ : O →+* OC l)
     (u : Fn.Map F F') (k : Bool) (n j : ℕ) (x : Hc F' κ k n j) :
     β F κ k n j (pullHc κ u k n j x) = (pullMor (u.pt κ) n).pull j (β F' κ k n j x) :=

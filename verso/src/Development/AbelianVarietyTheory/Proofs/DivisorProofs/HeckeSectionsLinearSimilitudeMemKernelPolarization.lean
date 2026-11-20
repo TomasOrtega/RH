@@ -17,6 +17,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPel.HT.Hecke.KerPol
 open GlobalTheory.UPel.HT.Hecke
 
+/- English proof (translation)
+Introduce `p _ D R _ b g c k N hc hk hN hNp hEF hg hck S s o h hh`. Establish `hfib` using `GlobalTheory.T.hecke_bundle_trivial_geometric_fibre p D R b g c k N hc hk hN hNp hEF hg hck S s o h hh`. Take `⟨x, rfl⟩` from `hh`. Establish `hP` using `o.isLB`. Establish `clsPow : ∀ {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (n : ℕ) (h' : (GlobalTheory.UPel.HT.Hecke.lbPow L n).IsLB), GlobalTheory.CechPic.cls (GlobalTheory.UPel.HT.Hecke.lbPow L n) h' = n • GlobalTheory.CechPic.cls L hL`.
+
+Introduce `X L hL n h'`. Unfold `GlobalTheory.UPel.HT.Hecke.lbPow at h' ⊢`. Rewrite using `[GlobalTheory.CechPic.cls_linComb hL]`. Simplify using `[GlobalTheory.CechPic.pull_id]`. Establish `hQ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb hP _ _`.
+
+Establish `hadd` using `(GlobalTheory.AbDual.additive_of_cube GlobalTheory.CubeTop.cubeTheorem o.ab o.ab hP o.rig₁ o.rig₂).1`. Establish `evcCls : ∀ {M : LB (o.A ⊗ o.A).left} (hM : M.IsLB) {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hM a t = GlobalTheory.CechPic.pull (lift a t).left (GlobalTheory.CechPic.cls M hM)`. Introduce `M hM Y a t`. Rewrite using `[← GlobalTheory.AbDual.cls_ev hM a t (pull_isLB hM _), GlobalTheory.CechPic.cls_pull hM]`. Establish `evcQ : ∀ {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hQ a t = (k ^ 2 / c) • GlobalTheory.AbDual.evc hP a t`.
+
+Introduce `Y a t`. Rewrite using `[evcCls hQ, evcCls hP, clsPow hP _ hQ, map_nsmul]`. Establish `hpow : ∀ (a : o.A ⟶ o.A) (n : ℕ), GlobalTheory.AbDual.evc hP (a ^ n) (𝟙 o.A) = n • GlobalTheory.AbDual.evc hP a (𝟙 o.A)`. Introduce `a n`. Proceed by induction on `n with`.
+
+Consider the case `zero => rw [pow_zero, zero_smul]`. Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one hP hadd _`. Consider the case `succ n ih => rw [pow_succ, (GlobalTheory.AbDual.isAdditive_iff hP).1 hadd, ih, succ_nsmul]`. Establish `etaPow : ∀ (n : ℕ) (z : D.La), (o.eta z) ^ n = o.eta (n • z)`. Introduce `n z`.
+
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, zero_smul, eta_zero]`. Consider the case `succ n ih => rw [pow_succ, ih, succ_nsmul, o.eta_add]`. Use `set th : o.A ⟶ o.A := toUnit o.A ≫ o.eta (N • g x) with hth`. Establish `hk1 : th ^ k = 1`.
+
+Rewrite using `[hth, ← MonObj.comp_pow, etaPow, smul_smul, show k * N = N * k from mul_comm _ _, o.eta_ker, MonObj.comp_one]`. Establish `htors : k • GlobalTheory.AbDual.evc hP th (𝟙 o.A) = 0`. Rewrite using `[← hpow, hk1]`. Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one hP hadd _`. Establish `hQth : GlobalTheory.AbDual.evc hQ th (𝟙 o.A) = 0`.
+
+Establish `hM : (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)).IsLB` using `pull_isLB hQ _`. Establish `hunit : IsUnit ((k : Γ(S, ⊤)))`. Establish `hR` using `b.unit k hk`. Establish `e` using `hR.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)`. Establish `e2` using `e.map (s.appTop.hom)`.
+
+Simplify using `using e2`. Establish `hrig : ∃ t : ((GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)).pull (1 : 𝟙_ (Over S) ⟶ o.A).left).Gen, t.IsGen`. Rewrite using `[← GlobalTheory.CechPic.cls_eq_zero_iff (pull_isLB hM _), GlobalTheory.CechPic.cls_pull hM, GlobalTheory.AbDual.cls_ev hQ, GlobalTheory.AbDual.pull_evc, evcQ, Category.comp_id, GlobalTheory.AbDual.evc_one_right hP o.rig₂, smul_zero]`. Establish `hpowM : ∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)) k).Gen, t.IsGen`. Establish `hMk : (GlobalTheory.UPel.HT.Hecke.lbPow (GlobalTheory.AbDual.ev (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)) th (𝟙 o.A)) k).IsLB` using `LB.isLB_linComb hM _ _`.
+
+Use `(GlobalTheory.CechPic.cls_eq_zero_iff hMk).1 ?_` and prove the remaining obligations. Rewrite using `[clsPow hM k hMk, GlobalTheory.AbDual.cls_ev hQ, evcQ, smul_comm, htors, smul_zero]`. Take `⟨t, ht⟩` from `GlobalTheory.T.rigidified_lineBundle_trivial_of_torsion_geometricFibres S o.A o.ab _ hM hrig k hunit hpowM hfib`. Conclude with `(GlobalTheory.AbDual.triv_ev_iff hQ _ _).1 ⟨t, ht⟩`. Establish `hsw : GlobalTheory.CechPic.cls o.P hP = GlobalTheory.CechPic.cls (GlobalTheory.AbDual.swap o.P) (pull_isLB hP _)` using `(GlobalTheory.CechPic.cls_eq_iff _ _).2 o.symm`.
+
+Use `⟨(GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 hQth, (GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[evcQ, evcCls hP, hsw, ← evcCls (pull_isLB hP _), GlobalTheory.AbDual.evc_swap hP, ← evcQ]`. Conclude with `hQth`.
+-/
 theorem hecke_sections_triv : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), c.Coprime p → k.Coprime p → 3 ≤ N → N.Coprime p → (∀ x y, D.EF (g x) (g y) = c * D.EF x y) → (∀ x, ∃ y, g y = k • x) → c ∣ k ^ 2 → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b (N * k) s), ∀ h ∈ GlobalTheory.UPel.HT.Hecke.heckeSub o g N, (∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).pull (lift (toUnit o.A ≫ h) (𝟙 o.A)).left).Gen, t.IsGen) ∧ (∃ t : ((GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).pull (lift (𝟙 o.A) (toUnit o.A ≫ h)).left).Gen, t.IsGen) := by
   intro p _ D R _ b g c k N hc hk hN hNp hEF hg hck S s o h hh
   have hfib := GlobalTheory.T.hecke_bundle_trivial_geometric_fibre p D R b g c k N hc hk hN hNp hEF hg hck S s o h hh

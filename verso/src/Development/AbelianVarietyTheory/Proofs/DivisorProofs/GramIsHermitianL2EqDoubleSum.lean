@@ -13,6 +13,9 @@ namespace GlobalTheory.HSAmp
 set_option autoImplicit false in
 open Filter Topology MeasureTheory in
 open scoped ComplexOrder Matrix in
+/- English proof (translation)
+Rewrite using `[Complex.ofReal_pow, ← Complex.mul_conj', map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma ofReal_norm_sum_mul_sq_eq_double_sum_conj {ι : Type} [Fintype ι] (c w : ι → ℂ) :
     ((‖∑ i, c i * w i‖ ^ 2 : ℝ) : ℂ) =
       ∑ i, ∑ j, c i * (starRingEnd ℂ) (c j) * (w i * (starRingEnd ℂ) (w j)) := by
@@ -25,6 +28,21 @@ set_option autoImplicit false in
 open Filter Topology MeasureTheory in
 open scoped ComplexOrder Matrix in
 
+/- English proof (translation)
+Use `haveI : Fintype S := @Fintype.ofFinite S h.finite`. Establish `hint` using `h.integrable`. Establish `hterm : ∀ (c : ι → ℂ) (σ : S), Integrable (fun y => ∑ i, ∑ j, c i * (starRingEnd ℂ) (c j) * (v σ y i * (starRingEnd ℂ) (v σ y j))) (μ σ)` using `fun c σ => integrable_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => (hint σ i j).const_mul _`. Use `⟨?_, fun c => ⟨fun σ => ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.conjTranspose_apply, _root_.GlobalTheory.HSAmp.gram, Matrix.of_apply, finsum_eq_sum_of_fintype]`. Rewrite using `[star_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, ← integral_conj]`. Use `congr 1 with y`.
+
+Simplify using `[mul_comm]`. Use `(hterm c σ).re.congr (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.HSAmp.cmb]`. Rewrite using `[← ofReal_norm_sum_mul_sq_eq_double_sum_conj c (v σ y)]`. Conclude with `Complex.ofReal_re _`.
+
+Unfold `_root_.GlobalTheory.HSAmp.l2`. Conclude with `finsum_nonneg fun σ => integral_nonneg fun y => by`. Simplify using `only [_root_.GlobalTheory.HSAmp.cmb]`. Check the signs of the components of the expression. Unfold `_root_.GlobalTheory.HSAmp.l2 _root_.GlobalTheory.HSAmp.gram`.
+
+Simplify using `only [Matrix.of_apply, finsum_eq_sum_of_fintype]`. Establish `key : ∀ σ, ((∫ y, _root_.GlobalTheory.HSAmp.cmb v c σ y ∂μ σ : ℝ) : ℂ) = ∑ i, ∑ j, c i * (starRingEnd ℂ) (c j) * ∫ y, v σ y i * (starRingEnd ℂ) (v σ y j) ∂μ σ`. Introduce `σ`. Simplify using `only [_root_.GlobalTheory.HSAmp.cmb]`. Rewrite using `[← integral_complex_ofReal, integral_congr_ae (ae_of_all _ fun y => ofReal_norm_sum_mul_sq_eq_double_sum_conj c (v σ y)), integral_finset_sum _ fun i _ => integrable_finset_sum _ fun j _ => (hint σ i j).const_mul _]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun j _ => (hint σ i j).const_mul _]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Rewrite using `[Complex.ofReal_sum]`.
+
+Simplify using `only [key, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+-/
 theorem _root_.GlobalTheory.HSAmp.gram_isHermitian_and_l2_eq_quadratic_form (S : Type) (Y : S → Type)
     [∀ σ, MeasurableSpace (Y σ)] (ι : Type) [Fintype ι]
     [DecidableEq ι] (μ : ∀ σ, Measure (Y σ)) (v : ∀ σ, Y σ → ι → ℂ)

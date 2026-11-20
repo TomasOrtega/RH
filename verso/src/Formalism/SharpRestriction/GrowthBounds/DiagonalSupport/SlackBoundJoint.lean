@@ -13,6 +13,11 @@ section Geo
 
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {TT : Finset (Fin n')} {L₁ L₂ N₁ G' : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo] at hy`. Take `⟨⟨h1, h2⟩, hT⟩` from `hy`. Establish `hr0 : r - 1 < r` using `by omega`. Establish `a1` using `fr_le_last hV (j - 1) (show 0 < r by omega)`. Establish `a2` using `fr_le_last hV j (show 0 < r by omega)`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, by omega⟩, hT⟩`. Simplify using `only [Frames.IsW]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem LL_sub_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j y : ℤ) (hy : y ∈ Fr.LLset j) :
     y ∈ Fr.letters j ∧ ¬ Fr.IsW j y := by
   simp only [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo] at hy
@@ -26,6 +31,13 @@ theorem LL_sub_letters (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j y : ℤ) (hy 
   · simp only [Frames.IsW]
     omega
 
+/- English proof (translation)
+Establish `hV` using `hF.2.1`. Establish `hG` using `hF.2.2.2.2 j`. Take `⟨hyl, -⟩` from `LL_sub_letters hV hr j y hy`. Establish `hylt : y < Fr.fr j 0`. Simplify using `only [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo] at hy`.
+
+Conclude with `hy.1.2`. Use `set S := (Fr.letters j).filter (fun z => z < Fr.fr j 0) with hS`. Establish `hyS : y ∈ S` using `Finset.mem_filter.mpr ⟨hyl, hylt⟩`. Establish `hne : S.Nonempty` using `⟨y, hyS⟩`. Establish `hm` using `Finset.max'_mem S hne`.
+
+Rewrite `hm` using `[Finset.mem_filter]`. Establish `key` using `hG (S.max' hne) hm.1 hm.2 (fun z hz hzl => Finset.le_max' S z (Finset.mem_filter.mpr ⟨hz, hzl⟩))`. Use `Finset.le_max' S y hyS` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem LL_gap (hF : FramesOK TT L₁ L₂ N₁ G' Fr) (hr : 1 ≤ r) (j y : ℤ) (hy : y ∈ Fr.LLset j) :
     y + L₂ < Fr.fr j 0 := by
   have hV := hF.2.1
@@ -43,6 +55,17 @@ theorem LL_gap (hF : FramesOK TT L₁ L₂ N₁ G' Fr) (hr : 1 ≤ r) (j y : ℤ
   have := Finset.le_max' S y hyS
   omega
 
+/- English proof (translation)
+Establish `ho` using `Formalism.MainNotions.G.WittFrameLocaliserOrders.oldest_mem_segment_letters Fr L₁ N₁ hV hr j x hx hW`. Use `set o := Fr.oldest j x with ho_def`. Establish `hoL` using `ho`. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc] at hoL`. Take `⟨⟨ho1, ho2⟩, hoT⟩` from `hoL`.
+
+Establish `hpR : (1 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hdle : Fr.dist j o ≤ (Fr.fr j (r - 1) - Fr.fr (j - 1) 0).toNat`. Simplify using `only [Frames.dist]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hpow : (p : ℝ) ^ Fr.dist j o ≤ (p : ℝ) ^ (Fr.fr j (r - 1) - Fr.fr (j - 1) 0).toNat` using `pow_le_pow_right₀ hpR hdle`. Establish `hpos1 : (0 : ℝ) < (p : ℝ) ^ Fr.dist j o` using `pow_pos hp0 _`. Establish `hpos2 : (0 : ℝ) < (p : ℝ) ^ (Fr.fr j (r - 1) - Fr.fr (j - 1) 0).toNat` using `pow_pos hp0 _`. Establish `had : a ≤ (deg (posOf n' o) : ℝ)` using `hdeg _ hoT`. Use `show a / _ ≤ levDeg p Fr deg j o`.
+
+Simplify using `only [levDeg]`. Break down `le_or_gt a 0 with ha | ha` into its components or cases. Establish `h1 : a / (p : ℝ) ^ (Fr.fr j (r - 1) - Fr.fr (j - 1) 0).toNat ≤ 0` using `div_nonpos_of_nonpos_of_nonneg ha hpos2.le`. Establish `h2 : (0 : ℝ) ≤ (deg (posOf n' o) : ℝ) / (p : ℝ) ^ Fr.dist j o` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem Bo_ge (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (p : ℕ) (hp : 1 ≤ p) (deg : Fin n' → ℕ) (a : ℝ)
     (hdeg : ∀ s ∈ Fr.TT, a ≤ (deg s : ℝ)) (j x : ℤ) (hx : x ∈ Fr.letters j) (hW : ¬ Fr.IsW j x) :
     a / (p : ℝ) ^ (Fr.fr j (r - 1) - Fr.fr (j - 1) 0).toNat ≤ Bo p Fr deg j x := by
@@ -77,6 +100,17 @@ section Shift
 
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {L₁ N₁ : ℕ} {J : ℕ} [NeZero J]
 
+/- English proof (translation)
+Establish `hJ1` using `hV.2.1`. Substitute `hJ` using the available equality. Establish `hJpos : 0 < Fr.J` using `Nat.pos_of_ne_zero (NeZero.ne _)`. Establish `hv : (j + 1).val = (j.val + 1) % Fr.J`. Rewrite using `[ZMod.val_add, ZMod.val_one_eq_one_mod]`.
+
+Break down `Nat.lt_or_ge 1 Fr.J with h | h` into its components or cases. Rewrite using `[Nat.mod_eq_of_lt h]`. Establish `: Fr.J = 1` using `by omega`. Simplify using `[this]`. Establish `hjl : j.val < Fr.J` using `ZMod.val_lt j`.
+
+Simplify using `only [segZ]`. Break down `Nat.lt_or_ge (j.val + 1) Fr.J with h | h` into its components or cases. Use `⟨0, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hv, Nat.mod_eq_of_lt h]`. Use `push_cast`.
+
+Simplify using the standard rewrite rules. Establish `hj : j.val + 1 = Fr.J` using `by omega`. Establish `h0 : (j + 1).val = 0` using `by rw [hv, hj, Nat.mod_self]`. Use `⟨(n' : ℤ), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`.
+
+Establish `e1 : ((j.val : ℕ) : ℤ) + 1 = ((0 : ℕ) : ℤ) + (Fr.J : ℤ)` using `by push_cast; omega`. Establish `e2 : ((j.val : ℕ) : ℤ) = ((0 : ℕ) : ℤ) - 1 + (Fr.J : ℤ)` using `by push_cast; omega`. Prove the components needed by the constructor for the conclusion. Rewrite using `[e1, hJ1]`. Rewrite using `[e2, hJ1]`.
+-/
 theorem seg_shift (hV : Fr.Valid L₁ N₁) (hJ : J = Fr.J) (j : ZMod J) :
     ∃ s : ℤ, ∀ i, Fr.fr (segZ j + 1) i = Fr.fr (segZ (j + 1)) i + s ∧ Fr.fr (segZ j) i = Fr.fr (segZ (j + 1) - 1) i + s := by
   have hJ1 := hV.2.1
@@ -112,6 +146,39 @@ section HypH
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {TT : Finset (Fin n')} {L₁ L₂ N₁ G' : ℕ}
   {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {J : ℕ} [NeZero J]
 
+/- English proof (translation)
+Establish `hV` using `hF.2.1`. Establish `hr' : 0 < r` using `by omega`. Use `set jj := segZ j with hjj`. Use `set D := Fr.dist jj (Fr.fr jj 0) with hD`. Establish `hpR : (3 : ℝ) ≤ p` using `by exact_mod_cast hp`.
+
+Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Use `set q : ℝ := (p : ℝ)⁻¹ with hq`. Establish `hq0 : 0 ≤ q` using `inv_nonneg.mpr hp0.le`. Establish `hq1 : q < 1` using `inv_lt_one_of_one_lt₀ (by linarith)`. Establish `hq3 : q ≤ 1 / 3`.
+
+Rewrite using `[hq, one_div]`. Conclude with `inv_anti₀ (by norm_num) hpR`. Set `e : Fin (Dt.nL j) → ℕ` to `fun l => Fr.dist jj (llPos Fr jj l)`. Establish `hmem : ∀ l : Fin (Dt.nL j), llPos Fr jj l ∈ Fr.LLset jj` using `fun l => Formalism.MainNotions.Proposition5Numerics.llPos_mem Fr jj l (by rw [← hnL j]; exact l.isLt)`. Establish `a0` using `fr_le_last hV jj hr'`.
+
+Establish `he : ∀ l : Fin (Dt.nL j), ((e l : ℕ) : ℤ) = Fr.fr jj (r - 1) - llPos Fr jj l`. Introduce `l`. Establish `hy` using `hmem l`. Rewrite `hy` using `[Formalism.MainNotions.Proposition5Numerics.mem_LLset]`. Simplify using `only [e, Frames.dist]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hDe : (D : ℤ) = Fr.fr jj (r - 1) - Fr.fr jj 0`. Simplify using `only [hD, Frames.dist]`. Use linear arithmetic over natural numbers and integers. Establish `hM : ∀ l : Fin (Dt.nL j), D + L₂ + 1 ≤ e l`.
+
+Introduce `l`. Establish `h2` using `LL_gap hF hr jj _ (hmem l)`. Use `he l` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective e`.
+
+Introduce `l l' hll`. Establish `h1` using `he l`. Establish `h2` using `he l'`. Rewrite `h1` using `[hll]`. Establish `: llPos Fr jj l = llPos Fr jj l'` using `by omega`.
+
+Conclude with `Fin.ext (Formalism.MainNotions.Proposition5Numerics.llPos_inj Fr jj l l' (by rw [← hnL j]; exact l.isLt) (by rw [← hnL j]; exact l'.isLt) this)`. Establish `hterm : ∀ l : Fin (Dt.nL j), (Dt.d ⟨j, Sum.inl l⟩ : ℝ) ≤ 2 * a * q ^ (e l)`. Introduce `l`. Establish `h` using `hd ⟨j, Sum.inl l⟩`. Establish `hl : (lowP Fr p (⟨j, Sum.inl l⟩ : TL J Dt.nL r) : ℝ) = (p : ℝ) ^ (e l)`.
+
+Simplify using `only [lowP, posTL, e, jj]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h` using `[hl]`. Establish `hpe : (0 : ℝ) < (p : ℝ) ^ (e l)` using `pow_pos hp0 _`.
+
+Rewrite using `[hq, inv_pow, ← div_eq_mul_inv, le_div_iff₀ hpe]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : (Dt.dLL j : ℝ) ≤ 2 * a * ∑ k ∈ Finset.univ.image e, q ^ k`. Simplify using `only [SignedChainData.dLL]`. Use `push_cast`.
+
+Rewrite using `[Finset.sum_image (fun x _ y _ h => hinj h), Finset.mul_sum]`. Conclude with `Finset.sum_le_sum (fun l _ => hterm l)`. Use `set S := Finset.univ.image e`. Use `set N := S.sup id + 1`. Establish `hsub : S ⊆ Finset.Ico (D + L₂ + 1) N`.
+
+Introduce `k hk`. Rewrite using `[Finset.mem_Ico]`. Take `⟨l, -, rfl⟩` from `Finset.mem_image.mp hk`. Use `⟨hM l, ?_⟩` and prove the remaining obligations. Use `Finset.le_sup (f := id) hk` as an intermediate fact.
+
+Simplify using `only [id] at this`. Use linear arithmetic over natural numbers and integers. Establish `hgeo : ∑ k ∈ S, q ^ k ≤ q ^ (D + L₂ + 1) / (1 - q)` using `(Finset.sum_le_sum_of_subset_of_nonneg hsub (fun _ _ _ => pow_nonneg hq0 _)).trans (geom_sum_Ico_le_of_lt_one hq0 hq1)`. Establish `hz : (p : ℝ) ^ (-((D : ℕ) : ℤ) - L₁ - 1) = q ^ (D + L₁ + 1)`. Rewrite using `[show (-((D : ℕ) : ℤ) - L₁ - 1) = -(((D + L₁ + 1 : ℕ)) : ℤ) by push_cast; ring]`.
+
+Rewrite using `[zpow_neg, zpow_natCast, hq, inv_pow]`. Rewrite using `[hz]`. Establish `hqq : q ^ (D + L₂ + 1) ≤ q ^ (D + L₁ + 1)` using `pow_le_pow_of_le_one hq0 hq1.le (by omega)`. Establish `h1q : 0 < 1 - q` using `by linarith`. Establish `hfrac : q ^ (D + L₂ + 1) / (1 - q) ≤ 3 / 2 * q ^ (D + L₁ + 1)`.
+
+Rewrite using `[div_le_iff₀ h1q]`. Establish `hqn : 0 ≤ q ^ (D + L₁ + 1)` using `pow_nonneg hq0 _`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left (hgeo.trans hfrac)` to reduce the goal to its premises.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = 3 * a * q ^ (D + L₁ + 1) := by ring`.
+-/
 theorem dLL_le (hF : FramesOK TT L₁ L₂ N₁ G' Fr) (hr : 1 ≤ r) (hp : 3 ≤ p) (hL : L₁ ≤ L₂) (Dt : SignedChainData p O r J)
     (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card) (a : ℝ) (ha : 0 ≤ a)
     (hd : ∀ x, (lowP Fr p x : ℝ) * (Dt.d x : ℝ) ≤ 2 * a) (j : ZMod J) :
@@ -199,6 +266,9 @@ theorem dLL_le (hF : FramesOK TT L₁ L₂ N₁ G' Fr) (hr : 1 ≤ r) (hp : 3 �
         linarith
     _ = 3 * a * q ^ (D + L₁ + 1) := by ring
 
+/- English proof (translation)
+Establish `hr' : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `h3 : 26 * (r : ℝ) * c ≤ 25 * (r : ℝ) ^ 2 * c`. Establish `: 26 * (r : ℝ) ≤ 25 * (r : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem slack_bound_real (r : ℕ) (x c s : ℝ) (h1 : x ≤ s / 8) (h2 : 100 * (r : ℝ) ^ 2 * c ≤ s) (hr : 2 ≤ r) (hc : 0 ≤ c) :
     x + 26 * (r : ℝ) * c ≤ 3 / 8 * s := by
   have hr' : (2 : ℝ) ≤ r := by exact_mod_cast hr
@@ -214,6 +284,15 @@ section HypH2
 variable {n' r : ℕ} [NeZero n'] {Fr : Frames n' r} {TT : Finset (Fin n')} {L₁ L₂ N₁ G' : ℕ}
   {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {J : ℕ} [NeZero J]
 
+/- English proof (translation)
+Unfold `posU`. Use `split_ifs with hlt`. Conclude with `LL_sub_letters hV hr j _ (Formalism.MainNotions.Proposition5Numerics.llPos_mem Fr j u hlt)`. Establish `hu' : u - (Fr.LLset j).card = 0` using `by omega`. Rewrite using `[hu']`.
+
+Establish `hV'` using `hV`. Take `⟨-, -, -, h4, h5, -⟩` from `hV'`. Establish `a1` using `fr_le_last hV (j - 1) (show 0 < r by omega)`. Establish `a2` using `fr_le_last hV j (show 0 < r by omega)`. Establish `a3` using `h4 (j - 1)`.
+
+Simplify using `only [sub_add_cancel] at a3`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Frames.letters, Finset.mem_filter, Finset.mem_Icc]`. Conclude with `⟨⟨by omega, a2⟩, (h5 j 0 (by omega)).1⟩`. Simplify using `only [Frames.IsW]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem posU_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (hu : u ≤ (Fr.LLset j).card) :
     posU Fr (Fr.LLset j).card j u ∈ Fr.letters j ∧ ¬ Fr.IsW j (posU Fr (Fr.LLset j).card j u) := by
   unfold posU
@@ -233,6 +312,41 @@ theorem posU_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (j : ℤ) (u : ℕ) (h
     · simp only [Frames.IsW]
       omega
 
+/- English proof (translation)
+Establish `hV` using `hF.2.1`. Establish `hG` using `hF.2.2.1`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hnL` using `hT.2.1`. Establish `hpR : (1 : ℝ) ≤ p` using `by exact_mod_cast (show 1 ≤ p by omega)`.
+
+Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Introduce `j m i`. Take `⟨s, hs⟩` from `seg_shift hV hT.1 j`. Establish `hsl' : Dt.sl (j + 1) i = 3 / 8 * slU Fr p deg Y k Dt.nL (j + 1) i.val` using `hsl (j + 1) i`. Establish `hi0` using `i.isLt`.
+
+Establish `hnch` using `hT.2.2.2.2.2.1 (j + 1)`. Establish `hnL1` using `hnL (j + 1)`. Establish `hgP` using `hT.2.2.2.2.1 j m`. Use `set jj := segZ j with hjj`. Use `set jj' := segZ (j + 1) with hjj'`.
+
+Establish `a0` using `fr_le_last hV jj (show 0 < r by omega)`. Establish `a1` using `fr_le_last hV (jj + 1) (show 0 < r by omega)`. Establish `a2` using `hV.2.2.2.1 jj`. Establish `b0` using `fr_le_last hV jj' (show 0 < r by omega)`. Establish `b1` using `fr_le_last hV (jj' - 1) (show 0 < r by omega)`.
+
+Establish `b2` using `hV.2.2.2.1 (jj' - 1)`. Simplify using `only [sub_add_cancel] at b2`. Use `set Dd := Fr.dist jj (Fr.fr jj 0) with hDd`. Use `set g := (Fr.fr (jj + 1) (r - 1) - Fr.fr jj (r - 1)).toNat with hg`. Use `set E := (Fr.fr jj' (r - 1) - Fr.fr (jj' - 1) 0).toNat with hE`.
+
+Establish `hDdz : (Dd : ℤ) = Fr.fr jj (r - 1) - Fr.fr jj 0`. Simplify using `only [hDd, Frames.dist]`. Use linear arithmetic over natural numbers and integers. Establish `hgz : (g : ℤ) = Fr.fr (jj + 1) (r - 1) - Fr.fr jj (r - 1)` using `by simp only [hg]; omega`. Establish `hEz : (E : ℤ) = Fr.fr jj' (r - 1) - Fr.fr (jj' - 1) 0` using `by simp only [hE]; omega`.
+
+Establish `hEq : Dd + g = E`. Establish `e1` using `(hs (r - 1)).1`. Establish `e2` using `(hs 0).2`. Use linear arithmetic over natural numbers and integers. Establish `hDdG : Dd ≤ G'`.
+
+Use `hG jj` as an intermediate fact. Use `fr_le_last hV (jj - 1) (show 0 < r by omega)` as an intermediate fact. Use `hV.2.2.2.1 (jj - 1)` as an intermediate fact. Simplify using `only [sub_add_cancel] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hgG : g ≤ G'`. Use `hG (jj + 1)` as an intermediate fact. Simplify using `only [add_sub_cancel_right] at this`. Use linear arithmetic over natural numbers and integers. Establish `hEG : E ≤ G'`.
+
+Use `hG jj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hP : (Dt.P j m : ℝ) = (p : ℝ) ^ g`. Simplify using `only [SignedChainData.P]`. Rewrite using `[hgP]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `hi : i.val ≤ (Fr.LLset jj').card` using `by omega`. Take `⟨hxl, hxW⟩` from `posU_mem hV hr1 jj' i.val hi`. Use `set x := posU Fr (Fr.LLset jj').card jj' i.val with hx`.
+
+Use `set B := Bo p Fr deg jj' x with hB`. Establish `hBge : a / (p : ℝ) ^ E ≤ B` using `Bo_ge hV hr1 p (by omega) deg a hdeg jj' x hxl hxW`. Establish `hslB : Dt.sl (j + 1) i = 3 / 8 * Formalism.CountingSumsFrames.slII Y k B`. Rewrite using `[hsl']`. Use `congr 1`.
+
+Simplify using `only [slU]`. Rewrite using `[hnL1]`. Both sides reduce to the same expression. Establish `hQII : Formalism.CountingSumsFrames.QII p G' = (p : ℝ) ^ G'` using `rfl`. Establish `hDdQ : (p : ℝ) ^ Dd ≤ Formalism.CountingSumsFrames.QII p G'` using `by rw [hQII]; exact pow_le_pow_right₀ hpR hDdG`.
+
+Establish `hQ1 : 1 ≤ (p : ℝ) ^ g` using `one_le_pow₀ hpR`. Establish `hQQ : (p : ℝ) ^ g ≤ Formalism.CountingSumsFrames.QII p G'` using `by rw [hQII]; exact pow_le_pow_right₀ hpR hgG`. Establish `hdj` using `dLL_le hF hr1 hp hL Dt hnL a ha hd j`. Establish `hB5 : a / ((p : ℝ) ^ Dd * (p : ℝ) ^ g) ≤ B`. Rewrite using `[← pow_add, hEq]`.
+
+Conclude with `hBge`. Take `⟨h5a, h5b⟩` from `hII5 Dd ((p : ℝ) ^ g) (Dt.dLL j) B hDdQ hQ1 hQQ hdj hB5`. Establish `hB0 : a / Formalism.CountingSumsFrames.QII p G' ≤ B`. Use `le_trans ?_ hBge` and prove the remaining obligations. Rewrite using `[hQII]`.
+
+Conclude with `div_le_div_of_nonneg_left ha (pow_pos hp0 _) (pow_le_pow_right₀ hpR hEG)`. Establish `h0` using `hII0 B hB0`. Use `show (r : ℝ) * (Dt.dLL j : ℝ) / (Dt.P j m : ℝ) + 26 * (r : ℝ) * Dt.c ≤ Dt.sl (j + 1) i`. Rewrite using `[hslB, hc, hP]`. Establish `key` using `slack_bound_real r ((r : ℝ) * (Dt.dLL j : ℝ) / (p : ℝ) ^ g) cPr (Formalism.CountingSumsFrames.slII Y k B) (h5a.trans h5b) h0 hr hc0`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem slack_bound_joint (hF : FramesOK TT L₁ L₂ N₁ G' Fr) (hr : 2 ≤ r) (hp : 3 ≤ p) (hL : L₁ ≤ L₂) (deg : Fin n' → ℕ) (Y : ℝ)
     (k mS : ℕ) (K : ℕ) [NeZero K] (Dt : SignedChainData p O r J) (dPl : TL J Dt.nL r → ℕ) (ka : ZMod J → ℕ → Fin K → ℤ)
     (hT : Tied Fr p deg Y k mS K Dt dPl ka) (cPr : ℝ) (hc : Dt.c = cPr) (hc0 : 0 ≤ cPr)

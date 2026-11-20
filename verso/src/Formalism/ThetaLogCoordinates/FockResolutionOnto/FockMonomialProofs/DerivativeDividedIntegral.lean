@@ -8,6 +8,13 @@ open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.GM.MeanGammaLemmas Fo
 section D
 variable {p : ℕ} [Fact p.Prime] {σ : Type}
 
+/- English proof (translation)
+Proceed by induction on `k generalizing m with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Use `show coeff m (pderiv v _) = _`.
+
+Rewrite using `[coeff_pderiv, ih, Nat.descFactorial_succ]`. Establish `h1 : (m + Finsupp.single v 1 : σ →₀ ℕ) v = m v + 1` using `by simp`. Establish `h2 : m + Finsupp.single v 1 + Finsupp.single v k = m + Finsupp.single v (k + 1)`. Rewrite using `[add_assoc, ← Finsupp.single_add, add_comm 1 k]`. Rewrite using `[h1, h2, show m v + 1 + k = m v + (k + 1) by omega, show m v + (k + 1) - k = m v + 1 by omega]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_pderiv_pow (v : σ) (k : ℕ) (f : MvPolynomial σ ℚ_[p]) (m : σ →₀ ℕ) :
     coeff m ((((pderiv v).toLinearMap : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) ^ k) f) =
       (((m v + k).descFactorial k : ℕ) : ℚ_[p]) * coeff (m + Finsupp.single v k) f := by
@@ -24,9 +31,15 @@ theorem coeff_pderiv_pow (v : σ) (k : ℕ) (f : MvPolynomial σ ℚ_[p]) (m : �
     push_cast
     ring
 
+/- English proof (translation)
+Simplify using `using Padic.norm_int_le_one (p := p) (n : ℤ)`.
+-/
 private theorem norm_natCast_padic_le_one (n : ℕ) : ‖(n : ℚ_[p])‖ ≤ 1 := by
   simpa using Padic.norm_int_le_one (p := p) (n : ℤ)
 
+/- English proof (translation)
+Rewrite `hx`, the goal using `[intPol_iff_norm]`. Introduce `m`. Rewrite using `[coeff_smul, smul_eq_mul, coeff_pderiv_pow, Nat.descFactorial_eq_factorial_mul_choose, Nat.cast_mul, ← mul_assoc, ← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero k), one_mul, norm_mul]`. Conclude with `mul_le_one₀ (norm_natCast_padic_le_one _) (norm_nonneg _) (hx _)`.
+-/
 theorem pderiv_div_int (v : σ) (k : ℕ) (x : MvPolynomial σ ℚ_[p]) (hx : x ∈ IntPol p σ) :
     ((k.factorial : ℚ_[p]))⁻¹ •
       ((((pderiv v).toLinearMap : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) ^ k) x) ∈ IntPol p σ := by
@@ -38,10 +51,16 @@ theorem pderiv_div_int (v : σ) (k : ℕ) (x : MvPolynomial σ ℚ_[p]) (hx : x 
 
 end D
 
+/- English proof (translation)
+Introduce `p _ K r a k x hx`. Conclude with `pderiv_div_int _ k x hx`.
+-/
 theorem derivative_divided_integral : DWDivInt := by
   intro p _ K r a k x hx
   exact pderiv_div_int _ k x hx
 
+/- English proof (translation)
+Establish `e1` using `Ring.descPochhammer_eq_factorial_smul_choose c (k + 1)`. Establish `e2` using `Ring.descPochhammer_eq_factorial_smul_choose (c - 1) k`. Rewrite `e1`, `e2` using `[← Polynomial.eval_eq_smeval, nsmul_eq_mul]`. Rewrite using `[← e1, ← e2, descPochhammer_succ_left, Polynomial.eval_mul, Polynomial.eval_comp, Polynomial.eval_X, Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_one]`.
+-/
 theorem fact_choose_succ (c : ℤ) (k : ℕ) :
     ((k + 1).factorial : ℤ) * Ring.choose c (k + 1) = c * ((k.factorial : ℤ) * Ring.choose (c - 1) k) := by
   have e1 := Ring.descPochhammer_eq_factorial_smul_choose c (k + 1)
@@ -59,18 +78,27 @@ noncomputable def DDop (p : ℕ) [Fact p.Prime] {K r : ℕ} (LL : Letters (K + 1
 
 variable (LL : Letters (K + 1)) (Cs : Finset (Fin r)) (a : Fin r)
 
+/- English proof (translation)
+Simplify using `only [DDop, eulW, Wm, dW, ProjS.eulL, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.mulLeft_apply]`.
+-/
 theorem DDop_apply (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     DDop p LL Cs a F = X (Fin.last K, a) * ProjS.eulL (fun c : Fin r => (Fin.last K, c)) F +
         ∑ b ∈ Cs, X (Fin.last K, b) * glAct p LL K a b F := by
   simp only [DDop, eulW, Wm, dW, ProjS.eulL, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.sum_apply,
     LinearMap.mulLeft_apply]
 
+/- English proof (translation)
+Simplify using `only [Uop, DDop, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply, Wm, LinearMap.mulLeft_apply, mul_sub, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+-/
 theorem Uop_eq (c : ℤ) (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     Uop p LL c Cs a F = ((c : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * F) - DDop p LL Cs a F := by
   simp only [Uop, DDop, LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, LinearMap.smul_apply,
     LinearMap.id_apply, Wm, LinearMap.mulLeft_apply, mul_sub, mul_smul_comm]
   abel
 
+/- English proof (translation)
+Simplify using `only [LinearMap.sum_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl (fun i hi => h i hi f g)`.
+-/
 private theorem sum_linearMaps_leibniz_of_leibniz {σ ι : Type} (s : Finset ι)
     (L : ι → MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p])
     (h : ∀ i ∈ s, ∀ f g, L i (f * g) = L i f * g + f * L i g) (f g : MvPolynomial σ ℚ_[p]) :
@@ -78,6 +106,9 @@ private theorem sum_linearMaps_leibniz_of_leibniz {σ ι : Type} (s : Finset ι)
   simp only [LinearMap.sum_apply, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl (fun i hi => h i hi f g)
 
+/- English proof (translation)
+Simplify using `only [LinearMap.comp_apply, LinearMap.mulLeft_apply, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem mulLeft_comp_leibniz_of_leibniz {σ : Type} (q : MvPolynomial σ ℚ_[p])
     (L : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p])
     (h : ∀ f g, L (f * g) = L f * g + f * L g) (f g : MvPolynomial σ ℚ_[p]) :
@@ -86,6 +117,9 @@ private theorem mulLeft_comp_leibniz_of_leibniz {σ : Type} (q : MvPolynomial σ
   simp only [LinearMap.comp_apply, LinearMap.mulLeft_apply, h]
   ring
 
+/- English proof (translation)
+Simplify using `only [Derivation.coeFn_coe, Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem pderiv_toLinearMap_mul {σ : Type} (v : σ) (f g : MvPolynomial σ ℚ_[p]) :
     (↑(pderiv v : Derivation ℚ_[p] (MvPolynomial σ ℚ_[p]) (MvPolynomial σ ℚ_[p])) :
       MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial σ ℚ_[p]) (f * g) =
@@ -96,6 +130,17 @@ private theorem pderiv_toLinearMap_mul {σ : Type} (v : σ) (f g : MvPolynomial 
   simp only [Derivation.coeFn_coe, Derivation.leibniz, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Establish `hg : ∀ b, ∀ f g, glAct p LL K a b (f * g) = glAct p LL K a b f * g + f * glAct p LL K a b g`. Introduce `b`. Unfold `glAct`. Apply `sum_linearMaps_leibniz_of_leibniz` to reduce the goal to its premises. Introduce `i _`.
+
+Use `split_ifs`. Conclude with `mulLeft_comp_leibniz_of_leibniz _ _ (pderiv_toLinearMap_mul _)`. Introduce `f g`. Rewrite using `[LinearMap.neg_apply, LinearMap.neg_apply, LinearMap.neg_apply, mulLeft_comp_leibniz_of_leibniz _ _ (pderiv_toLinearMap_mul _)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `f g`. Simplify using the standard rewrite rules. Establish `he : ∀ f g, eulW p K r (f * g) = eulW p K r f * g + f * eulW p K r g`. Unfold `eulW`. Apply `sum_linearMaps_leibniz_of_leibniz` to reduce the goal to its premises.
+
+Introduce `i _`. Conclude with `mulLeft_comp_leibniz_of_leibniz _ _ (pderiv_toLinearMap_mul _)`. Establish `hA : (Wm p K a ∘ₗ eulW p K r) (f * g) = (Wm p K a ∘ₗ eulW p K r) f * g + f * (Wm p K a ∘ₗ eulW p K r) g` using `mulLeft_comp_leibniz_of_leibniz _ _ he f g`. Establish `hs : (∑ b ∈ Cs, Wm p K b ∘ₗ glAct p LL K a b) (f * g) = (∑ b ∈ Cs, Wm p K b ∘ₗ glAct p LL K a b) f * g + f * (∑ b ∈ Cs, Wm p K b ∘ₗ glAct p LL K a b) g` using `sum_linearMaps_leibniz_of_leibniz Cs (fun b => Wm p K b ∘ₗ glAct p LL K a b) (fun b _ => mulLeft_comp_leibniz_of_leibniz _ _ (hg b)) f g`. Unfold `DDop`.
+
+Simplify using `only [LinearMap.add_apply]`. Rewrite using `[hA, hs]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem DDop_mul (f g : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     DDop p LL Cs a (f * g) = DDop p LL Cs a f * g + f * DDop p LL Cs a g := by
   have hg : ∀ b, ∀ f g, glAct p LL K a b (f * g) = glAct p LL K a b f * g + f * glAct p LL K a b g := by
@@ -125,6 +170,9 @@ theorem DDop_mul (f g : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
   rw [hA, hs]
   ring
 
+/- English proof (translation)
+Rewrite using `[Uop_eq, Uop_eq, DDop_mul, hq]`. Simplify using `only [MvPolynomial.smul_eq_C_mul]`. Use `push_cast`. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Uop_shift (c n : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hq : DDop p LL Cs a q = ((n : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * q))
     (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
@@ -135,6 +183,9 @@ theorem Uop_shift (c n : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
   simp only [map_add]
   ring
 
+/- English proof (translation)
+Proceed by induction on `k generalizing G with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Module.End.mul_apply, Uop_shift LL Cs a c n q hq, ih, pow_succ, Module.End.mul_apply]`.
+-/
 theorem Uop_shift_pow (c n : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hq : DDop p LL Cs a q = ((n : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * q)) (k : ℕ)
     (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
@@ -144,6 +195,9 @@ theorem Uop_shift_pow (c n : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[
   | succ k ih =>
     rw [pow_succ, Module.End.mul_apply, Uop_shift LL Cs a c n q hq, ih, pow_succ, Module.End.mul_apply]
 
+/- English proof (translation)
+Establish `hq' : DDop p LL Cs a q = ((0 : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * q)`. Rewrite using `[hq]`. Simplify using the standard rewrite rules. Establish `key` using `Uop_shift_pow LL Cs a c 0 q hq' k G`. Rewrite `key` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem Uop_comm_pow (c : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hq : DDop p LL Cs a q = 0) (k : ℕ) (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     ((Uop p LL c Cs a) ^ k) (q * G) = q * ((Uop p LL c Cs a) ^ k) G := by
@@ -153,6 +207,15 @@ theorem Uop_comm_pow (c : ℤ) (q : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
   have key := Uop_shift_pow LL Cs a c 0 q hq' k G
   rwa [add_zero] at key
 
+/- English proof (translation)
+Establish `h1 : ∀ G, Uop p LL c Cs a (x * G) = x * Uop p LL c Cs a G + w * G`. Introduce `G`. Rewrite using `[Uop_eq, Uop_eq, DDop_mul, hx]`. Simplify using `only [MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Proceed by induction on `k generalizing G with`. Consider the case `zero`. Simplify using `only [zero_add, pow_one, pow_zero, Module.End.one_apply, Nat.cast_one, one_smul]`. Conclude with `h1 G`. Consider the case `succ k ih`.
+
+Establish `e0 : ((Uop p LL c Cs a) ^ (k + 1 + 1)) (x * G) = ((Uop p LL c Cs a) ^ (k + 1)) (Uop p LL c Cs a (x * G))`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e1 : ((Uop p LL c Cs a) ^ (k + 1 + 1)) G = ((Uop p LL c Cs a) ^ (k + 1)) (Uop p LL c Cs a G)`. Rewrite using `[pow_succ, Module.End.mul_apply]`. Establish `e2 : ((Uop p LL c Cs a) ^ (k + 1)) G = ((Uop p LL c Cs a) ^ k) (Uop p LL c Cs a G)`.
+
+Rewrite using `[pow_succ, Module.End.mul_apply]`. Rewrite using `[e0, h1, map_add, ih, Uop_comm_pow LL Cs a c w hw (k + 1), ← e1, ← e2]`. Use `push_cast`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Uop_step_pow (c : ℤ) (x w : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hx : DDop p LL Cs a x = -w) (hw : DDop p LL Cs a w = 0) (k : ℕ)
     (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
@@ -181,6 +244,13 @@ theorem Uop_step_pow (c : ℤ) (x w : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p
     simp only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]
     ring
 
+/- English proof (translation)
+Unfold `ProjS.eulL`. Rewrite using `[LinearMap.sum_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single d]`.
+
+Simplify using `[pderiv_X]`. Introduce `b _ hb`. Simplify using `[pderiv_X, Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `c _`. Simplify using `[pderiv_X, Pi.single_apply, h]`.
+-/
 theorem eulL_X (i : Fin (K + 1)) (d : Fin r) :
     ProjS.eulL (fun c : Fin r => (Fin.last K, c)) (X (i, d) : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) =
       if i = Fin.last K then X (i, d) else 0 := by
@@ -197,6 +267,9 @@ theorem eulL_X (i : Fin (K + 1)) (d : Fin r) :
     intro c _
     simp [pderiv_X, Pi.single_apply, h]
 
+/- English proof (translation)
+Unfold `glAct`. Rewrite using `[LinearMap.sum_apply, Finset.sum_eq_single i]`. Apply the tactic sequence `split_ifs <;> simp_all [pderiv_X, Pi.single_apply]`. Apply the tactic sequence `intro j _ hj split_ifs <;> simp [pderiv_X, Pi.single_apply, Ne.symm hj]`. Simplify using the standard rewrite rules.
+-/
 private theorem glAct_X_eq_ite (b : Fin r) (i : Fin (K + 1)) (d : Fin r) :
     glAct p LL K a b (X (i, d)) =
       if (i : ℕ) < K then
@@ -209,6 +282,11 @@ private theorem glAct_X_eq_ite (b : Fin r) (i : Fin (K + 1)) (d : Fin r) :
     split_ifs <;> simp [pderiv_X, Pi.single_apply, Ne.symm hj]
   · simp
 
+/- English proof (translation)
+Rewrite using `[DDop_apply, eulL_X, if_pos rfl]`. Establish `hz : ∀ b, glAct p LL K a b (X (Fin.last K, d)) = 0`. Introduce `b`. Rewrite using `[glAct_X_eq_ite]`. Simplify using the standard rewrite rules.
+
+Simplify using `[hz]`.
+-/
 theorem DDop_last (d : Fin r) :
     DDop p LL Cs a (X (Fin.last K, d)) = ((1 : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * X (Fin.last K, d)) := by
   rw [DDop_apply, eulL_X, if_pos rfl]
@@ -218,12 +296,18 @@ theorem DDop_last (d : Fin r) :
     simp
   simp [hz]
 
+/- English proof (translation)
+Rewrite using `[DDop_apply, eulL_X, if_neg hi, mul_zero, zero_add]`. Simplify using `only [glAct_X_eq_ite, if_pos (Fin.val_lt_last hi), hv, if_true]`. Simplify using `[mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+-/
 theorem DDop_vec (i : Fin (K + 1)) (hi : i ≠ Fin.last K) (hv : LL.vec i = true) (d : Fin r) :
     DDop p LL Cs a (X (i, d)) = if d ∈ Cs then X (Fin.last K, d) * X (i, a) else 0 := by
   rw [DDop_apply, eulL_X, if_neg hi, mul_zero, zero_add]
   simp only [glAct_X_eq_ite, if_pos (Fin.val_lt_last hi), hv, if_true]
   simp [mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']
 
+/- English proof (translation)
+Rewrite using `[DDop_apply, eulL_X, if_neg hi, mul_zero, zero_add]`. Simplify using `only [glAct_X_eq_ite, if_pos (Fin.val_lt_last hi), hv, Bool.false_eq_true, if_false]`. Use `split_ifs with h`. Simplify using `[h, Finset.sum_neg_distrib]`. Simplify using `[h]`.
+-/
 theorem DDop_cov (i : Fin (K + 1)) (hi : i ≠ Fin.last K) (hv : LL.vec i = false) (d : Fin r) :
     DDop p LL Cs a (X (i, d)) = if a = d then -∑ b ∈ Cs, X (Fin.last K, b) * X (i, b) else 0 := by
   rw [DDop_apply, eulL_X, if_neg hi, mul_zero, zero_add]
@@ -232,6 +316,9 @@ theorem DDop_cov (i : Fin (K + 1)) (hi : i ≠ Fin.last K) (hv : LL.vec i = fals
   · simp [h, Finset.sum_neg_distrib]
   · simp [h]
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Simplify using `only [DDop_mul, DDop_last, DDop_cov LL Cs a i hi hv]`. Simplify using `[Finset.sum_add_distrib, mul_ite, Finset.sum_ite_eq, ha]`. Rewrite using `[Finset.mul_sum, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl (fun b _ => by ring)`.
+-/
 theorem DDop_pair (ha : a ∈ Cs) (i : Fin (K + 1)) (hi : i ≠ Fin.last K) (hv : LL.vec i = false) :
     DDop p LL Cs a (∑ b ∈ Cs, X (Fin.last K, b) * X (i, b)) = 0 := by
   rw [map_sum]
@@ -240,6 +327,15 @@ theorem DDop_pair (ha : a ∈ Cs) (i : Fin (K + 1)) (hi : i ≠ Fin.last K) (hv 
   rw [Finset.mul_sum, ← sub_eq_add_neg, sub_eq_zero]
   exact Finset.sum_congr rfl (fun b _ => by ring)
 
+/- English proof (translation)
+Proceed by induction on `k generalizing c with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hU1 : Uop p LL c Cs a 1 = ((c : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * 1)`. Rewrite using `[Uop_eq]`.
+
+Establish `h0 : DDop p LL Cs a 1 = 0`. Establish `h2` using `DDop_mul (p := p) LL Cs a 1 1`. Rewrite `h2` using `[one_mul, one_mul, mul_one]`. Take the linear combination `-h2`. Rewrite using `[h0, sub_zero]`.
+
+Establish `hq` using `DDop_last (p := p) LL Cs a a`. Establish `key` using `Uop_shift_pow LL Cs a (c - 1) 1 (X (Fin.last K, a)) hq k 1`. Rewrite `key` using `[sub_add_cancel]`. Rewrite using `[pow_succ (Uop p LL c Cs a) k, Module.End.mul_apply, hU1, map_smul, key, ih (c - 1), fact_choose_succ]`. Use `push_cast`.
+
+Simplify using `only [MvPolynomial.smul_eq_C_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Uop_pow_one (c : ℤ) (k : ℕ) :
     ((Uop p LL c Cs a) ^ k) 1 =
       (((k.factorial : ℤ) * Ring.choose c k : ℤ) : ℚ_[p]) • (X (Fin.last K, a) ^ k) := by
@@ -261,6 +357,9 @@ theorem Uop_pow_one (c : ℤ) (k : ℕ) :
     simp only [MvPolynomial.smul_eq_C_mul, map_mul]
     ring
 
+/- English proof (translation)
+Rewrite using `[intPol_iff_norm]`. Introduce `m`. Rewrite using `[coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem one_int : (1 : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p (Fin (K + 1) × Fin r) := by
   classical
   rw [intPol_iff_norm]
@@ -268,6 +367,9 @@ theorem one_int : (1 : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p
   rw [coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Uop_eq, Uop_eq]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+-/
 private theorem Uop_add_one_apply (c : ℤ) (H : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     Uop p LL (c + 1) Cs a H = Uop p LL c Cs a H + X (Fin.last K, a) * H := by
   rw [Uop_eq, Uop_eq]
@@ -275,6 +377,15 @@ private theorem Uop_add_one_apply (c : ℤ) (H : MvPolynomial (Fin (K + 1) × Fi
   rw [add_smul, one_smul]
   abel
 
+/- English proof (translation)
+Establish `hUV : ∀ Z, Uop p LL c Cs a Z = Uop p LL (c - 1) Cs a Z + X (Fin.last K, a) * Z`. Introduce `Z`. Establish `h` using `Uop_add_one_apply LL Cs a (c - 1) Z`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hsh : ∀ Z, Uop p LL c Cs a (X (Fin.last K, a) * Z) = X (Fin.last K, a) * Uop p LL (c - 1) Cs a Z`.
+
+Introduce `Z`. Establish `h` using `Uop_shift LL Cs a (c - 1) 1 _ (DDop_last (p := p) LL Cs a a) Z`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Proceed by induction on `k with`. Consider the case `zero => simp [hUV]`.
+
+Consider the case `succ k ih`. Establish `e1 : Uop p LL (c - 1) Cs a (((Uop p LL (c - 1) Cs a) ^ (k + 1)) H) = ((Uop p LL (c - 1) Cs a) ^ (k + 1 + 1)) H`. Rewrite using `[pow_succ' _ (k + 1), Module.End.mul_apply]`. Establish `e2 : Uop p LL (c - 1) Cs a (((Uop p LL (c - 1) Cs a) ^ k) H) = ((Uop p LL (c - 1) Cs a) ^ (k + 1)) H`. Rewrite using `[pow_succ' _ k, Module.End.mul_apply]`.
+
+Rewrite using `[pow_succ' (Uop p LL c Cs a) (k + 1), Module.End.mul_apply, ih, map_add, map_smul, hUV, hsh, e1, e2]`. Use `push_cast`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem Uop_pow_succ_apply_eq (c : ℤ) (H : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (k : ℕ) :
     ((Uop p LL c Cs a) ^ (k + 1)) H = ((Uop p LL (c - 1) Cs a) ^ (k + 1)) H +
       ((k + 1 : ℕ) : ℚ_[p]) • (X (Fin.last K, a) * ((Uop p LL (c - 1) Cs a) ^ k) H) := by
@@ -300,6 +411,19 @@ private theorem Uop_pow_succ_apply_eq (c : ℤ) (H : MvPolynomial (Fin (K + 1) �
     simp only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]
     ring
 
+/- English proof (translation)
+Establish `h1 : ∀ G, Uop p LL c Cs a (x * G) = x * Uop p LL c Cs a G - w * G`. Introduce `G`. Rewrite using `[Uop_eq, Uop_eq, DDop_mul, hx]`. Simplify using `only [MvPolynomial.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw' : ∀ Y, Uop p LL c Cs a (w * Y) = w * Uop p LL (c - 2) Cs a Y`. Introduce `Y`. Establish `h` using `Uop_shift LL Cs a (c - 2) 2 w hw Y`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hV : ∀ Y, Uop p LL (c - 2) Cs a Y = Uop p LL (c - 1) Cs a Y - X (Fin.last K, a) * Y`.
+
+Introduce `Y`. Establish `h` using `Uop_add_one_apply LL Cs a (c - 2) Y`. Rewrite `h` using `[show c - 2 + 1 = c - 1 by ring]`. Rewrite using `[h]`. Normalize the expressions using the abelian group laws.
+
+Proceed by induction on `k with`. Consider the case `zero`. Simplify using `only [zero_add, pow_one, pow_zero, Module.End.one_apply, Nat.cast_one, one_smul]`. Conclude with `h1 G`. Consider the case `succ k ih`.
+
+Establish `e0 : ((Uop p LL c Cs a) ^ (k + 1 + 1)) (x * G) = Uop p LL c Cs a (((Uop p LL c Cs a) ^ (k + 1)) (x * G))`. Rewrite using `[pow_succ' _ (k + 1), Module.End.mul_apply]`. Establish `e1 : Uop p LL c Cs a (((Uop p LL c Cs a) ^ (k + 1)) G) = ((Uop p LL c Cs a) ^ (k + 1 + 1)) G`. Rewrite using `[pow_succ' _ (k + 1), Module.End.mul_apply]`. Establish `e2 : Uop p LL (c - 1) Cs a (((Uop p LL (c - 1) Cs a) ^ k) G) = ((Uop p LL (c - 1) Cs a) ^ (k + 1)) G`.
+
+Rewrite using `[pow_succ' _ k, Module.End.mul_apply]`. Rewrite using `[e0, ih, map_sub, map_smul, h1, hw', hV, e1, e2, Uop_pow_succ_apply_eq LL Cs a c G k]`. Use `push_cast`. Simplify using `only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem Uop_pow_succ_mul_apply (c : ℤ) (x w : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hx : DDop p LL Cs a x = w) (hw : DDop p LL Cs a w = ((2 : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * w))
     (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) (k : ℕ) :
@@ -338,11 +462,43 @@ private theorem Uop_pow_succ_mul_apply (c : ℤ) (x w : MvPolynomial (Fin (K + 1
     simp only [MvPolynomial.smul_eq_C_mul, map_add, map_one, map_natCast]
     ring
 
+/- English proof (translation)
+Rewrite using `[Nat.factorial_succ, Nat.cast_mul, mul_inv, mul_comm, ← mul_assoc, mul_inv_cancel₀ (by exact_mod_cast Nat.succ_ne_zero k), one_mul]`.
+-/
 private theorem inv_factorial_succ_mul_succ_eq (k : ℕ) :
     (((k + 1).factorial : ℚ_[p]))⁻¹ * ((k + 1 : ℕ) : ℚ_[p]) = ((k.factorial : ℚ_[p]))⁻¹ := by
   rw [Nat.factorial_succ, Nat.cast_mul, mul_inv, mul_comm, ← mul_assoc,
     mul_inv_cancel₀ (by exact_mod_cast Nat.succ_ne_zero k), one_mul]
 
+/- English proof (translation)
+Establish `hX : ∀ v, (X v : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p (Fin (K + 1) × Fin r)` using `fun v => FrozenVariableLemmas.intPol_X p v`. Establish `hM : ∀ {F G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]}, F ∈ IntPol p (Fin (K + 1) × Fin r) → G ∈ IntPol p (Fin (K + 1) × Fin r) → F * G ∈ IntPol p (Fin (K + 1) × Fin r)` using `fun hF hG => FrozenVariableLemmas.intPol_mul p hF hG`. Use `MvPolynomial.induction_on (motive := fun P => ∀ (c : ℤ) (k : ℕ), ((k.factorial : ℚ_[p]))⁻¹ • ((Uop p LL c Cs a) ^ k) (map (algebraMap ℤ_[p] ℚ_[p]) P) ∈ IntPol p (Fin (K + 1) × Fin r)) P ?_ ?_ ?_` and prove the remaining obligations. Introduce `z c k beta_reduce`. Rewrite using `[map_C]`.
+
+Establish `hC : (C (algebraMap ℤ_[p] ℚ_[p] z) : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) = (algebraMap ℤ_[p] ℚ_[p] z) • (1 : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])`. Rewrite using `[MvPolynomial.smul_eq_C_mul, mul_one]`. Establish `hs : ((k.factorial : ℚ_[p]))⁻¹ * ((((k.factorial : ℤ) * Ring.choose c k : ℤ)) : ℚ_[p]) = ((Ring.choose c k : ℤ) : ℚ_[p])`. Use `push_cast`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (by exact_mod_cast Nat.factorial_ne_zero k), one_mul]`.
+
+Establish `hT : ((k.factorial : ℚ_[p]))⁻¹ • ((Uop p LL c Cs a) ^ k) 1 = ((Ring.choose c k : ℤ) : ℚ_[p]) • X (Fin.last K, a) ^ k`. Rewrite using `[Uop_pow_one, smul_smul, hs]`. Rewrite using `[hC, map_smul, smul_comm, hT, algebraMap_smul, Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ z (zsmul_mem (FrozenVariableLemmas.intPol_pow p (hX _) k) _)`. Introduce `P Q hP hQ c k beta_reduce`.
+
+Rewrite using `[map_add, map_add, smul_add]`. Conclude with `add_mem (hP c k) (hQ c k)`. Introduce `P n hP c k beta_reduce`. Take `⟨j, d⟩` from `n`. Rewrite using `[map_mul, map_X, mul_comm]`.
+
+Establish `hF0 : map (algebraMap ℤ_[p] ℚ_[p]) P ∈ IntPol p (Fin (K + 1) × Fin r)`. Simplify using `using hP c 0`. Distinguish the cases in `hj : j = Fin.last K`. Substitute `hj` using the available equality. Establish `key` using `Uop_shift_pow LL Cs a (c - 1) 1 (X (Fin.last K, d)) (DDop_last LL Cs a d) k (map (algebraMap ℤ_[p] ℚ_[p]) P)`.
+
+Rewrite `key` using `[sub_add_cancel]`. Rewrite using `[key, ← mul_smul_comm]`. Conclude with `hM (hX _) (hP (c - 1) k)`. Consider the cases of `hv : LL.vec j with`. Consider the case `false`.
+
+Distinguish the cases in `hd : d = a`. Rewrite using `[hd]`. Establish `hx : DDop p LL Cs a (X (j, a)) = -(∑ b ∈ Cs, X (Fin.last K, b) * X (j, b))`. Rewrite using `[DDop_cov LL Cs a j hj hv a, if_pos rfl]`. Establish `hw` using `DDop_pair (p := p) LL Cs a ha j hj hv`.
+
+Establish `hwI : (∑ b ∈ Cs, X (Fin.last K, b) * X (j, b) : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p (Fin (K + 1) × Fin r)` using `Submodule.sum_mem _ (fun b _ => hM (hX _) (hX _))`. Consider the cases of `k with`. Consider the case `zero => simpa using hM (hX (j, a)) hF0`. Consider the case `succ k`. Rewrite using `[Uop_step_pow LL Cs a c _ _ hx hw k, smul_add, smul_smul, inv_factorial_succ_mul_succ_eq]`.
+
+Simplify using `only [← mul_smul_comm]`. Conclude with `add_mem (hM (hX _) (hP c (k + 1))) (hM hwI (hP c k))`. Establish `hD : DDop p LL Cs a (X (j, d)) = 0`. Rewrite using `[DDop_cov LL Cs a j hj hv d, if_neg (Ne.symm hd)]`. Rewrite using `[Uop_comm_pow LL Cs a c _ hD k, ← mul_smul_comm]`.
+
+Conclude with `hM (hX _) (hP c k)`. Consider the case `true`. Distinguish the cases in `hd : d ∈ Cs`. Establish `hx : DDop p LL Cs a (X (j, d)) = X (Fin.last K, d) * X (j, a)`. Rewrite using `[DDop_vec LL Cs a j hj hv d, if_pos hd]`.
+
+Establish `hw : DDop p LL Cs a (X (Fin.last K, d) * X (j, a)) = ((2 : ℤ) : ℚ_[p]) • (X (Fin.last K, a) * (X (Fin.last K, d) * X (j, a)))`. Rewrite using `[DDop_mul, DDop_last, DDop_vec LL Cs a j hj hv a, if_pos ha]`. Use `push_cast`. Rewrite using `[two_smul, one_smul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hwI : (X (Fin.last K, d) * X (j, a) : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) ∈ IntPol p (Fin (K + 1) × Fin r)` using `hM (hX _) (hX _)`. Consider the cases of `k with`. Consider the case `zero => simpa using hM (hX (j, d)) hF0`. Consider the case `succ k`. Rewrite using `[Uop_pow_succ_mul_apply LL Cs a c _ _ hx hw, smul_sub, smul_smul, inv_factorial_succ_mul_succ_eq]`.
+
+Simplify using `only [← mul_smul_comm]`. Conclude with `sub_mem (hM (hX _) (hP c (k + 1))) (hM hwI (hP (c - 1) k))`. Establish `hD : DDop p LL Cs a (X (j, d)) = 0`. Rewrite using `[DDop_vec LL Cs a j hj hv d, if_neg hd]`. Rewrite using `[Uop_comm_pow LL Cs a c _ hD k, ← mul_smul_comm]`.
+
+Conclude with `hM (hX _) (hP c k)`.
+-/
 theorem udiv_map (ha : a ∈ Cs) (P : MvPolynomial (Fin (K + 1) × Fin r) ℤ_[p]) :
     ∀ (c : ℤ) (k : ℕ), ((k.factorial : ℚ_[p]))⁻¹ • ((Uop p LL c Cs a) ^ k) (map (algebraMap ℤ_[p] ℚ_[p]) P) ∈
       IntPol p (Fin (K + 1) × Fin r) := by
@@ -431,6 +587,9 @@ theorem udiv_map (ha : a ∈ Cs) (P : MvPolynomial (Fin (K + 1) × Fin r) ℤ_[p
 
 end U
 
+/- English proof (translation)
+Introduce `p _ K r LL c Cs a k ha x hx`. Take `⟨P, rfl⟩` from `(FrozenVariableLemmas.intPol_iff p x).mp hx`. Conclude with `udiv_map LL Cs a ha P c k`.
+-/
 theorem raising_divided_integral : UDivInt := by
   intro p _ K r LL c Cs a k ha x hx
   obtain ⟨P, rfl⟩ := (FrozenVariableLemmas.intPol_iff p x).mp hx

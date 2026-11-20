@@ -6,6 +6,17 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 
 namespace GlobalTheory.IwConst
 
+/- English proof (translation)
+Set `f : V →ₗ[ℂ] ({a // ε a = b} → ℂ)` to `(LinearMap.funLeft ℂ ℂ (Subtype.val : {a // ε a = b} → Fin n)) ∘ₗ V.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `hx0 : ∀ a, ε a = b → (x : Fin n → ℂ) a = 0` using `fun a ha => by`.
+
+Simplify `congrFun hx ⟨a, ha⟩` using `[f]`. Establish `hterm : ∀ a, star ((x : Fin n → ℂ) a) * ((if ε a then (1 : ℂ) else -1) * (x : Fin n → ℂ) a) = (if b then (-1 : ℂ) else 1) * ((Complex.normSq ((x : Fin n → ℂ) a) : ℝ) : ℂ)`. Introduce `a`. Distinguish the cases in `ha : ε a = b`. Simplify using `[hx0 a ha]`.
+
+Apply the tactic sequence `have hb : ε a = !b := by cases h1 : ε a <;> cases b <;> simp_all`. Rewrite using `[Complex.normSq_eq_conj_mul_self, hb]`. Apply the tactic sequence `cases b <;> simp [Complex.star_def] <;> ring`. Establish `h0` using `hV x x.2`. Simplify using `only [Formalism.REAL.Jm, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply, hterm, ← Finset.mul_sum] at h0`.
+
+Apply the tactic sequence `have hc : (if b then (-1 : ℂ) else 1) ≠ 0 := by cases b <;> simp`. Establish `hsum : (∑ a, Complex.normSq ((x : Fin n → ℂ) a) : ℝ) = 0`. Use `(mul_eq_zero.mp h0).resolve_left hc` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hall` using `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => Complex.normSq_nonneg _)).mp hsum`.
+
+Use extensionality with `a`. Simplify using `using hall a (Finset.mem_univ a)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem finrank_le_card_of_isotropic {n : ℕ} (ε : Fin n → Bool) (V : Submodule ℂ (Fin n → ℂ))
     (hV : ∀ x ∈ V, star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x) = 0) (b : Bool) :
     Module.finrank ℂ V ≤ (univ.filter fun a => ε a = b).card := by
@@ -40,6 +51,11 @@ theorem finrank_le_card_of_isotropic {n : ℕ} (ε : Fin n → Bool) (V : Submod
     _ = Fintype.card {a // ε a = b} := Module.finrank_fintype_fun_eq_card ℂ
     _ = (univ.filter fun a => ε a = b).card := Fintype.card_subtype _
 
+/- English proof (translation)
+Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `j W h0 _`. Simplify using `[show Fin.last 0 = (0 : Fin 1) from rfl, h0]`.
+
+Consider the case `succ a ih`. Introduce `j W h0 hstep`. Establish `hprev` using `ih (fun i => j i.castSucc) (fun i => W i.castSucc) (by simpa using h0) (fun i => by have hs := hstep i.castSucc; rw [Fin.succ_castSucc] at hs; exact hs)`. Rewrite using `[Fin.sum_univ_castSucc, ← hprev, ← Fin.succ_last, hstep (Fin.last a)]`.
+-/
 private theorem finrank_last_eq_sum_of_finrank_succ {n : ℕ} : ∀ (a : ℕ) (j : Fin a → ℕ)
     (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), W 0 = ⊥ →
     (∀ i : Fin a, Module.finrank ℂ (W i.succ) = Module.finrank ℂ (W i.castSucc) + j i) →
@@ -55,11 +71,23 @@ private theorem finrank_last_eq_sum_of_finrank_succ {n : ℕ} : ∀ (a : ℕ) (j
       (fun i => by have hs := hstep i.castSucc; rw [Fin.succ_castSucc] at hs; exact hs)
     rw [Fin.sum_univ_castSucc, ← hprev, ← Fin.succ_last, hstep (Fin.last a)]
 
+/- English proof (translation)
+The claim follows from `finrank_last_eq_sum_of_finrank_succ a j W h.1 h.2.2.1`.
+-/
 theorem finrank_last_eq_sum {n : ℕ} {ε : Fin n → Bool} {a : ℕ} {j : Fin a → ℕ}
     {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)} (h : IsIsoFlag ε j W) :
     Module.finrank ℂ (W (Fin.last a)) = ∑ i, j i :=
   finrank_last_eq_sum_of_finrank_succ a j W h.1 h.2.2.1
 
+/- English proof (translation)
+Establish `split : ∀ i k : Fin a, j i * j k = (if i < k then j i * j k else 0) + (if i = k then j i * j k else 0) + (if k < i then j i * j k else 0)`. Introduce `i k`. Break down `lt_trichotomy i k with h | h | h` into its components or cases. Simplify using `[h, h.ne, not_lt.mpr h.le]`. Simplify using `[h]`.
+
+Simplify using `[h, h.ne', not_lt.mpr h.le]`. Establish `hsym : ∑ i, ∑ k, (if k < i then j i * j k else 0) = ∑ i, ∑ k, (if i < k then j i * j k else 0)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+
+Establish `hexp : ∑ i, ∑ k, j i * j k = ∑ i, ∑ k, ((if i < k then j i * j k else 0) + (if i = k then j i * j k else 0) + (if k < i then j i * j k else 0))` using `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => split i k`. Establish `hdiag : ∑ i, ∑ k, (if i = k then j i * j k else 0) = ∑ i, j i ^ 2`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `[sq]`.
+
+Rewrite using `[sq, Finset.sum_mul_sum, hexp]`. Simplify using `only [Finset.sum_add_distrib]`. Rewrite using `[hsym, hdiag]`. Simplify using `only [Finset.sum_filter]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem sq_sum_eq_sum_sq_add_two_mul_sum_lt' {a : ℕ} (j : Fin a → ℕ) :
     (∑ i, j i) ^ 2 = ∑ i, j i ^ 2 + 2 * ∑ i, ∑ k ∈ univ.filter (fun k => i < k), j i * j k := by
   have split : ∀ i k : Fin a, j i * j k = (if i < k then j i * j k else 0) +
@@ -86,6 +114,19 @@ private theorem sq_sum_eq_sum_sq_add_two_mul_sum_lt' {a : ℕ} (j : Fin a → �
   simp only [Finset.sum_filter]
   ring
 
+/- English proof (translation)
+Introduce `n ε a j W h p q hp hq`. Establish `hpq : p + q = n`. Rewrite using `[← hp, ← hq]`. Use `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Fin n))) (fun a => ε a = true)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hV : ∀ x ∈ W (Fin.last a), star x ⬝ᵥ (Formalism.REAL.Jm ε *ᵥ x) = 0` using `fun x hx => h.2.2.2 x hx x hx`. Establish `hS` using `finrank_last_eq_sum h`. Establish `hSp : ∑ i, j i ≤ p`. Rewrite using `[← hS, ← hp]`. Conclude with `finrank_le_card_of_isotropic ε _ hV true`.
+
+Establish `hSq : ∑ i, j i ≤ q`. Rewrite using `[← hS, ← hq]`. Conclude with `finrank_le_card_of_isotropic ε _ hV false`. Establish `hsq` using `sq_sum_eq_sum_sq_add_two_mul_sum_lt' j`. Substitute `hpq` using the available equality.
+
+Simplify using `only [dimN]`. Use `set S := ∑ i, j i`. Use `set X := ∑ i, j i ^ 2`. Use `set T := ∑ i, ∑ k ∈ univ.filter (fun k => i < k), j i * j k`. Take `⟨P, rfl⟩` from `Nat.exists_eq_add_of_le hSp`.
+
+Take `⟨Q, rfl⟩` from `Nat.exists_eq_add_of_le hSq`. Establish `e1 : S + P + (S + Q) - 2 * S = P + Q` using `by omega`. Establish `e2 : S + P - S = P` using `by omega`. Establish `e3 : S + Q - S = Q` using `by omega`. Rewrite using `[e1, e2, e3]`.
+
+Apply the tactic sequence `refine ⟨by trivial, ?_, ?_⟩ <;> nlinarith [hsq]`.
+-/
 theorem flag_dims : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ (p q : ℕ), (univ.filter fun a => ε a = true).card = p → (univ.filter fun a => ε a = false).card = q → p + q = n ∧ n ^ 2 = 2 * dimN n j + ((n - 2 * ∑ i, j i) ^ 2 + 2 * ∑ i, j i ^ 2) ∧ p ^ 2 + q ^ 2 = dimN n j + ((p - ∑ i, j i) ^ 2 + (q - ∑ i, j i) ^ 2 + ∑ i, j i ^ 2) := by
   intro n ε a j W h p q hp hq
   have hpq : p + q = n := by

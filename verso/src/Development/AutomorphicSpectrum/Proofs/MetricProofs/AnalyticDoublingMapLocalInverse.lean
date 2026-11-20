@@ -3,6 +3,23 @@ open Set Filter Topology Metric
 
 namespace GlobalTheory.CompanionTheory.Metric.FamilyInverse
 
+/- English proof (translation)
+Set `Φ : B × V → B × V` to `fun p => (p.1, d p)`. Set `L : (B × V) →L[ℂ] (B × V)` to `(ContinuousLinearMap.fst ℂ B V).prod ((2 : ℂ) • ContinuousLinearMap.snd ℂ B V)`. Set `L' : (B × V) →L[ℂ] (B × V)` to `(ContinuousLinearMap.fst ℂ B V).prod ((2⁻¹ : ℂ) • ContinuousLinearMap.snd ℂ B V)`. Set `Le : (B × V) ≃L[ℂ] (B × V)` to `ContinuousLinearEquiv.equivOfInverse L L' (fun p => by simp [L, L', smul_smul]) (fun p => by simp [L, L', smul_smul])`. Establish `hLe : (Le : (B × V) →L[ℂ] (B × V)) = L` using `rfl`.
+
+Establish `hΦan : AnalyticAt ℂ Φ (b₀, 0)` using `analyticAt_fst.prod han`. Establish `hΦd : HasFDerivAt Φ L (b₀, 0)` using `hasFDerivAt_fst.prodMk hd`. Establish `hs : HasStrictFDerivAt Φ (Le : (B × V) →L[ℂ] (B × V)) (b₀, 0)`. Use `hΦan.hasStrictFDerivAt` as an intermediate fact. Rewrite `this` using `[hΦd.fderiv, ← hLe]`. Then use the resulting hypothesis.
+
+Establish `hfix : Φ (b₀, 0) = (b₀, 0)` using `by simp [Φ, h0]`. Set `P` to `hs.toOpenPartialHomeomorph Φ`. Establish `hPc : (P : B × V → B × V) = Φ` using `hs.toOpenPartialHomeomorph_coe`. Establish `hPan : AnalyticAt ℂ P.symm (P (b₀, 0))` using `P.analyticAt_symm' (i := Le) hs.mem_toOpenPartialHomeomorph_source (by rw [hPc]; exact hΦan) (by rw [hPc, hΦd.fderiv, hLe])`. Establish `hΨan : AnalyticAt ℂ P.symm (b₀, 0)`.
+
+Establish `: P (b₀, 0) = (b₀, 0)` using `by rw [hPc]; exact hfix`. Rewrite `hPan` using `[this]`. Then use the resulting hypothesis. Establish `hright : ∀ᶠ q in 𝓝 (b₀, 0), Φ (P.symm q) = q`. Use `hs.eventually_right_inverse` as an intermediate fact. Rewrite `this` using `[hfix]`.
+
+Conclude with `this`. Establish `hleft : ∀ᶠ p in 𝓝 (b₀, 0), P.symm (Φ p) = p` using `hs.eventually_left_inverse`. Establish `hΨ0 : P.symm (b₀, 0) = (b₀, 0)`. Use `hs.localInverse_apply_image` as an intermediate fact. Rewrite `this` using `[hfix]`.
+
+Conclude with `this`. Use `⟨fun q => (P.symm q).2, analyticAt_snd.comp hΨan, by simp [hΨ0], ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hright] with q hq`. Establish `e1` using `congrArg Prod.fst hq`. Establish `e2` using `congrArg Prod.snd hq`.
+
+Establish `h1 : (P.symm q).1 = q.1` using `e1`. Establish `h2 : d (P.symm q) = q.2` using `e2`. Establish `h3 : (q.1, (P.symm q).2) = P.symm q` using `by rw [← h1]`. Rewrite using `[h3, h2]`. Use `filter_upwards [hleft] with p hp`.
+
+Establish `e` using `congrArg Prod.snd hp`. Conclude with `e`.
+-/
 theorem exists_analytic_family_inverse {B V : Type} [NormedAddCommGroup B] [NormedSpace ℂ B]
     [CompleteSpace B] [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
     (b₀ : B) (d : B × V → V) (han : AnalyticAt ℂ d (b₀, 0)) (h0 : d (b₀, 0) = 0)

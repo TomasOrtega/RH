@@ -16,6 +16,19 @@ noncomputable section
 namespace GlobalTheory.Mum.RosUniq
 open GlobalTheory.CechPic GlobalTheory.EndRosati
 
+/- English proof (translation)
+Set `T : Over S` to `Over.mk t`. Set `x : T ⟶ A` to `b * a⁻¹`. Establish `hx : lift (fst T A ≫ x) (snd T A) ≫ μ[A] = snd T A * (fst T A ≫ a)⁻¹ * (fst T A ≫ b)`. Rewrite using `[← Hom.mul_def]`. Simplify using `only [x, MonObj.comp_mul, GrpObj.comp_inv]`.
+
+The two sides agree by associativity and commutativity. Establish `hy : snd T A * (fst T A ≫ a)⁻¹ * (fst T A ≫ a) = snd T A` using `inv_mul_cancel_right _ _`. Rewrite `H` using `[hy, ← hx]`. Establish `h1 : x = 1` using `hK R' t x fun s => by`. Take `⟨i, hi⟩` from `exists_chart hL (a.left s)`.
+
+Take `⟨i', hi'⟩` from `exists_chart hL (b.left s)`. Set `V : (Spec (CommRingCat.of R')).Opens` to `a.left ⁻¹ᵁ L.U i ⊓ b.left ⁻¹ᵁ L.U i'`. Use `⟨V, ⟨hi, hi'⟩, ?_⟩` and prove the remaining obligations. Establish `z : ∀ (c : T ⟶ A) (l : L.ι), V ≤ c.left ⁻¹ᵁ L.U l → pull ((fst T A).left ⁻¹ᵁ V).ι (pull (fst T A ≫ c).left (cls L hL)) = 0` using `fun c l hl => by`. Rewrite using `[← pull_comp]`.
+
+Conclude with `(cls_eq_zero_iff (LB.isLB_pull hL _)).2 (BoxKernel.gen_of_chart (LB.isLB_pull hL _) (fun _ => l) fun y => mem_pull.2 (hl y.2))`. Establish `hT : (translDiff A L x).IsLB` using `LB.isLB_linComb hL _ _`. Use `(cls_eq_zero_iff (LB.isLB_pull hT _)).1 ?_` and prove the remaining obligations. Use `(cls_pull hT _ _).trans ((congrArg _ (cls_linComb hL _ _ hT)).trans ?_)` and prove the remaining obligations. Establish `e : ∑ k : Fin 2, (![1, -1] : Fin 2 → ℤ) k • pull ((![(lift (fst T A ≫ x) (snd T A) ≫ μ[A]).left, (snd T A).left] : Fin 2 → _) k) (cls L hL) = pull (fst T A ≫ b).left (cls L hL) - pull (fst T A ≫ a).left (cls L hL)`.
+
+Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul]`. Take the linear combination `(norm := abel) H`. Use `(congrArg _ e).trans ?_` and prove the remaining obligations. Conclude with `(map_sub _ _ _).trans ((congrArg₂ (· - ·) (z b i' inf_le_right) (z a i inf_le_left)).trans (sub_zero _))`.
+
+Conclude with `mul_inv_eq_one.1 h1`.
+-/
 theorem pt_eq_of_cls {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB)
     (hK : KTriv A L) {R' : Type} [CommRing R'] {t : Spec (CommRingCat.of R') ⟶ S} (a b : Over.mk t ⟶ A)
     (H : pull (snd (Over.mk t) A * (fst (Over.mk t) A ≫ a)⁻¹ * (fst (Over.mk t) A ≫ b)).left (cls L hL) -
@@ -57,6 +70,15 @@ end GlobalTheory.Mum.RosUniq
 
 open GlobalTheory.CechPic GlobalTheory.EndRosati GlobalTheory.Mum.RosUniq in
 
+/- English proof (translation)
+Introduce `R _ _ _ _ D f g g' hf hg hg' Hg Hg'`. Establish `hGF` using `GlobalTheory.firstFiveLaws.1.globalFns`. Take `⟨r, hr, -⟩` from `exists_ros hGF D.toPre.P.isAb D.toPre.P.isLB f g Hg`. Take `⟨r', hr', -⟩` from `exists_ros hGF D.toPre.P.isAb D.toPre.P.isLB f g' Hg'`. Establish `key : ∀ {T : Over (Spec (CommRingCat.of R))} (x y : T ⟶ D.toPre.P.A), pull (x * (y ≫ g)).left (cls _ D.toPre.P.isLB) - pull (y ≫ g).left (cls _ D.toPre.P.isLB) = pull (x * (y ≫ g')).left (cls _ D.toPre.P.isLB) - pull (y ≫ g').left (cls _ D.toPre.P.isLB)` using `fun x y => by`.
+
+Establish `h₁` using `cls_of_rosati D.toPre.P.isLB r hr x y`. Establish `h₂` using `cls_of_rosati D.toPre.P.isLB r' hr' x y`. Take the linear combination `(norm := abel) h₂ - h₁`. Set `cv` to `D.toPre.P.A.left.affineOpenCover`. Use `Over.OverMorphism.ext (Scheme.Cover.hom_ext cv.openCover _ _ fun j => ?_)` and prove the remaining obligations.
+
+Set `t : Spec (CommRingCat.of (cv.X j)) ⟶ Spec (CommRingCat.of R)` to `cv.f j ≫ D.toPre.P.A.hom`. Set `y : Over.mk t ⟶ D.toPre.P.A` to `Over.homMk (cv.f j) rfl`. Establish `k` using `key (snd (Over.mk t) D.toPre.P.A * (fst _ _ ≫ y ≫ g')⁻¹) (fst (Over.mk t) D.toPre.P.A ≫ y)`. Simplify using `only [Category.assoc] at k`. Establish `e` using `pt_eq_of_cls D.toPre.P.isLB D.toPre.P.ktriv (y ≫ g') (y ≫ g) k`.
+
+Conclude with `congrArg (·.left) e`.
+-/
 theorem GlobalTheory.Mum.rosatiAdj_unique : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (f g g' : D.toPre.P.A ⟶ D.toPre.P.A), IsMonHom f → IsMonHom g → IsMonHom g' → RosatiAdj D.toPre.P.A D.toPre.P.L f g → RosatiAdj D.toPre.P.A D.toPre.P.L f g' → g = g' := by
   intro R _ _ _ _ D f g g' hf hg hg' Hg Hg'
   have hGF := GlobalTheory.firstFiveLaws.1.globalFns

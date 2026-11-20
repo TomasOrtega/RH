@@ -15,6 +15,13 @@ open scoped TensorProduct
 namespace GlobalTheory.LowIrr
 open MvPolynomial Formalism.BasicNotions.TH
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `c d w hw`. Establish `hp` using `(GlobalTheory.LowIrr.lowShape P Q R S x k k' h1 h2 w (hNV hw)).1`. Establish `e` using `(GlobalTheory.T.fock_action_row_capelli_formula P Q R S w hp).1 c d`. Use `hN _ (eab_isKC_inl (S := S) c d) w hw` as an intermediate fact.
+
+Rewrite `this` using `[e]`. Simplify using `using N.sub_mem this (N.smul_mem (if c = d then (((P : ℂ) - Q) / 2) else 0) hw)`. Introduce `c d w hw`. Establish `hp` using `(GlobalTheory.LowIrr.lowShape P Q R S x k k' h1 h2 w (hNV hw)).1`. Establish `e` using `(GlobalTheory.T.fock_action_row_capelli_formula P Q R S w hp).2 c d`.
+
+Use `hN _ (eab_isKC_inr (R := R) c d) w hw` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `using N.sub_mem this (N.smul_mem (if c = d then (((Q : ℂ) - P) / 2) else 0) hw)`.
+-/
 theorem stable_of_rowOp {P Q R S : ℕ} (x : ℚ) (k k' : ℕ) (h1 : x - cPair R S = k) (h2 : x + cPair R S = k')
     (N : Submodule ℂ (Pol P Q R S)) (hNV : N ≤ GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k'))
     (hN : ∀ Z : Mat R S, IsKC Z → ∀ f ∈ N, fockAct2 P Q R S Z f ∈ N) :
@@ -34,6 +41,27 @@ theorem stable_of_rowOp {P Q R S : ℕ} (x : ℚ) (k k' : ℕ) (h1 : x - cPair R
     rw [e] at this
     simpa using N.sub_mem this (N.smul_mem (if c = d then (((Q : ℂ) - P) / 2) else 0) hw)
 
+/- English proof (translation)
+Introduce `P Q R S x k k' _ _ _ _ h1 h2 N hNV hN`. Use `set V := GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') with hVdef`. Establish `hVh : V ≤ homogeneousSubmodule (Ln P Q R S) ℂ (P * k + Q * k')` using `fun f hf => (GlobalTheory.LowIrr.lowShape P Q R S x k k' h1 h2 f hf).2`. Use `haveI : FiniteDimensional ℂ V := by haveI := GlobalTheory.CompactHarm.finite_homog (σ := Ln P Q R S) (P * k + Q * k')`. Conclude with `Submodule.finiteDimensional_of_le hVh`.
+
+Take `⟨hVz, hVy⟩` from `stable_of_rowOp x k k' h1 h2 V le_rfl (GlobalTheory.T.low_irreducible_k_stable P Q R S x k k' h1 h2)`. Take `⟨hNz, hNy⟩` from `stable_of_rowOp x k k' h1 h2 N hNV hN`. Establish `hJ : ∀ v ∈ V, (∀ c d : Fin R, c < d → GlobalTheory.Capelli.rowOp ℂ (zR P Q R S) c d v = 0) → (∃ α : Fin R → ℂ, ∀ c, GlobalTheory.Capelli.rowOp ℂ (zR P Q R S) c c v = α c • v) → (∀ c d : Fin S, c < d → GlobalTheory.Capelli.rowOp ℂ (yS P Q R S) c d v = 0) → (∃ β : Fin S → ℂ, ∀ d, G …`. Introduce `v hv hz ⟨α, hα⟩ hy ⟨β, hβ⟩`. Establish `hp` using `(GlobalTheory.LowIrr.lowShape P Q R S x k k' h1 h2 v hv).1`.
+
+Take `⟨m1, m2, m3⟩` from `GlobalTheory.T.capelli_highest_weight_vanishing P Q R S x k k' h1 h2 v ((GlobalTheory.KFixIrr.mem_lowOne x _ v).1 hv).1 hp`. Conclude with `⟨α, β, m1, m2, hz, hα, hy, hβ, m3⟩`. Take `⟨Q₀, hQ₀⟩` from `GlobalTheory.CompactHarm.jointTop_line (zR P Q R S) (yS P Q R S) (zR_inj P Q R S) (yS_inj P Q R S) (zR_ne_yS P Q R S) (zR_or_yS P Q R S) (kap P Q k k')`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Take `⟨hN0, hNV'⟩` from `hne`. Establish `hlt : N < V` using `lt_of_le_of_ne hNV hNV'`. Use `set N' := V ⊓ GlobalTheory.GLDuality.Compl.orth N with hN'def`. Establish `hN'0 : N' ≠ ⊥` using `GlobalTheory.GLDuality.Compl.inf_orth_ne_bot V N hlt`. Use `haveI : FiniteDimensional ℂ N := Submodule.finiteDimensional_of_le hNV`.
+
+Use `haveI : FiniteDimensional ℂ N' := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hN'z : ∀ (c d : Fin R), ∀ w ∈ N', GlobalTheory.Capelli.rowOp ℂ (zR P Q R S) c d w ∈ N'`. Introduce `c d w hw`. Use `⟨hVz c d w hw.1, GlobalTheory.GLDuality.Compl.mem_orth.2 fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[fockF_rowOp]`.
+
+Conclude with `GlobalTheory.GLDuality.Compl.mem_orth.1 hw.2 _ (hNz d c m hm)`. Establish `hN'y : ∀ (c d : Fin S), ∀ w ∈ N', GlobalTheory.Capelli.rowOp ℂ (yS P Q R S) c d w ∈ N'`. Introduce `c d w hw`. Use `⟨hVy c d w hw.1, GlobalTheory.GLDuality.Compl.mem_orth.2 fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[fockF_rowOp]`.
+
+Conclude with `GlobalTheory.GLDuality.Compl.mem_orth.1 hw.2 _ (hNy d c m hm)`. Take `⟨v, hv, hv0, a1, a2, a3, a4⟩` from `GlobalTheory.T.exists_highest_weight_vector_alt P Q R S N inferInstance hN0 hNz hNy`. Take `⟨v', hv', hv'0, b1, b2, b3, b4⟩` from `GlobalTheory.T.exists_highest_weight_vector_alt P Q R S N' inferInstance hN'0 hN'z hN'y`. Take `⟨α, β, hJv⟩` from `hJ v (hNV hv) a1 a2 a3 a4`. Take `⟨α', β', hJv'⟩` from `hJ v' hv'.1 b1 b2 b3 b4`.
+
+Take `⟨r, hr⟩` from `hQ₀ α β v hJv`. Take `⟨r', hr'⟩` from `hQ₀ α' β' v' hJv'`. Establish `hr0 : r ≠ 0` using `fun e => hv0 (by rw [hr, e, zero_smul])`. Establish `hv'N : v' ∈ N`. Establish `: v' = (r' / r) • v` using `by rw [hr', hr, smul_smul, div_mul_cancel₀ _ hr0]`.
+
+Rewrite using `[this]`. Conclude with `N.smul_mem _ hv`. Establish `h0` using `GlobalTheory.GLDuality.Compl.mem_orth.1 hv'.2 v' hv'N`. Use `(Formalism.GradedWeylDivisibility.fockPos _ v' hv'0).1` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Simplify using `at this`.
+-/
 theorem lowOne_irreducible : ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), P ≤ R → Q ≤ S → 0 < k → 0 < k' → x - Formalism.BasicNotions.TH.cPair R S = k → x + Formalism.BasicNotions.TH.cPair R S = k' → ∀ N : Submodule ℂ (Formalism.BasicNotions.TH.Pol P Q R S), N ≤ GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') → (∀ Z : Formalism.BasicNotions.TH.Mat R S, Formalism.BasicNotions.TH.IsKC Z → ∀ f ∈ N, Formalism.BasicNotions.TH.fockAct2 P Q R S Z f ∈ N) → N = ⊥ ∨ N = GlobalTheory.KFixIrr.lowOne P Q R S x (P * k + Q * k') := by
   intro P Q R S x k k' _ _ _ _ h1 h2 N hNV hN
   classical

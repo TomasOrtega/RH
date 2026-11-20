@@ -7,6 +7,23 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.PerfVB
 
+/- English proof (translation)
+Introduce `h10 ht hs`. Establish `h10' : ∀ y, a₁ (a₀ y) = 0` using `fun y => LinearMap.congr_fun h10 y`. Establish `ht' : ∀ y, a₀ (t (a₀ y)) = a₀ y` using `fun y => LinearMap.congr_fun ht y`. Establish `hs' : ∀ x, a₁ (s (a₁ x)) = a₁ x` using `fun x => LinearMap.congr_fun hs x`. Establish `hk : ∀ x, x - s (a₁ x) ∈ LinearMap.ker a₁` using `fun x => by`.
+
+Rewrite using `[LinearMap.mem_ker, map_sub, hs', sub_self]`. Establish `hp : Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀) ≤ LinearMap.ker ((LinearMap.id - a₀ ∘ₗ t) ∘ₗ (LinearMap.ker a₁).subtype)`. Introduce and unpack `⟨z, hz⟩ hzN`. Take `⟨y, rfl⟩ : ∃ y, a₀ y = z` from `LinearMap.mem_range.1 (Submodule.mem_comap.1 hzN)`. Rewrite using `[LinearMap.mem_ker]`.
+
+Express the relevant statement in the definitionally equal form `a₀ y - a₀ (t (a₀ y)) = 0`. Rewrite using `[ht', sub_self]`. Use `⟨Submodule.liftQ _ ((LinearMap.id - a₀ ∘ₗ t) ∘ₗ (LinearMap.ker a₁).subtype) hp, (Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀)).mkQ ∘ₗ LinearMap.codRestrict (LinearMap.ker a₁) (LinearMap.id - s ∘ₗ a₁) hk, t - t ∘ₗ s ∘ₗ a₁, s, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective (Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀)) q`.
+
+Establish `hz' : a₁ z = 0` using `LinearMap.mem_ker.1 hz`. Establish `key : (⟨z - a₀ (t z) - s (a₁ (z - a₀ (t z))), hk _⟩ : LinearMap.ker a₁) - ⟨z, hz⟩ ∈ Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀)`. Use `Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨-t z, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a₀ (-t z) = z - a₀ (t z) - s (a₁ (z - a₀ (t z))) - z`. Rewrite using `[map_sub a₁, hz', h10', sub_self, map_zero, sub_zero, map_neg]`.
+
+Normalize the expressions using the abelian group laws. Conclude with `(Submodule.Quotient.eq _).2 key`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective (Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀)) q`. Establish `hz' : a₁ z = 0` using `LinearMap.mem_ker.1 hz`.
+
+Express the relevant statement in the definitionally equal form `a₁ (z - a₀ (t z)) = 0`. Rewrite using `[map_sub, hz', h10', sub_zero]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (p := Submodule.comap (LinearMap.ker a₁).subtype (LinearMap.range a₀)) (⟨a₀ y - s (a₁ (a₀ y)), hk _⟩ : LinearMap.ker a₁) = 0`. Use `(Submodule.Quotient.mk_eq_zero _).2 (Submodule.mem_comap.2 (LinearMap.mem_range.2 ⟨y, ?_⟩))` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `a₀ y = a₀ y - s (a₁ (a₀ y))`. Rewrite using `[h10', map_zero, sub_zero]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x - s (a₁ x) - a₀ (t (x - s (a₁ x))) + a₀ (t x - t (s (a₁ x))) + s (a₁ x) = x`. Simplify using `only [map_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_contraction_onto_homology (R P₀ P₁ P₂ : Type) [CommRing R] [AddCommGroup P₀]
     [AddCommGroup P₁] [AddCommGroup P₂] [Module R P₀] [Module R P₁] [Module R P₂]
     (a₀ : P₀ →ₗ[R] P₁) (a₁ : P₁ →ₗ[R] P₂) (t : P₁ →ₗ[R] P₀) (s : P₂ →ₗ[R] P₁) :

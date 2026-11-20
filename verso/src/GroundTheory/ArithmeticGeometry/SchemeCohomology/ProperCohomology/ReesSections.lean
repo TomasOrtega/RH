@@ -30,17 +30,26 @@ abbrev unitB : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹
 variable (hF : IsCoherent F) (hV : IsAffineOpen V)
 
 include hF hV in
+/- English proof (translation)
+Use `hF.1` as an intermediate fact. Conclude with `isBaseChangeAt_of_isAffineOpen _ F hV (hV.preimage _)`.
+-/
 lemma isBaseChangeAt_reesPr : IsBaseChangeAt (reesPr I X) F V := by
   have := hF.1
   exact isBaseChangeAt_of_isAffineOpen _ F hV (hV.preimage _)
 
 include hF hV in
+/- English proof (translation)
+Use `(isCoherent_pullback_reesPr (I := I) hF).1` as an intermediate fact. Conclude with `isBaseChangeAt_of_isAffineOpen _ _ (hV.preimage _) ((hV.preimage _).preimage _)`.
+-/
 lemma isBaseChangeAt_reesPolyMap :
     IsBaseChangeAt (reesPolyMap I X) ((Scheme.Modules.pullback (reesPr I X)).obj F)
       (reesPr I X ⁻¹ᵁ V) := by
   have := (isCoherent_pullback_reesPr (I := I) hF).1
   exact isBaseChangeAt_of_isAffineOpen _ _ (hV.preimage _) ((hV.preimage _).preimage _)
 
+/- English proof (translation)
+Rewrite using `[reesRingHom_inl, ← Polynomial.monomial_zero_left, PolynomialModule.monomial_smul_single, zero_add]`.
+-/
 lemma single_zero_smul_compat (a : Γ(X, V)) (m : Γ(F, V)) :
     PolynomialModule.single Γ(X, V) 0 (a • m) =
       reesRingHom (I := I) hV ((reesPr I X).app V a) • PolynomialModule.single Γ(X, V) 0 m := by
@@ -48,6 +57,9 @@ lemma single_zero_smul_compat (a : Γ(X, V)) (m : Γ(F, V)) :
     zero_add]
 
 include hF in
+/- English proof (translation)
+Set `_ : Module Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) (PolynomialModule Γ(X, V) Γ(F, V))` to `Module.compHom _ (reesRingHom (I := I) hV)`. Take `⟨θ, hθ, -⟩` from `isBaseChangeAt_reesPr (I := I) hF hV _ (PolynomialModule.lsingle Γ(X, V) 0 : Γ(F, V) →ₗ[Γ(X, V)] _).toAddMonoidHom (fun a m => single_zero_smul_compat hV a m)`. Conclude with `⟨θ.toAddMonoidHom, hθ, fun s y => θ.map_smul s y⟩`.
+-/
 lemma exists_theta₁ : ∃ θ : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V) →+
     PolynomialModule Γ(X, V) Γ(F, V),
     (∀ m, θ (unitPr I F V m) = PolynomialModule.single Γ(X, V) 0 m) ∧
@@ -63,16 +75,25 @@ def theta₁ : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹
     PolynomialModule Γ(X, V) Γ(F, V) :=
   (exists_theta₁ hF hV).choose
 
+/- English proof (translation)
+The claim follows from `(exists_theta₁ hF hV).choose_spec.1 m`.
+-/
 lemma theta₁_unitPr (m : Γ(F, V)) :
     theta₁ hF hV (unitPr I F V m) = PolynomialModule.single Γ(X, V) 0 m :=
   (exists_theta₁ hF hV).choose_spec.1 m
 
+/- English proof (translation)
+The claim follows from `(exists_theta₁ hF hV).choose_spec.2 s y`.
+-/
 lemma theta₁_smul (s : Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V))
     (y : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V)) :
     theta₁ hF hV (s • y) = reesRingHom (I := I) hV s • theta₁ hF hV y :=
   (exists_theta₁ hF hV).choose_spec.2 s y
 
 include hF in
+/- English proof (translation)
+Set `_ : Module (polyRing I V) (PolynomialModule Γ(X, V) Γ(F, V))` to `Module.compHom _ (polyRingHom (I := I) hV)`. Take `⟨θ, hθ, -⟩` from `isBaseChangeAt_reesPolyMap (I := I) hF hV _ (theta₁ hF hV) (fun s y => theta₁_smul hF hV s y)`. Conclude with `⟨θ.toAddMonoidHom, hθ, fun s x => θ.map_smul s x⟩`.
+-/
 lemma exists_theta : ∃ θ : Γ((Scheme.Modules.pullback (reesPolyMap I X)).obj
       ((Scheme.Modules.pullback (reesPr I X)).obj F), reesPolyMap I X ⁻¹ᵁ (reesPr I X ⁻¹ᵁ V)) →+
     PolynomialModule Γ(X, V) Γ(F, V),
@@ -89,14 +110,23 @@ def thetaMap : Γ((Scheme.Modules.pullback (reesPolyMap I X)).obj
     PolynomialModule Γ(X, V) Γ(F, V) :=
   (exists_theta hF hV).choose
 
+/- English proof (translation)
+The claim follows from `(exists_theta hF hV).choose_spec.1 y`.
+-/
 lemma thetaMap_unitB (y : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V)) :
     thetaMap hF hV (unitB I F V y) = theta₁ hF hV y :=
   (exists_theta hF hV).choose_spec.1 y
 
+/- English proof (translation)
+The claim follows from `(polyRingEquiv hV).symm_apply_apply s`.
+-/
 lemma polyRingInv_polyRingHom (s : polyRing I V) :
     polyRingInv (I := I) (V := V) (polyRingHom hV s) = s :=
   (polyRingEquiv hV).symm_apply_apply s
 
+/- English proof (translation)
+The claim follows from `(exists_theta hF hV).choose_spec.2 s x`.
+-/
 lemma thetaMap_smul (s : polyRing I V) (x : Γ((Scheme.Modules.pullback (reesPolyMap I X)).obj
       ((Scheme.Modules.pullback (reesPr I X)).obj F), reesPolyMap I X ⁻¹ᵁ (reesPr I X ⁻¹ᵁ V))) :
     thetaMap hF hV (s • x) = polyRingHom (I := I) hV s • thetaMap hF hV x :=
@@ -121,16 +151,27 @@ def lambdaMap : PolynomialModule Γ(X, V) Γ(F, V) →+ polySec I F V where
     · intro n m m'
       rw [map_add, map_add, smul_add]
 
+/- English proof (translation)
+Simplify using `[lambdaMap, Finsupp.sum_single_index]`.
+-/
 lemma lambdaMap_single (n : ℕ) (m : Γ(F, V)) :
     lambdaMap I F V (PolynomialModule.single Γ(X, V) n m) =
       (polyRingInv (I := I) (V := V) (Polynomial.X ^ n)) • unitB I F V (unitPr I F V m) := by
   simp [lambdaMap, Finsupp.sum_single_index]
 
+/- English proof (translation)
+Rewrite using `[unitPr, pullbackUnitApp_smul_at, unitB, pullbackUnitApp_smul_at]`. Both sides reduce to the same expression.
+-/
 lemma unitB_unitPr_smul (c : Γ(X, V)) (m : Γ(F, V)) :
     unitB I F V (unitPr I F V (c • m)) = polyInl I V c • unitB I F V (unitPr I F V m) := by
   rw [unitPr, pullbackUnitApp_smul_at, unitB, pullbackUnitApp_smul_at]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p p' hp hp' => rw [add_smul, map_add, hp, hp', map_add, add_smul]`. Consider the case `monomial i c`. Proceed by induction on `q using PolynomialModule.induction_linear with`. Consider the case `zero => simp`.
+
+Consider the case `add q q' h h' => rw [smul_add, map_add, h, h', map_add, smul_add]`. Consider the case `single j m`. Rewrite using `[PolynomialModule.monomial_smul_single, lambdaMap_single, lambdaMap_single, unitB_unitPr_smul, smul_smul, smul_smul, polyRingInv, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X_pow, Polynomial.eval₂_X_pow, Polynomial.eval₂_monomial, pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma lambdaMap_smul (p : Polynomial Γ(X, V)) (q : PolynomialModule Γ(X, V) Γ(F, V)) :
     lambdaMap I F V (p • q) = polyRingInv (I := I) (V := V) p • lambdaMap I F V q := by
   induction p using Polynomial.induction_on' with
@@ -148,6 +189,13 @@ lemma lambdaMap_smul (p : Polynomial Γ(X, V)) (q : PolynomialModule Γ(X, V) Γ
       ring
 
 include hF hV in
+/- English proof (translation)
+Set `_ : Module Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) (polySec I F V)` to `Module.compHom _ ((reesPolyMap I X).app (reesPr I X ⁻¹ᵁ V)).hom`. Set `L1 : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V) →ₗ[ Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V)] polySec I F V` to `{ toFun := fun y => lambdaMap I F V (theta₁ hF hV y) map_add' := fun y y' => by rw [map_add, map_add] map_smul' := fun s y => by`. Rewrite using `[theta₁_smul, lambdaMap_smul, reesRingHom, RingHom.comp_apply, polyRingInv_polyRingHom]`. Use `rfl }`. Set `L2 : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V) →ₗ[ Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V)] polySec I F V` to `{ toFun := unitB I F V map_add' := map_add _ map_smul' := fun s y => pullbackUnitApp_smul_at _ _ _ s y }`.
+
+Take `⟨ψ, -, huniq⟩` from `isBaseChangeAt_reesPr (I := I) hF hV (polySec I F V) ((unitB I F V).comp (unitPr I F V)) (fun a m => unitB_unitPr_smul a m)`. Establish `e1` using `huniq L1 (fun m => by`. Express the relevant statement in the definitionally equal form `lambdaMap I F V (theta₁ hF hV (unitPr I F V m)) = _`. Rewrite using `[theta₁_unitPr, lambdaMap_single, pow_zero, map_one, one_smul]`. Use the proof step `rfl)`.
+
+Establish `e2` using `huniq L2 (fun m => rfl)`. Conclude with `congrArg (fun L : _ →ₗ[Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V)] polySec I F V => L y) (e1.trans e2.symm)`.
+-/
 lemma lambdaMap_theta₁ (y : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, reesPr I X ⁻¹ᵁ V)) :
     lambdaMap I F V (theta₁ hF hV y) = unitB I F V y := by
   let _ : Module Γ(reesScheme I X, reesPr I X ⁻¹ᵁ V) (polySec I F V) :=
@@ -177,6 +225,11 @@ lemma lambdaMap_theta₁ (y : Γ((Scheme.Modules.pullback (reesPr I X)).obj F, r
 
 include hF hV in
 
+/- English proof (translation)
+Set `L3 : polySec I F V →ₗ[polyRing I V] polySec I F V` to `{ toFun := fun x => lambdaMap I F V (thetaMap hF hV x) map_add' := fun x x' => by rw [map_add, map_add] map_smul' := fun s x => by`. Rewrite using `[thetaMap_smul, lambdaMap_smul, polyRingInv_polyRingHom]`. Use `rfl }`. Take `⟨ψ, -, huniq⟩` from `isBaseChangeAt_reesPolyMap (I := I) hF hV (polySec I F V) (unitB I F V) (fun s y => pullbackUnitApp_smul_at _ _ _ s y)`. Establish `e1` using `huniq L3 (fun y => by`.
+
+Express the relevant statement in the definitionally equal form `lambdaMap I F V (thetaMap hF hV (unitB I F V y)) = _`. Rewrite using `[thetaMap_unitB, lambdaMap_theta₁])`. Establish `e2` using `huniq LinearMap.id (fun y => rfl)`. Conclude with `congrArg (fun L : polySec I F V →ₗ[polyRing I V] polySec I F V => L x) (e1.trans e2.symm)`.
+-/
 theorem lambdaMap_thetaMap (x : polySec I F V) : lambdaMap I F V (thetaMap hF hV x) = x := by
   let L3 : polySec I F V →ₗ[polyRing I V] polySec I F V :=
     { toFun := fun x => lambdaMap I F V (thetaMap hF hV x)
@@ -193,6 +246,9 @@ theorem lambdaMap_thetaMap (x : polySec I F V) : lambdaMap I F V (thetaMap hF hV
   exact congrArg (fun L : polySec I F V →ₗ[polyRing I V] polySec I F V => L x) (e1.trans e2.symm)
 
 include hF hV in
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (lambdaMap_thetaMap hF hV)`.
+-/
 lemma thetaMap_injective : Function.Injective (thetaMap (I := I) hF hV) :=
   Function.LeftInverse.injective (lambdaMap_thetaMap hF hV)
 

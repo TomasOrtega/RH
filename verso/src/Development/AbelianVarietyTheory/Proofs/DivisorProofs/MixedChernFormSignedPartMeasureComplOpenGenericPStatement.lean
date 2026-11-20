@@ -13,5 +13,8 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.R
 open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.ChartGlue GlobalTheory.Mix
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MixNull.part_compl_null | exact GlobalTheory.MixNull.part_compl_null | (intros; apply GlobalTheory.MixNull.part_compl_null <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.mixedChernFormSignedPartMeasure_compl_open_genericPoint_eq_zero : ∀ (k : Type) [CommRing k] [IsDomain k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (σ : k →+* ℂ), Function.Injective σ → IsProjOver p → ∀ (D : ℕ) (L : Fin D → MLine p σ) (ε : ℤˣ) (U : X.Opens), genericPoint X ∈ U → part L ε (ptsIn p σ U)ᶜ = 0 := by
   first | exact @GlobalTheory.MixNull.part_compl_null | exact GlobalTheory.MixNull.part_compl_null | (intros; apply GlobalTheory.MixNull.part_compl_null <;> assumption)

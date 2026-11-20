@@ -6,6 +6,11 @@ namespace GroundTheory.Heights₂.Heights
 
 open ReciprocityTheory.ChartRestriction.G.Geo
 
+/- English proof (translation)
+Introduce `hZ2 f j m hf II hII`. Use `hZ2 (Fin f) (plBlocks f j m) (grassIdeal f j m) ⊥ (f * j * m) (fsMulti (plBlocks f j m)) (grassConst f j m) (rootFamily f j m) II hII (hArith f j m hf) bot_le (hSemi _ _ _) (hNef _ _ _ _ fun _ => ?_) (hConj _ _) ?_ (hDense f j m)` and prove the remaining obligations. Use `show (0 : ℤ) ≤ 1`. Conclude with `zero_le_one`. Introduce and unpack `W ⟨ζ, hζ, rfl⟩`.
+
+Conclude with `⟨hRoot f j m ζ hf hζ, hLe f j m ζ, hHt f j m ζ hf hζ II hII⟩`.
+-/
 theorem GrassHeightBound.proof (hArith : GrassArithVar.Statement) (hRoot : RootArithVar.Statement)
     (hSemi : FsLineSemipositive.Statement) (hNef : NefOfNonneg.Statement)
     (hConj : FsConjInvariant.Statement) (hLe : GrassLeRoot.Statement) (hHt : RootHeight.Statement)

@@ -27,6 +27,9 @@ def transIso {K K' L : Cx R} (i : (Q R).obj K ≅ (Q R).obj K') (n : ℤ) :
        map_add' := fun f g => Preadditive.comp_add _ _ _ _ _ _ } : _ ≃+ _) |>.trans
     (CohomologyClass.homAddEquiv (K := K') (L := L) (n := n)).symm
 
+/- English proof (translation)
+Introduce `R _ X F n` and use `⟨transIso R (isoQ R X) n⟩`.
+-/
 theorem locSecA : LateralTheory.E.LocSecPf.LocSecA := fun R _ X F n => ⟨transIso R (isoQ R X) n⟩
 
 end LateralTheory.E.LocSecPfA

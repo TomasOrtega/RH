@@ -17,6 +17,15 @@ def ChebotarevDegreeOne : Prop :=
       ∃ B : ValuationSubring Ω, IsPlaceOver B v ∧ Ine (F := F) B ≤ L.fixingSubgroup ∧
         ∃ σ : G F Ω, IsFrob B (normV v) σ ∧ AlgEquiv.restrictNormalHom L σ = g
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h F Ω _ _ _ _ _ U hU hN g A`. Establish `: IsGalois F Ω` using `{}`. Set `U' : ClosedSubgroup (G F Ω)` to `⟨U, U.isClosed_of_isOpen hU⟩`. Establish `hfix : (IntermediateField.fixedField U).fixingSubgroup = U` using `InfiniteGalois.fixingSubgroup_fixedField U'`.
+
+Establish `: FiniteDimensional F (IntermediateField.fixedField U)` using `(InfiniteGalois.isOpen_iff_finite _).1 (by rw [hfix]; exact hU)`. Establish `: IsGalois F (IntermediateField.fixedField U)` using `(InfiniteGalois.normal_iff_isGalois _).1 (by rw [hfix]; exact hN)`. Establish `hfin` using `(GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified F).2`. Take `⟨v, hv, hd, B, hB, hI, σ, hσ, hg⟩` from `h F Ω (IntermediateField.fixedField U) (AlgEquiv.restrictNormalHom _ g) _ (A.finite_toSet.union hfin)`. Simplify using `only [Set.mem_union, Finset.mem_coe, not_or] at hv`.
+
+Use `⟨v, hv.1, hd, by simpa using hv.2, B, hB, hfix ▸ hI, σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfix, ← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, map_mul, hg, map_inv, mul_inv_cancel]`. Introduce `h F Ω _ _ _ _ _ L _ _ g S hS`. Establish `: IsGalois F Ω` using `{}`. Take `⟨g', rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := F) (K₁ := L) Ω g`.
+
+Take `⟨v, hv, hd, -, B, hB, hI, σ, hσ, hg⟩` from `h F Ω L.fixingSubgroup (IntermediateField.fixingSubgroup_isOpen L) ((InfiniteGalois.normal_iff_isGalois L).2 inferInstance) g' hS.toFinset`. Use `⟨v, by simpa using hv, hd, B, hB, hI, σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[← IntermediateField.restrictNormalHom_ker, MonoidHom.mem_ker, map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis.
+-/
 theorem chebotarevDegreeOne_iff_cheb : ChebotarevDegreeOne ↔ GlobalTheory.TwSys.Cheb := by
   classical
   constructor
@@ -48,6 +57,11 @@ theorem chebotarevDegreeOne_iff_cheb : ChebotarevDegreeOne ↔ GlobalTheory.TwSy
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
+/- English proof (translation)
+Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `W hW ⟨g, hg⟩`. Establish `hV : IsOpen {s : G F Ω | s * g ∈ W}` using `hW.preimage (continuous_mul_const g)`. Establish `: IsGalois F Ω` using `{}`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hV (by simpa using hg)`.
+
+Take `⟨v, hv, hd, -, B, hB, -, σ, hσ, hU'⟩` from `chebotarevDegreeOne_iff_cheb.1 h F Ω U.toSubgroup U.isOpen U.isNormal' g hS.toFinset`. Conclude with `⟨σ, by simpa using hU hU', v, by simpa using hv, hd, B, hB, hσ⟩`.
+-/
 theorem ChebotarevDegreeOne.dense (h : ChebotarevDegreeOne) {S : Set (HeightOneSpectrum (𝓞 F))} (hS : S.Finite) :
     Dense {σ : G F Ω | ∃ v : HeightOneSpectrum (𝓞 F), v ∉ S ∧ v.asIdeal.inertiaDeg ℤ = 1 ∧
       ∃ B : ValuationSubring Ω, IsPlaceOver B v ∧ IsFrob B (normV v) σ} := by
@@ -60,6 +74,9 @@ theorem ChebotarevDegreeOne.dense (h : ChebotarevDegreeOne) {S : Set (HeightOneS
     U.isNormal' g hS.toFinset
   exact ⟨σ, by simpa using hU hU', v, by simpa using hv, hd, B, hB, hσ⟩
 
+/- English proof (translation)
+The claim follows from `Continuous.ext_on (h.dense hS) hf hf' fun σ ⟨v, hv, hd, B, hB, hσ⟩ => he v hv hd B hB σ hσ`.
+-/
 theorem ChebotarevDegreeOne.eq_of_frob (h : ChebotarevDegreeOne) {S : Set (HeightOneSpectrum (𝓞 F))}
     (hS : S.Finite) {Y : Type*} [TopologicalSpace Y] [T2Space Y] {f f' : G F Ω → Y} (hf : Continuous f)
     (hf' : Continuous f')

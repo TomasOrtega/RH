@@ -13,6 +13,19 @@ open GlobalTheory.HeightCounting.Up (PrN)
 
 namespace GlobalTheory.PlaceRead
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨φ, hφ0, hφ⟩` from `Submodule.exists_le_ker_of_lt_top _ (lt_top_iff_ne_top.2 hne)`. Set `B : Module.Basis ι ℂ W` to `Module.Basis.mk hli hsp.ge`. Set `Φ : W →ₗ[ℂ] ℂ` to `B.constr ℂ (fun i => e (φ (b i)))`. Establish `key : ∀ x, Φ (f x) = e (φ x)`.
+
+Introduce `x`. Establish `hx : x ∈ Submodule.span L (Set.range b)` using `b.mem_span x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`.
+
+Establish `: f (b i) = B i` using `(Module.Basis.mk_apply hli hsp.ge i).symm`. Rewrite using `[this]`. Conclude with `B.constr_basis ℂ _ i`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`.
+
+Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ, map_smul, hx, map_smul, smul_eq_mul, smul_eq_mul, map_mul]`. Establish `hΦ : Φ = 0`. Use `LinearMap.ext_on hS fun y hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsub y hy`. Establish `: φ x = 0` using `hφ (Submodule.subset_span hy)`.
+
+Rewrite using `[key, this, map_zero, LinearMap.zero_apply]`. Apply `hφ0` to reduce the goal to its premises. Use extensionality with `x`. Use `key x` as an intermediate fact. Rewrite `this` using `[hΦ, LinearMap.zero_apply]`.
+
+Conclude with `e.injective (by rw [← this, LinearMap.zero_apply, map_zero])`.
+-/
 theorem span_preimage_eq_top {L V W ι : Type*} [Field L] [AddCommGroup V] [Module L V] [AddCommGroup W] [Module ℂ W]
     (e : L →+* ℂ) (f : V →ₛₗ[e] W) (b : Module.Basis ι L V)
     (hli : LinearIndependent ℂ (fun i => f (b i))) (hsp : Submodule.span ℂ (Set.range (fun i => f (b i))) = ⊤)
@@ -45,6 +58,9 @@ theorem span_preimage_eq_top {L V W ι : Type*} [Field L] [AddCommGroup V] [Modu
   rw [hΦ, LinearMap.zero_apply] at this
   exact e.injective (by rw [← this, LinearMap.zero_apply, map_zero])
 
+/- English proof (translation)
+Introduce `D w j`. Establish `h` using `D.what₂.jMt_basis (D.what₂.muTw w) j (Module.Free.chooseBasis _ _)`. Conclude with `span_preimage_eq_top D.what₂.embLL (D.what₂.jMt (D.what₂.muTw w) j) _ h.1 h.2 _ (D.what₂.MtLat (D.what₂.muTw w) j).span_top (fun y hy => D.what₂.MtLat_sub _ _ y hy)`.
+-/
 theorem span_latS : ∀ (D : D7) (w : D.what₂.places.Pl) (j : ℕ), Submodule.span D.what₂.LL (latS (D := D) w j) = ⊤ := by
   intro D w j
   have h := D.what₂.jMt_basis (D.what₂.muTw w) j (Module.Free.chooseBasis _ _)

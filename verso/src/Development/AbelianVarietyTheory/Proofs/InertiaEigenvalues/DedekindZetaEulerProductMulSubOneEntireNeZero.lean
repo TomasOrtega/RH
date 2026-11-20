@@ -12,6 +12,15 @@ namespace GlobalTheory
 
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial in
 open scoped ContDiff Classical in
+/- English proof (translation)
+Establish `hs0 : -s ≠ 0`. Introduce `h`. Rewrite `hs` using `[neg_eq_zero.mp h]`. Evaluate the numerical expressions using `at hs`. Establish `key` using `_root_.GlobalTheory.tsum_ideal_mul_absNorm_cpow_eq_exp_tsum K (fun I => if I = ⊥ then 0 else 1) (by simp) (by simp) (fun I J => by`.
+
+Apply the tactic sequence `by_cases hI : I = ⊥ <;> by_cases hJ : J = ⊥ <;> simp [hI, hJ, Ideal.mul_eq_bot])`. Apply the tactic sequence `(fun I => by split_ifs <;> simp) s hs`. Rewrite using `[_root_.GlobalTheory.Mem.ZetaPole.dedekindZeta_eq_tsum_ideal K hs]`. Use `key using 1` and compare the differences between its conclusion and the goal. Use `tsum_congr fun I => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hI : I = ⊥`. Simplify using `[hI, Complex.zero_cpow hs0]`. Simplify using `[hI]`. Use `congr 1`. Use `tsum_congr fun P => ?_` and prove the remaining obligations.
+
+Simplify using `[P.ne_bot]`.
+-/
 private lemma dedekindZeta_eq_exp_tsum_neg_log (K : Type) [Field K] [NumberField K] (s : ℂ)
     (hs : 1 < s.re) :
     dedekindZeta K s = Complex.exp (∑' P : HeightOneSpectrum (𝓞 K),
@@ -37,6 +46,13 @@ private lemma dedekindZeta_eq_exp_tsum_neg_log (K : Type) [Field K] [NumberField
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Filter Topology Asymptotics Polynomial in
 open scoped ContDiff Classical in
 
+/- English proof (translation)
+Introduce `K _ _`. Take `⟨Z, hZd, hZ⟩` from `_root_.GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire K`. Use `⟨Z, hZd, ?_, hZ⟩` and prove the remaining obligations. Establish `h1 : Tendsto (fun s : ℝ => Z s) (𝓝[>] 1) (𝓝 (Z 1))`. Establish `: Continuous fun s : ℝ => Z s` using `hZd.continuous.comp Complex.continuous_ofReal`.
+
+Simplify using `using (this.tendsto 1).mono_left nhdsWithin_le_nhds`. Establish `h2 : Tendsto (fun s : ℝ => Z s) (𝓝[>] 1) (𝓝 (dedekindZeta_residue K : ℂ))`. Use `(tendsto_sub_one_mul_dedekindZeta_nhdsGT K).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Establish `hs' : 1 < (s : ℂ).re` using `by simpa using hs`.
+
+Rewrite using `[hZ s hs', dedekindZeta_eq_exp_tsum_neg_log K s hs']`. Rewrite using `[tendsto_nhds_unique h1 h2]`. Conclude with `dedekindZeta_residue_ne_zero K` after adjusting the coercions.
+-/
 theorem _root_.GlobalTheory.dedekindZeta_eulerProduct_mul_sub_one_entire_ne_zero :
     ∀ (K : Type) [Field K] [NumberField K], ∃ Z : ℂ → ℂ, Differentiable ℂ Z ∧ Z 1 ≠ 0 ∧ ∀ s : ℂ, 1 < s.re → Z s = (s - 1) * Complex.exp (∑' P : HeightOneSpectrum (𝓞 K), -Complex.log (1 - 1 * ((Ideal.absNorm P.asIdeal : ℕ) : ℂ) ^ (-s))) := by
   intro K _ _

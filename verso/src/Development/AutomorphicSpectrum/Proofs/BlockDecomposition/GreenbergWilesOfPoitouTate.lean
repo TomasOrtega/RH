@@ -18,6 +18,9 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.GreenbergWiles.Assembly
 
+/- English proof (translation)
+Apply `Nat.eq_of_mul_eq_mul_right hh1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem arith {a s p1 b h1 lam p2 h2 h0' q0 h0 m arch : ℕ}
     (h4 : a * s * p1 = b * h1 * lam) (h5 : s * p2 = h2 * h0') (h6 : p1 = q0 * p2 * m)
     (h7 : h0 * h2 * m = h1 * arch) (hh1 : 0 < h1) :
@@ -32,6 +35,9 @@ theorem arith {a s p1 b h1 lam p2 h2 h0' q0 h0 m arch : ℕ}
     _ = h0 * (b * h1 * lam) := by rw [h4]
     _ = b * h0 * lam * h1 := by ring
 
+/- English proof (translation)
+Rewrite using `[← Nat.card_pi]`. Conclude with `Nat.card_congr { toFun := fun x i => ⟨x.1 i, x.2 i (Set.mem_univ _)⟩ invFun := fun y => ⟨fun i => (y i).1, fun i _ => (y i).2⟩ left_inv := fun x => rfl right_inv := fun y => rfl }`.
+-/
 theorem card_pi_submodule {R ι : Type} [Semiring R] [Fintype ι] {X : ι → Type}
     [∀ i, AddCommMonoid (X i)] [∀ i, Module R (X i)] (L : ∀ i, Submodule R (X i)) :
     Nat.card (Submodule.pi Set.univ L) = ∏ i, Nat.card (L i) := by
@@ -42,6 +48,25 @@ theorem card_pi_submodule {R ι : Type} [Semiring R] [Fintype ι] {X : ι → Ty
       left_inv := fun x => rfl
       right_inv := fun y => rfl }
 
+/- English proof (translation)
+Introduce `hPT hGEC hLTD hLEC hLF`. Introduce `F Ω _ _ _ _ _ l _ r M _ _ _ _ _ S ρ hr hl hS hρ μ hμ Av hAv c hc L`. Use `haveI : NeZero (l ^ r) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Use `haveI hfinD : Finite (TDual (ZMod (l ^ r)) M) := GlobalTheory.CompanionTheory.DualFin.finite_dual_all (ZMod (l ^ r)) M`. Take `⟨inv, hinv, hnine, hsha⟩` from `GlobalTheory.CompanionTheory.GreenbergWiles.poitouTate_instance F Ω l r M S Av μ ρ hρ hμ hPT hl hr hS hAv`.
+
+Establish `hρ' : ContAction (twDual μ ρ)` using `GlobalTheory.T.selmer_group_dual_exact F Ω l r M S Av μ ρ hρ hμ`. Establish `hj : ∀ v, Function.Injective (invAt S Av μ hμ inv v)` using `fun v => ((hinv _ _ (hAv v)).comp (toMuLoc_bijective S Av μ hμ v)).injective`. Establish `hlf` using `GlobalTheory.CompanionTheory.Galois.PlacesOfS.localFinite_at_places F Ω l r M S Av μ ρ hρ hLF hr hAv`. Establish `hlf'` using `GlobalTheory.CompanionTheory.Galois.PlacesOfS.localFinite_at_places F Ω l r (TDual (ZMod (l ^ r)) M) S Av μ (twDual μ ρ) hρ' hLF hr hAv`. Use `haveI : ∀ v : S, Finite (H1 (ρ.comp (locFam S Av v))) := fun v => (hlf v).2.1`.
+
+Use `haveI : ∀ v : S, Finite (H2 (ρ.comp (locFam S Av v))) := fun v => (hlf v).2.2`. Use `haveI : ∀ v : S, Finite (H1 ((twDual μ ρ).comp (locFam S Av v))) := fun v => (hlf' v).2.1`. Take `⟨hH0, hH1, hH2, hH0', hH1'⟩` from `GlobalTheory.T.greenberg_wiles_formula F Ω l r M S Av μ ρ hρ (invAt S Av μ hμ inv) hμ hfinD hLF hr hAv hnine hsha`. Establish `hloc` using `GlobalTheory.T.galois_cohomology_localization_exact F Ω l r M S Av μ ρ hρ hμ hLTD hr inv hinv hAv`. Establish `hB` using `GlobalTheory.CompanionTheory.Pairing.sum_perfect (ZMod (l ^ r)) S (fun v => H1 (ρ.comp (locFam S Av v))) (fun v => H1 ((twDual μ ρ).comp (locFam S Av v))) (fun v => (cupH1H1TwistedDual μ ρ (locFam S Av v) (hρ.comp' (continuous_locFam S Av v))).compr₂ (invAt S Av μ hμ inv v)) (fun …`.
+
+Establish `hBi : Function.Injective (sumPair S Av μ (invAt S Av μ hμ inv) ρ hρ)`. Unfold `sumPair`. Rewrite using `[LinearMap.coe_sum]`. Conclude with `hB.1`. Establish `hBf : Function.Injective (sumPair S Av μ (invAt S Av μ hμ inv) ρ hρ).flip`.
+
+Unfold `sumPair`. Conclude with `hB.2`. Establish `hrange` using `GlobalTheory.T.tate_shafarevich_duality_h1 F Ω l r M S Av μ ρ hρ (invAt S Av μ hμ inv) hnine`. Establish `count` using `GlobalTheory.CompanionTheory.Counting.card_comap_mul_card_ker_mul_card_eq (l ^ r) (H1 ρ) (H1 (twDual μ ρ)) (∀ v : S, H1 (ρ.comp (locFam S Av v))) (∀ v : S, H1 ((twDual μ ρ).comp (locFam S Av v))) (sumPair S Av μ (invAt S Av μ hμ inv) ρ hρ) hBi hBf (loc1 S Av ρ) (loc1 S Av (twDual …`. Establish `hsel` using `GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker F Ω l r M S Av μ ρ hρ`.
+
+Establish `hsel'` using `GlobalTheory.CompanionTheory.GaloisCoh.selmer_sha_eq_comap_ker F Ω l r (TDual (ZMod (l ^ r)) M) S Av μ (twDual μ ρ) hρ'`. Rewrite `count` using `[← GlobalTheory.CompanionTheory.Duality.pi_perpCond_eq_annihilator_sumPair F Ω l r M S Av μ ρ hρ _ hj L, ← hsel.1 L, ← hsel'.1, ← hsel'.2.1, card_pi_submodule L, hsha.1.2.2.2]`. Establish `h5` using `GlobalTheory.T.poitou_tate_nine_term_exact F Ω l r M S Av μ ρ hρ (invAt S Av μ hμ inv) hLF hr hAv hnine hH2 hH0'`. Establish `h7` using `hGEC F Ω l r M S ρ hr hS hρ c hc`. Establish `hdeg : ∑ v : S, (if ((l : ℕ) : 𝓞 F) ∈ v.1.asIdeal then locDeg v.1 else 0) = Module.finrank ℚ F`.
+
+Rewrite using `[← GlobalTheory.T.sum_local_degrees_over_l F l (S.filter fun v => ((l : ℕ) : 𝓞 F) ∈ v.asIdeal) (fun v => by rw [Finset.mem_filter]; exact ⟨And.right, fun h => ⟨hS v h, h⟩⟩), Finset.sum_filter]`. Conclude with `Finset.sum_coe_sort S (fun v => if ((l : ℕ) : 𝓞 F) ∈ v.asIdeal then locDeg v else 0)`. Establish `hle` using `GlobalTheory.CompanionTheory.Gal.localEuler_places F Ω l r M S Av μ ρ hρ hLEC hr hAv`. Establish `h6 : Nat.card (∀ v : S, H1 (ρ.comp (locFam S Av v))) = (∏ v : S, Nat.card (H0 (ρ.comp (locFam S Av v)))) * Nat.card (∀ v : S, H2 (ρ.comp (locFam S Av v))) * Nat.card M ^ Module.finrank ℚ F`. Establish `hv : ∀ v : S, Nat.card (H1 (ρ.comp (locFam S Av v))) = Nat.card (H0 (ρ.comp (locFam S Av v))) * Nat.card (H2 (ρ.comp (locFam S Av v))) * Nat.card M ^ (if ((l : ℕ) : 𝓞 F) ∈ v.1.asIdeal then locDeg v.1 else 0)`.
+
+Introduce `v`. Use `split_ifs with h`. Conclude with `(hle v).1 h`. Rewrite using `[pow_zero, mul_one]`. Conclude with `(hle v).2 h`.
+
+Rewrite using `[Nat.card_pi, Nat.card_pi, Finset.prod_congr rfl (fun v _ => hv v), Finset.prod_mul_distrib, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Conclude with `arith count h5 h6 h7 Nat.card_pos`.
+-/
 theorem greenbergWiles_of_poitouTate : PoitouTateNormalised → GlobalEulerChar → LocalTateDuality →
     LocalEulerChar → LocalFiniteness → GreenbergWiles := by
   intro hPT hGEC hLTD hLEC hLF

@@ -12,6 +12,19 @@ open scoped ContDiff
 
 namespace UpperTheory.ConvolutionTheory.L1
 
+/- English proof (translation)
+Set `T : MultilinearMap ℂ (fun i => Y i → ℂ) (X → ℂ)` to `(MultilinearMap.mkPiAlgebra ℂ ι (X → ℂ)).compLinearMap (fun i => LinearMap.funLeft ℂ ℂ (p i))`. Establish `hT : ∀ s x, T s x = ∏ i, s i (p i x)`. Introduce `s x`. Simplify using `[T, MultilinearMap.compLinearMap_apply, Finset.prod_apply, LinearMap.funLeft_apply]`. Set `d : ι → ℕ` to `fun i => Module.finrank ℂ (Submodule.span ℂ (S i))`.
+
+Set `b : ∀ i, Module.Basis (Fin (d i)) ℂ (Submodule.span ℂ (S i))` to `fun i => Module.finBasis ℂ _`. Set `R : Set (X → ℂ)` to `Set.range fun r : ∀ i, Fin (d i) => T fun i => ((b i (r i) : Submodule.span ℂ (S i)) : Y i → ℂ)`. Establish `hR : R.Finite` using `Set.finite_range _`. Establish `hle : Submodule.span ℂ {f : X → ℂ | ∃ s : ∀ i, Y i → ℂ, (∀ i, s i ∈ S i) ∧ f = fun x => ∏ i, s i (p i x)} ≤ Submodule.span ℂ R`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `f ⟨s, hs, rfl⟩`. Establish `hs' : ∀ i, s i ∈ Submodule.span ℂ (S i)` using `fun i => Submodule.subset_span (hs i)`. Set `c : ∀ i, Fin (d i) → ℂ` to `fun i j => (b i).repr ⟨s i, hs' i⟩ j`. Establish `hsum : ∀ i, s i = ∑ j, c i j • ((b i j : Submodule.span ℂ (S i)) : Y i → ℂ)`. Introduce `i`.
+
+Establish `h` using `(b i).sum_repr ⟨s i, hs' i⟩`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (fun x => ∏ i, s i (p i x)) = T s` using `funext fun x => (hT s x).symm`. Establish `e2 : T s = T fun i => ∑ j, c i j • ((b i j : Submodule.span ℂ (S i)) : Y i → ℂ)` using `congrArg T (funext hsum)`. Use `show (fun x => ∏ i, s i (p i x)) ∈ (Submodule.span ℂ R : Set (X → ℂ))`.
+
+Rewrite using `[e, e2, MultilinearMap.map_sum]`. Use `Submodule.sum_mem _ fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨r, rfl⟩)`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ R) := FiniteDimensional.span_of_finite ℂ hR`.
+
+Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 private theorem fin_prod {ι X : Type} [Fintype ι] {Y : ι → Type} (p : ∀ i, X → Y i) (S : ∀ i, Set (Y i → ℂ))
     (hS : ∀ i, FiniteDimensional ℂ (Submodule.span ℂ (S i))) :
     FiniteDimensional ℂ (Submodule.span ℂ
@@ -54,21 +67,33 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 private def cR (D : InfD σ m) (i : Fin (m + 1)) : InfiniteAdeleRing E →+* InfiniteAdeleRing F :=
   (Pi.evalRingHom (fun _ : Fin (m + 1) => InfiniteAdeleRing F) i).comp D.e.toRingHom
 
+/- English proof (translation)
+The claim follows from `(continuous_apply i).comp D.cont`.
+-/
 private theorem continuous_cR (D : InfD σ m) (i : Fin (m + 1)) : Continuous (cR D i) :=
   (continuous_apply i).comp D.cont
 
 private def thetaR (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) : ArchMatrix E n →+* ArchMatrix F n :=
   (archMatrixEquiv F n).toRingHom.comp ((RingHom.mapMatrix (cR D i)).comp (archMatrixEquiv E n).symm.toRingHom)
 
+/- English proof (translation)
+Establish `h1 : Continuous fun M : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E) => M.map (cR D i)` using `continuous_id.matrix_map (continuous_cR D i)`. Conclude with `(continuous_archMatrixEquiv F n).comp (h1.comp (continuous_archMatrixEquiv_symm E n))`.
+-/
 private theorem continuous_thetaR (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) : Continuous (thetaR D n i) := by
   have h1 : Continuous fun M : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E) => M.map (cR D i) :=
     continuous_id.matrix_map (continuous_cR D i)
   exact (continuous_archMatrixEquiv F n).comp (h1.comp (continuous_archMatrixEquiv_symm E n))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem compA_val (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (g : archGroup E n) :
     (((compA D n i g : archGroup F n) : (ArchMatrix F n)ˣ) : ArchMatrix F n) =
       thetaR D n i ((g : (ArchMatrix E n)ˣ) : ArchMatrix E n) := rfl
 
+/- English proof (translation)
+Use `letI : NormedAlgebra ℚ (ArchMatrix E n) := NormedAlgebra.restrictScalars ℚ ℝ _`. Use `letI : NormedAlgebra ℚ (ArchMatrix F n) := NormedAlgebra.restrictScalars ℚ ℝ _`. Conclude with `NormedSpace.map_exp (thetaR D n i) (continuous_thetaR D n i) X`.
+-/
 private theorem thetaR_exp (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (X : ArchMatrix E n) :
     thetaR D n i (NormedSpace.exp X) = NormedSpace.exp (thetaR D n i X) := by
   letI : NormedAlgebra ℚ (ArchMatrix E n) := NormedAlgebra.restrictScalars ℚ ℝ _
@@ -81,6 +106,9 @@ private def thetaL (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) : archLie E n →
   map_smul' c X := Subtype.ext (map_real_smul (thetaR D n i) (continuous_thetaR D n i) c _)
   cont := ((continuous_thetaR D n i).comp continuous_subtype_val).subtype_mk _
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[compA_val, IsExpLieAlgebra.coe_expG, IsExpLieAlgebra.coe_expG]`. Conclude with `thetaR_exp D n i _`.
+-/
 private theorem compA_expG (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (Y : archLie E n) :
     compA D n i ((isExpLieAlgebra E n).expG Y) = (isExpLieAlgebra F n).expG (thetaL D n i Y) := by
   apply Subtype.ext
@@ -88,6 +116,11 @@ private theorem compA_expG (D : InfD σ m) (n : ℕ) (i : Fin (m + 1)) (Y : arch
   rw [compA_val, IsExpLieAlgebra.coe_expG, IsExpLieAlgebra.coe_expG]
   exact thetaR_exp D n i _
 
+/- English proof (translation)
+Use `(IsExpLieAlgebra.isSmoothFun_iff (isExpLieAlgebra E n)).2 fun g => ?_` and prove the remaining obligations. Establish `e : (fun Y : archLie E n => β (g * (isExpLieAlgebra E n).expG Y)) = fun Y => ∏ i, (fun Z : archLie F n => φ i (compA D n i g * (isExpLieAlgebra F n).expG Z)) (thetaL D n i Y)`. Use function extensionality and compare the values at `Y`. Rewrite using `[hβ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, compA_expG]`. Rewrite using `[e]`. Use `contDiff_prod fun i _ => ?_` and prove the remaining obligations. Conclude with `((IsExpLieAlgebra.isSmoothFun_iff (isExpLieAlgebra F n)).1 (hφ i) _).comp (thetaL D n i).contDiff`.
+-/
 private theorem tens_smooth (D : InfD σ m) (n : ℕ) (φ : Fin (m + 1) → TI F n) (β : TI E n) (hβ : IsTens D φ β)
     (hφ : ∀ i, SmoothT (φ i)) : SmoothT β := by
   refine (IsExpLieAlgebra.isSmoothFun_iff (isExpLieAlgebra E n)).2 fun g => ?_
@@ -101,6 +134,11 @@ private theorem tens_smooth (D : InfD σ m) (n : ℕ) (φ : Fin (m + 1) → TI F
   refine contDiff_prod fun i _ => ?_
   exact ((IsExpLieAlgebra.isSmoothFun_iff (isExpLieAlgebra F n)).1 (hφ i) _).comp (thetaL D n i).contDiff
 
+/- English proof (translation)
+Use `haveI := fin_prod (ι := Fin (m + 1)) (X := archGroup E n) (Y := fun _ => archGroup F n) (fun i => compA D n i) (fun i => Set.range fun k : archCompact F n => fun g : archGroup F n => φ i ((k : archGroup F n) * g)) hφ`. Establish `hsub : (Set.range fun k : archCompact E n => fun g : archGroup E n => β ((k : archGroup E n) * g)) ⊆ {f | ∃ s : Fin (m + 1) → archGroup F n → ℂ, (∀ i, s i ∈ Set.range fun k : archCompact F n => fun g : archGroup F n => φ i ((k : archGroup F n) * g)) ∧ f = fun x => ∏ i, s i (compA …`. Introduce and unpack `f ⟨k, rfl⟩`. Establish `hk` using `((positionOf F E σ m D).2 n (k : archGroup E n)).1 k.2`. Use `⟨fun i g => φ i (compA D n i k * g), fun i => ⟨⟨_, hk i⟩, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Use `show β ((k : archGroup E n) * x) = _`. Rewrite using `[hβ]`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [map_mul]`. Conclude with `Submodule.finiteDimensional_of_le (Submodule.span_mono hsub)`.
+-/
 private theorem tens_fin [IsTotallyComplex F] (D : InfD σ m) (n : ℕ) (φ : Fin (m + 1) → TI F n) (β : TI E n)
     (hβ : IsTens D φ β) (hφ : ∀ i, LeftFin (φ i)) : LeftFin β := by
   haveI := fin_prod (ι := Fin (m + 1)) (X := archGroup E n) (Y := fun _ => archGroup F n) (fun i => compA D n i)
@@ -119,6 +157,9 @@ private theorem tens_fin [IsTotallyComplex F] (D : InfD σ m) (n : ℕ) (φ : Fi
 
 end UpperTheory.ConvolutionTheory.L1
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ m D n φ β hβ`. Conclude with `⟨UpperTheory.ConvolutionTheory.L1.tens_smooth D n φ β hβ, UpperTheory.ConvolutionTheory.L1.tens_fin D n φ β hβ⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.L1.tensSmooth :
     UpperTheory.ConvolutionTheory.L1.TensSmooth := by
   intro F E _ _ _ _ _ _ σ m D n φ β hβ

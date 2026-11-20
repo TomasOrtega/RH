@@ -10,6 +10,11 @@ section SlopeTestRemainingChoices
 open Neutral.B1 Formalism.L2.Host Formalism.MainNotions.N Polynomial GlobalTheory.Pst UpperTheory.V
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Take `⟨L₁, r₁, hm₁, hV₁, e₁⟩` from `wdAt_of_isPstAt ι B h hj (r := r) ⟨L₂, r₂, hm₂, hV₂⟩`. Establish `h₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `h₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `e : mapRep (IntermediateField.inclusion h₁).toRingHom r₁ = mapRep (IntermediateField.inclusion h₂).toRingHom r₂`. Use extensionality with `g i j`.
+
+Conclude with `congrArg (fun f : ↥(Dec (F := E) A) →* GL (Fin a) (Om l) => (f g : Matrix (Fin a) (Fin a) (Om l)) i j) (hm₁.2.trans hm₂.2.symm)`. Rewrite using `[e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]`.
+-/
 private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om l ≃+* ℂ)
     {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)}
@@ -28,6 +33,11 @@ private theorem wdAt_of_model {l : ℕ} [Fact l.Prime] (P : LocPrime l) (ι : Om
       (hm₁.2.trans hm₂.2.symm)
   rw [e₁, BridgeParam.wdPst_enlarge P ι B h hj h₁ r₁ hV₁, BridgeParam.wdPst_enlarge P ι B h hj h₂ r₂ hV₂, e]
 
+/- English proof (translation)
+Set `e` to `(Module.finBasis ℂ V).equivFun`. Use `⟨_, a.transport e, b.transport e, WD.sound (a.iso_transport e).symm, WD.sound (b.iso_transport e).symm, ?_, fun σ σ' hσ => ?_⟩` and prove the remaining obligations. Use `show e.conjAlgEquiv ℂ a.N = e.conjAlgEquiv ℂ b.N`. Rewrite using `[ha.1, hb.1]`. Use `show e.conjAlgEquiv ℂ (a.ρ σ) = e.conjAlgEquiv ℂ (b.ρ σ')`.
+
+Establish `h1` using `hρ σ σ' hσ`. Establish `h2` using `hb.2 σ'`. Rewrite `h2` using `[← h1]`. Rewrite using `[(Module.End.isNilpotent_isSemisimple_unique (ha.2 σ).2 (a.semisimple σ) h2.2 (b.semisimple σ') ((ha.2 σ).1.symm.sub_left (Commute.refl _)) (h2.1.symm.sub_left (Commute.refl _)) (by simp)).2]`.
+-/
 private theorem wdRel_of_frobSS {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
@@ -49,6 +59,9 @@ private theorem wdRel_of_frobSS {E Ω E' Ω' : Type} [Field E] [NumberField E] [
       ((ha.2 σ).1.symm.sub_left (Commute.refl _)) (h2.1.symm.sub_left (Commute.refl _))
       (by simp)).2]
 
+/- English proof (translation)
+Take `⟨n, b, b', rfl, rfl, -, H⟩` from `H`. Rewrite using `[WD.eig_mk, WD.eig_mk, H σ σ' hσ]`.
+-/
 private theorem eig_of_wdRel {E Ω E' Ω' : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
@@ -59,6 +72,19 @@ private theorem eig_of_wdRel {E Ω E' Ω' : Type} [Field E] [NumberField E] [Fie
   rw [WD.eig_mk, WD.eig_mk, H σ σ' hσ]
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Take `⟨Kw, j, j_E, j_dense, e, e_cont, e_symm_cont, e_comm, LL, LL_split, eO, eO_alg, eO_cont, eO_symm_cont⟩` from `Bw'`. Simplify using `only at hK hJ hL`. Substitute `hK hJ hL` using the available equality. Use `set Bw' : LocBridge l K Ω (Dec (F := K) A) O := ⟨Bw.Kw, Bw.j, j_E, j_dense, e, e_cont, e_symm_cont, e_comm, Bw.LL, LL_split, eO, eO_alg, eO_cont, eO_symm_cont⟩ with hB`. Establish `key : ∀ (g : ↥(Dec (F` using `K) A)) (x : Ω), ((Bw.e.symm (e g) : ↥(Dec (F := F) A)) : G F Ω) x = (g : G K Ω) x := fun g x => Bw.j.injective (by rw [← Bw.e_comm, MulEquiv.apply_symm_apply, e_comm])`.
+
+Use `⟨(e.trans Bw.e.symm).toMonoidHom, Bw.e_symm_cont.comp e_cont, key, fun n r hr => ?_⟩` and prove the remaining obligations. Take `⟨L, r', hm, hV⟩` from `hr`. Set `r'' : ↥(Dec (F` to `K) A) →* GL (Fin n) ↥L.1 := r'.comp (e.trans Bw.e.symm).toMonoidHom`. Establish `hm' : IsModel Bw' (r.comp (e.trans Bw.e.symm).toMonoidHom) L r''` using `⟨hm.1, MonoidHom.ext fun g => DFunLike.congr_fun hm.2 (Bw.e.symm (e g))⟩`. Establish `hrep : Bw'.repE L r'' = Bw.repE L r'`.
+
+Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `h1 : r'' (e.symm g) = r' (Bw.e.symm g)` using `by simp [r'']`. Conclude with `congrArg (fun m : GL (Fin n) ↥L.1 => Matrix.toLin' (m : Matrix (Fin n) (Fin n) ↥L.1)) h1`. Establish `hV' : IsPst (Loc.PP l) (Bw'.repE L r'')` using `by rw [hrep]; exact hV`. Use `⟨⟨L, r'', hm', hV'⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[wdAt_of_model _ ι Bw h hj _ L r' hm hV, wdAt_of_model _ ι Bw' h' hj' _ L r'' hm' hV', hrep]`. Generalize the expression as in `Bw.repE L r' = ρ at hV ⊢`. Use `haveI := hV.finite`. Rewrite using `[wdPst_of_isPst ι Bw h hj hV, wdPst_of_isPst ι Bw' h' hj' hV]`. Use `wdRel_of_frobSS _ (BridgeParam.isFrobSS_wdRep (Loc.PP l) ι Bw h hj ρ) (BridgeParam.isFrobSS_wdRep (Loc.PP l) ι Bw' h' hj' ρ) fun σ σ' hσ => ?_` and prove the remaining obligations.
+
+Establish `h1 : weilToGK Bw h σ = weilToGK Bw' h' σ'`. Establish `h2 : Subgroup.inclusion (Weil_le_Dec h) σ = Bw.e.symm (e (Subgroup.inclusion (Weil_le_Dec h') σ'))` using `Subtype.ext (AlgEquiv.ext fun x => (hσ x).trans (key (Subgroup.inclusion (Weil_le_Dec h') σ') x).symm)`. Conclude with `(congrArg Bw.e h2).trans (Bw.e.apply_symm_apply _)`. Establish `h3 : alpha l σ = alpha l σ'`. Rewrite using `[alpha, alpha, hdeg σ σ' hσ, resDeg, resDeg, hq]`.
+
+Establish `h4 : weilD Bw h (Loc.PP l) ρ σ = weilD Bw' h' (Loc.PP l) ρ σ'` using `(weilD_apply Bw h (Loc.PP l) ρ σ).trans ((congrArg₂ (fun (g : ↥(GK Bw.Kw)) (m : ℤ) => actD (Loc.PP l) ρ g * ((phiU (Loc.PP l) ρ ^ (-m) : (Module.End ↥L.1 ↥(Dpst (Loc.PP l) ρ))ˣ) : Module.End ↥L.1 ↥(Dpst (Loc.PP l) ρ))) h1 h3).trans (weilD_apply Bw' h' (Loc.PP l) ρ σ').symm)`. Use `wd_ext _ ι ρ fun x => ?_` and prove the remaining obligations. Conclude with `(wdRho_mk (Loc.PP l) ι Bw h hj ρ σ x).trans ((congrArg (wdMk (Loc.PP l) ι ρ) (LinearMap.congr_fun h4 x)).trans (wdRho_mk (Loc.PP l) ι Bw' h' hj' ρ σ' x).symm)`.
+-/
 private theorem exists_transfer {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω]
     [Algebra F Ω] [Algebra K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω}
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 K)} (h : IsPlaceOver A v) (h' : IsPlaceOver A w)
@@ -111,6 +137,11 @@ private theorem exists_transfer {F K Ω : Type} [Field F] [NumberField F] [Field
   exact (wdRho_mk (Loc.PP l) ι Bw h hj ρ σ x).trans
     ((congrArg (wdMk (Loc.PP l) ι ρ) (LinearMap.congr_fun h4 x)).trans (wdRho_mk (Loc.PP l) ι Bw' h' hj' ρ σ' x).symm)
 
+/- English proof (translation)
+Take `⟨μ, ξ, hμ, hξ, hP, h1, h2⟩` from `H`. Take `⟨t, ht, key, hr⟩` from `exists_transfer h h' Bw Bw' hj hj' hK hJ hL hdeg hq ι`. Take `⟨h3, h4⟩` from `hr 1 _ hP`. Use `⟨μ.comp t, ξ.comp c, hμ.comp ht, hs ξ hξ, h3, fun σ' => ?_, fun σ' => ?_⟩` and prove the remaining obligations. Establish `e : t (Subgroup.inclusion (Weil_le_Dec h') σ') = Subgroup.inclusion (Weil_le_Dec h) (c σ')` using `Subtype.ext (AlgEquiv.ext fun x => (key _ x).trans (hc σ' x).symm)`.
+
+Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, e, h1, hp _ _ (hc σ')]`. Establish `e` using `h2 (c σ')`. Rewrite `e` using `[eig_of_wdRel h4 (hc σ')]`. Conclude with `e`.
+-/
 private theorem hasLT_transfer {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω]
     [Algebra F Ω] [Algebra K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω}
     {v : Plc F} {w : Plc K} (h : IsPlaceOver A v) (h' : IsPlaceOver A w)
@@ -136,6 +167,9 @@ private theorem hasLT_transfer {F K Ω : Type} [Field F] [NumberField F] [Field 
     rw [eig_of_wdRel h4 (hc σ')] at e
     exact e
 
+/- English proof (translation)
+Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Use `haveI : CharZero (w.adicCompletion K) := charZero_of_injective_algebraMap (algebraMap K _).injective`. Conclude with `(GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation _ _ i hi).1`.
+-/
 private theorem cont_symm {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K]
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 K)} (i : v.adicCompletion F ≃+* w.adicCompletion K)
     (hi : Continuous i) : Continuous i.symm := by
@@ -145,6 +179,15 @@ private theorem cont_symm {F K : Type} [Field F] [NumberField F] [Field K] [Numb
 
 end SlopeTestRemainingChoices
 
+/- English proof (translation)
+Introduce `F K Ω _ _ _ _ _ _ _ _ _ l _ A v w h h' O _ _ _ Bw Bw' hj hj' hK hJ hL jF i hP ι wt wt' hwt a a' ha`. Take `⟨c, hc, hdeg, hq, hs⟩` from `GlobalTheory.T.place_over_transport_ring_iso F Ω A v h K Ω A w h' _ _ i hP`. Establish `hi' : Continuous i.symm` using `cont_symm i hP.cont`. Set `E : Emb l w ≃ Emb l v` to `{ toFun := fun τ => ⟨τ.1.comp i.toRingHom, τ.2.comp hP.cont⟩ invFun := fun τ => ⟨τ.1.comp i.symm.toRingHom, τ.2.comp hi'⟩ left_inv := fun τ => Subtype.ext (RingHom.ext fun x => congrArg τ.1 (i.apply_symm_apply x)) right_inv := fun τ => Subtype.ext (RingHom.ext fun x => congrArg τ …`. Establish `hp : ∀ σ σ', WeilRel (RingEquiv.refl Ω) σ σ' → ∏ᶠ τ : Emb l v, τ.1 (a σ : v.adicCompletion F) ^ wt τ = ∏ᶠ τ : Emb l w, τ.1 (a' σ' : w.adicCompletion K) ^ wt' τ`.
+
+Introduce `σ σ' hσ`. Rewrite using `[← finprod_comp_equiv E]`. Use `finprod_congr fun τ => ?_` and prove the remaining obligations. Rewrite using `[hwt (E τ) τ rfl, ha σ σ' hσ]`. Both sides reduce to the same expression.
+
+Establish `sy : ∀ (σ : Weil h) (σ' : Weil h'), WeilRel (RingEquiv.refl Ω) σ' σ → WeilRel (RingEquiv.refl Ω) σ σ'` using `fun σ σ' H z => (H z).symm`. Establish `hd : ∀ (σ : Weil h) (σ' : Weil h'), WeilRel (RingEquiv.refl Ω) σ σ' → deg σ' = deg σ` using `fun σ σ' H => by rw [← (hc σ σ').1 H, hdeg]`. Use `⟨hasLT_transfer h h' Bw Bw' hj hj' hK hJ hL hd hq ι c.symm.toMonoidHom (fun σ' => (hc _ _).2 (c.apply_symm_apply σ')) (fun f hf => (hs _ _).2 ?_) wt wt' a a' hp, hasLT_transfer h' h Bw' Bw hj' hj hK.symm hJ.symm hL.symm (fun σ' σ H => (hd σ σ' (sy _ _ H)).symm) hq.symm ι c.toMono …` and prove the remaining obligations. Establish `e : (f.comp c.symm.toMonoidHom).comp c.toMonoidHom = f` using `MonoidHom.ext fun σ => congrArg f (c.symm_apply_apply σ)`. Rewrite using `[e]`.
+
+Conclude with `hf`.
+-/
 theorem UpperTheory.hasLocalLanglands_iff_of_placeIso :
     ∀ {F K Ω : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F Ω] [Algebra K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {v : Plc F} {w : Plc K} (h : IsPlaceOver A v) (h' : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O) (hj : GlobalTheory.Pst.Induces Bw) (hj' : GlobalTheory.Pst.Induces Bw'), Bw'.Kw = Bw.Kw → Bw'.j = Bw.j → Bw'.LL = Bw.LL → ∀ (jF : F →+* K) (i : v.adicCompletion F ≃+* w.adicCompletion K), PlaceIso A v A w (RingEquiv.refl Ω) jF i → ∀ (ι : Qbar l ≃+* ℂ) (wt : Emb l v → ℤ) (wt' : Emb l w → ℤ), (∀ (τ : Emb l v) (τ' : Emb l w), τ.1 = τ'.1.comp i.toRingHom → wt τ = wt' τ') → ∀ (a : Weil h →* (v.adicCompletion F)ˣ) (a' : Weil h' →* (w.adicCompletion K)ˣ), (∀ σ σ', WeilRel (RingEquiv.refl Ω) σ σ' → a' σ' = Units.map i.toRingHom.toMonoidHom (a σ)) → (UpperTheory.V.Loc.HasLT h Bw hj ι wt a ↔ UpperTheory.V.Loc.HasLT h' Bw' hj' ι wt' a') := by
   intro F K Ω _ _ _ _ _ _ _ _ _ l _ A v w h h' O _ _ _ Bw Bw' hj hj' hK hJ hL jF i hP ι wt wt' hwt a a' ha

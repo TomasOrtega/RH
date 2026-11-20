@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.LocalDensityOfM
 import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.BaseOneSide.PsiSide
 open PositivityTheory.Rg.Base1
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.RankOneLoc.locR | exact GlobalTheory.CompanionTheory.RankOneLoc.locR | (intros; apply GlobalTheory.CompanionTheory.RankOneLoc.locR <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_density_of_mass_one : Scal → PositivityTheory.SiegelWeilFormula.Densx.MassOne → LocR := by
   first | exact @GlobalTheory.CompanionTheory.RankOneLoc.locR | exact GlobalTheory.CompanionTheory.RankOneLoc.locR | (intros; apply GlobalTheory.CompanionTheory.RankOneLoc.locR <;> assumption)

@@ -26,9 +26,17 @@ def tupleRep (π : Representation ℂ G V) (m : ℕ) : Representation ℂ G (Fin
   map_one' := by ext; simp
   map_mul' a b := by ext; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem tupleRep_apply (π : Representation ℂ G V) (m : ℕ) (g : G) (u : Fin m → V) :
     tupleRep π m g u = fun j => π g (u j) := rfl
 
+/- English proof (translation)
+Introduce `u`. Establish `e : {g : G | tupleRep π m g u = u} = ⋂ j, {g : G | π g (u j) = u j}`. Use extensionality with `g`. Simplify using `[funext_iff]`. Rewrite using `[e]`.
+
+Conclude with `isOpen_iInter_of_finite fun j => hπ (u j)`.
+-/
 theorem isSmooth_tupleRep [TopologicalSpace G] {π : Representation ℂ G V} (hπ : IsSmooth π) (m : ℕ) :
     IsSmooth (tupleRep π m) := by
   intro u
@@ -38,6 +46,15 @@ theorem isSmooth_tupleRep [TopologicalSpace G] {π : Representation ℂ G V} (h�
   rw [e]
   exact isOpen_iInter_of_finite fun j => hπ (u j)
 
+/- English proof (translation)
+Set `f : (Fin m → V) →ₗ[ℂ] X × (Fin m → V ⧸ twKer π H 1)` to `Λ.prod (LinearMap.pi fun j => (twKer π H 1).mkQ ∘ₗ LinearMap.proj j)`. Take `⟨v, hv, hfv⟩` from `GlobalTheory.SmGL.IwahoriOnto.exists_fixed_map_eq (isSmooth_tupleRep hπ m) hH f u (by`. Introduce `h hh`. Use `Prod.ext (hu h hh) (funext fun j => ?_)` and prove the remaining obligations. Conclude with `(Submodule.Quotient.eq _).2 (GlobalTheory.IwahoriInj.sub_mem_twKer hh (u j)))`.
+
+Establish `h1 : Λ v = Λ u` using `congrArg Prod.fst hfv`. Establish `h2 : ∀ j, v j = 0`. Introduce `j`. Establish `hq : (twKer π H 1).mkQ (v j) = (twKer π H 1).mkQ (u j)` using `congrFun (congrArg Prod.snd hfv) j`. Use `GlobalTheory.IwahoriInj.eq_zero_of_fixed hπ hH ?_ ?_` and prove the remaining obligations.
+
+Use `GlobalTheory.IwahoriInj.mem_fixed.2 fun h hh => ?_` and prove the remaining obligations. Conclude with `congrFun (GlobalTheory.IwahoriInj.mem_fixed (π := tupleRep π m).1 hv h hh) j`. Establish `h0 : (twKer π H 1).mkQ (u j) = 0` using `(Submodule.Quotient.mk_eq_zero _).2 (hk j)`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 (hq.trans h0)`. Establish `h3 : v = 0` using `funext h2`.
+
+Rewrite using `[← h1, h3, map_zero]`.
+-/
 theorem map_eq_zero_of_compact [TopologicalSpace G] [IsTopologicalGroup G] {π : Representation ℂ G V}
     (hπ : IsSmooth π) {m : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X] (Λ : (Fin m → V) →ₗ[ℂ] X)
     {H : Subgroup G} (hH : IsCompact (H : Set G)) (u : Fin m → V)
@@ -67,6 +84,11 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V] {s : ℕ} {d : Fin s → ℕ}
 
+/- English proof (translation)
+Establish `hN : unipRad k e = GlobalTheory.InertSupp.unipOf k fun i => ((blk e i).val : ℤ)` using `GlobalTheory.InertSupp.unipRad_eq_unipOf k fun i j => by simp`. Use `choose S hS hSH using fun j => GlobalTheory.JacquetExact.exists_finset_of_mem_twKer (hk j)`. Take `⟨H, hle, hH, hSH'⟩` from `GlobalTheory.UnipCompact.exists_compact_subgroup k ι _ (Finset.univ.biUnion S) (by`. Introduce `x hx`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.1 hx`.
+
+Rewrite using `[← hN]`. Conclude with `hS j x hj)`. Use `map_eq_zero_of_compact hπ Λ hH u (fun h hh => hu h (hN ▸ hle hh)) fun j => hSH j H fun x hx => hSH' x (Finset.mem_biUnion.2 ⟨j, Finset.mem_univ _, hx⟩)` and prove the remaining obligations.
+-/
 theorem map_eq_zero_of_unipRad (e : (Σ a, Fin (d a)) ≃ ι) {π : Representation ℂ (GL ι k) V}
     (hπ : IsSmooth π) {m : ℕ} {X : Type} [AddCommGroup X] [Module ℂ X] (Λ : (Fin m → V) →ₗ[ℂ] X)
     (u : Fin m → V) (hu : ∀ g ∈ unipRad k e, Λ (fun j => π g (u j)) = Λ u)
@@ -89,6 +111,35 @@ end GlobalTheory.MidJacquet
 
 namespace GlobalTheory.MidJacquet
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n l d hld V _ _ π hπ m U hU W _ _ ρ Λ hne hinv hequiv`. Use `set e := tripPlace hld with he`. Use `set N := unipRad k e with hNdef`. Use `set τ := (jacU e π).comp (midHom k l d n) with hτ`. Set `A : ℕ → Submodule ℂ (Fin m → V)` to `fun t => U ⊓ ⨅ (i : Fin m) (_ : t ≤ i.val), (twKer π N 1).comap (LinearMap.proj i)`.
+
+Establish `memA : ∀ t u, u ∈ A t ↔ u ∈ U ∧ ∀ i : Fin m, t ≤ i.val → u i ∈ twKer π N 1`. Introduce `t u`. Simplify using `[A, Submodule.mem_iInf]`. Establish `hP : ∃ t, ∃ u ∈ A t, Λ u ≠ 0`. Take `⟨u, hu, hΛ⟩` from `hne`.
+
+Conclude with `⟨m, u, (memA m u).2 ⟨hu, fun i hi => absurd i.2 (not_lt.2 hi)⟩, hΛ⟩`. Establish `h0 : ∀ u ∈ A 0, Λ u = 0`. Introduce `u hu`. Rewrite `hu` using `[memA]`. Conclude with `map_eq_zero_of_unipRad e hπ Λ u (fun g hg => hinv g hg u hu.1) fun j => hu.2 j (Nat.zero_le _)`.
+
+Use `set t₀ := Nat.find hP with ht₀`. Take `⟨u₀, hu₀, hΛ₀⟩` from `Nat.find_spec hP`. Establish `ht₀0 : t₀ ≠ 0`. Introduce `h`. Conclude with `hΛ₀ (h0 u₀ (by rw [← h]; exact hu₀))`.
+
+Establish `ht₀m : t₀ ≤ m` using `Nat.find_min' hP ⟨u₀, (memA m u₀).2 ⟨((memA _ _).1 hu₀).1, fun i hi => absurd i.2 (not_lt.2 hi)⟩, hΛ₀⟩`. Establish `hmin : ∀ u ∈ A (t₀ - 1), Λ u = 0`. Introduce `u hu`. Assume the negation of the conclusion as `h`. Conclude with `Nat.find_min hP (by omega : t₀ - 1 < t₀) ⟨u, hu, h⟩`.
+
+Set `jj : Fin m` to `⟨t₀ - 1, by omega⟩`. Set `B` to `A t₀`. Set `L : B →ₗ[ℂ] Jacquet π N` to `(twKer π N 1).mkQ ∘ₗ LinearMap.proj jj ∘ₗ B.subtype`. Establish `hL : ∀ b : B, L b = Submodule.Quotient.mk ((b : Fin m → V) jj)` using `fun b => rfl`. Establish `hker : LinearMap.ker L ≤ LinearMap.ker (Λ ∘ₗ B.subtype)`.
+
+Introduce `b hb`. Rewrite `hb`, the goal using `[LinearMap.mem_ker]`. Establish `hb1 : (b : Fin m → V) jj ∈ twKer π N 1` using `(Submodule.Quotient.mk_eq_zero _).1 hb`. Establish `hb2` using `(memA t₀ b).1 b.2`. Use `hmin b ((memA _ _).2 ⟨hb2.1, fun i hi => ?_⟩)` and prove the remaining obligations.
+
+Break down `Nat.eq_or_lt_of_le hi with h | h` into its components or cases. Establish `: i = jj` using `Fin.ext h.symm`. Rewrite using `[this]`. Conclude with `hb1`. Conclude with `hb2.2 i (by omega)`.
+
+Set `φ : LinearMap.range L →ₗ[ℂ] W` to `(LinearMap.ker L).liftQ (Λ ∘ₗ B.subtype) hker ∘ₗ L.quotKerEquivRange.symm.toLinearMap`. Establish `hφ : ∀ b : B, φ ⟨L b, LinearMap.mem_range_self L b⟩ = Λ b`. Introduce `b`. Simplify using `only [φ, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply, Submodule.coe_subtype]`. Establish `hstab : ∀ (g : GL (Fin d) k) (b : Fin m → V), b ∈ B → (fun j => π (leviEmb k e (midHom k l d n g)) (b j)) ∈ B`.
+
+Introduce `g b hb`. Rewrite `hb`, the goal using `[memA]`. Use `⟨hU g b hb.1, fun i hi => ?_⟩` and prove the remaining obligations. Conclude with `twKer_le_comap π N _ (leviEmb_mem_normalizer k e _) (hb.2 i hi)`. Establish `hτL : ∀ (g : GL (Fin d) k) (b : B), τ g (L b) = L ⟨_, hstab g b b.2⟩` using `fun g b => rfl`.
+
+Set `S : Subrepresentation τ` to `{ toSubmodule := LinearMap.range L apply_mem_toSubmodule := by`. Introduce and unpack `g _ ⟨b, rfl⟩`. Rewrite using `[hτL]`. Conclude with `LinearMap.mem_range_self L _ }`. Set `f : S.toRepresentation.IntertwiningMap ρ` to `⟨φ, fun g => by`.
+
+Use extensionality with `x`. Take `⟨_, b, rfl⟩` from `x`. Establish `e1 : S.toRepresentation g ⟨L b, LinearMap.mem_range_self L b⟩ = ⟨L ⟨_, hstab g b b.2⟩, LinearMap.mem_range_self L _⟩` using `Subtype.ext (hτL g b)`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply]`. Rewrite using `[e1, hφ, hφ]`.
+
+Conclude with `hequiv g b ((memA _ _).1 b.2).1⟩`. Use `⟨S.toSubmodule, inferInstance, inferInstance, S.toRepresentation, ⟨S, .id _, Function.surjective_id⟩, f, fun hf => hΛ₀ ?_⟩` and prove the remaining obligations. Use `congrArg (fun F : S.toRepresentation.IntertwiningMap ρ => F ⟨L ⟨u₀, hu₀⟩, LinearMap.mem_range_self L _⟩) hf` as an intermediate fact. Establish `e2 : f ⟨L ⟨u₀, hu₀⟩, LinearMap.mem_range_self L _⟩ = Λ u₀` using `hφ ⟨u₀, hu₀⟩`. Rewrite using `[← e2, this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_subquotient_jacU_intertwining : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n l d : ℕ) (hld : l + d ≤ n) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin n) k) V), GlobalTheory.PRep.IsSmooth π →

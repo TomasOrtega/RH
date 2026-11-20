@@ -4,6 +4,15 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O M _ _ _ a ha l hl`. Establish `cancel : ∀ x y : O, a * x = a * y → x = y`. Introduce `x y hxy`. Use `ha (x - y) (by rw [mul_sub, hxy, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+
+Set `c : M → O` to `fun w => Classical.choose (hl w)`. Establish `hc : ∀ w, l w = a * c w` using `fun w => Classical.choose_spec (hl w)`. Use `⟨{ toFun := c, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Apply `cancel` to reduce the goal to its premises.
+
+Rewrite using `[mul_add, ← hc, ← hc, ← hc, map_add]`. Introduce `r x`. Apply `cancel` to reduce the goal to its premises. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← hc, map_smul, hc, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use extensionality with `w`. Simplify using `only [LinearMap.smul_apply, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`. Conclude with `hc w`.
+-/
 theorem dual_eq_smul_of_forall_dvd :
     ∀ (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (a : O), (∀ x : O, a * x = 0 → x = 0) →
       ∀ l : Module.Dual O M, (∀ w, a ∣ l w) → ∃ l' : Module.Dual O M, l = a • l' := by

@@ -30,6 +30,11 @@ section Geometry
 
 variable {X V W : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨b, x, rfl⟩ : ∃ (b : W) (x : π.fiber b), π.fiberι b x = v` from `⟨π v, π.asFiber v, π.fiberι_asFiber v⟩`. Establish `: Smooth (π.fiberToSpecResidueField b)` using `MorphismProperty.of_isPullback (P := @Smooth) (IsPullback.of_hasPullback π (W.fromSpecResidueField b)) ‹_›`. Establish `: IsReduced (π.fiber b)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (π.fiberToSpecResidueField b)`. Establish `hmax : IsMax x` using `fun x' _ => (π.fiberι b).isEmbedding.isInducing.specializes_iff.1 (hv _ ((GlobalTheory.FibreStalk.image_eq W V π b x').trans (GlobalTheory.FibreStalk.image_eq W V π b x).symm))`. Establish `: Ring.KrullDimLE 0 ((π.fiber b).presheaf.stalk x)` using `krullDimLE_of_coheight_le (Order.coheight_eq_zero.2 hmax).le`.
+
+Establish `hF : IsField ((π.fiber b).presheaf.stalk x)` using `Ring.KrullDimLE.isField_of_isReduced`. Rewrite using `[← GlobalTheory.FibreStalk.ker_stalkMap_fiberι]`. Use `letI := hF.toField`. Conclude with `IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ ((π.fiberι b).stalkMap_surjective x))`.
+-/
 theorem map_maximalIdeal_of_top (π : V ⟶ W) [Smooth π] {v : V} (hv : ∀ v', π v' = π v → v ⤳ v') :
     (IsLocalRing.maximalIdeal (W.presheaf.stalk (π v))).map (π.stalkMap v).hom =
       IsLocalRing.maximalIdeal (V.presheaf.stalk v) := by
@@ -46,6 +51,9 @@ theorem map_maximalIdeal_of_top (π : V ⟶ W) [Smooth π] {v : V} (hv : ∀ v',
   letI := hF.toField
   exact IsLocalRing.eq_maximalIdeal (RingHom.ker_isMaximal_of_surjective _ ((π.fiberι b).stalkMap_surjective x))
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.SmoothDimTotal.ringKrullDim_stalk_eq_add W V π v`. Rewrite `h` using `[map_maximalIdeal_of_top π hv, ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient _).1 inferInstance), add_zero, ringKrullDim_stalk_eq_coheight, ringKrullDim_stalk_eq_coheight]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem coheight_of_top [IsLocallyNoetherian V] [IsLocallyNoetherian W] (π : V ⟶ W) [Smooth π] {v : V}
     (hv : ∀ v', π v' = π v → v ⤳ v') : Order.coheight v = Order.coheight (π v) := by
   have h := GlobalTheory.SmoothDimTotal.ringKrullDim_stalk_eq_add W V π v
@@ -54,12 +62,22 @@ theorem coheight_of_top [IsLocallyNoetherian V] [IsLocallyNoetherian W] (π : V 
     ringKrullDim_stalk_eq_coheight] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Conclude with `TopCat.Presheaf.germ_res_apply _ _ _ _ _`.
+-/
 theorem germ_secPull {L : LB X} (s : L.Sec) (b : V ⟶ X) (v : V) (i : L.ι) (hi : b v ∈ L.U i)
     (hv : v ∈ (L.pull b).U fun _ => i) :
     V.presheaf.germ _ v hv ((Cartier.secPull s b).f fun _ => i) = b.stalkMap v (X.presheaf.germ _ _ hi (s.f i)) := by
   rw [Scheme.Hom.germ_stalkMap_apply]
   exact TopCat.Presheaf.germ_res_apply _ _ _ _ _
 
+/- English proof (translation)
+Establish `hc` using `coheight_of_top π hv`. Distinguish the cases in `h1 : Order.coheight v = 1`. Use `swap`. Rewrite using `[not_not.1 (mt CartierDiv.coheight_eq_one_of_mult_ne_zero h1), not_not.1 (mt CartierDiv.coheight_eq_one_of_mult_ne_zero (hc ▸ h1))]`. Take `⟨i, hi⟩` from `exists_chart hL ((π ≫ a) v)`.
+
+Establish `hi' : a (π v) ∈ L.U i` using `hi`. Establish `h₁ : v ∈ (L.pull (π ≫ a)).U fun _ => i` using `Set.mem_iInter.2 fun _ => hi`. Establish `h₂ : π v ∈ (L.pull a).U fun _ => i` using `Set.mem_iInter.2 fun _ => hi'`. Rewrite using `[mult_divOfSec h1 h₁, mult_divOfSec (hc ▸ h1) h₂, germ_secPull s _ v i hi, germ_secPull s _ _ i hi']`. Use `letI : Algebra (W.presheaf.stalk (π v)) (V.presheaf.stalk v) := (π.stalkMap v).hom.toAlgebra`.
+
+Use `haveI : Module.Flat (W.presheaf.stalk (π v)) (V.presheaf.stalk v) := Flat.stalkMap π v`. Use `haveI : IsLocalHom (algebraMap (W.presheaf.stalk (π v)) (V.presheaf.stalk v)) := inferInstanceAs (IsLocalHom (π.stalkMap v).hom)`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.T0.length_baseChange_eq (S := V.presheaf.stalk v) (map_maximalIdeal_of_top π hv), ← (Algebra.TensorProduct.quotIdealMapEquivTensorQuot (A := W.presheaf.stalk (π v)) (V.presheaf.stalk v) _).toLinearEquiv.length_eq, Ideal.map_span, Set.image_ …`. Both sides reduce to the same expression.
+-/
 theorem mult_of_top [IsIntegral V] [IsIntegral W] [IsLocallyNoetherian V] [IsLocallyNoetherian W] (π : V ⟶ W) [Smooth π]
     (a : W ⟶ X) {L : LB X} (hL : L.IsLB) (s : L.Sec) (hV : genericPoint V ∈ Out.nonzeroLocus (Cartier.secPull s (π ≫ a)))
     (hW : genericPoint W ∈ Out.nonzeroLocus (Cartier.secPull s a)) {v : V} (hv : ∀ v', π v' = π v → v ⤳ v') :
@@ -83,6 +101,13 @@ theorem mult_of_top [IsIntegral V] [IsIntegral W] [IsLocallyNoetherian V] [IsLoc
     Ideal.map_span, Set.image_singleton, Scheme.Hom.stalkMap_comp]
   rfl
 
+/- English proof (translation)
+Establish `hn : v ∉ Out.nonzeroLocus (Cartier.secPull s b)` using `fun hs => notMem_supp_divOfSec.2 hs (CartierDiv.mem_supp_of_mult_ne_zero hv)`. Establish `hn' : v' ∉ Out.nonzeroLocus (Cartier.secPull s b)`. Rewrite `hn`, the goal using `[Cartier.nonzeroLocus_secPull]`. Express the relevant statement in the definitionally equal form `b v' ∉ Out.nonzeroLocus s`. Rewrite using `[hb]`.
+
+Conclude with `hn`. Assume the negation of the conclusion as `hne`. Establish `l₁ : v < v'` using `⟨h, fun h' => hne (h.antisymm h').eq⟩`. Establish `l₂ : v' < genericPoint V` using `⟨genericPoint_specializes v', fun h' => hn' ((show v' ⤳ genericPoint V from h').mem_open (Out.nonzeroLocus _).isOpen hV)⟩`. Establish `h₄` using `Order.coheight_add_one_le l₁`.
+
+Establish `h₅` using `Order.coheight_add_one_le l₂`. Rewrite `h₄` using `[CartierDiv.coheight_eq_one_of_mult_ne_zero hv]`. Establish `h₆ : (1 : ℕ∞) + 1 ≤ 1` using `(add_le_add_left (le_add_self.trans h₅) 1).trans h₄`. Conclude with `absurd h₆ (by decide)`.
+-/
 theorem eq_of_mult_ne_zero [IsIntegral V] [IsLocallyNoetherian V] (b : V ⟶ X) {L : LB X} (hL : L.IsLB) (s : L.Sec)
     (hV : genericPoint V ∈ Out.nonzeroLocus (Cartier.secPull s b)) {v v' : V} (h : v' ⤳ v) (hb : b v' = b v)
     (hv : (divOfSec (LB.isLB_pull hL _) _ hV).mult v ≠ 0) : v' = v := by
@@ -103,6 +128,15 @@ theorem eq_of_mult_ne_zero [IsIntegral V] [IsLocallyNoetherian V] (b : V ⟶ X) 
   have h₆ : (1 : ℕ∞) + 1 ≤ 1 := (add_le_add_left (le_add_self.trans h₅) 1).trans h₄
   exact absurd h₆ (by decide)
 
+/- English proof (translation)
+Set `j` to `Limits.pullback.fst π (redι (clo z))`. Establish `: IsReduced (Limits.pullback π (redι (clo z)))` using `GlobalTheory.isReduced_of_smooth_of_isReduced (Limits.pullback.snd π (redι (clo z)))`. Establish `hj : Set.range j = closure {y}`. Rewrite using `[h, ← show Set.range (redι (clo z)) = closure {z} from range_redι (clo z)]`. Conclude with `Scheme.Pullback.range_fst π _`.
+
+Establish `hk : j.ker = (redι (clo y)).ker`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι, ← InterModel.radical_ker j, ← Scheme.IdealSheafData.vanishingIdeal_support]`. Use `congr 1`. Use `ext1`. Rewrite using `[Scheme.Hom.support_ker, hj, closure_closure]`.
+
+Both sides reduce to the same expression. Set `f` to `IsClosedImmersion.lift j (redι (clo y)) hk.le`. Establish `hf : f ≫ j = redι (clo y)` using `IsClosedImmersion.lift_fac _ _ _`. Establish `: IsIso f` using `IsClosedImmersion.isIso_of_ker_eq _ _ f hf hk.symm`. Use `⟨f ≫ Limits.pullback.snd π (redι (clo z)), inferInstance, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, ← Limits.pullback.condition, ← Category.assoc, hf]`.
+-/
 theorem exists_smooth_clo (π : V ⟶ X) [Smooth π] {y : V} {z : X} (h : closure {y} = π ⁻¹' closure {z}) :
     ∃ ρ : _ ⟶ _, Smooth ρ ∧ ρ ≫ redι (clo z) = redι (clo y) ≫ π := by
   let j := Limits.pullback.fst π (redι (clo z))
@@ -129,6 +163,13 @@ section Poly
 
 variable {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Use `⟨(basisMonomials ι ℝ).constr ℝ fun u => if h : ∃ a : Fin e → ι, ∑ j, Finsupp.single (a j) 1 = u then I h.choose else 0, fun a => ?_⟩` and prove the remaining obligations. Establish `e₁ : (∏ j, MvPolynomial.X (a j) : MvPolynomial ι ℝ) = basisMonomials ι ℝ (∑ j, Finsupp.single (a j) 1)`. Rewrite using `[coe_basisMonomials]`. Conclude with `(monomial_sum_one _ _).symm`. Establish `h : ∃ a' : Fin e → ι, ∑ j, Finsupp.single (a' j) 1 = ∑ j, Finsupp.single (a j) 1` using `⟨a, rfl⟩`.
+
+Rewrite using `[e₁, Module.Basis.constr_basis, dif_pos h]`. Establish `hc (c : ι) : Fintype.card {j // h.choose j = c} = Fintype.card {j // a j = c}`. Use `DFunLike.congr_fun h.choose_spec c` as an intermediate fact. Simplify using `only [Finsupp.finset_sum_apply, Finsupp.single_apply] at this`. Simplify using `only [Fintype.card_subtype, Finset.card_filter]`.
+
+Conclude with `this`. Rewrite using `[← hI a (Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c))]`. Conclude with `congrArg I (funext fun j => (Equiv.ofFiberEquiv_map _ j).symm)`.
+-/
 theorem exists_functional_prod (e : ℕ) (I : (Fin e → ι) → ℝ) (hI : ∀ a (σ : Equiv.Perm (Fin e)), I (a ∘ σ) = I a) :
     ∃ T : MvPolynomial ι ℝ →ₗ[ℝ] ℝ, ∀ a : Fin e → ι, T (∏ j, MvPolynomial.X (a j)) = I a := by
   refine ⟨(basisMonomials ι ℝ).constr ℝ fun u =>
@@ -146,10 +187,18 @@ theorem exists_functional_prod (e : ℕ) (I : (Fin e → ι) → ℝ) (hI : ∀ 
   rw [← hI a (Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (hc c))]
   exact congrArg I (funext fun j => (Equiv.ofFiberEquiv_map _ j).symm)
 
+/- English proof (translation)
+Simplify using `only [lin, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.prod_mul_distrib, smul_eq_C_mul, map_prod]`.
+-/
 theorem prod_lin {e : ℕ} (c : Fin e → ι → ℝ) :
     ∏ j, lin (c j) = ∑ a : Fin e → ι, (∏ j, c j (a j)) • ∏ j, MvPolynomial.X (a j) := by
   simp only [lin, Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.prod_mul_distrib, smul_eq_C_mul, map_prod]
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_functional_prod e I hI`. Establish `hT' (c : Fin e → ι → ℝ) : (T ∘ₗ homogeneousComponent e) (∏ j, lin (c j)) = ∑ a : Fin e → ι, (∏ j, c j (a j)) * I a`. Establish `hh : (∏ j, lin (c j)).IsHomogeneous e`. Simplify using `using IsHomogeneous.prod Finset.univ (fun j => lin (c j)) (fun _ => 1) fun j _ => by`. Simplify using `using isHomogeneous_lin_pow (c j) 1`.
+
+Rewrite using `[LinearMap.comp_apply, homogeneousComponent_of_mem hh, if_pos rfl, prod_lin, map_sum]`. Simplify using `only [map_smul, hT, smul_eq_mul]`. Rewrite using `[← hT', sub_eq_zero.1 (Model.eq_zero_of_pow e (Φ - T ∘ₗ homogeneousComponent e) (fun n => ?_) fun P d hd hP => ?_)]`. Rewrite using `[LinearMap.sub_apply, h₁, ← hT' fun _ j => n j, Fin.prod_const, sub_self]`. Rewrite using `[LinearMap.sub_apply, h₂ P d hd hP, LinearMap.comp_apply, homogeneousComponent_of_mem hP, if_neg hd.symm, map_zero, sub_self]`.
+-/
 theorem apply_prod_lin {e : ℕ} {I : (Fin e → ι) → ℝ} (hI : ∀ a (σ : Equiv.Perm (Fin e)), I (a ∘ σ) = I a)
     {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ}
     (h₁ : ∀ n : ι → ℤ, Φ (lin (fun j => (n j : ℝ)) ^ e) = ∑ a : Fin e → ι, (∏ j, (n (a j) : ℝ)) * I a)
@@ -168,6 +217,9 @@ theorem apply_prod_lin {e : ℕ} {I : (Fin e → ι) → ℝ} (hI : ∀ a (σ : 
   · rw [LinearMap.sub_apply, h₂ P d hd hP, LinearMap.comp_apply, homogeneousComponent_of_mem hP, if_neg hd.symm, map_zero,
       sub_self]
 
+/- English proof (translation)
+Rewrite using `[lin, Finset.sum_eq_single o (fun b _ hb => by simp [hb]) (by simp), smul_eq_C_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem lin_single (o : ι) (m : ℤ) : lin (fun j => ((Pi.single o m : ι → ℤ) j : ℝ)) = (m : ℝ) • MvPolynomial.X o := by
   rw [lin, Finset.sum_eq_single o (fun b _ hb => by simp [hb]) (by simp), smul_eq_C_mul]
   simp
@@ -178,6 +230,13 @@ section Mixed
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Establish `hnull (ε : ℤˣ) : (P.φ σ).chernPart D ε (offSupp p σ (divOfSec M.isLB s hs))ᶜ = 0`. Establish `e : (offSupp p σ (divOfSec M.isLB s hs))ᶜ = {y : CxPts p σ | y.1 (IsLocalRing.closedPoint ℂ) ∈ ((divOfSec M.isLB s hs).supp : Set Y)}`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, mem_offSupp, not_not]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `GlobalTheory.ChernNull.chernPart_over_closed hY _ (divOfSec M.isLB s hs).supp.isClosed (CartierDiv.genericPoint_notMem_supp _) σ _ ε`. Rewrite using `[Weight.chernInt_congr (g := fun v => Real.log ((M.φ σ).nsq (secVal p σ s) v) / 2) (isOpen_offSupp _).measurableSet fun y hy => logNorm_ratOfSec _ ((offSupp_divOfSec (q := p) (σ := σ) (hL := M.isLB) (hs := hs)).le hy)]`. Simplify using `only [Weight.chernInt, MeasureTheory.Measure.restrict_univ]`.
+
+Rewrite using `[MeasureTheory.Measure.restrict_eq_self_of_ae_mem (s := offSupp p σ (divOfSec M.isLB s hs)) (hnull 1), MeasureTheory.Measure.restrict_eq_self_of_ae_mem (s := offSupp p σ (divOfSec M.isLB s hs)) (hnull (-1))]`.
+-/
 theorem archInt_eq_chInt [IsIntegral Y] {D : ℕ} (hY : IsArithVar p D) (P M : HermLB p) (s : M.B.Sec)
     (hs : genericPoint Y ∈ Out.nonzeroLocus s) : P.archInt M D (isRatSec_ratOfSec s hs) =
       chInt P D fun σ v => Real.log ((M.φ σ).nsq (secVal p σ s) v) / 2 := by
@@ -205,6 +264,17 @@ variable {D₀ : ℕ} (hY : IsArithVar p D₀) {L : ι → HermLB p} (o : ι) (m
   (hg : (comb L n).IsArithHeight g)
 include hY hd hM hΦ hg
 
+/- English proof (translation)
+Establish `hZ : IsArithVar (i ≫ p) D` using `hY.of_isClosedImmersion i hc hd`. Establish `hΦ' : IsArFun (fun j => (L j).restr i) D Φ` using `⟨fun n' => by`. Take `⟨g', hg', e⟩` from `hΦ.1 n'`. Rewrite using `[← e]`. Conclude with `(isometric_comb_pull L n' i rfl).symm.isSelfInter hZ (hg'.isSelfInter_restrict hY i rfl), hΦ.2⟩`.
+
+Establish `h₁` using `((hC.arIso k Z (i ≫ p) D hZ).2 ι _ Φ hΦ').2.2 (Option ι) (fun x => x.elim M fun j => (L j).restr i) (fun x => x.elim (Pi.single o m) fun j => Pi.single j 1) (by`. Introduce and unpack `(_ | j)`. Use `HermLB.Isometric.trans (HermLB.icls_eq_iff.1 ?_) hM` and prove the remaining obligations. Simplify using `[icls_comb, HermLB.icls_pow, Pi.single_apply]`. Conclude with `isometric_comb_single _ j)`.
+
+Establish `h₂` using `(hC.arMix k Z (i ≫ p) D hZ ι M _ _ h₁ n (fun v => g (i v)) ((isometric_comb_pull L n i rfl).symm.isArithHeight hZ (hg.restrict hY i rfl)) _ (isRatSec_ratOfSec t ht)).2`. Rewrite `h₂` using `[archInt_eq_chInt hZ]`. Rewrite using `[← h₂, LinearMap.comp_apply, AlgHom.toLinearMap_apply, ← smul_eq_mul, ← map_smul, ← smul_mul_assoc]`. Use `congrArg Φ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, aeval_X, aeval_rename]`.
+
+Use `congr 2`. Conclude with `(lin_single o m).symm`. Rewrite using `[lin, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, aeval_C, aeval_X]`.
+
+Conclude with `congrArg _ ((one_smul ℝ _).symm.trans ((Int.cast_one (R := ℝ)) ▸ (lin_single j 1).symm))`.
+-/
 theorem mixed_horizontal (hC : ArCalc) (hc : CharZero Γ(Z, ⊤)) :
     (m : ℝ) * Φ (MvPolynomial.X o * lin (fun j => (n j : ℝ)) ^ D) = ∑ᶠ v, ((divOfSec M.isLB t ht).mult v : ℝ) * g (i v) -
       chInt (comb (fun j => (L j).restr i) n) D fun σ v => Real.log ((M.φ σ).nsq (secVal _ σ t) v) / 2 := by
@@ -232,6 +302,25 @@ theorem mixed_horizontal (hC : ArCalc) (hc : CharZero Γ(Z, ⊤)) :
     rw [map_mul, aeval_C, aeval_X]
     exact congrArg _ ((one_smul ℝ _).symm.trans ((Int.cast_one (R := ℝ)) ▸ (lin_single j 1).symm))
 
+/- English proof (translation)
+Establish `hp` using `GlobalTheory.VertProj.isProjOver_strHom_zmod k Y p D₀ hY Z i ℓ`. Establish `hL : ∀ j, ((L j).B.pull i).IsLB` using `fun j => LB.isLB_pull (L j).isLB i`. Establish `hP` using `LB.isLB_pull (comb L n).isLB i`. Establish `h₁` using `apply_prod_lin (Φ := Φ) (I := fun a : Fin (D + 1) → ι => (interNum (ZMod ℓ) (structureModule Z) (fun j => (L (a j)).B.pull i) : ℝ) * Real.log ℓ) (fun a σ => congrArg (fun x : ℤ => (x : ℝ) * Real.log ℓ) (interNum_comp_perm (ZMod ℓ) (structureModule Z) (L := fun j => (L (a j)).B.pu …`. Take `⟨g', hg', e⟩` from `hΦ.1 n'`.
+
+Rewrite using `[← e, hg'.vertical Z i (ZMod ℓ) _ hd, Nat.card_zmod, GlobalTheory.VertFun.topSelf_comb_pull hp hd i L n', Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_assoc _ _ _) hΦ.2`. Use `fun x j => ((Fin.cons (Pi.single o m) (fun _ => n) : Fin (D + 1) → ι → ℤ) x j : ℝ)`. Establish `HD` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom (ZMod ℓ) Z) (structureModule Z) hp (d := D + 1) (by rw [QCoh.suppDim_structureModule, hd])`. Establish `h₂` using `HD.interNum_of_cls_eq_sum (L := fun j => (L j).B.pull i) hL (Q := Fin.cons M.B fun _ => (comb L n).B.pull i) (Fin.cases M.isLB fun _ => hP) (Fin.cons (Pi.single o m) (fun _ => n)) (Fin.cases (by`.
+
+Use `((CechPic.cls_eq_iff (((L o).restr i).pow m).isLB M.isLB).2 ⟨_, hM.choose_spec.1⟩).symm.trans ((CechPic.cls_lbPow (hL o) m _).trans ?_)` and prove the remaining obligations. Simplify using `[Pi.single_apply]) fun _ => by`. Use `(CechPic.cls_pull (comb L n).isLB i hP).trans ?_` and prove the remaining obligations. Rewrite using `[GenFibreSecs.cls_comb, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zsmul, CechPic.cls_pull (L j).isLB]`. Use the proof step `rfl)`. Rewrite `h₂` using `[GlobalTheory.T.rational_section_cycle_formula_projective (ZMod ℓ) Z hp D hd.le _ M.isLB _ (fun _ => hP) _ (isRatSec_ratOfSec t ht)]`. Simplify using `only [Fin.prod_univ_succ (fun x => lin _), Fin.cons_zero, Fin.cons_succ, Fin.prod_const, lin_single, smul_mul_assoc, map_smul, smul_eq_mul, Int.cast_natCast] at h₁`. Use `hY.isNoetherian_sub i` as an intermediate fact.
+
+Establish `hfin` using `(divOfSec M.isLB t ht).finite_support_mult`. Establish `h₃` using `congrArg (fun x : ℤ => (x : ℝ) * Real.log ℓ) h₂`. Move the coercions through the operations in `at h₃`. Rewrite using `[h₁]`. Use `Eq.trans (Eq.trans ?_ h₃.symm) ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun a _ => (mul_assoc _ _ _).symm`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) fun v hv => by`. Simplify using `using fun h0 : (divOfSec M.isLB t ht).mult v = 0 => hv (by simp [h0]),`. Use `finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) fun v hv => by`.
+
+Simplify using `using fun h0 : (divOfSec M.isLB t ht).mult v = 0 => hv (by simp [h0]), Int.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : (divOfSec M.isLB t ht).mult v ≠ 0` using `by simpa using hv`. Use `letI : Algebra (ZMod ℓ) Γ((Scheme.IdealSheafData.vanishingIdeal (clo v)).subscheme, ⊤) := ((redι (clo v)).appTop.hom.comp (algebraMap (ZMod ℓ) Γ(Z, ⊤))).toAlgebra`. Establish `e` using `hg.vertical _ (redι (clo v) ≫ i) (ZMod ℓ) D ((dim_clo v).trans (CutSec.dim_closure_of_coheight hY i hd (CartierDiv.coheight_eq_one_of_mult_ne_zero hv')))`.
+
+Rewrite `e` using `[Scheme.Hom.comp_apply, redι_clo, Nat.card_zmod]`. Rewrite using `[e, Int.cast_mul, mul_assoc]`. Use `congr 3`. Use `(interNumOn_eq_interNum_pull (k := ZMod ℓ) (f := redι (clo v)) (L := fun _ : Fin D => (comb L n).B.pull i) (fun _ => rfl) fun _ => hP).trans ?_` and prove the remaining obligations. Use `interNum_congr_cls _ _ (fun _ => LB.isLB_pull hP _) (fun _ => LB.isLB_pull (comb L n).isLB _) fun _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[CechPic.cls_pull hP, CechPic.cls_pull (comb L n).isLB, CechPic.cls_pull (comb L n).isLB, CechPic.pull_comp]`.
+-/
 theorem mixed_vertical (ℓ : ℕ) [Fact ℓ.Prime] [Algebra (ZMod ℓ) Γ(Z, ⊤)] :
     (m : ℝ) * Φ (MvPolynomial.X o * lin (fun j => (n j : ℝ)) ^ D) = ∑ᶠ v, ((divOfSec M.isLB t ht).mult v : ℝ) * g (i v) := by
   have hp := GlobalTheory.VertProj.isProjOver_strHom_zmod k Y p D₀ hY Z i ℓ
@@ -288,6 +377,9 @@ theorem mixed_vertical (ℓ : ℕ) [Fact ℓ.Prime] [Algebra (ZMod ℓ) Γ(Z, �
   refine interNum_congr_cls _ _ (fun _ => LB.isLB_pull hP _) (fun _ => LB.isLB_pull (comb L n).isLB _) fun _ => ?_
   rw [CechPic.cls_pull hP, CechPic.cls_pull (comb L n).isLB, CechPic.cls_pull (comb L n).isLB, CechPic.pull_comp]
 
+/- English proof (translation)
+Break down `hY.vertical_or_horizontal i with ⟨ℓ, _, ⟨_⟩⟩ | ⟨hc, -⟩` into its components or cases. Rewrite using `[mixed_vertical hY o m i hd M hM t ht hΦ n hg ℓ, chInt, finsum_eq_zero_of_forall_eq_zero (f := fun σ : k →+* ℂ => _) fun σ => ?_, sub_zero]`. Use `isEmpty_cxPts (p := i ≫ p) ℓ σ` as an intermediate fact. Simplify using `[Weight.chernInt, MeasureTheory.integral_of_isEmpty]`. Conclude with `mixed_horizontal hY o m i hd M hM t ht hΦ n hg hC hc`.
+-/
 theorem mixed (hC : ArCalc) :
     (m : ℝ) * Φ (MvPolynomial.X o * lin (fun j => (n j : ℝ)) ^ D) = ∑ᶠ v, ((divOfSec M.isLB t ht).mult v : ℝ) * g (i v) -
       chInt (comb (fun j => (L j).restr i) n) D fun σ v => Real.log ((M.φ σ).nsq (secVal _ σ t) v) / 2 := by
@@ -300,10 +392,52 @@ theorem mixed (hC : ArCalc) :
 
 end Mixed
 
+/- English proof (translation)
+Rewrite using `[vdmPol, vdmPol]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vdmPol_succ (r e : ℕ) : vdmPol r (e + 1) = MvPolynomial.X none * vdmPol r e := by
   rw [vdmPol, vdmPol]
   ring
 
+/- English proof (translation)
+Introduce `hC k _ X _ _ p d hX E r h H F N m s z e hdim hz`. Take `⟨hY, hsm, htop⟩` from `(GlobalTheory.T.flag_variety_arith_dimension k X p d hX E r h.isVB).2 F`. Use `choose top htop hcl hd using htop`. Use `hY.isIntegral` as an intermediate fact. Use `hY.isLocallyNoetherian` as an intermediate fact.
+
+Use `set i := redι (clo z) with hi`. Use `set j := redι (clo (top z)) with hj`. Establish `: IsNoetherian _` using `hX.isNoetherian_sub i`. Establish `: IsNoetherian _` using `hY.isNoetherian_sub j`. Take `⟨ρ, _, hρ⟩` from `exists_smooth_clo F.π (hcl z)`.
+
+Establish `hρ' (v) : i (ρ v) = F.π (j v)` using `by rw [← Scheme.Hom.comp_apply, hρ, Scheme.Hom.comp_apply]`. Establish `hW : genericPoint _ ∈ Out.nonzeroLocus (Cartier.secPull s i)`. Rewrite using `[Cartier.nonzeroLocus_secPull]`. Express the relevant statement in the definitionally equal form `i (genericPoint _) ∈ Out.nonzeroLocus s`. Rewrite using `[redι_clo]` and apply the resulting hypothesis.
+
+Establish `hV : genericPoint _ ∈ Out.nonzeroLocus (Cartier.secPull s (j ≫ F.π))`. Rewrite using `[Cartier.nonzeroLocus_secPull]`. Express the relevant statement in the definitionally equal form `F.π (j (genericPoint _)) ∈ Out.nonzeroLocus s`. Rewrite using `[redι_clo, (htop z).1]` and apply the resulting hypothesis. Establish `hii` using `i.isClosedEmbedding.injective`.
+
+Establish `hmul (a) : cutMult (N.pow m).isLB s z (i a) = (divOfSec (LB.isLB_pull (N.pow m).isLB i) _ hW).mult a`. Rewrite using `[cutMult, dif_pos (show _ ∈ Out.nonzeroLocus (GlobalTheory.ZM.RepBC.secPull (N.pow m).B i s) from hW)]`. Conclude with `hii.extend_apply _ _ a`. Establish `hfinW` using `(divOfSec (LB.isLB_pull (N.pow m).isLB i) _ hW).finite_support_mult`. Establish `hfin : (Function.support (cutMult (N.pow m).isLB s z)).Finite` using `(hfinW.image i).subset fun w hw => by`.
+
+Take `⟨a, rfl, -⟩` from `CutSec.exists_of_cutMult_ne_zero _ s hw`. Conclude with `⟨a, by rw [Function.mem_support, ← hmul]; exact hw, rfl⟩`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hlift (a) : ∃ v, j v = top (i a)`. Express the relevant statement in the definitionally equal form `_ ∈ Set.range j`.
+
+Rewrite using `[range_redι]`. Express the relevant statement in the definitionally equal form `_ ∈ closure {top z}`. Rewrite using `[hcl, Set.mem_preimage, (htop _).1]`. Conclude with `(range_redι (clo z)).le ⟨a, rfl⟩`. Use `choose u hu using hlift`.
+
+Establish `hρu (a) : ρ (u a) = a` using `hii (by rw [hρ', hu, (htop _).1])`. Establish `hut (a) (v) (hv : ρ v = a) : u a ⤳ v` using `j.isClosedEmbedding.isInducing.specializes_iff.1 (by`. Rewrite using `[hu]`. Conclude with `(htop _).2 _ (by rw [← hρ', hv]))`. Establish `hmu (a) : (divOfSec (LB.isLB_pull (N.pow m).isLB _) _ hV).mult (u a) = cutMult (N.pow m).isLB s z (i a)`.
+
+Establish `key (b) (hb : ρ ≫ i = b) (hV : genericPoint _ ∈ Out.nonzeroLocus (Cartier.secPull s b)) : (divOfSec (LB.isLB_pull (N.pow m).isLB b) _ hV).mult (u a) = (divOfSec (LB.isLB_pull (N.pow m).isLB i) _ hW).mult (ρ (u a))`. Substitute `hb` using the available equality. Conclude with `mult_of_top ρ i (N.pow m).isLB s hV hW fun v hv => hut a v (hv.trans (hρu a))`. Conclude with `(key _ hρ hV).trans ((congrArg _ (hρu a)).trans (hmul a).symm)`. Establish `hsum (g : F.Y → ℝ) : ∑ᶠ v, ((divOfSec (LB.isLB_pull (N.pow m).isLB _) _ hV).mult v : ℝ) * g (j v) = ∑ w ∈ hfin.toFinset, (cutMult (N.pow m).isLB s z w : ℝ) * g (top w)`.
+
+Establish `e₁ : ∀ {A B : Type} (f : B → ℝ) (c : A → B), Function.Injective c → Function.support f ⊆ Set.range c → ∑ᶠ b, f b = ∑ᶠ a, f (c a)` using `fun f c hc hs => by`. Rewrite using `[← finsum_mem_range hc, ← finsum_mem_inter_support, Set.inter_eq_right.2 hs, finsum_mem_support]`. Use `(e₁ _ u (Function.LeftInverse.injective hρu) fun v hv => ⟨ρ v, eq_of_mult_ne_zero _ (N.pow m).isLB s hV (hut _ v rfl) (by rw [← hρ, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hρu]) fun h0 => hv (by simp [h0])⟩).trans (Eq.trans ?_ (finsum_eq_sum_of_support_subset (fun w => (cut …` and prove the remaining obligations. Simplify using `using fun h0 : cutMult (N.pow m).isLB s z w = 0 => hw (by simp [h0])))`. Use `Eq.trans (finsum_congr fun a => ?_) (e₁ _ i hii fun w hw => (CutSec.exists_of_cutMult_ne_zero (N.pow m).isLB s (z := z) fun h0 => hw (by simp [h0])).imp fun _ h => h.1).symm` and prove the remaining obligations.
+
+Rewrite using `[hmu, hu]`. Establish `hwd` using `existsUnique_val_arch hC k X p d hX E r h H F N`. Establish `hval (w : X) (e' : ℕ) (hw : topologicalKrullDim (closure ({w} : Set X)) = (e' + 2 : ℕ)) : ∃ Φ, IsHtFun (F.fam H N) (top w) (e' + 2 + r.choose 2) Φ ∧ Φ (vdmPol r e') = F.val H N w e'`. Take `⟨y, Φ, hy, hΦ, e⟩` from `Classical.epsilon_spec ((hwd w e').1 hw).exists`. Take `rfl` from `isTop_unique (htop w) hy`.
+
+Conclude with `⟨Φ, hΦ, e⟩`. Establish `hval' (w : X) : ∃ Φ, cutMult (N.pow m).isLB s z w ≠ 0 → IsHtFun (F.fam H N) (top w) (e + 2 + r.choose 2) Φ ∧ Φ (vdmPol r e) = F.val H N w e`. Distinguish the cases in `hw : cutMult (N.pow m).isLB s z w = 0`. Conclude with `⟨0, fun h => absurd hw h⟩`. Take `⟨a, rfl, ha, -⟩` from `CutSec.exists_of_cutMult_ne_zero _ s hw`.
+
+Use `(hval _ e ?_).imp fun _ h _ => h` and prove the remaining obligations. Rewrite using `[← CutSec.dim_closure_of_coheight hX i (n := e + 2) ((dim_clo z).trans hdim) ha]`. Use `topologicalKrullDim_eq_of_isEmbedding (i.isClosedEmbedding.isEmbedding.comp IsEmbedding.subtypeVal) ?_` and prove the remaining obligations. Rewrite using `[Set.range_comp, Subtype.range_coe, ← i.isClosedEmbedding.closure_image_eq, Set.image_singleton]`. Use `choose Ψ hΨ using hval'`.
+
+Take `⟨Φ, hΦ, hΦv⟩` from `hval z (e + 1) hdim`. Take `⟨y, Λ, hy, hΛ, hΛv⟩` from `Classical.epsilon_spec ((hwd z e).2 hdim (N.pow m) s hz).exists`. Take `rfl` from `isTop_unique (htop z) hy`. Establish `eD : e + 1 + 2 + r.choose 2 = e + 2 + r.choose 2 + 1` using `by omega`. Rewrite `hΦ` using `[eD]`.
+
+Establish `hdV : topologicalKrullDim (Scheme.IdealSheafData.vanishingIdeal (clo (top z))).subscheme = (e + 2 + r.choose 2 + 1 : ℕ)`. Rewrite using `[dim_clo, hd z _ hdim, ← eD]`. Establish `hiso : (((F.fam H N none).restr j).pow m).Isometric ((N.pow m).pull (j ≫ F.π) (Category.assoc _ _ _))`. Establish `R` using `N.refines_pull_comp F.π rfl j rfl (Category.assoc _ _ _)`. Establish `I : (N.pull (j ≫ F.π) (Category.assoc _ _ _)).Isometric ((N.pull F.π rfl).pull j rfl)` using `HermLB.isometric_of_chart _ R.le (fun x => R.g _ (𝟙 _) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm`.
+
+Use `(I.symm.pow m).trans (HermLB.icls_eq_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[HermLB.icls_pow, HermLB.icls_pull, HermLB.icls_pull, HermLB.icls_pow, map_nsmul]`. Establish `hzero` using `Model.eq_zero_of_pow (e + 2 + r.choose 2) ((m : ℝ) • Φ ∘ₗ LinearMap.mulLeft ℝ (MvPolynomial.X none) - (∑ w ∈ hfin.toFinset, (cutMult (N.pow m).isLB s z w : ℝ) • Ψ w - Λ)) (fun n => ?_) fun P D hD hP => ?_`. Use `sub_eq_zero.1 (DFunLike.congr_fun hzero (vdmPol r e))` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.sub_apply, LinearMap.sum_apply, smul_eq_mul] at this`.
+
+Rewrite using `[← hΦv, vdmPol_succ, this, hΛv, finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) fun w hw => by`. Simplify using `using fun h0 : cutMult (N.pow m).isLB s z w = 0 => hw (by simp [h0])]`. Conclude with `congrArg₂ (· - ·) (Finset.sum_congr rfl fun w hw => by rw [(hΨ w (by simpa using hw)).2]) rfl`. Take `⟨g, hg⟩` from `(hC.arExists k F.Y _ _ hY).1 (comb (F.fam H N) n)`. Establish `e₁` using `mixed hY none m j hdV _ hiso (Cartier.secPull s _) hV (by rw [redι_clo]; exact hΦ) n hg hC`.
+
+Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.sub_apply, LinearMap.sum_apply, smul_eq_mul]`. Rewrite using `[e₁, hΛ.1 n, sub_eq_zero]`. Use `congrArg₂ (· - ·) ((hsum g).trans (Finset.sum_congr rfl fun w hw => ?_)) (congrArg _ ?_)` and prove the remaining obligations. Take `⟨g', hg', e₂⟩` from `(hΨ w (by simpa using hw)).1.1 n`. Rewrite using `[← e₂, hg.unique hY hg']`.
+
+Use function extensionality and compare the values at `σ v`. Conclude with `congrArg (Real.log · / 2) (((N.pow m).φ σ).nsq_pull_secPull (j ≫ F.π) (Category.assoc _ _ _) s v)`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.sub_apply, LinearMap.sum_apply, smul_eq_mul]`. Rewrite using `[hΦ.2 _ (1 + D) (by omega) ((isHomogeneous_X ℝ none).mul hP), hΛ.2 P D hD hP, Finset.sum_eq_zero fun w hw => by rw [(hΨ w (by simpa using hw)).1.2 P D hD hP, mul_zero]]`. Simplify using the standard rewrite rules.
+-/
 theorem val_recursion : ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp k) (d : ℕ), IsArithVar p d → ∀ (E : X.Modules) (r : ℕ) (h : VMetric p E r) (H : h.IsCInf) (F : FlagSp E r) (N : HermLB p), ∀ (m : ℕ) (s : (N.pow m).B.Sec) (z : X) (e : ℕ), topologicalKrullDim (closure ({z} : Set X)) = (e + 3 : ℕ) → z ∈ Out.nonzeroLocus s → (Function.support (cutMult (N.pow m).isLB s z)).Finite ∧ (m : ℝ) * F.val H N z (e + 1) = ∑ᶠ w, (cutMult (N.pow m).isLB s z w : ℝ) * F.val H N w e - F.arch H N (N.pow m) s z e := by
   intro hC k _ X _ _ p d hX E r h H F N m s z e hdim hz
   obtain ⟨hY, hsm, htop⟩ := (GlobalTheory.T.flag_variety_arith_dimension k X p d hX E r h.isVB).2 F

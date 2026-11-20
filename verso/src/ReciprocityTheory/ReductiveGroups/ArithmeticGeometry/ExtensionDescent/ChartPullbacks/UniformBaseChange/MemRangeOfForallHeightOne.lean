@@ -25,9 +25,23 @@ def denIdeal {ι : Type*} (x : ι → K) : Ideal A where
     exact ⟨c * u, by rw [map_mul, hu, smul_eq_mul, map_mul, mul_assoc]⟩
 
 omit [IsDomain A] [IsFractionRing A K] in
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 lemma mem_denIdeal {ι : Type*} {x : ι → K} {r : A} :
     r ∈ denIdeal (A := A) x ↔ ∀ i, algebraMap A K r * x i ∈ (algebraMap A K).range := Iff.rfl
 
+/- English proof (translation)
+Establish `hne : (Ideal.Quotient.mk (denIdeal (A` using `A) x) 1) ≠ 0 := by`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Introduce `h`. Take `⟨i, hi⟩` from `hx`. Apply `hi` to reduce the goal to its premises.
+
+Use `h i` as an intermediate fact. Simplify using `using this`. Take `⟨P, hP, -⟩` from `exists_le_isAssociatedPrime_of_isNoetherianRing A _ hne`. Rewrite `hP` using `[isAssociatedPrime_iff]`. Take `⟨hPp, y, hy⟩` from `hP`.
+
+Take `⟨d, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `key : ∀ r, r ∈ P ↔ ∀ i, algebraMap A K r * (algebraMap A K d * x i) ∈ (algebraMap A K).range`. Introduce `r`. Rewrite using `[hy, Submodule.mem_colon_singleton, Submodule.mem_bot, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Use `show (∀ i, algebraMap A K (r * d) * x i ∈ (algebraMap A K).range) ↔ _`.
+
+Simplify using `only [map_mul, mul_assoc]`. Use `⟨d, P, hPp, key, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hPp.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[Ideal.eq_top_iff_one, key 1]`. Introduce `i`. Simplify using `using hcon i`.
+-/
 lemma exists_assoc [IsNoetherianRing A] {ι : Type*} (x : ι → K)
     (hx : ∃ i, x i ∉ (algebraMap A K).range) :
     ∃ (d : A) (P : Ideal A), P.IsPrime ∧
@@ -59,6 +73,27 @@ lemma exists_assoc [IsNoetherianRing A] {ι : Type*} (x : ι → K)
   intro i
   simpa using hcon i
 
+/- English proof (translation)
+Take `⟨d, P, hP, hPmem, i0, hi0⟩` from `exists_assoc x hx`. Take `⟨b0, hb0⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors A) (fun i => algebraMap A K d * x i)`. Establish `hb0P : (b0 : A) ∈ P` using `(hPmem _).2 fun i => by`. Take `⟨y, hy⟩` from `hb0 i`. Conclude with `⟨y, by rw [hy, Algebra.smul_def]⟩`.
+
+Establish `hb0ne : (b0 : A) ≠ 0` using `nonZeroDivisors.coe_ne_zero b0`. Establish `hPne : P ≠ ⊥` using `fun h => hb0ne (by rw [h] at hb0P; exact (Submodule.mem_bot A).1 hb0P)`. Establish `hex : ∃ p ∈ P, ∃ u : A, algebraMap A K u = algebraMap A K p * (algebraMap A K d * x i0) ∧ u ∉ P`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+
+Apply `hi0` to reduce the goal to its premises. Set `N : Submodule A K` to `Submodule.map (Algebra.linearMap A K) P`. Establish `hNfg : N.FG` using `(IsNoetherian.noetherian P).map (Algebra.linearMap A K)`. Establish `hNne : N ≠ ⊥`. Introduce `h`.
+
+Establish `hm : algebraMap A K b0 ∈ N` using `(Submodule.mem_map).2 ⟨(b0 : A), hb0P, rfl⟩`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Conclude with `hb0ne ((IsFractionRing.injective A K) (hm.trans (map_zero _).symm))`. Establish `hint : IsIntegral A (algebraMap A K d * x i0)`. Use `isIntegral_of_smul_mem_submodule N hNne hNfg _ fun n hn => ?_` and prove the remaining obligations.
+
+Take `⟨a, haP, rfl⟩` from `(Submodule.mem_map).1 hn`. Take `⟨u, hu⟩` from `(hPmem a).1 haP i0`. Establish `huP` using `hne a haP u hu`. Use `(Submodule.mem_map).2 ⟨u, huP, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.linearMap_apply, smul_eq_mul]`.
+
+Rewrite using `[hu]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Conclude with `⟨a, ha⟩`. Take `⟨p, hpP, u, hu, huP⟩` from `hex`.
+
+Use `⟨P, hP, ?_, p * d, P.mul_mem_right d hpP, fun j => ?_, i0, u, huP, ?_⟩` and prove the remaining obligations. Use `haveI : Submodule.IsPrincipal (Ideal.span {p}) := ⟨⟨p, rfl⟩⟩`. Establish `hmin : P ∈ (Ideal.span {p}).minimalPrimes`. Use `⟨⟨hP, (Ideal.span_singleton_le_iff_mem P).2 hpP⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Take `⟨v, hv⟩` from `(hPmem q).1 hq i0`. Establish `e : q * u = p * v` using `IsFractionRing.injective A K (by rw [map_mul, map_mul, hu, hv]; ring)`. Establish `h1 : q * u ∈ Q` using `e ▸ Q.mul_mem_right v ((Ideal.span_singleton_le_iff_mem Q).1 hQ.2)`. Break down `hQ.1.mem_or_mem h1 with h2 | h2` into its components or cases. Conclude with `h2`.
+
+Conclude with `absurd (hQP h2) huP`. Establish `h1 : P.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ P hmin`. Establish `h0 : P.height ≠ 0` using `fun h => hPne (Ideal.height_eq_zero_iff_eq_bot.1 h)`. Conclude with `le_antisymm h1 (ENat.one_le_iff_ne_zero.2 h0)`. Take `⟨v, hv⟩` from `(hPmem p).1 hpP j`.
+
+Conclude with `⟨v, by rw [hv, map_mul]; ring⟩`. Rewrite using `[hu, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [Finite ι]
     (x : ι → K) (hx : ∃ i, x i ∉ (algebraMap A K).range) :
     ∃ P : Ideal A, P.IsPrime ∧ P.height = 1 ∧ ∃ b ∈ P,
@@ -116,6 +151,13 @@ theorem exists_clear [IsNoetherianRing A] [IsIntegrallyClosed A] {ι : Type*} [F
   · rw [hu, map_mul]
     ring
 
+/- English proof (translation)
+Take `⟨P, hP, h1, b, hbP, -, ⟨i, u, huP, hu⟩⟩` from `exists_clear (A := A) (ι := Unit) (fun _ => x) ⟨(), hx⟩`. Establish `hu' : algebraMap A K u = algebraMap A K b * x` using `hu`. Use `⟨P, hP, h1, fun s hs hsx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hsx`. Establish `e : algebraMap A K (s * u) = algebraMap A K (b * a)`.
+
+Rewrite using `[map_mul, map_mul, hu', ha]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : s * u = b * a` using `IsFractionRing.injective A K e`. Establish `h3 : s * u ∈ P` using `e2 ▸ P.mul_mem_right a hbP`. Break down `hP.mem_or_mem h3 with h4 | h4` into its components or cases.
+
+Conclude with `hs h4`. Conclude with `huP h4`.
+-/
 theorem exists_height_one_not_mem [IsNoetherianRing A] [IsIntegrallyClosed A] (x : K)
     (hx : x ∉ (algebraMap A K).range) :
     ∃ P : Ideal A, P.IsPrime ∧ P.height = 1 ∧
@@ -134,6 +176,9 @@ theorem exists_height_one_not_mem [IsNoetherianRing A] [IsIntegrallyClosed A] (x
   · exact hs h4
   · exact huP h4
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hx`. Take `⟨P, hP, h1, hs⟩` from `exists_height_one_not_mem x hx`. Take `⟨s, hsP, hsx⟩` from `h P hP h1`. Conclude with `hs s hsP hsx`.
+-/
 theorem mem_range_of_forall_height_one [IsNoetherianRing A] [IsIntegrallyClosed A] (x : K)
     (h : ∀ P : Ideal A, P.IsPrime → P.height = 1 →
       ∃ s ∉ P, algebraMap A K s * x ∈ (algebraMap A K).range) :
@@ -145,6 +190,19 @@ theorem mem_range_of_forall_height_one [IsNoetherianRing A] [IsIntegrallyClosed 
 
 omit [IsFractionRing A K] in
 
+/- English proof (translation)
+Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing A (Ideal.span {a})).subset ?_` and prove the remaining obligations. Introduce and unpack `P ⟨hP, h1, haP⟩`. Establish `hle : Ideal.span {a} ≤ P` using `(Ideal.span_singleton_le_iff_mem P).mpr haP`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `hQprime : Q.IsPrime` using `hQ.1.1`.
+
+Distinguish the cases in `hQP' : Q = P`. Conclude with `hQP' ▸ hQ`. It suffices to derive a contradiction. Establish `hlt : Q < P` using `lt_of_le_of_ne hQP hQP'`. Establish `hQne : (⊥ : Ideal A) < Q`.
+
+Use `lt_of_le_of_ne bot_le (fun hb => ha ?_)` and prove the remaining obligations. Establish `h3 : a ∈ Q` using `hQ.1.2 (Ideal.mem_span_singleton_self a)`. Rewrite `h3` using `[← hb]`. Conclude with `Ideal.mem_bot.mp h3`. Establish `h1' : Order.height (⟨P, hP⟩ : PrimeSpectrum A) = 1` using `by first`.
+
+Consider the case `(rw [Ideal.IsPrime.height_eq_primeHeight] at h1; exact h1)`. Consider the case `(rw [Ideal.height_eq_primeHeight_of_isPrime] at h1; exact h1)`. Consider the case `(rw [← Ideal.primeHeight_eq_height] at h1; exact h1)`. Consider the case `(rw [Ideal.IsPrime.height] at h1; exact h1)`. Consider the case `(simp only [Ideal.height, Ideal.minimalPrimes_eq_subsingleton_self, Set.mem_singleton_iff, iInf_iInf_eq_left] at h1; exact h1)`.
+
+Establish `hlt' : (⟨Q, hQprime⟩ : PrimeSpectrum A) < ⟨P, hP⟩` using `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).mp hlt`. Establish `hQ1 : Order.height (⟨Q, hQprime⟩ : PrimeSpectrum A) < 1`. Rewrite using `[← h1']`. Conclude with `Order.height_strictMono hlt' (lt_of_le_of_lt (Order.height_mono (le_of_lt hlt')) (by rw [h1']; exact ENat.one_lt_top))`. Establish `hne' : (⟨⊥, Ideal.bot_prime⟩ : PrimeSpectrum A) < ⟨Q, hQprime⟩` using `(PrimeSpectrum.asIdeal_lt_asIdeal _ _).mp hQne`.
+
+Establish `hQ0` using `Order.height_strictMono hne' (lt_of_le_of_lt (Order.height_mono (le_of_lt hne')) (lt_trans hQ1 ENat.one_lt_top))`. Establish `hQz : Order.height (⟨Q, hQprime⟩ : PrimeSpectrum A) = 0` using `ENat.lt_one_iff_eq_zero.mp hQ1`. Rewrite `hQ0` using `[hQz]`. Conclude with `absurd hQ0 (not_lt_zero')`.
+-/
 theorem finite_height_one [IsNoetherianRing A] {a : A} (ha : a ≠ 0) :
     {P : Ideal A | P.IsPrime ∧ P.height = 1 ∧ a ∈ P}.Finite := by
   classical

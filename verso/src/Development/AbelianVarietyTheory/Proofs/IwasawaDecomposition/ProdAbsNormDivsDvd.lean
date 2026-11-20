@@ -13,6 +13,11 @@ section General
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Rewrite using `[← map_prod]`. Apply `map_dvd` to reduce the goal to its premises. Use `Finset.prod_dvd_of_coprime ?_ ?_` and prove the remaining obligations. Introduce `P _ Q _ hPQ`. Conclude with `(HeightOneSpectrum.isCoprime_of_ne P Q hPQ)`.
+
+Introduce `P hP`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `(mem_divs ha P).1 hP`.
+-/
 theorem prod_absNorm_divs_dvd {a : 𝓞 E} (ha : a ≠ 0) :
     ∏ P ∈ divs a, Ideal.absNorm P.asIdeal ∣ Ideal.absNorm (Ideal.span {a}) := by
   rw [← map_prod]
@@ -24,6 +29,11 @@ theorem prod_absNorm_divs_dvd {a : 𝓞 E} (ha : a ≠ 0) :
     rw [Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]
     exact (mem_divs ha P).1 hP
 
+/- English proof (translation)
+Establish `h1 : Ideal.absNorm P.asIdeal ∣ p ^ Module.finrank ℚ E`. Rewrite using `[← RingOfIntegers.rank, ← Ideal.absNorm_span_natCast]`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 h)`. Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hp).1 h1`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases.
+
+Rewrite `hk` using `[pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `absurd hk P.isPrime.ne_top`. Rewrite using `[hk]`. Conclude with `Nat.le_self_pow hk0.ne' p`.
+-/
 theorem le_absNorm_of_mem {p : ℕ} (hp : p.Prime) (P : HeightOneSpectrum (𝓞 E)) (h : (p : 𝓞 E) ∈ P.asIdeal) :
     p ≤ Ideal.absNorm P.asIdeal := by
   have h1 : Ideal.absNorm P.asIdeal ∣ p ^ Module.finrank ℚ E := by
@@ -36,6 +46,11 @@ theorem le_absNorm_of_mem {p : ℕ} (hp : p.Prime) (P : HeightOneSpectrum (𝓞 
   · rw [hk]
     exact Nat.le_self_pow hk0.ne' p
 
+/- English proof (translation)
+Establish `hp0 : (p : 𝓞 E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `h1` using `prod_absNorm_divs_dvd hp0`. Rewrite `h1` using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, ← h]`. Establish `h2` using `Nat.le_of_dvd (pow_pos hp.pos _) h1`. Assume the negation of the conclusion as `hne`.
+
+Establish `hlt : p < Ideal.absNorm P.asIdeal` using `lt_of_le_of_ne (le_absNorm_of_mem hp P hP) (Ne.symm hne)`. Establish `h3 : ∏ _Q ∈ divs (p : 𝓞 E), p < ∏ Q ∈ divs (p : 𝓞 E), Ideal.absNorm Q.asIdeal` using `Finset.prod_lt_prod (fun _ _ => hp.pos) (fun Q hQ => le_absNorm_of_mem hp Q ((mem_divs hp0 Q).1 hQ)) ⟨P, (mem_divs hp0 P).2 hP, hlt⟩`. Rewrite `h3` using `[Finset.prod_const]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem absNorm_eq_of_split {p : ℕ} (hp : p.Prime) (h : (divs (p : 𝓞 E)).card = Module.finrank ℚ E)
     (P : HeightOneSpectrum (𝓞 E)) (hP : (p : 𝓞 E) ∈ P.asIdeal) : Ideal.absNorm P.asIdeal = p := by
   have hp0 : (p : 𝓞 E) ≠ 0 := by exact_mod_cast hp.ne_zero
@@ -50,6 +65,11 @@ theorem absNorm_eq_of_split {p : ℕ} (hp : p.Prime) (h : (divs (p : 𝓞 E)).ca
   rw [Finset.prod_const] at h3
   omega
 
+/- English proof (translation)
+Use `Finset.card_le_card_of_injOn (fun P => HeightOneSpectrum.comap s hs P) ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Establish `h1` using `(mem_divs hsa P).1 hP`. Conclude with `(mem_divs ha _).2 h1`. Introduce `P _ Q _ hPQ`.
+
+Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Conclude with `Ideal.comap_injective_of_surjective s hs (congrArg HeightOneSpectrum.asIdeal hPQ)`.
+-/
 theorem card_divs_map_le (s : 𝓞 E →+* 𝓞 E) (hs : Function.Surjective s) {a : 𝓞 E} (ha : a ≠ 0) (hsa : s a ≠ 0) :
     (divs (s a)).card ≤ (divs a).card := by
   refine Finset.card_le_card_of_injOn (fun P => HeightOneSpectrum.comap s hs P) ?_ ?_
@@ -60,6 +80,23 @@ theorem card_divs_map_le (s : 𝓞 E →+* 𝓞 E) (hs : Function.Surjective s) 
     apply HeightOneSpectrum.ext
     exact Ideal.comap_injective_of_surjective s hs (congrArg HeightOneSpectrum.asIdeal hPQ)
 
+/- English proof (translation)
+Establish `hp0 : (p : 𝓞 E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `ha0 : a ≠ 0` using `left_ne_zero_of_mul (ha ▸ hp0)`. Establish `hb0 : s a ≠ 0` using `right_ne_zero_of_mul (ha ▸ hp0)`. Establish `hsurj : Function.Surjective s` using `fun x => ⟨s x, hs x⟩`. Establish `hc : (divs (p : 𝓞 E)).card = Module.finrank ℚ E`.
+
+Rewrite using `[← h, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `P`. Conclude with `mem_divs hp0 P`. Establish `hna : ∀ P ∈ divs a, Ideal.absNorm P.asIdeal = p` using `fun P hP => absNorm_eq_of_split hp hc P (ha ▸ Ideal.mul_mem_right _ _ ((mem_divs ha0 P).1 hP))`.
+
+Establish `hnb : ∀ P ∈ divs (s a), Ideal.absNorm P.asIdeal = p` using `fun P hP => absNorm_eq_of_split hp hc P (ha ▸ Ideal.mul_mem_left _ _ ((mem_divs hb0 P).1 hP))`. Establish `hU : divs (p : 𝓞 E) = divs a ∪ divs (s a)`. Use extensionality with `P`. Rewrite using `[Finset.mem_union, mem_divs hp0, mem_divs ha0, mem_divs hb0, ← ha]`. Conclude with `P.isPrime.mul_mem_iff_mem_or_mem`.
+
+Establish `hle : (divs a).card + (divs (s a)).card ≤ Module.finrank ℚ E`. Establish `h1` using `prod_absNorm_divs_dvd ha0`. Establish `h2` using `prod_absNorm_divs_dvd hb0`. Rewrite `h1` using `[Finset.prod_congr rfl hna, Finset.prod_const]`. Rewrite `h2` using `[Finset.prod_congr rfl hnb, Finset.prod_const]`.
+
+Establish `h3` using `mul_dvd_mul h1 h2`. Rewrite `h3` using `[← pow_add, ← map_mul, Ideal.span_singleton_mul_span_singleton, ha, Ideal.absNorm_span_natCast, RingOfIntegers.rank]`. Conclude with `(Nat.pow_dvd_pow_iff_le_right hp.one_lt).1 h3`. Establish `hui` using `Finset.card_union_add_card_inter (divs a) (divs (s a))`. Rewrite `hui` using `[← hU, hc]`.
+
+Establish `e1` using `card_divs_map_le s hsurj ha0 hb0`. Establish `e2` using `card_divs_map_le s hsurj hb0 (by rw [hs]; exact ha0)`. Rewrite `e2` using `[hs]`. Establish `hint : divs a ∩ divs (s a) = ∅` using `Finset.card_eq_zero.1 (by omega)`. Use `⟨?_, ⟨by omega, hna⟩, ⟨by omega, hnb⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[← Ideal.isCoprime_span_singleton_iff, Ideal.isCoprime_iff_sup_eq]`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle'⟩` from `Ideal.exists_le_maximal _ hne`. Establish `haM : a ∈ M` using `hle' (Ideal.mem_sup_left (Ideal.mem_span_singleton_self a))`. Establish `hbM : s a ∈ M` using `hle' (Ideal.mem_sup_right (Ideal.mem_span_singleton_self (s a)))`.
+
+Establish `hM0 : M ≠ ⊥` using `fun h0 => ha0 (by rwa [h0, Ideal.mem_bot] at haM)`. Establish `hmem : (⟨M, hM.isPrime, hM0⟩ : HeightOneSpectrum (𝓞 E)) ∈ divs a ∩ divs (s a)` using `Finset.mem_inter.2 ⟨(mem_divs ha0 _).2 haM, (mem_divs hb0 _).2 hbM⟩`. Rewrite `hmem` using `[hint]`. Conclude with `Finset.notMem_empty _ hmem`.
+-/
 theorem split_facts (s : 𝓞 E →+* 𝓞 E) (hs : ∀ x, s (s x) = x) {p f : ℕ} (hp : p.Prime)
     (hf : Module.finrank ℚ E = 2 * f) (h : (placesOver E p).ncard = Module.finrank ℚ E) {a : 𝓞 E}
     (ha : a * s a = (p : 𝓞 E)) :
@@ -110,6 +147,13 @@ theorem split_facts (s : 𝓞 E →+* 𝓞 E) (hs : ∀ x, s (s x) = x) {p f : �
   rw [hint] at hmem
   exact Finset.notMem_empty _ hmem
 
+/- English proof (translation)
+Take `⟨y, hy⟩` from `h`. Establish `h1 : a = 1 + (c : 𝓞 E) * y`. Rewrite using `[← hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : s a = 1 + (c : 𝓞 E) * s y`.
+
+Rewrite using `[h1, map_add, map_one, map_mul, map_natCast]`. Establish `h3 : (c : 𝓞 E) ∣ (((T : ℤ) - 1 : ℤ) : 𝓞 E)`. Use `⟨y + s y + (c : 𝓞 E) * (y * s y), ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← ha, h2]`.
+
+Use `nth_rewrite 1 [h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(Nat.modEq_iff_dvd.2 (Primes.natCast_dvd_intCast h3)).symm`.
+-/
 theorem modEq_one_of_dvd (s : 𝓞 E →+* 𝓞 E) {a : 𝓞 E} {T c : ℕ} (ha : a * s a = (T : 𝓞 E))
     (h : (c : 𝓞 E) ∣ a - 1) : T ≡ 1 [MOD c] := by
   obtain ⟨y, hy⟩ := h
@@ -128,11 +172,17 @@ theorem modEq_one_of_dvd (s : 𝓞 E →+* 𝓞 E) {a : 𝓞 E} {T c : ℕ} (ha 
 
 end General
 
+/- English proof (translation)
+Use `letI := B.fields.starE`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `star_star (x : B.fields.E)`.
+-/
 theorem conjO_conjO (B : Base) (x : 𝓞 B.fields.E) : B.fields.conjO (B.fields.conjO x) = x := by
   letI := B.fields.starE
   apply RingOfIntegers.ext
   exact star_star (x : B.fields.E)
 
+/- English proof (translation)
+Rewrite using `[B.fields_f]`. Use `show Module.finrank ℚ B.host.E = _`. Rewrite using `[B.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem finrank_E (B : Base) : Module.finrank ℚ B.fields.E = 2 * B.fields.f := by
   rw [B.fields_f]
   show Module.finrank ℚ B.host.E = _
@@ -140,11 +190,23 @@ theorem finrank_E (B : Base) : Module.finrank ℚ B.fields.E = 2 * B.fields.f :=
   unfold Ranks.f Ranks.n
   ring
 
+/- English proof (translation)
+Introduce `τ τ'`. Rewrite using `[B.fields_emb_apply, B.fields_emb_apply, Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K B.host _ τ.2 x hx, Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K B.host _ τ'.2 x hx]`.
+-/
 theorem mem_Kq (B : Base) {x : B.host.E} (hx : x ∈ B.host.K) : x ∈ B.fields.Kq := by
   intro τ τ'
   rw [B.fields_emb_apply, B.fields_emb_apply, Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K B.host _ τ.2 x hx,
     Formalism.MainNotions.UnusedSlot33.HK.sigmaOf_fix_K B.host _ τ'.2 x hx]
 
+/- English proof (translation)
+Introduce `B X`. Establish `hG` using `fun i => split_facts B.fields.conjO (conjO_conjO B) (B.host.g_prime i) (finrank_E B) (GlobalTheory.HostSplit.split_of_one_mod B.R B.host _ (B.host.g_prime i) (B.g_cond i)).1 (B.primes_piG_norm X i)`. Establish `hT` using `fun u => split_facts B.fields.conjO (conjO_conjO B) (B.T_prime u) (finrank_E B) (GlobalTheory.HostSplit.split_of_one_mod B.R B.host _ (B.T_prime u) (B.T_cond u)).1 (B.primes_piT_norm X u)`. Use `⟨?_, B.primes_piGCong X⟩` and prove the remaining obligations. Use `{ g_prime := B.host.g_prime piG_Kq := fun i => mem_Kq B (X.piG_K i) piG_norm := B.primes_piG_norm X piG_cop := fun i => (hG i).1 vG_card := fun i => (hG i).2.2.1 vG_norm := fun i => (hG i).2.2.2 g_cong := (B.primes_piGCong X).g_cong (B.primes_piG_norm X) g_ne := B.host.g_ne T_pri …` and prove the remaining obligations.
+
+Establish `h1` using `modEq_one_of_dvd B.fields.conjO (B.primes_piT_norm X u) (X.piT_cong u)`. Establish `hd : B.host.g i ∣ B.host.QS * B.host.q * B.host.d * (B.host.g 0 * B.host.g 1) ^ 2`. Use `Dvd.dvd.mul_left (Dvd.dvd.pow ?_ two_ne_zero) _` and prove the remaining obligations. Use `fin_cases i`. Conclude with `dvd_mul_right _ _`.
+
+Conclude with `dvd_mul_left _ _`. Establish `h2 : B.host.g i ≡ 1 [MOD B.host.g i]`. Establish `h3` using `h1.of_dvd hd`. Rewrite `h3` using `[hi]`. Then use the resulting hypothesis. Establish `h4 : B.host.g i ∣ 1` using `(Nat.modEq_zero_iff_dvd.1 (h2.symm.trans (Nat.modEq_zero_iff_dvd.2 dvd_rfl)))`.
+
+Conclude with `(B.host.g_prime i).one_lt.ne' (Nat.dvd_one.1 h4)`.
+-/
 theorem primes_ok : ∀ (B : Base) (X : PreX B.toPre), (B.primes X).Ok ∧ (B.primes X).PiGCong := by
   intro B X
   have hG := fun i => split_facts B.fields.conjO (conjO_conjO B) (B.host.g_prime i) (finrank_E B)

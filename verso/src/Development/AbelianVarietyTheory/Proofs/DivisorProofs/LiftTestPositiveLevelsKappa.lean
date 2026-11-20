@@ -15,6 +15,11 @@ open GlobalTheory.PrimIn
 
 namespace GlobalTheory.Stage3
 
+/- English proof (translation)
+Introduce `P D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM hU hL hPos hK`. Take `⟨_hGiven, hGS, hCD, hLI, _hTR, _hUI, _hUIW⟩` from `GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM`. Take `⟨hOk, hGU, hGE, _hBlk, hA, hB⟩` from `GlobalTheory.T.multiplicity_one_gives_unit_equiv P R F hT hM`. Establish `hJ` using `(GlobalTheory.Hk3.inertJunk_iff A3).1 hT.junk`. Establish `hLev : R.PLevW F` using `GlobalTheory.LevW.levW_of_parts P.q2 P.q1 R F hLI hT.ok hT.char hT.ex hJ hGS hCD hM hGE hPos hK hA hL hU`.
+
+Establish `hW : (R.toCx3 F).PartsW false` using `GlobalTheory.SumW.partsW_base P.q2 P.q1 R F hLI hT.ok hT.char hT.ex hJ hGS hCD hM hOk.1 hGE hPos hK hB hU`. Take `⟨-, hH, hTS, htr⟩` from `GlobalTheory.Hk3.HeckeClose.heckeClose P.q1 P.q3 P.q2 R F 1 hT.ok hT.char hT.ex hT.junk hT.ser hT.trSem hU hGU hGE hLev hA hB hK hW`. Conclude with `⟨hLev, hW, hH, hTS, htr⟩`.
+-/
 theorem stage3 : Hypotheses3 → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), TiesB R F → GlobalTheory.CuspMult.MultEq R.toRealDat → R.toRealDat.LUnif → Formalism.IndefR.Rat.LiftTest (R.toCx3 F) → (∀ b, (lv (F.fc (R.toCx3 F).zs) b).Pos) → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PLevW F ∧ (R.toCx3 F).PartsW false ∧ R.PHecke F ∧ A3.fam3.TypesSep3 ∧ ∃ tr, R.TrISem F tr ∧ GlobalTheory.Hk3.TrISepWith A3 tr := by
   intro P D G _ _ Pl0 I0 T0 A3 Ks _ _ _ R F hT hM hU hL hPos hK
   obtain ⟨_hGiven, hGS, hCD, hLI, _hTR, _hUI, _hUIW⟩ := GlobalTheory.T.multiplicity_one_gives_lift_data P R F hT hM

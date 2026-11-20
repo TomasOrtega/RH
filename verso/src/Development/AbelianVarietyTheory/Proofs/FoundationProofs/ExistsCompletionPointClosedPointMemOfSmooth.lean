@@ -14,6 +14,9 @@ variable {X S : Scheme.{u}} (f : X ⟶ S)
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `((specializes_closedPoint y).map s.base.hom.continuous).mem_open U.isOpen h`.
+-/
 theorem _root_.GlobalTheory.range_subset_opens_of_isLocalRing {B : CommRingCat.{u}} [IsLocalRing B] (s : Spec B ⟶ S)
     {U : S.Opens} (h : s (closedPoint B) ∈ U) : Set.range s ⊆ U := by
   rintro _ ⟨y, rfl⟩
@@ -22,6 +25,9 @@ theorem _root_.GlobalTheory.range_subset_opens_of_isLocalRing {B : CommRingCat.{
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 
+/- English proof (translation)
+Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `S.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (f x)) isOpen_univ`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((O ⊓ f ⁻¹ᵁ U : X.Opens) : Set X) from ⟨hx, hxU⟩) (O ⊓ f ⁻¹ᵁ U).isOpen`. Conclude with `⟨U, V, hU, hV, fun y hy => (hVle hy).2, fun y hy => (hVle hy).1, hxV⟩`.
+-/
 theorem _root_.GlobalTheory.exists_isAffineOpen_pair (x : X) {O : X.Opens} (hx : x ∈ O) :
     ∃ (U : S.Opens) (V : X.Opens), IsAffineOpen U ∧ IsAffineOpen V ∧ V ≤ f ⁻¹ᵁ U ∧ V ≤ O ∧
       x ∈ V := by
@@ -35,6 +41,19 @@ theorem _root_.GlobalTheory.exists_isAffineOpen_pair (x : X) {O : X.Opens} (hx :
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 
+/- English proof (translation)
+Establish `hsm : (f.appLE U V hVU).hom.Smooth` using `HasRingHomProperty.appLE @Smooth f ‹_› ⟨U, hU⟩ ⟨V, hV⟩ hVU`. Establish `hxV : Set.range x₀.base ⊆ Set.range hV.fromSpec.base` using `by rw [hV.range_fromSpec]; exact hx`. Establish `hsU : Set.range s.base ⊆ Set.range hU.fromSpec.base` using `by rw [hU.range_fromSpec]; exact hs`. Use `set a : Γ(X, V) ⟶ C := Spec.preimage (IsOpenImmersion.lift hV.fromSpec x₀ hxV) with ha_def`. Use `set b : Γ(S, U) ⟶ B := Spec.preimage (IsOpenImmersion.lift hU.fromSpec s hsU) with hb_def`.
+
+Establish `ha : Spec.map a ≫ hV.fromSpec = x₀`. Rewrite using `[ha_def, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hb : Spec.map b ≫ hU.fromSpec = s`. Rewrite using `[hb_def, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hab : f.appLE U V hVU ≫ a = b ≫ π`.
+
+Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono hU.fromSpec, Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, IsAffineOpen.SpecMap_appLE_fromSpec f hU hV hVU, hb, reassoc_of% ha, h]`. Use `letI : Algebra Γ(S, U) Γ(X, V) := (f.appLE U V hVU).hom.toAlgebra`. Use `letI : Algebra Γ(S, U) B := b.hom.toAlgebra`. Use `letI : Algebra Γ(S, U) C := (b ≫ π).hom.toAlgebra`.
+
+Use `haveI : Algebra.Smooth Γ(S, U) Γ(X, V) := hsm`. Set `π' : B →ₐ[Γ(S, U)] C` to `{ π.hom with commutes' := fun _ => rfl }`. Set `φ : Γ(X, V) →ₐ[Γ(S, U)] C` to `{ a.hom with commutes' := fun r => congrArg (fun k => k.hom r) hab }`. Take `⟨ψ, hψ⟩` from `H Γ(S, U) Γ(X, V) π' (fun _ => rfl) φ`. Use `⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ hV.fromSpec, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, ← ha]`. Use `congr 2`. Use extensionality with `y`. Conclude with `congrArg (fun k => k y) hψ`. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV hVU, ← Category.assoc, ← Spec.map_comp, ← hb]`.
+
+Use `congr 2`. Use extensionality with `r`. Conclude with `ψ.commutes r`.
+-/
 theorem _root_.GlobalTheory.exists_lift_of_smooth_of_isAffineOpen [Smooth f] {U : S.Opens} {V : X.Opens}
     (hU : IsAffineOpen U) (hV : IsAffineOpen V) (hVU : V ≤ f ⁻¹ᵁ U) {B C : CommRingCat.{u}}
     (π : B ⟶ C) (s : Spec B ⟶ S) (x₀ : Spec C ⟶ X) (h : x₀ ≫ f = Spec.map π ≫ s)
@@ -75,6 +94,11 @@ theorem _root_.GlobalTheory.exists_lift_of_smooth_of_isAffineOpen [Smooth f] {U 
     ext r
     exact ψ.commutes r
 
+/- English proof (translation)
+Establish `: IsLocalRing C` using `isLocalRing_of_surjective_of_henselian (RingHom.ker π.hom) π.hom hπ fun _ => Iff.rfl`. Establish `: IsLocalHom π.hom` using `⟨fun b hb => isUnit_of_isUnit_map_of_henselian (RingHom.ker π.hom) π.hom hπ (fun _ => Iff.rfl) hb⟩`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `exists_isAffineOpen_pair f (x₀ (closedPoint C)) (O := ⊤) trivial`. Use `exists_lift_of_smooth_of_isAffineOpen f hU hV hVU π s x₀ h (range_subset_opens_of_isLocalRing s ?_) (range_subset_opens_of_isLocalRing x₀ hxV) ?_` and prove the remaining obligations. Establish `e : f (x₀ (closedPoint C)) = s (Spec.map π (closedPoint C))` using `congr($h (closedPoint C))`.
+
+Rewrite using `[← Spec_closedPoint (f := π), ← e]`. Conclude with `hVU hxV`. Introduce `R A _ _ _ _ _ _ π' hπ' φ`. Conclude with `exists_algHom_lift_of_smooth (RingHom.ker π.hom) π' (fun c => (hπ c).imp fun b hb => (hπ' b).trans hb) (fun b => by rw [hπ']; rfl) φ`.
+-/
 theorem exists_lift_of_smooth_of_henselian [Smooth f] {B C : CommRingCat.{u}} [IsLocalRing B]
     (π : B ⟶ C) (hπ : Function.Surjective π) [HenselianRing B (RingHom.ker π.hom)]
     (s : Spec B ⟶ S) (x₀ : Spec C ⟶ X) (h : x₀ ≫ f = Spec.map π ≫ s) :
@@ -98,6 +122,21 @@ theorem exists_lift_of_smooth_of_henselian [Smooth f] {B C : CommRingCat.{u}} [I
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 
+/- English proof (translation)
+Set `g : Spec B ⟶ pullback f f` to `pullback.lift x₁ x₂ h`. Establish `hg : Spec.map π ≫ g = (Spec.map π ≫ x₁) ≫ pullback.diagonal f`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [g, Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Simplify using `only [g, Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id, h₀]`.
+
+Establish `hrange : Set.range g.base ⊆ Set.range (pullback.diagonal f).base`. Introduce and unpack `_ ⟨y, rfl⟩`. Take `⟨m, hm, hym⟩` from `Ideal.exists_le_maximal y.asIdeal y.isPrime.ne_top`. Establish `hkm : RingHom.ker π.hom ≤ m` using `hj.trans (sInf_le ⟨bot_le, hm⟩)`. Use `haveI := hm.isPrime`.
+
+Set `z : PrimeSpectrum C` to `⟨m.map π.hom, Ideal.map_isPrime_of_surjective hπ hkm⟩`. Establish `hz : PrimeSpectrum.comap π.hom z = ⟨m, hm.isPrime⟩` using `by ext1 show Ideal.comap π.hom (m.map π.hom) = m`. Rewrite using `[Ideal.comap_map_of_surjective' _ hπ, sup_eq_left.mpr hkm]`. Establish `hgp : g.base ⟨m, hm.isPrime⟩ ∈ (pullback.diagonal f).opensRange`. Rewrite using `[← hz]`.
+
+Use `show (Spec.map π ≫ g).base z ∈ _`. Rewrite using `[hg]`. Conclude with `⟨_, rfl⟩`. Establish `hsp : y ⤳ ⟨m, hm.isPrime⟩` using `(PrimeSpectrum.le_iff_specializes y ⟨m, hm.isPrime⟩).mp hym`. Conclude with `(hsp.map g.base.hom.continuous).mem_open (pullback.diagonal f).opensRange.isOpen hgp`.
+
+Take `⟨l, hl⟩ : ∃ l, l ≫ pullback.diagonal f = g` from `⟨IsOpenImmersion.lift (pullback.diagonal f) g hrange, IsOpenImmersion.lift_fac _ _ _⟩`. Establish `e₁ : x₁ = l`. Rewrite using `[← pullback.lift_fst x₁ x₂ h]`. Express the relevant statement in the definitionally equal form `g ≫ _ = _`. Rewrite using `[← hl]`.
+
+Simplify using the standard rewrite rules. Establish `e₂ : x₂ = l`. Rewrite using `[← pullback.lift_snd x₁ x₂ h]`. Express the relevant statement in the definitionally equal form `g ≫ _ = _`. Rewrite using `[← hl]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e₁, e₂]`.
+-/
 theorem _root_.GlobalTheory.lift_ext_of_unramified [FormallyUnramified f] [LocallyOfFiniteType f]
     {B C : CommRingCat.{u}} (π : B ⟶ C) (hπ : Function.Surjective π)
     (hj : RingHom.ker π.hom ≤ Ideal.jacobson ⊥) {x₁ x₂ : Spec B ⟶ X}
@@ -146,6 +185,15 @@ variable {X S : Scheme.{u}} (f : X ⟶ S) in
 variable (B : Type u) [CommRing B] [IsLocalRing B] (I : Ideal B) [HenselianRing B I]
   (s : Spec (.of B) ⟶ S) in
 
+/- English proof (translation)
+Introduce and unpack `⟨x₀, hx₀⟩`. Establish `hker : ∀ b : B, b ∈ I ↔ Ideal.Quotient.mk I b = 0` using `fun b => Ideal.Quotient.eq_zero_iff_mem.symm`. Use `haveI : IsLocalRing (B ⧸ I) := _root_.GlobalTheory.isLocalRing_of_surjective_of_henselian I (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective hker`. Use `haveI : IsLocalRing (CommRingCat.of (B ⧸ I)) := ‹IsLocalRing (B ⧸ I)›`. Establish `hclosed : (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))).base (closedPoint (CommRingCat.of (B ⧸ I))) = closedPoint B`.
+
+Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap (Ideal.Quotient.mk I) (maximalIdeal (B ⧸ I)) = maximalIdeal B`. Conclude with `IsLocalRing.eq_maximalIdeal (Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective)`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `_root_.GlobalTheory.exists_isAffineOpen_pair f (x₀ (closedPoint (CommRingCat.of (B ⧸ I)))) (O := ⊤) trivial`. Establish `hfx : f (x₀ (closedPoint (CommRingCat.of (B ⧸ I)))) = s (closedPoint B)`.
+
+Express the relevant statement in the definitionally equal form `(x₀ ≫ f).base _ = _`. Rewrite using `[hx₀]`. Conclude with `congrArg s.base hclosed`. Establish `hs : Set.range s ⊆ U` using `_root_.GlobalTheory.range_subset_opens_of_isLocalRing s (hfx ▸ hVU hxV)`. Establish `hx : Set.range x₀ ⊆ V` using `_root_.GlobalTheory.range_subset_opens_of_isLocalRing x₀ hxV`.
+
+Take `⟨x, hπx, hxf⟩` from `_root_.GlobalTheory.exists_lift_of_smooth_of_isAffineOpen f hU hV hVU _ s x₀ hx₀ hs hx (fun R A _ _ _ _ _ _ π' hπ' φ => _root_.GlobalTheory.exists_algHom_lift_of_smooth I π' (fun c => by`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Conclude with `⟨b, hπ' b⟩)`. Use the proof step `(fun b => by rw [hπ']; exact hker b) φ)`. Conclude with `⟨⟨x, hxf⟩, Subtype.ext hπx⟩`.
+-/
 theorem _root_.GlobalTheory.reducePoint_quotient_surjective [Smooth f] :
     Function.Surjective (_root_.GlobalTheory.reducePoint f (CommRingCat.ofHom (Ideal.Quotient.mk I)) s) := by
   rintro ⟨x₀, hx₀⟩
@@ -187,6 +235,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) in
 variable (B : Type u) [CommRing B] [HenselianLocalRing B] (s : Spec (.of B) ⟶ S) in
 
+/- English proof (translation)
+The claim follows from `_root_.GlobalTheory.reducePoint_quotient_surjective f B (maximalIdeal B) s`.
+-/
 theorem _root_.GlobalTheory.reducePoint_residue_surjective [Smooth f] :
     Function.Surjective (_root_.GlobalTheory.reducePoint f (CommRingCat.ofHom (residue B)) s) :=
   _root_.GlobalTheory.reducePoint_quotient_surjective f B (maximalIdeal B) s
@@ -202,6 +253,23 @@ variable {X S : Scheme.{u}} (f : X ⟶ S) [Smooth f]
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) [Smooth f] in
 
+/- English proof (translation)
+Take `⟨x, hxO, hfx⟩` from `hO`. Take `⟨U, V, hU, hV, hVU, hVO, hxV⟩` from `_root_.GlobalTheory.exists_isAffineOpen_pair f x hxO`. Establish `hsm` using `HasRingHomProperty.appLE @Smooth f ‹_› ⟨U, hU⟩ ⟨V, hV⟩ hVU`. Establish `hsU : Set.range s.base ⊆ Set.range hU.fromSpec.base`. Rewrite using `[hU.range_fromSpec]`.
+
+Conclude with `_root_.GlobalTheory.range_subset_opens_of_isLocalRing s (hfx ▸ hVU hxV)`. Use `set b : Γ(S, U) ⟶ CommRingCat.of B := Spec.preimage (IsOpenImmersion.lift hU.fromSpec s hsU) with hb_def`. Establish `hb : Spec.map b ≫ hU.fromSpec = s`. Rewrite using `[hb_def, Spec.map_preimage, IsOpenImmersion.lift_fac]`. Take `⟨P, hP⟩ : x ∈ Set.range hV.fromSpec.base` from `by rw [hV.range_fromSpec]; exact hxV`.
+
+Establish `hPm : Ideal.comap (f.appLE U V hVU).hom P.asIdeal = Ideal.comap b.hom (maximalIdeal B)`. Establish `e : hU.fromSpec.base ((Spec.map (f.appLE U V hVU)).base P) = hU.fromSpec.base ((Spec.map b).base (closedPoint B))`. Express the relevant statement in the definitionally equal form `(Spec.map (f.appLE U V hVU) ≫ hU.fromSpec).base P = (Spec.map b ≫ hU.fromSpec).base _`. Rewrite using `[IsAffineOpen.SpecMap_appLE_fromSpec f hU hV hVU, hb]`. Express the relevant statement in the definitionally equal form `f.base (hV.fromSpec.base P) = _`.
+
+Rewrite using `[hP, hfx]`. Conclude with `congrArg PrimeSpectrum.asIdeal (hU.fromSpec.isOpenEmbedding.injective e)`. Use `letI : Algebra Γ(S, U) Γ(X, V) := (f.appLE U V hVU).hom.toAlgebra`. Use `letI : Algebra Γ(S, U) B := b.hom.toAlgebra`. Use `letI : Algebra Γ(S, U) K := ((algebraMap B K).comp b.hom).toAlgebra`.
+
+Use `haveI : IsScalarTower Γ(S, U) B K := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.Smooth Γ(S, U) Γ(X, V) := hsm`. Use `haveI := P.isPrime`. Take `⟨φ⟩` from `_root_.GlobalTheory.nonempty_algHom_of_smooth_of_isSepClosed (K := K) P.asIdeal (by`. Express the relevant statement in the definitionally equal form `Ideal.comap (f.appLE U V hVU).hom P.asIdeal = _`.
+
+Rewrite using `[hPm]`. Use extensionality with `r`. Express the relevant statement in the definitionally equal form `b.hom r ∈ maximalIdeal B ↔ algebraMap B K (b.hom r) = 0`. Conclude with `(_root_.GlobalTheory.algebraMap_eq_zero_iff_mem_maximalIdeal (b.hom r)).symm)`. Take `⟨W, iW, iBW, hE, ψ, ε, hψ, -⟩` from `_root_.GlobalTheory.exists_etale_algHom_lift_of_smooth (B := B) (K := K) φ`.
+
+Use `⟨W, iW, iBW, hE, ε, Spec.map (CommRingCat.ofHom ψ) ≫ hV.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Establish `e : f.appLE U V hVU ≫ CommRingCat.ofHom ψ = b ≫ CommRingCat.ofHom (algebraMap B W)`. Use extensionality with `r`. Conclude with `congrArg (fun k => k r) hψ`. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec f hU hV hVU, ← hb, ← Spec.map_comp_assoc, e, Spec.map_comp_assoc]`.
+
+Introduce and unpack `_ ⟨z, rfl⟩`. Apply `hVO` to reduce the goal to its premises. Rewrite using `[← SetLike.mem_coe, ← hV.range_fromSpec]`. Conclude with `⟨(Spec.map (CommRingCat.ofHom ψ)).base z, rfl⟩`.
+-/
 theorem _root_.GlobalTheory.exists_etale_point_of_smooth (B : Type u) [CommRing B] [IsLocalRing B]
     (K : Type*) [Field K] [Algebra B K] [Algebra (ResidueField B) K]
     [IsScalarTower B (ResidueField B) K] [Algebra.IsSeparable (ResidueField B) K] [IsSepClosed K]
@@ -254,6 +322,13 @@ theorem _root_.GlobalTheory.exists_etale_point_of_smooth (B : Type u) [CommRing 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 variable {X S : Scheme.{u}} (f : X ⟶ S) [Smooth f] in
 
+/- English proof (translation)
+Rewrite using `[Scheme.Pullback.range_fst]`. Use `congr 1`. Establish `key : ∀ z : Spec (.of (ResidueField B)), (Spec.map (CommRingCat.ofHom (residue B))).base z = closedPoint B`. Introduce `z`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+
+Use `show Ideal.comap (residue B) z.asIdeal = maximalIdeal B`. Use `haveI := z.isPrime`. Rewrite using `[Ideal.eq_bot_of_prime z.asIdeal, ← RingHom.ker_eq_comap_bot, ker_residue]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨z, rfl⟩`. Conclude with `key z`. Introduce and unpack `rfl`. Conclude with `⟨⟨⊥, Ideal.isPrime_bot⟩, key _⟩`.
+-/
 theorem _root_.GlobalTheory.range_fst_residue {B : Type u} [CommRing B] [IsLocalRing B] (g : X ⟶ Spec (.of B)) :
     Set.range (pullback.fst g (Spec.map (CommRingCat.ofHom (residue B)))) =
       g ⁻¹' {closedPoint B} := by
@@ -281,6 +356,11 @@ section DiscreteValuation
 
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry IsLocalRing in
 
+/- English proof (translation)
+Take `⟨hD, hR⟩` from `_root_.GlobalTheory.exists_isDiscreteValuationRing_of_unramified V V'`. Establish `hF : Module.FaithfullyFlat V V'` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `hinj : Function.Injective (algebraMap V V')` using `FaithfulSMul.algebraMap_injective V V'`. Use `haveI : FaithfulSMul V (FractionRing V') := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective, IsScalarTower.algebraMap_eq V V' (FractionRing V')]`.
+
+Conclude with `(IsFractionRing.injective V' (FractionRing V')).comp hinj`. Use `letI := FractionRing.liftAlgebra V (FractionRing V')`. Use `haveI := FractionRing.isScalarTower_liftAlgebra V (FractionRing V')`. Take `⟨hfin, hsep⟩` from `_root_.GlobalTheory.finite_and_isSeparable_fractionRing_of_unramified V V' (FractionRing V) (FractionRing V')`. Conclude with `⟨hD, hR, Algebra.FormallyUnramified.map_maximalIdeal, hF, inferInstance, inferInstance, _, inferInstance, hfin, hsep⟩`.
+-/
 theorem _root_.GlobalTheory.isDiscreteValuationRing_of_etale_of_isLocalHom (V V' : Type*) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CommRing V'] [IsLocalRing V'] [Algebra V V']
     [IsLocalHom (algebraMap V V')] [Algebra.Etale V V'] :

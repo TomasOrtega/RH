@@ -21,21 +21,36 @@ def linForm {ι ι' : Type} [Fintype ι] [Fintype ι'] (e : ι → WV I → C) (
 
 variable {ι ι' : Type} [Fintype ι] [Fintype ι']
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hPullW_eq (H : MvPowerSeries (WV I) C) (e : ι → WV I → C) (e' : ι' → WV I → C) :
     hPullW H e e' = MvPowerSeries.subst (linForm e e') H := rfl
 
+/- English proof (translation)
+Simplify using `[linForm]`.
+-/
 theorem constantCoeff_linForm (e : ι → WV I → C) (e' : ι' → WV I → C) (w : WV I) :
     MvPowerSeries.constantCoeff (linForm e e' w) = 0 := by
   simp [linForm]
 
+/- English proof (translation)
+The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => constantCoeff_linForm e e' w)`.
+-/
 theorem hasSubst_linForm (e : ι → WV I → C) (e' : ι' → WV I → C) :
     MvPowerSeries.HasSubst (linForm e e') := MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => constantCoeff_linForm e e' w)
 
+/- English proof (translation)
+Simplify using `[linForm, MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]`.
+-/
 theorem pderiv_linForm (e : ι → WV I → C) (e' : ι' → WV I → C) (w : WV I) (b : ι') :
     MvPowerSeries.pderiv C (Sum.inr b) (linForm e e' w) = MvPowerSeries.C (e' b w) := by
   classical
   simp [linForm, MvPowerSeries.pderiv_X, Pi.single_apply, MvPowerSeries.smul_eq_C_mul]
 
+/- English proof (translation)
+Use extensionality with `μ`. Rewrite using `[MvPowerSeries.coeff_pderiv]`. Use `show ((μ w + 1 : ℕ) : C) * MvPowerSeries.coeff (μ + Finsupp.single w 1) F = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dVar_eq {σ : Type} (w : σ) (F : MvPowerSeries σ C) :
     dVar w F = MvPowerSeries.pderiv C w F := by
   ext μ
@@ -44,6 +59,11 @@ theorem dVar_eq {σ : Type} (w : σ) (F : MvPowerSeries σ C) :
   push_cast
   ring
 
+/- English proof (translation)
+Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single g]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Simplify using `[toW]`. Introduce `g' _ hg'`. Use `Finset.sum_eq_zero (fun k _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[toW, hg']`. Simplify using the standard rewrite rules.
+-/
 theorem sum_toW {M : Type} [AddCommGroup M] [Module C M] (g : Fin 2) (u : I g → C) (F : WV I → M) :
     ∑ w, toW g u w • F w = ∑ k, u k • F ⟨g, k⟩ := by
   rw [Fintype.sum_sigma, Finset.sum_eq_single g]
@@ -54,6 +74,11 @@ theorem sum_toW {M : Type} [AddCommGroup M] [Module C M] (g : Fin 2) (u : I g �
     simp [toW, hg']
   · simp
 
+/- English proof (translation)
+Establish `hs` using `hasSubst_linForm e (fun b => toW g (v' b))`. Rewrite using `[hPullW_eq, GlobalTheory.FormalCalc.pderiv_subst hs]`. Establish `key : ∀ w : WV I, MvPowerSeries.subst (linForm e (fun b => toW g (v' b))) (MvPowerSeries.pderiv C w H) * MvPowerSeries.pderiv C (Sum.inr b) (linForm e (fun b => toW g (v' b)) w) = toW g (v' b) w • hPullW (dVar w H) e (fun b => toW g (v' b))`. Introduce `w`. Rewrite using `[pderiv_linForm, hPullW_eq, dVar_eq, MvPowerSeries.smul_eq_C_mul, mul_comm]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun w _ => key w)]`. Conclude with `sum_toW g (v' b) (fun w => hPullW (dVar w H) e (fun b => toW g (v' b)))`.
+-/
 theorem pderiv_hPullW (H : MvPowerSeries (WV I) C) (e : ι → WV I → C) (g : Fin 2)
     (v' : ι' → I g → C) (b : ι') :
     MvPowerSeries.pderiv C (Sum.inr b) (hPullW H e (fun b => toW g (v' b))) =
@@ -69,6 +94,9 @@ theorem pderiv_hPullW (H : MvPowerSeries (WV I) C) (e : ι → WV I → C) (g : 
   rw [Finset.sum_congr rfl (fun w _ => key w)]
   exact sum_toW g (v' b) (fun w => hPullW (dVar w H) e (fun b => toW g (v' b)))
 
+/- English proof (translation)
+Unfold `upG`. Rewrite using `[GlobalTheory.FormalCalc.constantCoeff_subst_of_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => MvPowerSeries.constantCoeff_X _)) (fun _ => MvPowerSeries.constantCoeff_X _), hF, map_zero]`.
+-/
 theorem constantCoeff_upG (g : Fin 2) {F : MvPowerSeries (I g) C}
     (hF : MvPowerSeries.constantCoeff F = 0) : MvPowerSeries.constantCoeff (upG g F) = 0 := by
   unfold upG
@@ -78,6 +106,17 @@ theorem constantCoeff_upG (g : Fin 2) {F : MvPowerSeries (I g) C}
 
 variable {V : VF C} {d : ℕ} {J : Fin 2 → Type} [∀ g, Fintype (J g)]
 
+/- English proof (translation)
+Rewrite using `[hPullW_eq, hPullW_eq]`. Apply `GlobalTheory.subst_eq_of_coeff_eq_of_killed C (WV I) (ι ⊕ ι') (OnLeafV G g a a')` to reduce the goal to its premises. Conclude with `constantCoeff_linForm _ _`. Introduce and unpack `⟨w1, w2⟩ hw`. Establish `h1 : ∀ c, toW g (e c) ⟨w1, w2⟩ = 0`.
+
+Introduce `c`. Distinguish the cases in `h : w1 = g`. Substitute `h` using the available equality. Simplify using `only [toW]`. Conclude with `he c w2 (fun hty => hw (Or.inl ⟨rfl, hty⟩))`.
+
+Simplify using `[toW, h]`. Establish `h2 : ∀ b, toW (1 - g) (v' b) ⟨w1, w2⟩ = 0`. Introduce `b`. Distinguish the cases in `h : w1 = 1 - g`. Substitute `h` using the available equality.
+
+Simplify using `only [toW]`. Conclude with `hv b w2 (fun hty => hw (Or.inr ⟨rfl, hty⟩))`. Simplify using `[toW, h]`. Simplify using `[linForm, h1, h2]`. Introduce `μ hμ`.
+
+Rewrite using `[show MvPowerSeries.coeff μ (toLeaf G g a a' F) = toLeaf G g a a' F μ from rfl]`. Unfold `toLeaf`. Conclude with `if_pos hμ`.
+-/
 theorem hPullW_toLeaf (G : ∀ g, Cart V d (I g) (J g)) (g : Fin 2) (a a' : ZMod d)
     (e : ι → I g → C) (v' : ι' → I (1 - g) → C)
     (he : ∀ c x, (G g).ty (Sum.inl x) ≠ a → e c x = 0)
@@ -108,16 +147,25 @@ theorem hPullW_toLeaf (G : ∀ g, Cart V d (I g) (J g)) (g : Fin 2) (a a' : ZMod
     unfold toLeaf
     exact if_pos hμ
 
+/- English proof (translation)
+Rewrite using `[add_sub_cancel_left, ZMod.val_natCast, Nat.mod_eq_of_lt hid]`. Conclude with `hi`.
+-/
 theorem odd_val_sub {d : ℕ} [NeZero d] (a : ZMod d) {i : ℕ} (hi : Odd i) (hid : i < d) :
     Odd (a + (i : ZMod d) - a).val := by
   rw [add_sub_cancel_left, ZMod.val_natCast, Nat.mod_eq_of_lt hid]
   exact hi
 
+/- English proof (translation)
+Rewrite using `[hPullW_eq, hPullW_eq, hPullW_eq, MvPowerSeries.subst_add (hasSubst_linForm e e')]`.
+-/
 private theorem hPullW_add (H H' : MvPowerSeries (WV I) C) (e : ι → WV I → C)
     (e' : ι' → WV I → C) :
     hPullW (H + H') e e' = hPullW H e e' + hPullW H' e e' := by
   rw [hPullW_eq, hPullW_eq, hPullW_eq, MvPowerSeries.subst_add (hasSubst_linForm e e')]
 
+/- English proof (translation)
+Simplify using `only [hPullW_eq]`. Rewrite using `[GlobalTheory.FormalCalc.subst_sum' (hasSubst_linForm e e')]`. Simplify using `only [MvPowerSeries.subst_smul (hasSubst_linForm e e')]`.
+-/
 private theorem hPullW_sum_smul {κ : Type} [Fintype κ] (c : κ → C) (F : κ → MvPowerSeries (WV I) C)
     (e : ι → WV I → C) (e' : ι' → WV I → C) :
     hPullW (∑ q, c q • F q) e e' = ∑ q, c q • hPullW (F q) e e' := by
@@ -125,6 +173,23 @@ private theorem hPullW_sum_smul {κ : Type} [Fintype κ] (c : κ → C) (F : κ 
   rw [GlobalTheory.FormalCalc.subst_sum' (hasSubst_linForm e e')]
   simp only [MvPowerSeries.subst_smul (hasSubst_linForm e e')]
 
+/- English proof (translation)
+Introduce `C _ V d _ I J _ _ X hAlt g a i hi hid S t ht ι ι' _ _ e v' he hvint hv b`. Establish `hΦ : MvPowerSeries.HasSubst (fun w : WV I => upG w.1 (t w.1 w.2))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun w => constantCoeff_upG w.1 ((ht w.1).1 w.2))`. Establish `hLs` using `hasSubst_linForm (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b))`. Establish `hK : ∀ k : I (1 - g), ∃ γ : MvPowerSeries (WV I) C, (∀ μ, V.Ge 0 (MvPowerSeries.coeff μ γ)) ∧ v' b k • hPullW (dVar (⟨1 - g, k⟩ : WV I) (X.hL g a (a + (i : ZMod d)))) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b)) = v' b k • hPullW (∑ κ : J g, X.pair g κ k • upG g ((S g).ze …`. Introduce `k`.
+
+Distinguish the cases in `hk : (X.G (1 - g)).ty (Sum.inl k) = a + (i : ZMod d)`. Take `⟨K, ⟨γ, hγ, rfl⟩, hEq⟩` from `X.C_eq hAlt g a (a + (i : ZMod d)) (odd_val_sub a hi hid) S t ht k hk`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Rewrite `hEq` using `[sub_eq_iff_eq_add']`. Rewrite using `[hEq, hPullW_add, hPullW_toLeaf X.G g a _ e v' he hv, hPullW_toLeaf X.G g a _ e v' he hv, smul_add]`.
+
+Use `⟨0, fun μ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `VF.Ge.zero 0`. Rewrite using `[hv b k hk]`. Simplify using `only [zero_smul, add_zero]`.
+
+Use `choose γ hγint hγeq using hK`. Use `⟨∑ k, v' b k • γ k, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ`. Rewrite using `[map_sum]`. Use `VF.Ge.sum (fun k _ => ?_)` and prove the remaining obligations.
+
+Simplify using `only [map_smul, smul_eq_mul]`. Conclude with `VF.Ge.mul_int (hvint b k) (hγint k μ)`. Unfold `RowData.hM`. Rewrite using `[pderiv_hPullW (X.hL g a (a + (i : ZMod d))) (fun c => toW g (e c)) (1 - g) v' b, Finset.sum_congr rfl (fun k _ => hγeq k), Finset.sum_add_distrib]`. Use `(add_comm _ _).trans ?_` and prove the remaining obligations.
+
+Use `congr 1`. Simplify using `only [hPullW_eq]`. Establish `hΨ : MvPowerSeries.HasSubst (fun w : WV I => MvPowerSeries.subst (linForm (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b))) (upG w.1 (t w.1 w.2)))`. Establish `h` using `hΦ.comp hLs`. Simplify using `only [MvPowerSeries.substAlgHom_apply] at h`.
+
+Conclude with `h`. Rewrite using `[GlobalTheory.FormalCalc.subst_sum' hΨ]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[MvPowerSeries.subst_smul hΨ, MvPowerSeries.subst_comp_subst_apply hΦ hLs]`. Simplify using `only [hPullW_sum_smul, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun κ _ => Finset.sum_congr rfl (fun k _ => ?_))` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+-/
 theorem pderiv_hM : ∀ (C : Type) [Field C] (V : VF C) (d : ℕ) [NeZero d] (I J : Fin 2 → Type) [∀ g, Fintype (I g)] [∀ g, Fintype (J g)] (X : RowData C V d I J), X.Alt → ∀ (g : Fin 2) (a : ZMod d) (i : ℕ), Odd i → i < d → ∀ (S : ∀ g, Sys (X.G g)) (t : ∀ g, I g → MvPowerSeries (I g) C), (∀ g, (S g).IsT (t g)) → ∀ (ι ι' : Type) [Fintype ι] [Fintype ι'] (e : ι → I g → C) (v' : ι' → I (1 - g) → C), (∀ c x, (X.G g).ty (Sum.inl x) ≠ a → e c x = 0) → (∀ b k, V.Ge 0 (v' b k)) → (∀ b k, (X.G (1 - g)).ty (Sum.inl k) ≠ a + (i : ZMod d) → v' b k = 0) → ∀ b : ι', ∃ γ : MvPowerSeries (WV I) C, (∀ μ, V.Ge 0 (MvPowerSeries.coeff μ γ)) ∧ MvPowerSeries.pderiv C (Sum.inr b) (X.hM g a i e v') = MvPowerSeries.subst (fun w : WV I => hPullW (upG w.1 (t w.1 w.2)) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b))) γ + ∑ κ : J g, (∑ k, X.pair g κ k * v' b k) • hPullW (upG g ((S g).ze (t g) κ)) (fun c => toW g (e c)) (fun b => toW (1 - g) (v' b)) := by
   intro C _ V d _ I J _ _ X hAlt g a i hi hid S t ht ι ι' _ _ e v' he hvint hv b
   have hΦ : MvPowerSeries.HasSubst (fun w : WV I => upG w.1 (t w.1 w.2)) :=

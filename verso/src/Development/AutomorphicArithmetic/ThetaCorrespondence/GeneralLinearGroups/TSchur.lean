@@ -7,9 +7,17 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Admissi
 
 open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.JHMult UpperTheory.Lit.Cas
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.AdmissibleSchurLemma.schur_adm`.
+-/
 private theorem UpperTheory.Lit.Cas.schur_adm : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G), IsOpen (K : Set G) → IsCompact (K : Set G) → ∀ (N : Type) [AddCommGroup N] [Module ℂ N] (π : Representation ℂ G N), π.IsIrreducible → GlobalTheory.PRep.IsAdmissible π → ∀ φ : N →ₗ[ℂ] N, (∀ g x, φ (π g x) = π g (φ x)) → ∃ c : ℂ, φ = c • LinearMap.id :=
   _root_.UpperTheory.Reformulated.B.AdmissibleSchurLemma.schur_adm
 
+/- English proof (translation)
+Establish `hne : (⊥ : Subrepresentation π) ≠ ⊤` using `bot_ne_top`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hne` to reduce the goal to its premises. Use extensionality with `v`.
+
+Simplify using `[h v]`.
+-/
 private theorem UpperTheory.Lit.Cas.exists_ne_zero_of_irr {G N : Type} [Group G] [AddCommGroup N] [Module ℂ N]
     (π : Representation ℂ G N) (hirr : π.IsIrreducible) : ∃ x : N, x ≠ 0 := by
   have hne : (⊥ : Subrepresentation π) ≠ ⊤ := bot_ne_top
@@ -19,6 +27,13 @@ private theorem UpperTheory.Lit.Cas.exists_ne_zero_of_irr {G N : Type} [Group G]
   ext v
   simp [h v]
 
+/- English proof (translation)
+Introduce `H k _ _ _ _ x t`. Take `⟨v, hv⟩` from `UpperTheory.Lit.Cas.exists_ne_zero_of_irr x.rep x.2.rep.irr`. Establish `uniq : ∀ c c', ScalarBy x t c → ScalarBy x t c' → c = c'` using `fun c c' h h' => smul_left_injective ℂ hv ((h v).symm.trans (h' v))`. Use `⟨?_, uniq, fun c h0 hc => uniq _ _ hc fun w => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `UpperTheory.Lit.Cas.schur_adm (GL (Fin x.1) k) (KO k (Fin x.1)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO _ x.rep x.2.rep.irr (H k x.1 _ x.rep x.2.rep.smooth x.2.rep.irr) (x.rep (Matrix.GeneralLinearGroup.scalar (Fin x.1) t)) (fun g w => by`.
+
+Establish `hcomm : Matrix.GeneralLinearGroup.scalar (Fin x.1) t * g = g * Matrix.GeneralLinearGroup.scalar (Fin x.1) t`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(Matrix.scalar_commute (n := Fin x.1) (t : k) (fun r => Commute.all _ _) (g : Matrix _ _ k)).eq`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply])`. Conclude with `⟨c, fun w => by rw [hc]; rfl⟩`.
+
+Use `haveI : IsEmpty (Fin x.1) := by rw [h0]; infer_instance`. Establish `h1 : Matrix.GeneralLinearGroup.scalar (Fin x.1) t = 1` using `Units.ext (Matrix.ext fun i => isEmptyElim i)`. Rewrite using `[h1, map_one, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.Lit.Cas.schur :
     GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : IrrGL k) (t : kˣ), (∃ c, ScalarBy x t c) ∧ (∀ c c', ScalarBy x t c → ScalarBy x t c' → c = c') ∧ ∀ c, x.1 = 0 → ScalarBy x t c → c = 1 := by
   intro H k _ _ _ _ x t

@@ -24,6 +24,9 @@ namespace GlobalTheory.CompanionTheory.ComplexSets
 
 open GroundTheory.Heights₂.Heights in
 
+/- English proof (translation)
+The claim follows from `DivisorGeneralPointBranches.proof DivisorOneComponent.proof (DivisorBranches.proof IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof GroundTheory.Heights₂.Heights.AutoClose.DivisorRegularGeneric (NormalDivisorChartGeneric.proof (NormalModelDivisorChartGeneric.proof ( …`.
+-/
 theorem divisorGeneralPointBranches : GroundTheory.Heights₂.Heights.DivisorGeneralPointBranches.Statement :=
   DivisorGeneralPointBranches.proof DivisorOneComponent.proof
     (DivisorBranches.proof IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof

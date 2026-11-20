@@ -23,12 +23,18 @@ section Shift
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
 
+/- English proof (translation)
+The claim follows from `isometric_of_eqOn fun σ a y _ => by exact (congrArg (· + 2 * t σ) (Weight.pull_φ (L.φ σ) π hπ a y)).trans (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t σ) π hπ a y).symm`.
+-/
 theorem isometric_pull_shift (L : HermLB p) (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ)
     (π : Y ⟶ X) (hπ : π ≫ p = q) : ((L.shift t ht).pull π hπ).Isometric ((L.pull π hπ).shift t ht) :=
   isometric_of_eqOn fun σ a y _ => by
     exact (congrArg (· + 2 * t σ) (Weight.pull_φ (L.φ σ) π hπ a y)).trans
       (Weight.pull_φ ((L.φ σ).addFn fun _ => 2 * t σ) π hπ a y).symm
 
+/- English proof (translation)
+Take `⟨w, hw, h⟩` from `h`. Use `⟨w, hw, fun σ a b y ha hb => ?_⟩` and prove the remaining obligations. Establish `e` using `h σ a b y ha hb`. Conclude with `(congrArg (· + 2 * t σ) e).trans (add_right_comm _ _ _)`.
+-/
 theorem isometric_shift_of_isometric {L M : HermLB p} (h : L.Isometric M) (t : (k →+* ℂ) → ℝ)
     (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) : (L.shift t ht).Isometric (M.shift t ht) := by
   obtain ⟨w, hw, h⟩ := h
@@ -36,6 +42,9 @@ theorem isometric_shift_of_isometric {L M : HermLB p} (h : L.Isometric M) (t : (
   have e := h σ a b y ha hb
   exact (congrArg (· + 2 * t σ) e).trans (add_right_comm _ _ _)
 
+/- English proof (translation)
+The claim follows from `isometric_of_eqOn fun σ a y _ => by show ((L.φ σ).φ a.1 y + (M.φ σ).φ a.2 y) + 2 * t σ = ((L.φ σ).φ a.1 y + 2 * t σ) + (M.φ σ).φ a.2 y ring`.
+-/
 theorem isometric_tens_shift_left (L M : HermLB p) (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) :
     ((L.shift t ht).tens M).Isometric ((L.tens M).shift t ht) :=
   isometric_of_eqOn fun σ a y _ => by
@@ -46,12 +55,18 @@ variable (p) in
 
 def constB (t : ℝ) : HermLB p := (triv p).shift (fun _ => t) fun _ => rfl
 
+/- English proof (translation)
+Rewrite using `[add_comm, constB, ← icls_tens, icls_eq_iff]`. Conclude with `(isometric_shift_of_isometric (isometric_triv_tens L).symm _ _).trans (isometric_tens_shift_left _ _ _ _).symm`.
+-/
 theorem icls_shift_const (L : HermLB p) (t : ℝ) :
     (L.shift (fun _ => t) fun _ => rfl).icls = L.icls + (constB p t).icls := by
   rw [add_comm, constB, ← icls_tens, icls_eq_iff]
   exact (isometric_shift_of_isometric (isometric_triv_tens L).symm _ _).trans
     (isometric_tens_shift_left _ _ _ _).symm
 
+/- English proof (translation)
+Rewrite using `[← icls_shift_const, icls_eq_iff]`. Conclude with `isometric_of_eqOn fun σ a y _ => by show ((0 : ℝ) + 2 * s) + 2 * t = (0 : ℝ) + 2 * (s + t)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem icls_constB_add (s t : ℝ) : (constB p (s + t)).icls = (constB p s).icls + (constB p t).icls := by
   rw [← icls_shift_const, icls_eq_iff]
   exact isometric_of_eqOn fun σ a y _ => by
@@ -62,10 +77,18 @@ variable (p) in
 
 def constHom : ℝ →+ IsomClass p := AddMonoidHom.mk' (fun t => (constB p t).icls) icls_constB_add
 
+/- English proof (translation)
+Simplify using `only [gdeg, chInt, HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]`.
+-/
 theorem gdeg_shift_const (L : HermLB p) (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (D : ℕ) :
     gdeg (L.shift t ht) D = gdeg L D := by
   simp only [gdeg, chInt, HermLB.shift, Weight.chernInt, Weight.chernPart_addFn_const]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `icls_eq_iff.1 ?_` and prove the remaining obligations. Rewrite using `[icls_shift_const, icls_comb, icls_comb, Fin.sum_univ_three, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Matrix.head_cons]`. Rewrite using `[icls_eq_iff.2 hA, icls_shift_const]`.
+
+Establish `e : (constB p ((m 2 : ℤ) : ℝ)).icls = m 2 • (constB p 1).icls`. Use `map_zsmul (constHom p) (m 2) 1` as an intermediate fact. Simplify `this` using `[constHom]`. Rewrite using `[e, smul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem isometric_comb_three_shift (S Q A A' : HermLB p)
     (hA : A'.Isometric (A.shift (fun _ => 1) fun _ => rfl)) (m : Fin 3 → ℤ) (c : ℝ) (hc : ((m 2 : ℤ) : ℝ) = c) :
     (comb ![S, Q, A'] m).Isometric ((comb ![S, Q, A] m).shift (fun _ => c) fun _ => rfl) := by
@@ -82,15 +105,56 @@ theorem isometric_comb_three_shift (S Q A A' : HermLB p)
 
 end Shift
 
+/- English proof (translation)
+Simplify using `only [lin, map_sum, map_mul, rename_C, rename_X]`. Conclude with `Fintype.sum_equiv (Equiv.swap x y) _ _ fun z => by simp [Equiv.swap_apply_self]`.
+-/
 theorem rename_lin_swap {κ : Type} [Fintype κ] [DecidableEq κ] (x y : κ) (c : κ → ℝ) :
     rename (Equiv.swap x y) (lin c) = lin fun z => c (Equiv.swap x y z) := by
   simp only [lin, map_sum, map_mul, rename_C, rename_X]
   exact Fintype.sum_equiv (Equiv.swap x y) _ _ fun z => by simp [Equiv.swap_apply_self]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp`.
+-/
 theorem cast_triple (u v : ℤ) : (fun j => (((![u, v, 1] : Fin 3 → ℤ) j : ℤ) : ℝ)) = ![(u : ℝ), v, 1] := by
   funext j
   fin_cases j <;> simp
 
+/- English proof (translation)
+Introduce `hC hR k _ B Y _ _ q p d D hq hp π w ι _ E r h H fl hfl Ψ hΨ a i i' hi`. Take `⟨G, -, hS⟩` from `GlobalTheory.CovTest.homog_swap_exists_of_ar_calc hC hR`. Take `⟨Y₁, q₁, d₁, ρ, wρ, E₁, h₁, H₁, fl₁, M, rfl, hY₁, hfl₁, hS0, hS1, hM⟩` from `GlobalTheory.SwapBundle.swapFl_bundle k B Y q p d D hq hp π w ι E r h H fl hfl a i i' hi`. Use `haveI := hY₁.isIntegral`. Use `set x : Σ a, Fin (r a) := ⟨a, i⟩ with hx`.
+
+Use `set y : Σ a, Fin (r a) := ⟨a, i'⟩ with hy`. Establish `hxy : x ≠ y`. Introduce `e`. Rewrite `e` using `[hx, hy, Sigma.mk.inj_iff]`. Use `congrArg Fin.val (eq_of_heq e.2)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Use `set L : (Σ a, Fin (r a)) → HermLB p := fun z => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w) with hL`. Establish `key : ∀ n : (Σ a, Fin (r a)) → ℤ, Ψ (lin (fun z => (n z : ℝ)) ^ (d₁ + 1)) + Ψ (lin (fun z => (n (Equiv.swap x y z) : ℝ)) ^ (d₁ + 1)) = 0`. Introduce `n`. Use `set n' : (Σ a, Fin (r a)) → ℤ := fun z => if z = x ∨ z = y then 0 else n z with hn'`.
+
+Use `set A₀ : HermLB q₁ := comb M n' with hA₀`. Use `set A₁ : HermLB q₁ := A₀.shift (fun _ => 1) fun _ => rfl with hA₁`. Use `set S := VMetric.grLB fl₁ 0 (H₁.pull ρ wρ) with hSd`. Use `set Q := VMetric.grLB fl₁ 1 (H₁.pull ρ wρ) with hQd`. Use `set Mf : Fin 3 → HermLB p := ![S, Q, A₀.pull ρ wρ] with hMf`.
+
+Use `set Mf' : Fin 3 → HermLB p := ![S, Q, A₁.pull ρ wρ] with hMf'`. Use `set Am : Fin 3 → (Σ a, Fin (r a)) → ℤ := ![Pi.single x 1, Pi.single y 1, n'] with hAm`. Establish `hiso : ∀ j, (comb L (Am j)).Isometric (Mf j)`. Introduce `j`. Use `fin_cases j`.
+
+Conclude with `(isometric_comb_single L x).trans hS0.symm`. Conclude with `(isometric_comb_single L y).trans hS1.symm`. Conclude with `SwapFlProof.comb_isometric_pullback L M ρ wρ n' (fun z => z = x ∨ z = y) (fun z hz => if_pos hz) (fun z hz => hM z (fun e => hz (Or.inl e)) (fun e => hz (Or.inr e)))`. Use `set f : Fin 3 → MvPolynomial (Σ a, Fin (r a)) ℝ := fun j => lin fun z => (Am j z : ℝ) with hf`. Use `set Ψ₃ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ := Ψ ∘ₗ (aeval f : MvPolynomial (Fin 3) ℝ →ₐ[ℝ] _).toLinearMap with hΨ₃`.
+
+Establish `hΨ' : IsGeoFun Mf (d₁ + 1) Ψ₃`. Use `⟨fun m => ?_, fun P e he hP => ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ₃, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, hf, aeval_lin]`. Establish `h2` using `hΨ.1 (fun z => ∑ j, m j * Am j z)`. Simplify using `only [Int.cast_sum, Int.cast_mul] at h2`.
+
+Rewrite using `[h2]`. Conclude with `((isometric_comb_comb L Am m).trans (isometric_comb_congr hiso m)).gdeg_eq _`. Rewrite using `[hΨ₃, LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Conclude with `hΨ.2 _ e he (by simpa using hP.aeval _ fun j => isHomogeneous_lin _)`. Establish `hA' : (A₁.pull ρ wρ).Isometric ((A₀.pull ρ wρ).shift (fun _ => 1) fun _ => rfl)` using `isometric_pull_shift A₀ _ _ ρ wρ`.
+
+Establish `hcomb : ∀ (m : Fin 3 → ℤ) (c : ℝ), ((m 2 : ℤ) : ℝ) = c → (comb Mf' m).Isometric ((comb Mf m).shift (fun _ => c) fun _ => rfl)` using `fun m c hc => isometric_comb_three_shift S Q _ _ hA' m c hc`. Establish `hΨ'' : IsGeoFun Mf' (d₁ + 1) Ψ₃` using `⟨fun m => (hΨ'.1 m).trans (((hcomb m _ rfl).gdeg_eq _).trans (gdeg_shift_const _ _ _ _)).symm, hΨ'.2⟩`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k Y p (d₁ + 1) hp).2 (Fin 3) Mf).1`. Take `⟨Φ', hΦ'⟩` from `((hC.arExists k Y p (d₁ + 1) hp).2 (Fin 3) Mf').1`. Establish `e1` using `hS k Y₁ Y q₁ p d₁ hY₁ hp ρ wρ E₁ h₁ H₁ fl₁ hfl₁ A₀ Φ Ψ₃ hΦ hΨ' (n x) (n y)`.
+
+Establish `e2` using `hS k Y₁ Y q₁ p d₁ hY₁ hp ρ wρ E₁ h₁ H₁ fl₁ hfl₁ A₁ Φ' Ψ₃ hΦ' hΨ'' (n x) (n y)`. Establish `hsh : ∀ u v : ℤ, Φ' (lin ![(u : ℝ), v, 1] ^ (d₁ + 2)) = Φ (lin ![(u : ℝ), v, 1] ^ (d₁ + 2)) + (((d₁ + 1 : ℕ) : ℝ) + 1) * 1 * Ψ₃ (lin ![(u : ℝ), v, 1] ^ (d₁ + 1))`. Introduce `u v`. Establish `h1` using `hΦ.1 ![u, v, 1]`. Establish `h2` using `hΦ'.1 ![u, v, 1]`.
+
+Rewrite `h1`, `h2` using `[cast_triple]`. Establish `h3` using `hC.arShift k Y p (d₁ + 1) hp (comb Mf ![u, v, 1]) _ 1 h1`. Establish `h4` using `(hcomb ![u, v, 1] 1 (by simp)).symm.isSelfInter hp h3`. Rewrite using `[h2.unique hp h4, ← cast_triple u v, hΨ'.1 ![u, v, 1]]`. Rewrite `e2` using `[hsh, hsh]`.
+
+Establish `e3 : (((d₁ + 1 : ℕ) : ℝ) + 1) * (Ψ₃ (lin ![(n x : ℝ), n y, 1] ^ (d₁ + 1)) + Ψ₃ (lin ![(n y : ℝ), n x, 1] ^ (d₁ + 1))) = 0` using `by linarith`. Establish `hpos : (((d₁ + 1 : ℕ) : ℝ) + 1) ≠ 0` using `by positivity`. Establish `e4` using `(mul_eq_zero.1 e3).resolve_left hpos`. Establish `hx0 : n' x = 0` using `if_pos (Or.inl rfl)`. Establish `hy0 : n' y = 0` using `if_pos (Or.inr rfl)`.
+
+Establish `hne : ∀ z, z ≠ x → z ≠ y → n' z = n z` using `fun z h1 h2 => if_neg (by tauto)`. Simplify using `only [hΨ₃, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow, hf, aeval_lin] at e4`. Rewrite `e4` using `[hAm, SwapFlProof.lin_update_two_coords x y hxy n n' hx0 hy0 hne (n x) (n y), SwapFlProof.lin_update_two_coords x y hxy n n' hx0 hy0 hne (n y) (n x)]`. Use `e4 using 4` and compare the differences between its conclusion and the goal. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Function.update_eq_self, Function.update_eq_self]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Distinguish the cases in `h1 : z = x`.
+
+Substitute `h1` using the available equality. Simplify using `[Function.update_apply, hxy, Equiv.swap_apply_left]`. Distinguish the cases in `h2 : z = y`. Substitute `h2` using the available equality. Simplify using `[Function.update_apply, Equiv.swap_apply_right]`.
+
+Simplify using `[Function.update_apply, h1, h2, Equiv.swap_apply_of_ne_of_ne h1 h2]`. Establish `hz` using `GlobalTheory.ArInt.Model.eq_zero_of_pow (d₁ + 1) (Ψ + Ψ ∘ₗ (rename (Equiv.swap x y) : MvPolynomial (Σ a, Fin (r a)) ℝ →ₐ[ℝ] _).toLinearMap) (fun n => by`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_pow (rename (Equiv.swap x y)), rename_lin_swap]`. Conclude with `key n)`. Use the proof step `(fun P e he hP => by`.
+
+Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, hΨ.2 P e he hP, hΨ.2 _ e he (hP.rename_isHomogeneous), add_zero])`. Introduce `P`. Use `LinearMap.congr_fun hz P` as an intermediate fact. Rewrite `this` using `[LinearMap.add_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, LinearMap.zero_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem geo_swap : ArCalc → RegularAlteration → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d D : ℕ), IsArithVar q d → IsArithVar p D → ∀ (π : Y ⟶ B) (w : π ≫ q = p) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (h : ∀ a, VMetric q (E a) (r a)) (H : ∀ a, (h a).IsCInf) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), IsFlagBundle π E r fl → ∀ Ψ : MvPolynomial (Σ a, Fin (r a)) ℝ →ₗ[ℝ] ℝ, IsGeoFun (fun z : Σ a, Fin (r a) => VMetric.grLB (fl z.1) z.2 ((H z.1).pull π w)) D Ψ → ∀ (a : ι) (i i' : Fin (r a)), (i' : ℕ) = i + 1 → ∀ P : MvPolynomial (Σ a, Fin (r a)) ℝ, Ψ (rename (Equiv.swap (⟨a, i⟩ : Σ a, Fin (r a)) ⟨a, i'⟩) P) = -Ψ P := by
   intro hC hR k _ B Y _ _ q p d D hq hp π w ι _ E r h H fl hfl Ψ hΨ a i i' hi
   obtain ⟨G, -, hS⟩ := GlobalTheory.CovTest.homog_swap_exists_of_ar_calc hC hR

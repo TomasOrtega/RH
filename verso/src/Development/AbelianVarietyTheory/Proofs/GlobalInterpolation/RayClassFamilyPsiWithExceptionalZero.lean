@@ -11,6 +11,39 @@ open scoped Classical
 
 namespace GlobalTheory.Hk.PsiExc
 
+/- English proof (translation)
+Establish `hu0 : 0 < u` using `by linarith`. Establish `key` using `GlobalTheory.ResRect.residue_rectangle (fun s => -(ψ s) * (u : ℂ) ^ s / s) ⟨σ, -T⟩ ⟨c, T⟩ S (fun p => -(k p * ((u : ℂ) ^ p / p))) hσc (by simp only; linarith) (fun p hp => by`. Take `⟨h1, h2, h3⟩` from `hS p hp`. Simplify using `only [h3]`. Conclude with `⟨h1, h2, by linarith, hT⟩)`.
+
+Use the proof step `(by`. Introduce and unpack `s ⟨hs, hsS⟩`. Simplify using `only [mem_reProdIm, Set.mem_Icc] at hs`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+
+Use `hs.1.1` as an intermediate fact. Simplify using `only [zero_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(((hd s hs.1.1 hs.1.2 (abs_le.2 hs.2) hsS).neg.mul (GlobalTheory.ExplicitRect.analyticAt_cpow hu0 s).differentiableAt).div differentiableAt_id hs0).differentiableWithinAt)`. Use the proof step `(fun p hpS => by`.
+
+Take `⟨g, hg, hφ⟩` from `hp p hpS`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Use `(hS _ hpS).1` as an intermediate fact. Simplify using `only [zero_re] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `GlobalTheory.ExplicitRect.expand_simple hu0 hp0 hg hφ)`. Simplify using `only [Finset.sum_neg_distrib] at key`. Establish `hor : ∀ τ : ℝ, |τ| = T → ‖∫ x : ℝ in σ..c, (-(ψ ((x : ℂ) + τ * I)) * (u : ℂ) ^ ((x : ℂ) + τ * I) / ((x : ℂ) + τ * I))‖ ≤ 9 * (M * u / T)`. Introduce `τ hτ`.
+
+Establish `key` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := σ) (b := c) (C := 3 * (M * u / T)) (f := fun x : ℝ => (-(ψ ((x : ℂ) + τ * I)) * (u : ℂ) ^ ((x : ℂ) + τ * I) / ((x : ℂ) + τ * I))) (by`. Introduce `x hx`. Rewrite `hx` using `[Set.uIoc_of_le hσc.le]`. Establish `h1` using `hb ((x : ℂ) + τ * I) (by simpa using hx.1.le) (by simpa using hx.2) (by simpa using hτ.le) (Or.inr (by simpa using hτ))`. Establish `h2 : ‖(u : ℂ) ^ ((x : ℂ) + τ * I)‖ ≤ 3 * u`.
+
+Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hu0]`. Simplify using `only [add_re, ofReal_re, mul_re, I_re, mul_zero, ofReal_im, I_im, mul_one, sub_self, add_zero]`. Conclude with `(Real.rpow_le_rpow_of_exponent_le hu.le hx.2).trans huc`. Establish `h3 : T ≤ ‖(x : ℂ) + τ * I‖`. Rewrite using `[← hτ]`.
+
+Use `Complex.abs_im_le_norm ((x : ℂ) + τ * I)` as an intermediate fact. Simplify using `using this`. Rewrite using `[norm_div, norm_mul, norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Use `key.trans ?_` and prove the remaining obligations.
+
+Apply the tactic sequence `have : |c - σ| ≤ 3 := by rw [abs_le]; constructor <;> linarith`. Establish `h4 : 0 ≤ M * u / T` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `left : ‖∫ t : ℝ in (-T)..T, (-(ψ ((σ : ℂ) + t * I)) * (u : ℂ) ^ ((σ : ℂ) + t * I) / ((σ : ℂ) + t * I))‖ ≤ 4 * (T * M * u ^ σ)`. Establish `key` using `intervalIntegral.norm_integral_le_of_norm_le_const (a := -T) (b := T) (C := 2 * (M * u ^ σ)) (f := fun t : ℝ => (-(ψ ((σ : ℂ) + t * I)) * (u : ℂ) ^ ((σ : ℂ) + t * I) / ((σ : ℂ) + t * I))) (by`.
+
+Introduce `t ht`. Rewrite `ht` using `[Set.uIoc_of_le (by linarith)]`. Establish `h1` using `hb ((σ : ℂ) + t * I) (by simp) (by simpa using hσc.le) (by simpa using abs_le.2 ⟨ht.1.le, ht.2⟩) (Or.inl (by simp))`. Establish `h2 : ‖(u : ℂ) ^ ((σ : ℂ) + t * I)‖ = u ^ σ`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hu0]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : 1 / 2 ≤ ‖(σ : ℂ) + t * I‖`. Use `Complex.re_le_norm ((σ : ℂ) + t * I)` as an intermediate fact. Conclude with `hσ.trans (by simpa using this)`. Rewrite using `[norm_div, norm_mul, norm_neg, h2]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[abs_of_pos (by linarith)]`. Expand and normalize the polynomial expressions, which then agree. Establish `gen : ∀ a b v l Z : ℂ, a - b + I * v - I * l = 2 * Real.pi * I * (-Z) → ‖(1 / (2 * Real.pi) : ℂ) * v + Z‖ ≤ ‖a‖ + ‖b‖ + ‖l‖`.
+
+Introduce `a b v l Z e`. Establish `hp : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Establish `e2 : (1 / (2 * Real.pi) : ℂ) * v + Z = (1 / (2 * Real.pi) : ℂ) * (I * a - I * b + l)`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(-I) * e + (v - l + 2 * Real.pi * Z) * I_mul_I`.
+
+Establish `n1 : ‖(1 / (2 * Real.pi) : ℂ)‖ ≤ 1`. Rewrite using `[norm_div, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos, norm_one, Complex.norm_ofNat, div_le_one (by positivity)]`. Combine the linear relations using `[Real.pi_gt_three]`. Establish `n2 : ‖I * a - I * b + l‖ ≤ ‖a‖ + ‖b‖ + ‖l‖`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations.
+
+Use `norm_sub_le (I * a) (I * b)` as an intermediate fact. Simplify using `only [norm_mul, norm_I, one_mul] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e2, norm_mul]`. Use `mul_le_mul n1 n2 (norm_nonneg _) zero_le_one` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `(gen _ _ _ _ _ key).trans ?_` and prove the remaining obligations. Establish `a1` using `hor (-T) (by rw [abs_neg, abs_of_pos hT])`. Establish `a2` using `hor T (abs_of_pos hT)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem shift (ψ : ℂ → ℂ) (S : Finset ℂ) (k : ℂ → ℂ) (u σ c T M : ℝ) (hu : 1 < u)
     (hσ : 1 / 2 ≤ σ) (hσc : σ < c) (hc3 : c ≤ 3) (huc : u ^ c ≤ 3 * u) (hT : 0 < T) (hM : 0 ≤ M)
     (hS : ∀ p ∈ S, σ < p.re ∧ p.re < c ∧ p.im = 0)
@@ -124,24 +157,36 @@ theorem shift (ψ : ℂ → ℂ) (S : Finset ℂ) (k : ℂ → ℂ) (u σ c T M 
   have a2 := hor T (abs_of_pos hT)
   linarith
 
+/- English proof (translation)
+Use `le_trans ?_ (𝓕.lam_le n)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, AddChar.norm_apply, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (𝓕.lam_nonneg g n)]`.
+-/
 theorem norm_lamChi_le (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (n : ℕ) : ‖𝓕.lamChi χ n‖ ≤ 2 * Λ n := by
   refine le_trans ?_ (𝓕.lam_le n)
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun g _ => ?_)
   rw [norm_mul, AddChar.norm_apply, one_mul, Complex.norm_real, Real.norm_eq_abs,
     abs_of_nonneg (𝓕.lam_nonneg g n)]
 
+/- English proof (translation)
+Rewrite using `[LFam.ell, Real.le_log_iff_exp_le (by have := 𝓕.B_ge; positivity)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Use `𝓕.B_ge` as an intermediate fact. Use polynomial arithmetic with `[abs_nonneg t]`.
+-/
 theorem one_le_ell (𝓕 : LFam) (t : ℝ) : 1 ≤ 𝓕.ell t := by
   rw [LFam.ell, Real.le_log_iff_exp_le (by have := 𝓕.B_ge; positivity)]
   have := Real.exp_one_lt_d9
   have := 𝓕.B_ge
   nlinarith [abs_nonneg t]
 
+/- English proof (translation)
+Use `𝓕.B_ge` as an intermediate fact. Use `Real.log_le_log (by positivity) ?_` and prove the remaining obligations. Establish `h2 : |t| + 2 ≤ |T| + 2` using `by linarith [le_abs_self T]`. Conclude with `mul_le_mul_of_nonneg_left h2 (by linarith)`.
+-/
 theorem ell_mono (𝓕 : LFam) {t T : ℝ} (h : |t| ≤ T) : 𝓕.ell t ≤ 𝓕.ell T := by
   have := 𝓕.B_ge
   refine Real.log_le_log (by positivity) ?_
   have h2 : |t| + 2 ≤ |T| + 2 := by linarith [le_abs_self T]
   exact mul_le_mul_of_nonneg_left h2 (by linarith)
 
+/- English proof (translation)
+Rewrite using `[norm_div, Complex.norm_cpow_eq_rpow_re_of_pos (by linarith), ofReal_re, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Use `Real.rpow_le_rpow_of_exponent_le hu h2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_term_le {u β σ : ℝ} (hu : 1 ≤ u) (h1 : 1 / 2 ≤ β) (h2 : β ≤ σ) :
     ‖(u : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ 2 * u ^ σ := by
   rw [norm_div, Complex.norm_cpow_eq_rpow_re_of_pos (by linarith), ofReal_re, Complex.norm_real,
@@ -150,6 +195,9 @@ theorem norm_term_le {u β σ : ℝ} (hu : 1 ≤ u) (h1 : 1 / 2 ≤ β) (h2 : β
   calc _ ≤ u ^ σ / (1 / 2) := by gcongr
     _ = _ := by ring
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ b h).trans ?_)` and prove the remaining obligations. Establish `: (Z.card : ℝ) ≤ 1` using `by exact_mod_cast hZ`. Rewrite using `[nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem norm_sum_le_of_card {Z : Finset ℝ} (hZ : Z.card ≤ 1) {f : ℝ → ℂ} {b : ℝ} (hb : 0 ≤ b)
     (h : ∀ β ∈ Z, ‖f β‖ ≤ b) : ‖∑ β ∈ Z, f β‖ ≤ b := by
   refine (norm_sum_le _ _).trans ((Finset.sum_le_card_nsmul _ _ b h).trans ?_)
@@ -157,6 +205,11 @@ theorem norm_sum_le_of_card {Z : Finset ℝ} (hZ : Z.card ≤ 1) {f : ℝ → �
   rw [nsmul_eq_mul]
   nlinarith
 
+/- English proof (translation)
+Break down `Z.eq_empty_or_nonempty with rfl | ⟨β, hβ⟩` into its components or cases. Conclude with `⟨1 - 2 * d, by linarith, le_rfl, by simp⟩`. Establish `e : ∀ γ ∈ Z, γ = β` using `fun γ hγ => Finset.card_le_one.1 hZ _ hγ _ hβ`. Break down `le_total β (1 - 3 * d) with h | h` into its components or cases. Use `⟨1 - 2 * d, by linarith, le_rfl, fun γ hγ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e γ hγ]`. Conclude with `le_abs.2 (Or.inl (by linarith))`. Use `⟨1 - 4 * d, le_rfl, by linarith, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[e γ hγ]`. Conclude with `le_abs.2 (Or.inr (by linarith))`.
+-/
 theorem exists_line {Z : Finset ℝ} (hZ : Z.card ≤ 1) {d : ℝ} (hd : 0 < d) :
     ∃ σ : ℝ, 1 - 4 * d ≤ σ ∧ σ ≤ 1 - 2 * d ∧ ∀ β ∈ Z, d ≤ |σ - β| := by
   rcases Z.eq_empty_or_nonempty with rfl | ⟨β, hβ⟩
@@ -170,6 +223,9 @@ theorem exists_line {Z : Finset ℝ} (hZ : Z.card ≤ 1) {d : ℝ} (hd : 0 < d) 
     rw [e γ hγ]
     exact le_abs.2 (Or.inr (by linarith))
 
+/- English proof (translation)
+Establish `ho : analyticOrderAt f p = 1` using `hf.analyticOrderAt_eq_one_of_zero_deriv_ne_zero h0 h1`. Take `⟨g, hg, h⟩` from `GlobalTheory.ExplicitRect.logDeriv_pole hf (by rw [ho]; simp)`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Simplify `h` using `[analyticOrderNatAt, ho]`.
+-/
 theorem logDeriv_simple {f : ℂ → ℂ} {p : ℂ} (hf : AnalyticAt ℂ f p) (h0 : f p = 0)
     (h1 : deriv f p ≠ 0) : ∃ g : ℂ → ℂ, AnalyticAt ℂ g p ∧ ∀ᶠ s in 𝓝[≠] p,
       deriv f s / f s = 1 / (s - p) + g s := by
@@ -178,6 +234,65 @@ theorem logDeriv_simple {f : ℂ → ℂ} {p : ℂ} (hf : AnalyticAt ℂ f p) (h
   refine ⟨g, hg, ?_⟩
   simpa [analyticOrderNatAt, ho] using h
 
+/- English proof (translation)
+Establish `hu0 : 0 < u` using `by linarith`. Establish `hlog : 1 / 2 < Real.log u`. Use `Real.log_two_gt_d9` as an intermediate fact. Use `Real.log_le_log (by norm_num) hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hc1 : 1 < 1 + 1 / Real.log u`. Establish `: 0 < 1 / Real.log u` using `by apply one_div_pos.2; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc3 : 1 + 1 / Real.log u ≤ 3`. Establish `: 1 / Real.log u ≤ 2` using `by rw [div_le_iff₀ (by linarith)]; linarith`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `huc : u ^ (1 + 1 / Real.log u) ≤ 3 * u`. Rewrite using `[Real.rpow_add hu0, Real.rpow_one, Real.rpow_def_of_pos hu0, mul_one_div_cancel (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Generalize the expression as in `1 + 1 / Real.log u = c at *`. Take `⟨hcard, hZ1, hZ2⟩` from `hZ`. Establish `hl` using `one_le_ell 𝓕 T`. Establish `hd0 : 0 < d` using `by rw [hd]; positivity`. Establish `hd1 : d ≤ 1 / 160`.
+
+Rewrite using `[hd, div_le_iff₀ (by positivity)]; linarith`. Take `⟨σ, hσ1, hσ2, hσ3⟩` from `exists_line hcard hd0`. Establish `hβ : ∀ β ∈ Z, 1 / 2 ≤ β` using `fun β h => by`. Establish `h1` using `(hZ1 β h).1`. Establish `h2 : c₀ / 𝓕.ell 0 ≤ c₀` using `div_le_self hc₀.le (one_le_ell 𝓕 0)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hreg : ∀ s : ℂ, σ ≤ s.re → |s.im| ≤ T → 1 - c₀ / 2 / 𝓕.ell s.im ≤ s.re`. Introduce `s h1 h2`. Establish `h3` using `ell_mono 𝓕 h2`. Establish `h4` using `one_le_ell 𝓕 s.im`.
+
+Establish `h5 : c₀ / 2 / 𝓕.ell T ≤ c₀ / 2 / 𝓕.ell s.im` using `by gcongr`. Establish `h6 : c₀ / 2 / 𝓕.ell T = 4 * d` using `by rw [hd]; field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hreg' : ∀ s : ℂ, σ ≤ s.re → |s.im| ≤ T → 1 - c₀ / 𝓕.ell s.im ≤ s.re`. Introduce `s h1 h2`.
+
+Establish `h3` using `hreg s h1 h2`. Establish `h4` using `one_le_ell 𝓕 s.im`. Establish `h5 : c₀ / 2 / 𝓕.ell s.im ≤ c₀ / 𝓕.ell s.im` using `by gcongr; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `han : ∀ s : ℂ, σ ≤ s.re → AnalyticAt ℂ (𝓕.F χ) s` using `fun s hs => (GlobalTheory.Hk.RayCont.continuation_growth 𝓕 χ).1 s (by simp only [Set.mem_setOf_eq]; linarith)`.
+
+Use `set Z' := Z.filter (fun β => σ < β) with hZ'`. Establish `h1Z : (1 : ℂ) ∉ Z'.image (fun β : ℝ => (β : ℂ))`. Introduce `h`. Take `⟨β, h1, h2⟩` from `Finset.mem_image.1 h`. Establish `h3 : β = 1` using `by exact_mod_cast h2`.
+
+Use `(hZ1 β (Finset.mem_filter.1 h1).1).2.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : 0 ≤ C * 𝓕.ell T ^ 2 + 2 / d` using `by positivity`. Establish `hite : ∀ s : ℂ, s ≠ 1 → AnalyticAt ℂ (fun s : ℂ => if χ = 1 then 1 / (s - 1) else (0 : ℂ)) s`. Introduce `s hs`.
+
+Distinguish the cases in `h : χ = 1`. Simplify using `only [if_pos h]`. Conclude with `analyticAt_const.div (analyticAt_id.sub analyticAt_const) (sub_ne_zero.2 hs)`. Simplify using `only [if_neg h]`. Conclude with `analyticAt_const`.
+
+Establish `key` using `shift (fun s => deriv (𝓕.F χ) s / 𝓕.F χ s - (if χ = 1 then 1 / (s - 1) else 0)) (insert 1 (Z'.image (fun β : ℝ => (β : ℂ)))) (fun p => if p = 1 then (if χ = 1 then -1 else 0) else 1) u σ c T _ (by linarith) (by linarith) (by linarith) hc3 huc (by linarith) hM ?_ ?_ ?_ ?_`. Establish `e1 : ∀ t : ℝ, -(deriv (𝓕.F χ) ((c : ℂ) + t * I) / 𝓕.F χ ((c : ℂ) + t * I) - (if χ = 1 then 1 / (((c : ℂ) + t * I) - 1) else 0)) = LSeries (𝓕.lamChi χ) ((c : ℂ) + t * I)` using `fun t => by`. Rewrite using `[← (GlobalTheory.Hk.LogDeriv.logDeriv_F 𝓕 χ _ (by simpa using hc1)).2.2.2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1] at key`.
+
+Rewrite `key` using `[Finset.sum_insert h1Z, Finset.sum_image (fun a _ b _ h => ofReal_injective h)]`. Establish `e2 : ∑ β ∈ Z', (if (β : ℂ) = 1 then (if χ = 1 then -1 else 0) else 1) * ((u : ℂ) ^ (β : ℂ) / (β : ℂ)) = ∑ β ∈ Z', (u : ℂ) ^ (β : ℂ) / (β : ℂ)` using `Finset.sum_congr rfl fun β h => by`. Establish `hne : (β : ℂ) ≠ 1` using `fun e => h1Z (Finset.mem_image.2 ⟨β, h, e⟩)`. Rewrite using `[if_neg hne, one_mul]`. Apply the tactic sequence `have e3 : (if (1 : ℂ) = 1 then (if χ = 1 then -1 else 0) else 1) * ((u : ℂ) ^ (1 : ℂ) / (1 : ℂ)) = -(if χ = 1 then (u : ℂ) else 0) := by split_ifs <;> simp_all`.
+
+Rewrite `key` using `[e2, e3]`. Establish `hs : u ^ σ ≤ u ^ (1 - 2 * d)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) hσ2`. Establish `n1 : ‖∑ β ∈ Z.filter (fun β => ¬ σ < β), (u : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ 2 * u ^ (1 - 2 * d)` using `norm_sum_le_of_card ((Finset.card_filter_le _ _).trans hcard) (by positivity) fun β h => norm_term_le (by linarith) (hβ β (Finset.mem_filter.1 h).1) ((not_lt.1 (Finset.mem_filter.1 h).2).trans hσ2)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Z (fun β => σ < β), ← add_assoc]`. Use `(norm_add_le _ _).trans (add_le_add ?_ n1)` and prove the remaining obligations.
+
+Rewrite using `[sub_eq_add_neg, add_assoc]`. Use `key.trans ?_` and prove the remaining obligations. Use `gcongr`. Introduce `p hp`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases.
+
+Simplify using `only [one_re, one_im]`. Conclude with `⟨by linarith, hc1, trivial⟩`. Take `⟨β, h1, rfl⟩` from `Finset.mem_image.1 hp`. Take `⟨h2, h3⟩` from `Finset.mem_filter.1 h1`. Use `(hZ1 β h2).2.1` as an intermediate fact.
+
+Simplify using `only [ofReal_re, ofReal_im]`. Conclude with `⟨h3, by linarith, trivial⟩`. Introduce `s h1 h2 h3 h4`. Rewrite `h4` using `[Finset.mem_insert, not_or]`. Establish `hF : 𝓕.F χ s ≠ 0` using `fun h0 => by`.
+
+Take `⟨β, h5, rfl⟩` from `hZ2 s (hreg' s h1 h3) h0`. Use `h4.2 (Finset.mem_image_of_mem _ (Finset.mem_filter.2 ⟨h5, lt_of_le_of_ne h1 ?_⟩))` and prove the remaining obligations. Introduce `e`. Use `hσ3 β h5` as an intermediate fact. Rewrite `this` using `[e]`.
+
+Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(((han s h1).deriv.div (han s h1) hF).sub (hite s h4.1)).differentiableAt`. Introduce `p hp`. Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases.
+
+Establish `h1 : σ ≤ (1 : ℂ).re` using `by simp only [one_re]; linarith`. Establish `hF : 𝓕.F χ 1 ≠ 0` using `fun h0 => by`. Take `⟨β, h5, h6⟩` from `hZ2 1 (hreg' 1 h1 (by simp; linarith)) h0`. Establish `h3 : (1 : ℝ) = β` using `by exact_mod_cast h6`. Use `(hZ1 β h5).2.1` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨_, (han 1 h1).deriv.div (han 1 h1) hF, Eventually.of_forall fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [if_true, Pi.div_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Establish `hp1 : p ≠ 1` using `fun e => h1Z (e ▸ hp)`.
+
+Take `⟨β, h1, rfl⟩` from `Finset.mem_image.1 hp`. Take `⟨h2, h3⟩` from `Finset.mem_filter.1 h1`. Take `⟨g, hg, h⟩` from `logDeriv_simple (han β h3.le) (hZ1 β h2).2.2.1 (hZ1 β h2).2.2.2`. Use `⟨_, hg.sub (hite _ hp1), h.mono fun s hs => ?_⟩` and prove the remaining obligations. Simplify using `only [if_neg hp1, Pi.sub_apply, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `s h1 h2 h3 h4`. Establish `far : ∀ x : ℝ, d ≤ |σ - x| → d ≤ ‖s - (x : ℂ)‖`. Introduce `x hx`. Break down `h4 with h4 | h4` into its components or cases.
+
+Use `hx.trans ?_` and prove the remaining obligations. Use `Complex.abs_re_le_norm (s - (x : ℂ))` as an intermediate fact. Simplify `this` using `[h4]`. Use `Complex.abs_im_le_norm (s - (x : ℂ))` as an intermediate fact. Simplify using `only [sub_im, ofReal_im, sub_zero, h4] at this`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `inv : ∀ x : ℝ, d ≤ |σ - x| → ‖1 / (s - (x : ℂ))‖ ≤ 1 / d`. Introduce `x hx`. Rewrite using `[norm_div, norm_one]`. Conclude with `one_div_le_one_div_of_le hd0 (far x hx)`.
+
+Establish `b1` using `hb s (hreg s h1 h3) (h2.trans hc3) fun β h e => by`. Use `far β (hσ3 β h)` as an intermediate fact. Rewrite `this` using `[e]`. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `b2 : ‖∑ β ∈ Z, 1 / (s - (β : ℂ))‖ ≤ 1 / d` using `norm_sum_le_of_card hcard (by positivity) fun β h => inv β (hσ3 β h)`. Establish `b3 : ‖(if χ = 1 then 1 / (s - 1) else 0 : ℂ)‖ ≤ 1 / d` using `by split_ifs`. Simplify using `using inv 1 (le_abs.2 (Or.inr (by linarith)))`. Simplify using `[hd0.le]`. Establish `b4 : C * 𝓕.ell s.im ^ 2 ≤ C * 𝓕.ell T ^ 2`.
+
+Use `ell_mono 𝓕 h3` as an intermediate fact. Use `one_le_ell 𝓕 s.im` as an intermediate fact. Use `gcongr`. Establish `b5` using `norm_sub_le (deriv (𝓕.F χ) s / 𝓕.F χ s) (if χ = 1 then 1 / (s - 1) else 0 : ℂ)`. Establish `b6` using `norm_add_le (deriv (𝓕.F χ) s / 𝓕.F χ s - ∑ β ∈ Z, 1 / (s - (β : ℂ))) (∑ β ∈ Z, 1 / (s - (β : ℂ)))`.
+
+Rewrite `b6` using `[sub_add_cancel]`. Establish `b7 : 2 / d = 1 / d + 1 / d` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem contour (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (Z : Finset ℝ) (c₀ C u T d : ℝ) (hc₀ : 0 < c₀)
     (hc₁ : c₀ ≤ 1 / 20) (hC : 0 < C) (hZ : 𝓕.ExcZ χ c₀ Z) (hu : 2 ≤ u) (hT : 1 ≤ T)
     (hd : d = c₀ / (8 * 𝓕.ell T))
@@ -354,12 +469,22 @@ theorem contour (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (Z : Finset ℝ) (c₀ C
     have b7 : 2 / d = 1 / d + 1 / d := by ring
     linarith
 
+/- English proof (translation)
+Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun n _ => norm_lamChi_le 𝓕 χ n).trans ?_)` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`. Use `GlobalTheory.Mem.An.sum_vonMangoldt_le_two_mul u hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_psi_le (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) {u : ℝ} (hu : 0 ≤ u) : ‖𝓕.psi χ u‖ ≤ 4 * u := by
   refine (norm_sum_le _ _).trans ((Finset.sum_le_sum fun n _ => norm_lamChi_le 𝓕 χ n).trans ?_)
   rw [← Finset.mul_sum]
   have := GlobalTheory.Mem.An.sum_vonMangoldt_le_two_mul u hu
   linarith
 
+/- English proof (translation)
+Establish `h` using `Real.pow_div_factorial_le_exp (δ / 2 * W) (by positivity) 4`. Establish `e : Real.exp (-(δ / 2) * W) = Real.exp (δ / 2 * W) * Real.exp (-(δ * W))`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e, ← mul_assoc]`. Use `gcongr`. Establish `e2 : W ^ 4 = 24 * (2 / δ) ^ 4 * ((δ / 2 * W) ^ 4 / (Nat.factorial 4 : ℕ))`. Simplify using `only [Nat.factorial]`. Clear the denominators using the available nonvanishing facts.
+
+Evaluate the numerical expressions. Rewrite using `[e2]`. Use `gcongr`.
+-/
 theorem pow_four_mul_exp_le {δ W : ℝ} (hδ : 0 < δ) (hW : 0 ≤ W) :
     W ^ 4 * Real.exp (-(δ * W)) ≤ 24 * (2 / δ) ^ 4 * Real.exp (-(δ / 2) * W) := by
   have h := Real.pow_div_factorial_le_exp (δ / 2 * W) (by positivity) 4
@@ -374,6 +499,11 @@ theorem pow_four_mul_exp_le {δ W : ℝ} (hδ : 0 < δ) (hW : 0 ≤ W) :
   rw [e2]
   gcongr
 
+/- English proof (translation)
+Establish `h1 : l ^ 2 ≤ (3 * W) ^ 2` using `by gcongr`. Establish `h2 : W ^ 2 ≤ W ^ 4` using `pow_le_pow_right₀ hW1 (by norm_num)`. Establish `h3 : W ≤ W ^ 4` using `le_self_pow₀ hW1 (by norm_num)`. Establish `h4 : 2 / (c₀ / (8 * l)) = 48 / c₀ * (l / 3)` using `by field_simp; norm_num`. Establish `h5 : 48 / c₀ * (l / 3) ≤ 48 / c₀ * W ^ 4` using `by gcongr; linarith`.
+
+Establish `h6 : C * l ^ 2 ≤ C * (9 * W ^ 4)` using `by gcongr; linarith`. Rewrite using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem const_le {c₀ C l W : ℝ} (hc₀ : 0 < c₀) (hC : 0 < C) (hl1 : 1 ≤ l) (hl : l ≤ 3 * W)
     (hW1 : 1 ≤ W) : C * l ^ 2 + 2 / (c₀ / (8 * l)) ≤ (9 * C + 48 / c₀) * W ^ 4 := by
   have h1 : l ^ 2 ≤ (3 * W) ^ 2 := by gcongr
@@ -385,6 +515,11 @@ theorem const_le {c₀ C l W : ℝ} (hc₀ : 0 < c₀) (hC : 0 < C) (hl1 : 1 ≤
   rw [h4]
   linarith
 
+/- English proof (translation)
+Rewrite using `[Real.rpow_sub hu0, Real.rpow_one, div_div, ← Real.exp_add, Real.rpow_def_of_pos hu0, ← hW2]`. Use `gcongr`. Establish `e : W ^ 2 * (2 * (c₀ / (8 * l))) = c₀ / 4 * W * W / l` using `by field_simp; ring`. Rewrite using `[e, le_div_iff₀ (by linarith)]`. Use `mul_le_mul_of_nonneg_left hl (mul_nonneg hc₀.le hW0)` as an intermediate fact.
+
+Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hc₀.le hW0) hW0]`.
+-/
 theorem rpow_le {c₀ u l W : ℝ} (hc₀ : 0 < c₀) (hu0 : 0 < u) (hl1 : 1 ≤ l) (hl : l ≤ 3 * W)
     (hW0 : 0 ≤ W) (hW2 : W ^ 2 = Real.log u) :
     u ^ (1 - 2 * (c₀ / (8 * l))) ≤ u / Real.exp (c₀ / 32 * W) / Real.exp (c₀ / 32 * W) := by
@@ -396,6 +531,21 @@ theorem rpow_le {c₀ u l W : ℝ} (hc₀ : 0 < c₀) (hu0 : 0 < u) (hl1 : 1 ≤
   have := mul_le_mul_of_nonneg_left hl (mul_nonneg hc₀.le hW0)
   nlinarith [mul_nonneg (mul_nonneg hc₀.le hW0) hW0]
 
+/- English proof (translation)
+Establish `hW0 : 0 ≤ W` using `by linarith`. Establish `hE` using `Real.exp_pos (-(δ / 2) * W)`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hR1 : 1 ≤ u / T` using `(one_le_div hT0).2 hTu`. Establish `hW4 : 1 ≤ W ^ 4` using `one_le_pow₀ hW1`.
+
+Establish `t1 : M * u / T ≤ K * (W ^ 4 * (u / T))`. Rewrite using `[mul_div_assoc, ← mul_assoc]`. Use `gcongr`. Establish `t2 : T * M * Y ≤ K * (W ^ 4 * (u / T))`. Combine the equalities or inequalities in the displayed calculation.
+
+Break down `le_total 0 Y with hY | hY` into its components or cases. Use `gcongr`. Conclude with `(mul_nonpos_of_nonneg_of_nonpos (by positivity) hY).trans (by positivity)`. Use `_ = _ := by field_simp`. Establish `t3 : Y ≤ W ^ 4 * (u / T)`.
+
+Use `hpow.trans ((div_le_self (by positivity) (by linarith)).trans ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `t4 : u * Real.log u ^ 2 / T + Real.log u ≤ 2 * (W ^ 4 * (u / T))`. Establish `h2 : W ^ 2 ≤ W ^ 4` using `pow_le_pow_right₀ hW1 (by norm_num)`. Establish `e : u * Real.log u ^ 2 / T = W ^ 4 * (u / T)` using `by rw [← hW2]; ring`.
+
+Rewrite using `[e, ← hW2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `t5 : W ^ 4 * (u / T) ≤ 24 * (2 / δ) ^ 4 * (u * Real.exp (-(δ / 2) * W))`. Use `mul_le_mul_of_nonneg_left (pow_four_mul_exp_le hδ0 hW0) hu0.le` as an intermediate fact. Rewrite `this` using `[Real.exp_neg, ← hT]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `t6` using `mul_le_mul_of_nonneg_left t4 hP.le`. Establish `t7` using `mul_le_mul_of_nonneg_left t5 (by positivity : 0 ≤ 2 * P + 22 * K + 2)`. Establish `t8` using `mul_pos hu0 hE`. Generalize the expression as in `W ^ 4 * (u / T) = R at *`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem total_le {δ P K M Y u T W : ℝ} (hδ0 : 0 < δ) (hP : 0 < P) (hK0 : 0 < K) (hM0 : 0 ≤ M)
     (hu0 : 0 < u) (hW1 : 1 ≤ W) (hW2 : W ^ 2 = Real.log u) (hT : T = Real.exp (δ * W))
     (hT2 : 2 ≤ T) (hTu : T ≤ u) (hM : M ≤ K * W ^ 4) (hpow : Y ≤ u / T / T) :
@@ -435,6 +585,31 @@ theorem total_le {δ P K M Y u T W : ℝ} (hδ0 : 0 < δ) (hP : 0 < P) (hK0 : 0 
   calc _ ≤ (2 * P + 22 * K + 2) * R := by linarith
     _ ≤ _ := by linarith
 
+/- English proof (translation)
+Introduce `c₀ hc₀ hc₁`. Take `⟨C, hC, H⟩` from `GlobalTheory.Hk.LogDerivHalf.logDeriv_sub_exceptional_le c₀ hc₀ hc₁`. Take `⟨P, hP, HP⟩` from `GlobalTheory.PerronCoeff.truncated_perron_of_le_two_vonMangoldt`. Use `set δ := c₀ / 32 with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`.
+
+Use `set K := 9 * C + 48 / c₀ with hK`. Establish `hK0 : 0 < K` using `by positivity`. Use `⟨δ / 2, 14 + (2 * P + 22 * K + 2) * (24 * (2 / δ) ^ 4), by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `𝓕 χ Z u hZ hu hB`. Establish `hu0 : 0 < u` using `by linarith`.
+
+Establish `hlog : 0 ≤ Real.log u` using `Real.log_nonneg (by linarith)`. Establish `hW2 : Real.sqrt (Real.log u) ^ 2 = Real.log u` using `Real.sq_sqrt hlog`. Establish `hW0 : 0 ≤ Real.sqrt (Real.log u)` using `Real.sqrt_nonneg _`. Generalize the expression as in `Real.sqrt (Real.log u) = W at *`. Establish `hE` using `Real.exp_pos (-(δ / 2) * W)`.
+
+Establish `hQ : 0 ≤ (2 * P + 22 * K + 2) * (24 * (2 / δ) ^ 4)` using `by positivity`. Break down `le_total (δ * W) 1 with h | h` into its components or cases. Establish `n1` using `norm_psi_le 𝓕 χ hu0.le`. Establish `n2 : ‖(if χ = 1 then (u : ℂ) else 0)‖ ≤ u` using `by split_ifs`. Simplify using `[abs_of_pos hu0]`.
+
+Simplify using `[hu0.le]`. Establish `n3 : ‖∑ β ∈ Z, (u : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ 2 * u` using `norm_sum_le_of_card hZ.1 (by positivity) fun β hβ => by`. Establish `h1` using `(hZ.2.1 β hβ).1`. Establish `h2 : c₀ / 𝓕.ell 0 ≤ c₀` using `div_le_self hc₀.le (one_le_ell 𝓕 0)`. Simplify using `using norm_term_le (u := u) (β := β) (σ := 1) (by linarith) (by linarith) (hZ.2.1 β hβ).2.1.le`.
+
+Establish `n4` using `norm_sub_le (𝓕.psi χ u) (if χ = 1 then (u : ℂ) else 0)`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `n5` using `Real.add_one_le_exp (-(δ / 2) * W)`. Establish `n6 : 1 / 2 ≤ Real.exp (-(δ / 2) * W)` using `by linarith`. Establish `n7` using `mul_le_mul_of_nonneg_left n6 hu0.le`.
+
+Establish `n8` using `mul_nonneg hQ (mul_pos hu0 hE).le`. Use the polynomial consequences of the given equalities and inequalities. Establish `hδ1 : δ ≤ 1` using `by linarith`. Establish `hW1 : 1 ≤ W` using `by nlinarith`. Use `set T := Real.exp (δ * W) with hT`.
+
+Establish `hT2 : 2 ≤ T`. Use `Real.add_one_le_exp (δ * W)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hTu : T ≤ u`. Rewrite using `[hT, ← Real.le_log_iff_exp_le hu0, ← hW2]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hl1` using `one_le_ell 𝓕 T`. Establish `hl : 𝓕.ell T ≤ 3 * W`. Establish `hB4` using `𝓕.B_ge`. Establish `e : 𝓕.ell T ≤ Real.log (𝓕.B * (2 * T))`.
+
+Use `Real.log_le_log (by positivity) ?_` and prove the remaining obligations. Rewrite using `[abs_of_pos (by linarith)]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e` using `[Real.log_mul (by positivity) (by positivity), Real.log_mul (by positivity) (by positivity), hT, Real.log_exp]`.
+
+Use `Real.log_two_lt_d9` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `A` using `HP (𝓕.lamChi χ) u T (norm_lamChi_le 𝓕 χ) hT2 hTu`. Establish `B` using `contour 𝓕 χ Z c₀ C u T _ hc₀ hc₁ hC hZ hu (by linarith) rfl (H 𝓕 χ Z hZ)`. Establish `gen : ∀ a v m z : ℂ, ‖a - m + z‖ ≤ ‖a - v‖ + ‖v - m + z‖` using `fun a v m z => by`.
+
+Use `le_trans (le_of_eq ?_) (norm_add_le _ _)` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `((gen _ _ _ _).trans (add_le_add A B)).trans ?_` and prove the remaining obligations. Conclude with `total_le hδ0 hP hK0 (by positivity) hu0 hW1 hW2 hT hT2 hTu (const_le hc₀ hC hl1 hl hW1) (rpow_le hc₀ hu0 hl1 hl hW0 hW2)`.
+-/
 theorem psi_exceptional : ∀ c₀ : ℝ, 0 < c₀ → c₀ ≤ 1 / 20 → ∃ c C : ℝ, 0 < c ∧ 0 < C ∧ ∀ (𝓕 : LFam) (χ : AddChar 𝓕.G ℂ) (Z : Finset ℝ) (u : ℝ), 𝓕.ExcZ χ c₀ Z → 2 ≤ u → Real.log 𝓕.B ≤ Real.sqrt (Real.log u) → ‖𝓕.psi χ u - (if χ = 1 then (u : ℂ) else 0) + ∑ β ∈ Z, (u : ℂ) ^ (β : ℂ) / (β : ℂ)‖ ≤ C * u * Real.exp (-c * Real.sqrt (Real.log u)) := by
   intro c₀ hc₀ hc₁
   obtain ⟨C, hC, H⟩ := GlobalTheory.Hk.LogDerivHalf.logDeriv_sub_exceptional_le c₀ hc₀ hc₁

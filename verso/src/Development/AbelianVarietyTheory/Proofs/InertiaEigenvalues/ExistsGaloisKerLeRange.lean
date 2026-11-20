@@ -7,6 +7,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Take `⟨E, hE, hEU⟩` from `(krullTopology_mem_nhds_one_iff ℚ_[l] (Om l) (U : Set (GQ l))).mp (hU.mem_nhds U.one_mem)`. Use `haveI := hS.to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S) := IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Set `F : IntermediateField ℚ_[l] (Om l)` to `E ⊔ IntermediateField.adjoin ℚ_[l] S`. Set `M : IntermediateField ℚ_[l] (Om l)` to `IntermediateField.normalClosure ℚ_[l] F (Om l)`.
+
+Use `haveI : FiniteDimensional ℚ_[l] M := inferInstance`. Use `haveI : Normal ℚ_[l] M := inferInstance`. Use `haveI : IsGalois ℚ_[l] M := isGalois_iff.mpr ⟨inferInstance, inferInstance⟩`. Establish `hFM : F ≤ M` using `IntermediateField.le_normalClosure F`. Take `⟨vr, top, hloc, hext⟩` from `exists_isNonarchimedeanLocalField_valuativeExtension ℚ_[l] M`.
+
+Use `⟨M, inferInstance, vr, top, hloc, inferInstance, hext, inferInstance, inferInstance, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.restrictNormalHom_ker]`. Introduce `σ hσ`. Apply `hEU` to reduce the goal to its premises. Conclude with `(IntermediateField.fixingSubgroup_le (le_trans le_sup_left hFM)) hσ`.
+
+Introduce `x hx`. Establish `: x ∈ M` using `hFM (le_sup_right (a := E) (IntermediateField.subset_adjoin ℚ_[l] S hx))`. Conclude with `⟨⟨x, this⟩, rfl⟩`.
+-/
 theorem exists_galois_ker_le_range (l : ℕ) [Fact l.Prime] (U : Subgroup (GQ l)) (S : Set (Om l))
     (hU : IsOpen (U : Set (GQ l))) (hS : S.Finite) :
     ∃ (L : Type) (_ : Field L) (_ : ValuativeRel L) (_ : TopologicalSpace L) (_ : IsNonarchimedeanLocalField L)

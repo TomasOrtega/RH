@@ -4,6 +4,13 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleIntegralClosur
 open IsLocalRing Polynomial
 open scoped TensorProduct
 
+/- English proof (translation)
+Introduce `S K L F _ _ _ _ _ _ _ _ _ _ _ _`. Establish `hb : IsBaseChange K (LinearMap.id : L →ₗ[S] L)` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors S) K _).mp (isLocalizedModule_id (nonZeroDivisors S) L K)`. Set `g : K ⊗[S] L →ₐ[K] L` to `Algebra.TensorProduct.lift (Algebra.ofId K L) (AlgHom.id S L) (fun _ _ => Commute.all _ _)`. Establish `hg : (g : K ⊗[S] L → L) = hb.equiv`. Use function extensionality and compare the values at `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k l => simp [g, IsBaseChange.equiv_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Set `e0 : K ⊗[S] L ≃ₐ[K] L` to `AlgEquiv.ofBijective g (by rw [hg]; exact hb.equiv.bijective)`.
+
+Conclude with `⟨(Algebra.TensorProduct.cancelBaseChange S K F F L).symm.trans (Algebra.TensorProduct.congr AlgEquiv.refl e0)⟩`.
+-/
 theorem GlobalTheory.AbhyankarBC.nonempty_tensor_algEquiv_of_isFractionRing : ∀ (S K L F : Type) [CommRing S] [Field K] [Algebra S K] [IsFractionRing S K] [CommRing L]
     [Algebra K L] [Algebra S L] [IsScalarTower S K L] [CommRing F] [Algebra K F] [Algebra S F]
     [IsScalarTower S K F], Nonempty (F ⊗[S] L ≃ₐ[F] F ⊗[K] L) := by
@@ -23,6 +30,23 @@ theorem GlobalTheory.AbhyankarBC.nonempty_tensor_algEquiv_of_isFractionRing : �
   exact ⟨(Algebra.TensorProduct.cancelBaseChange S K F F L).symm.trans
     (Algebra.TensorProduct.congr AlgEquiv.refl e0)⟩
 
+/- English proof (translation)
+Introduce `D B F _ _ _ _ _ N M hM hN`. Set `Dm` to `Localization M`. Establish `hM' : ∀ y : M, IsUnit (algebraMap D F y)` using `fun y => hM y y.2`. Use `letI : Algebra Dm F := (IsLocalization.lift (M := M) (S := Dm) (g := algebraMap D F) hM').toAlgebra`. Use `haveI : IsScalarTower D Dm F := IsScalarTower.of_algebraMap_eq (fun x => (IsLocalization.lift_eq (M := M) (S := Dm) hM' x).symm)`.
+
+Set `ι : Dm ⊗[D] N →ₐ[Dm] Dm ⊗[D] B` to `Algebra.TensorProduct.map (AlgHom.id Dm Dm) N.val`. Establish `hι : Function.Bijective ι`. Prove the components needed by the constructor for the conclusion. Use `Module.Flat.lTensor_preserves_injective_linearMap (M := Dm) N.val.toLinearMap Subtype.val_injective` as an intermediate fact. Conclude with `this`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul a b`. Take `⟨m, hm, hmb⟩` from `hN b`.
+
+Set `u` to `(IsLocalization.map_units Dm (⟨m, hm⟩ : M)).unit`. Use `⟨(a * ↑u⁻¹) ⊗ₜ[D] (⟨m • b, hmb⟩ : N), ?_⟩` and prove the remaining obligations. Simplify using `only [ι, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, Subalgebra.coe_val]`. Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`.
+
+Establish `hu : (u : Dm) = algebraMap D Dm m` using `rfl`. Rewrite using `[← hu, mul_left_comm, Units.mul_inv, mul_one]`. Consider the case `add x y hx hy`. Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`.
+
+Conclude with `⟨x' + y', map_add _ _ _⟩`. Set `eι : Dm ⊗[D] N ≃ₐ[Dm] Dm ⊗[D] B` to `AlgEquiv.ofBijective ι hι`. Set `E : F ⊗[D] N ≃ₐ[F] F ⊗[D] B` to `(Algebra.TensorProduct.cancelBaseChange D Dm F F N).symm.trans ((Algebra.TensorProduct.congr AlgEquiv.refl eι).trans (Algebra.TensorProduct.cancelBaseChange D Dm F F B))`. Establish `hE : ⇑(Algebra.TensorProduct.map (AlgHom.id F F) N.val : F ⊗[D] N →ₐ[F] F ⊗[D] B) = ⇑E`. Use function extensionality and compare the values at `x`.
+
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f n`. Simplify using `[E, eι, ι, Algebra.TensorProduct.cancelBaseChange_tmul, Algebra.TensorProduct.cancelBaseChange_symm_tmul]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Rewrite using `[hE]`. Conclude with `E.bijective`.
+-/
 theorem GlobalTheory.AbhyankarBC.tensor_map_val_bijective_of_smul_mem : ∀ (D B F : Type) [CommRing D] [CommRing B] [Algebra D B] [CommRing F] [Algebra D F]
     (N : Subalgebra D B) (M : Submonoid D), (∀ m ∈ M, IsUnit (algebraMap D F m)) →
     (∀ b : B, ∃ m ∈ M, m • b ∈ N) →
@@ -71,6 +95,17 @@ theorem GlobalTheory.AbhyankarBC.tensor_map_val_bijective_of_smul_mem : ∀ (D B
   rw [hE]
   exact E.bijective
 
+/- English proof (translation)
+Introduce `S K L D _ _ _ _ _ _ _ _ _ _ _ _ b`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_mem _, by simp⟩`. Consider the case `tmul d l`. Take `⟨s, hs0, hint⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff S K L).mpr (Algebra.IsAlgebraic.isAlgebraic l))`.
+
+Use `⟨algebraMap S D s, ⟨s, mem_nonZeroDivisors_of_ne_zero hs0, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap S D s • (d ⊗ₜ[S] l) = algebraMap D (D ⊗[S] L) d * ((1 : D) ⊗ₜ[S] (s • l))`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, algebraMap_smul, one_mul, Algebra.algebraMap_self, RingHom.id_apply, TensorProduct.tmul_smul]`. Rewrite using `[h1]`. Use `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ d) ?_` and prove the remaining obligations.
+
+Conclude with `(hint.map (Algebra.TensorProduct.includeRight : L →ₐ[S] D ⊗[S] L)).tower_top`. Consider the case `add x y hx hy`. Take `⟨m1, hm1, h1⟩` from `hx`. Take `⟨m2, hm2, h2⟩` from `hy`. Use `⟨m1 * m2, mul_mem hm1 hm2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `Subalgebra.smul_mem _ h1 _`. Rewrite using `[mul_smul]`.
+
+Conclude with `Subalgebra.smul_mem _ h2 _`.
+-/
 theorem GlobalTheory.AbhyankarBC.exists_smul_mem_integralClosure_tensor : ∀ (S K L D : Type) [CommRing S] [IsDomain S] [Field K] [Algebra S K] [IsFractionRing S K]
     [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L] [Algebra.IsAlgebraic K L]
     [CommRing D] [Algebra S D], ∀ b : D ⊗[S] L,
@@ -97,6 +132,19 @@ theorem GlobalTheory.AbhyankarBC.exists_smul_mem_integralClosure_tensor : ∀ (S
     · rw [mul_comm, mul_smul]; exact Subalgebra.smul_mem _ h1 _
     · rw [mul_smul]; exact Subalgebra.smul_mem _ h2 _
 
+/- English proof (translation)
+Introduce `S S₁ K K₁ L _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hinj q hq hqu π hπ y hy hram hsep`. Set `f : S[X]` to `X ^ q - C π`. Set `D` to `AdjoinRoot f`. Establish `hD : Algebra.Etale D (integralClosure D (D ⊗[S] L))` using `GlobalTheory.T.abhyankar_dvr_of_isSeparable_alt S K L π q D ⟨AlgEquiv.refl⟩ hπ hqu hram hsep`. Set `φ : D →ₐ[S] S₁` to `AdjoinRoot.liftAlgHom f (Algebra.ofId S S₁) y (by simp [f, hy])`.
+
+Use `letI : Algebra D S₁ := φ.toRingHom.toAlgebra`. Use `letI : Algebra D K₁ := ((algebraMap S₁ K₁).comp φ.toRingHom).toAlgebra`. Use `haveI : IsScalarTower D S₁ K₁ := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower S D S₁ := IsScalarTower.of_algebraMap_eq (fun x => (φ.commutes x).symm)`. Use `haveI : IsScalarTower S D K₁ := IsScalarTower.of_algebraMap_eq (fun x => by`.
+
+Rewrite using `[IsScalarTower.algebraMap_apply S S₁ K₁, IsScalarTower.algebraMap_apply S D S₁]`. Use the proof step `rfl)`. Set `N` to `integralClosure D (D ⊗[S] L)`. Set `T` to `S₁ ⊗[D] N`. Use `haveI : Algebra.Etale S₁ T := Algebra.Etale.baseChange D N S₁`.
+
+Use `haveI : Algebra.IsIntegral S₁ T := Algebra.IsIntegral.tensorProduct D S₁ N`. Use `haveI hT := GlobalTheory.T.etale_integralClosure_tensor S₁ K₁ T inferInstance inferInstance`. Establish `hunit : ∀ m ∈ Algebra.algebraMapSubmonoid D (nonZeroDivisors S), IsUnit (algebraMap D K₁ m)`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply S S₁ K₁]`.
+
+Use `IsUnit.mk0 _ ?_` and prove the remaining obligations. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective S₁ K₁), map_eq_zero_iff _ hinj]`. Conclude with `nonZeroDivisors.ne_zero hs`. Set `e1 : K₁ ⊗[S₁] T ≃ₐ[K₁] K₁ ⊗[D] N` to `Algebra.TensorProduct.cancelBaseChange D S₁ K₁ K₁ N`. Set `e2 : K₁ ⊗[D] N ≃ₐ[K₁] K₁ ⊗[D] (D ⊗[S] L)` to `AlgEquiv.ofBijective _ (GlobalTheory.AbhyankarBC.tensor_map_val_bijective_of_smul_mem D (D ⊗[S] L) K₁ N _ hunit (GlobalTheory.AbhyankarBC.exists_smul_mem_integralClosure_tensor S K L D))`.
+
+Set `e3 : K₁ ⊗[D] (D ⊗[S] L) ≃ₐ[K₁] K₁ ⊗[S] L` to `Algebra.TensorProduct.cancelBaseChange S D K₁ K₁ L`. Take `⟨e4⟩` from `GlobalTheory.AbhyankarBC.nonempty_tensor_algEquiv_of_isFractionRing S K L K₁`. Set `e : K₁ ⊗[S₁] T ≃ₐ[S₁] K₁ ⊗[K] L` to `(((e1.trans e2).trans e3).trans e4).restrictScalars S₁`. Conclude with `Algebra.Etale.of_equiv e.mapIntegralClosure`.
+-/
 theorem GlobalTheory.AbhyankarBC.etale_integralClosure_of_root_uniformizer : ∀ (S S₁ K K₁ L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S] [CommRing S₁]
     [IsDomain S₁] [IsDiscreteValuationRing S₁] [Field K] [Algebra S K] [IsFractionRing S K] [Field K₁]
     [Algebra S₁ K₁] [IsFractionRing S₁ K₁] [Algebra S S₁] [Algebra K K₁] [Algebra S K₁]

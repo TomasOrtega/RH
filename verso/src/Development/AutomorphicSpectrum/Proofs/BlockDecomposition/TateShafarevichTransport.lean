@@ -10,6 +10,11 @@ open NumberField IsDedekindDomain Representation Formalism.ConjugateSelfDual Rec
 
 namespace GlobalTheory.CompanionTheory.PTIso.ShaTransfer
 
+/- English proof (translation)
+Use `⟨LinearEquiv.ofSubmodules e p q ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(h x).1 hx`.
+
+Introduce `hy`. Conclude with `⟨e.symm y, (h _).2 (by simpa using hy), by simp⟩`.
+-/
 theorem nonempty_equiv_of_mem_iff {R A B : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] (e : A ≃ₗ[R] B) (p : Submodule R A) (q : Submodule R B)
     (h : ∀ x, x ∈ p ↔ e x ∈ q) : Nonempty (p ≃ₗ[R] q) := by
@@ -21,6 +26,9 @@ theorem nonempty_equiv_of_mem_iff {R A B : Type} [CommRing R] [AddCommGroup A] [
   · intro hy
     exact ⟨e.symm y, (h _).2 (by simpa using hy), by simp⟩
 
+/- English proof (translation)
+Take `⟨hA, hB, ⟨f⟩, hc⟩` from `h`. Use `⟨Finite.of_equiv _ eA.toEquiv, Finite.of_equiv _ eB.toEquiv, ⟨(eB.symm.trans f).trans eA.symm.dualMap⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr eA.toEquiv, ← Nat.card_congr eB.toEquiv, hc]`.
+-/
 theorem dualData_transfer {R A B A' B' : Type} [CommRing R] [AddCommGroup A] [Module R A]
     [AddCommGroup B] [Module R B] [AddCommGroup A'] [Module R A'] [AddCommGroup B'] [Module R B']
     (eA : A' ≃ₗ[R] A) (eB : B' ≃ₗ[R] B)
@@ -45,6 +53,9 @@ variable {R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
   (σ : Representation R Γ N) (σ' : Representation R Γ' N)
   (eG : Γ ≃ₜ* Γ') (eI : I ≃ I') (eD : ∀ i, D i ≃ₜ* D' (eI i))
 
+/- English proof (translation)
+Introduce `d m`. Use `show σ' (φ' (eI i) (eD i d)) m = σ (φ i d) m`. Rewrite using `[hD, hσ]`.
+-/
 theorem local_compat (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) (i : I) :
     ∀ d m, (σ'.comp (φ' (eI i))) (eD i d) m = (σ.comp (φ i)) d m := by
@@ -52,6 +63,11 @@ theorem local_compat (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
   show σ' (φ' (eI i) (eD i d)) m = σ (φ i d) m
   rw [hD, hσ]
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `d`. Use `show f.1 (eG (φ i d)) = f.1 (φ' (eI i) (eD i d))`. Rewrite using `[hD]`.
+-/
 theorem res_h1_iso_h1 (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) (i : I) (x : H1 σ') :
     resH1 σ (φ i) (hφ i) (equivH1OfIso eG σ' σ hσ x) =
@@ -66,6 +82,11 @@ theorem res_h1_iso_h1 (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     show f.1 (eG (φ i d)) = f.1 (φ' (eI i) (eD i d))
     rw [hD]
 
+/- English proof (translation)
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H f`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `d`. Use `show f.1 (eG (φ i d.1), eG (φ i d.2)) = f.1 (φ' (eI i) (eD i d.1), φ' (eI i) (eD i d.2))`. Rewrite using `[hD, hD]`.
+-/
 theorem res_h2_iso_h2 (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) (i : I) (x : H2 σ') :
     resH2 σ (φ i) (hφ i) (equivH2OfIso eG σ' σ hσ x) =
@@ -80,6 +101,11 @@ theorem res_h2_iso_h2 (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     show f.1 (eG (φ i d.1), eG (φ i d.2)) = f.1 (φ' (eI i) (eD i d.1), φ' (eI i) (eD i d.2))
     rw [hD, hD]
 
+/- English proof (translation)
+Simplify using `only [Sha1, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[res_h1_iso_h1 φ hφ φ' hφ' σ σ' eG eI eD hD hσ, h, map_zero]`. Introduce `h i'`.
+
+Take `⟨i, rfl⟩` from `eI.surjective i'`. Establish `hi` using `h i`. Rewrite `hi` using `[res_h1_iso_h1 φ hφ φ' hφ' σ σ' eG eI eD hD hσ]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 hi`.
+-/
 theorem mem_Sha1_iff_equiv_mem (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) (x : H1 σ') :
     x ∈ Sha1 σ' φ' hφ' ↔ equivH1OfIso eG σ' σ hσ x ∈ Sha1 σ φ hφ := by
@@ -93,6 +119,11 @@ theorem mem_Sha1_iff_equiv_mem (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     rw [res_h1_iso_h1 φ hφ φ' hφ' σ σ' eG eI eD hD hσ] at hi
     exact (LinearEquiv.map_eq_zero_iff _).1 hi
 
+/- English proof (translation)
+Simplify using `only [Sha2, Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Rewrite using `[res_h2_iso_h2 φ hφ φ' hφ' σ σ' eG eI eD hD hσ, h, map_zero]`. Introduce `h i'`.
+
+Take `⟨i, rfl⟩` from `eI.surjective i'`. Establish `hi` using `h i`. Rewrite `hi` using `[res_h2_iso_h2 φ hφ φ' hφ' σ σ' eG eI eD hD hσ]`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 hi`.
+-/
 theorem mem_Sha2_iff_equiv_mem (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) (x : H2 σ') :
     x ∈ Sha2 σ' φ' hφ' ↔ equivH2OfIso eG σ' σ hσ x ∈ Sha2 σ φ hφ := by
@@ -106,12 +137,18 @@ theorem mem_Sha2_iff_equiv_mem (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     rw [res_h2_iso_h2 φ hφ φ' hφ' σ σ' eG eI eD hD hσ] at hi
     exact (LinearEquiv.map_eq_zero_iff _).1 hi
 
+/- English proof (translation)
+The claim follows from `nonempty_equiv_of_mem_iff (equivH1OfIso eG σ' σ hσ) _ _ (mem_Sha1_iff_equiv_mem φ hφ φ' hφ' σ σ' eG eI eD hD hσ)`.
+-/
 theorem nonempty_sha1_equiv (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) :
     Nonempty (Sha1 σ' φ' hφ' ≃ₗ[R] Sha1 σ φ hφ) :=
   nonempty_equiv_of_mem_iff (equivH1OfIso eG σ' σ hσ) _ _
     (mem_Sha1_iff_equiv_mem φ hφ φ' hφ' σ σ' eG eI eD hD hσ)
 
+/- English proof (translation)
+The claim follows from `nonempty_equiv_of_mem_iff (equivH2OfIso eG σ' σ hσ) _ _ (mem_Sha2_iff_equiv_mem φ hφ φ' hφ' σ σ' eG eI eD hD hσ)`.
+-/
 theorem nonempty_sha2_equiv (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
     (hσ : ∀ g m, σ' (eG g) m = σ g m) :
     Nonempty (Sha2 σ' φ' hφ' ≃ₗ[R] Sha2 σ φ hφ) :=
@@ -120,6 +157,9 @@ theorem nonempty_sha2_equiv (hD : ∀ i d, φ' (eI i) (eD i d) = eG (φ i d))
 
 end Rep
 
+/- English proof (translation)
+Introduce `g ψ`. Use extensionality with `m`. Rewrite using `[twDual_apply, twDual_apply, hχ, ← map_inv, hρ]`.
+-/
 theorem twDual_compat_of_iso {R Γ Γ' M : Type} [CommRing R] [Group Γ] [TopologicalSpace Γ]
     [Group Γ'] [TopologicalSpace Γ'] [AddCommGroup M] [Module R M]
     (χ : Γ →* Rˣ) (χ' : Γ' →* Rˣ) (ρ : Representation R Γ M) (ρ' : Representation R Γ' M)
@@ -129,6 +169,11 @@ theorem twDual_compat_of_iso {R Γ Γ' M : Type} [CommRing R] [Group Γ] [Topolo
   ext m
   rw [twDual_apply, twDual_apply, hχ, ← map_inv, hρ]
 
+/- English proof (translation)
+Establish `hT` using `twDual_compat_of_iso χ χ' ρ ρ' eG hχ hρ`. Take `⟨a1⟩` from `nonempty_sha1_equiv φ hφ φ' hφ' ρ ρ' eG eI eD hD hρ`. Take `⟨a2⟩` from `nonempty_sha2_equiv φ hφ φ' hφ' ρ ρ' eG eI eD hD hρ`. Take `⟨b1⟩` from `nonempty_sha1_equiv φ hφ φ' hφ' (twDual χ ρ) (twDual χ' ρ') eG eI eD hD hT`. Take `⟨b2⟩` from `nonempty_sha2_equiv φ hφ φ' hφ' (twDual χ ρ) (twDual χ' ρ') eG eI eD hD hT`.
+
+Conclude with `⟨dualData_transfer b1 a2 h.1, dualData_transfer a1 b2 h.2⟩`.
+-/
 theorem shaG_transfer {R : Type} [CommRing R] [TopologicalSpace R] [DiscreteTopology R]
     {Γ Γ' : Type} [Group Γ] [TopologicalSpace Γ] [Group Γ'] [TopologicalSpace Γ']
     {I I' : Type} [Fintype I] [Fintype I'] {D : I → Type} {D' : I' → Type}

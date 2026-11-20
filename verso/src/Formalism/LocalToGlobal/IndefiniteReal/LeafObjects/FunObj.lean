@@ -135,6 +135,9 @@ structure FunLeaves (C : ℝ) : Prop where
   cs : LeafCS (funObjOf R F J) (F.fc (R.toCx F).zs).Z.b
   wt : LeafWt (funObjOf R F J) C (F.fc (R.toCx F).zs).Z.b
 
+/- English proof (translation)
+The claim follows from `functional_lower_bound_of_conditions_numeric wf (Sb R F) (F.fc (R.toCx F).zs).Z C₀ CH (funObjOf R F J) C hD hH0 hl1a hl1c hXE hRR hRRw hC hx hL1 hLx hL.mm hL.c hL.ker hL.fp hL.ip hL.oneSquare hL.n0 hL.int hL.arch hL.thb hL.h1 hL.h7 hL.b5 hL.b7 hL.cs hL.wt hPol`.
+-/
 theorem fun_of_leaves (C₀ CH C : ℝ) (wf : (DfB R F).WF) (hD : 0 < (Sb R F).D) (hH0 : (Sb R F).H0)
     (hl1a : (Sb R F).BaseTypeSubspacesMapOntoBothSides) (hl1c : (Sb R F).RowLatticeBoundForBasis) (hXE : ∀ v, IsUnit ((Sb R F).XE v).det)
     (hRR : Submodule.IsLattice D.what₂.LL (Sb R F).RR)

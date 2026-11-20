@@ -9,6 +9,15 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ μ hμ s hs U hU`. Take `⟨N, k, L, C, hk, hb⟩` from `GlobalTheory.TateConv.bound F E hs hU`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `haveI := hμ`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`.
+
+Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `set g : (AE F E)ˣ → ENNReal := fun m => GlobalTheory.XTermMaj.maj F E N U (m : AE F E) * ENNReal.ofReal ((absE F E m : ℝ) ^ s) with hg`. Establish `hinv : ∀ l : (AE F E)ˣ, GlobalTheory.XTermMaj.maj F E N U ((l⁻¹ : (AE F E)ˣ) : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ (-s)) = g l⁻¹` using `fun l => by`. Simplify using `only [hg, map_inv, NNReal.coe_inv]`.
+
+Rewrite using `[Real.inv_rpow (NNReal.coe_nonneg _), Real.rpow_neg (NNReal.coe_nonneg _)]`. Repeatedly rewrite using `[hinv]`. Establish `hm : ∫⁻ l, g l⁻¹ ∂μ = ∫⁻ l, g l ∂μ.inv` using `(lintegral_map_equiv g (MeasurableEquiv.inv (AE F E)ˣ) (μ := μ)).symm`. Rewrite using `[hm]`. Use `haveI : μ.inv.IsHaarMeasure := {}`.
+
+Conclude with `lt_of_le_of_lt (lintegral_mono hb) (GlobalTheory.TateConv.lintegral_bound_lt_top F E μ.inv hs hk L C)`.
+-/
 theorem GlobalTheory.TateConv.majorant_inv_lintegral_lt_top : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (μ : Measure (AE F E)ˣ), μ.IsHaarMeasure →
     ∀ s : ℝ, 1 < s → ∀ U : Set (Fin (Module.finrank F E) → Af F), IsCompact U → ∃ N : ℕ,
       ∫⁻ l, GlobalTheory.XTermMaj.maj F E N U ((l⁻¹ : (AE F E)ˣ) : AE F E) * ENNReal.ofReal ((absE F E l : ℝ) ^ (-s)) ∂μ < ⊤ := by

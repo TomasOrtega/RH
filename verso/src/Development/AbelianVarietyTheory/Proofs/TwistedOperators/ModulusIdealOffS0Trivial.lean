@@ -17,6 +17,15 @@ namespace GlobalTheory.ModulUnit
 
 open GlobalTheory.ChiGrid
 
+/- English proof (translation)
+Establish `hne : ∀ v' ∈ P.S0, ∃ t : 𝓞 D.host.F, t ∈ v'.asIdeal ∧ t ∉ v.asIdeal`. Introduce `v' hv'`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hle : v'.asIdeal ≤ v.asIdeal` using `fun t ht => hc t ht`.
+
+Establish `heq : v'.asIdeal = v.asIdeal` using `v'.isMaximal.eq_of_le v.isPrime.ne_top hle`. Establish `: v' = v` using `HeightOneSpectrum.ext heq`. Conclude with `hv (this ▸ hv')`. Use `choose! f hf using hne`. Use `⟨∏ v' ∈ P.S0, f v' ^ P.depth sc v', ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨v', hv', h⟩`. Conclude with `(hf v' hv').2 (v.isPrime.mem_of_pow_mem _ h)`. Rewrite using `[map_prod, Places.modul]`. Use `Ideal.prod_mem_prod fun v' hv' => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_pow]`. Use `Ideal.pow_mem_pow ?_ _` and prove the remaining obligations. Establish `e : ((P.w v').under (𝓞 D.host.F)).asIdeal = v'.asIdeal` using `by rw [P.under_w hv']`. Establish `h1 : f v' ∈ ((P.w v').under (𝓞 D.host.F)).asIdeal` using `e ▸ (hf v' hv').1`. Conclude with `h1`.
+-/
 theorem exists_int_mem_modul {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) (v : GlobalTheory.FinPl.Pl D)
     (hv : v ∉ P.S0) : ∃ t : 𝓞 D.host.F, t ∉ v.asIdeal ∧ algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t ∈ P.modul sc := by
   have hne : ∀ v' ∈ P.S0, ∃ t : 𝓞 D.host.F, t ∈ v'.asIdeal ∧ t ∉ v.asIdeal := by
@@ -42,6 +51,13 @@ theorem exists_int_mem_modul {D : D7} {T : Type} {L : LevCh D T} (P : Places L) 
 
 end GlobalTheory.ModulUnit
 
+/- English proof (translation)
+Introduce `D T L P sc v hv`. Take `⟨t, ht, htm⟩` from `GlobalTheory.ModulUnit.exists_int_mem_modul P sc v hv`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `GlobalTheory.SeeSaw.idV_mono FractionalIdeal.coeIdeal_le_one v`. Rewrite using `[GlobalTheory.SeeSaw.idV, AddSubgroup.closure_le]`.
+
+Introduce and unpack `_ ⟨α, hα, hαv, a, ha, rfl⟩`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[GlobalTheory.IdVGen.tmul_eq ht α]`. Take `⟨h1, h2⟩` from `GlobalTheory.IdVGen.smul_inv_mem ht hα hαv`. Use `AddSubgroup.subset_closure ⟨_, h1, h2, _, ?_, rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[FractionalIdeal.mem_coeIdeal]`. Conclude with `⟨algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t * o, Ideal.mul_mem_right _ _ htm, by rw [map_mul]; rfl⟩`.
+-/
 theorem GlobalTheory.ModulUnit.idV_modul_eq_one : ∀ {D : D7} {T : Type} {L : LevCh D T} (P : Places L) (sc : Consts) (v : GlobalTheory.FinPl.Pl D), v ∉ P.S0 → GlobalTheory.SeeSaw.idV ((P.modul sc : Ideal (𝓞 D.host.E)) : GlobalTheory.SeeSaw.FI D) v = GlobalTheory.SeeSaw.idV 1 v := by
   intro D T L P sc v hv
   obtain ⟨t, ht, htm⟩ := GlobalTheory.ModulUnit.exists_int_mem_modul P sc v hv

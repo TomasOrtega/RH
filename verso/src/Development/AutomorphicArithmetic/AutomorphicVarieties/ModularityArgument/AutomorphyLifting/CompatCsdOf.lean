@@ -25,12 +25,18 @@ def AAcross2 : Prop :=
 
 variable {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)}
 
+/- English proof (translation)
+The claim follows from `have u : ∀ {r r' : G F Ω →* GL (Fin n) (Qbar l)}, RepIso r r' → ∀ v, (Unl1 r v → Unl1 r' v) ∧ (PotUnl r v → PotUnl r' v) := fun e _ => ⟨fun k A hA => (k A hA).imp fun _ j => ⟨j.1.of_iso e, j.2⟩, fun k A hA => (k A hA).imp fun _ j => ⟨j.1.of_iso e, j.2⟩⟩ ⟨fun v hv k => (u e v).2 ( …`.
+-/
 theorem WitA.iso' [IsCMField F] (e : RepIso r r') (h : WitA ι r) : WitA ι r' :=
   have u : ∀ {r r' : G F Ω →* GL (Fin n) (Qbar l)}, RepIso r r' → ∀ v, (Unl1 r v → Unl1 r' v) ∧ (PotUnl r v → PotUnl r' v) :=
     fun e _ => ⟨fun k A hA => (k A hA).imp fun _ j => ⟨j.1.of_iso e, j.2⟩, fun k A hA => (k A hA).imp fun _ j => ⟨j.1.of_iso e, j.2⟩⟩
   ⟨fun v hv k => (u e v).2 (h.1 v hv ((u e.symm' v).1 k)), fun π hreg ha =>
     (h.2 π hreg (attC_iso e.symm' ha)).imp fun _ ht v hv => ht v (hv.imp id (u e.symm' v).2)⟩
 
+/- English proof (translation)
+Introduce `A h rc hrc` and use `e A h rc hrc ▸ H A h rc hrc`.
+-/
 theorem ParAtT.congr {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin n) (Qbar l)} {w : HeightOneSpectrum (𝓞 E)} {p p' : Gu.Par Ω w}
     (H : ParAtT ι r w p) (e : ∀ A h rc, IsRecT h rc → p A h rc = p' A h rc) : ParAtT ι r w p' :=

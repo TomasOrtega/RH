@@ -7,6 +7,15 @@ open GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph
 
+/- English proof (translation)
+Introduce `K' _ ι' _ Ω _ y' z k c hz hzc`. Establish `hy : y' ⟨k, c⟩ ≠ 0`. Introduce `h0`. Establish `hm : (X ⟨k, c⟩ : MRing ι') ∈ mCoordIdeal y'`. Use `RingHom.mem_ker.2 ?_` and prove the remaining obligations.
+
+Simplify using `[mConeMap, h0]`. Establish `h1` using `hz.2 _ hm`. Simplify using `only [map_X, eval_X] at h1`. Conclude with `hzc h1`. Use `⟨hy, fun i => ⟨fun l => if l = k then 1 else 0, X ⟨k, i⟩, X ⟨k, c⟩, GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single ⟨k, i⟩, GroundTheory.Heights₂.Heights.LowerBoundFree.isMultiHomog_X_single ⟨k, c⟩, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `using hy`. Simplify using `only [aeval_X]`. Clear the denominators using the available nonvanishing facts. Simplify using `using hzc`. Simplify using `only [map_X, eval_X]`.
+
+Rewrite using `[div_eq_inv_mul]`.
+-/
 theorem isValueAt_coord_ratio :
     ∀ (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Ω : Type) [Field Ω]
       (y' : (Σ k, ι' k) → Ω) (z : (Σ k, ι' k) → ℂ) (k : K') (c : ι' k),

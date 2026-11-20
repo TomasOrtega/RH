@@ -31,6 +31,9 @@ noncomputable section
 
 namespace GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d
 
+/- English proof (translation)
+Use `(Formalism.L2.Th1.G.jets_in_norm_holds K X _).2 ?_` and prove the remaining obligations. Use `Formalism.L2.Th1.G.jetsIn_sum _ _ fun k _ => ?_` and prove the remaining obligations. Conclude with `Formalism.L2.Th1.G.jetsIn_mul (Formalism.L2.Th1.G.jetsIn_C (hr k)) ((Formalism.L2.Th1.G.jets_in_norm_holds K X _).1 (hsg k))`.
+-/
 theorem jets_comb {K : Type} [NormedField K] [IsUltrametricDist K] {X κ : Type} [Fintype κ] (r : κ → K)
     (sg : κ → MvPowerSeries X K) (hr : ∀ k, ‖r k‖ ≤ 1) (hsg : ∀ k, JetsIntegral (sg k)) :
     JetsIntegral (∑ k, MvPowerSeries.C (r k) * sg k) := by
@@ -39,11 +42,23 @@ theorem jets_comb {K : Type} [NormedField K] [IsUltrametricDist K] {X κ : Type}
   exact Formalism.L2.Th1.G.jetsIn_mul (Formalism.L2.Th1.G.jetsIn_C (hr k))
     ((Formalism.L2.Th1.G.jets_in_norm_holds K X _).1 (hsg k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem atLin_X {σ κ : Type} [Fintype κ] {p : ℕ} [Fact p.Prime] (c : σ → κ → ℂ_[p]) (F : MvPowerSeries σ ℂ_[p]) :
     TaylorLogMetric.atLin c (fun j => MvPowerSeries.X j) F = Formalism.L2.Th1.G.linSub c F := rfl
 
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {N N' : ℕ}
 
+/- English proof (translation)
+Establish `hadd : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => z + t) Set.univ` using `fun z _ => by fun_prop`. Establish `h1 : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => G (z + t)) Set.univ` using `hG.comp hadd (fun _ _ => Set.mem_univ _)`. Set `ℓ : TaylorLogMetric.VC D N N' →ₗ[ℂ] ℂ` to `(formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N').flip t`. Establish `h2 : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => ℓ z) Set.univ` using `(LinearMap.toContinuousLinearMap ℓ).analyticOnNhd _`. Establish `h3 : ∀ z : TaylorLogMetric.VC D N N', TaylorLogMetric.Hf D B.tor z t = ℓ z` using `fun z => by show _ = formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N' z t`.
+
+Rewrite using `[formV_apply]`. Both sides reduce to the same expression. Introduce `z hz`. Establish `h4 : AnalyticAt ℂ (fun z : TaylorLogMetric.VC D N N' => Complex.exp (-(Real.pi : ℂ) * ℓ z - (Real.pi : ℂ) * TaylorLogMetric.Hf D B.tor t t / 2)) z`. Use `h2 z hz` as an intermediate fact.
+
+Use `fun_prop`. Establish `h5` using `(h1 z hz).mul h4`. Establish `e : TaylorLogMetric.U D B.tor t G = (fun z => G (z + t)) * (fun z : TaylorLogMetric.VC D N N' => Complex.exp (-(Real.pi : ℂ) * ℓ z - (Real.pi : ℂ) * TaylorLogMetric.Hf D B.tor t t / 2))`. Use function extensionality and compare the values at `z`. Simplify using `only [TaylorLogMetric.U, h3, Pi.mul_apply]`.
+
+Rewrite using `[e]`. Conclude with `h5`.
+-/
 theorem analytic_U (B : Base D cc δ) (t : TaylorLogMetric.VC D N N') {G : TaylorLogMetric.VC D N N' → ℂ} (hG : AnalyticOnNhd ℂ G Set.univ) :
     AnalyticOnNhd ℂ (TaylorLogMetric.U D B.tor t G) Set.univ := by
   have hadd : AnalyticOnNhd ℂ (fun z : TaylorLogMetric.VC D N N' => z + t) Set.univ := fun z _ => by fun_prop
@@ -73,6 +88,21 @@ abbrev jetS (a₀ : ℕ) (b₀ : ℤ) (dK : ℕ) (ha : 0 < a₀) (hd : 0 < dK) (
   Formalism.L2.Th1.C.jet (Formalism.L2.Th1.A.logSer (curveL p (cmL a₀ b₀ dK ha hd lam hlam) ι))
     (Formalism.L2.Th1.Top.phC p (cmL a₀ b₀ dK ha hd lam hlam) ι) 2
 
+/- English proof (translation)
+Take `⟨M₀, hM0, hMc, hMm⟩` from `(Formalism.L2.KerInert.pairing_fact D cc δ p N N' L L₁ L' L₁' hE hE').2 t ht`. Take `⟨J, _, v, A, cE, sE, δE, emb, act, hEF, hfM⟩` from `hfr`. Establish `hLat` using `GlobalTheory.T.normalisedThetaFamily_normalised_all_places D cc δ hcc hδ B χ hχ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L₁ L₁' hA₁ p ι`. Establish `hθ` using `hLat.mem_th.1`. Establish `hEan : AnalyticOnNhd ℂ (B.eNat χ N N' L₁ L₁') Set.univ`.
+
+Establish `h1 : AnalyticOnNhd ℂ (fun w : TaylorLogMetric.VC D N N' => (s.flatV N N').symm w) Set.univ` using `(LinearMap.toContinuousLinearMap (s.flatV N N').symm.toLinearMap).analyticOnNhd _`. Establish `h2` using `hθ.comp h1 (fun _ _ => Set.mem_univ _)`. Establish `e : (B.eNat χ N N' L₁ L₁') = (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' z)) ∘ (fun w : TaylorLogMetric.VC D N N' => (s.flatV N N').symm w)`. Use function extensionality and compare the values at `w`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `h2`. Establish `hGan` using `analytic_U B t hEan`. Establish `hCo : TaylorLogMetric.CoefIn D (TaylorLogMetric.U D B.tor t (B.eNat χ N N' L₁ L₁')) TaylorLogMetric.Qbar` using `hIn.algT D cc δ B χ hcc hδ hχ N N' L₁ L₁' hA₁ t ⟨M₀, hM0, hMm⟩`. Establish `hU : (fun z => TaylorLogMetric.U D B.tor t (B.eNat χ N N' L₁ L₁') (s.flatV N N' z)) = Formalism.L2.Th1.H.opU (matH (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹)) ((s.flatV N N').symm t) (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' z))`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[KS.opU_pb (s.flatV N N') _ _ (KS.form_flat s (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))), LinearEquiv.apply_symm_apply]`. Simplify using `only [Formalism.L2.Th1.H.opU, formV_apply]`. Both sides reduce to the same expression. Establish `hfr' : (fun (i : DVar X.Tau N N') x => M (s.iT i.1, i.2) x) = frameM (ι : ℂ →+* ℂ_[p]) v A`.
+
+Use function extensionality and compare the values at `i x`. Conclude with `(hfM i x).symm`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨hS, sg, hsg, heq⟩` from `hIn.shape GlobalTheory.EmbSepUnram.embSep a₀ b₀ c₀ D.host.d ha hd lam hlam hcm (DVar X.Tau N N') (Formalism.L2.AlgTh.hSc X.Tau N N' (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ))⁻¹) (s.laF B.tor L₁ L₁') hLat.selfDual hLat.stable (fun z => B.eNat χ N N' L₁ L₁' (s.flatV N N' …`. Use `Nat.Coprime.eq_one_of_dvd hMc.symm h` as an intermediate fact.
+
+Conclude with `(Fact.out : p.Prime).one_lt.ne' this)`. Use the proof step `(fun _ => by show s.flatV N N' ((M₀ : ℂ) • (s.flatV N N').symm t) ∈ TaylorLogMetric.La D B.tor L₁ L₁'`. Rewrite using `[map_smul, LinearEquiv.apply_symm_apply, Nat.cast_smul_eq_nsmul]`. Conclude with `hMm)`. Use `J v (HH D) N N' A u D.host.E cE sE δE emb act hEF`.
+
+Use `⟨hS, sg, hsg, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FlatTaylorBridge.bridge D X s N N' p lm ι hι _ hGan hCo _ M, hfr', hU]`. Simplify `heq` using `[thetaLin]`.
+-/
 theorem term_shape (hIn : GlobalTheory.ThLoc.Inputs) (hcc : TaylorLogMetric.IsCurveIdeal D cc) (hδ : TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ)
     (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) (hχ : TaylorLogMetric.IsChi D χ) {X : Fields} (s : Seam D X) (hs : s.Ok)
     (a₀ : ℕ) (b₀ c₀ : ℤ) (ha : 0 < a₀) (hd : 0 < D.host.d) (lam : ℂ) (hlam : lam ≠ 0) (hcm : CmOK a₀ b₀ c₀ D.host.d)
@@ -141,6 +171,13 @@ end GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d
 
 namespace GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d
 
+/- English proof (translation)
+Establish `e : (-(S • ∑ t : HH D, u t • ∑ a : Fin N, ∑ b : Fin N', (MvPowerSeries.X ((false, t), a, b) * MvPowerSeries.X ((true, t), a, b) : MvPowerSeries ((Bool × HH D) × Fin N × Fin N') ℂ_[p]))) = (-S) • Formalism.L2.Th1.G.betaPair (HH D) N N' u`. Rewrite using `[neg_smul]`. Use `congr 2`. Unfold `Formalism.L2.Th1.G.betaPair`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Fintype.sum_prod_type, MvPowerSeries.smul_eq_C_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+
+Rewrite using `[e]`. Both sides reduce to the same expression.
+-/
 theorem expS_eq (D : D7) {N N' : ℕ} {p : ℕ} [Fact p.Prime] (S : ℂ_[p]) (u : HH D → ℂ_[p]) :
     product_zeroth_first_parts.expS ℂ_[p] (-(S • ∑ t : HH D, u t • ∑ a : Fin N, ∑ b : Fin N',
       (MvPowerSeries.X ((false, t), a, b) * MvPowerSeries.X ((true, t), a, b) :
@@ -162,6 +199,11 @@ theorem expS_eq (D : D7) {N N' : ℕ} {p : ℕ} [Fact p.Prime] (S : ℂ_[p]) (u 
   rw [e]
   rfl
 
+/- English proof (translation)
+Establish `hp : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `e : (p : ℂ_[p]) = algebraMap ℚ_[p] ℂ_[p] (p : ℚ_[p])` using `(map_natCast _ p).symm`. Establish `e2 : ‖(p : ℂ_[p])‖ = (p : ℝ)⁻¹`. Rewrite using `[e, norm_algebraMap', Padic.norm_p]`. Rewrite `h` using `[e2, Real.inv_rpow hp.le, Real.rpow_neg hp.le, inv_inv]`.
+
+Conclude with `h`.
+-/
 theorem norm_bound {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (h : ‖x‖ ≤ ‖(p : ℂ_[p])‖ ^ (-(1 / 2 : ℝ))) :
     ‖x‖ ≤ (p : ℝ) ^ ((1 : ℝ) / 2) := by
   have hp : (0 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).pos
@@ -171,6 +213,9 @@ theorem norm_bound {p : ℕ} [Fact p.Prime] {x : ℂ_[p]} (h : ‖x‖ ≤ ‖(p
   rw [e2, Real.inv_rpow hp.le, Real.rpow_neg hp.le, inv_inv] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[atLin_X, ← Formalism.L2.Th1.G.linSubHom_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, Formalism.L2.Th1.G.linSubHom_apply]`. Both sides reduce to the same expression.
+-/
 theorem atLin_comb {σ ν κ : Type} [Finite σ] [Fintype ν] [Fintype κ] {p : ℕ} [Fact p.Prime] (M : σ → ν → ℂ_[p]) (r : κ → ℂ_[p])
     (G : κ → MvPowerSeries σ ℂ_[p]) :
     TaylorLogMetric.atLin M (fun j => MvPowerSeries.X j) (∑ k, algebraMap ℂ_[p] (MvPowerSeries σ ℂ_[p]) (r k) * G k) =
@@ -180,11 +225,17 @@ theorem atLin_comb {σ ν κ : Type} [Finite σ] [Fintype ν] [Fintype κ] {p : 
   rw [map_mul, AlgHom.commutes, Formalism.L2.Th1.G.linSubHom_apply]
   rfl
 
+/- English proof (translation)
+Use `h m` as an intermediate fact. Simplify `this` using `only [Formalism.DworkPowerSeriesWeights.mfact, Finsupp.prod, Nat.cast_prod]`.
+-/
 theorem jets_prod {ν : Type} {p : ℕ} [Fact p.Prime] {sg : MvPowerSeries ν ℂ_[p]} (h : JetsIntegral sg) (m : ν →₀ ℕ) :
     ‖(m.prod fun _ n => (n.factorial : ℂ_[p])) * MvPowerSeries.coeff m sg‖ ≤ 1 := by
   have := h m
   simpa only [Formalism.DworkPowerSeriesWeights.mfact, Finsupp.prod, Nat.cast_prod] using this
 
+/- English proof (translation)
+Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[h k, mul_left_comm]`.
+-/
 theorem comb_exp {ν κ : Type} [Fintype κ] {K : Type} [CommRing K] (E : MvPowerSeries ν K) (r : κ → K)
     (T sg : κ → MvPowerSeries ν K) (h : ∀ k, T k = E * sg k) :
     ∑ k, MvPowerSeries.C (r k) * T k = E * ∑ k, MvPowerSeries.C (r k) * sg k := by
@@ -194,6 +245,19 @@ theorem comb_exp {ν κ : Type} [Fintype κ] {K : Type} [CommRing K] (E : MvPowe
 
 end GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d
 
+/- English proof (translation)
+Introduce `hIn D cc δ hcc hδ B χ hχ X s hs N N' L L' hA p _ lm hpd cD hgen P P' κ hP hP' hκ F hF`. Take `⟨ι, hι⟩` from `hIn.lamExt p lm`. Establish `hdp : D.host.d.Prime` using `D.host.hyp.2.1`. Establish `hd : 0 < D.host.d` using `hdp.pos`. Establish `hd8 : D.host.d % 8 = 7`.
+
+Use `D.host.hyp.2.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨a₀, b₀, c₀, ha, lam, hlam, hcm, hL⟩` from `KS.exists_cmOK D.host.d hd hd8 hdp B.L (GlobalTheory.FourthRootStd.hst B)`. Establish `hlat : (cmL a₀ b₀ D.host.d ha hd lam hlam).lattice.toAddSubgroup = TaylorLogMetric.lamOf D cc δ`. Rewrite using `[hL]`.
+
+Conclude with `B.lat`. Establish `h5 : 5 ≤ p` using `by omega`. Establish `hInt` using `GlobalTheory.GoodModelFive.goodModel_five hIn D cc δ hcc hδ a₀ b₀ c₀ ha hd lam hlam hcm hlat p h5 ι`. Take `⟨u, hu, hfr⟩` from `GlobalTheory.T.dualLocalBases_eigenframe_at_ramifiedPrime D cc δ hcc hδ X s hs a₀ b₀ c₀ ha hd lam hlam hcm hlat N N' L L' hA p lm hpd ι hι cD hgen P P' κ hP hP' hκ`. Set `M : D.what₂.Tau × Fin N' × Fin N → (Bool × HH D) × Fin N × Fin N' → ℂ_[p]` to `fun k j => κ k.1 * TaylorLogMetric.chgB D lm P P' k ((0 : ZMod 1), (tauPl D j.1, j.2))`.
+
+Establish `hterm` using `fun (L₁ : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L₁' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA₁ : TaylorLogMetric.admitted D N N' L₁ L₁') (hE : TaylorLogMetric.EqAt D p L L₁) (hE' : TaylorLogMetric.EqAt D p L' L₁') (t : TaylorLogMetric.VC D N N') (ht : TaylorLogMetri …`. Establish `hb` using `(hterm L L' hA ⟨1, Nat.coprime_one_left p, fun x hx => by simpa using hx, fun x hx => by simpa using hx⟩ ⟨1, Nat.coprime_one_left p, fun x hx => by simpa using hx, fun x hx => by simpa using hx⟩ 0 ⟨1, one_pos, Nat.coprime_one_left p, by simpa using AddSubgroup.zero_mem _⟩).1`. Establish `hbound : ‖GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.jetS a₀ b₀ D.host.d ha hd lam hlam p ι‖ ≤ (p : ℝ) ^ ((1 : ℝ) / 2)`. Use `GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.norm_bound ?_` and prove the remaining obligations. Establish `e3 : ((D.host.d : ℕ) : ℂ_[p]) = (p : ℂ_[p])` using `congrArg _ hpd.symm`.
+
+Rewrite `hb` using `[e3]`. Conclude with `hb`. Take `⟨m, r, t, L₁, L₁', hr, ht, hL1, rfl⟩` from `hF`. Establish `hk` using `fun k => (hterm (L₁ k) (L₁' k) (hL1 k).1 (hL1 k).2.1 (hL1 k).2.2 (t k) (ht k)).2`. Use `choose sg hsg he using hk`.
+
+Use `⟨GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.jetS a₀ b₀ D.host.d ha hd lam hlam p ι, hbound, u, hu, ∑ k, MvPowerSeries.C (r k) * sg k, GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.jets_prod (GlobalTheory.Proof.shape_normalisedThetaCo …` and prove the remaining obligations. Rewrite using `[GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.expS_eq, ← GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.comb_exp _ r _ sg he]`. Conclude with `GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.atLin_comb M r _`.
+-/
 theorem GlobalTheory.Proof.shape_normalisedThetaCombinations_dualBases_at_d.shapeComb : GlobalTheory.ThLoc.Inputs → ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), TaylorLogMetric.IsCurveIdeal D cc → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ → ∀ (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ), TaylorLogMetric.IsChi D χ → ∀ (X : Fields) (s : Seam D X), s.Ok → ∀ (N N' : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)) (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)), TaylorLogMetric.admitted D N N' L L' → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), p = D.host.d → ∀ (cD : D.what₂.Tau → ℂ), IsDgen D cD → ∀ (P : D.what₂.Tau → Matrix (Fin N) (Fin N) D.host.E) (P' : D.what₂.Tau → Matrix (Fin N') (Fin N') D.host.E) (κ : D.what₂.Tau → ℂ_[p]), GlobalTheory.KerStd.StdBases D lm L P → GlobalTheory.KerStd.StdBases D lm L' P' → (∀ τ, ‖κ τ‖ ≤ ‖TaylorLogMetric.lamC lm (cD τ)‖) → ∀ F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p], TaylorLogMetric.IsComb D B.tor (B.eNat χ) lm L L' F → OrbitPlaces.ShapeD D p (GlobalTheory.KerStd.stdSer D lm κ P P' F) := by
   intro hIn D cc δ hcc hδ B χ hχ X s hs N N' L L' hA p _ lm hpd cD hgen P P' κ hP hP' hκ F hF
   obtain ⟨ι, hι⟩ := hIn.lamExt p lm

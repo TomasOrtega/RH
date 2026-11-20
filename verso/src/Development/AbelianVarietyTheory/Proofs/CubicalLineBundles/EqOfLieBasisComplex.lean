@@ -14,6 +14,19 @@ open GlobalTheory GlobalTheory.CM
 
 namespace GlobalTheory.DerivZero
 
+/- English proof (translation)
+Establish `w : (φ ≫ f.left) ≫ H.hom = G'.hom ≫ j`. Rewrite using `[Category.assoc, Over.w f]`. Conclude with `hG.1.w`. Take `⟨f', hf'⟩ : ∃ f' : G' ⟶ H', f'.left ≫ ψ = φ ≫ f.left` from `⟨Over.homMk (hH.1.lift (φ ≫ f.left) G'.hom w) (hH.1.lift_snd _ _ w), hH.1.lift_fst _ _ w⟩`. Establish `hpt : ∀ {T : Over S'} (x : T ⟶ G'), ∃ x₀ : Over.mk (T.hom ≫ j) ⟶ G, x₀.left = x.left ≫ φ`.
+
+Introduce `T x`. Use `⟨Over.homMk (x.left ≫ φ) ?_, rfl⟩` and prove the remaining obligations. Use `dsimp`. Rewrite using `[Category.assoc, hG.1.w, ← Category.assoc, Over.w x]`. Establish `hmul : ∀ {T : Over S'} (x y : T ⟶ G'), (x * y) ≫ f' = (x ≫ f') * (y ≫ f')`.
+
+Introduce `T x y`. Take `⟨x₀, hx₀⟩` from `hpt x`. Take `⟨y₀, hy₀⟩` from `hpt y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hH.1.hom_ext` to reduce the goal to its premises.
+
+Establish `e1` using `hG.2 T x y x₀ y₀ hx₀ hy₀`. Establish `e2` using `hH.2 T (x ≫ f') (y ≫ f') (x₀ ≫ f) (y₀ ≫ f) (by simp only [Over.comp_left, hx₀, Category.assoc, hf']) (by simp only [Over.comp_left, hy₀, Category.assoc, hf'])`. Establish `e3 : (x₀ * y₀) ≫ f = (x₀ ≫ f) * (y₀ ≫ f)`. Simplify using `[Hom.mul_def]`. Rewrite using `[← e2, ← e3]`.
+
+Simplify using `only [Over.comp_left, Category.assoc, hf', e1]`. Simplify using `only [Over.w]`. Use `⟨f', ⟨?_, ?_⟩, hf'⟩` and prove the remaining obligations. Establish `h1` using `hmul (1 : 𝟙_ (Over S') ⟶ G') 1`. Rewrite `h1` using `[_root_.mul_one]`.
+
+Establish `h2 : (1 : 𝟙_ (Over S') ⟶ G') ≫ f' = 1` using `by simpa using h1.symm`. Simplify `h2` using `[Hom.one_def]`. Establish `h3` using `hmul (fst G' G') (snd G' G')`. Simplify `h3` using `[Hom.mul_def]`.
+-/
 theorem exists_lift_isMonHom {S S' : Scheme.{0}} {j : S' ⟶ S} {G H : Over S} {G' H' : Over S'} [GrpObj G] [GrpObj H]
     [GrpObj G'] [GrpObj H'] {φ : G'.left ⟶ G.left} {ψ : H'.left ⟶ H.left} (hG : IsGrpPullback G' G j φ)
     (hH : IsGrpPullback H' H j ψ) (f : G ⟶ H) [IsMonHom f] :

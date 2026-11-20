@@ -20,6 +20,11 @@ def wgt (m : ConeMetric ℂ J) (n : ℕ) (z : J → ℂ) : ℝ :=
 def logRatio (m₀ m₁ : ConeMetric ℂ J) (z : J → ℂ) : ℝ :=
   Real.log (m₁.ρ z / m₀.ρ z)
 
+/- English proof (translation)
+Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Establish `h` using `m.smul 0 0`. Rewrite `h` using `[zero_smul, norm_zero, zero_mul]`. Conclude with `le_of_eq h.symm`.
+
+Conclude with `(m.pos z hz).le`.
+-/
 theorem _root_.ReciprocityTheory.ChartRestriction.G.Geo.ConeMetric.nonneg (m : ConeMetric ℂ J) (z : J → ℂ) :
     0 ≤ m.ρ z := by
   by_cases hz : z = 0

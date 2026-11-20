@@ -14,10 +14,16 @@ namespace GlobalTheory.CompanionTheory.KFin.GoodLocal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ}
 
+/- English proof (translation)
+Simplify using `[sigR, inclR]`.
+-/
 theorem sigR_inclR (A : Type) [CommRing A] [Algebra F A] (e : E) :
     sigR A σ (inclR (F := F) A e) = inclR (F := F) A (σ e) := by
   simp [sigR, inclR]
 
+/- English proof (translation)
+Simplify using `only [hR, Formalism.UG.hform, colV, JR, sigR_inclR, mulVec, dotProduct, map_apply, Matrix.mul_apply, cT, transpose_apply, map_sum, map_mul, Finset.sum_mul, RingHom.coe_coe]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem dual_mulVec (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin n) (Fin r) E)
     (z : Fin n → Fv F v ⊗[F] E) (i : Fin r) :
     ((cT (σ : E →+* E) A * J).map (inclR (F := F) (Fv F v)) *ᵥ z) i
@@ -26,12 +32,18 @@ theorem dual_mulVec (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin n) (Fin r)
     cT, transpose_apply, map_sum, map_mul, Finset.sum_mul, RingHom.coe_coe]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[mulVec, dotProduct, colV, Finset.sum_apply, mul_comm]`.
+-/
 theorem col_mulVec (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin n) (Fin r) E)
     (w : Fin r → Fv F v ⊗[F] E) :
     A.map (inclR (F := F) (Fv F v)) *ᵥ w = ∑ i, w i • colV v A i := by
   ext a
   simp [mulVec, dotProduct, colV, Finset.sum_apply, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[← dual_mulVec]`. Use `conv_rhs => rw [Matrix.mul_apply]`. Simplify using `only [mulVec, dotProduct, map_apply, colV, map_sum, map_mul]`.
+-/
 theorem hR_colV (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin n) (Fin r) E)
     (B : Matrix (Fin n) (Fin r) E) (i j : Fin r) :
     hR (Fv F v) σ J (colV v A i) (colV v B j)
@@ -40,15 +52,28 @@ theorem hR_colV (v : HeightOneSpectrum (𝓞 F)) (A : Matrix (Fin n) (Fin r) E)
   conv_rhs => rw [Matrix.mul_apply]
   simp only [mulVec, dotProduct, map_apply, colV, map_sum, map_mul]
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]`.
+-/
 theorem sigma_sigma (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   apply τ.injective
   rw [hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]
 
+/- English proof (translation)
+Simplify using `[cT, Matrix.map_mul, transpose_mul]`.
+-/
 theorem cT_mul_rect (s : E →+* E) {a b c : Type} [Fintype b] (P : Matrix a b E) (Q : Matrix b c E) :
     cT s (P * Q) = cT s Q * cT s P := by
   simp [cT, Matrix.map_mul, transpose_mul]
 
+/- English proof (translation)
+Establish `hcT : cT (σ : E →+* E) J = J`. Use extensionality with `i j`. Conclude with `hJ.1 i j`. Establish `hcc : cT (σ : E →+* E) (cT (σ : E →+* E) X) = X`. Use extensionality with `i j`.
+
+Conclude with `sigma_sigma hCM _`. Establish `h1 : cT (σ : E →+* E) (1 : Matrix (Fin r) (Fin r) E) = 1`. Use extensionality with `i j`. Simplify using `[cT, Matrix.one_apply, eq_comm]`. Use `congrArg (cT (σ : E →+* E)) hW.xy` as an intermediate fact.
+
+Rewrite `this` using `[cT_mul_rect, cT_mul_rect, hcT, hcc, h1, ← Matrix.mul_assoc]`. Conclude with `this`.
+-/
 theorem gram_yx (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin r) E}
     (hW : IsWittFrame σ J X Y) : cT (σ : E →+* E) Y * J * X = 1 := by
   have hcT : cT (σ : E →+* E) J = J := by
@@ -69,6 +94,9 @@ def projP (v : HeightOneSpectrum (𝓞 F)) (σ : E →ₐ[F] E) (J : Matrix (Fin
   1 - X.map (inclR (F := F) (Fv F v)) * (cT (σ : E →+* E) Y * J).map (inclR (F := F) (Fv F v))
     - Y.map (inclR (F := F) (Fv F v)) * (cT (σ : E →+* E) X * J).map (inclR (F := F) (Fv F v))
 
+/- English proof (translation)
+Establish `hb : ∀ A B : Matrix (Fin n) (Fin r) E, (A.map (inclR (F` using `F) (Fv F v)) * (cT (σ : E →+* E) B * J).map (inclR (F := F) (Fv F v))) *ᵥ z = ∑ i, hR (Fv F v) σ J (colV v B i) z • colV v A i := by`. Introduce `A B`. Rewrite using `[← mulVec_mulVec, col_mulVec]`. Simplify using `only [dual_mulVec]`. Simplify using `only [projP, sub_mulVec, one_mulVec, hb]`.
+-/
 theorem projP_mulVec (v : HeightOneSpectrum (𝓞 F)) (X Y : Matrix (Fin n) (Fin r) E)
     (z : Fin n → Fv F v ⊗[F] E) :
     projP v σ J X Y *ᵥ z = z - ∑ i, hR (Fv F v) σ J (colV v Y i) z • colV v X i
@@ -81,6 +109,13 @@ theorem projP_mulVec (v : HeightOneSpectrum (𝓞 F)) (X Y : Matrix (Fin n) (Fin
     simp only [dual_mulVec]
   simp only [projP, sub_mulVec, one_mulVec, hb]
 
+/- English proof (translation)
+Establish `hd : ∀ (A B : Matrix (Fin n) (Fin r) E) (i : Fin r), ((cT (σ : E →+* E) A * J).map (inclR (F` using `F) (Fv F v)) * M * B.map (inclR (F := F) (Fv F v))) i i = hR (Fv F v) σ J (colV v A i) (M *ᵥ colV v B i) := by`. Introduce `A B i`. Rewrite using `[← dual_mulVec, Matrix.mul_assoc]`. Both sides reduce to the same expression. Establish `hmv : ∀ (A B : Matrix (Fin n) (Fin r) E) (d : Fin r → Fv F v ⊗[F] E), (A.map (inclR (F` using `F) (Fv F v)) * diagonal d * (cT (σ : E →+* E) B * J).map (inclR (F := F) (Fv F v))) *ᵥ z = ∑ i, (d i * hR (Fv F v) σ J (colV v B i) z) • colV v A i := by`.
+
+Introduce `A B d`. Rewrite using `[← mulVec_mulVec, ← mulVec_mulVec, col_mulVec]`. Simplify using `only [mulVec_diagonal, dual_mulVec]`. Unfold `leviMat`. Simplify using `only [add_mulVec]`.
+
+Rewrite using `[hmv, hmv]`. Simplify using `only [hd]`. Simplify using `only [mulVec_mulVec, projP, Matrix.mul_assoc]`.
+-/
 theorem leviMat_mulVec (v : HeightOneSpectrum (𝓞 F)) (X Y : Matrix (Fin n) (Fin r) E)
     (M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (z : Fin n → Fv F v ⊗[F] E) :
     leviMat σ J (Fv F v) X Y M *ᵥ z =
@@ -105,12 +140,40 @@ theorem leviMat_mulVec (v : HeightOneSpectrum (𝓞 F)) (X Y : Matrix (Fin n) (F
   simp only [hd]
   simp only [mulVec_mulVec, projP, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hg : cT (sigR (Fv F v) σ) (matHom _ σ J g).1 * JR (Fv F v) J * (matHom _ σ J g).1 = JR (Fv F v) J` using `g.2`. Simplify using `only [hR]`. Rewrite using `[Formalism.UG.P.hform_mulVec, hg]`.
+-/
 theorem hR_isom {v : HeightOneSpectrum (𝓞 F)} (g : GLoc σ J v) (a b : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J ((matHom _ σ J g).1 *ᵥ a) ((matHom _ σ J g).1 *ᵥ b) = hR (Fv F v) σ J a b := by
   have hg : cT (sigR (Fv F v) σ) (matHom _ σ J g).1 * JR (Fv F v) J * (matHom _ σ J g).1 = JR (Fv F v) J := g.2
   simp only [hR]
   rw [Formalism.UG.P.hform_mulVec, hg]
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ n J r X Y hCM hJ hW v Λ hΛ hA p m hp B _ _ hm`. Take `⟨-, ⟨hint, heven⟩, hmax⟩` from `hΛ`. Establish `hxx : ∀ i j, hR (Fv F v) σ J (colV v X i) (colV v X j) = 0` using `fun i j => by`. Rewrite using `[hR_colV, hW.xx]`. Simplify using the standard rewrite rules.
+
+Establish `hyy : ∀ i j, hR (Fv F v) σ J (colV v Y i) (colV v Y j) = 0` using `fun i j => by`. Rewrite using `[hR_colV, hW.yy]`. Simplify using the standard rewrite rules. Establish `hxy : ∀ i j, hR (Fv F v) σ J (colV v X i) (colV v Y j) = if i = j then 1 else 0` using `fun i j => by`. Apply the tactic sequence `rw [hR_colV, hW.xy, Matrix.one_apply]; split_ifs <;> simp`.
+
+Establish `hyx : ∀ i j, hR (Fv F v) σ J (colV v Y i) (colV v X j) = if i = j then 1 else 0` using `fun i j => by`. Apply the tactic sequence `rw [hR_colV, gram_yx hCM hJ hW, Matrix.one_apply]; split_ifs <;> simp`. Establish `hδ : ∀ i j : Fin r, ((if i = j then 1 else 0 : Fv F v ⊗[F] E)) ∈ intLoc F E v` using `fun i j => by split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+
+Establish `hx : ∀ i, colV v X i ∈ Λ` using `fun i => by`. Use `(hA _).2 ⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxx]`. Conclude with `zero_mem _`. Rewrite using `[hyx]`.
+
+Conclude with `hδ _ _`. Simplify using `[hxx, hyx]`. Establish `hy : ∀ i, colV v Y i ∈ Λ` using `fun i => by`. Use `(hA _).2 ⟨fun j => ?_, fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hxy]`.
+
+Conclude with `hδ _ _`. Rewrite using `[hyy]`. Conclude with `zero_mem _`. Simplify using `[hxy, hyy]`. Establish `hP : ∀ z ∈ Λ, projP v σ J X Y *ᵥ z ∈ Λ` using `fun z hz => by`.
+
+Rewrite using `[projP_mulVec]`. Conclude with `((hA z).1 hz).2.2`. Establish `hsm : ∀ a ∈ intLoc F E v, ∀ z ∈ Λ, a • z ∈ Λ` using `fun a ha z hz => Λ.smul_mem ⟨a, ha⟩ hz`. Establish `hpz : ∀ z ∈ Λ, (matHom _ σ J p).1 *ᵥ z ∈ Λ` using `fun z hz => (hp z).1 hz`. Establish `hsub : ∀ z ∈ Λ, (matHom _ σ J m).1 *ᵥ z ∈ Λ` using `fun z hz => by`.
+
+Rewrite using `[hm, leviMat_mulVec]`. Use `add_mem (add_mem (sum_mem fun i _ => ?_) (sum_mem fun i _ => ?_)) (hP _ (hpz _ (hP z hz)))` and prove the remaining obligations. Conclude with `hsm _ (mul_mem (hint _ (hy i) _ (hpz _ (hx i))) (hint _ (hy i) _ hz)) _ (hx i)`. Conclude with `hsm _ (mul_mem (hint _ (hx i) _ (hpz _ (hy i))) (hint _ (hx i) _ hz)) _ (hy i)`. Set `L' : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E)` to `{ carrier := {z | (matHom _ σ J m).1 *ᵥ z ∈ Λ} add_mem' := fun {a b} ha hb => by`.
+
+Simplify using `only [Set.mem_setOf_eq, mulVec_add] at ha hb ⊢`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun a z hz => by`. Establish `e : (matHom _ σ J m).1 *ᵥ (a • z) = a • ((matHom _ σ J m).1 *ᵥ z)`.
+
+Express the relevant statement in the definitionally equal form `(matHom _ σ J m).1 *ᵥ ((a : Fv F v ⊗[F] E) • z) = (a : Fv F v ⊗[F] E) • ((matHom _ σ J m).1 *ᵥ z)`. Rewrite using `[mulVec_smul]`. Express the relevant statement in the definitionally equal form `(matHom _ σ J m).1 *ᵥ (a • z) ∈ Λ`. Rewrite using `[e]`. Conclude with `Λ.smul_mem a hz }`.
+
+Establish `hL' : ∀ z, z ∈ L' ↔ (matHom _ σ J m).1 *ᵥ z ∈ Λ` using `fun z => Iff.rfl`. Establish `hev : IsEvenInt (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) L'`. Use `⟨fun a ha b hb => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← hR_isom m a b]`. Conclude with `hint _ ha _ hb`.
+
+Rewrite using `[← hR_isom m a a]`. Conclude with `heven _ ha`. Establish `hle : L' ≤ Λ` using `hmax L' hev hsub`. Conclude with `fun y => ⟨hsub y, fun h => hle h⟩`.
+-/
 theorem levi_mem_stabLat : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (intLoc F E v) (Fin n → Fv F v ⊗[F] E)), IsMaxEven (sigR (Fv F v) σ) (intLoc F E v) (hR (Fv F v) σ J) Λ → IsAdapted (intLoc F E v) (hR (Fv F v) σ J) (colV v X) (colV v Y) Λ → ∀ (p m : GLoc σ J v), p ∈ stabLat σ J Λ → ∀ B : Matrix (Fin r) (Fin r) (Fv F v ⊗[F] E), B.BlockTriangular id → (matHom _ σ J p).1 * X.map (inclR (F := F) (Fv F v)) = X.map (inclR (F := F) (Fv F v)) * B → (matHom _ σ J m).1 = leviMat σ J (Fv F v) X Y (matHom _ σ J p).1 → m ∈ stabLat σ J Λ := by
   intro F E _ _ _ _ _ σ n J r X Y hCM hJ hW v Λ hΛ hA p m hp B _ _ hm
   obtain ⟨-, ⟨hint, heven⟩, hmax⟩ := hΛ

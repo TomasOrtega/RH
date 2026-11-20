@@ -9,6 +9,11 @@ namespace ThetaCosetSum
 
 open Formalism.L2.Th1.H
 
+/- English proof (translation)
+Unfold `xiL`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[opU]`. Simplify using `only [xiS, sumU, hatS, Finset.mul_sum, Finset.sum_mul]`.
+
+Use `Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xiL_eq_kernel {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (α : V → ℂ) (vol : ℝ) (SX SA SB : Finset V)
     (Φ e : V → ℂ) (z : V) :
     xiL H α vol SX SA SB Φ e z = (((Real.sqrt vol : ℝ) : ℂ)⁻¹ * ((vol : ℝ) : ℂ)) *
@@ -23,6 +28,15 @@ theorem xiL_eq_kernel {V : Type} [AddCommGroup V] [Module ℂ V] (H : Sesq V) (�
   refine Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun t _ => ?_
   ring
 
+/- English proof (translation)
+Establish `hs : ((Real.sqrt vol : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.mpr hv).ne'` after adjusting the coercions. Establish `h2 : ((vol : ℝ) : ℂ) = ((Real.sqrt vol : ℝ) : ℂ) * ((Real.sqrt vol : ℝ) : ℂ)`. Conclude with `(Real.mul_self_sqrt hv.le).symm` after adjusting the coercions. Establish `h3 : ∀ w : ℂ, ((Real.sqrt vol : ℝ) : ℂ)⁻¹ * ((((Real.sqrt vol : ℝ) : ℂ)⁻¹ * ((vol : ℝ) : ℂ)) * w) = w`.
+
+Introduce `w`. Generalize the expression as in `((Real.sqrt vol : ℝ) : ℂ) = s at hs h2`. Rewrite using `[h2]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [xiL_eq_kernel, h3, Real.sqrt_one, Complex.ofReal_one, inv_one, one_mul, hΨ, Finset.sum_mul]`.
+
+Simplify using `only [Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.sum_comm]`.
+-/
 theorem sum_xiL {V ι : Type} [AddCommGroup V] [Module ℂ V] [Fintype ι] (H : Sesq V) (α : V → ℂ) (vol : ℝ) (hv : 0 < vol)
     (SX SA SB : Finset V) (c : ι → ℂ) (Φ : ι → V → ℂ) (Ψ e : V → ℂ) (hΨ : ∀ t, Ψ t = ∑ i, c i * Φ i t) (z : V) :
     ∑ i, c i * (((Real.sqrt vol : ℝ) : ℂ)⁻¹ * xiL H α vol SX SA SB (Φ i) e z) = xiL H α 1 SX SA SB Ψ e z := by
@@ -44,6 +58,17 @@ theorem sum_xiL {V ι : Type} [AddCommGroup V] [Module ℂ V] [Fintype ι] (H : 
 
 open Classical in
 
+/- English proof (translation)
+Distinguish the cases in `ht : t ∈ A`. Establish `key : ∀ q, t - (r q : M) ∈ B ↔ q = Submodule.Quotient.mk (⟨t, ht⟩ : ↥A)`. Introduce `q`. Rewrite using `[eq_comm]`. Use `conv_rhs => rw [← hr q]`.
+
+Rewrite using `[Submodule.Quotient.eq]`. Both sides reduce to the same expression. Rewrite using `[Finset.sum_eq_single (Submodule.Quotient.mk (⟨t, ht⟩ : ↥A))]`. Establish `hm` using `(key _).mpr rfl`. Rewrite using `[if_pos hm, mul_one, ← h2 (r (Submodule.Quotient.mk (⟨t, ht⟩ : ↥A)) : M) _ hm, add_sub_cancel]`.
+
+Introduce `q _ hq`. Rewrite using `[if_neg (fun h => hq ((key q).mp h)), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h0 : Ξ t = 0`.
+
+Assume the negation of the conclusion as `h`. Conclude with `ht (h1 t h)`. Rewrite using `[h0]`. Use `symm`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Apply `ht` to reduce the goal to its premises. Use `A.add_mem (hBA h) (r q).2` as an intermediate fact. Simplify using `using this`.
+-/
 theorem eq_sum_coset {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (A B : Submodule R M) (hBA : B ≤ A)
     [Fintype (↥A ⧸ B.comap A.subtype)] (Ξ : M → ℂ) (h1 : ∀ x, Ξ x ≠ 0 → x ∈ A) (h2 : ∀ x, ∀ y ∈ B, Ξ (x + y) = Ξ x)
     (r : (↥A ⧸ B.comap A.subtype) → ↥A) (hr : ∀ q, Submodule.Quotient.mk (r q) = q) (t : M) :
@@ -78,6 +103,19 @@ end ThetaCosetSum
 
 open ThetaCosetSum in
 
+/- English proof (translation)
+Introduce `X A a b S N N' cA cB Ξ hT hN hN' hA hB hv hfin h1 h2 z`. Set `_` to `Fintype.ofFinite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype)`. Establish `hle : mulLat cB (homAt S N N') ≤ divLat cA (homAt S N N')`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hy)`.
+
+Establish `hdiv : ∀ x ∈ divLat cA (homAt S N N'), x ∈ divLat (cA * cB) (homAt S N N')`. Introduce `x hx`. Establish `h : (cB : 𝓞 X.E) • (cA : 𝓞 X.E) • x ∈ homAt S N N'` using `Submodule.smul_mem _ _ hx`. Rewrite `h` using `[smul_smul, mul_comm, ← Nat.cast_mul]`. Conclude with `h`.
+
+Unfold `latSum`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `set r := Function.surjInv (Submodule.Quotient.mk_surjective ((mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype)) with hr`. Establish `hrq : ∀ q, Submodule.Quotient.mk (r q) = q` using `fun q => Function.surjInv_eq _ q`. Establish `hx : ∀ q, A.thInd S N N' cB (r q : HomE X.E a b) z = _` using `fun q => hT N N' cB (r q) ⟨hN, hN', hB, Dvd.intro_left _ rfl, hdiv _ (r q).2⟩ (Nat.mul_pos hA hB) z`.
+
+Simplify using `only [hx]`. Unfold `xiC thC xiV`. Use `sum_xiL _ _ _ hv _ _ _ (fun q => Ξ (r q)) (fun q => onV (X.embC A.σ₀) A.δ (cosInd S N N' cB (r q))) _ _ ?_ z` and prove the remaining obligations. Introduce `v`. Unfold `onV`.
+
+Use `split_ifs with h`. Use `eq_sum_coset _ _ hle Ξ h1 h2 r hrq h.choose` as an intermediate fact. Rewrite using `[this]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Unfold `cosInd`.
+
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
+-/
 theorem latSum_thInd_eq_thC : ∀ (X : Fields) (A : Amb X) (a b : ℕ) (S : Finset (HeightOneSpectrum (𝓞 X.E))) (N : Submodule (𝓞 X.E) (Sp X.E a)) (N' : Submodule (𝓞 X.E) (Sp X.E b)) (cA cB : ℕ) (Ξ : HomE X.E a b → ℂ), A.IndTieD a b S (cA * cB) → IsSdLat N → IsSdLat N' → 0 < cA → 0 < cB → 0 < volC A.AA S N N' → Finite (↥(divLat cA (homAt S N N')) ⧸ (mulLat cB (homAt S N N')).comap (divLat cA (homAt S N N')).subtype) → (∀ x, Ξ x ≠ 0 → x ∈ divLat cA (homAt S N N')) → (∀ x, ∀ y ∈ mulLat cB (homAt S N N'), Ξ (x + y) = Ξ x) → ∀ z, latSum (divLat cA (homAt S N N')) (mulLat cB (homAt S N N')) (fun x => Ξ x * A.thInd S N N' cB x z) = thC (X.embC A.σ₀) A.δ A.d A.sc A.AA S N N' (cA * cB) Ξ (A.e a b N N') z := by
   intro X A a b S N N' cA cB Ξ hT hN hN' hA hB hv hfin h1 h2 z
   classical

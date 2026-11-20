@@ -18,11 +18,17 @@ namespace GlobalTheory.CompanionTheory.RedComp
 
 variable {D : D7}
 
+/- English proof (translation)
+Use `haveI : (Valued.v : Valuation (Kw PP) _).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (valuation (Kw PP)) Valued.v).lt_one_iff_lt_one`.
+-/
 theorem val_lt_one_iff (PP : Pl D.host.E) (x : Kw PP) :
     valuation (Kw PP) x < 1 ↔ Valued.v x < 1 := by
   haveI : (Valued.v : Valuation (Kw PP) _).Compatible := Valuation.Compatible.ofValuation _
   exact (ValuativeRel.isEquiv (valuation (Kw PP)) Valued.v).lt_one_iff_lt_one
 
+/- English proof (translation)
+Establish `h : toAd D ((algebraMap (𝓞 D.host.E) D.host.E a) ⊗ₜ[D.host.F] (1 : Af D.host.F)) = _` using `GlobalTheory.AdeleBaseChange.map_tmul_one (toAd_spec D) _`. Use `show (Formalism.UG.evalV D.host.E PP) (toAd D ((algebraMap (𝓞 D.host.E) D.host.E a) ⊗ₜ[D.host.F] (1 : Af D.host.F))) = _`. Rewrite using `[h]`. Both sides reduce to the same expression.
+-/
 theorem cpt_oToS (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
     cpt PP ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) =
       algebraMap D.host.E (Kw PP) (a : D.host.E) := by
@@ -32,6 +38,9 @@ theorem cpt_oToS (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
   rw [h]
   rfl
 
+/- English proof (translation)
+Establish `h : Valued.v (algebraMap D.host.E (Kw PP) (a : D.host.E)) = PP.valuation D.host.E (a : D.host.E)` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' PP _`. Rewrite using `[h]`. Conclude with `PP.valuation_lt_one_iff_mem a`.
+-/
 theorem v_algebraMap_lt_one_iff (PP : Pl D.host.E) (a : 𝓞 D.host.E) :
     Valued.v (algebraMap D.host.E (Kw PP) (a : D.host.E)) < 1 ↔ a ∈ PP.asIdeal := by
   have h : Valued.v (algebraMap D.host.E (Kw PP) (a : D.host.E)) = PP.valuation D.host.E (a : D.host.E) :=
@@ -56,12 +65,20 @@ def ballIdeal (PP : Pl D.host.E) : Ideal (Formalism.L2.Herm.intAf D.host.F D.hos
     rw [Subring.coe_mul, map_mul, map_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_left' hc) hs
 
+/- English proof (translation)
+Use `Ideal.map_le_iff_le_comap.2 fun a ha => ?_` and prove the remaining obligations. Use `show Valued.v (cpt PP ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D)) < 1`. Rewrite using `[cpt_oToS]`. Conclude with `(v_algebraMap_lt_one_iff PP a).2 ha`.
+-/
 theorem idS_le_ballIdeal (PP : Pl D.host.E) : idS D.host.F PP.asIdeal ≤ ballIdeal PP := by
   refine Ideal.map_le_iff_le_comap.2 fun a ha => ?_
   show Valued.v (cpt PP ((oToS D.host.F D.host.E a : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D)) < 1
   rw [cpt_oToS]
   exact (v_algebraMap_lt_one_iff PP a).2 ha
 
+/- English proof (translation)
+Unfold `resS at h`. Rewrite `h` using `[RingHom.comp_apply]`. Establish `h2 : (RingEquiv.ofBijective (cmpS D.host.F PP.asIdeal) (cmpS_bij (F` using `D.host.F) PP.asIdeal PP.ne_bot)).symm (Ideal.Quotient.mk (idS D.host.F PP.asIdeal) s) = 0 := h`. Establish `h3` using `(RingEquiv.symm_apply_eq _).1 h2`. Rewrite `h3` using `[map_zero]`.
+
+Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h3`.
+-/
 theorem mem_idS_of_resS_eq_zero (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf D.host.F D.host.E)
     (h : resS D.host.F PP s = 0) : s ∈ idS D.host.F PP.asIdeal := by
   unfold resS at h
@@ -72,6 +89,15 @@ theorem mem_idS_of_resS_eq_zero (PP : Pl D.host.E) (s : Formalism.L2.Herm.intAf 
   rw [map_zero] at h3
   exact Ideal.Quotient.eq_zero_iff_mem.1 h3
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (resS D.host.F PP z)`. Establish `h0 : resS D.host.F PP (z - oToS D.host.F D.host.E b) = 0`. Rewrite using `[map_sub, resS_oToS, hb, sub_self]`. Establish `hv : Valued.v (cpt PP ((z : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) - algebraMap D.host.E (Kw PP) (b : D.host.E)) < 1`. Establish `h1` using `idS_le_ballIdeal PP (mem_idS_of_resS_eq_zero PP _ h0)`.
+
+Establish `h2 : Valued.v (cpt PP (((z - oToS D.host.F D.host.E b : Formalism.L2.Herm.intAf D.host.F D.host.E)) : Lev.EAf D)) < 1` using `h1`. Rewrite `h2` using `[AddSubgroupClass.coe_sub, map_sub, cpt_oToS]`. Then use the resulting hypothesis. Establish `hba : Valued.v (algebraMap D.host.E (Kw PP) ((b - a : 𝓞 D.host.E) : D.host.E)) < 1 ↔ resS D.host.F PP z = Ideal.Quotient.mk PP.asIdeal a`. Rewrite using `[v_algebraMap_lt_one_iff, ← hb, Ideal.Quotient.eq]`. Establish `hsub : algebraMap D.host.E (Kw PP) ((b - a : 𝓞 D.host.E) : D.host.E) = algebraMap D.host.E (Kw PP) (b : D.host.E) - algebraMap D.host.E (Kw PP) (a : D.host.E)`.
+
+Rewrite using `[← map_sub]`. Both sides reduce to the same expression. Rewrite using `[← hba, hsub]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `Valuation.map_add_lt _ hv h` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `h`. Establish `h3` using `Valuation.map_sub_lt (v := Valued.v) h hv`. Rewrite `h3` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem resS_eq_mk_iff (PP : Pl D.host.E) (z : Formalism.L2.Herm.intAf D.host.F D.host.E) (a : 𝓞 D.host.E) :
     resS D.host.F PP z = Ideal.Quotient.mk PP.asIdeal a ↔
       Valued.v (cpt PP ((z : Formalism.L2.Herm.intAf D.host.F D.host.E) : Lev.EAf D) - algebraMap D.host.E (Kw PP) (a : D.host.E)) < 1 := by
@@ -97,6 +123,11 @@ theorem resS_eq_mk_iff (PP : Pl D.host.E) (z : Formalism.L2.Herm.intAf D.host.F 
     have h3 := Valuation.map_sub_lt (v := Valued.v) h hv
     rwa [sub_sub_sub_cancel_left] at h3
 
+/- English proof (translation)
+Introduce `D n β x PP hx i j a`. Take `⟨y, rfl⟩` from `hx`. Establish `e1 : β⁻¹ * Formalism.L2.DIV.frGL β y * β = Formalism.L2.DIV.intGL _ _ n y`. Simplify using `only [Formalism.L2.DIV.frGL, MonoidHom.coe_comp, MulEquiv.coe_toMonoidHom, Function.comp_apply, MulAut.conj_apply]`. Use `group`.
+
+Rewrite using `[redFn_frGL, inBasis_apply, e1, val_lt_one_iff]`. Conclude with `resS_eq_mk_iff PP (y.1 i j) a`.
+-/
 theorem redFn_entry_eq_mk_iff : ∀ {D : D7} {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)) (PP : Pl D.host.E), x ∈ St β → ∀ (i j : Fin n) (a : 𝓞 D.host.E), ((redFn β PP x : GL (Fin n) (kP PP)) : Matrix (Fin n) (Fin n) (kP PP)) i j = Ideal.Quotient.mk PP.asIdeal a ↔ valuation (Kw PP) ((inBasis rfl β PP x).1 i j - algebraMap D.host.E (Kw PP) (a : D.host.E)) < 1 := by
   intro D n β x PP hx i j a
   obtain ⟨y, rfl⟩ := hx
@@ -123,6 +154,9 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.SplitFlip GlobalTheor
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.FunObj.borelKw GlobalTheory.FunObj.borelSpaceKw
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff | exact ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff | (intros; apply ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff <;> as …`.
+-/
 theorem _root_.GlobalTheory.Adopt.latticeStabilizer_reduction_eq_local_reduction : ∀ {D : D7} {n : ℕ} (β x : GL (Fin n) (Lev.EAf D)) (PP : Pl D.host.E), x ∈ St β → ∀ (i j : Fin n) (a : 𝓞 D.host.E), ((redFn β PP x : GL (Fin n) (kP PP)) : Matrix (Fin n) (Fin n) (kP PP)) i j = Ideal.Quotient.mk PP.asIdeal a ↔ valuation (Kw PP) ((inBasis rfl β PP x).1 i j - algebraMap D.host.E (Kw PP) (a : D.host.E)) < 1 := by
   first | exact @ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff | exact ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff | (intros; apply ReductionComponent.GlobalTheory.CompanionTheory.RedComp.redFn_entry_eq_mk_iff <;> assumption)
 

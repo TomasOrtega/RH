@@ -5,5 +5,8 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HenselianL
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsCrystalPairing
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.CubeTheorem
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.GroupBplus.groupSt | exact GlobalTheory.GroupBplus.groupSt | (intros; apply GlobalTheory.GroupBplus.groupSt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.group_structure_of_published_inputs : GlobalTheory.Published.RaynaudExtension → GlobalTheory.Published.GrothendieckOrthogonality → GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.GroupBplus.GroupSt := by
   first | exact @GlobalTheory.GroupBplus.groupSt | exact GlobalTheory.GroupBplus.groupSt | (intros; apply GlobalTheory.GroupBplus.groupSt <;> assumption)

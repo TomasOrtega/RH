@@ -21,6 +21,9 @@ variable {L : Type} [Field L] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 omit [DecidableEq ι] in
 
+/- English proof (translation)
+Use `ext1 i k`. Conclude with `congrFun (hU (fun j => W j k) (funext fun j => congrFun (congrFun hW j) k)) i`.
+-/
 theorem eq_mul_const (γ : L⟦X⟧ →ₐ[L] L⟦X⟧) (G U : Matrix ι ι L⟦X⟧)
     (hU : ∀ c : ι → L⟦X⟧, G.mulVec (fun i => γ (c i)) = c →
       c = U.mulVec fun i => C (constantCoeff (c i)))
@@ -28,6 +31,9 @@ theorem eq_mul_const (γ : L⟦X⟧ →ₐ[L] L⟦X⟧) (G U : Matrix ι ι L⟦
   ext1 i k
   exact congrFun (hU (fun j => W j k) (funext fun j => congrFun (congrFun hW j) k)) i
 
+/- English proof (translation)
+Establish `h1 : (U.map g).map γ = (U.map γ).map g` using `by ext1 i j; exact hc _`. Establish `h2 : (U.map g).map constantCoeff = 1` using `by rw [← hU0]; ext1 i j; exact hg _`. Establish `h` using `eq_mul_const γ G U hU (H * U.map g) (by`. Rewrite using `[Matrix.map_mul, ← mul_assoc, hGH, h1, mul_assoc, ← Matrix.map_mul, hGU])`. Rewrite `h` using `[Matrix.map_mul, hH0, h2, one_mul, Matrix.map_one _ (map_zero _) (map_one _), mul_one]`. Then use the resulting hypothesis.
+-/
 theorem invariant_of_comm (γ g : L⟦X⟧ →ₐ[L] L⟦X⟧) (G H U : Matrix ι ι L⟦X⟧)
     (hU : ∀ c : ι → L⟦X⟧, G.mulVec (fun i => γ (c i)) = c →
       c = U.mulVec fun i => C (constantCoeff (c i)))
@@ -40,6 +46,19 @@ theorem invariant_of_comm (γ g : L⟦X⟧ →ₐ[L] L⟦X⟧) (G H U : Matrix �
     rw [Matrix.map_mul, ← mul_assoc, hGH, h1, mul_assoc, ← Matrix.map_mul, hGU])
   rwa [Matrix.map_mul, hH0, h2, one_mul, Matrix.map_one _ (map_zero _) (map_one _), mul_one] at h
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `hQ.exists_right_inv`. Establish `hqm : ∀ k : ℕ, Q ^ k * q ^ k = 1` using `fun k => by rw [← mul_pow, hq, one_pow]`. Establish `hγq : γ q ^ m * γ Q ^ m = 1` using `by rw [← mul_pow, ← map_mul, mul_comm, hq, map_one, one_pow]`. Establish `h1 : (U'.map φ).map γ = (U'.map γ).map φ` using `by ext1 i j; exact hc _`. Establish `hφ : U'.map φ * V'.map φ = 1`.
+
+Rewrite using `[← Matrix.map_mul, hUV', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hVU : V * U = 1` using `mul_eq_one_comm.1 hUV`. Use `set W : Matrix ι ι L⟦X⟧ := q ^ m • (P * U'.map φ) with hWdef`. Establish `hWγ : W.map γ = γ q ^ m • (P.map γ * (U'.map γ).map φ)`. Rewrite using `[← h1, ← Matrix.map_mul]`.
+
+Use `ext1 i j`. Simplify using `only [hWdef, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`. Establish `hGP' : G * P.map γ = (q ^ m * γ Q ^ m) • (P * G'.map φ)`. Rewrite using `[mul_smul, hGP, smul_smul, mul_comm, hqm, one_smul]`. Establish `hW` using `eq_mul_const γ G U hU W (by`.
+
+Rewrite using `[hWγ, Matrix.mul_smul, ← mul_assoc, hGP', Matrix.smul_mul, mul_assoc, ← Matrix.map_mul, hGU', smul_smul, mul_left_comm, hγq, mul_one])`. Establish `hinv : W * ((Q ^ m * q ^ m') • (V'.map φ * P')) = 1`. Rewrite using `[hWdef, Matrix.smul_mul, Matrix.mul_smul, mul_assoc, ← mul_assoc (U'.map φ), hφ, one_mul, hP, smul_smul, smul_smul, show q ^ m * (Q ^ m * q ^ m') * Q ^ m' = (Q ^ m * q ^ m) * (Q ^ m' * q ^ m') by ring, hqm, hqm, one_mul, one_smul]`. Establish `hAB` using `congrArg (fun M : Matrix ι ι L⟦X⟧ => (M.map constantCoeff).map C) hinv`. Simplify using `only [Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _)] at hAB`.
+
+Use `set A := W.map constantCoeff`. Establish `hA : P * U'.map φ = Q ^ m • (U * A.map C)`. Rewrite using `[← hW, hWdef, smul_smul, hqm, one_smul]`. Use `⟨A, ((Q ^ m * q ^ m') • (V'.map φ * P')).map constantCoeff, hA, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, hA, smul_smul, Matrix.smul_mul, mul_assoc, hAB, mul_one, pow_add, mul_comm]`.
+
+Establish `h3 : Q ^ m' • V = Q ^ m • (A.map C * V'.map φ * P')`. Establish `: V * (P * U'.map φ) * (V'.map φ * P') = V * (Q ^ m • (U * A.map C)) * (V'.map φ * P')`. Rewrite using `[hA]`. Rewrite `this` using `[mul_assoc, mul_assoc, ← mul_assoc (U'.map φ), hφ, one_mul, hP, Matrix.mul_smul, mul_one, Matrix.mul_smul, Matrix.smul_mul, ← mul_assoc V, hVU, one_mul, ← mul_assoc]`. Then use the resulting hypothesis. Rewrite using `[Matrix.transpose_map, Matrix.transpose_map, Matrix.smul_mul, Matrix.smul_mul, ← Matrix.transpose_mul, ← Matrix.transpose_mul, ← mul_assoc, pow_add, pow_add, mul_smul, mul_smul, ← Matrix.transpose_smul (Q ^ m') V, h3, Matrix.transpose_smul]`.
+-/
 theorem frob_relation (γ φ : L⟦X⟧ →ₐ[L] L⟦X⟧) (G G' U U' V V' P P' : Matrix ι ι L⟦X⟧) (Q : L⟦X⟧) (m m' : ℕ)
     (hU : ∀ c : ι → L⟦X⟧, G.mulVec (fun i => γ (c i)) = c →
       c = U.mulVec fun i => C (constantCoeff (c i)))
@@ -90,6 +109,9 @@ end Formal
 
 variable {l : ℕ} [Fact l.Prime] {LL : FinExt l}
 
+/- English proof (translation)
+Introduce `r h0 h1` and use `by have h := (ha r h0 h1).add (hb r h0 h1) rw [add_zero] at h refine squeeze_zero (fun k => by positivity) (fun k => ?_) h rw [← add_mul, map_add, IntermediateField.coe_add] exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)`.
+-/
 theorem conv_add {a b : PowerSeries ↥LL.1} (ha : Conv a) (hb : Conv b) : Conv (a + b) := fun r h0 h1 => by
   have h := (ha r h0 h1).add (hb r h0 h1)
   rw [add_zero] at h
@@ -97,15 +119,26 @@ theorem conv_add {a b : PowerSeries ↥LL.1} (ha : Conv a) (hb : Conv b) : Conv 
   rw [← add_mul, map_add, IntermediateField.coe_add]
   exact mul_le_mul_of_nonneg_right (norm_add_le _ _) (by positivity)
 
+/- English proof (translation)
+Introduce `r h0 h1` and use `by simpa using ha r h0 h1`.
+-/
 theorem conv_neg {a : PowerSeries ↥LL.1} (ha : Conv a) : Conv (-a) := fun r h0 h1 => by
   simpa using ha r h0 h1
 
+/- English proof (translation)
+Introduce `r h0 h1` and use `by have h := (ha r h0 h1).mul_const r rw [zero_mul] at h rw [← Filter.tendsto_add_atTop_iff_nat 1] simpa only [coeff_succ_X_mul, pow_succ, mul_assoc] using h`.
+-/
 theorem conv_X_mul {a : PowerSeries ↥LL.1} (ha : Conv a) : Conv (X * a) := fun r h0 h1 => by
   have h := (ha r h0 h1).mul_const r
   rw [zero_mul] at h
   rw [← Filter.tendsto_add_atTop_iff_nat 1]
   simpa only [coeff_succ_X_mul, pow_succ, mul_assoc] using h
 
+/- English proof (translation)
+Establish `h : ∀ k : ℕ, Conv ((1 + X) ^ k * a)` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc, add_mul, one_mul]`.
+
+Conclude with `conv_add ih (conv_X_mul ih)`. Rewrite using `[XX, sub_mul, one_mul, sub_eq_add_neg]`. Conclude with `conv_add (h _) (conv_neg ha)`.
+-/
 theorem conv_XX_mul (s : ℕ) {a : PowerSeries ↥LL.1} (ha : Conv a) : Conv (XX l ↥LL.1 s * a) := by
   have h : ∀ k : ℕ, Conv ((1 + X) ^ k * a) := fun k => by
     induction k with
@@ -116,13 +149,26 @@ theorem conv_XX_mul (s : ℕ) {a : PowerSeries ↥LL.1} (ha : Conv a) : Conv (XX
   rw [XX, sub_mul, one_mul, sub_eq_add_neg]
   exact conv_add (h _) (conv_neg ha)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using ha`. Consider the case `succ k ih => rw [pow_succ', mul_assoc]`. Conclude with `conv_XX_mul s ih`.
+-/
 theorem conv_XX_pow_mul (s k : ℕ) {a : PowerSeries ↥LL.1} (ha : Conv a) : Conv (XX l ↥LL.1 s ^ k * a) := by
   induction k with
   | zero => simpa using ha
   | succ k ih => rw [pow_succ', mul_assoc]; exact conv_XX_mul s ih
 
+/- English proof (translation)
+Simplify using `[logS]`.
+-/
 theorem logS_const : constantCoeff (logS LL) = 0 := by simp [logS]
 
+/- English proof (translation)
+Establish `h : ∀ k, coeff k (derivative ↥LL.1 (logS LL)) = (-1) ^ k` using `fun k => by`. Establish `: ((k : ↥LL.1) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero k`. Rewrite using `[coeff_derivative, logS, coeff_mk]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree. Use extensionality with `k`. Rewrite using `[add_mul, one_mul, map_add]`. Break down `k with _ | k` into its components or cases. Simplify using `[h]`.
+
+Rewrite using `[coeff_succ_X_mul, h, h, coeff_one, if_neg k.succ_ne_zero, pow_succ]`. Simplify using the standard rewrite rules.
+-/
 theorem logS_deriv : (1 + X) * derivative ↥LL.1 (logS LL) = 1 := by
   have h : ∀ k, coeff k (derivative ↥LL.1 (logS LL)) = (-1) ^ k := fun k => by
     have : ((k : ↥LL.1) + 1) ≠ 0 := Nat.cast_add_one_ne_zero k
@@ -137,6 +183,11 @@ theorem logS_deriv : (1 + X) * derivative ↥LL.1 (logS LL) = 1 := by
   · rw [coeff_succ_X_mul, h, h, coeff_one, if_neg k.succ_ne_zero, pow_succ]
     simp
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `cyc_eq_X_mul l ↥LL.1 ((l ^ (s - 1) : ℕ) : ℤ_[l])`. Rewrite `hb` using `[cyc_natCast]`. Take `⟨t, ht⟩` from `X_dvd_iff.2 (logS_const (LL := LL))`. Establish `hu : IsUnit (C (algebraMap ℤ_[l] ↥LL.1 ((l ^ (s - 1) : ℕ) : ℤ_[l])) + X * b)`. Rewrite using `[isUnit_iff_constantCoeff, map_natCast]`.
+
+Use `(Fact.out : l.Prime).ne_zero` as an intermediate fact. Simplify using `[this]`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Conclude with `⟨v * t, by rw [XX, hb, ht]; linear_combination (X * t) * hv⟩`.
+-/
 theorem exists_logS_div (s : ℕ) : ∃ τ, XX l ↥LL.1 s * τ = logS LL := by
   obtain ⟨b, hb⟩ := cyc_eq_X_mul l ↥LL.1 ((l ^ (s - 1) : ℕ) : ℤ_[l])
   rw [cyc_natCast] at hb
@@ -153,19 +204,31 @@ section Generic
 variable {O L : Type} [CommRing O] [Field L] [Algebra ℤ_[l] O] [Algebra ℤ_[l] L] [Algebra O L]
   [IsScalarTower ℤ_[l] O L]
 
+/- English proof (translation)
+Rewrite using `[cyc, cyc, map_sub, map_one, IsScalarTower.algebraMap_eq ℤ_[l] O L, PowerSeries.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem map_cyc (c : ℤ_[l]) : PowerSeries.map (algebraMap O L) (cyc l O c) = cyc l L c := by
   rw [cyc, cyc, map_sub, map_one, IsScalarTower.algebraMap_eq ℤ_[l] O L, PowerSeries.map_comp]
   rfl
 
+/- English proof (translation)
+Rewrite using `[act_apply, act_apply, ← map_cyc (O := O)]`. Conclude with `PowerSeries.map_subst (HasSubst.of_constantCoeff_zero' (cyc_const l _ c)) a`.
+-/
 theorem map_act (c : ℤ_[l]) (a : PowerSeries O) :
     PowerSeries.map (algebraMap O L) (act l O c a) = act l L c (PowerSeries.map (algebraMap O L) a) := by
   rw [act_apply, act_apply, ← map_cyc (O := O)]
   exact PowerSeries.map_subst (HasSubst.of_constantCoeff_zero' (cyc_const l _ c)) a
 
 omit [Algebra ℤ_[l] O] [Algebra ℤ_[l] L] [IsScalarTower ℤ_[l] O L] [Fact l.Prime] in
+/- English proof (translation)
+Simplify using `[QQ, XX, map_sum]`.
+-/
 theorem map_QQ (s : ℕ) : PowerSeries.map (algebraMap O L) (QQ l O s) = QQ l L s := by
   simp [QQ, XX, map_sum]
 
+/- English proof (translation)
+Take `⟨b, hb⟩ : X ∣ a - C (constantCoeff a)` from `by rw [X_dvd_iff]; simp`. Rewrite `hb` using `[sub_eq_iff_eq_add]`. Use `conv_lhs => rw [hb]`. Rewrite using `[map_add, map_mul, act_C, act_X]`. Simplify using `[cyc_const]`.
+-/
 theorem const_act (c : ℤ_[l]) (a : PowerSeries O) : constantCoeff (act l O c a) = constantCoeff a := by
   obtain ⟨b, hb⟩ : X ∣ a - C (constantCoeff a) := by rw [X_dvd_iff]; simp
   rw [sub_eq_iff_eq_add] at hb
@@ -173,6 +236,15 @@ theorem const_act (c : ℤ_[l]) (a : PowerSeries O) : constantCoeff (act l O c a
   rw [map_add, map_mul, act_C, act_X]
   simp [cyc_const]
 
+/- English proof (translation)
+Use `set ι : PowerSeries O →+* PowerSeries L := PowerSeries.map (algebraMap O L) with hι`. Establish `hact : ∀ (x : ℤ_[l]) (M : Matrix (Fin r) (Fin r) (PowerSeries O)), (M.map (act l _ x)).map ι = (M.map ι).map (act l _ x)` using `fun x M => by ext1 i j; exact map_act x _`. Establish `hsm : ∀ (a : PowerSeries O) (M : Matrix (Fin r) (Fin r) (PowerSeries O)), (a • M).map ι = ι a • M.map ι` using `fun a M => by ext1 i j; simp`. Establish `hQ : IsUnit (QQ l L s)`. Rewrite using `[isUnit_iff_constantCoeff, (XX_QQ_properties l _ s hs).2.2.1]`.
+
+Conclude with `hl.isUnit`. Use `choose A B hA hB hV using fun k => frob_relation (act l _ (c i₀)) (phi l _) _ _ (U k) (U (k - 1)) (V k) (V (k - 1)) ((Pm k).map ι) ((Pm' k).map ι) (QQ l L s) m m' (hU k) (hUV k) (hUV (k - 1)) (hGU (k - 1)) hQ (fun a => act_comm' l _ _ _ a) (by rw [← Matrix.map_mul, hP, hsm, map_p …`. Establish `h` using `congrArg (fun M => M.map ι) (hGP k)`. Simplify using `only [hsm, Matrix.map_mul, map_pow] at h`. Rewrite `h` using `[map_act, map_QQ, phi, hact, hact]`.
+
+Conclude with `h)`. Use `⟨fun g k => ?_, A, B, hA, fun k => by rw [hB k, hsm, map_pow, map_QQ], fun k => by rw [hV k, hsm, map_pow, map_QQ, Matrix.transpose_map (M := Pm' k)]⟩` and prove the remaining obligations. Use `invariant_of_comm (act l _ (c i₀)) (act l _ (c g)) _ _ _ (hU k) (hU0 k) (hGU k) ?_ (const_act _) (fun a => act_comm' l _ _ _ a) ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `: constantCoeff (G g k i j) = (1 : Matrix (Fin r) (Fin r) O) i j` using `by rw [← hG0 g k]; rfl`.
+
+Rewrite using `[Matrix.map_apply, Matrix.map_apply, ← coeff_zero_eq_constantCoeff_apply, hι, coeff_map, coeff_zero_eq_constantCoeff_apply, this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← hact, ← hact, ← Matrix.map_mul, ← Matrix.map_mul, hc]`.
+-/
 theorem letter_formal (s r n m m' : ℕ) (hs : 1 ≤ s) (hl : (l : L) ≠ 0) {I : Type} (c : I → ℤ_[l])
     (i₀ : I) (G : I → ZMod n → Matrix (Fin r) (Fin r) (PowerSeries O))
     (Pm Pm' : ZMod n → Matrix (Fin r) (Fin r) (PowerSeries O))
@@ -227,6 +299,13 @@ theorem letter_formal (s r n m m' : ℕ) (hs : 1 ≤ s) (hl : (l : L) ≠ 0) {I 
 
 omit [Fact l.Prime] [Algebra ℤ_[l] O] in
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `k`. Use `X_mul_cancel ?_` and prove the remaining obligations. Establish `h` using `geom_sum_mul (1 + X : PowerSeries O) l`.
+
+Simplify using `only [pow_zero, pow_one, AlgHom.one_apply]`. Rewrite using `[hq]`. Take the linear combination `-h`. Consider the case `succ j ih`. Introduce `k`.
+
+Rewrite using `[pow_succ', AlgHom.mul_apply]`. Express the relevant statement in the definitionally equal form `φ ((letφ (n := n) φ ^ j) (fun _ => q) (k - 1)) = _`. Rewrite using `[ih, map_sum]`. Simplify using `only [map_pow, map_add, map_one, hφ, hq, add_sub_cancel, ← pow_mul, pow_succ', mul_assoc]`.
+-/
 theorem letφ_pow (n : ℕ) (φ : O⟦X⟧ →ₐ[O] O⟦X⟧) (q : O⟦X⟧) (hq : X * q = (1 + X) ^ l - 1) (hφ : φ X = X * q)
     (j : ℕ) : ∀ k, (letφ (n := n) φ ^ j) (fun _ => q) k = ∑ i ∈ Finset.range l, ((1 + X) ^ l ^ j) ^ i := by
   induction j with
@@ -246,17 +325,32 @@ theorem letφ_pow (n : ℕ) (φ : O⟦X⟧ →ₐ[O] O⟦X⟧) (q : O⟦X⟧) (h
 
 omit [Algebra ℤ_[l] O] in
 
+/- English proof (translation)
+Simplify using `[Matrix.mul_apply, Finset.sum_apply]`.
+-/
 theorem mul_letter {r n : ℕ} (M N : Matrix (Fin r) (Fin r) (LetA O n)) (i j : Fin r) (k : ZMod n) :
     (M * N) i j k = (M.map (· k) * N.map (· k)) i j := by
   simp [Matrix.mul_apply, Finset.sum_apply]
 
 omit [Algebra ℤ_[l] O] in
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem one_letter {r n : ℕ} (i j : Fin r) (k : ZMod n) :
     (1 : Matrix (Fin r) (Fin r) O⟦X⟧) i j = (1 : Matrix (Fin r) (Fin r) (LetA O n)) i j k := by
   rw [Matrix.one_apply, Matrix.one_apply]
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use `⟨fun g k => ?_, fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `h` using `(hmul i₀ g).symm.trans ((congrArg Gm (mul_comm _ _)).trans (hmul g i₀)) ext1 i j`. Establish `h'` using `congrFun (congrFun (congrFun h i) j) k`. Rewrite `h'` using `[mul_letter, mul_letter]`. Conclude with `h'`.
+
+Use `ext1 i j`. Establish `h'` using `congrFun (congrFun (congrFun hP i) j) k`. Rewrite `h'` using `[mul_letter]`. Rewrite using `[h', ← hQ k]`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]`.
+
+Use `ext1 i j`. Establish `h'` using `congrFun (congrFun (congrFun hGP i) j) k`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Pi.mul_apply, Pi.pow_apply] at h' ⊢`. Rewrite `h'` using `[mul_letter, mul_letter]`. Rewrite using `[← hQ k]`.
+
+Conclude with `h'`.
+-/
 theorem to_letters (s r n m m' : ℕ) {I : Type} [CommGroup I] (c : I → ℤ_[l]) (i₀ : I) (Q : LetA O n)
     (hQ : ∀ k, Q k = QQ l O s) (Gm : I → Matrix (Fin r) (Fin r) (LetA O n))
     (Pm Pm' : Matrix (Fin r) (Fin r) (LetA O n))
@@ -291,6 +385,17 @@ end Generic
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hG0 : ∀ g k, ((Gm g).map (· k)).map constantCoeff = 1` using `fun g k => by ext1 i j; rw [Matrix.map_apply, Matrix.map_apply, h0, Matrix.one_apply]`. Take `⟨e1, e2, e3⟩` from `to_letters s r n m m' (fun g => (c g : ℤ_[l])) i₀ Q hQ Gm Pm Pm' hmul hP hGP`. Use `choose U V hUV hU0 hGU hU hconv using fun k => exists_invariant_basis l LL s r (c i₀) hs h2 hu ((Gm i₀).map (· k)) (hG0 i₀ k)`. Take `⟨hinv, A, B, hA, hB, hV⟩` from `letter_formal (L := ↥LL.1) s r n m m' hs (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) (fun g => (c g : ℤ_[l])) i₀ (fun g k => (Gm g).map (· k)) (fun k => Pm.map (· k)) (fun k => Pm'.map (· k)) hG0 e1 e2 e3 U V hUV hU0 hGU hU`. Take `⟨τ, hτ⟩` from `exists_logS_div (LL := LL) s`.
+
+Establish `hρ : (0 : ℝ) < (l : ℝ) ^ (-((s : ℝ) + 1 / ((l : ℝ) - 1)))` using `Real.rpow_pos_of_pos (Nat.cast_pos.2 (Fact.out : l.Prime).pos) _`. Establish `c1` using `GlobalTheory.T.cyclotomicFrobenius_system_continuation_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ U _ B _ hρ hB (fun k i j => (hconv k i j).1)`. Establish `c2` using `GlobalTheory.T.cyclotomicFrobenius_system_continuation_open_disc l LL s r n (m + m') hs _ τ logS_const logS_deriv hτ (fun k => (V k).transpose) _ (fun k => (A k).transpose) _ hρ hV (fun k i j => (hconv k j i).2)`. Use `⟨Matrix.of fun i j k => U k i j, Matrix.of fun i j k => V k i j, ?_, fun i j k => ?_, fun i j k => ?_, fun g => ?_, Matrix.of fun i j k => A k i j, ?_⟩` and prove the remaining obligations. Use `ext1 i j`.
+
+Use function extensionality and compare the values at `k`. Rewrite using `[mul_letter]`. Conclude with `(congrFun (congrFun (hUV k) i) j).trans (one_letter i j k)`. Conclude with `(congrFun (congrFun (hU0 k) i) j).trans Matrix.one_apply`. Rewrite using `[← hτ, mul_pow, mul_assoc, mul_assoc]`.
+
+Conclude with `⟨conv_XX_pow_mul s _ (c1 k i j), conv_XX_pow_mul s _ (c2 k j i)⟩`. Use `ext1 i j`. Use function extensionality and compare the values at `k`. Rewrite using `[mul_letter]`. Conclude with `congrFun (congrFun (hinv g k) i) j`.
+
+Use `ext1 i j`. Use function extensionality and compare the values at `k`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, Pi.mul_apply, Pi.pow_apply, mul_letter, mul_letter, toLL, hQ, map_QQ]`. Conclude with `congrFun (congrFun (hA k) i) j`.
+-/
 theorem letterwise (s r n m m' : ℕ) [NeZero n] (hs : 1 ≤ s) (h2 : l = 2 → 2 ≤ s) {I : Type} [CommGroup I]
     (c : I → ℤ_[l]ˣ) (i₀ : I) (hu : ‖(c i₀ : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(s : ℤ))) (Q : LetA ↥(OL LL) n)
     (hQ : ∀ k, Q k = QQ l ↥(OL LL) s) (Gm : I → Matrix (Fin r) (Fin r) (LetA ↥(OL LL) n))
@@ -342,6 +447,13 @@ theorem letterwise (s r n m m' : ℕ) [NeZero n] (hs : 1 ≤ s) (h2 : l = 2 → 
 
 variable {P : LocPrime l} {K : FinExt l} {s : ℕ} {Γ : GamS P K s LL}
 
+/- English proof (translation)
+Take `⟨χ, hχ, -⟩` from `GlobalTheory.Cyc.exists_integral_cyclotomicChar l P`. Establish `hex : ∀ g : Γ.Gam, ∃ c : ℤ_[l]ˣ, (Γ.χΓ g : ↥(OL LL)) = algebraMap ℤ_[l] ↥(OL LL) c` using `fun g => by`. Take `⟨x, rfl⟩` from `Γ.resΓ_onto g`. Use `⟨χ x, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h` using `Γ.χΓ_res x`.
+
+Rewrite `h` using `[P.PD_χ, ← hχ]`. Conclude with `h`. Use `choose c hc using hex`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations. Establish `h` using `Γ.gam_gen`.
+
+Establish `hs : ((s : ℚ) : WithTop ℚ) = (s : WithTop ℚ)` using `by norm_cast`. Rewrite `h` using `[← hs, (GlobalTheory.HWL.NormVal.locPrime_v_normalised l P LL).1, hc, GroupLayer.norm_sub_one]`. Rewrite using `[h, ← Real.rpow_intCast]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem exists_char (Γ : GamS P K s LL) : ∃ c : Γ.Gam → ℤ_[l]ˣ, ‖(c Γ.gam : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(s : ℤ)) ∧
     ∀ g, (Γ.χΓ g : ↥(OL LL)) = algebraMap ℤ_[l] ↥(OL LL) (c g) := by
   obtain ⟨χ, hχ, -⟩ := GlobalTheory.Cyc.exists_integral_cyclotomicChar l P
@@ -360,6 +472,11 @@ theorem exists_char (Γ : GamS P K s LL) : ∃ c : Γ.Gam → ℤ_[l]ˣ, ‖(c �
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨c, hu, hc⟩` from `exists_char Γ`. Take `⟨_, hO, hl0, hl1, -⟩` from `GlobalTheory.Per.integers_completeDVR l LL`. Establish `hq : X * R.q₀ = (1 + X) ^ l - 1` using `by rw [R.q₀_def, P.PD_p]`. Establish `hpin` using `fun g => act_unique l ↥(OL LL) hl0 hl1 (R.γ₀ g) R.φ₀ (c g) (R.φ₀_X.trans hq) (R.γ₀_comm g) (R.γ₀_X g).1 ((R.γ₀_X g).2.trans (hc g))`. Use `⟨c, hu, (hpin 1).1, fun g => (hpin g).2, fun k => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[WSer.Q, letφ_pow _ _ _ hq R.φ₀_X, QQ, XX, add_sub_cancel]`.
+-/
 theorem pinned (R : WSer Γ) : ∃ c : Γ.Gam → ℤ_[l]ˣ, ‖(c Γ.gam : ℤ_[l]) - 1‖ = (l : ℝ) ^ (-(s : ℤ)) ∧
     R.φ₀ = phi l _ ∧ (∀ g, R.γ₀ g = act l _ (c g)) ∧ ∀ k, R.Q k = QQ l ↥(OL LL) s := by
   obtain ⟨c, hu, hc⟩ := exists_char Γ
@@ -378,6 +495,13 @@ open InvCont
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `l _ P K s LL hgood Γ R r m m' Gm Pm Pm' hmul h0 hP hGP`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Establish `hle : K0 K ≤ K.1` using `inf_le_left`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion hle).toLinearMap (IntermediateField.inclusion_injective hle)`. Use `haveI : NeZero (Module.finrank ℚ_[l] ↥(K0 K)) := ⟨Module.finrank_pos.ne'⟩`.
+
+Take `⟨c, hu, hφ, hγ, hQ⟩` from `pinned R`. Simplify using `only [hγ, hφ] at hmul hGP`. Take `⟨U, V, h1, h2, h3, h4, h5⟩` from `letterwise s r _ m m' hgood.1 hgood.2.1 c Γ.gam hu R.Q hQ Gm Pm Pm' hmul h0 hP (hGP Γ.gam)`. Use `⟨U, V, m + m', h1, h2, h3, fun g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, act_X, map_cyc]`.
+
+Simplify `h4 g` using `only [act_apply]`. Rewrite using `[← cyc_natCast l ↥LL.1 l]`. Simplify `h5` using `only [phi, act_apply]`.
+-/
 theorem exists_invariant_basis_conv : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (s : ℕ) (LL : FinExt l), Good K s LL → ∀ (Γ : GamS P K s LL) (R : WSer Γ), ∀ (r m m' : ℕ) (Gm : Γ.Gam → Matrix (Fin r) (Fin r) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)))) (Pm Pm' : Matrix (Fin r) (Fin r) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)))), (∀ g h, Gm (g * h) = Gm g * (Gm h).map (letγ (R.γ₀ g))) → (∀ g i j k, PowerSeries.constantCoeff (Gm g i j k) = if i = j then 1 else 0) → Pm * Pm' = (R.Q ^ m') • (1 : Matrix (Fin r) (Fin r) (LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K)))) → (∀ g, (letγ (R.γ₀ g) R.Q ^ m) • (Pm * (Gm g).map (letφ R.φ₀)) = (R.Q ^ m) • (Gm g * Pm.map (letγ (R.γ₀ g)))) → ∃ (U V : Matrix (Fin r) (Fin r) (LetA ↥LL.1 (Module.finrank ℚ_[l] ↥(K0 K)))) (w : ℕ), U * V = 1 ∧ (∀ i j k, PowerSeries.constantCoeff (U i j k) = if i = j then 1 else 0) ∧ (∀ i j k, Conv (logS LL ^ w * U i j k) ∧ Conv (logS LL ^ w * V i j k)) ∧ (∀ g, (Gm g).map toLL * U.map (fun a k => PowerSeries.subst (PowerSeries.map (algebraMap ↥(OL LL) ↥LL.1) (R.γ₀ g PowerSeries.X)) (a k)) = U) ∧ ∃ Cm : Matrix (Fin r) (Fin r) (ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ↥LL.1), Pm.map toLL * U.map (fun a k => PowerSeries.subst ((1 + PowerSeries.X) ^ l - 1 : PowerSeries ↥LL.1) (a (k - 1))) = (toLL R.Q ^ m) • (U * Cm.map (fun c k => PowerSeries.C (c k))) := by
   intro l _ P K s LL hgood Γ R r m m' Gm Pm Pm' hmul h0 hP hGP
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2

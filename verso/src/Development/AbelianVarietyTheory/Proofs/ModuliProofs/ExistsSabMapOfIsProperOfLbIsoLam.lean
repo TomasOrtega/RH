@@ -22,6 +22,11 @@ open GlobalTheory.Models GlobalTheory.ZM
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hΛ : (abelian₂ t.G t.PP.L).IsLB` using `LB.isLB_linComb t.PP.isLB _ _`. Use `t.prim.trans t.PP.isLB (LB.isLB_linComb t.PP.isLB _ _) (pull_isLB hΛ _) ?_` and prove the remaining obligations. Use `LBIso.chartPull (A := abelian₂ t.G t.PP.L) (B := abelian₂ t.G t.PP.L) (h := (lift (𝟙 t.G) (t.act.act H.w0)).left) (chartPullSame t.PP.L _ _ _ _ fun I => ?_) (Geo.Tor.chartPullPull _ _ _ rfl) (Pdiv.PullbackComparison.gen_refl _ hΛ)` and prove the remaining obligations. Establish `e : psum t.G ![𝟙 t.G, t.act.act H.w0] I.down = lift (𝟙 t.G) (t.act.act H.w0) ≫ psum t.G (x2 t.G) I.down`. Use `Eq.trans (congrArg (fun z => psum t.G z I.down) (funext fun i => ?_)) (psum_hom (preHom (lift (𝟙 t.G) (t.act.act H.w0))) (x2 t.G) I.down).symm` and prove the remaining obligations.
+
+Use `fin_cases i`. Conclude with `(lift_fst _ _).symm`. Conclude with `(lift_snd _ _).symm`. Conclude with `congrArg (fun z => z.left) e`.
+-/
 theorem lbIso_lam_pull_id_w0 {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S : Scheme.{0}}
     (t : SAB H S) :
     LBIso t.PP.L ((abelian₂ t.G t.PP.L).pull (Y := t.G.left) (lift (𝟙 t.G) (t.act.act H.w0)).left) := by
@@ -38,6 +43,17 @@ theorem lbIso_lam_pull_id_w0 {E : Type} [Field E] [NumberField E] [IsCMField E] 
     · exact (lift_snd _ _).symm
   exact congrArg (fun z => z.left) e
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H S S' t t' f φ φ₂ hp gp sq hΛ hact`. Use `exists_sabMap_of_isProper_of_lbIso hL.globalFns E H S S' t t' f φ hp gp ?_ hact` and prove the remaining obligations. Establish `l : (abelian₂ t.G t.PP.L).IsLB` using `LB.isLB_linComb t.PP.isLB _ _`. Establish `l' : (abelian₂ t'.G t'.PP.L).IsLB` using `LB.isLB_linComb t'.PP.isLB _ _`. Set `δ : t.G.left ⟶ (G2 t.G).left` to `(lift (𝟙 t.G) (t.act.act H.w0)).left`.
+
+Set `δ' : t'.G.left ⟶ (G2 t'.G).left` to `(lift (𝟙 t'.G) (t'.act.act H.w0)).left`. Establish `a₁ : δ ≫ (fst t.G t.G).left = 𝟙 _` using `congrArg (fun z => z.left) (lift_fst (𝟙 t.G) (t.act.act H.w0))`. Establish `a₂ : δ ≫ (snd t.G t.G).left = (t.act.act H.w0).left` using `congrArg (fun z => z.left) (lift_snd (𝟙 t.G) (t.act.act H.w0))`. Establish `b₁ : δ' ≫ (fst t'.G t'.G).left = 𝟙 _` using `congrArg (fun z => z.left) (lift_fst (𝟙 t'.G) (t'.act.act H.w0))`. Establish `b₂ : δ' ≫ (snd t'.G t'.G).left = (t'.act.act H.w0).left` using `congrArg (fun z => z.left) (lift_snd (𝟙 t'.G) (t'.act.act H.w0))`.
+
+Establish `e : δ' ≫ φ₂ = φ ≫ δ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst t.G t.G).left = (_ ≫ _) ≫ (fst t.G t.G).left`. Rewrite using `[Category.assoc, sq.1, ← Category.assoc, b₁, Category.assoc, a₁, Category.id_comp, Category.comp_id]`. Use `show (_ ≫ _) ≫ (snd t.G t.G).left = (_ ≫ _) ≫ (snd t.G t.G).left`.
+
+Rewrite using `[Category.assoc, sq.2, ← Category.assoc, b₂, Category.assoc, a₂, hact]`. Establish `s₁ : LBIso t'.PP.L (((abelian₂ t.G t.PP.L).pull φ₂).pull δ')` using `(lbIso_lam_pull_id_w0 t').trans t'.PP.isLB (pull_isLB l' _) (pull_isLB (pull_isLB l _) _) (SiegelPullComp.iso_pull δ' hΛ)`. Establish `s₂ : LBIso t'.PP.L ((abelian₂ t.G t.PP.L).pull (δ' ≫ φ₂))` using `s₁.trans t'.PP.isLB (pull_isLB (pull_isLB l _) _) (pull_isLB l _) (SiegelPullComp.iso_pull_pull l φ₂ δ')`. Rewrite `s₂` using `[e]`. Establish `s₃ : LBIso t'.PP.L (((abelian₂ t.G t.PP.L).pull δ).pull φ)` using `s₂.trans t'.PP.isLB (pull_isLB l _) (pull_isLB (pull_isLB l _) _) (SiegelPullComp.iso_pull_pull l δ φ).symm`.
+
+Conclude with `s₃.trans t'.PP.isLB (pull_isLB (pull_isLB l _) _) (pull_isLB t.PP.isLB _) (SiegelPullComp.iso_pull φ (lbIso_lam_pull_id_w0 t)).symm`.
+-/
 theorem exists_sabMap_of_isProper_of_lbIso_lam : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S S' : Scheme.{0}) (t : SAB H S) (t' : SAB H S') (f : S' ⟶ S) (φ : t'.G.left ⟶ t.G.left) (φ₂ : (G2 t'.G).left ⟶ (G2 t.G).left), IsProper t.G.hom → IsGrpPullback t'.G t.G f φ → IsSquare φ φ₂ → LBIso (abelian₂ t'.G t'.PP.L) ((abelian₂ t.G t.PP.L).pull φ₂) → (∀ a, (t'.act.act a).left ≫ φ = φ ≫ (t.act.act a).left) → ∃ m : SABMap t' t f, m.φ = φ := by
   intro hL E _ _ _ H S S' t t' f φ φ₂ hp gp sq hΛ hact
   refine exists_sabMap_of_isProper_of_lbIso hL.globalFns E H S S' t t' f φ hp gp ?_ hact

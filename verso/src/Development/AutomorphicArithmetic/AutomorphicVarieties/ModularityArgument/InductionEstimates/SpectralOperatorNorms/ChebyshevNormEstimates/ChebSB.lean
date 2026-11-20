@@ -5,6 +5,17 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Ci PositivityTheory.Rg.Fx
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
+/- English proof (translation)
+Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hr`. Proceed by induction on `m using Nat.twoStepInduction with`. Consider the case `zero => simpa using h1`. Consider the case `one`. Establish `: ‖φ y‖ ≤ 2 * r + 1` using `by linarith`.
+
+Simplify using `using this`. Consider the case `more m ih0 ih1`. Establish `e : Polynomial.Chebyshev.T ℂ ((m + 2 : ℕ) : ℤ) = Polynomial.X * Polynomial.Chebyshev.T ℂ ((m + 1 : ℕ) : ℤ) + Polynomial.X * Polynomial.Chebyshev.T ℂ ((m + 1 : ℕ) : ℤ) - Polynomial.Chebyshev.T ℂ (m : ℤ)`. Use `push_cast`. Rewrite using `[Polynomial.Chebyshev.T_add_two]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, map_add, map_mul, Polynomial.aeval_X, map_sub, map_add, map_mul]`. Use `set u := φ (Polynomial.aeval y (Polynomial.Chebyshev.T ℂ ((m + 1 : ℕ) : ℤ)))`. Use `set v := φ (Polynomial.aeval y (Polynomial.Chebyshev.T ℂ (m : ℤ)))`. Establish `hp : ‖φ y * u‖ ≤ r * (2 * r + 1) ^ (m + 1)` using `(norm_mul_le _ _).trans (mul_le_mul hr ih1 (norm_nonneg _) hr0)`.
+
+Establish `hq : (2 * r + 1) ^ m ≤ (2 * r + 1) ^ (m + 1)` using `pow_le_pow_right₀ (by linarith) (Nat.le_succ m)`. Establish `h2` using `norm_sub_le (φ y * u + φ y * u) v`. Establish `h3` using `norm_add_le (φ y * u) (φ y * u)`. Establish `h4 : (2 * r + 1) ^ (m + 2) = (2 * r + 1) * (2 * r + 1) ^ (m + 1)` using `by ring`. Rewrite using `[h4]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem chebyshev_image_norm_le {A B : Type} [CommRing A] [Algebra ℂ A] [NormedRing B] (φ : A →+* B)
     (h1 : ‖(1 : B)‖ ≤ 1) (y : A) (r : ℝ) (hr : ‖φ y‖ ≤ r) (m : ℕ) :
     ‖φ (Polynomial.aeval y (Polynomial.Chebyshev.T ℂ (m : ℤ)))‖ ≤ (2 * r + 1) ^ m := by
@@ -34,6 +45,15 @@ private theorem chebyshev_image_norm_le {A B : Type} [CommRing A] [Algebra ℂ A
     rw [h4]
     linarith
 
+/- English proof (translation)
+Introduce `K _ _ n d evz hc M₀ hM`. Establish `hM0 : 0 ≤ M₀` using `(norm_nonneg _).trans (hM 0 (by simp))`. Use `⟨4 * M₀ + 4, by linarith, fun η hη hη1 m z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖(1 : Eu d →L[ℂ] Eu d)‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`. Establish `hX : ‖evz z (C (X none))‖ ≤ M₀` using `hM z hz`.
+
+Establish `h2η : 0 ≤ 2 / η` using `by positivity`. Establish `hy : ‖((evz z).comp C) (C ((2 / η : ℝ) : ℂ) * X none - 1 : MvPolynomial (Option (Ix K n)) ℂ)‖ ≤ 2 / η * M₀ + 1`. Rewrite using `[map_sub, map_mul, map_one, RingHom.comp_apply, RingHom.comp_apply, hc, smul_mul_assoc, one_mul]`. Use `(norm_sub_le _ _).trans (add_le_add ?_ h1)` and prove the remaining obligations. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg h2η]`.
+
+Conclude with `mul_le_mul_of_nonneg_left hX h2η`. Use `chebyshev_image_norm_le ((evz z).comp C) h1 _ _ hy m` as an intermediate fact. Use `this.trans (pow_le_pow_left₀ (by positivity) ?_ m)` and prove the remaining obligations. Establish `h4 : 4 ≤ 4 / η` using `by rw [le_div_iff₀ hη]; linarith`. Establish `e : (4 * M₀ + 4) / η = 2 * (2 / η * M₀) + 4 / η` using `by ring`.
+
+Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.chebSB :
     ∀ {K : Type} [Field K] [NumberField K] {n d : ℕ} (evz : ℂ → PR K n →+* (Eu d →L[ℂ] Eu d)), (∀ z (c : ℂ), evz z (C (C c)) = c • 1) → ∀ M₀, SB (fun z => evz z (C (X none))) M₀ →
       ∃ M₁ : ℝ, 4 ≤ M₁ ∧ ∀ η : ℝ, 0 < η → η ≤ 1 → ∀ m : ℕ, SB (fun z => evz z (chebP η m)) ((M₁ / η) ^ m) := by

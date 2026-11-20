@@ -17,6 +17,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
   [NeZero n] (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
 
 omit [NeZero n] in
+/- English proof (translation)
+Rewrite using `[← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero]`.
+-/
 theorem nsmul_zmodToQZ (x : ZMod n) : n • zmodToQZ n x = 0 := by
   rw [← map_nsmul, nsmul_eq_mul, ZMod.natCast_self, zero_mul, map_zero]
 
@@ -32,6 +35,9 @@ def gsLocalUnitsImage (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+The claim follows from `(congrArg (zmodToQZ n) ((gsCompactInv_localToCompact S ιs n hodd h3 ξ).trans (gsSumInvRoots_apply S ιs n ξ))).trans ((map_sum (zmodToQZ n) _ _).trans (Finset.sum_congr rfl fun v _ => zmodToQZ_gsLocalInvRoots_eq_localInvU S ιs n v (ξ v)))`.
+-/
 theorem zmodToQZ_gsCompactInv_localToCompact_eq_localInvU (hodd : Odd n ∨ IsTotallyComplex K.1)
     (h3 : Subsingleton (cohomology (gsRoots S n) 3))
     (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
@@ -45,6 +51,11 @@ theorem zmodToQZ_gsCompactInv_localToCompact_eq_localInvU (hodd : Odd n ∨ IsTo
 omit [Fintype S] in
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `hg : ∀ v, 𝟙 (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) ≫ gsRootsOmegaMor S ιs n v = (Rep.resFunctor (gsFinFamily S ιs v).toMonoidHom).map (𝟙 (gsRoots S n)) ≫ gsRootsOmegaMor S ιs n v` using `fun _ => Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))`. Establish `e1` using `hom_apply_hom_apply_eq_of_comp_eq (localToCompact_compactCohomologyMap (gsFinFamily S ιs) (A := gsRoots S n) (B := gsRoots S n) (Aᵥ := fun v => Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) (Bᵥ := fun v => galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicComp …`. Establish `e2` using `hom_apply_hom_apply_eq_of_comp_eq (localToCompact_compactCohomologyMap (gsFinFamily S ιs) (A := gsRoots S n) (B := galSUnitsMax K.1 ℚ̄ S) (Aᵥ := fun v => galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)) …`. Use `(congrArg (gsRootsToUnitsCompact S ιs n 3).hom e1).trans (e2.trans ?_)` and prove the remaining obligations. Use `congrArg (localToCompact (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) (fun v => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (gsSUnitsLocalMor S ιs) 2).hom (funext fun v => ?_)` and prove the remaining obligations.
+
+Conclude with `(hom_apply_hom_apply_of_comp_eq (cohomologyMap_comp _ _ 2).symm (ξ v))`.
+-/
 theorem gsRootsToUnitsCompact_comparison_localToCompact
     (ξ : ∀ v : S, cohomology (Rep.res (gsFinFamily S ιs v).toMonoidHom (gsRoots S n)) 2) :
     (gsRootsToUnitsCompact S ιs n 3).hom ((gsRootsComparison S ιs n 3).hom
@@ -78,10 +89,16 @@ def gsLocalCup (d : GsUnitsDatum S) (z : cocycles (zmodRep.{0} (galUnramifiedOut
       ((δ (bockSeq_shortExact (galUnramifiedOutside K.1 ℚ̄ S) n (NeZero.ne n)) 1 2 rfl).hom (cohomologyπ _ 1 z)))
 
 omit [Fintype S] [NeZero n] in
+/- English proof (translation)
+Normalize the expressions using the abelian group laws.
+-/
 theorem sub_sub_eq_neg_sub_add {M : Type*} [AddCommGroup M] (a b c : M) : b - (a - c) = -(a - (b + c)) := by
   abel
 
 omit [Fintype S] [NeZero n] in
+/- English proof (translation)
+Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun v _ => by rw [map_sub, sub_add_cancel]`.
+-/
 theorem sum_map_eq_sum_map_sub_add {ι : Type*} (s : Finset ι) {M : ι → Type*} [∀ v, AddCommGroup (M v)] {N : Type*}
     [AddCommGroup N] (F : ∀ v, M v →+ N) (a b : ∀ v, M v) :
     ∑ v ∈ s, F v (a v) = ∑ v ∈ s, F v (a v - b v) + ∑ v ∈ s, F v (b v) := by
@@ -89,6 +106,9 @@ theorem sum_map_eq_sum_map_sub_add {ι : Type*} (s : Finset ι) {M : ι → Type
   exact Finset.sum_congr rfl fun v _ => by rw [map_sub, sub_add_cancel]
 
 omit [Fintype S] [NeZero n] in
+/- English proof (translation)
+Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_eq_zero fun v _ => by rw [map_sub, smul_sub, ha, hb, sub_zero]`.
+-/
 theorem nsmul_sum_map_sub {ι : Type*} (s : Finset ι) {M : ι → Type*} [∀ v, AddCommGroup (M v)] {N : Type*}
     [AddCommGroup N] (F : ∀ v, M v →+ N) (a b : ∀ v, M v) (ha : ∀ v, n • F v (a v) = 0)
     (hb : ∀ v, n • F v (b v) = 0) : n • ∑ v ∈ s, F v (a v - b v) = 0 := by
@@ -97,6 +117,13 @@ theorem nsmul_sum_map_sub {ι : Type*} (s : Finset ι) {M : ι → Type*} [∀ v
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Establish `hsurj` using `localToCompact_two_surjective S ιs n h3 (gsCupClass S ιs n hnS d z)`. Establish `hT` using `(congrArg (fun w => zmodToQZ n (gsCompactInv S ιs n hodd h3 w)) hsurj.choose_spec).symm.trans (zmodToQZ_gsCompactInv_localToCompact_eq_localInvU S ιs n hodd h3 hsurj.choose)`. Establish `L1` using `gsRootsToUnitsCompact_cup_eq S ιs n hnS ℓ k hℓ hnk hS d z`. Establish `hL2` using `(congrArg (fun w => (gsRootsToUnitsCompact S ιs n 3).hom ((gsRootsComparison S ιs n 3).hom w)) hsurj.choose_spec).symm.trans (gsRootsToUnitsCompact_comparison_localToCompact S ιs n hsurj.choose)`. Establish `h0 : (localToCompact (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) (fun v => galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) (gsSUnitsLocalMor S ιs) 2).hom (gsLocalUnitsImage S ιs n hsurj.c …`.
+
+Conclude with `(map_sub _ _ _).trans (sub_eq_zero.2 (hL2.symm.trans L1.choose_spec.2))`. Establish `hex` using `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_local (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 2) h0`. Establish `hy : ∀ v : S, (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsUnitsLocalMor S ιs v) 2).hom (cohomologyπ _ 2 L1.choose) - (gsLocalUnitsImage S ιs n hsurj.choose v - gsLocalCup S ιs n d z v) = (cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom ( …` using `fun v => (sub_sub_eq_neg_sub_add _ _ _).trans ((congrArg Neg.neg (congrFun hex.choose_spec v).symm).trans (map_neg ((cohomologyMapAlong (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (gsSUnitsLocalMor S ιs v) 2).hom) hex.choose).symm)`. Establish `hloc : ∀ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (gsLocalCup S ιs n d z v) = zmodToQZ n (Multiplicative.toAdd (charEquiv ℚ̄ (Set.toFinite S) hodd χ (SIdeleClassGroup.mk S (finiteEmbedding (v : HeightOneSpectrum (𝓞 K.1)) (Additive.toMul (d.2 v))))))` using `fun v => localInvU_cupPairing_δ_bockSeq S ιs hodd v (Additive.toMul (d.2 v)) z χ hχ`. Establish `hβ : n • ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (gsLocalUnitsImage S ιs n hsurj.choose v - gsLocalCup S ιs n d z v) = 0` using `nsmul_sum_map_sub n Finset.univ (fun v : S => localInvU (v : HeightOneSpectrum (𝓞 K.1))) (gsLocalUnitsImage S ιs n hsurj.choose) (gsLocalCup S ιs n d z) (fun v => (congrArg (n • ·) (zmodToQZ_gsLocalInvRoots_eq_localInvU S ιs n v (hsurj.choose v)).symm).trans (nsmul_zmodToQZ n _)) …`.
+
+Establish `hT1` using `sum_localInvU_eq_neg_divChar S ιs hodd (Additive.toMul d.1) z χ hχ L1.choose L1.choose_spec.1 (fun v => gsLocalUnitsImage S ιs n hsurj.choose v - gsLocalCup S ιs n d z v) (-hex.choose) hy hβ`. Establish `hsum : ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (gsLocalUnitsImage S ιs n hsurj.choose v) = ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (gsLocalUnitsImage S ιs n hsurj.choose v - gsLocalCup S ιs n d z v) + ∑ v : S, localInvU (v : HeightOneSpectrum (𝓞 K.1)) (gsLoc …` using `sum_map_eq_sum_map_sub_add Finset.univ (fun v : S => localInvU (v : HeightOneSpectrum (𝓞 K.1))) (gsLocalUnitsImage S ιs n hsurj.choose) (gsLocalCup S ιs n d z)`. Conclude with `hT.trans (hsum.trans ((congrArg₂ (· + ·) hT1 (Finset.sum_congr rfl fun v _ => hloc v)).trans ((neg_add_eq_sub _ _).trans (zmodToQZ_charEquiv_gsUnitsClass S n hodd χ d).symm)))`.
+-/
 theorem zmodToQZ_gsCompactInv_gsCupClass (ℓ k : ℕ) (hℓ : ℓ.Prime) (hnk : n = ℓ ^ k)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (hodd : Odd n ∨ IsTotallyComplex K.1) (h3 : Subsingleton (cohomology (gsRoots S n) 3))

@@ -44,6 +44,9 @@ def gsRootsOmegaMor (v : S) :
       (gsFinFamily_apply S ιs v σ ((((Additive.toMul ζ : rootsOfUnity n (maxUnramifiedOutside K.1 ℚ̄ S)) :
         (maxUnramifiedOutside K.1 ℚ̄ S)ˣ)) : maxUnramifiedOutside K.1 ℚ̄ S))))⟩
 
+/- English proof (translation)
+Rewrite using `[Preadditive.comp_nsmul, Preadditive.nsmul_comp, Category.comp_id, Category.id_comp]`.
+-/
 theorem comp_nsmul_id_eq {C : Type*} [Category C] [Preadditive C] {X Y : C} (f : X ⟶ Y) (m : ℕ) :
     f ≫ (m • 𝟙 Y) = (m • 𝟙 X) ≫ f := by
   rw [Preadditive.comp_nsmul, Preadditive.nsmul_comp, Category.comp_id, Category.id_comp]
@@ -78,10 +81,16 @@ def gsRootsComparison (m : ℕ) :
   compactCohomologyMap (gsFinFamily S ιs) (𝟙 (gsRoots S n)) (gsRootsOmegaMor S ιs n)
     (fun _ => Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun _ => rfl))) m
 
+/- English proof (translation)
+The claim follows from `sUnitsKummerSequence_shortExact S n hnS`.
+-/
 theorem gsKummer_shortExact (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal) :
     (sUnitsKummerSequence S (maxUnramifiedOutside K.1 ℚ̄ S) n).ShortExact :=
   sUnitsKummerSequence_shortExact S n hnS
 
+/- English proof (translation)
+The claim follows from `kummerSequence_shortExact n (by exact_mod_cast NeZero.ne n)`.
+-/
 theorem localKummer_shortExact (v : S) :
     (kummerSequence ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)
       (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)) n).ShortExact :=

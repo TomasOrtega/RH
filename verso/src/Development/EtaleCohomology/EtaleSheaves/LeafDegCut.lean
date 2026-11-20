@@ -9,17 +9,26 @@ open LateralTheory.E.E4 LateralTheory.E.LeafGhostCut LateralTheory.E.EtaleTopolo
 def Cov {B : Scheme.{0}} (U : B.Etale) (P : ∀ U' : B.Etale, (U' ⟶ U) → Prop) : Prop :=
   ∃ S ∈ (EtTop B) U, ∀ (U' : B.Etale) (a : U' ⟶ U), S a → P U' a
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun U' a ha => hPQ U' a (hP U' a ha)⟩`.
+-/
 theorem Cov.mono {B : Scheme.{0}} {U : B.Etale} {P Q : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : Cov U P)
     (hPQ : ∀ U' a, P U' a → Q U' a) : Cov U Q := by
   obtain ⟨S, hS, hP⟩ := h
   exact ⟨S, hS, fun U' a ha => hPQ U' a (hP U' a ha)⟩
 
+/- English proof (translation)
+Take `⟨S, hS, hP⟩` from `h`. Take `⟨S', hS', hQ⟩` from `h'`. Conclude with `⟨S ⊓ S', (EtTop B).intersection_covering hS hS', fun U' a ha => ⟨hP U' a ha.1, hQ U' a ha.2⟩⟩`.
+-/
 theorem Cov.and {B : Scheme.{0}} {U : B.Etale} {P Q : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : Cov U P) (h' : Cov U Q) :
     Cov U (fun U' a => P U' a ∧ Q U' a) := by
   obtain ⟨S, hS, hP⟩ := h
   obtain ⟨S', hS', hQ⟩ := h'
   exact ⟨S ⊓ S', (EtTop B).intersection_covering hS hS', fun U' a ha => ⟨hP U' a ha.1, hQ U' a ha.2⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, (EtTop B).top_mem U, fun U' a _ => h U' a⟩`.
+-/
 theorem Cov.all {B : Scheme.{0}} {U : B.Etale} {P : ∀ U' : B.Etale, (U' ⟶ U) → Prop} (h : ∀ U' a, P U' a) : Cov U P :=
   ⟨⊤, (EtTop B).top_mem U, fun U' a _ => h U' a⟩
 
@@ -94,6 +103,9 @@ def LeafSurj0 : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], 
   Cov U (fun U' a => ∃ c : Hrel (ZMod q) (sch.map (prB ι U')) (tw q i) 0,
     bY q i (g2 ≫ g1 ≫ p) ι U' 0 c = rY q i (g2 ≫ g1 ≫ p) ι a 0 y)
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hb U x`. Take `⟨y0, hy0⟩` from `hb U 0`. Use `(Cov.and (hv U y) (hv U y0)).mono fun U' a ⟨h1, h2⟩ => ?_` and prove the remaining obligations. Rewrite using `[← hf, ← hnat, h1, ← h2, hnat, hf, hy0, zero_comp, comp_zero]`.
+-/
 theorem loc_zero_map {B : Scheme.{0}} {q : ℕ} {K K' : DerivedCategory (SShv B q)} (f : K ⟶ K') {m : ℤ}
     (X X' : B.Etale → Type 1) [∀ U, Zero (X' U)]
     (e : ∀ U, X U → ((OU B q).obj U ⟶ (shiftFunctor _ m).obj K))
@@ -110,6 +122,9 @@ theorem loc_zero_map {B : Scheme.{0}} {q : ℕ} {K K' : DerivedCategory (SShv B 
   refine (Cov.and (hv U y) (hv U y0)).mono fun U' a ⟨h1, h2⟩ => ?_
   rw [← hf, ← hnat, h1, ← h2, hnat, hf, hy0, zero_comp, comp_zero]
 
+/- English proof (translation)
+The claim follows from `loc_zero_map (𝟙 K) X X e e hb res (fun _ y => y) hnat (fun U y => by simp) hv U x`.
+-/
 theorem loc_zero {B : Scheme.{0}} {q : ℕ} {K : DerivedCategory (SShv B q)} {m : ℤ}
     (X : B.Etale → Type 1) [∀ U, Zero (X U)]
     (e : ∀ U, X U → ((OU B q).obj U ⟶ (shiftFunctor _ m).obj K)) (hb : ∀ U, Function.Surjective (e U))
@@ -120,6 +135,9 @@ theorem loc_zero {B : Scheme.{0}} {q : ℕ} {K : DerivedCategory (SShv B q)} {m 
     Cov U (fun U' a => (OU B q).map a ≫ x ≫ (shiftFunctor _ m).map (𝟙 K) = 0) :=
   loc_zero_map (𝟙 K) X X e e hb res (fun _ y => y) hnat (fun U y => by simp) hv U x
 
+/- English proof (translation)
+Rewrite using `[IsZero.iff_id_eq_zero, ← CategoryTheory.Functor.map_id]`. Conclude with `hZ B q K K (𝟙 K) m h`.
+-/
 theorem isZero_of (hZ : LeafShMapZero) {B : Scheme.{0}} {q : ℕ} (K : DerivedCategory (SShv B q)) (m : ℤ)
     (h : ∀ (U : B.Etale) (x : (OU B q).obj U ⟶ (shiftFunctor _ m).obj K),
       Cov U (fun U' a => (OU B q).map a ≫ x ≫ (shiftFunctor _ m).map (𝟙 K) = 0)) :
@@ -127,6 +145,9 @@ theorem isZero_of (hZ : LeafShMapZero) {B : Scheme.{0}} {q : ℕ} (K : DerivedCa
   rw [IsZero.iff_id_eq_zero, ← CategoryTheory.Functor.map_id]
   exact hZ B q K K (𝟙 K) m h
 
+/- English proof (translation)
+Use `isZero_of hZ K m fun U x => Cov.all fun U' a => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hb U x`. Take `⟨y0, hy0⟩` from `hb U 0`. Rewrite using `[Subsingleton.elim y y0, hy0]`. Simplify using the standard rewrite rules.
+-/
 theorem isZero_neg (hZ : LeafShMapZero) {B : Scheme.{0}} {q : ℕ} (K : DerivedCategory (SShv B q)) (m : ℤ)
     (X : B.Etale → Type 1) (hs : ∀ U, Subsingleton (X U))
     (e : ∀ U, X U → ((OU B q).obj U ⟶ (shiftFunctor _ m).obj K)) (hb : ∀ U, Function.Surjective (e U)) :
@@ -137,6 +158,17 @@ theorem isZero_neg (hZ : LeafShMapZero) {B : Scheme.{0}} {q : ℕ} (K : DerivedC
   rw [Subsingleton.elim y y0, hy0]
   simp
 
+/- English proof (translation)
+Introduce `hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ`. Establish `hS : SHV q i V p g1 g2` using `hA`. Use `⟨fun m hm => ?_, ?_, ?_, fun m hm => ?_, fun m hm => ?_, ?_⟩` and prove the remaining obligations. Conclude with `isZero_of hZ K0 m (loc_zero _ (l0 · m) (fun U => (r0.1 U m).2) (fun U U' a => rY q i p ι a m) (fun U U' a y => r0.2 U U' a m y) (fun U y => hV0 hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U m hm y))`. Conclude with `hZ B q K0 K1 f 2 (loc_zero_map f _ _ (l0 · 2) (l1 · 2) (fun U => (r0.1 U 2).2) (fun U U' a => rY q i (g1 ≫ p) ι a 2) (fun U => gY q i p g1 ι U 2) (fun U U' a y => r1.2 U U' a 2 y) (fun U y => mf U 2 y) (fun U y => hK2 hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U y))`.
+
+Conclude with `hZ B q K1 K2 g 1 (loc_zero_map g _ _ (l1 · 1) (l2 · 1) (fun U => (r1.1 U 1).2) (fun U U' a => rY q i (g2 ≫ g1 ≫ p) ι a 1) (fun U => gY q i (g1 ≫ p) g2 ι U 1) (fun U U' a y => r2.2 U U' a 1 y) (fun U y => mg U 1 y) (fun U y => hK1 hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U y))`. Conclude with `isZero_neg hZ K2 m _ (fun U => hN _ _ _ m hm) (l2 · m) (fun U => (r2.1 U m).2)`. Break down `lt_or_gt_of_ne hm with hm | hm` into its components or cases. Conclude with `isZero_neg hZ L m _ (fun U => hN _ _ _ m hm) (lL · m) (fun U => (rL.1 U m).2)`. Conclude with `isZero_of hZ L m (loc_zero _ (lL · m) (fun U => (rL.1 U m).2) (fun U U' a => rB q i ι a m) (fun U U' a c => rL.2 U U' a m c) (fun U c => hVB hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U m hm c))`.
+
+Use `hI B q L K2 ℓ 0 (fun U x x' hx => ?_) (fun U y => ?_)` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(rL.1 U 0).2 x`. Take `⟨c', rfl⟩` from `(rL.1 U 0).2 x'`. Establish `hd` using `hIn hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U (c - c') (hx.mono fun U' a h => by`. Rewrite `h` using `[← mℓ U 0 c, ← mℓ U 0 c', ← r2.2 U U' a 0, ← r2.2 U U' a 0]`.
+
+Rewrite using `[map_sub, map_sub, (r2.1 U' 0).1 h, sub_self])`. Use `hd.mono fun U' a h => ?_` and prove the remaining obligations. Rewrite using `[← rL.2 U U' a 0 c, ← rL.2 U U' a 0 c', sub_eq_zero.1 ((map_sub _ c c').symm.trans h)]`. Take `⟨z, rfl⟩` from `(r2.1 U 0).2 y`. Use `(hSu hy q k hq i b ι V hV p g1 g2 h0 h1 h2 hS U z).mono fun U' a ⟨c, hc⟩ => ⟨lL U' 0 c, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← r2.2 U U' a 0 z, ← hc, mℓ U' 0 c]`.
+-/
 theorem goal_of (hN : LeafNeg) (hZ : LeafShMapZero) (hI : LeafShIso) (hV0 : LeafVan0) (hK2 : LeafKill2)
     (hK1 : LeafKill1) (hVB : LeafVanB) (hIn : LeafInj0) (hSu : LeafSurj0) : LateralTheory.E.EtaleTopologySheaves.LeafDeg := by
   intro hy q _ k _ hq i B W Y0 Y1 Y2 b ι _ V hV p g1 g2 h0 h1 h2 hA K0 K1 K2 L f g ℓ l0 l1 l2 lL r0 r1 r2 rL mf mg mℓ

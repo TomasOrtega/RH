@@ -23,6 +23,9 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 
 namespace GlobalTheory.InertTransferW
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hw` to reduce the goal to its premises. Establish `h2 : (a - b) • w = 0` using `by rw [sub_smul, h, sub_self]`. Conclude with `(smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hne)`.
+-/
 theorem complex_smul_left_cancel_of_ne_zero {V : Type*} [AddCommGroup V] [Module ℂ V] {a b : ℂ} {w : V} (hw : w ≠ 0) (h : a • w = b • w) :
     a = b := by
   by_contra hne
@@ -30,6 +33,9 @@ theorem complex_smul_left_cancel_of_ne_zero {V : Type*} [AddCommGroup V] [Module
   have h2 : (a - b) • w = 0 := by rw [sub_smul, h, sub_self]
   exact (smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hne)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Apply `hw` to reduce the goal to its premises. Establish `h2 : (a - b) • w = 0` using `by rw [sub_smul, h, sub_self]`. Conclude with `(smul_eq_zero.mp h2).resolve_left (sub_ne_zero.mpr hne)`.
+-/
 theorem field_smul_left_cancel_of_ne_zero {K V : Type*} [Field K] [AddCommGroup V] [Module K V] {a b : K} {w : V} (hw : w ≠ 0)
     (h : a • w = b • w) : a = b := by
   by_contra hne
@@ -39,6 +45,31 @@ theorem field_smul_left_cancel_of_ne_zero {K V : Type*} [Field K] [AddCommGroup 
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hW hE hS hTS hJunk j c c' u u' x x' hx hx' hc hc' hn hn'`. Take `⟨hcore, hSF, -, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hE`. Establish `hX : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Take `⟨hW0, hWops, -, -, -, -, hWev, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hcore hS hX R.SF hSF j`. Take `⟨hV, hVops, -⟩` from `(GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hcore.lev hcore.fam hcore.models).2 j A3.A.μ0`.
+
+Establish `K : ∀ {cc : Pl D.host.E → List ℤ → ℂ} {z : (A3.A.fam.L j A3.A.μ0).S.Forms}, R.thG j A3.A.μ0 (R.jV j A3.A.μ0 z) ∈ R.Wc' j cc → R.thG j A3.A.μ0 (R.jV j A3.A.μ0 z) ≠ 0 → ∀ P, Good R.toRealDat A3.A.μ0 P → ∀ cV cW, GlobalTheory.Hk3.MatchW R.toRealDat j A3.A.μ0 P cV cW → ∀ σ : ℂ, hV P …`. Introduce `cc z hz hz0 P hP cV cW hM σ hσ`. Rewrite `hz` using `[hWc j cc]`. Establish `h1` using `(GlobalTheory.T.theta_intertwines_matched_operators R.toRealDat F.lv2 hcore hS hX R.SF hSF j A3.A.μ0 P hP cV cW hM hV hVops).1 hW0 hWops (R.jV j A3.A.μ0 z)`. Establish `h4` using `hWev cc P hP cW _ hz`.
+
+Establish `h5 : σ • R.thG j A3.A.μ0 (R.jV j A3.A.μ0 z) = GlobalTheory.Hk3.evC (Wc D j) P (cc P) cW • R.thG j A3.A.μ0 (R.jV j A3.A.μ0 z)` using `((R.thG j A3.A.μ0).map_smul σ (R.jV j A3.A.μ0 z)).symm.trans ((congrArg (R.thG j A3.A.μ0) hσ).symm.trans (h1.trans h4))`. Conclude with `complex_smul_left_cancel_of_ne_zero hz0 h5`. Establish `hrank : (Vc D j).rank = (A3.A.fam.L j A3.A.μ0).n` using `R.B.rankL j`. Establish `V1 : ∀ (Q : A3.okI A3.A.μ0) (sq : List ℕ), Formalism.L2.Col.InertTypeOk (Vc D j).rank sq → ∀ f, R.jV j A3.A.μ0 (A3.heckeLI j A3.A.μ0 (Q, sq) f) = hV (R.plI Q) (Finsupp.single (labIn (Vc D j).rank sq) 1) (R.jV j A3.A.μ0 f)`. Introduce `Q sq hsq f`.
+
+Establish `tie` using `(hW.inert.hL j A3.A.μ0).some`. Use `((GlobalTheory.T.inertHeckeOperators_lifts_rational_selfAdjoint_labels R.toRealDat F.lv2 hcore.lev hcore.fam hcore.models j A3.A.μ0 _ (fun k : A3.okI A3.A.μ0 × List ℕ => R.plI k.1) (fun k => labIn (Vc D j).rank k.2) (A3.heckeLI j A3.A.μ0) (fun k => Formalism.L2.Col.InertTypeOk (V …` and prove the remaining obligations. Introduce `k hk`. Take `⟨hg, hcj⟩` from `(GlobalTheory.T.inert_places_iff_good_primes_fixed_by_conj R F hW A3.A.μ0 (R.plI k.1)).1 ⟨k.1, k.1.2, rfl⟩`. Use `⟨hg, hcj, ?_⟩` and prove the remaining obligations.
+
+Conclude with `((GlobalTheory.T.selfDual_antitone_list_iff_inertPrimeHeckeExponents (Vc D j).rank (labIn (Vc D j).rank k.2)).2 ⟨k.2, hk.2.2, hk.1, hk.2.1, rfl⟩).2.1`. Establish `hx0 : x ≠ 0` using `by rintro rfl; exact hn (by simp)`. Establish `hx0' : x' ≠ 0` using `by rintro rfl; exact hn' (by simp)`. Establish `hopx : ∀ k, A3.heckeLI j A3.A.μ0 k x = u (Sum.inr k) • x` using `fun k => hx (Sum.inr k)`. Establish `hopx' : ∀ k, A3.heckeLI j A3.A.μ0 k x' = u' (Sum.inr k) • x'` using `fun k => hx' (Sum.inr k)`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hu P d hP hPc hd`. Take `⟨Q, hQ, rfl⟩` from `(GlobalTheory.T.inert_places_iff_good_primes_fixed_by_conj R F hW A3.A.μ0 P).2 ⟨hP, hPc⟩`. Take `⟨cV, hM⟩` from `((hTS _ hP hPc).2 j).2 (Finsupp.single d 1)`. Take `⟨σ, h1, h2⟩` from `GlobalTheory.T.sphericalOperators_common_eigenvalue_inertPrime R.toRealDat hcore.models j A3.A.μ0 hV hVops _ hP hPc (fun sq => D.what₂.embLL (u (Sum.inr (⟨Q, hQ⟩, sq)))) (R.jV j A3.A.μ0 x) (R.jV j A3.A.μ0 x') (fun sq hsq => ⟨(V1 ⟨Q, hQ⟩ sq hsq x).symm.trans ((congrArg (R.jV j A3. …`.
+
+Establish `e1` using `K hc hn _ hP cV _ hM σ h1`. Establish `e2` using `K hc' hn' _ hP cV _ hM σ h2`. Unfold `GlobalTheory.Hk3.evC at e1 e2`. Rewrite `e1`, `e2` using `[Finsupp.sum_single_index (by simp), if_pos hd, one_mul]`. Conclude with `e1.symm.trans e2`.
+
+Introduce and unpack `hcc ⟨⟨Q0, hQ0⟩, sq⟩`. Establish `hPl` using `(GlobalTheory.T.inert_places_iff_good_primes_fixed_by_conj R F hW A3.A.μ0 (R.plI Q0)).1 ⟨Q0, hQ0, rfl⟩`. Break down `hJunk.2 j A3.A.μ0 (⟨Q0, hQ0⟩, sq) with h0 | ⟨y, hy, hop⟩` into its components or cases. Establish `a1 : u (Sum.inr (⟨Q0, hQ0⟩, sq)) • x = 0` using `(hopx (⟨Q0, hQ0⟩, sq)).symm.trans ((LinearMap.congr_fun h0 x).trans (LinearMap.zero_apply x))`. Establish `a2 : u' (Sum.inr (⟨Q0, hQ0⟩, sq)) • x' = 0` using `(hopx' (⟨Q0, hQ0⟩, sq)).symm.trans ((LinearMap.congr_fun h0 x').trans (LinearMap.zero_apply x'))`.
+
+Rewrite using `[(smul_eq_zero.mp a1).resolve_right hx0, (smul_eq_zero.mp a2).resolve_right hx0']`. Establish `a1 : u (Sum.inr (⟨Q0, hQ0⟩, sq)) = u (Sum.inr (⟨Q0, hQ0⟩, y))`. Conclude with `field_smul_left_cancel_of_ne_zero hx0 ((hopx (⟨Q0, hQ0⟩, sq)).symm.trans ((LinearMap.congr_fun hop x).trans (hopx (⟨Q0, hQ0⟩, y))))`. Establish `a2 : u' (Sum.inr (⟨Q0, hQ0⟩, sq)) = u' (Sum.inr (⟨Q0, hQ0⟩, y))`. Conclude with `field_smul_left_cancel_of_ne_zero hx0' ((hopx' (⟨Q0, hQ0⟩, sq)).symm.trans ((LinearMap.congr_fun hop x').trans (hopx' (⟨Q0, hQ0⟩, y))))`.
+
+Rewrite using `[a1, a2]`. Rewrite `hy` using `[← hrank]`. Take `⟨cW, hM⟩` from `((hTS _ hPl.1 hPl.2).2 j).1 (Finsupp.single (labIn (Vc D j).rank y) 1)`. Establish `b1` using `K hc hn _ hPl.1 _ cW hM _ ((V1 ⟨Q0, hQ0⟩ y hy x).symm.trans ((congrArg (R.jV j A3.A.μ0) (hopx _)).trans (map_smulₛₗ _ _ _)))`. Establish `b2` using `K hc' hn' _ hPl.1 _ cW hM _ ((V1 ⟨Q0, hQ0⟩ y hy x').symm.trans ((congrArg (R.jV j A3.A.μ0) (hopx' _)).trans (map_smulₛₗ _ _ _)))`.
+
+Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Use `b1.trans (Eq.trans ?_ b2.symm)` and prove the remaining obligations. Unfold `GlobalTheory.Hk3.evC`. Use `Finsupp.sum_congr fun d _ => ?_` and prove the remaining obligations. Use `split_ifs with hd`.
+
+Rewrite using `[hcc _ d hPl.1 hPl.2 hd]`. Both sides reduce to the same expression.
+-/
 theorem inertEigenvalues_iff_thetaLift_inertLabels_alt : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → (∀ P, Good R.toRealDat A3.A.μ0 P → conjPl P = P → TwoSided R.toRealDat A3.A.μ0 P) → ((∀ t (k : A3.okI t × List ℕ), A3.heckeRI t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.R t).n y ∧ A3.heckeRI t k = A3.heckeRI t (k.1, y)) ∧ ∀ j t (k : A3.okI t × List ℕ), A3.heckeLI j t k = 0 ∨ ∃ y, Formalism.L2.Col.InertTypeOk (A3.A.fam.L j t).n y ∧ A3.heckeLI j t k = A3.heckeLI j t (k.1, y)) → ∀ (j : Fin D.R.m) c c' (u u' : (A3.liftI j A3.A.μ0).OpIx → D.what₂.LL) (x x' : (A3.A.fam.L j A3.A.μ0).S.Forms), (∀ i, (A3.liftI j A3.A.μ0).opAll i x = u i • x) → (∀ i, (A3.liftI j A3.A.μ0).opAll i x' = u' i • x') → R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ∈ R.Wc' j c → R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x') ∈ R.Wc' j c' → R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x) ≠ 0 → R.thG j A3.A.μ0 (R.jV j A3.A.μ0 x') ≠ 0 → ((∀ k, u (Sum.inr k) = u' (Sum.inr k)) ↔ (∀ P d, Good R.toRealDat A3.A.μ0 P → conjPl P = P → IsLab (Wc D j) P d → c P d = c' P d)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hLI hOk hW hE hS hTS hJunk j c c' u u' x x' hx hx' hc hc' hn hn'
   obtain ⟨hcore, hSF, -, hWc⟩ := GlobalTheory.CoreOfWeak.core_of_weak R F hW hE

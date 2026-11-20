@@ -8,6 +8,9 @@ namespace GlobalTheory.HilbertThetaSeries.DualIdele
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.count_coe K v (by rwa [ne_eq, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]), HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ hr, WithZero.log_exp, neg_neg]`.
+-/
 theorem count_span_int (v : HeightOneSpectrum (𝓞 K)) {r : 𝓞 K} (hr : r ≠ 0) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K r)) =
       -WithZero.log (v.valuation K (algebraMap (𝓞 K) K r)) := by
@@ -16,6 +19,13 @@ theorem count_span_int (v : HeightOneSpectrum (𝓞 K)) {r : 𝓞 K} (hr : r ≠
     HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_if_neg _ hr, WithZero.log_exp,
     neg_neg]
 
+/- English proof (translation)
+Take `⟨⟨r, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (𝓞 K)⁰ x`. Establish `hs : (s : 𝓞 K) ≠ 0` using `nonZeroDivisors.coe_ne_zero s`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (by simp)`.
+
+Establish `hs' : algebraMap (𝓞 K) K s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hs`. Establish `e : IsLocalization.mk' K r s * algebraMap (𝓞 K) K s = algebraMap (𝓞 K) K r` using `IsLocalization.mk'_spec K r s`. Establish `e2` using `congrArg (FractionalIdeal.count K v) (congrArg (FractionalIdeal.spanSingleton (𝓞 K)⁰) e)`. Rewrite `e2` using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K v ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hx) ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hs'), count_span_int v hs, count_span_int v hr]`. Establish `e3` using `congrArg (v.valuation K) e`.
+
+Rewrite `e3` using `[map_mul]`. Establish `hv1 : v.valuation K (algebraMap (𝓞 K) K s) ≠ 0` using `(map_ne_zero _).mpr hs'`. Establish `hv2 : v.valuation K (IsLocalization.mk' K r s) ≠ 0` using `(map_ne_zero _).mpr hx`. Rewrite `e2` using `[← e3, WithZero.log_mul hv2 hv1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem count_span (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ x) = -WithZero.log (v.valuation K x) := by
   obtain ⟨⟨r, s⟩, rfl⟩ := IsLocalization.mk'_surjective (𝓞 K)⁰ x
@@ -37,6 +47,11 @@ theorem count_span (v : HeightOneSpectrum (𝓞 K)) {x : K} (hx : x ≠ 0) :
   rw [← e3, WithZero.log_mul hv2 hv1] at e2
   linarith
 
+/- English proof (translation)
+Establish `hy` using `(FiniteAdeleRing.isUnit_iff.1 y.isUnit).2`. Use `⟨∏ᶠ w : HeightOneSpectrum (𝓞 K), (w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ (-WithZero.log (Valued.v (pLoc K w (y : Af K)))), ?_, fun w => ?_⟩` and prove the remaining obligations. Use `finprod_induction (fun I : FractionalIdeal (𝓞 K)⁰ K => I ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun w => zpow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `FractionalIdeal.coeIdeal_ne_zero.2 w.ne_bot`. Use `FractionalIdeal.count_finprod K w (fun w => -WithZero.log (Valued.v (pLoc K w (y : Af K)))) ?_ filter_upwards [hy] with v hv` and prove the remaining obligations.
+
+Establish `: Valued.v (pLoc K v (y : Af K)) = 1` using `hv`. Rewrite using `[this, WithZero.log_one, neg_zero]`.
+-/
 theorem exists_ideal (y : (Af K)ˣ) : ∃ I : FractionalIdeal (𝓞 K)⁰ K, I ≠ 0 ∧
     ∀ w, FractionalIdeal.count K w I = -WithZero.log (Valued.v (pLoc K w (y : Af K))) := by
   have hy := (FiniteAdeleRing.isUnit_iff.1 y.isUnit).2
@@ -50,6 +65,21 @@ theorem exists_ideal (y : (Af K)ˣ) : ∃ I : FractionalIdeal (𝓞 K)⁰ K, I �
     have : Valued.v (pLoc K v (y : Af K)) = 1 := hv
     rw [this, WithZero.log_one, neg_zero]
 
+/- English proof (translation)
+Introduce `F _ _ y ξ hξ h`. Take `⟨I, hI, hc⟩` from `exists_ideal y`. Establish `hy0 : ∀ w, Valued.v (pLoc F w (y : Af F)) ≠ 0` using `fun w => (map_ne_zero _).2 ((FiniteAdeleRing.isUnit_iff.1 y.isUnit).1 w)`. Establish `hmem : ξ ∈ FractionalIdeal.dual ℤ ℚ I`. Rewrite using `[FractionalIdeal.mem_dual hI]`.
+
+Introduce `b hb`. Take `⟨n, hn⟩` from `h b fun w => by`. Break down `eq_or_ne b 0 with rfl | hb0` into its components or cases. Simplify using the standard rewrite rules. Establish `h1` using `FractionalIdeal.count_mono F w ((FractionalIdeal.spanSingleton_ne_zero_iff).mpr hb0) (FractionalIdeal.spanSingleton_le_iff_mem.2 hb)`.
+
+Rewrite `h1` using `[hc, count_span w hb0, neg_le_neg_iff]`. Conclude with `(WithZero.log_le_log ((map_ne_zero _).2 hb0) (hy0 w)).1 h1`. Conclude with `⟨n, by rw [Algebra.traceForm_apply]; simpa using hn.symm⟩`. Establish `hD` using `FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero (α := FractionalIdeal (𝓞 F)⁰ F))`. Establish `hd` using `coeIdeal_differentIdeal ℤ ℚ F (𝓞 F)`.
+
+Establish `hd0 : (differentIdeal ℤ (𝓞 F) : FractionalIdeal (𝓞 F)⁰ F) ≠ 0` using `hd ▸ inv_ne_zero hD`. Establish `hs0 : FractionalIdeal.spanSingleton (𝓞 F)⁰ ξ ≠ 0` using `(FractionalIdeal.spanSingleton_ne_zero_iff).mpr hξ`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 F)⁰ ξ * (I * (differentIdeal ℤ (𝓞 F) : FractionalIdeal (𝓞 F)⁰ F)) ≤ 1`. Establish `h1` using `FractionalIdeal.spanSingleton_le_iff_mem.2 hmem`. Rewrite `h1` using `[FractionalIdeal.dual_eq_mul_inv]`.
+
+Use `(mul_le_mul_left h1 _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hd]`. Clear the denominators using the available nonvanishing facts. Take `⟨𝔪, h𝔪⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hle`. Establish `hm0 : 𝔪 ≠ ⊥` using `FractionalIdeal.coeIdeal_ne_zero.1 (h𝔪 ▸ mul_ne_zero hs0 (mul_ne_zero hI hd0))`.
+
+Use `⟨𝔪, hm0, fun w => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (FractionalIdeal.count F w) h𝔪`. Rewrite `h2` using `[FractionalIdeal.count_mul F w hs0 (mul_ne_zero hI hd0), FractionalIdeal.count_mul F w hI hd0, FractionalIdeal.count_coe F w hm0, FractionalIdeal.count_coe F w (FractionalIdeal.coeIdeal_ne_zero.1 hd0), hc, count_span w hξ]`. Establish `h3 : Valued.v (pLoc F w (algebraMap F (Af F) ξ)) = w.valuation F ξ` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w ξ`. Establish `hx0 : w.valuation F ξ ≠ 0` using `(map_ne_zero _).2 hξ`.
+
+Rewrite using `[map_mul, map_mul, h3, ← WithZero.exp_log hx0, ← WithZero.exp_log (hy0 w), ← WithZero.exp_add]`. Use `congr 1`. Unfold `ordI`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem genD_of_trace : ∀ (F : Type) [Field F] [NumberField F] (y : (Af F)ˣ) (ξ : F), ξ ≠ 0 → (∀ b : F, (∀ w, w.valuation F b ≤ Valued.v (pLoc F w (y : Af F))) → ∃ n : ℤ, Algebra.trace ℚ F (ξ * b) = n) → ∃ 𝔪, GenD (algebraMap F (Af F) ξ * (y : Af F)) 𝔪 := by
   intro F _ _ y ξ hξ h
   obtain ⟨I, hI, hc⟩ := exists_ideal y

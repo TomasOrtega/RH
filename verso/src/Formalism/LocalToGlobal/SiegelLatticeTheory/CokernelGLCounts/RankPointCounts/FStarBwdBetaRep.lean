@@ -16,6 +16,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
+/- English proof (translation)
+Introduce `hC γ Z hZ`. Take `⟨w, hγ, -⟩` from `hZ`. Establish `hN` using `normRepExists_ctx hC`. Take `⟨⟨hgen, hG⟩, hat⟩` from `hγ`. Take `⟨y, hy⟩` from `hN γ w hat (eligRel_holds γ w ⟨⟨hgen, hG⟩, hat⟩) hgen`.
+
+Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨(w, y), hy⟩`. Establish `hn : nrep γ = some hex.choose` using `dif_pos hex`. Establish `hrep : repF γ = hex.choose.2.1` using `by unfold repF; rw [hn]`. Take `⟨⟨hPD, hmk⟩, -⟩` from `hex.choose_spec`. Use `⟨⟨hex.choose.2.1, hPD⟩, hrep.symm, hmk, ?_⟩` and prove the remaining obligations.
+
+Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 γ.lam hrow`. Establish `hrel` using `(hEq ⟨hex.choose.2.1, hPD⟩ (Quot.out γ.cls)).1 (hmk.trans (Quot.out_eq γ.cls).symm)`. Establish `e` using `Formalism.L2.SG.Pf.g_value_function _ _ _ _ _ hrel`. Conclude with `fun h0 => hG (e.symm.trans h0)`.
+-/
 theorem repG_holds : RepG u u' F0 what₂ := by
   intro hC γ Z hZ
   obtain ⟨w, hγ, -⟩ := hZ

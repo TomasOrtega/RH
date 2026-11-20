@@ -24,9 +24,17 @@ def ptOverHomEquiv {K L : Type} [Field K] [Field L] [Algebra K L] (X : Over (Sp 
   left_inv y := Over.OverMorphism.ext rfl
   right_inv x := rfl
 
+/- English proof (translation)
+Simplify using `using (isUnit_iff_ne_zero.2 hm).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`.
+-/
 theorem isUnit_natCast_top {K : Type} [Field K] {m : ℕ} (hm : (m : K) ≠ 0) : IsUnit (m : Γ(Sp K, ⊤)) := by
   simpa using (isUnit_iff_ne_zero.2 hm).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom
 
+/- English proof (translation)
+Take `⟨-, hfin, het⟩` from `GrpTangent.finiteEtale_mulN_torsion A (hG := hA) (isUnit_natCast_top hm)`. Rewrite using `[← Nat.card_congr (GlobalTheory.TorsionUnram.torsionEquiv A m _), ← Nat.card_congr (GlobalTheory.TorsionUnram.torsionEquiv A m _), Nat.card_congr (ptOverHomEquiv _), Nat.card_congr (ptOverHomEquiv _)]`. Take `⟨z⟩ : Nonempty (Sp Ω)` from `inferInstance`. Take `⟨z'⟩ : Nonempty (Sp Ω')` from `inferInstance`. Rewrite using `[(FinEt.card_points_eq_finrank (torsion A m).hom (spMap (algebraMap K Ω)) z).2, (FinEt.card_points_eq_finrank (torsion A m).hom (spMap (algebraMap K Ω')) z').2]`.
+
+Use `haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Rewrite using `[Subsingleton.elim (spMap (algebraMap K Ω) z) (spMap (algebraMap K Ω') z')]`.
+-/
 theorem card_torsion_eq {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Algebra K Ω] [Algebra K Ω']
     [IsSepClosed Ω] [IsSepClosed Ω'] (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A) {m : ℕ}
     (hm : (m : K) ≠ 0) :
@@ -41,6 +49,13 @@ theorem card_torsion_eq {K Ω Ω' : Type} [Field K] [Field Ω] [Field Ω'] [Alge
   haveI : Subsingleton (Sp K) := inferInstanceAs (Subsingleton (PrimeSpectrum K))
   rw [Subsingleton.elim (spMap (algebraMap K Ω) z) (spMap (algebraMap K Ω') z')]
 
+/- English proof (translation)
+Set `t : Sp L ⟶ Sp K` to `spMap (algebraMap K L)`. Use `letI : GrpObj ((Over.pullback t).obj A) := Functor.grpObjObj`. Establish `hgp : IsGrpPullback ((Over.pullback t).obj A) A t (pullback.fst A.hom t)` using `isGrpPullback_pullback A t`. Establish `hab : IsAbelianScheme ((Over.pullback t).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj t A hA`. Establish `hdim : SmoothOfRelativeDimension g ((Over.pullback t).obj A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hgp.1 hg`.
+
+Take `⟨e, -⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hgp (𝟙 (Sp L)) t (Category.id_comp t).symm`. Establish `hmL : (m : L) ≠ 0`. Introduce `h`. Apply `hm` to reduce the goal to its premises. Apply `(algebraMap K L).injective` to reduce the goal to its premises.
+
+Simplify using `using h`. Rewrite using `[← GlobalTheory.UU.TorsionCount.card_torsion_points_unconditional L _ g m hab hdim hmL]`. Conclude with `Nat.card_congr (Equiv.subtypeEquiv e.toEquiv fun x => by`. Express the relevant statement in the definitionally equal form `x ^ m = 1 ↔ e x ^ m = 1`. Rewrite using `[← map_pow, map_eq_one_iff e e.injective]).symm`.
+-/
 theorem card_torsion_algClosed {K L : Type} [Field K] [Field L] [IsAlgClosed L] [Algebra K L]
     (A : Over (Sp K)) [GrpObj A] (hA : IsAbelianScheme A) {g : ℕ} (hg : SmoothOfRelativeDimension g A.hom)
     {m : ℕ} (hm : (m : K) ≠ 0) :
@@ -62,6 +77,9 @@ theorem card_torsion_algClosed {K L : Type} [Field K] [Field L] [IsAlgClosed L] 
       change x ^ m = 1 ↔ e x ^ m = 1
       rw [← map_pow, map_eq_one_iff e e.injective]).symm
 
+/- English proof (translation)
+Introduce `K Ω _ _ _ _ A _ hA g hg m hm`. Rewrite using `[card_torsion_eq (Ω' := AlgebraicClosure Ω) A hA hm]`. Conclude with `card_torsion_algClosed A hA hg hm`.
+-/
 theorem card_torsion_sepClosed : ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [IsSepClosed Ω] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ g : ℕ, SmoothOfRelativeDimension g A.hom → ∀ m : ℕ, (m : K) ≠ 0 → Nat.card {x : ptOver K Ω ⟶ A // x ^ m = 1} = m ^ (2 * g) := by
   intro K Ω _ _ _ _ A _ hA g hg m hm
   rw [card_torsion_eq (Ω' := AlgebraicClosure Ω) A hA hm]

@@ -27,10 +27,16 @@ def kfinFuns (ε : Fin n → Bool) : Submodule ℂ (KG ε → ℂ) where
     rintro c a ⟨F, hF, ha, hc, ht⟩
     exact ⟨F, hF, F.smul_mem c ha, hc, ht⟩
 
+/- English proof (translation)
+Take `⟨F, -, he, hc, -⟩` from `h`. Conclude with `hc e he`.
+-/
 theorem continuous_of_kFinFun {e : KG ε → ℂ} (h : KFinFun ε e) : Continuous e := by
   obtain ⟨F, -, he, hc, -⟩ := h
   exact hc e he
 
+/- English proof (translation)
+The claim follows from `(he.mul hF).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem integrable_mul {e F : KG ε → ℂ} (he : Continuous e) (hF : Continuous F) :
     Integrable (fun k => e k * F k) (muK ε) :=
   (he.mul hF).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)

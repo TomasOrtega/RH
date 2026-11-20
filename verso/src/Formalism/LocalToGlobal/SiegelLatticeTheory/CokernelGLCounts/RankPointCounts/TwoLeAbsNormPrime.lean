@@ -9,11 +9,25 @@ namespace Formalism.L2.SG.NGCut.TorsionTotientBound
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Establish `h1 : Ideal.absNorm P ≠ 1` using `by rw [Ne, Ideal.absNorm_eq_one_iff]; exact hP.ne_top`. Establish `h2 : Ideal.absNorm P ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact h0`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_le_absNorm_prime {P : Ideal (𝓞 E)} (hP : P.IsPrime) (h0 : P ≠ ⊥) : 2 ≤ Ideal.absNorm P := by
   have h1 : Ideal.absNorm P ≠ 1 := by rw [Ne, Ideal.absNorm_eq_one_iff]; exact hP.ne_top
   have h2 : Ideal.absNorm P ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact h0
   omega
 
+/- English proof (translation)
+Establish `hI0 : ∀ I ∈ D, I ≠ ⊥` using `fun I hI h => hM (by obtain ⟨c, hc⟩ := hD I hI; rw [hc, h, Ideal.bot_mul])`. Establish `hinj : Set.InjOn (fun I => UniqueFactorizationMonoid.normalizedFactors I) (D : Set (Ideal (𝓞 E)))`. Introduce `I hI J hJ h`. Rewrite using `[← Ideal.prod_normalizedFactors_eq_self (hI0 I hI), ← Ideal.prod_normalizedFactors_eq_self (hI0 J hJ)]`. Conclude with `congrArg Multiset.prod h`.
+
+Establish `hsub : D.image (fun I => UniqueFactorizationMonoid.normalizedFactors I) ⊆ (UniqueFactorizationMonoid.normalizedFactors M).powerset.toFinset`. Introduce `s hs`. Take `⟨I, hI, rfl⟩` from `Finset.mem_image.1 hs`. Rewrite using `[Multiset.mem_toFinset, Multiset.mem_powerset]`. Conclude with `(UniqueFactorizationMonoid.dvd_iff_normalizedFactors_le_normalizedFactors (hI0 I hI) hM).1 (hD I hI)`.
+
+Establish `h1 : D.card ≤ 2 ^ Multiset.card (UniqueFactorizationMonoid.normalizedFactors M)`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : 2 ^ Multiset.card (UniqueFactorizationMonoid.normalizedFactors M) ≤ Ideal.absNorm M`. Establish `hprod : Ideal.absNorm M = ((UniqueFactorizationMonoid.normalizedFactors M).map Ideal.absNorm).prod` using `by conv_lhs => rw [← Ideal.prod_normalizedFactors_eq_self hM]`. Conclude with `map_multiset_prod Ideal.absNorm _`.
+
+Rewrite using `[hprod, ← Multiset.card_map Ideal.absNorm]`. Use `Multiset.pow_card_le_prod fun n hn => ?_` and prove the remaining obligations. Take `⟨P, hP, rfl⟩` from `Multiset.mem_map.1 hn`. Establish `hpr` using `UniqueFactorizationMonoid.prime_of_normalized_factor P hP`. Conclude with `two_le_absNorm_prime (Ideal.isPrime_of_prime hpr) hpr.ne_zero`.
+
+Conclude with `h1.trans h2`.
+-/
 theorem card_dvd_le_absNorm (M : Ideal (𝓞 E)) (hM : M ≠ ⊥) (D : Finset (Ideal (𝓞 E)))
     (hD : ∀ I ∈ D, I ∣ M) : D.card ≤ Ideal.absNorm M := by
   classical
@@ -46,6 +60,9 @@ theorem card_dvd_le_absNorm (M : Ideal (𝓞 E)) (hM : M ≠ ⊥) (D : Finset (I
     exact two_le_absNorm_prime (Ideal.isPrime_of_prime hpr) hpr.ne_zero
   exact h1.trans h2
 
+/- English proof (translation)
+Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv I (I.map σ) σ rfl).toEquiv.symm`.
+-/
 theorem absNorm_map_equiv (σ : 𝓞 E ≃+* 𝓞 E) (I : Ideal (𝓞 E)) :
     Ideal.absNorm (I.map σ) = Ideal.absNorm I := by
   rw [Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]

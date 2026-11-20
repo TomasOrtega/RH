@@ -21,6 +21,9 @@ open GlobalTheory.PullDegSymm
 
 namespace GlobalTheory.PullDegSymm
 
+/- English proof (translation)
+Establish `hm : r z ∈ p' ⁻¹ᵁ (LB.div (L.pull F) L').U (fun _ => j, j')` using `⟨mem_pull.2 h₁, h₂⟩`. Establish `e` using `congrArg (gm r z _) (H j j')`. Use `(gm_res _ z _ hm _).symm.trans (e.trans ?_)` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n) (gm_pull _ _ z _ hm _))) (gm_res _ z _ hm _))`.
+-/
 theorem carriesAt_gm {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} {w : LB.Iso L' (L.pull F)}
     {p' : Y ⟶ X'} {p : Y ⟶ X} {hp : p' ≫ F = p} {n : ℤ}
     {a : LB.Gen (LB.LinComb L' (K := PUnit) (fun _ => p') (fun _ => n))}
@@ -35,6 +38,19 @@ theorem carriesAt_gm {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X
   exact (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ n)
     (gm_pull _ _ z _ hm _))) (gm_res _ z _ hm _))
 
+/- English proof (translation)
+Introduce `R _ _ D D' p W ψW g hg H`. Establish `hgj : g ≫ W.ι = jK R` using `by rw [hg, specOf_id', Category.comp_id]`. Establish `hc : ∀ χ : D'.X, ∀ _ : PUnit, (toUnit (TW W) ≫ D'.c χ).left ≫ p.F = 𝟙 _ ≫ (toUnit (TW W) ≫ D.c (p.xe χ)).left`. Introduce `χ _`. Use `show (W.ι ≫ (D'.c χ).left) ≫ p.F = 𝟙 _ ≫ W.ι ≫ (D.c (p.xe χ)).left`.
+
+Rewrite using `[Category.assoc, p.c_eq, specOf_id', Category.id_comp, Category.id_comp]`. Use `choose ψ hψg hψm using fun χ : D'.X => GlobalTheory.DegPull.exists_pmaps ((isGen_iff _).1 p.w_gen) D.P.isLB D'.P.isLB (𝟙 _) (hc χ) (ψW.psi (p.xe χ)) (ψW.psi_gen _)`. Use `⟨⟨ψ, hψg, fun χ => ?_⟩, hψm⟩` and prove the remaining obligations. Apply `corr_of_val D'.P.isLB` to reduce the goal to its premises. Introduce `y J hJ`.
+
+Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Establish `hr : (jK R ∣_ W) ≫ W.ι = (jK R ⁻¹ᵁ W).ι ≫ jK R` using `morphismRestrict_ι _ _`. Establish `hιg : (jK R ⁻¹ᵁ W).ι ≫ g = jK R ∣_ W`. Rewrite using `[← cancel_mono W.ι, Category.assoc, hgj, hr]`. Establish `hpt : (jK R ∣_ W) ≫ (toUnit (TW W) ≫ D'.c χ).left = (jK R ⁻¹ᵁ W).ι ≫ D'.xK χ` using `by show (jK R ∣_ W) ≫ W.ι ≫ (D'.c χ).left = (jK R ⁻¹ᵁ W).ι ≫ jK R ≫ (D'.c χ).left`.
+
+Rewrite using `[← Category.assoc, hr, Category.assoc]`. Take `⟨jD, hjD⟩` from `exists_chart D.P.isLB (p.F (((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ) y))`. Establish `mq : ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ) y ∈ D'.P.L.U (J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ))` using `hJ _`. Establish `k1` using `hψm χ _ (jK R ∣_ W) y (fun _ => jD) (fun _ => J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ)) (fun _ => (congrArg (fun f => p.F (f y) ∈ D.P.L.U jD) hpt).mpr hjD) (fun _ => (congrArg (fun f => f y ∈ D'.P.L.U (J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ))) hpt).mpr mq)`. Rewrite `k1` using `[Category.comp_id, Fintype.prod_unique, hpt]`.
+
+Establish `k2` using `carriesAt_gm (H χ) (jK R ⁻¹ᵁ W).ι y jD (J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ)) hjD mq`. Establish `hq : (jK R ⁻¹ᵁ W).ι ≫ g ≫ (toUnit (TW W) ≫ D.c (p.xe χ)).left = ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ) ≫ p.F`. Rewrite using `[← Category.assoc, hιg, ← hpt, Category.assoc, hc χ PUnit.unit, Category.id_comp]`. Establish `a` using `gm_pullGen D.P.L _ _ (ψW.psi (p.xe χ)) g (jK R ⁻¹ᵁ W).ι y (fun _ => jD) (Set.mem_iInter.2 fun _ => (congrArg (fun f => f y ∈ D.P.L.U jD) hq).mpr hjD)`. Rewrite `a` using `[hιg]`.
+
+Rewrite using `[val_of (ψ χ) (jK R ∣_ W) y J (fun _ => J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ)) (fun _ => by rw [hpt]), val_of (D'.psi χ) (jK R ⁻¹ᵁ W).ι y J (fun _ => J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ)) (fun _ => rfl)]`. Conclude with `mul_left_cancel (k1.symm.trans (a.symm.trans k2))`.
+-/
 theorem exists_psiOn_rev : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) (p : PullIdent (RingHom.id R) D D')
     (W : (Spec (CommRingCat.of R)).Opens) (ψW : PsiOn D W) (g : (TK R).left ⟶ (TW W).left)
     (hg : g ≫ W.ι = jK R ≫ GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)),
@@ -79,6 +95,19 @@ theorem exists_psiOn_rev : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegP
       val_of (D'.psi χ) (jK R ⁻¹ᵁ W).ι y J (fun _ => J ((jK R ⁻¹ᵁ W).ι ≫ D'.xK χ)) (fun _ => rfl)]
   exact mul_left_cancel (k1.symm.trans (a.symm.trans k2))
 
+/- English proof (translation)
+Substitute `hχ` using the available equality. Rewrite using `[carriesAt_iff]`. Introduce `y j jD h₁ h₂`. Establish `hgj : g ≫ W.ι = jK R` using `by rw [hg, specOf_id', Category.comp_id]`. Establish `hP : g ≫ (toUnit (TW W) ≫ D.c (p.xe χ')).left = D.xK (p.xe χ')` using `by show g ≫ W.ι ≫ (D.c (p.xe χ')).left = jK R ≫ (D.c (p.xe χ')).left`.
+
+Rewrite using `[← Category.assoc, hgj]`. Establish `m₁ : (toUnit (TW W) ≫ D'.c χ').left (g y) ∈ D'.P.L.U j` using `(congrArg (fun f => f y ∈ D'.P.L.U j) hx).mp h₁`. Establish `m₂ : p.F ((toUnit (TW W) ≫ D'.c χ').left (g y)) ∈ D.P.L.U jD`. Establish `: p.F ((toUnit (TW W) ≫ D'.c χ').left (g y)) = D.xK (p.xe χ') y`. Establish `e` using `congrArg (fun f => f y) hx`.
+
+Conclude with `(congrArg p.F e.symm).trans (base_cancel (Finv_F p) _)`. Rewrite using `[this]`. Conclude with `h₂`. Establish `k` using `hψ χ' (TK R).left g y (fun _ => jD) (fun _ => j) (fun _ => m₂) (fun _ => m₁)`. Rewrite `k` using `[Category.comp_id, Fintype.prod_unique]`.
+
+Take `⟨J, hJ, eJ⟩` from `exists_good D.P.L D.P.isLB y (fun _ : PUnit => D.xK (p.xe χ')) (fun _ => jD) (fun _ _ _ => rfl) (fun _ => h₂)`. Establish `v` using `GlobalTheory.ArcSpecialise.psiOn_generic ψW (p.xe χ') g (𝟙 _) (by rw [hgj, Category.id_comp]) hJ`. Rewrite `v` using `[val_of _ g y J (fun _ => jD) (fun _ => by rw [hP]; exact eJ PUnit.unit), val_of _ (𝟙 _) y J (fun _ => jD) (fun _ => by rw [Category.id_comp]; exact eJ PUnit.unit)]`. Establish `a₁` using `gm_pullGen D'.P.L _ _ (ψW'.psi χ') g (𝟙 _) y (fun _ => j) (Set.mem_iInter.2 fun _ => m₁)`. Rewrite `a₁` using `[Category.id_comp]`.
+
+Establish `key : ∀ {G : Type} [CommGroup G] (A B C E : G), C = A ^ (-1 : ℤ) * B → C = E → B = A⁻¹ ^ (-1 : ℤ) * E`. Introduce `G _ A B C E h₁ h₂`. Rewrite using `[← h₂, h₁]`. Use `group`. Use `a₁.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[show gw (wInv p) (D.xK (p.xe χ')) y j jD = _ from gw_revIso p.w (Finv_F p) _ y j jD h₁ h₂, hx]`. Conclude with `key _ _ _ _ k v`.
+-/
 theorem psiOn_carries_pullbackIdent_reverse_of_pmaps {R : Type} [CommRing R] [IsDomain R] {D D' : DegPre R} (p : PullIdent (RingHom.id R) D D')
     {W : (Spec (CommRingCat.of R)).Opens} (ψW : PsiOn D W) {g : (TK R).left ⟶ (TW W).left}
     (hg : g ≫ W.ι = jK R ≫ GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) (ψW' : PsiOn D' W)
@@ -117,6 +146,9 @@ theorem psiOn_carries_pullbackIdent_reverse_of_pmaps {R : Type} [CommRing R] [Is
   rw [show gw (wInv p) (D.xK (p.xe χ')) y j jD = _ from gw_revIso p.w (Finv_F p) _ y j jD h₁ h₂, hx]
   exact key _ _ _ _ k v
 
+/- English proof (translation)
+Introduce `R _ _ D D' p W ψW g hg ψW' hψ χ` and use `psiOn_carries_pullbackIdent_reverse_of_pmaps p ψW hg ψW' hψ χ (p.xe.symm χ) (p.xe.apply_symm_apply χ) _`.
+-/
 theorem psi_carries_rev : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R) (p : PullIdent (RingHom.id R) D D')
     (W : (Spec (CommRingCat.of R)).Opens) (ψW : PsiOn D W) (g : (TK R).left ⟶ (TW W).left)
     (hg : g ≫ W.ι = jK R ≫ GlobalTheory.IndefiniteRowSideFullHecke.RigidPullbackIdentification.specOf (RingHom.id R)) (ψW' : PsiOn D' W),
@@ -128,6 +160,9 @@ theorem psi_carries_rev : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPr
         (GlobalTheory.PullDegSymm.c_eq' p χ) W g hg) (-1) (D.psi χ) (LB.pullGen D'.P.L _ _ (ψW'.psi (p.xe.symm χ)) g) := fun R _ _ D D' p W ψW g hg ψW' hψ χ =>
   psiOn_carries_pullbackIdent_reverse_of_pmaps p ψW hg ψW' hψ χ (p.xe.symm χ) (p.xe.apply_symm_apply χ) _
 
+/- English proof (translation)
+Introduce `R _ _ D D' hD`. Take `⟨p⟩` from `GlobalTheory.PullDegCompare.nonempty_iff.1 ⟨hD⟩`. Take `⟨W, ψW, g, hg, H⟩` from `p.w_psi`. Take `⟨ψW', hψ⟩` from `exists_psiOn_rev R D D' p W ψW g hg H`. Conclude with `GlobalTheory.PullDegCompare.nonempty_iff.2 ⟨⟨Finv p, cart' p, F_one' p, F_mul' p, wInv p, wInv_isGen p, w_rig' p, p.xe.symm, c_eq' p, ⟨W, ψW', g, hg, psi_carries_rev R D D' p W ψW g hg ψW' hψ⟩⟩⟩`.
+-/
 theorem isPullDeg_symm : ∀ (R : Type) [CommRing R] [IsDomain R] (D D' : DegPre R),
     IsPullDeg (RingHom.id R) D D' → Nonempty (IsPullDeg (RingHom.id R) D' D) := by
   intro R _ _ D D' hD

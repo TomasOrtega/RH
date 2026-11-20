@@ -17,6 +17,17 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.ZM.GraphSegre
 
+/- English proof (translation)
+Use extensionality with `F`. Simplify using `only [idealOf, graphIdeal, Ideal.mem_iInf, RingHom.mem_ker, Category.comp_id]`. Prove the components needed by the constructor for the conclusion. Introduce `hF T _ β y v₁ v₂ h`. Conclude with `hF T _ β y _ ⟨h.1, H T y v₁ v₂ h.2.1 h.2.2⟩`.
+
+Introduce `hF T _ β y v h`. Use `eq_zero_of_localization _ fun J hJ => ?_` and prove the remaining obligations. Use `set φ := algebraMap T (Localization.AtPrime J) with hφ`. Take `⟨v₁, hv₁⟩` from `(GlobalTheory.ZM.LocalCoord.secCoord_local X₁ M₁ σ₁ th₁ h₁).1 (Localization.AtPrime J) ((spMap φ ≫ y) ≫ a₁)`. Take `⟨v₂, hv₂⟩` from `(GlobalTheory.ZM.LocalCoord.secCoord_local X₂ M₂ σ₂ th₂ h₂).1 (Localization.AtPrime J) ((spMap φ ≫ y) ≫ a₂)`.
+
+Establish `hv` using `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N _ ty T y v hN h.2).1 _ φ`. Take `⟨u, hu⟩` from `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique Y N _ ty _ _ _ hN (H _ _ v₁ v₂ hv₁ hv₂)).2.2 _ hv`. Establish `hv₁'` using `(GlobalTheory.ZM.Coord.secCoord_bc_scale_unique X₁ M₁ _ th₁ _ _ _ h₁ hv₁).2.1 u`. Establish `hs : (spMap φ ≫ y) ≫ s = spMap (φ.comp β)`. Rewrite using `[Category.assoc, h.1]`.
+
+Conclude with `(Spec.map_comp (CommRingCat.ofHom β) (CommRingCat.ofHom φ)).symm`. Establish `key` using `hF _ _ (φ.comp β) (spMap φ ≫ y) _ v₂ ⟨hs, hv₁', hv₂⟩`. Rewrite using `[MvPolynomial.map_eval₂Hom, ← key]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[hu i, _root_.mul_assoc]`.
+-/
 theorem idealOf_eq_graphIdeal {K σ₁ σ₂ : Type} [CommRing K] {Y X₁ X₂ : Scheme.{0}} (s : Y ⟶ Sp K)
     (M₁ : LB X₁) (th₁ : σ₁ → M₁.Sec) (a₁ : Y ⟶ X₁) (M₂ : LB X₂) (th₂ : σ₂ → M₂.Sec) (a₂ : Y ⟶ X₂)
     (N : LB Y) (ty : σ₁ × σ₂ → N.Sec) (h₁ : M₁.IsLB) (h₂ : M₂.IsLB) (hN : N.IsLB)
@@ -45,6 +56,25 @@ theorem idealOf_eq_graphIdeal {K σ₁ σ₂ : Type} [CommRing K] {Y X₁ X₂ :
     funext i
     rw [hu i, _root_.mul_assoc]
 
+/- English proof (translation)
+Introduce `R K σ₁ σ₂ _ _ _ _ x I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ Y s a₁ a₂ r₁ r₂ hp ha₂`. Take `⟨I₃, M₃, th₃, r₃, hseg⟩` from `GlobalTheory.ZM.SegreCoord.segre_coordinates R σ₁ σ₂ I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ r₁ r₂`. Establish `hprop : IsProper Z₂.hom` using `(GlobalTheory.ZM.projRep_projective_ample R σ₂ I₂ Z₂ M₂ th₂ r₂).2.1`. Establish `hP : IsPullback (fst Z₁ Z₂).left (snd Z₁ Z₂).left Z₁.hom Z₂.hom` using `IsPullback.of_hasPullback Z₁.hom Z₂.hom`. Establish `hW` using `IsPullback.of_hasPullback (Z₁ ⊗ Z₂).hom (spMap x)`.
+
+Generalize the expression as in `pullback.fst (Z₁ ⊗ Z₂).hom (spMap x) = π at hW`. Generalize the expression as in `pullback.snd (Z₁ ⊗ Z₂).hom (spMap x) = s' at hW`. Generalize the expression as in `pullback (Z₁ ⊗ Z₂).hom (spMap x) = Wd at π s' hW`. Take `⟨th', r', hbc⟩` from `GlobalTheory.ZM.RepBC.projRep_baseChange R K _ x I₃ _ Wd _ s' π M₃ th₃ r₃ hW`. Establish `hfw : (fst Z₁ Z₂).left ≫ Z₁.hom = (Z₁ ⊗ Z₂).hom` using `Over.w _`.
+
+Set `a : Y ⟶ (Z₁ ⊗ Z₂).left` to `hP.lift a₁ a₂ (hp.w.trans ha₂.symm)`. Establish `e₁ : a ≫ (fst Z₁ Z₂).left = a₁` using `hP.lift_fst _ _ _`. Establish `e₂ : a ≫ (snd Z₁ Z₂).left = a₂` using `hP.lift_snd _ _ _`. Set `i : Y ⟶ Wd` to `hW.lift a s (by rw [← hfw, ← Category.assoc, e₁, hp.w])`. Establish `i₁ : i ≫ π = a` using `hW.lift_fst _ _ _`.
+
+Establish `i₂ : i ≫ s' = s` using `hW.lift_snd _ _ _`. Set `q : Wd ⟶ Y` to `hp.lift (π ≫ (fst Z₁ Z₂).left) s' (by rw [Category.assoc, hfw, hW.w])`. Establish `q₁ : q ≫ a₁ = π ≫ (fst Z₁ Z₂).left` using `hp.lift_fst _ _ _`. Establish `q₂ : q ≫ s = s'` using `hp.lift_snd _ _ _`. Establish `hq : IsPullback π q (fst Z₁ Z₂).left a₁`.
+
+Use `IsPullback.of_bot ?_ q₁.symm hp` and prove the remaining obligations. Rewrite using `[q₂, hfw]`. Conclude with `hW`. Establish `hsf : IsSeparated (fst Z₁ Z₂).left` using `MorphismProperty.of_isPullback (P := @IsSeparated) hP.flip inferInstance`. Establish `hsq : IsSeparated q` using `MorphismProperty.of_isPullback (P := @IsSeparated) hq hsf`.
+
+Establish `hiq : i ≫ q = 𝟙 Y`. Use `hp.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, q₁, ← Category.assoc, i₁, e₁, Category.id_comp]`. Rewrite using `[Category.assoc, q₂, i₂, Category.id_comp]`. Establish `hci : IsClosedImmersion i`.
+
+Establish `: IsClosedImmersion (i ≫ q)` using `by rw [hiq]; infer_instance`. Conclude with `IsClosedImmersion.of_comp i q`. Establish `hN : ((M₃.pull π).pull i).IsLB` using `pull_isLB r'.1 i`. Establish `hc : ∀ (T : Type) [CommRing T] (y : Sp T ⟶ Y) (v : σ₁ × σ₂ → T), SecCoord ((M₃.pull π).pull i) (fun j => GlobalTheory.ZM.RepBC.secPull _ i (th' j)) y v ↔ SecCoord (M₃.pull π) th' (y ≫ i) v` using `fun T _ y v => GlobalTheory.ZM.RepBC.secCoord_pull _ th' i y v`. Establish `rY` using `GlobalTheory.ZM.ClosedCoord.projRep_closed K _ _ Wd Y s' _ th' i _ _ r' hci hN hc`.
+
+Establish `H : ∀ (T : Type) [CommRing T] (y : Sp T ⟶ Y) (v₁ : σ₁ → T) (v₂ : σ₂ → T), SecCoord M₁ th₁ (y ≫ a₁) v₁ → SecCoord M₂ th₂ (y ≫ a₂) v₂ → SecCoord ((M₃.pull π).pull i) (fun j => GlobalTheory.ZM.RepBC.secPull _ i (th' j)) y (fun i => v₁ i.1 * v₂ i.2)`. Introduce `T _ y v₁ v₂ h₁ h₂`. Rewrite using `[hc, hbc, Category.assoc, i₁]`. Use `hseg T _ v₁ v₂ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, e₁]` and apply the resulting hypothesis.
+
+Rewrite using `[Category.assoc, e₂]` and apply the resulting hypothesis. Rewrite `rY` using `[i₂, idealOf_eq_graphIdeal s M₁ th₁ a₁ M₂ th₂ a₂ _ _ r₁.1 r₂.1 hN H]`. Conclude with `⟨_, _, rY, H⟩`.
+-/
 theorem projRep_graph : ∀ (R K σ₁ σ₂ : Type) [CommRing R] [CommRing K] [Finite σ₁] [Finite σ₂] (x : R →+* K) (I₁ : Ideal (MvPolynomial σ₁ R)) (I₂ : Ideal (MvPolynomial σ₂ R)) (Z₁ Z₂ : Over (Sp R)) (M₁ : LB Z₁.left) (M₂ : LB Z₂.left) (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec) (Y : Scheme.{0}) (s : Y ⟶ Sp K) (a₁ : Y ⟶ Z₁.left) (a₂ : Y ⟶ Z₂.left), ProjRep I₁ Z₁.hom M₁ th₁ → ProjRep I₂ Z₂.hom M₂ th₂ → IsPullback a₁ s Z₁.hom (spMap x) → a₂ ≫ Z₂.hom = s ≫ spMap x → ∃ (N : LB Y) (ty : σ₁ × σ₂ → N.Sec), ProjRep (graphIdeal s M₁ th₁ a₁ M₂ th₂ a₂) s N ty ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ Y) (v₁ : σ₁ → T) (v₂ : σ₂ → T), SecCoord M₁ th₁ (y ≫ a₁) v₁ → SecCoord M₂ th₂ (y ≫ a₂) v₂ → SecCoord N ty y (fun i => v₁ i.1 * v₂ i.2) := by
   intro R K σ₁ σ₂ _ _ _ _ x I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ Y s a₁ a₂ r₁ r₂ hp ha₂
   obtain ⟨I₃, M₃, th₃, r₃, hseg⟩ := GlobalTheory.ZM.SegreCoord.segre_coordinates R σ₁ σ₂ I₁ I₂ Z₁ Z₂ M₁ M₂ th₁ th₂ r₁ r₂

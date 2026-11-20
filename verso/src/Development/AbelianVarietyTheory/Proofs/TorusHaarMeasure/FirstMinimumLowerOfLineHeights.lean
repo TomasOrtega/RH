@@ -10,6 +10,11 @@ open scoped ComplexOrder ENNReal Matrix
 
 namespace GlobalTheory.LineHeight
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_unique, Matrix.mul_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h : (A * Matrix.of fun k (_ : Unit) => u k) a default = A.mulVec u a`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Rewrite using `[Matrix.conjTranspose_apply, h, Complex.star_def, Complex.conj_mul']`.
+
+Use `norm_cast`.
+-/
 theorem gramDet_column {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (u : Fin r → ℂ) :
     (((A * (Matrix.of fun k (_ : Unit) => u k))ᴴ * (A * (Matrix.of fun k (_ : Unit) => u k))).det.re)
       = ∑ a, ‖(A.mulVec u) a‖ ^ 2 := by
@@ -20,6 +25,13 @@ theorem gramDet_column {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (u : Fin r →
   rw [Matrix.conjTranspose_apply, h, Complex.star_def, Complex.conj_mul']
   norm_cast
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨i0⟩` from `‹Nonempty ι›`. Distinguish the cases in `hm0 : m ≤ 0`. Conclude with `absurd ((min_le_right _ _).trans (hm0.trans (hf i0))) (not_le.mpr (hcon i0))`.
+
+Establish `h1 : ∀ i, f i ≤ 1` using `fun i => ((hcon i).trans_le (min_le_left _ _)).le`. Establish `hp : ∏ i, f i ≤ f i0`. Rewrite using `[← Finset.mul_prod_erase Finset.univ f (Finset.mem_univ i0)]`. Conclude with `mul_le_of_le_one_right (hf i0) (Finset.prod_le_one (fun i _ => hf i) fun i _ => h1 i)`. Establish `h2 : f i0 < m` using `(hcon i0).trans_le (min_le_right _ _)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_min_le_of_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (f : ι → ℝ)
     (hf : ∀ i, 0 ≤ f i) (m : ℝ) (hm : m ≤ ∏ i, f i) : ∃ i, min 1 m ≤ f i := by
   classical
@@ -37,15 +49,38 @@ theorem exists_min_le_of_le_prod {ι : Type} [Fintype ι] [Nonempty ι] (f : ι 
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, not_not.mp (mt (X.cmType τ).2 h)⟩⟩`.
+-/
 theorem nonempty_cmType {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
   by_cases h : τ ∈ X.Ψ
   · exact ⟨⟨τ, h⟩⟩
   · exact ⟨⟨_, not_not.mp (mt (X.cmType τ).2 h)⟩⟩
 
+/- English proof (translation)
+The claim follows from `mul_pos two_pos (norm_pos_iff.mpr ((map_ne_zero τ.1).mpr X.ξ0_ne))`.
+-/
 theorem c_pos {r : ℕ} (X : Data E r) (τ : X.Ψ) : 0 < X.c τ :=
   mul_pos two_pos (norm_pos_iff.mpr ((map_ne_zero τ.1).mpr X.ξ0_ne))
 
+/- English proof (translation)
+Introduce `r X d hd hr m hm`. Use `nonempty_cmType X` as an intermediate fact. Take `⟨τ0, -, hτ0⟩` from `(Finset.univ : Finset X.Ψ).exists_min_image X.c Finset.univ_nonempty`. Establish `hmin : 0 < min 1 m` using `lt_min one_pos hm`. Establish `hδ : 0 < X.c τ0 * min 1 m` using `mul_pos (c_pos X τ0) hmin`.
+
+Use `⟨Real.sqrt (X.c τ0 * min 1 m), Real.sqrt_pos.2 hδ, fun x hx hW => ?_⟩` and prove the remaining obligations. Take `⟨hdet, hmaj⟩` from `GlobalTheory.T.majorant_eq_sum_norm_sq_orthonormalFrame r X x hx`. Establish `key : ∀ v ∈ X.Λ, v ≠ 0 → X.c τ0 * min 1 m ≤ ∑ τ, X.c τ * X.maj x τ (Data.emb τ.1 v)`. Introduce `v hv hv0`. Establish `hli : LinearIndependent E (fun _ : Unit => v)` using `linearIndependent_unique_iff.mpr hv0`.
+
+Establish `hfin : Module.finrank E (Submodule.span E (Set.range fun _ : Unit => v)) = 1`. Rewrite using `[Set.range_const]`. Conclude with `finrank_span_singleton hv0`. Establish `hg : ∀ τ : X.Ψ, (((mat x τ)⁻¹ * Matrix.of fun k (_ : Unit) => τ.1 (v k))ᴴ * ((mat x τ)⁻¹ * Matrix.of fun k (_ : Unit) => τ.1 (v k))).det.re = X.maj x τ (Data.emb τ.1 v)` using `fun τ => (gramDet_column _ _).trans (hmaj τ _).symm`. Establish `hmaj0 : ∀ τ, 0 ≤ X.maj x τ (Data.emb τ.1 v)` using `fun τ => by`.
+
+Rewrite using `[hmaj]`. Check the signs of the components of the expression. Establish `hidx` using `GlobalTheory.SpanIndex.relIndex_span_ne_zero r X Unit (fun _ => v) hli fun _ => hv`. Establish `h1` using `hW _ hfin`. Rewrite `h1` using `[hd x hdet Unit (fun _ => v) hli (fun _ => hv)]`.
+
+Simplify using `only [hg] at h1`. Establish `h2 : m ≤ ∏ τ, X.maj x τ (Data.emb τ.1 v)` using `h1.trans (div_le_self (Finset.prod_nonneg fun τ _ => hmaj0 τ) (by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hidx))`. Take `⟨τ, hτ⟩` from `exists_min_le_of_le_prod _ hmaj0 m h2`. Combine the equalities or inequalities in the displayed calculation. Establish `hne : ∃ v ∈ X.Λ, v ≠ 0`.
+
+Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hbot : Submodule.span E (X.Λ : Set (Fin r → E)) = ⊥` using `Submodule.span_eq_bot.mpr fun v hv => hcon v hv`. Rewrite `hbot` using `[X.Λ_span]`. Establish `: Nonempty (Fin r)` using `⟨⟨0, hr⟩⟩`.
+
+Conclude with `top_ne_bot hbot`. Take `⟨v0, hv0, hv00⟩` from `hne`. Unfold `Data.la1`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Unfold `Data.firstMinimumSq`.
+
+Use `le_csInf ⟨_, v0, hv0, hv00, rfl⟩ ?_` and prove the remaining obligations. Introduce and unpack `t ⟨v, hv, hv0', rfl⟩`. Conclude with `key v hv hv0'`.
+-/
 theorem exists_la1_lower_bound_of_line_heights : (∀ (r : ℕ) (X : Data E r) (d : Frame X.Ψ r → Submodule E (Fin r → E) → ℝ), (∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, (mat x τ).det ≠ 0) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (w : ι → Fin r → E), LinearIndependent E w → (∀ a, w a ∈ X.Λ) → d x (Submodule.span E (Set.range w)) = ((∏ τ : X.Ψ, ((((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))ᴴ * ((mat x τ)⁻¹ * (Matrix.of fun k a => τ.1 (w a k)))).det.re)) / (((Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup.relIndex (X.Λ.toAddSubgroup ⊓ (Submodule.span E (Set.range w)).toAddSubgroup)) : ℝ))) → 0 < r → ∀ m : ℝ, 0 < m → ∃ ε : ℝ, 0 < ε ∧ ∀ x, IsOrth X x → (∀ W : Submodule E (Fin r → E), Module.finrank E W = 1 → m ≤ d x W) → ε ≤ X.la1 x) := by
   intro r X d hd hr m hm
   have := nonempty_cmType X

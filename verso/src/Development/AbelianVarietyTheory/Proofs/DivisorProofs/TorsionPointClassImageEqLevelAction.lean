@@ -21,6 +21,11 @@ noncomputable section
 
 namespace GlobalTheory.TorsSpec
 
+/- English proof (translation)
+Establish `hP` using `GrpTangent.isPullback_torsion G n`. Establish `hw : ((torsion.ι G n).left ≫ φ) ≫ (mulN G n).left = ((torsion G n).hom ≫ f) ≫ (MonObj.one : 𝟙_ (Over X') ⟶ G).left`. Establish `e` using `eta_comp_of_isGrpPullback h`. Rewrite using `[Category.assoc, ← hc, ← Category.assoc, hP.w]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((torsion G n).hom ≫ ·) e).trans (Category.assoc _ _ _).symm)`.
+
+Conclude with `⟨hP.lift _ _ hw, hP.lift_fst _ _ hw, hP.lift_snd _ _ hw⟩`.
+-/
 theorem exists_torsion_map_of_isGrpPullback {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {f : X' ⟶ X'}
     {φ : G.left ⟶ G.left} (h : IsGrpPullback G G f φ) (hc : (mulN G n).left ≫ φ = φ ≫ (mulN G n).left) :
     ∃ τ : (torsion G n).left ⟶ (torsion G n).left,
@@ -34,6 +39,17 @@ theorem exists_torsion_map_of_isGrpPullback {X' : Scheme.{0}} (G : Over X') [Grp
       ((congrArg ((torsion G n).hom ≫ ·) e).trans (Category.assoc _ _ _).symm)
   exact ⟨hP.lift _ _ hw, hP.lift_fst _ _ hw, hP.lift_snd _ _ hw⟩
 
+/- English proof (translation)
+Introduce `E _ X' _ _ G _ _ _ n hn V _ ℓ _ M w hw _ _ hun act Γ _ ρ' ρ hρ ι m hm hmv K _ _ t γ P Q PT QT hPT hQT hPQ x cP cQ hcP hcQ`. Use `haveI := mono_torsion_ι G n`. Establish `hpb` using `hm.1 γ`. Take `⟨τ, hτι, hτh⟩` from `exists_torsion_map_of_isGrpPullback G n hpb (by rw [← act_natCast act n]; exact hm.2.1 γ _)`. Establish `hPQT : PT ≫ τ = QT`.
+
+Rewrite using `[← cancel_mono (torsion.ι G n).left, Category.assoc, hτι, reassoc_of% hPT, hQT, hPQ]`. Establish `hq : τ (PT x) = QT x` using `by rw [← hPQT, Scheme.Hom.comp_apply]`. Establish `hιh : (torsion.ι G n).left ≫ G.hom = (torsion G n).hom` using `Over.w _`. Establish `hval : ValAt G n ℓ w (PT x) ((ι γ).symm cQ)`. Introduce `Ω _ _ y z hyz`.
+
+Rewrite `hcQ` using `[← hq]`. Establish `key` using `Scheme.SpecMap_stalkMap_fromSpecStalk τ (x := PT x)`. Establish `h1` using `hcQ Ω (y ≫ Spec.map (τ.stalkMap (PT x))) (z ≫ (ρ γ).hom) (by`. Simplify using `only [Category.assoc, reassoc_of% key, hτh, hρ, reassoc_of% hyz])`. Simplify using `only [Category.assoc, reassoc_of% key, hτι] at h1`.
+
+Use `hpb.1.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hmv, LinearEquiv.apply_symm_apply]`. Conclude with `h1`. Simplify using `only [Category.assoc, hw, hιh]`. Conclude with `hyz`.
+
+Rewrite using `[valAt_unique G n hn ℓ w hw hun (PT x) cP _ hcP hval, LinearEquiv.apply_symm_apply]`.
+-/
 theorem class_move : ∀ {E : Type} [Field E] {X' : Scheme.{0}} [IsIntegral X'] [GlobalTheory.IsNormalScheme X'] (G : Over X') [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] (n : ℕ) (hn : IsUnit (n : Γ(X', ⊤))) {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X')
     [IsOpenImmersion ℓ] {M : Type} (w : M → (V ⟶ G.left)) (hw : ∀ c, w c ≫ G.hom = ℓ) [AddCommGroup M] [Module (𝓞 E) M] (hun : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ V) (c c' : M), x ≫ w c = x ≫ w c' → c = c') (act : OAct (𝓞 E) G)

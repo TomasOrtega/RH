@@ -22,15 +22,48 @@ open GlobalTheory.Mum
 noncomputable section
 namespace GlobalTheory.Mum.SecsAsm
 
+/- English proof (translation)
+Unfold `scal`. Rewrite using `[map_one, map_one, gs_eq p z ⊤ trivial, map_one, map_one]`.
+-/
 theorem gs_scal_one {R : Type} [CommRing R] {Y Z : Scheme.{0}} (q : Y ⟶ Sp R) (p : Z ⟶ Y) (z : Z) :
     gs p z ⊤ (scal q 1) = 1 := by
   unfold scal
   rw [map_one, map_one, gs_eq p z ⊤ trivial, map_one, map_one]
 
+/- English proof (translation)
+The claim follows from `IsLocalRing.comap_closedPoint (residue R)`.
+-/
 theorem closed_pt (R : Type) [CommRing R] [IsLocalRing R] :
     spMap (residue R) (closedPoint (ResidueField R)) = closedPoint R :=
   IsLocalRing.comap_closedPoint (residue R)
 
+/- English proof (translation)
+Take `⟨Y⟩ : Nonempty (Ext D.toPre)` from `inferInstance`. Take `⟨hsm, -, -, -, -⟩` from `GlobalTheory.Mum.ext_smooth_affine_surj_terms R D.toPre Y`. Take `⟨S, k₁, himm⟩` from `GlobalTheory.T.exists_theta_immersion_torus_extension_projective R hB D Y`. Take `⟨hth, hth0⟩` from `GlobalTheory.T.exists_integralThetaFamily_prescribed_leadingTerm R hB D`. Use `choose k₀ hk₀ using hth`.
+
+Take `⟨⟨j₀, hdesc⟩, hdescθ⟩` from `GlobalTheory.Mum.exists_secs_of_intFam R hB D C`. Establish `hk : k₁ + ∑ a ∈ S, k₀ a ≤ C.n ^ (max j₀ (k₁ + ∑ a ∈ S, k₀ a))` using `(le_max_right _ _).trans (Nat.lt_pow_self C.n_prime.one_lt).le`. Take `⟨Φ, hΦ⟩` from `hdesc (max j₀ (k₁ + ∑ a ∈ S, k₀ a)) (le_max_left _ _)`. Take `⟨N, α, b, τ, hτ, hατ, hI⟩` from `himm _ ((Nat.le_add_right _ _).trans hk)`. Establish `hF : ∀ i, ∃ F : IntFam (maximalIdeal R) D.toPre (C.n ^ (max j₀ (k₁ + ∑ a ∈ S, k₀ a))), F.Lead (α i) (b i)` using `fun i => hk₀ (α i) _ (((Finset.single_le_sum (fun _ _ => Nat.zero_le _) (hατ i).1).trans (Nat.le_add_left _ _)).trans hk) (b i)`.
+
+Use `choose F hFl using hF`. Take `⟨bθ, τθ, y₀, hθt, hy₀c, hy₀⟩` from `GlobalTheory.Mum.exists_term_nonzero_closed R hB D Y`. Take `⟨F₁, hF₁⟩` from `hth0 1 le_rfl bθ`. Take `⟨θ, hθ⟩` from `hdescθ F₁`. Establish `hsm0 : Smooth ((Over.pullback (spMap (residue R))).obj Y.H).hom` using `inferInstanceAs (Smooth (pullback.snd Y.H.hom (spMap (residue R))))`.
+
+Establish `himm0 : IsImmersion (pullback.fst Y.H.hom (spMap (residue R)) ≫ GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ)`. Establish `: IsClosedImmersion (spMap (residue R))` using `IsClosedImmersion.spec_of_surjective _ residue_surjective`. Establish `: IsClosedImmersion (pullback.fst Y.H.hom (spMap (residue R)))` using `inferInstance`. Use `infer_instance`. Use `⟨{ N := N, k := _, s := fun i => Φ (F i), θ := θ, Y := (Over.pullback (spMap (residue R))).obj Y.H smooth := hsm0 j := pullback.fst Y.H.hom (spMap (residue R)) ≫ GlobalTheory.ProjSpace.toProj Y.H.hom τ hτ j_over := ?_ imm := himm0 O := pullback.fst Y.H.hom (spMap (residue R)) ⁻¹ᵁ …` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, GlobalTheory.ProjSpace.toProj_str, pullback.condition]`. Both sides reduce to the same expression. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := Y.H.hom) (g := spMap (residue R)) y₀ (closedPoint _) (hy₀c.trans (closed_pt R).symm)`. Conclude with `⟨z, show pullback.fst Y.H.hom (spMap (residue R)) z ∈ nonzeroLocus τθ by rw [hz]; exact hy₀⟩`. Introduce `W _ _ _ hW φ ξ hφ hloc hξ`.
+
+Take `⟨W', _, _, _, io, T, hio, hfin, hTφ, hTξ⟩` from `C.exists_trait W hW φ ξ hφ hloc hξ`. Take `⟨u, hu⟩` from `hΦ W' T`. Take `⟨uθ, huθ⟩` from `hθ W' T`. Use `choose σ hσE hσA using fun i => hu (F i)`. Take `⟨θ', hθE, hθA⟩` from `huθ`.
+
+Take `⟨κ, e, hκ, he, hred⟩` from `GlobalTheory.Mum.trait_lead_value R hB D C Y W' T`. Establish `hκ' : κ.comp (residue R) = (residue W').comp (io.comp φ)` using `by rw [hκ, hTφ]`. Use `⟨W', _, inferInstance, inferInstance, io, T.G, inferInstance, T.β, σ, θ', κ, e, T.cdvr, hio, hfin, by rw [← hTξ]; exact T.cart, hκ', he, fun i Z p p' hpp z J hJ => ?_, fun Z p p' hpp z J hJ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hσA i Z p p' hpp z J hJ, gs_scal_one, _root_.one_mul]`. Rewrite using `[hθA Z p p' hpp z J hJ, gs_scal_one, _root_.one_mul]`.
+
+Introduce `Ω _ p p' y hp hy`. Establish `hval` using `hred (Sp Ω) p p' (y ≫ pullback.fst Y.H.hom (spMap (residue R))) hp (by rw [hy]; simp only [Category.assoc])`. Establish `e1 : spMap (residue W') ≫ spMap (io.comp φ) = spMap κ ≫ spMap (residue R)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hκ']`. Establish `hw` using `Over.w e.hom`.
+
+Establish `hbase : p' ≫ T.G.hom ≫ spMap (io.comp φ) = (y ≫ pullback.fst Y.H.hom (spMap (residue R))) ≫ Y.H.hom`. Rewrite using `[hp]`. Simplify using `only [Category.assoc]`. Rewrite using `[pullback.condition_assoc, e1, pullback.condition]`. Rewrite using `[hy]`.
+
+Simplify using `only [Category.assoc]`. Use `erw [pullback.condition_assoc]`. Rewrite using `[← Category.assoc e.hom.left]`. Use `erw [hw]`. Both sides reduce to the same expression.
+
+Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨-, hs, hP⟩` from `GlobalTheory.Mum.toProj_secPull_of_sval R Ω C.G.left D.toPre.P.A.left T.G.left Y.H.left C.P.L.L D.toPre.P.L T.β Y.q.left _ N σ τ Y.H.hom hτ p' (y ≫ pullback.fst Y.H.hom (spMap (residue R))) C.P.L.isLB D.toPre.P.isLB (fun z J J' hJ hJ' => by`. Take `⟨c, hc⟩` from `hval _ u z J J' hJ hJ'`. Conclude with `⟨c, fun i => hc (α i) (b i) (τ i) (F i) (σ i) (hατ i).2 (hFl i) (hσE i)⟩)`. Rewrite using `[hbase]`.
+
+Conclude with `⟨hs, hP.trans (by simp only [Category.assoc])⟩`. Use `choose J hJ using fun χ : Sp Ω ⟶ C.G.left => exists_chart C.P.L.isLB (χ x) choose J' hJ' using fun χ : Sp Ω ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (χ x)`. Take `⟨c, hc⟩` from `hval 1 uθ x J J' hJ hJ'`. Establish `h1` using `hc 0 bθ τθ F₁ θ' hθt hF₁ hθE`. Establish `hx' : (y ≫ pullback.fst Y.H.hom (spMap (residue R))) x ∈ nonzeroLocus τθ` using `hx`.
+
+Establish `hu1` using `(GlobalTheory.mem_nonzeroLocus_iff_pull τθ _ x (Good.mem hJ' _ _)).1 hx'`. Use `(GlobalTheory.mem_nonzeroLocus_iff_pull θ' p' x (Good.mem hJ _ _)).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (sval θ' p' x J)`. Rewrite using `[h1]`. Conclude with `c.isUnit.mul hu1`.
+-/
 theorem secs_exists (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hB : Base R) (D : DegData R (maximalIdeal R))
     (C : LabCover D) : Nonempty (Secs C.toModif C.G C.P.L.L C.α) := by
   obtain ⟨Y⟩ : Nonempty (Ext D.toPre) := inferInstance
@@ -117,6 +150,9 @@ theorem secs_exists (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hB : B
 
 end GlobalTheory.Mum.SecsAsm
 
+/- English proof (translation)
+Introduce `R _ _ _ hB D C`. Take `⟨h, -, -⟩` from `GlobalTheory.DegPullId.exists_isPullDeg_id_self R (maximalIdeal R) hB.1 D`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, RingHom.id R, D, C, ⟨hB.1, Function.injective_id, RingHom.Finite.id R⟩, ⟨h⟩, GlobalTheory.Mum.SecsAsm.secs_exists R hB D C⟩`.
+-/
 theorem GlobalTheory.Mum.exists_secs_finExt : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (C : LabCover D), ∃ (R₁ : Type) (_ : CommRing R₁) (_ : IsDomain R₁) (_ : IsLocalRing R₁) (ρ : R →+* R₁) (D₁ : DegData R₁ (maximalIdeal R₁)) (C₁ : LabCover D₁), FinExt ρ ∧ Nonempty (IsPullDeg ρ D.toPre D₁.toPre) ∧ Nonempty (Secs C₁.toModif C₁.G C₁.P.L.L C₁.α) := by
   intro R _ _ _ hB D C
   obtain ⟨h, -, -⟩ := GlobalTheory.DegPullId.exists_isPullDeg_id_self R (maximalIdeal R) hB.1 D

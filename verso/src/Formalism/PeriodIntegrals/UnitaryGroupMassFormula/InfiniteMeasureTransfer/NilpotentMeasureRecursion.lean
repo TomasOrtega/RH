@@ -13,26 +13,50 @@ variable (I : AutInst) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso I)
 
 abbrev Mv (g : HI I) (v : InfinitePlace I.F) : Matrix (Fin I.n) (Fin I.n) ℂ := (hmI I g).map (thI I v)
 
+/- English proof (translation)
+Establish `h` using `congrFun (betaI_toInfL I hb s) v`. Rewrite using `[← h]`. Conclude with `betaV_val I v _`.
+-/
 theorem uMat_toInf (s : I.Ginf) (v : InfinitePlace I.F) :
     uMat (s v) = (I.P v)⁻¹ * Mv I (Formalism.L2.SG.Pf.MeasInf.toInfL I hb s) v * I.P v := by
   have h := congrFun (betaI_toInfL I hb s) v
   rw [← h]
   exact betaV_val I v _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lin_eq (g : HI I) (w : Fin I.n → TI I) :
     Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g w = hmI I g *ᵥ w := rfl
 
+/- English proof (translation)
+Rewrite using `[lin_eq, thV_sub, thV_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+-/
 theorem thV_lin_sub (g : HI I) (v : InfinitePlace I.F) (w : Fin I.n → TI I) :
     thV I v (Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g w - w) =
       (Mv I g v - 1) *ᵥ thV I v w := by
   rw [lin_eq, thV_sub, thV_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rv_eq (v : InfinitePlace I.F) (x : Fin I.n → I.E) : rv I v x = (I.P v)⁻¹ *ᵥ phV I v x := rfl
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)), Matrix.one_mulVec]`.
+-/
 theorem Pinv_mulVec_P_mulVec (v : InfinitePlace I.F) (y : Fin I.n → ℂ) : (I.P v)⁻¹ *ᵥ (I.P v *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec,
     Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)), Matrix.one_mulVec]
 
+/- English proof (translation)
+Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hPi : ∀ y, I.P v *ᵥ ((I.P v)⁻¹ *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hL : ((I.P v)⁻¹ * Mv I g v * I.P v - 1) *ᵥ ((I.P v)⁻¹ *ᵥ u) = (I.P v)⁻¹ *ᵥ ((Mv I g v - 1) *ᵥ u)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPi, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`.
+
+Establish `himg : (fun a => (I.P v)⁻¹ *ᵥ phV I v (Y a)) '' t = (Matrix.mulVecLin (I.P v)⁻¹) '' ((fun a => phV I v (Y a)) '' t)`. Rewrite using `[Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[hL, himg, Submodule.span_image]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, hxy⟩`. Establish `h2` using `congrArg (fun x => I.P v *ᵥ x) hxy`. Simplify using `only [Matrix.mulVecLin_apply, hPi] at h2`. Rewrite using `[← h2]`. Conclude with `hy`.
+
+Introduce `h`. Conclude with `⟨_, h, rfl⟩`.
+-/
 theorem conj_mem_iff {m : ℕ} (g : HI I) (v : InfinitePlace I.F) (Y : Fin m → Fin I.n → I.E) (t : Set (Fin m))
     (u : Fin I.n → ℂ) :
     ((I.P v)⁻¹ * Mv I g v * I.P v - 1) *ᵥ ((I.P v)⁻¹ *ᵥ u) ∈
@@ -59,6 +83,17 @@ theorem conj_mem_iff {m : ℕ} (g : HI I) (v : InfinitePlace I.F) (Y : Fin m →
   · intro h
     exact ⟨_, h, rfl⟩
 
+/- English proof (translation)
+Establish `key : ∀ v, ((I.P v)⁻¹ * Mv I g v * I.P v) *ᵥ rv I v x = rv I v x ↔ Mv I g v *ᵥ phV I v x = phV I v x`. Introduce `v`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hPi : ∀ y, I.P v *ᵥ ((I.P v)⁻¹ *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`.
+
+Rewrite using `[rv_eq, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPi]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg (fun y => I.P v *ᵥ y) h`. Simplify `h2` using `only [hPi]`.
+
+Introduce `h`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Rewrite using `[key]`.
+
+Establish `h2` using `congrArg (thV I v) h`. Rewrite `h2` using `[lin_eq, thV_mulVec, thV_ratV]`. Conclude with `h2`. Introduce `h`. Apply `thV_ext (I := I)` to reduce the goal to its premises.
+
+Introduce `v`. Rewrite using `[lin_eq, thV_mulVec, thV_ratV]`. Conclude with `(key v).1 (h v)`.
+-/
 theorem fix_iff (g : HI I) (x : Fin I.n → I.E) :
     Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g
               (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) x) =
@@ -89,6 +124,19 @@ theorem fix_iff (g : HI I) (x : Fin I.n → I.E) :
     rw [lin_eq, thV_mulVec, thV_ratV]
     exact (key v).1 (h v)
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.SG.Sub.tupH, Formalism.L2.SG.Sub.F0]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Establish `h2` using `h (Fin.castAdd r (Fin.castSucc a))`.
+
+Rewrite `h2` using `[Fin.append_left, Fin.snoc_castSucc]`. Then use the resulting hypothesis. Establish `h2` using `h (Fin.natAdd (r + 1) a)`. Rewrite `h2` using `[Fin.append_right]`. Then use the resulting hypothesis. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+
+Establish `h2` using `h (Fin.castAdd r (Fin.last r))`. Rewrite `h2` using `[Fin.append_left, Fin.snoc_last]`. Then use the resulting hypothesis. Introduce `h b`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left i`.
+
+Rewrite using `[Fin.append_left]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.snoc_last]`. Conclude with `h _ (by simp)`.
+
+Consider the case `cast a`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `h _ (by simp)`. Consider the case `right j`. Rewrite using `[Fin.append_right]`.
+
+Conclude with `h _ (by simp)`.
+-/
 theorem tup_all {r : ℕ} (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (Q : (Fin I.n → I.E) → Prop) :
     (∀ b, Q (Formalism.L2.SG.Sub.tupH (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) b)) ↔
       ∀ x ∈ Set.range e ∪ Set.range f ∪ {z}, Q x := by
@@ -119,6 +167,13 @@ theorem tup_all {r : ℕ} (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E
       rw [Fin.append_right]
       exact h _ (by simp)
 
+/- English proof (translation)
+Introduce `I hb r e f z s`. Establish `hmem : ∀ g : HI I, g ∈ Formalism.L2.SG.Sub.Hsub (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) ↔ ∀ b, Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) …` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (Formalism.L2.SG.Sub.tupH (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) b)) = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (Formalism.L2.SG.Su …`. Introduce `g`. Simplify using `only [Formalism.L2.SG.Sub.Hsub, Formalism.L2.SG.Sub.stabT, MulAction.mem_stabilizer_iff]`. Conclude with `funext_iff`.
+
+Use `(hmem _).trans ((tup_all I e f z (fun x => Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (Formalism.L2.SG.Pf.MeasInf.toInfL I hb s) (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMass …` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.HidaSetting.Hset, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h v x hx`. Rewrite using `[uMat_toInf I hb s v]`.
+
+Conclude with `(fix_iff I _ x).1 (h x hx) v`. Introduce `h x hx`. Conclude with `(fix_iff I _ x).2 fun v => by`. Rewrite using `[← uMat_toInf I hb s v]`. Conclude with `h v x hx`.
+-/
 theorem hermitian_measure_recursion : HStep := by
   intro I hb r e f z s
   have hmem : ∀ g : HI I, g ∈ Formalism.L2.SG.Sub.Hsub (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J
@@ -143,9 +198,15 @@ theorem hermitian_measure_recursion : HStep := by
       rw [← uMat_toInf I hb s v]
       exact h v x hx
 
+/- English proof (translation)
+The claim follows from `Set.ext fun _ => Fin.lt_iff_val_lt_val`.
+-/
 theorem span_lt_eq {m : ℕ} (b : Fin m) : {a : Fin m | a < b} = {c : Fin m | c.1 < b.1} :=
   Set.ext fun _ => Fin.lt_iff_val_lt_val
 
+/- English proof (translation)
+The claim follows from `Set.ext fun c => ⟨fun _ => c.2, fun _ => Set.mem_univ _⟩`.
+-/
 theorem span_univ_eq (m : ℕ) : (Set.univ : Set (Fin m)) = {c : Fin m | c.1 < m} :=
   Set.ext fun c => ⟨fun _ => c.2, fun _ => Set.mem_univ _⟩
 
@@ -157,6 +218,13 @@ def Acond {r : ℕ} (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (M : M
     ∀ u, (∀ a, Bv I v (phV I v (e a)) u = 0) →
       (M - 1) *ᵥ u ∈ Submodule.span ℂ ((fun c => phV I v (e c)) '' {c | c.1 < r})
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.SG.HidaSetting.InN, Formalism.L2.SG.HidaSetting.InS, Formalism.L2.SG.HidaSetting.spanLt, Acond, rv_eq]`. Rewrite using `[and_assoc]`. Use `and_congr (forall_congr' fun a => conj_mem_iff I g v e _ _) (and_congr (conj_mem_iff I g v e _ _) ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`.
+
+Establish `h2` using `h ((I.P v)⁻¹ *ᵥ u) (fun a => by rw [hJ_conj]; exact hu a)`. Conclude with `(conj_mem_iff I g v e _ u).1 h2`. Introduce `h y hy`. Establish `hy' : y = (I.P v)⁻¹ *ᵥ (I.P v *ᵥ y)` using `(Pinv_mulVec_P_mulVec I v y).symm`. Rewrite `hy`, the goal using `[hy']`.
+
+Conclude with `(conj_mem_iff I g v e _ _).2 (h _ fun a => by rw [← hJ_conj]; exact hy a)`.
+-/
 theorem inN_iff {r : ℕ} (g : HI I) (v : InfinitePlace I.F) (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) :
     InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) ((I.P v)⁻¹ * Mv I g v * I.P v) ↔
       Acond I e z (Mv I g v) v := by
@@ -173,6 +241,25 @@ theorem inN_iff {r : ℕ} (g : HI I) (v : InfinitePlace I.F) (e : Fin r → Fin 
     rw [hy'] at hy ⊢
     exact (conj_mem_iff I g v e _ _).2 (h _ fun a => by rw [← hJ_conj]; exact hy a)
 
+/- English proof (translation)
+Establish `hz : ∀ a, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE I.cm.sig I.J (e a) z = 0` using `hstd.2.2.2.1`. Prove the components needed by the constructor for the conclusion. Introduce `hg v`. Take `⟨h1, h2⟩` from `hg`. Use `⟨fun a => ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h1 a) v`. Rewrite `h3` using `[thV_lin_sub, thV_ratV]`. Conclude with `h3`. Establish `hw : Formalism.L2.SG.Sub.InXperp (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) (Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) z) := by`. Introduce `a`.
+
+Apply `thI_inj (I := I)` to reduce the goal to its premises. Introduce `v'`. Rewrite using `[thI_hR, thV_ratV]`. Conclude with `(phi_hE (I := I) v' (e a) z).symm.trans (by rw [hz a, map_zero])`. Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h2 _ hw) v`.
+
+Rewrite `h3` using `[thV_lin_sub, thV_ratV, span_univ_eq]`. Conclude with `h3`. Take `⟨w, hw⟩` from `exists_single (I := I) v u`. Establish `hx : Formalism.L2.SG.Sub.InXperp (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) w`. Introduce `a`.
+
+Apply `thI_inj (I := I)` to reduce the goal to its premises. Introduce `v'`. Rewrite using `[thI_hR, hw v']`. Use `split_ifs with hv`. Substitute `hv` using the available equality.
+
+Conclude with `hu a`. Simplify using `[Bv]`. Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h2 _ hx) v`. Rewrite `h3` using `[thV_lin_sub, hw v, if_pos rfl, span_univ_eq]`. Conclude with `h3`.
+
+Introduce `h`. Use `(show _ ∧ _ from ⟨fun b => ?_, fun w hw => ?_⟩)` and prove the remaining obligations. Rewrite using `[mem_spanR_iff (I := I)]`. Introduce `v`. Rewrite using `[thV_lin_sub, thV_ratV]`.
+
+Conclude with `(h v).1 b`. Rewrite using `[mem_spanR_iff (I := I)]`. Introduce `v`. Rewrite using `[thV_lin_sub, span_univ_eq]`. Use `(h v).2.2 _ fun a => ?_` and prove the remaining obligations.
+
+Rewrite using `[← thI_hR]`. Conclude with `(congrArg (thI I v) (hw a)).trans (map_zero _)`.
+-/
 theorem nsub_iff {r : ℕ} (g : HI I) (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (T : I.F)
     (hstd : (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r).IsStd I.cm.sig I.J T) :
     g ∈ Formalism.L2.SG.Sub.Nsub (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J
@@ -222,6 +309,9 @@ theorem nsub_iff {r : ℕ} (g : HI I) (e f : Fin r → Fin I.n → I.E) (z : Fin
       rw [← thI_hR]
       exact (congrArg (thI I v) (hw a)).trans (map_zero _)
 
+/- English proof (translation)
+Introduce `I hb r e f z T hstd s`. Rewrite using `[nsub_iff I _ e f z T hstd]`. Simplify using `only [Formalism.L2.SG.HidaSetting.Ninf, Set.mem_setOf_eq]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[uMat_toInf I hb s v, inN_iff]`.
+-/
 theorem nilpotent_measure_recursion : NStep := by
   intro I hb r e f z T hstd s
   rw [nsub_iff I _ e f z T hstd]

@@ -18,6 +18,11 @@ section Gen
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
+/- English proof (translation)
+Establish `hg0 : (g : 𝓞 E) ≠ 0` using `by exact_mod_cast (by omega : g ≠ 0)`. Rewrite using `[← Ideal.mem_span_singleton]`. Use `hr ?_` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf, Submodule.mem_sInf]`. Introduce and unpack `J ⟨hJ, hp⟩`.
+
+Establish `hJ0 : J ≠ ⊥`. Introduce `e`. Rewrite `hJ` using `[e, le_bot_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hg0 hJ`. Conclude with `hb ⟨J, hp, hJ0⟩ (hJ (Ideal.mem_span_singleton_self _))`.
+-/
 theorem dvd_of_forall_mem (g : ℕ) (hg : 1 ≤ g) (hr : (Ideal.span {(g : 𝓞 E)}).IsRadical)
     (b : 𝓞 E) (hb : ∀ PP : Pl E, (g : 𝓞 E) ∈ PP.asIdeal → b ∈ PP.asIdeal) : (g : 𝓞 E) ∣ b := by
   have hg0 : (g : 𝓞 E) ≠ 0 := by exact_mod_cast (by omega : g ≠ 0)
@@ -31,6 +36,17 @@ theorem dvd_of_forall_mem (g : ℕ) (hg : 1 ≤ g) (hr : (Ideal.span {(g : 𝓞 
     exact hg0 hJ
   exact hb ⟨J, hp, hJ0⟩ (hJ (Ideal.mem_span_singleton_self _))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h PP hP`. Establish `hgk : ((g : ℕ) : kP PP) = 0`. Use `Ideal.Quotient.eq_zero_iff_mem.2 hP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+
+Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Take `⟨t, ht⟩` from `h i j`. Establish `h1` using `congrArg (resS F PP) ht`. Rewrite `h1` using `[map_sub, map_nsmul, nsmul_eq_mul, hgk, zero_mul, sub_eq_zero]`.
+
+Use `show resS F PP ((y : Matrix (Fin n) (Fin n) (intAf F E)) i j) = (1 : Matrix (Fin n) (Fin n) (kP PP)) i j`. Rewrite using `[h1]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hij]`. Introduce `h i j`. Use `lc_div g (by omega) (dvd_of_forall_mem g hg hr) _ fun PP hP => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun M : GL (Fin n) (kP PP) => (M : Matrix (Fin n) (Fin n) (kP PP)) i j) (h PP hP)`. Express the relevant statement in the definitionally equal form `resS F PP ((y : Matrix (Fin n) (Fin n) (intAf F E)) i j) = (1 : Matrix (Fin n) (Fin n) (kP PP)) i j at h1`.
+
+Rewrite using `[map_sub, h1]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+-/
 theorem entries_iff_red (g : ℕ) (hg : 1 ≤ g) (hr : (Ideal.span {(g : 𝓞 E)}).IsRadical) (y : GL (Fin n) (intAf F E)) :
     (∀ i j, ∃ t : intAf F E, (y : Matrix (Fin n) (Fin n) (intAf F E)) i j -
         (1 : Matrix (Fin n) (Fin n) (intAf F E)) i j = g • t) ↔
@@ -59,6 +75,23 @@ theorem entries_iff_red (g : ℕ) (hg : 1 ≤ g) (hr : (Ideal.span {(g : 𝓞 E)
     · subst hij; simp
     · simp [hij]
 
+/- English proof (translation)
+Use `set B : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := (β : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hB`. Use `set Bi : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := ((β⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) with hBi`. Use `set Y : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := (y : Matrix (Fin n) (Fin n) (intAf F E)).map (intAf F E).subtype with hY`. Establish `hXe : ((frGL β y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) = B * Y * Bi` using `lc_frGL_coe β y`. Establish `hBiB : Bi * B = 1` using `Units.inv_mul β`.
+
+Establish `hBBi : B * Bi = 1` using `Units.mul_inv β`. Establish `hX1 : ((frGL β y : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) - 1 = B * (Y - 1) * Bi`. Rewrite using `[hXe, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hBBi]`. Establish `hYe : ∀ i j, Y i j - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) i j = (((y : Matrix (Fin n) (Fin n) (intAf F E)) i j - (1 : Matrix (Fin n) (Fin n) (intAf F E)) i j : intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F)`. Introduce `i j`.
+
+Rewrite using `[← lc_one_coe]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Take `⟨z, hz, e⟩` from `h _ (lc_frame_mem hβ (Pi.single j 1) (fun k => by rw [Pi.single_apply]; split_ifs; exacts [one_mem _, zero_mem _]))`.
+
+Establish `hc` using `(hβ z).1 hz`. Use `⟨⟨(Bi *ᵥ z) i, hc i⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hYe]`. Establish `e2` using `congrArg (fun w => (Bi *ᵥ w) i) e`.
+
+Use `beta_reduce at e2`. Establish `hconj : Bi * (B * (Y - 1) * Bi) * B = Y - 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite `e2` using `[hX1, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hB, hconj, Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Rewrite `e2` using `[Pi.smul_apply, smul_eq_mul]`.
+
+Rewrite using `[show (Y i j - (1 : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) i j) = (Y - 1).col j i from rfl, e2]`. Simplify using `[nsmul_eq_mul]`. Introduce `h choose t ht using h set M' : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F) := fun i j => ((t i j : intAf F E) : E ⊗[F] Formalism.L2.Herm.Af F) with hM'`. Establish `hYM : Y - 1 = (g : E ⊗[F] Formalism.L2.Herm.Af F) • M'`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.sub_apply, hYe, ht i j]`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul]`. Both sides reduce to the same expression. Use `fun v hv => ⟨B *ᵥ (M' *ᵥ (Bi *ᵥ v)), lc_frame_mem hβ _ fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `(hβ v).1 hv`.
+
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (t i j).2 (hc j)`. Rewrite using `[hX1, hYM, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+-/
 theorem sub_one_iff_entries (Λ : Submodule (𝓞 E) (Fin n → E)) (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hβ : IsFrame β Λ)
     (g : ℕ) (y : GL (Fin n) (intAf F E)) :
     (∀ v ∈ hatL (F := F) Λ, ∃ z ∈ hatL (F := F) Λ,
@@ -116,6 +149,11 @@ theorem sub_one_iff_entries (Λ : Submodule (𝓞 E) (Fin n → E)) (β : GL (Fi
 
 end Gen
 
+/- English proof (translation)
+Establish `hΛ : Formalism.L2.SG.InstExistsPf.Lv D = Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0`. Rewrite using `[Formalism.L2.SG.InstExistsPf.Lv_eq_map]`. Both sides reduce to the same expression. Use `show lamAf (F := ↥D.host.F) (Formalism.L2.SG.InstExistsPf.Lv D) = _`. Rewrite using `[hΛ]`.
+
+Unfold `lamAf hatL Formalism.UG.latS`. Rewrite using `[Set.image_eq_range]`. Both sides reduce to the same expression.
+-/
 theorem Lf_eq (D : D7) : (Formalism.L2.SG.InstExistsPf.instOf D).Lf =
       hatL (F := D.host.F) (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) := by
   have hΛ : Formalism.L2.SG.InstExistsPf.Lv D = Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0 := by
@@ -128,6 +166,17 @@ theorem Lf_eq (D : D7) : (Formalism.L2.SG.InstExistsPf.instOf D).Lf =
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D β x g hβ hx hg hr`. Establish `hLf` using `Lf_eq D`. Establish `hSt : x.1 ∈ St β`. Rewrite using `[stabilizer_eq_stabilizer_lattice _ _ _ _ β hβ, ← hLf]`. Conclude with `hx`.
+
+Take `⟨y, hy⟩` from `hSt`. Establish `hred : ∀ PP : Pl D.host.E, redFn β PP x.1 = bc (resS D.host.F PP) y` using `fun PP => by`. Rewrite using `[← hy, redFn_frGL]`. Establish `key` using `(sub_one_iff_entries _ β hβ g y).trans (entries_iff_red g hg hr y)`. Establish `hfm : (Formalism.L2.SG.InstExistsPf.instOf D).fmat x = (frGL β y).val` using `by show x.1.val = _`.
+
+Rewrite using `[← hy]`. Establish `hv1` using `fun v => SetLike.ext_iff.1 hLf v`. Prove the components needed by the constructor for the conclusion. Introduce `hk PP hP`. Use `(hred PP).trans (key.1 (fun v hv => ?_) PP hP)` and prove the remaining obligations.
+
+Take `⟨z, hz, e⟩` from `hk.2 v ((hv1 v).2 hv)`. Use `⟨z, (hv1 z).1 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfm]`. Conclude with `e`. Introduce `h`.
+
+Use `⟨hx, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, e⟩` from `key.2 (fun PP hP => (hred PP).symm.trans (h PP hP)) v ((hv1 v).1 hv)`. Use `⟨z, (hv1 z).2 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[hfm]`. Conclude with `e`.
+-/
 theorem mem_Kg_iff_redFn : ∀ (D : D7) (β : GL (Fin (Yc D 0).rank) (EAf D)) (x : (Formalism.L2.SG.InstExistsPf.instOf D).Gf) (g : ℕ),
     IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → x ∈ (Formalism.L2.SG.InstExistsPf.instOf D).Kset → 1 ≤ g →
     (Ideal.span {(g : 𝓞 D.host.E)}).IsRadical →

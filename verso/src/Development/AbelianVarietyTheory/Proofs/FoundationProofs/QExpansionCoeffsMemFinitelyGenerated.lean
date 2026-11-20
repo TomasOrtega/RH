@@ -24,6 +24,11 @@ def clearCoeff (n M w : ℕ) (c : Fin n → Polynomial ℂ) (i : ℕ) (τ : ℍ)
     DD τ ^ (w * (n - i)) * ∑ k ∈ Finset.range (M + 1), (c ⟨i, h⟩).coeff k * (E₄ τ ^ (3 * k) * DD τ ^ (M - k))
   else DD τ ^ M
 
+/- English proof (translation)
+Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le hp), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ M` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Establish `hD` using `ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ`. Establish `hsplit : DD τ ^ M = DD τ ^ (M - k) * DD τ ^ k` using `by rw [← pow_add, Nat.sub_add_cancel hk']`.
+
+Rewrite using `[hsplit]`. Simplify using `only [ReciprocityTheory.ChartRestriction.L1.jT, ReciprocityTheory.ChartRestriction.L1.AA]`. Rewrite using `[div_pow, pow_mul]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem dd_pow_mul_eval_jT (p : Polynomial ℂ) (M : ℕ) (hp : p.natDegree ≤ M) (τ : ℍ) :
     DD τ ^ M * p.eval (jT τ) =
       ∑ k ∈ Finset.range (M + 1), p.coeff k * (E₄ τ ^ (3 * k) * DD τ ^ (M - k)) := by
@@ -37,6 +42,13 @@ theorem dd_pow_mul_eval_jT (p : Polynomial ℂ) (M : ℕ) (hp : p.natDegree ≤ 
   rw [div_pow, pow_mul]
   field_simp
 
+/- English proof (translation)
+Establish `key : ∑ i ∈ Finset.range (n + 1), clearCoeff n M w c i τ * (DD τ ^ w * f τ) ^ i = DD τ ^ (w * n + M) * (f τ ^ n + ∑ i, (c i).eval (jT τ) * f τ ^ (i : ℕ))`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range (fun i => clearCoeff n M w c i τ * (DD τ ^ w * f τ) ^ i), mul_add, Finset.mul_sum, add_comm]`. Use `congr 1`. Simplify using `only [clearCoeff, lt_irrefl, dite_false]`. Rewrite using `[mul_pow, ← pow_mul, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [clearCoeff, Fin.is_lt, dite_true, Fin.eta]`. Rewrite using `[← dd_pow_mul_eval_jT _ M (hM i), mul_pow, ← pow_mul]`. Establish `e : w * (n - i) + M + w * i = w * n + M`.
+
+Rewrite using `[add_right_comm, ← mul_add, Nat.sub_add_cancel i.isLt.le]`. Rewrite using `[← e, pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, h τ, mul_zero]`.
+-/
 theorem sum_clearCoeff_eq_zero (n M w : ℕ) (c : Fin n → Polynomial ℂ) (hM : ∀ i, (c i).natDegree ≤ M)
     (f : ℍ → ℂ) (h : ∀ τ, f τ ^ n + ∑ i, (c i).eval (jT τ) * f τ ^ (i : ℕ) = 0) (τ : ℍ) :
     ∑ i ∈ Finset.range (n + 1), clearCoeff n M w c i τ * (DD τ ^ w * f τ) ^ i = 0 := by
@@ -57,6 +69,13 @@ theorem sum_clearCoeff_eq_zero (n M w : ℕ) (c : Fin n → Polynomial ℂ) (hM 
       ring
   rw [key, h τ, mul_zero]
 
+/- English proof (translation)
+Take `⟨hcst, -, -, hmul, hpow, hsum⟩` from `GlobalTheory.T.qExpansionCoeffsInSubring_ring_closed R N hN`. Establish `hDD : QAll (· ∈ R) N DD` using `((GlobalTheory.T.eisenstein_delta_qExpansion_integrality N hN DD (Or.inr (Or.inr rfl))).2.1) R`. Establish `hE : QAll (· ∈ R) N ⇑E₄` using `((GlobalTheory.T.eisenstein_delta_qExpansion_integrality N hN ⇑E₄ (Or.inl rfl)).2.1) R`. Distinguish the cases in `h : i < n`. Establish `hf : clearCoeff n M w c i = fun τ => DD τ ^ (w * (n - i)) * ∑ k ∈ Finset.range (M + 1), (c ⟨i, h⟩).coeff k * (E₄ τ ^ (3 * k) * DD τ ^ (M - k))`.
+
+Use function extensionality and compare the values at `τ`. Simplify using `[clearCoeff, h]`. Rewrite using `[hf]`. Use `hmul _ _ (hpow _ _ hDD) ?_` and prove the remaining obligations. Use `(hsum ℕ (Finset.range (M + 1)) _ fun k hk => ?_).1` and prove the remaining obligations.
+
+Conclude with `hmul _ _ (hcst _ (hc _ k (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)))) (hmul _ _ (hpow _ _ hE) (hpow _ _ hDD))`. Establish `hf : clearCoeff n M w c i = fun τ => DD τ ^ M` using `by funext τ; simp [clearCoeff, h]`. Rewrite using `[hf]`. Conclude with `hpow _ _ hDD`.
+-/
 theorem qall_clearCoeff (R : Subring ℂ) (N : ℕ) (hN : 0 < N) (n M w : ℕ) (c : Fin n → Polynomial ℂ)
     (hc : ∀ (i : Fin n) (k : ℕ), k ≤ M → (c i).coeff k ∈ R) (i : ℕ) :
     QAll (· ∈ R) N (clearCoeff n M w c i) := by
@@ -76,10 +95,38 @@ theorem qall_clearCoeff (R : Subring ℂ) (N : ℕ) (hN : 0 < N) (n M w : ℕ) (
     rw [hf]
     exact hpow _ _ hDD
 
+/- English proof (translation)
+Use extensionality with `k`. Simplify using `[PowerSeries.coeff_map]`.
+-/
 theorem powerSeries_map_mk {Ω : Type} [Field Ω] (ε : Ω →+* ℂ) (g : ℕ → Ω) :
     PowerSeries.map ε (PowerSeries.mk g) = PowerSeries.mk fun k => ε (g k) := by
   ext k; simp [PowerSeries.coeff_map]
 
+/- English proof (translation)
+Introduce `Ω _ ε N w f a hN hLv hF`. Use `haveI : CharZero Ω := ε.charZero`. Take `⟨n, c, hc, hrel⟩` from `GlobalTheory.T.integral_over_jInvariant_of_hasSomeLevelOver ε.range f ⟨N, w, hN, hLv⟩`. Use `set M := ∑ i, (c i).natDegree with hMdef`. Establish `hM : ∀ i, (c i).natDegree ≤ M` using `fun i => Finset.single_le_sum (f := fun i => (c i).natDegree) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+
+Establish `hpre : ∀ (i : Fin n) (k : ℕ), ∃ x : Ω, ε x = (c i).coeff k` using `fun i k => RingHom.mem_range.1 (hc i k)`. Use `choose e he using hpre`. Use `set S₀ : Finset Ω := Finset.univ.image (fun p : Fin n × Fin (M + 1) => e p.1 p.2) with hS₀`. Use `set A : Subring Ω := Subring.closure (S₀ : Set Ω) with hA`. Use `set R : Subring ℂ := A.map ε with hR`.
+
+Establish `hcR : ∀ (i : Fin n) (k : ℕ), k ≤ M → (c i).coeff k ∈ R` using `fun i k hk => Subring.mem_map.2 ⟨e i k, Subring.subset_closure (Finset.mem_coe.2 (Finset.mem_image.2 ⟨(i, ⟨k, Nat.lt_succ_of_le hk⟩), Finset.mem_univ _, rfl⟩)), he i k⟩`. Establish `hP : ∀ i, QAll (· ∈ R) N (clearCoeff n M w c i)` using `qall_clearCoeff R N hN n M w c hcR`. Use `choose c' hc'Q hc'R using hP`. Establish `hser` using `GlobalTheory.T.polynomial_relation_passes_to_qExpansions N n (fun τ => DD τ ^ w * f τ) (fun k => ε (a k)) (clearCoeff n M w c) c' hN hF hc'Q (sum_clearCoeff_eq_zero n M w c hM f hrel)`. Establish `hpre2 : ∀ i k, ∃ x ∈ A, ε x = c' i k` using `fun i k => Subring.mem_map.1 (hc'R i k)`.
+
+Use `choose d hdA hd using hpre2`. Use `set Q : Polynomial (PowerSeries Ω) := ∑ i ∈ Finset.range (n + 1), Polynomial.monomial i (PowerSeries.mk (d i)) with hQdef`. Establish `hmap : PowerSeries.map ε (Q.eval (PowerSeries.mk a)) = (∑ i ∈ Finset.range (n + 1), Polynomial.monomial i (PowerSeries.mk (c' i))).eval (PowerSeries.mk fun k => ε (a k))`. Simplify using `only [hQdef, Polynomial.eval_finset_sum, Polynomial.eval_monomial, map_sum, map_mul, map_pow, powerSeries_map_mk, hd]`. Rewrite `hmap` using `[hser]`.
+
+Establish `hQ : Q.eval (PowerSeries.mk a) = 0`. Use extensionality with `k`. Use `congrArg (PowerSeries.coeff k) hmap` as an intermediate fact. Simplify `this` using `[PowerSeries.coeff_map]`. Establish `hcoef : ∀ i, Q.coeff i = if i ∈ Finset.range (n + 1) then PowerSeries.mk (d i) else 0` using `fun i => by`.
+
+Simplify using `only [hQdef, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial]`. Conclude with `Finset.sum_ite_eq' _ _ _`. Establish `hQne : Q ≠ 0`. Introduce `h0`. Establish `hn` using `hcoef n`.
+
+Rewrite `hn` using `[h0, Polynomial.coeff_zero, if_pos (Finset.self_mem_range_succ n)]`. Establish `hc0 : c' n = 0` using `funext fun k => by`. Establish `h1` using `congrArg (PowerSeries.coeff k) hn`. Rewrite `h1` using `[PowerSeries.coeff_mk, map_zero]`. Rewrite using `[← hd n k, ← h1, map_zero]`.
+
+Both sides reduce to the same expression. Establish `hq` using `hc'Q n`. Establish `hPn : clearCoeff n M w c n = fun τ => DD τ ^ M` using `by funext τ; simp [clearCoeff]`. Rewrite `hq` using `[hPn, hc0]`. Establish `hz : HasQ N (fun _ : ℍ => (0 : ℂ)) (0 : ℕ → ℂ)` using `fun τ => by simpa using hasSum_zero`.
+
+Use `(GlobalTheory.T.hasQExpansionOfLevel_coeff_and_function_unique).2 N _ _ 0 hq hz` as an intermediate fact. Conclude with `pow_ne_zero M (ReciprocityTheory.ChartRestriction.L1.DD_ne_zero UpperHalfPlane.I) (congrFun this UpperHalfPlane.I)`. Establish `hcA : ∀ i k, PowerSeries.coeff k (Q.coeff i) ∈ A` using `fun i k => by`. Rewrite using `[hcoef i]`. Use `split_ifs`.
+
+Rewrite using `[PowerSeries.coeff_mk]`. Conclude with `hdA i k`. Simplify using the standard rewrite rules. Take `⟨S₁, hS₁⟩` from `GlobalTheory.T.eisenstein_algebraic_powerSeries_coeff_closure Ω A (PowerSeries.mk a) Q hQne hcA hQ`. Use `⟨S₀ ∪ S₁, fun k => ?_⟩` and prove the remaining obligations.
+
+Establish `hk` using `hS₁ k`. Rewrite `hk` using `[PowerSeries.coeff_mk]`. Use `(Subring.closure_le.2 ?_) hk` and prove the remaining obligations. Introduce and unpack `x (hx | hx)`. Conclude with `Subring.closure_mono (by simp [Finset.coe_union]) hx`.
+
+Conclude with `Subring.subset_closure (by simp [hx])`.
+-/
 theorem qcoeff_finitelyGenerated : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (N w : ℕ) (f : ℍ → ℂ) (a : ℕ → Ω),
     0 < N → Lv ε.range N w f → HasQ N (fun τ => DD τ ^ w * f τ) (fun n => ε (a n)) →
       ∃ S : Finset Ω, ∀ k, a k ∈ Subring.closure (S : Set Ω) := by

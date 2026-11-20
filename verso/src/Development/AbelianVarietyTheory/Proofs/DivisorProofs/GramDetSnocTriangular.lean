@@ -9,10 +9,16 @@ section GramTri
 
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V]
 
+/- English proof (translation)
+Rewrite using `[← h.conj_symm σ y (a • x), h.smul_right, map_mul, h.conj_symm]`.
+-/
 theorem gramTri_form_smul_left (h : HermFam K V) (σ : K →+* ℂ) (a : K) (x y : V) :
     h.form σ (a • x) y = starRingEnd ℂ (σ a) * h.form σ x y := by
   rw [← h.conj_symm σ y (a • x), h.smul_right, map_mul, h.conj_symm]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `h.smul_right σ 0 x 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, h.add_right, ih, Finset.sum_insert ha]`.
+-/
 theorem gramTri_form_sum_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {ι : Type} (s : Finset ι)
     (f : ι → V) : h.form σ x (∑ k ∈ s, f k) = ∑ k ∈ s, h.form σ x (f k) := by
   classical
@@ -22,11 +28,17 @@ theorem gramTri_form_sum_right (h : HermFam K V) (σ : K →+* ℂ) (x : V) {ι 
     simpa using this
   | insert a s ha ih => rw [Finset.sum_insert ha, h.add_right, ih, Finset.sum_insert ha]
 
+/- English proof (translation)
+Rewrite using `[← h.conj_symm σ z, gramTri_form_sum_right, map_sum]`. Simplify using `only [h.conj_symm]`.
+-/
 theorem gramTri_form_sum_left (h : HermFam K V) (σ : K →+* ℂ) (z : V) {ι : Type} (s : Finset ι)
     (f : ι → V) : h.form σ (∑ k ∈ s, f k) z = ∑ k ∈ s, h.form σ (f k) z := by
   rw [← h.conj_symm σ z, gramTri_form_sum_right, map_sum]
   simp only [h.conj_symm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [HermFam.gram, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.map_apply, gramTri_form_sum_left, gramTri_form_sum_right, gramTri_form_smul_left, h.smul_right, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermFam_gram_matrix_change (h : HermFam K V) (σ : K →+* ℂ) {n : ℕ} (e : Fin n → V)
     (P : Matrix (Fin n) (Fin n) K) :
     h.gram σ (fun j => ∑ k, P k j • e k) = (P.map σ)ᴴ * h.gram σ e * P.map σ := by
@@ -42,6 +54,11 @@ def triChangeMatrix {i : ℕ} (d : Fin i → K) (c : Fin (i + 1) → K) :
     Matrix (Fin (i + 1)) (Fin (i + 1)) K :=
   Matrix.of fun k j => Fin.snoc (α := fun _ => K) (fun j' => if k = j'.castSucc then d j' else 0) (c k) j
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [triChangeMatrix]`. Consider the case `cast j`. Simplify using `only [triChangeMatrix, Matrix.of_apply, Fin.snoc_castSucc, ite_smul, zero_smul]`.
+
+Rewrite using `[Finset.sum_ite_eq']`. Simplify using the standard rewrite rules.
+-/
 theorem triChangeMatrix_family {i : ℕ} (e : Fin (i + 1) → V) (d : Fin i → K) (c : Fin (i + 1) → K) :
     (Fin.snoc (α := fun _ => V) (fun j => d j • e j.castSucc) (∑ k, c k • e k)) =
       fun j => ∑ k, triChangeMatrix d c k j • e k := by
@@ -53,6 +70,11 @@ theorem triChangeMatrix_family {i : ℕ} (e : Fin (i + 1) → V) (d : Fin i → 
     rw [Finset.sum_ite_eq']
     simp
 
+/- English proof (translation)
+Establish `hT : (triChangeMatrix d c).BlockTriangular id`. Introduce `k j hjk`. Simplify using `only [id] at hjk`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hjk (not_lt.2 (Fin.le_last k))`.
+
+Consider the case `cast j`. Simplify using `only [triChangeMatrix, Matrix.of_apply, Fin.snoc_castSucc]`. Rewrite using `[if_neg (ne_of_gt hjk)]`. Rewrite using `[Matrix.det_of_upperTriangular hT, Fin.prod_univ_castSucc]`. Simplify using `[triChangeMatrix]`.
+-/
 theorem triChangeMatrix_det {i : ℕ} (d : Fin i → K) (c : Fin (i + 1) → K) :
     (triChangeMatrix d c).det = (∏ j, d j) * c (Fin.last i) := by
   have hT : (triChangeMatrix d c).BlockTriangular id := by
@@ -66,6 +88,13 @@ theorem triChangeMatrix_det {i : ℕ} (d : Fin i → K) (c : Fin (i + 1) → K) 
   rw [Matrix.det_of_upperTriangular hT, Fin.prod_univ_castSucc]
   simp [triChangeMatrix]
 
+/- English proof (translation)
+Rewrite using `[triChangeMatrix_family, hermFam_gram_matrix_change, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hmap : ((triChangeMatrix d c).map σ).det = σ (triChangeMatrix d c).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hmap, triChangeMatrix_det]`.
+
+Use `set z := σ ((∏ j, d j) * c (Fin.last i))`. Establish `hz : star z * (h.gram σ e).det * z = ((‖z‖ ^ 2 : ℝ) : ℂ) * (h.gram σ e).det`. Rewrite using `[mul_comm (star z * _) z, ← mul_assoc, Complex.star_def, Complex.mul_conj']`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[hz, Complex.re_ofReal_mul]`. Simplify using `only [z, map_mul, map_prod, norm_mul, norm_prod, mul_pow, Finset.prod_pow]`.
+-/
 theorem hermFam_gram_det_triangular (h : HermFam K V) (σ : K →+* ℂ) {i : ℕ} (e : Fin (i + 1) → V)
     (d : Fin i → K) (c : Fin (i + 1) → K) :
     (h.gram σ (Fin.snoc (fun j => d j • e j.castSucc) (∑ k, c k • e k))).det.re =

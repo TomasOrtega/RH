@@ -9,6 +9,13 @@ open Formalism.MainNotions.N GlobalTheory.Cong GlobalTheory.PsChar
 
 namespace GlobalTheory.TrFormNd
 
+/- English proof (translation)
+Introduce `k Γ _ _ _ a r hr M hM hg`. Establish `hnd : PI.SSAscent.UnitaryGroupMassFormula.TrNondeg (PI.SSAscent.UnitaryGroupMassFormula.imAlg r)` using `PI.SSAscent.UnitaryGroupMassFormula.downStep_of PI.SSAscent.UnitaryGroupMassFormula.trace_nilpotent_ascent k Γ a r hr`. Use `hnd M ((GlobalTheory.SSCont.mem_imAlg_iff r M).2 hM) fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `(GlobalTheory.SSCont.mem_imAlg_iff r y).1 hy`. Use `clear hy`.
+
+Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `hg g`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [mul_add, Matrix.trace_add, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [Matrix.mul_smul, Matrix.trace_smul, hy, smul_zero]`.
+-/
 theorem eq_zero_of_trace_mul_eq_zero : ∀ (k Γ : Type) [Field k] [CharZero k] [Group Γ] (a : ℕ) (r : Γ →* GL (Fin a) k), IsSSRep r → ∀ M ∈ Submodule.span k (Set.range fun g => ((r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)), (∀ g, (M * ((r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k)).trace = 0) → M = 0 := by
   intro k Γ _ _ _ a r hr M hM hg
   have hnd : PI.SSAscent.UnitaryGroupMassFormula.TrNondeg (PI.SSAscent.UnitaryGroupMassFormula.imAlg r) :=

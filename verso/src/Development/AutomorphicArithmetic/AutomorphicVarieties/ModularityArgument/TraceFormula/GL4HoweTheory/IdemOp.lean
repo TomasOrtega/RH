@@ -3,6 +3,33 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.IsHilbertSchmidt
 
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ μ hμ J hJo hJc χ hχ hn hm V _ _ π hπ`. Use `set f : G → ℂ := (J : Set G).indicator fun x => (χ x)⁻¹ with hfdef`. Establish `hne : ∀ x, χ x ≠ 0` using `fun x h => by simpa [h] using hn x`. Establish `hJcl : IsClopen (J : Set G)` using `⟨hJc.isClosed, hJo⟩`. Establish `hf : IsLocallyConstant f`.
+
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `h1` using `(IsLocallyConstant.iff_eventually_eq χ).1 hχ x`. Distinguish the cases in `hx : x ∈ (J : Set G)`. Use `filter_upwards [h1, hJo.mem_nhds hx] with y hy hyJ`.
+
+Simplify using `only [hfdef, Set.indicator_of_mem hx, Set.indicator_of_mem hyJ, hy]`. Use `filter_upwards [hJcl.isClosed.isOpen_compl.mem_nhds hx] with y hyJ`. Simplify using `only [hfdef, Set.indicator_of_notMem hx, Set.indicator_of_notMem hyJ]`. Establish `hc : HasCompactSupport f` using `HasCompactSupport.intro hJc fun x hx => Set.indicator_of_notMem hx _`. Establish `hB : IsIntegralOp μ π f (GlobalTheory.OpTrace.smoothOp π μ f)`.
+
+Introduce `v l`. Establish `hi` using `hπ.smoothOp_integrand hf hc v`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.OpTrace.integrable_map (μ := μ) hi.1 hi.2 l l.map_zero` as an intermediate fact. Simplify `this` using `only [map_smul, smul_eq_mul]`.
+
+Rewrite using `[hπ.map_smoothOp (μ := μ) hf hc l v]`. Simplify using `only [smul_eq_mul]`. Generalize the expression as in `GlobalTheory.OpTrace.smoothOp π μ f = B at hB`. Use `⟨B, (μ.real (J : Set G) : ℂ), ?_, hB, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : μ (J : Set G) ≠ 0` using `(hJo.measure_pos μ ⟨1, J.one_mem⟩).ne'`.
+
+Establish `h1 : μ (J : Set G) ≠ ⊤` using `hJc.measure_lt_top.ne`. Establish `: μ.real (J : Set G) ≠ 0`. Rewrite using `[Measure.real, ENNReal.toReal_ne_zero]`. Conclude with `⟨h0, h1⟩`. Conclude with `this` after adjusting the coercions.
+
+Introduce `v x hx`. Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Establish `h1` using `(hB v (l ∘ₗ π x)).2`. Establish `h2` using `(hB v l).2`.
+
+Rewrite using `[map_sub, map_smul, sub_eq_zero, h2, smul_eq_mul, ← integral_const_mul, ← integral_mul_left_eq_self (fun g => χ x * (f g * l (π g v))) x]`. Use `h1.trans (integral_congr_ae (Filter.Eventually.of_forall fun g => ?_))` and prove the remaining obligations. Establish `e : χ x * f (x * g) = f g`. Distinguish the cases in `hg : g ∈ J`. Establish `hxg : x * g ∈ (J : Set G)` using `J.mul_mem hx hg`.
+
+Establish `hg' : g ∈ (J : Set G)` using `hg`. Simplify using `only [hfdef, Set.indicator_of_mem hxg, Set.indicator_of_mem hg', hm x hx g hg]`. Use `hne x` as an intermediate fact. Use `hne g` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+
+Establish `hxg : x * g ∉ (J : Set G)` using `fun h => hg ((J.mul_mem_cancel_left hx).1 h)`. Establish `hg' : g ∉ (J : Set G)` using `hg`. Simplify using `only [hfdef, Set.indicator_of_notMem hxg, Set.indicator_of_notMem hg', mul_zero]`. Simplify using `only [← mul_assoc, e, map_mul, LinearMap.comp_apply, Module.End.mul_apply]`. Introduce `v hv`.
+
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `l`. Rewrite using `[map_sub, map_smul, sub_eq_zero, (hB v l).2]`. Establish `e : (fun g => f g * l (π g v)) = (J : Set G).indicator fun _ => l v`. Use function extensionality and compare the values at `g`.
+
+Distinguish the cases in `hg : g ∈ (J : Set G)`. Simplify using `only [hfdef, Set.indicator_of_mem hg, hv g hg, map_smul, smul_eq_mul]`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (hne g), one_mul]`. Simplify using `only [hfdef, Set.indicator_of_notMem hg, zero_mul]`. Rewrite using `[e, integral_indicator_const _ hJo.measurableSet]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.V.Z.Tf.L4.idemOp :
     ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G), μ.IsHaarMeasure →
       ∀ (J : Subgroup G), IsOpen (J : Set G) → IsCompact (J : Set G) → ∀ χ : G → ℂ, IsLocallyConstant χ → (∀ x, ‖χ x‖ = 1) →

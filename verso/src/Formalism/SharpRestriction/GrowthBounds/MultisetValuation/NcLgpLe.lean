@@ -6,6 +6,15 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 
 open Finset
 
+/- English proof (translation)
+Unfold `lgp`. Use `split_ifs with h`. Use `push_cast`. Establish `: 0 ≤ Real.logb p A` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `push_cast`. Establish `hx0 : 0 < x` using `by omega`. Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast hp`. Establish `h1 : (Nat.log p x.toNat : ℝ) ≤ Real.logb p (x.toNat : ℝ)` using `Real.natLog_le_logb _ _`. Establish `h2 : ((x.toNat : ℕ) : ℝ) = (x : ℝ)`.
+
+Establish `: ((x.toNat : ℕ) : ℤ) = x` using `Int.toNat_of_nonneg hx0.le`. Conclude with `this` after adjusting the coercions. Rewrite `h1` using `[h2]`. Establish `h3 : Real.logb p (x : ℝ) ≤ Real.logb p (A ^ c)` using `Real.logb_le_logb_of_le hp1 (by exact_mod_cast hx0) hx`. Rewrite `h3` using `[Real.logb_pow]`.
+
+Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nc_lgp_le (p : ℕ) (hp : 2 ≤ p) (x : ℤ) (A : ℝ) (c : ℕ) (_hA : 1 ≤ A) (hx : (x : ℝ) ≤ A ^ c)
     (hl : 1 ≤ Real.logb p A) : (lgp p x : ℝ) ≤ (c + 1) * Real.logb p A := by
   unfold lgp
@@ -28,6 +37,21 @@ theorem nc_lgp_le (p : ℕ) (hp : 2 ≤ p) (x : ℤ) (A : ℝ) (c : ℕ) (_hA : 
 
 variable {n' k1 : ℕ}
 
+/- English proof (translation)
+Unfold `de`. Use `set ℓ := Real.logb p A with hℓ`. Establish `hN1' : (1 : ℝ) ≤ NN k1 t j` using `by unfold NN; push_cast; nlinarith`. Establish `hNM : 1 ≤ NM` using `le_trans hN1' hN1`. Establish `hN0' : (0 : ℝ) ≤ NN k1 t (j - 1)` using `by positivity`.
+
+Establish `hα : ∀ s, (lgp p (al TT lam0 s) : ℝ) ≤ 3 * ℓ` using `fun s => by`. Use `nc_lgp_le p hp _ A 2 hA (hal s) hl` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlz : ∀ s, (lgp p (lsz t TT lam0 w j s) : ℝ) ≤ 5 * ℓ` using `fun s => by`.
+
+Use `nc_lgp_le p hp _ A 4 hA (hls s) hl` as an intermediate fact. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hα0 : ∀ s, (0 : ℝ) ≤ lgp p (al TT lam0 s)` using `fun s => by positivity`. Establish `hlz0 : ∀ s, (0 : ℝ) ≤ lgp p (lsz t TT lam0 w j s)` using `fun s => by positivity`.
+
+Establish `h1 : ∑ s : Fin n', ((NN k1 t j : ℝ) * lgp p (al TT lam0 s) + (NN k1 t (j - 1) : ℝ) * (NN k1 t j : ℝ) * lgp p (lsz t TT lam0 w j s)) ≤ ∑ _s : Fin n', (8 * NM ^ 2 * ℓ)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s _`. Establish `e1 : (NN k1 t j : ℝ) * lgp p (al TT lam0 s) ≤ NM * (3 * ℓ)` using `mul_le_mul hN1 (hα s) (hα0 s) (by linarith)`. Establish `e2 : (NN k1 t (j - 1) : ℝ) * (NN k1 t j : ℝ) * lgp p (lsz t TT lam0 w j s) ≤ NM * NM * (5 * ℓ)` using `mul_le_mul (mul_le_mul hN0 hN1 (by positivity) (by linarith)) (hlz s) (hlz0 s) (by nlinarith)`.
+
+Establish `e3 : NM * (3 * ℓ) ≤ NM * NM * (3 * ℓ)`. Establish `: 0 ≤ NM * (3 * ℓ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ∑ s ∈ TT, ((lgp p (al TT lam0 s) : ℝ)) ^ 2 ≤ ∑ _s ∈ TT, (9 * ℓ ^ 2)`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s _`. Use `hα s` as an intermediate fact. Use `hα0 s` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+
+Rewrite `h1` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite `h2` using `[Finset.sum_const, nsmul_eq_mul]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem nc_de_le (p t : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ) (j : ℕ)
     (hp : 2 ≤ p) (A : ℝ) (NM : ℝ) (hA : 1 ≤ A) (hl : 1 ≤ Real.logb p A) (hN1 : (NN k1 t j : ℝ) ≤ NM)
     (hN0 : (NN k1 t (j - 1) : ℝ) ≤ NM) (hal : ∀ s, (al TT lam0 s : ℝ) ≤ A ^ 2)

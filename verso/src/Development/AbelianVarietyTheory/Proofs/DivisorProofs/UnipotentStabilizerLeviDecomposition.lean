@@ -11,22 +11,60 @@ namespace GlobalTheory.PlaneProj
 open Matrix
 variable {A : Type} [CommRing A] {m n k : Type} [Fintype m] [Fintype n] [Fintype k]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]`.
+-/
 theorem mul_vmv (M : Matrix m n A) (u : n → A) (w : k → A) : M * vecMulVec u w = vecMulVec (M *ᵥ u) w := by
   ext i j; simp [vecMulVec_apply, mul_apply, mulVec, dotProduct, Finset.sum_mul, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_comm]`.
+-/
 theorem vmv_transpose (u : m → A) (w : n → A) : (vecMulVec u w)ᵀ = vecMulVec w u := by
   ext i j; simp [vecMulVec_apply, mul_comm]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`.
+-/
 theorem vmv_map (c : A →+* A) (u : m → A) (w : n → A) : (vecMulVec u w).map c = vecMulVec (c ∘ u) (c ∘ w) := by
   ext i j; simp [vecMulVec_apply]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[vecMulVec_apply, mul_apply, dotProduct, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 theorem vmv_mul_vmv (a : m → A) (b : n → A) (u : n → A) (w : k → A) :
     vecMulVec a b * vecMulVec u w = (b ⬝ᵥ u) • vecMulVec a w := by
   ext i j; simp [vecMulVec_apply, mul_apply, dotProduct, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[vecMulVec_apply, mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`.
+-/
 theorem vmv_mulVec (u : m → A) (w : n → A) (z : n → A) : vecMulVec u w *ᵥ z = (w ⬝ᵥ z) • u := by
   ext i; simp [vecMulVec_apply, mulVec, dotProduct, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]
 
+/- English proof (translation)
+Use `set α : d₁ → A := (J *ᵥ (c ∘ y)) ᵥ* (P * ι) with hα`. Establish `hcx : c ∘ x = P.map c *ᵥ (c ∘ x)`. Use function extensionality and compare the values at `i`. Rewrite using `[Function.comp_apply, ← RingHom.map_mulVec, hPx]`. Establish `hxP : x ᵥ* Pᵀ = x` using `by rw [vecMul_transpose, hPx]`.
+
+Establish `hwx : (J *ᵥ (c ∘ x)) ᵥ* (P * ι) = 0`. Rewrite using `[← mulVec_transpose, transpose_mul, hcx, mulVec_mulVec, mulVec_mulVec, show ιᵀ * Pᵀ * J * P.map c = ιᵀ * (Pᵀ * J * P.map c) by simp only [Matrix.mul_assoc], hP, hιx]`. Establish `hιπ : ι * π = 1 - vecMulVec x (J *ᵥ (c ∘ y)) + vecMulVec y (J *ᵥ (c ∘ x))`. Rewrite using `[← hframe]`. Normalize the expressions using the abelian group laws.
+
+Establish `hιh : ι * (π * P * ι) = P * ι - vecMulVec x α`. Rewrite using `[show ι * (π * P * ι) = (ι * π) * (P * ι) by simp only [Matrix.mul_assoc], hιπ, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, vecMulVec_mul, vecMulVec_mul, hwx]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply, α]`. Establish `k1 : (P * ι)ᵀ * J * (P * ι).map c = J₁`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J₁ := by rw [hP, hgram]`. Establish `k2 : (P * ι)ᵀ * J * (vecMulVec x α).map c = 0`.
+
+Establish `: ((P * ι)ᵀ * J) *ᵥ (c ∘ x) = 0`. Rewrite using `[hcx, mulVec_mulVec, transpose_mul, show ιᵀ * Pᵀ * J * P.map c = ιᵀ * (Pᵀ * J * P.map c) by simp only [Matrix.mul_assoc], hP, hιx]`. Rewrite using `[vmv_map, mul_vmv, this]`. Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`.
+
+Establish `k3 : (vecMulVec x α)ᵀ * J * (P * ι).map c = 0`. Establish `: x ᵥ* (J * (P * ι).map c) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[vmv_transpose, Matrix.mul_assoc, vecMulVec_mul, this]`. Use extensionality with `i j`.
+
+Simplify using `[vecMulVec_apply]`. Establish `k4 : (vecMulVec x α)ᵀ * J * (vecMulVec x α).map c = 0`. Rewrite using `[vmv_transpose, vmv_map, vecMulVec_mul, vmv_mul_vmv, ← dotProduct_mulVec, hxx, zero_smul]`. Establish `hms : (P * ι - vecMulVec x α).map c = (P * ι).map c - (vecMulVec x α).map c`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.map_apply, Matrix.sub_apply, map_sub]`. Establish `hU : (π * P * ι)ᵀ * J₁ * (π * P * ι).map c = J₁`. Establish `e0 : (π * P * ι)ᵀ * J₁ * (π * P * ι).map c = (ι * (π * P * ι))ᵀ * J * (ι * (π * P * ι)).map c`. Simplify using `only [← hgram, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[e0, hιh, transpose_sub, hms, Matrix.sub_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_mul, k1, k2, k3, k4]`.
+
+Normalize the expressions using the abelian group laws. Use `set h := π * P * ι with hh`. Use `⟨hU, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg Matrix.det hU`. Rewrite `e` using `[det_mul, det_mul, det_transpose, show h.map c = c.mapMatrix h from rfl, ← RingHom.map_det]`.
+
+Establish `e' : (h.det * c h.det) * J₁.det = 1 * J₁.det` using `by linear_combination e`. Establish `h1 : h.det * c h.det = 1` using `hJ₁.mul_right_cancel e'`. Conclude with `⟨⟨_, _, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`. Establish `e3 : (ι * h) *ᵥ z = (P * ι) *ᵥ z - (α ⬝ᵥ z) • x` using `by rw [hιh, sub_mulVec, vmv_mulVec]`. Establish `e4 : α ⬝ᵥ z = (J *ᵥ (c ∘ y)) ⬝ᵥ (P *ᵥ (ι *ᵥ z))` using `by rw [hα, ← dotProduct_mulVec, mulVec_mulVec]`.
+
+Rewrite `e3` using `[← mulVec_mulVec z ι h, ← mulVec_mulVec z P ι, e4]`. Rewrite using `[e3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem proj_core {d d₁ : Type} [Fintype d] [Fintype d₁] [DecidableEq d] [DecidableEq d₁] (c : A →+* A)
     (P J : Matrix d d A) (J₁ : Matrix d₁ d₁ A) (ι : Matrix d d₁ A) (π : Matrix d₁ d A) (x y : d → A)
     (hP : Pᵀ * J * P.map c = J) (hPx : P *ᵥ x = x)
@@ -90,44 +128,93 @@ open Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use `show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a`. Simplify using the standard rewrite rules.
+-/
 theorem cA_inclR' (σ : E →ₐ[F] E) (a : E) : cA σ (inclR (F := F) (AF F) a) = inclR (F := F) (AF F) (σ a) := by
   show Algebra.TensorProduct.map _ _ ((1 : AF F) ⊗ₜ[F] a) = (1 : AF F) ⊗ₜ[F] σ a
   simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `cA_inclR' σ (v i)`.
+-/
 theorem cA_incV (σ : E →ₐ[F] E) {n : ℕ} (v : Fin n → E) :
     ⇑((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) ∘ incV F v = incV F (⇑σ ∘ v) := by
   funext i; exact cA_inclR' σ (v i)
 
+/- English proof (translation)
+Use extensionality with `i j`. Conclude with `cA_inclR' σ (M i j)`.
+-/
 theorem incM_map (σ : E →ₐ[F] E) {m n : Type} (M : Matrix m n E) :
     (incM F M).map ⇑((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) = incM F (M.map σ) := by
   ext i j; exact cA_inclR' σ (M i j)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (inclR (F := F) (AF F)) M v i).symm`.
+-/
 theorem incM_mulVec' {m n : ℕ} (M : Matrix (Fin m) (Fin n) E) (v : Fin n → E) :
     incM F M *ᵥ incV F v = incV F (M *ᵥ v) := by
   funext i; exact (RingHom.map_mulVec (inclR (F := F) (AF F)) M v i).symm
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Conclude with `(RingHom.map_vecMul (inclR (F := F) (AF F)) M v j).symm`.
+-/
 theorem incV_vecMul {m n : ℕ} (v : Fin m → E) (M : Matrix (Fin m) (Fin n) E) :
     incV F v ᵥ* incM F M = incV F (v ᵥ* M) := by
   funext j; exact (RingHom.map_vecMul (inclR (F := F) (AF F)) M v j).symm
 
+/- English proof (translation)
+Simplify using `only [incV, dotProduct, map_sum, map_mul]`.
+-/
 theorem incV_dot {n : ℕ} (u w : Fin n → E) : incV F u ⬝ᵥ incV F w = inclR (F := F) (AF F) (u ⬝ᵥ w) := by
   simp only [incV, dotProduct, map_sum, map_mul]
 
+/- English proof (translation)
+The claim follows from `(Matrix.map_mul (f := inclR (F := F) (AF F))).symm`.
+-/
 theorem incM_mul {m n k : Type} [Fintype n] (M : Matrix m n E) (N : Matrix n k E) :
     incM F M * incM F N = incM F (M * N) := (Matrix.map_mul (f := inclR (F := F) (AF F))).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[incM, incV, vecMulVec_apply]`.
+-/
 theorem incM_vmv {m n : ℕ} (u : Fin m → E) (w : Fin n → E) :
     vecMulVec (incV F u) (incV F w) = incM F (vecMulVec u w) := by
   ext i j; simp [incM, incV, vecMulVec_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem incM_transpose {m n : Type} (M : Matrix m n E) : (incM F M)ᵀ = incM F Mᵀ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[incV]`.
+-/
 theorem incV_zero {n : ℕ} : incV F (0 : Fin n → E) = 0 := by funext i; simp [incV]
 
 end GlobalTheory.PlaneProj
 
 open GlobalTheory.PlaneProj Matrix in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B d W r s d₁ W₁ H' i₀ i₁ hσ hW hH p hp`. Take `⟨π, -, hfr, hJ₁⟩` from `GlobalTheory.PlaneFrame.frame_dual_gram F E σ B d W r s d₁ W₁ H' i₀ i₁ hσ hW hH`. Establish `hsk` using `GlobalTheory.PlaneFrame.form_skew hσ hW.skew`. Use `set c : AE F E →+* AE F E := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) with hc`. Establish `eιx : (H'.ιᵀ * W.J) *ᵥ (⇑σ ∘ H'.x) = 0`.
+
+Use function extensionality and compare the values at `j`. Establish `h0` using `(hH.orth (Pi.single j 1)).1`. Rewrite `h0` using `[form, dotProduct_comm, dotProduct_mulVec, dotProduct_single_one]`. Rewrite using `[Pi.zero_apply, ← h0, ← mulVec_mulVec, mulVec_transpose]`. Both sides reduce to the same expression.
+
+Establish `exι : H'.x ᵥ* (W.J * H'.ι.map σ) = 0`. Use function extensionality and compare the values at `j`. Establish `h0 : form σ W.J H'.x (H'.ι *ᵥ Pi.single j 1) = 0`. Rewrite using `[hsk, (hH.orth _).1, map_zero, neg_zero]`. Rewrite using `[Pi.zero_apply, ← h0, form, ← dotProduct_single_one (H'.x ᵥ* _) j, ← dotProduct_mulVec, ← mulVec_mulVec]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`. Establish `hframe : vecMulVec (incV F H'.x) (incM F W.J *ᵥ (c ∘ incV F H'.y)) + incM F H'.ι * incM F π - vecMulVec (incV F H'.y) (incM F W.J *ᵥ (c ∘ incV F H'.x)) = 1`. Rewrite using `[cA_incV, cA_incV, incM_mulVec', incM_mulVec', incM_vmv, incM_vmv, incM_mul]`.
+
+Establish `e1 : incM F (vecMulVec H'.x (W.J *ᵥ (⇑σ ∘ H'.y))) + incM F (H'.ι * π) - incM F (vecMulVec H'.y (W.J *ᵥ (⇑σ ∘ H'.x))) = incM F (vecMulVec H'.x (W.J *ᵥ (⇑σ ∘ H'.y)) + H'.ι * π - vecMulVec H'.y (W.J *ᵥ (⇑σ ∘ H'.x)))`. Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, map_add, map_sub]`. Rewrite using `[e1]`. Establish `e2 : vecMulVec H'.x (W.J *ᵥ (⇑σ ∘ H'.y)) + H'.ι * π - vecMulVec H'.y (W.J *ᵥ (⇑σ ∘ H'.x)) = 1` using `hfr`.
+
+Rewrite using `[e2]`. Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hgram : (incM F H'.ι)ᵀ * incM F W.J * (incM F H'.ι).map c = incM F W₁.J`. Rewrite using `[incM_map, incM_transpose, incM_mul, incM_mul, hH.gram]`.
+
+Establish `hιx : ((incM F H'.ι)ᵀ * incM F W.J) *ᵥ (c ∘ incV F H'.x) = 0`. Rewrite using `[cA_incV, incM_transpose, incM_mul, incM_mulVec', eιx, incV_zero]`. Establish `hxι : incV F H'.x ᵥ* (incM F W.J * (incM F H'.ι).map c) = 0`. Rewrite using `[incM_map, incM_mul, incV_vecMul, exι, incV_zero]`. Establish `hxx : incV F H'.x ⬝ᵥ (incM F W.J *ᵥ (c ∘ incV F H'.x)) = 0`.
+
+Rewrite using `[cA_incV, incM_mulVec', incV_dot]`. Establish `: H'.x ⬝ᵥ (W.J *ᵥ (⇑σ ∘ H'.x)) = 0` using `hH.xx`. Rewrite using `[this, map_zero]`. Establish `hJ₁' : IsUnit (incM F W₁.J).det`. Rewrite using `[show incM F W₁.J = (inclR (F := F) (AF F)).mapMatrix W₁.J from rfl, ← RingHom.map_det]`.
+
+Conclude with `hJ₁.map _`. Take `⟨hU, hdet, hz⟩` from `proj_core c (mat p) (incM F W.J) (incM F W₁.J) (incM F H'.ι) (incM F π) (incV F H'.x) (incV F H'.y) p.2 hp hframe hgram hιx hxι hxx hJ₁'`. Conclude with `⟨⟨Matrix.GeneralLinearGroup.mk'' _ hdet, hU⟩, fun z => ⟨_, hz z⟩⟩`.
+-/
 theorem GlobalTheory.PlaneProj.exists_levi_proj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (d : ℕ)
     (W : Spc F E d) (r s d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ), IsCMExt F E σ → W.IsSkew σ B r s →
     H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ p : UA σ W.J, mat p *ᵥ incV F H'.x = incV F H'.x → ∃ h₁ : UA σ W₁.J,

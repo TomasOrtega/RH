@@ -13,6 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PolDeg
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨φ, hφ, hns⟩` from `hfan g`. Use `⟨φ, hφ, fun n hn hodd => ?_⟩` and prove the remaining obligations. Take `⟨F, S, s, j, hj, G, hG, e, BD, d, N, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, k, hk⟩` from `h g hg φ hφ hns n hn hodd`. Establish `hn0 : n ≠ 0` using `by omega`.
+
+Use `⟨F, S, s, j, hj, G, hG, e, BD, d, N, h1, h2, h3, h4, h5, h6, h7, h8, h9, fun x => GlobalTheory.T.hasSiegelChart_of_polarisedMonomialPeriodChart F s j e φ BD d x hn0 (h10 x), h11, h12, k, fun k' hk' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isAmple_tensor_lbPow_mono_of_generated S (hodge G g) (CechPic.dual BD.lb) N k (isLB_hodge G g) (CechPic.isLB_dual BD.isLB_lb) h12 hk k' hk'`.
+-/
 theorem siegelToroidalIntegral_of_polCharts
     (hfan : ∀ g : ℕ, ∃ φ : InvFun ℤ, IsPolFan (id : ℤ → ℤ) g φ ∧ NoSelfInt (id : ℤ → ℤ) g φ)
     (h : GlobalTheory.Published.SiegelToroidalPolCharts) : GlobalTheory.Published.SiegelToroidalIntegral := by
@@ -27,6 +32,9 @@ theorem siegelToroidalIntegral_of_polCharts
   exact GlobalTheory.T.isAmple_tensor_lbPow_mono_of_generated S (hodge G g) (CechPic.dual BD.lb) N k (isLB_hodge G g)
     (CechPic.isLB_dual BD.isLB_lb) h12 hk k' hk'
 
+/- English proof (translation)
+The claim follows from `siegelToroidalIntegral_of_polCharts`.
+-/
 example : (∀ g : ℕ, ∃ φ : InvFun ℤ, IsPolFan (id : ℤ → ℤ) g φ ∧ NoSelfInt (id : ℤ → ℤ) g φ) →
     GlobalTheory.Published.SiegelToroidalPolCharts → GlobalTheory.Published.SiegelToroidalIntegral := siegelToroidalIntegral_of_polCharts
 

@@ -9,6 +9,19 @@ open ValuativeRel GlobalTheory.WeilDeligne GlobalTheory.LocGL GlobalTheory.LocLa
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {g : ℕ} [Fact g.Prime]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
+/- English proof (translation)
+Use `haveI : IsLocalHom (PadicInt.toZMod (p := g)) := IsLocalHom.of_surjective _ (ZMod.ringHom_surjective _)`. Set `u₀ : (ZMod g)ˣ` to `ZMod.unitOfCoprime n hn`. Establish `hu₀ : IsUnit ((n : ℕ) : ℤ_[g])` using `isUnit_of_map_unit (PadicInt.toZMod (p := g)) _ (by`. Rewrite using `[map_natCast]`. Conclude with `u₀.isUnit)`.
+
+Take `⟨θ, hθ⟩` from `exists_red i hi hw μ htm`. Take `⟨P, hP, e⟩` from `GlobalTheory.Published.DepthZeroModel.exists_label L θ u₀ (by rw [ZMod.coe_unitOfCoprime]; exact hgen)`. Establish `h1` using `H E Ω g A w h rc (UpperTheory.One.M.Old.close hε hl) i hi κ L t ht hT 1 (Or.inl rfl) (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ) (IrrGL.isCusp_ofChar μ hμ) _ P hP (inflates_units i θ μ hμ hθ)`. Establish `h2 : rc (cls (GlobalTheory.SmGL.IrrRep.det (Fin 1) μ hμ)) = _` using `hl.one μ hμ`. Rewrite `h1` using `[h2, e, WD.inePol_of_mem_Ine _ ht, WD.lpOfChar, WD.charPol_mk, WDRep.ofChars_ρ, charpoly_diagEnd]`.
+
+Establish `h3` using `congrArg (fun p => p.coeff 0) h1`. Establish `h4 : μ (a (ineIncl h ⟨t, ht⟩)) = θ u₀` using `Units.ext (by simpa using h3)`. Establish `h5 : u₀ = Units.map (PadicInt.toZMod (p` using `g)).toMonoidHom hu₀.unit := Units.ext (by simp [u₀])`. Rewrite using `[h4, h5, hθ]`. Use `set y : (w.adicCompletion E)ˣ := Units.map i.toRingHom.toMonoidHom (Units.map (algebraMap ℤ_[g] ℚ_[g]).toMonoidHom hu₀.unit) with hy`.
+
+Establish `hyn : (y : w.adicCompletion E) = n` using `by simp [hy]`. Establish `hyi : valuation (w.adicCompletion E) ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1`. Establish `e4 : ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) = i (((hu₀.unit⁻¹ : ℤ_[g]ˣ) : ℤ_[g]) : ℚ_[g])`. Rewrite using `[hy, ← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[e4]`. Conclude with `val_int_le i hi _`. Establish `h6 : μ (x * y⁻¹) = 1` using `htm _ (by`. Establish `e3 : ((x * y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) - 1 = ((x : w.adicCompletion E) - n) * ((y⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E)`. Rewrite using `[← hyn, sub_mul, Units.mul_inv]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e3, map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le hx hyi)`. Rewrite `h6` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h6.symm`.
+-/
 theorem value_at_gen_m [IsTotallyComplex E] (H : DiscreteGroups.sglob.DzType.DepthZeroInertiaBig) {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
     {ε : EpsFamily A} (hε : IsDeligneEps ε) {rc : IrrGL (w.adicCompletion E) → WD h} (hl : Laws a ha ε rc)
     (i : ℚ_[g] ≃+* w.adicCompletion E) (hi : Continuous i) (hw : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal)

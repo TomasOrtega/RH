@@ -19,6 +19,23 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LatJet
 
+/- English proof (translation)
+Introduce `hPC hDR hDC K _ _ d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E _ _ _ _ I _ φ hφ hres c y hc 𝔠 X₀ δ₀ N T hover`. Take `⟨X', p, U', hp, he, hcc, hh, hdiff, hend⟩` from `GlobalTheory.T.torsion_transport_elliptic hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E I φ hφ hres c y hc 𝔠 T`. Establish `hΩ₀ : Ω₀ ≠ 0` using `hT.1`. Establish `hΩ₁ : Ω₁ ≠ 0` using `hT.2.1`. Establish `hgΩ₀ : g Ω₀ ≠ 0` using `by simpa using hΩ₀`.
+
+Establish `hκ : g Ω₀ / Ω₁ ≠ 0` using `div_ne_zero hgΩ₀ hΩ₁`. Take `⟨T', hT'o, hC, hA'⟩` from `GlobalTheory.T.complex_point_galois_conjugate hPC hDR hDC E I 𝔠 φ (lattice c y) (lattice c (y * (upIdele K E t)⁻¹)) T Qb (algebraMap Qb ℂ) X₀ δ₀ N hover g X' p U' (g Ω₀ / Ω₁) hp hκ he hcc (by`. Introduce `w v v' h1 h2`. Establish `h3` using `hdiff w v v' h1 h2`. Establish `e : (fun j ↦ g (Ω₀ * w j) / Ω₁) = (fun j ↦ g Ω₀ / Ω₁ * g (w j))`.
+
+Use function extensionality and compare the values at `j`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e] at h3) hend` and apply the resulting hypothesis. Use `⟨T', hT'o, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `hC' : T'.C = g T.C / (g Ω₀ / Ω₁) ^ Fintype.card I`. Rewrite using `[← hC]`. Clear the denominators using the available nonvanishing facts. Establish `hn : T'.C / Ω₁ ^ Fintype.card I = g (T.C / Ω₀ ^ Fintype.card I)`. Rewrite using `[hC', map_div₀, map_pow, div_pow]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[hn]`. Introduce `i`. Take `⟨hhi, hsw⟩` from `hA' i`. Establish `hπ : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
+
+Establish `key` using `hh i`. Unfold `CxPt.A`. Rewrite using `[hhi]`. Establish `e1 : (Real.pi : ℂ) * (T.U.h i : ℂ) * T.s i * T.w i ^ 2 * Ω₀ ^ 2 * ((Real.sqrt d : ℝ) : ℂ) / (2 * Real.pi) = ((T.U.h i : ℂ) * ((Real.sqrt d : ℝ) : ℂ)) * (T.s i * T.w i ^ 2) * Ω₀ ^ 2 / 2`. Clear the denominators using the available nonvanishing facts.
+
+Establish `e2 : (Real.pi : ℂ) * (U'.h i : ℂ) * T'.s i * T'.w i ^ 2 * Ω₁ ^ 2 * ((Real.sqrt d : ℝ) : ℂ) / (2 * Real.pi) = ((U'.h i : ℂ) * ((Real.sqrt d : ℝ) : ℂ)) * (T'.s i * T'.w i ^ 2) * Ω₁ ^ 2 / 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e1, e2, hsw, map_div₀, map_mul, map_mul, map_pow, key]`. Establish `g2 : g (2 : ℂ) = 2` using `map_ofNat g 2`. Rewrite using `[g2]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem modelConj_of_deRham : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ModelConj := by
   intro hPC hDR hDC K _ _ d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E _ _ _ _ I _ φ hφ hres c y hc 𝔠 X₀ δ₀ N T hover
   obtain ⟨X', p, U', hp, he, hcc, hh, hdiff, hend⟩ := GlobalTheory.T.torsion_transport_elliptic hPC hDR hDC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E I φ hφ hres c y hc 𝔠 T

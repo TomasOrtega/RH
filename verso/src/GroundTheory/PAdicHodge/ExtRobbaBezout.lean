@@ -14,8 +14,14 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] (T : TeichLift p L Γ)
   [IsAlgClosed L] [CompleteSpace L]
 
+/- English proof (translation)
+Introduce `_ _ hx _ hr0 hrρ hm` and use `T.exists_point_dvd hx hr0 hrρ hm`.
+-/
 theorem rootExists : T.RootExists := fun _ _ hx _ hr0 hrρ hm => T.exists_point_dvd hx hr0 hrρ hm
 
+/- English proof (translation)
+The claim follows from `T.isBezout_of_rootExists T.rootExists`.
+-/
 theorem isBezout_robbaTilde : IsBezout T.RobbaTilde := T.isBezout_of_rootExists T.rootExists
 
 end TeichLift

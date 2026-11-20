@@ -11,6 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `k _ _ _ _ ψ h`. Conclude with `⟨h.continuous, h.ne_one⟩`.
+-/
 theorem hasConductor_one_continuous_ne_one : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle),
     HasConductor ψ 1 → Continuous ψ ∧ ψ ≠ 1 := by
   intro k _ _ _ _ ψ h

@@ -30,6 +30,11 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 namespace GlobalTheory.MovedDict
 
+/- English proof (translation)
+Introduce `hPr hInp`. Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch hIs _ => ?_⟩⟩` and prove the remaining obligations. Introduce `p hp x y`. Take `⟨hSs, hSt⟩` from `GlobalTheory.T.lattices_self_dual_moved_pair hPr hInp ch hIs p hp x y`. Take `⟨κ, hκ, hu, hj⟩` from `GlobalTheory.T.exists_unit_modulus_local_factor hPr hInp ch hIs p hp x y`.
+
+Use `⟨_, _, κ, hSs, hSt, hκ, GlobalTheory.T.differentiable_intertwining_pair hPr hInp ch hIs p hp x y, ?_, GlobalTheory.T.vacuum_vector_moved_pair hPr hInp ch hIs p hp x y, (GlobalTheory.T.lattice_orbit_vectors_moved_pair hPr hInp ch hIs p hp x y).1, hj⟩` and prove the remaining obligations. Introduce `q _ hx hy`. Use `⟨?_, ?_, hu q hx hy⟩` and prove the remaining obligations. Apply the tactic sequence `rcases p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩ <;> first | exact hy | exact hx`. Apply the tactic sequence `rcases p with ⟨i, j⟩ | ⟨t, i, j⟩ | i | ⟨t, j⟩ <;> first | exact hx | exact hy`.
+-/
 theorem movedVacuum_dict : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ (p : Pair _), DefPair D.R.m p →
     ∀ (x : FinPt ch.G p.small) (y : FinPt ch.G p.big), ∃ (Ls : Submodule (𝓞 D.host.E) (Fin (ch.G.pS p).rank → D.host.E))
     (Lt : Submodule (𝓞 D.host.E) (Fin (ch.G.pT p).rank → D.host.E)) (κ : ℂ), SD D Ls ∧ SD D Lt ∧ Mod1All κ ∧

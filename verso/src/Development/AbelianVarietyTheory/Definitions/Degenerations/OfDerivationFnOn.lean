@@ -146,31 +146,54 @@ def Model.ofAlgebra (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (
   sep := by show IsSeparated (Spec.map _); infer_instance
   qc := by show QuasiCompact (Spec.map _); infer_instance
 
+/- English proof (translation)
+The claim follows from `haveI : Algebra.Smooth R (MvPolynomial (Fin n) R) := ⟨inferInstance, inferInstance⟩ Model.ofAlgebra R K (MvPolynomial (Fin n) R)`.
+-/
 example (R : Type) [CommRing R] (K : Type) [Field K] [Algebra R K] (n : ℕ) :
     Model R ((Over.pullback (spMap (algebraMap R K))).obj
       (Over.mk (spMap (algebraMap R (MvPolynomial (Fin n) R))))) :=
   haveI : Algebra.Smooth R (MvPolynomial (Fin n) R) := ⟨inferInstance, inferInstance⟩
   Model.ofAlgebra R K (MvPolynomial (Fin n) R)
 
+/- English proof (translation)
+Unfold `Model.j`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc]`. Use `congr 1`. Conclude with `Over.w M.e.inv`.
+-/
 theorem Model.j_hom (M : Model R A) : M.j ≫ M.Y.hom = A.hom ≫ spMap (algebraMap R K) := by
   unfold Model.j
   rw [Category.assoc, pullback.condition, ← Category.assoc]
   congr 1
   exact Over.w M.e.inv
 
+/- English proof (translation)
+Use `⟨rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[morphismRestrict_ι, Over.id_left, Category.id_comp]`.
+-/
 theorem extends_id (M : Model R A) (U : M.Y.left.Opens) : Extends M M (𝟙 A) U U.ι := by
   refine ⟨rfl, ?_⟩
   rw [morphismRestrict_ι, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⊤, (⊤ : M.Y.left.Opens).ι, trivial, extends_id M ⊤, inferInstance⟩`.
+-/
 theorem isoAt_id (M : Model R A) (y : M.Y.left) : IsoAt M M (𝟙 A) y := ⟨⊤, (⊤ : M.Y.left.Opens).ι, trivial, extends_id M ⊤, inferInstance⟩
 
+/- English proof (translation)
+Take `⟨U, g, hy, he, -⟩` from `h`. Conclude with `⟨U, g, hy, he⟩`.
+-/
 theorem IsoAt.defAt {M : Model R A} {N : Model R A'} {f : A ⟶ A'} {y : M.Y.left} (h : IsoAt M N f y) :
     DefAt M N f y := by
   obtain ⟨U, g, hy, he, -⟩ := h
   exact ⟨U, g, hy, he⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨𝟙 _, by rw [Over.id_left]; infer_instance, by rw [Over.id_left, Category.comp_id]⟩`.
+-/
 theorem Model.le_refl (M : Model R A) : M.Le M := ⟨𝟙 _, by rw [Over.id_left]; infer_instance, by rw [Over.id_left, Category.comp_id]⟩
 
+/- English proof (translation)
+Take `⟨g, hg, hgj⟩` from `h`. Take `⟨g', hg', hgj'⟩` from `h'`. Use `⟨g ≫ g', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Use `infer_instance`.
+
+Rewrite using `[Over.comp_left, ← Category.assoc, hgj, hgj']`.
+-/
 theorem Model.Le.trans {M N P : Model R A} (h : M.Le N) (h' : N.Le P) : M.Le P := by
   obtain ⟨g, hg, hgj⟩ := h
   obtain ⟨g', hg', hgj'⟩ := h'
@@ -204,12 +227,20 @@ def derDual : B →+* DualNumber (Localization S) where
     show algebraMap B (Localization S) (d (a + b)) = algebraMap B (Localization S) (d a) + algebraMap B (Localization S) (d b)
     rw [map_add, map_add])
 
+/- English proof (translation)
+Use `TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr ?_` and prove the remaining obligations. Conclude with `IsLocalization.map_units (Localization S) s`.
+-/
 theorem derDual_isUnit (s : S) : IsUnit (derDual d S s) := by
   refine TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr ?_
   exact IsLocalization.map_units (Localization S) s
 
 def locDual : Localization S →+* DualNumber (Localization S) := IsLocalization.lift (derDual_isUnit d S)
 
+/- English proof (translation)
+Set `φ : Localization S →+* Localization S` to `(TrivSqZeroExt.fstHom (Localization S) (Localization S) (Localization S)).toRingHom.comp (locDual d S)`. Establish `hφ : φ = RingHom.id _`. Use `IsLocalization.ringHom_ext S (RingHom.ext fun b => ?_)` and prove the remaining obligations. Simplify using `only [φ, RingHom.comp_apply, locDual, IsLocalization.lift_eq, RingHom.id_apply]`. Both sides reduce to the same expression.
+
+Conclude with `RingHom.congr_fun hφ x`.
+-/
 theorem locDual_fst (x : Localization S) : (locDual d S x).fst = x := by
   let φ : Localization S →+* Localization S :=
     (TrivSqZeroExt.fstHom (Localization S) (Localization S) (Localization S)).toRingHom.comp (locDual d S)
@@ -224,17 +255,28 @@ def locDer : Localization S →+ Localization S where
   map_zero' := by simp
   map_add' a b := by simp
 
+/- English proof (translation)
+Use `show (locDual d S (x * y)).snd = x * (locDual d S y).snd + y * (locDual d S x).snd`. Rewrite using `[map_mul, DualNumber.snd_mul, locDual_fst, locDual_fst]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem locDer_mul (x y : Localization S) : locDer d S (x * y) = x * locDer d S y + y * locDer d S x := by
   show (locDual d S (x * y)).snd = x * (locDual d S y).snd + y * (locDual d S x).snd
   rw [map_mul, DualNumber.snd_mul, locDual_fst, locDual_fst]
   ring
 
+/- English proof (translation)
+Use `show (locDual d S (algebraMap B _ b)).snd = _`. Unfold `locDual`. Rewrite using `[IsLocalization.lift_eq]`. Both sides reduce to the same expression.
+-/
 theorem locDer_algebraMap (b : B) : locDer d S (algebraMap B _ b) = algebraMap B _ (d b) := by
   show (locDual d S (algebraMap B _ b)).snd = _
   unfold locDual
   rw [IsLocalization.lift_eq]
   rfl
 
+/- English proof (translation)
+Establish `hu : IsUnit (algebraMap B (Localization S) s)` using `IsLocalization.map_units (Localization S) s`. Rewrite using `[Localization.mk_eq_mk']`. Establish `key` using `locDer_mul d S (IsLocalization.mk' (Localization S) a s) (algebraMap B _ s)`. Rewrite `key` using `[IsLocalization.mk'_spec, locDer_algebraMap, locDer_algebraMap]`. Establish `spec : algebraMap B (Localization S) s * IsLocalization.mk' (Localization S) a s = algebraMap B _ a` using `IsLocalization.mk'_spec' _ _ _`.
+
+Establish `spec2 : algebraMap B (Localization S) s * algebraMap B (Localization S) s * IsLocalization.mk' (Localization S) (s.1 * d a - a * d s.1) (s * s) = algebraMap B _ (s.1 * d a - a * d s.1)`. Rewrite using `[← map_mul, ← Submonoid.coe_mul, IsLocalization.mk'_spec']`. Use `(hu.mul hu).mul_left_cancel ?_` and prove the remaining obligations. Rewrite using `[spec2, map_sub, map_mul, map_mul]`. Take the linear combination `(-algebraMap B (Localization S) s) * key - algebraMap B (Localization S) (d s.1) * spec`.
+-/
 theorem locDer_mk (a : B) (s : S) :
     locDer d S (Localization.mk a s) = Localization.mk (s.1 * d a - a * d s.1) (s * s) := by
   have hu : IsUnit (algebraMap B (Localization S) s) := IsLocalization.map_units (Localization S) s
@@ -269,6 +311,9 @@ def secDer (d : Derivation K B B) (U : (Sp B).Opens) : Γ(Sp B, U) →+ Γ(Sp B,
 def fnOn (B : Type) [CommRing B] (U : (Sp B).Opens) : B →+* Γ(Sp B, U) :=
   ((Sp B).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom.comp (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show locDer d (denoms B x.1) ((fnOn B U b).1 x) = (fnOn B U (d b)).1 x`. Establish `h : ∀ c : B, (fnOn B U c).1 x = algebraMap B (Localization (denoms B x.1)) c` using `fun c => rfl`. Rewrite using `[h, h, locDer_algebraMap]`.
+-/
 theorem secDer_fnOn (d : Derivation K B B) (U : (Sp B).Opens) (b : B) : secDer d U (fnOn B U b) = fnOn B U (d b) := by
   apply Subtype.ext
   funext x
@@ -276,6 +321,9 @@ theorem secDer_fnOn (d : Derivation K B B) (U : (Sp B).Opens) (b : B) : secDer d
   have h : ∀ c : B, (fnOn B U c).1 x = algebraMap B (Localization (denoms B x.1)) c := fun c => rfl
   rw [h, h, locDer_algebraMap]
 
+/- English proof (translation)
+Establish `e` using `congrArg (fun g => (g ≫ (Sp B).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap K B)))`. Conclude with `e.symm`.
+-/
 theorem cstK_spec (U : (Sp B).Opens) (c : K) :
     cstK (Over.mk (spMap (algebraMap K B))) U c = fnOn B U (algebraMap K B c) := by
   have e := congrArg (fun g => (g ≫ (Sp B).presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom c)
@@ -291,9 +339,17 @@ def VF.ofDerivation (d : Derivation K B B) : VF (Over.mk (spMap (algebraMap K B)
     exact (congrArg (secDer d U) (cstK_spec U c)).trans this
   res U V h a := rfl
 
+/- English proof (translation)
+The claim follows from `secDer_fnOn d U b`.
+-/
 theorem VF.ofDerivation_fnOn (d : Derivation K B B) (U : (Sp B).Opens) (b : B) :
     (VF.ofDerivation d).D U (fnOn B U b) = fnOn B U (d b) := secDer_fnOn d U b
 
+/- English proof (translation)
+Unfold `jac`. Use `Matrix.det_one (n := Fin n)` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, VF.ofDerivation_fnOn, MvPolynomial.pderiv_X, Matrix.one_apply]`. Distinguish the cases in `h : i = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`.
+-/
 theorem jac_pderiv (n : ℕ) (U : (Sp (MvPolynomial (Fin n) K)).Opens) :
     jac (A := Over.mk (spMap (algebraMap K (MvPolynomial (Fin n) K))))
       (fun i : Fin n => VF.ofDerivation (MvPolynomial.pderiv i)) U
@@ -306,6 +362,15 @@ theorem jac_pderiv (n : ℕ) (U : (Sp (MvPolynomial (Fin n) K)).Opens) :
   · subst h; simp
   · simp [h, Ne.symm h]
 
+/- English proof (translation)
+Use `⟨?_, fun x => ⟨⊤, fun j => fnOn _ ⊤ (MvPolynomial.X j), trivial, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_fin]`. Establish `hA : Algebra.IsStandardSmoothOfRelativeDimension n K (MvPolynomial (Fin n) K)`. Set `v : PEmpty.{1} → MvPolynomial (Fin n) K` to `PEmpty.elim`. Set `P0` to `Algebra.PreSubmersivePresentation.naive (v := v) (PEmpty.elim : PEmpty.{1} → Fin n) (fun a => a.elim)`.
+
+Set `P : Algebra.SubmersivePresentation K _ (Fin n) PEmpty.{1}` to `⟨P0, by`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Matrix.det_isEmpty, map_one]`. Conclude with `isUnit_one⟩`. Establish `hI : Ideal.span (Set.range v) = ⊥` using `by simp [v]`. Set `e : (MvPolynomial (Fin n) K ⧸ Ideal.span (Set.range v)) ≃ₐ[K] MvPolynomial (Fin n) K` to `(Ideal.quotientEquivAlgOfEq K hI).trans (AlgEquiv.ofRingEquiv (f := RingEquiv.quotientBot _) (fun r => RingEquiv.quotientBot_mk _))`.
+
+Conclude with `(P.ofAlgEquiv e).isStandardSmoothOfRelativeDimension (by simp [Algebra.Presentation.dimension])`. Use `show SmoothOfRelativeDimension n (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin n) K))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n)]`. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap n).mpr hA)`. Rewrite using `[jac_pderiv]`.
+
+Conclude with `isUnit_one`.
+-/
 theorem isFrame_pderiv (n : ℕ) :
     IsFrame (A := Over.mk (spMap (algebraMap K (MvPolynomial (Fin n) K))))
       (fun i : Fin n => VF.ofDerivation (MvPolynomial.pderiv i)) := by
@@ -330,10 +395,16 @@ theorem isFrame_pderiv (n : ℕ) :
   · rw [jac_pderiv]; exact isUnit_one
 end SpecVF
 
+/- English proof (translation)
+Simplify using `[polyPt, List.range_succ, Polynomial.coeff_X]`.
+-/
 theorem polyPt_X {S : Scheme.{0}} {G Z : Over S} [GrpObj G] (F : End G) (x : Z ⟶ G) :
     polyPt F Polynomial.X x = x ≫ (show G ⟶ G from F) := by
   simp [polyPt, List.range_succ, Polynomial.coeff_X]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨inferInstance, inferInstance, h⟩`.
+-/
 theorem unr_self {R : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] {π : R} (h : Irreducible π) :
     Unr π R := ⟨inferInstance, inferInstance, h⟩
 

@@ -96,6 +96,9 @@ def LimWU : Prop :=
         UpperTheory.V.Af.FrobEig ι r w (UpperTheory.V.Af.algSat a (normV w) B)) ∧
       (∀ w, ((l : ℕ) : 𝓞 E) ∈ w.asIdeal → Apart w w₀ → (∃ B, SatU U w B) → CrysDRU U ι r w)
 
+/- English proof (translation)
+The claim follows from `apartAll_empty w`.
+-/
 example (w : HeightOneSpectrum (𝓞 E)) : ApartAll (∅ : Finset (HeightOneSpectrum (𝓞 E))) w := apartAll_empty w
 
 end GlobalTheory.CongL

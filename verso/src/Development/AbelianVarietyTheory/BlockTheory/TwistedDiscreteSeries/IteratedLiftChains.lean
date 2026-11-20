@@ -133,8 +133,14 @@ def SingleBlockCuspidal (D : D7) : Prop :=
 
 def NoExcludedParameter : Prop := ∀ D : D7, NodeChainStatement D ∧ SingleBlockCuspidal D
 
+/- English proof (translation)
+The claim follows from `Or.inl (by norm_num)`.
+-/
 example : (4 : ℂ) ∈ excluded 4 3 := Or.inl (by norm_num)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> simp [chrStep, Nat.odd_iff]`.
+-/
 example {C : Type} [CommGroup C] (μ : ℕ → C) (η : C) :
     (chrStep μ η 1).2 = μ 1 ∧ (chrStep μ η 2).2 = μ 2 * η⁻¹ := by
   constructor <;> simp [chrStep, Nat.odd_iff]

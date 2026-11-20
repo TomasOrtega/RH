@@ -15,6 +15,11 @@ variable {σ : Type} [Fintype σ]
 
 def bin (M α : σ →₀ ℕ) : K := ∏ x, ((α x).choose (M x) : K)
 
+/- English proof (translation)
+Unfold `bin Finsupp.prod`. Use `Finset.prod_subset (Finset.subset_univ _) fun x _ hx => ?_` and prove the remaining obligations. Establish `h0 : α x = 0` using `by simpa using hx`. Establish `hle : M x ≤ α x`. Conclude with `Finsupp.le_def.1 h x`.
+
+Establish `h1 : M x = 0` using `by omega`. Simplify using `[h0, h1]`.
+-/
 private theorem finsupp_prod_choose_eq_bin_of_le (M α : σ →₀ ℕ) (h : M ≤ α) :
     (α.prod fun x k => (k.choose (M x) : K)) = bin M α := by
   unfold bin Finsupp.prod
@@ -25,6 +30,13 @@ private theorem finsupp_prod_choose_eq_bin_of_le (M α : σ →₀ ℕ) (h : M �
   have h1 : M x = 0 := by omega
   simp [h0, h1]
 
+/- English proof (translation)
+Rewrite using `[ddiv_monomial]`. Distinguish the cases in `h : M ≤ α`. Rewrite using `[if_pos h, finsupp_prod_choose_eq_bin_of_le M α h]`. Rewrite using `[if_neg h]`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, α x < M x := by`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Conclude with `Finsupp.le_def.2 hc`. Establish `h0 : (bin M α : K) = 0`.
+
+Unfold `bin`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ x) (by simp [Nat.choose_eq_zero_of_lt hx])`. Rewrite using `[h0, mul_zero, map_zero]`.
+-/
 theorem ddiv_monomial' (M α : σ →₀ ℕ) (c : K) :
     ddiv M (monomial α c) = monomial (α - M) (c * bin M α) := by
   rw [ddiv_monomial]
@@ -41,12 +53,22 @@ theorem ddiv_monomial' (M α : σ →₀ ℕ) (c : K) :
       exact Finset.prod_eq_zero (Finset.mem_univ x) (by simp [Nat.choose_eq_zero_of_lt hx])
     rw [h0, mul_zero, map_zero]
 
+/- English proof (translation)
+Establish `h : (bin M α : K) = ((∏ x, (α x).choose (M x) : ℕ) : K)`. Rewrite using `[bin, Nat.cast_prod]`. Rewrite using `[h]`. Conclude with `vge_natCast v _`.
+-/
 theorem vge_bin (v : AddValuation K (WithTop ℚ)) (M α : σ →₀ ℕ) : vge v 0 (bin M α : K) := by
   have h : (bin M α : K) = ((∏ x, (α x).choose (M x) : ℕ) : K) := by
     rw [bin, Nat.cast_prod]
   rw [h]
   exact vge_natCast v _
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' F (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)` and prove the remaining obligations. Establish `hb : (bin M₂ α : K) * bin M₁ (α - M₂) = bin (M₁ + M₂) α`. Unfold `bin`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Break down `h x with h1 | h2` into its components or cases. Simplify using `[h1]`. Simplify using `[h2]`. Simplify using `only [ddiv_monomial']`. Rewrite using `[tsub_tsub, add_comm M₂ M₁, mul_assoc, hb]`.
+
+Simplify using `only [ddiv_add, h₁, h₂]`.
+-/
 theorem ddiv_ddiv_of_disjoint (M₁ M₂ : σ →₀ ℕ) (h : ∀ x, M₁ x = 0 ∨ M₂ x = 0)
     (F : MvPolynomial σ K) : ddiv M₁ (ddiv M₂ F) = ddiv (M₁ + M₂) F := by
   refine MvPolynomial.induction_on' F (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)
@@ -61,12 +83,18 @@ theorem ddiv_ddiv_of_disjoint (M₁ M₂ : σ →₀ ℕ) (h : ∀ x, M₁ x = 0
     rw [tsub_tsub, add_comm M₂ M₁, mul_assoc, hb]
   · simp only [ddiv_add, h₁, h₂]
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' F (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)` and prove the remaining obligations. Rewrite using `[ddiv_monomial']`. Simplify using `[bin]`. Rewrite using `[ddiv_add, h₁, h₂]`.
+-/
 theorem ddiv_zero' (F : MvPolynomial σ K) : ddiv 0 F = F := by
   refine MvPolynomial.induction_on' F (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)
   · rw [ddiv_monomial']
     simp [bin]
   · rw [ddiv_add, h₁, h₂]
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.expand_monomial, MvPolynomial.monomial_eq, Finsupp.prod_of_support_subset _ Finsupp.support_smul (fun n e => (X n : MvPolynomial τ K) ^ e) (fun i _ => pow_zero _)]`.
+-/
 theorem expand_monomial' {τ : Type} (P : ℕ) (d : τ →₀ ℕ) (c : K) :
     expand P (monomial d c) = monomial (P • d) c := by
   rw [MvPolynomial.expand_monomial, MvPolynomial.monomial_eq,
@@ -79,6 +107,13 @@ section Letter
 
 variable {L : Type} [DecidableEq L] {r : ℕ}
 
+/- English proof (translation)
+Unfold `onLetter`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Conclude with `Finsupp.mapDomain_apply (fun x y hxy => by simpa using hxy) β a`.
+
+Rewrite using `[if_neg h]`. Establish `hne : (j, a) ∉ Set.range (fun b : Fin r => (i, b))`. Introduce and unpack `⟨b, hb⟩`. Conclude with `h (congrArg Prod.fst hb).symm`. Use `first`.
+
+Consider the case `exact Finsupp.mapDomain_of_notMem_range _ _ hne`. Consider the case `exact Finsupp.mapDomain_notin_range _ _ hne`.
+-/
 theorem onLetter_apply (i : L) (β : Fin r →₀ ℕ) (j : L) (a : Fin r) :
     onLetter i β (j, a) = if j = i then β a else 0 := by
   unfold onLetter
@@ -96,20 +131,32 @@ theorem onLetter_apply (i : L) (β : Fin r →₀ ℕ) (j : L) (a : Fin r) :
 
 def letE (α : L × Fin r →₀ ℕ) (i : L) : Fin r →₀ ℕ := Finsupp.equivFunOnFinite.symm fun a => α (i, a)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem letE_apply (α : L × Fin r →₀ ℕ) (i : L) (a : Fin r) : letE α i a = α (i, a) := rfl
 
 def offE (i : L) (α : L × Fin r →₀ ℕ) : L × Fin r →₀ ℕ := α.filter fun x => x.1 ≠ i
 
+/- English proof (translation)
+Unfold `offE`. Rewrite using `[Finsupp.filter_apply]`. Apply the tactic sequence `by_cases h : j = i <;> simp [h]`.
+-/
 theorem offE_apply (i : L) (α : L × Fin r →₀ ℕ) (j : L) (a : Fin r) :
     offE i α (j, a) = if j = i then 0 else α (j, a) := by
   unfold offE
   rw [Finsupp.filter_apply]
   by_cases h : j = i <;> simp [h]
 
+/- English proof (translation)
+Unfold `absE`. Conclude with `Finsupp.sum_fintype _ _ (fun _ => rfl)`.
+-/
 theorem absE_eq_sum (β : Fin r →₀ ℕ) : absE β = ∑ a, β a := by
   unfold absE
   exact Finsupp.sum_fintype _ _ (fun _ => rfl)
 
+/- English proof (translation)
+Rewrite using `[absE_eq_sum]`. Unfold `ldeg`. Simplify using `only [letE_apply]`.
+-/
 theorem absE_letE (α : L × Fin r →₀ ℕ) (i : L) : absE (letE α i) = ldeg α i := by
   rw [absE_eq_sum]
   unfold ldeg
@@ -123,8 +170,26 @@ variable [CharZero K] (v : AddValuation K (WithTop ℚ)) (p : ℕ)
 
 def divE {r : ℕ} (P : ℕ) (η : Fin r →₀ ℕ) : Fin r →₀ ℕ := Finsupp.equivFunOnFinite.symm fun a => η a / P
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem divE_apply {r : ℕ} (P : ℕ) (η : Fin r →₀ ℕ) (a : Fin r) : divE P η a = η a / P := rfl
 
+/- English proof (translation)
+Establish `hP : 0 < p ^ g` using `pow_pos hD.prime.pos g`. Establish `H : ∀ ρf : Fin r → Fin (p ^ g), ∃ (n : ℕ) (cf : Fin n → K) (ρ' δ κ : Fin n → (Fin r →₀ ℕ)), (∀ t, 0 ≤ v (cf t)) ∧ (∀ t, (absE (κ t) : ℝ) ≤ (absE M : ℝ) / ((p : ℝ) ^ g) + c) ∧ ∀ (β γ : Fin r →₀ ℕ), ((c : ℕ) : WithTop ℚ) ≤ v ((ddiv M (monomial ((Finsupp.equivFunOnFinite.symm fun a …` using `fun ρf => hDER hD r g _ (fun a => by simp) M c hc`. Use `choose n cf ρ' δ κ hcf hκ happ using H`. Use `⟨Σ ρf : Fin r → Fin (p ^ g), Fin (n ρf), inferInstance, fun s a => (s.1 a : ℕ), fun s => cf s.1 s.2, fun s => ρ' s.1 s.2, fun s => δ s.1 s.2, fun s => κ s.1 s.2, fun s => hcf s.1 s.2, fun s => hκ s.1 s.2, fun η => ?_⟩` and prove the remaining obligations. Take `⟨ρf, hρf⟩ : ∃ ρf : Fin r → Fin (p ^ g), ∀ a, (ρf a : ℕ) = η a % p ^ g` from `⟨fun a => ⟨η a % p ^ g, Nat.mod_lt _ hP⟩, fun a => rfl⟩`.
+
+Establish `hη : η = (Finsupp.equivFunOnFinite.symm fun a => ((ρf a : ℕ))) + p ^ g • divE (p ^ g) η`. Use extensionality with `a`. Establish `hm` using `Nat.mod_add_div (η a) (p ^ g)`. Simplify using `[divE_apply, hρf]`. Apply the tactic sequence `all_goals first | exact hm.symm | omega`.
+
+Establish `hterm : ∀ t, monomial (ρ' ρf t) (cf ρf t) * expand (p ^ g) (monomial (δ ρf t) (1 : K) * ddiv (κ ρf t) (monomial (divE (p ^ g) η) (1 : K))) = monomial (ρ' ρf t + p ^ g • (δ ρf t + (divE (p ^ g) η - κ ρf t))) (cf ρf t * bin (κ ρf t) (divE (p ^ g) η))`. Introduce `t`. Rewrite using `[ddiv_monomial', monomial_mul, expand_monomial', monomial_mul, one_mul, one_mul]`. Establish `hsum : (∑ s : (Σ ρf : Fin r → Fin (p ^ g), Fin (n ρf)), if (fun a => (s.1 a : ℕ)) = (fun a => η a % p ^ g) then monomial (ρ' s.1 s.2 + p ^ g • (δ s.1 s.2 + (divE (p ^ g) η - κ s.1 s.2))) (cf s.1 s.2 * bin (κ s.1 s.2) (divE (p ^ g) η)) else 0) = ∑ t, monomial (ρ' ρf t) (cf ρf t) * …`. Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single ρf]`.
+
+Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[hterm t]`. Conclude with `if_pos (funext hρf)`. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun t _ => if_neg ?_` and prove the remaining obligations.
+
+Introduce `h`. Apply `hb` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Apply `Fin.ext` to reduce the goal to its premises. Establish `h2 : ((b a : ℕ)) = η a % p ^ g` using `congrFun h a`.
+
+Rewrite using `[h2, hρf a]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `hpoly : ddiv M (monomial η (1 : K)) - (∑ s : (Σ ρf : Fin r → Fin (p ^ g), Fin (n ρf)), if (fun a => (s.1 a : ℕ)) = (fun a => η a % p ^ g) then monomial (ρ' s.1 s.2 + p ^ g • (δ s.1 s.2 + (divE (p ^ g) η - κ s.1 s.2))) (cf s.1 s.2 * bin (κ s.1 s.2) (divE (p ^ g) η)) else 0) = ddiv …`. Rewrite using `[hsum, ← hη]`.
+
+Introduce `γ`. Establish `key` using `happ ρf (divE (p ^ g) η) γ`. Rewrite `key` using `[← hpoly]`. Conclude with `(vge_natCast_bound v c _).2 key`.
+-/
 theorem der' (hDER : DER K v p) (hD : DVRHyp v p) (r g : ℕ) (M : Fin r →₀ ℕ) (c : ℕ) (hc : 1 ≤ c) :
     ∃ (I : Type) (_ : Fintype I) (cls : I → Fin r → ℕ) (cf : I → K) (ρ' δ κ : I → (Fin r →₀ ℕ)),
       (∀ s, 0 ≤ v (cf s)) ∧ (∀ s, (absE (κ s) : ℝ) ≤ (absE M : ℝ) / ((p : ℝ) ^ g) + c) ∧
@@ -196,6 +261,11 @@ section App
 
 variable {L : Type} [Fintype L] [DecidableEq L] {r : ℕ}
 
+/- English proof (translation)
+Unfold `bin`. Rewrite using `[Fintype.prod_prod_type, Finset.prod_eq_single i]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[onLetter_apply, if_pos rfl, letE_apply]`. Introduce `j _ hj`.
+
+Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[onLetter_apply, if_neg hj]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem bin_onLetter (i : L) (M : Fin r →₀ ℕ) (α : L × Fin r →₀ ℕ) :
     (bin (onLetter i M) α : K) = bin M (letE α i) := by
   unfold bin
@@ -209,6 +279,11 @@ theorem bin_onLetter (i : L) (M : Fin r →₀ ℕ) (α : L × Fin r →₀ ℕ)
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Use extensionality with `⟨j, a⟩`. Simplify using `only [Finsupp.tsub_apply, Finsupp.add_apply, offE_apply, onLetter_apply, letE_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[h]`.
+-/
 theorem sub_onLetter (i : L) (M : Fin r →₀ ℕ) (α : L × Fin r →₀ ℕ) :
     α - onLetter i M = offE i α + onLetter i (letE α i - M) := by
   ext ⟨j, a⟩
@@ -218,6 +293,11 @@ theorem sub_onLetter (i : L) (M : Fin r →₀ ℕ) (α : L × Fin r →₀ ℕ)
     simp
   · simp [h]
 
+/- English proof (translation)
+Introduce `β`. Distinguish the cases in `h : ∃ u : σ →₀ ℕ, u.mapDomain f = β`. Take `⟨u, rfl⟩` from `h`. Rewrite using `[coeff_rename_mapDomain f hf]`. Conclude with `hQ u`.
+
+Rewrite using `[coeff_rename_eq_zero f Q β (fun u hu => absurd ⟨u, hu⟩ h)]`. Conclude with `vge_zero v a`.
+-/
 theorem cge_rename (v : AddValuation K (WithTop ℚ)) {σ τ : Type} (f : σ → τ) (hf : Function.Injective f)
     {a : ℝ} {Q : MvPolynomial σ K} (hQ : cge v a Q) : cge v a (rename f Q) := by
   intro β
@@ -231,14 +311,23 @@ theorem cge_rename (v : AddValuation K (WithTop ℚ)) {σ τ : Type} (f : σ →
 def putL (i : L) (α : L × Fin r →₀ ℕ) : MvPolynomial (Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K :=
   (LinearMap.mulLeft K (monomial (offE i α) (1 : K))).comp (rename fun a : Fin r => (i, a)).toLinearMap
 
+/- English proof (translation)
+Simplify using `only [putL, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]`.
+-/
 private theorem putL_eq_monomial_mul_rename (i : L) (α : L × Fin r →₀ ℕ) (Q : MvPolynomial (Fin r) K) :
     putL i α Q = monomial (offE i α) (1 : K) * rename (fun a : Fin r => (i, a)) Q := by
   simp only [putL, LinearMap.comp_apply, LinearMap.mulLeft_apply, AlgHom.toLinearMap_apply]
 
+/- English proof (translation)
+Rewrite using `[putL_eq_monomial_mul_rename, rename_monomial, monomial_mul, one_mul, onLetter]`.
+-/
 theorem putL_monomial (i : L) (α : L × Fin r →₀ ℕ) (η : Fin r →₀ ℕ) (c : K) :
     putL i α (monomial η c) = monomial (offE i α + onLetter i η) c := by
   rw [putL_eq_monomial_mul_rename, rename_monomial, monomial_mul, one_mul, onLetter]
 
+/- English proof (translation)
+Rewrite using `[putL_eq_monomial_mul_rename]`. Establish `h` using `cge_mul v (cge_monomial v (offE i α) (vge_one v)) (cge_rename v (fun a : Fin r => (i, a)) (fun x y hxy => by simpa using hxy) hQ)`. Rewrite `h` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem cge_putL (v : AddValuation K (WithTop ℚ)) (i : L) (α : L × Fin r →₀ ℕ) {a : ℝ}
     {Q : MvPolynomial (Fin r) K} (hQ : cge v a Q) : cge v a (putL i α Q) := by
   rw [putL_eq_monomial_mul_rename]
@@ -246,6 +335,9 @@ theorem cge_putL (v : AddValuation K (WithTop ℚ)) (i : L) (α : L × Fin r →
     (cge_rename v (fun a : Fin r => (i, a)) (fun x y hxy => by simpa using hxy) hQ)
   rwa [zero_add] at h
 
+/- English proof (translation)
+Rewrite using `[ddiv_monomial', ddiv_monomial', putL_monomial, sub_onLetter, bin_onLetter]`.
+-/
 theorem ddiv_onLetter_monomial (i : L) (M : Fin r →₀ ℕ) (α : L × Fin r →₀ ℕ) :
     ddiv (onLetter i M) (monomial α (1 : K)) = putL i α (ddiv M (monomial (letE α i) 1)) := by
   rw [ddiv_monomial', ddiv_monomial', putL_monomial, sub_onLetter, bin_onLetter]
@@ -258,6 +350,9 @@ def appMon (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K) (ρ' δ 
     monomial (offE i α + onLetter i (ρ' s + P • (δ s + (divE P (letE α i) - κ s))))
       (cf s * bin (κ s) (divE P (letE α i))) else 0
 
+/- English proof (translation)
+Rewrite using `[map_sum, appMon]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : cls s = (fun a => α (i, a) % P)`. Rewrite using `[if_pos h, if_pos (show cls s = fun a => letE α i a % P from h), putL_monomial]`. Rewrite using `[if_neg h, if_neg (show ¬ cls s = fun a => letE α i a % P from h), map_zero]`.
+-/
 theorem appMon_eq (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K) (ρ' δ κ : I → (Fin r →₀ ℕ))
     (α : L × Fin r →₀ ℕ) :
     appMon i P cls cf ρ' δ κ α = putL i α (∑ s, if cls s = (fun a => letE α i a % P) then
@@ -269,6 +364,11 @@ theorem appMon_eq (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K) (
   · rw [if_pos h, if_pos (show cls s = fun a => letE α i a % P from h), putL_monomial]
   · rw [if_neg h, if_neg (show ¬ cls s = fun a => letE α i a % P from h), map_zero]
 
+/- English proof (translation)
+Unfold `appMon`. Apply `cge_sum v` to reduce the goal to its premises. Introduce `s _`. Distinguish the cases in `h : cls s = (fun a => α (i, a) % P)`. Rewrite using `[if_pos h]`.
+
+Use `cge_monomial v _ ?_` and prove the remaining obligations. Establish `h2` using `vge_mul v ((vge_zero_iff v (cf s)).2 (hcf s)) (vge_bin v (κ s) (divE P (letE α i)))`. Rewrite `h2` using `[add_zero]`. Then use the resulting hypothesis. Rewrite using `[if_neg h]`. Conclude with `cge_zero v 0`.
+-/
 theorem cge_appMon (v : AddValuation K (WithTop ℚ)) (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K)
     (ρ' δ κ : I → (Fin r →₀ ℕ)) (hcf : ∀ s, 0 ≤ v (cf s)) (α : L × Fin r →₀ ℕ) :
     cge v 0 (appMon i P cls cf ρ' δ κ α) := by
@@ -290,6 +390,9 @@ section AppL
 
 variable {L : Type} [Fintype L] [DecidableEq L] {r : ℕ} {I : Type} [Fintype I]
 
+/- English proof (translation)
+Use `conv_lhs => rw [G.as_sum]`. Rewrite using `[ddiv_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[← ddiv_smul]`. Simplify using `only [smul_monomial, smul_eq_mul, mul_one]`.
+-/
 theorem ddiv_as_sum {σ : Type} (M : σ →₀ ℕ) (G : MvPolynomial σ K) :
     ddiv M G = ∑ α ∈ G.support, G.coeff α • ddiv M (monomial α (1 : K)) := by
   conv_lhs => rw [G.as_sum]
@@ -302,6 +405,9 @@ def appL (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K) (ρ' δ κ
     MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K :=
   lsup (appMon i P cls cf ρ' δ κ)
 
+/- English proof (translation)
+Rewrite using `[appL, lsup_apply]`. Apply `cge_sum v` to reduce the goal to its premises. Introduce `α _`. Establish `h` using `cge_smul v (hG α) (cge_appMon v i P cls cf ρ' δ κ hcf α)`. Rewrite `h` using `[add_zero]`. Then use the resulting hypothesis.
+-/
 theorem cge_appL (v : AddValuation K (WithTop ℚ)) (i : L) (P : ℕ) (cls : I → Fin r → ℕ) (cf : I → K)
     (ρ' δ κ : I → (Fin r →₀ ℕ)) (hcf : ∀ s, 0 ≤ v (cf s)) {a : ℝ} {G : MvPolynomial (L × Fin r) K}
     (hG : cge v a G) : cge v a (appL i P cls cf ρ' δ κ G) := by
@@ -311,6 +417,11 @@ theorem cge_appL (v : AddValuation K (WithTop ℚ)) (i : L) (P : ℕ) (cls : I �
   have h := cge_smul v (hG α) (cge_appMon v i P cls cf ρ' δ κ hcf α)
   rwa [add_zero] at h
 
+/- English proof (translation)
+Rewrite using `[ddiv_as_sum, appL, lsup_apply, ← Finset.sum_sub_distrib]`. Apply `cge_sum v` to reduce the goal to its premises. Introduce `α _`. Rewrite using `[← smul_sub]`. Use `cge_smul v (hG α) ?_` and prove the remaining obligations.
+
+Rewrite using `[ddiv_onLetter_monomial, appMon_eq, ← map_sub]`. Conclude with `cge_putL v i α (hder (letE α i))`.
+-/
 theorem cge_ddiv_sub_appL (v : AddValuation K (WithTop ℚ)) (i : L) (P : ℕ) (M : Fin r →₀ ℕ)
     (cls : I → Fin r → ℕ) (cf : I → K) (ρ' δ κ : I → (Fin r →₀ ℕ)) (c : ℝ)
     (hder : ∀ η : Fin r →₀ ℕ, cge v c (ddiv M (monomial η (1 : K)) -
@@ -332,9 +443,15 @@ namespace TwistData
 
 variable (D : TwistData K) (p : ℕ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftE_mb (α : D.EA) (b : D.Lb) (a : Fin D.r) : D.liftE p α (D.mb b, a) = α (Sum.inl b, a) := by
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem liftE_mw (α : D.EA) (t : D.Tau) (a : Fin D.r) :
     D.liftE p α (D.mw t, a) = α (Sum.inr t, a) / D.P p t := by
   rfl
@@ -343,14 +460,23 @@ def emb (ρ : D.Tau → Fin D.r → ℕ) (ζ : D.EM) : D.EA :=
   Finsupp.equivFunOnFinite.symm fun x => Sum.elim (fun b => ζ (D.mb b, x.2))
     (fun t => ρ t x.2 + D.P p t * ζ (D.mw t, x.2)) x.1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_inl (ρ : D.Tau → Fin D.r → ℕ) (ζ : D.EM) (b : D.Lb) (a : Fin D.r) :
     D.emb p ρ ζ (Sum.inl b, a) = ζ (D.mb b, a) := by
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_inr (ρ : D.Tau → Fin D.r → ℕ) (ζ : D.EM) (t : D.Tau) (a : Fin D.r) :
     D.emb p ρ ζ (Sum.inr t, a) = ρ t a + D.P p t * ζ (D.mw t, a) := by
   rfl
 
+/- English proof (translation)
+Use extensionality with `⟨x, a⟩`. Break down `x with b | t` into its components or cases. Rewrite using `[emb_inl, liftE_mb]`. Rewrite using `[emb_inr, liftE_mw, ← h t a, Nat.mod_add_div]`.
+-/
 theorem emb_liftE (ρ : D.Tau → Fin D.r → ℕ) (α : D.EA) (h : D.InClass p ρ α) :
     D.emb p ρ (D.liftE p α) = α := by
   ext ⟨x, a⟩
@@ -358,6 +484,11 @@ theorem emb_liftE (ρ : D.Tau → Fin D.r → ℕ) (α : D.EA) (h : D.InClass p 
   · rw [emb_inl, liftE_mb]
   · rw [emb_inr, liftE_mw, ← h t a, Nat.mod_add_div]
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' G (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.PlaneGram.dg_monomial, digitPart_monomial, digitPart_monomial]`. Distinguish the cases in `h : D.InClass p ρ α`. Rewrite using `[if_pos h, if_pos h, Formalism.MainNotions.PlaneGram.dg_monomial, D.emb_liftE p ρ α h]`. Rewrite using `[if_neg h, if_neg h, map_zero]`.
+
+Rewrite using `[map_add, digitPart_add, digitPart_add, map_add, h₁, h₂]`.
+-/
 theorem digitPart_dg (ρ : D.Tau → Fin D.r → ℕ) (f : D.EA → K) (G : MvPolynomial (D.OL × Fin D.r) K) :
     D.digitPart p ρ (dg f G) = dg (fun ζ => f (D.emb p ρ ζ)) (D.digitPart p ρ G) := by
   refine MvPolynomial.induction_on' G (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)
@@ -367,6 +498,11 @@ theorem digitPart_dg (ρ : D.Tau → Fin D.r → ℕ) (f : D.EA → K) (G : MvPo
     · rw [if_neg h, if_neg h, map_zero]
   · rw [map_add, digitPart_add, digitPart_add, map_add, h₁, h₂]
 
+/- English proof (translation)
+Unfold `digitPart`. Apply `Formalism.MainNotions.PlaneGram.cge_sum v` to reduce the goal to its premises. Introduce `α _`. Distinguish the cases in `h : D.InClass p ρ α`. Rewrite using `[if_pos h]`.
+
+Conclude with `Formalism.MainNotions.PlaneGram.cge_monomial v _ (hG α)`. Rewrite using `[if_neg h]`. Conclude with `Formalism.MainNotions.PlaneGram.cge_zero v a`.
+-/
 theorem cge_digitPart (v : AddValuation K (WithTop ℚ)) (ρ : D.Tau → Fin D.r → ℕ) {a : ℝ}
     {G : MvPolynomial (D.OL × Fin D.r) K} (hG : cge v a G) : cge v a (D.digitPart p ρ G) := by
   unfold digitPart
@@ -380,6 +516,17 @@ theorem cge_digitPart (v : AddValuation K (WithTop ℚ)) (ρ : D.Tau → Fin D.r
 
 variable (t : D.Tau)
 
+/- English proof (translation)
+Establish `hval : ∀ t' a, ((Formalism.MainNotions.PlaneGram.offE (Sum.inr t) α + onLetter (Sum.inr t) (ρ1 + D.P p t • x) : D.EA)) (Sum.inr t', a) = if t' = t then ρ1 a + D.P p t * x a else α (Sum.inr t', a)`. Introduce `t' a`. Rewrite using `[Finsupp.add_apply, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply]`. Distinguish the cases in `h : t' = t`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Establish `hne : (Sum.inr t' : D.OL) ≠ Sum.inr t` using `fun e => h (Sum.inr_injective e)`. Simplify using `[h, hne]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Use `⟨fun a => ?_, fun t' ht' a => ?_⟩` and prove the remaining obligations. Establish `h1` using `h t a`. Rewrite `h1` using `[hval, if_pos rfl, Nat.add_mul_mod_self_left]`. Conclude with `h1`. Establish `h1` using `h t' a`.
+
+Rewrite `h1` using `[hval, if_neg ht']`. Conclude with `h1`. Introduce and unpack `⟨h1, h2⟩ t' a`. Rewrite using `[hval]`. Distinguish the cases in `h : t' = t`.
+
+Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Nat.add_mul_mod_self_left]`. Conclude with `h1 a`. Rewrite using `[if_neg h]`. Conclude with `h2 t' h a`.
+-/
 theorem inClass_new (ρ'' : D.Tau → Fin D.r → ℕ) (α : D.EA) (ρ1 x : Fin D.r →₀ ℕ) :
     D.InClass p ρ'' (offE (Sum.inr t) α + onLetter (Sum.inr t) (ρ1 + D.P p t • x)) ↔
       (∀ a, ρ1 a % D.P p t = ρ'' t a) ∧
@@ -411,6 +558,15 @@ theorem inClass_new (ρ'' : D.Tau → Fin D.r → ℕ) (α : D.EA) (ρ1 x : Fin 
     · rw [if_neg h]
       exact h2 t' h a
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨funext fun a => ?_, fun t' ht' a => ?_⟩` and prove the remaining obligations. Establish `h1` using `h t a`. Rewrite `h1` using `[Function.update_apply, if_pos rfl]`.
+
+Conclude with `h1.symm`. Establish `h1` using `h t' a`. Rewrite `h1` using `[Function.update_apply, if_neg ht']`. Conclude with `h1`. Introduce and unpack `⟨h1, h2⟩ t' a`.
+
+Rewrite using `[Function.update_apply]`. Distinguish the cases in `h : t' = t`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, h1]`. Rewrite using `[if_neg h]`.
+
+Conclude with `h2 t' h a`.
+-/
 theorem inClass_update (ρ'' : D.Tau → Fin D.r → ℕ) (α : D.EA) (cl : Fin D.r → ℕ) :
     D.InClass p (Function.update ρ'' t cl) α ↔
       (cl = fun a => α (Sum.inr t, a) % D.P p t) ∧
@@ -432,11 +588,21 @@ theorem inClass_update (ρ'' : D.Tau → Fin D.r → ℕ) (α : D.EA) (cl : Fin 
     · rw [if_neg h]
       exact h2 t' h a
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem liftE_apply_eq_sum_elim (α : D.EA) (x : D.ML × Fin D.r) :
     D.liftE p α x = Sum.elim (fun b => α (Sum.inl b, x.2))
       (Sum.elim (fun _ => 0) (Sum.elim (fun s => α (Sum.inr s, x.2) / D.P p s) (fun _ => 0))) x.1 := by
   rfl
 
+/- English proof (translation)
+Use extensionality with `⟨y, a⟩`. Break down `y with b | t' | t' | t'` into its components or cases. Simplify using `[liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw]`. Simplify using `[liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw]`. Distinguish the cases in `h : t' = t`.
+
+Substitute `h` using the available equality. Simplify using `[liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw]`. Use `first`. Consider the case `(rw [← mul_add, Nat.add_mul_div_left _ _ hP]; omega)`. Consider the case `(rw [Nat.add_mul_div_left _ _ hP]; omega)`.
+
+Consider the case `omega`. Simplify using `[liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw, h]`. Simplify using `[liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw]`.
+-/
 theorem liftE_new (hP : 0 < D.P p t) (α : D.EA) (ρ1 δ1 κ1 : Fin D.r →₀ ℕ) :
     D.liftE p (offE (Sum.inr t) α + onLetter (Sum.inr t)
         (ρ1 + D.P p t • (δ1 + (divE (D.P p t) (letE α (Sum.inr t)) - κ1)))) =
@@ -455,11 +621,17 @@ theorem liftE_new (hP : 0 < D.P p t) (α : D.EA) (ρ1 δ1 κ1 : Fin D.r →₀ �
     · simp [liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw, h]
   · simp [liftE_apply_eq_sum_elim, Formalism.MainNotions.PlaneGram.offE_apply, onLetter_apply, mw]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `only [Formalism.MainNotions.PlaneGram.letE_apply, Formalism.MainNotions.PlaneGram.divE_apply, liftE_mw]`.
+-/
 theorem letE_liftE_mw (α : D.EA) :
     letE (D.liftE p α) (D.mw t) = divE (D.P p t) (letE α (Sum.inr t)) := by
   ext a
   simp only [Formalism.MainNotions.PlaneGram.letE_apply, Formalism.MainNotions.PlaneGram.divE_apply, liftE_mw]
 
+/- English proof (translation)
+Rewrite using `[digitPart_eq, map_zero]`.
+-/
 theorem digitPart_zero (ρ : D.Tau → Fin D.r → ℕ) :
     D.digitPart p ρ (0 : MvPolynomial (D.OL × Fin D.r) K) = 0 := by
   rw [digitPart_eq, map_zero]
@@ -469,10 +641,20 @@ def opS (μ κ1 : Fin D.r →₀ ℕ) (c1 : K) :
   c1 • ((LinearMap.mulLeft K (monomial (onLetter (D.mw t) μ) (1 : K))).comp
     (ddivL (onLetter (D.mw t) κ1)))
 
+/- English proof (translation)
+Simplify using `only [opS, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, Formalism.MainNotions.PlaneGram.ddiv_eq]`.
+-/
 theorem opS_apply (μ κ1 : Fin D.r →₀ ℕ) (c1 : K) (Q : MvPolynomial (D.ML × Fin D.r) K) :
     D.opS t μ κ1 c1 Q = c1 • (monomial (onLetter (D.mw t) μ) (1 : K) * ddiv (onLetter (D.mw t) κ1) Q) := by
   simp only [opS, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, Formalism.MainNotions.PlaneGram.ddiv_eq]
 
+/- English proof (translation)
+Establish `hsh : ∀ L : D.EM, D.opS t (Formalism.MainNotions.PlaneGram.divE (D.P p t) ρ0 + δ0) κ0 e (monomial L c) = monomial (onLetter (D.mw t) (Formalism.MainNotions.PlaneGram.divE (D.P p t) ρ0 + δ0) + (L - onLetter (D.mw t) κ0)) (c * (e * Formalism.MainNotions.PlaneGram.bin κ0 (Formalism. …`. Introduce `L`. Rewrite using `[opS_apply, Formalism.MainNotions.PlaneGram.ddiv_monomial', Formalism.MainNotions.PlaneGram.bin_onLetter, monomial_mul, smul_monomial, smul_eq_mul, one_mul, mul_left_comm]`. Distinguish the cases in `h2 : (fun a => ρ0 a % D.P p t) = ρ'' t`. Rewrite using `[if_pos h2]`.
+
+Distinguish the cases in `h1 : cl = (fun a => α (Sum.inr t, a) % D.P p t)`. Rewrite using `[if_pos h1, digitPart_monomial, digitPart_monomial]`. Distinguish the cases in `hQ : ∀ t', t' ≠ t → ∀ a, α (Sum.inr t', a) % D.P p t' = ρ'' t' a`. Rewrite using `[if_pos ((D.inClass_new p t ρ'' α ρ0 _).2 ⟨fun a => congrFun h2 a, hQ⟩), if_pos ((D.inClass_update p t ρ'' α cl).2 ⟨h1, hQ⟩), smul_monomial, smul_eq_mul, hsh, D.liftE_new p t hP, letE_liftE_mw]`. Rewrite using `[if_neg (fun h => hQ ((D.inClass_new p t ρ'' α ρ0 _).1 h).2), if_neg (fun h => hQ ((D.inClass_update p t ρ'' α cl).1 h).2), smul_zero, map_zero]`.
+
+Rewrite using `[if_neg h1, digitPart_zero, smul_zero, digitPart_monomial, if_neg (fun h => h1 ((D.inClass_update p t ρ'' α cl).1 h).1), map_zero]`. Rewrite using `[if_neg h2]`. Distinguish the cases in `h1 : cl = (fun a => α (Sum.inr t, a) % D.P p t)`. Rewrite using `[if_pos h1, digitPart_monomial, if_neg (fun h => h2 (funext ((D.inClass_new p t ρ'' α ρ0 _).1 h).1)), smul_zero]`. Rewrite using `[if_neg h1, digitPart_zero, smul_zero]`.
+-/
 private theorem digitPart_approx_term_lemma_4 (hP : 0 < D.P p t) (ρ'' : D.Tau → Fin D.r → ℕ)
     (cl : Fin D.r → ℕ) (e : K) (ρ0 δ0 κ0 : Fin D.r →₀ ℕ) (α : D.EA) (c : K) :
     c • D.digitPart p ρ'' (if cl = (fun a => α (Sum.inr t, a) % D.P p t) then
@@ -506,6 +688,11 @@ private theorem digitPart_approx_term_lemma_4 (hP : 0 < D.P p t) (ρ'' : D.Tau �
         if_neg (fun h => h2 (funext ((D.inClass_new p t ρ'' α ρ0 _).1 h).1)), smul_zero]
     · rw [if_neg h1, digitPart_zero, smul_zero]
 
+/- English proof (translation)
+Use `MvPolynomial.induction_on' G (fun α c => ?_) (fun F₁ F₂ h₁ h₂ => ?_)` and prove the remaining obligations. Rewrite using `[Formalism.MainNotions.PlaneGram.appL, Formalism.MainNotions.PlaneGram.lsup_monomial, digitPart_smul, Formalism.MainNotions.PlaneGram.appMon, digitPart_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `digitPart_approx_term_lemma_4 D p t hP ρ'' (cls s) (cf s) (ρ' s) (δ s) (κ s) α c`. Rewrite using `[map_add, digitPart_add, h₁, h₂, ← Finset.sum_add_distrib]`.
+
+Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (fun a => ρ' s a % D.P p t) = ρ'' t`. Rewrite using `[if_pos h, if_pos h, if_pos h, digitPart_add, map_add]`. Rewrite using `[if_neg h, if_neg h, if_neg h, add_zero]`.
+-/
 theorem digitPart_appL {I : Type} [Fintype I] (hP : 0 < D.P p t) (ρ'' : D.Tau → Fin D.r → ℕ)
     (cls : I → Fin D.r → ℕ) (cf : I → K) (ρ' δ κ : I → (Fin D.r →₀ ℕ))
     (G : MvPolynomial (D.OL × Fin D.r) K) :

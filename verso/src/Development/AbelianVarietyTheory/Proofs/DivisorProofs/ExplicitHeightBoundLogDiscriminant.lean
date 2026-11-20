@@ -3,6 +3,45 @@ import Mathlib
 namespace GlobalTheory.CovTop.VolUp
 
 set_option maxHeartbeats 2000000 in
+/- English proof (translation)
+Introduce `f r L n g h rd P hf hr hL hfr hrd hlrd hn hlogn hlogg hh hlogh hP0 hP`. Establish `hf' : (2:ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hr' : (2:ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hf0 : (0:ℝ) ≤ f` using `by linarith`. Establish `hr2 : (4:ℝ) ≤ (r:ℝ)^2` using `by nlinarith`.
+
+Establish `hfL : 0 ≤ (f:ℝ) * L` using `by positivity`. Establish `hfr0 : 0 ≤ (f:ℝ) * (r:ℝ)^2` using `by positivity`. Establish `hU4 : 4 * ((f:ℝ) * L) ≤ (f:ℝ) * (r:ℝ)^2 * L` using `by nlinarith`. Establish `hUfr : (f:ℝ) * (r:ℝ)^2 ≤ (f:ℝ) * (r:ℝ)^2 * L` using `by nlinarith`. Establish `hUf : 4 * (f:ℝ) ≤ (f:ℝ) * (r:ℝ)^2 * L` using `by nlinarith`.
+
+Use `set U : ℝ := (f:ℝ) * (r:ℝ)^2 * L with hU`. Establish `hU0 : 0 ≤ U` using `by linarith`. Establish `hlrd0 : 0 ≤ Real.log rd` using `Real.log_nonneg hrd`. Establish `he2 : (3:ℝ) ≤ Real.exp 2` using `by linarith [Real.add_one_le_exp (2:ℝ)]`. Establish `hexpL : 0 < Real.exp L` using `Real.exp_pos L`.
+
+Establish `hA : n ≤ Real.exp (60 * U)`. Rewrite using `[← Real.log_le_iff_le_exp hn]`. Establish `: 2 * (f:ℝ) * (r:ℝ)^2 * Real.log g ≤ 2 * f * (r:ℝ)^2 * (30 * L)` using `mul_le_mul_of_nonneg_left hlogg (by positivity)`. Rewrite using `[hU]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `he7 : (1000:ℝ) ≤ Real.exp 7`. Establish `h1` using `Real.exp_one_gt_d9`. Establish `: Real.exp 7 = Real.exp 1 ^ 7` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hB1 : 1000 * (f:ℝ) * (r:ℝ)^3 ≤ Real.exp (9 * L)`. Establish `hfr3 : (f:ℝ) * (r:ℝ)^3 ≤ ((f:ℝ) * (r:ℝ)^2)^2`. Use polynomial arithmetic with `[mul_nonneg (by positivity : (0:ℝ) ≤ f * r^3) (by nlinarith : (0:ℝ) ≤ f * r - 1)]`. Establish `hsq : ((f:ℝ) * (r:ℝ)^2)^2 ≤ Real.exp L ^ 2` using `by gcongr`. Establish `h9 : Real.exp 7 * Real.exp L ^ 2 ≤ Real.exp (9 * L)`.
+
+Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[mul_le_mul he7 hsq (by positivity) (by positivity)]`.
+
+Establish `hB : (1000 * (f:ℝ) * (r:ℝ)^3) ^ (f * r^2) ≤ Real.exp (9 * U)`. Combine the equalities or inequalities in the displayed calculation. Establish `h4f : 4 * (f:ℝ) ≤ Real.exp L` using `by nlinarith`. Establish `hflrd : (f:ℝ) * Real.log rd ≤ (f:ℝ) * (2 * L)` using `mul_le_mul_of_nonneg_left hlrd hf0`. Establish `hlin : 1 + (f:ℝ) * Real.log rd ≤ Real.exp (2 * L)`.
+
+Establish `h1` using `Real.add_one_le_exp L`. Establish `: Real.exp (2 * L) = Real.exp L * Real.exp L` using `by rw [← Real.exp_add]; ring_nf`. Rewrite using `[this]`. Establish `: 4 * (f:ℝ) * (L + 1) ≤ Real.exp L * Real.exp L` using `mul_le_mul h4f h1 (by linarith) hexpL.le`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hC : h ≤ Real.exp (2 * U)`. Rewrite using `[← Real.log_le_iff_le_exp hh]`. Establish `hl1 : Real.log (1 + (f:ℝ) * Real.log rd) ≤ 2 * L`. Rewrite using `[Real.log_le_iff_le_exp (by positivity)]; exact hlin`. Establish `: 2 * (f:ℝ) * Real.log (1 + f * Real.log rd) ≤ 2 * f * (2 * L)` using `mul_le_mul_of_nonneg_left hl1 (by positivity)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD : (3:ℝ) ^ (2 * f) ≤ Real.exp U`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : (3:ℝ) ^ (2 * f * r ^ 2) ≤ Real.exp (4 * U)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hy0 : 0 ≤ (f:ℝ) * ((r:ℝ)^2 - 1) / 2`. Establish `: 0 ≤ (r:ℝ)^2 - 1` using `by linarith`. Check the signs of the components of the expression. Establish `hF : rd ^ ((f:ℝ) * ((r:ℝ)^2 - 1) / 2) ≤ Real.exp U`. Rewrite using `[Real.rpow_def_of_pos (by linarith)]`.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: Real.log rd * ((f:ℝ) * ((r:ℝ)^2 - 1) / 2) ≤ 2 * L * ((f:ℝ) * ((r:ℝ)^2 - 1) / 2)` using `mul_le_mul_of_nonneg_right hlrd hy0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP1 : P ≤ Real.exp (3 * (r:ℝ)^2)`. Establish `h2 : (2:ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1:ℝ)]`.
+
+Establish `hpi : 2 * Real.pi ≤ Real.exp 2`. Use `Real.pi_lt_d2` as an intermediate fact. Establish `h1` using `Real.exp_one_gt_d9`. Establish `he : Real.exp 2 = Real.exp 1 ^ 2` using `by rw [← Real.exp_nat_mul]; norm_num`. Establish `h3 : (2.7182818283:ℝ) ^ 2 ≤ Real.exp 1 ^ 2` using `by gcongr`.
+
+Establish `h4 : (6.3:ℝ) ≤ 2.7182818283 ^ 2` using `by norm_num`. Rewrite using `[he]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA1 : (2:ℝ) ^ (r * (r - 1) / 2) ≤ Real.exp ((r:ℝ)^2)`. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `pow_le_pow_right₀ (by linarith)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = Real.exp ((r:ℝ)^2) := by rw [← Real.exp_nat_mul]; push_cast; ring_nf`. Establish `hA2 : (2 * Real.pi) ^ (r - 1) ≤ Real.exp (2 * r)`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hA3 : √(r:ℝ) ≤ Real.exp r`. Establish `h1` using `Real.add_one_le_exp (r:ℝ)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hG : P ^ f ≤ Real.exp (3 * U)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hEFG : (3:ℝ) ^ (2 * f * r ^ 2) * rd ^ ((f:ℝ) * ((r:ℝ)^2 - 1) / 2) * P ^ f ≤ Real.exp (4 * U) * Real.exp U * Real.exp (3 * U)` using `mul_le_mul (mul_le_mul hE hF (Real.rpow_nonneg (by linarith) _) (Real.exp_pos _).le) hG (pow_nonneg hP0 _) (by positivity)`. Establish `hCD : h * (3:ℝ) ^ (2 * f) ≤ Real.exp (2 * U) * Real.exp U` using `mul_le_mul hC hD (by positivity) (Real.exp_pos _).le`. Establish `hCG` using `mul_le_mul hCD hEFG (mul_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg (by linarith) _)) (pow_nonneg hP0 _)) (by positivity)`. Establish `hAB : n * (1000 * (f:ℝ) * (r:ℝ)^3) ^ (f * r^2) ≤ Real.exp (60 * U) * Real.exp (9 * U)` using `mul_le_mul hA hB (by positivity) (Real.exp_pos _).le`.
+
+Establish `hall` using `mul_le_mul hAB hCG (mul_nonneg (mul_nonneg hh.le (by positivity)) (mul_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg (by linarith) _)) (pow_nonneg hP0 _))) (by positivity)`. Use `hall.trans ?_` and prove the remaining obligations. Simplify using `only [← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem mass_bound_numbers_le_exp : ∀ (f r : ℕ) (L n g h rd P : ℝ), 2 ≤ f → 2 ≤ r → 1 ≤ L → (f : ℝ) * (r : ℝ) ^ 2 ≤ Real.exp L → 1 ≤ rd → Real.log rd ≤ 2 * L → 0 < n → Real.log n ≤ 2 * f * (r : ℝ) ^ 2 * Real.log g → Real.log g ≤ 30 * L → 0 < h → Real.log h ≤ f * Real.log rd + 2 * f * Real.log (1 + f * Real.log rd) → 0 ≤ P → P ≤ 2 ^ (r * (r - 1) / 2) * (2 * Real.pi) ^ (r - 1) * √r → n * (1000 * (f : ℝ) * (r : ℝ) ^ 3) ^ (f * r ^ 2) * (h * 3 ^ (2 * f) * ((3 : ℝ) ^ (2 * f * r ^ 2) * rd ^ ((f : ℝ) * ((r : ℝ) ^ 2 - 1) / 2) * P ^ f)) ≤ Real.exp (119 * (f * (r : ℝ) ^ 2 * L)) := by
   intro f r L n g h rd P hf hr hL hfr hrd hlrd hn hlogn hlogg hh hlogh hP0 hP
   have hf' : (2:ℝ) ≤ f := by exact_mod_cast hf

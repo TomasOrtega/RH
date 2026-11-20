@@ -5,6 +5,11 @@ open scoped BigOperators
 
 namespace GlobalTheory.FinWeil
 
+/- English proof (translation)
+Establish `hout : ∀ g : G, f (Quotient.out (g : G ⧸ H)) = f g`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hadd, hH _ h.2, mul_one]`. Use `⟨⟨fun q => f (Quotient.out q), ?_, ?_⟩, hout⟩` and prove the remaining obligations.
+
+Rewrite using `[← QuotientAddGroup.mk_zero, hout, h0]`. Introduce `a b`. Proceed by induction on `a using QuotientAddGroup.induction_on`. Proceed by induction on `b using QuotientAddGroup.induction_on`. Rewrite using `[← QuotientAddGroup.mk_add, hout, hout, hout, hadd]`.
+-/
 theorem exists_addChar_quotient {G : Type} [AddCommGroup G] (H : AddSubgroup G) (f : G → ℂ)
     (h0 : f 0 = 1) (hadd : ∀ x y, f (x + y) = f x * f y) (hH : ∀ x ∈ H, f x = 1) :
     ∃ χ : AddChar (G ⧸ H) ℂ, ∀ g : G, χ (g : G ⧸ H) = f g := by
@@ -19,6 +24,15 @@ theorem exists_addChar_quotient {G : Type} [AddCommGroup G] (H : AddSubgroup G) 
     induction b using QuotientAddGroup.induction_on
     rw [← QuotientAddGroup.mk_add, hout, hout, hout, hadd]
 
+/- English proof (translation)
+Use `choose χ hχ using fun g : G => exists_addChar_quotient L (p g) (h0 g) (hr g) (fun k hk => hL k hk g)`. Establish `hout : ∀ (g : G) (k : K), p (Quotient.out (g : G ⧸ H)) k = p g k`. Introduce `g k`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_mul H g`. Rewrite using `[hh, hl, (hH _).1 h.2, mul_one]`.
+
+Establish `hΦ : ∀ (g : G) (k : K), χ (Quotient.out (g : G ⧸ H)) (k : K ⧸ L) = p g k`. Introduce `g k`. Rewrite using `[hχ, hout]`. Use `⟨fun q => χ (Quotient.out q), ?_, hΦ⟩` and prove the remaining obligations. Introduce `a b hab`.
+
+Proceed by induction on `a using QuotientAddGroup.induction_on with | _ a`. Proceed by induction on `b using QuotientAddGroup.induction_on with | _ b`. Rewrite using `[QuotientAddGroup.eq, hH]`. Introduce `k`. Establish `h1 : p a k = p b k`.
+
+Rewrite using `[← hΦ, ← hΦ]`. Conclude with `congrArg (fun ψ : AddChar (K ⧸ L) ℂ => ψ (k : K ⧸ L)) hab`. Rewrite using `[hl, ← h1, ← hl, neg_add_cancel, h0']`.
+-/
 theorem exists_injective_addChar {G K : Type} [AddCommGroup G] [AddCommGroup K] (H : AddSubgroup G)
     (L : AddSubgroup K) (p : G → K → ℂ)
     (hl : ∀ x y z, p (x + y) z = p x z * p y z) (hr : ∀ x y z, p x (y + z) = p x y * p x z)
@@ -46,6 +60,27 @@ theorem exists_injective_addChar {G K : Type} [AddCommGroup G] [AddCommGroup K] 
     exact congrArg (fun ψ : AddChar (K ⧸ L) ℂ => ψ (k : K ⧸ L)) hab
   rw [hl, ← h1, ← hl, neg_add_cancel, h0']
 
+/- English proof (translation)
+Introduce `R X M _ _ _ _ _ σ w γ W h S A T₀ T hS hT hfin`. Establish `hS' : ∀ a : A, a ∈ S.addSubgroupOf A ↔ ∀ t : T, γ a t = 1`. Introduce `a`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, hS a a.2]`. Simplify using the standard rewrite rules.
+
+Establish `hT' : ∀ t : T, t ∈ T₀.addSubgroupOf T ↔ ∀ a : A, γ a t = 1`. Introduce `t`. Rewrite using `[AddSubgroup.mem_addSubgroupOf, hT t t.2]`. Simplify using the standard rewrite rules. Take `⟨Φ, hΦi, hΦ⟩` from `exists_injective_addChar (S.addSubgroupOf A) (T₀.addSubgroupOf T) (fun a t => γ a t) (fun x y z => h.add_left _ _ _) (fun x y z => h.add_right _ _ _) (fun x => h.zero_right _) (fun x => h.zero_left _) hS' (fun k hk => (hT' k).1 hk)`.
+
+Take `⟨Ψ, hΨi, hΨ⟩` from `exists_injective_addChar (T₀.addSubgroupOf T) (S.addSubgroupOf A) (fun t a => γ a t) (fun x y z => h.add_right _ _ _) (fun x y z => h.add_left _ _ _) (fun x => h.zero_left _) (fun x => h.zero_right _) hT' (fun k hk => (hS' k).1 hk)`. Use `haveI : Finite (T ⧸ T₀.addSubgroupOf T) := Nat.finite_of_card_ne_zero hfin`. Use `haveI : Finite (A ⧸ S.addSubgroupOf A) := Finite.of_injective Φ hΦi`. Use `letI := Fintype.ofFinite (T ⧸ T₀.addSubgroupOf T)`. Use `letI := Fintype.ofFinite (A ⧸ S.addSubgroupOf A)`.
+
+Establish `c1` using `Fintype.card_le_of_injective Φ hΦi`. Establish `c2` using `Fintype.card_le_of_injective Ψ hΨi`. Establish `c3` using `c2`. Rewrite `c1`, `c2` using `[AddChar.card_eq]`. Establish `hc : Fintype.card (A ⧸ S.addSubgroupOf A) = Fintype.card (T ⧸ T₀.addSubgroupOf T)` using `le_antisymm c1 c2`.
+
+Establish `eA : S.relIndex A = Fintype.card (A ⧸ S.addSubgroupOf A)` using `Nat.card_eq_fintype_card`. Establish `eT : T₀.relIndex T = Fintype.card (T ⧸ T₀.addSubgroupOf T)` using `Nat.card_eq_fintype_card`. Use `⟨by rw [eA, eT, hc], ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨χ, hχ⟩` from `exists_addChar_quotient (S.addSubgroupOf A) (fun a : A => γ a y) (h.zero_left _) (fun a b => h.add_left _ _ _) (fun a ha => hy a a.2 (AddSubgroup.mem_addSubgroupOf.1 ha))`.
+
+Establish `hb : Function.Bijective Ψ` using `(Fintype.bijective_iff_injective_and_card Ψ).2 ⟨hΨi, by rw [AddChar.card_eq, hc]⟩`. Take `⟨q, hq⟩` from `hb.2 χ`. Proceed by induction on `q using QuotientAddGroup.induction_on with | _ t`. Use `⟨t, t.2, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1` using `hΨ t ⟨a, ha⟩`.
+
+Rewrite `h1` using `[hq, hχ]`. Conclude with `h1`. Introduce `t ht`. Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `h1 : ∀ q : A ⧸ S.addSubgroupOf A, γ ((Quotient.out q : A) : X) t = Ψ ((⟨t, ht⟩ : T) : T ⧸ T₀.addSubgroupOf T) q`.
+
+Introduce `q`. Use `conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[hΨ]`. Rewrite using `[Finset.sum_congr rfl fun q _ => h1 q, AddChar.sum_eq_ite, eA]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations.
+
+Rewrite using `[hT t ht]`. Prove the components needed by the constructor for the conclusion. Introduce `h0 a ha`. Establish `h2` using `hΨ ⟨t, ht⟩ ⟨a, ha⟩`. Rewrite `h2` using `[h0]`.
+
+Simplify using `using h2.symm`. Introduce `h0`. Use extensionality with `q`. Rewrite using `[← h1, h0 _ (Quotient.out q).2]`. Simplify using the standard rewrite rules.
+-/
 theorem perfect_pairing_quotients : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, IsHeis σ w γ W → ∀ (S A T₀ T : AddSubgroup X), (∀ a ∈ A, a ∈ S ↔ ∀ t ∈ T, γ a t = 1) → (∀ t ∈ T, t ∈ T₀ ↔ ∀ a ∈ A, γ a t = 1) → T₀.relIndex T ≠ 0 → S.relIndex A = T₀.relIndex T ∧ (∀ y : X, (∀ a ∈ A, a ∈ S → γ a y = 1) → ∃ t ∈ T, ∀ a ∈ A, γ a y = γ a t) ∧ ∀ t ∈ T, (∑ᶠ q : A ⧸ S.addSubgroupOf A, γ ((Quotient.out q : A) : X) t) = if t ∈ T₀ then (S.relIndex A : ℂ) else 0 := by
   intro R X M _ _ _ _ _ σ w γ W h S A T₀ T hS hT hfin
   have hS' : ∀ a : A, a ∈ S.addSubgroupOf A ↔ ∀ t : T, γ a t = 1 := by

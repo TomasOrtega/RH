@@ -13,6 +13,11 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory.SiegLev
 
+/- English proof (translation)
+Introduce `h n N hn hN hnN hpow ⟨F⟩`. Establish `hN0 : N ≠ 0` using `by rintro rfl; exact (Nat.not_odd_zero hN)`. Take `⟨j, hinj, hζ, hfes⟩` from `GlobalTheory.T.exists_inclusion_cyclotomicAwayRing_finite_etale n N hN0 hnN`. Take `⟨hfin, het, hsurj⟩` from `hfes hpow`. Take `⟨Q⟩` from `GlobalTheory.T.nonempty_siegelLevelLoweringQuotientFamily h n N F j hn hN hnN hζ hfin het`.
+
+Conclude with `⟨{ X := Q.X s := Q.s smooth := Q.smooth qproj := Q.qproj univ := Q.univ princ := Q.princ rep := fun S s' c hred hdense hpr => GlobalTheory.T.siegelLevelLoweringQuotient_represents_reduced h n N F j Q hn hN hnN hinj hζ hfin het hsurj S s' c hred hdense hpr inj := fun R _ _ x y s' …`.
+-/
 theorem sFam_down : ∀ h n N : ℕ, 3 ≤ n → Odd N → n ∣ N → (∃ a, N ∣ n ^ a) → Nonempty (SFam h N (zetaAway N)) →
     Nonempty (SFam h n (zetaAway n)) := by
   intro h n N hn hN hnN hpow ⟨F⟩

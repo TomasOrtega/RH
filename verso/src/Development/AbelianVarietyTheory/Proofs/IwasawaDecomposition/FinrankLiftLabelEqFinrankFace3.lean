@@ -25,6 +25,23 @@ namespace GlobalTheory.Mem.ThetaRead3.L0
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH i t x`. Establish `hE : R.toRealDat.IsThP` using `RealDat.thP_of_weak hP.char.base.thP hH.aux.ex`. Establish `hM` using `hP.char.base.models`. Establish `hμ : Used0 D (Y.tup t)`. Break down `hP.char.tup.mu_used t with h | ⟨w, hw⟩` into its components or cases.
+
+Use `left`. Rewrite using `[h, Y.tup0]`. Use `right`. Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Rewrite using `[Y.muAt, Equiv.apply_symm_apply, hw]`.
+
+Use `set xM := D.what₂.jMt (Y.tup t) ((i : ℕ) + 1) (Y.eMt i t x) with hxM`. Use `set zt := R.jV i t (liftForm A3.A F.P0 F.ψ0 i t x) with hzt`. Take `⟨w, hwM, hwK, hwW⟩` from `GlobalTheory.T.thetaAdjoint_at_lift_eq_lowestKType_restriction R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj hP.char.base.lev hP.char.base.grp hM hE R.hv0 Y.IL (Y.tup t) hμ i xM`. Establish `hth` using `Y.tied.lift.theta (Y.tup t) hμ i xM w (GlobalTheory.ThetaPRead.isThetaP_toLiftReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop Y.hinj hE.thF (Y.tup t) i) hwM hwK hwW`. Use `set u := Y.tupT (Y.tup t) with hu`.
+
+Use `set a := Y.IL.jMt (Y.tup t) hμ i xM with ha`. Use `set z' : (R.HV i u).H := (LinearEquiv.ofInjective (R.extV i u) (Y.hinj i u)).symm (Submodule.inclusion inf_le_left a) with hz'`. Establish `hz'1 : R.extV i u z' = R.extV i t zt`. Rewrite using `[hz', ofInjective_symm_eq]`. Conclude with `Y.mtRead i t hμ x`.
+
+Establish `hzz : R.thF i u z' = R.thF i t zt` using `thF_congr R.toRealDat Y.hinj i t u (Y.tupT_tup t) zt z' hz'1`. Set `w' : (⨂[ℂ] τ, (R.MW i (sg0 D A3.A)).sm τ) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `w`. Set `U : MMap (R.MW i (sg0 D A3.A))` to `PiTensorProduct.lift.symm w'`. Establish `hU : U ∈ R.Wall i (sg0 D A3.A)` using `GlobalTheory.HeckeParts.mult_le_triv _ ((Mult.mem_multT _ _ _ _ w').1 hwM)`. Establish `hlow : ∀ v : ∀ ρ, lowT (R.MW i (sg0 D A3.A)) ρ, U (fun ρ => v ρ) = R.thF i u z' (fun ρ => v ρ)`.
+
+Introduce `v`. Establish `e` using `LinearMap.congr_fun hwK (PiTensorProduct.tprod ℂ v)`. Establish `e2 : w' (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A3.A)) τ).subtype) (PiTensorProduct.tprod ℂ v)) = PiTensorProduct.lift (R.thF i u z') (PiTensorProduct.map (fun τ => (lowT (R.MW i (sg0 D A3.A)) τ).subtype) (PiTensorProduct.tprod ℂ v))` using `e`. Rewrite `e2` using `[PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod]`. Conclude with `e2`.
+
+Establish `hw0 : U - R.thF i t zt = 0` using `GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ (R.MW i (sg0 D A3.A)) R.θ hM.inf (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ _ (Submodule.sub_mem _ hU (hE.thF_mem i t zt)) (fun v => by show U (fun ρ => v ρ) - R.thF i t zt (fun ρ => v ρ) = 0`. Rewrite using `[hlow v, hzz, sub_self])`. Establish `hUw : PiTensorProduct.lift U = w'` using `LinearEquiv.apply_symm_apply _ w'`. Establish `h1` using `(Y.mjRead i (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) xM)).symm.trans hth`. Express the relevant statement in the definitionally equal form `PiTensorProduct.lift _ = R.eWf i (sg0 D A3.A) ∘ₗ w' at h1`.
+
+Rewrite `h1` using `[← hUw, sub_eq_zero.1 hw0, ← lift_postOn, ← hE.thG i t zt]`. Conclude with `(hM.HW i (sg0 D A3.A)).1 (PiTensorProduct.lift.injective h1)`.
+-/
 theorem thetaP_read : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → ∀ (i : Fin D.R.m) (t : T) x, Y.mj.eW i (D.what₂.thetaP (Y.tup t) ((i : ℕ) + 1) (D.what₂.jMt (Y.tup t) ((i : ℕ) + 1) (Y.eMt i t x))) = R.thG i t (R.jV i t (liftForm A3.A F.P0 F.ψ0 i t x)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH i t x
   have hE : R.toRealDat.IsThP := RealDat.thP_of_weak hP.char.base.thP hH.aux.ex
@@ -82,6 +99,29 @@ open Formalism.IndefR.CxPass.LevelOperators
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y _Z hP hH i t x hx`. Establish `hok` using `hH.ok`. Establish `hc` using `Formalism.IndefR.Links.RealDat3.characterisation_of_weak hP.char hH.aux.ex`. Establish `hM` using `hc.models`. Establish `hCore : GlobalTheory.Hk3.Core R.toRealDat F.lv2` using `⟨hc.lev, hc.grp, hc.fam, hc.models, hc.chain, hc.thP⟩`.
+
+Establish `hL` using `GlobalTheory.Hk3.eH_laws R.toRealDat F.lv2 hCore hok.ok2.irr i`. Establish `hK : (R.toCx3 F).KFormL` using `Formalism.IndefR.Links.RealDat3.kFormL_of (F := F) hM`. Establish `hJ : (R.toCx3 F).JIsoL F.cv` using `Formalism.IndefR.Links.RealDat3.jIsoL_of (F := F) hM`. Establish `hRZ : (R.toCx3 F).RatZ` using `(complex_data_conditions_base_level_of_primitive_links hok hH.sep hP.char hH.prim).ratZ`. Establish `H` using `Formalism.IndefR.CxPass.lift_hypotheses_of_unitary hok hK F.cv (fun _ _ _ _ => rfl) hJ hH.prim.gUnit.2 hH.prim.gEquiv.2 i t`.
+
+Establish `hB : BlockHyp (A3.A.fam.L i t) (A3.A.fam.lvlA F.P0 F.ψ0) A3.A.v0 1` using `⟨hok.ok2.conj, hok.ok2.irr, hok.ok2.lifts i t⟩`. Establish `hopE : opV A3.fam3.base3.v0.embedding (fun g => R.gWx F i g) (idemOf A3.A.X) = Tw.map (twAt D.what₂.embLL A3.A.v0) (GlobalTheory.Hk3.eH R.toRealDat i)`. Set `mA : ((R.HW i (sg0 D A3.A)).H →ₗ[ℂ] (R.HW i (sg0 D A3.A)).H) →+ (Tw (twAt D.what₂.embLL A3.A.v0) (R.HW i (sg0 D A3.A)).H →ₗ[ℂ] Tw (twAt D.what₂.embLL A3.A.v0) (R.HW i (sg0 D A3.A)).H)` to `{ toFun := Tw.map (twAt D.what₂.embLL A3.A.v0), map_zero' := LinearMap.ext fun _ => rfl, map_add' := fun _ _ => LinearMap.ext fun _ => rfl }`. Rewrite using `[show Tw.map (twAt D.what₂.embLL A3.A.v0) (GlobalTheory.Hk3.eH R.toRealDat i) = mA (GlobalTheory.Hk3.eH R.toRealDat i) from rfl]`. Unfold `opV GlobalTheory.Hk3.eH`.
+
+Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun g _ => LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `show cj (twAt D.what₂.embLL A3.A.v0) (A3.A.v0.embedding ((idemOf A3.A.X).coeff g)) • R.gW i (sg0 D A3.A) g (Tw.out (s := (twAt D.what₂.embLL A3.A.v0)) (E := (R.HW i (sg0 D A3.A)).H) y) = RealDat.eC (A := A3.A) (sg0 D A3.A) g • R.gW i (sg0 D A3.A) g (Tw.out (s := (twAt D.what₂.emb …`. Rewrite using `[Formalism.IndefR.Links.emb_eq D.what₂.embLL A3.A.v0, cj_cj]`. Both sides reduce to the same expression.
+
+Establish `hθ : ∀ (u : (R.toCx3 F).FLC i t), Tw.out (s` using `(twAt D.what₂.embLL A3.A.v0)) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).θ' i t u) = cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) • R.thG i t (Tw.out (s := (twAt D.what₂.embLL A3.A.v0)) (E := (R.HV i t).H) u) := fun u => rfl`. Establish `hfix : ∀ y ∈ LinearMap.range ((R.toCx3 F).θ' i t), opV A3.fam3.base3.v0.embedding (fun g => R.gWx F i g) (idemOf A3.A.X) y = y`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[hopE]`. Express the relevant statement in the definitionally equal form `Tw.mk (twAt D.what₂.embLL A3.A.v0) (GlobalTheory.Hk3.eH R.toRealDat i (Tw.out (s := (twAt D.what₂.embLL A3.A.v0)) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).θ' i t u))) = (R.toCx3 F).θ' i t u`.
+
+Rewrite using `[hθ, map_smul, hL.2.2.2, ← hθ]`. Both sides reduce to the same expression. Use `set ℓ := A3.A.fam.lvlA F.P0 F.ψ0 with hℓ`. Use `set f0 := liftForm A3.A F.P0 F.ψ0 i t x with hf0`. Establish `hf0l : f0 = GlobalTheory.Mem.LiftForms.lvlForm (A3.A.fam.L i t).S (A3.A.fam.L i t).r ℓ.P ℓ.ψ x` using `rfl`.
+
+Establish `hlev : f0 ∈ lvlForms (A3.A.fam.L i t).S (A3.A.fam.L i t).r ℓ.P ℓ.ψ`. Rewrite using `[← GlobalTheory.Mem.LiftForms.range_lvlForm]`. Conclude with `⟨x, hf0l.symm⟩`. Establish `hfix0 : opF (A3.A.fam.L i t).r (lvlIdem ℓ.P ℓ.ψ) f0 = f0`. Conclude with `opF_lvlIdem_fix (A3.A.fam.L i t).r ℓ.P ℓ.ψ f0 hlev`.
+
+Establish `hea : opF (A3.A.fam.L i t).r (goodAt ℓ.X ℓ.P ℓ.ψ) f0 = opF (A3.A.fam.L i t).r (idemOf A3.A.X) f0`. Rewrite using `[goodAt, opF_mul, LinearMap.comp_apply, hfix0]`. Both sides reduce to the same expression. Establish `horth : ∀ z ∈ ((LinearMap.range (LinearMap.adjoint ((R.toCx3 F).θ' i t))).comap ((R.toCx3 F).jL i t) ⊓ LinearMap.range (opF (A3.A.fam.L i t).r (goodAt ℓ.X ℓ.P ℓ.ψ)) : Submodule _ _), ⟪(R.toCx3 F).jL i t z, (R.toCx3 F).jL i t f0⟫_ℂ = 0`. Introduce `z hz`.
+
+Establish `hZeq : (((LinearMap.range (LinearMap.adjoint ((R.toCx3 F).θ' i t))).comap ((R.toCx3 F).jL i t)) ⊓ LinearMap.range (opF (A3.A.fam.L i t).r (goodAt ℓ.X ℓ.P ℓ.ψ)) : Submodule _ _) = LinearMap.range ((A3.A.fam.L i t).toF ℓ ((R.toCx3 F).Zl i t))`. Use `Eq.trans ?_ (Formalism.IndefR.CxPass.LevelOperators.range_toF (A3.A.fam.L i t) ℓ _).symm` and prove the remaining obligations. Rewrite using `[Formalism.IndefR.CxPass.LevelOperators.goodR_eq]`. Both sides reduce to the same expression. Establish `hz' : z ∈ LinearMap.range ((A3.A.fam.L i t).toF ℓ ((R.toCx3 F).Zl i t))` using `hZeq ▸ hz`.
+
+Take `⟨c, rfl⟩` from `hz'`. Rewrite using `[← GlobalTheory.Mem.LiftForms.lvlForm_lE hB c]`. Use `(hJ i t _ _).trans ?_` and prove the remaining obligations. Establish `h0 : Formalism.DivisionValues.hform ((A3.A.fam.L i t).S.lvlH (A3.A.fam.L i t).r ℓ.P ℓ.ψ) ((A3.A.fam.L i t).lE ℓ ((R.toCx3 F).Zl i t) *ᵥ c) x = 0` using `hx c`. Use `show A3.fam3.base3.v0.embedding (CSDForm.csumForm (A3.A.fam.L i t).S _ _) = 0`.
+
+Rewrite using `[CSDForm.csumForm_apply, hf0l, GlobalTheory.Mem.LiftForms.csum_lvlForm, h0, mul_zero, map_zero]`. Establish `key` using `theta_eq_zero_of_orth H (hRZ.2 i t) (goodAt ℓ.X ℓ.P ℓ.ψ) (idemOf A3.A.X) (opF_goodAt_idem _ _ hok.ok2.irr _ _) hfix f0 hea horth`. Establish `h2` using `congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) key`. Rewrite `h2` using `[hθ, hP.phs i, map_one, one_smul]`. Conclude with `h2`.
+-/
 theorem thG_eq_zero_of_orth : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → ∀ (i : Fin D.R.m) (t : T) (x : Fin (lDim D A3.A F.P0 F.ψ0 i t) → D.what₂.LL), (∀ z, Formalism.DivisionValues.hform (lH D A3.A F.P0 F.ψ0 i t) (lZ0 D A3.A F.P0 F.ψ0 (A3.fam3.toSub2 (zsOf R F)) i t *ᵥ z) x = 0) → R.thG i t (R.jV i t (liftForm A3.A F.P0 F.ψ0 i t x)) = 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y _Z hP hH i t x hx
   have hok := hH.ok
@@ -164,6 +204,13 @@ end GlobalTheory.Mem.ThOrth.L0
 
 namespace GlobalTheory.Mem.R3.LabEig.L0
 
+/- English proof (translation)
+Introduce `hW hDS hHC hCRD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hPins hHolds hHost σ`. Take `⟨hC3, hSF, -, -, hEE, hWc, -⟩` from `GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hPins.char`. Establish `hCore` using `hC3 hHolds.aux.ex`. Establish `hS` using `GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCRD R.toRealDat`. Establish `hPY : StdPsi Y.hF Y.PY` using `Y.stdPsi.1`.
+
+Establish `hPW : ∀ i, StdPsi Y.hF (Y.PW i)` using `Y.stdPsi.2`. Take `⟨c, hc⟩` from `exists_isSphScalars Y.hF (Y.PW ⟨0, Y.hm⟩) (hPW _) (principalLevelFrame.rowRepR R.θ (Y.eFT σ))`. Use `⟨c, fun b U hU => ?_, fun i U hU => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hxU⟩` from `isotE_sub R.toRealDat F.lv2 hCore hS R.SF hSF Y.hF Y.PY Y.PW hPY hPW _ ⟨0, Y.hm⟩ c hc b U hU`. Conclude with `⟨x, by rw [hEE]; exact hx, hxU⟩`.
+
+Take `⟨x, hx, hxU⟩` from `isotL_sub R.toRealDat F.lv2 hCore R.SF hSF Y.hF Y.PW hPW _ ⟨0, Y.hm⟩ c hc i U hU`. Conclude with `⟨x, by rw [hWc]; exact hx, hxU⟩`.
+-/
 theorem eig_parts : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ σ : D.what₂.FT, ∃ c, (∀ b, ∀ U ∈ principalLevelFrame.isotE R.θ Y.PY (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) (levChi _ (R.βY 0) (R.dat0 (R.toRealDat.levR F.lv2 b))) R.e0 (principalLevelFrame.rowRepR R.θ (Y.eFT σ)), ∃ x ∈ R.EEc c, R.HE.e x = U) ∧ (∀ i, ∀ U ∈ principalLevelFrame.isotL R.θ (Y.PW i) (R.MW i (sg0 D A3.A)) (levS _ (R.βW i) (R.datWp i (R.toRealDat.levL F.lv2 false (sg0 D A3.A)))) (levChi _ (R.βW i) (R.datWp i (R.toRealDat.levL F.lv2 false (sg0 D A3.A)))) (R.eWf i (sg0 D A3.A)) (principalLevelFrame.rowRepR R.θ (Y.eFT σ)), ∃ x ∈ R.Wc' i c, (R.HW i (sg0 D A3.A)).e x = U) := by
   intro hW hDS hHC hCRD D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hPins hHolds hHost σ
   obtain ⟨hC3, hSF, -, -, hEE, hWc, -⟩ := GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hPins.char
@@ -185,6 +232,27 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost c b x hx0 hxc hxb`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨hcore, hSF, -, -, hEEc, -, -⟩` from `GlobalTheory.CoreThree.heckeCharacterisation_places_parts_of_weak R F hP.char`. Take `⟨h, -, hN, -, hev, hchar⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R.toRealDat F.lv2 (hcore hHo.aux.ex) (GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hCu R.toRealDat) R.SF hSF`.
+
+Establish `heig : ∀ c' (y : R.HE.H), y ∈ R.EEc c' → ∀ P d, GlobalTheory.Hk3.Good R.toRealDat A3.A.μ0 P → GlobalTheory.Hk3.IsLab (Yc D 0) P d → h P (Finsupp.single d 1) y = c' P (dualLab d) • y`. Introduce `c' y hy P d hG hL`. Rewrite `hy` using `[hEEc c']`. Rewrite using `[hev c' P hG (Finsupp.single d 1) y hy]`. Use `congr 1`.
+
+Simplify using `[GlobalTheory.Hk3.evC, Finsupp.sum_single_index, hL]`. Establish `horth : ∀ c', R.EEc c' ≠ R.EEc c → R.EEc c' ≤ (ℂ ∙ x)ᗮ`. Introduce `c' hne y hy`. Establish `hex : ∃ P d, GlobalTheory.Hk3.Good R.toRealDat A3.A.μ0 P ∧ GlobalTheory.Hk3.IsLab (Yc D 0) P d ∧ c' P (dualLab d) ≠ c P (dualLab d)`. Assume the negation of the conclusion as `hall`.
+
+Use `push_neg at hall`. Apply `hne` to reduce the goal to its premises. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Rewrite using `[hEEc c]`. Conclude with `hchar c z fun P d hG hL => by rw [heig c' z hz P d hG hL, hall P d hG hL]`. Introduce `hz`. Rewrite using `[hEEc c']`. Conclude with `hchar c' z fun P d hG hL => by rw [heig c z hz P d hG hL, hall P d hG hL]`.
+
+Take `⟨P, d, hG, hL, hcc⟩` from `hex`. Establish `hT : Commute (h P (Finsupp.single d 1)) (LinearMap.adjoint (h P (Finsupp.single d 1)))`. Rewrite using `[hN.2 P hG]`. Conclude with `hN.1 P P hG hG _ _`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`.
+
+Use `inner_eq_zero_of_normal _ hT hcc (heig c' y hy P d hG hL) (heig c x hxc P d hG hL)` as an intermediate fact. Rewrite using `[← inner_conj_symm, this, map_zero]`. Establish `hpart : ∀ p, R.EEp3 p ≤ (ℂ ∙ x)ᗮ`. Introduce `p`. Unfold `RealDat3.EEp3`.
+
+Use `iSup₂_le fun c' hc' => horth c' fun heq => hno p ?_` and prove the remaining obligations. Conclude with `carries_of_eq R p heq hc'`. Establish `hxT : (Tw.mk (twAt D.what₂.embLL A3.A.v0) x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) ∈ (R.toCx3 F).EEl b` using `hxb`. Rewrite `hxT` using `[← (hHo.prim.sumE b).2]`. Establish `hxS : x ∈ ⨆ p, R.EEp3 p`.
+
+Establish `h1 : (Tw.mk (twAt D.what₂.embLL A3.A.v0) x : Tw (twAt D.what₂.embLL A3.A.v0) R.HE.H) ∈ Tw.sub (twAt D.what₂.embLL A3.A.v0) (⨆ p, R.EEp3 p)`. Rewrite using `[twSub_iSup]`. Establish `hle : (⨆ p, (R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl b) ≤ ⨆ p, Tw.sub (twAt D.what₂.embLL A3.A.v0) (R.EEp3 p)` using `iSup_mono fun p => inf_le_left`. Conclude with `hle hxT`. Conclude with `h1`.
+
+Establish `hself : x ∈ (ℂ ∙ x)ᗮ` using `(iSup_le hpart) hxS`. Rewrite `hself` using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Conclude with `hx0 (inner_self_eq_zero.1 hself)`.
+-/
 theorem carried : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (c : Pl D.host.E → List ℤ → ℂ) (b : Bool) (x : R.HE.H), x ≠ 0 → x ∈ R.EEc c → R.HE.e x ∈ R.toRealDat.EEat (R.toRealDat.levR F.lv2 b) → ∃ p, R.Carries p c := by
   intro hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost c b x hx0 hxc hxb
   by_contra hno
@@ -248,6 +316,33 @@ end GlobalTheory.Mem.R3.LabCarry.L0
 
 namespace GlobalTheory.Mem.R3.RatSpan.L0
 
+/- English proof (translation)
+Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hpt : ∀ y : Fin (((R.toCx3 F).data F.cr false).dW i) → D.what₂.LL, (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i (Z.jW i y))`. Introduce `y`. Rewrite using `[Z.jW_read]`.
+
+Use `(GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i y).trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `hmem : ∀ y, y ∈ (s0Of R F).Wp i p ↔ Z.jW i y ∈ (R.Wp3 i p).comap (Y.mj.eW i)`. Introduce `y`. Use `show (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) ∈ (R.toCx3 F).Wp i p ↔ _`.
+
+Conclude with `(Iff.of_eq (congrArg (· ∈ (R.toCx3 F).Wp i p) (hpt y))).trans Iff.rfl`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(hmem y).1 hy`.
+
+Introduce `x hx`. Establish `hnP : 0 < RealDat.nP F.lv2 false` using `RealDat.nP_pos (F := F.lv2) false`. Establish `hinj : Function.Injective (Y.mj.eW i)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `d hd`.
+
+Establish `h1 : RealDat.nP F.lv2 false * ‖d‖ ^ 2 = 0` using `by rw [← Y.mj.eW_norm i d, hd]; simp`. Establish `h2 : ‖d‖ ^ 2 = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hnP.ne'`. Conclude with `h`.
+
+Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h2)`. Establish `hw` using `(R.toCx3 F).principal_form_injective false hR.kForm hR.ewNorm (hR.h4pos.2.2 false) i`. Use `set U : Submodule ℂ ((R.toCx3 F).W i) := Submodule.span ℂ ((fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _)) with hU`. Establish `hUT : U = (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i)`. Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises.
+
+Rewrite using `[hU, Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨hy, LinearMap.mem_range_self _ _⟩`. Rewrite using `[← (R.toCx3 F).finrank_WpK F.cr false hR.h4pos hR.kForm hR.ewNorm hR.types0 hR.lifts0.1 hR.ratTh hR.liftHyp0.h3W hR.partsW i p]`. Conclude with `(finrank_le_cpt A3.A.v0.embedding ((R.toCx3 F).w0C false i) hw U ((R.toCx3 F).WpK false i p) (fun y hy => Submodule.subset_span ⟨y, hy, rfl⟩)).trans (Submodule.finrank_mono inf_le_left)`.
+
+Establish `hWS : Y.mj.eW i x ∈ R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`. Rewrite using `[hH.aux.levelW false i (sg0 D A3.A), ← Y.mj.eW_range i]`. Conclude with `LinearMap.mem_range_self _ _`. Rewrite `hWS` using `[← GlobalTheory.Mem.LiftTheta.goodForm_span]`. Establish `h1 : Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i x) ∈ U`.
+
+Rewrite using `[hUT]`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.mem_map_of_mem (f := Tw.mkL (twAt D.what₂.embLL A3.A.v0) (R.HW i (sg0 D A3.A)).H) hWS`. Rewrite `h2` using `[Submodule.map_span]`. Use `(Submodule.span_le.2 ?_) h2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`. Use `⟨Pi.single k 1, ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i (Pi.single k 1)`. Conclude with `(congrArg ((R.toCx3 F).w0C false i) (cpt_single A3.A.v0.embedding k).symm).trans h3`. Set `outL : (R.toCx3 F).W i →ₛₗ[cj (twAt D.what₂.embLL A3.A.v0)] (R.HW i (sg0 D A3.A)).H` to `{ toFun := fun z => Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) z map_add' := fun a b => Tw.out_add (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) a b map_smul' := fun c a => Tw.out_smul (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i …`.
+
+Establish `h4 : Y.mj.eW i x ∈ U.map outL` using `Submodule.mem_map_of_mem (f := outL) h1`. Rewrite `h4` using `[hU, Submodule.map_span, ← Set.image_comp]`. Establish `h5 : Submodule.span ℂ ((outL ∘ fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _)) ≤ (Submodule.span ℂ ((Z.jW i) '' (((R.toCx3 F).WpK false i p : Set (Fin ((R.toCx3 F).dW false i) → D.what₂.LL)) : Set (Fin (((R.toCx3 F).data F.cr fa …`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Use `⟨Z.jW i y, Submodule.subset_span ⟨y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Y.mj.eW i (Z.jW i y) = Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y))`. Conclude with `(congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) (hpt y)).symm`. Take `⟨x', hx', hxx⟩` from `h5 h4`. Rewrite using `[← hinj hxx]`.
+
+Conclude with `hx'`.
+-/
 theorem span_jW_wp : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (i : Fin D.R.m) (p : A3.fam3.base3.Ix), Submodule.span ℂ ((Z.jW i) '' ((s0Of R F).Wp i p : Set (Fin ((s0Of R F).dW i) → D.what₂.LL))) = (R.Wp3 i p).comap (Y.mj.eW i) := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p
   have hR := complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim
@@ -330,6 +425,19 @@ namespace GlobalTheory.Mem.R3.IsotIndep.L0
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost i`. Establish `hI : Inputs D` using `GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra hW hDS hHC hCR D`. Establish `hB` using `hP.char.base`. Establish `hT` using `Y.tied.lift`. Establish `h0` using `hB.models.νW i`.
+
+Establish `hs` using `GlobalTheory.HilbertLevels.scaled (inv_pos.2 (GlobalTheory.HilbertLevels.nP_pos F.lv2 false)) h0.1.1 h0.2`. Establish `hO` using `(GlobalTheory.T.rowFiniteTypes_isotypicParts_span_orthogonal D (Wc D i) _ R.θ (R.MW i (sg0 D A3.A)) (Y.PW i) Y.hF (R.βW i) (R.datWp i (R.levL F.lv2 false (sg0 D A3.A))) (R.eWf i (sg0 D A3.A)) _ (R.fdW i) hI (D.sp.W_sig _) hB.models.inf (Y.stdPsi.2 i) hs.1 hs.2 (gaL_finSum _ _ _ _ …`. Apply `OrthogonalFamily.independent` to reduce the goal to its premises. Rewrite using `[orthogonalFamily_iff_pairwise]`. Introduce `σ σ' hne`.
+
+Rewrite using `[Function.onFun, Submodule.isOrtho_iff_inner_eq]`. Introduce `u hu v hv`. Establish `hu'` using `(hT.isot i σ u).1 hu`. Establish `hv'` using `(hT.isot i σ' v).1 hv`. Rewrite `hu'`, `hv'` using `[Y.prtWE]`.
+
+Take `⟨a, ha, hau⟩` from `hu'`. Take `⟨b, hb, hbv⟩` from `hv'`. Establish `hni : ¬ (principalLevelFrame.rowRepR R.θ (Y.eFT σ)).Iso (principalLevelFrame.rowRepR R.θ (Y.eFT σ'))` using `fun h => hne (Y.eFT.injective (principalLevelFrame.rowRepR_inj R.θ _ _ h))`. Establish `key` using `hO _ _ hni a ha b hb`. Rewrite using `[hT.mj i u v]`.
+
+Unfold `LiftReal.ipWc ipMT`. Rewrite using `[← hau, ← hbv]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Use `Eq.trans ?_ key` and prove the remaining obligations. Use `congr 1`.
+
+Conclude with `LinearEquiv.symm_apply_apply _ a`. Conclude with `LinearEquiv.symm_apply_apply _ b`.
+-/
 theorem isot_iSupIndep : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ i : Fin D.R.m, iSupIndep (fun σ : D.what₂.FT => D.what₂.isot ((i : ℕ) + 1) σ) := by
   intro hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost i
   have hI : Inputs D := GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra hW hDS hHC hCR D
@@ -367,6 +475,21 @@ end GlobalTheory.Mem.R3.IsotIndep.L0
 open GlobalTheory.Mem.R3.LamDim in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p`. Use `set s := twAt D.what₂.embLL A3.A.v0 with hs`. Establish `hinj : Function.Injective (Y.mj.eW i)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`.
+
+Establish `h1` using `Y.mj.eW_norm i x`. Rewrite `h1` using `[hx, norm_zero, zero_pow two_ne_zero]`. Establish `hn : (0 : ℝ) < RealDat.nP F.lv2 false` using `RealDat.nP_pos (F := F.lv2) false`. Establish `h2 : ‖x‖ ^ 2 = 0`. Break down `mul_eq_zero.1 h1.symm with h | h` into its components or cases.
+
+Conclude with `absurd h hn.ne'`. Conclude with `h`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 h2)`. Establish `hrg : LinearMap.range (Y.mj.eW i) = R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`. Rewrite using `[Y.mj.eW_range i, hH.aux.levelW false i (sg0 D A3.A)]`.
+
+Establish `hw : LinearMap.range ((R.toCx3 F).w0C false i) = Tw.sub s (R.toRealDat.WS F.lv2 false i (sg0 D A3.A))`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩ show ((Real.sqrt (RealDat.nP F.lv2 false) : ℝ) : ℂ) • (show R.toRealDat.WS F.lv2 false i (sg0 D A3.A) from (R.toCx3 F).wC false i A3.fam3.base3.v0 y).1 ∈ _`. Conclude with `Submodule.smul_mem (R.toRealDat.WS F.lv2 false i (sg0 D A3.A)) _ (show R.toRealDat.WS F.lv2 false i (sg0 D A3.A) from (R.toCx3 F).wC false i A3.fam3.base3.v0 y).2`. Introduce `x hx`.
+
+Establish `hle : R.toRealDat.WS F.lv2 false i (sg0 D A3.A) ≤ Submodule.comap (Tw.mkL s (R.HW i (sg0 D A3.A)).H) (LinearMap.range ((R.toCx3 F).w0C false i))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `GlobalTheory.TwParts.mk_bC_mem_range R F i k`. Conclude with `hle hx`.
+
+Establish `hD` using `hH.prim.dimParts i p`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `key` using `CxData.finrank_Ep (R.toCx3 F) F.cr false (hR.wf false) (hR.what₂ false).1 (hR.rowHyp false).h3 (hR.partsE false) p`. Establish `key2 : Module.finrank D.what₂.LL ((s0Of R F).Ep p) = Module.finrank ℂ ((R.toCx3 F).EEp p ⊓ (R.toCx3 F).EEl false : Submodule ℂ (R.toCx3 F).EE)` using `key`. Rewrite using `[key2, ← hD, finrank_comap_of_inj _ hinj, hrg, hw]`.
+
+Use `show _ = Module.finrank ℂ (Tw.sub s (R.Wp3 i p) ⊓ Tw.sub s (R.toRealDat.WS F.lv2 false i (sg0 D A3.A)) : Submodule ℂ _)`. Rewrite using `[← twSub_inf, finrank_twSub]`.
+-/
 theorem GlobalTheory.Mem.R3.L0.finrank_liftLabel_eq_finrank_face3 : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (i : Fin D.R.m) (p : A3.fam3.base3.Ix), Module.finrank ℂ ((R.Wp3 i p).comap (Y.mj.eW i)) = Module.finrank D.what₂.LL ((s0Of R F).Ep p) := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i p
   set s := twAt D.what₂.embLL A3.A.v0 with hs
@@ -412,6 +535,33 @@ theorem GlobalTheory.Mem.R3.L0.finrank_liftLabel_eq_finrank_face3 : GlobalTheory
 
 namespace GlobalTheory.Mem.R3.LabCount.L0
 
+/- English proof (translation)
+Introduce `hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost cOf hLab p`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hHo.ok hHo.sep hP.char hHo.prim`. Establish `hRow` using `hR.rowHyp false`. Establish `hE : (R.toCx3 F).PartsE false` using `hHo.prim.sumE false`. Establish `hinj : Function.Injective R.HE.e` using `hP.char.base.models.HE.1`.
+
+Use `set L : Submodule ℂ R.HE.H := (R.toRealDat.EEat (R.toRealDat.levR F.lv2 false)).comap R.HE.e with hL`. Establish `hpart : ∀ q, Module.finrank ℂ ((R.toCx3 F).EEp q ⊓ (R.toCx3 F).EEl false : Submodule ℂ (R.toCx3 F).EE) = Module.finrank ℂ (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H)`. Introduce `q`. Rewrite using `[← finrank_twSub (twAt D.what₂.embLL A3.A.v0) (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H), twSub_inf]`. Both sides reduce to the same expression.
+
+Establish `hEp : Module.finrank D.what₂.LL ((s0Of R F).Ep p) = Module.finrank ℂ (R.EEp3 p ⊓ L : Submodule ℂ R.HE.H)`. Rewrite using `[← hpart p]`. Conclude with `(R.toCx3 F).finrank_Ep F.cr false hRow.wf hRow.h2 hRow.h3 hE p`. Set `C` to `toChainReal R.toRealDat F.lv2 Y.tupT Y.hm Y.hTop`. Set `lf : Mult.MMap (R.MY 0) ≃ₗ[ℂ] C.Amb 0` to `PiTensorProduct.lift`.
+
+Set `φ : R.HE.H →ₗ[ℂ] C.Amb 0` to `lf.toLinearMap ∘ₗ R.HE.e`. Establish `hφ : Function.Injective φ` using `lf.injective.comp hinj`. Establish `hmemL : ∀ y : R.HE.H, φ y ∈ C.EEc false → y ∈ L`. Introduce `y hy`. Take `⟨z, hz, hzy⟩` from `Submodule.mem_map.1 hy`.
+
+Establish `: z = R.HE.e y` using `lf.injective hzy`. Substitute `this` using the available equality. Conclude with `hz`. Use `choose x hxP hxe using fun k => (hLab (D.what₂.ft0 k)).2 k rfl`. Establish `hxφ : ∀ k, φ (x k) = (Y.Iz.jE (D.what₂.onb0 k)).1` using `fun k => (hxe k).symm`.
+
+Establish `hli0 : LinearIndependent ℂ (fun k => ((Y.Iz.jE (D.what₂.onb0 k)).1 : C.Amb 0))`. Establish `h1` using `D.what₂.onb0.toBasis.linearIndependent.map' Y.Iz.jE.toLinearMap Y.Iz.jE.ker`. Establish `h2` using `h1.map' (C.EEc false).subtype (Submodule.ker_subtype _)`. Conclude with `h2`. Establish `hli : LinearIndependent ℂ x`.
+
+Apply `LinearIndependent.of_comp φ` to reduce the goal to its premises. Use `hli0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Conclude with `hxφ k`. Establish `hxL : ∀ k, x k ∈ L` using `fun k => hmemL _ (by rw [hxφ k]; exact (Y.Iz.jE (D.what₂.onb0 k)).2)`.
+
+Establish `hDim : Module.finrank ℂ L ≤ Fintype.card (Fin D.what₂.D0)`. Set `g0 : L →ₗ[ℂ] C.EEc false` to `(φ.domRestrict L).codRestrict (C.EEc false) (fun y => Submodule.mem_map_of_mem (f := lf.toLinearMap) y.2)`. Set `g : L →ₗ[ℂ] D.what₂.EE0` to `Y.Iz.jE.symm.toLinearMap ∘ₗ g0`. Establish `hg : Function.Injective g`. Introduce `a b h`.
+
+Establish `h1 : g0 a = g0 b` using `Y.Iz.jE.symm.injective h`. Establish `h2 : φ a = φ b` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext (hφ h2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ q, Module.finrank ℂ (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H) ≤ Fintype.card (Fin D.what₂.D0)`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hcard` using `card_filter_eq_finrank x hli (fun k => cOf (D.what₂.ft0 k)) (fun q => (R.EEp3 q ⊓ L : Submodule ℂ R.HE.H)) (fun k => ⟨hxP k, hxL k⟩) hsum p`. Establish `hcount : ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = p), D.what₂.nRows0 σ = (Finset.univ.filter (fun k => cOf (D.what₂.ft0 k) = p)).card`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := D.what₂.ft0) (t := Finset.univ.filter (fun σ => cOf σ = p)) (fun k hk => by simpa using hk)]`. Use `Finset.sum_congr rfl fun σ hσ => ?_` and prove the remaining obligations.
+
+Rewrite `hσ` using `[Finset.mem_filter]`. Rewrite using `[Formalism.BasicNotions.Rows.Data.nRows0, Fintype.card_subtype, Finset.filter_filter]`. Use `congr 1`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h ▸ hσ.2, h⟩`. Introduce `h`. Conclude with `h.2`.
+
+Rewrite using `[hEp, ← hcard]`. Conclude with `hcount`.
+-/
 theorem cnt : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : GlobalTheory.Mem.R3.Rw.RationalReadingWithoutCongruence R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ cOf : D.what₂.FT → A3.fam3.base3.Ix, (∀ σ, HasLab Y σ (cOf σ)) → ∀ p : A3.fam3.base3.Ix, ∑ σ ∈ Finset.univ.filter (fun σ => cOf σ = p), D.what₂.nRows0 σ = Module.finrank D.what₂.LL ((s0Of R F).Ep p) := by
   intro hWe hDs hHC hCu D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hHo hHost cOf hLab p
   have hR := complex_data_conditions_base_level_of_primitive_links hHo.ok hHo.sep hP.char hHo.prim

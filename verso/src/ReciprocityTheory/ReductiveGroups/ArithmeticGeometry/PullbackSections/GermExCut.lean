@@ -67,6 +67,9 @@ def FrameTieSt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
 def zCast {S : Scheme.{0}} (A : Over S) {L : LB A.left} {T : Over S} {k₁ k₂ : ℤ} (h : k₁ = k₂)
     (F : LB.Sec (LPow A L k₁ T)) : LB.Sec (LPow A L k₂ T) := h ▸ F
 
+/- English proof (translation)
+The claim follows from `(Nat.cast_pow M 2).symm`.
+-/
 theorem natCast_sq (M : ℕ) : ((M : ℤ) ^ 2) = ((M ^ 2 : ℕ) : ℤ) := (Nat.cast_pow M 2).symm
 
 def SplitModel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
@@ -121,6 +124,11 @@ def GermChartSplitFibre : Prop :=
         (∀ b, IsGerm yI.1 C.ch.d C.ch.x C.ch.B.A.act C.ch.e C.ch.wP (T.Q.l.M ^ 2)
           (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b)) (g b)) ∧ ∀ b, IsIntPS Tc (g b)
 
+/- English proof (translation)
+Introduce `D T h j hj _ hstar Tc io yI e la ho hy hM hsplit n x F hV`. Take `⟨C, hC⟩` from `hT D T h j hj hstar Tc io yI hy`. Use `letI := io.toAlgebra`. Use `choose σ hσ using fun b => hR D T h j hj hstar Tc io yI e la ho hy hM C.I (hsplit C.I) (x b) (F b) (hV b)`. Use `choose g hg hgI using fun b => hG D T h j hj hstar Tc io yI C hC (T.Q.l.M ^ 2) (zCast (T.Q.Xo j).univ.t.G (natCast_sq T.Q.l.M) (F b)) (σ b) (hσ b)`.
+
+Conclude with `⟨C, g, hg, hgI⟩`.
+-/
 theorem germ_chart_split_fibre_exists (hT : TruncatedIntegralChartExists) (hR : RegTieSt) (hG : GermTieSt) : GermChartSplitFibre := by
   intro D T h j hj _ hstar Tc io yI e la ho hy hM hsplit n x F hV
   obtain ⟨C, hC⟩ := hT D T h j hj hstar Tc io yI hy

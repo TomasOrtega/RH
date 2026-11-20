@@ -13,35 +13,60 @@ section
 
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[sg, pow_succ', Matrix.GeneralLinearGroup.map_apply]`.
+-/
 private theorem rep_sg_succ (σ : R ≃ₐ[k] R) (i : ℕ) (d : GL (Fin n) R) :
     sg (σ ^ (i + 1)) d = sg σ (sg (σ ^ i) d) := by
   ext a b
   simp [sg, pow_succ', Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[sg, Matrix.GeneralLinearGroup.map_apply]`.
+-/
 private theorem rep_sg_one (d : GL (Fin n) R) : sg (1 : R ≃ₐ[k] R) d = d := by
   ext a b
   simp [sg, Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `[sg, up, Matrix.GeneralLinearGroup.map_apply]`.
+-/
 private theorem rep_sg_up (σ : R ≃ₐ[k] R) (γ : GL (Fin n) k) : sg σ (up R γ) = up R γ := by
   ext a b
   simp [sg, up, Matrix.GeneralLinearGroup.map_apply]
 
+/- English proof (translation)
+Simplify using `[nm, List.range_succ]`.
+-/
 private theorem rep_nm_succ (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
     nm σ (q + 1) d = nm σ q d * sg (σ ^ q) d := by
   simp [nm, List.range_succ]
 
+/- English proof (translation)
+Proceed by induction on `q with`. Consider the case `zero => simp [nm, rep_sg_one]`. Consider the case `succ q ih => rw [rep_nm_succ, map_mul, ← mul_assoc, ih, rep_sg_succ]`.
+-/
 private theorem rep_shift (σ : R ≃ₐ[k] R) (q : ℕ) (d : GL (Fin n) R) :
     d * sg σ (nm σ q d) = nm σ q d * sg (σ ^ q) d := by
   induction q with
   | zero => simp [nm, rep_sg_one]
   | succ q ih => rw [rep_nm_succ, map_mul, ← mul_assoc, ih, rep_sg_succ]
 
+/- English proof (translation)
+Rewrite using `[cp, cp, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+-/
 private theorem rep_cp_up (γ : GL (Fin n) k) : cp (up R γ) = (cp γ).map (algebraMap k R) := by
   rw [cp, cp, ← Matrix.charpoly_map]
   rfl
 
 end
 
+/- English proof (translation)
+Introduce `k R _ _ _ _ σ q hσ n δ γ hsep hcp`. Use `haveI : Module.Finite k R := (galBase k R k σ q hσ).1`. Establish `hs : ((nm σ q δ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).charpoly.Separable`. Establish `h` using `hsep.map (f := algebraMap k R)`. Rewrite `h` using `[← hcp]`. Then use the resulting hypothesis.
+
+Take `⟨x, hx⟩` from `(conjSep k R n _ hs).1 ((up R γ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) ((rep_cp_up γ).trans hcp.symm)`. Establish `hx' : nm σ q δ * x = x * up R γ` using `Units.ext (by simpa using hx)`. Establish `h1 : nm σ q (sgConj σ x δ) = up R γ`. Rewrite using `[(nmPoly k R σ q hσ n δ).2 x, mul_assoc, hx', inv_mul_cancel_left]`. Use `⟨x, h1, ?_⟩` and prove the remaining obligations.
+
+Establish `h2` using `rep_shift σ q (sgConj σ x δ)`. Rewrite `h2` using `[h1, rep_sg_up, hσ.pow, rep_sg_one]`. Conclude with `h2`.
+-/
 theorem nmRep : NmRep := by
   intro k R _ _ _ _ σ q hσ n δ γ hsep hcp
   haveI : Module.Finite k R := (galBase k R k σ q hσ).1

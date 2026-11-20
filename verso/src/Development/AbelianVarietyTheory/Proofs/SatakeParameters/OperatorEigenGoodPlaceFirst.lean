@@ -20,6 +20,13 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT NumberField IsDedekindDomain Polynomial GlobalTheory.HeightCounting GlobalTheory.RowTie GlobalTheory.SplitRead GlobalTheory.NPin
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Establish `hvv : P.under (𝓞 (maximalRealSubfield E)) = v` using `HeightOneSpectrum.ext hv`. Substitute `hvv` using the available equality. Establish `hx' : x = GlobalTheory.CongSplit.idemAt E (P.under (𝓞 (maximalRealSubfield E))) * x`. Establish `h0` using `GlobalTheory.AL_eq_zero_of_compAt E (x - GlobalTheory.CongSplit.idemAt E (P.under (𝓞 (maximalRealSubfield E))) * x) (fun w => by`.
+
+Rewrite using `[RingHom.map_sub, RingHom.map_mul]`. Distinguish the cases in `hw : w = P.under (𝓞 (maximalRealSubfield E))`. Rewrite using `[hw, GlobalTheory.CongSplit.compAt_idemAt_self, one_mul, sub_self]`. Rewrite using `[GlobalTheory.CongSplit.compAt_idemAt_ne E _ hw, hx w hw, zero_mul, sub_zero])`. Conclude with `(sub_eq_zero.1 h0)`.
+
+Use `conv_rhs => rw [hx']`. Rewrite using `[RingEquiv.map_mul]`. Use `congr 1`.
+-/
 theorem GlobalTheory.InertFormFix.mul_idem_of_trivOutside {E : Type} [Field E] [NumberField E] [IsCMField E] (F : Subfield E)
     (hF : F = maximalRealSubfield E) (P : HeightOneSpectrum (𝓞 E))
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (hv : NG.OverPl P v) (x : AL E)
@@ -41,6 +48,9 @@ theorem GlobalTheory.InertFormFix.mul_idem_of_trivOutside {E : Type} [Field E] [
   rw [RingEquiv.map_mul]
   congr 1
 
+/- English proof (translation)
+Introduce `D hF P e f hP v hv x hx`. Establish `hf` using `GlobalTheory.AdelicU.Supp.eq_placeIdem_of_isPrimeIdem hP rfl`. Substitute `hf` using the available equality. Conclude with `GlobalTheory.InertFormFix.mul_idem_of_trivOutside D.host.F hF P v hv x hx`.
+-/
 theorem GlobalTheory.InertFormFix.finPart_mul_of_trivOutside : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (P : HeightOneSpectrum (𝓞 D.host.E)) (e f : Formalism.L2.Theta.AE D), Formalism.IndefR.Mult.IsPrimeIdem P e f → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))), NG.OverPl P v → ∀ x : AL D.host.E, (∀ w, w ≠ v → compAt D.host.E w x = 0) → Formalism.L2.Theta.finPart D f * (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm x = (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm x := by
   intro D hF P e f hP v hv x hx
   have hf := GlobalTheory.AdelicU.Supp.eq_placeIdem_of_isPrimeIdem hP rfl
@@ -49,6 +59,21 @@ theorem GlobalTheory.InertFormFix.finPart_mul_of_trivOutside : ∀ (D : D7) (hF 
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Introduce `D hF V n Q hQ P e f hP v hv κ hT`. Take `⟨⟨β, β', hββ', hβ'β, hmat⟩, -⟩` from `hQ`. Rewrite using `[GlobalTheory.SphTrans.suppF_iff f (Q.into κ), hmat κ]`. Establish `hT' : ∀ w, w ≠ v → (κ.1.1 : Matrix (Fin n) (Fin n) (AL D.host.E)).map (compAt D.host.E w) = 1` using `fun w hw => hT w (by simpa using hw)`. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.finPart D f • (β * (κ.1.1 : Matrix (Fin n) (Fin n) (AL D.host.E)).map (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm * β' - 1) = β * (κ.1.1 : Matrix (Fin n) (Fin n) (AL D.host.E)).map (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm * β' - 1`.
+
+Use `set M : Matrix (Fin n) (Fin n) (AL D.host.E) := κ.1.1 with hMdef`. Use `set K := M.map (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm with hKdef`. Establish `hcore : ∀ a b, Formalism.L2.Theta.finPart D f * (K - 1) a b = (K - 1) a b`. Introduce `a b`. Establish `hx : ∀ w, w ≠ v → compAt D.host.E w (M a b - (1 : Matrix (Fin n) (Fin n) (AL D.host.E)) a b) = 0`.
+
+Introduce `w hw`. Establish `h1` using `congrFun (congrFun (hT' w hw) a) b`. Rewrite `h1` using `[Matrix.map_apply]`. Rewrite using `[RingHom.map_sub, h1]`. Distinguish the cases in `hab : a = b`.
+
+Rewrite using `[hab, Matrix.one_apply_eq, Matrix.one_apply_eq, RingHom.map_one, sub_self]`. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, RingHom.map_zero, sub_zero]`. Establish `h2` using `GlobalTheory.InertFormFix.finPart_mul_of_trivOutside D hF P e f hP v hv _ hx`. Establish `e3 : (K - 1) a b = (Formalism.IndefR.principalLevelFrame.tensCastR hF).symm (M a b - (1 : Matrix (Fin n) (Fin n) (AL D.host.E)) a b)`. Rewrite using `[Matrix.sub_apply, hKdef, Matrix.map_apply, RingEquiv.map_sub]`.
+
+Distinguish the cases in `hab : a = b`. Rewrite using `[hab, Matrix.one_apply_eq, Matrix.one_apply_eq, RingEquiv.map_one]`. Rewrite using `[Matrix.one_apply_ne hab, Matrix.one_apply_ne hab, RingEquiv.map_zero]`. Rewrite using `[e3, h2]`. Establish `hK : Formalism.L2.Theta.finPart D f • (K - 1) = K - 1`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, hcore]`. Establish `e1 : β * K * β' - 1 = β * (K - 1) * β'`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hββ']`. Rewrite using `[e1]`.
+
+Use `conv_rhs => rw [← hK]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+-/
 theorem GlobalTheory.InertFormFix.suppF_of_trivOutside : ∀ (D : D7) (hF : D.host.F = maximalRealSubfield D.host.E) (V : Formalism.BasicNotions.TH.HSp D) (n : ℕ) (Q : Formalism.IndefR.principalLevelFrame.RowPsi V n), Formalism.IndefR.principalLevelFrame.StdPsi hF Q → ∀ (P : HeightOneSpectrum (𝓞 D.host.E)) (e f : Formalism.L2.Theta.AE D), Formalism.IndefR.Mult.IsPrimeIdem P e f → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))), NG.OverPl P v → ∀ κ : GAf D.host.E n, TrivOutside {v} κ → Formalism.IndefR.Mult.SuppF V f (Q.ψ κ) := by
   intro D hF V n Q hQ P e f hP v hv κ hT
   obtain ⟨⟨β, β', hββ', hβ'β, hmat⟩, -⟩ := hQ
@@ -87,6 +112,21 @@ theorem GlobalTheory.InertFormFix.suppF_of_trivOutside : ∀ (D : D7) (hF : D.ho
   conv_rhs => rw [← hK]
   rw [Matrix.mul_smul, Matrix.smul_mul]
 
+/- English proof (translation)
+Introduce `hA hL D P X hX h41 h7 htie i hμ j hj h hh Pp hG hI v hv g κ hκ hT`. Establish `hstd` using `hX.stdV j`. Establish `hprime` using `GlobalTheory.InertFrameLoc.isPrimeIdem_tensAt hI rfl`. Establish `hsupp` using `GlobalTheory.InertFormFix.suppF_of_trivOutside D hX.hF (Formalism.IndefR.Links.Vc D j) D.R.nV (hX.PV j) hstd Pp _ _ hprime v hv κ hT`. Take `⟨c, hc⟩` from `X.given.core.lev.βV j`.
+
+Rewrite `hc` using `[one_pow]`. Establish `ls` using `(GlobalTheory.LevSplit.lev_split (Formalism.IndefR.Links.Vc D j) (X.R.βV j) (X.R.ΛV j) 1 (Formalism.IndefR.RecTie.datVP X.R j (X.tupT (D.nd.mu i)) (X.R.levR X.F false)) hc).2 Pp _ _ hprime (by`. Introduce `h1`. Establish `: ((1 : ℕ) : 𝓞 D.host.E) = 1` using `Nat.cast_one`. Rewrite `h1` using `[this]`.
+
+Conclude with `Pp.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1))`. Use the proof step `(fun PP hPP => hG PP hPP)`. Establish `hK : (hX.PV j).ψ κ ∈ Formalism.L2.Theta.KsphC (Formalism.IndefR.Links.Vc D j) ∅` using `(hstd.2 κ).1 hκ`. Establish `hlev` using `(ls.1 _ hsupp).2 hK`. Establish `hchi` using `ls.2.1 _ hlev hsupp`.
+
+Establish `hfix : ∀ (x : D.what₂.Mt (D.nd.mu i) (j.1 + 1)) y, X.fn hμ j x (y * (hX.PV j).ψ κ) = X.fn hμ j x y`. Introduce `x y`. Establish `hm` using `((X.IL.jMt (D.nd.mu i) hμ j) x).2`. Take `⟨-, hm2⟩` from `hm`. Establish `e1` using `hm2 ((hX.PV j).ψ κ) hlev y`.
+
+Unfold `GlobalTheory.NJoin.RealAt.fn`. Rewrite using `[e1]`. Rewrite using `[hchi]`. Conclude with `one_smul ℂ _`. Establish `key : ∀ (j' : ℕ) (e : j.1 + 1 = j') (h1 : 1 ≤ j') (h2 : j' ≤ D.R.m) (x : D.what₂.Mt (D.nd.mu i) j'), NG.rt D.host.E D.R.nV κ ((P.M (D.nd.mu i) j' h1 h2).real x) = (P.M (D.nd.mu i) j' h1 h2).real x`.
+
+Introduce `j' e h1 h2 x`. Substitute `e` using the available equality. Use function extensionality and compare the values at `y`. Use `show (P.M _ _ h1 h2).real x (y * κ) = _`. Rewrite using `[hX.real (D.nd.mu i) hμ j x (y * κ), hX.real (D.nd.mu i) hμ j x y, ← mul_assoc, map_mul, hfix]`.
+
+Conclude with `key _ hj _ _ g`.
+-/
 theorem GlobalTheory.InertFormFix.real_rt_eq_of_good_inert : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), Formalism.MainNotions.SumRepresentations.Conclusion41 D → Formalism.MainNotions.SumRepresentations.adm7 D → Formalism.MainNotions.SumRepresentations.tieLab D → ∀ (i : D.nd.Loc) (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i), ∀ h, GlobalTheory.Hk3.IsOpsV X.R j (X.tupT (D.nd.mu i)) h → ∀ Pp, GlobalTheory.Hk3.Good X.R (X.tupT (D.nd.mu i)) Pp → Formalism.UG.IsInertAt D.host.F D.host.E (Pp.under (𝓞 D.host.F)) Pp → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E))), NG.OverPl Pp v → ∀ g : D.what₂.Mt (D.nd.mu i) (D.nd.j i), ∀ κ ∈ Umax D.host.E D.R.nV, TrivOutside {v} κ → NG.rt D.host.E D.R.nV κ ((P.M.loc i).real g) = (P.M.loc i).real g := by
   intro hA hL D P X hX h41 h7 htie i hμ j hj h hh Pp hG hI v hv g κ hκ hT
   have hstd := hX.stdV j

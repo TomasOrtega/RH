@@ -4,6 +4,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 
 namespace GlobalTheory.AffineSB
 
+/- English proof (translation)
+Introduce `k _ _ _ _ R Q _ _ _ A a Φ hΦ`. Establish `hc : ∀ B : Matrix R R k, Continuous fun x : Matrix R Q k => B * x` using `fun B => continuous_const.matrix_mul continuous_id`. Set `e : Matrix R Q k ≃ₜ Matrix R Q k` to `{ toFun := fun x => A.val * x + a invFun := fun y => (A⁻¹ : GL R k).val * (y - a) left_inv := fun x => by`. Simplify using `only [add_sub_cancel_right, ← Matrix.mul_assoc, Matrix.coe_units_inv]`. Rewrite using `[Matrix.nonsing_inv_mul _ (by simpa using A.isUnit.map Matrix.detMonoidHom), Matrix.one_mul]`.
+
+Use `right_inv := fun y => by`. Simplify using `only [← Matrix.mul_assoc, Matrix.coe_units_inv]`. Rewrite using `[Matrix.mul_nonsing_inv _ (by simpa using A.isUnit.map Matrix.detMonoidHom), Matrix.one_mul, sub_add_cancel]`. Use `continuous_toFun := (hc _).add continuous_const`. Use `continuous_invFun := (hc _).comp (continuous_id.sub continuous_const) }`.
+
+Conclude with `⟨hΦ.1.comp_continuous e.continuous, hΦ.2.comp_homeomorph e⟩`.
+-/
 theorem mem_SB_comp_affine : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (R Q : Type) [Fintype R] [DecidableEq R] [Fintype Q] (A : GL R k) (a : Matrix R Q k) (Φ : Matrix R Q k → ℂ), Φ ∈ SB (Matrix R Q k) → (fun x => Φ (A.val * x + a)) ∈ SB (Matrix R Q k) := by
   intro k _ _ _ _ R Q _ _ _ A a Φ hΦ
   have hc : ∀ B : Matrix R R k, Continuous fun x : Matrix R Q k => B * x := fun B =>

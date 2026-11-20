@@ -17,6 +17,19 @@ section Abstract
 
 variable {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Use `set p := (twKer π N 1).mkQ with hp`. Use `set σ := jacquet π N s hs with hσ`. Establish `hps : ∀ m v, p (π (s m) v) = σ m (p v)` using `fun _ _ => rfl`. Establish `hpN : ∀ x ∈ N, ∀ v, p (π x v) = p v` using `fun x hx v => (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨x, hx⟩, v, by simp⟩)`. Take `⟨u, rfl⟩ : ∃ u, p u = y` from `Submodule.mkQ_surjective _ y`.
+
+Take `⟨t, htc, ht⟩` from `hcon _ ((ho.inter (hπ.1 u)).mem_nhds ⟨one_mem I, by simp⟩)`. Use `set Y := (fixed π I).map p with hY`. Use `haveI := hπ.2 I ho hc`. Establish `key : ∀ w, (∀ c ∈ C, π ((s t)⁻¹ * c * s t) w = w) → (∀ d ∈ M₀, σ d (p w) = p w) → σ t (p w) ∈ Y`. Introduce `w h1 h2`.
+
+Use `IwahoriOnto.exists_fixed_map_eq hπ.1 hc p (π (s t) w) fun g hg => ?_` and prove the remaining obligations. Take `⟨d, hd, x, hx, c, hcC, rfl⟩` from `hfac g hg`. Establish `h3 : π c (π (s t) w) = π (s t) w` using `by conv_rhs => rw [← h1 c hcC]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+
+Use `group`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h3, hps, hpN x hx, hps, ← Module.End.mul_apply, ← map_mul, htc d hd, map_mul, Module.End.mul_apply, h2 d hd]`. Establish `hinj : Function.Injective (σ t)`. Introduce `a b hab`. Use `congrArg (σ t⁻¹) hab` as an intermediate fact.
+
+Simplify `this` using `[← Module.End.mul_apply, ← map_mul]`. Establish `hst : ∀ z ∈ Y, σ t z ∈ Y`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : ∀ g ∈ I, π g w = w` using `fun g hg => by simpa using hw ⟨g, hg⟩`. Conclude with `key w (fun c hcC => hw' _ (ht c hcC).1) fun d hd => by rw [← hps, hw' _ (hM₀ d hd)]`.
+
+Establish `hsurj : Function.Surjective ((σ t).restrict hst)` using `LinearMap.surjective_of_injective fun a b hab => Subtype.ext (hinj (congrArg Subtype.val hab))`. Take `⟨z, hz⟩` from `hsurj ⟨_, key u (fun c hcC => (ht c hcC).2) fun d hd => by simpa using hy ⟨d, hd⟩⟩`. Establish `: (z : Jacquet π N) = p u` using `hinj (congrArg Subtype.val hz)`. Conclude with `this ▸ z.2`.
+-/
 theorem exists_fixed_mk_eq {π : Representation ℂ G V} (hπ : IsAdmissible π) {I N : Subgroup G}
     (ho : IsOpen (I : Set G)) (hc : IsCompact (I : Set G)) {M : Type} [Group M] (s : M →* G)
     (hs : ∀ m, s m ∈ Subgroup.normalizer (N : Set G)) (M₀ : Subgroup M) (hM₀ : ∀ d ∈ M₀, s d ∈ I)
@@ -67,6 +80,33 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
   [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Introduce `U hU`. Set `r : α → ℕ` to `fun a => (Finset.univ.filter fun b => b < a).card`. Establish `hr : ∀ a b, b < a → r b < r a` using `fun a b hab => Finset.card_lt_card ⟨fun l hl => by`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hl ⊢`. Conclude with `hl.trans hab, fun hs => by simpa using hs (show b ∈ _ by simpa using hab)⟩`.
+
+Set `S : kˣ → Levi k m` to `fun x a => Units.map (Matrix.scalar (m a)).toMonoidHom (x ^ r a)⁻¹`. Set `T : kˣ → n → kˣ` to `fun x i => (x ^ r (blk e i))⁻¹`. Establish `hST : ∀ x, leviEmb k e (S x) = diagT k n (T x)`. Introduce `x`. Use extensionality with `i j`.
+
+Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`. Rewrite using `[val_diagT, diagonal_apply]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+
+Rewrite using `[leviEmb_apply_same]`. Simplify using `[S, T, Matrix.scalar_apply, diagonal_pow, diagonal_apply, inv_pow]`. Rewrite using `[leviEmb_apply_ne k e _ h, if_neg fun h' => h (congrArg Sigma.fst (e.injective h'))]`. Establish `hcomm : ∀ x (d : Levi k m), d * S x = S x * d` using `fun x d => funext fun a => Units.ext ((Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq).symm`. Set `F : Filter (kˣ × jMinus k e)` to `(comap (fun x : kˣ => (x : k)) (𝓝 0)) ×ˢ ⊤`.
+
+Establish `hent : ∀ (x : kˣ) (c : GL n k) i j, ((diagT k n (T x))⁻¹ * c * diagT k n (T x)).val i j = (x : k) ^ r (blk e i) * c.val i j * ((x : k) ^ r (blk e j))⁻¹`. Introduce `x c i j`. Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul]`. Simplify using `[T]`. Establish `hT : Tendsto (fun p : kˣ × jMinus k e => (diagT k n (T p.1))⁻¹ * p.2.1 * diagT k n (T p.1)) F (𝓝 1)`.
+
+Rewrite using `[SplitFlip.isEmbedding_val_GL.tendsto_nhds_iff]`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_def, hent]`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`.
+
+Simplify using `only [blk_apply, Units.val_one]`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Establish `h0 : ∀ p : kˣ × jMinus k e, (p.2.1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0` using `fun p => (mem_parabLower_iff k).1 ((mem_unipRadLower k).1 p.2.2.1).1 a b i j hab`. Simplify using `only [h0, mul_zero, zero_mul, IwahoriFactor.one_ne e hab.ne]`. Conclude with `tendsto_const_nhds`.
+
+Establish `h1 : ∀ p : kˣ × jMinus k e, (p.1 : k) ^ r a * (p.2.1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩) * ((p.1 : k) ^ r a)⁻¹ = (1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩)` using `fun p => by`. Rewrite using `[((mem_unipRadLower k).1 p.2.2.1).2 a i j, IwahoriFactor.one_same, mul_comm, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ p.1.ne_zero), one_mul]`. Simplify using `only [h1]`. Conclude with `tendsto_const_nhds`. Rewrite using `[IwahoriFactor.one_ne e hab.ne', (IsValuativeTopology.hasBasis_nhds_zero k).tendsto_right_iff]`.
+
+Introduce `γ _`. Establish `h1 : {x : k | valuation k x < γ} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨γ, fun _ h => h⟩`. Establish `h2 : {x : k | valuation k x < 1} ∈ 𝓝 (0 : k)` using `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨1, fun _ h => h⟩`. Use `filter_upwards [prod_mem_prod (preimage_mem_comap (inter_mem h1 h2)) univ_mem] with p hp`. Take `⟨l, hl⟩` from `Nat.exists_eq_add_of_lt (hr a b hab)`.
+
+Establish `hint : valuation k ((p.2.1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩)) ≤ 1`. Use `StepData.mem_KOne.1 p.2.2.2 (e ⟨a, i⟩) (e ⟨b, j⟩)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, IwahoriFactor.one_ne e hab.ne', sub_zero]`. Conclude with `this.le`. Establish `: (p.1 : k) ^ r a * (p.2.1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩) * ((p.1 : k) ^ r b)⁻¹ = p.1 * (p.1 ^ l * (p.2.1 : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩))`.
+
+Rewrite using `[hl]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `show valuation k _ < _`. Rewrite using `[this, map_mul, map_mul, map_pow]`.
+
+Conclude with `(mul_le_of_le_one_right' (mul_le_one' (pow_le_one' hp.1.2.le _) hint)).trans_lt hp.1.1`. Use `haveI : (comap (fun x : kˣ => (x : k)) (𝓝 0)).NeBot := by`. Use `comap_neBot fun s hs => ?_` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff s).1 hs`. Take `⟨δ, hδ0, hδ⟩ : ∃ δ : ValueGroupWithZero k, δ ≠ 0 ∧ δ < γ` from `⟨uniformizer k * γ, by simp, mul_lt_of_lt_one_left γ.zero_lt uniformizer_lt_one⟩`.
+
+Take `⟨x, rfl⟩` from `valuation_surjective δ`. Conclude with `⟨Units.mk0 x (by simpa using hδ0), hγ hδ⟩`. Take `⟨x, hx⟩` from `Filter.nonempty_of_mem (mem_prod_top.1 (hT hU))`. Conclude with `⟨S x, hcomm x, fun c hc => by rw [hST]; exact hx ⟨c, hc⟩⟩`.
+-/
 theorem jMinus_contract (e : (Σ a, m a) ≃ n) : ∀ U ∈ 𝓝 (1 : GL n k), ∃ t : Levi k m,
     (∀ d : Levi k m, d * t = t * d) ∧ ∀ c ∈ jMinus k e, (leviEmb k e t)⁻¹ * c * leviEmb k e t ∈ U := by
   intro U hU
@@ -149,6 +189,11 @@ end GlobalTheory.LocGL.ProRadOnto
 
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.LocGL ValuativeRel in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n _ _ m _ _ _ _ e V _ _ π hπ y hy`. Take `⟨v, hv, h⟩` from `ProRadOnto.exists_fixed_mk_eq hπ (isOpen_levelPre _) (isCompact_levelPre _) (leviEmb k e) (N := unipRad k e) (leviEmb_mem_normalizer k e) (leviKOne k m) (fun d hd => jLevi_le_proRad e ⟨d, hd, rfl⟩) (jMinus k e) (fun g hg => by`. Take `⟨d, ⟨d', hd', rfl⟩, u, hu, c, hc, rfl⟩` from `IwahoriFactor.levi_plus_minus e hg`. Conclude with `⟨d', hd', u, hu.1, c, hc, rfl⟩)`. Use the proof step `(fun U hU => by`.
+
+Take `⟨t, ht, h⟩` from `ProRadOnto.jMinus_contract e U hU`. Conclude with `⟨t, fun d _ => ht d, h⟩) y hy`. Conclude with `⟨v, hv, h⟩`.
+-/
 theorem GlobalTheory.LocGL.ProRadOnto.exists_proRad_fixed_mk_eq : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α n : Type} [Fintype α] [LinearOrder α] {m : α → Type} [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL n k) V), IsAdmissible π → ∀ y : Jacquet π (unipRad k e), y ∈ fixed (jacU e π) (leviKOne k m) → ∃ v ∈ fixed π (proRad k e), (Submodule.Quotient.mk v : Jacquet π (unipRad k e)) = y := by
   intro k _ _ _ _ α n _ _ m _ _ _ _ e V _ _ π hπ y hy
   obtain ⟨v, hv, h⟩ := ProRadOnto.exists_fixed_mk_eq hπ (isOpen_levelPre _) (isCompact_levelPre _) (leviEmb k e)

@@ -14,6 +14,31 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.TraitExt
 
+/- English proof (translation)
+Introduce `R W R₁ _ _ _ _ _ _ _ _ _ hW φ hφ hφl ρ hρ Ω _ _ _ _ e he`. Take `⟨hWd, hWc, hW0⟩` from `hW`. Take `⟨-, hρi, hρf⟩` from `hρ`. Use `letI : Algebra W Ω := ((algebraMap (FractionRing W) Ω).comp (algebraMap W (FractionRing W))).toAlgebra`. Use `haveI : IsScalarTower W (FractionRing W) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+
+Establish `hWΩ : Function.Injective (algebraMap W Ω)` using `(algebraMap (FractionRing W) Ω).injective.comp (IsFractionRing.injective W (FractionRing W))`. Use `haveI : FaithfulSMul W Ω := (faithfulSMul_iff_algebraMap_injective W Ω).2 hWΩ`. Use `haveI : Algebra.IsAlgebraic W Ω := (IsFractionRing.comap_isAlgebraic_iff (A := W) (K := FractionRing W) (C := Ω)).mpr inferInstance`. Use `letI : Algebra R R₁ := ρ.toAlgebra`. Use `haveI : Module.Finite R R₁ := hρf`.
+
+Use `letI : Algebra R W := φ.toAlgebra`. Use `letI : Algebra R Ω := ((algebraMap W Ω).comp φ).toAlgebra`. Use `haveI : IsScalarTower R W Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `f₀ : R₁ →+* Ω` to `e.comp (algebraMap R₁ (FractionRing R₁))`. Establish `hf₀ : ∀ r, f₀ (ρ r) = algebraMap W Ω (φ r)` using `he`.
+
+Set `f : R₁ →ₐ[R] Ω` to `{ f₀ with commutes' := fun r => hf₀ r }`. Establish `hint : ∀ x : R₁, IsIntegral W (f₀ x)` using `fun x => IsIntegral.tower_top (A := W) (IsIntegral.map f (show IsIntegral R x from RingHom.Finite.to_isIntegral hρf x))`. Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule R R₁).FG)`. Take `⟨W₁, hd, hc, -, hfin, -, hloc, -, hmem⟩` from `GlobalTheory.exists_complete_dvr_finite_subalgebra W Ω (S.image f₀)`. Establish `hin : ∀ x : R₁, f₀ x ∈ W₁`.
+
+Introduce `x`. Establish `hx : x ∈ Submodule.span R (S : Set R₁)` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hmem _ (Finset.mem_image_of_mem _ hy) (hint y)`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `W₁.add_mem hy hz`. Consider the case `smul a y _ hy`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `W₁.mul_mem ?_ hy` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `f₀ (ρ a) ∈ W₁`. Rewrite using `[hf₀]`. Conclude with `W₁.algebraMap_mem _`. Set `iw : W →+* W₁` to `algebraMap W W₁`. Set `φ₁ : R₁ →+* W₁` to `f₀.codRestrict W₁ hin`.
+
+Establish `hiwinj : Function.Injective iw` using `fun a b h => hWΩ (congrArg Subtype.val h)`. Use `haveI : CharZero W₁ := charZero_of_injective_ringHom hiwinj`. Establish `hcomp : φ₁.comp ρ = iw.comp φ`. Use extensionality with `r`. Conclude with `hf₀ r`.
+
+Establish `hφ₁inj : Function.Injective φ₁` using `fun a b h => by`. Establish `: f₀ a = f₀ b` using `congrArg Subtype.val h`. Conclude with `IsFractionRing.injective R₁ (FractionRing R₁) (e.injective this)`. Establish `hφ₁l : IsLocalHom φ₁`. Establish `h1 : (maximalIdeal W₁).comap iw = maximalIdeal W` using `((local_hom_TFAE iw).out 0 4).mp hloc`.
+
+Establish `h2 : (maximalIdeal W).comap φ = maximalIdeal R` using `((local_hom_TFAE φ).out 0 4).mp hφl`. Establish `hP : ((maximalIdeal W₁).comap φ₁).comap ρ = maximalIdeal R`. Rewrite using `[Ideal.comap_comap, hcomp, ← Ideal.comap_comap, h1, h2]`. Establish `hmax : ((maximalIdeal W₁).comap φ₁).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap' ρ (RingHom.Finite.to_isIntegral hρf) _ (by rw [hP]; infer_instance)`. Conclude with `((local_hom_TFAE φ₁).out 0 4).mpr (IsLocalRing.eq_maximalIdeal hmax)`.
+
+Use `haveI : Algebra.IsAlgebraic W₁ Ω := Algebra.IsAlgebraic.extendScalars hiwinj`. Use `haveI : Module.IsTorsionFree W₁ Ω := Module.isTorsionFree_iff_algebraMap_injective.mpr Subtype.val_injective`. Use `haveI : Module.IsTorsionFree W₁ (AlgebraicClosure (FractionRing W₁)) := Module.isTorsionFree_iff_algebraMap_injective.mpr (by`. Rewrite using `[IsScalarTower.algebraMap_eq W₁ (FractionRing W₁) (AlgebraicClosure (FractionRing W₁))]`. Conclude with `(algebraMap (FractionRing W₁) _).injective.comp (IsFractionRing.injective W₁ (FractionRing W₁)))`.
+
+Set `σ' : Ω →ₐ[W₁] AlgebraicClosure (FractionRing W₁)` to `IsAlgClosed.lift`. Establish `hσ : ∀ x : W₁, σ' (x : Ω) = algebraMap (FractionRing W₁) (AlgebraicClosure (FractionRing W₁)) (algebraMap W₁ (FractionRing W₁) x)` using `fun x => by`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `σ'.commutes x`. Use `⟨W₁, inferInstance, inferInstance, inferInstance, iw, φ₁, σ'.toRingHom, ⟨hd, hc, inferInstance⟩, hiwinj, RingHom.finite_algebraMap.2 hfin, hloc, hφ₁inj, hφ₁l, hcomp, fun w => hσ (iw w), fun r => hσ (φ₁ r)⟩` and prove the remaining obligations.
+-/
 theorem exists_finite_trait_extension : ∀ (R W R₁ : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W] [CommRing R₁] [IsDomain R₁] [IsLocalRing R₁], GlobalTheory.LN.CDvr W → ∀ (φ : R →+* W), Function.Injective φ → IsLocalHom φ → ∀ (ρ : R →+* R₁), FinExt ρ → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra (FractionRing W) Ω] [Algebra.IsAlgebraic (FractionRing W) Ω] (e : FractionRing R₁ →+* Ω), (∀ r, e (algebraMap R₁ (FractionRing R₁) (ρ r)) = algebraMap (FractionRing W) Ω (algebraMap W (FractionRing W) (φ r))) → ∃ (W₁ : Type) (_ : CommRing W₁) (_ : IsDomain W₁) (_ : IsLocalRing W₁) (iw : W →+* W₁) (φ₁ : R₁ →+* W₁) (σ : Ω →+* AlgebraicClosure (FractionRing W₁)), GlobalTheory.LN.CDvr W₁ ∧ Function.Injective iw ∧ iw.Finite ∧ IsLocalHom iw ∧ Function.Injective φ₁ ∧ IsLocalHom φ₁ ∧ φ₁.comp ρ = iw.comp φ ∧ (∀ w, σ (algebraMap (FractionRing W) Ω (algebraMap W (FractionRing W) w)) = algebraMap (FractionRing W₁) (AlgebraicClosure (FractionRing W₁)) (algebraMap W₁ (FractionRing W₁) (iw w))) ∧ ∀ r, σ (e (algebraMap R₁ (FractionRing R₁) r)) = algebraMap (FractionRing W₁) (AlgebraicClosure (FractionRing W₁)) (algebraMap W₁ (FractionRing W₁) (φ₁ r)) := by
   intro R W R₁ _ _ _ _ _ _ _ _ _ hW φ hφ hφl ρ hρ Ω _ _ _ _ e he
   obtain ⟨hWd, hWc, hW0⟩ := hW

@@ -5,6 +5,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 
 namespace GlobalTheory.LastStep
 
+/- English proof (translation)
+Introduce `D c v k _ _ _ _ ι o hS j h t hU hK χz χS' χT h1 h2 x hx`. Take `⟨i, rfl⟩` from `(hS.pre.tP x).1 hx`. Establish `hpos : ∀ n, 0 < (c.X n).rank` using `fun n => by`. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Introduce `h0`.
+
+Establish `P` using `o.Q n i`. Use `revert P`. Rewrite using `[h0]`. Introduce `P`. Conclude with `P.fn_ne (LinearMap.ext fun x => by rw [Subsingleton.elim x 0, map_zero, map_zero])`.
+
+Establish `hV : 0 < (c.V (j + 1)).rank`. Use `(c.jac j 0 h).d.rank_add` as an intermediate fact. Use `hpos (j + 1)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨χS₃, χT₃, hW₃, hu₃⟩` from `hK (j + 1) (by omega)`.
+
+Take `⟨χS₂, χT₂, hW₂, hu₂⟩` from `hU.top j h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.weilRepresentation_determines_charUnramified_splitPlace D k (o.p i) c.ψ _ _ χS₃ χT₃ χS' (χT * χz⁻¹) (t.kom (j + 1)) hW₃ h1).2 (hpos _) (hu₃ _ ((hS.pre.tP _).2 ⟨i, rfl⟩)).1`. Conclude with `(GlobalTheory.T.weilRepresentation_determines_charUnramified_splitPlace D k (o.p i) c.ψ _ _ χS₂ χT₂ χS' χT (t.omT j h) hW₂ h2).1 hV (hu₂ _ ((hS.pre.tP _).2 ⟨i, rfl⟩)).2`.
+-/
 theorem chars_unram : ∀ (D : D7) (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι), ShapeOff v o → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (t : Tup c), t.UnrOn (· ∈ v.tP) → t.UnrK (· ∈ v.tP) → ∀ (χz χS' χT : (AE D)ˣ →* Circle), IsWeilDatumO c.ψ _ _ χS' (χT * χz⁻¹) (t.kom (j + 1)) → IsWeilDatumO c.ψ _ _ χS' χT (t.omT j h) → ∀ x, x ∈ v.tP → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D χS' x ∧ GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D χT x := by
   intro D c v k _ _ _ _ ι o hS j h t hU hK χz χS' χT h1 h2 x hx
   obtain ⟨i, rfl⟩ := (hS.pre.tP x).1 hx

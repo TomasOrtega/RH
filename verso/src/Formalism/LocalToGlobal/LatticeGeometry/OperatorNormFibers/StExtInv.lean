@@ -15,6 +15,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 abbrev ext (A : HLat K) (N : Submodule (𝓞 K) A.V) : Submodule (𝓞 K') (baseChange K' A).V :=
   (baseChange K' (withL A N)).L
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (A : HLat K) (N : Submodule (𝓞 K) A.V) :
     baseChange K' (withL A N) = withL (baseChange K' A) (ext K' A N) := rfl
 

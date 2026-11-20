@@ -39,6 +39,9 @@ def LocalClassData.toAt0 {D : D7} {u : D.what₂.Word} {μ : D.what₂.Tup} {w :
   cls_surj := c.cls_surj
   stab_zero := c.stab_zero
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Conclude with `⟨{ cls := fun a L => e (Cmp.clsR hk I (isUnit_det_gram0 D.sp) a L) cls_iff := fun a a' L L' hL hL' => e.injective.eq_iff.trans (Cmp.clsR_iff hS r lam0 dom hk I ψ e' (isUnit_det_gram0 D.sp) hH a a' L L' hL hL') cls_surj := fun x => by`. Take `⟨a, L, hL, hx⟩` from `Cmp.clsR_surj hS r lam0 dom hk I ψ e' (isUnit_det_gram0 D.sp) hH (e.symm x)`. Conclude with `⟨a, L, hL, by rw [hx, Equiv.apply_symm_apply]⟩`. Use `stab_zero := fun a L hL => (Cmp.stab_card hS r lam0 dom hk I ψ e' (isUnit_det_gram0 D.sp) hH a L hL).trans (Triv.card_stab (H u) D.host.g_prime D.host.g_ne _) }⟩`.
+-/
 theorem class_local_of_eq (D : D7) (H : LevelData D) (u : D.what₂.Word) {p : ℕ} {X : Type} (e : (D.mem u).C.cls 0 ≃ X)
     {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -59,6 +62,9 @@ theorem class_local_of_eq (D : D7) (H : LevelData D) (u : D.what₂.Word) {p : �
       (Cmp.stab_card hS r lam0 dom hk I ψ e' (isUnit_det_gram0 D.sp) hH a L hL).trans
         (Triv.card_stab (H u) D.host.g_prime D.host.g_ne _) }⟩
 
+/- English proof (translation)
+Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e', hH, heq⟩` from `hG`. Take `⟨c⟩` from `class_local_of_eq D H u e hS nV r m lam0 dom hk I ψ e' hH (D.gat u w h) heq`. Conclude with `⟨c.toAt0 Lv⟩`.
+-/
 theorem clsAt0_of_gatIs (D : D7) (H : LevelData D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (hG : GatIs D H u w h) (μ : D.what₂.Tup)
     (e : (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0) {Fl : Fills (D.gat u w h)} (Lv : Levels Fl) :
@@ -67,12 +73,18 @@ theorem clsAt0_of_gatIs (D : D7) (H : LevelData D) (u : D.what₂.Word) (w : D.w
   obtain ⟨c⟩ := class_local_of_eq D H u e hS nV r m lam0 dom hk I ψ e' hH (D.gat u w h) heq
   exact ⟨c.toAt0 Lv⟩
 
+/- English proof (translation)
+The claim follows from `clsAt0_of_gatIs D H u w h (hG u w h) μ (e u μ) _`.
+-/
 theorem clsAt0_twLoc (D : D7) (H : LevelData D) (hG : ∀ u w h, GatIs D H u w h)
     (e : ∀ u μ, (D.mem u).C.cls 0 ≃ (D.chTw u μ).cls 0) {Gl : LatInst D} (Wl : WeilJacquetShalikaLaw.TwLoc D Gl) (μ : D.what₂.Tup)
     (u : D.what₂.Word) (w : D.what₂.places.Pl) (h : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
     Nonempty (ClsAt0 D u μ w h ((Wl.Yt μ).Lv u w h)) :=
   clsAt0_of_gatIs D H u w h (hG u w h) μ (e u μ) _
 
+/- English proof (translation)
+The claim follows from `clsAt0_twLoc D Gd.herm.lev0 Gd.gat T.eCls0 Wl μ u w h`.
+-/
 theorem clsAt0_tied {D : D7} {Gt : GatTies D} {c : LatCmp D} (Gd : GroupCompatibilityAll D Gt c)
     {inQ : D.what₂.Tup → IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers D.host.F) → Prop}
     (T : Formalism.L2.Herm.TwChTied D inQ) {Gl : LatInst D} (Wl : WeilJacquetShalikaLaw.TwLoc D Gl) (μ : D.what₂.Tup)

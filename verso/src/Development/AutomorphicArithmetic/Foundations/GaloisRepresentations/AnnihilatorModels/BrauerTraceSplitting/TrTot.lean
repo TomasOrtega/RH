@@ -9,6 +9,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 
 namespace UpperTheory.Gal.crystallineComparison.Br
 
+/- English proof (translation)
+Introduce `l _ B Z Y p q s tr htr W r c hc J _ σ hσ hsp x`. Express the relevant statement in the definitionally equal form `Htot l (sch.obj Y) at x`. Express the relevant statement in the definitionally equal form `pullTot l (sch.map c) (DirectSum.lmap tr x) = ∑ j, pullTot l (sch.map (σ j)) x`. Use extensionality with `n`. Rewrite using `[DFinsupp.finset_sum_apply]`.
+
+Simplify using `only [pullTot, DirectSum.lmap_apply]`. Conclude with `htr n W r c hc J σ hσ hsp (x n)`.
+-/
 theorem trTot : TrTot := by
   intro l _ B Z Y p q s tr htr W r c hc J _ σ hσ hsp x
   change Htot l (sch.obj Y) at x

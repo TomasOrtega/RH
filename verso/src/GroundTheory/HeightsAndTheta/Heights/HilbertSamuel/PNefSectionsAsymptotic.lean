@@ -17,6 +17,9 @@ section Coordinates
 
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Use extensionality with `s`. Use `show (∀ c : ∀ k, ι k, _ → _) ↔ (∀ c : ∀ k, ι k, _ → _)`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Nat.cast_one, one_mul]`.
+-/
 theorem chartLatQ_eq_smul_one (y : (Σ k, ι k) → Ω) (a : K → ℤ) (τ : ℕ) :
     chartLatQ y a τ = chartLatQ y ((τ : ℤ) • a) 1 := by
   ext s

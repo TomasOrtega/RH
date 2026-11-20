@@ -12,6 +12,9 @@ namespace CompanionTheory.Rg.BcB.G3.TensorComplP
 variable {F K : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+Use `v.isMaximal` as an intermediate fact. Establish `h` using `IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)`. Use `(h.preimage (f := HeightOneSpectrum.asIdeal) (fun a _ b _ hab => HeightOneSpectrum.ext hab)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+-/
 theorem finite_over : {w : HeightOneSpectrum (𝓞 K) | w.under (𝓞 F) = v}.Finite := by
   have := v.isMaximal
   have h := IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)
@@ -24,12 +27,20 @@ def phi : v.adicCompletion F ⊗[F] K →+*
     (∀ u : {u : HeightOneSpectrum (𝓞 K) // u.under (𝓞 F) = v}, u.1.adicCompletion K) :=
   RingHom.pi fun u => GlobalTheory.LFun.toCompl u.2
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (y : v.adicCompletion F ⊗[F] K) (u : {u : HeightOneSpectrum (𝓞 K) // u.under (𝓞 F) = v}) :
     phi v y u = GlobalTheory.LFun.toCompl u.2 y := rfl
 
 def extZ : v.adicCompletion F ⊗[F] K →ₗ[F] FiniteAdeleRing (𝓞 F) F ⊗[F] K :=
   LinearMap.rTensor K (GlobalTheory.AdelicU.singleFin v)
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [extZ, LinearMap.rTensor_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+-/
 theorem map_extZ_self (y : v.adicCompletion F ⊗[F] K) :
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F K) (extZ v y) = y := by
   induction y using TensorProduct.induction_on with
@@ -39,6 +50,11 @@ theorem map_extZ_self (y : v.adicCompletion F ⊗[F] K) :
     rw [GlobalTheory.AdelicU.evalV_singleFin_self]
   | add a b ha hb => simp only [map_add, ha, hb]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x`. Simplify using `only [extZ, LinearMap.rTensor_tmul, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne h, TensorProduct.zero_tmul]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb, add_zero]`.
+-/
 theorem map_extZ_ne {v' : HeightOneSpectrum (𝓞 F)} (h : v' ≠ v) (y : v.adicCompletion F ⊗[F] K) :
     Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v') (AlgHom.id F K) (extZ v y) = 0 := by
   induction y using TensorProduct.induction_on with
@@ -48,6 +64,13 @@ theorem map_extZ_ne {v' : HeightOneSpectrum (𝓞 F)} (h : v' ≠ v) (y : v.adic
     rw [GlobalTheory.AdelicU.evalV_singleFin_ne h, TensorProduct.zero_tmul]
   | add a b ha hb => simp only [map_add, ha, hb, add_zero]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `h0 : GlobalTheory.LFun.finAdEquiv F K (extZ v y) = 0`. Establish `hc : ∀ w : HeightOneSpectrum (𝓞 K), GlobalTheory.LFun.finAdEquiv F K (extZ v y) w = 0`. Introduce `w`.
+
+Distinguish the cases in `hw : w.under (𝓞 F) = v`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply hw, map_extZ_self]`. Conclude with `(phi_apply v y ⟨w, hw⟩).symm.trans (congrFun hy ⟨w, hw⟩)`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply rfl, map_extZ_ne v hw, map_zero]`. Conclude with `Subtype.ext (funext hc)`.
+
+Establish `h1 : extZ v y = 0` using `(map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv F K).injective).1 h0`. Rewrite using `[← map_extZ_self v y, h1, map_zero]`.
+-/
 theorem phi_injective : Function.Injective (phi (K := K) v) := by
   rw [injective_iff_map_eq_zero]
   intro y hy
@@ -62,6 +85,11 @@ theorem phi_injective : Function.Injective (phi (K := K) v) := by
   have h1 : extZ v y = 0 := (map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv F K).injective).1 h0
   rw [← map_extZ_self v y, h1, map_zero]
 
+/- English proof (translation)
+Introduce `z`. Take `⟨y, hy⟩` from `(GlobalTheory.LFun.finAdEquiv F K).surjective ⟨fun w => if h : w.under (𝓞 F) = v then z ⟨w, h⟩ else 0, by filter_upwards [(finite_over (K := K) v).compl_mem_cofinite] with u hu`. Rewrite using `[dif_neg (by simpa using hu)]`. Conclude with `zero_mem _⟩`. Use `⟨Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v) (AlgHom.id F K) y, funext fun u => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[phi_apply, ← GlobalTheory.LFun.finAdEquiv_apply u.2, hy]`. Use `show (if h : u.1.under (𝓞 F) = v then z ⟨u.1, h⟩ else 0) = z u`. Rewrite using `[dif_pos u.2]`.
+-/
 theorem phi_surjective : Function.Surjective (phi (K := K) v) := by
   intro z
   obtain ⟨y, hy⟩ := (GlobalTheory.LFun.finAdEquiv F K).surjective
@@ -77,6 +105,9 @@ theorem phi_surjective : Function.Surjective (phi (K := K) v) := by
 end CompanionTheory.Rg.BcB.G3.TensorComplP
 
 open CompanionTheory.Rg.BcB.G3.TensorComplP in
+/- English proof (translation)
+Introduce `F K _ _ _ _ _ v`. Use `⟨RingEquiv.ofBijective (phi v) ⟨phi_injective v, phi_surjective v⟩, fun a u => ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.LFun.toCompl u.2 (1 ⊗ₜ[F] a) = _`. Rewrite using `[GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]`.
+-/
 theorem CompanionTheory.Rg.BcB.G3.tensorCompl_pf : TensorCompl := by
   intro F K _ _ _ _ _ v
   refine ⟨RingEquiv.ofBijective (phi v) ⟨phi_injective v, phi_surjective v⟩, fun a u => ?_⟩

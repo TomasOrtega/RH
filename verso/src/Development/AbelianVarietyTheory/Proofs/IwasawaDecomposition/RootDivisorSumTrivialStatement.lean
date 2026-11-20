@@ -8,5 +8,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4O GlobalTheory.ChernReg
 open scoped TensorProduct ContDiff
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ShFam.toPic_sum_divOf_rootExp | exact GlobalTheory.ShFam.toPic_sum_divOf_rootExp | (intros; apply GlobalTheory.ShFam.toPic_sum_divOf_rootExp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.root_divisor_sum_trivial : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (τ : D.what₂.Tau), toPic (∑ i : Fin N, divOf (Φ.C k) (rootExp S (τ, i))) = 0 := by
   first | exact @GlobalTheory.ShFam.toPic_sum_divOf_rootExp | exact GlobalTheory.ShFam.toPic_sum_divOf_rootExp | (intros; apply GlobalTheory.ShFam.toPic_sum_divOf_rootExp <;> assumption)

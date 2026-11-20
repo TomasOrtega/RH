@@ -19,6 +19,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LevelIndexMeasure
 
+/- English proof (translation)
+Introduce `D V n ι J J₀ K K₀ μ μ₀ hι hJ hJi hK hK₀ hJK hJK₀ hμ hμ₀`. Take `⟨hLC, hSC, hT2, hB, hTG, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+
+Use `haveI := hB`. Use `haveI := hTG`. Use `haveI : μ.IsHaarMeasure := hμ.1`. Use `haveI : μ₀.IsHaarMeasure := hμ₀.1`. Establish `hfin : ∀ g : GA D V, ∃ x, Lev.finE V (ι x) = Lev.finE V g`.
+
+Introduce `g`. Take `⟨k, k1, k2⟩` from `GlobalTheory.UnitarySplit.ga_glue V 1 _ (one_mem _) (GlobalTheory.UnitarySplit.finHom_mem V g)`. Establish `hk : k ∈ ι.range`. Rewrite using `[hι]`. Conclude with `MonoidHom.mem_ker.2 k1`.
+
+Take `⟨x, rfl⟩` from `hk`. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom V (ι x)) = Formalism.UG.bc (Lev.swapAE D) (finHom V g)`. Rewrite using `[k2]`. Establish `hHH : K.comap (Lev.finE V) ≤ K₀.comap (Lev.finE V)`.
+
+Introduce `g hg`. Take `⟨x, hx⟩` from `hfin g`. Express the relevant statement in the definitionally equal form `Lev.finE V g ∈ K at hg`. Use `show Lev.finE V g ∈ K₀`. Rewrite `hg`, the goal using `[← hx]`.
+
+Conclude with `(hJK₀ x).2 (hJ ((hJK x).1 hg))`. Establish `e1 : J = K.comap ((Lev.finE V).comp ι)`. Use extensionality with `x`. Conclude with `(hJK x).symm`. Establish `e2 : (J₀.map ι).map (Lev.finE V) = (K₀.comap (Lev.finE V)).map (Lev.finE V)`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨ι x, (hJK₀ x).2 hx, rfl⟩`. Introduce and unpack `⟨g, hg, rfl⟩`.
+
+Take `⟨x, hx⟩` from `hfin g`. Use `⟨ι x, ⟨x, (hJK₀ x).1 ?_, rfl⟩, hx⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `hg`. Establish `hidx : (K.comap (Lev.finE V)).relIndex (K₀.comap (Lev.finE V)) = J.relIndex J₀`.
+
+Rewrite using `[e1, Subgroup.relIndex_comap, Subgroup.relIndex_comap, ← Subgroup.map_map, e2]`. Use `haveI : ((K.comap (Lev.finE V)).subgroupOf (K₀.comap (Lev.finE V))).FiniteIndex := ⟨hidx.trans_ne hJi⟩`. Establish `hm` using `Formalism.DoubleCosetMeasures.P.GLRed.relIndex_mul_measure _ _ hHH hK.1.measurableSet μ`. Rewrite `hm` using `[hidx, GlobalTheory.Mass.Levels.measure_comap_finE hμ, mul_one]`. Establish `h0 : μ₀ (K₀.comap (Lev.finE V)) = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hμ₀`.
+
+Establish `heq` using `Measure.isMulLeftInvariant_eq_smul μ μ₀`. Establish `hc : ((Measure.haarScalarFactor μ μ₀ : NNReal) : ENNReal) = (J.relIndex J₀ : ENNReal)`. Use `congrArg (fun m : Measure (GA D V) => m ((K₀.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))) heq` as an intermediate fact. Simplify using `only [Measure.smul_apply, h0, ← hm] at this`. Rewrite using `[this, ENNReal.smul_def, smul_eq_mul, mul_one]`.
+
+Use extensionality with `s hs`. Rewrite using `[heq, Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, smul_eq_mul, hc]`.
+-/
 theorem measure_eq_relIndex_smul : ∀ {D : D7} (V : HSp D) (n : ℕ) (ι : Formalism.MainNotions.StandardLatticesGL3.GA D n →* GA D V) (J J₀ : Subgroup (Formalism.MainNotions.StandardLatticesGL3.GA D n))
   (K K₀ : Subgroup (GL (Fin V.rank) (Lev.EAf D))) (μ μ₀ : Measure (GA D V)), ι.range = GfC V → J ≤ J₀ → J.relIndex J₀ ≠ 0 →
   IsOpenCompactLevel V K → IsOpenCompactLevel V K₀ → (∀ x, Lev.finE V (ι x) ∈ K ↔ x ∈ J) → (∀ x, Lev.finE V (ι x) ∈ K₀ ↔ x ∈ J₀) →

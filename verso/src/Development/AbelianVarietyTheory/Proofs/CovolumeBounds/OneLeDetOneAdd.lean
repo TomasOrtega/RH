@@ -4,6 +4,13 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.OneLeDetOneAdd
 
+/- English proof (translation)
+Establish `hA : (1 + D).IsHermitian` using `Matrix.isHermitian_one.add hD.1`. Establish `hμ : ∀ i, 1 ≤ hA.eigenvalues i`. Introduce `i`. Establish `hv1 : RCLike.re (star ⇑(hA.eigenvectorBasis i) ⬝ᵥ ⇑(hA.eigenvectorBasis i)) = 1`. Rewrite using `[dotProduct_comm]`.
+
+Simplify using `only [← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, hA.eigenvectorBasis.orthonormal.1 i, algebraMap.coe_one, one_pow, RCLike.one_re]`. Establish `h` using `hA.eigenvalues_eq i`. Rewrite `h` using `[Matrix.add_mulVec, Matrix.one_mulVec, dotProduct_add, map_add, hv1]`. Establish `h0` using `hD.re_dotProduct_nonneg ⇑(hA.eigenvectorBasis i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hprod : (1 : ℝ) ≤ ∏ i, hA.eigenvalues i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hA.det_eq_prod_eigenvalues, ← RCLike.ofReal_prod]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_det_one_add {𝕜 : Type*} {n : Type*} [RCLike 𝕜] [Fintype n] [DecidableEq n]
     {D : Matrix n n 𝕜} (hD : D.PosSemidef) : (1 : 𝕜) ≤ (1 + D).det := by
   have hA : (1 + D).IsHermitian := Matrix.isHermitian_one.add hD.1

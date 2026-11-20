@@ -17,6 +17,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace PositivityTheory.Xgn.QuotientUniformizationChartAt
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨q, rfl⟩`. Establish `hab : 𝔐.f (centre z) ∈ abLocus Y.t.G` using `(abLocus_pullback abLocusOne Y.t.semi 𝔐.m.cart.1 _).2 hz`. Establish `hq : z q = centre z` using `congrArg z (Subsingleton.elim (α := PrimeSpectrum ℂ) q _)`. Establish `e : (x ≫ pullback.fst _ _) q = (z ≫ 𝔐.f) q` using `by rw [hx]`. Simplify using `only [Scheme.Hom.comp_apply] at e`.
+
+Establish `: x q ∈ pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F)) ⁻¹' abLocus Y.t.G`. Rewrite using `[Set.mem_preimage, e, hq]`. Conclude with `hab`. Rewrite `this` using `[Y.ab_gen]`. Then use the resulting hypothesis.
+-/
 theorem interior_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
     (z : Sp ℂ ⟶ 𝔐.X) (hz : 𝔐.Interior z) (x : Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F)))
     (hx : x ≫ pullback.fst _ _ = z ≫ 𝔐.f) : Set.range x ⊆ Set.range Y.jQ := by
@@ -31,18 +36,27 @@ theorem interior_range {E : Type} [Field E] [NumberField E] [IsCMField E] {H : H
     exact hab
   rwa [Y.ab_gen] at this
 
+/- English proof (translation)
+Rewrite using `[show dualMap (g.comp f) = (dualMap g).comp (dualMap f) from RingHom.ext fun a => by`. Apply the tactic sequence `ext <;> simp [dualMap]]`. Conclude with `Spec.map_comp (CommRingCat.ofHom (dualMap f)) (CommRingCat.ofHom (dualMap g))`.
+-/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap (g.comp f)) = spMap (dualMap g) ≫ spMap (dualMap f) := by
   rw [show dualMap (g.comp f) = (dualMap g).comp (dualMap f) from RingHom.ext fun a => by
     ext <;> simp [dualMap]]
   exact Spec.map_comp (CommRingCat.ofHom (dualMap f)) (CommRingCat.ofHom (dualMap g))
 
+/- English proof (translation)
+Rewrite `hu`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg h0.le]`. Use polynomial arithmetic with `[norm_nonneg u]`.
+-/
 theorem smul_mem_ball {n : ℕ} {ρ : ℝ} (h0 : 0 < ρ) (h1 : ρ ≤ 1) {u : Fin n → ℂ}
     (hu : u ∈ Metric.ball (0 : Fin n → ℂ) 1) : (ρ : ℂ) • u ∈ Metric.ball (0 : Fin n → ℂ) 1 := by
   rw [mem_ball_zero_iff] at hu ⊢
   rw [norm_smul, Complex.norm_real, Real.norm_of_nonneg h0.le]
   nlinarith [norm_nonneg u]
 
+/- English proof (translation)
+Use `⟨smul_mem_ball h0 h1 hu.1, fun i hi => ?_⟩` and prove the remaining obligations. Establish `: (ρ : ℂ) ≠ 0` using `by exact_mod_cast h0.ne'`. Simplify `hu.2 i hi` using `[this]`.
+-/
 theorem smul_mem_punct {n a : ℕ} {ρ : ℝ} (h0 : 0 < ρ) (h1 : ρ ≤ 1) {u : Fin n → ℂ}
     (hu : u ∈ Flat.punct n a 1) : (ρ : ℂ) • u ∈ Flat.punct n a 1 := by
   refine ⟨smul_mem_ball h0 h1 hu.1, fun i hi => ?_⟩
@@ -52,6 +66,31 @@ theorem smul_mem_punct {n a : ℕ} {ρ : ℝ} (h0 : 0 < ρ) (h1 : ρ ≤ 1) {u :
 end PositivityTheory.Xgn.QuotientUniformizationChartAt
 
 open PositivityTheory.Xgn.QuotientUniformizationChartAt in
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 n a w N s z₀ ha hw hmem hI hz₀ hval`. Establish `htie` using `𝔐.tie`. Establish `hall` using `𝔐.all`. Establish `hex : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, ∃ z : Sp ℂ ⟶ 𝔐.X, genPt 𝔐.ξ ⤳ centre z ∧ CoordsAt 𝔐.ξ y z (w u)` using `fun u hu => (GlobalTheory.T.complex_points_iff_centres 𝔐.X Ω 𝔐.ξ K J y htie (w u)).1 (hmem u hu)`. Use `haveI : Nonempty (Sp ℂ ⟶ 𝔐.X) := ⟨z₀⟩`.
+
+Use `choose! p hp₀ hp using hex`. Establish `huniq : ∀ (z z' : Sp ℂ ⟶ 𝔐.X) (w' : (Σ k, J k) → ℂ), CoordsAt 𝔐.ξ y z w' → CoordsAt 𝔐.ξ y z' w' → z = z'` using `fun z z' w' h h' => by`. Take `⟨e1, -, e3⟩` from `GlobalTheory.T.local_ring_points_existsUnique 𝔐.X Ω 𝔐.ξ K J y htie ℂ`. Conclude with `(e1 w' h.1 (e3 z w' (hall _) h).1).unique ⟨hall _, h⟩ ⟨hall _, h'⟩`. Establish `hb0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `by simp`.
+
+Establish `hp0 : p 0 = z₀` using `huniq _ _ (w 0) (hp 0 hb0) hz₀`. Establish `hhol : IsHolTo (Metric.ball 0 1) p` using `GlobalTheory.T.holomorphic_coords_of_generic_point 𝔐.X Ω 𝔐.ξ K J y htie hall n _ w p Metric.isOpen_ball hw hp`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := ⟨⟩`. Take `⟨τ, hτ⟩` from `GlobalTheory.T.holomorphic_disc_over_number_field_ring c.F 𝔐.X (𝔐.f ≫ Y.s) n p hhol`.
+
+Establish `hint : ∀ u ∈ Flat.punct n a 1, 𝔐.Interior (p u)` using `fun u hu => hI u hu _ (hp u hu.1)`. Establish `hlat : ∀ k : Fin N, s k ∈ 𝔐.M.lat ⟨centre z₀, hall _⟩` using `fun k => by`. Take `⟨_, _, v', hext, _⟩` from `hval k`. Conclude with `Submodule.subset_span ⟨v', hext⟩`. Establish `hsm : Smooth 𝔐.t.G.hom` using `𝔐.t.semi.smooth`.
+
+Take `⟨W, hW, v, hq, htan, hv⟩` from `GlobalTheory.T.lattice_tangent_vectors_affine_open 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M ⟨centre z₀, hall _⟩ N s 𝔐.tie.gen hlat`. Establish `hW0 : ⊤ ≤ p 0 ⁻¹ᵁ W` using `fun x _ => by`. Establish `: x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Substitute `this` using the available equality. Rewrite using `[hp0]`.
+
+Conclude with `hq`. Take `⟨ρ₁, ψ, hρ₁, hρ₁', hψ, hψp⟩` from `GlobalTheory.T.holomorphic_disc_in_affine_open 𝔐.X W hW n p hhol hW0`. Establish `hp₁ : IsHolTo (Metric.ball 0 1) (fun u => spMap (ψ u))` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_spMap Metric.isOpen_ball hψ.2`. Take `⟨tW, ⟨mW⟩⟩` from `exists_sab hW.fromSpec 𝔐.t`. Take `⟨mY, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp 𝔐.m mW`.
+
+Take `⟨ρ₂, C, h, hρ₂, hρ₂', ⟨mC⟩, hC⟩` from `GlobalTheory.T.boundary_disc_map_embedding_fixed E H D l Xo c Y _ (hW.fromSpec ≫ 𝔐.f) tW mY τ n a (fun u => spMap (ψ u)) ha hp₁ (fun u hu => by`. Use `hτ _ (smul_mem_ball hρ₁ hρ₁' hu)` as an intermediate fact. Rewrite `this` using `[← hψp u hu]`. Simplify using `using this)`. Use the proof step `(fun u hu x hx => interior_range 𝔐 _ (hint _ (smul_mem_punct hρ₁ hρ₁' hu)) x (by`.
+
+Rewrite using `[hx, ← hψp u hu.1, Category.assoc]))`. Take `⟨θ, hθ⟩ : ∃ θ : Γ(𝔐.X, W) →+* C.R, spMap θ = h` from `⟨(Spec.preimage h).hom, Spec.map_preimage _⟩`. Substitute `hθ` using the available equality. Take `⟨mX, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mW mC`. Take `⟨x, hx⟩` from `GlobalTheory.T.abelian_map_tangent_coordinates E H 𝔐.X 𝔐.t Γ(𝔐.X, W) hW.fromSpec N v C.R C.t θ mX C.g C.M htan`.
+
+Establish `hpt : ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (C.ψ z) ≫ spMap θ ≫ hW.fromSpec = p (((ρ₁ * ρ₂ : ℝ) : ℂ) • z)` using `fun z hz => by`. Rewrite using `[← Category.assoc, hC z hz, hψp _ (smul_mem_ball hρ₂ hρ₂' hz), smul_smul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h12 : 0 < ρ₁ * ρ₂` using `mul_pos hρ₁ hρ₂`.
+
+Establish `h12' : ρ₁ * ρ₂ ≤ 1` using `mul_le_one₀ hρ₁' hρ₂.le hρ₂'`. Use `⟨ρ₁ * ρ₂, τ, C, spMap θ ≫ hW.fromSpec, mX, x, h12, h12', fun u hu => ⟨?_, ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hpt u hu]`. Conclude with `hp _ (smul_mem_ball h12 h12' hu)`. Rewrite using `[← Category.assoc, hpt u hu]`.
+
+Conclude with `hτ _ (smul_mem_ball h12 h12' hu)`. Establish `e' : spMap ((C.ψ u).comp θ) ≫ hW.fromSpec = spMap (C.ψ u) ≫ spMap θ ≫ hW.fromSpec`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `Spec.map_comp _ _`.
+
+Take `⟨w', hw1, hw2⟩` from `hv ((C.ψ u).comp θ) _ e' (𝔐.all _) i`. Use `⟨w', hw1, ?_⟩` and prove the remaining obligations. Rewrite using `[hw2, dualMap_comp, hx, Category.assoc]`.
+-/
 theorem PositivityTheory.Xgn.quotient_uniformization_chart_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (n a : ℕ) (w : (Fin n → ℂ) → (Σ k, J k) → ℂ) (N : ℕ) (s : Fin N → 𝔐.Li) (z₀ : Sp ℂ ⟶ 𝔐.X), a ≤ n → DifferentiableOn ℂ w (ball 0 1) → (∀ u ∈ ball (0 : Fin n → ℂ) 1, w u ∈ mcPts (mCoordIdeal y)) → (∀ u ∈ Flat.punct n a 1, ∀ z : Sp ℂ ⟶ 𝔐.X, CoordsAt 𝔐.ξ y z (w u) → 𝔐.Interior z) → CoordsAt 𝔐.ξ y z₀ (w 0) → (∀ i, ∃ v : epsAt z₀ ⟶ 𝔐.t.G, 𝔐.M.ValAt z₀ (s i) v) → ∃ (ρ : ℝ) (τ : c.F →+* ℂ) (C : Flat.BdryChart Xo (τ.comp (IntermediateField.inclusion c.le).toRingHom) n a) (jj : Sp C.R ⟶ 𝔐.X) (m : SABMap C.t 𝔐.t jj) (sc : Fin N → Fin C.g → C.R), 0 < ρ ∧ ρ ≤ 1 ∧ ∀ u ∈ ball (0 : Fin n → ℂ) 1, CoordsAt 𝔐.ξ y (spMap (C.ψ u) ≫ jj) (w ((ρ : ℂ) • u)) ∧ spMap (C.ψ u) ≫ jj ≫ 𝔐.f ≫ Y.s = spMap (τ.comp (algebraMap (𝓞 c.F) c.F)) ∧ ∀ i, ∃ v : epsAt (spMap (C.ψ u) ≫ jj) ⟶ 𝔐.t.G, 𝔐.M.ValAt (spMap (C.ψ u) ≫ jj) (s i) v ∧ v.left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap (C.ψ u)) ≫ (C.M.pt (sc i)).left ≫ m.φ := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 n a w N s z₀ ha hw hmem hI hz₀ hval
   classical

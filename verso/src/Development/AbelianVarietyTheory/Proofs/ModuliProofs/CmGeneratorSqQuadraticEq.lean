@@ -9,6 +9,13 @@ namespace GlobalTheory.CMGeneratorSquareModuli
 
 open NumberField
 
+/- English proof (translation)
+Establish `hm` using `H.d_mod`. Take `⟨k, hk⟩ : ∃ k : ℤ, (H.d : ℤ) + 1 = 4 * k` from `⟨((H.d : ℤ) + 1) / 4, by omega⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hkc : (H.d : NumberField.RingOfIntegers E) + 1 = 4 * (k : NumberField.RingOfIntegers E)`. Use `congrArg (fun z : ℤ => (z : NumberField.RingOfIntegers E)) hk` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Conclude with `this`. Establish `h4 : (4 : NumberField.RingOfIntegers E) * (H.w0 * H.w0 - (H.w0 - (k : NumberField.RingOfIntegers E))) = 0`. Take the linear combination `(2 * H.w0 - 1 + H.rt) * H.two_weight_eq_one_add_root + H.rt_sq - hkc`. Break down `mul_eq_zero.mp h4 with h | h` into its components or cases.
+
+Conclude with `absurd h (by norm_num)`. Conclude with `sub_eq_zero.mp h`.
+-/
 theorem cm_generator_sq_quadratic_eq {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     ∃ k : ℤ, H.w0 * H.w0 = H.w0 - (k : NumberField.RingOfIntegers E) := by
@@ -25,6 +32,15 @@ theorem cm_generator_sq_quadratic_eq {E : Type} [Field E] [NumberField E] [Numbe
   · exact absurd h (by norm_num)
   · exact sub_eq_zero.mp h
 
+/- English proof (translation)
+Introduce `E _ _ _ H a ha`. Take `⟨k, hk⟩` from `cm_generator_sq_quadratic_eq H`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`.
+
+Conclude with `⟨0, 1, by simp [hx]⟩`. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨u1, v1, rfl⟩` from `hx`. Take `⟨u2, v2, rfl⟩` from `hy`.
+
+Conclude with `⟨u1 + u2, v1 + v2, by push_cast; ring⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨u1, v1, rfl⟩` from `hx`. Take `⟨u2, v2, rfl⟩` from `hy`. Use `⟨u1 * u2 - v1 * v2 * k, u1 * v2 + u2 * v1 + v1 * v2, ?_⟩` and prove the remaining obligations.
+
+Use `push_cast`. Take the linear combination `((v1 : NumberField.RingOfIntegers E) * v2) * hk`.
+-/
 theorem main : ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : NumberField.IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) {a : NumberField.RingOfIntegers E},
     a ∈ Algebra.adjoin ℤ ({ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host.w0 H} : Set (NumberField.RingOfIntegers E)) →

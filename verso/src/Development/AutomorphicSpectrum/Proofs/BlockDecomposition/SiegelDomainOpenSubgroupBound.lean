@@ -16,6 +16,9 @@ namespace GlobalTheory.CompanionTheory.RapidDecay.NearCusp
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
   {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Use `hC.eventually_forall_of_forall_eventually (P := fun x h => h⁻¹ * x * h ∈ V) fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : GFin σ J × GFin σ J => z.2⁻¹ * z.1 * z.2` using `(continuous_snd.inv.mul continuous_fst).mul continuous_snd`. Establish `ht` using `hc.tendsto ((1 : GFin σ J), y)`. Simplify using `only [mul_one, inv_mul_cancel] at ht`. Conclude with `ht hV`.
+-/
 theorem conj_mem_nhds {C : Set (GFin σ J)} (hC : IsCompact C) {V : Set (GFin σ J)} (hV : V ∈ 𝓝 (1 : GFin σ J)) :
     {x : GFin σ J | ∀ h ∈ C, h⁻¹ * x * h ∈ V} ∈ 𝓝 (1 : GFin σ J) := by
   refine hC.eventually_forall_of_forall_eventually (P := fun x h => h⁻¹ * x * h ∈ V) fun y _ => ?_
@@ -25,6 +28,13 @@ theorem conj_mem_nhds {C : Set (GFin σ J)} (hC : IsCompact C) {V : Set (GFin σ
   simp only [mul_one, inv_mul_cancel] at ht
   exact ht hV
 
+/- English proof (translation)
+Set `T : GAd σ J → ∀ w : InfinitePlace F, EmbOver E w → Fin n → Fin n → ℝ` to `fun k w τ i j => ∑ a, ∑ b, ‖archMat σ J τ (projArch σ J w k⁻¹) i a‖ * ‖archMat σ J τ (projArch σ J w k) b j‖`. Set `f : GAd σ J → ℝ` to `fun k => ∑ w, ∑ τ : EmbOver E w, ∑ i, ∑ j, T k w τ i j`. Establish `hm : ∀ (w : InfinitePlace F) (τ : EmbOver E w), Continuous fun k : GAd σ J => archMat σ J τ (projArch σ J w k)` using `fun w τ => (GlobalTheory.Orb.continuous_archMat σ J τ).comp (continuous_projArch σ J w)`. Establish `hf : Continuous f`. Use `continuous_finset_sum _ fun w _ => continuous_finset_sum _ fun τ _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations.
+
+Conclude with `(((hm w τ).comp continuous_inv).matrix_elem i a).norm.mul (((hm w τ).matrix_elem b j).norm)`. Take `⟨C, hC⟩` from `hCm.exists_bound_of_continuousOn hf.continuousOn`. Establish `hT : ∀ k w τ i j, 0 ≤ T k w τ i j` using `fun k w τ i j => by positivity`. Use `⟨max C 0, le_max_right _ _, fun k hk w τ i j => ?_⟩` and prove the remaining obligations. Establish `h1 : T k w τ i j ≤ f k`.
+
+Use `le_trans ?_ (Finset.single_le_sum (f := fun w => ∑ τ : EmbOver E w, ∑ i, ∑ j, T k w τ i j) (fun w _ => by positivity) (Finset.mem_univ w))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, T k w τ i j) (fun τ _ => by positivity) (Finset.mem_univ τ))` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun i => ∑ j, T k w τ i j) (fun i _ => by positivity) (Finset.mem_univ i))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => T k w τ i j) (fun j _ => hT k w τ i j) (Finset.mem_univ j)`. Conclude with `h1.trans ((Real.le_norm_self _).trans ((hC k hk).trans (le_max_left _ _)))`.
+-/
 theorem exists_bound_archMat {Cm : Set (GAd σ J)} (hCm : IsCompact Cm) : ∃ C₀ : ℝ, 0 ≤ C₀ ∧
     ∀ k ∈ Cm, ∀ (w : InfinitePlace F) (τ : EmbOver E w) (i j : Fin n),
       ∑ a, ∑ b, ‖archMat σ J τ (projArch σ J w k⁻¹) i a‖ * ‖archMat σ J τ (projArch σ J w k) b j‖ ≤ C₀ := by
@@ -56,6 +66,25 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.RapidDecay.NearCusp
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma hCM`. Establish `hC : GlobalTheory.UAut.IsIsoCols σ J (pre X s)` using `GlobalTheory.UAut.isIsoCols_of_isWittFrame hW hσ hJ s.2`. Set `Cf : Set (GFin σ J)` to `(fun z : GAd σ J × GAd σ J => projFin σ J z.1 * projFin σ J z.2) '' (Ω ×ˢ Cm)`. Establish `hCf : IsCompact Cf` using `(hΩ.prod hCm).image (((continuous_projFin σ J).comp continuous_fst).mul ((continuous_projFin σ J).comp continuous_snd))`. Set `Uf : Set (GFin σ J)` to `ofFin σ J ⁻¹' (U : Set (GAd σ J))`.
+
+Establish `hUf : Uf ∈ 𝓝 (1 : GFin σ J)` using `(hU.preimage (continuous_ofFin σ J)).mem_nhds (by simp only [Uf, Set.mem_preimage, map_one]; exact U.one_mem)`. Set `Wn : Set (GFin σ J)` to `{x | ∀ h ∈ Cf, h⁻¹ * x * h ∈ Uf}`. Establish `hWn : Wn ∈ 𝓝 (1 : GFin σ J)` using `conj_mem_nhds hCf hUf`. Take `⟨Q, hQ, hQm⟩` from `GlobalTheory.T.unipotent_radical_compact_fundamental_domain F E σ hCM n J hJ _ (pre X s) hC Wn hWn`. Set `Q' : Set (GAd σ J)` to `(fun z : GAd σ J × GAd σ J => z.1⁻¹ * z.2 * z.1) '' (Ω ×ˢ Q)`.
+
+Establish `hQ' : IsCompact Q'` using `(hΩ.prod hQ).image ((continuous_fst.inv.mul continuous_snd).mul continuous_fst)`. Take `⟨M₁, hM₁, hM₁b⟩` from `GlobalTheory.T.torus_conjugate_unipotent_bounded F E σ hCM n J hJ r X Y hW Q' c hQ' hc s`. Take `⟨C₀, hC₀, hC₀b⟩` from `exists_bound_archMat (σ := σ) (J := J) hCm`. Use `⟨C₀ * M₁, mul_nonneg hC₀ hM₁, ?_⟩` and prove the remaining obligations. Introduce `p hp t ht a ha k hk m hm`.
+
+Take `⟨γ, hγ, q, hqQ, hqU, hqW, rfl⟩` from `hQm m hm`. Establish `hfa : projFin σ J a = 1` using `mem_infPts.1 ha.1`. Use `⟨γ, hγ, ofInf σ J (projInf σ J ((p * a * k)⁻¹ * q * (p * a * k))), ofFin σ J (projFin σ J ((p * a * k)⁻¹ * q * (p * a * k))), ⟨mem_infPts.2 (projFin_ofInf σ J _), ?_⟩, ?_, mem_finPts.2 (projInf_ofFin σ J _), ?_⟩` and prove the remaining obligations. Introduce `w τ i j`. Establish `hpar : p ∈ GlobalTheory.UAut.parFlag σ J (pre X s) fun _ => 0` using `GlobalTheory.T.minimal_parabolic_mem_partial_flag F E σ n J r X p (hΩP hp) s`.
+
+Establish `hq' : q ∈ GlobalTheory.UAut.unipFlag σ J (pre X s) fun _ => 0` using `by rw [GlobalTheory.UAut.unipFlag_const]; exact hqU`. Establish `hnU : p⁻¹ * q * p ∈ unipRad σ J (pre X s)`. Use `GlobalTheory.UAut.conj_mem_unipFlag hJ hσ hC (fun _ => 0) (inv_mem hpar) hq'` as an intermediate fact. Rewrite `this` using `[inv_inv, GlobalTheory.UAut.unipFlag_const]`. Then use the resulting hypothesis. Establish `hnQ : p⁻¹ * q * p ∈ Q'` using `⟨(p, q), ⟨hp, hqQ⟩, rfl⟩`.
+
+Establish `hN` using `hM₁b _ hnQ hnU t ht a ha w τ`. Establish `ev : (p * a * k)⁻¹ * q * (p * a * k) = k⁻¹ * (a⁻¹ * (p⁻¹ * q * p) * a) * k` using `by group`. Establish `hB : archMat σ J τ (projArch σ J w k⁻¹) * archMat σ J τ (projArch σ J w k) = 1`. Rewrite using `[← map_mul, ← map_mul, inv_mul_cancel, map_one, map_one]`. Establish `key : archMat σ J τ (projArch σ J w (ofInf σ J (projInf σ J ((p * a * k)⁻¹ * q * (p * a * k))))) - 1 = archMat σ J τ (projArch σ J w k⁻¹) * (archMat σ J τ (projArch σ J w (a⁻¹ * (p⁻¹ * q * p) * a)) - 1) * archMat σ J τ (projArch σ J w k)`.
+
+Rewrite using `[projArch_ofInf, projInfArch_projInf, ev, map_mul (projArch σ J w) _ k, map_mul (projArch σ J w) k⁻¹, map_mul (archMat σ J τ), map_mul (archMat σ J τ), Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hB]`. Rewrite using `[key]`. Use `(GlobalTheory.CuspGeo.norm_mul_mul_apply_le _ _ _ _ hN i j).trans ?_` and prove the remaining obligations. Rewrite using `[mul_div_assoc C₀]`. Conclude with `mul_le_mul_of_nonneg_right (hC₀b k hk w τ i j) (div_nonneg hM₁ (ratio_pos ht s).le)`.
+
+Establish `hh : projFin σ J p * projFin σ J k ∈ Cf` using `⟨(p, k), ⟨hp, hk⟩, rfl⟩`. Establish `e : projFin σ J ((p * a * k)⁻¹ * q * (p * a * k)) = (projFin σ J p * projFin σ J k)⁻¹ * projFin σ J q * (projFin σ J p * projFin σ J k)`. Simplify using `only [map_mul, map_inv, hfa, mul_one]`. Use `hqW _ hh` as an intermediate fact. Rewrite `this` using `[← e]`.
+
+Conclude with `this`. Rewrite using `[mul_assoc (γ * (p * a * k)), ofInf_projInf_mul_ofFin_projFin] group`.
+-/
 theorem near_cusp_one (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hCM : IsCMExt F E σ) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X Y : Matrix (Fin n) (Fin r) E) (hW : IsWittFrame σ J X Y) (Ω Cm : Set (GAd σ J)) (c : ℝ)
@@ -125,6 +154,11 @@ namespace GlobalTheory.CompanionTheory.RapidDecay
 
 open NearCusp in
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r X Y hW Ω Cm c U hΩ hΩP hCm hc hU`. Use `choose M hM0 hM using near_cusp_one F E σ hCM n J hJ r X Y hW Ω Cm c U hΩ hΩP hCm hc hU`. Use `⟨∑ s, M s, Finset.sum_nonneg fun s _ => hM0 s, ?_⟩` and prove the remaining obligations. Introduce `p hp t ht a ha k hk s m hm`. Take `⟨γ, hγ, u, κ, ⟨hu1, hu2⟩, h2, h3, h4⟩` from `hM s p hp t ht a ha k hk m hm`.
+
+Use `⟨γ, hγ, u, κ, ⟨hu1, fun w τ i j => (hu2 w τ i j).trans ?_⟩, h2, h3, h4⟩` and prove the remaining obligations. Conclude with `div_le_div_of_nonneg_right (Finset.single_le_sum (fun s _ => hM0 s) (Finset.mem_univ s)) (ratio_pos ht s).le`.
+-/
 theorem near_cusp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ (Ω Cm : Set (GAd σ J)) (c : ℝ) (U : Subgroup (GAd σ J)), IsCompact Ω → Ω ⊆ minParOne σ J X → IsCompact Cm → 0 < c → IsOpen (U : Set (GAd σ J)) → ∃ M : ℝ, 0 ≤ M ∧ ∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → ∀ k ∈ Cm, ∀ s : Fin r, ∀ m ∈ unipRad σ J (pre X s), ∃ γ ∈ ratPts σ J, ∃ u κ : GAd σ J, CloseInf σ J u (M / ratio t s) ∧ κ ∈ U ∧ κ ∈ finPts σ J ∧ m * (p * a * k) = γ * (p * a * k) * u * κ := by
   intro F E _ _ _ _ _ σ hCM n J hJ r X Y hW Ω Cm c U hΩ hΩP hCm hc hU
   choose M hM0 hM using near_cusp_one F E σ hCM n J hJ r X Y hW Ω Cm c U hΩ hΩP hCm hc hU

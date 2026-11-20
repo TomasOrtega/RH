@@ -3,6 +3,31 @@ open scoped TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set f := Algebra.TensorProduct.map (IsScalarTower.toAlgHom k R K) (IsScalarTower.toAlgHom k B κ) with hfdef`. Use `set g := algebraMap (K ⊗[k] κ) L`. Establish `key : ∀ w : K ⊗[k] κ, ∃ (x : R ⊗[k] B) (s : nonZeroDivisors R) (t : nonZeroDivisors B), w * (algebraMap R K (s : R) ⊗ₜ[k] algebraMap B κ (t : B)) = f x`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+
+Consider the case `zero => exact ⟨0, 1, 1, by simp⟩`. Consider the case `tmul a b`. Take `⟨⟨r, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors R) a`. Take `⟨⟨c, t⟩, ht⟩` from `IsLocalization.surj (nonZeroDivisors B) b`. Use `⟨r ⊗ₜ[k] c, s, t, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul] at *`. Rewrite using `[hs, ht, hfdef, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Consider the case `add w₁ w₂ h₁ h₂`. Take `⟨x₁, s₁, t₁, e₁⟩` from `h₁`.
+
+Take `⟨x₂, s₂, t₂, e₂⟩` from `h₂`. Use `⟨x₁ * ((s₂ : R) ⊗ₜ[k] (t₂ : B)) + x₂ * ((s₁ : R) ⊗ₜ[k] (t₁ : B)), s₁ * s₂, t₁ * t₂, ?_⟩` and prove the remaining obligations. Establish `hm : ∀ (s : R) (t : B), f (s ⊗ₜ[k] t) = algebraMap R K s ⊗ₜ[k] algebraMap B κ t`. Introduce `s t`. Rewrite using `[hfdef, Algebra.TensorProduct.map_tmul]`.
+
+Both sides reduce to the same expression. Rewrite using `[map_add, map_mul, map_mul, hm, hm, ← e₁, ← e₂]`. Simplify using `only [Submonoid.coe_mul, map_mul, ← Algebra.TensorProduct.tmul_mul_tmul]`. Expand and normalize the polynomial expressions, which then agree. Establish `unit_st : ∀ (s : nonZeroDivisors R) (t : nonZeroDivisors B), IsUnit (algebraMap R K (s : R) ⊗ₜ[k] algebraMap B κ (t : B))`.
+
+Introduce `s t`. Establish `hs : IsUnit (algebraMap R K (s : R))` using `IsLocalization.map_units K s`. Establish `ht : IsUnit (algebraMap B κ (t : B))` using `IsLocalization.map_units κ t`. Establish `: algebraMap R K (s : R) ⊗ₜ[k] algebraMap B κ (t : B) = Algebra.TensorProduct.includeLeft (R` using `k) (S := k) (B := κ) (algebraMap R K (s : R)) * Algebra.TensorProduct.includeRight (R := k) (A := K) (algebraMap B κ (t : B)) := by`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Rewrite using `[this]`. Conclude with `(hs.map _).mul (ht.map _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsFractionRing.injective (K ⊗[k] κ) L).comp ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Injective (TensorProduct.map (IsScalarTower.toAlgHom k R K).toLinearMap (IsScalarTower.toAlgHom k B κ).toLinearMap)`.
+
+Conclude with `TensorProduct.map_injective_of_flat_flat _ _ (IsFractionRing.injective R K) (IsFractionRing.injective B κ)`. Introduce `z`. Take `⟨⟨u, v⟩, huv⟩` from `IsLocalization.surj (nonZeroDivisors (K ⊗[k] κ)) z`. Take `⟨xu, su, tu, eu⟩` from `key u`. Take `⟨xv, sv, tv, ev⟩` from `key (v : K ⊗[k] κ)`.
+
+Use `⟨xu * ((sv : R) ⊗ₜ[k] (tv : B)), xv * ((su : R) ⊗ₜ[k] (tu : B)), ?_, ?_⟩` and prove the remaining obligations. Use `all_goals`. Establish `hm : ∀ (s : R) (t : B), f (s ⊗ₜ[k] t) = algebraMap R K s ⊗ₜ[k] algebraMap B κ t`. Introduce `s t`. Rewrite using `[hfdef, Algebra.TensorProduct.map_tmul]`.
+
+Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, map_mul, hm]`. Rewrite using `[← ev]`. Simplify using `only [map_mul]`. Use `mul_ne_zero (mul_ne_zero ?_ ?_) ?_` and prove the remaining obligations.
+
+Conclude with `(IsLocalization.map_units L v).ne_zero`. Conclude with `((unit_st sv tv).map g).ne_zero`. Conclude with `((unit_st su tu).map g).ne_zero`. Rewrite using `[← ev, ← eu]`. Simplify using `only [map_mul]`.
+
+Establish `huv' : z * g (v : K ⊗[k] κ) = g u` using `huv`. Take the linear combination `(g (algebraMap R K ↑sv ⊗ₜ[k] algebraMap B κ ↑tv) * g (algebraMap R K ↑su ⊗ₜ[k] algebraMap B κ ↑tu)) * huv'`.
+-/
 theorem tensor_fractionRing_of_tensor
     {k R B K κ L : Type} [Field k] [CommRing R] [CommRing B] [Field K] [Field κ]
     [Field L] [Algebra k R] [Algebra k B] [Algebra k K] [Algebra k κ] [Algebra R K] [Algebra B κ]

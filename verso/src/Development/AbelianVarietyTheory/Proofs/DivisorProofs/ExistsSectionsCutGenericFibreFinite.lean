@@ -13,6 +13,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.HSAmp.GenCut
 
+/- English proof (translation)
+Establish `hfin` using `NoetherianSpace.finite_irreducibleComponents (α := Y)`. Establish `hne : ∀ C : irreducibleComponents Y, ∃ y : Y, y ∈ C.1` using `fun C => C.2.1.nonempty`. Use `choose y hy using hne`. Establish `: Finite (irreducibleComponents Y)` using `hfin.to_subtype`. Use `⟨Set.range fun C => (y C : T), Set.finite_range _, fun U hU hS => ?_⟩` and prove the remaining obligations.
+
+Establish `hC : IsClosed ((Subtype.val : Y → T) ⁻¹' Uᶜ)` using `hU.isClosed_compl.preimage continuous_subtype_val`. Establish `h` using `(GlobalTheory.T.topologicalKrullDim_drop_and_finite_of_dim_zero Y).1 _ (d + 1) hC hY fun Z hZ _ hsub => hsub (hy ⟨Z, hZ⟩) (hS ⟨⟨Z, hZ⟩, rfl⟩)`. Set `f : ↥(Y \ U) → ↥((Subtype.val : Y → T) ⁻¹' Uᶜ)` to `fun x => ⟨⟨x.1, x.2.1⟩, x.2.2⟩`. Establish `hf : IsInducing f`. Use `(IsInducing.subtypeVal.comp IsInducing.subtypeVal).of_comp_iff.1 ?_` and prove the remaining obligations.
+
+Conclude with `IsInducing.subtypeVal`. Establish `h2` using `lt_of_le_of_lt hf.topologicalKrullDim_le h`. Rewrite `h2` using `[Nat.cast_add, Nat.cast_one]`. Conclude with `ENat.WithBot.lt_add_one_iff.1 h2`.
+-/
 theorem exists_finite_drop {T : Type} [TopologicalSpace T] [NoetherianSpace T] (Y : Set T) (d : ℕ)
     (hY : topologicalKrullDim Y ≤ (d + 1 : ℕ)) :
     ∃ S : Set T, S.Finite ∧ ∀ U : Set T, IsOpen U → S ⊆ U → topologicalKrullDim ↥(Y \ U) ≤ d := by
@@ -33,6 +40,19 @@ theorem exists_finite_drop {T : Type} [TopologicalSpace T] [NoetherianSpace T] (
   rw [Nat.cast_add, Nat.cast_one] at h2
   exact ENat.WithBot.lt_add_one_iff.1 h2
 
+/- English proof (translation)
+Introduce `k _ X _ p D hp P hA d`. Use `hp.isNoetherian` as an intermediate fact. Proceed by induction on `d with`. Consider the case `zero`. Introduce `Z _ hd`.
+
+Establish `hf : Finite ↥(Z ∩ fib X 0)` using `(GlobalTheory.T.topologicalKrullDim_drop_and_finite_of_dim_zero ↥(Z ∩ fib X 0)).2 inferInstance (by simpa using hd)`. Use `⟨Fin.elim0, Fin.elim0, fun j => j.elim0, ?_⟩` and prove the remaining obligations. Conclude with `(Set.toFinite (Z ∩ fib X 0)).subset (Set.inter_subset_inter_left _ Set.sdiff_subset)`. Consider the case `succ d ih`. Introduce `Z hZ hd`.
+
+Take `⟨S, hS, hdrop⟩` from `exists_finite_drop (Z ∩ fib X 0) d hd`. Take `⟨e₀, he₀, f, hf, hSf⟩` from `GlobalTheory.T.exists_ample_power_section_nonvanishing_on_finite k X p D hp P hA S hS`. Establish `hU : IsOpen (NV P e₀ 0 f)` using `(GlobalTheory.T.regularNonvanishingLocusSection_properties k X p P e₀ 0 f hf).1`. Establish `h` using `hdrop _ hU hSf`. Rewrite using `[show (Z ∩ fib X 0) \ NV P e₀ 0 f = (Z \ NV P e₀ 0 f) ∩ fib X 0 from by`.
+
+Use extensionality with `x`. Simplify using `only [Set.mem_sdiff, Set.mem_inter_iff]`. Use the proof step `tauto] at h`. Take `⟨e, g, heg, hfin⟩` from `ih _ (hZ.sdiff hU) h`. Use `⟨Fin.cons e₀ e, Fin.cons f g, fun j => ?_, hfin.subset ?_⟩` and prove the remaining obligations.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Conclude with `⟨he₀, hf⟩`. Conclude with `heg j`. Introduce and unpack `x ⟨⟨hxZ, hx⟩, hx0⟩`. Simplify using `only [Set.mem_iUnion, not_exists] at hx`.
+
+Use `⟨⟨⟨hxZ, hx 0⟩, ?_⟩, hx0⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, not_exists]`. Conclude with `fun j => hx j.succ`.
+-/
 theorem exists_sections_finite : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (d : ℕ) (Z : Set X), IsClosed Z → topologicalKrullDim ↥(Z ∩ fib X 0) ≤ d → ∃ (e : Fin d → ℕ) (g : Fin d → X.functionField), (∀ j, 0 < e j ∧ g j ∈ P.H (e j) 0) ∧ ((Z \ ⋃ j, NV P (e j) 0 (g j)) ∩ fib X 0).Finite := by
   intro k _ X _ p D hp P hA d
   have := hp.isNoetherian

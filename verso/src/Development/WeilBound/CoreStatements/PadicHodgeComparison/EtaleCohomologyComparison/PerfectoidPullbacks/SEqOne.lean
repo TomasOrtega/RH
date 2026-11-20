@@ -16,6 +16,13 @@ def pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (r : ℕ) :
   Ideal.span {z | ∃ l : List (ℕ × B), (∀ q ∈ l, q.2 ∈ J) ∧ r ≤ (l.map Prod.fst).sum ∧
     z = (l.map fun q => δ.dpow q.1 q.2).prod}
 
+/- English proof (translation)
+Establish `: pdP δ r ≤ (pdP δ' r).comap f`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Use `Ideal.subset_span ⟨l.map fun q => (q.1, f q.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+
+Take `⟨q', hq', rfl⟩` from `List.mem_map.1 hq`. Conclude with `hf.1 (Ideal.mem_map_of_mem f (hl q' hq'))`. Simplify `hr` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congr 1`.
+
+Use `List.map_congr_left fun q hq => ?_` and prove the remaining obligations. Conclude with `(hf.2 q.2 (hl q hq)).symm`. Conclude with `this hx`.
+-/
 theorem dividedPowerFiltration_map {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'} {δ : DividedPowers J}
     {δ' : DividedPowers J'} {f : B →+* B'} (hf : IsDPMorphism δ δ' f) (r : ℕ) {x : B} (hx : x ∈ pdP δ r) :
     f x ∈ pdP δ' r := by
@@ -37,6 +44,9 @@ section General
 
 variable {b : Base} (L : b.Fun)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem pdPow_eq (T : Thick L) (r : ℕ) : T.pdPow r = pdP T.δ r := rfl
 
 def thA : Thick L ⥤ CommAlgCat.{0} b.R where
@@ -47,6 +57,9 @@ def thA : Thick L ⥤ CommAlgCat.{0} b.R where
   map_id _ := rfl
   map_comp _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem modF_thA : CH.modF (thA L) = O L := rfl
 
 def thP : PDF b.R (Thick L) where
@@ -113,6 +126,9 @@ def nlFun (γ : DividedPowers I) (p : ℕ) (X : Scheme.{0}) (q : X ⟶ Spec (Com
   prod_f {_ _ y} _ := by simp
   prod_g _ _ := by simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem smFun_eq {K : Type} [CommRing K] (X : Scheme.{0}) (q : X ⟶ Spec (CommRingCat.of K)) :
     smFun X q = nlFun (dividedPowersBot K) 0 X q (Ideal.Quotient.mk ⊥) := rfl
 
@@ -120,6 +136,9 @@ variable {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (Comm
 
 instance : IsEmpty (nlFun γ p X q κ).ι := inferInstanceAs (IsEmpty Empty)
 
+/- English proof (translation)
+The claim follows from `Finset.prod_of_isEmpty _`.
+-/
 theorem prod_e {M : Type} [CommMonoid M] (f : (nlFun γ p X q κ).ι → M) : ∏ j, f j = 1 := Finset.prod_of_isEmpty _
 
 def pt (T : Thick (nlFun γ p X q κ)) : Spec (CommRingCat.of (T.B ⧸ T.J)) ⟶ X :=
@@ -153,6 +172,9 @@ def mkT (B : Type) [CommRing B] (i : R →+* B) (J : Ideal B) (δ : DividedPower
   hs := (prod_e _).trans (by simp)
   hv := (map_one _).trans (prod_e _).symm
 
+/- English proof (translation)
+Establish `h` using `T.hs`. Rewrite `h` using `[prod_e]`. Use `ext`. Simplify using `using h.symm`.
+-/
 theorem s_eq_one (T : Thick (nlFun γ p X q κ)) : T.s = 1 := by
   have h := T.hs
   rw [prod_e] at h
@@ -176,6 +198,9 @@ def mkH {T T' : Thick (nlFun γ p X q κ)} (φ : T.B →+* T'.B) (comm : ∀ r, 
     exact ((congrArg₂ (· * ·) (prod_e _) (map_one _)).trans (mul_one 1)).symm
   hv j := j.elim
 
+/- English proof (translation)
+The claim follows from `Thick.Hom.ext h (funext fun j => j.elim)`.
+-/
 theorem hom_ext {T T' : Thick (nlFun γ p X q κ)} {f g : T ⟶ T'} (h : f.φ = g.φ) : f = g :=
   Thick.Hom.ext h (funext fun j => j.elim)
 
@@ -253,6 +278,9 @@ variable {σ : R →+* R'}
 def NMor.bar (m : NMor γ q κ γ' q' κ' σ) : R ⧸ I →+* R' ⧸ I' :=
   Ideal.quotientMap I' σ fun _ hx => m.hI.1 (Ideal.mem_map_of_mem σ hx)
 
+/- English proof (translation)
+Use extensionality with `a`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (κ a)`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, m.hκ a r hr.symm, ← hr]`. Both sides reduce to the same expression.
+-/
 theorem NMor.bar_κ (m : NMor γ q κ γ' q' κ' σ) : m.bar.comp κ = κ'.comp m.g := by
   ext a
   obtain ⟨r, hr⟩ := Ideal.Quotient.mk_surjective (κ a)

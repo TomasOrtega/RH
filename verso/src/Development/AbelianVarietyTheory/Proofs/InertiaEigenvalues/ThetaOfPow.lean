@@ -3,6 +3,13 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.LabelDatum
 open Polynomial
 
 namespace GlobalTheory.GLq.LabelModel
+/- English proof (translation)
+Take `⟨c, rfl⟩` from `hm`. Establish `hm0 : 0 < m` using `Nat.pos_of_mul_pos_right hM`. Use `haveI : NeZero m := ⟨hm0.ne'⟩`. Use `haveI : NeZero (m * c) := ⟨hM.ne'⟩`. Establish `hη : IsPrimitiveRoot (ξ ^ c) m` using `hξ.pow hM (mul_comm _ _)`.
+
+Take `⟨a, -, hac, ha⟩` from `(hη.isPrimitiveRoot_iff).1 hζ`. Take `⟨U, hU⟩` from `ZMod.unitsMap_surjective (n := m) (m := m * c) (Dvd.intro _ rfl) (ZMod.unitOfCoprime a hac)`. Use `⟨ξ ^ (U : ZMod (m * c)).val, hξ.pow_of_coprime _ (ZMod.val_coe_unit_coprime U), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_div_cancel_left _ hm0, ← pow_mul, mul_comm, pow_mul, ← ha]`. Establish `h1 : (((U : ZMod (m * c)).val : ℕ) : ZMod m) = (a : ZMod m)`.
+
+Use `congrArg (fun u : (ZMod m)ˣ => (u : ZMod m)) hU` as an intermediate fact. Simplify `this` using `[ZMod.unitsMap_val]`. Establish `h2` using `(ZMod.natCast_eq_natCast_iff _ _ _).1 h1`. Rewrite using `[pow_eq_pow_mod _ hη.pow_eq_one, pow_eq_pow_mod a hη.pow_eq_one, h2]`.
+-/
 theorem lift {F : Type} [Field F] {m M : ℕ} (hM : 0 < M) (hm : m ∣ M) {ξ ζ : F} (hξ : IsPrimitiveRoot ξ M)
     (hζ : IsPrimitiveRoot ζ m) : ∃ ξ' : F, IsPrimitiveRoot ξ' M ∧ ξ' ^ (M / m) = ζ := by
   obtain ⟨c, rfl⟩ := hm
@@ -22,11 +29,20 @@ theorem lift {F : Type} [Field F] {m M : ℕ} (hM : 0 < M) (hm : m ∣ M) {ξ ζ
 
 variable (g : ℕ) [hg : Fact g.Prime]
 
+/- English proof (translation)
+The claim follows from `Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' hg.out.one_lt)`.
+-/
 theorem pos {d : ℕ} (hd : 0 < d) : 0 < g ^ d - 1 :=
   Nat.sub_pos_of_lt (Nat.one_lt_pow hd.ne' hg.out.one_lt)
 
+/- English proof (translation)
+The claim follows from `Nat.pow_sub_one_dvd_pow_sub_one g h`.
+-/
 theorem dv {d e : ℕ} (h : d ∣ e) : g ^ d - 1 ∣ g ^ e - 1 := Nat.pow_sub_one_dvd_pow_sub_one g h
 
+/- English proof (translation)
+Use `haveI : NeZero (((g ^ d - 1 : ℕ)) : Formalism.CyclotomicNorms.Fbar g) := ⟨by`. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ hg.out.pos), Nat.cast_pow, CharP.cast_eq_zero (Formalism.CyclotomicNorms.Fbar g) g, zero_pow hd.ne']`. Use the proof step `simp⟩`. Use `haveI : NeZero (g ^ d - 1) := ⟨(pos g hd).ne'⟩`. Conclude with `HasEnoughRootsOfUnity.exists_primitiveRoot _ _`.
+-/
 theorem exprim {d : ℕ} (hd : 0 < d) : ∃ ξ : Formalism.CyclotomicNorms.Fbar g, IsPrimitiveRoot ξ (g ^ d - 1) := by
   haveI : NeZero (((g ^ d - 1 : ℕ)) : Formalism.CyclotomicNorms.Fbar g) := ⟨by
     rw [Nat.cast_sub (Nat.one_le_pow _ _ hg.out.pos), Nat.cast_pow, CharP.cast_eq_zero (Formalism.CyclotomicNorms.Fbar g) g, zero_pow hd.ne']
@@ -34,6 +50,11 @@ theorem exprim {d : ℕ} (hd : 0 < d) : ∃ ξ : Formalism.CyclotomicNorms.Fbar 
   haveI : NeZero (g ^ d - 1) := ⟨(pos g hd).ne'⟩
   exact HasEnoughRootsOfUnity.exists_primitiveRoot _ _
 
+/- English proof (translation)
+Establish `step : ∀ n (x : {x : Formalism.CyclotomicNorms.Fbar g // IsPrimitiveRoot x (g ^ n.factorial - 1)}), ∃ y : {x : Formalism.CyclotomicNorms.Fbar g // IsPrimitiveRoot x (g ^ (n+1).factorial - 1)}, y.1 ^ ((g ^ (n+1).factorial - 1) / (g ^ n.factorial - 1)) = x.1`. Introduce `n x`. Take `⟨ξ, hξ⟩` from `exprim g (Nat.factorial_pos (n+1))`. Take `⟨y, hy, hy'⟩` from `lift (pos g (Nat.factorial_pos (n+1))) (dv g (Nat.factorial_dvd_factorial (Nat.le_succ n))) hξ x.2`. Conclude with `⟨⟨y, hy⟩, hy'⟩`.
+
+Use `choose f hf using step`. Take `⟨x0, hx0⟩` from `exprim g (Nat.factorial_pos 0)`. Set `s : ∀ n : ℕ, {x : Formalism.CyclotomicNorms.Fbar g // IsPrimitiveRoot x (g ^ n.factorial - 1)}` to `fun n => Nat.rec ⟨x0, hx0⟩ (fun n x => f n x) n`. Conclude with `⟨fun n => (s n).1, fun n => ⟨(s n).2, hf n (s n)⟩⟩`.
+-/
 theorem chain : ∃ z : ℕ → Formalism.CyclotomicNorms.Fbar g, ∀ n, IsPrimitiveRoot (z n) (g ^ n.factorial - 1) ∧
     z (n+1) ^ ((g ^ (n+1).factorial - 1) / (g ^ n.factorial - 1)) = z n := by
   have step : ∀ n (x : {x : Formalism.CyclotomicNorms.Fbar g // IsPrimitiveRoot x (g ^ n.factorial - 1)}),
@@ -49,12 +70,22 @@ theorem chain : ∃ z : ℕ → Formalism.CyclotomicNorms.Fbar g, ∀ n, IsPrimi
     fun n => Nat.rec ⟨x0, hx0⟩ (fun n x => f n x) n
   exact ⟨fun n => (s n).1, fun n => ⟨(s n).2, hf n (s n)⟩⟩
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `h1`. Take `⟨v, rfl⟩` from `h2`. Establish `ha : 0 < a` using `Nat.pos_of_mul_pos_right hb`. Rewrite using `[Nat.mul_div_cancel_left _ hb, Nat.mul_div_cancel_left _ ha, mul_assoc, Nat.mul_div_cancel_left _ ha, mul_comm]`.
+-/
 theorem divmul {a b c : ℕ} (h1 : a ∣ b) (h2 : b ∣ c) (hb : 0 < b) : c / b * (b / a) = c / a := by
   obtain ⟨u, rfl⟩ := h1
   obtain ⟨v, rfl⟩ := h2
   have ha : 0 < a := Nat.pos_of_mul_pos_right hb
   rw [Nat.mul_div_cancel_left _ hb, Nat.mul_div_cancel_left _ ha, mul_assoc, Nat.mul_div_cancel_left _ ha, mul_comm]
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `chain g`. Establish `hc : ∀ n k, z (n + k) ^ ((g ^ (n+k).factorial - 1) / (g ^ n.factorial - 1)) = z n`. Introduce `n k`. Proceed by induction on `k with`. Consider the case `zero => simp [Nat.div_self (pos g (Nat.factorial_pos n))]`.
+
+Consider the case `succ k ih`. Rewrite using `[← ih, ← (hz (n+k)).2, ← pow_mul, ← add_assoc, divmul (dv g (Nat.factorial_dvd_factorial (Nat.le_add_right n k))) (dv g (Nat.factorial_dvd_factorial (Nat.le_succ _))) (pos g (Nat.factorial_pos _))]`. Use `⟨fun d => z d ^ ((g ^ d.factorial - 1) / (g ^ d - 1)), fun d hd => ⟨?_, fun d' hdd hd' => ?_⟩⟩` and prove the remaining obligations. Conclude with `(hz d).1.pow (pos g (Nat.factorial_pos _)) (Nat.div_mul_cancel (dv g (Nat.dvd_factorial hd le_rfl))).symm`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.le_of_dvd hd' hdd) beta_reduce`.
+
+Rewrite using `[← hc d k, ← pow_mul, ← pow_mul, divmul (dv g hdd) (dv g (Nat.dvd_factorial hd' le_rfl)) (pos g hd'), divmul (dv g (Nat.dvd_factorial hd le_rfl)) (dv g (Nat.factorial_dvd_factorial (Nat.le_add_right d k))) (pos g (Nat.factorial_pos _))]`.
+-/
 theorem gensys : ∃ ζ : ℕ → Formalism.CyclotomicNorms.Fbar g, ∀ d, 0 < d → IsPrimitiveRoot (ζ d) (g ^ d - 1) ∧
     ∀ d', d ∣ d' → 0 < d' → ζ d' ^ ((g ^ d' - 1) / (g ^ d - 1)) = ζ d := by
   obtain ⟨z, hz⟩ := chain g
@@ -74,6 +105,13 @@ theorem gensys : ∃ ζ : ℕ → Formalism.CyclotomicNorms.Fbar g, ∀ d, 0 < d
       divmul (dv g hdd) (dv g (Nat.dvd_factorial hd' le_rfl)) (pos g hd'),
       divmul (dv g (Nat.dvd_factorial hd le_rfl)) (dv g (Nat.factorial_dvd_factorial (Nat.le_add_right d k))) (pos g (Nat.factorial_pos _))]
 
+/- English proof (translation)
+Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Set `K` to `IntermediateField.adjoin (ZMod g) {x}`. Use `haveI : FiniteDimensional (ZMod g) K := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite K := Module.finite_of_finite (ZMod g)`. Use `letI : Fintype K := Fintype.ofFinite K`.
+
+Establish `hcard : Fintype.card K = g ^ Module.finrank (ZMod g) K`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod g), ZMod.card]`. Set `y : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Use `FiniteField.pow_card_sub_one_eq_one y hy` as an intermediate fact.
+
+Rewrite `this` using `[hcard]`. Conclude with `⟨_, Module.finrank_pos, by simpa [y] using congrArg Subtype.val this⟩`.
+-/
 theorem level (x : Formalism.CyclotomicNorms.Fbar g) (hx : x ≠ 0) : ∃ d, 0 < d ∧ x ^ (g ^ d - 1) = 1 := by
   have hint : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
   let K := IntermediateField.adjoin (ZMod g) {x}
@@ -90,9 +128,19 @@ theorem level (x : Formalism.CyclotomicNorms.Fbar g) (hx : x ≠ 0) : ∃ d, 0 <
 
 noncomputable def E (d : ℕ) : ℂ := Complex.exp (2 * Real.pi * Complex.I / ((g ^ d - 1 : ℕ) : ℂ))
 
+/- English proof (translation)
+The claim follows from `Complex.isPrimitiveRoot_exp _ (pos g hd).ne'`.
+-/
 theorem E_prim {d : ℕ} (hd : 0 < d) : IsPrimitiveRoot (E g d) (g ^ d - 1) :=
   Complex.isPrimitiveRoot_exp _ (pos g hd).ne'
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `dv g h`. Establish `h1` using `pos g hd`. Establish `h2` using `pos g hd'`. Establish `hc0 : c ≠ 0` using `by rintro rfl; omega`. Unfold `E`.
+
+Rewrite using `[← Complex.exp_nat_mul, hc, Nat.mul_div_cancel_left _ h1]`. Use `congr 1`. Establish `: ((g ^ d - 1 : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 h1.ne'`. Establish `: (c : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hc0`. Rewrite using `[Nat.cast_mul]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem E_pow {d d' : ℕ} (h : d ∣ d') (hd : 0 < d) (hd' : 0 < d') : E g d' ^ ((g ^ d' - 1) / (g ^ d - 1)) = E g d := by
   obtain ⟨c, hc⟩ := dv g h
   have h1 := pos g hd
@@ -106,11 +154,31 @@ theorem E_pow {d d' : ℕ} (h : d ∣ d') (hd : 0 < d) (hd' : 0 < d') : E g d' ^
   rw [Nat.cast_mul]
   field_simp
 
+/- English proof (translation)
+Establish `hf : IsOfFinOrder z` using `isOfFinOrder_iff_pow_eq_one.2 ⟨m, hm, h.pow_eq_one⟩`. Rewrite using `[hf.pow_eq_pow_iff_modEq, ← h.eq_orderOf]`.
+-/
 theorem prim_iff {R : Type} [CommMonoid R] {z : R} {m : ℕ} (h : IsPrimitiveRoot z m) (hm : 0 < m) (a b : ℕ) :
     z ^ a = z ^ b ↔ a ≡ b [MOD m] := by
   have hf : IsOfFinOrder z := isOfFinOrder_iff_pow_eq_one.2 ⟨m, hm, h.pow_eq_one⟩
   rw [hf.pow_eq_pow_iff_modEq, ← h.eq_orderOf]
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `gensys g`. Set `R : Formalism.CyclotomicNorms.Fbar g → ℂ → Prop` to `fun x c => ∃ d, 0 < d ∧ ∃ j, x = ζ d ^ j ∧ c = E g d ^ j`. Establish `common : ∀ x c y c', R x c → R y c' → ∃ d, 0 < d ∧ ∃ j j', x = ζ d ^ j ∧ c = E g d ^ j ∧ y = ζ d ^ j' ∧ c' = E g d ^ j'`. Introduce and unpack `x c y c' ⟨d, hd, j, rfl, rfl⟩ ⟨e, he, k, rfl, rfl⟩`. Establish `hde` using `Nat.mul_pos hd he`.
+
+Use `⟨d * e, hde, (g ^ (d * e) - 1) / (g ^ d - 1) * j, (g ^ (d * e) - 1) / (g ^ e - 1) * k, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul (ζ _), (hζ d hd).2 _ (Dvd.intro _ rfl) hde]`. Rewrite using `[pow_mul (E _ _), E_pow g (Dvd.intro _ rfl) hd hde]`. Rewrite using `[pow_mul (ζ _), (hζ e he).2 _ (Dvd.intro_left _ rfl) hde]`. Rewrite using `[pow_mul (E _ _), E_pow g (Dvd.intro_left _ rfl) he hde]`.
+
+Establish `key : ∀ x c y c', R x c → R y c' → (x = y ↔ c = c')`. Introduce `x c y c' h h'`. Take `⟨d, hd, j, j', rfl, rfl, rfl, rfl⟩` from `common _ _ _ _ h h'`. Rewrite using `[prim_iff (hζ d hd).1 (pos g hd), prim_iff (E_prim g hd) (pos g hd)]`. Establish `mul : ∀ x c y c', R x c → R y c' → R (x * y) (c * c')`.
+
+Introduce `x c y c' h h'`. Take `⟨d, hd, j, j', rfl, rfl, rfl, rfl⟩` from `common _ _ _ _ h h'`. Conclude with `⟨d, hd, j + j', (pow_add _ _ _).symm, (pow_add _ _ _).symm⟩`. Establish `ex : ∀ x, x ≠ 0 → ∃ c, R x c`. Introduce `x hx`.
+
+Take `⟨d, hd, h⟩` from `level g x hx`. Use `haveI : NeZero (g ^ d - 1) := ⟨(pos g hd).ne'⟩`. Take `⟨j, -, hj⟩` from `(hζ d hd).1.eq_pow_of_pow_eq_one h`. Conclude with `⟨_, d, hd, j, hj.symm, rfl⟩`. Use `choose! t ht using ex`.
+
+Set `t' : Formalism.CyclotomicNorms.Fbar g → ℂ` to `fun x => if x = 0 then 0 else t x`. Establish `ht' : ∀ x, x ≠ 0 → R x (t' x)` using `fun x hx => by simpa [t', hx] using ht x hx`. Use `⟨⟨⟨⟨t', ?_⟩, ?_⟩, ?_, ζ, fun d hd => (hζ d hd).1.eq_orderOf.symm, fun d e hd he => (hζ d hd).2 _ (Dvd.intro _ rfl) (Nat.mul_pos hd he)⟩⟩` and prove the remaining obligations. Conclude with `(key _ _ _ _ (ht' 1 one_ne_zero) ⟨1, one_pos, 0, by simp, by simp⟩).1 rfl`. Introduce `x y`.
+
+Distinguish the cases in `hx : x = 0`. Simplify using `[t', hx]`. Distinguish the cases in `hy : y = 0`. Simplify using `[t', hy]`. Conclude with `(key _ _ _ _ (ht' _ (mul_ne_zero hx hy)) (mul _ _ _ _ (ht' x hx) (ht' y hy))).1 rfl`.
+
+Introduce `x y hx hy h`. Conclude with `(key _ _ _ _ (ht' x hx) (ht' y hy)).2 h`.
+-/
 theorem inhab : Nonempty (LabelDatum g) := by
   classical
   obtain ⟨ζ, hζ⟩ := gensys g
@@ -152,11 +220,17 @@ theorem inhab : Nonempty (LabelDatum g) := by
   · intro x y hx hy h
     exact (key _ _ _ _ (ht' x hx) (ht' y hy)).2 h
 
+/- English proof (translation)
+Take `⟨L⟩` from `inhab g`. Conclude with `⟨⟨t, ht, L.gen, L.gen_order, L.gen_norm⟩, rfl⟩`.
+-/
 theorem inhab_teich (t : Formalism.CyclotomicNorms.Fbar g →* ℂ) (ht : ∀ x y, x ≠ 0 → y ≠ 0 → t x = t y → x = y) :
     ∃ L : LabelDatum g, L.teich = t := by
   obtain ⟨L⟩ := inhab g
   exact ⟨⟨t, ht, L.gen, L.gen_order, L.gen_norm⟩, rfl⟩
 
+/- English proof (translation)
+Establish `h : ∃ m : ℕ, L.gen d ^ n = L.gen d ^ m` using `⟨n, rfl⟩`. Establish `hp : IsPrimitiveRoot (L.gen d) (g ^ d - 1)` using `L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _`. Establish `h1` using `(prim_iff hp (pos g hd) _ _).1 h.choose_spec`. Establish `h2 : L.teich x ^ (g ^ d - 1) = 1` using `by rw [← map_pow, hx, map_one]`. Rewrite using `[thetaOf, dif_pos h, pow_eq_pow_mod _ h2, pow_eq_pow_mod n h2, h1]`.
+-/
 theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.CyclotomicNorms.Fbar g} (hx : x ^ (g ^ d - 1) = 1) (n : ℕ) :
     thetaOf L d x (L.gen d ^ n) = L.teich x ^ n := by
   have h : ∃ m : ℕ, L.gen d ^ n = L.gen d ^ m := ⟨n, rfl⟩
@@ -165,6 +239,9 @@ theorem thetaOf_pow (L : LabelDatum g) {d : ℕ} (hd : 0 < d) {x : Formalism.Cyc
   have h2 : L.teich x ^ (g ^ d - 1) = 1 := by rw [← map_pow, hx, map_one]
   rw [thetaOf, dif_pos h, pow_eq_pow_mod _ h2, pow_eq_pow_mod n h2, h1]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => h.2.1, fun h => ⟨one_pos, h, fun a h1 h2 => by omega⟩⟩`.
+-/
 theorem isCusp_one (χ : Gn g 1 → ℂ) : IsCusp χ ↔ IsIrr χ :=
   ⟨fun h => h.2.1, fun h => ⟨one_pos, h, fun a h1 h2 => by omega⟩⟩
 

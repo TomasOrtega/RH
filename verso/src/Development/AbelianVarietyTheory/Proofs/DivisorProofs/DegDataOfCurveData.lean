@@ -33,6 +33,29 @@ def CurveData {T : Type} [Fintype T] {N : ℕ} (q : ℕ) [Fact q.Prime] (j : ℕ
 
 open GlobalTheory.VB GlobalTheory.IndefiniteRowSideFullHecke.FrobeniusTwistEigen in
 
+/- English proof (translation)
+Take `⟨k, _, _, _, C, _, _, hC, ι, _, φ, c, L, H, rL, rH, M, HH, g, te, hc, hL, hH, hH1, hH2, hM, hHH, hMH, hF, ⟨eM⟩, hte, hΨ, h0, hN, hlo, hhi⟩` from `h`. Use `haveI : Infinite k := IsAlgClosed.instInfinite`. Take `⟨P, hP⟩` from `(exists_isMaxSubDeg_iff (k := k) (F := M)).2 (GlobalTheory.VB.bddAbove_subDegs_of_isVB k C hC.toIsProjCurve M g hM)`. Establish `hslope` using `hS.1 q k C hC M HH g hM hHH hMH hF P hP`. Take `⟨hdegH, hC1, hsum⟩` from `hS.2 q k C hC ι φ c hc L H rL rH hL hH hH1 hH2`.
+
+Establish `hΨ' : ∀ σ, σ ∈ Finset.univ.image te ↔ c σ ∉ Finset.univ.image te`. Introduce `σ`. Simplify using `using hΨ σ`. Establish `h2` using `hsum M ⟨eM⟩ (Finset.univ.image te) hΨ'`. Rewrite `h2` using `[Finset.sum_image (fun a _ b _ e => hte e)]`.
+
+Establish `hdual : ∀ σ, deg k (dual (L σ)) = -deg k (L σ)`. Introduce `σ`. Establish `e` using `hH1 (c σ)`. Rewrite `e` using `[hc σ]`. Take `⟨i, p, w, hSE⟩` from `e`.
+
+Use `(hL (c σ)).isFiniteQC` as an intermediate fact. Use `(hH (c σ)).isFiniteQC` as an intermediate fact. Use `(hL σ).dual.isFiniteQC` as an intermediate fact. Establish `e1` using `hC.toIsProjCurve.deg_shortExact hSE`. Establish `e2` using `hdegH (c σ)`.
+
+Establish `e3` using `hC1 σ`. Simplify using `only at e1`. Use linear arithmetic over natural numbers and integers. Establish `hM' : ∀ τ m, j < m → m < N → ∃ (S : C.Modules) (i : S ⟶ M), IsCohSub i ∧ PowerSumSmul.psum r τ m ≤ (deg k S : ℝ)`. Introduce `τ m h1 h2`.
+
+Take `⟨S, i, hi, hle⟩` from `hhi τ m h1 h2`. Use `⟨S, i, hi, ?_⟩` and prove the remaining obligations. Rewrite `hle` using `[hC1 (te τ)]`. Simplify using `using hle`. Use `⟨(P : ℝ), ((-deg k M : ℤ) : ℝ), by exact_mod_cast hP.nonneg, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Int.cast_le (R := ℝ)).2 hslope` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ m h1 h2`. Choose the witnesses or unpack the hypotheses as in `⟨S, i, hi, hle⟩ : ∃ (S : C.Modules) (i : S ⟶ M), IsCohSub i ∧ PowerSumSmul.psum r τ m ≤ (deg k S : ℝ) := by`.
+
+Distinguish the cases in `hm : m ≤ j`. Conclude with `hlo τ m h1 hm h2`. Conclude with `hM' τ m (by omega) h2`. Use `haveI := hi.mono`. Use `haveI := hi.isFiniteQC`.
+
+Use `hP.deg_le i` as an intermediate fact. Conclude with `le_trans hle (by exact_mod_cast this)`. Introduce `τ`. Rewrite using `[hN τ, hC1 (te τ)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h0]`. Establish `h3 : (2 : ℤ) * ∑ τ, (-deg k (L (c (te τ)))) = -deg k M`. Rewrite using `[← h2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hdual, hC1 (te τ)]`. Establish `h4` using `congrArg (Int.cast : ℤ → ℝ) h3`. Move the coercions through the operations in `at h4 ⊢`. Rewrite `h4` using `[Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degData_of_curveData (hS : GlobalTheory.IndefiniteRowSideFullHecke.FrobeniusTwistEigen.SlopeAndEigenDegrees) {T : Type} [Fintype T] {N : ℕ}
     (q : ℕ) [Fact q.Prime] (j : ℕ) (r : T → Fin N → ℝ) (h : CurveData q j r) :
     GlobalTheory.PowerSumSmul.DegData j (q : ℝ) r := by

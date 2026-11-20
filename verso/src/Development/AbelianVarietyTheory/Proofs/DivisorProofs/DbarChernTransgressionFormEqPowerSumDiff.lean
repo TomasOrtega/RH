@@ -19,11 +19,45 @@ noncomputable section
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Rewrite using `[Matrix.trace_mul_cycle, Matrix.trace, Finset.sum_comm (f := fun p q => (Q * P) q p * M p q)]`. Conclude with `Finset.sum_congr rfl fun q _ => Matrix.mul_apply`.
+-/
 theorem trace_mul_mul_eq_sum_entries {R : Type} [CommRing R] {r : Type} [Fintype r] (P M Q : Matrix r r R) :
     (P * M * Q).trace = ∑ p, ∑ q, (Q * P) q p * M p q := by
   rw [Matrix.trace_mul_cycle, Matrix.trace, Finset.sum_comm (f := fun p q => (Q * P) q p * M p q)]
   exact Finset.sum_congr rfl fun q _ => Matrix.mul_apply
 
+/- English proof (translation)
+Take `⟨_, hsum, hsmul, _, hleib⟩` from `GlobalTheory.T.dbar_operator_local_calculus_complex_forms n v`. Take `⟨sconst, ssum, ssmul, smul⟩` from `GlobalTheory.T.smooth_coefficient_forms_closed_under_operations n v`. Establish `hinf : (∞ : WithTop ℕ∞) + 1 ≤ ∞` using `le_of_eq (by simp)`. Establish `hdiff : ∀ α : V n → Alt n, (∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (α x) S) v) → ∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (α x) S) v` using `fun α h S => (h S).differentiableAt (by simp)`. Take `⟨W, hW⟩ : ∃ W : ℕ → V n → Matrix r r (Ev n), W = fun i x => curvEv G' x ^ (k - 1 - i) * curvEv G x ^ i` from `⟨_, rfl⟩`.
+
+Take `⟨β, hβ⟩ : ∃ β : r → r → V n → Alt n, β = fun p q x => (∑ a, conn G x (coordVec a) p q • dz a) - ∑ a, conn G' x (coordVec a) p q • dz a` from `⟨_, rfl⟩`. Establish `hWs : ∀ i p q, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr ((W i x q p : Ev n) : Alt n) S) v`. Introduce `i p q`. Substitute `hW` using the available equality. Conclude with `(GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G' G v hG' hG'u hG hGu (k - 1 - i) i q p).1`.
+
+Establish `hWc : ∀ i p q, dbarAt (fun x => ((W i x q p : Ev n) : Alt n)) v = 0`. Introduce `i p q`. Substitute `hW` using the available equality. Conclude with `(GlobalTheory.T.curvatureMatrix_powProduct_entry_smooth_dbarClosed n r G' G v hG' hG'u hG hGu (k - 1 - i) i q p).2`. Establish `hcs : ∀ (H : V n → Matrix r r ℂ), MContDiffAt ∞ H v → IsUnit (H v).det → ∀ p q, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (∑ a, conn H x (coordVec a) p q • dz a) S) v`.
+
+Introduce `H hH hHu p q`. Conclude with `ssum (Fin n) Finset.univ (fun a x => conn H x (coordVec a) p q • dz a) fun a _ => ssmul (fun x => conn H x (coordVec a) p q) (fun _ => dz a) (hH.conn hHu hinf (coordVec a) p q) (sconst (dz a))`. Establish `hβs : ∀ p q, ∀ S, ContDiffAt ℝ ∞ (fun x => (bas n).repr (β p q x) S) v`. Introduce `p q S`. Substitute `hβ` using the available equality.
+
+Simplify `(hcs G hG hGu p q S).sub (hcs G' hG' hG'u p q S)` using `only [map_sub, Finsupp.sub_apply]`. Establish `dsub : ∀ α γ : V n → Alt n, (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (α x) S) v) → (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (γ x) S) v) → dbarAt (fun x => α x - γ x) v = dbarAt α v - dbarAt γ v`. Introduce `α γ hα hγ`. Establish `e : (fun x => α x - γ x) = fun x => ∑ j ∈ (Finset.univ : Finset (Fin 2)), (![α, fun y => (-1 : ℂ) • γ y] j) x`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[Fin.sum_univ_two, sub_eq_add_neg]`. Rewrite using `[e, hsum (Fin 2) Finset.univ _ ?_]`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[hsmul (-1) γ hγ]`.
+
+Simplify using `[sub_eq_add_neg]`. Introduce `j _ S fin_cases j`. Conclude with `hα S`. Simplify `(hγ S).const_smul (-1 : ℂ)` using `[map_smul]`. Establish `hdβ : ∀ p q, dbarAt (β p q) v = (curvEv G v p q : Alt n) - curvEv G' v p q`.
+
+Introduce `p q`. Substitute `hβ` using the available equality. Use `(dsub _ _ (hdiff _ (hcs G hG hGu p q)) (hdiff _ (hcs G' hG' hG'u p q))).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.dbar_chernConnection_entry_eq_curvature n r G v hG hGu p q, GlobalTheory.T.dbar_chernConnection_entry_eq_curvature n r G' v hG' hG'u p q]`. Establish `step : ∀ i p q, dbarAt (fun x => ((W i x q p : Ev n) : Alt n) * β p q x) v = (W i v q p : Alt n) * ((curvEv G v p q : Alt n) - curvEv G' v p q)`.
+
+Introduce `i p q`. Rewrite using `[hleib (fun x => W i x q p) (β p q) (hdiff _ (hWs i p q)) (hdiff _ (hβs p q)), hWc, zero_mul, zero_add, hdβ]`. Establish `key : (fun x => transAt G G' x k) = fun x => ∑ i ∈ Finset.range k, ∑ p, ∑ q, ((W i x q p : Ev n) : Alt n) * β p q x`. Use function extensionality and compare the values at `x`. Substitute `hW hβ` using the available equality.
+
+Simplify using `only [transAt]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [trace_mul_mul_eq_sum_entries, Matrix.map_apply, Matrix.sub_apply, map_sub, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_mul, Subalgebra.coe_algebraMap, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, mul_sub, sub_mul, Subalgebra.coe_sub]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun q _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, mul_assoc, mul_sub, sub_mul]`. Establish `alg : ∑ i ∈ Finset.range k, ∑ p, ∑ q, W i v q p * (curvEv G v p q - curvEv G' v p q) = powAt G v k - powAt G' v k`.
+
+Use `Eq.trans ?_ (GlobalTheory.T.sum_trace_pow_mul_sub_mul_pow_telescope (Ev n) r (curvEv G v) (curvEv G' v) k)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.trace_mul_cycle, Matrix.trace, Finset.sum_comm, hW]`. Conclude with `Finset.sum_congr rfl fun q _ => by rw [Matrix.diag_apply, Matrix.mul_apply]; rfl`. Rewrite using `[key]`.
+
+Use `(hsum _ _ _ ?_).trans ?_` and prove the remaining obligations. Introduce `i _`. Conclude with `hdiff _ (ssum r Finset.univ _ fun p _ => ssum r Finset.univ _ fun q _ => smul _ _ (hWs i p q) (hβs p q))`. Establish `inner : ∀ i, dbarAt (fun x => ∑ p, ∑ q, ((W i x q p : Ev n) : Alt n) * β p q x) v = ∑ p, ∑ q, (W i v q p : Alt n) * ((curvEv G v p q : Alt n) - curvEv G' v p q)`. Introduce `i`.
+
+Use `(hsum _ _ _ ?_).trans (Finset.sum_congr rfl fun p _ => ?_)` and prove the remaining obligations. Introduce `p _`. Conclude with `hdiff _ (ssum r Finset.univ _ fun q _ => smul _ _ (hWs i p q) (hβs p q))`. Use `(hsum _ _ _ ?_).trans (Finset.sum_congr rfl fun q _ => step i p q)` and prove the remaining obligations. Introduce `q _`.
+
+Conclude with `hdiff _ (smul _ _ (hWs i p q) (hβs p q))`. Rewrite using `[Finset.sum_congr rfl fun i _ => inner i]`. Use `congrArg (fun w : Ev n => (w : Alt n)) alg` as an intermediate fact. Simplify `this` using `only [AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_mul, Subalgebra.coe_sub]`.
+-/
 theorem dbarAt_transAt (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (v : V n)
     (hG : MContDiffAt ∞ G v) (hGu : IsUnit (G v).det) (hG' : MContDiffAt ∞ G' v)
     (hG'u : IsUnit (G' v).det) (k : ℕ) :

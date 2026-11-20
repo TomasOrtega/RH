@@ -38,6 +38,9 @@ def qc (ω : HChar F) : QuasiCharacter F where
     exact ω.2.2 a)
   continuous_toFun := (QuotientGroup.isQuotientMap_mk _).continuous_iff.2 ω.2.1
 
+/- English proof (translation)
+Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H x => exact L2.norm_omega_eq_one h x`.
+-/
 theorem norm_qc (ω : HChar F) (h : IsOfFinOrder ω) (c : GroundTheory.Global.IdeleClassGroup F) :
     ‖((qc ω c : ℂˣ) : ℂ)‖ = 1 := by
   induction c using QuotientGroup.induction_on with
@@ -45,6 +48,9 @@ theorem norm_qc (ω : HChar F) (h : IsOfFinOrder ω) (c : GroundTheory.Global.Id
 
 def hc (ω : HChar F) (h : IsOfFinOrder ω) : HeckeCharacter F := QuasiCharacter.toUnitary (qc ω) (norm_qc ω h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hc_toIdele (ω : HChar F) (h : IsOfFinOrder ω) (x : IdeleGroup F) :
     (((hc ω h).toIdele x : Circle) : ℂ) = ((ω.1 x : ℂˣ) : ℂ) := rfl
 

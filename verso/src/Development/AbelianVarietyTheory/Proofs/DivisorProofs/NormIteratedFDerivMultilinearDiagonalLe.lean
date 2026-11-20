@@ -4,6 +4,17 @@ open MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set L : E →L[ℝ] (Fin j → E) := ContinuousLinearMap.pi (fun _ => ContinuousLinearMap.id ℝ E) with hL`. Establish `hLn : ‖L‖ ≤ 1`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one (fun x => ?_)` and prove the remaining obligations. Rewrite using `[one_mul]`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg x)).2 (fun _ => ?_)` and prove the remaining obligations.
+
+Simplify using `[hL]`. Establish `hfun : (fun y : E => f (fun _ => y)) = (f : (Fin j → E) → ℂ) ∘ L`. Use function extensionality and compare the values at `z`. Simplify using `[hL]`. Establish `hf : ContDiff ℝ ⊤ (f : (Fin j → E) → ℂ)` using `f.contDiff`.
+
+Rewrite using `[hfun, ContinuousLinearMap.iteratedFDeriv_comp_right L hf y (by exact_mod_cast le_top)]`. Establish `hLy : ‖L y‖ ≤ ‖y‖`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg y)).2 (fun _ => ?_)` and prove the remaining obligations. Simplify using `[hL]`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `Finset.prod_le_one (fun _ _ => norm_nonneg _) (fun _ _ => hLn)`. Use `_ = ‖iteratedFDeriv ℝ i (⇑f) (L y)‖ := mul_one _`. Use `_ ≤ (Fintype.card (Fin j)).descFactorial i * ‖f‖ * ‖L y‖ ^ (Fintype.card (Fin j) - i) := f.norm_iteratedFDeriv_le i (L y)`. Use `_ ≤ (j.descFactorial i : ℝ) * ‖f‖ * ‖y‖ ^ (j - i) := by`. Rewrite using `[Fintype.card_fin]`.
+
+Use `gcongr`.
+-/
 theorem norm_iteratedFDeriv_diag_multilinear_le (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (j : ℕ)
     (f : ContinuousMultilinearMap ℝ (fun _ : Fin j => E) ℂ) (i : ℕ) (y : E) :
     ‖iteratedFDeriv ℝ i (fun y : E => f (fun _ => y)) y‖ ≤ (j.descFactorial i : ℝ) * ‖f‖ * ‖y‖ ^ (j - i) := by

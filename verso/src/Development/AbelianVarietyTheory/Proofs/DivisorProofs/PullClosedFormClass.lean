@@ -8,6 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.AbCoh
 
+/- English proof (translation)
+Introduce `R R' _ _ X X' s s' σ φ h hc hc' w`. Set `ω : ClosedForm s` to `⟨w, by rw [show ClosedForm s = ⊤ from hc]; exact Submodule.mem_top⟩`. Set `ω' : ClosedForm s'` to `⟨GlobalTheory.CechDR.pullForm h w, by rw [show ClosedForm s' = ⊤ from hc']; exact Submodule.mem_top⟩`. Establish `e : IsPull1 h (clForm s ω) (clForm s' ω')` using `IsPullForm.cl (isPullForm_pullForm h w)`. Establish `k : clAll (OAff s) hc w = clForm s ω` using `rfl`.
+
+Establish `k' : clAll (OAff s') hc' (GlobalTheory.CechDR.pullForm h w) = clForm s' ω'` using `rfl`. Rewrite using `[k, k']`. Conclude with `e.eq_pullHH1.symm`.
+-/
 theorem pullHH1_clAll : ∀ (R R' : Type) [CommRing R] [CommRing R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (σ : R →+* R') (φ : X' ⟶ X) (h : φ ≫ s = s' ≫ spMap σ) (hc : Closed1 (OAff s) = ⊤) (hc' : Closed1 (OAff s') = ⊤) (w : GlobForm s), pullHH1 h (clAll (OAff s) hc w) = clAll (OAff s') hc' (GlobalTheory.CechDR.pullForm h w) := by
   intro R R' _ _ X X' s s' σ φ h hc hc' w
   let ω : ClosedForm s := ⟨w, by rw [show ClosedForm s = ⊤ from hc]; exact Submodule.mem_top⟩

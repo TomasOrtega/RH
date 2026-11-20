@@ -16,6 +16,9 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 
 namespace PositivityTheory.Rg.BcB.CV
 
+/- English proof (translation)
+The claim follows from `have hQMap : QMap := pf_QMap hNormEq have hQInt : QInt := pf_QInt have hQAdd : QAdd := pf_QAdd have hQProd : QProd := pf_QProd hQuotProd hQMap have hVfun : Vfun := pf_Vfun hChainSum hRatDisc hNormEq hQInt hQAdd have hLocTor : LocTor := pf_LocTor have hOneVanish : OneVanish := pf_ …`.
+-/
 theorem classVanish_of_steps (hNormEq : PositivityTheory.Rg.BcB.D4.NormEq) (hQuotProd : PositivityTheory.Rg.BcB.D4.QuotProd) (hChainSum : PositivityTheory.Rg.BcB.ChainSum) (hRatDisc : PositivityTheory.Rg.BcB.D4.RatDisc) (hLocVanish : PositivityTheory.Rg.BcB.LocVanish) (hLocProper : PositivityTheory.Rg.BcB.D4.LocProper) (hLocFlag : PositivityTheory.Rg.BcB.D4.LocFlag) (hDegBdd : PositivityTheory.Rg.BcB.DegBdd) (hKerFin : PositivityTheory.Rg.BcB.D4.KerFin) (hMahler : PositivityTheory.Rg.BcB.Mahler) (hSplitAt : PositivityTheory.Rg.BcB.D4.SplitAt) (hNonEllFlag : PositivityTheory.Rg.BcB.D4.NonEllFlag) (hSplitAt2 : PositivityTheory.Rg.BcB.D4.SplitAt2) (hPairParam : PositivityTheory.Rg.BcB.D4.PairParam) (hTorusChar : PositivityTheory.Rg.BcB.D4.TorusChar) (hChiGam : PositivityTheory.Rg.BcB.D4.ChiGam) (hQuotStage : PositivityTheory.Rg.BcB.D4.QuotStage) (hSizeBasic : PositivityTheory.Rg.BcB.SizeBasic) :
     PositivityTheory.Rg.BcB.ClassVanish :=
   have hQMap : QMap := pf_QMap hNormEq

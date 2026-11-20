@@ -6,6 +6,11 @@ open PositivityTheory.Rg.Tf.Loc
 
 namespace GlobalTheory.CompanionTheory.CyclicCocycle
 
+/- English proof (translation)
+Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation K)`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_infinite_iff_finite]`. Establish `hr : r ≠ 0` using `fun h0 => hr0 (by simp [h0])`. Take `⟨m, hm, hmm⟩` from `isOfFinOrder_iff_pow_eq_one.mp (isOfFinOrder_of_finite (Units.mk0 r hr))`.
+
+Establish `h1 : r ^ m = 1` using `by simpa using congrArg Units.val hmm`. Establish `h2 : (ValuativeRel.valuation K r) ^ m = 1` using `by rw [← map_pow, h1, map_one]`. Conclude with `absurd h2 (pow_lt_one₀ zero_le' hr1 hm.ne').ne`.
+-/
 theorem infinite_of_localField (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] : Infinite K := by
   obtain ⟨r, hr0, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation K)
@@ -17,6 +22,15 @@ theorem infinite_of_localField (K : Type) [Field K] [ValuativeRel K] [Topologica
   have h2 : (ValuativeRel.valuation K r) ^ m = 1 := by rw [← map_pow, h1, map_one]
   exact absurd h2 (pow_lt_one₀ zero_le' hr1 hm.ne').ne
 
+/- English proof (translation)
+Set `A : Matrix (Fin n) (Fin n) (MvPolynomial (Fin m) E)` to `∑ j, (MvPolynomial.X j : MvPolynomial (Fin m) E) • (y j).map MvPolynomial.C`. Establish `hev : ∀ v : Fin m → E, MvPolynomial.eval v A.det = (∑ j, v j • y j).det`. Introduce `v`. Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+
+Use extensionality with `p q`. Simplify using `[A, Matrix.sum_apply]`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hzero : A.det = 0`.
+
+Use `MvPolynomial.funext_set (fun _ => Set.range (algebraMap k E)) (fun _ => ?_) (fun v hv => ?_)` and prove the remaining obligations. Conclude with `Set.infinite_range_of_injective (algebraMap k E).injective`. Establish `hv' : ∀ i, ∃ t : k, algebraMap k E t = v i` using `fun i => hv i (Set.mem_univ i) choose t ht using hv'`. Rewrite using `[hev, map_zero]`. Use `hcon t` as an intermediate fact.
+
+Simplify `this` using `[ht]`. Conclude with `h (by rw [← hev, hzero, map_zero])`.
+-/
 theorem exists_det_ne_zero {k E : Type*} [Field k] [Field E] [Algebra k E] [Infinite k]
     {m n : ℕ} (y : Fin m → Matrix (Fin n) (Fin n) E) (a : Fin m → E)
     (h : (∑ j, a j • y j).det ≠ 0) :
@@ -43,6 +57,23 @@ theorem exists_det_ne_zero {k E : Type*} [Field k] [Field E] [Algebra k E] [Infi
       simpa [ht] using this
   exact h (by rw [← hev, hzero, map_zero])
 
+/- English proof (translation)
+Set `M : Matrix (Fin ℓ) (Fin ℓ) E` to `Matrix.of fun i j => (σ ^ (i : ℕ)) (b j)`. Establish `hdet : M.det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h0`. Establish `hvj : ∀ j, ∑ i, v i * (σ ^ (i : ℕ)) (b j) = 0`.
+
+Introduce `j`. Use `congrFun hv j` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, M]`. Establish `hall : ∀ z : E, ∑ i, v i * (σ ^ (i : ℕ)) z = 0`. Introduce `z`.
+
+Rewrite using `[← b.sum_repr z]`. Simplify using `only [map_sum, map_smul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `congrArg (fun w => b.repr z j • w) (hvj j)` as an intermediate fact.
+
+Simplify using `only [smul_zero, Finset.smul_sum] at this`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`. Set `f : Fin ℓ → (E →* E)` to `fun i => ((σ ^ (i : ℕ) : E ≃ₐ[k] E) : E →* E)`.
+
+Establish `hf : Function.Injective f`. Introduce `i j hij`. Establish `h1 : (σ ^ (i : ℕ) : E ≃ₐ[k] E) = σ ^ (j : ℕ)`. Use extensionality with `z`. Conclude with `DFunLike.congr_fun hij z`.
+
+Conclude with `Fin.ext (hinj i.2 j.2 h1)`. Establish `li` using `(linearIndependent_monoidHom E E).comp f hf`. Establish `hz` using `Fintype.linearIndependent_iff.mp li v (by`. Use function extensionality and compare the values at `z`. Simplify `hall z)` using `[f]`.
+
+Conclude with `hv0 (funext hz)`. Set `e : Fin ℓ → E` to `fun i => if (i : ℕ) = 0 then 1 else 0`. Use `⟨M⁻¹.mulVec e, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : M.mulVec (M⁻¹.mulVec e) = e`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv M (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`.
+
+Establish `h2` using `congrFun h1 i`. Simplify using `only [Matrix.mulVec, dotProduct, M, Matrix.of_apply] at h2`. Simplify using `only [e] at h2`. Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+-/
 theorem exists_dual {k E : Type*} [Field k] [Field E] [Algebra k E] {ℓ : ℕ} (σ : E ≃ₐ[k] E)
     (hinj : Set.InjOn (fun i : ℕ => σ ^ i) (Set.Iio ℓ)) (b : Module.Basis (Fin ℓ) k E) :
     ∃ a : Fin ℓ → E, ∀ i : Fin ℓ,
@@ -90,6 +121,13 @@ theorem exists_dual {k E : Type*} [Field k] [Field E] [Algebra k E] {ℓ : ℕ} 
   rw [← h2]
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
+/- English proof (translation)
+Take `⟨p, hp⟩` from `hX`. Establish `hc : X.charpoly.coeff 0 ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, h0, mul_zero]`.
+
+Use `set c := X.charpoly.coeff 0 with hcdef`. Establish `h1 : aeval X (divX X.charpoly) * X + algebraMap E _ c = 0`. Establish `h` using `Matrix.aeval_self_charpoly X`. Rewrite `h` using `[← divX_mul_X_add X.charpoly]`. Simplify `h` using `[map_add, map_mul, aeval_X, aeval_C, ← hcdef]`.
+
+Establish `h2 : (-(c⁻¹) • aeval X (divX X.charpoly)) * X = 1`. Rewrite using `[Matrix.smul_mul, eq_neg_of_add_eq_zero_left h1, smul_neg, neg_smul, neg_neg, Algebra.algebraMap_eq_smul_one, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Use `⟨C (-(c⁻¹)) * (divX X.charpoly).comp p, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_eq_left_inv h2, map_mul, aeval_C, aeval_comp, ← hp, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]`.
+-/
 theorem inv_mem_range {E : Type*} [Field E] {n : ℕ} (Γ X : Matrix (Fin n) (Fin n) E)
     (hX : ∃ p : E[X], X = aeval Γ p) (hd : X.det ≠ 0) : ∃ q : E[X], X⁻¹ = aeval Γ q := by
   obtain ⟨p, hp⟩ := hX
@@ -111,6 +149,11 @@ theorem inv_mem_range {E : Type*} [Field E] {n : ℕ} (Γ X : Matrix (Fin n) (Fi
 
 variable {k E : Type*} [Field k] [Field E] [Algebra k E] {n : ℕ}
 
+/- English proof (translation)
+Use `set Γ := ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hΓ`. Establish `hfix : (σ.toAlgHom.toRingHom).mapMatrix Γ = Γ`. Use extensionality with `i j`. Establish `: Γ i j = algebraMap k E ((γ : Matrix (Fin n) (Fin n) k) i j)` using `rfl`. Simplify using `[this]`.
+
+Establish `h1 : (aeval Γ p).map σ = (σ.toAlgHom.toRingHom).mapMatrix (aeval Γ p)` using `rfl`. Rewrite using `[h1, aeval_def, aeval_def, hom_eval₂, hfix, eval₂_map]`. Use `congr 1`. Use extensionality with `a i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.algebraMap_matrix_apply, hij]`.
+-/
 theorem map_aeval_incl (σ : E ≃ₐ[k] E) (γ : GL (Fin n) k) (p : E[X]) :
     (aeval ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) p).map σ =
       aeval ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)
@@ -132,6 +175,9 @@ def cMat (σ : E ≃ₐ[k] E) (u : GL (Fin n) E) (i : ℕ) : Matrix (Fin n) (Fin
 def res (σ : E ≃ₐ[k] E) (ℓ : ℕ) (u : GL (Fin n) E) (s : E) : Matrix (Fin n) (Fin n) E :=
   ∑ i ∈ Finset.range ℓ, ((σ ^ i) s) • cMat σ u i
 
+/- English proof (translation)
+Establish `h : u * sigmaGL σ (twNorm (sigmaGL σ) i u) = twNorm (sigmaGL σ) (i + 1) u`. Rewrite using `[map_twNorm, twNorm_succ]`. Use `group`. Conclude with `congrArg Units.val h`.
+-/
 theorem cMat_succ (σ : E ≃ₐ[k] E) (u : GL (Fin n) E) (i : ℕ) :
     (u : Matrix (Fin n) (Fin n) E) * (cMat σ u i).map σ = cMat σ u (i + 1) := by
   have h : u * sigmaGL σ (twNorm (sigmaGL σ) i u) = twNorm (sigmaGL σ) (i + 1) u := by
@@ -139,6 +185,15 @@ theorem cMat_succ (σ : E ≃ₐ[k] E) (u : GL (Fin n) E) (i : ℕ) :
     group
   exact congrArg Units.val h
 
+/- English proof (translation)
+Use `set f : ℕ → Matrix (Fin n) (Fin n) E := fun i => ((σ ^ i) s) • cMat σ u i with hf`. Establish `h1 : (res σ ℓ u s).map σ = ∑ i ∈ Finset.range ℓ, ((σ ^ (i + 1)) s) • (cMat σ u i).map σ`. Use extensionality with `p q`. Simplify using `[res, Matrix.sum_apply, pow_succ']`. Establish `h2 : (u : Matrix (Fin n) (Fin n) E) * (res σ ℓ u s).map σ = ∑ i ∈ Finset.range ℓ, f (i + 1)`.
+
+Rewrite using `[h1, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, cMat_succ]`. Establish `h3 : f ℓ = f 0`. Establish `hs : (σ ^ ℓ) s = s` using `by rw [hℓ]; rfl`.
+
+Express the relevant statement in the definitionally equal form `((σ ^ ℓ) s) • cMat σ u ℓ = ((σ ^ 0) s) • cMat σ u 0`. Rewrite using `[hs]`. Simplify using `[cMat, hN]`. Establish `h4` using `Finset.sum_range_succ f ℓ`. Rewrite `h4` using `[Finset.sum_range_succ' f ℓ, h3]`.
+
+Rewrite using `[h2]`. Conclude with `add_right_cancel h4`.
+-/
 theorem mul_map_res (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 1) (u : GL (Fin n) E)
     (hN : twNorm (sigmaGL σ) ℓ u = 1) (s : E) :
     (u : Matrix (Fin n) (Fin n) E) * (res σ ℓ u s).map σ = res σ ℓ u s := by
@@ -161,6 +216,21 @@ theorem mul_map_res (σ : E ≃ₐ[k] E) {ℓ : ℕ} (hℓ : σ ^ ℓ = 1) (u : 
   rw [h2]
   exact add_right_cancel h4
 
+/- English proof (translation)
+Establish `hord : orderOf σ = Module.finrank k E`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hgen, IsGalois.card_aut_eq_finrank]`. Establish `hinj : Set.InjOn (fun i : ℕ => σ ^ i) (Set.Iio (Module.finrank k E))`. Rewrite using `[← hord]`. Conclude with `pow_injOn_Iio_orderOf`.
+
+Establish `hpos : 0 < Module.finrank k E` using `Module.finrank_pos`. Set `b` to `Module.finBasis k E`. Take `⟨a, ha⟩` from `exists_dual σ hinj b`. Set `y : Fin (Module.finrank k E) → Matrix (Fin n) (Fin n) E` to `fun j => res σ (Module.finrank k E) u (b j)`. Establish `hone : ∑ j, a j • y j = 1`.
+
+Establish `h1 : ∀ j, a j • y j = ∑ i : Fin (Module.finrank k E), (a j * (σ ^ (i : ℕ)) (b j)) • cMat σ u i`. Introduce `j`. Simplify using `only [y, res]`. Rewrite using `[Finset.sum_range, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => smul_smul _ _ _`.
+
+Simplify using `only [h1]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul, ha]`. Rewrite using `[Finset.sum_eq_single (⟨0, hpos⟩ : Fin (Module.finrank k E))]`. Simplify using `[cMat]`.
+
+Introduce `i _ hi`. Establish `: (i : ℕ) ≠ 0` using `fun h => hi (Fin.ext h)`. Simplify using `[this]`. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `exists_det_ne_zero (k := k) y a (by rw [hone]; simp)`.
+
+Use `⟨∑ j, t j • b j, ?_⟩` and prove the remaining obligations. Establish `: res σ (Module.finrank k E) u (∑ j, t j • b j) = ∑ j, algebraMap k E (t j) • y j`. Simplify using `only [y, res, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_smul, Algebra.smul_def (t j)]`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem exists_res_det_ne_zero [FiniteDimensional k E] [IsGalois k E] [Infinite k]
     (σ : E ≃ₐ[k] E) (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ) (u : GL (Fin n) E) :
     ∃ s : E, (res σ (Module.finrank k E) u s).det ≠ 0 := by
@@ -202,6 +272,23 @@ theorem exists_res_det_ne_zero [FiniteDimensional k E] [IsGalois k E] [Infinite 
     rw [map_smul, smul_smul, Algebra.smul_def (t j)]
   rwa [this]
 
+/- English proof (translation)
+Establish `hℓ : σ ^ Module.finrank k E = 1`. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Conclude with `pow_card_eq_one'`. Use `set Γ := ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) with hΓ`. Set `S` to `(aeval Γ : E[X] →ₐ[E] Matrix (Fin n) (Fin n) E).range`.
+
+Establish `hmemS : ∀ {M : Matrix (Fin n) (Fin n) E}, M ∈ S ↔ ∃ p : E[X], M = aeval Γ p`. Introduce `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨p, rfl⟩`.
+
+Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨p, rfl⟩`. Establish `hmap : ∀ {M : Matrix (Fin n) (Fin n) E}, M ∈ S → M.map σ ∈ S`. Introduce `M hM`. Take `⟨p, rfl⟩` from `hmemS.mp hM`.
+
+Conclude with `hmemS.mpr ⟨_, map_aeval_incl σ γ p⟩`. Establish `hc : ∀ i, cMat σ u i ∈ S`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+
+Establish `: cMat σ u 0 = 1` using `by simp [cMat]`. Rewrite using `[this]`. Conclude with `S.one_mem`. Consider the case `succ i ih`. Rewrite using `[← cMat_succ]`.
+
+Conclude with `S.mul_mem (hmemS.mpr hu) (hmap ih)`. Take `⟨s, hs⟩` from `exists_res_det_ne_zero σ hgen u`. Use `set X := res σ (Module.finrank k E) u s with hX`. Establish `hXS : X ∈ S` using `S.sum_mem fun i _ => S.smul_mem (hc i) _`. Set `Xu : GL (Fin n) E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero X hs`.
+
+Establish `hXu : (Xu : Matrix (Fin n) (Fin n) E) = X` using `rfl`. Establish `hfun : u * sigmaGL σ Xu = Xu` using `Units.ext (mul_map_res σ hℓ u hN s)`. Use `⟨Xu⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv, hXu]`. Conclude with `inv_mem_range Γ X (hmemS.mp hXS) hs`.
+
+Rewrite using `[inv_inv, map_inv]`. Conclude with `eq_mul_inv_of_mul_eq hfun`.
+-/
 theorem cocycle [FiniteDimensional k E] [IsGalois k E] [Infinite k]
     (σ : E ≃ₐ[k] E) (hgen : ∀ τ : E ≃ₐ[k] E, τ ∈ Subgroup.zpowers σ)
     (γ : GL (Fin n) k) (u : GL (Fin n) E)
@@ -251,6 +338,9 @@ theorem cocycle [FiniteDimensional k E] [IsGalois k E] [Infinite k]
   · rw [inv_inv, map_inv]
     exact eq_mul_inv_of_mul_eq hfun
 
+/- English proof (translation)
+Introduce `_ k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n γ _ u hu hN`. Use `haveI := infinite_of_localField k`. Conclude with `cocycle σ hgen γ u hu hN`.
+-/
 theorem cyclicCocycleLemma : PositivityTheory.Rg.Tf.Loc.A2 → PositivityTheory.Rg.Tf.Loc.A3 := by
   intro _ k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n γ _ u hu hN
   haveI := infinite_of_localField k

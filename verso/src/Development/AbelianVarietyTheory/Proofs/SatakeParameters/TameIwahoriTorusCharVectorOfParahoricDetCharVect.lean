@@ -11,12 +11,22 @@ namespace GlobalTheory.TameParahoric
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`.
+-/
 theorem residue_eq_zero_iff_val_lt (x : 𝒪[k]) :
     IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1 := by
   rw [IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff,
     (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩
 
+/- English proof (translation)
+Establish `h1 : (A.map (IsLocalRing.residue 𝒪[k])).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Use `(residue_eq_zero_iff_val_lt (A i i - 1)).2 (by simpa using hd i)` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`.
+
+Simplify using `using this`. Introduce `i j hij`. Conclude with `(residue_eq_zero_iff_val_lt _).2 (hl i j hij)`. Establish `h2 : IsLocalRing.residue 𝒪[k] (A.det - 1) = 0`. Rewrite using `[map_sub, map_one, RingHom.map_det, sub_eq_zero]`.
+
+Simplify using `using h1`. Use `(residue_eq_zero_iff_val_lt _).1 h2` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, RingHom.map_det]`. Then use the resulting hypothesis.
+-/
 theorem val_det_sub_one_lt {m : Type} [Fintype m] [LinearOrder m] (A : Matrix m m 𝒪[k])
     (hl : ∀ i j, j < i → valuation k (algebraMap 𝒪[k] k (A i j)) < 1)
     (hd : ∀ i, valuation k (algebraMap 𝒪[k] k (A i i) - 1) < 1) :
@@ -35,6 +45,23 @@ theorem val_det_sub_one_lt {m : Type} [Fintype m] [LinearOrder m] (A : Matrix m 
   have := (residue_eq_zero_iff_val_lt _).1 h2
   rwa [map_sub, map_one, RingHom.map_det] at this
 
+/- English proof (translation)
+Establish `hlt : ∀ (i : Fin t) (j : Fin r), Fin.castAdd t j < Fin.natAdd r i`. Introduce `i j`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Simplify using `only [Fin.coe_castAdd, Fin.coe_natAdd]`. Use linear arithmetic over natural numbers and integers.
+
+Use `⟨fun h hK hl hd => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨h₀, hh⟩` from `hK`. Establish `hval : ∀ i j, h.val i j = algebraMap 𝒪[k] k (h₀.val i j)`. Introduce `i j`. Rewrite using `[← hh]`.
+
+Both sides reduce to the same expression. Establish `hsub : h.val.submatrix (Fin.natAdd r) (Fin.natAdd r) = (h₀.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).map (algebraMap 𝒪[k] k)`. Use extensionality with `i j`. Simplify using `[hval]`. Establish `hdet : valuation k ((h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det - 1) < 1`.
+
+Rewrite using `[hsub]`. Use `val_det_sub_one_lt _ (fun i j hij => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify `hl (Fin.natAdd r i) (Fin.natAdd r j) (by simpa using hij)` using `[hval]`. Simplify `hd (Fin.natAdd r i)` using `[hval]`. Establish `hne : (h.val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det ≠ 0`.
+
+Introduce `h0`. Rewrite `hdet` using `[h0, zero_sub, Valuation.map_neg, Valuation.map_one]`. Conclude with `lt_irrefl _ hdet`. Establish `hu : χ (Units.mk0 _ hne) = 1` using `hχ _ (by simpa using hdet)`. Rewrite using `[hv h ⟨h₀, hh⟩ (fun i j => hl _ _ (hlt i j)) (Units.mk0 _ hne) rfl, hu]`.
+
+Simplify using the standard rewrite rules. Establish `hD : ((∏ j : Fin t, s (Fin.natAdd r j) : kˣ) : k) = ((diagT k (Fin (r + t)) s).val.submatrix (Fin.natAdd r) (Fin.natAdd r)).det`. Rewrite using `[val_diagT, Matrix.submatrix_diagonal _ _ (Fin.natAdd_injective _ _), Matrix.det_diagonal]`. Simplify using `[Units.coe_prod]`. Establish `hlow : ∀ (i : Fin t) (j : Fin r), valuation k ((diagT k (Fin (r + t)) s).val (Fin.natAdd r i) (Fin.castAdd t j)) < 1`.
+
+Introduce `i j`. Rewrite using `[val_diagT, Matrix.diagonal_apply_ne _ (hlt i j).ne']`. Simplify using the standard rewrite rules. Rewrite using `[hv _ (iwahori_le_KO k (Fin (r + t)) (diagT_mem_iwahori hs)) hlow _ hD]`. Use `congr 2`.
+
+Rewrite using `[torusChar_apply, Fin.prod_univ_add, map_prod]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+-/
 theorem isIwVec_of_isParahoricVec (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (r t : ℕ) (χ : kˣ →* ℂˣ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ (GL (Fin (r + t)) k) V) (v : V) (hχ : IsTame χ) (hv : IsParahoricVec χ π v) :

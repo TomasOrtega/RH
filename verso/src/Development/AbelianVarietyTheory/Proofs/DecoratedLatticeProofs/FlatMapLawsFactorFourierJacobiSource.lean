@@ -19,11 +19,17 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [BorelSpace k] {R Q : Type} [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] {M : Type} [AddCommGroup M]
   [Module ℂ M]
 
+/- English proof (translation)
+Take `⟨r, q⟩` from `e`. Simplify using `[fillAt, hI, hE]`.
+-/
 theorem fillAt_entry (β : Matrix R Q k) (E I : Finset (R × Q)) (x : Matrix R Q k) (y : I → k) (e : R × Q)
     (hI : e ∉ I) (hE : e ∉ E) : fillAt β E I x y e.1 e.2 = x e.1 e.2 := by
   obtain ⟨r, q⟩ := e
   simp [fillAt, hI, hE]
 
+/- English proof (translation)
+Unfold `red`. Apply the tactic sequence `simp_rw [fillAt_entry β E I x _ e hI hE, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+-/
 theorem red_mul_entry (ψ : AddChar k Circle) (ν : Measure k) (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k)
     (E I : Finset (R × Q)) (e : R × Q) (hI : e ∉ I) (hE : e ∉ E) (g : k → ℂ) (Φ : Matrix R Q k → ℂ)
     (x : Matrix R Q k) :
@@ -32,6 +38,11 @@ theorem red_mul_entry (ψ : AddChar k Circle) (ν : Measure k) (w : Matrix R Q k
   simp_rw [fillAt_entry β E I x _ e hI hE, mul_assoc]
   exact integral_const_mul _ _
 
+/- English proof (translation)
+Take `⟨r₀, q₀⟩` from `e`. Use extensionality with `r q`. Distinguish the cases in `h1 : (r, q) ∈ I`. Establish `: ¬ (r₀ = r ∧ q₀ = q)` using `by rintro ⟨rfl, rfl⟩; exact hI h1`. Simplify using `[fillAt, h1, Matrix.single_apply, this]`.
+
+Distinguish the cases in `h2 : (r, q) ∈ E`. Establish `: ¬ (r₀ = r ∧ q₀ = q)` using `by rintro ⟨rfl, rfl⟩; exact hE h2`. Simplify using `[fillAt, h1, h2, Matrix.single_apply, this]`. Simplify using `[fillAt, h1, h2]`.
+-/
 theorem fillAt_add_single (β : Matrix R Q k) (E I : Finset (R × Q)) (x : Matrix R Q k) (y : I → k) (e : R × Q)
     (hI : e ∉ I) (hE : e ∉ E) (a : k) :
     fillAt β E I x y + Matrix.single e.1 e.2 a = fillAt β E I (x + Matrix.single e.1 e.2 a) y := by
@@ -45,9 +56,17 @@ theorem fillAt_add_single (β : Matrix R Q k) (E I : Finset (R × Q)) (x : Matri
       simp [fillAt, h1, h2, Matrix.single_apply, this]
     · simp [fillAt, h1, h2]
 
+/- English proof (translation)
+Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]`.
+-/
 theorem circle_neg_mul (ψ : AddChar k Circle) (z : k) : (ψ (-z) : ℂ) * (ψ z : ℂ) = 1 := by
   rw [← Circle.coe_mul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, Circle.coe_one]
 
+/- English proof (translation)
+Introduce `b Φ`. Set `f : Matrix R Q k →ₗ[k] k` to `{ toFun := fun t => b * t e.1 e.2 map_add' := fun s t => by simp [mul_add] map_smul' := fun a t => by simp; ring }`. Establish `hmem : (fun t => (ψ (b * (t e.1 e.2 - β e.1 e.2)) : ℂ) * Φ.1 t) ∈ SB (Matrix R Q k)`. Use `GlobalTheory.T.schwartzBruhat_mul_addChar_linearForm k ψ hψ R Q f (-(b * β e.1 e.2)) Φ.1 Φ.2` as an intermediate fact. Use `this using 3 with t` and compare the differences between its conclusion and the goal.
+
+Simplify using `only [f, LinearMap.coe_mk, AddHom.coe_mk]`. Put the polynomial expressions in normal form. Use `⟨⟨_, hmem⟩, h b Φ ⟨_, hmem⟩ (fun t => rfl), fun x => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `exact red_mul_entry ψ ν w β E I e hI hE (fun s => (ψ (b * (s - β e.1 e.2)) : ℂ)) Φ.1 x`.
+-/
 theorem evalLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ) (L : SB (Matrix R Q k) →ₗ[ℂ] M)
     (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q) (hI : e ∉ I) (hE : e ∉ E)
     (h : ∀ (b : k) (Φ Φ' : SB (Matrix R Q k)), (∀ t, Φ'.1 t = (ψ (b * (t e.1 e.2 - β e.1 e.2)) : ℂ) * Φ.1 t) →
@@ -66,6 +85,13 @@ theorem evalLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuou
   refine ⟨⟨_, hmem⟩, h b Φ ⟨_, hmem⟩ (fun t => rfl), fun x => ?_⟩
   exact red_mul_entry ψ ν w β E I e hI hE (fun s => (ψ (b * (s - β e.1 e.2)) : ℂ)) Φ.1 x
 
+/- English proof (translation)
+Introduce `a Φ`. Establish `hmem1 : (fun t => Φ.1 (t + Matrix.single e.1 e.2 a)) ∈ SB (Matrix R Q k)`. Use `GlobalTheory.T.schwartzBruhat_comp_affine_matrix k R Q 1 (Matrix.single e.1 e.2 a) Φ.1 Φ.2` as an intermediate fact. Simplify using `using this`. Set `Φa : SB (Matrix R Q k)` to `⟨_, hmem1⟩`.
+
+Use `⟨(ψ (-w (Matrix.single e.1 e.2 a)) : ℂ) • Φa, ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h a Φ Φa (fun t => rfl), smul_smul, circle_neg_mul, one_smul]`. Unfold `red`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, Φa]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `y`. Rewrite using `[← fillAt_add_single β E I x y e hI hE a, map_add, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (L : SB (Matrix R Q k) →ₗ[ℂ] M)
     (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) (E I : Finset (R × Q)) (e : R × Q) (hI : e ∉ I) (hE : e ∉ E)
     (h : ∀ (a : k) (Φ Φ' : SB (Matrix R Q k)), (∀ t, Φ'.1 t = Φ.1 (t + Matrix.single e.1 e.2 a)) →
@@ -85,6 +111,15 @@ theorem intLaw_direct (ψ : AddChar k Circle) (ν : Measure k) (L : SB (Matrix R
     rw [← fillAt_add_single β E I x y e hI hE a, map_add, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]
     ring
 
+/- English proof (translation)
+Introduce `Φ hΦ`. Establish `h0 : Φ = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Establish `hx` using `congrFun hΦ x`.
+
+Unfold `red at hx`. Establish `hf : ∀ y : (∅ : Finset (R × Q)) → k, fillAt β ∅ ∅ x y = x` using `fun y => by ext r q; simp [fillAt]`. Simplify using `only [hf] at hx`. Rewrite `hx` using `[integral_const]`. Establish `hv : (Measure.pi fun _ : (∅ : Finset (R × Q)) => ν) Set.univ = 1`.
+
+Rewrite using `[Measure.pi_of_empty]`. Simplify using the standard rewrite rules. Establish `hv' : (Measure.pi fun _ : (∅ : Finset (R × Q)) => ν).real Set.univ = 1`. Simplify using `[Measure.real, hv]`. Rewrite `hx` using `[hv', one_smul, Pi.zero_apply]`.
+
+Rewrite using `[Submodule.coe_zero, Pi.zero_apply]`. Conclude with `(mul_eq_zero.mp hx).resolve_right (Circle.coe_ne_zero _)`. Rewrite using `[h0, map_zero]`.
+-/
 theorem kills_empty (ψ : AddChar k Circle) (ν : Measure k) (L : SB (Matrix R Q k) →ₗ[ℂ] M)
     (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k) : Kills L ψ ν w β ∅ ∅ := by
   intro Φ hΦ
@@ -116,6 +151,15 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [BorelSpace k] {R Q : Type} [Fintype R] [Fintype Q] [DecidableEq R] [DecidableEq Q] {M : Type} [AddCommGroup M]
   [Module ℂ M]
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro E _ hK _`. Simplify using `using hK`. Consider the case `insert a S ha ih`. Introduce `E hdisj hK hlaw`.
+
+Establish `hdisj' : Disjoint S I` using `Finset.disjoint_of_subset_left (Finset.subset_insert _ _) hdisj`. Establish `h1 : Kills L ψ ν w β (E ∪ S) I` using `ih E hdisj' hK fun e he E' h1 h2 h3 => hlaw e (Finset.mem_insert_of_mem he) E' h1 (h2.trans (Finset.union_subset_union_right (Finset.subset_insert _ _))) h3`. Establish `haI : a ∉ I` using `Finset.disjoint_left.mp hdisj (Finset.mem_insert_self _ _)`. Establish `heq : E ∪ insert a S = insert a (E ∪ S)`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_union, Finset.mem_insert]`. The claim follows by propositional logic. Rewrite using `[heq]`. Distinguish the cases in `haE : a ∈ E ∪ S`. Rewrite using `[Finset.insert_eq_of_mem haE]` and apply the resulting hypothesis.
+
+Use `GlobalTheory.T.partialReduction_evaluate_entry_of_mul_law k ψ ν hψ hψ1 hν R Q M L w β (E ∪ S) I a haI h1 ?_` and prove the remaining obligations. Use `hlaw a (Finset.mem_insert_self _ _) (E ∪ S) Finset.subset_union_left ?_ haE` and prove the remaining obligations. Conclude with `Finset.union_subset_union_right (Finset.subset_insert _ _)`.
+-/
 theorem kills_evals (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     (hν : ν.IsAddHaarMeasure) (L : SB (Matrix R Q k) →ₗ[ℂ] M) (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k)
     (I : Finset (R × Q)) (S : Finset (R × Q)) : ∀ E : Finset (R × Q), Disjoint S I → Kills L ψ ν w β E I →
@@ -139,6 +183,15 @@ theorem kills_evals (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous �
       refine hlaw a (Finset.mem_insert_self _ _) (E ∪ S) Finset.subset_union_left ?_ haE
       exact Finset.union_subset_union_right (Finset.subset_insert _ _)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro I _ hK _`. Simplify using `using hK`. Consider the case `insert a S ha ih`. Introduce `I hdisj hK hlaw`.
+
+Establish `hdisj' : Disjoint S E` using `Finset.disjoint_of_subset_left (Finset.subset_insert _ _) hdisj`. Establish `h1 : Kills L ψ ν w β E (I ∪ S)` using `ih I hdisj' hK fun e he I' h1 h2 h3 => hlaw e (Finset.mem_insert_of_mem he) I' h1 (h2.trans (Finset.union_subset_union_right (Finset.subset_insert _ _))) h3`. Establish `haE : a ∉ E` using `Finset.disjoint_left.mp hdisj (Finset.mem_insert_self _ _)`. Establish `heq : I ∪ insert a S = insert a (I ∪ S)`. Use extensionality with `x`.
+
+Simplify using `only [Finset.mem_union, Finset.mem_insert]`. The claim follows by propositional logic. Rewrite using `[heq]`. Distinguish the cases in `haI : a ∈ I ∪ S`. Rewrite using `[Finset.insert_eq_of_mem haI]` and apply the resulting hypothesis.
+
+Use `GlobalTheory.T.partialReduction_integrate_entry_of_translation k ψ ν hψ hν R Q M L w β E (I ∪ S) a haE h1 ?_` and prove the remaining obligations. Use `hlaw a (Finset.mem_insert_self _ _) (I ∪ S) Finset.subset_union_left ?_ haI` and prove the remaining obligations. Conclude with `Finset.union_subset_union_right (Finset.subset_insert _ _)`.
+-/
 theorem kills_ints (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ)
     (hν : ν.IsAddHaarMeasure) (L : SB (Matrix R Q k) →ₗ[ℂ] M) (w : Matrix R Q k →ₗ[k] k) (β : Matrix R Q k)
     (E : Finset (R × Q)) (S : Finset (R × Q)) : ∀ I : Finset (R × Q), Disjoint S E → Kills L ψ ν w β E I →
@@ -171,22 +224,41 @@ open GlobalTheory.LocFlat
 section Sets
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 
+/- English proof (translation)
+Simplify using `[fixSet]`.
+-/
 theorem mem_fixSet {ρ : ℕ} {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} : e ∈ fixSet ρ ↔
     ((∃ i, e.2 = Sum.inr i ∧ i.val ≤ ρ ∧ ¬ Free (ρ + 1) e) ∨ (∃ l s, e.1 = Sum.inr l ∧ ρ < l.val ∧ e.2 = Sum.inl s)) := by
   simp [fixSet]
 
+/- English proof (translation)
+Simplify using `[transSet]`.
+-/
 theorem mem_transSet {ρ : ℕ} {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} : e ∈ transSet ρ ↔
     (Free (ρ + 1) e ∧ ∀ i, e.2 = Sum.inr i → ρ < i.val) := by
   simp [transSet]
 
+/- English proof (translation)
+Simplify using `[lowSet]`.
+-/
 theorem mem_lowSet {ρ : ℕ} {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} : e ∈ lowSet ρ ↔
     ∃ (l : Fin c) (i : Fin (c + 1)), e = (Sum.inr l, Sum.inr i) ∧ ρ < i.val ∧ i.val ≤ l.val := by
   simp [lowSet]
 
+/- English proof (translation)
+Simplify using `[upSet]`.
+-/
 theorem mem_upSet {ρ : ℕ} {e : (n ⊕ Fin c) × (n' ⊕ Fin (c + 1))} : e ∈ upSet ρ ↔
     ∃ (l : Fin c) (i : Fin (c + 1)), e = (Sum.inr l, Sum.inr i) ∧ l.val < i.val ∧ i.val ≤ ρ := by
   simp [upSet]
 
+/- English proof (translation)
+Rewrite using `[Finset.disjoint_left]`. Introduce and unpack `⟨r, q⟩ h1 h2`. Rewrite `h1` using `[mem_transSet]`. Rewrite `h2` using `[mem_fixSet]`. Break down `h2 with ⟨i, hq, hi, hnf⟩ | ⟨l, s, hr, hl, hq⟩` into its components or cases.
+
+Conclude with `hnf h1.1`. Simplify using `only at hr hq`. Substitute `hr hq` using the available equality. Use `h1.1` as an intermediate fact. Simplify using `only [Free] at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem disj_trans_fix (ρ : ℕ) :
     Disjoint (transSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))) (fixSet ρ) := by
   rw [Finset.disjoint_left]
@@ -201,6 +273,11 @@ theorem disj_trans_fix (ρ : ℕ) :
     simp only [Free] at this
     omega
 
+/- English proof (translation)
+Rewrite using `[Finset.disjoint_left]`. Introduce `e h1 h2`. Take `⟨l, i, rfl, -, hil⟩` from `mem_lowSet.mp h1`. Use `(mem_transSet.mp h2).1` as an intermediate fact. Simplify using `only [Free] at this`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem disj_low_trans (ρ : ℕ) :
     Disjoint (lowSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))) (transSet ρ) := by
   rw [Finset.disjoint_left]
@@ -210,6 +287,13 @@ theorem disj_low_trans (ρ : ℕ) :
   simp only [Free] at this
   omega
 
+/- English proof (translation)
+Rewrite using `[Finset.disjoint_left]`. Introduce `e h1 h2`. Take `⟨l, i, rfl, hli, hiρ⟩` from `mem_upSet.mp h1`. Break down `Finset.mem_union.mp h2 with h | h` into its components or cases. Break down `mem_fixSet.mp h with ⟨i', hq, -, hnf⟩ | ⟨l', s, -, -, hq⟩` into its components or cases.
+
+Conclude with `hnf (by simp only [Free]; exact hli)`. Simplify using `at hq`. Take `⟨l', i', he, -, hil⟩` from `mem_lowSet.mp h`. Simplify using `only [Prod.mk.injEq, Sum.inr.injEq] at he`. Take `⟨rfl, rfl⟩` from `he`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem disj_up_fixlow (ρ : ℕ) :
     Disjoint (upSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))) (fixSet ρ ∪ lowSet ρ) := by
   rw [Finset.disjoint_left]
@@ -231,6 +315,17 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
   {M : Type} [AddCommGroup M] [Module ℂ M]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simpa using K`. Consider the case `succ j ih`. Establish `hsplit : (lowSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))).filter (fun e => colIx e < j + 1) = (lowSet ρ).filter (fun e => colIx e < j) ∪ (lowSet ρ).filter (fun e => colIx e = j)`.
+
+Use extensionality with `e`. Apply the tactic sequence `by_cases h : e ∈ (lowSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))) <;> simp [h] <;> omega`. Rewrite using `[hsplit, ← Finset.union_assoc]`. Use `kills_evals ψ ν hψ hψ1 hν L chL _ (transSet ρ) _ _ (Finset.disjoint_of_subset_left (Finset.filter_subset _ _) (disj_low_trans ρ)) ih ?_` and prove the remaining obligations. Introduce `e he E' h1 h2 h3`.
+
+Take `⟨he1, he2⟩` from `Finset.mem_filter.mp he`. Take `⟨l, i, rfl, hρi, hil⟩` from `mem_lowSet.mp he1`. Simplify using `only [colIx, Sum.elim_inr] at he2`. Use `GlobalTheory.T.partialReduction_lower_entry_multiplication_law k ψ ν hψ hν n n' c ρ M L hc H4 l i hρi hil E' (Finset.subset_union_left.trans h1) ?_ ?_ h3` and prove the remaining obligations. Introduce `x hx`.
+
+Apply `h1` to reduce the goal to its premises. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Simplify `hx` using `[he2]`. Use `h2.trans ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [Finset.mem_union, Finset.mem_filter] at hx ⊢`. The claim follows by propositional logic.
+-/
 theorem kills_low (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     (hν : ν.IsAddHaarMeasure) (ρ : ℕ) (L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M)
     (hc : c = 2 * ρ + 1)
@@ -265,6 +360,21 @@ theorem kills_low (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ)
       simp only [Finset.mem_union, Finset.mem_filter] at hx ⊢
       tauto
 
+/- English proof (translation)
+Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj`. Establish `hemp : (upSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))).filter (fun e => j ≤ colIx e) = ∅`.
+
+Apply `Finset.filter_false_of_mem` to reduce the goal to its premises. Introduce `e he`. Take `⟨l, i, rfl, -, -⟩` from `mem_upSet.mp he`. Simplify using `only [colIx, Sum.elim_inr]`. Use `i.isLt` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hemp, Finset.union_empty]`. Conclude with `K`. Consider the case `succ d ih`. Introduce `j hj`.
+
+Establish `hsplit : (upSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))).filter (fun e => j ≤ colIx e) = (upSet ρ).filter (fun e => j + 1 ≤ colIx e) ∪ (upSet ρ).filter (fun e => colIx e = j)`. Use extensionality with `e`. Apply the tactic sequence `by_cases h : e ∈ (upSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))) <;> simp [h] <;> omega`. Rewrite using `[hsplit, ← Finset.union_assoc]`. Use `kills_ints ψ ν hψ hν L chL _ (fixSet ρ ∪ lowSet ρ) _ _ (Finset.disjoint_of_subset_left (Finset.filter_subset _ _) (disj_up_fixlow ρ)) (ih (j + 1) (by omega)) ?_` and prove the remaining obligations.
+
+Introduce `e he I' h1 h2 h3`. Take `⟨he1, he2⟩` from `Finset.mem_filter.mp he`. Take `⟨l, i, rfl, hli, hiρ⟩` from `mem_upSet.mp he1`. Simplify using `only [colIx, Sum.elim_inr] at he2`. Use `GlobalTheory.T.partialReduction_upper_free_entry_translation_law k ψ ν hψ hν n n' c ρ M L hc H4 l i hli hiρ I' (Finset.subset_union_left.trans h1) ?_ ?_ h3` and prove the remaining obligations.
+
+Introduce `x hx`. Apply `h1` to reduce the goal to its premises. Use `Finset.mem_union_right _ ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter] at hx ⊢`. Conclude with `⟨hx.1, by omega⟩`.
+
+Use `h2.trans ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_union, Finset.mem_filter] at hx ⊢`. The claim follows by propositional logic.
+-/
 theorem kills_up (ψ : AddChar k Circle) (ν : Measure k) (hψ : Continuous ψ)
     (hν : ν.IsAddHaarMeasure) (ρ : ℕ) (L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M)
     (hc : c = 2 * ρ + 1)
@@ -317,6 +427,31 @@ end GlobalTheory.PartRed
 namespace GlobalTheory.PartRed
 open GlobalTheory.LocFlat
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ ψ ν hψ hψ1 hν n n' _ _ _ _ c ρ M _ _ L hc H1 H2 H3 H4`. Establish `K0` using `kills_empty ψ ν L chL (basePt c (0 : Matrix n n' k))`. Establish `K1` using `kills_evals ψ ν hψ hψ1 hν L chL (basePt c (0 : Matrix n n' k)) ∅ (fixSet ρ) ∅ (Finset.disjoint_empty_right _) K0 (by`. Introduce `e he E' _ _ heE'`. Use `evalLaw_direct ψ ν hψ L chL _ E' ∅ e (Finset.notMem_empty _) heE' ?_` and prove the remaining obligations.
+
+Take `⟨r, q⟩` from `e`. Break down `mem_fixSet.mp he with h | h` into its components or cases. Conclude with `H1 r q h`. Conclude with `H2 r q h)`. Rewrite `K1` using `[Finset.empty_union]`.
+
+Establish `K2` using `kills_ints ψ ν hψ hν L chL (basePt c (0 : Matrix n n' k)) (fixSet ρ) (transSet ρ) ∅ (disj_trans_fix ρ) K1 (by`. Introduce `e he I' _ _ heI'`. Use `intLaw_direct ψ ν L chL _ (fixSet ρ) I' e heI' (Finset.disjoint_left.mp (disj_trans_fix ρ) he) ?_` and prove the remaining obligations. Take `⟨r, q⟩` from `e`. Establish `h` using `mem_transSet.mp he`.
+
+Introduce `a Φ Φ' hΦ'`. Rewrite using `[chL_apply]`. Conclude with `H3 r q h.1 h.2 a Φ Φ' hΦ')`. Rewrite `K2` using `[Finset.empty_union]`. Establish `K3` using `kills_low ψ ν hψ hψ1 hν ρ L hc H4 K2 (c + 1)`.
+
+Establish `hlow : (lowSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))).filter (fun e => colIx e < c + 1) = lowSet ρ`. Apply `Finset.filter_true_of_mem` to reduce the goal to its premises. Introduce `e he`. Take `⟨l, i, rfl, -, -⟩` from `mem_lowSet.mp he`. Simplify using `only [colIx, Sum.elim_inr]`.
+
+Conclude with `i.isLt`. Rewrite `K3` using `[hlow]`. Establish `K4` using `kills_up ψ ν hψ hν ρ L hc H4 K3 (c + 1) 0 (by omega)`. Establish `hup : (upSet ρ : Finset ((n ⊕ Fin c) × (n' ⊕ Fin (c + 1)))).filter (fun e => 0 ≤ colIx e) = upSet ρ`. Apply `Finset.filter_true_of_mem` to reduce the goal to its premises.
+
+Introduce `e _`. Conclude with `Nat.zero_le _`. Rewrite `K4` using `[hup]`. Establish `hρc : ρ < c` using `by omega`. Set `lρ : Fin c` to `⟨ρ, hρc⟩`.
+
+Set `F : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] (Matrix (n ⊕ Unit) n' k → ℂ)` to `{ toFun := fun Φ => flRow ψ ν (ρ + 1) Φ.1 map_add' := fun Φ₁ Φ₂ => GlobalTheory.T.flatMapFourierJacobiRow_add k ψ ν hψ hν n n' c (ρ + 1) Φ₁.1 Φ₂.1 Φ₁.2 Φ₂.2 map_smul' := fun a Φ => by`. Use function extensionality and compare the values at `x`. Simplify using `only [flRow, opE, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_assoc]`. Conclude with `integral_const_mul _ _ }`. Establish `hker : LinearMap.ker F ≤ LinearMap.ker L`.
+
+Introduce `Φ hΦ`. Rewrite `hΦ`, the goal using `[LinearMap.mem_ker]`. Apply `K4` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[GlobalTheory.T.partialReduction_eq_flatMapFourierJacobiRow k ψ ν hν n n' c ρ hc lρ rfl Φ.1 x]`.
+
+Conclude with `congrFun hΦ _`. Set `f₀ : LinearMap.range F →ₗ[ℂ] M` to `(LinearMap.ker F).liftQ L hker ∘ₗ F.quotKerEquivRange.symm.toLinearMap`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f₀`. Use `⟨g ∘ₗ (SB (Matrix (n ⊕ Unit) n' k)).subtype, fun Φ Ψ hΨ => ?_⟩` and prove the remaining obligations. Establish `h1 : g (F Φ) = L Φ`.
+
+Use `LinearMap.congr_fun hg ⟨F Φ, LinearMap.mem_range_self F Φ⟩` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype] at this`. Rewrite using `[this]`. Simplify using `[f₀, LinearMap.quotKerEquivRange_symm_apply_image]`. Rewrite using `[LinearMap.comp_apply, Submodule.coe_subtype, hΨ]`.
+
+Conclude with `h1.symm`.
+-/
 theorem flRow_factor : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle) (ν : Measure k), Continuous ψ → ψ ≠ 1 → ν.IsAddHaarMeasure → ∀ (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (c ρ : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] (L : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k) →ₗ[ℂ] M), c = 2 * ρ + 1 → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ i, q = Sum.inr i ∧ i.val ≤ ρ ∧ ¬ Free (ρ + 1) (r, q)) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψ (b * (t r q - basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → L Φ' = L Φ) → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), (∃ l s, r = Sum.inr l ∧ ρ < l.val ∧ q = Sum.inl s) → ∀ (b : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = (ψ (b * (t r q - basePt c (0 : Matrix n n' k) r q)) : ℂ) * Φ.1 t) → L Φ' = L Φ) → (∀ (r : n ⊕ Fin c) (q : n' ⊕ Fin (c + 1)), Free (ρ + 1) (r, q) → (∀ i, q = Sum.inr i → ρ < i.val) → ∀ (a : k) (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = Φ.1 (t + Matrix.single r q a)) → L Φ' = (ψ (ch (Matrix.single r q a)) : ℂ) • L Φ) → (∀ u : GL (Fin c) k, embA n u ∈ N k n c (ρ + 1) → ∀ (Φ Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)), (∀ t, Φ'.1 t = Φ.1 (((embA n u)⁻¹).val * t)) → L Φ' = (ψ (-simpleSum (embA n u)) : ℂ) • L Φ) → ∃ L₀ : SB (Matrix (n ⊕ Unit) n' k) →ₗ[ℂ] M, ∀ Φ Ψ, Ψ.1 = GlobalTheory.LocFlat.flRow ψ ν (ρ + 1) Φ.1 → L Φ = L₀ Ψ := by
   intro k _ _ _ _ _ _ ψ ν hψ hψ1 hν n n' _ _ _ _ c ρ M _ _ L hc H1 H2 H3 H4
   have K0 := kills_empty ψ ν L chL (basePt c (0 : Matrix n n' k))

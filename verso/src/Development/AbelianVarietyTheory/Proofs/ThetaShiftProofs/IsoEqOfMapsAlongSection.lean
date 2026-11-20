@@ -13,6 +13,19 @@ open TopologicalSpace
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Establish `tr : ∀ {t : LB.Gen N}, t.IsGen → ∀ (i j : N.ι) (x : Y), x ∈ N.U i ⊓ N.U j → gm (𝟙 Y) x (N.U i) (t.s i) = gm (𝟙 Y) x (N.U i ⊓ N.U j) (N.g i j) * gm (𝟙 Y) x (N.U j) (t.s j)`. Introduce `t ht i j x hx`. Use `congrArg (gm (𝟙 Y) x (N.U i ⊓ N.U j)) (ht i j)` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res _ x _ hx, gm_res _ x _ hx]`. Then use the resulting hypothesis. Take `⟨u, hu⟩` from `glue_unit ⊤ N.U (fun _ => le_top) (fun y _ => Opens.mem_iSup.2 (hN y)) (fun i => t₁.s i * (t₂.s i)⁻¹) (fun i j x hx => by`.
+
+Rewrite using `[map_mul, map_mul, map_inv, map_inv, tr h₁ i j x hx, tr h₂ i j x hx, mul_inv, _root_.mul_mul_mul_comm, mul_inv_cancel, _root_.one_mul])`. Take `⟨a, ha⟩` from `hp u.val`. Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (i : N.ι), r z ∈ N.U i → (gm r z (N.U i) (t₁.s i) * (gm r z (N.U i) (t₂.s i))⁻¹).val = gs (r ≫ p) z ⊤ a`. Introduce `Z r z i hi`. Rewrite using `[← map_inv, ← map_mul, ← hu i, gm_res r z _ hi]`.
+
+Conclude with `(gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) ha.symm).trans (gs_pull r p z ⊤ trivial a))`. Establish `a1 : a = 1` using `fn_ext fun y _ => by`. Take `⟨i, hi⟩` from `hN (e y)`. Use `key _ e y i hi` as an intermediate fact. Rewrite `this` using `[h y i hi, mul_inv_cancel, he]`.
+
+Rewrite using `[← this, gs_eq _ y ⊤ trivial, map_one, map_one, Units.val_one]`. Consider the cases of `t₁ with`. Consider the case `mk s₁`. Consider the cases of `t₂ with`. Consider the case `mk s₂`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `unit_ext fun x hx => ?_` and prove the remaining obligations. Use `key _ (𝟙 Y) x i hx` as an intermediate fact. Rewrite `this` using `[a1, gs_eq _ x ⊤ trivial, map_one, map_one]`.
+
+Conclude with `mul_inv_eq_one.1 (Units.ext this)`.
+-/
 theorem gen_eq_of_eq_along_section {Y S : Scheme.{0}} {N : LB Y} (hN : ∀ y : Y, ∃ i, y ∈ N.U i)
     (p : Y ⟶ S) (e : S ⟶ Y) (he : e ≫ p = 𝟙 _) (hp : Function.Surjective p.appTop.hom)
     {t₁ t₂ : LB.Gen N} (h₁ : t₁.IsGen) (h₂ : t₂.IsGen)
@@ -49,6 +62,11 @@ theorem gen_eq_of_eq_along_section {Y S : Scheme.{0}} {N : LB Y} (hN : ∀ y : Y
   rw [a1, gs_eq _ x ⊤ trivial, map_one, map_one] at this
   exact mul_inv_eq_one.1 (Units.ext this)
 
+/- English proof (translation)
+Use `gen_eq_of_eq_along_section (fun y => ?_) p e he hp h₁ h₂ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hL y`. Take `⟨j, hj⟩` from `hM y`. Conclude with `⟨(j, i), hj, hi⟩`. Introduce and unpack `s ⟨j, i⟩ ⟨hj, hi⟩`.
+
+Establish `k₁` using `gm_maps_pt m₁ (𝟙 S) s j i hj hi`. Establish `k₂` using `gm_maps_pt m₂ (𝟙 S) s j i hj hi`. Rewrite `k₁`, `k₂` using `[Category.id_comp]`. Conclude with `mul_right_cancel (k₁.symm.trans k₂)`.
+-/
 theorem iso_eq_of_maps_along_section {Y S : Scheme.{0}} {L M : LB Y} (hL : ∀ y : Y, ∃ i, y ∈ L.U i)
     (hM : ∀ y : Y, ∃ i, y ∈ M.U i) (p : Y ⟶ S) (e : S ⟶ Y) (he : e ≫ p = 𝟙 _)
     (hp : Function.Surjective p.appTop.hom) {w₁ w₂ : LB.Iso L M} (h₁ : w₁.IsGen) (h₂ : w₂.IsGen)
@@ -65,6 +83,9 @@ theorem iso_eq_of_maps_along_section {Y S : Scheme.{0}} {L M : LB Y} (hL : ∀ y
     rw [Category.id_comp] at k₁ k₂
     exact mul_right_cancel (k₁.symm.trans k₂)
 
+/- English proof (translation)
+The claim follows from `iso_eq_of_maps_along_section (S := S) (exists_chart P.isLB) (fun y => (exists_chart hM₀ (φ y)).elim fun j hj => ⟨fun _ => j, mem_pull.2 hj⟩) P.A.hom (eSec P.A) (Over.w η[P.A]) (hG _ _ P.isAb).2 h₁ h₂ m₁ m₂`.
+-/
 theorem rigidified_iso_unique (hG : Out.GlobalFnsSt) {S : Scheme.{0}} (P : Out.PolAV S) {B₀ : Scheme.{0}}
     {M₀ : LB B₀} (hM₀ : M₀.IsLB) (φ : P.A.left ⟶ B₀) (w₁ w₂ : LB.Iso P.L (M₀.pull φ))
     (h₁ : w₁.IsGen) (h₂ : w₂.IsGen) (rig : LB.Gen (P.L.pull (eSec P.A)))

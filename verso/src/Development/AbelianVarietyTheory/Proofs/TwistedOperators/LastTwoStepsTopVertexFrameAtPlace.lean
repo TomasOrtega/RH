@@ -16,12 +16,30 @@ namespace GlobalTheory.FlatPlace
 variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
+/- English proof (translation)
+The claim follows from `funext fun a => by show p.π (incA D a) = _ rw [hp.2.1] exact congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z w) (GlobalTheory.AdeleBaseChange.map_tmul_one (toAd_spec D) a)`.
+-/
 theorem pr_eq_algebraMap_of_isPlc {w : Pl D.host.E} {p : Place D (Kw w)} (hp : IsPlc w p) :
     (p.pr : D.host.E → Kw w) = algebraMap D.host.E (Kw w) := funext fun a => by
   show p.π (incA D a) = _
   rw [hp.2.1]
   exact congrArg (fun z : FiniteAdeleRing (𝓞 D.host.E) D.host.E => z w) (GlobalTheory.AdeleBaseChange.map_tmul_one (toAd_spec D) a)
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Establish `hL` using `ch.S.last t (Set.mem_univ t) w hw`. Unfold `IsSumFrame at hL`. Rewrite using `[pr_eq_algebraMap_of_isPlc hp]`. Use `set d := ch.G.sp.topDec with hd`.
+
+Establish `h1 : (locGrid ch.G t w).rank (D.R.m, D.R.m) = (ch.G.V (.grid D.R.m D.R.m)).rank` using `rank_vertex ch.G t w (X := (D.R.m, D.R.m)) ⟨le_rfl, le_rfl⟩`. Establish `h2 : topRank (locGrid ch.G t w) D.R.m = (ch.G.V (.top D.R.m)).rank` using `topRank_eq ch.G t w hle`. Establish `h3 : (ch.G.V (.grid D.R.m D.R.m)).rank + 1 = (ch.G.V (.top D.R.m)).rank` using `d.rank`. Set `e : Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m)) ⊕ Unit ≃ Fin (topRank (locGrid ch.G t w) D.R.m)` to `((Equiv.sumCongr (finCongr h1) (⟨fun _ => 0, fun _ => (), fun _ => rfl, fun x => Subsingleton.elim _ _⟩ : Unit ≃ Fin 1)).trans (frame h3)).trans (finCongr h2.symm)`. Use `⟨e, fun i => rfl, ?_, ?_⟩` and prove the remaining obligations.
+
+Simplify using `[e, frame]`. Use linear arithmetic over natural numbers and integers. Set `F` to `frTop ch.S.toGridChoice t w D.R.m hle`. Use `⟨⟨F.β.submatrix id e, F.γ.submatrix e id, ?_, ?_⟩, ?_, fun r z => rfl⟩` and prove the remaining obligations. Rewrite using `[submatrix_mul_equiv, submatrix_id_id, F.βγ]`.
+
+Rewrite using `[← submatrix_mul _ _ _ id _ Function.bijective_id, F.γβ, submatrix_one_equiv]`. Use `Matrix.ext fun r z => ?_` and prove the remaining obligations. Break down `z with i | u` into its components or cases. Use `congrFun (congrFun hL r) (Sum.inl (Fin.cast h1 i))` as an intermediate fact. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Simplify using `only [fromCols_apply_inl]`. Both sides reduce to the same expression. Use `congrFun (congrFun hL r) (Sum.inr 0)` as an intermediate fact. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations.
+
+Both sides reduce to the same expression. Simplify using `only [fromCols_apply_inr, of_apply, Matrix.mul_diagonal, Matrix.map_apply, mul_one]`. Rewrite using `[Pi.one_apply, mul_one]`. Use `symm`. Use `show ∑ k : Fin 1, (_ : Kw w) = _`.
+
+Rewrite using `[Fin.sum_univ_one]`. Conclude with `mul_one _`.
+-/
 theorem topVertexFrame_renumbered_cast (ch : Choice R) (t : T) (w : Pl D.host.E) (hw : w ∈ locPl ch.G t) (p : Place D (Kw w)) (hp : IsPlc w p)
     (n : ℕ) (hn : D.R.m = n) (hle : n ≤ D.R.m) :
     ∃ e : Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m)) ⊕ Unit ≃ Fin (topRank (locGrid ch.G t w) n),
@@ -65,6 +83,9 @@ theorem topVertexFrame_renumbered_cast (ch : Choice R) (t : T) (w : Pl D.host.E)
         rw [Fin.sum_univ_one]
         exact mul_one _
 
+/- English proof (translation)
+Introduce `ch t w hw p hp j _` and use `topVertexFrame_renumbered_cast ch t w hw p hp (j + 1 + 1) (by omega) (by omega)`.
+-/
 theorem frame_top_last : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R) (t : T) (w : Pl D.host.E) (hw : w ∈ locPl ch.G t) (p : Place D (Kw w)) (hp : IsPlc w p)
     (j : ℕ) (hj : j + 2 = D.R.m),
     ∃ e : Fin ((locGrid ch.G t w).rank (D.R.m, D.R.m)) ⊕ Unit ≃ Fin (topRank (locGrid ch.G t w) (j + 1 + 1)),

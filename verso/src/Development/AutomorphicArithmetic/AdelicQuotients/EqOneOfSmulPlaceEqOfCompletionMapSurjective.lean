@@ -6,6 +6,13 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Gl
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.Tf.Geo
 open scoped NumberField.AdeleRing
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ q w hs σ hσ`. Establish `h : w.1 = σ • w.1` using `(congrArg Subtype.val hσ).symm`. Use `haveI : w.1.asIdeal.LiesOver q.asIdeal := w.2`. Establish `hid : ∀ y, galHom σ w.1 w.1 h y = y`. Introduce `y`.
+
+Take `⟨a, rfl⟩` from `hs y`. Conclude with `galHom_completionMap q σ w.1 w.1 h a`. Use `AlgEquiv.ext fun x ↦ ?_` and prove the remaining obligations. Establish `h2` using `galHom_algebraMap σ w.1 w.1 h x`. Rewrite `h2` using `[hid]`.
+
+Conclude with `(algebraMap E (w.1.adicCompletion E)).injective h2.symm`.
+-/
 theorem UpperTheory.eq_one_of_smul_place_eq_of_completionMap_surjective :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (q : HeightOneSpectrum (𝓞 F)) (w : PlacesOver E q), Function.Surjective (completionMap q w.1) →
         ∀ σ : E ≃ₐ[F] E, σ • w = w → σ = 1 := by

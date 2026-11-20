@@ -16,6 +16,9 @@ namespace Formalism.MainStatements.RankOne
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
   {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => rfl | X :: w, hw, u => by simp only [PI.UpqRep.dsigW, List.map_cons] rw [dsigW_conj hσ ht w (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) u] exact ReciprocityTheory.ChartRestriction.DS.Mult1.Down.ScaleMoveB.dsig_conj hσ ht (hw X List.mem_cons_self) _`.
+-/
 theorem dsigW_conj (hσ : IsURepOn (UH (Hpk k r)) σ) {t : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ht : t ∈ UH (Hpk k r)) :
     ∀ ws : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), (∀ X ∈ ws, PI.UpqRep.InLieHpk k r X) → ∀ u : H,
       PI.UpqRep.dsigW (k := k) (r := r) σ ws (σ t u) =
@@ -26,6 +29,25 @@ theorem dsigW_conj (hσ : IsURepOn (UH (Hpk k r)) σ) {t : Matrix (Fin (2 * r + 
     rw [dsigW_conj hσ ht w (fun Y hY => hw Y (List.mem_cons_of_mem X hY)) u]
     exact ReciprocityTheory.ChartRestriction.DS.Mult1.Down.ScaleMoveB.dsig_conj hσ ht (hw X List.mem_cons_self) _
 
+/- English proof (translation)
+Establish `hU : IsURepOn (UH (Hpk k r)) σ` using `Formalism.MainNotions.LowestKTypeMultiplicity.urep_of_DS hσ`. Establish `hti` using `WeylGroupFacts.uh_inv ht`. Establish `hu : IsUnit t.det` using `(unitary_group_closed k r).unit t ht`. Use `set x := σ t⁻¹ v with hx`. Establish `hxs : x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := TranslationBesselVanishing.smooth_translate hσ hv hti`.
+
+Establish `htx : σ t x = v`. Rewrite using `[hx, ← ContinuousLinearMap.comp_apply, ← TranslationBesselVanishing.sigma_mul hσ ht hti, Matrix.mul_nonsing_inv _ hu, (MatrixMultiplicationContinuity.sigma_facts hσ).1]`. Both sides reduce to the same expression. Take `⟨hadd, -, -, C, Ws, hWs, hbd⟩` from `hB`. Establish `hpos : 0 < ‖Bm v‖` using `norm_pos_iff.mpr hBv`.
+
+Use `set e : ℝ := ‖Bm v‖ / (|C| + 1) with he`. Establish `he0 : 0 < e` using `div_pos hpos (by positivity)`. Take `⟨u, huK, hue⟩` from `hKD k r ε lam H σ hlam hσ x hxs (Ws.map (List.map fun X => t⁻¹ * X * t)) (fun w hw X hX => by`. Take `⟨w0, hw0, rfl⟩` from `List.mem_map.1 hw`. Take `⟨X0, hX0, rfl⟩` from `List.mem_map.1 hX`.
+
+Conclude with `ReciprocityTheory.ChartRestriction.DS.Mult1.Down.ScaleMoveB.lie_conj ht (hWs w0 hw0 X0 hX0)) e he0`. Use `⟨u, huK, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hus : u ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hlam hσ u huK`. Establish `hds : x - u ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := by`. Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ u]`.
+
+Conclude with `DDSmoothness.smooth_add hxs (DDSmoothness.smooth_smul (-1) hus)`. Establish `hsplit : Bm v = Bm (σ t (x - u))`. Use `hadd _ (TranslationBesselVanishing.smooth_translate hσ hds ht) _ (TranslationBesselVanishing.smooth_translate hσ hus ht)` as an intermediate fact. Rewrite `this` using `[← map_add, sub_add_cancel, htx, h0, add_zero]`. Conclude with `this`.
+
+Establish `hb` using `hbd _ (TranslationBesselVanishing.smooth_translate hσ hds ht)`. Establish `hmap : (Ws.map fun w => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ w (σ t (x - u))‖) = (Ws.map (List.map fun X => t⁻¹ * X * t)).map fun w => ‖PI.UpqRep.dsigW (k := k) (r := r) σ w (x - u)‖ := by`. Rewrite using `[List.map_map]`. Use `List.map_congr_left fun w hw => ?_` and prove the remaining obligations. Rewrite using `[dsigW_conj hU ht w (hWs w hw), (MatrixMultiplicationContinuity.sigma_facts hσ).2 t ht]`.
+
+Both sides reduce to the same expression. Rewrite `hb` using `[hmap, ← hsplit]`. Use `set S := ((Ws.map (List.map fun X => t⁻¹ * X * t)).map fun w => ‖PI.UpqRep.dsigW (k := k) (r := r) σ w (x - u)‖).sum with hS`. Establish `hS0 : 0 ≤ S`. Rewrite using `[hS]`.
+
+Apply `List.sum_nonneg` to reduce the goal to its premises. Introduce `y hy`. Take `⟨w, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `norm_nonneg _`. Establish `h1 : ‖Bm v‖ ≤ |C| * S` using `hb.trans (mul_le_mul_of_nonneg_right (le_abs_self C) hS0)`.
+
+Establish `h2 : |C| * S ≤ |C| * e` using `mul_le_mul_of_nonneg_left hue.le (abs_nonneg C)`. Establish `h3 : |C| * e < ‖Bm v‖`. Rewrite using `[he, mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[abs_nonneg C]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem nz_translate (hKD : Pv.AmpDD.KDense) (hlam : IsHCParam lam) (hσ : PI.UpqRep.IsDSHpk k r ε lam σ)
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {z : Fin (2 * r + k + 1) → ℂ} {ψ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → ℂ}
     {π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)} {Bm : H → Wp} (hB : PI.BesselMapUniq.IsBesselMapSm (k := k) (r := r) z ψ σ π Bm)
@@ -78,6 +100,17 @@ theorem nz_translate (hKD : Pv.AmpDD.KDense) (hlam : IsHCParam lam) (hσ : PI.Up
     nlinarith [abs_nonneg C]
   linarith
 
+/- English proof (translation)
+Take `⟨μG, hμG⟩` from `unitary_group_haar_exists k r`. Establish `hGsk : IsHaarOn (UH (Hpk k r)) μG` using `⟨B5.haar_sigmaFinite hμG, hμG.ne_zero, hμG.conc, hμG.left⟩`. Establish `hS` using `Formalism.L2.SG.Pf.Choice.isHaarOn_muS hz hT hW hW1 h0 h1`. Take `⟨νq, hq⟩` from `Formalism.L2.SG.Pf.QuotMeasExists.quotMeasExists k r z hz hT μG _ hGsk hS`. Establish `hN : IsHaarOn (Nset k r) (haarLie (Nset k r) κ)` using `Formalism.MainNotions.BridgeCSB.haarLieN k r κ h0 h1`.
+
+Establish `hB` using `PI.WBL.S5.G.beBessel_of growth_spherical_bound ⟨CompanionTheory.FamilyDerivativeExpansion.DecS.decay_low_range, CompanionTheory.FamilyDerivativeExpansion.DecS.decay_infinite_range, CompanionTheory.D.gk.admitted.k_finite_smooth, trivial⟩ k r ε lam h H σ w0 Wp z c u π μW _ μG νq ⟨h …`. Establish `hvs` using `CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hlam hσ v hv`. Establish `hn : ⟪l v, l v⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hlv`. Establish `he : ∀ x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ, ThreeDimData.be z c π σ μW (haarLie (Nset k r) κ) x v (l v) = ⟪l v, l v⟫_ℂ • l x := fun x hx => by`. Rewrite using `[hl x hx v hvs]`.
+
+Both sides reduce to the same expression. Take `⟨y, hy, hne⟩` from `nz_translate hKD hlam hσ hB ht hvs (by show ThreeDimData.be z c π σ μW (haarLie (Nset k r) κ) v v (l v) ≠ 0`. Rewrite using `[he v hvs]`. Conclude with `smul_ne_zero hn hlv)`. Establish `hys` using `TranslationBesselVanishing.smooth_translate hσ (CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hlam hσ y hy) ht`.
+
+Use `⟨y, hy, fun h0 => hne ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show ThreeDimData.be z c π σ μW (haarLie (Nset k r) κ) _ v (l v) = 0`. Rewrite using `[he _ hys, h0, smul_zero]`. Establish `h2 : ThreeDimData.be z c π σ μW (haarLie (Nset k r) κ) (a • σ t y) v (l v) = a • ThreeDimData.be z c π σ μW (haarLie (Nset k r) κ) (σ t y) v (l v)` using `hB.2.1 a _ hys`. Rewrite `h2` using `[he _ hys, he _ (DDSmoothness.smooth_smul a hys), smul_comm]`.
+
+Conclude with `smul_right_injective _ hn h2`.
+-/
 theorem side_nz (hKD : Pv.AmpDD.KDense) {h : ℝ} (hlam : IsHCParam lam) (hσ : PI.UpqRep.IsDSHpk k r ε lam σ)
     (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam h) (hO : ThreeDimData.GapOK k r h) {w0 : H} (hw0 : PI.UpqRep.IsLowUnitH k r ε lam σ w0)
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]

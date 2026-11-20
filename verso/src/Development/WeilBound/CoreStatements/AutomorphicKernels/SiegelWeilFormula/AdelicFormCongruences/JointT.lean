@@ -4,6 +4,9 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 
 namespace PositivityTheory.SiegelWeilFormula.Afc
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨orbRes, uEx, fcConj_of⟩`.
+-/
 theorem afc_all : OrbRes ∧ UEx ∧ (AuxiliaryPrimeFunction → FcConj) := ⟨orbRes, uEx, fcConj_of⟩
 
 end PositivityTheory.SiegelWeilFormula.Afc

@@ -14,6 +14,9 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 private abbrev eDir (τ : K →+* ℂ) (i j : Fin n) (z : ℂ) : Lie K n := toL (Matrix.single i j (atEmb τ z))
 
 omit [NumberField K] in
+/- English proof (translation)
+Unfold `coord`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 private theorem coord_smul' (τ : K →+* ℂ) (t : ℝ) (x : Cinf K) : coord τ (t • x) = t • coord τ x := by
   unfold coord
   split_ifs <;> simp
@@ -26,9 +29,15 @@ private def coordL (τ : K →+* ℂ) (i j : Fin n) : Lie K n →ₗ[ℝ] ℂ wh
 private def coordC (τ : K →+* ℂ) (i j : Fin n) : Lie K n →L[ℝ] ℂ :=
   LinearMap.toContinuousLinearMap (coordL τ i j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem coordC_apply (τ : K →+* ℂ) (i j : Fin n) (y : Lie K n) :
     coordC τ i j y = coord τ (y i j) := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `coord τ ((Matrix.single a b (atEmb τ z) : Matrix (Fin n) (Fin n) (Cinf K)) c e) = _`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`. Conclude with `coord_atEmb τ z`. Conclude with `map_zero _`.
+-/
 private theorem coordC_eDir (τ : K →+* ℂ) (a b c e : Fin n) (z : ℂ) :
     coordC τ c e (eDir τ a b z) = if a = c ∧ b = e then z else 0 := by
   change coord τ ((Matrix.single a b (atEmb τ z) : Matrix (Fin n) (Fin n) (Cinf K)) c e) = _
@@ -37,6 +46,11 @@ private theorem coordC_eDir (τ : K →+* ℂ) (a b c e : Fin n) (z : ℂ) :
   · exact coord_atEmb τ z
   · exact map_zero _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(Matrix.of y * (Matrix.single a b (atEmb τ z) : Matrix (Fin n) (Fin n) (Cinf K))) i j = _`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `_ = ∑ k, (Matrix.single k b (atEmb τ (coord τ (y k a) * z)) : Matrix (Fin n) (Fin n) (Cinf K)) i j`. Distinguish the cases in `hj : j = b`.
+
+Substitute `hj` using the available equality. Rewrite using `[Matrix.mul_single_apply_same, Finset.sum_eq_single i (fun k _ hk => by simp [hk]) (by simp), Matrix.single_apply_same, GlobalTheory.CapAdInv.mul_atEmb]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hj]`. Simplify using `[Matrix.single_apply, Ne.symm hj]`.
+-/
 private theorem rmul_eDir (τ : K →+* ℂ) (a b : Fin n) (z : ℂ) (y : Lie K n) :
     rmul (eDir τ a b z) y = ∑ k, eDir τ k b (coord τ (y k a) * z) := by
   funext i j
@@ -51,6 +65,9 @@ private theorem rmul_eDir (τ : K →+* ℂ) (a b : Fin n) (z : ℂ) (y : Lie K 
   · rw [Matrix.mul_single_apply_of_ne _ _ _ _ _ hj]
     simp [Matrix.single_apply, Ne.symm hj]
 
+/- English proof (translation)
+Establish `h : eDir τ a b z = z.re • eDir τ a b 1 + z.im • eDir τ a b Complex.I`. Express the relevant statement in the definitionally equal form `(Matrix.single a b (atEmb τ z) : Matrix (Fin n) (Fin n) (Cinf K)) = z.re • Matrix.single a b (atEmb τ 1) + z.im • Matrix.single a b (atEmb τ Complex.I)`. Rewrite using `[atEmb_eq τ z, Matrix.single_add, ← Matrix.smul_single, ← Matrix.smul_single]`. Rewrite using `[h, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]`.
+-/
 private theorem map_eDir (L : Lie K n →L[ℝ] ℂ) (τ : K →+* ℂ) (a b : Fin n) (z : ℂ) :
     L (eDir τ a b z) = (z.re : ℂ) * L (eDir τ a b 1) + (z.im : ℂ) * L (eDir τ a b Complex.I) := by
   have h : eDir τ a b z = z.re • eDir τ a b 1 + z.im • eDir τ a b Complex.I := by
@@ -59,13 +76,24 @@ private theorem map_eDir (L : Lie K n →L[ℝ] ℂ) (τ : K →+* ℂ) (a b : F
     rw [atEmb_eq τ z, Matrix.single_add, ← Matrix.smul_single, ← Matrix.smul_single]
   rw [h, map_add, map_smul, map_smul, Complex.real_smul, Complex.real_smul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem pd_eq (τ : K →+* ℂ) (i j : Fin n) (F : Lie K n → ℂ) (x : Lie K n) :
     pd τ i j F x = (1 / 2 : ℂ) * (fderiv ℝ F x (eDir τ i j 1) - Complex.I * fderiv ℝ F x (eDir τ i j Complex.I)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rd_eq (τ : K →+* ℂ) (i j : Fin n) (F : Lie K n → ℂ) (x : Lie K n) :
     rd τ i j F x = (1 / 2 : ℂ) * (fderiv ℝ F x (rmul (eDir τ i j 1) x) -
       Complex.I * fderiv ℝ F x (rmul (eDir τ i j Complex.I) x)) := rfl
 
+/- English proof (translation)
+Rewrite using `[rd_eq, rmul_eDir, rmul_eDir, map_sum, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[pd_eq, coordC_apply, map_eDir _ τ k b (_ * 1), map_eDir _ τ k b (_ * Complex.I)]`. Generalize the expression as in `coord τ (y k a) = c`. Generalize the expression as in `fderiv ℝ F y (eDir τ k b 1) = A`.
+
+Generalize the expression as in `fderiv ℝ F y (eDir τ k b Complex.I) = B`. Use `conv_rhs => rw [← Complex.re_add_im c]`. Simplify using `only [mul_one, Complex.mul_I_re, Complex.mul_I_im, Complex.ofReal_neg]`. Take the linear combination `((c.im : ℂ) * B / 2) * Complex.I_mul_I`.
+-/
 private theorem rd_eq_sum (τ : K →+* ℂ) (a b : Fin n) (F : Lie K n → ℂ) (y : Lie K n) :
     rd τ a b F y = ∑ k, coordC τ k a y * pd τ k b F y := by
   rw [rd_eq, rmul_eDir, rmul_eDir, map_sum, map_sum, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.mul_sum]
@@ -85,10 +113,19 @@ private def Smth : Submodule ℂ (Lie K n → ℂ) where
   zero_mem' := (contDiff_const : ContDiff ℝ ∞ fun _ : Lie K n => (0 : ℂ))
   smul_mem' := fun c _ (h : ContDiff ℝ ∞ _) => (contDiff_const (c := c)).mul h
 
+/- English proof (translation)
+The claim follows from `F.2`.
+-/
 private theorem cd_of (F : Smth K n) : ContDiff ℝ ∞ F.1 := F.2
 
+/- English proof (translation)
+The claim follows from `(cd_of F).differentiable (by simp)`.
+-/
 private theorem diff_of (F : Smth K n) : Differentiable ℝ F.1 := (cd_of F).differentiable (by simp)
 
+/- English proof (translation)
+The claim follows from `(hF.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const`.
+-/
 private theorem contDiff_fderiv_apply {F : Lie K n → ℂ} (hF : ContDiff ℝ ∞ F) (w : Lie K n) :
     ContDiff ℝ ∞ fun y => fderiv ℝ F y w :=
   (hF.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const
@@ -111,8 +148,14 @@ private def dirOp (w : Lie K n) : Module.End ℂ (Smth K n) where
 private def dOp (τ : K →+* ℂ) (a b : Fin n) : Module.End ℂ (Smth K n) :=
   (1 / 2 : ℂ) • (dirOp (eDir τ a b 1) - Complex.I • dirOp (eDir τ a b Complex.I))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem dOp_val (τ : K →+* ℂ) (a b : Fin n) (F : Smth K n) : (dOp τ a b F).1 = pd τ a b F.1 := rfl
 
+/- English proof (translation)
+Establish `hd : DifferentiableAt ℝ (fderiv ℝ F) x` using `(hF.fderiv_right (m := ∞) (by simp)).differentiable (by simp) x`. Rewrite using `[fderiv_clm_apply hd (differentiableAt_const w)]`. Simplify using the standard rewrite rules.
+-/
 private theorem fderiv_fderiv_apply {F : Lie K n → ℂ} (hF : ContDiff ℝ ∞ F) (x u w : Lie K n) :
     fderiv ℝ (fun y => fderiv ℝ F y w) x u = fderiv ℝ (fderiv ℝ F) x u w := by
   have hd : DifferentiableAt ℝ (fderiv ℝ F) x :=
@@ -120,22 +163,36 @@ private theorem fderiv_fderiv_apply {F : Lie K n → ℂ} (hF : ContDiff ℝ ∞
   rw [fderiv_clm_apply hd (differentiableAt_const w)]
   simp
 
+/- English proof (translation)
+Use `LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coordC τ a b y * (coordC τ c e y * F.1 y) = coordC τ c e y * (coordC τ a b y * F.1 y)`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem x_comm (τ : K →+* ℂ) (a b c e : Fin n) : Commute (xOp τ a b) (xOp τ c e) := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)
   change coordC τ a b y * (coordC τ c e y * F.1 y) = coordC τ c e y * (coordC τ a b y * F.1 y)
   ring
 
+/- English proof (translation)
+Use `LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fderiv ℝ (fun z => fderiv ℝ F.1 z w) y u = fderiv ℝ (fun z => fderiv ℝ F.1 z u) y w`. Rewrite using `[fderiv_fderiv_apply (cd_of F), fderiv_fderiv_apply (cd_of F)]`. Conclude with `((cd_of F).contDiffAt.isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)) _ _`.
+-/
 private theorem dir_comm (u w : Lie K n) : Commute (dirOp u) (dirOp w) := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)
   change fderiv ℝ (fun z => fderiv ℝ F.1 z w) y u = fderiv ℝ (fun z => fderiv ℝ F.1 z u) y w
   rw [fderiv_fderiv_apply (cd_of F), fderiv_fderiv_apply (cd_of F)]
   exact ((cd_of F).contDiffAt.isSymmSndFDerivAt (by simp; exact WithTop.coe_le_coe.2 le_top)) _ _
 
+/- English proof (translation)
+Establish `h : ∀ u : Lie K n, Commute (dirOp u) (dOp τ c e)` using `fun u => (((dir_comm u _).sub_right ((dir_comm u _).smul_right _))).smul_right _`. Conclude with `((h _).sub_left ((h _).smul_left _)).smul_left _`.
+-/
 private theorem d_comm (τ : K →+* ℂ) (a b c e : Fin n) : Commute (dOp τ a b) (dOp τ c e) := by
   have h : ∀ u : Lie K n, Commute (dirOp u) (dOp τ c e) := fun u =>
     (((dir_comm u _).sub_right ((dir_comm u _).smul_right _))).smul_right _
   exact ((h _).sub_left ((h _).smul_left _)).smul_left _
 
+/- English proof (translation)
+Use `LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pd τ a b (fun z => coordC τ c e z * F.1 z) y - coordC τ c e y * pd τ a b F.1 y = ((if a = c ∧ b = e then (1 : Module.End ℂ (Smth K n)) else 0) F).1 y`. Rewrite using `[pd_eq, pd_eq, fderiv_fun_mul (coordC τ c e).differentiableAt (diff_of F y), ContinuousLinearMap.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, coordC_eDir]`. Distinguish the cases in `h : a = c ∧ b = e`.
+
+Simplify using `only [if_pos h, Module.End.one_apply]`. Take the linear combination `(-(F.1 y) / 2) * Complex.I_mul_I`. Simplify using `only [if_neg h, LinearMap.zero_apply, ZeroMemClass.coe_zero, Pi.zero_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem weyl_rel (τ : K →+* ℂ) (a b c e : Fin n) :
     dOp τ a b * xOp τ c e - xOp τ c e * dOp τ a b = if a = c ∧ b = e then 1 else 0 := by
   refine LinearMap.ext fun F => Subtype.ext (funext fun y => ?_)
@@ -149,6 +206,9 @@ private theorem weyl_rel (τ : K →+* ℂ) (a b c e : Fin n) :
   · simp only [if_neg h, LinearMap.zero_apply, ZeroMemClass.coe_zero, Pi.zero_apply]
     ring
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons j l ih => rw [List.map_cons, List.prod_cons, Module.End.mul_apply, hA, ih]`. Both sides reduce to the same expression.
+-/
 private theorem prod_map_apply {ι : Type} (A : ι → Module.End ℂ (Smth K n))
     (op : ι → (Lie K n → ℂ) → (Lie K n → ℂ))
     (hA : ∀ j G, (A j G).1 = op j G.1) (l : List ι) (G : Smth K n) :
@@ -158,25 +218,40 @@ private theorem prod_map_apply {ι : Type} (A : ι → Module.End ℂ (Smth K n)
   | cons j l ih => rw [List.map_cons, List.prod_cons, Module.End.mul_apply, hA, ih]; rfl
 
 omit [NumberField K] in
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons j l ih => simp only [List.foldr_cons, List.map_cons, List.prod_cons, ih, mul_assoc]`.
+-/
 private theorem foldr_mul {ι : Type} (c : ι → Lie K n → ℂ) (l : List ι) (G : Lie K n → ℂ) (y : Lie K n) :
     l.foldr (fun j H z => c j z * H z) G y = (l.map fun j => c j y).prod * G y := by
   induction l with
   | nil => simp
   | cons j l ih => simp only [List.foldr_cons, List.map_cons, List.prod_cons, ih, mul_assoc]
 
+/- English proof (translation)
+Simplify using `[LinearMap.sum_apply]`.
+-/
 private theorem sum_apply_val {ι : Type} (s : Finset ι) (T : ι → Module.End ℂ (Smth K n)) (G : Smth K n)
     (x : Lie K n) : ((∑ i ∈ s, T i) G).1 x = ∑ i ∈ s, (T i G).1 x := by
   simp [LinearMap.sum_apply]
 
+/- English proof (translation)
+Simplify using `[zsmul_eq_mul]`.
+-/
 private theorem zsmul_apply_val (z : ℤ) (T : Module.End ℂ (Smth K n)) (G : Smth K n) (x : Lie K n) :
     ((z • T) G).1 x = (z : ℂ) * (T G).1 x := by
   simp [zsmul_eq_mul]
 
+/- English proof (translation)
+Simplify using `[detAt, Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`.
+-/
 private theorem detAt_eq (τ : K →+* ℂ) (x : Lie K n) :
     detAt τ x = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) *
       ∏ j, coord τ (x (p j) j) := by
   simp [detAt, Matrix.det_apply, Units.smul_def, zsmul_eq_mul]
 
+/- English proof (translation)
+Rewrite using `[sum_apply_val, detAt_eq, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_apply_val, List.ofFn_eq_map, prod_map_apply (fun j => xOp τ (p j) j) (fun j H z => coordC τ (p j) j z * H z) (fun _ _ => rfl), foldr_mul, ← List.ofFn_eq_map, List.prod_ofFn, mul_assoc]`. Both sides reduce to the same expression.
+-/
 private theorem xdet_apply (τ : K →+* ℂ) (H : Smth K n) (x : Lie K n) :
     ((∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
       (List.ofFn fun j : Fin n => xOp τ (p j) j).prod) H).1 x = detAt τ x * H.1 x := by
@@ -187,6 +262,9 @@ private theorem xdet_apply (τ : K →+* ℂ) (H : Smth K n) (x : Lie K n) :
     foldr_mul, ← List.ofFn_eq_map, List.prod_ofFn, mul_assoc]
   rfl
 
+/- English proof (translation)
+Rewrite using `[sum_apply_val, detD]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[zsmul_apply_val, List.ofFn_eq_map, prod_map_apply (fun j => dOp τ (p j) j) (fun j H => pd τ (p j) j H) (fun _ _ => rfl)]`.
+-/
 private theorem ddet_apply (τ : K →+* ℂ) (H : Smth K n) (x : Lie K n) :
     ((∑ p : Equiv.Perm (Fin n), ((Equiv.Perm.sign p : ℤˣ) : ℤ) •
       (List.ofFn fun j : Fin n => dOp τ (p j) j).prod) H).1 x = detD τ H.1 x := by
@@ -195,6 +273,9 @@ private theorem ddet_apply (τ : K →+* ℂ) (H : Smth K n) (x : Lie K n) :
   rw [zsmul_apply_val, List.ofFn_eq_map,
     prod_map_apply (fun j => dOp τ (p j) j) (fun j H => pd τ (p j) j H) (fun _ _ => rfl)]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Rewrite using `[rd_eq_sum, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, sum_apply_val]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp [Module.End.natCast_apply]`.
+-/
 private theorem lhs_op (τ : K →+* ℂ) (p : Equiv.Perm (Fin n)) (j : Fin n) (H : Smth K n) :
     (((∑ k, xOp τ k (p j) * dOp τ k j) +
       (if p j = j then ((n - 1 - j.val : ℕ) : Module.End ℂ (Smth K n)) else 0)) H).1 =
@@ -204,6 +285,11 @@ private theorem lhs_op (τ : K →+* ℂ) (p : Equiv.Perm (Fin n)) (j : Fin n) (
   congr 1
   split_ifs <;> simp [Module.End.natCast_apply]
 
+/- English proof (translation)
+Establish `hC` using `GlobalTheory.CapelliWeyl.capelli_identity (n := n) (xOp τ) (dOp τ) (x_comm τ) (d_comm τ) (weyl_rel τ)`. Establish `h` using `congrArg (fun T : Module.End ℂ (Smth K n) => (T G).1 x) hC`. Rewrite `h` using `[Module.End.mul_apply, xdet_apply, ddet_apply, sum_apply_val]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[zsmul_apply_val, List.ofFn_eq_map, prod_map_apply _ (fun j H y => rd τ (p j) j H y + (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) * H y) (lhs_op τ p)]`.
+-/
 private theorem capelli_glob (τ : K →+* ℂ) (G : Smth K n) (x : Lie K n) :
     detAt τ x * detD τ G.1 x = ∑ p : Equiv.Perm (Fin n), (((Equiv.Perm.sign p : ℤˣ) : ℤ) : ℂ) *
       (List.finRange n).foldr (fun j H y => rd τ (p j) j H y +
@@ -216,6 +302,9 @@ private theorem capelli_glob (τ : K →+* ℂ) (G : Smth K n) (x : Lie K n) :
   rw [zsmul_apply_val, List.ofFn_eq_map, prod_map_apply _ (fun j H y => rd τ (p j) j H y +
     (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) * H y) (lhs_op τ p)]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons j l ih => exact hop j y _ _ ih`.
+-/
 private theorem foldr_congr_nhds {ι : Type} (op : ι → (Lie K n → ℂ) → (Lie K n → ℂ))
     (hop : ∀ j (y : Lie K n) (G H : Lie K n → ℂ), G =ᶠ[nhds y] H → op j G =ᶠ[nhds y] op j H)
     (l : List ι) {y : Lie K n} {G H : Lie K n → ℂ} (h : G =ᶠ[nhds y] H) :
@@ -224,15 +313,24 @@ private theorem foldr_congr_nhds {ι : Type} (op : ι → (Lie K n → ℂ) → 
   | nil => exact h
   | cons j l ih => exact hop j y _ _ ih
 
+/- English proof (translation)
+The claim follows from `(h.fderiv (𝕜 := ℝ)).mono fun z hz => by simp only [pd_eq, hz]`.
+-/
 private theorem pd_congr (τ : K →+* ℂ) (a b : Fin n) (y : Lie K n) (G H : Lie K n → ℂ)
     (h : G =ᶠ[nhds y] H) : pd τ a b G =ᶠ[nhds y] pd τ a b H :=
   (h.fderiv (𝕜 := ℝ)).mono fun z hz => by simp only [pd_eq, hz]
 
+/- English proof (translation)
+The claim follows from `((h.fderiv (𝕜 := ℝ)).and h).mono fun z hz => by simp only [rd_eq, hz.1, hz.2]`.
+-/
 private theorem rd_congr (τ : K →+* ℂ) (a b : Fin n) (c : ℂ) (y : Lie K n) (G H : Lie K n → ℂ)
     (h : G =ᶠ[nhds y] H) :
     (fun z => rd τ a b G z + c * G z) =ᶠ[nhds y] fun z => rd τ a b H z + c * H z :=
   ((h.fderiv (𝕜 := ℝ)).and h).mono fun z hz => by simp only [rd_eq, hz.1, hz.2]
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq hU hF hx`.
+-/
 private theorem exists_smooth_eq {U : Set (Lie K n)} (hU : IsOpen U) {F : Lie K n → ℂ}
     (hF : ContDiffOn ℝ ∞ F U) {x : Lie K n} (hx : x ∈ U) :
     ∃ G : Lie K n → ℂ, ContDiff ℝ ∞ G ∧ G =ᶠ[nhds x] F :=
@@ -241,6 +339,13 @@ private theorem exists_smooth_eq {U : Set (Lie K n)} (hU : IsOpen U) {F : Lie K 
 end UpperTheory.V.Z.Inf.WeylGroupAction
 
 open UpperTheory.V.Z.Inf UpperTheory.V.Z.Inf.WeylGroupAction in
+/- English proof (translation)
+Introduce `K _ _ _ n τ U hU F hF x hx`. Take `⟨G, hG, hGF⟩` from `exists_smooth_eq hU hF hx`. Establish `e1 : detD τ G x = detD τ F x`. Unfold `detD`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `(foldr_congr_nhds _ (fun j y G H h => pd_congr τ (p j) j y G H h) _ hGF).eq_of_nhds`. Rewrite using `[← e1]`. Use `(capelli_glob τ (⟨G, hG⟩ : Smth K n) x).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Conclude with `(foldr_congr_nhds _ (fun j y G H h => rd_congr τ (p j) j (if p j = j then ((n - 1 - j.val : ℕ) : ℂ) else 0) y G H h) (List.finRange n) hGF).eq_of_nhds`.
+-/
 theorem UpperTheory.V.Z.Inf.weyl :
     UpperTheory.V.Z.Inf.Weyl := by
   intro K _ _ _ n τ U hU F hF x hx

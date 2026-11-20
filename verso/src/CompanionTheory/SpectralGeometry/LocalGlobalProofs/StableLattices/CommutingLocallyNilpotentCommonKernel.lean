@@ -5,6 +5,19 @@ open CompanionTheory.RgExh CompanionTheory.RgExh.Dec CompanionTheory.RgExh.Dec.J
 
 namespace GlobalTheory.CompanionTheory.RgTransport
 
+/- English proof (translation)
+Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty`. Take `⟨x, hx, hx0⟩` from `(Submodule.ne_bot_iff I).1 hI`. Conclude with `⟨x, hx, hx0, by simp⟩`. Consider the case `insert a F _ ih`.
+
+Take `⟨x, hx, hx0, hF⟩` from `ih`. Establish `hex : ∃ N : ℕ, (D a ^ N) x = 0` using `hnil a x hx`. Establish `hN` using `Nat.find_spec hex`. Establish `hmin` using `fun m => Nat.find_min hex (m := m)`. Use `set N := Nat.find hex with hNdef`.
+
+Establish `hpos : N ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0]`. Conclude with `hx0 (by simpa using hN)`. Take `⟨M, hM⟩` from `Nat.exists_eq_succ_of_ne_zero hpos`.
+
+Establish `hiter : ∀ k : ℕ, (D a ^ k) x ∈ I`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ihk`.
+
+Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hstab a _ ihk`. Use `⟨(D a ^ M) x, hiter M, hmin M (by omega), ?_⟩` and prove the remaining obligations. Introduce `Y hY`. Break down `Finset.mem_insert.1 hY with rfl | hY` into its components or cases.
+
+Rewrite using `[← Module.End.mul_apply, ← pow_succ']`. Rewrite `hN` using `[hM]`. Conclude with `hN`. Establish `hc : Commute (D Y) (D a ^ M)` using `(hcomm Y a).pow_right M`. Rewrite using `[← Module.End.mul_apply, hc.eq, Module.End.mul_apply, hF Y hY, map_zero]`.
+-/
 theorem exists_joint_kernel_finset {V : Type} [AddCommGroup V] [Module ℂ V]
     (I : Submodule ℂ V) (hI : I ≠ ⊥) (D : ℂ → Module.End ℂ V)
     (hcomm : ∀ Y Y', Commute (D Y) (D Y'))
@@ -43,6 +56,17 @@ theorem exists_joint_kernel_finset {V : Type} [AddCommGroup V] [Module ℂ V]
     · have hc : Commute (D Y) (D a ^ M) := (hcomm Y a).pow_right M
       rw [← Module.End.mul_apply, hc.eq, Module.End.mul_apply, hF Y hY, map_zero]
 
+/- English proof (translation)
+Introduce `V _ _ I hI D hcomm hstab hnil l c hD`. Set `F : Finset ℂ` to `(Finset.range l).image (fun n : ℕ => (n : ℂ))`. Establish `hcard : F.card = l`. Simplify using `using Finset.card_image_of_injective (Finset.range l) (Nat.cast_injective (R := ℂ))`. Take `⟨w, hw, hw0, hF⟩` from `exists_joint_kernel_finset I hI D hcomm hstab hnil F`.
+
+Use `⟨w, hw, hw0, fun Y => ?_⟩` and prove the remaining obligations. Use `(Module.forall_dual_apply_eq_zero_iff ℂ (D Y w)).1 fun φ => ?_` and prove the remaining obligations. Set `p : Polynomial ℂ` to `∑ j ∈ Finset.range l, Polynomial.C (φ (c j w)) * Polynomial.X ^ j`. Establish `heval : ∀ Z : ℂ, p.eval Z = φ (D Z w)`. Introduce `Z`.
+
+Rewrite using `[hD Z]`. Simplify using `only [p, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`. Establish `hdeg : p.degree < (F.card : ℕ)`. Rewrite using `[hcard]`.
+
+Use `(Polynomial.degree_sum_le _ _).trans_lt ?_` and prove the remaining obligations. Use `(Finset.sup_lt_iff (WithBot.bot_lt_coe l)).2 fun j hj => ?_` and prove the remaining obligations. Use `(Polynomial.degree_C_mul_X_pow_le j _).trans_lt ?_` and prove the remaining obligations. Conclude with `WithBot.coe_lt_coe.2 (Finset.mem_range.1 hj)`. Establish `hp : p = 0` using `Polynomial.eq_zero_of_degree_lt_of_eval_finset_eq_zero F hdeg (fun Z hZ => by rw [heval, hF Z hZ, map_zero])`.
+
+Rewrite using `[← heval, hp, Polynomial.eval_zero]`.
+-/
 theorem exists_joint_kernel_polynomial_family :
     ∀ {V : Type} [AddCommGroup V] [Module ℂ V] (I : Submodule ℂ V), I ≠ ⊥ →
       ∀ (D : ℂ → Module.End ℂ V), (∀ Y Y', Commute (D Y) (D Y')) →

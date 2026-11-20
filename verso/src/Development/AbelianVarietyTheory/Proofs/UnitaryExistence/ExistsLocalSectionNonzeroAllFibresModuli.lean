@@ -17,6 +17,15 @@ namespace GlobalTheory.PushLoc
 
 open LBGerm PushInv ReciprocityTheory.ChartRestriction.G.Out
 
+/- English proof (translation)
+Establish `hz : ∀ z, A.hom ((snd T A).left z) ∈ V` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, w_snd, Scheme.Hom.comp_apply]`. Conclude with `hV _`. Establish `le : ∀ j : Fin 1 → L.ι, (LPow A L (1 : ℕ) T).U j ≤ (snd T A).left ⁻¹ᵁ (A.hom ⁻¹ᵁ V ⊓ L.U (j 0))` using `fun j z h => ⟨hz z, (mem_chart A L T _ z j).1 h⟩`. Establish `v : ∀ (j : Fin 1 → L.ι) z, z ∈ (LPow A L (1 : ℕ) T).U j → gs (𝟙 _) z _ (((snd T A).left.appLE _ _ (le j)).hom (θ (j 0))) = ((snd T A).left.stalkMap z).hom (gs (𝟙 _) _ _ (θ (j 0)))` using `fun j z h => by`.
+
+Rewrite using `[gs_appLE _ _ _ (le j) (𝟙 _) z h, Category.id_comp]`. Conclude with `gs_stalkMap _ z (A.hom ⁻¹ᵁ V ⊓ L.U (j 0)) (le j h) _`. Use `⟨secOfGerm (fun j => ((snd T A).left.appLE _ _ (le j)).hom (θ (j 0))) fun z i j hi hj => by` and prove the remaining obligations. Rewrite using `[v i z hi, v j z hj, gm_lpow A L T (𝟙 _) z i j hi hj, Category.id_comp, gs_secOn hθ _ (i 0) (j 0) (hz z) (le i hi).2 (le j hj).2, map_mul, ← gm_comp _ (𝟙 _) z (L.U (i 0) ⊓ L.U (j 0)) ⟨(le i hi).2, (le j hj).2⟩, Category.comp_id], fun p => ?_⟩`. Take `⟨g, i, hg, hi⟩` from `hne (T.hom p) (hV p)`.
+
+Take `⟨q, h₁, h₂⟩` from `Scheme.exists_preimage_of_isPullback (IsPullback.of_hasPullback T.hom A.hom) p g hg.symm`. Take `rfl : (snd T A).left q = g` from `h₂`. Use `⟨q, fun _ => i, h₁, ?_⟩` and prove the remaining obligations. Use `show q ∈ (T ⊗ A).left.basicOpen (((snd T A).left.appLE _ _ (le fun _ => i)).hom (θ i))`. Rewrite using `[Scheme.basicOpen_appLE]`.
+
+Conclude with `⟨(mem_chart A L T _ q _).2 (A.left.basicOpen_le _ hi).2, hi⟩`.
+-/
 theorem exists_sec_lpow {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left) (T : Over S) {V : S.Opens}
     (hV : ∀ y, T.hom y ∈ V) {θ : ∀ i, Γ(A.left, A.hom ⁻¹ᵁ V ⊓ L.U i)} (hθ : θ ∈ secOn L (A.hom ⁻¹ᵁ V))
     (hne : ∀ y ∈ V, ∃ (g : A.left) (i : L.ι), A.hom g = y ∧ g ∈ A.left.basicOpen (θ i)) :
@@ -44,6 +53,11 @@ theorem exists_sec_lpow {S : Scheme.{0}} (A : Over S) [GrpObj A] (L : LB A.left)
   rw [Scheme.basicOpen_appLE]
   exact ⟨(mem_chart A L T _ q _).2 (A.left.basicOpen_le _ hi).2, hi⟩
 
+/- English proof (translation)
+Introduce `hS E _ _ _ H D l Xo z`. Use `Xo.smooth` as an intermediate fact. Establish `hsm : Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Establish `: IsLocallyNoetherian Xo.X` using `LocallyOfFiniteType.isLocallyNoetherian Xo.s`. Take `⟨V, hV, θ, hθ, -, hne⟩` from `pushInvertible hS Xo.X (Obj.toPolAV Xo.univ) z`.
+
+Take `⟨B, j, hj, hp, hsub⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := Xo.X) (x := z) (U := V) hV`. Establish `hN : IsLocallyNoetherian (Spec B)` using `isLocallyNoetherian_of_isOpenImmersion j`. Take `⟨s, hs⟩` from `exists_sec_lpow Xo.univ.t.G Xo.univ.t.PP.L (Over.mk j) (V := V) (fun y => hsub ⟨y, rfl⟩) hθ hne`. Conclude with `⟨B, inferInstance, (isLocallyNoetherian_Spec (R := B)).1 hN, j, s, hj, hp, hs⟩`.
+-/
 theorem exists_secNZ : Out.SecBaseChangeSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (z : Xo.X), ∃ (R : Type) (_ : CommRing R) (_ : IsNoetherianRing R) (j : Sp R ⟶ Xo.X) (θ : LB.Sec (PPx j)), IsOpenImmersion j ∧ z ∈ Set.range j ∧ SecNZ j θ := by
   intro hS E _ _ _ H D l Xo z
   have := Xo.smooth

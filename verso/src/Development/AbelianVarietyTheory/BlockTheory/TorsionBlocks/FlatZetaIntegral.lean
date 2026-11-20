@@ -27,16 +27,25 @@ def FlatZetaHolomorphic : Prop :=
 
 omit [MeasurableSpace X] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[flatIntegrand]`.
+-/
 theorem flatIntegrand_self (f : X → ℂ) (a : X → ℝ) (s₀ : ℂ) : flatIntegrand f a s₀ s₀ = f := by
   funext x
   simp [flatIntegrand]
 
 omit [MeasurableSpace X] in
 
+/- English proof (translation)
+Rewrite using `[flatIntegrand, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hx, Complex.sub_re]`.
+-/
 theorem norm_flatIntegrand (f : X → ℂ) {a : X → ℝ} (s₀ s : ℂ) {x : X} (hx : 0 < a x) :
     ‖flatIntegrand f a s₀ s x‖ = ‖f x‖ * a x ^ (s.re - s₀.re) := by
   rw [flatIntegrand, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hx, Complex.sub_re]
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.of_finite`. Simplify using `[flatZeta, flatIntegrand]`.
+-/
 example (s : ℂ) :
     Integrable (flatIntegrand (fun _ : Unit => (1 : ℂ)) (fun _ => (1 / 2 : ℝ)) 0 s)
         (Measure.dirac ()) ∧

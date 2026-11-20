@@ -26,10 +26,16 @@ def transport {E E' : Type} [AddCommGroup E] [Module R E] [AddCommGroup E'] [Mod
   add a b := by rw [map_add, M.add]
   smul c a := by rw [map_smul]; exact M.smul c _
 
+/- English proof (translation)
+Unfold `IsTanAt at hv ⊢`. Rewrite using `[Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, MonObj.one_comp]`.
+-/
 theorem isTanAt_comp {v : epsAt x ⟶ G} (hv : IsTanAt G x v) (f : G ⟶ G) [IsMonHom f] : IsTanAt G x (v ≫ f) := by
   unfold IsTanAt at hv ⊢
   rw [Over.comp_left, ← Category.assoc, hv, ← Over.comp_left, MonObj.one_comp]
 
+/- English proof (translation)
+Simplify using `[Hom.mul_def]`.
+-/
 theorem mul_comp' {T : Over S} (u v : T ⟶ G) (f : G ⟶ G) [IsMonHom f] : (u * v) ≫ f = (u ≫ f) * (v ≫ f) := by
   simp [Hom.mul_def]
 
@@ -38,6 +44,9 @@ variable {E : Type} [AddCommGroup E] [Module R E]
 def endo (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : E :=
   Classical.choose (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))`.
+-/
 theorem endo_spec (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : M.pt (endo M f e) = M.pt e ≫ f :=
   Classical.choose_spec (M.onto (M.pt e ≫ f) (isTanAt_comp (M.tan e) f))
 
@@ -47,6 +56,9 @@ def diff (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] : E →ₗ[R] E where
   map_smul' c a := M.inj (by
     rw [endo_spec, RingHom.id_apply, LieModel.pt_smul, LieModel.pt_smul, endo_spec, Category.assoc])
 
+/- English proof (translation)
+The claim follows from `endo_spec M f e`.
+-/
 theorem diff_spec (M : LieModel G x E) (f : G ⟶ G) [IsMonHom f] (e : E) : M.pt (diff M f e) = M.pt e ≫ f :=
   endo_spec M f e
 
@@ -81,6 +93,9 @@ def rho {O : Type} [CommRing O] (act : OAct O G) (M : LieModel G x E) : O →+* 
     show M.pt (diff M (act.act (a + b)) e) = M.pt (diff M (act.act a) e + diff M (act.act b) e)
     rw [diff_spec, M.add, diff_spec, diff_spec, act.add, comp_mul]
 
+/- English proof (translation)
+Introduce `a e` and use `by letI := act.hom a; exact diff_spec M (act.act a) e`.
+-/
 theorem rho_isActOf {O : Type} [CommRing O] (act : OAct O G) (M : LieModel G x E) : M.IsActOf act.act (rho act M) :=
   fun a e => by letI := act.hom a; exact diff_spec M (act.act a) e
 
@@ -89,6 +104,25 @@ end PositivityTheory.Xgf.TransportLieModel
 namespace PositivityTheory.Xgf
 
 open TransportLieModel in
+/- English proof (translation)
+Introduce `E _ _ _ H S t R _ _ x`. Use `letI := t.grp`. Use `haveI := t.comm`. Use `haveI : Smooth t.G.hom := t.semi.smooth`. Take `⟨L, _, _, ⟨M0⟩⟩` from `lieModel_exists S t.G R x`.
+
+Take `⟨hfin, hproj⟩` from `T.lie_model_finite_projective S t.G R x L M0`. Use `haveI := hfin`. Use `haveI := hproj`. Use `haveI : Module.Free R L := Module.free_of_flat_of_isLocalRing`. Set `b` to `Module.finBasis R L`.
+
+Set `M` to `transport M0 b.equivFun`. Use `⟨Module.finrank R L, M, rho t.act M, rho_isActOf t.act M, ?_⟩` and prove the remaining obligations. Introduce `R' _ f x' hx'`. Substitute `hx'` using the available equality. Use `letI : Algebra R R' := f.toAlgebra`.
+
+Take `⟨T', _, _, _, _, M1, j, hj, hbc⟩` from `FlagFib.lieModel_liftBaseChange S t.G R R' x L M0`. Set `b'` to `hbc.basis b`. Set `M' : LieModel t.G (spMap f ≫ x) (Fin (Module.finrank R L) → R')` to `transport M1 b'.equivFun`. Establish `key : ∀ u : Fin (Module.finrank R L) → R, b'.equivFun.symm (f ∘ u) = j (b.equivFun.symm u)`. Introduce `u`.
+
+Apply `b'.equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Rewrite using `[Module.Basis.equivFun_apply, IsBaseChange.basis_repr_comp_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Establish `hpt : ∀ u, M'.pt (f ∘ u) = M1.pt (j (b.equivFun.symm u))`. Introduce `u`. Use `show M1.pt (b'.equivFun.symm (f ∘ u)) = _`. Rewrite using `[key]`. Use `⟨M', rho t.act M', rho_isActOf t.act M', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `u`. Rewrite using `[hpt]`. Establish `h3` using `hj (b.equivFun.symm u)`. Simplify using `only [LieModel.Lifts, Category.comp_id] at h3`. Conclude with `h3`.
+
+Introduce `a u`. Apply `M'.inj` to reduce the goal to its premises. Establish `h1` using `rho_isActOf t.act M' a (f ∘ u)`. Establish `h2 : M0.pt (b.equivFun.symm (rho t.act M a u)) = M0.pt (b.equivFun.symm u) ≫ t.act.act a` using `rho_isActOf t.act M a u`. Rewrite using `[h1, hpt, hpt]`.
+
+Establish `h3` using `hj (b.equivFun.symm u)`. Establish `h4` using `hj (b.equivFun.symm (rho t.act M a u))`. Simplify using `only [LieModel.Lifts, Category.comp_id] at h3 h4`. Use `ext1`. Rewrite using `[Over.comp_left, h3, h4, h2, Over.comp_left, Category.assoc]`.
+-/
 theorem lie_model_action_base_change : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (R : Type) [CommRing R] [IsLocalRing R] (x : Sp R ⟶ S), ∃ (n : ℕ) (M : LieModel t.G x (Fin n → R)) (ρ : 𝓞 E →+* Module.End R (Fin n → R)), M.IsActOf t.act.act ρ ∧ ∀ (R' : Type) [CommRing R'] (f : R →+* R') (x' : Sp R' ⟶ S), x' = spMap f ≫ x → ∃ (M' : LieModel t.G x' (Fin n → R')) (ρ' : 𝓞 E →+* Module.End R' (Fin n → R')), M'.IsActOf t.act.act ρ' ∧ (∀ u, (M'.pt (f ∘ u)).left = spMap (dualMap f) ≫ (M.pt u).left) ∧ ∀ a u, ρ' a (f ∘ u) = f ∘ ρ a u := by
   intro E _ _ _ H S t R _ _ x
   letI := t.grp

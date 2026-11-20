@@ -6,6 +6,9 @@ open scoped MatrixGroups ModularForm
 
 namespace UpperTheory.V.Z.Sym.Unl
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Both sides reduce to the same expression.
+-/
 private theorem coe_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I → ℂ) (f : I → ModularForm (Gamma1 N) k) :
     ((∑ a ∈ s, c a • f a : ModularForm (Gamma1 N) k) : ℍ → ℂ) = ∑ a ∈ s, c a • (f a : ℍ → ℂ) := by
   classical
@@ -13,16 +16,27 @@ private theorem coe_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I �
   | empty => simp
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ← ih]; rfl
 
+/- English proof (translation)
+Rewrite using `[strictPeriods_Gamma1]`. Conclude with `AddSubgroup.mem_zmultiples 1`.
+-/
 private theorem one_mem_per (N : ℕ) :
     (1 : ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods := by
   rw [strictPeriods_Gamma1]; exact AddSubgroup.mem_zmultiples 1
 
+/- English proof (translation)
+Unfold `coef`. Rewrite using `[ModularForm.qExpansion_smul one_pos (one_mem_per N) c f]`. Simplify using the standard rewrite rules.
+-/
 private theorem coef_smul {N : ℕ} {k : ℤ} (c : ℂ) (f : ModularForm (Gamma1 N) k) (n : ℕ) :
     coef (c • (f : ℍ → ℂ)) n = c * coef f n := by
   unfold coef
   rw [ModularForm.qExpansion_smul one_pos (one_mem_per N) c f]
   simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [coef, qExpansion_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih, ← coef_smul]`. Unfold `coef`.
+
+Rewrite using `[← map_add]`. Use `congr 1`. Conclude with `ModularForm.qExpansion_add one_pos (one_mem_per N) (c a • f a) (∑ a ∈ s, c a • f a)`.
+-/
 private theorem coef_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I → ℂ) (f : I → ModularForm (Gamma1 N) k) (n : ℕ) :
     coef (∑ a ∈ s, c a • f a : ModularForm (Gamma1 N) k) n = ∑ a ∈ s, c a * coef (f a) n := by
   classical
@@ -35,17 +49,28 @@ private theorem coef_comb {N : ℕ} {k : ℤ} {I : Type} (s : Finset I) (c : I �
     congr 1
     exact ModularForm.qExpansion_add one_pos (one_mem_per N) (c a • f a) (∑ a ∈ s, c a • f a)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ`. Rewrite using `[ModularForm.SL_slash_apply, ModularGroup.SL_neg_smul, one_smul, ModularGroup.denom_apply]`. Simplify using `[mul_comm, ← inv_pow]`.
+-/
 private theorem slash_neg_one (k : ℕ) (f : ℍ → ℂ) : f ∣[(k : ℤ)] (-1 : SL(2, ℤ)) = ((-1 : ℂ) ^ k) • f := by
   funext τ
   rw [ModularForm.SL_slash_apply, ModularGroup.SL_neg_smul, one_smul, ModularGroup.denom_apply]
   simp [mul_comm, ← inv_pow]
 
+/- English proof (translation)
+Establish `h : (2 : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((2 : ℕ) : ℚ_[l])`. Rewrite using `[map_natCast]`. Both sides reduce to the same expression. Rewrite using `[h, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out Nat.prime_two).2 hl`.
+-/
 private theorem norm_two (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) : ‖(2 : Qbar l)‖ = 1 := by
   have h : (2 : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((2 : ℕ) : ℚ_[l]) := by
     rw [map_natCast]; rfl
   rw [h, norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact (Nat.coprime_primes Fact.out Nat.prime_two).2 hl
 
+/- English proof (translation)
+Establish `h : (ι.symm (χ (a : ZMod N))) ^ (Fintype.card (ZMod N)ˣ) = 1`. Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg norm h`. Rewrite `h2` using `[norm_pow, norm_one]`.
+
+Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2`.
+-/
 private theorem norm_chi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (a : (ZMod N)ˣ) : ‖ι.symm (χ (a : ZMod N))‖ = 1 := by
   have h : (ι.symm (χ (a : ZMod N))) ^ (Fintype.card (ZMod N)ˣ) = 1 := by
@@ -54,6 +79,15 @@ private theorem norm_chi {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {N : �
   rw [norm_pow, norm_one] at h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2
 
+/- English proof (translation)
+Introduce `γ hγ`. Establish `hd : IsUnit ((γ 1 1 : ℤ) : ZMod N)`. Establish `h1` using `γ.det_coe`. Rewrite `h1` using `[Matrix.det_fin_two]`. Establish `h2` using `congrArg (Int.cast : ℤ → ZMod N) h1`.
+
+Move the coercions through the operations in `at h2`. Rewrite `h2` using `[Gamma0_mem.1 hγ, mul_zero, sub_zero]`. Conclude with `IsUnit.of_mul_eq_one_right _ h2`. Take `⟨d, hd⟩` from `hd`. Rewrite using `[coe_comb, SlashAction.sum_slash, Finset.smul_sum, ← hd]`.
+
+Use `Fintype.sum_equiv (Equiv.mulRight d) _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[ModularForm.SL_smul_slash, hfam a (a * d) γ hγ (by rw [← hd]; rfl), smul_smul]`. Use `congr 1`. Simplify using `only [Equiv.coe_mulRight]`. Rewrite using `[mul_left_comm, ← map_mul, ← Units.val_mul]`.
+
+Use `congr 3`. Simplify using `[mul_comm]`.
+-/
 private theorem hasChar_comb {N k : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (v : ℂ)
     (f : (ZMod N)ˣ → ModularForm (Gamma1 N) (k : ℤ)) (hfam : IsFam k f) :
     HasChar k χ (∑ a : (ZMod N)ˣ, (v * χ ((a⁻¹ : (ZMod N)ˣ) : ZMod N)) • f a : ModularForm (Gamma1 N) (k : ℤ)) := by
@@ -76,6 +110,9 @@ private theorem hasChar_comb {N k : ℕ} [NeZero N] (χ : DirichletCharacter ℂ
   congr 3
   simp [mul_comm]
 
+/- English proof (translation)
+Introduce `γ hγ`. Rewrite using `[coe_comb, SlashAction.sum_slash]`. Use `(zeroAtImInftySubmodule ℂ).sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[ModularForm.SL_smul_slash]`. Conclude with `(zeroAtImInftySubmodule ℂ).smul_mem _ (hvan a γ hγ)`.
+-/
 private theorem vanOff_comb {N k : ℕ} [NeZero N] (c : (ZMod N)ˣ → ℂ)
     (f : (ZMod N)ˣ → ModularForm (Gamma1 N) (k : ℤ)) (hvan : ∀ a, VanOff N k (f a)) :
     VanOff N k (∑ a : (ZMod N)ˣ, c a • f a : ModularForm (Gamma1 N) (k : ℤ)) := by
@@ -88,6 +125,25 @@ private theorem vanOff_comb {N k : ℕ} [NeZero N] (c : (ZMod N)ˣ → ℂ)
 end UpperTheory.V.Z.Sym.Unl
 
 open UpperTheory.V.Z.Sym.Unl in
+/- English proof (translation)
+Introduce `l _ hl ι N _ hN hlN`. Take `⟨k₀, hk₀⟩` from `unitFamC l hl ι N hN hlN`. Use `⟨k₀, fun k hk χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨f, hfam, hint, hvan, hunit, hzero, hcj⟩` from `hk₀ k hk`. Use `set u : ℂ := coef (f 1) 0 with hu`.
+
+Establish `hu0 : u ≠ 0`. Introduce `h`. Rewrite `hunit` using `[h]`. Simplify using `at hunit`. Use `set c : (ZMod N)ˣ → ℂ := fun a => (2 * u)⁻¹ * χ ((a⁻¹ : (ZMod N)ˣ) : ZMod N) with hc`.
+
+Establish `hcn : ∀ a, ‖ι.symm (c a)‖ = 1`. Introduce `a`. Simplify using `only [hc, map_mul, map_inv₀, norm_mul, norm_inv, norm_chi, hunit, map_ofNat, norm_two l hl]`. Simplify using the standard rewrite rules. Use `⟨∑ a, c a • f a, hasChar_comb χ _ f hfam, ?_, vanOff_comb c f hvan, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `n`. Rewrite using `[coef_comb, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, hcn, one_mul]`. Conclude with `hint a n`.
+
+Establish `: Fact (2 < N)` using `⟨hN⟩`. Establish `hne : (1 : (ZMod N)ˣ) ≠ -1`. Introduce `h`. Use `congrArg Units.val h` as an intermediate fact. Simplify using `only [Units.val_one, Units.val_neg] at this`.
+
+Conclude with `ZMod.neg_one_ne_one this.symm`. Establish `hm : (f (-1) : ℍ → ℂ) = ((-1 : ℂ) ^ k) • (f 1 : ℍ → ℂ)`. Rewrite using `[← slash_neg_one]`. Conclude with `(hfam 1 (-1) (-1) (by simp [Gamma0_mem]) (by simp)).symm`. Rewrite using `[coef_comb, Fintype.sum_eq_add 1 (-1) hne (fun a ha => by rw [hzero a ha.1 ha.2, mul_zero]), hm, coef_smul, ← hu]`.
+
+Simplify using `only [hc, inv_one, Units.val_one, map_one, inv_neg, Units.val_neg, hχ]`. Establish `h1 : ((-1 : ℂ) ^ k) * (-1) ^ k = 1` using `by rw [← mul_pow]; simp`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h1`. Introduce `σ`.
+
+Take `⟨f', hfam', hvan', hco⟩` from `hcj σ`. Use `⟨∑ a : (ZMod N)ˣ, (σ (2 * u)⁻¹ * cj σ χ ((a⁻¹ : (ZMod N)ˣ) : ZMod N)) • f' a, hasChar_comb (cj σ χ) _ f' hfam', vanOff_comb _ f' hvan', fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[coef_comb, coef_comb, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hco, map_mul σ (c a), hc]`.
+
+Simplify using `only`. Rewrite using `[map_mul σ]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Z.Sym.Unl.unitFormC :
     UpperTheory.V.Z.Sym.Unl.UnitFormC := by
   classical

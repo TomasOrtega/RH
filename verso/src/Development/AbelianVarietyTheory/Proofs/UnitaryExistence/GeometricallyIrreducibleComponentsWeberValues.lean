@@ -13,6 +13,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor F
 
 namespace GlobalTheory.FinalJoin.FieldAlg
 
+/- English proof (translation)
+Introduce `D Q hP j hj l' Xo' c' n hn hM hW`. Take `⟨⟨ι, hι⟩, hr, -, -⟩` from `GlobalTheory.Member.exists_iotaOK D Q hP j hj`. Establish `h6 : 6 ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`.
+
+Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `h1` using `GlobalTheory.RankOneDatum.exists_datum_rank_one D Q.H (Q.Dw j) (D.sp.W j) ι hι (by omega)`. Establish `h0 : Q.H.rt0 ∈ c'.F` using `c'.le (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `hC` using `GlobalTheory.FinalJoin.CurveField.curveOver_of_weberIn _ Q.H c'.F n hn`.
+
+Establish `hc : CurveOver Q.H c'.F l'.M'` using `hC.2 _ hM (hW.elim (hC.1 h0) id)`. Conclude with `GlobalTheory.CompRat.fnAlgClosed_of_curveOver_lcm _ Q.H (Q.Dw j) l' Xo' c' (by omega) (Or.inr (Or.inr ⟨by omega, h1⟩)) hc`.
+-/
 theorem fnAlgClosed_of_weberIn : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, Formalism.L2.Pj.InR D j → ∀ (l' : Level Q.H) (Xo' : Moduli (Q.Dw j) l') (c' : Coeff l') (n : ℕ), 0 < n → l'.M' ∣ n → (WeberIn Q.H c'.F n ∨ CurveOver Q.H c'.F n) → FnAlgClosed Xo' c' := by
   intro D Q hP j hj l' Xo' c' n hn hM hW
   obtain ⟨⟨ι, hι⟩, hr, -, -⟩ := GlobalTheory.Member.exists_iotaOK D Q hP j hj

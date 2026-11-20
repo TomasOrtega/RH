@@ -18,6 +18,11 @@ section Lin
 
 variable {K : Type} [Field K] {n : ℕ}
 
+/- English proof (translation)
+Establish `hPP : ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (P : Matrix (Fin n) (Fin n) K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, pow_zero, Matrix.mul_one, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+
+Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem conj_pow (P : GL (Fin n) K) (D : Matrix (Fin n) (Fin n) K) (k : ℕ) :
     ((P : Matrix (Fin n) (Fin n) K) * D * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) ^ k =
       (P : Matrix (Fin n) (Fin n) K) * D ^ k * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := by
@@ -35,6 +40,11 @@ theorem conj_pow (P : GL (Fin n) K) (D : Matrix (Fin n) (Fin n) K) (k : ℕ) :
             ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := by simp only [Matrix.mul_assoc]
       _ = _ := by rw [hPP, Matrix.mul_one]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, Matrix.mul_add, Matrix.add_mul]`. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, aeval_monomial, conj_pow]`. Establish `hc : algebraMap K (Matrix (Fin n) (Fin n) K) a * (P : Matrix (Fin n) (Fin n) K) = (P : Matrix (Fin n) (Fin n) K) * algebraMap K (Matrix (Fin n) (Fin n) K) a` using `Algebra.commutes a _`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem aeval_conj (P : GL (Fin n) K) (D : Matrix (Fin n) (Fin n) K) (Q : K[X]) :
     aeval ((P : Matrix (Fin n) (Fin n) K) * D * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) Q =
       (P : Matrix (Fin n) (Fin n) K) * aeval D Q * ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := by
@@ -51,6 +61,9 @@ theorem aeval_conj (P : GL (Fin n) K) (D : Matrix (Fin n) (Fin n) K) (Q : K[X]) 
       _ = (P : Matrix (Fin n) (Fin n) K) * (algebraMap K (Matrix (Fin n) (Fin n) K) a * D ^ k) *
             ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) := by rw [hc]; simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `h` using `Polynomial.aeval_algHom_apply (Matrix.diagonalAlgHom K : (Fin n → K) →ₐ[K] Matrix (Fin n) (Fin n) K) u Q`. Rewrite `h` using `[Matrix.diagonalAlgHom_apply]`. Rewrite using `[h, Matrix.diagonalAlgHom_apply, aeval_pi_apply]`. Use `congr 1`.
+-/
 theorem aeval_diagonal' (u : Fin n → K) (Q : K[X]) :
     aeval (Matrix.diagonal u) Q = Matrix.diagonal fun i => Q.eval (u i) := by
   have h := Polynomial.aeval_algHom_apply (Matrix.diagonalAlgHom K : (Fin n → K) →ₐ[K] Matrix (Fin n) (Fin n) K) u Q
@@ -58,14 +71,27 @@ theorem aeval_diagonal' (u : Fin n → K) (Q : K[X]) :
   rw [h, Matrix.diagonalAlgHom_apply, aeval_pi_apply]
   congr 1
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem mulVec_inv_mulVec (P : GL (Fin n) K) (x : Fin n → K) :
     (P : Matrix (Fin n) (Fin n) K) *ᵥ (((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem inv_mulVec_mulVec (P : GL (Fin n) K) (x : Fin n → K) :
     ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ ((P : Matrix (Fin n) (Fin n) K) *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Rewrite using `[LinearMap.mem_ker, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h2` using `congrArg (fun z => ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ z) h`. Simplify using `only [inv_mulVec_mulVec, Matrix.mulVec_zero] at h2`.
+
+Establish `h3` using `congrFun h2 i`. Simplify `h3` using `[Matrix.mulVec_diagonal]`. Introduce `h`. Establish `: Matrix.diagonal d *ᵥ (((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) = 0`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Matrix.mulVec_diagonal]`. Conclude with `h i`. Rewrite using `[this, Matrix.mulVec_zero]`.
+-/
 theorem mem_ker_conj_diagonal (P : GL (Fin n) K) (d : Fin n → K) (x : Fin n → K) :
     x ∈ LinearMap.ker (Matrix.toLin' ((P : Matrix (Fin n) (Fin n) K) * Matrix.diagonal d *
         ((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))) ↔
@@ -84,6 +110,21 @@ theorem mem_ker_conj_diagonal (P : GL (Fin n) K) (d : Fin n → K) (x : Fin n �
       exact h i
     rw [this, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_ker_conj_diagonal]`. Establish `hy0 : ∀ j, j ∉ S → ((((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ x) j = 0`. Introduce `j hj`.
+
+Break down `mul_eq_zero.1 (hx j) with h | h` into its components or cases. Conclude with `absurd ((hd j).1 h) hj`. Conclude with `h`. Establish `hx' : x = ∑ j ∈ S, ((((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) *ᵥ x) j • (fun k => (P : Matrix (Fin n) (Fin n) K) k j)` using `by conv_lhs => rw [← mulVec_inv_mulVec P x]`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Matrix.mulVec, dotProduct]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ S)]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+
+Introduce `j _ hj`. Rewrite using `[hy0 j hj, mul_zero]`. Rewrite using `[hx']`. Conclude with `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_ker_conj_diagonal]`. Introduce `j`. Establish `e : (((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ fun k => (P : Matrix (Fin n) (Fin n) K) k i.1) j = (((P⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * (P : Matrix (Fin n) (Fin n) K)) j i.1`. Rewrite using `[Matrix.mul_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_apply]`. Distinguish the cases in `hj : j = i.1`. Substitute `hj` using the available equality. Rewrite using `[(hd _).2 i.2, zero_mul]`.
+
+Rewrite using `[if_neg hj, mul_zero]`.
+-/
 theorem ker_conj_diagonal_eq_span (P : GL (Fin n) K) (d : Fin n → K) (S : Finset (Fin n))
     (hd : ∀ i, d i = 0 ↔ i ∈ S) :
     LinearMap.ker (Matrix.toLin' ((P : Matrix (Fin n) (Fin n) K) * Matrix.diagonal d *
@@ -123,6 +164,11 @@ theorem ker_conj_diagonal_eq_span (P : GL (Fin n) K) (d : Fin n → K) (S : Fins
       rw [(hd _).2 i.2, zero_mul]
     · rw [if_neg hj, mul_zero]
 
+/- English proof (translation)
+Rewrite `ht` using `[Matrix.eval_charpoly]`. Take `⟨x, hx, hx0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 ht`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations. Rewrite `hx0` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hx0]`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+-/
 theorem exists_eigvec (γ : Matrix (Fin n) (Fin n) K) (t : K) (ht : γ.charpoly.eval t = 0) :
     ∃ x : Fin n → K, x ≠ 0 ∧ γ *ᵥ x = t • x := by
   rw [Matrix.eval_charpoly] at ht
@@ -133,6 +179,15 @@ theorem exists_eigvec (γ : Matrix (Fin n) (Fin n) K) (t : K) (ht : γ.charpoly.
   funext i
   simp [Matrix.scalar_apply, Matrix.mulVec_diagonal]
 
+/- English proof (translation)
+Use `choose x hx0 hx using fun i => exists_eigvec γ (u i) (hr i)`. Establish `hli : LinearIndependent K x`. Use `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' γ) u hu x fun i => ?_` and prove the remaining obligations. Use `Module.End.hasEigenvector_iff.2 ⟨Module.End.mem_eigenspace_iff.2 ?_, hx0 i⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply]`.
+
+Conclude with `hx i`. Set `M : Matrix (Fin n) (Fin n) K` to `Matrix.of fun k i => x i k`. Establish `hcol : M.col = x` using `by funext j k; rfl`. Establish `hM : IsUnit M` using `Matrix.linearIndependent_cols_iff_isUnit.1 (by rw [hcol]; exact hli)`. Use `⟨hM.unit, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsUnit.unit_spec]`. Use extensionality with `k i`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply]`. Establish `h1` using `congrFun (hx i) k`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h1`.
+
+Simplify using `only [M, Matrix.of_apply]`. Rewrite using `[h1, mul_comm]`.
+-/
 theorem exists_diagonalize (γ : Matrix (Fin n) (Fin n) K) (u : Fin n → K) (hu : Function.Injective u)
     (hr : ∀ i, γ.charpoly.eval (u i) = 0) :
     ∃ P : GL (Fin n) K, γ * (P : Matrix (Fin n) (Fin n) K) = (P : Matrix (Fin n) (Fin n) K) * Matrix.diagonal u := by
@@ -160,6 +215,13 @@ def revOn (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S) : Equiv.Perm 
   left_inv i := Subtype.ext (Fin.rev_rev _)
   right_inv i := Subtype.ext (Fin.rev_rev _)
 
+/- English proof (translation)
+Establish `e : A.submatrix (fun i : S => i.1) (fun i : S => i.1) = (revOn S hS).permMatrix K * Matrix.diagonal fun j : S => A (Fin.rev j.1) j.1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_diagonal, Matrix.submatrix_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq]`. Distinguish the cases in `h : (revOn S hS) i = j`. Rewrite using `[if_pos h, one_mul]`.
+
+Substitute `h` using the available equality. Simplify using `[revOn, Fin.rev_rev]`. Rewrite using `[if_neg h, zero_mul]`. Apply `hA` to reduce the goal to its premises. Introduce `hj`.
+
+Apply `h` to reduce the goal to its premises. Conclude with `Subtype.ext (by rw [hj]; rfl)`. Rewrite using `[e, Matrix.det_mul, Matrix.det_permutation, Matrix.det_diagonal]`.
+-/
 theorem det_submatrix_rev (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, j ≠ Fin.rev i → A i j = 0)
     (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S) :
     (A.submatrix (fun i : S => i.1) (fun i : S => i.1)).det =
@@ -180,6 +242,13 @@ theorem det_submatrix_rev (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, j ≠ Fi
       exact Subtype.ext (by rw [hj]; rfl)
   rw [e, Matrix.det_mul, Matrix.det_permutation, Matrix.det_diagonal]
 
+/- English proof (translation)
+Establish `e : A = (Fin.revPerm : Equiv.Perm (Fin n)).permMatrix K * Matrix.diagonal fun j => A (Fin.rev j) j`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_diagonal, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, Fin.revPerm_apply]`. Distinguish the cases in `h : Fin.rev i = j`. Rewrite using `[if_pos h, one_mul]`.
+
+Substitute `h` using the available equality. Rewrite using `[Fin.rev_rev]`. Rewrite using `[if_neg h, zero_mul]`. Conclude with `hA i j (fun hj => h hj.symm)`. Use `conv_lhs => rw [e]`.
+
+Rewrite using `[Matrix.det_mul, Matrix.det_permutation, Matrix.det_diagonal]`.
+-/
 theorem det_rev (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, j ≠ Fin.rev i → A i j = 0) :
     A.det = ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) : ℤ) : K) * ∏ j, A (Fin.rev j) j := by
   have e : A = (Fin.revPerm : Equiv.Perm (Fin n)).permMatrix K * Matrix.diagonal fun j => A (Fin.rev j) j := by
@@ -195,6 +264,13 @@ theorem det_rev (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, j ≠ Fin.rev i �
   conv_lhs => rw [e]
   rw [Matrix.det_mul, Matrix.det_permutation, Matrix.det_diagonal]
 
+/- English proof (translation)
+Rewrite using `[← Finset.sum_filter_add_sum_filter_not S (fun j => Fin.rev j = j), Int.cast_add]`. Establish `h0 : (((∑ j ∈ S.filter (fun j => ¬ Fin.rev j = j), f j : ℤ)) : ZMod 2) = 0`. Rewrite using `[Int.cast_sum]`. Use `Finset.sum_involution (fun j _ => Fin.rev j) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j _`.
+
+Rewrite using `[hf]`. Conclude with `CharTwo.add_self_eq_zero _`. Introduce `j hj _`. Conclude with `(Finset.mem_filter.1 hj).2`. Introduce `j hj`.
+
+Rewrite `hj`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hS _ hj.1, by rw [Fin.rev_rev]; exact fun h => hj.2 h.symm⟩`. Introduce `j _`. Conclude with `Fin.rev_rev j`. Rewrite using `[h0, add_zero]`.
+-/
 theorem sum_rev_parity (f : Fin n → ℤ) (hf : ∀ j, f (Fin.rev j) = f j) (S : Finset (Fin n))
     (hS : ∀ i ∈ S, Fin.rev i ∈ S) :
     (((∑ j ∈ S, f j : ℤ)) : ZMod 2) = (((∑ j ∈ S.filter (fun j => Fin.rev j = j), f j : ℤ)) : ZMod 2) := by
@@ -214,6 +290,9 @@ theorem sum_rev_parity (f : Fin n → ℤ) (hf : ∀ j, f (Fin.rev j) = f j) (S 
       exact Fin.rev_rev j
   rw [h0, add_zero]
 
+/- English proof (translation)
+Establish `a` using `congrArg Fin.val hi`. Establish `b` using `congrArg Fin.val hj`. Rewrite `a`, `b` using `[Fin.val_rev]`. Conclude with `Fin.ext (by omega)`.
+-/
 theorem rev_fixed_unique {i j : Fin n} (hi : Fin.rev i = i) (hj : Fin.rev j = j) : i = j := by
   have a := congrArg Fin.val hi
   have b := congrArg Fin.val hj
@@ -226,6 +305,11 @@ section Ord
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Unfold `ordL`. Distinguish the cases in `hx : Valued.v x = 0`. Establish `hy : Valued.v y = 0` using `by rw [← h]; exact hx`. Rewrite using `[dif_pos hx, dif_pos hy]`. Establish `hy : Valued.v y ≠ 0` using `by rw [← h]; exact hx`.
+
+Rewrite using `[dif_neg hx, dif_neg hy]`. Establish `e : WithZero.unzero hx = WithZero.unzero hy`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, WithZero.coe_unzero, h]`. Rewrite using `[e]`.
+-/
 theorem ordL_eq_of_v {x y : L} (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
   unfold ordL
   by_cases hx : Valued.v x = 0
@@ -238,6 +322,11 @@ theorem ordL_eq_of_v {x y : L} (h : Valued.v x = Valued.v y) : ordL x = ordL y :
       rw [WithZero.coe_unzero, WithZero.coe_unzero, h]
     rw [e]
 
+/- English proof (translation)
+Establish `h0 : Valued.v x ≠ 0` using `by simpa using hx`. Establish `h0' : Valued.v y ≠ 0` using `by simpa using hy`. Establish `h1 : Valued.v (x * y) ≠ 0` using `by rw [map_mul]; exact mul_ne_zero h0 h0'`. Unfold `ordL`. Rewrite using `[dif_neg h1, dif_neg h0, dif_neg h0']`.
+
+Establish `e : WithZero.unzero h1 = WithZero.unzero h0 * WithZero.unzero h0'`. Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_mul, WithZero.coe_unzero, WithZero.coe_unzero, WithZero.coe_unzero, map_mul]`. Rewrite using `[e, toAdd_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ordL_mul' {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL x + ordL y := by
   have h0 : Valued.v x ≠ 0 := by simpa using hx
   have h0' : Valued.v y ≠ 0 := by simpa using hy
@@ -250,15 +339,24 @@ theorem ordL_mul' {x y : L} (hx : x ≠ 0) (hy : y ≠ 0) : ordL (x * y) = ordL 
   rw [e, toAdd_mul]
   ring
 
+/- English proof (translation)
+Establish `h` using `ordL_mul' (one_ne_zero : (1 : L) ≠ 0) (one_ne_zero : (1 : L) ≠ 0)`. Rewrite `h` using `[one_mul]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem ordL_one' : ordL (1 : L) = 0 := by
   have h := ordL_mul' (one_ne_zero : (1 : L) ≠ 0) (one_ne_zero : (1 : L) ≠ 0)
   rw [one_mul] at h
   omega
 
+/- English proof (translation)
+Unfold `ordL`. Simplify using the standard rewrite rules.
+-/
 theorem ordL_zero' : ordL (0 : L) = 0 := by
   unfold ordL
   simp
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp [ordL_one']`. Consider the case `@insert a T ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ordL_mul' (hg a (Finset.mem_insert_self a T)) (Finset.prod_ne_zero_iff.2 fun j hj => hg j (Finset.mem_insert_of_mem hj)), ih fun j hj => hg j (Finset.mem_insert_of_mem hj)]`.
+-/
 theorem ordL_prod' {ι : Type} (T : Finset ι) (g : ι → L) (hg : ∀ j ∈ T, g j ≠ 0) :
     ordL (∏ j ∈ T, g j) = ∑ j ∈ T, ordL (g j) := by
   induction T using Finset.induction_on with
@@ -269,6 +367,9 @@ theorem ordL_prod' {ι : Type} (T : Finset ι) (g : ι → L) (hg : ∀ j ∈ T,
         (Finset.prod_ne_zero_iff.2 fun j hj => hg j (Finset.mem_insert_of_mem hj)),
       ih fun j hj => hg j (Finset.mem_insert_of_mem hj)]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or s with h | h <;> subst h`. Simplify using the standard rewrite rules. Apply `ordL_eq_of_v` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem ordL_sign_mul (s : ℤˣ) (x : L) : ordL (((s : ℤ) : L) * x) = ordL x := by
   rcases Int.units_eq_one_or s with h | h <;> subst h
   · simp
@@ -281,6 +382,65 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨-, hinv, hcj, -⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Unfold `kapSign`. Use `split_ifs with hs`. Both sides reduce to the same expression. Simplify using `only []`.
+
+Establish `hUn : ((γ.val.map (cj w))ᵀ) * γ.val = 1`. Establish `h` using `hγ`. Unfold `UL at h`. Rewrite `h` using `[if_neg hs]`. Establish `h2 : cT (cj w) (γ : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * 1 * (γ : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = 1` using `h`.
+
+Rewrite `h2` using `[Matrix.mul_one]`. Conclude with `h2`. Take `⟨u, hu_prod, hu⟩` from `hV`. Establish `huinj : Function.Injective u` using `fun i j h => hv (by rw [← (hu i).2, ← (hu j).2, h])`. Establish `hroot : ∀ i, γ.val.charpoly.eval (u i) = 0`.
+
+Introduce `i`. Rewrite using `[hu_prod, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Take `⟨P, hP⟩` from `exists_diagonalize γ.val u huinj hroot`. Establish `hγP : γ.val = (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * Matrix.diagonal u * ((P⁻¹ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = _ := by rw [hP]`. Use `set H : Matrix (Fin n) (Fin n) (w.adicCompletion E) := ((P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map (cj w))ᵀ * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) with hHdef`. Establish `hPdet : (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 P.isUnit).ne_zero`.
+
+Establish `hHdet : H.det = cj w (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det`. Rewrite using `[hHdef, Matrix.det_mul, Matrix.det_transpose, show ((P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map (cj w)).det = cj w (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det by rw [RingHom.map_det]; rfl]`. Establish `hH0 : H.det ≠ 0`. Rewrite using `[hHdet]`. Conclude with `mul_ne_zero ((map_ne_zero (cj w)).2 hPdet) hPdet`.
+
+Establish `hherm : ∀ i j, cj w (H j i) = H i j`. Introduce `i j`. Simplify using `only [hHdef, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hinv]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hun : ∀ i j, cj w (u i) * H i j * u j = H i j`.
+
+Establish `e1 : (((γ.val * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E))).map (cj w))ᵀ * (γ.val * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)))) = H`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = H := by rw [hUn, Matrix.one_mul]`.
+
+Establish `e2 : (((γ.val * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E))).map (cj w))ᵀ * (γ.val * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)))) = Matrix.diagonal (fun i => cj w (u i)) * H * Matrix.diagonal u`. Rewrite using `[hP, Matrix.map_mul, Matrix.transpose_mul, Matrix.diagonal_map (map_zero (cj w)), Matrix.diagonal_transpose, hHdef]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `i j`. Use `congrFun (congrFun (e2.symm.trans e1) i) j` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Then use the resulting hypothesis. Establish `hsupp : ∀ i j, j ≠ Fin.rev i → H i j = 0`. Introduce `i j hj`. Assume the negation of the conclusion as `hne`. Establish `h1 : cj w (u i) * u j = 1`.
+
+Establish `h2 : (cj w (u i) * u j) * H i j = 1 * H i j`. Rewrite using `[one_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_right_cancel₀ hne h2`. Apply `hj` to reduce the goal to its premises.
+
+Apply `hrev` to reduce the goal to its premises. Establish `h2` using `ordL_mul' ((map_ne_zero (cj w)).2 (hu i).1) (hu j).1`. Rewrite `h2` using `[h1, ordL_one', ordL_eq_of_v (hcj (u i)), (hu i).2, (hu j).2]`. Use linear arithmetic over natural numbers and integers. Establish `hg0 : ∀ j, H (Fin.rev j) j ≠ 0`.
+
+Introduce `j h`. Apply `hH0` to reduce the goal to its premises. Use `Matrix.det_eq_zero_of_row_eq_zero (Fin.rev j) fun j' => ?_` and prove the remaining obligations. Distinguish the cases in `hj' : j' = j`. Rewrite using `[hj']`.
+
+Conclude with `h`. Conclude with `hsupp _ _ (by rw [Fin.rev_rev]; exact hj')`. Use `set f : Fin n → ℤ := fun j => ordL (H (Fin.rev j) j) with hfdef`. Establish `hf : ∀ j, f (Fin.rev j) = f j`. Introduce `j`.
+
+Simplify using `only [hfdef, Fin.rev_rev]`. Rewrite using `[← hherm]`. Conclude with `ordL_eq_of_v (hcj _)`. Establish `hordS : ∀ (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S), ordL (H.submatrix (fun i : S => i.1) (fun i : S => i.1)).det = ∑ j ∈ S, f j`. Introduce `S hS`.
+
+Rewrite using `[det_submatrix_rev H hsupp S hS, ordL_sign_mul, ordL_prod' _ _ (fun j _ => hg0 j.1)]`. Conclude with `Finset.sum_coe_sort S (fun j => f j)`. Establish `htot : Even (∑ j ∈ (Finset.univ : Finset (Fin n)), f j)`. Establish `e : ordL H.det = ∑ j, f j`. Rewrite using `[det_rev H hsupp, ordL_sign_mul, ordL_prod' _ _ (fun j _ => hg0 j)]`.
+
+Rewrite `e` using `[hHdet, ordL_mul' ((map_ne_zero (cj w)).2 hPdet) hPdet, ordL_eq_of_v (hcj _)]`. Conclude with `⟨ordL (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det, by rw [← e]⟩`. Establish `hevenS : ∀ (S : Finset (Fin n)) (hS : ∀ i ∈ S, Fin.rev i ∈ S), Even (∑ j ∈ S, f j)`. Introduce `S hS`. Rewrite using `[← ZMod.intCast_eq_zero_iff_even, sum_rev_parity f hf S hS]`.
+
+Distinguish the cases in `hm : ∃ m ∈ S, Fin.rev m = m`. Take `⟨m, hmS, hm⟩` from `hm`. Establish `e : S.filter (fun j => Fin.rev j = j) = (Finset.univ : Finset (Fin n)).filter (fun j => Fin.rev j = j)`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`. Conclude with `⟨(rev_fixed_unique h hm) ▸ hmS, h⟩`. Rewrite using `[e, ← sum_rev_parity f hf _ (fun i _ => Finset.mem_univ _)]`.
+
+Conclude with `(ZMod.intCast_eq_zero_iff_even).2 htot`. Establish `e : S.filter (fun j => Fin.rev j = j) = ∅`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.notMem_empty, iff_false, not_and]`. Conclude with `fun hj h => hm ⟨j, hj, h⟩`.
+
+Rewrite using `[e, Finset.sum_empty, Int.cast_zero]`. Use `set S : Finset (Fin n) := Finset.univ.filter fun i => Q.eval (u i) = 0 with hSdef`. Use `set V₁ := LinearMap.ker (Matrix.toLin' (aeval γ.val Q)) with hV`. Establish `hVspan : V₁ = Submodule.span (w.adicCompletion E) (Set.range fun i : S => fun k => (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1)`. Rewrite using `[hV, hγP, aeval_conj, aeval_diagonal']`.
+
+Conclude with `ker_conj_diagonal_eq_span P _ S fun i => by simp [hSdef]`. Establish `hli : LinearIndependent (w.adicCompletion E) (fun i : S => fun k => (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1)`. Establish `h` using `(Matrix.linearIndependent_cols_iff_isUnit.2 P.isUnit).comp (fun i : S => i.1) Subtype.val_injective`. Conclude with `h`. Use `set B := Module.finBasis (w.adicCompletion E) V₁`.
+
+Establish `hBli : LinearIndependent (w.adicCompletion E) (fun i => ((B i : V₁) : Fin n → w.adicCompletion E))` using `B.linearIndependent.map' V₁.subtype (Submodule.ker_subtype V₁)`. Establish `hBspan : Submodule.span (w.adicCompletion E) (Set.range fun i => ((B i : V₁) : Fin n → w.adicCompletion E)) = V₁`. Establish `e : (Set.range fun i => ((B i : V₁) : Fin n → w.adicCompletion E)) = V₁.subtype '' Set.range B`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e, Submodule.span_image, B.span_eq, Submodule.map_top, Submodule.range_subtype]`. Take `⟨d, hd0, hdet⟩` from `GlobalTheory.T.gram_det_change_of_basis' (cj w) V₁ (fun i : S => fun k => (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1) (fun i => ((B i : V₁) : Fin n → w.adicCompletion E)) hli hVspan.symm hBli hBspan`. Establish `hG : (Matrix.of fun i j : S => ∑ k, cj w ((P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k i.1) * (P : Matrix (Fin n) (Fin n) (w.adicCompletion E)) k j.1) = H.submatrix (fun i : S => i.1) (fun i : S => i.1)`. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Establish `key : (Matrix.of fun i j => ∑ k, cj w ((B i).1 k) * (B j).1 k).det = cj w d * d * (H.submatrix (fun i : S => i.1) (fun i : S => i.1)).det`. Rewrite using `[← hG]`. Conclude with `hdet`. Rewrite using `[key]`. Distinguish the cases in `hS : ∀ i ∈ S, Fin.rev i ∈ S`.
+
+Establish `hne : (H.submatrix (fun i : S => i.1) (fun i : S => i.1)).det ≠ 0`. Rewrite using `[det_submatrix_rev H hsupp S hS]`. Apply the tactic sequence `exact mul_ne_zero (by rcases Int.units_eq_one_or (Equiv.Perm.sign (revOn S hS)) with h | h <;> simp [h]) (Finset.prod_ne_zero_iff.2 fun j _ => hg0 j.1)`. Rewrite using `[ordL_mul' (mul_ne_zero ((map_ne_zero (cj w)).2 hd0) hd0) hne, ordL_mul' ((map_ne_zero (cj w)).2 hd0) hd0, ordL_eq_of_v (hcj d), hordS S hS]`. Take `⟨r, hr⟩` from `hevenS S hS`.
+
+Conclude with `Even.neg_one_zpow ⟨ordL d + r, by rw [hr]; ring⟩`. Use `push_neg at hS`. Take `⟨i, hi, hri⟩` from `hS`. Establish `hz : (H.submatrix (fun i : S => i.1) (fun i : S => i.1)).det = 0`. Use `Matrix.det_eq_zero_of_row_eq_zero ⟨i, hi⟩ fun j => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.submatrix_apply]`. Apply `hsupp` to reduce the goal to its premises. Introduce `h`. Apply `hri` to reduce the goal to its premises. Rewrite using `[← h]`.
+
+Conclude with `j.2`. Rewrite using `[hz, mul_zero, ordL_zero', zpow_zero]`.
+-/
 theorem kapSign_eq_one_of_vals (hU : Unr E) (w : Pl E) (n : ℕ) (γ : GLw n w) (hγ : γ ∈ UL n w)
     (v : Fin n → ℤ) (hv : Function.Injective v) (hrev : ∀ i j, v j = -v i → j = Fin.rev i)
     (hV : HasVals γ.val.charpoly v) (Q : (w.adicCompletion E)[X]) : kapSign n w Q γ = 1 := by

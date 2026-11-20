@@ -21,11 +21,35 @@ noncomputable section
 
 namespace GlobalTheory.SquareAgree
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU]`.
+-/
 theorem conjU_one_eq {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E) (h : J = c • V.gram) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU V c h 1 = 1 := by
   apply Subtype.ext
   simp [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU]
 
+/- English proof (translation)
+Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _ _ hO hT R Rf hM Pi rf rl p p' _ g hg ΦD _ Φ₀D _ hPM`. Rewrite using `[conjU_one_eq, conjU_one_eq]`. Establish `hinf` using `GlobalTheory.T.archimedeanSupported_smul_transposeGram_finite_sub_one D X e hO.JX g hg`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.unramified_places_finite_set hP _ _ _ Bs _ _ Γ Xc om om' hT`. Take `⟨T₀, hXT, hOn⟩` from `hPM`.
+
+Take `⟨S, l, k, hTS, hl, hprod, hkinf, hkS, hkV, hkV'⟩` from `GlobalTheory.T.exists_adelicUnitary_prod_localPoints_mul_latticeStabilizer _ _ _ Bs _ _ Γ hT.geo _ hinf (T₀ ∪ S₀)`. Establish `ext : ∀ U : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F), GlobalTheory.ThK.PolynomialMatching.PolMatchOn Bs Γ Xc R Rf (T₀ ∪ U) ΦD Φ₀D`. Introduce `U`. Proceed by induction on `U using Finset.induction_on with`. Consider the case `empty => rw [Finset.union_empty]`.
+
+Conclude with `hOn`. Consider the case `insert v U hv ih`. Rewrite using `[Finset.union_insert]`. Distinguish the cases in `hvX : v ∈ Xc.T`. Rewrite using `[Finset.insert_eq_of_mem (Finset.mem_union_left _ (hXT hvX))]`.
+
+Conclude with `ih`. Conclude with `GlobalTheory.ThK.PolynomialMatching.polMatchOn_insert _ _ _ Bs _ _ Γ Xc R Rf v (hM.fin.sph v hvX).1 _ _ _ ih`. Establish `hOnS : GlobalTheory.ThK.PolynomialMatching.PolMatchOn Bs Γ Xc R Rf S ΦD Φ₀D`. Use `ext S` as an intermediate fact. Rewrite `this` using `[Finset.union_eq_right.2 (Finset.union_subset_left hTS)]`. Then use the resulting hypothesis.
+
+Establish `hU` using `hS₀ S (Finset.union_subset_right hTS) k hkinf hkS hkV hkV'`. Establish `hOnK : GlobalTheory.ThK.PolynomialMatching.PolMatchOn Bs Γ Xc R Rf S (om (1, k) ΦD) (om' (1, k) Φ₀D)`. Take `⟨m, m', f, φ, f', φ', hφ, hφ', hΦ, hΦ', hsum⟩` from `hOnS`. Use `⟨m, m', f, φ, f', φ', hφ, hφ', ?_, ?_, hsum⟩` and prove the remaining obligations. Rewrite using `[hΦ, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hU.1 (f i) (φ i) (hφ i).2.1 (hφ i).2.2`. Rewrite using `[hΦ', map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => hU.2 (f' j) (φ' j) (hφ' j).2.1 (hφ' j).2.2`. Establish `split : ∀ (x y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J) Φ, om (1, x * y) Φ = om (1, x) (om (1, y) Φ)`. Introduce `x y Φ`.
+
+Rewrite using `[show ((1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.V.J), x * y) = (1, x) * (1, y) by simp, map_mul, Module.End.mul_apply]`. Establish `split' : ∀ (x y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J) Φ, om' (1, x * y) Φ = om' (1, x) (om' (1, y) Φ)`. Introduce `x y Φ`. Rewrite using `[show ((1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.V'.J), x * y) = (1, x) * (1, y) by simp, map_mul, Module.End.mul_apply]`. Establish `key : ∀ l' : List (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F × GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA D.sp.cm.sig Γ.W.J), (∀ x ∈ l', x.1 ∈ S ∧ x.2 ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt D.sp.cm.sig Γ.W (Globa …`.
+
+Introduce `l'`. Proceed by induction on `l' with`. Consider the case `nil => intro _`. Simplify using `using hOnK`. Consider the case `cons x l' ih`.
+
+Introduce `hx`. Establish `h1` using `hx x List.mem_cons_self`. Establish `h2` using `ih fun y hy => hx y (List.mem_cons_of_mem _ hy)`. Simplify using `only [List.map_cons, List.prod_cons, mul_assoc]`. Rewrite using `[split, split']`.
+
+Conclude with `GlobalTheory.T.matched_maps_local_identity hP _ _ _ Bs _ _ Γ Xc om om' R Rf hM S x.1 h1.1 x.2 h1.2 _ _ h2`. Rewrite using `[hprod]`. Conclude with `⟨S, hXT.trans (Finset.subset_union_left.trans hTS), key l hl⟩`.
+-/
 theorem polMatch_kapX : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))
     (𝓕₁ : Set (GA D W₁)) (ωA : WRep W X) (ωB : WRep W₁ X) (e : Fin X.rank ≃ Fin (W.rank + W₁.rank))

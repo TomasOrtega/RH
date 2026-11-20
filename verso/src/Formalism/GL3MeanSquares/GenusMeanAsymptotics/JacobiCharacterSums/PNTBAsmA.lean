@@ -4,6 +4,19 @@ noncomputable section
 
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
+/- English proof (translation)
+Establish `hM0 : 0 < M` using `by linarith`. Establish `hy0 : 0 ≤ y` using `le_trans (by positivity) hy`. Establish `hA : M ^ 6 * Pt ≤ (M ^ 2)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : lg * lm ^ 2 / M ^ 6 ≤ 169 * D * (M ^ 2)⁻¹`.
+
+Establish `hlm2 : lm ^ 2 ≤ 169 * M ^ 2` using `by nlinarith`. Establish `h2 : lg * lm ^ 2 ≤ D * M ^ 2 * (169 * M ^ 2)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : M * (4 * y * (C * (Pt + lg * lm ^ 2 / M ^ 12)) / (M ^ 5)⁻¹) = 4 * C * y * (M ^ 6 * Pt + lg * lm ^ 2 / M ^ 6)`.
+
+Apply the tactic sequence `field_simp <;> ring`. Establish `h1 : M * (4 * y * (C * (Pt + lg * lm ^ 2 / M ^ 12)) / (M ^ 5)⁻¹) ≤ 4 * C * y * ((M ^ 2)⁻¹ + 169 * D * (M ^ 2)⁻¹)`. Rewrite using `[e1]; exact mul_le_mul_of_nonneg_left (add_le_add hA hB) (by positivity)`. Establish `hM3 : M ^ 3 ≤ y * (M ^ 2)⁻¹`. Rewrite using `[le_mul_inv_iff₀ (by positivity)]; calc M ^ 3 * M ^ 2 = M ^ 5 := by ring _ ≤ y := hy`.
+
+Establish `h2 : M * (4 * ((M ^ 5)⁻¹ * y + 1) * lg) ≤ 8 * D * y * (M ^ 2)⁻¹`. Establish `hc : 0 ≤ 4 * M * ((M ^ 5)⁻¹ * y + 1)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : (M ^ 5)⁻¹ ≤ (M ^ 2)⁻¹` using `inv_anti₀ (by positivity) (pow_le_pow_right₀ hM (by norm_num))`. Establish `h3 : 20 * (M ^ 5)⁻¹ * y ≤ 20 * (M ^ 2)⁻¹ * y`.
+
+Use `mul_le_mul_of_nonneg_right h5 hy0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 2 * y * t ≤ 2 * y * (M ^ 2)⁻¹` using `mul_le_mul_of_nonneg_left ht (by positivity)`. Establish `e2 : M * (4 * y * (C * (Pt + lg * lm ^ 2 / M ^ 12)) / (M ^ 5)⁻¹ + 4 * ((M ^ 5)⁻¹ * y + 1) * lg) = M * (4 * y * (C * (Pt + lg * lm ^ 2 / M ^ 12)) / (M ^ 5)⁻¹) + M * (4 * ((M ^ 5)⁻¹ * y + 1) * lg)` using `by ring`. Rewrite using `[e2]`.
+
+Establish `e3 : (4 * C + 676 * C * D + 8 * D + 22) * y * (M ^ 2)⁻¹ = 4 * C * y * ((M ^ 2)⁻¹ + 169 * D * (M ^ 2)⁻¹) + 8 * D * y * (M ^ 2)⁻¹ + 20 * (M ^ 2)⁻¹ * y + 2 * y * (M ^ 2)⁻¹` using `by ring`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem num_alg (M y C D Pt t lg lm : ℝ) (hM : 1 ≤ M) (hy : M ^ 5 ≤ y) (hC : 0 ≤ C) (hD : 0 ≤ D)
     (hPt : Pt ≤ (M ^ 8)⁻¹) (ht : t ≤ (M ^ 2)⁻¹) (hlg : lg ≤ D * M ^ 2)
     (hlm0 : 0 ≤ lm) (hlm : lm ≤ 13 * M) :
@@ -54,14 +67,23 @@ theorem num_alg (M y C D Pt t lg lm : ℝ) (hM : 1 ≤ M) (hy : M ^ 5 ≤ y) (hC
   rw [e3]
   linarith
 
+/- English proof (translation)
+Establish `h3 : Real.exp 1 ≤ x` using `by linarith [Real.exp_one_lt_d9]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem one_le_log_of_three_le {x : ℝ} (hx : 3 ≤ x) : 1 ≤ Real.log x := by
   have h3 : Real.exp 1 ≤ x := by linarith [Real.exp_one_lt_d9]
   calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
     _ ≤ Real.log x := Real.log_le_log (Real.exp_pos 1) h3
 
+/- English proof (translation)
+Rewrite using `[Real.exp_neg, ← Real.log_pow, Real.exp_log (pow_pos hM n)]`.
+-/
 theorem inv_pow_eq_exp {M : ℝ} (hM : 0 < M) (n : ℕ) : (M ^ n)⁻¹ = Real.exp (-(n * Real.log M)) := by
   rw [Real.exp_neg, ← Real.log_pow, Real.exp_log (pow_pos hM n)]
 
+/- English proof (translation)
+Establish `hl : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Establish `hs` using `Real.sq_sqrt hl`. Establish `h0 : 0 ≤ cA * Real.sqrt (Real.log y)` using `by positivity`. Establish `h2 : (cA * Real.sqrt (Real.log y)) ^ 2 < Real.log M ^ 2` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logy_lt {cA M y : ℝ} (hcA : 0 < cA) (hy : 2 ≤ y)
     (h : cA * Real.sqrt (Real.log y) < Real.log M) : cA ^ 2 * Real.log y < Real.log M ^ 2 := by
   have hl : 0 ≤ Real.log y := Real.log_nonneg (by linarith)
@@ -71,6 +93,11 @@ theorem logy_lt {cA M y : ℝ} (hcA : 0 < cA) (hy : 2 ≤ y)
   calc cA ^ 2 * Real.log y = (cA * Real.sqrt (Real.log y)) ^ 2 := by rw [mul_pow, hs]
     _ < Real.log M ^ 2 := h2
 
+/- English proof (translation)
+Establish `hM0 : 0 < M` using `by linarith`. Establish `hlM : 0 < Real.log M` using `Real.log_pos (by linarith)`. Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg (by linarith)`. Establish `h2` using `logy_lt hcA hy h`. Establish `h3 : c * Real.log y ≤ Real.log M ^ 2`.
+
+Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hc' hly]`. Establish `h4 : c * Real.log y / Real.log M ≤ Real.log M`. Rewrite using `[div_le_iff₀ hlM]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_le_exp {cA c M y : ℝ} (hcA : 0 < cA) (hc : 0 < c) (hc' : c ≤ cA ^ 2) (hM : 8 ≤ M) (hy : 2 ≤ y)
     (h : cA * Real.sqrt (Real.log y) < Real.log M) :
     M⁻¹ ≤ Real.exp (-(c * Real.log y / Real.log M)) := by
@@ -85,6 +112,33 @@ theorem inv_le_exp {cA c M y : ℝ} (hcA : 0 < cA) (hc : 0 < c) (hc' : c ≤ cA 
   calc M⁻¹ = Real.exp (-Real.log M) := by rw [Real.exp_neg, Real.exp_log hM0]
     _ ≤ Real.exp (-(c * Real.log y / Real.log M)) := Real.exp_le_exp.mpr (by linarith)
 
+/- English proof (translation)
+Use `set D : ℝ := 1 + (cA ^ 2)⁻¹ with hDdef`. Establish `hD : 0 ≤ D` using `by positivity`. Use `⟨5 + (26 * C + 20) / κ, 4 * C + 676 * C * D + 8 * D + 22, by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `M y hM hy hlog hsq`. Establish `hM0 : 0 < M` using `by linarith`.
+
+Establish `hy0 : 0 < y` using `by linarith`. Establish `hL1 : 1 ≤ Real.log M` using `one_le_log_of_three_le (by linarith)`. Establish `hl1 : 1 ≤ Real.log (Real.log M + 2)` using `one_le_log_of_three_le (by linarith)`. Establish `hLM : Real.log M ≤ M` using `by linarith [Real.log_le_sub_one_of_pos hM0]`. Establish `hC0 : 0 ≤ 5 + (26 * C + 20) / κ` using `by positivity`.
+
+Establish `hlog' : (5 + (26 * C + 20) / κ) * Real.log M ≤ Real.log y`. Establish `: (5 + (26 * C + 20) / κ) * Real.log M * 1 ≤ (5 + (26 * C + 20) / κ) * Real.log M * Real.log (Real.log M + 2)` using `mul_le_mul_of_nonneg_left hl1 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkC : κ * (5 + (26 * C + 20) / κ) = 5 * κ + (26 * C + 20)` using `by field_simp`. Establish `hK : (26 * C + 20) * Real.log M ≤ κ * Real.log y`.
+
+Use `mul_le_mul_of_nonneg_left hlog' hκ.le` as an intermediate fact. Establish `h5 : 0 ≤ 5 * κ * Real.log M` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hy5 : M ^ 5 ≤ y`. Rewrite using `[← Real.log_le_log_iff (by positivity) hy0, Real.log_pow]`.
+
+Establish `: 5 * Real.log M ≤ (5 + (26 * C + 20) / κ) * Real.log M`. Establish `: 0 ≤ (26 * C + 20) / κ * Real.log M` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h12 : M ^ (12 : ℝ) = M ^ 12`. Rewrite using `[show (12 : ℝ) = ((12 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite using `[h12]`. Establish `hlm : Real.log (M * M ^ 12) = 13 * Real.log M`. Rewrite using `[show M * M ^ 12 = M ^ 13 by ring, Real.log_pow]; push_cast; ring`.
+
+Establish `hpow : (M * M ^ 12) ^ C = Real.exp (13 * C * Real.log M)`. Rewrite using `[Real.rpow_def_of_pos (by positivity), hlm]; ring_nf`. Establish `hyk : y ^ (-(κ / 2)) = Real.exp (-(κ / 2 * Real.log y))`. Rewrite using `[Real.rpow_def_of_pos hy0]`. Put the polynomial expressions in normal form.
+
+Establish `hPt : (M * M ^ 12) ^ C * y ^ (-(κ / 2)) ≤ (M ^ 8)⁻¹`. Rewrite using `[hpow, hyk, ← Real.exp_add, inv_pow_eq_exp hM0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `ht : y ^ (-(κ / 2)) ≤ (M ^ 2)⁻¹`. Rewrite using `[hyk, inv_pow_eq_exp hM0]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Use `push_cast`. Establish `: 0 ≤ 26 * C * Real.log M` using `by positivity`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hlg : Real.log (2 * y) ≤ D * M ^ 2`. Establish `hq` using `logy_lt hcA hy hsq`. Establish `hq' : Real.log y ≤ Real.log M ^ 2 * (cA ^ 2)⁻¹`. Rewrite using `[le_mul_inv_iff₀ (by positivity)]; linarith`.
+
+Establish `hLM2 : Real.log M ^ 2 ≤ M ^ 2` using `by nlinarith`. Establish `hq'' : Real.log M ^ 2 * (cA ^ 2)⁻¹ ≤ M ^ 2 * (cA ^ 2)⁻¹` using `mul_le_mul_of_nonneg_right hLM2 (by positivity)`. Establish `h2 : Real.log 2 ≤ 1` using `by linarith [Real.log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2)]`. Establish `hM1 : 1 ≤ M ^ 2` using `by nlinarith`. Rewrite using `[Real.log_mul (by norm_num) hy0.ne', hDdef]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hlm0 : 0 ≤ Real.log (M * M ^ 12)` using `by rw [hlm]; linarith`. Establish `hlm13 : Real.log (M * M ^ 12) ≤ 13 * M` using `by rw [hlm]; linarith`. Establish `key` using `num_alg M y C D ((M * M ^ 12) ^ C * y ^ (-(κ / 2))) (y ^ (-(κ / 2))) (Real.log (2 * y)) (Real.log (M * M ^ 12)) (by linarith) hy5 hC.le hD hPt ht hlg hlm0 hlm13`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem num_main (cA κ C : ℝ) (hcA : 0 < cA) (hκ : 0 < κ) (hC : 0 < C) :
     ∃ C₀ B : ℝ, 0 ≤ C₀ ∧ 0 ≤ B ∧ ∀ M y : ℝ, 8 ≤ M → 2 ≤ y →
       C₀ * Real.log M * Real.log (Real.log M + 2) ≤ Real.log y →

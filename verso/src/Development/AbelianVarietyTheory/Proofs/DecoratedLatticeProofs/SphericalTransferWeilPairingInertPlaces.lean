@@ -26,6 +26,39 @@ namespace GlobalTheory.ChainOnto
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hH D ψ S T χS χT om hW t ht v hv hunr w h U hU f hf X _ _ ρ x B hx X' _ _ ρ' b hb hbne`. Take `⟨hS, hT⟩` from `hunr w h`. Break down `hx with ⟨hs, -⟩ | ⟨hin, c, ϖ, eS, α, hUI, heS, hxS, rfl⟩` into its components or cases. Conclude with `absurd hs hv`. Take `⟨-, hodd, hch⟩` from `(GlobalTheory.T.exists_unitaryCharts_allFinitePlaces_frameLattice D T v w h).2 hv`.
+
+Take `⟨eT, heT⟩` from `hch c heS.1`. Establish `hf0 : (f : WO S T → ℂ) ≠ 0` using `fun h0 => hbne (by rw [show f = 0 from Subtype.ext h0]; simp)`. Take `⟨δ, ψ', M, ρ0, ω, s, hstd, hsf, hωom, hcT, hcS⟩` from `GlobalTheory.T.weilDatum_inertPlace_standard_cayley_pair D ψ S T χS χT om hW v w h hin hS hT c ϖ eS eT hUI heS heT f hf hf0`. Establish `hq0 : (qV D.host.F v : ℂ) ≠ 0` using `by exact_mod_cast hodd.pos.ne'`. Take `⟨hvS, hsegS⟩` from `GlobalTheory.T.heckeChar_value_inert_place_and_segment D χS S.rank hW.hecS hW.resS v w h hin hS`.
+
+Take `⟨hvT, -⟩` from `GlobalTheory.T.heckeChar_value_inert_place_and_segment D χT T.rank hW.hecT hW.resT v w h hin hT`. Use `Or.inr ⟨hin, c, ϖ, eT, liftPar (Units.mk0 _ hq0) S.rank T.rank α, hUI, heT, ?_, ?_⟩` and prove the remaining obligations. Use `set α' := liftPar (Units.mk0 _ hq0) S.rank T.rank α`. Establish `e1S : embV S v (eS.symm 1) = 1` using `by rw [map_one, map_one]`. Establish `e1T : embV T v (eT.symm 1) = 1` using `by rw [map_one, map_one]`.
+
+Establish `e0S : embV S v 1 = 1` using `map_one _`. Establish `e0T : embV T v 1 = 1` using `map_one _`. Take `⟨RS, hRS⟩ : ∃ RS : Representation ℂ (GU c S.rank) (WO S T → ℂ), ∀ g u, RS g u = om (embV S v (eS.symm g), 1) u` from `⟨om.comp ((MonoidHom.inl _ _).comp ((embV S v).comp eS.symm.toMonoidHom)), fun _ _ => rfl⟩`. Take `⟨RT, hRT⟩ : ∃ RT : Representation ℂ (GU c T.rank) (WO S T → ℂ), ∀ g u, RT g u = om (1, embV T v (eT.symm g)) u` from `⟨om.comp ((MonoidHom.inr _ _).comp ((embV T v).comp eT.symm.toMonoidHom)), fun _ _ => rfl⟩`. Take `⟨πS, hπS⟩ : ∃ πS : Representation ℂ (GU c S.rank) U, ∀ g (u : U), ((πS g u : U) : WO S T → ℂ) = RS g u` from `⟨GlobalTheory.PRep.sub RS U fun g u hu => by rw [hRS, ← e0T]; exact hU _ _ u hu, fun _ _ => rfl⟩`.
+
+Take `⟨πT, hπT⟩ : ∃ πT : Representation ℂ (GU c T.rank) U, ∀ g (u : U), ((πT g u : U) : WO S T → ℂ) = RT g u` from `⟨GlobalTheory.PRep.sub RT U fun g u hu => by rw [hRT, ← e0S]; exact hU _ _ u hu, fun _ _ => rfl⟩`. Establish `hMS : ∀ g (m : M), ((ω (g, 1) m : M) : WO S T → ℂ) = RS g m` using `fun g m => by`. Rewrite using `[hRS, hωom, e1T]`. Establish `hMT : ∀ g (m : M), ((ω (1, g) m : M) : WO S T → ℂ) = RT g m` using `fun g m => by`. Rewrite using `[hRT, hωom, e1S]`.
+
+Establish `hvac` using `hstd.2.2.1`. Establish `hfixS : ∀ k ∈ KU c S.rank, πS k f = f` using `fun k hk => by`. Establish `a4` using `hstd.1.fix k 1 (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hk)).2 (one_mem _) s hvac`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπS, ← hsf, ← hMS]`.
+
+Conclude with `congrArg Subtype.val a4`. Establish `hfixT : ∀ k ∈ KU c T.rank, πT k f = f` using `fun k hk => by`. Establish `a4` using `hstd.1.fix 1 k (one_mem _) (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hk)).2 s hvac`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hπT, ← hsf, ← hMT]`.
+
+Conclude with `congrArg Subtype.val a4`. Establish `hcom1` using `GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hUI S.rank`. Establish `hcom2` using `GlobalTheory.T.inert_unitary_coset_symmetry_hecke_even _ ϖ c _ hUI T.rank`. Establish `hρ1 : ρ 1 x = x` using `by rw [map_one]; rfl`. Establish `hbT : ∀ g (u : U), b (πT g u) x = ρ' (eT.symm g) (b u x)` using `fun g u => by`.
+
+Establish `e2` using `hb 1 (eT.symm g) u x`. Establish `e : πT g u = ⟨om (embV S v 1, embV T v (eT.symm g)) u, hU _ _ u u.2⟩` using `Subtype.ext ((hπT g u).trans ((hRT g u).trans (congrArg (fun z => om (z, embV T v (eT.symm g)) (u : WO S T → ℂ)) e0S.symm)))`. Rewrite `e2` using `[hρ1]`. Rewrite using `[e, e2]`. Establish `hbS : ∀ g (u : U) y, b (πS g u) (ρ (eS.symm g) y) = b u y` using `fun g u y => by`.
+
+Establish `e2` using `hb (eS.symm g) 1 u y`. Establish `e : πS g u = ⟨om (embV S v (eS.symm g), embV T v 1) u, hU _ _ u u.2⟩` using `Subtype.ext ((hπS g u).trans ((hRS g u).trans (congrArg (fun z => om (embV S v (eS.symm g), z) (u : WO S T → ℂ)) e0T.symm)))`. Rewrite `e2` using `[map_one ρ', Module.End.one_apply]`. Rewrite using `[e, e2]`. Use `⟨hbne, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, fun h' hh' => ?_⟩` and prove the remaining obligations.
+
+Use `show ρ' (eT.symm k) (b f x) = b f x`. Rewrite using `[← hbT, hfixT k hk]`. Establish `: CharZero (w.adicCompletion D.host.E)` using `charZero_of_injective_algebraMap (algebraMap D.host.E (w.adicCompletion D.host.E)).injective`. Take `⟨h0, hh0, heq⟩` from `GlobalTheory.T.unramified_hecke_vacuum_larger_eq_smaller hH _ ϖ c _ δ ψ' S.rank T.rank M ρ0 ω s hstd h' hh'`. Establish `hsat` using `GlobalTheory.T.satakeTransform_eq_at_thetaLift_of_vacuum_eq _ ϖ c _ δ ψ' S.rank T.rank M ρ0 ω s hstd hcT hcS (by omega) h0 hh0 h' hh' heq (Units.mk0 _ hq0) rfl α`.
+
+Establish `sA : b (heckeVec πT (KU c T.rank) h' f) x = heckeVec (ρ'.comp eT.symm.toMonoidHom) (KU c T.rank) h' (b f x)` using `map_heckeVec hcom2.1 hh' (b.flip x) (fun g u => hbT g u) f`. Establish `sB : heckeVec πT (KU c T.rank) h' f = heckeVec πS (KU c S.rank) h0 f`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `m1` using `map_heckeVec hcom2.1 hh' U.subtype (ρ' := RT) (fun g u => hπT g u) f`. Establish `m2` using `map_heckeVec hcom2.1 hh' M.subtype (ρ := ω.comp (MonoidHom.inr _ _)) (ρ' := RT) (fun g m => hMT g m) s`.
+
+Establish `m3` using `map_heckeVec hcom1.1 hh0 M.subtype (ρ := ω.comp (MonoidHom.inl _ _)) (ρ' := RS) (fun g m => hMS g m) s`. Establish `m4` using `map_heckeVec hcom1.1 hh0 U.subtype (ρ' := RS) (fun g u => hπS g u) f`. Simplify using `only [Submodule.subtype_apply] at m1 m2 m3 m4`. Rewrite using `[m1, m4, ← hsf, ← m2, ← m3, heq]`. Establish `sC` using `(GlobalTheory.T.hecke_operator_move_across_invariant_bilinear (GU c S.rank) (KU c S.rank) hcom1.1 hcom1.2.1 U X X' πS (ρ.comp eS.symm.toMonoidHom) b (fun g u y => hbS g u y) f (GlobalTheory.LGrp.mem_fixed.2 hfixS) x hxS.2.1 h0 hh0).2`.
+
+Establish `hev : (fun g => h0 g⁻¹) = h0` using `funext fun g => hcom1.2.2 h0 hh0 g`. Rewrite using `[← sA, sB, sC, hev, hxS.2.2 h0 hh0, map_smul, hsat]`. Establish `hc` using `GlobalTheory.T.baseChange_thetaLiftSatakeParameter_eq_add_segment (Units.mk0 _ hq0) S.rank T.rank (by omega) α`. Establish `ht' : ((T.rank : ℤ) - S.rank) = (t : ℤ)` using `by omega`. Rewrite `hc` using `[ht']`.
+
+Establish `e` using `congrArg (Multiset.map (((-1 : ℂˣ) ^ S.rank) * ·)) hc`. Simplify using `only [Multiset.map_map, Multiset.map_add, Function.comp_def, mul_inv_cancel_left] at e`. Rewrite `e` using `[Multiset.map_id']`. Rewrite using `[e, stepPar, hvS, hvT, hsegS (Units.mk0 _ hq0) _ t rfl]`. Use `congr 1`.
+
+Conclude with `Multiset.map_congr rfl fun y _ => by group`.
+-/
 theorem transferOn_inert : GlobalTheory.Hk3.HoweUnram → ∀ D : D7, TransferOn D fun v => ¬ IsSplit (E := D.host.E) v := by
   intro hH D ψ S T χS χT om hW t ht v hv hunr w h U hU f hf X _ _ ρ x B hx X' _ _ ρ' b hb hbne
   obtain ⟨hS, hT⟩ := hunr w h

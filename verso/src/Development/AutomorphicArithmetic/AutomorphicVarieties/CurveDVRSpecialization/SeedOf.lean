@@ -24,6 +24,9 @@ section Gen
 
 variable {n : ℕ} {A G K : Type} [CommRing A] [Group G]
 
+/- English proof (translation)
+Establish `h1` using `((d_gmap D).2.2.1 f y).1`. Rewrite `h1` using `[h, ← (d_toDet (GDet.ofRep ρ) _).1, d_toDet_ofRep.1, (d_ofRep _ _ _).1]`. Conclude with `h1.symm`.
+-/
 private theorem chi_of_map [CommRing K] (D : GDet n A G) (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : D.map f = GDet.ofRep ρ) (y : MonoidAlgebra A G) :
     (D.chi y).map f = (GDet.repAlg ρ K (MonoidAlgebra.mapRingHom G f y)).charpoly := by
@@ -31,6 +34,9 @@ private theorem chi_of_map [CommRing K] (D : GDet n A G) (f : A →+* K) (ρ : G
   rw [h, ← (d_toDet (GDet.ofRep ρ) _).1, d_toDet_ofRep.1, (d_ofRep _ _ _).1] at h1
   exact h1.symm
 
+/- English proof (translation)
+Establish `h1` using `((d_gmap D).2.2.1 f y).2 1`. Rewrite `h1` using `[h]`. Establish `h2` using `(d_toDet (GDet.ofRep ρ) (MonoidAlgebra.mapRingHom G f y)).2.2.1`. Rewrite `h2` using `[d_toDet_ofRep.1, (d_ofRep _ _ _).2.2.1 hn]`. Conclude with `h1.symm.trans h2.symm`.
+-/
 private theorem tr_of_map [CommRing K] (hn : 1 ≤ n) (D : GDet n A G) (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : D.map f = GDet.ofRep ρ) (y : MonoidAlgebra A G) :
     f (D.tr y) = (GDet.repAlg ρ K (MonoidAlgebra.mapRingHom G f y)).trace := by
@@ -40,14 +46,23 @@ private theorem tr_of_map [CommRing K] (hn : 1 ≤ n) (D : GDet n A G) (f : A �
   rw [d_toDet_ofRep.1, (d_ofRep _ _ _).2.2.1 hn] at h2
   exact h1.symm.trans h2.symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[GDet.repAlg]`.
+-/
 private theorem rep_single [CommRing K] (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K) (g : G) (a : A) :
     GDet.repAlg ρ K (MonoidAlgebra.mapRingHom G f (MonoidAlgebra.single g a)) = f a • ρ g := by
   ext i j; simp [GDet.repAlg]
 
+/- English proof (translation)
+Rewrite using `[tr_of_map hn D f ρ h, rep_single, map_one, one_smul]`.
+-/
 private theorem tr_single [CommRing K] (hn : 1 ≤ n) (D : GDet n A G) (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K)
     (h : D.map f = GDet.ofRep ρ) (g : G) : f (D.tr (MonoidAlgebra.single g 1)) = (ρ g).trace := by
   rw [tr_of_map hn D f ρ h, rep_single, map_one, one_smul]
 
+/- English proof (translation)
+Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, tr_single hn D f ρ h, map_mul]`.
+-/
 private theorem gram_of_map [CommRing K] (hn : 1 ≤ n) (D : GDet n A G) (f : A →+* K)
     (ρ : G →* Matrix (Fin n) (Fin n) K) (h : D.map f = GDet.ofRep ρ) (g : Fin n × Fin n → G) :
     f (Matrix.det (Matrix.of fun a b => D.tr (MonoidAlgebra.single (g a * g b) 1))) =
@@ -57,11 +72,19 @@ private theorem gram_of_map [CommRing K] (hn : 1 ≤ n) (D : GDet n A G) (f : A 
   ext a b
   rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply, tr_single hn D f ρ h, map_mul]
 
+/- English proof (translation)
+Rewrite using `[← UpperTheory.V.AlgebraTools.Det.irrIffSpan]`. Conclude with `⟨fun h N hN => h N fun g _ => hN g, fun h N hN => h N fun g => hN g (Subgroup.mem_top g)⟩`.
+-/
 private theorem irr_iff_span [Field K] [IsAlgClosed K] (ρ : G →* Matrix (Fin n) (Fin n) K) :
     MatIrr ⊤ ρ ↔ Submodule.span K (Set.range ρ) = ⊤ := by
   rw [← UpperTheory.V.AlgebraTools.Det.irrIffSpan]
   exact ⟨fun h N hN => h N fun g _ => hN g, fun h N hN => h N fun g => hN g (Subgroup.mem_top g)⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hdet⟩` from `(g_gram _ _ _).1 hs`. Use `choose g hg using hx`. Use `(g_gram _ _ _).2 ⟨fun a => ρ (g a), fun a => ⟨_, rfl⟩, fun h0 => hdet ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[← gram_of_map hn D j ρ h, map_eq_zero_iff j hj]`. Establish `h1` using `gram_of_map hn D φ ρ' h' g`.
+
+Rewrite `h1` using `[h0, map_zero]`. Simplify `h1.symm` using `only [hg]`.
+-/
 private theorem span_of_spec [Field K] {K' : Type} [Field K'] (hn : 1 ≤ n) (D : GDet n A G) (j : A →+* K)
     (hj : Function.Injective j) (φ : A →+* K') (ρ : G →* Matrix (Fin n) (Fin n) K)
     (ρ' : G →* Matrix (Fin n) (Fin n) K') (h : D.map j = GDet.ofRep ρ) (h' : D.map φ = GDet.ofRep ρ')
@@ -74,6 +97,13 @@ private theorem span_of_spec [Field K] {K' : Type} [Field K'] (hn : 1 ≤ n) (D 
   rw [h0, map_zero] at h1
   simpa only [hg] using h1.symm
 
+/- English proof (translation)
+Establish `key : ∀ Y : Matrix (Fin n) (Fin n) K, (Y * X).trace = 0` using `fun Y => by`. Establish `hY : Y ∈ Submodule.span K (Set.range ρ)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hY using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨g, rfl⟩ := hy`. Conclude with `h g`.
+
+Consider the case `zero => rw [zero_mul, trace_zero]`. Consider the case `add a b _ _ ha hb => rw [add_mul, trace_add, ha, hb, add_zero]`. Consider the case `smul a y _ hy => rw [smul_mul_assoc, trace_smul, hy, smul_zero]`. Use extensionality with `a b`. Use `key (Matrix.single b a 1)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.trace_single_mul, one_smul]`. Conclude with `this`.
+-/
 private theorem eq_zero_of_tr [Field K] (ρ : G →* Matrix (Fin n) (Fin n) K)
     (hs : Submodule.span K (Set.range ρ) = ⊤) (X : Matrix (Fin n) (Fin n) K) (h : ∀ g, (ρ g * X).trace = 0) :
     X = 0 := by
@@ -89,11 +119,17 @@ private theorem eq_zero_of_tr [Field K] (ρ : G →* Matrix (Fin n) (Fin n) K)
   rw [Matrix.trace_single_mul, one_smul] at this
   exact this
 
+/- English proof (translation)
+The claim follows from `d_gext D D' fun g i _ _ => hf (by rw [← ((d_gmap D).2.2.1 f _).2 i, ← ((d_gmap D').2.2.1 f _).2 i, h])`.
+-/
 private theorem gdet_inj [CommRing K] (f : A →+* K) (hf : Function.Injective f) (D D' : GDet n A G)
     (h : D.map f = D'.map f) : D = D' :=
   d_gext D D' fun g i _ _ => hf (by
     rw [← ((d_gmap D).2.2.1 f _).2 i, ← ((d_gmap D').2.2.1 f _).2 i, h])
 
+/- English proof (translation)
+Use `d_gext _ _ fun g i _ _ => ?_` and prove the remaining obligations. Establish `h1` using `chi_of_map (GDet.ofRep ρ) (RingHom.id K) ρ (d_gmap _).1 (MonoidAlgebra.single g 1)`. Establish `h2` using `chi_of_map (GDet.ofRep ρ') (RingHom.id K) ρ' (d_gmap _).1 (MonoidAlgebra.single g 1)`. Rewrite `h1`, `h2` using `[rep_single, map_one, one_smul, Polynomial.map_id]`. Rewrite using `[GDet.lam, GDet.lam, h1, h2, H, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+-/
 private theorem ofRep_conj [CommRing K] (ρ ρ' : G →* Matrix (Fin n) (Fin n) K) (h : GL (Fin n) K)
     (H : ∀ g, ρ' g = h * ρ g * h⁻¹) : GDet.ofRep ρ' = GDet.ofRep ρ := by
   refine d_gext _ _ fun g i _ _ => ?_
@@ -102,6 +138,9 @@ private theorem ofRep_conj [CommRing K] (ρ ρ' : G →* Matrix (Fin n) (Fin n) 
   rw [rep_single, map_one, one_smul, Polynomial.map_id] at h1 h2
   rw [GDet.lam, GDet.lam, h1, h2, H, Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
+/- English proof (translation)
+Introduce `B _ _ x`. Use `letI : Algebra A B := ((algebraMap A' B).comp f).toAlgebra`. Use `h B x` as an intermediate fact. Simplify using `only [map_sub, map_one, MonoidAlgebra.mapRingHom_single] at this ⊢`. Conclude with `this`.
+-/
 private theorem kills_map {A' : Type} [CommRing A'] (D : GDet n A G) (f : A →+* A') (g : G)
     (h : D.Kills (MonoidAlgebra.single g 1 - 1)) : (D.map f).Kills (MonoidAlgebra.single g 1 - 1) := by
   intro B _ _ x
@@ -110,6 +149,9 @@ private theorem kills_map {A' : Type} [CommRing A'] (D : GDet n A G) (f : A →+
   simp only [map_sub, map_one, MonoidAlgebra.mapRingHom_single] at this ⊢
   exact this
 
+/- English proof (translation)
+The claim follows from `| 0, _, _ => by simp | m + 1, c, x => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Fin.prod_univ_succ, prod_smul (fun i => c i.succ) (fun i => x i.succ), smul_mul_smul_comm]`.
+-/
 private theorem prod_smul [CommRing K] {M : Type} [Ring M] [Algebra K M] :
     ∀ {m : ℕ} (c : Fin m → K) (x : Fin m → M), (List.ofFn fun i => c i • x i).prod = (∏ i, c i) • (List.ofFn x).prod
   | 0, _, _ => by simp
@@ -117,6 +159,11 @@ private theorem prod_smul [CommRing K] {M : Type} [Ring M] [Algebra K M] :
     rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Fin.prod_univ_succ,
       prod_smul (fun i => c i.succ) (fun i => x i.succ), smul_mul_smul_comm]
 
+/- English proof (translation)
+Establish `key : ∀ i j : Fin n, ¬ ∀ g, ρ.r g i j = 0` using `fun i j h => by`. Use `eq_zero_of_tr ρ.r hs (Matrix.single j i 1) fun g => by` as an intermediate fact. Rewrite using `[Matrix.trace_mul_single]`. Simplify using `[h g]`. Establish `h2` using `congrFun (congrFun this j) i`.
+
+Simplify using `at h2`. Establish `h2 : 1 < n` using `by omega`. Use `⟨fun h => key ⟨1, h2⟩ ⟨0, by omega⟩ fun g => ?_, fun h => key ⟨0, by omega⟩ ⟨1, h2⟩ fun g => ?_⟩` and prove the remaining obligations. Conclude with `h (Ideal.subset_span ⟨g, _, _, by simp [Fin.lt_def], rfl⟩)`. Conclude with `h (Ideal.subset_span ⟨g, _, _, by simp [Fin.lt_def], rfl⟩)`.
+-/
 private theorem offTri_of_irr {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k} [Field K]
     (hn : n = 2 ∨ n = 3) (ρ : NRep F n K) (hs : Submodule.span K (Set.range ρ.r) = ⊤) : ρ.OffTri ⊥ := by
   have key : ∀ i j : Fin n, ¬ ∀ g, ρ.r g i j = 0 := fun i j h => by
@@ -135,24 +182,41 @@ section Cont
 
 variable {Γ Γ' R R' : Type} [TopologicalSpace Γ] [TopologicalSpace Γ'] [CommRing R] [CommRing R']
 
+/- English proof (translation)
+Introduce `N` and use `by simp only [map_mul] exact (hf N).mul (hg N)`.
+-/
 private theorem ac_mul {I : Ideal R} {f g : Γ → R} (hf : AdicCont I f) (hg : AdicCont I g) :
     AdicCont I fun x => f x * g x := fun N => by
   simp only [map_mul]
   exact (hf N).mul (hg N)
 
+/- English proof (translation)
+Introduce `N` and use `(hf N).comp_continuous hu`.
+-/
 private theorem ac_comp {I : Ideal R} {f : Γ → R} (hf : AdicCont I f) {u : Γ' → Γ} (hu : Continuous u) :
     AdicCont I fun x => f (u x) := fun N => (hf N).comp_continuous hu
 
+/- English proof (translation)
+Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap φ := le_trans (Ideal.pow_right_mono (fun y hy => map_nonunit φ y hy) N) (Ideal.le_comap_pow _ N) exact (hf N).comp (Ideal.quotientMap _ φ hle)`.
+-/
 private theorem ac_map [IsLocalRing R] [IsLocalRing R'] (φ : R →+* R') [IsLocalHom φ] {f : Γ → R}
     (hf : AdicCont (maximalIdeal R) f) : AdicCont (maximalIdeal R') fun x => φ (f x) := fun N => by
   have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap φ :=
     le_trans (Ideal.pow_right_mono (fun y hy => map_nonunit φ y hy) N) (Ideal.le_comap_pow _ N)
   exact (hf N).comp (Ideal.quotientMap _ φ hle)
 
+/- English proof (translation)
+Introduce `N s` and use `hu.isOpen_preimage.1 (hf N s)`.
+-/
 private theorem ac_desc {I : Ideal R} {f : Γ → R} {u : Γ' → Γ} (hu : Topology.IsQuotientMap u)
     (hf : AdicCont I fun x => f (u x)) : AdicCont I f := fun N s =>
   hu.isOpen_preimage.1 (hf N s)
 
+/- English proof (translation)
+Establish `: {x | f x = a} = ⋂ N : ℕ, {x | Ideal.Quotient.mk (I ^ N) (f x) = Ideal.Quotient.mk (I ^ N) a}`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Use `⟨fun h N => by rw [h], fun h => ?_⟩` and prove the remaining obligations. Use `sub_eq_zero.1 (IsHausdorff.haus (I := I) inferInstance _ fun N => ?_)` and prove the remaining obligations.
+
+Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.Quotient.eq.1 (h N)`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun N => (hf N).isClosed_fiber _`.
+-/
 private theorem ac_closed {I : Ideal R} [IsHausdorff I R] {f : Γ → R} (hf : AdicCont I f) (a : R) :
     IsClosed {x | f x = a} := by
   have : {x | f x = a} = ⋂ N : ℕ, {x | Ideal.Quotient.mk (I ^ N) (f x) = Ideal.Quotient.mk (I ^ N) a} := by
@@ -178,20 +242,35 @@ private noncomputable def unt {K : Type} [CommRing K] [Algebra O K] (r0 : G.G₀
   map_one' := by simp
   map_mul' g h := by simp [smul_smul, mul_comm]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem unt_apply {K : Type} [CommRing K] [Algebra O K] (r0 : G.G₀ →* Matrix (Fin n) (Fin n) K) (g : G.G₀) :
     unt L r0 g = (((L.κA K g)⁻¹ : Kˣ) : K) • r0 g := rfl
 
+/- English proof (translation)
+Rewrite using `[unt_apply, smul_smul, Units.mul_inv, one_smul]`.
+-/
 private theorem smul_unt {K : Type} [CommRing K] [Algebra O K] (r0 : G.G₀ →* Matrix (Fin n) (Fin n) K) (g : G.G₀) :
     ((L.κA K g : Kˣ) : K) • unt L r0 g = r0 g := by
   rw [unt_apply, smul_smul, Units.mul_inv, one_smul]
 
+/- English proof (translation)
+The claim follows from `j.commutes _`.
+-/
 private theorem κ_map {C K : Type} [CommRing C] [Algebra O C] [CommRing K] [Algebra O K] (j : C →ₐ[O] K) (g : G.G₀) :
     j ((L.κA C g : Cˣ) : C) = (L.κA K g : Kˣ) := j.commutes _
 
+/- English proof (translation)
+Rewrite using `[← map_inv, ← map_inv, κ_map]`.
+-/
 private theorem κ_map_inv {C K : Type} [CommRing C] [Algebra O C] [CommRing K] [Algebra O K] (j : C →ₐ[O] K)
     (g : G.G₀) : j (((L.κA C g)⁻¹ : Cˣ) : C) = ((L.κA K g)⁻¹ : Kˣ) := by
   rw [← map_inv, ← map_inv, κ_map]
 
+/- English proof (translation)
+The claim follows from `Subtype.ext (by show G.c * (G.c * g * G.c⁻¹) * G.c⁻¹ = g have : G.c * (G.c * g * G.c⁻¹) * G.c⁻¹ = (G.c * G.c) * g * (G.c * G.c)⁻¹ := by group rw [this, G.c_sq]; simp)`.
+-/
 private theorem conj_conj (g : G.G₀) : G.conj (G.conj g) = g := Subtype.ext (by
   show G.c * (G.c * g * G.c⁻¹) * G.c⁻¹ = g
   have : G.c * (G.c * g * G.c⁻¹) * G.c⁻¹ = (G.c * G.c) * g * (G.c * G.c)⁻¹ := by group
@@ -201,19 +280,33 @@ variable {C : Type} [CommRing C] [Algebra O C] [IsCO O C] (p : Pair r C)
 
 private noncomputable def tt (g : G.G₀) : C := (((L.κA C g)⁻¹ : Cˣ) : C) * p.D.tr (MonoidAlgebra.single g 1)
 
+/- English proof (translation)
+Use `ac_map (algebraMap O C) (ac_comp L.κ_cont continuous_inv)` as an intermediate fact. Simplify using `only [← map_inv]`. Conclude with `this`.
+-/
 private theorem κinv_cont : AdicCont (maximalIdeal C) fun g : G.G₀ => (((L.κA C g)⁻¹ : Cˣ) : C) := by
   have := ac_map (algebraMap O C) (ac_comp L.κ_cont continuous_inv)
   simp only [← map_inv]
   exact this
 
+/- English proof (translation)
+The claim follows from `ac_mul (κinv_cont L) (p.cont 1)`.
+-/
 private theorem tt_cont : AdicCont (maximalIdeal C) (tt L p) := ac_mul (κinv_cont L) (p.cont 1)
 
+/- English proof (translation)
+Rewrite using `[tt, map_mul, κ_map_inv, unt_apply, trace_smul, ← tr_single hn p.D _ r0 h]`. Both sides reduce to the same expression.
+-/
 private theorem tt_map (hn : 1 ≤ n) {K : Type} [CommRing K] [Algebra O K] (j : C →ₐ[O] K)
     (r0 : G.G₀ →* Matrix (Fin n) (Fin n) K) (h : p.D.map (j : C →+* K) = GDet.ofRep r0) (g : G.G₀) :
     j (tt L p g) = (unt L r0 g).trace := by
   rw [tt, map_mul, κ_map_inv, unt_apply, trace_smul, ← tr_single hn p.D _ r0 h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[unt_apply]`. Use `show _ • diagonal _ = _`. Rewrite using `[← diagonal_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, L.chib, ← Units.val_mul]`. Use `congr 1`. Use `show (L.κA _ g)⁻¹ * (_ * L.κA _ g) = _`. Rewrite using `[mul_comm _ (L.κA _ g), inv_mul_cancel_left]`.
+-/
 private theorem unt_diag (g : G.G₀) : unt L (diagRep r.chib) g =
     diagonal fun i => ((F.Ψ (L.π g) ^ w n i : (ResidueField O)ˣ) : ResidueField O) := by
   rw [unt_apply]
@@ -226,10 +319,18 @@ private theorem unt_diag (g : G.G₀) : unt L (diagRep r.chib) g =
   show (L.κA _ g)⁻¹ * (_ * L.κA _ g) = _
   rw [mul_comm _ (L.κA _ g), inv_mul_cancel_left]
 
+/- English proof (translation)
+Rewrite using `[tt_map L p hn (res O C) _ p.red, unt_diag, trace_diagonal]`.
+-/
 private theorem tt_res (hn : 1 ≤ n) (g : G.G₀) :
     res O C (tt L p g) = ∑ i, ((F.Ψ (L.π g) ^ w n i : (ResidueField O)ˣ) : ResidueField O) := by
   rw [tt_map L p hn (res O C) _ p.red, unt_diag, trace_diagonal]
 
+/- English proof (translation)
+Establish `h1` using `p.P 1 g`. Establish `h2 : G.star O C n (MonoidAlgebra.single g 1) = ((G.eps O C g ^ (1 - (n : ℤ)) : Cˣ) : C) • MonoidAlgebra.single (G.conj g)⁻¹ 1`. Simplify using `[GFrame.star, GFrame.starOp]`. Establish `h3 : L.κA C g * L.κA C (G.conj g) = G.eps O C g ^ (1 - (n : ℤ))`. Use `congrArg (Units.map (algebraMap O C : O →* C)) (L.κ_conj g)` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_zpow]`. Conclude with `this`. Rewrite `h1` using `[h2, ← (d_toDet _ _).2.1, (d_chi _ _).2.2.2.2.2.2 _ _ hn, (d_toDet _ _).2.1, pow_one, ← h3]`. Rewrite using `[tt, tt, GDet.tr, GDet.tr, ← h1, map_inv, inv_inv, Units.val_mul, mul_assoc, Units.inv_mul_cancel_left]`.
+-/
 private theorem tt_star (hn : 1 ≤ n) (g : G.G₀) : tt L p (G.conj g)⁻¹ = tt L p g := by
   have h1 := p.P 1 g
   have h2 : G.star O C n (MonoidAlgebra.single g 1) =
@@ -247,6 +348,9 @@ variable {K : Type} [Field K] [Algebra O K] (j : C →ₐ[O] K) (hj : Function.I
   (hs : Submodule.span K (Set.range r0) = ⊤)
 
 include hs in
+/- English proof (translation)
+Rewrite using `[eq_top_iff, ← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[← smul_unt L r0 g]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`.
+-/
 private theorem span_unt : Submodule.span K (Set.range (unt L r0)) = ⊤ := by
   rw [eq_top_iff, ← hs, Submodule.span_le]
   rintro _ ⟨g, rfl⟩
@@ -254,6 +358,11 @@ private theorem span_unt : Submodule.span K (Set.range (unt L r0)) = ⊤ := by
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)
 
 include hj h0 hs in
+/- English proof (translation)
+Rewrite using `[MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hg h`. Apply `hj` to reduce the goal to its premises. Rewrite using `[tt_map L p hn j r0 h0, tt_map L p hn j r0 h0, map_mul, hg, mul_one]`.
+
+Introduce `H`. Use `sub_eq_zero.1 (eq_zero_of_tr _ (span_unt L r0 hs) _ fun h => ?_)` and prove the remaining obligations. Rewrite using `[mul_sub, mul_one, trace_sub, ← map_mul, ← tt_map L p hn j r0 h0, ← tt_map L p hn j r0 h0, H, sub_self]`.
+-/
 private theorem mem_ker_iff (hn : 1 ≤ n) (g : G.G₀) : g ∈ (unt L r0).ker ↔ ∀ h, tt L p (h * g) = tt L p h := by
   rw [MonoidHom.mem_ker]
   constructor
@@ -265,6 +374,25 @@ private theorem mem_ker_iff (hn : 1 ≤ n) (g : G.G₀) : g ∈ (unt L r0).ker �
     rw [mul_sub, mul_one, trace_sub, ← map_mul, ← tt_map L p hn j r0 h0, ← tt_map L p hn j r0 h0, H, sub_self]
 
 include h0 hs in
+/- English proof (translation)
+Take `⟨m, hm, h1, h2⟩` from `L.tame u g hg`. Establish `hI : g ^ m ∈ r.Ip u`. Use `⟨pow_mem hg m, Subgroup.mem_iInf.2 fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, L.chib, map_pow L.π, h1, OneMemClass.coe_one, map_one, _root_.one_zpow, one_mul]`. Use `show Units.map _ (L.κ (g ^ m)) = 1`.
+
+Rewrite using `[map_pow L.κ, h2, map_one]`. Establish `h3 : r0 (g ^ m) = 1`. Use `sub_eq_zero.1 (eq_zero_of_tr _ hs _ fun h => ?_)` and prove the remaining obligations. Use `tr_of_map hn p.D _ r0 h0 (MonoidAlgebra.single h 1 * (MonoidAlgebra.single (g ^ m) 1 - 1))` as an intermediate fact. Rewrite `this` using `[p.I u _ hI h, map_zero, map_mul, map_mul, map_sub, map_sub, map_one, map_one, rep_single, rep_single, map_one, one_smul, one_smul]`.
+
+Conclude with `this.symm`. Establish `h4 : unt L r0 g ^ m = 1`. Establish `h5 : L.κA K (g ^ m) = 1` using `by show Units.map _ (L.κ (g ^ m)) = 1`. Rewrite using `[map_pow L.κ, h2, map_one]`. Rewrite using `[← map_pow, unt_apply, h3, h5]`.
+
+Simplify using the standard rewrite rules. Establish `hu : IsUnit (m : C)`. Assume the negation of the conclusion as `hu`. Establish `h6 : res O C m = 0` using `(res_eq_zero_iff O C _).2 hu`. Rewrite `h6` using `[map_natCast]`.
+
+Conclude with `hm ((CharP.cast_eq_zero_iff _ l m).1 h6)`. Use `letI : Algebra C K := (j : C →+* K).toAlgebra`. Set `y : MonoidAlgebra C G.G₀` to `MonoidAlgebra.single g (((L.κA C g)⁻¹ : Cˣ) : C)`. Establish `hK : (p.D.chi y).map (j : C →+* K) = (unt L r0 g).charpoly`. Rewrite using `[chi_of_map p.D _ r0 h0, rep_single, unt_apply, ← κ_map_inv L j]`.
+
+Both sides reduce to the same expression. Establish `hk : (p.D.chi y).map (res O C : C →+* ResidueField O) = (Polynomial.X - 1) ^ n`. Rewrite using `[chi_of_map p.D _ _ p.red, rep_single]`. Establish `h7 : (res O C : C →+* ResidueField O) (((L.κA C g)⁻¹ : Cˣ) : C) • diagRep r.chib g = unt L (diagRep r.chib) g`. Rewrite using `[unt_apply, ← κ_map_inv L (res O C)]`.
+
+Both sides reduce to the same expression. Rewrite using `[h7, unt_diag, charpoly_diagonal, hΨ]`. Simplify using `only [_root_.one_zpow, Units.val_one, map_one, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Use `T.unipTorsion (A := C) (unt L r0 g) (p.D.chi y) n m ?_ ?_ ?_ hu h4` and prove the remaining obligations. Rewrite using `[← (d_toDet _ _).1]`.
+
+Conclude with `(d_chi _ _).2.2.2.2.1`. Rewrite using `[← Polynomial.aeval_map_algebraMap K] show Polynomial.aeval _ ((p.D.chi y).map (j : C →+* K)) = 0`. Rewrite using `[hK, Matrix.aeval_self_charpoly]`. Establish `h8 : residue C = (ResidueField.map (algebraMap O C)).comp (res O C : C →+* ResidueField O)`. Use extensionality with `x`.
+
+Conclude with `((RingEquiv.ofBijective _ (resMap_bijective O C)).apply_symm_apply (residue C x)).symm`. Rewrite using `[h8, ← Polynomial.map_map, hk]`. Simplify using the standard rewrite rules.
+-/
 private theorem tame_ker [CharP (ResidueField O) l] (hj : Function.Injective j) (hn : 1 ≤ n) (u : G.St) (g : G.G₀)
     (hg : g ∈ G.Iu u) (hΨ : F.Ψ (L.π g) = 1) : g ∈ (unt L r0).ker := by
   obtain ⟨m, hm, h1, h2⟩ := L.tame u g hg
@@ -313,6 +441,13 @@ private theorem tame_ker [CharP (ResidueField O) l] (hj : Function.Injective j) 
     simp
 
 include h0 hs in
+/- English proof (translation)
+Use `L.ker _ inferInstance ?_ (fun g hg => ?_) (tame_ker L p j r0 h0 hs hj hn) fun g hg => ?_` and prove the remaining obligations. Establish `: ((unt L r0).ker : Set G.G₀) = ⋂ h, {g | tt L p (h * g) = tt L p h}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `mem_ker_iff L p j hj r0 h0 hs hn g`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun h => ac_closed (ac_comp (tt_cont L p) (continuous_const_mul h)) _`. Use `(mem_ker_iff L p j hj r0 h0 hs hn _).2 fun h => ?_` and prove the remaining obligations. Rewrite using `[← tt_star L p hn (h * G.conj g), ← tt_star L p hn h, map_mul, conj_conj, _root_.mul_inv_rev]`. Apply `hj` to reduce the goal to its premises.
+
+Rewrite using `[tt_map L p hn j r0 h0, tt_map L p hn j r0 h0, map_mul, MonoidHom.mem_ker.1 (inv_mem hg), one_mul]`. Establish `h5 : L.κA K g = 1` using `by show Units.map _ (L.κ g) = 1`. Rewrite using `[L.ramκ g hg, map_one]`. Rewrite using `[MonoidHom.mem_ker, unt_apply, hI g hg, h5]`. Simplify using the standard rewrite rules.
+-/
 private theorem ker_le [CharP (ResidueField O) l] (hj : Function.Injective j) (hn : 1 ≤ n)
     (hI : ∀ g ∈ G.I0, r0 g = 1) : L.π.ker ≤ (unt L r0).ker := by
   refine L.ker _ inferInstance ?_ (fun g hg => ?_) (tame_ker L p j r0 h0 hs hj hn) fun g hg => ?_
@@ -332,10 +467,18 @@ private theorem ker_le [CharP (ResidueField O) l] (hj : Function.Injective j) (h
     rw [MonoidHom.mem_ker, unt_apply, hI g hg, h5]
     simp
 
+/- English proof (translation)
+Use `haveI : CompactSpace G.G₀ := isCompact_iff_compactSpace.1 (G.η.ker.isClosed_of_isOpen G.η_open).isCompact`. Conclude with `L.π_cont.isClosedMap.isQuotientMap L.π_cont L.π_surj`.
+-/
 private theorem π_quot : Topology.IsQuotientMap L.π := by
   haveI : CompactSpace G.G₀ := isCompact_iff_compactSpace.1 (G.η.ker.isClosed_of_isOpen G.η_open).isCompact
   exact L.π_cont.isClosedMap.isQuotientMap L.π_cont L.π_surj
 
+/- English proof (translation)
+Establish `key : ∀ x y, L.π x = L.π y → a x = a y` using `fun x y hxy => by`. Establish `: a (x * y⁻¹) = 1` using `h (by rw [MonoidHom.mem_ker, map_mul, map_inv, hxy, mul_inv_cancel])`. Rewrite using `[← inv_mul_cancel_right x y, map_mul, this, one_mul]`. Establish `hs` using `Function.surjInv_eq L.π_surj`. Use `⟨⟨⟨fun x => a (Function.surjInv L.π_surj x), ?_⟩, fun x y => ?_⟩, fun g => key _ _ (hs _)⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_one a]; exact key _ _ (by rw [hs, map_one])`. Rewrite using `[← map_mul]; exact key _ _ (by rw [map_mul, hs, hs, hs])`.
+-/
 private theorem desc {M : Type} [Monoid M] (a : G.G₀ →* M) (h : L.π.ker ≤ a.ker) :
     ∃ b : F.G0 →* M, ∀ g, b (L.π g) = a g := by
   have key : ∀ x y, L.π x = L.π y → a x = a y := fun x y hxy => by
@@ -346,6 +489,15 @@ private theorem desc {M : Type} [Monoid M] (a : G.G₀ →* M) (h : L.π.ker ≤
   · rw [← map_one a]; exact key _ _ (by rw [hs, map_one])
   · rw [← map_mul]; exact key _ _ (by rw [map_mul, hs, hs, hs])
 
+/- English proof (translation)
+Establish `key : ∀ v : F.V, ∃ χ : Fin n → F.Gv v →* Cˣ, (∀ i, AdicCont (maximalIdeal C) (fun g => (χ i g : C)) ∧ ∀ g, res O C (χ i g) = ((F.Ψ (F.loc v g) ^ w n i : (ResidueField O)ˣ) : ResidueField O)) ∧ ∀ u (h : L.e u = v) i g, χ i (h ▸ L.lam u g) * L.κA C (G.φ u g) = p.ψ u i g` using `fun v => by`. Take `⟨u, rfl⟩` from `L.e.surjective v`. Use `⟨fun i => (p.ψ u i * ((L.κA C).comp (G.φ u))⁻¹).comp (L.lam u).symm.toMulEquiv.toMonoidHom, fun i => ⟨?_, fun g => ?_⟩, fun u' h i g => ?_⟩` and prove the remaining obligations. Conclude with `ac_comp (ac_mul (p.psi u i).cont (ac_comp (κinv_cont L) (G.φ_cont u))) (L.lam u).symm.continuous`. Take `⟨g, rfl⟩` from `(L.lam u).surjective g`.
+
+Establish `h1 : (L.lam u).symm.toMulEquiv.toMonoidHom (L.lam u g) = g` using `(L.lam u).symm_apply_apply g`. Rewrite using `[MonoidHom.comp_apply, h1]`. Use `show res O C ((p.ψ u i g : Cˣ) * (((L.κA C (G.φ u g))⁻¹ : Cˣ) : C)) = _`. Rewrite using `[map_mul, κ_map_inv, (p.psi u i).red, L.psib, L.chib, ← Units.val_mul, ← L.lam_loc]`. Use `congr 1`.
+
+Conclude with `mul_inv_cancel_right _ _`. Take `rfl` from `L.e.injective h`. Establish `h1 : (L.lam u').symm.toMulEquiv.toMonoidHom (L.lam u' g) = g` using `(L.lam u').symm_apply_apply g`. Rewrite using `[MonoidHom.comp_apply, h1]`. Conclude with `inv_mul_cancel_right _ _`.
+
+Use `choose χ h1 h2 using key`. Conclude with `⟨χ, h1, fun v i g => h2 _ v rfl i g⟩`.
+-/
 private theorem chi_ex : ∃ χ : ∀ v, Fin n → F.Gv v →* Cˣ, IsPsi O F n (fun v i g => (χ v i g : C)) ∧
     ∀ v i g, χ (L.e v) i (L.lam v g) * L.κA C (G.φ v g) = p.ψ v i g := by
   have key : ∀ v : F.V, ∃ χ : Fin n → F.Gv v →* Cˣ, (∀ i, AdicCont (maximalIdeal C) (fun g => (χ i g : C)) ∧
@@ -378,9 +530,39 @@ set_option linter.overlappingInstances false
 variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O]
   [Algebra ℤ_[l] O] {F : Frame l (ResidueField O)} {n : ℕ} (T : Setup F n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem tw_apply {A : Type} [CommRing A] [Algebra O A] (ρ : NRep F n A) (g : T.G.G₀) :
     T.K.tw ρ g = ((T.K.κA A g : Aˣ) : A) • ρ.r (T.K.π g) := rfl
 
+/- English proof (translation)
+Establish `hn : 1 ≤ n` using `by have := T.n23; omega`. Set `j : C →ₐ[O] K` to `IsScalarTower.toAlgHom O C K`. Take `⟨r0, -, h0, hk⟩` from `groupDet_exists_semisimple_representation (p.D.map (algebraMap C K))`. Use `replace h0 : p.D.map (j : C →+* K) = GDet.ofRep r0 := h0.symm`. Establish `hu' : ∀ g, unt T.K (T.K.tw ρ') g = ρ'.r (T.K.π g)` using `fun g => by`.
+
+Rewrite using `[unt_apply, tw_apply, smul_smul, Units.inv_mul, one_smul]`. Establish `hs' : Submodule.span K' (Set.range (T.K.tw ρ')) = ⊤`. Rewrite using `[eq_top_iff, ← (irr_iff_span _).1 hirr, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Take `⟨g, rfl⟩` from `T.K.π_surj g`.
+
+Rewrite using `[← hu', unt_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨g, rfl⟩)`. Establish `hs` using `span_of_spec hn p.D _ hj _ r0 _ h0 h' hs'`. Establish `hI0 : ∀ g ∈ T.G.I0, r0 g = 1` using `fun g hg => by`. Establish `h1` using `(hk _).1 (kills_map p.D (algebraMap C K) g (hI g hg))`.
+
+Establish `h2` using `rep_single (RingHom.id K) r0 g 1`. Rewrite `h2` using `[MonoidAlgebra.mapRingHom_single, map_one, one_smul]`. Rewrite `h1` using `[map_sub, map_one, h2, sub_eq_zero]`. Then use the resulting hypothesis. Take `⟨b, hb⟩` from `desc T.K (unt T.K r0) (ker_le T.K p j r0 h0 hs hj hn hI0)`. Take `⟨χ, hχ, hψ⟩` from `chi_ex T.K p`.
+
+Set `t : F.G0 → C` to `fun x => tt T.K p (Function.surjInv T.K.π_surj x)`. Establish `ht0 : ∀ x, algebraMap C K (t x) = (b x).trace` using `fun x => by`. Use `tt_map T.K p hn j r0 h0 (Function.surjInv T.K.π_surj x)` as an intermediate fact. Rewrite `this` using `[← hb, Function.surjInv_eq T.K.π_surj]`. Conclude with `this`.
+
+Establish `ht : ∀ g, t (T.K.π g) = tt T.K p g` using `fun g => hj (by`. Rewrite using `[ht0, hb]`. Conclude with `(tt_map T.K p hn j r0 h0 g).symm)`. Establish `hψ' : ∀ v i g, algebraMap C K (p.ψ v i g : Cˣ) = (T.K.κA K (T.G.φ v g) : Kˣ) * algebraMap C K (χ (T.K.e v) i (T.K.lam v g) : Cˣ)` using `fun v i g => by`. Rewrite using `[← hψ, Units.val_mul, map_mul, mul_comm, ← κ_map T.K j]`.
+
+Both sides reduce to the same expression. Use `Exists.elim (of_trace T.ok T.n23 C K hj b t χ ⟨?_, fun x => ?_⟩ ht0 (fun x => ?_) hχ (fun v g x => ?_) K' (φ : C →+* K') ρ' hirr (fun x => ?_)) fun ρ H => ?_` and prove the remaining obligations. Use `rotate_right`. Take `⟨h, H1, H2, H3, H4⟩` from `H`. Use `⟨ρ, H3, H4, h0.trans (ofRep_conj r0 _ h fun g => ?_).symm, fun v i => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[tw_apply, H1, hb, ← smul_unt T.K r0 g, mul_smul_comm, smul_mul_assoc]`. Use extensionality with `g show algebraMap C K (p.ψ v i g : Cˣ) = ρ.ψ (T.K.e v) i (T.K.lam v g) * T.K.κA K (T.G.φ v g)`. Rewrite using `[hψ', H2, mul_comm]`. Use `ac_desc (π_quot T.K) ?_` and prove the remaining obligations. Simplify using `only [ht]`.
+
+Conclude with `tt_cont T.K p`. Take `⟨g, rfl⟩` from `T.K.π_surj x`. Rewrite using `[ht, tt_res T.K p hn]`. Take `⟨g, rfl⟩` from `T.K.π_surj x`. Rewrite using `[Frame.star, ← map_inv, ← T.K.π_conj, ht, ht, map_inv, tt_star T.K p hn]`.
+
+Take `⟨u, rfl⟩` from `T.K.e.surjective v`. Take `⟨g, rfl⟩ : ∃ g' : Fin n → T.G.Gv u, g = fun i => T.K.lam u (g' i)` from `⟨fun i => (T.K.lam u).symm (g i), funext fun i => ((T.K.lam u).apply_symm_apply _).symm⟩`. Establish `h1 : GDet.repAlg r0 K (MonoidAlgebra.mapRingHom _ (j : C →+* K) (T.G.oEl u (p.ψ u) g)) = 0` using `eq_zero_of_tr r0 hs _ fun y => by`. Use `tr_of_map hn p.D _ r0 h0 (MonoidAlgebra.single y 1 * T.G.oEl u (p.ψ u) g)` as an intermediate fact. Rewrite `this` using `[p.Ord, map_zero, map_mul, map_mul, rep_single, map_one, one_smul]`.
+
+Conclude with `this.symm`. Rewrite `h1` using `[GFrame.oEl, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Establish `h2` using `prod_smul (fun i => ((T.K.κA K (T.G.φ u (g i)) : Kˣ) : K)) (fun i => b (F.loc0 _ (T.K.lam u (g i))) - algebraMap C K (χ (T.K.e u) i (T.K.lam u (g i)) : Cˣ) • (1 : Matrix (Fin n) (Fin n) K))`. Establish `h3` using `h2.symm.trans (Eq.trans (congrArg (fun f => (List.ofFn f).prod) (funext fun i => by`. Simplify using `only [Function.comp_apply]`.
+
+Rewrite using `[map_sub, map_sub, rep_single, rep_single, map_one, map_one, one_smul, smul_sub, T.K.lam_loc, hb, smul_unt, smul_smul, ← hψ']`. Use the proof step `rfl)) h1)`. Establish `h4` using `(IsUnit.smul_eq_zero (IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _))).1 h3`. Unfold `ordProd`. Rewrite using `[h4, mul_zero, trace_zero]`.
+
+Take `⟨g, rfl⟩` from `T.K.π_surj x`. Rewrite using `[ht, ← hu']`. Conclude with `tt_map T.K p hn φ _ h' g`.
+-/
 private theorem untwist {C : Type} [CommRing C] [Algebra O C] [IsCO O C] (p : Pair T.r C) {K : Type} [Field K]
     [IsAlgClosed K] [Algebra O K] [Algebra C K] [IsScalarTower O C K] (hj : Function.Injective (algebraMap C K))
     (hI : ∀ g ∈ T.G.I0, p.D.Kills (MonoidAlgebra.single g 1 - 1)) {K' : Type} [Field K'] [IsAlgClosed K']
@@ -457,6 +639,19 @@ private theorem untwist {C : Type} [CommRing C] [Algebra O C] [IsCO O C] (p : Pa
     rw [ht, ← hu']
     exact tt_map T.K p hn φ _ h' g
 
+/- English proof (translation)
+Establish `tw_map : ∀ {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O A'] (f : A →ₐ[O] A') (ρ : NRep F n A), (GDet.ofRep (T.K.tw ρ)).map (f : A →+* A') = GDet.ofRep (T.K.tw (ρ.map (f : A →+* A'))) ∧ ∀ v i, pushCh (f : A →+* A') (T.K.twψ ρ v i) = T.K.twψ (ρ.map (f : A →+* A …`. Introduce `A A' _ _ _ _ f ρ`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[(d_gmap (GDet.ofRep (T.K.tw ρ))).2.2.2]`. Use `congr 1`.
+
+Use extensionality with `g a b`. Use `show f (_ * _) = _ * f _`. Rewrite using `[map_mul, κ_map]`. Use extensionality with `g show f (_ * _) = f _ * _`. Rewrite using `[map_mul]`.
+
+Use `congr 1`. Conclude with `κ_map T.K f _`. Establish `hu : T.S.u.map (T.S.A.val : T.S.A →+* T.S.R) = T.S.ρ`. Apply the tactic sequence `ext <;> rfl`. Establish `h1 : T.B.u.D.map ((T.S.inc.comp Φ : T.B.B →ₐ[O] T.S.A) : T.B.B →+* T.S.A) = GDet.ofRep (T.K.tw T.S.u)`.
+
+Use `gdet_inj (T.S.A.val : T.S.A →+* T.S.R) Subtype.val_injective _ _ ?_` and prove the remaining obligations. Rewrite using `[(tw_map T.S.A.val T.S.u).1, hu, (d_gmap _).2.1]`. Conclude with `hΦ.1`. Establish `h2 : ∀ v i, pushCh ((T.S.inc.comp Φ : T.B.B →ₐ[O] T.S.A) : T.B.B →+* T.S.A) (T.B.u.ψ v i) = T.K.twψ T.S.u v i` using `fun v i => by`. Establish `h3` using `(tw_map T.S.A.val T.S.u).2 v i`.
+
+Rewrite `h3` using `[hu, ← hΦ.2 v i]`. Use extensionality with `g`. Conclude with `(congrArg Units.val (DFunLike.congr_fun h3 g)).symm`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Rewrite using `[← (tw_map ξ T.S.u).1, ← h1, (d_gmap _).2.1]`.
+
+Both sides reduce to the same expression. Rewrite using `[← (tw_map ξ T.S.u).2, ← h2]`. Both sides reduce to the same expression.
+-/
 private theorem maps_A (Φ : T.B.B →ₐ[O] T.S.B) (hΦ : T.IsPhi Φ) {K : Type} [CommRing K] [Algebra O K]
     (ξ : T.S.A →ₐ[O] K) : T.B.u.Maps ((ξ.comp (T.S.inc.comp Φ) : T.B.B →ₐ[O] K) : T.B.B →+* K)
       (GDet.ofRep (T.K.tw (T.S.u.map (ξ : T.S.A →+* K)))) (T.K.twψ (T.S.u.map (ξ : T.S.A →+* K))) := by
@@ -498,6 +693,25 @@ end Main
 end UpperTheory.V.Pr
 
 open UpperTheory.V.Pr in
+/- English proof (translation)
+Introduce `l _ O _ _ _ _ _ F n T Φ hΦ J hU hD ⟨K', _, _, _, φ, ρ', hirr, hJ, hφ⟩`. Use `haveI : (RingHom.ker φ).IsPrime := RingHom.ker_isPrime φ`. Take `⟨Z, hZ, hZφ⟩` from `Ideal.exists_minimalPrimes_le hJ`. Use `haveI : Z.IsPrime := hZ.1.1`. Establish `hJZ : J ≤ Z` using `hZ.1.2`.
+
+Set `C` to `T.B.B ⧸ Z`. Set `q : T.B.B →ₐ[O] C` to `Ideal.Quotient.mkₐ O Z`. Establish `hq : Function.Surjective q` using `Ideal.Quotient.mkₐ_surjective O Z`. Use `haveI : IsDomain C := Ideal.Quotient.isDomain Z`. Use `haveI : Nontrivial C := IsDomain.toNontrivial`.
+
+Use `haveI : IsCO O C := co_quot O T.B.B C q hq`. Set `K` to `AlgebraicClosure (FractionRing C)`. Establish `hj : Function.Injective (algebraMap C K)`. Rewrite using `[IsScalarTower.algebraMap_eq C (FractionRing C) K]`. Conclude with `(algebraMap (FractionRing C) K).injective.comp (IsFractionRing.injective C (FractionRing C))`.
+
+Take `⟨p, hp⟩` from `exists_determinantPair_map_of_algHom l T.G O n T.r T.B.B C q T.B.u`. Set `φ' : C →ₐ[O] K'` to `Ideal.Quotient.liftₐ Z φ fun a ha => hZφ ha`. Take `⟨ρ, H1, H2, H3⟩` from `untwist T p hj (fun g hg => by`. Use `kills_map _ (Ideal.Quotient.factor hJZ) g (hU g hg)` as an intermediate fact. Rewrite `this` using `[(d_gmap _).2.1]`.
+
+Rewrite using `[← hp.1]`. Conclude with `this) φ' ρ' hirr (by rw [← hp.1, (d_gmap _).2.1]; exact hφ)`. Take `⟨ξ, β, hξ, hβ⟩` from `point_field T.ok T.n23 T.S C K hj ρ H1 (offTri_of_irr T.n23 ρ ((irr_iff_span _).1 H2))`. Establish `hM` using `maps_A T Φ hΦ ξ`. Rewrite `hM` using `[hξ]`.
+
+Establish `hc : ((ξ.comp (T.S.inc.comp Φ) : T.B.B →ₐ[O] K) : T.B.B →+* K) = (algebraMap C K).comp (β.comp Φ : T.B.B →ₐ[O] C)` using `RingHom.ext fun x => hβ (Φ x)`. Rewrite `hM` using `[hc]`. Establish `hβΦ : β.comp Φ = q`. Use `(T.B.univ C p).unique ⟨gdet_inj _ hj _ _ ?_, fun v i => ?_⟩ hp` and prove the remaining obligations. Rewrite using `[(d_gmap _).2.1, hM.1, H3.1]`.
+
+Use extensionality with `g`. Apply `hj` to reduce the goal to its premises. Conclude with `congrArg Units.val (DFunLike.congr_fun ((hM.2 v i).trans (H3.2 v i).symm) g)`. Establish `hβs : Function.Surjective β` using `fun c => by`. Take `⟨x, rfl⟩` from `hq c`.
+
+Conclude with `⟨Φ x, DFunLike.congr_fun hβΦ x⟩`. Use `⟨RingHom.ker (ξ : T.S.A →+* K), RingHom.ker β, RingHom.ker_isPrime _, (types T.ok T.n23 T.S K _).1.1 (hξ.symm ▸ H2), RingHom.ker_isPrime _, ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Use `Ideal.map_le_iff_le_comap.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `(DFunLike.congr_fun hβΦ x).trans (Ideal.Quotient.eq_zero_iff_mem.2 (hJZ hx))`. Use `show ξ (T.S.inc x) = 0`.
+
+Rewrite using `[hβ, RingHom.mem_ker.1 hx, map_zero]`. Conclude with `(Ideal.quotientKerAlgEquivOfSurjective hβs).toRingEquiv.ringKrullDim.trans (hD Z hZ)`.
+-/
 theorem UpperTheory.V.Pr.seedOf :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n), T.CurveSpecializationHypothesis := by
   intro l _ O _ _ _ _ _ F n T Φ hΦ J hU hD ⟨K', _, _, _, φ, ρ', hirr, hJ, hφ⟩

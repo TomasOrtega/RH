@@ -12,6 +12,9 @@ def IntervalMomentsDetermine.Statement : Prop :=
     μ (Set.Icc (-1 : ℝ) 1)ᶜ = 0 → ν (Set.Icc (-1 : ℝ) 1)ᶜ = 0 →
     (∀ k : ℕ, ∫ x, x ^ k ∂μ = ∫ x, x ^ k ∂ν) → μ = ν
 
+/- English proof (translation)
+Use `⟨inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.dirac_apply' _ (measurableSet_Icc.compl)]`. Simplify using the standard rewrite rules. Conclude with `⟨by simp [ENNReal.mul_lt_top]⟩`. Simplify using `[Measure.restrict_apply measurableSet_Icc.compl]`.
+-/
 example : IsFiniteMeasure (Measure.dirac (0 : ℝ)) ∧ Measure.dirac (0 : ℝ) (Set.Icc (-1 : ℝ) 1)ᶜ = 0 ∧
     IsFiniteMeasure ((2⁻¹ : ENNReal) • (volume : Measure ℝ).restrict (Set.Icc (-1) 1)) ∧
     ((2⁻¹ : ENNReal) • (volume : Measure ℝ).restrict (Set.Icc (-1) 1)) (Set.Icc (-1 : ℝ) 1)ᶜ = 0 := by

@@ -70,16 +70,25 @@ variable {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ} (E : Exp A g)
 def hom : Multiplicative (Fin g → ℂ) →* Pt A :=
   MonoidHom.mk' (fun z => E.exp z.toAdd) (fun _ _ => E.exp_add _ _)
 
+/- English proof (translation)
+The claim follows from `E.hom.map_one`.
+-/
 theorem exp_zero : E.exp 0 = 1 := E.hom.map_one
 
 def lat : Submodule ℤ (Fin g → ℂ) := AddSubgroup.toIntSubmodule (Subgroup.toAddSubgroup' E.hom.ker)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_lat (z : Fin g → ℂ) : z ∈ E.lat ↔ E.exp z = 1 := Iff.rfl
 
 instance : DiscreteTopology E.lat := E.discrete
 
 instance : IsZLattice ℝ E.lat := ⟨E.span⟩
 
+/- English proof (translation)
+Rewrite using `[E.exp_add, (E.mem_lat la).1 la.2, _root_.mul_one]`.
+-/
 theorem exp_add_lat (z : Fin g → ℂ) (la : E.lat) : E.exp (z + la) = E.exp z := by
   rw [E.exp_add, (E.mem_lat la).1 la.2, _root_.mul_one]
 
@@ -163,6 +172,11 @@ def HasFactor (a : F.toExp.lat → (Fin g → ℂ) → ℂ) : Prop :=
 
 def IsAH (D : AHDatum F.toExp.lat) : Prop := F.HasFactor D.factor
 
+/- English proof (translation)
+Establish `hx : (F.exp z).mor.base (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i)`. Rewrite using `[F.isLB.cover]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Use `⟨i, fun p _ => ?_⟩` and prove the remaining obligations.
+
+Establish `hp : p = (default : PrimeSpectrum ℂ)` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `hp` using the available equality. Conclude with `hi`.
+-/
 theorem exists_chart (z : Fin g → ℂ) : ∃ i, z ∈ pre F.exp (L.U i) := by
   have hx : (F.exp z).mor.base (default : PrimeSpectrum ℂ) ∈ (⨆ i, L.U i) := by
     rw [F.isLB.cover]; trivial
@@ -172,6 +186,15 @@ theorem exists_chart (z : Fin g → ℂ) : ∃ i, z ∈ pre F.exp (L.U i) := by
   subst hp
   exact hi
 
+/- English proof (translation)
+Take `⟨i, h⟩` from `F.exists_chart z`. Establish `e : F.exp (z + la) = F.exp z` using `F.toExp.exp_add_lat z la`. Establish `h' : z + la ∈ pre F.exp (L.U i)`. Express the relevant statement in the definitionally equal form `In (F.exp (z + la)).mor _`. Rewrite using `[e]`.
+
+Conclude with `h`. Establish `hv : ∀ (x y : Pt A) (_ : x = y) (hx : In x.mor (L.U i)) (hy : In y.mor (L.U i)), val x.mor hx (s.f i) = val y.mor hy (s.f i)`. Introduce `x y hxy hx hy`. Substitute `hxy` using the available equality. Both sides reduce to the same expression.
+
+Establish `h1` using `hs i z h`. Establish `h2` using `hs i (z + la) h'`. Rewrite `h2` using `[hv _ _ e h' h, h1, ha la z i h h']`. Apply `mul_right_cancel₀ (F.fr_ne i _ h')` to reduce the goal to its premises. Rewrite using `[← h2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem IsSec.add_lat {F : Unif A L g} {a : F.toExp.lat → (Fin g → ℂ) → ℂ} (ha : F.HasFactor a) {s : L.Sec}
     {θ : (Fin g → ℂ) → ℂ} (hs : F.IsSec s θ) (la : F.toExp.lat) (z : Fin g → ℂ) :
     θ (z + la) = a la z * θ z := by
@@ -207,6 +230,13 @@ def thetaTerm {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Matrix (
 def theta {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) : ℂ :=
   ∑' l : Fin g → ℤ, thetaTerm a b z τ.1 l
 
+/- English proof (translation)
+Unfold `theta`. Rewrite using `[← (Equiv.neg (Fin g → ℤ)).tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Unfold `thetaTerm`. Use `congr 2`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.neg_apply, Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 example {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) :
     theta (-a) (-b) (-z) τ = theta a b z τ := by
   unfold theta
@@ -220,6 +250,11 @@ example {g : ℕ} (a b : Fin g → ℝ) (z : Fin g → ℂ) (τ : Siegel g) :
   · refine Finset.sum_congr rfl fun i _ => ?_
     simp only [Equiv.neg_apply, Pi.neg_apply]; push_cast; ring
 
+/- English proof (translation)
+Unfold `theta jacobiTheta₂`. Rewrite using `[← (Equiv.funUnique (Fin 1) ℤ).symm.tsum_eq]`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Simplify using `only [thetaTerm, e, jacobiTheta₂_term, Fin.sum_univ_one]`. Use `congr 1`.
+
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+-/
 example (z : Fin 1 → ℂ) (τ : Siegel 1) : theta 0 0 z τ = jacobiTheta₂ (z 0) (τ.1 0 0) := by
   unfold theta jacobiTheta₂
   rw [← (Equiv.funUnique (Fin 1) ℤ).symm.tsum_eq]

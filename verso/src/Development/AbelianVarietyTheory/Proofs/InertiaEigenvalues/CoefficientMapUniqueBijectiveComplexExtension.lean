@@ -17,6 +17,17 @@ open Formalism.BasicNotions Formalism.L2.DIV GlobalTheory.AdTh.CoefExt
 variable {K : Type} [Field K] {σ : K →+* ℂ} {I : Type} [Fintype I] {n : ℕ} {lam : I → DomWeight n}
   {W : Type} [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Establish `hsp : ⊤ ≤ Submodule.span ℂ (Set.range fun j => up σ lam (bVV K lam j))`. Introduce `v _`. Take `⟨a, rfl⟩` from `exists_coord σ lam v`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hcard : Fintype.card (VVIdx lam) = Module.finrank ℂ (VV ℂ lam)` using `(Module.finrank_eq_card_basis (bVV ℂ lam)).symm`.
+
+Set `b : Module.Basis (VVIdx lam) ℂ (VV ℂ lam)` to `basisOfTopLeSpanOfCardEqFinrank _ hsp hcard`. Establish `hb : ∀ j, b j = up σ lam (bVV K lam j)` using `fun j => congrFun (coe_basisOfTopLeSpanOfCardEqFinrank _ hsp hcard) j`. Establish `hsw : ⊤ ≤ Submodule.span ℂ (Set.range fun j => c' (bVV K lam j))`. Rewrite using `[← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Rewrite using `[← (bVV K lam).sum_repr v, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Set `w : Module.Basis (VVIdx lam) ℂ W` to `Module.Basis.mk hli hsw`.
+
+Establish `hc : ∀ j, (b.equiv w (Equiv.refl _)) (up σ lam (bVV K lam j)) = c' (bVV K lam j)`. Introduce `j`. Rewrite using `[← hb, Module.Basis.equiv_apply]`. Conclude with `Module.Basis.mk_apply hli hsw j`. Use `⟨(b.equiv w (Equiv.refl _)).toLinearMap, fun v => ?_, (b.equiv w (Equiv.refl _)).bijective, fun d hd => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← (bVV K lam).sum_repr v, up_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smulₛₗ, LinearEquiv.coe_coe, hc]`. Use `b.ext fun j => ?_` and prove the remaining obligations. Rewrite using `[hb, hd, LinearEquiv.coe_coe, hc]`.
+-/
 theorem exists_ext (c' : VV K lam →ₛₗ[σ] W) (hs : Submodule.span ℂ (Set.range c') = ⊤)
     (hli : LinearIndependent ℂ fun j => c' (bVV K lam j)) :
     ∃ c : VV ℂ lam →ₗ[ℂ] W, (∀ v, c (up σ lam v) = c' v) ∧ Function.Bijective c ∧
@@ -48,6 +59,11 @@ theorem exists_ext (c' : VV K lam →ₛₗ[σ] W) (hs : Submodule.span ℂ (Set
   · refine b.ext fun j => ?_
     rw [hb, hd, LinearEquiv.coe_coe, hc]
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin (VVIdx lam)`. Establish `h1` using `h _ (bVV K lam ∘ e.symm) ((bVV K lam).linearIndependent.comp _ e.symm.injective)`. Establish `h2` using `h1.comp e e.injective`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem li_basis (c' : VV K lam →ₛₗ[σ] W)
     (h : ∀ (m : ℕ) (b : Fin m → VV K lam), LinearIndependent K b → LinearIndependent ℂ fun j => c' (b j)) :
     LinearIndependent ℂ fun j => c' (bVV K lam j) := by
@@ -68,6 +84,13 @@ open Classical
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP`. Take `⟨gramR, c0R, c0L, hT, hc⟩` from `hP.lift.c0`. Establish `hE : ∀ v, O.c0' (GlobalTheory.AdTh.CoefExt.up O.jL (lamV D i) v) = c0L i v`. Introduce `v`. Take `⟨w, hw, h⟩` from `hc v`.
+
+Rewrite using `[show GlobalTheory.AdTh.CoefExt.up O.jL (lamV D i) v = w from Subtype.ext hw.symm]`. Conclude with `h`. Take `⟨-, h2, h3⟩` from `hT.mapL i`. Take `⟨c, h4, h5, h6⟩` from `exists_ext (W := (R.cV i).W) O.c0' (GlobalTheory.AdTh.CoefExt.span_top (W := (R.cV i).W) hE h3) (li_basis (W := (R.cV i).W) O.c0' fun m b hb => GlobalTheory.AdTh.CoefExt.linearIndependent (W := (R.cV i).W) hE h2 b hb)`. Use `⟨c, fun v v' hv => ?_, h5, fun d hd => h6 d fun v => hd v _ rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[show v' = GlobalTheory.AdTh.CoefExt.up (inC O.c') (lamV D i) v from Subtype.ext hv]`. Conclude with `h4 v`.
+-/
 theorem exists_extC_bijective_unique : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (M : OMDat T.toCore R i Tp tup), M.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) M.s0) → ∃ c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W, ExtC R i (inC M.c') M.c0' c ∧ Function.Bijective c ∧ ∀ c', ExtC R i (inC M.c') M.c0' c' → c' = c := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP
   obtain ⟨gramR, c0R, c0L, hT, hc⟩ := hP.lift.c0

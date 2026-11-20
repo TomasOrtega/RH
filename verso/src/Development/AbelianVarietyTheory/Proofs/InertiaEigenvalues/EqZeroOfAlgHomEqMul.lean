@@ -7,6 +7,31 @@ namespace GlobalTheory.CycFr
 
 open PowerSeries in
 
+/- English proof (translation)
+Use `set A := _root_.GlobalTheory.CycFr.act O c X with hAdef`. Use `set G := g X with hGdef`. Use `set P : O⟦X⟧ := ∑ i ∈ Finset.range l, (1 + X) ^ i with hPdef`. Establish `hP : (1 + X : O⟦X⟧) ^ l - 1 = X * P`. Rewrite using `[← geom_sum_mul, add_sub_cancel_left, mul_comm]`.
+
+Establish `hPc : constantCoeff P = (l : O)` using `by simp [P]`. Establish `hXφ : X ∣ φ₀ X` using `by rw [hφ, hP]; exact dvd_mul_right _ _`. Establish `hφact : φ₀ = _root_.GlobalTheory.CycFr.act O (l : ℤ_[l])`. Apply `_root_.GlobalTheory.CycFr.algHom_ext_X _ _ hXφ` to reduce the goal to its premises. Rewrite using `[hφ, _root_.GlobalTheory.CycFr.act_nat_X]`.
+
+Establish `hA0 : constantCoeff A = 0` using `PowerSeries.X_dvd_iff.mp (_root_.GlobalTheory.CycFr.X_dvd_act_X c)`. Establish `hG : φ₀ G = (1 + G) ^ l - 1`. Rewrite using `[hGdef, hc, hφ]`. Simplify using `[map_sub, map_pow, map_add, map_one]`. Establish `hA : φ₀ A = (1 + A) ^ l - 1`.
+
+Rewrite using `[hAdef, hφact, _root_.GlobalTheory.CycFr.act_comm, ← hφact, hφ]`. Simplify using `[map_sub, map_pow, map_add, map_one]`. Establish `hstep : ∀ n, 2 ≤ n → ∀ E : O⟦X⟧, G - A = X ^ n * E → constantCoeff E = 0`. Introduce `n hn E hE`. Use `set S : O⟦X⟧ := ∑ i ∈ Finset.range l, (1 + G) ^ i * (1 + A) ^ (l - 1 - i) with hSdef`.
+
+Establish `hSc : constantCoeff S = (l : O)` using `by simp [S, hA0, h0]`. Establish `hD : φ₀ (G - A) = (G - A) * S`. Establish `hgs` using `geom_sum₂_mul (1 + G) (1 + A) l`. Rewrite `hgs` using `[add_sub_add_left_eq_sub]`. Rewrite using `[map_sub, hG, hA, mul_comm, hgs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hD` using `[hE, map_mul, map_pow, hφ, hP, mul_pow, mul_assoc, mul_assoc]`. Establish `hcancel` using `mul_left_cancel₀ (pow_ne_zero n PowerSeries.X_ne_zero) hD`. Establish `hcc` using `congrArg constantCoeff hcancel`. Rewrite `hcc` using `[map_mul, map_mul, map_pow, hPc, hSc, _root_.GlobalTheory.CycFr.constantCoeff_algHom φ₀ hXφ E]`.
+
+Establish `hne : ((l : O) ^ n) ≠ (l : O)`. Rewrite using `[← Nat.cast_pow, Ne, Nat.cast_inj]`. Introduce `h`. Establish `h2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Use `Nat.pow_right_injective h2 (h.trans (pow_one l).symm)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `: constantCoeff E * ((l : O) ^ n - l) = 0` using `by linear_combination hcc`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (sub_eq_zero.mp h) hne`.
+
+Establish `hdvd : ∀ n, X ^ (n + 2) ∣ G - A`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[PowerSeries.X_pow_dvd_iff]`.
+
+Introduce `m hm`. Use `interval_cases m`. Simplify using `[hA0, h0]`. Rewrite using `[map_sub, h1, hAdef, _root_.GlobalTheory.CycFr.coeff_one_act_X, sub_self]`. Consider the case `succ k ih`.
+
+Take `⟨E, hE⟩` from `ih`. Establish `he` using `hstep (k + 2) (by omega) E hE`. Take `⟨F, hF⟩` from `PowerSeries.X_dvd_iff.mpr he`. Conclude with `⟨F, by rw [hE, hF]; ring⟩`. Establish `hGA : G = A`.
+
+Rewrite using `[← sub_eq_zero]`. Use extensionality with `m`. Use `PowerSeries.X_pow_dvd_iff.mp (hdvd m) m (by omega)` as an intermediate fact. Simplify using `using this`. Conclude with `_root_.GlobalTheory.CycFr.algHom_ext_X _ _ (PowerSeries.X_dvd_iff.mpr h0) hGA`.
+-/
 theorem _root_.GlobalTheory.CycFr.eq_act_of_comm {l : ℕ} [Fact l.Prime] {O : Type}
     [CommRing O] [IsDomain O] [CharZero O]
     [Algebra ℤ_[l] O] (φ₀ g : O⟦X⟧ →ₐ[O] O⟦X⟧) (c : ℤ_[l]) (hφ : φ₀ X = (1 + X) ^ l - 1)

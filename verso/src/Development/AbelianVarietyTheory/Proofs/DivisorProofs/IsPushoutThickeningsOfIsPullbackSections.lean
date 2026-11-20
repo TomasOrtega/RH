@@ -6,16 +6,25 @@ noncomputable section
 
 namespace GlobalTheory.ThickPush
 
+/- English proof (translation)
+Use `Scheme.Hom.ext hb fun U => ?_` and prove the remaining obligations. Rewrite using `[← h U (le_of_eq congr((TopologicalSpace.Opens.map $hb.symm).obj U))]`. Both sides reduce to the same expression.
+-/
 theorem hom_ext_appLE {Z X : Scheme.{0}} {f g : Z ⟶ X} (hb : f.base = g.base)
     (h : ∀ U e, f.appLE U (g ⁻¹ᵁ U) e = g.app U) : f = g := by
   refine Scheme.Hom.ext hb fun U => ?_
   rw [← h U (le_of_eq congr((TopologicalSpace.Opens.map $hb.symm).obj U))]
   rfl
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem appLE_eq_of_eq {X Y : Scheme.{0}} {f f' : X ⟶ Y} (h : f = f') (U : Y.Opens) (V : X.Opens)
     (e : V ≤ f ⁻¹ᵁ U) (e' : V ≤ f' ⁻¹ᵁ U) : f.appLE U V e = f'.appLE U V e' := by
   subst h; rfl
 
+/- English proof (translation)
+Substitute `hpq` using the available equality. Conclude with `h`.
+-/
 theorem isUnit_germ_of_eq {T : Scheme.{0}} {p q : T} (hpq : p = q) (W : T.Opens) (hp : p ∈ W) (hq : q ∈ W)
     (t : Γ(T, W)) (h : IsUnit (T.presheaf.germ W p hp t)) : IsUnit (T.presheaf.germ W q hq t) := by
   subst hpq; exact h
@@ -29,11 +38,19 @@ def bse : (Y : TopCat) ⟶ (T : TopCat) :=
   TopCat.ofHom ⟨fun y => g₁ ((hj.homeomorph _).symm y),
     g₁.base.hom.continuous.comp (hj.homeomorph _).symm.continuous⟩
 
+/- English proof (translation)
+Use `show g₁ ((hj.homeomorph _).symm (hj.homeomorph _ x)) = g₁ x`. Rewrite using `[Homeomorph.symm_apply_apply]`.
+-/
 theorem bse_j₁ (x : Y₁) : bse hj g₁ (j₁ x) = g₁ x := by
   show g₁ ((hj.homeomorph _).symm (hj.homeomorph _ x)) = g₁ x
   rw [Homeomorph.symm_apply_apply]
 
 include hw hi₂ hg in
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `hi₂ x`. Establish `h1 : j₂ (i₂ y) = j₁ (i₁ y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hw]`. Establish `h2 : g₂ (i₂ y) = g₁ (i₁ y)`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hg]`.
+
+Rewrite using `[h1, h2, bse_j₁]`.
+-/
 theorem bse_j₂ (x : Y₂) : bse hj g₁ (j₂ x) = g₂ x := by
   obtain ⟨y, rfl⟩ := hi₂ x
   have h1 : j₂ (i₂ y) = j₁ (i₁ y) := by
@@ -42,12 +59,18 @@ theorem bse_j₂ (x : Y₂) : bse hj g₁ (j₂ x) = g₂ x := by
     rw [← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hg]
   rw [h1, h2, bse_j₁]
 
+/- English proof (translation)
+Use extensionality with `x`. Use `show bse hj g₁ (j₁ x) ∈ W ↔ g₁ x ∈ W`. Rewrite using `[bse_j₁]`.
+-/
 theorem pre₁ (W : T.Opens) : j₁ ⁻¹ᵁ ((TopologicalSpace.Opens.map (bse hj g₁)).obj W) = g₁ ⁻¹ᵁ W := by
   ext x
   show bse hj g₁ (j₁ x) ∈ W ↔ g₁ x ∈ W
   rw [bse_j₁]
 
 include hw hi₂ hg in
+/- English proof (translation)
+Use extensionality with `x`. Use `show bse hj g₁ (j₂ x) ∈ W ↔ g₂ x ∈ W`. Rewrite using `[bse_j₂ hw hi₂ hj g₁ g₂ hg]`.
+-/
 theorem pre₂ (W : T.Opens) : j₂ ⁻¹ᵁ ((TopologicalSpace.Opens.map (bse hj g₁)).obj W) = g₂ ⁻¹ᵁ W := by
   ext x
   show bse hj g₁ (j₂ x) ∈ W ↔ g₂ x ∈ W
@@ -68,10 +91,16 @@ def liftApp (W : T.Opens) : Γ(T, W) ⟶ Γ(Y, (TopologicalSpace.Opens.map (bse 
       ((appLE_eq_of_eq hg _ _ _ _).trans (Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm))
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(hV _).lift_fst _ _ _ @[reassoc]`.
+-/
 theorem liftApp_fst (W : T.Opens) : liftApp hw hi₂ hj hV g₁ g₂ hg W ≫ j₁.app _ = g₁.appLE W _ (pre₁ hj g₁ W).le :=
   (hV _).lift_fst _ _ _
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `(hV _).lift_snd _ _ _`.
+-/
 theorem liftApp_snd (W : T.Opens) : liftApp hw hi₂ hj hV g₁ g₂ hg W ≫ j₂.app _ =
     g₂.appLE W _ (pre₂ hw hi₂ hj g₁ g₂ hg W).le :=
   (hV _).lift_snd _ _ _
@@ -119,6 +148,9 @@ def desc : Y ⟶ T :=
     rw [h4] at h2
     exact isUnit_germ_of_eq (bse_j₁ hj g₁ x₁).symm W hx₁ hW t (isUnit_of_map_unit (g₁.stalkMap x₁).hom _ h2)⟩⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem desc_app (W : T.Opens) : (desc hw hi₂ hj hV g₁ g₂ hg).app W = liftApp hw hi₂ hj hV g₁ g₂ hg W := rfl
 
 end Hom
@@ -130,6 +162,11 @@ variable {Y₀ Y₁ Y₂ Y T : Scheme.{0}} {i₁ : Y₀ ⟶ Y₁} {i₂ : Y₀ �
     (i₂.appLE (j₂ ⁻¹ᵁ V) ((i₁ ≫ j₁) ⁻¹ᵁ V) (by rw [hw]; exact le_rfl)))
   (g₁ : Y₁ ⟶ T) (g₂ : Y₂ ⟶ T) (hg : i₁ ≫ g₁ = i₂ ≫ g₂)
 
+/- English proof (translation)
+Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `bse_j₁ hj g₁ x`. Establish `hh : j₁.appLE (desc hw hi₂ hj hV g₁ g₂ hg ⁻¹ᵁ W) (g₁ ⁻¹ᵁ W) e = j₁.app _ ≫ Y₁.presheaf.map (homOfLE e).op` using `rfl`. Rewrite using `[Scheme.Hom.comp_appLE, hh, desc_app]`.
+
+Use `erw [liftApp_fst_assoc]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)`.
+-/
 theorem fac₁ : j₁ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₁ := by
   refine hom_ext_appLE ?_ fun W e => ?_
   · ext x
@@ -139,6 +176,11 @@ theorem fac₁ : j₁ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₁ := by
     erw [liftApp_fst_assoc]
     exact (Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)
 
+/- English proof (translation)
+Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Conclude with `bse_j₂ hw hi₂ hj g₁ g₂ hg x`. Establish `hh : j₂.appLE (desc hw hi₂ hj hV g₁ g₂ hg ⁻¹ᵁ W) (g₂ ⁻¹ᵁ W) e = j₂.app _ ≫ Y₂.presheaf.map (homOfLE e).op` using `rfl`. Rewrite using `[Scheme.Hom.comp_appLE, hh, desc_app]`.
+
+Use `erw [liftApp_snd_assoc]`. Conclude with `(Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)`.
+-/
 theorem fac₂ : j₂ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₂ := by
   refine hom_ext_appLE ?_ fun W e => ?_
   · ext x
@@ -148,6 +190,13 @@ theorem fac₂ : j₂ ≫ desc hw hi₂ hj hV g₁ g₂ hg = g₂ := by
     erw [liftApp_snd_assoc]
     exact (Scheme.Hom.appLE_map _ _ _).trans (Scheme.Hom.appLE_eq_app _)
 
+/- English proof (translation)
+Use `hom_ext_appLE ?_ fun W e => ?_` and prove the remaining obligations. Use extensionality with `x`. Take `⟨x₁, rfl⟩ : ∃ x₁, j₁ x₁ = x` from `⟨(hj.homeomorph _).symm x, (hj.homeomorph _).apply_symm_apply x⟩`. Use `show m (j₁ x₁) = bse hj g₁ (j₁ x₁)`. Rewrite using `[bse_j₁, ← h₁, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[desc_app]`. Apply `(hV _).hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (liftApp_fst hw hi₂ hj hV g₁ g₂ hg W).symm` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE j₁]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans (appLE_eq_of_eq h₁ _ _ _ _)`.
+
+Use `Eq.trans ?_ (liftApp_snd hw hi₂ hj hV g₁ g₂ hg W).symm` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE j₂]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans (appLE_eq_of_eq h₂ _ _ _ _)`.
+-/
 theorem uniq (m : Y ⟶ T) (h₁ : j₁ ≫ m = g₁) (h₂ : j₂ ≫ m = g₂) : m = desc hw hi₂ hj hV g₁ g₂ hg := by
   refine hom_ext_appLE ?_ fun W e => ?_
   · ext x
@@ -165,6 +214,9 @@ theorem uniq (m : Y ⟶ T) (h₁ : j₁ ≫ m = g₁) (h₂ : j₂ ≫ m = g₂)
 
 end Fac
 
+/- English proof (translation)
+Introduce `Y₀ Y₁ Y₂ i₁ i₂ _ _ _ hs₂ Y j₁ j₂ hw hc₁ _ hs₁ _ hV`. Establish `hj : IsHomeomorph j₁` using `isHomeomorph_iff_isEmbedding_surjective.mpr ⟨j₁.isClosedEmbedding.isEmbedding, hs₁.surj⟩`. Use `IsPushout.of_isColimit' ⟨hw⟩ (PushoutCocone.IsColimit.mk _ (fun s => desc hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s => fac₁ hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s => fac₂ hw hs₂.surj hj hV s.inl s.inr s.condition) (fun s m h₁ h₂ => uniq hw hs₂.surj hj hV s.inl …` and prove the remaining obligations.
+-/
 theorem isPushout_of_isPullback_sections : ∀ (Y₀ Y₁ Y₂ : Scheme.{0}) (i₁ : Y₀ ⟶ Y₁) (i₂ : Y₀ ⟶ Y₂),
     IsClosedImmersion i₁ → IsClosedImmersion i₂ → Surjective i₁ → Surjective i₂ →
     ∀ (Y : Scheme.{0}) (j₁ : Y₁ ⟶ Y) (j₂ : Y₂ ⟶ Y) (hw : i₁ ≫ j₁ = i₂ ≫ j₂),

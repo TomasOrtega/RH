@@ -14,16 +14,25 @@ namespace SectionInjectivity
 
 set_option linter.unusedSectionVars false
 
+/- English proof (translation)
+The claim follows from `fun k hk ↦ hc k (by simpa [evalCone] using hz.2 _ hk)`.
+-/
 theorem isLive_of_mem_points {P : ArithVariety n} {z : Cone n ℂ} (hz : z ∈ P.points ℂ)
     {c : (k : ι) → Fin (n k + 1)} (hc : ∀ k, z k (c k) ≠ 0) :
     ∀ k, (X ⟨k, c k⟩ : MvPolynomial (Coord n) ℤ) ∉ P.ideal := fun k hk ↦
   hc k (by simpa [evalCone] using hz.2 _ hk)
 
+/- English proof (translation)
+Simplify using `only [evalCone, chartMonomial, eval₂_prod, eval₂_pow, eval₂_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`.
+-/
 theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n k + 1)}
     (hc : ∀ k, z k (c k) ≠ 0) (d : ι → ℕ) : evalCone z (chartMonomial c d) ≠ 0 := by
   simp only [evalCone, chartMonomial, eval₂_prod, eval₂_pow, eval₂_X]
   exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)
 
+/- English proof (translation)
+Establish `hmul : den * (f * chartMonomial c d' - f' * chartMonomial c d) ∈ P.ideal`. Establish `e : den * (f * chartMonomial c d' - f' * chartMonomial c d) = (den * f - num * chartMonomial c d) * chartMonomial c d' - (den * f' - num * chartMonomial c d') * chartMonomial c d` using `by ring`. Rewrite using `[e]`. Conclude with `P.ideal.sub_mem (P.ideal.mul_mem_right _ h) (P.ideal.mul_mem_right _ h')`. Conclude with `(P.isPrime.mem_or_mem hmul).resolve_left hden`.
+-/
 theorem chartForm_cross {P : ArithVariety n} {num den : MvPolynomial (Coord n) ℤ}
     (hden : den ∉ P.ideal) {c : (k : ι) → Fin (n k + 1)} {d d' : ι → ℕ}
     {f f' : MvPolynomial (Coord n) ℤ} (h : den * f - num * chartMonomial c d ∈ P.ideal)
@@ -37,6 +46,9 @@ theorem chartForm_cross {P : ArithVariety n} {num den : MvPolynomial (Coord n) �
     exact P.ideal.sub_mem (P.ideal.mul_mem_right _ h) (P.ideal.mul_mem_right _ h')
   exact (P.isPrime.mem_or_mem hmul).resolve_left hden
 
+/- English proof (translation)
+Rewrite `h₁`, `h₂`, the goal using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero]`. Rewrite using `[chartMonomial_add, chartMonomial_nsmul]`. Simplify using `only [map_mul, map_pow] at h₁ h₂ ⊢`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem chartForm_mul_pow {P : ArithVariety n} {num₁ den₁ num₂ den₂ : MvPolynomial (Coord n) ℤ}
     {c : (k : ι) → Fin (n k + 1)} {d₁ d₂ : ι → ℕ} {f₁ f₂ : MvPolynomial (Coord n) ℤ} (t : ℕ)
     (h₁ : den₁ * f₁ - num₁ * chartMonomial c d₁ ∈ P.ideal)
@@ -49,6 +61,9 @@ theorem chartForm_mul_pow {P : ArithVariety n} {num₁ den₁ num₂ den₂ : Mv
         (Ideal.Quotient.mk P.ideal den₂ * Ideal.Quotient.mk P.ideal f₂) ^ t := by ring
     _ = _ := by rw [h₁, h₂]; ring
 
+/- English proof (translation)
+Use extensionality with `i`. Express the relevant statement in the definitionally equal form `(t • ((q - k) • M.deg + fun _ ↦ (1 : ℤ)) : ι → ℤ) i + (t • (k • M.deg + -fun _ ↦ (1 : ℤ)) : ι → ℤ) i = ((q * t) • M.deg : ι → ℤ) i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, nsmul_eq_mul, Nat.cast_sub hkq.le, Nat.cast_mul, Pi.mul_apply, Pi.sub_apply, Pi.natCast_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem deg_eq (M : HermLine n) {k q : ℕ} (hkq : k < q) (t : ℕ) :
     (((M.pow (q - k)).mul (HermLine.standard n)).pow t).deg +
         t • ((M.pow k).mul (HermLine.standard n).inv).deg = (M.pow (q * t)).deg := by
@@ -59,6 +74,11 @@ theorem deg_eq (M : HermLine n) {k q : ℕ} (hkq : k < q) (t : ℕ) :
     Pi.mul_apply, Pi.sub_apply, Pi.natCast_apply]
   ring
 
+/- English proof (translation)
+Establish `hH` using `((HermLine.standard n).metric_pos z hz).ne'`. Simplify using `only [HermLine.pow, HermLine.mul, HermLine.inv]`. Rewrite using `[← mul_pow, pow_mul]`. Use `congr 1`. Establish `hq : M.metric z ^ q = M.metric z ^ (q - k) * M.metric z ^ k`.
+
+Rewrite using `[← pow_add, Nat.sub_add_cancel hkq.le]`. Rewrite using `[hq]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem metric_eq (M : HermLine n) {k q : ℕ} (hkq : k < q) (t : ℕ) {z : Cone n ℂ}
     (hz : BlockNonzero z) :
     (M.pow (q * t)).metric z = (((M.pow (q - k)).mul (HermLine.standard n)).pow t).metric z *
@@ -76,6 +96,25 @@ end SectionInjectivity
 
 open SectionInjectivity in
 
+/- English proof (translation)
+Introduce `ι _ _ n P M k q hkq e C he0 heC t`. Use `⟨fun s hs ↦ ?_, fun s₁ s₂ h ↦ mul_right_cancel₀ (pow_ne_zero t he0) h⟩` and prove the remaining obligations. Use `⟨IntegralSection.cast (deg_eq M hkq t) (s.mul (e.pow t)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [IntegralSection.toFun, IntegralSection.cast, IntegralSection.mul, IntegralSection.pow, map_mul, map_pow]`. Rewrite using `[div_pow, mul_div_mul_comm]`.
+
+Introduce `z hz c d f hcf hzc`. Establish `hlive` using `isLive_of_mem_points hz hzc`. Take `⟨d₁, f₁, hcf₁⟩` from `s.regular c hlive`. Take `⟨d₂, f₂, hcf₂⟩` from `e.regular c hlive`. Establish `hs₁` using `hs z hz c d₁ f₁ hcf₁ hzc`.
+
+Establish `he₂` using `heC z hz c d₂ f₂ hcf₂ hzc`. Establish `hf : s.den * e.den ^ t * f - s.num * e.num ^ t * chartMonomial c d ∈ P.ideal` using `hcf.2`. Establish `hprod` using `chartForm_mul_pow t hcf₁.2 hcf₂.2`. Establish `hden : s.den * e.den ^ t ∉ P.ideal` using `(IntegralSection.cast (deg_eq M hkq t) (s.mul (e.pow t))).den_not_mem`. Establish `hev` using `hz.2 _ (chartForm_cross hden hf hprod)`.
+
+Establish `hμ` using `evalCone_chartMonomial_ne_zero hzc d`. Establish `hμ₁` using `evalCone_chartMonomial_ne_zero hzc d₁`. Establish `hμ₂` using `evalCone_chartMonomial_ne_zero hzc d₂`. Rewrite `hev` using `[chartMonomial_add, chartMonomial_nsmul]`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul, eval₂_pow] at hev hμ hμ₁ hμ₂ hs₁ he₂ ⊢`.
+
+Rewrite using `[metric_eq M hkq t hz.1, Real.exp_zero]`. Establish `hN` using `((((M.pow (q - k)).mul (HermLine.standard n)).pow t).metric_pos z hz.1)`. Establish `hE` using `(((M.pow k).mul (HermLine.standard n).inv).metric_pos z hz.1)`. Use `set x := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) f`. Use `set x₁ := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) f₁`.
+
+Use `set x₂ := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) f₂`. Use `set μ := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) (chartMonomial c d)`. Use `set μ₁ := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) (chartMonomial c d₁)`. Use `set μ₂ := eval₂ (Int.castRingHom ℂ) (fun v : Coord n ↦ z v.1 v.2) (chartMonomial c d₂)`. Use `set hNz := (((M.pow (q - k)).mul (HermLine.standard n)).pow t).metric z`.
+
+Use `set hEz := ((M.pow k).mul (HermLine.standard n).inv).metric z`. Establish `hnorm : ‖x‖ * (‖μ₁‖ * ‖μ₂‖ ^ t) = ‖x₁‖ * ‖x₂‖ ^ t * ‖μ‖`. Establish `h` using `congrArg norm (sub_eq_zero.mp hev)`. Simplify `h` using `only [norm_mul, norm_pow]`. Establish `hμ'` using `norm_pos_iff.mpr hμ`.
+
+Establish `hμ₁'` using `norm_pos_iff.mpr hμ₁`. Establish `hμ₂'` using `norm_pos_iff.mpr hμ₂`. Establish `key : ‖x‖ / (‖μ‖ * (hNz * hEz ^ t)) = ‖x₁‖ / (‖μ₁‖ * hNz) * (‖x₂‖ / (‖μ₂‖ * hEz)) ^ t`. Rewrite using `[div_pow, div_mul_div_comm, div_eq_div_iff (by positivity) (by positivity)]`. Take the linear combination `(hNz * hEz ^ t) * hnorm`.
+
+Rewrite using `[key]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem SectionInjectivity.proof : SectionInjectivity.Statement := by
   intro ι _ _ n P M k q hkq e C he0 heC t
   refine ⟨fun s hs ↦ ?_, fun s₁ s₂ h ↦ mul_right_cancel₀ (pow_ne_zero t he0) h⟩

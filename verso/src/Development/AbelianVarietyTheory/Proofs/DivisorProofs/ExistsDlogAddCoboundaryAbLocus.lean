@@ -20,6 +20,17 @@ namespace GlobalTheory.CechH1Local
 local macro "opens_le" : tactic =>
   `(tactic| (rw [SetLike.le_def]; intro y hy; simp only [TopologicalSpace.Opens.mem_inf] at hy ⊢; aesop))
 
+/- English proof (translation)
+Establish `hV' : ∀ p y, y ∈ V p → y ∈ Uc (σ p)` using `fun p y h => hV p h`. Establish `cov : ∀ O : Y.Opens, O ≤ ⨆ p, V p → O ≤ ⨆ p, O ⊓ V p`. Introduce `O hO x hx`. Take `⟨p, hp⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hO hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨p, hx, hp⟩`.
+
+Establish `glue : ∀ i, ∃ t : Γ(Y, Uc i), ∀ p, rsT t (Uc i ⊓ V p) = rsT (B p) (Uc i ⊓ V p) + rsT (c (σ p) i) (Uc i ⊓ V p)`. Introduce `i`. Use `exists_rsT_eq (fun p => Uc i ⊓ V p) (fun p => inf_le_left) (cov _ (hVt i)) _ fun p p' => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hB p p')`. Establish `h2` using `congrArg (fun s => rsT s ((Uc i ⊓ V p) ⊓ (Uc i ⊓ V p'))) (hc (σ p) (σ p') i)`.
+
+Simplify using `only [rsT_add, rsT_sub] at h1 h2 ⊢`. Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 ⊢`. Take the linear combination `h1 - h2`. Use `choose t ht using glue`. Use `⟨t, fun i j => ?_⟩` and prove the remaining obligations.
+
+Use `eq_of_rsT_eq (fun p => Uc i ⊓ Uc j ⊓ V p) (fun p => inf_le_left) (cov _ (inf_le_left.trans (hVt i))) _ _ fun p => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht i p)`. Establish `h2` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (ht j p)`. Establish `h3` using `congrArg (fun s => rsT s (Uc i ⊓ Uc j ⊓ V p)) (hc (σ p) i j)`. Simplify using `only [rsT_add, rsT_sub] at h1 h2 h3 ⊢`.
+
+Simplify using `(disch := opens_le) only [rsT_rsT] at h1 h2 h3 ⊢`. Take the linear combination `h1 - h2 + h3`.
+-/
 theorem isCob_of_refine_le {Y : Scheme.{0}} {I K : Type} (Uc : I → Y.Opens) (c : C1 Uc) (hc : IsCoc Uc c)
     (V : K → Y.Opens) (σ : K → I) (hV : ∀ p, V p ≤ Uc (σ p)) (hVt : ∀ i, Uc i ≤ ⨆ p, V p)
     (B : ∀ p, Γ(Y, V p)) (hB : ∀ p p', rsT (c (σ p) (σ p')) (V p ⊓ V p') =
@@ -49,19 +60,41 @@ theorem isCob_of_refine_le {Y : Scheme.{0}} {I K : Type} (Uc : I → Y.Opens) (c
   simp (disch := opens_le) only [rsT_rsT] at h1 h2 h3 ⊢
   linear_combination h1 - h2 + h3
 
+/- English proof (translation)
+Rewrite using `[rsT_of_le h, rsT_of_le h, hd.2.2 _ _ h le_top]`.
+-/
 theorem rsT_field {Z : Scheme.{0}} {d : ∀ W : Z.Opens, Γ(Z, W) → Γ(Z, W)} (hd : IsField ⊤ d) {O O' : Z.Opens}
     (h : O' ≤ O) (f : Γ(Z, O)) : rsT (d O f) O' = d O' (rsT f O') := by
   rw [rsT_of_le h, rsT_of_le h, hd.2.2 _ _ h le_top]
 
+/- English proof (translation)
+Rewrite using `[rsT_of_le h']`. Conclude with `congrArg (fun φ => φ.hom r) (Scheme.Hom.appLE_map π h (homOfLE h').op)`.
+-/
 theorem rsT_appLE {Y X : Scheme.{0}} (π : Y ⟶ X) (V : X.Opens) {O O' : Y.Opens} (h : O ≤ π ⁻¹ᵁ V) (h' : O' ≤ O)
     (r : Γ(X, V)) : rsT ((π.appLE V O h).hom r) O' = (π.appLE V O' (h'.trans h)).hom r := by
   rw [rsT_of_le h']
   exact congrArg (fun φ => φ.hom r) (Scheme.Hom.appLE_map π h (homOfLE h').op)
 
+/- English proof (translation)
+Rewrite using `[← rsT_mul, Units.mul_inv, rsT_one h]`.
+-/
 theorem rsT_unit {Z : Scheme.{0}} {T O : Z.Opens} (h : O ≤ T) (u : Γ(Z, T)ˣ) :
     rsT u.val O * rsT u⁻¹.val O = 1 := by
   rw [← rsT_mul, Units.mul_inv, rsT_one h]
 
+/- English proof (translation)
+Introduce `i i' i''`. Use `set O := W i ⊓ W i' ⊓ W i''`. Establish `l₁ : O ≤ W i ⊓ W i'` using `inf_le_left`. Establish `l₂ : O ≤ W i' ⊓ W i''` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `l₃ : O ≤ W i ⊓ W i''` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`.
+
+Establish `m₁ : W i ⊓ W i' ≤ L.U (j i) ⊓ L.U (j i')` using `inf_le_inf (hj i) (hj i')`. Establish `m₂ : W i' ⊓ W i'' ≤ L.U (j i') ⊓ L.U (j i'')` using `inf_le_inf (hj i') (hj i'')`. Establish `m₃ : W i ⊓ W i'' ≤ L.U (j i) ⊓ L.U (j i'')` using `inf_le_inf (hj i) (hj i'')`. Establish `k : ∀ (a b : J) (l : O ≤ W a ⊓ W b) (m : W a ⊓ W b ≤ L.U (j a) ⊓ L.U (j b)), rsT (d (W a ⊓ W b) (rsT (L.g (j a) (j b)).val (W a ⊓ W b)) * rsT (L.g (j a) (j b))⁻¹.val (W a ⊓ W b)) O = d O (rsT (L.g (j a) (j b)).val O) * rsT (L.g (j a) (j b))⁻¹.val O`. Introduce `a b l m`.
+
+Rewrite using `[rsT_mul, rsT_field hd l, rsT_rsT m l, rsT_rsT m l]`. Rewrite using `[k i i' l₁ m₁, k i' i'' l₂ m₂, k i i'' l₃ m₃]`. Establish `T3 : O ≤ L.U (j i) ⊓ L.U (j i') ⊓ L.U (j i'')` using `le_inf (le_inf (l₁.trans (m₁.trans inf_le_left)) (l₁.trans (m₁.trans inf_le_right))) (l₂.trans (m₂.trans inf_le_right))`. Establish `co` using `congrArg (fun u => rsT (Units.val u) O) (hL.cocycle (j i) (j i') (j i''))`. Simplify using `only [Units.val_mul, rsT_mul] at co`.
+
+Establish `e : ∀ {T T' : Z.Opens} (h : T' ≤ T) (u : Γ(Z, T)ˣ), (res h u).val = resG Z h u.val` using `fun _ _ => rfl`. Establish `r : ∀ {T T' : Z.Opens} (h : T' ≤ T) (s : Γ(Z, T)), O ≤ T' → rsT (resG Z h s) O = rsT s O` using `fun h s hO => by rw [← rsT_of_le h, rsT_rsT h hO]`. Rewrite `co` using `[e, e, e, r _ _ T3, r _ _ T3, r _ _ T3]`. Use `set a := rsT (L.g (j i) (j i')).val O`. Use `set b := rsT (L.g (j i') (j i'')).val O`.
+
+Use `set a' := rsT (L.g (j i) (j i'))⁻¹.val O`. Use `set b' := rsT (L.g (j i') (j i''))⁻¹.val O`. Use `set e' := rsT (L.g (j i) (j i''))⁻¹.val O`. Establish `ha : a * a' = 1` using `rsT_unit (l₁.trans m₁) _`. Establish `hb : b * b' = 1` using `rsT_unit (l₂.trans m₂) _`.
+
+Establish `he : rsT (L.g (j i) (j i'')).val O * e' = 1` using `rsT_unit (l₃.trans m₃) _`. Rewrite `he`, the goal using `[← co]`. Establish `hdm` using `hd.2.1 O le_top a b`. Rewrite using `[hdm]`. Take the linear combination `(-(d O a * a' + d O b * b')) * he + (d O a * b * e') * ha + (d O b * a * e') * hb`.
+-/
 theorem isCoc_dlg {Z : Scheme.{0}} (L : LB Z) (hL : L.IsLB) {d : ∀ W : Z.Opens, Γ(Z, W) → Γ(Z, W)}
     (hd : IsField ⊤ d) {J : Type} (W : J → Z.Opens) (j : J → L.ι) (hj : ∀ i, W i ≤ L.U (j i)) :
     IsCoc W (fun i i' => d (W i ⊓ W i') (rsT (L.g (j i) (j i')).val (W i ⊓ W i')) *
@@ -102,6 +135,31 @@ theorem isCoc_dlg {Z : Scheme.{0}} (L : LB Z) (hL : L.IsLB) {d : ∀ W : Z.Opens
   rw [hdm]
   linear_combination (-(d O a * a' + d O b * b')) * he + (d O a * b * e') * ha + (d O b * a * e') * hb
 
+/- English proof (translation)
+Introduce `E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hdd J W j hW hWc hj z hz`. Set `K` to `{p : t.G.left.affineOpens × J // p.1.1 ≤ W p.2}`. Set `V : K → t.G.left.Opens` to `fun p => p.1.1.1`. Set `σ : K → J` to `fun p => p.1.2`. Establish `hVσ : ∀ p, V p ≤ W (σ p)` using `fun p => p.2`.
+
+Establish `hVt : ∀ i, W i ≤ ⨆ p, V p`. Introduce `i x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUW⟩` from `t.G.left.isBasis_affineOpens.exists_subset_of_mem_open hx (W i).isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, i), hUW⟩, hxU⟩`. Establish `cover : ⨆ p, V p = t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1`.
+
+Use `le_antisymm (iSup_le fun p => (hVσ p).trans (hW _)) ?_` and prove the remaining obligations. Rewrite using `[← hWc]`. Conclude with `iSup_le hVt`. Set `z' : C1 V` to `fun p p' => rsT (z (σ p) (σ p')) (V p ⊓ V p')`. Establish `hz' : IsCoc V z'`.
+
+Introduce `p p' p''`. Establish `h` using `congrArg (fun s => rsT s (V p ⊓ V p' ⊓ V p'')) (hz (σ p) (σ p') (σ p''))`. Simplify using `only [rsT_add] at h`. Establish `l₁ : V p ⊓ V p' ⊓ V p'' ≤ W (σ p) ⊓ W (σ p') ⊓ W (σ p'')` using `inf_le_inf (inf_le_inf (hVσ p) (hVσ p')) (hVσ p'')`. Simplify using `only [z']`.
+
+Rewrite using `[rsT_rsT (inf_le_inf (hVσ p) (hVσ p')) inf_le_left, rsT_rsT (inf_le_inf (hVσ p') (hVσ p'')) (le_inf (inf_le_left.trans inf_le_right) inf_le_right), rsT_rsT (inf_le_inf (hVσ p) (hVσ p'')) (le_inf (inf_le_left.trans inf_le_left) inf_le_right)]`. Rewrite `h` using `[rsT_rsT inf_le_left l₁, rsT_rsT (le_inf (inf_le_left.trans inf_le_right) inf_le_right) l₁, rsT_rsT (le_inf (inf_le_left.trans inf_le_left) inf_le_right) l₁]`. Then use the resulting hypothesis. Take `⟨cc, y', hy'⟩` from `GlobalTheory.T.basis_tangent_module_localized_abelian_locus E H R t P m tt htt hab c hc n v' dd' hdd K V (fun p => j (σ p)) (fun p => (hVσ p).trans (hW _)) cover (fun p => (hVσ p).trans (hj _)) (fun p => p.1.1.2) z' hz'`. Set `dl : Fin n → C1 W` to `fun b i i' => dd' b (W i ⊓ W i') (rsT (t.PP.L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (t.PP.L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')`. Establish `hdl : ∀ b, IsCoc W (dl b)` using `fun b => isCoc_dlg t.PP.L t.PP.isLB (hdd b).1 W j hj`.
+
+Set `c0 : C1 W` to `fun i i' => z i i' - ∑ b, GlobalTheory.HeatV.cst t.G.hom (GlobalTheory.HeatV.bo R c).1 (inf_le_left.trans (hW i)) (cc b) * dl b i i'`. Set `Cf : ∀ O : t.G.left.Opens, O ≤ t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1 → Fin n → Γ(t.G.left, O)` to `fun O h b => (t.G.hom.appLE _ O h).hom (cc b)`. Establish `key : ∀ (a a' : J) {O : t.G.left.Opens} (l : O ≤ W a ⊓ W a'), rsT (c0 a a') O = rsT (z a a') O - ∑ b, Cf O (l.trans (inf_le_left.trans (hW a))) b * rsT (dl b a a') O`. Introduce `a a' O l`. Simplify using `only [c0]`.
+
+Rewrite using `[rsT_sub, rsT_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[rsT_mul, rsT_appLE _ _ _ l]`. Establish `hc0 : IsCoc W c0`.
+
+Introduce `i i' i''`. Establish `l₁ : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i'` using `inf_le_left`. Establish `l₂ : W i ⊓ W i' ⊓ W i'' ≤ W i' ⊓ W i''` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Establish `l₃ : W i ⊓ W i' ⊓ W i'' ≤ W i ⊓ W i''` using `le_inf (inf_le_left.trans inf_le_left) inf_le_right`. Establish `h0` using `hz i i' i''`.
+
+Rewrite using `[key i i' l₁, key i' i'' l₂, key i i'' l₃]`. Establish `hs : ∑ b, Cf _ (l₁.trans (inf_le_left.trans (hW i))) b * rsT (dl b i i') (W i ⊓ W i' ⊓ W i'') + ∑ b, Cf _ (l₁.trans (inf_le_left.trans (hW i))) b * rsT (dl b i' i'') (W i ⊓ W i' ⊓ W i'') = ∑ b, Cf _ (l₁.trans (inf_le_left.trans (hW i))) b * rsT (dl b i i'') (W i ⊓ W i' ⊓ W i'')`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_add, hdl b i i' i'']`.
+
+Take the linear combination `h0 - hs`. Establish `hB : ∀ p p', rsT (c0 (σ p) (σ p')) (V p ⊓ V p') = rsT (y' p') (V p ⊓ V p') - rsT (y' p) (V p ⊓ V p')`. Introduce `p p'`. Establish `l : V p ⊓ V p' ≤ W (σ p) ⊓ W (σ p')` using `inf_le_inf (hVσ p) (hVσ p')`. Rewrite using `[key _ _ l, show rsT (z (σ p) (σ p')) (V p ⊓ V p') = z' p p' from rfl, hy' p p']`.
+
+Establish `hs : ∀ b, rsT (dl b (σ p) (σ p')) (V p ⊓ V p') = dd' b (V p ⊓ V p') (rsT (t.PP.L.g (j (σ p)) (j (σ p'))).val (V p ⊓ V p')) * rsT (t.PP.L.g (j (σ p)) (j (σ p')))⁻¹.val (V p ⊓ V p')` using `fun b => by`. Simplify using `only [dl]`. Rewrite using `[rsT_mul, rsT_field (hdd b).1 l, rsT_rsT (inf_le_inf (hj _) (hj _)) l, rsT_rsT (inf_le_inf (hj _) (hj _)) l]`. Simplify using `only [hs]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨y, hy⟩` from `isCob_of_refine_le W c0 hc0 V σ hVσ hVt y' hB`. Use `⟨cc, y, fun i i' => ?_⟩` and prove the remaining obligations. Use `hy i i'` as an intermediate fact. Simplify using `only [c0] at this`. Take the linear combination `this`.
+-/
 theorem exists_dlog_add_coboundary_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsAdicComplete (maximalIdeal R) R] [Algebra ℚ R] (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (m : ℕ) (tt : Fin m → R), (∀ i, tt i ≠ 0) → (∀ p : Sp R, p ∈ abLocus t.G ↔ ∏ i, tt i ∉ p.asIdeal) → ∀ (c : R), c = ∏ i, tt i → ∀ (n : ℕ) (v' : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) t.G)) (dd' : Fin n → Fld t.G.left), (∀ a, IsInv t.G (v' a) (dd' a)) → ∀ (J : Type) (W : J → t.G.left.Opens) (j : J → t.PP.L.ι) (hW : ∀ i, W i ≤ t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1), ⨆ i, W i = t.G.hom ⁻¹ᵁ (GlobalTheory.HeatV.bo R c).1 → (∀ i, W i ≤ t.PP.L.U (j i)) → ∀ z : C1 W, IsCoc W z → ∃ (cc : Fin n → Γ(Sp R, (GlobalTheory.HeatV.bo R c).1)) (y : ∀ i, Γ(t.G.left, W i)), ∀ i i', z i i' = ∑ b, GlobalTheory.HeatV.cst t.G.hom (GlobalTheory.HeatV.bo R c).1 (inf_le_left.trans (hW i)) (cc b) * (dd' b (W i ⊓ W i') (rsT (t.PP.L.g (j i) (j i')).val (W i ⊓ W i')) * rsT (t.PP.L.g (j i) (j i'))⁻¹.val (W i ⊓ W i')) + (rsT (y i') (W i ⊓ W i') - rsT (y i) (W i ⊓ W i')) := by
   intro E _ _ _ H R _ _ _ _ _ _ t P m tt htt hab c hc n v' dd' hdd J W j hW hWc hj z hz
   let K := {p : t.G.left.affineOpens × J // p.1.1 ≤ W p.2}

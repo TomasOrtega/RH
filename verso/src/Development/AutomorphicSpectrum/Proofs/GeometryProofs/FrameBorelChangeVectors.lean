@@ -12,22 +12,40 @@ open MonoidalCategory CartesianMonoidalCategory MonObj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simpa using MonObj.comp_one f`. Consider the case `cons a L ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.comp_mul, ih]`.
+-/
 theorem comp_list_prod {B : Scheme.{0}} {G T T' : Over B} [GrpObj G] (f : T' ⟶ T) (L : List (T ⟶ G)) :
     f ≫ L.prod = (L.map fun a => f ≫ a).prod := by
   induction L with
   | nil => simpa using MonObj.comp_one f
   | cons a L ih => rw [List.prod_cons, List.map_cons, List.prod_cons, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_algebraMap {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F) :
     (Formalism.L2.Pj.dualMap ψ).comp (algebraMap S (DualNumber S)) = (algebraMap F (DualNumber F)).comp ψ := by
   ext s <;> simp [Formalism.L2.Pj.dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Apply the tactic sequence `ext s <;> simp [Formalism.L2.Pj.dualMap, ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, GlobalTheory.CompanionTheory.Ar.epsMul, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_comp_epsMul' {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F) (a : S) :
     (Formalism.L2.Pj.dualMap ψ).comp (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul a) =
       (GlobalTheory.CompanionTheory.Ar.epsMul (ψ a)).comp (Formalism.L2.Pj.dualMap ψ) := by
   ext s <;> simp [Formalism.L2.Pj.dualMap, ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsMul, GlobalTheory.CompanionTheory.Ar.epsMul,
     TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Take `⟨u, hu, hp⟩` from `h`. Establish `hf : spMap (Formalism.L2.Pj.dualMap ψ) ≫ (Formalism.L2.Pj.tEps x).hom = (epsAt (spMap ψ ≫ x)).hom` using `by show spMap (Formalism.L2.Pj.dualMap ψ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = Spec.map (CommRingCat.ofHom (algebraMap F (DualNumber F))) ≫ spMap ψ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+
+Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp_algebraMap]`. Set `f : epsAt (spMap ψ ≫ x) ⟶ Formalism.L2.Pj.tEps x` to `Over.homMk (spMap (Formalism.L2.Pj.dualMap ψ)) hf`. Use `⟨fun i => f ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (Formalism.L2.Pj.dualMap ψ) ≫ (u i).left = _`. Rewrite using `[hu i, hv i, ← Category.assoc, ← Category.assoc]`.
+
+Use `congr 1`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, dualMap_comp_epsMul']`. Establish `e : (List.ofFn fun i => f ≫ u i) = (List.ofFn u).map fun a => f ≫ a`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ← comp_list_prod]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hw, ← hp]`. Both sides reduce to the same expression.
+-/
 theorem isComb_of_isCombAt {Xo : Moduli D l} {S F : Type} [CommRing S] [CommRing F] (ψ : S →+* F)
     {x : Sp S ⟶ Xo.X} {x' : Sp F ⟶ Xo.X} (hx : x' = spMap ψ ≫ x) {m : ℕ}
     {vS : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} {cf : Fin m → S}
@@ -59,6 +77,11 @@ theorem isComb_of_isCombAt {Xo : Moduli D l} {S F : Type} [CommRing S] [CommRing
     rw [hw, ← hp]
     rfl
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Use `choose cf h1 h2 h3 using h`. Use `⟨Matrix.of fun i j => ψ (cf i j), fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `isComb_of_isCombAt ψ hx (h3 i) hv (hv' i)`. Rewrite using `[Matrix.det_of_lowerTriangular]`.
+
+Conclude with `Finset.prod_congr rfl fun i _ => by simp [h1]`. Introduce `i j hij`. Establish `: i < j` using `hij`. Simplify using `[h2 i j this]`.
+-/
 theorem exists_matrix {Xo : Moduli D l} {S F : Type} [CommRing S] [Field F] (ψ : S →+* F)
     {x : Sp S ⟶ Xo.X} {x' : Sp F ⟶ Xo.X} (hx : x' = spMap ψ ≫ x) {m n : ℕ} (hn : n = m)
     {u u' : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)} (d : Fin m → S)
@@ -78,6 +101,9 @@ theorem exists_matrix {Xo : Moduli D l} {S F : Type} [CommRing S] [Field F] (ψ 
       have : i < j := hij
       simp [h2 i j this]
 
+/- English proof (translation)
+Take `⟨-, hc, -⟩` from `hb`. Take `⟨A, hA, dA⟩` from `exists_matrix ψ hy hp.symm (fun i => (t (some ⟨τ, i⟩) : S)) (hc τ) hv hv'`. Take `⟨B, hB, dB⟩` from `exists_matrix ψ hy hq.symm (fun i => (t (some ⟨ComplexEmbedding.conjugate τ, i⟩) : S)) (hc (ComplexEmbedding.conjugate τ)) hw hw'`. Conclude with `⟨A, B, hA, hB, dA, dB⟩`.
+-/
 theorem exists_triangular_at_field (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (τ : E →+* ℂ) (S : Type) [CommRing S] [Algebra c.F S]
     (t : Formalism.L2.Pj.Ix D → Sˣ) (z z' : Formalism.L2.Pj.FrPt Xo c S) (hb : Formalism.L2.Pj.FrBor t z z')

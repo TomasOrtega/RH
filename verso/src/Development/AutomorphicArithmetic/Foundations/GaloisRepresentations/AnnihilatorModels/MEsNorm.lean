@@ -13,6 +13,15 @@ open private isDomain_of_isReduced_of_isIntegrallyClosed from Development.Automo
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Hecke GlobalTheory.UPel.HT.ES
 
+/- English proof (translation)
+Introduce `p _ D R _ _ _ _ b N h3 hcop hp r w j c hw hu hj hc hm M`. Take `⟨Y₀, s₀, t₀, gs, gt, o₀, o₀', ms₀, mt₀, ψ₀, hst₀, hgs, hgt, hfgs, hegs, hfgt, hegt, hiso₀, htj₀, huniv₀⟩` from `hG p D R b N h3 hcop hp r w j c hw hu hj hc hm M`. Take `⟨Y, s, i, hio, hid, hi, hfs, hnorm, hflat, hnoeth, hext⟩` from `NormCover.exists_finite_normal_model p D R b N hp M Y₀ s₀ gs hfgs hegs hgs`. Take `⟨t, hit, ht, hft⟩` from `GlobalTheory.ExtT.exists_finite_extension p D R b N h3 hcop hp r w j c hw hu hj hc hm M Y₀ s₀ t₀ gs gt o₀ o₀' ms₀ mt₀ ψ₀ hst₀ hgs hgt hfgs hegs hfgt hegt hiso₀ htj₀ Y s i hio hid hi hfs hnorm hflat hnoeth hext`. Establish `hred : AlgebraicGeometry.IsReduced Y` using `isReduced_normalModel_of_generic p D R b N hp M Y₀ s₀ gs hgs hegs Y s i hio hi hflat hext`.
+
+Establish `hdom : ∀ y : Y, IsDomain (Y.presheaf.stalk y)` using `fun y => by haveI := hnorm y`. Conclude with `isDomain_of_isReduced_of_isIntegrallyClosed _`. Take `⟨o, ⟨ms⟩⟩` from `GlobalTheory.HTPull.exists_objMap_pull p D R b N M.X Y M.s s M.univ`. Establish `hpt` using `GlobalTheory.HTPull.exists_objMap_pull p D R b N M.X Y M.s t M.univ`. Rewrite `hpt` using `[ht]`.
+
+Take `⟨o', ⟨mt⟩⟩` from `hpt`. Substitute `hi` using the available equality. Substitute `hit` using the available equality. Take `⟨m, -⟩` from `GlobalTheory.HTSympCover.exists_objMap_cancel_φ ms₀ ms`. Take `⟨m', -⟩` from `GlobalTheory.HTSympCover.exists_objMap_cancel_φ mt₀ mt`.
+
+Take `⟨ψ, hiso, hcomm⟩` from `PIsogExt.exists_isPIsog_extend p D R b N h3 hcop j c hc Y₀ Y i _ _ hio hid hnoeth hnorm hdom o o' o₀ o₀' m m' ψ₀ hiso₀`. Use `⟨Y, s, t, o, o', ms, mt, ψ, ht.symm, hfs, hft, hnorm, hflat, hiso, ?_, ?_⟩` and prove the remaining obligations. Conclude with `isTj_of_objMap_factor p D R b N r w j Y₀ Y i _ _ o o' o₀ o₀' m m' ψ₀ ψ hcomm hext htj₀`. Conclude with `existsUnique_of_openImmersion p D R b N h3 hcop r w j c M Y₀ Y i (i ≫ s) s _ _ o o' o₀ o₀' m m' ψ₀ ψ hio rfl hcomm hext huniv₀`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Mod.esNorm_of (hG : UpperTheory.Gal.crystallineComparison.Mod.EsGen) : UpperTheory.Gal.crystallineComparison.Mod.EsNorm := by
   intro p _ D R _ _ _ _ b N h3 hcop hp r w j c hw hu hj hc hm M
   obtain ⟨Y₀, s₀, t₀, gs, gt, o₀, o₀', ms₀, mt₀, ψ₀, hst₀, hgs, hgt, hfgs, hegs, hfgt, hegt, hiso₀, htj₀, huniv₀⟩ :=

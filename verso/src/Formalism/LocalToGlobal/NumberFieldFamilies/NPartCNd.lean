@@ -63,6 +63,9 @@ abbrev OmC : Type := AlgebraicClosure H.E
 
 def PlOverEx : Prop := ∀ v : HeightOneSpectrum (𝓞 H.E), ∃ A : ValuationSubring (OmC H), IsPlaceOver A v
 
+/- English proof (translation)
+Introduce `v` and use `exists_isPlaceOver (OmC H) v`.
+-/
 theorem plOverEx_holds : PlOverEx H := fun v => exists_isPlaceOver (OmC H) v
 
 def plOmC (h : PlOverEx H) : Formalism.GaloisCohomology.Places H.E (OmC H) := ⟨fun v => (h v).choose, fun v => (h v).choose_spec⟩
@@ -80,6 +83,9 @@ def ldatC (h : PlOverEx H) (p : ℕ) [Fact p.Prime] : Formalism.GaloisCohomology
 def TameEx (h : PlOverEx H) : Prop :=
   ∀ v : HeightOneSpectrum (𝓞 H.E), ∃ γ : G H.E (OmC H), TameGenAt ((plOmC H h).1 v) γ
 
+/- English proof (translation)
+Introduce `v` and use `by obtain ⟨p, hp, hmem⟩ := Formalism.BasicNotions.Examples₂.PlacesToy.exists_prime_mem v have hlt : ((plOmC H h).1 v).valuation ((p : ℕ) : OmC H) < 1 := by have := (((plOmC H h).2 v) ((p : ℕ) : 𝓞 H.E)).mpr hmem simpa using this exact Formalism.BasicNotions.Examples₂.Tame.exists_t …`.
+-/
 theorem tameEx_holds (h : PlOverEx H) : TameEx H h := fun v => by
   obtain ⟨p, hp, hmem⟩ := Formalism.BasicNotions.Examples₂.PlacesToy.exists_prime_mem v
   have hlt : ((plOmC H h).1 v).valuation ((p : ℕ) : OmC H) < 1 := by
@@ -91,6 +97,9 @@ def gamW (h : PlOverEx H) (v : HeightOneSpectrum (𝓞 H.E)) : G H.E (OmC H) := 
   classical
   exact if hv : ∃ γ : G H.E (OmC H), TameGenAt ((plOmC H h).1 v) γ then hv.choose else 1
 
+/- English proof (translation)
+Unfold `gamW`. Use `split_ifs with hv`. Conclude with `hv.choose_spec.1`. Conclude with `one_mem _`.
+-/
 theorem gamW_mem (h : PlOverEx H) (v : HeightOneSpectrum (𝓞 H.E)) : gamW H h v ∈ Ine (F := H.E) ((plOmC H h).1 v) := by
   classical
   unfold gamW
@@ -98,6 +107,9 @@ theorem gamW_mem (h : PlOverEx H) (v : HeightOneSpectrum (𝓞 H.E)) : gamW H h 
   · exact hv.choose_spec.1
   · exact one_mem _
 
+/- English proof (translation)
+Unfold `gamW`. Rewrite using `[dif_pos (ht v)]`. Conclude with `(ht v).choose_spec`.
+-/
 theorem gamW_gen (h : PlOverEx H) (ht : TameEx H h) (v : HeightOneSpectrum (𝓞 H.E)) :
     TameGenAt ((plOmC H h).1 v) (gamW H h v) := by
   classical
@@ -105,10 +117,16 @@ theorem gamW_gen (h : PlOverEx H) (ht : TameEx H h) (v : HeightOneSpectrum (𝓞
   rw [dif_pos (ht v)]
   exact (ht v).choose_spec
 
+/- English proof (translation)
+Use `haveI : Fact p.Prime := ⟨hp⟩`. Conclude with `Formalism.GaloisCohomology.above_finite (F := H.E) p`.
+-/
 theorem placesOver_fin (p : ℕ) (hp : p.Prime) : (placesOver H.E p).Finite := by
   haveI : Fact p.Prime := ⟨hp⟩
   exact Formalism.GaloisCohomology.above_finite (F := H.E) p
 
+/- English proof (translation)
+Use `(((placesOver_fin H _ (H.g_prime 0)).union (placesOver_fin H _ (H.g_prime 1))).union (placesOver_fin H (if l = H.pde then H.pde' else H.pde) (by split_ifs; exacts [H.pde'_prime, H.pde_prime]))).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨hv | hv | hv, -⟩`. Conclude with `Or.inl (Or.inl hv)`. Conclude with `Or.inl (Or.inr hv)`. Conclude with `Or.inr hv`.
+-/
 theorem exceptional_places_finite (l : ℕ) : (exceptionalPlaces H l).Finite := by
   refine (((placesOver_fin H _ (H.g_prime 0)).union (placesOver_fin H _ (H.g_prime 1))).union
     (placesOver_fin H (if l = H.pde then H.pde' else H.pde) (by split_ifs; exacts [H.pde'_prime, H.pde_prime]))).subset ?_
@@ -122,6 +140,9 @@ def PlGC (k : Fin 2) : Type :=
 
 def PlGFin : Prop := ∀ k, Finite (PlGC H k)
 
+/- English proof (translation)
+Introduce `k` and use `by haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩ exact (Formalism.GaloisCohomology.above_finite (F := maximalRealSubfield H.E) (H.g k)).to_subtype`.
+-/
 theorem plGFin_holds : PlGFin H := fun k => by
   haveI : Fact (H.g k).Prime := ⟨H.g_prime k⟩
   exact (Formalism.GaloisCohomology.above_finite (F := maximalRealSubfield H.E) (H.g k)).to_subtype
@@ -150,6 +171,9 @@ def LocsFin : Prop := ∀ j w, Set.Finite {i : LocT B | jOf B i = j ∧ wOf B i 
 
 def locsC (hF : LocsFin B) (j : ℕ) (w : what₂.places.Pl) : Finset (LocT B) := (hF j w).toFinset
 
+/- English proof (translation)
+Simplify using `[locsC]`.
+-/
 theorem locsC_mem (hF : LocsFin B) (j : ℕ) (w : what₂.places.Pl) (i : LocT B) :
     i ∈ locsC B hF j w ↔ jOf B i = j ∧ wOf B i = w := by
   simp [locsC]

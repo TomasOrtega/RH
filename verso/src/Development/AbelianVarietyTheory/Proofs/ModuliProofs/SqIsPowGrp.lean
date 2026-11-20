@@ -53,11 +53,21 @@ def sqPol (P : Out.PolAV S) : Out.PolAV S :=
     ample := relAmple_boxLB S _ P.A 2 (sqIsPowGrp P.A) P.L P.isLB P.ample
     ktriv := kTriv_boxLB S _ P.A 2 (sqIsPowGrp P.A) P.L P.isLB P.ktriv }
 
+/- English proof (translation)
+Simplify using `only [sqPol, Out.boxLB]`. Apply the tactic sequence `congr 1 <;> funext i <;> fin_cases i <;> rfl`.
+-/
 theorem sqPol_L (P : Out.PolAV S) :
     (sqPol P).L = LB.LinComb P.L (K := Fin 2) ![(fst P.A P.A).left, (snd P.A P.A).left] ![1, 1] := by
   simp only [sqPol, Out.boxLB]
   congr 1 <;> funext i <;> fin_cases i <;> rfl
 
+/- English proof (translation)
+Introduce `K _ _ P`. Use `⟨sqPol P, Iso.refl _, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `show IsMonHom (𝟙 (P.A ⊗ P.A) ≫ fst P.A P.A)`. Rewrite using `[Category.id_comp]`. Conclude with `(sqIsPowGrp P.A).hom 0`.
+
+Use `show IsMonHom (𝟙 (P.A ⊗ P.A) ≫ snd P.A P.A)`. Rewrite using `[Category.id_comp]`. Conclude with `(sqIsPowGrp P.A).hom 1`. Use `show LBIso (sqPol P).L (LB.LinComb P.L (K := Fin 2) ![(𝟙 (P.A ⊗ P.A) ≫ fst P.A P.A).left, (𝟙 (P.A ⊗ P.A) ≫ snd P.A P.A).left] ![1, 1])`. Simplify using `only [Category.id_comp]`.
+
+Establish `h : LBIso (sqPol P).L (sqPol P).L` using `⟨idIso _, idIso_isGen (sqPol P).isLB⟩`. Rewrite `h`, the goal using `[sqPol_L]`. Conclude with `h`.
+-/
 theorem exists_square : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)), ∃ (P₂ : Out.PolAV (Sp K)) (e : P₂.A ≅ P.A ⊗ P.A), IsMonHom (e.hom ≫ fst P.A P.A) ∧ IsMonHom (e.hom ≫ snd P.A P.A) ∧ P₂.g = 2 * P.g ∧ LBIso P₂.L (LB.LinComb P.L (K := Fin 2) ![(e.hom ≫ fst P.A P.A).left, (e.hom ≫ snd P.A P.A).left] ![1, 1]) := by
   intro K _ _ P
   refine ⟨sqPol P, Iso.refl _, ?_, ?_, rfl, ?_⟩

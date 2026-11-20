@@ -21,13 +21,26 @@ namespace GlobalTheory.PolIsoDescent
 
 open GlobalTheory.GenSpread
 
+/- English proof (translation)
+The claim follows from `have : Subsingleton (Sp C) := inferInstanceAs (Subsingleton (PrimeSpectrum C)) ⟨inferInstance, ⟨fun _ => ⟨(default : PrimeSpectrum F), Subsingleton.elim _ _⟩⟩⟩`.
+-/
 theorem flat_surjective {F C : Type} [Field F] [Field C] (i : Sp F ⟶ Sp C) : Flat i ∧ Surjective i :=
   have : Subsingleton (Sp C) := inferInstanceAs (Subsingleton (PrimeSpectrum C))
   ⟨inferInstance, ⟨fun _ => ⟨(default : PrimeSpectrum F), Subsingleton.elim _ _⟩⟩⟩
 
+/- English proof (translation)
+The claim follows from `charZero_of_injective_ringHom (f := (Spec.preimage i).hom) (RingHom.injective _)`.
+-/
 theorem charZero_of_hom {F C : Type} [Field F] [Field C] [CharZero C] (i : Sp F ⟶ Sp C) : CharZero F :=
   charZero_of_injective_ringHom (f := (Spec.preimage i).hom) (RingHom.injective _)
 
+/- English proof (translation)
+Use `charZero_of_hom i` as an intermediate fact. Take `⟨_, _⟩` from `flat_surjective i`. Establish `: Epi i` using `Flat.epi_of_flat_of_surjective _`. Establish `h` using `(hM S P n hn).2.2.2.2`. Establish `h₁` using `h F (i ≫ t) (Nat.cast_ne_zero.2 (by omega))`.
+
+Establish `h₂` using `h C t (Nat.cast_ne_zero.2 (by omega))`. Set `ρ : Over.mk (i ≫ t) ⟶ Over.mk t` to `Over.homMk i rfl`. Set `r : {x : Over.mk t ⟶ P.A // x ^ n = 1} → {x : Over.mk (i ≫ t) ⟶ P.A // x ^ n = 1}` to `fun z => ⟨ρ ≫ z.1, by rw [← MonObj.comp_pow, z.2, MonObj.comp_one]⟩`. Establish `hr : Function.Injective r` using `fun a b e => Subtype.ext (Over.OverMorphism.ext ((cancel_epi i).1 (congrArg (fun q => q.1.left) e)))`. Establish `: Finite {x : Over.mk (i ≫ t) ⟶ P.A // x ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [h₁]; positivity)`.
+
+Take `⟨z, hz⟩` from `((Nat.bijective_iff_injective_and_card r).2 ⟨hr, h₂.trans h₁.symm⟩).2 ⟨x, hx⟩`. Conclude with `⟨z.1, z.2, (congrArg (fun q => q.1.left) hz).symm⟩`.
+-/
 theorem exists_torsion_of_algClosed (hM : MulNSt) {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) {F C : Type}
     [Field F] [IsAlgClosed F] [Field C] [IsAlgClosed C] [CharZero C] (i : Sp F ⟶ Sp C) (t : Sp C ⟶ S) {n : ℕ}
     (hn : 1 ≤ n) (x : Over.mk (i ≫ t) ⟶ P.A) (hx : x ^ n = 1) :
@@ -48,6 +61,9 @@ theorem exists_torsion_of_algClosed (hM : MulNSt) {S : Scheme.{0}} [IsLocallyNoe
   obtain ⟨z, hz⟩ := ((Nat.bijective_iff_injective_and_card r).2 ⟨hr, h₂.trans h₁.symm⟩).2 ⟨x, hx⟩
   exact ⟨z.1, z.2, (congrArg (fun q => q.1.left) hz).symm⟩
 
+/- English proof (translation)
+Take `⟨θ, hθ, e⟩` from `grpPullback_iso h₁ h₂`. Take `⟨w, hw⟩` from `l₁.trans W.isLB (pull_isLB P.isLB _) (pull_isLB W.isLB _) (lbIso_pull_of_lbIso l₂ θ.hom.left e.symm).symm`. Use `MatchRigid.aut_eq_id hL W (𝟙 _) hM hF θ w hw fun y hy => Over.OverMorphism.ext (h₂.1.hom_ext (by rw [Over.comp_left, Category.assoc, e, h y hy]) (by rw [Over.w, Over.w]))` as an intermediate fact. Rewrite using `[← e, this, Over.id_left, Category.id_comp]`.
+-/
 theorem eq_of_torsion (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {F : Type} [Field F] [IsAlgClosed F]
     (W : PolAV (Sp F)) {s : Sp F ⟶ S} {f₁ f₂ : W.A.left ⟶ P.A.left} (h₁ : IsGrpPullback W.A P.A s f₁)
     (h₂ : IsGrpPullback W.A P.A s f₂) (l₁ : LBIso W.L (P.L.pull f₁)) (l₂ : LBIso W.L (P.L.pull f₂)) {M : ℕ}
@@ -60,6 +76,25 @@ theorem eq_of_torsion (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {F : Type} [Fie
     Over.OverMorphism.ext (h₂.1.hom_ext (by rw [Over.comp_left, Category.assoc, e, h y hy]) (by rw [Over.w, Over.w]))
   rw [← e, this, Over.id_left, Category.id_comp]
 
+/- English proof (translation)
+Use `charZero_of_hom (x ≫ Q.hom)` as an intermediate fact. Take `⟨W, h, hh, -, hm, hw⟩` from `hL.polBaseChange S _ (((x ≫ Q.hom) ≫ κ) ≫ j) B'`. Establish `hp : IsGrpPullback W.A B'.A (((x ≫ Q.hom) ≫ κ) ≫ j) h` using `⟨hh, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = toBase hh.w x), (Over.OverMorphism.ext hy : y₀ = toBase hh.w y), ← hm]`. Use the proof step `rfl⟩`.
+
+Establish `key : ∀ i : Sp F ⟶ Sp C, (x ≫ Q.hom) ≫ κ = i ≫ κ → ∃ a : W.A.left ⟶ Q.left, a ≫ f' = h ∧ a ≫ Q.hom = W.A.hom ≫ i ∧ IsGrpPullback W.A B.A (((x ≫ Q.hom) ≫ κ) ≫ j) (a ≫ f) ∧ LBIso W.L (B.L.pull (a ≫ f))` using `fun i hi => by`. Establish `hi' : ((x ≫ Q.hom) ≫ κ) ≫ j = i ≫ κ ≫ j` using `by rw [hi, Category.assoc]`. Establish `w : h ≫ B'.A.hom = (W.A.hom ≫ i) ≫ κ ≫ j` using `by rw [hh.w, hi', Category.assoc]`. Establish `a₁` using `hf'.1.lift_fst _ _ w`. Establish `a₂` using `hf'.1.lift_snd _ _ w`.
+
+Conclude with `⟨_, a₁, a₂, ((hf'.cancel (hp.congr hi' a₁.symm) a₂).comp hf).congr hi'.symm rfl, (LBIso.symm hw).trans W.isLB (pull_isLB B'.isLB _) (pull_isLB B.isLB _) (lbIso_pull_comp _ a₁.symm rfl hl)⟩`. Take `⟨a, a₁, a₂, a₃, a₄⟩` from `key _ rfl`. Take `⟨a', a₁', a₂', a₃', a₄'⟩` from `key _ e'`. Establish `E : a ≫ f = a' ≫ f`. Use `eq_of_torsion hL B W a₃ a₃' a₄ a₄' le_rfl (by norm_num) fun y hy => ?_` and prove the remaining obligations.
+
+Establish `hyw : y.left ≫ W.A.hom = 𝟙 _` using `Over.w y`. Set `ρ : Over.mk ((x ≫ Q.hom) ≫ κ ≫ j) ⟶ Over.mk (𝟙 _ ≫ ((x ≫ Q.hom) ≫ κ) ≫ j)` to `Over.homMk (𝟙 _) (by simp)`. Take `⟨z, hz, ez⟩` from `exists_torsion_of_algClosed hL.mulN B' (x ≫ Q.hom) (κ ≫ j) (n := 3) (by norm_num) (ρ ≫ pushHom hp _ y) (by rw [← MonObj.comp_pow]; erw [← map_pow, hy, map_one, MonObj.comp_one])`. Use `replace ez : y.left ≫ h = (x ≫ Q.hom) ≫ z.left := (Category.id_comp _).symm.trans ez`. Take `⟨z₀, hz₀⟩` from `rB' z hz`.
+
+Establish `hzw : z.left ≫ B'.A.hom = 𝟙 _ ≫ κ ≫ j` using `(Over.w z).trans (Category.id_comp _).symm`. Set `u : Over.mk (𝟙 (Sp C)) ⟶ Q` to `Over.homMk (hf'.1.lift z.left (𝟙 _) hzw) (hf'.1.lift_snd _ _ _)`. Establish `u₁ : u.left ≫ f' = z.left` using `hf'.1.lift_fst _ _ _`. Establish `u₂ : u.left ≫ Q.hom = 𝟙 _` using `Over.w u`. Set `σ : Over.mk (𝟙 _ ≫ κ ≫ j) ⟶ Over.mk (κ ≫ j)` to `Over.homMk (𝟙 _) rfl`.
+
+Set `σ' : Over.mk (κ ≫ j) ⟶ Over.mk (𝟙 _ ≫ κ ≫ j)` to `Over.homMk (𝟙 _) (by simp)`. Establish `hu : u ^ 3 = 1`. Establish `inj : Function.Injective (pushHom hf' (Over.mk (𝟙 _)))` using `fun p q h => Over.OverMorphism.ext (hf'.1.hom_ext (congrArg (fun m => m.left) h) (by rw [Over.w, Over.w]))`. Establish `: pushHom hf' _ u = σ ≫ z` using `Over.OverMorphism.ext (u₁.trans (Category.id_comp _).symm)`. Apply `inj` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, this, ← MonObj.comp_pow, hz, MonObj.comp_one, map_one]`. Take `⟨v₀, hv₀⟩` from `rB (σ' ≫ pushHom hf _ u) (by rw [← MonObj.comp_pow]; erw [← map_pow, hu, map_one, MonObj.comp_one])`. Use `replace hv₀ : u.left ≫ f = κ ≫ v₀ := (Category.id_comp _).symm.trans hv₀`. Establish `fin : ∀ (i : Sp F ⟶ Sp C) (b : W.A.left ⟶ Q.left), (x ≫ Q.hom) ≫ κ = i ≫ κ → b ≫ f' = h → b ≫ Q.hom = W.A.hom ≫ i → y.left ≫ b ≫ f = (i ≫ κ) ≫ v₀` using `fun i b hi b₁ b₂ => by`. Establish `: y.left ≫ b = i ≫ u.left` using `hf'.1.hom_ext (by rw [Category.assoc, b₁, ez, Category.assoc i, u₁, hz₀, ← Category.assoc, hi, Category.assoc]) (by rw [Category.assoc, b₂, reassoc_of% hyw, Category.assoc, u₂]; exact (Category.comp_id _).symm)`.
+
+Rewrite using `[reassoc_of% this, hv₀, Category.assoc]`. Rewrite using `[fin _ a rfl a₁ a₂, fin _ a' e' a₁' a₂', e']`. Establish `w : (x ≫ f') ≫ B'.A.hom = 𝟙 _ ≫ ((x ≫ Q.hom) ≫ κ) ≫ j` using `by simp [hf'.1.w]`. Establish `y₁` using `hh.lift_fst _ _ w`. Establish `y₂` using `hh.lift_snd _ _ w`.
+
+Establish `fin : ∀ (p : Sp F ⟶ Q.left) (b : W.A.left ⟶ Q.left), x ≫ f' = p ≫ f' → b ≫ f' = h → b ≫ Q.hom = W.A.hom ≫ p ≫ Q.hom → p = hh.lift _ _ w ≫ b` using `fun p b hp b₁ b₂ => hf'.1.hom_ext (by rw [Category.assoc, b₁, y₁, hp]) (by rw [Category.assoc, b₂, reassoc_of% y₂])`. Rewrite using `[fin x' a' e a₁' a₂', Category.assoc, ← E, ← Category.assoc, ← fin x a rfl a₁ a₂]`.
+-/
 theorem comp_eq_of_rational (hL : Laws) {S U : Scheme.{0}} [IsLocallyNoetherian S] (B B' : PolAV S) {C : Type}
     [Field C] [IsAlgClosed C] [CharZero C] (κ : Sp C ⟶ U) (j : U ⟶ S)
     (rB : ∀ x : Over.mk (κ ≫ j) ⟶ B.A, x ^ 3 = 1 → ∃ x₀ : U ⟶ B.A.left, x.left = κ ≫ x₀)
@@ -122,6 +157,9 @@ theorem comp_eq_of_rational (hL : Laws) {S U : Scheme.{0}} [IsLocallyNoetherian 
     (by rw [Category.assoc, b₁, y₁, hp]) (by rw [Category.assoc, b₂, reassoc_of% y₂])
   rw [fin x' a' e a₁' a₂', Category.assoc, ← E, ← Category.assoc, ← fin x a rfl a₁ a₂]
 
+/- English proof (translation)
+Establish `hp` using `isGrpPullback_pullback G t`. Set `e : Q ≅ (Over.pullback t).obj G` to `Over.isoMk (hf.isoIsPullback _ _ hp.1) (hf.isoIsPullback_hom_snd _ _ hp.1)`. Establish `he : e.hom.left ≫ pullback.fst G.hom t = f` using `hf.isoIsPullback_hom_fst _ _ hp.1`. Establish `: IsMonHom e.hom` using `hL.rigidity _ _ _ hQ (TLinPf.isAb_pullback t G hG) e.hom (Over.OverMorphism.ext (hp.1.hom_ext ((Category.assoc _ _ _).trans ((congrArg (eSec Q ≫ ·) he).trans (h₀.trans (PolExtend.eSec_fst t G).symm))) (by rw [Over.w, Over.w])))`. Conclude with `((isGrpPullback_of_iso e).comp hp).congr (Category.id_comp _) he`.
+-/
 theorem isGrpPullback_of_one (hL : Laws) {S S' : Scheme.{0}} {t : S' ⟶ S} {G : Over S} [GrpObj G] {Q : Over S'}
     [GrpObj Q] (hG : IsAbelianScheme G) (hQ : IsAbelianScheme Q) {f : Q.left ⟶ G.left}
     (hf : IsPullback f Q.hom G.hom t) (h₀ : eSec Q ≫ f = t ≫ eSec G) : IsGrpPullback Q G t f := by
@@ -135,6 +173,11 @@ theorem isGrpPullback_of_one (hL : Laws) {S S' : Scheme.{0}} {t : S' ⟶ S} {G :
       (by rw [Over.w, Over.w])))
   exact ((isGrpPullback_of_iso e).comp hp).congr (Category.id_comp _) he
 
+/- English proof (translation)
+Take `⟨h₁, h₂⟩` from `flat_surjective κ`. Establish `hN` using `LB.isLB_div hM hL`. Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Take `⟨i, hi⟩` from `exists_chart hN (eSec X (default : PrimeSpectrum K))`. Conclude with `exists_gen_of_rigidified_of_flat_baseChange hG _ _ κ X _ hX hN h₁ h₂ inferInstance (IsoExtend.exists_gen_of_chart hN _ i fun y => by`.
+
+Rewrite using `[Subsingleton.elim (α := Sp K) y (default : PrimeSpectrum K)]`. Conclude with `hi)`. Use the proof step `((IsoExtend.lbIso_pull_iff_gen L M _).1 h)`.
+-/
 theorem lbIso_descend (hG : GlobalFnsSt) {K C : Type} [Field K] [Field C] (κ : Sp C ⟶ Sp K) (X : Over (Sp K))
     [GrpObj X] (hX : IsAbelianScheme X) {L M : LB X.left} (hL : L.IsLB) (hM : M.IsLB)
     (h : LBIso (L.pull (pullback.fst X.hom κ)) (M.pull (pullback.fst X.hom κ))) : LBIso L M := by
@@ -151,6 +194,31 @@ end GlobalTheory.PolIsoDescent
 
 open GlobalTheory.PolIsoDescent GlobalTheory.GenSpread in
 
+/- English proof (translation)
+Introduce `hL hL₂ hext R _ _ _ ⟨_, _, _⟩ C _ _ _ B B' rB rB' φ g hφ hg hl`. Establish `: CharZero (FractionRing R)` using `charZero_of_injective_algebraMap (IsFractionRing.injective R _)`. Establish `: CharZero C` using `charZero_of_injective_algebraMap (algebraMap (FractionRing R) C).injective`. Set `κ : Sp C ⟶ Sp (FractionRing R)` to `jFK (R := R) C`. Set `X` to `(Over.pullback (jK R)).obj B'.A`.
+
+Set `Y` to `(Over.pullback (jK R)).obj B.A`. Set `Q` to `(Over.pullback κ).obj X`. Establish `hX : IsAbelianScheme X` using `TLinPf.isAb_pullback _ _ B'.isAb`. Establish `hY : IsAbelianScheme Y` using `TLinPf.isAb_pullback _ _ B.isAb`. Establish `hQ : IsAbelianScheme Q` using `TLinPf.isAb_pullback _ _ hX`.
+
+Set `π : Q.left ⟶ X.left` to `pullback.fst X.hom κ`. Set `p : X.left ⟶ B'.A.left` to `pullback.fst B'.A.hom (jK R)`. Establish `hπ : IsGrpPullback Q X κ π` using `isGrpPullback_pullback X κ`. Establish `hp : IsGrpPullback X B'.A (jK R) p` using `isGrpPullback_pullback B'.A (jK R)`. Establish `hY'` using `isGrpPullback_pullback B.A (jK R)`.
+
+Establish `hf'` using `hπ.comp hp`. Establish `pb : ∀ A : Over (Sp R), IsPullback (snd (TF (R` using `R) C) A).left (fst (TF (R := R) C) A).left A.hom (κ ≫ jK R) := fun A => (IsPullback.of_hasPullback (TF (R := R) C).hom A.hom).flip`. Set `c` to `hf'.1.isoIsPullback _ _ (pb B'.A)`. Establish `c₁ : c.hom ≫ (snd (TF (R` using `R) C) B'.A).left = π ≫ p := hf'.1.isoIsPullback_hom_fst _ _ _`. Establish `c₂ : c.hom ≫ (fst (TF (R` using `R) C) B'.A).left = Q.hom := hf'.1.isoIsPullback_hom_snd _ _ _`.
+
+Establish `hφ' : φ.inv ≫ fst _ _ = fst _ _` using `by rw [← hφ, Iso.inv_hom_id_assoc]`. Set `f : Q.left ⟶ B.A.left` to `(c.hom ≫ φ.inv.left) ≫ (snd (TF (R := R) C) B.A).left`. Establish `hfp : IsPullback f Q.hom B.A.hom (κ ≫ jK R)`. Establish `: IsIso φ.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map φ.inv))`. Establish `h : IsPullback (c.hom ≫ φ.inv.left) Q.hom (fst (TF (R` using `R) C) B.A).left (𝟙 _) := IsPullback.of_horiz_isIso ⟨by rw [Category.assoc, ← Over.comp_left, hφ', c₂, Category.comp_id]⟩`.
+
+Conclude with `Category.id_comp (κ ≫ jK R) ▸ h.paste_horiz (pb B.A)`. Establish `pt : ∀ (x : TF (R` using `R) C ⟶ B.A) (u : Sp C ⟶ Q.left), u ≫ π ≫ p = (g x).left → u ≫ Q.hom = 𝟙 _ → u ≫ f = x.left := fun x u u₁ u₂ => by`. Establish `: u ≫ c.hom = (lift (𝟙 _) (g x)).left` using `(pb B'.A).hom_ext (by rw [Category.assoc, c₁, u₁, ← Over.comp_left, lift_snd]) (by rw [Category.assoc, c₂, u₂, ← Over.comp_left, lift_fst]; rfl)`. Express the relevant statement in the definitionally equal form `u ≫ (c.hom ≫ _) ≫ _ = _`. Rewrite using `[Category.assoc, reassoc_of% this, ← Over.comp_left, ← Over.comp_left, ← hg, Category.assoc, Iso.hom_inv_id_assoc, lift_snd]`.
+
+Establish `one : ∀ P : PolAV (Sp R), (1 : TF (R` using `R) C ⟶ P.A).left = (κ ≫ jK R) ≫ eSec P.A := fun _ => rfl`. Establish `hf : IsGrpPullback Q B.A (κ ≫ jK R) f`. Use `isGrpPullback_of_one hL B.isAb hQ hfp ((pt 1 _ ?_ (Over.w η[Q])).trans (one B))` and prove the remaining obligations. Rewrite using `[map_one, one, ← Category.assoc]`. Use `erw [PolExtend.eSec_fst κ X, Category.assoc, PolExtend.eSec_fst (jK R) B'.A, Category.assoc]`.
+
+Establish `hl' : LBIso (B'.L.pull (π ≫ p)) (B.L.pull f)` using `lbIso_pull_comp (c.hom ≫ φ.inv.left) (by rw [Category.assoc, ← Over.comp_left, Iso.inv_hom_id_assoc, c₁]) rfl hl.symm`. Establish `wf : f ≫ B.A.hom = (Q.hom ≫ κ) ≫ jK R` using `by rw [hfp.w, Category.assoc]`. Take `⟨f₀, hf₀⟩` from `exists_desc_of_smooth_of_geometricPoints (FractionRing R) C X Y hX.smooth (have := hY.proper; inferInstance) (hY'.1.lift f (Q.hom ≫ κ) wf) ((hY'.1.lift_snd _ _ _).trans hπ.1.w.symm) fun F _ _ x x' e => by`. Establish `e' : (x ≫ Q.hom) ≫ κ = (x' ≫ Q.hom) ≫ κ`. Rewrite using `[Category.assoc, Category.assoc, ← hπ.1.w]`.
+
+Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ X.hom) e).trans (Category.assoc _ _ _))`. Use `hY'.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hY'.1.lift_fst]`. Conclude with `comp_eq_of_rational hL B B' κ (jK R) (fun x hx => (rB x hx).elim fun a h => ⟨a.left, h⟩) (fun x hx => (rB' x hx).elim fun a h => ⟨a.left, h⟩) hf hf' hl' x x' ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ p) e).trans (Category.assoc _ _ _))) e'`. Rewrite using `[Category.assoc, Category.assoc, hY'.1.lift_snd, ← Category.assoc, ← Category.assoc]`.
+
+Conclude with `e'`. Establish `ef : π ≫ f₀.left ≫ pullback.fst B.A.hom (jK R) = f` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst B.A.hom (jK R)) hf₀).trans (hY'.1.lift_fst _ _ _))`. Take `⟨k₁, k₂⟩` from `flat_surjective κ`. Establish `h₀ : IsGrpPullback X B.A (jK R) (f₀.left ≫ pullback.fst B.A.hom (jK R))` using `isGrpPullback_of_fpqc _ _ _ (jK R) κ B.A X Q π _ k₁ k₂ inferInstance hπ (hf.congr rfl ef.symm) (by rw [Category.assoc, hY'.1.w, ← Category.assoc, Over.w f₀])`. Take `⟨ψ, hψ, eψ⟩` from `grpPullback_iso h₀ hY'`.
+
+Rewrite `ef` using `[← eψ]`. Take `⟨Ψ, m, hΨ, l⟩` from `polAV_iso_extends_of_isIntegrallyClosed hL hL₂ R B B' ψ hψ (lbIso_descend hL.globalFns κ X hX (pull_isLB B'.isLB _) (pull_isLB B.isLB _) (LBIso.trans (pull_isLB (pull_isLB B'.isLB _) _) (pull_isLB B'.isLB _) (pull_isLB (pull_isLB B.isLB _) _) (lbIso_pull_pull B'.isLB π rfl).symm …`. Use `⟨Ψ, m, l, fun x => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Establish `w : (g x).left ≫ B'.A.hom = 𝟙 _ ≫ κ ≫ jK R` using `(Over.w (g x)).trans (Category.id_comp _).symm`. Establish `u₁` using `hf'.1.lift_fst _ _ w`.
+
+Establish `q : ψ.hom.left ≫ pullback.fst B.A.hom (jK R) = p ≫ Ψ.hom.left`. Rewrite using `[← hΨ]`. Conclude with `ExtUnique.pullback_map_left_fst (jK R) Ψ.hom`. Rewrite using `[← pt x _ u₁ (hf'.1.lift_snd _ _ w), ← ef, q, Over.comp_left]`. Conclude with `(congrArg (· ≫ Ψ.hom.left) u₁).symm.trans (by simp only [Category.assoc])`.
+-/
 theorem GlobalTheory.polAV_iso_descends_of_ratTors : Laws → Laws2 → GlobalTheory.LN.HomExtSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.LN.CDvr R → ∀ (C : Type) [Field C] [IsAlgClosed C] [Algebra (FractionRing R) C] (B B' : PolAV (Sp R)), RatTors B C 3 → RatTors B' C 3 → ∀ (φ : TF (R := R) C ⊗ B.A ≅ TF (R := R) C ⊗ B'.A) (g : (TF (R := R) C ⟶ B.A) ≃* (TF (R := R) C ⟶ B'.A)), φ.hom ≫ fst _ _ = fst _ _ → (∀ x, lift (𝟙 _) x ≫ φ.hom = lift (𝟙 _) (g x)) → LBIso (B.L.pull (snd (TF (R := R) C) B.A).left) (B'.L.pull (φ.hom ≫ snd (TF (R := R) C) B'.A).left) → ∃ Ψ : B'.A ≅ B.A, IsMonHom Ψ.hom ∧ LBIso B'.L (B.L.pull Ψ.hom.left) ∧ ∀ x, g x ≫ Ψ.hom = x := by
   intro hL hL₂ hext R _ _ _ ⟨_, _, _⟩ C _ _ _ B B' rB rB' φ g hφ hg hl
   have : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R _)

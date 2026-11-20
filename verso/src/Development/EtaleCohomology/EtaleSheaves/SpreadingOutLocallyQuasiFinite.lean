@@ -18,6 +18,11 @@ def LeafOpenSpread : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [Al
     ∃ (S : Subalgebra k Ω), R ≤ S ∧ S.FG ∧ ∀ (R' : Subalgebra k Ω), S ≤ R' → ∀ (hR : R ≤ R') (E : Scheme.{0})
       (q' : E ⟶ Sp R') (r : E ⟶ A), IsPullback r q' p (incl hR) → ∀ z : E, r z ∈ U
 
+/- English proof (translation)
+Introduce `EA EB A B h g rA rB sq hg x hx`. Set `U` to `g.quasiFiniteLocus`. Establish `sq2 : IsPullback (rA ∣_ U) ((rA ⁻¹ᵁ U).ι ≫ h) (U.ι ≫ g) rB` using `(isPullback_morphismRestrict rA U).paste_vert sq`. Establish `: LocallyQuasiFinite ((rA ⁻¹ᵁ U).ι ≫ h)` using `MorphismProperty.of_isPullback (P := @LocallyQuasiFinite) sq2 inferInstance`. Establish `hxV : x ∈ rA ⁻¹ᵁ U` using `hx`.
+
+Use `((rA ⁻¹ᵁ U).ι ≫ h).quasiFiniteAt ⟨x, hxV⟩` as an intermediate fact. Establish `h2` using `(Scheme.Hom.quasiFiniteAt_comp_iff_of_isOpenImmersion (f := (rA ⁻¹ᵁ U).ι) (g := h) (x := ⟨x, hxV⟩)).mp this`. Simplify using `using h2`.
+-/
 theorem quasi_finite_at_base_change_of_finite_type : LeafQFAtBaseChange := by
   intro EA EB A B h g rA rB sq hg x hx
   let U := g.quasiFiniteLocus
@@ -31,6 +36,13 @@ theorem quasi_finite_at_base_change_of_finite_type : LeafQFAtBaseChange := by
     (x := ⟨x, hxV⟩)).mp this
   simpa using h2
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ R hR CA CB A B cB γ qB g vA vB hB hA pB pA hw hγ`. Establish `: LocallyOfFinitePresentation (g ≫ qB)` using `hA.1`. Establish `: LocallyOfFiniteType g` using `locallyOfFiniteType_of_comp g qB`. Establish `sqC : IsPullback vA γ g vB` using `IsPullback.of_bot pA hw.symm pB`. Establish `hU : ∀ x : CA, vA x ∈ g.quasiFiniteLocus` using `fun x => hD γ g vA vB sqC inferInstance x (γ.quasiFiniteAt x)`.
+
+Take `⟨S, hRS, hS, H⟩` from `hO k Ω R hR (γ ≫ cB) (g ≫ qB) vA g.quasiFiniteLocus hA pA hU`. Use `⟨S, hRS, hS, ?_⟩` and prove the remaining obligations. Introduce `R' hSR' hRR' EA EB qB' h rA rB QB QA hc`. Establish `sqE : IsPullback rA h g rB` using `IsPullback.of_bot QA hc.symm QB`. Establish `: LocallyOfFiniteType h` using `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) sqE inferInstance`.
+
+Rewrite using `[← Scheme.Hom.quasiFiniteLocus_eq_top_iff]`. Use `top_le_iff.mp fun z _ => ?_` and prove the remaining obligations. Conclude with `hBC h g rA rB sqE inferInstance z (H R' hSR' hRR' EA (h ≫ qB') rA QA z)`.
+-/
 theorem LeafSpreadLQFMap_of (hBC : LeafQFAtBaseChange) (hD : LeafQFAtDescend) (hO : LeafOpenSpread) :
     LateralTheory.E.SpreadingOutQuasiFiniteness.LeafSpreadLQFMap := by
   intro k _ Ω _ _ R hR CA CB A B cB γ qB g vA vB hB hA pB pA hw hγ

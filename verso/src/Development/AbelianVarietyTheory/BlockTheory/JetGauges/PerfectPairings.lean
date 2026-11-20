@@ -53,6 +53,9 @@ def FourierDenominators : Prop :=
 def mulNat {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (n : ℕ) : Pt R 1 d :=
   Nat.rec (motive := fun _ => Pt R 1 d) 0 (fun _ y => G.add y (pt R d 0)) n
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulNat_succ {R : Type} [CommRing R] {d : ℕ} (G : FGLaw R d) (n : ℕ) :
     mulNat G (n + 1) = G.add (mulNat G n) (pt R d 0) := rfl
 

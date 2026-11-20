@@ -7,6 +7,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentPolynomialTa
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LaurentCohomology
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology`. Consider the case `exact _root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology`. Consider the case `(apply _root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LaurentCohomologyVanishing.laurent_cohomology ..)`.
+-/
 theorem GlobalTheory.gm_cohomology_strictlyHenselian : ∀ (q : ℕ) [NeZero q] (A : Type) [CommRing A], SH A → IsUnit (q : A) →
     ∀ n i : ℤ, (2 ≤ n → Subsingleton (Ht q (sp (LaurentPolynomial A)) n i)) ∧
       Nonempty (Ht q (sp (LaurentPolynomial A)) 1 i ≃+ ZMod q) := by

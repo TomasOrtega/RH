@@ -11,6 +11,11 @@ open ReciprocityTheory.ChartRestriction.DS.Lap
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Take `⟨hgH, hfix, hz⟩` from `hg`. Establish `hinv : g⁻¹ * g = 1` using `ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hgH`. Establish `key : ∀ y, g *ᵥ y = y → g⁻¹ *ᵥ y = y`. Introduce `y hy`. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `⟨inv_mem_UH' hgH, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩`.
+-/
 theorem inv_mem_UWset {z : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} (hg : g ∈ Formalism.QuantumDeterminants.UWset k r z) :
     g⁻¹ ∈ Formalism.QuantumDeterminants.UWset k r z := by
   obtain ⟨hgH, hfix, hz⟩ := hg
@@ -22,6 +27,11 @@ theorem inv_mem_UWset {z : Fin (2 * r + k + 1) → ℂ} {g : Mat k r} (hg : g �
       _ = y := by rw [hinv, Matrix.one_mulVec]
   exact ⟨inv_mem_UH' hgH, fun a => ⟨key _ (hfix a).1, key _ (hfix a).2⟩, key _ hz⟩
 
+/- English proof (translation)
+Establish `hU : IsClosed {g : Mat k r | gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r}` using `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `h1 : IsClosed {g : Mat k r | ∀ a : Fin r, g *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) ∧ g *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k …`. Simplify using `only [Set.ofPred_forall, Set.ofPred_and]`. Conclude with `isClosed_iInter fun a => (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const).inter (isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const)`. Establish `h2 : IsClosed {g : Mat k r | g *ᵥ z = z}` using `isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const`.
+
+Conclude with `hU.inter (h1.inter h2)`.
+-/
 theorem isClosed_UWset (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (Formalism.QuantumDeterminants.UWset k r z) := by
   have hU : IsClosed {g : Mat k r | gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r} :=
     isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
@@ -37,6 +47,17 @@ theorem isClosed_UWset (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (Formalism.Q
     isClosed_eq (continuous_id.matrix_mulVec continuous_const) continuous_const
   exact hU.inter (h1.inter h2)
 
+/- English proof (translation)
+Establish `hπU` using `hcTypeW_uRep k r z u Vp π hz hT hπ`. Use `hμW.1` as an intermediate fact. Use `hμN.1` as an intermediate fact. Establish `hof : Continuous fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => (Matrix.of p.1 : Mat k r)` using `continuous_fst`. Establish `hTae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z` using `Measure.quasiMeasurePreserving_fst.ae (ae_iff.2 hμW.2.2.1)`.
+
+Establish `hTc : IsClosed {p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r | Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z}` using `(isClosed_UWset z).preimage hof`. Establish `hπc : ContinuousOn π (Formalism.QuantumDeterminants.UWset k r z)` using `continuousOn_clm_apply.2 hπU.2.2`. Establish `hinv : ContinuousOn (fun g : Mat k r => g⁻¹) (Formalism.QuantumDeterminants.UWset k r z)`. Introduce `g hg`. Establish `hgi : g⁻¹ * g = 1` using `ReciprocityTheory.ChartRestriction.DS.Xi.StepA.UH_inv_mul k r hg.1`.
+
+Establish `hu : IsUnit g.det` using `Matrix.isUnit_det_of_left_inverse hgi`. Establish `hc` using `NormedRing.inverse_continuousAt hu.unit`. Rewrite `hc` using `[IsUnit.unit_spec]`. Conclude with `(continuousAt_matrix_inv g hc).continuousWithinAt`. Establish `hcont : ContinuousOn (fun p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r => π (Matrix.of p.1)⁻¹) {p | Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z}` using `hπc.comp (hinv.comp hof.continuousOn fun p hp => hp) fun p hp => inv_mem_UWset hp`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hcont.aestronglyMeasurable (μ := μW.prod μN) hTc.measurableSet`. Establish `hTae' : ∀ᵐ p ∂(μW.prod μN), p ∈ {p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r | Matrix.of p.1 ∈ Formalism.QuantumDeterminants.UWset k r z}` using `hTae`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem hTae']`. Conclude with `h`.
+
+Use `filter_upwards [hTae] with p hp v`. Conclude with `hπU.2.1 _ (inv_mem_UWset hp) v`.
+-/
 theorem piInv_facts (z : Fin (2 * r + k + 1) → ℂ) (u : Fin k → ℝ) {Vp : Type} [NormedAddCommGroup Vp]
     [InnerProductSpace ℂ Vp] [FiniteDimensional ℂ Vp] (π : Mat k r → (Vp →L[ℂ] Vp))
     (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (hz : Formalism.QuantumDeterminants.inWb k r z) (hT : 0 < Formalism.QuantumDeterminants.Tz k r z)

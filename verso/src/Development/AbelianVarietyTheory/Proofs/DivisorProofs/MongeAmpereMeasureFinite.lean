@@ -6,6 +6,23 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `e X _ _ _ _ _ A Φ O hO hV`. Distinguish the cases in `hne : Nonempty (ChartPartition A)`. Use `swap`. Unfold `maMeasure`. Rewrite using `[dif_neg hne]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[maMeasure_eq_sum A Φ hne, Measure.coe_finsetSum, Finset.sum_apply]`. Use `ENNReal.sum_lt_top.mpr fun j _ => ?_` and prove the remaining obligations. Use `set P := hne.some`. Use `set ch := A.chart j with hch`.
+
+Establish `hTm : MeasurableSet ch.target` using `ch.open_target.measurableSet`. Establish `hsm : AEMeasurable ch.symm (volume.restrict ch.target)` using `ch.continuousOn_symm.aemeasurable hTm`. Unfold `chartMeasure`. Rewrite using `[Measure.map_apply_of_aemeasurable (hsm.mono_ac (withDensity_absolutelyContinuous _ _)) hO.measurableSet, withDensity_apply' _ _, Measure.restrict_restrict' hTm]`. Establish `hZ : IsCompact (tsupport (P.χ j))` using `(isClosed_tsupport _).isCompact`.
+
+Establish `hsrc : ∀ x ∈ tsupport (P.χ j), x ∈ ch.source` using `fun x hx => P.tsupport_subset j hx`. Use `choose V hVo hxV hVf using fun (x : X) (hx : x ∈ tsupport (P.χ j)) => hV j x (hsrc x hx)`. Take `⟨t, ht⟩` from `hZ.elim_nhds_subcover' (fun x hx => V x hx) (fun x hx => (hVo x hx).mem_nhds (hxV x hx))`. Set `S : ↥(tsupport (P.χ j)) → Set (Fin e → ℂ)` to `fun (x : ↥(tsupport (P.χ j))) => ch.target ∩ ch.symm ⁻¹' (V x.1 x.2 ∩ O)`. Establish `hSo : ∀ x, IsOpen (S x)` using `fun x => ch.isOpen_inter_preimage_symm ((hVo x.1 x.2).inter hO)`.
+
+Set `W` to `⋃ x : ↥t, S x.1`. Establish `hWm : MeasurableSet W` using `(isOpen_iUnion fun (x : ↥t) => hSo x.1).measurableSet`. Establish `hS'm : MeasurableSet (ch.symm ⁻¹' O ∩ ch.target)`. Rewrite using `[Set.inter_comm]`. Conclude with `(ch.isOpen_inter_preimage_symm hO).measurableSet`.
+
+Establish `hpt : ∀ y ∈ ch.symm ⁻¹' O ∩ ch.target, ENNReal.ofReal (P.χ j (ch.symm y) * locDens A Φ j y) ≤ W.indicator (fun y => ENNReal.ofReal (locDens A Φ j y)) y`. Introduce `y hy`. Distinguish the cases in `h0 : P.χ j (ch.symm y) = 0`. Simplify using `[h0]`. Establish `hz : ch.symm y ∈ tsupport (P.χ j)` using `subset_tsupport _ h0`.
+
+Establish `hcov` using `ht hz`. Simplify using `only [Set.mem_iUnion] at hcov`. Take `⟨x, hxt, hyx⟩` from `hcov`. Establish `hyW : y ∈ W` using `Set.mem_iUnion.mpr ⟨⟨x, hxt⟩, hy.2, hyx, hy.1⟩`. Rewrite using `[Set.indicator_of_mem hyW, ENNReal.ofReal_mul (P.nonneg j _)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem maMeasure_lt_top_of_locally_finite : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X] [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X) (O : Set X), IsOpen O → (∀ (j : Fin A.n) (x : X), x ∈ (A.chart j).source → ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ ∫⁻ y in (A.chart j).target ∩ (A.chart j).symm ⁻¹' (V ∩ O), ENNReal.ofReal (locDens A Φ j y) < ⊤) → maMeasure A Φ O < ⊤ := by
   intro e X _ _ _ _ _ A Φ O hO hV
   by_cases hne : Nonempty (ChartPartition A)

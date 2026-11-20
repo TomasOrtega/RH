@@ -15,6 +15,23 @@ open scoped Matrix ContDiff ComplexOrder
 
 namespace GlobalTheory.ChernCalc
 
+/- English proof (translation)
+Introduce `hCD F _ σ X κ _ Δ L r ψ hψ P hP`. Use `haveI := CxPts.compactSpace σ X.isProjOver`. Use `haveI := CxPts.t2Space_cxPts_of_isProjOver σ X.isProjOver`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ X.isProjOver`. Establish `hform : ∀ G : MvPolynomial κ ℝ, (atlas X σ).IsForm (evalF (atlas X σ) (fun a => c1W (ψ a)) G)` using `fun G => ((GlobalTheory.formCalculus _ _ (atlas X σ)).2.2.2.1 κ _ G (fun a => (GlobalTheory.T.firstChernFormOfWeight_isForm_dbar_eq_zero F σ X (L a) (ψ a) (hψ a).2).1)).1`.
+
+Establish `Pw` using `GlobalTheory.LineForm.wInt_props (CxPts X.str σ) X.dim (atlas X σ)`. Establish `hint : ∀ G : MvPolynomial κ ℝ, ∀ ε : ℤˣ, Integrable (fun _ => (1 : ℝ)) ((atlas X σ).part (evalF (atlas X σ) (fun a => c1W (ψ a)) G) ε)` using `fun G ε => by haveI := Pw.1 _ (hform G) ε`. Conclude with `integrable_const _`. Establish `hadd : ∀ G₁ G₂ : MvPolynomial κ ℝ, (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) (G₁ + G₂)) = (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) G₁) + (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) G₂)` using `fun G₁ G₂ => by`. Rewrite using `[← wInt_one, ← wInt_one, ← wInt_one, GlobalTheory.LineForm.GeoInt.evalF_add]`.
+
+Conclude with `(Pw.2.1 _ _ _ (hform G₁) (hform G₂) (hint G₁) (hint G₂)).2`. Establish `hsmul : ∀ (t : ℝ) (G : MvPolynomial κ ℝ), (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) (t • G)) = t * (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) G)` using `fun t G => by`. Rewrite using `[← wInt_one, ← wInt_one, GlobalTheory.LineForm.GeoInt.evalF_smul]`. Conclude with `Pw.2.2.1 _ t _ (hform G)`. Establish `hspan` using `GlobalTheory.LineForm.GeoInt.mem_span_pow_lin X.dim P hP`.
+
+Use `clear hP`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨n, rfl⟩` from `hx`. Take `⟨L', r', ψ', hpr, hci, hc1⟩` from `GlobalTheory.T.exists_smoothWeight_integral_combination F σ X κ Δ L r ψ hψ n`.
+
+Establish `e1 : evalF (atlas X σ) (fun a => c1W (ψ a)) (GlobalTheory.ArInt.lin (fun i => (n i : ℝ)) ^ X.dim) = fld (atlas X σ) (c1W ψ' ^ X.dim)`. Use function extensionality and compare the values at `x`. Rewrite using `[hc1]`. Simplify using `only [evalF, fld, GlobalTheory.ArInt.lin, map_pow, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X, MvPolynomial.aeval_C, MvPolynomial.aeval_X, Finset.sum_apply, Pi.smul_apply, Pi.pow_apply]`. Use `congr 2`.
+
+Establish `e2 : X.interPoly Δ (GlobalTheory.ArInt.lin (fun i => (n i : ℝ)) ^ X.dim) = (X.inter fun _ => ∑ a, n a • Δ a : ℝ)`. Use `Var.interPoly_prod_sum X Δ (fun _ a => n a)` as an intermediate fact. Rewrite `this` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Conclude with `this`. Rewrite using `[e1, e2, HolAtlas.integral, GlobalTheory.T.part_firstChernFormOfWeight_pow_eq_chernPart F σ X L' ψ' hci, GlobalTheory.T.part_firstChernFormOfWeight_pow_eq_chernPart F σ X L' ψ' hci, ← (hCD F X σ _ L' r' hpr ψ' hci).2]`.
+
+Simplify using `only [Weight.chernInt, Measure.restrict_univ, integral_const, smul_eq_mul, mul_one]`. Consider the case `zero`. Rewrite using `[map_zero]`. Use `hsmul 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`.
+
+Conclude with `this`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add, hadd, hx, hy]`. Consider the case `smul t x _ hx`. Rewrite using `[map_smul, hsmul, hx, smul_eq_mul]`.
+-/
 theorem integral_evalF_c1W_eq_interPoly : GlobalTheory.Published.ChernDegree → ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (κ : Type) [Fintype κ] (Δ : κ → X.Dv) (L : κ → LB X.X) (r : ∀ a, (L a).ι → X.Fnˣ) (ψ : ∀ a, Weight X.str σ (L a)), (∀ a, Presents (Δ a) (L a) (r a) ∧ (ψ a).IsCInf) → ∀ P : MvPolynomial κ ℝ, P.IsHomogeneous X.dim → (atlas X σ).integral (evalF (atlas X σ) (fun a => c1W (ψ a)) P) = X.interPoly Δ P := by
   intro hCD F _ σ X κ _ Δ L r ψ hψ P hP
   haveI := CxPts.compactSpace σ X.isProjOver

@@ -10,17 +10,28 @@ section Lord
 
 variable {R : Type} [Semiring R]
 
+/- English proof (translation)
+Unfold `lord`. Rewrite using `[Finset.le_min_iff]`. Simplify using `only [Finsupp.mem_support_iff]`.
+-/
 theorem le_lord_iff (n : WithTop ℤ) (f : LaurentPolynomial R) :
     n ≤ lord f ↔ ∀ k : ℤ, f.coeff k ≠ 0 → n ≤ (k : WithTop ℤ) := by
   unfold lord
   rw [Finset.le_min_iff]
   simp only [Finsupp.mem_support_iff]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, le_lord_iff]`. Introduce `k hk`. Conclude with `absurd rfl hk`.
+-/
 theorem lord_zero : lord (0 : LaurentPolynomial R) = ⊤ := by
   rw [eq_top_iff, le_lord_iff]
   intro k hk
   exact absurd rfl hk
 
+/- English proof (translation)
+Rewrite `*` using `[le_lord_iff]`. Introduce `k hk`. Distinguish the cases in `h1 : f.coeff k = 0`. Apply `hg k` to reduce the goal to its premises. Introduce `h2`.
+
+Apply `hk` to reduce the goal to its premises. Rewrite using `[AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h1, h2, add_zero]`. Conclude with `hf k h1`.
+-/
 theorem le_lord_add {n : WithTop ℤ} {f g : LaurentPolynomial R} (hf : n ≤ lord f) (hg : n ≤ lord g) :
     n ≤ lord (f + g) := by
   rw [le_lord_iff] at *
@@ -32,6 +43,9 @@ theorem le_lord_add {n : WithTop ℤ} {f g : LaurentPolynomial R} (hf : n ≤ lo
     rw [AddMonoidAlgebra.coeff_add, Finsupp.add_apply, h1, h2, add_zero]
   · exact hf k h1
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [lord_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `le_lord_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem le_lord_sum {ι : Type} {n : WithTop ℤ} (s : Finset ι) (f : ι → LaurentPolynomial R)
     (h : ∀ i ∈ s, n ≤ lord (f i)) : n ≤ lord (∑ i ∈ s, f i) := by
   classical
@@ -42,6 +56,11 @@ theorem le_lord_sum {ι : Type} {n : WithTop ℤ} (s : Finset ι) (f : ι → La
     exact le_lord_add (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite `*` using `[le_lord_iff]`. Introduce `k hk`. Establish `hk' : k ∈ (f * g).coeff.support` using `Finsupp.mem_support_iff.mpr hk`. Use `AddMonoidAlgebra.support_coeff_mul_subset f g hk'` as an intermediate fact. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.mp this`.
+
+Establish `h1` using `hf a (Finsupp.mem_support_iff.mp ha)`. Establish `h2` using `hg b (Finsupp.mem_support_iff.mp hb)`. Rewrite using `[WithTop.coe_add]`. Conclude with `add_le_add h1 h2`.
+-/
 theorem le_lord_mul {m n : WithTop ℤ} {f g : LaurentPolynomial R} (hf : m ≤ lord f) (hg : n ≤ lord g) :
     m + n ≤ lord (f * g) := by
   classical
@@ -55,6 +74,11 @@ theorem le_lord_mul {m n : WithTop ℤ} {f g : LaurentPolynomial R} (hf : m ≤ 
   rw [WithTop.coe_add]
   exact add_le_add h1 h2
 
+/- English proof (translation)
+Rewrite using `[le_lord_iff]`. Introduce `k hk`. Rewrite `hk` using `[LaurentPolynomial.C_apply]`. Use `split_ifs at hk with h`. Rewrite using `[h]`.
+
+Conclude with `le_refl _`. Conclude with `absurd rfl hk`.
+-/
 theorem lord_C_nonneg (a : R) : (0 : WithTop ℤ) ≤ lord (LaurentPolynomial.C a) := by
   rw [le_lord_iff]
   intro k hk
@@ -72,27 +96,47 @@ variable {R : Type} [CommSemiring R] {σ : Type}
 def pge (n : WithTop ℤ) (G : MvPolynomial σ (LaurentPolynomial R)) : Prop :=
   ∀ β, n ≤ lord (G.coeff β)
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[coeff_zero, lord_zero]`. Conclude with `le_top`.
+-/
 theorem pge_zero (n : WithTop ℤ) : pge n (0 : MvPolynomial σ (LaurentPolynomial R)) := by
   intro β; rw [coeff_zero, lord_zero]; exact le_top
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[coeff_add]`. Conclude with `le_lord_add (hF β) (hG β)`.
+-/
 theorem pge_add {n : WithTop ℤ} {F G : MvPolynomial σ (LaurentPolynomial R)} (hF : pge n F)
     (hG : pge n G) : pge n (F + G) := by
   intro β; rw [coeff_add]; exact le_lord_add (hF β) (hG β)
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[coeff_sum]`. Conclude with `le_lord_sum s _ fun i hi => h i hi β`.
+-/
 theorem pge_sum {ι : Type} {n : WithTop ℤ} (s : Finset ι)
     (f : ι → MvPolynomial σ (LaurentPolynomial R)) (h : ∀ i ∈ s, pge n (f i)) :
     pge n (∑ i ∈ s, f i) := by
   intro β; rw [coeff_sum]; exact le_lord_sum s _ fun i hi => h i hi β
 
+/- English proof (translation)
+Introduce `β`. Rewrite using `[coeff_mul]`. Conclude with `le_lord_sum _ _ fun x _ => le_lord_mul (hF x.1) (hG x.2)`.
+-/
 theorem pge_mul {m n : WithTop ℤ} {F G : MvPolynomial σ (LaurentPolynomial R)} (hF : pge m F)
     (hG : pge n G) : pge (m + n) (F * G) := by
   classical
   intro β; rw [coeff_mul]
   exact le_lord_sum _ _ fun x _ => le_lord_mul (hF x.1) (hG x.2)
 
+/- English proof (translation)
+Introduce `β` and use `h.trans (hF β)`.
+-/
 theorem pge_mono {m n : WithTop ℤ} (h : m ≤ n) {F : MvPolynomial σ (LaurentPolynomial R)}
     (hF : pge n F) : pge m F := fun β => h.trans (hF β)
 
+/- English proof (translation)
+Rewrite using `[Finset.le_inf_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h β`. Distinguish the cases in `hβ : β ∈ G.support`. Conclude with `h β hβ`.
+
+Rewrite using `[notMem_support_iff.mp hβ, lord_zero]`. Conclude with `le_top`. Introduce `h β _`. Conclude with `h β`.
+-/
 theorem pge_iff_inf (n : WithTop ℤ) (G : MvPolynomial σ (LaurentPolynomial R)) :
     (n ≤ G.support.inf fun β => lord (G.coeff β)) ↔ pge n G := by
   rw [Finset.le_inf_iff]
@@ -112,39 +156,68 @@ variable {K : Type} [Field K] {L : Type} [DecidableEq L] {r : ℕ} (sg : L → B
 abbrev subV : MvPolynomial (L × Fin r) K →+* MvPolynomial (L × Fin r) (LauF K r) :=
   substS (lauι K r) sg S (hMat K r) (hInvT K r)
 
+/- English proof (translation)
+Unfold `valS`. Conclude with `pge_iff_inf n _`.
+-/
 theorem le_valS_iff (n : WithTop ℤ) (F : MvPolynomial (L × Fin r) K) :
     n ≤ valS sg S F ↔ ∀ β, n ≤ lord ((subV sg S F).coeff β) := by
   unfold valS
   exact pge_iff_inf n _
 
+/- English proof (translation)
+The claim follows from `le_valS_iff sg S n F`.
+-/
 theorem le_valS_iff_pge (n : WithTop ℤ) (F : MvPolynomial (L × Fin r) K) :
     n ≤ valS sg S F ↔ pge n (subV sg S F) := le_valS_iff sg S n F
 
+/- English proof (translation)
+The claim follows from `(le_valS_iff_pge sg S _ F).mp le_rfl`.
+-/
 theorem pge_valS (F : MvPolynomial (L × Fin r) K) : pge (valS sg S F) (subV sg S F) :=
   (le_valS_iff_pge sg S _ F).mp le_rfl
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff, le_valS_iff_pge, map_zero]`. Conclude with `pge_zero _`.
+-/
 theorem valS_zero : valS sg S (0 : MvPolynomial (L × Fin r) K) = ⊤ := by
   rw [eq_top_iff, le_valS_iff_pge, map_zero]; exact pge_zero _
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff_pge, map_add]`. Conclude with `pge_add (pge_mono (min_le_left _ _) (pge_valS sg S F)) (pge_mono (min_le_right _ _) (pge_valS sg S G))`.
+-/
 theorem valS_add_le (F G : MvPolynomial (L × Fin r) K) :
     min (valS sg S F) (valS sg S G) ≤ valS sg S (F + G) := by
   rw [le_valS_iff_pge, map_add]
   exact pge_add (pge_mono (min_le_left _ _) (pge_valS sg S F))
     (pge_mono (min_le_right _ _) (pge_valS sg S G))
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff_pge, map_sum]`. Conclude with `pge_sum s _ fun i hi => (le_valS_iff_pge sg S n _).mp (h i hi)`.
+-/
 theorem valS_sum_le {ι : Type} (s : Finset ι) (f : ι → MvPolynomial (L × Fin r) K) (n : WithTop ℤ)
     (h : ∀ i ∈ s, n ≤ valS sg S (f i)) : n ≤ valS sg S (∑ i ∈ s, f i) := by
   rw [le_valS_iff_pge, map_sum]
   exact pge_sum s _ fun i hi => (le_valS_iff_pge sg S n _).mp (h i hi)
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff_pge, map_mul]`. Conclude with `pge_mul (pge_valS sg S F) (pge_valS sg S G)`.
+-/
 theorem valS_mul_le (F G : MvPolynomial (L × Fin r) K) :
     valS sg S F + valS sg S G ≤ valS sg S (F * G) := by
   rw [le_valS_iff_pge, map_mul]
   exact pge_mul (pge_valS sg S F) (pge_valS sg S G)
 
+/- English proof (translation)
+Simplify using `[substS]`.
+-/
 theorem subV_C (a : K) : subV sg S (C a : MvPolynomial (L × Fin r) K) = C (lauι K r a) := by
   simp [substS]
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff, subV_C]`. Introduce `β`. Rewrite using `[coeff_C]`. Use `split_ifs`. Conclude with `lord_C_nonneg _`.
+
+Rewrite using `[lord_zero]`. Conclude with `le_top`.
+-/
 theorem valS_C_nonneg (a : K) : 0 ≤ valS sg S (C a : MvPolynomial (L × Fin r) K) := by
   classical
   rw [le_valS_iff, subV_C]
@@ -154,6 +227,9 @@ theorem valS_C_nonneg (a : K) : 0 ≤ valS sg S (C a : MvPolynomial (L × Fin r)
   · exact lord_C_nonneg _
   · rw [lord_zero]; exact le_top
 
+/- English proof (translation)
+Establish `h` using `valS_mul_le sg S (C a) F`. Use `le_trans ?_ h` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valS_C_mul_le (a : K) (F : MvPolynomial (L × Fin r) K) :
     valS sg S F ≤ valS sg S (C a * F) := by
   have h := valS_mul_le sg S (C a) F
@@ -161,6 +237,9 @@ theorem valS_C_mul_le (a : K) (F : MvPolynomial (L × Fin r) K) :
   calc valS sg S F = 0 + valS sg S F := (zero_add _).symm
     _ ≤ _ := add_le_add (valS_C_nonneg sg S a) le_rfl
 
+/- English proof (translation)
+Rewrite using `[smul_eq_C_mul]`. Conclude with `valS_C_mul_le sg S a F`.
+-/
 theorem valS_smul_le (a : K) (F : MvPolynomial (L × Fin r) K) :
     valS sg S F ≤ valS sg S (a • F) := by
   rw [smul_eq_C_mul]; exact valS_C_mul_le sg S a F
@@ -171,49 +250,91 @@ section Exps
 
 variable {L : Type} {r : ℕ} (out : L → Prop) [DecidablePred out]
 
+/- English proof (translation)
+Unfold `eOut`. Rewrite using `[Finsupp.filter_apply]`.
+-/
 theorem eOut_apply (α : L × Fin r →₀ ℕ) (x : L × Fin r) :
     eOut out α x = if out x.1 then α x else 0 := by
   unfold eOut; rw [Finsupp.filter_apply]
 
+/- English proof (translation)
+Unfold `eIn`. Rewrite using `[Finsupp.filter_apply]`. Apply the tactic sequence `by_cases h : out x.1 <;> simp [h]`.
+-/
 theorem eIn_apply (α : L × Fin r →₀ ℕ) (x : L × Fin r) :
     eIn out α x = if out x.1 then 0 else α x := by
   unfold eIn; rw [Finsupp.filter_apply]
   by_cases h : out x.1 <;> simp [h]
 
+/- English proof (translation)
+The claim follows from `Finsupp.filter_add_filter_not α _`.
+-/
 theorem eOut_add_eIn (α : L × Fin r →₀ ℕ) : eOut out α + eIn out α = α :=
   Finsupp.filter_add_filter_not α _
 
+/- English proof (translation)
+The claim follows from `Finsupp.filter_add`.
+-/
 theorem eOut_add (α β : L × Fin r →₀ ℕ) : eOut out (α + β) = eOut out α + eOut out β :=
   Finsupp.filter_add
 
+/- English proof (translation)
+The claim follows from `Finsupp.filter_add`.
+-/
 theorem eIn_add (α β : L × Fin r →₀ ℕ) : eIn out (α + β) = eIn out α + eIn out β :=
   Finsupp.filter_add
 
+/- English proof (translation)
+Apply the tactic sequence `ext x; simp only [eOut_apply]; split_ifs <;> rfl`.
+-/
 theorem eOut_eOut (α : L × Fin r →₀ ℕ) : eOut out (eOut out α) = eOut out α := by
   ext x; simp only [eOut_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext x; simp only [eIn_apply]; split_ifs <;> rfl`.
+-/
 theorem eIn_eIn (α : L × Fin r →₀ ℕ) : eIn out (eIn out α) = eIn out α := by
   ext x; simp only [eIn_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext x; simp only [eIn_apply, eOut_apply, Finsupp.coe_zero, Pi.zero_apply]; split_ifs <;> rfl`.
+-/
 theorem eIn_eOut (α : L × Fin r →₀ ℕ) : eIn out (eOut out α) = 0 := by
   ext x; simp only [eIn_apply, eOut_apply, Finsupp.coe_zero, Pi.zero_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Apply the tactic sequence `ext x; simp only [eIn_apply, eOut_apply, Finsupp.coe_zero, Pi.zero_apply]; split_ifs <;> rfl`.
+-/
 theorem eOut_eIn (α : L × Fin r →₀ ℕ) : eOut out (eIn out α) = 0 := by
   ext x; simp only [eIn_apply, eOut_apply, Finsupp.coe_zero, Pi.zero_apply]; split_ifs <;> rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[eOut_apply]`.
+-/
 theorem eOut_zero : eOut out (0 : L × Fin r →₀ ℕ) = 0 := by
   ext x; simp [eOut_apply]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[eIn_apply]`.
+-/
 theorem eIn_zero : eIn out (0 : L × Fin r →₀ ℕ) = 0 := by
   ext x; simp [eIn_apply]
 
+/- English proof (translation)
+Use `eOut_add_eIn out α` as an intermediate fact. Rewrite `this` using `[h, zero_add]`. Then use the resulting hypothesis.
+-/
 theorem eIn_eq_self_of_eOut_eq_zero {α : L × Fin r →₀ ℕ} (h : eOut out α = 0) : eIn out α = α := by
   have := eOut_add_eIn out α
   rwa [h, zero_add] at this
 
+/- English proof (translation)
+Apply the tactic sequence `intro x; rw [eOut_apply]; split_ifs <;> simp`.
+-/
 theorem eOut_le (α : L × Fin r →₀ ℕ) : eOut out α ≤ α := by
   intro x; rw [eOut_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `ext x; simp only [Finsupp.coe_tsub, Pi.sub_apply, eOut_apply, eIn_apply]; split_ifs <;> simp`.
+-/
 theorem sub_eOut (α : L × Fin r →₀ ℕ) : α - eOut out α = eIn out α := by
   ext x; simp only [Finsupp.coe_tsub, Pi.sub_apply, eOut_apply, eIn_apply]; split_ifs <;> simp
 
@@ -230,34 +351,55 @@ def subX (x : L × Fin r) : MvPolynomial (L × Fin r) R :=
      else ∑ b, MvPolynomial.C (B x.2 b) * X (x.1, b))
   else X x
 
+/- English proof (translation)
+Simplify using `[substS, subX]`.
+-/
 theorem substS_X (x : L × Fin r) : substS ι sg S A B (X x) = subX sg S A B x := by
   simp [substS, subX]
 
+/- English proof (translation)
+Simplify using `[substS]`.
+-/
 theorem substS_C (c : K) : substS ι sg S A B (C c) = C (ι c) := by
   simp [substS]
 
+/- English proof (translation)
+Unfold `substS`. Rewrite using `[eval₂Hom_monomial]`. Both sides reduce to the same expression.
+-/
 theorem substS_monomial (α : L × Fin r →₀ ℕ) (c : K) :
     substS ι sg S A B (monomial α c) = C (ι c) * α.prod fun x k => subX sg S A B x ^ k := by
   unfold substS
   rw [eval₂Hom_monomial]
   rfl
 
+/- English proof (translation)
+Rewrite using `[substS_monomial, substS_monomial ι sg S A B α 1, map_one, map_one, one_mul]`.
+-/
 theorem substS_monomial' (α : L × Fin r →₀ ℕ) (c : K) :
     substS ι sg S A B (monomial α c) = C (ι c) * substS ι sg S A B (monomial α 1) := by
   rw [substS_monomial, substS_monomial ι sg S A B α 1, map_one, map_one, one_mul]
 
+/- English proof (translation)
+Use `conv_lhs => rw [F.as_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => substS_monomial' ι sg S A B α _`.
+-/
 theorem substS_eq_sum (F : MvPolynomial (L × Fin r) K) :
     substS ι sg S A B F =
       ∑ α ∈ F.support, C (ι (F.coeff α)) * substS ι sg S A B (monomial α 1) := by
   conv_lhs => rw [F.as_sum, map_sum]
   exact Finset.sum_congr rfl fun α _ => substS_monomial' ι sg S A B α _
 
+/- English proof (translation)
+Rewrite using `[substS_eq_sum, coeff_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => coeff_C_mul _ _ _`.
+-/
 theorem coeff_substS (F : MvPolynomial (L × Fin r) K) (β : L × Fin r →₀ ℕ) :
     (substS ι sg S A B F).coeff β =
       ∑ α ∈ F.support, ι (F.coeff α) * (substS ι sg S A B (monomial α 1)).coeff β := by
   rw [substS_eq_sum, coeff_sum]
   exact Finset.sum_congr rfl fun α _ => coeff_C_mul _ _ _
 
+/- English proof (translation)
+Rewrite using `[F.as_sum, map_sum]`. Use `Subring.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Rewrite using `[substS_monomial]`. Use `Subring.mul_mem _ (hC _) ?_` and prove the remaining obligations. Conclude with `Subring.prod_mem _ fun x hx => Subring.pow_mem _ (h α hα x hx) _`.
+-/
 theorem substS_mem (T : Subring (MvPolynomial (L × Fin r) R)) (hC : ∀ c : K, C (ι c) ∈ T)
     (F : MvPolynomial (L × Fin r) K)
     (h : ∀ α ∈ F.support, ∀ x ∈ α.support, subX sg S A B x ∈ T) : substS ι sg S A B F ∈ T := by
@@ -267,6 +409,9 @@ theorem substS_mem (T : Subring (MvPolynomial (L × Fin r) R)) (hC : ∀ c : K, 
   refine Subring.mul_mem _ (hC _) ?_
   exact Subring.prod_mem _ fun x hx => Subring.pow_mem _ (h α hα x hx) _
 
+/- English proof (translation)
+Rewrite using `[substS_monomial]`. Establish `: (α.prod fun x k => subX sg S A B x ^ k) = α.prod fun x k => (X x : MvPolynomial (L × Fin r) R) ^ k`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Simplify using `only [subX, if_neg (h x hx)]`. Rewrite using `[this, monomial_eq]`.
+-/
 theorem substS_monomial_of_free (α : L × Fin r →₀ ℕ) (c : K) (h : ∀ x ∈ α.support, x.1 ∉ S) :
     substS ι sg S A B (monomial α c) = monomial α (ι c) := by
   rw [substS_monomial]
@@ -277,6 +422,11 @@ theorem substS_monomial_of_free (α : L × Fin r →₀ ℕ) (c : K) (h : ∀ x 
 
 variable (out : L → Prop) [DecidablePred out]
 
+/- English proof (translation)
+Establish `hX : ∀ b, (X (x.1, b) : MvPolynomial (L × Fin r) R) ∈ supported R {y : L × Fin r | ¬ out y.1}`. Introduce `b`. Rewrite using `[supported_eq_adjoin_X]`. Conclude with `Algebra.subset_adjoin ⟨(x.1, b), hx, rfl⟩`. Establish `hCm : ∀ a : R, (C a : MvPolynomial (L × Fin r) R) ∈ supported R {y : L × Fin r | ¬ out y.1}` using `fun a => Subalgebra.algebraMap_mem _ a`.
+
+Unfold `subX`. Use `split_ifs`. Conclude with `Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (hCm _) (hX b)`. Conclude with `Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (hCm _) (hX b)`. Conclude with `hX x.2`.
+-/
 theorem subX_mem_supported (x : L × Fin r) (hx : ¬ out x.1) :
     subX sg S A B x ∈ supported R {y : L × Fin r | ¬ out y.1} := by
   have hX : ∀ b, (X (x.1, b) : MvPolynomial (L × Fin r) R) ∈ supported R {y : L × Fin r | ¬ out y.1} := by
@@ -291,6 +441,17 @@ theorem subX_mem_supported (x : L × Fin r) (hx : ¬ out x.1) :
   · exact Subalgebra.sum_mem _ fun b _ => Subalgebra.mul_mem _ (hCm _) (hX b)
   · exact hX x.2
 
+/- English proof (translation)
+Establish `hmem : substS ι sg S A B (monomial (eIn out α) 1) ∈ (supported R {y : L × Fin r | ¬ out y.1}).toSubring`. Use `substS_mem ι sg S A B _ (fun c => Subalgebra.algebraMap_mem _ _) _ ?_` and prove the remaining obligations. Introduce `γ hγ x hx`. Use `subX_mem_supported sg S A B out x ?_` and prove the remaining obligations. Establish `hγ' : γ = eIn out α` using `by classical`.
+
+Use `support_monomial_subset hγ` as an intermediate fact. Simplify using `using this`. Rewrite `hx` using `[hγ', Finsupp.mem_support_iff, eIn_apply]`. Introduce `ho`. Rewrite `hx` using `[if_pos ho]`.
+
+Conclude with `hx rfl`. Establish `hv` using `mem_supported.mp (Subalgebra.mem_toSubring.mp hmem)`. Assume the negation of the conclusion as `hne`. Apply `hδ` to reduce the goal to its premises. Use extensionality with `x`.
+
+Rewrite using `[eOut_apply, Finsupp.coe_zero, Pi.zero_apply]`. Use `split_ifs with ho`. Assume the negation of the conclusion as `hx`. Establish `: x ∈ (substS ι sg S A B (monomial (eIn out α) 1)).vars` using `(mem_vars_iff_mem_support x).mpr ⟨δ, mem_support_iff.mpr hne, Finsupp.mem_support_iff.mpr hx⟩`. Conclude with `hv (Finset.mem_coe.mpr this) ho`.
+
+Both sides reduce to the same expression.
+-/
 theorem coeff_substS_eIn_eq_zero (α δ : L × Fin r →₀ ℕ) (hδ : eOut out δ ≠ 0) :
     (substS ι sg S A B (monomial (eIn out α) 1)).coeff δ = 0 := by
   have hmem : substS ι sg S A B (monomial (eIn out α) 1) ∈
@@ -318,6 +479,11 @@ theorem coeff_substS_eIn_eq_zero (α δ : L × Fin r →₀ ℕ) (hδ : eOut out
     exact hv (Finset.mem_coe.mpr this) ho
   · rfl
 
+/- English proof (translation)
+Establish `h1 : (monomial α (1 : K)) = monomial (eOut out α) 1 * monomial (eIn out α) 1`. Rewrite using `[monomial_mul, eOut_add_eIn, one_mul]`. Use `conv_lhs => rw [h1, map_mul]`. Rewrite using `[substS_monomial_of_free ι sg S A B (eOut out α) 1, map_one]`. Introduce `x hx hxS`.
+
+Rewrite `hx` using `[Finsupp.mem_support_iff, eOut_apply, if_neg (hout _ hxS)]`. Conclude with `hx rfl`.
+-/
 theorem substS_monomial_split (hout : ∀ i ∈ S, ¬ out i) (α : L × Fin r →₀ ℕ) :
     substS ι sg S A B (monomial α 1) =
       monomial (eOut out α) 1 * substS ι sg S A B (monomial (eIn out α) 1) := by
@@ -329,6 +495,15 @@ theorem substS_monomial_split (hout : ∀ i ∈ S, ¬ out i) (α : L × Fin r �
   rw [Finsupp.mem_support_iff, eOut_apply, if_neg (hout _ hxS)] at hx
   exact hx rfl
 
+/- English proof (translation)
+Rewrite using `[substS_monomial_split ι sg S A B out hout α, coeff_monomial_mul', one_mul]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[← h2, sub_eOut]`. Apply `coeff_substS_eIn_eq_zero` to reduce the goal to its premises. Introduce `h0`.
+
+Apply `h2` to reduce the goal to its premises. Use extensionality with `x`. Establish `hx` using `DFunLike.congr_fun h0 x`. Establish `hle` using `h1 x`. Simplify using `only [eOut_apply, Finsupp.coe_tsub, Pi.sub_apply, Finsupp.coe_zero, Pi.zero_apply] at hx hle ⊢`.
+
+Use `split_ifs with ho`. Simplify using `only [if_pos ho] at hx hle`. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Conclude with `absurd (h2 ▸ eOut_le out γ) h1`.
+
+Both sides reduce to the same expression.
+-/
 theorem coeff_substS_monomial (hout : ∀ i ∈ S, ¬ out i) (α γ : L × Fin r →₀ ℕ) :
     (substS ι sg S A B (monomial α 1)).coeff γ =
       if eOut out γ = eOut out α then (substS ι sg S A B (monomial (eIn out α) 1)).coeff (eIn out γ)
@@ -357,10 +532,16 @@ section CoefOut
 variable {K : Type} [Field K] {L : Type} [DecidableEq L] {r : ℕ}
   (out : L → Prop) [DecidablePred out]
 
+/- English proof (translation)
+Simplify using `[coefOut]`.
+-/
 theorem coefOut_zero (μ : L × Fin r →₀ ℕ) :
     coefOut out μ (0 : MvPolynomial (L × Fin r) K) = 0 := by
   simp [coefOut]
 
+/- English proof (translation)
+Unfold `coefOut`. Use `Finset.sum_subset hs fun α _ hα => ?_` and prove the remaining obligations. Rewrite using `[notMem_support_iff.mp hα, monomial_zero, ite_self]`.
+-/
 theorem coefOut_eq_sum (μ : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fin r) K)
     (s : Finset (L × Fin r →₀ ℕ)) (hs : F.support ⊆ s) :
     coefOut out μ F = ∑ α ∈ s, if eOut out α = μ then monomial (eIn out α) (F.coeff α) else 0 := by
@@ -368,6 +549,9 @@ theorem coefOut_eq_sum (μ : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fin 
   refine Finset.sum_subset hs fun α _ hα => ?_
   rw [notMem_support_iff.mp hα, monomial_zero, ite_self]
 
+/- English proof (translation)
+Rewrite using `[coefOut_eq_sum out μ (F + G) (F.support ∪ G.support) support_add, coefOut_eq_sum out μ F (F.support ∪ G.support) Finset.subset_union_left, coefOut_eq_sum out μ G (F.support ∪ G.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[coeff_add, map_add]`. Rewrite using `[add_zero]`.
+-/
 theorem coefOut_add (μ : L × Fin r →₀ ℕ) (F G : MvPolynomial (L × Fin r) K) :
     coefOut out μ (F + G) = coefOut out μ F + coefOut out μ G := by
   rw [coefOut_eq_sum out μ (F + G) (F.support ∪ G.support) support_add,
@@ -378,6 +562,9 @@ theorem coefOut_add (μ : L × Fin r →₀ ℕ) (F G : MvPolynomial (L × Fin r
   · rw [coeff_add, map_add]
   · rw [add_zero]
 
+/- English proof (translation)
+Rewrite using `[coefOut_eq_sum out μ (a • F) F.support support_smul, coefOut, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[coeff_smul, smul_monomial]`. Rewrite using `[smul_zero]`.
+-/
 theorem coefOut_smul (μ : L × Fin r →₀ ℕ) (a : K) (F : MvPolynomial (L × Fin r) K) :
     coefOut out μ (a • F) = a • coefOut out μ F := by
   rw [coefOut_eq_sum out μ (a • F) F.support support_smul, coefOut, Finset.smul_sum]
@@ -391,19 +578,39 @@ def coefOutL (μ : L × Fin r →₀ ℕ) : MvPolynomial (L × Fin r) K →ₗ[K
   map_add' := coefOut_add out μ
   map_smul' := coefOut_smul out μ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coefOutL_apply (μ : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fin r) K) :
     coefOutL out μ F = coefOut out μ F := rfl
 
+/- English proof (translation)
+The claim follows from `map_sum (coefOutL out μ) f s`.
+-/
 theorem coefOut_sum {ι : Type} (μ : L × Fin r →₀ ℕ) (s : Finset ι)
     (f : ι → MvPolynomial (L × Fin r) K) :
     coefOut out μ (∑ i ∈ s, f i) = ∑ i ∈ s, coefOut out μ (f i) :=
   map_sum (coefOutL out μ) f s
 
+/- English proof (translation)
+Rewrite using `[coefOut_eq_sum out μ (monomial α c) {α} support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+-/
 theorem coefOut_monomial (μ α : L × Fin r →₀ ℕ) (c : K) :
     coefOut out μ (monomial α c) = if eOut out α = μ then monomial (eIn out α) c else 0 := by
   rw [coefOut_eq_sum out μ (monomial α c) {α} support_monomial_subset, Finset.sum_singleton,
     coeff_monomial, if_pos rfl]
 
+/- English proof (translation)
+Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `monomial α c`. Rewrite using `[coefOut_monomial]`. Distinguish the cases in `h1 : eOut out α = μ`. Rewrite using `[if_pos h1, coeff_monomial, coeff_monomial]`.
+
+Establish `hμ : eOut out μ = μ` using `by rw [← h1, eOut_eOut]`. Distinguish the cases in `h2 : eIn out α = β`. Establish `h3 : eOut out β = 0` using `by rw [← h2, eOut_eIn]`. Establish `h4 : α = μ + β` using `by rw [← h1, ← h2, eOut_add_eIn]`. Rewrite using `[if_pos h2, if_pos ⟨h3, hμ⟩, if_pos h4]`.
+
+Rewrite using `[if_neg h2] split_ifs with h3 h4`. It suffices to derive a contradiction. Apply `h2` to reduce the goal to its premises. Rewrite using `[h4, eIn_add, ← hμ, eIn_eOut, zero_add, eIn_eq_self_of_eOut_eq_zero out h3.1]`. Both sides reduce to the same expression.
+
+Both sides reduce to the same expression. Rewrite using `[if_neg h1, coeff_zero, coeff_monomial] split_ifs with h3 h4`. It suffices to derive a contradiction. Apply `h1` to reduce the goal to its premises. Rewrite using `[h4, eOut_add, h3.1, h3.2, add_zero]`.
+
+Both sides reduce to the same expression. Both sides reduce to the same expression. Consider the case `add p q hp hq`. Rewrite using `[coefOut_add, coeff_add, hp, hq, coeff_add]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem coeff_coefOut (μ β : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fin r) K) :
     (coefOut out μ F).coeff β =
       if eOut out β = 0 ∧ eOut out μ = μ then F.coeff (μ + β) else 0 := by
@@ -433,12 +640,20 @@ theorem coeff_coefOut (μ β : L × Fin r →₀ ℕ) (F : MvPolynomial (L × Fi
     rw [coefOut_add, coeff_add, hp, hq, coeff_add]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite `h` using `[mem_support_iff, coeff_coefOut]`. Assume the negation of the conclusion as `h0`. Conclude with `h (if_neg fun hh => h0 hh.1)`.
+-/
 theorem eOut_eq_zero_of_mem_support_coefOut {μ β : L × Fin r →₀ ℕ} {F : MvPolynomial (L × Fin r) K}
     (h : β ∈ (coefOut out μ F).support) : eOut out β = 0 := by
   rw [mem_support_iff, coeff_coefOut] at h
   by_contra h0
   exact h (if_neg fun hh => h0 hh.1)
 
+/- English proof (translation)
+Rewrite `h` using `[mem_support_iff, coeff_coefOut]`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `split_ifs`.
+
+Conclude with `h0`. Both sides reduce to the same expression.
+-/
 theorem add_mem_support_of_mem_support_coefOut {μ β : L × Fin r →₀ ℕ}
     {F : MvPolynomial (L × Fin r) K} (h : β ∈ (coefOut out μ F).support) : μ + β ∈ F.support := by
   rw [mem_support_iff, coeff_coefOut] at h
@@ -449,6 +664,11 @@ theorem add_mem_support_of_mem_support_coefOut {μ β : L × Fin r →₀ ℕ}
   · exact h0
   · rfl
 
+/- English proof (translation)
+Unfold `coefOut`. Repeatedly rewrite using `[Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Repeatedly rewrite using `[mul_ite, mul_zero]`.
+
+Rewrite using `[Finset.sum_ite_eq, if_pos (Finset.mem_image_of_mem _ hα)]`.
+-/
 theorem sum_mul_coefOut (g : (L × Fin r →₀ ℕ) → MvPolynomial (L × Fin r) K)
     (F : MvPolynomial (L × Fin r) K) :
     ∑ μ ∈ F.support.image (eOut out), g μ * coefOut out μ F =
@@ -460,6 +680,9 @@ theorem sum_mul_coefOut (g : (L × Fin r →₀ ℕ) → MvPolynomial (L × Fin 
   simp_rw [mul_ite, mul_zero]
   rw [Finset.sum_ite_eq, if_pos (Finset.mem_image_of_mem _ hα)]
 
+/- English proof (translation)
+Rewrite using `[sum_mul_coefOut out (fun μ => monomial μ 1) F]`. Use `conv_lhs => rw [F.as_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[monomial_mul, eOut_add_eIn, one_mul]`.
+-/
 theorem sum_coefOut (F : MvPolynomial (L × Fin r) K) :
     F = ∑ μ ∈ F.support.image (eOut out), monomial μ 1 * coefOut out μ F := by
   rw [sum_mul_coefOut out (fun μ => monomial μ 1) F]
@@ -469,6 +692,23 @@ theorem sum_coefOut (F : MvPolynomial (L × Fin r) K) :
 
 variable (sg : L → Bool) (S : Finset L)
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff]`. Introduce `β`. Distinguish the cases in `hμ : ∃ α ∈ F.support, eOut out α = μ`. Take `⟨α₀, -, hα₀⟩` from `hμ`. Establish `hμ1 : eOut out μ = μ` using `by rw [← hα₀, eOut_eOut]`.
+
+Establish `hμ2 : eIn out μ = 0` using `by rw [← hα₀, eIn_eOut]`. Establish `hexp : (subV sg S (coefOut out μ F)).coeff β = ∑ α ∈ F.support, if eOut out α = μ then lauι K r (F.coeff α) * (subV sg S (monomial (eIn out α) 1)).coeff β else 0`. Unfold `coefOut`. Rewrite using `[map_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations.
+
+Use `split_ifs`. Rewrite using `[substS_monomial', coeff_C_mul]`. Rewrite using `[map_zero, coeff_zero]`. Distinguish the cases in `hβ : eOut out β = 0`. Establish `hβ2 : eIn out β = β` using `eIn_eq_self_of_eOut_eq_zero out hβ`.
+
+Establish `: (subV sg S (coefOut out μ F)).coeff β = (subV sg S F).coeff (μ + β)`. Rewrite using `[hexp, coeff_substS]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_substS_monomial _ sg S _ _ out hout α (μ + β), eOut_add, eIn_add, hμ1, hμ2, hβ, hβ2, add_zero, zero_add]`. Distinguish the cases in `h : eOut out α = μ`.
+
+Rewrite using `[if_pos h, if_pos h.symm]`. Rewrite using `[if_neg h, if_neg (fun hh => h hh.symm), mul_zero]`. Rewrite using `[this]`. Conclude with `pge_valS sg S F _`. Rewrite using `[hexp]`.
+
+Use `le_lord_sum _ _ fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[coeff_substS_eIn_eq_zero _ sg S _ _ out α β hβ, mul_zero, lord_zero]`. Conclude with `le_top`. Rewrite using `[lord_zero]`.
+
+Conclude with `le_top`. Establish `: coefOut out μ F = 0`. Unfold `coefOut`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Rewrite using `[if_neg fun h => hμ ⟨α, hα, h⟩]`.
+
+Rewrite using `[this, map_zero, coeff_zero, lord_zero]`. Conclude with `le_top`.
+-/
 theorem valS_coefOut_le (hout : ∀ i ∈ S, ¬ out i) (μ : L × Fin r →₀ ℕ)
     (F : MvPolynomial (L × Fin r) K) : valS sg S F ≤ valS sg S (coefOut out μ F) := by
   rw [le_valS_iff]
@@ -509,6 +749,15 @@ theorem valS_coefOut_le (hout : ∀ i ∈ S, ¬ out i) (μ : L × Fin r →₀ �
       rw [if_neg fun h => hμ ⟨α, hα, h⟩]
     rw [this, map_zero, coeff_zero, lord_zero]; exact le_top
 
+/- English proof (translation)
+Establish `hΦ : Φ F = ∑ μ ∈ F.support.image (eOut out), Φ (monomial μ 1) * coefOut out μ F`. Rewrite using `[sum_mul_coefOut out (fun μ => Φ (monomial μ 1)) F]`. Use `conv_lhs => rw [F.as_sum, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `: monomial α (F.coeff α) = F.coeff α • (monomial α (1 : K))`.
+
+Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, h1 α, smul_eq_C_mul]`. Establish `h3 : monomial (eIn out α) (F.coeff α) = C (F.coeff α) * monomial (eIn out α) (1 : K)`. Rewrite using `[C_mul_monomial, mul_one]`. Rewrite using `[h3]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hΦ]`. Use `valS_sum_le sg S _ _ _ fun μ hμ => ?_` and prove the remaining obligations. Take `⟨α, -, rfl⟩` from `Finset.mem_image.mp hμ`. Use `le_trans ?_ (valS_mul_le sg S _ _)` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem valS_outside_linear (Φ : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K)
     (hout : ∀ i ∈ S, ¬ out i)
     (h1 : ∀ α, Φ (monomial α 1) = monomial (eIn out α) 1 * Φ (monomial (eOut out α) 1))
@@ -537,6 +786,11 @@ section Nonneg
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `hf`. Unfold `lord`. Apply `Finset.le_min` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[LaurentPolynomial.support_coeff_toLaurent]`.
+
+Simplify using `only [Finset.mem_map, Nat.castEmbedding_apply] at hn`. Take `⟨m, -, rfl⟩` from `hn`. Conclude with `Nat.zero_le m` after adjusting the coercions.
+-/
 theorem lord_nonneg_of_mem {R : Type} [CommRing R] (f : LaurentPolynomial R)
     (hf : f ∈ (Polynomial.toLaurent : Polynomial R →+* LaurentPolynomial R).range) : 0 ≤ lord f := by
   obtain ⟨q, rfl⟩ := hf
@@ -548,6 +802,13 @@ theorem lord_nonneg_of_mem {R : Type} [CommRing R] (f : LaurentPolynomial R)
   obtain ⟨m, -, rfl⟩ := hn
   exact_mod_cast Nat.zero_le m
 
+/- English proof (translation)
+Unfold `hMat sDiag Formalism.MainNotions.G.gL Formalism.MainNotions.G.gLinv`. Rewrite using `[Matrix.transpose_apply]`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Use `Subring.mul_mem _ ?_ (RingHom.mem_range.mpr ⟨Polynomial.C _, Polynomial.toLaurent_C _⟩)` and prove the remaining obligations.
+
+Use `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (RingHom.mem_range.mpr ⟨Polynomial.C _, Polynomial.toLaurent_C _⟩) ?_` and prove the remaining obligations. Simplify using `only [Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `exact RingHom.mem_range.mpr ⟨Polynomial.X, Polynomial.toLaurent_X⟩`. Consider the case `exact Subring.one_mem _`.
+
+Consider the case `exact Subring.zero_mem _`.
+-/
 theorem hMat_mem (r : ℕ) (a b : Fin r) :
     hMat K r a b ∈ (Polynomial.toLaurent : Polynomial (GenF K r) →+* LauF K r).range := by
   unfold hMat sDiag Formalism.MainNotions.G.gL Formalism.MainNotions.G.gLinv
@@ -565,6 +826,15 @@ theorem hMat_mem (r : ℕ) (a b : Fin r) :
 
 variable {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L)
 
+/- English proof (translation)
+Establish `key : subV sg S F ∈ (MvPolynomial.map (σ` using `L × Fin r) (Polynomial.toLaurent : Polynomial (GenF K r) →+* LauF K r)).range := by`. Use `substS_mem _ sg S _ _ _ ?_ F ?_` and prove the remaining obligations. Introduce `c`. Use `⟨MvPolynomial.C (Polynomial.C ((algebraMap (MvPolynomial (Fin r × Fin r) K) (GenF K r)) (MvPolynomial.C c))), ?_⟩` and prove the remaining obligations. Simplify using `[lauι, Formalism.MainNotions.G.coefL]`.
+
+Introduce `α hα x hx`. Unfold `subX`. Use `split_ifs with h1 h2`. Use `Subring.sum_mem _ fun b _ => Subring.mul_mem _ ?_ ⟨X (x.1, b), by simp⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `hMat_mem (K := K) r x.2 b`.
+
+Conclude with `⟨MvPolynomial.C q, by simp [hq]⟩`. Conclude with `absurd (h α hα x.1 x.2 (Finsupp.mem_support_iff.mp hx) h1) h2`. Conclude with `⟨X x, by simp⟩`. Rewrite using `[le_valS_iff]`. Introduce `β`.
+
+Apply `lord_nonneg_of_mem` to reduce the goal to its premises. Take `⟨q, hq⟩` from `key`. Rewrite using `[← hq, MvPolynomial.coeff_map]`. Conclude with `⟨_, rfl⟩`.
+-/
 theorem valS_nonneg_of_vecS (F : MvPolynomial (L × Fin r) K)
     (h : ∀ α ∈ F.support, ∀ i a, α (i, a) ≠ 0 → i ∈ S → sg i = true) : 0 ≤ valS sg S F := by
   have key : subV sg S F ∈
@@ -590,10 +860,16 @@ theorem valS_nonneg_of_vecS (F : MvPolynomial (L × Fin r) K)
   rw [← hq, MvPolynomial.coeff_map]
   exact ⟨_, rfl⟩
 
+/- English proof (translation)
+The claim follows from `valS_nonneg_of_vecS sg S F fun α hα i a hne hi => absurd (h α hα i hi a) hne`.
+-/
 theorem valS_nonneg_of_free (F : MvPolynomial (L × Fin r) K)
     (h : ∀ α ∈ F.support, ∀ i ∈ S, ∀ a, α (i, a) = 0) : 0 ≤ valS sg S F :=
   valS_nonneg_of_vecS sg S F fun α hα i a hne hi => absurd (h α hα i hi a) hne
 
+/- English proof (translation)
+The claim follows from `valS_nonneg_of_vecS sg S F fun α hα i a hne _ => h α hα i a hne`.
+-/
 theorem valS_nonneg_of_vec (F : MvPolynomial (L × Fin r) K)
     (h : ∀ α ∈ F.support, ∀ i a, α (i, a) ≠ 0 → sg i = true) : 0 ≤ valS sg S F :=
   valS_nonneg_of_vecS sg S F fun α hα i a hne _ => h α hα i a hne
@@ -604,6 +880,11 @@ section Rename
 
 variable {K : Type} [Field K] {L : Type} [DecidableEq L] {L' : Type} [DecidableEq L'] {r : ℕ}
 
+/- English proof (translation)
+Establish `: (substS ι sg' S' A B).comp (rename (Prod.map f (id : Fin r → Fin r))).toRingHom = ((rename (Prod.map f (id : Fin r → Fin r)) : MvPolynomial (L × Fin r) R →ₐ[R] MvPolynomial (L' × Fin r) R).toRingHom).comp (substS ι (sg' ∘ f) (S'.preimage f hf.injOn) A B)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[substS_C]`. Introduce `x`.
+
+Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, substS_X]`. Unfold `subX`. Simplify using `only [Prod.map_fst, Prod.map_snd, id_eq, Finset.mem_preimage, Function.comp_apply]`. Apply the tactic sequence `split_ifs <;> simp [map_sum, rename_X]`. Conclude with `RingHom.congr_fun this F`.
+-/
 theorem substS_rename {R : Type} [CommRing R] (ι : K →+* R) (A B : Matrix (Fin r) (Fin r) R)
     (f : L → L') (hf : Function.Injective f) (sg' : L' → Bool) (S' : Finset L')
     (F : MvPolynomial (L × Fin r) K) :
@@ -623,6 +904,15 @@ theorem substS_rename {R : Type} [CommRing R] (ι : K →+* R) (A B : Matrix (Fi
       split_ifs <;> simp [map_sum, rename_X]
   exact RingHom.congr_fun this F
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Prod.map f (id : Fin r → Fin r))` using `hf.prodMap Function.injective_id`. Establish `key : ∀ n : WithTop ℤ, n ≤ valS sg' S' (rename (Prod.map f id) F) ↔ n ≤ valS (sg' ∘ f) (S'.preimage f hf.injOn) F`. Introduce `n`. Rewrite using `[le_valS_iff, le_valS_iff, subV, substS_rename _ _ _ f hf]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h β`. Use `h (Finsupp.mapDomain (Prod.map f id) β)` as an intermediate fact. Rewrite `this` using `[coeff_rename_mapDomain _ hinj]`. Then use the resulting hypothesis. Introduce `h β'`. Distinguish the cases in `hβ : ∃ β, Finsupp.mapDomain (Prod.map f (id : Fin r → Fin r)) β = β'`.
+
+Take `⟨β, rfl⟩` from `hβ`. Rewrite using `[coeff_rename_mapDomain _ hinj]`. Conclude with `h β`. Rewrite using `[coeff_rename_eq_zero, lord_zero]`. Conclude with `le_top`.
+
+Introduce `u hu`. Conclude with `absurd ⟨u, hu⟩ hβ`. Conclude with `le_antisymm ((key _).mp le_rfl) ((key _).mpr le_rfl)`.
+-/
 theorem valS_rename (f : L → L') (hf : Function.Injective f) (sg' : L' → Bool) (S' : Finset L')
     (F : MvPolynomial (L × Fin r) K) :
     valS sg' S' (rename (Prod.map f id) F) = valS (sg' ∘ f) (S'.preimage f hf.injOn) F := by
@@ -653,13 +943,26 @@ section Hcomp
 
 variable {L : Type} {r : ℕ}
 
+/- English proof (translation)
+Unfold `ldeg`. Simplify using `only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]`.
+-/
 theorem ldeg_add (α β : L × Fin r →₀ ℕ) (i : L) : ldeg (α + β) i = ldeg α i + ldeg β i := by
   unfold ldeg
   simp only [Finsupp.coe_add, Pi.add_apply, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[ldeg]`.
+-/
 theorem ldeg_zero (i : L) : ldeg (0 : L × Fin r →₀ ℕ) i = 0 := by
   simp [ldeg]
 
+/- English proof (translation)
+Unfold `ldeg`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Finset.sum_eq_single b]`. Simplify using the standard rewrite rules.
+
+Introduce `a _ hab`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `hh`. Conclude with `hab (Prod.mk.inj hh).2.symm`. Introduce `hb`.
+
+Conclude with `absurd (Finset.mem_univ b) hb`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `hh`. Conclude with `h (Prod.mk.inj hh).1.symm`.
+-/
 theorem ldeg_single [DecidableEq L] (i : L) (b : Fin r) (k : ℕ) (j : L) :
     ldeg (Finsupp.single (i, b) k) j = if j = i then k else 0 := by
   classical
@@ -683,9 +986,15 @@ section HomD
 
 variable {R : Type} [CommSemiring R]
 
+/- English proof (translation)
+Introduce `β hβ i` and use `(hG β hβ i).trans (h i)`.
+-/
 theorem HomD_congr {d d' : L → ℕ} (h : ∀ i, d i = d' i) {G : MvPolynomial (L × Fin r) R}
     (hG : HomD d G) : HomD d' G := fun β hβ i => (hG β hβ i).trans (h i)
 
+/- English proof (translation)
+Introduce `β hβ i`. Establish `: β = 0`. Use `support_monomial_subset (R := R) (s := (0 : L × Fin r →₀ ℕ)) (a := 1) hβ` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, ldeg_zero]`.
+-/
 theorem HomD_one : HomD (fun _ => 0) (1 : MvPolynomial (L × Fin r) R) := by
   classical
   intro β hβ i
@@ -694,6 +1003,9 @@ theorem HomD_one : HomD (fun _ => 0) (1 : MvPolynomial (L × Fin r) R) := by
     simpa using this
   rw [this, ldeg_zero]
 
+/- English proof (translation)
+Introduce `β hβ i`. Take `⟨b1, h1, b2, h2, rfl⟩` from `Finset.mem_add.mp (support_mul G G' hβ)`. Rewrite using `[ldeg_add, hG b1 h1 i, hG' b2 h2 i]`.
+-/
 theorem HomD_mul {d d' : L → ℕ} {G G' : MvPolynomial (L × Fin r) R} (hG : HomD d G)
     (hG' : HomD d' G') : HomD (fun i => d i + d' i) (G * G') := by
   classical
@@ -701,6 +1013,9 @@ theorem HomD_mul {d d' : L → ℕ} {G G' : MvPolynomial (L × Fin r) R} (hG : H
   obtain ⟨b1, h1, b2, h2, rfl⟩ := Finset.mem_add.mp (support_mul G G' hβ)
   rw [ldeg_add, hG b1 h1 i, hG' b2 h2 i]
 
+/- English proof (translation)
+Introduce `β hβ i`. Take `⟨k, hk, hkβ⟩` from `Finset.mem_biUnion.mp (support_sum hβ)`. Conclude with `h k hk β hkβ i`.
+-/
 theorem HomD_sum {ι : Type} {d : L → ℕ} (s : Finset ι) (f : ι → MvPolynomial (L × Fin r) R)
     (h : ∀ k ∈ s, HomD d (f k)) : HomD d (∑ k ∈ s, f k) := by
   classical
@@ -708,6 +1023,11 @@ theorem HomD_sum {ι : Type} {d : L → ℕ} (s : Finset ι) (f : ι → MvPolyn
   obtain ⟨k, hk, hkβ⟩ := Finset.mem_biUnion.mp (support_sum hβ)
   exact h k hk β hkβ i
 
+/- English proof (translation)
+Introduce `β hβ j`. Establish `hm : (C c * X (i, b) : MvPolynomial (L × Fin r) R) = monomial (Finsupp.single (i, b) 1) c`. Rewrite using `[X, C_mul_monomial, mul_one]`. Rewrite `hβ` using `[hm]`. Establish `: β = Finsupp.single (i, b) 1`.
+
+Use `support_monomial_subset hβ` as an intermediate fact. Simplify using `using this`. Rewrite using `[this, ldeg_single, ldeg_single]`.
+-/
 theorem HomD_C_mul_X [DecidableEq L] (c : R) (i : L) (b b' : Fin r) :
     HomD (ldeg (Finsupp.single (i, b') 1)) (C c * X (i, b) : MvPolynomial (L × Fin r) R) := by
   intro β hβ j
@@ -724,6 +1044,11 @@ end HomD
 variable {K : Type} [Field K] [DecidableEq L] {R : Type} [CommRing R]
   (ι : K →+* R) (sg : L → Bool) (S : Finset L) (A B : Matrix (Fin r) (Fin r) R)
 
+/- English proof (translation)
+Unfold `subX`. Use `split_ifs`. Conclude with `HomD_sum _ _ fun b _ => HomD_C_mul_X _ x.1 b x.2`. Conclude with `HomD_sum _ _ fun b _ => HomD_C_mul_X _ x.1 b x.2`. Use `HomD_C_mul_X (R := R) 1 x.1 x.2 x.2` as an intermediate fact.
+
+Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem HomD_subX (x : L × Fin r) : HomD (ldeg (Finsupp.single x 1)) (subX sg S A B x) := by
   unfold subX
   split_ifs
@@ -732,6 +1057,15 @@ theorem HomD_subX (x : L × Fin r) : HomD (ldeg (Finsupp.single x 1)) (subX sg S
   · have := HomD_C_mul_X (R := R) 1 x.1 x.2 x.2
     rwa [map_one, one_mul] at this
 
+/- English proof (translation)
+Proceed by induction on `α using Finsupp.induction_linear with`. Consider the case `zero`. Establish `: (monomial (0 : L × Fin r →₀ ℕ) (1 : K)) = 1` using `rfl`. Rewrite using `[this, map_one]`. Conclude with `HomD_congr (fun i => (ldeg_zero i).symm) HomD_one`.
+
+Consider the case `add α β hα hβ`. Establish `: (monomial (α + β) (1 : K)) = monomial α 1 * monomial β 1`. Rewrite using `[monomial_mul, one_mul]`. Rewrite using `[this, map_mul]`. Conclude with `HomD_congr (fun i => (ldeg_add α β i).symm) (HomD_mul hα hβ)`.
+
+Consider the case `single x k`. Rewrite using `[← X_pow_eq_monomial, map_pow, substS_X]`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero, Finsupp.single_zero]`.
+
+Conclude with `HomD_congr (fun i => (ldeg_zero i).symm) HomD_one`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Finsupp.single_add]`. Conclude with `HomD_congr (fun i => (ldeg_add _ _ i).symm) (HomD_mul ih (HomD_subX sg S A B x))`.
+-/
 theorem HomD_substS_monomial (α : L × Fin r →₀ ℕ) :
     HomD (ldeg α) (substS ι sg S A B (monomial α 1)) := by
   induction α using Finsupp.induction_linear with
@@ -754,6 +1088,9 @@ theorem HomD_substS_monomial (α : L × Fin r →₀ ℕ) :
       rw [pow_succ, Finsupp.single_add]
       exact HomD_congr (fun i => (ldeg_add _ _ i).symm) (HomD_mul ih (HomD_subX sg S A B x))
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Conclude with `h (HomD_substS_monomial ι sg S A B α β (mem_support_iff.mpr hne))`.
+-/
 theorem coeff_substS_monomial_eq_zero (α β : L × Fin r →₀ ℕ) (h : ¬ ∀ i, ldeg β i = ldeg α i) :
     (substS ι sg S A B (monomial α 1)).coeff β = 0 := by
   by_contra hne
@@ -764,6 +1101,15 @@ variable [Fintype L]
 def hcomp (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) : MvPolynomial (L × Fin r) K :=
   ∑ α ∈ F.support, if (∀ i, ldeg α i = d i) then monomial α (F.coeff α) else 0
 
+/- English proof (translation)
+Unfold `hcomp`. Rewrite using `[coeff_sum]`. Distinguish the cases in `hβ : β ∈ F.support`. Rewrite using `[Finset.sum_eq_single β]`. Use `split_ifs`.
+
+Rewrite using `[coeff_monomial, if_pos rfl]`. Rewrite using `[coeff_zero]`. Introduce `α _ hne split_ifs`. Rewrite using `[coeff_monomial, if_neg hne]`. Rewrite using `[coeff_zero]`.
+
+Introduce `h`. Conclude with `absurd hβ h`. Rewrite using `[notMem_support_iff.mp hβ, ite_self]`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[coeff_monomial, if_neg]`. Introduce `h`. Conclude with `hβ (h ▸ hα)`. Rewrite using `[coeff_zero]`.
+-/
 theorem coeff_hcomp (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (β : L × Fin r →₀ ℕ) :
     (hcomp d F).coeff β = if (∀ i, ldeg β i = d i) then F.coeff β else 0 := by
   unfold hcomp
@@ -785,24 +1131,39 @@ theorem coeff_hcomp (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (β : L ×
       intro h; exact hβ (h ▸ hα)
     · rw [coeff_zero]
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[coeff_hcomp, coeff_dg]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem hcomp_eq_dg (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) :
     hcomp d F = dg (fun α => if (∀ i, ldeg α i = d i) then (1 : K) else 0) F := by
   ext β
   rw [coeff_hcomp, coeff_dg]
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [hcomp_eq_dg, map_add]`.
+-/
 theorem hcomp_add (d : L → ℕ) (F G : MvPolynomial (L × Fin r) K) :
     hcomp d (F + G) = hcomp d F + hcomp d G := by
   simp only [hcomp_eq_dg, map_add]
 
+/- English proof (translation)
+Simplify using `only [hcomp_eq_dg, map_smul]`.
+-/
 theorem hcomp_smul (d : L → ℕ) (a : K) (F : MvPolynomial (L × Fin r) K) :
     hcomp d (a • F) = a • hcomp d F := by
   simp only [hcomp_eq_dg, map_smul]
 
+/- English proof (translation)
+Simplify using `only [hcomp_eq_dg, map_sum]`.
+-/
 theorem hcomp_sum {κ : Type} (d : L → ℕ) (s : Finset κ) (f : κ → MvPolynomial (L × Fin r) K) :
     hcomp d (∑ k ∈ s, f k) = ∑ k ∈ s, hcomp d (f k) := by
   simp only [hcomp_eq_dg, map_sum]
 
+/- English proof (translation)
+Rewrite using `[mem_PolK_iff]`. Introduce `α hα`. Rewrite `hα` using `[mem_support_iff, coeff_hcomp]`. Assume the negation of the conclusion as `h`. Conclude with `hα (if_neg h)`.
+-/
 theorem hcomp_mem_PolK (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) : hcomp d F ∈ PolK K r d := by
   rw [mem_PolK_iff]
   intro α hα
@@ -810,6 +1171,11 @@ theorem hcomp_mem_PolK (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) : hcomp
   by_contra h
   exact hα (if_neg h)
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[coeff_hcomp]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
+
+Conclude with `h ((mem_PolK_iff d F).mp hF β (mem_support_iff.mpr (Ne.symm hne)))`.
+-/
 theorem hcomp_of_mem (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (hF : F ∈ PolK K r d) :
     hcomp d F = F := by
   ext β
@@ -819,6 +1185,11 @@ theorem hcomp_of_mem (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (hF : F �
   · by_contra hne
     exact h ((mem_PolK_iff d F).mp hF β (mem_support_iff.mpr (Ne.symm hne)))
 
+/- English proof (translation)
+Introduce `β hβ`. Rewrite `hβ` using `[mem_support_iff, coeff_hcomp]`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Apply `hβ` to reduce the goal to its premises.
+
+Rewrite using `[h0, ite_self]`.
+-/
 theorem support_hcomp_subset (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) :
     (hcomp d F).support ⊆ F.support := by
   intro β hβ
@@ -828,6 +1199,13 @@ theorem support_hcomp_subset (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) :
   apply hβ
   rw [h0, ite_self]
 
+/- English proof (translation)
+Use extensionality with `β`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_hcomp]`. Distinguish the cases in `hβ : β ∈ F.support`. Rewrite using `[Finset.sum_eq_single (fun i => ldeg β i)]`.
+
+Rewrite using `[if_pos fun i => rfl]`. Introduce `d _ hd`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hd (funext fun i => (h i).symm)`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_image_of_mem _ hβ) h`. Rewrite using `[notMem_support_iff.mp hβ]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_hcomp (F : MvPolynomial (L × Fin r) K) :
     F = ∑ d ∈ F.support.image (fun α i => ldeg α i), hcomp d F := by
   ext β
@@ -843,6 +1221,17 @@ theorem sum_hcomp (F : MvPolynomial (L × Fin r) K) :
   · rw [notMem_support_iff.mp hβ]
     simp
 
+/- English proof (translation)
+Establish `hexp : (substS ι sg S A B (hcomp d F)).coeff β = ∑ α ∈ F.support, if (∀ i, ldeg α i = d i) then ι (F.coeff α) * (substS ι sg S A B (monomial α 1)).coeff β else 0`. Unfold `hcomp`. Rewrite using `[map_sum, coeff_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs`.
+
+Rewrite using `[substS_monomial', coeff_C_mul]`. Rewrite using `[map_zero, coeff_zero]`. Rewrite using `[hexp]`. Use `split_ifs with hβ`. Rewrite using `[coeff_substS]`.
+
+Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs with hα`. Both sides reduce to the same expression. Rewrite using `[coeff_substS_monomial_eq_zero, mul_zero]`. Introduce `h`.
+
+Conclude with `hα fun i => (h i).symm.trans (hβ i)`. Use `Finset.sum_eq_zero fun α _ => ?_ split_ifs with hα` and prove the remaining obligations. Rewrite using `[coeff_substS_monomial_eq_zero, mul_zero]`. Introduce `h`. Conclude with `hβ fun i => (h i).trans (hα i)`.
+
+Both sides reduce to the same expression.
+-/
 theorem coeff_subV_hcomp (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (β : L × Fin r →₀ ℕ) :
     (substS ι sg S A B (hcomp d F)).coeff β =
       if (∀ i, ldeg β i = d i) then (substS ι sg S A B F).coeff β else 0 := by
@@ -869,6 +1258,11 @@ theorem coeff_subV_hcomp (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) (β :
       intro h; exact hβ fun i => (h i).trans (hα i)
     · rfl
 
+/- English proof (translation)
+Rewrite using `[le_valS_iff]`. Introduce `β`. Rewrite using `[subV, coeff_subV_hcomp]`. Use `split_ifs`. Conclude with `pge_valS sg S F β`.
+
+Rewrite using `[lord_zero]`. Conclude with `le_top`.
+-/
 theorem valS_hcomp_le (d : L → ℕ) (F : MvPolynomial (L × Fin r) K) :
     valS sg S F ≤ valS sg S (hcomp d F) := by
   rw [le_valS_iff]
@@ -882,16 +1276,30 @@ end Hcomp
 
 section Vala
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toR_top : toR ⊤ = ⊤ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toR_coe (n : ℤ) : toR (n : WithTop ℤ) = (((n : ℤ) : ℝ) : WithTop ℝ) := rfl
 
+/- English proof (translation)
+Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp [toR_top]`. Consider the case `coe n => rw [toR_coe, WithTop.coe_le_coe, WithTop.coe_le_coe, Int.ceil_le]`.
+-/
 theorem le_toR_iff (θ : ℝ) (x : WithTop ℤ) :
     ((θ : ℝ) : WithTop ℝ) ≤ toR x ↔ ((⌈θ⌉ : ℤ) : WithTop ℤ) ≤ x := by
   induction x using WithTop.recTopCoe with
   | top => simp [toR_top]
   | coe n => rw [toR_coe, WithTop.coe_le_coe, WithTop.coe_le_coe, Int.ceil_le]
 
+/- English proof (translation)
+Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp [toR_top]`. Consider the case `coe n`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => exact absurd h (by simp)`.
+
+Consider the case `coe m`. Rewrite using `[toR_coe, toR_coe, WithTop.coe_le_coe]`. Conclude with `WithTop.coe_le_coe.mp h` after adjusting the coercions.
+-/
 theorem toR_mono {x y : WithTop ℤ} (h : x ≤ y) : toR x ≤ toR y := by
   induction y using WithTop.recTopCoe with
   | top => simp [toR_top]
@@ -902,6 +1310,11 @@ theorem toR_mono {x y : WithTop ℤ} (h : x ≤ y) : toR x ≤ toR y := by
       rw [toR_coe, toR_coe, WithTop.coe_le_coe]
       exact_mod_cast WithTop.coe_le_coe.mp h
 
+/- English proof (translation)
+Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => simp [toR_top]`. Consider the case `coe m`. Proceed by induction on `y using WithTop.recTopCoe with`. Consider the case `top => simp [toR_top]`.
+
+Consider the case `coe n`. Rewrite using `[← WithTop.coe_add, toR_coe, toR_coe, toR_coe, ← WithTop.coe_add]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem toR_add (x y : WithTop ℤ) : toR (x + y) = toR x + toR y := by
   induction x using WithTop.recTopCoe with
   | top => simp [toR_top]
@@ -914,54 +1327,93 @@ theorem toR_add (x y : WithTop ℤ) : toR (x + y) = toR x + toR y := by
 
 variable {K : Type} [Field K] {L : Type} [DecidableEq L] {r : ℕ} (sg : L → Bool) (S : Finset L)
 
+/- English proof (translation)
+The claim follows from `le_toR_iff θ _`.
+-/
 theorem vala_iff (θ : ℝ) (F : MvPolynomial (L × Fin r) K) :
     vala sg S θ F ↔ ((⌈θ⌉ : ℤ) : WithTop ℤ) ≤ valS sg S F := le_toR_iff θ _
 
+/- English proof (translation)
+The claim follows from `vala_iff sg S θ F`.
+-/
 theorem vala_iff_Aset (θ : ℝ) (F : MvPolynomial (L × Fin r) K) :
     vala sg S θ F ↔ F ∈ Aset sg S ⌈θ⌉ := vala_iff sg S θ F
 
+/- English proof (translation)
+Rewrite using `[vala_iff_Aset, Int.ceil_intCast]`.
+-/
 theorem vala_int_iff (n : ℤ) (F : MvPolynomial (L × Fin r) K) :
     vala sg S (n : ℝ) F ↔ F ∈ Aset sg S n := by
   rw [vala_iff_Aset, Int.ceil_intCast]
 
 variable {sg S}
 
+/- English proof (translation)
+The claim follows from `le_trans (WithTop.coe_le_coe.mpr h) hF`.
+-/
 theorem vala_mono {θ θ' : ℝ} (h : θ' ≤ θ) {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S θ' F := le_trans (WithTop.coe_le_coe.mpr h) hF
 
+/- English proof (translation)
+The claim follows from `le_trans hF (toR_mono h)`.
+-/
 theorem vala_of_le {θ : ℝ} {L' : Type} [DecidableEq L'] {sg' : L' → Bool} {S' : Finset L'}
     {F : MvPolynomial (L × Fin r) K} {G : MvPolynomial (L' × Fin r) K}
     (h : valS sg S F ≤ valS sg' S' G) (hF : vala sg S θ F) : vala sg' S' θ G :=
   le_trans hF (toR_mono h)
 
+/- English proof (translation)
+Unfold `vala`. Rewrite using `[valS_zero, toR_top]`. Conclude with `le_top`.
+-/
 theorem vala_zero (θ : ℝ) : vala sg S θ (0 : MvPolynomial (L × Fin r) K) := by
   unfold vala; rw [valS_zero, toR_top]; exact le_top
 
+/- English proof (translation)
+Rewrite `*` using `[vala_iff]`. Conclude with `le_trans (le_min hF hG) (valS_add_le sg S F G)`.
+-/
 theorem vala_add {θ : ℝ} {F G : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F)
     (hG : vala sg S θ G) : vala sg S θ (F + G) := by
   rw [vala_iff] at *
   exact le_trans (le_min hF hG) (valS_add_le sg S F G)
 
+/- English proof (translation)
+Rewrite using `[vala_iff]`. Conclude with `valS_sum_le sg S s f _ fun i hi => (vala_iff sg S θ _).mp (h i hi)`.
+-/
 theorem vala_sum {θ : ℝ} {ι : Type} (s : Finset ι) (f : ι → MvPolynomial (L × Fin r) K)
     (h : ∀ i ∈ s, vala sg S θ (f i)) : vala sg S θ (∑ i ∈ s, f i) := by
   rw [vala_iff]
   exact valS_sum_le sg S s f _ fun i hi => (vala_iff sg S θ _).mp (h i hi)
 
+/- English proof (translation)
+The claim follows from `vala_of_le (valS_smul_le sg S a F) hF`.
+-/
 theorem vala_smul {θ : ℝ} (a : K) {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S θ (a • F) := vala_of_le (valS_smul_le sg S a F) hF
 
+/- English proof (translation)
+The claim follows from `vala_of_le (valS_C_mul_le sg S a F) hF`.
+-/
 theorem vala_C_mul {θ : ℝ} (a : K) {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S θ (C a * F) := vala_of_le (valS_C_mul_le sg S a F) hF
 
+/- English proof (translation)
+Use `vala_smul (-1 : K) hF` as an intermediate fact. Rewrite `this` using `[neg_smul, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem vala_neg {θ : ℝ} {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S θ (-F) := by
   have := vala_smul (-1 : K) hF
   rwa [neg_smul, one_smul] at this
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]`. Conclude with `vala_add hF (vala_neg hG)`.
+-/
 theorem vala_sub {θ : ℝ} {F G : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F)
     (hG : vala sg S θ G) : vala sg S θ (F - G) := by
   rw [sub_eq_add_neg]; exact vala_add hF (vala_neg hG)
 
+/- English proof (translation)
+Unfold `vala at *`. Use `le_trans ?_ (toR_mono (valS_mul_le sg S F G))` and prove the remaining obligations. Rewrite using `[toR_add, WithTop.coe_add]`. Conclude with `add_le_add hF hG`.
+-/
 theorem vala_mul {θ₁ θ₂ : ℝ} {F G : MvPolynomial (L × Fin r) K} (hF : vala sg S θ₁ F)
     (hG : vala sg S θ₂ G) : vala sg S (θ₁ + θ₂) (F * G) := by
   unfold vala at *
@@ -969,14 +1421,25 @@ theorem vala_mul {θ₁ θ₂ : ℝ} {F G : MvPolynomial (L × Fin r) K} (hF : v
   rw [toR_add, WithTop.coe_add]
   exact add_le_add hF hG
 
+/- English proof (translation)
+Rewrite using `[vala_iff, Int.ceil_zero]`. Conclude with `h`.
+-/
 theorem vala_of_nonneg {F : MvPolynomial (L × Fin r) K} (h : 0 ≤ valS sg S F) : vala sg S 0 F := by
   rw [vala_iff, Int.ceil_zero]; exact h
 
+/- English proof (translation)
+Use `valS_C_nonneg sg S (1 : K) (r := r)` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `vala_of_nonneg this`.
+-/
 theorem vala_one : vala sg S 0 (1 : MvPolynomial (L × Fin r) K) := by
   have := valS_C_nonneg sg S (1 : K) (r := r)
   rw [map_one] at this
   exact vala_of_nonneg this
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using vala_one`. Consider the case `succ k ih`. Rewrite using `[pow_succ]`. Use `vala_mul ih hF` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vala_pow {θ : ℝ} {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) (k : ℕ) :
     vala sg S (k * θ) (F ^ k) := by
   induction k with
@@ -987,11 +1450,17 @@ theorem vala_pow {θ : ℝ} {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ
     convert this using 1
     push_cast; ring
 
+/- English proof (translation)
+Use `vala_mul (vala_of_nonneg hF) hG` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+-/
 theorem vala_mul_left_nonneg {θ : ℝ} {F G : MvPolynomial (L × Fin r) K} (hF : 0 ≤ valS sg S F)
     (hG : vala sg S θ G) : vala sg S θ (F * G) := by
   have := vala_mul (vala_of_nonneg hF) hG
   rwa [zero_add] at this
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using vala_one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `vala_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem vala_prod {ι : Type} (s : Finset ι) (θ : ι → ℝ) (f : ι → MvPolynomial (L × Fin r) K)
     (h : ∀ i ∈ s, vala sg S (θ i) (f i)) : vala sg S (∑ i ∈ s, θ i) (∏ i ∈ s, f i) := by
   classical
@@ -1002,13 +1471,22 @@ theorem vala_prod {ι : Type} (s : Finset ι) (θ : ι → ℝ) (f : ι → MvPo
     exact vala_mul (h a (Finset.mem_insert_self a s))
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+The claim follows from `vala_of_le (valS_coefOut_le out sg S hout μ F) hF`.
+-/
 theorem vala_coefOut {θ : ℝ} (out : L → Prop) [DecidablePred out] (hout : ∀ i ∈ S, ¬ out i)
     (μ : L × Fin r →₀ ℕ) {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S θ (coefOut out μ F) := vala_of_le (valS_coefOut_le out sg S hout μ F) hF
 
+/- English proof (translation)
+The claim follows from `vala_of_le (valS_hcomp_le sg S d F) hF`.
+-/
 theorem vala_hcomp [Fintype L] {θ : ℝ} (d : L → ℕ) {F : MvPolynomial (L × Fin r) K}
     (hF : vala sg S θ F) : vala sg S θ (hcomp d F) := vala_of_le (valS_hcomp_le sg S d F) hF
 
+/- English proof (translation)
+The claim follows from `vala_of_le (valS_outside_linear out sg S Φ hout h1 h2 F) hF`.
+-/
 theorem vala_outside_linear {θ : ℝ}
     (Φ : MvPolynomial (L × Fin r) K →ₗ[K] MvPolynomial (L × Fin r) K)
     (out : L → Prop) [DecidablePred out] (hout : ∀ i ∈ S, ¬ out i)
@@ -1017,11 +1495,17 @@ theorem vala_outside_linear {θ : ℝ}
     (hF : vala sg S θ F) : vala sg S θ (Φ F) :=
   vala_of_le (valS_outside_linear out sg S Φ hout h1 h2 F) hF
 
+/- English proof (translation)
+Unfold `vala`. Rewrite using `[valS_rename f hf]`.
+-/
 theorem vala_rename_iff {L' : Type} [DecidableEq L'] (f : L → L') (hf : Function.Injective f)
     (sg' : L' → Bool) (S' : Finset L') (θ : ℝ) (F : MvPolynomial (L × Fin r) K) :
     vala sg' S' θ (rename (Prod.map f id) F) ↔ vala (sg' ∘ f) (S'.preimage f hf.injOn) θ F := by
   unfold vala; rw [valS_rename f hf]
 
+/- English proof (translation)
+Unfold `vala at *`. Use `le_trans ?_ (toR_mono h)` and prove the remaining obligations. Rewrite using `[toR_add, toR_coe, WithTop.coe_add]`. Conclude with `add_le_add hF le_rfl`.
+-/
 theorem vala_of_add_le {θ : ℝ} (k : ℤ) {F G : MvPolynomial (L × Fin r) K}
     (h : valS sg S F + ((k : ℤ) : WithTop ℤ) ≤ valS sg S G) (hF : vala sg S θ F) :
     vala sg S (θ + k) G := by
@@ -1037,11 +1521,21 @@ section FromV2
 variable {K : Type} [Field K] [CharZero K] {L : Type} [Fintype L] [DecidableEq L] {r : ℕ} [NeZero r]
   {sg : L → Bool} {S : Finset L}
 
+/- English proof (translation)
+The claim follows from `vala_of_le ((hV2 L sg r S).2.2.1 S' hsub hvec F) hF`.
+-/
 theorem vala_superset_vec (hV2 : V2 K) {θ : ℝ} {S' : Finset L} (hsub : S ⊆ S')
     (hvec : ∀ i ∈ S', i ∉ S → sg i = true) {F : MvPolynomial (L × Fin r) K}
     (hF : vala sg S θ F) : vala sg S' θ F :=
   vala_of_le ((hV2 L sg r S).2.2.1 S' hsub hvec F) hF
 
+/- English proof (translation)
+Establish `h` using `(hV2 L sg r S).1 i a`. Distinguish the cases in `hs : sg i = true`. Rewrite `h`, the goal using `[if_pos hs]`. Rewrite using `[vala_iff, Int.ceil_zero]`. Conclude with `h`.
+
+Rewrite `h`, the goal using `[if_neg hs]`. Establish `h1 : ⌈(-1 : ℝ)⌉ = -1`. Use `Int.ceil_intCast (R := ℝ) (-1)` as an intermediate fact. Simplify using `using this`. Rewrite using `[vala_iff, h1]`.
+
+Conclude with `h`.
+-/
 theorem vala_X (hV2 : V2 K) (i : L) (a : Fin r) :
     vala sg S (if sg i then 0 else -1) (X (i, a) : MvPolynomial (L × Fin r) K) := by
   have h := (hV2 L sg r S).1 i a
@@ -1054,6 +1548,9 @@ theorem vala_X (hV2 : V2 K) (i : L) (a : Fin r) :
       simpa using this
     rw [vala_iff, h1]; exact h
 
+/- English proof (translation)
+Establish `h` using `(hV2 L sg r S).2.1 i β F`. Use `vala_of_add_le _ h hF` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> simp [sub_eq_add_neg]`.
+-/
 theorem vala_ddiv_letter' (hV2 : V2 K) {θ : ℝ} (i : L) (β : Fin r →₀ ℕ)
     {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S (θ - (if sg i then (absE β : ℝ) else 0)) (ddiv (onLetter i β) F) := by
@@ -1062,6 +1559,9 @@ theorem vala_ddiv_letter' (hV2 : V2 K) {θ : ℝ} (i : L) (β : Fin r →₀ ℕ
   convert this using 1
   split_ifs <;> simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Use `vala_mono ?_ (vala_ddiv_letter' hV2 i β hF)` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Establish `: (0 : ℝ) ≤ absE β` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem vala_ddiv_letter (hV2 : V2 K) {θ : ℝ} (i : L) (β : Fin r →₀ ℕ)
     {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S (θ - absE β) (ddiv (onLetter i β) F) := by
@@ -1072,12 +1572,22 @@ theorem vala_ddiv_letter (hV2 : V2 K) {θ : ℝ} (i : L) (β : Fin r →₀ ℕ)
     linarith
 
 omit [CharZero K] [Fintype L] [NeZero r] in
+/- English proof (translation)
+Use `conv_lhs => rw [F.as_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => dg_monomial f α _`.
+-/
 theorem dg_eq_sum {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolynomial σ K) :
     dg f F = ∑ α ∈ F.support, monomial α (f α * F.coeff α) := by
   conv_lhs => rw [F.as_sum, map_sum]
   exact Finset.sum_congr rfl fun α _ => dg_monomial f α _
 
 omit [CharZero K] [Fintype L] [NeZero r] in
+/- English proof (translation)
+Unfold `Finsupp.prod`. Rewrite using `[Finset.prod_eq_single x]`. Simplify using `only`. Rewrite using `[Finsupp.single_eq_same]`. Introduce `y _ hy dsimp only`.
+
+Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hy), Nat.choose_zero_right, Nat.cast_one]`. Introduce `hx`. Establish `h0 : α x = 0` using `Finsupp.notMem_support_iff.mp hx`. Establish `hk0 : k = 0` using `by omega`. Simplify using `only`.
+
+Rewrite using `[Finsupp.single_eq_same, h0, hk0, Nat.choose_zero_right, Nat.cast_one]`.
+-/
 theorem prod_choose_single {σ : Type} (α : σ →₀ ℕ) (x : σ) (k : ℕ) (hk : k ≤ α x) :
     (α.prod fun y n => ((n.choose (Finsupp.single x k y) : ℕ) : K)) = ((α x).choose k : ℕ) := by
   classical
@@ -1095,6 +1605,13 @@ theorem prod_choose_single {σ : Type} (α : σ →₀ ℕ) (x : σ) (k : ℕ) (
     rw [Finsupp.single_eq_same, h0, hk0, Nat.choose_zero_right, Nat.cast_one]
 
 omit [CharZero K] [Fintype L] [NeZero r] in
+/- English proof (translation)
+Rewrite using `[dg_eq_sum]`. Unfold `ddiv`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Establish `hk : k ≤ α x` using `Finsupp.single_le_iff.mp h`. Rewrite using `[monomial_mul, add_tsub_cancel_of_le h, one_mul, prod_choose_single α x k hk, mul_comm]`. Establish `hk : α x < k`. Assume the negation of the conclusion as `hh`. Conclude with `h (Finsupp.single_le_iff.mpr (not_lt.mp hh))`.
+
+Rewrite using `[Nat.choose_eq_zero_of_lt hk, Nat.cast_zero, zero_mul, monomial_zero, mul_zero]`.
+-/
 theorem dg_choose_eq {σ : Type} (x : σ) (k : ℕ) (F : MvPolynomial σ K) :
     dg (fun α => ((α x).choose k : K)) F =
       monomial (Finsupp.single x k) 1 * ddiv (Finsupp.single x k) F := by
@@ -1110,6 +1627,13 @@ theorem dg_choose_eq {σ : Type} (x : σ) (k : ℕ) (F : MvPolynomial σ K) :
       exact h (Finsupp.single_le_iff.mpr (not_lt.mp hh))
     rw [Nat.choose_eq_zero_of_lt hk, Nat.cast_zero, zero_mul, monomial_zero, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[dg_choose_eq]`. Establish `hs : Finsupp.single x k = onLetter x.1 (Finsupp.single x.2 k)`. Unfold `onLetter`. Rewrite using `[Finsupp.mapDomain_single]`. Establish `habs : absE (Finsupp.single x.2 k) = k`.
+
+Unfold `absE`. Rewrite using `[Finsupp.sum_single_index rfl]`. Establish `h1` using `vala_ddiv_letter' hV2 x.1 (Finsupp.single x.2 k) hF`. Rewrite `h1` using `[← hs, habs]`. Establish `h2 : vala sg S (k * (if sg x.1 then 0 else -1 : ℝ)) (monomial (Finsupp.single x k) (1 : K))`.
+
+Rewrite using `[← X_pow_eq_monomial]`. Conclude with `vala_pow (vala_X hV2 x.1 x.2) k`. Establish `h3` using `vala_mul h2 h1`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `split_ifs <;> ring`.
+-/
 theorem vala_dg_choose (hV2 : V2 K) {θ : ℝ} (x : L × Fin r) (k : ℕ)
     {F : MvPolynomial (L × Fin r) K} (hF : vala sg S θ F) :
     vala sg S (θ - k) (dg (fun α => ((α x).choose k : K)) F) := by
@@ -1136,19 +1660,31 @@ section TotallyRealRoots
 
 variable {K : Type} [Field K]
 
+/- English proof (translation)
+Use extensionality with `β`. Simplify using `only [coeff_dg]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem dg_mul {σ : Type} (f g : (σ →₀ ℕ) → K) (F : MvPolynomial σ K) :
     dg (fun α => f α * g α) F = dg f (dg g F) := by
   ext β; simp only [coeff_dg]; ring
 
+/- English proof (translation)
+Use extensionality with `β`. Simplify using `only [coeff_dg, one_mul]`.
+-/
 theorem dg_one {σ : Type} (F : MvPolynomial σ K) : dg (fun _ => (1 : K)) F = F := by
   ext β; simp only [coeff_dg, one_mul]
 
+/- English proof (translation)
+Use extensionality with `β`. Simplify using `only [coeff_dg, coeff_sum, coeff_smul, smul_eq_mul, Finset.sum_mul, mul_assoc]`.
+-/
 theorem dg_sum_smul {σ ι : Type} (s : Finset ι) (lam : ι → K) (b : ι → (σ →₀ ℕ) → K)
     (F : MvPolynomial σ K) :
     dg (fun α => ∑ k ∈ s, lam k * b k α) F = ∑ k ∈ s, lam k • dg (b k) F := by
   ext β
   simp only [coeff_dg, coeff_sum, coeff_smul, smul_eq_mul, Finset.sum_mul, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `β`. Simplify using `only [coeff_dg]`. Distinguish the cases in `hβ : β ∈ F.support`. Rewrite using `[h β hβ]`. Rewrite using `[notMem_support_iff.mp hβ, mul_zero, mul_zero]`.
+-/
 theorem dg_congr {σ : Type} {f g : (σ →₀ ℕ) → K} {F : MvPolynomial σ K}
     (h : ∀ α ∈ F.support, f α = g α) : dg f F = dg g F := by
   ext β
@@ -1157,6 +1693,11 @@ theorem dg_congr {σ : Type} {f g : (σ →₀ ℕ) → K} {F : MvPolynomial σ 
   · rw [h β hβ]
   · rw [notMem_support_iff.mp hβ, mul_zero, mul_zero]
 
+/- English proof (translation)
+Introduce `β hβ`. Rewrite `hβ` using `[mem_support_iff, coeff_dg]`. Rewrite using `[mem_support_iff]`. Introduce `h0`. Apply `hβ` to reduce the goal to its premises.
+
+Rewrite using `[h0, mul_zero]`.
+-/
 theorem support_dg_subset_v {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolynomial σ K) :
     (dg f F).support ⊆ F.support := by
   intro β hβ
@@ -1164,6 +1705,9 @@ theorem support_dg_subset_v {σ : Type} (f : (σ →₀ ℕ) → K) (F : MvPolyn
   rw [mem_support_iff]
   intro h0; apply hβ; rw [h0, mul_zero]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial β c => rw [monomial_mul, dg_monomial, dg_monomial, monomial_mul, one_mul, one_mul]`. Consider the case `add p q hp hq => rw [mul_add, map_add, map_add, mul_add, hp, hq]`.
+-/
 theorem dg_monomial_mul {σ : Type} (g : (σ →₀ ℕ) → K) (μ : σ →₀ ℕ) (Q : MvPolynomial σ K) :
     dg g (monomial μ 1 * Q) = monomial μ 1 * dg (fun β => g (μ + β)) Q := by
   induction Q using MvPolynomial.induction_on' with
@@ -1172,6 +1716,11 @@ theorem dg_monomial_mul {σ : Type} (g : (σ →₀ ℕ) → K) (μ : σ →₀ 
 
 variable {L : Type} [DecidableEq L] {r : ℕ} {sg : L → Bool} {S : Finset L}
 
+/- English proof (translation)
+Use `valS_nonneg_of_free sg S _ fun α hα i hi a => ?_` and prove the remaining obligations. Establish `: α = μ`. Use `support_monomial_subset hα` as an intermediate fact. Simplify using `using this`. Rewrite using `[this]`.
+
+Conclude with `h i hi a`.
+-/
 theorem valS_monomial_nonneg_of_free (μ : L × Fin r →₀ ℕ) (c : K) (h : ∀ i ∈ S, ∀ a, μ (i, a) = 0) :
     0 ≤ valS sg S (monomial μ c) := by
   classical
@@ -1181,6 +1730,11 @@ theorem valS_monomial_nonneg_of_free (μ : L × Fin r →₀ ℕ) (c : K) (h : �
     simpa using this
   rw [this]; exact h i hi a
 
+/- English proof (translation)
+Use `valS_nonneg_of_vec sg S _ fun α hα i a hne => ?_` and prove the remaining obligations. Establish `: α = μ`. Use `support_monomial_subset hα` as an intermediate fact. Simplify using `using this`. Rewrite `hne` using `[this]`.
+
+Conclude with `h i a hne`.
+-/
 theorem valS_monomial_nonneg_of_vec (μ : L × Fin r →₀ ℕ) (c : K)
     (h : ∀ i a, μ (i, a) ≠ 0 → sg i = true) : 0 ≤ valS sg S (monomial μ c) := by
   classical
@@ -1190,6 +1744,11 @@ theorem valS_monomial_nonneg_of_vec (μ : L × Fin r →₀ ℕ) (c : K)
     simpa using this
   rw [this] at hne; exact h i a hne
 
+/- English proof (translation)
+Use `conv => rw [sum_coefOut out F, map_sum]`. Use `vala_sum _ _ fun μ hμ => ?_` and prove the remaining obligations. Take `⟨α, -, rfl⟩` from `Finset.mem_image.mp hμ`. Rewrite using `[dg_monomial_mul]`. Use `vala_mul_left_nonneg (valS_monomial_nonneg_of_free _ _ ?_) (h _ (eOut_eOut out α) _ (vala_coefOut out hout _ hF))` and prove the remaining obligations.
+
+Introduce `i hi a`. Rewrite using `[eOut_apply, if_neg (hout i hi)]`.
+-/
 theorem vala_dg_outside (out : L → Prop) [DecidablePred out] (hout : ∀ i ∈ S, ¬ out i)
     (g : (L × Fin r →₀ ℕ) → K) (n θ : ℝ)
     (h : ∀ μ, eOut out μ = μ → ∀ G : MvPolynomial (L × Fin r) K, vala sg S θ G →

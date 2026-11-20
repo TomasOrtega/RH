@@ -8,6 +8,11 @@ namespace DeterminantReindex
 
 open C2x2 CardInsertEmbedding
 
+/- English proof (translation)
+Use `choose τ' hτ' using hr`. Establish `hinj : Function.Injective τ'`. Introduce `x y hxy`. Apply `he` to reduce the goal to its premises. Rewrite using `[← hτ' x, ← hτ' y, hxy]`.
+
+Use `⟨Equiv.ofBijective τ' (Finite.injective_iff_bijective.mp hinj), fun t => ?_⟩` and prove the remaining obligations. Simplify using `[hτ']`.
+-/
 lemma perm_of_range {m k : ℕ} (e ρ : Fin k → Fin m) (he : Function.Injective e)
     (hr : ∀ t, ∃ s, ρ s = e t) : ∃ τ : Equiv.Perm (Fin k), ∀ t, e t = ρ (τ t) := by
   choose τ' hτ' using hr
@@ -16,6 +21,9 @@ lemma perm_of_range {m k : ℕ} (e ρ : Fin k → Fin m) (he : Function.Injectiv
   refine ⟨Equiv.ofBijective τ' (Finite.injective_iff_bijective.mp hinj), fun t => ?_⟩
   simp [hτ']
 
+/- English proof (translation)
+Establish `: M.submatrix e f = (M.submatrix ρ f).submatrix τ id`. Use extensionality with `t s`. Simplify using `[h]`. Rewrite using `[this, Matrix.det_permute]`.
+-/
 lemma det_reindex {m k : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (e ρ f : Fin k → Fin m) (τ : Equiv.Perm (Fin k))
     (h : ∀ t, e t = ρ (τ t)) :
     (M.submatrix e f).det = ((Equiv.Perm.sign τ : ℤ) : ℂ) * (M.submatrix ρ f).det := by
@@ -23,14 +31,23 @@ lemma det_reindex {m k : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (e ρ f : Fin k �
     ext t s; simp [h]
   rw [this, Matrix.det_permute]
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp`.
+-/
 lemma sign_sq {k : ℕ} (τ : Equiv.Perm (Fin k)) :
     ((Equiv.Perm.sign τ : ℤ) : ℂ) * ((Equiv.Perm.sign τ : ℤ) : ℂ) = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp
 
+/- English proof (translation)
+Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp`.
+-/
 lemma sign_pm {k : ℕ} (τ : Equiv.Perm (Fin k)) :
     ((Equiv.Perm.sign τ : ℤ) : ℂ) = 1 ∨ ((Equiv.Perm.sign τ : ℤ) : ℂ) = -1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> rw [h] <;> simp
 
+/- English proof (translation)
+Use extensionality with `t s`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[sum_emb hkm f hf]`. Introduce `j hj`. Rewrite using `[hU _ _ (by rw [Fin.lt_def, hf]; omega), mul_zero]`.
+-/
 lemma U_mul_sub {m k : ℕ} (hkm : k ≤ m) (M U : Matrix (Fin m) (Fin m) ℂ) (hU : ∀ i j, j < i → U i j = 0)
     (e f : Fin k → Fin m) (hf : ∀ t, (f t).val = t.val) :
     (M * U).submatrix e f = M.submatrix e f * U.submatrix f f := by
@@ -40,6 +57,9 @@ lemma U_mul_sub {m k : ℕ} (hkm : k ≤ m) (M U : Matrix (Fin m) (Fin m) ℂ) (
   intro j hj
   rw [hU _ _ (by rw [Fin.lt_def, hf]; omega), mul_zero]
 
+/- English proof (translation)
+Use extensionality with `t s`. Rewrite using `[Matrix.mul_diagonal]`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, C2.monoP, Matrix.of_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 lemma submatrix_mul_monomialMatrix {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin m → ℂ) (M : Matrix (Fin m) (Fin m) ℂ)
     (e f : Fin k → Fin m) :
     (M * C2.monoP w d).submatrix e f = M.submatrix e (fun s => w (f s)) * Matrix.diagonal (fun s => d (f s)) := by
@@ -48,6 +68,11 @@ lemma submatrix_mul_monomialMatrix {m k : ℕ} (w : Equiv.Perm (Fin m)) (d : Fin
   simp only [Matrix.submatrix_apply, Matrix.mul_apply, C2.monoP, Matrix.of_apply,
     mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Substitute `hkn` using the available equality. Rewrite using `[← Fin.prod_univ_eq_prod_range (fun j => if h : j < m then d ⟨j, h⟩ else 1)]`. Use `Finset.prod_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Establish `hlt : t.val < m` using `by have := (e t).isLt; rw [he] at this; exact this`. Rewrite using `[dif_pos hlt]`.
+
+Use `congr 1`. Conclude with `Fin.ext (he t)`.
+-/
 lemma prod_emb {m k n : ℕ} (hkn : k = n) (d : Fin m → ℂ) (e : Fin k → Fin m) (he : ∀ t, (e t).val = t.val) :
     ∏ t, d (e t) = ∏ j ∈ Finset.range n, (if h : j < m then d ⟨j, h⟩ else 1) := by
   subst hkn

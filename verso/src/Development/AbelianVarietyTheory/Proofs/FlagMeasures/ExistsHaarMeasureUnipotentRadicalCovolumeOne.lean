@@ -9,6 +9,15 @@ open scoped TensorProduct ENNReal
 
 namespace GlobalTheory.NsubHaarCovol
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hCM n J hJ r P T hP`. Establish `hcl : IsClosed (Nsub (AF F) σ J P : Set (HA (AF F) σ J))` using `PI.UnitaryGroupMassFormula.MeasWCore.isClosed_Nsub (AF F) σ J P`. Set `μ0 : Measure (Nsub (AF F) σ J P)` to `Measure.haar`. Establish `hμ0 : μ0.IsHaarMeasure` using `inferInstance`. Take `⟨⟨𝓕, h𝓕⟩, hall, hscale⟩` from `GlobalTheory.ClosedSubgroupCovol.fundamentalDomain_covol F E σ hCM n J hJ _ hcl μ0 hμ0`.
+
+Take `⟨Kc, hKc, hcov⟩` from `GlobalTheory.UnipFlagCore.nsub_cocompact F E σ hCM n J hJ r P T hP`. Take `⟨hcv, hne, hle⟩` from `hall 𝓕 h𝓕`. Establish `hfin : μ0 𝓕 ≠ ∞` using `((hle Kc hKc.isClosed.measurableSet hcov).trans_lt hKc.measure_lt_top).ne`. Establish `hpos : 0 < (μ0 𝓕).toReal` using `ENNReal.toReal_pos hne hfin`. Establish `hc0 : ((μ0 𝓕).toNNReal)⁻¹ ≠ 0` using `inv_ne_zero (by`.
+
+Introduce `h`. Rewrite `h` using `[ENNReal.toNNReal_eq_zero_iff]`. Conclude with `h.elim hne hfin)`. Use `⟨((μ0 𝓕).toNNReal)⁻¹ • μ0, Measure.IsHaarMeasure.nnreal_smul _ hc0, ?_⟩` and prove the remaining obligations. Rewrite using `[hscale _ hc0, hcv, NNReal.coe_inv, ENNReal.coe_toNNReal_eq_toReal]`.
+
+Conclude with `inv_mul_cancel₀ hpos.ne'`.
+-/
 theorem exists_haar_covol_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (P : Frame E n r) (T : F), P.IsStd σ J T → ∃ μ : Measure (Nsub (AF F) σ J P), μ.IsHaarMeasure ∧ covol μ = 1 := by
   intro F E _ _ _ _ _ σ hCM n J hJ r P T hP
   have hcl : IsClosed (Nsub (AF F) σ J P : Set (HA (AF F) σ J)) :=

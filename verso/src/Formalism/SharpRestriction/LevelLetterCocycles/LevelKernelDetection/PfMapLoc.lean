@@ -16,6 +16,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
     {Lb : LevB W} {hR : Ring9 W} {uZ : ℤ_[PD.p]ˣ} {ιZ : ℤ_[PD.p] →+* O}
 
+/- English proof (translation)
+Establish `h : ∀ y, ιV PD (LL` using `LL) (V := T.V) y = ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+
+Establish `hi : Function.Injective (PD.ι.toLinearMap.restrictScalars Qp)` using `PD.ι_inj`. Introduce `a b hab`. Rewrite `hab` using `[h, h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hi hab`.
+-/
 theorem Pf_MapLoc_ιV_inj (T : LocLat G Qp LL O) : Function.Injective (ιV PD (LL := LL) (V := T.V)) := by
   have h : ∀ y, ιV PD (LL := LL) (V := T.V) y =
       ((PD.ι.toLinearMap.restrictScalars Qp).lTensor T.V) y := fun y => by
@@ -28,6 +33,9 @@ theorem Pf_MapLoc_ιV_inj (T : LocLat G Qp LL O) : Function.Injective (ιV PD (L
   rw [h, h] at hab
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hi hab
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x b => simp [ιV]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem Pf_MapLoc_ιV_map {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (y : T₁.V ⊗[Qp] B) :
     AlgebraTensorModule.map F.f (LinearMap.id : BdR →ₗ[Qp] BdR) (ιV PD (LL := LL) (V := T₁.V) y) =
       ιV PD (LL := LL) (V := T₂.V) (AlgebraTensorModule.map F.f (LinearMap.id : B →ₗ[Qp] B) y) := by
@@ -36,6 +44,9 @@ theorem Pf_MapLoc_ιV_map {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂
   | tmul x b => simp [ιV]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Apply `Pf_MapLoc_ιV_inj (PD := PD) T₂` to reduce the goal to its premises. Rewrite using `[← levN_eq, W.levN_map F crys₁ crys₂ i ζ x hx k, levN_eq, Pf_MapLoc_ιV_map]`.
+-/
 theorem Pf_MapLoc_levB_map {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (crys₁ : IsCrys PD T₁.ρ) (crys₂ : IsCrys PD T₂.ρ)
     (levN_eq : ∀ (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (x : ↥(W.N T)) (k : ℤ),
@@ -46,6 +57,15 @@ theorem Pf_MapLoc_levB_map {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T�
   apply Pf_MapLoc_ιV_inj (PD := PD) T₂
   rw [← levN_eq, W.levN_map F crys₁ crys₂ i ζ x hx k, levN_eq, Pf_MapLoc_ιV_map]
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `(TensorProduct.piScalarRight LL LL D₁ (Rs LL PD.p s)).surjective f`. Establish `h1 : (fun ζ => g (TensorProduct.piScalarRight LL LL D₁ (Rs LL PD.p s) y ζ)) = TensorProduct.piScalarRight LL LL D₂ (Rs LL PD.p s) (g.rTensor _ y)`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => funext ζ`. Simplify using the standard rewrite rules.
+
+Consider the case `tmul x a => funext ζ`. Simplify using the standard rewrite rules. Consider the case `add y y' hy hy'`. Use function extensionality and compare the values at `ζ`. Establish `e1` using `congrFun hy ζ`.
+
+Establish `e2` using `congrFun hy' ζ`. Simplify using `only [map_add, Pi.add_apply] at e1 e2 ⊢`. Rewrite using `[e1, e2]`. Simplify using `only [toKsD, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[h1, LinearEquiv.symm_apply_apply]`.
+
+Use `clear h1`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => simp [LinearMap.baseChange_tmul]`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`.
+-/
 theorem Pf_MapLoc_toKsD_map (s : ℕ) {D₁ D₂ : Type} [AddCommGroup D₁] [Module LL D₁]
     [AddCommGroup D₂] [Module LL D₂] (g : D₁ →ₗ[LL] D₂) (f : Rs LL PD.p s → D₁) :
     g.baseChange (KsW W s) (toKsD W s D₁ f) = toKsD W s D₂ (fun ζ => g (f ζ)) := by
@@ -71,6 +91,13 @@ theorem Pf_MapLoc_toKsD_map (s : ℕ) {D₁ D₂ : Type} [AddCommGroup D₁] [Mo
   | tmul x a => simp [LinearMap.baseChange_tmul]
   | add y y' hy hy' => simp only [map_add, hy, hy']
 
+/- English proof (translation)
+Establish `hc : ∀ k, (dmapOf h).baseChange (KsW W s) (coefN Lb s T₁ c x k) = coefN Lb s T₂ c y k`. Introduce `k`. Simplify using `only [coefN]`. Rewrite using `[Pf_MapLoc_toKsD_map]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `ζ`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hxy ζ.1 k).symm`. Apply `(HahnModule.of (KsW W s)).symm.injective` to reduce the goal to its premises. Use extensionality with `k`.
+
+Simplify using `[ambF, ambMap, expN, HahnSeries.ofSuppBddBelow, hc]`.
+-/
 theorem Pf_MapLoc_ambF_expN (s : ℕ) {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {c : ZMod n}
     (h : MemD W F c) (x : ↥(W.N T₁)) (y : ↥(W.N T₂))
     (hxy : ∀ (ζ : LL) (k : ℤ), Lb.levB T₂ c ζ y k =
@@ -94,6 +121,23 @@ variable {T₁ T₂ : LocLat G Qp LL O} {C₁ : Coord W (baseIdOf hR) T₁} {C�
   {F : LatHom T₁.L T₂.L} {c : ZMod n} {ell : ℕ} {H : ℕ → ℕ} {κ₁ κ₂ : PowerSeries O} {r₁ r₂ : ℕ}
   {lam₁ : Fin r₁ → Dc W T₁ c} {lam₂ : Fin r₂ → Dc W T₂ c}
 
+/- English proof (translation)
+Introduce `s _ w hw hw'`. Use `funext fun ⟨s', hs'⟩ => Subtype.ext ?_` and prove the remaining obligations. Use `show ambF Mh.memD s' (locF Lb C₁ κ₁ s' (κ₁ • w) _) = locF Lb C₂ κ₂ s' (κ₂ • hC.f w) _`. Establish `hm₁ : C₂.t c (κ₁ • hC.f w) ∈ W.N T₂`. Establish `h0` using `(latHomOf hC).map_N c (κ₁ • w) (Hy₁.kap w hw)`.
+
+Rewrite `h0` using `[show (latHomOf hC).f (κ₁ • w) = κ₁ • hC.f w from hC.f.map_smul κ₁ w]`. Conclude with `(mem_N C₂ c _).1 h0`. Establish `hm₂ : C₂.t c (κ₂ • hC.f w) ∈ W.N T₂` using `(mem_N C₂ c _).1 (Hy₂.kap _ hw')`. Establish `hA : ambF Mh.memD s' (expN Lb s' T₁ c ⟨C₁.t c (κ₁ • w), Hy₁.kap w hw⟩) = expN Lb s' T₂ c ⟨C₂.t c (κ₁ • hC.f w), hm₁⟩`. Apply `Pf_MapLoc_ambF_expN` to reduce the goal to its premises.
+
+Introduce `ζ k`. Establish `hx : W.map F (C₁.t c (κ₁ • w)) ∈ W.N T₂`. Rewrite using `[← hC.coord_hom_map_trace, map_smul]`. Conclude with `hm₁`. Establish `he : (⟨C₂.t c (κ₁ • hC.f w), hm₁⟩ : ↥(W.N T₂)) = ⟨W.map F (C₁.t c (κ₁ • w)), hx⟩` using `Subtype.ext (by show C₂.t c (κ₁ • hC.f w) = W.map F (C₁.t c (κ₁ • w))`.
+
+Rewrite using `[← hC.coord_hom_map_trace, map_smul])`. Rewrite using `[he]`. Conclude with `Pf_MapLoc_levB_map F hC.crys hC.crys' levN_eq c ζ ⟨C₁.t c (κ₁ • w), Hy₁.kap w hw⟩ hx k`. Establish `hs₁ : (baseIdOf hR).d κ₂ • C₂.t c (κ₁ • hC.f w) ∈ W.N T₂` using `(W.N T₂).smul_mem _ hm₁`. Establish `hs₂ : (baseIdOf hR).d κ₁ • C₂.t c (κ₂ • hC.f w) ∈ W.N T₂` using `(W.N T₂).smul_mem _ hm₂`.
+
+Establish `hE : HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ₂) • expN Lb s' T₂ c ⟨C₂.t c (κ₁ • hC.f w), hm₁⟩ = HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ₁) • expN Lb s' T₂ c ⟨C₂.t c (κ₂ • hC.f w), hm₂⟩`. Rewrite using `[← Hy₂.expSemi s' κ₂ ⟨_, hm₁⟩ hs₁, ← Hy₂.expSemi s' κ₁ ⟨_, hm₂⟩ hs₂]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(baseIdOf hR).d κ₂ • C₂.t c (κ₁ • hC.f w) = (baseIdOf hR).d κ₁ • C₂.t c (κ₂ • hC.f w)`.
+
+Rewrite using `[← C₂.t_smul, ← C₂.t_smul, smul_smul, smul_smul, mul_comm]`. Unfold `locF`. Rewrite using `[Mh.smul s', hA]`. Use `set ρ₁ := HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ₁)`. Use `set ρ₂ := HahnSeries.ofPowerSeries ℤ (KsW W s') (rhoL hR c s' κ₂)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, mul_assoc, Ring.inverse_mul_cancel ρ₂ (kap₂_unit s' hs'), mul_one]`. Use `_ = (Ring.inverse ρ₁ * Ring.inverse ρ₂) • (ρ₁ • expN Lb s' T₂ c ⟨C₂.t c (κ₂ • hC.f w), hm₂⟩) := by`. Rewrite using `[hE]`. Use `_ = Ring.inverse ρ₂ • expN Lb s' T₂ c ⟨C₂.t c (κ₂ • hC.f w), hm₂⟩ := by`.
+
+Rewrite using `[smul_smul, mul_comm (Ring.inverse ρ₁), mul_assoc, Ring.inverse_mul_cancel ρ₁ (kap₁_unit s' hs'), mul_one]`.
+-/
 theorem locComm_holds (hC : CoordHom C₁ C₂ F)
     (Hy₁ : LvHyp Lb hR uZ ιZ C₁ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₁ lam₁)
     (Hy₂ : LvHyp Lb hR uZ ιZ C₂ c ell (Formalism.ExponentWindows.abelian₂ (baseIdOf hR).Bs.p H ell) κ₂ lam₂)

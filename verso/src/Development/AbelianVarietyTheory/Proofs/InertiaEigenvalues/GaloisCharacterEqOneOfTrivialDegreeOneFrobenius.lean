@@ -16,6 +16,13 @@ open GlobalTheory
 
 namespace GlobalTheory.FrobTrivChar
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ φ hφ hev`. Establish `: IsGalois E Ω` using `{}`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply]`. Assume the negation of the conclusion as `hg`.
+
+Establish `hV : IsOpen {x : G E Ω | φ x ≠ 1}` using `isOpen_ne_fun hφ continuous_const`. Establish `hn : (fun u : G E Ω => u * g) ⁻¹' {x : G E Ω | φ x ≠ 1} ∈ nhds (1 : G E Ω)` using `(hV.preimage (continuous_mul_const g)).mem_nhds (by simpa using hg)`. Take `⟨L, hfd, hN, hL⟩` from `(krullTopology_mem_nhds_one_iff_of_normal E Ω _).1 hn`. Establish `hgal : IsGalois E L` using `{}`. Establish `hS` using `Filter.eventually_cofinite.1 hev`.
+
+Take `⟨v, hv, hf, he, B, hB, -, σ, hσ, hU⟩` from `GlobalTheory.Published.cheb_holds E Ω L.fixingSubgroup L.fixingSubgroup_isOpen ((InfiniteGalois.normal_iff_isGalois L).2 hgal) g hS.toFinset`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, not_not] at hv`. Establish `h1` using `hL hU`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, inv_mul_cancel_right] at h1`. Conclude with `h1 (hv hf he B σ hB hσ)`.
+-/
 theorem eq_one_of_frob_trivial : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime]
     (φ : G E Ω →* (Qbar l)ˣ), Continuous φ →
     (∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, w.asIdeal.inertiaDeg ℤ = 1 → w.asIdeal.ramificationIdx ℤ = 1 →

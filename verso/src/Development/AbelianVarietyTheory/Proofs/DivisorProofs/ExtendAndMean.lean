@@ -2,6 +2,13 @@ import Mathlib
 
 namespace GlobalTheory.EmbeddingMean
 
+/- English proof (translation)
+Use `letI : Algebra A C := f.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A C := IsScalarTower.of_algebraMap_eq (fun x => (f.commutes x).symm)`. Use `haveI : FiniteDimensional A B := Module.Finite.of_restrictScalars_finite K A B`. Use `haveI : CharZero A := charZero_of_injective_algebraMap (algebraMap K A).injective`. Rewrite using `[← AlgHom.card A B C, ← Fintype.card_subtype]`.
+
+Use `Fintype.card_congr { toFun := fun g => { g.1.toRingHom with commutes' := fun a => by` and prove the remaining obligations. Use `DFunLike.congr_fun g.2 a` as an intermediate fact. Conclude with `this }`. Use `invFun := fun h => ⟨h.restrictScalars K, AlgHom.ext fun a => h.commutes a⟩`. Use `left_inv := fun g => Subtype.ext (AlgHom.ext fun _ => rfl)`.
+
+Use `right_inv := fun h => AlgHom.ext fun _ => rfl }`.
+-/
 theorem card_fibre {K A B C : Type} [Field K] [Field A] [Field B] [Field C] [CharZero K]
     [Algebra K A] [Algebra K B] [Algebra K C] [Algebra A B] [IsScalarTower K A B]
     [FiniteDimensional K A] [FiniteDimensional K B] [IsAlgClosed C] [DecidableEq (A →ₐ[K] C)]
@@ -22,6 +29,15 @@ theorem card_fibre {K A B C : Type} [Field K] [Field A] [Field B] [Field C] [Cha
       left_inv := fun g => Subtype.ext (AlgHom.ext fun _ => rfl)
       right_inv := fun h => AlgHom.ext fun _ => rfl }
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional A B := Module.Finite.of_restrictScalars_finite K A B`. Establish `hpos : 0 < Module.finrank A B` using `Module.finrank_pos`. Use `⟨fun f => ?_, fun F => ?_⟩` and prove the remaining obligations. Establish `h` using `card_fibre (B := B) f`. Take `⟨g, hg⟩` from `Finset.card_pos.mp (h ▸ hpos)`.
+
+Conclude with `⟨g, (Finset.mem_filter.mp hg).2⟩`. Establish `hsum : (∑ g : B →ₐ[K] C, F (g.comp (IsScalarTower.toAlgHom K A B))) = (Module.finrank A B : ℝ) * ∑ f : A →ₐ[K] C, F f`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun g : B →ₐ[K] C => g.comp (IsScalarTower.toAlgHom K A B)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => F f) (fun g hg => by rw [(Finset.mem_filter.mp hg).2]), Finset.sum_const, nsmul_eq_mul]`.
+
+Use `congr 2`. Use `card_fibre (B := B) f` and compare the differences between its conclusion and the goal. Establish `hA : (Module.finrank K A : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := K) (M := A)).ne'` after adjusting the coercions. Establish `hB : (Module.finrank A B : ℝ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+
+Rewrite using `[hsum, ← Module.finrank_mul_finrank K A B]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem tower {K A B C : Type} [Field K] [Field A] [Field B] [Field C] [CharZero K]
     [Algebra K A] [Algebra K B] [Algebra K C] [Algebra A B] [IsScalarTower K A B]
     [FiniteDimensional K A] [FiniteDimensional K B] [IsAlgClosed C] :

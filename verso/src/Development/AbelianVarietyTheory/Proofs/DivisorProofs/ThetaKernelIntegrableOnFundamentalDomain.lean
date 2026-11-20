@@ -31,6 +31,21 @@ noncomputable section
 
 namespace GlobalTheory.ThetaCuspInteg
 
+/- English proof (translation)
+Establish `hC₁ : IsCompact (C₀ * (K : Set (GA D M)))` using `hC₀.mul hK`. Take `⟨K₀, hK₀n, hK₀c, m, e, hlev⟩` from `GlobalTheory.T.weilTheta_level_polynomial_in_height ψ θ hθ ε M X χ χ' ω hω Φ hΦ _ hC₁`. Take `⟨μ, 𝓕, hμ⟩` from `GlobalTheory.Size.exists_isCovolOne (sgn ε M) X`. Take `⟨S₀, d, hA1⟩` from `GlobalTheory.T.wittFrame_torus_eq_levi_element θ hθ ε M r Xf Yf hW`. Take `⟨μ', 𝓕', hcov, hA2⟩` from `GlobalTheory.T.leviThetaValue_le_det_mul_rational_sum ψ (sgn ε M) S₀ X r d χ χ' (ω.toSgn ε) hω`.
+
+Take `⟨k, A, C, hC, hB⟩` from `GlobalTheory.T.torus_mixedCoordinate_sum_rapid_decay ψ (IsWeilDatumO.std hω) θ hθ (sgn ε M) X S₀ r d μ' 𝓕' hcov c hc K₀ hK₀n hK₀c μ 𝓕 hμ τ₀ (Module.finrank ℚ D.host.F * X.rank)`. Take `⟨N₂, C₂, hC₂, hU⟩` from `GlobalTheory.T.sobolevSeminorm_weilTheta_polynomial_in_height ψ θ hθ ε M X χ χ' ω hω Φ hΦ _ hC₁ μ 𝓕 hμ k`. Use `set H : ℝ := (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ) with hHdef`. Use `⟨C * (m * H ^ e) ^ A * (C₂ * H ^ N₂), fun p hp t ht a ha k' hk' => ?_⟩` and prove the remaining obligations. Establish `hy : a⁻¹ * p * a * k' ∈ C₀ * (K : Set (GA D M))` using `Set.mul_mem_mul (hsub p hp t ht a ha) hk'`.
+
+Establish `hΨ : IsThetaFunO ψ (sgn ε M) X (ω (a⁻¹ * p * a * k', h) Φ)`. Use `hω.om_pres ((GlobalTheory.Grid.ofSgn ε M).symm (a⁻¹ * p * a * k'), h) Φ hΦ` as an intermediate fact. Simplify `this` using `[GlobalTheory.Grid.WRep.toSgn]`. Take `⟨n, hn, hnle, hnlev⟩` from `hlev _ hy h`. Establish `hs` using `hU _ hy h`.
+
+Establish `hsplit : thetaKO ω (p * a * k') h Φ = ω (a, 1) (ω (a⁻¹ * p * a * k', h) Φ) 0`. Establish `e1 : ((p * a * k', h) : GA D M × GA D X) = (a, 1) * (a⁻¹ * p * a * k', h)`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Unfold `thetaKO`. Rewrite using `[e1, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[hsplit]`. Take `⟨α, hα1, hα2, hlevi⟩` from `hA1 t ht.1 a ha`. Establish `h2` using `hB n hn _ hΨ hnlev (hvan _ h S₀ r d μ' 𝓕' hcov) t ht α.1 hα1 hα2`. Establish `hle` using `hA2 _ hΨ α`.
+
+Generalize the expression as in `ω (a⁻¹ * p * a * k', h) Φ = Ψ at *`. Establish `e' : ω (a, 1) Ψ 0 = ω.toSgn ε (d.levi α, 1) Ψ 0`. Rewrite using `[← hlevi]`. Use `show ω (a, 1) Ψ 0 = ω ((ofSgn ε M) ((ofSgn ε M).symm a), 1) Ψ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`.
+
+Rewrite `hle` using `[← e', GlobalTheory.T.halfPowerDetAbs_realDiagonal_torus θ hθ r X.rank t ht.1 α hα1 hα2]`. Use `hle.trans (h2.trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hm0 : 0 ≤ m * H ^ e` using `hn0.trans hnle`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hn0 hnle A) hC) hs ENNReal.toReal_nonneg (mul_nonneg hC (pow_nonneg hm0 A))`.
+-/
 theorem theta_le_height {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ) (ε : Bool) (M X : HSp D)
     (χ χ' : (Formalism.L2.Theta.AE D)ˣ →* Circle) (ω : WRep M X) (hω : IsWeil ψ ε M X χ χ' ω) (Φ : WO M X → ℂ)
     (hΦ : IsThetaFunO ψ (sgn ε M) X Φ) (τ₀ : D.what₂.Tau)
@@ -82,6 +97,19 @@ theorem theta_le_height {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
   exact mul_le_mul (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hn0 hnle A) hC) hs ENNReal.toReal_nonneg
     (mul_nonneg hC (pow_nonneg hm0 A))
 
+/- English proof (translation)
+Introduce `hRT D ψ θ hθ ε M X χ χ' ω hω p hsig hd ν 𝓕 hν Φ hΦ τ₀ hvan h`. Take `⟨τ, hτ⟩` from `hsig`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D M`. Establish `hν1` using `hν.1`. Take `⟨r, Xf, Yf, hW⟩` from `GlobalTheory.SiegelSet.exists_isWittFrame (GlobalTheory.AdelicU.isCMExt_host D) (isHermND_gram M)`.
+
+Establish `hr : r ≤ p` using `GlobalTheory.T.hermitianWittIndex_le_negative_signature M hτ hW`. Take `⟨K, Ω, c, hK, hΩ, -, hc, -, hcl, hcov, ⟨C₀, hC₀, hconj⟩, hmeas, -, -⟩` from `hRT D.host.F D.host.E D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) M.rank M.gram (isHermND_gram M) r Xf Yf hW`. Take `⟨-, C₁, hC₁⟩` from `hmeas ν hν1`. Take `⟨B, hB⟩` from `theta_le_height ψ θ hθ ε M X χ χ' ω hω Φ hΦ τ₀ hvan r Xf Yf hW Ω C₀ K c hC₀ hK hc hconj h`. Establish `hω' : IsWeilDatumO ψ (sgn ε M) X χ χ' (ω.toSgn ε)` using `hω`.
+
+Establish `hcont : Continuous fun g => thetaKO ω g h Φ` using `(hω'.om_cont Φ hΦ 0).comp ((continuous_ofSgn_symm ε M).prodMk continuous_const)`. Establish `hinv : ∀ γ ∈ GQ M, ∀ g, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ` using `fun γ hγ g => by`. Establish `e1 : (((ofSgn ε M).symm (γ * g), h) : GA D (sgn ε M) × GA D X) = ((ofSgn ε M).symm γ, 1) * ((ofSgn ε M).symm g, h)` using `by simp`. Use `show (ω.toSgn ε) ((ofSgn ε M).symm (γ * g), h) Φ 0 = (ω.toSgn ε) ((ofSgn ε M).symm g, h) Φ 0`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`.
+
+Conclude with `hω'.om_aut _ (ofSgn_symm_mem_GQ ε hγ) 1 (one_mem _) _ (hω'.om_pres _ _ hΦ)`. Use `set S := GlobalTheory.SiegelSet.siegelSet D.sp.cm.sig M.gram Xf Yf Ω c K with hSdef`. Establish `hSm : MeasurableSet S` using `hcl.measurableSet`. Establish `hScov : ∀ g, ∃ γ ∈ GQ M, γ * g ∈ S` using `fun g => by`. Take `⟨γ, hγ, s, hs, e⟩` from `hcov g`.
+
+Use `⟨γ⁻¹, inv_mem hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[e, inv_mul_cancel_left]`. Conclude with `hs`. Establish `hI` using `GlobalTheory.T.lintegral_siegelCone_inv_modulus_lt_top_weil D.host.F M.rank r 0 hc (by omega)`. Simplify using `only [mul_zero, pow_zero, Finset.prod_const_one, ENNReal.ofReal_one, one_mul] at hI`.
+
+Establish `key : ∫⁻ g in 𝓕, ‖thetaKO ω g h Φ‖ₑ ∂ν ≤ C₁ * (ENNReal.ofReal B * ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus D.host.F M.rank t * ∏ i, t i)⁻¹))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `⟨hcont.aestronglyMeasurable, key.trans_lt (ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI))⟩`.
+-/
 theorem integrableOn_thetaKO : GlobalTheory.Published.SiegelSetUnitary → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (M X : HSp D) (χ χ' : (Formalism.L2.Theta.AE D)ˣ →* Circle) (ω : WRep M X), IsWeil ψ ε M X χ χ' ω →
     ∀ p : ℕ, (∃ τ, Formalism.UG.HasSignature (gramAt D M τ) (M.rank - p) p) → p < M.rank →

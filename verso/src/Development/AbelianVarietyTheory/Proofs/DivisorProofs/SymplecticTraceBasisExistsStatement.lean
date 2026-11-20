@@ -10,6 +10,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ArchDualPair.dualPair | exact GlobalTheory.ArchDualPair.dualPair | (intros; apply GlobalTheory.ArchDualPair.dualPair <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.symplectic_trace_basis_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (x y : Fin n → E) (x' y' : Fin d → E),
     form σ J x y = 1 → form σ J' y' x' = -1 → ∃ t : Fin (Module.finrank F E) → E, ∀ i j,

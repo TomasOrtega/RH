@@ -10,6 +10,11 @@ open scoped Matrix
 noncomputable section
 namespace GlobalTheory.LiftLowerLoc
 
+/- English proof (translation)
+Establish `hle : Submodule.span ℂ G ≤ (LinearMap.ker φ).map (GlobalTheory.WeilM.SB X).subtype`. Use `Submodule.span_le.2 fun g hg => ?_` and prove the remaining obligations. Take `⟨hg', h0⟩` from `hG g hg`. Conclude with `⟨⟨g, hg'⟩, h0, rfl⟩`. Take `⟨y, hy, hy'⟩` from `hle hΨ`.
+
+Establish `: y = Ψ` using `Subtype.ext hy'`. Rewrite using `[← this]`. Conclude with `hy`.
+-/
 theorem eq_zero_of_mem_span {X : Type} [TopologicalSpace X] (φ : GlobalTheory.WeilM.SB X →ₗ[ℂ] ℂ) (G : Set (X → ℂ))
     (hG : ∀ g ∈ G, ∃ hg : g ∈ GlobalTheory.WeilM.SB X, φ ⟨g, hg⟩ = 0) (Ψ : GlobalTheory.WeilM.SB X)
     (hΨ : Ψ.1 ∈ Submodule.span ℂ G) : φ Ψ = 0 := by
@@ -21,6 +26,9 @@ theorem eq_zero_of_mem_span {X : Type} [TopologicalSpace X] (φ : GlobalTheory.W
   have : y = Ψ := Subtype.ext hy'
   rw [← this]; exact hy
 
+/- English proof (translation)
+The claim follows from `LinearMap.congr_fun ((repA ν β).map_one) Φ`.
+-/
 theorem omA_one_one {A D : Type*} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D]
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ν β : kˣ →* ℂˣ) (Φ : Matrix A D k → ℂ) : omA ν β (1 : GL A k) (1 : GL D k) Φ = Φ :=
@@ -32,6 +40,39 @@ def firstVar {X : Type} [TopologicalSpace X]
   map_add' x y := by simp
   map_smul' c x := by simp
 
+/- English proof (translation)
+Introduce `k _ _ _ _ a b ν β ϖ hϖ hνs hνu hβs hβu hνr ℓ hℓ ψv hψc hψ1 Bf h1 h2 h3`. Establish `hZ : ∀ Ψ₁ Ψ₂ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k), (∀ Y : Matrix (Fin a) (Fin (a + b)) k, Matrix.vecMul ℓ Y = 0 → Ψ₂.1 Y = 0) → Bf Ψ₁ Ψ₂ = 0` using `fun Ψ₁ Ψ₂ hΨ₂ => HM k a (a + b) ℓ hℓ ψv hψc hψ1 (Bf Ψ₁) (fun z Ψ Ψ' hΨ' => h3 z Ψ₁ Ψ Ψ' hΨ') Ψ₂ hΨ₂`. Take `⟨L, χ, s, hχ, hL0, hLeq, hLloc⟩` from `HF k a b ν β hνs hνu hβs hβu Bf h1 h2`. Establish `hχs : GlobalTheory.SmGL.IsSmoothChar χ`. Break down `hχ with rfl | rfl` into its components or cases.
+
+Conclude with `hνs`. Conclude with `hνs.inv`. Establish `hχr : ∀ m : ℕ, 0 < m → ∀ r : ℝ, ((χ ϖ : ℂ)) ^ m ≠ (r : ℂ)`. Break down `hχ with rfl | rfl` into its components or cases. Conclude with `hνr`.
+
+Introduce `m hm r hr`. Apply `hνr m hm r⁻¹` to reduce the goal to its premises. Establish `e : ((ν⁻¹ ϖ : ℂˣ) : ℂ) = ((ν ϖ : ℂˣ) : ℂ)⁻¹` using `by simp`. Rewrite `hr` using `[e, inv_pow]`. Rewrite using `[Complex.ofReal_inv, ← hr, inv_inv]`.
+
+Establish `hLz : L = 0` using `HL k a b χ ϖ hϖ hχs hχr s ℓ hℓ L (fun Ψ hΨ => hL0 Ψ fun Ψ₁ => hZ Ψ₁ Ψ hΨ) hLeq`. Establish `hloc : ∀ Ψ₂ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k), ∃ U ∈ nhds (X0 k (finSumFinEquiv : Fin a ⊕ Fin b ≃ Fin (a + b))), ∀ Ψ₁ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k), (∀ Y ∉ U, Ψ₁.1 Y = 0) → Bf Ψ₁ Ψ₂ = 0` using `fun Ψ₂ => hLloc Ψ₂ (by simp [hLz])`. Establish `hmove : ∀ (Ψ₂ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)) (h : GL (Fin (a + b)) k), ∃ V : Set (Matrix (Fin a) (Fin (a + b)) k), IsOpen V ∧ X0 k (finSumFinEquiv : Fin a ⊕ Fin b ≃ Fin (a + b)) * (invT h).val ∈ V ∧ ∀ Ψ₁ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + …`. Introduce `Ψ₂ h`. Set `Φ₂ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)` to `⟨omA ν β 1 h Ψ₂.1, omA_mem_SB ν β 1 h Ψ₂.2⟩`.
+
+Take `⟨U, hU, hUB⟩` from `hloc Φ₂`. Establish `hc : Continuous fun Y : Matrix (Fin a) (Fin (a + b)) k => Y * ((invT h)⁻¹).val` using `continuous_id.matrix_mul continuous_const`. Use `⟨interior ((fun Y => Y * ((invT h)⁻¹).val) ⁻¹' U), isOpen_interior, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_interior_iff_mem_nhds]`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+
+Simplify `hU` using `[Matrix.mul_assoc]`. Introduce `Ψ₁ hΨ₁`. Set `Φ₁ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)` to `⟨omA ν β 1 h Ψ₁.1, omA_mem_SB ν β 1 h Ψ₁.2⟩`. Establish `hback : ∀ Ψ : Matrix (Fin a) (Fin (a + b)) k → ℂ, Ψ = omA ν β 1 h⁻¹ (omA ν β 1 h Ψ)` using `fun Ψ => by`. Rewrite using `[← omA_mul, mul_one, inv_mul_cancel, omA_one_one]`.
+
+Rewrite using `[h2 h⁻¹ Φ₁ Ψ₁ Φ₂ Ψ₂ (hback _) (hback _)]`. Apply `hUB` to reduce the goal to its premises. Introduce `Y hY`. Use `show omA ν β 1 h Ψ₁.1 Y = 0`. Establish `hz : Ψ₁.1 (Y * (invT h).val) = 0`.
+
+Assume the negation of the conclusion as `hne`. Establish `hm` using `interior_subset (hΨ₁ _ hne)`. Simplify using `only [Set.mem_preimage, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at hm`. Conclude with `hY hm`. Simplify using `[omA, hz]`.
+
+Establish `hfull : ∀ Ψ₂ Ψ₁ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k), (∀ Y, Ψ₁.1 Y ≠ 0 → Y.rank = a) → Bf Ψ₁ Ψ₂ = 0`. Introduce `Ψ₂ Ψ₁ hrank`. Establish `hcl : IsClosed (Function.support Ψ₁.1)`. Establish `: Function.support Ψ₁.1 = (Ψ₁.1 ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`.
+
+Conclude with `(Ψ₁.2.1.isOpen_fiber 0).isClosed_compl`. Establish `hcpt : IsCompact (Function.support Ψ₁.1)`. Use `Ψ₁.2.2` as an intermediate fact. Rewrite `this` using `[HasCompactSupport, tsupport, hcl.closure_eq]`. Conclude with `this`.
+
+Establish `hex : ∀ Y : Function.support Ψ₁.1, ∃ V : Set (Matrix (Fin a) (Fin (a + b)) k), IsOpen V ∧ Y.1 ∈ V ∧ ∀ Ψ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k), (∀ Y, Ψ.1 Y ≠ 0 → Y ∈ V) → Bf Ψ Ψ₂ = 0`. Introduce and unpack `⟨Y, hY⟩`. Take `⟨h, rfl⟩` from `(rank_eq_card_iff_exists_frameMatrixFirstColumnBlock (k := k) (finSumFinEquiv : Fin a ⊕ Fin b ≃ Fin (a + b)) Y).1 (by rw [Fintype.card_fin]; exact hrank Y hY)`. Conclude with `hmove Ψ₂ h`. Use `choose V hVo hYV hVB using hex`.
+
+Take `⟨t, ht⟩` from `hcpt.elim_finite_subcover V hVo (fun Y hY => Set.mem_iUnion.2 ⟨⟨Y, hY⟩, hYV _⟩)`. Establish `hspan` using `GlobalTheory.CoverSB.mem_span_of_cover k (Fin a) (Fin (a + b)) t (fun i => V i.1) (fun i => hVo _) Ψ₁.1 Ψ₁.2 (fun Y hY => by`. Take `⟨i, hi, hYi⟩` from `Set.mem_iUnion₂.1 (ht hY)`. Conclude with `⟨⟨i, hi⟩, hYi⟩)`. Use `eq_zero_of_mem_span (firstVar Bf Ψ₂) _ ?_ Ψ₁ hspan` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨hg, i, hgi⟩`. Conclude with `⟨hg, hVB _ ⟨g, hg⟩ hgi⟩`. Establish `hν1 : ν ϖ ≠ 1` using `fun h => hνr 1 one_pos 1 (by simp [h])`. Use `LinearMap.ext fun Ψ₁ => LinearMap.ext fun Ψ₂ => ?_` and prove the remaining obligations. Take `⟨Φ₀, hΦ₀, hΦ₀r, hsub⟩` from `GlobalTheory.RankCoinv.exists_fullRank_sub_mem_twistSpan k a (a + b) (by omega) ν β hνs hνu ϖ hϖ hν1 Ψ₁.1 Ψ₁.2`.
+
+Establish `hdiff : Ψ₁.1 - Φ₀ ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)` using `sub_mem Ψ₁.2 hΦ₀`. Establish `e : Ψ₁ = ⟨Φ₀, hΦ₀⟩ + ⟨Ψ₁.1 - Φ₀, hdiff⟩` using `Subtype.ext (by simp)`. Establish `hA : Bf ⟨Φ₀, hΦ₀⟩ Ψ₂ = 0` using `hfull Ψ₂ ⟨Φ₀, hΦ₀⟩ (fun Y hY => by`. Assume the negation of the conclusion as `hr`. Conclude with `hY (hΦ₀r Y hr))`.
+
+Establish `hB : firstVar Bf Ψ₂ ⟨Ψ₁.1 - Φ₀, hdiff⟩ = 0`. Use `eq_zero_of_mem_span (firstVar Bf Ψ₂) _ ?_ _ hsub` and prove the remaining obligations. Introduce and unpack `z ⟨g, Ψ, hΨ, rfl⟩`. Use `⟨sub_mem (omA_mem_SB ν β g 1 hΨ) hΨ, ?_⟩` and prove the remaining obligations. Establish `e2 : (⟨omA ν β g 1 Ψ - Ψ, sub_mem (omA_mem_SB ν β g 1 hΨ) hΨ⟩ : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)) = ⟨omA ν β g 1 Ψ, omA_mem_SB ν β g 1 hΨ⟩ - ⟨Ψ, hΨ⟩` using `rfl`.
+
+Rewrite using `[e2, map_sub, sub_eq_zero]`. Conclude with `h1 g ⟨Ψ, hΨ⟩ _ Ψ₂ rfl`. Rewrite using `[e, map_add, LinearMap.add_apply, hA, zero_add]`. Simplify `hB` using `[firstVar]`.
+-/
 theorem loc_of_parts
     (HM : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a d : ℕ) (ℓ : Fin a → k), ℓ ≠ 0 → ∀ (ψv : AddChar k ℂ), Continuous ψv → ψv ≠ 1 →
     ∀ L : GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin d) k) →ₗ⋆[ℂ] ℂ,

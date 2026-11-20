@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.RealMult
 
+/- English proof (translation)
+Proceed by induction on `d using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r a`. Simplify using `[tensorEval_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem tensorEval_includeRight_comp {R₀ A B : Type} [CommRing R₀] [CommRing A] [CommRing B] (ρ : A →+* B)
     (d : R₀ ⊗[ℤ] A) :
     tensorEval ((Algebra.TensorProduct.includeRight (R := ℤ) (A := R₀) (B := B)).toRingHom.comp ρ) d =
@@ -24,6 +27,21 @@ theorem tensorEval_includeRight_comp {R₀ A B : Type} [CommRing R₀] [CommRing
     simp [tensorEval_tmul, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Introduce `F _ _ 𝔠 N M s U α V hDP R₀ _ k r₀ W hW Y φY hY δY h h' hh hh'`. Take `⟨-, -, hflat, hV, hnorm, hcod⟩` from `hDP`. Rewrite using `[← sub_eq_zero]`. Establish `key` using `rTensor_eq_zero_of_restrict_affine_inf N M s V hflat hnorm hcod W hW R₀ (TensorProduct.comm ℤ R₀ Γ(M, W) (h - h')) ?_`. Conclude with `(TensorProduct.comm ℤ R₀ Γ(M, W)).map_eq_zero_iff.1 key`.
+
+Introduce `W' hW' hle`. Set `ρ : Γ(M, W) →+* Γ(M, W')` to `(M.presheaf.map (homOfLE (hle.trans inf_le_left)).op).hom`. Set `ψ : Γ(M, W) →+* R₀ ⊗[ℤ] Γ(M, W')` to `(Algebra.TensorProduct.includeRight (R := ℤ) (A := R₀) (B := Γ(M, W'))).toRingHom.comp ρ`. Take `⟨X, φ, hX⟩` from `Obj.exists_isPullBy Y (spMap ψ)`. Take `⟨δ, hδ, -⟩` from `hX.existsUnique_detGen ψ δY`.
+
+Establish `hmap : spMap ψ ≫ hW.fromSpec = spMap (Algebra.TensorProduct.includeRight (R` using `ℤ) (A := R₀) (B := Γ(M, W'))).toRingHom ≫ hW'.fromSpec := by`. Rewrite using `[← hW.map_fromSpec hW' (homOfLE (hle.trans inf_le_left)).op]`. Simplify using `[ψ, ρ, spMap, Spec.map_comp]`. Establish `hXr : X.IsRapoport`. Rewrite using `[Obj.isRapoport_iff]`.
+
+Use `Set.eq_univ_of_forall fun x K _ t hx Z χ hZ ↦ ?_` and prove the remaining obligations. Establish `hZU : Z.IsPullBy U (t ≫ spMap ψ ≫ hW.fromSpec) (χ ≫ φ ≫ φY)` using `hZ.comp (hX.comp hY)`. Take `⟨z, rfl⟩` from `hx`. Establish `hmem : (t ≫ spMap ψ ≫ hW.fromSpec) z ∈ (V : Set M)`. Rewrite using `[hmap]`.
+
+Establish `: (hW'.fromSpec) ((t ≫ spMap (Algebra.TensorProduct.includeRight (R` using `ℤ) (A := R₀) (B := Γ(M, W'))).toRingHom) z) ∈ (W' : Set M) := by`. Rewrite using `[← hW'.range_fromSpec]`. Conclude with `⟨_, rfl⟩`. Conclude with `(hle.trans inf_le_right) (by simpa using this)`. Rewrite `hmem` using `[hV]`.
+
+Conclude with `hmem K _ ⟨z, rfl⟩ Z _ hZU`. Establish `e1` using `hh _ ψ X φ hXr δ hX hδ`. Establish `e2` using `hh' _ ψ X φ hXr δ hX hδ`. Establish `e : tensorEval ψ (h - h') = 0` using `by rw [map_sub, ← e1, ← e2, sub_self]`. Rewrite `e` using `[tensorEval_includeRight_comp, LinearEquiv.map_eq_zero_iff]`.
+
+Conclude with `e`.
+-/
 theorem isChartFun_unique : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {N : ℕ} {M : Scheme.{0}}
     {s : M ⟶ Sp (Localization.Away (N : ℤ))} {U : Obj F 𝔠 M} {α : U.Level N} {V : M.Opens},
     IsDPModel N s U α V → ∀ {R₀ : Type} [CommRing R₀] {k : ℕ} (r₀ : Rule (rapObj 𝔠) R₀ k)

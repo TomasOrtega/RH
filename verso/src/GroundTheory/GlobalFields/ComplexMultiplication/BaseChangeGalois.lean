@@ -17,6 +17,9 @@ variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
 variable (E) in
 
+/- English proof (translation)
+The claim follows from `WeierstrassCurve.map_baseChange (R := F) (S := F) E (g : Ω →ₐ[F] Ω)`.
+-/
 theorem baseChange_map_algEquiv (g : Ω ≃ₐ[F] Ω) :
     (E.baseChange Ω).map (g : Ω →+* Ω) = E.baseChange Ω :=
   WeierstrassCurve.map_baseChange (R := F) (S := F) E (g : Ω →ₐ[F] Ω)
@@ -27,6 +30,11 @@ noncomputable def _root_.GroundTheory.Arith.Abelian.Isogeny.conj (g : Ω ≃ₐ[
   ψ.mapOf (g : Ω →+* Ω) (baseChange_map_algEquiv E g) (baseChange_map_algEquiv E' g)
 
 variable (E) in
+/- English proof (translation)
+Establish `e : (ffCongr (baseChange_map_algEquiv E g)).toRingHom.comp (ffMap (g : Ω →+* Ω) (E.baseChange Ω)) = (galFF E g).toRingHom`. Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `c`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, ffMap_algebraMap, ffCongr_algebraMap, galFF_algebraMap]`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, ffMap_genX, ffCongr_genX, galFF_genX]`.
+
+Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, ffMap_genY, ffCongr_genY, galFF_genY]`. Conclude with `DFunLike.congr_fun e f`.
+-/
 theorem ffCongr_ffMap_eq_galFF (g : Ω ≃ₐ[F] Ω) (f : (E.baseChange Ω).toAffine.FunctionField) :
     ffCongr (baseChange_map_algEquiv E g) (ffMap (g : Ω →+* Ω) (E.baseChange Ω) f) =
       galFF E g f := by
@@ -42,16 +50,25 @@ theorem ffCongr_ffMap_eq_galFF (g : Ω ≃ₐ[F] Ω) (f : (E.baseChange Ω).toAf
         ffCongr_genY, galFF_genY]
   exact DFunLike.congr_fun e f
 
+/- English proof (translation)
+Rewrite using `[Isogeny.conj, Isogeny.mapOf_alt, ffCongr_ffMap_eq_galFF]`.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.conj_alt_bis (g : Ω ≃ₐ[F] Ω)
     (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) : (ψ.conj g).x = galFF E g ψ.x := by
   rw [Isogeny.conj, Isogeny.mapOf_alt, ffCongr_ffMap_eq_galFF]
 
+/- English proof (translation)
+Rewrite using `[Isogeny.conj, Isogeny.mapOf_y, ffCongr_ffMap_eq_galFF]`.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.conj_y (g : Ω ≃ₐ[F] Ω)
     (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) : (ψ.conj g).y = galFF E g ψ.y := by
   rw [Isogeny.conj, Isogeny.mapOf_y, ffCongr_ffMap_eq_galFF]
 
 variable (E E') in
 
+/- English proof (translation)
+Establish `e : ∀ a : F, galFF E g (algebraMap Ω (E.baseChange Ω).toAffine.FunctionField (algebraMap F Ω a)) = algebraMap Ω _ (algebraMap F Ω a)` using `fun a => by`. Rewrite using `[galFF_algebraMap, AlgEquiv.commutes]`. Apply the tactic sequence `ext <;> exact e _`.
+-/
 theorem map_galFF_curve' (g : Ω ≃ₐ[F] Ω) :
     ((E'.baseChange Ω).baseChange (E.baseChange Ω).toAffine.FunctionField).map
       (galFF E g : _ →+* _) =
@@ -68,11 +85,17 @@ noncomputable def galPt (g : Ω ≃ₐ[F] Ω) :
       ((E'.baseChange Ω).baseChange (E.baseChange Ω).toAffine.FunctionField).toAffine.Point :=
   autPoint _ (galFF E g) (map_galFF_curve' E E' g)
 
+/- English proof (translation)
+Rewrite using `[ψ.val_eq, galPt, autPoint_some, (ψ.conj g).val_eq]`. Conclude with `point_some_congr (ψ.conj_alt_bis g).symm (ψ.conj_y g).symm`.
+-/
 theorem galPt_val (g : Ω ≃ₐ[F] Ω) (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) :
     galPt E E' g ψ.1 = (ψ.conj g).1 := by
   rw [ψ.val_eq, galPt, autPoint_some, (ψ.conj g).val_eq]
   exact point_some_congr (ψ.conj_alt_bis g).symm (ψ.conj_y g).symm
 
+/- English proof (translation)
+Consider the cases of `c with`. Consider the case `zero => rfl`. Consider the case `some x y h => show autPoint _ _ _ (Point.some _ _ _) = Point.some _ _ _`. Rewrite using `[autPoint_some]`. Conclude with `point_some_congr (galFF_algebraMap E g x) (galFF_algebraMap E g y)`.
+-/
 theorem galPt_constMap [DecidableEq Ω] (g : Ω ≃ₐ[F] Ω) (c : (E'.baseChange Ω).toAffine.Point) :
     galPt E E' g (constMap (E'.baseChange Ω) (E.baseChange Ω).toAffine.FunctionField c) =
       constMap (E'.baseChange Ω) (E.baseChange Ω).toAffine.FunctionField
@@ -84,6 +107,9 @@ theorem galPt_constMap [DecidableEq Ω] (g : Ω ≃ₐ[F] Ω) (c : (E'.baseChang
     rw [autPoint_some]
     exact point_some_congr (galFF_algebraMap E g x) (galFF_algebraMap E g y)
 
+/- English proof (translation)
+Consider the cases of `Q with`. Consider the case `zero => rfl`. Consider the case `some a b h`. Rewrite using `[Point.map_some, galPt, autPoint_some, autPoint_some, Point.map_some]`. Conclude with `point_some_congr (galFF_translate E g R a) (galFF_translate E g R b)`.
+-/
 theorem galPt_map_translate [IsAlgClosed Ω] [DecidableEq Ω] (g : Ω ≃ₐ[F] Ω)
     (R : (E.baseChange Ω).toAffine.Point)
     (Q : ((E'.baseChange Ω).baseChange (E.baseChange Ω).toAffine.FunctionField).toAffine.Point) :
@@ -95,6 +121,9 @@ theorem galPt_map_translate [IsAlgClosed Ω] [DecidableEq Ω] (g : Ω ≃ₐ[F] 
     rw [Point.map_some, galPt, autPoint_some, autPoint_some, Point.map_some]
     exact point_some_congr (galFF_translate E g R a) (galFF_translate E g R b)
 
+/- English proof (translation)
+Apply `Isogeny.pointMap_eq_of_map_translate` to reduce the goal to its premises. Establish `h` using `congrArg (galPt E E' g) (ψ.map_translate R)`. Rewrite `h` using `[galPt_map_translate, map_add, galPt_val, galPt_constMap]`. Conclude with `h`.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.pointMap_conj [IsAlgClosed Ω] [DecidableEq Ω]
     (g : Ω ≃ₐ[F] Ω) (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω))
     (R : (E.baseChange Ω).toAffine.Point) :
@@ -111,6 +140,17 @@ section Torsion
 variable {F Ω : Type u} [Field F] [Field Ω] [Algebra F Ω] [DecidableEq Ω]
 variable {E E' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic]
 
+/- English proof (translation)
+Establish `hx : IsAlgebraic F x`. Break down `(zsmul_eq_zero_iff_ΨSq (E.baseChange Ω) n _).mp hR with h0 | ⟨x', y', h', he, hev⟩` into its components or cases. Conclude with `absurd h0 (Point.some_ne_zero h)`. Establish `hxx : x = x'` using `(Point.some.inj he).1`. Use `⟨E.ΨSq n, ΨSq_ne_zero_of_ne_zero E hn, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hxx, ← eval_map_algebraMap, ← WeierstrassCurve.map_ΨSq]`. Conclude with `hev`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `hxi : IsIntegral F x` using `hx.isIntegral`. Use `set A := integralClosure F Ω`.
+
+Establish `hb : _root_.IsIntegral F (algebraMap F Ω E.a₁ * x + algebraMap F Ω E.a₃)` using `(isIntegral_algebraMap.mul hxi).add isIntegral_algebraMap`. Establish `hc : _root_.IsIntegral F (x ^ 3 + algebraMap F Ω E.a₂ * x ^ 2 + algebraMap F Ω E.a₄ * x + algebraMap F Ω E.a₆)` using `(((hxi.pow 3).add (isIntegral_algebraMap.mul (hxi.pow 2))).add (isIntegral_algebraMap.mul hxi)).add isIntegral_algebraMap`. Set `b : A` to `⟨_, hb⟩`. Set `c : A` to `⟨_, hc⟩`. Set `q : A[X]` to `X ^ 2 + C b * X - C c`.
+
+Establish `hmon : q.Monic`. Simplify using `only [q]`. Use `monicity!`. Establish `heq : aeval y q = 0`. Establish `e` using `(equation_iff _ _).mp h.1`.
+
+Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at e`. Simplify using `only [q, map_sub, map_add, map_mul, map_pow, aeval_X, aeval_C]`. Use `show y ^ 2 + (algebraMap F Ω E.a₁ * x + algebraMap F Ω E.a₃) * y - (x ^ 3 + algebraMap F Ω E.a₂ * x ^ 2 + algebraMap F Ω E.a₄ * x + algebraMap F Ω E.a₆) = 0`. Take the linear combination `e`. Conclude with `(isIntegral_trans (R := F) (A := A) y ⟨q, hmon, heq⟩).isAlgebraic`.
+-/
 theorem isAlgebraic_of_zsmul_eq_zero {n : ℤ} (hn : n ≠ 0) {x y : Ω}
     (h : (E.baseChange Ω).toAffine.Nonsingular x y)
     (hR : n • (Point.some x y h : (E.baseChange Ω).toAffine.Point) = 0) :
@@ -147,6 +187,9 @@ theorem isAlgebraic_of_zsmul_eq_zero {n : ℤ} (hn : n ≠ 0) {x y : Ω}
     linear_combination e
   exact (isIntegral_trans (R := F) (A := A) y ⟨q, hmon, heq⟩).isAlgebraic
 
+/- English proof (translation)
+Consider the cases of `R with`. Consider the case `zero => exact map_zero _`. Consider the case `some x y h`. Take `⟨hx, hy⟩` from `isAlgebraic_of_zsmul_eq_zero hn h hR`. Conclude with `galPointsHom_some_eq_self F Ω E h (hg x hx) (hg y hy)`.
+-/
 theorem galPointsHom_eq_self_of_zsmul_eq_zero (g : Ω ≃ₐ[F] Ω)
     (hg : ∀ z : Ω, IsAlgebraic F z → g z = z) {n : ℤ} (hn : n ≠ 0)
     {R : (E.baseChange Ω).toAffine.Point} (hR : n • R = 0) : galPointsHom F Ω E g R = R := by
@@ -156,6 +199,27 @@ theorem galPointsHom_eq_self_of_zsmul_eq_zero (g : Ω ≃ₐ[F] Ω)
     obtain ⟨hx, hy⟩ := isAlgebraic_of_zsmul_eq_zero hn h hR
     exact galPointsHom_some_eq_self F Ω E h (hg x hx) (hg y hy)
 
+/- English proof (translation)
+Establish `hfix : ∀ {n : ℤ}, n ≠ 0 → ∀ R : (E.baseChange Ω).toAffine.Point, n • R = 0 → (ψ.conj g).pointMap R = ψ.pointMap R`. Introduce `n hn R hR`. Establish `h1` using `ψ.pointMap_conj g R`. Rewrite `h1` using `[galPointsHom_eq_self_of_zsmul_eq_zero g hg hn hR]`. Rewrite using `[h1]`.
+
+Apply `galPointsHom_eq_self_of_zsmul_eq_zero g hg hn` to reduce the goal to its premises. Rewrite using `[← Isogeny.pointHom_apply, ← map_zsmul, hR, map_zero]`. Use `set χ := (ψ.conj g).1 - ψ.1 with hχ`. Establish `hmem : χ ∈ isogHom (E.baseChange Ω) (E'.baseChange Ω)` using `(isogHom _ _).sub_mem (ψ.conj g).respectsAdd ψ.respectsAdd`. Assume the negation of the conclusion as `hne`.
+
+Establish `hχ0 : (⟨χ, hmem⟩ : isogHom (E.baseChange Ω) (E'.baseChange Ω)) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Apply `Isogeny.ext'` to reduce the goal to its premises. Establish `h0'` using `congrArg Subtype.val h0`.
+
+Conclude with `sub_eq_zero.mp h0'`. Use `set φχ := isogOfHom ⟨χ, hmem⟩ hχ0`. Establish `hker : ∀ {n : ℤ}, n ≠ 0 → ∀ R, n • R = 0 → R ∈ φχ.pointHom.ker`. Introduce `n hn R hR`. Rewrite using `[AddMonoidHom.mem_ker, Isogeny.pointHom_apply]`.
+
+Apply `Isogeny.pointMap_eq_of_map_translate` to reduce the goal to its premises. Rewrite using `[isogOfHom_val, map_zero, add_zero]`. Use `show Point.map _ ((ψ.conj g).1 - ψ.1) = (ψ.conj g).1 - ψ.1`. Rewrite using `[map_sub, Isogeny.map_translate, Isogeny.map_translate, hfix hn R hR]`. Normalize the expressions using the abelian group laws.
+
+Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ2, hℓ⟩ : ∃ ℓ : ℕ, 2 ≤ ℓ ∧ (ℓ : Ω) ≠ 0 := by`. Distinguish the cases in `h2 : ((2 : ℕ) : Ω) = 0`. Use `⟨3, by norm_num, ?_⟩` and prove the remaining obligations. Establish `e : ((3 : ℕ) : Ω) = ((2 : ℕ) : Ω) + 1` using `by push_cast; ring`. Rewrite using `[e, h2, zero_add]`.
+
+Conclude with `one_ne_zero`. Conclude with `⟨2, le_refl 2, h2⟩`. Use `set d := φχ.degree`. Use `set n : ℤ := (ℓ : ℤ) ^ (d + 1) with hn`. Establish `hnΩ : (n : Ω) ≠ 0`.
+
+Rewrite using `[hn]`. Use `push_cast`. Conclude with `pow_ne_zero _ hℓ`. Establish `hn0 : n ≠ 0` using `fun h => hnΩ (by rw [h, Int.cast_zero])`. Establish `hcard` using `card_zsmul_eq_zero (E.baseChange Ω) hnΩ`.
+
+Establish `hle : Nat.card {P : (E.baseChange Ω).toAffine.Point // n • P = 0} ≤ Nat.card φχ.pointHom.ker` using `Nat.card_le_card_of_injective (fun P => ⟨P.1, hker hn0 P.1 P.2⟩) (by intro a b h; simp only [Subtype.mk.injEq] at h; exact Subtype.ext h)`. Establish `hkd` using `φχ.card_ker_le_degree`. Establish `hnat : n.natAbs = ℓ ^ (d + 1)`. Rewrite using `[hn, Int.natAbs_pow, Int.natAbs_natCast]`. Rewrite `hle` using `[hcard, hnat]`.
+
+Establish `h2 : d < 2 ^ (d + 1)` using `(Nat.lt_two_pow_self).trans (Nat.pow_lt_pow_right (by norm_num) (by omega))`. Establish `h3 : 2 ^ (d + 1) ≤ ℓ ^ (d + 1)` using `Nat.pow_le_pow_left hℓ2 _`. Establish `h4 : ℓ ^ (d + 1) ≤ (ℓ ^ (d + 1)) ^ 2` using `Nat.le_self_pow (by norm_num) _`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GroundTheory.Arith.Abelian.Isogeny.conj_eq_self [IsAlgClosed Ω] (g : Ω ≃ₐ[F] Ω)
     (hg : ∀ z : Ω, IsAlgebraic F z → g z = z)
     (ψ : Isogeny (E.baseChange Ω) (E'.baseChange Ω)) : ψ.conj g = ψ := by

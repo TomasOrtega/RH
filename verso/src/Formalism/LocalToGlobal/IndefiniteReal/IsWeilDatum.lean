@@ -31,10 +31,19 @@ instance : One (HeisG B) := ⟨⟨0, 0⟩⟩
 
 instance : Inv (HeisG B) := ⟨fun x => ⟨-x.w, -x.t⟩⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mul_def (x y : HeisG B) : x * y = ⟨x.w + y.w, x.t + y.t + ⅟2 * B x.w y.w⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem one_def : (1 : HeisG B) = ⟨0, 0⟩ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem inv_def (x : HeisG B) : x⁻¹ = ⟨-x.w, -x.t⟩ := rfl
 
 end HeisG

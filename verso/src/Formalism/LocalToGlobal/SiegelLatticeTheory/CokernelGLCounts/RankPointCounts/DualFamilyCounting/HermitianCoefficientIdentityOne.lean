@@ -13,27 +13,44 @@ section
 variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_iff_lemma {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     v ∈ spanS S b ↔ ∃ c : ι → K, (∀ i, c i ∈ S) ∧ v = ∑ i, c i • b i := Iff.rfl
 
+/- English proof (translation)
+Rewrite `hv`, the goal using `[mem_iff_lemma]`. Take `⟨d, hd, rfl⟩` from `hv`. Conclude with `⟨fun i => a * d i, fun i => S.mul_mem ha (hd i), by simp [Finset.smul_sum, mul_smul]⟩`.
+-/
 private theorem smul_mem_lemma_2 {ι : Type} [Fintype ι] {g : ι → V} {a : K} (ha : a ∈ S) {v : V}
     (hv : v ∈ spanS S g) : a • v ∈ spanS S g := by
   rw [mem_iff_lemma] at hv ⊢
   obtain ⟨d, hd, rfl⟩ := hv
   exact ⟨fun i => a * d i, fun i => S.mul_mem ha (hd i), by simp [Finset.smul_sum, mul_smul]⟩
 
+/- English proof (translation)
+Rewrite `hv` using `[mem_iff_lemma]`. Take `⟨c, hc, rfl⟩` from `hv`. Conclude with `AddSubgroup.sum_mem _ fun k _ => smul_mem_lemma_2 (hc k) (hfg k)`.
+-/
 theorem spanS_le_of {κ ι : Type} [Fintype κ] [Fintype ι] {f : κ → V} {g : ι → V}
     (hfg : ∀ k, f k ∈ spanS S g) {v : V} (hv : v ∈ spanS S f) : v ∈ spanS S g := by
   rw [mem_iff_lemma] at hv
   obtain ⟨c, hc, rfl⟩ := hv
   exact AddSubgroup.sum_mem _ fun k _ => smul_mem_lemma_2 (hc k) (hfg k)
 
+/- English proof (translation)
+Rewrite `hv` using `[mem_iff_lemma]`. Take `⟨c, -, rfl⟩` from `hv`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+-/
 theorem mem_span_of_spanS {ι : Type} [Fintype ι] {g : ι → V} {v : V} (hv : v ∈ spanS S g) :
     v ∈ Submodule.span K (Set.range g) := by
   rw [mem_iff_lemma] at hv
   obtain ⟨c, -, rfl⟩ := hv
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
+/- English proof (translation)
+Use `⟨le_antisymm ?_ ?_, fun v => ⟨spanS_le_of h1, spanS_le_of h2⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `mem_span_of_spanS (h1 k)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_span_of_spanS (h2 i)`.
+-/
 theorem spans_eq {κ ι : Type} [Fintype κ] [Fintype ι] {f : κ → V} {g : ι → V}
     (h1 : ∀ k, f k ∈ spanS S g) (h2 : ∀ i, g i ∈ spanS S f) :
     Submodule.span K (Set.range f) = Submodule.span K (Set.range g) ∧
@@ -46,17 +63,26 @@ theorem spans_eq {κ ι : Type} [Fintype κ] [Fintype ι] {f : κ → V} {g : ι
     rintro _ ⟨i, rfl⟩
     exact mem_span_of_spanS (h2 i)
 
+/- English proof (translation)
+Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, hxy, hyx, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, mul_zero, add_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem form_pair (x y : V) (hxy : h x y = 0) (hyx : h y x = 0) (α β γ δ : K) :
     h (α • x + β • y) (γ • x + δ • y) = star α * γ * h x x + star β * δ * h y y := by
   simp only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, map_smul, hxy, hyx,
     smul_eq_mul, starRingEnd_apply, RingHom.id_apply, mul_zero, add_zero, zero_add]
   ring
 
+/- English proof (translation)
+Simplify using `only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, hxz, hyz, smul_eq_mul, mul_zero, add_zero]`.
+-/
 theorem form_pair_orth (x y z : V) (hxz : h x z = 0) (hyz : h y z = 0) (α β : K) :
     h (α • x + β • y) z = 0 := by
   simp only [map_add, map_smulₛₗ, LinearMap.add_apply, LinearMap.smul_apply, hxz, hyz,
     smul_eq_mul, mul_zero, add_zero]
 
+/- English proof (translation)
+Establish `hAA : A * A⁻¹ = 1` using `mul_inv_cancel₀ hA`. Establish `e : A * (star α * α + β * (star β * (B * A⁻¹))) = D`. Rewrite using `[hDdef]`. Take the linear combination `(β * star β * B) * hAA`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hermitian_coefficient_identity_one {A B D α β : K} (hA : A ≠ 0) (hD : D ≠ 0)
     (hDdef : D = star α * α * A + star β * β * B) :
     A * D⁻¹ * (star α * α + β * (star β * (B * A⁻¹))) = 1 := by
@@ -68,6 +94,9 @@ theorem hermitian_coefficient_identity_one {A B D α β : K} (hA : A ≠ 0) (hD 
       = D⁻¹ * (A * (star α * α + β * (star β * (B * A⁻¹)))) := by ring
     _ = 1 := by rw [e, inv_mul_cancel₀ hD]
 
+/- English proof (translation)
+Establish `hAA : A * A⁻¹ = 1` using `mul_inv_cancel₀ hA`. Establish `e : A * (star β * (B * A⁻¹) * β + α * star α) = D`. Rewrite using `[hDdef]`. Take the linear combination `(star β * β * B) * hAA`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem hermitian_coefficient_identity_two {A B D α β : K} (hA : A ≠ 0) (hD : D ≠ 0)
     (hDdef : D = star α * α * A + star β * β * B) :
     A * D⁻¹ * (star β * (B * A⁻¹) * β + α * star α) = 1 := by
@@ -79,14 +108,77 @@ theorem hermitian_coefficient_identity_two {A B D α β : K} (hA : A ≠ 0) (hD 
       = D⁻¹ * (A * (star β * (B * A⁻¹) * β + α * star α)) := by ring
     _ = 1 := by rw [e, inv_mul_cancel₀ hD]
 
+/- English proof (translation)
+The claim follows from `And.intro (mul_ne_zero ha.1 hc.1) (And.intro (S.mul_mem ha.2.1 hc.2.1) (by rw [mul_inv]; exact S.mul_mem ha.2.2 hc.2.2))`.
+-/
 private theorem isUnitIn_mul_dual_family_counting {a c : K} (ha : IsUnitIn S a) (hc : IsUnitIn S c) :
     IsUnitIn S (a * c) :=
   And.intro (mul_ne_zero ha.1 hc.1)
     (And.intro (S.mul_mem ha.2.1 hc.2.1) (by rw [mul_inv]; exact S.mul_mem ha.2.2 hc.2.2))
 
+/- English proof (translation)
+The claim follows from `And.intro (inv_ne_zero ha.1) (And.intro ha.2.2 (by rw [inv_inv]; exact ha.2.1))`.
+-/
 private theorem isUnitIn_inv {a : K} (ha : IsUnitIn S a) : IsUnitIn S a⁻¹ :=
   And.intro (inv_ne_zero ha.1) (And.intro ha.2.2 (by rw [inv_inv]; exact ha.2.1))
 
+/- English proof (translation)
+Use `set A := h (b i₀) (b i₀) with hAdef`. Use `set B := h (b j) (b j) with hBdef`. Use `set Y := α • b i₀ + β • b j with hYdef`. Use `set D := h Y Y with hDdef'`. Establish `hA : A ≠ 0` using `unit_ne (hu i₀)`.
+
+Establish `hD : D ≠ 0` using `unit_ne hY`. Establish `hAA : A * A⁻¹ = 1` using `mul_inv_cancel₀ hA`. Establish `hπ0 : π ≠ 0` using `hπ.ne`. Establish `hAs : star A = A`. Use `hs.eq (b i₀) (b i₀)` as an intermediate fact.
+
+Rewrite `this` using `[starRingEnd_apply]`. Then use the resulting hypothesis. Establish `hBs : star B = B`. Use `hs.eq (b j) (b j)` as an intermediate fact. Rewrite `this` using `[starRingEnd_apply]`. Then use the resulting hypothesis. Establish `hDdef : D = star α * α * A + star β * β * B` using `form_pair (b i₀) (b j) (ho i₀ j hij) (ho j i₀ hij.symm) α β α β`.
+
+Take `⟨d, hd⟩ : ∃ d, e j = e i₀ + d` from `⟨_, (Nat.add_sub_of_le hm).symm⟩`. Establish `hBA : B * A⁻¹ ∈ S`. Establish `eq : B * A⁻¹ = (B * (π ^ e j)⁻¹) * (A * (π ^ e i₀)⁻¹)⁻¹ * π ^ d`. Rewrite using `[hd, pow_add]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[eq]`. Conclude with `S.mul_mem (S.mul_mem (hu j).2.1 (hu i₀).2.2) (S.pow_mem hπ.mem d)`. Establish `hAD : A * D⁻¹ ∈ S`. Establish `eq : A * D⁻¹ = (A * (π ^ e i₀)⁻¹) * (D * (π ^ e i₀)⁻¹)⁻¹`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[eq]`. Conclude with `S.mul_mem (hu i₀).2.1 hY.2.2`. Establish `hγ : -(star β * (B * A⁻¹)) ∈ S` using `S.neg_mem (S.mul_mem (hS.star_mem β hβ) hBA)`. Establish `hδ : star α ∈ S` using `hS.star_mem α hα`. Use `set Z := (-(star β * (B * A⁻¹))) • b i₀ + star α • b j with hZdef`.
+
+Establish `hYZ : h Y Z = 0`. Combine the equalities or inequalities in the displayed calculation. Establish `hZY : h Z Y = 0`. Use `hs.eq Y Z` as an intermediate fact. Rewrite `this` using `[hYZ, map_zero]`.
+
+Conclude with `this.symm`. Establish `hsg : star (-(star β * (B * A⁻¹))) = -(A⁻¹ * B * β)`. Rewrite using `[star_neg, star_mul, star_mul, star_star, star_inv₀, hAs, hBs]`. Establish `hZZ : h Z Z = B * A⁻¹ * D`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hsg, star_star, hDdef]`. Take the linear combination `(A⁻¹ * B ^ 2 * β * star β - α * star α * B) * hAA`. Establish `hZu : IsUnitIn S (h Z Z * (π ^ e j)⁻¹)`. Establish `eqZ : h Z Z * (π ^ e j)⁻¹ = (B * (π ^ e j)⁻¹) * (D * (π ^ e i₀)⁻¹) * (A * (π ^ e i₀)⁻¹)⁻¹`. Rewrite using `[hZZ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[eqZ]`. Conclude with `isUnitIn_mul_dual_family_counting (isUnitIn_mul_dual_family_counting (hu j) hY) (isUnitIn_inv (hu i₀))`. Take `⟨c, hc0, hcj, hck⟩ : ∃ c : ι → V, c i₀ = Y ∧ c j = Z ∧ ∀ k, k ≠ i₀ → k ≠ j → c k = b k` from `⟨Function.update (Function.update b i₀ Y) j Z, by simp [Function.update_apply, hij], by simp [Function.update_apply], fun k h1 h2 => by simp [Function.update_apply, h1, h2]⟩`. Establish `hYk : ∀ k, k ≠ i₀ → k ≠ j → h Y (b k) = 0` using `fun k h1 h2 => form_pair_orth _ _ _ (ho i₀ k (Ne.symm h1)) (ho j k (Ne.symm h2)) α β`.
+
+Establish `hZk : ∀ k, k ≠ i₀ → k ≠ j → h Z (b k) = 0` using `fun k h1 h2 => form_pair_orth _ _ _ (ho i₀ k (Ne.symm h1)) (ho j k (Ne.symm h2)) _ _`. Establish `hkY : ∀ k, k ≠ i₀ → k ≠ j → h (b k) Y = 0`. Introduce `k h1 h2`. Use `show h (b k) (α • b i₀ + β • b j) = 0`. Rewrite using `[map_add, map_smul, map_smul, ho k i₀ h1, ho k j h2, smul_zero, smul_zero, add_zero]`.
+
+Establish `hkZ : ∀ k, k ≠ i₀ → k ≠ j → h (b k) Z = 0`. Introduce `k h1 h2`. Use `show h (b k) ((-(star β * (B * A⁻¹))) • b i₀ + star α • b j) = 0`. Rewrite using `[map_add, map_smul, map_smul, ho k i₀ h1, ho k j h2, smul_zero, smul_zero, add_zero]`. Establish `ortho : ∀ p q, p ≠ q → h (c p) (c q) = 0`.
+
+Introduce `p q hpq`. Distinguish the cases in `hp0 : p = i₀`. Rewrite `hpq`, the goal using `[hp0]`. Distinguish the cases in `hqj : q = j`. Rewrite using `[hqj, hc0, hcj]`.
+
+Conclude with `hYZ`. Rewrite using `[hc0, hck q (Ne.symm hpq) hqj]`. Conclude with `hYk q (Ne.symm hpq) hqj`. Distinguish the cases in `hpj : p = j`. Rewrite `hpq`, the goal using `[hpj]`.
+
+Distinguish the cases in `hq0 : q = i₀`. Rewrite using `[hq0, hcj, hc0]`. Conclude with `hZY`. Rewrite using `[hcj, hck q hq0 (Ne.symm hpq)]`. Conclude with `hZk q hq0 (Ne.symm hpq)`.
+
+Rewrite using `[hck p hp0 hpj]`. Distinguish the cases in `hq0 : q = i₀`. Rewrite using `[hq0, hc0]`. Conclude with `hkY p hp0 hpj`. Distinguish the cases in `hqj : q = j`.
+
+Rewrite using `[hqj, hcj]`. Conclude with `hkZ p hp0 hpj`. Rewrite using `[hck q hq0 hqj]`. Conclude with `ho p q hpq`. Establish `units : ∀ i, IsUnitIn S (h (c i) (c i) * (π ^ e i)⁻¹)`.
+
+Introduce `i`. Distinguish the cases in `hi0 : i = i₀`. Rewrite using `[hi0, hc0]`. Conclude with `hY`. Distinguish the cases in `hij' : i = j`.
+
+Rewrite using `[hij', hcj]`. Conclude with `hZu`. Rewrite using `[hck i hi0 hij']`. Conclude with `hu i`. Establish `memb : ∀ x y : K, x ∈ S → y ∈ S → x • b i₀ + y • b j ∈ spanS S b` using `fun x y hx hy => add_mem (smul_mem_lemma_2 hx (mem_spanS_self b i₀)) (smul_mem_lemma_2 hy (mem_spanS_self b j))`.
+
+Establish `h1 : ∀ k, c k ∈ spanS S b`. Introduce `k`. Distinguish the cases in `hk0 : k = i₀`. Rewrite using `[hk0, hc0]`. Conclude with `memb α β hα hβ`.
+
+Distinguish the cases in `hkj : k = j`. Rewrite using `[hkj, hcj]`. Conclude with `memb _ _ hγ hδ`. Rewrite using `[hck k hk0 hkj]`. Conclude with `mem_spanS_self b k`.
+
+Establish `memc : ∀ x y : K, x ∈ S → y ∈ S → x • Y + y • Z ∈ spanS S c` using `fun x y hx hy => by`. Use `add_mem (smul_mem_lemma_2 hx (mem_spanS_self c i₀)) (smul_mem_lemma_2 hy (mem_spanS_self c j))` as an intermediate fact. Rewrite `this` using `[hc0, hcj]`. Then use the resulting hypothesis. Establish `exp2 : ∀ a1 a2 : K, a1 • Y + a2 • Z = (a1 * α + a2 * (-(star β * (B * A⁻¹)))) • b i₀ + (a1 * β + a2 * star α) • b j`. Introduce `a1 a2`.
+
+Rewrite using `[hYdef, hZdef]`. Simplify using `only [smul_add, smul_smul, add_smul]`. Normalize the expressions using the abelian group laws. Establish `h2 : ∀ i, b i ∈ spanS S c`. Introduce `i`.
+
+Distinguish the cases in `hi0 : i = i₀`. Rewrite using `[hi0]`. Establish `e1 : b i₀ = (A * D⁻¹ * star α) • Y + (-(A * D⁻¹ * β)) • Z`. Rewrite using `[exp2]`. Establish `c1 : A * D⁻¹ * star α * α + -(A * D⁻¹ * β) * -(star β * (B * A⁻¹)) = 1`.
+
+Take the linear combination `hermitian_coefficient_identity_one hA hD hDdef`. Establish `c2 : A * D⁻¹ * star α * β + -(A * D⁻¹ * β) * star α = 0` using `by ring`. Rewrite using `[c1, c2, one_smul, zero_smul, add_zero]`. Rewrite using `[e1]`. Conclude with `memc _ _ (S.mul_mem hAD hδ) (S.neg_mem (S.mul_mem hAD hβ))`.
+
+Distinguish the cases in `hij' : i = j`. Rewrite using `[hij']`. Establish `e2 : b j = (A * D⁻¹ * (star β * (B * A⁻¹))) • Y + (A * D⁻¹ * α) • Z`. Rewrite using `[exp2]`. Establish `c1 : A * D⁻¹ * (star β * (B * A⁻¹)) * α + A * D⁻¹ * α * -(star β * (B * A⁻¹)) = 0` using `by ring`.
+
+Establish `c2 : A * D⁻¹ * (star β * (B * A⁻¹)) * β + A * D⁻¹ * α * star α = 1`. Take the linear combination `hermitian_coefficient_identity_two hA hD hDdef`. Rewrite using `[c1, c2, zero_smul, one_smul, zero_add]`. Rewrite using `[e2]`. Conclude with `memc _ _ (S.mul_mem hAD (S.mul_mem (hS.star_mem β hβ) hBA)) (S.mul_mem hAD hα)`.
+
+Rewrite using `[← hck i hi0 hij']`. Conclude with `mem_spanS_self c i`. Take `⟨hsp, hiff⟩` from `spans_eq h1 h2`. Conclude with `⟨c, ortho, units, hc0, hck, hsp, hiff⟩`.
+-/
 theorem rot2 (hS : IsHermSemilocal S) (hπ : IsUnif S π) (hs : h.IsSymm) {ι : Type} [Fintype ι]
     [DecidableEq ι] {b : ι → V} {e : ι → ℕ} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (hu : ∀ i, IsUnitIn S (h (b i) (b i) * (π ^ e i)⁻¹)) {i₀ j : ι} (hij : i₀ ≠ j)

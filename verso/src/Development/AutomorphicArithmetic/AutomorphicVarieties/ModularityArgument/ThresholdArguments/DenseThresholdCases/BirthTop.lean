@@ -78,7 +78,13 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open UpperTheory.V UpperTheory.V.Af UpperTheory.V.Cu UpperTheory.V.Z.Bc
 namespace UpperTheory.V.Z.Win.Birth
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.Z.Bc.second_initial_of_prints (_root_.UpperTheory.V.Z.Bc.hypothesesZ' hH) (_root_.UpperTheory.V.Z.Win.Birth.awChain_of_printsH hH) (_root_.UpperTheory.V.Z.Win.Birth.propEGP_of_printsH hH)`.
+-/
 theorem seed2_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Sd.Seed2Alt := _root_.UpperTheory.V.Z.Bc.second_initial_of_prints (_root_.UpperTheory.V.Z.Bc.hypothesesZ' hH) (_root_.UpperTheory.V.Z.Win.Birth.awChain_of_printsH hH) (_root_.UpperTheory.V.Z.Win.Birth.propEGP_of_printsH hH)
+/- English proof (translation)
+The claim follows from `have hA := hH.toClassicalTheorems _root_.UpperTheory.V.Cu.fourth_initial_of_rank_four_data alNe _root_.UpperTheory.V.Cu.tauEx' (_root_.UpperTheory.V.Cu.rank_four_automorphy_of_tensor_of_base_change_of_induction hH (_root_.UpperTheory.V.Z.Bc.upQuadI_of_alt hA (quadLiftRealToComple …`.
+-/
 theorem fourth_initial_of_prints_h (hH : _root_.UpperTheory.V.Af.HypothesesH') : _root_.UpperTheory.V.Cu.SeedIVAlt :=
   have hA := hH.toClassicalTheorems
   _root_.UpperTheory.V.Cu.fourth_initial_of_rank_four_data alNe _root_.UpperTheory.V.Cu.tauEx' (_root_.UpperTheory.V.Cu.rank_four_automorphy_of_tensor_of_base_change_of_induction hH (_root_.UpperTheory.V.Z.Bc.upQuadI_of_alt hA (quadLiftRealToComplex_of_base_change hH.bc)) (_root_.UpperTheory.V.Z.Bc.upSolI_of_alt hA (cyclicLiftRankTwo_of_cyclic_base_change hH.cyc))

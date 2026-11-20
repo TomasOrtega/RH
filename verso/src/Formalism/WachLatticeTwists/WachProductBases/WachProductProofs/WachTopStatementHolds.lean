@@ -27,6 +27,47 @@ def NHom.killIdeal {S : HidaSetting O A} {ι : Type} {pr : Equiv.Perm ι} {D₁ 
     obtain ⟨x, hx, hfx⟩ := ha n hn
     exact ⟨r • x, (W₁.N i).smul_mem r hx, by rw [map_smul, hfx, smul_smul, smul_eq_mul]⟩
 
+/- English proof (translation)
+Introduce `O A _ _ _ S ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ h₀ H hrad hdec hP20 hP21 hP22 hP50 hP51 hP52 hL0 hL1 hL2 hP6 hM hh hH`. Consider the cases of `nonempty_fintype ι`. Take `⟨⟨a, hka⟩, hker⟩` from `hP6`. Establish `hpi : ∀ i, ∃ c : ℕ, E.π.Kills i (S.π ^ c)` using `fun i => cokernel_killed_holds A D₁ D₂ (E.π.f i) (W₁.N i) (W₂.N i) S.π (S.ℓ : A) a (E.surj i) (E.π.N_le i) (hka i) (hL1.2.1 i a) (hL2.2.2.2 i) (hL2.1 i)`. Use `choose c hc using hpi`.
+
+Establish `hcu : ∀ i, E.π.Kills i (S.π ^ (univ.sup c))`. Introduce `i n hn`. Take `⟨n₁, h1, h2⟩` from `hc i n hn`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (Finset.le_sup (f := c) (mem_univ i))`. Conclude with `⟨S.π ^ k • n₁, (W₁.N i).smul_mem _ h1, by`.
+
+Rewrite using `[map_smul, h2, hk, pow_add, mul_comm, mul_smul]⟩`. Establish `hL3` using `lemma_three_a_holds O A S ι pr D₁ D₂ W₁ W₂ E.π M h H _ hdec hP51 hP52 hH hcu`. Establish `hsat : ∀ i x, E.ι.f i x ∈ W₁.N i → x ∈ W₀.N i` using `fun i => kernel_intersection_holds A D₀ D₁ (E.ι.f i) (W₀.N i) (W₁.N i) (S.ℓ : A) (hker i) (hL0.2.2.1 i)`. Establish `htame : ∀ (π' w : A) (e s' : ℕ), S.s = 1 → e * s' = S.ℓ - 1 → π' = w * S.π ^ s' → ∀ i, E.π.Kills i (π' ^ ⌈((e * H : ℕ) : ℚ) / ((S.ℓ - 1 : ℕ) : ℚ)⌉₊)`. Introduce `π' w e s' hs hes hπ' i`.
+
+Establish `hX : S.X = S.π` using `by simp [HidaSetting.X, hs]`. Conclude with `lemma_three_tame_exponent A (E.π.killIdeal i) S.π π' w S.ℓ e s' H S.hℓ.two_le hes hπ' (by rw [← hX]; exact hL3 i)`. Establish `htameΔ : ∀ (π' w : A) (e s' : ℕ) (Δ : Type) [Group Δ] [Fintype Δ] (ρ₁ : ι → Δ →* Module.End O D₁) (ρ₂ : ι → Δ →* Module.End O D₂), S.s = 1 → e * s' = S.ℓ - 1 → π' = w * S.π ^ s' → IsUnit ((Fintype.card Δ : ℕ) : O) → (∀ i d, ∀ x ∈ W₁.N i, ρ₁ i d x ∈ W₁.N i) → (∀ i d x, E.π.f i (ρ₁ …`. Introduce `π' w e s' Δ _ _ ρ₁ ρ₂ hs hes hπ' hunit hN hf hcomm i n hn hinv`. Establish `hpow : ∀ (m : ℕ) (d : Δ) (x : D₂), ρ₂ i d (π' ^ m • x) = π' ^ m • ρ₂ i d x`.
+
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro d x`. Simplify using the standard rewrite rules. Consider the case `succ m ih => intro d x`.
+
+Rewrite using `[pow_succ', mul_smul, hcomm, ih, mul_smul]`. Conclude with `lemma_three_invariants O A Δ D₁ D₂ (ρ₁ i) (ρ₂ i) (E.π.f i) (W₁.N i) (W₂.N i) _ hunit (hN i) (hf i) (hpow _) (htame π' w e s' hs hes hπ' i) n hn hinv`. Take `⟨V₀, hN0, hφ0, hγ0, hH0⟩` from `to_wach_module_holds O A S ι pr D₀ W₀ M h M₀ h₀ hrad hP20 hP50 hM hh`. Take `⟨V₁, hN1, hφ1, hγ1, hH1⟩` from `to_wach_module_holds O A S ι pr D₁ W₁ M h M₀ h₀ hrad hP21 hP51 hM hh`. Take `⟨V₂, hN2, hφ2, hγ2, hH2⟩` from `to_wach_module_holds O A S ι pr D₂ W₂ M h M₀ h₀ hrad hP22 hP52 hM hh`.
+
+Establish `hm0 : ∀ x : ι → D₀, x ∈ V₀.N ↔ ∀ i, x i ∈ W₀.N i`. Introduce `x`. Rewrite using `[hN0]`. Simplify using `[Submodule.mem_pi]`. Establish `hm1 : ∀ x : ι → D₁, x ∈ V₁.N ↔ ∀ i, x i ∈ W₁.N i`.
+
+Introduce `x`. Rewrite using `[hN1]`. Simplify using `[Submodule.mem_pi]`. Establish `hm2 : ∀ x : ι → D₂, x ∈ V₂.N ↔ ∀ i, x i ∈ W₂.N i`. Introduce `x`.
+
+Rewrite using `[hN2]`. Simplify using `[Submodule.mem_pi]`. Set `fι : (ι → D₀) →ₗ[A] (ι → D₁)` to `LinearMap.pi (fun i => (E.ι.f i).comp (LinearMap.proj i))`. Set `fπ : (ι → D₁) →ₗ[A] (ι → D₂)` to `LinearMap.pi (fun i => (E.π.f i).comp (LinearMap.proj i))`. Establish `hfι : ∀ x i, fι x i = E.ι.f i (x i)` using `fun _ _ => rfl`.
+
+Establish `hfπ : ∀ x i, fπ x i = E.π.f i (x i)` using `fun _ _ => rfl`. Set `Hι : Hom V₀ V₁` to `{ f := fι φ_comm := by`. Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[hφ1, hfι, hφ0, E.ι.φ_comm, hfι]`.
+
+Use `γ_comm := by`. Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[hγ1, hfι, hγ0, E.ι.γ_comm, hfι]`. Use `N_le := by`.
+
+Introduce `x hx`. Rewrite using `[hm1]`. Introduce `i`. Conclude with `E.ι.N_le i _ ((hm0 x).1 hx i) }`. Set `Hπ : Hom V₁ V₂` to `{ f := fπ φ_comm := by`.
+
+Introduce `x`. Use function extensionality and compare the values at `i`. Rewrite using `[hφ2, hfπ, hφ1, E.π.φ_comm, hfπ]`. Use `γ_comm := by`. Introduce `x`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[hγ2, hfπ, hγ1, E.π.γ_comm, hfπ]`. Use `N_le := by`. Introduce `x hx`. Rewrite using `[hm2]`.
+
+Introduce `i`. Conclude with `E.π.N_le i _ ((hm1 x).1 hx i) }`. Set `Sq : SES V₀ V₁ V₂` to `{ ι := Hι π := Hπ ι_inj := by`. Introduce `x y hxy`. Use function extensionality and compare the values at `i`.
+
+Conclude with `E.ι_inj i (congrFun hxy i)`. Conclude with `:= by`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx choose x₀ hx₀ using fun i => (E.exact i (x i)).1 (congrFun hx i)`.
+
+Conclude with `⟨x₀, funext hx₀⟩`. Introduce and unpack `⟨x₀, rfl⟩`. Use function extensionality and compare the values at `i`. Conclude with `(E.exact i _).2 ⟨x₀ i, rfl⟩`. Use `sat := by`.
+
+Introduce `x₀ hx`. Rewrite using `[hm0]`. Introduce `i`. Conclude with `hsat i _ ((hm1 _).1 hx i) }`. Use `⟨hL3, htame, htameΔ, hsat, V₀, V₁, V₂, Sq, hN0, hN1, hN2, hφ0, hγ0, hφ1, hγ1, hφ2, hγ2, fun _ _ => rfl, fun _ _ => rfl, ?_, ?_, ⟨a, ?_⟩, hH0, hH1, hH2⟩` and prove the remaining obligations.
+
+Introduce `y choose x hx using fun i => E.surj i (y i)`. Conclude with `⟨x, funext hx⟩`. Introduce `n hn choose n₁ h1 h2 using fun i => hL3 i (n i) ((hm2 n).1 hn i)`. Conclude with `⟨n₁, (hm1 n₁).2 h1, funext h2⟩`. Introduce `n hn choose n₁ h1 h2 using fun i => hka i (n i) ((hm2 n).1 hn i)`.
+
+Use `⟨n₁, (hm1 n₁).2 h1, funext fun i => ?_⟩` and prove the remaining obligations. Use `show E.π.f i (n₁ i) = ((S.ℓ : O) ^ a) • n i`. Rewrite using `[h2, ← algebraMap_smul A ((S.ℓ : O) ^ a) (n i)]`. Simplify using the standard rewrite rules.
+-/
 theorem wach_top_statement_holds : WachProductBasisTheorem := by
   intro O A _ _ _ S ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ h₀ H hrad hdec
     hP20 hP21 hP22 hP50 hP51 hP52 hL0 hL1 hL2 hP6 hM hh hH

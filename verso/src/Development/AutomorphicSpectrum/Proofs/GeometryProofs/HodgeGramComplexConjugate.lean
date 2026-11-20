@@ -18,6 +18,9 @@ open GlobalTheory.ArchMetricCompare (cj cjPt cjUnif cj_isAH cj_val isIso_of_cj c
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Establish `h : (dualMap (starRingEnd ℂ)).comp (dualMap (starRingEnd ℂ)) = RingHom.id (DualNumber ℂ)`. Apply the tactic sequence `ext c <;> simp [dualMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, h]`. Conclude with `Spec.map_id _`.
+-/
 theorem dualConj_dualConj :
     spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (starRingEnd ℂ)) = 𝟙 (Sp (DualNumber ℂ)) := by
   have h : (dualMap (starRingEnd ℂ)).comp (dualMap (starRingEnd ℂ)) = RingHom.id (DualNumber ℂ) := by
@@ -25,6 +28,13 @@ theorem dualConj_dualConj :
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp, h]
   exact Spec.map_id _
 
+/- English proof (translation)
+Distinguish the cases in `h : DifferentiableAt ℂ F 0`. Establish `d` using `h.hasFDerivAt.star_star`. Rewrite `d` using `[star_zero]`. Rewrite using `[d.fderiv]`. Simplify using the standard rewrite rules.
+
+Establish `h' : ¬ DifferentiableAt ℂ (star ∘ F ∘ star) 0` using `fun h' => h (by`. Use `h'.star_star` as an intermediate fact. Establish `e : star ∘ (star ∘ F ∘ star) ∘ star = F`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+
+Rewrite `this` using `[star_zero, e]`. Conclude with `this)`. Rewrite using `[fderiv_zero_of_not_differentiableAt h, fderiv_zero_of_not_differentiableAt h']`. Simplify using the standard rewrite rules.
+-/
 theorem fderiv_conj {g : ℕ} (F : (Fin g → ℂ) → ℂ) (w : Fin g → ℂ) :
     fderiv ℂ (star ∘ F ∘ star) 0 (star w) = star (fderiv ℂ F 0 w) := by
   by_cases h : DifferentiableAt ℂ F 0
@@ -44,6 +54,17 @@ theorem fderiv_conj {g : ℕ} (F : (Fin g → ℂ) → ℂ) (w : Fin g → ℂ) 
 
 variable {A A' : Over (Sp ℂ)} [GrpObj A] [GrpObj A'] {ψ : A'.left ⟶ A.left} {M : LB A.left} {M' : LB A'.left} {g : ℕ}
 
+/- English proof (translation)
+Use `haveI := isIso_of_cj h`. Introduce `U hU f`. Establish `e2 : t'.left = spMap (dualMap (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ`. Rewrite using `[← Category.assoc]`. Conclude with `(IsIso.eq_comp_inv ψ).2 e`.
+
+Establish `e4 : (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ = spMap (dualMap (starRingEnd ℂ)) ≫ t'.left`. Rewrite using `[e2, ← Category.assoc, dualConj_dualConj, Category.id_comp]`. Establish `h2 : ⊤ ≤ t.left ⁻¹ᵁ (inv ψ ⁻¹ᵁ U)` using `fun p _ => by`. Establish `q : ((show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ) p ∈ U`. Rewrite using `[e4]`.
+
+Conclude with `hU (show spMap (dualMap (starRingEnd ℂ)) p ∈ (⊤ : (Sp (DualNumber ℂ)).Opens) from trivial)`. Conclude with `q`. Establish `e1 : (fun z => valAt' (u'.ex z).left U f) = star ∘ (fun z => valAt' (u.ex z).left (inv ψ ⁻¹ᵁ U) (((inv ψ).app U).hom f)) ∘ star`. Use function extensionality and compare the values at `fun z => by`. Simplify using `only [hex]`.
+
+Conclude with `cj_val h _ U f`. Rewrite using `[e1, fderiv_conj]`. Establish `k : ∀ (y : Sp (DualNumber ℂ) ⟶ A'.left) (hy : ⊤ ≤ y ⁻¹ᵁ U), y = spMap (dualMap (starRingEnd ℂ)) ≫ (show Sp (DualNumber ℂ) ⟶ _ from t.left) ≫ inv ψ → TangentOrigin.evalPt y U hy f = dualMap (starRingEnd ℂ) (TangentOrigin.evalPt (R` using `DualNumber ℂ) t.left _ h2 (((inv ψ).app U).hom f)) := by`. Introduce and unpack `_ hy rfl`. Rewrite using `[TangentOrigin.evalPt_spMap_comp _ _ U h2]`.
+
+Use `congr 1`. Use `(congrArg TrivSqZeroExt.snd (k _ hU e2)).trans ?_` and prove the remaining obligations. Establish `e3` using `hd _ h2 (((inv ψ).app U).hom f)`. Simplify using `only [dualMap, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Conclude with `congrArg (starRingEnd ℂ) e3`.
+-/
 theorem isDiff_conj (h : IsGrpPullback A' A cj ψ) (u : HolUnif A M g) (u' : HolUnif A' M' g)
     (hex : ∀ z, u'.ex z = cjPt h (u.ex (star z))) {t : epsR ℂ ⟶ A} {t' : epsR ℂ ⟶ A'}
     (e : t'.left ≫ ψ = spMap (dualMap (starRingEnd ℂ)) ≫ t.left) {w : Fin g → ℂ} (hd : u.IsDiff w t) :
@@ -79,6 +100,11 @@ theorem isDiff_conj (h : IsGrpPullback A' A cj ψ) (u : HolUnif A M g) (u' : Hol
     TrivSqZeroExt.snd_inr, zero_add]
   exact congrArg (starRingEnd ℂ) e3
 
+/- English proof (translation)
+Establish `hM1 : (M.pull (𝟙 A.left)).IsLB` using `pull_isLB hM _`. Take `⟨w, hw⟩ : LBIso M (M.pull (𝟙 A.left))` from `LBIso.chartPull (chartPullId M) (chartPullPull M (𝟙 _) (𝟙 _) rfl) (PolBaseChange.lbIso_refl hM)`. Establish `key : ∀ f, f = ψ ≫ 𝟙 A.left → ∃ (u' : HolUnif A' (M.pull f) g) (χ' : u'.Λ → ℂ), u'.IsAH (Hm.map star) χ' ∧ ∀ z, u'.ex z = cjPt h (u.ex (star z))`. Introduce and unpack `_ rfl`. Conclude with `⟨cjUnif h (carry u hM hM1 hw), _, cj_isAH h _ (carry_isAH hM hM1 hw hA), fun _ => rfl⟩`.
+
+Conclude with `key _ (Category.comp_id _).symm`.
+-/
 theorem exists_conjUnif (h : IsGrpPullback A' A cj ψ) (hM : M.IsLB) (u : HolUnif A M g)
     {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hA : u.IsAH Hm χ) :
     ∃ (u' : HolUnif A' (M.pull ψ) g) (χ' : u'.Λ → ℂ), u'.IsAH (Hm.map star) χ' ∧
@@ -92,6 +118,15 @@ theorem exists_conjUnif (h : IsGrpPullback A' A cj ψ) (hM : M.IsLB) (u : HolUni
     exact ⟨cjUnif h (carry u hM hM1 hw), _, cj_isAH h _ (carry_isAH hM hM1 hw hA), fun _ => rfl⟩
   exact key _ (Category.comp_id _).symm
 
+/- English proof (translation)
+Introduce and unpack `S G _ L x x' n v v' Γ rfl hv' ⟨Q, ψ, vo, u, Hm, χ, W, hP, hLB, hAH, hvo, hΓ⟩`. Establish `hc` using `isGrpPullback_pullback Q.A cj`. Use `haveI := (Out.TLinPf.isAb_pullback cj Q.A Q.isAb).comm`. Take `⟨u', χ', hAH', hex⟩` from `exists_conjUnif hc Q.isLB u hAH`. Establish `sq : ∀ i, (spMap (dualMap (starRingEnd ℂ)) ≫ (vo i).left) ≫ Q.A.hom = (epsR ℂ).hom ≫ cj` using `fun i => by`.
+
+Rewrite using `[Category.assoc, Over.w]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Set `t : ∀ i, epsR ℂ ⟶ (Over.pullback cj).obj Q.A` to `fun i => Over.homMk (hc.1.lift _ _ (sq i)) (hc.1.lift_snd _ _ _)`. Establish `et : ∀ i, (t i).left ≫ pullback.fst Q.A.hom cj = spMap (dualMap (starRingEnd ℂ)) ≫ (vo i).left` using `fun i => hc.1.lift_fst _ _ _`. Use `⟨GlobalTheory.TorsionTauCompare.polOfPullback Q _ hc, pullback.fst Q.A.hom cj ≫ ψ, t, u', Hm.map star, χ', fun i => star (W i), hc.comp hP, ?_, hAH', fun i => ⟨?_, isDiff_conj hc u u' hex (et i) (hvo i).2⟩, fun i j => ?_⟩` and prove the remaining obligations. Conclude with `LBIso.symm (Cusp.FibreMove.lbIso_pull (LBIso.symm hLB) _)`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ ψ) (et i))).trans (((Category.assoc _ _ _).trans (congrArg _ (hvo i).1)).trans (hv' i).symm)`.
+
+Rewrite using `[Matrix.map_apply, hΓ, map_mul, Complex.conj_ofReal]`. Use `congr 1`. Use `Eq.trans ?_ (GlobalTheory.ArchMetricCompare.star_form Hm (star (W i)) (star (W j)))` and prove the remaining obligations. Rewrite using `[star_star (W i), star_star (W j)]`. Both sides reduce to the same expression.
+-/
 theorem isHodgeGram_conj : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (x x' : Spec (CommRingCat.of ℂ) ⟶ S) (n : ℕ) (v : Fin n → (epsAt x ⟶ G)) (v' : Fin n → (epsAt x' ⟶ G)) (Γ : Matrix (Fin n) (Fin n) ℂ), x' = spMap (starRingEnd ℂ) ≫ x → (∀ i, (v' i).left = spMap (dualMap (starRingEnd ℂ)) ≫ (v i).left) → Fl.IsHodgeGram G L x v Γ → Fl.IsHodgeGram G L x' v' (Γ.map (starRingEnd ℂ)) := by
   rintro S G _ L x x' n v v' Γ rfl hv' ⟨Q, ψ, vo, u, Hm, χ, W, hP, hLB, hAH, hvo, hΓ⟩
   have hc := isGrpPullback_pullback Q.A cj

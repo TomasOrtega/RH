@@ -21,12 +21,21 @@ open GlobalTheory.Cusp GlobalTheory.Mem.AutSpace GlobalTheory.Published.AutFin G
 
 variable {D : D7} {θ : GlobalTheory.Mem.Th.InfF D} {V : HSp D}
 
+/- English proof (translation)
+The claim follows from `(mem_Mc_iff.1 φ.2).1.smooth`.
+-/
 theorem smooth_of_mem (φ : Mc θ V) : φ.1 ∈ SmFun θ V := (mem_Mc_iff.1 φ.2).1.smooth
 
+/- English proof (translation)
+Substitute `h` using the available equality. Both sides reduce to the same expression.
+-/
 theorem der_congr (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) (h : X = Y) : der hθ τ hX = der hθ τ hY := by
   subst h; rfl
 
+/- English proof (translation)
+The claim follows from `LinearMap.ext fun φ => Subtype.ext (GlobalTheory.Mem.RealTranslate.Rder_comb hθ (smooth_of_mem φ) hX hY r s)`.
+-/
 theorem der_comb (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X Y : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (hY : Y ∈ lieAt V τ) (r s : ℝ) (h : r • X + s • Y ∈ lieAt V τ) :
     der hθ τ h = (r : ℂ) • der hθ τ hX + (s : ℂ) • der hθ τ hY :=
@@ -40,6 +49,9 @@ section Bd
 
 variable {μ : Measure (GA D V)} [μ.IsHaarMeasure] {hθ : IsInfFam θ} {E : Set (Mc θ V)}
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `hS`. Take `⟨b, hb, k⟩` from `hT`. Use `⟨a + b, add_nonneg ha hb, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, map_add, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h φ hφ) (k φ hφ))`.
+-/
 theorem Bd.add {S T : Module.End ℂ (Mc θ V)} (hS : Bd μ hθ E S) (hT : Bd μ hθ E T) : Bd μ hθ E (S + T) := by
   obtain ⟨a, ha, h⟩ := hS
   obtain ⟨b, hb, k⟩ := hT
@@ -47,12 +59,18 @@ theorem Bd.add {S T : Module.End ℂ (Mc θ V)} (hS : Bd μ hθ E S) (hT : Bd μ
   rw [LinearMap.add_apply, map_add, add_mul]
   exact (norm_add_le _ _).trans (add_le_add (h φ hφ) (k φ hφ))
 
+/- English proof (translation)
+Take `⟨a, ha, h⟩` from `hT`. Use `⟨‖c‖ * a, mul_nonneg (norm_nonneg _) ha, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h φ hφ) (norm_nonneg _)`.
+-/
 theorem Bd.smul {T : Module.End ℂ (Mc θ V)} (c : ℂ) (hT : Bd μ hθ E T) : Bd μ hθ E (c • T) := by
   obtain ⟨a, ha, h⟩ := hT
   refine ⟨‖c‖ * a, mul_nonneg (norm_nonneg _) ha, fun φ hφ => ?_⟩
   rw [LinearMap.smul_apply, map_smul, norm_smul, mul_assoc]
   exact mul_le_mul_of_nonneg_left (h φ hφ) (norm_nonneg _)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, le_rfl, fun φ _ => by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(hT a (Finset.mem_insert_self _ _)).add (ih fun i hi => hT i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem Bd.sum {ι : Type} (s : Finset ι) {T : ι → Module.End ℂ (Mc θ V)} (hT : ∀ i ∈ s, Bd μ hθ E (T i)) :
     Bd μ hθ E (∑ i ∈ s, T i) := by
   classical
@@ -64,6 +82,9 @@ theorem Bd.sum {ι : Type} (s : Finset ι) {T : ι → Module.End ℂ (Mc θ V)}
 
 end Bd
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ X hX φ (der hθ τ hX φ)`. Establish `h' : ⟪io μ hθ φ, io μ hθ (der hθ τ hX (der hθ τ hX φ))⟫_ℂ = -⟪io μ hθ (der hθ τ hX φ), io μ hθ (der hθ τ hX φ)⟫_ℂ` using `by rw [h, neg_neg]`. Rewrite using `[h', inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem inner_der_der (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) (φ : Mc θ V) :
     ⟪io μ hθ φ, io μ hθ (der hθ τ hX (der hθ τ hX φ))⟫_ℂ = -((‖io μ hθ (der hθ τ hX φ)‖ ^ 2 : ℝ) : ℂ) := by
@@ -74,6 +95,17 @@ theorem inner_der_der (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam
   push_cast
   rfl
 
+/- English proof (translation)
+Use `choose κ hκ0 hκ using hK`. Use `set B : ℝ := ‖c‖ + ∑ b, κ b ^ 2 with hB`. Establish `hB0 : 0 ≤ B` using `add_nonneg (norm_nonneg _) (Finset.sum_nonneg fun b _ => sq_nonneg _)`. Use `⟨Real.sqrt B, Real.sqrt_nonneg _, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun w => ⟪io μ hθ φ, io μ hθ w⟫_ℂ) (hE φ hφ)`.
+
+Simplify using `only [map_smul, map_sub, map_sum, inner_smul_right, inner_sub_right, inner_sum, inner_der_der, inner_self_eq_norm_sq_to_K] at h2`. Establish `e : ((‖io μ hθ φ‖ : ℂ) ^ 2) = ((‖io μ hθ φ‖ ^ 2 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite `h2` using `[show ((RCLike.ofReal ‖io μ hθ φ‖ : ℂ) ^ 2) = ((‖io μ hθ φ‖ ^ 2 : ℝ) : ℂ) from e]`. Establish `h3` using `congrArg Complex.re h2`. Simplify using `only [Complex.sub_re, Complex.re_sum, Complex.neg_re, Complex.ofReal_re, Complex.re_mul_ofReal, Finset.sum_neg_distrib, sub_neg_eq_add, Complex.add_re] at h3`.
+
+Establish `h4 : ‖io μ hθ (der hθ τ (hX a) φ)‖ ^ 2 ≤ ∑ x, ‖io μ hθ (der hθ τ (hX x) φ)‖ ^ 2` using `Finset.single_le_sum (f := fun x => ‖io μ hθ (der hθ τ (hX x) φ)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ a)`. Establish `h5 : ∑ b, ‖io μ hθ (der hθ τ (hY b) φ)‖ ^ 2 ≤ (∑ b, κ b ^ 2) * ‖io μ hθ φ‖ ^ 2`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`.
+
+Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hκ b φ hφ) 2`. Establish `h6 : -(c.re * ‖io μ hθ φ‖ ^ 2) ≤ ‖c‖ * ‖io μ hθ φ‖ ^ 2`. Rewrite using `[← neg_mul]`. Conclude with `mul_le_mul_of_nonneg_right ((neg_le_abs _).trans (Complex.abs_re_le_norm c)) (sq_nonneg _)`. Establish `h7 : ‖io μ hθ (der hθ τ (hX a) φ)‖ ^ 2 ≤ B * ‖io μ hθ φ‖ ^ 2`.
+
+Rewrite using `[hB, add_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h8` using `Real.sqrt_le_sqrt h7`. Rewrite `h8` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hB0, Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+-/
 theorem bd_of_casimir (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     (E : Set (Mc θ V)) {n₁ n₂ : ℕ} {X : Fin n₁ → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {Y : Fin n₂ → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : ∀ a, X a ∈ lieAt V τ) (hY : ∀ b, Y b ∈ lieAt V τ)
@@ -109,6 +141,19 @@ theorem bd_of_casimir (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam
   have h8 := Real.sqrt_le_sqrt h7
   rwa [Real.sqrt_sq (norm_nonneg _), Real.sqrt_mul hB0, Real.sqrt_sq (norm_nonneg _)] at h8
 
+/- English proof (translation)
+Establish `h0 : (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ lieAt V τ` using `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).zero_mem`. Proceed by induction on `hZ using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Use `⟨h0, ?_⟩` and prove the remaining obligations.
+
+Establish `e : der hθ τ h0 = 0`. Establish `h00 : (0 : ℝ) • (0 : Matrix (Fin V.rank) (Fin V.rank) ℂ) + (0 : ℝ) • 0 ∈ lieAt V τ`. Simplify using `using h0`. Rewrite using `[der_congr hθ h0 h00 (by simp), der_comb hθ h0 h0 0 0 h00]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e]`. Conclude with `⟨0, le_rfl, fun φ _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨h1, b1⟩` from `hx`. Take `⟨h2, b2⟩` from `hy`.
+
+Establish `h12 : x + y ∈ lieAt V τ` using `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).add_mem h1 h2`. Establish `h12' : (1 : ℝ) • x + (1 : ℝ) • y ∈ lieAt V τ` using `by simpa using h12`. Use `⟨h12, ?_⟩` and prove the remaining obligations. Rewrite using `[der_congr hθ h12 h12' (by simp), der_comb hθ h1 h2 1 1 h12']`. Conclude with `(b1.smul _).add (b2.smul _)`.
+
+Consider the case `smul r x _ hx`. Take `⟨h1, b1⟩` from `hx`. Establish `h12 : r • x ∈ lieAt V τ` using `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).smul_mem r h1`. Establish `h12' : r • x + (0 : ℝ) • x ∈ lieAt V τ` using `by simpa using h12`. Use `⟨h12, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[der_congr hθ h12 h12' (by simp), der_comb hθ h1 h1 r 0 h12']`. Simplify using `using b1.smul (r : ℂ)`.
+-/
 theorem bd_span (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     (E : Set (Mc θ V)) (S : Set (Matrix (Fin V.rank) (Fin V.rank) ℂ))
     (hS : ∀ Z ∈ S, ∃ h : Z ∈ lieAt V τ, Bd μ hθ E (der hθ τ h))
@@ -143,6 +188,11 @@ theorem bd_span (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {
     rw [der_congr hθ h12 h12' (by simp), der_comb hθ h1 h1 r 0 h12']
     simpa using b1.smul (r : ℂ)
 
+/- English proof (translation)
+Proceed by induction on `j generalizing φ with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Establish `e : deriv (fun t : ℝ => φ.1 (x * oneP θ V τ X t)) = fun t => (der hθ τ hX φ).1 (x * oneP θ V τ X t)` using `funext fun t => (GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (GlobalTheory.Mem.Lift.hasDerivAt_Rder (smooth_of_mem φ) hX) x t).deriv`. Rewrite using `[iteratedDeriv_succ', e, ih (der hθ τ hX φ), pow_succ]`.
+
+Both sides reduce to the same expression.
+-/
 theorem iteratedDeriv_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (j : ℕ) (φ : Mc θ V) (x : GA D V) :
     iteratedDeriv j (fun t : ℝ => φ.1 (x * oneP θ V τ X t)) =
@@ -156,6 +206,15 @@ theorem iteratedDeriv_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix 
     rw [iteratedDeriv_succ', e, ih (der hθ τ hX φ), pow_succ]
     rfl
 
+/- English proof (translation)
+Establish `hin : y ∈ GlobalTheory.SmoothGlob.lieSet e`. Express the relevant statement in the definitionally equal form `yᴴ * Formalism.REAL.Jm e + Formalism.REAL.Jm e * y = 0`. Rewrite using `[hy.1, Matrix.neg_mul, hy.2, neg_add_cancel]`. Establish `hm : ∀ t : ℝ, Formalism.REAL.toM (Formalism.REAL.expG e y t) = NormedSpace.exp (t • y)` using `fun t => by`. Rewrite using `[Formalism.REAL.toM_expG e y t hin, Complex.coe_smul]`.
+
+Set `s : ℝ → Formalism.REAL.KG e` to `fun t => ⟨Formalism.REAL.expG e y t, by`. Rewrite using `[Formalism.REAL.mem_KG, hm]`. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.KStable.exp_mem_Kset hin hy.2 t⟩`. Establish `hs : ∀ t, Formalism.REAL.toMK (s t) = NormedSpace.exp (t • y)` using `hm`. Establish `hemb : Topology.IsEmbedding (fun k : Formalism.REAL.KG e => Formalism.REAL.toMK k)` using `(Formalism.REAL.isClosedEmbeddingMatrix n e).1.isEmbedding.comp Topology.IsEmbedding.subtypeVal`.
+
+Use `⟨s, hemb.continuous_iff.2 ?_, hemb.injective ?_, fun a b => hemb.injective ?_, hs⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun t => Formalism.REAL.toMK (s t)`. Simplify using `only [hs]`. Use `open scoped Matrix.Norms.Operator in`. Conclude with `continuous_iff_continuousAt.2 fun t => (hasDerivAt_exp_smul_const (𝕂 := ℝ) y t).continuousAt`.
+
+Express the relevant statement in the definitionally equal form `Formalism.REAL.toMK (s 0) = 1`. Rewrite using `[hs, zero_smul, NormedSpace.exp_zero]`. Express the relevant statement in the definitionally equal form `Formalism.REAL.toMK (s (a + b)) = Formalism.REAL.toMK (s a) * Formalism.REAL.toMK (s b)`. Rewrite using `[hs, hs, hs, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl y).smul_left a).smul_right b)]`.
+-/
 theorem exists_oneParam {n : ℕ} {e : Fin n → Bool} {y : Matrix (Fin n) (Fin n) ℂ} (hy : IsKLie e y) :
     ∃ s : ℝ → Formalism.REAL.KG e, Continuous s ∧ s 0 = 1 ∧ (∀ a b, s (a + b) = s a * s b) ∧
       ∀ t, Formalism.REAL.toMK (s t) = NormedSpace.exp (t • y) := by
@@ -180,6 +239,11 @@ theorem exists_oneParam {n : ℕ} {e : Fin n → Bool} {y : Matrix (Fin n) (Fin 
   · change Formalism.REAL.toMK (s (a + b)) = Formalism.REAL.toMK (s a) * Formalism.REAL.toMK (s b)
     rw [hs, hs, hs, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl y).smul_left a).smul_right b)]
 
+/- English proof (translation)
+Establish `hu : IsUnit P⁻¹`. Rewrite using `[Matrix.isUnit_nonsing_inv_iff]`. Conclude with `hP`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `e1 : t • (P⁻¹ * y * P) = P⁻¹ * (t • y) * (P⁻¹)⁻¹`.
+
+Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Rewrite using `[kAt, oneP, h, e1, Matrix.exp_conj _ _ hu, Matrix.nonsing_inv_nonsing_inv _ hd]`.
+-/
 theorem kAt_eq_oneP (θ : GlobalTheory.Mem.Th.InfF D) {τ : D.what₂.Tau} {e : Fin V.rank → Bool}
     {P y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) {k : Formalism.REAL.KG e} {t : ℝ}
     (h : Formalism.REAL.toMK k = NormedSpace.exp (t • y)) :
@@ -191,6 +255,13 @@ theorem kAt_eq_oneP (θ : GlobalTheory.Mem.Th.InfF D) {τ : D.what₂.Tau} {e : 
     rw [Matrix.nonsing_inv_nonsing_inv _ hd]; simp
   rw [kAt, oneP, h, e1, Matrix.exp_conj _ _ hu, Matrix.nonsing_inv_nonsing_inv _ hd]
 
+/- English proof (translation)
+Take `⟨s, hc, h0, ha, hs⟩` from `exists_oneParam hy`. Take `⟨m, hm0, hm⟩` from `GlobalTheory.T.finite_coefficient_space_annihilating_polynomial (Formalism.REAL.KG e) W ρ hρ s hc h0 ha`. Establish `hκ0 : 0 ≤ ∑ r ∈ m.roots.toFinset, ‖r‖` using `Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨_, hκ0, fun φ hφ => GlobalTheory.T.skew_operator_bounded_by_polynomial_roots _ _ (io μ hθ) (io_injective μ hθ) (der hθ τ hY) (fun a b => GlobalTheory.T.derivative_skew_adjoint_cusp_forms D θ hθ V μ τ _ hY a b) m hm0 _ hκ0 (fun r hr => Finset.single_le_sum (f := fun r : ℂ => ‖r‖) …` and prove the remaining obligations. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `hm _ (hφ x) 1`. Rewrite using `[Polynomial.aeval_eq_sum_range]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun j _ => ?_) h1` and prove the remaining obligations.
+
+Establish `e2 : (fun t : ℝ => φ.1 (x * kAt θ V τ e P (1 * s t))) = fun t => φ.1 (x * oneP θ V τ (P⁻¹ * y * P) t)`. Use function extensionality and compare the values at `fun t => by rw [one_mul, kAt_eq_oneP θ hP (hs t)]`. Rewrite using `[e2, iteratedDeriv_oneP hθ hY j φ x]`. Establish `: oneP θ V τ (P⁻¹ * y * P) 0 = 1` using `GlobalTheory.Mem.Lift.oneP_zero hθ`. Simplify using `[this]`.
+-/
 theorem bd_ktype (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     {e : Fin V.rank → Bool} {P y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P)
     {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
@@ -217,11 +288,19 @@ theorem bd_ktype (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) 
   have : oneP θ V τ (P⁻¹ * y * P) 0 = 1 := GlobalTheory.Mem.Lift.oneP_zero hθ
   simp [this]
 
+/- English proof (translation)
+The claim follows from `let ⟨a, ha, k⟩ := hT ⟨a, ha, fun φ hφ => k φ (h hφ)⟩`.
+-/
 theorem Bd.mono {μ : Measure (GA D V)} [μ.IsHaarMeasure] {hθ : IsInfFam θ} {E E' : Set (Mc θ V)}
     {T : Module.End ℂ (Mc θ V)} (hT : Bd μ hθ E' T) (h : E ⊆ E') : Bd μ hθ E T :=
   let ⟨a, ha, k⟩ := hT
   ⟨a, ha, fun φ hφ => k φ (h hφ)⟩
 
+/- English proof (translation)
+Rewrite using `[derInf, derInf, derInf, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h12 : (1 : ℝ) • (X τ).1 + (1 : ℝ) • (Y τ).1 ∈ lieAt V τ`. Simplify using `only [one_smul]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).add_mem (X τ).2 (Y τ).2`.
+
+Rewrite using `[der_congr hθ ((X + Y) τ).2 h12 (by simp only [one_smul]; rfl), der_comb hθ (X τ).2 (Y τ).2 1 1 h12]`. Simplify using the standard rewrite rules.
+-/
 theorem derInf_add (hθ : IsInfFam θ) (X Y : LieN V) : derInf hθ (X + Y) = derInf hθ X + derInf hθ Y := by
   rw [derInf, derInf, derInf, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun τ _ => ?_
@@ -231,6 +310,11 @@ theorem derInf_add (hθ : IsInfFam θ) (X Y : LieN V) : derInf hθ (X + Y) = der
   rw [der_congr hθ ((X + Y) τ).2 h12 (by simp only [one_smul]; rfl), der_comb hθ (X τ).2 (Y τ).2 1 1 h12]
   simp
 
+/- English proof (translation)
+Rewrite using `[derInf, derInf, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h12 : r • (X τ).1 + (0 : ℝ) • (X τ).1 ∈ lieAt V τ`. Simplify using `only [zero_smul, add_zero]`. Conclude with `(GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).smul_mem r (X τ).2`.
+
+Rewrite using `[der_congr hθ ((r • X) τ).2 h12 (by simp only [zero_smul, add_zero]; rfl), der_comb hθ (X τ).2 (X τ).2 r 0 h12]`. Simplify using the standard rewrite rules.
+-/
 theorem derInf_smul (hθ : IsInfFam θ) (r : ℝ) (X : LieN V) : derInf hθ (r • X) = (r : ℂ) • derInf hθ X := by
   rw [derInf, derInf, Finset.smul_sum]
   refine Finset.sum_congr rfl fun τ _ => ?_
@@ -240,6 +324,9 @@ theorem derInf_smul (hθ : IsInfFam θ) (r : ℝ) (X : LieN V) : derInf hθ (r �
   rw [der_congr hθ ((r • X) τ).2 h12 (by simp only [zero_smul, add_zero]; rfl), der_comb hθ (X τ).2 (X τ).2 r 0 h12]
   simp
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `derInf_smul hθ 0 (0 : LieN V)` as an intermediate fact. Simplify using `using this`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, derInf_add, derInf_smul, ih]`.
+-/
 theorem derInf_sum (hθ : IsInfFam θ) {ι : Type} (s : Finset ι) (a : ι → ℝ) (b : ι → LieN V) :
     derInf hθ (∑ i ∈ s, a i • b i) = ∑ i ∈ s, (a i : ℂ) • derInf hθ (b i) := by
   classical
@@ -249,6 +336,13 @@ theorem derInf_sum (hθ : IsInfFam θ) {ι : Type} (s : Finset ι) (a : ι → �
     simpa using this
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, derInf_add, derInf_smul, ih]
 
+/- English proof (translation)
+Use `haveI : FiniteDimensional ℝ (LieN V) := inferInstanceAs (FiniteDimensional ℝ (∀ τ : D.what₂.Tau, (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.lieU (gramAt D V τ)).toSubmodule))`. Set `b` to `Module.finBasis ℝ (LieN V)`. Establish `hb : ∀ i, Bd μ hθ E (derInf hθ (b i))` using `fun i => Bd.sum _ fun τ _ => h τ _ _`. Use `choose Λ hΛ0 hΛ using hb`. Set `f` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`.
+
+Use `⟨∑ i, ‖f i‖ * Λ i, Finset.sum_nonneg fun i _ => mul_nonneg (norm_nonneg _) (hΛ0 i), fun X φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : derInf hθ X = ∑ i, ((f i X : ℝ) : ℂ) • derInf hθ (b i)` using `by conv_lhs => rw [← b.sum_repr X]`. Rewrite using `[derInf_sum]`. Both sides reduce to the same expression. Rewrite using `[e, LinearMap.sum_apply, map_sum, Finset.sum_mul, Finset.sum_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, norm_smul, Complex.norm_real]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem bd_inf (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) (E : Set (Mc θ V))
     (h : ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hZ : Z ∈ lieAt V τ),
       Bd μ hθ E (der hθ τ hZ)) :
@@ -271,6 +365,11 @@ theorem bd_inf (μ : Measure (GA D V)) [μ.IsHaarMeasure] (hθ : IsInfFam θ) (E
         mul_le_mul ((f i).le_opNorm X) (hΛ i φ hφ) (norm_nonneg _) (by positivity)
     _ = _ := by ring
 
+/- English proof (translation)
+Establish `hL : ∀ {f g : GA D V → ℂ} (hf : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GQ V) μ f) (hg : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GQ V) μ g), f = g → hf.toL2 = hg.toL2`. Introduce and unpack `f g hf hg rfl`. Both sides reduce to the same expression. Establish `h` using `memL2_of_cusp_form (μ := μ) (GlobalTheory.Grow.cuspRapidDecay_of_bound GlobalTheory.CuspGeo.cuspDecayBound) hθ (mem_cuspForms.1 φ.2).1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Conclude with `(GlobalTheory.AutomorphicL2Unitary.right_translate_toL2 h k).trans (hL _ h (funext hk))`.
+-/
 theorem Rcusp_io_of_fixed (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (hθ : IsInfFam θ)
     (φ : Mc θ V) (k : GA D V) (hk : ∀ g, φ.1 (g * k) = φ.1 g) : Rcusp V μ k (io μ hθ φ) = io μ hθ φ := by
   have hL : ∀ {f g : GA D V → ℂ} (hf : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GQ V) μ f) (hg : GlobalTheory.AutomorphicL2Unitary.MemL2Quotient (GQ V) μ g), f = g →
@@ -282,6 +381,9 @@ theorem Rcusp_io_of_fixed (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRi
   refine Subtype.ext ?_
   exact (GlobalTheory.AutomorphicL2Unitary.right_translate_toL2 h k).trans (hL _ h (funext hk))
 
+/- English proof (translation)
+Establish `e` using `norm_sub_sq (𝕜 := ℂ) v u`. Establish `e2 : RCLike.re ⟪v, u⟫_ℂ = (⟪u, v⟫_ℂ).re` using `inner_re_symm (𝕜 := ℂ) v u`. Rewrite `e` using `[e2, h1]`. Use `pow_le_pow_left₀ (norm_nonneg _) h2 2` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem half_le_re_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {u v : H} (h1 : ‖v‖ = ‖u‖)
     (h2 : ‖v - u‖ ≤ ‖u‖) : (1 / 2 : ℝ) * ‖u‖ ^ 2 ≤ (⟪u, v⟫_ℂ).re := by
   have e := norm_sub_sq (𝕜 := ℂ) v u
@@ -290,6 +392,11 @@ theorem half_le_re_inner {H : Type} [NormedAddCommGroup H] [InnerProductSpace �
   have := pow_le_pow_left₀ (norm_nonneg _) h2 2
   nlinarith
 
+/- English proof (translation)
+Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `h1 : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← conjTranspose_mul, mul_nonsing_inv _ hd, conjTranspose_one]`. Establish `h0 : yᴴ * Formalism.REAL.Jm e + Formalism.REAL.Jm e * y = 0`. Rewrite using `[hy.1, Matrix.neg_mul, hy.2, neg_add_cancel]`. Express the relevant statement in the definitionally equal form `(P⁻¹ * y * P)ᴴ * gramAt D V τ + gramAt D V τ * (P⁻¹ * y * P) = 0`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hfr]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.add_mul, Matrix.mul_add]`. Use `_ = 0 := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, h0, Matrix.mul_zero, Matrix.zero_mul]`.
+-/
 theorem lie_conj {τ : D.what₂.Tau} {e : Fin V.rank → Bool} {P y : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P)
     (hfr : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ) (hy : IsKLie e y) : P⁻¹ * y * P ∈ lieAt V τ := by
   have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).1 hP
@@ -301,10 +408,16 @@ theorem lie_conj {τ : D.what₂.Tau} {e : Fin V.rank → Bool} {P y : Matrix (F
         rw [← hfr]; simp only [conjTranspose_mul, Matrix.mul_assoc, Matrix.add_mul, Matrix.mul_add]
     _ = 0 := by rw [h1, mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_one, h0, Matrix.mul_zero, Matrix.zero_mul]
 
+/- English proof (translation)
+The claim follows from `congrArg (fun T : L2cusp V μ →L[ℂ] L2cusp V μ => T u) ((Rcusp V μ).map_mul a b)`.
+-/
 theorem Rcusp_mul_apply (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (a b : GA D V)
     (u : L2cusp V μ) : Rcusp V μ (a * b) u = Rcusp V μ a (Rcusp V μ b u) :=
   congrArg (fun T : L2cusp V μ →L[ℂ] L2cusp V μ => T u) ((Rcusp V μ).map_mul a b)
 
+/- English proof (translation)
+Establish `e : Rcusp V μ (expInf θ V X * k) (io μ hθ φ) = Rcusp V μ (expInf θ V X) (io μ hθ φ)` using `(Rcusp_mul_apply μ _ _ _).trans (congrArg _ (Rcusp_io_of_fixed μ hθ φ k hk))`. Rewrite using `[e]`. Conclude with `half_le_re_inner ((GlobalTheory.Cusp.isUnitaryRep_Rcusp V μ).1 _ _) ((GlobalTheory.T.cusp_translate_bounded_by_derivative D θ hθ V μ X φ).trans hb)`.
+-/
 theorem half_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (hθ : IsInfFam θ) (φ : Mc θ V)
     (X : LieN V) (k : GA D V) (hk : ∀ g, φ.1 (g * k) = φ.1 g)
     (hb : ‖io μ hθ (derInf hθ X φ)‖ ≤ ‖io μ hθ φ‖) :
@@ -314,6 +427,15 @@ theorem half_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightI
   rw [e]
   exact half_le_re_inner ((GlobalTheory.Cusp.isUnitaryRep_Rcusp V μ).1 _ _) ((GlobalTheory.T.cusp_translate_bounded_by_derivative D θ hθ V μ X φ).trans hb)
 
+/- English proof (translation)
+Establish `hδ : (0 : ℝ) < 1 / (C + 1)` using `by positivity`. Take `⟨N, hN, hlog⟩` from `GlobalTheory.T.archimedean_neighbourhood_exp_surjective D θ hθ V _ hδ`. Establish `hM` using `GlobalTheory.CompanionTheory.CuspNbhd.real_mul_level_mem_nhds D V U hU N hN`. Establish `hfd : FiniteDimensional ℂ (E.map (io μ hθ))`. Use `GlobalTheory.CompanionTheory.CuspFin.finiteDimensional_of_coercive GlobalTheory.CuspGeo.cuspDecayBound μ _ hM ?_` and prove the remaining obligations.
+
+Introduce `g hg u hu`. Take `⟨r, k, hr, hrN, hk, hkf, hgr⟩` from `hg`. Take `⟨φ, hφ, hφu⟩` from `hu`. Take `⟨X, hX, hXr⟩` from `hlog r hrN hr`. Rewrite using `[hgr, ← hXr, ← hφu]`.
+
+Use `half_of_bound μ hθ φ X k (hfix φ hφ k hk hkf) ((hC X φ hφ).trans ?_)` and prove the remaining obligations. Establish `h1 : C * ‖X‖ ≤ 1`. Establish `h2 : ‖X‖ * (C + 1) ≤ 1`. Use `mul_lt_mul_of_pos_right hX (show 0 < C + 1 by positivity)` as an intermediate fact. Rewrite `this` using `[one_div, inv_mul_cancel₀ (by positivity)]`.
+
+Conclude with `this.le`. Use polynomial arithmetic with `[norm_nonneg X]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) h1)`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (io μ hθ) (io_injective μ hθ) E).symm`.
+-/
 theorem finite_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (hθ : IsInfFam θ)
     (U : Subgroup (GA D V)) (hU : IsOpen (U : Set (GA D V))) (E : Submodule ℂ (Mc θ V))
     (hfix : ∀ φ ∈ E, ∀ k ∈ U, k ∈ GfC V → ∀ g, φ.1 (g * k) = φ.1 g) {C : ℝ} (hC0 : 0 ≤ C)
@@ -339,6 +461,25 @@ theorem finite_of_bound (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsMulRigh
     exact (mul_le_of_le_one_left (norm_nonneg _) h1)
   exact LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (io μ hθ) (io_injective μ hθ) E).symm
 
+/- English proof (translation)
+Introduce `D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c`. Take `⟨μ, -, hμ, -⟩` from `PositivityTheory.MatrixIdentityOffBase.exists_meas V`. Use `haveI := hμ`. Use `haveI := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D V μ hμ`. Set `E : Submodule ℂ (Mc θ V)` to `{ carrier := {φ | φ.1 ∈ forms θ V U ε fr ρ c} add_mem' := by`.
+
+Introduce `f g hf hg`. Take `⟨-, f2, f3, f4⟩` from `hf`. Take `⟨-, g2, g3, g4⟩` from `hg`. Use `⟨(mem_Mc_iff.1 (f + g).2).1, fun u hu hu' x => ?_, fun τ x => ?_, fun τ k => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_add, Pi.add_apply, f2 u hu hu' x, g2 u hu hu' x]`.
+
+Conclude with `(coeffSpan (ρ τ)).add_mem (f3 τ x) (g3 τ x)`. Rewrite using `[Submodule.coe_add, (linOnSm_gelf (θ := θ) (V := V) τ k).add f.1 (smooth_of_mem f) g.1 (smooth_of_mem g), f4, g4, smul_add]`. Use the proof step `zero_mem' := by`. Use `⟨(mem_Mc_iff.1 (0 : Mc θ V).2).1, fun _ _ _ _ => rfl, fun τ x => (coeffSpan (ρ τ)).zero_mem, fun τ k => ?_⟩` and prove the remaining obligations. Use `(linOnSm_gelf (θ := θ) (V := V) τ k).smul 0 0` as an intermediate fact.
+
+Simplify using `using this`. Use the proof step `smul_mem' := by`. Introduce `a f hf`. Take `⟨-, f2, f3, f4⟩` from `hf`. Use `⟨(mem_Mc_iff.1 (a • f).2).1, fun u hu hu' x => ?_, fun τ x => ?_, fun τ k => ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Submodule.coe_smul, Pi.smul_apply, f2 u hu hu' x]`. Conclude with `(coeffSpan (ρ τ)).smul_mem a (f3 τ x)`. Rewrite using `[Submodule.coe_smul, (linOnSm_gelf (θ := θ) (V := V) τ k).smul, f4, smul_comm] }`. Establish `hgr : ∀ (τ : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) (hZ : Z ∈ lieAt V τ), Bd μ hθ (E : Set (Mc θ V)) (der hθ τ hZ)`. Introduce `τ Z hZ`.
+
+Take `⟨hPu, hPg⟩` from `hfr τ`. Take `⟨n₁, n₂, X, y, hX, hy, hspan, hg⟩` from `GlobalTheory.T.lie_algebra_spanned_by_compact_and_frame D θ hθ V τ (ε τ) (fr τ) hPu hPg`. Establish `hYl : ∀ b, (fr τ)⁻¹ * y b * fr τ ∈ lieAt V τ` using `fun b => lie_conj hPu hPg (hy b)`. Establish `bK : ∀ b, Bd μ hθ (E : Set (Mc θ V)) (der hθ τ (hYl b))` using `fun b => (bd_ktype μ hθ hPu (ρ τ) (hρ τ) (hy b) (hYl b)).mono fun φ hφ => hφ.2.2.1 τ`. Establish `bX` using `bd_of_casimir μ hθ (E : Set (Mc θ V)) hX hYl (c τ 1) (fun φ hφ => by`.
+
+Establish `h1` using `hφ.2.2.2 τ 1`. Rewrite `h1` using `[hg φ.1 (smooth_of_mem φ)]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, ← h1]`. Simplify using `[Submodule.coe_sum]) bK`.
+
+Take `⟨_, b'⟩` from `bd_span μ hθ (E : Set (Mc θ V)) (Set.range X ∪ Set.range fun b => (fr τ)⁻¹ * y b * fr τ) (by`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨b, rfl⟩)`. Conclude with `⟨hX a, bX a⟩`. Conclude with `⟨hYl b, bK b⟩) (hspan Z hZ)`. Conclude with `b'`.
+
+Take `⟨C, hC0, hC⟩` from `bd_inf μ hθ (E : Set (Mc θ V)) hgr`. Establish `hfE : FiniteDimensional ℂ E` using `finite_of_bound μ hθ U hU E (fun φ hφ => hφ.2.1) hC0 hC`. Establish `hle : Submodule.span ℂ {φ | φ ∈ forms θ V U ε fr ρ c ∧ IsCuspFun V φ} ≤ E.map (Mc θ V).subtype` using `Submodule.span_le.2 fun x hx => ⟨⟨x, mem_Mc_iff.2 ⟨hx.1.1, hx.2⟩⟩, hx.1, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem cuspFinite : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)), IsOpen (U : Set (GA D V)) → ∀ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), GlobalTheory.Published.AutFin.IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] [∀ τ, FiniteDimensional ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)), (∀ τ, GlobalTheory.Published.AutFin.IsContRep (ρ τ)) → ∀ c : D.what₂.Tau → ℕ → ℂ, FiniteDimensional ℂ (Submodule.span ℂ {φ | φ ∈ GlobalTheory.Published.AutFin.forms θ V U ε fr ρ c ∧ IsCuspFun V φ}) := by
   intro D θ hθ V U hU ε fr hfr W _ _ _ ρ hρ c
   obtain ⟨μ, -, hμ, -⟩ := PositivityTheory.MatrixIdentityOffBase.exists_meas V

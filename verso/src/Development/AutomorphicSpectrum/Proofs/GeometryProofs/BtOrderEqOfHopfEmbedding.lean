@@ -9,6 +9,9 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
+/- English proof (translation)
+The claim follows from `@PositivityTheory.HtPt.Mh.char`.
+-/
 theorem btOrder_eq_of_open_cover : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (A : Subalgebra R (T → R)), IsHopfOrder A → ∀ (j : Γ.G.left ⟶ Spec (CommRingCat.of A)), Γ.IsEmb A j → IsOpenImmersion j → Γ.TranslatesCover A j ⊤ → Γ.btOrder ⊤ = A :=
   @PositivityTheory.HtPt.Mh.char
 

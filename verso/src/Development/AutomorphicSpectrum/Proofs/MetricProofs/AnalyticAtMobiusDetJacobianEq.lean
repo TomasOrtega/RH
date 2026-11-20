@@ -6,6 +6,11 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.CompanionTheory.Ar.PB.FibPt
 
+/- English proof (translation)
+Establish `hT : AnalyticAt ℂ (fun z' : Fin (d + 1) → ℂ => (Fin.tail z' : Fin d → ℂ)) z`. Rewrite using `[analyticAt_pi_iff]`. Introduce `i`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) i.succ).analyticAt z`. Establish `hA : AnalyticAt ℂ (fun y' => g y' p q) (Fin.tail z)` using `ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg p q).differentiableOn _ (Set.mem_univ _)`.
+
+Conclude with `hA.comp hT`.
+-/
 theorem analyticAt_entry_tail {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (z : Fin (d + 1) → ℂ) (p q : Fin 2) :
     AnalyticAt ℂ (fun z' : Fin (d + 1) → ℂ => g (Fin.tail z') p q) z := by
@@ -17,6 +22,11 @@ theorem analyticAt_entry_tail {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) 
     ReciprocityTheory.AnForm.Osgood.osgood d Set.univ _ isOpen_univ (hg p q).differentiableOn _ (Set.mem_univ _)
   exact hA.comp hT
 
+/- English proof (translation)
+Establish `hc0 : AnalyticAt ℂ (fun z' : Fin (d + 1) → ℂ => z' 0) z` using `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) 0).analyticAt z`. Establish `e` using `analyticAt_entry_tail g hg z`. Establish `hnum : AnalyticAt ℂ (fun z' : Fin (d + 1) → ℂ => g (Fin.tail z') 1 0 + g (Fin.tail z') 1 1 * z' 0) z` using `(e 1 0).add ((e 1 1).mul hc0)`. Establish `hden : AnalyticAt ℂ (fun z' : Fin (d + 1) → ℂ => den (g (Fin.tail z')) (z' 0)) z` using `(e 0 0).add ((e 0 1).mul hc0)`. Rewrite using `[analyticAt_pi_iff]`.
+
+Introduce `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hnum.div hden h`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) j.succ).analyticAt z`.
+-/
 theorem analyticAt_mobius_first {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (z : Fin (d + 1) → ℂ)
     (h : den (g (Fin.tail z)) (z 0) ≠ 0) : AnalyticAt ℂ (mob1 g) z := by
@@ -33,6 +43,13 @@ theorem analyticAt_mobius_first {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2
   · exact hnum.div hden h
   · exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) j.succ).analyticAt z
 
+/- English proof (translation)
+Establish `hl : HasDerivAt (fun t : ℂ => a + t) 1 0`. Simplify using `using (hasDerivAt_id (0 : ℂ)).const_add a`. Establish `hn : HasDerivAt (fun t : ℂ => m 1 0 + m 1 1 * (a + t)) (m 1 1 * 1) 0` using `(hl.const_mul (m 1 1)).const_add (m 1 0)`. Establish `hd : HasDerivAt (fun t : ℂ => den m (a + t)) (m 0 1 * 1) 0` using `(hl.const_mul (m 0 1)).const_add (m 0 0)`. Establish `h0 : den m (a + 0) ≠ 0` using `by simpa using h`.
+
+Establish `hq` using `hn.div hd h0`. Establish `e1 : (m 1 1 * 1 * den m (a + 0) - (m 1 0 + m 1 1 * (a + 0)) * (m 0 1 * 1)) / den m (a + 0) ^ 2 = mobD m a`. Simplify using `only [add_zero, mobD, Matrix.det_fin_two]`. Use `congr 1`. Simplify using `only [den]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `hq` using `[e1]`. Conclude with `hq`.
+-/
 theorem hasDerivAt_mob_shift (m : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) (h : den m a ≠ 0) :
     HasDerivAt (fun t : ℂ => mob m (a + t)) (mobD m a) 0 := by
   have hl : HasDerivAt (fun t : ℂ => a + t) 1 0 := by
@@ -52,6 +69,21 @@ theorem hasDerivAt_mob_shift (m : Matrix (Fin 2) (Fin 2) ℂ) (a : ℂ) (h : den
   rw [e1] at hq
   exact hq
 
+/- English proof (translation)
+Use `set z : Fin (d + 1) → ℂ := Fin.cons a y with hz`. Establish `htail : (Fin.tail z : Fin d → ℂ) = y` using `Fin.tail_cons _ _`. Establish `hz0 : z 0 = a` using `Fin.cons_zero _ _`. Establish `hF : HasFDerivAt (mob1 g) (fderiv ℂ (mob1 g) z) z` using `(analyticAt_mobius_first g hg z (by rwa [htail, hz0])).differentiableAt.hasFDerivAt`. Establish `hrow : ∀ (i : Fin d) (v : Fin (d + 1) → ℂ), fderiv ℂ (mob1 g) z v i.succ = v i.succ`.
+
+Introduce `i v`. Establish `h1` using `(hasFDerivAt_pi'.1 hF) i.succ`. Establish `h2 : HasFDerivAt (fun z' : Fin (d + 1) → ℂ => mob1 g z' i.succ) (ContinuousLinearMap.proj (R` using `ℂ) (φ := fun _ : Fin (d + 1) => ℂ) i.succ) z := (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin (d + 1) => ℂ) i.succ).hasFDerivAt`. Conclude with `DFunLike.congr_fun (h1.unique h2) v`. Establish `hcorner : fderiv ℂ (mob1 g) z (Pi.single 0 1) 0 = mobD (g y) a`.
+
+Establish `hc : HasDerivAt (fun t : ℂ => z + t • (Pi.single 0 1 : Fin (d + 1) → ℂ)) (Pi.single 0 1) 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const (Pi.single 0 1 : Fin (d + 1) → ℂ)).const_add z`. Establish `hF' : HasFDerivAt (mob1 g) (fderiv ℂ (mob1 g) z) (z + (0 : ℂ) • (Pi.single 0 1 : Fin (d + 1) → ℂ))` using `by simpa using hF`. Establish `hcomp` using `hF'.comp_hasDerivAt (0 : ℂ) hc`. Establish `h0` using `(hasDerivAt_pi.1 hcomp) 0`.
+
+Establish `hline : ∀ t : ℂ, (mob1 g ∘ fun t : ℂ => z + t • (Pi.single 0 1 : Fin (d + 1) → ℂ)) t 0 = mob (g y) (a + t)`. Introduce `t`. Establish `ht : (Fin.tail (z + t • (Pi.single 0 1 : Fin (d + 1) → ℂ)) : Fin d → ℂ) = y`. Rewrite using `[← htail]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[Fin.tail, Pi.single_apply, Fin.succ_ne_zero]`. Simplify using `only [Function.comp, mob1, Fin.cons_zero, ht]`. Simplify using `[hz0]`. Establish `h3 : HasDerivAt (fun t : ℂ => (mob1 g ∘ fun t : ℂ => z + t • (Pi.single 0 1 : Fin (d + 1) → ℂ)) t 0) (mobD (g y) a) 0`. Simplify `hasDerivAt_mob_shift (g y) a h` using `only [hline]`.
+
+Conclude with `h0.unique h3`. Rewrite using `[Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `hz1 : ∀ i : Fin d, ReciprocityTheory.AnForm.A.jacC (mob1 g) z i.succ 0 = 0`. Introduce `i`. Simplify using `[ReciprocityTheory.AnForm.A.jacC, hrow, Pi.single_apply, Fin.succ_ne_zero]`.
+
+Establish `hminor : (ReciprocityTheory.AnForm.A.jacC (mob1 g) z).submatrix (Fin.succAbove 0) Fin.succ = 1`. Use extensionality with `i j`. Simplify using `[ReciprocityTheory.AnForm.A.jacC, hrow, Pi.single_apply, Matrix.one_apply, Fin.succ_inj]`. Simplify using `only [hz1, hminor]`. Simplify using `[ReciprocityTheory.AnForm.A.jacC, hcorner]`.
+-/
 theorem det_jacobian_mobius_first {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ)
     (hg : ∀ p q, Differentiable ℂ fun y' => g y' p q) (y : Fin d → ℂ) (a : ℂ)
     (h : den (g y) a ≠ 0) :
@@ -101,6 +133,9 @@ theorem det_jacobian_mobius_first {d : ℕ} (g : (Fin d → ℂ) → Matrix (Fin
   simp only [hz1, hminor]
   simp [ReciprocityTheory.AnForm.A.jacC, hcorner]
 
+/- English proof (translation)
+Introduce `d g hg y a h`. Use `⟨analyticAt_mobius_first g hg _ ?_, det_jacobian_mobius_first g hg y a h⟩` and prove the remaining obligations. Rewrite using `[Fin.tail_cons, Fin.cons_zero]` and apply the resulting hypothesis.
+-/
 theorem analyticAt_mobius_and_det_jacobian : ∀ (d : ℕ) (g : (Fin d → ℂ) → Matrix (Fin 2) (Fin 2) ℂ),
     (∀ p q, Differentiable ℂ fun y' => g y' p q) → ∀ (y : Fin d → ℂ) (a : ℂ),
     GlobalTheory.CompanionTheory.Ar.PB.FibPt.den (g y) a ≠ 0 →

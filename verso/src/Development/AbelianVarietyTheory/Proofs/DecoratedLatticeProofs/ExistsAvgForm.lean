@@ -18,6 +18,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] {c : ℕ}
 variable {A : Type} [AddCommGroup A] [Module ℂ A]
 
+/- English proof (translation)
+Distinguish the cases in `h : f ∈ SB X`. Rewrite using `[show z • f = ((z • (⟨f, h⟩ : SB X) : SB X) : X → ℂ) from rfl, app_coe, map_smul, ← app_coe]`. Establish `h' : z • f ∉ SB X` using `fun h' => h ((Submodule.smul_mem_iff _ hz).1 h')`. Simplify using `[app, h, h']`.
+-/
 theorem app_smul {X V : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℂ V] (l : SB X →ₗ[ℂ] V) {z : ℂ} (hz : z ≠ 0)
     (f : X → ℂ) : app l (z • f) = z • app l f := by
   by_cases h : f ∈ SB X
@@ -27,6 +30,9 @@ theorem app_smul {X V : Type} [TopologicalSpace X] [AddCommGroup V] [Module ℂ 
 
 omit [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om_smul' {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k)
     (z : ℂ) (Φ : Matrix b a k → ℂ) : om μ g h (z • Φ) = z • om μ g h Φ := by
   funext x
@@ -35,6 +41,9 @@ theorem om_smul' {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [Decidable
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [BorelSpace k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [opE, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[integral_const_mul]`.
+-/
 theorem opE_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (z : ℂ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) : opE ψ ν p (z • Φ) = z • opE ψ ν p Φ := by
   funext x
@@ -43,6 +52,11 @@ theorem opE_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (z : ℂ)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [BorelSpace k] in
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [opEFJ, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+
+Use `congrFun (opE_smul ψ ν p z (fun x => Φ (x + GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage.rowM n c p u))) x` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Rewrite using `[mul_left_comm, ← this]`. Both sides reduce to the same expression.
+-/
 theorem opEFJ_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (z : ℂ) (Φ₀ : (n' → k) → ℂ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) : opEFJ ψ ν p Φ₀ (z • Φ) = z • opEFJ ψ ν p Φ₀ Φ := by
   funext x
@@ -54,6 +68,19 @@ theorem opEFJ_smul (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (z : ℂ) 
   rw [mul_left_comm, ← this]
   rfl
 
+/- English proof (translation)
+Establish `hE` using `(opE_SB_and_linear k n n' c p ψ hψ ν).1`. Set `E : GL (n ⊕ Fin c) k → SB (Matrix n n' k)` to `fun h => ⟨opE ψ ν p (om μ 1 h Φ.1), hE _ (om_mem_SB μ 1 h Φ.2)⟩`. Establish `hfE : ∀ h, tInt ψ ν μ p σ B F Φ.1 h = B (E h) (σ h F)` using `fun h => by`. Unfold `tInt`. Rewrite using `[show opE ψ ν p (om μ 1 h Φ.1) = ((E h : SB (Matrix n n' k)) : Matrix n n' k → ℂ) from rfl, app_coe]`.
+
+Establish `hmul : ∀ (g h : GL (n ⊕ Fin c) k) (Ψ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ), om μ 1 (g * h) Ψ = om μ 1 g (om μ 1 h Ψ)` using `fun g h Ψ => by`. Rewrite using `[← om_mul, one_mul]`. Use `set a : ℂ := ((nabs k (Matrix.GeneralLinearGroup.det x) ^ (((c : ℝ) + 1) / 2 - p) : ℝ) : ℂ) with ha`. Set `Ψ : SB (Matrix n n' k)` to `⟨om μ 1 x (E h).1, om_mem_SB μ 1 x (E h).2⟩`. Establish `h1 : E (embX c x * u * h) = (a * (ψ (-simpleSum u) : ℂ)) • Ψ`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use `show opE ψ ν p (om μ 1 (embX c x * u * h) Φ.1) = (a * (ψ (-simpleSum u) : ℂ)) • om μ 1 x (opE ψ ν p (om μ 1 h Φ.1))`. Rewrite using `[mul_assoc, hmul, (opE_om_embX k n n' c p hp hpc ψ ν μ _).1, hmul, opE_om_target_unipotent k n n' c p hp hpc ψ ν μ _ u hu]`. Use function extensionality and compare the values at `y`. Simplify using `only [om, Pi.smul_apply, smul_eq_mul, ha]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (ψ (-simpleSum u) : ℂ) * (ψ (simpleSum u) : ℂ) = 1`. Rewrite using `[← Circle.coe_mul, ← AddChar.map_add_eq_mul]`. Simplify using the standard rewrite rules. Establish `h4 : a * a = ((nabs k (Matrix.GeneralLinearGroup.det x) ^ ((c : ℝ) + 1 - 2 * p) : ℝ) : ℂ)`.
+
+Rewrite using `[ha, ← Complex.ofReal_mul, ← Real.rpow_add (nabs_pos _ _)]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `hB.1 (E h) u hu (σ h F)`. Establish `h6` using `hB.2 x (E h) Ψ (σ u (σ h F)) rfl`.
+
+Rewrite using `[hfE, hfE, h1, map_smul, LinearMap.smul_apply, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h6, h5, ← h4, ← ha, smul_eq_mul]`. Take the linear combination `(a * a * B (E h) (σ h F)) * h3`.
+-/
 theorem tInt_left {p : ℕ} (hp : 1 ≤ p) (hpc : p ≤ c) {ψ : AddChar k Circle} (hψ : Continuous ψ)
     (ν : Measure k) [ν.IsAddHaarMeasure] (μ : kˣ →* ℂˣ) {σ : Representation ℂ (GL (n ⊕ Fin c) k) A}
     {B : SB (Matrix n n' k) →ₗ[ℂ] A →ₗ[ℂ] ℂ} (hB : BilPos ψ μ p σ B) (F : A)
@@ -95,6 +122,9 @@ theorem tInt_left {p : ℕ} (hp : 1 ≤ p) (hpc : p ≤ c) {ψ : AddChar k Circl
 
 omit [BorelSpace k] in
 
+/- English proof (translation)
+Establish `e` using `om_mul μ 1 1 h j Φ`. Rewrite `e` using `[one_mul]`. Unfold `tInt`. Rewrite using `[e, h1, om_smul', opE_smul, app_smul _ (Units.ne_zero _), map_mul, Module.End.mul_apply, h2, map_smul, map_smul, LinearMap.smul_apply, smul_smul]`. Simplify using the standard rewrite rules.
+-/
 theorem tInt_right (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ) (p : ℕ) (σ : Representation ℂ (GL (n ⊕ Fin c) k) A)
     (B : SB (Matrix n n' k) →ₗ[ℂ] A →ₗ[ℂ] ℂ) (F : A) (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ)
     (j : GL (n ⊕ Fin c) k) (l : ℂˣ) (h1 : om μ 1 j Φ = ((l⁻¹ : ℂˣ) : ℂ) • Φ) (h2 : σ j F = (l : ℂ) • F)
@@ -106,6 +136,15 @@ theorem tInt_right (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ
     LinearMap.smul_apply, smul_smul]
   simp
 
+/- English proof (translation)
+Use `secondCountable k` as an intermediate fact. Take `⟨H1, H2⟩` from `FourierJacobiGroup.mem_RFJ_iff k n c ρ h1 h2`. Take `⟨r₁, hr₁, β₀, rfl⟩` from `(H1 r).1 hr`. Take `⟨x, u, hu, rfl⟩` from `Radical.exists_of_mem_R hr₁`. Establish `e : ∀ β : n → k, t (colE c (ρ + 1) β * (embX c x * u * colE c (ρ + 1) β₀ * h)) = (((nabs k (Matrix.GeneralLinearGroup.det x))⁻¹ : ℝ) : ℂ) * (fun γ => t (colE c (ρ + 1) (γ + β₀) * h)) ((x⁻¹).val.mulVec β)`.
+
+Introduce `β`. Rewrite using `[← ht x _ (H2 ((x⁻¹).val.mulVec β) u hu), ← FourierJacobiGroup.colE_add]`. Use `congr 1`. Simplify using `only [← mul_assoc]`. Rewrite using `[Exchange.colE_mul_embX]`.
+
+Use `group`. Simplify using `only [e]`. Rewrite using `[integral_const_mul, integral_comp_mulVec_eq_smul ν x⁻¹ (fun γ => t (colE c (ρ + 1) (γ + β₀) * h)), integral_add_right_eq_self (fun γ => t (colE c (ρ + 1) γ * h)) β₀, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul]`. Establish `e2 : nabs k (Matrix.GeneralLinearGroup.det x⁻¹) = (nabs k (Matrix.GeneralLinearGroup.det x))⁻¹`. Simplify using `[nabs]`.
+
+Rewrite using `[e2, inv_inv, inv_mul_cancel₀ (nabs_pos _ _).ne']`. Simplify using the standard rewrite rules.
+-/
 theorem avg_RFJ {ρ : ℕ} (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.IsAddHaarMeasure] (t : GL (n ⊕ Fin c) k → ℂ)
     (ht : ∀ (x : GL n k), ∀ u ∈ N k n c (ρ + 1), ∀ h, t (embX c x * u * h) =
       (((nabs k (Matrix.GeneralLinearGroup.det x))⁻¹ : ℝ) : ℂ) * t h)
@@ -137,6 +176,29 @@ theorem avg_RFJ {ρ : ℕ} (h1 : 1 ≤ ρ) (h2 : ρ < c) (ν : Measure k) [ν.Is
 section Double
 variable {n₀ n₁ n₂ : Type} [Fintype n₀] [DecidableEq n₀] [Fintype n₁] [DecidableEq n₁] [Fintype n₂] [DecidableEq n₂]
 
+/- English proof (translation)
+Use `hν.1` as an intermediate fact. Establish `h1 : 1 ≤ ρ` using `by omega`. Establish `hρc : ρ ≤ c` using `by omega`. Set `ρ₁ : Representation ℂ (GL (n₁ ⊕ Fin (c + 1)) k) (SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k))` to `(omR μ₂).comp (MonoidHom.inl (GL (n₁ ⊕ Fin (c + 1)) k) (GL (n₂ ⊕ Fin c) k))`. Establish `hρ₁s : IsSrc μ₂ ρ₁` using `fun _ _ => rfl`.
+
+Establish `hρ₁ : IsSmoothRep ρ₁`. Introduce `Φ`. Use `omR_smooth (a := n₁ ⊕ Fin (c + 1)) (b := n₂ ⊕ Fin c) hμ₂ Φ` as an intermediate fact. Conclude with `this.preimage (continuous_id.prodMk continuous_const)`. Set `b : SB (Matrix n₁ n₀ k) →ₗ[ℂ] SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k) →ₗ[ℂ] ℂ` to `(T.compr₂ (LinearMap.applyₗ v)).compl₂ (opL hψ ν ρ)`.
+
+Establish `hb : ∀ Ψ Φ, b Ψ Φ = T Ψ (opL hψ ν ρ Φ) v` using `fun _ _ => rfl`. Establish `hL : ∀ Φ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k), (opL hψ ν ρ Φ).1 = opE ψ ν ρ Φ.1` using `fun _ => rfl`. Establish `hbpos : BilPos ψ μ₁ ρ ρ₁ b`. Use `⟨fun Ψ g hg Φ => ?_, fun g Ψ Ψ₁ Φ hΨ => ?_⟩` and prove the remaining obligations. Establish `e : opL hψ ν ρ (ρ₁ g Φ) = (ψ (simpleSum g) : ℂ) • opL hψ ν ρ Φ` using `Subtype.ext (by`.
+
+Rewrite using `[hL, hρ₁s, GlobalTheory.RootExSource.opE_om_source k n₂ n₁ c ρ h1 hρc ψ ν μ₂ _ g hg]`. Use the proof step `rfl)`. Rewrite using `[hb, hb, e, map_smul, LinearMap.smul_apply, smul_eq_mul]`. Set `Ξ : SB (Matrix n₂ n₁ k)` to `⟨om μ₂ g 1 (opL hψ ν ρ Φ).1, om_mem_SB μ₂ g 1 (opL hψ ν ρ Φ).2⟩`. Establish `e : opL hψ ν ρ (ρ₁ (embX (c + 1) g) Φ) = ((nabs k (Matrix.GeneralLinearGroup.det g) ^ (((c : ℝ) + 2) / 2 - ρ) : ℝ) : ℂ) • Ξ` using `Subtype.ext (by`.
+
+Rewrite using `[hL, hρ₁s, (opE_om_embX k n₂ n₁ c ρ h1 hρc ψ ν μ₂ _).2 g]`. Use the proof step `rfl)`. Rewrite using `[hb, hb, e, map_smul, LinearMap.smul_apply, smul_eq_mul, hT.2 g Ψ Ψ₁ _ Ξ hΨ rfl]`. Use `congr 3`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨B, hBpos, hBb⟩` from `bilPos_exUp_exists (c := c + 1) h1 (by omega) hψ hψ1 ν hρ₁ hbpos`. Take `⟨fj, hrep, hfj⟩` from `exists_fj_of_exUp (c := c + 1) h1 (by omega) hψ hψ1 hν hρ₁ hbpos.1 hBpos.1 hBb`. Establish `hw : ∀ Ψ (Φ : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)) (Φ₀ : SB (n₁ → k)), app (T Ψ) (opEFJ ψ ν ρ Φ₀.1 Φ.1) v = fj Ψ Φ Φ₀`. Introduce `Ψ Φ Φ₀`.
+
+Take `⟨hmem, hop, hLL⟩` from `(avg_self_and_props k n₂ n₁ c ρ h1 hρc ψ hψ hψ1 ν hν μ₂ hμ₂ Φ).2 Φ₀`. Establish `e` using `hop 1`. Rewrite `e` using `[om_one, om_one]`. Rewrite using `[hfj, ← hLL ρ₁ hρ₁s (b Ψ), ← e]`. Use `Eq.trans ?_ (app_coe (b Ψ) ⟨_, hmem⟩).symm` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Conclude with `congrArg (fun l : A →ₗ[ℂ] ℂ => l v) (app_coe (T Ψ) (opL hψ ν ρ ⟨_, hmem⟩))`. Use `⟨ρ₁, B, hρ₁s, hBpos, ?_⟩` and prove the remaining obligations. Introduce and unpack `Φ₁ Φ₂ h w ⟨m, Ψ, Φ₀, hd, rfl⟩`. Establish `hw' : ∀ Ψ (Φ₀ : SB (n₁ → k)), app (T Ψ) (opEFJ ψ ν ρ Φ₀.1 (om μ₂ h 1 Φ₂.1)) v = fj Ψ (ρ₁ h Φ₂) Φ₀` using `fun Ψ Φ₀ => hw Ψ (ρ₁ h Φ₂) Φ₀`.
+
+Simplify using `only [hw', (hrep.2 _ _ _).2]`. Rewrite using `[← integral_finset_sum _ fun i _ => (hrep.2 _ _ _).1]`. Use `congr 1`. Use function extensionality and compare the values at `β`. Establish `e` using `om_mul μ₁ 1 1 (colE (c + 1) (ρ + 1) β) h Φ₁`.
+
+Rewrite `e` using `[one_mul]`. Establish `: opE ψ ν (ρ + 1) (om μ₁ 1 (colE (c + 1) (ρ + 1) β) (om μ₁ 1 h Φ₁)) = (∑ i, (Φ₀ i).1 β • Ψ i : SB (Matrix n₁ n₀ k)).1`. Use function extensionality and compare the values at `x₀`. Use `(hd x₀ β).trans ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+
+Unfold `tInt`. Rewrite using `[e, this, app_coe, map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_avg_form {ρ : ℕ} (hcρ : c + 1 = 2 * ρ) {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {ν : Measure k} (hν : IsSelfDual ψ ν) {μ₁ μ₂ : kˣ →* ℂˣ} (hμ₂ : IsOpen (μ₂.ker : Set kˣ))
     {τ : Representation ℂ (GL (n₂ ⊕ Fin c) k) A}
@@ -205,6 +267,17 @@ theorem exists_avg_form {ρ : ℕ} (hcρ : c + 1 = 2 * ρ) {ψ : AddChar k Circl
   rw [e, this, app_coe, map_mul]
   simp
 
+/- English proof (translation)
+Use `hν.1` as an intermediate fact. Establish `e` using `om_mul μ x 1 (r * y) j Φ.1`. Rewrite `e` using `[mul_one]`. Establish `s1 : app B (opEFJ ψ ν ρ Φ₀.1 (om μ x (r * y * j) Φ.1)) (τ (r * y * j) F) = app B (opEFJ ψ ν ρ Φ₀.1 (om μ x (r * y) Φ.1)) (τ (r * y) F)`. Rewrite using `[e, h1, om_smul', opEFJ_smul, app_smul _ (Units.ne_zero _), map_mul τ (r * y), Module.End.mul_apply, h2, map_smul, map_smul, LinearMap.smul_apply, smul_smul]`.
+
+Simplify using the standard rewrite rules. Set `Φ' : SB (Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k)` to `⟨om μ x 1 Φ.1, om_mem_SB μ x 1 Φ.2⟩`. Take `⟨hmem, hop, -⟩` from `(avg_self_and_props k n n' c ρ (by omega) (by omega) ψ hψ hψ1 ν hν μ hμ Φ').2 Φ₀`. Establish `s2 : ∀ h, app B (opEFJ ψ ν ρ Φ₀.1 (om μ x h Φ.1)) (τ h F) = tInt ψ ν μ ρ τ B F (⟨_, hmem⟩ : SB _).1 h`. Introduce `h`.
+
+Establish `e` using `om_mul μ 1 x h 1 Φ.1`. Rewrite `e` using `[one_mul, mul_one]`. Unfold `tInt`. Rewrite using `[hop h, e]`. Take `⟨g, u, hu, rfl⟩` from `Radical.exists_of_mem_R hr`.
+
+Rewrite using `[s1, s2, s2, tInt_left (by omega) (by omega) hψ ν μ hB F _ g u hu]`. Establish `: (c : ℝ) + 1 - 2 * ρ = 0`. Establish `: ((c + 1 : ℕ) : ℝ) = ((2 * ρ : ℕ) : ℝ)` using `by rw [hcρ]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite using `[this]`. Simplify using the standard rewrite rules.
+-/
 theorem pair_last {ρ : ℕ} (hcρ : c + 1 = 2 * ρ) {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {ν : Measure k} (hν : IsSelfDual ψ ν) {μ : kˣ →* ℂˣ} (hμ : IsOpen (μ.ker : Set kˣ))
     {τ : Representation ℂ (GL (n ⊕ Fin c) k) A} {B : SB (Matrix n n' k) →ₗ[ℂ] A →ₗ[ℂ] ℂ} (hB : BilPos ψ μ ρ τ B) (F : A)
@@ -237,6 +310,17 @@ theorem pair_last {ρ : ℕ} (hcρ : c + 1 = 2 * ρ) {ψ : AddChar k Circle} (h�
   rw [this]
   simp
 
+/- English proof (translation)
+Use `hν.1` as an intermediate fact. Simplify using `only [pair_last hcρ hψ hψ1 hν hμ₂ (hT.1 _) F Φ₂ j' (L₂.lam ⟨j', hj'⟩) (t₂.2 ⟨j', hj'⟩) (hF ⟨j', hj'⟩) hr'] at hz'`. Take `⟨ρ₁, B, hρ₁, hB, H⟩` from `exists_avg_form hcρ hψ hψ1 hν hμ₂ hT (τ y F)`. Set `Φ₁' : SB (Matrix (n₁ ⊕ Fin (c + 1)) (n₀ ⊕ Fin (c + 1 + 1)) k)` to `⟨om μ₁ a 1 Φ₁.1, om_mem_SB μ₁ a 1 Φ₁.2⟩`. Set `Φ₂' : SB (Matrix (n₂ ⊕ Fin c) (n₁ ⊕ Fin (c + 1)) k)` to `⟨om μ₂ 1 y Φ₂.1, om_mem_SB μ₂ 1 y Φ₂.2⟩`.
+
+Establish `e1 : ∀ h, om μ₁ a h Φ₁.1 = om μ₁ 1 h Φ₁'.1` using `fun h => by`. Rewrite using `[show Φ₁'.1 = om μ₁ a 1 Φ₁.1 from rfl, ← om_mul, one_mul, mul_one]`. Establish `e2 : ∀ h, om μ₂ h y Φ₂.1 = om μ₂ h 1 Φ₂'.1` using `fun h => by`. Rewrite using `[show Φ₂'.1 = om μ₂ 1 y Φ₂.1 from rfl, ← om_mul, one_mul, mul_one]`. Rewrite `hz`, `hz'` using `[e1, e2]`.
+
+Rewrite using `[H _ _ _ _ hz, H _ _ _ _ hz', mul_assoc r]`. Establish `q1 : om μ₁ 1 j Φ₁'.1 = (((L₁.lam ⟨j, hj⟩)⁻¹ : ℂˣ) : ℂ) • Φ₁'.1`. Rewrite using `[← e1, show Φ₁'.1 = om μ₁ a 1 Φ₁.1 from rfl, ← om_smul', ← t₁.2 ⟨j, hj⟩, ← om_mul, one_mul, mul_one]`. Establish `q2 : ρ₁ j Φ₂' = (L₁.lam ⟨j, hj⟩ : ℂ) • Φ₂'` using `Subtype.ext (by`. Rewrite using `[hρ₁, ← e2, Submodule.coe_smul, show Φ₂'.1 = om μ₂ 1 y Φ₂.1 from rfl, ← om_smul', ← t₂.1 ⟨j, hj⟩, ← om_mul, one_mul, mul_one])`.
+
+Rewrite using `[avg_RFJ (by omega) (by omega) ν _ (fun g u hu h => ?_) hr]`. Simplify using `only [← mul_assoc, tInt_right ψ ν μ₁ (ρ + 1) ρ₁ B Φ₂' Φ₁'.1 j _ q1 q2]`. Rewrite using `[tInt_left (by omega) (by omega) hψ ν μ₁ hB Φ₂' Φ₁' g u hu, ← Real.rpow_neg_one]`. Use `congr 3`. Establish `: ((c + 1 : ℕ) : ℝ) = ((2 * ρ : ℕ) : ℝ)` using `by rw [hcρ]`.
+
+Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem tensorVal_inv {ρ : ℕ} (hcρ : c + 1 = 2 * ρ) {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
     {ν : Measure k} (hν : IsSelfDual ψ ν) {μ₁ μ₂ : kˣ →* ℂˣ} (hμ₂ : IsOpen (μ₂.ker : Set kˣ))
     {τ : Representation ℂ (GL (n₂ ⊕ Fin c) k) A}

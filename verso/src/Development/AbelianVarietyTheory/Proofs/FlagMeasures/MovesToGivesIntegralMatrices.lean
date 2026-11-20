@@ -17,6 +17,11 @@ section Gen
 
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
+/- English proof (translation)
+Rewrite `hx` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, rfl⟩` from `hx`. Use `⟨l, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hk (hl (Finsupp.mem_support_iff.mpr h))`.
+
+Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules.
+-/
 theorem exists_coef_of_mem_span_image {V : Type*} [AddCommGroup V] [Module E V] (e : Fin r → V)
     (s : Set (Fin r)) {x : V} (hx : x ∈ Submodule.span E (e '' s)) :
     ∃ l : Fin r → E, (∀ k, k ∉ s → l k = 0) ∧ x = ∑ k, l k • e k := by
@@ -26,6 +31,11 @@ theorem exists_coef_of_mem_span_image {V : Type*} [AddCommGroup V] [Module E V] 
   · by_contra h; exact hk (hl (Finsupp.mem_support_iff.mpr h))
   · rw [Finsupp.linearCombination_apply, Finsupp.sum_fintype]; intro i; simp
 
+/- English proof (translation)
+Unfold `orth`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`.
+
+Conclude with `F.z_orth a`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [map_add, ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`.
+-/
 theorem z_mem_orth (F : FlagG S r T) : F.z ∈ orth S (Submodule.span E (Set.range F.e)) := by
   unfold orth
   simp only [Submodule.mem_iInf, LinearMap.mem_ker]
@@ -36,6 +46,27 @@ theorem z_mem_orth (F : FlagG S r T) : F.z ∈ orth S (Submodule.span E (Set.ran
   | add a b _ _ ha hb => simp [map_add, ha, hb]
   | smul c a _ ha => simp [ha]
 
+/- English proof (translation)
+Establish `key : ∀ b : Fin (r + 1), ∃ l : Fin r → E, (∀ k, b ≤ Fin.castSucc k → l k = 0) ∧ n (frame F b) = frame F b + ∑ k, l k • F.fl.e k`. Introduce `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Establish `hz : frame F (Fin.last r) = F.fl.z` using `by simp [frame, FlagG.fvec]`.
+
+Establish `hm` using `h2 _ (z_mem_orth F.fl)`. Establish `hm' : n F.fl.z - F.fl.z ∈ Submodule.span E (F.fl.e '' Set.univ)`. Rewrite using `[Set.image_univ]`. Conclude with `hm`. Take `⟨l, -, hl⟩` from `exists_coef_of_mem_span_image F.fl.e Set.univ hm'`.
+
+Use `⟨l, fun k hk => absurd hk (not_le.mpr (Fin.castSucc_lt_last k)), ?_⟩` and prove the remaining obligations. Rewrite using `[hz, ← hl]`. Normalize the expressions using the abelian group laws. Consider the case `cast i`. Establish `hf : frame F (Fin.castSucc i) = F.fl.e i` using `by simp [frame, FlagG.fvec]`.
+
+Establish `hmem : F.fl.e i ∈ Xflag F (i.val + 1)` using `Submodule.subset_span (Set.mem_image_of_mem _ (show i ∈ {k : Fin r | k.1 < i.1 + 1} from Nat.lt_succ_self _))`. Establish `hm : n (F.fl.e i) - F.fl.e i ∈ Submodule.span E (F.fl.e '' {k : Fin r | k.1 < i.1})`. Use `h1 i.val _ hmem` as an intermediate fact. Rewrite `*` using `[hf]`. Conclude with `this`.
+
+Take `⟨l, hl0, hl⟩` from `exists_coef_of_mem_span_image F.fl.e _ hm`. Use `⟨l, fun k hk => hl0 k ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_lt]`. Conclude with `Fin.castSucc_le_castSucc_iff.mp hk`. Rewrite using `[hf, ← hl]`.
+
+Normalize the expressions using the abelian group laws. Use `choose l hl0 hl using key`. Use `⟨Matrix.of fun a b => Fin.snoc (α := fun _ => E) (l b) 0 a + if a = b then 1 else 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Simplify using `only [Matrix.of_apply, if_neg (ne_of_gt hab), add_zero]`.
+
+Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast k => simp only [Fin.snoc_castSucc]`. Conclude with `hl0 b k hab.le`. Introduce `a`.
+
+Simplify using `only [Matrix.of_apply, if_pos rfl]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp`. Consider the case `cast k => simp only [Fin.snoc_castSucc]`. Rewrite using `[hl0 _ k le_rfl]`.
+
+Simplify using the standard rewrite rules. Introduce `b`. Rewrite using `[hl b]`. Simplify using `only [Matrix.of_apply, add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[Fin.sum_univ_castSucc]`.
+
+Simplify using `[frame, FlagG.fvec, add_comm]`.
+-/
 theorem exists_upUni (F : LFlag S r T) (n : S.V ≃ₗ[E] S.V)
     (h1 : ∀ j, ∀ x ∈ Xflag F (j + 1), n x - x ∈ Xflag F j)
     (h2 : ∀ x ∈ orth S (Xsp F), n x - x ∈ Xsp F) :
@@ -84,6 +115,11 @@ theorem exists_upUni (F : LFlag S r T) (n : S.V ≃ₗ[E] S.V)
     rw [Fin.sum_univ_castSucc]
     simp [frame, FlagG.fvec, add_comm]
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul`. Consider the case `exact _root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul`. Consider the case `(apply _root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul ..)`.
+-/
 theorem upUni_mul {N : ℕ} {U W : Matrix (Fin N) (Fin N) E} (hU0 : ∀ a b, b < a → U a b = 0)
     (hU1 : ∀ a, U a a = 1) (hW0 : ∀ a b, b < a → W a b = 0) (hW1 : ∀ a, W a a = 1) :
     (∀ a b, b < a → (U * W) a b = 0) ∧ (∀ a, (U * W) a a = 1) := by
@@ -95,6 +131,9 @@ theorem upUni_mul {N : ℕ} {U W : Matrix (Fin N) (Fin N) E} (hU0 : ∀ a b, b <
   | (intros; apply @_root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.UpperUnitriangularMul.upperUnitriangular_mul ..)
 
+/- English proof (translation)
+Unfold `mapLF`. Rewrite using `[dif_pos hγ]`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simp [frame, FlagG.fvec, mapFlag]`. Consider the case `cast k => simp [frame, FlagG.fvec, mapFlag]`.
+-/
 theorem frame_mapLF (γ : S.V ≃ₗ[E] S.V) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom S.hT) (F : LFlag S r T) (b : Fin (r + 1)) :
     frame (mapLF γ F) b = γ (frame F b) := by
   unfold mapLF
@@ -109,6 +148,9 @@ end GlobalTheory.MovedFrames
 
 namespace GlobalTheory.MovedFrames
 
+/- English proof (translation)
+Rewrite using `[map_sum]`. Simplify using `only [map_smul, hF, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun a _ => by rw [mul_comm]`.
+-/
 theorem map_sum_frame {E V : Type*} [Field E] [AddCommGroup V] [Module E V] {N : ℕ} (ρ : V ≃ₗ[E] V)
     (U W : Matrix (Fin N) (Fin N) E) (f g : Fin N → V) (hF : ∀ a, ρ (f a) = ∑ c, U c a • g c) (b : Fin N) :
     ρ (∑ a, W a b • f a) = ∑ c, (U * W) c b • g c := by
@@ -121,6 +163,17 @@ end GlobalTheory.MovedFrames
 
 namespace GlobalTheory.MovedFrames
 
+/- English proof (translation)
+Introduce `D X Y u u' F00 F'0 t₀ ρ U U' hM n m hn hm`. Take `⟨_, hU, hU', hF, hF'⟩` from `hM`. Take `⟨W, hW0, hW1, hWe⟩` from `exists_upUni _ n hn.2.1 hn.2.2`. Take `⟨W', hW'0, hW'1, hW'e⟩` from `exists_upUni _ m hm.2.1 hm.2.2`. Establish `hlin : t₀.lin ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `t₀.rep.2.2.1`.
+
+Establish `hγ : n⁻¹ * t₀.lin * m ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `mul_mem (mul_mem (inv_mem hn.1) hlin) hm.1`. Take `⟨hB0, hB1⟩` from `upUni_mul (fun a b h => (hU a b).1 h) (fun a => (hU a a).2 rfl) hW0 hW1`. Take `⟨hB'0, hB'1⟩` from `upUni_mul (fun a b h => (hU' a b).1 h) (fun a => (hU' a a).2 rfl) hW'0 hW'1`. Use `⟨U * W, U' * W', hB0, hB1, hB'0, hB'1, fun b => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hWe]`.
+
+Conclude with `map_sum_frame ρ U W _ _ hF b`. Establish `ht : ∀ a, t₀.lin (frame (lf D (X.Fu u')) a) = frame t₀.frame a` using `fun a => by`. Rewrite using `[← frame_mapLF _ hlin]`. Both sides reduce to the same expression. Establish `hx : ∀ x, n ((n⁻¹ * t₀.lin * m) x) = t₀.lin (m x)` using `fun x => by`.
+
+Rewrite using `[← LinearEquiv.mul_apply, show n * (n⁻¹ * t₀.lin * m) = t₀.lin * m by group, LinearEquiv.mul_apply]`. Establish `hF2 : ∀ a, (t₀.lin.trans ρ) (frame (lf D (X.Fu u')) a) = ∑ c, U' c a • frame F'0 c`. Introduce `a`. Rewrite using `[LinearEquiv.trans_apply, ht, hF']`. Rewrite using `[frame_mapLF _ hγ, hx, hW'e]`.
+
+Use `map_sum_frame (t₀.lin.trans ρ) U' W' _ _ hF2 b` as an intermediate fact. Rewrite using `[← this, LinearEquiv.trans_apply, map_sum]`.
+-/
 theorem moved_frames : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (t₀ : TauC Y u u') (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → ∀ n m, n ∈ NRat (lf D (X.Fu u)) → m ∈ NRat (lf D (X.Fu u')) → ∃ B B' : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, (∀ a b, b < a → B a b = 0) ∧ (∀ a, B a a = 1) ∧ (∀ a b, b < a → B' a b = 0) ∧ (∀ a, B' a a = 1) ∧ ∀ b, ρ (n (frame (lf D (X.Fu u)) b)) = ∑ a, B a b • frame F00 a ∧ ρ (n (frame (mapLF (n⁻¹ * t₀.lin * m) (lf D (X.Fu u'))) b)) = ∑ a, B' a b • frame F'0 a := by
   intro D X Y u u' F00 F'0 t₀ ρ U U' hM n m hn hm
   obtain ⟨_, hU, hU', hF, hF'⟩ := hM

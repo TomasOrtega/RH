@@ -23,13 +23,37 @@ def matOf (s : S.V ≃ₗ[E] S.V) : Matrix (Fin S.rank) (Fin S.rank) E :=
 variable {S} {T T' : E} {A : Matrix (Fin S.rank) (Fin (r + 1)) E} {Λ Λ₁ : Submodule (𝓞 E) (Fin S.rank → E)}
   {s t : S.V ≃ₗ[E] S.V} {F F' G : FlagD (ofHSpace S) r}
 
+/- English proof (translation)
+The claim follows from `S.frame.equivFun.surjective`.
+-/
 theorem co_surjective : Function.Surjective (co S) := S.frame.equivFun.surjective
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_latV (x : S.V) : x ∈ latV S Λ ↔ co S x ∈ Λ := Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[ofHSpace_B, hT_eq_sum, form, Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem B_eq (x y : S.V) : (ofHSpace S).B x y = form (starRingEnd E) S.gram (co S x) (co S y) := by
   rw [ofHSpace_B, hT_eq_sum, form, Matrix.dotProduct_mulVec]; rfl
 
+/- English proof (translation)
+Establish `hfg : (latV S Λ).FG`. Rewrite using `[latV, Submodule.comap_equiv_eq_map_symm]`. Conclude with `h.1.map _`. Establish `hd (x : S.V) : x ∈ latV S Λ ↔ ∀ y ∈ latV S Λ, (ofHSpace S).B x y ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[mem_latV, h.2, co_surjective.forall]`.
+
+Simplify using `only [← B_eq, mem_latV, Submodule.mem_one, RingHom.mem_range]`. Establish `hs : Submodule.span E (latV S Λ : Set S.V) = ⊤`. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `hfg`. Take `⟨d, hd'⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (𝓞 E)) N fun y => star ((ofHSpace S).B x y)`.
+
+Establish `hd0 : ((d : 𝓞 E) : E) ≠ 0` using `by simpa using nonZeroDivisors.ne_zero d.2`. Rewrite using `[← Submodule.smul_mem_iff _ (star_ne_zero.2 hd0)]`. Use `Submodule.subset_span ((hd _).2 fun y hy => ?_)` and prove the remaining obligations. Establish `k : star ((ofHSpace S).B (star ((d : 𝓞 E) : E) • x) y) ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[(ofHSpace S).herm]`.
+
+Rewrite `hy` using `[← hN]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc⟩` from `hd' y hy`. Use `Submodule.mem_one.2 ⟨c, hc.trans ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[(ofHSpace S).herm, LinearMap.map_smulₛₗ, starRingEnd_apply, star_star]`. Both sides reduce to the same expression. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply]`. Conclude with `add_mem ha hb`.
+
+Consider the case `smul c a _ ha`. Rewrite using `[int_smul_eq, map_smul (ofHSpace S).B, LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ c ha`. Take `⟨c, hc⟩` from `Inhab.map_mem_int (starRingEnd E) (Submodule.mem_one.1 k)`. Conclude with `Submodule.mem_one.2 ⟨c, hc.trans (star_star _)⟩`.
+
+Use `⟨⟨⟨_, hfg, by simp⟩, hs⟩, Submodule.ext fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HermLat.mem_dual_iff, hs, ← hd]`. Simplify using the standard rewrite rules.
+-/
 theorem isUnimod_latV (h : SelfDual (starRingEnd E) S.gram Λ) : IsUnimod (ofHSpace S) (latV S Λ) := by
   have hfg : (latV S Λ).FG := by
     rw [latV, Submodule.comap_equiv_eq_map_symm]; exact h.1.map _
@@ -63,6 +87,9 @@ theorem isUnimod_latV (h : SelfDual (starRingEnd E) S.gram Λ) : IsUnimod (ofHSp
   rw [GlobalTheory.HermLat.mem_dual_iff, hs, ← hd]
   simp
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[coMat, co, Matrix.mulVec, dotProduct, mul_comm]`.
+-/
 theorem coMat_mulVec {m : ℕ} (x : Fin m → S.V) (c : Fin m → E) : coMat S x *ᵥ c = co S (∑ a, c a • x a) := by
   ext i
   simp [coMat, co, Matrix.mulVec, dotProduct, mul_comm]

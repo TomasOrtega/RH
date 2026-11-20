@@ -17,5 +17,8 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.LN
 
+/- English proof (translation)
+Introduce `h₁ h₂` and use `⟨GlobalTheory.T.compatible_line_bundles_formal_thickening h₁ h₂, GlobalTheory.T.existsUnique_hom_of_thickenings' h₁ h₂, GlobalTheory.SecAlg.existsUnique_sec, GlobalTheory.T.exists_section_primitiveBundle_translate_localRing h₁ h₂⟩`.
+-/
 theorem GlobalTheory.LN.ega_of_laws : Laws → Laws2 → Ega := fun h₁ h₂ =>
   ⟨GlobalTheory.T.compatible_line_bundles_formal_thickening h₁ h₂, GlobalTheory.T.existsUnique_hom_of_thickenings' h₁ h₂, GlobalTheory.SecAlg.existsUnique_sec, GlobalTheory.T.exists_section_primitiveBundle_translate_localRing h₁ h₂⟩

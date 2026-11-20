@@ -9,14 +9,25 @@ variable {K Kt : Type} [Field K] [CommRing Kt] (p : ℕ) [Fact p.Prime] [CharP K
   {ι : Type} (F : ι → Kt →+* Kt) (s : Finset ι) (A : Subring K)
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Rewrite using `[hπ.ann]`. Simplify using `[map_natCast, CharP.cast_eq_zero]`.
+-/
 lemma logLift_pp_zero (hπ : IsFlatLift p π) : (p : Kt) * p = 0 := by
   rw [hπ.ann]; simp [map_natCast, CharP.cast_eq_zero]
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, map_one π, fun i _ => ⟨0, by simp [A.zero_mem], by simp⟩⟩`.
+-/
 lemma logLift_one : LogLift p π F s (A : Set K) 1 :=
   ⟨1, map_one π, fun i _ => ⟨0, by simp [A.zero_mem], by simp⟩⟩
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Take `⟨z, hz, hF⟩` from `hg`. Take `⟨z', hz', hF'⟩` from `hg'`. Establish `hpp` using `logLift_pp_zero p π hπ`. Use `⟨z * z', by simp [hz, hz'], fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hFw⟩` from `hF i hi`.
+
+Take `⟨w', hw', hFw'⟩` from `hF' i hi`. Use `⟨w + w', by rw [map_add]; exact A.add_mem hw hw', ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hFw, hFw', mul_pow]`. Take the linear combination `(z ^ p * z' ^ p * w * w') * hpp`.
+-/
 lemma logLift_mul (hπ : IsFlatLift p π) {g g' : K} (hg : LogLift p π F s (A : Set K) g)
     (hg' : LogLift p π F s (A : Set K) g') : LogLift p π F s (A : Set K) (g * g') := by
   obtain ⟨z, hz, hF⟩ := hg
@@ -30,6 +41,17 @@ lemma logLift_mul (hπ : IsFlatLift p π) {g g' : K} (hg : LogLift p π F s (A :
   linear_combination (z ^ p * z' ^ p * w * w') * hpp
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Take `⟨z, hz, hF⟩` from `hg`. Establish `hpp` using `logLift_pp_zero p π hπ`. Establish `hπp : π (p : Kt) = 0` using `by simp [map_natCast, CharP.cast_eq_zero]`. Take `⟨z', hz'⟩` from `hπ.surj g⁻¹`. Take `⟨e, he⟩` from `(hπ.ker (z * z' - 1)).1 (by simp [hz, hz', hg0])`.
+
+Use `set u := z' * (1 - p * e) with hu`. Establish `hzu : z * u = 1`. Establish `: z * z' = 1 + p * e` using `by linear_combination he`. Rewrite using `[hu, ← mul_assoc, this]`. Take the linear combination `(-(e * e)) * hpp`.
+
+Establish `hπu : π u = g⁻¹` using `by simp [hu, hz', hπp]`. Use `clear_value u`. Use `⟨u, hπu, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, hFw⟩` from `hF i hi`. Use `⟨-w, by rw [map_neg]; exact A.neg_mem hw, ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : F i z * F i u = 1` using `by rw [← map_mul, hzu, map_one]`. Establish `h2 : F i z * (u ^ p * (1 + p * -w)) = 1`. Rewrite using `[hFw]`. Establish `: z ^ p * u ^ p = 1` using `by rw [← mul_pow, hzu, one_pow]`. Take the linear combination `(1 - (p:Kt) * w * ((p:Kt) * w)) * this - (w * w) * hpp`.
+
+Take the linear combination `(u ^ p * (1 + p * -w)) * h1 - (F i u) * h2`.
+-/
 lemma logLift_inv (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift p π F s (A : Set K) g) :
     LogLift p π F s (A : Set K) g⁻¹ := by
   obtain ⟨z, hz, hF⟩ := hg
@@ -54,6 +76,13 @@ lemma logLift_inv (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift 
   linear_combination (u ^ p * (1 + p * -w)) * h1 - (F i u) * h2
 
 omit [Fact p.Prime] in
+/- English proof (translation)
+Establish `hpow : ∀ {h : K}, LogLift p π F s (A : Set K) h → ∀ k : ℕ, LogLift p π F s (A : Set K) (h ^ k)`. Introduce `h hh k`. Proceed by induction on `k with`. Consider the case `zero => simpa using logLift_one p π F s A`. Consider the case `succ k ih => rw [pow_succ]`.
+
+Conclude with `logLift_mul p π F s A hπ ih hh`. Introduce `n`. Consider the cases of `n with`. Consider the case `ofNat k => rw [Int.ofNat_eq_coe, zpow_natCast]`. Conclude with `hpow hg k`.
+
+Consider the case `negSucc k`. Rewrite using `[zpow_negSucc, ← inv_pow]`. Conclude with `hpow (logLift_inv p π F s A hπ hg0 hg) (k + 1)`.
+-/
 lemma logLift_zpow (hπ : IsFlatLift p π) {g : K} (hg0 : g ≠ 0) (hg : LogLift p π F s (A : Set K) g) :
     ∀ n : ℤ, LogLift p π F s (A : Set K) (g ^ n) := by
   have hpow : ∀ {h : K}, LogLift p π F s (A : Set K) h → ∀ k : ℕ, LogLift p π F s (A : Set K) (h ^ k) := by

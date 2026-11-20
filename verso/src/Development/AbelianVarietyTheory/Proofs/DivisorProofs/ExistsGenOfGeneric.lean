@@ -13,6 +13,13 @@ open GlobalTheory.Desc
 
 namespace GlobalTheory.PicGenericInj
 
+/- English proof (translation)
+Introduce `R _ _ _ _ _ G _ hG N hN ht`. Use `hG.smooth` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Establish `h₁ : IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Establish `h₂ : Flat (jK R)`.
+
+Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (nonZeroDivisors R))`. Establish `h₃ : IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le)⟩`.
+
+Conclude with `GenericExtend.exists_isGen_of_densePart _ _ (jK R) ((isNormalScheme_iff_pred _).1 inferInstance) h₁ h₂ h₃ inferInstance G (eSec G) N (Over.w η[G]) ‹_› (geometricallyIntegral_of_smooth G.hom) hN (DVR.exists_gen_of_isLB_local _ (pull_isLB hN _)) ht`.
+-/
 theorem exists_gen_of_generic : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G], IsSemiAbelian G → ∀ N : LB G.left, N.IsLB → (∃ t : LB.Gen (N.pull (pullback.fst G.hom (jK R))), t.IsGen) → ∃ t : LB.Gen N, t.IsGen := by
   intro R _ _ _ _ _ G _ hG N hN ht
   have := hG.smooth

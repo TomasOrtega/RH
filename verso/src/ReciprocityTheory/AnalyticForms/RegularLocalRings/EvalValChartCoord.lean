@@ -12,6 +12,9 @@ namespace AffPres
 
 variable {W : Scheme.{0}} {s : W ⟶ Spec (.of ℂ)} (P : AffPres s)
 
+/- English proof (translation)
+Introduce `t`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective ((Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).hom (P.iso.inv.appTop (P.V.topIso.inv t)))`. Use `⟨a, ?_⟩` and prove the remaining obligations. Use `show P.V.topIso.hom (P.iso.hom.appTop ((Scheme.ΓSpecIso _).inv (Ideal.Quotient.mk P.K a))) = t`. Rewrite using `[ha, ← CommRingCat.comp_apply (Scheme.ΓSpecIso _).hom, Iso.hom_inv_id, CommRingCat.id_apply, ← CommRingCat.comp_apply P.iso.inv.appTop, ← Scheme.Hom.comp_appTop, Iso.hom_inv_id, Scheme.Hom.id_appTop, CommRingCat.id_apply, ← CommRingCat.comp_apply P.V.topIso.inv, Iso.inv_hom_id, C …`.
+-/
 theorem secHom_surj : Function.Surjective P.secHom := by
   intro t
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective
@@ -23,6 +26,9 @@ theorem secHom_surj : Function.Surjective P.secHom := by
     Scheme.Hom.id_appTop, CommRingCat.id_apply, ← CommRingCat.comp_apply P.V.topIso.inv, Iso.inv_hom_id,
     CommRingCat.id_apply]
 
+/- English proof (translation)
+Establish `: IsAffine P.V.toScheme` using `IsAffine.of_isIso P.iso.hom`. Conclude with `this`.
+-/
 theorem isAffineOpen_V' : IsAffineOpen P.V := by
   have : IsAffine P.V.toScheme := IsAffine.of_isIso P.iso.hom
   exact this
@@ -32,6 +38,11 @@ end AffPres
 variable {K : Type} [Fintype K] [Nonempty K] {ι : K → Type} [∀ k, Fintype (ι k)]
 variable {P : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (hP : IsMultiHomogIdeal P)
 
+/- English proof (translation)
+Take `⟨φ, hφ⟩` from `val_ringHom (toSpecC hP) (chartOpen hP p).1 y hy hc`. Establish `h` using `MvPolynomial.ringHom_ext (f := eval (fun q => val (toSpecC hP) (chartCoord hP p q) y hy)) (g := φ.comp ((gammaChart hP p).symm.toRingHom.comp (Ideal.Quotient.mk (chartIdeal P p)))) ?_ ?_`. Conclude with `(RingHom.congr_fun h f).trans (hφ _)`. Introduce `a`. Rewrite using `[eval_C, RingHom.comp_apply, RingHom.comp_apply, hφ]`.
+
+Use `show a = val _ ((gammaChart hP p).symm (Ideal.Quotient.mk _ (C a))) y hy`. Rewrite using `[gammaChart_symm_C, val_const _ _ y hy hc]`. Introduce `q`. Rewrite using `[eval_X, RingHom.comp_apply, RingHom.comp_apply, hφ]`. Both sides reduce to the same expression.
+-/
 theorem eval_val_chartCoord (p : (k : K) → ι k) (y : projX P hP) (hy : y ∈ (chartOpen hP p).1)
     (hc : IsClosed ({y} : Set (projX P hP))) (f : MvPolynomial (Σ k, ι k) ℂ) :
     eval (fun q => val (toSpecC hP) (chartCoord hP p q) y hy) f =

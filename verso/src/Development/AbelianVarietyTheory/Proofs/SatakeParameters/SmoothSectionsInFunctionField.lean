@@ -4,6 +4,17 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalThe
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `Z' _ p' inst' hp hinst W hWa hW B hB`. Substitute `hinst` using the available equality. Use `letI : Algebra ℂ Z'.functionField := ffAlg p'`. Set `φ : ℂ →+* Γ(Z', W)` to `(p'.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Establish `h` using `HasRingHomProperty.appLE @Smooth p' hp ⟨⊤, isAffineOpen_top _⟩ ⟨W, hWa⟩ le_top`.
+
+Establish `h' : RingHom.Smooth φ` using `RingHom.Smooth.comp (RingHom.Smooth.of_bijective (Scheme.ΓSpecIso (CommRingCat.of ℂ)).symm.commRingCatIsoToRingEquiv.bijective) h`. Use `letI : Algebra ℂ Γ(Z', W) := φ.toAlgebra`. Establish `hs : Algebra.Smooth ℂ Γ(Z', W)` using `h'`. Set `g` to `(Z'.presheaf.germ W (genericPoint Z') hW).hom`. Establish `hg : Function.Injective g` using `germ_injective_of_isIntegral Z' (genericPoint Z') hW`.
+
+Establish `hc : ∀ c : ℂ, g (algebraMap ℂ Γ(Z', W) c) = algebraMap ℂ Z'.functionField c`. Introduce `c`. Use `show g (φ c) = _`. Simplify using `only [φ, g, Scheme.Hom.appLE, CommRingCat.comp_apply, RingHom.comp_apply]`. Use `show _ = (Z'.presheaf.germ ⊤ (genericPoint Z') trivial).hom ((p'.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom c))`.
+
+Rewrite using `[← CommRingCat.comp_apply, TopCat.Presheaf.germ_res]`. Both sides reduce to the same expression. Set `gA : Γ(Z', W) →ₐ[ℂ] Z'.functionField` to `{ g with commutes' := hc }`. Set `f : Γ(Z', W) →ₐ[ℂ] B` to `gA.codRestrict B (fun x => (hB _).2 ⟨x, rfl⟩)`. Establish `hf : Function.Bijective f`.
+
+Use `⟨fun a b hab => hg (congrArg Subtype.val hab), fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(hB y.1).1 y.2`. Conclude with `⟨x, Subtype.ext hx⟩`. Conclude with `Algebra.Smooth.of_equiv (AlgEquiv.ofBijective f hf)`.
+-/
 theorem smooth_sections_in_functionField : ∀ (Z' : Scheme.{0}) [IsIntegral Z'] (p' : Z' ⟶ Sp ℂ) [inst' : Algebra ℂ Z'.functionField], Smooth p' → inst' = ffAlg p' → ∀ (W : Z'.Opens), IsAffineOpen W → ∀ (hW : genericPoint Z' ∈ W) (B : Subalgebra ℂ Z'.functionField), (∀ y, y ∈ B ↔ ∃ g : Γ(Z', W), (Z'.presheaf.germ W (genericPoint Z') hW).hom g = y) → Algebra.Smooth ℂ B := by
   intro Z' _ p' inst' hp hinst W hWa hW B hB
   subst hinst

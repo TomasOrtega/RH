@@ -15,6 +15,21 @@ noncomputable section
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c Y Z e hjQ hY x hx`. Establish `hZY : Z.jQ ≫ e.inv = Y.jQ` using `by rw [← hjQ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Establish `hbd : ∀ w : gen Y, e.hom w ∈ genBd Z ↔ w ∈ genBd Y`. Introduce `w`. Rewrite using `[mem_genBd, mem_genBd, not_iff_not]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hZY, Scheme.Hom.comp_apply, hz, ← Scheme.Hom.comp_apply, Iso.hom_inv_id]`. Both sides reduce to the same expression.
+
+Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by rw [← hjQ, Scheme.Hom.comp_apply]⟩`. Establish `hxe : e.hom (e.inv x) = x`. Rewrite using `[← Scheme.Hom.comp_apply, Iso.inv_hom_id]`. Both sides reduce to the same expression.
+
+Take `⟨k, hk, m, d, ξ, t, P, γ, hξ, h1, h2, h3, ⟨μ⟩, h5, h6, h7⟩` from `hY (e.inv x) (by rw [← hbd, hxe]; exact hx)`. Take `⟨t₀, n₁, n₂, -⟩` from `cmpSt_of_sabExtNormalSt (sabExtNormalSt_of_homExtNormalSt homExtNormal) E H D l Xo c c.F (𝓞 c.F) (RingHom.id c.F) (algebraMap (𝓞 c.F) c.F) Y Z e.inv hZY (GlobalTheory.ModelRelCompare.normal_genericFibre Z (GlobalTheory.ModelRelCompare.isDedFrac_in_use c).1).1`. Take `⟨a, -⟩` from `GlobalTheory.LevelCover.sab_cancel n₂ μ (ξ ≫ e.hom) (by rw [Category.assoc, e.hom_inv_id_assoc])`. Take `⟨b, -⟩` from `GlobalTheory.LevelCover.sab_comp a n₁ (e := (ξ ≫ e.hom) ≫ genι Z) rfl`. Establish `hcomap : (genBdIdeal Z).comap e.hom = genBdIdeal Y` using `GlobalTheory.vanishingIdeal_comap_of_isOpenImmersion (gen Y) (gen Z) e.hom (genBd Z) (genBd Y) fun w => (hbd w).symm`.
+
+Use `⟨k, hk, m, d, ξ ≫ e.hom, t, P, γ, ?_, ?_, ?_, ?_, ⟨b⟩, h5, h6, h7⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.hom (ξ _) = x`. Rewrite using `[hξ, hxe]`. Conclude with `GlobalTheory.MemberEt.isEtaleCompletion_comp_openImmersion _ _ e.hom _ ξ h1`. Establish `h2'` using `h2`.
+
+Rewrite `h2'` using `[← hcomap, GlobalTheory.VanStalk.stalkId_comap, Ideal.map_map]`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `h2'`. Introduce `p`. Rewrite using `[Scheme.Hom.comp_apply, hbd]`.
+
+Conclude with `h3 p`.
+-/
 theorem hasToricChart_of_genIso : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (Z : GMod Xo c) (e : gen Y ≅ gen Z),
     Y.jQ ≫ e.hom = Z.jQ → (∀ x ∈ genBd Y, HasToricChart Y x) → ∀ x ∈ genBd Z, HasToricChart Z x := by

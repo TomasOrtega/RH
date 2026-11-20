@@ -23,6 +23,15 @@ noncomputable section
 
 namespace GlobalTheory.RecModel
 
+/- English proof (translation)
+Use `D.sp.cm.totReal` as an intermediate fact. Use `set φ : D.host.F →+* ℂ := τ.comp (algebraMap D.host.F D.host.E) with hφ`. Use `set w : InfinitePlace D.host.F := InfinitePlace.mk φ`. Establish `hw : w.embedding = φ` using `InfinitePlace.embedding_mk_eq_of_isReal (IsTotallyReal.complexEmbedding_isReal φ)`. Set `_ : Algebra D.host.F ℂ` to `φ.toAlgebra`.
+
+Set `f : Ainf D.host.F →ₐ[D.host.F] ℂ` to `{ toRingHom := (InfinitePlace.Completion.extensionEmbedding w).comp (Pi.evalRingHom _ w) commutes' := fun x => by show InfinitePlace.Completion.extensionEmbedding w (algebraMap D.host.F (Ainf D.host.F) x w) = φ x`. Rewrite using `[InfiniteAdeleRing.algebraMap_apply, ← hw]`. Conclude with `InfinitePlace.Completion.extensionEmbedding_coe w _ }`. Set `g : D.host.E →ₐ[D.host.F] ℂ` to `{ toRingHom := τ, commutes' := fun _ => rfl }`. Use `⟨(Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom, fun x => ?_, ?_⟩` and prove the remaining obligations.
+
+Use `show f 1 * g x = τ x`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression. Establish `: (fun a : Ainf D.host.F => (Algebra.TensorProduct.lift f g (fun _ _ => Commute.all _ _)).toRingHom (a ⊗ₜ[D.host.F] (1 : D.host.E))) = fun a => InfinitePlace.Completion.extensionEmbedding w (a w)`. Use function extensionality and compare the values at `a`.
+
+Use `show f a * g 1 = _`. Rewrite using `[map_one, mul_one]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`.
+-/
 theorem exists_isInfEmb (D : D7) (τ : D.host.E →+* ℂ) :
     ∃ θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ, Formalism.MainNotions.StandardLattice.IsInfEmb τ θ := by
   have := D.sp.cm.totReal
@@ -51,6 +60,9 @@ theorem exists_isInfEmb (D : D7) (τ : D.host.E →+* ℂ) :
     rw [this]
     exact (InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w)
 
+/- English proof (translation)
+Use `⟨fun τ => if h : τ ∈ X.Ψ then (X.signature ⟨τ, h⟩).choose else 1, fun Y hΨ hG hp τ hτ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hG, ← hp]`. Establish `hτ'` using `hΨ τ hτ`. Simplify using `only [dif_pos hτ']`. Conclude with `(X.signature ⟨τ, hτ'⟩).choose_spec.2`.
+-/
 theorem exists_x0Orth {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) :
     ∃ x₀ : (E →+* ℂ) → Matrix (Fin r) (Fin r) ℂ, ∀ Y : Data E r,
       (∀ τ, τ ∈ Y.Ψ → τ ∈ X.Ψ) → X.Gm = Y.Gm → X.p0 = Y.p0 → IsOrthogonalFrame Y x₀ := by
@@ -61,6 +73,15 @@ theorem exists_x0Orth {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   simp only [dif_pos hτ']
   exact (X.signature ⟨τ, hτ'⟩).choose_spec.2
 
+/- English proof (translation)
+Introduce `hH D Q hQ j hj σ' g ty F _ _`. Establish `hr` using `D.sp.W_rank j hj.1 hj.2`. Take `⟨io, hemb, -, hcc, hdet, hspan, hform⟩` from `exists_latEmb_sign_one D Q hQ j hj`. Set `c : (Fin (D.sp.W j).rank → D.host.E) ≃ₗ[D.host.E] (Fin D.R.r → D.host.E)` to `LinearEquiv.funCongrLeft D.host.E D.host.E (finCongr hr.symm)`. Set `ψ : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin D.R.r → D.host.E)` to `(c.restrictScalars (𝓞 D.host.E)).toLinearMap ∘ₗ io`.
+
+Establish `hξ : cc (-D.host.xi0) = -(-D.host.xi0)`. Rewrite using `[cc, map_neg, conj_xi0_alt]`. Establish `hsp : Submodule.span D.host.E (Set.range ψ) = ⊤`. Establish `: Set.range ψ = c.toLinearMap '' Set.range io`. Rewrite using `[← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, hspan, Submodule.map_top, LinearEquiv.range]`. Take `⟨M, hB, hN, hM⟩` from `GlobalTheory.ModelsExist.exists_modelsOf hH D.host.E Q.H (Q.Dw j) Q.l (Q.Xo j) σ' g ty F D.R.r (-D.host.xi0) (gmW (D.sp.W j) hr) ψ hξ (level_good_and_sign D Q hQ).2.2 ⟨c.injective.comp hemb.1, hsp, hcc, hdet, hform⟩`. Use `choose θ hθ using exists_isInfEmb D`. Take `⟨x₀, hx₀⟩` from `exists_x0Orth (M.X ⟨0, F.n_pos⟩)`.
+
+Establish `hx : ∀ k, IsOrthogonalFrame (M.X k) x₀` using `fun k => hx₀ _ (fun τ hτ => ((hB.type _).2 τ).2 (((hB.type k).2 τ).1 hτ)) ((hM _).1.trans (hM k).1.symm) ((hB.type _).1.trans (hB.type k).1.symm)`. Conclude with `⟨M, io, fun _ τ => θ τ.1, x₀, ⟨hB, hM, hemb, hform, fun _ τ => hθ τ.1, hx⟩, hN, fun io' h1 h2 => ⟨hB, hM, h1, h2, fun _ τ => hθ τ.1, hx⟩⟩`.
+-/
 theorem exists_recOK : GlobalTheory.Published.HasseNormSt → ∀ (D : D7) (Q : Par D), Q.Pins → ∀ (j : ℕ) (hj : InR D j) (σ' : KA Q.l →+* ℂ) (g : ℕ) (ty : Fin g → (D.host.E →+* ℂ)) (F : FamilyUnif (Q.Xo j) σ' ty), σ' (baseKA Q.l).ρ = Q.H.rt0 → IsTypeFn Q.H (Q.Dw j).p (Q.Dw j).q ty → ∃ (M : GlobalTheory.FrameUnif.ModelsOf F D.R.r) (io : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E)) (th : ∀ k, (M.X k).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (x₀ : (D.host.E →+* ℂ) → Matrix (Fin D.R.r) (Fin D.R.r) ℂ), RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io th x₀ ∧ GlobalTheory.FrameUnif.NegXi M ∧ ∀ io' : (Q.Dw j).La →ₗ[𝓞 D.host.E] (Fin (D.sp.W j).rank → D.host.E), LatEmb (D.sp.W j) io' → (∀ x y, (((Q.Dw j).EF x y : ℤ) : ℚ) = Algebra.trace ℚ D.host.E (-(-D.host.xi0) * herm (gmW (D.sp.W j) (D.sp.W_rank j hj.1 hj.2)) (io' x ∘ Fin.cast (D.sp.W_rank j hj.1 hj.2).symm) (io' y ∘ Fin.cast (D.sp.W_rank j hj.1 hj.2).symm))) → RecOK M (D.sp.W j) (D.sp.W_rank j hj.1 hj.2) io' th x₀ := by
   intro hH D Q hQ j hj σ' g ty F _ _
   have hr := D.sp.W_rank j hj.1 hj.2

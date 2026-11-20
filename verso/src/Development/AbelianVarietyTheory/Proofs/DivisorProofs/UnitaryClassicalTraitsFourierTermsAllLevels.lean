@@ -13,6 +13,9 @@ open Classical
 
 namespace GlobalTheory.UPoinc
 
+/- English proof (translation)
+Establish `: IsDedekindDomain X₁.o₁` using `X₁.ar.ded`. Use `X₁.M.lft` as an intermediate fact. Establish `: IsLocallyNoetherian (Sp X₁.o₁)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`. Establish `: IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `infer_instance`.
+-/
 theorem USetup.isNoetherianRing_stalk {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Geo.Tor.Level H} {Xo : Moduli D l} {c : Coeff l} {C : UCompact Xo c} (X₁ : USetup C) (z₁ : X₁.M.Z) :
     IsNoetherianRing (X₁.M.Z.presheaf.stalk z₁) := by
@@ -23,6 +26,11 @@ theorem USetup.isNoetherianRing_stalk {E : Type} [Field E] [NumberField E] [IsCM
   have : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s
   infer_instance
 
+/- English proof (translation)
+Unfold `PosW`. Establish `: ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
+
+Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.posDef_diagonal_iff]`. Introduce `_`. Evaluate the numerical expressions.
+-/
 theorem posW_one_one : PosW (!![1] : Matrix (Fin 1) (Fin 1) ℤ) := by
   unfold PosW
   have : ((!![1] + (!![1] : Matrix (Fin 1) (Fin 1) ℤ).transpose).map (Int.cast : ℤ → ℝ)) = Matrix.diagonal fun _ => 2 := by
@@ -31,6 +39,11 @@ theorem posW_one_one : PosW (!![1] : Matrix (Fin 1) (Fin 1) ℤ) := by
   rw [this, Matrix.posDef_diagonal_iff]
   intro _; norm_num
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw hpq l Xo c C X₁ p _ z₁ Φ h y₀ N₀`. Take `⟨N, hN, hd, k, Q, t, B, _, _, _, _, _, 𝔷, hinj, hfix, hmax, hk, hu, ht, hc⟩` from `GlobalTheory.T.unitary_fourierClassSums_deeper_level E H Dw hpq l Xo c C X₁ p z₁ Φ h y₀ (N₀ + 1)`. Use `X₁.normal.isDomain_stalk z₁` as an intermediate fact. Use `X₁.normal.isIntegrallyClosed_stalk z₁` as an intermediate fact. Use `X₁.isNoetherianRing_stalk z₁` as an intermediate fact.
+
+Conclude with `⟨N, by omega, hd, k, Q, t, hk, hu, ht, GlobalTheory.T.approx_orbitSums_of_galois_classSums (𝓞 E) H.bar (min Dw.p Dw.q) p _ Φ 1 !![(1 : ℤ)] _ N y₀ k Q t B hinj hfix 𝔷 hmax (by omega) posW_one_one hu hc⟩`.
+-/
 theorem four_of_classical : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (Φ : FPre (H.bar : 𝓞 E → 𝓞 E) (min Dw.p Dw.q) p (X₁.M.Z.presheaf.stalk z₁)), (∀ y, ∃ t : UCTrait X₁ p z₁, (∀ a, Φ.ev y a = t.val a) ∧ ∃ e : Φ.X y ≃ₗ[𝓞 E] t.T.P.D.toPre.X, ∀ a b, Φ.sc y * Φ.β y a b = t.sc * t.T.be (e a) (e b)) → Φ.Four !![(1 : ℤ)] (X₁.S.r * X₁.S.N) := by
   intro E _ _ _ H Dw hpq l Xo c C X₁ p _ z₁ Φ h y₀ N₀
   obtain ⟨N, hN, hd, k, Q, t, B, _, _, _, _, _, 𝔷, hinj, hfix, hmax, hk, hu, ht, hc⟩ :=

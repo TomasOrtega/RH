@@ -19,11 +19,21 @@ variable {F A T T' : Type*} [CommRing F] [CommRing A] [CommRing T] [CommRing T']
 def rangeCompMap (φ : A →ₐ[F] T) (ψ : T →ₐ[F] T') : φ.range →ₐ[F] (ψ.comp φ).range :=
   (ψ.comp φ.range.val).codRestrict _ (by rintro ⟨_, a, rfl⟩; exact ⟨a, rfl⟩)
 
+/- English proof (translation)
+Introduce and unpack `⟨_, a, rfl⟩`. Conclude with `⟨⟨φ a, a, rfl⟩, rfl⟩`.
+-/
 theorem rangeCompMap_surjective (φ : A →ₐ[F] T) (ψ : T →ₐ[F] T') :
     Function.Surjective (rangeCompMap φ ψ) := by
   rintro ⟨_, a, rfl⟩
   exact ⟨⟨φ a, a, rfl⟩, rfl⟩
 
+/- English proof (translation)
+Set `r : φ.range` to `⟨φ a, a, rfl⟩`. Establish `hr : r ∈ nonZeroDivisors φ.range` using `mem_nonZeroDivisors_of_ne_zero fun h => ha (congrArg Subtype.val h)`. Set `χ` to `(rangeCompMap φ ψ).toRingHom`. Establish `hχr : ∀ b ∈ Ideal.span {r}, χ b = 0`. Introduce `b hb`.
+
+Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.mp hb`. Rewrite using `[map_mul]`. Establish `: χ r = 0` using `Subtype.ext hψ`. Rewrite using `[this, mul_zero]`. Establish `h1` using `ringKrullDim_le_of_surjective _ (Ideal.Quotient.lift_surjective_of_surjective _ hχr (rangeCompMap_surjective φ ψ))`.
+
+Conclude with `(add_le_add h1 le_rfl).trans (ringKrullDim_quotient_succ_le_of_nonZeroDivisor hr)`.
+-/
 theorem ringKrullDim_range_comp_add_one_le [IsDomain T] (φ : A →ₐ[F] T) (ψ : T →ₐ[F] T') (a : A)
     (ha : φ a ≠ 0) (hψ : ψ (φ a) = 0) :
     ringKrullDim (ψ.comp φ).range + 1 ≤ ringKrullDim φ.range := by
@@ -54,6 +64,13 @@ def partDehom (s : Finset K) : MvPolynomial (Σ k, ι k) F →ₐ[F] MvPolynomia
 def subst1 (k : K) : MvPolynomial K Ω →ₐ[F] MvPolynomial K Ω :=
   (aeval fun j => if j = k then C (y ⟨k, c k⟩)⁻¹ else X j : MvPolynomial K Ω →ₐ[Ω] MvPolynomial K Ω).restrictScalars F
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨j, i⟩`. Simplify using `only [partDehom, subst1, AlgHom.comp_apply, aeval_X, Finset.mem_insert]`. Distinguish the cases in `hj : j ∈ s`. Establish `: j ≠ k` using `fun h => hk (h ▸ hj)`.
+
+Simplify using `[hj]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Simplify using `only [hj, if_false, if_true, AlgHom.restrictScalars_apply, map_mul, aeval_C, aeval_X]`. Rewrite using `[div_eq_mul_inv, C_mul]`.
+
+Simplify using the standard rewrite rules. Simplify using `[hj, hjk]`.
+-/
 theorem subst1_comp {s : Finset K} {k : K} (hk : k ∉ s) :
     (subst1 (F := F) y c k).comp (partDehom y c s) = partDehom y c (insert k s) := by
   apply MvPolynomial.algHom_ext
@@ -69,11 +86,19 @@ theorem subst1_comp {s : Finset K} {k : K} (hk : k ∉ s) :
       simp
     · simp [hj, hjk]
 
+/- English proof (translation)
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[partDehom, mConeMapOver]`.
+-/
 theorem partDehom_empty : partDehom (F := F) y c ∅ = mConeMapOver F y := by
   apply MvPolynomial.algHom_ext
   intro p
   simp [partDehom, mConeMapOver]
 
+/- English proof (translation)
+Establish `key` using `ringKrullDim_range_comp_add_one_le (partDehom (F := F) y c s) (subst1 y c k) (X ⟨k, c k⟩ - 1) ?_ ?_`. Rewrite `key` using `[subst1_comp y c hk]`. Then use the resulting hypothesis. Introduce `h`. Establish `h'` using `congrArg constantCoeff h`. Simplify using `[partDehom, hk] at h'`.
+
+Rewrite using `[← AlgHom.comp_apply, subst1_comp y c hk]`. Simplify using `[partDehom, hc k]`.
+-/
 theorem ringKrullDim_partDehom_insert (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {s : Finset K} {k : K} (hk : k ∉ s) :
     ringKrullDim (partDehom (F := F) y c (insert k s)).range + 1 ≤ ringKrullDim (partDehom (F := F) y c s).range := by
   have key := ringKrullDim_range_comp_add_one_le (partDehom (F := F) y c s) (subst1 y c k) (X ⟨k, c k⟩ - 1) ?_ ?_
@@ -84,6 +109,9 @@ theorem ringKrullDim_partDehom_insert (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {s : Fi
   · rw [← AlgHom.comp_apply, subst1_comp y c hk]
     simp [partDehom, hc k]
 
+/- English proof (translation)
+Rewrite using `[chartRingOver, Algebra.adjoin_range_eq_range_aeval]`. Use `congr 1`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `[partDehom]`.
+-/
 theorem chartRingOver_eq_range [Fintype K] :
     chartRingOver F y c = (((aeval fun _ => (0 : Ω) : MvPolynomial K Ω →ₐ[Ω] Ω).restrictScalars F).comp
       (partDehom (F := F) y c Finset.univ)).range := by
@@ -95,6 +123,13 @@ theorem chartRingOver_eq_range [Fintype K] :
 
 end Chart
 
+/- English proof (translation)
+Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe e`. Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top => exact absurd h (by norm_cast)`.
+
+Consider the case `coe e`. Establish `h' : ((e + n : ℕ) : WithBot ℕ∞) ≤ ((n : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h`. Establish `h'' : e + n ≤ n` using `by exact_mod_cast h'`. Establish `: e = 0` using `by omega`. Substitute `this` using the available equality.
+
+Simplify using the standard rewrite rules.
+-/
 theorem le_zero_of_add_natCast_le {d : WithBot ℕ∞} {n : ℕ} (h : d + n ≤ n) : d ≤ 0 := by
   induction d using WithBot.recBotCoe with
   | bot => exact bot_le
@@ -108,6 +143,15 @@ theorem le_zero_of_add_natCast_le {d : WithBot ℕ∞} {n : ℕ} (h : d + n ≤ 
       subst this
       simp
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι Ω _ _ y hdim c hc`. Establish `h0 : ringKrullDim (partDehom (F` using `F) y c ∅).range = (Fintype.card K : WithBot ℕ∞) := by`. Rewrite using `[partDehom_empty, ← ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerEquivRange _).toRingEquiv]`. Use `ringKrullDim_eq_of_relDim (Q := mIdealOver F y) (m := 0) hdim` as an intermediate fact. Rewrite `this` using `[Nat.zero_add]`.
+
+Conclude with `this`. Establish `hstep : ∀ s : Finset K, ringKrullDim (partDehom (F` using `F) y c s).range + (s.card : WithBot ℕ∞) ≤ Fintype.card K := by`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [h0]`.
+
+Consider the case `insert k s hk ih`. Rewrite using `[Finset.card_insert_of_notMem hk, Nat.cast_add, Nat.cast_one, add_comm ((s.card : ℕ) : WithBot ℕ∞) 1, ← add_assoc]`. Conclude with `(add_le_add (ringKrullDim_partDehom_insert y c hc hk) le_rfl).trans ih`. Establish `hu` using `hstep Finset.univ`. Rewrite `hu` using `[Finset.card_univ]`.
+
+Establish `hle : ringKrullDim (chartRingOver F y c) ≤ 0`. Rewrite using `[chartRingOver_eq_range]`. Conclude with `(ringKrullDim_le_of_surjective _ (rangeCompMap_surjective _ _)).trans (le_zero_of_add_natCast_le hu)`. Establish `: Ring.KrullDimLE 0 (chartRingOver F y c)` using `Ring.krullDimLE_iff.mpr (by simpa using hle)`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`.
+-/
 theorem PointChartField.full : PointChartField.Statement := by
   intro F _ K _ _ ι Ω _ _ y hdim c hc
   have h0 : ringKrullDim (partDehom (F := F) y c ∅).range = (Fintype.card K : WithBot ℕ∞) := by

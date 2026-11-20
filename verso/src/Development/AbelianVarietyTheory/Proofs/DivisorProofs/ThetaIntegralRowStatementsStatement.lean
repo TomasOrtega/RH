@@ -19,5 +19,8 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.ZetaValueIdeals
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.HeckeFunctionalEquationAbs
 import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.LevelPlusSubgroup
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RowClaim.JoinF.claims | exact GlobalTheory.RowClaim.JoinF.claims | (intros; apply GlobalTheory.RowClaim.JoinF.claims <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_integral_row_statements : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.RowClaim.SumOKK ∧ GlobalTheory.RowClaim.ConstK ∧ GlobalTheory.RowClaim.LinK ∧ GlobalTheory.RowClaim.Formula2K ∧ GlobalTheory.RowClaim.SumRatK := by
   first | exact @GlobalTheory.RowClaim.JoinF.claims | exact GlobalTheory.RowClaim.JoinF.claims | (intros; apply GlobalTheory.RowClaim.JoinF.claims <;> assumption)

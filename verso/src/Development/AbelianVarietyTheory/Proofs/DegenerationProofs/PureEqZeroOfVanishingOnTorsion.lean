@@ -12,6 +12,15 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.PureZero
 
+/- English proof (translation)
+Establish `hs` using `h.sep`. Establish `h4 : (4 : ℝ) ≤ N` using `by exact_mod_cast h.four`. Establish `hg' : (1 : ℝ) ≤ g` using `by exact_mod_cast hg`. Establish `h1 : (1 : ℝ) ≤ (3 / 2 : ℝ) ^ g` using `one_le_pow₀ (by norm_num)`. Establish `h2 : (1 / 2 : ℝ) ≤ (2 : ℝ) ^ ((g : ℝ) / 2 - 1)`.
+
+Establish `: (2 : ℝ) ^ (-1 : ℝ) ≤ (2 : ℝ) ^ ((g : ℝ) / 2 - 1)` using `Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)`. Rewrite `this` using `[Real.rpow_neg_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (1 / 2 : ℝ) ≤ (g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)`. Establish `: (1 : ℝ) ≤ (g : ℝ) * (3 / 2 : ℝ) ^ g` using `one_le_mul_of_one_le_of_one_le hg' h1`.
+
+Use the polynomial consequences of the given equalities and inequalities. Use `set C := (g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)`. Establish `hM : (0 : ℝ) ≤ ((N ^ g * g.factorial : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `h5 : (1 : ℝ) ≤ 2 * C * N` using `by nlinarith`. Establish `: ((N ^ g * g.factorial : ℕ) : ℝ) < N'` using `by nlinarith`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem lt_of_big {g N N' : ℕ} (h : Big g N N') (hg : 1 ≤ g) : N ^ g * g.factorial < N' := by
   have hs := h.sep
   have h4 : (4 : ℝ) ≤ N := by exact_mod_cast h.four
@@ -31,6 +40,17 @@ theorem lt_of_big {g N N' : ℕ} (h : Big g N N') (hg : 1 ≤ g) : N ^ g * g.fac
   have : ((N ^ g * g.factorial : ℕ) : ℝ) < N' := by nlinarith
   exact_mod_cast this
 
+/- English proof (translation)
+Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `: Etale P.A.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 (hg ▸ P.smoothDim)`. Set `e : Sp K ⟶ P.A.left` to `(1 : Out.baseOver (Sp K) ⟶ P.A).left`. Use `isOpenImmersion_of_section_of_etale P.A.hom e (Over.w _)` as an intermediate fact. Establish `: IsDominant e` using `⟨e.isOpenEmbedding.isOpen_range.dense ⟨_, (default : PrimeSpectrum K), rfl⟩⟩`.
+
+Establish `: IsIso (snd (Out.baseOver (Sp K)) P.A).left` using `inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp K)) P.A.hom))`. Set `z : Sp K ⟶ (Out.baseOver (Sp K) ⊗ P.A).left` to `(Out.ptSecT P.A (1 : Out.baseOver (Sp K) ⟶ P.A)).left`. Establish `hz : z = e ≫ inv (snd (Out.baseOver (Sp K)) P.A).left`. Rewrite using `[IsIso.eq_comp_inv]`. Conclude with `congrArg (·.left) (lift_snd (𝟙 _) (1 : Out.baseOver (Sp K) ⟶ P.A))`.
+
+Establish `hd : IsDominant z` using `by rw [hz]; infer_instance`. Establish `: IsReduced (Out.baseOver (Sp K) ⊗ P.A).left` using `isReduced_of_isOpenImmersion (snd (Out.baseOver (Sp K)) P.A).left`. Assume the negation of the conclusion as `hne`. Establish `hb : ((Out.baseOver (Sp K) ⊗ P.A).left.basicOpen (s.f j) : Set (Out.baseOver (Sp K) ⊗ P.A).left).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+
+Conclude with `fun h => hne ((basicOpen_eq_bot_iff _).1 (TopologicalSpace.Opens.ext h))`. Take `⟨y, hy⟩` from `hd.denseRange.exists_mem_open (TopologicalSpace.Opens.isOpen _) hb`. Use `hs fun y' _ => ?_` and prove the remaining obligations. Establish `: y' = y` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Substitute `this` using the available equality.
+
+Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩`.
+-/
 theorem sec_eq_zero_of_dim_zero {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = 0)
     {M : LB (Out.baseOver (Sp K) ⊗ P.A).left} (s : M.Sec)
     (hs : ¬ ⊤ ≤ (Out.ptSecT P.A (1 : Out.baseOver (Sp K) ⟶ P.A)).left ⁻¹ᵁ Out.nonzeroLocus s) (j : M.ι) :
@@ -59,6 +79,13 @@ theorem sec_eq_zero_of_dim_zero {K : Type} [Field K] [IsAlgClosed K] (P : Out.Po
   subst this
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos P.g with h0 | h0` into its components or cases. Conclude with `sec_eq_zero_of_dim_zero P h0 s (hs 1 (one_pow _))`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hM1 : 1 ≤ N'` using `Nat.pos_of_ne_zero fun e => hN' (by rw [e, Nat.cast_zero])`.
+
+Establish `hcard` using `(h.mulN (Sp K) P N' hM1).2.2.2.2 K (𝟙 _) hN'`. Establish `h₄` using `card_torsion_zeros_twist_le h h₂ K P N d N' c h0 hB.four hd hN' s hne`. Establish `e : N' ^ (2 * P.g) = N' ^ 2 * N' ^ (2 * P.g - 2)` using `by rw [← pow_add]; congr 1; omega`. Rewrite `h₄` using `[Nat.card_congr (Equiv.subtypeEquivRight fun x => and_iff_left_of_imp (hs x)), hcard, e]`. Establish `h₅` using `Nat.le_of_mul_le_mul_right h₄ (pow_pos hM1 _)`.
+
+Establish `h₆` using `lt_of_big hB (h0.trans_le hg)`. Establish `h₇ : N ^ P.g * P.g.factorial ≤ N ^ g * g.factorial` using `Nat.mul_le_mul (Nat.pow_le_pow_right (by have := hB.four; omega) hg) (Nat.factorial_le hg)`. Establish `h₈` using `Nat.mul_le_mul h₇ hd'`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem twist_eq_zero (h : Out.Laws) (h₂ : Out.Laws2) {K : Type} [Field K] [IsAlgClosed K]
     (P : Out.PolAV (Sp K)) {g N N' d : ℕ} (hB : Big g N N') (hN' : (N' : K) ≠ 0) (hg : P.g ≤ g) (hd : 1 ≤ d)
     (hd' : d ≤ N ^ g * g.factorial) (c : Out.baseOver (Sp K) ⟶ P.A)
@@ -81,6 +108,13 @@ theorem twist_eq_zero (h : Out.Laws) (h₂ : Out.Laws2) {K : Type} [Field K] [Is
   have h₈ := Nat.mul_le_mul h₇ hd'
   nlinarith
 
+/- English proof (translation)
+Introduce `h h₂ k _ _ Φ g N N' d π hB hN' hg hd hd' α φ hφ hx`. Establish `hM1 : 1 ≤ N'` using `Nat.pos_of_ne_zero fun e => hN' (by rw [e, Nat.cast_zero])`. Take `⟨s, hs0, hs⟩` from `(GlobalTheory.T.pureWeightSection_to_twistedPolarisationPower k Φ N d π α (by have := hB.four; omega) hd).1 φ hφ`. Use `hs0 (twist_eq_zero h h₂ π.PB hB hN' hg hd hd' _ s fun b hb => ?_)` and prove the remaining obligations. Use `π.hom` as an intermediate fact.
+
+Establish `hb' : (b ≫ π.β.inv) ^ N' = 1`. Rewrite using `[← cancel_mono π.β.hom, MonObj.pow_comp, MonObj.one_comp, Category.assoc, π.β.inv_hom_id, Category.comp_id, hb]`. Take `⟨x, hx1, hxq⟩` from `(TorsLift.points_lift k Φ.E Φ.G Φ.D N' hM1).2.1 _ hb'`. Establish `e : x ≫ Φ.D.q ≫ π.β.hom = b`. Rewrite using `[← Category.assoc, hxq, Category.assoc, π.β.inv_hom_id, Category.comp_id]`.
+
+Rewrite using `[← e]`. Conclude with `fun hh => hx x hx1 ((hs x).2 hh)`.
+-/
 theorem pure_eq_zero_of_vanishing_on_torsion :
     Out.Laws → Out.Laws2 → (∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (g N N' d : ℕ) (π : Φ.Pol N), Big g N N' → (N' : k) ≠ 0 → π.PB.g ≤ g → 1 ≤ d → d ≤ N ^ g * g.factorial → ∀ (α : Φ.E.X) (φ : (Φ.H d).Sec), Φ.Pure α φ → (∀ x : Φ.Pt, x ^ N' = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus φ) → ∀ l, φ.f l = 0) := by
   intro h h₂ k _ _ Φ g N N' d π hB hN' hg hd hd' α φ hφ hx

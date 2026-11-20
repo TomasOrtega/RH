@@ -37,6 +37,19 @@ def ThetaThetaAdjScalar : Prop :=
   ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), ScalarAt R F
 
+/- English proof (translation)
+Establish `hk` using `Rk.m_add_three_le_k`. Establish `hj` using `j.2`. Establish `mono : ∀ a d : ℕ, a + d < Rk.r → Formalism.L2.NTheta.lamAt h (a + d) ≤ Formalism.L2.NTheta.lamAt h a`. Introduce `a d`. Proceed by induction on `d with`.
+
+Consider the case `zero => intro _`. Conclude with `le_rfl`. Consider the case `succ d ih`. Introduce `hd`. Conclude with `(Formalism.L2.NTheta.lamAt_lt h (a + d) hd).le.trans (ih (by omega))`.
+
+Establish `val : ∀ (c : ℕ) (hc : c < Rk.m), Formalism.L2.NTheta.lamAt h (Rk.k - 1 + c) = -h.b ⟨c, hc⟩`. Introduce `c hc`. Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Simplify using the standard rewrite rules.
+
+Unfold `Ranks.r at hn mono`. Distinguish the cases in `hle : n ≤ Rk.k - 1 + j`. Establish `h1` using `mono n (Rk.k - 1 + j - n) (by omega)`. Rewrite `h1` using `[show n + (Rk.k - 1 + j - n) = Rk.k - 1 + j by omega, val j hj]`. Establish `h2` using `h.gap_be j`.
+
+Conclude with `le_trans (by simp only [Fin.eta] at h1; linarith) (le_abs_self _)`. Establish `hj1 : (j : ℕ) + 1 < Rk.m` using `by omega`. Establish `h1` using `mono (Rk.k - 1 + (j + 1)) (n - (Rk.k - 1 + (j + 1))) (by omega)`. Rewrite `h1` using `[show Rk.k - 1 + (j + 1) + (n - (Rk.k - 1 + (j + 1))) = n by omega, val _ hj1]`. Establish `h2` using `h.gap_eb j hj1`.
+
+Conclude with `le_trans (by linarith) (neg_le_abs _)`.
+-/
 theorem gap {Rk : Ranks} (h : HCParam Rk) (j : Fin Rk.m) {n : ℕ} (hn : n < Rk.r) :
     ((Rk.t : ℚ) + 3) / 2 ≤ |Formalism.L2.NTheta.lamAt h n + h.e j| := by
   have hk := Rk.m_add_three_le_k
@@ -65,11 +78,23 @@ theorem gap {Rk : Ranks} (h : HCParam Rk) (j : Fin Rk.m) {n : ℕ} (hn : n < Rk.
     have h2 := h.gap_eb j hj1
     exact le_trans (by linarith) (neg_le_abs _)
 
+/- English proof (translation)
+Rewrite using `[h i t c x hx]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem IsScalarOnParts.mem {R : RealDat D A Ks} {lam : Fin D.R.m → T → EigSys D → ℝ} (h : IsScalarOnParts R lam)
     (i : Fin D.R.m) (t : T) (c : EigSys D) {x} (hx : x ∈ goodPartOff R i (badPlaces R t) c) :
     R.thG i t (LinearMap.adjoint (R.thG i t) x) ∈ goodPartOff R i (badPlaces R t) c := by
   rw [h i t c x hx]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h hP`. Take `⟨x, hx, hy⟩` from `h _ hP`. Conclude with `hy (algebraMap _ _ x) rfl hx`. Introduce `h v hv`.
+
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Establish `hle : v.asIdeal ≤ (P.under (𝓞 D.host.F)).asIdeal`. Introduce `x hx`.
+
+Take `⟨y, hy, hyP⟩` from `hc x hx`. Establish `: y = algebraMap _ _ x` using `RingOfIntegers.ext hy`. Substitute `this` using the available equality. Conclude with `hyP`. Use `v.isMaximal.eq_of_le (P.under (𝓞 D.host.F)).isPrime.ne_top hle` as an intermediate fact.
+
+Rewrite using `[show P.under (𝓞 D.host.F) = v from HeightOneSpectrum.ext this.symm]` and apply the resulting hypothesis.
+-/
 theorem offS_iff (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) (P : HeightOneSpectrum (𝓞 D.host.E)) :
     OffS D S P ↔ P.under (𝓞 D.host.F) ∉ S := by
   constructor

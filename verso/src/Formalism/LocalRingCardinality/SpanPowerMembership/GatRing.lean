@@ -8,12 +8,23 @@ open QuadraticAlgebra IsLocalRing
 
 variable {W : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] {ϖ : W}
 
+/- English proof (translation)
+Apply the tactic sequence `rw [sq, algebraMap_eq]; ext <;> simp`.
+-/
 theorem om_sq : (ω : QuadraticAlgebra W ϖ 0) ^ 2 = algebraMap W _ ϖ := by
   rw [sq, algebraMap_eq]; ext <;> simp
 
+/- English proof (translation)
+Rewrite using `[pow_mul, om_sq, map_pow]`.
+-/
 theorem om_pow (n : ℕ) : (ω : QuadraticAlgebra W ϖ 0) ^ (2 * n) = algebraMap W _ (ϖ ^ n) := by
   rw [pow_mul, om_sq, map_pow]
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_norm_isUnit, norm_def]`. Assume the negation of the conclusion as `hn`. Establish `h1 : ϖ * z.im * z.im ∈ nonunits W` using `fun hu => hϖ.not_isUnit (isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hu))`. Establish `h2` using `nonunits_add (show _ ∈ nonunits W from hn) h1`. Establish `e : z.re * z.re + 0 * z.re * z.im - ϖ * z.im * z.im + ϖ * z.im * z.im = z.re * z.re` using `by ring`.
+
+Rewrite `h2` using `[e]`. Conclude with `h2 (h.mul h)`.
+-/
 theorem isUnit_of_re (hϖ : Irreducible ϖ) (z : QuadraticAlgebra W ϖ 0) (h : IsUnit z.re) : IsUnit z := by
   rw [isUnit_iff_norm_isUnit, norm_def]
   by_contra hn
@@ -24,6 +35,11 @@ theorem isUnit_of_re (hϖ : Irreducible ϖ) (z : QuadraticAlgebra W ϖ 0) (h : I
   rw [e] at h2
   exact h2 (h.mul h)
 
+/- English proof (translation)
+Rewrite using `[isUnit_iff_norm_isUnit, norm_def]`. Simplify using `only [omega_re, omega_im]`. Introduce `h`. Establish `e : (0 : W) * 0 + 0 * 0 * 1 - ϖ * 1 * 1 = -ϖ` using `by ring`. Rewrite `h` using `[e, IsUnit.neg_iff]`.
+
+Conclude with `hϖ.not_isUnit h`.
+-/
 theorem om_not_isUnit (hϖ : Irreducible ϖ) : ¬ IsUnit (ω : QuadraticAlgebra W ϖ 0) := by
   rw [isUnit_iff_norm_isUnit, norm_def]
   simp only [omega_re, omega_im]
@@ -32,6 +48,19 @@ theorem om_not_isUnit (hϖ : Irreducible ϖ) : ¬ IsUnit (ω : QuadraticAlgebra 
   rw [e, IsUnit.neg_iff] at h
   exact hϖ.not_isUnit h
 
+/- English proof (translation)
+Establish `caseB : ∀ (j : ℕ) (v : Wˣ) (a' : W), z.im = v * ϖ ^ j → z.re = ϖ ^ (j + 1) * a' → ∃ (n : ℕ) (u : QuadraticAlgebra W ϖ 0), IsUnit u ∧ z = ω ^ n * u` using `fun j v a' h1 h2 => by`. Use `⟨2 * j + 1, ⟨v, a'⟩, isUnit_of_re hϖ _ v.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, om_pow, algebraMap_eq]`. Use `ext`. Simplify using `only [re_mul, im_mul, omega_re, omega_im, h2]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [re_mul, im_mul, omega_re, omega_im, h1]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `ha : z.re = 0`. Apply the tactic sequence `have hb : z.im ≠ 0 := fun hb => hz (by ext <;> simp [ha, hb])`.
+
+Take `⟨j, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`. Conclude with `caseB j v 0 hv (by rw [ha, mul_zero])`. Take `⟨i, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Distinguish the cases in `hd : ϖ ^ i ∣ z.im`. Take `⟨b', hb'⟩` from `hd`.
+
+Use `⟨2 * i, ⟨u, b'⟩, isUnit_of_re hϖ _ u.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[om_pow, algebraMap_eq]`. Use `ext`. Simplify using `[hu]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[hb']`. Establish `hb : z.im ≠ 0` using `fun hb => hd (by rw [hb]; exact dvd_zero _)`. Take `⟨j, v, hv⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hb hϖ`. Establish `hji : j < i`. Assume the negation of the conclusion as `hc`.
+
+Conclude with `hd (hv ▸ Dvd.dvd.mul_left (pow_dvd_pow ϖ (not_lt.mp hc)) _)`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_lt hji`. Conclude with `caseB j v (u * ϖ ^ c) hv (by rw [hu]; ring)`.
+-/
 theorem fact (hϖ : Irreducible ϖ) (z : QuadraticAlgebra W ϖ 0) (hz : z ≠ 0) :
     ∃ (n : ℕ) (u : QuadraticAlgebra W ϖ 0), IsUnit u ∧ z = ω ^ n * u := by
   have caseB : ∀ (j : ℕ) (v : Wˣ) (a' : W), z.im = v * ϖ ^ j → z.re = ϖ ^ (j + 1) * a' →
@@ -61,12 +90,20 @@ theorem fact (hϖ : Irreducible ϖ) (z : QuadraticAlgebra W ϖ 0) (hz : z ≠ 0)
       obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_lt hji
       exact caseB j v (u * ϖ ^ c) hv (by rw [hu]; ring)
 
+/- English proof (translation)
+Introduce `h`. Establish `h2 : (ω : QuadraticAlgebra W ϖ 0) ^ (2 * n) = 0` using `by rw [two_mul, pow_add, h, mul_zero]`. Rewrite `h2` using `[om_pow, map_eq_zero_iff _ algebraMap_injective]`. Conclude with `pow_ne_zero n hϖ.ne_zero h2`.
+-/
 theorem om_pow_ne_zero (hϖ : Irreducible ϖ) (n : ℕ) : (ω : QuadraticAlgebra W ϖ 0) ^ n ≠ 0 := by
   intro h
   have h2 : (ω : QuadraticAlgebra W ϖ 0) ^ (2 * n) = 0 := by rw [two_mul, pow_add, h, mul_zero]
   rw [om_pow, map_eq_zero_iff _ algebraMap_injective] at h2
   exact pow_ne_zero n hϖ.ne_zero h2
 
+/- English proof (translation)
+Establish `: NoZeroDivisors (QuadraticAlgebra W ϖ 0)` using `⟨fun {x y} hxy => by`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_or]`. Take `⟨n, u, hu, rfl⟩` from `fact hϖ x hc.1`. Take `⟨m, v, hv, rfl⟩` from `fact hϖ y hc.2`.
+
+Establish `e : ω ^ n * u * (ω ^ m * v) = ω ^ (n + m) * (u * v)` using `by ring`. Rewrite `hxy` using `[e]`. Conclude with `om_pow_ne_zero hϖ (n + m) ((hu.mul hv).mul_left_eq_zero.mp hxy)⟩`. Conclude with `NoZeroDivisors.to_isDomain _`.
+-/
 theorem isDomain (hϖ : Irreducible ϖ) : IsDomain (QuadraticAlgebra W ϖ 0) := by
   have : NoZeroDivisors (QuadraticAlgebra W ϖ 0) := ⟨fun {x y} hxy => by
     by_contra hc
@@ -78,6 +115,15 @@ theorem isDomain (hϖ : Irreducible ϖ) : IsDomain (QuadraticAlgebra W ϖ 0) := 
     exact om_pow_ne_zero hϖ (n + m) ((hu.mul hv).mul_left_eq_zero.mp hxy)⟩
   exact NoZeroDivisors.to_isDomain _
 
+/- English proof (translation)
+Use `isDomain hϖ` as an intermediate fact. Use `⟨om_not_isUnit hϖ, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `h0 : (ω : QuadraticAlgebra W ϖ 0) ≠ 0` using `by simpa using om_pow_ne_zero hϖ 1`. Establish `hx : x ≠ 0` using `fun h => h0 (by rw [hxy, h, zero_mul])`. Establish `hy : y ≠ 0` using `fun h => h0 (by rw [hxy, h, mul_zero])`.
+
+Take `⟨n, u, hu, rfl⟩` from `fact hϖ x hx`. Take `⟨m, v, hv, rfl⟩` from `fact hϖ y hy`. Break down `n with _ | n` into its components or cases. Use `left`. Simplify using `using hu`.
+
+Break down `m with _ | m` into its components or cases. Use `right`. Simplify using `using hv`. It suffices to derive a contradiction. Establish `e : (ω : QuadraticAlgebra W ϖ 0) * 1 = ω * (ω * (ω ^ (n + m) * (u * v)))`.
+
+Rewrite using `[mul_one]`. Use `conv_lhs => rw [hxy]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `om_not_isUnit hϖ (IsUnit.of_mul_eq_one _ (mul_left_cancel₀ h0 e).symm)`.
+-/
 theorem om_irreducible (hϖ : Irreducible ϖ) : Irreducible (ω : QuadraticAlgebra W ϖ 0) := by
   have := isDomain hϖ
   refine ⟨om_not_isUnit hϖ, fun x y hxy => ?_⟩
@@ -96,6 +142,9 @@ theorem om_irreducible (hϖ : Irreducible ϖ) : Irreducible (ω : QuadraticAlgeb
     ring
   exact om_not_isUnit hϖ (IsUnit.of_mul_eq_one _ (mul_left_cancel₀ h0 e).symm)
 
+/- English proof (translation)
+The claim follows from `isDomain hϖ; IsDiscreteValuationRing (QuadraticAlgebra W ϖ 0) := by have := isDomain hϖ refine IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨ω, om_irreducible hϖ, fun {x} hx => ?_⟩ obtain ⟨n, u, hu, rfl⟩ := fact hϖ x hx exact ⟨n, hu.unit, rfl⟩`.
+-/
 theorem isDVR (hϖ : Irreducible ϖ) :
     haveI := isDomain hϖ; IsDiscreteValuationRing (QuadraticAlgebra W ϖ 0) := by
   have := isDomain hϖ
@@ -104,6 +153,11 @@ theorem isDVR (hϖ : Irreducible ϖ) :
   obtain ⟨n, u, hu, rfl⟩ := fact hϖ x hx
   exact ⟨n, hu.unit, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[Ideal.mem_span_singleton, om_pow, algebraMap_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨⟨t.re, by simp⟩, ⟨t.im, by simp⟩⟩`. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`.
+
+Apply the tactic sequence `exact ⟨⟨a, b⟩, by ext <;> simp [ha, hb]⟩`.
+-/
 theorem mem_span_om_pow (m : ℕ) (z : QuadraticAlgebra W ϖ 0) :
     z ∈ Ideal.span {(ω : QuadraticAlgebra W ϖ 0) ^ (2 * m)} ↔ ϖ ^ m ∣ z.re ∧ ϖ ^ m ∣ z.im := by
   rw [Ideal.mem_span_singleton, om_pow, algebraMap_eq]
@@ -113,6 +167,9 @@ theorem mem_span_om_pow (m : ℕ) (z : QuadraticAlgebra W ϖ 0) :
   · rintro ⟨⟨a, ha⟩, ⟨b, hb⟩⟩
     exact ⟨⟨a, b⟩, by ext <;> simp [ha, hb]⟩
 
+/- English proof (translation)
+The claim follows from `isDomain hϖ; haveI := isDVR hϖ IsAdicComplete (maximalIdeal (QuadraticAlgebra W ϖ 0)) (QuadraticAlgebra W ϖ 0) := by have := isDomain hϖ have := isDVR hϖ have keyO : ∀ (n : ℕ) (x y : QuadraticAlgebra W ϖ 0), x ≡ y [SMOD (maximalIdeal (QuadraticAlgebra W ϖ 0) ^ n • ⊤ : Submodule _ …`.
+-/
 theorem isAdicComplete (hϖ : Irreducible ϖ) (hC : IsAdicComplete (Ideal.span {ϖ}) W) :
     haveI := isDomain hϖ; haveI := isDVR hϖ
     IsAdicComplete (maximalIdeal (QuadraticAlgebra W ϖ 0)) (QuadraticAlgebra W ϖ 0) := by

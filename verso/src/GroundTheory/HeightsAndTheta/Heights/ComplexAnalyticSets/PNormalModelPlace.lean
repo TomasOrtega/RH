@@ -10,6 +10,11 @@ noncomputable section
 
 namespace NormalModelPlace
 
+/- English proof (translation)
+Establish `hJ : Ideal.span {e x} = (Ideal.span {x}).map e`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Set `qe` to `Ideal.quotientEquiv (Ideal.span {x}) (Ideal.span {e x}) e hJ`. Establish `: RingHomSurjective (e : A →+* C)` using `⟨e.surjective⟩`. Set `f : (A ⧸ Ideal.span {x}) →ₛₗ[(e : A →+* C)] (C ⧸ Ideal.span {e x})` to `{ toFun := qe map_add' := qe.map_add map_smul' := fun a b => by`.
+
+Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (e (a * b)) = Ideal.Quotient.mk _ (e a * e b)`. Rewrite using `[map_mul] }`. Rewrite using `[Ring.ord, Ring.ord, Module.length, Module.length, WithBot.unbot_inj, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f qe.bijective)]`.
+-/
 theorem ord_eq_of_ringEquiv {A C : Type*} [CommRing A] [CommRing C] (e : A ≃+* C) (x : A) :
     Ring.ord A x = Ring.ord C (e x) := by
   have hJ : Ideal.span {e x} = (Ideal.span {x}).map e := by
@@ -26,6 +31,11 @@ theorem ord_eq_of_ringEquiv {A C : Type*} [CommRing A] [CommRing C] (e : A ≃+*
   rw [Ring.ord, Ring.ord, Module.length, Module.length, WithBot.unbot_inj,
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f qe.bijective)]
 
+/- English proof (translation)
+Introduce `hu`. Take `⟨u, hu⟩` from `hu.exists_right_inv`. Take `⟨u, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Rewrite `hu` using `[← map_mul, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Establish `h1` using `IsLocalRing.le_maximalIdeal hI hu`.
+
+Establish `h2` using `(IsLocalRing.maximalIdeal L).mul_mem_right u hz`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal L).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using (IsLocalRing.maximalIdeal L).sub_mem h2 h1))`.
+-/
 theorem not_isUnit_mk_of_mem_maximalIdeal {L : Type*} [CommRing L] [IsLocalRing L] {I : Ideal L} (hI : I ≠ ⊤)
     {z : L} (hz : z ∈ IsLocalRing.maximalIdeal L) : ¬ IsUnit (Ideal.Quotient.mk I z) := by
   intro hu
@@ -39,17 +49,29 @@ theorem not_isUnit_mk_of_mem_maximalIdeal {L : Type*} [CommRing L] [IsLocalRing 
 
 variable {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J) (w : Fin n ⊕ Fin M.m → ℂ)
 
+/- English proof (translation)
+Rewrite using `[eval_rename]`. Both sides reduce to the same expression.
+-/
 theorem eval_rename_inl (f : MvPolynomial (Fin n) ℂ) :
     eval w (rename Sum.inl f) = eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) f := by
   rw [eval_rename]; rfl
 
+/- English proof (translation)
+Rewrite `hf` using `[← M.comap_eq]`. Conclude with `hf`.
+-/
 theorem rename_mem_normalModel {f : MvPolynomial (Fin n) ℂ} (hf : f ∈ J) : rename Sum.inl f ∈ M.ideal := by
   rw [← M.comap_eq] at hf; exact hf
 
+/- English proof (translation)
+Introduce `p hp` and use `RingHom.mem_ker.2 (hw p hp)`.
+-/
 theorem normalModel_le_ker (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     M.ideal ≤ RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ) :=
   fun p hp => RingHom.mem_ker.2 (hw p hp)
 
+/- English proof (translation)
+Introduce `f hf`. Rewrite using `[RingHom.mem_ker, ← eval_rename_inl]`. Conclude with `hw _ (rename_mem_normalModel M hf)`.
+-/
 theorem le_ker_firstCoords (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     J ≤ RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ) := by
   intro f hf
@@ -73,6 +95,9 @@ def curveToPoint : curveLocalRing J (IndefiniteRowSideFullHecke.ComplexSets.firs
     rw [Ideal.mem_comap, Ideal.mem_comap, toPointLocalization, IsLocalization.map_eq]
     exact Ideal.mem_map_of_mem _ (rename_mem_normalModel M hf))
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `Ideal.quotientMap _ (toPointLocalization M w) _ (Ideal.Quotient.mk _ (algebraMap _ _ f)) = Ideal.Quotient.mk _ (algebraMap _ _ (rename Sum.inl f))`. Rewrite using `[Ideal.quotientMap_mk, toPointLocalization, IsLocalization.map_eq]`. Both sides reduce to the same expression.
+-/
 theorem curveToPoint_algebraMap (f : MvPolynomial (Fin n) ℂ) :
     curveToPoint M w (algebraMap _ (curveLocalRing J (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w)) f) =
       algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (pointLocalRing M.ideal w) (rename Sum.inl f) := by
@@ -81,6 +106,9 @@ theorem curveToPoint_algebraMap (f : MvPolynomial (Fin n) ℂ) :
   rw [Ideal.quotientMap_mk, toPointLocalization, IsLocalization.map_eq]
   rfl
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)).primeCompl _ _ M.isPrime (Set.disjoint_left.2 fun _ ha hJ => (Ideal.mem_primeCompl_iff.1 ha) (normalModel_le_ker M w hw hJ))`.
+-/
 theorem isPrime_map_normalModel (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     (M.ideal.map (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ)
       (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))))).IsPrime :=
@@ -88,6 +116,9 @@ theorem isPrime_map_normalModel (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSe
     (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)).primeCompl _ _ M.isPrime
     (Set.disjoint_left.2 fun _ ha hJ => (Ideal.mem_primeCompl_iff.1 ha) (normalModel_le_ker M w hw hJ))
 
+/- English proof (translation)
+The claim follows from `IsLocalization.isPrime_of_isPrime_disjoint (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl _ _ hJ (Set.disjoint_left.2 fun _ ha hJ => (Ideal.mem_primeCompl_iff.1 ha) (le_ker_firstCoords M w hw hJ))`.
+-/
 theorem isPrime_map_curve (hJ : J.IsPrime) (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     (J.map (algebraMap (MvPolynomial (Fin n) ℂ)
       (Localization.AtPrime (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) :
@@ -96,6 +127,9 @@ theorem isPrime_map_curve (hJ : J.IsPrime) (hw : w ∈ IndefiniteRowSideFullHeck
     (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl _ _ hJ
     (Set.disjoint_left.2 fun _ ha hJ => (Ideal.mem_primeCompl_iff.1 ha) (le_ker_firstCoords M w hw hJ))
 
+/- English proof (translation)
+Establish `h` using `IsLocalization.under_map_of_isPrime_disjoint (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)).primeCompl (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))) M.isPrime (Set.disjoint_left.2 fun _ ha hJ => (Ideal.mem_primeCompl_iff.1 …`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mk (M.ideal.map (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))))) (algebraMap _ _ b) = 0) ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Use `conv_rhs => rw [← h]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_pointLocalRing_eq_zero_iff (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal)
     (b : MvPolynomial (Fin n ⊕ Fin M.m) ℂ) :
     algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (pointLocalRing M.ideal w) b = 0 ↔ b ∈ M.ideal := by
@@ -110,6 +144,13 @@ theorem algebraMap_pointLocalRing_eq_zero_iff (hw : w ∈ IndefiniteRowSideFullH
   conv_rhs => rw [← h]
   rfl
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl y`. Establish `hx' : (Ideal.Quotient.mk (M.ideal.map (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))))) (toPointLocalization M w (IsLocalization.mk' _ a s))) = 0` using `hx`.
+
+Rewrite `hx'` using `[toPointLocalization, IsLocalization.map_mk', Ideal.Quotient.eq_zero_iff_mem, IsLocalization.mk'_mem_map_algebraMap_iff]`. Take `⟨t, ht, hta⟩` from `hx'`. Establish `ha : rename Sum.inl a ∈ M.ideal` using `(M.isPrime.mem_or_mem hta).resolve_left fun h => (Ideal.mem_primeCompl_iff.1 ht) (normalModel_le_ker M w hw h)`. Establish `ha' : a ∈ J` using `by rw [← M.comap_eq]; exact ha`. Express the relevant statement in the definitionally equal form `(Ideal.Quotient.mk (J.map (algebraMap (MvPolynomial (Fin n) ℂ) (Localization.AtPrime (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ))))) (IsLocalization.mk' _ a s)) = 0`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, IsLocalization.mk'_mem_map_algebraMap_iff]`. Conclude with `⟨1, Submonoid.one_mem _, by rwa [one_mul]⟩`.
+-/
 theorem curveToPoint_injective (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     Function.Injective (curveToPoint M w) := by
   rw [injective_iff_map_eq_zero]
@@ -132,6 +173,13 @@ theorem curveToPoint_injective (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSet
   rw [Ideal.Quotient.eq_zero_iff_mem, IsLocalization.mk'_mem_map_algebraMap_iff]
   exact ⟨1, Submonoid.one_mem _, by rwa [one_mul]⟩
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ)).primeCompl y`. Distinguish the cases in `ha : a ∈ RingHom.ker (eval (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w) : MvPolynomial (Fin n) ℂ →+* ℂ)`. It suffices to derive a contradiction. Establish `hx' : IsUnit (Ideal.Quotient.mk (M.ideal.map (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))))) (toPointLocalization M w (IsLocalization.mk' _ a s)))` using `hx`.
+
+Rewrite `hx'` using `[toPointLocalization, IsLocalization.map_mk']`. Use `not_isUnit_mk_of_mem_maximalIdeal (isPrime_map_normalModel M w hw).ne_top ?_ hx'` and prove the remaining obligations. Use `(IsLocalization.AtPrime.mk'_mem_maximal_iff (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))) _ _ _).2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rename Sum.inl a ∈ RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)`. Rewrite using `[RingHom.mem_ker, eval_rename_inl]`.
+
+Conclude with `RingHom.mem_ker.1 ha`. Conclude with `((IsLocalization.AtPrime.isUnit_mk'_iff _ _ a s).2 ha).map _`.
+-/
 theorem isUnit_of_isUnit_curveToPoint (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal)
     (x : curveLocalRing J (IndefiniteRowSideFullHecke.ComplexSets.firstCoords w)) (hx : IsUnit (curveToPoint M w x)) : IsUnit x := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -151,6 +199,11 @@ theorem isUnit_of_isUnit_curveToPoint (hw : w ∈ IndefiniteRowSideFullHecke.Com
     exact RingHom.mem_ker.1 ha
   · exact ((IsLocalization.AtPrime.isUnit_mk'_iff _ _ a s).2 ha).map _
 
+/- English proof (translation)
+Use `M.isPrime` as an intermediate fact. Establish `: IsIntegrallyClosed (MvPolynomial (Fin n ⊕ Fin M.m) ℂ ⧸ M.ideal)` using `M.isIntegrallyClosed`. Conclude with `isIntegrallyClosed_of_isLocalization (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ)) ⧸ M.ideal.map (algebraMap (MvPolynomial (Fin n ⊕ Fin M.m) ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial (Fin n ⊕ Fin M.m) ℂ →+* ℂ))))) (Algebr …`. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero fun h => (Ideal.mem_primeCompl_iff.1 hs) (normalModel_le_ker M w hw ?_)` and prove the remaining obligations.
+
+Rewrite `h` using `[Ideal.Quotient.algebraMap_eq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h)`.
+-/
 theorem isIntegrallyClosed_pointLocalRing (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn M.ideal) :
     IsIntegrallyClosed (pointLocalRing M.ideal w) := by
   have := M.isPrime
@@ -190,6 +243,47 @@ local notation "𝔏" => Localization.AtPrime (RingHom.ker (eval w : MvPolynomia
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n J q M w hJ hw hwq`. Substitute `hwq` using the available equality. Use `isPrime_map_curve M w hJ hw` as an intermediate fact. Use `isPrime_map_normalModel M w hw` as an intermediate fact. Establish `: IsDomain 𝒪` using `Ideal.Quotient.isDomain _`.
+
+Establish `: IsDomain 𝒯` using `Ideal.Quotient.isDomain _`. Establish `: IsLocalRing 𝒪` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Establish `: IsLocalRing 𝒯` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Use `isIntegrallyClosed_pointLocalRing M w hw` as an intermediate fact. Establish `hg_alg` using `curveToPoint_algebraMap M w`.
+
+Establish `hg_inj` using `curveToPoint_injective M w hw`. Establish `hg_loc : (IsLocalRing.maximalIdeal 𝒯).comap (curveToPoint M w) = IsLocalRing.maximalIdeal 𝒪`. Use `le_antisymm (IsLocalRing.le_maximalIdeal (Ideal.comap_ne_top _ (IsLocalRing.maximalIdeal.isMaximal _).ne_top)) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+
+Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 hx (isUnit_of_isUnit_curveToPoint M w hw x h)`. Establish `hι : Function.Injective (algebraMap 𝒯 ℱ)` using `IsFractionRing.injective _ _`. Establish `hιg : Function.Injective ((algebraMap 𝒯 ℱ).comp (curveToPoint M w))` using `hι.comp hg_inj`. Take `⟨ψ, hψ⟩ : ∃ ψ : 𝒦 →+* ℱ, ∀ x, ψ (algebraMap 𝒪 𝒦 x) = algebraMap 𝒯 ℱ (curveToPoint M w x)` from `⟨IsFractionRing.lift hιg, IsFractionRing.lift_algebraMap hιg⟩`. Establish `hψinj : Function.Injective ψ` using `ψ.injective`.
+
+Establish `hcomp : (algebraMap 𝒯 ℱ).comp (curveToPoint M w) = ψ.comp (algebraMap 𝒪 𝒦)` using `RingHom.ext fun x => (hψ x).symm`. Take `⟨val, hval_inj, hval_alg, hval_int, hval_surj⟩ : ∃ val : 𝒪̄ →+* 𝒦, Function.Injective val ∧ (∀ x, val (algebraMap 𝒪 𝒪̄ x) = algebraMap 𝒪 𝒦 x) ∧ (∀ x, IsIntegral 𝒪 (val x)) ∧ (∀ k, IsIntegral 𝒪 k → ∃ x, val x = k)` from `⟨(integralClosure 𝒪 𝒦).val.toRingHom, Subtype.val_injective, fun _ => rfl, fun x => (mem_integralClosure_iff _ _).1 (Subtype.prop x), fun k hk => ⟨(⟨k, (mem_integralClosure_iff _ _).2 hk⟩ : integralClosure 𝒪 𝒦), rfl⟩⟩`. Establish `hint : ∀ k : 𝒦, IsIntegral 𝒪 k → ∃ t : 𝒯, algebraMap 𝒯 ℱ t = ψ k`. Introduce and unpack `k ⟨p, hpm, hp⟩`. Use `(IsIntegrallyClosed.isIntegral_iff (R := 𝒯) (K := ℱ)).1 ⟨p.map (curveToPoint M w), hpm.map _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Polynomial.eval₂_map, hcomp, ← Polynomial.hom_eval₂, hp, map_zero]`. Choose the witnesses or unpack the hypotheses as in `⟨φ, hφ⟩ : ∃ φ : 𝒪̄ →+* 𝒯, ∀ x, algebraMap 𝒯 ℱ (φ x) = ψ (val x) := by`. Establish `hr : ∀ x, (ψ.comp val) x ∈ (algebraMap 𝒯 ℱ).range` using `fun x => hint _ (hval_int x)`. Set `e` to `RingEquiv.ofBijective (algebraMap 𝒯 ℱ).rangeRestrict ⟨fun a b h => hι (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Use `⟨e.symm.toRingHom.comp ((ψ.comp val).codRestrict _ hr), fun x => ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg Subtype.val (e.apply_symm_apply ((ψ.comp val).codRestrict _ hr x))`. Establish `hφinj : Function.Injective φ` using `fun a b h => hval_inj (hψinj (by rw [← hφ, ← hφ, h]))`. Establish `hφg : ∀ x, φ (algebraMap 𝒪 𝒪̄ x) = curveToPoint M w x` using `fun x => hι (by rw [hφ, hval_alg, hψ])`. Establish `: IsDomain 𝒪̄` using `hφinj.isDomain φ`. Establish `: Algebra.IsIntegral 𝒪 𝒪̄` using `inferInstanceAs (Algebra.IsIntegral 𝒪 (integralClosure 𝒪 𝒦))`.
+
+Take `⟨P, hP⟩ : ∃ P : Ideal 𝒪̄, P = (IsLocalRing.maximalIdeal 𝒯).comap φ` from `⟨_, rfl⟩`. Establish `: P.IsPrime` using `by rw [hP]; exact Ideal.comap_isPrime _ _`. Establish `hPmem : ∀ x, x ∈ P ↔ φ x ∈ IsLocalRing.maximalIdeal 𝒯` using `fun x => by rw [hP, Ideal.mem_comap]`. Establish `hPmax : P.IsMaximal`. Use `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := 𝒪) P ?_` and prove the remaining obligations.
+
+Rewrite using `[hP, Ideal.comap_comap, show φ.comp (algebraMap 𝒪 𝒪̄) = curveToPoint M w from RingHom.ext hφg, hg_loc]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal _`. Establish `hunits : ∀ y : P.primeCompl, IsUnit (φ y)` using `fun y => by`. Assume the negation of the conclusion as `h`. Conclude with `y.2 ((hPmem _).2 ((IsLocalRing.mem_maximalIdeal _).2 h))`.
+
+Establish `hY : ∀ i, ∃ y : 𝒪̄, φ y = algebraMap ℬ 𝒯 (X (Sum.inr i))`. Introduce `i`. Take `⟨a, b, hb, hab⟩` from `M.birational i`. Take `⟨p, hpm, hp⟩` from `M.integral i`. Establish `hrel : algebraMap ℬ 𝒯 (rename Sum.inl b) * algebraMap ℬ 𝒯 (X (Sum.inr i)) = algebraMap ℬ 𝒯 (rename Sum.inl a)`.
+
+Rewrite using `[← sub_eq_zero, ← map_mul, ← map_sub]`. Conclude with `(algebraMap_pointLocalRing_eq_zero_iff M w hw _).2 hab`. Establish `hb0 : algebraMap 𝒯 ℱ (algebraMap ℬ 𝒯 (rename Sum.inl b)) ≠ 0`. Rewrite using `[map_ne_zero_iff _ hι]`. Introduce `h`.
+
+Conclude with `hb (by rw [← M.comap_eq]; exact (algebraMap_pointLocalRing_eq_zero_iff M w hw _).1 h)`. Establish `hk : ψ (algebraMap 𝒪 𝒦 (algebraMap 𝒜 𝒪 a) / algebraMap 𝒪 𝒦 (algebraMap 𝒜 𝒪 b)) = algebraMap 𝒯 ℱ (algebraMap ℬ 𝒯 (X (Sum.inr i)))`. Rewrite using `[map_div₀, hψ, hψ, hg_alg, hg_alg]`. Use `(eq_div_of_mul_eq hb0 ?_).symm` and prove the remaining obligations. Rewrite using `[← map_mul, mul_comm, hrel]`.
+
+Establish `hkint : IsIntegral 𝒪 (algebraMap 𝒪 𝒦 (algebraMap 𝒜 𝒪 a) / algebraMap 𝒪 𝒦 (algebraMap 𝒜 𝒪 b))`. Use `⟨p.map (algebraMap 𝒜 𝒪), hpm.map _, hψinj ?_⟩` and prove the remaining obligations. Establish `h1 : (ψ.comp (algebraMap 𝒪 𝒦)).comp (algebraMap 𝒜 𝒪) = (algebraMap 𝒯 ℱ).comp ((algebraMap ℬ 𝒯).comp (rename Sum.inl : 𝒜 →ₐ[ℂ] ℬ).toRingHom)` using `RingHom.ext fun f => by simp [hψ, hg_alg]`. Establish `h2 : algebraMap 𝒯 ℱ (algebraMap ℬ 𝒯 (p.eval₂ (rename Sum.inl : 𝒜 →ₐ[ℂ] ℬ).toRingHom (X (Sum.inr i)))) = p.eval₂ ((algebraMap 𝒯 ℱ).comp ((algebraMap ℬ 𝒯).comp (rename Sum.inl : 𝒜 →ₐ[ℂ] ℬ).toRingHom)) (algebraMap 𝒯 ℱ (algebraMap ℬ 𝒯 (X (Sum.inr i))))`. Rewrite using `[Polynomial.hom_eval₂, Polynomial.hom_eval₂]`.
+
+Rewrite using `[map_zero, Polynomial.hom_eval₂, Polynomial.eval₂_map, hk, h1, ← h2, (algebraMap_pointLocalRing_eq_zero_iff M w hw _).2 hp, map_zero]`. Take `⟨y, hy⟩` from `hval_surj _ hkint`. Conclude with `⟨y, hι (by rw [hφ, hy, hk])⟩`. Take `⟨χ, hχ⟩ : ∃ χ : ℬ →+* 𝒪̄, ∀ b, φ (χ b) = algebraMap ℬ 𝒯 b` from `by choose y hy using hY`. Use `⟨eval₂Hom ((algebraMap 𝒪 𝒪̄).comp ((algebraMap 𝒜 𝒪).comp C)) (Sum.elim (fun j => algebraMap 𝒪 𝒪̄ (algebraMap 𝒜 𝒪 (X j))) y), fun b => ?_⟩` and prove the remaining obligations.
+
+Establish `h : φ.comp (eval₂Hom ((algebraMap 𝒪 𝒪̄).comp ((algebraMap 𝒜 𝒪).comp C)) (Sum.elim (fun j => algebraMap 𝒪 𝒪̄ (algebraMap 𝒜 𝒪 (X j))) y)) = algebraMap ℬ 𝒯`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, eval₂Hom_C, hφg, hg_alg, rename_C]`. Break down `v with j | i` into its components or cases. Simplify using `only [RingHom.comp_apply, eval₂Hom_X', Sum.elim_inl, hφg, hg_alg, rename_X]`.
+
+Simplify using `only [RingHom.comp_apply, eval₂Hom_X', Sum.elim_inr, hy]`. Conclude with `RingHom.congr_fun h b`. Establish `hΦ : ∀ x, IsLocalization.lift hunits (algebraMap 𝒪̄ (Localization.AtPrime P) x) = φ x` using `IsLocalization.lift_eq hunits`. Establish `hΦinj : Function.Injective (IsLocalization.lift (S` using `Localization.AtPrime P) hunits) := by`. Use `(IsLocalization.lift_injective_iff (M := P.primeCompl) (S := Localization.AtPrime P) (hg := hunits)).2 fun x y => ⟨fun h => congrArg φ ?_, fun h => congrArg _ (hφinj h)⟩` and prove the remaining obligations.
+
+Conclude with `IsLocalization.injective (Localization.AtPrime P) (Ideal.primeCompl_le_nonZeroDivisors P) h`. Establish `hΦsurj : Function.Surjective (IsLocalization.lift (S` using `Localization.AtPrime P) hunits) := by`. Introduce `t`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Take `⟨⟨b, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker (eval w : ℬ →+* ℂ)).primeCompl z`.
+
+Simplify using `only`. Establish `hs : χ s ∈ P.primeCompl` using `fun h => (IsLocalRing.mem_maximalIdeal _).1 ((hPmem _).1 h) (by`. Rewrite using `[hχ]`. Conclude with `isUnit_algebraMap_pointLocalRing _ _ _ fun h0 => (Ideal.mem_primeCompl_iff.1 s.2) (RingHom.mem_ker.2 h0))`. Use `⟨IsLocalization.mk' (Localization.AtPrime P) (χ b) ⟨χ s, hs⟩, ?_⟩` and prove the remaining obligations.
+
+Use `(IsLocalization.lift_mk'_spec _ _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[hχ, hχ]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (M.ideal.map (algebraMap ℬ 𝔏)) (algebraMap ℬ 𝔏 b) = Ideal.Quotient.mk (M.ideal.map (algebraMap ℬ 𝔏)) (algebraMap ℬ 𝔏 (s : ℬ)) * Ideal.Quotient.mk (M.ideal.map (algebraMap ℬ 𝔏)) (IsLocalization.mk' 𝔏 b s)`. Rewrite using `[← map_mul, IsLocalization.mk'_spec']`. Use `⟨⟨P, hPmax⟩, fun f => ?_⟩` and prove the remaining obligations.
+
+Use `(ord_eq_of_ringEquiv (RingEquiv.ofBijective _ ⟨hΦinj, hΦsurj⟩) _).trans ?_` and prove the remaining obligations. Use `congr 1`. Express the relevant statement in the definitionally equal form `IsLocalization.lift hunits (algebraMap 𝒪̄ (Localization.AtPrime P) (algebraMap 𝒪 𝒪̄ (algebraMap 𝒜 𝒪 f))) = _`. Rewrite using `[hΦ, hφg, hg_alg]`.
+-/
 theorem NormalModelPlace.proof : NormalModelPlace.Statement := by
   intro n J q M w hJ hw hwq
   subst hwq

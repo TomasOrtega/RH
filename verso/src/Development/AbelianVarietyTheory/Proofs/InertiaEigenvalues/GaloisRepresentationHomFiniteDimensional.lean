@@ -28,6 +28,11 @@ def twistRep (χ : G →* LLˣ) (ρ : Representation LL G V) : Representation LL
   map_one' := by simp
   map_mul' g h := by simp [smul_smul, mul_comm]
 
+/- English proof (translation)
+Establish `hsm : ∀ (q : Qp) (b : B), PD.ι (q • b) = q • PD.ι b` using `fun q b => (PD.ι.toLinearMap.restrictScalars Qp).map_smul q b`. Establish `h1 : Units.map (PD.actdR g : F →* F) T = Units.map (algebraMap Qp F : Qp →* F) (PD.χ g) * T`. Use `ext`. Establish `h2` using `PD.ι_comm g PD.t`. Rewrite `h2` using `[PD.t_act, hsm, ← hT, Algebra.smul_def]`.
+
+Conclude with `h2.symm`. Establish `h3` using `congrArg (fun x : Fˣ => ((x ^ n : Fˣ) : F)) h1`. Simplify using `only [mul_zpow, ← map_zpow, Units.val_mul, Units.coe_map] at h3`. Rewrite using `[Algebra.smul_def, ← map_zpow]`. Conclude with `h3`.
+-/
 theorem act_zpow (T : Fˣ) (hT : (T : F) = PD.ι PD.t) (n : ℤ) (g : G) :
     PD.actdR g ((T ^ n : Fˣ) : F) = ((PD.χ g ^ n : Qpˣ) : Qp) • ((T ^ n : Fˣ) : F) := by
   have hsm : ∀ (q : Qp) (b : B), PD.ι (q • b) = q • PD.ι b := fun q b =>
@@ -42,6 +47,21 @@ theorem act_zpow (T : Fˣ) (hT : (T : F) = PD.ι PD.t) (n : ℤ) (g : G) :
   rw [Algebra.smul_def, ← map_zpow]
   exact h3
 
+/- English proof (translation)
+Establish `hρ' : ∀ g x, (((ψ g)⁻¹ : Qpˣ) : Qp) • ρ g x = ρ' g x` using `fun g x => by`. Rewrite using `[← hρ, smul_smul, Units.inv_mul, one_smul]`. Set `Φ : V ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F` to `mulR Qp F LL V u ∘ₗ ext Qp F LinearMap.id`. Set `Ψ : V ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F` to `mulR Qp F LL V (u⁻¹ : Fˣ) ∘ₗ ext Qp F LinearMap.id`. Establish `h1 : ∀ x, Φ (Ψ x) = x`.
+
+Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul v b => simp [Φ, Ψ]`.
+
+Establish `h2 : ∀ x, Ψ (Φ x) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+
+Consider the case `tmul v b => simp [Φ, Ψ]`. Set `E : V ⊗[Qp] F ≃ₗ[LL] V ⊗[Qp] F` to `LinearEquiv.ofLinear Φ Ψ (LinearMap.ext h1) (LinearMap.ext h2)`. Establish `hD : (DdR PD ρ).map E.toLinearMap = DdR PD ρ'`. Use `le_antisymm ?_ fun y hy => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+
+Conclude with `twist_mem_DdR PD ρ ρ' LinearMap.id _ _ ha hρ hx`. Conclude with `⟨Ψ y, twist_mem_DdR PD ρ' ρ LinearMap.id _ _ ha' hρ' hy, h1 y⟩`. Establish `hF : ∀ τ a, (FildR PD ρ τ a).map E.toLinearMap = FildR PD ρ' τ (n + a)`. Introduce `τ a`. Use `le_antisymm ?_ fun y hy => ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `twist_mem_FildR PD ρ ρ' LinearMap.id _ _ ha hρ τ hu hx`. Use `twist_mem_FildR PD ρ' ρ LinearMap.id _ _ ha' hρ' τ hu' hy` as an intermediate fact. Rewrite `this` using `[neg_add_cancel_left]`. Conclude with `⟨Ψ y, this, h1 y⟩`.
+
+Use `⟨fun h => ?_, fun τ a => ?_⟩` and prove the remaining obligations. Rewrite using `[IsDR, ← hD, LinearEquiv.finrank_map_eq, h]`. Unfold `multV`. Rewrite using `[add_assoc, ← hF, ← hF, LinearEquiv.finrank_map_eq, LinearEquiv.finrank_map_eq]`.
+-/
 theorem twist_unit (ρ ρ' : Representation LL G V) (u : Fˣ) (n : ℤ) (ψ : G → Qpˣ)
     (hu : (u : F) ∈ PD.Fil n) (hu' : ((u⁻¹ : Fˣ) : F) ∈ PD.Fil (-n))
     (ha : ∀ g, PD.actdR g (u : F) = (ψ g : Qp) • (u : F))
@@ -86,6 +106,17 @@ theorem twist_unit (ρ ρ' : Representation LL G V) (u : Fˣ) (n : ℤ) (ψ : G 
 
 end Generic
 
+/- English proof (translation)
+Introduce `l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' m j hm hg h`. Use `K.2` as an intermediate fact. Use `LL.2` as an intermediate fact. Use `(GlobalTheory.T.concretePeriod_deRham_module_finrank_le l P AI T K LL V ρ).1` as an intermediate fact. Establish `hs` using `filSpans T K LL ρ h`.
+
+Set `ρ₀ : Representation ↥LL.1 ↥(GK K) V'` to `twistRep (cycLL (P.PD K) ↥LL.1 ^ (-j)) ρ'`. Establish `hρ₀ : ∀ g y, ρ₀ g y = ((cycLL (P.PD K) ↥LL.1 g ^ (-j) : (↥LL.1)ˣ) : ↥LL.1) • ρ' g y` using `fun g y => rfl`. Establish `hβ : ∀ g x y, m (ρ g x) (ρ₀ g y) = m x y` using `fun g x y => by`. Rewrite using `[hρ₀, map_smul, hg, smul_eq_mul, zpow_neg, Units.inv_mul_cancel_left]`. Establish `hβ' : Function.Bijective m.flip` using `(LinearEquiv.ofBijective m hm).flip.bijective`.
+
+Establish `h₀ : IsDR (P.PD K) ρ₀` using `isDR_of_spans T K LL ρ₀ (spans_dual_of_spans (P.PD K) ρ ρ₀ m (isField_dR T) hβ hβ' (hs.spans _))`. Establish `ht : (GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR P K : P.R.BdR) = (P.PD K).ι (P.PD K).t` using `rfl`. Take `⟨h1, h2⟩` from `twist_unit (P.PD K) ρ₀ ρ' (GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence.tdR P K ^ (-j)) (-j) (fun g => (P.PD K).χ g ^ (-j)) (tdR_zpow_mem T K _) (by rw [← zpow_neg]; exact tdR_zpow_mem T K _) (act_zpow _ _ ht _) (fun g => by rw [← zpow_neg, ← zpow_neg]; exact act_zpo …`. Rewrite using `[hρ₀, ← algebraMap_smul ↥LL.1]`. Use `congr 1`.
+
+Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap ℚ_[l] ↥LL.1 : ℚ_[l] →* ↥LL.1)) ((P.PD K).χ g) (-j)))`. Use `⟨h1 h₀, fun τ a _ => ?_⟩` and prove the remaining obligations. Take `⟨n, d, k, had⟩` from `exists_adapted (P.PD K) (isField_dR T) ρ hs τ`. Take `⟨d', had'⟩` from `had.dual ρ₀ m hβ hβ'`. Rewrite using `[show -a - j = -j + -a by ring, h2, had.multV_eq, had'.multV_eq]`.
+
+Simplify using `only [neg_inj]`.
+-/
 theorem twisted_dual_deRham : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (V' : Type) [AddCommGroup V'] [Module ↥LL.1 V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] ↥LL.1 V'] [FiniteDimensional ↥LL.1 V'] (ρ' : Representation ↥LL.1 ↥(GK K) V') (m : V →ₗ[↥LL.1] V' →ₗ[↥LL.1] ↥LL.1) (j : ℤ), Function.Bijective m → (∀ g x y, m (ρ g x) (ρ' g y) = ((cycLL (P.PD K) ↥LL.1 g ^ j : (↥LL.1)ˣ) : ↥LL.1) * m x y) → IsDR (P.PD K) ρ → IsDR (P.PD K) ρ' ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ), Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = Module.finrank ℚ_[l] ↥K.1 → multV (P.PD K) ρ' τ (-a - j) = multV (P.PD K) ρ τ a := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' m j hm hg h
   have := K.2

@@ -27,10 +27,19 @@ def dia : Rˣ →* SL(2, R) where
     change _ = !![x.1, 0; 0, (x⁻¹).1] * !![y.1, 0; 0, (y⁻¹).1]
     simp [mul_comm])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uni_val (x : Multiplicative R) : (uni x).1 = !![1, x.toAdd; 0, 1] := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem dia_val (u : Rˣ) : (dia u).1 = !![u.1, 0; 0, (u⁻¹).1] := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, uni_val, dia_val, Matrix.mul_fin_two, toAdd_ofAdd]`. Use `congr 3`. Apply the tactic sequence `all_goals simp only [mul_zero, zero_mul, mul_one, one_mul, add_zero, zero_add]`. Rewrite using `[← mul_assoc, ← mul_assoc, Units.mul_inv, one_mul, mul_comm]`.
+-/
 theorem uni_dia (x : R) (u : Rˣ) : uni (.ofAdd x) * dia u = dia u * uni (.ofAdd ((u⁻¹).1 * (u⁻¹).1 * x)) := by
   apply Subtype.ext
   simp only [Matrix.SpecialLinearGroup.coe_mul, uni_val, dia_val, Matrix.mul_fin_two, toAdd_ofAdd]
@@ -40,17 +49,31 @@ theorem uni_dia (x : R) (u : Rˣ) : uni (.ofAdd x) * dia u = dia u * uni (.ofAdd
 
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
+/- English proof (translation)
+The claim follows from `Continuous.subtype_mk (continuous_matrix fun i j => by fin_cases i <;> fin_cases j <;> simp [continuous_const, continuous_toAdd]) _`.
+-/
 theorem continuous_uni : Continuous (uni : Multiplicative R → SL(2, R)) :=
   Continuous.subtype_mk (continuous_matrix fun i j => by
     fin_cases i <;> fin_cases j <;> simp [continuous_const, continuous_toAdd]) _
 
+/- English proof (translation)
+The claim follows from `(isClosed_eq (continuous_id.matrix_det) continuous_const).isClosedEmbedding_subtypeVal`.
+-/
 theorem closedEmb [T2Space R] : IsClosedEmbedding (Subtype.val : SL(2, R) → Matrix (Fin 2) (Fin 2) R) :=
   (isClosed_eq (continuous_id.matrix_det) continuous_const).isClosedEmbedding_subtypeVal
 
+/- English proof (translation)
+The claim follows from `closedEmb.isCompact_preimage (isCompact_pi_infinite fun i => isCompact_pi_infinite (h i))`.
+-/
 theorem box [T2Space R] {C : Fin 2 → Fin 2 → Set R} (h : ∀ i j, IsCompact (C i j)) :
     IsCompact {g : SL(2, R) | ∀ i j, g.1 i j ∈ C i j} :=
   closedEmb.isCompact_preimage (isCompact_pi_infinite fun i => isCompact_pi_infinite (h i))
 
+/- English proof (translation)
+Take `⟨O₁, h1, h2⟩` from `(mem_nhds_subtype _ _ _).1 hW`. Establish `h3 : (fun M : Fin 2 → Fin 2 → R => Matrix.of M + 1) ⁻¹' O₁ ∈ 𝓝 0` using `((show Continuous (Matrix.of : (Fin 2 → Fin 2 → R) → _) from continuous_id).add continuous_const).continuousAt.preimage_mem_nhds (by change O₁ ∈ 𝓝 ((0 : Matrix (Fin 2) (Fin 2) R) + 1); rw [zero_add]; exact h1)`. Rewrite `h3` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, h4, h5⟩` from `h3`. Simplify using `only [nhds_pi, Filter.mem_pi] at h4`.
+
+Use `choose J _ s h6 h7 using h4`. Use `⟨⋂ i, ⋂ j, s i j, by simpa using h6, fun y hy => h2 ?_⟩` and prove the remaining obligations. Use `h5 (a := fun i j => (y.1 - 1) i j) fun i _ => h7 i fun j _ => Set.mem_iInter₂.1 (hy i j) i j` as an intermediate fact. Express the relevant statement in the definitionally equal form `Matrix.of (fun i j => (y.1 - 1) i j) + 1 ∈ O₁ at this`. Rewrite `this` using `[show Matrix.of (fun i j => (y.1 - 1) i j) = y.1 - 1 from rfl, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem nhds_box {W : Set SL(2, R)} (hW : W ∈ 𝓝 1) : ∃ O ∈ 𝓝 (0 : R), ∀ y : SL(2, R), (∀ i j, (y.1 - 1) i j ∈ O) → y ∈ W := by
   obtain ⟨O₁, h1, h2⟩ := (mem_nhds_subtype _ _ _).1 hW
   have h3 : (fun M : Fin 2 → Fin 2 → R => Matrix.of M + 1) ⁻¹' O₁ ∈ 𝓝 0 :=
@@ -65,6 +88,15 @@ theorem nhds_box {W : Set SL(2, R)} (hW : W ∈ 𝓝 1) : ∃ O ∈ 𝓝 (0 : R)
   change Matrix.of (fun i j => (y.1 - 1) i j) + 1 ∈ O₁ at this
   rwa [show Matrix.of (fun i j => (y.1 - 1) i j) = y.1 - 1 from rfl, sub_add_cancel] at this
 
+/- English proof (translation)
+Set `d : R → ℝ` to `fun x => ‖p x‖ + if q x ∈ L then 0 else 1`. Apply the tactic sequence `have d0 : ∀ x, 0 ≤ d x := fun x => add_nonneg (norm_nonneg _) (by split_ifs <;> simp)`. Establish `dc : Continuous d` using `hp.norm.add ((IsLocallyConstant.continuous (f := fun z : Λ => if z ∈ L then (0 : ℝ) else 1) ((IsLocallyConstant.iff_eventually_eq _).2 fun z => by`. Distinguish the cases in `hz : z ∈ L`. Use `filter_upwards [Lo.mem_nhds hz] with w hw`.
+
+Simplify using `[hz, show w ∈ L from hw]`. Use `filter_upwards [(L.isClosed_of_isOpen Lo).isOpen_compl.mem_nhds hz] with w hw`. Simplify using `[hz, show w ∉ L from hw])).comp hq)`. Establish `dt : ∀ x y, q (x - y) ∈ L → |d x - d y| ≤ ‖p (x - y)‖` using `fun x y h => by`. Establish `: q x ∈ L ↔ q y ∈ L`.
+
+Rewrite `h` using `[map_sub]`. Conclude with `⟨fun a => by simpa using sub_mem a h, fun a => by simpa using add_mem h a⟩`. Simplify using `only [d, this, add_sub_add_right_eq_sub, map_sub]`. Conclude with `abs_norm_sub_norm_le _ _`. Use `⟨d, dc, by simp [d], d0, dt, fun x ε h3 h2 => ?_⟩` and prove the remaining obligations.
+
+Establish `h4` using `norm_nonneg (p x)`. Simplify using `only [d] at h2`. Use `split_ifs at h2 with h`. Conclude with `⟨by linarith, h⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem gauge {V Λ : Type} [NormedCommRing V] [CommRing Λ] [TopologicalSpace Λ] [IsTopologicalRing Λ]
     (p : R →+* V) (q : R →+* Λ) (hp : Continuous p) (hq : Continuous q) {L : AddSubgroup Λ} (Lo : IsOpen (L : Set Λ)) :
     ∃ d : R → ℝ, Continuous d ∧ d 0 = 0 ∧ (∀ x, 0 ≤ d x) ∧ (∀ x y, q (x - y) ∈ L → |d x - d y| ≤ ‖p (x - y)‖) ∧
@@ -92,6 +124,11 @@ theorem gauge {V Λ : Type} [NormedCommRing V] [CommRing Λ] [TopologicalSpace �
   · exact ⟨by linarith, h⟩
   · linarith
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mul_sub, Matrix.mul_assoc, ← Matrix.mul_smul, ← Matrix.smul_mul]`. Use `congr 1`. Use `conv_lhs => enter [1]`. Rewrite using `[← Matrix.one_mul y.1]`. Rewrite using `[← Matrix.sub_mul, uni_val]`.
+
+Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+-/
 theorem diff_uni (κ y : SL(2, R)) (w : R) :
     (κ⁻¹ * y).1 - (κ⁻¹ * ((uni (.ofAdd w))⁻¹ * y)).1 = w • ((κ⁻¹).1 * !![0, 1; 0, 0] * y.1) := by
   rw [← map_inv, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_mul,
@@ -103,12 +140,28 @@ theorem diff_uni (κ y : SL(2, R)) (w : R) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp
 
+/- English proof (translation)
+Rewrite using `[← map_inv, Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mul_assoc, uni_val]`. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply]`.
+-/
 theorem nil_uni (y : SL(2, R)) (w : R) : !![0, 1; 0, 0] * ((uni (.ofAdd w))⁻¹ * y).1 = !![0, 1; 0, 0] * y.1 := by
   rw [← map_inv, Matrix.SpecialLinearGroup.coe_mul, ← Matrix.mul_assoc, uni_val]
   congr 1
   ext i j
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply]
 
+/- English proof (translation)
+Take `⟨O, hO, hOW⟩` from `nhds_box hW`. Take `⟨ε₀, h0, U, hU, hO'⟩` from `hn O hO`. Take `⟨L, Lo, Lc, LU⟩` from `hL U hU`. Take `⟨ε, ε0, ε1, ε2⟩ : ∃ ε : ℝ, 0 < ε ∧ ε ≤ ε₀ ∧ ε ≤ 1 / 2` from `⟨_, lt_min h0 one_half_pos, min_le_left _ _, min_le_right _ _⟩`. Take `⟨d, dc, d00, d0, dt, dl⟩` from `gauge p q hp hq Lo`.
+
+Take `⟨e, he⟩ : ∃ e : SL(2, R) → ℝ, ∀ y, e y = ∑ i, ∑ j, d ((y.1 - 1) i j)` from `⟨_, fun _ => rfl⟩`. Take `⟨η, hη⟩ : ∃ η : SL(2, R) → ℝ, ∀ y, η y = max (ε - e y) 0` from `⟨_, fun _ => rfl⟩`. Establish `ec : Continuous e`. Rewrite using `[funext he]`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ =>`.
+
+Use the proof step `dc.comp ((continuous_subtype_val.sub continuous_const).matrix_elem i j)`. Establish `hs : ∀ y ∈ tsupport η, ∀ i j, ‖p ((y.1 - 1) i j)‖ ≤ ε ∧ q ((y.1 - 1) i j) ∈ L` using `fun y hy i j => by`. Establish `h1 : e y ≤ ε` using `closure_minimal (s := Function.support η) (t := {y | e y ≤ ε}) (fun z hz => le_of_not_gt fun h : ε < e z => hz ((hη z).trans (max_eq_right (by linarith)))) (isClosed_le ec continuous_const) hy`. Establish `h2 : d ((y.1 - 1) i j) ≤ ε` using `((Finset.single_le_sum (f := fun j => d ((y.1 - 1) i j)) (fun _ _ => d0 _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, d ((y.1 - 1) i j)) (fun _ _ => Finset.sum_nonneg fun _ _ => d0 _) (Finset.mem_univ i))).trans (he y ▸ h1)`. Conclude with `dl _ ε ε2 h2`.
+
+Establish `hcs : HasCompactSupport η` using `(box fun i j => (hc ε L Lc).image (continuous_add_const ((1 : Matrix (Fin 2) (Fin 2) R) i j))).of_isClosed_subset (isClosed_tsupport _) fun y hy i j => ⟨_, hs y hy i j, by simp⟩`. Establish `ηc : Continuous η` using `by rw [funext hη]; exact (continuous_const.sub ec).max continuous_const`. Use `⟨η, ⟨ηc, hcs, fun y hy => hOW y fun i j => hO' _ ((hs y hy i j).1.trans ε1) (LU (hs y hy i j).2), fun y => (le_max_right _ _).trans_eq (hη y).symm, ?_⟩, L, Lo, fun y y' b hb => ?_⟩` and prove the remaining obligations. Establish `: e 1 = 0` using `by simp [he, d00]`. Simplify using `only [hη, this, sub_zero, max_eq_left ε0.le]`.
+
+Conclude with `ε0.ne'`. Rewrite using `[hη, hη]`. Use `(abs_max_sub_max_le_abs _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[sub_sub_sub_cancel_left]`. Simplify using `only [he, ← Finset.sum_sub_distrib]`.
+
+Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun i _ => (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum (g := fun _ => b) fun j _ => ?_)).trans_eq (by simp; ring))` and prove the remaining obligations. Establish `e2 : (y.1 - 1) i j - (y'.1 - 1) i j = (y.1 - y'.1) i j` using `by rw [← Matrix.sub_apply, sub_sub_sub_cancel_right]`. Conclude with `(dt _ _ (e2 ▸ (hb i j).1)).trans (e2 ▸ (hb i j).2)`.
+-/
 theorem bump_ex [T2Space R] {V Λ : Type} [NormedCommRing V] [CommRing Λ] [TopologicalSpace Λ] [IsTopologicalRing Λ]
     (p : R →+* V) (q : R →+* Λ) (hp : Continuous p) (hq : Continuous q)
     (hc : ∀ (r : ℝ) (C : Set Λ), IsCompact C → IsCompact {x | ‖p x‖ ≤ r ∧ q x ∈ C})
@@ -155,6 +208,25 @@ theorem bump_ex [T2Space R] {V Λ : Type} [NormedCommRing V] [CommRing Λ] [Topo
   have e2 : (y.1 - 1) i j - (y'.1 - 1) i j = (y.1 - y'.1) i j := by rw [← Matrix.sub_apply, sub_sub_sub_cancel_right]
   exact (dt _ _ (e2 ▸ (hb i j).1)).trans (e2 ▸ (hb i j).2)
 
+/- English proof (translation)
+Take `⟨η, hη, L, Lo, hlip⟩` from `bump_ex p q hp hq hc hn (fun U hU => (hL U hU).imp fun L h => ⟨h.1, h.2.1, h.2.2.1⟩) hW`. Use `⟨η, hη, fun Ω hΩ => ?_⟩` and prove the remaining obligations. Take `⟨T, hT0⟩ : ∃ T : SL(2, R) × SL(2, R) → Matrix (Fin 2) (Fin 2) R, ∀ z, T z = (z.1⁻¹).1 * !![0, 1; 0, 0] * (z.1 * z.2).1` from `⟨_, fun _ => rfl⟩`. Establish `Tc : Continuous T`. Rewrite using `[funext hT0]`.
+
+Establish `c : Continuous (Subtype.val : SL(2, R) → Matrix (Fin 2) (Fin 2) R)` using `continuous_subtype_val`. Establish `c1 : Continuous fun z : SL(2, R) × SL(2, R) => (z.1⁻¹).1` using `c.comp (continuous_inv (G := SL(2, R)) |>.comp continuous_fst)`. Establish `c2 : Continuous fun z : SL(2, R) × SL(2, R) => (z.1 * z.2).1` using `c.comp (continuous_mul (M := SL(2, R)))`. Conclude with `(c1.matrix_mul continuous_const).matrix_mul c2`. Establish `hC : IsCompact (⋃ i, ⋃ j, (fun z => T z i j) '' Ω ×ˢ tsupport η)` using `isCompact_iUnion fun i => isCompact_iUnion fun j => (hΩ.prod hη.cpt).image (Tc.matrix_elem i j)`.
+
+Take `⟨D₁, hD₁⟩` from `hC.exists_bound_of_continuousOn hp.continuousOn`. Take `⟨L', -, Lc', LU', D, hD⟩` from `hL _ (hC.eventually_forall_of_forall_eventually (x₀ := (0 : Λ)) (P := fun z t => z * q t ∈ L) fun t _ => (continuous_fst.mul (hq.comp continuous_snd)).continuousAt.preimage_mem_nhds (Lo.mem_nhds (by simp)))`. Use `⟨4 * (D * max D₁ 0), uni '' (Multiplicative.ofAdd '' {x | ‖p x‖ ≤ D ∧ q x ∈ L'}), ((hc D L' Lc').image continuous_ofAdd).image continuous_uni, fun x k => ?_⟩` and prove the remaining obligations. Take `⟨ξ, h1, h2, h3⟩` from `hD x.toAdd`. Establish `D0 : 0 ≤ D` using `(norm_nonneg _).trans h2`.
+
+Take `⟨w, hw⟩ : ∃ w, w = ((u ^ k)⁻¹).1 * ((u ^ k)⁻¹).1 * (ξ + x.toAdd)` from `⟨_, rfl⟩`. Establish `w1 : ‖p w‖ ≤ D / 2 ^ k`. Establish `a : ∀ z : V, ‖p ((u ^ k)⁻¹).1 * z‖ ≤ ‖z‖ / 2 ^ k` using `fun z => by`. Rewrite using `[← inv_pow, Units.val_pow_eq_pow_val, map_pow]`. Use `clear hw`.
+
+Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ', mul_assoc, pow_succ', ← div_div, div_right_comm, div_eq_inv_mul]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul (hu.trans_eq (one_div _)) ih (norm_nonneg _) (by positivity))`.
+
+Rewrite using `[hw, map_mul, map_mul, mul_assoc]`. Use `(a _).trans (div_le_div_of_nonneg_right ((a _).trans ((div_le_self (norm_nonneg _) (one_le_pow₀ one_le_two)).trans h2)) (by positivity))` and prove the remaining obligations. Establish `w2 : q w ∈ L'`. Rewrite using `[hw, map_mul, map_mul, ← inv_pow, Units.val_pow_eq_pow_val, map_pow, hu', one_pow, one_mul, one_mul]` and apply the resulting hypothesis. Use `⟨_, h1, _, ⟨_, ⟨w, ⟨w1.trans (div_le_self D0 (one_le_pow₀ one_le_two)), w2⟩, rfl⟩, rfl⟩, ?_, fun κ hκ y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← map_mul, ← map_pow, hw, ← uni_dia]`. Both sides reduce to the same expression. Establish `key : ∀ z ∈ tsupport η, T (κ, z) = (κ⁻¹).1 * !![0, 1; 0, 0] * y.1 → |η (κ⁻¹ * ((uni (.ofAdd w))⁻¹ * y)) - η (κ⁻¹ * y)| ≤ 4 * (D * max D₁ 0) / 2 ^ k` using `fun z hz hT => by`. Use `(hlip _ _ (D / 2 ^ k * max D₁ 0) fun i j => ?_).trans_eq (by ring)` and prove the remaining obligations. Establish `m : T (κ, z) i j ∈ ⋃ i, ⋃ j, (fun z => T z i j) '' Ω ×ˢ tsupport η` using `Set.mem_iUnion₂.2 ⟨i, j, (κ, z), ⟨hκ, hz⟩, rfl⟩`.
+
+Rewrite using `[diff_uni, ← hT, Matrix.smul_apply, smul_eq_mul, map_mul, map_mul]`. Conclude with `⟨LU' w2 _ m, (norm_mul_le _ _).trans (mul_le_mul w1 ((hD₁ _ m).trans (le_max_left _ _)) (norm_nonneg _) (by positivity))⟩`. Distinguish the cases in `a1 : κ⁻¹ * y ∈ tsupport η`. Conclude with `key _ a1 (by simp only [hT0, mul_inv_cancel_left])`. Distinguish the cases in `a2 : κ⁻¹ * ((uni (.ofAdd w))⁻¹ * y) ∈ tsupport η`.
+
+Conclude with `key _ a2 (by simp only [hT0, mul_inv_cancel_left]; rw [Matrix.mul_assoc, nil_uni, Matrix.mul_assoc])`. Establish `b1` using `image_eq_zero_of_notMem_tsupport a1`. Establish `b2` using `image_eq_zero_of_notMem_tsupport a2`. Simplify using `only [b1, b2, sub_self, abs_zero]`. Check the signs of the components of the expression.
+-/
 theorem lip_of [T2Space R] {V Λ : Type} [NormedCommRing V] [CommRing Λ] [TopologicalSpace Λ] [IsTopologicalRing Λ]
     (p : R →+* V) (q : R →+* Λ) (hp : Continuous p) (hq : Continuous q)
     (hc : ∀ (r : ℝ) (C : Set Λ), IsCompact C → IsCompact {x | ‖p x‖ ≤ r ∧ q x ∈ C})

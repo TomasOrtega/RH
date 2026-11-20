@@ -9,6 +9,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.TwistedAverage
 
+/- English proof (translation)
+Use `Finset.sum_bij (fun t _ => (QuotientGroup.mk t : H ⧸ K)) (fun _ _ => Finset.mem_univ _) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb hab`. Conclude with `(hT b).unique ⟨ha, QuotientGroup.eq.1 hab⟩ ⟨hb, by simp⟩`. Introduce `q _`. Take `⟨t, ⟨ht, hx⟩, -⟩` from `hT q.out`.
+
+Use `⟨t, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 hx`. Introduce `t _`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K t`.
+
+Rewrite using `[hh, hf _ _ h.2]`.
+-/
 theorem sum_reps_eq_sum_out {H V : Type} [Group H] [AddCommGroup V] (K : Subgroup H)
     [Fintype (H ⧸ K)] (T : Finset H) (hT : ∀ x : H, ∃! t, t ∈ T ∧ t⁻¹ * x ∈ K) (f : H → V)
     (hf : ∀ x, ∀ k ∈ K, f (x * k) = f x) :
@@ -26,6 +33,19 @@ theorem sum_reps_eq_sum_out {H V : Type} [Group H] [AddCommGroup V] (K : Subgrou
     obtain ⟨h, hh⟩ := QuotientGroup.mk_out_eq_mul K t
     rw [hh, hf _ _ h.2]
 
+/- English proof (translation)
+Introduce `G Z _ _ _ _ _ ρ hρ L hL v hv K T hKo hKv hT`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Establish `hθ : IsOpen (((1 : L →* ℂˣ).ker : Subgroup L) : Set L)`. Rewrite using `[MonoidHom.ker_one]`. Conclude with `isOpen_univ`.
+
+Take `⟨M, hM, hsum⟩` from `exists_sum_eq_zero hρ hL (1 : L →* ℂˣ) hθ hv`. Use `haveI : Finite (L ⧸ K) := Subgroup.quotient_finite_of_isOpen _ hKo`. Use `haveI hKf : K.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Use `haveI : Fintype (L ⧸ K) := Fintype.ofFinite _`. Use `set C : Subgroup L := (M ⊓ K).normalCore with hC`.
+
+Use `haveI : C.Normal := Subgroup.normalCore_normal _`. Use `haveI : C.FiniteIndex := inferInstance`. Use `haveI : Fintype (L ⧸ C) := Fintype.ofFinite _`. Establish `hCM : C ≤ M ⊓ K` using `Subgroup.normalCore_le _`. Use `haveI : Finite (K ⧸ C.subgroupOf K) := inferInstance`.
+
+Use `haveI : Fintype (K ⧸ C.subgroupOf K) := Fintype.ofFinite _`. Establish `hf : ∀ x : L, ∀ k ∈ K, twOrbit ρ L 1 v (x * k) = twOrbit ρ L 1 v x`. Introduce `x k hk`. Simplify using `only [twOrbit, MonoidHom.one_apply, mul_one, inv_one, Units.val_one, one_smul, Subgroup.coe_mul, map_mul, Module.End.mul_apply, hKv k hk]`. Establish `h0` using `hsum C (hCM.trans inf_le_left)`.
+
+Rewrite `h0` using `[sum_out_refine (hCM.trans inf_le_right) (twOrbit ρ L 1 v) hf]`. Rewrite `h0` using `[← Nat.cast_smul_eq_nsmul ℂ, smul_eq_zero]`. Establish `h1 : ∑ q : L ⧸ K, twOrbit ρ L 1 v q.out = 0`. Break down `h0 with h0 | h0` into its components or cases. Conclude with `absurd h0 (Nat.cast_ne_zero.2 Fintype.card_ne_zero)`.
+
+Conclude with `h0`. Establish `h2` using `sum_reps_eq_sum_out K T hT (twOrbit ρ L 1 v) hf`. Rewrite `h2` using `[h1]`. Simplify `h2` using `[twOrbit]`.
+-/
 theorem sum_reps_eq_zero_of_mem_twKer :
     ∀ {G Z : Type} [Group G] [AddCommGroup Z] [Module ℂ Z] [TopologicalSpace G] [IsTopologicalGroup G] (ρ : Representation ℂ G Z), IsSmooth ρ → ∀ (L : Subgroup G), IsCompact (L : Set G) → ∀ v : Z, v ∈ twKer ρ L 1 → ∀ (K : Subgroup L) (T : Finset L), IsOpen (K : Set L) → (∀ x ∈ K, ρ (x : G) v = v) → (∀ x : L, ∃! t, t ∈ T ∧ t⁻¹ * x ∈ K) → ∑ t ∈ T, ρ (t : G) v = 0 := by
   intro G Z _ _ _ _ _ ρ hρ L hL v hv K T hKo hKv hT

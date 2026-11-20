@@ -31,11 +31,19 @@ abbrev lpow (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l]
     Submodule ℤ_[l] X :=
   LinearMap.range (LinearMap.lsmul ℤ_[l] X ((l : ℤ_[l]) ^ r))
 
+/- English proof (translation)
+Introduce `r s h x ⟨y, hy⟩`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le h`. Conclude with `⟨(l : ℤ_[l]) ^ k • y, by rw [← hy, pow_add, LinearMap.lsmul_apply, LinearMap.lsmul_apply, mul_smul]⟩`.
+-/
 theorem lpow_anti (X : Type) [AddCommGroup X] [Module ℤ_[l] X] : Antitone (lpow l X) := by
   intro r s h x ⟨y, hy⟩
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le h
   exact ⟨(l : ℤ_[l]) ^ k • y, by rw [← hy, pow_add, LinearMap.lsmul_apply, LinearMap.lsmul_apply, mul_smul]⟩
 
+/- English proof (translation)
+Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := X) (IsLocalRing.maximalIdeal ℤ_[l]) (IsLocalRing.maximalIdeal.isMaximal ℤ_[l]).ne_top`. Rewrite using `[← Submodule.mem_bot ℤ_[l], ← hK, Submodule.mem_iInf]`. Introduce `r`. Take `⟨y, rfl⟩` from `h r`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations.
+
+Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.pow_mem_pow (Ideal.mem_span_singleton_self _) r`.
+-/
 theorem lpow_sep (X : Type) [AddCommGroup X] [Module ℤ_[l] X] [Module.Finite ℤ_[l] X] (x : X)
     (h : ∀ r, x ∈ lpow l X r) : x = 0 := by
   have hK := Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := X) (IsLocalRing.maximalIdeal ℤ_[l])
@@ -72,6 +80,15 @@ def reduceH2ModPrimePow (ρ : Representation ℤ_[l] Γ ℤ_[l]) (r : ℕ)
     rw [← e]
     simp [d1, h]).toAddMonoidHom
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Introduce `hz`. Establish `hz' : reduceTwoCocyclesModPrimePow ρ r ρr h z ∈ (B2 ρr).comap (Z2 ρr).subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hz`.
+
+Take `⟨w, hw, hb⟩` from `GlobalTheory.T.exists_z2_sub_pow_smul_mem_b2_of_reduction l Γ ρ hρ r ρr h z.1 z.2 hz'`. Use `⟨Submodule.Quotient.mk ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]`. Conclude with `hb`. Introduce and unpack `⟨y, rfl⟩`.
+
+Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H z`. Establish `: reduceTwoCocyclesModPrimePow ρ r ρr h ((l : ℤ_[l]) ^ r • z) = 0`. Rewrite using `[LinearMap.map_smulₛₗ, map_pow, map_natCast, ← Nat.cast_pow, ZMod.natCast_self, zero_smul]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (reduceTwoCocyclesModPrimePow ρ r ρr h ((l : ℤ_[l]) ^ r • z)) = 0`.
+
+Rewrite using `[this, Submodule.Quotient.mk_zero]`.
+-/
 theorem reduction_h2_eq_zero_iff [ContinuousMul Γ] (ρ : Representation ℤ_[l] Γ ℤ_[l]) (hρ : ContAction ρ)
     (r : ℕ) (ρr : Representation (ZMod (l ^ r)) Γ (ZMod (l ^ r)))
     (h : ∀ g x, PadicInt.toZModPow r (ρ g x) = ρr g (PadicInt.toZModPow r x)) (x : H2 ρ) :
@@ -94,6 +111,9 @@ theorem reduction_h2_eq_zero_iff [ContinuousMul Γ] (ρ : Representation ℤ_[l]
       change Submodule.Quotient.mk (reduceTwoCocyclesModPrimePow ρ r ρr h ((l : ℤ_[l]) ^ r • z)) = 0
       rw [this, Submodule.Quotient.mk_zero]
 
+/- English proof (translation)
+Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H y`. Take `⟨z, hz, e⟩` from `GlobalTheory.T.mod_l_three_cocycle_condition l Γ ρ hρ (ρr 1) (h 1) (GlobalTheory.T.exists_coboundary_of_subsingleton_contCohomology_three _ Γ _ (ρr 1) h3) r (ρr r) (h r) y.1 y.2`. Conclude with `⟨Submodule.Quotient.mk ⟨z, hz⟩, congrArg Submodule.Quotient.mk (Subtype.ext (funext e))⟩`.
+-/
 theorem reduction_h2_surjective [ContinuousMul Γ] (ρ : Representation ℤ_[l] Γ ℤ_[l]) (hρ : ContAction ρ)
     (ρr : ∀ r, Representation (ZMod (l ^ r)) Γ (ZMod (l ^ r)))
     (h : ∀ r g x, PadicInt.toZModPow r (ρ g x) = ρr r g (PadicInt.toZModPow r x))
@@ -106,6 +126,9 @@ theorem reduction_h2_surjective [ContinuousMul Γ] (ρ : Representation ℤ_[l] 
     exact ⟨Submodule.Quotient.mk ⟨z, hz⟩,
       congrArg Submodule.Quotient.mk (Subtype.ext (funext e))⟩
 
+/- English proof (translation)
+Establish `: (lpow l X r).toAddSubgroup = π.ker`. Use extensionality with `x`. Conclude with `(hk x).symm`. Rewrite using `[← Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective π hs).toEquiv, ← this]`. Both sides reduce to the same expression.
+-/
 theorem card_quot_lpow {X : Type} [AddCommGroup X] [Module ℤ_[l] X] {Y : Type} [AddCommGroup Y]
     (r : ℕ) (π : X →+ Y) (hs : Function.Surjective π)
     (hk : ∀ x, π x = 0 ↔ ∃ y, (l : ℤ_[l]) ^ r • y = x) :
@@ -115,6 +138,13 @@ theorem card_quot_lpow {X : Type} [AddCommGroup X] [Module ℤ_[l] X] {Y : Type}
   rw [← Nat.card_congr (QuotientAddGroup.quotientKerEquivOfSurjective π hs).toEquiv, ← this]
   rfl
 
+/- English proof (translation)
+Use `GlobalTheory.T.padicInt_module_finite_of_separated l _ ?_ fun x hx => ?_` and prove the remaining obligations. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations. Rewrite using `[card_quot_lpow 1 _ (reduction_h2_surjective ρ hρ ρr h h3 1) (reduction_h2_eq_zero_iff ρ hρ 1 _ (h 1))]`. Conclude with `Nat.card_pos.ne'`. Proceed by induction on `x using Submodule.Quotient.induction_on with`.
+
+Consider the case `H z`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Use `GlobalTheory.T.padic_coboundary_of_divisible l Γ ρ ρr h h1 z.1 z.2 fun r => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hx r`. Proceed by induction on `y using Submodule.Quotient.induction_on with`.
+
+Consider the case `H w`. Rewrite `hy` using `[← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq]`. Conclude with `⟨w.1, w.2, hy⟩`.
+-/
 theorem finite_h2_padic_representation [ContinuousMul Γ] (ρ : Representation ℤ_[l] Γ ℤ_[l]) (hρ : ContAction ρ)
     (ρr : ∀ r, Representation (ZMod (l ^ r)) Γ (ZMod (l ^ r)))
     (h : ∀ r g x, PadicInt.toZModPow r (ρ g x) = ρr r g (PadicInt.toZModPow r x))
@@ -134,6 +164,11 @@ theorem finite_h2_padic_representation [ContinuousMul Γ] (ρ : Representation �
         rw [← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq] at hy
         exact ⟨w.1, w.2, hy⟩
 
+/- English proof (translation)
+Use `GlobalTheory.T.padicInt_length_eq_of_card_quotient_eq l X (H0 σ) (lpow l X) (fun r => Submodule.torsionBy ℤ_[l] (H0 σ) ((l : ℤ_[l]) ^ r)) 1 (lpow_anti X) (lpow_sep X) (fun r s h => Submodule.torsionBy_le_torsionBy_of_dvd _ _ (pow_dvd_pow _ h)) (fun y => (hA y.1).imp fun r h => Su …` and prove the remaining obligations. Set `f : H0 (τ r) → Submodule.torsionBy ℤ_[l] (H0 σ) ((l : ℤ_[l]) ^ r)` to `fun n => ⟨⟨ι r n.1, fun g => by rw [← he, n.2 g]⟩, Subtype.ext ((hr r _).2 ⟨n.1, rfl⟩)⟩`. Establish `hf : Function.Bijective f`. Use `⟨fun a b h => Subtype.ext (hι r (congrArg (fun x => x.1.1) h)), fun a => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hr r a.1.1).1 (congrArg Subtype.val a.2)`.
+
+Conclude with `⟨⟨n, fun g => hι r (by rw [he, hn, a.1.2 g])⟩, Subtype.ext (Subtype.ext hn)⟩`. Conclude with `⟨Finite.of_surjective f hf.2, (hc r h).trans (Nat.card_eq_of_bijective f hf)⟩`.
+-/
 theorem length_eq_length_invariants_of_torsion_levels {X : Type} [AddCommGroup X] [Module ℤ_[l] X] [Module.Finite ℤ_[l] X]
     {A : Type} [AddCommGroup A] [Module ℤ_[l] A] (σ : Representation ℤ_[l] Γ A)
     (hA : ∀ a : A, ∃ r : ℕ, (l : ℤ_[l]) ^ r • a = 0)
@@ -165,6 +200,9 @@ variable {l : ℕ} [Fact l.Prime]
 def redChar {Γ : Type} [Group Γ] (ψ : Γ →* ℤ_[l]ˣ) (r : ℕ) : Γ →* (ZMod (l ^ r))ˣ :=
   (Units.map (PadicInt.toZModPow r : ℤ_[l] →+* ZMod (l ^ r)).toMonoidHom).comp ψ
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem redChar_coe {Γ : Type} [Group Γ] (ψ : Γ →* ℤ_[l]ˣ) (r : ℕ) (g : Γ) :
     ((redChar ψ r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) = PadicInt.toZModPow r (ψ g : ℤ_[l]) := rfl
 
@@ -172,6 +210,15 @@ local instance neZero_prime_pow (r : ℕ) : NeZero (l ^ r) := ⟨pow_ne_zero _ (
 
 local instance finite_tdual (r : ℕ) : Finite (TDual (ZMod (l ^ r)) (ZMod (l ^ r))) := DFunLike.finite _
 
+/- English proof (translation)
+Take `⟨ι, h1, h2, h3⟩` from `(GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).2 r`. Set `ev : TDual (ZMod (l ^ r)) (ZMod (l ^ r)) →+ ZMod (l ^ r)` to `{ toFun := fun φ => φ 1, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hlin : ∀ (φ : TDual (ZMod (l ^ r)) (ZMod (l ^ r))) (m : ZMod (l ^ r)), φ m = m * φ 1` using `fun φ m => by`. Use `LinearMap.map_smul (show ZMod (l ^ r) →ₗ[ZMod (l ^ r)] ZMod (l ^ r) from φ) m 1` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one, smul_eq_mul]`.
+
+Conclude with `this`. Establish `hev : Function.Bijective ev`. Use `⟨fun φ ψ h => TDual.ext fun m => ?_, fun y => ⟨y • TDual.mk LinearMap.id, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hlin φ, hlin ψ]`. Conclude with `congrArg _ h`.
+
+Conclude with `mul_one y`. Use `⟨ι.comp ev, h1.comp hev.1, fun a => ?_, fun g n => ?_⟩` and prove the remaining obligations. Rewrite using `[h2, AddMonoidHom.coe_comp, hev.2.range_comp]`. Express the relevant statement in the definitionally equal form `ι (_ * n (_ * 1)) = (((χ ^ (-e)) g : ℤ_[l]ˣ) : ℤ_[l]) • ι (n 1)`. Rewrite using `[← h3, mul_one, hlin n, ← mul_assoc, redChar_coe, redChar_coe, ← map_mul, ← Units.val_mul]`.
+
+Use `congr 4`. Simplify using `only [MonoidHom.zpow_apply, map_inv]`. Use `group`.
+-/
 theorem exists_iota {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]ˣ) (e : ℤ) (r : ℕ) :
     ∃ ι : TDual (ZMod (l ^ r)) (ZMod (l ^ r)) →+ QZ l, Function.Injective ι ∧
       (∀ a : QZ l, (l : ℤ_[l]) ^ r • a = 0 ↔ a ∈ Set.range ι) ∧
@@ -199,6 +246,15 @@ theorem exists_iota {Γ : Type} [Group Γ] (χ : Γ →* ℤ_[l]ˣ) (e : ℤ) (r
 
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
+/- English proof (translation)
+Take `⟨K, hK, e, he, he', hc⟩` from `GlobalTheory.T.decompositionGroup_mulEquiv_localGalois_cyclotomic F Ω l v A hv hA`. Set `ρK : Representation (ZMod (l ^ r)) (GK l K) M` to `ρ.comp e.symm.toMonoidHom`. Establish `hρK : ContAction ρK` using `hρ.comp' he'`. Take `⟨-, f1, f2, f3⟩` from `hF l K hK r M ρK hr hρK`. Take `⟨⟨j⟩, -, -, -, hb⟩` from `hT l K hK r M ρK hr hρK`.
+
+Take `⟨⟨e1⟩, ⟨e2⟩, e3⟩` from `GlobalTheory.T.nonempty_H1_H2_equiv_of_continuous_mulEquiv _ _ _ M e he he' ρK ρ fun g m => by simp [ρK]`. Use `⟨Finite.of_equiv _ e1, Finite.of_equiv _ e2, e3 (f3 3 le_rfl), ?_⟩` and prove the remaining obligations. Establish `hfin : Finite (TDual (ZMod (l ^ r)) M)` using `DFunLike.finite _`. Establish `hH : H0 τ = H0 ((twDual (cycK l K r) ρK).comp (MonoidHom.id _))`. Establish `key : ∀ g φ, τ g φ = twDual (cycK l K r) ρK (e g) φ` using `fun g φ => TDual.ext fun m => by`.
+
+Rewrite using `[hτ, twDual_apply, hc]`. Simplify using `[ρK]`. Use extensionality with `φ`. Rewrite using `[mem_riemannRochSpace_iff_regularAt_everywhere, mem_riemannRochSpace_iff_regularAt_everywhere]`. Use `⟨fun h g => ?_, fun h g => (key g φ).trans (h (e g))⟩` and prove the remaining obligations.
+
+Take `⟨g, rfl⟩` from `e.surjective g`. Conclude with `(key g φ).symm.trans (h g)`. Set `E : H2 ρK ≃ Module.Dual (ZMod (l ^ r)) (H0 ((twDual (cycK l K r) ρK).comp (MonoidHom.id _)))` to `(Equiv.ofBijective _ hb).trans (LinearEquiv.congrRight j).toEquiv`. Rewrite using `[← Nat.card_congr e2, Nat.card_congr E, GlobalTheory.T.card_dual_zmod_module_eq_card, hH]`.
+-/
 theorem finite_cohomology_and_card_H2_eq_card_H0_dual (hF : LocalFinitenessK) (hT : LocalTateDualityK)
     (v : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (hv : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal)
     (hA : IsPlaceOver A v) (r : ℕ) (hr : 0 < r) (M : Type) [AddCommGroup M]
@@ -229,14 +285,25 @@ theorem finite_cohomology_and_card_H2_eq_card_H0_dual (hF : LocalFinitenessK) (h
   rw [← Nat.card_congr e2, Nat.card_congr E, GlobalTheory.T.card_dual_zmod_module_eq_card, hH]
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+The claim follows from `DFunLike.congr_fun D.hchi (g : G F Ω)`.
+-/
 theorem chi_loc (D : LData F Ω l) (v : D.S) (g : Dec (F := F) (D.A v)) :
     D.chi (locFam D.S D.A v g) = cycZ F Ω l g := DFunLike.congr_fun D.hchi (g : G F Ω)
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+Rewrite using `[← Finset.mem_coe, D.hS]`. Both sides reduce to the same expression.
+-/
 theorem mem_above (D : LData F Ω l) (v : HeightOneSpectrum (𝓞 F)) :
     v ∈ D.S ↔ ((l : ℕ) : 𝓞 F) ∈ v.asIdeal := by
   rw [← Finset.mem_coe, D.hS]; rfl
 
+/- English proof (translation)
+Establish `hc : Continuous D.chi`. Rewrite using `[(QuotientGroup.isQuotientMap_mk _).continuous_iff]`. Establish `: (D.chi ∘ QuotientGroup.mk : G F Ω → _) = cycZ F Ω l` using `by rw [← D.hchi]; rfl`. Rewrite using `[this]`. Conclude with `continuous_cycZ F Ω l`.
+
+Conclude with `Units.continuous_val.comp (hc.zpow n)`.
+-/
 theorem continuous_chi (D : LData F Ω l) (n : ℤ) :
     Continuous fun g => (((D.chi ^ n) g : ℤ_[l]ˣ) : ℤ_[l]) := by
   have hc : Continuous D.chi := by
@@ -245,6 +312,9 @@ theorem continuous_chi (D : LData F Ω l) (n : ℤ) :
     rw [this]; exact continuous_cycZ F Ω l
   exact Units.continuous_val.comp (hc.zpow n)
 
+/- English proof (translation)
+The claim follows from `((continuous_chi D n).comp continuous_fst).mul continuous_snd`.
+-/
 theorem contAction_zlTw (D : LData F Ω l) (n : ℤ) : ContAction (zlTw D n) :=
   ((continuous_chi D n).comp continuous_fst).mul continuous_snd
 
@@ -252,16 +322,25 @@ abbrev zr (D : LData F Ω l) (n : ℤ) (r : ℕ) :
     Representation (ZMod (l ^ r)) (GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))) (ZMod (l ^ r)) :=
   charRep (redChar (D.chi ^ n) r)
 
+/- English proof (translation)
+The claim follows from `((GlobalTheory.Published.PoitouTate.continuous_toZModPow.comp (continuous_chi D n)).comp continuous_fst).mul continuous_snd`.
+-/
 theorem contAction_zr (D : LData F Ω l) (n : ℤ) (r : ℕ) : ContAction (zr D n r) :=
   ((GlobalTheory.Published.PoitouTate.continuous_toZModPow.comp (continuous_chi D n)).comp continuous_fst).mul
     continuous_snd
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+The claim follows from `map_mul _ _ _`.
+-/
 theorem red_zlTw (D : LData F Ω l) (n : ℤ) (r : ℕ) (g) (x : ℤ_[l]) :
     PadicInt.toZModPow r (zlTw D n g x) = zr D n r g (PadicInt.toZModPow r x) := map_mul _ _ _
 
 abbrev zd (D : LData F Ω l) (n : ℤ) (r : ℕ) := twDual (redChar D.chi r) (zr D n r)
 
+/- English proof (translation)
+The claim follows from `finite_cohomology_and_card_H2_eq_card_H0_dual hF hT v.1 (D.A v) ((mem_above D v.1).1 v.2) (D.hA v) r hr _ _ ((contAction_zr D n r).comp' (continuous_locFam D.S D.A v)) _ fun g φ m => by change ((redChar D.chi r (locFam D.S D.A v g) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * _ = _ rw [r …`.
+-/
 theorem local_zr (hF : LocalFinitenessK) (hT : LocalTateDualityK) (D : LData F Ω l) (n : ℤ)
     (v : D.S) (r : ℕ) (hr : 0 < r) :
     Finite (H1 ((zr D n r).comp (locFam D.S D.A v))) ∧
@@ -279,6 +358,9 @@ abbrev redLoc (D : LData F Ω l) (n : ℤ) (v : D.S) (r : ℕ) :=
   reduceH2ModPrimePow ((zlTw D n).comp (locFam D.S D.A v)) r ((zr D n r).comp (locFam D.S D.A v))
     fun g x => red_zlTw D n r (locFam D.S D.A v g) x
 
+/- English proof (translation)
+Establish `hc : ContAction ((zlTw D n).comp (locFam D.S D.A v))` using `(contAction_zlTw D n).comp (((continuous_locFam D.S D.A v).comp continuous_fst).prodMk continuous_snd)`. Conclude with `⟨finite_h2_padic_representation _ hc (fun r => (zr D n r).comp (locFam D.S D.A v)) (fun r g x => red_zlTw D n r _ x) (fun r hr => (local_zr hF hT D n v r hr).1) (local_zr hF hT D n v 1 one_pos).2.1 (local_zr hF hT D n v 1 one_pos).2.2.1, fun r => ⟨reduction_h2_surjective _ hc (fu …`.
+-/
 theorem local_lim (hF : LocalFinitenessK) (hT : LocalTateDualityK) (D : LData F Ω l) (n : ℤ)
     (v : D.S) : Module.Finite ℤ_[l] (H2 ((zlTw D n).comp (locFam D.S D.A v))) ∧
       ∀ r, Function.Surjective (redLoc D n v r) ∧
@@ -292,6 +374,9 @@ theorem local_lim (hF : LocalFinitenessK) (hT : LocalTateDualityK) (D : LData F 
       (fun r g x => red_zlTw D n r _ x) (local_zr hF hT D n v 1 one_pos).2.2.1 r,
       reduction_h2_eq_zero_iff _ hc r _ _⟩⟩
 
+/- English proof (translation)
+Introduce `v`. Take `⟨hfg, h⟩` from `local_lim hF hT D (e + 1) v`. Use `choose ι h1 h2 h3 using exists_iota D.chi e`. Conclude with `length_eq_length_invariants_of_torsion_levels _ (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1 _ (fun r => (zd D (e + 1) r).comp (locFam D.S D.A v)) ι h1 h2 (fun r g n => h3 r _ n) fun r hr => (card_quot_lpow r _ (h r).1 (h r).2).trans (local_zr hF hT D (e + 1) v r …`.
+-/
 theorem local_tate_duality_h2_limit (hF : LocalFinitenessK) (hT : LocalTateDualityK) (D : LData F Ω l) (e : ℤ) :
     TateLocalDualityH2AtPlaces D e := by
   intro v
@@ -312,6 +397,9 @@ attribute [local instance] neZero_prime_pow finite_tdual
 variable {l : ℕ} [Fact l.Prime]
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
 
+/- English proof (translation)
+Establish `: Finite (X ⧸ LinearMap.ker f)` using `Finite.of_equiv _ f.quotKerEquivRange.toEquiv.symm`. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations. Rewrite using `[Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)]`. Conclude with `mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'`.
+-/
 theorem finite_of_ker {R X Y : Type} [Ring R] [AddCommGroup X] [Module R X] [AddCommGroup Y]
     [Module R Y] [Finite Y] (f : X →ₗ[R] Y) [Finite (LinearMap.ker f)] : Finite X := by
   have : Finite (X ⧸ LinearMap.ker f) := Finite.of_equiv _ f.quotKerEquivRange.toEquiv.symm
@@ -320,6 +408,9 @@ theorem finite_of_ker {R X Y : Type} [Ring R] [AddCommGroup X] [Module R X] [Add
   exact mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+Rewrite using `[redChar, MonoidHom.comp_assoc, D.hchi]`. Both sides reduce to the same expression.
+-/
 theorem redChar_chi (D : LData F Ω l) (r : ℕ) :
     (redChar D.chi r).comp (toGS Ω _) = cycMod F Ω l r := by
   rw [redChar, MonoidHom.comp_assoc, D.hchi]; rfl
@@ -334,6 +425,13 @@ variable (D : LData F Ω l) (e : ℤ)
 abbrev redGl (r : ℕ) := reduceH2ModPrimePow (zlTw D (e + 1)) r (zr D (e + 1) r) (red_zlTw D (e + 1) r)
 
 include hF hT hS h3 in
+/- English proof (translation)
+Establish `hc` using `contAction_zlTw D (e + 1)`. Use `⟨finite_h2_padic_representation _ hc (zr D (e + 1)) (red_zlTw D (e + 1)) (fun r hr => ?_) ?_ h3, fun r => ⟨reduction_h2_surjective _ hc (zr D (e + 1)) (red_zlTw D (e + 1)) h3 r, reduction_h2_eq_zero_iff _ hc r _ _⟩⟩` and prove the remaining obligations. Use `fun v => (local_zr hF hT D (e + 1) v r hr).1` as an intermediate fact. Establish `: Finite (LinearMap.ker (loc1 D.S D.A (zr D (e + 1) r)))`. Rewrite using `[loc1, LinearMap.ker_pi]`.
+
+Conclude with `(hS r hr).2.1`. Conclude with `finite_of_ker (loc1 D.S D.A (zr D (e + 1) r))`. Use `fun v => (local_zr hF hT D (e + 1) v 1 one_pos).2.1` as an intermediate fact. Establish `: Finite (LinearMap.ker (loc2 D.S D.A (zr D (e + 1) 1)))`. Rewrite using `[loc2, LinearMap.ker_pi]`.
+
+Conclude with `(hS 1 one_pos).1.2.1`. Conclude with `finite_of_ker (loc2 D.S D.A (zr D (e + 1) 1))`.
+-/
 theorem global_lim : Module.Finite ℤ_[l] (H2 (zlTw D (e + 1))) ∧
     ∀ r, Function.Surjective (redGl D e r) ∧
       ∀ x, redGl D e r x = 0 ↔ ∃ y, (l : ℤ_[l]) ^ r • y = x := by
@@ -355,6 +453,13 @@ def redPi (r : ℕ) : (∀ v : D.S, H2 ((zlTw D (e + 1)).comp (locFam D.S D.A v)
   AddMonoidHom.pi fun v => (redLoc D (e + 1) v r).comp (Pi.evalAddMonoidHom _ v)
 
 include hF hT hS h3 in
+/- English proof (translation)
+Establish `hg` using `(global_lim D e hF hT hS h3).2 r`. Establish `hl` using `fun v => (local_lim hF hT D (e + 1) v).2 r`. Use `GlobalTheory.T.natCard_coker_ker_padic_mod_pow l r _ _ (localH2 D e) _ _ _ (loc2 D.S D.A (zr D (e + 1) r)) (redGl D e r) (redPi D e r) hg.1 (fun y => ?_) hg.2 (fun x => ?_) fun x => ?_` and prove the remaining obligations. Use `choose x hx using fun v => (hl v).1 (y v)`. Conclude with `⟨x, funext hx⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h choose y hy using fun v => ((hl v).2 (x v)).1 (congrFun h v)`. Conclude with `⟨y, funext hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `funext fun v => ((hl v).2 (x v)).2 ⟨y v, congrFun hy v⟩`.
+
+Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z => rfl`.
+-/
 theorem cok_ker (r : ℕ) :
     Nat.card ((_ ⧸ LinearMap.range (localH2 D e)) ⧸ lpow l (_ ⧸ LinearMap.range (localH2 D e)) r) =
       Nat.card (_ ⧸ LinearMap.range (loc2 D.S D.A (zr D (e + 1) r))) ∧
@@ -377,6 +482,9 @@ theorem cok_ker (r : ℕ) :
     | H z => rfl
 
 include hF hT hN hS h3 in
+/- English proof (translation)
+Take `⟨j, _, _, -, -, -, -, -, -, -, hex, hs⟩` from `hN r hr`. Rewrite using `[(cok_ker D e hF hT hS h3 r).1, ← LinearMap.exact_iff.1 hex, Nat.card_congr (LinearMap.quotKerEquivOfSurjective _ hs).toEquiv, GlobalTheory.T.card_dual_zmod_module_eq_card]`.
+-/
 theorem card_cok (r : ℕ) (hr : 0 < r) :
     Nat.card ((_ ⧸ LinearMap.range (localH2 D e)) ⧸ lpow l (_ ⧸ LinearMap.range (localH2 D e)) r) =
       Nat.card (H0 (zd D (e + 1) r)) := by
@@ -385,17 +493,32 @@ theorem card_cok (r : ℕ) (hr : 0 < r) :
     Nat.card_congr (LinearMap.quotKerEquivOfSurjective _ hs).toEquiv, GlobalTheory.T.card_dual_zmod_module_eq_card]
 
 include hF hT in
+/- English proof (translation)
+The claim follows from `have := fun v => (local_lim hF hT D (e + 1) v).1 inferInstance`.
+-/
 theorem finite_pi : Module.Finite ℤ_[l] (∀ v : D.S, H2 ((zlTw D (e + 1)).comp (locFam D.S D.A v))) :=
   have := fun v => (local_lim hF hT D (e + 1) v).1
   inferInstance
 
 include hF hT hN hS h3 in
+/- English proof (translation)
+Introduce `_`. Use `finite_pi D e hF hT` as an intermediate fact. Use `choose ι h1 h2 h4 using exists_iota D.chi e`. Conclude with `length_eq_length_invariants_of_torsion_levels _ (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1 _ (zd D (e + 1)) ι h1 h2 h4 (card_cok D e hF hT hN hS h3)`.
+-/
 theorem ptCokerAt : PTCokerAt D e := by
   intro _
   have := finite_pi D e hF hT
   choose ι h1 h2 h4 using exists_iota D.chi e
   exact length_eq_length_invariants_of_torsion_levels _ (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1 _ (zd D (e + 1)) ι h1 h2 h4 (card_cok D e hF hT hN hS h3)
 
+/- English proof (translation)
+Establish `h : ∀ v : D.S, ∃ c : ℕ, ∀ a : QZ l, (∀ g, qzTw D e (locFam D.S D.A v g) a = a) → (l : ℤ_[l]) ^ c • a = 0` using `fun v => by`. Take `⟨g, hg, hne⟩` from `GlobalTheory.T.exists_decompositionGroup_cyclotomicCharacter_zpow_ne_one F Ω l v.1 (D.A v) ((mem_above D v.1).1 v.2) (D.hA v) (-e) (neg_ne_zero.2 he)`. Establish `hx : ((cycZ F Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) - 1 ≠ 0` using `sub_ne_zero.2 fun h => hne (Units.ext h)`. Use `⟨(((cycZ F Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) - 1).valuation, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : ((D.chi (locFam D.S D.A v ⟨g, hg⟩) ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) • a = a` using `ha ⟨g, hg⟩`.
+
+Rewrite `h1` using `[chi_loc]`. Establish `h2 : (((cycZ F Ω l g ^ (-e) : ℤ_[l]ˣ) : ℤ_[l]) - 1) • a = 0`. Rewrite using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1`. Rewrite `h2` using `[PadicInt.unitCoeff_spec hx, mul_smul]`.
+
+Conclude with `(Units.isUnit _).smul_eq_zero.1 h2`. Use `choose c hc using h`. Take `⟨m, hm⟩` from `(Set.finite_range c).bddAbove`. Use `⟨m, fun v a ha => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' (hm ⟨v, rfl⟩)`.
+
+Rewrite using `[hk, pow_add, mul_smul, hc v a ha, smul_zero]`.
+-/
 theorem exists_kill (he : e ≠ 0) : ∃ c : ℕ, ∀ (v : D.S) (a : QZ l),
     (∀ g, qzTw D e (locFam D.S D.A v g) a = a) → (l : ℤ_[l]) ^ c • a = 0 := by
   have h : ∀ v : D.S, ∃ c : ℕ, ∀ a : QZ l,
@@ -418,6 +541,11 @@ theorem exists_kill (he : e ≠ 0) : ∃ c : ℕ, ∀ (v : D.S) (a : QZ l),
   rw [hk, pow_add, mul_smul, hc v a ha, smul_zero]
 
 omit [IsAlgClosure F Ω] in
+/- English proof (translation)
+Establish `hu : ¬ IsUnit ((l : ℕ) : 𝓞 F)` using `fun h => by`. Establish `h1` using `h.map (Algebra.norm ℤ)`. Rewrite `h1` using `[← map_natCast (algebraMap ℤ (𝓞 F)), Algebra.norm_algebraMap, isUnit_pow_iff (by rw [RingOfIntegers.rank]; exact Module.finrank_pos.ne'), Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `(Fact.out : l.Prime).one_lt.ne' h1`. Take `⟨m, hm, hl⟩` from `Ideal.exists_le_maximal (Ideal.span {((l : ℕ) : 𝓞 F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`.
+
+Establish `hl'` using `hl (Ideal.mem_span_singleton_self _)`. Establish `h0 : m ≠ ⊥` using `fun h => by`. Rewrite `hl'` using `[h, Ideal.mem_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero (Nat.cast_eq_zero.1 hl')`. Conclude with `⟨⟨⟨m, hm.isPrime, h0⟩, (mem_above D _).2 hl'⟩⟩`.
+-/
 theorem nonempty_S : Nonempty D.S := by
   have hu : ¬ IsUnit ((l : ℕ) : 𝓞 F) := fun h => by
     have h1 := h.map (Algebra.norm ℤ)
@@ -435,6 +563,13 @@ theorem nonempty_S : Nonempty D.S := by
 
 include hF hT in
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_kill D e he`. Take `⟨ι, -, h2, -⟩` from `exists_iota D.chi e c`. Establish `hart : ∀ v : D.S, IsArtinian ℤ_[l] (H2 ((zlTw D (e + 1)).comp (locFam D.S D.A v)))` using `fun v => by`. Establish `: Finite (H0 ((qzTw D e).comp (locFam D.S D.A v)))` using `((Set.finite_range ι).subset fun a ha => (h2 a).1 (hc v a ha)).to_subtype`. Establish `h` using `local_tate_duality_h2_limit hF hT D e v`.
+
+Establish `h' : Module.length ℤ_[l] (H0 ((qzTw D e).comp (locFam D.S D.A v))) ≠ ⊤` using `Module.length_ne_top`. Rewrite `h'` using `[← h, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Conclude with `h'.2`. Use `finite_pi D e hF hT` as an intermediate fact. Take `⟨m, hm⟩` from `IsArtinian.monotone_stabilizes (R := ℤ_[l]) (M := ∀ v : D.S, H2 ((zlTw D (e + 1)).comp (locFam D.S D.A v))) ⟨fun r => OrderDual.toDual (lpow l _ r), fun r s h => lpow_anti _ h⟩`.
+
+Use `⟨m, fun p => lpow_sep (l := l) _ _ fun r => ?_⟩` and prove the remaining obligations. Establish `hp : (l : ℤ_[l]) ^ m • p ∈ lpow l _ m` using `⟨p, rfl⟩`. Break down `le_total m r with h | h` into its components or cases. Conclude with `(OrderDual.toDual.injective (hm r h)).le hp`. Conclude with `lpow_anti _ h hp`.
+-/
 theorem exists_kill_pi (he : e ≠ 0) : ∃ m : ℕ,
     ∀ p : ∀ v : D.S, H2 ((zlTw D (e + 1)).comp (locFam D.S D.A v)), (l : ℤ_[l]) ^ m • p = 0 := by
   obtain ⟨c, hc⟩ := exists_kill D e he
@@ -459,6 +594,25 @@ theorem exists_kill_pi (he : e ≠ 0) : ∃ m : ℕ,
   · exact lpow_anti _ h hp
 
 include hF hT hN hS h3 in
+/- English proof (translation)
+Introduce `_`. Establish `hX` using `(global_lim D e hF hT hS h3).1`. Establish `hP` using `finite_pi D e hF hT`. Establish `hgal : IsGalois F Ω` using `IsAlgClosure.isGalois F Ω`. Use `choose ι h1 h2 h4 using exists_iota D.chi e`.
+
+Take `⟨P, hm, hu, hc⟩` from `GlobalTheory.T.sha1_torsion_level_filtration l _ D.S _ (locFam D.S D.A) (continuous_locFam D.S D.A) (QZ l) (qzTw D e) (GlobalTheory.T.qz_torsion_and_exists_zmod_pow_embedding l).1`. Establish `key : ∃ c : ℕ, ∀ r, c ≤ r → (∀ x p, localH2 D e x = (l : ℤ_[l]) ^ r • p → ∃ x', localH2 D e x = (l : ℤ_[l]) ^ r • localH2 D e x') ∧ ∀ a : QZ l, (∀ v, ∃ b : QZ l, (l : ℤ_[l]) ^ r • b = 0 ∧ ∀ g, qzTw D e (locFam D.S D.A v g) a - a = qzTw D e (locFam D.S D.A v g) b - b) → ∃ b : QZ l …`. Break down `eq_or_ne e 0 with he | he` into its components or cases. Establish `htr : ∀ g a, qzTw D e g a = a` using `fun g a => by simp [qzTw, he]`. Establish `htf` using `GlobalTheory.T.padicInt_eq_zero_of_pow_smul_of_card_quotient l (_ ⧸ LinearMap.range (localH2 D e)) fun r hr => by`.
+
+Establish `hH : H0 (zd D (e + 1) r) = ⊤` using `eq_top_iff.2 fun n _ g => h1 r ((h4 r g n).trans (htr g _))`. Rewrite using `[card_cok D e hF hT hN hS h3 r hr, hH, Nat.card_congr Submodule.topEquiv.toEquiv]`. Conclude with `(GlobalTheory.T.card_dual_zmod_module_eq_card (l ^ r) (ZMod (l ^ r))).trans (Nat.card_zmod _)`. Use `⟨0, fun r _ => ⟨fun x p h => ?_, fun a _ => ⟨0, smul_zero _, fun g => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨x', hx'⟩` from `(Submodule.Quotient.mk_eq_zero _).1 (htf r (Submodule.Quotient.mk p) (by`.
+
+Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨x, h⟩))`. Conclude with `⟨x', by rw [hx', h]⟩`. Rewrite using `[htr, htr, sub_self, sub_self]`. Take `⟨c, hc⟩` from `exists_kill D e he`.
+
+Take `⟨m, hm⟩` from `exists_kill_pi D e hF hT he`. Use `⟨c + m, fun r hr => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' hr`. Use `⟨fun x p h => ⟨0, ?_⟩, fun a ha => ⟨a, ?_, fun _ => rfl⟩⟩` and prove the remaining obligations. Rewrite using `[h, map_zero, smul_zero, ← add_assoc, pow_add, mul_smul, hm, smul_zero]`.
+
+Take `⟨v⟩` from `nonempty_S D`. Take `⟨b, hb, hab⟩` from `ha v`. Establish `h0` using `hc v (a - b) fun g => by`. Rewrite using `[map_sub, sub_eq_sub_iff_sub_eq_sub]`. Conclude with `hab g`.
+
+Establish `h5 : (l : ℤ_[l]) ^ (k + (c + m)) • (a - b) = 0`. Rewrite using `[add_comm c m, ← add_assoc, pow_add, mul_smul, h0, smul_zero]`. Rewrite `h5` using `[smul_sub, hb, sub_zero]`. Then use the resulting hypothesis. Take `⟨c, key⟩` from `key`. Establish `hker : Sha2Zl D e = LinearMap.ker (localH2 D e)` using `by rw [localH2, LinearMap.ker_pi]; rfl`.
+
+Rewrite using `[hker]`. Use `GlobalTheory.T.padicInt_length_eq_of_card_quotient_eq l _ _ (fun r => (lpow l _ r).comap (LinearMap.ker (localH2 D e)).subtype) P (c + 1) (fun r s h => Submodule.comap_mono (lpow_anti _ h)) (fun x hx => Subtype.ext (lpow_sep (l := l) _ _ hx)) hm hu fun r hr => ?_` and prove the remaining obligations. Take `⟨k1, k2⟩` from `key r (by omega)`. Take `⟨⟨f1, -, -, f2⟩, -⟩` from `hS r (by omega)`. Establish `e1` using `hc r _ _ (zd D (e + 1) r) (ι r) (h1 r) (h2 r) (h4 r) k2`.
+
+Use `⟨Nat.finite_of_card_ne_zero (e1.trans_ne Nat.card_pos.ne'), ?_⟩` and prove the remaining obligations. Use `((cok_ker D e hF hT hS h3 r).2 k1).trans (Eq.trans ?_ (e1.trans f2).symm)` and prove the remaining obligations. Rewrite using `[loc2, LinearMap.ker_pi]`. Both sides reduce to the same expression.
+-/
 theorem ptShaAt : PTShaAt D e := by
   intro _
   have hX := (global_lim D e hF hT hS h3).1
@@ -514,6 +668,9 @@ theorem ptShaAt : PTShaAt D e := by
 
 omit hN hS h3 in
 
+/- English proof (translation)
+Take `⟨ζ, hζ⟩` from `exists_primitiveRoot_pow F Ω l r`. Take `⟨inv, -, h⟩` from `hP F Ω l r (hc.imp id fun h => (NumberField.nrRealPlaces_eq_zero_iff).1 h) hr ζ hζ`. Take `⟨a, b, c⟩` from `h D.S (fun v hv => (mem_above D v).2 hv) D.A D.hA _ (redChar_chi D r) _ _ (contAction_zr D (e + 1) r)`. Conclude with `⟨⟨_, a⟩, b, c 3 le_rfl⟩`.
+-/
 theorem finite_level (hP : PoitouTateDuality) (hc : PTCase F l) (r : ℕ) (hr : 0 < r) :
     (∃ j, NineTermExact D.S D.A (redChar D.chi r) j (zr D (e + 1) r) (contAction_zr D (e + 1) r)) ∧
     ShaDual D.S D.A (redChar D.chi r) (zr D (e + 1) r) ∧ Subsingleton (Hn (zr D (e + 1) r) 3) := by
@@ -526,6 +683,9 @@ theorem finite_level (hP : PoitouTateDuality) (hc : PTCase F l) (r : ℕ) (hr : 
 
 end Global
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ D e hc => ptCokerAt D e hF hT (fun r hr => (finite_level D e hP hc r hr).1) (fun r hr => (finite_level D e hP hc r hr).2.1) (finite_level D e hP hc 1 one_pos).2.2 hc, fun _ _ _ _ _ _ _ _ _ D e hc => ptShaAt D e hF hT (fun r hr => (finite_level D e hP hc r h …`.
+-/
 theorem archimedeanSignatureMatching_of_poitouTate (hP : GlobalTheory.Published.PoitouTateDuality) (hF : LocalFinitenessK)
     (hT : LocalTateDualityK) (hE : LocalEulerCharK) : Formalism.MainNotions.BlochKatoReduction.Gen.ArchimedeanSignatureMatching :=
   ⟨fun _ _ _ _ _ _ _ _ _ D e hc => ptCokerAt D e hF hT (fun r hr => (finite_level D e hP hc r hr).1)
@@ -534,6 +694,9 @@ theorem archimedeanSignatureMatching_of_poitouTate (hP : GlobalTheory.Published.
       (fun r hr => (finite_level D e hP hc r hr).2.1) (finite_level D e hP hc 1 one_pos).2.2 hc,
     fun _ _ _ _ _ _ _ _ _ D e => local_tate_duality_h2_limit hF hT D e, hF, hT, hE⟩
 
+/- English proof (translation)
+Introduce `hP hF hT hE` and use `⟨archimedeanSignatureMatching_of_poitouTate hP hF hT hE, archimedeanSignatureMatching_of_poitouTate hP hF hT hE⟩`.
+-/
 theorem twist_cohomology_inputs : GlobalTheory.Published.PoitouTateDuality → LocalFinitenessK → LocalTateDualityK →
     LocalEulerCharK → Formalism.MainNotions.BlochKatoReduction.Gen.ArchimedeanSignatureMatching ∧ Formalism.MainNotions.BlochKatoReduction.ArchimedeanSignatureMatching :=
   fun hP hF hT hE => ⟨archimedeanSignatureMatching_of_poitouTate hP hF hT hE, archimedeanSignatureMatching_of_poitouTate hP hF hT hE⟩

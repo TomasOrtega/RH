@@ -16,51 +16,87 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule (ofAdj starAdj)
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨ε, -, hc, -, hε, -⟩` from `(localComponents D P).1`. Rewrite `h`, the goal using `[hε]`. Use `conv_rhs => rw [← h]`. Rewrite using `[map_mul, hc]`.
+-/
 theorem cA_mem_idAt {P : Pl D → Prop} {a : AE D} (h : a ∈ idAt D P) : cA D a ∈ idAt D P := by
   obtain ⟨ε, -, hc, -, hε, -⟩ := (localComponents D P).1
   rw [hε] at h ⊢
   conv_rhs => rw [← h]
   rw [map_mul, hc]
 
+/- English proof (translation)
+Introduce `i j` and use `by have := cA_mem_idAt (hx j i) simpa [adj] using this`.
+-/
 theorem mxAt_adj {P : Pl D → Prop} {m n : ℕ} {x : Mx D m n} (hx : MxAt P x) : MxAt P (adj x) := fun i j => by
   have := cA_mem_idAt (hx j i)
   simpa [adj] using this
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hx k j)`.
+-/
 theorem mxAt_mul_l {P : Pl D → Prop} {l m n : ℕ} (A : Mx D l m) {x : Mx D m n} (hx : MxAt P x) : MxAt P (A * x) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (hx k j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hx i k)`.
+-/
 theorem mxAt_mul_r {P : Pl D → Prop} {l m n : ℕ} {x : Mx D l m} (hx : MxAt P x) (A : Mx D m n) : MxAt P (x * A) :=
   fun i j => by
     rw [Matrix.mul_apply]
     exact Ideal.sum_mem _ fun k _ => Ideal.mul_mem_right _ _ (hx i k)
 
+/- English proof (translation)
+Introduce `i j` and use `Ideal.mul_mem_left _ _ (hx i j)`.
+-/
 theorem mxAt_smul {P : Pl D → Prop} {m n : ℕ} (c : AE D) {x : Mx D m n} (hx : MxAt P x) : MxAt P (c • x) :=
   fun i j => Ideal.mul_mem_left _ _ (hx i j)
 
+/- English proof (translation)
+Introduce `i j` and use `add_mem (hx i j) (hy i j)`.
+-/
 theorem mxAt_add {P : Pl D → Prop} {m n : ℕ} {x y : Mx D m n} (hx : MxAt P x) (hy : MxAt P y) : MxAt P (x + y) :=
   fun i j => add_mem (hx i j) (hy i j)
 
+/- English proof (translation)
+Introduce `_ _` and use `zero_mem _`.
+-/
 theorem mxAt_zero {P : Pl D → Prop} {m n : ℕ} : MxAt P (0 : Mx D m n) := fun _ _ => zero_mem _
 
+/- English proof (translation)
+Introduce `u hu` and use `by rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]; exact hz`.
+-/
 theorem combAt_single {P : Pl D → Prop} {S T : HSp D} {z : WO S T} (hz : MxAt P z) (c : ℂ) :
     CombAt P (Finsupp.single z c) := fun u hu => by
   rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hu)]; exact hz
 
+/- English proof (translation)
+Simplify using `[comb, Finset.sum_apply, smul_eq_mul]`.
+-/
 theorem comb_apply (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (c : WO S T →₀ ℂ) (f : WO S T → ℂ) (w : WO S T) :
     comb ψ S T c f w = ∑ z ∈ c.support, c z * heisO ψ S T z f w := by
   simp [comb, Finset.sum_apply, smul_eq_mul]
 
+/- English proof (translation)
+Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `[comb]`. Simplify using `[comb, Finsupp.support_single_ne_zero _ hc]`.
+-/
 theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (z : WO S T) (c : ℂ) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single z c) f = c • heisO ψ S T z f := by
   by_cases hc : c = 0
   · subst hc; simp [comb]
   · simp [comb, Finsupp.support_single_ne_zero _ hc]
 
+/- English proof (translation)
+Simplify using `[symplOH, symplO, hO]`.
+-/
 theorem symplOH_zero_right (S T : HSp D) (w : WO S T) : symplOH S T w 0 = 0 := by
   simp [symplOH, symplO, hO]
 
+/- English proof (translation)
+Establish `h : incA D (-D.host.xi0⁻¹) * cA D (incA D D.host.xi0) = 1`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, ← map_mul]`. Rewrite using `[show -D.host.xi0⁻¹ * -D.host.xi0 = 1 by rw [neg_mul_neg]; exact inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)]`. Conclude with `map_one _`. Rewrite using `[ofAdj, starAdj, adj_smul, adj_mul, adj_mul, adj_adj, adj_gA, adj_giA, Matrix.smul_mul, Matrix.mul_smul, smul_smul, h, one_smul, Matrix.mul_assoc, Matrix.mul_assoc, giA_gA_cancel, giA_mul_gA, Matrix.mul_one]`.
+-/
 theorem ofAdj_starAdj (S T : HSp D) (x : WO S T) : ofAdj S T (starAdj S T x) = x := by
   have h : incA D (-D.host.xi0⁻¹) * cA D (incA D D.host.xi0) = 1 := by
     rw [GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.star_purely_imaginary_eq_neg, ← map_mul]
@@ -79,6 +115,17 @@ variable {D : D7}
 
 def invLine {m n : ℕ} (τ : Matrix (Fin m) (Fin n) D.host.E) : Matrix (Fin n) (Fin m) D.host.E := fun i j => (τ j i)⁻¹
 
+/- English proof (translation)
+Establish `hsub : ∀ a b : Fin L.rank, a = b` using `fun a b => Fin.ext (by have := a.2; have := b.2; omega)`. Establish `hsub'' : ∀ a b : Fin L''.rank, a = b` using `fun a b => Fin.ext (by have := a.2; have := b.2; omega)`. Set `k0 : Fin L''.rank` to `⟨0, by omega⟩`. Establish `hne : ∀ i, τ i k0 ≠ 0`. Introduce `i hi`.
+
+Establish `h0 : τ = 0`. Use function extensionality and compare the values at `a b`. Rewrite using `[hsub a i, hsub'' b k0]`. Conclude with `hi`. Rewrite `hτ` using `[h0, Matrix.mul_zero, Matrix.mul_zero]`.
+
+Establish `hc : (-(D.host.xi0 * star D.host.xi0)) ≠ 0`. Use `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D` as an intermediate fact. Simplify using `using this`. Establish `hg : L''.gram = 0`. Use `hτ.symm` as an intermediate fact.
+
+Rewrite `this` using `[smul_eq_zero, or_iff_right hc]`. Then use the resulting hypothesis. Use `haveI : Nonempty (Fin L''.rank) := ⟨k0⟩`. Conclude with `Formalism.L2.Theta.gram_det_ne L'' (by rw [hg, Matrix.det_zero])`. Use function extensionality and compare the values at `i j`. Rewrite using `[hsub j i, Matrix.one_apply_eq, Matrix.mul_apply, Finset.sum_eq_single k0 (fun b _ hb => absurd (hsub'' b k0) hb) (fun h => absurd (Finset.mem_univ _) h)]`.
+
+Use `show τ i k0 * (τ i k0)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ (hne i)`.
+-/
 theorem mul_invLine {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (hL : L.rank = 1) (hL'' : L''.rank = 1)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) : τ * invLine τ = 1 := by
   have hsub : ∀ a b : Fin L.rank, a = b := fun a b => Fin.ext (by have := a.2; have := b.2; omega)
@@ -107,23 +154,40 @@ theorem mul_invLine {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.h
 def kapInv {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D) (b : WO L S) : WO S L'' :=
   (rat (invLine τ) : Mx D L''.rank L.rank) * starAdj L S b
 
+/- English proof (translation)
+Rewrite using `[kap, kapInv, ← Matrix.mul_assoc, ← rat_mul, mul_invLine τ hL hL'' hτ, rat_one, Matrix.one_mul, ofAdj_starAdj]`.
+-/
 theorem kap_kapInv {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (hL : L.rank = 1) (hL'' : L''.rank = 1)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (S : HSp D) (b : WO L S) :
     kap τ S (kapInv τ S b) = b := by
   rw [kap, kapInv, ← Matrix.mul_assoc, ← rat_mul, mul_invLine τ hL hL'' hτ, rat_one, Matrix.one_mul, ofAdj_starAdj]
 
+/- English proof (translation)
+The claim follows from `mxAt_mul_l _ (mxAt_smul _ (mxAt_mul_l _ (mxAt_mul_r (mxAt_adj hb) _)))`.
+-/
 theorem mxAt_kapInv {P : Pl D → Prop} {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D)
     {b : WO L S} (hb : MxAt P b) : MxAt P (kapInv τ S b) :=
   mxAt_mul_l _ (mxAt_smul _ (mxAt_mul_l _ (mxAt_mul_r (mxAt_adj hb) _)))
 
+/- English proof (translation)
+The claim follows from `mxAt_smul _ (mxAt_mul_l _ (mxAt_mul_r (mxAt_adj (mxAt_mul_l _ hw)) _))`.
+-/
 theorem mxAt_kap {P : Pl D → Prop} {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D)
     {w : WO S L''} (hw : MxAt P w) : MxAt P (kap τ S w) :=
   mxAt_smul _ (mxAt_mul_l _ (mxAt_mul_r (mxAt_adj (mxAt_mul_l _ hw)) _))
 
+/- English proof (translation)
+Rewrite using `[kap, kap, kap, ← GlobalTheory.LinkKappa.ofAdj_add, Matrix.mul_add]`.
+-/
 theorem kap_add {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (S : HSp D) (w w' : WO S L'') :
     kap τ S (w + w') = kap τ S w + kap τ S w' := by
   rw [kap, kap, kap, ← GlobalTheory.LinkKappa.ofAdj_add, Matrix.mul_add]
 
+/- English proof (translation)
+Establish `hτ' : τᴴ * (L.gram * τ) = (((-1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L''.gram`. Rewrite using `[hτ]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h` using `GlobalTheory.LinkKappa.symplO_ofAdj L L'' S τ (-1) hτ' w w'`. Unfold `symplOH`. Rewrite using `[kap, kap, h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symplOH_kap {L L'' : HSp D} (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (S : HSp D) (w w' : WO S L'') :
     symplOH L S (kap τ S w) (kap τ S w') = symplOH S L'' w w' := by
@@ -140,10 +204,16 @@ namespace GlobalTheory.LastOpPf
 
 variable {D : D7}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lastBi_apply {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : OrthDec X T L'')
     (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (Ξ : WO V₀ S → ℂ) (Φ₂ : WO S T → ℂ) (u : WO A S) (v : WO S X) :
     lastBi o o'' τ Ξ Φ₂ u v = Φ₂ (o''.resT S v).1 * Ξ ((o.resS S).symm (u, kap τ S (o''.resT S v).2)) := rfl
 
+/- English proof (translation)
+Simplify using `only [heisO]`. Rewrite using `[o.symplOH_resS, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply, ← map_add, Prod.mk_add_mk, kap_add, symplOH_kap τ hτ, AddChar.map_add_eq_mul]`.
+-/
 theorem heisO_split {V₀ A L S L'' : HSp D} (o : OrthDec V₀ A L) (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (ψ : AddChar (AF D.host.F) ℂ)
     (Ξ : WO V₀ S → ℂ) (x u : WO A S) (y w : WO S L'') :
@@ -159,6 +229,11 @@ namespace GlobalTheory.LastOpPf
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [Finset.sum_apply, lastBi_apply, comb_single, Pi.smul_apply, smul_eq_mul, one_mul, heisO_split o τ hτ]`. Simplify using `only [biComb, comb_apply]`. Simplify using `only [heisO, lastBi_apply, map_add, Prod.fst_add, Prod.snd_add, o''.symplOH_resT, AddChar.map_add_eq_mul]`. Rewrite using `[Finset.sum_product]`.
+
+Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem biComb_lastBi {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : OrthDec X T L'')
     (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (ψ : AddChar (AF D.host.F) ℂ)
@@ -182,6 +257,13 @@ namespace GlobalTheory.LastOpPf
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[lastBi_apply, comb_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `hz : (o.resS S).symm ((o.resS S z).1, kap τ S (kapInv τ S (o.resS S z).2)) = z`.
+
+Rewrite using `[kap_kapInv τ hL hL'' hτ, Prod.mk.eta, AddEquiv.symm_apply_apply]`. Establish `hK` using `heisO_split o τ hτ ψ Ξ (o.resS S z).1 u (kapInv τ S (o.resS S z).2) (o''.resT S v).2`. Rewrite `hK` using `[hz]`. Rewrite using `[hK]`. Simplify using `only [biComb, comb_single, Pi.smul_apply, smul_eq_mul, one_mul, heisO, lastBi_apply, map_add, AddEquiv.apply_symm_apply, Prod.fst_add, Prod.snd_add, add_zero, o''.symplOH_resT, symplOH_zero_right, AddChar.map_add_eq_mul, AddChar.map_zero_eq_one]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lastBi_comb {V₀ A L S X T L'' : HSp D} (o : OrthDec V₀ A L) (o'' : OrthDec X T L'')
     (τ : Matrix (Fin L.rank) (Fin L''.rank) D.host.E) (hL : L.rank = 1) (hL'' : L''.rank = 1)
     (hτ : τᴴ * (L.gram * τ) = (-(D.host.xi0 * star D.host.xi0)) • L''.gram) (ψ : AddChar (AF D.host.F) ℂ)
@@ -208,10 +290,22 @@ namespace GlobalTheory.LastOpPf
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_coe_sort s f).symm.trans (Equiv.sum_comp s.equivFin.symm (fun p : s => f p)).symm`.
+-/
 theorem sum_equivFin {α M : Type} [AddCommMonoid M] (s : Finset α) (f : α → M) :
     ∑ p ∈ s, f p = ∑ i : Fin s.card, f (s.equivFin.symm i : α) :=
   (Finset.sum_coe_sort s f).symm.trans (Equiv.sum_comp s.equivFin.symm (fun p : s => f p)).symm
 
+/- English proof (translation)
+Introduce `D ψ V₀ A L S X T L'' o o'' τ hL hL'' hτ P`. Use `⟨fun e he => ?_, fun d d' hd hd' => ?_⟩` and prove the remaining obligations. Use `⟨⟨e.support.card, fun i => Finsupp.single (o.resS S (e.support.equivFin.symm i : WO V₀ S)).1 (e (e.support.equivFin.symm i : WO V₀ S)), fun i => Finsupp.single ((o''.resT S).symm (0, kapInv τ S (o.resS S (e.support.equivFin.symm i : WO V₀ S)).2)) 1⟩, fun i => ⟨?_, ?_⟩, fun Ξ Φ₂ = …` and prove the remaining obligations. Conclude with `combAt_single (mxAt_mul_r (he _ (e.support.equivFin.symm i).2) _) _`. Use `combAt_single ?_ 1` and prove the remaining obligations.
+
+Rewrite using `[OrthDec.resT_symm_apply]`. Conclude with `mxAt_add (mxAt_mul_l _ mxAt_zero) (mxAt_mul_l _ (mxAt_kapInv τ S (mxAt_mul_r (he _ (e.support.equivFin.symm i).2) _)))`. Rewrite using `[lastBi_comb o o'' τ hL hL'' hτ ψ e Ξ Φ₂, sum_equivFin]`. Both sides reduce to the same expression. Use `⟨(d.support ×ˢ d'.support).card, fun i => Finsupp.single ((o.resS S).symm (((d.support ×ˢ d'.support).equivFin.symm i : WO A S × WO S X).1, kap τ S (o''.resT S ((d.support ×ˢ d'.support).equivFin.symm i : WO A S × WO S X).2).2)) (d ((d.support ×ˢ d'.support).equivFin.symm i : WO …` and prove the remaining obligations.
+
+Establish `hp` using `Finset.mem_product.1 ((d.support ×ˢ d'.support).equivFin.symm i).2`. Use `combAt_single ?_ _` and prove the remaining obligations. Rewrite using `[OrthDec.resS_symm_apply]`. Conclude with `mxAt_add (mxAt_mul_r (hd _ hp.1) _) (mxAt_mul_r (mxAt_kap τ S (mxAt_mul_l _ (hd' _ hp.2))) _)`. Establish `hp` using `Finset.mem_product.1 ((d.support ×ˢ d'.support).equivFin.symm i).2`.
+
+Conclude with `combAt_single (mxAt_mul_l _ (hd' _ hp.2)) _`. Rewrite using `[biComb_lastBi o o'' τ hτ ψ d d' Ξ Φ₂, sum_equivFin]`.
+-/
 theorem lastOp : ∀ D : D7, GlobalTheory.FinPl.LastOp D := by
   intro D ψ V₀ A L S X T L'' o o'' τ hL hL'' hτ P
   refine ⟨fun e he => ?_, fun d d' hd hd' => ?_⟩

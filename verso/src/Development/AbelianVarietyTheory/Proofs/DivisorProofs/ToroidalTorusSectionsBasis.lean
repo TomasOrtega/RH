@@ -20,12 +20,22 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.WeilEquivar
 
+/- English proof (translation)
+Establish `s` using `map_prod (zpowersHom U ζ) (fun i => Multiplicative.ofAdd (f i)) Finset.univ`. Rewrite `s` using `[← ofAdd_sum]`. Conclude with `s.symm`.
+-/
 theorem prod_zpow_eq {U J : Type} [CommGroup U] [Fintype J] (ζ : U) (f : J → ℤ) :
     ∏ i, ζ ^ f i = ζ ^ ∑ i, f i := by
   have s := map_prod (zpowersHom U ζ) (fun i => Multiplicative.ofAdd (f i)) Finset.univ
   rw [← ofAdd_sum] at s
   exact s.symm
 
+/- English proof (translation)
+Establish `h1 : k = ∏ i, σ i ^ n i` using `hinj (by simp only [hk, map_prod, map_pow])`. Establish `h2 : k' = ∏ i, (∏ j, σ j ^ M j i) ^ n i` using `hinj (by simp only [hk', hk, map_prod, map_pow, map_zpow, hA])`. Rewrite using `[h2, h1]`. Simplify using `only [map_prod, map_pow, map_zpow, hχ, ← zpow_natCast, ← zpow_mul, prod_zpow_eq]`. Use `congr 1`.
+
+Establish `h3 : ∀ i, ∑ j, B j m * M j i = ∑ j, B i j * M' j m` using `fun i => by`. Use `congrFun (congrFun hM i) m` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+
+Simplify using `only [h3, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring` and prove the remaining obligations.
+-/
 theorem chars_transform {G T U : Type} [CommGroup G] [CommGroup T] [CommGroup U] (e : T →* G)
     (hinj : Function.Injective e) (A : G →* G) {N : ℕ} (σ : Fin N → T) (ζ : U) (B M M' : Matrix (Fin N) (Fin N) ℤ)
     (hM : M.transpose * B = B * M') (hA : ∀ m, A (e (σ m)) = ∏ m', e (σ m') ^ M m' m) (χ : Fin N → (T →* U))
@@ -46,6 +56,19 @@ theorem chars_transform {G T U : Type} [CommGroup G] [CommGroup T] [CommGroup U]
   rw [Finset.sum_comm]
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z K _ ξ₀ ξ hξ q hq N b s ζ hG hgen hact χ hχ α k k' hk m`. Substitute `hξ` using the available equality. Take `⟨Φ, hΦ⟩` from `GlobalTheory.WeilTorsChar.exists_mulEquiv_points _ Z.t.G Z.oF.t.G Z.m.φ Z.m.cart (Over.mk ξ₀)`. Set `P` to `GlobalTheory.Obj.toPolAV Z.oF`. Set `e : TorsK Z.t (ξ₀ ≫ Z.j) q →* (Over.mk ξ₀ ⟶ Z.oF.t.G)` to `Φ.symm.toMonoidHom.comp (TorsK Z.t (ξ₀ ≫ Z.j) q).subtype`.
+
+Establish `he : ∀ t, e t = Φ.symm t.1` using `fun _ => rfl`. Set `σ : Fin N → TorsK Z.t (ξ₀ ≫ Z.j) q` to `fun i => ⟨Φ (s i), (map_pow Φ _ _).symm.trans ((congrArg Φ (hG.1 i)).trans (map_one _))⟩`. Establish `hσ : ∀ i, e (σ i) = s i` using `fun i => Φ.symm_apply_apply _`. Use `haveI := Z.oF.t.act.hom α`. Set `A : (Over.mk ξ₀ ⟶ Z.oF.t.G) →* (Over.mk ξ₀ ⟶ Z.oF.t.G)` to `IsMonHom.monoidHom (Z.oF.t.act.act α) _`.
+
+Establish `hA : ∀ x, A x = x ≫ Z.oF.t.act.act α` using `fun _ => rfl`. Establish `hek : e k ^ q = 1`. Establish `ht : k.1 ^ q = 1` using `k.2`. Rewrite using `[he]`. Conclude with `(map_pow Φ.symm _ _).symm.trans ((congrArg Φ.symm ht).trans (map_one _))`.
+
+Take `⟨n, hn⟩` from `hgen (e k) hek`. Use `chars_transform e (Φ.symm.injective.comp Subtype.val_injective) A σ ζ (GlobalTheory.EqHalf.gram Dw b) (GlobalTheory.EqHalf.latMat Dw b α) (GlobalTheory.EqHalf.latMat Dw b (H.bar α)) (GlobalTheory.EqHalf.latMat_transpose_mul_gram Dw b α) (fun i => ?_) χ (fun j i => ?_) k k' n ?_ ? …` and prove the remaining obligations. Simplify using `only [hσ, hA]`. Conclude with `hact α i`. Conclude with `GlobalTheory.Ex.Specialise.unitOn_bijective.1 ((GlobalTheory.LevelCompare.weil_existsUnique P q (s i) (s j) (hG.1 i) (hG.1 j)).unique (hχ j (σ i) (s i) (hΦ (s i)).symm) (hG.2 i j))`.
+
+Simplify using `only [hσ]`. Conclude with `hn`. Rewrite using `[hA, he k']`. Use `(Φ.symm_apply_eq).2 (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Establish `h1 : (e k).left ≫ Z.m.φ = k.1.left`.
+
+Rewrite using `[← hΦ (e k), he]`. Conclude with `congrArg (fun u => u.left) (Φ.apply_symm_apply k.1)`. Use `Eq.trans ?_ (hΦ _).symm` and prove the remaining obligations. Rewrite using `[hk, Over.comp_left, Over.comp_left, Category.assoc, ← h1, Category.assoc]`. Conclude with `congrArg _ (Z.m.act α).symm`.
+-/
 theorem equivar_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β)
     (K : Type) [Field K] (ξ₀ : Sp K ⟶ Xo.XF c) (ξ : Sp K ⟶ Z.X), ξ₀ ≫ Z.j = ξ → ∀ q : ℕ, q ≠ 0 →

@@ -15,11 +15,20 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+The claim follows from `(hpkFacts k r).2.1`.
+-/
 lemma hsq : Hpk k r * Hpk k r = 1 := (hpkFacts k r).2.1
 
+/- English proof (translation)
+Rewrite using `[← Matrix.mul_assoc, hsq, Matrix.one_mul]`.
+-/
 lemma hsq' (M : Mx k r) : Hpk k r * (Hpk k r * M) = M := by
   rw [← Matrix.mul_assoc, hsq, Matrix.one_mul]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv hsq`.
+-/
 lemma hinv : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv hsq
 
 def Skew (X : Mx k r) : Prop := Xᴴ * Hpk k r + Hpk k r * X = 0
@@ -34,6 +43,9 @@ def Out (k r : ℕ) (i : Fin (r + 1)) (p : Fin (2 * r + k + 1)) : Prop :=
 def InV (k r : ℕ) (i : Fin (r + 1)) (Z : Mx k r) : Prop :=
   ∀ p q : Fin (2 * r + k + 1), (Out k r i p ∨ Out k r i q) → Z p q = 0
 
+/- English proof (translation)
+Establish `h' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `h`. Establish `h1 : Xᴴ * Hpk k r = -(Hpk k r * X)` using `eq_neg_of_add_eq_zero_left h'`. Combine the equalities or inequalities in the displayed calculation.
+-/
 lemma skew_conj {X : Mx k r} (h : Skew X) : Xᴴ = Hpk k r * (-X) * Hpk k r := by
   have h' : Xᴴ * Hpk k r + Hpk k r * X = 0 := h
   have h1 : Xᴴ * Hpk k r = -(Hpk k r * X) := eq_neg_of_add_eq_zero_left h'
@@ -41,6 +53,9 @@ lemma skew_conj {X : Mx k r} (h : Skew X) : Xᴴ = Hpk k r * (-X) * Hpk k r := b
     _ = -(Hpk k r * X) * Hpk k r := by rw [h1]
     _ = Hpk k r * (-X) * Hpk k r := by rw [Matrix.mul_neg, Matrix.neg_mul]
 
+/- English proof (translation)
+Establish `hU : IsUnit (Hpk k r)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse hsq)`. Establish `hc` using `Matrix.exp_conj (Hpk k r) (-X) hU`. Rewrite `hc` using `[hinv]`. Use `show (NormedSpace.exp X)ᴴ * Hpk k r * NormedSpace.exp X = Hpk k r`. Rewrite using `[← Matrix.exp_conjTranspose, skew_conj h, hc, Matrix.mul_assoc (Hpk k r * NormedSpace.exp (-X)) (Hpk k r) (Hpk k r), hsq, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)), neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`.
+-/
 lemma exp_uh {X : Mx k r} (h : Skew X) : NormedSpace.exp X ∈ UH (Hpk k r) := by
   have hU : IsUnit (Hpk k r) :=
     (Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse hsq)
@@ -52,6 +67,11 @@ lemma exp_uh {X : Mx k r} (h : Skew X) : NormedSpace.exp X ∈ UH (Hpk k r) := b
     Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl X)),
     neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `hX`. Establish `h1' : Xᴴ * Hpk k r + Hpk k r * X = 0` using `h1`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show ((t : ℂ) • X)ᴴ * Hpk k r + Hpk k r * ((t : ℂ) • X) = 0`. Rewrite using `[Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_ofReal, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, h1', smul_zero]`.
+
+Take `⟨e1, e2⟩` from `h2 a ha`. Conclude with `⟨by rw [Matrix.smul_mulVec, e1, smul_zero], by rw [Matrix.smul_mulVec, e2, smul_zero]⟩`.
+-/
 lemma lieL_rsmul {i : Fin (r + 1)} {X : Mx k r} (hX : X ∈ LieL k r i) (t : ℝ) :
     (t : ℂ) • X ∈ LieL k r i := by
   obtain ⟨h1, h2⟩ := hX
@@ -64,6 +84,13 @@ lemma lieL_rsmul {i : Fin (r + 1)} {X : Mx k r} (hX : X ∈ LieL k r i) (t : ℝ
     exact ⟨by rw [Matrix.smul_mulVec, e1, smul_zero],
       by rw [Matrix.smul_mulVec, e2, smul_zero]⟩
 
+/- English proof (translation)
+Introduce `g hg t`. Establish `hY : (t : ℂ) • X ∈ LieL k r i` using `lieL_rsmul hX t`. Take `⟨hgU, hgv⟩` from `hg`. Establish `hgU' : gᴴ * Hpk k r * g = Hpk k r` using `hgU`. Establish `hE' : (NormedSpace.exp ((t : ℂ) • X))ᴴ * Hpk k r * NormedSpace.exp ((t : ℂ) • X) = Hpk k r` using `exp_uh hY.1`.
+
+Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show (g * NormedSpace.exp ((t : ℂ) • X))ᴴ * Hpk k r * (g * NormedSpace.exp ((t : ℂ) • X)) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = Hpk k r := by rw [hgU', hE']`. Take `⟨e1, e2⟩` from `hY.2 a ha`. Take `⟨g1, g2⟩` from `hgv a ha`. Conclude with `⟨by rw [← Matrix.mulVec_mulVec, exp_mulVec_fix _ _ e1, g1], by rw [← Matrix.mulVec_mulVec, exp_mulVec_fix _ _ e2, g2]⟩`.
+-/
 theorem flow_of_lieL {i : Fin (r + 1)} {X : Mx k r} (hX : X ∈ LieL k r i) : Flow (Glev k r i) X := by
   intro g hg t
   have hY : (t : ℂ) • X ∈ LieL k r i := lieL_rsmul hX t
@@ -82,6 +109,13 @@ theorem flow_of_lieL {i : Fin (r + 1)} {X : Mx k r} (hX : X ∈ LieL k r i) : Fl
     exact ⟨by rw [← Matrix.mulVec_mulVec, exp_mulVec_fix _ _ e1, g1],
       by rw [← Matrix.mulVec_mulVec, exp_mulVec_fix _ _ e2, g2]⟩
 
+/- English proof (translation)
+Take `⟨hX1, hX2⟩` from `hX`. Take `⟨hY1, hY2⟩` from `hY`. Establish `a1 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX1`. Establish `b1 : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY1`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `show (X + Y)ᴴ * Hpk k r + Hpk k r * (X + Y) = 0`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x1, x2⟩` from `hX2 a ha`. Take `⟨y1, y2⟩` from `hY2 a ha`.
+
+Conclude with `⟨by rw [Matrix.add_mulVec, x1, y1, add_zero], by rw [Matrix.add_mulVec, x2, y2, add_zero]⟩`.
+-/
 lemma lieL_add {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY : Y ∈ LieL k r i) :
     X + Y ∈ LieL k r i := by
   obtain ⟨hX1, hX2⟩ := hX
@@ -97,6 +131,13 @@ lemma lieL_add {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY : Y 
     obtain ⟨y1, y2⟩ := hY2 a ha
     exact ⟨by rw [Matrix.add_mulVec, x1, y1, add_zero], by rw [Matrix.add_mulVec, x2, y2, add_zero]⟩
 
+/- English proof (translation)
+Take `⟨hX1, hX2⟩` from `hX`. Take `⟨hY1, hY2⟩` from `hY`. Establish `a1 : Xᴴ * Hpk k r + Hpk k r * X = 0` using `hX1`. Establish `b1 : Yᴴ * Hpk k r + Hpk k r * Y = 0` using `hY1`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Use `show (X - Y)ᴴ * Hpk k r + Hpk k r * (X - Y) = 0`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.sub_mul, Matrix.mul_sub]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨x1, x2⟩` from `hX2 a ha`. Take `⟨y1, y2⟩` from `hY2 a ha`.
+
+Conclude with `⟨by rw [Matrix.sub_mulVec, x1, y1, sub_zero], by rw [Matrix.sub_mulVec, x2, y2, sub_zero]⟩`.
+-/
 lemma lieL_sub {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY : Y ∈ LieL k r i) :
     X - Y ∈ LieL k r i := by
   obtain ⟨hX1, hX2⟩ := hX
@@ -112,6 +153,11 @@ lemma lieL_sub {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY : Y 
     obtain ⟨y1, y2⟩ := hY2 a ha
     exact ⟨by rw [Matrix.sub_mulVec, x1, y1, sub_zero], by rw [Matrix.sub_mulVec, x2, y2, sub_zero]⟩
 
+/- English proof (translation)
+Establish `cX` using `skew_conj hX.1`. Establish `cY` using `skew_conj hY.1`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `show (X * Y - Y * X)ᴴ * Hpk k r + Hpk k r * (X * Y - Y * X) = 0`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, cX, cY]`.
+
+Simplify using `only [Matrix.mul_assoc, hsq', hsq, Matrix.mul_one, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.sub_mul, Matrix.mul_sub]`. Apply the tactic sequence `all_goals abel`. Take `⟨x1, x2⟩` from `hX.2 a ha`. Take `⟨y1, y2⟩` from `hY.2 a ha`. Conclude with `⟨by rw [Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, y1, x1, Matrix.mulVec_zero, Matrix.mulVec_zero, sub_zero], by rw [Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, y2, x2, Matrix.mulVec_zero, Matrix.mulVec_zero, sub_zero]⟩`.
+-/
 lemma lieL_bracket {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY : Y ∈ LieL k r i) :
     X * Y - Y * X ∈ LieL k r i := by
   have cX := skew_conj hX.1
@@ -129,6 +175,9 @@ lemma lieL_bracket {i : Fin (r + 1)} {X Y : Mx k r} (hX : X ∈ LieL k r i) (hY 
       by rw [Matrix.sub_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, y2, x2,
         Matrix.mulVec_zero, Matrix.mulVec_zero, sub_zero]⟩
 
+/- English proof (translation)
+Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `(hpkFacts k r).1`. Apply the tactic sequence `have hs : star (1 / 2 : ℂ) = 1 / 2 := by first | simp | (rw [Complex.star_def]; simp)`. Use `show (hpart1 (Hpk k r) Z)ᴴ * Hpk k r + Hpk k r * hpart1 (Hpk k r) Z = 0`. Simplify using `only [hpart1, hinv, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]`. Apply the tactic sequence `all_goals module`.
+-/
 lemma skew_hpart1 (Z : Mx k r) : Skew (hpart1 (Hpk k r) Z) := by
   have hH : (Hpk k r)ᴴ = Hpk k r := (hpkFacts k r).1
   have hs : star (1 / 2 : ℂ) = 1 / 2 := by
@@ -139,6 +188,11 @@ lemma skew_hpart1 (Z : Mx k r) : Skew (hpart1 (Hpk k r) Z) := by
     Matrix.mul_sub, Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]
   all_goals module
 
+/- English proof (translation)
+Establish `hH : (Hpk k r)ᴴ = Hpk k r` using `(hpkFacts k r).1`. Establish `hs : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))`. Rewrite using `[Complex.star_def, map_div₀, map_one, map_mul, Complex.conj_I, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `show (hpart2 (Hpk k r) Z)ᴴ * Hpk k r + Hpk k r * hpart2 (Hpk k r) Z = 0`.
+
+Simplify using `only [hpart2, hinv, Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hH, hs, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]`. Apply the tactic sequence `all_goals module`.
+-/
 lemma skew_hpart2 (Z : Mx k r) : Skew (hpart2 (Hpk k r) Z) := by
   have hH : (Hpk k r)ᴴ = Hpk k r := (hpkFacts k r).1
   have hs : star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I)) := by
@@ -150,10 +204,18 @@ lemma skew_hpart2 (Z : Mx k r) : Skew (hpart2 (Hpk k r) Z) := by
     Matrix.mul_add, Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]
   all_goals module
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `[bvec, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 lemma mulVec_bvec (M : Mx k r) (q : Fin (2 * r + k + 1)) : M *ᵥ bvec q = fun p => M p q := by
   funext p
   simp [bvec, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Substitute `hv` using the available equality. Use `i.isLt` as an intermediate fact. Use `v.isLt` as an intermediate fact. Unfold `Out at hq ⊢`. Unfold `GBasic.sig at hq`.
+
+Use `split_ifs at hq with h`. Apply the tactic sequence `rcases hq with hq | hq <;> (try simp only [Fin.val_mk] at hq) <;> omega`. Conclude with `hq`.
+-/
 lemma out_of_sig {i : Fin (r + 1)} {q v : Fin (2 * r + k + 1)} (hq : Out k r i q)
     (hv : q = GBasic.sig k r v) : Out k r i v := by
   subst hv
@@ -165,6 +227,15 @@ lemma out_of_sig {i : Fin (r + 1)} {q v : Fin (2 * r + k + 1)} (hq : Out k r i q
   · rcases hq with hq | hq <;> (try simp only [Fin.val_mk] at hq) <;> omega
   · exact hq
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Distinguish the cases in `hb : Out k r i b`. Establish `h0 : (Hpk k r * Zᴴ) p b = 0`.
+
+Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Rewrite using `[Matrix.conjTranspose_apply, hZ b a (Or.inl hb), star_zero, mul_zero]`. Rewrite using `[h0, zero_mul]`.
+
+Establish `h0 : Hpk k r b q = 0`. Unfold `Out at hq hb`. Use `i.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use `q.isLt` as an intermediate fact.
+
+Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Rewrite using `[h0, mul_zero]`.
+-/
 lemma col_HZH {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) {q : Fin (2 * r + k + 1)}
     (hq : Out k r i q) (p : Fin (2 * r + k + 1)) : (Hpk k r * Zᴴ * Hpk k r) p q = 0 := by
   rw [Matrix.mul_apply]
@@ -186,6 +257,9 @@ lemma col_HZH {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) {q : Fin (2 * r 
       split_ifs <;> first | rfl | omega
     rw [h0, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[mulVec_bvec, mulVec_bvec]`. Apply the tactic sequence `refine ⟨funext fun p => ?_, funext fun p => ?_⟩ <;>`. Simplify using `only [hpart1, hpart2, hinv, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply, hZ p q (Or.inr hq), col_HZH hZ hq p, sub_zero, add_zero, smul_zero, Pi.zero_apply]`.
+-/
 lemma hpart_kill {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) {q : Fin (2 * r + k + 1)}
     (hq : Out k r i q) :
     hpart1 (Hpk k r) Z *ᵥ bvec q = 0 ∧ hpart2 (Hpk k r) Z *ᵥ bvec q = 0 := by
@@ -194,9 +268,15 @@ lemma hpart_kill {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) {q : Fin (2 *
     simp only [hpart1, hpart2, hinv, Matrix.smul_apply, Matrix.sub_apply, Matrix.add_apply,
       hZ p q (Or.inr hq), col_HZH hZ hq p, sub_zero, add_zero, smul_zero, Pi.zero_apply]
 
+/- English proof (translation)
+Conclude with `Or.inl ha`.
+-/
 lemma out_eI {i : Fin (r + 1)} (a : Fin r) (ha : a.val < i.val) : Out k r i (eI k r a) := by
   exact Or.inl ha
 
+/- English proof (translation)
+Use `i.isLt` as an intermediate fact. Use `a.isLt` as an intermediate fact. Use `right`. Use `show 2 * r + k - i.val < 2 * r + k - a.val`. Use linear arithmetic over natural numbers and integers.
+-/
 lemma out_esI {i : Fin (r + 1)} (a : Fin r) (ha : a.val < i.val) : Out k r i (esI k r a) := by
   have := i.isLt
   have := a.isLt
@@ -204,11 +284,19 @@ lemma out_esI {i : Fin (r + 1)} (a : Fin r) (ha : a.val < i.val) : Out k r i (es
   show 2 * r + k - i.val < 2 * r + k - a.val
   omega
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨skew_hpart1 Z, fun a ha => ⟨(hpart_kill hZ (out_eI a ha)).1, (hpart_kill hZ (out_esI a ha)).1⟩⟩, ⟨skew_hpart2 Z, fun a ha => ⟨(hpart_kill hZ (out_eI a ha)).2, (hpart_kill hZ (out_esI a ha)).2⟩⟩⟩`.
+-/
 theorem hpart_mem {i : Fin (r + 1)} {Z : Mx k r} (hZ : InV k r i Z) :
     hpart1 (Hpk k r) Z ∈ LieL k r i ∧ hpart2 (Hpk k r) Z ∈ LieL k r i :=
   ⟨⟨skew_hpart1 Z, fun a ha => ⟨(hpart_kill hZ (out_eI a ha)).1, (hpart_kill hZ (out_esI a ha)).1⟩⟩,
     ⟨skew_hpart2 Z, fun a ha => ⟨(hpart_kill hZ (out_eI a ha)).2, (hpart_kill hZ (out_esI a ha)).2⟩⟩⟩
 
+/- English proof (translation)
+Establish `hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Use `Complex.I_ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Unfold `hpart1 hpart2`.
+
+Rewrite using `[smul_smul, hI]`. Use `module`.
+-/
 lemma hpart_decomp (Z : Mx k r) : Z = hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk k r) Z := by
   have hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2 := by
     have := Complex.I_ne_zero
@@ -218,6 +306,15 @@ lemma hpart_decomp (Z : Mx k r) : Z = hpart1 (Hpk k r) Z + Complex.I • hpart2 
   rw [smul_smul, hI]
   module
 
+/- English proof (translation)
+Establish `hWP : Hpk k r * Pᴴ * Hpk k r = -P`. Rewrite using `[skew_conj hP]`. Simplify using `only [Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]`. Establish `hWQ : Hpk k r * Qᴴ * Hpk k r = -Q`. Rewrite using `[skew_conj hQ]`.
+
+Simplify using `only [Matrix.mul_assoc, hsq', hsq, Matrix.mul_one]`. Establish `hW : Hpk k r * (P + Complex.I • Q)ᴴ * Hpk k r = -P + Complex.I • Q`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, hWP, hWQ, Complex.star_def, Complex.conj_I, neg_smul, smul_neg, neg_neg]`. Establish `hI : (1 / (2 * Complex.I)) * (2 * Complex.I) = 1`. Use `Complex.I_ne_zero` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Unfold `hpart1 hpart2`. Rewrite using `[hinv, hW]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[show P + Complex.I • Q - (-P + Complex.I • Q) = (2 : ℂ) • P by module, smul_smul]`.
+
+Evaluate the numerical expressions. Rewrite using `[show P + Complex.I • Q + (-P + Complex.I • Q) = (2 * Complex.I) • Q by module, smul_smul, hI, one_smul]`.
+-/
 lemma hpart_unique {P Q : Mx k r} (hP : Skew P) (hQ : Skew Q) :
     hpart1 (Hpk k r) (P + Complex.I • Q) = P ∧ hpart2 (Hpk k r) (P + Complex.I • Q) = Q := by
   have hWP : Hpk k r * Pᴴ * Hpk k r = -P := by

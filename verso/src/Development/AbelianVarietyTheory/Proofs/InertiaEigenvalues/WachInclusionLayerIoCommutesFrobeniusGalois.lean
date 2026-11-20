@@ -13,6 +13,15 @@ namespace GlobalTheory.HWL.IoComm
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Set `Φ : O ⊗[Z] A →ₐ[O] O ⊗[Z] A` to `Algebra.TensorProduct.map (AlgHom.id _ _) ψ`. Establish `h1 : ∀ z : O ⊗[Z] A, Algebra.TensorProduct.map (AlgHom.id O O) j (Φ z) = Algebra.TensorProduct.map (AlgHom.id O O) Ψ (Algebra.TensorProduct.map (AlgHom.id O O) j z)`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+
+Consider the case `tmul o w`. Simplify using `only [Φ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, h]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h2 : ∀ z : O ⊗[Z] A, f (Φ z) = f' z`. Introduce `z`.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul o w`. Rewrite using `[hf]`. Simplify using `only [Φ, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+
+Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h3 : y = Φ x` using `hj (hxy.trans (h1 x).symm)`. Rewrite using `[h3, h2]`.
+-/
 theorem transfer {Z O A W S : Type} [CommRing Z] [CommRing O] [CommRing A] [CommRing W] [CommRing S]
     [Algebra Z O] [Algebra Z A] [Algebra Z W] (j : A →ₐ[Z] W)
     (hj : Function.Injective (Algebra.TensorProduct.map (AlgHom.id O O) j))
@@ -45,16 +54,25 @@ def frobA (l : ℕ) [Fact l.Prime] : Ainf l →ₐ[ℤ_[l]] Ainf l where
   toRingHom := WittVector.map (frobenius (OCb l) l)
   commutes' := fun x => map_zlW l _ x
 
+/- English proof (translation)
+Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Both sides reduce to the same expression.
+-/
 theorem frobA_apply (w : Ainf l) : frobA l w = WittVector.frobenius w := by
   rw [WittVector.frobenius_eq_map_frobenius]
   rfl
 
+/- English proof (translation)
+Use extensionality with `n`. Express the relevant statement in the definitionally equal form `frobenius (Cb l) l (algebraMap (OCb l) (Cb l) (w.coeff n)) = algebraMap (OCb l) (Cb l) (frobenius (OCb l) l (w.coeff n))`. Rewrite using `[frobenius_def, frobenius_def, map_pow]`.
+-/
 theorem frobW_inclWA (w : Ainf l) : frobW l (inclWA l w) = inclWA l (frobA l w) := by
   ext n
   change frobenius (Cb l) l (algebraMap (OCb l) (Cb l) (w.coeff n)) =
     algebraMap (OCb l) (Cb l) (frobenius (OCb l) l (w.coeff n))
   rw [frobenius_def, frobenius_def, map_pow]
 
+/- English proof (translation)
+Use extensionality with `n`. Conclude with `autCb_alg l (AI.actT g) (w.coeff n)`.
+-/
 theorem act_inclWA {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (w : Ainf l) :
     (AI.actWCbHom g).toAlgHom (inclWA l w) = inclWA l ((AI.actWHom g).toAlgHom w) := by
   ext n
@@ -65,11 +83,17 @@ section
 variable {P : LocPrime l} {AI : LocAinf l P} {K : FinExt l} {s : ℕ} {LL : FinExt l} {Γ : GamS P K s LL}
   {R : WSer Γ} (I : IoS AI R)
 
+/- English proof (translation)
+The claim follows from `((I.ioE_ext _).symm.trans (congrArg I.ioE (R.φE_ext a).symm)).trans ((I.ioE_φ _).trans (congrArg (φRW LL) (I.ioE_ext a)))`.
+-/
 theorem incl_io_φ (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) :
     inclR LL (I.io (letφ R.φ₀ a)) = φRW LL (inclR LL (I.io a)) :=
   ((I.ioE_ext _).symm.trans (congrArg I.ioE (R.φE_ext a).symm)).trans
     ((I.ioE_φ _).trans (congrArg (φRW LL) (I.ioE_ext a)))
 
+/- English proof (translation)
+The claim follows from `((I.ioE_ext _).symm.trans (congrArg I.ioE (R.γE_ext _ a).symm)).trans ((I.ioE_γ g _).trans (congrArg (AI.gRW LL (g : GQ l)) (I.ioE_ext a)))`.
+-/
 theorem incl_io_γ (g : ↥(GK K)) (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] ↥(K0 K))) :
     inclR LL (I.io (letγ (R.γ₀ (Γ.resΓ g)) a)) = AI.gRW LL (g : GQ l) (inclR LL (I.io a)) :=
   ((I.ioE_ext _).symm.trans (congrArg I.ioE (R.γE_ext _ a).symm)).trans
@@ -77,12 +101,18 @@ theorem incl_io_γ (g : ↥(GK K)) (a : LetA ↥(OL LL) (Module.finrank ℚ_[l] 
 
 end
 
+/- English proof (translation)
+The claim follows from `transfer (inclWA l) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1 (frobA l) (frobW l) frobW_inclWA f f' (fun o w => by rw [frobA_apply, hf]) x y hxy`.
+-/
 theorem transfer_φ (LL : FinExt l) {S : Type} [CommRing S] (f f' : RA LL →+* S)
     (hf : ∀ o w, f' (o ⊗ₜ[ℤ_[l]] w) = f (o ⊗ₜ[ℤ_[l]] WittVector.frobenius w)) (x y : RA LL)
     (hxy : inclR LL y = φRW LL (inclR LL x)) : f y = f' x :=
   transfer (inclWA l) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1 (frobA l) (frobW l) frobW_inclWA f f'
     (fun o w => by rw [frobA_apply, hf]) x y hxy
 
+/- English proof (translation)
+The claim follows from `transfer (inclWA l) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1 (AI.actWHom g).toAlgHom (AI.actWCbHom g).toAlgHom (act_inclWA AI g) f f' (fun o w => hf o w) x y hxy`.
+-/
 theorem transfer_γ {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (LL : FinExt l) {S : Type} [CommRing S]
     (f f' : RA LL →+* S)
     (hf : ∀ o w, f' (o ⊗ₜ[ℤ_[l]] w) = f (o ⊗ₜ[ℤ_[l]] AI.actW g w)) (x y : RA LL)
@@ -90,6 +120,9 @@ theorem transfer_γ {P : LocPrime l} (AI : LocAinf l P) (g : GQ l) (LL : FinExt 
   transfer (inclWA l) (GlobalTheory.HWL.TensorWitt.main l LL).2.2.1 (AI.actWHom g).toAlgHom
     (AI.actWCbHom g).toAlgHom (act_inclWA AI g) f f' (fun o w => hf o w) x y hxy
 
+/- English proof (translation)
+Introduce `l _ P AI K s LL Γ R I S _ f f'`. Conclude with `⟨fun hf a => transfer_φ LL f f' hf _ _ (incl_io_φ I a), fun g hf a => transfer_γ AI (g : GQ l) LL f f' hf _ _ (incl_io_γ I g a)⟩`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (K : FinExt l) (s : ℕ) (LL : FinExt l) (Γ : GamS P K s LL) (R : WSer Γ) (I : IoS AI R) (S : Type) [CommRing S] (f f' : RA LL →+* S), ((∀ o w, f' (o ⊗ₜ[ℤ_[l]] w) = f (o ⊗ₜ[ℤ_[l]] WittVector.frobenius w)) → ∀ a, f (I.io (letφ R.φ₀ a)) = f' (I.io a)) ∧ ∀ g : ↥(GK K), (∀ o w, f' (o ⊗ₜ[ℤ_[l]] w) = f (o ⊗ₜ[ℤ_[l]] AI.actW (g : GQ l) w)) → ∀ a, f (I.io (letγ (R.γ₀ (Γ.resΓ g)) a)) = f' (I.io a) := by
   intro l _ P AI K s LL Γ R I S _ f f'
   exact ⟨fun hf a => transfer_φ LL f f' hf _ _ (incl_io_φ I a),

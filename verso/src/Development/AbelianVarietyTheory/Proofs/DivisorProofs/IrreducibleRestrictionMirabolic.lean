@@ -12,11 +12,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.LeftEndJacquet
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j, mul_comm]`.
+-/
 theorem scalar_comm {k : Type} [Field k] (ϖ : kˣ) (g : GL (Fin 1) k) :
     g * GeneralLinearGroup.scalar (Fin 1) ϖ = GeneralLinearGroup.scalar (Fin 1) ϖ * g := by
   ext i j
   simp [Matrix.mul_apply, Fin.fin_one_eq_zero i, Fin.fin_one_eq_zero j, mul_comm]
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `tmul c v`. Rewrite using `[extTensor_tmul]`.
+
+Simplify using `[detRep, detChar, TensorProduct.smul_tmul']`.
+-/
 theorem ext_scalar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {m : Type} [Fintype m] [DecidableEq m] {V : Type} [AddCommGroup V] [Module ℂ V]
     (π' : Representation ℂ (GL m k) V) (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (y : ℂ ⊗[ℂ] V) :
@@ -28,6 +36,19 @@ theorem ext_scalar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
     rw [extTensor_tmul]
     simp [detRep, detChar, TensorProduct.smul_tmul']
 
+/- English proof (translation)
+Introduce `K V W _ _ _ _ _ π₁ π₂ _ h φ hφ`. Use `haveI : IsSimpleOrder (Subrepresentation π₂) := h`. Establish `hbt : (⊥ : Subrepresentation π₁) ≠ ⊤`. Introduce `hb`. Take `⟨x, hx⟩` from `exists_ne (0 : V)`.
+
+Establish `hmem : x ∈ (⊤ : Subrepresentation π₁).toSubmodule` using `Submodule.mem_top`. Rewrite `hmem` using `[← hb]`. Conclude with `hx ((Submodule.mem_bot ℂ).1 hmem)`. Use `{ exists_pair_ne := ⟨⊥, ⊤, hbt⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Set `I : Subrepresentation π₂` to `⟨U.toSubmodule.map φ.toLinearMap, by`.
+
+Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Conclude with `⟨π₁ g u, U.apply_mem_toSubmodule g hu, by simp [φ.isIntertwining]⟩⟩`. Break down `IsSimpleOrder.eq_bot_or_eq_top I with hI | hI` into its components or cases. Use `left`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun u hu => ?_)` and prove the remaining obligations.
+
+Establish `: φ u ∈ I.toSubmodule` using `⟨u, hu, rfl⟩`. Rewrite `this` using `[hI]`. Establish `h0 : φ u = 0` using `(Submodule.mem_bot ℂ).1 this`. Conclude with `(Submodule.mem_bot ℂ).2 (hφ (h0.trans (map_zero φ).symm))`. Use `right`.
+
+Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `: φ v ∈ I.toSubmodule` using `by rw [hI]; exact Submodule.mem_top`. Take `⟨u, hu, huv⟩` from `this`. Use `hφ huv` as an intermediate fact. Rewrite using `[← this]`.
+
+Conclude with `hu`.
+-/
 theorem isIrreducible_of_injective : ∀ {K V W : Type} [Group K] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (π₁ : Representation ℂ K V) (π₂ : Representation ℂ K W) [Nontrivial V], π₂.IsIrreducible →
     ∀ (φ : π₁.IntertwiningMap π₂), Function.Injective φ → π₁.IsIrreducible := by
@@ -58,6 +79,17 @@ theorem isIrreducible_of_injective : ∀ {K V W : Type} [Group K] [AddCommGroup 
     rw [← this]
     exact hu
 
+/- English proof (translation)
+Introduce `k _ _ _ _ m a b _ _ _ _ _ _ V Y _ _ _ _ π' τ f hf e' g q hq`. Set `J` to `jacMap (two e') f`. Establish `hJ : ∀ x, J (jac₂ e' π' g x) = jac₂ e' τ g (J x)` using `fun x => LinearMap.congr_fun (J.isIntertwining' _) x`. Establish `hpow : ∀ (i : ℕ) x, J (((jac₂ e' π' g) ^ i) x) = ((jac₂ e' τ g) ^ i) (J x)`. Introduce `i`.
+
+Proceed by induction on `i with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ i ih => intro x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, hJ]`.
+
+Establish `hcomm : ∀ (r : Polynomial ℂ) x, J (Polynomial.aeval (jac₂ e' π' g) r x) = Polynomial.aeval (jac₂ e' τ g) r (J x)`. Introduce `r x`. Proceed by induction on `r using Polynomial.induction_on' with`. Consider the case `add p r hp hr => simp only [map_add, LinearMap.add_apply, hp, hr]`. Consider the case `monomial i c`.
+
+Simplify using `only [Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul, hpow]`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨v, rfl⟩` from `hf w`. Establish `h1 : (Submodule.Quotient.mk (f v) : Jacquet τ (unipRad k (two e'))) = J (Submodule.Quotient.mk v)` using `rfl`.
+
+Rewrite using `[h1, ← hcomm, hq]`. Simplify using the standard rewrite rules.
+-/
 theorem aeval_jac₂_eq_zero_of_surjective : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {m a b : Type} [Fintype m] [DecidableEq m] [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     {V Y : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
@@ -85,6 +117,15 @@ theorem aeval_jac₂_eq_zero_of_surjective : ∀ {k : Type} [Field k] [Valuative
   rw [h1, ← hcomm, hq]
   simp
 
+/- English proof (translation)
+Introduce `H K V W _ _ _ _ _ _ ψ π₁ π₂ φ hφ`. Set `L1` to `TensorProduct.lid ℂ V`. Set `L2` to `TensorProduct.lid ℂ W`. Set `f : V →ₗ[ℂ] W` to `L2.toLinearMap ∘ₗ φ.toLinearMap ∘ₗ L1.symm.toLinearMap`. Establish `key2 : ∀ (g : K) (y : ℂ ⊗[ℂ] W), L2 (extTensor ψ π₂ (1, g) y) = π₂ g (L2 y)`.
+
+Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul c w => simp [extTensor_tmul, L2]`.
+
+Establish `key1 : ∀ (g : K) (v : V), extTensor ψ π₁ (1, g) (L1.symm v) = L1.symm (π₁ g v)`. Introduce `g v`. Simplify using `[extTensor_tmul, L1]`. Use `⟨⟨f, fun g => LinearMap.ext fun v => ?_⟩, ?_⟩` and prove the remaining obligations. Use `show L2 (φ (L1.symm (π₁ g v))) = π₂ g (L2 (φ (L1.symm v)))`.
+
+Rewrite using `[← key1, ← key2]`. Use `congr 1`. Conclude with `LinearMap.congr_fun (φ.isIntertwining' (1, g)) (L1.symm v)`. Conclude with `L2.injective.comp (hφ.comp L1.symm.injective)`.
+-/
 theorem exists_injective_of_extTensor : ∀ {H K V W : Type} [Group H] [Group K] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (ψ : Representation ℂ H ℂ) (π₁ : Representation ℂ K V) (π₂ : Representation ℂ K W)
     (φ : (extTensor ψ π₁).IntertwiningMap (extTensor ψ π₂)), Function.Injective φ →
@@ -109,6 +150,19 @@ theorem exists_injective_of_extTensor : ∀ {H K V W : Type} [Group H] [Group K]
     exact LinearMap.congr_fun (φ.isIntertwining' (1, g)) (L1.symm v)
   · exact L2.injective.comp (hφ.comp L1.symm.injective)
 
+/- English proof (translation)
+Introduce `G V V₂ X X₂ _ _ _ _ _ _ _ _ _ ρ ρ₂ σ σ₂ z hz a p hp hpi ι hι p₂ hp₂`. Establish `pint : ∀ g v, p (ρ g v) = σ g (p v)` using `fun g v => LinearMap.congr_fun (p.isIntertwining' g) v`. Establish `iint : ∀ g v, ι (ρ g v) = ρ₂ g (ι v)` using `fun g v => LinearMap.congr_fun (ι.isIntertwining' g) v`. Establish `p2int : ∀ g v, p₂ (ρ₂ g v) = σ₂ g (p₂ v)` using `fun g v => LinearMap.congr_fun (p₂.isIntertwining' g) v`. Set `s : X → V` to `fun y => Classical.choose (hp y)`.
+
+Establish `hs1 : ∀ y, ρ z (s y) = a • s y` using `fun y => (Classical.choose_spec (hp y)).1`. Establish `hs2 : ∀ y, p (s y) = y` using `fun y => (Classical.choose_spec (hp y)).2`. Establish `uniq : ∀ y v, ρ z v = a • v → p v = y → s y = v`. Introduce `y v hv hpv`. Establish `h` using `hpi (s y - v) (by rw [map_sub, hs1, hv, smul_sub]) (by rw [map_sub, hs2, hpv, sub_self])`.
+
+Conclude with `sub_eq_zero.1 h`. Set `sL : X →ₗ[ℂ] V` to `{ toFun := s map_add' := fun x y => (uniq (x + y) (s x + s y) (by rw [map_add, hs1, hs1, smul_add]) (by rw [map_add, hs2, hs2])).trans rfl map_smul' := fun c x => uniq (c • x) (c • s x) (by rw [map_smul, hs1, smul_comm]) (by rw [map_smul, hs2]) }`. Establish `sint : ∀ g y, s (σ g y) = ρ g (s y)`. Introduce `g y`. Use `uniq _ _ ?_ (by rw [pint, hs2])` and prove the remaining obligations.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hz, map_mul, Module.End.mul_apply, hs1, map_smul]`. Set `F : X →ₗ[ℂ] X₂` to `p₂.toLinearMap ∘ₗ ι.toLinearMap ∘ₗ sL`. Use `⟨⟨F, fun g => LinearMap.ext fun y => ?_⟩, fun y y' hyy => ?_⟩` and prove the remaining obligations. Use `show p₂ (ι (s (σ g y))) = σ₂ g (p₂ (ι (s y)))`. Rewrite using `[sint, iint, p2int]`.
+
+Establish `hF : ∀ y, F y = p₂ (ι (s y))` using `fun y => rfl`. Establish `h0 : F (y - y') = 0` using `by rw [map_sub, sub_eq_zero]; exact hyy`. Establish `he : ρ₂ z (ι (s (y - y'))) = a • ι (s (y - y'))` using `by rw [← iint, hs1, map_smul]`. Establish `h1` using `hp₂ _ he (by rw [← hF]; exact h0)`. Establish `h2 : s (y - y') = 0` using `hι (h1.trans (map_zero ι).symm)`.
+
+Establish `h3 : y - y' = 0` using `by rw [← hs2 (y - y'), h2, map_zero]`. Conclude with `sub_eq_zero.1 h3`.
+-/
 theorem exists_injective_of_eigen : ∀ {G V V₂ X X₂ : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V₂] [Module ℂ V₂]
     [AddCommGroup X] [Module ℂ X] [AddCommGroup X₂] [Module ℂ X₂]
     (ρ : Representation ℂ G V) (ρ₂ : Representation ℂ G V₂) (σ : Representation ℂ G X)
@@ -149,6 +203,15 @@ theorem exists_injective_of_eigen : ∀ {G V V₂ X X₂ : Type} [Group G] [AddC
     have h3 : y - y' = 0 := by rw [← hs2 (y - y'), h2, map_zero]
     exact sub_eq_zero.1 h3
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n a b _ _ _ _ _ _ e V W _ _ _ _ π σ hπ hirr p hp`. Set `σ'` to `σ.comp (leviTwo k a b).symm.toMonoidHom`. Set `p' : (jac (two e) π).IntertwiningMap σ'` to `⟨p.toLinearMap, fun h => by`. Use `p.isIntertwining' ((leviTwo k a b).symm h)` as an intermediate fact. Simplify `this⟩` using `[jac₂, σ']`.
+
+Take `⟨f, hf⟩` from `(Model.evalOne_bijective (two e) hπ σ').2 p'`. Use `haveI := hirr`. Use `⟨f, (Representation.IsIrreducible.injective_or_eq_zero f).resolve_right fun h0 => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `hp`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`.
+
+Apply `hv` to reduce the goal to its premises. Establish `h1 : p (Submodule.Quotient.mk w) = (Model.evalOne (two e) f) (Submodule.Quotient.mk w)`. Rewrite using `[hf]`. Both sides reduce to the same expression. Rewrite using `[h1, h0]`.
+
+Both sides reduce to the same expression.
+-/
 theorem exists_injective_ind₂ : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n a b : Type} [Fintype n] [DecidableEq n] [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
     (e : a ⊕ b ≃ n) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
@@ -172,6 +235,19 @@ theorem exists_injective_ind₂ : ∀ {k : Type} [Field k] [ValuativeRel k] [Top
   rw [h1, h0]
   rfl
 
+/- English proof (translation)
+Introduce `k _ _ _ _ hG n m _ _ _ _ e V V' _ _ _ _ _ π π' hπ hirr hπ' hfl ξ hξ ϖ N S hS h0 hN t₀ φ hother hii`. Establish `hzc : ∀ g : GL (Fin 1) k × GL m k, g * (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) = (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) * g` using `fun g => Prod.ext (scalar_comm ϖ g.1) (by simp)`. Establish `hoth : ∀ t, t ≠ t₀ → ∃ q : Polynomial ℂ, q.eval (ξ ϖ : ℂ) ≠ 0 ∧ ∀ w ∈ (S t.succ).toSubmodule, Polynomial.aeval (jac₂ e π (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) q w ∈ (S t.castSucc).toSubmodule`. Introduce `t ht`. Take `⟨c, hc, hw⟩` from `hother t ht`.
+
+Use `⟨Polynomial.X - Polynomial.C c, by simpa [sub_eq_zero] using hc.symm, fun w hw' => ?_⟩` and prove the remaining obligations. Simplify `hw w hw'` using `[Module.algebraMap_end_apply]`. Take `⟨p, hpsurj, hpinj⟩` from `GlobalTheory.T.filtration_central_character_isolate (jac₂ e π) (extTensor (detRep (Fin 1) ξ) π') N S hS h0 hN _ hzc t₀ (ξ ϖ) ⟨φ⟩ (ext_scalar π' ξ ϖ) hoth`. Take `⟨Y, _, _, τ, hτs, hτirr, qτ, hqτ⟩` from `IrrQuot.exists_irreducible_smooth_quotient π' hπ' hfl inferInstance`. Use `haveI : Nontrivial Y := Model.nontrivial_of_isIrreducible hτirr`.
+
+Set `T : (extTensor (detRep (Fin 1) ξ) π').IntertwiningMap (extTensor (detRep (Fin 1) ξ) τ)` to `⟨TensorProduct.map LinearMap.id qτ.toLinearMap, fun g => by`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `x y`. Simplify using `[extTensor_tmul, qτ.isIntertwining]⟩`. Establish `hT : Function.Surjective T` using `TensorProduct.map_surjective Function.surjective_id hqτ`.
+
+Take `⟨y, hy⟩` from `exists_ne (0 : ℂ ⊗[ℂ] Y)`. Take `⟨x, rfl⟩` from `hT y`. Take `⟨v, -, rfl⟩` from `hpsurj x`. Take `⟨ι₀, hι₀⟩` from `exists_injective_ind₂ e π (extTensor (detRep (Fin 1) ξ) τ) hπ hirr (T.comp p) ⟨v, hy⟩`. Set `ι : (jac₂ e π).IntertwiningMap (jac₂ e (ind₂ e (extTensor (detRep (Fin 1) ξ) τ)))` to `⟨(jacMap (two e) ι₀).toLinearMap, fun g => (jacMap (two e) ι₀).isIntertwining' _⟩`.
+
+Establish `hι : Function.Injective ι` using `JacInj.jacMap_injective k Bool n _ (two e) V _ π _ ι₀ (isSmooth_parInd _ _) hι₀`. Establish `hkill : ∀ (m' : Type) [Fintype m'] [DecidableEq m'] (e' : Fin 1 ⊕ m' ≃ m), ∃ q : Polynomial ℂ, q.eval (ξ ϖ : ℂ) ≠ 0 ∧ Polynomial.aeval (jac₂ e' τ (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) q = 0`. Introduce `m' _ _ e'`. Take `⟨q, hq, hq0⟩` from `hii m' e'`. Conclude with `⟨q, hq, aeval_jac₂_eq_zero_of_surjective π' τ qτ hqτ e' _ q hq0⟩`.
+
+Take `⟨N₂, S₂, hS₂, h0₂, hN₂, t₂, ⟨φ₂⟩, hoth₂⟩` from `GlobalTheory.T.jacquet_mirabolic_induction_character hG e τ hτs ξ hξ ϖ hkill`. Take `⟨p₂, -, hp₂⟩` from `GlobalTheory.T.filtration_central_character_isolate _ (extTensor (detRep (Fin 1) ξ) τ) N₂ S₂ hS₂ h0₂ hN₂ _ hzc t₂ (ξ ϖ) ⟨φ₂⟩ (ext_scalar τ ξ ϖ) hoth₂`. Take `⟨ψ, hψ⟩` from `exists_injective_of_eigen _ _ _ _ _ hzc (ξ ϖ) p hpsurj hpinj ι hι p₂ hp₂`. Take `⟨ψ', hψ'⟩` from `exists_injective_of_extTensor _ π' τ ψ hψ`. Conclude with `isIrreducible_of_injective π' τ hτirr ψ' hψ'`.
+-/
 theorem isIrreducible : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.GeometricLemmaFiltration → ∀ {n m : Type} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] (e : Fin 1 ⊕ m ≃ n) {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [Nontrivial V'] (π : Representation ℂ (GL n k) V) (π' : Representation ℂ (GL m k) V') (hπ : IsSmooth π) (hirr : π.IsIrreducible) (hπ' : IsSmooth π') (hfl : HasFiniteLength π') (ξ : kˣ →* ℂˣ) (hξ : IsSmoothChar ξ) (ϖ : kˣ) (N : ℕ) (S : Fin (N + 1) → Subrepresentation (jac₂ e π)) (hS : Monotone S) (h0 : S 0 = ⊥) (hN : S (Fin.last N) = ⊤) (t₀ : Fin N) (φ : (subQuot (S t₀.succ) (S t₀.castSucc)).Equiv (extTensor (detRep (Fin 1) ξ) π')) (hother : ∀ t, t ≠ t₀ → ∃ c : ℂ, c ≠ (ξ ϖ : ℂ) ∧ ∀ w ∈ (S t.succ).toSubmodule, jac₂ e π (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) w - c • w ∈ (S t.castSucc).toSubmodule) (hii : ∀ (m' : Type) [Fintype m'] [DecidableEq m'] (e' : Fin 1 ⊕ m' ≃ m), ∃ q : Polynomial ℂ, q.eval (ξ ϖ : ℂ) ≠ 0 ∧ Polynomial.aeval (jac₂ e' π' (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) q = 0), π'.IsIrreducible := by
   intro k _ _ _ _ hG n m _ _ _ _ e V V' _ _ _ _ _ π π' hπ hirr hπ' hfl ξ hξ ϖ N S hS h0 hN t₀ φ hother hii
   have hzc : ∀ g : GL (Fin 1) k × GL m k,

@@ -8,6 +8,9 @@ noncomputable section
 namespace GlobalTheory.HenQ.Regroup
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Use `haveI := p.isMaximal`. Rewrite `hP` using `[IsDedekindDomain.mem_primesOverFinset_iff p.ne_bot]`. Use `haveI : P.IsPrime := hP.1`. Use `haveI : P.LiesOver p.asIdeal := hP.2`. Conclude with `Nat.one_le_iff_ne_zero.mpr (mul_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver P p.ne_bot) (Ideal.inertiaDeg'_pos p.asIdeal P).ne')`.
+-/
 private lemma one_le_ramificationIdx_mul_inertiaDeg_of_mem (E : Type) [Field E]
     [NumberField E] (p : HeightOneSpectrum (NumberField.RingOfIntegers ℚ))
     {P : Ideal (NumberField.RingOfIntegers E)}
@@ -22,6 +25,9 @@ private lemma one_le_ramificationIdx_mul_inertiaDeg_of_mem (E : Type) [Field E]
     (Ideal.inertiaDeg'_pos p.asIdeal P).ne')
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Use `haveI := (HeightOneSpectrum.under (NumberField.RingOfIntegers ℚ) v).isMaximal`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff (HeightOneSpectrum.under (NumberField.RingOfIntegers ℚ) v).ne_bot, HeightOneSpectrum.under_asIdeal]`. Conclude with `⟨v.isPrime, inferInstance⟩`.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.mem_fin (E : Type) [Field E] [NumberField E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)) :
     v.asIdeal ∈
@@ -35,6 +41,9 @@ theorem _root_.GlobalTheory.HenQ.Regroup.mem_fin (E : Type) [Field E] [NumberFie
   exact ⟨v.isPrime, inferInstance⟩
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+The claim follows from `one_le_ramificationIdx_mul_inertiaDeg_of_mem E _ (_root_.GlobalTheory.HenQ.Regroup.mem_fin E v)`.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.term_pos (E : Type) [Field E] [NumberField E]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)) :
     (1 : ℕ) ≤
@@ -45,6 +54,9 @@ theorem _root_.GlobalTheory.HenQ.Regroup.term_pos (E : Type) [Field E] [NumberFi
   one_le_ramificationIdx_mul_inertiaDeg_of_mem E _ (_root_.GlobalTheory.HenQ.Regroup.mem_fin E v)
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Use `haveI := p.isMaximal`. Rewrite using `[Ideal.sum_ramification_inertia (NumberField.RingOfIntegers E) ℚ E p.ne_bot, hE]`.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.sum_eq (E : Type) [Field E] [NumberField E]
     (hE : Module.finrank ℚ E = (2 : ℕ))
     (p : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers ℚ)) :
@@ -58,6 +70,13 @@ end GlobalTheory.HenQ.Regroup
 
 namespace GlobalTheory.HenQ.Regroup
 
+/- English proof (translation)
+Use `haveI := v.isMaximal`. Take `⟨P, hPm, hP⟩` from `Ideal.exists_maximal_ideal_liesOver_of_isIntegral (S := 𝓞 E) v.asIdeal`. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+
+Rewrite using `[hP.over, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective (𝓞 ℚ) (𝓞 E))`. Use `⟨⟨P, hPm.isPrime, hne⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[HeightOneSpectrum.under_asIdeal]`.
+
+Conclude with `hP.over.symm`.
+-/
 theorem exists_above (E : Type) [Field E] [NumberField E]
     (v : HeightOneSpectrum (𝓞 ℚ)) : ∃ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 ℚ) = v := by
   haveI := v.isMaximal
@@ -73,6 +92,11 @@ theorem exists_above (E : Type) [Field E] [NumberField E]
   exact hP.over.symm
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm p.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `p.ne_bot`. Establish `h1 : Ideal.absNorm p.asIdeal ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`.
+
+Conclude with `p.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.two_le_absNorm {K : Type} [Field K] [NumberField K]
     (p : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)) :
     (2 : ℕ) ≤ (Ideal.absNorm : Ideal (NumberField.RingOfIntegers K) → ℕ) p.asIdeal := by
@@ -85,6 +109,9 @@ theorem _root_.GlobalTheory.HenQ.Regroup.two_le_absNorm {K : Type} [Field K] [Nu
   omega
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.card_eq_sum_ones]`. Conclude with `Finset.sum_le_sum fun P hP => one_le_ramificationIdx_mul_inertiaDeg_of_mem E p (hT hP)`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma card_le_sum_ramificationIdx_mul_inertiaDeg_le_two (E : Type) [Field E]
     [NumberField E] (hE : Module.finrank ℚ E = 2)
     (p : HeightOneSpectrum (NumberField.RingOfIntegers ℚ))
@@ -103,6 +130,17 @@ private lemma card_le_sum_ramificationIdx_mul_inertiaDeg_le_two (E : Type) [Fiel
       _ = 2 := _root_.GlobalTheory.HenQ.Regroup.sum_eq E hE p
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h1 : w.asIdeal ≠ w'.asIdeal` using `fun he => hne (HeightOneSpectrum.ext he).symm`. Establish `h2 : w.asIdeal ≠ v.asIdeal` using `fun he => hcon.1 (HeightOneSpectrum.ext he).symm`. Establish `h3 : w'.asIdeal ≠ v.asIdeal` using `fun he => hcon.2 (HeightOneSpectrum.ext he).symm`.
+
+Establish `mw` using `_root_.GlobalTheory.HenQ.Regroup.mem_fin E w`. Establish `mw'` using `_root_.GlobalTheory.HenQ.Regroup.mem_fin E w'`. Establish `mv` using `_root_.GlobalTheory.HenQ.Regroup.mem_fin E v`. Rewrite `mw'` using `[hw']`. Rewrite `mv` using `[hv]`.
+
+Establish `hsub : ({w.asIdeal, w'.asIdeal, v.asIdeal} : Finset (Ideal (NumberField.RingOfIntegers E))) ⊆ IsDedekindDomain.primesOverFinset (HeightOneSpectrum.under (NumberField.RingOfIntegers ℚ) w).asIdeal (NumberField.RingOfIntegers E)`. Introduce `P hP`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hP`. Break down `hP with rfl | rfl | rfl` into its components or cases. Conclude with `mw`.
+
+Conclude with `mw'`. Conclude with `mv`. Establish `hb` using `card_le_sum_ramificationIdx_mul_inertiaDeg_le_two E hE _ _ hsub`. Establish `hcard : ({w.asIdeal, w'.asIdeal, v.asIdeal} : Finset (Ideal (NumberField.RingOfIntegers E))).card = 3`. Rewrite using `[Finset.card_insert_of_notMem (by simp [h1, h2]), Finset.card_pair h3]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.fiber_split (E : Type) [Field E] [NumberField E]
     (hE : Module.finrank ℚ E = (2 : ℕ))
     (w w' v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))
@@ -138,6 +176,17 @@ theorem _root_.GlobalTheory.HenQ.Regroup.fiber_split (E : Type) [Field E] [Numbe
   omega
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hne' : w.asIdeal ≠ v.asIdeal` using `fun he => hne (HeightOneSpectrum.ext he).symm`. Establish `hw` using `_root_.GlobalTheory.HenQ.Regroup.mem_fin E w`. Establish `hvm` using `_root_.GlobalTheory.HenQ.Regroup.mem_fin E v`. Rewrite `hvm` using `[hv]`.
+
+Use `set p := HeightOneSpectrum.under (NumberField.RingOfIntegers ℚ) w with hp`. Use `haveI : w.asIdeal.LiesOver p.asIdeal := by`. Rewrite using `[hp, HeightOneSpectrum.under_asIdeal]`. Use `infer_instance`. Establish `hn` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal p.asIdeal p.isPrime p.ne_bot`.
+
+Rewrite `hn` using `[hN]`. Establish `hf : p.asIdeal.inertiaDeg' w.asIdeal = 2` using `(Nat.pow_right_injective (_root_.GlobalTheory.HenQ.Regroup.two_le_absNorm p) hn).symm`. Establish `hwv` using `one_le_ramificationIdx_mul_inertiaDeg_of_mem E p hvm`. Establish `hww` using `one_le_ramificationIdx_mul_inertiaDeg_of_mem E p hw`. Establish `hsub : ({w.asIdeal, v.asIdeal} : Finset (Ideal (NumberField.RingOfIntegers E))) ⊆ IsDedekindDomain.primesOverFinset p.asIdeal (NumberField.RingOfIntegers E)`.
+
+Introduce `P hP`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hP`. Break down `hP with rfl | rfl` into its components or cases. Conclude with `hw`. Conclude with `hvm`.
+
+Establish `hle` using `(card_le_sum_ramificationIdx_mul_inertiaDeg_le_two E hE p _ hsub).2`. Rewrite `hle` using `[Finset.sum_pair hne', hf]`. Rewrite `hww` using `[hf]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.fiber_inert (E : Type) [Field E] [NumberField E]
     (hE : Module.finrank ℚ E = (2 : ℕ))
     (w v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))
@@ -188,6 +237,9 @@ end GlobalTheory.HenQ.Regroup
 namespace GlobalTheory.HenQ.Regroup
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Establish `h` using `multipliable_one_add_of_summable (f := fun i => g i - 1) (Summable.of_nonneg_of_le (fun _ => norm_nonneg _) hg hu)`. Simplify using `using h`.
+-/
 private lemma multipliable_of_norm_sub_one_le_summable {ι : Type*} (g : ι → ℂ) (u : ι → ℝ)
     (hu : Summable u) (hg : ∀ i, ‖g i - 1‖ ≤ u i) : Multipliable g := by
   have h := multipliable_one_add_of_summable (f := fun i => g i - 1)
@@ -195,6 +247,13 @@ private lemma multipliable_of_norm_sub_one_le_summable {ι : Type*} (g : ι → 
   simpa using h
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Establish `ha : ‖a - 1‖ ≤ ε` using `hm a (Multiset.mem_cons_self a m)`. Establish `ih'` using `ih (fun x hx => hm x (Multiset.mem_cons_of_mem hx))`.
+
+Establish `h2 : (1 : ℝ) ≤ 2 ^ Multiset.card m` using `one_le_pow₀ (by norm_num)`. Establish `hP : ‖m.prod‖ ≤ 2 ^ Multiset.card m`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hε1) (sub_nonneg.2 h2)]`. Rewrite using `[Multiset.prod_cons, Multiset.card_cons, pow_succ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `_ ≤ ε * 2 ^ Multiset.card m + ε * (2 ^ Multiset.card m - 1) := add_le_add (mul_le_mul ha hP (norm_nonneg _) hε0) ih'`. Use `_ = ε * (2 ^ Multiset.card m * 2 - 1) := by ring`.
+-/
 private lemma norm_multiset_prod_sub_one_le (m : Multiset ℂ) {ε : ℝ} (hε0 : 0 ≤ ε) (hε1 : ε ≤ 1)
     (hm : ∀ x ∈ m, ‖x - 1‖ ≤ ε) : ‖m.prod - 1‖ ≤ ε * (2 ^ Multiset.card m - 1) := by
   induction m using Multiset.induction_on with
@@ -219,6 +278,13 @@ private lemma norm_multiset_prod_sub_one_le (m : Multiset ℂ) {ε : ℝ} (hε0 
       _ = ε * (2 ^ Multiset.card m * 2 - 1) := by ring
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Establish `h1 : (1 : ℝ) / 2 ≤ ‖1 - z‖`. Use `norm_sub_norm_le (1 : ℂ) z` as an intermediate fact. Rewrite `this` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : (1 : ℂ) - z ≠ 0`.
+
+Introduce `h`. Rewrite `h1` using `[h, norm_zero]`. Evaluate the numerical expressions using `at h1`. Establish `hq : (1 - z)⁻¹ - 1 = z / (1 - z)`. Rewrite using `[eq_div_iff hne, sub_mul, inv_mul_cancel₀ hne]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hq, norm_div, div_le_iff₀ (by linarith)]`. Use polynomial arithmetic with `[norm_nonneg z]`.
+-/
 private lemma norm_inv_one_sub_sub_one_le_two_mul {z : ℂ} (hz : ‖z‖ ≤ 1 / 2) :
     ‖(1 - z)⁻¹ - 1‖ ≤ 2 * ‖z‖ := by
   have h1 : (1 : ℝ) / 2 ≤ ‖1 - z‖ := by
@@ -236,6 +302,19 @@ private lemma norm_inv_one_sub_sub_one_le_two_mul {z : ℂ} (hz : ‖z‖ ≤ 1 
   nlinarith [norm_nonneg z]
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Establish `hδ1 : 1 < s.re - c₀` using `by linarith`. Establish `hsum : Summable fun w : {w : HeightOneSpectrum (NumberField.RingOfIntegers E) // w ∉ SE} => ((Ideal.absNorm (w : HeightOneSpectrum (NumberField.RingOfIntegers E)).asIdeal : ℕ) : ℝ) ^ (-(s.re - c₀))` using `((_root_.GlobalTheory.countable_ideal_and_summable_absNorm_rpow E).2 (s.re - c₀) hδ1).2.subtype _`. Use `multipliable_of_norm_sub_one_le_summable _ _ (hsum.mul_left (2 * 2 ^ r)) (fun w => ?_)` and prove the remaining obligations. Take `⟨hcard, hb⟩` from `hBE w.1 w.2`. Establish `hN2 : 2 ≤ Ideal.absNorm w.1.asIdeal` using `_root_.GlobalTheory.HenQ.Regroup.two_le_absNorm w.1`.
+
+Use `set N : ℕ := Ideal.absNorm w.1.asIdeal with hN`. Establish `hNR : (2 : ℝ) ≤ N` using `by exact_mod_cast hN2`. Establish `hNpos : (0 : ℝ) < N` using `by linarith`. Establish `hsmall : (N : ℝ) ^ (-(s.re - c₀)) ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[one_div]`. Conclude with `inv_anti₀ (by norm_num) hNR`. Establish `hz : ∀ b ∈ BE w.1, ‖b * (N : ℂ) ^ (-s)‖ ≤ (N : ℝ) ^ (-(s.re - c₀))`. Introduce `b hbm`. Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos (by omega), Complex.neg_re]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_add hNpos]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `norm_multiset_prod_sub_one_le (Multiset.map (fun b => (1 - b * (N : ℂ) ^ (-s))⁻¹) (BE w.1)) (ε := 2 * (N : ℝ) ^ (-(s.re - c₀))) (by positivity) (by linarith) (by`.
+
+Introduce `x hx`. Take `⟨b, hbm, rfl⟩` from `Multiset.mem_map.mp hx`. Use `hz b hbm` as an intermediate fact. Conclude with `(norm_inv_one_sub_sub_one_le_two_mul (by linarith)).trans (by linarith))`. Rewrite `hm` using `[Multiset.card_map]`.
+
+Establish `hpow : (2 : ℝ) ^ (BE w.1).card ≤ 2 ^ r` using `pow_le_pow_right₀ (by norm_num) hcard`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.multipliable_E (E : Type) [Field E] [NumberField E]
     (SE : Set (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)))
     (BE : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E) → Multiset ℂ)
@@ -302,6 +381,13 @@ end GlobalTheory.HenQ.Regroup
 namespace GlobalTheory.HenQ.Regroup
 
 open IsDedekindDomain NumberField in
+/- English proof (translation)
+Proceed by induction on `B' using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a m ih`. Simplify using `only [Multiset.map_cons, Multiset.cons_add, Multiset.prod_cons, Multiset.map_add, Multiset.prod_add] at ih ⊢`. Rewrite using `[← ih]`.
+
+Establish `hfac : ((1 : ℂ) - a ^ 2 * X ^ 2)⁻¹ = (1 - a * X)⁻¹ * (1 - -a * X)⁻¹`. Rewrite using `[← mul_inv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.HenQ.Regroup.fac_inert (B' : Multiset ℂ) (X : ℂ) :
     (Multiset.map (fun (b : ℂ) ↦ ((1 : ℂ) - b * X)⁻¹) (B' + Multiset.map Neg.neg B')).prod =
       (Multiset.map (fun (b : ℂ) ↦ ((1 : ℂ) - b * X ^ (2 : ℕ))⁻¹)
@@ -319,6 +405,21 @@ theorem _root_.GlobalTheory.HenQ.Regroup.fac_inert (B' : Multiset ℂ) (X : ℂ)
     rw [hfac]
     ring
 
+/- English proof (translation)
+Establish `hE'` using `(multipliable_E E SE BE c₀ r hBE s hs).hasProd`. Set `e : (Σ p : {p : HeightOneSpectrum (𝓞 ℚ) // p ∉ SQ}, {w : HeightOneSpectrum (𝓞 E) // w.under (𝓞 ℚ) = p.1}) ≃ {w : HeightOneSpectrum (𝓞 E) // w ∉ SE}` to `{ toFun := fun x => ⟨x.2.1, by rw [hSE, x.2.2]; exact x.1.2⟩ invFun := fun w => ⟨⟨w.1.under (𝓞 ℚ), (hSE w.1).not.mp w.2⟩, ⟨w.1, rfl⟩⟩ left_inv := by rintro ⟨⟨p, hp⟩, ⟨w, hw⟩⟩; simp only at hw; subst hw; rfl right_inv := by intro w; rfl }`. Establish `h2` using `(e.hasProd_iff).mpr hE'`. Use `(h2.sigma (g := fun p : {p : HeightOneSpectrum (𝓞 ℚ) // p ∉ SQ} => ((BQ p.1).map fun b => (1 - b * ((Ideal.absNorm p.1.asIdeal : ℕ) : ℂ) ^ (-s))⁻¹).prod) ?_).tprod_eq` and prove the remaining obligations. Introduce and unpack `⟨p, hp⟩`.
+
+Take `⟨w, rfl⟩` from `exists_above E p`. Establish `hwS : w ∉ SE` using `by rw [hSE]; exact hp`. Break down `hloc w hwS with ⟨hN, w', hne, hw', hBQ⟩ | ⟨hN, B', hBE', hBQ⟩` into its components or cases. Establish `hN' : Ideal.absNorm w'.asIdeal = Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal`. Break down `hloc w' (by rw [hSE, hw']; exact hp) with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases.
+
+Rewrite using `[h, hw']`. Conclude with `absurd (fiber_inert E hE w' w h hw'.symm) (Ne.symm hne)`. Set `a : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}` to `⟨w, rfl⟩`. Set `a' : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}` to `⟨w', hw'⟩`. Establish `hall : ∀ c : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}, c ∈ ({a, a'} : Finset _)`.
+
+Introduce `c`. Break down `fiber_split E hE w w' c.1 hw' c.2 hne with h | h` into its components or cases. Simplify using `[Subtype.ext_iff, h, a]`. Simplify using `[Subtype.ext_iff, h, a']`. Establish `hne' : a ≠ a'` using `fun h => hne (congrArg Subtype.val h).symm`.
+
+Use `hasProd_prod_of_ne_finset_one (L := SummationFilter.unconditional _) (s := ({a, a'} : Finset _)) (fun c hc => absurd (hall c) hc) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.prod_pair hne']`. Simplify using `only [e, Equiv.coe_fn_mk, a, a', Function.comp_apply]`. Rewrite using `[hBQ, Multiset.map_add, Multiset.prod_add, hN, hN']`. Set `a : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}` to `⟨w, rfl⟩`.
+
+Establish `hall : ∀ c : {v : HeightOneSpectrum (𝓞 E) // v.under (𝓞 ℚ) = w.under (𝓞 ℚ)}, c ∈ ({a} : Finset _)`. Introduce `c`. Use `fiber_inert E hE w c.1 hN c.2` as an intermediate fact. Simplify using `[Subtype.ext_iff, this, a]`. Use `hasProd_prod_of_ne_finset_one (L := SummationFilter.unconditional _) (s := ({a} : Finset _)) (fun c hc => absurd (hall c) hc) using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[Finset.prod_singleton]`. Simplify using `only [e, Equiv.coe_fn_mk, a, Function.comp_apply]`. Establish `hX : ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-s) = (((Ideal.absNorm (w.under (𝓞 ℚ)).asIdeal : ℕ) : ℂ) ^ (-s)) ^ 2`. Rewrite using `[hN, pow_two, Nat.cast_mul, Complex.natCast_mul_natCast_cpow, pow_two]`. Rewrite using `[hX, hBE', hBQ, fac_inert]`.
+-/
 theorem core (E : Type) [Field E] [NumberField E] (hE : Module.finrank ℚ E = 2)
     (SQ : Set (HeightOneSpectrum (𝓞 ℚ))) (SE : Set (HeightOneSpectrum (𝓞 E)))
     (BQ : HeightOneSpectrum (𝓞 ℚ) → Multiset ℂ) (BE : HeightOneSpectrum (𝓞 E) → Multiset ℂ) (c₀ : ℝ) (r : ℕ)

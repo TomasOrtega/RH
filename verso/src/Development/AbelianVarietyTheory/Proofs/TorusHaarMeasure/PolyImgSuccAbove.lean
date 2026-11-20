@@ -18,6 +18,9 @@ def freeVar (j0 : Fin (N + 1)) : SVar D N → TVar D N :=
 
 open NumberField MvPolynomial in
 variable {F : Type} [Field F] {D N : ℕ} in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.GenericSection.polyImg]`.
+-/
 theorem _root_.GlobalTheory.GenericSection.polyImg_same (j0 : Fin (N + 1)) (x : Fin N → F)
     (i : Fin (D + 1)) :
     _root_.GlobalTheory.GenericSection.polyImg j0 x (i, j0) =
@@ -26,6 +29,9 @@ theorem _root_.GlobalTheory.GenericSection.polyImg_same (j0 : Fin (N + 1)) (x : 
 
 open NumberField MvPolynomial in
 variable {F : Type} [Field F] {D N : ℕ} in
+/- English proof (translation)
+Simplify using `[_root_.GlobalTheory.GenericSection.polyImg]`.
+-/
 theorem _root_.GlobalTheory.GenericSection.polyImg_succAbove (j0 : Fin (N + 1)) (x : Fin N → F)
     (i : Fin (D + 1)) (k : Fin N) :
     _root_.GlobalTheory.GenericSection.polyImg j0 x (i, j0.succAbove k) = X (Sum.inr (i, k)) := by

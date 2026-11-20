@@ -4,6 +4,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 
 namespace GlobalTheory.PMon.Ram
 
+/- English proof (translation)
+Introduce `h0 a`. Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `hstep` using `herbrandPhi_of_mem_Icc (K := F) (L := L) n (u := ((n : ℝ) + 1)) ⟨by linarith, le_refl _⟩`.
+
+Establish `hidx : (lowerRamificationGroup F L ((n : ℤ) + 1)).relIndex (lowerRamificationGroup F L 0) * Nat.card ↥(wild F L n) = Nat.card (L ≃ₐ[F] L)`. Rewrite using `[h0, Subgroup.relIndex_top_right, wild, Subgroup.index_mul_card]`. Establish `hpos : (0 : ℝ) < ((lowerRamificationGroup F L ((n : ℤ) + 1)).relIndex (lowerRamificationGroup F L 0) : ℝ)` using `relIndex_pos_of_finite _ _`. Establish `hidxR : (((lowerRamificationGroup F L ((n : ℤ) + 1)).relIndex (lowerRamificationGroup F L 0) : ℕ) : ℝ) * (Nat.card ↥(wild F L n) : ℝ) = (Nat.card (L ≃ₐ[F] L) : ℝ)` using `by exact_mod_cast hidx`. Move the coercions through the operations in `[Finset.sum_range_succ] at ih ⊢`.
+
+Rewrite using `[hstep, ← ih, ← hidxR]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_mul_herbrandPhi_natCast_of_totallyRamified (F L : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
     [Algebra F L] [ValuativeExtension F L] [FiniteDimensional F L] [IsGalois F L] :

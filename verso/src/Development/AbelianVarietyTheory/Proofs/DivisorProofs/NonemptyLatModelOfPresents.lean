@@ -16,6 +16,9 @@ variable {X : Scheme.{0}} [IsIntegral X] {D : CartierDiv X} {L : LB X} {r : L.ι
 
 def genChart (h : Presents D L r) : L.ι := (exists_chart h.isLB (genericPoint X)).choose
 
+/- English proof (translation)
+The claim follows from `(exists_chart h.isLB (genericPoint X)).choose_spec`.
+-/
 theorem gen_mem_genChart (h : Presents D L r) : genericPoint X ∈ L.U h.genChart :=
   (exists_chart h.isLB (genericPoint X)).choose_spec
 
@@ -24,10 +27,18 @@ def secVal (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U) : Γ(L
       (r h.genChart : X.functionField)) fun s t => by
     rw [LB.coord_add, map_add, add_div]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem secVal_apply (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(LB.toMod L, U)) :
     h.secVal U hU s = fnOf _ (memInf hU h.gen_mem_genChart) (LB.coord s h.genChart) /
       (r h.genChart : X.functionField) := rfl
 
+/- English proof (translation)
+Establish `h₀` using `h.gen_mem_genChart`. Establish `hW : genericPoint X ∈ U ⊓ L.U i ⊓ L.U h.genChart` using `⟨hi, h₀⟩`. Establish `e` using `congrArg (fnOf _ hW) (LB.coord_rel s i h.genChart (inf_le_left : U ⊓ L.U i ⊓ L.U h.genChart ≤ U ⊓ L.U i) (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (le_inf (inf_le_left.trans inf_le_right) inf_le_right))`. Rewrite `e` using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG]`. Rewrite using `[e, secVal_apply, h.isRatSec i h.genChart (memInf hi.2 h₀), mul_left_comm]`.
+
+Conclude with `congrArg _ (div_mul_cancel₀ _ (Units.ne_zero _))`.
+-/
 theorem secVal_mul (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U) (s : Γ(LB.toMod L, U))
     (i : L.ι) (hi : genericPoint X ∈ U ⊓ L.U i) :
     h.secVal U hU s * r i = fnOf _ hi (LB.coord s i) := by
@@ -41,10 +52,22 @@ theorem secVal_mul (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U
   rw [e, secVal_apply, h.isRatSec i h.genChart (memInf hi.2 h₀), mul_left_comm]
   exact congrArg _ (div_mul_cancel₀ _ (Units.ne_zero _))
 
+/- English proof (translation)
+Introduce `s t e` and use `LB.sec_ext fun i => fn_ext fun hi => by rw [← h.secVal_mul U hU s i hi, ← h.secVal_mul U hU t i hi, e]`.
+-/
 theorem secVal_injective (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U) :
     Function.Injective (h.secVal U hU) := fun s t e =>
   LB.sec_ext fun i => fn_ext fun hi => by rw [← h.secVal_mul U hU s i hi, ← h.secVal_mul U hU t i hi, e]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩ y hy`. Take `⟨i, hi⟩` from `exists_chart h.isLB y`. Establish `hyi : y ∈ U ⊓ L.U i` using `⟨hy, hi⟩`. Use `(h.isEqn i y hi).regularAt_iff.2 ?_` and prove the remaining obligations.
+
+Rewrite using `[h.secVal_mul U hU s i (gen_mem hyi)]`. Conclude with `regAt_fnOf hyi _ _`. Introduce `hf`. Establish `key (i : L.ι) : ∃ a : Γ(X, U ⊓ L.U i), ∀ hi, fnOf _ hi a = f * r i`. Distinguish the cases in `hi : genericPoint X ∈ U ⊓ L.U i`.
+
+Take `⟨a, ha⟩` from `exists_fnOf_eq hi fun x hx => (h.isEqn i x hx.2).regularAt_iff.1 (hf x hx.1)`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h' => (hi h').elim⟩`. Use `choose a ha using key`. Establish `hmem : a ∈ secOn L U` using `fun i j => fn_ext fun hij => by`.
+
+Rewrite using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, ha, ha, h.isRatSec i j (memInf hij.1.2 hij.2), mul_left_comm]`. Use `⟨LB.mkSec a hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[secVal_apply, LB.coord_mkSec, ha]`. Conclude with `mul_div_cancel_right₀ _ (Units.ne_zero _)`.
+-/
 theorem mem_range_secVal (h : Presents D L r) (U : X.Opens) (hU : genericPoint X ∈ U) (f : X.functionField) :
     f ∈ (h.secVal U hU).range ↔ ∀ y ∈ U, D.RegularAt y f := by
   constructor
@@ -85,6 +108,9 @@ def latModel (h : Presents D L r) :
 
 end GlobalTheory.Cartier.Presents
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ h` and use `⟨h.latModel⟩`.
+-/
 theorem GlobalTheory.Cartier.nonempty_latModel_of_presents : ∀ (X : Scheme.{0}) [IsIntegral X] (D : CartierDiv X) (L : LB X)
     (r : L.ι → X.functionFieldˣ), Presents D L r →
     Nonempty (LatModel (V := X.functionField) (fun y => (D.secOn {y}).toAddSubgroup) (LB.toMod L)) :=

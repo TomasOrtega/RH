@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero | exact GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero | (intros; apply GlobalTheory.ThetaSumNeScaled.exists_thetaSum_pureA_scaledInt_ne_zero <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_sum_ne_zero_indicator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (a : F), a ≠ 0 →
     Set.indicator {y | y - 0 ∈ GlobalTheory.EvAdm.scaledInt F κ a} (fun _ => (1 : ℂ)) ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) →
     ∃ f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ,

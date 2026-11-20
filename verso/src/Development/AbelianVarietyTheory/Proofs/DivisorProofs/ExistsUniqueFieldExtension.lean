@@ -13,6 +13,15 @@ namespace GlobalTheory.Mum
 
 open GlobalTheory.FieldBaseChange ReciprocityTheory.ChartRestriction.G.DVR
 
+/- English proof (translation)
+Introduce `R _ _ I D k F₀ F _ _`. Establish `hG : GlobalFnsSt` using `GlobalTheory.allSixLaws.1.globalFns`. Establish `hL` using `D.P.isLB`. Establish `hext : ∀ α, GeneratorPullback.SecScal D.P.L (DegPre.famφ D (FractionRing R) α) (DegPre.famε k) (F₀.F.s α) (D.famφB α) (DegPre.famε k) (F₀.f α) (DegPre.prB D (FractionRing R)).left 1` using `fun α => by`. Establish `h` using `F₀.ext α`.
+
+Establish `e : scal (DegPre.BF D (FractionRing R)).hom (1 : R) = 1`. Unfold `scal`. Rewrite using `[map_one, map_one]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hov : F₀.Over (famPull D (FractionRing R) F hG k F₀.F)` using `fun α => by`.
+
+Use `SectionScalarValuation.secScal_of_sval hL fun y J hJ => ?_` and prove the remaining obligations. Use `show _ = sval (termPull D (FractionRing R) F k α (F₀.F.s α)) (𝟙 _) y J`. Use `Eq.trans ?_ (sval_pullOver _ _ _ _ hJ).symm` and prove the remaining obligations. Use `Eq.trans ?_ (SectionScalarValuation.secScal_sval (hext α) _ y hJ)` and prove the remaining obligations. Use `congr 1`.
+
+Rewrite using `[Category.assoc, ← Over.comp_left, famMap_snd]`. Use `⟨_, hov, fun s hs => fam_ext fun α j => congrArg (fun q => LB.Sec.f q j) (sec_ext' hL fun y J hJ => ?_)⟩` and prove the remaining obligations. Rewrite using `[← SectionScalarValuation.secScal_sval (hs α) (𝟙 _) y hJ, SectionScalarValuation.secScal_sval (hov α) (𝟙 _) y hJ]`.
+-/
 theorem IntFam.existsUnique_over : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (k : ℕ)
     (F₀ : IntFam I D k) (F : Type) [Field F] [Algebra (FractionRing R) F], ∃! s : Fam D F k, F₀.Over s := by
   intro R _ _ I D k F₀ F _ _

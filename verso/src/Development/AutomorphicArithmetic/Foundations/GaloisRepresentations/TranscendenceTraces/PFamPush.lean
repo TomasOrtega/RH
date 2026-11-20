@@ -10,6 +10,9 @@ private noncomputable def sqPush {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') (p : Z' �
 private def resHom {R : Type} [CommRing R] (F : Shv R) {V U : Scheme.{0}} (g : V ⟶ U) : Sec F U →+ Sec F V :=
   (F.obj.map g.op).hom.toAddMonoidHom
 
+/- English proof (translation)
+Rewrite using `[Category.assoc, t.hv]`. Conclude with `pullback.condition`.
+-/
 private theorem pushK_w {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶ S} {A B : Sq p} (t : A.To B) :
     pullback.fst h A.v ≫ h = (pullback.snd h A.v ≫ t.k) ≫ B.v := by
   rw [Category.assoc, t.hv]
@@ -19,12 +22,21 @@ private noncomputable def pushK {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶
     pullback h A.v ⟶ pullback h B.v :=
   pullback.lift (pullback.fst h A.v) (pullback.snd h A.v ≫ t.k) (pushK_w h t)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 private theorem pushK_fst {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶ S} {A B : Sq p} (t : A.To B) :
     pushK h t ≫ pullback.fst h B.v = pullback.fst h A.v := pullback.lift_fst _ _ _
 
+/- English proof (translation)
+The claim follows from `pullback.lift_snd _ _ _`.
+-/
 private theorem pushK_snd {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶ S} {A B : Sq p} (t : A.To B) :
     pushK h t ≫ pullback.snd h B.v = pullback.snd h A.v ≫ t.k := pullback.lift_snd _ _ _
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, pushK_snd, Category.assoc, t.hr, Category.assoc]`.
+-/
 private theorem pushK_r {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶ S} {A B : Sq p} (t : A.To B) :
     pushK h t ≫ pullback.snd h B.v ≫ B.r = (pullback.snd h A.v ≫ A.r) ≫ t.g := by
   rw [← Category.assoc, pushK_snd, Category.assoc, t.hr, Category.assoc]
@@ -33,6 +45,9 @@ private noncomputable def toPush {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') (p : Z' �
     (sqPush h p A).To (sqPush h p B) :=
   ⟨t.g, pushK h t, t.hu, pushK_fst h t, pushK_r h t⟩
 
+/- English proof (translation)
+Rewrite using `[res_res, res_res, pushK_snd]`.
+-/
 private theorem res_pushK {R : Type} [CommRing R] {F : Shv R} {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') {p : Z' ⟶ S}
     {A B : Sq p} (t : A.To B) (a : Sec F B.V) :
     Sec.res (pushK h t) (Sec.res (pullback.snd h B.v) a) = Sec.res (pullback.snd h A.v) (Sec.res t.k a) := by
@@ -50,6 +65,13 @@ private noncomputable def famPush {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') (p : Z' �
   comm A s t a := (τ.comm (sqPush h p A) s t (Sec.res (pullback.snd h A.v) a)).trans
     (congrArg ((τ.deg t).app (sqPush h p A)) (map_res (I.d s t) (pullback.snd h A.v) a))
 
+/- English proof (translation)
+Introduce `Ω _ _ x`. Use `haveI := A.finite`. Use `(hb Ω x).trans ((hS (pullback.snd h A.v) A.r Ω x _ (fun z => w Ω (z ≫ pullback.fst h A.v) • Sec.res z (Sec.res (pullback.snd h A.v) a))).trans ?_)` and prove the remaining obligations. Use `finsum_congr fun y => finsum_congr fun hy => ?_` and prove the remaining obligations. Establish `hfin` using `hF (pullback.snd h A.v) Ω y`.
+
+Establish `hbij` using `fib_bijOn (IsPullback.of_hasPullback h A.v) (Ω := Ω) y`. Establish `hsum` using `finsum_mem_eq_of_bijOn (f := fun z => w Ω (z ≫ pullback.fst h A.v)) (g := fun z' => w Ω z') _ hbij (fun _ _ => rfl)`. Use `show _ = (∑ᶠ (z' : gp Ω ⟶ Z) (_ : z' ∈ fib h (y ≫ A.v)), w Ω z') • Sec.res y a`. Rewrite using `[← hsum, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite `hz` using `[Set.Finite.mem_toFinset]`. Rewrite using `[res_res]`. Use `congr 2`.
+-/
 private theorem sum_push (hS : SumComp) (hF : FibFin) {q : ℕ} {i : ℤ} {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') (p : Z' ⟶ S)
     [IsFinite h] [IsFinite p] (w : Wt Z) (A : Sq p) (a : Sec (tw q i) A.V) (b : Sec (tw q i) A.U)
     (hb : IsSum w (sqPush h p A) (Sec.res (pullback.snd h A.v) a) b) : IsSum (w.push h) A a b := by
@@ -70,14 +92,27 @@ private theorem sum_push (hS : SumComp) (hF : FibFin) {q : ℕ} {i : ℤ} {Z Z' 
   rw [res_res]
   congr 2
 
+/- English proof (translation)
+Rewrite using `[Category.comp_id, ← Category.assoc, pullback.condition, Category.comp_id]`.
+-/
 private theorem self_r {Z Z' S : Scheme.{0}} (h : Z ⟶ Z') (p : Z' ⟶ S) :
     pullback.fst h (𝟙 Z') ≫ h ≫ p = (pullback.snd h (𝟙 Z') ≫ p) ≫ 𝟙 S := by
   rw [Category.comp_id, ← Category.assoc, pullback.condition, Category.comp_id]
 
+/- English proof (translation)
+Rewrite using `[res_res, pullback.condition, Category.comp_id]`.
+-/
 private theorem res_self {R : Type} [CommRing R] {F : Shv R} {Z Z' : Scheme.{0}} (h : Z ⟶ Z') (a : Sec F Z') :
     Sec.res (pullback.fst h (𝟙 Z')) (Sec.res h a) = Sec.res (pullback.snd h (𝟙 Z')) a := by
   rw [res_res, pullback.condition, Category.comp_id]
 
+/- English proof (translation)
+Introduce `hS hF q i Z Z' S h p _ _ w τ hτ`. Use `⟨famPush h p τ, ?_, ?_⟩` and prove the remaining obligations. Introduce `A a`. Take `⟨b, hb, hbs⟩` from `hτ (sqPush h p A) (Sec.res (pullback.snd h A.v) a)`. Use `⟨b, ?_, sum_push hS hF h p w A a b hbs⟩` and prove the remaining obligations.
+
+Use `show (τ.deg 0).app (sqPush h p A) (Sec.res (pullback.snd h A.v) (Sec.map (resι (ZMod q) (tw q i)) a)) = _`. Conclude with `(congrArg ((τ.deg 0).app (sqPush h p A)) (map_res _ _ a)).symm.trans hb`. Introduce `n a`. Set `t : (sqPush h p (Sq.self p)).To (Sq.self (h ≫ p))` to `⟨𝟙 S, pullback.fst h (𝟙 Z'), Category.id_comp _, Category.comp_id _, self_r h p⟩`. Establish `hn : Sec.res (𝟙 S) ((τ.deg n).app (Sq.self (h ≫ p)) (Sec.res h a)) = (τ.deg n).app (sqPush h p (Sq.self p)) (Sec.res (pullback.fst h (𝟙 Z')) (Sec.res h a))` using `(τ.deg n).nat t (Sec.res h a)`.
+
+Use `show (τ.deg n).app (sqPush h p (Sq.self p)) (Sec.res (pullback.snd h (𝟙 Z')) a) = _`. Conclude with `(congrArg ((τ.deg n).app (sqPush h p (Sq.self p))) (res_self h a).symm).trans (hn.symm.trans (res_id _))`.
+-/
 theorem UpperTheory.Gal.TranscendenceTraces.famPush_of :
     SumComp → FibFin → FamPush := by
   intro hS hF q i Z Z' S h p _ _ w τ hτ

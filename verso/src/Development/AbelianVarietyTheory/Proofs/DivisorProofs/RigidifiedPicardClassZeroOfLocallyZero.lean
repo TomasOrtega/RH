@@ -12,6 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PicGlue
 
+/- English proof (translation)
+Introduce `S A T _ hA c h₀ loc`. Take `⟨L, hL, rfl⟩` from `cls_surj c`. Establish `hf` using `GlobalTheory.T.isPreimageSectionsBijective_abelianScheme_snd S A T hA`. Use `(cls_eq_zero_iff hL).2 (GlobalTheory.CubeGlue.triv_of_locally_triv hL (snd A T).left (lift (1 : T ⟶ A) (𝟙 T)).left ?_ (GlobalTheory.CubeGlue.surjective_restrict _ fun V ↦ ?_) ((cls_eq_zero_iff (pull_isLB hL _)).1 h₀) fun p ↦ ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`.
+
+Conclude with `(ConcreteCategory.isIso_iff_bijective _).2 (hf V)`. Take `⟨Z, z, hz, hp, h⟩` from `loc p`. Take `⟨hw, hr⟩` from `GlobalTheory.whiskerLeft_isOpenImmersion_range S A T Z z hz`. Use `⟨z.left.opensRange, hp, (cls_eq_zero_iff (pull_isLB hL _)).1 ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩ : ∃ m : ((snd A T).left ⁻¹ᵁ z.left.opensRange).toScheme ⟶ (A ⊗ Z).left, m ≫ (A ◁ z).left = ((snd A T).left ⁻¹ᵁ z.left.opensRange).ι` from `⟨IsOpenImmersion.lift _ _ (by`.
+
+Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `fun x hx ↦ (hr x).2 hx), IsOpenImmersion.lift_fac _ _ _⟩`. Rewrite using `[cls_pull hL, ← hm, pull_comp, h, map_zero]`.
+-/
 theorem eq_zero_of_rigid_of_locally_zero : ∀ (S : Scheme.{0}) (A T : Over S) [GrpObj A], IsAbelianScheme A →
     ∀ c : Pic (A ⊗ T).left, GlobalTheory.CechPic.pull (lift (1 : T ⟶ A) (𝟙 T)).left c = 0 →
       (∀ p : T.left, ∃ (Z : Over S) (z : Z ⟶ T), IsOpenImmersion z.left ∧ p ∈ Set.range z.left ∧

@@ -21,6 +21,11 @@ section Pair
 
 variable {k : Type} [CommRing k] {σ : Type}
 
+/- English proof (translation)
+Proceed by induction on `c generalizing n g with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Rewrite using `[Function.iterate_succ_apply, ih, MvPowerSeries.coeff_pderiv]`. Establish `h1 : n + c • Finsupp.single i 1 + Finsupp.single i 1 = n + (c + 1) • Finsupp.single i 1`.
+
+Rewrite using `[add_smul, one_smul, add_assoc]`. Establish `h2 : ((n + c • Finsupp.single i 1 : σ →₀ ℕ)) i = n i + c` using `by simp`. Rewrite using `[h1, h2, Nat.ascFactorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_iter_pderiv (i : σ) (c : ℕ) (g : MvPowerSeries σ k) (n : σ →₀ ℕ) :
     coeff n ((pderiv k i)^[c] g) =
       coeff (n + c • Finsupp.single i 1) g * ((n i + 1).ascFactorial c : k) := by
@@ -35,6 +40,15 @@ theorem coeff_iter_pderiv (i : σ) (c : ℕ) (g : MvPowerSeries σ k) (n : σ �
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ n`. Simplify using the standard rewrite rules. Consider the case `cons l L ih`.
+
+Introduce `hnd n`. Rewrite `hnd` using `[List.nodup_cons]`. Rewrite using `[List.foldr_cons, coeff_iter_pderiv, ih hnd.2]`. Establish `hprod : (L.map fun l' => (((n + m l • Finsupp.single (cd l) 1 : σ →₀ ℕ) (cd l') + 1).ascFactorial (m l') : k)).prod = (L.map fun l' => ((n (cd l') + 1).ascFactorial (m l') : k)).prod`. Use `congr 1`.
+
+Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l' hl'`. Establish `hne : cd l ≠ cd l'` using `fun h => hnd.1 (by rw [hc h]; exact hl')`. Simplify using `[Finsupp.single_apply, hne]`. Rewrite using `[hprod, List.map_cons, List.sum_cons, List.map_cons, List.prod_cons, add_assoc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem coeff_fold {ι : Type} (cd : ι → σ) (hc : Function.Injective cd) (m : ι → ℕ) (f : MvPowerSeries σ k) :
     ∀ (L : List ι), L.Nodup → ∀ n : σ →₀ ℕ,
       coeff n (L.foldr (fun l g => (pderiv k (cd l))^[m l] g) f) =
@@ -63,11 +77,27 @@ section Pair2
 
 variable {k : Type} [CommRing k]
 
+/- English proof (translation)
+Establish `h` using `MvPowerSeries.subst_C (a := fun p : Fin m × Fin d => a p.1 p.2) (0 : k)`. Rewrite `h` using `[map_zero, map_zero]`. Conclude with `h`.
+-/
 theorem ev_zero {d m n : ℕ} (a : Fin m → Pt k n d) : ev a (0 : PS k m d) = 0 := by
   have h := MvPowerSeries.subst_C (a := fun p : Fin m × Fin d => a p.1 p.2) (0 : k)
   rw [map_zero, map_zero] at h
   exact h
 
+/- English proof (translation)
+Use function extensionality and compare the values at `f`. Establish `ev1 : ev (n` using `1) ![pt k d 0, 0] (1 : PS k 2 d) = 1 := by`. Establish `h` using `MvPowerSeries.subst_C (a := fun p : Fin 2 × Fin d => (![pt k d 0, 0] : Fin 2 → Pt k 1 d) p.1 p.2) (1 : k)`. Rewrite `h` using `[map_one, map_one]`. Conclude with `h`.
+
+Establish `ev0 : ev (n` using `1) ![pt k d 0, 0] (0 : PS k 2 d) = 0 := ev_zero _`. Establish `hinner : ∀ j : Fin d, (∑ i' : Fin d, MvPowerSeries.C ((Pi.single i (1 : k) : Fin d → k) i') * ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i') (addF k d j))) = if j = i then 1 else 0 := by`. Introduce `j`. Rewrite using `[Finset.sum_eq_single j]`. Establish `hd : pderiv k ((1 : Fin 2), j) (addF k d j) = 1`.
+
+Simplify using `[addF, MvPowerSeries.pderiv_X, Pi.single_apply]`. Rewrite using `[hd, ev1, mul_one]`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_apply, hji]`. Introduce `b _ hb`. Establish `hd : pderiv k ((1 : Fin 2), b) (addF k d j) = 0`. Simplify using `[addF, MvPowerSeries.pderiv_X, Pi.single_apply, Ne.symm hb]`. Rewrite using `[hd, ev0, mul_zero]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`. Establish `hD : Dof (addF k d) (Pi.single i (1 : k)) f = ∑ j, (if j = i then (1 : PS k 1 d) else 0) * pderiv k ((0 : Fin 1), j) f`. Simplify using `only [Dof, hinner]`. Rewrite using `[hD]`.
+
+Simplify using `[ite_mul, Finset.sum_ite_eq']`.
+-/
 theorem dof_single (d : ℕ) (i : Fin d) :
     (Dof (addF k d) (Pi.single i (1 : k)) : PS k 1 d → PS k 1 d) = pderiv k ((0 : Fin 1), i) := by
   classical
@@ -102,6 +132,13 @@ theorem dof_single (d : ℕ) (i : Fin d) :
 
 end Pair2
 
+/- English proof (translation)
+Introduce `k _ d ι _ j hj α g`. Distinguish the cases in `h01 : (1 : k) = 0`. Use `haveI : Subsingleton k := subsingleton_of_zero_eq_one h01.symm`. Conclude with `Subsingleton.elim _ _`. Simplify using `only [DpolyOf, MvPolynomial.support_monomial, if_neg h01, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, map_one, one_mul, DmonOf, dof_single]`.
+
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Simplify using `only [ite_true, map_one, one_mul]`. Establish `hcd : Function.Injective (fun l : ι => ((0 : Fin 1), j l))` using `fun a b h => hj (Prod.mk.inj h).2`. Establish `hf` using `coeff_fold (k := k) (fun l : ι => ((0 : Fin 1), j l)) hcd α g (Finset.univ : Finset ι).toList (Finset.nodup_toList _) 0`. Apply the tactic sequence `try simp only at hf`.
+
+Rewrite using `[hf]`. Simplify using `only [zero_add, Finsupp.coe_zero, Pi.zero_apply, Nat.one_ascFactorial, Finset.sum_map_toList, Finset.prod_map_toList]`. Rewrite using `[mul_comm]`. Apply the tactic sequence `try push_cast`. Apply the tactic sequence `try rfl`.
+-/
 theorem monoVal : MonoValSt := by
   intro k _ d ι _ j hj α g
   classical

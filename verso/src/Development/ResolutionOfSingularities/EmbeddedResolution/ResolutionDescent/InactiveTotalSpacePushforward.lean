@@ -29,10 +29,16 @@ variable {k : Type u} [Field k] [CharZero k] {Y : Scheme.{u}} [AlgebraicGeometry
   {pY : Y ⟶ Spec (CommRingCat.of k)} [AlgebraicGeometry.LocallyOfFiniteType pY]
   {S S' : EmbeddedBlowupSequence k Y pY}
 
+/- English proof (translation)
+Rewrite using `[← P.len_eq]`. Conclude with `hi`.
+-/
 theorem le_length_of_le_length (P : ChartPushforward S S') {i : ℕ} (hi : i ≤ S.length) : i ≤ S'.length := by
   rw [← P.len_eq]
   exact hi
 
+/- English proof (translation)
+Rewrite using `[← P.len_eq]`. Conclude with `hi`.
+-/
 theorem lt_length_of_lt_length (P : ChartPushforward S S') {i : ℕ} (hi : i < S.length) : i < S'.length := by
   rw [← P.len_eq]
   exact hi
@@ -44,6 +50,9 @@ private def detachedCoprodIsoOfLE (P : ChartPushforward S S') [AlgebraicGeometry
     (fun n ih hn => coprod.mapIso (ih (Nat.le_of_succ_le hn))
       (P.detachedSchemeIso n (lt_of_lt_of_le (Nat.lt_succ_self n) hn))) i
 
+/- English proof (translation)
+Use `⟨detachedCoprodIsoOfLE P, fun _ => rfl, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi show (coprod.inl : S.detachedCoprod i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i) ≫ coprod.map (detachedCoprodIsoOfLE P i hi.le).hom (P.detachedSchemeIso i hi).hom = (detachedCoprodIsoOfLE P i hi.le).hom ≫ (coprod.inl : S'.detachedCoprod i ⟶ S'.detachedCoprod i ⨿ S'.detachedS …`. Simplify using the standard rewrite rules. Introduce `i hi show (coprod.inr : S.detachedScheme i ⟶ S.detachedCoprod i ⨿ S.detachedScheme i) ≫ coprod.map (detachedCoprodIsoOfLE P i hi.le).hom (P.detachedSchemeIso i hi).hom = (P.detachedSchemeIso i hi).hom ≫ (coprod.inr : S'.detachedScheme i ⟶ S'.detachedCoprod i ⨿ S'.detachedScheme i …`. Simplify using the standard rewrite rules.
+-/
 theorem exists_iso_detachedCoprod_compatible (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] :
     ∃ e : ∀ i : ℕ, i ≤ S'.length → (S.detachedCoprod i ≅ S'.detachedCoprod i),
@@ -73,6 +82,9 @@ def inactiveTotalIso (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
   P.exists_iso_detachedCoprod_compatible.choose i hi
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `P.exists_iso_detachedCoprod_compatible.choose_spec.2.1 i hi @[reassoc]`.
+-/
 theorem detachedCoprodInl_inactiveTotalIso_hom (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
     S.detachedCoprodInl i ≫ (P.inactiveTotalIso (i + 1) hi).hom =
@@ -80,6 +92,9 @@ theorem detachedCoprodInl_inactiveTotalIso_hom (P : ChartPushforward S S')
   P.exists_iso_detachedCoprod_compatible.choose_spec.2.1 i hi
 
 @[reassoc]
+/- English proof (translation)
+The claim follows from `P.exists_iso_detachedCoprod_compatible.choose_spec.2.2 i hi`.
+-/
 theorem detachedCoprodInr_inactiveTotalIso_hom (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
     S.detachedCoprodInr i ≫ (P.inactiveTotalIso (i + 1) hi).hom =
@@ -90,12 +105,18 @@ def totalSpaceIso (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i
     (hi : i ≤ S'.length) : S.totalSpace i ≅ S'.totalSpace i :=
   coprod.mapIso (P.strictTransformIso i hi) (P.inactiveTotalIso i hi)
 
+/- English proof (translation)
+The claim follows from `rfl @[reassoc]`.
+-/
 theorem totalSpaceIso_hom_eq_coprodMap (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
     (P.totalSpaceIso i hi).hom =
       coprod.map (P.strictTransformIso i hi).hom (P.inactiveTotalIso i hi).hom := rfl
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[P.totalSpaceIso_hom_eq_coprodMap i hi]`. Simplify using the standard rewrite rules. Use the proof step `@[reassoc]`.
+-/
 theorem inl_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
     (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) ≫ (P.totalSpaceIso i hi).hom =
@@ -104,6 +125,9 @@ theorem inl_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsR
   simp
 
 @[reassoc]
+/- English proof (translation)
+Rewrite using `[P.totalSpaceIso_hom_eq_coprodMap i hi]`. Simplify using the standard rewrite rules.
+-/
 theorem inr_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i ≤ S'.length) :
     (coprod.inr : S.detachedCoprod i ⟶ S.totalSpace i) ≫ (P.totalSpaceIso i hi).hom =
@@ -111,14 +135,27 @@ theorem inr_totalSpaceIso_hom (P : ChartPushforward S S') [AlgebraicGeometry.IsR
   rw [P.totalSpaceIso_hom_eq_coprodMap i hi]
   simp
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem comap_hom_comap_inv {A B : Scheme.{u}} (e : A ≅ B) (I : B.IdealSheafData) :
     (I.comap e.hom).comap e.inv = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.inv_hom_id, Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+Rewrite using `[← Scheme.IdealSheafData.comap_comp, e.hom_inv_id, Scheme.IdealSheafData.comap_id]`.
+-/
 private theorem comap_inv_comap_hom {A B : Scheme.{u}} (e : A ≅ B) (I : A.IdealSheafData) :
     (I.comap e.inv).comap e.hom = I := by
   rw [← Scheme.IdealSheafData.comap_comp, e.hom_inv_id, Scheme.IdealSheafData.comap_id]
 
+/- English proof (translation)
+Establish `hcomm' : u' ≫ eB.inv = eA.inv ≫ u`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← hcomm, Category.assoc, eB.hom_inv_id, Category.comp_id]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.le_map_iff_comap_le, ← Scheme.IdealSheafData.comap_comp, hcomm, Scheme.IdealSheafData.comap_comp]`. Conclude with `Scheme.IdealSheafData.comap_mono _ (Scheme.IdealSheafData.le_map_iff_comap_le.mp le_rfl)`.
+
+Establish `key : ((J.comap eA.hom).map u).comap eB.inv ≤ J.map u'`. Rewrite using `[Scheme.IdealSheafData.le_map_iff_comap_le, ← Scheme.IdealSheafData.comap_comp, hcomm', Scheme.IdealSheafData.comap_comp]`. Establish `h2 : (((J.comap eA.hom).map u).comap u).comap eA.inv ≤ (J.comap eA.hom).comap eA.inv` using `Scheme.IdealSheafData.comap_mono eA.inv (Scheme.IdealSheafData.le_map_iff_comap_le.mp (le_rfl : (J.comap eA.hom).map u ≤ (J.comap eA.hom).map u))`. Rewrite `h2` using `[comap_hom_comap_inv eA J]`. Conclude with `h2`.
+
+Establish `h3 : (((J.comap eA.hom).map u).comap eB.inv).comap eB.hom ≤ (J.map u').comap eB.hom` using `Scheme.IdealSheafData.comap_mono eB.hom key`. Rewrite `h3` using `[comap_inv_comap_hom eB]`. Then use the resulting hypothesis.
+-/
 private theorem comap_map_of_comm_iso {A B A' B' : Scheme.{u}} (eA : A ≅ A') (eB : B ≅ B')
     (u : A ⟶ B) (u' : A' ⟶ B') (hcomm : u ≫ eB.hom = eA.hom ≫ u')
     (J : A'.IdealSheafData) :
@@ -146,6 +183,9 @@ private theorem comap_map_of_comm_iso {A B A' B' : Scheme.{u}} (eA : A ≅ A') (
       Scheme.IdealSheafData.comap_mono eB.hom key
     rwa [comap_inv_comap_hom eB] at h3
 
+/- English proof (translation)
+Establish `h` using `comap_map_of_comm_iso (P.strictTransformIso i hi.le) (P.totalSpaceIso i hi.le) (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) (coprod.inl : S'.strictTransform i ⟶ S'.totalSpace i) (P.inl_totalSpaceIso_hom i hi.le) (S'.centerOffDetached i)`. Rewrite `h` using `[P.comap_centerOffDetached i hi]`. Conclude with `h`.
+-/
 theorem comap_totalCenter (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y] (i : ℕ)
     (hi : i < S'.length) :
     (S'.totalCenter i).comap (P.totalSpaceIso i hi.le).hom = S.totalCenter i := by
@@ -156,6 +196,11 @@ theorem comap_totalCenter (P : ChartPushforward S S') [AlgebraicGeometry.IsReduc
   rw [P.comap_centerOffDetached i hi] at h
   exact h
 
+/- English proof (translation)
+Use `coprod.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[P.inl_totalSpaceIso_hom_assoc (i + 1) hi, S'.inl_totalTransition_eq_strictTransformMap_inl i, S.inl_totalTransition_assoc i, P.inl_totalSpaceIso_hom i hi.le]`. Conclude with `P.strictTransformIso_hom_comp_strictTransformMap_assoc i hi _`. Use `S.detachedCoprod_succ_hom_ext i ?_ ?_` and prove the remaining obligations. Rewrite using `[P.inr_totalSpaceIso_hom_assoc (i + 1) hi, P.detachedCoprodInl_inactiveTotalIso_hom_assoc i hi, S'.detachedCoprodInl_inr_totalTransition i, S.detachedCoprodInl_inr_totalTransition_assoc i, P.inr_totalSpaceIso_hom i hi.le]`.
+
+Rewrite using `[P.inr_totalSpaceIso_hom_assoc (i + 1) hi, P.detachedCoprodInr_inactiveTotalIso_hom_assoc i hi, S'.detachedCoprodInr_inr_totalTransition i, S.detachedCoprodInr_inr_totalTransition_assoc i, P.inl_totalSpaceIso_hom i hi.le]`. Conclude with `P.detachedSchemeIso_hom_comp_detachedι_assoc i hi _`.
+-/
 private theorem totalSpaceIso_hom_totalTransition (P : ChartPushforward S S')
     [AlgebraicGeometry.IsReduced Y] (i : ℕ) (hi : i < S'.length) :
     (P.totalSpaceIso (i + 1) hi).hom ≫ S'.totalTransition i
@@ -173,6 +218,13 @@ private theorem totalSpaceIso_hom_totalTransition (P : ChartPushforward S S')
         P.inl_totalSpaceIso_hom i hi.le]
       exact P.detachedSchemeIso_hom_comp_detachedι_assoc i hi _
 
+/- English proof (translation)
+Use `⟨P.len_eq, fun i hi => P.totalSpaceIso i (P.le_length_of_le_length hi), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (P.totalSpaceIso 0 (Nat.zero_le _)).hom ≫ S'.totalSpaceZeroIso.hom = S.totalSpaceZeroIso.hom`. Use `coprod.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[P.inl_totalSpaceIso_hom_assoc 0 (Nat.zero_le _), S'.inl_totalSpaceZeroIso_hom, S.inl_totalSpaceZeroIso_hom]`. Conclude with `P.strictTransformIso_zero_hom_comp_strictTransformZeroIso_hom`.
+
+Establish `hB : IsInitial (S.detachedCoprod 0)` using `initialIsInitial`. Conclude with `hB.hom_ext _ _`. Introduce `i hi`. Rewrite using `[inducedBlowups_blowupMorphism S' h' i, inducedBlowups_blowupMorphism S h i]`. Conclude with `P.totalSpaceIso_hom_totalTransition i (P.lt_length_of_lt_length hi)`.
+
+Introduce `i hi`. Conclude with `P.comap_totalCenter i (P.lt_length_of_lt_length hi)`.
+-/
 theorem inducedBlowups_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :
     (S.inducedBlowups h).Isomorphic (S'.inducedBlowups h') := by
@@ -190,6 +242,9 @@ theorem inducedBlowups_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry
   · intro i hi
     exact P.comap_totalCenter i (P.lt_length_of_lt_length hi)
 
+/- English proof (translation)
+The claim follows from `(P.inducedBlowups_isomorphic h h').withoutIsoBlowups`.
+-/
 theorem inducedBlowupsWithoutIso_isomorphic (P : ChartPushforward S S') [AlgebraicGeometry.IsReduced Y]
     (h : S.TransitionsAreBlowups) (h' : S'.TransitionsAreBlowups) :
     (S.inducedBlowupsWithoutIso h).Isomorphic (S'.inducedBlowupsWithoutIso h') :=

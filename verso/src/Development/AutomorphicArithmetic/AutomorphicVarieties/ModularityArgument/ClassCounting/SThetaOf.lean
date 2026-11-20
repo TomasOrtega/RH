@@ -4,6 +4,25 @@ noncomputable section
 
 namespace UpperTheory.V.ZK
 
+/- English proof (translation)
+Take `⟨i, j, hij, c⟩` from `t`. Express the relevant statement in the definitionally equal form `(u : Matrix (Fin n) (Fin n) k) = Matrix.transvection i j c at hu`. Establish `hD : IsUnit (Matrix.diagonal (Function.update (fun _ => (1 : k)) i a)).det`. Rewrite using `[Matrix.det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`. Introduce `l _`.
+
+Rewrite using `[Function.update_apply]`. Use `split_ifs`. Conclude with `ha0`. Conclude with `one_ne_zero`. Establish `hT : ∀ x : k, IsUnit (Matrix.transvection i j x).det`.
+
+Introduce `x`. Rewrite using `[Matrix.det_transvection_of_ne i j hij]`. Conclude with `isUnit_one`. Establish `hcomm : ∀ x : k, Matrix.diagonal (Function.update (fun _ => (1 : k)) i a) * Matrix.transvection i j x = Matrix.transvection i j (a * x) * Matrix.diagonal (Function.update (fun _ => (1 : k)) i a)`. Introduce `x`.
+
+Use extensionality with `r s`. Simplify using `only [Matrix.transvection, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Function.update_apply]`. Apply the tactic sequence `rcases eq_or_ne r i with rfl | hr <;> rcases eq_or_ne s j with rfl | hs`. Simplify using `[hij, Ne.symm hij]`. Distinguish the cases in `hrs : r = s`.
+
+Substitute `hrs` using the available equality. Simplify using `[Ne.symm hs]`. Simplify using `[hs, Ne.symm hs, hrs]`. Distinguish the cases in `hrs : r = s`. Substitute `hrs` using the available equality.
+
+Simplify using `[hr, Ne.symm hr]`. Simplify using `[hr, Ne.symm hr, hrs]`. Distinguish the cases in `hrs : r = s`. Substitute `hrs` using the available equality. Simplify using `[hr, Ne.symm hr]`.
+
+Simplify using `[hr, Ne.symm hr, hrs]`. Set `dU` to `Matrix.nonsingInvUnit _ hD`. Set `T : k → GL (Fin n) k` to `fun x => Matrix.nonsingInvUnit _ (hT x)`. Establish `e1 : ∀ x, dU * T x = T (a * x) * dU` using `fun x => Units.ext (hcomm x)`. Establish `e2 : ∀ x y, T x * T y = T (x + y)` using `fun x y => Units.ext (Matrix.transvection_mul_transvection_same i j hij x y)`.
+
+Establish `hu' : u = T c` using `Units.ext hu`. Establish `ha : a - 1 ≠ 0` using `sub_ne_zero.mpr ha1`. Establish `hx : a * (c / (a - 1)) = c / (a - 1) + c`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3` using `congrArg Φ (e1 (c / (a - 1)))`. Rewrite `h3` using `[map_mul, map_mul, mul_comm (Φ dU), mul_left_inj, hx, ← e2, map_mul]`. Rewrite using `[hu']`. Conclude with `(mul_eq_left.mp h3.symm)`.
+-/
 private theorem gl_hom_transvection_eq_one_of_ne_zero_of_ne_one {k M : Type} [Field k] [CommGroup M] {n : ℕ} (a : k) (ha0 : a ≠ 0) (ha1 : a ≠ 1)
     (Φ : GL (Fin n) k →* M) (t : Matrix.TransvectionStruct (Fin n) k) (u : GL (Fin n) k)
     (hu : (u : Matrix (Fin n) (Fin n) k) = t.toMatrix) : Φ u = 1 := by
@@ -56,6 +75,19 @@ private theorem gl_hom_transvection_eq_one_of_ne_zero_of_ne_one {k M : Type} [Fi
   exact (mul_eq_left.mp h3.symm)
 
 open Matrix in
+/- English proof (translation)
+Establish `key : ∀ A : Matrix (Fin n) (Fin n) k, A.det ≠ 0 → ∀ u : GL (Fin n) k, (u : Matrix (Fin n) (Fin n) k) = A → Φ u = w (GeneralLinearGroup.det u)`. Introduce `A hA`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun A => ∀ u : GL (Fin n) k, (u : Matrix (Fin n) (Fin n) k) = A → Φ u = w (GeneralLinearGroup.det u)) A hA ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD u hu`. Rewrite `hD` using `[Matrix.det_diagonal]`.
+
+Establish `hD' : ∀ l, D l ≠ 0` using `fun l => Finset.prod_ne_zero_iff.mp hD l (Finset.mem_univ l)`. Establish `hdet : GeneralLinearGroup.det u = ∏ l, Units.mk0 (D l) (hD' l)`. Use `ext`. Rewrite using `[GeneralLinearGroup.val_det_apply, hu, Matrix.det_diagonal, Units.coe_prod]`. Both sides reduce to the same expression.
+
+Rewrite using `[hd u (fun l => Units.mk0 (D l) (hD' l)) hu, hdet, map_prod]`. Introduce `t u hu`. Rewrite using `[gl_hom_transvection_eq_one_of_ne_zero_of_ne_one a ha0 ha1 Φ t u hu]`. Establish `h1 : GeneralLinearGroup.det u = 1`. Use `ext`.
+
+Rewrite using `[GeneralLinearGroup.val_det_apply, hu, Matrix.TransvectionStruct.det]`. Both sides reduce to the same expression. Rewrite using `[h1, map_one]`. Introduce `A B hA hB hPA hPB u hu`. Establish `e : u = Matrix.nonsingInvUnit A (isUnit_iff_ne_zero.mpr hA) * Matrix.nonsingInvUnit B (isUnit_iff_ne_zero.mpr hB)` using `Units.ext hu`.
+
+Rewrite using `[e, map_mul, map_mul, hPA _ rfl, hPB _ rfl, map_mul]`. Use `key _ ?_ g rfl` and prove the remaining obligations. Introduce `h`. Use `(GeneralLinearGroup.det g).ne_zero` as an intermediate fact. Rewrite `this` using `[GeneralLinearGroup.val_det_apply]`.
+
+Conclude with `this h`.
+-/
 private lemma gl_det {k M : Type} [Field k] [CommGroup M] {n : ℕ} (a : k) (ha0 : a ≠ 0) (ha1 : a ≠ 1)
     (Φ : GL (Fin n) k →* M) (w : kˣ →* M)
     (hd : ∀ (g : GL (Fin n) k) (d : Fin n → kˣ), (g : Matrix (Fin n) (Fin n) k) = diagonal (fun i => (d i : k)) →
@@ -91,6 +123,27 @@ private lemma gl_det {k M : Type} [Field k] [CommGroup M] {n : ℕ} (a : k) (ha0
   rw [GeneralLinearGroup.val_det_apply] at this
   exact this h
 
+/- English proof (translation)
+Establish `hdiag : ∀ (n : ℕ) (d : Fin n → kˣ), F (Fin n → k) (LinearEquiv.piCongrRight (fun i => scal k (d i))) = ∏ i, w (d i)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `d`.
+
+Establish `h1 : (LinearEquiv.piCongrRight (fun i => scal k (d i)) : (Fin 0 → k) ≃ₗ[k] (Fin 0 → k)) = 1`. Use extensionality with `x i`. Conclude with `i.elim0`. Rewrite using `[h1, map_one, Fin.prod_univ_zero]`. Consider the case `succ n ih`.
+
+Introduce `d`. Establish `hc` using `hiso (k × (Fin n → k)) (Fin (n + 1) → k) (Fin.consLinearEquiv k (fun _ : Fin (n + 1) => k)) ((scal k (d 0)).prodCongr (LinearEquiv.piCongrRight (fun i => scal k (d i.succ))))`. Establish `he : cj (Fin.consLinearEquiv k (fun _ : Fin (n + 1) => k)) ((scal k (d 0)).prodCongr (LinearEquiv.piCongrRight (fun i => scal k (d i.succ)))) = LinearEquiv.piCongrRight (fun i => scal k (d i))`. Use extensionality with `x i`. Use `Fin.cases ?_ ?_ i` and prove the remaining obligations.
+
+Simplify using `[cj, scal]`. Introduce `j`. Simplify using `[cj, scal]`. Both sides reduce to the same expression. Rewrite `hc` using `[he, hadd, hone, ih]`.
+
+Rewrite using `[Fin.prod_univ_succ]`. Conclude with `hc`. Establish `hstd : ∀ (n : ℕ) (g₀ : (Fin n → k) ≃ₗ[k] (Fin n → k)), F (Fin n → k) g₀ = w (LinearEquiv.det g₀)`. Introduce `n g₀`. Set `Φ : GL (Fin n) k →* M` to `(F (Fin n → k)).comp ((LinearMap.GeneralLinearGroup.generalLinearEquiv k (Fin n → k)).toMonoidHom.comp Matrix.GeneralLinearGroup.toLin.toMonoidHom)`.
+
+Establish `hΦ : ∀ G : GL (Fin n) k, Φ G = F (Fin n → k) (LinearMap.GeneralLinearGroup.generalLinearEquiv k _ (Matrix.GeneralLinearGroup.toLin G))` using `fun G => rfl`. Establish `key` using `gl_det a ha0 ha1 Φ w (by`. Introduce `G d hG`. Rewrite using `[hΦ, ← hdiag n d]`. Use `congr 1`.
+
+Use extensionality with `x i`. Simplify using `[LinearMap.GeneralLinearGroup.coeFn_generalLinearEquiv, hG, Matrix.mulVec_diagonal, scal, Units.smul_def])`. Use the proof step `(Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv k _).symm g₀))`. Rewrite `key` using `[hΦ]`. Simplify using `only [MulEquiv.apply_symm_apply] at key`.
+
+Rewrite using `[key]`. Use `congr 1`. Use `ext`. Use `set G := Matrix.GeneralLinearGroup.toLin.symm ((LinearMap.GeneralLinearGroup.generalLinearEquiv k (Fin n → k)).symm g₀) with hGdef`. Establish `hG : LinearMap.GeneralLinearGroup.generalLinearEquiv k _ (Matrix.GeneralLinearGroup.toLin G) = g₀`.
+
+Simplify using `[hGdef]`. Rewrite using `[← hG, LinearEquiv.coe_det, LinearMap.GeneralLinearGroup.generalLinearEquiv_to_linearMap, Matrix.GeneralLinearGroup.coe_toLin, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `(LinearMap.det_toLin' _).symm`. Use `haveI : Module.Finite k V := Module.Finite.of_finite`. Establish `hc` using `hiso V _ (Module.finBasis k V).equivFun g`.
+
+Rewrite using `[← hc, hstd]`. Use `congr 1`. Conclude with `LinearEquiv.det_conj g (Module.finBasis k V).equivFun`.
+-/
 private lemma fam_det {k M : Type} [Field k] [Finite k] [CommGroup M] (a : k) (ha0 : a ≠ 0) (ha1 : a ≠ 1)
     (F : ∀ (V : Type) [AddCommGroup V] [Module k V] [Finite V], (V ≃ₗ[k] V) →* M) (w : kˣ →* M)
     (hiso : ∀ (V W : Type) [AddCommGroup V] [Module k V] [Finite V] [AddCommGroup W] [Module k W] [Finite W]
@@ -160,6 +213,11 @@ private lemma fam_det {k M : Type} [Field k] [Finite k] [CommGroup M] (a : k) (h
   congr 1
   exact LinearEquiv.det_conj g (Module.finBasis k V).equivFun
 
+/- English proof (translation)
+Establish `h` using `(h1 A).2.2.1 C G G f (MulAut.conj g⁻¹).toMonoidHom m z`. Rewrite using `[← h]`. Use `congr 2`. Use extensionality with `c`. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`.
+
+Rewrite using `[mul_assoc, hg c, inv_mul_cancel_left]`.
+-/
 private lemma conj_fix (h1 : SChain) {A : Type} [CommRing A] {C G : Type} [Group C] [Group G] (f : C →* G) (g : G)
     (hg : ∀ c, f c * g = g * f c) (m : ℕ) (z : Ch A C m) :
     cm A (MulAut.conj g⁻¹).toMonoidHom m (cm A f m z) = cm A f m z := by
@@ -170,11 +228,17 @@ private lemma conj_fix (h1 : SChain) {A : Type} [CommRing A] {C G : Type} [Group
   simp only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]
   rw [mul_assoc, hg c, inv_mul_cancel_left]
 
+/- English proof (translation)
+Unfold `Cyc at *`. Rewrite using `[(h1 A).2.1, hz, map_zero]`.
+-/
 private lemma cyc_cm (h1 : SChain) {A : Type} [CommRing A] {C G : Type} [Group C] [Group G] (f : C →* G)
     {m : ℕ} {z : Ch A C (m + 1)} (hz : Cyc z) : Cyc (cm A f (m + 1) z) := by
   unfold Cyc at *
   rw [(h1 A).2.1, hz, map_zero]
 
+/- English proof (translation)
+Establish `hw : Cyc (cm A f (m + 1) z)` using `cyc_cm h1 f hz`. Establish `hp` using `h2 A G g m (cm A f (m + 1) z)`. Unfold `Cyc at hw ⊢`. Rewrite `hp` using `[hw, map_zero, add_zero, conj_fix h1 f g hg (m + 1) z, sub_self]`. Conclude with `hp`.
+-/
 private lemma cyc_prism (h1 : SChain) (h2 : SPrism) {A : Type} [CommRing A] {C G : Type} [Group C] [Group G]
     (f : C →* G) (g : G) (hg : ∀ c, f c * g = g * f c) {m : ℕ} {z : Ch A C (m + 1)} (hz : Cyc z) :
     Cyc (prism A g (m + 1) (cm A f (m + 1) z)) := by
@@ -184,11 +248,39 @@ private lemma cyc_prism (h1 : SChain) (h2 : SPrism) {A : Type} [CommRing A] {C G
   rw [hw, map_zero, add_zero, conj_fix h1 f g hg (m + 1) z, sub_self] at hp
   exact hp
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[scal, Units.smul_def]`.
+-/
 private lemma scal_comm {k V : Type} [Field k] [AddCommGroup V] [Module k V] (u : kˣ) (g : V ≃ₗ[k] V) :
     scal V u * g = g * scal V u := by
   ext x
   simp [scal, Units.smul_def]
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 k _ _ q _ e ζ hζ v`. Take `⟨t, ht0, htv⟩` from `h6 k q e ζ hζ v`. Establish `hcard : ((Nat.card k : ℕ) : ZMod q) = 1`. Establish `hd : q ∣ Nat.card kˣ`. Rewrite using `[hζ.eq_orderOf]`.
+
+Conclude with `orderOf_dvd_natCard ζ`. Rewrite `hd` using `[Nat.card_units]`. Establish `hpos : 0 < Nat.card k` using `Nat.card_pos`. Rewrite using `[← Nat.sub_add_cancel hpos, Nat.cast_add, (ZMod.natCast_eq_zero_iff _ _).2 hd, Nat.cast_one, zero_add]`. Take `⟨θ, hθ, hθk⟩` from `h5 k (ZMod q) hcard (2 * e + 1 + 1) t ht0`.
+
+Use `⟨θ, hθ, ?_⟩` and prove the remaining obligations. Unfold `HasVal`. Introduce `V _ _ _ x g`. Distinguish the cases in `hq : q = 1`. Substitute `hq` using the available equality.
+
+Conclude with `Subsingleton.elim _ _`. Establish `hq1 : 1 < q`. Use `NeZero.ne q` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ha0 : (ζ : k) ≠ 0` using `ζ.ne_zero`.
+
+Establish `ha1 : (ζ : k) ≠ 1`. Introduce `h`. Conclude with `hζ.ne_one hq1 (Units.val_eq_one.mp h)`. Set `w : kˣ →* Multiplicative (ZMod q)` to `MonoidHom.mk' (fun u => Multiplicative.ofAdd ((x : ZMod q) ^ (e + 1) * Multiplicative.toAdd (v u))) (by`. Introduce `a b`.
+
+Simplify using `only [map_mul, toAdd_mul, mul_add, ofAdd_add])`. Establish `hP : ∀ (W : Type) [AddCommGroup W] [Module k W] (g' : W ≃ₗ[k] W), Cyc (prism (ZMod q) g' (2 * e + 1 + 1) (cm (ZMod q) ((scal W).comp (chi q ζ hζ.pow_eq_one x)) (2 * e + 1 + 1) (zc q e)))`. Introduce `W _ _ g'`. Conclude with `cyc_prism (A := ZMod q) (m := 2 * e + 1) (z := zc q e) h1 h2 ((scal W).comp (chi q ζ hζ.pow_eq_one x)) g' (fun c => scal_comm (chi q ζ hζ.pow_eq_one x c) g') (h4 q e)`. Establish `hmul : ∀ (W : Type) [AddCommGroup W] [Module k W] [Finite W] (g₁ g₂ : W ≃ₗ[k] W), θ W (prism (ZMod q) (g₁ * g₂) (2 * e + 1 + 1) (cm (ZMod q) ((scal W).comp (chi q ζ hζ.pow_eq_one x)) (2 * e + 1 + 1) (zc q e))) = θ W (prism (ZMod q) g₁ (2 * e + 1 + 1) (cm (ZMod q) ((scal W).comp ( …`.
+
+Introduce `W _ _ _ g₁ g₂`. Establish `hz : Cyc (cm (ZMod q) ((scal W).comp (chi q ζ hζ.pow_eq_one x)) (2 * e + 1 + 1) (zc q e))` using `cyc_cm h1 _ (h4 q e)`. Establish `hb` using `hθ.bdry W _ (h3 (ZMod q) (W ≃ₗ[k] W) g₁ g₂ (2 * e + 1) _ hz)`. Rewrite `hb` using `[conj_fix h1 ((scal W).comp (chi q ζ hζ.pow_eq_one x)) g₁ (fun c => scal_comm (chi q ζ hζ.pow_eq_one x c) g₁) (2 * e + 1 + 1) (zc q e), map_sub, map_sub, sub_eq_zero, sub_eq_iff_eq_add]`. Rewrite using `[hb, add_comm]`.
+
+Set `F : ∀ (W : Type) [AddCommGroup W] [Module k W] [Finite W], (W ≃ₗ[k] W) →* Multiplicative (ZMod q)` to `fun W _ _ _ => MonoidHom.mk' (fun g₁ => Multiplicative.ofAdd (θ W (prism (ZMod q) g₁ (2 * e + 1 + 1) (cm (ZMod q) ((scal W).comp (chi q ζ hζ.pow_eq_one x)) (2 * e + 1 + 1) (zc q e))))) (fun g₁ g₂ => by simp only [hmul W g₁ g₂, ofAdd_add])`. Establish `key` using `fam_det (ζ : k) ha0 ha1 F w ?_ ?_ ?_ V g`. Conclude with `Multiplicative.ofAdd.injective key`. Introduce `V' W' _ _ _ _ _ _ φ g' show Multiplicative.ofAdd _ = Multiplicative.ofAdd _`. Use `congr 1`.
+
+Establish `hc : (cj φ).comp ((scal V').comp (chi q ζ hζ.pow_eq_one x)) = (scal W').comp (chi q ζ hζ.pow_eq_one x)`. Use extensionality with `u y`. Simplify using `[cj, scal, Units.smul_def]`. Rewrite using `[← hθ.iso V' W' φ _ (hP V' g'), (h1 _).2.2.2.1, ← (h1 _).2.2.1, hc]`. Introduce `V' W' _ _ _ _ _ _ g₁ g₂`.
+
+Set `f : Cq q →* (V' ≃ₗ[k] V') × (W' ≃ₗ[k] W')` to `MonoidHom.prod ((scal V').comp (chi q ζ hζ.pow_eq_one x)) ((scal W').comp (chi q ζ hζ.pow_eq_one x))`. Establish `hy` using `cyc_prism h1 h2 f (g₁, g₂) (fun c => Prod.ext (scal_comm _ g₁) (scal_comm _ g₂)) (h4 q e)`. Establish `ha` using `hθ.add _ V' W' (MonoidHom.fst _ _) (MonoidHom.snd _ _) _ hy`. Rewrite `ha` using `[(h1 _).2.2.2.1, (h1 _).2.2.2.1, (h1 _).2.2.2.1, ← (h1 _).2.2.1, ← (h1 _).2.2.1, ← (h1 _).2.2.1]`. Use `show Multiplicative.ofAdd _ = Multiplicative.ofAdd _ * Multiplicative.ofAdd _`.
+
+Rewrite using `[← ofAdd_add]`. Use `congr 1`. Introduce `u`. Establish `hy` using `cyc_prism h1 h2 (chi q ζ hζ.pow_eq_one x) u (fun c => mul_comm _ _) (h4 q e)`. Establish `hu` using `hθk _ hy`.
+
+Rewrite `hu` using `[htv x u, (h1 _).2.2.2.1, ← (h1 _).2.2.1]`. Use `show Multiplicative.ofAdd _ = Multiplicative.ofAdd _`. Rewrite using `[hu]`.
+-/
 theorem sThetaOf : SThetaOf := by
   intro h1 h2 h3 h4 h5 h6 k _ _ q _ e ζ hζ v
   obtain ⟨t, ht0, htv⟩ := h6 k q e ζ hζ v

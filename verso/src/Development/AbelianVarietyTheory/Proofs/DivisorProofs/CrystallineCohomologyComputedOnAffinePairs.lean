@@ -20,6 +20,11 @@ variable {R : Type} [CommRing R] {I : Ideal R} (κ : DividedPowers I) {X : Schem
 
 def smAff : ObjectProperty (IsSm κ t i).FullSubcategory := fun S ↦ IsAffineOpen S.obj.U
 
+/- English proof (translation)
+Break down `S'.obj.hU with h' | h'` into its components or cases. Conclude with `h'`. Establish `e : S'.obj.U = S.obj.U` using `le_antisymm f.hom.2 (h' ▸ le_top)`. Express the relevant statement in the definitionally equal form `IsAffineOpen S'.obj.U`. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem smAff_up (S S' : (IsSm κ t i).FullSubcategory) (f : S ⟶ S') (h : smAff κ t i S) :
     smAff κ t i S' := by
   rcases S'.obj.hU with h' | h'
@@ -51,11 +56,17 @@ def mapOf : CoefMap (RingHom.id R) (pE κ t i ⋙ O κ t) ((smAff κ t i).ι ⋙
   naturality _ _ := rfl
   smul _ _ _ := rfl
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨(mapOf κ t i).pull1, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem mapTo_pull1 : Function.Bijective (mapTo κ t i).pull1 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(mapOf κ t i).pull1, fun c ↦ ?_, fun c ↦ ?_⟩
   · obtain ⟨a, rfl⟩ := H1.mk_surjective _ c; rfl
   · obtain ⟨a, rfl⟩ := H1.mk_surjective _ c; rfl
 
+/- English proof (translation)
+Use `Function.bijective_iff_has_inverse.2 ⟨(mapOf κ t i).pull2, fun c ↦ ?_, fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem mapTo_pull2 : Function.Bijective (mapTo κ t i).pull2 := by
   refine Function.bijective_iff_has_inverse.2 ⟨(mapOf κ t i).pull2, fun c ↦ ?_, fun c ↦ ?_⟩
   · obtain ⟨a, rfl⟩ := H2.mk_surjective _ c; rfl
@@ -69,6 +80,17 @@ namespace GlobalTheory.PDForm
 
 open AffPair in
 
+/- English proof (translation)
+Introduce `R _ I κ X t Y i hY`. Establish `ha` using `GlobalTheory.T.crystallineCohomology_restrict_affinePointPairs_bijective R I κ X t Y i`. Establish `hc` using `GlobalTheory.T.affinePointPairs_comma_acyclic_degree_le_two.1 R I κ X t Y i hY`. Establish `hc2` using `GlobalTheory.T.affinePointPairs_comma_acyclic_degree_le_two.2 R I κ X t Y i hY`. Establish `h1 : Function.Bijective (CoefMap.restrict (coefSm κ t i) (smAff κ t i).ι).pull1` using `Desc.restrict_upwardClosed_subcategory_pull1_bijective R _ (coefSm κ t i) (smAff κ t i) (smAff_up κ t i) (fun T ↦ (hc T).1) (fun T ↦ (hc T).2.1) fun T ↦ (hc T).2.2`.
+
+Establish `h2 : Function.Bijective (CoefMap.restrict (coefSm κ t i) (smAff κ t i).ι).pull2` using `⟨Desc.pull_restrict_small_injective (coefSm κ t i) (smAff κ t i) (smAff_up κ t i) (fun T ↦ (hc T).1) (fun T ↦ (hc T).2.1) fun T ↦ (hc T).2.2, Desc.descent_H2_surjective (coefSm κ t i) (smAff κ t i) (smAff_up κ t i) (fun T ↦ (hc T).1) (fun T ↦ (hc T).2.1) (fun T ↦ (hc T).2.2) hc2⟩`. Use `GlobalTheory.T.algebra_coefficients_restriction_bijective R _ _ (O κ t) (pE κ t i) ?_ ?_` and prove the remaining obligations. Establish `h` using `(mapTo_pull1 κ t i).comp (h1.comp ha.1)`. Establish `e : ⇑(CoefMap.restrict (O κ t) (pE κ t i)).pull1 = (mapTo κ t i).pull1 ∘ (CoefMap.restrict (coefSm κ t i) (smAff κ t i).ι).pull1 ∘ (CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull1`. Use function extensionality and compare the values at `c`.
+
+Take `⟨a, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h`. Establish `h` using `(mapTo_pull2 κ t i).comp (h2.comp ha.2)`.
+
+Establish `e : ⇑(CoefMap.restrict (O κ t) (pE κ t i)).pull2 = (mapTo κ t i).pull2 ∘ (CoefMap.restrict (coefSm κ t i) (smAff κ t i).ι).pull2 ∘ (CoefMap.restrict (O κ t) ((IsSm κ t i).ι ⋙ Pr.fgt κ t i)).pull2`. Use function extensionality and compare the values at `c`. Take `⟨a, rfl⟩` from `H2.mk_surjective _ c`. Both sides reduce to the same expression. Rewrite using `[e]`.
+
+Conclude with `h`.
+-/
 theorem crystallineCohomology_computed_on_affinePairs : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R) (Y : Scheme.{0}) (i : X ⟶ Y),
     (∀ U V : Y.Opens, IsAffineOpen U → IsAffineOpen V → IsAffineOpen (U ⊓ V)) →

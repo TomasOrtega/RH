@@ -24,6 +24,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.DifferentialTranslates.ExistsCurve
 open UpperTheory.V.Lit
 
+/- English proof (translation)
+The claim follows from `Dr.deRhamInj_of Dr.absMain Dr.dEquiv Dr.inclFacts Dr.dExact Dr.average Dr.window Dr.cutoff Dr.retract Dr.locSec Dr.coneConvex Dr.geoProper Dr.gauge Dr.levelVal Dr.centralOf Dr.corrFwd Dr.corrSmooth Dr.corrBwd Dr.corrCochain Dr.corrUniq Dr.corrInv Dr.corrBasic Dr.corrD`.
+-/
 theorem UpperTheory.V.Lit.deRhamInj :
     DeRhamInj :=
   Dr.deRhamInj_of Dr.absMain Dr.dEquiv Dr.inclFacts Dr.dExact Dr.average Dr.window Dr.cutoff Dr.retract Dr.locSec Dr.coneConvex Dr.geoProper Dr.gauge Dr.levelVal Dr.centralOf Dr.corrFwd Dr.corrSmooth Dr.corrBwd Dr.corrCochain Dr.corrUniq Dr.corrInv Dr.corrBasic Dr.corrD

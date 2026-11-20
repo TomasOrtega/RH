@@ -8,6 +8,17 @@ noncomputable section
 
 namespace Formalism.FourierDecayAlt.P.DiscFubiniVolume
 
+/- English proof (translation)
+Break down `le_or_gt 1 u with h | h` into its components or cases. Conclude with `J_bound h`. Establish `hb : ‖∫ t in (-1 : ℝ)..1, (g0 t : ℂ) * ee u t‖ ≤ 1 * |1 - (-1 : ℝ)|`. Apply `intervalIntegral.norm_integral_le_of_norm_le_const` to reduce the goal to its premises. Introduce `t _`.
+
+Rewrite using `[norm_mul]`. Establish `h1 : ‖(g0 t : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, show g0 t = Real.sqrt (1 - t ^ 2) from rfl, abs_of_nonneg (Real.sqrt_nonneg _)]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ‖ee u t‖ = 1`.
+
+Simplify using `only [ee]`. Conclude with `Complex.norm_exp_I_mul_ofReal _`. Rewrite using `[h2, mul_one]`. Conclude with `h1`. Establish `hsu : Real.sqrt u ≤ 1`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < u * Real.sqrt u` using `mul_pos hu (Real.sqrt_pos.mpr hu)`. Establish `hle : u * Real.sqrt u ≤ 1` using `by nlinarith [Real.sqrt_nonneg u]`. Establish `h10 : 2 ≤ 10 / (u * Real.sqrt u)`. Rewrite using `[le_div_iff₀ hpos]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : (1 : ℝ) * |1 - (-1 : ℝ)| = 2` using `by norm_num`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 lemma J_all {u : ℝ} (hu : 0 < u) :
     ‖∫ t in (-1 : ℝ)..1, (g0 t : ℂ) * ee u t‖ ≤ 10 / (u * Real.sqrt u) := by
   rcases le_or_gt 1 u with h | h
@@ -37,6 +48,11 @@ lemma J_all {u : ℝ} (hu : 0 < u) :
     have e2 : (1 : ℝ) * |1 - (-1 : ℝ)| = 2 := by norm_num
     linarith
 
+/- English proof (translation)
+Establish `hset : {b : ℝ | b ^ 2 < s} = Ioo (-Real.sqrt s) (Real.sqrt s)`. Use extensionality with `b`. Simplify using `only [mem_setOf_eq, mem_Ioo]`. Conclude with `Real.sq_lt`. Rewrite using `[hset, Real.volume_Ioo]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma vol_sq_lt (s : ℝ) : volume {b : ℝ | b ^ 2 < s} = ENNReal.ofReal (2 * Real.sqrt s) := by
   have hset : {b : ℝ | b ^ 2 < s} = Ioo (-Real.sqrt s) (Real.sqrt s) := by
     ext b
@@ -46,6 +62,29 @@ lemma vol_sq_lt (s : ℝ) : volume {b : ℝ | b ^ 2 < s} = ENNReal.ofReal (2 * R
   congr 1
   ring
 
+/- English proof (translation)
+Use `set e := Complex.measurableEquivRealProd with he`. Establish `hpres : MeasurePreserving e.symm volume volume` using `MeasurePreserving.symm _ Complex.volume_preserving_equiv_real_prod`. Use `set F : ℂ → ℂ := (ball (0 : ℂ) R).indicator (fun z => ee ρ z.re) with hF`. Use `set S : Set (ℝ × ℝ) := {p | p.1 ^ 2 + p.2 ^ 2 < R ^ 2} with hS`. Establish `hmemS : ∀ p : ℝ × ℝ, e.symm p ∈ ball (0 : ℂ) R ↔ p ∈ S`.
+
+Introduce `p`. Rewrite using `[Complex.measurableEquivRealProd_symm_apply, mem_ball, dist_zero_right, Complex.norm_eq_sqrt_sq_add_sq, Real.sqrt_lt' hR]`. Both sides reduce to the same expression. Establish `hFG : ∀ p : ℝ × ℝ, F (e.symm p) = S.indicator (fun q => ee ρ q.1) p`. Introduce `p`.
+
+Distinguish the cases in `hp : p ∈ S`. Rewrite using `[Set.indicator_of_mem hp, hF, Set.indicator_of_mem ((hmemS p).mpr hp), Complex.measurableEquivRealProd_symm_apply]`. Rewrite using `[Set.indicator_of_notMem hp, hF, Set.indicator_of_notMem (fun h => hp ((hmemS p).mp h))]`. Establish `hcont : Continuous (fun z : ℂ => ee ρ z.re)`. Unfold `ee`.
+
+Use `fun_prop`. Establish `hFint : Integrable F`. Rewrite using `[hF, integrable_indicator_iff measurableSet_ball]`. Use `Measure.integrableOn_of_bounded (M := 1) measure_ball_lt_top.ne hcont.aestronglyMeasurable ?_` and prove the remaining obligations. Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations.
+
+Simplify using `only [ee]`. Rewrite using `[Complex.norm_exp_I_mul_ofReal]`. Establish `hGint : Integrable (S.indicator (fun q : ℝ × ℝ => ee ρ q.1)) (volume.prod volume)`. Rewrite using `[← Measure.volume_eq_prod]`. Establish `h1 : (fun p => F (e.symm p)) = S.indicator (fun q : ℝ × ℝ => ee ρ q.1)` using `funext hFG`.
+
+Rewrite using `[← h1]`. Conclude with `(hpres.integrable_comp_emb e.symm.measurableEmbedding).mpr hFint`. Establish `hSmeas : ∀ a : ℝ, MeasurableSet {b : ℝ | b ^ 2 < R ^ 2 - a ^ 2}` using `fun a => measurableSet_lt (by fun_prop) measurable_const`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Measure.volume_eq_prod]`.
+
+Conclude with `integral_congr_ae (Filter.Eventually.of_forall hFG)`. Use `_ = ∫ a, ∫ b, S.indicator (fun q : ℝ × ℝ => ee ρ q.1) (a, b) := integral_prod _ hGint`. Use `_ = ∫ a, ((2 * Real.sqrt (R ^ 2 - a ^ 2) : ℝ) : ℂ) * ee ρ a := by`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Establish `hin : (fun b => S.indicator (fun q : ℝ × ℝ => ee ρ q.1) (a, b)) = {b : ℝ | b ^ 2 < R ^ 2 - a ^ 2}.indicator (fun _ => ee ρ a)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b ^ 2 < R ^ 2 - a ^ 2`. Rewrite using `[Set.indicator_of_mem (show b ∈ {b : ℝ | b ^ 2 < R ^ 2 - a ^ 2} from hb), Set.indicator_of_mem (show (a, b) ∈ S from show a ^ 2 + b ^ 2 < R ^ 2 by linarith)]`. Rewrite using `[Set.indicator_of_notMem (show b ∉ {b : ℝ | b ^ 2 < R ^ 2 - a ^ 2} from hb), Set.indicator_of_notMem (show (a, b) ∉ S from fun h => hb (by`.
+
+Establish `h' : a ^ 2 + b ^ 2 < R ^ 2` using `h`. Use the proof step `linarith))]`. Rewrite using `[hin, integral_indicator_const _ (hSmeas a), measureReal_def, vol_sq_lt, ENNReal.toReal_ofReal (by positivity), Complex.real_smul]`. Use `_ = ∫ t in (-R)..R, ((2 * Real.sqrt (R ^ 2 - t ^ 2) : ℝ) : ℂ) * ee ρ t := by`. Rewrite using `[intervalIntegral.integral_of_le (by linarith), setIntegral_eq_integral_of_forall_compl_eq_zero]`.
+
+Introduce `a ha`. Establish `h2 : R ^ 2 - a ^ 2 ≤ 0`. Simplify using `only [mem_Ioc, not_and_or, not_lt, not_le] at ha`. Apply the tactic sequence `rcases ha with h | h <;> nlinarith`. Rewrite using `[Real.sqrt_eq_zero'.mpr h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 lemma disc_fubini {R ρ : ℝ} (hR : 0 < R) :
     ∫ z in ball (0 : ℂ) R, ee ρ z.re = ∫ t in (-R)..R, ((2 * Real.sqrt (R ^ 2 - t ^ 2) : ℝ) : ℂ) * ee ρ t := by
   classical
@@ -114,6 +153,17 @@ lemma disc_fubini {R ρ : ℝ} (hR : 0 < R) :
         rw [Real.sqrt_eq_zero'.mpr h2]
         simp
 
+/- English proof (translation)
+Establish `hR0 : R ≠ 0` using `hR.ne'`. Establish `hRc : (R : ℂ) ≠ 0` using `by exact_mod_cast hR0`. Establish `hsq : ∀ s : ℝ, Real.sqrt (1 - s ^ 2) = Real.sqrt (R ^ 2 - (R * s) ^ 2) / R`. Introduce `s`. Rewrite using `[show R ^ 2 - (R * s) ^ 2 = R ^ 2 * (1 - s ^ 2) by ring, Real.sqrt_mul (sq_nonneg R), Real.sqrt_sq hR.le, mul_div_cancel_left₀ _ hR0]`.
+
+Establish `hee : ∀ s : ℝ, ee (ρ * R) s = ee ρ (R * s)`. Introduce `s`. Simplify using `only [ee]`. Use `congr 2`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `key : (fun s : ℝ => (g0 s : ℂ) * ee (ρ * R) s) = fun s => ((Real.sqrt (R ^ 2 - (R * s) ^ 2) / R : ℝ) : ℂ) * ee ρ (R * s)`. Use function extensionality and compare the values at `s`. Rewrite using `[hee, show g0 s = Real.sqrt (1 - s ^ 2) from rfl, hsq]`. Establish `hint : (∫ s in (-1 : ℝ)..1, (g0 s : ℂ) * ee (ρ * R) s) = ∫ s in (-1 : ℝ)..1, ((Real.sqrt (R ^ 2 - (R * s) ^ 2) / R : ℝ) : ℂ) * ee ρ (R * s)`.
+
+Rewrite using `[key]`. Establish `hcomp` using `intervalIntegral.integral_comp_mul_left (a := (-1 : ℝ)) (b := 1) (fun t : ℝ => ((Real.sqrt (R ^ 2 - t ^ 2) / R : ℝ) : ℂ) * ee ρ t) hR0`. Rewrite using `[hint, hcomp, mul_neg, mul_one, Complex.real_smul, ← intervalIntegral.integral_const_mul, ← intervalIntegral.integral_const_mul]`. Use `intervalIntegral.integral_congr fun t _ => ?_` and prove the remaining obligations. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 lemma disc_scale {R ρ : ℝ} (hR : 0 < R) :
     ∫ t in (-R)..R, ((2 * Real.sqrt (R ^ 2 - t ^ 2) : ℝ) : ℂ) * ee ρ t =
       ((2 * R ^ 2 : ℝ) : ℂ) * ∫ s in (-1 : ℝ)..1, (g0 s : ℂ) * ee (ρ * R) s := by
@@ -150,6 +200,35 @@ namespace Formalism.FourierDecayAlt.P
 
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.DiscFubiniVolume
 
+/- English proof (translation)
+Introduce `β hβ`. Use `⟨20 / Real.pi * ‖β‖ ^ (-(3 / 2 : ℝ)), fun ξ x₀ R hξ hR => ?_⟩` and prove the remaining obligations. Use `set γ := β * ξ with hγ`. Establish `hγ0 : γ ≠ 0` using `mul_ne_zero hβ hξ`. Establish `hγn : 0 < ‖γ‖` using `norm_pos_iff.mpr hγ0`.
+
+Use `set c : ℝ := ‖γ‖ with hc`. Establish `hpsi : ∀ x : ℂ, G.psi β (ξ * x) = Complex.exp (Complex.I * ((γ * x).re : ℂ))`. Introduce `x`. Simplify using `only [G.psi, hγ, mul_assoc]`. Establish `htr : ∫ x in ball x₀ R, G.psi β (ξ * x) = Complex.exp (Complex.I * ((γ * x₀).re : ℂ)) * ∫ w in ball (0 : ℂ) R, Complex.exp (Complex.I * ((γ * w).re : ℂ))`.
+
+Rewrite using `[← integral_indicator measurableSet_ball, ← integral_indicator measurableSet_ball, ← integral_const_mul, ← integral_add_left_eq_self _ x₀]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w ∈ ball (0 : ℂ) R`. Establish `hw' : x₀ + w ∈ ball x₀ R`.
+
+Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left]`. Simplify using `using hw`. Rewrite using `[Set.indicator_of_mem hw', Set.indicator_of_mem hw, hpsi, mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]`. Establish `hw' : x₀ + w ∉ ball x₀ R`. Rewrite using `[mem_ball, dist_eq_norm, add_sub_cancel_left]`.
+
+Simplify using `using hw`. Rewrite using `[Set.indicator_of_notMem hw', Set.indicator_of_notMem hw, mul_zero]`. Use `set u : Circle := Circle.exp (-Complex.arg γ) with hu`. Establish `hrot : ∀ v : ℂ, γ * (rotation u v) = (c : ℂ) * v`. Introduce `v`.
+
+Rewrite using `[rotation_apply, hu, Circle.coe_exp]`. Use `nth_rewrite 1 [← Complex.norm_mul_exp_arg_mul_I γ]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = ↑‖γ‖ * v := by`.
+
+Rewrite using `[← Complex.exp_add, Complex.ofReal_neg, neg_mul, add_neg_cancel, Complex.exp_zero, mul_one]`. Establish `hrotI : ∫ w in ball (0 : ℂ) R, Complex.exp (Complex.I * ((γ * w).re : ℂ)) = ∫ v in ball (0 : ℂ) R, ee c v.re`. Establish `hL` using `LinearIsometryEquiv.measurePreserving (rotation u)`. Rewrite using `[← integral_indicator measurableSet_ball, ← integral_indicator measurableSet_ball, ← hL.integral_comp (rotation u).toHomeomorph.measurableEmbedding]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `v`. Establish `hn : rotation u v ∈ ball (0 : ℂ) R ↔ v ∈ ball (0 : ℂ) R`. Simplify using `only [mem_ball, dist_zero_right, LinearIsometryEquiv.norm_map]`. Distinguish the cases in `hv : v ∈ ball (0 : ℂ) R`. Rewrite using `[Set.indicator_of_mem (hn.mpr hv), Set.indicator_of_mem hv, hrot, Complex.re_ofReal_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (fun h => hv (hn.mp h)), Set.indicator_of_notMem hv]`. Establish `hvol : (volume (ball x₀ R)).toReal = R ^ 2 * Real.pi`. Rewrite using `[Complex.volume_ball, ENNReal.toReal_mul, ENNReal.toReal_pow, ENNReal.toReal_ofReal hR.le]`. Simplify using the standard rewrite rules.
+
+Establish `hJ` using `J_all (u := c * R) (by positivity)`. Establish `hx : 0 < ‖β‖` using `norm_pos_iff.mpr hβ`. Establish `hy : 0 < R * ‖ξ‖` using `mul_pos hR (norm_pos_iff.mpr hξ)`. Establish `hcR : c * R = ‖β‖ * (R * ‖ξ‖)`. Rewrite using `[hc, hγ, norm_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hpow : c * R * Real.sqrt (c * R) = (‖β‖ * (R * ‖ξ‖)) ^ (3 / 2 : ℝ)`. Rewrite using `[hcR, Real.sqrt_eq_rpow, show (3 / 2 : ℝ) = 1 + 1 / 2 by norm_num, Real.rpow_add (by positivity), Real.rpow_one]`. Establish `hkey : 10 / (c * R * Real.sqrt (c * R)) = 10 * (‖β‖ ^ (-(3 / 2 : ℝ)) * (R * ‖ξ‖) ^ (-(3 / 2 : ℝ)))`. Rewrite using `[hpow, ← Real.mul_rpow hx.le hy.le, Real.rpow_neg (by positivity), div_eq_mul_inv]`.
+
+Simplify using `only [C6.meanDisc]`. Rewrite using `[htr, hrotI, disc_fubini hR, disc_scale hR, hvol]`. Combine the equalities or inequalities in the displayed calculation. Establish `hn1 : ‖Complex.exp (Complex.I * ((γ * x₀).re : ℂ))‖ = 1` using `Complex.norm_exp_I_mul_ofReal _`. Establish `hn2 : ‖((2 * R ^ 2 : ℝ) : ℂ)‖ = 2 * R ^ 2`.
+
+Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Establish `hn3 : ‖(R ^ 2 * Real.pi)⁻¹‖ = (R ^ 2 * Real.pi)⁻¹` using `Real.norm_of_nonneg (by positivity)`. Rewrite using `[norm_smul, norm_mul, norm_mul, hn1, hn2, hn3]`. Establish `hpi : (0 : ℝ) < Real.pi` using `Real.pi_pos`. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ 2 / Real.pi * (10 / (c * R * Real.sqrt (c * R))) := mul_le_mul_of_nonneg_left hJ (by positivity)`. Use `_ = 20 / Real.pi * ‖β‖ ^ (-(3 / 2 : ℝ)) * (R * ‖ξ‖) ^ (-(3 / 2 : ℝ)) := by`. Rewrite using `[hkey]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem disc_mean_value : C6.DiscMean := by
   intro β hβ
   refine ⟨20 / Real.pi * ‖β‖ ^ (-(3 / 2 : ℝ)), fun ξ x₀ R hξ hR => ?_⟩

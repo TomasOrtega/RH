@@ -14,6 +14,11 @@ open scoped Classical
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Establish `ha : (⟨x, hx⟩ : 𝓞 F) ≠ 0` using `fun e => h0 (congrArg Subtype.val e)`. Use `InfinitePlace.one_le_of_lt_one (w := w) ha (fun z _ => h z)` as an intermediate fact.
+
+Conclude with `absurd this (not_le.mpr (h w))`.
+-/
 theorem exists_one_le_place (x : F) (hx : IsIntegral ℤ x) (h0 : x ≠ 0) : ∃ w : InfinitePlace F, 1 ≤ w x := by
   by_contra h
   push_neg at h
@@ -22,10 +27,16 @@ theorem exists_one_le_place (x : F) (hx : IsIntegral ℤ x) (h0 : x ≠ 0) : ∃
   have := InfinitePlace.one_le_of_lt_one (w := w) ha (fun z _ => h z)
   exact absurd this (not_le.mpr (h w))
 
+/- English proof (translation)
+Rewrite using `[← InfinitePlace.norm_embedding_eq, ← InfinitePlace.norm_embedding_eq, map_mul, map_natCast, norm_mul, Complex.norm_natCast]`.
+-/
 theorem place_natCast_mul (w : InfinitePlace F) (m : ℕ) (x : F) : w ((m : F) * x) = m * w x := by
   rw [← InfinitePlace.norm_embedding_eq, ← InfinitePlace.norm_embedding_eq, map_mul, map_natCast, norm_mul,
     Complex.norm_natCast]
 
+/- English proof (translation)
+Establish `hm0 : (m : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)`. Take `⟨w, hw⟩` from `exists_one_le_place _ hint (mul_ne_zero hm0 h0)`. Rewrite `hw` using `[place_natCast_mul, mul_comm]`. Establish `hmpos : (0 : ℝ) < m` using `by exact_mod_cast hm`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem inv_le_sum_places (m : ℕ) (hm : 1 ≤ m) (x : F) (hint : IsIntegral ℤ ((m : F) * x)) (h0 : x ≠ 0) :
     (m : ℝ)⁻¹ ≤ ∑ w : InfinitePlace F, w x := by
   have hm0 : (m : F) ≠ 0 := by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)
@@ -35,6 +46,11 @@ theorem inv_le_sum_places (m : ℕ) (hm : 1 ≤ m) (x : F) (hint : IsIntegral �
   calc (m : ℝ)⁻¹ ≤ w x := by rw [inv_le_iff_one_le_mul₀ hmpos]; exact hw
     _ ≤ _ := Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => apply_nonneg w x) (Finset.mem_univ w)
 
+/- English proof (translation)
+Establish `hs : 0 ≤ ∑ w : InfinitePlace F, w x` using `Finset.sum_nonneg fun w _ => apply_nonneg w x`. Rewrite using `[Prod.norm_def]`. Use `max_le ((pi_norm_le_iff_of_nonneg hs).mpr fun w => ?_) ((pi_norm_le_iff_of_nonneg hs).mpr fun w => ?_)` and prove the remaining obligations. Rewrite using `[mixedEmbedding_apply_isReal, InfinitePlace.norm_embedding_of_isReal]`. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => apply_nonneg w x) (Finset.mem_univ _)`.
+
+Rewrite using `[mixedEmbedding_apply_isComplex, InfinitePlace.norm_embedding_eq]`. Conclude with `Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => apply_nonneg w x) (Finset.mem_univ _)`.
+-/
 theorem norm_mixedEmbedding_le (x : F) : ‖(mixedEmbedding F x : NumberField.mixedEmbedding.mixedSpace F)‖ ≤ ∑ w : InfinitePlace F, w x := by
   have hs : 0 ≤ ∑ w : InfinitePlace F, w x := Finset.sum_nonneg fun w _ => apply_nonneg w x
   rw [Prod.norm_def]
@@ -44,6 +60,9 @@ theorem norm_mixedEmbedding_le (x : F) : ‖(mixedEmbedding F x : NumberField.mi
   · rw [mixedEmbedding_apply_isComplex, InfinitePlace.norm_embedding_eq]
     exact Finset.single_le_sum (f := fun w : InfinitePlace F => w x) (fun w _ => apply_nonneg w x) (Finset.mem_univ _)
 
+/- English proof (translation)
+Establish `hs : 0 ≤ ∑ j, ∑ w : InfinitePlace F, w (ξ j)` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => apply_nonneg w _`. Use `(pi_norm_le_iff_of_nonneg hs).mpr fun j => (norm_mixedEmbedding_le (ξ j)).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace F, w (ξ j)) (fun j _ => Finset.sum_nonneg fun w _ => apply_nonneg w _) (Finset.mem_univ j)`.
+-/
 theorem norm_pi_mixedEmbedding_le {κ : Type} [Fintype κ] (ξ : κ → F) :
     ‖((fun j => mixedEmbedding F (ξ j)) : κ → NumberField.mixedEmbedding.mixedSpace F)‖ ≤ ∑ j, ∑ w : InfinitePlace F, w (ξ j) := by
   have hs : 0 ≤ ∑ j, ∑ w : InfinitePlace F, w (ξ j) :=
@@ -52,6 +71,11 @@ theorem norm_pi_mixedEmbedding_le {κ : Type} [Fintype κ] (ξ : κ → F) :
   exact Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace F, w (ξ j))
     (fun j _ => Finset.sum_nonneg fun w _ => apply_nonneg w _) (Finset.mem_univ j)
 
+/- English proof (translation)
+Establish `hP : 0 < P` using `hP0.trans_le h`. Establish `e : P ^ A * (1 + P) ^ N₀ * (P ^ (A + N₀ + D))⁻¹ = (1 + P⁻¹) ^ N₀ * (P ^ D)⁻¹`. Establish `hP' : P ≠ 0` using `hP.ne'`. Rewrite using `[show (1 : ℝ) + P⁻¹ = (1 + P) * P⁻¹ by rw [add_mul, one_mul, mul_inv_cancel₀ hP', add_comm], mul_pow, pow_add, pow_add, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e]`. Use `gcongr`.
+-/
 theorem stepB (P P0 : ℝ) (hP0 : 0 < P0) (h : P0 ≤ P) (A N₀ D : ℕ) :
     P ^ A * (1 + P) ^ N₀ * (P ^ (A + N₀ + D))⁻¹ ≤ (1 + P0⁻¹) ^ N₀ * (P0 ^ D)⁻¹ := by
   have hP : 0 < P := hP0.trans_le h
@@ -62,6 +86,49 @@ theorem stepB (P P0 : ℝ) (hP0 : 0 < P0) (h : P0 ≤ P) (A N₀ D : ℕ) :
   rw [e]
   gcongr
 
+/- English proof (translation)
+Introduce `F _ _ κ _ _ q blk A N₀ c hc`. Use `set L := GlobalTheory.LatScaleSum.latPi F κ with hL`. Use `set D : ℕ := Module.finrank ℤ L + 1 with hD`. Use `set H : (κ → mixedSpace F) → ℝ := fun v => ((1 + ‖v‖) ^ D)⁻¹ with hH`. Establish `hHs : Summable fun z : L => H z` using `GlobalTheory.LatScaleSum.summable_inv_one_add_pow F κ`.
+
+Use `set P0 : ℝ := c ^ q with hP0def`. Establish `hP0 : 0 < P0` using `pow_pos hc q`. Use `set B : ℝ := (1 + P0⁻¹) ^ N₀ * (P0 ^ D)⁻¹ with hB`. Establish `hB0 : 0 ≤ B` using `by positivity`. Use `⟨A + N₀ + D, B * ∑' z : L, H z, q * (A + N₀ + D) + D, ?_⟩` and prove the remaining obligations.
+
+Introduce `m t hm ht`. Use `set N := A + N₀ + D with hN`. Use `set P : ℝ := ∏ i, t i with hPdef`. Establish `ht0 : ∀ i, 0 < t i` using `fun i => hc.trans_le (ht i)`. Establish `hPP0 : P0 ≤ P`.
+
+Rewrite using `[hP0def, hPdef]`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : 0 < P` using `hP0.trans_le hPP0`. Establish `hmpos : (0 : ℝ) < m` using `by exact_mod_cast hm`. Establish `hm0 : (m : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)`.
+
+Use `set ψ : (κ → F) → (κ → mixedSpace F) := fun ξ i => mixedEmbedding F (ξ i) with hψdef`. Use `set g : (κ → F) → (κ → mixedSpace F) := fun ξ => ψ (fun i => (m : F) * ξ i) with hgdef`. Establish `hginj : Function.Injective g`. Introduce `ξ η h`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun h i` as an intermediate fact. Simplify using `only [hgdef, hψdef] at this`. Conclude with `mul_left_cancel₀ hm0 (mixedEmbedding_injective F this)`. Establish `hgsmul : ∀ ξ, g ξ = m • ψ ξ`. Introduce `ξ`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [hgdef, hψdef, Pi.smul_apply]`. Rewrite using `[← nsmul_eq_mul, map_nsmul]`. Use `set Lind : (κ → mixedSpace F) → ℝ := (L : Set (κ → mixedSpace F)).indicator H with hLind`. Establish `hLs : Summable Lind` using `summable_subtype_iff_indicator.mp hHs`.
+
+Establish `hLnn : ∀ v, 0 ≤ Lind v` using `fun v => Set.indicator_nonneg (fun v _ => by positivity) v`. Establish `key : ∀ ξ, latG (F` using `F) blk A N m t ξ * (1 + P) ^ N₀ ≤ B * (m : ℝ) ^ (q * N + D) * Lind (g ξ) := by`. Introduce `ξ`. Establish `hR : 0 ≤ B * (m : ℝ) ^ (q * N + D) * Lind (g ξ)` using `mul_nonneg (by positivity) (hLnn _)`. Unfold `latG`.
+
+Use `split_ifs with hblk`. Use `swap`. Simplify using `using hR`. Unfold `majI`. Use `split_ifs with hint`.
+
+Use `swap`. Simplify using `using hR`. Establish `hmem : g ξ ∈ L` using `GlobalTheory.LatScaleSum.mem_latPi F κ _ hint`. Rewrite using `[hLind, Set.indicator_of_mem hmem]`. Use `set S : Fin q → ℝ := fun i => ∑ j ∈ blk i, ∑ w : InfinitePlace F, w (ξ j) with hS`.
+
+Use `set s : ℝ := ∑ j, ∑ w : InfinitePlace F, w (ξ j) with hs`. Establish `hS0 : ∀ i, (m : ℝ)⁻¹ ≤ S i`. Introduce `i`. Take `⟨j, hj, hξ⟩` from `hblk i`. Conclude with `(inv_le_sum_places m hm (ξ j) (hint j) hξ).trans (Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace F, w (ξ j)) (fun j _ => Finset.sum_nonneg fun w _ => apply_nonneg w _) hj)`.
+
+Use `set Q : ℝ := ∏ i, (1 + t i * S i) with hQ`. Establish `hQge : P * ((m : ℝ) ^ q)⁻¹ ≤ Q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, inv_pow]`. Use `_ ≤ Q := Finset.prod_le_prod (fun i _ => by have := ht0 i; positivity) (fun i _ => by`.
+
+Use `mul_le_mul_of_nonneg_left (hS0 i) (ht0 i).le` as an intermediate fact. Conclude with `le_add_of_nonneg_of_le zero_le_one this)`. Establish `hs0 : 0 ≤ s` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => apply_nonneg w _`. Establish `hQpos : 0 < P * ((m : ℝ) ^ q)⁻¹` using `by positivity`. Establish `hmaj : majW blk A N t ξ = P ^ A * ((Q ^ N) * (1 + s) ^ N)⁻¹`.
+
+Unfold `majW`. Rewrite using `[Finset.prod_pow]`. Rewrite using `[hmaj]`. Establish `hψn : ‖ψ ξ‖ ≤ s` using `norm_pi_mixedEmbedding_le ξ`. Establish `hgn : ‖g ξ‖ ≤ m * ‖ψ ξ‖` using `by rw [hgsmul]; exact norm_nsmul_le`.
+
+Establish `hcc : ((1 + s) ^ N)⁻¹ ≤ (m : ℝ) ^ D * H (g ξ)`. Establish `h1 : ((1 + s) ^ N)⁻¹ ≤ ((1 + s) ^ D)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ (by linarith) (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hmpos.ne'), one_mul]`. Use `_ ≤ (m : ℝ) ^ D * ((1 + ‖g ξ‖) ^ D)⁻¹ := by gcongr`. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Use polynomial arithmetic with `[norm_nonneg (ψ ξ), hgn]`. Establish `ha : (Q ^ N)⁻¹ ≤ (m : ℝ) ^ (q * N) * (P ^ N)⁻¹`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hb` using `stepB P P0 hP0 hPP0 A N₀ D`. Establish `hHg : 0 ≤ H (g ξ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hnn : ∀ ξ, 0 ≤ latG (F` using `F) blk A N m t ξ := fun ξ => latG_nonneg blk A N m t ξ (fun i => (ht0 i).le)`.
+
+Establish `hpow : 0 < (1 + P) ^ N₀` using `by positivity`. Establish `key' : ∀ ξ, latG (F` using `F) blk A N m t ξ ≤ ((1 + P) ^ N₀)⁻¹ * (B * (m : ℝ) ^ (q * N + D)) * Lind (g ξ) := by`. Introduce `ξ`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+
+Use `_ ≤ ((1 + P) ^ N₀)⁻¹ * (B * (m : ℝ) ^ (q * N + D) * Lind (g ξ)) := mul_le_mul_of_nonneg_left (key ξ) (by positivity)`. Use `_ = _ := by ring`. Establish `hu : Summable fun ξ => Lind (g ξ)` using `hLs.comp_injective hginj`. Establish `hsum : Summable (latG (F` using `F) blk A N m t) := Summable.of_nonneg_of_le hnn key' (hu.mul_left _)`. Use `⟨hsum, ?_⟩` and prove the remaining obligations.
+
+Establish `hcomp : ∑' ξ, Lind (g ξ) ≤ ∑' v, Lind v` using `tsum_comp_le_tsum_of_inj hLs hLnn hginj`. Establish `hsub : ∑' v, Lind v = ∑' z : L, H z` using `(tsum_subtype (L : Set (κ → mixedSpace F)) H).symm`. Rewrite using `[← tsum_mul_right]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsub]; exact mul_le_mul_of_nonneg_left hcomp (by positivity)`.
+
+Use `_ = B * (∑' z : L, H z) * (m : ℝ) ^ (q * N + D) := by ring`.
+-/
 theorem latG_tsum_le : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [DecidableEq κ] (q : ℕ) (blk : Fin q → Finset κ)
     (A N₀ : ℕ) (c : ℝ), 0 < c → ∃ (N : ℕ) (C : ℝ) (K : ℕ), ∀ (m : ℕ) (t : Fin q → ℝ), 1 ≤ m → (∀ i, c ≤ t i) →
       Summable (latG (F := F) blk A N m t) ∧ (∑' ξ, latG (F := F) blk A N m t ξ) * (1 + ∏ i, t i) ^ N₀ ≤ C * (m : ℝ) ^ K := by

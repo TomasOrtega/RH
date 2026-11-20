@@ -16,6 +16,25 @@ open GlobalTheory.CxPts
 
 variable {F : Type} [Field F] {X : Scheme.{0}} (p : X ⟶ Sp F) (σ : F →+* ℂ)
 
+/- English proof (translation)
+Set `: Algebra F Γ(X, U)` to `(algX p U).toAlgebra`. Set `: Algebra F ℂ` to `σ.toAlgebra`. Establish `hft : (algX p U).FiniteType` using `(HasRingHomProperty.appLE @LocallyOfFiniteType p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top).comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.surjective)`. Establish `: Algebra.FiniteType F Γ(X, U)` using `hft`. Establish `hg : hU.fromSpec ≫ p = Spec.map (CommRingCat.ofHom (algebraMap F Γ(X, U)))`.
+
+Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec p (isAffineOpen_top _) hU (show U ≤ p ⁻¹ᵁ ⊤ from le_top)`. Rewrite using `[← h, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `: Nontrivial Γ(X, U)` using `nontrivial_of_ne _ _ hf`. Establish `: NoZeroDivisors (ℂ ⊗[F] Γ(X, U))` using `@UnitRigidity.noZeroDivisors_tensor F Γ(X, U) _ _ _ (algX p U).toAlgebra X p _ hU.fromSpec (inferInstanceAs (IsOpenImmersion hU.fromSpec)) hg ℂ _ _`.
+
+Establish `hinj` using `Algebra.TensorProduct.includeRight_injective (R := F) (A := ℂ) (B := Γ(X, U)) (algebraMap F ℂ).injective`. Establish `: Nontrivial (ℂ ⊗[F] Γ(X, U))` using `hinj.nontrivial`. Establish `: IsDomain (ℂ ⊗[F] Γ(X, U))` using `NoZeroDivisors.to_isDomain _`. Set `φ (q : ℂ ⊗[F] Γ(X, U) →ₐ[ℂ] ℂ) : Γ(X, U) →+* ℂ` to `q.toRingHom.comp (Algebra.TensorProduct.includeRight (R := F) (A := ℂ)).toRingHom`. Establish `hφa (q) (a) : φ q a = q (1 ⊗ₜ a)` using `rfl`.
+
+Establish `hφ (q) (a : F) : φ q (algX p U a) = σ a`. Establish `: ((1 : ℂ) ⊗ₜ[F] algX p U a) = algebraMap ℂ (ℂ ⊗[F] Γ(X, U)) (σ a)` using `(Algebra.TensorProduct.tmul_one_eq_one_tmul (R := F) (A := ℂ) (B := Γ(X, U)) a).symm`. Rewrite using `[hφa, this, AlgHom.commutes]`. Both sides reduce to the same expression. Set `s (q : ℂ ⊗[F] Γ(X, U) →ₐ[ℂ] ℂ) : CxPts p σ` to `ofHom hU (φ q) (hφ q)`.
+
+Establish `hsU (q) : s q ∈ ptsIn p σ U` using `ofHom_mem _ _ _`. Establish `hsv (q) (a) : ev p σ U a (s q) = q (1 ⊗ₜ a)` using `ev_ofHom _ _ _ a`. Use `⟨_, inferInstance, s, ?_, ?_, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Ideal.exists_maximal (ℂ ⊗[F] Γ(X, U))`. Set `` to `Ideal.Quotient.field m`.
+
+Establish `: Module.Finite ℂ ((ℂ ⊗[F] Γ(X, U)) ⧸ m)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Conclude with `⟨(IsAlgClosed.lift (R := ℂ) (S := (ℂ ⊗[F] Γ(X, U)) ⧸ m) (M := ℂ)).comp (Ideal.Quotient.mkₐ ℂ m)⟩`. Use `continuous_iff_continuousAt.2 fun q => tendsto_subtype_rng.2 (GlobalTheory.Points.tendsto_of_isAffineOpen hU (hsU q) (Filter.Eventually.of_forall hsU) fun a => ?_)` and prove the remaining obligations. Establish `h : Continuous (ev p σ U a ∘ s)`. Establish `: ev p σ U a ∘ s = fun q => q (1 ⊗ₜ a)` using `funext fun q => hsv q a`.
+
+Rewrite using `[this]`. Conclude with `GlobalTheory.AffinePoints.continuous_eval _`. Conclude with `h.continuousAt`. Set `ψ : Γ(X, U) →ₐ[F] ℂ` to `{ evHom hy with commutes' := fun a => (ev_eq hy _).symm.trans (ev_algX hy a) }`. Set `q : ℂ ⊗[F] Γ(X, U) →ₐ[ℂ] ℂ` to `Algebra.TensorProduct.lift (AlgHom.id ℂ ℂ) ψ fun _ _ => Commute.all _ _`.
+
+Use `⟨q, Subtype.ext (GlobalTheory.Points.ext_of_valR hU (hsU q) hy fun a => ?_)⟩` and prove the remaining obligations. Use `(hsv q a).trans ?_` and prove the remaining obligations. Simplify using `only [q, Algebra.TensorProduct.lift_tmul, map_one, one_mul]`. Conclude with `(ev_eq hy a).symm`. Establish `hf' : ((1 : ℂ) ⊗ₜ[F] f) ≠ 0` using `(map_ne_zero_iff _ hinj).2 hf`.
+
+Use `(GlobalTheory.AffinePoints.dense_nonvanishing hf').mono fun q hq => ?_` and prove the remaining obligations. Use `(mem_ptsIn_basicOpen (hsU q) f).2 ?_` and prove the remaining obligations. Rewrite using `[hsv]`. Conclude with `hq`.
+-/
 theorem exists_param [GeometricallyIntegral p] [LocallyOfFiniteType p] {U : X.Opens} (hU : IsAffineOpen U)
     {f : Γ(X, U)} (hf : f ≠ 0) :
     ∃ (B : Type) (_ : TopologicalSpace B) (s : B → CxPts p σ), Nonempty B ∧ Continuous s ∧
@@ -77,6 +96,11 @@ theorem exists_param [GeometricallyIntegral p] [LocallyOfFiniteType p] {U : X.Op
     rw [hsv]
     exact hq
 
+/- English proof (translation)
+Take `⟨x, hxU, hxW⟩` from `nonempty_preirreducible_inter U.isOpen W.isOpen hne hW`. Take `⟨f, hfW, hf⟩` from `hU.exists_basicOpen_le (V := W) ⟨x, hxW⟩ hxU`. Use `⟨f, ?_, hfW⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hf` using `[Scheme.basicOpen_zero]`.
+
+Conclude with `hf`.
+-/
 theorem exists_ne_zero_basicOpen_le [IsIntegral X] {U W : X.Opens} (hU : IsAffineOpen U)
     (hne : (U : Set X).Nonempty) (hW : (W : Set X).Nonempty) :
     ∃ f : Γ(X, U), f ≠ 0 ∧ X.basicOpen f ≤ W := by
@@ -87,6 +111,13 @@ theorem exists_ne_zero_basicOpen_le [IsIntegral X] {U W : X.Opens} (hU : IsAffin
   rw [Scheme.basicOpen_zero] at hf
   exact hf
 
+/- English proof (translation)
+Establish `: IsIntegral X` using `GeometricallyIntegral.isIntegral_of_subsingleton p`. Use `⟨?_, fun W hW y => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top (genericPoint X))`. Take `⟨f, hf, -⟩` from `exists_ne_zero_basicOpen_le hU ⟨_, hx⟩ ⟨_, hx⟩`. Take `⟨B, _, s, ⟨b⟩, -⟩` from `exists_param p σ hU hf`.
+
+Conclude with `⟨s b⟩`. Take `⟨U, hU, hx, -⟩` from `Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (Opens.mem_top (y.1 (IsLocalRing.closedPoint ℂ)))`. Take `⟨f, hf, hfW⟩` from `exists_ne_zero_basicOpen_le hU ⟨_, hx⟩ hW`. Take `⟨B, _, s, -, hs, hr, hd⟩` from `exists_param p σ hU hf`. Take `⟨b, rfl⟩` from `hr (mem_ptsIn.2 hx)`.
+
+Conclude with `closure_mono (ptsIn_mono hfW) (hs.closure_preimage_subset _ (hd b))`.
+-/
 theorem nonempty_and_dense_of_geometricallyIntegral [GeometricallyIntegral p] [LocallyOfFiniteType p] :
     Nonempty (CxPts p σ) ∧ ∀ W : X.Opens, (W : Set X).Nonempty → Dense (ptsIn p σ W) := by
   have : IsIntegral X := GeometricallyIntegral.isIntegral_of_subsingleton p
@@ -102,6 +133,9 @@ theorem nonempty_and_dense_of_geometricallyIntegral [GeometricallyIntegral p] [L
     obtain ⟨b, rfl⟩ := hr (mem_ptsIn.2 hx)
     exact closure_mono (ptsIn_mono hfW) (hs.closure_preimage_subset _ (hd b))
 
+/- English proof (translation)
+Introduce `_ _ Y σ` and use `nonempty_and_dense_of_geometricallyIntegral Y.str σ`.
+-/
 theorem nonempty_and_dense : ∀ (F : Type) [Field F] (Y : GlobalTheory.ProjVar.Var F) (σ : F →+* ℂ),
     Nonempty (CxPts Y.str σ) ∧ ∀ W : Y.X.Opens, (W : Set Y.X).Nonempty → Dense (CxPts.ptsIn Y.str σ W) :=
   fun _ _ Y σ => nonempty_and_dense_of_geometricallyIntegral Y.str σ

@@ -11,6 +11,15 @@ namespace PDivGroup
 
 variable {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R)
 
+/- English proof (translation)
+Establish `h1 : (G.transl n).toLinearMap = (G.resOne n : G.A (n + 1) →ₗ[R] G.A 1).lTensor _ ∘ₗ comul` using `LinearMap.ext fun a => G.transl_apply n a`. Establish `h2 : ∀ t : (G.A (n + 1) ⊗[R] G.A (n + 1)) ⊗[R] G.A (n + 1), ((G.resOne n : G.A (n + 1) →ₗ[R] G.A 1).lTensor _).lTensor _ (TensorProduct.assoc R _ _ _ t) = TensorProduct.assoc R _ _ _ ((G.resOne n : G.A (n + 1) →ₗ[R] G.A 1).lTensor _ t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul u c`. Proceed by induction on `u with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`.
+
+Consider the case `tmul a b => simp`. Rewrite using `[h1, LinearMap.lTensor_comp_apply, ← coassoc_apply, h2, transl_apply]`. Use `congr 1`. Generalize the expression as in `comul (R := R) x = t`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+-/
 theorem lTensor_transl_comul (n : ℕ) (x : G.A (n + 1)) :
     (G.transl n).toLinearMap.lTensor (G.A (n + 1)) (comul (R := R) x) =
       TensorProduct.assoc R _ _ _ ((comul (R := R)).rTensor (G.A 1) (G.transl n x)) := by
@@ -37,6 +46,11 @@ theorem lTensor_transl_comul (n : ℕ) (x : G.A (n + 1)) :
   | add x y hx hy => simp only [map_add, hx, hy]
   | tmul a b => simp
 
+/- English proof (translation)
+Establish `h1 : ∀ t : G.A (n + 1) ⊗[R] G.A (n + 1), TensorProduct.assoc R _ _ _ (t ⊗ₜ (1 : G.A 1)) = ((TensorProduct.mk R (G.A (n + 1)) (G.A 1)).flip 1).lTensor _ t` using `fun t => by`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`.
+
+Establish `h2 : comul (R` using `R) (1 : G.A (n + 1)) = 1 ⊗ₜ 1 := by simp [Algebra.TensorProduct.one_def]`. Establish `h3 : G.transl n 1 = 1 ⊗ₜ 1` using `by rw [map_one, Algebra.TensorProduct.one_def]`. Rewrite using `[LinearMap.lTensor_sub, LinearMap.sub_apply, cobOne_apply]`. Simplify using `only [map_sub, lTensor_transl_comul, h, map_add, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, h1, h2, h3, AlgHom.toLinearMap_apply, LinearMap.flip_apply, mk_apply, assoc_tmul, tmul_add]`. Normalize the expressions using the abelian group laws.
+-/
 theorem lTensor_transl_sub_cobOne (n : ℕ) (x : G.A (n + 1)) (b : G.A 1)
     (h : G.transl n x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b) :
     ((G.transl n).toLinearMap - (TensorProduct.mk R (G.A (n + 1)) (G.A 1)).flip 1).lTensor
@@ -55,6 +69,9 @@ theorem lTensor_transl_sub_cobOne (n : ℕ) (x : G.A (n + 1)) (b : G.A 1)
     assoc_tmul, tmul_add]
   abel
 
+/- English proof (translation)
+Establish `h2` using `G.lTensor_transl_sub_cobOne n x b h`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[← (mem_symCocycles.1 (cobOne_mem x)).2, LinearMap.rTensor_comm, h2, map_zero]`.
+-/
 theorem cobOne_transl_invariant {p : ℕ} {R : Type} [CommRing R] (G : PDivGroup p R) (n : ℕ)
     (x : G.A (n + 1)) (b : G.A 1) (h : G.transl n x = x ⊗ₜ[R] 1 + 1 ⊗ₜ[R] b) :
     ((G.transl n).toLinearMap - (TensorProduct.mk R (G.A (n + 1)) (G.A 1)).flip 1).rTensor

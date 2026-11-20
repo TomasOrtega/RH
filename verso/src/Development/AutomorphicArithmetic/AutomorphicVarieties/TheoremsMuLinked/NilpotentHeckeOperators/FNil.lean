@@ -1,5 +1,20 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `K S _ _ _ f n N q α U hU hne`. Simplify using `only [not_forall] at hne`. Take `⟨i, i', hii', hα⟩` from `hne`. Establish `hcase : (U i - U i') ^ (2 * N) = 0 ∨ (U i - (q : S) * U i') ^ (2 * N) = 0`. Establish `ha : (U i - f (α i)) ^ N = 0` using `hU i`.
+
+Establish `hb : (U i' - f (α i')) ^ N = 0` using `hU i'`. Distinguish the cases in `he : α i = α i'`. Use `left`. Establish `hnb : (-(U i' - f (α i'))) ^ N = 0` using `by rw [neg_pow, hb, mul_zero]`. Establish `hx : U i - U i' = (U i - f (α i)) + -(U i' - f (α i'))`.
+
+Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`. Conclude with `Commute.add_pow_eq_zero_of_add_le_succ_of_pow_eq_zero (Commute.all _ _) ha hnb (by omega)`. Use `right`.
+
+Establish `hq : α i = (q : K) * α i'`. Assume the negation of the conclusion as `h'`. Conclude with `hα ⟨he, h'⟩`. Establish `hnb : (-(q : S) * (U i' - f (α i'))) ^ N = 0` using `by rw [mul_pow, hb, mul_zero]`. Establish `hx : U i - (q : S) * U i' = (U i - f (α i)) + -(q : S) * (U i' - f (α i'))`.
+
+Rewrite using `[hq, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`. Conclude with `Commute.add_pow_eq_zero_of_add_le_succ_of_pow_eq_zero (Commute.all _ _) ha hnb (by omega)`. Establish `hY : ((U i - U i') * (U i - (q : S) * U i')) ^ (2 * N) = 0`.
+
+Rewrite using `[mul_pow]`. Break down `hcase with h | h` into its components or cases. Rewrite using `[h, zero_mul]`. Rewrite using `[h, mul_zero]`. Establish `hdvd : (U i - U i') * (U i - (q : S) * U i') ∣ ∏ j : Fin n, ∏ j' ∈ Finset.univ.erase j, (U j - U j') * (U j - (q : S) * U j')` using `(Finset.dvd_prod_of_mem (fun j' => (U i - U j') * (U i - (q : S) * U j')) (Finset.mem_erase.2 ⟨hii'.symm, Finset.mem_univ _⟩)).trans (Finset.dvd_prod_of_mem (fun j => ∏ j' ∈ Finset.univ.erase j, (U j - U j') * (U j - (q : S) * U j')) (Finset.mem_univ i))`.
+
+Conclude with `zero_dvd_iff.1 (hY ▸ pow_dvd_pow_of_dvd hdvd (2 * N))`.
+-/
 theorem UpperTheory.V.Th.fNil :
     ∀ (K S : Type) [CommRing K] [IsDomain K] [CommRing S] (f : K →+* S) (n N q : ℕ) (α : Fin n → K) (U : Fin n → S), (∀ k, (U k - f (α k)) ^ N = 0) → ¬ (∀ i i', i ≠ i' → α i ≠ α i' ∧ α i ≠ (q : K) * α i') → (∏ i : Fin n, ∏ i' ∈ Finset.univ.erase i, (U i - U i') * (U i - (q : S) * U i')) ^ (2 * N) = 0 := by
   intro K S _ _ _ f n N q α U hU hne

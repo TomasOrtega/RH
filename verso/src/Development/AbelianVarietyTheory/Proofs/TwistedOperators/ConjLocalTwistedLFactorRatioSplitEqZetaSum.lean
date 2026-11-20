@@ -12,11 +12,35 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocZetaSplit
 
+/- English proof (translation)
+Establish `h` using `congrArg (fun M : Multiset ℂˣ => (M.map fun b : ℂˣ => f (b : ℂ)).prod) hA`. Simplify `h` using `[Multiset.map_map, Function.comp_def, Units.coe_star, Units.val_inv_eq_inv_val]`.
+-/
 theorem prod_map_conj_eq (A : Multiset ℂˣ) (hA : A.map star = A.map (·⁻¹)) (f : ℂ → ℂ) :
     (A.map fun b : ℂˣ => f (starRingEnd ℂ (b : ℂ))).prod = (A.map fun b : ℂ ˣ => f ((b : ℂ)⁻¹)).prod := by
   have h := congrArg (fun M : Multiset ℂˣ => (M.map fun b : ℂˣ => f (b : ℂ)).prod) hA
   simpa [Multiset.map_map, Function.comp_def, Units.coe_star, Units.val_inv_eq_inv_val] using h
 
+/- English proof (translation)
+Introduce `D B m v w w' hne hv hqw hqw' hB' hstar hm1 hnorm hsign`. Use `set s : ℂ := (1 + (D.R.t : ℂ)) / 2 with hs`. Use `set X : ℂ := npow w (-s) with hXdef`. Use `set μ : ℂ := (m w : ℂ) with hμ`. Establish `hX : starRingEnd ℂ X = X`.
+
+Establish `: X = (((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ (-((1 + (D.R.t : ℝ)) / 2)) : ℝ)`. Rewrite using `[hXdef, npow, Complex.ofReal_cpow (by positivity)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, Complex.conj_ofReal]`.
+
+Establish `hX' : npow w' (-s) = X` using `by rw [hXdef, npow, npow, hqw, hqw']`. Establish `hinv : ((m w' : ℂ))⁻¹ = μ` using `inv_eq_of_mul_eq_one_left (by rw [hμ, ← Units.val_mul, hm1, Units.val_one])`. Establish `hμc : starRingEnd ℂ μ = μ⁻¹` using `(Complex.inv_eq_conj hnorm).symm`. Establish `hμc' : starRingEnd ℂ μ⁻¹ = μ` using `by rw [map_inv₀, hμc, inv_inv]`. Establish `e : Formalism.L2.Host.aboveF (L` using `D.host.E) D.host.F v = {w, w'} := by ext u; simp [mem_aboveF, hv]`.
+
+Establish `hL : LvTw B m v s = ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod * ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod`. Rewrite using `[LvTw_eq, e, Finset.prod_pair hne, hB', Multiset.map_map, hX', hinv]`. Simplify using `only [Function.comp_def, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression. Establish `hc1 : starRingEnd ℂ ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod = ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod`.
+
+Rewrite using `[map_multiset_prod, Multiset.map_map]`. Use `prod_map_conj_eq (B w) hstar (fun z => (1 - z * μ * X)⁻¹)` as an intermediate fact. Simplify using `only [Function.comp_def, map_inv₀, map_sub, map_one, map_mul, hμc', hX]`. Conclude with `this`. Establish `hc2 : starRingEnd ℂ ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod = ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod`.
+
+Rewrite using `[map_multiset_prod, Multiset.map_map]`. Use `prod_map_conj_eq (B w) hstar (fun z => (1 - z⁻¹ * μ⁻¹ * X)⁻¹)` as an intermediate fact. Simplify using `only [inv_inv] at this`. Simplify using `only [Function.comp_def, map_inv₀, map_sub, map_one, map_mul, hμc, hX]`. Conclude with `this`.
+
+Establish `hstarμ : ((star (m w) : ℂˣ) : ℂ) = μ⁻¹` using `by rw [Units.coe_star, ← hμc]; rfl`. Establish `hr1 : eulerFac ((B w).map (star (m w) * ·)) X = ((B w).map fun b : ℂˣ => (1 - (b : ℂ) * μ⁻¹ * X)⁻¹).prod`. Rewrite using `[eulerFac_eq_prod, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, hstarμ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hr2 : eulerFac ((B w).map fun β => (star (m w) * β)⁻¹) X = ((B w).map fun b : ℂˣ => (1 - (b : ℂ)⁻¹ * μ * X)⁻¹).prod`. Rewrite using `[eulerFac_eq_prod, Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun b _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_inv_eq_inv_val, Units.val_mul, hstarμ, mul_inv, inv_inv]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : (dLoc D v : ℂ) = (∏ i ∈ Finset.Ioc D.R.t (D.R.r + D.R.t), (1 - ((qV D.host.E w : ℂ) ^ i)⁻¹))⁻¹`. Rewrite using `[← Finset.prod_inv_distrib, dLoc]`. Use `push_cast`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Simplify using `[quadTerm, hsign, qV, hqw]`. Rewrite using `[map_div₀, Complex.conj_ofReal, hd, div_inv_eq_mul, hL, map_mul, hc1, hc2, hr1, hr2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_LvTw_div_dLoc : ∀ (D : D7) (B : Fam D.host.E) (m : HeightOneSpectrum (𝓞 D.host.E) → ℂˣ) (v : HeightOneSpectrum (𝓞 D.host.F)) (w w' : HeightOneSpectrum (𝓞 D.host.E)), w ≠ w' → (∀ u : HeightOneSpectrum (𝓞 D.host.E), u.under (𝓞 D.host.F) = v ↔ u = w ∨ u = w') → Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal → Ideal.absNorm w'.asIdeal = Ideal.absNorm v.asIdeal → B w' = (B w).map (·⁻¹) → (B w).map star = (B w).map (·⁻¹) → m w * m w' = 1 → ‖(m w : ℂ)‖ = 1 → quadSign D v = 1 → starRingEnd ℂ (LvTw B m v ((1 + (D.R.t : ℂ)) / 2) / (dLoc D v : ℂ)) = eulerFac ((B w).map (star (m w) * ·)) (npow w (-((1 + (D.R.t : ℂ)) / 2))) * eulerFac ((B w).map fun β => (star (m w) * β)⁻¹) (npow w (-((1 + (D.R.t : ℂ)) / 2))) * ∏ i ∈ Finset.Ioc D.R.t (D.R.r + D.R.t), (1 - ((qV D.host.E w : ℂ) ^ i)⁻¹) := by
   intro D B m v w w' hne hv hqw hqw' hB' hstar hm1 hnorm hsign
   classical

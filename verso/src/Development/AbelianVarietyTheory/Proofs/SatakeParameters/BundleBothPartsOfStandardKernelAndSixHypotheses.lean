@@ -12,6 +12,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.Svd
 
+/- English proof (translation)
+Introduce `Bd Q Lk ker hQ hT`. Establish `hM : RowE Q Lk (fun _ D O _ _ => ModelsAt D O)` using `RowE.of_all fun _ K β _ _ _ hq _ => GlobalTheory.T.tuplesHaveLocalModels_at_constructedPoint_over_trueColumns hE hX K β (hQ _ _ _ _ _ hq)`. Conclude with `Row.and (GlobalTheory.Svd.rowTwU Q Lk hM) (GlobalTheory.Pdv.rowAt_of_stdTie hA hG hC hI Q Lk ker hT)`.
+-/
 theorem servH_row (hA : Formalism.L2.KerInert.AlgTAll) (hG : Formalism.L2.KerInert.GenusOneModelExistsLattice) (hC : Formalism.L2.KerInert.Rep.CurveDict)
     (hI : Formalism.L2.KerInert.IntInert) (hE : GlobalTheory.TwV.Lt.AdmAtEnt2) (hX : GlobalTheory.TwV.Lt.CurveEx) :
     ∀ {Bd : BdT} (Q : V4.Slot) (Lk : LkT Bd) (ker : ∀ (D : D7) (O : Obj D) (c : ℝ), Bd D O c → KerEntTied O.ex),

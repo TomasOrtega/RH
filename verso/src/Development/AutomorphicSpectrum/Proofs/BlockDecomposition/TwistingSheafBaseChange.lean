@@ -8,6 +8,13 @@ namespace GlobalTheory.CompanionTheory.ConeTwistingSheaf
 
 attribute [local instance] MvPolynomial.gradedAlgebra
 
+/- English proof (translation)
+Establish `key : ∀ (s : MvPolynomial (Fin (N + 1)) R') (_ : s = MvPolynomial.X j) (hd : s ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R' 1), ∃ ψ : HomogeneousLocalization.Away (MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R') s →+* ChartR R' N j, chart R' N j = spMap ψ ≫ Proj.awayι …`. Introduce and unpack `_ rfl hd`. Use `⟨RingHom.id _, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `e : spMap (RingHom.id (ChartR R' N j)) = 𝟙 _` using `Spec.map_id _`. Rewrite using `[e, Category.id_comp]`.
+
+Both sides reduce to the same expression. Take `⟨ψ, h1, h2⟩` from `key (GlobalTheory.ProjSpace.gradedMap N φ (MvPolynomial.X j)) (MvPolynomial.map_X φ j) ((GlobalTheory.ProjSpace.gradedMap N φ).2 (X_mem R N j))`. Use `⟨ψ.comp (HomogeneousLocalization.Away.map (GlobalTheory.ProjSpace.gradedMap N φ) (MvPolynomial.X j)), ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, Category.assoc, GlobalTheory.ProjSpace.baseChange, Proj.awayι_comp_map _ _ one_pos _ (X_mem R N j), ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `ψ (HomogeneousLocalization.Away.map (GlobalTheory.ProjSpace.gradedMap N φ) (MvPolynomial.X j) _) = _`. Rewrite using `[ratio, HomogeneousLocalization.Away.map_mk, h2]`. Simplify using `[ratio]`.
+-/
 theorem exists_chartHom {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (N : ℕ) (j : Fin (N + 1)) :
     ∃ c : ChartR R N j →+* ChartR R' N j,
       chart R' N j ≫ GlobalTheory.ProjSpace.baseChange N φ = spMap c ≫ chart R N j ∧
@@ -34,6 +41,23 @@ theorem exists_chartHom {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R
     rw [ratio, HomogeneousLocalization.Away.map_mk, h2]
     simp [ratio]
 
+/- English proof (translation)
+Take `⟨N, i, hi, hp, het, s, hs, hu⟩` from `hO`. Establish `H` using `GlobalTheory.ProjSpace.isPullback_baseChange N φ`. Establish `hw : (pullback.fst p (spMap φ) ≫ i) ≫ PSpace.str R N = pullback.snd p (spMap φ) ≫ spMap φ`. Rewrite using `[Category.assoc, hp]`. Conclude with `pullback.condition`.
+
+Take `⟨i', hi1, hi2⟩ : ∃ i' : pullback p (spMap φ) ⟶ PSpace R' N, i' ≫ GlobalTheory.ProjSpace.baseChange N φ = pullback.fst p (spMap φ) ≫ i ∧ i' ≫ PSpace.str R' N = pullback.snd p (spMap φ)` from `⟨H.lift _ _ hw, H.lift_fst _ _ hw, H.lift_snd _ _ hw⟩`. Establish `Hl : IsPullback i' (pullback.fst p (spMap φ)) (GlobalTheory.ProjSpace.baseChange N φ) i`. Use `IsPullback.of_right (h₁₂ := PSpace.str R' N) (v₁₃ := spMap φ) (h₂₂ := PSpace.str R N) ?_ hi1 H.flip` and prove the remaining obligations. Rewrite using `[hi2, hp]`. Conclude with `(IsPullback.of_hasPullback p (spMap φ)).flip`.
+
+Establish `hc : IsClosedImmersion i'` using `MorphismProperty.of_isPullback (P := @IsClosedImmersion) Hl.flip hi`. Use `choose c hc1 hc2 using fun j => exists_chartHom φ N j`. Establish `hm : ∀ j, (pullback.fst i' (chart R' N j) ≫ pullback.fst p (spMap φ)) ≫ i = (pullback.snd i' (chart R' N j) ≫ spMap (c j)) ≫ chart R N j` using `fun j => by`. Rewrite using `[Category.assoc, Category.assoc, ← hc1, ← hi1, ← Category.assoc, pullback.condition, Category.assoc]`. Set `m : ∀ j, pullback i' (chart R' N j) ⟶ pullback i (chart R N j)` to `fun j => pullback.lift _ _ (hm j)`.
+
+Establish `hm1 : ∀ j, m j ≫ pullback.fst i (chart R N j) = pullback.fst i' (chart R' N j) ≫ pullback.fst p (spMap φ)` using `fun j => pullback.lift_fst _ _ _`. Establish `hm2 : ∀ j, m j ≫ pullback.snd i (chart R N j) = pullback.snd i' (chart R' N j) ≫ spMap (c j)` using `fun j => pullback.lift_snd _ _ _`. Establish `hl : ∀ j, (m j ≫ s j) ≫ D.f = pullback.fst i' (chart R' N j) ≫ pullback.fst p (spMap φ)` using `fun j => by`. Rewrite using `[Category.assoc, hs, hm1]`. Use `⟨N, i', hc, hi2, ?_, fun j => pullback.lift (m j ≫ s j) (pullback.fst i' (chart R' N j)) (hl j), fun j => pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Etale (pullback.snd D.f (pullback.fst p (spMap φ))) infer_instance`. Introduce `V j k a b h`. Establish `h₀ : (a ≫ m j) ≫ pullback.fst i (chart R N j) = (b ≫ m k) ≫ pullback.fst i (chart R N k)`. Rewrite using `[Category.assoc, Category.assoc, hm1, hm1, ← Category.assoc, ← Category.assoc, h]`. Establish `e` using `hu V j k (a ≫ m j) (b ≫ m k) h₀`.
+
+Establish `ueq : ∀ {a₁ a₂ b₁ b₂ : V ⟶ D.Y} (_ : a₁ = a₂) (_ : b₁ = b₂) (h₁ : a₁ ≫ D.f = b₁ ≫ D.f) (h₂ : a₂ ≫ D.f = b₂ ≫ D.f), D.u a₁ b₁ h₁ = D.u a₂ b₂ h₂`. Introduce `a₁ a₂ b₁ b₂ ha hb h₁ h₂`. Substitute `ha hb` using the available equality. Both sides reduce to the same expression. Establish `nat : ∀ x, (spMap (c j)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (ChartR R N j))).inv.hom x) = (Scheme.ΓSpecIso (CommRingCat.of (ChartR R' N j))).inv.hom (c j x)` using `fun x => (congrArg (fun f => f.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (c j)))).symm`.
+
+Establish `hs₂ : (a ≫ m j) ≫ pullback.snd i (chart R N j) = (a ≫ pullback.snd i' (chart R' N j)) ≫ spMap (c j)`. Rewrite using `[Category.assoc, hm2, Category.assoc]`. Use `(congrArg Units.val (ueq (by simp) (by simp) _ _)).trans (e.trans ?_)` and prove the remaining obligations. Rewrite using `[hs₂, Scheme.Hom.comp_appTop]`. Express the relevant statement in the definitionally equal form `(a ≫ pullback.snd i' (chart R' N j)).appTop.hom ((spMap (c j)).appTop.hom _) = _`.
+
+Rewrite using `[nat, hc2]`.
+-/
 theorem isTwistingSheaf_pullback {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') {X : Scheme.{0}} (p : X ⟶ Sp R)
     (D : E.LineData X) (hO : IsTautologicalLine p D) :
     IsTautologicalLine (pullback.snd p (spMap φ)) (D.pb (pullback.fst p (spMap φ))) := by

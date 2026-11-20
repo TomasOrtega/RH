@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.SiegTh.TraitScale
 
+/- English proof (translation)
+Take `⟨u, hu⟩` from `hm.exists_right_inv`. Take `⟨v, hv⟩` from `hf u`. Use `IsUnit.of_mul_eq_one v (IsFractionRing.injective V (FractionRing V) ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast, hv, map_one, ← map_natCast f, ← map_mul, hu, map_one]`.
+-/
 theorem isUnit_natCast {o V : Type} [CommRing o] [CommRing V] [IsDomain V] (f : o →+* FractionRing V)
     (hf : ∀ a, f a ∈ Set.range (algebraMap V (FractionRing V))) {m : ℕ} (hm : IsUnit (m : o)) : IsUnit (m : V) := by
   obtain ⟨u, hu⟩ := hm.exists_right_inv
@@ -24,6 +27,9 @@ theorem isUnit_natCast {o V : Type} [CommRing o] [CommRing V] [IsDomain V] (f : 
   refine IsUnit.of_mul_eq_one v (IsFractionRing.injective V (FractionRing V) ?_)
   rw [map_mul, map_natCast, hv, map_one, ← map_natCast f, ← map_mul, hu, map_one]
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `rfl : h₁ = h₂` from `Over.OverMorphism.ext he`. Conclude with `⟨pt, H⟩`.
+-/
 theorem thList_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
     {m N : ℕ} {K : Type} [Field K] {x₁ x₂ : Sp K ⟶ S} (e : x₁ = x₂) {T : Over S} (h₁ : Over.mk x₁ ⟶ T)
     (h₂ : Over.mk x₂ ⟶ T) (he : h₁.left = h₂.left) (θ : LB.Sec (LPow G L ((1 : ℕ) : ℤ) T))
@@ -33,6 +39,11 @@ theorem thList_transport {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left
   obtain rfl : h₁ = h₂ := Over.OverMorphism.ext he
   exact ⟨pt, H⟩
 
+/- English proof (translation)
+Take `⟨j, -, hj⟩` from `ρ.r_eq`. Establish `ho : Odd (S.r * S.N)`. Rewrite using `[hj, ρ.N_eq]`. Conclude with `(ρ.n_odd.pow).mul (ρ.n_odd.pow.pow)`. Use `⟨ho, ?_⟩` and prove the remaining obligations.
+
+Establish `h2 : 2 ≤ S.r * S.N` using `le_trans S.N_ge (Nat.le_mul_of_pos_left _ S.r_pos)`. Take `⟨t, ht⟩` from `ho`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem level_odd {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     Odd (S.r * S.N) ∧ 3 ≤ S.r * S.N := by
   obtain ⟨j, -, hj⟩ := ρ.r_eq
@@ -44,6 +55,21 @@ theorem level_odd {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : Thet
   obtain ⟨t, ht⟩ := ho
   omega
 
+/- English proof (translation)
+Introduce `o Ω _ _ _ _ S ρ m N e hm hm3 hmu hN hE V _ _ _ hV emb hemb`. Use `letI := ρ.P.isAb.comm`. Set `K` to `AlgebraicClosure (FractionRing V)`. Set `io : FractionRing V →+* K` to `algebraMap _ _`. Set `i : S.R →+* K` to `(io.comp emb).comp S.R.val.toRingHom`.
+
+Set `y : Sp (FractionRing V) ⟶ Sp S.R` to `spMap (emb.comp S.R.val.toRingHom)`. Establish `hmV : IsUnit (m : V)` using `isUnit_natCast (emb.comp (algebraMap o Ω)) hemb hmu`. Establish `hkV : IsUnit ((S.r * S.N : ℕ) : V)` using `isUnit_natCast (emb.comp (algebraMap o Ω)) hemb S.unit`. Establish `ne : ∀ {k : ℕ}, IsUnit (k : V) → (k : K) ≠ 0` using `fun h => by`. Use `h.map (io.comp (algebraMap V (FractionRing V)))` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Take `⟨hko, hk3⟩` from `level_odd ρ`. Establish `hfib : PolFib ρ.P.A ρ.P.L S.g (spMap i ≫ 𝟙 (Sp S.R))` using `ρ.g_eq ▸ GlobalTheory.UMin.FibExist.polFib_of_point _ ρ.P K _`. Take `⟨pt, c, H⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g m N K _ (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) hm (ne hmV) hN hfib`.
+
+Take `⟨pt', c', H'⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen S.g (S.r * S.N) _ K _ (SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ i) hko (ne hkV) rfl hfib`. Establish `hx : spMap i ≫ 𝟙 (Sp S.R) = spMap io ≫ y`. Rewrite using `[Category.comp_id, ← spMap_comp]`. Establish `H2 : HasTh₂ ρ.P.A ρ.P.L ρ.rig m (S.r * S.N) (spMap io ≫ y) c c'` using `hx ▸ (⟨_, pt, pt', GlobalTheory.UMin.isGenSec_real_pull o Ω S ρ K i, H, H'⟩ : HasTh₂ ρ.P.A ρ.P.L ρ.rig m (S.r * S.N) (spMap i ≫ 𝟙 (Sp S.R)) c c')`. Take `⟨P, α, -, hα, hiso⟩` from `GlobalTheory.UMin.FibExist.polFib_of_point _ ρ.P (FractionRing V) y`.
+
+Establish `hS : (letI` using `P.isAb.comm; HypS P.A P.L) := by`. Use `letI := P.isAb.comm`. Conclude with `GlobalTheory.SymBaseChange.hypS_baseChange _ _ ρ.P.A P.A y α ρ.P.L P.L ρ.P.isLB P.isLB hα hiso ρ.hypS`. Take `⟨a, ha, h₁, h₂⟩` from `GlobalTheory.T.thetaConstants_two_levels_primitive_at_trait _ ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen V hV y P α hα hiso hS K io m (S.r * S.N) _ _ c c' hm hm3 hmV hko hk3 hkV H2`. Take `⟨r₁, r₂⟩` from `GlobalTheory.T.thetaConstantList_realisedSystem_up_to_rootsOfUnity o Ω S ρ K i _ pt' c' H'`.
+
+Use `⟨K, inferInstance, io, _, c, c', a, ha, h₁, h₂, ?_, r₁, r₂⟩` and prove the remaining obligations. Establish `hz : spMap i ≫ 𝟙 (Sp S.R) = spMap (io.comp emb) ≫ spMap S.R.val.toRingHom ≫ 𝟙 (Sp S.R)`. Rewrite using `[← Category.assoc, ← spMap_comp]`. Take `⟨q, Hq⟩` from `thList_transport hz _ ((Over.homMk (spMap (io.comp emb)) rfl : Over.mk (spMap (io.comp emb) ≫ spMap S.R.val.toRingHom ≫ 𝟙 (Sp S.R)) ⟶ Over.mk (spMap S.R.val.toRingHom ≫ 𝟙 (Sp S.R))) ≫ (Over.homMk (spMap S.R.val.toRingHom) rfl : Over.mk (spMap S.R.val.toRingHom ≫ 𝟙 (Sp S.R)) ⟶ Ove …`. Rewrite `Hq` using `[← ThetaRuleCompare.pullS_comp]`.
+
+Conclude with `hE.2.2 K (io.comp emb) q c Hq`.
+-/
 theorem exists_scale : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (m N : ℕ) (e : Fin N → Ω), Odd m → 3 ≤ m → IsUnit (m : o) → N = m ^ (4 * S.g) → SymE ρ m e → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (emb : Ω →+* FractionRing V), (∀ a : o, emb (algebraMap o Ω a) ∈ Set.range (algebraMap V (FractionRing V))) → ∃ (K : Type) (_ : Field K) (io : FractionRing V →+* K) (N' : ℕ) (c : Fin N → K) (c' : Fin N' → K) (a : K), a ≠ 0 ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => c b / a) ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => c' b / a) ∧ (∀ j, io (emb (e j)) = symTup c j) ∧ (∀ x, ∃ b, c' x ^ ((S.r * S.N) ^ 2) = io (emb (S.th b)) ^ ((S.r * S.N) ^ 2)) ∧ ∀ b, ∃ x, c' x ^ ((S.r * S.N) ^ 2) = io (emb (S.th b)) ^ ((S.r * S.N) ^ 2) := by
   intro o Ω _ _ _ _ S ρ m N e hm hm3 hmu hN hE V _ _ _ hV emb hemb
   letI := ρ.P.isAb.comm

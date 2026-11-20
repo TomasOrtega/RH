@@ -10,6 +10,17 @@ noncomputable section
 
 namespace GlobalTheory.LatTied
 
+/- English proof (translation)
+Introduce `D M Tn Q hQ hI j w h1 h2 hw`. Distinguish the cases in `hne : (D.nd.locs j w).Nonempty`. Take `⟨i, hi⟩` from `hne`. Establish `hwi : D.nd.w i = w` using `((D.nd.locs_mem j w i).1 hi).2`. Establish `hQc : Tn.B.Qc j w = Q w` using `by rw [← Tn.Q_eq j w i hi, hQ i, hwi]`.
+
+Apply `GlobalTheory.T.heckeStableLocalLattice_of_integral D M Tn.B j h1 h2 w` to reduce the goal to its premises. Rewrite using `[hQc]`. Conclude with `hI j h1 h2 w hw`. Establish `hsub : Subsingleton (heckeAlg Tn.B j w)`. Assume the negation of the conclusion as `hns`.
+
+Rewrite `hns` using `[not_subsingleton_iff_nontrivial]`. Take `⟨I, hI'⟩` from `Ideal.exists_maximal (heckeAlg Tn.B j w)`. Take `⟨i, hi, -⟩` from `Tn.mx_all j w h1 h2 hw I hI'`. Conclude with `hne ⟨i, hi⟩`. Establish `h10 : (1 : Module.End (FractionRing (Tn.B.Oc j w)) (Tn.B.V j w)) = 0`.
+
+Use `congrArg Subtype.val (Subsingleton.elim (1 : heckeAlg Tn.B j w) 0)` as an intermediate fact. Simplify using `using this`. Establish `hx : ∀ y : Tn.B.V j w, y = 0` using `fun y => by`. Use `LinearMap.congr_fun h10 y` as an intermediate fact. Simplify using `using this`.
+
+Introduce `v k _ x _`. Rewrite using `[hx (Tn.B.hK j w v k x)]`. Conclude with `Submodule.zero_mem _`.
+-/
 theorem latStable_tied : ∀ (D : D7) (M : MtFam D) (Tn : NormalizedLocalCompatibility D M) (Q : D.what₂.places.Pl → Finset (PlE D.host)),
     (∀ i, D.nd.Q i = Q (D.nd.w i)) → (∀ j h1 h2 w, D.what₂.muAt w ≠ D.what₂.mu0 → LatInt D M (Q w) j h1 h2 w) →
     ∀ j w, 1 ≤ j → j ≤ D.R.m → D.what₂.muAt w ≠ D.what₂.mu0 → GlobalTheory.EtaJoin.LatStable Tn.B j w := by

@@ -172,18 +172,32 @@ def LastSteps : Prop :=
 section Checks
 variable {k : Type} [Field k] [ValuativeRel k] {ι n : Type} [Fintype n] [DecidableEq n]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_latOf_typeFrame]`. Simplify using `[srcLat, mem_box, Valuation.mem_integer_iff, LinearMap.funLeft_apply]`.
+-/
 example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin (0 + 1)) : latOf (typeFrame ϖ o).bas = srcLat n ϖ := by
   ext y
   rw [mem_latOf_typeFrame]
   simp [srcLat, mem_box, Valuation.mem_integer_iff, LinearMap.funLeft_apply]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_latOf_typeFrame]`. Simplify using `[mem_box, Valuation.mem_integer_iff]`.
+-/
 example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin 0) : latOf (typeFrame ϖ o).bas = box _ 1 := by
   ext y
   rw [mem_latOf_typeFrame]
   simp [mem_box, Valuation.mem_integer_iff]
 
+/- English proof (translation)
+The claim follows from `box_one.symm`.
+-/
 example {c : ℕ} (o : ι ≃ n ⊕ Fin c) : latOf (plainFrame (k := k) o).bas = box _ 1 := box_one.symm
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `h (Pi.single i 1) (fun j => by` as an intermediate fact. Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp)`. Simplify using `using this`.
+
+Introduce `h y hy`. Conclude with `sum_mem fun i _ => mul_mem (h i) (by simpa [Valuation.mem_integer_iff] using hy i)`.
+-/
 example (η : n → k) : η ∈ dualStd k n ↔ ∀ i, η i ∈ 𝒪[k] := by
   constructor
   · intro h i

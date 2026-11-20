@@ -20,11 +20,17 @@ section Manifold
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, map_add, Pi.add_apply, Subalgebra.coe_add]`.
+-/
 theorem evalF_add {ι : Type} (w : ι → A.Pt → Ev n) (P Q : MvPolynomial ι ℝ) :
     evalF A w (P + Q) = evalF A w P + evalF A w Q := by
   funext x
   simp only [evalF, fld, map_add, Pi.add_apply, Subalgebra.coe_add]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [evalF, fld, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, MvPolynomial.aeval_C, Pi.smul_apply, ← Algebra.smul_def, Subalgebra.coe_smul]`. Both sides reduce to the same expression.
+-/
 theorem evalF_smul {ι : Type} (w : ι → A.Pt → Ev n) (t : ℝ) (P : MvPolynomial ι ℝ) :
     evalF A w (t • P) = (t : ℂ) • evalF A w P := by
   funext x
@@ -32,6 +38,11 @@ theorem evalF_smul {ι : Type} (w : ι → A.Pt → Ev n) (t : ℝ) (P : MvPolyn
     Pi.smul_apply, ← Algebra.smul_def, Subalgebra.coe_smul]
   rfl
 
+/- English proof (translation)
+Establish `h : A.loc ((t : ℂ) • α) i v = (t : ℂ) • A.loc α i v`. Unfold `HolAtlas.loc`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(smul_zero _).symm`.
+
+Rewrite using `[h, ← Complex.re_ofReal_mul]`. Simplify using `only [dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc]`.
+-/
 theorem re_dens_loc_smul (t : ℝ) (α : A.Fld) (i : A.ι) (v : ReciprocityTheory.L2DbarEstimates.V n) :
     (dens (A.loc ((t : ℂ) • α) i v)).re = t * (dens (A.loc α i v)).re := by
   have h : A.loc ((t : ℂ) • α) i v = (t : ℂ) • A.loc α i v := by
@@ -43,6 +54,9 @@ theorem re_dens_loc_smul (t : ℝ) (α : A.Fld) (i : A.ι) (v : ReciprocityTheor
 
 variable [MeasurableSpace M] [BorelSpace M]
 
+/- English proof (translation)
+Use `ChernScale.glueMeas_restrict_eq A.e (ρ := fun i y => ENNReal.ofReal ((ε : ℤ) * (dens (A.loc ((t : ℂ) • α) i (A.e i y))).re)) (ρ' := fun i y => ENNReal.ofReal ((ε' : ℤ) * (dens (A.loc α i (A.e i y))).re)) (c := ENNReal.ofReal c) ENNReal.ofReal_ne_top MeasurableSet.univ (fun i y _ …` as an intermediate fact. Rewrite `this` using `[Measure.restrict_univ, Measure.restrict_univ]`. Conclude with `this`.
+-/
 theorem part_smul (t : ℝ) (α : A.Fld) (ε ε' : ℤˣ) (c : ℝ) (hc : 0 ≤ c)
     (h : ∀ x : ℝ, ((ε : ℤ) : ℝ) * (t * x) = c * (((ε' : ℤ) : ℝ) * x)) :
     A.part ((t : ℂ) • α) ε = ENNReal.ofReal c • A.part α ε' := by
@@ -54,6 +68,9 @@ theorem part_smul (t : ℝ) (α : A.Fld) (ε ε' : ℤˣ) (c : ℝ) (hc : 0 ≤ 
   rw [Measure.restrict_univ, Measure.restrict_univ] at this
   exact this
 
+/- English proof (translation)
+Break down `le_total 0 t with ht | ht` into its components or cases. Rewrite using `[part_smul A t α ε ε t ht fun x => by ring]`. Conclude with `(h ε).smul_measure ENNReal.ofReal_ne_top`. Rewrite using `[part_smul A t α ε (-ε) (-t) (neg_nonneg.2 ht) fun x => by rw [Units.val_neg, Int.cast_neg]; ring]`. Conclude with `(h _).smul_measure ENNReal.ofReal_ne_top`.
+-/
 theorem integrable_part_smul {g : M → ℝ} (t : ℝ) {α : A.Fld} (h : ∀ ε : ℤˣ, Integrable g (A.part α ε)) (ε : ℤˣ) :
     Integrable g (A.part ((t : ℂ) • α) ε) := by
   rcases le_total 0 t with ht | ht
@@ -62,11 +79,23 @@ theorem integrable_part_smul {g : M → ℝ} (t : ℝ) {α : A.Fld} (h : ∀ ε 
   · rw [part_smul A t α ε (-ε) (-t) (neg_nonneg.2 ht) fun x => by rw [Units.val_neg, Int.cast_neg]; ring]
     exact (h _).smul_measure ENNReal.ofReal_ne_top
 
+/- English proof (translation)
+Rewrite using `[part_smul A 0 α ε ε 0 le_rfl fun x => by ring, ENNReal.ofReal_zero, zero_smul]`.
+-/
 theorem part_zero_smul (α : A.Fld) (ε : ℤˣ) : A.part (((0 : ℝ) : ℂ) • α) ε = 0 := by
   rw [part_smul A 0 α ε ε 0 le_rfl fun x => by ring, ENNReal.ofReal_zero, zero_smul]
 
 variable [T2Space M] [SecondCountableTopology M] [CompactSpace M]
 
+/- English proof (translation)
+Establish `hF : ∀ Q, A.IsForm (evalF A w Q)` using `fun Q => ((GlobalTheory.T.smoothForms_calculus_holomorphicAtlas M n A).2.2.2.1 ι w Q hw).1`. Take `⟨-, hadd, hsm, -⟩` from `GlobalTheory.T.holAtlas_topFormIntegral_finite_additive_homogeneous M n A`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `e : evalF A w 0 = ((0 : ℝ) : ℂ) • evalF A w 0` using `by rw [← evalF_smul, zero_smul]`.
+
+Simplify using `only [Finset.sum_empty]`. Rewrite using `[e]`. Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[part_zero_smul]`. Conclude with `integrable_zero_measure`.
+
+Rewrite using `[hsm g 0 _ (hF _), zero_mul]`. Consider the case `insert a s ha ih`. Take `⟨i₁, i₂⟩` from `ih fun b hb => h b (Finset.mem_insert_of_mem hb)`. Establish `j₁ : ∀ ε : ℤˣ, Integrable g (A.part (evalF A w (c a • P a)) ε)`. Rewrite using `[evalF_smul]`.
+
+Conclude with `integrable_part_smul A (c a) (h a (Finset.mem_insert_self a s))`. Take `⟨k₁, k₂⟩` from `hadd g _ _ (hF _) (hF _) j₁ i₁`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, evalF_add]`. Use `⟨k₁, ?_⟩` and prove the remaining obligations. Rewrite using `[k₂, i₂, evalF_smul, hsm g _ _ (hF _)]`.
+-/
 theorem wInt_evalF_sum {ι κ : Type} (w : ι → A.Pt → Ev n) (hw : ∀ i, A.IsForm (fld A (w i))) (g : M → ℝ)
     (P : κ → MvPolynomial ι ℝ) (c : κ → ℝ) (s : Finset κ)
     (h : ∀ a ∈ s, ∀ ε : ℤˣ, Integrable g (A.part (evalF A w (P a)) ε)) :
@@ -94,6 +123,9 @@ theorem wInt_evalF_sum {ι κ : Type} (w : ι → A.Pt → Ev n) (hw : ∀ i, A.
 
 end Manifold
 
+/- English proof (translation)
+Introduce `k _ X p D hX σ ι _ L g s c h`. Use `haveI := hX.toIsArithVar.isIntegral`. Take `⟨h₁, h₂, h₃⟩` from `(GlobalTheory.IsArithVar.finite_emb_and_topology hX.toIsArithVar).2 σ`. Conclude with `(wInt_evalF_sum (hX.atlas σ) (fun i => c1F hX σ (L i)) (fun i => ((GlobalTheory.T.firstChern_form_properties k X p D hX σ).1 (L i) (L i)).1.1) g (fun n : ι → ℤ => lin (fun i => (n i : ℝ)) ^ D) c s h).2`.
+-/
 theorem wInt_sum_lin_pow : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsRegVar p D) (σ : k →+* ℂ)
     {ι : Type} [Fintype ι] (L : ι → HermLB p) (g : CxPts p σ → ℝ) (s : Finset (ι → ℤ)) (c : (ι → ℤ) → ℝ),
     (∀ n ∈ s, ∀ ε : ℤˣ, Integrable g ((hX.atlas σ).part (evalF (hX.atlas σ) (fun i => c1F hX σ (L i)) (lin (fun i => (n i : ℝ)) ^ D)) ε)) →

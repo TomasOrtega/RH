@@ -7,12 +7,24 @@ namespace UpperTheory.V.AlgebraTools.Det
 section
 variable {n : ℕ} {A G : Type} [CommRing A] [Group G]
 
+/- English proof (translation)
+Unfold `GDet.repAlg`. Rewrite using `[MonoidAlgebra.lift_single]`. Both sides reduce to the same expression.
+-/
 private theorem repAlg_single (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [CommRing B] [Algebra A B]
     (g : G) (r : B) : GDet.repAlg ρ B (MonoidAlgebra.single g r) = r • (ρ g).map (algebraMap A B) := by
   unfold GDet.repAlg
   rw [MonoidAlgebra.lift_single]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g`. Simplify using `[MonoidAlgebra.of_apply, repAlg_single]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add]`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Consider the case `smul r x hx`. Establish `hr : r • x = MonoidAlgebra.single 1 r * x`. Rewrite using `[Algebra.smul_def]`.
+
+Both sides reduce to the same expression. Establish `hm : MonoidAlgebra.mapRingHom G (algebraMap A B) (MonoidAlgebra.single 1 r) = MonoidAlgebra.single 1 (algebraMap A B r)`. Use extensionality with `g`. Simplify using `[MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Rewrite using `[hr, map_mul, map_mul, map_mul, hx, Matrix.map_mul, hm, repAlg_single, repAlg_single, map_one]`.
+
+Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+-/
 private theorem repAlg_map (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [CommRing B] [Algebra A B]
     (y : MonoidAlgebra A G) :
     GDet.repAlg ρ B (MonoidAlgebra.mapRingHom G (algebraMap A B) y) = (GDet.repAlg ρ A y).map (algebraMap A B) := by
@@ -36,9 +48,17 @@ private theorem repAlg_map (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [Co
     ext i j
     by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem ofRep_D (ρ : G →* Matrix (Fin n) (Fin n) A) (B : Type) [CommRing B] [Algebra A B]
     (x : MonoidAlgebra B G) : (GDet.ofRep ρ).D B x = (GDet.repAlg ρ B x).det := rfl
 
+/- English proof (translation)
+Unfold `GDet.chi`. Rewrite using `[ofRep_D, ← Polynomial.algebraMap_eq, map_sub, repAlg_single, repAlg_map, map_one]`. Rewrite using `[Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j`.
+
+Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]`.
+-/
 private theorem chi_eq (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra A G) :
     (GDet.ofRep ρ).chi y = (GDet.repAlg ρ A y).charpoly := by
   unfold GDet.chi
@@ -48,6 +68,9 @@ private theorem chi_eq (ρ : G →* Matrix (Fin n) (Fin n) A) (y : MonoidAlgebra
   ext i j
   by_cases h : i = j <;> simp [Matrix.charmatrix_apply, Matrix.one_apply, h]
 
+/- English proof (translation)
+Rewrite using `[chi_eq, repAlg_single]`. Simplify using the standard rewrite rules.
+-/
 private theorem chi_single (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
   rw [chi_eq, repAlg_single]; simp
@@ -56,6 +79,31 @@ end
 
 end UpperTheory.V.AlgebraTools.Det
 
+/- English proof (translation)
+Introduce `n A G _ _ ρ`. Use `⟨chi_eq ρ, chi_single ρ, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hn y haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩`. Unfold `GDet.tr GDet.lam`. Rewrite using `[chi_eq, Matrix.trace_eq_neg_charpoly_coeff, Fintype.card_fin]`.
+
+Expand and normalize the polynomial expressions, which then agree. Introduce `g`. Unfold `GDet.lam`. Rewrite using `[chi_single, Matrix.det_eq_sign_charpoly_coeff, Fintype.card_fin, Nat.sub_self]`. Introduce `y hy`.
+
+Unfold `GDet.Kills`. Introduce `B _ _ h`. Rewrite using `[ofRep_D, map_add, map_mul, repAlg_map, hy, Matrix.map_zero _ (map_zero _), mul_zero, add_zero, map_one, Matrix.det_one]`. Introduce `A' _ f`. Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations.
+
+Unfold `GDet.map`. Simplify using `only`. Rewrite using `[ofRep_D, ofRep_D]`. Use `congr 2`. Introduce `H _ φ`.
+
+Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations. Unfold `GDet.comap`. Simplify using `only`. Rewrite using `[MonoidHom.comp_apply, ofRep_D, ofRep_D]`. Use `congr 1`.
+
+Use `show GDet.repAlg ρ B (MonoidAlgebra.mapDomainRingHom B φ x) = GDet.repAlg (ρ.comp φ) B x`. Proceed by induction on `x using MonoidAlgebra.induction_on with`. Consider the case `of h`. Simplify using `[MonoidAlgebra.of_apply, repAlg_single, MonoidAlgebra.mapDomainRingHom]`. Consider the case `add x y hx hy`.
+
+Rewrite using `[map_add, map_add, map_add, hx, hy]`. Consider the case `smul r x hx`. Establish `hr : r • x = MonoidAlgebra.single 1 r * x`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+
+Rewrite using `[hr, map_mul, map_mul, map_mul, hx]`. Use `congr 1`. Simplify using `[repAlg_single, MonoidAlgebra.mapDomainRingHom]`. Introduce `ρ' P hP`. Use `GDet.ext fun B _ _ x => ?_` and prove the remaining obligations.
+
+Establish `key : ∀ y : MonoidAlgebra B G, (P : Matrix (Fin n) (Fin n) A).map (algebraMap A B) * GDet.repAlg ρ' B y = GDet.repAlg ρ B y * (P : Matrix (Fin n) (Fin n) A).map (algebraMap A B)`. Introduce `y`. Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g`. Rewrite using `[MonoidAlgebra.of_apply, repAlg_single, repAlg_single, one_smul, one_smul, ← Matrix.map_mul, ← Matrix.map_mul, hP]`.
+
+Consider the case `add y z hy hz`. Rewrite using `[map_add, map_add, Matrix.mul_add, Matrix.add_mul, hy, hz]`. Consider the case `smul r y hy`. Rewrite using `[map_smul, map_smul, Matrix.mul_smul, Matrix.smul_mul, hy]`. Establish `hd` using `congrArg Matrix.det (key x)`.
+
+Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, mul_comm (Matrix.det (GDet.repAlg ρ B x))]`. Establish `hu : IsUnit (Matrix.det ((P : Matrix (Fin n) (Fin n) A).map (algebraMap A B)))`. Rewrite using `[show ((P : Matrix (Fin n) (Fin n) A).map (algebraMap A B)).det = algebraMap A B (P : Matrix (Fin n) (Fin n) A).det from (RingHom.map_det _ _).symm]`. Conclude with `(Matrix.isUnits_det_units P).map _`. Rewrite using `[ofRep_D, ofRep_D]`.
+
+Conclude with `hu.mul_left_cancel hd`.
+-/
 theorem UpperTheory.V.AlgebraTools.Det.repApi :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A),
     (∀ y, (GDet.ofRep ρ).chi y = (GDet.repAlg ρ A y).charpoly) ∧

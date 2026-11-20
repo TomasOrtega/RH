@@ -18,6 +18,23 @@ namespace GlobalTheory.TorusCong
 
 open Formalism.L2.SG.Pf.unitaryCongruence GlobalTheory.St.G.FrameClose
 
+/- English proof (translation)
+Introduce `D X u`. Take `⟨c', hc', hm⟩` from `X.xu_z u`. Take `⟨-, hz0, -⟩` from `X.vectorsInLattice`. Use `set z' : VA X.B.I := X.B.I.fmat (X.xu u)⁻¹ *ᵥ incl X.B.I (X.zR u) with hz'`. Establish `hm' : (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (z' - X.z0) ∈ mL X.B.I X.B.g` using `hm`.
+
+Establish `hzz : hA X.B.I z' z' = -(((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)`. Rewrite using `[hz', Formalism.L2.SG.PoincareInHH.Cut.hA_fmat, HidaSetting.zR, Formalism.L2.SG.PoincareInHH.Cut.hA_crd, X.zu_norm, map_neg, map_natCast, map_neg, map_natCast]`. Use `set m : VA X.B.I := (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (z' - X.z0) with hmdef`. Use `set w0 : VA X.B.I := (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • X.z0 with hw0def`. Establish `hw0 : w0 ∈ X.B.I.Lf` using `nat_smul_mem c' hz0`.
+
+Establish `hw : m + w0 ∈ X.B.I.Lf` using `add_mem (mL_le X.B.g hm') hw0`. Establish `h1 : ZMod' X.B.I X.B.g (hA X.B.I m (m + w0))` using `zmod_of_mL hm' hw`. Establish `h2 : ZMod' X.B.I X.B.g (hA X.B.I w0 m)`. Rewrite using `[hA_symm]`. Conclude with `Z_sig _ _ (zmod_of_mL hm' hw0)`.
+
+Establish `hsplit : hA X.B.I (m + w0) (m + w0) - hA X.B.I w0 w0 = hA X.B.I m (m + w0) + hA X.B.I w0 m`. Rewrite using `[hA_add_left, hA_add_right, hA_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmw : m + w0 = (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • z'`. Rewrite using `[hmdef, hw0def, ← smul_add, sub_add_cancel]`.
+
+Establish `hsq : ∀ x : VA X.B.I, hA X.B.I ((c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x) ((c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x) = (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * hA X.B.I x x`. Introduce `x`. Rewrite using `[hA_nat_left, hA_smul_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `hA1 : ZMod' X.B.I X.B.g ((c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * (hA X.B.I z' z' - hA X.B.I X.z0 X.z0))`.
+
+Establish `e : (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * (hA X.B.I z' z' - hA X.B.I X.z0 X.z0) = hA X.B.I m (m + w0) + hA X.B.I w0 m`. Rewrite using `[← hsplit, hmw, hw0def, hsq, hsq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Z_add _ _ h1 h2`.
+
+Establish `hA2 : ZMod' X.B.I X.B.g ((c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * (hA X.B.I X.z0 X.z0 + 1))`. Use `Z_smul X.B.I X.B.g (natCast_mem (IntAf X.B.I.F X.B.I.E) (c' ^ 2)) X.formsAtZero.1` as an intermediate fact. Simplify `this` using `[Nat.cast_pow]`. Use `⟨c' ^ 2, Nat.Coprime.pow_left 2 hc', ?_⟩` and prove the remaining obligations. Establish `e : ((c' ^ 2 : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (1 - (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)) = (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * (hA X.B.I z' z' - hA X.B.I X.z0 X.z0) + (c' : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ^ 2 * (hA X.B.I X.z0 X.z0 + 1)`.
+
+Rewrite using `[hzz, Nat.cast_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Z_add _ _ hA1 hA2`.
+-/
 theorem one_sub_T_zmod : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word), ∃ M : ℕ, Nat.Coprime M X.B.g ∧ ZMod' X.B.I X.B.g ((M : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * (1 - (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F))) := by
   intro D X u
   obtain ⟨c', hc', hm⟩ := X.xu_z u

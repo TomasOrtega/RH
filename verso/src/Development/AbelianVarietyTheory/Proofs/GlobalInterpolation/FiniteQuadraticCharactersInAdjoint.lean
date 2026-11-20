@@ -4,6 +4,17 @@ open Formalism.MainNotions.N
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hli : LinearIndependent k (fun i => (ψ i : Γ → k))` using `(linearIndependent_monoidHom Γ k).comp ψ hψ`. Rewrite `hli`, the goal using `[linearIndependent_iff']`. Introduce `s c hc i hi`. Establish `key : ∀ g, ∑ j ∈ s, (c j * ψ j g) • X j = 0`. Introduce `g`.
+
+Establish `h1 : (∑ j ∈ s, (c j * ψ j g) • X j) * ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = 0`. Establish `h2 : ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (∑ j ∈ s, c j • X j) = 0`. Rewrite using `[hc, Matrix.mul_zero]`. Rewrite using `[← h2, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_smul_comm, h, smul_smul, smul_mul_assoc]`. Conclude with `(Units.mul_left_eq_zero (r g)).1 h1`. Assume the negation of the conclusion as `hci`. Apply `hX i` to reduce the goal to its premises. Use extensionality with `a b`.
+
+Establish `h3` using `hli s (fun j => c j * X j a b) (by`. Use function extensionality and compare the values at `g`. Establish `h4` using `congrFun (congrFun (key g) a) b`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h4`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+
+Rewrite using `[← h4]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring) i hi`. Simplify `h3` using `[hci]`.
+-/
 theorem linearIndependent_conj_eigenmatrices {Γ k ι : Type} [Group Γ] [Field k] {n : ℕ}
     (r : Γ →* GL (Fin n) k) (ψ : ι → Γ →* k) (hψ : Function.Injective ψ)
     (X : ι → Matrix (Fin n) (Fin n) k) (hX : ∀ i, X i ≠ 0)
@@ -36,6 +47,13 @@ theorem linearIndependent_conj_eigenmatrices {Γ k ι : Type} [Group Γ] [Field 
     exact Finset.sum_congr rfl fun j _ => by ring) i hi
   simpa [hci] using h3
 
+/- English proof (translation)
+Introduce `Γ k _ _ _ n r`. Use `set S := {χ : Γ →* ℤˣ | ∃ X : Matrix (Fin n) (Fin n) k, X ≠ 0 ∧ ∀ g, ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = ((χ g : ℤ) : k) • (X * ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))} with hS`. Establish `hex : ∀ χ : S, ∃ X : Matrix (Fin n) (Fin n) k, X ≠ 0 ∧ ∀ g, ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = ((χ.1 g : ℤ) : k) • (X * ((r g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))` using `fun χ => χ.2`. Use `choose X hX h using hex`. Set `ψ : S → Γ →* k` to `fun χ => ((Int.castRingHom k).toMonoidHom.comp (Units.coeHom ℤ)).comp χ.1`.
+
+Establish `hψ : Function.Injective ψ`. Introduce `χ₁ χ₂ e`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `g`. Establish `h1 : ((χ₁.1 g : ℤ) : k) = ((χ₂.1 g : ℤ) : k)` using `DFunLike.congr_fun e g`.
+
+Conclude with `h1` after adjusting the coercions. Establish `hli` using `linearIndependent_conj_eigenmatrices r ψ hψ X hX h`. Establish `: Finite S` using `hli.finite_of_isNoetherian`. Conclude with `Set.toFinite S`.
+-/
 theorem finite_quadratic_characters_in_adjoint :
     ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (n : ℕ) (r : Γ →* GL (Fin n) k),
       Set.Finite {χ : Γ →* ℤˣ | ∃ X : Matrix (Fin n) (Fin n) k, X ≠ 0 ∧ ∀ g,

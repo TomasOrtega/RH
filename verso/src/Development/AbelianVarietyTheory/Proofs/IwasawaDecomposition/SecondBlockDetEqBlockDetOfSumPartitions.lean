@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `ha` using `a.isLt`. Distinguish the cases in `h : a.val < r`. Rewrite using `[Formalism.L2.Col.coarse_of_lt h]`. Simplify using `[Formalism.L2.DIV.blkOf, h]`.
+
+Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h)]`. Establish `h2 : a.val - r < t` using `by omega`. Simplify using `[Formalism.L2.DIV.blkOf, h, Formalism.L2.Col.blkIdx, h2, Nat.div_eq_of_lt h2]`.
+-/
 theorem blkOf_eq_coarse {n r t : ℕ} (hn : n = r + t) :
     (Formalism.L2.DIV.blkOf r t : Fin n → ℕ) = fun a => Formalism.L2.Col.coarse r [t] a.val := by
   funext a
@@ -15,6 +20,11 @@ theorem blkOf_eq_coarse {n r t : ℕ} (hn : n = r + t) :
     have h2 : a.val - r < t := by omega
     simp [Formalism.L2.DIV.blkOf, h, Formalism.L2.Col.blkIdx, h2, Nat.div_eq_of_lt h2]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Establish `ha` using `a.isLt`. Distinguish the cases in `h : a.val < r`. Rewrite using `[Formalism.L2.Col.coarse_of_lt h]`. Simplify using `[Formalism.L2.DIV.blk2, h]`.
+
+Rewrite using `[Formalism.L2.Col.coarse_of_le (Nat.not_lt.mp h)]`. Establish `h2 : a.val - r < t` using `by omega`. Simplify using `[Formalism.L2.DIV.blk2, h, Formalism.L2.Col.blkIdx, h2]`.
+-/
 theorem twoBlocks_eq_coarse_of_add {n r t : ℕ} (hn : n = r + t) :
     (Formalism.L2.DIV.blk2 r : Fin n → ℕ) = fun a => Formalism.L2.Col.coarse r [t] a.val := by
   funext a
@@ -25,6 +35,9 @@ theorem twoBlocks_eq_coarse_of_add {n r t : ℕ} (hn : n = r + t) :
     have h2 : a.val - r < t := by omega
     simp [Formalism.L2.DIV.blk2, h, Formalism.L2.Col.blkIdx, h2]
 
+/- English proof (translation)
+Establish `hg' : g ∈ Formalism.L2.DIV.blockTri (fun a : Fin n => Formalism.L2.Col.coarse r [t] a.val)` using `hg`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Formalism.L2.DIV.diag_block_det_val 1 hg', Formalism.L2.Col.blkDet_val]`. Both sides reduce to the same expression.
+-/
 theorem lowerBlockDet_coarse_partition_eq_blockDet_upperTri {κ : Type} [CommRing κ] {n r t : ℕ} (g : GL (Fin n) κ)
     (hg : g ∈ Formalism.L2.Col.blockUT n κ r [t]) :
     Formalism.L2.DIV.dBlk (fun a : Fin n => Formalism.L2.Col.coarse r [t] a.val) 1 g =
@@ -34,6 +47,11 @@ theorem lowerBlockDet_coarse_partition_eq_blockDet_upperTri {κ : Type} [CommRin
   rw [Formalism.L2.DIV.diag_block_det_val 1 hg', Formalism.L2.Col.blkDet_val]
   rfl
 
+/- English proof (translation)
+Introduce `κ _ n r t hn g hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[blkOf_eq_coarse hn]`. Conclude with `lowerBlockDet_coarse_partition_eq_blockDet_upperTri g hg`. Rewrite using `[twoBlocks_eq_coarse_of_add hn]`.
+
+Conclude with `lowerBlockDet_coarse_partition_eq_blockDet_upperTri g hg`.
+-/
 theorem secondBlockDet_eq_blockDet_of_sum_partitions : ∀ {κ : Type} [CommRing κ] {n r t : ℕ}, n = r + t → ∀ (g : GL (Fin n) κ) (hg : g ∈ Formalism.L2.Col.blockUT n κ r [t]),
     Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blkOf r t) 1 g = Formalism.L2.Col.blkDet n κ (Formalism.L2.Col.coarse r [t]) 1 ⟨g, hg⟩ ∧
       Formalism.L2.DIV.dBlk (Formalism.L2.DIV.blk2 r) 1 g = Formalism.L2.Col.blkDet n κ (Formalism.L2.Col.coarse r [t]) 1 ⟨g, hg⟩ := by

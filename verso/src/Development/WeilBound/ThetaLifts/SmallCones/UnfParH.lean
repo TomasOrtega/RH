@@ -13,6 +13,9 @@ noncomputable section
 
 namespace PositivityTheory.ThKCT.Unf
 
+/- English proof (translation)
+The claim follows from `Φ.continuous.comp h.cn ci := Φ.continuous.comp (h.ci.comp Ψ.symm.continuous) cm := Φ.continuous.comp h.cm cχ := h.cχ emb := by have := (Φ.toHomeomorph.isClosedEmbedding.comp h.emb).comp ((Homeomorph.refl N).prodCongr (Ψ.symm.toHomeomorph.prodCongr (Homeomorph.refl T))).isClosedEm …`.
+-/
 theorem Par.transport {G G' N H H' T : Type} [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] [TopologicalSpace N]
     [MeasurableSpace N] [Group H] [TopologicalSpace H] [Group H'] [TopologicalSpace H'] [CommGroup T] [TopologicalSpace T]
     {μN : Measure N} {nn : N → G} {ι : H →* G} {mm : T →* G} {χ : T →* ℝ≥0} (h : Par μN nn ι mm χ) (Φ : G ≃ₜ* G') (Ψ : H ≃ₜ* H') :
@@ -40,6 +43,21 @@ theorem Par.transport {G G' N H H' T : Type} [Group G] [TopologicalSpace G] [Gro
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨⟨_, _, _⟩, -⟩` from `GlobalTheory.T.adeles_locally_compact_second_countable F`. Take `⟨_, _, _, _, hsc, -, -, hB, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hcm (AF F)`. Use `hB 1 M` as an intermediate fact. Establish `: BorelSpace (AF F)` using `⟨rfl⟩`. Take `⟨-, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hcm M J hJ (AF F)`.
+
+Take `⟨nn, ι, mm, c, hval, hΨ, cn, ci, cm, cc, n0, nmul, -, hin, hmn, hmi, -, hdec, rn, -, -⟩` from `par2 F E σ hcm M J hJ`. Use `set μW : Measure (Fin 1 → Fin M → AF F ⊗[F] E) := Measure.addHaar with hμW`. Use `set μA : Measure (AF F) := Measure.addHaar with hμA`. Take `⟨χ, χc, χ1, χ2⟩` from `modulus hcm M μW μA inferInstance inferInstance`. Take `⟨⟨CW, hCW, hW⟩, -⟩` from `GlobalTheory.T.rational_tuples_discrete_cocompact_adelic F E σ hcm 1 M`.
+
+Take `⟨⟨CA, hCA, hA⟩, -⟩` from `GlobalTheory.T.adele_ring_cocompact_discrete_number_field F`. Use `⟨_, inferInstance, inferInstance, inferInstance, inferInstance, μW.prod μA, inferInstance, inferInstance, nn, ι, mm, χ, (0, 0), ⟨cn, ci, cm, χc, hΨ, fun p => ⟨fun x => (p.1 + x.1, p.2 + x.2 + c p.1 x.1), ?_, fun x => nmul _ _ _ _⟩, fun u => ⟨Prod.map (actW (AF F) σ J u) id, ?_, f …` and prove the remaining obligations. Use `(measurePreserving_add_left μW p.1).skew_product (g := fun w y => p.2 + y + c p.1 w) ?_ (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Conclude with `((continuous_const.add continuous_snd).add (cc.comp (continuous_const.prodMk continuous_fst))).measurable`. Simplify `map_add_left_eq_self μA (p.2 + c p.1 w)` using `only [add_right_comm p.2]`.
+
+Conclude with `MeasurePreserving.prod ⟨((hact 1).1.comp (continuous_const.prodMk continuous_id)).measurable, GlobalTheory.T.adelic_haar_invariant_unitary_action F E σ hcm M J hJ μW inferInstance u⟩ (MeasurePreserving.id μA)`. Conclude with `Continuous.measurable (by fun_prop)`. Take `⟨b, r, e1, e2⟩` from `hval p u a`. Conclude with `⟨b, r, _, e1, fun hp => ⟨(e2 hp).1, (e2 hp).2, by rw [hp]; exact smul_zero _⟩⟩`. Establish `e : eOne (AF F ⊗[F] E) (M + 1) = fun _ => Pi.single 0 1`.
+
+Use function extensionality and compare the values at `k i`. Use `Fin.cases rfl (fun i => ?_) i` and prove the remaining obligations. Simplify using `[eOne]`. Rewrite using `[e]`. Conclude with `funext fun _ => ha`.
+
+Use `(measurePreserving_add_right μW p.1).skew_product (g := fun w y => y + p.2 + c w p.1) ?_ (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Conclude with `((continuous_snd.add continuous_const).add (cc.comp (continuous_fst.prodMk continuous_const))).measurable`. Simplify `map_add_right_eq_self μA (p.2 + c w p.1)` using `only [add_assoc]`. Take `⟨X, hX⟩` from `hW w`. Take `⟨r, hr⟩` from `hA (t + c (ratTup (AF F) (-X)) w)`.
+
+Use `⟨_, rn (-X) (-r), _, ⟨?_, ?_⟩, nmul _ _ _ _⟩` and prove the remaining obligations. Establish `e : ratTup (F` using `F) (AF F) (-X) = -ratTup (AF F) X := funext fun a => funext fun i => map_neg _ _`. Rewrite using `[e, neg_add_eq_sub]` and apply the resulting hypothesis. Rewrite using `[map_neg, add_assoc, neg_add_eq_sub]` and apply the resulting hypothesis.
+-/
 theorem parH (hcm : IsCMExt F E σ) {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) :
     ∃ (N : Type) (_ : TopologicalSpace N) (_ : SecondCountableTopology N) (_ : MeasurableSpace N) (_ : BorelSpace N)
       (μN : Measure N) (_ : SigmaFinite μN) (_ : IsFiniteMeasureOnCompacts μN) (nn : N → HA (AF F) σ (hypJ J))

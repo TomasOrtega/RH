@@ -11,6 +11,9 @@ namespace PositivityTheory.Rg.DzCount
 
 namespace LeviInductionForms
 
+/- English proof (translation)
+Establish `e : ∀ c, ζ ^ c = ζ ^ (c % N)` using `fun c => by conv_lhs => rw [← Nat.mod_add_div c N]`. Rewrite using `[pow_add, pow_mul, h.pow_eq_one, one_pow, mul_one]`. Rewrite using `[e a, e b]`. Conclude with `⟨fun H => h.pow_inj (Nat.mod_lt _ hN) (Nat.mod_lt _ hN) H, fun H => by rw [H]⟩`.
+-/
 theorem pow_eq_pow_iff_mod {M : Type*} [CommMonoid M] {ζ : M} {N : ℕ} (h : IsPrimitiveRoot ζ N)
     (hN : 0 < N) (a b : ℕ) : ζ ^ a = ζ ^ b ↔ a % N = b % N := by
   have e : ∀ c, ζ ^ c = ζ ^ (c % N) := fun c => by
@@ -19,6 +22,13 @@ theorem pow_eq_pow_iff_mod {M : Type*} [CommMonoid M] {ζ : M} {N : ℕ} (h : Is
   rw [e a, e b]
   exact ⟨fun H => h.pow_inj (Nat.mod_lt _ hN) (Nat.mod_lt _ hN) H, fun H => by rw [H]⟩
 
+/- English proof (translation)
+Establish `hirr` using `minpoly.irreducible hw`. Establish `hdvd : minpoly K w ∣ (X ^ (Nat.card K) ^ n - X : K[X])`. Apply `minpoly.dvd` to reduce the goal to its premises. Simplify using `[h1]`. Establish `hd : (minpoly K w).natDegree ∣ n` using `hirr.natDegree_dvd_of_dvd_X_pow_card_pow_sub_X hdvd`.
+
+Establish `hpos : 0 < (minpoly K w).natDegree` using `minpoly.natDegree_pos hw`. Establish `hself : w ^ (Nat.card K) ^ (minpoly K w).natDegree = w`. Take `⟨r, hr⟩` from `(hirr.natDegree_dvd_iff_dvd_X_pow_card_pow_sub_X).1 (dvd_refl _)`. Establish `h3 : Polynomial.aeval w (X ^ (Nat.card K) ^ (minpoly K w).natDegree - X : K[X]) = 0`. Rewrite using `[hr, map_mul, minpoly.aeval, zero_mul]`.
+
+Simplify `h3` using `[sub_eq_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `h2 _ hpos (lt_of_le_of_ne (Nat.le_of_dvd hn hd) hne) hself`.
+-/
 theorem natDegree_minpoly_eq {K F : Type*} [Field K] [Finite K] [Field F] [Algebra K F] (n : ℕ)
     (hn : 0 < n) (w : F) (hw : IsIntegral K w) (h1 : w ^ (Nat.card K) ^ n = w)
     (h2 : ∀ d, 0 < d → d < n → w ^ (Nat.card K) ^ d ≠ w) : (minpoly K w).natDegree = n := by
@@ -36,6 +46,29 @@ theorem natDegree_minpoly_eq {K F : Type*} [Field K] [Finite K] [Field F] [Algeb
   by_contra hne
   exact h2 _ hpos (lt_of_le_of_ne (Nat.le_of_dvd hn hd) hne) hself
 
+/- English proof (translation)
+Establish `hq : Fintype.card K = Nat.card K` using `Nat.card_eq_fintype_card.symm`. Establish `hφ : ∀ (i : ℕ) (x : F), (FiniteField.frobeniusAlgHom K F ^ i) x = x ^ (Nat.card K) ^ i`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro x`.
+
+Simplify using the standard rewrite rules. Consider the case `succ i ih`. Introduce `x`. Rewrite using `[pow_succ, AlgHom.mul_apply, ih]`. Use `show (x ^ Fintype.card K) ^ (Nat.card K) ^ i = _`.
+
+Rewrite using `[hq, ← pow_mul, ← pow_succ']`. Establish `hroot : ∀ i : ℕ, Polynomial.aeval (w ^ (Nat.card K) ^ i) (minpoly K w) = 0`. Introduce `i`. Rewrite using `[← hφ, Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]`. Establish `hpw : ∀ a b : ℕ, (w ^ (Nat.card K) ^ a) ^ (Nat.card K) ^ b = w ^ (Nat.card K) ^ (a + b)`.
+
+Introduce `a b`. Rewrite using `[← pow_mul, ← pow_add]`. Establish `hlt : ∀ i j : ℕ, i < j → j < n → w ^ (Nat.card K) ^ i ≠ w ^ (Nat.card K) ^ j`. Introduce `i j hij hjn H`. Establish `H2` using `congrArg (fun x : F => x ^ (Nat.card K) ^ (n - j)) H`.
+
+Simplify using `only [hpw] at H2`. Establish `e : j + (n - j) = n` using `by omega`. Rewrite `H2` using `[e, h1]`. Conclude with `h2 (i + (n - j)) (by omega) (by omega) H2`. Establish `hinj : Set.InjOn (fun i : ℕ => w ^ (Nat.card K) ^ i) (Finset.range n : Set ℕ)`.
+
+Introduce `i hi j hj H`. Simplify using `only [Finset.mem_coe, Finset.mem_range, Finset.coe_range, Set.mem_Iio] at hi hj`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Conclude with `absurd H (hlt i j h hj)`. Conclude with `h`.
+
+Conclude with `absurd H.symm (hlt j i h hi)`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Use `set S := (Finset.range n).image (fun i : ℕ => w ^ (Nat.card K) ^ i) with hS`. Establish `hcardS : S.card = n`.
+
+Rewrite using `[hS, Finset.card_image_of_injOn hinj, Finset.card_range]`. Establish `hw'S : w' ∉ S`. Rewrite using `[hS, Finset.mem_image]`. Introduce and unpack `⟨i, -, hi⟩`. Conclude with `hno i hi.symm`.
+
+Establish `hP0 : minpoly K w ≠ 0` using `minpoly.ne_zero hw`. Establish `hmap0 : (minpoly K w).map (algebraMap K F) ≠ 0` using `Polynomial.map_ne_zero hP0`. Establish `hsub : (insert w' S).val ⊆ ((minpoly K w).map (algebraMap K F)).roots`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_val, Finset.mem_insert]`.
+
+Rewrite using `[Polynomial.mem_roots hmap0, Polynomial.IsRoot.def, Polynomial.eval_map, ← Polynomial.aeval_def]`. Break down `hx with rfl | hx` into its components or cases. Conclude with `hP`. Rewrite `hx` using `[hS, Finset.mem_image]`. Take `⟨i, -, rfl⟩` from `hx`.
+
+Conclude with `hroot i`. Establish `hcard` using `Polynomial.card_le_degree_of_subset_roots hsub`. Rewrite `hcard` using `[Finset.card_insert_of_notMem hw'S, hcardS, Polynomial.natDegree_map, natDegree_minpoly_eq n hn w hw h1 h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_eq_pow_of_aeval {K F : Type*} [Field K] [Fintype K] [Field F] [Algebra K F] (n : ℕ)
     (hn : 0 < n) (w w' : F) (hw : IsIntegral K w) (h1 : w ^ (Nat.card K) ^ n = w)
     (h2 : ∀ d, 0 < d → d < n → w ^ (Nat.card K) ^ d ≠ w)
@@ -100,6 +133,37 @@ theorem exists_eq_pow_of_aeval {K F : Type*} [Field K] [Fintype K] [Field F] [Al
 end LeviInductionForms
 
 open LeviInductionForms in
+/- English proof (translation)
+Unfold `St3a`. Introduce `K _ _ n hn`. Use `letI : Fintype K := Fintype.ofFinite K`. Establish `hq1 : 1 < Nat.card K` using `Finite.one_lt_card`. Establish `hqn : 1 < Nat.card K ^ n` using `Nat.one_lt_pow hn.ne' hq1`.
+
+Take `⟨N, hN⟩ : ∃ N : ℕ, N = Nat.card K ^ n - 1` from `⟨_, rfl⟩`. Establish `hNq : Nat.card K ^ n = N + 1` using `by omega`. Establish `hNpos : 0 < N` using `by omega`. Use `haveI : NeZero N := ⟨hNpos.ne'⟩`. Use `haveI : NeZero ((N : ℕ) : K) := ⟨by`.
+
+Establish `hc : ((Nat.card K : ℕ) : K) = 0`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero K`. Establish `h4 : ((Nat.card K ^ n : ℕ) : K) = (N : K) + 1`. Rewrite using `[hNq, Nat.cast_add, Nat.cast_one]`.
+
+Rewrite `h4` using `[Nat.cast_pow, hc, zero_pow hn.ne']`. Introduce `h0`. Rewrite `h4` using `[h0, zero_add]`. Conclude with `zero_ne_one h4⟩`. Take `⟨ω, hω⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure K) N`.
+
+Take `⟨ζ, hζ⟩ : ∃ ζ : ℂ, IsPrimitiveRoot ζ N` from `⟨_, Complex.isPrimitiveRoot_exp N hNpos.ne'⟩`. Establish `htr : ∀ a b : ℕ, ζ ^ a = ζ ^ b ↔ ω ^ a = ω ^ b`. Introduce `a b`. Rewrite using `[pow_eq_pow_iff_mod hζ hNpos, pow_eq_pow_iff_mod hω hNpos]`. Set `jOf : ℂ → ℕ` to `fun z => if h : ∃ j : ℕ, ζ ^ j = z then h.choose else 0`.
+
+Establish `hj : ∀ z : ℂ, ExactPer (Nat.card K) n z → ζ ^ jOf z = z`. Introduce `z hz`. Unfold `ExactPer at hz`. Take `⟨hz0, hz1, -⟩` from `hz`. Establish `hzN : z ^ N = 1`.
+
+Rewrite `hz1` using `[hNq, pow_succ']`. Conclude with `mul_right_injective₀ hz0 (hz1.trans (mul_one z).symm)`. Establish `hex : ∃ j : ℕ, ζ ^ j = z`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hzN`. Conclude with `⟨i, hi⟩`.
+
+Simplify using `only [jOf, dif_pos hex]`. Conclude with `hex.choose_spec`. Establish `hint : ∀ x : AlgebraicClosure K, IsIntegral K x` using `fun x => Algebra.IsIntegral.isIntegral x`. Establish `hper : ∀ (j m : ℕ), (ζ ^ j) ^ (Nat.card K) ^ m = ζ ^ j ↔ (ω ^ j) ^ (Nat.card K) ^ m = ω ^ j`. Introduce `j m`.
+
+Rewrite using `[← pow_mul, ← pow_mul]`. Conclude with `htr _ _`. Establish `hω0 : ω ≠ 0` using `hω.ne_zero hNpos.ne'`. Use `⟨fun z => minpoly K (ω ^ jOf z), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hzj` using `hj z hz`. Unfold `ExactPer at hz`. Take `⟨-, hz1, hz2⟩` from `hz`. Rewrite `hz1`, `hz2` using `[← hzj]`. Establish `hw1 : (ω ^ jOf z) ^ (Nat.card K) ^ n = ω ^ jOf z` using `(hper _ _).1 hz1`.
+
+Establish `hw2 : ∀ d, 0 < d → d < n → (ω ^ jOf z) ^ (Nat.card K) ^ d ≠ ω ^ jOf z` using `fun d hd hdn H => hz2 d hd hdn ((hper _ _).2 H)`. Establish `hw` using `hint (ω ^ jOf z)`. Use `show (minpoly K (ω ^ jOf z)).Monic ∧ Irreducible (minpoly K (ω ^ jOf z)) ∧ minpoly K (ω ^ jOf z) ≠ X ∧ (minpoly K (ω ^ jOf z)).natDegree = n`. Use `⟨minpoly.monic hw, minpoly.irreducible hw, ?_, natDegree_minpoly_eq n hn _ hw hw1 hw2⟩` and prove the remaining obligations. Introduce `hX`.
+
+Establish `h0` using `minpoly.aeval K (ω ^ jOf z)`. Rewrite `h0` using `[hX, Polynomial.aeval_X]`. Conclude with `pow_ne_zero _ hω0 h0`. Introduce `z z' hz hz' hlab`. Establish `hzj` using `hj z hz`.
+
+Establish `hzj'` using `hj z' hz'`. Unfold `ExactPer at hz`. Take `⟨-, hz1, hz2⟩` from `hz`. Rewrite `hz1`, `hz2` using `[← hzj]`. Establish `hw1 : (ω ^ jOf z) ^ (Nat.card K) ^ n = ω ^ jOf z` using `(hper _ _).1 hz1`.
+
+Establish `hw2 : ∀ d, 0 < d → d < n → (ω ^ jOf z) ^ (Nat.card K) ^ d ≠ ω ^ jOf z` using `fun d hd hdn H => hz2 d hd hdn ((hper _ _).2 H)`. Establish `hw` using `hint (ω ^ jOf z)`. Establish `hP : Polynomial.aeval (ω ^ jOf z') (minpoly K (ω ^ jOf z)) = 0`. Establish `hlab' : minpoly K (ω ^ jOf z) = minpoly K (ω ^ jOf z')` using `hlab`. Rewrite using `[hlab']`.
+
+Conclude with `minpoly.aeval K _`. Take `⟨i, hi⟩` from `exists_eq_pow_of_aeval n hn _ _ hw hw1 hw2 hP`. Use `⟨i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hzj', ← hzj, ← pow_mul, htr, pow_mul]`. Conclude with `hi`.
+-/
 theorem st3a : St3a := by
   unfold St3a
   intro K _ _ n hn

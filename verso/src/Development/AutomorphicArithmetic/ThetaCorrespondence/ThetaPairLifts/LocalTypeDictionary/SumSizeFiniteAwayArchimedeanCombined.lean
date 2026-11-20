@@ -23,6 +23,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SumSizeFiniteAwayIn
 
 section
 namespace GlobalTheory.SumSize.Join
+/- English proof (translation)
+Introduce `P`. Establish `hInp : ∀ D, GlobalTheory.NormSum.Inp D` using `GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied`. Establish `hOK : GlobalTheory.RowClaim.SumOKK` using `_root_.GlobalTheory.T.sumOKK_of_theta_local_inputs P`. Establish `hDep : GlobalTheory.SumSize.DepthK` using `_root_.GlobalTheory.T.depthK_of_sumOKK P hOK`. Establish `hDict : GlobalTheory.SumSize.DictK` using `_root_.GlobalTheory.T.sum_size_dictionary P hInp`.
+
+Establish `hScal` using `_root_.GlobalTheory.T.finite_and_infinite_scalar_bounds P`. Establish `hForm` using `_root_.GlobalTheory.T.form_value_finite_infinite_factorization P`. Establish `hPair` using `_root_.GlobalTheory.T.field_pair_comparison P`. Establish `hPsi` using `_root_.GlobalTheory.Adopt.test_vector_value_factorization P`. Establish `hTopF` using `_root_.GlobalTheory.T.sum_size_finite_top_term_integral P hInp hDict hDep`.
+
+Establish `hRowF` using `_root_.GlobalTheory.T.sum_size_bound_finite_places P hInp hDict hDep`. Establish `hTopI` using `_root_.GlobalTheory.T.kernel_conjugation_mean_archimedean_top_term P hInp hDict hDep`. Establish `hRowI` using `_root_.GlobalTheory.T.sum_size_bound_opposite_conjugation P hInp hDict hDep`. Use `⟨?_, _root_.GlobalTheory.Adopt.twisted_local_factor_away_from_level P, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Adopt.finiteSumDenominatorBound_of_factor_claims hOK hDep hScal.1 (_root_.GlobalTheory.Adopt.finCoefK_of_theta_inputs P) (_root_.GlobalTheory.T.finDatK_of_theta_inputs P) (_root_.GlobalTheory.T.gamma_factor_loss_at_finite_places P) hTopF hRowF hPair.1 hPsi.1 hForm.1`.
+
+Conclude with `GlobalTheory.T.archimedeanSumSizeBound_largeData_from_factors hOK hDep hScal.2 (_root_.GlobalTheory.T.sum_size_archimedean_tensor_bound P) (_root_.GlobalTheory.T.sum_count_bound_archimedean P hDep) (_root_.GlobalTheory.T.class_count_bound_archimedean P) hTopI hRowI hPair.2 hPsi.2 …`.
+-/
 theorem sum_size_finite_away_archimedean_combined : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.SumSize.FinK ∧ GlobalTheory.SumSize.AwayK ∧ GlobalTheory.SumSize.InfK := by
   intro P
   have hInp : ∀ D, GlobalTheory.NormSum.Inp D := GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied
@@ -47,6 +56,9 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined | exact _root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined | (intros; apply _root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.sum_size_bound_all_places : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.SumSize.FinK ∧ GlobalTheory.SumSize.AwayK ∧ GlobalTheory.SumSize.InfK := by
   first | exact @_root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined | exact _root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined | (intros; apply _root_.GlobalTheory.SumSize.Join.sum_size_finite_away_archimedean_combined <;> assumption)
 end

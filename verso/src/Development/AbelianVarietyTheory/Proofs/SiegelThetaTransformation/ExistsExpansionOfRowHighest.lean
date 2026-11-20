@@ -12,6 +12,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.F
 
 namespace GlobalTheory.Dict.CuspAny
 
+/- English proof (translation)
+Establish `h : p + q ≤ n + (p + q)` using `Nat.le_add_left _ _`. Set `A : Matrix (Fin n) (Fin (n + (p + q))) ℂ` to `(1 : Matrix _ _ ℂ).submatrix (Fin.castAdd (p + q)) id`. Establish `hA : A * Aᵀ = 1`. Use extensionality with `i j`. Simplify using `[A, Matrix.mul_apply, Matrix.one_apply, eq_comm]`.
+
+Establish `h1 : Harm.colSubst (fun _ : T => A) (fun _ => Aᵀ) P ∈ GaussGauge.minorSpan _ c c'` using `GaussGauge.orbitSpan_le_minorSpan h c c' (Harm.rowHighest_eq_orbitSpan h c c' ℂ ▸ Harm.colSubst_mem_rowHighest (fun _ => hA) hP)`. Establish `h2 : Harm.colSubst (fun _ : T => Aᵀ) (fun _ => A) (Harm.colSubst (fun _ : T => A) (fun _ => Aᵀ) P) = P`. Rewrite using `[← AlgHom.comp_apply, Harm.colSubst_comp]`. Simplify using `only [hA]`. Rewrite using `[Harm.colSubst_one, AlgHom.id_apply]`.
+
+Rewrite using `[← h2]`. Use `(Submodule.span_le (p := (GaussGauge.minorSpan (Fin n) c c').comap (Harm.colSubst (fun _ : T => Aᵀ) (fun _ => A)).toLinearMap)).2 ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Express the relevant statement in the definitionally equal form `Harm.colSubst (fun _ : T => Aᵀ) (fun _ => A) (Harm.minorProd c c' x.1 x.2) ∈ GaussGauge.minorSpan (Fin n) c c'`. Rewrite using `[Harm.colSubst_minorProd]`.
+
+Conclude with `GaussGauge.minorProd_mem_minorSpan _ _ _ _`.
+-/
 theorem mem_minorSpan_of_rowHighest {T : Type} [Fintype T] {p q n : ℕ} {c : T → Fin p → ℕ}
     {c' : T → Fin q → ℕ} {P : Harm.Poly ℂ T p q (Fin n)} (hP : P ∈ Harm.rowHighest ℂ c c') :
     P ∈ GaussGauge.minorSpan (Fin n) c c' := by
@@ -43,6 +52,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data 
   {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} (idx : Fin g ≃ X.Ψ × Fin r)
   {q0 : ℕ} (hr : X.p0 + q0 = r) {n : ℕ} {c : X.Ψ → Fin q0 → ℕ} {c' : X.Ψ → Fin X.p0 → ℕ}
 
+/- English proof (translation)
+Take `⟨bas', S, hs', hA⟩` from `exists_isAdapted hs hξ.2.1`. Take `⟨a', b', κ, -, -, hκ⟩` from `exists_thFr_eq_mul idx hr hs hs' hn a b`. Take `⟨A, hA1, hA2, hA3⟩` from `hA.exists_expansion hr idx hs' hξ n a' b' (Harm.isHarmonic_of_mem_rowHighest hP) (mem_minorSpan_of_rowHighest hP) hc hx`. Use `⟨fun m => κ * A m, _, ?_, fun s => ?_, fun m hm h0 => hm (mul_eq_zero_of_right κ (hA3 m h0))⟩` and prove the remaining obligations. Simplify `hA1.mul_left ‖κ‖` using `only [norm_mul]`.
+
+Establish `hxs` using `(FlowCoefficientBounds.flow_real X hξ hx s 0).1`. Rewrite using `[hκ P _ hxs]`. Simplify `(hA2 _ hxs).mul_left κ` using `only [mul_assoc]`.
+-/
 theorem exists_expansion_of_rowHighest (hs : IsSympl X bas) (hn : Even n)
     (hc : ∃ τ, (∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ c τ i) ∨
       ∃ i : Fin X.p0, i.val + 1 = X.p0 ∧ 1 ≤ c' τ i)
@@ -65,6 +79,13 @@ theorem exists_expansion_of_rowHighest (hs : IsSympl X bas) (hn : Even n)
     rw [hκ P _ hxs]
     simpa only [mul_assoc] using (hA2 _ hxs).mul_left κ
 
+/- English proof (translation)
+Establish `hsec` using `isSec_of_eq_sum_thFr idx hr s t a b hs hP hQ hΓ`. Use `FJZero.mem_SS_of_isModerate X _ Q hsec (isModerate_of_eq_sum_thFr idx hr s t a b hs hn hP hQ) fun ξ hξ x hx => ?_` and prove the remaining obligations. Use `choose A ν h1 h2 h3 using fun j : s => exists_expansion_of_rowHighest idx hr hs hn hc (a j) (b j) (hP j j.2) hξ hx`. Establish `h4 (j : s) : Summable fun m => ‖t j * A j m‖`. Simplify `(h1 j).mul_left ‖t j‖` using `only [norm_mul]`.
+
+Use `FJZero.fj_eq_zero_of_isSec X _ Q hsec hξ hx (fun p : s × (Fin n → Fin g → ℤ) => t p.1 * A p.1 p.2) (hasSum_prod_of_fintype h4 fun j => (h4 j).of_norm.hasSum).1 (fun p => ν p.1 p.2) (fun u => ?_) 0 fun p hp => h3 _ _ (right_ne_zero_of_mul hp)` and prove the remaining obligations. Rewrite using `[hQ _ (FlowCoefficientBounds.flow_real X hξ hx u 0).1, ← Finset.sum_coe_sort]`. Use `(hasSum_prod_of_fintype (f := fun (j : s) m => t j * A j m * cexp (4 * Real.pi * I * ∑ τ, (ν j m τ : ℂ) * u τ)) (fun j => ?_) fun j => ?_).2` and prove the remaining obligations. Use `(h4 j).congr fun m => ?_` and prove the remaining obligations. Establish `h` using `FJZero.norm_expo (ν j m) u`.
+
+Rewrite `h` using `[FJZero.expo]`. Rewrite using `[norm_mul (t j * A j m), h, mul_one]`. Simplify `(h2 j u).mul_left (t j)` using `only [mul_assoc]`.
+-/
 theorem mem_SS_of_eq_sum_thFr {J : Type} (s : Finset J) (t : J → ℂ) (a b : J → Fin n → Fin g → ℝ)
     {P : J → Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n)} {Q : Frame X.Ψ r → ℂ} (hs : IsSympl X bas)
     (hn : Even n)
@@ -110,6 +131,9 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict.CuspAny
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g q0 hr bas idx n hs hn k k' hk φ hφ P hP Q hQ hΓ`. Take `⟨m, a, b, t, h⟩` from `(GlobalTheory.SW.CharLink.harmonicTheta_eq_sum_thetaCharacteristic E r X g q0 hr bas idx n hs hn).2 φ hφ`. Break down `hk with ⟨τ, hτ⟩ | h0` into its components or cases. Conclude with `CuspAny.mem_SS_of_eq_sum_thFr idx hr Finset.univ t (fun j k i => (a j k i : ℝ)) (fun j k i => (b j k i : ℝ)) (P := fun _ => P) hs hn ⟨τ, Or.inl hτ⟩ (fun _ _ => hP) (fun x hx => (hQ x hx).trans (h P x hx)) hΓ`. Conclude with `ThFr.mem_SS_of_eq_sum_thFr idx hr Finset.univ t (fun j k i => (a j k i : ℝ)) (fun j k i => (b j k i : ℝ)) (P := fun _ => P) hs hn (Or.inr (CuspClass.not_isIso_of_definite X (by omega))) (fun _ _ => hP) (fun x hx => (hQ x hx).trans (h P x hx)) hΓ`.
+-/
 theorem mem_SS_of_eq_thP : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ (k : X.Ψ → Fin q0 → ℕ) (k' : X.Ψ → Fin X.p0 → ℕ), ((∃ τ, ∃ i : Fin q0, i.val + 1 = q0 ∧ 1 ≤ k τ i) ∨ q0 = 0) → ∀ φ : TF n g, IsSB φ → ∀ P ∈ Harm.rowHighest ℂ k k', ∀ Q : Frame X.Ψ r → ℂ, (∀ x ∈ X.dom, Q x = thP X hr bas idx φ P x) → (∀ ga ∈ X.Γ, ∀ x ∈ X.dom, Q (lact ga x) = X.χ (wtOf X hr k k' n) ga * Q x) → Q ∈ X.SS (wtOf X hr k k' n) := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn k k' hk φ hφ P hP Q hQ hΓ
   obtain ⟨m, a, b, t, h⟩ := (GlobalTheory.SW.CharLink.harmonicTheta_eq_sum_thetaCharacteristic E r X g q0 hr bas idx n hs hn).2 φ hφ

@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain
 
 variable (D : D7)
 
+/- English proof (translation)
+Use `Int.ideal_span_isMaximal_of_prime p` as an intermediate fact. Use `⟨?_⟩` and prove the remaining obligations. Use `Ideal.IsMaximal.eq_of_le inferInstance ?_ ?_` and prove the remaining obligations. Conclude with `(Ideal.IsPrime.under ℤ P).ne_top`. Rewrite using `[Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]`.
+
+Simplify using `using h`.
+-/
 theorem liesOver_of_mem {L : Type} [Field L] [NumberField L] {p : ℕ} [Fact p.Prime] (P : Ideal (𝓞 L)) [hP : P.IsPrime]
     (h : ((p : ℕ) : 𝓞 L) ∈ P) : P.LiesOver (Ideal.span {(p : ℤ)}) := by
   have := Int.ideal_span_isMaximal_of_prime p
@@ -18,12 +23,22 @@ theorem liesOver_of_mem {L : Type} [Field L] [NumberField L] {p : ℕ} [Fact p.P
   · rw [Ideal.span_singleton_le_iff_mem, Ideal.under_def, Ideal.mem_comap]
     simpa using h
 
+/- English proof (translation)
+Establish `h1 : (p : ℤ) ∈ P.under ℤ` using `by rw [← h.over]; exact Ideal.mem_span_singleton_self _`. Rewrite `h1` using `[Ideal.under_def, Ideal.mem_comap]`. Simplify using `using h1`.
+-/
 theorem mem_of_liesOver {L : Type} [Field L] [NumberField L] {p : ℕ} (P : Ideal (𝓞 L))
     [h : P.LiesOver (Ideal.span {(p : ℤ)})] : ((p : ℕ) : 𝓞 L) ∈ P := by
   have h1 : (p : ℤ) ∈ P.under ℤ := by rw [← h.over]; exact Ideal.mem_span_singleton_self _
   rw [Ideal.under_def, Ideal.mem_comap] at h1
   simpa using h1
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hc : IsCoprime (p : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.mpr ((Nat.coprime_primes hp hq).mpr hne)`. Take `⟨a, b, hab⟩` from `hc`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Establish `h1 : (1 : 𝓞 L) = (a : 𝓞 L) * ((p : ℕ) : 𝓞 L) + (b : 𝓞 L) * ((q : ℕ) : 𝓞 L)`. Use `congrArg (Int.cast : ℤ → 𝓞 L) hab.symm` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[h1]`.
+
+Conclude with `P.add_mem (P.mul_mem_left _ hp') (P.mul_mem_left _ hq')`.
+-/
 theorem prime_unique {L : Type} [Field L] [NumberField L] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (P : Ideal (𝓞 L))
     [hP : P.IsPrime] (hp' : ((p : ℕ) : 𝓞 L) ∈ P) (hq' : ((q : ℕ) : 𝓞 L) ∈ P) : p = q := by
   by_contra hne
@@ -38,6 +53,17 @@ theorem prime_unique {L : Type} [Field L] [NumberField L] {p q : ℕ} (hp : p.Pr
   rw [h1]
   exact P.add_mem (P.mul_mem_left _ hp') (P.mul_mem_left _ hq')
 
+/- English proof (translation)
+Establish `hq` using `D.what₂.places.resChar_prime w`. Establish `hne : ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.mpr hq.ne_zero`. Establish `h1` using `D.val_eq w _ hne`. Rewrite `h1` using `[D.what₂.places.val_resChar]`. Establish `h2 : ((D.what₂.places.ramIdx w : ℕ) : ℤ) = vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)` using `by exact_mod_cast h1`.
+
+Establish `h3 : 0 < vAdd (D.plEq w) ((D.what₂.places.resChar w : ℕ) : D.what₂.LL)`. Rewrite using `[← h2]`. Conclude with `D.what₂.places.ramIdx_pos w` after adjusting the coercions. Unfold `vAdd at h3`. Establish `hlt : (D.plEq w).valuation D.what₂.LL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) < 1`.
+
+Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hv0 : (D.plEq w).valuation D.what₂.LL ((D.what₂.places.resChar w : ℕ) : D.what₂.LL) ≠ 0` using `(Valuation.ne_zero_iff _).mpr hne`. Establish `h4` using `(WithZero.log_le_log one_ne_zero hv0).mpr h`. Rewrite `h4` using `[WithZero.log_one]`.
+
+Use linear arithmetic over natural numbers and integers. Use `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := D.what₂.LL) _ _).mp ?_` and prove the remaining obligations. Use `first`. Consider the case `exact hlt`. Consider the case `(simpa using hlt)`.
+
+Consider the case `(convert hlt using 2; exact map_natCast _ _)`.
+-/
 theorem resChar_mem (w : D.what₂.places.Pl) :
     ((D.what₂.places.resChar w : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
   have hq := D.what₂.places.resChar_prime w
@@ -63,6 +89,11 @@ theorem resChar_mem (w : D.what₂.places.Pl) :
     | (simpa using hlt)
     | (convert hlt using 2; exact map_natCast _ _)
 
+/- English proof (translation)
+Use `(D.plEq w).isPrime` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `resChar_mem D w`. Introduce `h`.
+
+Conclude with `prime_unique (D.what₂.places.resChar_prime w) hp.out _ (resChar_mem D w) h`.
+-/
 theorem resChar_eq_iff (p : ℕ) [hp : Fact p.Prime] (w : D.what₂.places.Pl) :
     D.what₂.places.resChar w = p ↔ ((p : ℕ) : 𝓞 D.what₂.LL) ∈ (D.plEq w).asIdeal := by
   have := (D.plEq w).isPrime
@@ -70,9 +101,15 @@ theorem resChar_eq_iff (p : ℕ) [hp : Fact p.Prime] (w : D.what₂.places.Pl) :
   · rintro rfl; exact resChar_mem D w
   · intro h; exact prime_unique (D.what₂.places.resChar_prime w) hp.out _ (resChar_mem D w) h
 
+/- English proof (translation)
+Simplify using `[hp.out.ne_zero]`.
+-/
 theorem span_ne_bot (p : ℕ) [hp : Fact p.Prime] : Ideal.span {(p : ℤ)} ≠ ⊥ := by
   simp [hp.out.ne_zero]
 
+/- English proof (translation)
+Use `Int.ideal_span_isMaximal_of_prime p` as an intermediate fact. Use `(D.plEq w.1).isPrime` as an intermediate fact. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff (span_ne_bot p)]`. Conclude with `⟨(D.plEq w.1).isPrime, liesOver_of_mem _ ((resChar_eq_iff D p w.1).mp w.2)⟩`.
+-/
 theorem mem_over (p : ℕ) [Fact p.Prime] (w : {w : D.what₂.places.Pl // D.what₂.places.resChar w = p}) :
     (D.plEq w.1).asIdeal ∈ IsDedekindDomain.primesOverFinset (Ideal.span {(p : ℤ)}) (𝓞 D.what₂.LL) := by
   have := Int.ideal_span_isMaximal_of_prime p
@@ -85,6 +122,9 @@ instance plFin (p : ℕ) [Fact p.Prime] : Fintype {w : D.what₂.places.Pl // D.
     (fun w => (⟨(D.plEq w.1).asIdeal, mem_over D p w⟩ : ↥(IsDedekindDomain.primesOverFinset (Ideal.span {(p : ℤ)}) (𝓞 D.what₂.LL))))
     (fun a b h => Subtype.ext (D.plEq.injective (HeightOneSpectrum.ext (show (D.plEq a.1).asIdeal = (D.plEq b.1).asIdeal from congrArg Subtype.val h))))
 
+/- English proof (translation)
+Take `⟨hPp, hPl⟩` from `hP`. Establish `hb : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot (span_ne_bot p) P`. Use `⟨⟨D.plEq.symm ⟨P, hPp, hb⟩, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[resChar_eq_iff]`. Simplify using `using mem_of_liesOver (p := p) P`.
+-/
 theorem exists_over (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 D.what₂.LL))
     (hP : P ∈ (Ideal.span {(p : ℤ)}).primesOver (𝓞 D.what₂.LL)) :
     ∃ w : {w : D.what₂.places.Pl // D.what₂.places.resChar w = p}, (D.plEq w.1).asIdeal = P := by
@@ -94,11 +134,21 @@ theorem exists_over (p : ℕ) [Fact p.Prime] (P : Ideal (𝓞 D.what₂.LL))
   rw [resChar_eq_iff]
   simpa using mem_of_liesOver (p := p) P
 
+/- English proof (translation)
+Use `Int.ideal_span_isMaximal_of_prime p` as an intermediate fact. Take `⟨P, hP⟩` from `Ideal.nonempty_primesOver (S := 𝓞 D.what₂.LL) (Ideal.span {(p : ℤ)})`. Conclude with `⟨(exists_over D p P hP).choose⟩`.
+-/
 theorem plNe (p : ℕ) [Fact p.Prime] : Nonempty {w : D.what₂.places.Pl // D.what₂.places.resChar w = p} := by
   have := Int.ideal_span_isMaximal_of_prime p
   obtain ⟨P, hP⟩ := Ideal.nonempty_primesOver (S := 𝓞 D.what₂.LL) (Ideal.span {(p : ℤ)})
   exact ⟨(exists_over D p P hP).choose⟩
 
+/- English proof (translation)
+Use `Int.ideal_span_isMaximal_of_prime p` as an intermediate fact. Rewrite using `[← Ideal.sum_ramification_inertia (𝓞 D.what₂.LL) ℚ D.what₂.LL (span_ne_bot p)]`. Use `Finset.sum_bij (fun w _ => (D.plEq w.1).asIdeal) (fun w _ => mem_over D p w) (fun _ _ _ _ h => Subtype.ext (D.plEq.injective (HeightOneSpectrum.ext h))) ?_ ?_` and prove the remaining obligations. Introduce `P hP`. Rewrite `hP` using `[IsDedekindDomain.mem_primesOverFinset_iff (span_ne_bot p)]`.
+
+Take `⟨w, hw⟩` from `exists_over D p P hP`. Conclude with `⟨w, Finset.mem_univ _, hw⟩`. Introduce `w _`. Use `(D.plEq w.1).isPrime` as an intermediate fact. Establish `: (D.plEq w.1).asIdeal.LiesOver (Ideal.span {(p : ℤ)})` using `liesOver_of_mem _ ((resChar_eq_iff D p w.1).mp w.2)`.
+
+Rewrite using `[D.ram_eq, Ideal.absNorm_eq_pow_inertiaDeg' (p := p) _ hp.out, padicValNat.prime_pow, Ideal.ramificationIdx'_eq_ramificationIdx _ _ (span_ne_bot p)]`. Both sides reduce to the same expression.
+-/
 theorem sumEF (p : ℕ) [hp : Fact p.Prime] :
     ∑ w : {w : D.what₂.places.Pl // D.what₂.places.resChar w = p},
       D.what₂.places.ramIdx w.1 * padicValNat p (Ideal.absNorm (D.plEq w.1).asIdeal) =
@@ -123,9 +173,17 @@ def wt (p : ℕ) (w : D.what₂.places.Pl) : ℝ :=
   (D.what₂.places.ramIdx w : ℝ) * (padicValNat p (Ideal.absNorm (D.plEq w).asIdeal) : ℝ) /
     (Module.finrank ℚ D.what₂.LL : ℝ)
 
+/- English proof (translation)
+Unfold `wt`. Check the signs of the components of the expression.
+-/
 theorem wt_nonneg (p : ℕ) (w : D.what₂.places.Pl) : 0 ≤ wt D p w := by
   unfold wt; positivity
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[← Finset.sum_div]`. Establish `h` using `sumEF D p`. Establish `h0 : (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Rewrite using `[div_eq_one_iff_eq h0, ← h]`.
+
+Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem wt_sum (p : ℕ) [Fact p.Prime] :
     ∑ w : {w : D.what₂.places.Pl // D.what₂.places.resChar w = p}, wt D p w.1 = 1 := by
   unfold wt

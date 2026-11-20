@@ -9,6 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.AbelianLetters
 
+/- English proof (translation)
+Substitute `e` using the available equality. Take `⟨a, ha⟩` from `TorusCoord.exists_ratio hL (fun _ _ _ => rfl) t ht t' ht'`. Use `⟨a, fun z J hJ => ha _ _ z J hJ, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hL (cpt A)`. Apply `toStkA_injective` to reduce the goal to its premises.
+
+Establish `hm : (𝟙 (Sp A) : Sp A ⟶ Sp A) (cpt A) ∈ LB.wchart L φ j` using `hj (x := cpt A) trivial`. Rewrite using `[map_mul, toStkA_valR _ ⊤ _ le_rfl, toStkA_valR _ (LB.wchart L φ j) _ hj (t.s j), toStkA_valR _ (LB.wchart L φ j) _ hj (t'.s j), ← Units.val_mul, gen_trans ht _ _ hm (hJ.mem φ _), gen_trans ht' _ _ hm (hJ.mem φ _), mul_left_comm]`. Conclude with `congrArg (fun q => Units.val (_ * q)) (ha _ _ _ J hJ)`.
+-/
 theorem exists_ratio_valR {A : Type} [CommRing A] [IsLocalRing A] {X : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
     {ε : K → ℤ} (hL : L.IsLB) {φ φ' : K → (Sp A ⟶ X)} (e : φ = φ') (t : LB.Gen (LB.LinComb L φ ε))
     (t' : LB.Gen (LB.LinComb L φ' ε)) (ht : t.IsGen) (ht' : t'.IsGen) :
@@ -26,6 +31,19 @@ theorem exists_ratio_valR {A : Type} [CommRing A] [IsLocalRing A] {X : Scheme.{0
     gen_trans ht _ _ hm (hJ.mem φ _), gen_trans ht' _ _ hm (hJ.mem φ _), mul_left_comm]
   exact congrArg (fun q => Units.val (_ * q)) (ha _ _ _ J hJ)
 
+/- English proof (translation)
+Establish `eb : ∀ z, (ex ((n : ℂ) • z)).b = (sB (Out.TF (R` using `ℂ) ℂ) (ex z).b).b := fun z => by`. Rewrite using `[b_nsmul hex, hb]`. Use `choose a ha hv using fun x z => exists_ratio_valR (A := ℂ) D.P.isLB (φ := Out.DegPre.gtφ D ℂ (ex ((n : ℂ) • z)).b x) (φ' := Out.DegPre.gtφT D (Out.TF (R := ℂ) ℂ) (sB (Out.TF (R := ℂ) ℂ) (ex z).b).b x) (by rw [eb]; rfl) ((ex ((n : ℂ) • z)).s x) ((sB (Out.TF (R := ℂ) ℂ) (ex z).b).s …`. Establish `hev : ∀ c : Γ(Sp ℂ, ⊤), valR (𝟙 (Sp ℂ)) ⊤ c = HolHom.evalHom (𝟙 (Sp ℂ)) ⊤ le_rfl c` using `fun c => HolHom.valR_eq _ _ _ c`. Use `⟨fun x z => valR (𝟙 (Sp ℂ)) ⊤ (a x z).val, fun x z j hj => ?_, fun x z => ?_, fun x z z' => ?_⟩` and prove the remaining obligations.
+
+Use `(hv x z j hj).trans (congrArg (_ * ·) ?_)` and prove the remaining obligations. Establish `H` using `hpull D.P.A _ (ex z).b (𝟙 _)`. Rewrite `H` using `[Category.comp_id]`. Conclude with `valR_of_isPull H x j`. Conclude with `(hev _).trans_ne ((a x z).isUnit.map _).ne_zero`.
+
+Establish `: a x (z + z') = a x z * a x z'` using `unit_ext fun w _ => by`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D.P.isLB w`. Establish `e1` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ ((hex ((n : ℂ) • z) ((n : ℂ) • z')).2 x) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e2` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ ((hadd _ (ex z).b (ex z').b).2 x) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e3 : val (Out.DegPre.cubAt D ℂ (Out.DegPre.cF D ℂ x) (ex ((n : ℂ) • z)).b (ex ((n : ℂ) • z')).b) (𝟙 _) w J = val (Out.DegPre.cubAtT D _ (Out.DegPre.cT D _ x) (sB (Out.TF (R` using `ℂ) ℂ) (ex z).b).b (sB (Out.TF (R := ℂ) ℂ) (ex z').b).b) (𝟙 _) w J := by`.
+
+Rewrite using `[eb, eb]`. Both sides reduce to the same expression. Rewrite `e1` using `[← smul_add]`. Rewrite `e2` using `[← b_add hex]`. Establish `key : ∀ {U : Type} [CommGroup U] {p q r c c' p' q' r' k₁ k₂ k₃ : U}, r * c = p * q → r' * c' = p' * q' → c = c' → p = k₁ * p' → q = k₂ * q' → r = k₃ * r' → k₃ = k₁ * k₂`.
+
+Introduce `U _ p q r c c' p' q' r' k₁ k₂ k₃ h₁ h₂ h₃ h₄ h₅ h₆`. Rewrite `h₁` using `[h₃, h₄, h₅, h₆, _root_.mul_assoc, h₂, _root_.mul_mul_mul_comm]`. Conclude with `mul_right_cancel h₁`. Rewrite using `[map_mul]`. Conclude with `key e1 e2 e3 (ha x z w J hJ) (ha x z' w J hJ) (ha x (z + z') w J hJ)`.
+
+Simplify using `only [this, hev, Units.val_mul, map_mul]`.
+-/
 theorem exists_isRatio_mul [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (D : Out.DegPre ℂ)
     (g n : ℕ) (ex : (Fin g → ℂ) → Out.GtPtF D ℂ) (sB : ∀ Tt : Over (Sp ℂ), (Tt ⟶ D.P.A) → Out.GtPt D Tt)
     (hb : ∀ Tt b, (sB Tt b).b = b ^ n)

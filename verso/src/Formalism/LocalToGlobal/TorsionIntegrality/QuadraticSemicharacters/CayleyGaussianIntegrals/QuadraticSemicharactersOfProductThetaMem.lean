@@ -12,6 +12,9 @@ section Arith
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Establish `h` using `AddSubgroup.nsmul_index_mem (Λ₁.addSubgroupOf Λ₂) ⟨x, hx⟩`. Rewrite `h` using `[AddSubgroup.mem_addSubgroupOf]`. Unfold `relIdx`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Simplify `h` using `[AddSubgroup.relIndex]`.
+-/
 theorem relIdx_smul_mem (Λ₁ Λ₂ : AddSubgroup V) {x : V} (hx : x ∈ Λ₂) :
     (relIdx Λ₁ Λ₂ : ℂ) • x ∈ Λ₁ := by
   have h := AddSubgroup.nsmul_index_mem (Λ₁.addSubgroupOf Λ₂) ⟨x, hx⟩
@@ -20,10 +23,18 @@ theorem relIdx_smul_mem (Λ₁ Λ₂ : AddSubgroup V) {x : V} (hx : x ∈ Λ₂)
   rw [Nat.cast_smul_eq_nsmul]
   simpa [AddSubgroup.relIndex] using h
 
+/- English proof (translation)
+Simplify using `[altE, map_smul]`.
+-/
 theorem altE_natCast_smul_left (H : Sesq V) (N : ℕ) (s x : V) :
     altE H ((N : ℂ) • s) x = (N : ℝ) * altE H s x := by
   simp [altE, map_smul]
 
+/- English proof (translation)
+Take `⟨m, hm⟩` from `(show ∀ y ∈ Λ, ∃ m : ℤ, altE H ((N : ℂ) • s) y = (m : ℝ) from hΛ hs) x hx`. Rewrite `hm` using `[altE_natCast_smul_left]`. Establish `hm' : (N : ℂ) * (altE H s x : ℂ) = (m : ℂ)` using `by exact_mod_cast hm`. Rewrite using `[← Complex.exp_nat_mul]`. Establish `h2 : ((2 * N : ℕ) : ℂ) * (-(Real.pi : ℂ) * Complex.I * (altE H s x : ℂ)) = ((-m : ℤ) : ℂ) * (2 * Real.pi * Complex.I)`.
+
+Use `push_cast`. Take the linear combination `(-2 * (Real.pi : ℂ) * Complex.I) * hm'`. Rewrite using `[h2, Complex.exp_int_mul_two_pi_mul_I]`.
+-/
 theorem phase_root (H : Sesq V) (Λ : AddSubgroup V) (hΛ : Λ ≤ dualLat H Λ) (N : ℕ) {s x : V}
     (hs : (N : ℂ) • s ∈ Λ) (hx : x ∈ Λ) :
     Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H s x : ℂ)) ^ (2 * N) = 1 := by
@@ -37,6 +48,9 @@ theorem phase_root (H : Sesq V) (Λ : AddSubgroup V) (hΛ : Λ ≤ dualLat H Λ)
     linear_combination (-2 * (Real.pi : ℂ) * Complex.I) * hm'
   rw [h2, Complex.exp_int_mul_two_pi_mul_I]
 
+/- English proof (translation)
+Conclude with `phase_root H Λ hΛ.ge N hs hx`.
+-/
 theorem phase_root_selfDual (H : Sesq V) (Λ : AddSubgroup V) (hΛ : IsSelfDual H Λ) (N : ℕ) {s x : V}
     (hs : (N : ℂ) • s ∈ Λ) (hx : x ∈ Λ) :
     Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H s x : ℂ)) ^ (2 * N) = 1 := by
@@ -44,6 +58,15 @@ theorem phase_root_selfDual (H : Sesq V) (Λ : AddSubgroup V) (hΛ : IsSelfDual 
 
 end Arith
 
+/- English proof (translation)
+Introduce `L ω₀ n _ _ h Λ α β g D ε θ hθ S hS t y`. Establish `hH : IsHerm (stdH L (Fin 4 × n))` using `(standardFormBasic L (Fin 4 × n)).2.1`. Establish `hfix : F0 L ω₀ (Fin 4 × n) ∈ fixedBy (stdH L (Fin 4 × n)) β (stdLat L (Fin 4 × n))` using `((hF0 L ω₀ (Fin 4 × n) D.per D.half β D.betaStd).1).2`. Establish `h1 : tens4 (opU (matH h) t θ) (g.symm y) = opU (matH (blk4 h)) (fun w => t w.2) (tens4 θ) (g.symm y)` using `((heisenbergFourfold n h).2 (fun w => t w.2) (fun _ => θ) (g.symm y)).symm`. Establish `h2 : tens4 θ = fun v => ε * (fun z => ((Real.sqrt (relIdx (stdLat L (Fin 4 × n)) (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ))) : ℝ) : ℂ)⁻¹ * ∑ x ∈ S, β x * opU (stdH L (Fin 4 × n)) x (F0 L ω₀ (Fin 4 × n)) z) ((g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) v)`.
+
+Rewrite using `[hθ]`. Use function extensionality and compare the values at `v`. Use `InterReps_of semicharacterHom (Fin 4 × n → ℂ) (stdH L (Fin 4 × n)) hH (stdLat L (Fin 4 × n)) (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) β D.betaSemi _ hfix S hS (g v)` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul, kernel4]`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, h2, Inv.opU_const_mul]`. Apply the tactic sequence `erw [heisenbergIsometry _ _ _ _ _ D.isom (fun w => t w.2) (fun z => ((Real.sqrt (relIdx (stdLat L (Fin 4 × n)) (imgLat (g : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ))) : ℝ) : ℂ)⁻¹ * ∑ x ∈ S, β x * opU (stdH L (Fin 4 × n)) x (F0 L ω₀ (Fin 4 × n)) z) (g.symm y)]`. Rewrite using `[Inv.opU_const_mul, Inv.opU_finset_sum]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`.
+
+Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Inv.opU_const_mul, heisenbergMul _ _ hH, F0, heisenbergStandard]`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem quadraticSemicharacters_of_productThetaMem (hF0 : ProductThetaMem) : quadraticSemicharacterIdentityReformulated₂ := by
   intro L ω₀ n _ _ h Λ α β g D ε θ hθ S hS t y
   have hH : IsHerm (stdH L (Fin 4 × n)) := (standardFormBasic L (Fin 4 × n)).2.1

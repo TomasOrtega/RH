@@ -7,6 +7,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxForm GlobalTheory.CxPts GlobalTheory.VB GlobalTheory.Cartier GlobalTheory.CovTest GlobalTheory.CovTest.SwapLine GlobalTheory.LineForm
 open scoped Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CxFormStokesBoth.stokes | exact GlobalTheory.CxFormStokesBoth.stokes | (intros; apply GlobalTheory.CxFormStokesBoth.stokes <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.integral_del_dbar_zero : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n),
     ∀ η : A.Fld, A.IsForm η → A.integral (A.del η) = 0 ∧ A.integral (A.dbar η) = 0 := by
   first | exact @GlobalTheory.CxFormStokesBoth.stokes | exact GlobalTheory.CxFormStokesBoth.stokes | (intros; apply GlobalTheory.CxFormStokesBoth.stokes <;> assumption)

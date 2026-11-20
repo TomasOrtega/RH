@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.HodgeIntoDeRhamInje
 import Development.AbelianVarietyTheory.Proofs.CoherentCohomologyProofs.ExactAndSurjectiveAppOfExactOfEpi
 open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.DeRham GlobalTheory.DeRhamSheaf GlobalTheory.LieVB
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.HodgeSub.exists_proj | exact GlobalTheory.HodgeSub.exists_proj | (intros; apply GlobalTheory.HodgeSub.exists_proj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.abelian_scheme_affine_base_change : ∀ {T : Scheme.{0}} (A : Over T) [GrpObj A] (V V' : T.Opens) (hV : IsAffineOpen V)
     (hV' : IsAffineOpen V') (h : V' ≤ V),
     letI := resAlg h

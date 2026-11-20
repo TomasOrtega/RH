@@ -11,15 +11,28 @@ open PI MG
 
 variable {m : ℕ} {G : Set (Matrix (Fin m) (Fin m) ℂ)} {hG : IsMatGroup G}
 
+/- English proof (translation)
+Rewrite using `[Measure.modularCharacterFun_eq_haarScalarFactor (Measure.haar : Measure (MG G hG)) g]`. Conclude with `Measure.isMulLeftInvariant_eq_smul_of_regular _ _`.
+-/
 theorem map_mul_right_haar (g : MG G hG) :
     (Measure.haar : Measure (MG G hG)).map (· * g) =
       Measure.modularCharacterFun g • (Measure.haar : Measure (MG G hG)) := by
   rw [Measure.modularCharacterFun_eq_haarScalarFactor (Measure.haar : Measure (MG G hG)) g]
   exact Measure.isMulLeftInvariant_eq_smul_of_regular _ _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨rfl⟩, fun _ _ hxy => Subtype.ext hxy⟩`.
+-/
 private theorem isEmbedding_MG_val : Topology.IsEmbedding (MG.val : MG G hG → MtM m) :=
   ⟨⟨rfl⟩, fun _ _ hxy => Subtype.ext hxy⟩
 
+/- English proof (translation)
+Establish `hr : Set.range (MG.val : MG G hG → MtM m) = {x | Matrix.of x ∈ G}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `z.2`.
+
+Introduce `hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `hc : IsClosed (Set.range (MG.val : MG G hG → MtM m))`. Rewrite using `[hr]`. Conclude with `hG.1.preimage (f := fun x : MtM m => Matrix.of x) continuous_id`.
+
+Conclude with `(Topology.IsClosedEmbedding.mk isEmbedding_MG_val hc).measurableEmbedding`.
+-/
 private theorem measurableEmbedding_MG_val :
     MeasurableEmbedding (MG.val : MG G hG → MtM m) := by
   have hr : Set.range (MG.val : MG G hG → MtM m) = {x | Matrix.of x ∈ G} := by
@@ -34,6 +47,31 @@ private theorem measurableEmbedding_MG_val :
     exact hG.1.preimage (f := fun x : MtM m => Matrix.of x) continuous_id
   exact (Topology.IsClosedEmbedding.mk isEmbedding_MG_val hc).measurableEmbedding
 
+/- English proof (translation)
+Use `haveI := hμ.1`. Establish `hMe : MeasurableEmbedding (MG.val : MG G hG → MtM m)` using `measurableEmbedding_MG_val`. Use `haveI : SigmaFinite (onG hG μ) := by`. Use `⟨⟨⟨fun n => MG.val ⁻¹' spanningSets μ n, fun _ => Set.mem_univ _, fun n => ?_, ?_⟩⟩⟩` and prove the remaining obligations. Use `show μ.comap MG.val _ < ⊤`.
+
+Rewrite using `[hMe.comap_apply]`. Conclude with `(measure_mono (Set.image_preimage_subset _ _)).trans_lt (measure_spanningSets_lt_top μ n)`. Rewrite using `[← Set.preimage_iUnion, iUnion_spanningSets, Set.preimage_univ]`. Establish `hkey : ∀ h z : MG G hG, MG.val (h * z) = lmulQ (MG.toM h) (MG.val z)`. Introduce `h z`.
+
+Use `show MG.toM (h * z) = _`. Rewrite using `[toM_mul']`. Both sides reduce to the same expression. Use `haveI : Measure.IsMulLeftInvariant (onG hG μ) := by`. Use `⟨fun h => Measure.ext fun s hs => ?_⟩` and prove the remaining obligations.
+
+Establish `hA : Measurable (lmulQ (MG.toM h) : MtM m → MtM m)`. Use `Continuous.measurable (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Establish `hf : (fun x : MtM m => lmulQ (MG.toM h) x i j) = fun x => ∑ k, MG.toM h i k * x k j`. Use function extensionality and compare the values at `x`. Simplify using `only [lmulQ, Matrix.mul_apply, Matrix.of_apply]`.
+
+Rewrite using `[hf]`. Conclude with `continuous_finset_sum _ fun k _ => by fun_prop`. Establish `hvs : MeasurableSet (MG.val '' s)` using `hMe.measurableSet_image.2 hs`. Establish `hinvA : Measure.map (lmulQ (MG.toM h)) μ = μ` using `hμ.2.2.2 _ h.2`. Rewrite using `[Measure.map_apply (measurable_const_mul h) hs]`.
+
+Use `show μ.comap MG.val _ = μ.comap MG.val _`. Rewrite using `[hMe.comap_apply, hMe.comap_apply]`. Apply `le_antisymm` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Apply `measure_mono` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨h * z, hz, hkey h z⟩`. Use `_ = μ (MG.val '' s) := by`. Rewrite using `[← Measure.map_apply hA hvs, hinvA]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← Measure.map_apply hA hvs, hinvA]`. Use `_ ≤ μ (MG.val '' ((h * ·) ⁻¹' s) ∪ {x | Matrix.of x ∉ G}) := by`. Apply `measure_mono` to reduce the goal to its premises. Introduce `y hy`. Distinguish the cases in `hyG : Matrix.of y ∈ G`.
+
+Use `left`. Take `⟨w, hw, hwy⟩` from `hy`. Take `⟨z, hz⟩ : ∃ z : MG G hG, MG.val z = y` from `⟨⟨y, hyG⟩, rfl⟩`. Use `⟨z, ?_, hz⟩` and prove the remaining obligations. Establish `hEq : h * z = w`.
+
+Apply `hMe.injective` to reduce the goal to its premises. Rewrite using `[hkey, hz, hwy]`. Use `show h * z ∈ s`. Rewrite using `[hEq]`. Conclude with `hw`.
+
+Use `right`. Conclude with `hyG`. Use `_ ≤ μ (MG.val '' ((h * ·) ⁻¹' s)) + μ {x | Matrix.of x ∉ G} := measure_union_le _ _`. Use `_ = μ (MG.val '' ((h * ·) ⁻¹' s)) := by rw [hμ.2.2.1, add_zero]`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts (MG G hG))` from `inferInstance`.
+
+Establish `hK0 : (Measure.haar : Measure (MG G hG)) K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty).ne'`. Establish `hKt : (Measure.haar : Measure (MG G hG)) K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Conclude with `⟨_, measure_eq_div_smul (onG hG μ) Measure.haar hK0 hKt⟩`.
+-/
 theorem onG_eq (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) :
     ∃ c : ℝ≥0∞, onG hG μ = c • (Measure.haar : Measure (MG G hG)) := by
   haveI := hμ.1
@@ -96,6 +134,21 @@ theorem onG_eq (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ) :
   have hKt : (Measure.haar : Measure (MG G hG)) K ≠ ⊤ := K.isCompact.measure_lt_top.ne
   exact ⟨_, measure_eq_div_smul (onG hG μ) Measure.haar hK0 hKt⟩
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `onG_eq μ hμ`. Establish `hMe : MeasurableEmbedding (MG.val : MG G hG → MtM m)` using `measurableEmbedding_MG_val`. Establish `hback : Measure.map MG.val (onG hG μ) = μ` using `by show Measure.map MG.val (μ.comap MG.val) = μ`. Rewrite using `[hMe.map_comap]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises.
+
+Rewrite using `[ae_iff]`. Establish `hset : {x | ¬ x ∈ Set.range (MG.val : MG G hG → MtM m)} = {x | Matrix.of x ∉ G}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx hxG`.
+
+Conclude with `hx ⟨⟨x, hxG⟩, rfl⟩`. Introduce and unpack `hx ⟨z, rfl⟩`. Conclude with `hx z.2`. Rewrite using `[hset]`. Conclude with `hμ.2.2.1`.
+
+Introduce `s hs`. Establish `hR : Measurable (rmulQ s : MtM m → MtM m)`. Use `Continuous.measurable (continuous_pi fun i => continuous_pi fun j => ?_)` and prove the remaining obligations. Establish `hf : (fun x : MtM m => rmulQ s x i j) = fun x => ∑ k, x i k * s k j`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [rmulQ, Matrix.mul_apply, Matrix.of_apply]`. Rewrite using `[hf]`. Conclude with `continuous_finset_sum _ fun k _ => by fun_prop`. Establish `hgkey : (rmulQ s) ∘ MG.val = MG.val ∘ (· * mk hG s hs)`. Use function extensionality and compare the values at `z`.
+
+Use `show _ = MG.toM (z * mk hG s hs)`. Rewrite using `[toM_mul', toM_mk]`. Both sides reduce to the same expression. Establish `hinv : Measure.map (· * mk hG s hs) (onG hG μ) = onG hG μ`. Rewrite using `[hc, Measure.map_smul, map_mul_right_haar, h1, one_smul]`.
+
+Rewrite using `[← hback, Measure.map_map hR hMe.measurable, hgkey, ← Measure.map_map hMe.measurable (measurable_mul_const _), hinv]`.
+-/
 theorem rightInv_of (μ : Measure (MtM m)) (hμ : IsHaarOnM G μ)
     (h1 : ∀ g : MG G hG, Measure.modularCharacterFun g = 1) : IsRightInvM G μ := by
   obtain ⟨c, hc⟩ := onG_eq μ hμ
@@ -168,6 +221,11 @@ def conjE (c : Matrix (Fin m) (Fin m) ℂ) (hc : IsUnit c) (hcG : ∀ g, c * g *
     simp only [toM_mk]
     exact (continuous_const.matrix_mul continuous_toM).matrix_mul continuous_const
 
+/- English proof (translation)
+Rewrite using `[Measure.modularCharacterFun_eq_haarScalarFactor (Measure.map φ (Measure.haar : Measure (MG G hG))) (φ g)]`. Establish `hφ : Measurable φ` using `φ.continuous.measurable`. Establish `e1 : Measure.map (· * φ g) (Measure.map φ (Measure.haar : Measure (MG G hG))) = Measure.modularCharacterFun g • Measure.map φ (Measure.haar : Measure (MG G hG))`. Rewrite using `[Measure.map_map (measurable_mul_const (φ g)) hφ]`. Establish `e : ((· * φ g) ∘ ⇑φ) = (⇑φ ∘ (· * g))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `[map_mul]`. Rewrite using `[e, ← Measure.map_map hφ (measurable_mul_const g), map_mul_right_haar g, Measure.map_smul]`. Simplify using `only [e1, Measure.haarScalarFactor_smul, Measure.haarScalarFactor_self, smul_eq_mul, mul_one]`.
+-/
 theorem modF_conj (φ : MG G hG ≃ₜ* MG G hG) (g : MG G hG) :
     Measure.modularCharacterFun (φ g) = Measure.modularCharacterFun g := by
   rw [Measure.modularCharacterFun_eq_haarScalarFactor
@@ -182,6 +240,15 @@ theorem modF_conj (φ : MG G hG ≃ₜ* MG G hG) (g : MG G hG) :
     rw [e, ← Measure.map_map hφ (measurable_mul_const g), map_mul_right_haar g, Measure.map_smul]
   simp only [e1, Measure.haarScalarFactor_smul, Measure.haarScalarFactor_self, smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Establish `K : TopologicalSpace.PositiveCompacts (MG G hG)` using `Classical.arbitrary _`. Use `set C : Set (MG G hG) := (fun p : MG G hG × MG G hG => p.1 * p.2⁻¹) '' ((K : Set (MG G hG)) ×ˢ V) with hCdef`. Establish `hC : IsCompact C` using `(K.isCompact.prod hV).image (continuous_fst.mul continuous_snd.inv)`. Establish `hK0 : 0 < (Measure.haar : Measure (MG G hG)) K` using `Measure.measure_pos_of_nonempty_interior _ K.interior_nonempty`. Establish `hKt : (Measure.haar : Measure (MG G hG)) K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`.
+
+Establish `hCt : (Measure.haar : Measure (MG G hG)) C ≠ ⊤` using `hC.measure_lt_top.ne`. Use `⟨((Measure.haar : Measure (MG G hG)) C / (Measure.haar : Measure (MG G hG)) K).toReal, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h` using `(MeasurableEquiv.mulRight v).map_apply (μ := (Measure.haar : Measure (MG G hG))) (K : Set (MG G hG))`. Rewrite `h` using `[MeasurableEquiv.coe_mulRight, map_mul_right_haar v, Measure.smul_apply, ENNReal.smul_def]`. Establish `hsub : (fun x => x * v) ⁻¹' (K : Set (MG G hG)) ⊆ C`.
+
+Introduce `x hx`. Conclude with `⟨(x * v, v), ⟨hx, hv⟩, by simp⟩`. Establish `hle : (Measure.modularCharacterFun v : ℝ≥0∞) * (Measure.haar : Measure (MG G hG)) K ≤ (Measure.haar : Measure (MG G hG)) C`. Rewrite using `[← smul_eq_mul, h]`. Conclude with `measure_mono hsub`.
+
+Establish `hle' : (Measure.modularCharacterFun v : ℝ≥0∞) ≤ (Measure.haar : Measure (MG G hG)) C / (Measure.haar : Measure (MG G hG)) K` using `(ENNReal.le_div_iff_mul_le (Or.inl hK0.ne') (Or.inl hKt)).2 hle`. Rewrite using `[← ENNReal.coe_toReal]`. Conclude with `ENNReal.toReal_mono (ENNReal.div_ne_top hCt hK0.ne') hle'`.
+-/
 theorem modF_bdd (V : Set (MG G hG)) (hV : IsCompact V) :
     ∃ M : ℝ, ∀ v ∈ V, (Measure.modularCharacterFun v : ℝ) ≤ M := by
   have K : TopologicalSpace.PositiveCompacts (MG G hG) := Classical.arbitrary _

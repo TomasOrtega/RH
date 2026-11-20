@@ -9,5 +9,8 @@ open IsDedekindDomain NumberField MeasureTheory Matrix GlobalTheory.ChiGrid Glob
 open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.RowUnf GlobalTheory.RowChain GlobalTheory.SeeSaw GlobalTheory.RowVal GlobalTheory.RowReal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CombsExist.combs_exist | exact GlobalTheory.CombsExist.combs_exist | (intros; apply GlobalTheory.CombsExist.combs_exist <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.rowTest_exists_combinations_of_expansion : Big fun ch => ∀ t Φ β τ, ch.S.IsExpansion t Φ β τ → ∃ c, IsCombs ch.W τ c := by
   first | exact @GlobalTheory.CombsExist.combs_exist | exact GlobalTheory.CombsExist.combs_exist | (intros; apply GlobalTheory.CombsExist.combs_exist <;> assumption)

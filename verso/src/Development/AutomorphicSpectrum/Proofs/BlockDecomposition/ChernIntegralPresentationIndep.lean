@@ -10,6 +10,9 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 
 namespace GlobalTheory.CompanionTheory.ChernMass
 
+/- English proof (translation)
+Take `⟨ψ₀, hψ₀, hmass⟩` from `GlobalTheory.T.chern_integral_presentation_transfer Y Δ L L' r r' hL hL' φ hφ`. Rewrite using `[← hmass]`. Conclude with `GlobalTheory.T.chern_integral_weight_indep Y L' ψ₀ ψ hψ₀ hψ`.
+-/
 theorem chernInt_eq_of_presents (Y : Var ℂ) (Δ : Y.Dv) (L L' : LB Y.X) (r : L.ι → Y.Fnˣ)
     (r' : L'.ι → Y.Fnˣ) (hL : Presents Δ L r) (hL' : Presents Δ L' r')
     (φ : Weight Y.str (RingHom.id ℂ) L) (ψ : Weight Y.str (RingHom.id ℂ) L')

@@ -15,6 +15,17 @@ namespace PositivityTheory.ThKW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E}
   {ξ₀ : E} {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} {ι : (InfinitePlace F → ℂ) →+ AEF F E}
+/- English proof (translation)
+Establish `e1 : ∀ w, compAtF θ w (mtF σ JT h⁻¹) = b.map (tauB B w)` using `fun w => by`. Rewrite using `[show mtF σ JT h⁻¹ = b.map (incAF F E) from hb]`. Use extensionality with `i j`. Conclude with `PositivityTheory.ThKW.RealC.theta_inc (C.inf w) _`. Establish `e2 : ∀ w, compAtF θ w (mtF σ JS g⁻¹⁻¹) = a.map (tauB B w)` using `fun w => by`.
+
+Rewrite using `[inv_inv, show mtF σ JS g = a.map (incAF F E) from ha]`. Use extensionality with `i j`. Conclude with `PositivityTheory.ThKW.RealC.theta_inc (C.inf w) _`. Establish `e3 : ∀ w, (b.map (tauB B w) ⊗ₖ (a.map (tauB B w))ᵀ) = (b ⊗ₖ aᵀ).map (tauB B w)` using `fun w => by`. Use extensionality with `⟨i, j⟩ ⟨k, l⟩`.
+
+Simplify using `only [Matrix.kroneckerMap_apply, Matrix.map_apply, Matrix.transpose_apply, map_mul]`. Rewrite using `[mMF_apply]`. Simplify using `only [e1, e2]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.RatAut.RealInt.det_blk]`.
+
+Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[e3]`. Conclude with `(RingHom.map_det _ _).symm`. Rewrite using `[GlobalTheory.RatAut.RealInt.det_blk_sub_one]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[e3, RingHom.map_det, map_sub, map_one]`. Both sides reduce to the same expression.
+-/
 theorem det_mMF_B_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) {g : GAF σ JS} {h : GAF σ JT} {a b}
     (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b) :
     (mMF σ JS JT θ (g⁻¹, h⁻¹)).det = ∏ v, tauB B v (b ⊗ₖ aᵀ).det ∧

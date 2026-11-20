@@ -17,6 +17,11 @@ open scoped nonZeroDivisors
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.UnitaryNormalization.main`. Consider the case `exact _root_.GlobalTheory.UnitaryNormalization.main`. Consider the case `(apply _root_.GlobalTheory.UnitaryNormalization.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnitaryNormalization.main <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.UnitaryNormalization.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnitaryNormalization.main ..)`.
+-/
 theorem fracIdeal_smul_mem_exists {E : Type} [Field E] [NumberField E] {n : ℕ}
     (B : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (hx : x ∈ Submodule.span E (B : Set (Fin n → E))) :
@@ -29,6 +34,17 @@ theorem fracIdeal_smul_mem_exists {E : Type} [Field E] [NumberField E] {n : ℕ}
   | (intros; apply @_root_.GlobalTheory.UnitaryNormalization.main <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.UnitaryNormalization.main ..)
 
+/- English proof (translation)
+Introduce `E _ _ n L hL u hu`. Set `f : E →ₗ[𝓞 E] (Fin n → E)` to `(LinearMap.toSpanSingleton E (Fin n → E) u).restrictScalars (𝓞 E)`. Establish `hf : Function.Injective f` using `smul_left_injective E hu`. Set `M : Submodule (𝓞 E) E` to `L.comap f`. Establish `hLn : IsNoetherian (𝓞 E) L` using `isNoetherian_of_fg_of_noetherian L hL.fg`.
+
+Establish `hMfg : M.FG`. Apply `Submodule.fg_of_fg_map_injective f hf` to reduce the goal to its premises. Conclude with `isNoetherian_submodule.mp hLn _ (Submodule.map_comap_le f L)`. Establish `hfr : IsFractional (𝓞 E)⁰ M` using `FractionalIdeal.isFractional_of_fg hMfg`. Set `I : FractionalIdeal (𝓞 E)⁰ E` to `⟨M, hfr⟩`.
+
+Use `⟨I, ?_, fun c => Iff.rfl⟩` and prove the remaining obligations. Establish `hu' : u ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[hL.span_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd, hdu⟩` from `fracIdeal_smul_mem_exists L u hu'`.
+
+Introduce `h0`. Establish `hmem : algebraMap (𝓞 E) E d ∈ I` using `by show algebraMap (𝓞 E) E d • u ∈ L`. Rewrite using `[algebraMap_smul]`. Conclude with `hdu`. Rewrite `hmem` using `[h0, FractionalIdeal.mem_zero_iff]`.
+
+Conclude with `hd ((map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).mp hmem)`.
+-/
 theorem fracIdeal_of_lattice_smul_mem : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)),
     Submodule.IsLattice E L → ∀ u : Fin n → E, u ≠ 0 →
       ∃ I : FractionalIdeal (𝓞 E)⁰ E, I ≠ 0 ∧ ∀ c : E, c ∈ I ↔ c • u ∈ L := by

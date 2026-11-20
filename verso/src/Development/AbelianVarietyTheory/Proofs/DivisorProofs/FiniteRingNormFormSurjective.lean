@@ -5,6 +5,13 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FinRingNorm
 
+/- English proof (translation)
+Consider the cases of `nonempty_fintype F`. Establish `hc : ringChar F ≠ 2`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Use `ringChar.Nat.cast_ringChar (R := F)` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Conclude with `this` after adjusting the coercions. Take `⟨a, b, hab⟩` from `FiniteField.exists_root_sum_quadratic (R := F) (f := X ^ 2) (g := -(C d * X ^ 2) - C s) (by simp) (by compute_degree!) (FiniteField.odd_card_of_char_ne_two hc)`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Simplify using `only [eval_pow, eval_X, eval_sub, eval_neg, eval_mul, eval_C] at hab`.
+
+Take the linear combination `hab`.
+-/
 theorem field_case (F : Type) [Field F] [Finite F] (h2 : (2 : F) ≠ 0) (d s : F) (hd : d ≠ 0) :
     ∃ a b : F, a ^ 2 - d * b ^ 2 = s := by
   classical
@@ -19,6 +26,13 @@ theorem field_case (F : Type) [Field F] [Finite F] (h2 : (2 : F) ≠ 0) (d s : F
   simp only [eval_pow, eval_X, eval_sub, eval_neg, eval_mul, eval_C] at hab
   linear_combination hab
 
+/- English proof (translation)
+Establish `key : ∀ I : MaximalSpectrum S, ∃ a b : S ⧸ I.asIdeal, a ^ 2 - (Ideal.Quotient.mk I.asIdeal d) * b ^ 2 = Ideal.Quotient.mk I.asIdeal s`. Introduce `I`. Use `letI : Field (S ⧸ I.asIdeal) := Ideal.Quotient.field I.asIdeal`. Use `haveI : Finite (S ⧸ I.asIdeal) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Establish `h2' : (2 : S ⧸ I.asIdeal) ≠ 0`.
+
+Use `(h2.map (Ideal.Quotient.mk I.asIdeal)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Conclude with `field_case _ h2' _ _ (hd.map (Ideal.Quotient.mk I.asIdeal)).ne_zero`. Use `choose A B hAB using key`. Use `⟨(IsArtinianRing.equivPi S).symm A, (IsArtinianRing.equivPi S).symm B, ?_⟩` and prove the remaining obligations.
+
+Apply `(IsArtinianRing.equivPi S).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Simplify using `only [map_sub, map_mul, map_pow, AlgEquiv.apply_symm_apply, Pi.sub_apply, Pi.mul_apply, Pi.pow_apply]`. Conclude with `hAB I`.
+-/
 theorem reduced_case (S : Type) [CommRing S] [Finite S] [IsReduced S] (h2 : IsUnit (2 : S))
     (d s : S) (hd : IsUnit d) : ∃ a b : S, a ^ 2 - d * b ^ 2 = s := by
   classical
@@ -39,6 +53,31 @@ theorem reduced_case (S : Type) [CommRing S] [Finite S] [IsReduced S] (h2 : IsUn
     Pi.pow_apply]
   exact hAB I
 
+/- English proof (translation)
+Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `S _ _ hn h2 d s hd hs`. Distinguish the cases in `hred : IsReduced S`. Conclude with `reduced_case S h2 d s hd`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx2⟩ : ∃ x : S, x ≠ 0 ∧ x ^ 2 = 0 := by`. Rewrite `hred` using `[isReduced_iff]`. Use `push_neg at hred`. Take `⟨y, ⟨k, hk⟩, hy⟩` from `hred`. Establish `hex : ∃ m, y ^ m = 0` using `⟨k, hk⟩`.
+
+Set `m` to `Nat.find hex`. Establish `hm : y ^ m = 0` using `Nat.find_spec hex`. Establish `hm0 : m ≠ 0`. Introduce `h`. Establish `: y ^ m = 1` using `by rw [h, pow_zero]`.
+
+Apply `hy` to reduce the goal to its premises. Rewrite using `[← mul_one y, ← this, hm, mul_zero]`. Establish `hm1 : m ≠ 1`. Introduce `h`. Apply `hy` to reduce the goal to its premises.
+
+Rewrite using `[← pow_one y, ← h, hm]`. Take `⟨j, hj⟩ : ∃ j, m = j + 1` from `⟨m - 1, by omega⟩`. Use `⟨y ^ j, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Nat.find_min hex (by omega)`. Rewrite using `[← pow_mul]`.
+
+Take `⟨t, ht⟩ : ∃ t, j * 2 = m + t` from `⟨j * 2 - m, by omega⟩`. Rewrite using `[ht, pow_add, hm, zero_mul]`. Use `set I : Ideal S := Ideal.span {x} with hI`. Establish `hlt : Nat.card (S ⧸ I) < n`. Rewrite using `[← hn]`.
+
+Consider the cases of `nonempty_fintype S`. Use `haveI : Finite (S ⧸ I) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Consider the cases of `nonempty_fintype (S ⧸ I)`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Apply `Fintype.card_lt_of_surjective_not_injective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective` to reduce the goal to its premises.
+
+Introduce `hinj`. Apply `hx0` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`.
+
+Use `haveI : Finite (S ⧸ I) := Finite.of_surjective _ Ideal.Quotient.mk_surjective`. Take `⟨a', b', hab'⟩` from `ih _ hlt (S ⧸ I) rfl (h2.map (Ideal.Quotient.mk I)) _ _ (hd.map (Ideal.Quotient.mk I)) (hs.map (Ideal.Quotient.mk I))`. Take `⟨a0, rfl⟩` from `Ideal.Quotient.mk_surjective a'`. Take `⟨b0, rfl⟩` from `Ideal.Quotient.mk_surjective b'`. Establish `hmem : a0 ^ 2 - d * b0 ^ 2 - s ∈ I`.
+
+Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify using `only [map_sub, map_mul, map_pow]`. Rewrite using `[hab', sub_self]`. Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.mp hmem`. Take `⟨u, hu⟩` from `h2.exists_right_inv`.
+
+Take `⟨t, ht⟩` from `hs.exists_right_inv`. Use `set iv := t - t ^ 2 * r * x with hiv`. Establish `hv : (s + r * x) * iv - 1 = 0`. Rewrite using `[hiv]`. Take the linear combination `(1 - t * r * x) * ht - t ^ 2 * r ^ 2 * hx2`.
+
+Use `⟨a0 - r * a0 * iv * u * x, b0 - r * b0 * iv * u * x, ?_⟩` and prove the remaining obligations. Take the linear combination `(1 - r * x * 2 * u * iv) * hr.symm - r * x * 2 * u * hv - r * x * hu + (r * iv * u) ^ 2 * (a0 ^ 2 - d * b0 ^ 2) * hx2`.
+-/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (n : ℕ) : ∀ (S : Type) [CommRing S] [Finite S], Nat.card S = n → IsUnit (2 : S) →
     ∀ d s : S, IsUnit d → IsUnit s → ∃ a b : S, a ^ 2 - d * b ^ 2 = s := by
   induction n using Nat.strong_induction_on with
@@ -100,6 +139,9 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (n : ℕ) : ∀ (S : Type) [CommRing
   refine ⟨a0 - r * a0 * iv * u * x, b0 - r * b0 * iv * u * x, ?_⟩
   linear_combination (1 - r * x * 2 * u * iv) * hr.symm - r * x * 2 * u * hv - r * x * hu + (r * iv * u) ^ 2 * (a0 ^ 2 - d * b0 ^ 2) * hx2
 
+/- English proof (translation)
+Introduce `S _ _ h2 d s hd hs` and use `finiteRing_sq_sub_mul_sq_eq_of_card _ S rfl h2 d s hd hs`.
+-/
 theorem exists_sq_sub_mul_sq_eq : ∀ (S : Type) [CommRing S] [Finite S], IsUnit (2 : S) →
     ∀ d s : S, IsUnit d → IsUnit s → ∃ a b : S, a ^ 2 - d * b ^ 2 = s :=
   fun S _ _ h2 d s hd hs => finiteRing_sq_sub_mul_sq_eq_of_card _ S rfl h2 d s hd hs

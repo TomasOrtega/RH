@@ -5,6 +5,23 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 
 namespace GlobalTheory.HubLoc
 
+/- English proof (translation)
+Introduce `l h N v U U' hl hN hU hcard hb hv`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Unfold `LocalSituation.cLL LocalSituation.mN LocalSituation.rI LocalSituation.n0 at *`. Use `set L := Nat.log l (2 * h) with hL`. Use `set n0 := sInf {n | h + h ≤ l ^ n * (l - 1)} with hn0`.
+
+Establish `hl1 : 1 < l` using `hl.one_lt`. Establish `hn0le : n0 ≤ L + 1`. Apply `Nat.sInf_le` to reduce the goal to its premises. Use `show h + h ≤ l ^ (L + 1) * (l - 1)`. Establish `h1 : 2 * h < l ^ (L + 1)` using `Nat.lt_pow_succ_log_self hl1 (2 * h)`.
+
+Establish `h2 : l ^ (L + 1) ≤ l ^ (L + 1) * (l - 1)` using `Nat.le_mul_of_pos_right _ (by omega)`. Use linear arithmetic over natural numbers and integers. Establish `hI : Finset.Ico (0 : ℤ) 1 = {0}`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_singleton]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, Finset.sum_singleton]`. Establish `hterm : ∀ u ∈ U, (∑ᶠ (_ : u ∈ U') (_ : u ≠ 0), (2 * 1 + n0 + 1 + LocalSituation.vZ l (u - 0))) ≤ 4 + 2 * L`. Introduce `u hu`. Establish `hz : LocalSituation.vZ l u ≤ Nat.log l h` using `vZ_le_log l h u (hb u hu)`.
+
+Establish `hlog : Nat.log l h ≤ L` using `Nat.log_mono_right (by omega)`. Simplify using `only [finsum_eq_if, sub_zero]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hS : (∑ᶠ (u : ℤ) (_ : u ∈ U') (_ : u ≠ 0), (2 * 1 + n0 + 1 + LocalSituation.vZ l (u - 0))) ≤ N * (4 + 2 * L)`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := U) ?_]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_eq_mul]`. Conclude with `Nat.mul_le_mul_right _ hcard`. Introduce `u hu`. Rewrite `hu` using `[Function.mem_support]`.
+
+Assume the negation of the conclusion as `hnot`. Establish `hnU' : u ∉ U'` using `fun h' => hnot (Finset.mem_coe.mpr (hU h'))`. Conclude with `hu (by simp only [finsum_eq_if, if_neg hnU'])`. Establish `hNL : 1 ≤ N * (4 + 2 * L)`. Use `Nat.mul_le_mul hN (show 1 ≤ 4 + 2 * L by omega)` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmax` using `max_le hNL hS`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem cLL_unit_interval_le : ∀ (l h N v : ℕ) (U : Finset ℤ) (U' : Set ℤ), l.Prime → 1 ≤ N → U' ⊆ U → U.card ≤ N →
     (∀ u ∈ U, -(h : ℤ) ≤ u ∧ u ≤ h) → v ≤ LocalSituation.mN l 1 (h + h) - 1 →
     LocalSituation.cLL l (LocalSituation.mN l 1 (h + h)) v U' 0 1 ≤ 5 + Nat.log l (2 * h) + N * (4 + 2 * Nat.log l (2 * h)) := by

@@ -13,6 +13,15 @@ open Formalism.InvariantFactorPaths.G7 (Simeq at1 cob d1 swap2 DivAB)
 open Formalism.G (unitBall)
 open Formalism.L2.Th1.C (IsLogPair mulBy EndInt PhNormAt IsBinomScalar FGInt LG)
 
+/- English proof (translation)
+Introduce `K _ _ _ g2 g3 s2 c0 a1 a3 xT yT al albar S P l linv i ep F ι _ xQ wp wm hP hL hI hlp hCu hCu3 hT hQ hFib hN1 hS hEnd hcl h0 hne h1 hb1 hb2`. Establish `hl0 : PowerSeries.constantCoeff l = 0` using `hL.2.2.1`. Take `⟨hc0, hth⟩` from `phEDef K s2 (xT + c0) (3 * (xT + c0) ^ 2 - g2 / 4) (wOf (xT + c0) P) l hl0`. Take `⟨-, -, hd1, -⟩` from `hC K g2 g3 s2 c0 a1 a3 xT yT P l i ep F hP hL hI hCu hCu3 hT`. Take `⟨-, hFG, hF1⟩` from `Formalism.L2.Th1.C.first_level_from_universal_law K F l linv _ hlp hL hc0 hd1`.
+
+Establish `hPN` using `hN K g2 g3 s2 c0 xT al albar S P l linv i ep F ι xQ wp wm hP hT.2.1 hlp hCu hT.2.2.1 hQ hFib hN1 hS`. Establish `hLG : LG (unitBall K) (phTw g2 s2 c0 xT P l)` using `Split.split_vanishing_at_two K (unitBall K) (Formalism.L2.Th1.C.unitBallClosed K) l linv _ al albar ⟨hlp, hFG, hc0⟩ hF1 hEnd hcl hPN h0 hne h1 hb1 hb2`. Establish `hth' : PowerSeries.subst l (thTw g2 s2 c0 xT P) = fExp (-phTw g2 s2 c0 xT P l)` using `hth`. Establish `hneg : LG (unitBall K) (-phTw g2 s2 c0 xT P l)` using `(Formalism.L2.Th1.C.lGSubgroup K (unitBall K) Unit).2.2 _ hLG`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `(Formalism.L2.Th1.C.simeqIffCong K Unit _ _).2 ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.C.Cong, sub_zero]`. Conclude with `hLG`. Rewrite using `[hth']`. Conclude with `constantCoeff_fExp hneg.1`.
+
+Rewrite using `[hth']`. Conclude with `hneg.2`.
+-/
 theorem Th0Vanish_of (hC : CubeE) (hN : PhENorm) : ThetaZeroVanishing := by
   intro K _ _ _ g2 g3 s2 c0 a1 a3 xT yT al albar S P l linv i ep F ι _ xQ wp wm hP hL hI hlp hCu
     hCu3 hT hQ hFib hN1 hS hEnd hcl h0 hne h1 hb1 hb2
@@ -45,11 +54,20 @@ variable {K : Type} [NormedField K] [NormedAlgebra ℚ_[2] K]
 def phi (K : Type) [NormedField K] [NormedAlgebra ℚ_[2] K] : ℤ_[2] →+* K :=
   (algebraMap ℚ_[2] K).comp PadicInt.Coe.ringHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem phi_apply (x : ℤ_[2]) : phi K x = algebraMap ℚ_[2] K (x : ℚ_[2]) := rfl
 
+/- English proof (translation)
+Conclude with `(continuous_algebraMap ℚ_[2] K).comp continuous_subtype_val`.
+-/
 theorem continuous_phi : Continuous (phi K) := by
   exact (continuous_algebraMap ℚ_[2] K).comp continuous_subtype_val
 
+/- English proof (translation)
+Establish `hd : DenseRange (Int.cast : ℤ → ℤ_[2])` using `PadicInt.denseRange_intCast`. Establish `h1 : x ∈ closure (Set.range (Int.cast : ℤ → ℤ_[2]))` using `by rw [hd.closure_eq]; trivial`. Use `map_mem_closure continuous_phi h1 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `⟨n, by rw [map_intCast]⟩`.
+-/
 theorem phi_mem_closure (x : ℤ_[2]) : phi K x ∈ closure (Set.range (fun n : ℤ => (n : K))) := by
   have hd : DenseRange (Int.cast : ℤ → ℤ_[2]) := PadicInt.denseRange_intCast
   have h1 : x ∈ closure (Set.range (Int.cast : ℤ → ℤ_[2])) := by rw [hd.closure_eq]; trivial
@@ -57,17 +75,33 @@ theorem phi_mem_closure (x : ℤ_[2]) : phi K x ∈ closure (Set.range (fun n : 
   rintro _ ⟨n, rfl⟩
   exact ⟨n, by rw [map_intCast]⟩
 
+/- English proof (translation)
+The claim follows from `closure_minimal (Set.range_subset_iff.mpr hn) hs (phi_mem_closure x)`.
+-/
 theorem phi_mem_of_closed {s : Set K} (hs : IsClosed s) (hn : ∀ n : ℤ, (n : K) ∈ s) (x : ℤ_[2]) :
     phi K x ∈ s := closure_minimal (Set.range_subset_iff.mpr hn) hs (phi_mem_closure x)
 
+/- English proof (translation)
+The claim follows from `(algebraMap ℚ_[2] K).injective.comp Subtype.val_injective`.
+-/
 theorem phi_injective : Function.Injective (phi K) := (algebraMap ℚ_[2] K).injective.comp Subtype.val_injective
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `PadicInt.isUnit_iff.mpr hx`. Conclude with `⟨((u⁻¹ : ℤ_[2]ˣ) : ℤ_[2]), by rw [map_units_inv]⟩`.
+-/
 theorem phi_inv {x : ℤ_[2]} (hx : ‖x‖ = 1) : ∃ y : ℤ_[2], (phi K x)⁻¹ = phi K y := by
   obtain ⟨u, rfl⟩ := PadicInt.isUnit_iff.mpr hx
   exact ⟨((u⁻¹ : ℤ_[2]ˣ) : ℤ_[2]), by rw [map_units_inv]⟩
 
 end Two
 
+/- English proof (translation)
+Establish `h1 : ‖b - b'‖ ≤ max ‖b‖ ‖b'‖`. Establish `h3` using `PadicInt.nonarchimedean b (-b')`. Rewrite `h3` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `h2 : ‖b‖ ≤ max ‖b - b'‖ ‖b'‖`. Establish `h3` using `PadicInt.nonarchimedean (b - b') b'`.
+
+Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Rewrite `h1`, `h2` using `[hb]`. Break down `le_total ‖b - b'‖ ‖b'‖ with h | h` into its components or cases. Rewrite `h2` using `[max_eq_right h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Rewrite `h1` using `[max_eq_left (by linarith)]`. Rewrite `h2` using `[max_eq_left h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem norm_sub_eq_one {b b' : ℤ_[2]} (hb : ‖b‖ = 1) (hb' : ‖b'‖ < 1) : ‖b - b'‖ = 1 := by
   have h1 : ‖b - b'‖ ≤ max ‖b‖ ‖b'‖ := by
     have h3 := PadicInt.nonarchimedean b (-b')
@@ -83,6 +117,11 @@ theorem norm_sub_eq_one {b b' : ℤ_[2]} (hb : ‖b‖ = 1) (hb' : ‖b'‖ < 1)
     rw [max_eq_left h] at h2
     linarith
 
+/- English proof (translation)
+Take `⟨-, -, h0, h1, hm, hadd, -⟩` from `Formalism.L2.Th1.C.ptClosure K R l linv h hF`. Proceed by induction on `n using Int.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih`. Use `hadd _ _ ih h1` as an intermediate fact.
+
+Simplify using `using this`. Consider the case `pred n ih`. Use `hadd _ _ ih hm` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`.
+-/
 theorem endInt_int {K : Type} [Field K] (R : Subring K) {l linv : PowerSeries K}
     (h : IsLogPair l linv) (hF : FGInt R l linv) (n : ℤ) : EndInt R l linv (n : K) := by
   obtain ⟨-, -, h0, h1, hm, hadd, -⟩ := Formalism.L2.Th1.C.ptClosure K R l linv h hF
@@ -95,6 +134,23 @@ theorem endInt_int {K : Type} [Field K] (R : Subring K) {l linv : PowerSeries K}
     have := hadd _ _ ih hm
     simpa [sub_eq_add_neg] using this
 
+/- English proof (translation)
+Introduce `K _ _ _ _ F l linv b b' hL hlp hb hb' al albar`. Establish `hcl` using `Formalism.L2.Th1.C.unitBallClosed K`. Establish `hFG : FGInt (unitBall K) l linv`. Rewrite using `[FGInt, ← Formalism.L2.Th1.C.Dict.law_eq hlp hL.1 hL.2.2.2.2]`. Conclude with `hL.2.1`.
+
+Establish `hbin : ∀ x : ℤ_[2], IsBinomScalar (unitBall K) (phi K x)` using `phi_mem_of_closed (Formalism.L2.Th1.C.binomClosed K (unitBall K) hcl) (Formalism.L2.Th1.C.intBinomScalar K (unitBall K))`. Establish `hal : al = phi K b` using `rfl`. Establish `halb : albar = phi K b'` using `rfl`. Establish `h1b' : ‖(1 : ℤ_[2]) - b'‖ = 1` using `norm_sub_eq_one norm_one hb'`. Establish `hbb' : ‖b - b'‖ = 1` using `norm_sub_eq_one hb hb'`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `phi_mem_of_closed (Formalism.L2.Th1.C.endIntClosed K (unitBall K) hcl l linv hlp.1) (endInt_int (unitBall K) hlp hFG) b`. Conclude with `phi_mem_closure b`. Rewrite using `[hal, ← map_zero (phi K)]`. Introduce `h`.
+
+Use `phi_injective h` as an intermediate fact. Rewrite `hb` using `[this, norm_zero]`. Conclude with `zero_ne_one hb`. Rewrite using `[hal, halb]`. Introduce `h`.
+
+Use `phi_injective h` as an intermediate fact. Rewrite `hb` using `[this]`. Conclude with `hb'.ne hb`. Rewrite using `[halb, ← map_one (phi K)]`. Introduce `h`.
+
+Use `phi_injective h` as an intermediate fact. Rewrite `hb'` using `[this, norm_one]`. Conclude with `lt_irrefl _ hb'`. Establish `e : al * (al - albar) = phi K (b * (b - b'))`. Rewrite using `[hal, halb, map_mul, map_sub]`.
+
+Take `⟨y, hy⟩` from `phi_inv (K := K) (x := b * (b - b')) (by rw [norm_mul, hb, hbb', one_mul])`. Rewrite using `[e, hy]`. Conclude with `hbin y`. Establish `e : al * (1 - albar) = phi K (b * (1 - b'))`. Rewrite using `[hal, halb, map_mul, map_sub, map_one]`.
+
+Take `⟨y, hy⟩` from `phi_inv (K := K) (x := b * (1 - b')) (by rw [norm_mul, hb, h1b', one_mul])`. Rewrite using `[e, hy]`. Conclude with `hbin y`.
+-/
 theorem two_adic_scalar_conditions : TwoAdicScalars := by
   intro K _ _ _ _ F l linv b b' hL hlp hb hb' al albar
   have hcl := Formalism.L2.Th1.C.unitBallClosed K

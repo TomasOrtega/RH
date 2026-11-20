@@ -8,6 +8,17 @@ noncomputable section
 namespace GlobalTheory.HaarSum
 open MeasureTheory
 
+/- English proof (translation)
+Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hc`. Establish `hHo : IsOpen (H : Set G)` using `Subgroup.isOpen_mono hle ho`. Establish `ho' : IsOpen ((H'.subgroupOf H : Subgroup H) : Set H)` using `ho.preimage continuous_subtype_val`. Use `haveI : Finite (H ⧸ H'.subgroupOf H) := (H'.subgroupOf H).quotient_finite_of_isOpen ho'`. Use `haveI : (H'.subgroupOf H).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
+
+Establish `hemb : MeasurableEmbedding (H.subtype : H → G)` using `MeasurableEmbedding.subtype_coe hHo.measurableSet`. Establish `: (μ.comap (H.subtype : H → G)).IsMulLeftInvariant` using `Measure.IsMulLeftInvariant.comap μ hemb`. Establish `key` using `(H'.subgroupOf H).index_mul_measure ho'.measurableSet (μ.comap (H.subtype : H → G))`. Rewrite `key` using `[hemb.comap_apply, hemb.comap_apply]`. Establish `e1 : (H.subtype : H → G) '' Set.univ = (H : Set G)` using `by ext x; simp`.
+
+Establish `e2 : (H.subtype : H → G) '' ((H'.subgroupOf H : Subgroup H) : Set H) = (H' : Set G)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
+
+Introduce `hx`. Conclude with `⟨⟨x, hle hx⟩, hx, rfl⟩`. Rewrite `key` using `[e1, e2]`. Use `⟨?_, Subgroup.FiniteIndex.index_ne_zero⟩` and prove the remaining obligations. Rewrite using `[Subgroup.relIndex, Measure.real, Measure.real, ← key, ENNReal.toReal_mul, mul_comm]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem vol_mul_relIndex {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (H H' : Subgroup G) (hle : H' ≤ H)
     (hc : IsCompact (H : Set G)) (ho : IsOpen (H' : Set G)) :
@@ -34,6 +45,21 @@ theorem vol_mul_relIndex {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   rw [Subgroup.relIndex, Measure.real, Measure.real, ← key, ENNReal.toReal_mul, mul_comm]
   simp
 
+/- English proof (translation)
+Establish `key : ∀ x : G, u ((x : G ⧸ S).out) = u x` using `fun x => by`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul S x`. Rewrite using `[hh]`. Conclude with `hu x h h.2`. Establish `hset : ∀ q : G ⧸ S, {x : G | (x : G ⧸ S) = q} = (fun x => q.out⁻¹ * x) ⁻¹' (S : Set G)`.
+
+Introduce `q`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Rewrite using `[eq_comm]`.
+
+Conclude with `QuotientGroup.eq`. Establish `hmeas : ∀ q : G ⧸ S, MeasurableSet {x : G | (x : G ⧸ S) = q}` using `fun q => by`. Rewrite using `[hset]`. Conclude with `(hS.preimage (continuous_mul_left _)).measurableSet`. Establish `hμ : ∀ q : G ⧸ S, μ {x : G | (x : G ⧸ S) = q} = μ (S : Set G)` using `fun q => by`.
+
+Rewrite using `[hset]`. Conclude with `measure_preimage_mul μ _ _`. Establish `hfun : u = fun x => ∑ q ∈ F, ({x : G | (x : G ⧸ S) = q}.indicator (fun _ => u q.out) x)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_eq_single (x : G ⧸ S)]`.
+
+Simplify using `[Set.indicator, key]`. Introduce `q _ hq`. Simplify using `[Set.indicator, Ne.symm hq]`. Introduce `hx`. Establish `h0` using `hF _ hx`.
+
+Rewrite `h0` using `[key]`. Simplify using `[Set.indicator, key, h0]`. Use `conv_lhs => rw [hfun]`. Rewrite using `[integral_finset_sum]`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hmeas q), Measure.real, hμ q, Complex.real_smul, Measure.real]`. Introduce `q _`. Conclude with `(integrableOn_const (hμ q ▸ hfin)).integrable_indicator (hmeas q)`.
+-/
 theorem integral_eq_sum_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (μ : Measure G) [μ.IsMulLeftInvariant] (S : Subgroup G) (hS : IsOpen (S : Set G))
     (hfin : μ (S : Set G) ≠ ⊤) (u : G → ℂ) (hu : ∀ x, ∀ s ∈ S, u (x * s) = u x) (F : Finset (G ⧸ S))
@@ -74,11 +100,35 @@ theorem integral_eq_sum_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopo
   · intro q _
     exact (integrableOn_const (hμ q ▸ hfin)).integrable_indicator (hmeas q)
 
+/- English proof (translation)
+Use `haveI : DiscreteTopology (G ⧸ S) := QuotientGroup.discreteTopology hS`. Conclude with `(hC.image (continuous_coinduced_rng : Continuous fun x : G => (x : G ⧸ S))).finite_of_discrete`.
+-/
 theorem finite_cosets {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (S : Subgroup G)
     (hS : IsOpen (S : Set G)) {C : Set G} (hC : IsCompact C) : ((fun x : G => (x : G ⧸ S)) '' C).Finite := by
   haveI : DiscreteTopology (G ⧸ S) := QuotientGroup.discreteTopology hS
   exact (hC.image (continuous_coinduced_rng : Continuous fun x : G => (x : G ⧸ S))).finite_of_discrete
 
+/- English proof (translation)
+Introduce `V _ _ _ μ hμ Λ hΛo hΛc u ⟨U, hUo, hU⟩ hsupp`. Use `letI : MeasurableSpace V := borel V`. Use `haveI : BorelSpace V := ⟨rfl⟩`. Use `haveI := hμ`. Set `G` to `Multiplicative V`.
+
+Use `letI : MeasurableSpace G := borel V`. Use `haveI : BorelSpace G := ⟨rfl⟩`. Set `ν : Measure G` to `μ`. Use `haveI : ν.IsMulLeftInvariant := ⟨fun g => Measure.IsAddLeftInvariant.map_add_left_eq_self (μ := μ) (Multiplicative.toAdd g)⟩`. Set `u' : G → ℂ` to `fun X => u (Multiplicative.toAdd X)`.
+
+Set `K : Subgroup G` to `AddSubgroup.toSubgroup Λ`. Set `S : Subgroup G` to `rStab u' ⊓ K`. Establish `hSK : S ≤ K` using `inf_le_right`. Establish `hSo : IsOpen (S : Set G)`. Use `Subgroup.isOpen_mono (H₁ := AddSubgroup.toSubgroup (U ⊓ Λ)) ?_ ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Use `⟨fun y => hU _ _ hx.1, hx.2⟩` and prove the remaining obligations. Conclude with `hUo.inter hΛo`. Establish `hKc : IsCompact (K : Set G)` using `hΛc`. Take `⟨hvol, hidx⟩` from `vol_mul_relIndex ν K S hSK hKc hSo`.
+
+Establish `hKpos : 0 < μ (Λ : Set V)` using `hΛo.measure_pos μ ⟨0, Λ.zero_mem⟩`. Establish `hKfin : μ (Λ : Set V) < ⊤` using `hΛc.measure_lt_top`. Establish `hSfin : ν (S : Set G) ≠ ⊤` using `ne_top_of_le_ne_top hKfin.ne (measure_mono hSK)`. Establish `hfinC` using `finite_cosets S hSo (C := tsupport u') hsupp`. Establish `hF : ∀ q : G ⧸ S, q ∉ hfinC.toFinset → u' q.out = 0`.
+
+Introduce `q hq`. Assume the negation of the conclusion as `h`. Apply `hq` to reduce the goal to its premises. Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨q.out, subset_tsupport _ h, QuotientGroup.out_eq' q⟩`.
+
+Establish `hint_eq` using `integral_eq_sum_cosets ν S hSo hSfin u' (fun x s hs => hs.1 x) hfinC.toFinset hF`. Establish `hsum : ∑ᶠ q : G ⧸ S, u' q.out = ∑ q ∈ hfinC.toFinset, u' q.out`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hq (hF q h)`.
+
+Establish `hKr : (μ (Λ : Set V)).toReal = ν.real (S : Set G) * (S.relIndex K : ℝ)` using `hvol.symm`. Establish `hKne : (μ (Λ : Set V)).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hKpos.ne', hKfin.ne⟩`. Establish `hSne : ν.real (S : Set G) ≠ 0`. Introduce `h0`. Rewrite `hKne` using `[hKr, h0, zero_mul]`.
+
+Conclude with `hKne rfl`. Express the relevant statement in the definitionally equal form `(((S.relIndex K : ℕ) : ℂ))⁻¹ * ∑ᶠ q : G ⧸ S, u' q.out = _ * ∫ x : G, u' x ∂ν`. Rewrite using `[hint_eq, hsum, hKr]`. Establish `hidx' : ((S.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`. Establish `hSne' : ((ν.real (S : Set G) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hSne`.
+
+Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem hint_eq_integral : ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     (μ : @MeasureTheory.Measure V (borel V)), @MeasureTheory.Measure.IsAddHaarMeasure V _ _ (borel V) μ →
     ∀ (Λ : AddSubgroup V), IsOpen (Λ : Set V) → IsCompact (Λ : Set V) → ∀ u : V → ℂ,

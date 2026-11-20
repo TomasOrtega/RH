@@ -6,6 +6,13 @@ namespace SheetDecomposition
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Introduce `X Ω _ ξ o _ _ κ x h c p hp a`. Take `⟨U, hU, hg, hm, -, hr⟩` from `BBase.chart h c hp.1`. Establish `hq : p.1 ∈ U` using `(hm _).2 ⟨p.2, hp⟩`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+
+Take `⟨s, t, ht, e⟩` from `BBase.exists_frac hU p hq hg ha`. Conclude with `⟨_, (hr _).1 ⟨t, rfl⟩, (BBase.unitAt_ev_iff h.gen hU p hq hg t).2 ht, (hr _).1 ⟨s, e.symm⟩⟩`. Introduce and unpack `⟨s, -, ⟨h0, -, hi⟩, hsa⟩`. Take `⟨t, ht⟩` from `(hr _).2 hsa`. Establish `e : a = s⁻¹ * (s * a)` using `by rw [inv_mul_cancel_left₀ h0]`.
+
+Rewrite using `[e, ← ht]`. Conclude with `mul_mem hi (BBase.ev_mem p U hq hg t)`.
+-/
 theorem regular_function_chart_adjoin : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (o : Type) [CommRing o] [Algebra o Ω] (κ : Type) (x : κ → Ω), CoordTie o ξ x → ∀ (c : κ) (p : Cpt ξ), InChart ξ x c p → ∀ a : Ω, a ∈ regAt ξ p ↔ ∃ s ∈ Algebra.adjoin o (Set.range fun j => x j / x c), unitAt ξ p s ∧ s * a ∈ Algebra.adjoin o (Set.range fun j => x j / x c) := by
   intro X Ω _ ξ o _ _ κ x h c p hp a
   obtain ⟨U, hU, hg, hm, -, hr⟩ := BBase.chart h c hp.1

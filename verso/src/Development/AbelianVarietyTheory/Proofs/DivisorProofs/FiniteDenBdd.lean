@@ -13,6 +13,17 @@ open scoped TensorProduct Classical
 
 namespace GlobalTheory.FinFix
 
+/- English proof (translation)
+Establish `hN' : (0 : ℚ) < N` using `by exact_mod_cast hN`. Use `((Set.finite_Icc (-⌈R * N⌉) ⌈R * N⌉).image (fun k : ℤ => (k : ℚ) / N)).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨⟨k, hk⟩, hR⟩`. Use `⟨k, ?_, ?_⟩` and prove the remaining obligations. Establish `hkR : |(k : ℝ)| ≤ R * N`.
+
+Establish `: (k : ℝ) = (q : ℝ) * N` using `by exact_mod_cast hk.symm`. Rewrite using `[this, abs_mul, Nat.abs_cast]`. Conclude with `mul_le_mul_of_nonneg_right hR (Nat.cast_nonneg _)`. Establish `h1` using `abs_le.1 hkR`. Prove the components needed by the constructor for the conclusion.
+
+Establish `: -(R * N) ≤ (k : ℝ)` using `h1.1`. Establish `h3 : (-⌈R * N⌉ : ℝ) ≤ k`. Use `Int.le_ceil (R * N)` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `h3` after adjusting the coercions. Establish `h3 : (k : ℝ) ≤ ⌈R * N⌉` using `le_trans h1.2 (Int.le_ceil _)`. Conclude with `h3` after adjusting the coercions. Use `show (k : ℚ) / N = q`. Rewrite using `[← hk]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem finite_den_bdd (N : ℕ) (hN : 0 < N) (R : ℝ) :
     {q : ℚ | (∃ k : ℤ, q * N = k) ∧ |(q : ℝ)| ≤ R}.Finite := by
   have hN' : (0 : ℚ) < N := by exact_mod_cast hN

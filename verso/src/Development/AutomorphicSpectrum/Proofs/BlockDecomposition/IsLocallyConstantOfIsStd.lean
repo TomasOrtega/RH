@@ -19,9 +19,15 @@ namespace GlobalTheory.CompanionTheory.SmallSec
 section
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isClosed_valBall n, isOpen_valBall n⟩`.
+-/
 theorem isClopen_ball (n : ℤ) : IsClopen (valBall F n : Set F) :=
   ⟨isClosed_valBall n, isOpen_valBall n⟩
 
+/- English proof (translation)
+Establish `e : ∀ i j, Continuous fun X : Matrix (Fin 2) (Fin 3) F => X i j` using `fun i j => continuous_id.matrix_elem i j`. Establish `hb : ∀ (n : ℤ) (f : Matrix (Fin 2) (Fin 3) F → F), Continuous f → IsClopen {X | f X ∈ valBall F n}` using `fun n f hf => (isClopen_ball n).preimage hf`. Conclude with `(hb _ _ ((e 0 0).sub continuous_const)).inter <| (hb _ _ (e 0 1)).inter <| (hb _ _ (e 1 0)).inter <| (hb _ _ ((e 1 1).sub continuous_const)).inter <| (hb _ _ (e 0 2)).inter (hb _ _ (e 1 2))`.
+-/
 theorem isClopen_secSet (m : ℕ) : IsClopen (secSet F m) := by
   have e : ∀ i j, Continuous fun X : Matrix (Fin 2) (Fin 3) F => X i j :=
     fun i j => continuous_id.matrix_elem i j
@@ -32,6 +38,13 @@ theorem isClopen_secSet (m : ℕ) : IsClopen (secSet F m) := by
     (hb _ _ (e 0 1)).inter <| (hb _ _ (e 1 0)).inter <|
     (hb _ _ ((e 1 1).sub continuous_const)).inter <| (hb _ _ (e 0 2)).inter (hb _ _ (e 1 2))
 
+/- English proof (translation)
+Use `set A : Set F := (valBall F (m : ℤ) : Set F) ∪ ((fun x => x + 1) '' (valBall F (m : ℤ) : Set F)) ∪ (valBall F (-(m : ℤ)) : Set F) with hA`. Establish `hAc : IsCompact A` using `((isCompact_valBall _).union ((isCompact_valBall _).image (continuous_id.add continuous_const))).union (isCompact_valBall _)`. Establish `hbox : IsCompact (Set.univ.pi fun _ : Fin 2 => Set.univ.pi fun _ : Fin 3 => A)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hAc`. Use `IsCompact.of_isClosed_subset hbox (isClopen_secSet m).1 ?_` and prove the remaining obligations. Introduce and unpack `X ⟨h00, h01, h10, h11, h02, h12⟩ i - j -`.
+
+Establish `s1 : ∀ {x : F}, x ∈ valBall F (m : ℤ) → x ∈ A` using `fun h => Or.inl (Or.inl h)`. Establish `s2 : ∀ {x : F}, x - 1 ∈ valBall F (m : ℤ) → x ∈ A` using `fun {x} h => Or.inl (Or.inr ⟨x - 1, h, sub_add_cancel x 1⟩)`. Establish `s3 : ∀ {x : F}, x ∈ valBall F (-(m : ℤ)) → x ∈ A` using `fun h => Or.inr h`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `s2 h00`.
+
+Conclude with `s1 h01`. Conclude with `s3 h02`. Conclude with `s1 h10`. Conclude with `s2 h11`. Conclude with `s3 h12`.
+-/
 theorem isCompact_secSet (m : ℕ) : IsCompact (secSet F m) := by
   set A : Set F := (valBall F (m : ℤ) : Set F) ∪ ((fun x => x + 1) '' (valBall F (m : ℤ) : Set F)) ∪
     (valBall F (-(m : ℤ)) : Set F) with hA
@@ -54,6 +67,11 @@ theorem isCompact_secSet (m : ℕ) : IsCompact (secSet F m) := by
   · exact s2 h11
   · exact s3 h12
 
+/- English proof (translation)
+Take `⟨hc, h1, h0⟩` from `hψ`. Establish `ht` using `isTrivialOn_addCharConductor hc h1`. Rewrite `ht` using `[h0]`. Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Use `⟨{y | y - x ∈ valBall F 0}, (isOpen_valBall 0).preimage (continuous_id.sub continuous_const), by simp [zero_mem], fun y hy => ?_⟩` and prove the remaining obligations.
+
+Establish `: ψ y = ψ (y - x) * ψ x` using `by rw [← AddChar.map_add_eq_mul, sub_add_cancel]`. Rewrite using `[this, ht _ hy, one_mul]`.
+-/
 theorem isLocallyConstant_of_isStd {ψ : AddChar F Circle} (hψ : IsStd ψ) :
     IsLocallyConstant fun x : F => (ψ x : ℂ) := by
   obtain ⟨hc, h1, h0⟩ := hψ
@@ -67,6 +85,13 @@ theorem isLocallyConstant_of_isStd {ψ : AddChar F Circle} (hψ : IsStd ψ) :
 
 end
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ hψ m`. Establish `hg : IsLocallyConstant fun X : Matrix (Fin 2) (Fin 3) F => (ψ (X 1 2) : ℂ)` using `(isLocallyConstant_of_isStd hψ).comp_continuous (continuous_id.matrix_elem 1 2)`. Establish `hS` using `isClopen_secSet (F := F) m`. Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun X => ?_, HasCompactSupport.intro (isCompact_secSet m) fun X hX => Set.indicator_of_notMem hX _⟩` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ secSet F m`.
+
+Take `⟨U, hU, hXU, hUc⟩` from `(IsLocallyConstant.iff_exists_open _).1 hg X`. Use `⟨U ∩ secSet F m, hU.inter hS.2, ⟨hXU, hX⟩, fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [secFun]`. Rewrite using `[Set.indicator_of_mem hY.2, Set.indicator_of_mem hX]`. Conclude with `hUc Y hY.1`.
+
+Use `⟨(secSet F m)ᶜ, hS.1.isOpen_compl, hX, fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [secFun]`. Rewrite using `[Set.indicator_of_notMem hY, Set.indicator_of_notMem hX]`.
+-/
 theorem secFun_mem_SB_of_isStd : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle),
     IsStd ψ → ∀ m : ℕ, secFun ψ m ∈ LFS.SB F := by

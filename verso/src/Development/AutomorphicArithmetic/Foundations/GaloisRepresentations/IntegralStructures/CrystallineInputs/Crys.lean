@@ -29,11 +29,26 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace UpperTheory.Gal.Int.Inp
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.deRham_potentiallySemistable`.
+-/
 theorem pst : GlobalTheory.Published.DeRhamPotSemistable := GlobalTheory.deRham_potentiallySemistable
 
+/- English proof (translation)
+The claim follows from `UpperTheory.Lit.CharWD.algebraicCharacterWD GlobalTheory.globalArtinReciprocity_holds UpperTheory.Lit.heckeLAdicCharacterDeRham pst`.
+-/
 theorem alg : GlobalTheory.Published.AlgebraicCharacterWD :=
   UpperTheory.Lit.CharWD.algebraicCharacterWD GlobalTheory.globalArtinReciprocity_holds UpperTheory.Lit.heckeLAdicCharacterDeRham pst
 
+/- English proof (translation)
+Establish `hD` using `UpperTheory.Lit.heckeLAdicCharacterDeRham`. Establish `hB` using `pst`. Establish `hW` using `alg`. Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art ha χ n μ h1 h2 h3 w A h O _ _ _ Bw hj hu`. Take `⟨a, ha'⟩` from `GlobalTheory.localArtinExists_holds E Ω A w h`.
+
+Establish `hξ` using `ParamAboveModel.isComp_loc (w := w) χ`. Establish `hc : Continuous fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => (((rk1 μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `e : (fun g : ↥(ReciprocityTheory.Gal.Dec (F` using `E) A) => (((rk1 μ).comp (ReciprocityTheory.Gal.Dec (F := E) A).subtype g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) i j) = fun g : ↥(ReciprocityTheory.Gal.Dec (F := E) A) => ((μ g : (Om l)ˣ) : Om l) := by`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[Subsingleton.elim i j]`. Simplify using `[rk1]`. Rewrite using `[e]`. Conclude with `Units.continuous_val.comp (h2.comp continuous_subtype_val)`. Establish `hr` using `DeRhamPotSemistable.isPstAt hB hT.some Bw _ hc (hD E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj).1`.
+
+Rewrite using `[← GlobalTheory.PstLaws.unr_wdAt_iff Bw h hj P ι _ hr, hW E Ω l P AI hT ι art ha χ n μ h1 h2 h3 w A h O Bw hj _ hξ a ha', GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]`. Conclude with `(GlobalTheory.Published.CharCrysModel.isUnram_iff χ w).2 hu`.
+-/
 theorem crys : GlobalTheory.Published.HeckeLAdicCharacterCrystalline := by
   have hD := UpperTheory.Lit.heckeLAdicCharacterDeRham
   have hB := pst
@@ -58,6 +73,9 @@ theorem crys : GlobalTheory.Published.HeckeLAdicCharacterCrystalline := by
     GlobalTheory.LocLanglands.Test.unr_lpOfChar_iff ha' hξ.1]
   exact (GlobalTheory.Published.CharCrysModel.isUnram_iff χ w).2 hu
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.HeckeAboveBridge.heckeLAdicCharacterAbove_of_potSemistable UpperTheory.Lit.heckeLAdicCharacterDeRham crys pst`.
+-/
 theorem hk : GlobalTheory.Published.HeckeLAdicCharacterAbove :=
   GlobalTheory.HeckeAboveBridge.heckeLAdicCharacterAbove_of_potSemistable UpperTheory.Lit.heckeLAdicCharacterDeRham crys pst
 

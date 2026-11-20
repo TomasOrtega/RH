@@ -30,6 +30,9 @@ def CombBound4 (G : GlobalFamilyData X ka wL wF) (Qf : ∀ la, LocalPointData G 
       X.depth S.sW wL la ((Qf la).y ζ) ≤
         (((nus la : ℝ) + c / (2 * (G.iet : ℝ)) * (X.vAt la ((Qf la).y ζ) (X.inc _ G.et)).toReal : ℝ) : EReal))
 
+/- English proof (translation)
+Introduce `la ζ` and use `(h la ((Qf la).y ζ)).1 hj`.
+-/
 theorem combBound4_of {G : GlobalFamilyData X ka wL wF} {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hj : j < D.R.m) (h : CombBound G S c nus) (Qf : ∀ la, LocalPointData G la) : CombBound4 G Qf S c nus :=
   fun la ζ => (h la ((Qf la).y ζ)).1 hj
@@ -37,6 +40,9 @@ theorem combBound4_of {G : GlobalFamilyData X ka wL wF} {S : Scal B} {c : ℝ} {
 def DepthAtM (X : PJ D B P j) (S : Scal B) (wL : WeightFamilies.Wt D j) (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) : Prop :=
   ∀ la (y : X.Pt la), X.depth S.sW wL la y ≤ ((nus la : ℝ) : EReal)
 
+/- English proof (translation)
+Introduce `la y` and use `(h la y).2 hj`.
+-/
 theorem depthAtM_of {G : GlobalFamilyData X ka wL wF} {S : Scal B} {c : ℝ} {nus : HeightOneSpectrum (𝓞 B.KO) → ℝ}
     (hj : D.R.m ≤ j) (h : CombBound G S c nus) : DepthAtM X S wL nus :=
   fun la y => (h la y).2 hj
@@ -49,6 +55,9 @@ def ConclAtM (large₂ : SizeData₂ D) (X : PJ D B P j) (S : Scal B) (ka wL wF 
 def PageGd4 (X : PJ D B P j) (ka : WeightFamilies.Wt D j) (large₂ : SizeData₂ D) (CG AG Pd : ℝ) : Prop :=
   WeightFamilies.PPv D large₂ CG AG * (1 + Real.log ka.size) ≤ Pd
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem pageGd4_iff {X : PJ D B P j} {ka : WeightFamilies.Wt D j} {large₂ : SizeData₂ D} {CG AG Pd : ℝ} :
     PageGd4 X ka large₂ CG AG Pd ↔ PageGd X ka large₂ CG AG Pd := Iff.rfl
 
@@ -66,6 +75,9 @@ def PolyDom4 (D : D7) {j : ℕ} (B : WeightFamilies.Prov D) (large₂ : SizeData
   1 / 2 ≤ Prw ∧ Prw ≤ PH ∧ 0 ≤ Pet ∧
   Prw ≤ WeightFamilies.PPv D large₂ C2 A2
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem polyDom4_iff {B : WeightFamilies.Prov D} {large₂ : SizeData₂ D} {K : KAdm} {H : KHyp} {C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd : ℝ}
     {ka : WeightFamilies.Wt D j} :
     PolyDom4 D B large₂ K H C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd ka ↔ PolyDom D B large₂ K H C2 A2 CR Ch Ah Cq Aq Gc PH Prw Pet Pd ka :=

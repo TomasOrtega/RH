@@ -15,12 +15,24 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.PicGlue
 
+/- English proof (translation)
+Rewrite using `[same_iff_map hN hM, op_id, CategoryTheory.Functor.map_id]`. Conclude with `eq_comm`.
+-/
 theorem same_id_map {S : Scheme.{0}} {A T U : Over S} [GrpObj A] {N : LB (A ⊗ T).left} {M : LB (A ⊗ U).left}
     (hN : Fam A N) (hM : Fam A M) (u : T ⟶ U) :
     Same A N M (𝟙 T) u ↔ (addF A).map u.op (famCls hM) = famCls hN := by
   rw [same_iff_map hN hM, op_id, CategoryTheory.Functor.map_id]
   exact eq_comm
 
+/- English proof (translation)
+Introduce `S A _ hA Ix U M hM hcov`. Take `⟨B, x, hu, j, ho, hc, hj⟩` from `GlobalTheory.RepOver.representable_over S (addF A) (GlobalTheory.PicGlue.addF_separated S A hA) (GlobalTheory.PicGlue.addF_glue S A hA) Ix U (fun i ↦ famCls (hM i).fam) (fun i Y u u' h ↦ (hM i).inj Y u u' ((same_iff_map (hM i).fam (hM i).fam u u').2 h)) (fun i T y ↦ by`. Take `⟨N, hN, rfl⟩` from `famCls_surj y`. Take `⟨W, hW⟩` from `(hM i).chart T N hN`. Conclude with `⟨W, fun Y a ↦ (exists_congr fun u ↦ (same_iff_map hN (hM i).fam a u).symm).trans (hW Y a)⟩)`.
+
+Use the proof step `(fun T y p ↦ by`. Take `⟨K, _, _, s, hs⟩` from `GlobalTheory.exists_geomPoint_through T.left p`. Set `a : Over.mk (s ≫ T.hom) ⟶ T` to `Over.homMk s rfl`. Take `⟨N, hN, e⟩` from `famCls_surj ((addF A).map a.op y)`. Take `⟨i, u, h⟩` from `hcov K (s ≫ T.hom) N hN`.
+
+Conclude with `⟨i, _, a, u, hs, e.symm.trans ((same_id_map hN (hM i).fam u).1 h).symm⟩)`. Take `⟨P, hP, rfl⟩` from `famCls_surj x`. Use `⟨B, P, j, ⟨hP, fun T t N hN ↦ ?_⟩, ho, hc, fun i ↦ (same_id_map (hM i).fam hP _).2 (hj i)⟩` and prove the remaining obligations. Take `⟨g, hg, hg'⟩` from `hu T (famCls hN)`. Establish `k : ∀ g : T ⟶ B, LBIso N (ev P (fst A T) (snd A T ≫ g)) ↔ (addF A).map g.op (famCls hP) = famCls hN` using `fun g ↦ (same_id_iff hN.isLB hP.isLB g).symm.trans (same_id_map hN hP g)`.
+
+Conclude with `⟨g, ⟨toUnit_unique _ _, (k g).2 hg⟩, fun g' h ↦ hg' g' ((k g').1 h.2)⟩`.
+-/
 theorem glue : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A], IsAbelianScheme A → ∀ (Ix : Type) (U : Ix → Over S) (M : ∀ i, LB (A ⊗ U i).left), (∀ i, IsChart A (M i)) → (∀ (K : Type) [Field K] [IsAlgClosed K] (s : Sp K ⟶ S) (N : LB (A ⊗ Over.mk s).left), Fam A N → ∃ (i : Ix) (u : Over.mk s ⟶ U i), Same A N (M i) (𝟙 _) u) → ∃ (B : Over S) (P : LB (A ⊗ B).left) (j : ∀ i, U i ⟶ B), Rep A (toUnit B) P ∧ (∀ i, IsOpenImmersion (j i).left) ∧ (∀ p : B.left, ∃ i, p ∈ Set.range (j i).left) ∧ ∀ i, Same A (M i) P (𝟙 _) (j i) := by
   intro S A _ hA Ix U M hM hcov
   obtain ⟨B, x, hu, j, ho, hc, hj⟩ := GlobalTheory.RepOver.representable_over S (addF A) (GlobalTheory.PicGlue.addF_separated S A hA) (GlobalTheory.PicGlue.addF_glue S A hA) Ix U

@@ -9,6 +9,9 @@ open scoped ContDiff
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hd : deriv (fun t => ∫ τ in c..t, f τ) = f`. Use function extensionality and compare the values at `fun t => hf.continuous.deriv_integral f c t`. Use `⟨contDiff_infty_iff_deriv.2 ⟨fun t => ?_, by rw [hd]; exact hf⟩, hd⟩` and prove the remaining obligations. Conclude with `(hf.continuous.integral_hasStrictDerivAt c t).hasDerivAt.differentiableAt`.
+-/
 theorem RadialPrimitive.primitive_contDiff (f : ℝ → ℝ) (hf : ContDiff ℝ ∞ f) (c : ℝ) :
     ContDiff ℝ ∞ (fun t => ∫ τ in c..t, f τ) ∧ deriv (fun t => ∫ τ in c..t, f τ) = f := by
   have hd : deriv (fun t => ∫ τ in c..t, f τ) = f :=
@@ -16,6 +19,35 @@ theorem RadialPrimitive.primitive_contDiff (f : ℝ → ℝ) (hf : ContDiff ℝ 
   refine ⟨contDiff_infty_iff_deriv.2 ⟨fun t => ?_, by rw [hd]; exact hf⟩, hd⟩
   exact (hf.continuous.integral_hasStrictDerivAt c t).hasDerivAt.differentiableAt
 
+/- English proof (translation)
+Introduce `e a t₀ T ha ht₀ hconst hzero hint`. Use `set c : ℝ := ((e + 1 : ℕ) : ℝ) with hc`. Use `set g : ℝ → ℝ := fun τ => a τ * (c * τ ^ (e + 1 - 1)) with hg`. Use `set P : ℝ → ℝ := fun t => ∫ τ in (0 : ℝ)..t, g τ with hP`. Establish `hgs : ContDiff ℝ ∞ g` using `ha.mul (contDiff_const.mul (contDiff_id.pow _))`.
+
+Take `⟨hPs, hPd⟩` from `RadialPrimitive.primitive_contDiff g hgs 0`. Establish `hrt : ∀ t, radialTransform (e + 1) a t = a t * t ^ (e + 1) - P t` using `fun t => rfl`. Establish `hPc : ∀ t ∈ Set.Icc 0 t₀, P t = a 0 * t ^ (e + 1)`. Introduce `t ht`. Establish `h0` using `radialTransform_eq_zero_of_const e a hconst ht`.
+
+Rewrite `h0` using `[hrt, hconst t ht]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set h : ℝ → ℝ := fun t => if t < t₀ then a 0 else P t / t ^ (e + 1) with hh`. Establish `hlow : ∀ t, t < t₀ → h t = a 0` using `fun t ht => if_pos ht`. Establish `hpos : ∀ t, 0 < t → h t = P t / t ^ (e + 1)`.
+
+Introduce `t ht`. Distinguish the cases in `h1 : t < t₀`. Rewrite using `[hlow t h1, hPc t ⟨ht.le, h1.le⟩, mul_div_assoc, div_self (pow_ne_zero _ ht.ne'), mul_one]`. Conclude with `if_neg h1`. Establish `hlowE : ∀ x, x < t₀ → h =ᶠ[nhds x] fun _ => a 0` using `fun x hx => Filter.eventually_of_mem (isOpen_Iio.mem_nhds hx) fun t ht => hlow t ht`.
+
+Establish `hposE : ∀ x, 0 < x → h =ᶠ[nhds x] fun t => P t / t ^ (e + 1)` using `fun x hx => Filter.eventually_of_mem (isOpen_Ioi.mem_nhds hx) fun t ht => hpos t ht`. Establish `hs : ContDiff ℝ ∞ h`. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x < t₀`.
+
+Conclude with `contDiffAt_const.congr_of_eventuallyEq (hlowE x hx)`. Establish `hx0 : 0 < x` using `lt_of_lt_of_le ht₀ (not_lt.1 hx)`. Conclude with `(hPs.contDiffAt.div (contDiff_id.pow _).contDiffAt (pow_ne_zero _ hx0.ne')).congr_of_eventuallyEq (hposE x hx0)`. Use `set R : ℝ := max T t₀ with hR`. Establish `hPz : ∀ t, R ≤ t → P t = 0`.
+
+Introduce `t ht`. Establish `hTt : T ≤ t` using `le_trans (le_max_left _ _) ht`. Establish `hgc : Continuous g` using `hgs.continuous`. Establish `htail : ∫ τ in T..t, g τ = 0`. Establish `hcg : ∫ τ in T..t, g τ = ∫ τ in T..t, (0 : ℝ)` using `intervalIntegral.integral_congr fun τ hτ => by`.
+
+Rewrite `hτ` using `[Set.uIcc_of_le hTt]`. Simplify using `[hg, hzero τ hτ.1]`. Rewrite using `[hcg]`. Simplify using the standard rewrite rules. Use `intervalIntegral.integral_add_adjacent_intervals (μ := volume) (a := 0) (b := T) (c := t) (hgc.intervalIntegrable _ _) (hgc.intervalIntegrable _ _)` as an intermediate fact.
+
+Simplify using `only [hP]`. Rewrite using `[← this, htail, add_zero]`. Conclude with `hint`. Establish `hhz : ∀ t, R ≤ t → h t = 0`. Introduce `t ht`.
+
+Establish `ht0 : 0 < t` using `lt_of_lt_of_le ht₀ (le_trans (le_max_right _ _) ht)`. Rewrite using `[hpos t ht0, hPz t ht, zero_div]`. Take `⟨hQs, hQd⟩` from `RadialPrimitive.primitive_contDiff h hs R`. Use `⟨fun t => ∫ τ in R..t, h τ, hQs, ⟨R, fun t ht => ?_⟩, ?_, ?_, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hcg : ∫ τ in R..t, h τ = ∫ τ in R..t, (0 : ℝ)` using `intervalIntegral.integral_congr fun τ hτ => by`.
+
+Rewrite `hτ` using `[Set.uIcc_of_le ht]`. Conclude with `hhz τ hτ.1`. Use `show ∫ τ in R..t, h τ = 0`. Rewrite using `[hcg]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hQd]`. Conclude with `hlow 0 ht₀`. Rewrite using `[hQd, (hlowE 0 ht₀).deriv_eq]`. Simplify using the standard rewrite rules. Rewrite using `[hQd, hpos t ht, hrt, div_mul_cancel₀ _ (pow_ne_zero _ ht.ne')]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hQd, (hposE t ht).deriv_eq, hrt]`. Establish `hPt : HasDerivAt P (g t) t` using `(hgs.continuous.integral_hasStrictDerivAt 0 t).hasDerivAt`. Establish `hq : HasDerivAt (fun s => P s / s ^ (e + 1)) ((g t * t ^ (e + 1) - P t * (((e + 1 : ℕ) : ℝ) * t ^ (e + 1 - 1))) / (t ^ (e + 1)) ^ 2) t` using `hPt.div (hasDerivAt_pow (e + 1) t) (pow_ne_zero _ ht.ne')`. Rewrite using `[hq.deriv]`.
+
+Simplify using `only [hg, hc, Nat.add_sub_cancel]`. Establish `ht' : t ≠ 0` using `ht.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem RadialPrimitive.proof : RadialPrimitive.Statement := by
   intro e a t₀ T ha ht₀ hconst hzero hint
   set c : ℝ := ((e + 1 : ℕ) : ℝ) with hc

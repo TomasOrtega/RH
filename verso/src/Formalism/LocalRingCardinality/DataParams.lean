@@ -18,6 +18,9 @@ def rG (s : Scale) : ℕ := KG s + 1
 
 def Av5 (s : Scale) : ℝ := max 26 (4 * hExp s + 9)
 
+/- English proof (translation)
+Unfold `Av5 hExp jG Scale.A`. Establish `h1` using `s.eps_lt`. Rewrite using `[max_eq_left]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem Av5_eq (s : Scale) : Av5 s = Scale.A := by
   unfold Av5 hExp jG Scale.A
   have h1 := s.eps_lt
@@ -297,6 +300,11 @@ variable {D : D7} {L : SizeData₂ D}
 def SgWin (P : ParameterChoice' D L) (C0 : ℝ) : Prop :=
   L.sc.x ^ (-P.CF) / C0 ^ 2 ≤ sgS D ∧ sgS D ≤ L.sc.x ^ (-P.CF)
 
+/- English proof (translation)
+Rewrite using `[P.topPlace_first_bound τ t hm ht]`. Establish `hb` using `L.bT_ge t`. Establish `hx : 1 < L.sc.x` using `L.sc.one_lt_alt`. Establish `hbpos : 0 < L.sc.b'`. Unfold `Scale.b' Scale.a Scale.X' Scale.b`.
+
+Establish `: 0 < L.sc.x` using `by linarith`. Check the signs of the components of the expression. Establish `hfl : ((⌊L.sc.b' / L.sc.x⌋ : ℤ) : ℝ) ≤ L.sc.b' / L.sc.x` using `Int.floor_le _`. Establish `hdiv : L.sc.b' / L.sc.x ≤ L.sc.b'` using `div_le_self hbpos.le hx.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem bT_ge_half (P : ParameterChoice' D L) (τ : D.what₂.Tau) (t : D.host.TT) (hm : 0 < D.R.m)
     (ht : (D.eTau τ : D.R.GG) = D.R.tau1 t) :
     (((D.hc τ).b ⟨0, hm⟩ : ℚ) : ℝ) / 2 ≤ (L.bT t : ℝ) := by
@@ -313,12 +321,20 @@ theorem bT_ge_half (P : ParameterChoice' D L) (τ : D.what₂.Tau) (t : D.host.T
 
 end ParameterChoice'
 
+/- English proof (translation)
+Unfold `Ranks.f`. Establish `h` using `R.two_le_m`. Establish `: 4 ≤ R.m ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem f_le_m_sq_n (R : Ranks) : R.f ≤ R.m ^ 2 * R.n := by
   unfold Ranks.f
   have h := R.two_le_m
   have : 4 ≤ R.m ^ 2 := by nlinarith
   nlinarith
 
+/- English proof (translation)
+Establish `h1` using `R.f_le_k`. Establish `h2` using `R.two_le_m`. Establish `h3 : R.k ≤ R.r` using `by unfold Ranks.r; omega`. Establish `h4 : R.r ≤ R.r ^ 2` using `Nat.le_self_pow (by norm_num) _`. Establish `h5 : R.f = 2 * R.ord` using `rfl`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem f_le_r_sq (R : Ranks) : R.f ≤ R.r ^ 2 := by
   have h1 := R.f_le_k
   have h2 := R.two_le_m

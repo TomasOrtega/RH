@@ -24,6 +24,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
+/- English proof (translation)
+Use `letI := io.toAlgebra`. Use `letI := io₂.toAlgebra`. Take `⟨G, t', m1, m2, ⟨ub, b1, b2, b3, b4⟩, θ, hθ, w1, w2, σ, s1, θ2, r1, r2, i1, i2, p2, hg⟩` from `h`. Take `⟨e, hu, w, p, hw, p₁, p₂, R⟩` from `(FrameLift.frOver_iff d y₂ y).1 hy`. Take `⟨m', e₁⟩` from `LiftBaseChange.exists_comp' d.m m1 y.x e.symm`.
+
+Establish `eig : ∀ τ v, Formalism.L2.Pj.IsEigV d.c₂ io₂ G τ v ↔ Formalism.L2.Pj.IsEigV c io G τ v` using `fun τ v => forall_congr' fun a => forall_congr' fun z => by rw [← FrameLift.embK_eF d τ a, hio]`. Take `⟨w', r', tri⟩` from `LiftBaseChange.rigIso_comp d.m m1 m' e.symm e₁ (w := w) hw r1`. Take `⟨s', hs'⟩` from `thf_secUp ((isGen_iff w').1 r'.1) Xo.univ.t.PP.isLB t'.PP.isLB σ`. Use `⟨G, t', m', m2, ⟨ub, b1, fun τ i => (eig τ _).1 (b2 τ i), fun τ v h1 h2 => b3 τ v h1 ((eig τ v).2 h2), fun τ i => ?_⟩, θ, hθ, w', w2, σ, s', θ2, r', r2, (ArcQ.FrUniq.isoMaps_iff w' σ s').2 fun Z r z j k hj hk => hs' Z r z (fun _ => j) k (mem_pull.2 hj) hk, i2, p2, ?_⟩` and prove the remaining obligations. Take `⟨q, h2, h3⟩` from `b4 τ i`.
+
+Conclude with `⟨q, by rw [e₁, ← Category.assoc, h2, hu], h3⟩`. Introduce `g g₁ g₂ (J : PUnit → Xo.univ.t.PP.L.ι) hJ`. Take `⟨g', a₁, a₂⟩` from `FrameLift.exists_pm (G := d.Xo₂.univ.t.G) (x := y₂.x) t'.G.hom m1.φ m1.cart.1.w.symm`. Establish `eg : g' ≫ p = g`. Use `FrameLift.pm_ext ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, p₁, ← Category.assoc, a₁, g₁, e₁]`. Rewrite using `[Category.assoc, p₂, a₂, g₂]`. Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart t'.PP.isLB z`. Take `⟨i, hi⟩` from `exists_chart d.Xo₂.univ.t.PP.isLB (m1.φ z)`.
+
+Establish `hj : m'.φ z ∈ Xo.univ.t.PP.L.U (J PUnit.unit)` using `mem_pull.1 hz`. Establish `hj' : d.m.φ (m1.φ z) ∈ Xo.univ.t.PP.L.U (J PUnit.unit)` using `(congrArg (· ∈ Xo.univ.t.PP.L.U (J PUnit.unit)) (FrameLift.pt_eq e₁ z)).mp hj`. Establish `le : (d.Xo₂.univ.t.PP.L.pull m1.φ).U (fun _ => i) ≤ g' ⁻¹ᵁ (PPx y₂.x).U (fun _ => i)` using `fun q hq => Set.mem_iInter.2 fun _ => (congrArg (· ∈ d.Xo₂.univ.t.PP.L.U i) (FrameLift.pt_eq a₁ q)).mpr (mem_pull.1 hq)`. Establish `u₁` using `(ArcQ.FrUniq.isoMaps_iff w1 σ s1).1 i1 _ (𝟙 _) z i k hi hk`. Rewrite `u₁` using `[hg g' a₁ a₂ (fun _ => i) le, gs_appLE g' _ _ le (𝟙 _) z (mem_pull.2 hi), Category.id_comp]`.
+
+Establish `u₂` using `R _ g' z (J PUnit.unit) i ((congrArg (fun t => d.m.φ t ∈ Xo.univ.t.PP.L.U (J PUnit.unit)) (FrameLift.pt_eq a₁ z)).mpr hj') ((congrArg (· ∈ d.Xo₂.univ.t.PP.L.U i) (FrameLift.pt_eq a₁ z)).mpr hi)`. Rewrite `u₂` using `[a₁, eg]`. Establish `u₃` using `tri _ (𝟙 _) z (J PUnit.unit) i k hj' hi hk`. Rewrite `u₃` using `[Category.id_comp]`. Rewrite using `[hs' _ (𝟙 _) z J k hz hk, gs_appLE _ _ _ hJ (𝟙 _) z hz, Category.id_comp]`.
+
+Use `Eq.trans ?_ (u₂.trans (congrArg _ u₁)).symm` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← Units.val_mul, ← u₃]`.
+-/
 theorem integral_below (T : CDVR) (io : c.F →+* T.Fr) (io₂ : d.c₂.F →+* T.Fr) (hio : ∀ a : c.F, io₂ (d.eF a) = io a)
     (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (y₂ : letI := io₂.toAlgebra; FrPt d.Xo₂ d.c₂ T.Fr)
     (hy : letI := io.toAlgebra; letI := io₂.toAlgebra; FrOver d y₂ y) (h : Integral T io₂ y₂) : Integral T io y := by
@@ -68,6 +83,11 @@ theorem integral_below (T : CDVR) (io : c.F →+* T.Fr) (io₂ : d.c₂.F →+* 
     refine Eq.trans ?_ (u₂.trans (congrArg _ u₁)).symm
     rw [← _root_.mul_assoc, ← Units.val_mul, ← u₃]
 
+/- English proof (translation)
+Set `j : K →+* AlgebraicClosure K` to `algebraMap _ _`. Use `letI : Algebra c.F (AlgebraicClosure K) := (j.comp (algebraMap c.F K)).toAlgebra`. Use `letI : Algebra d.c₂.F (AlgebraicClosure K) := (j.comp (algebraMap d.c₂.F K)).toAlgebra`. Set `ψ : K →ₐ[c.F] AlgebraicClosure K` to `⟨j, fun _ => rfl⟩`. Set `ψ₂ : K →ₐ[d.c₂.F] AlgebraicClosure K` to `⟨j, fun _ => rfl⟩`.
+
+Take `⟨z, hz⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c K _ ψ y`. Take `⟨z₂, hz₂⟩` from `GlobalTheory.TransferCompare.frBC_framed d.Xo₂ d.c₂ K _ ψ₂ y₂`. Establish `e` using `h (AlgebraicClosure K) (fun a => congrArg j (hc a)) z₂ z (GlobalTheory.FrameLift.frOver_map d (ψ := ψ) (ψ₂ := ψ₂) rfl hy hz hz₂)`. Rewrite `e` using `[GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf.1 ψ y (GlobalTheory.TransferCompare.allTest_framed Xo c K y) z hz, GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed d.Xo₂ d.c₂) g hg.1 ψ₂ y₂ (GlobalTheory.Transfer …`. Conclude with `j.injective e`.
+-/
 theorem evR_eq_of_pull {d : DeltaDat Xo c 0} {a : (E →+* ℂ) × ℕ → ℕ} {m : ℕ} {f : Rul Xo c} {g : Rul d.Xo₂ d.c₂}
     (hf : f ∈ sec Xo c a m) (hg : g ∈ sec d.Xo₂ d.c₂ a m) (h : GlobalTheory.LevPull.Pull d f g) {K : Type} [Field K]
     [Algebra c.F K] [Algebra d.c₂.F K] (hc : ∀ a : c.F, algebraMap d.c₂.F K (d.eF a) = algebraMap c.F K a)
@@ -91,6 +111,11 @@ end Integral
 
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c d _ hlev hO T io₂ y₂ halg`. Establish `hO' : GlobalTheory.ClsVal.Cmp.OverBase d` using `hO.elim (fun h => GlobalTheory.ClsVal.Cmp.overBase_of_ne h.1 h.2 d) id`. Use `letI := io₂.toAlgebra`. Use `letI := (io₂.comp (d.eF : c.F →+* d.c₂.F)).toAlgebra`. Take `⟨y, hy⟩` from `GlobalTheory.CovPull.below_exists d hO' (GlobalTheory.IndefiniteRowSideFullHecke.RelativeGroupHatForm.KA_le hlev.1) (S := T.Fr) (fun _ => rfl) y₂.1`.
+
+Use `⟨⟨y, GlobalTheory.TransferCompare.allTest_framed Xo c T.Fr y, integral_below d T _ io₂ (fun _ => rfl) y y₂.1 hy y₂.2.2⟩, halg, ?_, fun a n f hf g hg h => ?_⟩` and prove the remaining obligations. Introduce and unpack `φ ⟨G, t', m1, m2, h⟩`. Take `⟨m', -⟩` from `LiftBaseChange.exists_comp' d.m m1 y.x hy.1.symm`. Conclude with `⟨G, t', m', m2, h⟩`. Conclude with `evR_eq_of_pull hf hg h (fun _ => rfl) hy`.
+-/
 theorem exists_intFr_below : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0), 1 ≤ Dw.p + Dw.q → d.IsLev → ((Dw.p ≠ Dw.q ∧ l.A = 1) ∨ GlobalTheory.ClsVal.Cmp.OverBase d) → ∀ (T : CDVR) (io₂ : d.c₂.F →+* T.Fr) (y₂ : IntFr d.Xo₂ d.c₂ T io₂), y₂.IsAlg → ∃ y : IntFr Xo c T (io₂.comp (d.eF : c.F →+* d.c₂.F)), y.IsAlg ∧ (∀ φ : ℝ, HasPhi y₂ φ → HasPhi y φ) ∧ ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), ∀ f ∈ sec Xo c a n, ∀ g ∈ sec d.Xo₂ d.c₂ a n, GlobalTheory.LevPull.Pull d f g → evI y₂ g = evI y f := by
   intro E _ _ _ H Dw l Xo c d _ hlev hO T io₂ y₂ halg
   have hO' : GlobalTheory.ClsVal.Cmp.OverBase d := hO.elim (fun h => GlobalTheory.ClsVal.Cmp.overBase_of_ne h.1 h.2 d) id

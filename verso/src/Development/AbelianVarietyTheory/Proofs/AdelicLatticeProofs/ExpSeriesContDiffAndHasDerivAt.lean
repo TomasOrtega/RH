@@ -11,6 +11,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {I : Type}
 end ExpSeries
 
 open scoped ContDiff in
+/- English proof (translation)
+Use `ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun h => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smulRight_apply, norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma norm_smulRight_le_opNorm_mul_norm {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℂ E] (L : V →L[ℝ] ℂ) (w : E) :
     ‖L.smulRight w‖ ≤ ‖L‖ * ‖w‖ := by
@@ -21,6 +24,9 @@ private lemma norm_smulRight_le_opNorm_mul_norm {V E : Type} [NormedAddCommGroup
     _ = ‖L‖ * ‖w‖ * ‖h‖ := by ring
 
 open scoped ContDiff in
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma mul_exp_mul_le_exp_add_one_mul (r R : ℝ) :
     r * Real.exp (R * r) ≤ Real.exp ((R + 1) * r) := by
   calc r * Real.exp (R * r) ≤ Real.exp r * Real.exp (R * r) :=
@@ -28,6 +34,9 @@ private lemma mul_exp_mul_le_exp_add_one_mul (r R : ℝ) :
     _ = Real.exp ((R + 1) * r) := by rw [← Real.exp_add]; ring_nf
 
 open scoped ContDiff in
+/- English proof (translation)
+Use `Summable.of_nonneg_of_le (fun i => by positivity) (fun i => ?_) (hw (R + 1))` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma summable_norm_smulRight_mul_exp {V E I : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [NormedAddCommGroup E] [NormedSpace ℂ E] (m : I → V →L[ℝ] ℂ) (w : I → E)
     (hw : ∀ R : ℝ, Summable fun i => ‖w i‖ * Real.exp (R * ‖m i‖)) (R : ℝ) :
@@ -41,6 +50,9 @@ private lemma summable_norm_smulRight_mul_exp {V E I : Type} [NormedAddCommGroup
         mul_le_mul_of_nonneg_left (mul_exp_mul_le_exp_add_one_mul _ _) (norm_nonneg _)
 
 open scoped ContDiff in
+/- English proof (translation)
+Rewrite using `[Complex.norm_exp]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma norm_cexp_le_exp_mul_opNorm_of_norm_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (L : V →L[ℝ] ℂ) {y : V} {r : ℝ} (hy : ‖y‖ ≤ r) :
     ‖Complex.exp (L y)‖ ≤ Real.exp (r * ‖L‖) := by
@@ -51,6 +63,13 @@ private lemma norm_cexp_le_exp_mul_opNorm_of_norm_le {V : Type} [NormedAddCommGr
     _ ≤ r * ‖L‖ := by rw [mul_comm]; exact mul_le_mul_of_nonneg_right hy (norm_nonneg _)
 
 open scoped ContDiff in
+/- English proof (translation)
+Use `set r := ‖x‖ + 1`. Establish `hx : x ∈ Metric.ball (0 : V) r` using `by rw [mem_ball_zero_iff]; simp [r]`. Use `hasFDerivAt_tsum_of_isPreconnected (u := fun i => ‖(m i).smulRight (w i)‖ * Real.exp (r * ‖m i‖)) (f := fun i v => Complex.exp (m i v) • w i) (f' := fun i y => Complex.exp (m i y) • (m i).smulRight (w i)) (summable_norm_smulRight_mul_exp m w hw r) Metric.isOpen_ball (convex_ball …` and prove the remaining obligations. Introduce `i y _`. Use `(((m i).hasFDerivAt.cexp).smul_const (w i)).congr_fderiv ?_` and prove the remaining obligations.
+
+Use extensionality with `h`. Simplify using `[smul_smul]`. Introduce `i y hy`. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (norm_cexp_le_exp_mul_opNorm_of_norm_le _ (by rw [mem_ball_zero_iff] at hy; exact hy.le)) (norm_nonneg _)`.
+
+Use `Summable.of_norm_bounded (hw r) fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (norm_cexp_le_exp_mul_opNorm_of_norm_le _ (by simp [r])) (norm_nonneg _)`.
+-/
 private lemma hasFDerivAt_tsum_cexp_smul_of_summable_exp {V E I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (m : I → V →L[ℝ] ℂ) (w : I → E)
     (hw : ∀ R : ℝ, Summable fun i => ‖w i‖ * Real.exp (R * ‖m i‖)) (x : V) :
@@ -76,6 +95,13 @@ private lemma hasFDerivAt_tsum_cexp_smul_of_summable_exp {V E I : Type} [NormedA
     exact mul_le_mul_of_nonneg_left (norm_cexp_le_exp_mul_opNorm_of_norm_le _ (by simp [r])) (norm_nonneg _)
 
 open scoped ContDiff in
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ _ w hw`. Conclude with `contDiff_zero.2 (continuous_iff_continuousAt.2 fun x => (hasFDerivAt_tsum_cexp_smul_of_summable_exp m w hw x).continuousAt)`. Consider the case `succ n ih`.
+
+Introduce `E _ _ _ w hw`. Establish `hd` using `fun x => hasFDerivAt_tsum_cexp_smul_of_summable_exp m w hw x`. Use `push_cast`. Use `contDiff_succ_iff_fderiv.2 ⟨fun x => (hd x).differentiableAt, fun h => by simp at h, ?_⟩` and prove the remaining obligations. Establish `hfd : fderiv ℝ (fun v => ∑' i, Complex.exp (m i v) • w i) = fun x => ∑' i, Complex.exp (m i x) • (m i).smulRight (w i)`.
+
+Use function extensionality and compare the values at `fun x => (hd x).fderiv`. Rewrite using `[hfd]`. Conclude with `ih (V →L[ℝ] E) (fun i => (m i).smulRight (w i)) (summable_norm_smulRight_mul_exp m w hw)`.
+-/
 private lemma contDiff_tsum_cexp_smul_of_summable_exp {V I : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (m : I → V →L[ℝ] ℂ) (n : ℕ) :
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (w : I → E),
@@ -100,6 +126,19 @@ private lemma contDiff_tsum_cexp_smul_of_summable_exp {V I : Type} [NormedAddCom
 
 open scoped ContDiff in
 
+/- English proof (translation)
+Introduce `V _ _ I c m hc`. Establish `hfun : (fun v : V => ∑' i, c i * Complex.exp (m i v)) = fun v => ∑' i, Complex.exp (m i v) • c i`. Use function extensionality and compare the values at `fun v => tsum_congr fun i => by rw [smul_eq_mul, mul_comm]`. Establish `hz : ∀ z : V, Summable fun i => c i * m i z`. Introduce `z`.
+
+Use `Summable.of_norm_bounded ((hc 1).mul_left ‖z‖) fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, one_mul]`. Establish `h1 : 0 ≤ ‖c i‖ * ‖z‖ * (Real.exp ‖m i‖ - ‖m i‖)` using `mul_nonneg (mul_nonneg (norm_nonneg _) (norm_nonneg _)) (by linarith [Real.add_one_le_exp ‖m i‖])`. Establish `h2 : ‖c i‖ * ‖m i z‖ ≤ ‖c i‖ * (‖m i‖ * ‖z‖)` using `mul_le_mul_of_nonneg_left ((m i).le_opNorm z) (norm_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `⟨?_, fun z => ⟨hz z, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `contDiff_infty.2 fun n => contDiff_tsum_cexp_smul_of_summable_exp m n ℂ c hc`. Establish `hF` using `hasFDerivAt_tsum_cexp_smul_of_summable_exp m c hc (0 : V)`. Establish `hl` using `(hasDerivAt_id (0 : ℝ)).smul_const z`.
+
+Establish `h` using `hF.comp_hasDerivAt_of_eq (0 : ℝ) hl (zero_smul ℝ z).symm`. Establish `hS : Summable fun i => (m i).smulRight (c i)`. Use `Summable.of_norm ?_` and prove the remaining obligations. Simplify using `using summable_norm_smulRight_mul_exp m c hc 0`. Establish `hS' : Summable fun i => Complex.exp (m i 0) • (m i).smulRight (c i)`.
+
+Simplify using `using hS`. Establish `hfeq : (fun t : ℝ => ∑' i, c i * Complex.exp (m i (t • z))) = ((fun v => ∑' i, Complex.exp (m i v) • c i) ∘ fun y => id y • z)`. Use function extensionality and compare the values at `fun t => tsum_congr fun i => by simp [mul_comm]`. Rewrite using `[hfeq]`. Use `h.congr_deriv ?_` and prove the remaining obligations.
+
+Establish `happ` using `(hS'.hasSum.mapL (ContinuousLinearMap.apply ℝ ℂ ((1 : ℝ) • z))).tsum_eq`. Simplify using `only [ContinuousLinearMap.apply_apply] at happ`. Rewrite using `[← happ]`. Conclude with `tsum_congr fun i => by simp [mul_comm]`.
+-/
 theorem _root_.GlobalTheory.expSeries_contDiff_and_hasDerivAt :
     ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] (I : Type) (c : I → ℂ)
       (m : I → V →L[ℝ] ℂ), (∀ R : ℝ, Summable fun i => ‖c i‖ * Real.exp (R * ‖m i‖)) →

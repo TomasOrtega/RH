@@ -7,6 +7,25 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFu
 
 namespace GlobalTheory.RootEx.UnfoldShape
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `hM`. Establish `hmem : ∀ t : GL ι k, act t M = M → ∀ x ∈ M, t.val *ᵥ x ∈ M` using `fun t ht x hx => by`. Establish `h : t.val *ᵥ x ∈ act t M` using `mem_act.2 ⟨x, hx, rfl⟩`. Rewrite `h` using `[ht]`. Then use the resulting hypothesis. Establish `hsM : ∀ x : s, x.1 ∈ M` using `fun x => hs ▸ Submodule.subset_span x.2`.
+
+Establish `hex : ∀ (t : {t : GL ι k // act t M = M}) (x : s), ∃ r : S, t.1.val *ᵥ x.1 - r.1 ∈ ϖ • M`. Introduce `t x`. Take `⟨r, hr, -⟩` from `hS.2 _ (hmem t.1 t.2 x.1 (hsM x))`. Conclude with `⟨⟨r, hr.1⟩, hr.2⟩`. Use `choose f hf using hex`.
+
+Establish `hsec : ∀ y : Set.range f, ∃ t, f t = y.1` using `fun y => y.2`. Use `choose g hg using hsec`. Establish `: Fintype (Set.range f)` using `Fintype.ofFinite _`. Use `⟨Finset.univ.image fun y => (g y).1, ?_, fun t ht => ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+
+Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 ht`. Conclude with `(g y).2`. Use `set t₀ := g ⟨f ⟨t, ht⟩, ⟨_, rfl⟩⟩ with ht₀`. Establish `hft : f t₀ = f ⟨t, ht⟩` using `hg _`. Establish `hinv : act (t₀.1)⁻¹ M = M`.
+
+Establish `h` using `act_mul (t₀.1)⁻¹ t₀.1 M`. Rewrite `h` using `[inv_mul_cancel, act_one, t₀.2]`. Conclude with `h.symm`. Use `⟨t₀.1, Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, (t₀.1)⁻¹ * t, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[act_mul, ht, hinv]`.
+
+Introduce `v hv`. Rewrite `hv` using `[← hs]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `h1` using `hf ⟨t, ht⟩ ⟨x, hx⟩`.
+
+Establish `h2` using `hf t₀ ⟨x, hx⟩`. Rewrite `h2` using `[hft]`. Establish `h3` using `sub_mem h1 h2`. Rewrite `h3` using `[sub_sub_sub_cancel_right]`. Take `⟨w, hw, hw'⟩` from `mem_smul_iff.1 h3`.
+
+Use `mem_smul_iff.2 ⟨_, hmem _ hinv w hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_smul, hw', Matrix.mulVec_sub, Matrix.sub_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Units.val_mul]`. Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
+
+Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[mul_inv_cancel_left]`.
+-/
 theorem stabiliser_finite_cosets_mod (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) [Fintype ι] [DecidableEq ι] (ϖ : 𝒪[k])
     (M : Submodule 𝒪[k] (ι → k)) (S : Finset (ι → k)) (hM : M.FG) (hS : IsReps ϖ M S) :

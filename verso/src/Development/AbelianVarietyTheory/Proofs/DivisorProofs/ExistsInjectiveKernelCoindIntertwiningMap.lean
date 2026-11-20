@@ -28,12 +28,23 @@ noncomputable def delta : V →ₗ[ℂ] Representation.coindV P.subtype σ where
     by_cases hx : x ∈ P <;> simp [hx]
 
 open Classical in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem delta_apply (v : V) (x : G) :
     (delta P σ v).1 x = if h : x ∈ P then σ ⟨x, h⟩ v else 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coind_val (g : G) (f : Representation.coindV P.subtype σ) (x : G) :
     (Representation.coind P.subtype σ g f).1 x = f.1 (x * g) := rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[coind_val, delta_apply, delta_apply]`. Distinguish the cases in `hx : x ∈ P`. Establish `h1 : x * (p : G) ∈ P` using `P.mul_mem hx p.2`. Rewrite using `[dif_pos hx, dif_pos h1]`.
+
+Establish `: (⟨x * (p : G), h1⟩ : P) = ⟨x, hx⟩ * p` using `rfl`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression. Establish `h1 : x * (p : G) ∉ P` using `fun h => hx ((P.mul_mem_cancel_right p.2).1 h)`. Rewrite using `[dif_neg hx, dif_neg h1]`.
+-/
 theorem coind_delta (p : P) (v : V) :
     Representation.coind P.subtype σ (p : G) (delta P σ v) = delta P σ (σ p v) := by
   ext x
@@ -47,6 +58,13 @@ theorem coind_delta (p : P) (v : V) :
     rw [dif_neg hx, dif_neg h1]
 
 open Classical in
+/- English proof (translation)
+Use extensionality with `x`. Establish `h : ∀ g : G, (Representation.coind P.subtype σ g⁻¹ (delta P σ (f.1 g))).1 x = if x * g⁻¹ ∈ P then f.1 x else 0`. Introduce `g`. Rewrite using `[coind_val, delta_apply]`. Distinguish the cases in `hx : x * g⁻¹ ∈ P`.
+
+Rewrite using `[dif_pos hx, if_pos hx]`. Use `f.2 ⟨x * g⁻¹, hx⟩ g` as an intermediate fact. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg hx, if_neg hx]`.
+
+Rewrite using `[Submodule.coe_sum, Finset.sum_apply, Finset.sum_congr rfl fun g _ => h g]`. Establish `e` using `Equiv.sum_comp ((Equiv.inv G).trans (Equiv.mulLeft x)) (fun y : G => if y ∈ P then f.1 x else 0)`. Simplify using `only [Equiv.trans_apply, Equiv.inv_apply, Equiv.coe_mulLeft] at e`. Rewrite using `[e, ← Finset.sum_filter, Finset.sum_const, Submodule.coe_smul, Pi.smul_apply, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem sum_delta [Fintype G] (f : Representation.coindV P.subtype σ) :
     ∑ g : G, Representation.coind P.subtype σ g⁻¹ (delta P σ (f.1 g)) =
       ((Finset.univ.filter (· ∈ P)).card : ℂ) • f := by
@@ -79,10 +97,24 @@ noncomputable def kernel :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kernel_apply (Φ : Representation.IntertwiningMap (Representation.coind P.subtype σ)
       (Representation.coind P'.subtype σ')) (g : G) (v : V) :
     kernel P σ P' σ' Φ g v = (Φ (delta P σ v)).1 g := rfl
 
+/- English proof (translation)
+Introduce `G _ _ P P' V V' _ _ _ _ σ σ'`. Use `haveI := Fintype.ofFinite G`. Use `⟨kernel P σ P' σ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `Φ hΦ`.
+
+Establish `h0 : ∀ v, Φ (delta P σ v) = 0`. Introduce `v`. Use extensionality with `g`. Use `kernel_apply P σ P' σ' Φ g v` as an intermediate fact. Rewrite `this` using `[hΦ]`.
+
+Conclude with `this.symm`. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Use `ext1 f`. Establish `h1` using `congrArg Φ (sum_delta P σ f)`. Rewrite using `[map_sum, map_smul, Finset.sum_eq_zero (fun g _ => by`.
+
+Rewrite `h1` using `[Φ.isIntertwining, h0, map_zero])]`. Establish `hc : ((Finset.univ.filter (fun x : G => x ∈ P)).card : ℂ) ≠ 0`. Rewrite using `[Nat.cast_ne_zero, Finset.card_ne_zero]`. Conclude with `⟨1, by simp [P.one_mem]⟩`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left hc`.
+
+Introduce `Φ p' g p`. Use extensionality with `v`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, kernel_apply, kernel_apply, ← coind_delta, Φ.isIntertwining, coind_val, mul_assoc]`. Conclude with `(Φ (delta P σ v)).2 p' (g * p)`.
+-/
 theorem exists_kernel : ∀ (G : Type) [Group G] [Finite G] (P P' : Subgroup G) (V V' : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] (σ : Representation ℂ P V) (σ' : Representation ℂ P' V'), ∃ K : Representation.IntertwiningMap (Representation.coind P.subtype σ) (Representation.coind P'.subtype σ') →ₗ[ℂ] (G → V →ₗ[ℂ] V'), Function.Injective K ∧ ∀ (Φ : Representation.IntertwiningMap (Representation.coind P.subtype σ) (Representation.coind P'.subtype σ')) (p' : P') (g : G) (p : P), K Φ ((p' : G) * g * (p : G)) = σ' p' ∘ₗ K Φ g ∘ₗ σ p := by
   intro G _ _ P P' V V' _ _ _ _ σ σ'
   classical

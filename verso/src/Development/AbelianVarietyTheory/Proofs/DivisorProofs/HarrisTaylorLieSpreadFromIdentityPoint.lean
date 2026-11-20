@@ -13,6 +13,9 @@ noncomputable section
 
 namespace GlobalTheory.HTLieSpread
 
+/- English proof (translation)
+The claim follows from `| 0, w => by simp [h0] | a + 1, w => by rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, hadd, prod_ofFn_eq T h0 hadd (fun i => w i.succ)]`.
+-/
 theorem prod_ofFn_eq {G : Type} [Monoid G] {V : Type} [AddCommMonoid V] (T : V → G)
     (h0 : T 0 = 1) (hadd : ∀ c c', T (c + c') = T c * T c') :
     ∀ {a : ℕ} (w : Fin a → V), (List.ofFn (fun i => T (w i))).prod = T (∑ i, w i)
@@ -20,10 +23,20 @@ theorem prod_ofFn_eq {G : Type} [Monoid G] {V : Type} [AddCommMonoid V] (T : V �
   | a + 1, w => by
     rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ, hadd, prod_ofFn_eq T h0 hadd (fun i => w i.succ)]
 
+/- English proof (translation)
+The claim follows from `Matrix.toLin'.injective (LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using h v)`.
+-/
 theorem mat_ext {n : ℕ} {C : Type} [CommRing C] {A B : Matrix (Fin n) (Fin n) C}
     (h : ∀ v, A.mulVec v = B.mulVec v) : A = B :=
   Matrix.toLin'.injective (LinearMap.ext fun v => by simpa [Matrix.toLin'_apply] using h v)
 
+/- English proof (translation)
+Establish `hsq : (2 * b.ρ - (D.tr : R)) ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : R)`. Use `b.ρ_root` as an intermediate fact. Use `push_cast`. Take the linear combination `4 * this`. Establish `hd : D.tr ^ 2 - 4 * D.nm = -(((D.tr ^ 2 - 4 * D.nm).natAbs : ℕ) : ℤ)`.
+
+Use `D.disc_neg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hcop : ((D.tr ^ 2 - 4 * D.nm).natAbs).Coprime p`. Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd (Fact.out)]`. Introduce `h`.
+
+Conclude with `D.disc_p (Int.natCast_dvd.mpr h)`. Establish `hu` using `b.unit _ hcop`. Rewrite using `[← isUnit_pow_iff (n := 2) two_ne_zero, hsq, hd]`. Rewrite using `[Int.cast_neg, Int.cast_natCast]`. Conclude with `hu.neg`.
+-/
 theorem isUnit_two_rho_sub {p : ℕ} [Fact p.Prime] {D : GlobalTheory.UPel.HT.Datum p} {R : Type} [CommRing R]
     (b : GlobalTheory.UPel.HT.Base D R) : IsUnit (2 * b.ρ - (D.tr : R)) := by
   have hsq : (2 * b.ρ - (D.tr : R)) ^ 2 = ((D.tr ^ 2 - 4 * D.nm : ℤ) : R) := by
@@ -48,6 +61,35 @@ def TangentCoordinatesSmoothCommGroupLocalRing : Prop :=
         (∀ (s : R') c, (T (s • c)).left = spMap (epsScaleR s) ≫ (T c).left) ∧
         ∀ u : G ⟶ G, IsMonHom u → ∀ c, T c ≫ u = T (((M u).map β).mulVec c)
 
+/- English proof (translation)
+Introduce `p _ D R _ b C _ _ tR A _ _ hsm act hlie R' _ β x hx`. Take `⟨g0, rfl⟩ : ∃ g0 : C →+* R', spMap g0 = x` from `⟨(Spec.preimage x).hom, by simp [spMap]⟩`. Establish `hg : g0.comp tR = β`. Establish `h1 : Spec.map (CommRingCat.ofHom (g0.comp tR)) = Spec.map (CommRingCat.ofHom β)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Conclude with `hx`. Establish `h2` using `Spec.map_injective h1`. Simplify using `using congrArg CommRingCat.Hom.hom h2`. Establish `hgapp : ∀ r, g0 (tR r) = β r` using `fun r => by rw [← hg]; rfl`. Take `⟨n, M, hM⟩` from `hcoord C A hsm`.
+
+Take `⟨T1, T1inj, T1rng, T1add, T1sm, T1u⟩` from `hM C (RingHom.id C)`. Take `⟨T0, T0inj, T0rng, T0add, T0sm, T0u⟩` from `hM R' g0`. Establish `T1zero : T1 0 = 1`. Establish `h` using `T1add 0 0`. Rewrite `h` using `[add_zero]`.
+
+Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`. Establish `T0zero : T0 0 = 1`. Establish `h` using `T0add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+
+Establish `hid : ∀ u : A ⟶ A, (M u).map (RingHom.id C) = M u` using `fun u => by ext; simp`. Set `fa : 𝓞 D.F → Matrix (Fin n) (Fin n) C` to `fun c => M (act.act (algebraMap (𝓞 D.F) D.O c))`. Establish `key : ∀ (c : 𝓞 D.F) v, T1 v ≫ act.act (algebraMap (𝓞 D.F) D.O c) = T1 ((fa c).mulVec v)` using `fun c v => by`. Rewrite using `[T1u _ (act.hom _) v, hid]`. Establish `f1 : fa 1 = 1` using `mat_ext fun v => T1inj (by`.
+
+Rewrite using `[← key, map_one, act.one, Category.comp_id, Matrix.one_mulVec])`. Establish `fmul : ∀ c d, fa (c * d) = fa c * fa d` using `fun c d => mat_ext fun v => T1inj (by`. Rewrite using `[← key, map_mul, act.mul, ← Category.assoc, key, key, Matrix.mulVec_mulVec])`. Establish `fadd : ∀ c d, fa (c + d) = fa c + fa d` using `fun c d => mat_ext fun v => T1inj (by`. Rewrite using `[← key, map_add, act.add, MonObj.comp_mul, key, key, ← T1add, Matrix.add_mulVec])`.
+
+Establish `f0 : fa 0 = 0`. Establish `h` using `fadd 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `add_left_cancel (h.symm.trans (add_zero _).symm)`. Set `f : 𝓞 D.F →+* Matrix (Fin n) (Fin n) C` to `{ toFun := fa, map_one' := f1, map_mul' := fmul, map_zero' := f0, map_add' := fadd }`.
+
+Establish `keyf : ∀ (c : 𝓞 D.F) v, T1 v ≫ act.act (algebraMap (𝓞 D.F) D.O c) = T1 ((f c).mulVec v)` using `key`. Establish `keyg : ∀ (c : 𝓞 D.F) u, T0 u ≫ act.act (algebraMap (𝓞 D.F) D.O c) = T0 (((f c).map g0).mulVec u)` using `fun c u => T0u _ (act.hom _) u`. Establish `hω : D.ω ^ 2 - (D.tr : 𝓞 D.F) * D.ω + (D.nm : 𝓞 D.F) = 0`. Rewrite using `[← D.tr_eq, ← D.nm_eq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hρ : (tR b.ρ) ^ 2 - (D.tr : C) * tR b.ρ + (D.nm : C) = 0`. Use `congrArg tR b.ρ_root` as an intermediate fact. Simplify using `using this`. Establish `hunit : IsUnit (2 * tR b.ρ - (D.tr : C))`. Simplify `(isUnit_two_rho_sub b).map tR` using `[map_ofNat]`.
+
+Set `t : Fin D.a → (𝓞 D.F →+* C)` to `fun i => tR.comp (b.t i)`. Establish `ht : ∀ i, t i D.ω = tR b.ρ` using `fun i => by simp [t, b.t_ω]`. Establish `hyp : ∀ v : Fin n → C, (f D.ω).mulVec v = tR b.ρ • v → ∃ w : Fin D.a → Fin n → C, (∀ i (c : 𝓞 D.F), (f c).mulVec (w i) = t i c • w i) ∧ v = ∑ i, w i`. Introduce `v hv`. Take `⟨w, hw, hvw⟩` from `hlie (T1 v) ⟨(T1rng _).2 ⟨v, rfl⟩, by rw [keyf, hv]; exact T1sm _ _⟩`.
+
+Use `choose w' hw' using fun i => (T1rng (w i)).1 (hw i 0).1`. Use `⟨w', fun i c => T1inj ?_, T1inj ?_⟩` and prove the remaining obligations. Rewrite using `[← keyf, hw' i]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[T1sm, hw' i]`.
+
+Conclude with `(hw i c).2`. Rewrite using `[hvw, ← prod_ofFn_eq T1 T1zero T1add]`. Simplify using `only [hw']`. Establish `L` using `GlobalTheory.eigen_decomp_base_change (𝓞 D.F) C n D.a D.ω D.tr D.nm hω f (tR b.ρ) hρ hunit t ht hyp R' g0`. Introduce `v hv`.
+
+Take `⟨v', rfl⟩` from `(T0rng v).1 hv.1`. Take `⟨w, hw, hvw⟩` from `L v' (T0inj (by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← keyg, T0sm, hgapp]`. Conclude with `hv.2))`.
+
+Use `⟨fun i => T0 (w i), fun i c => ⟨(T0rng _).2 ⟨_, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[keyg, hw i c, T0sm]`. Rewrite using `[show g0 (t i c) = β (b.t i c) from hgapp _]`. Rewrite using `[hvw, prod_ofFn_eq T0 T0zero T0add]`.
+-/
 theorem spread_of_coord (hcoord : TangentCoordinatesSmoothCommGroupLocalRing) : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (C : Type) [CommRing C] [IsLocalRing C] (tR : R →+* C) (A : Over (Sp C)) [GrpObj A] [IsCommMonObj A], Smooth A.hom → ∀ (act : GlobalTheory.UPel.HT.OActN D.O A), GlobalTheory.UPel.HT.LieAt b act tR (spMap (RingHom.id C)) → ∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ Sp C), x ≫ spMap tR = spMap β → GlobalTheory.UPel.HT.LieAt b act β x := by
   intro p _ D R _ b C _ _ tR A _ _ hsm act hlie R' _ β x hx
   obtain ⟨g0, rfl⟩ : ∃ g0 : C →+* R', spMap g0 = x := ⟨(Spec.preimage x).hom, by simp [spMap]⟩
@@ -113,6 +155,9 @@ theorem spread_of_coord (hcoord : TangentCoordinatesSmoothCommGroupLocalRing) : 
     rw [show g0 (t i c) = β (b.t i c) from hgapp _]
   · rw [hvw, prod_ofFn_eq T0 T0zero T0add]
 
+/- English proof (translation)
+The claim follows from `spread_of_coord GlobalTheory.T.exists_tangent_coords_base_change_smooth_comm_group`.
+-/
 theorem lieAt_spread : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (C : Type) [CommRing C] [IsLocalRing C] (tR : R →+* C) (A : Over (Sp C)) [GrpObj A] [IsCommMonObj A], Smooth A.hom → ∀ (act : GlobalTheory.UPel.HT.OActN D.O A), GlobalTheory.UPel.HT.LieAt b act tR (spMap (RingHom.id C)) → ∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ Sp C), x ≫ spMap tR = spMap β → GlobalTheory.UPel.HT.LieAt b act β x :=
   spread_of_coord GlobalTheory.T.exists_tangent_coords_base_change_smooth_comm_group
 

@@ -20,6 +20,23 @@ variable {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [G
   [IsCommMonObj G'] [GrpObj G''] [IsCommMonObj G'']
   {f : S' ⟶ S} {F : G'.left ⟶ G.left} {hw : F ≫ G.hom = G'.hom ≫ f}
 
+/- English proof (translation)
+Establish `key : ∀ (T : Over S''), ∃ ρ : Over.mk (T.hom ≫ f' ≫ f) ⟶ Over.mk ((Over.mk (T.hom ≫ f')).hom ≫ f), ρ.left = 𝟙 T.left ∧ ∀ x : T ⟶ G'', toBase hw'' x = ρ ≫ toBase hw (toBase hw' x)` using `fun T => ⟨Over.homMk (𝟙 T.left) (by simp), rfl, fun x => Over.OverMorphism.ext ((Category.assoc _ _ _).symm.trans (Category.id_comp _).symm)⟩`. Use `⟨mul, (isGen_iff _).2 (Tw.pgen_cancel P.L.isLB ((isGen_iff _).1 h.gen) ((isGen_iff _).1 h''.gen)), fun T z J'' J' hJ'' hJ' B hB => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_pt P.L.isLB z`. Take `⟨ρ, hρ, e⟩` from `key T`. Take `⟨a₁, a₂, a₃⟩` from `h.vals (Over.mk (T.hom ≫ f')) z J' J hJ' hJ _ (fun _ => rfl)`.
+
+Set `β` to `toBaseHom mul T`. Set `A : (Over.mk (T.hom ≫ f') ⟶ G') → (T.left.presheaf.stalk z)ˣ` to `fun x => gw w x.left z (J (x.left ≫ F)) (J' x.left)`. Establish `hAB : ∀ x : T ⟶ G'', A (β x) * B x = gw w'' x.left z (J (x.left ≫ F' ≫ F)) (J'' x.left)` using `fun x => by`. Rewrite using `[hB, ← Category.assoc]`. Conclude with `(Tw _ x.left z _ _ _ (hJ ((x.left ≫ F') ≫ F)) (hJ' (x.left ≫ F')) (hJ'' x.left)).symm`.
+
+Take `⟨b₁, b₂, b₃⟩` from `h''.vals T z J'' J hJ'' hJ (fun x => A (β x) * B x) hAB`. Use `⟨?_, fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Rewrite `b₁` using `[map_one, ← Category.assoc, _root_.mul_assoc]`. Conclude with `mul_left_cancel (a := A 1) (a₁.symm.trans b₁)`. Establish `a : val P.sym ((x.left ≫ F') ≫ F) z J * A (β x) = A (β x)⁻¹ * val P'.sym (x.left ≫ F') z J'` using `a₂ (β x)`.
+
+Establish `b` using `b₂ x`. Rewrite `b` using `[map_inv, ← Category.assoc, ← _root_.mul_assoc, a, _root_.mul_assoc, _root_.mul_assoc]`. Conclude with `mul_left_cancel b`. Establish `c : @_root_.id (T.left.presheaf.stalk z)ˣ (cubV P.c (T` using `Over.mk (T.hom ≫ f' ≫ f)) z J (toBase hw'' x) (toBase hw'' y) (toBase hw'' u)) = cubV P.c (T := Over.mk ((Over.mk (T.hom ≫ f')).hom ≫ f)) z J (toBase hw (β x)) (toBase hw (β y)) (toBase hw (β u)) := by`. Establish `e' : (lift (toBase hw'' x) (lift (toBase hw'' y) (toBase hw'' u))).left = (lift (toBase hw (β x)) (lift (toBase hw (β y)) (toBase hw (β u)))).left`.
+
+Rewrite using `[e, e, e, ← comp_lift, ← comp_lift, Over.comp_left, hρ]`. Conclude with `Category.id_comp _`. Conclude with `congrArg (fun r => val (L := P.L.L) (φ := thφ G (x3 G)) (ε := thε) P.c.t r z J) e'`. Take `⟨C, hC⟩ : ∃ C : (T.left.presheaf.stalk z)ˣ, C = cubV P.c (T` from `Over.mk ((Over.mk (T.hom ≫ f')).hom ≫ f)) z J (toBase hw (β x)) (toBase hw (β y)) (toBase hw (β u)) := ⟨_, rfl⟩`. Take `⟨C', hC'⟩ : ∃ C' : (T.left.presheaf.stalk z)ˣ, C' = cubV P'.c (T` from `Over.mk (T.hom ≫ f')) z J' (β x) (β y) (β u) := ⟨_, rfl⟩`.
+
+Establish `a : C * A (β x * β y) * A (β x * β u) * A (β y * β u) * A 1 = A (β x * β y * β u) * A (β x) * A (β y) * A (β u) * C'`. Rewrite using `[hC, hC']`. Conclude with `a₃ (β x) (β y) (β u)`. Establish `b` using `b₃ x y u`. Rewrite `b` using `[c.trans hC.symm]`.
+
+Simplify using `only [map_mul, map_one] at b`. Establish `g : C' * B (x * y) * B (x * u) * B (y * u) * B 1 = B (x * y * u) * B x * B y * B u * cubV P''.c z J'' x y u`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `a'` using `congrArg Additive.ofMul a`. Establish `b'` using `congrArg Additive.ofMul b`.
+
+Simplify using `only [ofMul_mul] at a' b' ⊢`. Take the linear combination `(norm := abel) b' - a'`. Rewrite `g` using `[hC']`. Conclude with `g`.
+-/
 theorem IsCPMap.cancel {P : CP G} {P' : CP G'} {P'' : CP G''} {f' : S'' ⟶ S'} {F' : G''.left ⟶ G'.left}
     {hw' : F' ≫ G'.hom = G''.hom ≫ f'} {w : LB.Iso P'.L.L (P.L.L.pull F)} {w' : LB.Iso P''.L.L (P'.L.L.pull F')}
     {hw'' : (F' ≫ F) ≫ G.hom = G''.hom ≫ f' ≫ f} {w'' : LB.Iso P''.L.L (P.L.L.pull (F' ≫ F))}
@@ -76,6 +93,11 @@ theorem IsCPMap.cancel {P : CP G} {P' : CP G'} {P'' : CP G''} {f' : S'' ⟶ S'} 
     rw [hC'] at g
     exact g
 
+/- English proof (translation)
+Introduce `S S' S'' f f' G _ _ G' _ _ G'' _ _ P P' P'' F hw w F' hw' hw'' h`. Use `⟨fun w' h' => ?_, fun mul w'' h'' => ?_⟩` and prove the remaining obligations. Take `⟨w'', Tw, H⟩` from `h.exists_comp h' hw''`. Conclude with `⟨w'', H, Tw⟩`. Take `⟨w', Tw⟩` from `Geo.Tor.exists_cancel P.L.isLB w w'' ((isGen_iff _).1 h.gen) ((isGen_iff _).1 h''.gen) P'.L.isLB P''.L.isLB`.
+
+Conclude with `⟨w', h.cancel h'' mul Tw, Tw⟩`.
+-/
 theorem isCPMap_comp_cancel :
     (∀ (S S' S'' : Scheme.{0}) (f : S' ⟶ S) (f' : S'' ⟶ S') (G : Over S) [GrpObj G] [IsCommMonObj G] (G' : Over S') [GrpObj G'] [IsCommMonObj G'] (G'' : Over S'') [GrpObj G''] [IsCommMonObj G''] (P : CP G) (P' : CP G') (P'' : CP G'') (F : G'.left ⟶ G.left) (hw) (w) (F' : G''.left ⟶ G'.left) (hw' : F' ≫ G'.hom = G''.hom ≫ f') (hw'' : (F' ≫ F) ≫ G.hom = G''.hom ≫ f' ≫ f), IsCPMap P' P f F hw w → (∀ w', IsCPMap P'' P' f' F' hw' w' → ∃ w'', IsCPMap P'' P (f' ≫ f) (F' ≫ F) hw'' w'' ∧ Tri w w' w'') ∧ ((∀ (T : Over S'') (x y : T ⟶ G''), toBase hw' (x * y) = toBase hw' x * toBase hw' y) → ∀ w'', IsCPMap P'' P (f' ≫ f) (F' ≫ F) hw'' w'' → ∃ w', IsCPMap P'' P' f' F' hw' w' ∧ Tri w w' w'')) := by
   intro S S' S'' f f' G _ _ G' _ _ G'' _ _ P P' P'' F hw w F' hw' hw'' h

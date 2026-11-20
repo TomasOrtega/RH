@@ -2,6 +2,11 @@ import Mathlib
 
 namespace UpperTheory.Reformulated.B.AddCharacterCount.Helpers
 
+/- English proof (translation)
+Establish `li : LinearIndependent C (M` using `Multiplicative F → C) ((fun f => f : (Multiplicative F →* C) → Multiplicative F → C) ∘ AddChar.toMonoidHomEquiv) := (linearIndependent_monoidHom (Multiplicative F) C).comp _ AddChar.toMonoidHomEquiv.injective`. Establish `h1` using `li.cardinalMk_le_finrank`. Rewrite `h1` using `[Module.finrank_fintype_fun_eq_card]`. Establish `hlt : Cardinal.mk (AddChar F C) < Cardinal.aleph0` using `lt_of_le_of_lt h1 Cardinal.natCast_lt_aleph0`. Establish `hfin : Finite (AddChar F C)` using `Cardinal.lt_aleph0_iff_finite.mp hlt`.
+
+Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `: Nat.card (AddChar F C) ≤ Fintype.card (Multiplicative F)`. Establish `h2` using `Cardinal.toNat_le_toNat h1 Cardinal.natCast_lt_aleph0`. Simplify `h2` using `[Nat.card]`. Simplify `this` using `[Nat.card_eq_fintype_card]`.
+-/
 private lemma card_le {C F : Type} [Field C] [Fintype F] [AddCommGroup F] :
     Finite (AddChar F C) ∧ Nat.card (AddChar F C) ≤ Nat.card F := by
   have li : LinearIndependent C (M := Multiplicative F → C)
@@ -21,6 +26,11 @@ private lemma card_le {C F : Type} [Field C] [Fintype F] [AddCommGroup F] :
 end UpperTheory.Reformulated.B.AddCharacterCount.Helpers
 
 open UpperTheory.Reformulated.B.AddCharacterCount.Helpers in
+/- English proof (translation)
+Introduce `C F _ _ _ _ ψ hψ`. Establish `hinj : Function.Injective ψ.mulShift` using `AddChar.to_mulShift_inj_of_isPrimitive (AddChar.IsPrimitive.of_ne_one hψ)`. Take `⟨hfin, hc⟩` from `card_le (C := C) (F := F)`. Establish `hbij : Function.Bijective ψ.mulShift` using `hinj.bijective_of_nat_card_le hc`. Use `⟨Equiv.ofBijective _ hbij, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `h h'`. Simplify using `[AddChar.mulShift_mul]`. Introduce `h a`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.AddCharacterCount.main :
     ∀ {C F : Type} [inst : Field C] [inst_1 : Field F] [Fintype F] [DecidableEq F] (ψ : AddChar F C),
       ψ ≠ (1 : AddChar F C) →

@@ -12,6 +12,13 @@ noncomputable section
 
 namespace GlobalTheory.LKCx.ClsReg
 
+/- English proof (translation)
+Establish `hsh : sh G ((e * e'⁻¹ : G.Cˣ) : G.C) = sh G ((e'⁻¹ : G.Cˣ) : G.C) * sh G (e : G.C)`. Simplify using `only [sh, Units.val_mul, map_mul, MulOpposite.unop_mul]`. Establish `h1 : sh G (e' : G.C) * sh G ((e'⁻¹ : G.Cˣ) : G.C) = 1`. Simplify using `only [sh]`. Rewrite using `[← MulOpposite.unop_mul, ← map_mul, Units.inv_mul, map_one, MulOpposite.unop_one]`.
+
+Establish `hrr : (r' : ℚ) * ((r : ℚ) / r') = r` using `by field_simp`. Establish `key2 : ((e : G.C) * ((e'⁻¹ : G.Cˣ) : G.C)) * ((e' : G.C) * a' * ((β : G.C) * sh G (e' : G.C) * ((β⁻¹ : G.Cˣ) : G.C))) * ((β : G.C) * (sh G ((e'⁻¹ : G.Cˣ) : G.C) * sh G (e : G.C)) * ((β⁻¹ : G.Cˣ) : G.C)) = (e : G.C) * a' * ((β : G.C) * sh G (e : G.C) * ((β⁻¹ : G.Cˣ) : G.C))`. Simplify using `only [mul_assoc]`. Rewrite using `[Units.inv_mul_cancel_left, Units.inv_mul_cancel_left, ← mul_assoc (sh G (e' : G.C)), h1, one_mul]`. Rewrite using `[hsh, Units.val_mul]`.
+
+Simplify using `only [← Algebra.smul_def, smul_mul_assoc, mul_smul_comm, smul_smul, hrr]`. Rewrite using `[key2]`.
+-/
 theorem conj_rel_alg' {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β e e' : G.Cˣ) (a' : G.C) (r r' : ℚˣ) :
     algebraMap ℚ G.C (r : ℚ) * ((e : G.C) * a' * ((β : G.C) * sh G (e : G.C) * ((β⁻¹ : G.Cˣ) : G.C))) =
       algebraMap ℚ G.C ((r : ℚ) / r') * (((e * e'⁻¹ : G.Cˣ) : G.C) * (algebraMap ℚ G.C (r' : ℚ) *
@@ -32,6 +39,13 @@ theorem conj_rel_alg' {p : ℕ} [Fact p.Prime] (G : HTGroup p) (β e e' : G.Cˣ)
   simp only [← Algebra.smul_def, smul_mul_assoc, mul_smul_comm, smul_smul, hrr]
   rw [key2]
 
+/- English proof (translation)
+Establish `hc` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC y₀ hsep hdeg`. Establish `hamem : a ∈ Subalgebra.centralizer G.F ({y₀} : Set G.C)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`.
+
+Conclude with `ha.eq.symm`. Establish `hbmem : b ∈ Subalgebra.centralizer G.F ({y₀} : Set G.C)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`.
+
+Conclude with `hb.eq.symm`. Rewrite `hamem` using `[hc]`. Establish `h2` using `Algebra.adjoin_le_centralizer_centralizer G.F ({y₀} : Set G.C) hamem`. Rewrite `h2` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(h2 b hbmem).symm`.
+-/
 theorem commute_of_commute_of_separable {p : ℕ} [Fact p.Prime] (G : HTGroup p) (y₀ : G.C)
     (hsep : (minpoly G.F y₀).Separable) (hdeg : (minpoly G.F y₀).natDegree = G.n) (a b : G.C)
     (ha : Commute a y₀) (hb : Commute b y₀) : Commute a b := by
@@ -51,6 +65,9 @@ theorem commute_of_commute_of_separable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
   rw [Subalgebra.mem_centralizer_iff] at h2
   exact (h2 b hbmem).symm
 
+/- English proof (translation)
+Use `haveI : Infinite G.F := Infinite.of_injective (Nat.cast : ℕ → G.F) Nat.cast_injective`. Take `⟨g, hg⟩` from `GlobalTheory.LKInv.exists_unit_conj_of_minpoly_eq G.F G.C G.n G.rankC (b : G.C) (a : G.C) hsep hdeg hab`. Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, mul_assoc, Units.mul_inv, mul_one]`.
+-/
 theorem units_conj_of_minpoly_eq_of_separable {p : ℕ} [Fact p.Prime] (G : HTGroup p) (a b : G.Cˣ)
     (hab : minpoly G.F (a : G.C) = minpoly G.F (b : G.C)) (hsep : (minpoly G.F (b : G.C)).Separable)
     (hdeg : (minpoly G.F (b : G.C)).natDegree = G.n) : ∃ g : G.Cˣ, (a : G.C) = g * b * ↑g⁻¹ := by

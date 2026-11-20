@@ -10,6 +10,39 @@ noncomputable section
 
 namespace GoodPointBranch
 
+/- English proof (translation)
+Use `set ψ : (Fin (d + 1) → ℂ) → Fin n → ℂ := fun t => IndefiniteRowSideFullHecke.ComplexSets.firstCoords (φ t) with hψdef`. Establish `hψd : DifferentiableOn ℂ ψ (ball 0 r)` using `differentiableOn_pi.2 fun i => differentiableOn_pi.1 hφd (Sum.inl i)`. Establish `h0r : (0 : Fin (d + 1) → ℂ) ∈ ball 0 r` using `mem_ball_self hr`. Establish `hψ : HasStrictFDerivAt ψ (fderiv ℂ ψ 0) 0` using `(analyticOnNhd_of_differentiableOn isOpen_ball hψd 0 h0r).hasStrictFDerivAt`. Establish `hψ0 : ψ 0 = q` using `by simp only [hψdef, hφ0, hwq]`.
+
+Take `⟨H, hHd, hH0, hF⟩` from `hvan`. Establish `hk : k ≠ 0`. Introduce `hk0`. Establish `h : linEval u (ψ 0) = (0 : Fin (d + 1) → ℂ) 0 ^ k * H 0` using `hF 0 h0r`. Rewrite `h` using `[hψ0, hqu, hk0, pow_zero, one_mul]`.
+
+Conclude with `hH0 0 h0r h.symm`. Establish `hzero : ∀ t ∈ ball (0 : Fin (d + 1) → ℂ) r, linEval u (ψ t) = 0 ↔ t 0 = 0`. Introduce `t ht`. Establish `h : linEval u (ψ t) = t 0 ^ k * H t` using `hF t ht`. Rewrite using `[h, mul_eq_zero, pow_eq_zero_iff hk]`.
+
+Conclude with `or_iff_left (hH0 t ht)`. Establish `hψZ : ∀ t ∈ ball (0 : Fin (d + 1) → ℂ) r, ψ t ∈ zeroSet J` using `fun t ht => NormalModelFibre.firstCoords_mem_zeroSet M (hφZ ht)`. Establish `hslice : ∀ᶠ v in 𝓝 (0 : Fin d → ℂ), ψ (consZero d v) ∈ zeroSet J ∩ {x | linEval u x = 0}` using `by filter_upwards [ball_mem_nhds (0 : Fin d → ℂ) hr] with v hv`. Establish `hv'` using `consZero_mem_ball hv`. Conclude with `⟨hψZ _ hv', (hzero _ hv').2 (consZero_apply_zero v)⟩`.
+
+Take `⟨ha, W, hW, hWinj, hcov⟩` from `slice_chart hψ hψ0 hinjD hV hqV hg hAg hS hslice`. Establish `hE : ball (0 : Fin (d + 1) → ℂ) r ∩ φ ⁻¹' G ∩ ψ ⁻¹' N₀ ∈ 𝓝 (0 : Fin (d + 1) → ℂ)`. Establish `hφc : ContinuousAt φ 0` using `hφd.continuousOn.continuousAt (ball_mem_nhds 0 hr)`. Establish `hψc : ContinuousAt ψ 0` using `hψd.continuousOn.continuousAt (ball_mem_nhds 0 hr)`. Conclude with `inter_mem (inter_mem (ball_mem_nhds 0 hr) (hφc.preimage_mem_nhds (by rw [hφ0]; exact hG))) (hψc.preimage_mem_nhds (by rw [hψ0]; exact hN₀))`.
+
+Take `⟨ε₁, hε₁, hε₁E⟩` from `Metric.mem_nhds_iff.1 hE`. Take `⟨ε₂, hε₂, hε₂W⟩` from `Metric.mem_nhds_iff.1 hW`. Establish `hs : 0 < min ε₁ ε₂` using `lt_min hε₁ hε₂`. Establish `hs1 : ball (0 : Fin (d + 1) → ℂ) (min ε₁ ε₂) ⊆ ball 0 r ∩ φ ⁻¹' G ∩ ψ ⁻¹' N₀` using `(ball_subset_ball (min_le_left _ _)).trans hε₁E`. Establish `hsr : ball (0 : Fin (d + 1) → ℂ) (min ε₁ ε₂) ⊆ ball 0 r` using `fun t ht => (hs1 ht).1.1`.
+
+Establish `hs2 : ball (0 : Fin d → ℂ) (min ε₁ ε₂) ⊆ W` using `(ball_subset_ball (min_le_right _ _)).trans hε₂W`. Establish `hinj : InjOn ψ (ball 0 (min ε₁ ε₂))`. Introduce `t ht t' ht' htt`. Distinguish the cases in `hφe : φ t = φ t'`. Conclude with `hφi (hsr ht) (hsr ht') hφe`.
+
+Establish `hu : linEval u (ψ t) = 0` using `hdouble _ (hφZ (hsr ht)) _ (hφZ (hsr ht')) htt (hs1 ht).2 hφe`. Establish `ht0 : t 0 = 0` using `(hzero t (hsr ht)).1 hu`. Establish `ht'0 : t' 0 = 0` using `(hzero t' (hsr ht')).1 (by rw [← htt]; exact hu)`. Establish `htail : Fin.tail t = Fin.tail t'` using `hWinj (hs2 (tail_mem_ball ht)) (hs2 (tail_mem_ball ht')) (by show ψ (consZero d (Fin.tail t)) = ψ (consZero d (Fin.tail t'))`. Rewrite using `[consZero_tail t ht0, consZero_tail t' ht'0]`.
+
+Conclude with `htt)`. Combine the equalities or inequalities in the displayed calculation. Set `γ : VarBranch J (d + 1) q` to `{ radius := min ε₁ ε₂, radius_pos := hs, toFun := ψ, differentiableOn := hψd.mono hsr, injOn := hinj, map_zero := hψ0, mapsTo := fun t ht => hψZ t (hsr ht) }`. Use `⟨γ, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hUs⟩` from `hφU (min ε₁ ε₂) hs`.
+
+Use `⟨U, hU, fun w' hw' => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, rfl⟩` from `hUs hw'`. Conclude with `⟨t, ht, rfl⟩`. Introduce and unpack `x ⟨t, ht, rfl⟩`. Conclude with `⟨(hs1 ht).2, φ t, ⟨hφZ (hsr ht), (hs1 ht).1.2⟩, rfl⟩`.
+
+Take `⟨N, hN, hNS⟩` from `hcov (ball 0 (min ε₁ ε₂)) (ball_mem_nhds 0 hs) hs2`. Use `⟨N, hN, fun x hx hxu => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, hvx⟩` from `hNS ⟨⟨hx.1, hxu⟩, hx.2⟩`. Conclude with `⟨consZero d v, ⟨consZero_mem_ball hv, consZero_apply_zero v⟩, hvx⟩`. Conclude with `⟨H, hHd.mono hsr, fun t ht => hH0 t (hsr ht), fun t ht => hF t (hsr ht)⟩`.
+
+Establish `hπ : ∀ x : Fin n → ℂ, LinearMap.toMatrix' (A : (Fin n → ℂ) →ₗ[ℂ] (Fin d → ℂ)) *ᵥ x = A x` using `fun x => LinearMap.toMatrix'_mulVec _ x`. Establish `h1 : HasFDerivAt (fun τ : Fin (d + 1) → ℂ => (τ 0, A (ψ τ))) ((ContinuousLinearMap.proj 0).prod (A.comp (fderiv ℂ ψ 0))) 0` using `(hasFDerivAt_apply 0 0).prodMk (A.hasFDerivAt.comp 0 hψ.hasFDerivAt)`. Establish `h2 : HasFDerivAt (fun τ => vecCons (τ 0) (LinearMap.toMatrix' (A : (Fin n → ℂ) →ₗ[ℂ] (Fin d → ℂ)) *ᵥ γ.toFun τ)) ((consCLM d).comp ((ContinuousLinearMap.proj 0).prod (A.comp (fderiv ℂ ψ 0)))) 0`. Establish `h3` using `(consCLM d).hasFDerivAt.comp 0 h1`. Establish `hfun : (fun τ => vecCons (τ 0) (LinearMap.toMatrix' (A : (Fin n → ℂ) →ₗ[ℂ] (Fin d → ℂ)) *ᵥ γ.toFun τ)) = ⇑(consCLM d) ∘ fun τ : Fin (d + 1) → ℂ => (τ 0, A (ψ τ))`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[Function.comp_apply, consCLM_apply, hπ]`. Rewrite using `[hfun]`. Conclude with `h3`. Rewrite using `[h2.fderiv]`.
+
+Use `set L := (consCLM d).comp ((ContinuousLinearMap.proj 0).prod (A.comp (fderiv ℂ ψ 0))) with hL`. Establish `hLinj : Function.Injective L`. Use `(injective_iff_map_eq_zero L).2 fun v hv => ?_` and prove the remaining obligations. Establish `hLv : L v = vecCons (v 0) (A (fderiv ℂ ψ 0 v))`. Rewrite using `[hL, ContinuousLinearMap.comp_apply, consCLM_apply]`.
+
+Both sides reduce to the same expression. Establish `hv' : vecCons (v 0) (A (fderiv ℂ ψ 0 v)) = 0` using `by rw [← hLv]; exact hv`. Establish `h0 : v 0 = 0` using `by simpa using congrFun hv' 0`. Establish `hA : A (fderiv ℂ ψ 0 v) = 0`. Use function extensionality and compare the values at `j`.
+
+Simplify using `using congrFun hv' j.succ`. Conclude with `ha v h0 hA`. Conclude with `⟨hLinj, LinearMap.injective_iff_surjective (f := (L : (Fin (d + 1) → ℂ) →ₗ[ℂ] (Fin (d + 1) → ℂ))).1 hLinj⟩`.
+-/
 theorem exists_branch {n d : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} (M : IndefiniteRowSideFullHecke.ComplexSets.NormalModel J)
     {u q : Fin n → ℂ} (hqu : linEval u q = 0)
     {A : (Fin n → ℂ) →L[ℂ] (Fin d → ℂ)} {O : Set (Fin d → ℂ)} {V : Set (Fin n → ℂ)}

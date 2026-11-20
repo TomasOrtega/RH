@@ -14,6 +14,11 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ConeLaw
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hpure v k hk l hl hkx`. Take `⟨g₁, hg₁, hq⟩` from `GlobalTheory.T.seesaw_type_a_triple_stabilizer F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ v k hk l hkx`. Use `⟨g₁, hg₁, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hlaw` using `GlobalTheory.T.seesaw_type_a_triple_second hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he k l g₁ hkx hq`. Establish `hρ : locOp v (G.M.co.rho B.ψ (partFin v (shiftA H H' 1))) φ ∈ SB _` using `locOp_mem v _ φ`.
+
+Establish `h1 : locOp v (om (1, 1)) φ = φ` using `locOp_of_fix (fun Φ _ => by rw [← Prod.one_eq_mk, map_one]; rfl) hφ`. Simplify using `only [GlobalTheory.ConeBump.integ]`. Rewrite using `[GlobalTheory.T.local_stabilizer_eigen_idele hKP F E σ B b a' G H H' X om om' hT v k hk l hkx φ hφ, GlobalTheory.T.seesaw_type_a_triple_third hKP F E σ B b a' G G₁ H H' X om om' om₁ om₁' hC hT hT₁ e he ei ev hei hev hpure v k hk g₁ hg₁ _ hlaw _ hρ, h1]`.
+-/
 theorem integ_law : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W),

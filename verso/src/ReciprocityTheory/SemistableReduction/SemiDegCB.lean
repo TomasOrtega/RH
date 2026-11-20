@@ -16,17 +16,29 @@ def consZero (K : Type) [Field K] (k : ℕ) : (Fin k → K) →ₗ[K] (Fin (k + 
     ext i
     refine Fin.cases ?_ (fun j => ?_) i <;> simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem consZero_zero (K : Type) [Field K] {k : ℕ} (y : Fin k → K) :
     consZero K k y 0 = 0 := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem consZero_succ (K : Type) [Field K] {k : ℕ} (y : Fin k → K) (i : Fin k) :
     consZero K k y i.succ = y i := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h i.succ`.
+-/
 theorem consZero_injective (K : Type) [Field K] (k : ℕ) : Function.Injective (consZero K k) := by
   intro x y h
   funext i
   simpa using congrFun h i.succ
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[hx]`. Simplify using `[Fin.tail]`.
+-/
 theorem consZero_tail (K : Type) [Field K] {k : ℕ} (x : Fin (k + 1) → K) (hx : x 0 = 0) :
     consZero K k (Fin.tail x) = x := by
   funext i
@@ -34,6 +46,11 @@ theorem consZero_tail (K : Type) [Field K] {k : ℕ} (x : Fin (k + 1) → K) (hx
   · simp [hx]
   · simp [Fin.tail]
 
+/- English proof (translation)
+Simplify using `only [intVec, Submodule.mem_pi, Set.mem_univ, forall_const]`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using ha`.
+
+Simplify using `[Pi.single_apply, h, Submodule.zero_mem]`.
+-/
 theorem single_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} (i : Fin k) {a : K}
     (ha : a ∈ (1 : Submodule (𝓞 K) K)) : Pi.single i a ∈ intVec K k := by
   classical
@@ -44,6 +61,11 @@ theorem single_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} (i : Fi
     simpa using ha
   · simp [Pi.single_apply, h, Submodule.zero_mem]
 
+/- English proof (translation)
+Simplify using `only [intVec, Submodule.mem_pi, Set.mem_univ, forall_const]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Simplify using `using h i.succ`. Introduce `h i`.
+
+Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Submodule.zero_mem]`. Simplify using `using h j`.
+-/
 theorem consZero_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} {y : Fin k → K} :
     consZero K k y ∈ intVec K (k + 1) ↔ y ∈ intVec K k := by
   simp only [intVec, Submodule.mem_pi, Set.mem_univ, forall_const]
@@ -55,6 +77,9 @@ theorem consZero_mem_intVec (K : Type) [Field K] [NumberField K] {k : ℕ} {y : 
     · simp [Submodule.zero_mem]
     · simpa using h j
 
+/- English proof (translation)
+The claim follows from `| 0, X, _, _ => by refine ⟨Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun j => j.elim0, fun j => j.elim0, fun t _ => ?_, fun x _ => ⟨Fin.elim0, fun i => i.elim0, ?_⟩, ?_⟩ · convert X.zero_mem using 1 · ext i exact i.elim0 · simp only [Finset.univ_eq_empty, Finset.p …`.
+-/
 theorem lattice_split (K : Type) [Field K] [NumberField K] : ∀ (k : ℕ)
     (X : Submodule (𝓞 K) (Fin k → K)), X.FG → intVec K k ≤ X →
     ∃ (C : Fin k → Submodule (𝓞 K) K) (z : Fin k → Fin k → K),

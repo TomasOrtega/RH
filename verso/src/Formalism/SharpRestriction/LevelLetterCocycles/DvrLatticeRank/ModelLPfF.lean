@@ -27,6 +27,9 @@ def WD : Prop :=
       ∑ k, algebraMap (LetA O n) W.EE ((letE c : LetA O n) * b k) ⊗ₜ[O] mkL W T π' c (z k) (hz k) →
     expS W T c ζ a y = expS W T c ζ b z
 
+/- English proof (translation)
+Take `⟨m', a', y', ⟨hy', hx'⟩, hg⟩` from `LevelExpansions.NL_rep W T hx`. Take `⟨hy, hxr⟩` from `hr`. Introduce `τ ζ hpt i`. Rewrite using `[hwd τ ζ hpt _ y hy _ y' hy' (hxr.symm.trans hx')]`. Conclude with `hg τ ζ hpt i`.
+-/
 theorem good_all (hwd : WD W T Pt π' c) {x : LA W T π' c} (hx : x ∈ NL W T Pt π' Eπ h' c)
     {m : ℕ} {a : Fin m → ↥W.AΔ} {y : Fin m → W.DD T} (hr : IsRepL W T π' Eπ h' c x a y) :
     ∀ τ ζ, Pt c ζ τ → ∀ i : ℤ, expS W T c ζ (fun j => (a j : LetA O n)) y i ∈
@@ -37,6 +40,9 @@ theorem good_all (hwd : WD W T Pt π' c) {x : LA W T π' c} (hx : x ∈ NL W T P
   rw [hwd τ ζ hpt _ y hy _ y' hy' (hxr.symm.trans hx')]
   exact hg τ ζ hpt i
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨m, a, y, ⟨hy, hx⟩, -⟩`. Use `⟨∑ j, a j ⊗ₜ ⟨mkL W T π' c (y j) (hy j), Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, hx]`. Both sides reduce to the same expression.
+-/
 theorem nl_le : NL W T Pt π' Eπ h' c ≤ LamLA W T π' Eπ h' c ⊤ := by
   refine Submodule.span_le.2 ?_
   rintro x ⟨m, a, y, ⟨hy, hx⟩, -⟩
@@ -44,6 +50,13 @@ theorem nl_le : NL W T Pt π' Eπ h' c ≤ LamLA W T π' Eπ h' c ⊤ := by
   rw [map_sum, hx]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, a, y, hr, hg⟩` from `hx`. Use `Submodule.subset_span ⟨m, _, y, MLE.rep_smul W T π' Eπ h' c hr hb, fun τ ζ hpt => ?_⟩` and prove the remaining obligations. Conclude with `MLB.goodF_mul W T c ζ τ h' b _ y (hg τ ζ hpt)`.
+
+Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul o x _ hx => rw [LinearMap.map_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem nl_smulA {b : LetA O n} (hb : b ∈ W.AΔ) {x : LA W T π' c} (hx : x ∈ NL W T Pt π' Eπ h' c) :
     smulLA W T π' c b x ∈ NL W T Pt π' Eπ h' c := by
   induction hx using Submodule.span_induction with
@@ -55,6 +68,11 @@ theorem nl_smulA {b : LetA O n} (hb : b ∈ W.AΔ) {x : LA W T π' c} (hx : x �
   | add x y _ _ hx hy => rw [map_add]; exact Submodule.add_mem _ hx hy
   | smul o x _ hx => rw [LinearMap.map_smul]; exact Submodule.smul_mem _ _ hx
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [expS, serC, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[← Algebra.smul_def, LevelExpansions.lev_smul, mul_smul]`.
+
+Rewrite using `[smul_zero]`.
+-/
 theorem expS_alg_mul (ζ : LL) (o : O) {m : ℕ} (a : Fin m → LetA O n) (y : Fin m → W.DD T) :
     expS W T c ζ (fun j => algebraMap O (LetA O n) o * a j) y = algebraMap O LL o • expS W T c ζ a y := by
   funext i
@@ -64,6 +82,11 @@ theorem expS_alg_mul (ζ : LL) (o : O) {m : ℕ} (a : Fin m → LetA O n) (y : F
   · rw [← Algebra.smul_def, LevelExpansions.lev_smul, mul_smul]
   · rw [smul_zero]
 
+/- English proof (translation)
+Take `⟨m, a, y, hr⟩` from `MLE.rep_exists W T π' Eπ h' c hx`. Establish `hr'` using `MLE.rep_smul W T π' Eπ h' c hr (W.AΔ.algebraMap_mem (((PD.p : ℕ) : O) ^ k))`. Rewrite `hr'` using `[← MLE.smul_eq_smulLA]`. Establish `hg` using `good_all W T Pt π' Eπ h' c hwd hk hr'`. Use `Submodule.subset_span ⟨m, a, y, hr, fun τ ζ hpt i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `hg τ ζ hpt i`. Establish `e : expS W T c ζ (fun j => ((⟨algebraMap O (LetA O n) (((PD.p : ℕ) : O) ^ k) * a j, W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) (a j).2⟩ : ↥W.AΔ) : LetA O n)) y = algebraMap O LL (((PD.p : ℕ) : O) ^ k) • expS W T c ζ (fun j => (a j : LetA O n)) y` using `expS_alg_mul W T c ζ _ _ y`. Rewrite `h1` using `[e, Pi.smul_apply]`. Conclude with `(Submodule.smul_mem_iff _ (by rw [map_pow]; exact pow_ne_zero _ hp)).1 h1`.
+-/
 theorem nl_sat (hwd : WD W T Pt π' c) (hp : algebraMap O LL ((PD.p : ℕ) : O) ≠ 0)
     {x : LA W T π' c} (hx : x ∈ LamLA W T π' Eπ h' c ⊤) (k : ℕ)
     (hk : ((PD.p : ℕ) : O) ^ k • x ∈ NL W T Pt π' Eπ h' c) : x ∈ NL W T Pt π' Eπ h' c := by

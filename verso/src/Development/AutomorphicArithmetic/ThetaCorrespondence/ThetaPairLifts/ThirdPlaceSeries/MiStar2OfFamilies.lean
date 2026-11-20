@@ -20,6 +20,9 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Unf GlobalTheory.MiS
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.MiTop GlobalTheory.SeeSaw GlobalTheory.Fam ValuativeRel IsLocalRing GlobalTheory.FinPl
 namespace GlobalTheory.MiTop
+/- English proof (translation)
+Introduce `hDS hCR hHC D L hT Gi Gl Kc Yd cX ex W hB hLv hFam hSv hPu`. Conclude with `_root_.GlobalTheory.T.joint_star_product_nonvanishing_alt hDS hCR W hB (_root_.GlobalTheory.MiTop.descent_eV_mem_level_alt W hB hLv) (_root_.GlobalTheory.T.joint_of_famAllQ_of_servedQ hCR hHC W hFam hSv) hPu`.
+-/
 theorem miStar2_of_bot_lev_fam_served_puNZ : GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.HarishChandraModules → ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.MiTop.BottomHypotheses W → _root_.GlobalTheory.MiS.LevelHypothesis W → _root_.GlobalTheory.MiTop.FamilyAllConditions W → _root_.GlobalTheory.MiTop.FamilyServedCondition W → PuNZ D → (_root_.GlobalTheory.MiS.packageCoefficientSpace W).MIstar2 (W.Q.F.eV (_root_.GlobalTheory.MiS.packageCoefficientSpace W).zs) W.Q.sEE := by
   intro hDS hCR hHC D L hT Gi Gl Kc Yd cX ex W hB hLv hFam hSv hPu
   exact _root_.GlobalTheory.T.joint_star_product_nonvanishing_alt hDS hCR W hB (_root_.GlobalTheory.MiTop.descent_eV_mem_level_alt W hB hLv) (_root_.GlobalTheory.T.joint_of_famAllQ_of_servedQ hCR hHC W hFam hSv) hPu

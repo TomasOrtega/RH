@@ -15,6 +15,15 @@ open scoped TensorProduct Matrix
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Break down `hr.lt_or_eq with hr | hr` into its components or cases. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`.
+
+Simplify using `[Complex.zero_cpow hw]`. Establish `hx' : (x : ℂ) ≠ 0` using `by exact_mod_cast hx`. Establish `hr' : (r : ℂ) ≠ 0` using `by exact_mod_cast hr.ne'`. Establish `hxr : ((x * r : ℝ) : ℂ) ≠ 0` using `by push_cast; exact mul_ne_zero hx' hr'`. Rewrite using `[Complex.cpow_def_of_ne_zero hxr, Complex.cpow_def_of_ne_zero hx', Complex.cpow_def_of_ne_zero hr', ← Complex.exp_add]`.
+
+Use `congr 1`. Establish `: Complex.log ((x * r : ℝ) : ℂ) = Complex.log (x : ℂ) + Complex.log (r : ℂ)`. Rewrite using `[show ((x * r : ℝ) : ℂ) = (r : ℂ) * (x : ℂ) by push_cast; ring, Complex.log_ofReal_mul hr hx', Complex.ofReal_log hr.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Expand and normalize the polynomial expressions, which then agree. Substitute `hr` using the available equality. Distinguish the cases in `hw : w = 0`. Simplify using `[hw]`. Simplify using `[Complex.zero_cpow hw]`.
+-/
 theorem cpow_mul_nonneg (x r : ℝ) (hr : 0 ≤ r) (w : ℂ) :
     (((x * r : ℝ)) : ℂ) ^ w = (x : ℂ) ^ w * (r : ℂ) ^ w := by
   rcases hr.lt_or_eq with hr | hr
@@ -40,6 +49,11 @@ theorem cpow_mul_nonneg (x r : ℝ) (hr : 0 ≤ r) (w : ℂ) :
     · simp [hw]
     · simp [Complex.zero_cpow hw]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on generalizing x with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`. Establish `e : x * (r j * ∏ i ∈ s, r i) = (x * ∏ i ∈ s, r i) * r j` using `by ring`.
+
+Rewrite using `[e, cpow_mul_nonneg _ _ (hr j (Finset.mem_insert_self j s)), ih x (fun i hi => hr i (Finset.mem_insert_of_mem hi))]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cpow_mul_prod {ι : Type} (x : ℝ) (s : Finset ι) (r : ι → ℝ) (hr : ∀ i ∈ s, 0 ≤ r i) (w : ℂ) :
     (((x * ∏ i ∈ s, r i : ℝ)) : ℂ) ^ w = (x : ℂ) ^ w * ∏ i ∈ s, ((r i : ℝ) : ℂ) ^ w := by
   classical
@@ -52,6 +66,15 @@ theorem cpow_mul_prod {ι : Type} (x : ℝ) (s : Finset ι) (r : ι → ℝ) (hr
       ih x (fun i hi => hr i (Finset.mem_insert_of_mem hi))]
     ring
 
+/- English proof (translation)
+Establish `hset : {x | ∃ y ∈ L₁, ∃ y' ∈ L₂, x = y + B.mulVec y'} = (L₁ : Set (Fin n → Fv F v ⊗[F] E))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, y', hy', rfl⟩`. Establish `hy'' : y' ∈ latO bs v` using `by rw [← h2]; exact hy'`.
+
+Establish `hB' : B.mulVec y' ∈ (L₁ : Set (Fin n → Fv F v ⊗[F] E))`. Rewrite using `[h1]`. Conclude with `mulVec_latO σ bs J T v hv B hB y' hy''`. Conclude with `L₁.add_mem hy hB'`. Introduce `hx`.
+
+Conclude with `⟨x, hx, 0, L₂.zero_mem, by simp⟩`. Establish `hpos : lam (L₁ : Set (Fin n → Fv F v ⊗[F] E)) ≠ 0` using `(hco.1.measure_pos lam ⟨0, L₁.zero_mem⟩).ne'`. Establish `hfin : lam (L₁ : Set (Fin n → Fv F v ⊗[F] E)) ≠ ⊤` using `hco.2.measure_lt_top.ne`. Unfold `nu2`. Rewrite using `[hset, ENNReal.div_self hpos hfin]`.
+
+Both sides reduce to the same expression.
+-/
 theorem self_dual_measure_lattice_one (σ : E →ₐ[F] E) {d M n : ℕ} (bs : Module.Basis (Fin d) F E) (J : Matrix (Fin M) (Fin M) E)
     (T : Matrix (Fin n) (Fin n) E) (v : HeightOneSpectrum (𝓞 F)) (hv : Good σ bs J T v)
     (lam : Measure (Fin n → Fv F v ⊗[F] E)) (hlam : lam.IsAddHaarMeasure) (L₁ L₂ : AddSubgroup (Fin n → Fv F v ⊗[F] E))
@@ -75,6 +98,17 @@ theorem self_dual_measure_lattice_one (σ : E →ₐ[F] E) {d M n : ℕ} (bs : M
   rw [hset, ENNReal.div_self hpos hfin]
   rfl
 
+/- English proof (translation)
+Take `⟨Sψ, hSψ⟩` from `psi_split ψ hψ`. Establish `hfin` using `Filter.eventually_cofinite.1 (eventually_good σ hCM bs J T)`. Use `⟨Sψ ∪ hfin.toFinset, fun S hS b hb => ?_⟩` and prove the remaining obligations. Establish `hgood : ∀ v, v ∉ S → Good σ bs J T v` using `fun v hv => by`. Assume the negation of the conclusion as `h`.
+
+Conclude with `hv (hS (Finset.mem_union_right _ (hfin.mem_toFinset.2 h)))`. Establish `hcomp : ∀ v, evalV F v (sndA F (-trPair (AF F) (T.map (inclR (AF F))) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)))) = -trPair (Fv F v) (T.map (inclR (Fv F v))) (hermV σ v (hermFin σ b) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`. Introduce `v`. Establish `h3` using `trPair_T_fE bs ((evalV F v).comp (sndA F)) T (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))`. Rewrite `h3` using `[AlgHom.comp_apply]`.
+
+Rewrite using `[map_neg, map_neg, h3, hermV_val']`. Establish `hinf : fstA F (-trPair (AF F) (T.map (inclR (AF F))) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) = -trPair (Ainf F) (T.map (inclR (Ainf F))) (hermInf σ b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E))`. Rewrite using `[map_neg, trPair_T_fE bs (fstA F) T, hermInf_val]`. Both sides reduce to the same expression. Establish `hint : ∀ v, v ∉ S → evalV F v (sndA F (-trPair (AF F) (T.map (inclR (AF F))) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)))) ∈ v.adicCompletionIntegers F`.
+
+Introduce `v hv`. Rewrite using `[hcomp v]`. Establish `hbv : hermV σ v (hermFin σ b) ∈ latH σ bs v n` using `hb v hv`. Conclude with `neg_mem (trPair_int σ bs J T v (hgood v hv) _ _ (fun i j => (hgood v hv).hT i j) (herm_entries σ hCM bs J T v (hgood v hv) _ hbv))`. Rewrite using `[hSψ S (fun v hv => hS (Finset.mem_union_left _ hv)) _ hint, hinf]`.
+
+Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hcomp v]`.
+-/
 theorem psiT_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d M n : ℕ} (bs : Module.Basis (Fin d) F E)
     (J : Matrix (Fin M) (Fin M) E) (T : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) :
     ∃ S₀ : Finset (HeightOneSpectrum (𝓞 F)), ∀ S, S₀ ⊆ S → ∀ b ∈ UH σ bs n S,
@@ -111,6 +145,11 @@ theorem psiT_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) {d M n : ℕ} (bs
   congr 1
   exact Finset.prod_congr rfl fun v _ => by rw [hcomp v]
 
+/- English proof (translation)
+Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Take `⟨-, -, -, -, -, htr, -, -, -, hgr⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)`. Establish `hpsi : Continuous (psiV F ψ v)`. Unfold `psiV`. Conclude with `hψ.comp ((continuous_const.prodMk continuous_id).comp (GlobalTheory.CompanionTheory.AdelicCharLocal.continuous_singleV F v))`.
+
+Use `hφ.mul (hpsi.comp ?_)` and prove the remaining obligations. Unfold `trPair`. Use `continuous_const.mul (htr.comp ?_)` and prove the remaining obligations. Use `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun c _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply a).comp ((continuous_apply c).comp (hgr n M J)))`.
+-/
 theorem continuous_locI (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     (v : HeightOneSpectrum (𝓞 F)) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (B : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (φ : (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ) (hφ : Continuous φ) :
@@ -126,6 +165,35 @@ theorem continuous_locI (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddCha
   refine continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun c _ => ?_
   exact continuous_const.mul ((continuous_apply a).comp ((continuous_apply c).comp (hgr n M J)))
 
+/- English proof (translation)
+Take `⟨Sψ, hSψ⟩` from `psi_split ψ hψ`. Take `⟨St, hSt⟩` from `tup_split σ hCM ψ hψ M n d J hJ bs μ sdW μi hμi μv hμv`. Establish `hfing` using `Filter.eventually_cofinite.1 (eventually_good σ hCM bs J T)`. Establish `hfinp` using `Filter.eventually_cofinite.1 pure.2.1`. Use `⟨Sψ ∪ St ∪ hfing.toFinset ∪ hfinp.toFinset, fun S hS b hb => ?_⟩` and prove the remaining obligations.
+
+Establish `hSψS : Sψ ⊆ S` using `fun v hv => hS (by simp [hv])`. Establish `hStS : St ⊆ S` using `fun v hv => hS (by simp [hv])`. Establish `hgood : ∀ v, v ∉ S → Good σ bs J T v` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (by simp [hfing.mem_toFinset.2 h]))`.
+
+Establish `hpv : ∀ v, v ∉ S → Φv v = (latV bs v).indicator 1` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (by simp [hfinp.mem_toFinset.2 h]))`. Establish `hbv : ∀ v, v ∉ S → hermV σ v (hermFin σ b) ∈ latH σ bs v n` using `fun v hv => hb v hv`. Set `gi : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ` to `fun Y => phiInf θ l fr g P Y * psiInf F ψ (trPair (Ainf F) (hermInf σ b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (gramR (Ainf F) σ J Y))`.
+
+Set `gv : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → ℂ` to `fun v Y => Φv v Y * psiV F ψ v (trPair (Fv F v) (hermV σ v (hermFin σ b) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J Y))`. Establish `hmeas : ∀ v ∈ S, AEStronglyMeasurable (gv v) (μv v)`. Introduce `v _`. Take `⟨t1, t2, t3, t4, -⟩` from `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`. Use `haveI := (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (Fv F v)).2.2.2.2.2.2.2.1 n M`.
+
+Conclude with `(continuous_locI σ hCM ψ hψ.1 v J _ (Φv v) (pure.1 v).1.continuous).aestronglyMeasurable`. Establish `key` using `hSt S hStS gi gv hmeas`. Establish `hlat` using `(GlobalTheory.T.adelic_tuple_projections F E σ hCM d bs n M).2.2.2.2.2.1`. Establish `hpt : ∀ Y, Φ Y * ψ (trPair (AF F) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (gramR (AF F) σ J Y)) = (GlobalTheory.CompanionTheory.SW.intOff bs S).indicator (fun X => gi (projInf X) * ∏ v ∈ S, gv v (projV v (projFin X))) Y`. Introduce `Y`.
+
+Distinguish the cases in `hY : Y ∈ GlobalTheory.CompanionTheory.SW.intOff bs S`. Rewrite using `[Set.indicator_of_mem hY]`. Establish `hYv : ∀ v, v ∉ S → projV v (projFin Y) ∈ latV bs v` using `hY`. Establish `hΦ : Φ Y = phiInf θ l fr g P (projInf Y) * ∏ v ∈ S, Φv v (projV v (projFin Y))`. Rewrite using `[prod Y, pure.2.2 (projFin Y), finprod_eq_prod_of_mulSupport_subset]`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Use `show Φv v (projV v (projFin Y)) = 1`. Rewrite using `[hpv v hvS, Set.indicator_of_mem (hYv v hvS)]`.
+
+Both sides reduce to the same expression. Establish `hc : ∀ v, evalV F v (sndA F (trPair (AF F) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (gramR (AF F) σ J Y))) = trPair (Fv F v) (hermV σ v (hermFin σ b) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) (gramR (Fv F v) σ J (projV v (projFin Y)))`. Introduce `v`. Establish `h3` using `trPair_gram_fE bs σ ((evalV F v).comp (sndA F)) J (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) Y`. Rewrite `h3` using `[AlgHom.comp_apply]`.
+
+Rewrite using `[h3, hermV_val', projV_projFin]`. Establish `hi : fstA F (trPair (AF F) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (gramR (AF F) σ J Y)) = trPair (Ainf F) (hermInf σ b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) (gramR (Ainf F) σ J (projInf Y))`. Rewrite using `[trPair_gram_fE bs σ (fstA F) J, hermInf_val, projInf_eq]`. Both sides reduce to the same expression. Establish `hint : ∀ v, v ∉ S → evalV F v (sndA F (trPair (AF F) (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) (gramR (AF F) σ J Y))) ∈ v.adicCompletionIntegers F`.
+
+Introduce `v hv`. Rewrite using `[hc v]`. Conclude with `trPair_int σ bs J T v (hgood v hv) _ _ (herm_entries σ hCM bs J T v (hgood v hv) _ (hbv v hv)) (gram_entries σ bs J T v (hgood v hv) _ (hYv v hv))`. Rewrite using `[hΦ, hSψ S hSψS _ hint, hi]`. Simplify using `only [gi, gv, hc]`.
+
+Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem hY]`. Establish `hY' : ¬ ∀ v, v ∉ S → projV v (projFin Y) ∈ latV bs v` using `hY`. Use `push_neg at hY'`.
+
+Take `⟨v, hvS, hYv⟩` from `hY'`. Establish `hsupp : (Function.mulSupport fun w => Φv w (projV w (projFin Y))).Finite`. Use `(hfinp.union (Filter.eventually_cofinite.1 (hlat (projFin Y)))).subset ?_` and prove the remaining obligations. Introduce `w hw`. Assume the negation of the conclusion as `hcon`.
+
+Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hcon`. Apply `hw` to reduce the goal to its premises. Use `show Φv w (projV w (projFin Y)) = 1`. Rewrite using `[hcon.1, Set.indicator_of_mem hcon.2]`. Both sides reduce to the same expression.
+
+Rewrite using `[prod Y, pure.2.2 (projFin Y), finprod_eq_zero _ v _ hsupp, mul_zero, zero_mul]`. Rewrite using `[hpv v hvS, Set.indicator_of_notMem hYv]`. Unfold `jtR`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), key]`.
+-/
 theorem jt_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M n d : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (T : Matrix (Fin n) (Fin n) E) (bs : Module.Basis (Fin d) F E) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     {ι : Type} [Fintype ι] (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (fr : ι → GL (Fin M) ℂ) (g : ι → GL (Fin n) ℂ)
@@ -218,6 +286,19 @@ theorem jt_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M n d : ℕ) (J : 
   unfold jtR
   rw [integral_congr_ae (Filter.Eventually.of_forall hpt), key]
 
+/- English proof (translation)
+Take `⟨S1, h1⟩` from `jt_split σ hCM M n d J hJ T bs ψ hψ θ l fr g P Φ Φf Φv μ pure prod sdW μi hμi μv hμv`. Take `⟨S2, h2⟩` from `psiT_split σ hCM bs J T ψ hψ`. Establish `hfing` using `Filter.eventually_cofinite.1 (eventually_good σ hCM bs J T)`. Establish `hstd` using `Filter.eventually_cofinite.1 std`. Use `⟨S1 ∪ S2 ∪ hfing.toFinset ∪ hstd.toFinset, fun S hS b hb => ?_⟩` and prove the remaining obligations.
+
+Establish `hS1 : S1 ⊆ S` using `fun v hv => hS (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_left _ hv)))`. Establish `hS2 : S2 ⊆ S` using `fun v hv => hS (Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _ hv)))`. Establish `hgood : ∀ v, v ∉ S → Good σ bs J T v` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (Finset.mem_union_left _ (Finset.mem_union_right _ (hfing.mem_toFinset.2 h))))`.
+
+Establish `hL : ∀ v, v ∉ S → (L₁ v : Set (Fin n → Fv F v ⊗[F] E)) = latO bs v ∧ (L₂ v : Set (Fin n → Fv F v ⊗[F] E)) = latO bs v` using `fun v hv => by`. Assume the negation of the conclusion as `h`. Conclude with `hv (hS (Finset.mem_union_right _ (hstd.mem_toFinset.2 h)))`. Establish `hbv : ∀ v, v ∉ S → hermV σ v (hermFin σ b) ∈ latH σ bs v n` using `fun v hv => hb v hv`. Establish `hnu : nuA θ g lam L₁ L₂ (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) = nuInf θ g (hermInf σ b : Matrix (Fin n) (Fin n) (Ainf F ⊗[F] E)) * ∏ v ∈ S, nu2 (lam v) (L₁ v) (L₂ v) (hermV σ v (hermFin σ b) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`.
+
+Unfold `nuA`. Rewrite using `[hermInf_val]`. Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset]`. Conclude with `Finset.prod_congr rfl fun v _ => by rw [hermV_val]`.
+
+Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Use `show nu2 (lam v) (L₁ v) (L₂ v) (matV v (b : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))) = 1`. Rewrite using `[← hermV_val]`.
+
+Conclude with `self_dual_measure_lattice_one σ bs J T v (hgood v hvS) (lam v) (haar v) (L₁ v) (L₂ v) (co v).1 (hL v hvS).1 (hL v hvS).2 _ (herm_entries σ hCM bs J T v (hgood v hvS) _ (hbv v hvS))`. Unfold `whI`. Rewrite using `[hnu, cpow_mul_prod _ S (fun v => nu2 (lam v) (L₁ v) (L₂ v) (hermV σ v (hermFin σ b) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) (fun v _ => ENNReal.toReal_nonneg), h1 S hS1 b hb, h2 S hS2 b hb, Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem whI_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M n d : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
     (T : Matrix (Fin n) (Fin n) E) (bs : Module.Basis (Fin d) F E) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ)
     {ι : Type} [Fintype ι] (θ : ι → (Ainf F ⊗[F] E →+* ℂ)) (l : ι → ℝ) (fr : ι → GL (Fin M) ℂ) (g : ι → GL (Fin n) ℂ)

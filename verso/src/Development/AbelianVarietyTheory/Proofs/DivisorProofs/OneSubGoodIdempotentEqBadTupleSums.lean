@@ -12,8 +12,14 @@ open Classical
 
 variable (D : D7)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(D.host.g_prime k).ne_zero⟩`.
+-/
 theorem neZeroG (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨D.host.g_prime k⟩`.
+-/
 theorem factG (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
 
 attribute [local instance] neZeroG factG
@@ -21,24 +27,38 @@ attribute [local instance] neZeroG factG
 def allTup (k : Fin 2) : Finset (Tup D k) :=
   Finset.univ.image fun a : D.nd.PlG k → (Fin D.R.r → ZMod (D.host.g k)) => fun v => Formalism.CyclotomicNorms.monicOf (a v)
 
+/- English proof (translation)
+Introduce `a b h`. Use function extensionality and compare the values at `i`. Rewrite using `[← Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt a i, h, Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt]`.
+-/
 theorem monicOf_injective (k : Fin 2) :
     Function.Injective (Formalism.CyclotomicNorms.monicOf : (Fin D.R.r → ZMod (D.host.g k)) → (ZMod (D.host.g k))[X]) := by
   intro a b h
   funext i
   rw [← Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt a i, h, Formalism.CyclotomicNorms.Sqf.coeff_monicOf_lt]
 
+/- English proof (translation)
+Introduce `a b h`. Use function extensionality and compare the values at `v`. Conclude with `monicOf_injective D k (congrFun h v)`.
+-/
 theorem tupOf_injective (k : Fin 2) :
     Function.Injective fun a : D.nd.PlG k → (Fin D.R.r → ZMod (D.host.g k)) => fun v => Formalism.CyclotomicNorms.monicOf (a v) := by
   intro a b h
   funext v
   exact monicOf_injective D k (congrFun h v)
 
+/- English proof (translation)
+Unfold `badElt`. Both sides reduce to the same expression.
+-/
 theorem badElt_coeff (k : Fin 2) (S : Finset (Tup D k)) (g : G0g D.nd) :
     (badElt D k S).coeff g = if ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k → g kv = 1 then
       ∑ t ∈ S, ∏ v : D.nd.PlG k, (D.ntypes.eSer k (t v)).coeff (g ⟨k, v⟩) else 0 := by
   unfold badElt
   rfl
 
+/- English proof (translation)
+Take `⟨S, hS, hsum⟩` from `D.ntypes.eSer_sum k`. Rewrite using `[← hsum, ← Finset.sum_image (fun a _ b _ h => monicOf_injective D k h)]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `f hf`.
+
+Take `⟨h1, h2, -⟩` from `(hS f).1 hf`. Conclude with `Finset.mem_image.2 ⟨_, Finset.mem_univ _, Formalism.CyclotomicNorms.Sqf.monicOf_coeffs f h1 h2⟩`. Introduce `f _ hf`. Conclude with `D.ntypes.eSer_zero k f fun h => hf ((hS f).2 h)`.
+-/
 theorem sum_eSer_monicOf (k : Fin 2) :
     ∑ b : Fin D.R.r → ZMod (D.host.g k), D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf b) = 1 := by
   obtain ⟨S, hS, hsum⟩ := D.ntypes.eSer_sum k
@@ -51,6 +71,15 @@ theorem sum_eSer_monicOf (k : Fin 2) :
   · intro f _ hf
     exact D.ntypes.eSer_zero k f fun h => hf ((hS f).2 h)
 
+/- English proof (translation)
+Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[badElt_coeff, allTup, Finset.sum_image (fun a _ b _ h => tupOf_injective D k h)]`. Establish `e : ∑ a : D.nd.PlG k → (Fin D.R.r → ZMod (D.host.g k)), ∏ v, (D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf (a v))).coeff (g ⟨k, v⟩) = ∏ v, (1 : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))).coeff (g ⟨k, v⟩)`. Use `(Fintype.prod_sum (fun v (b : Fin D.R.r → ZMod (D.host.g k)) => (D.ntypes.eSer k (Formalism.CyclotomicNorms.monicOf b)).coeff (g ⟨k, v⟩))).symm.trans ?_` and prove the remaining obligations.
+
+Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_eSer_monicOf D k, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`. Rewrite using `[e, MonoidAlgebra.one_def, MonoidAlgebra.one_def]`. Simplify using `only [MonoidAlgebra.coeff_single, Finsupp.single_apply]`. Distinguish the cases in `h1 : g = 1`.
+
+Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h1)] split_ifs with hs`. Take `⟨kv, hkv⟩` from `Function.ne_iff.1 h1`. Take `⟨k', v⟩` from `kv`.
+
+Distinguish the cases in `hk : k' = k`. Substitute `hk` using the available equality. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) (if_neg fun h => hkv h.symm)`. Conclude with `absurd (hs ⟨k', v⟩ hk) hkv`. Both sides reduce to the same expression.
+-/
 theorem badElt_all (k : Fin 2) : badElt D k (allTup D k) = 1 := by
   apply MonoidAlgebra.coeff_injective
   ext g
@@ -80,6 +109,11 @@ def goodSet (k : Fin 2) : Finset (Tup D k) := (allTup D k).filter (goodAt D k)
 
 def badSet (k : Fin 2) : Finset (Tup D k) := (allTup D k).filter fun t => ¬ goodAt D k t
 
+/- English proof (translation)
+Rewrite using `[← badElt_all D k]`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[MonoidAlgebra.coeff_add, Finsupp.add_apply, badElt_coeff, badElt_coeff, badElt_coeff]`. Use `split_ifs`.
+
+Conclude with `Finset.sum_filter_add_sum_filter_not _ _ _`. Simplify using the standard rewrite rules.
+-/
 theorem badElt_good_add_bad (k : Fin 2) : badElt D k (goodSet D k) + badElt D k (badSet D k) = 1 := by
   rw [← badElt_all D k]
   apply MonoidAlgebra.coeff_injective
@@ -89,12 +123,26 @@ theorem badElt_good_add_bad (k : Fin 2) : badElt D k (goodSet D k) + badElt D k 
   · exact Finset.sum_filter_add_sum_filter_not _ _ _
   · simp
 
+/- English proof (translation)
+Rewrite using `[badElt_coeff, if_neg]`. Take `⟨kv, h1, h2⟩` from `hh`. Conclude with `fun hs => h2 (hs kv h1)`.
+-/
 theorem badElt_coeff_off (k : Fin 2) (S : Finset (Tup D k)) (h : G0g D.nd)
     (hh : ∃ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ k ∧ h kv ≠ 1) : (badElt D k S).coeff h = 0 := by
   rw [badElt_coeff, if_neg]
   obtain ⟨kv, h1, h2⟩ := hh
   exact fun hs => h2 (hs kv h1)
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.coeff_mul_apply_left]`. Rewrite using `[Finsupp.sum_eq_single (fun kv => if kv.1 = 0 then g kv else 1)]`. Use `congr 2`. Use function extensionality and compare the values at `kv`. Distinguish the cases in `h0 : kv.1 = 0`.
+
+Simplify using `[h0]`. Simplify using `[h0]`. Introduce `b hb hne`. Establish `hb0 : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ 0 → b kv = 1`. Introduce `kv hkv`.
+
+Assume the negation of the conclusion as `hc`. Conclude with `hb (hx b ⟨kv, hkv, hc⟩)`. Take `⟨kv, hkv⟩` from `Function.ne_iff.1 hne`. Distinguish the cases in `h0 : kv.1 = 0`. Rewrite using `[hy _ ⟨kv, by rw [h0]; decide, ?_⟩, mul_zero]`.
+
+Introduce `hc`. Apply `hkv` to reduce the goal to its premises. Simplify using `only [h0, if_true]`. Establish `: (b⁻¹ * g) kv = 1` using `hc`. Rewrite `this` using `[Pi.mul_apply, Pi.inv_apply, inv_mul_eq_one]`.
+
+Conclude with `this`. Conclude with `absurd (by simp [h0, hb0 kv h0]) hkv`. Introduce `_`. Conclude with `zero_mul _`.
+-/
 theorem coeff_mul_factors (x y : MonoidAlgebra ℂ (G0g D.nd))
     (hx : ∀ h : G0g D.nd, (∃ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ 0 ∧ h kv ≠ 1) → x.coeff h = 0)
     (hy : ∀ h : G0g D.nd, (∃ kv : (Σ k : Fin 2, D.nd.PlG k), kv.1 ≠ 1 ∧ h kv ≠ 1) → y.coeff h = 0)
@@ -126,6 +174,15 @@ theorem coeff_mul_factors (x y : MonoidAlgebra ℂ (G0g D.nd))
   · intro _
     exact zero_mul _
 
+/- English proof (translation)
+Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `g`. Rewrite using `[coeff_mul_factors D _ _ (fun h hh => badElt_coeff_off D 0 _ h hh) (fun h hh => badElt_coeff_off D 1 _ h hh), badElt_coeff, badElt_coeff, if_pos, if_pos]`. Use `rotate_left`. Introduce and unpack `⟨k, v⟩ hk fin_cases k`.
+
+Simplify using the standard rewrite rules. Conclude with `absurd rfl hk`. Introduce and unpack `⟨k, v⟩ hk fin_cases k`. Conclude with `absurd rfl hk`. Simplify using the standard rewrite rules.
+
+Establish `he : D.ntypes.e0.coeff g = ∑ᶠ a : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), (Fin D.R.r → ZMod (D.host.g kv.1))), (if D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) then ∏ kv : (Σ k : Fin 2, D.nd.PlG k), (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf …` using `rfl`. Rewrite using `[he, finsum_eq_sum_of_fintype, goodSet, goodSet, Finset.sum_filter, Finset.sum_filter, allTup, allTup, Finset.sum_image (fun a _ b _ h => tupOf_injective D 0 h), Finset.sum_image (fun a _ b _ h => tupOf_injective D 1 h), Finset.sum_mul_sum, ← Fintype.sum_prod_type']`. Use `Fintype.sum_equiv ((Equiv.piCurry fun k (_ : D.nd.PlG k) => Fin D.R.r → ZMod (D.host.g k)).trans (piFinTwoEquiv _)) _ _ fun a => ?_` and prove the remaining obligations. Establish `hg : D.ntypes.goodTuple (fun k v => Formalism.CyclotomicNorms.monicOf (a ⟨k, v⟩)) ↔ goodAt D 0 (fun v => Formalism.CyclotomicNorms.monicOf (a ⟨0, v⟩)) ∧ goodAt D 1 (fun v => Formalism.CyclotomicNorms.monicOf (a ⟨1, v⟩))` using `Fin.forall_fin_two`. Rewrite using `[Fintype.prod_sigma, Fin.prod_univ_two]`.
+
+Apply the tactic sequence `by_cases h0 : goodAt D 0 (fun v => Formalism.CyclotomicNorms.monicOf (a ⟨0, v⟩)) <;>`. Apply the tactic sequence `by_cases h1 : goodAt D 1 (fun v => Formalism.CyclotomicNorms.monicOf (a ⟨1, v⟩)) <;>`. Simplify using `[hg, h0, h1, piFinTwoEquiv_apply, Equiv.piCurry_apply, Sigma.curry]`.
+-/
 theorem e0_eq : D.ntypes.e0 = badElt D 0 (goodSet D 0) * badElt D 1 (goodSet D 1) := by
   apply MonoidAlgebra.coeff_injective
   ext g
@@ -158,6 +215,9 @@ theorem e0_eq : D.ntypes.e0 = badElt D 0 (goodSet D 0) * badElt D 1 (goodSet D 1
   by_cases h1 : goodAt D 1 (fun v => Formalism.CyclotomicNorms.monicOf (a ⟨1, v⟩)) <;>
   simp [hg, h0, h1, piFinTwoEquiv_apply, Equiv.piCurry_apply, Sigma.curry]
 
+/- English proof (translation)
+Use `⟨badSet D, fun k t ht => (Finset.mem_filter.1 ht).2, ?_⟩` and prove the remaining obligations. Rewrite using `[e0_eq, ← sub_eq_iff_eq_add'.2 (badElt_good_add_bad D 0).symm, ← sub_eq_iff_eq_add'.2 (badElt_good_add_bad D 1).symm]`. Use `noncomm_ring`.
+-/
 theorem one_sub_goodTypeIdempotent_eq_badTupleSums : ∃ S : ∀ k : Fin 2, Finset (Tup D k), (∀ k, ∀ t ∈ S k, ¬ goodAt D k t) ∧
     1 - D.ntypes.e0 = badElt D 0 (S 0) + badElt D 1 (S 1) - badElt D 0 (S 0) * badElt D 1 (S 1) := by
   refine ⟨badSet D, fun k t ht => (Finset.mem_filter.1 ht).2, ?_⟩

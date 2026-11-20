@@ -12,17 +12,32 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 namespace GlobalTheory.SmallerSource
 
+/- English proof (translation)
+Take `⟨hU, -, -⟩` from `h5 r s hrs`. Use `set D := X.ds r s lam`. Conclude with `(hU D.U ⟨D.nontriv, D.irred⟩).2.2 D.HK D.ι ⟨D.ι_inj, D.ι_range, D.der⟩`.
+-/
 theorem discrete_series_gk_admissible_irreducible (X : ProvA) (h5 : admQ5 X) {r s : ℕ} (hrs : 1 ≤ r + s) (lam : Ix r s → ℚ) :
     AdmGK (X.ds r s lam).HK ∧ IrrGK (X.ds r s lam).HK := by
   obtain ⟨hU, -, -⟩ := h5 r s hrs
   set D := X.ds r s lam
   exact (hU D.U ⟨D.nontriv, D.irred⟩).2.2 D.HK D.ι ⟨D.ι_inj, D.ι_range, D.der⟩
 
+/- English proof (translation)
+Unfold `cPair`. Rewrite using `[Nat.cast_sub hp, Nat.cast_sub hq]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cPair_sub {p q i : ℕ} (hp : i ≤ p) (hq : i ≤ q) : cPair (p - i) (q - i) = cPair p q := by
   unfold cPair
   rw [Nat.cast_sub hp, Nat.cast_sub hq]
   ring
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf0`. Establish `hAI` using `discrete_series_gk_admissible_irreducible X h5 hrs lam`. Establish `hI : Intw MM (X.ds r s lam).HK f` using `(isIntw_iff (X.fock p q r s) MM _ f).1 hf`. Take `⟨hfin, -, hcone⟩` from `hD r s lam hlam`. Establish `hex : ∃ v, IsHW (X.ds r s lam).HK.act (blattner lam) v`.
+
+Establish `hne : hwSub (X.ds r s lam).HK.act (blattner lam) ≠ ⊥`. Introduce `h`. Rewrite `hfin` using `[h]`. Simplify using `at hfin`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+
+Conclude with `⟨v, hv0, hv⟩`. Establish `hmin : ∀ ν w, IsHW (X.ds r s lam).HK.act ν w → degW (cPair p q) (blattner lam) ≤ degW (cPair p q) ν` using `GlobalTheory.T.degW_blattner_le_of_blattnerCone r s (X.ds r s lam).HK lam (cPair p q) θ hcone hsign`. Take `⟨⟨μ, P, hPJ, hP1, hP2, hfP⟩, -⟩` from `GlobalTheory.T.fock_minimal_KType_second_member p q r s MM (X.ds r s lam).HK f hAI.2 hAI.1 hI hf0 (blattner lam) hex hmin`. Establish `hbot` using `((h2 p q r s).2.2.2.2.1 μ (blattner lam)).2 (hno μ)`. Establish `hmem : P ∈ hwSub (X.fock p q r s).act1 μ ⊓ hwSub (X.fock p q r s).act2 (blattner lam) ⊓ Submodule.span ℂ (X.fock p q r s).J`.
+
+Use `Submodule.mem_inf.2 ⟨Submodule.mem_inf.2 ⟨hP1.2, hP2.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[J_eq (X.fock p q r s)]`. Conclude with `Submodule.subset_span hPJ`. Rewrite `hmem` using `[hbot]`. Conclude with `hP1.1 ((Submodule.mem_bot ℂ).1 hmem)`.
+-/
 theorem intw_eq_zero (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) (h5 : admQ5 X)
     {p q r s : ℕ} (hrs : 1 ≤ r + s) (lam : Ix r s → ℚ) (hlam : IsParam lam) (θ : ℚ)
     (hsign : ∀ a, (θ < lam a → 0 ≤ shiftNu (cPair p q) (blattner lam) a) ∧
@@ -60,6 +75,17 @@ theorem intw_eq_zero (X : ProvA) (h2 : admH2 X) (hD : DiscreteSeriesBlattner X) 
   rw [hbot] at hmem
   exact hP1.1 ((Submodule.mem_bot ℂ).1 hmem)
 
+/- English proof (translation)
+Introduce `X _ h2 hD h5`. Unfold `ArchimedeanRallisFifth ARv DataAR DataARm`. Prove the components needed by the constructor for the conclusion. Introduce `t al be ga de hd hne i hi1 hip hiq MM f hf`. Establish `hA` using `hd.1`.
+
+Establish `ht : 1 ≤ t`. Unfold `HypA at hA`. Conclude with `hA.1`. Take `⟨-, -, hlam', -, hs'⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hA`. Establish `hno` using `((GlobalTheory.T.lowestType_not_jointShape_smaller_pairs t al be ga de hA i hi1).2.2 hne hip hiq).1`.
+
+Use `intw_eq_zero X h2 hD h5 (by omega) (lamA' t al be ga de) hlam' ((t : ℚ) / 2) ?_ hno MM f hf` and prove the remaining obligations. Rewrite using `[cPair_sub hip hiq]`. Conclude with `hs'`. Introduce `t al be ga de hd hne i hi1 hip hiq MM f hf`. Establish `hA` using `hd.1`.
+
+Establish `ht : 1 ≤ t`. Unfold `HypA at hA`. Conclude with `hA.1`. Take `⟨-, hlam', -, hs'⟩` from `GlobalTheory.T.lowestKTypes_jointShape_block_in_unitaryS t al be ga de hA`. Establish `hno` using `((GlobalTheory.T.lowestType_not_jointShape_smaller_pairs t al be ga de hA i hi1).2.2 hne hip hiq).2`.
+
+Use `intw_eq_zero X h2 hD h5 (by omega) (lamM' t al be ga de) hlam' ((t : ℚ) / 2) ?_ hno MM f hf` and prove the remaining obligations. Rewrite using `[cPair_sub hip hiq]`. Conclude with `hs'`.
+-/
 theorem no_map_smaller_source :
     ∀ X : ProvA, admH1 X → admH2 X → DiscreteSeriesBlattner X → admQ5 X → ArchimedeanRallisFifth X := by
   intro X _ h2 hD h5

@@ -155,6 +155,9 @@ def DerBounds : Prop := ∀ C₀ : ℝ, 0 < C₀ → ∃ C : ℝ, 0 < C ∧ ForP
     Integrable (fun h => ⟪dR π (embL e X) (π g₀ v₀), π (embH e (umat h)) (π g₀ v₀)⟫_ℂ) (muG ε') ∧
       ∫ h, ‖⟪dR π (embL e X) (π g₀ v₀), π (embH e (umat h)) (π g₀ v₀)⟫_ℂ‖ ∂muG ε' ≤ (muG ε' (nbh ε' (1 / 4))).toReal * big C n B
 
+/- English proof (translation)
+Simplify `h` using `[nbh, hsn, umat]`.
+-/
 theorem one_mem_nbh {m : ℕ} (ε : Fin m → Bool) {δ : ℝ} (h : 0 ≤ δ) : (1 : UJ ε) ∈ nbh ε δ := by
   simpa [nbh, hsn, umat] using h
 
@@ -163,17 +166,30 @@ section RankOne
 open scoped ContDiff
 open GlobalTheory.Survey.MatrixExponentialEntries (chi)
 
+/- English proof (translation)
+Establish `: X = Matrix.diagonal (fun _ => X 0 0)`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this, Matrix.exp_diagonal]`. Simplify using `[Pi.exp_def, Complex.exp_eq_exp_ℂ]`.
+-/
 theorem exp_entry (X : Mat 1) : (NormedSpace.exp X) 0 0 = Complex.exp (X 0 0) := by
   have : X = Matrix.diagonal (fun _ => X 0 0) := by
     ext i j; fin_cases i; fin_cases j; simp
   rw [this, Matrix.exp_diagonal]
   simp [Pi.exp_def, Complex.exp_eq_exp_ℂ]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [Matrix.mul_apply, ih]`.
+-/
 theorem prod_entry (l : List (Mat 1)) : l.prod 0 0 = (l.map fun X => X 0 0).prod := by
   induction l with
   | nil => simp
   | cons a l ih => simp [Matrix.mul_apply, ih]
 
+/- English proof (translation)
+Introduce `k Xs _`. Establish `: (fun t : Fin k → ℝ => chi m ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) w) = fun t => Complex.exp (m * ∑ i, (t i : ℂ) * Xs i 0 0) * w`. Use function extensionality and compare the values at `t`. Simplify using `only [chi, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul, prod_entry, List.map_ofFn, List.prod_ofFn, Function.comp, exp_entry, Complex.exp_int_mul, Complex.exp_sum]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Use `ContDiff.mul (ContDiff.cexp (ContDiff.mul contDiff_const (ContDiff.sum fun i _ => ContDiff.mul ?_ contDiff_const))) contDiff_const` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp (contDiff_apply ℝ ℝ i)`.
+-/
 theorem smV_chi (L : Set (Mat 1)) (m : ℤ) (w : ℂ) : SmV L (chi m) w := by
   intro k Xs _
   have : (fun t : Fin k → ℝ => chi m ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) w) =
@@ -186,6 +202,11 @@ theorem smV_chi (L : Set (Mat 1)) (m : ℤ) (w : ℂ) : SmV L (chi m) w := by
   refine ContDiff.mul (ContDiff.cexp (ContDiff.mul contDiff_const (ContDiff.sum fun i _ => ContDiff.mul ?_ contDiff_const))) contDiff_const
   exact Complex.ofRealCLM.contDiff.comp (contDiff_apply ℝ ℝ i)
 
+/- English proof (translation)
+Establish `: (fun t : ℝ => chi m (NormedSpace.exp (t • X)) w) = fun t : ℝ => Complex.exp ((t : ℂ) * (m * X 0 0)) * w`. Use function extensionality and compare the values at `t`. Simplify using `only [chi, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, smul_eq_mul, exp_entry, ← Complex.exp_int_mul]`. Use `congr 2`. Simplify using the standard rewrite rules.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (m * X 0 0)) * w) ((Complex.exp (((0 : ℝ) : ℂ) * (m * X 0 0)) * (1 * (m * X 0 0))) * w) 0` using `((((hasDerivAt_id (((0 : ℝ) : ℂ))).mul_const _).cexp).comp_ofReal).mul_const _`. Unfold `dR`. Rewrite using `[this, hd.deriv]`. Simplify using the standard rewrite rules.
+-/
 theorem dR_chi (m : ℤ) (X : Mat 1) (w : ℂ) : dR (chi m) X w = m * X 0 0 * w := by
   have : (fun t : ℝ => chi m (NormedSpace.exp (t • X)) w) = fun t : ℝ => Complex.exp ((t : ℂ) * (m * X 0 0)) * w := by
     funext t
@@ -205,6 +226,19 @@ def tensOne (ε : Fin 1 → Bool) (m : ℤ) : TensDat 1 ℂ where
   io := fun _ y _ => y
   pr := fun _ x => x 0
 
+/- English proof (translation)
+Establish `hne : ∀ g ∈ UJset ε, g 0 0 ≠ 0` using `fun g hg h0 => by`. Apply the tactic sequence `have := GlobalTheory.Survey.MatrixExponentialEntries.norm_entry (ε := ε) hg`. Simplify using `[h0] at this`. Establish `hinv : ∀ g : Mat 1, g⁻¹ 0 0 = (g 0 0)⁻¹` using `fun g => by`. Simplify using `[Matrix.inv_def, Matrix.det_unique, Matrix.adjugate_fin_one]`.
+
+Use `⟨fun s => ?_, fun s => ?_, fun _ _ _ _ => smV_chi _ _ _, fun _ _ _ => smV_chi _ _ _, fun _ _ _ _ _ _ => rfl, fun _ _ _ _ _ _ => rfl, fun s g hg y _ c => ?_, fun s g hg x _ => ?_, fun s X _ y _ c => ?_, fun x _ => ?_, fun s y x _ _ => ?_⟩` and prove the remaining obligations. Establish `: ((fun _ => (m : ℝ)) - Pi.single s 1 : Fin 1 → ℝ) = fun _ => (((m - 1 : ℤ)) : ℝ)`. Use function extensionality and compare the values at `a`. Take `rfl : a = s` from `Subsingleton.elim _ _`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `GlobalTheory.Survey.MatrixExponentialEntries.isDS_chi ε (m - 1)`. Apply the tactic sequence `simp only [tensOne]; split_ifs <;> simp`. Take `rfl : c = 0` from `Subsingleton.elim _ _ show (g 0 0) ^ (m - 1) * (show ℂ from y) = ∑ d, g⁻¹ d 0 • chi m g (show ℂ from y)`. Generalize the expression as in `(show ℂ from y) = z`.
+
+Simplify using `[tensOne, chi, hinv, zpow_sub₀ (hne g hg)]`. Expand and normalize the polynomial expressions, which then agree. Use `show _ = (g 0 0) ^ (m - 1) * x 0`. Simplify using `[tensOne, chi, hinv, zpow_sub₀ (hne g hg)]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `rfl : c = 0` from `Subsingleton.elim _ _ show dR (chi (m - 1)) X (show ℂ from y) = dR (chi m) X (show ℂ from y) - ∑ d, X d 0 • (show ℂ from y)`. Generalize the expression as in `(show ℂ from y) = z`. Simplify using `[dR_chi]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `a`.
+
+Take `rfl : a = 0` from `Subsingleton.elim _ _`. Simplify using `[tensOne]`. Use `show ∑ c : Fin 1, (if ε c then 1 else -1 : ℂ) * ⟪x c, (y : ℂ)⟫_ℂ = (((if ε 0 then 1 else -1 : ℝ)) : ℂ) * ⟪x 0, (y : ℂ)⟫_ℂ`. Apply the tactic sequence `by_cases h : ε 0 <;> simp [h]`.
+-/
 theorem tensOne_is (ε : Fin 1 → Bool) (m : ℤ) : (tensOne ε m).Is ε (fun _ => (m : ℝ)) (chi m) := by
   have hne : ∀ g ∈ UJset ε, g 0 0 ≠ 0 := fun g hg h0 => by
     have := GlobalTheory.Survey.MatrixExponentialEntries.norm_entry (ε := ε) hg

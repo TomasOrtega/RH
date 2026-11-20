@@ -10,6 +10,21 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V]
   [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `hp : 𝔭.IsPrime` using `h𝔭.isPrime`. Establish `han : ∀ z, h z z = 0 → z = 0`. Introduce `z hz`. Assume the negation of the conclusion as `hz0`. Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`.
+
+Establish `hpos` using `hd z hz0 φ`. Rewrite `hpos` using `[hz, map_zero, Complex.zero_re]`. Conclude with `lt_irrefl _ hpos`. Use `set v := vF 𝔭 n with hvdef`. Establish `hv : n ∉ 𝔭 ^ (v + 1)` using `localValuationFiltration.notMem_pow_vF h𝔭 hn`.
+
+Establish `hx0 : WCA.InL 𝔭 A₀ 0 x` using `(WCA.inL_zero_iff hp).2 hxL`. Establish `hJ : 1 ≤ j - 2 * v` using `by omega`. Establish `hw : WCA.InL 𝔭 A₀ (v + (v + (j - 2 * v))) (y - x)`. Establish `e : v + (v + (j - 2 * v)) = j` using `by omega`. Rewrite using `[e]`.
+
+Conclude with `WCA.InL.of_mem h𝔭 hxy`. Take `⟨g, hgI, hgJ, hgS, hgxy⟩` from `WCC.core hK hF hs han hA₀i h𝔭 hn hv hx0 hx hy hJ hw`. Establish `hL : ∀ z, z ∈ locF 𝔭 A₀ → g z ∈ locF 𝔭 A₀`. Introduce `z hz`. Establish `hz0 : WCA.InL 𝔭 A₀ 0 z` using `(WCA.inL_zero_iff hp).2 hz`.
+
+Establish `h1 : WCA.InL 𝔭 A₀ 0 (g z - z)` using `(hgJ z hz0).mono (Nat.zero_le _)`. Establish `h2` using `h1.add hp hz0`. Rewrite `h2` using `[sub_add_cancel]`. Conclude with `(WCA.inL_zero_iff hp).1 h2`. Establish `hLs : ∀ z, z ∈ locF 𝔭 A₀ → g.symm z ∈ locF 𝔭 A₀` using `fun z hz => (WCA.inL_zero_iff hp).1 (hgS z ((WCA.inL_zero_iff hp).2 hz))`.
+
+Use `⟨g, ?_, fun z hz => (hgJ z ((WCA.inL_zero_iff hp).2 hz)).mem hp, hgxy⟩` and prove the remaining obligations. Use `show g ∈ Formalism.ThetaLiftIndependence.autL h (locF 𝔭 A₀)`. Use `⟨hgI, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hL z hz`.
+
+Introduce `z hz`. Conclude with `Submodule.mem_map.2 ⟨g.symm z, hLs z hz, by simp⟩`.
+-/
 theorem exists_isom_congr (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
     (hA₀ : Submodule.IsLattice K A₀) (hA₀i : Formalism.HermitianLatticesTheory.IsIntegralLat h A₀) {𝔭 : Ideal (𝓞 F)}

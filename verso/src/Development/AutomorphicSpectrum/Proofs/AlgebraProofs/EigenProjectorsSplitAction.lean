@@ -10,6 +10,11 @@ namespace GlobalTheory.CompanionTheory.Ar.Crv.SplitProj
 
 open GlobalTheory.CompanionTheory.Ar.Crv
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul c a => exact ⟨1, fun _ => c, fun _ => a, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨m, c, a, rfl⟩` from `hx`.
+
+Take `⟨n, d, b, rfl⟩` from `hy`. Use `⟨m + n, Fin.append c d, Fin.append a b, ?_⟩` and prove the remaining obligations. Simplify using `[Fin.sum_univ_add]`.
+-/
 theorem exists_sum_tmul {O k : Type} [CommRing O] [Field k] (z : TensorProduct ℤ k O) :
     ∃ (m : ℕ) (c : Fin m → k) (a : Fin m → O), z = ∑ j, c j ⊗ₜ[ℤ] a j := by
   induction z using TensorProduct.induction_on with
@@ -26,6 +31,9 @@ def splitMap {O k S : Type} [CommRing O] [Field k] (χ : S → (O →+* k)) :
   Algebra.TensorProduct.lift (Algebra.ofId k (S → k))
     (Pi.algHom ℤ (fun _ : S => k) fun s => (χ s).toIntAlgHom) (fun _ _ => Commute.all _ _)
 
+/- English proof (translation)
+Simplify using `[splitMap, Algebra.ofId_apply]`.
+-/
 theorem splitMap_tmul {O k S : Type} [CommRing O] [Field k] (χ : S → (O →+* k)) (c : k) (a : O)
     (t : S) : splitMap χ (c ⊗ₜ[ℤ] a) t = c * χ t a := by
   simp [splitMap, Algebra.ofId_apply]
@@ -37,12 +45,18 @@ def actMap {K V O k : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O]
     (fun c a => show Commute (algebraMap K (Module.End K V) (algebraMap k K c)) (ρ a) from
       Algebra.commute_algebraMap_left _ _)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def]`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+-/
 theorem actMap_tmul {K V O k : Type} [Field K] [AddCommGroup V] [Module K V] [CommRing O] [Field k]
     [Algebra k K] (ρ : O →+* Module.End K V) (c : k) (a : O) :
     actMap ρ (c ⊗ₜ[ℤ] a) = algebraMap k K c • ρ a := by
   rw [Algebra.smul_def]
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
 
+/- English proof (translation)
+Take `⟨b, hb⟩` from `hL.1 i`. Use `(hb _).2 fun q => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]`. Conclude with `mul_le_one' hc ((hb _).1 hx q)`.
+-/
 theorem smul_mem_of_isBun {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCommGroup V]
     [Module K V] {L : C.I → AddSubgroup V} (hL : IsBun C L) (i : C.I) {c : K}
     (hc : C.v i c ≤ 1) {x : V} (hx : x ∈ L i) : c • x ∈ L i := by
@@ -51,6 +65,33 @@ theorem smul_mem_of_isBun {K : Type} [Field K] (C : ACurve K) {V : Type} [AddCom
   rw [map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul]
   exact mul_le_one' hc ((hb _).1 hx q)
 
+/- English proof (translation)
+Introduce `K _ C V _ _ _ L O k S _ _ _ _ _ χ hχ hk ρ hL hρ`. Establish `hinj : Function.Injective (splitMap χ)` using `hχ.1`. Establish `hsurj : Function.Surjective (splitMap χ)` using `hχ.2`. Use `choose z hz using fun s : S => hsurj (Pi.single s 1)`. Use `choose m c a hza using fun s : S => exists_sum_tmul (z s)`.
+
+Establish `he : ∀ s, actMap (k` using `k) ρ (z s) = ∑ j, algebraMap k K (c s j) • ρ (a s j) := by`. Introduce `s`. Rewrite using `[hza s, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => actMap_tmul ρ _ _`. Establish `hcoef : ∀ s t, ∑ j, c s j * χ t (a s j) = if t = s then 1 else 0`.
+
+Introduce `s t`. Establish `h` using `congrFun (hz s) t`. Rewrite `h` using `[hza s, map_sum, Finset.sum_apply]`. Simplify using `only [splitMap_tmul] at h`. Rewrite using `[h, Pi.single_apply]`.
+
+Establish `hmul : ∀ s b, ρ b * actMap (k` using `k) ρ (z s) = algebraMap k K (χ s b) • actMap (k := k) ρ (z s) := by`. Introduce `s b`. Establish `h : ((1 : k) ⊗ₜ[ℤ] b) * z s = (χ s b ⊗ₜ[ℤ] (1 : O)) * z s`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hz s]`.
+
+Use function extensionality and compare the values at `t`. Simplify using `only [Pi.mul_apply, splitMap_tmul, Pi.single_apply]`. Distinguish the cases in `hts : t = s`. Substitute `hts` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hts]`. Establish `h'` using `congrArg (actMap (k := k) ρ) h`. Rewrite `h'` using `[map_mul, map_mul, actMap_tmul, actMap_tmul]`. Simplify using `using h'`. Establish `hsum : ∑ s, actMap (k` using `k) ρ (z s) = 1 := by`.
+
+Establish `h : ∑ s, z s = 1`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`. Simplify using `only [hz]`. Use function extensionality and compare the values at `t`.
+
+Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[← map_sum, h, map_one]`. Use `⟨fun s => actMap (k := k) ρ (z s), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s i x hx show actMap (k := k) ρ (z s) x ∈ L i`. Rewrite using `[he s, LinearMap.sum_apply]`.
+
+Conclude with `sum_mem fun j _ => smul_mem_of_isBun C hL i (hk i _) (hρ _ i x hx)`. Introduce `s x`. Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `b`. Establish `h` using `congrArg (fun f : Module.End K V => f x) (hmul s b)`.
+
+Simplify `h` using `[sub_eq_zero]`. Introduce `s x hx`. Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Establish `hx' : ∀ b, ρ b x = algebraMap k K (χ s b) • x` using `fun b => by`. Simplify `hx b` using `[sub_eq_zero]`.
+
+Use `show actMap (k := k) ρ (z s) x = x`. Rewrite using `[he s, LinearMap.sum_apply]`. Establish `: ∀ j, (algebraMap k K (c s j) • ρ (a s j)) x = algebraMap k K (c s j * χ s (a s j)) • x` using `fun j => by`. Rewrite using `[LinearMap.smul_apply, hx', smul_smul, map_mul]`. Simplify using `only [this]`.
+
+Rewrite using `[← Finset.sum_smul, ← map_sum, hcoef s s]`. Simplify using the standard rewrite rules. Introduce `x`. Establish `h` using `congrArg (fun f : Module.End K V => f x) hsum`. Simplify `h` using `[LinearMap.sum_apply]`.
+
+Introduce `s`. Conclude with `⟨m s, c s, a s, hcoef s, he s⟩`.
+-/
 theorem split_proj : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (L : C.I → AddSubgroup V) (O k S : Type) [CommRing O] [Field k]
     [Algebra k K] [Fintype S] [DecidableEq S] (χ : S → (O →+* k)), IsSplit χ →

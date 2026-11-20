@@ -13,6 +13,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.St.G
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ cm n J hJ hdet T f L M hT hS hf hL hM`. Establish `hLat : IsLat L` using `hL.1`. Establish `hMat : IsLat M` using `hM.1`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ g ∈ UPts cm.sig J (v.adicCompletion F), ∀ x, x ∈ loc v L ↔ g.1 *ᵥ x ∈ loc v M`. Introduce `v`.
+
+Distinguish the cases in `hv : (T : 𝓞 F) ∈ v.asIdeal`. Conclude with `GlobalTheory.T.exists_localUnitary_lattices_of_level F E cm n J hJ hdet T f L M hT hS hf hL hM v hv`. Conclude with `GlobalTheory.T.exists_localUnitary_of_selfDual_at_place F E cm n J hJ hdet L M hLat hMat v (GlobalTheory.T.isLocallySelfDual_of_hermitianLatticeOfLevel F E cm n J hJ hdet T f L hL v hv) (GlobalTheory.T.isLocallySelfDual_of_hermitianLatticeOfLevel F E cm n J hJ hdet T f M hM v hv)`. Use `choose g hgU hg using hloc`. Set `k : ∀ v : HeightOneSpectrum (𝓞 F), GL (Fin n) (E ⊗[F] v.adicCompletion F)` to `fun v => if loc v L = loc v M then 1 else g v`.
+
+Establish `hkU : ∀ v, k v ∈ UPts cm.sig J (v.adicCompletion F)`. Introduce `v`. Distinguish the cases in `hv : loc v L = loc v M`. Simplify using `only [k, if_pos hv]`. Conclude with `one_mem _`.
+
+Simplify using `only [k, if_neg hv]`. Conclude with `hgU v`. Establish `hfin : {v | k v ≠ 1}.Finite`. Use `(GlobalTheory.T.localSpanOfLatticeAtPlace_eq_for_almost_all_places F E n L M hLat hMat).subset ?_` and prove the remaining obligations. Introduce `v hv heq`.
+
+Conclude with `hv (by simp only [k, if_pos heq])`. Take `⟨y, hyU, hy⟩` from `GlobalTheory.T.exists_adelic_unitary_of_finite_support F E n cm.sig J k hkU hfin`. Establish `hglob : ∀ x, x ∈ hat F L ↔ y.1 *ᵥ x ∈ hat F M`. Rewrite using `[GlobalTheory.T.adelicLattice_carry_iff_forall_place F E n L M hLat hMat y]`. Introduce `v x`.
+
+Rewrite using `[hy v]`. Distinguish the cases in `hv : loc v L = loc v M`. Simplify using `only [k, if_pos hv, Units.val_one, Matrix.one_mulVec, hv]`. Simplify using `only [k, if_neg hv]`. Conclude with `hg v x`.
+
+Use `⟨⟨y, hyU⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hglob, Matrix.mulVec_mulVec]`. Establish `hinv : ((⟨y, hyU⟩ : UPts cm.sig J (Ad F))⁻¹).1 = y⁻¹` using `rfl`. Rewrite using `[hinv, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+-/
 theorem tlat_one_genus : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHerm (cm.sig : E →+* E) J → J.det ≠ 0 → ∀ (T f : ℕ) (L M : Submodule (𝓞 E) (Fin n → E)), T.Prime → SplitsIn E T → Module.finrank ℚ E = 2 * f → TLat cm.sig J T f L → TLat cm.sig J T f M → ∃ h : UPts cm.sig J (Ad F), ∀ x, (h⁻¹).1.1 *ᵥ x ∈ hat F L ↔ x ∈ hat F M := by
   intro F E _ _ _ _ _ _ cm n J hJ hdet T f L M hT hS hf hL hM
   classical

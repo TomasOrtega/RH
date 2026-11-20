@@ -4,6 +4,9 @@ import Mathlib
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ContinuousMulVec
 open Matrix MeasureTheory GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib GlobalTheory.CompanionTheory.LeibOrd GlobalTheory.SplitWeil GlobalTheory.JHMult GlobalTheory.CompanionTheory.BZShell GlobalTheory.CompanionTheory.MirPair
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZShell.Radical.false_of_translation_invariant | exact GlobalTheory.CompanionTheory.BZShell.Radical.false_of_translation_invariant | (intros; apply GlobalTheory.CompanionTheory.BZShell.Radical.false_of_translation_invariant <;> assumpti …`.
+-/
 theorem _root_.GlobalTheory.T.nondegenerate_unipotent_pairing_schwartz : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (d : ℕ) (hd : 0 < d) (R R' : MRep k d) (hR' : IsSmooth R'.ρ) {V V' : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [Nontrivial V]

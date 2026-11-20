@@ -15,6 +15,13 @@ section ext
 
 variable {K K' : Type} [Field K] [Field K'] (f : K →+* K')
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `: f (a • x) = RingOfIntegers.mapRingHom f a • f x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+-/
 theorem span_image_span (s : Set K) :
     Submodule.span (𝓞 K') (f '' (Submodule.span (𝓞 K) s : Set K)) = Submodule.span (𝓞 K') (f '' s) := by
   refine le_antisymm (Submodule.span_le.2 ?_)
@@ -44,6 +51,11 @@ section host
 
 variable {R : Ranks} (H : Host R)
 
+/- English proof (translation)
+Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hcm` using `H.isCMField_hostE`. Establish `h : IsCMField.complexConj H.E x = H.conj x`. Apply `H.φ₀.injective` to reduce the goal to its premises.
+
+Rewrite using `[IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`. Use `show starRingEnd ℂ (H.emb g x) = H.emb g (H.conj x)`. Rewrite using `[← h, IsCMField.complexEmbedding_complexConj]`.
+-/
 theorem conjugate_emb (g : R.GG) :
     ComplexEmbedding.conjugate (H.emb g) = H.emb (g * R.cc) := by
   rw [Formalism.L2.Geo.emb_mul_cc_comp]
@@ -55,16 +67,31 @@ theorem conjugate_emb (g : R.GG) :
   show starRingEnd ℂ (H.emb g x) = H.emb g (H.conj x)
   rw [← h, IsCMField.complexEmbedding_complexConj]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨t, ht⟩ => (factEmb R H).1.1 ht ▸ t.2, fun h => ⟨⟨g, h⟩, rfl⟩⟩`.
+-/
 theorem ex_emb_iff (g : R.GG) :
     (∃ t : Tau R, H.emb t = H.emb g) ↔ g ∈ R.Psi :=
   ⟨fun ⟨t, ht⟩ => (factEmb R H).1.1 ht ▸ t.2, fun h => ⟨⟨g, h⟩, rfl⟩⟩
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `(factEmb R H).1.2 σ`. Rewrite using `[conjugate_emb, ex_emb_iff, ex_emb_iff]`. Conclude with `Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g`.
+-/
 theorem emb_cm (σ : H.E →+* ℂ) :
     (∃ t : Tau R, H.emb t = σ) ↔ ¬ ∃ t : Tau R, H.emb t = ComplexEmbedding.conjugate σ := by
   obtain ⟨g, rfl⟩ := (factEmb R H).1.2 σ
   rw [conjugate_emb, ex_emb_iff, ex_emb_iff]
   exact Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g
 
+/- English proof (translation)
+Establish `hc : ∀ σ : H.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Establish `hi : ∀ {a b : Tau R}, H.emb a = H.emb b → a = b` using `fun h => Subtype.ext ((factEmb R H).1.1 h)`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`.
+
+Conclude with `absurd ⟨a, h⟩ ((emb_cm H (H.emb b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((emb_cm H (H.emb a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`.
+
+Introduce `σ`. Distinguish the cases in `h : ∃ t : Tau R, H.emb t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(emb_cm H σ).2 h`.
+
+Conclude with `⟨Sum.inl t, ht⟩`.
+-/
 theorem sum_emb_bijective : Function.Bijective
     (Sum.elim (fun t : Tau R => H.emb t) fun t : Tau R => ComplexEmbedding.conjugate (H.emb t)) := by
   have hc : ∀ σ : H.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ :=
@@ -102,6 +129,9 @@ end host
 def toTop (K : IntermediateField ℚ ℂ) : K →+* (⊤ : IntermediateField ℚ K) :=
   (IntermediateField.topEquiv (F := ℚ) (E := K)).symm
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Mem.BaseField.exists_base`.
+-/
 theorem exists_base : ∀ (B : Pre) (S₀ S₁ S₂ : Finset ℂ), (∀ z ∈ S₀, IsAlgebraic ℚ z) → (∀ z ∈ S₁, IsAlgebraic ℚ z) → (∀ z ∈ S₂, IsAlgebraic ℚ z) → ∃ B' : Base, B'.toPre = B ∧ (∀ z ∈ S₀, ∃ x ∈ B'.Ks, B'.embLL x = z) ∧ (∀ z ∈ S₁, ∃ x ∈ B'.LL0, B'.embLL x = z) ∧ ∀ z ∈ S₂, ∃ x : B'.LL, B'.embLL x = z :=
   GlobalTheory.Mem.BaseField.exists_base
 

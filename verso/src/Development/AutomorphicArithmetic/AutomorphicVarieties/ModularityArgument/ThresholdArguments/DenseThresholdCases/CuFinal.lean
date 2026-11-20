@@ -41,7 +41,13 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open UpperTheory.V UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.GradeZeroInterpolatingElement
 namespace UpperTheory.V.Cu
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.V.Cu.modularity_rank_four_of_promodularity_case_three (_root_.UpperTheory.V.Cu.promodularity_case_three_of_chain_reduction existsTensorSeedTower_holds (_root_.UpperTheory.V.Cu.chain_rank_four_of_red_a_y_coin_fib_y (redA_of redTanA) yCoin (fibY_of torusY)) chain …`.
+-/
 theorem main4_alt : _root_.UpperTheory.V.Cu.AutomorphyRankFourDense := _root_.UpperTheory.V.Cu.modularity_rank_four_of_promodularity_case_three (_root_.UpperTheory.V.Cu.promodularity_case_three_of_chain_reduction existsTensorSeedTower_holds (_root_.UpperTheory.V.Cu.chain_rank_four_of_red_a_y_coin_fib_y (redA_of redTanA) yCoin (fibY_of torusY)) chainDesc4 _root_.UpperTheory.V.Cu.chainIV_alt)
+/- English proof (translation)
+Introduce `hP` and use `_root_.UpperTheory.V.Cu2.tauEx' (_root_.UpperTheory.V.Cu2.kapEx_alt Cu2.twistIne (_root_.UpperTheory.V.Cu2.algType_alt hP)) Cu2.tauOf hP`.
+-/
 theorem tauEx' : _root_.UpperTheory.V.Cu.TauExAlt := fun hP => _root_.UpperTheory.V.Cu2.tauEx' (_root_.UpperTheory.V.Cu2.kapEx_alt Cu2.twistIne (_root_.UpperTheory.V.Cu2.algType_alt hP)) Cu2.tauOf hP
 end UpperTheory.V.Cu
 end

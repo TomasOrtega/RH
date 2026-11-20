@@ -4,6 +4,27 @@ open Formalism.ConjugateSelfDual Formalism.MainNotions.N Polynomial
 
 namespace GlobalTheory.StableSubMat
 
+/- English proof (translation)
+Use `set b := Module.finrank L V`. Set `f : (Fin b → L) →ₗ[L] (Fin a → L)` to `V.subtype ∘ₗ (Module.finBasis L V).equivFun.symm.toLinearMap`. Establish `hfinj : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `Subtype.val_injective.comp (Module.finBasis L V).equivFun.symm.injective`.
+
+Establish `hfr : LinearMap.range f = V`. Rewrite using `[LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`. Take `⟨g₀, hg₀⟩` from `LinearMap.exists_leftInverse_of_injective f hfinj`. Use `set E : Matrix (Fin a) (Fin b) L := LinearMap.toMatrix' f with hE`. Use `set D : Matrix (Fin b) (Fin a) L := LinearMap.toMatrix' g₀ with hD`.
+
+Establish `hEf : E.mulVecLin = f` using `by rw [hE]; exact Matrix.toLin'_toMatrix' f`. Establish `hDf : D.mulVecLin = g₀` using `by rw [hD]; exact Matrix.toLin'_toMatrix' g₀`. Establish `hDE : D * E = 1`. Rewrite using `[hD, hE, ← LinearMap.toMatrix'_comp, hg₀, LinearMap.toMatrix'_id]`. Establish `hrange : LinearMap.range E.mulVecLin = V` using `by rw [hEf, hfr]`.
+
+Establish `hED : ∀ v ∈ V, (E * D).mulVec v = v`. Introduce `v hv`. Rewrite `hv` using `[← hfr]`. Take `⟨w, rfl⟩` from `hv`. Rewrite using `[← Matrix.mulVec_mulVec]`.
+
+Establish `h1 : D.mulVec (f w) = g₀ (f w)` using `by rw [← hDf]; rfl`. Establish `h2 : ∀ u, E.mulVec u = f u` using `fun u => by rw [← hEf]; rfl`. Rewrite using `[h1, h2, ← LinearMap.comp_apply g₀ f, hg₀, LinearMap.id_apply]`. Establish `key : ∀ g, E * D * ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * E = ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * E`. Introduce `g`.
+
+Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_assoc (E * D), ← Matrix.mulVec_mulVec (M := E * D)]`.
+
+Apply `hED` to reduce the goal to its premises. Rewrite using `[← Matrix.mulVec_mulVec]`. Apply `hV` to reduce the goal to its premises. Rewrite using `[← hrange]`. Conclude with `⟨x, rfl⟩`.
+
+Set `σm : Γ →* Matrix (Fin b) (Fin b) L` to `{ toFun := fun g => D * ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * E map_one' := by simp [hDE] map_mul' := by`. Introduce `g h`. Simplify using `only [map_mul, Units.val_mul]`. Establish `k` using `key h`. Simplify using `only [Matrix.mul_assoc] at k ⊢`.
+
+Rewrite using `[k] }`. Use `⟨b, E, D, σm.toHomUnits, hDE, hrange, fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.coe_toHomUnits]`. Both sides reduce to the same expression. Rewrite using `[MonoidHom.coe_toHomUnits]`.
+
+Express the relevant statement in the definitionally equal form `_ = E * (D * ((τ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * E)`. Establish `k` using `key g`. Simplify using `only [Matrix.mul_assoc] at k ⊢`. Conclude with `k.symm`.
+-/
 theorem exists_restrict {Γ L : Type} [Group Γ] [Field L] {a : ℕ} (τ : Γ →* GL (Fin a) L)
     (V : Submodule L (Fin a → L)) (hV : IsInv τ V) :
     ∃ (b : ℕ) (E : Matrix (Fin a) (Fin b) L) (D : Matrix (Fin b) (Fin a) L) (σ : Γ →* GL (Fin b) L),

@@ -21,6 +21,13 @@ def LocG : Prop := ∀ (q : ℕ) [NeZero q] (S : Type) [CommRing S] (f g : S), I
   letI := (torMap f g hε).toAlgebra
   Nonempty (Localization.Away (algebraMap S (Tor f g hε) g) ≃ₐ[S] (ZMod q → Localization.Away g))
 
+/- English proof (translation)
+Establish `hr : p ∈ Set.range (PrimeSpectrum.comap (algebraMap S (Localization.Away f)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `hp`. Take `⟨P, hP⟩` from `hr`. Take `⟨i⟩` from `‹Nonempty ι›`.
+
+Use `⟨PrimeSpectrum.comap (algebraMap C (Localization.Away (algebraMap S C f))) (PrimeSpectrum.comap (e : Localization.Away (algebraMap S C f) →+* (ι → Localization.Away f)) (PrimeSpectrum.comap (Pi.evalRingHom _ i) P)), ?_⟩` and prove the remaining obligations. Rewrite using `[← hP]`. Use extensionality with `x`. Simplify using `only [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Establish `: (e (algebraMap C (Localization.Away (algebraMap S C f)) (algebraMap S C x))) i = algebraMap S (Localization.Away f) x`.
+
+Rewrite using `[← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]`. Both sides reduce to the same expression. Simplify using `only [RingHom.coe_coe, Pi.evalRingHom_apply, this]`.
+-/
 theorem surj_local (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] [Nonempty ι] (f : S)
     (e : Localization.Away (algebraMap S C f) ≃ₐ[S] (ι → Localization.Away f)) (p : PrimeSpectrum S) (hp : f ∉ p.asIdeal) :
     ∃ Q : PrimeSpectrum C, PrimeSpectrum.comap (algebraMap S C) Q = p := by
@@ -38,11 +45,19 @@ theorem surj_local (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] [None
     rw [← IsScalarTower.algebraMap_apply, AlgEquiv.commutes]; rfl
   simp only [RingHom.coe_coe, Pi.evalRingHom_apply, this]
 
+/- English proof (translation)
+Introduce `q _ S _ f g hfg ε hε`. Use `letI := (torMap f g hε).toAlgebra`. Conclude with `hL S (Tor f g hε) (ZMod q) f g hfg (hF q S f g hfg ε hε) (hG q S f g hfg ε hε)`.
+-/
 theorem TorEt_of (hL : LocalGlue) (hF : LocF) (hG : LocG) : TorEt := by
   intro q _ S _ f g hfg ε hε
   letI := (torMap f g hε).toAlgebra
   exact hL S (Tor f g hε) (ZMod q) f g hfg (hF q S f g hfg ε hε) (hG q S f g hfg ε hε)
 
+/- English proof (translation)
+Introduce `p`. Distinguish the cases in `hf : f ∈ p.asIdeal`. Establish `hg : g ∉ p.asIdeal`. Introduce `hg`. Apply `p.isPrime.ne_top` to reduce the goal to its premises.
+
+Rewrite using `[eq_top_iff, ← hfg, Ideal.span_le]`. Apply the tactic sequence `rintro x (rfl | rfl) <;> assumption`. Conclude with `surj_local S C ι g eg p hg`. Conclude with `surj_local S C ι f ef p hf`.
+-/
 theorem surj_glue (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] [Nonempty ι] (f g : S) (hfg : Ideal.span {f, g} = ⊤)
     (ef : Localization.Away (algebraMap S C f) ≃ₐ[S] (ι → Localization.Away f))
     (eg : Localization.Away (algebraMap S C g) ≃ₐ[S] (ι → Localization.Away g)) :
@@ -63,13 +78,24 @@ def LocalEF : Prop := ∀ (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C
   Nonempty (Localization.Away (algebraMap S C g) ≃ₐ[S] (ι → Localization.Away g)) →
   Algebra.Etale S C ∧ Module.Finite S C
 
+/- English proof (translation)
+Introduce `S C ι _ _ _ _ _ f g hfg ⟨ef⟩ ⟨eg⟩`. Take `⟨h1, h2⟩` from `h S C ι f g hfg ⟨ef⟩ ⟨eg⟩`. Conclude with `⟨h1, h2, surj_glue S C ι f g hfg ef eg⟩`.
+-/
 theorem localGlue_of (h : LocalEF) : LocalGlue := by
   intro S C ι _ _ _ _ _ f g hfg ⟨ef⟩ ⟨eg⟩
   obtain ⟨h1, h2⟩ := h S C ι f g hfg ⟨ef⟩ ⟨eg⟩
   exact ⟨h1, h2, surj_glue S C ι f g hfg ef eg⟩
 
+/- English proof (translation)
+The claim follows from `TorEt_of (localGlue_of hE) hF hG`.
+-/
 theorem TorEt_of' (hE : LocalEF) (hF : LocF) (hG : LocG) : TorEt := TorEt_of (localGlue_of hE) hF hG
 
+/- English proof (translation)
+Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Use extensionality with `s`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Localization.awayMap, IsLocalization.Away.map, IsLocalization.map_eq]`. Establish `h1 : algebraMap (Localization.Away f) (ι → Localization.Away f) (algebraMap S (Localization.Away f) s) = algebraMap S (ι → Localization.Away f) s` using `rfl`.
+
+Rewrite using `[h1, RingHom.coe_coe, AlgEquiv.commutes]`. Conclude with `(IsScalarTower.algebraMap_apply S C (Localization.Away (algebraMap S C f)) s)`.
+-/
 theorem awayMap_eq (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] (f : S)
     (e : Localization.Away (algebraMap S C f) ≃ₐ[S] (ι → Localization.Away f)) :
     Localization.awayMap (algebraMap S C) f =
@@ -84,6 +110,9 @@ theorem awayMap_eq (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] (f : 
   rw [h1, RingHom.coe_coe, AlgEquiv.commutes]
   exact (IsScalarTower.algebraMap_apply S C (Localization.Away (algebraMap S C f)) s)
 
+/- English proof (translation)
+Rewrite using `[awayMap_eq S C ι f e]`. Conclude with `hP.1 _ e.symm.toRingEquiv hb`.
+-/
 theorem away_prop (P : ∀ {R S : Type} [CommRing R] [CommRing S], (R →+* S) → Prop) (hP : RingHom.RespectsIso @P)
     (S C ι : Type) [CommRing S] [CommRing C] [Algebra S C] (f : S)
     (e : Localization.Away (algebraMap S C f) ≃ₐ[S] (ι → Localization.Away f))
@@ -92,6 +121,13 @@ theorem away_prop (P : ∀ {R S : Type} [CommRing R] [CommRing S], (R →+* S) �
   rw [awayMap_eq S C ι f e]
   exact hP.1 _ e.symm.toRingEquiv hb
 
+/- English proof (translation)
+Introduce `S C ι _ _ _ _ _ f g hfg ⟨ef⟩ ⟨eg⟩`. Establish `key : ∀ (P : ∀ {R S : Type} [CommRing R] [CommRing S], (R →+* S) → Prop), RingHom.RespectsIso @P → RingHom.OfLocalizationSpan @P → (∀ h : S, P (algebraMap (Localization.Away h) (ι → Localization.Away h))) → P (algebraMap S C)`. Introduce `P hP hL hb`. Apply `hL (algebraMap S C) {f, g} hfg` to reduce the goal to its premises. Introduce and unpack `⟨r, hr⟩`.
+
+Break down `hr with rfl | rfl` into its components or cases. Conclude with `away_prop P hP S C ι _ ef (hb _)`. Conclude with `away_prop P hP S C ι _ eg (hb _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.etale_algebraMap]`.
+
+Conclude with `key _ RingHom.Etale.respectsIso RingHom.Etale.ofLocalizationSpan (fun h => RingHom.etale_algebraMap.mpr inferInstance)`. Rewrite using `[← RingHom.finite_algebraMap]`. Conclude with `key _ RingHom.finite_respectsIso RingHom.finite_ofLocalizationSpan (fun h => RingHom.finite_algebraMap.mpr inferInstance)`.
+-/
 theorem localEF_of : LocalEF := by
   intro S C ι _ _ _ _ _ f g hfg ⟨ef⟩ ⟨eg⟩
   have key : ∀ (P : ∀ {R S : Type} [CommRing R] [CommRing S], (R →+* S) → Prop), RingHom.RespectsIso @P →
@@ -111,6 +147,9 @@ theorem localEF_of : LocalEF := by
     exact key _ RingHom.finite_respectsIso RingHom.finite_ofLocalizationSpan
       (fun h => RingHom.finite_algebraMap.mpr inferInstance)
 
+/- English proof (translation)
+The claim follows from `TorEt_of' localEF_of hF hG`.
+-/
 theorem TorEt_of'' (hF : LocF) (hG : LocG) : TorEt := TorEt_of' localEF_of hF hG
 
 def pr1 {q : ℕ} [NeZero q] {S : Type} [CommRing S] (f g : S) {ε : ZMod q → Localization.Away (f * g)}
@@ -123,6 +162,11 @@ def ProjF : Prop := ∀ (q : ℕ) [NeZero q] (S : Type) [CommRing S] (f g : S), 
   letI := (pr1 f g hε).toAlgebra
   IsLocalization.Away (algebraMap S (Tor f g hε) f) (ZMod q → Localization.Away f)
 
+/- English proof (translation)
+Introduce `q _ S _ f g hfg ε hε`. Use `letI := (torMap f g hε).toAlgebra`. Use `letI := (pr1 f g hε).toAlgebra`. Use `haveI := h q S f g hfg ε hε`. Set `e` to `IsLocalization.algEquiv (Submonoid.powers (algebraMap S (Tor f g hε) f)) (Localization.Away (algebraMap S (Tor f g hε) f)) (ZMod q → Localization.Away f)`.
+
+Use `⟨AlgEquiv.ofRingEquiv (f := e.toRingEquiv) (fun s => ?_)⟩` and prove the remaining obligations. Establish `h1 : algebraMap S (Localization.Away (algebraMap S (Tor f g hε) f)) s = algebraMap (Tor f g hε) (Localization.Away (algebraMap S (Tor f g hε) f)) (torMap f g hε s)` using `rfl`. Rewrite using `[AlgEquiv.coe_ringEquiv, h1, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem locF_of (h : ProjF) : LocF := by
   intro q _ S _ f g hfg ε hε
   letI := (torMap f g hε).toAlgebra
@@ -146,6 +190,11 @@ def ProjG : Prop := ∀ (q : ℕ) [NeZero q] (S : Type) [CommRing S] (f g : S), 
   letI := (pr2 f g hε).toAlgebra
   IsLocalization.Away (algebraMap S (Tor f g hε) g) (ZMod q → Localization.Away g)
 
+/- English proof (translation)
+Introduce `q _ S _ f g hfg ε hε`. Use `letI := (torMap f g hε).toAlgebra`. Use `letI := (pr2 f g hε).toAlgebra`. Use `haveI := h q S f g hfg ε hε`. Set `e` to `IsLocalization.algEquiv (Submonoid.powers (algebraMap S (Tor f g hε) g)) (Localization.Away (algebraMap S (Tor f g hε) g)) (ZMod q → Localization.Away g)`.
+
+Use `⟨AlgEquiv.ofRingEquiv (f := e.toRingEquiv) (fun s => ?_)⟩` and prove the remaining obligations. Establish `h1 : algebraMap S (Localization.Away (algebraMap S (Tor f g hε) g)) s = algebraMap (Tor f g hε) (Localization.Away (algebraMap S (Tor f g hε) g)) (torMap f g hε s)` using `rfl`. Rewrite using `[AlgEquiv.coe_ringEquiv, h1, AlgEquiv.commutes]`. Both sides reduce to the same expression.
+-/
 theorem locG_of (h : ProjG) : LocG := by
   intro q _ S _ f g hfg ε hε
   letI := (torMap f g hε).toAlgebra
@@ -159,6 +208,9 @@ theorem locG_of (h : ProjG) : LocG := by
   rw [AlgEquiv.coe_ringEquiv, h1, AlgEquiv.commutes]
   rfl
 
+/- English proof (translation)
+The claim follows from `TorEt_of'' (locF_of hF) (locG_of hG)`.
+-/
 theorem TorEt_of_proj (hF : ProjF) (hG : ProjG) : TorEt := TorEt_of'' (locF_of hF) (locG_of hG)
 
 end LateralTheory.E.TorEtPf

@@ -15,17 +15,31 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSp
 
 def abar (s : ℕ) (ε : ℂ) (bt : ℂ → H) (D : ℂ) : ℝ := ∑ z ∈ G.rootSet s (ε * D), ‖bt z‖
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => norm_nonneg _`.
+-/
 theorem abar_nonneg (s : ℕ) (ε : ℂ) (bt : ℂ → H) (D : ℂ) : 0 ≤ abar s ε bt D := Finset.sum_nonneg fun _ _ => norm_nonneg _
 
+/- English proof (translation)
+Simplify using `[G.psi, Complex.norm_exp]`.
+-/
 private lemma norm_psi_lemma (β w : ℂ) : ‖G.psi β w‖ = 1 := by
   simp [G.psi, Complex.norm_exp]
 
+/- English proof (translation)
+Unfold `mainD abar`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun z _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, norm_psi_lemma, one_mul]`.
+-/
 theorem norm_mainD_le (s : ℕ) (β ε : ℂ) (bt : ℂ → H) (x D : ℂ) :
     ‖mainD s β ε bt x D‖ ≤ abar s ε bt D := by
   unfold mainD abar
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun z _ => ?_)
   rw [norm_smul, norm_psi_lemma, one_mul]
 
+/- English proof (translation)
+Establish `h0 : ∀ᵐ D : ℂ ∂volume, D ≠ 0`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules. Use `filter_upwards [h0] with D hD`. Unfold `mainD`.
+
+Rewrite using `[sum_rootSet_eq_range hs (mul_ne_zero hε hD)]`.
+-/
 theorem mainD_ae_eq {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ε ≠ 0) (bt : ℂ → H) (x : ℂ) :
     mainD s β ε bt x =ᵐ[volume] fun D => ∑ k ∈ Finset.range s,
       G.psi β ((s : ℂ) * NthRootMeasurability.R s k (ε * D) * x) • bt (NthRootMeasurability.R s k (ε * D)) := by
@@ -35,6 +49,11 @@ theorem mainD_ae_eq {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ε ≠
   unfold mainD
   rw [sum_rootSet_eq_range hs (mul_ne_zero hε hD)]
 
+/- English proof (translation)
+Establish `h0 : ∀ᵐ D : ℂ ∂volume, D ≠ 0`. Rewrite using `[ae_iff]`. Simplify using the standard rewrite rules. Use `filter_upwards [h0] with D hD`. Unfold `abar`.
+
+Rewrite using `[sum_rootSet_eq_range hs (mul_ne_zero hε hD)]`.
+-/
 theorem abar_ae_eq {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ε ≠ 0) (bt : ℂ → H) :
     abar s ε bt =ᵐ[volume] fun D => ∑ k ∈ Finset.range s, ‖bt (NthRootMeasurability.R s k (ε * D))‖ := by
   have h0 : ∀ᵐ D : ℂ ∂volume, D ≠ 0 := by
@@ -43,14 +62,25 @@ theorem abar_ae_eq {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ε ≠ 0) (bt : �
   unfold abar
   rw [sum_rootSet_eq_range hs (mul_ne_zero hε hD)]
 
+/- English proof (translation)
+Unfold `NthRootMeasurability.R`. Conclude with `measurable_const.mul (measurable_id.pow_const _)`.
+-/
 private lemma measurable_R_lemma (s k : ℕ) : Measurable (NthRootMeasurability.R s k) := by
   unfold NthRootMeasurability.R
   exact measurable_const.mul (measurable_id.pow_const _)
 
+/- English proof (translation)
+Unfold `G.psi`. Use `fun_prop`.
+-/
 private lemma continuous_psi_lemma_2 (β : ℂ) : Continuous (G.psi β) := by
   unfold G.psi
   fun_prop
 
+/- English proof (translation)
+Use `AEStronglyMeasurable.congr (StronglyMeasurable.aestronglyMeasurable ?_) (mainD_ae_eq hs β hε bt x).symm` and prove the remaining obligations. Establish `hk : ∀ k ∈ Finset.range s, StronglyMeasurable (fun D : ℂ => G.psi β ((s : ℂ) * NthRootMeasurability.R s k (ε * D) * x) • bt (NthRootMeasurability.R s k (ε * D)))`. Introduce `k _`. Establish `hR : Measurable fun D : ℂ => NthRootMeasurability.R s k (ε * D)` using `(measurable_R_lemma s k).comp (measurable_const.mul measurable_id)`. Establish `hp : Measurable fun D : ℂ => G.psi β ((s : ℂ) * NthRootMeasurability.R s k (ε * D) * x)` using `(continuous_psi_lemma_2 β).measurable.comp ((measurable_const.mul hR).mul measurable_const)`.
+
+Conclude with `hp.stronglyMeasurable.smul (hbt.comp_measurable hR)`. Use `Finset.stronglyMeasurable_sum (Finset.range s) hk` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `D`. Simplify using `only [Finset.sum_apply]`.
+-/
 theorem aestronglyMeasurable_mainD {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ε ≠ 0) {bt : ℂ → H}
     (hbt : StronglyMeasurable bt) (x : ℂ) : AEStronglyMeasurable (mainD s β ε bt x) volume := by
   refine AEStronglyMeasurable.congr (StronglyMeasurable.aestronglyMeasurable ?_)
@@ -68,6 +98,11 @@ theorem aestronglyMeasurable_mainD {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ
   funext D
   simp only [Finset.sum_apply]
 
+/- English proof (translation)
+Use `AEStronglyMeasurable.congr (StronglyMeasurable.aestronglyMeasurable ?_) (abar_ae_eq hs hε bt).symm` and prove the remaining obligations. Establish `hk : ∀ k ∈ Finset.range s, StronglyMeasurable (fun D : ℂ => ‖bt (NthRootMeasurability.R s k (ε * D))‖)`. Introduce `k _`. Establish `hR : Measurable fun D : ℂ => NthRootMeasurability.R s k (ε * D)` using `(measurable_R_lemma s k).comp (measurable_const.mul measurable_id)`. Conclude with `(hbt.comp_measurable hR).norm`.
+
+Use `Finset.stronglyMeasurable_sum (Finset.range s) hk` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `D`. Simplify using `only [Finset.sum_apply]`.
+-/
 theorem aestronglyMeasurable_abar {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ε ≠ 0) {bt : ℂ → H}
     (hbt : StronglyMeasurable bt) : AEStronglyMeasurable (abar s ε bt) volume := by
   refine AEStronglyMeasurable.congr (StronglyMeasurable.aestronglyMeasurable ?_)
@@ -82,10 +117,16 @@ theorem aestronglyMeasurable_abar {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ε 
   funext D
   simp only [Finset.sum_apply]
 
+/- English proof (translation)
+Unfold `G.rootSet`. Conclude with `(Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots s a)`.
+-/
 theorem card_rootSet_le (s : ℕ) (a : ℂ) : (G.rootSet s a).card ≤ s := by
   unfold G.rootSet
   exact (Multiset.toFinset_card_le _).trans (Polynomial.card_nthRoots s a)
 
+/- English proof (translation)
+Simplify using `only [bz, norm_smul, norm_mul, norm_inv, hε, inv_one, one_mul, norm_pow, Complex.norm_natCast, Complex.norm_real, Real.norm_eq_abs, smul_eq_mul, abs_norm]`. Rewrite using `[abs_of_nonneg (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem jac_norm_bz {s : ℕ} {ε : ℂ} (hε : ‖ε‖ = 1) (bt : ℂ → H) (z : ℂ) :
     ‖ε⁻¹ * ((s : ℂ) * z ^ (s - 1))‖ ^ 2 • ‖bt z‖ ^ 2 = ‖bz s bt z‖ ^ 2 := by
   simp only [bz, norm_smul, norm_mul, norm_inv, hε, inv_one, one_mul, norm_pow,
@@ -93,6 +134,15 @@ theorem jac_norm_bz {s : ℕ} {ε : ℂ} (hε : ‖ε‖ = 1) (bt : ℂ → H) (
   rw [abs_of_nonneg (by positivity)]
   ring
 
+/- English proof (translation)
+Establish `hε0 : ε ≠ 0` using `by rintro rfl; simp at hε`. Establish `hb2 : Integrable (fun z => ‖bz s bt z‖ ^ 2)` using `(memLp_two_iff_integrable_sq_norm hb.1).1 hb`. Establish `hF : Integrable (fun z => ‖ε⁻¹ * ((s : ℂ) * z ^ (s - 1))‖ ^ 2 • ‖bt z‖ ^ 2)`. Repeatedly rewrite using `[jac_norm_bz hε bt]`. Conclude with `hb2`.
+
+Take `⟨hGi, hGeq⟩` from `integral_sum_rootSet s hs ε hε0 (fun z => ‖bt z‖ ^ 2) hF`. Establish `hpt : ∀ D, abar s ε bt D ^ 2 ≤ s * ∑ z ∈ G.rootSet s (ε * D), ‖bt z‖ ^ 2`. Introduce `D`. Use `(sq_sum_le_card_mul_sum_sq).trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast card_rootSet_le s _) (Finset.sum_nonneg fun _ _ => sq_nonneg _)`.
+
+Establish `hm` using `aestronglyMeasurable_abar hs hε0 hbt`. Establish `hsq : Integrable (fun D => abar s ε bt D ^ 2)`. Use `Integrable.mono' (hGi.const_mul s) (hm.pow 2) (Eventually.of_forall fun D => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]`. Conclude with `hpt D`.
+
+Use `⟨(memLp_two_iff_integrable_sq hm).2 hsq, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, hGeq]`. Repeatedly rewrite using `[jac_norm_bz hε bt]`.
+-/
 theorem memLp_abar {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ‖ε‖ = 1) {bt : ℂ → H} (hbt : StronglyMeasurable bt)
     (hb : MemLp (bz s bt) 2 volume) :
     MemLp (abar s ε bt) 2 volume ∧ ∫ D, abar s ε bt D ^ 2 ≤ s * ∫ z, ‖bz s bt z‖ ^ 2 := by
@@ -118,6 +168,11 @@ theorem memLp_abar {s : ℕ} (hs : s ≠ 0) {ε : ℂ} (hε : ‖ε‖ = 1) {bt 
         rw [integral_const_mul, hGeq]
         simp_rw [jac_norm_bz hε bt]
 
+/- English proof (translation)
+Establish `hε0 : ε ≠ 0`. Introduce `h`. Rewrite `hε` using `[h, norm_zero]`. Conclude with `zero_ne_one hε`. Use `(memLp_abar hs hε hbt hb).1.of_le (aestronglyMeasurable_mainD hs β hε0 hbt x) (ae_of_all _ fun D => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Real.norm_of_nonneg (abar_nonneg s ε bt D)]`. Conclude with `norm_mainD_le s β ε bt x D`.
+-/
 theorem memLp_mainD {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ‖ε‖ = 1) {bt : ℂ → H}
     (hbt : StronglyMeasurable bt) (hb : MemLp (bz s bt) 2 volume) (x : ℂ) :
     MemLp (mainD s β ε bt x) 2 volume := by
@@ -132,6 +187,11 @@ end abar
 
 section moving
 
+/- English proof (translation)
+Use `⟨fun a D => by linarith [le_abs_self (‖lam a‖ * ab (lam a * D) - ab D)], ?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hlam.eventually_ne one_ne_zero] with a ha`. Conclude with `(((memLp_comp_mul hab (lam a) ha).const_mul ‖lam a‖).sub hab).abs`. Establish `h` using `(tendsto_dil_real ab hab).comp hlam`. Use `h.congr fun a => ?_` and prove the remaining obligations.
+
+Simplify using `only [Function.comp_apply, sq_abs]`.
+-/
 theorem dil_dominator {α : Type} {l : Filter α} (ab : ℂ → ℝ) (hab : MemLp ab 2 volume) (lam : α → ℂ)
     (hlam : Tendsto lam l (𝓝 1)) :
     (∀ a D, ‖lam a‖ * ab (lam a * D) ≤ ab D + |‖lam a‖ * ab (lam a * D) - ab D|) ∧
@@ -150,6 +210,15 @@ section cut
 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
+/- English proof (translation)
+Establish `hs0 : 0 < s` using `Nat.pos_of_ne_zero hs`. Establish `hroot : ∀ z ∈ G.rootSet s (ε * D), ε⁻¹ * z ^ s = D`. Introduce `z hz`. Establish `hz' : z ^ s = ε * D`. Simplify `hz` using `[G.rootSet, Polynomial.mem_nthRoots hs0]`.
+
+Rewrite using `[hz', ← mul_assoc, inv_mul_cancel₀ hε, one_mul]`. Unfold `mainD`. Distinguish the cases in `hD : D ∈ Q`. Rewrite using `[Set.indicator_of_mem hD]`. Use `Finset.sum_congr rfl fun z hz => ?_` and prove the remaining obligations.
+
+Rewrite using `[Set.indicator_of_mem]`. Use `show ε⁻¹ * z ^ s ∈ Q`. Rewrite using `[hroot z hz]`. Conclude with `hD`. Rewrite using `[Set.indicator_of_notMem hD]`.
+
+Use `Finset.sum_eq_zero fun z hz => ?_` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem, smul_zero]`. Use `show ε⁻¹ * z ^ s ∉ Q`. Rewrite using `[hroot z hz]`. Conclude with `hD`.
+-/
 theorem mainD_indicator {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ε ≠ 0) (bt : ℂ → H) (Q : Set ℂ)
     (x D : ℂ) :
     mainD s β ε ({z | ε⁻¹ * z ^ s ∈ Q}.indicator bt) x D = Q.indicator (mainD s β ε bt x) D := by
@@ -172,6 +241,9 @@ theorem mainD_indicator {s : ℕ} (hs : s ≠ 0) (β : ℂ) {ε : ℂ} (hε : ε
     show ε⁻¹ * z ^ s ∉ Q
     rw [hroot z hz]; exact hD
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ Qz`. Simplify using `[bz, Set.indicator_of_mem hz]`. Simplify using `[bz, Set.indicator_of_notMem hz]`.
+-/
 theorem bz_indicator (s : ℕ) (bt : ℂ → H) (Qz : Set ℂ) :
     bz s (Qz.indicator bt) = Qz.indicator (bz s bt) := by
   funext z

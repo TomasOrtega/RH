@@ -4,6 +4,19 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 
 namespace GlobalTheory.LUDecomp
 
+/- English proof (translation)
+Establish `h : (i : ℕ) ≤ n` using `i.is_lt.le`. Use `set A := B.submatrix (Fin.castLE h) (Fin.castLE h) with hAdef`. Establish `hA : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hdet`. Set `c : Fin i → ℂ` to `fun k => B i (Fin.castLE h k)`. Set `y : Fin i → ℂ` to `-(c ᵥ* A⁻¹)`.
+
+Establish `hy : y ᵥ* A = -c`. Simplify using `only [y, Matrix.neg_vecMul, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]`. Use `⟨fun j => if hj : (j : ℕ) < i then y ⟨j, hj⟩ else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Establish `: ¬ ((j : ℕ) < i)` using `not_lt.mpr hj`.
+
+Simplify using `[this]`. Introduce `k hk`. Establish `hsum : ∑ j : Fin n, (if hj : (j : ℕ) < i then y ⟨j, hj⟩ else 0) * B j k = ∑ j' : Fin i, y j' * B (Fin.castLE h j') k`. Use `symm`. Apply `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h)` to reduce the goal to its premises.
+
+Introduce `j hj`. Establish `: ¬ ((j : ℕ) < i)`. Introduce `hlt`. Conclude with `hj ⟨⟨j, hlt⟩, Fin.ext rfl⟩`. Simplify using `[this]`.
+
+Introduce `j'`. Simplify using `[j'.is_lt]`. Establish `hk'` using `congrFun hy ⟨k, hk⟩`. Establish `hkk : Fin.castLE h ⟨k, hk⟩ = k` using `Fin.ext rfl`. Simplify using `only [Matrix.vecMul, dotProduct, hAdef, Matrix.submatrix_apply, Pi.neg_apply, hkk, c] at hk'`.
+
+Rewrite using `[hsum, hk']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma exists_row {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
     (hdet : (B.submatrix (Fin.castLE i.is_lt.le) (Fin.castLE i.is_lt.le)).det ≠ 0) :
     ∃ x : Fin n → ℂ, (∀ j, i ≤ j → x j = 0) ∧ ∀ k, k < i → B i k + ∑ j, x j * B j k = 0 := by
@@ -35,6 +48,19 @@ lemma exists_row {n : ℕ} (B : Matrix (Fin n) (Fin n) ℂ) (i : Fin n)
     rw [hsum, hk']
     ring
 
+/- English proof (translation)
+Introduce `n B hB`. Establish `hx : ∀ i : Fin n, ∃ x : Fin n → ℂ, (∀ j, i ≤ j → x j = 0) ∧ ∀ k, k < i → B.val i k + ∑ j, x j * B.val j k = 0` using `fun i => exists_row B.val i (hB i i.is_lt.le)`. Use `choose x hx0 hx1 using hx`. Set `M : Matrix (Fin n) (Fin n) ℂ` to `fun i j => x i j + if i = j then 1 else 0`. Establish `hMlow : M.BlockTriangular OrderDual.toDual`.
+
+Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Simplify using `[M, hx0 i j hij'.le, hij'.ne]`. Establish `hMdet : M.det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular M hMlow]`.
+
+Conclude with `Finset.prod_eq_one (fun i _ => by simp [M, hx0 i i le_rfl])`. Establish `hMunit : IsUnit M` using `(Matrix.isUnit_iff_isUnit_det M).mpr (by rw [hMdet]; exact isUnit_one)`. Set `Mg : GL (Fin n) ℂ` to `hMunit.unit`. Establish `hMg : (Mg : Matrix (Fin n) (Fin n) ℂ) = M` using `rfl`. Use `⟨Mg⁻¹, Mg * B, ?_, ?_, by simp⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.coe_units_inv, hMg]`. Establish `: Invertible M` using `M.invertibleOfIsUnitDet ((Matrix.isUnit_iff_isUnit_det M).mp hMunit)`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hMlow`. Introduce `i k hik`. Establish `hik' : k < i` using `hik`.
+
+Use `show (M * B.val) i k = 0`. Rewrite using `[Matrix.mul_apply]`. Use `hx1 i k hik'` as an intermediate fact. Simplify using `only [M, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[add_comm]`.
+
+Conclude with `this`.
+-/
 theorem lu : ∀ {n : ℕ} (B : GL (Fin n) ℂ), (∀ (k : ℕ) (hk : k ≤ n), (B.val.submatrix (Fin.castLE hk) (Fin.castLE hk)).det ≠ 0) → ∃ L U : GL (Fin n) ℂ, L.val.BlockTriangular OrderDual.toDual ∧ U.val.BlockTriangular id ∧ B = L * U := by
   intro n B hB
   have hx : ∀ i : Fin n, ∃ x : Fin n → ℂ, (∀ j, i ≤ j → x j = 0) ∧

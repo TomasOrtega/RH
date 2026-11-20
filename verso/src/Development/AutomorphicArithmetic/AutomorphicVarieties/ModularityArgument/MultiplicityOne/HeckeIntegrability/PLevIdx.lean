@@ -5,6 +5,17 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.V.Z.Mult.Pi
 
 namespace UpperTheory.V.Z.Mult.Pi
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i T hi ih`. Establish `ih'` using `ih (fun k hk => hqj k (Finset.mem_insert_of_mem hk)) (fun k hk l hl => hqk k (Finset.mem_insert_of_mem hk) l (Finset.mem_insert_of_mem hl)) (fun k hk => hj k (Finset.mem_insert_of_mem hk)) (fun k hk => hq k (Finset.mem_insert_of_mem hk))`. Establish `hiT : i ∈ insert i T` using `Finset.mem_insert_self i T`.
+
+Use `set L : Subgroup G := K ⊓ ⨅ k ∈ T, (N k).comap (q k) with hL`. Establish `hins : (K ⊓ ⨅ k ∈ insert i T, (N k).comap (q k)) = L ⊓ (N i).comap (q i)`. Rewrite using `[Finset.iInf_insert, inf_left_comm, inf_comm]`. Establish `hmap : L.map (q i) = B i`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hq i hiT x (Subgroup.mem_inf.1 hx).1`. Introduce `a ha`. Use `⟨j i a, ?_, hqj i hiT a⟩` and prove the remaining obligations. Use `Subgroup.mem_inf.2 ⟨hj i hiT a ha, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `k hk`. Establish `hne : i ≠ k` using `fun h => hi (h ▸ hk)`. Rewrite using `[hqk i hiT k (Finset.mem_insert_of_mem hk) hne a]`. Conclude with `(N k).one_mem`.
+
+Rewrite using `[hins, Finset.prod_insert hi, ← ih', ← Subgroup.relIndex_mul_relIndex (L ⊓ (N i).comap (q i)) L K inf_le_left inf_le_left, Subgroup.inf_relIndex_left, Subgroup.relIndex_comap, hmap]`.
+-/
 private theorem relIndex_positions {G ι : Type} [Group G] {A : ι → Type} [∀ i, Group (A i)] (K : Subgroup G)
     (q : ∀ i, G →* A i) (j : ∀ i, A i →* G) (B N : ∀ i, Subgroup (A i)) (T : Finset ι)
     (hqj : ∀ i ∈ T, ∀ a, q i (j i a) = a)
@@ -40,6 +51,9 @@ private theorem relIndex_positions {G ι : Type} [Group G] {A : ι → Type} [�
       ← Subgroup.relIndex_mul_relIndex (L ⊓ (N i).comap (q i)) L K inf_le_left inf_le_left,
       Subgroup.inf_relIndex_left, Subgroup.relIndex_comap, hmap]
 
+/- English proof (translation)
+Unfold `Lev`. Rewrite using `[Subgroup.mem_iInf]`. Conclude with `⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i.1 i.2⟩`.
+-/
 private theorem mem_Lev {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {n : ℕ}
     (S : Set (GlobalTheory.BCT.Pl E)) (N : ∀ w : GlobalTheory.BCT.Pl E, Subgroup (GlobalTheory.BCT.GLw n w)) (g : GF E n) :
     g ∈ Lev S N ↔ ∀ i, Sl S i → qw n i.1 i.2 g ∈ N i.1 := by
@@ -47,6 +61,21 @@ private theorem mem_Lev {E : Type} [Field E] [NumberField E] [NumberField.IsCMFi
   rw [Subgroup.mem_iInf]
   exact ⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i.1 i.2⟩
 
+/- English proof (translation)
+Introduce `hF _ E _ _ _ n S Z N hS hZ hG`. Take `⟨-, -, h3, h4, -, -, h7⟩` from `hF E n S hS`. Establish `hK : ∀ g, g ∈ PositivityTheory.Rg.BcB.G8.Kf E n ↔ ∀ i, Sl S i → qw n i.1 i.2 g ∈ GlobalTheory.LFun.KGL i.1 n` using `fun g => by`. Rewrite using `[← h7, mem_Lev]`. Establish `hLe : Lev S N ≤ PositivityTheory.Rg.BcB.G8.Kf E n` using `fun g hg => (hK g).2 fun i hi => (hG i.1).2.1 ((mem_Lev S N g).1 hg i hi)`.
+
+Use `⟨hLe, ?_⟩` and prove the remaining obligations. Establish `hposition : ∀ i ∈ Z ×ˢ (Finset.univ : Finset Bool), Sl S i` using `fun i hi => by`. Establish `hw` using `hZ i.1 (Finset.mem_product.1 hi).1`. Conclude with `⟨hw.1, fun _ => hw.2⟩`. Establish `hEq : Lev S N = PositivityTheory.Rg.BcB.G8.Kf E n ⊓ ⨅ i ∈ Z ×ˢ (Finset.univ : Finset Bool), (N i.1).comap (qw n i.1 i.2)`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `g hg`. Use `Subgroup.mem_inf.2 ⟨hLe hg, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `fun i hi => (mem_Lev S N g).1 hg i (hposition i hi)`.
+
+Introduce `g hgg`. Take `⟨hg, hg'⟩` from `Subgroup.mem_inf.1 hgg`. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap] at hg'`. Use `(mem_Lev S N g).2 fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hw : i.1 ∈ Z`.
+
+Conclude with `hg' i (Finset.mem_product.2 ⟨hw, Finset.mem_univ _⟩)`. Rewrite using `[(hG i.1).2.2.2 hw]`. Conclude with `(hK g).1 hg i hi`. Establish `key` using `relIndex_positions (A := fun i : GlobalTheory.BCT.Pl E × Bool => GlobalTheory.BCT.GLw n i.1) (PositivityTheory.Rg.BcB.G8.Kf E n) (fun i => qw n i.1 i.2) (fun i => jw n i.1 i.2) (fun i => GlobalTheory.LFun.KGL i.1 n) (fun i => N i.1) (Z ×ˢ (Finset.univ : Finset Bool)) (fun i _ a = …`. Distinguish the cases in `hik : i = k`.
+
+Substitute `hik` using the available equality. Rewrite using `[(h3 i.1 i.2).2.2.1 a]`. Conclude with `ha`. Rewrite using `[h4 i k (hposition i hi) hk hik a]`. Conclude with `(GlobalTheory.LFun.KGL k.1 n).one_mem)`.
+
+Use the proof step `(fun i hi k hk => (hK k).1 hk i (hposition i hi))`. Rewrite using `[hEq, key, Finset.prod_product]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[Fintype.prod_bool, sq]`.
+-/
 theorem levIdx_pf :
     SlotBasic → LevTop → LevIdx := by
   intro hF _ E _ _ _ n S Z N hS hZ hG

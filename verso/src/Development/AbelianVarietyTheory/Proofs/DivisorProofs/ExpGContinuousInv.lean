@@ -6,6 +6,11 @@ open Formalism.REAL (UJ KG toM toMK muK expG inG Jm Kset)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `n ε Z hZ`. Use `⟨(Formalism.REAL.group_exponential_facts n ε Z hZ).2.2.1, fun t => ?_⟩` and prove the remaining obligations. Establish `hmul : toM (expG ε Z t) * NormedSpace.exp (-((t : ℂ) • Z)) = 1`. Rewrite using `[Formalism.REAL.toM_expG ε Z t hZ]`. Establish `h` using `Formalism.REAL.one_parameter_subgroup_holds n Z t (-t)`.
+
+Establish `e : ((-t : ℝ) : ℂ) • Z = -((t : ℂ) • Z)` using `by push_cast; rw [neg_smul]`. Rewrite `h` using `[e, add_neg_cancel]`. Simplify using `using h.symm`. Conclude with `Units.inv_eq_of_mul_eq_one_right hmul`.
+-/
 theorem expG_continuous_inv : ∀ (n : ℕ) (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ), inG ε Z →
     Continuous (fun t : ℝ => expG ε Z t) ∧
       ∀ t : ℝ, toM (expG ε Z t)⁻¹ = NormedSpace.exp (-((t : ℂ) • Z)) := by

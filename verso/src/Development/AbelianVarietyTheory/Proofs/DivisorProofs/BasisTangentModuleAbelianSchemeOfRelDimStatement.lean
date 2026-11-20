@@ -13,5 +13,8 @@ open GlobalTheory.RayEv (Ray)
 open GlobalTheory.Toroidal GlobalTheory.LogKS GlobalTheory.LogKSChart GlobalTheory.Heat
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TanBasisDim.basis_tanM_abelian | exact GlobalTheory.TanBasisDim.basis_tanM_abelian | (intros; apply GlobalTheory.TanBasisDim.basis_tanM_abelian <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.basis_tangentModule_abelianScheme_of_relDim : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (d : ℕ), IsAbelianScheme G → SmoothOfRelativeDimension d G.hom → Nonempty (Module.Basis (Fin d) R (TanM (𝟙 (Sp R)) G)) := by
   first | exact @GlobalTheory.TanBasisDim.basis_tanM_abelian | exact GlobalTheory.TanBasisDim.basis_tanM_abelian | (intros; apply GlobalTheory.TanBasisDim.basis_tanM_abelian <;> assumption)

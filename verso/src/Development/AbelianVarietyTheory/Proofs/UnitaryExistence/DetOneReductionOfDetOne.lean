@@ -6,6 +6,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.DetMod
 
+/- English proof (translation)
+Establish `h : LinearMap.toMatrix b b (algebraMap R S s • LinearMap.baseChange S γ) = (algebraMap R S).mapMatrix a`. Use extensionality with `i j`. Establish `h1 : (algebraMap R S s • LinearMap.baseChange S γ) (b j) = ∑ i, algebraMap R S (a i j) • b i`. Rewrite using `[LinearMap.smul_apply, hb, LinearMap.baseChange_tmul, algebraMap_smul, ← TensorProduct.tmul_smul, ha, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hb, algebraMap_smul, TensorProduct.tmul_smul]`. Rewrite using `[LinearMap.toMatrix_apply, h1, b.repr_sum_self]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_det, ← h, map_smul, Matrix.det_smul, LinearMap.det_toMatrix, Fintype.card_fin]`.
+-/
 theorem det_baseChange_of_rel {R S L : Type} [CommRing R] [CommRing S] [Algebra R S] [AddCommGroup L] [Module R L]
     {r : ℕ} (x : Fin r → L) (b : Module.Basis (Fin r) S (S ⊗[R] L)) (hb : ∀ j, b j = 1 ⊗ₜ x j)
     (γ : L →ₗ[R] L) (s : R) (a : Matrix (Fin r) (Fin r) R) (ha : ∀ j, s • γ (x j) = ∑ i, a i j • x i) :
@@ -21,6 +26,37 @@ theorem det_baseChange_of_rel {R S L : Type} [CommRing R] [CommRing S] [Algebra 
     rfl
   rw [RingHom.map_det, ← h, map_smul, Matrix.det_smul, LinearMap.det_toMatrix, Fintype.card_fin]
 
+/- English proof (translation)
+Introduce `R K _ _ _ _ _ L _ _ _ _ I _ γ hγ`. Distinguish the cases in `hI : I = ⊤`. Use `haveI := Ideal.Quotient.subsingleton_iff.2 hI`. Conclude with `Subsingleton.elim _ _`. Use `set r := Module.finrank R L with hr`.
+
+Use `haveI : IsArtinianRing (R ⧸ I) := isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] L) r (fun P => by haveI := P.isMaximal`. Use `letI : Field ((R ⧸ I) ⧸ P.asIdeal) := Ideal.Quotient.field _`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) L).finrank_eq]`. Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := L) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`.
+
+Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Establish `hsurj : Function.Surjective (TensorProduct.mk R (R ⧸ I) L 1)` using `TensorProduct.mk_surjective R L (R ⧸ I) Ideal.Quotient.mk_surjective`. Use `choose x hx using fun j => hsurj (b j)`. Establish `hb : ∀ j, b j = 1 ⊗ₜ x j` using `fun j => (hx j).symm`.
+
+Establish `hsup : (⊤ : Submodule R L) ≤ Submodule.span R (Set.range x) ⊔ I • ⊤`. Introduce `l _`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (b.repr (1 ⊗ₜ l) i)`. Establish `h0 : ((1 : R ⧸ I) ⊗ₜ[R] (l - ∑ i, c i • x i)) = 0`. Rewrite using `[TensorProduct.tmul_sub, TensorProduct.tmul_sum, sub_eq_zero, ← b.sum_repr (1 ⊗ₜ l)]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hc, TensorProduct.tmul_smul, ← hb, ← Ideal.Quotient.algebraMap_eq, algebraMap_smul]`. Establish `h1` using `congrArg (TensorProduct.quotTensorEquivQuotSMul L I) h0`. Rewrite `h1` using `[map_zero, TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, Submodule.Quotient.mk_eq_zero]`. Establish `: l = ∑ i, c i • x i + (l - ∑ i, c i • x i)` using `by abel`.
+
+Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)) h1`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs1, hs⟩ : ∃ s : R, s - 1 ∈ I ∧ ∀ l : L, s • l ∈ Submodule.span R (Set.range x) := by`. Take `⟨s, hs1, hs⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul I (⊤ : Submodule R (L ⧸ Submodule.span R (Set.range x))) Module.Finite.fg_top (by`. Introduce `q _`.
+
+Take `⟨l, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 (hsup (Submodule.mem_top : l ∈ ⊤))`. Rewrite using `[Submodule.Quotient.mk_add, (Submodule.Quotient.mk_eq_zero _).2 hu, zero_add]`. Use `Submodule.smul_induction_on hv (fun a ha z _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.mk_smul]`.
+
+Conclude with `Submodule.smul_mem_smul ha trivial`. Rewrite using `[Submodule.Quotient.mk_add]`. Conclude with `add_mem hu hv)`. Use `⟨s, hs1, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`.
+
+Conclude with `hs _ trivial`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+
+Simplify using `using hs1`. Establish `hsK : algebraMap R K s ≠ 0` using `fun h => hs0 (IsFractionRing.injective R K (by rw [h, map_zero]))`. Use `choose a ha using fun j => (Submodule.mem_span_range_iff_exists_fun R).1 (hs (γ (x j)))`. Establish `hspan : ⊤ ≤ Submodule.span K (Set.range fun j => (1 : K) ⊗ₜ[R] x j)`. Introduce `t ht`.
+
+Use `clear ht`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact zero_mem _`. Consider the case `add u v hu hv => exact add_mem hu hv`. Consider the case `tmul k l`.
+
+Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 (hs l)`. Establish `: k ⊗ₜ[R] l = (k * (algebraMap R K s)⁻¹) • ∑ i, algebraMap R K (c i) • ((1 : K) ⊗ₜ[R] x i)`. Simplify using `only [algebraMap_smul, ← TensorProduct.tmul_smul]`. Rewrite using `[← TensorProduct.tmul_sum, hc, TensorProduct.tmul_smul, ← algebraMap_smul K s, smul_smul, inv_mul_cancel_right₀ hsK, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Establish `hrk : Fintype.card (Fin r) = Module.finrank K (K ⊗[R] L)`. Rewrite using `[Fintype.card_fin, hr, (IsLocalizedModule.isBaseChange (nonZeroDivisors R) K (TensorProduct.mk R K L 1)).finrank_eq]`. Establish `hK` using `det_baseChange_of_rel x (basisOfTopLeSpanOfCardEqFinrank _ hspan hrk) (fun j => by simp) γ s (Matrix.of fun i j => a j i) (fun j => (ha j).symm)`. Establish `hQ` using `det_baseChange_of_rel x b hb γ s (Matrix.of fun i j => a j i) (fun j => (ha j).symm)`.
+
+Rewrite `hK` using `[hγ, mul_one, ← map_pow]`. Establish `hs' : algebraMap R (R ⧸ I) s = 1`. Rewrite using `[Ideal.Quotient.algebraMap_eq, ← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Conclude with `hs1`. Rewrite `hQ` using `[← IsFractionRing.injective R K hK, map_pow, hs', one_pow, one_mul]`.
+
+Conclude with `hQ`.
+-/
 theorem det_baseChange_quot_eq_one : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (L : Type) [AddCommGroup L] [Module R L] [Module.Finite R L] [Module.Projective R L] (I : Ideal R) [Finite (R ⧸ I)] (γ : L →ₗ[R] L), LinearMap.det (LinearMap.baseChange K γ) = 1 → LinearMap.det (LinearMap.baseChange (R ⧸ I) γ) = 1 := by
   intro R K _ _ _ _ _ L _ _ _ _ I _ γ hγ
   by_cases hI : I = ⊤

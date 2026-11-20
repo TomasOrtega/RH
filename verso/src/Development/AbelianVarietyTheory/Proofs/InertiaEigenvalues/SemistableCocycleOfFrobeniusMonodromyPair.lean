@@ -10,6 +10,15 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.ExistsEqTmulOn
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N GlobalTheory.Pst GlobalTheory.PMon TensorProduct Module
 open scoped Formalism.Per
 
+/- English proof (translation)
+Introduce `l _ P AI T K V _ _ _ _ _ _ _ ρ hρ x hx y hy hxy`. Take `⟨ι, hιC, hιact⟩` from `GlobalTheory.T.exists_equivariant_log_semistable_to_deRham l P AI T`. Take `⟨hιst, -, -⟩` from `GlobalTheory.T.lTensor_semistable_to_deRham_equivariant l P ι hιC hιact K V ρ`. Take `⟨z, hNz, hφz, hFz⟩` from `GlobalTheory.T.exists_monodromy_frobenius_solution_fil l P AI T ι hιC K V x y hxy`. Establish `hx'` using `(mem_Dst P ρ).mp hx`.
+
+Establish `hy'` using `(mem_Dst P ρ).mp hy`. Establish `hw : ∀ g : ↥(GK K), ∃ v : V, stRep P ρ g z - z = v ⊗ₜ[ℚ_[l]] (1 : Bst P)`. Introduce `g`. Use `GlobalTheory.T.exists_eq_tmul_one_of_monodromy_frobenius_filtration l P AI T ι hιC K V (stRep P ρ g z - z) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← Module.End.mul_apply, monV_stRep, Module.End.mul_apply, hNz, hx', sub_self]`.
+
+Establish `hφz' : phiV P ℚ_[l] V z = z + y` using `by rw [← hφz]; abel`. Rewrite using `[map_sub, ← Module.End.mul_apply, phiV_stRep, Module.End.mul_apply, hφz', map_add, hy']`. Normalize the expressions using the abelian group laws. Rewrite using `[map_sub, hιst]`. Conclude with `Submodule.sub_mem _ (GlobalTheory.T.actVdR_mem_tensorDeRhamFiltration l P K V ρ 0 g _ hFz) hFz`.
+
+Use `choose c hc using hw`. Establish `hc' : ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : Bst P) = stRep P ρ g z - z` using `fun g => (hc g).symm`. Conclude with `⟨z, c, GlobalTheory.T.continuousCocycle_of_semistable_coboundary l P AI T K V ρ hρ z c hc', hc', hNz⟩`.
+-/
 theorem GlobalTheory.semistable_class_of_pair : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [ContinuousAdd V] [ContinuousConstSMul ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V), (∀ v : V, Continuous fun g => ρ g v) → ∀ x ∈ Dst P ρ, ∀ y ∈ Dst P ρ, (l : ℚ_[l]) • phiV P ℚ_[l] V x - x = monV P ℚ_[l] V y → ∃ (z : V ⊗[ℚ_[l]] Bst P) (c : ↥(GK K) → V), c ∈ continuousCocycles ρ ∧ (∀ g, c g ⊗ₜ[ℚ_[l]] (1 : Bst P) = stRep P ρ g z - z) ∧ monV P ℚ_[l] V z = x := by
   intro l _ P AI T K V _ _ _ _ _ _ _ ρ hρ x hx y hy hxy
   obtain ⟨ι, hιC, hιact⟩ := GlobalTheory.T.exists_equivariant_log_semistable_to_deRham l P AI T

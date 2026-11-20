@@ -20,10 +20,30 @@ section Galois
 variable {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω]
   (L : Type) [Field L] [NumberField L] [Algebra K L] [Algebra L Ω] [IsScalarTower K L Ω] [IsGalois K L]
 
+/- English proof (translation)
+The claim follows from `(A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom))`.
+-/
 theorem valuation_int_le_one {L Ω : Type} [Field L] [Field Ω] [Algebra L Ω] (A : ValuationSubring Ω) (x : 𝓞 L) :
     A.valuation (algebraMap L Ω (x : L)) ≤ 1 :=
   (A.valuation_le_one_iff _).mpr (mem_of_isIntegral_int A (x.isIntegral_coe.map (algebraMap L Ω).toIntAlgHom))
 
+/- English proof (translation)
+Introduce and unpack `τ ⟨P, hP, hPo, hτ⟩`. Set `w : HeightOneSpectrum (𝓞 L)` to `⟨P, hP, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P⟩`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Establish `hAv : IsPlaceOver A v` using `fun x => by`. Use `hA (algebraMap (𝓞 K) (𝓞 L) x)` as an intermediate fact.
+
+Rewrite using `[hPo.over, Ideal.mem_under, IsScalarTower.algebraMap_apply K L Ω]`. Conclude with `this`. Establish `hu : ∀ s : 𝓞 L, s ∉ P → A.valuation (algebraMap L Ω (s : L)) = 1` using `fun s hs => le_antisymm (valuation_int_le_one A s) (not_lt.1 ((hA s).not.2 hs))`. Take `⟨σ, hσ, e⟩` from `GlobalTheory.InertiaLift.exists_mem_Ine_lift A L τ (fun x hx => by`. Choose the witnesses or unpack the hypotheses as in `⟨s, t, hs, e⟩ : ∃ s t : 𝓞 L, s ∉ P ∧ x * (s : L) = t := by`.
+
+Take `⟨n, d, e | e⟩` from `w.exists_primeCompl_mul_eq_or_mul_eq x`. Conclude with `⟨d, n, d.2, e⟩`. Use `⟨n, d, fun hn => ?_, e⟩` and prove the remaining obligations. Establish `h1` using `hu d d.2`. Establish `e' : x * (n : L) = ((d : 𝓞 L) : L)` using `e`.
+
+Rewrite `h1` using `[← e', map_mul, map_mul]`. Conclude with `((mul_le_of_le_one_left' hx).trans_lt ((hA n).2 hn)).ne h1`. Establish `hs' : τ • s ∉ P` using `fun hs' => hs (by simpa using P.sub_mem hs' (hτ s))`. Establish `e2 : τ x * τ (s : L) = τ (t : L)` using `by rw [← map_mul, e]`. Establish `key : τ (s : L) * (τ x - x) = (τ (t : L) - t) - x * (τ (s : L) - s)`.
+
+Rewrite using `[← e2, ← e]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : A.valuation (algebraMap L Ω (τ (s : L))) = 1` using `hu _ hs'`. Establish `h2 : A.valuation (algebraMap L Ω (τ (t : L) - t)) < 1` using `(hA _).2 (hτ t)`. Establish `h3 : A.valuation (algebraMap L Ω (τ (s : L) - s)) < 1` using `(hA _).2 (hτ s)`.
+
+Establish `h4 : A.valuation (algebraMap L Ω (τ (s : L) * (τ x - x))) < 1`. Rewrite using `[key, map_sub (algebraMap L Ω) _ (x * _), map_mul]`. Use `Valuation.map_sub_lt _ h2 ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' hx).trans_lt h3`.
+
+Rewrite using `[map_mul, map_mul, h1, one_mul, map_sub] at h4)` and apply the resulting hypothesis. Rewrite using `[← h A hAv σ hσ]`. Use extensionality with `x`. Apply `(algebraMap L Ω).injective` to reduce the goal to its premises. Rewrite using `[← e]`.
+
+Conclude with `(σ.restrictNormal_commutes L x).symm`.
+-/
 theorem unramIn_of_ine {v : HeightOneSpectrum (𝓞 K)}
     (h : ∀ A : ValuationSubring Ω, IsPlaceOver A v → ∀ σ ∈ Ine (F := K) A, AlgEquiv.restrictNormalHom L σ = 1) :
     GlobalTheory.NT.UnramIn L v := by
@@ -66,6 +86,13 @@ theorem unramIn_of_ine {v : HeightOneSpectrum (𝓞 K)}
 
 omit [IsAlgClosure K Ω] [NumberField L] in
 
+/- English proof (translation)
+Set `f : 𝓞 L →+* A` to `((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A fun x => (A.valuation_le_one_iff _).1 (valuation_int_le_one A x)`. Establish `hf : ∀ x, x ∈ (IsLocalRing.maximalIdeal A).comap f ↔ A.valuation (algebraMap L Ω (x : L)) < 1` using `fun x => A.valuation_lt_one_iff (f x)`. Use `⟨(IsLocalRing.maximalIdeal A).comap f, inferInstance, ⟨?_⟩, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[Ideal.mem_under, hf, ← hA x, IsScalarTower.algebraMap_apply K L Ω]`.
+
+Both sides reduce to the same expression. Rewrite using `[hf]`. Use `hσ.2 _ (valuation_int_le_one A x)` as an intermediate fact. Rewrite `this` using `[← σ.restrictNormal_commutes L, ← map_pow, ← map_sub]`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+
+Conclude with `this`.
+-/
 theorem isFrob_restrict {v : HeightOneSpectrum (𝓞 K)} {A : ValuationSubring Ω} (hA : IsPlaceOver A v) {σ : G K Ω}
     (hσ : IsFrob (F := K) A (normV v) σ) : GlobalTheory.NT.IsFrob L v (AlgEquiv.restrictNormalHom L σ) := by
   let f : 𝓞 L →+* A := ((algebraMap L Ω).comp (algebraMap (𝓞 L) L)).codRestrict A fun x =>
@@ -82,6 +109,13 @@ theorem isFrob_restrict {v : HeightOneSpectrum (𝓞 K)} {A : ValuationSubring �
     rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
     exact this
 
+/- English proof (translation)
+Establish `: IsGalois K Ω` using `{}`. Set `N : ClosedSubgroup (G K Ω)` to `⟨φ.ker, φ.ker.isClosed_of_isOpen ho⟩`. Set `L` to `IntermediateField.fixedField φ.ker`. Establish `hN : L.fixingSubgroup = φ.ker` using `InfiniteGalois.fixingSubgroup_fixedField N`. Establish `h1 : FiniteDimensional K L` using `(InfiniteGalois.isOpen_iff_finite L).1 (by rw [hN]; exact ho)`.
+
+Establish `h2 : IsGalois K L` using `(InfiniteGalois.normal_iff_isGalois L).1 (by rw [hN]; infer_instance)`. Establish `h3 : ∀ σ : G K Ω, AlgEquiv.restrictNormalHom L σ = 1 ↔ φ σ = 1` using `fun σ => by`. Rewrite using `[← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, hN, MonoidHom.mem_ker]`. Establish `h4 : IsMulCommutative (L ≃ₐ[K] L)` using `⟨⟨fun a b => by`. Take `⟨a, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) Ω a`.
+
+Take `⟨b, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := L) Ω b`. Rewrite using `[← mul_inv_eq_one, ← map_mul, ← map_mul, ← map_inv, ← map_mul, h3, map_mul, map_inv, map_mul, map_mul, mul_comm (φ a), mul_inv_cancel]⟩⟩`. Conclude with `⟨L, h1, {}, h3⟩`.
+-/
 theorem exists_field {B : Type} [CommGroup B] (φ : G K Ω →* B) (ho : IsOpen (φ.ker : Set (G K Ω))) :
     ∃ (L : IntermediateField K Ω) (_ : FiniteDimensional K L) (_ : IsAbelianGalois K L),
       ∀ σ : G K Ω, AlgEquiv.restrictNormalHom L σ = 1 ↔ φ σ = 1 := by
@@ -109,6 +143,9 @@ variable {K : Type} [Field K] [NumberField K]
 def rad (𝔪 : Ideal (𝓞 K)) (v : HeightOneSpectrum (𝓞 K)) : WithZero (Multiplicative ℤ) :=
   WithZero.exp (-FractionalIdeal.count K v (𝔪 : FractionalIdeal (𝓞 K)⁰ K))
 
+/- English proof (translation)
+Use `FractionalIdeal.count_mono K v (FractionalIdeal.coeIdeal_ne_zero.2 hm) ((FractionalIdeal.coeIdeal_le_coeIdeal K).2 (Ideal.le_of_dvd hv))` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.count_self]`. Rewrite using `[rad, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem rad_lt_one {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) {v : HeightOneSpectrum (𝓞 K)} (hv : v.asIdeal ∣ 𝔪) :
     rad 𝔪 v < 1 := by
   have := FractionalIdeal.count_mono K v (FractionalIdeal.coeIdeal_ne_zero.2 hm)
@@ -117,6 +154,9 @@ theorem rad_lt_one {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) {v : HeightOneSpe
   rw [rad, ← WithZero.exp_zero, WithZero.exp_lt_exp]
   omega
 
+/- English proof (translation)
+Establish `: (Associates.mk v.asIdeal).count (Associates.mk 𝔪).factors = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hv ((Associates.count_ne_zero_iff_dvd hm v.irreducible).1 hne)`. Rewrite using `[rad, FractionalIdeal.count_coe K v hm]`. Simplify using `[this]`.
+-/
 theorem rad_eq_one {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪) :
     rad 𝔪 v = 1 := by
   classical
@@ -126,6 +166,9 @@ theorem rad_eq_one {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) {v : HeightOneSpe
   rw [rad, FractionalIdeal.count_coe K v hm]
   simp [this]
 
+/- English proof (translation)
+The claim follows from `Iff.trans ⟨FractionalIdeal.mem_coeIdeal_of_mem _, fun h => by obtain ⟨b, hb, e⟩ := (FractionalIdeal.mem_coeIdeal _).1 h rwa [← RingOfIntegers.ext e]⟩ (GlobalTheory.Idele.mem_iff_valuation_le (FractionalIdeal.coeIdeal_ne_zero.2 hm) _)`.
+-/
 theorem mem_iff_rad {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (a : 𝓞 K) :
     a ∈ 𝔪 ↔ ∀ v : HeightOneSpectrum (𝓞 K), v.valuation K (a : K) ≤ rad 𝔪 v :=
   Iff.trans ⟨FractionalIdeal.mem_coeIdeal_of_mem _, fun h => by
@@ -133,6 +176,33 @@ theorem mem_iff_rad {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (a : 𝓞 K) :
       rwa [← RingOfIntegers.ext e]⟩
     (GlobalTheory.Idele.mem_iff_valuation_le (FractionalIdeal.coeIdeal_ne_zero.2 hm) _)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, ⟨ha, hb, -, hb', hab, hp⟩, e⟩`. Use `⟨fun v hv => ?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `h1 : v.valuation K (b : K) = 1`. Use `le_antisymm (v.valuation_le_one b) (not_lt.1 fun h => ?_)` and prove the remaining obligations.
+
+Conclude with `v.prime.not_isUnit (hb'.isUnit_of_dvd' (Ideal.dvd_span_singleton.2 ((v.valuation_lt_one_iff_mem b).1 h)) hv)`. Establish `h2` using `(mem_iff_rad hm _).1 hab v`. Establish `e2 : ((a - b : 𝓞 K) : K) = ((k : K) - 1) * b`. Rewrite using `[sub_mul, e, one_mul]`. Both sides reduce to the same expression.
+
+Rewrite `h2` using `[e2, map_mul, h1, mul_one]`. Then use the resulting hypothesis. Use `hp φ` as an intermediate fact. Rewrite `this` using `[← e, map_mul, mul_assoc]`. Conclude with `pos_of_mul_pos_left this (mul_self_nonneg _)`. Introduce and unpack `⟨h, hp⟩`.
+
+Set `D : Ideal (𝓞 K)` to `{ carrier := {b | ∃ a : 𝓞 K, (k : K) * (b : K) = a} zero_mem' := ⟨0, by simp⟩ add_mem' := by`. Introduce and unpack `b c ⟨a, ha⟩ ⟨d, hd⟩`. Conclude with `⟨a + d, by push_cast; rw [mul_add, ha, hd]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c b ⟨a, ha⟩`.
+
+Use `⟨c * a, ?_⟩` and prove the remaining obligations. Use `show (k : K) * ((c : K) * b) = c * a`. Rewrite using `[← ha]`. Use `ring }`. Establish `hD : D ⊔ 𝔪 = ⊤`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, fun h0 => hm (le_bot_iff.1 (h0 ▸ le_sup_right.trans hle))⟩`. Establish `hv : v.asIdeal ∣ 𝔪` using `Ideal.dvd_iff_le.2 (le_sup_right.trans hle)`. Establish `h1 : v.valuation K (k : K) ≤ 1`.
+
+Use `Valuation.map_add_le (v.valuation K) ((h v hv).trans (rad_lt_one hm hv).le) (map_one _).le` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Take `⟨n, d, e⟩` from `v.exists_primeCompl_mul_eq_of_integer _ h1`. Conclude with `d.2 (hle (le_sup_left (a := D) ⟨n, e⟩))`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hb0, hb1⟩ : ∃ b ∈ D, b ≠ 0 ∧ 1 - b ∈ 𝔪 := by`.
+
+Take `⟨b, hb, c, hc, e⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hD)`. Establish `hc' : 1 - b ∈ 𝔪` using `by rwa [← e, add_sub_cancel_left]`. Distinguish the cases in `hb0 : b = 0`. Take `⟨n, d, hd, e⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) (k : K)`. Establish `hd0` using `nonZeroDivisors.ne_zero hd`.
+
+Use `⟨d, ⟨n, ?_⟩, hd0, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `div_mul_cancel₀ _ (by simpa using hd0)`. Rewrite `hc'` using `[hb0, sub_zero]`. Simplify using `using 𝔪.mul_mem_left (1 - d) hc'`.
+
+Conclude with `⟨b, hb, hb0, hc'⟩`. Take `⟨a, e⟩` from `hb`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb0`. Establish `hab : a - b ∈ 𝔪` using `(mem_iff_rad hm _).2 fun v => by`. Distinguish the cases in `hv : v.asIdeal ∣ 𝔪`.
+
+Establish `e2 : ((a - b : 𝓞 K) : K) = ((k : K) - 1) * b`. Rewrite using `[sub_mul, e, one_mul]`. Both sides reduce to the same expression. Rewrite using `[e2, map_mul]`. Conclude with `(mul_le_of_le_one_right' (v.valuation_le_one b)).trans (h v hv)`.
+
+Rewrite using `[rad_eq_one hm hv]`. Conclude with `v.valuation_le_one _`. Use `⟨a, b, ⟨?_, hb0, ?_, ?_, hab, fun φ => ?_⟩, e⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `mul_ne_zero k.ne_zero hbK e`.
+
+Conclude with `Ideal.isCoprime_iff_exists.2 ⟨a, Ideal.mem_span_singleton_self a, _, 𝔪.sub_mem hb1 hab, by ring⟩`. Conclude with `Ideal.isCoprime_iff_exists.2 ⟨b, Ideal.mem_span_singleton_self b, _, hb1, by ring⟩`. Rewrite using `[← e, map_mul, mul_assoc]`. Conclude with `mul_pos (hp φ) (mul_self_pos.2 ((map_ne_zero φ).2 hbK))`.
+-/
 theorem mem_rayUnits_iff {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (k : Kˣ) : k ∈ rayUnits 𝔪 ↔
     (∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪 → v.valuation K ((k : K) - 1) ≤ rad 𝔪 v) ∧
       ∀ φ : K →+* ℝ, 0 < φ (k : K) := by
@@ -203,6 +273,15 @@ theorem mem_rayUnits_iff {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (k : Kˣ) :
     · rw [← e, map_mul, mul_assoc]
       exact mul_pos (hp φ) (mul_self_pos.2 ((map_ne_zero φ).2 hbK))
 
+/- English proof (translation)
+Establish `h : ∀ w : InfinitePlace K, ∃ S : Set w.Completion, IsPreconnected S ∧ 0 ∉ S ∧ 1 ∈ S ∧ algebraMap K w.Completion (k : K) ∈ S` using `fun w => by`. Break down `w.isReal_or_isComplex with hw | hw` into its components or cases. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `he : e (algebraMap K w.Completion (k : K)) = InfinitePlace.embedding_of_isReal hw (k : K)` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv w.1).symm (k : K))`. Use `⟨e ⁻¹' Set.Ioi 0, (InfinitePlace.Completion.isometryEquivRealOfIsReal hw).toHomeomorph.isPreconnected_preimage.2 isPreconnected_Ioi, by simp, by simp, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Set.mem_preimage, he]`. Conclude with `hk _`. Set `e` to `InfinitePlace.Completion.ringEquivComplexOfIsComplex hw`. Conclude with `⟨e ⁻¹' {0}ᶜ, (InfinitePlace.Completion.isometryEquivComplexOfIsComplex hw).toHomeomorph.isPreconnected_preimage.2 (isConnected_compl_singleton_of_one_lt_rank (by simp) 0).isPreconnected, by simp, by simp, (map_ne_zero e).2 ((map_ne_zero _).2 k.ne_zero)⟩`. Use `choose S hS h0 h1 h2 using h`.
+
+Set `T : Set (InfiniteAdeleRing K)` to `Set.univ.pi S`. Establish `hp : IsPreconnected ((Units.val : (InfiniteAdeleRing K)ˣ → InfiniteAdeleRing K) ⁻¹' T)`. Rewrite using `[← (isOpenEmbedding_val_inf K).isInducing.isPreconnected_image, Set.image_preimage_eq_of_subset]`. Conclude with `isPreconnected_univ_pi hS`. Introduce `y hy`.
+
+Establish `: IsUnit y` using `Pi.isUnit_iff.2 fun w => IsUnit.mk0 _ fun h => h0 w (h ▸ hy w trivial)`. Conclude with `this`. Conclude with `hp.subset_connectedComponent (fun w _ => h1 w) (fun w _ => h2 w)`.
+-/
 theorem mem_connectedComponentOfOne_of_pos (k : Kˣ) (hk : ∀ φ : K →+* ℝ, 0 < φ (k : K)) :
     (Units.map (algebraMap K (InfiniteAdeleRing K)).toMonoidHom k : (InfiniteAdeleRing K)ˣ) ∈
       Subgroup.connectedComponentOfOne (InfiniteAdeleRing K)ˣ := by
@@ -257,6 +336,11 @@ def rayIdl (𝔪 : Ideal (𝓞 K)) : Subgroup (Ideles K) where
     have h3 := ha' v hv
     rwa [Valuation.map_sub_swap, ← h2, map_mul, h1, one_mul] at h3
 
+/- English proof (translation)
+Establish `h : IsOpen (⋂ v ∈ {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ 𝔪}, {a : Ideles K | Valued.v (ev v (a : AdeleRing (𝓞 K) K) - 1) ≤ rad 𝔪 v})` using `(Ideal.finite_factors hm).isOpen_biInter fun v _ => (GlobalTheory.Mem.UnitOpen.isOpen_val_le v _).preimage ((GlobalTheory.Mem.UnitOpen.continuous_comp v).sub continuous_const)`. Establish `hp : Continuous (infPart (K` using `K)) := Continuous.units_map _ continuous_fst`. Use `GlobalTheory.Mem.UnitOpen.isOpen_unitIdl.inter (h.inter ((isOpen_connectedComponentOfOne_inf K).preimage hp)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `a`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isOpen_rayIdl {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) : IsOpen (rayIdl 𝔪 : Set (Ideles K)) := by
   have h : IsOpen (⋂ v ∈ {v : HeightOneSpectrum (𝓞 K) | v.asIdeal ∣ 𝔪},
       {a : Ideles K | Valued.v (ev v (a : AdeleRing (𝓞 K) K) - 1) ≤ rad 𝔪 v}) :=
@@ -268,6 +352,11 @@ theorem isOpen_rayIdl {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) : IsOpen (rayI
   simp only [Set.mem_inter_iff, Set.mem_iInter]
   rfl
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨fun v => map_one (Valued.v : Valuation (v.adicCompletion K) _), fun v _ => ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v ((1 : v.adicCompletion K) - 1) ≤ _`. Simplify using the standard rewrite rules. Establish `e : infPart (Units.map (MonoidHom.inl (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)) y) = y` using `Units.ext rfl`.
+
+Conclude with `e.symm ▸ hy`.
+-/
 theorem infConn_le_rayIdl (𝔪 : Ideal (𝓞 K)) : infConn K ≤ rayIdl 𝔪 := by
   rintro _ ⟨y, hy, rfl⟩
   refine ⟨fun v => map_one (Valued.v : Valuation (v.adicCompletion K) _), fun v _ => ?_, ?_⟩
@@ -277,6 +366,13 @@ theorem infConn_le_rayIdl (𝔪 : Ideal (𝓞 K)) : infConn K ≤ rayIdl 𝔪 :=
       Units.ext rfl
     exact e.symm ▸ hy
 
+/- English proof (translation)
+Use `⟨fun w => ?_, fun w hw => ?_, ?_⟩` and prove the remaining obligations. Use `show Valued.v (ev w (localIdele K v x : AdeleRing (𝓞 K) K)) = 1`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Rewrite using `[ev_local_self]`.
+
+Conclude with `hx`. Rewrite using `[ev_local_ne h, map_one]`. Rewrite using `[ev_local_ne (by rintro rfl; exact hv hw)]`. Simplify using the standard rewrite rules. Rewrite using `[show infPart (localIdele K v x) = 1 from Units.ext rfl]`.
+
+Conclude with `one_mem _`.
+-/
 theorem localIdele_mem_rayIdl {𝔪 : Ideal (𝓞 K)} {v : HeightOneSpectrum (𝓞 K)} (hv : ¬ v.asIdeal ∣ 𝔪)
     {x : (v.adicCompletion K)ˣ} (hx : IsUnitAt v x) : localIdele K v x ∈ rayIdl 𝔪 := by
   refine ⟨fun w => ?_, fun w hw => ?_, ?_⟩
@@ -293,15 +389,26 @@ theorem localIdele_mem_rayIdl {𝔪 : Ideal (𝓞 K)} {v : HeightOneSpectrum (�
 
 def unif (v : HeightOneSpectrum (𝓞 K)) : (v.adicCompletion K)ˣ := atFin v (exists_unif v).choose
 
+/- English proof (translation)
+The claim follows from `(exists_unif v).choose_spec`.
+-/
 theorem isUnifAt_unif (v : HeightOneSpectrum (𝓞 K)) : IsUnifAt v (unif v) := (exists_unif v).choose_spec
 
 def unifIdl (𝔪 : Ideal (𝓞 K)) : idealsPrimeTo 𝔪 →* Ideles K := extend 𝔪 fun v => localIdele K v (unif v)
 
+/- English proof (translation)
+Use `(MonoidHom.map_finprod infPart (finite_support_zpow (fun v => localIdele K v (unif v)) _)).trans ?_` and prove the remaining obligations. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, show infPart (localIdele K v (unif v)) = 1 from Units.ext rfl, one_zpow]`.
+-/
 theorem infPart_unifIdl (𝔪 : Ideal (𝓞 K)) (J : idealsPrimeTo 𝔪) : infPart (unifIdl 𝔪 J) = 1 := by
   refine (MonoidHom.map_finprod infPart (finite_support_zpow (fun v => localIdele K v (unif v)) _)).trans ?_
   refine finprod_eq_one_of_forall_eq_one fun v => ?_
   rw [map_zpow, show infPart (localIdele K v (unif v)) = 1 from Units.ext rfl, one_zpow]
 
+/- English proof (translation)
+Use `MonoidHom.map_finprod (Units.map (ev v)) (finite_support_zpow (fun v => localIdele K v (unif v)) (J.1 : FractionalIdeal (𝓞 K)⁰ K))` as an intermediate fact. Rewrite using `[finprod_eq_single (fun w => Units.map (ev v) _) v fun w hw => by`. Rewrite using `[map_zpow, show Units.map (ev v) (localIdele K w (unif w)) = 1 from Units.ext (ev_local_ne hw.symm _), one_zpow],`. Use the proof step `map_zpow, show Units.map (ev v) (localIdele K v (unif v)) = unif v from Units.ext (ev_local_self v _)] at this`. Rewrite using `[← Units.val_zpow_eq_zpow_val, ← this]`.
+
+Both sides reduce to the same expression.
+-/
 theorem ev_unifIdl (𝔪 : Ideal (𝓞 K)) (J : idealsPrimeTo 𝔪) (v : HeightOneSpectrum (𝓞 K)) :
     ev v (unifIdl 𝔪 J : AdeleRing (𝓞 K) K) =
       (unif v : v.adicCompletion K) ^ FractionalIdeal.count K v (J.1 : FractionalIdeal (𝓞 K)⁰ K) := by
@@ -313,6 +420,9 @@ theorem ev_unifIdl (𝔪 : Ideal (𝓞 K)) (J : idealsPrimeTo 𝔪) (v : HeightO
   rw [← Units.val_zpow_eq_zpow_val, ← this]
   rfl
 
+/- English proof (translation)
+Establish `h : Valued.v (unif v : v.adicCompletion K) = WithZero.exp (-1 : ℤ)` using `isUnifAt_unif v`. Rewrite using `[ev_unifIdl, map_zpow₀, h, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem valued_unifIdl (𝔪 : Ideal (𝓞 K)) (J : idealsPrimeTo 𝔪) (v : HeightOneSpectrum (𝓞 K)) :
     Valued.v (ev v (unifIdl 𝔪 J : AdeleRing (𝓞 K) K)) =
       WithZero.exp (-FractionalIdeal.count K v (J.1 : FractionalIdeal (𝓞 K)⁰ K)) := by
@@ -320,13 +430,28 @@ theorem valued_unifIdl (𝔪 : Ideal (𝓞 K)) (J : idealsPrimeTo 𝔪) (v : Hei
   rw [ev_unifIdl, map_zpow₀, h, ← WithZero.exp_zsmul]
   simp
 
+/- English proof (translation)
+The claim follows from `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k`.
+-/
 theorem valued_algebraMap (v : HeightOneSpectrum (𝓞 K)) (k : K) :
     Valued.v (algebraMap K (v.adicCompletion K) k) = v.valuation K k :=
   HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_diagUnits (v : HeightOneSpectrum (𝓞 K)) (k : Kˣ) :
     ev v (diagUnits K k : AdeleRing (𝓞 K) K) = algebraMap K (v.adicCompletion K) k := rfl
 
+/- English proof (translation)
+Establish `e0 : ∀ v, ev v ((diagUnits K k * (unifIdl 𝔪 J)⁻¹ : Ideles K) : AdeleRing (𝓞 K) K) = algebraMap K (v.adicCompletion K) k * (ev v (unifIdl 𝔪 J : AdeleRing (𝓞 K) K))⁻¹` using `fun v => by`. Rewrite using `[Units.val_mul, map_mul, ev_diagUnits, map_units_inv]`. Establish `e1 : diagUnits K k * (unifIdl 𝔪 J)⁻¹ ∈ unitIdl K ↔ toPrincipalIdeal (𝓞 K) K k = J.1`. Establish `: ∀ v, Valued.v (ev v ((diagUnits K k * (unifIdl 𝔪 J)⁻¹ : Ideles K) : AdeleRing (𝓞 K) K)) = 1 ↔ FractionalIdeal.count K v (FractionalIdeal.spanSingleton (𝓞 K)⁰ (k : K)) = FractionalIdeal.count K v (J.1 : FractionalIdeal (𝓞 K)⁰ K)` using `fun v => by`. Rewrite using `[e0, map_mul, map_inv₀, valued_unifIdl, valued_algebraMap, mul_inv_eq_one₀ WithZero.exp_ne_zero, GlobalTheory.Idele.valuation_eq_exp_neg_count v k.ne_zero, WithZero.exp_inj, neg_inj]`.
+
+Rewrite using `[Units.ext_iff, coe_toPrincipalIdeal]`. Conclude with `⟨fun h => GlobalTheory.Idele.eq_of_count_eq (FractionalIdeal.spanSingleton_ne_zero_iff.2 k.ne_zero) J.1.ne_zero fun v => (this v).1 (h v), fun h v => (this v).2 (by rw [h])⟩`. Establish `e2 : ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔪 → Valued.v (ev v ((diagUnits K k * (unifIdl 𝔪 J)⁻¹ : Ideles K) : AdeleRing (𝓞 K) K) - 1) = v.valuation K ((k : K) - 1)` using `fun v hv => by`. Rewrite using `[e0, ev_unifIdl, J.2 v hv, zpow_zero, inv_one, mul_one, ← valued_algebraMap, map_sub (algebraMap K _), map_one]`. Establish `e3 : infPart (diagUnits K k * (unifIdl 𝔪 J)⁻¹) = Units.map (algebraMap K (InfiniteAdeleRing K)).toMonoidHom k`.
+
+Rewrite using `[map_mul, map_inv, infPart_unifIdl, inv_one, mul_one]`. Conclude with `Units.ext rfl`. Rewrite using `[mem_rayUnits_iff hm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`.
+
+Conclude with `⟨⟨fun v hv => e2 v hv ▸ h2 v hv, pos_of_mem_connectedComponentOfOne K k (e3 ▸ h3)⟩, e1.1 h1⟩`. Introduce and unpack `⟨⟨h2, h3⟩, h1⟩`. Conclude with `⟨e1.2 h1, fun v hv => (e2 v hv).symm ▸ h2 v hv, e3 ▸ mem_connectedComponentOfOne_of_pos k h3⟩`.
+-/
 theorem div_mem_rayIdl_iff {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (J : idealsPrimeTo 𝔪) (k : Kˣ) :
     diagUnits K k * (unifIdl 𝔪 J)⁻¹ ∈ rayIdl 𝔪 ↔ k ∈ rayUnits 𝔪 ∧ toPrincipalIdeal (𝓞 K) K k = J.1 := by
   have e0 : ∀ v, ev v ((diagUnits K k * (unifIdl 𝔪 J)⁻¹ : Ideles K) : AdeleRing (𝓞 K) K) =
@@ -358,6 +483,11 @@ theorem div_mem_rayIdl_iff {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (J : idea
 
 def rayGrp (𝔪 : Ideal (𝓞 K)) : Subgroup (Ideles K) := (diagUnits K).range ⊔ rayIdl 𝔪
 
+/- English proof (translation)
+Rewrite using `[Subgroup.mem_subgroupOf, rayGrp, Subgroup.mem_sup]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, rfl⟩, u, hu, e⟩`. Use `⟨k, (div_mem_rayIdl_iff hm J k).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← e, mul_inv, mul_inv_cancel_left]`.
+
+Conclude with `inv_mem hu`. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨_, ⟨k, rfl⟩, _, inv_mem ((div_mem_rayIdl_iff hm J k).2 hk), by`. Rewrite using `[mul_inv, inv_inv, mul_inv_cancel_left]⟩`.
+-/
 theorem unifIdl_mem_rayGrp_iff {𝔪 : Ideal (𝓞 K)} (hm : 𝔪 ≠ ⊥) (J : idealsPrimeTo 𝔪) :
     unifIdl 𝔪 J ∈ rayGrp 𝔪 ↔ J ∈ (rayPrincipal 𝔪).subgroupOf (idealsPrimeTo 𝔪) := by
   rw [Subgroup.mem_subgroupOf, rayGrp, Subgroup.mem_sup]
@@ -378,6 +508,29 @@ namespace GlobalTheory.Published
 
 open GlobalTheory.RayFromArtin
 
+/- English proof (translation)
+Introduce `H`. Rewrite using `[rayClassFieldSt_iff_artinIso]`. Introduce `K _ _ 𝔪 hm`. Take `⟨art, ha⟩` from `H K (AlgebraicClosure K)`. Establish `hU : IsOpen (rayGrp 𝔪 : Set (Ideles K))` using `Subgroup.isOpen_mono le_sup_right (isOpen_rayIdl hm)`.
+
+Set `θ : Ideles K →* Ideles K ⧸ rayGrp 𝔪` to `QuotientGroup.mk' _`. Establish `hθ : θ.ker = rayGrp 𝔪` using `QuotientGroup.ker_mk' _`. Establish `hker : art.ker ≤ θ.ker`. Rewrite using `[ha.ker, hθ]`. Conclude with `Subgroup.topologicalClosure_minimal _ (sup_le_sup_left (infConn_le_rayIdl 𝔪) _) (Subgroup.isClosed_of_isOpen _ hU)`.
+
+Set `ρ` to `art.liftOfSurjective ha.quot.surjective ⟨θ, hker⟩`. Establish `hρ : ∀ x, ρ (art x) = θ x` using `fun x => art.liftOfRightInverse_comp_apply _ _ ⟨θ, hker⟩ x`. Establish `hρo : IsOpen (ρ.ker : Set (Gab K (AlgebraicClosure K)))`. Rewrite using `[← ha.quot.isQuotientMap.isOpen_preimage]`. Use `hU using 1` and compare the differences between its conclusion and the goal.
+
+Use extensionality with `x`. Rewrite using `[Set.mem_preimage, SetLike.mem_coe, SetLike.mem_coe, MonoidHom.mem_ker, hρ, ← MonoidHom.mem_ker, hθ]`. Set `φ` to `ρ.comp (GlobalTheory.HeckeGal.toAb K (AlgebraicClosure K))`. Establish `hφ : Function.Surjective φ` using `fun b => by`. Take `⟨x, rfl⟩` from `QuotientGroup.mk'_surjective _ b`.
+
+Take `⟨σ, hσ⟩` from `toAb_surjective (art x)`. Conclude with `⟨σ, by rw [MonoidHom.comp_apply, hσ, hρ]⟩`. Take `⟨L, _, _, hL⟩` from `exists_field φ (hρo.preimage QuotientGroup.continuous_mk)`. Establish `: NumberField L` using `NumberField.of_module_finite K L`. Establish `hk2 : φ.ker ≤ (AlgEquiv.restrictNormalHom (F` using `K) (K₁ := AlgebraicClosure K) L).ker := fun σ => (hL σ).2`.
+
+Set `e` to `φ.liftOfSurjective hφ ⟨_, hk2⟩`. Establish `he : ∀ σ, e (φ σ) = AlgEquiv.restrictNormalHom L σ` using `fun σ => φ.liftOfRightInverse_comp_apply _ _ ⟨_, hk2⟩ σ`. Establish `he1 : ∀ b, e b = 1 ↔ b = 1` using `fun b => by`. Take `⟨σ, rfl⟩` from `hφ b`. Rewrite using `[he, hL]`.
+
+Set `ψ : idealsPrimeTo 𝔪 →* (L ≃ₐ[K] L)` to `e.comp (θ.comp (unifIdl 𝔪))⁻¹`. Establish `hψ : ∀ 𝔭 h, GlobalTheory.NT.UnramIn L 𝔭 ∧ GlobalTheory.NT.IsFrob L 𝔭 (ψ (primeElt 𝔪 𝔭 h))` using `fun v hv => by`. Use `⟨unramIn_of_ine (Ω := AlgebraicClosure K) L fun A hA σ hσ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, e⟩` from `(ha.ine v A hA _).2 ⟨σ, hσ, rfl⟩`. Rewrite using `[hL, MonoidHom.comp_apply, ← e, hρ, ← MonoidHom.mem_ker, hθ]`.
+
+Conclude with `Subgroup.mem_sup_right (localIdele_mem_rayIdl hv hx)`. Take `⟨A, hA⟩` from `exists_isPlaceOver (AlgebraicClosure K) v`. Take `⟨σ, hσ, e'⟩` from `(ha.frob v A hA _).1 ⟨_, isUnifAt_unif v, rfl⟩`. Establish `: ψ (primeElt 𝔪 v hv) = AlgEquiv.restrictNormalHom L σ`. Rewrite using `[← he, MonoidHom.comp_apply, MonoidHom.inv_apply, MonoidHom.comp_apply, unifIdl, extend_primeElt, ← hρ, ← e', map_inv (GlobalTheory.HeckeGal.toAb K _), map_inv ρ, inv_inv]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isFrob_restrict L hA hσ`. Establish `hkψ : ψ.ker = (rayPrincipal 𝔪).subgroupOf (idealsPrimeTo 𝔪)`. Use extensionality with `J`.
+
+Rewrite using `[← unifIdl_mem_rayGrp_iff hm, ← hθ, MonoidHom.mem_ker, MonoidHom.mem_ker, MonoidHom.comp_apply, he1, MonoidHom.inv_apply, inv_eq_one, MonoidHom.comp_apply]`. Establish `hsurj : Function.Surjective ψ`. Rewrite using `[← MonoidHom.range_eq_top, eq_top_iff, ← GlobalTheory.RayMaximal.closure_isFrob_eq_top L hm, Subgroup.closure_le]`. Introduce and unpack `σ ⟨𝔭, h, hσ⟩`. Conclude with `⟨primeElt 𝔪 𝔭 h, isFrob_unique L (hψ 𝔭 h).1 (hψ 𝔭 h).2 hσ⟩`.
+
+Conclude with `⟨L, inferInstance, inferInstance, inferInstance, inferInstance, (QuotientGroup.quotientMulEquivOfEq hkψ.symm).trans (QuotientGroup.quotientKerEquivOfSurjective ψ hsurj), hψ⟩`.
+-/
 theorem GlobalArtinReciprocity.rayClassFieldSt : GlobalArtinReciprocity → RayClassFieldSt := by
   intro H
   rw [rayClassFieldSt_iff_artinIso]

@@ -23,6 +23,21 @@ open scoped ComplexOrder
 
 open Formalism.IndefR.Cx.GroupActionMatrices Formalism.IndefR.Cx.EigenprojectionMatrices Formalism.IndefR.Cx.OrthogonalPartDecomposition Formalism.L2.DIV.CyclotomicLifting in
 
+/- English proof (translation)
+Establish `hA : (B.S.H.map v.embedding).PosDef` using `h.ok.hpos v`. Establish `hHh : B.S.Hᴴ = B.S.H` using `FinitelyNonzeroLinear.herm_of_pos h.conj (h.ok.hpos v)`. Establish `hadj : ∀ i, ∃ i', B.S.H.map v.embedding * (oM B op i).map v.embedding = ((oM B op i').map v.embedding)ᴴ * B.S.H.map v.embedding`. Introduce `i`. Take `⟨i', hi'⟩` from `oM_adj hO i`.
+
+Establish `h2 : B.S.H * oM B op i = (oM B op i')ᴴ * B.S.H`. Use `congrArg Matrix.conjTranspose hi'` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hHh]`. Conclude with `this`. Use `⟨i', ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.map_mul, h2, Matrix.map_mul, map_conjTranspose_of_mem_cmMax v.embedding _ (hO.rat i')]`. Establish `hc : Formalism.L2.Col.PairComm (linF fun i => (oM B op i).map v.embedding)` using `fun i j => linF_commute (by rw [← Matrix.map_mul, ← Matrix.map_mul, oM_comm hO.comm])`. Establish `hs : Formalism.L2.Col.SplitOver (linF fun i => (oM B op i).map v.embedding)` using `fun i => Module.End.iSup_maxGenEigenspace_eq_top _`. Establish `hmem : ∀ {S : (I → K) → Prop} {z : B.S.Forms}, z ∈ Formalism.L2.Col.eigSum op S → (fun a => v.embedding (B.S.basis.equivFun z a)) ∈ Formalism.L2.Col.eigSum (linF fun i => (oM B op i).map v.embedding) (fun w => ∃ x, S x ∧ w = fun i => v.embedding (x i))`. Introduce `S z hz`.
+
+Establish `h1 : B.S.basis.equivFun z ∈ Formalism.L2.Col.eigSum (fun i => Matrix.toLin' (oM B op i)) S`. Use `eigSum_le_comap_of (B.S.basis.equivFun : B.S.Forms →ₗ[K] (Fin B.S.dim → K)) op (fun i => Matrix.toLin' (oM B op i)) (fun i f => by rw [Matrix.toLin'_apply]; exact equivFun_oM i f) _ hz` as an intermediate fact. Simplify `this` using `[Submodule.mem_comap]`. Conclude with `emb_mem_eigSum v.embedding (oM B op) S h1`. Establish `hCC' : ∀ w, (fun w => ∃ x, C' x ∧ w = fun i => v.embedding (x i)) w → ¬ (fun w => ∃ x, C x ∧ w = fun i => v.embedding (x i)) w`.
+
+Introduce and unpack `w ⟨x', hx', rfl⟩ ⟨x, hx, e⟩`. Establish `: x' = x` using `funext fun i => v.embedding.injective (by simpa using congrFun e i)`. Substitute `this` using the available equality. Conclude with `hCC x' hx' hx`. Establish `key` using `cx_eig_orth (fun i => (oM B op i).map v.embedding) (B.S.H.map v.embedding) hA hadj hc hs hCC' (hmem hf) (hmem hg)`.
+
+Establish `hform0 : hform B.S.H (B.S.basis.equivFun f) (B.S.basis.equivFun g) = 0`. Apply `v.embedding.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← key, RationalHermitianForm.hform_eq_dot, ← emb_mulVec v.embedding B.S.H]`. Simplify using `only [dotProduct, map_sum, map_mul, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h.conj]`. Both sides reduce to the same expression. Rewrite `hform0` using `[hform_eq_csum, CSD.I_apply, CSD.I_apply, LinearEquiv.symm_apply_apply, LinearEquiv.symm_apply_apply]`. Conclude with `hform0`.
+-/
 theorem csum_eigSum_orth {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 I : Type}
     {B : BlockDat K G Pl0} {ℓ : Lvl K G} {v : InfinitePlace K} {s : ℕ} {op : I → Module.End K B.S.Forms}
     (h : BlockHyp B ℓ v s) (hO : OkOp B op) {C C' : (I → K) → Prop} (hCC : ∀ x, C' x → ¬ C x) {f g : B.S.Forms}
@@ -77,6 +92,9 @@ namespace GlobalTheory.Div
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Rewrite using `[(hM.HX t).2.2, hM.jX, hM.jX, R.emb0]`. Use `congr 1`. Conclude with `Formalism.IndefR.Bridge.ClassPres.isom_holds (R.B.R t).pres x y`.
+-/
 theorem inner_jX_csum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hM : R.IsModels) (t : A.fam.base.Tup)
     (x y : (A.fam.R t).S.Forms) :
@@ -87,6 +105,9 @@ theorem inner_jX_csum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {
   congr 1
   exact Formalism.IndefR.Bridge.ClassPres.isom_holds (R.B.R t).pres x y
 
+/- English proof (translation)
+Establish `key` using `inner_jX_csum R hM t x y`. Establish `h1 : Formalism.IndefR.Links.cj (twAt D.what₂.embLL A.v0) (inner ℂ (R.jX t x) (R.jX t y)) = 0` using `key.trans ((congrArg (⇑A.v0.embedding) h).trans (map_zero A.v0.embedding))`. Conclude with `(map_eq_zero (Formalism.IndefR.Links.cj (twAt D.what₂.embLL A.v0))).1 h1`.
+-/
 theorem inner_jX_zero {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hM : R.IsModels) (t : A.fam.base.Tup)
     (x y : (A.fam.R t).S.Forms)
@@ -101,6 +122,17 @@ theorem inner_jX_zero {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {
 end GlobalTheory.Div
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hH p q hpq x hx y hy`. Establish `hok` using `hOk.ok2.what₂ A3.A.μ0`. Establish `hO` using `okOp_opAll hok (hOk.what₂ A3.A.μ0) (hH A3.A.μ0).1 (hH A3.A.μ0).2`. Establish `hSS : ∀ z, (A3.rowI A3.A.μ0).HasRes3 q.1 z → ¬ (A3.rowI A3.A.μ0).HasRes3 p.1 z` using `fun z hq => (A3.rowI A3.A.μ0).excl3 ((A3.rowI A3.A.μ0).diffAt_of_mem_ixFin3 q.2 p.2 fun e => hpq (Subtype.ext e).symm) z hq`. Establish `hblk : BlockHyp (A3.A.fam.R A3.A.μ0) (A3.A.fam.lvl F.P0 F.ψ0) A3.A.fam.v0 s` using `⟨hOk.ok2.conj, hOk.ok2.irr, hok⟩`.
+
+Establish `hgen : ∀ f ∈ (A3.rowI A3.A.μ0).inertTypeEigenspaceSum p.1, ∀ g ∈ (A3.rowI A3.A.μ0).inertTypeEigenspaceSum q.1, ⟪R.jX A3.A.μ0 f, R.jX A3.A.μ0 g⟫_ℂ = 0`. Introduce `f hf g hg`. Establish `h0` using `GlobalTheory.Div.csum_eigSum_orth hblk hO hSS hf hg`. Conclude with `GlobalTheory.Div.inner_jX_zero R.toRealDat hC.base.models A3.A.μ0 f g h0`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem a ha`. Take `⟨f, hf, rfl⟩` from `ha`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb`. Take `⟨g, hg, rfl⟩` from `hb`.
+
+Conclude with `hgen f hf g hg`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw => rw [inner_add_right, hu, hw, add_zero]`. Consider the case `smul c u _ hu => rw [inner_smul_right, hu, mul_zero]`. Consider the case `zero => simp`.
+
+Consider the case `add u w _ _ hu hw => rw [inner_add_left, hu, hw, add_zero]`. Consider the case `smul c u _ hu => rw [inner_smul_left, hu, mul_zero]`.
+-/
 theorem GlobalTheory.Div.parts_orth_complex : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → (∀ t, (A3.A.fam.R t).OkH ∧ (A3.rowI t).InertRationalAdjoint) → ∀ p q : A3.fam3.base3.Ix, p ≠ q → ∀ x ∈ Submodule.span ℂ (R.jX A3.A.μ0 '' ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum p.1 : Set (A3.A.fam.R A3.A.μ0).S.Forms)), ∀ y ∈ Submodule.span ℂ (R.jX A3.A.μ0 '' ((A3.rowI A3.A.μ0).inertTypeEigenspaceSum q.1 : Set (A3.A.fam.R A3.A.μ0).S.Forms)), ⟪x, y⟫_ℂ = 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hC hH p q hpq x hx y hy
   have hok := hOk.ok2.what₂ A3.A.μ0

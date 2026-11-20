@@ -17,6 +17,11 @@ variable {S : Scheme.{0}} {G : Over S} {L : LB G.left} {N : ℕ}
 
 open GlobalTheory.FramePull in
 
+/- English proof (translation)
+Establish `e` using `congrArg (r.stalkMap z).hom (H (r z) (fun ψ => J (r ≫ ψ)) (fun ψ => hJ (r ≫ ψ)))`. Rewrite `e` using `[map_sum, map_mul, ← gs_comp r _ z ⊤ trivial]`. Establish `e₁ : sv s r z J = (r.stalkMap z).hom (sv s (𝟙 _) (r z) (fun ψ => J (r ≫ ψ)))` using `(congrArg (fun q => sv s q z J) (Category.comp_id r).symm).trans (sval_comp _ r _ z hJ)`. Rewrite using `[e₁]`. Use `e.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[map_mul, ← gs_comp r _ z ⊤ trivial]`. Conclude with `congrArg _ (sval_comp _ r _ z hJ).symm`.
+-/
 theorem linA_at {T T' : Over S} {h : T' ⟶ T} {n : ℕ} {b : Fin n → LB.Sec (LPow G L (N : ℤ) T)}
     {c : Fin n → Γ(T'.left, ⊤)} {a : Γ(T'.left, ⊤)} {s : LB.Sec (LPow G L (N : ℤ) T')} (H : LinA G L N h b c a s)
     (W : Scheme.{0}) (r : W ⟶ (T' ⊗ G).left) (z : W) (J) (hJ : Good L z J) :
@@ -33,6 +38,9 @@ theorem linA_at {T T' : Over S} {h : T' ⟶ T} {n : ℕ} {b : Fin n → LB.Sec (
 
 open GlobalTheory.FramePull in
 
+/- English proof (translation)
+Use `show gs r z _ 0 = 0`. Rewrite using `[gs_eq r z _ (hJ.mem _ r), map_zero, map_zero]`.
+-/
 theorem sv_zero {T : Over S} {W : Scheme.{0}} (r : W ⟶ (T ⊗ G).left) (z : W) {J} (hJ : Good L z J) :
     sv (N := N) (0 : LB.Sec (LPow G L (N : ℤ) T)) r z J = 0 := by
   show gs r z _ 0 = 0
@@ -42,6 +50,17 @@ end
 
 open GlobalTheory.FramePull in
 
+/- English proof (translation)
+Establish `hres : residue W a = 0` using `(residue_eq_zero_iff a).2 ha`. Use `⟨0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[lin_iff]`. Introduce `V r y J hJ`. Establish `e` using `linA_at hl V (r ≫ (jC φ (residue W) ▷ t.G).left) y J hJ`.
+
+Establish `hf : (r ≫ (jC φ (residue W) ▷ t.G).left) ≫ (fst (Over.mk (spMap φ)) t.G).left = (r ≫ (fst (Over.mk (spMap ((residue W).comp φ))) t.G).left) ≫ (jC φ (residue W)).left`. Rewrite using `[Category.assoc, ← Over.comp_left, whiskerRight_fst, Over.comp_left, Category.assoc]`. Establish `hb : (r ≫ (jC φ (residue W) ▷ t.G).left) ≫ (toBase φ ▷ t.G).left = r ≫ (toBase ((residue W).comp φ) ▷ t.G).left`. Rewrite using `[Category.assoc, ← Over.comp_left, ← comp_whiskerRight, jC_toBase]`. Establish `hg : ∀ x : W, gs ((r ≫ (jC φ (residue W) ▷ t.G).left) ≫ (fst (Over.mk (spMap φ)) t.G).left) y ⊤ (GlobalTheory.OneBasis.fnR x) = gs (r ≫ (fst (Over.mk (spMap ((residue W).comp φ))) t.G).left) y ⊤ (GlobalTheory.OneBasis.fnR (residue W x))` using `fun x => by`.
+
+Rewrite using `[hf, ← GlobalTheory.OneBasis.Calc.appTop_fnR (residue W) x]`. Conclude with `(gs_pull _ (jC φ (residue W)).left y ⊤ trivial _).symm`. Rewrite `e` using `[hg a, hres]`. Simplify using `only [hg, hb] at e`. Rewrite using `[sv_zero r y hJ, ← e]`.
+
+Establish `h0 : GlobalTheory.OneBasis.fnR (0 : ResidueField W) = 0` using `map_zero _`. Rewrite using `[h0, gs_eq _ y ⊤ trivial, map_zero, map_zero, MulZeroClass.zero_mul]`. Rewrite using `[lin_iff]`. Introduce `V r y J hJ`. Rewrite using `[sv_zero r y hJ]`.
+
+Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Rewrite using `[gs_eq _ y ⊤ trivial, map_zero, map_zero, MulZeroClass.zero_mul]`.
+-/
 theorem lin_residue_of_linA (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R]
     (t : SAB H (Sp R)) (N n : ℕ) (b : Fin n → LB.Sec (LPow t.G t.PP.L (N : ℤ) (Over.mk (𝟙 (Sp R)))))
     (W : Type) [CommRing W] [IsLocalRing W] (φ : R →+* W) (c : Fin n → W) (a : W)

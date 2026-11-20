@@ -9,6 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `h R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl`. Conclude with `⟨GlobalTheory.T.finite_image_inertia_of_potentialGoodReduction_alt h R K Ω V hV A hA l hl, GlobalTheory.T.hasPotentialGoodReduction_of_finite_image_inertia_alt h R K Ω V hV A hA l hl⟩`.
+-/
 theorem potentialGoodReduction_of_neronOggShafarevich :
     GlobalTheory.Published.NeronOggShafarevichSt → GlobalTheory.Published.PotentialGoodReductionSt := by
   intro h R K Ω _ _ _ _ _ _ _ _ _ _ V hV A _ _ hA l _ hl

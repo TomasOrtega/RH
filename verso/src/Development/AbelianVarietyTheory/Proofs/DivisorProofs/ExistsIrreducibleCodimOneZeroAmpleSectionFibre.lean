@@ -16,6 +16,11 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 
 namespace GlobalTheory.AmpleCut
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => simp at h`. Consider the case `coe x`. Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top => exact_mod_cast le_top`.
+
+Consider the case `coe n`. Establish `: d + 1 ≤ n + 1` using `by exact_mod_cast h`. Conclude with `(by omega : d ≤ n)` after adjusting the coercions.
+-/
 theorem le_of_succ_le_add_one {x : WithBot ℕ∞} {d : ℕ} (h : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ x + 1) :
     (d : WithBot ℕ∞) ≤ x := by
   induction x using WithBot.recBotCoe with
@@ -27,6 +32,17 @@ theorem le_of_succ_le_add_one {x : WithBot ℕ∞} {d : ℕ} (h : ((d + 1 : ℕ)
       have : d + 1 ≤ n + 1 := by exact_mod_cast h
       exact_mod_cast (by omega : d ≤ n)
 
+/- English proof (translation)
+Introduce `k _ X _ p D hX P hA ℓ d e C f hℓ hCi hCc hCf hdim he hf`. Distinguish the cases in `h0 : C ∩ NV P e 0 f = ∅`. Use `⟨C, hCi, hCc, fun x hx => ⟨hx, fun hx' => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Set.eq_empty_iff_forall_notMem.1 h0) x ⟨hx, hx'⟩`. Conclude with `le_trans (by exact_mod_cast Nat.le_succ d) hdim`.
+
+Take `⟨u, hu⟩` from `(GlobalTheory.T.lineBundlePow_sections_rationalFunctions_loci k X p P e).2 f hf`. Establish `hisP : IsProper p` using `GlobalTheory.CommonModel.isProper_of_isProjOver hX.isProjOver`. Establish `hne : (C ∩ (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u : Set X)).Nonempty`. Rewrite using `[← hu]`. Conclude with `Set.nonempty_iff_ne_empty.2 h0`.
+
+Distinguish the cases in `hsub : C ⊆ (ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus u : Set X)`. It suffices to derive a contradiction. Establish `haff` using `IsAmpleLB.isAffineOpen_nonzeroLocus p hA he u`. Establish `h1` using `GlobalTheory.T.topologicalKrullDim_le_zero_fibre_affineOpen k X p (GlobalTheory.MixHt.isAmb_of_isArithVar hX) ℓ _ C hℓ haff hCi hCc hCf hsub`. Establish `h2` using `hdim.trans h1`.
+
+Establish `: ((d + 1 : ℕ) : WithBot ℕ∞) ≤ ((0 : ℕ) : WithBot ℕ∞)` using `by simpa using h2`. Use `WithBot.coe_le_coe.1 this` as an intermediate fact. Normalize the coercions in `at this`. Take `⟨C', h1, h2, h3, h4⟩` from `GlobalTheory.T.exists_irreducible_zeroSet_section_closedIrreducible k X p D hX (lbPow P.L.B e) u C (isLB_lbPow hA.isLB e) hCi hCc hne hsub`. Use `⟨C', h1, h2, ?_, le_of_succ_le_add_one (hdim.trans h4)⟩` and prove the remaining obligations.
+
+Rewrite using `[hu]`. Conclude with `h3`.
+-/
 theorem exists_irreducible_diff_NV : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (ℓ d e : ℕ) (C : Set X) (f : X.functionField), ℓ.Prime →
     IsIrreducible C → IsClosed C → C ⊆ fib X ℓ → ((d + 1 : ℕ) : WithBot ℕ∞) ≤ topologicalKrullDim C → 0 < e →

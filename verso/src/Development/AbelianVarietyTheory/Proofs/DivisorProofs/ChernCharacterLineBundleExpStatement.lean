@@ -14,5 +14,8 @@ open GlobalTheory GlobalTheory.TorsionForm
 open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CxForm.ArRing.ch_ofLB | exact GlobalTheory.CxForm.ArRing.ch_ofLB | (intros; apply GlobalTheory.CxForm.ArRing.ch_ofLB <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chern_character_line_bundle_exp : ∀ (B : BottChern) (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (D : ℕ) (h : IsRegVar p D) (R : ArRing B h) (L : HermLB p), R.ch (.ofLB L) = ∑ j ∈ Finset.range (D + 2), ((j.factorial : ℚ)⁻¹) • R.c1 L ^ j := by
   first | exact @GlobalTheory.CxForm.ArRing.ch_ofLB | exact GlobalTheory.CxForm.ArRing.ch_ofLB | (intros; apply GlobalTheory.CxForm.ArRing.ch_ofLB <;> assumption)

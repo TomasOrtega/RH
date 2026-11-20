@@ -7,11 +7,23 @@ open UpperTheory.Gal.crystallineComparison (resPt twist PtId fn)
 open GlobalTheory.SS.FrobField (absFrob)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
+/- English proof (translation)
+Rewrite using `[fn, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Both sides reduce to the same expression.
+-/
 private theorem mem_basicOpen_fn {O : Type} [CommRing O] {Y : Scheme.{0}} (g : Y ⟶ Spec (CommRingCat.of O)) (a : O) (y : Y) :
     y ∈ Y.basicOpen (fn g a) ↔ g y ∈ PrimeSpectrum.basicOpen a := by
   rw [fn, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]
   rfl
 
+/- English proof (translation)
+Take `⟨Z, hZ, hxZ⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible _ (isIrreducible_singleton (x := x)).closure`. Establish `hZc : IsClosed Z` using `isClosed_of_mem_irreducibleComponents Z hZ`. Establish `hZi : IsIrreducible Z` using `hZ.1`. Use `set η := hZi.genericPoint with hη`. Establish `hgen : closure {η} = Z` using `(hZi.isGenericPoint_genericPoint_closure).trans hZc.closure_eq`.
+
+Use `⟨η, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[specializes_iff_mem_closure, hgen]`. Conclude with `hxZ (subset_closure rfl)`. Introduce `t ht`. Establish `h1 : Z ⊆ closure {t}`.
+
+Rewrite using `[← hgen]`. Conclude with `closure_minimal (Set.singleton_subset_iff.mpr (specializes_iff_mem_closure.mp ht)) isClosed_closure`. Establish `h2 : closure {t} = Z` using `subset_antisymm (hZ.2 isIrreducible_singleton.closure h1) h1`. Establish `h3 : η ⤳ t`. Rewrite using `[specializes_iff_mem_closure, hgen, ← h2]`.
+
+Conclude with `subset_closure rfl`. Conclude with `(ht.antisymm h3).eq`.
+-/
 private theorem exists_min {S : Scheme.{0}} (x : S) : ∃ x' : S, x' ⤳ x ∧ ∀ t : S, t ⤳ x' → t = x' := by
   obtain ⟨Z, hZ, hxZ⟩ := exists_mem_irreducibleComponents_subset_of_isIrreducible _
     (isIrreducible_singleton (x := x)).closure
@@ -33,6 +45,29 @@ private theorem exists_min {S : Scheme.{0}} (x : S) : ∃ x' : S, x' ⤳ x ∧ �
       exact subset_closure rfl
     exact (ht.antisymm h3).eq
 
+/- English proof (translation)
+Establish `hcomp : Mod.sp (β₀.comp q) = Mod.sp β₀ ≫ Mod.sp q`. Simplify using `only [Mod.sp, CommRingCat.ofHom_comp, Spec.map_comp]`. Use `haveI : IsClosedImmersion (Mod.sp q) := IsClosedImmersion.spec_of_surjective _ hq`. Use `haveI hτ : Flat (Mod.sp β₀) := Flat.SpecMap_iff.mpr (RingHom.Flat.of_isField (Field.toIsField A) _)`. Establish `hsq : s ≫ g = (bS ≫ Mod.sp β₀) ≫ Mod.sp q`.
+
+Rewrite using `[Category.assoc, ← hcomp]`. Conclude with `hpb.w`. Establish `hφi : pullback.lift s (bS ≫ Mod.sp β₀) hsq ≫ pullback.fst g (Mod.sp q) = s` using `pullback.lift_fst _ _ _`. Establish `hφπ : pullback.lift s (bS ≫ Mod.sp β₀) hsq ≫ pullback.snd g (Mod.sp q) = bS ≫ Mod.sp β₀` using `pullback.lift_snd _ _ _`. Use `set φ := pullback.lift s (bS ≫ Mod.sp β₀) hsq with hφ`.
+
+Establish `hφpb : IsPullback φ bS (pullback.snd g (Mod.sp q)) (Mod.sp β₀)`. Use `IsPullback.of_right ?_ hφπ (IsPullback.of_hasPullback g (Mod.sp q))` and prove the remaining obligations. Rewrite using `[hφi, ← hcomp]`. Conclude with `hpb`. Use `haveI : Flat φ := MorphismProperty.of_isPullback hφpb.flip hτ`.
+
+Establish `hgenφ : GeneralizingMap φ` using `Flat.generalizingMap φ`. Establish `hind : Topology.IsInducing (pullback.fst g (Mod.sp q))` using `(pullback.fst g (Mod.sp q)).isClosedEmbedding.isInducing`. Establish `memV : ∀ y : Y, y ∉ Y.basicOpen (fn g ϖ) ↔ ϖ ∈ (g y).asIdeal`. Introduce `y`. Rewrite using `[mem_basicOpen_fn]`.
+
+Express the relevant statement in the definitionally equal form `¬ (ϖ ∉ (g y).asIdeal) ↔ _`. Conclude with `not_not`. Establish `hϖker : ϖ ∈ RingHom.ker q`. Rewrite using `[hϖ]`. Conclude with `Ideal.mem_span_singleton_self ϖ`.
+
+Establish `hV_of : ∀ p : ↥(pullback g (Mod.sp q)), pullback.fst g (Mod.sp q) p ∉ Y.basicOpen (fn g ϖ)`. Introduce `p`. Rewrite using `[memV]`. Establish `h1 : g (pullback.fst g (Mod.sp q) p) = Mod.sp q (pullback.snd g (Mod.sp q) p)`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`.
+
+Rewrite using `[h1]`. Use `show ϖ ∈ Ideal.comap q _`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker.mp hϖker]`. Conclude with `Ideal.zero_mem _`. Establish `hV_to : ∀ y : Y, y ∉ Y.basicOpen (fn g ϖ) → y ∈ Set.range (pullback.fst g (Mod.sp q))`.
+
+Introduce `y hy`. Rewrite `hy` using `[memV]`. Rewrite using `[Scheme.Pullback.range_fst]`. Use `show g y ∈ Set.range (PrimeSpectrum.comap q)`. Rewrite using `[range_comap_of_surjective _ q hq, hϖ]`.
+
+Conclude with `(PrimeSpectrum.mem_zeroLocus (g y) _).mpr (SetLike.coe_subset_coe.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hy))`. Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Take `⟨x', hx'x, hmin⟩` from `exists_min x`. Use `⟨x', hx'x.mem_open hU hx, ?_⟩` and prove the remaining obligations.
+
+Establish `hsx : s x' = pullback.fst g (Mod.sp q) (φ x')`. Rewrite using `[← Scheme.Hom.comp_apply, hφi]`. Use `⟨hsx ▸ hV_of _, ?_⟩` and prove the remaining obligations. Introduce `y' hy' hspec`. Take `⟨p', rfl⟩` from `hV_to y' hy'`.
+
+Rewrite `hspec`, the goal using `[hsx]`. Establish `hp : p' ⤳ φ x'` using `hind.specializes_iff.mp hspec`. Take `⟨x'', hx'', hφx''⟩` from `hgenφ hp`. Rewrite `hφx''` using `[hmin x'' hx'']`. Rewrite using `[hφx'']`.
+-/
 private theorem dense_generic_points {O A k : Type} [CommRing O] [Field A] [Field k] (q : O →+* A) (hq : Function.Surjective q)
     (β₀ : A →+* k) (ϖ : O) (hϖ : RingHom.ker q = Ideal.span {ϖ}) (Y S : Scheme.{0}) (g : Y ⟶ Spec (CommRingCat.of O))
     (s : S ⟶ Y) (bS : S ⟶ gp k) (hpb : IsPullback s bS g (sp (β₀.comp q))) :
@@ -99,6 +134,11 @@ private theorem dense_generic_points {O A k : Type} [CommRing O] [Field A] [Fiel
   rw [hmin x'' hx''] at hφx''
   rw [hφx'']
 
+/- English proof (translation)
+Introduce `O _ _ _ ϖ hϖ k _ β hβ Y S g s bS hpb`. Take `⟨A, _, q, hq, β₀, hker, hβeq⟩ : ∃ (A : Type) (_ : Field A) (q : O →+* A), Function.Surjective q ∧ ∃ β₀ : A →+* k, RingHom.ker q = Ideal.span {ϖ} ∧ β₀.comp q = β` from `by haveI hmax : (Ideal.span {ϖ}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Use `⟨O ⧸ Ideal.span {ϖ}, Ideal.Quotient.field _, Ideal.Quotient.mk _, Ideal.Quotient.mk_surjective, Ideal.Quotient.lift _ β (fun a ha => by` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `[hβ]), Ideal.mk_ker, Ideal.Quotient.lift_comp_mk _ _ _⟩`.
+
+Substitute `hβeq` using the available equality. Conclude with `dense_generic_points q hq β₀ ϖ hker Y S g s bS hpb`.
+-/
 theorem UpperTheory.Gal.Mod.denseGen :
     DenseGen := by
   intro O _ _ _ ϖ hϖ k _ β hβ Y S g s bS hpb

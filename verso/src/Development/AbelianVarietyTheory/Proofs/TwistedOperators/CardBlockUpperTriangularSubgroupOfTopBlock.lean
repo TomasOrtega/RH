@@ -12,6 +12,11 @@ variable {κ : Type} [Field κ] {r t : ℕ}
 abbrev blkForm (g : GL (Fin (r + t)) κ) : Matrix (Fin r ⊕ Fin t) (Fin r ⊕ Fin t) κ :=
   (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).submatrix finSumFinEquiv finSumFinEquiv
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [toBlocks₂₁, blkForm, submatrix_apply, of_apply, Matrix.zero_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right]`. Apply `hg` to reduce the goal to its premises. Establish `hj : (Fin.castAdd t j).val < r` using `j.2`. Establish `hi : ¬ (Fin.natAdd r i).val < r` using `by simp`.
+
+Simplify using `only [blk2, hj, hi, if_true, if_false]`. Conclude with `Nat.zero_lt_one`.
+-/
 theorem blkForm_toBlocks₂₁ {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     (blkForm g).toBlocks₂₁ = 0 := by
   ext i j
@@ -23,10 +28,18 @@ theorem blkForm_toBlocks₂₁ {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (b
   simp only [blk2, hj, hi, if_true, if_false]
   exact Nat.zero_lt_one
 
+/- English proof (translation)
+Rewrite using `[← blkForm_toBlocks₂₁ hg, fromBlocks_toBlocks]`.
+-/
 theorem blkForm_eq {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     blkForm g = fromBlocks (blkForm g).toBlocks₁₁ (blkForm g).toBlocks₁₂ 0 (blkForm g).toBlocks₂₂ := by
   rw [← blkForm_toBlocks₂₁ hg, fromBlocks_toBlocks]
 
+/- English proof (translation)
+Establish `h1 : (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).det ≠ 0` using `g.isUnit.map Matrix.detMonoidHom |>.ne_zero`. Establish `h2 : (blkForm g).det = (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).det` using `det_submatrix_equiv_self _ _`. Rewrite `h2` using `[blkForm_eq hg, det_fromBlocks_zero₂₁]`. Introduce `h`. Rewrite `h2` using `[h, mul_zero]`.
+
+Conclude with `h1 h2.symm`.
+-/
 theorem det_blkForm_toBlocks22_ne_zero_of_mem_blockTri {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     (blkForm g).toBlocks₂₂.det ≠ 0 := by
   have h1 : (g : Matrix (Fin (r + t)) (Fin (r + t)) κ).det ≠ 0 := g.isUnit.map Matrix.detMonoidHom |>.ne_zero
@@ -41,11 +54,17 @@ def blkMk (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ
     rw [det_submatrix_equiv_self, det_fromBlocks_zero₂₁]
     exact mul_ne_zero (A.isUnit.map Matrix.detMonoidHom).ne_zero (D.isUnit.map Matrix.detMonoidHom).ne_zero)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[blkForm, blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+-/
 theorem blkForm_blkMk (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     blkForm (blkMk A D B) = fromBlocks (A : Matrix (Fin r) (Fin r) κ) B 0 (D : Matrix (Fin t) (Fin t) κ) := by
   ext i j
   simp [blkForm, blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
+/- English proof (translation)
+Introduce `i j hij`. Apply the tactic sequence `have key : r ≤ i.val ∧ j.val < r := by unfold blk2 at hij; split_ifs at hij <;> omega`. Take `⟨i', rfl⟩ : ∃ i', i = Fin.natAdd r i'` from `⟨⟨i.val - r, by omega⟩, by ext; simp; omega⟩`. Take `⟨j', rfl⟩ : ∃ j', j = Fin.castAdd t j'` from `⟨⟨j.val, key.2⟩, by ext; simp⟩`. Simplify using `[blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+-/
 theorem blkMk_mem (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     blkMk A D B ∈ blockTri (blk2 r) := by
   intro i j hij
@@ -54,6 +73,9 @@ theorem blkMk_mem (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (F
   obtain ⟨j', rfl⟩ : ∃ j', j = Fin.castAdd t j' := ⟨⟨j.val, key.2⟩, by ext; simp⟩
   simp [blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[upper_block_val_submatrix hr (blkMk_mem A D B)]`. Establish `: Fin.castLE hr = Fin.castAdd t` using `rfl`. Rewrite using `[this]`. Simplify using `[blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+-/
 theorem topBlock_upperTriangularBlockGL (hr : r ≤ r + t) (A : GL (Fin r) κ) (D : GL (Fin t) κ) (B : Matrix (Fin r) (Fin t) κ) :
     upperLeftBlock hr (blkMk A D B) = A := by
   ext i j
@@ -62,6 +84,9 @@ theorem topBlock_upperTriangularBlockGL (hr : r ≤ r + t) (A : GL (Fin r) κ) (
   rw [this]
   simp [blkMk, Matrix.GeneralLinearGroup.mkOfDetNeZero]
 
+/- English proof (translation)
+Rewrite using `[upper_block_val_submatrix hr hg]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem upperLeftBlock_eq_blkForm_toBlocks11 (hr : r ≤ r + t) {g : GL (Fin (r + t)) κ} (hg : g ∈ blockTri (blk2 r)) :
     ((upperLeftBlock hr g : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) = (blkForm g).toBlocks₁₁ := by
   rw [upper_block_val_submatrix hr hg]
@@ -95,6 +120,9 @@ def parSubEquiv (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) :
     · show (blkForm (blkMk A.1 D B)).toBlocks₁₂ = _
       rw [blkForm_blkMk]; rfl
 
+/- English proof (translation)
+Rewrite using `[Nat.card_congr (parSubEquiv hr H), Nat.card_prod, Nat.card_prod, mul_assoc]`. Use `congr 2`. Use `show Nat.card (Fin r → Fin t → κ) = _`. Rewrite using `[Nat.card_fun, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin r), Nat.card_eq_fintype_card (α := Fin t), Fintype.card_fin, Fintype.card_fin, ← pow_mul, mul_comm]`.
+-/
 theorem card_parSub_eq (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) [Finite κ] :
     Nat.card (parSub hr H) = Nat.card H * Nat.card (GL (Fin t) κ) * Nat.card κ ^ (r * t) := by
   rw [Nat.card_congr (parSubEquiv hr H), Nat.card_prod, Nat.card_prod, mul_assoc]
@@ -103,6 +131,9 @@ theorem card_parSub_eq (hr : r ≤ r + t) (H : Subgroup (GL (Fin r) κ)) [Finite
   rw [Nat.card_fun, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin r), Nat.card_eq_fintype_card (α := Fin t),
     Fintype.card_fin, Fintype.card_fin, ← pow_mul, mul_comm]
 
+/- English proof (translation)
+Introduce `κ _ _ n r t hr hn H`. Substitute `hn` using the available equality. Conclude with `card_parSub_eq hr H`.
+-/
 theorem card_parSub : ∀ (κ : Type) [Field κ] [Finite κ] (n r t : ℕ) (hr : r ≤ n), n = r + t →
     ∀ H : Subgroup (GL (Fin r) κ),
       Nat.card (GlobalTheory.ParIndex.parSub hr H) = Nat.card H * Nat.card (GL (Fin t) κ) * Nat.card κ ^ (r * t) := by

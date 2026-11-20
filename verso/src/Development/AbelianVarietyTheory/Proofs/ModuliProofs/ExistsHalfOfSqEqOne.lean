@@ -17,6 +17,23 @@ open CanTh
 
 variable {g : ℕ}
 
+/- English proof (translation)
+Set `Y : Matrix (Fin g) (Fin g) ℝ` to `M.map Complex.re`. Establish `hY : M = Y.map (↑)`. Use extensionality with `i j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Y]`.
+
+Use `h₁₁ i j` as an intermediate fact. Rewrite `this` using `[hermForm, SiegelNormalForm.form_single]`. Simplify using `using this`. Establish `hYs : Yᵀ = Y`. Use extensionality with `i j`.
+
+Use `congrArg Complex.re (hH.apply i j)` as an intermediate fact. Simplify `this` using `[Y]`. Establish `hYp : Y.PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos (by simpa [Matrix.IsHermitian] using hYs) ?_` and prove the remaining obligations. Introduce `a ha`.
+
+Establish `hne : (fun i => (a i : ℂ)) ≠ 0` using `fun h0 => ha (funext fun i => by simpa using congrFun h0 i)`. Use `hpos _ hne` as an intermediate fact. Rewrite `this` using `[hY]`. Simplify `this` using `[hermForm, Matrix.mulVec, dotProduct]`. Rewrite `h₁₂`, `h₂₂` using `[hY]`.
+
+Break down `hs with rfl | rfl` into its components or cases. Take `⟨-, h2, -⟩` from `SiegelNormalForm.siegel_of_relations Y hYp (-τ) (fun i j => by`. Use `h₁₂ i j` as an intermediate fact. Rewrite `this` using `[hermForm]`. Rewrite using `[Matrix.neg_mulVec, star_neg, Matrix.mulVec_neg, dotProduct_neg, Complex.neg_im, this]`.
+
+Apply the tactic sequence `split_ifs <;> simp)`. Use the proof step `(fun i j => by`. Use `h₂₂ i j` as an intermediate fact. Rewrite `this` using `[hermForm]`. Rewrite using `[Matrix.neg_mulVec, Matrix.neg_mulVec, star_neg, Matrix.mulVec_neg, dotProduct_neg, neg_dotProduct, neg_neg, this])`.
+
+Establish `hf : ∀ i : Fin g, False` using `fun i => by`. Establish `e1` using `h2.diag_pos (i := i)`. Establish `e2` using `hτ.diag_pos (i := i)`. Simplify using `only [Matrix.map_apply, Matrix.neg_apply, Complex.neg_im] at e1 e2`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `⟨by ext i; exact (hf i).elim, by ext i; exact (hf i).elim⟩`. Take `⟨h1, -, h3⟩` from `SiegelNormalForm.siegel_of_relations Y hYp τ h₁₂ h₂₂`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[hY, imInv, Matrix.inv_eq_left_inv h3]`.
+-/
 theorem isSymm_and_eq_imInv {M τ : Matrix (Fin g) (Fin g) ℂ} (hH : M.IsHermitian)
     (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm M z z).re) (hτ : (τ.map Complex.im).PosDef)
     {s : ℝ} (hs : s = 1 ∨ s = -1)
@@ -86,6 +103,13 @@ def lawSubgroup {Λ V : Type*} [AddCommGroup Λ] [AddCommGroup V] (ι : Λ →+ 
     rw [add_assoc, ← map_add, neg_add_cancel, map_zero, add_zero] at h2
     rw [h2, ← mul_assoc, mul_comm (J (-l) z), ← h1, one_mul]
 
+/- English proof (translation)
+Break down `sq_eq_one_iff.1 hc with rfl | rfl` into its components or cases. Conclude with `⟨0, Or.inl rfl, by simp, by simp⟩`. Use `⟨1 / 2, Or.inr rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Complex.exp_pi_mul_I]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.exp_neg_pi_mul_I]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_half_of_sq_eq_one {c : ℂ} (hc : c ^ 2 = 1) :
     ∃ a : ℝ, (a = 0 ∨ a = 1 / 2) ∧ cexp (2 * π * I * a) = c ∧ cexp (-(2 * π * I * a)) = c := by
   rcases sq_eq_one_iff.1 hc with rfl | rfl
@@ -94,6 +118,23 @@ theorem exists_half_of_sq_eq_one {c : ℂ} (hc : c ^ 2 = 1) :
     · rw [← Complex.exp_pi_mul_I]; congr 1; push_cast; ring
     · rw [← Complex.exp_neg_pi_mul_I]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Establish `hsingle : ∀ j : Fin g, (fun i => (((Pi.single j (1 : ℤ) : Fin g → ℤ) i : ℤ) : ℂ)) = Pi.single j (1 : ℂ)`. Introduce `j`. Use extensionality with `i`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Pi.single_apply, hij]`. Establish `hzero : (fun i => (((0 : Fin g → ℤ) i : ℤ) : ℂ)) = 0` using `by ext i; simp`.
+
+Set `e : Fin g → Λ` to `fun i => ⟨Φ (Pi.single i 1), (hΛ _).2 ⟨Pi.single i 1, 0, by`. Rewrite using `[hsingle, hzero, mulVec_zero, add_zero]⟩⟩`. Set `f : Fin g → Λ` to `fun i => ⟨Φ (τ *ᵥ Pi.single i 1), (hΛ _).2 ⟨0, Pi.single i 1, by`. Rewrite using `[hsingle, hzero, zero_add]⟩⟩`. Use `choose a ha ha' _ using fun i => exists_half_of_sq_eq_one (hχ (e i))`.
+
+Use `choose b hb _ hb' using fun i => exists_half_of_sq_eq_one (hχ (f i))`. Use `⟨a, b, ha, hb, fun l => ?_⟩` and prove the remaining obligations. Set `S` to `lawSubgroup Λ.subtype.toAddMonoidHom (fun l z => χ l * cexp (π * hermForm Hm z l + π / 2 * hermForm Hm l l)) (fun l z => mul_ne_zero (fun h => by simpa [h] using hχ l) (Complex.exp_ne_zero _)) hc (fun z => canTh τ a b (Φ.symm z))`. Establish `key : ∀ (l : Λ) (m n : Fin g → ℤ), (l : Fin d → ℂ) = Φ ((fun i => (m i : ℂ)) + τ *ᵥ fun i => (n i : ℂ)) → canMult a b m n = χ l → l ∈ S` using `fun l m n hl hm z => by`. Take `⟨z, rfl⟩` from `Φ.surjective z`.
+
+Express the relevant statement in the definitionally equal form `canTh τ a b (Φ.symm (Φ z + l)) = χ l * cexp (π * hermForm Hm (Φ z) l + π / 2 * hermForm Hm l l) * canTh τ a b (Φ.symm (Φ z))`. Rewrite using `[hl, ← map_add, Φ.symm_apply_apply, Φ.symm_apply_apply, hform, hform, canTh_add_period hs hp a b m n rfl, hm]`. Establish `he : ∀ i, e i ∈ S` using `fun i => key _ (Pi.single i 1) 0 (by rw [hsingle, hzero, mulVec_zero, add_zero]) (by`. Rewrite using `[← ha', canMult]`. Use `congr 1`.
+
+Simplify using `[dotProduct, Pi.single_apply])`. Establish `hf : ∀ i, f i ∈ S` using `fun i => key _ 0 (Pi.single i 1) (by rw [hsingle, hzero, zero_add]) (by`. Rewrite using `[← hb', canMult]`. Use `congr 1`. Simplify using `[dotProduct, Pi.single_apply])`.
+
+Take `⟨m, n, hmn⟩` from `(hΛ (Φ.symm l)).1 (by rw [Φ.apply_symm_apply]; exact l.2)`. Establish `hl : l = ∑ i, m i • e i + ∑ i, n i • f i`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : ∀ m : Fin g → ℤ, (fun i => (m i : ℂ)) = ∑ i, m i • (Pi.single i 1 : Fin g → ℂ)`. Introduce `m`.
+
+Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[← Φ.apply_symm_apply l, hmn, h1 m, h1 n]`. Simplify using `only [Matrix.mulVec_sum, Matrix.mulVec_smul, map_add, map_sum, map_zsmul, e, f]`. Simplify using the standard rewrite rules.
+
+Establish `: l ∈ S` using `hl ▸ S.add_mem (S.sum_mem fun i _ => S.zsmul_mem (he i) _) (S.sum_mem fun i _ => S.zsmul_mem (hf i) _)`. Conclude with `this`.
+-/
 theorem exists_half_char {d : ℕ} (Λ : Submodule ℤ (Fin d → ℂ)) (Hm : Matrix (Fin d) (Fin d) ℂ) (χ : Λ → ℂ)
     (Φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin d → ℂ)) {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.IsSymm)
     (hp : (τ.map Complex.im).PosDef)
@@ -151,6 +192,27 @@ theorem exists_half_char {d : ℕ} (Λ : Submodule ℤ (Fin d → ℂ)) (Hm : Ma
     (S.sum_mem fun i _ => S.zsmul_mem (hf i) _)
   exact this
 
+/- English proof (translation)
+Establish `H₁ : ∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → (Differentiable ℂ (fun z => theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => theta 0 0 z τ) (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(1 : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * (fun …` using `fun g τ hτ => by`. Use `⟨⟨?_, fun n n' z => ?_⟩, theta_ne_zero hτ 0 0⟩` and prove the remaining obligations. Use `differentiable_thetaChar (mem_thetaDomain hτ.2) 0 0` as an intermediate fact. Simplify `this` using `only [← thetaChar_eq_theta]`. Establish `h0 : ofRealVec (0 : Fin g → ℝ) = 0` using `by ext i; simp [ofRealVec]`.
+
+Simplify using `only [thetaQuasiPeriod_holds (Fin g) 0 0 z τ n n' hτ.1, autFactor, h0, zero_dotProduct, sub_zero, eC_zero, one_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Set `p : (Fin g → ℝ) → (Fin g → ℝ) → (Fin g → ℂ) → ℂ` to `fun a b z => eC (ofRealVec a ⬝ᵥ (τ *ᵥ ofRealVec a) / 2 + ofRealVec a ⬝ᵥ (z + ofRealVec b + ofRealVec 0))`. Establish `hp0 : ∀ a b z, p a b z ≠ 0` using `fun a b z => Complex.exp_ne_zero _`.
+
+Establish `hpd : ∀ a b, Differentiable ℂ (p a b)` using `fun a b => by`. Simplify using `only [p, eC, dotProduct]`. Use `fun_prop`. Establish `sh : ∀ a b z, theta a b z τ = p a b z * theta 0 0 (z + τ *ᵥ ofRealVec a + ofRealVec b) τ` using `fun a b z => by`. Simplify `thetaCharShift_holds (Fin g) a b 0 0 z τ hs` using `only [zero_add]`.
+
+Set `v` to `τ *ᵥ ofRealVec a + ofRealVec b`. Take `⟨n, n', hn⟩` from `mem_periodLattice_of_theta_translate_eq_unit_mul H₁ periodLattice_isLattice_of_mem_siegelH g τ ⟨hs, hp⟩ (τ *ᵥ ofRealVec a' + ofRealVec b' - v) (fun z => U (z - v) * p a b (z - v) * (p a' b' (z - v))⁻¹) (((hU.comp (differentiable_id.sub_const v)).mul ((hpd a b).comp (differentiabl …`. Establish `e` using `h (z - v)`. Rewrite `e` using `[sh a' b', sh a b, show z - v + τ *ᵥ ofRealVec a + ofRealVec b = z by simp only [v]; abel, show z - v + τ *ᵥ ofRealVec a' + ofRealVec b' = z + (τ *ᵥ ofRealVec a' + ofRealVec b' - v) by abel]`. Use `hp0 a' b' (z - v)` as an intermediate fact.
+
+Clear the denominators using the available nonvanishing facts. Take the linear combination `e)`. Establish `him : (τ.map Complex.im) *ᵥ (a' - a - fun i => (n i : ℝ)) = 0`. Use extensionality with `i`. Use `congrArg Complex.im (congrFun hn i)` as an intermediate fact.
+
+Simplify using `only [v, mulVec, dotProduct, ofRealVec, ofIntVec, Pi.add_apply, Pi.sub_apply, add_im, sub_im, im_sum, mul_im, ofReal_re, ofReal_im, intCast_re, intCast_im, mul_zero, zero_add, add_zero] at this`. Simplify using `only [mulVec, dotProduct, map_apply, Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.zero_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (a' - a - fun i => (n i : ℝ)) = 0` using `(Matrix.mulVec_injective_iff_isUnit.2 hp.isUnit) (him.trans (mulVec_zero _).symm)`. Establish `half : ∀ (x y : ℝ) (k : ℤ), (x = 0 ∨ x = 1 / 2) → (y = 0 ∨ y = 1 / 2) → x - y = k → x = y ∧ k = 0`.
+
+Introduce `x y k hx hy e`. Apply the tactic sequence `have h1 : (-1 : ℝ) < k := by rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> linarith`. Apply the tactic sequence `have h2 : (k : ℝ) < 1 := by rcases hx with rfl | rfl <;> rcases hy with rfl | rfl <;> linarith`. Establish `h3 : k = 0`. Establish `: (-1 : ℤ) < k` using `by exact_mod_cast h1`.
+
+Establish `: k < 1` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Substitute `h3` using the available equality. Conclude with `⟨by simpa [sub_eq_zero] using e, rfl⟩`. Establish `h2` using `fun i => half _ _ (n i) (ha' i) (ha i) (sub_eq_zero.1 (congrFun h1 i))`.
+
+Take `rfl : a' = a` from `funext fun i => (h2 i).1`. Take `rfl : n = 0` from `funext fun i => (h2 i).2`. Use `⟨rfl, funext fun i => (half _ _ (n' i) (hb' i) (hb i) ?_).1⟩` and prove the remaining obligations. Simplify using `only [v, ofIntVec_zero, mulVec_zero, zero_add, add_sub_add_left_eq_sub] at hn`. Use `congrFun hn i` as an intermediate fact.
+
+Simplify using `only [Pi.sub_apply, ofRealVec, ofIntVec] at this`. Conclude with `this` after adjusting the coercions.
+-/
 theorem half_char_unique {τ : Matrix (Fin g) (Fin g) ℂ} (hs : τ.IsSymm) (hp : (τ.map Complex.im).PosDef)
     {a b a' b' : Fin g → ℝ} (ha : ∀ k, a k = 0 ∨ a k = 1 / 2) (hb : ∀ k, b k = 0 ∨ b k = 1 / 2)
     (ha' : ∀ k, a' k = 0 ∨ a' k = 1 / 2) (hb' : ∀ k, b' k = 0 ∨ b' k = 1 / 2)

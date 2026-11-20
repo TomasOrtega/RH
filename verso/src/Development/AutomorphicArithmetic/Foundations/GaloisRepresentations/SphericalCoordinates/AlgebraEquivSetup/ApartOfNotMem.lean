@@ -116,6 +116,11 @@ def TrEx : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (A : A
 def LocComm : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Plc E) (hw : IsSplitAt w)
   (x : GL (Fin n) (w.adicCompletion E)) (g : GUf E n), comp w g = 1 → CertificateRingHomMap.loc hw x * g = g * CertificateRingHomMap.loc hw x
 
+/- English proof (translation)
+Introduce `h`. Apply `hw` to reduce the goal to its premises. Establish `h1 : (p : 𝓞 (maximalRealSubfield E)) ∈ (u.under (𝓞 (maximalRealSubfield E))).asIdeal` using `by show algebraMap _ (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ u.asIdeal`. Simplify using `using hu`. Rewrite `h1` using `[h]`.
+
+Establish `h2 : algebraMap _ (𝓞 E) (p : 𝓞 (maximalRealSubfield E)) ∈ w.asIdeal` using `h1`. Simplify using `using h2`.
+-/
 theorem apart_of_not_mem {w u : Plc E} (hw : (p : 𝓞 E) ∉ w.asIdeal) (hu : (p : 𝓞 E) ∈ u.asIdeal) : GlobalTheory.Cong.Apart u w := by
   intro h
   apply hw

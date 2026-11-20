@@ -10,21 +10,48 @@ namespace PI.ScRefExists.WF
 
 variable {I : Formalism.MainNotions.S.AutInst} {p : ℕ}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ap_smul (a : Ap I p) (v : Fin I.n → I.E) : a • v = (a : I.E) • v := rfl
 
+/- English proof (translation)
+The claim follows from `(algebraMap_smul I.E o v).symm`.
+-/
 theorem osmul (o : 𝓞 I.E) (v : Fin I.n → I.E) : o • v = (o : I.E) • v :=
   (algebraMap_smul I.E o v).symm
 
+/- English proof (translation)
+Unfold `hG`. Conclude with `(I.L_dual y).mp hy x hx`.
+-/
 theorem hG_L {x y : Fin I.n → I.E} (hx : x ∈ I.L) (hy : y ∈ I.L) :
     hG I x y ∈ (algebraMap (𝓞 I.E) I.E).range := by
   unfold hG
   exact (I.L_dual y).mp hy x hx
 
+/- English proof (translation)
+Establish `h1 : ((s : 𝓞 I.E) : I.E) = (s : I.E)` using `by simp`. Rewrite using `[← h1, ← osmul]`. Conclude with `I.L.smul_mem _ hx`.
+-/
 theorem natsmul_mem_L {s : ℕ} {x : Fin I.n → I.E} (hx : x ∈ I.L) : (s : I.E) • x ∈ I.L := by
   have h1 : ((s : 𝓞 I.E) : I.E) = (s : I.E) := by simp
   rw [← h1, ← osmul]
   exact I.L.smul_mem _ hx
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, Nat.coprime_one_left p, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, Nat.coprime_one_left p, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨t, ht, hty⟩` from `hy`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `: ((s * t : ℕ) : I.E) • (x + y) = (t : I.E) • ((s : I.E) • x) + (s : I.E) • ((t : I.E) • y)` using `by push_cast; module`.
+
+Rewrite using `[this]`. Conclude with `I.L.add_mem (natsmul_mem_L hsx) (natsmul_mem_L hty)`. Consider the case `smul a x _ hx`. Take `⟨s, hs, hsx⟩` from `hx`. Take `⟨s0, hs0, a0, ha0⟩` from `a.2`.
+
+Use `⟨s0 * s, Nat.Coprime.mul_left hs0 hs, ?_⟩` and prove the remaining obligations. Establish `: ((s0 * s : ℕ) : I.E) • (a • x) = a0 • ((s : I.E) • x)`. Rewrite using `[ap_smul, osmul, ← ha0]`. Use `push_cast`. Use `module`.
+
+Rewrite using `[this]`. Conclude with `I.L.smul_mem _ hsx`. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hsA : ((s : I.E))⁻¹ ∈ Ap I p` using `inv_mem_Ap hp hs`. Establish `hs0 : (s : I.E) ≠ 0`.
+
+Establish `: s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (Nat.coprime_zero_left p |>.mp hs)`. Conclude with `this` after adjusting the coercions. Establish `: x = (⟨_, hsA⟩ : Ap I p) • ((s : I.E) • x)`.
+
+Rewrite using `[ap_smul, smul_smul, inv_mul_cancel₀ hs0, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`.
+-/
 theorem mem_LA_iff (hp : p.Prime) {x : Fin I.n → I.E} :
     x ∈ LA I p ↔ ∃ s : ℕ, Nat.Coprime s p ∧ (s : I.E) • x ∈ I.L := by
   constructor
@@ -60,8 +87,16 @@ theorem mem_LA_iff (hp : p.Prime) {x : Fin I.n → I.E} :
     rw [this]
     exact Submodule.smul_mem _ _ (Submodule.subset_span hsx)
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span hx`.
+-/
 theorem L_le_LA {x : Fin I.n → I.E} (hx : x ∈ I.L) : x ∈ LA I p := Submodule.subset_span hx
 
+/- English proof (translation)
+Take `⟨s, hs, hsx⟩` from `(mem_LA_iff hp).1 hx`. Take `⟨t, ht, hty⟩` from `(mem_LA_iff hp).1 hy`. Take `⟨o, ho⟩` from `hG_L hsx hty`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, o, ?_⟩` and prove the remaining obligations. Rewrite `ho` using `[hG_smul_left, hG_smul_right, star_natCast]`.
+
+Rewrite using `[show ((o : 𝓞 I.E) : I.E) = algebraMap (𝓞 I.E) I.E o from rfl, ho]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hG_LA (hp : p.Prime) {x y : Fin I.n → I.E} (hx : x ∈ LA I p) (hy : y ∈ LA I p) :
     hG I x y ∈ Ap I p := by
   obtain ⟨s, hs, hsx⟩ := (mem_LA_iff hp).1 hx
@@ -71,6 +106,19 @@ theorem hG_LA (hp : p.Prime) {x y : Fin I.n → I.E} (hx : x ∈ LA I p) (hy : y
   rw [hG_smul_left, hG_smul_right, star_natCast] at ho
   rw [show ((o : 𝓞 I.E) : I.E) = algebraMap (𝓞 I.E) I.E o from rfl, ho]; push_cast; ring
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `I.L_fg`. Establish `hden : ∀ t ∈ T, ∃ s : ℕ, Nat.Coprime s p ∧ ∃ a : 𝓞 I.E, (s : I.E) * hG I t x = (a : I.E)`. Introduce `t ht`. Conclude with `hx t (hT ▸ Submodule.subset_span ht)`. Use `choose! s hs a ha using hden`.
+
+Set `S : ℕ` to `∏ t ∈ T, s t`. Establish `hS : Nat.Coprime S p` using `Nat.Coprime.prod_left fun t ht => hs t ht`. Establish `key : ∀ y ∈ I.L, hG I y ((S : I.E) • x) ∈ (algebraMap (𝓞 I.E) I.E).range`. Introduce `y hy`. Rewrite `hy` using `[← hT]`.
+
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem t ht`. Establish `hdvd : s t ∣ S` using `Finset.dvd_prod_of_mem s ht`. Take `⟨c, hc⟩` from `hdvd`. Use `⟨(c : 𝓞 I.E) * a t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hG_smul_right, hc]`. Use `push_cast`. Rewrite using `[mul_comm ((s t : ℕ) : I.E), mul_assoc, ha t ht]`. Consider the case `zero => exact ⟨0, by simp [hG_zero_left]⟩`. Consider the case `add y z _ _ hy hz`.
+
+Take `⟨o1, h1⟩` from `hy`. Take `⟨o2, h2⟩` from `hz`. Conclude with `⟨o1 + o2, by rw [hG_add_left, ← h1, ← h2]; simp⟩`. Consider the case `smul o y _ hy`. Take `⟨o1, h1⟩` from `hy`.
+
+Use `⟨PI.ScRefExists.TH.sg I o * o1, ?_⟩` and prove the remaining obligations. Rewrite using `[osmul, hG_smul_left, ← h1]`. Simplify using `[PI.ScRefExists.TH.sg_coe]`. Establish `hSx : (S : I.E) • x ∈ I.L` using `(I.L_dual _).2 key`. Conclude with `(mem_LA_iff hp).2 ⟨S, hS, hSx⟩`.
+-/
 theorem dual_LA (hp : p.Prime) {x : Fin I.n → I.E} (hx : ∀ y ∈ I.L, hG I y x ∈ Ap I p) : x ∈ LA I p := by
   classical
   obtain ⟨T, hT⟩ := I.L_fg
@@ -101,6 +149,9 @@ theorem dual_LA (hp : p.Prime) {x : Fin I.n → I.E} (hx : ∀ y ∈ I.L, hG I y
   have hSx : (S : I.E) • x ∈ I.L := (I.L_dual _).2 key
   exact (mem_LA_iff hp).2 ⟨S, hS, hSx⟩
 
+/- English proof (translation)
+Use `(mem_LA_iff hp).2 ⟨M, hM, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← Nat.cast_smul_eq_nsmul I.E]`. Then use the resulting hypothesis.
+-/
 theorem mem_LA_of_nsmul (hp : p.Prime) {M : ℕ} (hM : Nat.Coprime M p) {x : Fin I.n → I.E}
     (hx : M • x ∈ I.L) : x ∈ LA I p := by
   refine (mem_LA_iff hp).2 ⟨M, hM, ?_⟩
@@ -109,6 +160,15 @@ theorem mem_LA_of_nsmul (hp : p.Prime) {M : ℕ} (hM : Nat.Coprime M p) {x : Fin
 def proj {r : ℕ} (e f : Fin r → Fin I.n → I.E) (y : Fin I.n → I.E) : Fin I.n → I.E :=
   ∑ a, (hG I (f a) y • e a + hG I (e a) y • f a)
 
+/- English proof (translation)
+Establish `hr : ∀ (x : Fin I.n → I.E) (c : Fin r → I.E) (w : Fin r → Fin I.n → I.E), hG I x (∑ a, c a • w a) = ∑ a, c a * hG I x (w a)`. Introduce `x c w`. Unfold `hG Formalism.UG.hform`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hadd2 : ∀ x u w : Fin I.n → I.E, hG I x (u + w) = hG I x u + hG I x w`.
+
+Introduce `x u w`. Unfold `hG Formalism.UG.hform`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Unfold `proj`. Rewrite using `[Finset.sum_add_distrib, hadd2, hr, hr]`.
+
+Simplify using `only [he, hef]`. Simplify using the standard rewrite rules.
+-/
 theorem hG_e_proj {r : ℕ} {e f : Fin r → Fin I.n → I.E} (he : ∀ a b, hG I (e a) (e b) = 0)
     (hef : ∀ a b, hG I (e a) (f b) = if a = b then 1 else 0) (b : Fin r) (y : Fin I.n → I.E) :
     hG I (e b) (proj e f y) = hG I (e b) y := by
@@ -131,6 +191,21 @@ theorem hG_e_proj {r : ℕ} {e f : Fin r → Fin I.n → I.E} (he : ∀ a b, hG 
   simp only [he, hef]
   simp
 
+/- English proof (translation)
+Establish `hr : ∀ (x : Fin I.n → I.E) (c : Fin r → I.E) (w : Fin r → Fin I.n → I.E), hG I x (∑ a, c a • w a) = ∑ a, c a * hG I x (w a)`. Introduce `x c w`. Unfold `hG Formalism.UG.hform`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hadd2 : ∀ x u w : Fin I.n → I.E, hG I x (u + w) = hG I x u + hG I x w`.
+
+Introduce `x u w`. Unfold `hG Formalism.UG.hform`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Establish `hJ : ∀ i j, starRingEnd I.E (I.J i j) = I.J j i`. Introduce `i j`.
+
+Use `congrFun (congrFun I.J_herm j) i` as an intermediate fact. Simplify `this` using `[Formalism.UG.cT]`. Establish `hsym : ∀ x y, hG I y x = starRingEnd I.E (hG I x y)`. Introduce `x y`. Unfold `hG Formalism.UG.hform`.
+
+Simplify using `only [map_sum, map_mul, starRingEnd_self_apply, hJ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ∀ a, hG I (f b) (e a) = if a = b then 1 else 0`.
+
+Introduce `a`. Rewrite using `[hsym (e a) (f b), hef]`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `proj`. Rewrite using `[Finset.sum_add_distrib, hadd2, hr, hr]`.
+
+Simplify using `only [hf, h1]`. Simplify using the standard rewrite rules.
+-/
 theorem hG_f_proj {r : ℕ} {e f : Fin r → Fin I.n → I.E} (hf : ∀ a b, hG I (f a) (f b) = 0)
     (hef : ∀ a b, hG I (e a) (f b) = if a = b then 1 else 0) (b : Fin r) (y : Fin I.n → I.E) :
     hG I (f b) (proj e f y) = hG I (f b) y := by
@@ -168,6 +243,11 @@ theorem hG_f_proj {r : ℕ} {e f : Fin r → Fin I.n → I.E} (hf : ∀ a b, hG 
   simp only [hf, h1]
   simp
 
+/- English proof (translation)
+Unfold `proj`. Use `Submodule.sum_mem _ fun a _ => Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `h1` using `Submodule.smul_mem (LA I p) (⟨hG I (f a) y, hG_LA hp (hfA a) hy⟩ : Ap I p) (heA a)`. Rewrite `h1` using `[ap_smul]`. Then use the resulting hypothesis. Establish `h1` using `Submodule.smul_mem (LA I p) (⟨hG I (e a) y, hG_LA hp (heA a) hy⟩ : Ap I p) (hfA a)`.
+
+Rewrite `h1` using `[ap_smul]`. Then use the resulting hypothesis.
+-/
 theorem proj_mem (hp : p.Prime) {r : ℕ} {e f : Fin r → Fin I.n → I.E}
     (heA : ∀ a, e a ∈ LA I p) (hfA : ∀ a, f a ∈ LA I p) {y : Fin I.n → I.E} (hy : y ∈ LA I p) :
     proj e f y ∈ LA I p := by
@@ -178,6 +258,11 @@ theorem proj_mem (hp : p.Prime) {r : ℕ} {e f : Fin r → Fin I.n → I.E}
   · have h1 := Submodule.smul_mem (LA I p) (⟨hG I (e a) y, hG_LA hp (heA a) hy⟩ : Ap I p) (hfA a)
     rwa [ap_smul] at h1
 
+/- English proof (translation)
+Unfold `proj`. Use `Submodule.sum_mem _ fun a _ => Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Establish `h1` using `Submodule.smul_mem (Submodule.span (Ap I p) S) (⟨hG I (f a) y, hG_LA hp (hfA a) hy⟩ : Ap I p) (Submodule.subset_span (hS (Or.inl ⟨a, rfl⟩)))`. Rewrite `h1` using `[ap_smul]`. Then use the resulting hypothesis. Establish `h1` using `Submodule.smul_mem (Submodule.span (Ap I p) S) (⟨hG I (e a) y, hG_LA hp (heA a) hy⟩ : Ap I p) (Submodule.subset_span (hS (Or.inr ⟨a, rfl⟩)))`.
+
+Rewrite `h1` using `[ap_smul]`. Then use the resulting hypothesis.
+-/
 theorem proj_span {r : ℕ} (e f : Fin r → Fin I.n → I.E) (hp : p.Prime)
     (heA : ∀ a, e a ∈ LA I p) (hfA : ∀ a, f a ∈ LA I p) {y : Fin I.n → I.E} (hy : y ∈ LA I p)
     (S : Set (Fin I.n → I.E)) (hS : Set.range e ∪ Set.range f ⊆ S) :

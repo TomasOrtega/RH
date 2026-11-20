@@ -5,6 +5,19 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FibreRanks
 
+/- English proof (translation)
+Introduce `O _ M _ _ N _ _ K _ _ _ _ f`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ρ hρ q`. Establish `hinj : Function.Injective (f.baseChange q.asIdeal.ResidueField)`. Apply `Function.LeftInverse.injective (g := ρ.baseChange q.asIdeal.ResidueField)` to reduce the goal to its premises.
+
+Introduce `x`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Establish `: ρ ∘ₗ f = LinearMap.id` using `LinearMap.ext hρ`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+
+Conclude with `LinearMap.finrank_range_of_inj hinj`. Introduce `g q hg`. Establish `hker` using `LinearMap.finrank_range_add_finrank_ker (g.baseChange q.asIdeal.ResidueField)`. Establish `h0 : Module.finrank q.asIdeal.ResidueField (LinearMap.ker (g.baseChange q.asIdeal.ResidueField)) = 0`. Unfold `fibreRank fibreDim at hg`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hinj : Function.Injective (g.baseChange q.asIdeal.ResidueField)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.finrank_eq_zero.mp h0`. Unfold `fibreRank`.
+
+Rewrite using `[LinearMap.baseChange_comp, LinearMap.range_comp]`. Conclude with `(Submodule.equivMapOfInjective _ hinj _).finrank_eq.symm`. Introduce `h`. Conclude with `surjective_of_fibre_rank O M N f h`. Introduce `_ q haveI : Nontrivial O := by`.
+
+Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Conclude with `q.isPrime.ne_top (Subsingleton.elim _ _)`. Conclude with `Module.finrank_baseChange`.
+-/
 theorem fibre_ranks : ∀ (O : Type) [CommRing O] (M : Type) [AddCommGroup M] [Module O M] (N : Type) [AddCommGroup N] [Module O N] (K : Type) [AddCommGroup K] [Module O K] [Module.Finite O M] [Module.Finite O N] (f : M →ₗ[O] N), (∀ (ρ : N →ₗ[O] M), (∀ m, ρ (f m) = m) → ∀ q, fibreRank f q = fibreDim M q) ∧ (∀ (g : N →ₗ[O] K) (q : PrimeSpectrum O), fibreRank g q = fibreDim N q → fibreRank (g ∘ₗ f) q = fibreRank f q) ∧ ((∀ q, fibreRank f q = fibreDim N q) → Function.Surjective f) ∧ (∀ [Module.Free O M] (q : PrimeSpectrum O), fibreDim M q = Module.finrank O M) := by
   intro O _ M _ _ N _ _ K _ _ _ _ f
   refine ⟨?_, ?_, ?_, ?_⟩

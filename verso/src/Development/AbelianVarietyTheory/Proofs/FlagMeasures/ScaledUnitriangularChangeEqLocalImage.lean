@@ -14,6 +14,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.FrCoord
 
+/- English proof (translation)
+Establish `hu : IsUnit (algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))))` using `((G.c p).isUnit.pow _).map _`. Establish `he : (show ((placesOf Z).loc p).Ep from frFac Z.δ p b) = Ring.inverse (algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))))`. Rewrite using `[map_pow]`. Conclude with `congrArg (fun x => Ring.inverse (x ^ (D.R.rS - (b : ℕ)))) (c.c_eq p).symm`. Rewrite using `[he]`.
+
+Conclude with `Ring.inverse_mul_cancel _ hu`.
+-/
 theorem frFac_mul_c {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T}
     {F0' : LFlag (VS D) D.R.rS T'} {FP : ∀ p : PlF D, Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS}
     {G : GFrames (placesOf Z) D.R.rS D.R.k} (c : GCoord Z F0 F0' FP G) (p : PlF D) (b : Fin (D.R.rS + 1)) :
@@ -27,6 +32,13 @@ theorem frFac_mul_c {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D)
   rw [he]
   exact Ring.inverse_mul_cancel _ hu
 
+/- English proof (translation)
+Establish `h1 : c.e (∑ a, B a b • v a) = N (g b)`. Rewrite using `[hN b, map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by rw [map_smul, hg a]`. Establish `h2 : (c.c p).e (scaled Z p (fun b => ∑ a, B a b • v a) b) = frFac Z.δ p b • (c.c p).e (baseChange₂ D p (∑ a, B a b • v a))` using `(c.c p).e.map_smul _ _`. Establish `h3 : m ((placesOf Z).bc p (g b)) = (placesOf Z).bc p (N (g b))` using `hm (g b)`.
+
+Establish `h4 : m (algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))) • gl b) = algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))) • m (gl b)` using `m.map_smul _ _`. Establish `h5 : (c.c p).e (baseChange₂ D p (∑ a, B a b • v a)) = algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))) • m (gl b)` using `(c.compat p _).trans ((congrArg ((placesOf Z).bc p) h1).trans (h3.symm.trans ((congrArg m (hgl b).symm).trans h4)))`. Establish `h6 : (show ((placesOf Z).loc p).Ep from frFac Z.δ p b) • algebraMap ((placesOf Z).loc p).Fp ((placesOf Z).loc p).Ep ((G.c p).val ^ (D.R.rS - (b : ℕ))) • m (gl b) = m (gl b)`. Rewrite using `[smul_smul, frFac_mul_c c p b, one_smul]`. Rewrite using `[h2, h5]`.
+
+Conclude with `h6`.
+-/
 theorem step {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T}
     {F0' : LFlag (VS D) D.R.rS T'} {FP : ∀ p : PlF D, Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS}
     {G : GFrames (placesOf Z) D.R.rS D.R.k} (c : GCoord Z F0 F0' FP G) (p : PlF D) (N : G.GLV) (m : (G.S p).GLV)
@@ -56,6 +68,9 @@ theorem step {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS
   rw [h2, h5]
   exact h6
 
+/- English proof (translation)
+Introduce `D Z T T' F0 F0' FP G c p N m hm B`. Conclude with `⟨fun hN b => step c p N m hm B (frame F0) G.f (G.S p).f c.f_eq (G.f_eq p) hN b, fun hN b => step c p N m hm B (frame F0') G.f' (G.S p).f' c.f'_eq (G.f'_eq p) hN b⟩`.
+-/
 theorem scaled_coord : ∀ (D : D7) (Z : LocDat D) {T T' : D.host.E} (F0 : LFlag (VS D) D.R.rS T) (F0' : LFlag (VS D) D.R.rS T') (FP : ∀ p : PlF D, Formalism.MainNotions.S.LocNG.FPair (locH Z p) D.R.rS) (G : GFrames (placesOf Z) D.R.rS D.R.k) (c : GCoord Z F0 F0' FP G) (p : PlF D) (N : G.GLV) (m : (G.S p).GLV), (placesOf Z).Ext p N m → ∀ B : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E, ((∀ b, N (G.f b) = ∑ a, B a b • G.f a) → ∀ b, (c.c p).e (scaled Z p (fun b => ∑ a, B a b • frame F0 a) b) = m ((G.S p).f b)) ∧ ((∀ b, N (G.f' b) = ∑ a, B a b • G.f' a) → ∀ b, (c.c p).e (scaled Z p (fun b => ∑ a, B a b • frame F0' a) b) = m ((G.S p).f' b)) := by
   intro D Z T T' F0 F0' FP G c p N m hm B
   exact ⟨fun hN b => step c p N m hm B (frame F0) G.f (G.S p).f c.f_eq (G.f_eq p) hN b,

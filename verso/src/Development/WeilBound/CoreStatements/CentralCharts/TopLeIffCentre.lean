@@ -13,6 +13,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GlobalTheory.CompanionTheory.Ar.PB RootFieldNumerics
 open scoped ComplexOrder
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial)`. Introduce `h q _`. Establish `e : q = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Substitute `e` using the available equality.
+
+Conclude with `h`.
+-/
 theorem top_le_iff_centre {X : Scheme.{0}} (z : Sp ℂ ⟶ X) (U : X.Opens) : ⊤ ≤ z ⁻¹ᵁ U ↔ centre z ∈ U := by
   constructor
   · exact fun h => h (show IsLocalRing.closedPoint ℂ ∈ (⊤ : (Sp ℂ).Opens) from trivial)
@@ -21,10 +26,16 @@ theorem top_le_iff_centre {X : Scheme.{0}} (z : Sp ℂ ⟶ X) (U : X.Opens) : �
     subst e
     exact h
 
+/- English proof (translation)
+Use `filter_upwards [(hz U 0).1.mem_nhds ⟨ht, (top_le_iff_centre _ _).2 h⟩] with t h' using (top_le_iff_centre _ _).1 h'.2`.
+-/
 theorem eventually_centre {X : Scheme.{0}} {n : ℕ} {V : Set (Fin n → ℂ)} {z : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (hz : IsHolTo V z)
     {t₀ : Fin n → ℂ} (ht : t₀ ∈ V) (U : X.Opens) (h : centre (z t₀) ∈ U) : ∀ᶠ t in 𝓝 t₀, centre (z t) ∈ U := by
   filter_upwards [(hz U 0).1.mem_nhds ⟨ht, (top_le_iff_centre _ _).2 h⟩] with t h' using (top_le_iff_centre _ _).1 h'.2
 
+/- English proof (translation)
+Take `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, h6⟩` from `h`. Conclude with `⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun a => h6 _⟩`.
+-/
 theorem fibreLatVec_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} {t : SAB H X}
     {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {R : RiemLat E g Λ} {A₀ A₁ : Type}
     {x : A₀ → Fin g → ℂ} {v : A₀ → (epsAt z ⟶ t.G)} (h : FibreLatVec t z R x v) (f : A₁ → A₀) :
@@ -32,6 +43,11 @@ theorem fibreLatVec_comp {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   obtain ⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, h6⟩ := h
   exact ⟨A, i, φ, u, χ, h1, h2, h3, h4, h5, fun a => h6 _⟩
 
+/- English proof (translation)
+Establish `h1 : b i ∈ flagStep Ω b₀ (i + 1)`. Rewrite using `[← h]`. Conclude with `Submodule.subset_span ⟨i, Nat.lt_succ_self _, rfl⟩`. Establish `h2 : {k : Fin r | (k : ℕ) < i + 1} = insert i {k : Fin r | (k : ℕ) < i}`. Use extensionality with `k`.
+
+Simplify using `only [Set.mem_ofPred_eq, Set.mem_insert_iff, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[flagStep, h2, Set.image_insert_eq, Submodule.mem_span_insert]`. Take `⟨a, w, hw, e⟩` from `h1`. Conclude with `⟨a, by rw [e, add_sub_cancel_left]; exact hw⟩`.
+-/
 theorem exists_tr {Ω Li : Type} [Field Ω] [AddCommGroup Li] [Module Ω Li] {r : ℕ} (b b₀ : Fin r → Li)
     (h : ∀ i, flagStep Ω b i = flagStep Ω b₀ i) (i : Fin r) : ∃ t : Ω, b i - t • b₀ i ∈ flagStep Ω b₀ i := by
   have h1 : b i ∈ flagStep Ω b₀ (i + 1) := by
@@ -45,6 +61,9 @@ theorem exists_tr {Ω Li : Type} [Field Ω] [AddCommGroup Li] [Module Ω Li] {r 
   obtain ⟨a, w, hw, e⟩ := h1
   exact ⟨a, by rw [e, add_sub_cancel_left]; exact hw⟩
 
+/- English proof (translation)
+Unfold `leadMinor`. Use `split_ifs with h`. Rewrite using `[Matrix.submatrix_smul, Pi.smul_apply, Pi.smul_apply, Matrix.det_smul, Fintype.card_fin, ← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem leadMinor_smul {r : ℕ} (c : ℝ) (Γ : Matrix (Fin r) (Fin r) ℂ) (k : ℕ) :
     leadMinor ((c : ℂ) • Γ) k = c ^ k * leadMinor Γ k := by
   unfold leadMinor
@@ -53,6 +72,11 @@ theorem leadMinor_smul {r : ℕ} (c : ℝ) (Γ : Matrix (Fin r) (Fin r) ℂ) (k 
       Complex.re_ofReal_mul]
   · simp
 
+/- English proof (translation)
+Establish `h1` using `leadMinor_pos_of_posDef h (s := i + 1) i.2`. Establish `h2` using `leadMinor_pos_of_posDef h (s := i) i.2.le`. Establish `hp` using `Real.pi_pos`. Establish `e : leadMinor ((Real.pi : ℂ) • Γ) (i + 1) / leadMinor ((Real.pi : ℂ) • Γ) i = leadMinor Γ (i + 1) / leadMinor Γ i * Real.pi`. Rewrite using `[leadMinor_smul, leadMinor_smul, pow_succ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, Real.sqrt_mul (div_pos h1 h2).le, Real.log_mul (Real.sqrt_pos.2 (div_pos h1 h2)).ne' (Real.sqrt_pos.2 hp).ne']`.
+-/
 theorem log_nu {r : ℕ} {Γ : Matrix (Fin r) (Fin r) ℂ} (h : Γ.PosDef) (i : Fin r) :
     Real.log (Real.sqrt (leadMinor ((Real.pi : ℂ) • Γ) (i + 1) / leadMinor ((Real.pi : ℂ) • Γ) i)) =
       Real.log (Real.sqrt (leadMinor Γ (i + 1) / leadMinor Γ i)) + Real.log (Real.sqrt Real.pi) := by
@@ -78,6 +102,13 @@ def CountAt {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : 
           (∀ a, 𝔐.M.ValAt z (b a.1 a.2) (v a)) ∧ FibreLatVec 𝔐.t z R x v ∧
           ∀ s k, flagStep ℂ (fun i => x ⟨s, i⟩) k = F s k}.Countable
 
+/- English proof (translation)
+Rewrite using `[log_nu (hΓ _), mul_add]`. Use `congr 1`. Set `F : (Σ s, Fin (labelRk D s)) → ℝ` to `fun a => Real.log (Real.sqrt (leadMinor (Γ a.1) (a.2 + 1) / leadMinor (Γ a.1) a.2))`. Use `show _ * F (HodgeCpt.rootIdx D (τ, i)) = _`. Distinguish the cases in `h : (i : ℕ) < D.p`.
+
+Establish `e : HodgeCpt.rootIdx D (τ, i) = ⟨.inl τ, ⟨i, h⟩⟩` using `dif_pos h`. Rewrite using `[e]`. Simplify using `only [HodgeCpt.rootSgn, grLog, if_pos h, F, Int.cast_one, one_mul]`. Both sides reduce to the same expression. Establish `e : HodgeCpt.rootIdx D (τ, i) = ⟨.inr τ, ⟨D.p + D.q - 1 - i, by have` using `i.2; show _ < D.q; omega⟩⟩ := dif_neg h`.
+
+Rewrite using `[e]`. Simplify using `only [HodgeCpt.rootSgn, grLog, if_neg h, F, Int.cast_neg, Int.cast_one, neg_mul, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem root_log (Γ : ∀ s, Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ) (hΓ : ∀ s, (Γ s).PosDef) (τ : CMType H)
     (i : Fin (D.p + D.q)) :
     (HodgeCpt.rootSgn D (τ, i) : ℝ) * Real.log (Real.sqrt
@@ -99,6 +130,31 @@ theorem root_log (Γ : ∀ s, Matrix (Fin (labelRk D s)) (Fin (labelRk D s)) ℂ
     simp only [HodgeCpt.rootSgn, grLog, if_neg h, F, Int.cast_neg, Int.cast_one, neg_mul, one_mul]
     rfl
 
+/- English proof (translation)
+Use `set ch := An.Sys.A.chart k with hch`. Set `t₀` to `ch x₀`. Establish `hs₀ : ch.symm t₀ = x₀` using `ch.left_inv hk`. Establish `hop : IsOpen An.Sys.open'` using `(GlobalTheory.T.section_boundary_closed_and_codense _ _ An.Sys.A An.Sys.L An.Sys.s _ An.Sys.m An.Sys.W An.Sys.sec An.Sys.snc).1.isOpen_compl`. Set `V₁` to `ch.target ∩ ch.symm ⁻¹' An.Sys.open'`.
+
+Establish `hV₁ : IsOpen V₁` using `ch.isOpen_inter_preimage_symm hop`. Establish `ht₁ : t₀ ∈ V₁` using `⟨ch.map_source hk, by show ch.symm t₀ ∈ An.Sys.open'; rwa [hs₀]⟩`. Set `z'` to `fun t => z (ch.symm t)`. Establish `hz₁ : IsHolTo V₁ z'` using `SheetDecomposition.vecMono hzh hV₁ Set.inter_subset_left`. Establish `hint : ∀ t ∈ V₁, Gr.𝔐.Interior (z' t)` using `fun t ht => (An.interior _ _ (hzc _)).2 (by rw [hπ]; exact ht.2)`.
+
+Use `choose Us hUs b hb hfr using fun s => Gr.Fl.sub s ⟨centre (z' t₀), Gr.𝔐.all _⟩ trivial`. Take `⟨g, Λ, _, _, R, V₂, σ, hV₂, ht₂, h21, hfam, hlab, hvec⟩` from `hLP hG E H D l Xo c Y ∅ Gr.Ω Gr.K Gr.J Gr.y Gr.𝔐 _ V₁ z' hN hV₁ hz₁ hint t₀ ht₁`. Set `I` to `Σ s : CMType H ⊕ CMType H, Fin (labelRk D s)`. Set `e` to `Fintype.equivFin I`. Take `⟨xF, hxa, hxe⟩` from `hvec _ (fun a => b (e.symm a).1 (e.symm a).2) fun a => (hFV hG E H D l Xo c Y Gr.Ω Gr.K Gr.J Gr.y Gr.𝔐 (z' t₀) _ (b _) hN (hint _ ht₁) (hfr _ _ trivial (hUs _))).1 _`.
+
+Set `x : I → (Fin (Top.dimFl (CMType H) (D.p + D.q)) → ℂ) → Fin g → ℂ` to `fun a => xF (e a)`. Establish `hev : ∀ᶠ t in 𝓝 t₀, t ∈ V₂ ∧ (∀ s, centre (z' t) ∈ Us s) ∧ centre (z' t) ∈ U ∧ (∀ a, AnalyticAt ℂ (x a) t) ∧ ∃ v : I → (epsAt (z' t) ⟶ Gr.𝔐.t.G), (∀ a, Gr.𝔐.M.ValAt (z' t) (b a.1 a.2) (v a)) ∧ FibreLatVec Gr.𝔐.t (z' t) (R t) (fun a => x a t) v` using `by filter_upwards [hV₂.mem_nhds ht₂, Filter.eventually_all.2 fun s => eventually_centre hz₁ ht₁ (Us s) (hUs s), eventually_centre hz₁ ht₁ U (by show centre (z (ch.symm t₀)) ∈ U; rwa [hs₀]), Filter.eventually_all.2 fun a : I => (hxa (e a)).eventually_analyticAt, hxe] with t h1 h2 …`. Use `⟨h1, h2, h3, h4, fun a => v (e a), fun a => ?_, fibreLatVec_comp hf e⟩` and prove the remaining obligations. Use `hv (e a)` as an intermediate fact. Rewrite `this` using `[e.symm_apply_apply]`. Then use the resulting hypothesis.
+
+Take `⟨V₃, h3, hV₃, ht₃⟩` from `eventually_nhds_iff.1 hev`. Establish `hfr₃ : ∀ t ∈ V₃, ∀ s, (Gr.𝔐.V s).IsFrameAt (b s) ⟨centre (z' t), Gr.𝔐.all _⟩` using `fun t ht s => hfr s _ trivial ((h3 t ht).2.1 s)`. Establish `hval : ∀ t ∈ V₃, ∀ s, LinearIndependent ℂ (fun i => x ⟨s, i⟩ t) ∧ Submodule.span ℂ (Set.range fun i => x ⟨s, i⟩ t) = eigSp (R t).B (σ s) ∧ Gr.𝔐.M.GramAt Gr.𝔐.t.PP.L (z' t) (b s) ((Real.pi : ℂ) • (R t).gram fun i => x ⟨s, i⟩ t) ∧ ((R t).gram fun i => x ⟨s, i⟩ t).PosDef` using `fun t ht s => by`. Take `⟨h1, -, -, -, v, hv, hf⟩` from `h3 t ht`. Conclude with `(hFV hG E H D l Xo c Y Gr.Ω Gr.K Gr.J Gr.y Gr.𝔐 (z' t) s (b s) hN (hint _ (h21 h1)) (hfr₃ t ht s)).2 g Λ (R t) σ _ (fun i => v ⟨s, i⟩) (hlab t h1) (fun i => hv ⟨s, i⟩) (fibreLatVec_comp hf fun i => ⟨s, i⟩)`.
+
+Take `⟨σ', -, hσu, -, -, -, hσ⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l Xo c Y ∅ Gr.Ω Gr.K Gr.J Gr.y Gr.𝔐 ℂ (z' t₀)`. Take `rfl` from `hσu σ (hlab _ ht₂)`. Take `⟨hcm, -, hconj⟩` from `hσ (RingHom.id ℂ)`. Simplify using `only [RingHom.id_comp] at hcm hconj`. Establish `hfam₃ : IsHolFam V₃ R` using `⟨fun t ht t' ht' => hfam.1 t (h3 t ht).1 t' (h3 t' ht').1, fun a => (hfam.2 a).mono fun t ht => (h3 t ht).1⟩`.
+
+Take `⟨V, gm, hV, ht, hV3, hga, hgp, hrig⟩` from `hPM E (CMType H) g _ D.p D.q Λ V₃ R (fun τ => σ (.inl τ)) (fun τ i => x ⟨.inl τ, i⟩) (fun τ i => x ⟨.inr τ, i⟩) hV₃ hfam₃ hcm ⟨fun τ i t ht => (h3 t ht).2.2.2.1 _, fun τ i t ht => (h3 t ht).2.2.2.1 _, fun t ht τ => ⟨⟨(hval t ht (.inl τ)).1, (hval t ht (.inl τ)).2.1⟩, (hval t ht ( …`. Rewrite using `[← hconj]`. Conclude with `(hval t ht (.inr τ)).2.1⟩⟩ t₀ ht₃`. Establish `hV1 : V ⊆ V₁` using `fun t ht => h21 (h3 t (hV3 ht)).1`. Use `⟨V, gm, hV, ht, fun t ht => (hV1 ht).1, fun t ht => (hV1 ht).2, hga, fun t ht τ => (hgp t ht τ).1, fun t₁ ht₁ p => ?_, fun hC t ht => ?_⟩` and prove the remaining obligations.
+
+Use `choose tr htr using fun a : I => exists_tr (b a.1) (Gr.Fl.b a.1) (hb a.1) a.2`. Set `Γ` to `fun t s => (R t).gram fun i => x ⟨s, i⟩ t`. Set `nu : I → (Fin (Top.dimFl (CMType H) (D.p + D.q)) → ℂ) → ℝ` to `fun a t => Real.sqrt (leadMinor ((Real.pi : ℂ) • Γ t a.1) (a.2 + 1) / leadMinor ((Real.pi : ℂ) • Γ t a.1) a.2)`. Take `⟨G, hGa, hGe⟩` from `potLoc Gr An ψ k V z' (fun r => tr (HodgeCpt.rootIdx D r)) (fun r => nu (HodgeCpt.rootIdx D r)) hψ hπ hV (fun t ht => (hV1 ht).1) (fun t ht => ⟨(hV1 ht).2, hzc _, fun r => ⟨Gr.𝔐.all _, b _, _, hb _, hfr₃ t (hV3 ht) _, htr _, (hval t (hV3 ht) _).2.2.1, (hval t (hV3 ht) _).2.2.2.sm …`. Set `C : ℝ` to `∑ i ∈ Finset.Iic p.2, (HodgeCpt.rootSgn D (p.1, i) : ℝ) * Real.log (Real.sqrt Real.pi)`.
+
+Use `⟨fun t => G t + C, hGa.add analyticAt_const, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hGe, hV.mem_nhds ht₁] with t h1 h2`. Rewrite using `[h1, (hgp t h2 p.1).2 p.2, Complex.add_re, Complex.ofReal_re]`. Use `fun i => root_log (Γ t) (fun s => (hval t (hV3 h2) s).2.2.2) p.1 i` as an intermediate fact. Rewrite using `[Finset.sum_congr rfl fun i _ => this i, Finset.sum_add_distrib]`.
+
+Conclude with `(add_right_comm _ _ _).trans (add_assoc _ _ _)`. Use `Set.MapsTo.countable_of_injOn (f := z') ?_ ?_ (hC b g Λ (R t) (fun s k => flagStep ℂ (fun i => x ⟨s, i⟩ t) k) hb)` and prove the remaining obligations. Introduce and unpack `t' ⟨ht', hs⟩`. Take `⟨h, hP, hfl⟩` from `hrig t ht t' ht' hs`. Take `⟨h1, -, hU', -, v, hv, hf⟩` from `h3 t' (hV3 ht')`.
+
+Use `⟨hU', hint _ (hV1 ht'), hfr₃ t' (hV3 ht'), fun a => h.symm (x a t'), v, hv, hT E H _ _ _ g Λ (R t) (R t') h I _ v (hfam₃.1 t (hV3 ht) t' (hV3 ht')) hP hf, ?_⟩` and prove the remaining obligations. Introduce and unpack `(τ | τ) k`. Conclude with `(hfl τ k).1`. Conclude with `(hfl τ k).2`. Introduce `t₁ h₁ t₂ h₂ e`.
+
+Conclude with `ch.symm.injOn (hV1 h₁.1).1 (hV1 h₂.1).1 (hzi e)`.
+-/
 theorem locChart (hLP : LocPer) (hT : Transport) (hFV : FrameVals) (hPM : PerMat) (hG : Top.Given)
     (hN : 1 ≤ D.p + D.q) (Gr : RefGeo Y) (An : Gr.An)
     (ψ : An.Sys.X → An.Re.R.X) (hψ : HoloMap An.Sys.A An.Re.R.A ψ) (hπ : ∀ x, An.Re.π (ψ x) = x) (z : An.Sys.X → (Sp ℂ ⟶ Gr.𝔐.X))

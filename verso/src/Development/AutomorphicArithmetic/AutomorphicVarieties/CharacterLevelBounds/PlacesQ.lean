@@ -9,6 +9,9 @@ namespace UpperTheory.V.Chr.RationalPlaces
 
 variable (l : ℕ) [hl : Fact l.Prime]
 
+/- English proof (translation)
+Establish `h : Prime ((l : ℤ))` using `Nat.prime_iff_prime_int.mp hl.out`. Establish `e : Rat.ringOfIntegersEquiv ((l : ℕ) : 𝓞 ℚ) = (l : ℤ)` using `map_natCast _ l`. Rewrite `h` using `[← e]`. Conclude with `(MulEquiv.prime_iff (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ)).mp h`.
+-/
 private theorem prime_l : Prime ((l : ℕ) : 𝓞 ℚ) := by
   have h : Prime ((l : ℤ)) := Nat.prime_iff_prime_int.mp hl.out
   have e : Rat.ringOfIntegersEquiv ((l : ℕ) : 𝓞 ℚ) = (l : ℤ) := map_natCast _ l
@@ -22,6 +25,23 @@ private noncomputable def vQ : HeightOneSpectrum (𝓞 ℚ) where
 
 variable {l} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Unfold `IsPlaceOver`. Introduce `x`. Use `set m : ℤ := Rat.ringOfIntegersEquiv x with hmdef`. Establish `hx : algebraMap ℚ Ω (x : ℚ) = (m : Ω)`. Establish `e : ((m : ℤ) : ℚ) = (x : ℚ)`.
+
+Rewrite using `[hmdef, Rat.ringOfIntegersEquiv_apply_coe]`. Rewrite using `[← e, map_intCast]`. Establish `hmem : x ∈ (vQ l).asIdeal ↔ (l : ℤ) ∣ m`. Express the relevant statement in the definitionally equal form `x ∈ Ideal.span {((l : ℕ) : 𝓞 ℚ)} ↔ _`. Rewrite using `[Ideal.mem_span_singleton, ← map_dvd_iff Rat.ringOfIntegersEquiv, map_natCast]`.
+
+Establish `hA' : A.valuation ((l : ℤ) : Ω) < 1`. Rewrite using `[Int.cast_natCast]`. Conclude with `hA`. Establish `hint : ∀ k : ℤ, A.valuation (k : Ω) ≤ 1` using `fun k => (ValuationSubring.valuation_le_one_iff A _).mpr (intCast_mem A k)`. Rewrite using `[hx, hmem]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Assume the negation of the conclusion as `hnd`. Establish `hirr : Irreducible (l : ℤ)` using `(Nat.prime_iff_prime_int.mp hl.out).irreducible`. Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).mpr hnd`.
+
+Establish `h1 : ((a : Ω) * (l : ℤ) + (b : Ω) * (m : Ω)) = 1`. Use `congrArg (fun z : ℤ => (z : Ω)) hab` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Conclude with `this`. Establish `hle : A.valuation (1 : Ω) < 1`.
+
+Rewrite using `[← h1]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint a)) hA'`. Rewrite using `[map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hint b)) hm`. Rewrite `hle` using `[map_one]`. Conclude with `lt_irrefl _ hle`. Introduce and unpack `⟨k, hk⟩`. Rewrite using `[hk, Int.cast_mul, map_mul]`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (hint k)) hA'`.
+-/
 private theorem isPlaceOver_vQ [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω)
     (hA : A.valuation ((l : ℕ) : Ω) < 1) : IsPlaceOver (F := ℚ) A (vQ l) := by
   unfold IsPlaceOver
@@ -62,9 +82,27 @@ private theorem isPlaceOver_vQ [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : Valua
     rw [hk, Int.cast_mul, map_mul]
     exact lt_of_le_of_lt (mul_le_of_le_one_right' (hint k)) hA'
 
+/- English proof (translation)
+The claim follows from `(A.valuation_le_one_iff _).mpr (natCast_mem A n)`.
+-/
 private theorem val_natCast_le_one (A : ValuationSubring Ω) (n : ℕ) : A.valuation (n : Ω) ≤ 1 :=
   (A.valuation_le_one_iff _).mpr (natCast_mem A n)
 
+/- English proof (translation)
+Use `revert hn`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one => intro _`.
+
+Simplify using the standard rewrite rules. Consider the case `prime p hp`. Introduce `_`. Rewrite using `[hp.primeFactors]`. Simplify using the standard rewrite rules.
+
+Consider the case `mul a b iha ihb`. Introduce `hab`. Establish `ha : a ≠ 0` using `left_ne_zero_of_mul hab`. Establish `hb : b ≠ 0` using `right_ne_zero_of_mul hab`. Establish `key : A.valuation (a : Ω) * A.valuation (b : Ω) < 1 ↔ A.valuation (a : Ω) < 1 ∨ A.valuation (b : Ω) < 1`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `e1 : A.valuation (a : Ω) = 1` using `le_antisymm (val_natCast_le_one A a) hc.1`.
+
+Establish `e2 : A.valuation (b : Ω) = 1` using `le_antisymm (val_natCast_le_one A b) hc.2`. Rewrite `h` using `[e1, e2, one_mul]`. Conclude with `lt_irrefl _ h`. Introduce and unpack `(h | h)`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (val_natCast_le_one A b)) h`.
+
+Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (val_natCast_le_one A a)) h`. Rewrite using `[Nat.cast_mul, map_mul, Nat.primeFactors_mul ha hb, key, iha ha, ihb hb]`. Simplify using `only [Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨p, hp, h⟩ | ⟨p, hp, h⟩) exacts [⟨p, Or.inl hp, h⟩, ⟨p, Or.inr hp, h⟩]`.
+
+Introduce and unpack `⟨p, hp | hp, h⟩ exacts [Or.inl ⟨p, hp, h⟩, Or.inr ⟨p, hp, h⟩]`.
+-/
 private theorem val_lt_one_iff (A : ValuationSubring Ω) (n : ℕ) (hn : n ≠ 0) :
     A.valuation (n : Ω) < 1 ↔ ∃ p ∈ n.primeFactors, A.valuation (p : Ω) < 1 := by
   revert hn
@@ -100,6 +138,15 @@ private theorem val_lt_one_iff (A : ValuationSubring Ω) (n : ℕ) (hn : n ≠ 0
     · rintro ⟨p, hp | hp, h⟩
       exacts [Or.inl ⟨p, hp, h⟩, Or.inr ⟨p, hp, h⟩]
 
+/- English proof (translation)
+Set `x : (⊥ : Subring Ω)` to `⟨(p : Ω), natCast_mem _ p⟩`. Establish `hI : Ideal.span {x} ≠ ⊤`. Rewrite using `[Ne, Ideal.span_singleton_eq_top]`. Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`.
+
+Take `⟨m, hm⟩` from `Subring.mem_bot.mp y.2`. Establish `h1 : (((p : ℤ) * m : ℤ) : Ω) = ((1 : ℤ) : Ω)`. Establish `hv` using `congrArg Subtype.val hy`. Use `push_cast`. Rewrite using `[hm]`.
+
+Conclude with `hv`. Establish `h2 : (p : ℤ) * m = 1` using `Int.cast_injective h1`. Establish `h3 : IsUnit (p : ℤ)` using `isUnit_iff_exists_inv.mpr ⟨m, h2⟩`. Rewrite `h3` using `[Int.isUnit_iff_natAbs_eq, Int.natAbs_natCast]`. Conclude with `hp.ne_one h3`.
+
+Take `⟨B, -, hB⟩` from `Ideal.image_subset_nonunits_valuationSubring _ hI`. Conclude with `⟨B, (B.mem_nonunits_iff).mp (hB ⟨x, Ideal.subset_span rfl, rfl⟩)⟩`.
+-/
 private theorem exists_place [CharZero Ω] (p : ℕ) (hp : p.Prime) :
     ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1 := by
   let x : (⊥ : Subring Ω) := ⟨(p : Ω), natCast_mem _ p⟩
@@ -123,6 +170,17 @@ private theorem exists_place [CharZero Ω] (p : ℕ) (hp : p.Prime) :
 end UpperTheory.V.Chr.RationalPlaces
 
 open UpperTheory.V.Chr.RationalPlaces in
+/- English proof (translation)
+Introduce `Ω _ _ _`. Use `⟨fun p hp => exists_place p hp, fun A n hn => val_lt_one_iff A n hn, ?_⟩` and prove the remaining obligations. Introduce `p A A' hp hA hA'`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨σ, hσ⟩` from `exists_smul_eq_of_isPlaceOver (isPlaceOver_vQ A hA) (isPlaceOver_vQ A' hA')`.
+
+Establish `hL : IsLift (RingEquiv.refl ℚ) (σ⁻¹ : G ℚ Ω).toRingEquiv` using `fun x => AlgEquiv.commutes _ x`. Establish `hmem : ∀ x : Ω, (σ⁻¹ : G ℚ Ω).toRingEquiv x ∈ A ↔ x ∈ A'`. Introduce `x`. Rewrite using `[← hσ, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+
+Establish `hconj : ∀ g : G ℚ Ω, (σ⁻¹)⁻¹ * g * σ⁻¹ = conjGal hL g`. Introduce `g`. Use extensionality with `x`. Both sides reduce to the same expression. Use `⟨σ⁻¹, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `g hg`. Rewrite using `[hconj]`. Conclude with `conjGal_mem_Dec hL hmem hg`. Introduce `g hg`. Rewrite using `[hconj]`.
+
+Conclude with `conjGal_mem_Ine hL hmem hg`.
+-/
 theorem UpperTheory.V.Chr.placesQ :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω], (∀ p : ℕ, p.Prime → ∃ A : ValuationSubring Ω, A.valuation (p : Ω) < 1) ∧
           (∀ (A : ValuationSubring Ω) (n : ℕ), n ≠ 0 → (A.valuation (n : Ω) < 1 ↔ ∃ p ∈ n.primeFactors, A.valuation (p : Ω) < 1)) ∧

@@ -10,6 +10,29 @@ open MeasureTheory Filter Topology ReciprocityTheory.AnForm.M
 
 namespace GlobalTheory.CompanionTheory.Metric.LocTail
 
+/- English proof (translation)
+Take `⟨hI, hB⟩` from `hT R₀ hR₀`. Use `set h : X → ℝ := (GroundTheory.Heights₂.Heights.AnalyticLimit.tail Yo r R₀).indicator (fun x => Real.log (r x)) with hdef`. Establish `hIS` using `hI j S hSt hSc`. Use `⟨hIS, ?_⟩` and prove the remaining obligations. Establish `hh0 : ∀ x, 0 ≤ h x`.
+
+Introduce `x`. Use `Set.indicator_nonneg (fun x hx => ?_) x` and prove the remaining obligations. Conclude with `Real.log_nonneg (hr x hx.1)`. Establish `hhYo : ∀ x, x ∉ Yo → h x = 0`. Introduce `x hx`.
+
+Conclude with `Set.indicator_of_notMem (fun hm => hx hm.1) _`. Establish `hSm : MeasurableSet S` using `hSc.isClosed.measurableSet`. Use `set ch := A.chart j with hch`. Use `set Z : Set X := ch.symm '' S with hZ`. Use `set g : X → ℝ := Z.indicator h with hgdef`.
+
+Establish `hg0 : ∀ x, x ∉ ch.source → g x = 0`. Introduce `x hx`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hx (ch.map_target (hSt hy))`.
+
+Use `set F : (Fin e → ℂ) → ℝ := fun y => h (ch.symm y) * locDens A Φ j y with hF`. Establish `hgF : ∀ z ∈ ch.target, g (ch.symm z) * locDens A Φ j z = S.indicator F z`. Introduce `z hz`. Distinguish the cases in `hzS : z ∈ S`. Rewrite using `[Set.indicator_of_mem hzS, hgdef, Set.indicator_of_mem (Set.mem_image_of_mem _ hzS)]`.
+
+Establish `hnZ : ch.symm z ∉ Z`. Introduce and unpack `⟨y, hy, hyz⟩`. Conclude with `hzS ((ch.symm.injOn (by simpa using hSt hy) (by simpa using hz) hyz) ▸ hy)`. Rewrite using `[Set.indicator_of_notMem hzS, hgdef, Set.indicator_of_notMem hnZ, zero_mul]`. Establish `hFint : IntegrableOn (S.indicator F) ch.target` using `((integrable_indicator_iff hSm).2 hIS).integrableOn`.
+
+Establish `hint : IntegrableOn (fun z => g (ch.symm z) * locDens A Φ j z) ch.target` using `hFint.congr_fun (fun z hz => (hgF z hz).symm) ch.open_target.measurableSet`. Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Take `⟨hgt, hgI⟩` from `integralWith_localize_support A hne.some Φ hΦ j g hg0 hint`. Establish `hSint : ∫ z in ch.target, g (ch.symm z) * locDens A Φ j z = ∫ y in S, F y`. Rewrite using `[setIntegral_congr_fun ch.open_target.measurableSet hgF, setIntegral_indicator hSm, Set.inter_eq_right.2 hSt]`.
+
+Establish `hle : integralWith A hne.some Φ g ≤ integralWith A hne.some Φ h`. Unfold `integralWith`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Use `setIntegral_mono_on (hgt k) (integrableOn_weight A hne.some Φ h hI k) (A.chart k).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hx : (A.chart k).symm y ∈ Yo`.
+
+Establish `hd` using `hdens k y hy hx`. Establish `hχ` using `hne.some.nonneg k ((A.chart k).symm y)`. Establish `hgh : g ((A.chart k).symm y) ≤ h ((A.chart k).symm y)` using `Set.indicator_le_self' (fun x _ => hh0 x) _`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hgh hχ) hd`. Establish `h1 : h ((A.chart k).symm y) = 0` using `hhYo _ hx`.
+
+Establish `h2 : g ((A.chart k).symm y) = 0`. Rewrite using `[hgdef]`. Distinguish the cases in `hz : (A.chart k).symm y ∈ Z`. Rewrite using `[Set.indicator_of_mem hz, h1]`. Rewrite using `[Set.indicator_of_notMem hz]`.
+
+Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tailLog_on_compact_of_chart {e : ℕ} {X : Type} [TopologicalSpace X] [CompactSpace X]
     [T2Space X] (A : FinHolAtlas e X) (Yo : Set X) (r : X → ℝ) (Φ : Fin e → LocPot X) (CE : ℝ)
     (hΦ : ∀ i, IsPotential A (Φ i)) (hr : ∀ x ∈ Yo, 1 ≤ r x)

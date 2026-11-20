@@ -4,6 +4,9 @@ import Formalism.LocalToGlobal.UnitaryNorms.CharTransport
 
 open NumberField IsDedekindDomain GroundTheory.Automorphic GroundTheory.Automorphic.Reduction Formalism.L2.Host
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap K w₁).equalizer hf hg (funext e)) _`.
+-/
 private theorem finiteAdele_apply_congr {K X : Type} [Field K] [NumberField K] [TopologicalSpace X] [T2Space X]
     {w₁ w₂ : HeightOneSpectrum (𝓞 K)} (h : w₁ = w₂) (f : w₁.adicCompletion K → X) (g : w₂.adicCompletion K → X)
     (hf : Continuous f) (hg : Continuous g)
@@ -12,6 +15,11 @@ private theorem finiteAdele_apply_congr {K X : Type} [Field K] [NumberField K] [
   subst h
   exact congrFun ((HeightOneSpectrum.denseRange_algebraMap K w₁).equalizer hf hg (funext e)) _
 
+/- English proof (translation)
+Establish `h1 : DenseRange (fun x : WithAbs u.1 => (x : UniformSpace.Completion (WithAbs u.1)))` using `UniformSpace.Completion.denseRange_coe`. Establish `h2 : DenseRange (InfinitePlace.Completion.ofCompletion : _ → u.Completion)` using `(InfinitePlace.Completion.equiv u).symm.surjective.denseRange`. Establish `h3` using `h2.comp h1 (InfinitePlace.Completion.continuous_ofCompletion u)`. Use `h3.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Conclude with `⟨x.ofAbs, rfl⟩`.
+-/
 private theorem infDense {K : Type} [Field K] (u : InfinitePlace K) :
     DenseRange (algebraMap K u.Completion) := by
   have h1 : DenseRange (fun x : WithAbs u.1 => (x : UniformSpace.Completion (WithAbs u.1))) :=
@@ -23,6 +31,9 @@ private theorem infDense {K : Type} [Field K] (u : InfinitePlace K) :
   rintro _ ⟨x, rfl⟩
   exact ⟨x.ofAbs, rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `congrFun ((infDense w₁).equalizer hf hg (funext e)) _`.
+-/
 private theorem infiniteAdele_apply_congr {K X : Type} [Field K] [NumberField K] [TopologicalSpace X] [T2Space X]
     {w₁ w₂ : InfinitePlace K} (h : w₁ = w₂) (f : w₁.Completion → X) (g : w₂.Completion → X)
     (hf : Continuous f) (hg : Continuous g)
@@ -31,11 +42,25 @@ private theorem infiniteAdele_apply_congr {K X : Type} [Field K] [NumberField K]
   subst h
   exact congrFun ((infDense w₁).equalizer hf hg (funext e)) _
 
+/- English proof (translation)
+Establish `h` using `CT.compEquiv_symm_algebraMap j.symm v (j x)`. Rewrite `h` using `[RingEquiv.symm_apply_apply]`. Then use the resulting hypothesis.
+-/
 private theorem completionEquiv_algebraMap {K : Type} [Field K] [NumberField K] (j : K ≃+* K) (v : HeightOneSpectrum (𝓞 K)) (x : K) :
     (CT.compEquiv j.symm v).symm (algebraMap K _ x) = algebraMap K _ (j x) := by
   have h := CT.compEquiv_symm_algebraMap j.symm v (j x)
   rwa [RingEquiv.symm_apply_apply] at h
 
+/- English proof (translation)
+Introduce `K _ _`. Use `⟨fun σ x => ?_, fun a => ?_, fun σ τ a => ?_⟩` and prove the remaining obligations. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Conclude with `CT.infEquiv_algebraMap σ u x`.
+
+Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `completionEquiv_algebraMap σ v x`. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+
+Conclude with `infiniteAdele_apply_congr (w₁ := u.comap (RingEquiv.refl K).toRingHom) (w₂ := u) rfl (CT.infEquiv (RingEquiv.refl K) u) id (CT.continuous_infEquiv _ _) continuous_id (fun x => CT.infEquiv_algebraMap _ u x) a.1`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`. Conclude with `finiteAdele_apply_congr (w₁ := CT.plMap (RingEquiv.refl K).symm v) (w₂ := v) (by ext x; rfl) (CT.compEquiv (RingEquiv.refl K).symm v).symm id (CT.continuous_compEquiv_symm _ _) continuous_id (fun x => completionEquiv_algebraMap _ v x) a.2`. Apply `Prod.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `u`. Conclude with `infiniteAdele_apply_congr (w₁ := u.comap (σ.trans τ).toRingHom) (w₂ := (u.comap τ.toRingHom).comap σ.toRingHom) rfl (CT.infEquiv (σ.trans τ) u) (fun y => CT.infEquiv τ u (CT.infEquiv σ _ y)) (CT.continuous_infEquiv _ _) ((CT.continuous_infEquiv _ _).comp (CT.continuous_infEquiv _ …`. Simplify using `only [CT.infEquiv_algebraMap]`. Use the proof step `rfl) a.1`. Apply `RestrictedProduct.ext` to reduce the goal to its premises.
+
+Introduce `v`. Conclude with `finiteAdele_apply_congr (w₁ := CT.plMap (σ.trans τ).symm v) (w₂ := CT.plMap σ.symm (CT.plMap τ.symm v)) (by ext x; rfl) (CT.compEquiv (σ.trans τ).symm v).symm (fun y => (CT.compEquiv τ.symm v).symm ((CT.compEquiv σ.symm _).symm y)) (CT.continuous_compEquiv_symm _ _) ((CT.continuo …`. Simplify using `only [completionEquiv_algebraMap]`. Use the proof step `rfl) a.2`.
+-/
 theorem UpperTheory.ConvolutionTheory.K.adBasic :
     ∀ (K : Type) [Field K] [NumberField K], (∀ (σ : K ≃+* K) (x : K), CT.adMap σ (algebraMap K _ x) = algebraMap K _ (σ x)) ∧
       (∀ a, CT.adMap (RingEquiv.refl K) a = a) ∧ ∀ (σ τ : K ≃+* K) a, CT.adMap (σ.trans τ) a = CT.adMap τ (CT.adMap σ a) := by

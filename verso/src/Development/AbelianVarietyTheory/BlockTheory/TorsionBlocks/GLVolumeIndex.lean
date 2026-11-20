@@ -20,6 +20,9 @@ def princ (O : Type) [CommRing O] [IsLocalRing O] (n : Type) [Fintype n] [Decida
     Subgroup (GL n O) :=
   (Matrix.GeneralLinearGroup.map (n := n) (IsLocalRing.residue O)).ker
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[Matrix.isUnit_iff_isUnit_det]`. Establish `e : (red A).det = IsLocalRing.residue O A.det` using `(RingHom.map_det _ _).symm`. Rewrite `h` using `[e]`. Conclude with `(IsLocalRing.residue_ne_zero_iff_isUnit _).1 h.ne_zero`.
+-/
 theorem isUnit_of_red {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n O)
     (h : IsUnit (red A)) : IsUnit A := by
   rw [Matrix.isUnit_iff_isUnit_det] at h ⊢
@@ -27,19 +30,35 @@ theorem isUnit_of_red {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n O)
   rw [e] at h
   exact (IsLocalRing.residue_ne_zero_iff_isUnit _).1 h.ne_zero
 
+/- English proof (translation)
+Conclude with `Matrix.map_mul`.
+-/
 theorem red_mul {l m n : Type} [Fintype m] (A : Matrix l m O) (B : Matrix m n O) :
     red (A * B) = red A * red B := by
   exact Matrix.map_mul
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[red]`.
+-/
 theorem red_add {m n : Type} (A B : Matrix m n O) : red (A + B) = red A + red B := by
   ext i j
   simp [red]
 
+/- English proof (translation)
+Rewrite using `[← Matrix.ext_iff]`. Simplify using `[red, IsLocalRing.residue_eq_zero_iff]`.
+-/
 theorem red_eq_zero {m n : Type} (A : Matrix m n O) :
     red A = 0 ↔ ∀ i j, A i j ∈ IsLocalRing.maximalIdeal O := by
   rw [← Matrix.ext_iff]
   simp [red, IsLocalRing.residue_eq_zero_iff]
 
+/- English proof (translation)
+Establish `hred1 : red (((k⁻¹ : GL n O) : Matrix n n O) * A) = 1`. Rewrite using `[red_mul, h, ← red_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Use extensionality with `i j`. Simplify using `[red, Matrix.one_apply]`. Establish `hu : IsUnit (((k⁻¹ : GL n O) : Matrix n n O) * A)` using `isUnit_of_red _ (by rw [hred1]; exact isUnit_one)`.
+
+Establish `hup : hu.unit ∈ princ O n`. Rewrite using `[princ, MonoidHom.mem_ker]`. Use `ext1`. Simplify using `using hred1`. Use `⟨k * hu.unit, J.mul_mem hk (hJ hup), ?_⟩` and prove the remaining obligations.
+
+Simplify using `[← Matrix.mul_assoc]`.
+-/
 theorem exists_mem_of_red {n : Type} [Fintype n] [DecidableEq n] {J : Subgroup (GL n O)}
     (hJ : princ O n ≤ J) {k : GL n O} (hk : k ∈ J) {A : Matrix n n O}
     (h : red A = red (k : Matrix n n O)) : ∃ k' ∈ J, (k' : Matrix n n O) = A := by
@@ -55,6 +74,9 @@ theorem exists_mem_of_red {n : Type} [Fintype n] [DecidableEq n] {J : Subgroup (
   refine ⟨k * hu.unit, J.mul_mem hk (hJ hup), ?_⟩
   simp [← Matrix.mul_assoc]
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> ext i j <;>`. Simplify using `[toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 theorem blocks_mul {a t : Type} [Fintype a] [Fintype t] (g h : Matrix (a ⊕ t) (a ⊕ t) O) :
     (g * h).toBlocks₁₁ = g.toBlocks₁₁ * h.toBlocks₁₁ + g.toBlocks₁₂ * h.toBlocks₂₁ ∧
     (g * h).toBlocks₂₁ = g.toBlocks₂₁ * h.toBlocks₁₁ + g.toBlocks₂₂ * h.toBlocks₂₁ ∧
@@ -245,15 +267,24 @@ def IndexIdentities : Prop :=
     ν (𝒪[F] : Set F) = 1 →
       VolumeOfGL ν ∧ LevelIdentity ν ∧ ParahoricIndex F ∧ ParahoricIdentity ν
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example (q : ℝ) (r s : ℕ) :
     idxPar q r s = q ^ (r * s) * qE q 1 (r + s) / (qE q 1 r * qE q 1 s) := rfl
 
+/- English proof (translation)
+Establish `h : Icc 1 2 = ({1, 2} : Finset ℕ)` using `by decide`. Simplify using `only [idxPar, Formalism.BasicNotions.TH.parIdx, zetaFrom, qE]`. Evaluate the numerical expressions using `[h]`.
+-/
 example : idxPar 3 1 (1 * 1) * zetaFrom 3 1 (1 + 1 * 1) *
     ((3 : ℝ) ^ (-((1 * 1 * 1 : ℕ) : ℤ)) * qE 3 1 1 / zetaFrom 3 1 (1 * 1)) = 1 := by
   have h : Icc 1 2 = ({1, 2} : Finset ℕ) := by decide
   simp only [idxPar, Formalism.BasicNotions.TH.parIdx, zetaFrom, qE]
   norm_num [h]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨⟨k, _, e⟩, c, d⟩ => ⟨⟨k, e⟩, c, d⟩, fun ⟨⟨k, e⟩, c, d⟩ => ⟨⟨k, trivial, e⟩, c, d⟩⟩`.
+-/
 example {O : Type} [CommRing O] [IsLocalRing O] (r s : ℕ) (g : GL (Fin r ⊕ Fin s) O) :
     g ∈ parahoric O r s ↔ IsUnit g.val.toBlocks₁₁ ∧
       (∀ i j, g.val.toBlocks₂₁ i j ∈ IsLocalRing.maximalIdeal O) ∧ IsUnit g.val.toBlocks₂₂ :=

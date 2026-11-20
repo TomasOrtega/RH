@@ -14,6 +14,9 @@ open scoped ComplexOrder
 
 namespace GlobalTheory.HodgeLogBd
 
+/- English proof (translation)
+Take `⟨⟨v, h1, h2, e⟩, -⟩` from `isLeast_grSq hM₀ i`. Rewrite using `[e]`. Conclude with `((isLeast_grSq hM i).2 ⟨v, h1, h2, rfl⟩).trans (h v)`.
+-/
 theorem grSq_le_of_quad {m : ℕ} {M M₀ : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) (hM₀ : M₀.PosDef) {t : ℝ}
     (h : ∀ v : Fin m → ℂ, (star v ⬝ᵥ M *ᵥ v).re ≤ t * (star v ⬝ᵥ M₀ *ᵥ v).re) (i : Fin m) :
     grSq M i ≤ t * grSq M₀ i := by
@@ -21,6 +24,9 @@ theorem grSq_le_of_quad {m : ℕ} {M M₀ : Matrix (Fin m) (Fin m) ℂ} (hM : M.
   rw [e]
   exact ((isLeast_grSq hM i).2 ⟨v, h1, h2, rfl⟩).trans (h v)
 
+/- English proof (translation)
+The claim follows from `|Real.log (grSq M i) - Real.log (grSq M₀ i)| ≤ C * Real.log r := by have hp : 0 < r ^ C := Real.rpow_pos_of_pos hr C have e : r ^ C * r ^ (-C) = 1 := by rw [← Real.rpow_add hr, add_neg_cancel, Real.rpow_zero] have a := grSq_le_of_quad hM hM₀ h₂ i have b := grSq_le_of_quad hM₀ hM …`.
+-/
 theorem abs_log_grSq_sub_le {m : ℕ} {M M₀ : Matrix (Fin m) (Fin m) ℂ} (hM : M.PosDef) (hM₀ : M₀.PosDef) {r C : ℝ}
     (hr : 0 < r) (h₁ : ∀ v : Fin m → ℂ, r ^ (-C) * (star v ⬝ᵥ M₀ *ᵥ v).re ≤ (star v ⬝ᵥ M *ᵥ v).re)
     (h₂ : ∀ v : Fin m → ℂ, (star v ⬝ᵥ M *ᵥ v).re ≤ r ^ C * (star v ⬝ᵥ M₀ *ᵥ v).re) (i : Fin m) :
@@ -46,6 +52,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e) {σ : F →+* ℂ}
 
+/- English proof (translation)
+Take `⟨q, h1, h2⟩` from `Y.exists_adapted p`. Use `⟨q.2, ?_⟩` and prove the remaining obligations. Establish `hmem` using `FlagCpt.prodPow_mem n h1`. Establish `k1` using `FlagCpt.met_h G n h2`. Establish `k2` using `FlagCpt.met_h G₀ n h2`.
+
+Establish `hone : ‖((prodPow (1 : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → ℂˣ) n : ℂˣ) : ℂ)‖ ^ 2 = 1` using `by simp [prodPow]`. Rewrite `k1`, `k2` using `[hone, div_one]`. Establish `e1 : (cxSt F).pn Y.Y σ _ (Y.met G n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p = ‖Var.fval (prodPow q.1 n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2 * Y.genSq G n q.2`. Rewrite using `[← k1]`. Conclude with `Var.pn_eq hmem`.
+
+Establish `e2 : (cxSt F).pn Y.Y σ _ (Y.met G₀ n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p = ‖Var.fval (prodPow q.1 n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2 * Y.genSq G₀ n q.2`. Rewrite using `[← k2]`. Conclude with `Var.pn_eq hmem`. Establish `hP : PosAt (C` using `cxSt F) (Y.met G n) p := posAt_of_posSet (FlagCpt.posSet_met _ _) p`. Establish `hg` using `Y.genSq_pos G n q.2`.
+
+Establish `hg₀` using `Y.genSq_pos G₀ n q.2`. Establish `hK : 0 < ‖Var.fval (prodPow q.1 n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2`. Establish `: 0 < (cxSt F).pn Y.Y σ _ (Y.met G n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p` using `hP`. Rewrite `this` using `[e1]`. Conclude with `pos_of_mul_pos_left this hg.le`.
+
+Simplify using `only [lnRatio, lnN]`. Rewrite using `[e1, e2, Real.log_mul hK.ne' hg.ne', Real.log_mul hK.ne' hg₀.ne']`. Establish `lg : ∀ G' : EigMet Z (embOf e σ), Real.log (Y.genSq G' n q.2) = ∑ z : Pad.Letter Dw, (n z : ℝ) * Real.log (grSq (G'.gram _ q.2 z.1) z.2)` using `fun G' => by`. Rewrite using `[FlagCpt.genSq, Real.log_prod (fun z _ => (zpow_pos (grSq_pos (G'.pos _ _ _) _) _).ne')]`. Conclude with `Finset.sum_congr rfl fun z _ => Real.log_zpow _ _`.
+
+Rewrite using `[lg G, lg G₀]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lnRatio_met (G G₀ : EigMet Z (embOf e σ)) (n : Pad.Letter Dw → ℤ) (p : Y.Y.pts σ) :
     ∃ g : Y.FrameAt p, lnRatio (C := cxSt F) (Y.met G n) (Y.met G₀ n) p =
       (∑ z : Pad.Letter Dw, (n z : ℝ) * (Real.log (grSq (G.gram _ g z.1) z.2) - Real.log (grSq (G₀.gram _ g z.1) z.2))) / 2 := by
@@ -85,6 +104,9 @@ section FinalTheorems
 
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (x : ToroidalCompactificationData s) (Φ : s.Flag)
 
+/- English proof (translation)
+The claim follows from `|lnRatio (metsOf x Φ k none σ n) (refMet x Φ k σ n) p| ≤ (∑ z : Pad.Letter S.Dw, |(n z : ℝ)|) / 2 * (C * Real.log (rFlag x Φ k σ p)) := by obtain ⟨g, hg⟩ := lnRatio_met (Φ.C k) (x.hodge (embOf κ.e σ)) (x.eigMet (embOf κ.e σ)) n p have hb : ¬ LiesIn ((Φ.C k).down p) (genBd s.T.Z) …`.
+-/
 theorem abs_lnRatio_le {C : ℝ} (hC : x.IsMuExp C) (k : s.Comp) (σ : D.what₂.LL →+* ℂ) (n : Pad.Letter S.Dw → ℤ)
     (p : Pts (Φ.C k).Y σ) (hp : (Φ.C k).π (under p) ∉ genBd s.T.Z) :
     |lnRatio (metsOf x Φ k none σ n) (refMet x Φ k σ n) p| ≤
@@ -118,6 +140,9 @@ end FinalTheorems
 
 open GlobalTheory.Mean4O in
 
+/- English proof (translation)
+The claim follows from `|(T.F c).ph u σ x| ≤ C * ‖u‖ * Real.log ((T.M c).r σ x) := by intro _ _ D O hO _ A T H h c obtain ⟨xa, P, hc⟩ := hO have an := h.an c obtain ⟨C₀, hC⟩ := xa.exists_isMuExp refine ⟨(∑ y : DV.Rt D.what₂.Tau O.N, (∑ z : Pad.Letter O.S.Dw, |(O.ex y z : ℝ)|) / 2) * C₀, fun u σ z hz => …`.
+-/
 theorem abs_ph_le_log : Hypotheses2 → HypothesesH → OnObj fun _ O _ T _ _ => ∀ c, ∃ C : ℝ, ∀ u σ x, x ∉ (T.M c).Z σ →
     |(T.F c).ph u σ x| ≤ C * ‖u‖ * Real.log ((T.M c).r σ x) := by
   intro _ _ D O hO _ A T H h c

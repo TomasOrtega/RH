@@ -30,6 +30,41 @@ variable (d : Data K ι Ω WT A)
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Take `⟨⟨x, hx⟩, ⟨ta', hta'⟩⟩` from `d.exists_generic hd h`. Use `choose F hF _hF0 using fun c => d.componentForm_poly hd h c`. Establish `hUP` using `d.sum_logHeight_upper_bound hd h hLAM F hF`. Establish `hb1` using `d.HeightMinMaxFormula hd h hI2be x hx F hF`. Take `⟨haL, hade0, hade, haG10, haG1, haF0, haF, haG20, haG2⟩` from `d.h_six hd h hF1d x hx ta' hta'`.
+
+Establish `h7` using `d.h_seven hd h hH1 hF1d hSup hI2be x hx ta' hta'`. Establish `hdi` using `d.disc hd h hI2et hI2be ta' hta'`. Simplify using `only at h7 hdi`. Take `⟨h7a, h7b, h7c⟩` from `h7`. Take `⟨hplf, hIla, hIf, hdi1, hN0, hNf, hdn⟩` from `hdi`.
+
+Take `⟨hPN, hPQ, hPP0, hPP0', hPd, hGc, hPI4, hPet, hP14, hP16, hPrw, hPO⟩` from `hd.P_ge`. Establish `hn1 : (0 : ℝ) < d.n1`. Establish `h1` using `hd.i_ge`. Establish `h2` using `hd.g_zero_ge_ask_sum`. Establish `: 0 < d.n1` using `Nat.mul_pos (by omega) (by omega)`.
+
+Conclude with `this` after adjusting the coercions. Establish `hL` using `hd.size_L`. Establish `hlog0 : 0 ≤ Real.log ((d.N + 1 : ℕ) : ℝ)` using `Real.log_nonneg (by exact_mod_cast Nat.succ_pos _)`. Establish `hrw` using `hd.rw_le`. Establish `hlr : Real.log ((d.N + 1 : ℕ) : ℝ) + 1 / 2 ≤ d.Prw * d.wsize d.wL` using `by nlinarith`.
+
+Establish `hlw1 : Real.log ((d.N + 1 : ℕ) : ℝ) + 1 ≤ d.Prw * d.wsize d.wL` using `by nlinarith`. Establish `hharm : (harmonic d.N : ℝ) ≤ Real.log ((d.N + 1 : ℕ) : ℝ) + 1`. Establish `h1` using `harmonic_le_one_add_log d.N`. Break down `Nat.eq_zero_or_pos d.N with h0 | hpos` into its components or cases. Simplify using `[h0]`.
+
+Establish `: Real.log (d.N : ℝ) ≤ Real.log ((d.N + 1 : ℕ) : ℝ)` using `Real.log_le_log (by exact_mod_cast hpos) (by push_cast; linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hhN : (harmonic d.N : ℝ) / 2 ≤ d.Prw * d.wsize d.wL` using `by nlinarith`. Establish `hnu` using `hH1.2.2.1`. Establish `hlaW` using `hSup.1`.
+
+Establish `arith` using `heights_arith (d.D : ℝ) (d.del : ℝ) (d.wsize d.wL) (Real.log ((d.N + 1 : ℕ) : ℝ) + 1 / 2) (Real.log ((d.N + 1 : ℕ) : ℝ) + 1) (harmonic d.N : ℝ) (∑ c, ReciprocityTheory.MultiplicativeHeights.h0 (F c)) (meanK fun sg => ⨆ j, Real.log (d.supN sg d.wL (d.w j))) ((∑ᶠ la, d.nu la * logN …`. Take `⟨ar1, ar2⟩` from `arith`. Establish `hsI : (Function.support fun la => d.IL h hd.sel hd.a4.choose la * logNorm la).Finite` using `hIf.subset fun la hla => by`. Simplify using `only [Function.mem_support] at hla ⊢`. Introduce `h0`.
+
+Apply `hla` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Establish `hsN : (Function.support fun la => d.Nl h la * logNorm la).Finite` using `hNf.subset fun la hla => by`. Simplify using `only [Function.mem_support] at hla ⊢`. Introduce `h0`.
+
+Apply `hla` to reduce the goal to its premises. Rewrite using `[h0, zero_mul]`. Establish `eI : (fun la => (((d.htOf hd h).Ila la).toNat : ℝ) * Formalism.MainNotions.Gaps.HeightData.lN (d.htOf hd h).K la) = fun la => d.IL h hd.sel hd.a4.choose la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹`. Use function extensionality and compare the values at `la`. Use `show d.IL h hd.sel hd.a4.choose la * (logNorm la / (Module.finrank ℚ K : ℝ)) = _`.
+
+Rewrite using `[div_eq_mul_inv, ← mul_assoc]`. Both sides reduce to the same expression. Establish `eN : ∀ la, (d.htOf hd h).Net la = d.Nl h la`. Introduce `la`. Use `haveI : ∀ c, Fintype {w // w ∈ d.PlOver la c} := fun c => (hplf la c).fintype`.
+
+Use `show (∑ᶠ ζ : (Σ c, {w // w ∈ d.PlOver la c}), ((1 : ℕ) : ℝ) * (d.fze h ζ.1 ζ.2.1 : ℝ) * (d.ord ζ.1 (d.Wres ζ.1 ζ.2.1) (d.n1 • d.wde) (d.et ζ.1) : ℝ)) = _`. Rewrite using `[finsum_eq_sum_of_fintype, Fintype.sum_sigma]`. Unfold `Data.Nl`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← finsum_subtype_eq_finsum_cond, finsum_eq_sum_of_fintype]`.
+
+Simplify using the standard rewrite rules. Establish `eNf : (fun la => (d.htOf hd h).Net la * Formalism.MainNotions.Gaps.HeightData.lN (d.htOf hd h).K la) = fun la => d.Nl h la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹`. Use function extensionality and compare the values at `la`. Rewrite using `[eN la]`. Use `show d.Nl h la * (logNorm la / (Module.finrank ℚ K : ℝ)) = _`.
+
+Rewrite using `[div_eq_mul_inv, ← mul_assoc]`. Both sides reduce to the same expression. Establish `hsI' : (Function.support fun la => d.IL h hd.sel hd.a4.choose la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹).Finite` using `hsI.subset (Function.support_mul_subset_left _ _)`. Establish `hsN' : (Function.support fun la => d.Nl h la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹).Finite` using `hsN.subset (Function.support_mul_subset_left _ _)`. Establish `e1 : ∑' la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), d.IL h hd.sel hd.a4.choose la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹ = (∑ᶠ la, d.IL h hd.sel hd.a4.choose la * logNorm la) * (Module.finrank ℚ K : ℝ)⁻¹`.
+
+Rewrite using `[tsum_eq_finsum hsI', ← finsum_mul' _ _ hsI]`. Establish `e2 : ∑' la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), d.Nl h la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹ = (∑ᶠ la, d.Nl h la * logNorm la) * (Module.finrank ℚ K : ℝ)⁻¹`. Rewrite using `[tsum_eq_finsum hsN', ← finsum_mul' _ _ hsN]`. Use `⟨hIla, ?_, ?_, fun _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eI]`.
+
+Conclude with `summable_of_finite_support hsI'`. Rewrite using `[eI] show 2 * ∑' la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), d.IL h hd.sel hd.a4.choose la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹ ≤ (d.del : ℝ) * Real.log (d.del : ℝ) + 2 * ∑ k, meanK (fun sg => Real.log (d.supN sg d.wF (d.thp (hd.sel k)))) + 8 / 3 * (d.D : ℝ) * ((d.D : ℝ) …`. Rewrite using `[e1]`. Use `ar1` as an intermediate fact. Unfold `Data.PHc Data.PH`.
+
+Rewrite using `[← div_eq_mul_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[eNf]`. Conclude with `summable_of_finite_support hsN'`. Rewrite using `[eNf] show (∑' la : IsDedekindDomain.HeightOneSpectrum (𝓞 K), d.Nl h la * logNorm la * (Module.finrank ℚ K : ℝ)⁻¹) / (d.i : ℝ) ≤ (d.g0 : ℝ) * (((d.D : ℝ) + 1) * (d.del : ℝ) * (2 * d.Gc + 6 * d.PHc) * d.wsize d.wL + 4 / 3 * (d.D : ℝ) * (d.del : ℝ) * d.Prw * d.wsize d.wL) + (d.del …`.
+
+Rewrite using `[e2]`. Use `ar2` as an intermediate fact. Unfold `Data.PHc Data.PH`. Rewrite using `[← div_eq_mul_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem heights (hd : d.AxH 𝒜) (h : d.S1) (hH1 : d.FinitePlaceHyp) (hF1d : d.TrivialPlaceHyp) (hLAM : d.HtLAM)
     (hSup : d.HtSup) (hI2et : d.HeightIntegralEstimateTrivialPlace) (hI2be : d.HeightIntegralBoundEstimate) :
     Formalism.MainNotions.Gaps.HeightData.HtConcl (d.htOf hd h) := by

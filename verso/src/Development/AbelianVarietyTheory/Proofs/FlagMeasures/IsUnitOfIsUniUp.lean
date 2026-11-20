@@ -10,14 +10,23 @@ open scoped Classical
 
 variable {g : ℕ} [Fact g.Prime]
 
+/- English proof (translation)
+Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular (fun a b hab => (h a b).1 hab)]`. Rewrite using `[Finset.prod_eq_one (fun a _ => (h a a).2 rfl)]`. Conclude with `isUnit_one`.
+-/
 theorem isUnit_of_isUniUp {n : ℕ} {M : Mt g n} (h : IsUniUp M) : IsUnit M := by
   rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular (fun a b hab => (h a b).1 hab)]
   rw [Finset.prod_eq_one (fun a _ => (h a a).2 rfl)]
   exact isUnit_one
 
+/- English proof (translation)
+Simplify using `[toG, h]`.
+-/
 theorem val_toG {n : ℕ} {M : Mt g n} (h : IsUnit M) : ((toG M : Gn g n) : Mt g n) = M := by
   simp [toG, h]
 
+/- English proof (translation)
+Unfold `tr eDat`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : P (x : Mt g N) <;>`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finsupp.single_apply, hx, mul_assoc]`.
+-/
 theorem tr_eDat (N : ℕ) (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ : AddChar (ZMod g) ℂ)
     (χ : Gn g N → ℂ) :
     tr (eDat g N P φ ψ) χ = ((Finset.univ.filter fun u : Gn g N => P (u : Mt g N)).card : ℂ)⁻¹ *
@@ -28,6 +37,29 @@ theorem tr_eDat (N : ℕ) (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ : A
   by_cases hx : P (x : Mt g N) <;>
     simp [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finsupp.single_apply, hx, mul_assoc]
 
+/- English proof (translation)
+Set `T : Fin N → Fin N → Finset (ZMod g)` to `fun a b => if a < b ∧ ¬ S b then Finset.univ else {(1 : Mt g N) a b}`. Establish `key : ∀ M : Mt g N, (IsUniUp M ∧ ∀ b, S b → ∀ a, a < b → entN M a b = 0) ↔ ∀ a b, M a b ∈ T a b`. Introduce `M`. Simplify using `only [T]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h1, h2⟩ a b split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[Finset.mem_singleton]`. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Establish `hS : S b` using `by tauto`.
+
+Use `h2 b hS a hab` as an intermediate fact. Simplify using `only [entN, a.2, b.2, and_self, dif_pos] at this`. Rewrite using `[Matrix.one_apply_ne hab.ne]`. Conclude with `this`. Substitute `hab` using the available equality.
+
+Rewrite using `[(h1 a a).2 rfl, Matrix.one_apply_eq]`. Rewrite using `[(h1 a b).1 hab, Matrix.one_apply_ne hab.ne']`. Introduce `h`. Use `⟨fun a b => ⟨fun hab => ?_, fun hab => ?_⟩, fun b hb a hab => ?_⟩` and prove the remaining obligations. Use `h a b` as an intermediate fact.
+
+Rewrite `this` using `[if_neg (fun h' => lt_asymm hab h'.1), Finset.mem_singleton]`. Rewrite using `[this, Matrix.one_apply_ne hab.ne']`. Substitute `hab` using the available equality. Use `h a a` as an intermediate fact. Rewrite `this` using `[if_neg (fun h' => lt_irrefl _ h'.1), Finset.mem_singleton]`.
+
+Rewrite using `[this, Matrix.one_apply_eq]`. Unfold `entN split_ifs with hN`. Use `h ⟨a, hN.1⟩ ⟨b, hN.2⟩` as an intermediate fact. Rewrite `this` using `[if_neg (fun h' => h'.2 hb), Finset.mem_singleton]`. Rewrite using `[this, Matrix.one_apply_ne (by intro h'; simp at h'; omega)]`.
+
+Both sides reduce to the same expression. Establish `h1 : (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N) ∧ ∀ b, S b → ∀ a, a < b → entN (u : Mt g N) a b = 0).card = (Fintype.piFinset fun a => Fintype.piFinset fun b => T a b).card`. Use `Finset.card_bij (fun u _ => (u : Mt g N)) (fun u hu => ?_) (fun u _ v _ h => Units.ext h) (fun M hM => ?_)` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.2 fun a => Fintype.mem_piFinset.2 fun b => (key _).1 (Finset.mem_filter.1 hu).2 a b`. Use `(key M).2 fun a b => Fintype.mem_piFinset.1 (Fintype.mem_piFinset.1 hM a) b` as an intermediate fact.
+
+Establish `hu` using `isUnit_of_isUniUp this.1`. Use `⟨toG M, ?_, val_toG hu⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, val_toG hu]`. Conclude with `⟨Finset.mem_univ _, this⟩`. Rewrite using `[h1, Fintype.card_piFinset]`.
+
+Simplify using `only [Fintype.card_piFinset]`. Rewrite using `[Finset.prod_comm, ← Finset.prod_pow_eq_pow_sum, Finset.prod_range]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : S b`. Simplify using `[T, hb]`.
+
+Establish `: ∀ a, (T a b).card = if a < b then g else 1`. Introduce `a`. Apply the tactic sequence `by_cases hab : a < b <;> simp [T, hb, hab]`. Simplify using `only [this, hb, if_false]`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`.
+
+Use `congr 1`. Rewrite using `[show Finset.univ.filter (fun a => a < b) = Finset.Iio b by ext; simp]`. Simplify using the standard rewrite rules.
+-/
 theorem card_uniUp (N : ℕ) (S : ℕ → Prop) :
     (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N) ∧
       ∀ b, S b → ∀ a, a < b → entN (u : Mt g N) a b = 0).card =
@@ -92,6 +124,11 @@ theorem card_uniUp (N : ℕ) (S : ℕ → Prop) :
     rw [show Finset.univ.filter (fun a => a < b) = Finset.Iio b by ext; simp]
     simp
 
+/- English proof (translation)
+Unfold `diag1`. Use `val_toG (isUnit_of_isUniUp fun a b => ⟨fun hab => ?_, fun hab => ?_⟩)` and prove the remaining obligations. Use `show (if (a : ℕ) < k ∧ (b : ℕ) < k then entN (u : Mt g k) a b else (1 : Mt g n) a b) = 0 split_ifs with h`. Simplify using `only [entN, h, and_self, dif_pos]`. Conclude with `(hu _ _).1 hab`.
+
+Conclude with `Matrix.one_apply_ne hab.ne'`. Substitute `hab show (if (a : ℕ) < k ∧ (a : ℕ) < k then entN (u : Mt g k) a a else (1 : Mt g n) a a) = 1 split_ifs with h` using the available equality. Simplify using `only [entN, h, and_self, dif_pos]`. Conclude with `(hu _ _).2 rfl`. Conclude with `Matrix.one_apply_eq _`.
+-/
 theorem val_diag1 {k : ℕ} (n : ℕ) (u : Gn g k) (hu : IsUniUp (u : Mt g k)) :
     ((diag1 u n : Gn g n) : Mt g n) = fun i j : Fin n =>
       if (i : ℕ) < k ∧ (j : ℕ) < k then entN (u : Mt g k) i j else (1 : Mt g n) i j := by
@@ -109,6 +146,11 @@ theorem val_diag1 {k : ℕ} (n : ℕ) (u : Gn g k) (hu : IsUniUp (u : Mt g k)) :
       exact (hu _ _).2 rfl
     · exact Matrix.one_apply_eq _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h a b ha hb`. Simplify using `only [entN, ha, hb, and_self, dif_pos]`. Conclude with `⟨fun hab => (h _ _).1 hab, fun hab => (h _ _).2 (Fin.ext hab)⟩`. Introduce `h a b`.
+
+Use `h a b a.2 b.2` as an intermediate fact. Simplify using `only [entN, a.2, b.2, and_self, dif_pos] at this`. Conclude with `⟨fun hab => this.1 hab, fun hab => this.2 (congrArg _ hab)⟩`.
+-/
 theorem isUniUp_iff {n : ℕ} (M : Mt g n) : IsUniUp M ↔
     ∀ a b, a < n → b < n → (b < a → entN M a b = 0) ∧ (a = b → entN M a b = 1) := by
   constructor
@@ -120,19 +162,51 @@ theorem isUniUp_iff {n : ℕ} (M : Mt g n) : IsUniUp M ↔
     simp only [entN, a.2, b.2, and_self, dif_pos] at this
     exact ⟨fun hab => this.1 hab, fun hab => this.2 (congrArg _ hab)⟩
 
+/- English proof (translation)
+Use `conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]`. Both sides reduce to the same expression.
+-/
 theorem entN_tl {n : ℕ} (k : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < k) (hb : b < k) :
     entN (tl k M) a b = entN M a b := by
   conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]
   rfl
 
+/- English proof (translation)
+Use `conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]`. Both sides reduce to the same expression.
+-/
 theorem entN_br {n : ℕ} (k r : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < r) (hb : b < r) :
     entN (br k r M) a b = entN M (k + a) (k + b) := by
   conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]
   rfl
 
+/- English proof (translation)
+Simplify using `[entN]`.
+-/
 theorem entN_fin {n : ℕ} (M : Mt g n) (a b : Fin n) : entN M a b = M a b := by
   simp [entN]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, ⟨hP, hB⟩, ht⟩`. Rewrite `ht` using `[val_diag1 _ u hu]`. Establish `ht' : ∀ a b (ha : a < k + 1) (hb : b < k + 1), entN x a b = if a < k ∧ b < k then entN (u : Mt g k) a b else if a = b then 1 else 0`. Introduce `a b ha hb`.
+
+Use `congrFun (congrFun ht ⟨a, ha⟩) ⟨b, hb⟩` as an intermediate fact. Simplify `this` using `[tl, Matrix.one_apply]`. Rewrite `hu`, `hB` using `[isUniUp_iff]`. Use `⟨⟨(isUniUp_iff x).2 fun a b ha hb => ?_, fun a ha => ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : a < k + 1`.
+
+Distinguish the cases in `h2 : b < k + 1`. Rewrite using `[ht' a b h1 h2] split_ifs with h3 h4`. Conclude with `hu a b h3.1 h3.2`. Conclude with `⟨fun h => by omega, fun _ => rfl⟩`. Conclude with `⟨fun _ => rfl, fun h => absurd h h4⟩`.
+
+Conclude with `⟨fun h => by omega, fun h => by omega⟩`. Distinguish the cases in `h2 : b < k + 1`. Use `⟨fun _ => ?_, fun h => by omega⟩` and prove the remaining obligations. Conclude with `(entN_fin x ⟨a, ha⟩ ⟨b, hb⟩).trans (hP ⟨a, ha⟩ ⟨b, hb⟩ h2 (by simpa using h1))`. Use `hB (a - (k + 1)) (b - (k + 1)) (by omega) (by omega)` as an intermediate fact.
+
+Rewrite `this` using `[entN_br _ _ _ (by omega) (by omega), show k + 1 + (a - (k + 1)) = a by omega, show k + 1 + (b - (k + 1)) = b by omega]`. Conclude with `⟨fun h => this.1 (by omega), fun h => this.2 (by omega)⟩`. Rewrite using `[ht' a k (by omega) (by omega), if_neg (by omega), if_neg (by omega)]`. Use extensionality with `a b`. Rewrite using `[tl, ht' a b (by omega) (by omega), if_pos ⟨a.2, b.2⟩, entN_fin]`.
+
+Introduce and unpack `⟨⟨hx, h0⟩, hu⟩`. Establish `hx'` using `(isUniUp_iff x).1 hx`. Establish `hu1 : IsUniUp (u : Mt g k)`. Rewrite using `[hu, isUniUp_iff]`. Introduce `a b ha hb`.
+
+Rewrite using `[entN_tl _ _ ha hb]`. Conclude with `hx' a b (by omega) (by omega)`. Use `⟨hu1, ⟨fun a b h1 h2 => (hx a b).1 (by show (b : ℕ) < a; omega), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isUniUp_iff]`. Introduce `a b ha hb`.
+
+Rewrite using `[entN_br _ _ _ ha hb]`. Use `hx' (k + 1 + a) (k + 1 + b) (by omega) (by omega)` as an intermediate fact. Conclude with `⟨fun h => this.1 (by omega), fun h => this.2 (by omega)⟩`. Rewrite using `[val_diag1 _ u hu1]`. Use extensionality with `a b`.
+
+Establish `ha` using `a.2`. Establish `hb` using `b.2`. Use `hx' a b (by omega) (by omega)` as an intermediate fact. Simplify using `only [tl]`. Use `split_ifs with h`.
+
+Rewrite using `[hu, entN_tl _ _ h.1 h.2]`. Break down `lt_trichotomy (a : ℕ) b with hab | hab | hab` into its components or cases. Rewrite using `[Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega), show (b : ℕ) = k by omega]`. Conclude with `h0 a (by omega)`. Rewrite using `[this.2 hab, Fin.ext hab, Matrix.one_apply_eq]`.
+
+Rewrite using `[this.1 hab, Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega)]`.
+-/
 theorem fibre_iff {N k : ℕ} (hk : k < N) (x : Mt g N) (u : Gn g k) :
     (IsUniUp (u : Mt g k) ∧ InR (k + 1) x ∧ tl (k + 1) x = ((diag1 u (k + 1) : Gn g (k + 1)) : Mt g (k + 1))) ↔
       ((IsUniUp x ∧ ∀ a, a < k → entN x a k = 0) ∧ (u : Mt g k) = tl k x) := by
@@ -191,6 +265,11 @@ theorem fibre_iff {N k : ℕ} (hk : k < N) (x : Mt g N) (u : Gn g k) :
         · rw [this.2 hab, Fin.ext hab, Matrix.one_apply_eq]
         · rw [this.1 hab, Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega)]
 
+/- English proof (translation)
+Unfold `supFrom`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ (show k ≤ N - 1 by omega)]`. Use `congr 1`. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[Finset.sum_range_succ, h0 k (by omega), add_zero, Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[entN_tl _ _ (by omega) (by omega)]`.
+-/
 theorem sup_split {N k : ℕ} (hk : k < N) (x : Mt g N) (h0 : ∀ a, a < k → entN x a k = 0) :
     ∑ i ∈ Finset.range (N - 1), entN x i (i + 1) =
       ∑ i ∈ Finset.range (k - 1), entN (tl k x) i (i + 1) + supFrom k x := by
@@ -204,6 +283,11 @@ theorem sup_split {N k : ℕ} (hk : k < N) (x : Mt g N) (h0 : ∀ a, a < k → e
     rw [Finset.mem_range] at hi
     rw [entN_tl _ _ (by omega) (by omega)]
 
+/- English proof (translation)
+Rewrite using `[Finset.sum_range_add, Finset.sum_range_succ, if_pos rfl, add_zero, ← Finset.sum_range_id r]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[if_neg (by omega), if_neg id]`.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => if_neg (show k + 1 + i ≠ k by omega), Finset.sum_add_distrib]`. Simplify using `[mul_comm]`.
+-/
 theorem exp_split (k r : ℕ) :
     (∑ b ∈ Finset.range (k + 1 + r), if b = k then 0 else b) =
       (∑ b ∈ Finset.range k, if False then 0 else b) + ((k + 1) * r + r * (r - 1) / 2) := by
@@ -222,6 +306,25 @@ namespace GlobalTheory.GLm
 open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq GlobalTheory.GLm GlobalTheory.GLm.TraceTail
 open scoped Classical
 
+/- English proof (translation)
+Take `⟨r, rfl⟩ : ∃ r, N = k + 1 + r` from `⟨N - (k + 1), by omega⟩`. Establish `c1` using `card_uniUp (g := g) (k + 1 + r) (fun b => b = k)`. Establish `c2` using `card_uniUp (g := g) k (fun _ => False)`. Simplify using `only [forall_eq] at c1`. Simplify using `only [false_imp_iff, implies_true, and_true] at c2`.
+
+Unfold `wh eU eJ'`. Rewrite using `[tr_eDat, tr_eDat]`. Establish `e1 : ((Finset.univ.filter fun u : Gn g (k + 1 + r) => IsUniUp (u : Mt g (k + 1 + r)) ∧ ∀ a, a < k → entN (u : Mt g (k + 1 + r)) a k = 0).card : ℂ) = ((Finset.univ.filter fun u : Gn g k => IsUniUp (u : Mt g k)).card : ℂ) * (g : ℂ) ^ ((k + 1) * r + r * (r - 1) / 2)`. Establish `h1` using `exp_split k r`. Rewrite using `[c2]`.
+
+Use `(congrArg _ (Eq.trans (by congr) c1)).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Nat.cast_pow, ← pow_add]`. Use `congr 1`. Use `h1` and compare the differences between its conclusion and the goal. Use `Eq.trans (congrArg₂ _ (congrArg _ (Eq.trans (by congr) e1)) rfl) ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_inv, mul_assoc]`. Use `congr 1`. Unfold `tail`. Simplify using `only [Nat.add_sub_cancel_left, Nat.add_sub_cancel]`. Establish `: ∀ (c : ℂ) (A : Prop) [Decidable A] (B : Gn g (k + 1 + r) → Prop) [DecidablePred B] (f : Gn g (k + 1 + r) → ℂ) (d : ℂ), (if A then d * (c * ∑ x, if B x then f x else 0) else 0) = c * ∑ x, if A ∧ B x then d * f x else 0`.
+
+Introduce `c A _ B _ f d`. Distinguish the cases in `hA : A`. Simplify using `only [hA, if_true, true_and, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+
+Simplify using `[hA]`. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [fibre_iff hk]`. Use `split_ifs with hx`. Establish `hx'` using `(isUniUp_iff _).1 hx.1`. Establish `hU : IsUnit (tl k (x : Mt g (k + 1 + r)))`. Use `isUnit_of_isUniUp ((isUniUp_iff _).2 fun a b ha hb => ?_)` and prove the remaining obligations.
+
+Rewrite using `[entN_tl _ _ ha hb]`. Conclude with `hx' a b (by omega) (by omega)`. Rewrite using `[Finset.sum_eq_single (toG (tl k (x : Mt g (k + 1 + r))))]`. Rewrite using `[if_pos ⟨hx, val_toG hU⟩, val_toG hU, sup_split hk _ hx.2, AddChar.map_add_eq_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+
+Introduce `u _ hu`. Conclude with `if_neg fun h => hu (Units.ext (h.2.trans (val_toG hU).symm))`. Simplify using the standard rewrite rules. Simplify using `[hx]`.
+-/
 theorem tr_eJ'_eq_wh_tail (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (N k : ℕ) (χ : Gn g N → ℂ)
     (hk : k < N) :
     tr (eJ' g N k ψ) χ = wh ψ (fun h : Gn g k => tail ψ (k + 1) χ (diag1 h (k + 1))) := by

@@ -21,6 +21,9 @@ variable {A : Type u} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Schem
 def reesBound (x : cechH (reesPre I F) 𝔘 p) : ℕ :=
   Classical.choose (reesCoefFam_eq_zero_of_lt I hF 𝔘 hU p x)
 
+/- English proof (translation)
+The claim follows from `Classical.choose_spec (reesCoefFam_eq_zero_of_lt I hF 𝔘 hU p x) n hn`.
+-/
 lemma reesCoefFam_eq_zero_of_bound_lt (x : cechH (reesPre I F) 𝔘 p) {n : ℕ}
     (hn : reesBound I hF 𝔘 hU p x < n) : (reesCoefFam I hF 𝔘 hU n).cechH p x = 0 :=
   Classical.choose_spec (reesCoefFam_eq_zero_of_lt I hF 𝔘 hU p x) n hn
@@ -33,6 +36,9 @@ def reesCoefPoly (x : cechH (reesPre I F) 𝔘 p) :
       by_contra h
       exact hn (reesCoefFam_eq_zero_of_bound_lt I hF 𝔘 hU p x (by omega))))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma reesCoefPoly_coeff (x : cechH (reesPre I F) 𝔘 p) (n : ℕ) :
     (reesCoefPoly I hF 𝔘 hU p x).coeff n = (reesCoefFam I hF 𝔘 hU n).cechH p x :=
   rfl
@@ -54,6 +60,9 @@ def reesΦ : cechH (reesPre I F) 𝔘 p →ₗ[reesAlgebra I]
     refine Finset.sum_congr rfl fun ij _ => ?_
     rw [reesCoefPoly_coeff]
 
+/- English proof (translation)
+The claim follows from `reesCoefPoly_coeff I hF 𝔘 hU p x n`.
+-/
 lemma reesΦ_coeff (x : cechH (reesPre I F) 𝔘 p) (n : ℕ) :
     (reesΦ I hF 𝔘 hU p x).coeff n = (reesCoefFam I hF 𝔘 hU n).cechH p x :=
   reesCoefPoly_coeff I hF 𝔘 hU p x n
@@ -62,6 +71,11 @@ def cechK (n : ℕ) : Submodule A (cechH (modulesAb F).obj 𝔘 p) :=
   LinearMap.range (cechH.linearMap 𝔘 A (idealPowι I F n) p)
 
 omit [F.IsQuasicoherent] [Finite ι] in
+/- English proof (translation)
+Use `Submodule.smul_le.2 fun a ha y hy => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hy`. Establish `ha1 : a ∈ I ^ 1` using `by rwa [pow_one]`. Use `⟨cechH.linearMap 𝔘 A (idealPowMul I F a ha1) p z, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f => f.hom) (show modulesAbMap (idealPowMul I F a ha1) ≫ modulesAbMap (idealPowι I F (n + 1)) = modulesAbMap (idealPowι I F n) ≫ smulAbRingHom F (algebraMap A Γ(X, ⊤) a) by`.
+
+Rewrite using `[← modulesAbMap_comp, idealPowMul_ι, modulesAbMap_comp]`. Use the proof step `rfl)`. Express the relevant statement in the definitionally equal form `cechHMap 𝔘 (modulesAbMap (idealPowι I F (n + 1))).hom p (cechHMap 𝔘 (modulesAbMap (idealPowMul I F a ha1)).hom p z) = cechHMap 𝔘 (smulAbRingHom F (algebraMap A Γ(X, ⊤) a)).hom p (cechHMap 𝔘 (modulesAbMap (idealPowι I F n)).hom p z)`. Rewrite using `[← cechHMap_comp, ← cechHMap_comp]`. Conclude with `congrArg (fun f => cechHMap 𝔘 f p z) h`.
+-/
 lemma smul_cechK_le (n : ℕ) : I • cechK I 𝔘 p (F := F) n ≤ cechK I 𝔘 p (n + 1) := by
   refine Submodule.smul_le.2 fun a ha y hy => ?_
   obtain ⟨z, rfl⟩ := hy
@@ -79,6 +93,15 @@ lemma smul_cechK_le (n : ℕ) : I • cechK I 𝔘 p (F := F) n ≤ cechK I 𝔘
   rw [← cechHMap_comp, ← cechHMap_comp]
   exact congrArg (fun f => cechHMap 𝔘 f p z) h
 
+/- English proof (translation)
+Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ n`. Express the relevant statement in the definitionally equal form `(reesΦ I hF 𝔘 hU p x).coeff n ∈ cechK I 𝔘 p n`. Rewrite using `[reesΦ_coeff, reesCoefFam_cechH]`.
+
+Conclude with `⟨_, rfl⟩`. Introduce `hP choose y hy using fun n => (hP n : P.coeff n ∈ cechK I 𝔘 p n)`. Use `⟨∑ n ∈ P.coeff.support, (reesIncFam I hF 𝔘 hU n).cechH p (y n), ?_⟩` and prove the remaining obligations. Apply `PolynomialModule.ext` to reduce the goal to its premises. Use extensionality with `k`.
+
+Rewrite using `[reesΦ_coeff, map_sum]`. Repeatedly rewrite using `[reesCoefFam_reesIncFam]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hk`. Conclude with `hy k`.
+
+Conclude with `(Finsupp.notMem_support_iff.1 hk).symm`.
+-/
 lemma range_reesΦ :
     LinearMap.range (reesΦ I hF 𝔘 hU p) = reesFiltration I (smul_cechK_le I 𝔘 p (F := F)) := by
   ext P
@@ -101,6 +124,9 @@ lemma range_reesΦ :
 
 include hF hU in
 
+/- English proof (translation)
+Use `exists_eq_pow_smul_of_fg I (smul_cechK_le I 𝔘 p) ?_` and prove the remaining obligations. Rewrite using `[← range_reesΦ I hF 𝔘 hU p]`. Use `finite_reesCech I 𝔘 p hF hUtop hU` as an intermediate fact. Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Module.Finite.fg_top.map _`.
+-/
 theorem exists_cechK_eq_pow_smul [IsProper (X ↘ Spec (.of A))] (hUtop : iSup 𝔘 = ⊤) :
     ∃ c, ∀ n, cechK I 𝔘 p (F := F) (n + c) = I ^ n • cechK I 𝔘 p c := by
   refine exists_eq_pow_smul_of_fg I (smul_cechK_le I 𝔘 p) ?_

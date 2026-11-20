@@ -21,6 +21,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.GoodPos
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ σ hCM n J hJ r Xf Yf hW c hc S l d h ι hι hd hS1 hS2 hS3`. Take `⟨ρ, hρs, hρlift, hρι⟩` from `GlobalTheory.BlockForms.exists_archComp_of_isBlockEmb F E σ hCM n J r Xf Yf l d h ι hι`. Establish `loc` using `fun w => stab_of_frame F E σ hCM n J hJ r Xf Yf hW w (c w) (hc w) l d h`. Use `choose uw N hN hNX hNv y₀ hy₀ using loc`. Use `set u : GAd σ J := ofInf σ J (embArchPi σ J uw) with hu`.
+
+Establish `hu_arch : ∀ w, projArch σ J w u = uw w` using `fun w => by`. Rewrite using `[hu, projArch_ofInf, projInfArch_embArchPi]`. Establish `hu_inf : u ∈ infPts σ J` using `mem_infPts.2 (projFin_ofInf _ _ _)`. Take `⟨y, hy⟩` from `hρlift y₀`. Take `⟨k₀, hk₀S, hk₀⟩` from `hS2`.
+
+Use `⟨u, mem_unip_of_arch_frame F E σ n J r Xf S u hu_inf fun w => ⟨N w, by rw [hu_arch]; exact hN w, fun i j hij => ?_, fun v hv => ?_⟩, hu_inf, y, fun k => ?_⟩` and prove the remaining obligations. Break down `hNX w i j hij with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Break down `hS3 with h0 | ⟨p, hpS, hp⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `⟨p, hpS, by rw [Fin.le_def]; omega, by rw [Fin.lt_def]; omega⟩`.
+
+Conclude with `⟨k₀, hk₀S, by rw [Fin.le_def]; omega, by rw [Fin.lt_def]; omega⟩`. Take `⟨a, ha, hav⟩` from `hNv w v fun i hi => hv i ⟨k₀, hk₀S, by rw [Fin.le_def]; omega⟩`. Conclude with `⟨a, fun i hi => ⟨k₀, hk₀S, by have := ha i hi; rw [Fin.le_def]; omega⟩, by rw [hu_arch]; exact hav⟩`. Establish `e : (u * ι (GlobalTheory.CuspRep.infGL E d y)) * ι (GlobalTheory.CuspRep.infGL E d (Unitary.toUnits k)) * (u * ι (GlobalTheory.CuspRep.infGL E d y))⁻¹ = u * ι (GlobalTheory.CuspRep.infGL E d (y * Unitary.toUnits k * y⁻¹)) * u⁻¹`. Simplify using `only [map_mul, map_inv]`.
+
+Use `group`. Rewrite using `[e, mem_majCpt]`. Use `⟨mul_mem (mul_mem hu_inf (hρι _).1) (inv_mem hu_inf), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, hu_arch]`. Use `hy₀ w (Matrix.GeneralLinearGroup.map (ρ w) (Unitary.toUnits k)) ?_ _ ?_` and prove the remaining obligations.
+
+Establish `hk : star (k : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E)) * (k : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E)) = 1` using `Unitary.star_mul_self_of_mem k.2`. Establish `e1 : Formalism.UG.cT (sigR w.Completion σ) ((Matrix.GeneralLinearGroup.map (ρ w) (Unitary.toUnits k)).1) = (star (k : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E))).map (ρ w)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.star_apply, hρs]`. Rewrite using `[e1]`.
+
+Express the relevant statement in the definitionally equal form `_ * (k : Matrix (Fin d) (Fin d) (GlobalTheory.CuspRep.Cinf E)).map (ρ w) = 1`. Rewrite using `[← Matrix.map_mul, hk, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[(hρι _).2 w]`. Simplify using `only [map_mul, map_inv, hy w]`.
+-/
 theorem exists_conj_mem_majCpt_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →
     ∀ (r : ℕ) (Xf Yf : Matrix (Fin n) (Fin r) E), IsWittFrame σ J Xf Yf →

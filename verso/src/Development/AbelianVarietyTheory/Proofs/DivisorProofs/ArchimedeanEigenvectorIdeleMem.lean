@@ -7,6 +7,17 @@ open GlobalTheory.Doubling (absE)
 
 namespace GlobalTheory.ThK.LemF.IwasawaScal
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n₁ X X₁ H i₀ i₁ hH p hp t ht`. Rewrite using `[GlobalTheory.ThK.mem_idelesAt]`. Introduce `u hu`. Establish `hx : H.x ≠ 0`. Introduce `h0`.
+
+Use `hH.xy` as an intermediate fact. Simplify using `[form, h0] at this`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hx`. Establish `h1 : u • (mat p - 1) = 0` using `hp u hu`. Establish `h2 : (mat p - 1) *ᵥ incV F H.x = ((t : AE F E) - 1) • incV F H.x`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ht, sub_smul, one_smul]`. Establish `h3 : u • ((mat p - 1) *ᵥ incV F H.x) = 0`. Rewrite using `[← Matrix.smul_mulVec, h1, Matrix.zero_mulVec]`. Establish `h4 : (u • ((t : AE F E) - 1)) * incV F H.x i = 0`. Use `congrFun h3 i` as an intermediate fact.
+
+Rewrite `this` using `[h2]`. Simplify `this` using `[Pi.smul_apply, smul_eq_mul, smul_mul_assoc]`. Establish `hu' : IsUnit (incV F H.x i)`. Unfold `incV`. Conclude with `(isUnit_iff_ne_zero.mpr hi).map _`.
+
+Conclude with `(hu'.mul_left_eq_zero).mp h4`.
+-/
 theorem idele_mem_idelesAt_inf : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n₁ : ℕ) (X : Spc F E (n₁ + 2)) (X₁ : Spc F E n₁) (H : Plane E (n₁ + 2) n₁) (i₀ i₁ : ℕ),
     H.IsAdapted σ B X X₁ i₀ i₁ → ∀ p ∈ UAt σ X (evI F), ∀ t : (AE F E)ˣ,

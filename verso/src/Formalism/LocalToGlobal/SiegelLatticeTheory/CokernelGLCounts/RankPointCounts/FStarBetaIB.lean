@@ -46,6 +46,9 @@ variable {u u' F0 what₂}
 
 namespace BetaI
 
+/- English proof (translation)
+Use `⟨hL.fg.map _, ?_⟩` and prove the remaining obligations. Establish `e : ((Formalism.HermitianLatticesTheory.gmap g L : Submodule (𝓞 D.host.E) (VS D).V) : Set (VS D).V) = (g : (VS D).V →ₗ[D.host.E] (VS D).V) '' (L : Set (VS D).V)` using `rfl`. Rewrite using `[e, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `g.surjective`.
+-/
 theorem isLattice_gmap' (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) {L : Submodule (𝓞 D.host.E) (VS D).V}
     (hL : Submodule.IsLattice D.host.E L) : Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap g L) := by
   refine ⟨hL.fg.map _, ?_⟩
@@ -54,6 +57,13 @@ theorem isLattice_gmap' (g : (VS D).V ≃ₗ[D.host.E] (VS D).V) {L : Submodule 
   rw [e, Submodule.span_image, hL.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]
   exact g.surjective
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hy` using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`.
+
+Establish `h1` using `(hSD _).1 hx _ hy`. Establish `e` using `hβ (β.symm y) (β.symm x)`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Rewrite using `[e]` and apply the resulting hypothesis. Introduce `h`.
+
+Use `(hSD _).2 fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `h (β y) (by rw [Formalism.L2.SG.Saturated.mem_gmap_iff]; simpa using hy)`. Establish `e` using `hβ y (β.symm x)`. Simplify using `only [LinearEquiv.apply_symm_apply] at e`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem sd_gmap (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ : β ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT)
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hSD : BwdNA.SD (VS D) Λ) : BwdNA.SD (VS D) (Formalism.HermitianLatticesTheory.gmap β Λ) := by
   intro x
@@ -74,6 +84,69 @@ theorem sd_gmap (β : (VS D).V ≃ₗ[D.host.E] (VS D).V) (hβ : β ∈ Formalis
 
 end BetaI
 
+/- English proof (translation)
+Introduce `γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO`. Establish `hB0` using `hB`. Take `⟨hC, -, hS, hΛ₂, -, hT, hPD, -⟩` from `hB`. Take `⟨hΛ₂lat, hloc₂⟩` from `hΛ₂`. Take `⟨-, hT2, -⟩` from `hS`.
+
+Establish `hrow` using `hC.2.1.1 γ.lam γ.mem`. Establish `hΛlat : Submodule.IsLattice D.host.E γ.lam` using `hrow.2.1.1`. Establish `hSDl : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p γ.lam)` using `fun p => (hT2 p).1.1.1`. Establish `hSDl₂ : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p Λ₂)` using `fun p => (hloc₂ p).1.1.1`. Establish `hpr₂ : ∀ p, (locH Zd p).Prim (lattice₂ D Zd.M p Λ₂) (locF' Zd p F'₂)` using `fun p => (hloc₂ p).1.1.2.2.1.1`.
+
+Establish `hSD` using `sd_of_loc Zd hΛlat hSDl`. Establish `hSD₂` using `sd_of_loc Zd hΛ₂lat hSDl₂`. Establish `hXiso : ∀ x ∈ Xsp (liftF F'₂), ∀ y ∈ Xsp (liftF F'₂), (VS D).hT x y = 0` using `fun x hx y hy => NMoveP.hT_X_X F'₂.fl hx hy`. Establish `hzX : F'₂.fl.z ∈ orth (VS D) (Xsp (liftF F'₂))` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by`. Rewrite using `[BwdNA.hsw (VS D) F'₂.fl.z x]`.
+
+Establish `h` using `NMoveP.hT_f_X F'₂.fl (Fin.last D.R.rS) hx`. Rewrite `h` using `[NMoveP.fvecL]`. Rewrite using `[h, star_zero]`. Establish `hznot : F'₂.fl.z ∉ Xsp (liftF F'₂)`. Introduce `h`.
+
+Establish `h0` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hzX F'₂.fl.z h`. Rewrite `h0` using `[F'₂.fl.z_norm, neg_eq_zero]`. Conclude with `(D.mem u').A.T_prime.ne_zero (Nat.cast_eq_zero.1 h0)`. Establish `hXo` using `BwdNA.X_le_orth (VS D) (Xsp (liftF F'₂)) hXiso`. Establish `hXX : ∀ {w : (VS D).V}, w ∈ orth (VS D) (orth (VS D) (Xsp (liftF F'₂))) → w ∈ Xsp (liftF F'₂)` using `fun {w} hw => BwdNA.mem_of_orth_orth (VS D) _ fun v hv => by`.
+
+Rewrite using `[BwdNA.hsw (VS D) v w, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw v hv, star_zero]`. Establish `hXX' : ∀ {w : (VS D).V}, w ∈ orth (VS D) (orth (VS D) (Xsp (repF γ))) → w ∈ Xsp (repF γ)` using `fun {w} hw => BwdNA.mem_of_orth_orth (VS D) _ fun v hv => by`. Rewrite using `[BwdNA.hsw (VS D) v w, (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hw v hv, star_zero]`. Establish `hXmap : (Xsp (repF γ)).map (β₀ : (VS D).V →ₗ[D.host.E] (VS D).V) = Xsp (liftF F'₂)` using `BwdBetaCut.Xsp_of_frame β₀ _ _ hfr`. Establish `hsymmX : ∀ x ∈ Xsp (liftF F'₂), β₀.symm x ∈ Xsp (repF γ)` using `fun x hx => by`.
+
+Rewrite `hx` using `[← hXmap]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`. Establish `hmapX : ∀ x ∈ Xsp (repF γ), β₀ x ∈ Xsp (liftF F'₂)` using `fun x hx => by`. Rewrite using `[← hXmap]`.
+
+Conclude with `Submodule.mem_map_of_mem hx`. Establish `hΛ₁lat` using `BetaI.isLattice_gmap' β₀ hΛlat`. Establish `hSD₁` using `BetaI.sd_gmap β₀ hiso hSD`. Establish `he : ∀ a, β₀ ((repF γ).fl.e a) = F'₂.fl.e a` using `BwdBetaCut.e_of_frame β₀ (repF γ) (liftF F'₂) hfr`. Establish `hXS : Formalism.HermitianLatticesTheory.gmap β₀ (XS D (repF γ).fl) = XS D F'₂.fl`.
+
+Unfold `Formalism.HermitianLatticesTheory.gmap XS`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨w, ⟨a, x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, x, hx, by simp [he]⟩`. Introduce and unpack `⟨a, x, hx, rfl⟩`. Conclude with `⟨x • (repF γ).fl.e a, ⟨a, x, hx, rfl⟩, by simp [he]⟩`. Establish `hFO₂ : XLam Λ₂ (liftF F'₂) = XS D F'₂.fl` using `hT.2.2.2.2`.
+
+Establish `hFO : XLam γ.lam (repF γ) = XS D (repF γ).fl` using `hPD.2.2.2`. Establish `hXm : ∀ x ∈ Xsp (liftF F'₂), x ∈ Λ₂ ↔ x ∈ Formalism.HermitianLatticesTheory.gmap β₀ γ.lam` using `fun x hx => by`. Establish `h1 : x ∈ Λ₂ ↔ x ∈ XLam Λ₂ (liftF F'₂)` using `⟨fun h => Submodule.mem_inf.2 ⟨h, hx⟩, fun h => (Submodule.mem_inf.1 h).1⟩`. Establish `h2 : x ∈ Formalism.HermitianLatticesTheory.gmap β₀ γ.lam ↔ β₀.symm x ∈ XLam γ.lam (repF γ)`. Rewrite using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`.
+
+Conclude with `⟨fun h => Submodule.mem_inf.2 ⟨h, hsymmX x hx⟩, fun h => (Submodule.mem_inf.1 h).1⟩`. Rewrite using `[h1, h2, hFO₂, hFO, ← hXS, Formalism.L2.SG.Saturated.mem_gmap_iff]`. Establish `hzβ : β₀ (repF γ).fl.z = F'₂.fl.z`. Use `hfr (Fin.last _)` as an intermediate fact. Rewrite `this` using `[BwdBetaCut.fvec_last', BwdBetaCut.fvec_last']`. Then use the resulting hypothesis.
+
+Establish `hz₁ : F'₂.fl.z ∈ Formalism.HermitianLatticesTheory.gmap β₀ γ.lam`. Rewrite using `[Formalism.L2.SG.Saturated.mem_gmap_iff, ← hzβ, LinearEquiv.symm_apply_apply]`. Conclude with `hPD.1.1`. Establish `hz₂ : F'₂.fl.z ∈ Λ₂` using `hT.1.1.1`. Establish `hL : ∀ x ∈ Λ₂, x ∈ orth (VS D) (Xsp (liftF F'₂)) → ∃ y ∈ Formalism.HermitianLatticesTheory.gmap β₀ γ.lam, y - x ∈ Xsp (liftF F'₂)` using `fun x hx hxo => by`.
+
+Take `⟨w, hw, hxw⟩` from `BwdNA.dual_sum (VS D) γ.lam hΛlat hSD (orth (VS D) (Xsp (repF γ))) (β₀.symm x) (fun m hm hmo => by`. Establish `e` using `hiso m (β₀.symm x)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`. Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations.
+
+Rewrite using `[← localForm_baseChange]`. Take `⟨x₁, hx₁, hd⟩` from `hLs γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p m hm hmo`. Establish `e2 : baseChange₂ D p (β₀ m) = x₁ + (baseChange₂ D p (β₀ m) - x₁)` using `by abel`. Rewrite using `[e2, Formalism.L2.SG.Pf.ScalarFramePf.h_add_right (locH Zd p), (show (locH Zd p).h (baseChange₂ D p x) (baseChange₂ D p (β₀ m) - x₁) = 0 from baseChangeAt_perp' Zd p F'₂ hxo _ hd), add_zero]`. Conclude with `((hSDl₂ p).2.2 (baseChange₂ D p x)).1 (baseChange_mem_localLattice Zd hx p) x₁ hx₁)`.
+
+Use `⟨β₀ w, (Formalism.L2.SG.Saturated.mem_gmap_iff _ _ _).2 (by simpa using hw), ?_⟩` and prove the remaining obligations. Establish `h2` using `hmapX _ (hXX' hxw)`. Establish `e : β₀ w - x = -(β₀ (β₀.symm x - w))`. Rewrite using `[map_sub, LinearEquiv.apply_symm_apply]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[e]`. Conclude with `(Xsp (liftF F'₂)).neg_mem h2`. Establish `hL' : ∀ y ∈ Formalism.HermitianLatticesTheory.gmap β₀ γ.lam, y ∈ orth (VS D) (Xsp (liftF F'₂)) → ∃ x ∈ Λ₂, x ∈ orth (VS D) (Xsp (liftF F'₂)) ∧ y - x ∈ Xsp (liftF F'₂)` using `fun y hy hyo => by`. Rewrite `hy` using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`. Establish `hmo : β₀.symm y ∈ orth (VS D) (Xsp (repF γ))` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by`.
+
+Establish `e` using `hiso x (β₀.symm y)`. Rewrite `e` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`. Conclude with `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hyo _ (hmapX x hx)`. Take `⟨w, hw, hyw⟩` from `BwdNA.dual_sum (VS D) Λ₂ hΛ₂lat hSD₂ (orth (VS D) (Xsp (liftF F'₂))) y (fun m₂ hm₂ hm₂o => by`.
+
+Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations. Rewrite using `[← localForm_baseChange]`. Take `⟨x₁, hx₁, hd⟩` from `hLs γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO p _ hy hmo`. Rewrite `hd` using `[LinearEquiv.apply_symm_apply]`. Establish `e2 : baseChange₂ D p y = x₁ + (baseChange₂ D p y - x₁)` using `by abel`.
+
+Rewrite using `[e2, (locH Zd p).h_add_left]`. Establish `h0 : (locH Zd p).h (baseChange₂ D p y - x₁) (baseChange₂ D p m₂) = 0`. Rewrite using `[(locH Zd p).h_herm, (show (locH Zd p).h (baseChange₂ D p m₂) (baseChange₂ D p y - x₁) = 0 from baseChangeAt_perp' Zd p F'₂ hm₂o _ hd), map_zero]`. Rewrite using `[h0, add_zero]`. Conclude with `((hSDl₂ p).2.2 x₁).1 hx₁ (baseChange₂ D p m₂) (baseChange_mem_localLattice Zd hm₂ p))`.
+
+Establish `hX1` using `hXX hyw`. Use `⟨w, hw, ?_, hX1⟩` and prove the remaining obligations. Establish `e : w = y - (y - w)` using `by abel`. Rewrite using `[e]`. Conclude with `(orth (VS D) (Xsp (liftF F'₂))).sub_mem hyo (hXo hX1)`.
+
+Establish `hy` using `exists_yG Zd F'₂ hΛ₂lat hSD₂ hpr₂ hznot`. Establish `htr : ∃ c : D.host.E, IsIntegral ℤ c ∧ c + star c = 1`. Take `⟨c, hc⟩` from `D.host.exists_trace_one`. Use `⟨(c : D.host.E), RingOfIntegers.isIntegral_coe c, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj (H := D.host)]`.
+
+Conclude with `hc`. Take `⟨n, hniso, hnX, hnz, hno, himg⟩` from `BwdNA.main (VS D) (Xsp (liftF F'₂)) hXiso F'₂.fl.z hzX (Formalism.HermitianLatticesTheory.gmap β₀ γ.lam) Λ₂ hΛ₁lat hΛ₂lat hSD₁ hSD₂ hXm hz₁ hz₂ hL hL' hy htr`. Establish `hnI : n ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `hniso`. Establish `hvI : n.symm ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT` using `(Formalism.HermitianLatticesTheory.isom (VS D).hT).inv_mem hnI`. Establish `hvf : ∀ b, n.symm (frame (liftF F'₂) b) = frame (liftF F'₂) b`.
+
+Introduce `b`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `Fin.lastCases ?_ (fun i => ?_) b` and prove the remaining obligations. Rewrite using `[BwdBetaCut.fvec_last']`. Conclude with `hnz.symm`.
+
+Rewrite using `[BwdBetaCut.fvec_cs']`. Conclude with `(hnX _ (Submodule.subset_span ⟨i, rfl⟩)).symm`. Establish `hvX : ∀ y ∈ orth (VS D) (Xsp (liftF F'₂)), n.symm y - y ∈ Xsp (liftF F'₂)`. Introduce `y hy`. Establish `hy'o : n.symm y ∈ orth (VS D) (Xsp (liftF F'₂))` using `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).2 fun x hx => by`.
+
+Establish `e` using `hniso x (n.symm y)`. Rewrite `e` using `[hnX x hx, LinearEquiv.apply_symm_apply]`. Rewrite using `[← e]`. Conclude with `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth (VS D)).1 hy x hx`. Establish `h1` using `hno _ hy'o`.
+
+Rewrite `h1` using `[LinearEquiv.apply_symm_apply]`. Establish `e : n.symm y - y = -(y - n.symm y)` using `by abel`. Rewrite using `[e]`. Conclude with `(Xsp (liftF F'₂)).neg_mem h1`. Establish `hgm : Formalism.HermitianLatticesTheory.gmap (n.symm * β₀) γ.lam = Λ₂`.
+
+Use extensionality with `x`. Rewrite using `[Formalism.L2.SG.Saturated.mem_gmap_iff]`. Establish `e : (n.symm * β₀).symm x = β₀.symm (n x)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `show x = n.symm (β₀ (β₀.symm (n x)))`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e, ← Formalism.L2.SG.Saturated.mem_gmap_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : n x ∈ (n : (VS D).V → (VS D).V) '' (Λ₂ : Set (VS D).V)` using `by rw [himg]; exact h`.
+
+Take `⟨y, hy, hyx⟩` from `h'`. Rewrite using `[← n.injective hyx]`. Conclude with `hy`. Introduce `h`. Establish `h' : n x ∈ (n : (VS D).V → (VS D).V) '' (Λ₂ : Set (VS D).V)` using `⟨x, h, rfl⟩`.
+
+Rewrite `h'` using `[himg]`. Conclude with `h'`. Conclude with `⟨n.symm, hvI, hvf, hvX, hgm, hIo γ Z F'₂ φ φ' Λ₂ hB0 β₀ hiso hfr hW hO n.symm hvI hvf hvX hgm⟩`.
+-/
 theorem betaInt_of (hLs : LsetB Zd u u' F0 what₂) (hIo : IotaB Zd u u' F0 what₂) : BetaInt Zd u u' F0 what₂ := by
   intro γ Z F'₂ φ φ' Λ₂ hB β₀ hiso hfr hW hO
   have hB0 := hB

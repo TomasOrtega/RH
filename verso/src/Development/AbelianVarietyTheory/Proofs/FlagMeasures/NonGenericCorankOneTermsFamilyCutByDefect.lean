@@ -13,6 +13,9 @@ namespace GlobalTheory.SnFam
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hC => ?_⟩` and prove the remaining obligations. Establish `hT : ConcTie X Y` using `hC.2.2`. Conclude with `⟨rfl, GlobalTheory.T.nonGeneric_term_classes_eq_rows_in_double_coset D X Y u u' hT, (GlobalTheory.NGClass.ngClass_rows D X Y u u' hT).2.1⟩`.
+-/
 theorem famNG_holds : FamNG := by
   intro Cg cb Cw cT CT C0
   refine ⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' hC => ?_⟩

@@ -29,15 +29,24 @@ def bigSet (x : Fin n → E) (T : Set (UA σ J)) : Set (UA σ J) := {t | t ∈ T
 
 def partSum (f : UA σ J → ℂ) (S : Set (UA σ J)) (h : UA σ J) : ℂ := ∑' t : S, f (t.1 * h)
 
+/- English proof (translation)
+Use extensionality with `t`. Simplify using `only [lineSet, midSet, bigSet, Set.mem_union, Set.mem_setOf_eq]`. Apply the tactic sequence `by_cases h1 : StabLn x t <;> by_cases h2 : OrthLn x t <;> tauto`.
+-/
 theorem union_eq (x : Fin n → E) (T : Set (UA σ J)) :
     T = lineSet x T ∪ midSet x T ∪ bigSet x T := by
   ext t
   simp only [lineSet, midSet, bigSet, Set.mem_union, Set.mem_setOf_eq]
   by_cases h1 : StabLn x t <;> by_cases h2 : OrthLn x t <;> tauto
 
+/- English proof (translation)
+The claim follows from `Set.disjoint_left.2 fun _ h1 h2 => h2.2.1 h1.2`.
+-/
 theorem disjoint_line_mid (x : Fin n → E) (T : Set (UA σ J)) : Disjoint (lineSet x T) (midSet x T) :=
   Set.disjoint_left.2 fun _ h1 h2 => h2.2.1 h1.2
 
+/- English proof (translation)
+The claim follows from `Set.disjoint_left.2 fun _ h1 h2 => by rcases h1 with h1 | h1 · exact h2.2.1 h1.2 · exact h2.2.2 h1.2.2`.
+-/
 theorem disjoint_lm_big (x : Fin n → E) (T : Set (UA σ J)) :
     Disjoint (lineSet x T ∪ midSet x T) (bigSet x T) :=
   Set.disjoint_left.2 fun _ h1 h2 => by
@@ -45,6 +54,13 @@ theorem disjoint_lm_big (x : Fin n → E) (T : Set (UA σ J)) :
     · exact h2.2.1 h1.2
     · exact h2.2.2 h1.2.2
 
+/- English proof (translation)
+Use `set g : UA σ J → ℂ := fun t => f (t * h) with hg`. Establish `hsub : ∀ S ⊆ T, Summable (g ∘ ((↑) : S → UA σ J))`. Introduce `S hST`. Establish `hind : Summable (T.indicator g)` using `summable_subtype_iff_indicator.1 hs`. Conclude with `(hind.subtype S).congr fun t => Set.indicator_of_mem (hST t.2) g`.
+
+Establish `hLT : lineSet x T ⊆ T` using `fun t ht => ht.1`. Establish `hMT : midSet x T ⊆ T` using `fun t ht => ht.1`. Establish `hBT : bigSet x T ⊆ T` using `fun t ht => ht.1`. Express the relevant statement in the definitionally equal form `∑' t : T, g t = _`. Rewrite using `[tsum_congr_set_coe g (union_eq x T), Summable.tsum_union_disjoint (disjoint_lm_big x T) (hsub _ (Set.union_subset hLT hMT)) (hsub _ hBT), Summable.tsum_union_disjoint (disjoint_line_mid x T) (hsub _ hLT) (hsub _ hMT)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem tsum_eq_three (x : Fin n → E) (T : Set (UA σ J)) (f : UA σ J → ℂ) (h : UA σ J)
     (hs : Summable fun t : T => f (t.1 * h)) :
     ∑' t : T, f (t.1 * h) = partSum f (lineSet x T) h + partSum f (midSet x T) h + partSum f (bigSet x T) h := by

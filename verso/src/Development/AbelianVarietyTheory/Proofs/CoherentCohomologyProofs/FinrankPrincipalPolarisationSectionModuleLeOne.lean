@@ -18,6 +18,11 @@ open GlobalTheory GlobalTheory.AbLaw
 
 namespace GlobalTheory.PrincipalSections
 
+/- English proof (translation)
+Establish `hg` using `h g`. Rewrite `hg` using `[if_pos rfl]`. Take `⟨x, -, hx⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hg.trans_ne one_ne_zero)`. Establish `hb : 1 ≤ b x.2` using `Nat.one_le_iff_ne_zero.2 (right_ne_zero_of_mul hx)`. Establish `h₁ : a 0 * b x.2 ≤ ∑ y ∈ Finset.HasAntidiagonal.antidiagonal x.2, a y.1 * b y.2` using `Finset.single_le_sum (f := fun y : ℕ × ℕ => a y.1 * b y.2) (a := (0, x.2)) (fun _ _ => Nat.zero_le _) (by simp)`.
+
+Apply the tactic sequence `have h₂ : (if x.2 = g then 1 else 0) ≤ 1 := by split_ifs <;> omega`. Conclude with `(Nat.le_mul_of_pos_right _ hb).trans (h₁.trans ((h x.2).le.trans h₂))`.
+-/
 theorem le_one_of_convolution (a b : ℕ → ℕ) (g : ℕ)
     (h : ∀ n, ∑ x ∈ Finset.HasAntidiagonal.antidiagonal n, a x.1 * b x.2 = if n = g then 1 else 0) :
     a 0 ≤ 1 := by
@@ -31,6 +36,11 @@ theorem le_one_of_convolution (a b : ℕ → ℕ) (g : ℕ)
   have h₂ : (if x.2 = g then 1 else 0) ≤ 1 := by split_ifs <;> omega
   exact (Nat.le_mul_of_pos_right _ hb).trans (h₁.trans ((h x.2).le.trans h₂))
 
+/- English proof (translation)
+Take `⟨s, hs', hs⟩` from `isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens.mp (⟨isCompact_univ, isOpen_univ⟩ : IsCompact (Set.univ : Set X) ∧ IsOpen (Set.univ : Set X))`. Use `hs'.fintype` as an intermediate fact. Set `e` to `(Fintype.equivFin s).symm`. Use `⟨_, fun i => (e i).1.1, fun i => (e i).1.2, ?_⟩` and prove the remaining obligations. Rewrite using `[e.iSup_comp (g := fun i : s => i.1.1)]`.
+
+Use `ext1`. Simplify using `using hs.symm`.
+-/
 theorem exists_fin_affine_cover (X : Scheme.{0}) [CompactSpace X] :
     ∃ (n : ℕ) (D : Fin n → X.Opens), (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
   obtain ⟨s, hs', hs⟩ := isCompact_and_isOpen_iff_finite_and_eq_biUnion_affineOpens.mp
@@ -42,6 +52,13 @@ theorem exists_fin_affine_cover (X : Scheme.{0}) [CompactSpace X] :
   ext1
   simpa using hs.symm
 
+/- English proof (translation)
+Set `e : A ⊗ A ≅ A ⊗ A` to `{ hom := lift (fst A A * snd A A) (snd A A) inv := lift (fst A A * (snd A A)⁻¹) (snd A A) hom_inv_id := by`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[MonObj.comp_mul, GrpObj.comp_inv]`. Simplify using the standard rewrite rules. Use `inv_hom_id := by`.
+
+Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[MonObj.comp_mul]`. Simplify using `}`. Establish `h : IsPullback (fst A A).left (snd A A).left A.hom A.hom` using `IsPullback.of_hasPullback _ _`. Use `h.of_iso ((Over.forget S).mapIso e).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ (by simp) (by simp)` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(fst A A).left ≫ 𝟙 _ = (e.inv ≫ lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left`. Rewrite using `[Category.comp_id, Category.comp_id, ← Hom.mul_def]`. Simplify using `[e, MonObj.comp_mul]`. Express the relevant statement in the definitionally equal form `(snd A A).left ≫ 𝟙 _ = (e.inv ≫ snd A A).left`. Simplify using `[e]`.
+-/
 theorem isPullback_mul_snd {S : Scheme.{0}} (A : Over S) [GrpObj A] :
     IsPullback (lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left (snd A A).left A.hom A.hom := by
   let e : A ⊗ A ≅ A ⊗ A :=
@@ -86,6 +103,15 @@ noncomputable def chartTwInv {X Y : Scheme.{0}} (L : LB X) (a b : Y ⟶ X) :
       rw [zpow_neg_one, inv_inv]
       rfl }
 
+/- English proof (translation)
+Take `⟨⟨hproj, hsep⟩, -⟩` from `GlobalTheory.AbProj.abelian_projective_baseChange K P`. Establish `hpb` using `isPullback_mul_snd P.A`. Use `P.isAb.proper` as an intermediate fact. Establish `hqc : QuasiCompact P.A.hom` using `inferInstance`. Establish `hqc₂ : QuasiCompact (snd P.A P.A).left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hpb hqc`.
+
+Establish `: CompactSpace P.A.left` using `QuasiCompact.compactSpace_of_compactSpace P.A.hom`. Establish `: CompactSpace (P.A ⊗ P.A).left` using `QuasiCompact.compactSpace_of_compactSpace (snd P.A P.A).left`. Take `⟨n, U, hU, hUc⟩` from `exists_fin_affine_cover P.A.left`. Take `⟨m, D, hD, hDc⟩` from `exists_fin_affine_cover (P.A ⊗ P.A).left`. Establish `hL'` using `isLB_pw P.isLB (-1)`.
+
+Take `⟨e⟩` from `cechLB_homology_zero_equiv_sections K _ P.A.hom P.L _ U hUc`. Rewrite using `[← e.finrank_eq]`. Use `le_one_of_convolution (fun i => Module.finrank K ((cechLB P.A.hom P.L U).homology i)) (fun i => Module.finrank K ((cechLB P.A.hom (pw P.L (-1)) U).homology i)) P.g fun k => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.finrank_cechLB_homology_extProd_alt K _ _ _ _ _ _ _ P.L (pw P.L (-1)) hpb P.isLB hL' hsep hsep _ U _ U _ D hU hUc hU hUc hD hDc (cechLB_homology_finite_of_affine_cover K _ _ _ _ U P.isLB hsep hproj hU hUc) (cechLB_homology_finite_of_affine_cover K _ _ _ _ U hL' …`. Establish `hF : (translDiff P.A P.L (𝟙 P.A)).IsLB` using `DVR.linComb_isLB _ P.isLB _ _`.
+
+Take `⟨w, hw⟩` from `lbIso_of_chartPull (chartTwInv P.L _ _) hF`. Conclude with `(HomologicalComplex.homologyMapIso (cechLBCongr _ D (isLB_tw (pull_isLB P.isLB _) (pull_isLB hL' _) 1) hF w hw) k).toLinearEquiv.finrank_eq`.
+-/
 theorem finrank_secOnR_le_one (K : Type) [Field K] [IsAlgClosed K]
     (P : PolAV (Spec (CommRingCat.of K))) : Module.finrank K (SecOnR P.A.hom P.L ⊤) ≤ 1 := by
   obtain ⟨⟨hproj, hsep⟩, -⟩ := GlobalTheory.AbProj.abelian_projective_baseChange K P
@@ -123,6 +149,13 @@ noncomputable def chartPullOne {X Y : Scheme.{0}} (L : LB X) (a : Y ⟶ X) :
         (Eq.trans ?_ (gm_linComb L _ _ (𝟙 Y) y _ _ (le p hp) (le q hq)).symm)
       rw [Fin.prod_univ_one, zpow_one] }
 
+/- English proof (translation)
+Introduce `K _ _ P`. Set `T` to `baseOver (Spec (CommRingCat.of K))`. Set `f' : (T ⊗ P.A).left ⟶ Spec (CommRingCat.of K)` to `(fst T P.A).left`. Establish `: IsIso (snd T P.A).left` using `inferInstanceAs (IsIso (pullback.snd (𝟙 _) P.A.hom))`. Establish `w : (snd T P.A).left ≫ P.A.hom = f' ≫ Spec.map (CommRingCat.ofHom (RingHom.id K))`.
+
+Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `(pullback.condition (f := 𝟙 _) (g := P.A.hom)).symm`. Set `e₁ : SecOnR P.A.hom P.L ⊤ ≃ₗ[K] SecOnR f' (P.L.pull (snd T P.A).left) ⊤` to `LinearEquiv.ofBijective (SecOnR.pull P.L w ⊤ ⊤ le_top) (SecOn.pullLE_bijective_of_le_opensRange P.L (snd T P.A).left (Scheme.Hom.opensRange_of_isIso _).ge le_top le_top)`. Establish `hM : (LPow P.A P.L 1 T).IsLB` using `DVR.linComb_isLB _ P.isLB _ _`. Take `⟨u, hu⟩` from `lbIso_of_chartPull (chartPullOne P.L (snd T P.A).left) hM`.
+
+Set `e₂ : SecOnR f' (P.L.pull (snd T P.A).left) ⊤ ≃ₗ[K] SecOnR f' (LPow P.A P.L 1 T) ⊤` to `SecOnR.linEquiv f' (SecOn.congr (pull_isLB P.isLB _) hM u hu ⊤)`. Use `le_of_eq_of_le ?_ ((e₁ ≪≫ₗ e₂).finrank_eq.symm.trans_le (finrank_secOnR_le_one K P))` and prove the remaining obligations. Use `congrArg Cardinal.toNat (rank_eq_of_equiv_equiv (R := K) (R' := Γ(T.left, ⊤)) (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom ((SecOnR.of f' _ ⊤).symm.toAddEquiv.trans (GlobalTheory.LB.globalEquivSecM P.A P.L 1 T)) (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.o …` and prove the remaining obligations. Use `Eq.trans ?_ (GlobalTheory.LB.globalEquivSecM_smul P.A P.L 1 T _ ((SecOnR.of f' _ ⊤).symm s))` and prove the remaining obligations. Conclude with `congrArg (fun c : Γ((T ⊗ P.A).left, ⊤) => GlobalTheory.LB.globalEquivSecM P.A P.L 1 T (c • (SecOnR.of f' _ ⊤).symm s)) (rs_self le_top _)`.
+-/
 theorem finrank_secM_le_one : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), Module.finrank Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤) (SecM P.A P.L 1 (baseOver (Spec (CommRingCat.of K)))) ≤ 1 := by
   intro K _ _ P
   let T := baseOver (Spec (CommRingCat.of K))

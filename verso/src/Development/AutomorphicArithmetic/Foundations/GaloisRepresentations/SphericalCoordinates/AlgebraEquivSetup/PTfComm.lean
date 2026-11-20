@@ -4,6 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 open Formalism.UG GlobalTheory.LKDef.HeckeTraceForms UpperTheory.Gal.W2.Seed
 open scoped Classical
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private theorem comm_conv (hRing : ConvRing) {X : Type} [Group X] {K : Subgroup X} (hK : IsCommensurated K)
     {f g h : X → ℂ} (hf : f ∈ Hecke ℂ K) (hg : g ∈ Hecke ℂ K) (hh : h ∈ Hecke ℂ K)
     (c₁ : conv K f h = conv K h f) (c₂ : conv K g h = conv K h g) :
@@ -14,6 +17,15 @@ private theorem comm_conv (hRing : ConvRing) {X : Type} [Group X] {K : Subgroup 
     _ = conv K (conv K h f) g := by rw [c₁]
     _ = conv K h (conv K f g) := (hRing X K hK h hh f hf).2 g hg
 
+/- English proof (translation)
+Establish `hK` using `T.cms`. Establish `mA` using `(hAdm X M T a ha).1.1`. Establish `mB` using `(hAdm X M T b hb).1.1`. Establish `mZ` using `(hAdm X M T z hz.2).1.1`. Establish `mZ'` using `(hAdm X M T z' hz'.2).1.1`.
+
+Establish `cz` using `hCen X M T a z ha hz`. Establish `cz'` using `hCen X M T b z' hb hz'`. Establish `eBZ : conv T.K₀ (T.tf b) (T.tf z) = conv T.K₀ (T.tf z) (T.tf b)` using `(hCen X M T b z hb hz).2.trans (hCen X M T b z hb hz).1.symm`. Establish `eAZ' : conv T.K₀ (T.tf a) (T.tf z') = conv T.K₀ (T.tf z') (T.tf a)` using `(hCen X M T a z' ha hz').2.trans (hCen X M T a z' ha hz').1.symm`. Establish `eZZ' : conv T.K₀ (T.tf z) (T.tf z') = conv T.K₀ (T.tf z') (T.tf z)` using `(hCen X M T z z' hz.2 hz').2.trans (hCen X M T z z' hz.2 hz').1.symm`.
+
+Establish `mAZ` using `(hRing X T.K₀ hK _ mA _ mZ).1`. Establish `h1` using `comm_conv hRing hK mA mZ mB hab eBZ.symm`. Establish `h2` using `comm_conv hRing hK mA mZ mZ' eAZ' eZZ'`. Establish `h3` using `comm_conv hRing hK mB mZ' mAZ h1.symm h2.symm`. Rewrite using `[← cz.2, ← cz'.2]`.
+
+Conclude with `h3.symm`.
+-/
 private theorem comm_cen (hAdm : TfAdm) (hCen : TfMulCen) (hRing : ConvRing) {X M : Type} [Group X] [Group M]
     (T : TyLev X M) {a b z z' : X} (ha : T.L.pr a = 1) (hb : T.L.pr b = 1) (hz : T.Cen z) (hz' : T.Cen z')
     (hab : conv T.K₀ (T.tf a) (T.tf b) = conv T.K₀ (T.tf b) (T.tf a)) :
@@ -38,6 +50,13 @@ private theorem comm_cen (hAdm : TfAdm) (hCen : TfMulCen) (hRing : ConvRing) {X 
   rw [← cz.2, ← cz'.2]
   exact h3.symm
 
+/- English proof (translation)
+Introduce `hAdm hRing hCen hL hR hLoc X M M' M'' _ _ _ _ T L' Kw hF hAp z z' hz hz' t`. Use `⟨fun L'' t' h1 h2 => ?_, fun t' hc => ?_⟩` and prove the remaining obligations. Establish `ha : T.L.pr (L'.loc t) = 1` using `hAp.1 t`. Establish `hb : T.L.pr (L''.loc t') = 1` using `h1.1 t'`. Establish `hb' : L'.pr (L''.loc t') = 1` using `h2.1 t'`.
+
+Conclude with `comm_cen hAdm hCen hRing T ha hb hz hz' ((hL X M M' T L' Kw hF hAp t _ hb hb').trans (hR X M M' T L' Kw hF hAp t _ hb hb').symm)`. Establish `ha : T.L.pr (L'.loc t) = 1` using `hAp.1 t`. Establish `hb : T.L.pr (L'.loc t') = 1` using `hAp.1 t'`. Use `comm_cen hAdm hCen hRing T ha hb hz hz' ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[hLoc X M M' T L' Kw hF hAp t t' g, hLoc X M M' T L' Kw hF hAp t' t g, hc]`.
+-/
 theorem UpperTheory.Gal.W2.Seed.pTfComm : TfAdm → ConvRing → TfMulCen → TfMulL → TfMulR → TfLoc → TfComm := by
   intro hAdm hRing hCen hL hR hLoc X M M' M'' _ _ _ _ T L' Kw hF hAp z z' hz hz' t
   refine ⟨fun L'' t' h1 h2 => ?_, fun t' hc => ?_⟩

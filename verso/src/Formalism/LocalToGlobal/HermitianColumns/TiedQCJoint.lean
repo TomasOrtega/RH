@@ -24,6 +24,9 @@ def clsCast (D : D7) (u : D.what₂.Word) (i : ℕ) : (D.mem u).C.cls i ≃ (D.c
 def yCast (D : D7) (u : D.what₂.Word) (i : ℕ) : (D.mem u).C.Y i ≃ (D.chTw u D.what₂.mu0).Y i :=
   Equiv.cast (congrArg (fun C => C.Y i) (D.memberColumns_twistedChain_base u).symm)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[eq_of_heq hfg]`. Both sides reduce to the same expression.
+-/
 theorem heq_apply {R : Ranks} {ι : Type} [Fintype ι] {hc : ι → HCParam R} {C C' : ColumnChain R ι hc} (h : C' = C) (j : ℕ)
     (f : C'.cls j → C'.Y j → ℂ) (g : C.cls j → C.Y j → ℂ) (hfg : HEq f g) (c : C.cls j) (y : C.Y j) :
     f (Equiv.cast (congrArg (fun C => C.cls j) h.symm) c) (Equiv.cast (congrArg (fun C => C.Y j) h.symm) y) = g c y := by

@@ -35,6 +35,9 @@ def img {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M
     | none => 0
     | some k' => stepCoord Cv F' F z hp.choose k' q
 
+/- English proof (translation)
+Use function extensionality and compare the values at `q`. Take `⟨⟨k, hk⟩, m⟩` from `q`. Simplify using `only [basePart, img, Function.comp]`. Rewrite using `[dif_pos hk]`.
+-/
 theorem img_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ι' k) → ℂ) :
     basePart M.blk (img Cv F' F z) = basePart M'.blk z ∘ Cv.v := by
@@ -43,6 +46,13 @@ theorem img_base {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagC
   simp only [basePart, img, Function.comp]
   rw [dif_pos hk]
 
+/- English proof (translation)
+Establish `hk : ¬ ∀ p', M.blk p' ≠ some k` using `fun h => h p hp`. Establish `hex : ∃ p', M.blk p' = some k` using `⟨p, hp⟩`. Establish `hch : hex.choose = p` using `M.blk_inj _ _ k hex.choose_spec hp`. Simplify using `only [img, dif_neg hk]`. Use `split`.
+
+Use `next h =>`. Rewrite `h` using `[hch, hp']`. Conclude with `absurd h (by simp)`. Use `next k'' h =>`. Rewrite `h` using `[hch, hp']`.
+
+Consider the cases of `h`. Rewrite using `[hch]`.
+-/
 theorem img_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagCover M' M)
     (F' : FrameData ι' Ψ N M'.Ω M'.blk) (F : FrameData ι Ψ N M.Ω M.blk) (z : (Σ k, ι' k) → ℂ)
     {p : Ψ × Fin N} {k : K} {k' : K'} (hp : M.blk p = some k) (hp' : M'.blk p = some k') (m : ι k) :
@@ -60,6 +70,11 @@ theorem img_step {M : FlagModel y Ψ N j} {M' : FlagModel y' Ψ N j} (Cv : FlagC
     cases h
     rw [hch]
 
+/- English proof (translation)
+Establish `h1 : ¬ (M.blk p = none)`. Rewrite using `[hp]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[M.blk_none]`. Establish `h2 : M'.blk p ≠ none`.
+
+Rewrite using `[Ne, M'.blk_none]`. Conclude with `h1`. Conclude with `Option.ne_none_iff_exists'.mp h2`.
+-/
 theorem exists_blk_cover {M : FlagModel y Ψ N j} (M' : FlagModel y' Ψ N j) {p : Ψ × Fin N} {k : K}
     (hp : M.blk p = some k) : ∃ k', M'.blk p = some k' := by
   have h1 : ¬ (M.blk p = none) := by

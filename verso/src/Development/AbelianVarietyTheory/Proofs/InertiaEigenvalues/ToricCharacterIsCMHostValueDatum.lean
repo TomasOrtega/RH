@@ -11,6 +11,13 @@ open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfD
 
 namespace GlobalTheory.LamTie
 
+/- English proof (translation)
+Introduce `D Z hZ l j a s hs hN`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Take `⟨hcm, hind⟩` from `GlobalTheory.T.conjugateEmbedding_isCMType_sqrtMinusD D.R D.host`. Take `⟨hκ, hinf⟩` from `GlobalTheory.T.one_le_kap_and_lam0_hasInf D Z hZ l j a s hN`. Take `⟨hu, ht⟩` from `GlobalTheory.T.lam0_isUnitary_and_trivOnF D Z hZ l j a`.
+
+Establish `hb : IsBaseCond (cond0 D.host Z.w0)` using `GlobalTheory.T.isBaseCond_of_split_primes D.R D.host Z.q0 Z.w0 (fun p hp P hP => by`. Take `⟨h1, -, h3, h4⟩` from `hZ.places.splits p hp`. Conclude with `GlobalTheory.T.splitsInCMField_placeBelow_of_completelySplit D.host.E p h1 h3 h4 P hP) hZ.places`. Use `⟨hcm, hind, hs, hκ, hb, hu, ht, hinf, fun v P hP => ⟨fun h => absurd h (Finset.notMem_empty v), fun _ => ?_⟩⟩` and prove the remaining obligations. Establish `hv : v = below P` using `HeightOneSpectrum.ext (hP.symm.trans (over_below P))`.
+
+Substitute `hv` using the available equality. Conclude with `GlobalTheory.T.lam_conductor_exponent D Z hZ l j a P`.
+-/
 theorem toricCharacter_isCMHostValueDatum : ∀ (D : D7) (Z : LamDat D), Z.Ok → ∀ (l : ℕ) (j a : Fin D.R.m) (s : ℕ), 1 ≤ s → (s : ℤ) ≤ (BlochKatoReduction.Gen.NFun D.R : ℤ) + 1 → IsHostDatum D.host (phi D.host) s (Z.kap j a s) (cond0 D.host Z.w0) (Z.lam0 l j a) := by
   intro D Z hZ l j a s hs hN
   haveI : IsCMField D.host.E := D.host.isCMField_hostE

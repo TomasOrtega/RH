@@ -16,6 +16,11 @@ namespace MetricChange
 
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {L : HolLineBundle A}
 
+/- English proof (translation)
+Establish `hy : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source` using `⟨(A.chart j).map_source hx, by simpa [(A.chart j).left_inv hx] using hx⟩`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart j).open_source`. Establish `h1 : ContinuousAt (W.φ j ∘ (A.chart j).symm) (A.chart j x)` using `((W.smooth j j).continuousOn).continuousAt (hopen.mem_nhds hy)`. Establish `h2 : ContinuousAt ((W.φ j ∘ (A.chart j).symm) ∘ A.chart j) x` using `h1.comp ((A.chart j).continuousAt hx)`. Use `h2.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy`. Simplify using `[(A.chart j).left_inv hy]`.
+-/
 theorem weight_continuousAt (W : Weight L) (j : Fin A.n) {x : X} (hx : x ∈ (A.chart j).source) :
     ContinuousAt (W.φ j) x := by
   have hy : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source :=
@@ -30,6 +35,11 @@ theorem weight_continuousAt (W : Weight L) (j : Fin A.n) {x : X} (hx : x ∈ (A.
   filter_upwards [(A.chart j).open_source.mem_nhds hx] with y hy
   simp [(A.chart j).left_inv hy]
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun x ↦ ?_` and prove the remaining obligations. Establish `hx : x ∈ (A.chart (chartIdx A x)).source` using `Classical.choose_spec (A.cover x)`. Establish `h` using `(weight_continuousAt W₁ _ hx).sub (weight_continuousAt W₀ _ hx)`. Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart (chartIdx A x)).open_source.mem_nhds hx] with y hy`.
+
+Conclude with `(Weight.diff_eq W₁ W₀ _ hy).symm`.
+-/
 theorem diff_continuous (W₁ W₀ : Weight L) : Continuous (Weight.diff W₁ W₀) := by
   refine continuous_iff_continuousAt.2 fun x ↦ ?_
   have hx : x ∈ (A.chart (chartIdx A x)).source := Classical.choose_spec (A.cover x)
@@ -38,6 +48,13 @@ theorem diff_continuous (W₁ W₀ : Weight L) : Continuous (Weight.diff W₁ W�
   filter_upwards [(A.chart (chartIdx A x)).open_source.mem_nhds hx] with y hy
   exact (Weight.diff_eq W₁ W₀ _ hy).symm
 
+/- English proof (translation)
+Establish `e₀` using `h₀.eventually (by simp)`. Establish `e₁` using `h₁.eventually (by simp)`. Establish `hfun : (fun z ↦ f₀ z + t * (f₁ z - f₀ z)) = fun z ↦ (1 - t) * f₀ z + t * f₁ z`. Use function extensionality and compare the values at `z`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hfd : fderiv ℝ (fun z ↦ (1 - t) * f₀ z + t * f₁ z) =ᶠ[𝓝 y] fun z ↦ (1 - t) • fderiv ℝ f₀ z + t • fderiv ℝ f₁ z` using `by filter_upwards [e₀, e₁] with z hz₀ hz₁`. Establish `d₀` using `hz₀.differentiableAt (by norm_num)`. Establish `d₁` using `hz₁.differentiableAt (by norm_num)`. Rewrite using `[fderiv_fun_add (d₀.const_mul _) (d₁.const_mul _), fderiv_const_mul d₀, fderiv_const_mul d₁]`. Establish `D₀ : DifferentiableAt ℝ (fderiv ℝ f₀) y` using `(h₀.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`.
+
+Establish `D₁ : DifferentiableAt ℝ (fderiv ℝ f₁) y` using `(h₁.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h2 : fderiv ℝ (fun z ↦ (1 - t) • fderiv ℝ f₀ z + t • fderiv ℝ f₁ z) y = (1 - t) • fderiv ℝ (fderiv ℝ f₀) y + t • fderiv ℝ (fderiv ℝ f₁) y` using `((D₀.hasFDerivAt.const_smul (1 - t)).add (D₁.hasFDerivAt.const_smul t)).fderiv`. Rewrite using `[hfun, levi, levi, levi, hfd.fderiv_eq, h2]`. Simplify using `only [FunLike.coe_add, FunLike.coe_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem levi_lerp {ι : Type*} [Fintype ι] {f₀ f₁ : (ι → ℂ) → ℝ} {y : ι → ℂ}
     (h₀ : ContDiffAt ℝ 2 f₀ y) (h₁ : ContDiffAt ℝ 2 f₁ y) (t : ℝ) (w : ι → ℂ) :
     levi (fun z ↦ f₀ z + t * (f₁ z - f₀ z)) y w = (1 - t) * levi f₀ y w + t * levi f₁ y w := by
@@ -63,6 +80,13 @@ theorem levi_lerp {ι : Type*} [Fintype ι] {f₀ f₁ : (ι → ℂ) → ℝ} {
     smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `j y hy w`. Establish `hopen : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart j).open_source`. Establish `hy' : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart j).source` using `⟨hy, (A.chart j).map_target hy⟩`. Establish `c₀ : ContDiffAt ℝ 2 (W₀.φ j ∘ (A.chart j).symm) y` using `((W₀.smooth j j).contDiffAt (hopen.mem_nhds hy')).of_le (by norm_cast)`. Establish `c₁ : ContDiffAt ℝ 2 (W₁.φ j ∘ (A.chart j).symm) y` using `((W₁.smooth j j).contDiffAt (hopen.mem_nhds hy')).of_le (by norm_cast)`.
+
+Establish `key : levi ((W₀.lerp W₁ t).φ j ∘ (A.chart j).symm) y w = (1 - t) * levi (W₀.φ j ∘ (A.chart j).symm) y w + t * levi (W₁.φ j ∘ (A.chart j).symm) y w` using `levi_lerp c₀ c₁ t w`. Rewrite using `[key]`. Establish `a₀` using `h₀ j y hy w`. Establish `a₁` using `h₁ j y hy w`. Establish `: 0 ≤ 1 - t` using `by linarith [ht.2]`.
+
+Conclude with `add_nonneg (mul_nonneg this a₀) (mul_nonneg ht.1 a₁)`.
+-/
 theorem lerp_isSemipositive {W₀ W₁ : Weight L} (h₀ : W₀.IsSemipositive) (h₁ : W₁.IsSemipositive)
     {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) : (W₀.lerp W₁ t).IsSemipositive := by
   intro j y hy w
@@ -84,6 +108,55 @@ theorem lerp_isSemipositive {W₀ W₁ : Weight L} (h₀ : W₀.IsSemipositive) 
   have : 0 ≤ 1 - t := by linarith [ht.2]
   exact add_nonneg (mul_nonneg this a₀) (mul_nonneg ht.1 a₁)
 
+/- English proof (translation)
+Introduce `D X _ _ _ _ _ A L W₀ W₁ dV h₀ h₁ V _ hV hdim e ε hε`. Use `dV.isProb` as an intermediate fact. Use `set u := Weight.diff W₁ W₀ with hu_def`. Establish `hu_cont : Continuous u` using `diff_continuous W₁ W₀`. Take `⟨M₀, hM₀⟩` from `isCompact_univ.exists_bound_of_continuousOn hu_cont.continuousOn`.
+
+Use `set M := max M₀ 0 with hM_def`. Establish `hM : ∀ x, ‖u x‖ ≤ M` using `fun x ↦ (hM₀ x (mem_univ x)).trans (le_max_left _ _)`. Establish `hM0 : 0 ≤ M` using `le_max_right _ _`. Establish `hu_meas : AEStronglyMeasurable u dV.μ` using `hu_cont.aestronglyMeasurable`. Take `⟨C, hC⟩` from `hU A L W₀ W₁ dV h₀ h₁`.
+
+Set `B : ℕ → ℝ → X → ℝ` to `fun n t x ↦ bergman (W₀.lerp W₁ t) dV (V n) n x`. Set `b : ℝ → X → ℝ` to `fun t x ↦ bergmanDens (W₀.lerp W₁ t) dV x`. Set `F : ℕ → ℝ → ℝ` to `fun n t ↦ ∫ x, u x * (((n : ℝ) ^ D)⁻¹ * B n t x) ∂dV.μ`. Set `f : ℝ → ℝ` to `fun t ↦ ∫ x, u x * b t x ∂dV.μ`. Set `χ : ℕ → ℝ → ℝ` to `fun n s ↦ chiGram (W₀.lerp W₁ s) dV n (fun a ↦ (e n a : Fin A.n → X → ℂ))`.
+
+Establish `hB0 : ∀ n t x, 0 ≤ B n t x`. Introduce `n t x`. Use `Real.iSup_nonneg fun s ↦ div_nonneg ?_ (integral_nonneg fun y ↦ ?_)` and prove the remaining obligations. Unfold `ptNormSq`. Check the signs of the components of the expression.
+
+Unfold `ptNormSq`. Check the signs of the components of the expression. Establish `hderiv : ∀ n t, HasDerivAt (χ n) ((n : ℝ) / 2 * ∫ x, u x * B n t x ∂dV.μ) t` using `fun n t ↦ hG A L W₀ W₁ dV n (V n) (hV n) (e n) t`. Establish `hF : ∀ n t, F n t = ((n : ℝ) ^ D)⁻¹ * ∫ x, u x * B n t x ∂dV.μ`. Introduce `n t`.
+
+Use `show ∫ x, u x * (((n : ℝ) ^ D)⁻¹ * B n t x) ∂dV.μ = _`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hderiv' : ∀ n, 1 ≤ n → ∀ t, HasDerivAt (χ n) ((n : ℝ) ^ (D + 1) / 2 * F n t) t`. Introduce `n hn t`. Use `hderiv n t using 1` and compare the differences between its conclusion and the goal. Establish `: (n : ℝ) ^ D ≠ 0` using `pow_ne_zero _ (by exact_mod_cast (by omega : n ≠ 0))`. Rewrite using `[hF]`.
+
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hFmeas : ∀ n, 1 ≤ n → Measurable (F n)`. Introduce `n hn`. Establish `hpos : (0 : ℝ) < (n : ℝ) ^ (D + 1) / 2`.
+
+Establish `: (0 : ℝ) < n` using `Nat.cast_pos.2 (by omega)`. Check the signs of the components of the expression. Establish `: F n = fun t ↦ ((n : ℝ) ^ (D + 1) / 2)⁻¹ * deriv (χ n) t`. Use function extensionality and compare the values at `t`. Rewrite using `[(hderiv' n hn t).deriv]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `(measurable_deriv _).const_mul _`. Establish `hFbound : ∀ n, 1 ≤ n → ∀ t ∈ Icc (0 : ℝ) 1, ‖F n t‖ ≤ M * C`. Introduce `n hn t ht`.
+
+Establish `hnD : (0 : ℝ) < (n : ℝ) ^ D` using `pow_pos (Nat.cast_pos.2 (by omega)) _`. Establish `hg : ∀ x, ‖u x * (((n : ℝ) ^ D)⁻¹ * B n t x)‖ ≤ M * C`. Introduce `x`. Establish `h1 : B n t x ≤ C * (n : ℝ) ^ D` using `hC n hn t ht (V n) (hV n) x`. Establish `h2 : 0 ≤ ((n : ℝ) ^ D)⁻¹ * B n t x` using `mul_nonneg (inv_nonneg.2 hnD.le) (hB0 n t x)`.
+
+Establish `h3 : ((n : ℝ) ^ D)⁻¹ * B n t x ≤ C`. Rewrite using `[inv_mul_le_iff₀ hnD]`. Combine the linear relations using `[mul_comm C ((n : ℝ) ^ D)]`. Rewrite using `[norm_mul, Real.norm_of_nonneg h2]`. Conclude with `mul_le_mul (hM x) h3 h2 hM0`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hlim : ∀ t ∈ Icc (0 : ℝ) 1, Tendsto (fun n ↦ F n t) atTop (𝓝 (f t))`. Introduce `t ht`. Establish `hL1` using `hL A L (W₀.lerp W₁ t) dV (lerp_isSemipositive h₀ h₁ ht) V hV (hdim t ht)`. Establish `hbt : Integrable (b t) dV.μ` using `hBD A L (W₀.lerp W₁ t) dV`.
+
+Establish `hub : Integrable (fun x ↦ u x * b t x) dV.μ` using `hbt.bdd_mul hu_meas (ae_of_all _ hM)`. Establish `key : ∀ n, ‖F n t - f t‖ ≤ M * ∫ x, |((n : ℝ) ^ D)⁻¹ * B n t x - b t x| ∂dV.μ`. Introduce `n`. Establish `hg : Integrable (fun x ↦ ((n : ℝ) ^ D)⁻¹ * B n t x) dV.μ` using `(hBI A L (W₀.lerp W₁ t) dV n (V n) (hV n)).const_mul _`. Establish `hug : Integrable (fun x ↦ u x * (((n : ℝ) ^ D)⁻¹ * B n t x)) dV.μ` using `hg.bdd_mul hu_meas (ae_of_all _ hM)`.
+
+Establish `hd : Integrable (fun x ↦ |((n : ℝ) ^ D)⁻¹ * B n t x - b t x|) dV.μ` using `(hg.sub hbt).abs`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← integral_sub hug hub]`. Use `congr 2`. Use function extensionality and compare the values at `x`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∫ x, ‖u x * (((n : ℝ) ^ D)⁻¹ * B n t x - b t x)‖ ∂dV.μ := norm_integral_le_integral_norm _`. Use `_ ≤ ∫ x, M * |((n : ℝ) ^ D)⁻¹ * B n t x - b t x| ∂dV.μ := by`. Use `integral_mono_of_nonneg (ae_of_all _ fun x ↦ norm_nonneg _) (hd.const_mul M) (ae_of_all _ fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[norm_mul, Real.norm_eq_abs (_ - _)]`. Conclude with `mul_le_mul_of_nonneg_right (hM x) (abs_nonneg _)`. Use `_ = M * ∫ x, |((n : ℝ) ^ D)⁻¹ * B n t x - b t x| ∂dV.μ := integral_const_mul _ _`. Establish `h0 : Tendsto (fun n : ℕ ↦ M * ∫ x, |((n : ℝ) ^ D)⁻¹ * B n t x - b t x| ∂dV.μ) atTop (𝓝 0)`. Simplify using `using hL1.const_mul M`.
+
+Conclude with `tendsto_iff_norm_sub_tendsto_zero.2 (squeeze_zero (fun n ↦ norm_nonneg _) key h0)`. Establish `hI : Tendsto (fun n ↦ ∫ t in (0 : ℝ)..1, F n t) atTop (𝓝 (∫ t in (0 : ℝ)..1, f t))`. Use `intervalIntegral.tendsto_integral_filter_of_dominated_convergence (fun _ ↦ M * C) ?_ ?_ intervalIntegrable_const ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Conclude with `(hFmeas n hn).aestronglyMeasurable`.
+
+Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Use `ae_of_all _ fun t ht ↦ hFbound n hn t ?_` and prove the remaining obligations. Rewrite `ht` using `[uIoc_of_le zero_le_one]`. Conclude with `Ioc_subset_Icc_self ht`. Use `ae_of_all _ fun t ht ↦ hlim t ?_` and prove the remaining obligations.
+
+Rewrite `ht` using `[uIoc_of_le zero_le_one]`. Conclude with `Ioc_subset_Icc_self ht`. Establish `hsmall : ∀ᶠ n in atTop, |(∫ t in (0 : ℝ)..1, F n t) - ∫ t in (0 : ℝ)..1, f t| ≤ 2 * ε`. Use `(tendsto_order.1 (tendsto_iff_norm_sub_tendsto_zero.1 hI)).2 (2 * ε) (by positivity)` as an intermediate fact. Use `filter_upwards [this] with n hn`.
+
+Rewrite using `[← Real.norm_eq_abs]`. Conclude with `hn.le`. Use `filter_upwards [hsmall, eventually_ge_atTop 1] with n hn hn1`. Establish `hint : IntervalIntegrable (F n) volume 0 1`. Use `(intervalIntegrable_const (c := M * C)).mono_fun (hFmeas n hn1).aestronglyMeasurable ?_` and prove the remaining obligations.
+
+Use `(ae_restrict_iff' measurableSet_uIoc).2 (ae_of_all _ fun t ht ↦ ?_)` and prove the remaining obligations. Rewrite `ht` using `[uIoc_of_le zero_le_one]`. Conclude with `(hFbound n hn1 t (Ioc_subset_Icc_self ht)).trans (Real.le_norm_self _)`. Establish `hftc : χ n 1 - χ n 0 = ∫ t in (0 : ℝ)..1, (n : ℝ) ^ (D + 1) / 2 * F n t` using `(intervalIntegral.integral_eq_sub_of_hasDerivAt (fun t _ ↦ hderiv' n hn1 t) (hint.const_mul _)).symm`. Rewrite `hftc` using `[intervalIntegral.integral_const_mul]`.
+
+Establish `hχ1 : χ n 1 = chiGram W₁ dV n (fun a ↦ (e n a : Fin A.n → X → ℂ))`. Simplify using `[χ, chiGram, gram, Weight.lerp]`. Establish `hχ0 : χ n 0 = chiGram W₀ dV n (fun a ↦ (e n a : Fin A.n → X → ℂ))`. Simplify using `[χ, chiGram, gram, Weight.lerp]`. Rewrite `hftc` using `[hχ1, hχ0]`.
+
+Express the relevant statement in the definitionally equal form `|chiGram W₁ dV n (fun a ↦ (e n a : Fin A.n → X → ℂ)) - chiGram W₀ dV n (fun a ↦ (e n a : Fin A.n → X → ℂ)) - (n : ℝ) ^ (D + 1) / 2 * ∫ t in (0 : ℝ)..1, f t| ≤ ε * (n : ℝ) ^ (D + 1)`. Rewrite using `[hftc, ← mul_sub, abs_mul, abs_of_pos (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem proof (hG : GramChiDerivative.Statement) (hBI : BergmanIntegrable.Statement)
     (hBD : BergmanDensIntegrable.Statement) (hU : UniformBergmanBound.Statement)
     (hL : BergmanL1Convergence.Statement) : MetricChange.Statement := by

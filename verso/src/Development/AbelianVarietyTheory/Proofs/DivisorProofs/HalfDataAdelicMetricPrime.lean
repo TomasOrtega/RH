@@ -51,9 +51,55 @@ namespace GlobalTheory.HalfGeo
 
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+The claim follows from `Spec.map_comp _ _`.
+-/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := Spec.map_comp _ _
 
+/- English proof (translation)
+Use `haveI : CharZero S.functionField := hK`. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Use `haveI := GlobalTheory.DetHT.mono_j_int Z`. Establish `hq : p ^ 2 ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `hgen (s : S) : spMap (algebraMap (S.presheaf.stalk s) S.functionField) ≫ (S.fromSpecStalk s ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`.
+
+Rewrite using `[← Category.assoc]`. Use `congr 1`. Conclude with `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes s)`. Take `⟨ξ₀, hξ₀⟩` from `GlobalTheory.DetHT.exists_lift_int Z (K := S.functionField) (S.fromSpecStalk (genericPoint S) ≫ ρ) (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+
+Take `rfl : q = IsLocalRing.closedPoint _` from `Subsingleton.elim (α := PrimeSpectrum S.functionField) _ _`. Conclude with `((Scheme.Hom.comp_apply _ _ _).trans (congrArg ρ Scheme.fromSpecStalk_closedPoint)).symm ▸ hgp)`. Take `⟨s, ζ, B, hζp, hB, hG, hsg⟩` from `hGram E H Dw l Xo c _ _ Z S.functionField ξ₀ (p ^ 2) hq hζ (hξ₀ ▸ hsplit) N hrk`. Take `⟨χ, hχ, hχg⟩` from `hHom E H Dw l Xo c _ _ Z S.functionField ξ₀ _ hξ₀ (p ^ 2) hq N s ζ B hζp hB hG hsg`. Establish `key (s : S)` using `by haveI := (hN s).1 haveI := (hN s).2`.
+
+Conclude with `GlobalTheory.T.integral_point_extension_split E H Z.X Z.t S.functionField _ (p ^ 2) hq hζ hsplit (S.presheaf.stalk s) _ (hgen s)`. Establish `hz (y : Sp ↥(intO ℂ_[p]) ⟶ S) : spMap (Scheme.stalkClosedPointTo y).hom ≫ (S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ) = y ≫ ρ`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ ρ) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y)`. Establish `L (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `(key (y (IsLocalRing.closedPoint _))).2 p (Scheme.stalkClosedPointTo y).hom (y ≫ ρ) inferInstance (hz y)`.
+
+Set `ch : Fin N → ∀ y : Sp ↥(intO ℂ_[p]) ⟶ S, TorsChar Z.t (y ≫ ρ) (p ^ 2)` to `fun j y => Classical.choose ((L y).1 (χ j))`. Establish `hc (j : Fin N) (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `Classical.choose_spec ((L y).1 (χ j))`. Establish `memU (U : S.Opens) (hU : IsAffineOpen U) (x : Γ(S, U) →+* ↥(intO ℂ_[p])) (y : Sp ↥(intO ℂ_[p]) ⟶ S) (hxy : spMap x ≫ hU.fromSpec = y) : y (IsLocalRing.closedPoint _) ∈ U`. Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec, ← hxy]`. Conclude with `⟨_, rfl⟩`.
+
+Establish `hBJ : B.transpose * B.transpose⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (by rwa [Matrix.det_transpose])`. Use `⟨ch, B.transpose⁻¹, Matrix.isUnit_det_of_left_inverse hBJ, fun y => ?_, fun U hU g e he => ?_, fun y K _ k z₀ hK hy => ?_⟩` and prove the remaining obligations. Use `haveI := (hN (y (IsLocalRing.closedPoint _))).1 haveI := (hN (y (IsLocalRing.closedPoint _))).2`. Conclude with `hGens E H Z.X Z.t S.functionField _ (p ^ 2) hq hζ hsplit _ _ (hgen _) p _ _ inferInstance (hz y) N χ _ hχg fun m => hc m y`. Distinguish the cases in `hne : Nonempty U swap`.
+
+Conclude with `⟨fun _ _ => 0, fun x y hxy _ => absurd ⟨⟨_, memU U hU x y hxy⟩⟩ hne⟩`. Use `haveI : IsIntegrallyClosed Γ(S, U) := GlobalTheory.LineNorm.Chart.isIntegrallyClosed_sections hN hU`. Use `haveI := functionField_isFractionRing_of_isAffineOpen S U hU`. Establish `hgU : genericPoint S ∈ U`. Take `⟨u⟩` from `hne`.
+
+Conclude with `(genericPoint_specializes u.1).mem_open U.isOpen u.2`. Establish `hchart : spMap (algebraMap Γ(S, U) S.functionField) ≫ (hU.fromSpec ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hgU]`. Both sides reduce to the same expression. Use `choose hh hhs using fun j : Fin N => GlobalTheory.T.integral_point_torsion_split E H Z.X Z.t S.functionField _ p 2 hsplit Γ(S, U) (hU.fromSpec ≫ ρ) hchart g e he.1 (χ j)`.
+
+Use `⟨hh, fun x y hxy j => ?_⟩` and prove the remaining obligations. Establish `hs` using `memU U hU x y hxy`. Set `φ` to `(S.presheaf.germ U _ hs).hom`. Establish `hu : (algebraMap (S.presheaf.stalk (y (IsLocalRing.closedPoint _))) S.functionField).comp φ = algebraMap Γ(S, U) S.functionField` using `by show (S.presheaf.germ U _ hs ≫ S.presheaf.stalkSpecializes (genericPoint_specializes _)).hom = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes]`.
+
+Both sides reduce to the same expression. Establish `hx0 : spMap φ ≫ hU.fromSpec ≫ ρ = S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hs]`. Both sides reduce to the same expression. Establish `heq : (Scheme.stalkClosedPointTo y).hom.comp φ = x`.
+
+Apply `GlobalTheory.LineNorm.Chart.ringHom_ext hU` to reduce the goal to its premises. Rewrite using `[hxy]`. Use `show Spec.map (CommRingCat.ofHom ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ hU.fromSpec = y`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `show _ ≫ hU.fromSpecStalk hs = y`.
+
+Rewrite using `[hU.fromSpecStalk_eq_fromSpecStalk hs]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk y`. Establish `k : DlogIs Z.t p 2 (ch j y) (fun i => spMap (dualMap ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ e i) (fun i => ((Scheme.stalkClosedPointTo y).hom.comp φ) (hh j i))` using `hhs j _ φ _ _ _ _ (ch j y) hu hx0 inferInstance (hz y) (hc j y)`. Rewrite `k` using `[heq]`. Conclude with `k`.
+
+Take `⟨ω, hω⟩ : ∃ ω : Sp ℂ_[p] ⟶ S, ω = spMap (intO ℂ_[p]).subtype ≫ y` from `⟨_, rfl⟩`. Set `a : S` to `y (IsLocalRing.closedPoint _)`. Set `b : S` to `ω (IsLocalRing.closedPoint _)`. Establish `hba : b ⤳ a`. Establish `: b = y (spMap (intO ℂ_[p]).subtype (IsLocalRing.closedPoint _))` using `by simp only [b, hω]; rfl`.
+
+Rewrite using `[this]`. Conclude with `(IsLocalRing.specializes_closedPoint _).map y.continuous`. Use `haveI := (hN a).1`. Use `haveI := (hN a).2`. Use `haveI := (hN b).1`.
+
+Use `haveI := (hN b).2`. Set `r : S.presheaf.stalk a →+* S.presheaf.stalk b` to `(S.presheaf.stalkSpecializes hba).hom`. Set `ψ' : S.presheaf.stalk b →+* ℂ_[p]` to `(Scheme.stalkClosedPointTo ω).hom`. Establish `hψ' : spMap ψ' ≫ S.fromSpecStalk b = ω` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ω`. Establish `hr : spMap r ≫ S.fromSpecStalk a = S.fromSpecStalk b` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hba`.
+
+Establish `hωρ : spMap ψ' ≫ S.fromSpecStalk b ≫ ρ = (spMap k ≫ z₀) ≫ Z.j`. Rewrite using `[← Category.assoc, hψ', hω, Category.assoc, hy, Category.assoc]`. Take `⟨x₀, hx₀⟩` from `hLift E H Dw l Xo c Z _ _ ψ' inferInstance (S.fromSpecStalk b ≫ ρ) _ hωρ`. Establish `h1 : spMap (algebraMap (S.presheaf.stalk b) S.functionField) ≫ x₀ = ξ₀`. Rewrite using `[← cancel_mono Z.j, Category.assoc, hx₀, hgen, hξ₀]`.
+
+Establish `h2 : spMap ψ' ≫ x₀ = spMap k ≫ z₀` using `by rw [← cancel_mono Z.j, Category.assoc, hx₀, hωρ]`. Establish `h3 : ψ'.comp r = (intO ℂ_[p]).subtype.comp (Scheme.stalkClosedPointTo y).hom`. Establish `e : spMap (ψ'.comp r) ≫ S.fromSpecStalk a = spMap ((intO ℂ_[p]).subtype.comp (Scheme.stalkClosedPointTo y).hom) ≫ S.fromSpecStalk a`. Rewrite using `[sp_comp, sp_comp, Category.assoc, Category.assoc, hr, hψ', hω]`. Conclude with `congrArg (_ ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).symm`.
+
+Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e))`. Establish `h4 : (algebraMap (S.presheaf.stalk b) S.functionField).comp r = algebraMap (S.presheaf.stalk a) S.functionField` using `congrArg CommRingCat.Hom.hom (TopCat.Presheaf.stalkSpecializes_comp S.presheaf _ _)`. Establish `hinj` using `IsFractionRing.injective (S.presheaf.stalk b) S.functionField`. Use `choose s' hs' hs'' using fun m => hExt E H Dw l Xo c _ _ Z _ _ x₀ ξ₀ h1 (p ^ 2) hq (s m) (hG.1 m)`. Set `o : Over.mk (spMap k ≫ z₀) ⟶ Over.mk x₀` to `Over.homMk (spMap ψ') h2`.
+
+Take `⟨ζ₀, hζ₀⟩` from `GlobalTheory.HtChar.root_mem (R := S.presheaf.stalk b) hq (u := (ζ : S.functionField)) (by rw [← Units.val_pow_eq_pow_val, hζp.pow_eq_one, Units.val_one])`. Establish `hp₀ : IsPrimitiveRoot ζ₀ (p ^ 2)` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap _ S.functionField) (by rw [hζ₀]; exact IsPrimitiveRoot.coe_units_iff.2 hζp) hinj`. Set `ζ'` to `(hp₀.isUnit hq).unit`. Establish `hζ' : Units.map (algebraMap (S.presheaf.stalk b) S.functionField).toMonoidHom ζ' = ζ` using `Units.ext hζ₀`. Use `hIso E H Dw l Xo c _ _ Z p _ (spMap k ≫ z₀) (hPt E H Dw l Xo c Z hpq p K k z₀ hK _ _ rfl (by` and prove the remaining obligations.
+
+Rewrite using `[hy, Category.assoc])) N hrk (fun m => o ≫ s' m) (Units.map ψ'.toMonoidHom ζ') B _`. Use the proof step `(IsPrimitiveRoot.coe_units_iff.1 (GlobalTheory.HtChar.prim_map ψ' hq hp₀)) hBJ ⟨fun m => ?_, fun m m' => ?_⟩ _ fun m => ?_`. Rewrite using `[← MonObj.comp_pow, hs', MonObj.comp_one]`. Rewrite using `[← map_zpow]`. Use `hSpec E H Dw l Xo c _ _ Z _ _ _ _ ψ' hinj x₀ ξ₀ _ (p ^ 2) hq (s' m) (s' m') (s m) (s m') _ _ (hs' m) (hs' m') (hs'' m).symm (hs'' m').symm rfl rfl _ ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zpow, hζ']`. Conclude with `hG.2 m m'`. Conclude with `hChar E H Dw l Xo c _ _ Z S.functionField ξ₀ _ hξ₀ (p ^ 2) hq hζ hsplit _ _ (hgen a) _ r _ x₀ hinj h4 (by rw [hx₀, ← Category.assoc, hr]) h1 p _ ψ' _ _ inferInstance h3 (hz y) h2 (s m) (s' m) _ (hs' m) (hs'' m).symm rfl (χ m) _ (hχ m) (hc m y)`.
+-/
 theorem exists_family (hGram : GramSt) (hHom : HomSt) (hExt : ExtSt) (hSpec : SpecSt) (hChar : CharSt) (hGens : GensSt)
     (hLift : LiftSt) (hPt : PointSt) (hIso : IsoSt)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H}
@@ -199,6 +245,21 @@ theorem exists_family (hGram : GramSt) (hHom : HomSt) (hExt : ExtSt) (hSpec : Sp
         (by rw [hx₀, ← Category.assoc, hr]) h1 p _ ψ' _ _ inferInstance h3 (hz y) h2 (s m) (s' m) _ (hs' m) (hs'' m).symm rfl
         (χ m) _ (hχ m) (hc m y)
 
+/- English proof (translation)
+Use `choose cf hc₁ hc₂ hc₃ using hf.tri`. Set `T : Y.X → Matrix (Fin g) (Fin g) Y.Fn` to `fun y => Matrix.of fun k i => cf y i k`. Establish `hT (y : Y.X) : (T y).BlockTriangular id` using `fun k i h => hc₂ y i k h`. Establish `hTu (y : Y.X) : IsUnit (T y).det`. Rewrite using `[Matrix.det_of_upperTriangular (hT y), isUnit_iff_ne_zero]`.
+
+Conclude with `Finset.prod_ne_zero_iff.2 fun i _ h => (d y i).ne_zero ((hc₁ y i).symm.trans h)`. Establish `hch : ∀ x : V.X, ∃ (U : V.X.Opens) (hU : IsAffineOpen U) (n : ℕ) (e : Fin n → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)) (h : Fin (g + g) → Fin n → Γ(V.X, U)) (M : Matrix (Fin (g + g)) (Fin g) V.G.functionField), x ∈ U ∧ IsTanBasis t (hU.fromSpec ≫ ρ') e ∧ ChartDlog ch hU e h ∧ Char …`. Introduce `x`. Take `⟨⟨U, hU⟩, n, e, hx, he⟩` from `GlobalTheory.T.exists_affine_tangent_basis_locally E H X t V.X ρ' x`. Take `⟨h, hh⟩` from `hD U hU n e he`.
+
+Take `⟨M, hM⟩` from `hChart E H X t F Y V ρ' ρ hρ g u₀ f T hf.tan hTu hc₃ U hU n e he _ h`. Conclude with `⟨U, hU, n, e, h, M, hx, he, hh, hM⟩`. Use `choose U hU n e h M hx he hd hM using hch`. Use `⟨V, W, V.X, U, M, J, d, T, L, m, hJ, hW, hm, fun x _ => ⟨x, hx x⟩, fun i x _ => TopologicalSpace.Opens.mem_iSup.1 ((hLB i).cover.symm ▸ trivial : x ∈ ⨆ c, (L i).U c), fun y => ⟨hT y, hc₁ y⟩, hu, hL, fun a z hz k l => ?_, fun v hv ε y hy z yt hz hyt => ?_⟩` and prove the remaining obligations. Take `⟨α, b, -, -, hb⟩` from `hM a z hz`.
+
+Conclude with `⟨_, (hb k l).symm⟩`. Substitute `hv` using the available equality. Establish `P` using `fun a b ha hb => hTest E H X t hX F Y V ρ' ρ hρ g f T hf.indep v ch J hG (U a) (U b) (hU a) (hU b) _ _ (e a) (e b) (h a) (h b) (M a) (M b) (he a) (he b) (hd a) (hd b) (hM a) (hM b) ε y z yt hz hyt ha hb (hI _ y z hy hz) _ rfl`. Establish `h₀ : ⊤ ≤ yt ⁻¹ᵁ U (yt (IsLocalRing.closedPoint _))` using `(Scheme.preimage_eq_top_of_closedPoint_mem yt (hx _)).ge`. Establish `hpos` using `(P _ _ h₀ h₀).1`.
+
+Establish `Q` using `fun a b ha hb => hConv F v ε g J _ _ _ hpos (P a b ha hb).2`. Use `⟨_, fun k _ => Real.exp_pos _, fun i => ?_, fun a ha => ⟨(Q a a ha ha).1, (Q a a ha ha).2.1, (Q a a ha ha).2.2.1, fun b hb => (Q a b ha hb).2.2.2⟩⟩` and prove the remaining obligations. Rewrite using `[hlg i v rfl, Real.log_exp, Real.log_exp, add_sub_assoc, ← mul_sub, GlobalTheory.LineNorm.Chart.stepLog_eq ρ f (resP v) i v ε y hp.out _ rfl, decide_eq_true rfl]`. Use `congr 2`. Establish `h₁` using `hpos i`.
+
+Establish `h₂` using `hpos (i + 1)`. Establish `e₁ : (Finset.univ.filter fun l : Fin g => (l : ℕ) < i + 1) = insert i (Finset.univ.filter fun l : Fin g => (l : ℕ) < i)`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+
+Unfold `wedgeNorm at h₁ h₂ ⊢`. Rewrite `h₂`, the goal using `[e₁, Finset.prod_insert (by simp)]`. Rewrite using `[Real.log_mul (left_ne_zero_of_mul h₂.ne') h₁.ne', add_sub_cancel_right]`. Both sides reduce to the same expression.
+-/
 theorem halfData_of (hChart : ChartSt) (hTest : TestSt) (hConv : ConvSt)
     {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     [IsLocallyNoetherian X] {t : SAB H X} (hX : X.IsSeparated) {F : Type} [Field F] [NumberField F] {Y : Var F}
@@ -270,6 +331,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)} {F : Type} [Field F] [NumberField F] {ε : F ≃+* c.F}
   (C : GlobalTheory.ShFam.FlagCpt Z ε)
 
+/- English proof (translation)
+Establish `h : letterOf Dw (.inr k) = some ((letters Dw).get k)` using `List.getElem?_eq_getElem k.2`. Rewrite using `[Finset.prod_eq_single ((letters Dw).get k) (fun x _ hx => by`. Rewrite using `[expo_single, if_neg (by rw [h]; exact fun e => hx (Option.some.inj e).symm), zpow_zero]) (by simp),`. Use the proof step `expo_single, if_pos h, zpow_one]`.
+-/
 theorem prod_expo (a : ℕ → Bool) (R : Option ℝ) (k : Fin (letters Dw).length) (y : C.Y.X) :
     ∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw (Finsupp.single (a, R, .inr k) 1) x =
       dg C y ((letters Dw).get k).1 ((letters Dw).get k).2 := by
@@ -278,6 +342,27 @@ theorem prod_expo (a : ℕ → Bool) (R : Option ℝ) (k : Fin (letters Dw).leng
     rw [expo_single, if_neg (by rw [h]; exact fun e => hx (Option.some.inj e).symm), zpow_zero]) (by simp),
     expo_single, if_pos h, zpow_one]
 
+/- English proof (translation)
+Substitute `hg` using the available equality. Set `w : Fin (letters Dw).length → (Sym E →₀ ℤ)` to `fun k => Finsupp.single (a, R, .inr k) 1`. Take `⟨V₀, m, hm0, hV₀⟩` from `hBun F C.Y _ (fun k => divOf C (expo Dw (w k))) (fun k => lgOf C (w k)) ⟨M₀, hM⟩ fun k => fromModel_lgOf C GlobalTheory.ShFam.Pad.HTBound.htBound hX M₀ ρ₀ hM hρ (w k) fun b hb => by`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset hb)]`. Conclude with `ha`.
+
+Take `⟨V, b, b', ρ', e₀, e₁, e₂, e₃, e₄, hz, hζ, hs⟩` from `GlobalTheory.T.cover_refinement_exists _ _ _ Z.t _ _ M₀ ρ₀ V₀ (p ^ 2) (pow_ne_zero _ hp.out.ne_zero)`. Rewrite `e₄` using `[hρ]`. Take `⟨L, hL⟩` from `hV₀ V b b' e₀ e₁ e₂ e₃`. Use `haveI := Z.jQ_open`. Set `W : C.Y.X.Opens` to `C.π ⁻¹ᵁ Z.jQ.opensRange`.
+
+Establish `hW : genericPoint C.Y.X ∈ W`. Use `letI := (GlobalTheory.ShFam.constF ε C.Y).toAlgebra`. Use `⟨GlobalTheory.AllWt.ptF C.y0 (IsLocalRing.closedPoint _), ?_⟩` and prove the remaining obligations. Use `(Scheme.Hom.comp_apply _ _ _).symm.trans ((congrArg (fun q : Sp C.Y.Fn ⟶ _ => q (IsLocalRing.closedPoint _)) C.y0_x).trans ?_)` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (congrArg C.π Scheme.fromSpecStalk_closedPoint)`.
+
+Establish `hrange (x : V.G) (hx : V.π x ∈ W) : ρ' (V.j x) ∈ Set.range Z.j`. Take `⟨q, hq⟩` from `hx`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e₄, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, ← hq]`. Both sides reduce to the same expression.
+
+Establish `hgp : ρ' (genericPoint V.X) ∈ Set.range Z.j`. Establish `h₁ : V.j (genericPoint V.G) = genericPoint V.X` using `((GlobalTheory.HtGen.SplitCover.j_gen_specializes V).antisymm (genericPoint_specializes _)).eq`. Establish `h₂ : V.π (genericPoint V.G) = genericPoint C.Y.X` using `(V.φ_eq_fnMap.1.antisymm (genericPoint_specializes _)).eq`. Rewrite using `[← h₁]`. Conclude with `hrange _ (h₂ ▸ hW)`.
+
+Take `⟨ch, J, hJ, hG, hD, hI⟩` from `exists_family hGram hHom hExt hSpec hChar hGens hLift hPt hIso Z hpq V.X ρ' p V.normal hz hζ hs hgp _ hrk`. Establish `hu (i : Fin (letters Dw).length) (y : C.Y.X) : genAt (divOf C (expo Dw (w i))) y * (dg C y ((letters Dw).get i).1 ((letters Dw).get i).2 : C.Y.Fn) = ((∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw (w i) x) * (eqn (divOf C (expo Dw (w i))) y)⁻¹ : C.Y.Fnˣ)`. Rewrite using `[prod_expo, Units.val_mul, mul_comm, genAt]`. Use `halfData_of hChart hTest hConv hX _ p V ρ' _ e₄ (isFlagFrame_concat C) W hW L m hm0 (fun i => (hL i).1) (fun i => (hL i).2 p) (fun i y => ?_) (fun i v hv e y => ?_) ch J hJ hG hD fun k y z hy hz yO hyO => ?_` and prove the remaining obligations. Establish `h₁ : (divOf C (expo Dw (w i))).IsEqn y (∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw (w i) x)` using `isEqn_sum _ y fun x => ((fr_spec C y).2 x.1 x.2).zsmul _`.
+
+Use `(hu i y).symm ▸ ?_` and prove the remaining obligations. Simplify `(Base.isEqn_eqn _ y).iff_unitAt.1 h₁` using `[div_eq_mul_inv]`. Express the relevant statement in the definitionally equal form `lgOf C (w i) v e y = Real.log (e.w (valAt y.1 (genAt (divOf C (expo Dw (w i))) _ * _))) + _`. Rewrite using `[hu, lgOf_eq_lgCopy, lgCopy_eq, mixLog_eq (b := a) (by simp [hv, hap])]`. Use `congr 1`.
+
+Use `(Finsupp.sum_single_index (h := fun (a : Sym E) (n : ℤ) => (n : ℝ) * symLog C a.1 a.2.2 v e y) (by simp)).trans ?_` and prove the remaining obligations. Simplify using `only [symLog, mixLog, lnStep, dif_pos i.2, Int.cast_one, _root_.one_mul]`. Take `⟨z₀, hz₀⟩` from `GlobalTheory.DetHT.exists_lift_int Z (z ≫ V.j ≫ ρ') (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `rfl : q = IsLocalRing.closedPoint _` from `Subsingleton.elim (α := PrimeSpectrum (AlgebraicClosure F)) _ _`.
+
+Use `hrange (below z) ?_` and prove the remaining obligations. Rewrite `hy` using `[← hz]`. Conclude with `hy)`. Use `haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure F) := Algebra.IsAlgebraic.trans ℚ F _`. Use `hI yO _ k z₀ (fun x => (IsFractionRing.isAlgebraic_iff ℤ ℚ _).2 (Algebra.IsAlgebraic.isAlgebraic x)) ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, hyO, hz₀, Category.assoc, Category.assoc]`.
+-/
 theorem halfData_flag (hGram : GramSt) (hHom : HomSt) (hExt : ExtSt) (hSpec : SpecSt) (hChar : CharSt) (hGens : GensSt)
     (hLift : LiftSt) (hPt : PointSt) (hIso : IsoSt) (hChart : ChartSt) (hTest : TestSt) (hConv : ConvSt) (hBun : BundleSt)
     [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) (M₀ : GlobalTheory.TrueGeo.Model C.Y) (ρ₀ : M₀.X ⟶ Z.X)
@@ -348,6 +433,13 @@ end GlobalTheory.HalfGeo
 
 open GlobalTheory.Mean4 GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published GlobalTheory.HalfGeo in
 
+/- English proof (translation)
+Use `haveI := Fact.mk hp`. Take `⟨hX, hN, M₀, ρ', hM, hρ⟩` from `GlobalTheory.T.exists_normal_model_over_projective D.what₂.LL (O.Φ.C c).Y (𝓞 O.κ.c.F) (RingOfIntegers.mapRingEquiv O.κ.e) O.s.T.Z.X O.s.T.Z.s ((O.Φ.C c).π ≫ GlobalTheory.Toroidal.genι O.s.T.Z) O.s.T.Z.proj (by`. Rewrite using `[← (O.Φ.C c).π_str]`. Simplify using `only [Category.assoc]`. Rewrite using `[Limits.pullback.condition_assoc, ← Spec.map_comp, ← Spec.map_comp]`.
+
+Use the proof step `rfl)`. Establish `hpq : O.S.Dw.p + O.S.Dw.q = O.N` using `O.S.rank_eq`. Establish `hj` using `O.indef`. Use `halfData_flag (O.Φ.C c) hGram hHom hExt hSpec hChar hGens hLift hPt hIso hChart hTest hConv hBun hX M₀ ρ' hM hρ (by omega) (length_letters O.S) ?_ _ _ ((insert p Sx).finite_toSet.subset fun q hq => ?_) _ p (Function.update_self ..)` and prove the remaining obligations. Rewrite using `[GlobalTheory.ZM.finrank_int_lattice, GlobalTheory.Proof.LetterConjugation.finrank_host, hpq, Nat.mul_div_cancel_left _ two_pos, two_mul]`.
+
+Distinguish the cases in `h : q = p`. Simplify using `[h]`. Simplify `hq` using `[Function.update_of_ne h, ArIn.ind, h]`.
+-/
 theorem GlobalTheory.HalfGeo.halfData_of_steps (hGram : GramSt) (hHom : HomSt) (hExt : ExtSt) (hSpec : SpecSt) (hChar : CharSt)
     (hGens : GensSt) (hLift : LiftSt) (hPt : PointSt) (hIso : IsoSt) (hChart : ChartSt) (hTest : TestSt) (hConv : ConvSt)
     (hBun : BundleSt) (D : Formalism.BasicNotions.D7) (O : Setup D) (Sx : Finset ℕ) (R : ℝ) (p : ℕ) (hp : p.Prime) (c : O.s.Comp) :
@@ -372,6 +464,9 @@ theorem GlobalTheory.HalfGeo.halfData_of_steps (hGram : GramSt) (hHom : HomSt) (
 
 open GlobalTheory.Mean4 GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.Published GlobalTheory.HalfGeo in
 
+/- English proof (translation)
+Introduce `h₂ _ _ _ D O _ Sx R _ p hp c` and use `halfData_of_steps GlobalTheory.T.gram_matrix_result GlobalTheory.T.homomorphism_result GlobalTheory.T.extension_result GlobalTheory.T.spectral_result (GlobalTheory.T.character_of_spectral_result GlobalTheory.T.spectral_result) GlobalTheory.T.generators_result GlobalTheory.T.lifti …`.
+-/
 theorem GlobalTheory.HalfGeo.halfData_whole : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB → ∀ (D : D7) (O : Setup D), O.Core →
     ∀ (Sx : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → ∀ c : O.s.Comp,
     HalfDataC (fun k : Fin (D.R.f * O.N) => adlOf (O.Φ.C c) (O.met.hm c)

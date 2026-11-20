@@ -11,6 +11,19 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
+/- English proof (translation)
+Introduce `ν hsum hne a`. Establish `hsplit : ν a + ∑ i ∈ Finset.univ.erase a, ν i = 0`. Rewrite using `[Finset.add_sum_erase _ _ (Finset.mem_univ a)]`. Conclude with `hsum`. Establish `hell : (0 : ℤ) ≤ (ellOf E (⊤ : Submodule K V) : ℤ)` using `by positivity`.
+
+Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Distinguish the cases in `h0 : 0 ≤ ν a`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at h0`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbpos⟩ : ∃ b ∈ Finset.univ.erase a, 0 < ν b := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `Finset.sum_nonpos hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hba : b ≠ a` using `Finset.ne_of_mem_erase hb`. Use `weight_difference_le_ell_of_rep hE ν hne b a hba (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h0 : ν a ≤ 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `push_neg at h0`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbneg⟩ : ∃ b ∈ Finset.univ.erase a, ν b < 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `Finset.sum_nonneg hc` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hab : a ≠ b` using `(Finset.ne_of_mem_erase hb).symm`. Use `weight_difference_le_ell_of_rep hE ν hne a b hab (by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private theorem degreeZeroWeightsBounded_ellOf {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     [CharZero K] [FiniteDimensional K V] {E : GLOps n K V} (hE : IsGLRep E) :
     DegreeZeroWeightsBounded E (ellOf E (⊤ : Submodule K V)) := by
@@ -43,6 +56,13 @@ private theorem degreeZeroWeightsBounded_ellOf {n : ℕ} {K V : Type*} [Field K]
       have := weight_difference_le_ell_of_rep hE ν hne a b hab (by linarith)
       linarith
 
+/- English proof (translation)
+Introduce `ν hsum hne a`. Establish `hmem : (ν a).natAbs ∈ {k | ∃ nu ∈ wtsOf E (⊤ : Submodule K V), (∑ b, nu b = 0) ∧ ∃ b, k = (nu b).natAbs}` using `⟨ν, by simpa [wtsOf] using hne, hsum, a, rfl⟩`. Establish `hbdd : BddAbove {k | ∃ nu ∈ wtsOf E (⊤ : Submodule K V), (∑ b, nu b = 0) ∧ ∃ b, k = (nu b).natAbs}`. Use `⟨ellOf E (⊤ : Submodule K V), ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨nu, hnu, hs, b, rfl⟩`.
+
+Establish `hne' : weightSp E nu ≠ ⊥` using `by simpa [wtsOf] using hnu`. Establish `h` using `degreeZeroWeightsBounded_ellOf hE nu hs hne' b`. Rewrite `h` using `[Int.abs_eq_natAbs]`. Conclude with `h` after adjusting the coercions. Establish `hle : (ν a).natAbs ≤ linf E (⊤ : Submodule K V)`.
+
+Unfold `linf`. Conclude with `le_csSup hbdd hmem`. Rewrite using `[Int.abs_eq_natAbs]`. Conclude with `hle` after adjusting the coercions.
+-/
 private theorem degreeZeroWeightsBounded_linf {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
     [CharZero K] [FiniteDimensional K V] {E : GLOps n K V} (hE : IsGLRep E) :
     DegreeZeroWeightsBounded E (linf E (⊤ : Submodule K V)) := by
@@ -64,6 +84,9 @@ private theorem degreeZeroWeightsBounded_linf {n : ℕ} {K V : Type*} [Field K] 
   rw [Int.abs_eq_natAbs]
   exact_mod_cast hle
 
+/- English proof (translation)
+Introduce `p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv x hx`. Use `haveI : CharZero (KK O) := dvr_fraction_field_charZero_prime S hG.prime`. Rewrite using `[hMQ]`. Conclude with `invariant_projection_denominator_bound D h2 p O n V E hE M hM.1 Inv hInv _ _ (fun c u hu0 hu => extremal_projector_properties hE c _ (degreeZeroWeightsBounded_linf hE) u hu0 hu) (fun c y hy => extremalProjector_denominator_bound S hG.prime hE hM.1 c _ y hy) x hx`.
+-/
 theorem linf_lemma_without_projector (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : InvariantDenominatorLinftyBound := by
   intro p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv x hx
   haveI : CharZero (KK O) := dvr_fraction_field_charZero_prime S hG.prime
@@ -72,6 +95,9 @@ theorem linf_lemma_without_projector (D : Formalism.BasicNotions.D7) (h2 : adm2 
     (fun c u hu0 hu => extremal_projector_properties hE c _ (degreeZeroWeightsBounded_linf hE) u hu0 hu)
     (fun c y hy => extremalProjector_denominator_bound S hG.prime hE hM.1 c _ y hy) x hx
 
+/- English proof (translation)
+Introduce `p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv x hx`. Use `haveI : CharZero (KK O) := dvr_fraction_field_charZero_prime S hG.prime`. Rewrite using `[hMQ]`. Conclude with `invariant_projection_denominator_bound D h2 p O n V E hE M hM.1 Inv hInv _ _ (fun c u hu0 hu => extremal_projector_properties hE c _ (degreeZeroWeightsBounded_ellOf hE) u hu0 hu) (fun c y hy => extremalProjector_denominator_bound S hG.prime hE hM.1 c _ y hy) x hx`.
+-/
 theorem denominator_lemma_without_projector (D : Formalism.BasicNotions.D7) (h2 : adm2 D) : InvariantProjectionDenominator := by
   intro p n' O _ _ _ S hG n V _ _ _ _ _ E hE M hM hMQ Inv hInv x hx
   haveI : CharZero (KK O) := dvr_fraction_field_charZero_prime S hG.prime

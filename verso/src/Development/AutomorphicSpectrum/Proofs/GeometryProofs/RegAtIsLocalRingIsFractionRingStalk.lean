@@ -4,6 +4,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 
 namespace GlobalTheory.CompanionTheory.Ar
 
+/- English proof (translation)
+Establish `h` using `TopCat.Presheaf.germ_stalkSpecializes X.presheaf (U := U) hp p.2`. Establish `h2` using `congr(($h).hom r)`. Establish `e : ∀ x, genMap ξ p x = (Scheme.stalkClosedPointTo ξ).hom ((X.presheaf.stalkSpecializes p.2).hom x)` using `fun _ => rfl`. Rewrite using `[e]`. Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom h2`.
+-/
 theorem genMap_germ_eq_stalk_closed {X : Scheme.{0}} {Ω : Type} [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (p : Cpt ξ) (U : X.Opens) (hp : p.1 ∈ U)
     (hη : genPt ξ ∈ U) (r : Γ(X, U)) :
@@ -16,6 +19,9 @@ theorem genMap_germ_eq_stalk_closed {X : Scheme.{0}} {Ω : Type} [Field Ω]
   rw [e]
   exact congrArg (Scheme.stalkClosedPointTo ξ).hom h2
 
+/- English proof (translation)
+Establish `hl` using `hU.isLocalization_stalk x`. Take `⟨⟨r, t⟩, hrt⟩` from `IsLocalization.surj (hU.primeIdealOf x).asIdeal.primeCompl b`. Conclude with `⟨r, t.1, hrt, IsLocalization.map_units (X.presheaf.stalk x.1) (M := (hU.primeIdealOf x).asIdeal.primeCompl) t⟩`.
+-/
 theorem stalk_eq_germ_div_of_affine {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : U)
     (b : X.presheaf.stalk x.1) :
     ∃ r t : Γ(X, U), b * X.presheaf.germ U x.1 x.2 t = X.presheaf.germ U x.1 x.2 r ∧
@@ -25,6 +31,15 @@ theorem stalk_eq_germ_div_of_affine {X : Scheme.{0}} {U : X.Opens} (hU : IsAffin
   exact ⟨r, t.1, hrt, IsLocalization.map_units (X.presheaf.stalk x.1)
     (M := (hU.primeIdealOf x).asIdeal.primeCompl) t⟩
 
+/- English proof (translation)
+Introduce `X Ω _ ξ hξ p`. Establish `hsurj : Function.Surjective (genMap ξ p).rangeRestrict` using `(genMap ξ p).rangeRestrict_surjective`. Establish `hinj : Function.Injective (genMap ξ p).rangeRestrict` using `fun a b h => hξ.inj p (congrArg Subtype.val h)`. Establish `e : X.presheaf.stalk p.1 ≃+* regAt ξ p` using `RingEquiv.ofBijective (genMap ξ p).rangeRestrict ⟨hinj, hsurj⟩`. Establish `hloc : IsLocalRing (regAt ξ p)` using `IsLocalRing.of_surjective' (genMap ξ p).rangeRestrict hsurj`.
+
+Use `⟨hloc, ?_, ⟨e⟩⟩` and prove the remaining obligations. Apply `IsFractionRing.of_field` to reduce the goal to its premises. Introduce `a`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := p.1) trivial`. Establish `hη : genPt ξ ∈ U` using `p.2.mem_open U.2 hpU`.
+
+Take `⟨b, rfl⟩ : ∃ b : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom b = a` from `hξ.bij.2 a`. Take `⟨r, t, hrt, hunit⟩` from `stalk_eq_germ_div_of_affine hU ⟨genPt ξ, hη⟩ b`. Use `replace hrt : b * X.presheaf.germ U (genPt ξ) hη t = X.presheaf.germ U (genPt ξ) hη r := hrt`. Use `replace hunit : IsUnit (X.presheaf.germ U (genPt ξ) hη t) := hunit`. Establish `hne : (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hη t) ≠ 0` using `(hunit.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+
+Use `⟨⟨_, X.presheaf.germ U p.1 hpU r, rfl⟩, ⟨_, X.presheaf.germ U p.1 hpU t, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show _ = genMap ξ p (X.presheaf.germ U p.1 hpU r) / genMap ξ p (X.presheaf.germ U p.1 hpU t)`. Rewrite using `[genMap_germ_eq_stalk_closed ξ p U hpU hη, genMap_germ_eq_stalk_closed ξ p U hpU hη, eq_div_iff hne]`. Conclude with `((Scheme.stalkClosedPointTo ξ).hom.map_mul _ _).symm.trans (congrArg (Scheme.stalkClosedPointTo ξ).hom hrt)`.
+-/
 theorem regAt_isLocalRing_isFractionRing_stalk :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X), IsCptGen ξ →
       ∀ p : Cpt ξ, IsLocalRing (regAt ξ p) ∧ IsFractionRing (regAt ξ p) Ω ∧

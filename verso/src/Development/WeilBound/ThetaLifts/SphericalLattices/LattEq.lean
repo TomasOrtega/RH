@@ -8,6 +8,33 @@ open ValuativeRel Matrix
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `set L := latt t Y₀ with hL`. Establish `: Module.Finite 𝒪[k] L`. Rewrite using `[hL, latt]`. Conclude with `Module.Finite.span_of_finite _ ((Set.finite_range _).union (Set.finite_range _))`. Take `⟨m, b⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := 𝒪[k]) (M := L)`.
+
+Use `set w : Fin m → (Fin d → k) := fun i => (b i : Fin d → k) with hw`. Establish `hwL : ∀ i, w i ∈ L` using `fun i => (b i).2`. Establish `hli : LinearIndependent k w`. Rewrite using `[← LinearIndependent.iff_fractionRing 𝒪[k] k]`. Conclude with `b.linearIndependent.map' L.subtype (Submodule.ker_subtype L)`.
+
+Establish `hsum : ∀ x (hx : x ∈ L), x = ∑ i, ((b.repr ⟨x, hx⟩ i : 𝒪[k]) : k) • w i`. Introduce `x hx`. Establish `e` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e`. Use `e.symm.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(algebraMap_smul k _ _).symm`. Establish `hLw : ∀ x ∈ L, x ∈ Submodule.span k (Set.range w)`. Introduce `x hx`. Rewrite using `[hsum x hx]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+
+Establish `hsp : ⊤ ≤ Submodule.span k (Set.range w)`. Introduce `x _`. Establish `hx : x = ∑ j, (t⁻¹ * x j) • (t • Pi.single j (1 : k) : Fin d → k)`. Use extensionality with `l`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+
+Rewrite using `[mul_comm, ← mul_assoc, mul_inv_cancel₀ ht, one_mul]`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hLw _ ?_)` and prove the remaining obligations. Conclude with `Submodule.subset_span (Or.inr ⟨j, rfl⟩)`. Set `bk` to `Module.Basis.mk hli hsp`.
+
+Establish `hbk : ∀ i, bk i = w i` using `fun i => by simp [bk]`. Establish `hm : m = d`. Use `Module.finrank_eq_card_basis bk` as an intermediate fact. Simplify using `using this.symm`. Establish `hmem : ∀ v, v ∈ L ↔ ∀ i, bk.equivFun v i ∈ 𝒪[k]`.
+
+Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv i`. Establish `: bk.equivFun v = fun i => ((b.repr ⟨v, hv⟩ i : 𝒪[k]) : k)`. Apply `bk.equivFun.symm.injective` to reduce the goal to its premises.
+
+Rewrite using `[LinearEquiv.symm_apply_apply, Module.Basis.equivFun_symm_apply]`. Simplify `hsum v hv` using `only [hbk]`. Rewrite using `[this]`. Conclude with `(b.repr _ i).2`. Introduce `hc`.
+
+Rewrite using `[← bk.sum_equivFun v]`. Use `L.sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hbk i, show bk.equivFun v i • w i = (⟨bk.equivFun v i, hc i⟩ : 𝒪[k]) • w i from rfl]`. Conclude with `L.smul_mem _ (hwL i)`. Set `bk'` to `bk.reindex (finCongr hm)`.
+
+Set `hmat : Matrix (Fin d) (Fin d) k` to `(LinearMap.toMatrix' bk'.equivFun.toLinearMap)ᵀ`. Set `Bmat : Matrix (Fin d) (Fin d) k` to `(LinearMap.toMatrix' bk'.equivFun.symm.toLinearMap)ᵀ`. Establish `hB : hmat * Bmat = 1`. Simplify using `only [hmat, Bmat, ← Matrix.transpose_mul, ← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules.
+
+Use `⟨⟨hmat, Bmat, hB, mul_eq_one_comm.mp hB⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `key : v ᵥ* hmat = bk'.equivFun v`. Simplify using `[hmat, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`. Establish `hre : ∀ j, bk'.equivFun v j = bk.equivFun v ((finCongr hm).symm j)`. Introduce `j`.
+
+Simplify using `[bk', Module.Basis.equivFun_apply]`. Use `show v ∈ L ↔ ∀ j, (v ᵥ* hmat) j ∈ 𝒪[k]`. Rewrite using `[key, hmem]`. Simplify using `only [hre]`. Conclude with `⟨fun H j => H _, fun H i => by simpa using H (finCongr hm i)⟩`.
+-/
 theorem latt_eq {n d : ℕ} {t : k} (ht : t ≠ 0) (Y₀ : Matrix (Fin n) (Fin d) k) :
     ∃ h : GL (Fin d) k, ∀ v : Fin d → k, v ∈ latt t Y₀ ↔ ∀ j, (v ᵥ* h.1) j ∈ 𝒪[k] := by
   classical

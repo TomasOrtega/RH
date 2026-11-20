@@ -10,6 +10,11 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
 open MvPolynomial
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_subtype]`. Establish `: (Finset.univ.filter fun b : Fin n => (a : ℕ) ≤ b) = Finset.Ici (Fin.castLE (Nat.sub_le n 1) a)`. Use extensionality with `b`. Simplify using `[Fin.le_def]`. Rewrite using `[this, Fin.card_Ici]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem card_pivotCols_ge {n : ℕ} (a : Fin (n - 1)) :
     Fintype.card {b : Fin n // (a : ℕ) ≤ b} = n - a := by
   rw [Fintype.card_subtype]
@@ -18,6 +23,15 @@ theorem card_pivotCols_ge {n : ℕ} (a : Fin (n - 1)) :
   rw [this, Fin.card_Ici]
   simp
 
+/- English proof (translation)
+Rewrite using `[Fintype.card_sigma]`. Repeatedly rewrite using `[card_pivotCols_ge]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => n - i) (n - 1)]`. Break down `n with _ | m` into its components or cases. Simplify using `[flagDim]`.
+
+Simplify using `only [Nat.add_sub_cancel, flagDim]`. Establish `hr : ∑ i ∈ Finset.range m, (m + 1 - i) = ∑ i ∈ Finset.range m, (i + 2)`. Rewrite using `[← Finset.sum_range_reflect (fun i => i + 2) m]`. Conclude with `Finset.sum_congr rfl fun i hi => by simp at hi; omega`. Rewrite using `[hr, Finset.sum_add_distrib]`.
+
+Establish `h2` using `Finset.sum_range_id_mul_two m`. Establish `h3 : (m + 1) * m = (∑ i ∈ Finset.range m, i) * 2 + 2 * m`. Rewrite using `[h2]`. Break down `m with _ | k` into its components or cases. Simplify using the standard rewrite rules.
+
+Simplify using `only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Finset.sum_const, Finset.card_range, smul_eq_mul]`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_pivotIndex (n : ℕ) :
     Fintype.card (Σ a : Fin (n - 1), {b : Fin n // (a : ℕ) ≤ b}) = flagDim n + (n - 1) := by
   rw [Fintype.card_sigma]
@@ -39,6 +53,9 @@ theorem card_pivotIndex (n : ℕ) :
     rw [h3]
     omega
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply]`. Use `S.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (S.prod_mem fun i _ => h _ _) _`.
+-/
 theorem det_mem_subring {R : Type} [CommRing R] {m : Type} [Fintype m] [DecidableEq m] (S : Subring R)
     (M : Matrix m m R) (h : ∀ i j, M i j ∈ S) : M.det ∈ S := by
   rw [Matrix.det_apply]
@@ -55,6 +72,9 @@ def flagMinorAlg : Subalgebra F (MvPolynomial (Fin n × Fin n) F) :=
 
 abbrev PivotIdx := Σ a : Fin (n - 1), {b : Fin n // (a : ℕ) ≤ b}
 
+/- English proof (translation)
+Rewrite using `[pivotMinor_eq_flagMinor _ q.1 q.2.1 q.2.2]`. Conclude with `Algebra.subset_adjoin ⟨⟨q.1, _⟩, rfl⟩`.
+-/
 theorem pivotMinor_mem_flagMinorAlg (q : PivotIdx n) : pivotMinor (genMat F n) q.1 q.2.1 ∈ flagMinorAlg F n := by
   rw [pivotMinor_eq_flagMinor _ q.1 q.2.1 q.2.2]
   exact Algebra.subset_adjoin ⟨⟨q.1, _⟩, rfl⟩
@@ -66,13 +86,24 @@ def pivotAlg : Subalgebra F (flagMinorAlg F n) := Algebra.adjoin F (Set.range (p
 def pivotAlgP : Subalgebra F (MvPolynomial (Fin n × Fin n) F) :=
   Algebra.adjoin F (Set.range fun q : PivotIdx n => pivotMinor (genMat F n) q.1 q.2.1)
 
+/- English proof (translation)
+Rewrite using `[pivotAlg, AlgHom.map_adjoin, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem pivotAlgP_eq_map : pivotAlgP F n = (pivotAlg F n).map (flagMinorAlg F n).val := by
   rw [pivotAlg, AlgHom.map_adjoin, ← Set.range_comp]
   rfl
 
+/- English proof (translation)
+The claim follows from `Algebra.subset_adjoin ⟨⟨a, ⟨Fin.castLE (Nat.sub_le n 1) a, le_rfl⟩⟩, rfl⟩`.
+-/
 theorem leadMinor_mem_pivotAlgP (a : Fin (n - 1)) : leadMinor (genMat F n) a ∈ pivotAlgP F n :=
   Algebra.subset_adjoin ⟨⟨a, ⟨Fin.castLE (Nat.sub_le n 1) a, le_rfl⟩⟩, rfl⟩
 
+/- English proof (translation)
+Establish `hr : (r : ℕ) < n - 1` using `by have := j.2; have := r.2; omega`. Simplify using `only [pivotMatrix, Matrix.of_apply, Fin.val_castLE, dif_pos hr]`. Distinguish the cases in `h : (r : ℕ) ≤ b`. Conclude with `Algebra.subset_adjoin ⟨⟨⟨r, hr⟩, ⟨b, h⟩⟩, rfl⟩`. Rewrite using `[pivotMinor_eq_zero _ ⟨r, hr⟩ b (by simp only; omega)]`.
+
+Conclude with `zero_mem _`.
+-/
 theorem pivotMatrix_mem_pivotAlgP (j : Fin (n - 1)) (r : Fin (j + 1)) (b : Fin n) :
     pivotMatrix (genMat F n) (Fin.castLE (by have := j.2; omega) r) b ∈ pivotAlgP F n := by
   have hr : (r : ℕ) < n - 1 := by have := j.2; have := r.2; omega
@@ -82,12 +113,22 @@ theorem pivotMatrix_mem_pivotAlgP (j : Fin (n - 1)) (r : Fin (j + 1)) (b : Fin n
   · rw [pivotMinor_eq_zero _ ⟨r, hr⟩ b (by simp only; omega)]
     exact zero_mem _
 
+/- English proof (translation)
+Rewrite `hy` using `[pivotAlgP_eq_map]`. Take `⟨z, hz, rfl⟩` from `hy`. Conclude with `⟨⟨z, hz⟩, rfl⟩`.
+-/
 theorem exists_of_mem_pivotAlgP {y : MvPolynomial (Fin n × Fin n) F} (hy : y ∈ pivotAlgP F n) :
     ∃ z : pivotAlg F n, ((z : flagMinorAlg F n) : MvPolynomial (Fin n × Fin n) F) = y := by
   rw [pivotAlgP_eq_map] at hy
   obtain ⟨z, hz, rfl⟩ := hy
   exact ⟨⟨z, hz⟩, rfl⟩
 
+/- English proof (translation)
+Take `⟨j, S⟩` from `q`. Take `⟨c, hc⟩` from `exists_of_mem_pivotAlgP F n (y := ∏ a ∈ Finset.Iic j, leadMinor (genMat F n) a) (Subalgebra.prod_mem _ fun a _ => leadMinor_mem_pivotAlgP F n a)`. Take `⟨d, hd⟩` from `exists_of_mem_pivotAlgP F n (y := leadMinor (genMat F n) j * flagMinor (pivotMatrix (genMat F n)) j S) (Subalgebra.mul_mem _ (leadMinor_mem_pivotAlgP F n j) (det_mem_subring (pivotAlgP F n).toSubring _ fun r s => pivotMatrix_mem_pivotAlgP F n j r _))`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+
+Conclude with `(Finset.prod_ne_zero_iff.mpr fun a _ => hne a) hc.symm`. Establish `h1 : c • (⟨flagMinor (genMat F n) j S, Algebra.subset_adjoin ⟨⟨j, S⟩, rfl⟩⟩ : flagMinorAlg F n) = algebraMap (pivotAlg F n) (flagMinorAlg F n) d`. Apply `Subtype.val_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((c : flagMinorAlg F n) : MvPolynomial (Fin n × Fin n) F) * flagMinor (genMat F n) j S = ((d : flagMinorAlg F n) : MvPolynomial (Fin n × Fin n) F)`. Rewrite using `[hc, hd, ← h₁ (MvPolynomial (Fin n × Fin n) F) n (genMat F n) j S, mul_comm]`.
+
+Conclude with `IsAlgebraic.of_smul (mem_nonZeroDivisors_of_ne_zero hc0) (h1 ▸ isAlgebraic_algebraMap d)`.
+-/
 theorem isAlgebraic_flagMinor (h₁ : FlagPivotIdentity.Statement)
     (hne : ∀ a : Fin (n - 1), leadMinor (genMat F n) a ≠ 0) (q : Σ j, PluckerBlocks n n j) :
     IsAlgebraic (pivotAlg F n)
@@ -110,6 +151,13 @@ theorem isAlgebraic_flagMinor (h₁ : FlagPivotIdentity.Statement)
     rw [hc, hd, ← h₁ (MvPolynomial (Fin n × Fin n) F) n (genMat F n) j S, mul_comm]
   exact IsAlgebraic.of_smul (mem_nonZeroDivisors_of_ne_zero hc0) (h1 ▸ isAlgebraic_algebraMap d)
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy'`. Take `⟨q, rfl⟩` from `hy'`.
+
+Conclude with `isAlgebraic_flagMinor F n h₁ hne q`. Consider the case `algebraMap r => exact isAlgebraic_algebraMap (algebraMap F (pivotAlg F n) r)`. Consider the case `add y z hy hz ihy ihz`. Establish `e : (⟨y + z, add_mem hy hz⟩ : flagMinorAlg F n) = ⟨y, hy⟩ + ⟨z, hz⟩` using `Subtype.ext rfl`. Rewrite using `[e]`.
+
+Conclude with `ihy.add ihz`. Consider the case `mul y z hy hz ihy ihz`. Establish `e : (⟨y * z, mul_mem hy hz⟩ : flagMinorAlg F n) = ⟨y, hy⟩ * ⟨z, hz⟩` using `Subtype.ext rfl`. Rewrite using `[e]`. Conclude with `ihy.mul ihz`.
+-/
 theorem isAlgebraic_pivotAlg (h₁ : FlagPivotIdentity.Statement)
     (hne : ∀ a : Fin (n - 1), leadMinor (genMat F n) a ≠ 0) :
     Algebra.IsAlgebraic (pivotAlg F n) (flagMinorAlg F n) := by
@@ -131,6 +179,11 @@ theorem isAlgebraic_pivotAlg (h₁ : FlagPivotIdentity.Statement)
 
 end
 
+/- English proof (translation)
+Introduce `F _ n`. Establish `hx : AlgebraicIndependent F (pivotElt F n)` using `AlgebraicIndependent.of_comp (flagMinorAlg F n).val (h₂ F n)`. Establish `hne : ∀ a : Fin (n - 1), leadMinor (genMat F n) a ≠ 0` using `fun a h => hx.ne_zero ⟨a, ⟨Fin.castLE (Nat.sub_le n 1) a, le_rfl⟩⟩ (Subtype.ext h)`. Establish `tb` using `hx.isTranscendenceBasis_iff_isAlgebraic.mpr (isAlgebraic_pivotAlg F n h₁ hne)`. Establish `e` using `tb.cardinalMk_eq_trdeg`.
+
+Rewrite `e` using `[Cardinal.mk_fintype, card_pivotIndex]`. Conclude with `e.symm`.
+-/
 theorem FlagMinorsTrdeg.proof (h₁ : FlagPivotIdentity.Statement) (h₂ : FlagPivotAlgIndep.Statement) :
     FlagMinorsTrdeg.Statement := by
   intro F _ n

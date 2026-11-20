@@ -16,11 +16,17 @@ section Test
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Introduce `a n _ f hf t y y' hb`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`. Conclude with `wtField_of_borChart hB a n f hf (CAt σ) t y y' (hA _ y) (hA _ y') hb`.
+-/
 theorem wtC_of (hB : BorChartF Xo c) (hA : AllTest Xo c) (σ : c.F →+* ℂ) : WtC Xo c σ := by
   intro a n _ f hf t y y' hb
   letI : Field (CAt σ) := inferInstanceAs (Field ℂ)
   exact wtField_of_borChart hB a n f hf (CAt σ) t y y' (hA _ y) (hA _ y') hb
 
+/- English proof (translation)
+The claim follows from `testRd_of (U := U) (σ := σ) (hW := evalWD_fr hC) (hU := hU) (hB := hX) (hC := wtC_of hB hA σ)`.
+-/
 theorem testRd_rows {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ : c.F →+* ℂ) (hC : FrChartF Xo c)
     (hB : BorChartF Xo c) (hA : AllTest Xo c) (hU : IsUnf (U σ)) (hX : BCEx Xo c σ) : TestRd Xo c U σ :=
   testRd_of (U := U) (σ := σ) (hW := evalWD_fr hC) (hU := hU) (hB := hX) (hC := wtC_of hB hA σ)
@@ -32,6 +38,9 @@ section Inv
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
+/- English proof (translation)
+Introduce `a n hdn f hf k γ hγ x hx`. Rewrite using `[rdU_lact (U := U) (hU := hU) (hdn := hdn) (hf := hf) (k := k) γ hγ x hx, hχ, one_mul]`.
+-/
 theorem rdInvG_of_triv (U : Unf Xo c σ r) (hU : IsUnf U) (hχ : ∀ k la γ, (U.X k).χ la γ = 1) : RdInvG U := by
   intro a n hdn f hf k γ hγ x hx
   rw [rdU_lact (U := U) (hU := hU) (hdn := hdn) (hf := hf) (k := k) γ hγ x hx, hχ, one_mul]
@@ -46,6 +55,17 @@ def DictLoc (V : HSp D) {X : Comp → Data E r} (dict : GA D V → Σ k, Frame (
   ∀ g₀ : GA D V, ∃ N ∈ 𝓝 g₀, ∃ (k : Comp) (x : GA D V → Frame (X k).Ψ r), ContinuousOn x N ∧
     ∀ g ∈ N, x g ∈ (X k).dom ∧ ∃ γ ∈ (X k).Γ, dict g = ⟨k, lact γ (x g)⟩
 
+/- English proof (translation)
+Introduce `la P hP`. Establish `h1 : ∀ k, P k ∈ (X k).SS (la k)` using `hP`. Simplify using `only [Data.SS, Set.mem_setOf_eq] at h1`. Establish `hS : ∀ k, (X k).IsSec (la k) (P k)` using `fun k => (h1 k).1.1`. Rewrite using `[continuous_iff_continuousAt]`.
+
+Introduce `g₀`. Take `⟨N, hN, k, x, hx, hxN⟩` from `hL g₀`. Establish `hmap : Set.MapsTo x N (X k).dom`. Introduce `g hg`. Conclude with `(hxN g hg).1`.
+
+Establish `hcont : ContinuousOn (fun g => mu g * P k (x g)) N` using `hm.continuousOn.mul ((hS k).1.continuousOn.comp hx hmap)`. Establish `heq : ∀ g ∈ N, adel V dict mu P g = mu g * P k (x g)`. Introduce `g hg`. Take `⟨_, γ, hγ, hd⟩` from `hxN g hg`. Use `show mu g * P (dict g).1 (dict g).2 = _`.
+
+Rewrite using `[hd]`. Rewrite using `[(hS k).2.2 γ hγ (x g) (hxN g hg).1, hχ, one_mul]`. Establish `hev : (fun g => mu g * P k (x g)) =ᶠ[nhds g₀] adel V dict mu P`. Use `Filter.eventuallyEq_of_mem hN ?_` and prove the remaining obligations. Introduce `g hg`.
+
+Conclude with `(heq g hg).symm`. Conclude with `(hcont.continuousAt hN).congr hev`.
+-/
 theorem adelCont_of {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} (hχ : ∀ k la γ, (X k).χ la γ = 1) (hL : DictLoc V dict) (hm : Continuous mu) :
     AdelCont V dict mu := by
@@ -73,6 +93,9 @@ theorem adelCont_of {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k,
     exact (heq g hg).symm
   exact (hcont.continuousAt hN).congr hev
 
+/- English proof (translation)
+The claim follows from `adelAut_of hχ hd hm (adelCont_of hχ hL hmc)`.
+-/
 theorem adelAut_of_loc {V : HSp D} {X : Comp → Data E r} {dict : GA D V → Σ k, Frame (X k).Ψ r}
     {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)} {th : ∀ c, (X c).Ψ → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
     {hr : V.rank = r} (hχ : ∀ k la γ, (X k).χ la γ = 1) (hd : DictIsUnif V dict Kf th hr) (hm : MuUnit V dict mu)

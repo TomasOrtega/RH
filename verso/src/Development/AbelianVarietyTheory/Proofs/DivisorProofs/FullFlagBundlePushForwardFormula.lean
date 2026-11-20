@@ -10,6 +10,9 @@ open CategoryTheory AlgebraicGeometry MvPolynomial GlobalTheory.ProjVar GlobalTh
 
 namespace GlobalTheory.FlagPushProof
 
+/- English proof (translation)
+Introduce `F _ _ X Y ι _ m E E' φ f gr hf hg Q R hR`. Establish `hswap` using `GlobalTheory.T.flagSpace_intersectionNumber_adjacent_swap_neg F X Y ι m E E' φ f hf gr hg`. Use `GlobalTheory.T.linearForm_eq_of_weylAntisymmetrization_eq ι m (Y.interPoly gr) hswap Q (chernRoots m R * fibrePoint m) ?_` and prove the remaining obligations. Rewrite using `[hR, antisymm_chernRoots_mul_fibrePoint]`.
+-/
 theorem flagPushForward : GlobalTheory.Published.FlagPushForward := by
   intro F _ _ X Y ι _ m E E' φ f gr hf hg Q R hR
   have hswap := GlobalTheory.T.flagSpace_intersectionNumber_adjacent_swap_neg F X Y ι m E E' φ f hf gr hg

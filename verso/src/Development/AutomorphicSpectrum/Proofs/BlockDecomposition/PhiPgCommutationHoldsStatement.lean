@@ -4,5 +4,8 @@ import Development.WeilBound.RepresentationTheoryGL.GenericUnitaryGL.LeibnizOrde
 open Matrix GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.BZMir GlobalTheory.BZMir.Leib GlobalTheory.RgGu.Leib
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BZPhiPG.phiPG | exact GlobalTheory.CompanionTheory.BZPhiPG.phiPG | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.phiPG <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.phi_pg_commutation_holds : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], PhiPG k := by
   first | exact @GlobalTheory.CompanionTheory.BZPhiPG.phiPG | exact GlobalTheory.CompanionTheory.BZPhiPG.phiPG | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.phiPG <;> assumption)

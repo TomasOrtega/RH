@@ -26,19 +26,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.UMin.CmpTrait
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_id]`. Both sides reduce to the same expression.
+-/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   rw [← Spec.map_id]; rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+-/
 theorem comp_pow'' {S : Scheme.{0}} {A T T₀ : Over S} [GrpObj A] (ρ : T₀ ⟶ T) (x : T ⟶ A) (n : ℕ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
   induction n with
   | zero => rw [pow_zero, pow_zero, MonObj.comp_one]
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
+/- English proof (translation)
+Set `e : Over.mk (spMap (RingHom.id K) ≫ x) ⟶ Over.mk x` to `Over.homMk (spMap (RingHom.id K)) rfl`. Establish `key : ∀ a, ∃ b, pt a = pt' b` using `fun a => by`. Establish `hp : (e ≫ pt a) ^ (m ^ 2) = 1`. Rewrite using `[← comp_pow'', (h.2.1 a).1, MonObj.comp_one]`. Take `⟨b, hb⟩` from `h'.2.2 K (RingHom.id K) (e ≫ pt a) hp`.
+
+Use `⟨b, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Establish `hb' : spMap (RingHom.id K) ≫ (pt a).left = spMap (RingHom.id K) ≫ (pt' b).left` using `hb`. Rewrite `hb'` using `[spMap_id', Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis. Use `choose s hs using key`. Establish `hs' : Function.Injective s` using `fun a a' he => h.1 ((hs a).trans ((congrArg pt' he).trans (hs a').symm))`.
+
+Simplify using `using Fintype.card_le_of_injective s hs'`.
+-/
 theorem card_le_of_thList {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
     {m : ℕ} {K : Type} [Field K] [IsAlgClosed K] {x : Sp K ⟶ S} {θ θ' : SecAt G L x} {N N' : ℕ}
     {pt : Fin N → (Over.mk x ⟶ G)} {pt' : Fin N' → (Over.mk x ⟶ G)} {c : Fin N → K} {c' : Fin N' → K}
@@ -55,12 +71,24 @@ theorem card_le_of_thList {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.lef
   have hs' : Function.Injective s := fun a a' he => h.1 ((hs a).trans ((congrArg pt' he).trans (hs a').symm))
   simpa using Fintype.card_le_of_injective s hs'
 
+/- English proof (translation)
+The claim follows from `le_antisymm (card_le_of_thList h h') (card_le_of_thList h' h)`.
+-/
 theorem card_eq_of_thList {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
     {m : ℕ} {K : Type} [Field K] [IsAlgClosed K] {x : Sp K ⟶ S} {θ θ' : SecAt G L x} {N N' : ℕ}
     {pt : Fin N → (Over.mk x ⟶ G)} {pt' : Fin N' → (Over.mk x ⟶ G)} {c : Fin N → K} {c' : Fin N' → K}
     (h : ThList G L ρ m x θ pt c) (h' : ThList G L ρ m x θ' pt' c') : N = N' :=
   le_antisymm (card_le_of_thList h h') (card_le_of_thList h' h)
 
+/- English proof (translation)
+Take `⟨P, α, -, hp, hw⟩` from `hP`. Take `⟨e, he⟩` from `exists_univBasis_of_fibre abelianSchemeLaws_all.2 S (Sp K) G L hL P x α hp hw K (𝟙 _) x (Category.id_comp x)`. Establish `h0 : spMap (RingHom.id K) ≫ x = x` using `by rw [spMap_id', Category.id_comp]`. Take `⟨a, ha⟩` from `he.ex (RingHom.id K) h0 (SecM.ofSec G θ)`. Establish `ha0 : a ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `ha` using `[map_zero, zero_smul]`. Take `⟨q, -, hq⟩` from `hθ`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hq`. Establish `e0 : θ.f j = 0` using `congrArg (fun s => s.1 j) ha`.
+
+Rewrite `hj` using `[e0, Scheme.basicOpen_zero]`. Conclude with `hj`. Use `(isGenSec_iff θ).2 fun s => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `he.ex (RingHom.id K) h0 s`. Use `⟨fnR x (b * a⁻¹), ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hb, ha, smul_smul, ← map_mul, _root_.mul_assoc, inv_mul_cancel₀ ha0, _root_.mul_one]`.
+-/
 theorem isGenSec_of_nz {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} (hL : L.IsLB) {g : ℕ} {K : Type}
     [Field K] {x : Sp K ⟶ S} (hP : PolFib G L g x) {θ : SecAt G L x} (hθ : NZ G L x θ) : IsGenSec G L _ θ := by
   obtain ⟨P, α, -, hp, hw⟩ := hP
@@ -81,6 +109,11 @@ theorem isGenSec_of_nz {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} 
   refine ⟨fnR x (b * a⁻¹), ?_⟩
   rw [hb, ha, smul_smul, ← map_mul, _root_.mul_assoc, inv_mul_cancel₀ ha0, _root_.mul_one]
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Use `letI := i.toAlgebra`. Use `letI := (i.comp f).toAlgebra`. Use `haveI : IsScalarTower V V' K := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite V V' := hf`.
+
+Use `haveI : Algebra.IsIntegral V V' := Algebra.IsIntegral.of_finite V V'`. Establish `key : ∀ z : K, i.IsIntegralElem z → (i.comp f).IsIntegralElem z` using `fun z hz => isIntegral_trans (R := V) (A := V') z hz`. Take `⟨h1, a, ha, ha'⟩` from `h`. Conclude with `⟨fun b => key _ (h1 b), a, ha, key _ ha'⟩`.
+-/
 theorem prim_of_finite {V V' K : Type} [CommRing V] [CommRing V'] [Field K] (f : V →+* V') (i : V' →+* K) {J : Type}
     (c : J → K) (hf : f.Finite) (h : Prim i c) : Prim (i.comp f) c := by
   letI := f.toAlgebra
@@ -94,6 +127,15 @@ theorem prim_of_finite {V V' K : Type} [CommRing V] [CommRing V'] [Field K] (f :
   obtain ⟨h1, a, ha, ha'⟩ := h
   exact ⟨fun b => key _ (h1 b), a, ha, key _ ha'⟩
 
+/- English proof (translation)
+Use `letI := fK.toAlgebra`. Use `letI := io.toAlgebra`. Use `letI := f.toAlgebra`. Use `haveI : Module.Finite V V' := hf`. Use `haveI : Algebra.IsIntegral V V' := Algebra.IsIntegral.of_finite V V'`.
+
+Establish `hint : ∀ b : V', IsAlgebraic (FractionRing V) (algebraMap V' (FractionRing V') b)` using `fun b => by`. Take `⟨p, hp, hp0⟩` from `Algebra.IsIntegral.isIntegral (R := V) b`. Use `(show IsIntegral (FractionRing V) (algebraMap V' (FractionRing V') b) from ⟨p.map (algebraMap V (FractionRing V)), hp.map _, ?_⟩).isAlgebraic` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Establish `e : (algebraMap (FractionRing V) (FractionRing V')).comp (algebraMap V (FractionRing V)) = (algebraMap V' (FractionRing V')).comp (algebraMap V V')` using `RingHom.ext hfK`.
+
+Rewrite using `[e, ← Polynomial.hom_eval₂, hp0, map_zero]`. Use `haveI : Algebra.IsAlgebraic (FractionRing V) (FractionRing V') := ⟨fun z => by`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := V') z`. Conclude with `(hint a).mul (hint b).inv⟩`. Set `φ : FractionRing V' →ₐ[FractionRing V] K` to `IsAlgClosed.lift`.
+
+Conclude with `⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩`.
+-/
 theorem exists_ext {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDomain V'] (f : V →+* V')
     (fK : FractionRing V →+* FractionRing V') {K : Type} [Field K] [IsAlgClosed K] (io : FractionRing V →+* K)
     (hf : f.Finite) (hfK : ∀ a, fK (algebraMap V _ a) = algebraMap V' _ (f a)) :
@@ -117,12 +159,44 @@ theorem exists_ext {V V' : Type} [CommRing V] [IsDomain V] [CommRing V'] [IsDoma
   let φ : FractionRing V' →ₐ[FractionRing V] K := IsAlgClosed.lift
   exact ⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩
 
+/- English proof (translation)
+Take `⟨h1, a, ha, ha'⟩` from `h`. Take `⟨b, rfl⟩` from `hs a`. Conclude with `⟨fun b => h1 _, b, ha, ha'⟩`.
+-/
 theorem prim_comp {V K : Type} [CommRing V] [Field K] {i : V →+* K} {J J' : Type} {c : J → K} (h : Prim i c)
     (s : J' → J) (hs : Function.Surjective s) : Prim i (c ∘ s) := by
   obtain ⟨h1, a, ha, ha'⟩ := h
   obtain ⟨b, rfl⟩ := hs a
   exact ⟨fun b => h1 _, b, ha, ha'⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c V _ _ _ hV y K _ _ io m m' N N' d d' hmo hm3 hmu hmo' hm3' hmu' hd`. Establish `hbase : GlobalTheory.Mum.Base V` using `⟨ArcPointDescent.admissibleBase_maximalIdeal_completeDVR hV, hV.2.2⟩`. Take `⟨T, f, fK, -, -, hff, hfK, hTy⟩` from `GlobalTheory.T.exists_unitaryTrait_through_moduliGenericPoint E H Dw l Xo c V hbase hV.1 y`. Take `⟨io', hio'⟩` from `exists_ext f fK io hff hfK`. Use `set i : T.V →+* K := io'.comp (algebraMap T.V (FractionRing T.V)) with hi`.
+
+Establish `hinj : Function.Injective i` using `io'.injective.comp (IsFractionRing.injective T.V (FractionRing T.V))`. Use `haveI : IsDiscreteValuationRing T.V := T.cdvr.1`. Take `⟨tK, ⟨mK⟩, ⟨mx⟩⟩` from `T.gen`. Take `⟨m0, -⟩` from `ObjMaps.exists_sab_id T.t`. Establish `hpol : GlobalTheory.LN.PolAt T.t (jK T.V)` using `UnifAfterExt.polAt_of_sabMap m0 mK mx Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T.V) (𝟙 _) (by rw [Category.comp_id, Category.id_comp])`.
+
+Take `⟨σ, hσ⟩` from `exists_nz_of_polAt abelianSchemeLaws_all.1 abelianSchemeLaws_all.2 E H (Sp T.V) T.t T.V (𝟙 _) T.t m0 hpol`. Establish `h0 : spMap (RingHom.id T.V) ≫ 𝟙 (Sp T.V) = 𝟙 _` using `by rw [Category.comp_id, spMap_id']`. Establish `hσσ : VVRank.pullS T.t.G _ (Over.homMk (spMap (RingHom.id T.V)) h0 : Over.mk (𝟙 (Sp T.V)) ⟶ Over.mk (𝟙 _)) σ = σ`. Establish `e : (Over.homMk (spMap (RingHom.id T.V)) h0 : Over.mk (𝟙 (Sp T.V)) ⟶ Over.mk (𝟙 _)) = 𝟙 _` using `Over.OverMorphism.ext (spMap_id' T.V)`. Rewrite using `[e]`.
+
+Use `VVRank.pullM_id T.t.G T.t.PP.isLB ((1 : ℕ) : ℤ) (SecM.ofSec T.t.G σ)` as an intermediate fact. Rewrite `this` using `[VVRank.pullM_ofSec]`. Conclude with `congrArg (SecM.toSec T.t.G) this`. Establish `hnz : NZ T.t.G T.t.PP.L (𝟙 _) σ`. Use `hσ T.V (RingHom.id _) _ h0` as an intermediate fact.
+
+Rewrite `this` using `[hσσ]`. Then use the resulting hypothesis. Establish `hmT : ∀ {k : ℕ}, IsUnit (k : V) → IsUnit (k : T.V)` using `fun h => by simpa using h.map f`. Establish `hmK : ∀ {k : ℕ}, IsUnit (k : V) → (k : K) ≠ 0` using `fun h => by`. Use `h.map (io.comp (algebraMap V (FractionRing V)))` as an intermediate fact. Simplify using `using this.ne_zero`.
+
+Use `set x₁ : Sp K ⟶ Sp T.V := spMap i ≫ 𝟙 (Sp T.V) with hx₁`. Establish `ex₁ : spMap io' ≫ jK T.V = x₁` using `by rw [hx₁, Category.comp_id, hi, spMap_comp']`. Use `set x : Sp K ⟶ Xo.X := spMap io ≫ y ≫ pullback.fst _ _ with hx`. Establish `ex : spMap io' ≫ T.y ≫ pullback.fst _ _ = x` using `by rw [hx, hTy, ← hio', spMap_comp']; simp only [Category.assoc]`. Use `set g := Module.finrank ℚ E / 2 * (Dw.p + Dw.q) with hg`.
+
+Establish `hPx : PolFib Xo.univ.t.G Xo.univ.t.PP.L g x` using `GlobalTheory.T.universalTriple_fibre_principallyPolarised_dimension E H Dw l Xo c K x`. Take `⟨wK, hwK, -⟩` from `mK.lin`. Take `⟨wx, hwx, -⟩` from `mx.lin`. Establish `hPK : PolFib tK.G tK.PP.L g (spMap io')` using `((GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback _ _ _ _ _ _ _ _ Xo.univ.t.PP.isLB tK.PP.isLB mx.cart ⟨wx, hwx⟩ g K (spMap io')).1).2 (ex ▸ hPx)`. Establish `hP₁ : PolFib T.t.G T.t.PP.L g x₁` using `ex₁ ▸ ((GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback _ _ _ _ _ _ _ _ T.t.PP.isLB tK.PP.isLB mK.cart ⟨wK, hwK⟩ g K (spMap io')).1).1 hPK`.
+
+Use `set θ := SecAt.pull T.t.G T.t.PP.L σ i with hθdef`. Establish `hθnz : NZ T.t.G T.t.PP.L x₁ θ` using `hσ K i x₁ rfl`. Establish `hθ : IsGenSec T.t.G T.t.PP.L _ θ` using `isGenSec_of_nz T.t.PP.isLB hP₁ hθnz`. Take `⟨pt, cc, hc⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ T.t.G T.t.PP.L T.t.PP.rig T.t.PP.isLB T.t.PP.rigGen g m _ K x₁ θ hmo (hmK hmu)`. Use `rfl hP₁`.
+
+Take `⟨pt', cc', hc'⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed _ T.t.G T.t.PP.L T.t.PP.rig T.t.PP.isLB T.t.PP.rigGen g m' _ K x₁ θ hmo' (hmK hmu') rfl hP₁`. Establish `hpr : Prim i cc` using `GlobalTheory.T.thetaConstants_primitive_at_uniformisedTrait E H (Sp T.V) T.t T.V T.cdvr (𝟙 _) T.t ⟨m0⟩ ⟨T.P⟩ σ hnz m _ hmo hm3 (hmT hmu) K i pt cc hinj hc`. Establish `hpr' : Prim i cc'` using `GlobalTheory.T.thetaConstants_primitive_at_uniformisedTrait E H (Sp T.V) T.t T.V T.cdvr (𝟙 _) T.t ⟨m0⟩ ⟨T.P⟩ σ hnz m' _ hmo' hm3' (hmT hmu') K i pt' cc' hinj hc'`. Establish `h₁ : HasTh₂ T.t.G T.t.PP.L T.t.PP.rig m m' x₁ cc cc'` using `⟨θ, pt, pt', hθ, hc, hc'⟩`. Establish `hK : HasTh₂ tK.G tK.PP.L tK.PP.rig m m' (spMap io') cc cc'` using `(GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian _ T.t.G T.t.PP.L T.t.PP.rig T.t.PP.isLB T.t.PP.rigGen _ tK.G tK.PP.L tK.PP.rig (jK T.V) mK.φ tK.PP.isLB tK.PP.rigGen mK.cart ⟨wK, hwK⟩ m m' _ _ K (spMap io') cc cc').2 (ex₁ ▸ h₁)`.
+
+Establish `hX : HasTh₂ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m m' x cc cc'` using `ex ▸ (GlobalTheory.T.hasThetaConstantsTwoLevels_move_cartesian _ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig Xo.univ.t.PP.isLB Xo.univ.t.PP.rigGen _ tK.G tK.PP.L tK.PP.rig (T.y ≫ pullback.fst _ _) mx.φ tK.PP.isLB tK.PP.rigGen mx.cart ⟨wx, hwx⟩ m m' _ _ K (spMap io') cc cc').1 hK`. Establish `eN : N = m ^ (4 * g)`. Take `⟨_, _, _, _, hd1, -⟩` from `hd`. Take `⟨_, _, _, _, hc1, -⟩` from `hX`. Conclude with `card_eq_of_thList hd1 hc1`.
+
+Establish `eN' : N' = m' ^ (4 * g)`. Take `⟨_, _, _, _, -, hd2⟩` from `hd`. Take `⟨_, _, _, _, -, hc2⟩` from `hX`. Conclude with `card_eq_of_thList hd2 hc2`. Substitute `eN eN'` using the available equality.
+
+Take `⟨a, s, s', ha, hds, hds'⟩` from `(GlobalTheory.T.thetaConstantLists_unique_up_to_perm_scalar _ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig Xo.univ.t.PP.isLB Xo.univ.t.PP.rigGen g m m' _ _ K x hmo (hmK hmu) hmo' (hmK hmu') hPx).2 cc d cc' d' hX hd`. Establish `ei : i.comp f = io.comp (algebraMap V (FractionRing V))`. Use extensionality with `v`. Simplify using `only [hi, RingHom.comp_apply, ← hfK, ← hio']`. Establish `e1 : (fun b => d b / a) = cc ∘ s` using `funext fun b => by`.
+
+Rewrite using `[hds b, Function.comp_apply, mul_div_cancel_left₀ _ ha]`. Establish `e2 : (fun b => d' b / a) = cc' ∘ s'` using `funext fun b => by`. Rewrite using `[hds' b, Function.comp_apply, mul_div_cancel_left₀ _ ha]`. Use `⟨a, ha, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← ei]`.
+
+Conclude with `prim_of_finite f i _ hff (prim_comp hpr s s.surjective)`. Rewrite using `[e2, ← ei]`. Conclude with `prim_of_finite f i _ hff (prim_comp hpr' s' s'.surjective)`.
+-/
 theorem cmp_trait : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (y : Sp (FractionRing V) ⟶ Xo.XF c) (K : Type) [Field K] [IsAlgClosed K] (io : FractionRing V →+* K) (m m' N N' : ℕ) (d : Fin N → K) (d' : Fin N' → K), Odd m → 3 ≤ m → IsUnit (m : V) → Odd m' → 3 ≤ m' → IsUnit (m' : V) → HasTh₂ Xo.univ.t.G Xo.univ.t.PP.L Xo.univ.t.PP.rig m m' (spMap io ≫ y ≫ pullback.fst _ _) d d' → ∃ a : K, a ≠ 0 ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => d b / a) ∧ Prim (io.comp (algebraMap V (FractionRing V))) (fun b => d' b / a) := by
   intro E _ _ _ H Dw l Xo c V _ _ _ hV y K _ _ io m m' N N' d d' hmo hm3 hmu hmo' hm3' hmu' hd
   have hbase : GlobalTheory.Mum.Base V := ⟨ArcPointDescent.admissibleBase_maximalIdeal_completeDVR hV, hV.2.2⟩

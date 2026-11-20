@@ -91,6 +91,9 @@ def Seen (G : HTGroup p) (v : InfinitePlace G.F) (K : Subgroup G.GAf) (f : G.GAf
 def CxFin (G : HTGroup p) (v : InfinitePlace G.F) (K : Subgroup G.GAf) (f : G.GAf → ℂ) : Prop :=
   {z : Σ q : FCls G, PtsOf G v K q × grp G (Quot.out q).β | Seen G v K f z.1 z.2.1 z.2.2}.Finite
 
+/- English proof (translation)
+The claim follows from `Set.finite_empty.subset fun _ hz => (hz.2.1 rfl).elim`.
+-/
 example (K : Subgroup G.GAf) (v : InfinitePlace G.F) : CxFin G v K 0 :=
   Set.finite_empty.subset fun _ hz => (hz.2.1 rfl).elim
 

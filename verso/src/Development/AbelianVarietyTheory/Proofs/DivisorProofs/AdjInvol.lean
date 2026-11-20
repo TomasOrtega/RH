@@ -17,9 +17,15 @@ variable {𝔸 : Type} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [FiniteDimensi
 def skew : Submodule ℝ 𝔸 := LinearMap.ker (σ + LinearMap.id)
 
 omit [FiniteDimensional ℝ 𝔸] in
+/- English proof (translation)
+Simplify using `[skew, add_eq_zero_iff_eq_neg]`.
+-/
 theorem mem_skew {X : 𝔸} : X ∈ skew σ ↔ σ X = -X := by
   simp [skew, add_eq_zero_iff_eq_neg]
 
+/- English proof (translation)
+Use `haveI : IsArtinianRing 𝔸 := IsArtinianRing.of_finite ℝ 𝔸`. Conclude with `mul_eq_one_comm.1 h`.
+-/
 theorem mul_adj {a : 𝔸} (h : σ a * a = 1) : a * σ a = 1 := by
   haveI : IsArtinianRing 𝔸 := IsArtinianRing.of_finite ℝ 𝔸
   exact mul_eq_one_comm.1 h
@@ -43,9 +49,15 @@ def sec (anti : ∀ a b, σ (a * b) = σ b * σ a) (one : σ 1 = 1) (invol : ∀
 
 variable {σ} (anti : ∀ a b, σ (a * b) = σ b * σ a) (one : σ 1 = 1) (invol : ∀ a, σ (σ a) = a)
 
+/- English proof (translation)
+Rewrite using `[sec, dif_pos h]`.
+-/
 theorem sec_val {a : 𝔸} (h : σ a * a = 1) : ((sec σ anti one invol a : 𝔸ˣ) : 𝔸) = a := by
   rw [sec, dif_pos h]
 
+/- English proof (translation)
+The claim follows from `anti one := one invol := invol inj := Subtype.val_injective skew X := ⟨fun h => ⟨⟨X, (mem_skew σ).2 h⟩, rfl⟩, by rintro ⟨Y, rfl⟩; exact (mem_skew σ).1 Y.2⟩ mul a b ha hb := by have hab : σ (a * b) * (a * b) = 1 := by rw [anti, mul_assoc, ← mul_assoc (σ a), ha, one_mul, hb] refine …`.
+-/
 theorem lieData : IsLieData σ (skew σ).subtype (sec σ anti one invol) where
   anti := anti
   one := one
@@ -58,6 +70,15 @@ theorem lieData : IsLieData σ (skew σ).subtype (sec σ anti one invol) where
     rw [Subgroup.coe_mul, Units.val_mul, sec_val _ _ _ ha, sec_val _ _ _ hb, sec_val _ _ _ hab]
 
 include anti one invol in
+/- English proof (translation)
+Establish `H` using `lieData anti one invol`. Establish `hl` using `hasLog_of_isLieData _ _ _ _ _ _ H`. Set `ρ : unit σ anti one invol →* 𝔸` to `(Units.coeHom 𝔸).comp (unit σ anti one invol).subtype`. Establish `hρ : ∀ X : skew σ, ρ (expMap (skew σ).subtype (sec σ anti one invol) X) = exp (X : 𝔸)` using `fun X => sec_val anti one invol (SecondKind.exp_unitary H X)`. Establish `hs` using `(SecondKind.sm_iff H hl T hT fun g => f (ρ g)).2 fun k Y hY g => by`.
+
+Simplify using `only [map_mul, map_list_prod, List.map_ofFn, Function.comp_def, hρ]`. Conclude with `hf k Y hY _ g.2`. Establish `h0` using `hs (sec σ anti one invol u)`. Simplify using `only [map_mul, hρ] at h0`. Rewrite `h0` using `[show ρ (sec σ anti one invol u) = u from sec_val anti one invol hu]`.
+
+Take `⟨Λ, l1, l2, -⟩` from `hl`. Establish `hc : ContDiff ℝ ∞ fun a : 𝔸 => σ u * a` using `contDiff_const.mul contDiff_id`. Use `⟨fun a => f (u * exp (Λ (σ u * a) : 𝔸)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `h0.contDiffAt.comp u (ContDiffAt.comp (g := Λ) u (by rwa [hu]) hc.contDiffAt)`. Establish `ht` using `hc.continuous.tendsto u`.
+
+Rewrite `ht` using `[hu]`. Use `filter_upwards [ht.eventually l2] with a h ha`. Use `h (by rw [anti, invol, mul_assoc, ← mul_assoc u, mul_adj σ hu, one_mul, ha])` as an intermediate fact. Rewrite `this` using `[Submodule.subtype_apply]`. Rewrite using `[this, ← mul_assoc, mul_adj σ hu, one_mul]`.
+-/
 theorem exists_ext (T : Set (skew σ)) (hT : Submodule.span ℝ T = ⊤) (f : 𝔸 → ℂ)
     (hf : ∀ (k : ℕ) (Y : Fin k → skew σ), (∀ i, Y i ∈ T) → ∀ u, σ u * u = 1 →
       ContDiff ℝ ∞ fun t : Fin k → ℝ => f (u * (List.ofFn fun i => exp (t i • (Y i : 𝔸))).prod))
@@ -86,6 +107,19 @@ theorem exists_ext (T : Set (skew σ)) (hT : Submodule.span ℝ T = ⊤) (f : �
     rw [this, ← mul_assoc, mul_adj σ hu, one_mul]
 
 include anti one invol in
+/- English proof (translation)
+Establish `: CompleteSpace 𝔸` using `FiniteDimensional.complete ℝ 𝔸`. Establish `h0` using `hu.self_of_nhds`. Take `⟨F, F1, F2⟩` from `exists_ext anti one invol T hT f hf h0`. Establish `e : (fun y => f (γ y)) =ᶠ[𝓝 x] fun y => F (γ y)` using `by filter_upwards [hu, hγ.continuousAt.tendsto.eventually F2] with y a b using b a`. Establish `dF` using `(F1.differentiableAt (by simp)).hasFDerivAt`.
+
+Establish `dγ` using `(hγ.differentiableAt (by simp)).hasFDerivAt`. Use `⟨(F1.comp x hγ).congr_of_eventuallyEq e, fderiv ℝ F (γ x) ∘L ContinuousLinearMap.mul ℝ 𝔸 (γ x), fun X hX => ?_, fun v => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `d1 : HasDerivAt (fun t : ℝ => γ x * exp (t • X)) (γ x * X) 0`. Simplify using `using (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0).const_mul (γ x)`. Establish `ht` using `d1.continuousAt.tendsto`.
+
+Establish `e0 : γ x * exp ((0 : ℝ) • X) = γ x` using `by simp`. Simplify using `only [e0] at ht`. Establish `e1 : (fun t : ℝ => f (γ x * exp (t • X))) =ᶠ[𝓝 0] fun t => F (γ x * exp (t • X))` using `by filter_upwards [ht.eventually F2] with t h`. Use `h ?_` and prove the remaining obligations. Use `SecondKind.exp_unitary (lieData anti one invol) (t • (⟨X, (mem_skew σ).2 hX⟩ : skew σ))` as an intermediate fact.
+
+Rewrite using `[anti, mul_assoc, ← mul_assoc (σ (γ x)), h0, one_mul]`. Conclude with `this`. Rewrite using `[e1.deriv_eq]`. Conclude with `(HasFDerivAt.comp_hasDerivAt (l := F) (0 : ℝ) (by rw [e0]; exact dF) d1).deriv`. Set `S : 𝔸 →L[ℝ] 𝔸` to `LinearMap.toContinuousLinearMap σ`.
+
+Establish `d1` using `(S.hasFDerivAt.comp x dγ).mul' dγ`. Establish `d2 : HasFDerivAt (fun _ : E => (1 : 𝔸)) (0 : E →L[ℝ] 𝔸) x` using `hasFDerivAt_const _ _`. Use `congrArg (fun A => A v) (d1.unique (d2.congr_of_eventuallyEq hu))` as an intermediate fact. Rewrite using `[anti, invol, eq_neg_iff_add_eq_zero, add_comm]`. Simplify `this` using `[S]`.
+
+Rewrite using `[e.fderiv_eq]`. Use `(dF.comp x dγ).fderiv` as an intermediate fact. Rewrite `this` using `[Function.comp_def]`. Rewrite using `[this]`. Simplify using `[← mul_assoc, mul_adj σ h0]`.
+-/
 theorem chain (T : Set (skew σ)) (hT : Submodule.span ℝ T = ⊤) (f : 𝔸 → ℂ)
     (hf : ∀ (k : ℕ) (Y : Fin k → skew σ), (∀ i, Y i ∈ T) → ∀ u, σ u * u = 1 →
       ContDiff ℝ ∞ fun t : Fin k → ℝ => f (u * (List.ofFn fun i => exp (t i • (Y i : 𝔸))).prod))
@@ -148,6 +182,9 @@ instance : NormedAlgebra ℝ (Alg n ι) := inferInstanceAs (NormedAlgebra ℝ (�
 instance : FiniteDimensional ℝ (Alg n ι) := inferInstanceAs (FiniteDimensional ℝ (ι → Mt n))
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `@Pi.coe_exp ι (fun _ => Mt n) _ _ _ (fun _ => FiniteDimensional.complete ℝ _) X τ`.
+-/
 theorem exp_alg (X : Alg n ι) (τ : ι) : (exp X : Alg n ι) τ = exp (X τ : Mt n) :=
   @Pi.coe_exp ι (fun _ => Mt n) _ _ _ (fun _ => FiniteDimensional.complete ℝ _) X τ
 
@@ -155,6 +192,11 @@ end Inst
 
 def sgl (τ : ι) (X : Mt n) : Alg n ι := (Pi.single τ X : ι → Mt n)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `ρ`. Rewrite using `[exp_alg]`. Express the relevant statement in the definitionally equal form `exp (t • (Pi.single τ X : ι → Mt n) ρ) = _`. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[h]`.
+-/
 theorem exp_sgl (τ : ι) (X : Mt n) (t : ℝ) :
     (exp (t • sgl τ X) : Alg n ι) = (Pi.mulSingle τ (exp (t • X)) : ι → Mt n) := by
   funext ρ
@@ -164,6 +206,9 @@ theorem exp_sgl (τ : ι) (X : Mt n) (t : ℝ) :
   · subst h; simp
   · simp [h]
 
+/- English proof (translation)
+The claim follows from `Finset.univ_sum_single (X : ι → Mt n)`.
+-/
 theorem sum_sgl (X : Alg n ι) : ∑ τ, sgl τ (X τ) = X := Finset.univ_sum_single (X : ι → Mt n)
 
 def adj (Hm : ι → Mt n) : Alg n ι →ₗ[ℝ] Alg n ι where
@@ -183,6 +228,11 @@ variable {Hm : ι → Mt n} (hH : ∀ τ, (Hm τ).IsHermitian ∧ (Hm τ).det �
 include hH
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Use `funext_iff.trans (forall_congr' fun τ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Hm τ)⁻¹ * (u τ)ᴴ * Hm τ * u τ = 1 ↔ (u τ)ᴴ * Hm τ * u τ = Hm τ`. Establish `h` using `(hH τ).2.isUnit`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
+
+Use `congrArg (Hm τ * ·) h1` as an intermediate fact. Simplify `this` using `only [← mul_assoc, mul_nonsing_inv _ h, one_mul, mul_one]`. Introduce `h1`. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc (u τ)ᴴ, h1, nonsing_inv_mul _ h]`.
+-/
 theorem unit_iff (u : Alg n ι) : adj Hm u * u = 1 ↔ u ∈ UG Hm := by
   refine funext_iff.trans (forall_congr' fun τ => ?_)
   change (Hm τ)⁻¹ * (u τ)ᴴ * Hm τ * u τ = 1 ↔ (u τ)ᴴ * Hm τ * u τ = Hm τ
@@ -195,6 +245,11 @@ theorem unit_iff (u : Alg n ι) : adj Hm u * u = 1 ↔ u ∈ UG Hm := by
     rw [mul_assoc, mul_assoc, ← mul_assoc (u τ)ᴴ, h1, nonsing_inv_mul _ h]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+Use `funext_iff.trans (forall_congr' fun τ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Hm τ)⁻¹ * (X τ)ᴴ * Hm τ = -X τ ↔ (X τ)ᴴ * Hm τ + Hm τ * X τ = 0`. Establish `h` using `(hH τ).2.isUnit`. Prove the components needed by the constructor for the conclusion. Introduce `h1`.
+
+Rewrite using `[← mul_nonsing_inv_cancel_left _ ((X τ)ᴴ * Hm τ) h, ← mul_assoc (Hm τ)⁻¹, h1, mul_neg, neg_add_cancel]`. Introduce `h1`. Rewrite using `[mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ h]`.
+-/
 theorem skew_iff (X : Alg n ι) : adj Hm X = -X ↔ ∀ τ, X τ ∈ lieH (Hm τ) := by
   refine funext_iff.trans (forall_congr' fun τ => ?_)
   change (Hm τ)⁻¹ * (X τ)ᴴ * Hm τ = -X τ ↔ (X τ)ᴴ * Hm τ + Hm τ * X τ = 0
@@ -205,6 +260,9 @@ theorem skew_iff (X : Alg n ι) : adj Hm X = -X ↔ ∀ τ, X τ ∈ lieH (Hm τ
   · intro h1
     rw [mul_assoc, eq_neg_of_add_eq_zero_left h1, mul_neg, nonsing_inv_mul_cancel_left _ _ h]
 
+/- English proof (translation)
+Use `(skew_iff hH _).2 fun ρ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify `hX` using `[sgl]`. Simplify using `[sgl, h, lieH]`.
+-/
 theorem sgl_skew {τ : ι} {X : Mt n} (hX : X ∈ lieH (Hm τ)) : adj Hm (sgl τ X) = -sgl τ X := by
   refine (skew_iff hH _).2 fun ρ => ?_
   by_cases h : ρ = τ
@@ -212,6 +270,9 @@ theorem sgl_skew {τ : ι} {X : Mt n} (hX : X ∈ lieH (Hm τ)) : adj Hm (sgl τ
   · simp [sgl, h, lieH]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `funext fun τ => by change _ * (a τ * b τ)ᴴ * _ = (_ * (b τ)ᴴ * _) * (_ * (a τ)ᴴ * _) rw [conjTranspose_mul] simp only [mul_assoc] rw [mul_nonsing_inv_cancel_left _ _ (hH τ).2.isUnit]`.
+-/
 theorem adj_anti (a b : Alg n ι) : adj Hm (a * b) = adj Hm b * adj Hm a := funext fun τ => by
   change _ * (a τ * b τ)ᴴ * _ = (_ * (b τ)ᴴ * _) * (_ * (a τ)ᴴ * _)
   rw [conjTranspose_mul]
@@ -219,17 +280,28 @@ theorem adj_anti (a b : Alg n ι) : adj Hm (a * b) = adj Hm b * adj Hm a := fune
   rw [mul_nonsing_inv_cancel_left _ _ (hH τ).2.isUnit]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `funext fun τ => by change (Hm τ)⁻¹ * (1 : Mt n)ᴴ * Hm τ = 1 rw [conjTranspose_one, mul_one, nonsing_inv_mul _ (hH τ).2.isUnit]`.
+-/
 theorem adj_one : adj Hm 1 = 1 := funext fun τ => by
   change (Hm τ)⁻¹ * (1 : Mt n)ᴴ * Hm τ = 1
   rw [conjTranspose_one, mul_one, nonsing_inv_mul _ (hH τ).2.isUnit]
 
 omit [DecidableEq ι] in
+/- English proof (translation)
+The claim follows from `funext fun τ => by change _ * (_ * (a τ)ᴴ * _)ᴴ * _ = a τ rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, (hH τ).1] simp only [mul_assoc] rw [nonsing_inv_mul_cancel_left _ _ (hH τ).2.isUnit, nonsing_inv_mul _ (hH τ).2.isUnit, mul_ …`.
+-/
 theorem adj_invol (a : Alg n ι) : adj Hm (adj Hm a) = a := funext fun τ => by
   change _ * (_ * (a τ)ᴴ * _)ᴴ * _ = a τ
   rw [conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, (hH τ).1]
   simp only [mul_assoc]
   rw [nonsing_inv_mul_cancel_left _ _ (hH τ).2.isUnit, nonsing_inv_mul _ (hH τ).2.isUnit, mul_one]
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `Y _`. Establish `hY` using `(skew_iff hH _).1 ((mem_skew _).1 Y.2)`. Establish `: Y = ∑ τ, (⟨sgl τ (Y.1 τ), (mem_skew _).2 (sgl_skew hH (hY τ))⟩ : skew (adj Hm))`. Use `Subtype.ext ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_sum]`. Conclude with `(sum_sgl _).symm`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun τ _ => Submodule.subset_span ⟨τ, _, hY τ, rfl⟩`.
+-/
 theorem span_sgl : Submodule.span ℝ {Y : skew (adj Hm) | ∃ τ, ∃ X ∈ lieH (Hm τ), (Y : Alg n ι) = sgl τ X} = ⊤ := by
   rw [eq_top_iff]
   intro Y _
@@ -241,6 +313,17 @@ theorem span_sgl : Submodule.span ℝ {Y : skew (adj Hm) | ∃ τ, ∃ X ∈ lie
   rw [this]
   exact Submodule.sum_mem _ fun τ _ => Submodule.subset_span ⟨τ, _, hY τ, rfl⟩
 
+/- English proof (translation)
+Establish `hu' : ∀ᶠ y in 𝓝 x, adj Hm (coord n ι (γ y)) * coord n ι (γ y) = 1` using `hu.mono fun y h => (unit_iff hH _).2 h`. Take `⟨c1, D, c2, c3⟩` from `chain (adj_anti hH) (adj_one hH) (adj_invol hH) _ (span_sgl hH) (f : Alg n ι → ℂ) (fun k Y hY u hu => by choose τs Xs h1 h2 using hY`. Simplify using `only [h2, exp_sgl]`. Conclude with `hf k τs Xs h1 u ((unit_iff hH _).1 hu))`. Use the proof step `(γ := fun y => coord n ι (γ y)) ((coord n ι).contDiff.contDiffAt.comp x hγ) hu'`.
+
+Use `⟨c1, fun v => ?_⟩` and prove the remaining obligations. Take `⟨c4, c5⟩` from `c3 v`. Establish `e : fderiv ℝ (fun y => coord n ι (γ y)) x v = coord n ι (fderiv ℝ γ x v)`. Use `((coord n ι).hasFDerivAt.comp x (hγ.differentiableAt (by simp)).hasFDerivAt).fderiv` as an intermediate fact. Rewrite `this` using `[Function.comp_def]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression. Rewrite `c4`, `c5` using `[e]`. Use `c5.trans ?_` and prove the remaining obligations. Rewrite using `[← sum_sgl (adj Hm _ * _), map_sum]`.
+
+Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← c2 _ (sgl_skew hH ((skew_iff hH _).1 c4 τ))]`. Simplify using `only [exp_sgl]`. Establish `hi : (Matrix.of (γ x τ))⁻¹ = adj Hm (coord n ι (γ x)) τ` using `Matrix.inv_eq_left_inv (congrFun hu'.self_of_nhds τ)`. Rewrite using `[hi]`.
+
+Both sides reduce to the same expression.
+-/
 theorem chain_at {f : (ι → Mt n) → ℂ} (hf : SmFn Hm f) {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {γ : E → ι → Fin n → Fin n → ℂ} {x : E} (hγ : ContDiffAt ℝ ∞ γ x)
     (hu : ∀ᶠ y in 𝓝 x, (fun τ => Matrix.of (γ y τ)) ∈ UG Hm) :
@@ -273,6 +356,9 @@ theorem chain_at {f : (ι → Mt n) → ℂ} (hf : SmFn Hm f) {E : Type} [Normed
 
 end Concrete
 
+/- English proof (translation)
+Introduce `n ι _ _ Hm hH f hf E _ _ _ U γ hU hγ hu`. Establish `key` using `fun x (hx : x ∈ U) => chain_at hH hf (hγ.contDiffAt (hU.mem_nhds hx)) (Filter.eventually_of_mem (hU.mem_nhds hx) hu)`. Conclude with `⟨fun x hx => (key x hx).1.contDiffWithinAt, fun x hx => (key x hx).2⟩`.
+-/
 theorem main : ∀ (n : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (Hm : ι → Mt n),
     (∀ τ, (Hm τ).IsHermitian ∧ (Hm τ).det ≠ 0) → ∀ f, SmFn Hm f →
     ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (U : Set E)

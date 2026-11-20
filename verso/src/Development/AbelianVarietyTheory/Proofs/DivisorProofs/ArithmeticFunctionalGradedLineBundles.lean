@@ -21,8 +21,14 @@ namespace GlobalTheory.BcRead
 
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.SwapTrue
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem rootIdx_eq (ι : Type) (N j : ℕ) (hj : j ≤ N) : rootIdx ι N j = ⇑(blockEquiv ι N j hj).symm := rfl
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (GlobalTheory.ArInt.Model.eq_zero_of_pow d _ (fun n => by simp [h n, -map_pow]) fun P e he hP => by simp [hf P e he hP, hg P e he hP])`.
+-/
 private theorem ext_pow {ι : Type} [Fintype ι] (d : ℕ) (f g : MvPolynomial ι ℝ →ₗ[ℝ] ℝ)
     (h : ∀ n : ι → ℤ, f (lin (fun i => (n i : ℝ)) ^ d) = g (lin (fun i => (n i : ℝ)) ^ d))
     (hf : ∀ (P : MvPolynomial ι ℝ) (e : ℕ), e ≠ d → P.IsHomogeneous e → f P = 0)
@@ -30,6 +36,15 @@ private theorem ext_pow {ι : Type} [Fintype ι] (d : ℕ) (f g : MvPolynomial �
   sub_eq_zero.1 (GlobalTheory.ArInt.Model.eq_zero_of_pow d _ (fun n => by simp [h n, -map_pow])
     fun P e he hP => by simp [hf P e he hP, hg P e he hP])
 
+/- English proof (translation)
+Take `⟨xa, _, hcw⟩` from `id hC`. Establish `hm : O.met.hm = metsOf xa O.Φ` using `hcw.hm_eq`. Establish `hdim : (O.var c).dim = dimFl D.what₂.Tau O.N` using `O.dim_eq c`. Take `⟨-, hT⟩` from `GlobalTheory.ArTopTrue.arTop_true hP.p4 hH.deg GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s xa O.Φ c R hR`. Take `⟨M, L, m, Ψ, hL, hΨ, hnum⟩` from `hT (DV.Rt D.what₂.Tau O.N) (fun y => rootSym O.S.Dw (ArIn.ind Pc) (some R) (DV.tauEmb D y.1) y.2) (fun y => rootSym_support O _ R y)`.
+
+Establish `hcmp` using `GlobalTheory.CoverModelTop.top_eq hP.p4 hH.deg (O.var c) (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le) (fun y => adlOf (O.Φ.C c) (metsOf xa O.Φ c) (rootSym O.S.Dw (ArIn.ind Pc) (some R) (DV.tauEmb D y.1) y.2)) (fun _ => rfl) M L m Ψ hL hΨ W.V _ Φ (fun z => by have := W.ind z.1 z. …`. Establish `key` using `ext_pow (dimFl D.what₂.Tau O.N + 1) (numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) ∘ₗ (rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind Pc) R y c)).toLinearMap) ((W.V.ν)⁻¹ • Φ ∘ₗ (rename (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le).symm).toLinearMap) (f …`. Establish `h0` using `hΦ.2 _ e (hdim ▸ he) (hQ.rename_isHomogeneous (f := (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le).symm))`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, h0, smul_zero])`. Conclude with `LinearMap.congr_fun key P`.
+
+Establish `h1` using `GlobalTheory.NumLRename.numL_rename_of_agree _ ((O.var c).dim + 1) _ Ψ _ hnum (lin (fun z => (n z : ℝ)) ^ ((O.var c).dim + 1)) (isHomogeneous_lin_pow _ _)`. Establish `h2` using `hcmp n`. Rewrite `h1`, `h2` using `[hdim]`. Establish `h3 : rename (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le).symm (lin fun z => (n z : ℝ)) = lin fun z => (n (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le z) : ℝ)`. Rewrite using `[← rename_lin_comp (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le).symm]`.
+
+Simplify using `only [Equiv.apply_symm_apply]`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply, smul_eq_mul]`. Rewrite using `[map_pow (rename (blockEquiv D.what₂.Tau O.N O.j O.indef.2.le).symm), h3, hm, inv_mul_eq_div]`. Conclude with `h1.trans h2`.
+-/
 private theorem numL_eq (hP : Hypotheses2) (hH : HypothesesH) {D : D7} (O : Setup D) (hC : O.Core) (Pc : Finset ℕ) {R : ℝ} (hR : 2 ≤ R)
     (c : O.s.Comp) (W : BunModel O Pc R c)
     (Φ : MvPolynomial (Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a)) ℝ →ₗ[ℝ] ℝ)
@@ -75,6 +90,13 @@ end GlobalTheory.BcRead
 end
 
 open GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.TrueGeo GlobalTheory.SwapTrue GlobalTheory.BcRead in
+/- English proof (translation)
+Introduce `hP hH _ D O hC hf A T H h R hR`. Establish `M : ∀ c : O.s.Comp, BunModel O ∅ R c` using `fun c => (GlobalTheory.BcLie.nonempty_bunModel O hC hR c).some`. Establish `ex` using `fun c => (hP.p4.arExists (𝓞 D.what₂.LL) (M c).V.X (M c).V.p (O.var c).dim (M c).V.ar).2 _ (fun z : Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a) => VMetric.grLB ((M c).fl z.1) z.2 (((M c).H z.1).pull (M c).π (M c).w))`. Use `choose Φ hΦ using fun c => (ex c).1`. Use `choose Ψ hΨ using fun c => (ex c).2`.
+
+Use `⟨M, Φ, Ψ, fun c => ((M c).V.ν)⁻¹, hΦ, hΨ, fun (P : MvPolynomial (D.what₂.Tau × Fin O.N) ℝ) => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show (arIn O.s O.Φ O.met.hm).arDeg ∅ R P = ∑ c, ((M c).V.ν)⁻¹ * Φ c (rename (rootIdx D.what₂.Tau O.N O.j) P)`. Rewrite using `[rootIdx_eq _ _ _ O.indef.2.le]`. Conclude with `(LinearMap.sum_apply _ _ _).trans (Finset.sum_congr rfl fun c _ => numL_eq hP hH O hC ∅ hR c (M c) (Φ c) (hΦ c) P)`. Use `show (∑ c, (O.s.cx O.L O.B O.fl).volC c) * Formalism.L2.Geo.degFlL D.what₂.Tau O.N P = ∑ c, ((M c).V.ν)⁻¹ * Ψ c (rename (rootIdx D.what₂.Tau O.N O.j) P)`.
+
+Rewrite using `[rootIdx_eq _ _ _ O.indef.2.le, Formalism.L2.Geo.degFlL_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[geo_eq hP hH O hC ∅ hR c (M c) (Ψ c) (hΨ c), rename_rename, Equiv.self_comp_symm, rename_id_apply, mul_assoc, inv_mul_cancel_left₀ (M c).V.ν_pos.ne']`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_functional_graded_line_bundles : Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ => ∀ R : ℝ, 2 ≤ R →
     ∃ (M : ∀ c : O.s.Comp, BunModel O ∅ R c)
       (Φ Ψ : O.s.Comp → MvPolynomial (Σ a : D.what₂.Tau × Bool, Fin (rkB D.what₂.Tau O.N O.j a)) ℝ →ₗ[ℝ] ℝ)

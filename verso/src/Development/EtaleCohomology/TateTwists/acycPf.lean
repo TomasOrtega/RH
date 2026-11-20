@@ -27,6 +27,9 @@ def stair : Prop :=
 end LateralTheory.EtaleFoundations.acyc
 
 open LateralTheory.EtaleFoundations.acyc in
+/- English proof (translation)
+Introduce `R _ C J T a b _ _ τ hτ hJ hCa`. Conclude with `(hI R T).2 (hS R a b τ hτ (hC R C J hJ ((hI R C).1 hCa)))`.
+-/
 theorem LateralTheory.EtaleFoundations.tqis.acyc_of (hI : acycIff) (hC : column) (hS : stair) : LateralTheory.EtaleFoundations.tqis.acyc := by
   intro R _ C J T a b _ _ τ hτ hJ hCa
   exact (hI R T).2 (hS R a b τ hτ (hC R C J hJ ((hI R C).1 hCa)))

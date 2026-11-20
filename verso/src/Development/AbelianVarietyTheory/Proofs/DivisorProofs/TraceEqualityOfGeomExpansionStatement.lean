@@ -9,5 +9,8 @@ open GlobalTheory.PRep (IsAdmissible)
 open GlobalTheory.TrMult
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | exact GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | (intros; apply GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.trace_equality_of_geom_expansion : GeomExpansion → TraceEq := by
   first | exact @GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | exact GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion | (intros; apply GlobalTheory.TraceEqTwo.traceEq_of_geomExpansion <;> assumption)

@@ -16,6 +16,9 @@ namespace GlobalTheory
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D T h j hj σ hσ`. Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.rdIndep_laws T.Q.c GlobalTheory.abelianSchemeLaws_all.2.secBaseChangeAny GlobalTheory.abelianSchemeLaws_all.2.secTwist (T.U j) σ (h.evalWD j hj) (GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.abelianSchemeLaws_all. …`.
+-/
 theorem rdIndep_of_lawsM : ∀ (D : D7) (T : Core D), LawsM T → ∀ j, InR D j → ∀ σ, GoodEmb T.Q.c σ →
     RdIndep (T.Q.Xo j) T.Q.c (T.U j) σ := by
   intro D T h j hj σ hσ

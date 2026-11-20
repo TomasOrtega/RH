@@ -9,6 +9,9 @@ open UpperTheory.Gal.W2
 private def colM {K : Type*} {n : ℕ} (b : Fin n → Fin n → K) : Matrix (Fin n) (Fin n) K :=
   Matrix.of fun i j => b j i
 
+/- English proof (translation)
+Use extensionality with `r c`. Distinguish the cases in `h : c = i`. Substitute `h` using the available equality. Simplify using `[colM, Matrix.updateCol_apply]`. Simplify using `[colM, Matrix.updateCol_apply, h, Function.update_of_ne]`.
+-/
 private theorem colM_update {K : Type*} [Field K] {n : ℕ} (b : Fin n → Fin n → K) (i : Fin n)
     (y : Fin n → K) : (colM b).updateCol i y = colM (Function.update b i y) := by
   ext r c
@@ -16,11 +19,37 @@ private theorem colM_update {K : Type*} [Field K] {n : ℕ} (b : Fin n → Fin n
   · subst h; simp [colM, Matrix.updateCol_apply]
   · simp [colM, Matrix.updateCol_apply, h, Function.update_of_ne]
 
+/- English proof (translation)
+Use extensionality with `r`. Simplify using `[colM, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+-/
 private theorem colM_mulVec {K : Type*} [Field K] {n : ℕ} (b : Fin n → Fin n → K)
     (c : Fin n → K) : colM b *ᵥ c = ∑ i, c i • b i := by
   ext r
   simp [colM, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
+/- English proof (translation)
+Establish `h1 : f 1 = 1`. Establish `h` using `hm 1 1`. Establish `hp` using `hpos 1 one_ne_zero`. Rewrite `h` using `[_root_.one_mul]`. Conclude with `mul_left_cancel₀ hp.ne' (by rw [_root_.mul_one]; exact h.symm)`.
+
+Take `⟨t, hts, hspan, hli⟩` from `exists_linearIndependent K (s : Set (Fin n → K))`. Establish `hfin : t.Finite` using `s.finite_toSet.subset hts`. Use `haveI := hfin.fintype`. Establish `htop : ⊤ ≤ Submodule.span K (Set.range ((↑) : t → Fin n → K))`. Rewrite using `[Subtype.range_coe, hspan, hs]`.
+
+Establish `hcard : Fintype.card t = n`. Use `Module.finrank_eq_card_basis (Module.Basis.mk hli htop)` as an intermediate fact. Rewrite `this` using `[Module.finrank_fin_fun]`. Conclude with `this.symm`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `b0 : Fin n → Fin n → K` to `fun i => (e.symm i).1`. Establish `hb0 : (colM b0).det ≠ 0`. Introduce `hd`. Take `⟨v, hv, hMv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).mpr hd`. Rewrite `hMv` using `[colM_mulVec]`.
+
+Establish `hli' : LinearIndependent K b0` using `hli.comp e.symm e.symm.injective`. Conclude with `hv (funext (Fintype.linearIndependent_iff.mp hli' v hMv))`. Set `F : (Fin n → s) → ℝ` to `fun g => f (colM (fun i => (g i : Fin n → K))).det`. Take `⟨g0, -, hg0⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n → s)) F ⟨fun i => ⟨b0 i, hts (e.symm i).2⟩, Finset.mem_univ _⟩`. Set `b : Fin n → Fin n → K` to `fun i => (g0 i : Fin n → K)`.
+
+Establish `hle : F (fun i => ⟨b0 i, hts (e.symm i).2⟩) ≤ f (colM b).det` using `hg0 _ (Finset.mem_univ _)`. Establish `hpos0 : 0 < f (colM b).det` using `lt_of_lt_of_le (hpos _ hb0) hle`. Establish `hdet : (colM b).det ≠ 0`. Introduce `h`. Rewrite `hpos0` using `[h, h0]`.
+
+Conclude with `lt_irrefl _ hpos0`. Use `⟨b, hdet, fun i => (g0 i).2, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Use `set d := (colM b).det with hd`. Use `⟨d⁻¹ • (colM b).cramer y, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `i`. Establish `hupd : Function.update b i y = fun j => ((Function.update g0 i ⟨y, hy⟩ j : s) : Fin n → K)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+
+Simplify using `[b]`. Simplify using `[b, Function.update_apply, hj]`. Establish `hmax : f (colM (Function.update b i y)).det ≤ f d`. Rewrite using `[hupd]`. Conclude with `hg0 _ (Finset.mem_univ _)`.
+
+Establish `hinv : f d⁻¹ = (f d)⁻¹`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← hm, mul_inv_cancel₀ hdet, h1]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.cramer_apply, colM_update]`. Rewrite using `[hm, hinv, inv_mul_le_iff₀ hpos0, _root_.mul_one]`.
+
+Conclude with `hmax`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_cramer, smul_smul, inv_mul_cancel₀ hdet, one_smul]`.
+-/
 private theorem exists_frame {K : Type*} [Field K] (f : K → ℝ) (h0 : f 0 = 0)
     (hm : ∀ x y, f (x * y) = f x * f y) (hpos : ∀ x, x ≠ 0 → 0 < f x) (hnn : ∀ x, 0 ≤ f x)
     (ha : ∀ x y, f (x + y) ≤ max (f x) (f y)) {n : ℕ} (s : Finset (Fin n → K))
@@ -82,6 +111,25 @@ private theorem exists_frame {K : Type*} [Field K] (f : K → ℝ) (h0 : f 0 = 0
     exact hmax
   · rw [Matrix.mulVec_smul, Matrix.mulVec_cramer, smul_smul, inv_mul_cancel₀ hdet, one_smul]
 
+/- English proof (translation)
+Take `⟨b, hdet, hbs, hcoord⟩` from `exists_frame f h0 hm hpos hnn ha s hs`. Establish `hu : IsUnit (colM b)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hdet)`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Establish `hl : ((hu.unit⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) * colM b = 1`. Establish `h` using `Units.inv_mul hu.unit`.
+
+Rewrite `h` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis. Establish `hr : colM b * ((hu.unit⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = 1`. Establish `h` using `Units.mul_inv hu.unit`. Rewrite `h` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis. Establish `hsum : ∀ {α : Type} (t : Finset α) (u : α → K), (∀ i ∈ t, f (u i) ≤ 1) → f (∑ i ∈ t, u i) ≤ 1`.
+
+Introduce `α t u hu'`. Conclude with `Finset.sum_induction u (fun x => f x ≤ 1) (fun x y hx hy => (ha x y).trans (max_le hx hy)) (by rw [h0]; exact zero_le_one) hu'`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz set c := ((hu.unit⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ z with hc`.
+
+Establish `hzc : z = colM b *ᵥ c`. Rewrite using `[hc, Matrix.mulVec_mulVec, hr, Matrix.one_mulVec]`. Use `⟨fun y => ∑ i, if b i = y then c i else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Apply `hsum` to reduce the goal to its premises.
+
+Introduce `i _`. Use `split_ifs`. Conclude with `hz i`. Rewrite using `[h0]`. Conclude with `zero_le_one`.
+
+Rewrite using `[hzc, colM_mulVec]`. Simplify using `only [Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [ite_smul, zero_smul]`.
+
+Rewrite using `[Finset.sum_ite_eq, if_pos (hbs i)]`. Introduce and unpack `⟨a, ha1, rfl⟩ i choose! C hC1 hC2 using hcoord`. Establish `hz : ∑ y ∈ s, a y • y = colM b *ᵥ ∑ y ∈ s, a y • C y`. Rewrite using `[Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun y hy => ?_` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_smul, hC2 y hy]`. Rewrite using `[hz, Matrix.mulVec_mulVec, hl, Matrix.one_mulVec]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Apply `hsum` to reduce the goal to its premises. Introduce `y hy`.
+
+Rewrite using `[hm]`. Conclude with `mul_le_one₀ (ha1 y) (hnn _) (hC1 y hy i)`.
+-/
 private theorem exists_gl {K : Type} [Field K] (f : K → ℝ) (h0 : f 0 = 0)
     (hm : ∀ x y, f (x * y) = f x * f y) (hpos : ∀ x, x ≠ 0 → 0 < f x) (hnn : ∀ x, 0 ≤ f x)
     (ha : ∀ x y, f (x + y) ≤ max (f x) (f y)) {n : ℕ} (s : Finset (Fin n → K))
@@ -137,6 +185,11 @@ private theorem exists_gl {K : Type} [Field K] (f : K → ℝ) (h0 : f 0 = 0)
     rw [hm]
     exact mul_le_one₀ (ha1 y) (hnn _) (hC1 y hy i)
 
+/- English proof (translation)
+Introduce `p _ G w s hs`. Conclude with `exists_gl (fun x : G.Fw w => ‖(x : PadicAlgCl p)‖) (by simp) (fun x y => by`. Use `push_cast`. Conclude with `norm_mul _ _)`. Use the proof step `(fun x hx => norm_pos_iff.mpr (by exact_mod_cast hx))`.
+
+Use the proof step `(fun x => norm_nonneg _)`. Use the proof step `(fun x y => by`. Use `push_cast`. Conclude with `IsUltrametricDist.norm_add_le_max _ _) s hs`.
+-/
 theorem UpperTheory.Gal.W2.locLat_of :
     UpperTheory.Gal.W2.LocLat := by
   intro p _ G w s hs

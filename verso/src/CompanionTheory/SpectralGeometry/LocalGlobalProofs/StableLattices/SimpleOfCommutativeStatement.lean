@@ -8,6 +8,25 @@ open CompanionTheory.Rg.Fl
 
 namespace GlobalTheory.CompanionTheory.RgFl
 
+/- English proof (translation)
+Use `set B := Algebra.adjoin ℂ (Set.range fun i => ρ (a i)) with hB`. Establish `hmap : ∀ c ∈ Algebra.adjoin ℂ (Set.range a), ρ c ∈ B`. Introduce `c hc`. Establish `e : B = (Algebra.adjoin ℂ (Set.range a)).map ρ`. Rewrite using `[hB, AlgHom.map_adjoin, ← Set.range_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `⟨c, hc, rfl⟩`. Set `G : Fin d × Fin d → (B →ₗ[ℂ] Module.End ℂ V)` to `fun p => (LinearMap.mulLeft ℂ (ρ (x p.1))) ∘ₗ (LinearMap.mulRight ℂ (ρ (y p.2))) ∘ₗ B.val.toLinearMap`. Set `F : (Fin d × Fin d → B) →ₗ[ℂ] Module.End ℂ V` to `∑ p : Fin d × Fin d, G p ∘ₗ LinearMap.proj p`.
+
+Establish `hFs : ∀ (p : Fin d × Fin d) (b : B), F (Pi.single p b) = ρ (x p.1) * b * ρ (y p.2)`. Introduce `p b`. Simplify using `only [F, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`. Rewrite using `[Finset.sum_eq_single p]`. Simplify using `[G, mul_assoc]`.
+
+Introduce `q _ hq`. Simplify using `[Pi.single_eq_of_ne hq]`. Simplify using the standard rewrite rules. Establish `hF : LinearMap.range F = ⊤`. Rewrite using `[eq_top_iff]`.
+
+Introduce and unpack `f -`. Take `⟨g, rfl⟩` from `hρ f`. Establish `hg : g ∈ Submodule.span ℂ {z | ∃ i j, ∃ c ∈ Algebra.adjoin ℂ (Set.range a), z = x i * c * y j}`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`.
+
+Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨i, j, c, hc, rfl⟩` from `hz`. Conclude with `⟨Pi.single (i, j) ⟨ρ c, hmap c hc⟩, by simp [hFs]⟩`. Consider the case `zero => simp`.
+
+Consider the case `add u v _ _ hu hv => simpa using Submodule.add_mem _ hu hv`. Consider the case `smul t u _ hu => simpa using Submodule.smul_mem _ t hu`. Establish `h1 : Module.finrank ℂ (Module.End ℂ V) ≤ Module.finrank ℂ (Fin d × Fin d → B)`. Use `LinearMap.finrank_range_le F` as an intermediate fact. Rewrite `this` using `[hF, finrank_top]`. Then use the resulting hypothesis.
+
+Establish `h2 : Module.finrank ℂ (Module.End ℂ V) = Module.finrank ℂ V ^ 2`. Rewrite using `[Module.finrank_linearMap, sq]`. Establish `h3 : Module.finrank ℂ (Fin d × Fin d → B) = d ^ 2 * Module.finrank ℂ B`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[sq]`.
+
+Rewrite `h1` using `[h2, h3]`. Conclude with `h1`.
+-/
 theorem finrank_sq_le_of_span {A V : Type} [Ring A] [Algebra ℂ A] [AddCommGroup V] [Module ℂ V]
     [FiniteDimensional ℂ V] (ρ : A →ₐ[ℂ] Module.End ℂ V) (hρ : Function.Surjective ρ) {d l : ℕ}
     (x y : Fin d → A) (a : Fin l → A)
@@ -59,6 +78,13 @@ theorem finrank_sq_le_of_span {A V : Type} [Ring A] [Algebra ℂ A] [AddCommGrou
   rw [h2, h3] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `h d l`. Take `⟨C, hC⟩` from `h l (2 * d ^ 2)`. Use `⟨C, fun A _ _ hA V _ _ _ ρ hirr => ?_⟩` and prove the remaining obligations. Take `⟨x, y, a, hcomm, hs⟩` from `hA`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases.
+
+Simplify using `[Module.finrank_zero_of_subsingleton]`. Establish `hsurj` using `GlobalTheory.CompanionTheory.Burnside.burnside_surj_of_irred ρ hirr`. Establish `h1` using `finrank_sq_le_of_span ρ hsurj x y a hs`. Establish `h2` using `hC V (fun i => ρ (a i)) (fun i j => (hcomm i j).map ρ)`. Establish `hm : 0 < Module.finrank ℂ V` using `Module.finrank_pos`.
+
+Generalize the expression as in `Module.finrank ℂ V = m at *`. Generalize the expression as in `Module.finrank ℂ (Algebra.adjoin ℂ (Set.range fun i => ρ (a i))) = b at *`. Establish `h3 : m * m ≤ C * m` using `by nlinarith`. Conclude with `Nat.le_of_mul_le_mul_right h3 hm`.
+-/
 theorem stSimple_of_stComm : StComm → StSimple := by
   intro h d l
   obtain ⟨C, hC⟩ := h l (2 * d ^ 2)

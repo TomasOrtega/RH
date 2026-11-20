@@ -12,6 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.Chain.RealIt.LocalFromCover
 
+/- English proof (translation)
+Establish `h : Zᴴ * Jm p q + Jm p q * Z = 0` using `hZ`. Establish `hJ` using `GlobalTheory.RealPar.KStabLie.Jm_sq p q`. Establish `h2` using `congrArg (fun A => (A * Jm p q).trace) h`. Simplify using `only [add_mul, Matrix.trace_add, zero_mul, Matrix.trace_zero] at h2`. Rewrite `h2` using `[mul_assoc, hJ, mul_one, Matrix.trace_mul_comm, ← mul_assoc, hJ, one_mul, Matrix.trace_conjTranspose]`.
+
+Conclude with `eq_neg_of_add_eq_zero_left h2`.
+-/
 theorem trace_conj {p q : ℕ} {Z : Mat p q} (hZ : Z ∈ upq p q) : (starRingEnd ℂ) Z.trace = -Z.trace := by
   have h : Zᴴ * Jm p q + Jm p q * Z = 0 := hZ
   have hJ := GlobalTheory.RealPar.KStabLie.Jm_sq p q
@@ -20,10 +25,18 @@ theorem trace_conj {p q : ℕ} {Z : Mat p q} (hZ : Z ∈ upq p q) : (starRingEnd
   rw [mul_assoc, hJ, mul_one, Matrix.trace_mul_comm, ← mul_assoc, hJ, one_mul, Matrix.trace_conjTranspose] at h2
   exact eq_neg_of_add_eq_zero_left h2
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.reindex_apply, Matrix.submatrix_apply]`. Conclude with `e.symm.sum_comp fun a => Z a a`.
+-/
 theorem trace_reindex' {p q n : ℕ} (e : Ix p q ≃ Fin n) (Z : Mat p q) : (Matrix.reindex e e Z).trace = Z.trace := by
   simp only [Matrix.trace, Matrix.diag, Matrix.reindex_apply, Matrix.submatrix_apply]
   exact e.symm.sum_comp fun a => Z a a
 
+/- English proof (translation)
+Establish `h : t • plainMat e Z = Matrix.reindex e e (t • Z)`. Use extensionality with `a b`. Simplify using `[plainMat]`. Rewrite using `[h]`. Use `open scoped Matrix.Norms.Operator in`.
+
+Conclude with `(NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) (by`. Conclude with `LinearMap.continuous_of_finiteDimensional (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearMap) (t • Z)).symm`.
+-/
 theorem exp_plainMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (Z : Mat p q) (t : ℝ) :
     NormedSpace.exp (t • plainMat e Z) = plainMat e (NormedSpace.exp (t • Z)) := by
   have h : t • plainMat e Z = Matrix.reindex e e (t • Z) := by
@@ -33,6 +46,9 @@ theorem exp_plainMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (Z : Mat p q) (t : ℝ
   exact (NormedSpace.map_exp (Matrix.reindexAlgEquiv ℂ ℂ e) (by
     exact LinearMap.continuous_of_finiteDimensional (Matrix.reindexAlgEquiv ℂ ℂ e).toLinearMap) (t • Z)).symm
 
+/- English proof (translation)
+Establish `h0 : ∀ A : Mat p q, A.map (starRingEnd ℂ) = Aᴴᵀ` using `fun A => by ext a b; simp`. Establish `h1` using `exp_plainMat e (Z.map (starRingEnd ℂ)) t`. Establish `h2 : t • Z.map (starRingEnd ℂ) = (t • Z)ᴴᵀ` using `by ext a b; simp`. Rewrite `h1` using `[h2, Matrix.exp_transpose, Matrix.exp_conjTranspose, ← h0]`. Conclude with `h1`.
+-/
 theorem exp_barMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (Z : Mat p q) (t : ℝ) :
     NormedSpace.exp (t • barMat e Z) = barMat e (NormedSpace.exp (t • Z)) := by
   have h0 : ∀ A : Mat p q, A.map (starRingEnd ℂ) = Aᴴᵀ := fun A => by ext a b; simp
@@ -43,21 +59,33 @@ theorem exp_barMat {p q n : ℕ} (e : Ix p q ≃ Fin n) (Z : Mat p q) (t : ℝ) 
 
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau)
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Rewrite using `[toFrame, ← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul, mul_assoc, Matrix.mul_nonsing_inv _ hd, mul_one]`.
+-/
 theorem fr_toFrame (Y : Matrix (Fin V.rank) (Fin V.rank) ℂ) : M.fr τ * toFrame M τ Y * (M.fr τ)⁻¹ = Y := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
   rw [toFrame, ← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul, mul_assoc,
     Matrix.mul_nonsing_inv _ hd, mul_one]
 
+/- English proof (translation)
+Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Rewrite using `[toFrame, Matrix.trace_mul_comm, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul]`.
+-/
 theorem trace_toFrame (Y : Matrix (Fin V.rank) (Fin V.rank) ℂ) : (toFrame M τ Y).trace = Y.trace := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)
   rw [toFrame, Matrix.trace_mul_comm, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul]
 
+/- English proof (translation)
+Rewrite using `[DSModel.rep, ← Matrix.exp_conj _ _ (M.fr_unit τ), Matrix.mul_smul, Matrix.smul_mul, fr_toFrame]`.
+-/
 theorem rep_exp (Y : Matrix (Fin V.rank) (Fin V.rank) ℂ) (t : ℝ) :
     M.rep τ (NormedSpace.exp (t • toFrame M τ Y)) = M.σ τ (NormedSpace.exp (t • Y)) := by
   rw [DSModel.rep, ← Matrix.exp_conj _ _ (M.fr_unit τ), Matrix.mul_smul, Matrix.smul_mul, fr_toFrame]
 
 variable {M τ}
 
+/- English proof (translation)
+Rewrite using `[rep_exp, hφ, h.grp, T.expt_cov _ (GlobalTheory.RealPar.KStabLie.smul_mem_upq hZ t), smul_smul, ← zpow_add₀ (Units.ne_zero _), add_neg_cancel, zpow_zero, one_smul]`.
+-/
 theorem matches_exp {p q : ℕ} {T : GrpData p q} {R : DSRep T}
     {φ : Mat p q → Matrix (Fin V.rank) (Fin V.rank) ℂ} {m : ℤ} {U : M.H τ → R.U.H} (h : Matches R M τ φ m U)
     (hφ : ∀ (Z : Mat p q) (t : ℝ), NormedSpace.exp (t • φ Z) = φ (NormedSpace.exp (t • Z)))
@@ -67,6 +95,9 @@ theorem matches_exp {p q : ℕ} {T : GrpData p q} {R : DSRep T}
   rw [rep_exp, hφ, h.grp, T.expt_cov _ (GlobalTheory.RealPar.KStabLie.smul_mem_upq hZ t), smul_smul,
     ← zpow_add₀ (Units.ne_zero _), add_neg_cancel, zpow_zero, one_smul]
 
+/- English proof (translation)
+Establish `h3` using `(hasDerivAt_zpow m _ (.inl (Units.ne_zero _))).comp (0 : ℝ) (GlobalTheory.RealPar.Cover.hasDerivAt_sq (T := T) hZ)`. Use `h3.congr_deriv ?_` and prove the remaining obligations. Simplify using `[T.expt_zero]`.
+-/
 theorem hasDerivAt_sq_zpow {p q : ℕ} (T : GrpData p q) (m : ℤ) {Z : Mat p q} (hZ : Z ∈ upq p q) :
     HasDerivAt (fun t : ℝ => ((T.sq (T.expt (t • Z)) : ℂˣ) : ℂ) ^ m) (m * (Z.trace / 2)) 0 := by
   have h3 := (hasDerivAt_zpow m _ (.inl (Units.ne_zero _))).comp (0 : ℝ)
@@ -74,6 +105,31 @@ theorem hasDerivAt_sq_zpow {p q : ℕ} (T : GrpData p q) (m : ℤ) {Z : Mat p q}
   refine h3.congr_deriv ?_
   simp [T.expt_zero]
 
+/- English proof (translation)
+Set `A : LPol W.rank V.rank →ₗ[ℂ] M'.H τ →ₗ[ℂ] M.H τ` to `LinearMap.mk₂ ℂ (fun P y => U.symm (B (κ P) (U' y))) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp) (fun _ _ _ => by simp [LinearIsometryEquiv.map_smulₛₗ, LinearMap.map_smulₛₗ])`. Establish `hA : ∀ P y, A P y = U.symm (B (κ P) (U' y))` using `fun _ _ => rfl`. Establish `hmC : (m : ℂ) = 2 * (aT : ℂ)` using `by exact_mod_cast hm`. Establish `hmC' : (m' : ℂ) = 2 * (aS : ℂ)` using `by exact_mod_cast hm'`. Use `⟨A, fun P y => ?_, ?_, fun P w => ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.subset_span (h₁.smooth _ ?_)` and prove the remaining obligations. Rewrite using `[hA, U.apply_symm_apply]`. Conclude with `hB.kfin _ _`. Take `⟨v, hv⟩` from `exists_ne (0 : R₂.HK.V)`. Take `⟨P, hP⟩` from `hB.ne (R₂.ι v) fun h0 => hv (R₂.ι_inj (by rw [h0, map_zero]))`.
+
+Use `⟨κ.symm P, U'.symm (R₂.ι v), Submodule.subset_span (h₂.smooth _ ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[U'.apply_symm_apply]`. Conclude with `⟨v, rfl⟩`. Rewrite using `[hA, U'.apply_symm_apply, κ.apply_symm_apply]`. Introduce `h0`.
+
+Conclude with `hP (U.symm.injective (by rw [h0, map_zero]))`. Use `haveI : CompleteSpace (M'.H τ) := U'.toIsometryEquiv.completeSpace`. Take `⟨c, hc⟩` from `hB.bdd (κ P)`. Set `L : M'.H τ →L[ℂ] M.H τ` to `(A P).mkContinuous c fun y => by`. Rewrite using `[hA, U.symm.norm_map, ← U'.norm_map y]`.
+
+Conclude with `hc _`. Use `⟨(InnerProductSpace.toDual ℂ (M'.H τ)).symm ((innerSL ℂ w).comp L), fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[InnerProductSpace.toDual_symm_apply]`. Both sides reduce to the same expression. Introduce `X hX P y`.
+
+Rewrite `hX` using `[← h₁.lie]`. Take `⟨Z, hZ, rfl⟩` from `hX`. Establish `h1` using `(hasDerivAt_sq_zpow T₁ m hZ).fun_smul (hB.src Z hZ (κ P) (U' y))`. Establish `h2` using `(U.symm.toContinuousLinearEquiv.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Establish `h3 : (barMat e Z).map (starRingEnd ℂ) = Matrix.reindex e e Z` using `by ext a b; simp [barMat]`.
+
+Establish `h4 : (barMat e Z).trace = -Z.trace`. Rewrite using `[barMat, trace_reindex', ← trace_conj hZ]`. Simplify using `[Matrix.trace]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+
+Apply `U.injective` to reduce the goal to its premises. Rewrite using `[matches_exp h₁ (exp_barMat e) hZ, hA]`. Simplify using the standard rewrite rules. Rewrite using `[hA, fr_toFrame, trace_toFrame, h3, h4, map_sub, map_smul, hκ.1, hmC, show 2 * (aT : ℂ) * (Z.trace / 2) = aT * Z.trace by ring]`. Simplify using `[T₁.expt_zero]`.
+
+Introduce `Y hY P y`. Rewrite `hY` using `[← h₂.lie]`. Take `⟨Z, hZ, rfl⟩` from `hY`. Establish `h1` using `(hasDerivAt_sq_zpow T₂ m' hZ).star.fun_smul (hB.tgt Z hZ (κ P) (U' y))`. Establish `h2` using `(U.symm.toContinuousLinearEquiv.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+
+Establish `h4 : (plainMat e' Z).trace = Z.trace` using `trace_reindex' e' Z`. Establish `h5 : star ((m' : ℂ) * (Z.trace / 2)) = -((aS : ℂ) * Z.trace)`. Rewrite using `[Complex.star_def, map_mul, map_intCast, map_div₀, trace_conj hZ, map_ofNat, hmC']`. Expand and normalize the polynomial expressions, which then agree. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `t`. Rewrite using `[hA, matches_exp h₂ (exp_plainMat e') hZ, LinearMap.map_smulₛₗ]`. Both sides reduce to the same expression. Rewrite using `[h5, hA, fr_toFrame, trace_toFrame, h4, map_add, map_smul, plainMat, hκ.2]`. Simplify using `[T₂.expt_zero]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem exists_locIt (D : D7) (V W : HSp D) (S S' : D.what₂.Tau → SPar) (M : DSModel V S) (M' : DSModel W S')
     (τ : D.what₂.Tau) (p q r s : ℕ) (T₁ : GrpData p q) (T₂ : GrpData r s) (R₁ : DSRep T₁) (R₂ : DSRep T₂)
     (e : Ix p q ≃ Fin V.rank) (e' : Ix r s ≃ Fin W.rank) (m m' : ℤ) (aS aT : ℚ) (U : M.H τ ≃ₗᵢ[ℂ] R₁.U.H)

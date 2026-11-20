@@ -16,6 +16,29 @@ open scoped ContDiff Matrix
 set_option autoImplicit false
 noncomputable section
 
+/- English proof (translation)
+Introduce `F _ σ X m E O H H₀ hH hH₀ e S A W c hP ρ hρ hsupp`. Use `X.smooth_str` as an intermediate fact. Take `⟨hUo, hUeq, hK⟩` from `GlobalTheory.T.goodPatch_chart_image_properties E O H hP`. Use `set g : V X.dim → ℝ := corrTop (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) with hg`. Establish `hKc : IsCompact (e '' tsupport ρ)` using `hK _ (isClosed_tsupport ρ) hsupp`.
+
+Establish `hint : IntegrableOn (corrC (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ())) (offHyp S (e '' W))`. Use `GlobalTheory.T.integrableOn_chernTransgressionTerm_poincareGrowth S (e '' W) (e '' tsupport ρ) _ _ _ c hUo hKc (Set.image_mono hsupp) ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩ a ha`. Conclude with `hP.small z hz a ha`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+
+Establish `htop : z ∈ ptsIn X.str σ (⊤ : X.X.Opens)`. Simplify using `[ptsIn]`. Conclude with `GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E ⊤ H₀ hH₀ hP.holo htop (hP.sub hz) (hP.frame z hz)`. Introduce `v hv`. Rewrite `hv` using `[← hUeq]`.
+
+Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`. Conclude with `GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E O H hH hP.holo hzO (hP.sub hz) (hP.frame z hz)`. Introduce `v hv a i j`. Rewrite `hv` using `[← hUeq]`. Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`.
+
+Conclude with `hP.form z hz hzO a i j`. Introduce `v hv a b i j`. Rewrite `hv` using `[← hUeq]`. Take `⟨z, ⟨hzO, hz⟩, rfl⟩` from `hv`. Conclude with `hP.dbar z hz hzO a b i j`.
+
+Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt hP.holo (hP.sub hz) (hρ z)).contDiffWithinAt`. Introduce and unpack `_ ⟨z, hz, rfl⟩ hK'`. Rewrite using `[e.left_inv (hP.sub hz)]`. Assume the negation of the conclusion as `h0`.
+
+Conclude with `hK' ⟨z, subset_tsupport ρ h0, rfl⟩`. Establish `hgi : IntegrableOn g (e '' (ptsIn X.str σ O ∩ W))`. Rewrite using `[hUeq]`. Conclude with `(hint.re).const_mul _`. Establish `hval : (∫ v in e '' (ptsIn X.str σ O ∩ W), g v) = (Real.pi ^ X.dim)⁻¹ * (∫ v in offHyp S (e '' W), corrC (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) v).re`.
+
+Rewrite using `[hUeq, hg]`. Simplify using `only [corrTop]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Conclude with `integral_re hint`.
+
+Rewrite using `[← hval]`. Use `GlobalTheory.T.topFormIntegral_of_support_in_holomorphicChart (fun c : AlgChart X.str σ X.dim => c.e) (fun i j => i.holo_trans j) (fun y => AlgChart.exists_mem_source y) (isOpen_ptsIn O).measurableSet e W g hP.isOpen hP.sub (fun j => GlobalTheory.T.differentiableOn_holomorphicCha …` and prove the remaining obligations. Introduce `i y _ hyW hyi`. Establish `hy : y ∉ tsupport ρ` using `fun h => hyW (hsupp h)`. Establish `h0 : ρ =ᶠ[𝓝 y] fun _ => 0` using `notMem_tsupport_iff_eventuallyEq.1 hy`.
+
+Establish `h1 : (fun v => ρ (i.e.symm v)) =ᶠ[𝓝 (i.e y)] fun _ => 0`. Establish `ht` using `(i.e.continuousAt_symm (i.e.map_source hyi)).tendsto`. Rewrite `ht` using `[i.e.left_inv hyi]`. Conclude with `ht.eventually h0`. Simplify using `only [corrDens, corrTop]`.
+
+Rewrite using `[GlobalTheory.T.transgressionTopCoeffComplex_eq_zero_of_cutoff_zero _ _ h1]`. Simplify using the standard rewrite rules. Introduce `j y hyS hyW hyj`. Conclude with `GlobalTheory.T.transgressionDensity_holomorphicChart_etale E O H H₀ hH hH₀ hρ hP.holo j hyS (hP.sub hyW) hyj (hP.frame y hyW)`.
+-/
 theorem GlobalTheory.GoodTop.hasInt_corrDens_of_goodPatch : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → IsMetricOn E ⊤ H₀ → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} {S : Finset (Fin X.dim)} {A : Mat (fun _ : Unit => m) X.Fn} {W : Set (CxPts X.str σ)} {c : ℝ}, GoodPatch E O H e S A W c → ∀ {ρ : CxPts X.str σ → ℝ}, (∀ y, CInfAt ρ y) → tsupport ρ ⊆ W → HasInt (fun c : AlgChart X.str σ X.dim => c.e) (corrDens E H₀ H ρ) (ptsIn X.str σ O) ((Real.pi ^ X.dim)⁻¹ * (∫ v in offHyp S (e '' W), corrC (fun v => ρ (e.symm v)) (fun v => H₀ A (e.symm v) ()) (fun v => H A (e.symm v) ()) v).re) := by
   intro F _ σ X m E O H H₀ hH hH₀ e S A W c hP ρ hρ hsupp
   classical

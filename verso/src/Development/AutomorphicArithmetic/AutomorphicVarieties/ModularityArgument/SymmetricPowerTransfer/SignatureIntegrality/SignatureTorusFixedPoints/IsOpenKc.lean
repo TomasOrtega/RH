@@ -8,6 +8,13 @@ open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil Upp
 section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Establish `ho : IsOpen {x : k | valuation k x ≤ uniformizer k ^ (c : ℤ)}`. Establish `h0 : IsOpen ((valuation k).integer : Set k)` using `Valuation.isOpen_integer`. Use `h0.preimage (continuous_mul_const ((unif k ^ (-(c : ℤ)) : kˣ) : k)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ ↔ valuation k _ ≤ 1`.
+
+Rewrite using `[map_mul, GlAx.val_zpow, _root_.zpow_neg, mul_inv_le_iff₀ (zpow_pos GlAx.unif_pos _), one_mul]`. Both sides reduce to the same expression. Establish `h : ∀ f : GL (Fin n) k → GL (Fin n) k, Continuous f → IsOpen {g | GlAx.Bd c (f g)}` using `fun f hf => by`. Simplify using `only [GlAx.Bd, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ho.preimage (((Units.continuous_val.comp hf).sub continuous_const).matrix_elem i j)`.
+
+Establish `: (Kc k n c : Set (GL (Fin n) k)) = {g | GlAx.Bd c (id g)} ∩ {g | GlAx.Bd c g⁻¹}` using `Set.ext fun g => GlAx.mem_Kc`. Rewrite using `[this]`. Conclude with `(h _ continuous_id).inter (h _ continuous_inv)`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.isOpen_Kc (c : ℕ) : IsOpen (Kc k n c : Set (GL (Fin n) k)) := by
   have ho : IsOpen {x : k | valuation k x ≤ uniformizer k ^ (c : ℤ)} := by
     have h0 : IsOpen ((valuation k).integer : Set k) := Valuation.isOpen_integer
@@ -24,6 +31,9 @@ theorem UpperTheory.V.Z.Sym.Sig.isOpen_Kc (c : ℕ) : IsOpen (Kc k n c : Set (GL
   rw [this]
   exact (h _ continuous_id).inter (h _ continuous_inv)
 
+/- English proof (translation)
+Use `Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Use `(GlAx.mem_Kc.1 (h ((ord k (Units.mk0 _ h0)).natAbs + 1))).1 i j` as an intermediate fact. Rewrite `this` using `[show (g.val - 1) i j = (Units.mk0 _ h0 : kˣ) from rfl, val_ord, zpow_le_zpow_iff_right_of_lt_one₀ GlAx.unif_pos uniformizer_lt_one]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.kc_sep {g : GL (Fin n) k} (h : ∀ m, g ∈ Kc k n m) : g = 1 := by
   refine Units.ext (sub_eq_zero.1 (Matrix.ext fun i j => ?_))
   by_contra h0
@@ -32,6 +42,11 @@ theorem UpperTheory.V.Z.Sym.Sig.kc_sep {g : GL (Fin n) k} (h : ∀ m, g ∈ Kc k
     zpow_le_zpow_iff_right_of_lt_one₀ GlAx.unif_pos uniformizer_lt_one] at this
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hcl : ∀ m, IsClosed ((Kc k n m : Set (GL (Fin n) k)) \ interior S)` using `fun m => ((Kc k n m).isClosed_of_isOpen (isOpen_Kc m)).sdiff isOpen_interior`. Take `⟨a, ha⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed (fun m => (Kc k n m : Set (GL (Fin n) k)) \ interior S) (fun m _ h => ⟨GlAx.Kc_anti (Nat.le_succ m) h.1, h.2⟩) (fun m => by obtain ⟨x, h1, h2⟩ := Set.not_subset.1 (hc m); exact ⟨x, h1, fun h => h2 (interior_subset …`. Establish `h1 : a = 1` using `kc_sep fun m => (Set.mem_iInter.1 ha m).1`.
+
+Conclude with `(Set.mem_iInter.1 ha 0).2 (h1 ▸ mem_interior_iff_mem_nhds.2 hS)`.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.kc_basis {S : Set (GL (Fin n) k)} (hS : S ∈ nhds (1 : GL (Fin n) k)) : ∃ m, (Kc k n m : Set (GL (Fin n) k)) ⊆ S := by
   by_contra hc
   push_neg at hc
@@ -46,6 +61,27 @@ theorem UpperTheory.V.Z.Sym.Sig.kc_basis {S : Set (GL (Fin n) k)} (hS : S ∈ nh
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n Q hQ Ψ hΨ`. Establish `hle : Q ≤ KO k (Fin n)`. Break down `hQ with rfl | ⟨c, rfl⟩` into its components or cases. Use `exacts [fun _ h => h.2, fun _ h => GlAx.Kc_le _ h.2]`. Establish `ce : ∀ i j, Continuous fun g : GL (Fin n) k => g.val i j` using `fun i j => Units.continuous_val.matrix_elem i j`.
+
+Establish `hcl : IsClosed (Q : Set (GL (Fin n) k))`. Break down `hQ with rfl | ⟨c, rfl⟩` into its components or cases. Establish `: (((glIwa k n).N : Subgroup _) : Set (GL (Fin n) k)) = ((⋂ i, ⋂ j, ⋂ (_ : j < i), {g | g.val i j = 0}) ∩ ⋂ i, {g | g.val i i = 1}) ∩ KO k (Fin n)`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`.
+
+Conclude with `and_congr_left' (mem_unipB _)`. Rewrite using `[this]`. Conclude with `((isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (ce i j) continuous_const).inter (isClosed_iInter fun i => isClosed_eq (ce i i) continuous_const)).inter ((KO k (Fin n)).isClosed_of_isOpen GlobalTheory.SplitFlip.isOpen_KO)`. Establish `: (((glIwa k n).Nm c : Subgroup _) : Set (GL (Fin n) k)) = ((⋂ i, ⋂ j, ⋂ (_ : i < j), {g | g.val i j = 0}) ∩ ⋂ i, {g | g.val i i = 1}) ∩ Kc k n (c + 1)`. Use extensionality with `g`.
+
+Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `and_congr_left' GlAx.mem_low`. Rewrite using `[this]`. Conclude with `((isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (ce i j) continuous_const).inter (isClosed_iInter fun i => isClosed_eq (ce i i) continuous_const)).inter ((Kc k n _).isClosed_of_isOpen (isOpen_Kc _))`. Establish `hc : IsCompact (Q : Set (GL (Fin n) k))` using `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset hcl hle`.
+
+Use `haveI : CompactSpace Q := isCompact_iff_compactSpace.1 hc`. Establish `hcont : Continuous Ψ`. Use `continuous_iff_continuousAt.2 fun a => ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, Filter.tendsto_def]`. Introduce `S hS`.
+
+Take `⟨m, hm⟩` from `kc_basis (S := (fun g : GL (Fin n) k => (Ψ a : GL (Fin n) k) * g) ⁻¹' {g | ∀ h : g ∈ Q, (⟨g, h⟩ : Q) ∈ S}) (by`. Use `(continuous_const_mul _).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[mul_one]`. Take `⟨W, hW, hW'⟩` from `(mem_nhds_subtype _ _ _).1 hS`. Conclude with `Filter.mem_of_superset hW fun g hg h => hW' hg)`.
+
+Establish `ho : IsOpen {b : Q | (a : GL (Fin n) k)⁻¹ * b ∈ Kc k n m}` using `(isOpen_Kc m).preimage (continuous_const.mul continuous_subtype_val)`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp)) fun b hb => ?_` and prove the remaining obligations. Use `hm (GlAx.Kc_anti (Nat.le_succ m) (hΨ m a b hb))` as an intermediate fact. Simplify using `only [Set.mem_preimage, mul_inv_cancel_left, Set.mem_setOf_eq] at this`. Conclude with `this (Ψ b).2`.
+
+Set `C : ℕ → Set Q` to `fun m => {a | (a : GL (Fin n) k)⁻¹ * Ψ a ∈ Kc k n m}`. Establish `hne : ∀ m, (C m).Nonempty` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨1, by show _ ∈ Kc k n 0`. Rewrite using `[GlAx.Kc_zero]`.
+
+Conclude with `mul_mem (inv_mem (hle (1 : Q).2)) (hle (Ψ 1).2)⟩`. Consider the case `succ m ih => obtain ⟨a, ha⟩ := ih`. Conclude with `⟨Ψ a, hΨ m _ _ ha⟩`. Establish `hC : ∀ m, IsClosed (C m)` using `fun m => ((Kc k n m).isClosed_of_isOpen (isOpen_Kc m)).preimage (continuous_subtype_val.inv.mul (continuous_subtype_val.comp hcont))`. Take `⟨a, ha⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed C (fun m _ h => GlAx.Kc_anti (Nat.le_succ m) h) hne (hC 0).isCompact hC`.
+
+Use `⟨a, Subtype.ext (inv_mul_eq_one.1 (kc_sep fun m => Set.mem_iInter.1 ha m)).symm⟩` and prove the remaining obligations.
+-/
 theorem UpperTheory.V.Z.Sym.Sig.fixPt : UpperTheory.V.Z.Sym.Sig.FixPt := by
   intro k _ _ _ _ n Q hQ Ψ hΨ
   have hle : Q ≤ KO k (Fin n) := by

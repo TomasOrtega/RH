@@ -18,19 +18,46 @@ open GlobalTheory.UnitLemma GlobalTheory.InertUnitOrb
 
 namespace GlobalTheory.InertUnitOrb
 open GlobalTheory.UnitLemma
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitaryLattice_isLattice_selfDual_hermitianModel`.
+-/
 theorem unitLat_selfDual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ), B.σ (x : B.A) = x → (∀ y z, stdH K n (ψ y) (ψ z) = B.herm x y z) → ∀ q : UL n w, IsLat K.O K.E (unitLat e B ψ q) ∧ ∀ y, y ∈ unitLat e B ψ q ↔ ∀ z ∈ unitLat e B ψ q, B.herm x y z ∈ (algebraMap K.O K.E).range := GlobalTheory.T.unitaryLattice_isLattice_selfDual_hermitianModel
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitLattice_stable_iff_conj_integral`.
+-/
 theorem unitLat_stable_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (γ : UL n w), (∀ y, ψ (B.g * y) = ((((γ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y) → ∀ q : UL n w, ((∀ y ∈ unitLat e B ψ q, B.g * y ∈ unitLat e B ψ q) ↔ q⁻¹ * γ * q ∈ KL n w) := GlobalTheory.T.unitLattice_stable_iff_conj_integral
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.unitaryLattice_eq_iff_inv_mul_integral`.
+-/
 theorem unitLat_eq_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ q q' : UL n w, unitLat e B ψ q = unitLat e B ψ q' ↔ q⁻¹ * q' ∈ KL n w := GlobalTheory.T.unitaryLattice_eq_iff_inv_mul_integral
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.self_dual_lattice_standard_hermitian`.
+-/
 theorem exists_unitLat_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ), B.σ (x : B.A) = x → (∀ y z, stdH K n (ψ y) (ψ z) = B.herm x y z) → ∀ L : Submodule K.O B.A, IsLat K.O K.E L → (∀ y, y ∈ L ↔ ∀ z ∈ L, B.herm x y z ∈ (algebraMap K.O K.E).range) → ∃ q : UL n w, unitLat e B ψ q = L := GlobalTheory.T.self_dual_lattice_standard_hermitian
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.localUnitaryCentralizer_equiv_normOneTorus`.
+-/
 theorem exists_torus_equiv : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ) (γ : UL n w), IsModel B ((((γ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) x ψ → B.P.Separable → ∃ τ : twCent (MonoidHom.id (UL n w)) γ ≃* B.T, ∀ (t : twCent (MonoidHom.id (UL n w)) γ) (y : B.A), ψ (((τ t : B.Aˣ) : B.A) * y) = (((((t : UL n w) : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y := GlobalTheory.T.localUnitaryCentralizer_equiv_normOneTorus
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.compactPart_centralizer_iff_integralUnits_of_model`.
+-/
 theorem cptPart_iff_intUnits : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (x : B.Aˣ) (γ : UL n w), IsModel B ((((γ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) x ψ → B.P.Separable → ∀ τ : twCent (MonoidHom.id (UL n w)) γ ≃* B.T, (∀ (t : twCent (MonoidHom.id (UL n w)) γ) (y : B.A), ψ (((τ t : B.Aˣ) : B.A) * y) = (((((t : UL n w) : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y) → ∀ t : twCent (MonoidHom.id (UL n w)) γ, ((t : UL n w) ∈ cptPart (twCent (MonoidHom.id (UL n w)) γ) ↔ ((τ t : B.Aˣ)) ∈ intUnits K.O B.A) := GlobalTheory.T.compactPart_centralizer_iff_integralUnits_of_model
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.orbitalIntegral_indicator_eq_finsum_relIndex`.
+-/
 theorem twOrb_unit : ∀ (G : Type) [Group G] [TopologicalSpace G] (K : Subgroup G) (γ : G), twOrb (MonoidHom.id G) K γ ((K : Set G).indicator 1) = ∑ᶠ q : DoubleCoset.Quotient (twCent (MonoidHom.id G) γ : Set G) (K : Set G), if (Quotient.out q)⁻¹ * γ * Quotient.out q ∈ K then (((twCent (MonoidHom.id G) γ ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex (cptPart (twCent (MonoidHom.id G) γ)) : ℕ) : ℂ) else 0 := GlobalTheory.T.orbitalIntegral_indicator_eq_finsum_relIndex
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.relIndex_eq_relIndex_inf_of_mulEquiv_subgroup`.
+-/
 theorem relIndex_transport : ∀ (G H : Type) [Group G] [Group H] (T : Subgroup G) (S : Subgroup H) (τ : T ≃* S) (A₁ A₂ : Subgroup G) (B₁ B₂ : Subgroup H), A₁ ≤ T → A₂ ≤ T → (∀ t : T, (t : G) ∈ A₁ ↔ ((τ t : S) : H) ∈ B₁) → (∀ t : T, (t : G) ∈ A₂ ↔ ((τ t : S) : H) ∈ B₂) → A₁.relIndex A₂ = (B₁ ⊓ S).relIndex (B₂ ⊓ S) := GlobalTheory.T.relIndex_eq_relIndex_inf_of_mulEquiv_subgroup
 end GlobalTheory.InertUnitOrb
 
 namespace GlobalTheory.InertUnitOrb
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify `hz` using `[← mul_assoc]`. Introduce `h`. Conclude with `⟨((a⁻¹ : Aˣ) : A) * y, h, by simp [← mul_assoc]⟩`.
+-/
 theorem mem_mulLat_unit {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (L : Submodule O A) (a : Aˣ) (y : A) :
     y ∈ mulLat O (a : A) L ↔ ((a⁻¹ : Aˣ) : A) * y ∈ L := by
   constructor
@@ -39,6 +66,11 @@ theorem mem_mulLat_unit {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (L 
   · intro h
     exact ⟨((a⁻¹ : Aˣ) : A) * y, h, by simp [← mul_assoc]⟩
 
+/- English proof (translation)
+Introduce `O _ A _ _ L u`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ∀ y, y ∈ L ↔ (u : A) * y ∈ L` using `h`. Use extensionality with `y`.
+
+Rewrite using `[mem_mulLat_unit, h', ← mul_assoc, Units.mul_inv, one_mul]`. Introduce `h y`. Establish `hy` using `mem_mulLat_unit L u ((u : A) * y)`. Rewrite `hy` using `[h, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `hy.symm`.
+-/
 theorem mem_stabLat_iff : ∀ (O : Type) [CommRing O] (A : Type) [CommRing A] [Algebra O A] (L : Submodule O A) (u : Aˣ), u ∈ stabLat O L ↔ mulLat O (u : A) L = L := by
   intro O _ A _ _ L u
   constructor
@@ -51,6 +83,13 @@ theorem mem_stabLat_iff : ∀ (O : Type) [CommRing O] (A : Type) [CommRing A] [A
     rw [h, ← mul_assoc, Units.inv_mul, one_mul] at hy
     exact hy.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ hE w hw K e he hint n B ψ t q a ha`. Establish `hmap : ∀ (g h : UL n w), ((((g * h : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) = (((g : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm * (((h : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map …`. Introduce `g h`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Conclude with `Matrix.map_mul (f := (e.symm : w.adicCompletion E →+* K.E))`.
+
+Establish `hinv : ∀ y, ((((t⁻¹ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y = ψ (((a⁻¹ : B.Aˣ) : B.A) * y)`. Introduce `y`. Establish `h1 : ψ y = ((((t : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ (((a⁻¹ : B.Aˣ) : B.A) * y)`. Rewrite using `[← ha, ← mul_assoc, Units.mul_inv, one_mul]`. Rewrite using `[h1, Matrix.mulVec_mulVec, ← hmap, inv_mul_cancel]`.
+
+Simplify using the standard rewrite rules. Establish `key : ∀ (r : UL n w) (z : B.A), z ∈ unitLat e B ψ r ↔ ∀ i, (((((r⁻¹ : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ z) i ∈ (algebraMap K.O K.E).range` using `fun r z => Iff.rfl`. Use extensionality with `y`. Rewrite using `[key, _root_.mul_inv_rev, hmap, ← Matrix.mulVec_mulVec, hinv, ← key, mem_mulLat_unit]`.
+-/
 theorem unitLat_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : InvAlg K) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), ∀ (t q : UL n w) (a : B.Aˣ), (∀ y, ψ ((a : B.A) * y) = ((((t : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) *ᵥ ψ y) → unitLat e B ψ (t * q) = mulLat K.O (a : B.A) (unitLat e B ψ q) := by
   intro E _ _ _ hE w hw K e he hint n B ψ t q a ha
   have hmap : ∀ (g h : UL n w), ((((g * h : UL n w) : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).map e.symm) =
@@ -78,14 +117,23 @@ end GlobalTheory.InertUnitOrb
 namespace GlobalTheory.InertUnitOrb
 open GlobalTheory.UnitLemma
 
+/- English proof (translation)
+Simplify using `[mulLat]`.
+-/
 theorem mulLat_one' {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (L : Submodule O A) :
     mulLat O (1 : A) L = L := by
   simp [mulLat]
 
+/- English proof (translation)
+Rewrite using `[mulLat, mulLat, mulLat, LinearMap.mulLeft_mul, Submodule.map_comp]`.
+-/
 theorem mulLat_mul' {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (a b : A) (L : Submodule O A) :
     mulLat O (a * b) L = mulLat O a (mulLat O b L) := by
   rw [mulLat, mulLat, mulLat, LinearMap.mulLeft_mul, Submodule.map_comp]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, G.one_mem, by simp [mulLat_one']⟩ symm := by rintro L M ⟨t, ht, h⟩ refine ⟨t⁻¹, G.inv_mem ht, ?_⟩ rw [h, ← mulLat_mul', Units.inv_mul, mulLat_one'] trans := by rintro L M N ⟨t, ht, h⟩ ⟨s, hs, h'⟩ refine ⟨s * t, G.mul_mem hs ht, ?_⟩ rw [h', h, Units.val_mul, mulLat_mul']`.
+-/
 theorem orbRel_equivalence {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (G : Subgroup Aˣ)
     (X : Set (Submodule O A)) :
     Equivalence (fun L M : X => ∃ t ∈ G, (M : Submodule O A) = mulLat O (t : A) (L : Submodule O A)) where
@@ -99,6 +147,11 @@ theorem orbRel_equivalence {O A : Type} [CommRing O] [CommRing A] [Algebra O A] 
     refine ⟨s * t, G.mul_mem hs ht, ?_⟩
     rw [h', h, Units.val_mul, mulLat_mul']
 
+/- English proof (translation)
+Distinguish the cases in `h : (Function.support f).Finite`. Conclude with `AddMonoidHom.map_finsum (Rat.castHom ℂ).toAddMonoidHom h`. Rewrite using `[finsum_of_infinite_support h, finsum_of_infinite_support]`. Simplify using the standard rewrite rules. Establish `: Function.support (fun i => ((f i : ℚ) : ℂ)) = Function.support f`.
+
+Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem ratCast_finsum' {α : Type} (f : α → ℚ) : ((∑ᶠ i, f i : ℚ) : ℂ) = ∑ᶠ i, ((f i : ℚ) : ℂ) := by
   by_cases h : (Function.support f).Finite
   · exact AddMonoidHom.map_finsum (Rat.castHom ℂ).toAddMonoidHom h
@@ -108,11 +161,45 @@ theorem ratCast_finsum' {α : Type} (f : α → ℚ) : ((∑ᶠ i, f i : ℚ) : 
         ext i; simp
       rwa [this]
 
+/- English proof (translation)
+Rewrite using `[finsum_subtype_eq_finsum_cond]`. Conclude with `finsum_congr fun i => finsum_eq_if.symm`.
+-/
 theorem finsum_ite_subtype' {α M : Type} [AddCommMonoid M] (p : α → Prop) [DecidablePred p] (f : α → M) :
     ∑ᶠ i, (if p i then f i else 0) = ∑ᶠ i : Subtype p, f i := by
   rw [finsum_subtype_eq_finsum_cond]
   exact finsum_congr fun i => finsum_eq_if.symm
 
+/- English proof (translation)
+Introduce `E _ _ _ hE w hw K e he hint n B hsep γ x ψ hM`. Take `⟨hx, hg, hh⟩` from `hM`. Take `⟨τ, hτ⟩` from `exists_torus_equiv E hE w hw K e he hint n B ψ x γ ⟨hx, hg, hh⟩ hsep`. Establish `hcpt` using `cptPart_iff_intUnits E hE w hw K e he hint n B ψ x γ ⟨hx, hg, hh⟩ hsep τ hτ`. Establish `hS1` using `unitLat_selfDual E hE w hw K e he hint n B ψ x hx hh`.
+
+Establish `hS1b` using `unitLat_stable_iff E hE w hw K e he hint n B ψ γ hg`. Establish `hS2` using `unitLat_eq_iff E hE w hw K e he hint n B ψ`. Establish `hS3` using `exists_unitLat_eq E hE w hw K e he hint n B ψ x hx hh`. Establish `hS6 : ∀ (t : twCent (MonoidHom.id (UL n w)) γ) (q : UL n w), unitLat e B ψ ((t : UL n w) * q) = mulLat K.O ((τ t : B.Aˣ) : B.A) (unitLat e B ψ q)` using `fun t q => unitLat_mul E hE w hw K e he hint n B ψ t q (τ t) (hτ t)`. Establish `hcomm : ∀ s t : twCent (MonoidHom.id (UL n w)) γ, (s : UL n w) * t = t * s`.
+
+Introduce `s t`. Establish `h1 : τ (s * t) = τ (t * s)` using `by rw [map_mul, map_mul, mul_comm]`. Use `congrArg Subtype.val (τ.injective h1)` as an intermediate fact. Simplify using `using this`. Establish `hX : ∀ q : UL n w, q⁻¹ * γ * q ∈ KL n w → unitLat e B ψ q ∈ B.X x` using `fun q hq => ⟨(hS1 q).1, (hS1b q).2 hq, (hS1 q).2⟩`.
+
+Establish `hrel : ∀ L M : B.X x, (Quot.mk _ L : Orb K.O B.T (B.X x)) = Quot.mk _ M → ∃ t ∈ B.T, (M : Submodule K.O B.A) = mulLat K.O (t : B.A) L` using `fun L M h => (orbRel_equivalence B.T (B.X x)).eqvGen_iff.mp (Quot.eqvGen_exact h)`. Establish `hcle : cptPart (twCent (MonoidHom.id (UL n w)) γ) ≤ twCent (MonoidHom.id (UL n w)) γ` using `(Subgroup.closure_le _).mpr fun s hs => hs.1`. Establish `hconj : ∀ (Q s : UL n w), s ∈ (KL n w).map (MulAut.conj Q).toMonoidHom ↔ Q⁻¹ * s * Q ∈ KL n w`. Introduce `Q s`. Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`.
+
+Rewrite using `[twOrb_unit]`. Unfold `InvAlg.N orbSum`. Rewrite using `[ratCast_finsum']`. Rewrite using `[finsum_ite_subtype']`. Set `φ : {q : DoubleCoset.Quotient (twCent (MonoidHom.id (UL n w)) γ : Set (UL n w)) (KL n w : Set (UL n w)) // (Quotient.out q)⁻¹ * γ * Quotient.out q ∈ KL n w} → Orb K.O B.T (B.X x)` to `fun q => Quot.mk _ ⟨unitLat e B ψ (Quotient.out q.1), hX _ q.2⟩`.
+
+Use `finsum_eq_of_bijective φ ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `⟨q, hq⟩ ⟨q', hq'⟩ h`. Take `⟨a, ha, hQ⟩` from `hrel _ _ h`. Use `set t := τ.symm ⟨a, ha⟩`. Establish `hta : ((τ t : B.Aˣ) : B.A) = a` using `by simp [t]`.
+
+Rewrite `hQ` using `[← hta, ← hS6, hS2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show q = q'`. Rewrite using `[← DoubleCoset.out_eq' _ _ q, ← DoubleCoset.out_eq' _ _ q', DoubleCoset.eq]`. Conclude with `⟨t, t.2, _, (KL n w).inv_mem hQ, by group⟩`.
+
+Introduce `o set R := Quot.out o`. Take `⟨q0, hq0⟩` from `hS3 R.1 R.2.1 R.2.2.2`. Establish `hq0K : q0⁻¹ * γ * q0 ∈ KL n w` using `(hS1b q0).1 (hq0 ▸ R.2.2.1)`. Take `⟨h, k, hh, hk, hout⟩` from `DoubleCoset.mk_out_eq_mul (twCent (MonoidHom.id (UL n w)) γ) (KL n w) q0`. Establish `hhγ : h * γ = γ * h` using `hh`.
+
+Establish `hP : (Quotient.out (DoubleCoset.mk (twCent (MonoidHom.id (UL n w)) γ) (KL n w) q0))⁻¹ * γ * Quotient.out (DoubleCoset.mk (twCent (MonoidHom.id (UL n w)) γ) (KL n w) q0) ∈ KL n w`. Rewrite using `[hout]`. Establish `: (h * q0 * k)⁻¹ * γ * (h * q0 * k) = k⁻¹ * (q0⁻¹ * γ * q0) * k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+
+Conclude with `(KL n w).mul_mem ((KL n w).mul_mem ((KL n w).inv_mem hk) hq0K) hk`. Use `⟨⟨_, hP⟩, ?_⟩` and prove the remaining obligations. Use `show Quot.mk _ _ = o`. Rewrite using `[← Quot.out_eq o]`. Use `(Quot.sound ?_).symm` and prove the remaining obligations.
+
+Use `⟨τ ⟨h, hh⟩, (τ ⟨h, hh⟩).2, ?_⟩` and prove the remaining obligations. Use `show unitLat e B ψ _ = mulLat K.O _ R.1`. Rewrite using `[hout, ← hq0, ← hS6]`. Conclude with `((hS2 _ _).2 (by simpa [mul_assoc] using hk)).symm`. Introduce and unpack `⟨q, hq⟩ set R := Quot.out (φ ⟨q, hq⟩)`.
+
+Establish `hR : (Quot.mk _ R : Orb K.O B.T (B.X x)) = φ ⟨q, hq⟩` using `Quot.out_eq _`. Take `⟨a, ha, hRa⟩` from `hrel _ _ hR.symm`. Use `set t := τ.symm ⟨a, ha⟩`. Establish `hta : ((τ t : B.Aˣ) : B.A) = a` using `by simp [t]`. Rewrite `hRa` using `[← hta, ← hS6]`.
+
+Simplify using `only [one_mul, Rat.cast_natCast]`. Use `congr 1`. Use `relIndex_transport (UL n w) B.Aˣ _ B.T τ _ _ (stabLat K.O R.1) (intUnits K.O B.A) inf_le_left hcle ?_ hcpt` and prove the remaining obligations. Introduce `s`. Rewrite using `[mem_stabLat_iff, hRa, ← hS6, hS2, Subgroup.mem_inf, hconj]`.
+
+Simplify using `only [SetLike.coe_mem, true_and]`. Establish `: ((s : UL n w) * ((t : UL n w) * Quotient.out q))⁻¹ * ((t : UL n w) * Quotient.out q) = ((Quotient.out q)⁻¹ * s * Quotient.out q)⁻¹`. Rewrite using `[← mul_assoc (s : UL n w), hcomm s t]`. Use `group`. Rewrite using `[this]`.
+
+Conclude with `inv_mem_iff.symm`.
+-/
 theorem orb_eq_N : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (w : Pl E), ¬ IsSplitAt w → ∀ (K : GlobalTheory.UnitLemma.UQ) (e : K.E ≃+* w.adicCompletion E), (∀ x, e (K.c x) = cj w (e x)) → (∀ x, x ∈ (algebraMap K.O K.E).range ↔ Valued.v (e x) ≤ 1) → ∀ (n : ℕ) (B : GlobalTheory.UnitLemma.InvAlg K), B.P.Separable → ∀ (γ : UL n w) (x : B.Aˣ) (ψ : B.A ≃ₗ[K.E] (Fin n → K.E)), GlobalTheory.InertUnitOrb.IsModel B (γ.1.val.map e.symm) x ψ → twOrb (MonoidHom.id _) (KL n w) γ ((KL n w : Set (UL n w)).indicator 1) = ((B.N x : ℚ) : ℂ) := by
   intro E _ _ _ hE w hw K e he hint n B hsep γ x ψ hM
   obtain ⟨hx, hg, hh⟩ := hM

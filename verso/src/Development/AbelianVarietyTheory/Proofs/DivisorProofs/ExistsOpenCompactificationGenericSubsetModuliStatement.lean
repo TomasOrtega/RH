@@ -9,5 +9,8 @@ open GlobalTheory.UPoinc
 open GlobalTheory
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UPoinc.exists_open_generic_subset_moduli | exact GlobalTheory.UPoinc.exists_open_generic_subset_moduli | (intros; apply GlobalTheory.UPoinc.exists_open_generic_subset_moduli <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_open_compactification_generic_subset_moduli : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∃ W : C.Z.Opens, Set.range C.i ⊆ W ∧ ∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ C.Z), Set.range (gPt p ≫ y) ⊆ W → Set.range (gPt p ≫ y) ⊆ Set.range C.i := by
   first | exact @GlobalTheory.UPoinc.exists_open_generic_subset_moduli | exact GlobalTheory.UPoinc.exists_open_generic_subset_moduli | (intros; apply GlobalTheory.UPoinc.exists_open_generic_subset_moduli <;> assumption)

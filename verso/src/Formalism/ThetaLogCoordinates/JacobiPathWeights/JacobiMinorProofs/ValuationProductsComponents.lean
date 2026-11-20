@@ -18,9 +18,15 @@ def trInv {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) 
   ⟨(↑m⁻¹ : Matrix _ _ R).transpose, (↑m : Matrix _ _ R).transpose,
     by rw [← Matrix.transpose_mul]; simp, by rw [← Matrix.transpose_mul]; simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trInv_val {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) :
     (↑(trInv m) : Matrix (Fin n) (Fin n) R) = (↑m⁻¹ : Matrix (Fin n) (Fin n) R).transpose := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem trInv_inv {R : Type*} [CommRing R] {n : ℕ} (m : (Matrix (Fin n) (Fin n) R)ˣ) :
     (↑(trInv m)⁻¹ : Matrix (Fin n) (Fin n) R) = (↑m : Matrix (Fin n) (Fin n) R).transpose := rfl
 
@@ -28,6 +34,21 @@ end A0
 
 namespace A0
 
+/- English proof (translation)
+Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base`. Introduce `I`. Use `⟨fun I' => if I' = I then 1 else 0, fun I' => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only split`.
+
+Conclude with `one_mem _`. Conclude with `zero_mem _`. Simplify using the standard rewrite rules. Consider the case `succ N hN ih`. Introduce `I`.
+
+Distinguish the cases in `hch : colHeight (μ (N + 1)) c = colHeight (μ N) c`. Rewrite using `[pathWord, if_pos hch]`. Conclude with `ih I`. Rewrite using `[pathWord, if_neg hch] choose Q hQ1 hQ2 using ih`. Establish `hX : ∀ m : Fin n, (X (N, m) : MvPolynomial (ℕ × Fin n) R) ∈ supported R {x : ℕ × Fin n | i ≤ x.1}` using `fun m => by`.
+
+Rewrite using `[supported_eq_adjoin_X]`. Conclude with `Algebra.subset_adjoin ⟨(N, m), hN, rfl⟩`. Unfold `stepF`. Use `split`. Use `⟨fun I' => ∑ m ∈ I, ((sg I m : ℤ) : MvPolynomial (ℕ × Fin n) R) * Q (I.erase m) I' * X (N, m), fun I' => ?_, ?_⟩` and prove the remaining obligations.
+
+Conclude with `sum_mem fun m _ => mul_mem (mul_mem (intCast_mem _ _) (hQ1 _ _)) (hX m)`. Unfold `wedgeF`. Simplify using `only [hQ2, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `⟨fun I' => ∑ m ∈ Iᶜ, ((sg I m : ℤ) : MvPolynomial (ℕ × Fin n) R) * X (N, m) * Q (insert m I) I', fun I' => ?_, ?_⟩` and prove the remaining obligations. Conclude with `sum_mem fun m _ => mul_mem (mul_mem (intCast_mem _ _) (hX m)) (hQ1 _ _)`. Unfold `contrF`. Simplify using `only [hQ2, Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun I' _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trunc (R : Type*) [CommRing R] (n i : ℕ) (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ) (N : ℕ)
     (hN : i ≤ N) : ∀ I : Finset (Fin n),
     ∃ Q : Finset (Fin n) → MvPolynomial (ℕ × Fin n) R,
@@ -78,18 +99,27 @@ end A0
 
 namespace A0
 
+/- English proof (translation)
+Establish `h1` using `(Paths.le_iff_lt_colHeight h c m').1 hc`. Establish `h2` using `Paths.colHeight_le μ c`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem height_full {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) {m' : Fin n} (hm : m'.val + 1 = n) {c : ℤ}
     (hc : c ≤ μ m') : colHeight μ c = n := by
   have h1 := (Paths.le_iff_lt_colHeight h c m').1 hc
   have h2 := Paths.colHeight_le μ c
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Establish `: m'.val < colHeight μ c` using `by omega`. Conclude with `absurd ((Paths.le_iff_lt_colHeight h c m').2 this) (not_le.2 hc)`.
+-/
 theorem height_zero {n : ℕ} {μ : Fin n → ℤ} (h : Antitone μ) {m' : Fin n} (hm : m'.val = 0) {c : ℤ}
     (hc : μ m' < c) : colHeight μ c = 0 := by
   by_contra h0
   have : m'.val < colHeight μ c := by omega
   exact absurd ((Paths.le_iff_lt_colHeight h c m').2 this) (not_le.2 hc)
 
+/- English proof (translation)
+The claim follows from `(Finset.card_eq_iff_eq_univ I).1 (by simpa using h)`.
+-/
 theorem idx_univ {n : ℕ} {I : Finset (Fin n)} (h : I.card = n) : I = univ :=
   (Finset.card_eq_iff_eq_univ I).1 (by simpa using h)
 
@@ -101,6 +131,11 @@ section Weights
 
 variable {ι ζ : Type*} {n : ℕ} {L : Type*} [CommRing L] (isVec : ι → Bool) (S : Set ι) [DecidablePred (· ∈ S)]
 
+/- English proof (translation)
+Establish `h : ∀ e : LVar ι ζ n →₀ ℕ, wExp isVec S last e = e.sum fun x d => (d : ℤ) * wtX isVec S last x` using `fun e => rfl`. Rewrite using `[h, h, h, Finsupp.sum_add_index']`. Introduce `x`. Simplify using the standard rewrite rules. Introduce `x a b`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wExp_add (last : Bool) (e e' : LVar ι ζ n →₀ ℕ) :
     wExp isVec S last (e + e') = wExp isVec S last e + wExp isVec S last e' := by
   have h : ∀ e : LVar ι ζ n →₀ ℕ,
@@ -109,6 +144,9 @@ theorem wExp_add (last : Bool) (e e' : LVar ι ζ n →₀ ℕ) :
   · intro x; simp
   · intro x a b; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[Finsupp.weight_apply]`. Unfold `wExp Finsupp.sum`. Simplify using the standard rewrite rules.
+-/
 theorem wExp_weight (last : Bool) (e : LVar ι ζ n →₀ ℕ) :
     wExp isVec S last e = Finsupp.weight (wtX isVec S last) e := by
   rw [Finsupp.weight_apply]
@@ -120,10 +158,16 @@ def WGe (last : Bool) (s : ℤ) (H : MvPolynomial (LVar ι ζ n) L) (a : ℤ) : 
 
 variable {isVec S} {last : Bool} {s : ℤ}
 
+/- English proof (translation)
+Introduce `e he`. Simplify using `at he`.
+-/
 theorem wge_zero (a : ℤ) : WGe isVec S last s (0 : MvPolynomial (LVar ι ζ n) L) a := by
   intro e he
   simp at he
 
+/- English proof (translation)
+Introduce `e he`. Break down `Finset.mem_union.1 (MvPolynomial.support_add he) with h1 | h1` into its components or cases. Conclude with `h e h1`. Conclude with `h' e h1`.
+-/
 theorem wge_add {H H' : MvPolynomial (LVar ι ζ n) L} {a : ℤ} (h : WGe isVec S last s H a)
     (h' : WGe isVec S last s H' a) : WGe isVec S last s (H + H') a := by
   classical
@@ -132,6 +176,9 @@ theorem wge_add {H H' : MvPolynomial (LVar ι ζ n) L} {a : ℤ} (h : WGe isVec 
   · exact h e h1
   · exact h' e h1
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using wge_zero a`. Consider the case `insert x t hx ih`. Rewrite using `[Finset.sum_insert hx]`. Conclude with `wge_add (h x (Finset.mem_insert_self _ _)) (ih fun y hy => h y (Finset.mem_insert_of_mem hy))`.
+-/
 theorem wge_sum {κ : Type*} (t : Finset κ) (f : κ → MvPolynomial (LVar ι ζ n) L) {a : ℤ}
     (h : ∀ x ∈ t, WGe isVec S last s (f x) a) : WGe isVec S last s (∑ x ∈ t, f x) a := by
   classical
@@ -141,6 +188,9 @@ theorem wge_sum {κ : Type*} (t : Finset κ) (f : κ → MvPolynomial (LVar ι �
     rw [Finset.sum_insert hx]
     exact wge_add (h x (Finset.mem_insert_self _ _)) (ih fun y hy => h y (Finset.mem_insert_of_mem hy))
 
+/- English proof (translation)
+Introduce `e he`. Take `⟨e1, h1, e2, h2, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul H H' he)`. Rewrite using `[wExp_add, mul_add]`. Conclude with `add_le_add (h _ h1) (h' _ h2)`.
+-/
 theorem wge_mul {H H' : MvPolynomial (LVar ι ζ n) L} {a a' : ℤ} (h : WGe isVec S last s H a)
     (h' : WGe isVec S last s H' a') : WGe isVec S last s (H * H') (a + a') := by
   classical
@@ -149,6 +199,11 @@ theorem wge_mul {H H' : MvPolynomial (LVar ι ζ n) L} {a a' : ℤ} (h : WGe isV
   rw [wExp_add, mul_add]
   exact add_le_add (h _ h1) (h' _ h2)
 
+/- English proof (translation)
+Introduce `e he`. Establish `h0 : e = 0`. Assume the negation of the conclusion as `hne`. Rewrite `he` using `[mem_support_iff, coeff_C, if_neg (Ne.symm hne)]`. Conclude with `he rfl`.
+
+Substitute `h0` using the available equality. Simplify using `[wExp]`.
+-/
 theorem wge_C (z : L) : WGe isVec S last s (C z : MvPolynomial (LVar ι ζ n) L) 0 := by
   classical
   intro e he
@@ -159,10 +214,18 @@ theorem wge_C (z : L) : WGe isVec S last s (C z : MvPolynomial (LVar ι ζ n) L)
   subst h0
   simp [wExp]
 
+/- English proof (translation)
+Rewrite using `[← map_intCast (C : L →+* MvPolynomial (LVar ι ζ n) L)]`. Conclude with `wge_C _`.
+-/
 theorem wge_int (z : ℤ) : WGe isVec S last s ((z : ℤ) : MvPolynomial (LVar ι ζ n) L) 0 := by
   rw [← map_intCast (C : L →+* MvPolynomial (LVar ι ζ n) L)]
   exact wge_C _
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Use `wge_C (isVec := isVec) (S := S) (last := last) (s := s) (ζ := ζ) (n := n) (1 : L)` as an intermediate fact. Simplify using `using this`. Consider the case `insert x t hx ih`.
+
+Rewrite using `[Finset.prod_insert hx, Finset.sum_insert hx]`. Conclude with `wge_mul (h x (Finset.mem_insert_self _ _)) (ih fun y hy => h y (Finset.mem_insert_of_mem hy))`.
+-/
 theorem wge_prod {κ : Type*} (t : Finset κ) (f : κ → MvPolynomial (LVar ι ζ n) L) (a : κ → ℤ)
     (h : ∀ x ∈ t, WGe isVec S last s (f x) (a x)) :
     WGe isVec S last s (∏ x ∈ t, f x) (∑ x ∈ t, a x) := by
@@ -175,6 +238,11 @@ theorem wge_prod {κ : Type*} (t : Finset κ) (f : κ → MvPolynomial (LVar ι 
     rw [Finset.prod_insert hx, Finset.sum_insert hx]
     exact wge_mul (h x (Finset.mem_insert_self _ _)) (ih fun y hy => h y (Finset.mem_insert_of_mem hy))
 
+/- English proof (translation)
+Introduce `e he`. Rewrite `he` using `[mem_support_iff, coeff_X]`. Establish `h1 : Finsupp.single x 1 = e`. Assume the negation of the conclusion as `hne`. Rewrite `he` using `[if_neg hne]`.
+
+Conclude with `he rfl`. Rewrite using `[← h1, wExp_single, hx]`. Simplify using the standard rewrite rules.
+-/
 theorem wge_X (x : LVar ι ζ n) (hx : wtX isVec S last x = 0) :
     WGe isVec S last s (X x : MvPolynomial (LVar ι ζ n) L) 0 := by
   classical
@@ -187,6 +255,11 @@ theorem wge_X (x : LVar ι ζ n) (hx : wtX isVec S last x = 0) :
   rw [← h1, wExp_single, hx]
   simp
 
+/- English proof (translation)
+Introduce `e he`. Establish `hne : H ≠ 0`. Introduce and unpack `rfl`. Simplify using `at he`. Rewrite using `[wExp_weight, h (mem_support_iff.1 he)]`.
+
+Conclude with `ha hne`.
+-/
 theorem wge_hom {H : MvPolynomial (LVar ι ζ n) L} {a w : ℤ}
     (h : IsWeightedHomogeneous (wtX isVec S last) H w) (ha : H ≠ 0 → a ≤ s * w) :
     WGe isVec S last s H a := by
@@ -199,6 +272,31 @@ theorem wge_hom {H : MvPolynomial (LVar ι ζ n) L} {a w : ℤ}
 
 end Weights
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ J hJ`. Establish `h0 : J = ∅`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hJ (if_neg hne)`. Rewrite using `[h0, hp.1, Paths.colHeight_zero]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ j ih`.
+
+Introduce `hj J hJ`. Establish `ih'` using `ih (by omega)`. Distinguish the cases in `hch : colHeight (μ (j + 1)) c = colHeight (μ j) c`. Rewrite `hJ` using `[pathWord, if_pos hch]`. Rewrite using `[hch]`.
+
+Conclude with `ih' J hJ`. Rewrite `hJ` using `[pathWord, if_neg hch]`. Establish `hh` using `Paths.path_height hp (show j < N by omega) c`. Establish `hle` using `Paths.colHeight_le (μ j) c`. Establish `hle'` using `Paths.colHeight_le (μ (j + 1)) c`.
+
+Unfold `stepF at hJ`. Consider the cases of `hup : (isVec j == decide (1 ≤ c))`. Rewrite `hJ` using `[hup]`. Simplify using `only [Bool.false_eq_true, if_false] at hJ`. Unfold `contrF at hJ`.
+
+Take `⟨m, hm, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hJ`. Establish `e` using `ih' _ (right_ne_zero_of_mul hne)`. Rewrite `e` using `[Finset.card_insert_of_notMem (Finset.mem_compl.1 hm)]`. Distinguish the cases in `h1 : 1 ≤ c`. Establish `hv : isVec j = false` using `by simpa [h1] using hup`.
+
+Rewrite `hh` using `[hv]`. Simplify using `only [Bool.false_eq_true, if_false] at hh`. Rewrite `e`, the goal using `[if_pos h1]`. Use linear arithmetic over natural numbers and integers. Establish `hv : isVec j = true` using `by simpa [h1] using hup`.
+
+Rewrite `hh` using `[hv]`. Simplify using `only [if_true] at hh`. Rewrite `e`, the goal using `[if_neg h1]`. Use linear arithmetic over natural numbers and integers. Rewrite `hJ` using `[hup]`.
+
+Simplify using `only [if_true] at hJ`. Unfold `wedgeF at hJ`. Take `⟨m, hm, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hJ`. Establish `e` using `ih' _ (right_ne_zero_of_mul (left_ne_zero_of_mul hne))`. Establish `hpos : 0 < J.card` using `Finset.card_pos.2 ⟨m, hm⟩`.
+
+Rewrite `e` using `[Finset.card_erase_of_mem hm]`. Distinguish the cases in `h1 : 1 ≤ c`. Establish `hv : isVec j = true` using `by simpa [h1] using hup`. Rewrite `hh` using `[hv]`. Simplify using `only [if_true] at hh`.
+
+Rewrite `e`, the goal using `[if_pos h1]`. Use linear arithmetic over natural numbers and integers. Establish `hv : isVec j = false` using `by simpa [h1] using hup`. Rewrite `hh` using `[hv]`. Simplify using `only [Bool.false_eq_true, if_false] at hh`.
+
+Rewrite `e`, the goal using `[if_neg h1]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pathWord_card {R : Type*} [CommRing R] {n N : ℕ} {isVec : ℕ → Bool} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ}
     (hp : IsPath n isVec B μ N) (c : ℤ) (Xr : ℕ → Fin n → R) :
     ∀ j ≤ N, ∀ J : Finset (Fin n), pathWord isVec μ c Xr j J ≠ 0 →
@@ -261,6 +359,11 @@ theorem pathWord_card {R : Type*} [CommRing R] {n N : ℕ} {isVec : ℕ → Bool
           rw [if_neg h1] at e ⊢
           omega
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _`. Both sides reduce to the same expression. Consider the case `succ j ih`.
+
+Introduce `h`. Rewrite using `[pathWord, pathWord, ih fun l hl => h l (by omega), h j (by omega)]`.
+-/
 theorem pathWord_congr {R : Type*} [CommRing R] {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ)
     (Xr Xr' : ℕ → Fin n → R) : ∀ j : ℕ, (∀ l < j, Xr l = Xr' l) →
       pathWord isVec μ c Xr j = pathWord isVec μ c Xr' j := by
@@ -271,6 +374,13 @@ theorem pathWord_congr {R : Type*} [CommRing R] {n : ℕ} (isVec : ℕ → Bool)
     intro h
     rw [pathWord, pathWord, ih fun l hl => h l (by omega), h j (by omega)]
 
+/- English proof (translation)
+Distinguish the cases in `h1 : 1 ≤ c`. Rewrite using `[if_pos h1]`. Use `A1hw.act_pathWord actFormWedge actFormContract isVec μ c Xr _ m (fun i hi => ?_) (fun i hi => ?_) j` and prove the remaining obligations. Establish `: isVec i = true` using `by simpa [h1] using hi`. Simplify using `only [this, if_true]`.
+
+Establish `: isVec i = false` using `by simpa [h1] using hi`. Simplify using `only [this, Bool.false_eq_true, if_false]`. Rewrite using `[if_neg h1, ← trInv_val]`. Use `A1hw.act_pathWord actFormWedge actFormContract isVec μ c Xr _ (trInv m) (fun i hi => ?_) (fun i hi => ?_) j` and prove the remaining obligations. Establish `: isVec i = false` using `by simpa [h1] using hi`.
+
+Simplify using `only [this, Bool.false_eq_true, if_false, trInv_val]`. Establish `: isVec i = true` using `by simpa [h1] using hi`. Simplify using `only [this, if_true, trInv_inv, Matrix.transpose_transpose]`.
+-/
 theorem act_pathWord' {A : Type} [CommRing A] {n : ℕ} (isVec : ℕ → Bool) (μ : ℕ → Fin n → ℤ) (c : ℤ)
     (Xr : ℕ → Fin n → A) (m : (Matrix (Fin n) (Fin n) A)ˣ) (j : ℕ) :
     pathWord isVec μ c (fun i => if isVec i then Matrix.vecMul (Xr i) (↑m : Matrix (Fin n) (Fin n) A)
@@ -293,6 +403,17 @@ theorem act_pathWord' {A : Type} [CommRing A] {n : ℕ} (isVec : ℕ → Bool) (
     · have : isVec i = true := by simpa [h1] using hi
       simp only [this, if_true, trInv_inv, Matrix.transpose_transpose]
 
+/- English proof (translation)
+Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ J`. Use `show IsWeightedHomogeneous _ (if J = ∅ then 1 else 0) _`.
+
+Use `split`. Name the introduced variables `h`. Substitute `h` using the available equality. Simplify using `using isWeightedHomogeneous_one _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`.
+
+Consider the case `succ j ih`. Introduce `hj J`. Distinguish the cases in `hch : colHeight (μ (j + 1)) c = colHeight (μ j) c`. Rewrite using `[pathWord, if_pos hch]`. Conclude with `ih (by omega) J`.
+
+Rewrite using `[pathWord, if_neg hch]`. Use `A1hw.wt_step _ _ m _ _ _ (ih (by omega)) (fun m' => ?_) J` and prove the remaining obligations. Use `isWeightedHomogeneous_X L (wtX (ζ := Empty) (n := n) isVec S last) (Sum.inl (j, m'))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Establish `hjS : j ∈ S` using `hS j (by omega)`.
+
+Apply the tactic sequence `by_cases h1 : 1 ≤ c <;> cases hv : isVec j <;> by_cases h2 : m' = m <;>`. Simplify using `[wtX, hjS, hm, h1, hv, h2]`.
+-/
 theorem wt_word {L : Type*} [CommRing L] {n i : ℕ} (isVec : ℕ → Bool) (S : Set ℕ) [DecidablePred (· ∈ S)]
     (hS : ∀ j, j < i → j ∈ S) (μ : ℕ → Fin n → ℤ) (c : ℤ) (last : Bool) (m : Fin n)
     (hm : ∀ a : Fin n, (if last then a.val + 1 = n else a.val = 0) ↔ a = m) :
@@ -326,9 +447,23 @@ def sgn (last : Bool) : ℤ := if last then 1 else -1
 
 def bc (c x : ℤ) : ℤ := if 1 ≤ c then (if c ≤ x then (1 : ℤ) else 0) else (if x < c then -1 else 0)
 
+/- English proof (translation)
+The claim follows from `A1hw.sum_wt x T hT`.
+-/
 theorem sum_bc (x : ℤ) (T : Finset ℤ) (hT : Finset.Ioc 0 x ∪ Finset.Ioc x 0 ⊆ T) : ∑ c ∈ T, bc c x = x :=
   A1hw.sum_wt x T hT
 
+/- English proof (translation)
+Consider the cases of `last`. Simplify using `only [Bool.false_eq_true, if_false] at hm`. Distinguish the cases in `h1 : 1 ≤ c`. Distinguish the cases in `h2 : c ≤ ν m`. Apply the tactic sequence `simp only [sgn, bc, h1, h2, if_true, Bool.false_eq_true, if_false] split_ifs <;> norm_num`.
+
+Rewrite `hJ` using `[if_pos h1, height_zero hν hm (not_le.1 h2), Finset.card_eq_zero]`. Substitute `hJ` using the available equality. Simplify using `[sgn, bc, h1, h2]`. Distinguish the cases in `h2 : ν m < c`. Rewrite `hJ` using `[if_neg h1, height_zero hν hm h2, Nat.sub_zero]`.
+
+Rewrite using `[idx_univ hJ]`. Simplify using `[sgn, bc, h1, h2]`. Apply the tactic sequence `simp only [sgn, bc, h1, h2, Bool.false_eq_true, if_false] split_ifs <;> norm_num`. Simplify using `only [if_true] at hm`. Distinguish the cases in `h1 : 1 ≤ c`.
+
+Distinguish the cases in `h2 : c ≤ ν m`. Rewrite `hJ` using `[if_pos h1, height_full hν hm h2]`. Rewrite using `[idx_univ hJ]`. Simplify using `[sgn, bc, h1, h2]`. Apply the tactic sequence `simp only [sgn, bc, h1, h2, if_true, if_false] split_ifs <;> norm_num`.
+
+Distinguish the cases in `h2 : ν m < c`. Apply the tactic sequence `simp only [sgn, bc, h1, h2, if_true, if_false] split_ifs <;> norm_num`. Rewrite `hJ` using `[if_neg h1, height_full hν hm (not_lt.1 h2), Nat.sub_self, Finset.card_eq_zero]`. Substitute `hJ` using the available equality. Simplify using `[sgn, bc, h1, h2]`.
+-/
 theorem col_bound {n : ℕ} {ν : Fin n → ℤ} (hν : Antitone ν) (c : ℤ) (last : Bool) (m : Fin n)
     (hm : if last then m.val + 1 = n else m.val = 0) (J : Finset (Fin n))
     (hJ : J.card = if 1 ≤ c then colHeight ν c else n - colHeight ν c) :
@@ -376,12 +511,23 @@ def gam (n : ℕ) (τ : Type) : (Matrix (Fin n) (Fin n) (MvPolynomial τ (GenFie
     by rw [← Matrix.map_mul, genMat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)],
     by rw [← Matrix.map_mul, genMat_mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gam_val (n : ℕ) (τ : Type) :
     (↑(gam k n τ) : Matrix (Fin n) (Fin n) (MvPolynomial τ (GenField k n))) = (genMat k n)⁻¹.map C := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gam_inv (n : ℕ) (τ : Type) :
     (↑(gam k n τ)⁻¹ : Matrix (Fin n) (Fin n) (MvPolynomial τ (GenField k n))) = (genMat k n).map C := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a`. Rewrite using `[gam_val, gam_inv]`. Establish `h : gH k isVec S (X (j, a)) = sharpHom isVec S (genMat k n)⁻¹ (genMat k n) (X (Sum.inl (j, a)))`. Simplify using `[gH]`. Rewrite using `[h]`.
+
+Consider the cases of `hv : isVec j`. Simplify using `[sharpHom, hj, hv]`. Simplify using `[sharpHom, hj, hv]`.
+-/
 theorem gH_in {j : ℕ} (hj : j ∈ S) :
     (fun a : Fin n => gH k isVec S (X (j, a))) =
       if isVec j then
@@ -400,12 +546,26 @@ theorem gH_in {j : ℕ} (hj : j ∈ S) :
   · simp [sharpHom, hj, hv]
   · simp [sharpHom, hj, hv]
 
+/- English proof (translation)
+Simplify using `[gH, sharpHom, hj]`.
+-/
 theorem gH_out {j : ℕ} (hj : j ∉ S) (a : Fin n) :
     gH k isVec S (X (j, a)) = X (Sum.inl (j, a)) := by
   simp [gH, sharpHom, hj]
 
 variable {k isVec S}
 
+/- English proof (translation)
+Establish `hm' : ∀ a : Fin n, (if last then a.val + 1 = n else a.val = 0) ↔ a = m`. Introduce `a`. Consider the cases of `last`. Simplify using `only [Bool.false_eq_true, if_false] at hm ⊢`. Rewrite using `[Fin.ext_iff]`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [if_true] at hm ⊢`. Rewrite using `[Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[A1hw.map_pathWord (gH k isVec S)]`.
+
+Rewrite using `[pathWord_congr isVec μ c _ _ i fun l hl => gH_in k isVec S ((hS l).2 hl)]`. Rewrite using `[act_pathWord' isVec μ c (fun l b => (X (Sum.inl (l, b)) : MvPolynomial (LVar ℕ Empty n) (GenField k n))) (gam k n _) i]`. Use `wge_sum _ _ fun I' _ => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : GenField k n, minorF (if 1 ≤ c then (↑(gam k n (LVar ℕ Empty n)) : Matrix (Fin n) (Fin n) (MvPolynomial (LVar ℕ Empty n) (GenField k n))) else (↑(gam k n (LVar ℕ Empty n))⁻¹ : Matrix (Fin n) (Fin n) _).transpose) I' J = C z := by`. Rewrite using `[gam_val, gam_inv, ← Matrix.transpose_map]`.
+
+Use `split_ifs`. Conclude with `⟨_, (minorMap _ _ C n (genMat k n)⁻¹ I' J).symm⟩`. Conclude with `⟨_, (minorMap _ _ C n (genMat k n).transpose I' J).symm⟩`. Rewrite using `[hz, ← add_zero (sgn last * bc c (μ i m))]`. Use `wge_mul (wge_hom (wt_word isVec S (fun j hj => (hS j).2 hj) μ c last m hm' i le_rfl I') fun hne => ?_) (wge_C z)` and prove the remaining obligations.
+
+Conclude with `col_bound (hp.2.1 i hi) c last m hm I' (pathWord_card hp c _ i hi I' hne)`.
+-/
 theorem col_base {N i : ℕ} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ} (hp : IsPath n isVec B μ N) (hi : i ≤ N)
     (hS : ∀ j, j ∈ S ↔ j < i) (c : ℤ) (last : Bool) (m : Fin n)
     (hm : if last then m.val + 1 = n else m.val = 0) (J : Finset (Fin n)) :
@@ -436,6 +596,19 @@ theorem col_base {N i : ℕ} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ} (hp 
     fun hne => ?_) (wge_C z)
   exact col_bound (hp.2.1 i hi) c last m hm I' (pathWord_card hp c _ i hi I' hne)
 
+/- English proof (translation)
+Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base => exact h0`. Consider the case `succ N hN ih`. Introduce `J`. Distinguish the cases in `hch : colHeight (μ (N + 1)) c = colHeight (μ N) c`.
+
+Rewrite using `[pathWord, if_pos hch]`. Conclude with `ih J`. Rewrite using `[pathWord, if_neg hch]`. Establish `hout : N ∉ S` using `fun h => by have := (hS N).1 h; omega`. Establish `hX : ∀ b : Fin n, WGe isVec S last s (gH k isVec S (X (N, b))) 0`.
+
+Introduce `b`. Rewrite using `[gH_out k isVec S hout]`. Conclude with `wge_X _ (by simp [wtX, hout])`. Unfold `stepF`. Use `split`.
+
+Unfold `wedgeF`. Rewrite using `[map_sum]`. Use `wge_sum _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_intCast]`. Use `wge_mul (wge_mul (wge_int (isVec := isVec) (S := S) (last := last) (s := s) (L := GenField k n) (ζ := Empty) (n := n) (sg J b)) (ih (J.erase b))) (hX b)` as an intermediate fact.
+
+Simplify using `using this`. Unfold `contrF`. Rewrite using `[map_sum]`. Use `wge_sum _ _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_intCast]`.
+
+Use `wge_mul (wge_mul (wge_int (isVec := isVec) (S := S) (last := last) (s := s) (L := GenField k n) (ζ := Empty) (n := n) (sg J b)) (hX b)) (ih (insert b J))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem col_all {i : ℕ} {μ : ℕ → Fin n → ℤ} (hS : ∀ j, j ∈ S ↔ j < i) (c : ℤ) (last : Bool) (s a : ℤ)
     (h0 : ∀ J : Finset (Fin n), WGe isVec S last s
       (gH k isVec S (pathWord isVec μ c (fun j a => (X (j, a) : MvPolynomial (ℕ × Fin n) k)) i J)) a)
@@ -471,6 +644,11 @@ theorem col_all {i : ℕ} {μ : ℕ → Fin n → ℤ} (hS : ∀ j, j ∈ S ↔ 
           (L := GenField k n) (ζ := Empty) (n := n) (sg J b)) (hX b)) (ih (insert b J))
         simpa using this
 
+/- English proof (translation)
+Take `⟨hfin, -⟩` from `pathProductDegrees k n N isVec B μ I hp hI`. Establish `hsub : (Function.mulSupport fun c : ℤ => pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) k)) N (I c)) ⊆ ↑(hfin.toFinset ∪ (Finset.Ioc 0 (μ i m) ∪ Finset.Ioc (μ i m) 0))`. Introduce `c hc`. Rewrite using `[Finset.coe_union]`. Conclude with `Or.inl (by simpa using hc)`.
+
+Unfold `psiPath`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, map_prod]`. Use `wge_prod (isVec := isVec) (S := S) (last := last) (s := sgn last) (hfin.toFinset ∪ (Finset.Ioc 0 (μ i m) ∪ Finset.Ioc (μ i m) 0)) (fun c => gH k isVec S (pathWord isVec μ c (fun i a => (X (i, a) : MvPolynomial (ℕ × Fin n) k)) N (I c))) (fun c => sgn last * bc c (μ i m)) (fun c _ …` as an intermediate fact. Rewrite `this` using `[← Finset.mul_sum, sum_bc _ _ Finset.subset_union_right]`. Then use the resulting hypothesis.
+-/
 theorem psi_bound {N i : ℕ} {B : ℕ → ℕ} {μ : ℕ → Fin n → ℤ} {I : ℤ → Finset (Fin n)}
     (hp : IsPath n isVec B μ N) (hI : IsIndex (μ N) I) (hi : i ≤ N)
     (hS : ∀ j, j ∈ S ↔ j < i) (last : Bool) (m : Fin n)
@@ -497,6 +675,15 @@ end Gen
 
 end A0
 
+/- English proof (translation)
+Introduce `k _ n N i isVec B μ I hp hI hi`. Prove the components needed by the constructor for the conclusion. Introduce `m hm`. Unfold `valS`. Use `Finset.le_min fun j hj => ?_` and prove the remaining obligations.
+
+Take `⟨e, he, rfl⟩` from `(gen_mem_supp isVec _ true _ j).1 hj`. Use `A0.psi_bound (k := k) hp hI hi (S := {j : ℕ | j < i}) (fun j => Iff.rfl) true m (by simpa using hm) e he` as an intermediate fact. Simplify using `only [A0.sgn, if_true, one_mul] at this`. Conclude with `WithTop.coe_le_coe.2 this`. Introduce `m hm`.
+
+Unfold `lam1S`. Use `Finset.max_le fun j hj => ?_` and prove the remaining obligations. Take `⟨e, he, rfl⟩` from `(gen_mem_supp isVec _ false _ j).1 hj`. Use `A0.psi_bound (k := k) hp hI hi (S := {j : ℕ | j < i}) (fun j => Iff.rfl) false m (by simpa using hm) e he` as an intermediate fact. Simplify using `only [A0.sgn, Bool.false_eq_true, if_false] at this`.
+
+Conclude with `WithBot.coe_le_coe.2 (by linarith)`.
+-/
 theorem valuation_products_components : ValuationProductsComponents := by
   intro k _ n N i isVec B μ I hp hI hi
   constructor
@@ -527,6 +714,9 @@ def eps (I : Finset (Fin n)) : ℤ := ∏ a ∈ I, (-1) ^ (a.val + n + 1)
 
 def dualF (K : Form R n) : Form R n := fun J => ((eps Jᶜ : ℤ) : R) * K Jᶜ
 
+/- English proof (translation)
+Unfold `eps`. Rewrite using `[Finset.prod_pow_eq_pow_sum]`. Use `congr 1`. Simplify using `only [add_assoc, Finset.sum_add_distrib, Finset.sum_const, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eps_eq (I : Finset (Fin n)) : eps I = (-1) ^ (∑ a ∈ I, a.val + I.card * (n + 1)) := by
   unfold eps
   rw [Finset.prod_pow_eq_pow_sum]

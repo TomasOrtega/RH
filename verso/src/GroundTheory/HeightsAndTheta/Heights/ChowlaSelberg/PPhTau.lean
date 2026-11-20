@@ -9,6 +9,11 @@ open scoped Real ModularForm UpperHalfPlane
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hvol : volume.real (fundamentalDomain Complex.basisOneI) = 1`. Rewrite using `[← Complex.toBasis_orthonormalBasisOneI, measureReal_congr (fundamentalDomain_ae_parallelepiped _ volume)]`. Rewrite using `[measureReal_def, OrthonormalBasis.coe_toBasis, OrthonormalBasis.volume_parallelepiped]`. Simplify using the standard rewrite rules. Unfold `latticeArea`.
+
+Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ _ (latticeOfTau τ).latticeBasis Complex.basisOneI, hvol, mul_one, Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `[Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr, abs_of_pos τ.im_pos]`.
+-/
 theorem latticeArea_latticeOfTau (τ : ℍ) : latticeArea (latticeOfTau τ).lattice = τ.im := by
   have hvol : volume.real (fundamentalDomain Complex.basisOneI) = 1 := by
     rw [← Complex.toBasis_orthonormalBasisOneI,
@@ -20,6 +25,15 @@ theorem latticeArea_latticeOfTau (τ : ℍ) : latticeArea (latticeOfTau τ).latt
     Complex.basisOneI, hvol, mul_one, Module.Basis.det_apply, Matrix.det_fin_two]
   simp [Module.Basis.toMatrix_apply, Complex.coe_basisOneI_repr, abs_of_pos τ.im_pos]
 
+/- English proof (translation)
+Introduce `τ`. Establish `hy : 0 < τ.im` using `τ.im_pos`. Establish `hη : η (τ : ℂ) ≠ 0` using `ModularForm.eta_ne_zero (z := (τ : ℂ)) τ.im_pos`. Establish `hn : 0 < ‖η (τ : ℂ)‖` using `norm_pos_iff.2 hη`. Establish `h1 : ‖((2 * π : ℝ) : ℂ) ^ 12 * η (τ : ℂ) ^ 24‖ = ((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4) ^ 6`.
+
+Rewrite using `[norm_mul, norm_pow, norm_pow, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6 : (1 / 6 : ℝ) * Real.log (((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4) ^ 6) = Real.log ((2 * π) ^ 2 * ‖η (τ : ℂ)‖ ^ 4)`. Rewrite using `[Real.log_pow]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Unfold `logPeriod`. Rewrite using `[latticeArea_latticeOfTau, hΔ τ, h1, h6, ← Real.log_mul (by positivity) (by positivity)]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem PhTau.proof (hΔ : DeltaEta.Statement) : PhTau.Statement := by
   intro τ
   have hy : 0 < τ.im := τ.im_pos

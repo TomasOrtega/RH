@@ -7,6 +7,43 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 
 namespace GlobalTheory.AvgKO
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n φ hφ`. Take `⟨hlc, hcs⟩` from `hφ`. Set `H : Subgroup (GL (Fin n) k)` to `{ carrier := {g | ∀ X, φ (g.val * X) = φ X} one_mem' := by intro X; simp mul_mem' := by`. Introduce `a b ha hb X`. Simplify using `only [Set.mem_setOf_eq] at ha hb`.
+
+Rewrite using `[Units.val_mul, Matrix.mul_assoc, ha, hb]`. Use the proof step `inv_mem' := by`. Introduce `a ha X`. Simplify using `only [Set.mem_setOf_eq] at ha`. Use `ha ((a⁻¹ : GL (Fin n) k).val * X)` as an intermediate fact.
+
+Rewrite `this` using `[← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Conclude with `this.symm }`. Establish `hmemH : ∀ g, g ∈ H ↔ ∀ X, φ (g.val * X) = φ X` using `fun g => Iff.rfl`. Set `K` to `KO k (Fin n)`. Establish `hcont : Continuous (fun p : GL (Fin n) k × Matrix (Fin n) (Fin n) k => p.1.val * p.2)` using `(Units.continuous_val.comp continuous_fst).matrix_mul continuous_snd`.
+
+Set `S` to `(fun p : GL (Fin n) k × Matrix (Fin n) (Fin n) k => p.1.val * p.2) '' ((K : Set (GL (Fin n) k)) ×ˢ tsupport φ)`. Establish `hS : IsCompact S` using `(isCompact_KO.prod hcs).image hcont`. Set `Z` to `{p : GL (Fin n) k × Matrix (Fin n) (Fin n) k | φ (p.1.val * p.2) = φ p.2}`. Establish `hZ : IsOpen Z`. Establish `h1 : IsLocallyConstant (fun p : GL (Fin n) k × Matrix (Fin n) (Fin n) k => φ (p.1.val * p.2) - φ p.2)` using `(hlc.comp_continuous hcont).sub (hlc.comp_continuous continuous_snd)`.
+
+Establish `: Z = (fun p : GL (Fin n) k × Matrix (Fin n) (Fin n) k => φ (p.1.val * p.2) - φ p.2) ⁻¹' {0}`. Use extensionality with `p`. Simplify using `[Z, sub_eq_zero]`. Rewrite using `[this]`. Conclude with `h1.isOpen_fiber 0`.
+
+Establish `hsub : ({1} : Set (GL (Fin n) k)) ×ˢ S ⊆ Z`. Introduce and unpack `⟨g, X⟩ ⟨hg, -⟩`. Simplify using `only [Set.mem_singleton_iff] at hg`. Substitute `hg` using the available equality. Simplify using `[Z]`.
+
+Take `⟨U, V, hU, -, h1U, hSV, hUV⟩` from `generalized_tube_lemma isCompact_singleton hS hZ hsub`. Establish `hUK : U ∩ (K : Set (GL (Fin n) k)) ⊆ H`. Introduce and unpack `g ⟨hgU, hgK⟩`. Express the relevant statement in the definitionally equal form `g ∈ H`. Rewrite using `[hmemH]`.
+
+Introduce `X`. Distinguish the cases in `hX : X ∈ S`. Conclude with `hUV (show (g, X) ∈ U ×ˢ V from ⟨hgU, hSV hX⟩)`. Establish `hX1 : φ X = 0`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises.
+
+Introduce `hXC`. Conclude with `hX ⟨(1, X), ⟨K.one_mem, hXC⟩, by simp⟩`. Establish `hX2 : φ (g.val * X) = 0`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hXC`.
+
+Use `hX ⟨(g⁻¹, g.val * X), ⟨K.inv_mem hgK, hXC⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[hX1, hX2]`. Establish `hHo : IsOpen (H : Set (GL (Fin n) k))` using `Subgroup.isOpen_of_mem_nhds H (g := 1) (Filter.mem_of_superset ((hU.inter isOpen_KO).mem_nhds ⟨h1U rfl, K.one_mem⟩) hUK)`.
+
+Set `L` to `H.subgroupOf K`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 isCompact_KO`. Use `haveI : Finite (K ⧸ L) := Subgroup.quotient_finite_of_isOpen _ (hHo.preimage continuous_subtype_val)`. Use `haveI : Fintype (K ⧸ L) := Fintype.ofFinite _`. Take `⟨m, ⟨e⟩⟩` from `Finite.exists_equiv_fin (K ⧸ L)`.
+
+Establish `hm : (m : ℂ) ≠ 0`. Establish `: 0 < m`. Break down `Nat.eq_zero_or_pos m with h | h` into its components or cases. Establish `x` using `e (QuotientGroup.mk 1)`. Rewrite `x` using `[h]`.
+
+Conclude with `x.elim0`. Conclude with `h`. Conclude with `this.ne'` after adjusting the coercions. Use `⟨m, fun _ => 1 / (m : ℂ), fun i => ((Quotient.out (e.symm i) : K) : GL (Fin n) k)⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+
+Conclude with `K.inv_mem (Quotient.out (e.symm i)).2`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `g hg X`. Rewrite using `[← Finset.mul_sum, ← Finset.mul_sum]`.
+
+Use `congr 1`. Set `F : K ⧸ L → ℂ` to `fun q => φ ((((Quotient.out q : K) : GL (Fin n) k)⁻¹).val * X)`. Establish `key : ∀ y : K, F (QuotientGroup.mk y) = φ ((((y : GL (Fin n) k))⁻¹).val * X)`. Introduce `y`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul L y`.
+
+Simplify using `only [F]`. Rewrite using `[hh]`. Establish `hh' : ((h : K) : GL (Fin n) k)⁻¹ ∈ H` using `H.inv_mem (Subgroup.mem_subgroupOf.1 h.2)`. Rewrite using `[Subgroup.coe_mul, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc]`. Conclude with `(hmemH _).1 hh' _`.
+
+Set `g' : K` to `⟨g, hg⟩`. Establish `hl : ∀ i, φ ((((Quotient.out (e.symm i) : K) : GL (Fin n) k)⁻¹).val * (g.val * X)) = F (g'⁻¹ • e.symm i)`. Introduce `i`. Establish `hq : g'⁻¹ • e.symm i = QuotientGroup.mk (g'⁻¹ * Quotient.out (e.symm i))` using `by conv_lhs => rw [← QuotientGroup.out_eq' (e.symm i)]`. Both sides reduce to the same expression.
+
+Rewrite using `[hq, key, Subgroup.coe_mul, _root_.mul_inv_rev, InvMemClass.coe_inv, inv_inv, Units.val_mul, Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem avg_fin : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)
     (φ : Matrix (Fin n) (Fin n) k → ℂ), φ ∈ SB (Matrix (Fin n) (Fin n) k) →
     ∃ (m : ℕ) (w : Fin m → ℂ) (u : Fin m → GL (Fin n) k), (∀ i, u i ∈ KO k (Fin n)) ∧ ∑ i, w i = 1 ∧

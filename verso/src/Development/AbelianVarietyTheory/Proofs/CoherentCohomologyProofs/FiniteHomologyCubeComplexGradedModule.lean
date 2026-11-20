@@ -6,6 +6,9 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `have := isNoetherian_of_range_eq_ker f g h.linearMap_ker_eq.symm inferInstance`.
+-/
 private theorem finite_of_exact_of_finite {R A B C : Type*} [CommRing R] [IsNoetherianRing R]
     [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
     {f : A →ₗ[R] B} {g : B →ₗ[R] C} (h : Function.Exact f g) (hA : Module.Finite R A)
@@ -13,6 +16,15 @@ private theorem finite_of_exact_of_finite {R A B C : Type*} [CommRing R] [IsNoet
   have := isNoetherian_of_range_eq_ker f g h.linearMap_ker_eq.symm
   inferInstance
 
+/- English proof (translation)
+Introduce `ι _ _ R _ _`. It suffices to establish `key : ∀ (j p : ℕ), Fintype.card ι < p + j → ∀ (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] [Decomposition ℳ], Module.Finite (MvPolynomial ι R) M → ∀ n, Module.Finite R (( …`. Introduce `M _ _ _ _ ℳ _ _ hM n p`. Conclude with `key (Fintype.card ι + 1) p (by omega) M ℳ hM n`. Introduce `j`.
+
+Proceed by induction on `j with`. Consider the case `zero`. Introduce `p hp M _ _ _ _ ℳ _ _ _ n`. Use `ModuleCat.subsingleton_of_isZero (isZero_cubeComplex_homology (grCube ι ℳ n) (p := p) hp)` as an intermediate fact. Use `infer_instance`.
+
+Consider the case `succ j ih`. Introduce `p hp M _ _ _ _ ℳ _ _ hM n`. Take `⟨r, d, g, hg, hs⟩` from `exists_graded_surjection (ι := ι) ℳ`. Set `_` to `grSubDecomposition (grFree ι R d) hg.isHomogeneous_ker`. Establish `hK` using `ih (p + 1) (by omega) _ (grSub (grFree ι R d) (LinearMap.ker g)) inferInstance n`.
+
+Establish `hF` using `(cubeComplex_grFree_finite_and_exactAt ι R r d).1 n p`. Establish `hse` using `(hg.shortExact_ker hs).cubeComplex_shortExact n`. Establish `hex` using `(ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (hse.homology_exact₃ p (p + 1) rfl)`. Conclude with `finite_of_exact_of_finite hex hF hK`.
+-/
 theorem finite_cubeComplex_grCube_homology :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] [IsNoetherianRing R]
       (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M]

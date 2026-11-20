@@ -11,19 +11,31 @@ namespace GlobalTheory.SWQ.FourierSeries
 
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
+/- English proof (translation)
+Simplify using `only [Bd, rat, Pi.add_apply, map_sum, map_mul, mul_add, add_mul, Finset.sum_add_distrib, Algebra.algebraMap_self, RingHom.id_apply]`.
+-/
 theorem bd_rat_add (a : Fin N → F) (η ξ : Fin N → F) (u : Fin N → AF F) :
     Bd (AF F) a (rat η + u) (rat ξ) = algebraMap F (AF F) (Bd F a η ξ) + Bd (AF F) a u (rat ξ) := by
   simp only [Bd, rat, Pi.add_apply, map_sum, map_mul, mul_add, add_mul, Finset.sum_add_distrib,
     Algebra.algebraMap_self, RingHom.id_apply]
 
+/- English proof (translation)
+Simplify using `only [Bd, rat, Pi.sub_apply, map_sub, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+-/
 theorem bd_sub (a : Fin N → F) (ξ' ξ : Fin N → F) (u : Fin N → AF F) :
     Bd (AF F) a u (rat ξ') + -Bd (AF F) a u (rat ξ) = Bd (AF F) a u (rat (ξ' - ξ)) := by
   simp only [Bd, rat, Pi.sub_apply, map_sub, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Simplify using `[Bd, rat]`.
+-/
 theorem bd_zero (a : Fin N → F) (u : Fin N → AF F) : Bd (AF F) a u (rat 0) = 0 := by
   simp [Bd, rat]
 
+/- English proof (translation)
+Unfold `Bd`. Use `continuous_finset_sum _ fun l _ => ?_` and prove the remaining obligations. Conclude with `(continuous_const.mul (continuous_apply l)).mul continuous_const`.
+-/
 theorem continuous_bd (a : Fin N → F) (ξ : Fin N → F) :
     Continuous fun u : Fin N → AF F => Bd (AF F) a u (rat ξ) := by
   unfold Bd
@@ -34,10 +46,40 @@ end GlobalTheory.SWQ.FourierSeries
 
 namespace GlobalTheory.SWQ.FourierSeries
 
+/- English proof (translation)
+Use `haveI : Countable F := (Module.finBasis ℚ F).equivFun.toEquiv.injective.countable`. Use `infer_instance`.
+-/
 theorem countable_fn (F : Type) [Field F] [NumberField F] (N : ℕ) : Countable (Fin N → F) := by
   haveI : Countable F := (Module.finBasis ℚ F).equivFun.toEquiv.injective.countable
   infer_instance
 
+/- English proof (translation)
+Introduce `F _ _ N ψ lam ν a hC D hD hD1 P c hP hper hc hsum`. Establish `hC'` using `hC`. Take `⟨_, ⟨hψc, hψn, hψF, -⟩, -, hcov, -⟩` from `hC'`. Take `⟨-, -, -, ⟨K, hK, hKc⟩, -⟩` from `GlobalTheory.T.rationalVectors_adeles_fundamentalDomain_mass_one F N ν hcov`. Use `haveI : Countable (Fin N → F) := countable_fn F N`.
+
+Use `haveI : IsFiniteMeasure ((muV N ν).restrict D) := isFiniteMeasure_restrict.mpr (by rw [hD1]; simp)`. Establish `hmass : ((muV N ν).restrict D) Set.univ = 1` using `by rw [Measure.restrict_apply_univ, hD1]`. Establish `he : ∀ ξ, Continuous fun u : Fin N → AF F => ψ (Bd (AF F) a u (rat ξ))` using `fun ξ => hψc.comp (continuous_bd a ξ)`. Use `set S : (Fin N → AF F) → ℂ := fun u => ∑' ξ, c ξ * ψ (Bd (AF F) a u (rat ξ)) with hSdef`. Establish `hS : Continuous S` using `continuous_tsum (fun ξ => continuous_const.mul (he ξ)) hsum (fun ξ u => by simp [norm_mul, hψn])`.
+
+Establish `hSper : ∀ η u, S (rat η + u) = S u`. Introduce `η u`. Simplify using `only [hSdef, bd_rat_add, AddChar.map_add_eq_mul, hψF, one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M, ∀ u, ‖P u‖ ≤ M := by`. Take `⟨M, hM⟩` from `(hK.image hP.norm).bddAbove`.
+
+Use `⟨M, fun u => ?_⟩` and prove the remaining obligations. Take `⟨ξ, hξ⟩` from `hKc u`. Establish `: P u = P (u - rat ξ)`. Rewrite using `[← hper ξ (u - rat ξ)]`. Use `congr 1`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `hM ⟨_, hξ, rfl⟩`. Use `set Q : (Fin N → AF F) → ℂ := fun u => P u - S u with hQdef`. Establish `hQc : Continuous Q` using `hP.sub hS`.
+
+Establish `hQper : ∀ ξ u, Q (rat ξ + u) = Q u` using `fun ξ u => by simp only [hQdef, hper, hSper]`. Establish `hint : ∀ f : (Fin N → AF F) → ℂ, Continuous f → ∀ B : ℝ, (∀ u, ‖f u‖ ≤ B) → Integrable f ((muV N ν).restrict D)` using `fun f hf B hB => Integrable.of_bound hf.aestronglyMeasurable B (Eventually.of_forall hB)`. Establish `hcoefS : ∀ ξ, ∫ u in D, S u * ψ (-(Bd (AF F) a u (rat ξ))) ∂(muV N ν) = c ξ`. Introduce `ξ`. Establish `hterm : ∀ ξ' u, c ξ' * ψ (Bd (AF F) a u (rat ξ')) * ψ (-(Bd (AF F) a u (rat ξ))) = c ξ' * ψ (Bd (AF F) a u (rat (ξ' - ξ)))`.
+
+Introduce `ξ' u`. Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul, bd_sub]`. Establish `hsw : ∀ u, S u * ψ (-(Bd (AF F) a u (rat ξ))) = ∑' ξ', c ξ' * ψ (Bd (AF F) a u (rat (ξ' - ξ)))`. Introduce `u`. Simplify using `only [hSdef, ← tsum_mul_right, hterm]`.
+
+Repeatedly rewrite using `[hsw]`. Establish `hInt : ∀ ξ', Integrable (fun u => c ξ' * ψ (Bd (AF F) a u (rat (ξ' - ξ)))) ((muV N ν).restrict D)` using `fun ξ' => hint _ (continuous_const.mul (he _)) ‖c ξ'‖ (fun u => by simp [norm_mul, hψn])`. Establish `hnorm : ∀ ξ', ∫ u in D, ‖c ξ' * ψ (Bd (AF F) a u (rat (ξ' - ξ)))‖ ∂(muV N ν) = ‖c ξ'‖`. Introduce `ξ'`. Simplify using `only [norm_mul, hψn, mul_one]`.
+
+Rewrite using `[integral_const, smul_eq_mul, measureReal_def, hmass]`. Simplify using the standard rewrite rules. Rewrite using `[← integral_tsum_of_summable_integral_norm hInt (by simp_rw [hnorm]; exact hsum)]`. Establish `hval : ∀ ξ', ∫ u in D, c ξ' * ψ (Bd (AF F) a u (rat (ξ' - ξ))) ∂(muV N ν) = if ξ' = ξ then c ξ else 0`. Introduce `ξ'`.
+
+Rewrite using `[integral_const_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `only [sub_self, bd_zero, AddChar.map_zero_eq_one]`. Simplify using `[integral_const, measureReal_def, hmass]`.
+
+Rewrite using `[GlobalTheory.T.integral_adelicVectors_character_orthogonality F N ψ lam ν a hC D hD hD1 (ξ' - ξ) (sub_ne_zero.mpr h), mul_zero]`. Repeatedly rewrite using `[hval]`. Simplify using the standard rewrite rules. Establish `hQcoef : ∀ ξ : Fin N → F, ∫ u in D, Q u * ψ (-(Bd (AF F) a u (rat ξ))) ∂(muV N ν) = 0`. Introduce `ξ`.
+
+Establish `h1 : Integrable (fun u => P u * ψ (-(Bd (AF F) a u (rat ξ)))) ((muV N ν).restrict D)` using `hint _ (hP.mul (hψc.comp (continuous_bd a ξ).neg)) M (fun u => by simpa [norm_mul, hψn] using hM u)`. Establish `hSb : ∀ u, ‖S u‖ ≤ ∑' ξ, ‖c ξ‖` using `fun u => (norm_tsum_le_tsum_norm (hsum.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ' => by simp [norm_mul, hψn]))).trans (le_of_eq (tsum_congr fun ξ' => by simp [norm_mul, hψn]))`. Establish `h2 : Integrable (fun u => S u * ψ (-(Bd (AF F) a u (rat ξ)))) ((muV N ν).restrict D)` using `hint _ (hS.mul (hψc.comp (continuous_bd a ξ).neg)) _ (fun u => by simpa [norm_mul, hψn] using hSb u)`. Simplify using `only [hQdef, sub_mul]`. Rewrite using `[integral_sub h1 h2, hc, hcoefS, sub_self]`.
+
+Establish `hQ0` using `GlobalTheory.T.adelicPeriodic_continuous_eq_zero_of_fourier_coeff F N ψ lam ν a hC D hD hD1 Q hQc hQper hQcoef`. Introduce `u`. Use `congrFun hQ0 u` as an intermediate fact. Simplify using `only [hQdef, Pi.zero_apply, sub_eq_zero] at this`. Conclude with `this`.
+-/
 theorem fourier_series : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ) (ψ : AddChar (AF F) ℂ) (lam : InfinitePlace F → ℝ) (ν : Measure (AF F)) (a : Fin N → F), Ctx ψ lam ν a → ∀ D : Set (Fin N → AF F), IsAddFundamentalDomain (AddSubgroup.closure (Set.range (rat : (Fin N → F) → (Fin N → AF F)))) D (muV N ν) → muV N ν D = 1 → ∀ (P : (Fin N → AF F) → ℂ) (c : (Fin N → F) → ℂ), Continuous P → (∀ ξ u, P (rat ξ + u) = P u) → (∀ ξ, ∫ u in D, P u * ψ (-(Bd (AF F) a u (rat ξ))) ∂(muV N ν) = c ξ) → Summable (fun ξ => ‖c ξ‖) → ∀ u, P u = ∑' ξ, c ξ * ψ (Bd (AF F) a u (rat ξ)) := by
   intro F _ _ N ψ lam ν a hC D hD hD1 P c hP hper hc hsum
   classical

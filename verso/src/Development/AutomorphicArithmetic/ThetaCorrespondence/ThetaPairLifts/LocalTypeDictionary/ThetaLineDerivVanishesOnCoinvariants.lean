@@ -20,6 +20,13 @@ section Mat
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 end Mat
 variable {D : D7}
+/- English proof (translation)
+Introduce `_ D ψ θ _ hθ ε M X A B χS χT ω eS eT hω he Xs hJ f₀ hf γ hγ`. Apply the tactic sequence `have hc : GlobalTheory.RealDict.sgE (D := D) ε ≠ 0 := by cases ε <;> simp [GlobalTheory.RealDict.sgE]`. Take `⟨g, h1, h2, h3, h4⟩` from `exists_line M hc Xs hJ γ hγ`. Use `⟨g, h1, fun P => ?_⟩` and prove the remaining obligations. Take `⟨Z, hZ, hd⟩` from `der_line (V := sgn ε M) (ω := ω.toSgn ε) hθ hω (frSgn ε A) B he hf (fun t => (ofSgn ε M).symm (g t)) ((continuous_ofSgn_symm ε M).comp h2) (fun s t => by rw [h3, map_mul]) h4`.
+
+Use `⟨_, ?_, hd P⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun τ _ => Submodule.subset_span ⟨τ, Z τ, ?_, P, ?_⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.SgnIdent.lieAt_sgn ε M τ]`. Conclude with `hZ τ`. Rewrite using `[neg_smul, ← sub_eq_add_neg]`.
+
+Both sides reduce to the same expression.
+-/
 theorem line_deriv_theta_mem_coinvariants : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
   IsWeil ψ ε M X χS χT ω → (∀ τ, HasInfExp D χS τ (eS τ) ∧ HasInfExp D χT τ (eT τ)) →
@@ -58,6 +65,9 @@ open scoped ComplexConjugate
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.OmegaDer.line_deriv_theta_mem_coinvariants | exact _root_.GlobalTheory.OmegaDer.line_deriv_theta_mem_coinvariants | (intros; apply _root_.GlobalTheory.OmegaDer.line_deriv_theta_mem_coinvariants <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_lineDeriv_vanishes_on_coinvariants : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (ε : Bool) (M X : HSp D) (A : Fr M) (B : Fr X) (χS χT : (AE D)ˣ →* Circle) (ω : WRep M X) (eS eT : D.what₂.Tau → ℚ),
   IsWeil ψ ε M X χS χT ω → (∀ τ, HasInfExp D χS τ (eS τ) ∧ HasInfExp D χT τ (eT τ)) →

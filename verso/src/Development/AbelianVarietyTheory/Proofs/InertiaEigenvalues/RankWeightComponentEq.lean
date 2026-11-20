@@ -57,8 +57,14 @@ def co {v : FinPl D} (φ : SplitProj D v) (S T : HSp D) (BS : GL (Fin S.rank) (F
 variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
+/- English proof (translation)
+The claim follows from `(D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm`.
+-/
 theorem rank_V (i : Fin D.R.m) : D.R.r + D.R.t = (Vc D i).rank := (D.sp.V_rank _ (Nat.le_add_left _ _) i.2).symm
 
+/- English proof (translation)
+The claim follows from `(D.sp.W_rank _ (Nat.le_add_left _ _) i.2).symm`.
+-/
 theorem rank_weight_component_eq (i : Fin D.R.m) : D.R.r = (Wc D i).rank := (D.sp.W_rank _ (Nat.le_add_left _ _) i.2).symm
 
 def coR (R : RealDat D A Ks) (i : Fin D.R.m) {v : FinPl D} (φ : SplitProj D v) (x : WO (Vc D i) (Wc D i)) :
@@ -76,6 +82,13 @@ def ActAt (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) (PP : Pl D.host.E) {v : F
       ℓ (R.ωP i t (κ, 1) f) = ((R.chi ((i : ℕ) + 1) PP (Matrix.GeneralLinearGroup.det
         (Matrix.GeneralLinearGroup.map red h)) : ℂˣ) : ℂ) * ℓ f
 
+/- English proof (translation)
+Take `⟨α, rfl, h1, h2⟩` from `h`. Take `⟨α', e', h1', h2'⟩` from `((GlobalTheory.PlaceTensor.idem_spec D).2.2.2.1 v).2.2`. Establish `: α = α'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+
+Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `h1.trans h1'.symm`. Conclude with `(h2 w hw).trans (h2' w hw).symm`. Rewrite using `[this, ← e']`.
+
+Both sides reduce to the same expression.
+-/
 theorem placeIdem_eq {v : FinPl D} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
     algebraMap (AF D.host.F) (AE D) ε = idem D (.inl v) := by
   obtain ⟨α, rfl, h1, h2⟩ := h
@@ -89,6 +102,11 @@ theorem placeIdem_eq {v : FinPl D} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) :
   rw [this, ← e']
   rfl
 
+/- English proof (translation)
+Take `⟨-, h2, -, h4, -⟩` from `GlobalTheory.PlaceTensor.idem_spec D`. Establish `hg' : ∀ i j, idem D (.inl v) * (Formalism.L2.Theta.mt V g - 1) i j = (Formalism.L2.Theta.mt V g - 1) i j` using `fun i j => by`. Rewrite using `[← he.2.1]`. Conclude with `hg i j`. Use `⟨Matrix.ext fun i j => ?_, fun w hw ε hε i j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.map_apply, ← hg', map_mul, (h4 v).1, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[placeIdem_eq hε, ← hg', ← mul_assoc, h2 _ _ (fun h => hw (by rw [Sum.inl.inj h]; exact hv)), zero_mul]`.
+-/
 theorem suppIn_of_suppAt {v : FinPl D} {φ : SplitProj D v} {e : AE D} (he : IsIdemOf φ e) {Sb : Finset (FinPl D)}
     (hv : v ∈ Sb) {V : HSp D} {g : GA D V} (hg : Formalism.L2.Theta.SuppAt e V g) : SuppIn Sb V g := by
   obtain ⟨-, h2, -, h4, -⟩ := GlobalTheory.PlaceTensor.idem_spec D

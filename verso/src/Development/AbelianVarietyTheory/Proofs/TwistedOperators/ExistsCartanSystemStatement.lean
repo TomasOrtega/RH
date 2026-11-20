@@ -12,5 +12,8 @@ open GlobalTheory.AutomorphicL2Unitary (IsTopIrreducible)
 open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.Published.Langlands
 open scoped InnerProductSpace Topology ENNReal ComplexConjugate
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CartanFinite.exists_isCartanSystem | exact GlobalTheory.CartanFinite.exists_isCartanSystem | (intros; apply GlobalTheory.CartanFinite.exists_isCartanSystem <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cartan_system : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ 𝒯 : Finset (Subgroup (UJ ε)), IsCartanSystem 𝒯 := by
   first | exact @GlobalTheory.CartanFinite.exists_isCartanSystem | exact GlobalTheory.CartanFinite.exists_isCartanSystem | (intros; apply GlobalTheory.CartanFinite.exists_isCartanSystem <;> assumption)

@@ -3,6 +3,9 @@ open IsLocalRing
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_colon', SetLike.coe_subset_coe]`. Express the relevant statement in the definitionally equal form `Submodule.span B (Set.range g) ≤ _ ↔ _`. Rewrite using `[Submodule.span_le, Set.range_subset_iff]`. Simplify using `[smul_eq_mul]`.
+-/
 private lemma mem_colon_span_range_iff {B : Type*} [CommRing B] {P : Ideal B} {ι : Type*}
     (g : ι → B) (r : B) :
     r ∈ P.colon (Ideal.span (Set.range g) : Set B) ↔ ∀ i, r * g i ∈ P := by
@@ -11,6 +14,35 @@ private lemma mem_colon_span_range_iff {B : Type*} [CommRing B] {P : Ideal B} {�
   rw [Submodule.span_le, Set.range_subset_iff]
   simp [smul_eq_mul]
 
+/- English proof (translation)
+Introduce `A R _ _ _ φ hφ I J`. Take `⟨n, a, hJ⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian J)`. Take `⟨m, b, hI⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp (IsNoetherian.noetherian I)`. Use `replace hJ : Ideal.span (Set.range a) = J := hJ`. Use `replace hI : Ideal.span (Set.range b) = I := hI`.
+
+Substitute `hJ hI` using the available equality. Rewrite using `[Ideal.map_span φ (Set.range a), ← Set.range_comp]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `r hr`.
+
+Rewrite using `[Ideal.mem_comap, mem_colon_span_range_iff]`. Rewrite `hr` using `[mem_colon_span_range_iff]`. Introduce `i`. Simplify `Ideal.mem_map_of_mem φ (hr i)` using `[map_mul]`. Introduce `s hs`.
+
+Rewrite `hs` using `[mem_colon_span_range_iff]`. Establish `hmapI : (Ideal.span (Set.range b)).map φ = Ideal.span (Set.range (φ ∘ b))`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Use `choose c hc using fun i => Ideal.mem_span_range_iff_exists_fun.mp (hmapI ▸ hs i)`. Use `letI := φ.toAlgebra`.
+
+Use `haveI : Module.Flat A R := hφ`. Set `f : (Fin n → A) →ₗ[A] A × (Fin n × Fin m → A)` to `LinearMap.prod (Fintype.linearCombination A a) (LinearMap.pi fun p => -(b p.2) • LinearMap.proj p.1)`. Set `x : A × (Fin n × Fin m → A) →ₗ[A] R` to `LinearMap.coprod (LinearMap.toSpanSingleton A R s) (Fintype.linearCombination A fun p => c p.1 p.2)`. Establish `hxf : x ∘ₗ f = 0`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+
+Simplify using `[f, x, Algebra.smul_def, Fintype.sum_prod_type, Fintype.linearCombination_apply, LinearMap.pi_apply, map_sum, Finset.sum_mul]`. Rewrite using `[← sub_eq_add_neg, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : ∑ j, algebraMap A R (b j) * algebraMap A R (v i) * c i j = algebraMap A R (v i) * ∑ j, c i j * (φ ∘ b) j`. Rewrite using `[Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.algebraMap_toAlgebra, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hc i]`. Simplify using `only [RingHom.algebraMap_toAlgebra, Function.comp_apply]`.
+
+Expand and normalize the polynomial expressions, which then agree. Take `⟨k, g, y, hxy, hgf⟩` from `Module.Flat.exists_factorization_of_comp_eq_zero_of_free hxf`. Establish `hdec : ∀ w : A × (Fin n × Fin m → A), g w = w.1 • g (1, 0) + ∑ p, w.2 p • g (0, fun q => if p = q then 1 else 0)`. Introduce `w`. Establish `hw : w = w.1 • ((1 : A), (0 : Fin n × Fin m → A)) + ((0 : A), w.2)`.
+
+Apply the tactic sequence `ext <;> simp`. Use `conv_lhs => rw [hw]`. Rewrite using `[map_add, map_smul]`. Use `congr 1`. Conclude with `LinearMap.pi_apply_eq_sum_univ (g ∘ₗ LinearMap.inr A A (Fin n × Fin m → A)) w.2`.
+
+Establish `key : ∀ q, g (1, 0) q ∈ (Ideal.span (Set.range b)).colon (Ideal.span (Set.range a) : Set A)`. Introduce `q`. Rewrite using `[mem_colon_span_range_iff]`. Introduce `i`. Use `set w := f (fun j => if i = j then 1 else 0) with hw`.
+
+Establish `hw1 : w.1 = a i` using `by simp [hw, f, Fintype.linearCombination_apply]`. Establish `hw2 : ∀ p, w.2 p ∈ Ideal.span (Set.range b)`. Introduce `p`. Simplify using `only [hw, f, LinearMap.prod_apply, Pi.prod, LinearMap.pi_apply, LinearMap.smul_apply, LinearMap.proj_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (neg_mem (Ideal.subset_span ⟨p.2, rfl⟩))`.
+
+Establish `h0` using `DFunLike.congr_fun (hdec w) q`. Rewrite `h0` using `[show g w = 0 from LinearMap.congr_fun hgf _]`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Finsupp.coe_add, Pi.add_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul, Finsupp.finset_sum_apply] at h0`. Establish `h1 : g (1, 0) q * a i = -∑ p, w.2 p * g (0, fun q => if p = q then 1 else 0) q`. Rewrite using `[← hw1]`.
+
+Take the linear combination `-h0`. Rewrite using `[h1]`. Conclude with `neg_mem (Ideal.sum_mem _ fun p _ => Ideal.mul_mem_right _ _ (hw2 p))`. Establish `hs' : s = x (1, 0)` using `by simp [x]`. Rewrite using `[hs', hxy, LinearMap.comp_apply, ← Finsupp.univ_sum_single (g (1, 0)), map_sum]`.
+
+Use `Ideal.sum_mem _ fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Finsupp.smul_single_one, map_smul, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem φ (key q))`.
+-/
 theorem _root_.GlobalTheory.ideal_map_colon_eq_of_flat : ∀ {A R : Type} [CommRing A] [IsNoetherianRing A] [CommRing R]
     (φ : A →+* R), φ.Flat → ∀ I J : Ideal A, (I.colon J).map φ = (I.map φ).colon (J.map φ) := by
   intro A R _ _ _ φ hφ I J

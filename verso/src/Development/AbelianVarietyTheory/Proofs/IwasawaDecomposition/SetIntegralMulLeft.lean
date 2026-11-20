@@ -7,6 +7,9 @@ open scoped Pointwise
 namespace GlobalTheory.AverageConst
 
 @[to_additive setIntegral_add_left]
+/- English proof (translation)
+Establish `: SMulCommClass Z Λ Z` using `⟨fun a γ z => by`. Express the relevant statement in the definitionally equal form `a * ((γ : Z) * z) = (γ : Z) * (a * z)`. Rewrite using `[← mul_assoc, hc a, mul_assoc]⟩`. Rewrite using `[hF.setIntegral_eq (hF.smul_of_comm a) fun γ z => hφ γ γ.2 z]`. Conclude with `((measurePreserving_mul_left μ a).setIntegral_image_emb (measurableEmbedding_mulLeft a) φ F).symm`.
+-/
 theorem setIntegral_mul_left {Z : Type} [Group Z] [TopologicalSpace Z] [IsTopologicalGroup Z] [MeasurableSpace Z]
     [BorelSpace Z] (hc : ∀ a b : Z, a * b = b * a) (Λ : Subgroup Z) [Countable Λ] (μ : Measure Z)
     [μ.IsMulLeftInvariant] {F : Set Z} (hF : IsFundamentalDomain Λ F μ) (φ : Z → ℂ)
@@ -17,6 +20,23 @@ theorem setIntegral_mul_left {Z : Type} [Group Z] [TopologicalSpace Z] [IsTopolo
   rw [hF.setIntegral_eq (hF.smul_of_comm a) fun γ z => hφ γ γ.2 z]
   exact ((measurePreserving_mul_left μ a).setIntegral_image_emb (measurableEmbedding_mulLeft a) φ F).symm
 
+/- English proof (translation)
+Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `: IsFiniteMeasure (ν.restrict G)` using `⟨by rw [Measure.restrict_apply_univ]; exact measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov ν hG⟩`. Establish `: IsFiniteMeasure (μ.restrict F)` using `⟨by rw [Measure.restrict_apply_univ]; exact hfin.lt_top⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : Y → ℂ, ∀ y, Φ y = ∫ z in F, k z y ∂μ` from `⟨_, fun _ => rfl⟩`. Establish `hΦc : Continuous Φ`.
+
+Rewrite using `[funext hΦ]`. Conclude with `continuous_of_dominated (bound := fun _ => C) (fun y => (kz y).aestronglyMeasurable) (fun y => .of_forall fun z => kb z y) (integrable_const _) (.of_forall ky)`. Establish `hΦp : ∀ γ ∈ Γ, ∀ y, Φ (γ + y) = Φ y` using `fun γ hγ y => by simp only [hΦ, kΓ γ hγ]`. Establish `hΦb : ∀ y, ‖Φ y‖ ≤ C * (μ.restrict F).real Set.univ` using `fun y => by`. Rewrite using `[hΦ]`.
+
+Conclude with `norm_integral_le_of_norm_le_const (.of_forall fun z => kb z y)`. Establish `hint : ∀ a y₁, Integrable (fun y => χ a y * Φ (y₁ + y)) (ν.restrict G)` using `fun a y₁ => Integrable.of_bound ((h1 a).mul (hΦc.comp (continuous_const.add continuous_id))).aestronglyMeasurable _ (.of_forall fun y => by rw [norm_mul, h5, one_mul]; exact hΦb _)`. Establish `hco : ∀ a, (∀ y, χ a y = 1) ∨ ∫ y in G, χ a y * Φ y ∂ν = 0` using `fun a => (htw a).imp_right fun ⟨z₁, c, hc1, h⟩ => by`. Establish `hm : StronglyMeasurable (Function.uncurry fun y z => χ a y * k z y)` using `stronglyMeasurable_uncurry_of_continuous_of_stronglyMeasurable (fun z => (h1 a).mul (ky z)) fun y => (continuous_const.mul (kz y)).stronglyMeasurable`. Establish `e : ∫ y in G, χ a y * Φ y ∂ν = ∫ z in F, ∫ y in G, χ a y * k z y ∂ν ∂μ`.
+
+Simplify using `only [hΦ, ← integral_const_mul]`. Conclude with `integral_integral_swap (Integrable.of_bound hm.aestronglyMeasurable C (.of_forall fun p => by`. Rewrite using `[Function.uncurry, norm_mul, h5, one_mul]`. Conclude with `kb _ _))`. Establish `e2` using `setIntegral_mul_left hc Λ μ hF (fun z => ∫ y in G, χ a y * k z y ∂ν) (fun γ hγ z => by simp only [kΛ γ hγ]) z₁`.
+
+Simplify using `only [h, integral_const_mul] at e2`. Rewrite using `[e]`. Conclude with `(mul_left_eq_self₀.1 e2).resolve_left hc1`. Establish `key` using `GlobalTheory.SeparatingCharacters.eq_zero_of_coefficients_eq_zero Y Γ K hK hcov A χ h1 h2 h3 h4 h5 h6 ν G inferInstance hG (fun y => Φ (y₀ + y) - Φ (0 + y)) ((hΦc.comp (continuous_const.add continuous_id)).sub (hΦc.comp (continuous_const.add continuous_id))) (fun γ hγ y => by rw …`. Establish `e` using `setIntegral_add_left add_comm Γ ν hG (fun y => χ a y * Φ y) (fun γ hγ y => by rw [h2, (h6 γ).2 hγ, one_mul, hΦp γ hγ]) y₀`.
+
+Simplify using `only [h2, mul_assoc, integral_const_mul] at e`. Simplify using `only [mul_sub]`. Rewrite using `[integral_sub (hint a _) (hint a _), sub_eq_zero]`. Simplify using `only [zero_add]`. Break down `hco a with h | h` into its components or cases.
+
+Rewrite `e` using `[h, one_mul]`. Then use the resulting hypothesis. Rewrite `e`, the goal using `[h]`. Conclude with `(mul_eq_zero.1 e).resolve_left fun h0 => by simpa [h0] using h5 a y₀`. Use `congrFun key 0` as an intermediate fact. Simplify using `only [add_zero, Pi.zero_apply, sub_eq_zero] at this`.
+
+Rewrite using `[← hΦ, ← hΦ, this]`.
+-/
 theorem average_const {Y Z A : Type} [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddGroup Y] [T2Space Y]
     [LocallyCompactSpace Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (Γ : AddSubgroup Y)
     [DiscreteTopology Γ] {K : Set Y} (hK : IsCompact K) (hcov : ∀ x, ∃ γ ∈ Γ, γ + x ∈ K) [AddCommGroup A] (χ : A → Y → ℂ)

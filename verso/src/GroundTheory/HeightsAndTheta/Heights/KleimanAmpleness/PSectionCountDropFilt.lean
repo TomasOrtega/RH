@@ -23,6 +23,11 @@ section Ideals
 
 variable {S : Type u} [CommRing S] {N : ℕ}
 
+/- English proof (translation)
+Rewrite using `[← sum_homogeneousComponent r, Finset.sum_mul, map_sum]`. Use `Ideal.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr ((homogeneousComponent_isHomogeneous m r).mul hg))]`. Use `split_ifs`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)`.
+
+Conclude with `zero_mem _`.
+-/
 theorem homogeneousComponent_mul_mem_span {g : Poly S N} {e : ℕ} (hg : g.IsHomogeneous e)
     (r : Poly S N) (d : ℕ) : homogeneousComponent d (r * g) ∈ Ideal.span {g} := by
   classical
@@ -34,6 +39,15 @@ theorem homogeneousComponent_mul_mem_span {g : Poly S N} {e : ℕ} (hg : g.IsHom
   · exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self g)
   · exact zero_mem _
 
+/- English proof (translation)
+Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Introduce `d`. Take `⟨e, he⟩` from `hT g hg`.
+
+Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr he)]`. Use `split_ifs`. Conclude with `Ideal.subset_span hg`. Conclude with `zero_mem _`. Consider the case `zero => intro d`.
+
+Simplify using the standard rewrite rules. Consider the case `add a b _ _ ha hb => intro d`. Rewrite using `[map_add]`. Conclude with `add_mem (ha d) (hb d)`. Consider the case `smul r a _ ha`.
+
+Introduce `d`. Express the relevant statement in the definitionally equal form `homogeneousComponent d (r * a) ∈ _`. Rewrite using `[← sum_homogeneousComponent a, Finset.mul_sum, map_sum]`. Use `Ideal.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_le_iff_mem _).mpr (ha m) (homogeneousComponent_mul_mem_span (homogeneousComponent_isHomogeneous m a) r d)`.
+-/
 theorem hom_span {T : Set (Poly S N)} (hT : ∀ g ∈ T, ∃ e, g.IsHomogeneous e) :
     ∀ f ∈ Ideal.span T, ∀ d : ℕ, homogeneousComponent d f ∈ Ideal.span T := by
   intro f hf
@@ -56,6 +70,9 @@ theorem hom_span {T : Set (Poly S N)} (hT : ∀ g ∈ T, ∃ e, g.IsHomogeneous 
     exact (Ideal.span_singleton_le_iff_mem _).mpr (ha m)
       (homogeneousComponent_mul_mem_span (homogeneousComponent_isHomogeneous m a) r d)
 
+/- English proof (translation)
+Introduce `f hf d`. Take `⟨a, ha, a', ha', rfl⟩` from `Submodule.mem_sup.mp hf`. Rewrite using `[map_add]`. Conclude with `add_mem (Ideal.mem_sup_left (h a ha d)) (Ideal.mem_sup_right (h' a' ha' d))`.
+-/
 theorem hom_sup {I I' : Ideal (Poly S N)} (h : ∀ f ∈ I, ∀ d : ℕ, homogeneousComponent d f ∈ I)
     (h' : ∀ f ∈ I', ∀ d : ℕ, homogeneousComponent d f ∈ I') :
     ∀ f ∈ I ⊔ I', ∀ d : ℕ, homogeneousComponent d f ∈ I ⊔ I' := by
@@ -71,9 +88,17 @@ section Charts
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Simplify using `[SubSystem.secs, Submodule.mem_iInf]`.
+-/
 theorem mem_secs_iff {F : SubSystem S x Ω} {y : Ω} : y ∈ F.secs ↔ ∀ I, y ∈ F.sub I := by
   simp [SubSystem.secs, Submodule.mem_iInf]
 
+/- English proof (translation)
+Use `Submodule.span_induction (p := fun z _ => z ∈ chartRing S x I) ?_ ?_ ?_ ?_ hq` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, _, hs, hf, hse, rfl⟩`. Conclude with `⟨f, s, e, hs, hf, hse, rfl⟩`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb`.
+
+Conclude with `add_mem ha hb`. Introduce `a z _ hz`. Rewrite using `[chartRing_smul_def]`. Conclude with `mul_mem a.2 hz`.
+-/
 theorem mem_chartRing_of_mem_idealMod {J : Ideal (Poly S N)} {I : Chart x} {q : Ω}
     (hq : q ∈ idealMod J I) : q ∈ chartRing S x I := by
   refine Submodule.span_induction (p := fun z _ => z ∈ chartRing S x I) ?_ ?_ ?_ ?_ hq
@@ -85,6 +110,9 @@ theorem mem_chartRing_of_mem_idealMod {J : Ideal (Poly S N)} {I : Chart x} {q : 
     rw [chartRing_smul_def]
     exact mul_mem a.2 hz
 
+/- English proof (translation)
+Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Use `Submodule.mul_le.mpr fun q hq y hy => ?_` and prove the remaining obligations. Establish `h` using `(F.sub I).smul_mem (⟨q, mem_chartRing_of_mem_idealMod hq⟩ : chartRing S x I) hy`. Rewrite `h` using `[chartRing_smul_def]`. Then use the resulting hypothesis.
+-/
 theorem twist_idealSys_sub_le (F : SubSystem S x Ω) (J : Ideal (Poly S N)) (I : Chart x) :
     (F.twist (idealSys x J)).sub I ≤ F.sub I := by
   rw [SubSystem.twist_sub_eq_mul_of_line]
@@ -92,10 +120,16 @@ theorem twist_idealSys_sub_le (F : SubSystem S x Ω) (J : Ideal (Poly S N)) (I :
   have h := (F.sub I).smul_mem (⟨q, mem_chartRing_of_mem_idealMod hq⟩ : chartRing S x I) hy
   rwa [chartRing_smul_def] at h
 
+/- English proof (translation)
+Introduce `_ hy` and use `mem_secs_iff.mpr fun I => twist_idealSys_sub_le F J I (mem_secs_iff.mp hy I)`.
+-/
 theorem secs_twist_idealSys_le (F : SubSystem S x Ω) (J : Ideal (Poly S N)) :
     (F.twist (idealSys x J)).secs ≤ F.secs := fun _ hy =>
   mem_secs_iff.mpr fun I => twist_idealSys_sub_le F J I (mem_secs_iff.mp hy I)
 
+/- English proof (translation)
+Introduce `y hy`. Use `mem_secs_iff.mpr fun I => ?_` and prove the remaining obligations. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Establish `h1 : (1 : Ω) ∈ (idealSys x (⊤ : Ideal (Poly S N))).sub I` using `Submodule.subset_span ⟨1, 1, 0, Submodule.mem_top, one_mem _, isHomogeneous_one _ _, isHomogeneous_one _ _, by simp⟩`. Simplify using `using Submodule.mul_mem_mul h1 (mem_secs_iff.mp hy I)`.
+-/
 theorem secs_le_twist_idealSys_top (F : SubSystem S x Ω) :
     F.secs ≤ (F.twist (idealSys x (⊤ : Ideal (Poly S N)))).secs := by
   intro y hy
@@ -106,6 +140,9 @@ theorem secs_le_twist_idealSys_top (F : SubSystem S x Ω) :
       isHomogeneous_one _ _, by simp⟩
   simpa using Submodule.mul_mem_mul h1 (mem_secs_iff.mp hy I)
 
+/- English proof (translation)
+Use `Submodule.span_eq_bot.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, s, e, hf, _, hfe, _, rfl⟩`. Rewrite using `[(mem_primeOf_of_isHomogeneous x hfe).mp hf, zero_div]`.
+-/
 theorem idealMod_primeOf (I : Chart x) : idealMod (primeOf (S := S) x) I = ⊥ := by
   refine Submodule.span_eq_bot.mpr ?_
   rintro _ ⟨f, s, e, hf, _, hfe, _, rfl⟩
@@ -118,6 +155,15 @@ section FieldCharts
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `hsub : ∀ I : Chart x, Subsingleton (F.sub I ⧸ SubSystem.quotSub F (F.twist (idealSys x pp)) I)`. Introduce `I`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `((a - b : F.sub I) : Ω) ∈ (F.twist (idealSys x pp)).sub I`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`.
+
+Establish `h1 : (1 : Ω) ∈ (idealSys x pp).sub I` using `Submodule.subset_span ⟨X i, X i, 1, hpp i, X_mem_monos hi, isHomogeneous_X _ _, isHomogeneous_X _ _, by rw [aeval_X, div_self hxi]⟩`. Simplify using `using Submodule.mul_mem_mul h1 (a - b).2`. Establish `hC : Subsingleton (Cech.Cochain (fun I : Chart x => F.sub I ⧸ SubSystem.quotSub F (F.twist (idealSys x pp)) I) 0)`. Unfold `Cech.Cochain`. Conclude with `⟨fun a b => funext fun I => (hsub I.1).elim _ _⟩`.
+
+Establish `hH : Subsingleton (SubSystem.quotH F (F.twist (idealSys x pp)) 0)`. Unfold `SubSystem.quotH Cech.H`. Use `infer_instance`. Conclude with `Module.finrank_zero_of_subsingleton`.
+-/
 theorem finrank_quotH_irrelevant (F : SubSystem k x Ω) (pp : Ideal (Poly k N))
     (hpp : ∀ i, (X i : Poly k N) ∈ pp) :
     Module.finrank k (SubSystem.quotH F (F.twist (idealSys x pp)) 0) = 0 := by
@@ -147,6 +193,11 @@ theorem finrank_quotH_irrelevant (F : SubSystem k x Ω) (pp : Ideal (Poly k N))
 
 end FieldCharts
 
+/- English proof (translation)
+Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Establish `h2 : Module.finrank K (LinearMap.range φ) ≤ Module.finrank K W` using `Submodule.finrank_le _`. Establish `h3 : Module.finrank K (LinearMap.ker φ) ≤ Module.finrank K V₁`. Use `LinearMap.finrank_le_finrank_of_injective (f := LinearMap.codRestrict V₁ (V₂.subtype.comp (LinearMap.ker φ).subtype) fun s => hker s.1 s.2) ?_` and prove the remaining obligations. Introduce `a b hab`.
+
+Establish `h` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (Subtype.ext h)`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_le_of_step {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] [Module.Finite K W] {V₁ V₂ : Submodule K V} [FiniteDimensional K V₁]
     [FiniteDimensional K V₂] (φ : V₂ →ₗ[K] W) (hker : ∀ s, φ s = 0 → (s : V) ∈ V₁) :
@@ -166,6 +217,103 @@ end SectionCount.Drop.Filt
 
 open SectionCount.Drop.Filt in
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x d Nb b hZ hb`. Take `⟨j, hj⟩` from `hZ.relevant`. Establish `hxj : x j ≠ 0`. Introduce `h`. Apply `hj` to reduce the goal to its premises.
+
+Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j), aeval_X, h]`. Establish `hβ : x j ^ b ≠ 0` using `pow_ne_zero b hxj`. Use `set J := primeOf (S := k) x ⊔ zeroIdeal (twistSys k x (b : ℤ)) (x j ^ b) with hJdef`. Establish `hXJ : (X j ^ b : Poly k N) ∈ J` using `Ideal.mem_sup_right (Ideal.subset_span ⟨b, isHomogeneous_X_pow j b, fun I δ hδ => ⟨δ, hδ, by simp [aeval_X]⟩⟩)`. Establish `hXnot : (X j ^ b : Poly k N) ∉ primeOf (S` using `k) x := by`.
+
+Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X_pow j b)]`. Simplify using `using hβ`. Establish `hJhom : ∀ f ∈ J, ∀ d : ℕ, homogeneousComponent d f ∈ J` using `hom_sup (fun f hf d => homogeneousComponent_mem_primeOf x hf d) (hom_span fun g ⟨c, hc, _⟩ => ⟨c, hc⟩)`. Establish `hkill : ∀ p ∈ primeOf (S` using `k) x, ∀ m : Poly k N ⧸ J, p • m = 0 := by`. Introduce `p hp m`.
+
+Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (p * m) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (J.mul_mem_right m (Ideal.mem_sup_left hp))`. Take `⟨⟨Fl⟩, hcount⟩` from `PrimeFiltration.Exists.proof.{u, u, w} k Ω N x (Poly k N ⧸ J) (quotGraded J hJhom) (finite_quot J) hkill`. Rewrite `hcount` using `[Ideal.annihilator_quotient]`.
+
+Establish `hann : ∀ l, J ≤ Fl.prime l` using `fun l => by`. Use `Fl.ann_le l` as an intermediate fact. Rewrite `this` using `[Ideal.annihilator_quotient]`. Then use the resulting hypothesis. Establish `hlift : ∀ l : Fin Fl.n, ∃ (g : Poly k N) (e : ℕ), g.IsHomogeneous e ∧ Ideal.Quotient.mk J g = Fl.gen l`. Introduce `l`.
+
+Take `⟨g, hg, hgm⟩` from `mem_quotGraded_piece.mp (Fl.gen_mem l)`. Distinguish the cases in `h0 : 0 ≤ Fl.deg l`. Use `⟨g, (Fl.deg l).toNat, isHomogeneous_of_isWeightedHomogeneous_one ?_, hgm⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg h0]` and apply the resulting hypothesis. Use `⟨0, 0, isHomogeneous_zero _ _ _, ?_⟩` and prove the remaining obligations.
+
+Establish `hg0 : g = 0`. Use extensionality with `m`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hg hne`. Rewrite `h1` using `[weight_one_int]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[← hgm, hg0]`. Use `choose g eK hgH hgm using hlift`. Set `Jk : Fin (Fl.n + 1) → Ideal (Poly k N)` to `fun l => (Fl.step l).comap J.mkQ`. Establish `hJ0 : Jk 0 = J`.
+
+Simplify using `only [Jk, Fl.step_zero, Submodule.comap_bot, Submodule.ker_mkQ]`. Establish `hJlast : Jk (Fin.last _) = ⊤`. Simplify using `only [Jk, Fl.step_last, Submodule.comap_top]`. Establish `hmkQ : ∀ (c : Poly k N) (l : Fin Fl.n), J.mkQ (c * g l) = c • Fl.gen l`. Introduce `c l`.
+
+Rewrite using `[← hgm l]`. Both sides reduce to the same expression. Establish `hJsucc : ∀ l : Fin Fl.n, Jk l.succ = Jk l.castSucc ⊔ Ideal.span {g l}`. Introduce `l`. Use extensionality with `f`.
+
+Simplify using `only [Jk, Fl.step_succ, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨a, ha, y, hy, hay⟩` from `Submodule.mem_sup.mp hf`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`.
+
+Establish `h1 : f - c * g l ∈ (Fl.step l.castSucc).comap J.mkQ`. Rewrite using `[Submodule.mem_comap, map_sub, hmkQ, ← hay, add_sub_cancel_right]`. Conclude with `ha`. Establish `h2` using `Submodule.add_mem_sup h1 (Ideal.mul_mem_left _ c (Ideal.mem_span_singleton_self (g l)))`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+
+Introduce `hf`. Take `⟨a, ha, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[map_add, hmkQ]`. Conclude with `Submodule.add_mem_sup ha (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`.
+
+Establish `hJkp : ∀ (l : Fin Fl.n) (f : Poly k N), f ∈ Fl.prime l ↔ f * g l ∈ Jk l.castSucc`. Introduce `l f`. Rewrite using `[Fl.mem_prime, ← hgm l]`. Conclude with `Iff.rfl`. Establish `hJk_ge : ∀ l, J ≤ Jk l` using `fun l f hf => by`.
+
+Simplify using `only [Jk, Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero J).mpr hf, zero_mem]`. Establish `hJk_hom : ∀ l, ∀ f ∈ Jk l, ∀ d : ℕ, homogeneousComponent d f ∈ Jk l`. Introduce `l`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero => rw [hJ0]`.
+
+Conclude with `hJhom`. Consider the case `succ l ih`. Rewrite using `[hJsucc l]`. Conclude with `hom_sup ih (hom_span fun g' hg' => ⟨eK l, by rw [Set.mem_singleton_iff.mp hg']; exact hgH l⟩)`. Establish `hprimeZ : ∀ l, primeOf (S` using `k) x ≤ Fl.prime l := fun l => le_sup_left.trans (hann l)`.
+
+Establish `hsv : ∀ l, (∃ i, (X i : Poly k N) ∉ Fl.prime l) → ∃ e ≤ d, IsSubvar x (Fl.prime l) e` using `fun l hl => SubvarDrop.proof k Ω N x d (Fl.prime l) hZ (Fl.isPrime l) (Fl.isHomogeneous l) (hprimeZ l) hl ⟨X j ^ b, hann l hXJ, hXnot⟩`. Use `choose! eS heS heSv using hsv`. Set `kept : Finset (Fin Fl.n)` to `Finset.univ.filter fun l => ∃ i, (X i : Poly k N) ∉ Fl.prime l`. Set `σ : Fin kept.card ≃ kept` to `kept.equivFin.symm`. Set `emb : Fin kept.card → Fin Fl.n` to `fun a => (σ a).1`.
+
+Establish `hemb : ∀ a, ∃ i, (X i : Poly k N) ∉ Fl.prime (emb a)` using `fun a => (Finset.mem_filter.mp (σ a).2).2`. Establish `hdim_inj : ∀ {q : Ideal (Poly k N)} {e e' : ℕ}, IsSubvar x q e → IsSubvar x q e' → e = e'`. Introduce `q e e' h h'`. Establish `h2` using `h.dim.symm.trans h'.dim`. Rewrite `h2` using `[← WithBot.coe_natCast, ← WithBot.coe_natCast, WithBot.coe_inj, Nat.cast_inj]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hmin : ∀ q : Ideal (Poly k N), J ≤ q → IsSubvar x q d → q ∈ J.minimalPrimes`. Introduce `q hJq hq`. Use `hq.isPrime` as an intermediate fact. Use `⟨⟨hq.isPrime, hJq⟩, fun q' ⟨hq'p, hJq'⟩ hq'q => ?_⟩` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Take `⟨f, hfq, hfq'⟩` from `Set.not_subset.mp hne`. Use `hq'p` as an intermediate fact. Establish `hle : primeOf (S` using `k) x ≤ q' := le_sup_left.trans hJq'`. Establish `h1 : ringKrullDim (Poly k N ⧸ q') + 1 ≤ ringKrullDim (Poly k N ⧸ primeOf (S` using `k) x) := by`.
+
+Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hle) (Ideal.Quotient.factor_surjective hle) (r := Ideal.Quotient.mk _ (X j ^ b)) ?_ ?_` and prove the remaining obligations. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hJq' hXJ`.
+
+Establish `h2 : ringKrullDim (Poly k N ⧸ q) + 1 ≤ ringKrullDim (Poly k N ⧸ q')`. Use `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.factor hq'q) (Ideal.Quotient.factor_surjective hq'q) (r := Ideal.Quotient.mk _ f) ?_ ?_` and prove the remaining obligations. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Rewrite using `[Ideal.Quotient.factor_mk, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `hfq`. Rewrite `h2` using `[hq.dim]`. Rewrite `h1` using `[hZ.dim]`. Establish `h3` using `(add_le_add h2 (le_refl 1)).trans h1`. Establish `h4 : ((d + 1 + 1 + 1 : ℕ) : WithBot ℕ∞) ≤ ((d + 1 + 1 : ℕ) : WithBot ℕ∞)`.
+
+Simplify `h3` using `only [Nat.cast_succ]`. Rewrite `h4` using `[← WithBot.coe_natCast, ← WithBot.coe_natCast, WithBot.coe_le_coe, Nat.cast_le]`. Use linear arithmetic over natural numbers and integers. Establish `hc1 : ∀ qq : Ideal (Poly k N), (Finset.univ.filter fun a : Fin kept.card => eS (emb a) = d ∧ Fl.prime (emb a) = qq).card = (kept.filter fun l => eS l = d ∧ Fl.prime l = qq).card`. Introduce `qq`.
+
+Use `Finset.card_bij (fun a _ => emb a) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `Finset.mem_filter.mpr ⟨(σ a).2, (Finset.mem_filter.mp ha).2⟩`. Introduce `a _ a' _ h`. Conclude with `σ.injective (Subtype.ext h)`.
+
+Introduce `l hl`. Use `⟨σ.symm ⟨l, (Finset.mem_filter.mp hl).1⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Simplify using `only [emb, Equiv.apply_symm_apply]`. Conclude with `(Finset.mem_filter.mp hl).2`.
+
+Simplify using `only [emb, Equiv.apply_symm_apply]`. Establish `hβsecs : x j ^ b ∈ (twistSys k x (b : ℤ)).secs`. Use `mem_secs_iff.mpr fun I => ?_` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨X j ^ b, 1, 0, b, one_mem _, isHomogeneous_X_pow j b, isHomogeneous_one _ _, by simp, by simp [aeval_X]⟩`. Establish `hβnz : x j ^ b ∉ ((twistSys k x (b : ℤ)).twist (idealSys x (primeOf (S` using `k) x))).sub (singleChart hxj) := by`.
+
+Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`. Express the relevant statement in the definitionally equal form `x j ^ b ∉ idealMod (primeOf (S := k) x) (singleChart hxj) * _`. Rewrite using `[idealMod_primeOf, Submodule.bot_mul, Submodule.mem_bot]`. Conclude with `hβ`. Use `⟨x j ^ b, hβsecs, ⟨singleChart hxj, hβnz⟩, kept.card, fun a => Fl.prime (emb a), fun a => eS (emb a), fun a => -((eK (emb a) : ℕ) : ℤ), fun a => ⟨heSv _ (hemb a), heS _ (hemb a), hann _⟩, fun qq => ?_, fun n i => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `h : qq ∈ J.minimalPrimes ∧ IsSubvar x qq d`. Rewrite using `[dif_pos h, hc1 qq]`. Establish `hset : kept.filter (fun l => eS l = d ∧ Fl.prime l = qq) = Finset.univ.filter (fun l => Fl.prime l = qq)`. Use extensionality with `l`. Simplify using `only [kept, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, _, h2⟩`. Conclude with `h2`. Introduce `h2`. Establish `hrel : ∃ i, (X i : Poly k N) ∉ Fl.prime l` using `h2 ▸ h.2.relevant`.
+
+Conclude with `⟨hrel, hdim_inj (heSv l hrel) (h2 ▸ h.2), h2⟩`. Rewrite using `[hset]`. Establish `: qq.IsPrime` using `h.1.1.1`. Establish `hq` using `hcount Fl qq h.1`. Unfold `cutMult`.
+
+Rewrite using `[← hq, ENat.toNat_natCast]`. Rewrite using `[dif_neg h, hc1 qq, Nat.cast_eq_zero, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce and unpack `l hl ⟨hed, hpq⟩`. Establish `hrel` using `(Finset.mem_filter.mp hl).2`. Establish `hsub : IsSubvar x qq d` using `hpq ▸ hed ▸ heSv l hrel`.
+
+Conclude with `h ⟨hmin qq (hpq ▸ hann l) hsub, hsub⟩`. Use `set Fs := twistMul Nb.toSubSystem n (-((i : ℤ) * b)) with hFs`. Take `⟨L, hL⟩` from `exists_lineBundle_twistMul Nb n (-((i : ℤ) * b))`. Establish `hFB : Fs.twist (twistSys k x (-(b : ℤ))) = twistMul Nb.toSubSystem n (-(((i + 1 : ℕ) : ℤ) * b))`. Rewrite using `[hFs, twistMul, twistMul, SubSystem.twist_assoc, twistSys_twist_eq_add]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hFB]`. Set `T : Fin Fl.n → ℕ` to `fun l => Module.finrank k (SubSystem.quotH (Fs.twist (twistSys k x (-((eK l : ℕ) : ℤ)))) ((Fs.twist (twistSys k x (-((eK l : ℕ) : ℤ)))).twist (idealSys x (Fl.prime l))) 0)`.
+
+Establish `hsum : ∑ l : Fin Fl.n, T l = ∑ a : Fin kept.card, T (emb a)`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun l => ∃ i, (X i : Poly k N) ∉ Fl.prime l)]`. Rewrite using `[Finset.sum_eq_zero (s := Finset.univ.filter fun l => ¬ ∃ i, (X i : Poly k N) ∉ Fl.prime l), add_zero]`. Rewrite using `[← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp σ (fun l => T l.1)).symm`.
+
+Introduce `l hl`. Establish `hirr` using `(Finset.mem_filter.mp hl).2`. Simplify using `only [not_exists, not_not] at hirr`. Conclude with `finrank_quotH_irrelevant _ _ hirr`. Establish `hR : (∑ a : Fin kept.card, ((T (emb a) : ℕ) : ℤ)) = ((∑ l, T l : ℕ) : ℤ)`.
+
+Rewrite using `[hsum, Nat.cast_sum]`. It suffices to establish `hmain : (Module.finrank k Fs.secs : ℤ) - Module.finrank k (Fs.twist (twistSys k x (-(b : ℤ)))).secs ≤ ((∑ l, T l : ℕ) : ℤ) by`. Rewrite `hmain` using `[← hR]`. Conclude with `hmain`. Distinguish the cases in `hfd : Module.Finite k Fs.secs`.
+
+Use `swap`. Rewrite using `[Module.finrank_of_not_finite hfd]`. Use linear arithmetic over natural numbers and integers. Set `V : Fin (Fl.n + 1) → Submodule k Ω` to `fun l => (Fs.twist (idealSys x (Jk l))).secs`. Establish `hVfin : ∀ l, FiniteDimensional k (V l)` using `fun l => Submodule.finiteDimensional_of_le (secs_twist_idealSys_le Fs (Jk l))`.
+
+Establish `hstep : ∀ l : Fin Fl.n, Module.finrank k (V l.succ) ≤ Module.finrank k (V l.castSucc) + T l`. Introduce `l`. Establish `hS'` using `hS k Ω N x L (Jk l.castSucc) (Fl.prime l) (g l) (eK l) (hJk_hom _) (le_sup_left.trans (hJk_ge _)) (hgH l) (hJkp l)`. Establish `hF'` using `hF k Ω N x L (Fl.prime l) (-((eK l : ℕ) : ℤ)) (Fl.isPrime l) (Fl.isHomogeneous l) (hprimeZ l)`. Rewrite `hS'` using `[← hJsucc l, hL]`.
+
+Rewrite `hF'` using `[hL]`. Take `⟨φ, hφ⟩` from `hS'`. Use `hVfin l.succ` as an intermediate fact. Use `hVfin l.castSucc` as an intermediate fact. Conclude with `finrank_le_of_step φ hφ`.
+
+Establish `htel : ∀ r (hr : r ≤ Fl.n), Module.finrank k (V ⟨r, by omega⟩) ≤ Module.finrank k (V 0) + ∑ s ∈ Finset.range r, (if h : s < Fl.n then T ⟨s, h⟩ else 0)`. Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `_`.
+
+Rewrite using `[Finset.sum_range_zero, add_zero, Fin.mk_zero]`. Consider the case `succ r ih`. Introduce `hr`. Establish `hr' : r < Fl.n` using `by omega`. Rewrite using `[Finset.sum_range_succ, dif_pos hr']`.
+
+Establish `h1` using `hstep ⟨r, hr'⟩`. Establish `h2` using `ih (by omega)`. Rewrite `h1` using `[Fin.succ_mk, Fin.castSucc_mk]`. Use linear arithmetic over natural numbers and integers. Establish `hlast : V (Fin.last Fl.n) = Fs.secs` using `le_antisymm (secs_twist_idealSys_le Fs _) (by have h := secs_le_twist_idealSys_top (N := N) Fs; rwa [← hJlast] at h)`.
+
+Establish `htop` using `htel Fl.n le_rfl`. Rewrite `htop` using `[show (⟨Fl.n, by omega⟩ : Fin (Fl.n + 1)) = Fin.last Fl.n from rfl, hlast, Finset.sum_range]`. Simplify using `only [Fin.is_lt, dif_pos, Fin.eta] at htop`. Establish `hker` using `hK k Ω N x j b Fs hxj`. Set `mulβ : (Fs.twist (twistSys k x (-(b : ℤ)))).secs →ₗ[k] Fs.secs` to `{ toFun := fun t => ⟨x j ^ b * t, hker.1 t t.2⟩ map_add' := fun t t' => Subtype.ext (mul_add _ _ _) map_smul' := fun c t => Subtype.ext (mul_smul_comm c _ _) }`.
+
+Establish `hfinB : Module.Finite k (Fs.twist (twistSys k x (-(b : ℤ)))).secs` using `Module.Finite.of_injective mulβ fun t t' h => Subtype.ext (mul_left_cancel₀ hβ (congrArg Subtype.val h))`. Establish `hV0 : ∀ s : V 0, (x j ^ b)⁻¹ * (s : Ω) ∈ (Fs.twist (twistSys k x (-(b : ℤ)))).secs`. Introduce `s`. Establish `hV : ∀ y : Ω, y ∈ V 0 → y ∈ (Fs.twist (idealSys x J)).secs`. Introduce `y hy`.
+
+Simplify using `only [V] at hy`. Rewrite `hy` using `[hJ0]`. Then use the resulting hypothesis. Establish `hs` using `hV s s.2`. Take `⟨t, ht, hst⟩` from `hker.2 s hs`. Rewrite using `[hst, ← mul_assoc, inv_mul_cancel₀ hβ, one_mul]`.
+
+Conclude with `ht`. Set `divβ : V 0 →ₗ[k] (Fs.twist (twistSys k x (-(b : ℤ)))).secs` to `{ toFun := fun s => ⟨(x j ^ b)⁻¹ * s, hV0 s⟩ map_add' := fun s s' => Subtype.ext (mul_add _ _ _) map_smul' := fun c s => Subtype.ext (mul_smul_comm c _ _) }`. Establish `h0 : Module.finrank k (V 0) ≤ Module.finrank k (Fs.twist (twistSys k x (-(b : ℤ)))).secs` using `LinearMap.finrank_le_finrank_of_injective (f := divβ) fun s s' h => Subtype.ext (mul_left_cancel₀ (inv_ne_zero hβ) (congrArg Subtype.val h))`. Establish `h0'` using `Nat.cast_le (α := ℤ) |>.mpr h0`. Establish `htop'` using `Nat.cast_le (α := ℤ) |>.mpr htop`.
+
+Move the coercions through the operations in `at htop' ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem SectionCount.Drop.Filt.proof (hK : SectionCount.Drop.Filt.Kernel.Statement.{u, w})
     (hS : SectionCount.Drop.Filt.Step.Statement.{u, w})
     (hF : SectionCount.Drop.Filt.Finite.Statement.{u, w}) :

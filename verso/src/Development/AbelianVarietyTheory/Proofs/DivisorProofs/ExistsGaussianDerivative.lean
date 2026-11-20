@@ -12,6 +12,15 @@ open GlobalTheory.ThK.EvAt0.PolD
 
 namespace GlobalTheory.ThK.EvAt0.GaussForm
 
+/- English proof (translation)
+Set `B : E →L[ℝ] E →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap : (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] _).toLinearMap ∘ₗ ((-Real.pi) • Q))`. Establish `hB : ∀ x y, B x y = -Real.pi * Q x y` using `fun x y => rfl`. Take `⟨G, hG⟩` from `GlobalTheory.GaussSchwartz.exists_schwartz_exp_diag B (fun x hx => by`. Rewrite using `[hB]`. Use `mul_pos Real.pi_pos (hp x hx)` as an intermediate fact.
+
+Use the proof step `linarith)`. Use `⟨G, fun s => ⟨?_, fun v => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hG, hB]`. Use `push_cast`. Both sides reduce to the same expression.
+
+Establish `hfun : (⇑G) = fun x => Complex.ofRealCLM (Real.exp (B x x))` using `funext fun x => hG x`. Establish `h1` using `(B.hasFDerivAt (x := s)).clm_apply (hasFDerivAt_id s)`. Establish `h2` using `Complex.ofRealCLM.hasFDerivAt.comp s h1.exp`. Establish `h3` using `congrArg (fun f => fderiv ℝ f s) hfun`. Rewrite using `[h3.trans h2.fderiv, hG]`.
+
+Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.flip_apply, ContinuousLinearMap.id_apply, id, Complex.ofRealCLM_apply, hB, smul_eq_mul, hs v s]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_schwartz_gauss_form {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (Q : LinearMap.BilinForm ℝ E) (hs : ∀ p p', Q p p' = Q p' p) (hp : ∀ p, p ≠ 0 → 0 < Q p p) :
     ∃ G : SchwartzMap E ℂ, ∀ s, G s = Complex.exp (-(Real.pi : ℂ) * (Q s s : ℂ)) ∧

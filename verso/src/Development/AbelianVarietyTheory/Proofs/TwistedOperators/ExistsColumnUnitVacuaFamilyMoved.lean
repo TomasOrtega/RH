@@ -19,6 +19,15 @@ namespace GlobalTheory.ColVac
 
 variable {D : D7} {T : Type}
 
+/- English proof (translation)
+Take `⟨n, hn0, hn⟩` from `hL.xi_fin t`. Take `⟨-, a, b, -, -, hab, ha, hb⟩` from `GlobalTheory.IdeleParts.congr_open_and_parts D`. Establish `e : L.xi t x = L.xi t (b x)` using `by conv_lhs => rw [hab x, map_mul, GlobalTheory.TupRoot.eq_one_of_finPart (hL.xi t) hn0 hn _ (ha x).2, one_mul]`. Rewrite using `[e]`. Establish `hx` using `(hb x).1`.
+
+Generalize the expression as in `b x = u at hx`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨N, hN, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 h4 _ _ (hL.xi t)`. Set `y : (FiniteAdeleRing (𝓞 D.host.E) D.host.E)ˣ` to `⟨ι (finPart D (u : AE D)), ι (finPart D ((u⁻¹ : (AE D)ˣ) : AE D)), by rw [← map_mul, ← map_mul, Units.mul_inv, map_one, map_one], by rw [← map_mul, ← map_mul, Units.inv_mul, map_one, map_one]⟩`.
+
+Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E N hN y`. Establish `h5` using `hprod u hx S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS'`. Establish `h6 : Circle.toUnits (L.xi t u) = ∏ P ∈ S, (L.xiH t).locK P (k P)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod]`.
+
+Conclude with `h5`. Rewrite using `[h6]`. Conclude with `prod_mem fun P _ => Subgroup.subset_closure ⟨P, _, rfl⟩`.
+-/
 theorem xi_mem_xiVals {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) (t : T) (x : (AE D)ˣ) :
     Circle.toUnits (L.xi t x) ∈ xiVals L t := by
   obtain ⟨n, hn0, hn⟩ := hL.xi_fin t
@@ -44,6 +53,11 @@ theorem xi_mem_xiVals {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) (t : T) (x : (AE
   rw [h6]
   exact prod_mem fun P _ => Subgroup.subset_closure ⟨P, _, rfl⟩
 
+/- English proof (translation)
+Establish `hb : L.xi μ0 = 1` using `MonoidHom.ext (GlobalTheory.TwistFactorCompare.eq_one_of_chrEq_one (hL.xi_base ▸ hL.xi μ0))`. Establish `e : L.mu t j = L.mu μ0 j * L.xi t` using `by show L.mu0 j * L.xi t = L.mu0 j * L.xi μ0 * L.xi t`. Rewrite using `[hb, mul_one]`. Unfold `Formalism.IndefR.Lift.attChr`. Rewrite using `[e]`.
+
+Use `split_ifs`. Conclude with `mul_right_comm _ _ _`. Both sides reduce to the same expression.
+-/
 theorem attChr_mu {L : LevCh D T} {μ0 : T} (hL : L.Is μ0) (t : T) (j n : ℕ) :
     Formalism.IndefR.Lift.attChr (L.mu t j) L.eta n = Formalism.IndefR.Lift.attChr (L.mu μ0 j) L.eta n * L.xi t := by
   have hb : L.xi μ0 = 1 :=
@@ -63,6 +77,9 @@ variable {V : HSp D} {k : GA D V} {C Λ : Submodule (𝓞 D.host.E) (Fin V.rank 
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.MovedHomLat.bridge]`. Conclude with `(h _).1 (Submodule.subset_span ⟨s, hs, rfl⟩)`.
+-/
 theorem fwd (h : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) C ↔
       (Formalism.IndefR.Lev.finE V k).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) (s : Fin V.rank → D.host.E) (hs : s ∈ C) :
     (fun i => Formalism.IndefR.Datum.toEAf D ((mt V k *ᵥ fun j => incA D (s j)) i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
@@ -72,6 +89,9 @@ theorem fwd (h : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) C ↔
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `e2 : (Formalism.IndefR.Lev.finE V k).1 * (Formalism.IndefR.Lev.finE V k⁻¹).1 = 1` using `congrArg Units.val (((Formalism.IndefR.Lev.finE V).map_mul k k⁻¹).symm.trans ((congrArg (Formalism.IndefR.Lev.finE V) (mul_inv_cancel k)).trans (Formalism.IndefR.Lev.finE V).map_one))`. Rewrite using `[GlobalTheory.MovedHomLat.bridge]`. Use `(h _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Conclude with `Submodule.subset_span ⟨s, hs, rfl⟩`.
+-/
 theorem bwd (h : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) C ↔
       (Formalism.IndefR.Lev.finE V k).1 *ᵥ v ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ) (s : Fin V.rank → D.host.E) (hs : s ∈ Λ) :
     (fun i => Formalism.IndefR.Datum.toEAf D ((mt V k⁻¹ *ᵥ fun j => incA D (s j)) i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) C := by
@@ -87,6 +107,11 @@ end Move
 
 variable {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} {N : Std G U}
 
+/- English proof (translation)
+Establish `h0` using `N.u_lat (.top j) hj.le`. Establish `h1` using `N.u_lat (.top (j + 1)) hj`. Establish `H` using `GlobalTheory.MovedHomLat.actO_latO_onto (G.V (.top j)) (G.V (.top (j + 1))) (N.u (.top j)).1 (N.u (.top (j + 1))).1 _ _ _ _ (fwd h0) (fwd h1) (bwd h0) (bwd h1)`. Use `GlobalTheory.WeilVacMove.isVacO_om D W.ψ W.θ _ _ _ _ _ (W.om_is (.top t j) (show j + 1 ≤ D.R.m from hj)) W.θ_is _ _ _ _ _ _ _ _ _ _ (fun τ => ?_) (fun τ => ?_) (fun u => ⟨fun hu => ?_, ?_⟩) _ (Z.vac_is (.top t j) hj)` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockRealMove.compAt_mt_of_mem_GfC W.θ τ _ (N.u (.top j)).2, Matrix.mul_one, Matrix.one_mul]`.
+
+Rewrite using `[GlobalTheory.FockRealMove.compAt_mt_of_mem_GfC W.θ τ _ (N.u (.top (j + 1))).2, Matrix.mul_one, Matrix.one_mul]`. Take `⟨w, hw, e⟩` from `H.2 u hu`. Conclude with `⟨w, hw, e.symm⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `H.1 w hw`.
+-/
 theorem isVac_moved (Z : Normal W N) (t : T) {j : ℕ} (hj : j < D.R.m) :
     W.IsVac (.top t j) (W.om (.top t j) ((N.u (.top j)).1, (N.u (.top (j + 1))).1) (Z.vac (.top t j))) := by
   have h0 := N.u_lat (.top j) hj.le
@@ -102,6 +127,13 @@ theorem isVac_moved (Z : Normal W N) (t : T) {j : ℕ} (hj : j < D.R.m) :
   · rintro ⟨w, hw, rfl⟩
     exact H.1 w hw
 
+/- English proof (translation)
+Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch _`. Establish `hL : R.toLevCh.Is A.μ0` using `hS.core.lev`. Use `choose x hx using fun j => GlobalTheory.RecDict.exists_isDetRoot D (ch.G.V (.top j)) (ch.S.N.u (.top j)).1`. Use `⟨fun j => ch.W.om (.top A.μ0 j) ((ch.S.N.u (.top j)).1, (ch.S.N.u (.top (j + 1))).1) (ch.S.Z.vac (.top A.μ0 j)), fun t j hj => isVac_moved ch.S.Z A.μ0 hj, fun _ => 1, fun t j => Circle.toUnits (R.toLevCh.xi t ((x j)⁻¹ * x (j + 1))), fun t j => xi_mem_xiVals hL t _, fun t j hj => …` and prove the remaining obligations. Establish `hW0` using `ch.W.om_is (.top A.μ0 j) (show j + 1 ≤ D.R.m from hj)`.
+
+Establish `hWt` using `ch.W.om_is (.top t j) (show j + 1 ≤ D.R.m from hj)`. Establish `eS : ch.G.chrS (.top t j) = ch.G.chrS (.top A.μ0 j) * R.toLevCh.xi t` using `attChr_mu hL t _ _`. Establish `eT : ch.G.chrT (.top t j) = ch.G.chrT (.top A.μ0 j) * R.toLevCh.xi t` using `attChr_mu hL t _ _`. Rewrite `hWt` using `[eS, eT]`. Establish `e` using `GlobalTheory.TupRoot.twist_eq hW0 hWt (hx j) (hx (j + 1)) (ch.S.Z.vac_is (.top A.μ0 j) hj).2.theta`.
+
+Rewrite using `[(ch.S.Z.free t A.μ0 j).2.1]`. Use `e.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[one_mul, ← MonoidHom.map_inv, ← MonoidHom.map_mul]`. Both sides reduce to the same expression.
+-/
 theorem colVac : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → ∃ v, IsColVac ch v ∧ ∃ (κ : ℕ → ℂˣ) (z : T → ℕ → ℂˣ), (∀ t j, z t j ∈ xiVals R.toLevCh t) ∧ ∀ (t : T) (j : ℕ), j < D.R.m → ch.W.om (.top t j) (ch.G.toPair (.top t j) (ch.S.N.u (Pair.top t j : Pair T).small).1 (ch.S.N.u (Pair.top t j : Pair T).big).1) (ch.S.Z.vac (.top t j)) = ((κ j * z t j : ℂˣ) : ℂ) • v j := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch _
   have hL : R.toLevCh.Is A.μ0 := hS.core.lev

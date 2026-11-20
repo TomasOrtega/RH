@@ -10,6 +10,11 @@ namespace GlobalTheory.TypeAsm.CompatPf
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} {u : D.what₂.Word}
 
+/- English proof (translation)
+Unfold `Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa FlagG.X`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`.
+
+Conclude with `⟨b, (fv_cast _ b).symm⟩`. Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, b.2, fv_cast _ b⟩`.
+-/
 theorem fixedFrameOfWord_isotropic_eq_flag : (F0 X u).X = (X.Fu u).X := by
   unfold Formalism.HermitianLatticeCounting.S6.FlagD.X Formalism.HermitianLatticeCounting.S6.FlagD.Xa FlagG.X
   congr 1
@@ -18,6 +23,17 @@ theorem fixedFrameOfWord_isotropic_eq_flag : (F0 X u).X = (X.Fu u).X := by
   · rintro ⟨b, -, rfl⟩; exact ⟨b, (fv_cast _ b).symm⟩
   · rintro ⟨b, rfl⟩; exact ⟨b, b.2, fv_cast _ b⟩
 
+/- English proof (translation)
+Introduce and unpack `D X Y u ⟨s₁, s₂⟩ ⟨-, -, hp⟩`. Establish `hp' : rowOf Y.TR (Y.cs u) (Y.cs u) s₁ = rowOf Y.TR (Y.cs u) (Y.cs u) s₂` using `hp`. Establish `hl : s₁.lam = s₂.lam` using `congrArg (fun r => r.1.1) hp'`. Establish `hl' : s₁.lam' = s₂.lam'` using `congrArg (fun r => r.2.1.1) hp'`. Establish `hi : iotaOf Y.TR (Y.cs u) (Y.cs u) s₁ = iotaOf Y.TR (Y.cs u) (Y.cs u) s₂` using `congrArg (fun r => r.2.2) hp'`.
+
+Establish `h` using `(Formalism.L2.SG.Pf.Act.ratIotaC' Y u u s₁ s₂ hl hl').1 (Formalism.L2.SG.Pf.iotaDict_fwd Y s₁ s₂ hl hl' hi)`. Use `⟨hl, hl', fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx2 : x ∈ GlobalTheory.HermLat.perp (HV D) (F0 X u).X` using `hx.2`. Rewrite `hx2` using `[GlobalTheory.HermLat.mem_perp_iff, fixedFrameOfWord_isotropic_eq_flag]`. Establish `hx' : x ∈ Lrep s₁.lam (lf D (X.Fu u))`.
+
+Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Use `show x ∈ orth (VS D) (X.Fu u).X`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `hx2`. Establish `h2` using `h x hx'`.
+
+Unfold `NgX at h2`. Rewrite `h2` using `[sup_assoc, sup_idem]`. Rewrite using `[fixedFrameOfWord_isotropic_eq_flag]`. Use `SetLike.le_def.1 (sup_le_sup ?_ le_rfl) h2` and prove the remaining obligations. Rewrite using `[Submodule.ideal_span_singleton_smul]`.
+
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem compatC : CompatC := by
   rintro D X Y u ⟨s₁, s₂⟩ ⟨-, -, hp⟩
   have hp' : rowOf Y.TR (Y.cs u) (Y.cs u) s₁ = rowOf Y.TR (Y.cs u) (Y.cs u) s₂ := hp

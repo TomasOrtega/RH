@@ -10,15 +10,24 @@ namespace GlobalTheory.IwaParab
 def projP (R : Type) [CommRing R] (a r : ℕ) : Matrix (Fin a) (Fin a) R :=
   Matrix.diagonal fun i => if (i : ℕ) < r then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[projP, Matrix.diagonal_mul_diagonal]`. Apply the tactic sequence `congr 1; funext i; split_ifs <;> simp`.
+-/
 theorem projP_mul_self (R : Type) [CommRing R] (a r : ℕ) : projP R a r * projP R a r = projP R a r := by
   rw [projP, Matrix.diagonal_mul_diagonal]
   congr 1; funext i; split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `only [projP, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.diagonal_mul]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring`.
+-/
 theorem entry_QMP {R : Type} [CommRing R] {a r : ℕ} (M : Matrix (Fin a) (Fin a) R) (i j : Fin a) :
     ((1 - projP R a r) * M * projP R a r) i j = if r ≤ (i : ℕ) ∧ (j : ℕ) < r then M i j else 0 := by
   simp only [projP, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.diagonal_mul]
   split_ifs <;> first | (exfalso; omega) | ring
 
+/- English proof (translation)
+Simplify using `only [projP, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.diagonal_mul]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring`.
+-/
 theorem entry_PMQ {R : Type} [CommRing R] {a r : ℕ} (M : Matrix (Fin a) (Fin a) R) (i j : Fin a) :
     (projP R a r * M * (1 - projP R a r)) i j = if (i : ℕ) < r ∧ r ≤ (j : ℕ) then M i j else 0 := by
   simp only [projP, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_diagonal, Matrix.sub_apply, Matrix.diagonal_mul]
@@ -28,9 +37,43 @@ end GlobalTheory.IwaParab
 
 namespace GlobalTheory.IwaParab
 
+/- English proof (translation)
+Apply the tactic sequence `ext i j; simp only [nilM, Matrix.of_apply, Matrix.neg_apply, Pi.neg_apply]; split_ifs <;> simp`.
+-/
 theorem nilM_neg {R : Type} [CommRing R] {a r : ℕ} (x : BlockIx a r → R) : nilM (-x) = -nilM x := by
   ext i j; simp only [nilM, Matrix.of_apply, Matrix.neg_apply, Pi.neg_apply]; split_ifs <;> simp
 
+/- English proof (translation)
+Use `set P := projP R a r with hPdef`. Establish `hPP : P * P = P` using `projP_mul_self R a r`. Use `set G : Matrix (Fin a) (Fin a) R := g.1 with hG`. Use `set H : Matrix (Fin a) (Fin a) R := (g⁻¹ : GL (Fin a) R).1 with hH`. Establish `hHG : H * G = 1` using `by rw [hH, hG, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+
+Set `blk : Fin a → ℕ` to `fun i => if (i : ℕ) < r then 0 else 1`. Establish `hBT : G.BlockTriangular blk`. Introduce `i j h`. Establish `: (j : ℕ) < r ∧ r ≤ (i : ℕ)`. Apply the tactic sequence `simp only [blk] at h; split_ifs at h <;> first | (exfalso; omega) | (constructor <;> omega)`.
+
+Conclude with `hg i j this.1 this.2`. Use `letI : Invertible G := Units.invertible g`. Establish `hBTi : H.BlockTriangular blk`. Establish `h` using `Matrix.blockTriangular_inv_of_blockTriangular hBT`. Establish `e : H = G⁻¹` using `by rw [hH, hG, Matrix.coe_units_inv]`.
+
+Rewrite using `[e]`. Conclude with `h`. Establish `hGP : (1 - P) * G * P = 0`. Use extensionality with `i j`. Rewrite using `[entry_QMP, Matrix.zero_apply]`.
+
+Use `split_ifs with h`. Conclude with `hg i j h.2 h.1`. Both sides reduce to the same expression. Establish `hHP : (1 - P) * H * P = 0`. Use extensionality with `i j`.
+
+Rewrite using `[entry_QMP, Matrix.zero_apply]`. Use `split_ifs with h`. Apply the tactic sequence `exact hBTi (by simp only [blk]; split_ifs <;> omega)`. Both sides reduce to the same expression. Use `set X : Matrix (Fin a) (Fin a) R := P * (G * (1 - P) * H) * (1 - P) with hX`.
+
+Set `y : BlockIx a r → R` to `fun p => X p.1.1 p.1.2`. Establish `hy : nilM y = X`. Use extensionality with `i j`. Simplify using `only [nilM, Matrix.of_apply, y]`. Use `split_ifs with h`.
+
+Both sides reduce to the same expression. Rewrite using `[hX, entry_PMQ, if_neg h]`. Use `⟨y, unip (-y) * g, ?_, ?_⟩` and prove the remaining obligations. Establish `hm : (unip (-y) * g).1 = (1 - X) * G`. Express the relevant statement in the definitionally equal form `(1 + nilM (-y)) * G = _`.
+
+Rewrite using `[nilM_neg, hy, sub_eq_add_neg]`. Establish `h1 : (1 - P) * (unip (-y) * g).1 * P = 0`. Rewrite using `[hm]`. Establish `e : (1 - P) * ((1 - X) * G) * P = (1 - P) * G * P - (P - P * P) * (G * (1 - P) * H * (1 - P) * G * P)`. Rewrite using `[hX]`.
+
+Use `noncomm_ring`. Rewrite using `[e, hGP, hPP, sub_self, zero_mul, sub_zero]`. Establish `key : (1 - P) * H * (1 - P) * G * (1 - P) = 1 - P`. Establish `e2 : (1 - P) * H * (1 - P) * G * (1 - P) = (1 - P) * (H * G) * (1 - P) - ((1 - P) * H * P) * (G * (1 - P))` using `by noncomm_ring`. Establish `e3 : (1 - P) * (1 - P) = 1 - P - (P - P * P)` using `by noncomm_ring`.
+
+Rewrite using `[e2, hHG, hHP, zero_mul, sub_zero, mul_one, e3, hPP, sub_self, sub_zero]`. Establish `h2 : P * (unip (-y) * g).1 * (1 - P) = 0`. Rewrite using `[hm]`. Establish `e : P * ((1 - X) * G) * (1 - P) = P * G * (1 - P) - (P * P) * G * ((1 - P) * H * (1 - P) * G * (1 - P))`. Rewrite using `[hX]`.
+
+Use `noncomm_ring`. Rewrite using `[e, key, hPP]`. Use `noncomm_ring`. Introduce `i j`. Distinguish the cases in `hij : ((i : ℕ) < r ↔ (j : ℕ) < r)`.
+
+Conclude with `Or.inl hij`. Use `right`. Distinguish the cases in `hi : (i : ℕ) < r`. Use `congrFun (congrFun h2 i) j` as an intermediate fact. Rewrite `this` using `[entry_PMQ, if_pos ⟨hi, by by_contra hj; exact hij ⟨fun _ => by omega, fun _ => hi⟩⟩]`.
+
+Conclude with `this`. Use `congrFun (congrFun h1 i) j` as an intermediate fact. Rewrite `this` using `[entry_QMP, if_pos ⟨by omega, by by_contra hj; exact hij ⟨fun h => absurd h hi, fun h => absurd h hj⟩⟩]`. Conclude with `this`. Rewrite using `[← mul_assoc, ← unip_add, add_neg_cancel]`.
+
+Establish `h0 : unip (0 : BlockIx a r → R) = 1`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(1 + nilM (0 : BlockIx a r → R)) i j = (1 : Matrix (Fin a) (Fin a) R) i j`. Simplify using `[nilM]`. Rewrite using `[h0, one_mul]`.
+-/
 theorem exists_unip_mul {R : Type} [CommRing R] (a r : ℕ) (g : GL (Fin a) R)
     (hg : ∀ i j : Fin a, (j : ℕ) < r → r ≤ (i : ℕ) → g.1 i j = 0) :
     ∃ (y : BlockIx a r → R) (m : GL (Fin a) R),
@@ -115,6 +158,11 @@ namespace GlobalTheory.IwaParab
 
 open scoped Pointwise
 
+/- English proof (translation)
+Establish `hK` using `GlobalTheory.isCompact_KGL E a`. Take `⟨s, hs⟩` from `hK.elim_finite_subcover (fun t : PIW.ClassFinD.KGL E a => (t : GL (Fin a) (Af E)) • (L : Set (GL (Fin a) (Af E)))) (fun t => hL.smul _) (fun k hk => Set.mem_iUnion.2 ⟨⟨k, hk⟩, ⟨1, L.one_mem, mul_one k⟩⟩)`. Use `⟨s.image Subtype.val, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, hkt⟩` from `Set.mem_iUnion₂.1 (hs hk)`. Take `⟨l, hl, hlk⟩` from `hkt`.
+
+Conclude with `⟨t, Finset.mem_image_of_mem _ ht, l, hl, hlk.symm⟩`.
+-/
 theorem exists_finset_cover (E : Type) [Field E] [NumberField E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E)))
     (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) :
     ∃ T : Finset (GL (Fin a) (Af E)), ∀ k ∈ PIW.ClassFinD.KGL E a, ∃ t ∈ T, ∃ l ∈ L, k = t * l := by
@@ -129,6 +177,11 @@ theorem exists_finset_cover (E : Type) [Field E] [NumberField E] (a : ℕ) (L : 
   obtain ⟨l, hl, hlk⟩ := hkt
   exact ⟨t, Finset.mem_image_of_mem _ ht, l, hl, hlk.symm⟩
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul]`. Use `Matrix.BlockTriangular.mul ?_ ?_` and prove the remaining obligations. Introduce `i j h replace h : j < i := h`. Express the relevant statement in the definitionally equal form `(cornerGL a (sInf E) b).val i j = 0`. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ (ne_of_gt h), hb h, map_zero]`.
+
+Introduce `i j h replace h : j < i := h`. Express the relevant statement in the definitionally equal form `(cornerGL a (sFin E) c).val i j = 0`. Rewrite using `[GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ (ne_of_gt h), hc h, map_zero]`.
+-/
 theorem upper_infGL_mul_finGL {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (b : GL (Fin a) (Cinf E)) (hb : (b : Matrix (Fin a) (Fin a) (Cinf E)).BlockTriangular id)
     (c : GL (Fin a) (Af E)) (hc : (c : Matrix (Fin a) (Fin a) (Af E)).BlockTriangular id) :
@@ -144,6 +197,17 @@ theorem upper_infGL_mul_finGL {E : Type} [Field E] [NumberField E] [IsTotallyCom
     change (cornerGL a (sFin E) c).val i j = 0
     rw [GlobalTheory.IwasawaAdelic.cornerGL_entry_ne _ _ (ne_of_gt h), hc h, map_zero]
 
+/- English proof (translation)
+Introduce `E _ _ _ a r L hL`. Take `⟨T, hT⟩` from `exists_finset_cover E a L hL`. Use `⟨T, fun g => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, k, hbk⟩` from `GlobalTheory.IwasawaAdelic.exists_upper_mul_unitary_inf E a (Matrix.GeneralLinearGroup.map (pInf E) g)`. Take `⟨u, s, kf, hu, hs, hkf, hx⟩` from `GlobalTheory.IwasawaFinAd.iwasawaAf E a (Matrix.GeneralLinearGroup.map (pFin E) g)`.
+
+Take `⟨t, ht, l, hl, hkt⟩` from `hT kf hkf`. Establish `hus : ((u * s : GL (Fin a) (Af E)) : Matrix (Fin a) (Fin a) (Af E)).BlockTriangular id`. Rewrite using `[Units.val_mul]`. Conclude with `Matrix.BlockTriangular.mul (fun i j h => hu.1 i j h) (fun i j h => hs i j (ne_of_gt h))`. Establish `hB` using `upper_infGL_mul_finGL b hb (u * s) hus`.
+
+Take `⟨y, m, hm, hBm⟩` from `exists_unip_mul a r (infGL E a b * finGL E a (u * s)) (fun i j hj hi => hB (show j < i from Fin.lt_def.2 (by omega)))`. Use `⟨y, m, hm, t, ht, k, l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← hBm]`. Use `conv_lhs => rw [← infGL_mul_finGL g, hbk, hx, hkt]`. Establish `e : u * s * (t * l) = u * s * t * l` using `by group`.
+
+Rewrite using `[e]`. Rewrite using `[map_mul (finGL E a) (u * s * t) l, map_mul (infGL E a) b, map_mul (finGL E a) (u * s) t]`. Establish `c : infGL E a (Unitary.toUnits k) * (finGL E a (u * s) * finGL E a t) = finGL E a (u * s) * finGL E a t * infGL E a (Unitary.toUnits k)`. Rewrite using `[← map_mul]`. Conclude with `infGL_comm _ _`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = infGL E a b * (finGL E a (u * s) * finGL E a t * infGL E a (Unitary.toUnits k)) * finGL E a l := by rw [c]`. Use `_ = _ := by simp only [mul_assoc]`.
+-/
 theorem iwasawa_parab : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) →
     ∃ T : Finset (GL (Fin a) (Af E)), ∀ g : GA E a, ∃ (y : BlockIx a r → Ad E) (m : GA E a),

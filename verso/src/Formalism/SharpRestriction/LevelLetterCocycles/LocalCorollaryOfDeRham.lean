@@ -8,6 +8,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `hl : 0 < l ^ m` using `pow_pos (Fact.out : l.Prime).pos m`. Establish `hfin : Set.Finite {x : Om l | x ^ (l ^ m) = 1}`. Establish `: {x : Om l | x ^ (l ^ m) = 1} ⊆ ((Polynomial.nthRoots (l ^ m) (1 : Om l)).toFinset : Set (Om l))`. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset]`.
+
+Conclude with `(Polynomial.mem_nthRoots hl).2 hx`. Conclude with `(Finset.finite_toSet _).subset this`. Use `hfin.to_subtype` as an intermediate fact. Conclude with `IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`.
+-/
 theorem fd_mu (m : ℕ) :
     FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ m) = 1}) := by
   classical
@@ -29,14 +34,23 @@ def richLL (K LL : FinExt l) (m : ℕ) : FinExt l :=
     have := fd_mu (l := l) m
     exact IntermediateField.finiteDimensional_sup _ _⟩
 
+/- English proof (translation)
+The claim follows from `(le_bigLL K LL).trans le_sup_left`.
+-/
 theorem le_richLL (K LL : FinExt l) (m : ℕ) : LL.1 ≤ (richLL K LL m).1 := (le_bigLL K LL).trans le_sup_left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hK, h2, le_rfl, fun h => absurd h h2, (le_inf le_rfl hK).trans le_sup_left, fun τ x => (le_sup_left : (bigLL K LL).1 ≤ (richLL K LL m).1) ((le_sup_right : _ ≤ (bigLL K LL).1) (τ.fieldRange_le_normalClosure ⟨x, rfl⟩))⟩`.
+-/
 theorem caseA_richLL (K LL : FinExt l) (m : ℕ) (hK : K.1 ≤ MaximalUnramifiedExtension l) (h2 : l ≠ 2) :
     CaseA K (richLL K LL m) :=
   ⟨hK, h2, le_rfl, fun h => absurd h h2, (le_inf le_rfl hK).trans le_sup_left, fun τ x =>
     (le_sup_left : (bigLL K LL).1 ≤ (richLL K LL m).1)
       ((le_sup_right : _ ≤ (bigLL K LL).1) (τ.fieldRange_le_normalClosure ⟨x, rfl⟩))⟩
 
+/- English proof (translation)
+Establish `hpos : 0 < l ^ m` using `pow_pos (Fact.out : l.Prime).pos m`. Establish `: NeZero ((l ^ m : ℕ) : Om l)` using `⟨by exact_mod_cast hpos.ne'⟩`. Take `⟨x, hx⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic (l ^ m) (Om l)) (Polynomial.degree_cyclotomic_pos (l ^ m) (Om l) hpos).ne'`. Conclude with `⟨x, (Polynomial.isRoot_cyclotomic_iff).mp hx⟩`.
+-/
 theorem exists_prim_Om (m : ℕ) : ∃ x : Om l, IsPrimitiveRoot x (l ^ m) := by
   have hpos : 0 < l ^ m := pow_pos (Fact.out : l.Prime).pos m
   have : NeZero ((l ^ m : ℕ) : Om l) := ⟨by exact_mod_cast hpos.ne'⟩
@@ -44,6 +58,9 @@ theorem exists_prim_Om (m : ℕ) : ∃ x : Om l, IsPrimitiveRoot x (l ^ m) := by
     (Polynomial.degree_cyclotomic_pos (l ^ m) (Om l) hpos).ne'
   exact ⟨x, (Polynomial.isRoot_cyclotomic_iff).mp hx⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `exists_prim_Om (l := l) m`. Establish `hmem : x ∈ (richLL K LL m).1` using `(le_sup_right : _ ≤ (richLL K LL m).1) (IntermediateField.subset_adjoin _ _ hx.pow_eq_one)`. Conclude with `⟨⟨x, hmem⟩, IsPrimitiveRoot.coe_submonoidClass_iff.mp hx⟩`.
+-/
 theorem prim_richLL (K LL : FinExt l) (m : ℕ) :
     ∃ ζ : ↥(richLL K LL m).1, IsPrimitiveRoot ζ (l ^ m) := by
   obtain ⟨x, hx⟩ := exists_prim_Om (l := l) m
@@ -51,6 +68,9 @@ theorem prim_richLL (K LL : FinExt l) (m : ℕ) :
     (le_sup_right : _ ≤ (richLL K LL m).1) (IntermediateField.subset_adjoin _ _ hx.pow_eq_one)
   exact ⟨⟨x, hmem⟩, IsPrimitiveRoot.coe_submonoidClass_iff.mp hx⟩
 
+/- English proof (translation)
+The claim follows from `K.2 letI : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Fintype.ofFinite _ ThmELiftAt ((Th l).PD K) (O := ↥(OL LL)) n emb ((Th l).v LL) := by intro l _ K LL n _ emb have : FiniteDimensional ℚ_[l] ↥K.1 := K.2 let _ : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Fintype.ofFinite _ intro hL h5 have hn := …`.
+-/
 theorem lift_of_caseA_rich (Th : LocTheory) (N : ℕ → ℕ)
     (Wf : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), CaseA K LL →
       LocWach ((Th l).PD K) ↥LL.1 ↥(OL LL) ((Th l).v LL) (finrank ℚ_[l] ↥(K0 K)))
@@ -100,6 +120,9 @@ theorem lift_of_caseA_rich (Th : LocTheory) (N : ℕ → ℕ)
     ⟨inferInstance, Formalism.BasicNotions.Examples₂.LB.OL_dvr _, Formalism.BasicNotions.Examples₂.LB.OL_frac _⟩
     (hBC l K LL (richLL K LL m) (le_richLL K LL m)) H' hL h5
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨lift_of_caseA_rich Th N Wf hLift hBC, thmEBound_holds⟩`.
+-/
 theorem local_theorem_of_cyclotomic_lift (Th : LocTheory) (N : ℕ → ℕ)
     (Wf : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), CaseA K LL →
       LocWach ((Th l).PD K) ↥LL.1 ↥(OL LL) ((Th l).v LL) (finrank ℚ_[l] ↥(K0 K)))

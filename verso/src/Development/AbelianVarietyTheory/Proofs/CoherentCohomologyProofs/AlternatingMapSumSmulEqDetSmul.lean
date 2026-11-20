@@ -13,6 +13,9 @@ noncomputable def jetWedge (ω : M [⋀^Fin D]→ₗ[A] N) : (A × M) [⋀^Fin (
   AlternatingMap.alternatizeUncurryFin
     ((LinearMap.fst A A M).smulRight (ω.compLinearMap (LinearMap.snd A A M)))
 
+/- English proof (translation)
+Rewrite using `[jetWedge, AlternatingMap.alternatizeUncurryFin_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul, ← Int.cast_smul_eq_zsmul A]`. Simplify using `only [Int.cast_pow, Int.cast_neg, Int.cast_one]`. Both sides reduce to the same expression.
+-/
 theorem jetWedge_apply (ω : M [⋀^Fin D]→ₗ[A] N) (v : Fin (D + 1) → A × M) :
     jetWedge ω v =
       ∑ i : Fin (D + 1), ((-1 : A) ^ (i : ℕ) * (v i).1) • ω (fun k => (v (i.succAbove k)).2) := by
@@ -22,6 +25,21 @@ theorem jetWedge_apply (ω : M [⋀^Fin D]→ₗ[A] N) (v : Fin (D + 1) → A ×
   simp only [Int.cast_pow, Int.cast_neg, Int.cast_one]
   rfl
 
+/- English proof (translation)
+Set `φ : (A × M) →ₗ[A] (A × M)` to `(h • LinearMap.fst A A M).prod (h • LinearMap.snd A A M + (LinearMap.fst A A M).smulRight u)`. Set `g : Option M → A × M` to `fun o => o.elim (1, 0) (fun m => (0, m))`. Establish `hg : Submodule.span A (Set.range g) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, m⟩ -`.
+
+Establish `: ((a, m) : A × M) = a • g none + g (some m)` using `by simp [g]`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨none, rfl⟩)) (Submodule.subset_span ⟨some m, rfl⟩)`. Establish `key : ((jetWedge ω).compLinearMap φ).toMultilinearMap = (h ^ (D + 1) • jetWedge ω).toMultilinearMap`. Use `MultilinearMap.ext_of_span_eq_top (g := fun _ => g) (fun _ => hg) fun j => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `jetWedge ω (fun i => φ (g (j i))) = h ^ (D + 1) • jetWedge ω (fun i => g (j i))`. Distinguish the cases in `hj : ∃ a b, a ≠ b ∧ j a = j b`. Take `⟨a, b, hab, hjab⟩` from `hj`. Rewrite using `[(jetWedge ω).map_eq_zero_of_eq _ (i := a) (j := b) (by simp only [hjab]) hab, (jetWedge ω).map_eq_zero_of_eq _ (i := a) (j := b) (by simp only [hjab]) hab, smul_zero]`. Use `push Not at hj`.
+
+Rewrite using `[jetWedge_apply, jetWedge_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Consider the cases of `hi : j i with`. Consider the case `some m => simp [φ, g]`. Consider the case `none`.
+
+Establish `hk : ∀ k : Fin D, (g (j (i.succAbove k))).1 = 0`. Introduce `k`. Consider the cases of `hk : j (i.succAbove k) with`. Consider the case `some m => simp [g]`. Consider the case `none => exact absurd (hk.trans hi.symm) (hj _ _ (Fin.succAbove_ne i k))`.
+
+Establish `: (fun k : Fin D => (φ (g (j (i.succAbove k)))).2) = fun k : Fin D => h • (g (j (i.succAbove k))).2`. Use function extensionality and compare the values at `k`. Simplify using `[φ, hk k]`. Rewrite using `[this, ω.map_smul_univ (fun _ => h)]`. Simplify using `only [φ, g, smul_smul]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Conclude with `congrArg (fun F : MultilinearMap A (fun _ : Fin (D + 1) => A × M) N => F v) key`.
+-/
 theorem jetWedge_shear (ω : M [⋀^Fin D]→ₗ[A] N) (h : A) (u : M) (v : Fin (D + 1) → A × M) :
     jetWedge ω (fun i => (h * (v i).1, h • (v i).2 + (v i).1 • u)) = h ^ (D + 1) • jetWedge ω v := by
   classical
@@ -65,6 +83,17 @@ theorem jetWedge_shear (ω : M [⋀^Fin D]→ₗ[A] N) (h : A) (u : M) (v : Fin 
         ring
   exact congrArg (fun F : MultilinearMap A (fun _ : Fin (D + 1) => A × M) N => F v) key
 
+/- English proof (translation)
+Set `φ : (Fin n → A) →ₗ[A] M` to `Fintype.linearCombination A w`. Establish `key : ω.compLinearMap φ = ((LinearMap.toSpanSingleton A N (ω w)).compAlternatingMap Matrix.detRowAlternating)`. Use `Module.Basis.ext_alternating (Pi.basisFun A (Fin n)) fun v hv => ?_` and prove the remaining obligations. Establish `hb : Function.Bijective v` using `Finite.injective_iff_bijective.mp hv`. Set `σ : Equiv.Perm (Fin n)` to `Equiv.ofBijective v hb`.
+
+Establish `e1 : (fun i => (Pi.basisFun A (Fin n)) (v i)) = (Pi.basisFun A (Fin n)) ∘ σ` using `rfl`. Rewrite using `[e1, AlternatingMap.map_perm, AlternatingMap.map_perm]`. Use `congr 1`. Establish `e2 : (Matrix.detRowAlternating : (Fin n → A) [⋀^Fin n]→ₗ[A] A) (Pi.basisFun A (Fin n)) = 1`. Rewrite using `[← Matrix.det_one (n := Fin n)]`.
+
+Express the relevant statement in the definitionally equal form `Matrix.det _ = _`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`. Simplify using `only [LinearMap.compAlternatingMap_apply, e2, LinearMap.toSpanSingleton_apply, one_smul, AlternatingMap.compLinearMap_apply]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[φ]`. Use `congrArg (fun F : (Fin n → A) [⋀^Fin n]→ₗ[A] N => F a) key` as an intermediate fact. Establish `e3 : (fun i => ∑ k, a i k • w k) = fun i => φ (a i)`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(Fintype.linearCombination_apply A w (a i)).symm`. Rewrite using `[e3]`. Conclude with `this`.
+-/
 theorem alternating_map_sum_smul_eq_det_smul {n : ℕ} (ω : M [⋀^Fin n]→ₗ[A] N)
     (a : Matrix (Fin n) (Fin n) A) (w : Fin n → M) :
     ω (fun i => ∑ k, a i k • w k) = a.det • ω w := by
@@ -97,6 +126,15 @@ theorem alternating_map_sum_smul_eq_det_smul {n : ℕ} (ω : M [⋀^Fin n]→ₗ
   rw [e3]
   exact this
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset (Fin D), ω (s.piecewise v w) - ω w ∈ I • (⊤ : Submodule A N)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`.
+
+Establish `h1 : s.piecewise v w = Function.update (s.piecewise v w) i (w i)`. Rewrite using `[eq_comm, Function.update_eq_self_iff, Finset.piecewise_eq_of_notMem _ _ _ hi]`. Establish `h2 : ω ((insert i s).piecewise v w) - ω (s.piecewise v w) = ω.toMultilinearMap.toLinearMap (s.piecewise v w) i (v i - w i)`. Rewrite using `[map_sub, Finset.piecewise_insert]`. Use `conv_lhs => rw [h1]`.
+
+Simplify using the standard rewrite rules. Establish `h3 : ω ((insert i s).piecewise v w) - ω (s.piecewise v w) ∈ I • (⊤ : Submodule A N)`. Rewrite using `[h2]`. Use `Submodule.mem_map_of_mem (f := ω.toMultilinearMap.toLinearMap (s.piecewise v w) i) (hvw i)` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`.
+
+Conclude with `Submodule.smul_mono le_rfl le_top this`. Simplify using `using add_mem h3 ih`. Simplify using `using key Finset.univ`.
+-/
 theorem alternating_sub_mem_smul_top (ω : M [⋀^Fin D]→ₗ[A] N) (I : Ideal A) (v w : Fin D → M)
     (hvw : ∀ k, v k - w k ∈ I • (⊤ : Submodule A M)) :
     ω v - ω w ∈ I • (⊤ : Submodule A N) := by
@@ -136,15 +174,26 @@ noncomputable def jacForm (d : Derivation R A M) (ω : M [⋀^Fin D]→ₗ[A] N)
 
 variable (d : Derivation R A M) (ω : M [⋀^Fin D]→ₗ[A] N)
 
+/- English proof (translation)
+Rewrite using `[jetWedge_apply, jacForm]`.
+-/
 theorem jacForm_eq_jetWedge (f : Fin (D + 1) → A) :
     jacForm d ω f = jetWedge ω (fun i => (f i, d (f i))) := by
   rw [jetWedge_apply, jacForm]
 
+/- English proof (translation)
+Rewrite using `[jacForm_eq_jetWedge, jacForm_eq_jetWedge, ← jetWedge_shear ω h (d h)]`. Simplify using `only [Derivation.leibniz]`.
+-/
 theorem jacForm_mul (h : A) (f : Fin (D + 1) → A) :
     jacForm d ω (fun i => h * f i) = h ^ (D + 1) • jacForm d ω f := by
   rw [jacForm_eq_jetWedge, jacForm_eq_jetWedge, ← jetWedge_shear ω h (d h)]
   simp only [Derivation.leibniz]
 
+/- English proof (translation)
+Establish `: h ^ D • ω (fun k => d (g k)) = ω (fun k => h • d (g k))`. Rewrite using `[ω.map_smul_univ (fun _ => h)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `alternating_sub_mem_smul_top ω I _ _ fun k => ?_` and prove the remaining obligations.
+
+Rewrite using `[Derivation.leibniz, add_sub_cancel_left]`. Conclude with `Submodule.smul_mem_smul (hg k) Submodule.mem_top`.
+-/
 theorem form_d_mul_sub_mem (I : Ideal A) (h : A) (g : Fin D → A) (hg : ∀ k, g k ∈ I) :
     ω (fun k => d (h * g k)) - h ^ D • ω (fun k => d (g k)) ∈ I • (⊤ : Submodule A N) := by
   have : h ^ D • ω (fun k => d (g k)) = ω (fun k => h • d (g k)) := by
@@ -163,6 +212,9 @@ noncomputable def jacobianMultilinearTo : A [⋀^Fin (D + 1)]→ₗ[R] N where
   map_eq_zero_of_eq' v i j hv hij :=
     (jetWedge ω).map_eq_zero_of_eq (fun i => (v i, d (v i))) (by simp only [hv]) hij
 
+/- English proof (translation)
+The claim follows from `(jacForm_eq_jetWedge d ω f).symm`.
+-/
 theorem jacFormAlt_apply (f : Fin (D + 1) → A) : jacobianMultilinearTo d ω f = jacForm d ω f :=
   (jacForm_eq_jetWedge d ω f).symm
 
@@ -178,6 +230,9 @@ def altRestrictScalars (ω : M [⋀^Fin D]→ₗ[B] N) : M [⋀^Fin D]→ₗ[A] 
   toMultilinearMap := ω.toMultilinearMap.restrictScalars A
   map_eq_zero_of_eq' v _ _ hv hij := ω.map_eq_zero_of_eq v hv hij
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem altRestrictScalars_apply (ω : M [⋀^Fin D]→ₗ[B] N) (v : Fin D → M) :
     altRestrictScalars A ω v = ω v := rfl
 
@@ -189,6 +244,9 @@ noncomputable def exteriorPowerMapOver (φ : L →ₗ[A] M) : (⋀[A]^D L) →�
   exteriorPower.alternatingMapLinearEquiv
     ((altRestrictScalars A (exteriorPower.ιMulti B D (M := M))).compLinearMap φ)
 
+/- English proof (translation)
+Simplify using `[exteriorPowerMapOver]`.
+-/
 @[simp] theorem exteriorPowerMapOver_ιMulti (φ : L →ₗ[A] M) (v : Fin D → L) :
     exteriorPowerMapOver B D φ (exteriorPower.ιMulti A D v)
       = exteriorPower.ιMulti B D (fun k => φ (v k)) := by
@@ -199,6 +257,9 @@ noncomputable def wedgeContract (φ : Fin D → L →ₗ[A] B) : (⋀[A]^D L) �
     ((altRestrictScalars A (Matrix.detRowAlternating : (Fin D → B) [⋀^Fin D]→ₗ[B] B)).compLinearMap
       (LinearMap.pi φ))
 
+/- English proof (translation)
+Simplify using `only [wedgeContract, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]`. Both sides reduce to the same expression.
+-/
 @[simp] theorem wedgeContract_ιMulti (φ : Fin D → L →ₗ[A] B) (v : Fin D → L) :
     wedgeContract φ (exteriorPower.ιMulti A D v) = (Matrix.of fun j k => φ k (v j)).det := by
   simp only [wedgeContract, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti]
@@ -218,10 +279,16 @@ noncomputable def dWedge (g : Fin D → A) : ⋀[A]^D Ω[A⁄R] :=
 noncomputable def jac (f : Fin (D + 1) → A) : ⋀[A]^D Ω[A⁄R] :=
   ∑ i : Fin (D + 1), ((-1 : A) ^ (i : ℕ) * f i) • dWedge R (fun k => f (i.succAbove k))
 
+/- English proof (translation)
+The claim follows from `jacForm_mul _ _ h f`.
+-/
 theorem jac_mul (h : A) (f : Fin (D + 1) → A) :
     jac R (fun i => h * f i) = h ^ (D + 1) • jac R f :=
   jacForm_mul _ _ h f
 
+/- English proof (translation)
+The claim follows from `form_d_mul_sub_mem _ _ I h g hg`.
+-/
 theorem dWedge_mul_sub_mem (I : Ideal A) (h : A) (g : Fin D → A) (hg : ∀ k, g k ∈ I) :
     dWedge R (fun k => h * g k) - h ^ D • dWedge R g ∈ I • (⊤ : Submodule A (⋀[A]^D Ω[A⁄R])) :=
   form_d_mul_sub_mem _ _ I h g hg
@@ -231,11 +298,17 @@ variable (A D) in
 noncomputable def jacobianMultilinear : A [⋀^Fin (D + 1)]→ₗ[R] (⋀[A]^D Ω[A⁄R]) :=
   jacobianMultilinearTo (KaehlerDifferential.D R A) (exteriorPower.ιMulti A D)
 
+/- English proof (translation)
+The claim follows from `jacFormAlt_apply _ _ f`.
+-/
 @[simp] theorem jacAlt_apply (f : Fin (D + 1) → A) : jacobianMultilinear R A D f = jac R f :=
   jacFormAlt_apply _ _ f
 
 variable {R}
 
+/- English proof (translation)
+Rewrite using `[jac, jac, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, dWedge, exteriorPowerMapOver_ιMulti, ← algebraMap_smul B]`. Simplify using `[dWedge]`.
+-/
 theorem map_jac (S B : Type*) [CommRing S] [CommRing B] [Algebra R S] [Algebra S B] [Algebra R B]
     [Algebra A B] [IsScalarTower R A B] [IsScalarTower R S B] [SMulCommClass S A B]
     (f : Fin (D + 1) → A) :

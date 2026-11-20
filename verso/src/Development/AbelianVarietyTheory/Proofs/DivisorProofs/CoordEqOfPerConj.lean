@@ -16,12 +16,22 @@ section Letters
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Unfold `perFr`. Rewrite using `[dif_pos τ.2]`.
+-/
 theorem perFr_of_mem (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) (i : ℕ) :
     perFr X x v τ.1 i =
       if hi : X.p0 + i < r then ((mat x τ)⁻¹.mulVec (Data.emb τ.1 v)) ⟨X.p0 + i, hi⟩ else 0 := by
   unfold perFr
   rw [dif_pos τ.2]
 
+/- English proof (translation)
+Establish `hcc : conjEmb (conjEmb τ.1) = τ.1`. Use extensionality with `a`. Simplify using `[conjEmb]`. Establish `h1 : conjEmb τ.1 ∉ X.Ψ` using `(X.cmType τ.1).1 τ.2`. Establish `h2 : conjEmb (conjEmb τ.1) ∈ X.Ψ` using `by rw [hcc]; exact τ.2`.
+
+Establish `h3 : X.p0 - 1 - i < r` using `hj ▸ j.2`. Unfold `perFr`. Rewrite using `[dif_neg h1, dif_pos h2, dif_pos h3]`. Establish `key : ∀ (σ : E →+* ℂ) (hσ : σ ∈ X.Ψ), σ = τ.1 → hermC σ X.Gm (FD.col (mat x ⟨σ, hσ⟩) ⟨X.p0 - 1 - i, h3⟩) (Data.emb σ v) = hermC τ.1 X.Gm (FD.col (mat x τ) j) (Data.emb τ.1 v)`. Introduce `σ hσ h`.
+
+Substitute `h` using the available equality. Establish `: (⟨X.p0 - 1 - i, h3⟩ : Fin r) = j` using `Fin.ext hj.symm`. Rewrite using `[this]`. Conclude with `key _ h2 hcc`.
+-/
 theorem perFr_of_conj (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) (τ : X.Ψ) (i : ℕ) (j : Fin r)
     (hj : (j : ℕ) = X.p0 - 1 - i) :
     perFr X x v (conjEmb τ.1) i = hermC τ.1 X.Gm (FD.col (mat x τ) j) (Data.emb τ.1 v) := by
@@ -41,6 +51,11 @@ theorem perFr_of_conj (X : Data E r) (x : Frame X.Ψ r) (v : Fin r → E) (τ : 
     rw [this]
   exact key _ h2 hcc
 
+/- English proof (translation)
+Take `⟨x, hm⟩ : ∃ x : Frame X.Ψ r, mat x τ = 1` from `⟨fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), rfl⟩`. Establish `h1` using `h x (Pi.single a 1)`. Rewrite `h1` using `[per_of_le X _ _ _ ha, perFr_of_mem, hm, inv_one, one_mulVec]`. Assume the negation of the conclusion as `hne`. Use `split_ifs at h1 with hi`.
+
+Establish `h2 : (⟨X.p0 + i, hi⟩ : Fin r) ≠ a` using `fun e => hne (by rw [← e])`. Simplify using `[Data.emb, Pi.single_eq_of_ne h2] at h1`. Simplify using `[Data.emb] at h1`.
+-/
 theorem coord_eq_of_per_mem (X : Data E r) (τ : X.Ψ) (a : Fin r) (ha : X.p0 ≤ (a : ℕ)) (i : ℕ)
     (h : ∀ x v, per X x v (τ, a) = perFr X x v τ.1 i) : (a : ℕ) = X.p0 + i := by
   obtain ⟨x, hm⟩ : ∃ x : Frame X.Ψ r, mat x τ = 1 := ⟨fun _ => (1 : Matrix (Fin r) (Fin r) ℂ), rfl⟩
@@ -52,6 +67,13 @@ theorem coord_eq_of_per_mem (X : Data E r) (τ : X.Ψ) (a : Fin r) (ha : X.p0 �
     simp [Data.emb, Pi.single_eq_of_ne h2] at h1
   · simp [Data.emb] at h1
 
+/- English proof (translation)
+Establish `hle` using `X.p0_le`. Choose the witnesses or unpack the hypotheses as in `⟨s, t, hst⟩ : ∃ s t, X.Gm s t ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `X.Gm_det (Matrix.det_eq_zero_of_row_eq_zero a (hc a))`.
+
+Take `⟨x, hm⟩ : ∃ x : Frame X.Ψ r, mat x τ = Matrix.single s a 1` from `⟨fun _ => (Matrix.single s a 1 : Matrix (Fin r) (Fin r) ℂ), rfl⟩`. Establish `h1` using `h x (Pi.single t 1)`. Rewrite `h1` using `[per_of_lt X _ _ _ ha, perFr_of_conj X _ _ τ i ⟨X.p0 - 1 - i, by omega⟩ rfl, hm]`. Assume the negation of the conclusion as `hne`. Establish `h2 : a ≠ (⟨X.p0 - 1 - i, by omega⟩ : Fin r)` using `fun e => hne (by rw [e])`.
+
+Simplify using `[hermC, FD.col, Data.emb, Matrix.single_apply, Pi.single_apply, h2, apply_ite, hst] at h1`.
+-/
 theorem coord_eq_of_per_conj (X : Data E r) (τ : X.Ψ) (a : Fin r) (ha : (a : ℕ) < X.p0) (i : ℕ)
     (h : ∀ x v, per X x v (τ, a) = perFr X x v (conjEmb τ.1) i) : (a : ℕ) = X.p0 - 1 - i := by
   have hle := X.p0_le
@@ -67,6 +89,23 @@ theorem coord_eq_of_per_conj (X : Data E r) (τ : X.Ψ) (a : Fin r) (ha : (a : �
   have h2 : a ≠ (⟨X.p0 - 1 - i, by omega⟩ : Fin r) := fun e => hne (by rw [e])
   simp [hermC, FD.col, Data.emb, Matrix.single_apply, Pi.single_apply, h2, apply_ite, hst] at h1
 
+/- English proof (translation)
+Establish `hd` using `Dc.dir_eq ℓ`. Generalize the expression as in `Dc.eL ℓ = L at hd ⊢`. Take `⟨t, ρ, b⟩` from `L`. Take `⟨τ, i, b'⟩` from `ℓ`. Simplify using `only [letterDir] at hd ⊢`.
+
+Establish `hb : b = b'`. Assume the negation of the conclusion as `hne`. Use `congrFun (congrFun hd b) (Dc.idx.symm (rowOf X Dc.hr (t, ρ)))` as an intermediate fact. Simplify using `[Pi.single_eq_of_ne hne] at this`. Substitute `hb` using the available equality.
+
+Establish `hj : Dc.idx.symm (rowOf X Dc.hr (t, ρ)) = Dc.e.symm ⟨τ, i⟩`. Assume the negation of the conclusion as `hne`. Use `congrFun (congrFun hd b) (Dc.idx.symm (rowOf X Dc.hr (t, ρ)))` as an intermediate fact. Rewrite `this` using `[Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_same, Pi.single_eq_of_ne hne]`. Conclude with `one_ne_zero this`.
+
+Establish `hi : Dc.idx (Dc.e.symm ⟨τ, i⟩) = (t, rowIdx Dc.hr ρ)` using `by rw [← hj, Equiv.apply_symm_apply]; rfl`. Establish `hty` using `Dc.ty_eq (Dc.e.symm ⟨τ, i⟩)`. Establish `hper : ∀ x v, per X x v (t, rowIdx Dc.hr ρ) = perFr X x v τ i` using `fun x v => by`. Use `Dc.per_eq x v (Dc.e.symm ⟨τ, i⟩)` as an intermediate fact. Rewrite `this` using `[pv, Function.comp_apply, hi, hσ, Equiv.apply_symm_apply]`. Then use the resulting hypothesis.
+
+Rewrite `hty` using `[hi, hσ, Equiv.apply_symm_apply]`. Use `⟨rfl, ?_⟩` and prove the remaining obligations. Break down `ρ with k | k` into its components or cases. Establish `h1 : τ = t.1` using `hty.symm.trans (rowType_rowOf_inl X Dc.hr t k)`. Substitute `h1` using the available equality.
+
+Establish `h2` using `coord_eq_of_per_mem X t _ (by simp) i hper`. Rewrite `h2` using `[rowIdx_inl]`. Conclude with `Or.inl ⟨k, rfl, rfl, by omega⟩`. Establish `h1 : τ = conjEmb t.1` using `hty.symm.trans (rowType_rowOf_inr X Dc.hr t k)`. Substitute `h1` using the available equality.
+
+Establish `hk` using `k.2`. Establish `h2` using `coord_eq_of_per_conj X t _ (by rw [rowIdx_inr]; omega) i hper`. Rewrite `h2` using `[rowIdx_inr]`. Establish `h3` using `hm _ ((X.cmType t.1).1 t.2)`. Establish `h4 : (i : ℕ) < X.p0` using `lt_of_lt_of_le i.2 h3`.
+
+Conclude with `Or.inr ⟨k, rfl, rfl, by omega⟩`.
+-/
 theorem Dic.letter {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} {σ : c.F →+* ℂ}
     {X : Data E r} {g q0 n : ℕ} {a : (E →+* ℂ) × ℕ → ℕ} (Dc : Dic Dw c σ X g q0 n a)
     (hσ : ∀ τ, Formalism.L2.PjFree.relab c σ τ = τ) (hm : ∀ τ, τ ∉ X.Ψ → Dw.mult τ ≤ X.p0) (ℓ : LtN Dw n) :
@@ -114,6 +153,13 @@ end Letters
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ hT i Tp tup O _ X g Dc vr hM hp hv ℓ`. Establish `hP` using `hT.laws.pins`. Establish `hm : ∀ τ, τ ∉ X.Ψ → (T.Q.Dw ((i : ℕ) + 1)).mult τ ≤ X.p0` using `fun τ hτ => by`. Unfold `Datum.mult`. Rewrite using `[if_neg fun h : τ (T.Q.H.rt : D.host.E) = T.Q.H.rt0 => hτ ((hM.psi τ).2 (ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.exists_tau_of_inPsi T.Q hP.1 τ h)), hp]`.
+
+Take `⟨h1, h2⟩` from `Dic.letter Dc (fun τ => RingHom.ext fun _ => rfl) hm ℓ`. Take `⟨g1, g2, g3⟩` from `hv (Dc.eL ℓ)`. Use `⟨g2.trans h1, ?_⟩` and prove the remaining obligations. Break down `h2 with ⟨k, e1, e2, e3⟩ | ⟨k, e1, e2, e3⟩` into its components or cases. Rewrite `g3` using `[e1, Sum.elim_inl]`.
+
+Conclude with `Or.inl ⟨e2.trans g1, g3.trans e3⟩`. Rewrite `g3` using `[e1, Sum.elim_inr]`. Conclude with `Or.inr ⟨by rw [← g1]; exact e2, by rw [g3, e3]⟩`.
+-/
 theorem letters_eq_fockVars : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ (X : Data D.host.E D.R.r) (g : ℕ) (Dc : Dic (T.Q.Dw ((i : ℕ) + 1)) O.c' (inC O.c') X g (T.Q.Dw ((i : ℕ) + 1)).p (Vc D i).rank (wtA (κ i))) (vr : Harm.Var X.Ψ (T.Q.Dw ((i : ℕ) + 1)).p X.p0 (Fin (Vc D i).rank) ≃ FVar D (Wc D i).rank (Vc D i).rank), IsMod (Wc D i) (rank_Wc i) X → X.p0 = (T.Q.Dw ((i : ℕ) + 1)).q → IsVarOf (Vc D i) (Wc D i) X (T.Q.Dw ((i : ℕ) + 1)).p vr → (∀ ℓ : LtN (T.Q.Dw ((i : ℕ) + 1)) (Vc D i).rank, (vr (Dc.eL ℓ)).2.2 = ℓ.2.2 ∧ ((ℓ.1 = tauE D (vr (Dc.eL ℓ)).1 ∧ ((vr (Dc.eL ℓ)).2.1 : ℕ) = ℓ.2.1) ∨ (ℓ.1 = conjEmb (tauE D (vr (Dc.eL ℓ)).1) ∧ ((vr (Dc.eL ℓ)).2.1 : ℕ) = (T.Q.Dw ((i : ℕ) + 1)).p + ℓ.2.1))) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ hT i Tp tup O _ X g Dc vr hM hp hv ℓ
   have hP := hT.laws.pins

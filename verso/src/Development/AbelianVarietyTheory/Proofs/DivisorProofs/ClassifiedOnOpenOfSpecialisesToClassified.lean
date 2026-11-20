@@ -17,6 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.ClsOpen
 
+/- English proof (translation)
+Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
@@ -25,6 +28,37 @@ end GlobalTheory.ClsOpen
 
 open GlobalTheory.ClsOpen in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ D' L R V _ _ _ _ _ _ hR hV C t₁ P₁ iw θ hθ hb m N s ε e₁ e hε hs hu hD₁ hD`. Use `set f : R := ∏ i, s (.inl i) with hf_def`. Establish `hθf : θ f ≠ 0` using `by rw [hf_def, map_prod]; exact Finset.prod_ne_zero_iff.2 fun i _ => hs i`. Establish `hf0 : f ≠ 0` using `fun h => hθf (by rw [h, map_zero])`. Establish `hsk : ∀ k, s k ≠ 0`.
+
+Introduce and unpack `(i | j)`. Conclude with `fun h => hs i (by rw [h, map_zero])`. Conclude with `(hu j).ne_zero`. Establish `hθk : ∀ k, θ (s k) ≠ 0`. Introduce and unpack `(i | j)`.
+
+Conclude with `hs i`. Conclude with `((hu j).map θ).ne_zero`. Set `A` to `Localization.Away f`. Establish `hpow : Submonoid.powers f ≤ nonZeroDivisors R` using `powers_le_nonZeroDivisors_of_noZeroDivisors hf0`. Use `haveI : IsDomain A := IsLocalization.isDomain_localization hpow`.
+
+Use `haveI : IsNoetherianRing A := IsLocalization.isNoetherianRing (Submonoid.powers f) A hR.1.1`. Use `haveI : IsIntegrallyClosed R := hR.1.2.2.1`. Use `haveI : IsIntegrallyClosed A := isIntegrallyClosed_of_isLocalization A (Submonoid.powers f) hpow`. Establish `hψ` using `GlobalTheory.T.psiUnitOn_basicOpen_of_comesFromBase L P₁.D.toPre P₁.oD iw s ε e₁ hD₁ f (by`. Introduce and unpack `(i | j)`.
+
+Conclude with `⟨1, by rw [pow_one, hf_def]; exact Finset.dvd_prod_of_mem _ (Finset.mem_univ i)⟩`. Conclude with `⟨0, (hu j).dvd⟩)`. Take `⟨tO, ⟨mO⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap (algebraMap R A)) t₁`. Take `⟨hpr, ham, hkt⟩` from `GlobalTheory.T.isProper_relAmple_kTriv_of_trivialisations_generate R hR t₁ P₁ f hψ tO mO`. Establish `htors : GlobalTheory.TChart.TorsRat tO.G l.M'` using `(GlobalTheory.TorsAway.torsRat_away_iff R f t₁.G tO.G mO.φ mO.cart l.M').1 (GlobalTheory.T.genericFibre_torsion_rational_of_base L R hR t₁ P₁ iw s ε e₁ hε hsk hD₁)`.
+
+Set `K` to `FractionRing V`. Establish `hunitK : IsUnit (((algebraMap V K).comp θ) f)`. Rewrite using `[RingHom.comp_apply]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective V K)).2 hθf)`. Set `g : A →+* K` to `IsLocalization.Away.lift f hunitK`.
+
+Establish `hg : g.comp (algebraMap R A) = (algebraMap V K).comp θ` using `IsLocalization.lift_comp _`. Set `bA : c.F →+* A` to `(algebraMap R A).comp (iw.comp L.b)`. Set `incl` to `(IntermediateField.inclusion c.le).toRingHom`. Establish `hgb : g.comp bA = (algebraMap V K).comp C.b` using `by show g.comp ((algebraMap R A).comp (iw.comp L.b)) = _`. Rewrite using `[← RingHom.comp_assoc, hg, RingHom.comp_assoc, hb]`.
+
+Establish `E1 : spMap g ≫ spMap (algebraMap R A) = jK V ≫ spMap θ` using `(spMap_comp' _ _).symm.trans ((congrArg spMap hg).trans (spMap_comp' _ _))`. Take `⟨oK, ⟨mK⟩⟩` from `GlobalTheory.LevelQuotRep.obj_pull_same Xo.univ (C.y ≫ pullback.fst _ _)`. Establish `hsK : (C.y ≫ pullback.fst _ _) ≫ Xo.s = spMap g ≫ spMap (bA.comp incl)`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, C.y_over, spMap_comp' incl bA, ← Category.assoc, ← spMap_comp' bA g, hgb, spMap_comp']`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `(genOf_iff Xo c C.y C.t).1 C.gen`.
+
+Take `⟨bc⟩` from `GlobalTheory.T.exists_tripleMap_of_same_uniformised_coords L R V hR hV t₁ P₁ C.t C.P iw θ hθ s ε e₁ e hθk hD₁ hD`. Take `⟨n₁⟩` from `GlobalTheory.TraitOrder.cancel (Category.id_comp _) m₂ mK.toSABMap`. Take `⟨n₂⟩` from `GlobalTheory.TraitOrder.comp rfl bc m₁`. Take `⟨n₃⟩` from `GlobalTheory.TraitOrder.comp (Category.id_comp _) n₂ n₁`. Take `⟨n₄⟩` from `GlobalTheory.TraitOrder.cancel E1 mO n₃`.
+
+Take `⟨o, ho, ⟨mo⟩⟩` from `GlobalTheory.T.exists_unitaryModuliObject_spread_normal_domain Dw l c A bA tO hpr ham hkt htors K g _ oK hsK n₄`. Take `⟨f₀, ⟨hf₀s, ⟨mf₀⟩⟩, -⟩` from `Xo.rep (Sp A) (spMap (bA.comp incl)) inferInstance o`. Establish `hf₀ : f₀ ≫ Xo.s = spMap bA ≫ spMap incl` using `by rw [hf₀s, spMap_comp']`. Set `yo : Sp A ⟶ Xo.XF c` to `pullback.lift f₀ (spMap bA) hf₀`. Establish `hκ : spMap g ≫ yo = C.y`.
+
+Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst]`. Take `⟨mk'⟩` from `GlobalTheory.LevelQuotRep.obj_comp mo mf₀`. Conclude with `(Xo.rep (Sp K) _ inferInstance oK).unique ⟨by rw [Category.assoc, hf₀s, hsK], ⟨mk'⟩⟩ ⟨rfl, ⟨mK⟩⟩`. Rewrite using `[Category.assoc, pullback.lift_snd, C.y_over, ← spMap_comp', hgb, spMap_comp']`.
+
+Establish `hunitR : IsUnit ((algebraMap R (FractionRing R)) f)` using `isUnit_iff_ne_zero.2 ((map_ne_zero_iff _ (IsFractionRing.injective R (FractionRing R))).2 hf0)`. Set `jA : A →+* FractionRing R` to `IsLocalization.Away.lift f hunitR`. Establish `hjA : jA.comp (algebraMap R A) = algebraMap R (FractionRing R)` using `IsLocalization.lift_comp _`. Establish `hg₀ : spMap jA ≫ spMap (algebraMap R A) = jK R` using `by rw [← spMap_comp', hjA]`. Establish `mo' : SABMap tO Xo.univ.t f₀` using `ho ▸ mf₀.toSABMap`.
+
+Use `⟨spMap jA ≫ yo, yo, spMap g, ?_, ?_, ?_, E1, hκ⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_snd, ← hg₀, Category.assoc] show spMap jA ≫ spMap ((algebraMap R A).comp (iw.comp L.b)) = _`. Rewrite using `[spMap_comp']`. Use `(genOf_iff Xo c _ t₁).2 ?_` and prove the remaining obligations. Take `⟨t', ⟨n⟩⟩` from `GlobalTheory.TraitOrder.exists_pull (spMap jA) tO`.
+
+Conclude with `⟨t', GlobalTheory.TraitOrder.comp hg₀ mO n, GlobalTheory.TraitOrder.comp (by rw [Category.assoc, pullback.lift_fst]) mo' n⟩`. Introduce `g' hg'`. Take `⟨φ', rfl⟩` from `Spec.map_surjective g'`. Establish `h2 : CommRingCat.ofHom (algebraMap R A) ≫ φ' = CommRingCat.ofHom (algebraMap R (FractionRing R))` using `Spec.map_injective (by rw [Spec.map_comp]; exact hg')`. Establish `h3 : φ'.hom = jA` using `IsLocalization.ringHom_ext (Submonoid.powers f) ((congrArg CommRingCat.Hom.hom h2).trans hjA.symm)`.
+
+Establish `h4 : φ' = CommRingCat.ofHom jA` using `by ext1; exact h3`. Rewrite using `[h4]`.
+-/
 theorem GlobalTheory.clsOpen : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), ∀ (D' : Datum H) (L : LowBase D' c) (R V : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.Mum.Base R → GlobalTheory.Mum.Base V → ∀ (C : Fam Xo c V) (t₁ : SAB H (Sp R)) (P₁ : PELUnif (maximalIdeal R) t₁) (iw : L.W →+* R) (θ : R →+* V), IsLocalHom θ → θ.comp (iw.comp L.b) = C.b → ∀ (m N : ℕ) (s : Fin m ⊕ Fin N → R) (ε : Fin m ⊕ Fin N → LinearMap.BilinForm ℤ L.D.X) (e₁ : P₁.D.toPre.X ≃ₗ[𝓞 E] L.D.X) (e : C.P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), (∀ k, ε k ∈ balForms H.bar L.D.X) → (∀ i, θ (s (.inl i)) ≠ 0) → (∀ j, IsUnit (s (.inr j))) → DivFrom L P₁.D.toPre P₁.oD iw s ε e₁ → DivFrom L C.P.D.toPre C.P.oD (θ.comp iw) (fun k => θ (s k)) ε e → ∃ (y₁ : Sp (FractionRing R) ⟶ Xo.XF c) (yo : Sp (Localization.Away (∏ i, s (.inl i))) ⟶ Xo.XF c) (κ : Sp (FractionRing V) ⟶ Sp (Localization.Away (∏ i, s (.inl i)))), y₁ ≫ pullback.snd _ _ = jK R ≫ spMap (iw.comp L.b) ∧ GlobalTheory.UPoinc.GenOf Xo c y₁ t₁ ∧ (∀ g : Sp (FractionRing R) ⟶ Sp (Localization.Away (∏ i, s (.inl i))), g ≫ spMap (algebraMap R (Localization.Away (∏ i, s (.inl i)))) = jK R → g ≫ yo = y₁) ∧ κ ≫ spMap (algebraMap R (Localization.Away (∏ i, s (.inl i)))) = jK V ≫ spMap θ ∧ κ ≫ yo = C.y := by
   intro E _ _ _ H Dw l Xo c φ D' L R V _ _ _ _ _ _ hR hV C t₁ P₁ iw θ hθ hb m N s ε e₁ e hε hs hu hD₁ hD
   set f : R := ∏ i, s (.inl i) with hf_def

@@ -18,19 +18,37 @@ namespace UpperTheory.Kd.L
 section Helpers
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Take `⟨z, hz, e⟩` from `h`. Conclude with `⟨a * z, A.mul_mem _ _ ha hz, by rw [← mul_sub, e]; ring⟩`.
+-/
 private theorem cg_mul {A : ValuationSubring Ω} {l n : ℕ} {x y : Ω} (a : Ω) (ha : a ∈ A) (h : CgA A l n x y) :
     CgA A l n (a * x) (a * y) := by
   obtain ⟨z, hz, e⟩ := h
   exact ⟨a * z, A.mul_mem _ _ ha hz, by rw [← mul_sub, e]; ring⟩
 
+/- English proof (translation)
+Take `⟨z, hz, e⟩` from `h`. Take `⟨z', hz', e'⟩` from `h'`. Conclude with `⟨z + z', A.add_mem _ _ hz hz', by rw [mul_add, ← e, ← e']; ring⟩`.
+-/
 private theorem cg_trans {A : ValuationSubring Ω} {l n : ℕ} {x y u : Ω} (h : CgA A l n x y) (h' : CgA A l n y u) :
     CgA A l n x u := by
   obtain ⟨z, hz, e⟩ := h
   obtain ⟨z', hz', e'⟩ := h'
   exact ⟨z + z', A.add_mem _ _ hz hz', by rw [mul_add, ← e, ← e']; ring⟩
 
+/- English proof (translation)
+The claim follows from `pow_mem (natCast_mem A l) k`.
+-/
 private theorem lp_mem (A : ValuationSubring Ω) (l k : ℕ) : (l : Ω) ^ k ∈ A := pow_mem (natCast_mem A l) k
 
+/- English proof (translation)
+Establish `hv : A.valuation (l : Ω) < 1` using `(A.mem_nonunits_iff).1 hl`. Break down `A.valuation_lt_one_or_eq_one ⟨(D : Ω), natCast_mem A D⟩ with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hg` using `Nat.gcd_eq_gcd_ab l D`. Rewrite `hg` using `[(hp.coprime_iff_not_dvd.2 hD : Nat.gcd l D = 1)]`.
+
+Establish `e : (1 : Ω) = (l : Ω) * ((Nat.gcdA l D : ℤ) : Ω) + (D : Ω) * ((Nat.gcdB l D : ℤ) : Ω)`. Conclude with `congrArg (Int.cast : ℤ → Ω) hg` after adjusting the coercions. Establish `h1 : A.valuation ((l : Ω) * ((Nat.gcdA l D : ℤ) : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((A.valuation_le_one_iff _).2 (intCast_mem A _))) hv`.
+
+Establish `h2 : A.valuation ((D : Ω) * ((Nat.gcdB l D : ℤ) : Ω)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((A.valuation_le_one_iff _).2 (intCast_mem A _))) h`. Establish `h3` using `Valuation.map_add_lt A.valuation h1 h2`. Rewrite `h3` using `[← e, map_one]`.
+
+Conclude with `lt_irrefl _ h3`. Rewrite using `[← A.valuation_le_one_iff, map_inv₀]`. Conclude with `le_of_eq (by simpa using congrArg (·⁻¹) h)`.
+-/
 private theorem inv_nat_mem {A : ValuationSubring Ω} {l D : ℕ} (hp : l.Prime) (hl : (l : Ω) ∈ A.nonunits) (hD : ¬ l ∣ D) :
     (D : Ω)⁻¹ ∈ A := by
   have hv : A.valuation (l : Ω) < 1 := (A.mem_nonunits_iff).1 hl
@@ -52,6 +70,13 @@ private theorem inv_nat_mem {A : ValuationSubring Ω} {l D : ℕ} (hp : l.Prime)
   · rw [← A.valuation_le_one_iff, map_inv₀]
     exact le_of_eq (by simpa using congrArg (·⁻¹) h)
 
+/- English proof (translation)
+Break down `A.mem_or_inv_mem ζ with h1 | h1` into its components or cases. Conclude with `h1`. Establish `h0 : ζ ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow hM.ne']`.
+
+Conclude with `zero_ne_one h`. Establish `e : ζ = (ζ⁻¹) ^ (M - 1)`. Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, inv_pow]`. Rewrite `h` using `[pow_succ]`.
+
+Conclude with `eq_inv_of_mul_eq_one_right h`. Rewrite using `[e]`. Conclude with `pow_mem h1 _`.
+-/
 private theorem root_mem (A : ValuationSubring Ω) {ζ : Ω} {M : ℕ} (hM : 0 < M) (h : ζ ^ M = 1) : ζ ∈ A := by
   rcases A.mem_or_inv_mem ζ with h1 | h1
   · exact h1
@@ -67,6 +92,11 @@ private theorem root_mem (A : ValuationSubring Ω) {ζ : Ω} {M : ℕ} (hM : 0 <
     rw [e]
     exact pow_mem h1 _
 
+/- English proof (translation)
+Take `⟨D, hD, hF⟩` from `h`. Establish `hz : zt ε l k ∈ A` using `root_mem A (pow_pos hp.pos k) (IsNTr.isPrimitiveRoot_zt ε l k).pow_eq_one`. Establish `h1 : (D : Ω) * F ∈ A` using `(Subring.closure_le (t := A.toSubring)).2 (by simpa using hz) hF`. Establish `hD0 : (D : Ω) ≠ 0`. Use `algebraRat.charZero Ω` as an intermediate fact.
+
+Conclude with `Nat.cast_ne_zero.2 (fun e => hD (e ▸ dvd_zero l))`. Establish `h2` using `A.mul_mem _ _ (inv_nat_mem hp hl hD) h1`. Rewrite `h2` using `[inv_mul_cancel_left₀ hD0]`. Then use the resulting hypothesis.
+-/
 private theorem inZl_mem [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) {A : ValuationSubring Ω} {l k : ℕ} (hp : l.Prime) [NeZero l]
     (hl : (l : Ω) ∈ A.nonunits) {F : Ω} (h : InZl ε l k F) : F ∈ A := by
   obtain ⟨D, hD, hF⟩ := h
@@ -80,12 +110,20 @@ private theorem inZl_mem [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) {A : Valuatio
   have h2 := A.mul_mem _ _ (inv_nat_mem hp hl hD) h1
   rwa [inv_mul_cancel_left₀ hD0] at h2
 
+/- English proof (translation)
+Take `⟨D, hD, hF⟩` from `h`. Use `⟨D, hD, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (natCast_mem _ a) hF`.
+-/
 private theorem inZl_nat_mul {ε : Ω →+* ℂ} {l k : ℕ} {F : Ω} (a : ℕ) (h : InZl ε l k F) : InZl ε l k ((a : Ω) * F) := by
   obtain ⟨D, hD, hF⟩ := h
   refine ⟨D, hD, ?_⟩
   rw [mul_left_comm]
   exact mul_mem (natCast_mem _ a) hF
 
+/- English proof (translation)
+Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`. Establish `hM : 0 < l ^ L` using `pow_pos hp.pos L`. Use `haveI : NeZero (l ^ L) := ⟨hM.ne'⟩`. Establish `hz` using `IsNTr.isPrimitiveRoot_zt ε l L`.
+
+Establish `hs : IsPrimitiveRoot (s (zt ε l L)) (l ^ L)` using `hz.map_of_injective s.injective`. Take `⟨k, hk, e⟩` from `hz.eq_pow_of_pow_eq_one hs.pow_eq_one`. Establish `hc : k.Coprime (l ^ L)` using `(hz.pow_iff_coprime hM k).1 (e ▸ hs)`. Use `⟨ZMod.unitOfCoprime k hc, ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hk, e]`.
+-/
 private theorem exists_chi [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (l L : ℕ) [Fact l.Prime] (s : Ω ≃ₐ[ℚ] Ω) :
     ∃ u : (ZMod (l ^ L))ˣ, s (zt ε l L) = zt ε l L ^ (u : ZMod (l ^ L)).val := by
   have hp : l.Prime := Fact.out
@@ -99,6 +137,11 @@ private theorem exists_chi [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (l L : ℕ)
   refine ⟨ZMod.unitOfCoprime k hc, ?_⟩
   rw [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hk, e]
 
+/- English proof (translation)
+Establish `hpwo : (Set.range (Nat.cast : ℕ → ℚ)).IsPWO`. Rewrite using `[← Set.image_univ]`. Conclude with `(Set.isPWO_of_wellQuasiOrderedLE _).image_of_monotone Nat.mono_cast`. Use `⟨⟨fun r => if r ∈ Set.range (Nat.cast : ℕ → ℚ) then f r else 0, hpwo.mono fun r hr => ?_⟩, fun r => ?_, fun i => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+
+Conclude with `hr (if_neg h)`. Use `show (if r ∈ Set.range (Nat.cast : ℕ → ℚ) then f r else 0) ∈ A split_ifs`. Conclude with `hf r`. Conclude with `A.zero_mem`. Conclude with `if_pos ⟨i, rfl⟩`.
+-/
 private theorem exists_series (A : ValuationSubring Ω) (f : ℚ → Ω) (hf : ∀ r, f r ∈ A) :
     ∃ g : HahnSeries ℚ Ω, (∀ r, g.coeff r ∈ A) ∧ ∀ i : ℕ, g.coeff (i : ℚ) = f i := by
   classical
@@ -121,6 +164,9 @@ section Fib
 private def redZ (l n m : ℕ) (x : (ZMod (l ^ (m + n)))ˣ) : (ZMod (l ^ m))ˣ :=
   Units.map (ZMod.castHom (pow_dvd_pow l (Nat.le_add_right m n)) (ZMod (l ^ m))).toMonoidHom x
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `show (ZMod.castHom _ (ZMod (l ^ m))) ((ZMod.castHom _ (ZMod (l ^ (m + n)))) (y : ZMod (topM l n m (N * N)))) = (ZMod.castHom _ (ZMod (l ^ m))) (y : ZMod (topM l n m (N * N)))`. Conclude with `RingHom.congr_fun (Subsingleton.elim ((ZMod.castHom (pow_dvd_pow l (Nat.le_add_right m n)) (ZMod (l ^ m))).comp (ZMod.castHom (Dvd.intro _ rfl : l ^ (m + n) ∣ topM l n m (N * N)) (ZMod (l ^ (m + n))))) (ZMod.castHom (Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right m n)) (N * N …`.
+-/
 private theorem redZ_redTop (l n m N : ℕ) (y : (ZMod (topM l n m (N * N)))ˣ) :
     redZ l n m (redTop l n m N y) = redM l n m (N * N) y := by
   apply Units.ext
@@ -130,12 +176,18 @@ private theorem redZ_redTop (l n m N : ℕ) (y : (ZMod (topM l n m (N * N)))ˣ) 
     (ZMod.castHom (Dvd.intro _ rfl : l ^ (m + n) ∣ topM l n m (N * N)) (ZMod (l ^ (m + n)))))
     (ZMod.castHom (Dvd.dvd.mul_right (pow_dvd_pow l (Nat.le_add_right m n)) (N * N)) (ZMod (l ^ m)))) _
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ (m + n)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[ZMod.natCast_val]`. Both sides reduce to the same expression.
+-/
 private theorem redZ_coe (l n m : ℕ) [Fact l.Prime] (x : (ZMod (l ^ (m + n)))ˣ) :
     ((redZ l n m x : (ZMod (l ^ m))ˣ) : ZMod (l ^ m)) = (((x : ZMod (l ^ (m + n))).val : ℕ) : ZMod (l ^ m)) := by
   haveI : NeZero (l ^ (m + n)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
   rw [ZMod.natCast_val]
   rfl
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ (m + n)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Rewrite using `[Units.ext_iff, ← ZMod.natCast_eq_natCast_iff]`. Rewrite using `[redZ_coe]`. Simplify using the standard rewrite rules.
+-/
 private theorem val_iff (l n m : ℕ) [Fact l.Prime] (x : (ZMod (l ^ (m + n)))ˣ) :
     (x : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m] ↔ redZ l n m x = 1 := by
   haveI : NeZero (l ^ (m + n)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩
@@ -143,6 +195,15 @@ private theorem val_iff (l n m : ℕ) [Fact l.Prime] (x : (ZMod (l ^ (m + n)))ˣ
   rw [redZ_coe]
   simp
 
+/- English proof (translation)
+Establish `hmul : ∀ a b, redZ l n m (a * b) = redZ l n m a * redZ l n m b` using `fun a b => map_mul _ a b`. Establish `hinv : ∀ a, redZ l n m a⁻¹ = (redZ l n m a)⁻¹` using `fun a => map_inv (Units.map _) a`. Establish `hmaps : ∀ y' ∈ Finset.univ.filter (fun y' => redM l n m (N * N) y' = y), redTop l n m N y' * zh⁻¹ ∈ Finset.univ.filter (fun x : (ZMod (l ^ (m + n)))ˣ => (x : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m])`. Introduce `y' hy'`. Rewrite `hy'`, the goal using `[Finset.mem_filter]`.
+
+Use `⟨Finset.mem_univ _, (val_iff l n m _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hinv, redZ_redTop, hy'.2, hy, mul_inv_cancel]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl fun x hx => Finset.sum_congr ?_ fun _ _ => rfl` and prove the remaining obligations. Use extensionality with `y'`.
+
+Establish `hx1` using `(val_iff l n m x).1 (Finset.mem_filter.1 hx).2`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, by rw [h, mul_inv_cancel_right]⟩` and prove the remaining obligations.
+
+Rewrite using `[← redZ_redTop, h, hmul, hx1, one_mul, hy]`. Introduce and unpack `⟨-, h⟩`. Rewrite using `[← h, inv_mul_cancel_right]`.
+-/
 private theorem sum_fib {M : Type*} [AddCommMonoid M] (l n m N : ℕ) [Fact l.Prime] [NeZero (topM l n m (N * N))]
     (f : (ZMod (topM l n m (N * N)))ˣ → M) (zh : (ZMod (l ^ (m + n)))ˣ) (y : (ZMod (l ^ m))ˣ) (hy : redZ l n m zh = y)
     [Fintype (ZMod (l ^ (m + n)))ˣ] [Fintype (ZMod (topM l n m (N * N)))ˣ]
@@ -177,6 +238,11 @@ end Fib
 section Th
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Establish `h1` using `PadicInt.appr_lt (1 : ℤ_[l]) n`. Establish `h2` using `PadicInt.appr_spec n (1 : ℤ_[l])`. Rewrite `h2` using `[← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, map_natCast, sub_eq_zero]`. Establish `h3 : ((1 : ℕ) : ZMod (l ^ n)) = (((1 : ℤ_[l]).appr n : ℕ) : ZMod (l ^ n))` using `by simpa using h2`. Rewrite `h3` using `[ZMod.natCast_eq_natCast_iff']`.
+
+Establish `hgt : 1 < l ^ n` using `Nat.one_lt_pow (by omega) (Fact.out : l.Prime).one_lt`. Rewrite `h3` using `[Nat.mod_eq_of_lt hgt, Nat.mod_eq_of_lt h1]`. Conclude with `h3.symm`.
+-/
 private theorem appr_one (l n : ℕ) [Fact l.Prime] (hn : 1 ≤ n) : (1 : ℤ_[l]).appr n = 1 := by
   have h1 := PadicInt.appr_lt (1 : ℤ_[l]) n
   have h2 := PadicInt.appr_spec n (1 : ℤ_[l])
@@ -187,6 +253,11 @@ private theorem appr_one (l n : ℕ) [Fact l.Prime] (hn : 1 ≤ n) : (1 : ℤ_[l
   rw [Nat.mod_eq_of_lt hgt, Nat.mod_eq_of_lt h1] at h3
   exact h3.symm
 
+/- English proof (translation)
+Proceed by induction on `hT using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => simpa using h a`. Consider the case `cons a T ha hT ih`. Use `GlobalTheory.ThAdd.isThB_add Ω ε X A N l n w (b a) (∑ i ∈ T, b i) hl (hb a) (Submodule.sum_mem _ fun i _ => hb i) 1 1 (φ a) (∑ i ∈ T, φ i) (h a) ih` as an intermediate fact. Rewrite `this` using `[appr_one l n hn]`.
+
+Rewrite using `[Finset.sum_cons, Finset.sum_cons]`. Simplify using `using this`.
+-/
 private theorem thb_sum [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (A : ValuationSubring Ω) (N l : ℕ) [Fact l.Prime]
     (n w : ℕ) (hn : 1 ≤ n) (hl : (l : Ω) ∈ A.nonunits) {ι : Type*} (T : Finset ι) (hT : T.Nonempty) (b : ι → X.Fn l)
     (φ : ι → HahnSeries ℚ Ω) (hb : ∀ i, b i ∈ X.B N l w) (h : ∀ i, IsThB X A N l n (b i) (φ i)) :
@@ -201,11 +272,17 @@ private theorem thb_sum [IsAlgClosed Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (
     rw [Finset.sum_cons, Finset.sum_cons]
     simpa using this
 
+/- English proof (translation)
+Take `⟨_, _, _, _, h⟩` from `h`. Conclude with `h.1 r`.
+-/
 private theorem thb_coeff {ε : Ω →+* ℂ} {X : Tower Ω ε} {A : ValuationSubring Ω} {N l n : ℕ} [Fact l.Prime] {b : X.Fn l}
     {φ : HahnSeries ℚ Ω} (h : IsThB X A N l n b φ) (r : ℚ) : φ.coeff r ∈ A := by
   obtain ⟨_, _, _, _, h⟩ := h
   exact h.1 r
 
+/- English proof (translation)
+Take `⟨τ, hτ, e⟩` from `h`. Use `⟨τ, hτ, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[← Finset.mul_sum, ← e]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isNT_mul {ε : Ω →+* ℂ} {l L m : ℕ} [NeZero l] {F F' : Ω} (k : ℕ) (h : IsNT ε l L m F F') :
     IsNT ε l L m ((l : Ω) ^ k * F) ((l : Ω) ^ k * F') := by
   obtain ⟨τ, hτ, e⟩ := h
@@ -214,6 +291,13 @@ private theorem isNT_mul {ε : Ω →+* ℂ} {l L m : ℕ} [NeZero l] {F F' : Ω
   rw [← Finset.mul_sum, ← e]
   ring
 
+/- English proof (translation)
+Take `⟨v, b, hb, e⟩` from `Nat.exists_eq_pow_mul_and_not_dvd κ.den_nz l hp.ne_one`. Use `⟨v, fun {Ω} _ _ A hl => ?_⟩` and prove the remaining obligations. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hb0 : (b : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (fun h => hb (h ▸ dvd_zero l))`.
+
+Establish `e' : (l : Ω) ^ v * (κ : Ω) = (κ.num : Ω) * (b : Ω)⁻¹`. Rewrite using `[Rat.cast_def, e]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e']`.
+
+Conclude with `A.mul_mem _ _ (intCast_mem A _) (inv_nat_mem hp hl hb)`.
+-/
 private theorem exists_kappa (l : ℕ) (hp : l.Prime) (κ : ℚ) : ∃ v : ℕ, ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     (A : ValuationSubring Ω), (l : Ω) ∈ A.nonunits → (l : Ω) ^ v * (κ : Ω) ∈ A := by
   obtain ⟨v, b, hb, e⟩ := Nat.exists_eq_pow_mul_and_not_dvd κ.den_nz l hp.ne_one
@@ -228,6 +312,11 @@ private theorem exists_kappa (l : ℕ) (hp : l.Prime) (κ : ℚ) : ∃ v : ℕ, 
   rw [e']
   exact A.mul_mem _ _ (intCast_mem A _) (inv_nat_mem hp hl hb)
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Use `⟨(l : Ω) ^ C * (l : Ω) ^ q * (l : Ω) ^ c₂ * (l : Ω) ^ v * a - (l : Ω) ^ C * (l : Ω) ^ q * (l : Ω) ^ c₀ * ((l : Ω) ^ v * κ) * tt * (l : Ω) ^ m * ((l : Ω) ^ c₂ * T), ?_, ?_⟩` and prove the remaining obligations. Use `sub_mem ?_ ?_` and prove the remaining obligations. Conclude with `A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (lp_mem A l C) (lp_mem A l q)) (lp_mem A l c₂)) (lp_mem A l v)) ha`. Conclude with `A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (lp_mem A l C) (lp_mem A l q)) (lp_mem A l c₀)) hκ) htt) (lp_mem A l m)) hT`.
+
+Simplify using `only [pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem small_close {A : ValuationSubring Ω} {l n C L₀ c₂ v c₀ m : ℕ} (hn : n ≤ L₀) {a κ tt T : Ω} (ha : a ∈ A)
     (hT : (l : Ω) ^ c₂ * T ∈ A) (hκ : (l : Ω) ^ v * κ ∈ A) (htt : tt ∈ A) :
     CgA A l n ((l : Ω) ^ (C + (L₀ + c₂ + v)) * a) ((l : Ω) ^ (C + (L₀ + c₂ + v)) * ((l : Ω) ^ c₀ * κ * tt * (l : Ω) ^ m * T)) := by
@@ -240,6 +329,13 @@ private theorem small_close {A : ValuationSubring Ω} {l n C L₀ c₂ v c₀ m 
   · simp only [pow_add]
     ring
 
+/- English proof (translation)
+Establish `s1` using `cg_mul ((l : Ω) ^ (c + cc + e)) (lp_mem A l _) h0`. Establish `s2` using `cg_mul ((l : Ω) ^ e) (lp_mem A l _) h1`. Establish `s3 : CgA A l n ((l : Ω) ^ e * (D + (l : Ω) ^ c * ((l : Ω) ^ (cc + c₀) * F0 * tt))) ((l : Ω) ^ (c + cc + e) * ((l : Ω) ^ c₀ * κ * tt * (l : Ω) ^ m * T) + (l : Ω) ^ e * D)`. Use `⟨(l : Ω) ^ e * (l : Ω) ^ c * (l : Ω) ^ (cc + c₀) * E * tt, A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (A.mul_mem _ _ (lp_mem A l e) (lp_mem A l c)) (lp_mem A l _)) hE) htt, ?_⟩` and prove the remaining obligations. Rewrite using `[hF]`.
+
+Simplify using `only [pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (l : Ω) ^ (c + cc + e) * Ψ = (l : Ω) ^ e * ((l : Ω) ^ c * ((l : Ω) ^ cc * Ψ))`. Simplify using `only [pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite `s1` using `[e1]`. Conclude with `cg_trans s1 (cg_trans s2 s3)`.
+-/
 private theorem final_step {A : ValuationSubring Ω} {l n c cc e c₀ m : ℕ} {a Ψ D F0 T E tt κ : Ω}
     (h0 : CgA A l n a Ψ) (h1 : CgA A l n ((l : Ω) ^ c * ((l : Ω) ^ cc * Ψ)) (D + (l : Ω) ^ c * ((l : Ω) ^ (cc + c₀) * F0 * tt)))
     (hF : F0 = κ * (l : Ω) ^ m * T + (l : Ω) ^ n * E) (hE : E ∈ A) (htt : tt ∈ A) :
@@ -261,6 +357,39 @@ private theorem final_step {A : ValuationSubring Ω} {l n c cc e c₀ m : ℕ} {
 end Th
 end UpperTheory.Kd.L
 
+/- English proof (translation)
+Introduce `l _ N _ w hw`. Distinguish the cases in `hl2 : l = 2`. Conclude with `⟨0, 1, one_ne_zero, fun ε X c d gm P => absurd hl2 P.odd⟩`. Establish `hp : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hp.ne_zero⟩`.
+
+Take `⟨κ, hκ, L₀, har⟩` from `arith l N w hw.pos`. Take `⟨c₂, hsm⟩` from `small l w L₀`. Take `⟨cc, hmk⟩` from `mackey l`. Take `⟨c, hcor⟩` from `GlobalTheory.T.corestriction_cyclotomic_shapiro_normalisedTrace l hl2`. Take `⟨v, hv⟩` from `exists_kappa l hp κ`.
+
+Use `⟨c + cc + (L₀ + c₂ + v), κ, hκ, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ _ ε X c' d gm P A hl x m n c₀ hm hmn bB hbB y`. Distinguish the cases in `hsmall : m + n < L₀`. Use `⟨0, fun r => by simp, ?_⟩` and prove the remaining obligations. Introduce `s hs hres hz φ hφ tt htt β t a ha hβ hβ1 ht i`.
+
+Simplify using `only [HahnSeries.coeff_zero, map_zero, sub_self, add_zero]`. Conclude with `small_close (C := c + cc) (by omega) (thb_coeff hφ _) (hsm ε N c' d gm P A hl x m hm (by omega) β t a i) (hv A hl) (natCast_mem A _)`. Establish `hL : L₀ ≤ m + n` using `not_lt.1 hsmall`. Establish `hn : 1 ≤ n` using `hm.trans hmn`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+
+Establish `halg : Algebra.IsAlgebraic ℚ Ω` using `IsAlgClosure.isAlgebraic`. Establish `hj` using `X.j_hol`. Take `⟨hB, hcoc⟩` from `zcoc ε X l N c' d gm P A hl x w m n c₀ hw hm bB hbB`. Use `choose Φ hΦ using fun s z => GlobalTheory.T.exists_cuspFunctional_oddWeight_oddPrime Ω ε X A N l halg hj hl2 P.cop P.five hl n w hw (bMid X l n m N bB s z) (hB s z)`. Use `choose χ hχ using fun s => exists_chi ε l (m + n) s`.
+
+Use `haveI : NeZero (l ^ (m + n)) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Take `⟨zh, hzh⟩ : ∃ zh, redZ l n m zh = y` from `ZMod.unitsMap_surjective (pow_dvd_pow l (Nat.le_add_right m n)) y`. Establish `hdv : N * l ∣ topMu l n m N`. Use `⟨l ^ (m + n - 1) * N, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k, m + n = k + 1` from `⟨m + n - 1, by omega⟩`.
+
+Simplify using `only [topMu, hk, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨R, hR⟩` from `(reps l N c' d gm P (topMu l n m N) hdv).1`. Take `⟨hFs, hFa⟩` from `har ε c' d gm P x m n hm R hR zh`. Take `⟨ξ, hξA, hξ⟩` from `hmk ε X N c' d gm P A hl x w m n c₀ hw hm hn bB hbB R hR zh`.
+
+Use `choose F0 hF0 using fun r => GlobalTheory.T.exists_unique_normalizedCyclotomicTrace ε l (m + n) m hm (by omega) (Fsum ε l n m N x c' d w gm R zh r) (hFs r)`. Take `⟨ξ', hξ'A, hξ'⟩` from `hcor ε A hl (m + n) n m hm hmn (by omega) χ hχ (fun s u r => (l : Ω) ^ cc * (Φ s (u * zh)).coeff r) (fun s u r => A.mul_mem _ _ (lp_mem A l cc) (thb_coeff (hΦ s _).1 r)) (fun s t hs ht u r => by`. Establish `h` using `hcoc χ hχ s t hs (u * zh) _ _ _ (hΦ (s * t) _).1 (hΦ s _).1 (hΦ t (u * zh * (χ s)⁻¹)).1 r`. Establish `h'` using `cg_mul ((l : Ω) ^ cc) (lp_mem A l cc) h`. Rewrite `h'` using `[mul_add]`.
+
+Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[show u * (χ s)⁻¹ * zh = u * zh * (χ s)⁻¹ from mul_right_comm _ _ _])` and apply the resulting hypothesis. Use `ξ (fun r => (l : Ω) ^ (cc + c₀) * Fsum ε l n m N x c' d w gm R zh r)`. Use the proof step `(fun r => ⟨hξA r, by simpa using inZl_nat_mul (l ^ (cc + c₀)) (hFs r)⟩)`. Use the proof step `(fun s hs hres h1 tt htt r => by`.
+
+Establish `hz : s (zt ε l (m + n)) = zt ε l (m + n)`. Establish `hgt : 1 < l ^ (m + n)` using `Nat.one_lt_pow (by omega) hp.one_lt`. Rewrite using `[hχ s, h1, Units.val_one, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt hgt, pow_one]`. Establish `h` using `hξ s hs hres hz tt htt _ (hΦ s zh).1 r`. Rewrite using `[one_mul]`.
+
+Establish `e : (l : Ω) ^ (cc + c₀) * Fsum ε l n m N x c' d w gm R zh r * (tt.val : Ω) = (l : Ω) ^ cc * ((l : Ω) ^ c₀ * Fsum ε l n m N x c' d w gm R zh r * (tt.val : Ω))`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e])` and apply the resulting hypothesis. Use the proof step `(fun r => (l : Ω) ^ (cc + c₀) * F0 r) (fun r => isNT_mul _ (hF0 r).1)`.
+
+Take `⟨g, hgA, hg⟩` from `exists_series A (fun r => (l : Ω) ^ (L₀ + c₂ + v) * ξ' r) (fun r => A.mul_mem _ _ (lp_mem A l _) (hξ'A r))`. Use `⟨g, hgA, ?_⟩` and prove the remaining obligations. Introduce `s hs hres hzm φ hφ tt htt β t a ha hβ hβ1 ht i`. Establish `hone : (1 : (ZMod (l ^ (m + n)))ˣ) ∈ Finset.univ.filter (fun u : (ZMod (l ^ (m + n)))ˣ => (u : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m])` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, (val_iff l n m 1).2 (map_one (Units.map _))⟩`. Establish `hthb` using `thb_sum X A N l n w hn hl _ ⟨1, hone⟩ (fun u => bMid X l n m N bB s (u * zh)) (fun u => Φ s (u * zh)) (fun u => hB s _) (fun u => (hΦ s _).1)`.
+
+Establish `hpush : ∑ u ∈ Finset.univ.filter (fun u : (ZMod (l ^ (m + n)))ˣ => (u : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]), bMid X l n m N bB s (u * zh) = GlobalTheory.KA.push (redM l n m (N * N)) (bTop X l n m N bB) s y`. Simplify using `only [bMid, GlobalTheory.KA.push]`. Conclude with `sum_fib l n m N (bTop X l n m N bB s) zh y hzh`. Rewrite `hthb` using `[hpush]`. Establish `hmem : GlobalTheory.KA.push (redM l n m (N * N)) (bTop X l n m N bB) s y ∈ X.B N l w`.
+
+Rewrite using `[← hpush]`. Conclude with `Submodule.sum_mem _ fun u _ => hB s _`. Establish `h0` using `GlobalTheory.T.cuspFunctionalValueModPrimePow_unique_oddWeight Ω ε X A N l hj hl2 P.cop P.five hl n w hw _ hmem φ _ hφ hthb (i : ℚ)`. Establish `hβ' : β ≡ (zh : ZMod (l ^ (m + n))).val [MOD l ^ m]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, hβ, ← redZ_coe, hzh]`.
+
+Take `⟨E, hE, hFE⟩` from `hFa hL i (F0 i) (hF0 i).1 β t a ha hβ' hβ1 ht`. Establish `h1` using `hξ' s hs hres hzm tt htt (i : ℚ)`. Simplify using `only [← Finset.mul_sum] at h1`. Establish `hΨ : (∑ u ∈ Finset.univ.filter (fun u : (ZMod (l ^ (m + n)))ˣ => (u : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]), Φ s (u * zh)).coeff (i : ℚ) = ∑ u ∈ Finset.univ.filter (fun u : (ZMod (l ^ (m + n)))ˣ => (u : ZMod (l ^ (m + n))).val ≡ 1 [MOD l ^ m]), (Φ s (u * zh)).coeff (i : ℚ)` using `HahnSeries.coeff_sum _`. Rewrite `h1` using `[← hΨ]`.
+
+Establish `hfin` using `final_step (e := L₀ + c₂ + v) (c₀ := c₀) h0 h1 hFE (inZl_mem ε hp hl hE) (natCast_mem A tt.val)`. Establish `eg : s (g.coeff (i : ℚ)) - g.coeff (i : ℚ) = (l : Ω) ^ (L₀ + c₂ + v) * (s (ξ' (i : ℚ)) - ξ' (i : ℚ))`. Rewrite using `[hg i, map_mul, map_pow, map_natCast, mul_sub]`. Rewrite using `[eg]`. Conclude with `hfin`.
+-/
 theorem UpperTheory.Kd.L.law :
     ∀ (l : ℕ) [Fact l.Prime] (N : ℕ) [NeZero N] (w : ℕ), Odd w → ∃ (c₁ : ℕ) (κ : ℚ), κ ≠ 0 ∧ ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (x : ZMod N) (m n c₀ : ℕ), 1 ≤ m → m ≤ n → ∀ bB : (Ω ≃ₐ[ℚ] Ω) → X.Fn l, (∀ σ ∈ fixMu Ω (topMu l n m N), LiftB X l N w n c₀ (clsBmu X l n m N x c d (w + 2) gm σ) (bB σ)) → ∀ y : (ZMod (l ^ m))ˣ, ∃ g : HahnSeries ℚ Ω, (∀ r, g.coeff r ∈ A) ∧ ∀ s, Stab A s → (∀ a ∈ A, A.valuation (s a - a) < 1) → s (zt ε l m) = zt ε l m → ∀ φ : HahnSeries ℚ Ω, IsThB X A N l n (GlobalTheory.KA.push (redM l n m (N * N)) (bTop X l n m N bB) s y) φ → ∀ tt : ZMod (l ^ n), IsLamG ε l n m s tt → ∀ (β : ℕ) (t a : ℤ), (a : ZMod N) = ((en (gm 1) 0 0 : ℤ) : ZMod N) → (β : ZMod (l ^ m)) = (y : ZMod (l ^ m)) → (β : ZMod N) = 1 → (l : ℤ) ^ m * t ≡ 1 [ZMOD N] → ∀ i : ℕ, CgA A l n ((l : Ω) ^ c₁ * φ.coeff (i : ℚ)) ((l : Ω) ^ c₁ * ((l : Ω) ^ c₀ * (κ : Ω) * (tt.val : Ω) * (l : Ω) ^ m * toQ (l ^ m) (pieceT N l m m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a * t, 0) (a * t, 0) (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β) ((unitSet l m).filter fun γ => (γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det = 1)) i) + (s (g.coeff (i : ℚ)) - g.coeff (i : ℚ))) := by
 

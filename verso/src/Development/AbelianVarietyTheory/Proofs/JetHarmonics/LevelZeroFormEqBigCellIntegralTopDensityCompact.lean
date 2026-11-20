@@ -13,18 +13,29 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Glob
 
 namespace GlobalTheory.TopVec
 
+/- English proof (translation)
+Unfold `KB.levW`. Use `split_ifs`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.rb_zWeight_nonneg _ _ _ _`. Check the signs of the components of the expression.
+-/
 lemma levWeight_nonneg (P : M.Par) (j : ℕ) (t : ℂ) : 0 ≤ KB.levW P j t := by
   unfold KB.levW
   split_ifs
   · exact Formalism.FourierDecayAlt.P.JCx2.rb_zWeight_nonneg _ _ _ _
   · positivity
 
+/- English proof (translation)
+Rewrite using `[List.ofFn_succ']`. Simplify using the standard rewrite rules.
+-/
 lemma ofFn_snoc_unit {j : ℕ} (c : Fin j → ℂ) (t : ℂ) :
     (List.ofFn fun l : Fin (j + 1) => ((1 : ℕ), Fin.snoc (α := fun _ => ℂ) c t l)) =
       (List.ofFn fun l : Fin j => ((1 : ℕ), c l)) ++ [((1 : ℕ), t)] := by
   rw [List.ofFn_succ']
   simp
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Rewrite `hb` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hb`. Conclude with `⟨le_rfl, hc i⟩`.
+
+Simplify using `[D.ptSize, List.map_ofFn, List.sum_ofFn]`.
+-/
 lemma isLocPt_ofFn_unit {j : ℕ} (c : Fin j → ℂ) (hc : ∀ i, c i ≠ 0) :
     D.IsLocPt (List.ofFn fun l : Fin j => ((1 : ℕ), c l)) j := by
   refine ⟨?_, ?_⟩
@@ -34,6 +45,17 @@ lemma isLocPt_ofFn_unit {j : ℕ} (c : Fin j → ℂ) (hc : ∀ i, c i ≠ 0) :
     exact ⟨le_rfl, hc i⟩
   · simp [D.ptSize, List.map_ofFn, List.sum_ofFn]
 
+/- English proof (translation)
+Introduce `hP Wp Wq _ _ _ _ _ _ P p Cb H w hD hH hw`. Establish `hmeas` using `GlobalTheory.T.aestronglyMeasurable_topVector_smoothCoefficient Wp Wq P p Cb H w hD hw hH.1`. Use `set R : (j : ℕ) → (Fin j → ℂ) → ℝ := fun j c => (p.RR H j w (List.ofFn fun l : Fin j => ((1 : ℕ), c l)) (List.ofFn fun l : Fin j => ((1 : ℕ), c l))).re with hR`. Establish `hae : (fun c : Fin (P.r + 1) → ℂ => (∏ i : Fin (P.r + 1), KB.levW P ((i : ℕ) + 1) (c i)) * R (P.r + 1) c) =ᵐ[volume] fun c => ‖tv p H w c‖ ^ 2` using `by filter_upwards [GlobalTheory.ae_coords_ne_zero (P.r + 1)] with c hc`. Rewrite using `[← GlobalTheory.TopVec.Ew_eq_norm_tv_sq Wp Wq P p H w c, (GlobalTheory.T.topDensity_bigCell_eq_prod_levelWeights_mul_topForm Wp Wq P p H w c hc).1]`.
+
+Both sides reduce to the same expression. Take `⟨hint, heq⟩` from `GlobalTheory.iterated_integral_eq_integral_pi (P.r + 1) (KB.levW P) R (levWeight_nonneg P) (fun c hc => (GlobalTheory.T.topDensity_bigCell_eq_prod_levelWeights_mul_topForm Wp Wq P p H w c hc).2.2) ((hmeas.norm.pow 2).aemeasurable.congr hae.symm) (fun j hj c hc => by`. Take `⟨h1, h2⟩` from `GlobalTheory.T.levelModuleForm_eq_integral_of_compactCoeff hP Wp Wq P p Cb H w j _ hD hH hw (Nat.lt_succ_iff.1 hj) (isLocPt_ofFn_unit c hc)`. Establish `h3` using `h1.re`. Establish `h4` using `integral_re h1`.
+
+Simplify using `only [RCLike.re_to_complex, Complex.re_ofReal_mul] at h3 h4`. Simplify using `only [hR, ofFn_snoc_unit]`. Conclude with `⟨h3, by rw [h4, ← h2]⟩)`. Use `⟨(memLp_two_iff_integrable_sq_norm hmeas).2 (hint.congr hae), ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_congr_ae hae, ← heq]`.
+
+Establish `him` using `GlobalTheory.T.levelZeroForm_diagonal_bigCell_im_eq_zero hP Wp Wq P p Cb H w hD hH hw`. Establish `h0 : p.RR H 0 w [] [] = B.beta p.T.base (List.foldr (fun (a : Bool × ℝ) G => M.sgn P p.l0 • Q.CV P.k P.r (a.2 : ℂ) G) (H) w) H`. Unfold `KB.Pl.RR`. Rewrite using `[Formalism.FourierDecayAlt.P.level_zero_holds _ _ _ _ _ _ _ _ _ _ _ hH.1 (Formalism.FourierDecayAlt.P.CutBP.good_positioned_of_cut hw)]`. Both sides reduce to the same expression.
+
+Rewrite using `[← h0]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hR]`. Simplify using `using him`.
+-/
 theorem levelZero_eq_integral_topVector_of_cpt :
     P5.ThmPActualCpt → ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq) (Cb : ℝ) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter), KB.InDDplus2 P p.l0 p.T.base Cb p.Θ → KB.CptCoef p.T.base H → KB.CutWord P p.l0 w → MemLp (tv p H w) 2 volume ∧ B.beta p.T.base (List.foldr (fun (a : Bool × ℝ) G => M.sgn P p.l0 • Q.CV P.k P.r (a.2 : ℂ) G) (H) w) H = ((∫ c, ‖tv p H w c‖ ^ 2 : ℝ) : ℂ) := by
   intro hP Wp Wq _ _ _ _ _ _ P p Cb H w hD hH hw

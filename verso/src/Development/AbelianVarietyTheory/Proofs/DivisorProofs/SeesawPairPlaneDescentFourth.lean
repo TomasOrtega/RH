@@ -18,6 +18,13 @@ namespace GlobalTheory.ThKReindex
 
 open GlobalTheory.ThK.UnipDom.Inverse GlobalTheory.ThK.IsoZero
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, d.form]`. Use `set a := (d.e u).1`. Use `set b := (d.e u).2`. Use `set a' := (d.e v).1`.
+
+Use `set b' := (d.e v).2`. Establish `h1 : x + a + a' = x + a' + a` using `by abel`. Rewrite using `[h1, ← mul_assoc, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Simplify using `only [add_dotProduct]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCommGroup V] [Module R V]
     {Bf : V → V → R} {κ : Type} [Fintype κ] (d : Darboux Bf κ) (ψ : AddChar R ℂ) (u v : V)
     (φ : (κ → R) → ℂ) :
@@ -37,11 +44,19 @@ theorem rho_comm {R : Type} [CommRing R] [Invertible (2 : R)] {V : Type} [AddCom
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Unfold `thetaSum`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `tsum_mul_left`.
+-/
 theorem thetaSum_smul {κ : Type} (c : ℂ) (Φ : (κ → AF F) → ℂ) : thetaSum F (c • Φ) = c * thetaSum F Φ := by
   unfold thetaSum
   simp only [Pi.smul_apply, smul_eq_mul]
   exact tsum_mul_left
 
+/- English proof (translation)
+Establish `h` using `((GlobalTheory.ThKBasic.thetaBasic hKP.base F E σ B n d X W M χX χW om r s r' s' hP).1 Φ hΦ).2.1 1 (one_mem _) γ hγ 1 1`. Simplify using `only [mul_one, theta] at h`. Rewrite using `[h]`. Establish `h1 : ((1 : UA σ X.J), (1 : UA σ W.J)) = 1` using `rfl`. Rewrite using `[h1, map_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem thetaSum_om_rat (hKP : KP) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : Rep σ X W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s')
     (γ : UA σ W.J) (hγ : γ ∈ ratU σ W.J) (Φ : Fn F n d) (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
@@ -54,6 +69,9 @@ theorem thetaSum_om_rat (hKP : KP) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W
   rw [h1, map_one]
   rfl
 
+/- English proof (translation)
+Rewrite using `[rho_comm M.co B.ψ, map_smul, he.inv _ ⟨z, rfl⟩ _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ Φ hΦ), thetaSum_smul]`.
+-/
 theorem term_rho {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     (M : Model σ X W) (M₁ : Model σ X₁ W₁) (hstd : IsStd B.ψ) (ι : Matrix (Fin n) (Fin n₁) E)
     (ι' : Matrix (Fin d) (Fin d₁) E) (x y : Fin n → E) (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁)
@@ -66,6 +84,11 @@ theorem term_rho {B : Base F E} {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F
   rw [rho_comm M.co B.ψ, map_smul, he.inv _ ⟨z, rfl⟩ _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd _ Φ hΦ),
     thetaSum_smul]
 
+/- English proof (translation)
+Establish `hm : mat γ = (g : Matrix (Fin d) (Fin d) E).map (inclR (F` using `F) (AF F)) := by show (γ : GL (Fin d) (AE F E)).1 = _`. Rewrite using `[← hg]`. Both sides reduce to the same expression. Rewrite using `[hm]`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [incV]`. Conclude with `((inclR (F := F) (AF F)).map_mulVec (g : Matrix (Fin d) (Fin d) E) w i).symm`.
+-/
 theorem mat_mulVec_incV {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (γ : UA σ J) (g : GL (Fin d) E)
     (hg : Matrix.GeneralLinearGroup.map (n := Fin d) (inclR (F := F) (E := E) (AF F)) g = (γ : GL (Fin d) (AE F E)))
     (w : Fin d → E) : mat γ *ᵥ incV F w = incV F ((g : Matrix (Fin d) (Fin d) E) *ᵥ w) := by
@@ -77,6 +100,31 @@ theorem mat_mulVec_incV {d : ℕ} {J : Matrix (Fin d) (Fin d) E} (γ : UA σ J) 
   simp only [incV]
   exact ((inclR (F := F) (AF F)).map_mulVec (g : Matrix (Fin d) (Fin d) E) w i).symm
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he γ hγ w w' hww' Ψ hΨ`. Take `⟨C₀, hC₀, hexp⟩` from `GlobalTheory.T.seesaw_pair_plane_dimension hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he`. Take `⟨N, emb, lam, hinj, hfreq⟩` from `GlobalTheory.T.skew_space_real_embedding F E σ B n d X W r s r' s' hP.base hP.herm hP.skew H.x H.y hH.2.2.2.1`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hsch : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ u Φ ∈ schA F (Fin n × Fin d)` using `fun u Φ hΦ => GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd u Φ hΦ`.
+
+Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.mp hγ`. Establish `hmv : ∀ v : Fin d → E, mat γ *ᵥ incV F v = incV F ((g : Matrix (Fin d) (Fin d) E) *ᵥ v)` using `mat_mulVec_incV γ g hg`. Set `eg : (Fin d → E) ≃ (Fin d → E)` to `{ toFun := fun v => (g : Matrix (Fin d) (Fin d) E) *ᵥ v invFun := fun v => ((g⁻¹ : GL (Fin d) E) : Matrix (Fin d) (Fin d) E) *ᵥ v left_inv := fun v => by`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one, Matrix.one_mulVec]`.
+
+Use `right_inv := fun v => by`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel, Matrix.GeneralLinearGroup.coe_one, Matrix.one_mulVec] }`. Establish `heg : ∀ v, eg v = (g : Matrix (Fin d) (Fin d) E) *ᵥ v` using `fun v => rfl`. Set `ℓ : (Fin d → E) → Fn F n d → ℂ` to `fun v Φ => thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F v)) Φ))`. Establish `hΨ₁ : om (1, γ) Ψ ∈ schA F (Fin n × Fin d)` using `hS.pres _ Ψ hΨ`.
+
+Establish `hc : ∀ v t, B.ψ (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec (incV F H.y) (incV F v)) (Matrix.vecMulVec (incV F H.x) (emb t))) = GlobalTheory.ExpSumUniq.chr (lam v) t := hfreq`. Establish `hcn : ∀ v t, ‖GlobalTheory.ExpSumUniq.chr (lam v) t‖ = 1` using `fun v t => GlobalTheory.ExpSumUniq.norm_chr _ _`. Establish `hexpz : ∀ Φ ∈ schA F (Fin n × Fin d), ∀ t, thetaSum F (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (emb t)) Φ) = C₀ * ∑' v, GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ v Φ`. Introduce `Φ hΦ t`. Rewrite using `[(hexp _ (hsch _ Φ hΦ)).2]`.
+
+Use `congr 1`. Use `tsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[term_rho M M₁ hstd H.ι 1 H.x H.y e he (incV F v) (emb t) Φ hΦ, hc]`. Establish `hinvz : ∀ t, thetaSum F (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (emb t)) (om (1, γ) Ψ)) = thetaSum F (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.x) (mat γ⁻¹ *ᵥ emb t)) Ψ)`. Introduce `t`.
+
+Establish `himpl` using `hS.impl ((1 : UA σ X.J), γ) (Matrix.vecMulVec (incV F H.x) (mat γ⁻¹ *ᵥ emb t)) Ψ hΨ`. Establish `hact : actAB (cA σ) ((1 : UA σ X.J), γ) (Matrix.vecMulVec (incV F H.x) (mat γ⁻¹ *ᵥ emb t)) = Matrix.vecMulVec (incV F H.x) (emb t)` using `by show (1 : Matrix (Fin n) (Fin n) (AE F E)) * _ * (mat γ)ᵀ = _`. Rewrite using `[Matrix.one_mul, vmv_mul_transpose, Matrix.mulVec_mulVec, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mulVec]`. Rewrite `himpl` using `[hact]`. Rewrite using `[← himpl, thetaSum_om_rat hKP hP γ hγ _ (hsch _ Ψ hΨ)]`.
+
+Establish `hphase : ∀ v t, B.ψ (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec (incV F H.y) (incV F v)) (Matrix.vecMulVec (incV F H.x) (mat γ⁻¹ *ᵥ emb t))) = GlobalTheory.ExpSumUniq.chr (lam (eg v)) t := by`. Introduce `v t`. Establish `e1 : mat (1 : UA σ X.J) * Matrix.vecMulVec (incV F H.y) (incV F v) * (mat γ)ᵀ = Matrix.vecMulVec (incV F H.y) (incV F (eg v))`. Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mul, vmv_mul_transpose, hmv, heg]`. Establish `e2 : mat (1 : UA σ X.J) * Matrix.vecMulVec (incV F H.x) (mat γ⁻¹ *ᵥ emb t) * (mat γ)ᵀ = Matrix.vecMulVec (incV F H.x) (emb t)`.
+
+Rewrite using `[GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mul, vmv_mul_transpose, Matrix.mulVec_mulVec, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mulVec]`. Rewrite using `[← hc, ← GlobalTheory.SympInv.symp_act F E σ n d X W 1 γ, e1, e2]`. Establish `hsum1 : Summable fun v => ℓ v (om (1, γ) Ψ)` using `(hexp _ hΨ₁).1`. Establish `hsum0 : Summable fun v => ℓ (eg.symm v) Ψ` using `(Equiv.summable_iff eg.symm).mpr (hexp Ψ hΨ).1`. Establish `hkey : ∀ t : Fin N → ℝ, ∑' v, (ℓ v (om (1, γ) Ψ) - ℓ (eg.symm v) Ψ) * Complex.exp (2 * Real.pi * Complex.I * ∑ j, (lam v j : ℂ) * (t j : ℂ)) = 0`.
+
+Introduce `t`. Establish `hA : C₀ * ∑' v, GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ v (om (1, γ) Ψ) = C₀ * ∑' v, GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ (eg.symm v) Ψ`. Rewrite using `[← hexpz _ hΨ₁ t, hinvz t, (hexp _ (hsch _ Ψ hΨ)).2]`. Use `congr 1`. Rewrite using `[← Equiv.tsum_eq eg (fun v => GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ (eg.symm v) Ψ)]`.
+
+Use `tsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, term_rho M M₁ hstd H.ι 1 H.x H.y e he (incV F v) _ Ψ hΨ, hphase]`. Establish `hB` using `mul_left_cancel₀ hC₀ hA`. Establish `hs1 : Summable fun v => GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ v (om (1, γ) Ψ)` using `Summable.of_norm (by simpa [norm_mul, hcn] using summable_norm_iff.mpr hsum1)`. Establish `hs2 : Summable fun v => GlobalTheory.ExpSumUniq.chr (lam v) t * ℓ (eg.symm v) Ψ` using `Summable.of_norm (by simpa [norm_mul, hcn] using summable_norm_iff.mpr hsum0)`.
+
+Rewrite `hB` using `[← sub_eq_zero, ← hs1.tsum_sub hs2]`. Rewrite using `[← hB]`. Use `tsum_congr fun v => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.ExpSumUniq.chr]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hzero` using `GlobalTheory.ExpSumUniq.coeff_eq_zero N (Fin d → E) lam (fun v => ℓ v (om (1, γ) Ψ) - ℓ (eg.symm v) Ψ) hinj (hsum1.sub hsum0) hkey (eg w)`. Simplify using `only [Equiv.symm_apply_apply] at hzero`. Rewrite using `[← hww', hmv]`. Conclude with `sub_eq_zero.mp hzero`.
+-/
 theorem term_reindex : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),
     IsPair B M χX χW om r s r' s' →

@@ -9,6 +9,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c d p I hc hr ⟨ψ, hψ, ht⟩`. Establish `key : ∀ n, ∃ φ : (Fin n → LevQ Dw d.l₂) → c.F, DeltaOK (GlobalTheory.FormTies.withCoeff d φ) p I`. Introduce `n`. Distinguish the cases in `hn : Dw.p + Dw.q ≤ n`. Take `⟨φ, ph, x₀, h⟩` from `GlobalTheory.exists_phiPin_of_character E H Dw l Xo c n (GlobalTheory.FormTies.withCoeff d (0 : (Fin n → LevQ Dw d.l₂) → c.F)) hc.2.2.1 hn ψ`.
+
+Conclude with `⟨φ, hc, hr, fun _ => ⟨ph, ψ, x₀, hψ, h, ht⟩⟩`. Conclude with `⟨0, hc, hr, fun h => absurd h hn⟩`. Use `choose φ hφ using key`. Conclude with `⟨φ, hφ⟩`.
+-/
 theorem exists_coeff_deltaOK_of_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (d : DeltaDat Xo c 0) (p : ℕ) (I : Ideal (𝓞 E)), CoverOK d p I → RootOK d → (∃ ψ, ψ ≠ 1 ∧ d.PsiTie ψ) → ∃ φ : ∀ n, (Fin n → LevQ Dw d.l₂) → c.F, ∀ n, DeltaOK (GlobalTheory.FormTies.withCoeff d (φ n)) p I := by
   intro E _ _ _ H Dw l Xo c d p I hc hr ⟨ψ, hψ, ht⟩
   have key : ∀ n, ∃ φ : (Fin n → LevQ Dw d.l₂) → c.F, DeltaOK (GlobalTheory.FormTies.withCoeff d φ) p I := by

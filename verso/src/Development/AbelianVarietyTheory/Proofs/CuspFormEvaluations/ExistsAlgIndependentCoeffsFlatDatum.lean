@@ -16,6 +16,9 @@ open MeasureTheory
 
 namespace GlobalTheory.GenericFlat
 
+/- English proof (translation)
+Substitute `hab hnm` using the available equality. Simplify using `using hP`.
+-/
 theorem ae_cast {a b n m : ℕ} (hab : a = b) (hnm : n = m) (P : (Fin (a + 1) × Fin n → ℂ) → Prop)
     (hP : ∀ᵐ t : Fin (a + 1) × Fin n → ℂ, P t) :
     ∀ᵐ t : Fin (b + 1) × Fin m → ℂ,
@@ -23,6 +26,15 @@ theorem ae_cast {a b n m : ℕ} (hab : a = b) (hnm : n = m) (P : (Fin (a + 1) ×
   subst hab hnm
   simpa using hP
 
+/- English proof (translation)
+Introduce `D T h j _hj N wL wF w Tn c1 A`. Establish `hC : Countable T.Q.c.F` using `(Module.finBasis ℚ T.Q.c.F).equivFun.injective.countable`. Establish `hk : ∀ k : (T.U j T.σ₀).Comp, ∀ᵐ t : Fin (WeightFamilies.dimY D j + 1) × Fin N → ℂ, ∃ Fl : FlatM ((T.U j T.σ₀).X k) (A.Xa k), (∀ x, Fl.w0 x = ∑ i, t (0, i) * rdR h j (w i) k x) ∧ ∀ a x, Fl.s a x = ∑ i, t ((Fin.cast (A.dim k) a).succ, i) * rdR h j (w i) k x`. Introduce `k`. Establish `H` using `GlobalTheory.T.ae_exists_flat_datum_linearCombination _ _ ((T.U j T.σ₀).X k) (A.Xa k) T.Q.c.F T.σ₀ (A.rel k)`.
+
+Use `(ae_cast (A.dim k) (A.hN k) _ H).mono ?_` and prove the remaining obligations. Introduce and unpack `t ⟨Fl, h0, hs⟩`. Use `⟨Fl, fun x => ?_, fun a x => ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Use `Fintype.sum_equiv (finCongr (A.hN k)) _ _ fun i => ?_` and prove the remaining obligations.
+
+Simplify using `only [A.hw k i, finCongr_apply]`. Use `congr 2`. Rewrite using `[hs]`. Use `Fintype.sum_equiv (finCongr (A.hN k)) _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [A.hw k i, finCongr_apply]`.
+
+Use `congr 2`. Establish `hall` using `(ae_all_iff.2 hk).and (GlobalTheory.ae_eval₂_ne_zero_of_countable T.Q.c.F T.σ₀ (Fin (WeightFamilies.dimY D j + 1) × Fin N))`. Take `⟨t, ht, hg⟩` from `hall.exists`. Use `choose Fl h0 hs using ht`. Conclude with `⟨t, hg, ⟨⟨Fl, h0, hs⟩⟩⟩`.
+-/
 theorem exists_generic_flatAt : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (N : ℕ) (wL wF : WeightFamilies.Wt D j) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (Tn : ℕ) (c1 : ℝ) (A : ArchAt h j w wF Tn c1), ∃ t : Idx D j N → ℂ, (∀ Q : MvPolynomial (Idx D j N) T.Q.c.F, Q ≠ 0 → MvPolynomial.eval₂ T.σ₀ t Q ≠ 0) ∧ Nonempty (FlatAt h j A t) := by
   intro D T h j _hj N wL wF w Tn c1 A
   have hC : Countable T.Q.c.F := (Module.finBasis ℚ T.Q.c.F).equivFun.injective.countable

@@ -16,5 +16,8 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.Ma
 open CategoryTheory AlgebraicGeometry GlobalTheory GlobalTheory.TrueGeo GlobalTheory.ArInt ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.ProjVar
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ReadModel.gdeg_induced | exact GlobalTheory.ReadModel.gdeg_induced | (intros; apply GlobalTheory.ReadModel.gdeg_induced <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.geometric_degree_of_induced_bundle : GlobalTheory.Published.ArDegree → ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y) (P : TrueGeo.Model Y) (L : HermLB P.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ), A.Induced P L k cf → gdeg L Y.dim = (Module.finrank ℤ (𝓞 F) : ℝ) * (((k : ℕ) : ℝ) * ((A.n : ℕ) : ℝ)) ^ Y.dim * A.deg := by
   first | exact @GlobalTheory.ReadModel.gdeg_induced | exact GlobalTheory.ReadModel.gdeg_induced | (intros; apply GlobalTheory.ReadModel.gdeg_induced <;> assumption)

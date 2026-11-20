@@ -14,9 +14,15 @@ namespace PositivityTheory.Rg.Sw.Glob.LieCPfH
 
 variable {D : D7} {n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+-/
 theorem sgn_sq {m : ℕ} (ε : Fin m → Bool) (a : Fin m) : sgn ε a * sgn ε a = 1 := by
   unfold sgn; split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `sgn_sq ε a`.
+-/
 theorem diag_sgn_sq {m : ℕ} (ε : Fin m → Bool) :
     Matrix.diagonal (sgn ε) * Matrix.diagonal (sgn ε) = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -24,6 +30,19 @@ theorem diag_sgn_sq {m : ℕ} (ε : Fin m → Bool) :
   funext a
   exact sgn_sq ε a
 
+/- English proof (translation)
+Use `set J := Matrix.diagonal (sgn ε) with hJdef`. Establish `hJJ : J * J = 1` using `diag_sgn_sq ε`. Establish `hJu : IsUnit J`. Use `(Matrix.isUnit_iff_isUnit_det J).2 ?_` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det hJJ`.
+
+Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_ne_zero.2 (left_ne_zero_of_mul_eq_one h)`. Establish `hJinv : J⁻¹ = J` using `Matrix.inv_eq_left_inv hJJ`. Use `set Y : Matrix (Fin m) (Fin m) ℂ := (t : ℂ) • X with hY`. Establish `hXs : Xᴴ = J * (-X) * J`.
+
+Establish `h1 : Xᴴ * J = -(J * X)` using `eq_neg_of_add_eq_zero_left hX`. Combine the equalities or inequalities in the displayed calculation. Establish `hYs : Yᴴ = J * (-Y) * J⁻¹`. Rewrite using `[hJinv, hY, Matrix.conjTranspose_smul, hXs]`. Establish `: star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`.
+
+Rewrite using `[this]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Establish `hE : (NormedSpace.exp Y)ᴴ = J * NormedSpace.exp (-Y) * J`. Rewrite using `[← Matrix.exp_conjTranspose, hYs, Matrix.exp_conj J (-Y) hJu, hJinv]`. Establish `hneg : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`.
+
+Rewrite using `[← Matrix.exp_add_of_commute _ _ ((Commute.refl Y).neg_left), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[hE]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc J J, hJJ, Matrix.one_mul]`.
+
+Use `_ = J := by rw [hneg, Matrix.mul_one]`.
+-/
 theorem exp_preserves {m : ℕ} (ε : Fin m → Bool) (X : Matrix (Fin m) (Fin m) ℂ) (hX : IsUe ε X) (t : ℝ) :
     (NormedSpace.exp ((t : ℂ) • X))ᴴ * Matrix.diagonal (sgn ε) * NormedSpace.exp ((t : ℂ) • X) =
       Matrix.diagonal (sgn ε) := by
@@ -57,6 +76,15 @@ theorem exp_preserves {m : ℕ} (ε : Fin m → Bool) (X : Matrix (Fin m) (Fin m
           rw [← Matrix.mul_assoc J J, hJJ, Matrix.one_mul]
     _ = J := by rw [hneg, Matrix.mul_one]
 
+/- English proof (translation)
+Use `set E := NormedSpace.exp ((t : ℂ) • X)`. Use `set G := gramAt D V τ`. Use `set J := Matrix.diagonal (sgn ε)`. Establish `hfu : IsUnit fr.det` using `hfr.1`. Establish `hG : frᴴ * G * fr = J` using `hfr.2.1`.
+
+Establish `hEJ : Eᴴ * J * E = J` using `exp_preserves ε X hX t`. Establish `h1 : fr * fr⁻¹ = 1` using `Matrix.mul_nonsing_inv fr hfu`. Establish `h2 : (fr⁻¹)ᴴ * frᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `hGJ : G = (fr⁻¹)ᴴ * J * fr⁻¹`. Rewrite using `[← hG]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `show (fr * E * fr⁻¹)ᴴ * G * (fr * E * fr⁻¹) = G`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (fr⁻¹)ᴴ * (Eᴴ * J * E) * fr⁻¹ := by rw [hG]; simp only [Matrix.mul_assoc]`.
+
+Use `_ = G := by rw [hEJ, hGJ]`.
+-/
 theorem uh_frame {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : IsUe ε X) (t : ℝ) :
@@ -80,6 +108,9 @@ theorem uh_frame {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix 
     _ = (fr⁻¹)ᴴ * (Eᴴ * J * E) * fr⁻¹ := by rw [hG]; simp only [Matrix.mul_assoc]
     _ = G := by rw [hEJ, hGJ]
 
+/- English proof (translation)
+Establish `hex : ∃ x, IsAtTau θ V τ M x` using `Formalism.IndefR.PublishedAut.atTauExists_of hθ V τ M hM`. Unfold `atTau`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+-/
 theorem isAtTau_atTau {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     {M : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hM : M ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     IsAtTau θ V τ M (atTau θ V τ M) := by
@@ -88,11 +119,21 @@ theorem isAtTau_atTau {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.wh
   rw [dif_pos hex]
   exact hex.choose_spec
 
+/- English proof (translation)
+Unfold `compAt`. Conclude with `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+-/
 theorem compAt_mul_gen (θ : InfFam D) (τ : D.what₂.Tau) {a b c : ℕ} (A : Mx D a b) (B : Mx D b c) :
     compAt θ τ (A * B) = compAt θ τ A * compAt θ τ B := by
   unfold compAt
   exact Matrix.map_mul (f := (θ τ).comp (infPart D))
 
+/- English proof (translation)
+Establish `hc : ∀ ρ, compAt θ ρ (HMul.hMul (mt V h) x : Mx D V.rank n) = compAt θ ρ (mt V h) * compAt θ ρ x` using `fun ρ => compAt_mul_gen θ ρ (mt V h) x`. Establish `hτ : compAt θ τ (mt V h) = fr * E * fr⁻¹` using `hh.2.1`. Establish `hρ : ∀ ρ, ρ ≠ τ → compAt θ ρ (mt V h) = 1` using `fun ρ hρ => hh.2.2 ρ hρ`. Establish `hfin : (HMul.hMul (mt V h) x : Mx D V.rank n).map (finPart D) = x.map (finPart D)`. Rewrite using `[Matrix.map_mul, Formalism.IndefR.Fock.Der.finPart_mt hh.1, Matrix.one_mul]`.
+
+Establish `hΨx : Ψ (HMul.hMul (mt V h) x : Mx D V.rank n) = Ψ x` using `hΨ.1 _ _ (fun ρ hρ' => by rw [hc, hρ ρ hρ', Matrix.one_mul]) hfin`. Unfold `tens`. Rewrite using `[hΨx, hc, hτ]`. Use `congr 1`. Use `congr 1`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul fr hfu, Matrix.one_mul, Matrix.mul_assoc]`.
+-/
 theorem tens_comp {V : HSp D} {θ : InfFam D} {τ : D.what₂.Tau} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hfu : IsUnit fr.det) {Ψ : Mx D V.rank n → ℂ} (hΨ : AwayCls θ τ fr Ψ)
     (E : Matrix (Fin V.rank) (Fin V.rank) ℂ) (h : GA D V) (hh : IsAtTau θ V τ (fr * E * fr⁻¹) h)
@@ -120,6 +161,31 @@ open LieCPfH
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC Ψ hΨA X hX P g x`. Establish `hl : ∀ τ', l τ' ≠ 0` using `hLNe D ψ θ l hC.hψ hC.hθ hC.hl`. Establish `hc : 0 < cLoc l τ`. Unfold `cLoc`. Use `abs_pos.2 (hl τ)` as an intermediate fact.
+
+Check the signs of the components of the expression. Establish `hΨ : AwayCls θ τ fr Ψ` using `hAway D n V θ l s τ ε fr hC.hθ hC.hs hC.hfr hl Ψ hΨA`. Take `⟨𝓕, hμ⟩` from `hC.hμ`. Establish `hfu : IsUnit fr.det` using `hC.hfr.1`. Take `⟨S, S', hS, hS', hder⟩` from `hSD V.rank n (cLoc l τ) hc X P`.
+
+Take `⟨SP, hSP⟩` from `hSch V.rank n (cLoc l τ) hc P`. Establish `memQ : ∀ T : SchwartzMap (Fin V.rank → Fin n → ℂ) ℂ, tens θ τ fr T Ψ ∈ schwartzA θ V.rank n` using `fun T => hΨ.2 T ⟨T, rfl⟩`. Establish `hphi : ∀ (Q : PX V.rank n) (T : SchwartzMap (Fin V.rank → Fin n → ℂ) ℂ), (⇑T = fP (cLoc l τ) Q) → phiS θ τ fr (cLoc l τ) Ψ Q = ⟨tens θ τ fr T Ψ, memQ T⟩`. Introduce `Q T hT`. Establish `hm : tens θ τ fr (fP (cLoc l τ) Q) Ψ ∈ schwartzA θ V.rank n` using `hT ▸ memQ T`.
+
+Unfold `phiS`. Rewrite using `[dif_pos hm]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show tens θ τ fr (fP (cLoc l τ) Q) Ψ = tens θ τ fr T Ψ`. Rewrite using `[hT]`.
+
+Take `⟨x0, y, hg, hx0⟩` from `hAF D n V ψ χ θ μ ω H l s ν τ ε fr ι hC g`. Take `⟨Ψ', hΨ', hact⟩` from `hx0 Ψ hΨ`. Take `⟨L, hL⟩` from `hOp D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y`. Establish `key : ∀ T : SchwartzMap (Fin V.rank → Fin n → ℂ) ℂ, (ω g ⟨tens θ τ fr T Ψ, memQ T⟩).1 = tens θ τ fr (L T) Ψ'`. Introduce `T`.
+
+Rewrite using `[hg, map_mul, Module.End.mul_apply]`. Establish `h1 : ω (ι y) ⟨tens θ τ fr T Ψ, memQ T⟩ = ⟨tens θ τ fr (L T) Ψ, memQ (L T)⟩` using `Subtype.ext (hL Ψ hΨ T)`. Rewrite using `[h1]`. Conclude with `hact (L T) (memQ (L T))`. Establish `hLHS : (ω g (phiS θ τ fr (cLoc l τ) Ψ (vfX (cLoc l τ) X P))).1 x = (L S') (fr⁻¹ * compAt θ τ x) * Ψ' x`.
+
+Rewrite using `[hphi _ S' (funext hS'), key]`. Both sides reduce to the same expression. Establish `hgc : ∀ t : ℝ, (ω g (phiS θ τ fr (cLoc l τ) Ψ P)).1 (HMul.hMul (mt V (atTau θ V τ (fr * NormedSpace.exp ((t : ℂ) • X) * fr⁻¹))) x : Mx D V.rank n) = (L (S t)) (fr⁻¹ * compAt θ τ x) * Ψ' x`. Introduce `t`. Establish `hM` using `uh_frame hC.hfr hX t`.
+
+Establish `hh` using `isAtTau_atTau hC.hθ V τ hM`. Establish `hΦt : ∀ x', (⟨tens θ τ fr (S t) Ψ, memQ (S t)⟩ : schwartzA θ V.rank n).1 x' = (phiS θ τ fr (cLoc l τ) Ψ P).1 (mt V (atTau θ V τ (fr * NormedSpace.exp ((t : ℂ) • X) * fr⁻¹)) ⬝ x')`. Introduce `x'`. Rewrite using `[hphi P SP hSP]`. Use `show tens θ τ fr (S t) Ψ x' = tens θ τ fr SP Ψ (HMul.hMul (mt V _) x' : Mx D V.rank n)`.
+
+Rewrite using `[tens_comp hfu hΨ _ _ hh, hSP]`. Unfold `tens`. Conclude with `congrArg (· * Ψ x') (hS t _)`. Establish `e` using `GCommH.gComm hC.hψ hC.hχ hC.hη hC.hθ hμ hC.hω (phiS θ τ fr (cLoc l τ) Ψ P) ⟨tens θ τ fr (S t) Ψ, memQ (S t)⟩ _ hΦt g x`. Rewrite using `[← e, key]`.
+
+Both sides reduce to the same expression. Set `ev : SchwartzMap (Fin V.rank → Fin n → ℂ) ℂ →L[ℝ] ℂ` to `(BoundedContinuousFunction.evalCLM ℝ (fr⁻¹ * compAt θ τ x)).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℝ (Fin V.rank → Fin n → ℂ) ℂ)`. Establish `hev : ∀ T, ev T = T (fr⁻¹ * compAt θ τ x)` using `fun T => rfl`. Establish `hT : Filter.Tendsto (fun t : ℝ => (ev.comp L) (t⁻¹ • (S t - S 0))) (nhdsWithin 0 {0}ᶜ) (nhds ((ev.comp L) S'))` using `((ev.comp L).continuous.tendsto S').comp hder`. Establish `hd : HasDerivAt (fun t : ℝ => ev (L (S t))) (ev (L S')) 0`.
+
+Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `hT.congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [slope_def_module, sub_zero, map_smul, map_sub, ContinuousLinearMap.comp_apply]`. Establish `hd' : HasDerivAt (fun t : ℝ => (L (S t)) (fr⁻¹ * compAt θ τ x) * Ψ' x) ((L S') (fr⁻¹ * compAt θ τ x) * Ψ' x) 0`. Simplify `hd.mul_const (Ψ' x)` using `only [hev]`.
+
+Unfold `DX`. Rewrite using `[hLHS, ← hd'.deriv]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `(hgc t).symm`.
+-/
 theorem lieComm_of (hAway : AwayIn) (hLNe : LNe) (hSch : SchFP) (hOp : OpCLM) (hAF : AwayFact) (hSD : SchDeriv) :
     LieComm := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC Ψ hΨA X hX P g x

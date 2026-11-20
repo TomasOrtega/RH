@@ -22,6 +22,9 @@ def pullX {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of k)} {q' : X' ⟶ S
 
 omit [Fact p.Prime] [Fintype k] in
 
+/- English proof (translation)
+Set `g : k →+* B₀` to `(Scheme.ΓSpecIso B₀).hom.hom.comp (((y ≫ q).appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom)`. Rewrite using `[← map_natCast g, CharP.cast_eq_zero, map_zero]`.
+-/
 theorem p_zero {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of k)) {B₀ : CommRingCat.{0}} (y : Spec B₀ ⟶ X) :
     ((p : ℕ) : B₀) = 0 := by
   let g : k →+* B₀ := (Scheme.ΓSpecIso B₀).hom.hom.comp
@@ -30,6 +33,13 @@ theorem p_zero {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of k)) {B₀ : Comm
 
 def frbq (f : ℕ) {B₀ : Type} [CommRing B₀] (h : ((p : ℕ) : B₀) = 0) : B₀ →+* B₀ := Wc.frb (l := p) h ^ f
 
+/- English proof (translation)
+Proceed by induction on `f generalizing x with`. Consider the case `zero`. Unfold `frbq`. Rewrite using `[pow_zero, pow_zero, pow_one]`. Both sides reduce to the same expression.
+
+Consider the case `succ n ih`. Establish `e : frbq p (n + 1) h x = frbq p n h (Wc.frb h x)`. Unfold `frbq`. Rewrite using `[pow_succ]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, ih]`. Express the relevant statement in the definitionally equal form `(x ^ p) ^ p ^ n = _`. Rewrite using `[← pow_mul, ← pow_succ']`.
+-/
 theorem frbq_apply (f : ℕ) {B₀ : Type} [CommRing B₀] (h : ((p : ℕ) : B₀) = 0) (x : B₀) : frbq p f h x = x ^ p ^ f := by
   induction f generalizing x with
   | zero =>
@@ -67,6 +77,11 @@ def qFrob {f : ℕ} (hq : Fintype.card k = p ^ f) {X : Scheme.{0}} (q : X ⟶ Sp
     simp only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply, frbq_apply, ← map_pow, ← hq,
       FiniteField.pow_card]
 
+/- English proof (translation)
+Establish `e : (qFrob hq q).u = (B.schMap u hu).u`. Use extensionality with `B₀ y`. Conclude with `(hF B₀ y).symm`. Consider the cases of `h : qFrob hq q`. Consider the cases of `h' : B.schMap u hu`.
+
+Rewrite `e` using `[h, h']`. Consider the cases of `e`. Both sides reduce to the same expression.
+-/
 theorem qFrob_eq_schMap {f : ℕ} (hq : Fintype.card k = p ^ f) {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of k))
     (u : X ⟶ X) (hu : u ≫ q = q)
     (hF : ∀ (B₀ : CommRingCat.{0}) (y : Spec B₀ ⟶ X), y ≫ u = Spec.map (CommRingCat.ofHom (frbq p f (p_zero p q y))) ≫ y) :
@@ -136,6 +151,9 @@ def eS [FinDim p k] (Y : Var k) (n : ℕ) : HS p Y n ≃ₗ[Wc.K₀ p k] Dcr p Y
 def conjS [FinDim p k] {Y : Var k} {n : ℕ} (L : Dcr p Y n →ₗ[Wc.K₀ p k] Dcr p Y n) : HS p Y n →ₗ[Wc.K₀ p k] HS p Y n :=
   (eS p Y n).symm.toLinearMap ∘ₗ L ∘ₗ (eS p Y n).toLinearMap
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[conjS]`.
+-/
 theorem conjS_comp [FinDim p k] {Y : Var k} {n : ℕ} (L M : Dcr p Y n →ₗ[Wc.K₀ p k] Dcr p Y n) :
     conjS p L ∘ₗ conjS p M = conjS p (L ∘ₗ M) := by
   ext x

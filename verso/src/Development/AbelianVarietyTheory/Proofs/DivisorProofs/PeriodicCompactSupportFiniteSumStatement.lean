@@ -16,6 +16,9 @@ open GlobalTheory.Doubling (absE)
 open scoped Classical
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt | exact GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt | (intros; apply GlobalTheory.EvAdm.eq_sum_coset_indicator_scaledInt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.periodic_compact_support_finite_sum : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (d : F), d ≠ 0 →
     ∀ g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ, HasCompactSupport g →
     (∀ y, ∀ u ∈ GlobalTheory.EvAdm.scaledInt F κ d, g (y + u) = g y) →

@@ -11,6 +11,11 @@ universe w
 
 namespace GlobalTheory.CompanionTheory.CapVan
 
+/- English proof (translation)
+Use `show (⨅ a, V (i a)) = _`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_iInf₂ fun α hα => ?_` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hα`. Conclude with `iInf_le _ a`.
+
+Conclude with `le_iInf fun a => iInf₂_le (i a) (Finset.mem_image_of_mem i (Finset.mem_univ a))`.
+-/
 theorem capO_eq_iInf_image {X : Scheme.{0}} {ι : Type} [DecidableEq ι] [Fintype ι] (V : ι → X.Opens) {m : ℕ}
     (i : Fin m → ι) : capO V i = ⨅ α ∈ Finset.image i Finset.univ, V α := by
   show (⨅ a, V (i a)) = _
@@ -20,6 +25,11 @@ theorem capO_eq_iInf_image {X : Scheme.{0}} {ι : Type} [DecidableEq ι] [Fintyp
     exact iInf_le _ a
   · exact le_iInf fun a => iInf₂_le (i a) (Finset.mem_image_of_mem i (Finset.mem_univ a))
 
+/- English proof (translation)
+Take `⟨e⟩` from `GlobalTheory.T.cover_intersection_graded_iso q U a n i r`. Establish `hV : IsAffineOpen (capO U.U i)`. Rewrite using `[capO_eq_iInf_image]`. Conclude with `U.inter _ ⟨i 0, Finset.mem_image_of_mem i (Finset.mem_univ 0)⟩`. Use `haveI := CrystallineSemistableComparison.Pb.gr_aff q (capO U.U i) hV (a + 1) a r (Nat.lt_succ_self a) hr`.
+
+Conclude with `e.injective.subsingleton`.
+-/
 theorem van {K : Type} [Field K] [CharZero K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [Smooth q]
     (U : Cov q) (a n : ℕ) (i : Fin (n + 1) → U.ι) (r : ℕ) (hr : r ≠ a) :
     Subsingleton (HU (Fk q U a) (capT (Vk q U a) i) r) := by

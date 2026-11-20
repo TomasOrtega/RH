@@ -2,6 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 open MeasureTheory in
+/- English proof (translation)
+Establish `hD' : IsAddFundamentalDomain (unipLattice E a r) D (unipMeasure E a r)` using `hD.mono (Measure.absolutelyContinuous_isAddHaarMeasure _ _)`. Rewrite `h` using `[constantTerm_eq_setIntegral hl hD']`. Rewrite using `[Measure.isAddLeftInvariant_eq_smul ν (unipMeasure E a r), Measure.restrict_smul, integral_smul_nnreal_measure, h, smul_zero]`.
+-/
 private theorem setIntegral_haar {E : Type} [Field E] [NumberField E] {a r : ℕ} {φ : GA E a → ℂ}
     (hl : IsLeftInvariant φ) (g : GA E a) (h : constantTerm r φ g = 0) (ν : Measure (UPos a r → Ad E))
     [ν.IsAddHaarMeasure] {D : Set (UPos a r → Ad E)} (hD : IsAddFundamentalDomain (unipLattice E a r) D ν) :
@@ -18,6 +21,9 @@ private def ixEq (a r : ℕ) : UPos a r ≃ BlockIx a r where
   left_inv _ := rfl
   right_inv _ := rfl
 
+/- English proof (translation)
+Use `Units.ext ?_` and prove the remaining obligations. Apply the tactic sequence `change 1 + blockEntry (fun p => x (ixEq a r p)) = 1 + nilM x`. Use `congr 1`.
+-/
 private theorem unipGL_ixEq {R : Type} [CommRing R] {a r : ℕ} (x : BlockIx a r → R) :
     unipGL (fun p => x (ixEq a r p)) = unip x := by
   refine Units.ext ?_
@@ -25,6 +31,17 @@ private theorem unipGL_ixEq {R : Type} [CommRing R] {a r : ℕ} (x : BlockIx a r
   congr 1
 
 open MeasureTheory in
+/- English proof (translation)
+Introduce `E _ _ a φ hl _ hφ r h0 h1 i1 i2 μ 𝓕 hμ hF g`. Take `rfl : i1 = MeasurableSpace.pi` from `(@BorelSpace.measurable_eq _ _ i1 i2).trans (@BorelSpace.measurable_eq _ _ _ Pi.borelSpace).symm`. Set `β : (BlockIx a r → Ad E) ≃ₜ+ (UPos a r → Ad E)` to `{ toFun := fun x p => x (ixEq a r p) invFun := fun x p => x ((ixEq a r).symm p) left_inv := fun x => rfl right_inv := fun x => rfl map_add' := fun x y => rfl continuous_toFun := continuous_pi fun p => continuous_apply _ continuous_invFun := continuous_pi fun p => continuous_apply …`. Set `e : unipLattice E a r ≃ ratN E a r` to `{ toFun := fun y => ⟨β.symm y, by`. Take `⟨_, y, rfl⟩` from `y`.
+
+Conclude with `⟨fun p => y ((ixEq a r).symm p), rfl⟩⟩`. Use `invFun := fun x => ⟨β x, by`. Take `⟨_, y, rfl⟩` from `x`. Conclude with `⟨fun p => y (ixEq a r p), rfl⟩⟩`. Use `left_inv := fun y => Subtype.ext (β.apply_symm_apply y)`.
+
+Use `right_inv := fun x => Subtype.ext (β.symm_apply_apply x) }`. Set `m` to `β.toHomeomorph.toMeasurableEquiv`. Use `haveI : (μ.map m).IsAddHaarMeasure := β.isAddHaarMeasure_map μ`. Establish `h2` using `setIntegral_haar hl g (hφ r h0 h1 g) (μ.map m) (D := m '' 𝓕) (hF.image_of_equiv m.toEquiv (MeasurePreserving.symm m ⟨m.measurable, rfl⟩).quasiMeasurePreserving e fun y x => by`. Express the relevant statement in the definitionally equal form `β (β.symm y + x) = y + β x`.
+
+Rewrite using `[map_add, β.apply_symm_apply])`. Rewrite `h2` using `[m.measurableEmbedding.setIntegral_map, m.injective.preimage_image]`. Rewrite using `[← h2]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Conclude with `congrArg (fun u => φ (u * g)) (unipGL_ixEq x).symm`.
+-/
 theorem UpperTheory.isCuspidal_of_constantTerm_eq_zero :
     UpperTheory.V.Fb.CuspOf := by
   intro E _ _ a φ hl _ hφ r h0 h1 i1 i2 μ 𝓕 hμ hF g

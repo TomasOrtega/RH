@@ -12,6 +12,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 open Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Establish `hH : Hpk k r * Hpk k r = 1` using `(Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem groups_invL {k r : ℕ} {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
     Hpk k r * gᴴ * Hpk k r * g = 1 := by
   have hH : Hpk k r * Hpk k r = 1 := (Formalism.QuantumDeterminants.hpkFacts k r).2.1
@@ -19,10 +22,24 @@ theorem groups_invL {k r : ℕ} {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
   calc Hpk k r * gᴴ * Hpk k r * g = Hpk k r * (gᴴ * Hpk k r * g) := by simp only [Matrix.mul_assoc]
     _ = 1 := by rw [h, hH]
 
+/- English proof (translation)
+The claim follows from `mul_eq_one_comm.mp (groups_invL hg)`.
+-/
 theorem groups_invR {k r : ℕ} {g : Mat k r} (hg : g ∈ UH (Hpk k r)) :
     g * (Hpk k r * gᴴ * Hpk k r) = 1 :=
   mul_eq_one_comm.mp (groups_invL hg)
 
+/- English proof (translation)
+Establish `hN : IsClosed (Nset k r)` using `(Formalism.FourierDecayAlt.P.B2x2.closedN k r).closed`. Establish `: CompactSpace (UWset k r z)` using `isCompact_iff_compactSpace.mp hK`. Establish `hc : Continuous fun p : UWset k r z × Mat k r => Hpk k r * ((p.1 : Mat k r))ᴴ * Hpk k r * p.2`. Use `Continuous.matrix_mul ?_ continuous_snd` and prove the remaining obligations. Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations.
+
+Use `Continuous.matrix_mul continuous_const ?_` and prove the remaining obligations. Conclude with `(continuous_subtype_val.comp continuous_fst).matrix_conjTranspose`. Establish `e : Sset k r z = Prod.snd '' {p : UWset k r z × Mat k r | Hpk k r * ((p.1 : Mat k r))ᴴ * Hpk k r * p.2 ∈ Nset k r}`. Use extensionality with `s`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨h, hh, m, hm, rfl⟩`. Use `⟨(⟨h, hh⟩, h * m), ?_, rfl⟩` and prove the remaining obligations. Use `show Hpk k r * hᴴ * Hpk k r * (h * m) ∈ Nset k r`. Rewrite using `[← Matrix.mul_assoc, groups_invL hh.1, Matrix.one_mul]`. Conclude with `hm`.
+
+Introduce and unpack `⟨⟨⟨h, hh⟩, s'⟩, hp, rfl⟩`. Use `⟨h, hh, _, hp, ?_⟩` and prove the remaining obligations. Use `show s' = h * (Hpk k r * hᴴ * Hpk k r * s')`. Rewrite using `[← Matrix.mul_assoc, groups_invR hh.1, Matrix.one_mul]`. Rewrite using `[e]`.
+
+Conclude with `isClosedMap_snd_of_compactSpace _ (hN.preimage hc)`.
+-/
 theorem groups_sset_closed (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hK : IsCompact (UWset k r z)) :
     IsClosed (Sset k r z) := by
   have hN : IsClosed (Nset k r) := (Formalism.FourierDecayAlt.P.B2x2.closedN k r).closed
@@ -49,6 +66,11 @@ theorem groups_sset_closed (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hK : I
   rw [e]
   exact isClosedMap_snd_of_compactSpace _ (hN.preimage hc)
 
+/- English proof (translation)
+Introduce `k r z`. Use `⟨Formalism.FourierDecayAlt.P.B2x2.closedG k r, Formalism.FourierDecayAlt.P.B2x2.closedN k r, fun hz hT => ⟨Formalism.FourierDecayAlt.P.B2x3.closedW k r z, ?_⟩⟩` and prove the remaining obligations. Take `⟨h1, hmul, hinv⟩` from `Formalism.QuantumDeterminants.sGroup k r z hz`. Use `⟨h1, hmul, hinv, ?_, groups_sset_closed k r z (Formalism.FourierDecayAlt.P.B2x3.compactW k r z hz hT)⟩` and prove the remaining obligations. Introduce and unpack `s ⟨h, hh, m, hm, rfl⟩`.
+
+Rewrite using `[Matrix.det_mul]`. Conclude with `((Formalism.FourierDecayAlt.P.B2x3.closedW k r z).unit h hh).mul ((Formalism.FourierDecayAlt.P.B2x2.closedN k r).unit m hm)`.
+-/
 theorem closedSubgroups : ClosedSubgroupsStatement := by
   intro k r z
   refine ⟨Formalism.FourierDecayAlt.P.B2x2.closedG k r, Formalism.FourierDecayAlt.P.B2x2.closedN k r, fun hz hT => ⟨Formalism.FourierDecayAlt.P.B2x3.closedW k r z, ?_⟩⟩

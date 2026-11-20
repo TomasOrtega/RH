@@ -12,6 +12,11 @@ namespace PositivityTheory.SiegelWeilFormula.KFock
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Substitute `hm` using the available equality. Use `letI : MeasurableSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.measurableSpace_adeleRing F`. Use `haveI : BorelSpace (AdeleRing (𝓞 F) F) := GroundTheory.Global.borelSpace_adeleRing F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+
+Use `haveI : BorelSpace (κ → AdeleRing (𝓞 F) F) := Pi.borelSpace`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul μ (GroundTheory.Automorphic.GJMatrix.adeleMeasurePi F (ι := κ))`. Rewrite using `[h]`. Conclude with `(GlobalTheory.TowU.FourWeyl.integrable_schA hφ).smul_measure (by simp)`.
+-/
 theorem intSchA {κ : Type} [Fintype κ] (m : MeasurableSpace (κ → AF F))
     (hm : m = @MeasurableSpace.pi κ _ fun _ => GroundTheory.Global.measurableSpace_adeleRing F)
     (μ : @Measure (κ → AF F) m) (hμ : @Measure.IsAddHaarMeasure _ _ _ m μ) {φ : (κ → AF F) → ℂ} (hφ : φ ∈ schA F κ) :
@@ -26,6 +31,9 @@ theorem intSchA {κ : Type} [Fintype κ] (m : MeasurableSpace (κ → AF F))
   rw [h]
   exact (GlobalTheory.TowU.FourWeyl.integrable_schA hφ).smul_measure (by simp)
 
+/- English proof (translation)
+The claim follows from `(GroundTheory.Global.borelSpace_adeleRing F).measurable_eq.symm`.
+-/
 theorem measAF_eq : (measAF : MeasurableSpace (AF F)) = GroundTheory.Global.measurableSpace_adeleRing F :=
   (GroundTheory.Global.borelSpace_adeleRing F).measurable_eq.symm
 
@@ -33,31 +41,49 @@ section Cmb
 
 variable (d : SD σ)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [SD.cmb, Pi.add_apply, Matrix.add_apply, TensorProduct.add_tmul, Finset.sum_add_distrib]`.
+-/
 theorem cmb_add (c c' : Fin d.m × Fin d.n × Fin 2 → AF F) : d.cmb (c + c') = d.cmb c + d.cmb c' := by
   ext i j
   simp only [SD.cmb, Pi.add_apply, Matrix.add_apply, TensorProduct.add_tmul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [SD.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+-/
 theorem cmb_eq (c : Fin d.m × Fin d.n × Fin 2 → AF F) (i : Fin d.m) (j : Fin d.n) :
     d.cmb c i j = ∑ k, c (i, j, k) • Algebra.TensorProduct.basis (AF F) d.bs k := by
   simp only [SD.cmb, Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Take `⟨i, j, l⟩` from `k`. Simplify using `only [SD.crd, cmb_eq]`. Conclude with `congrFun ((Algebra.TensorProduct.basis (AF F) d.bs).repr_sum_self fun k => c (i, j, k)) l`.
+-/
 theorem crd_cmb' (c : Fin d.m × Fin d.n × Fin 2 → AF F) : d.crd (d.cmb c) = c := by
   funext k
   obtain ⟨i, j, l⟩ := k
   simp only [SD.crd, cmb_eq]
   exact congrFun ((Algebra.TensorProduct.basis (AF F) d.bs).repr_sum_self fun k => c (i, j, k)) l
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[cmb_eq]`. Conclude with `(Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)`.
+-/
 theorem cmb_crd (X : Mx F E d.m d.n) : d.cmb (d.crd X) = X := by
   ext i j
   rw [cmb_eq]
   exact (Algebra.TensorProduct.basis (AF F) d.bs).sum_repr (X i j)
 
+/- English proof (translation)
+Take `⟨i1, -, -, -⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [cmb_eq]`. Conclude with `continuous_finset_sum _ fun k _ => ((continuous_apply (i, j, k)).smul continuous_const)`.
+-/
 theorem continuous_cmb : Continuous d.cmb := by
   obtain ⟨i1, -, -, -⟩ := (PositivityTheory.ThKCT.ideleTop F E).1
   refine continuous_pi fun i => continuous_pi fun j => ?_
   simp only [cmb_eq]
   exact continuous_finset_sum _ fun k _ => ((continuous_apply (i, j, k)).smul continuous_const)
 
+/- English proof (translation)
+Take `⟨i1, -, -, -⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `continuous_pi fun k => ?_` and prove the remaining obligations. Establish `hl : Continuous (((Finsupp.lapply k.2.2).comp (Algebra.TensorProduct.basis (AF F) d.bs).repr.toLinearMap : AE F E →ₗ[AF F] AF F))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `hl.comp ((continuous_apply k.2.1).comp (continuous_apply k.1))`.
+-/
 theorem continuous_crd : Continuous d.crd := by
   obtain ⟨i1, -, -, -⟩ := (PositivityTheory.ThKCT.ideleTop F E).1
   refine continuous_pi fun k => ?_
@@ -76,6 +102,15 @@ def cmbE : (Fin d.m × Fin d.n × Fin 2 → AF F) ≃ₜ+ Mx F E d.m d.n where
 
 end Cmb
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4⟩` from `(PositivityTheory.ThKCT.ideleTop F E).1`. Use `haveI : BorelSpace (AE F E) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx F E d.m d.n) := inferInstanceAs (BorelSpace (Fin d.m → Fin d.n → AE F E))`. Use `haveI : IsTopologicalAddGroup (Mx F E d.m d.n) := inferInstanceAs (IsTopologicalAddGroup (Fin d.m → Fin d.n → AE F E))`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`.
+
+Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI : BorelSpace (AF F) := ⟨rfl⟩`. Use `haveI : BorelSpace (Fin d.m × Fin d.n × Fin 2 → AF F) := Pi.borelSpace`. Set `e : (Fin d.m × Fin d.n × Fin 2 → AF F) ≃ᵐ Mx F E d.m d.n` to `(cmbE d).toHomeomorph.toMeasurableEquiv`. Use `haveI : (Measure.map e.symm ν).IsAddHaarMeasure := ContinuousAddEquiv.isAddHaarMeasure_map ν (cmbE d).symm`.
+
+Establish `h1 : Integrable (f ∘ e) (Measure.map e.symm ν)`. Establish `hf' : f ∘ d.cmb ∈ schA F (Fin d.m × Fin d.n × Fin 2)` using `Submodule.mem_comap.mp hf`. Use `intSchA _ ?_ _ inferInstance hf'` and prove the remaining obligations. Conclude with `congrArg (fun m => @MeasurableSpace.pi (Fin d.m × Fin d.n × Fin 2) (fun _ => AF F) fun _ => m) measAF_eq`. Establish `h2` using `(integrable_map_equiv e f).2 h1`.
+
+Rewrite `h2` using `[MeasurableEquiv.map_map_symm]`. Then use the resulting hypothesis.
+-/
 theorem int_schM (d : SD σ) (ν : Measure (Mx F E d.m d.n)) (hν : ν.IsAddHaarMeasure) {f : Mx F E d.m d.n → ℂ}
     (hf : f ∈ d.schM) : Integrable f ν := by
   obtain ⟨i1, i2, i3, i4⟩ := (PositivityTheory.ThKCT.ideleTop F E).1

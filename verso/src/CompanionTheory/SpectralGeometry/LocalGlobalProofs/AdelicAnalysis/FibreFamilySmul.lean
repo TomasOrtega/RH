@@ -6,6 +6,13 @@ open scoped ENNReal NNReal
 
 namespace GlobalTheory.CompanionTheory.SW.Rescale
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily at h ⊢`. Use `⟨fun b => ?_, fun φ hφ => ?_, fun φ hφc hφs hφU => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, h.1 b, smul_zero]`. Simplify using `only [Measure.restrict_smul, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[h.2.1 φ hφ, lintegral_const_mul' _ _ ENNReal.coe_ne_top, ← mul_assoc, ← ENNReal.coe_mul, mul_comm c, div_mul_cancel₀ a hc]`.
+
+Take `⟨h1, h2⟩` from `h.2.2 φ hφc hφs hφU`. Use `⟨fun b hb => (h1 b hb).smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Establish `e : (fun b => ∫ v, φ v ∂((a / c) • fib b)) = fun b => ((a / c : ℝ≥0) : ℝ) • ∫ v, φ v ∂fib b`. Use function extensionality and compare the values at `b`. Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def]`.
+
+Rewrite using `[e]`. Conclude with `h2.const_smul ((a / c : ℝ≥0) : ℝ)`.
+-/
 theorem isFibreFamily_rescale (V X Y : Type) [TopologicalSpace V] [MeasurableSpace V]
     [TopologicalSpace X] [MeasurableSpace X] (μ : Measure V) (ν : Measure X) (f : V → Y)
     (ι : X → Y) (U : Set V) (B : Set X) (fib : X → Measure V)

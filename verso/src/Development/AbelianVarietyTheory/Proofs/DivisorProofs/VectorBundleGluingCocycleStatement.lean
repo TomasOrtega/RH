@@ -7,5 +7,8 @@ open Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs GlobalT
 open Formalism.MainNotions.DIV.Cons (intO)
 open GlobalTheory.ArLieBase
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.MatrixCocycle.exists_frames | exact GlobalTheory.MatrixCocycle.exists_frames | (intros; apply GlobalTheory.MatrixCocycle.exists_frames <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.vector_bundle_gluing_cocycle : ∀ (X : Scheme.{0}) (r : ℕ) (ι : Type) (U : ι → X.Opens) (A : ∀ i j, Matrix (Fin r) (Fin r) Γ(X, U i ⊓ U j)), (∀ x : X, ∃ i, x ∈ U i) → (∀ i, A i i = 1) → (∀ (i j k : ι) (V : X.Opens) (hij : V ≤ U i ⊓ U j) (hjk : V ≤ U j ⊓ U k) (hik : V ≤ U i ⊓ U k), (A i j).map (resG X hij) * (A j k).map (resG X hjk) = (A i k).map (resG X hik)) → ∃ (M : X.Modules) (f : ∀ i, Fin r → Γ(M, U i)) (hf : ∀ i, VB.IsFrame (f i)), ∀ i j b a, trCo (hf i) (f j) b a = A i j b a := by
   first | exact @GlobalTheory.MatrixCocycle.exists_frames | exact GlobalTheory.MatrixCocycle.exists_frames | (intros; apply GlobalTheory.MatrixCocycle.exists_frames <;> assumption)

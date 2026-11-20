@@ -24,6 +24,29 @@ end GlobalTheory.AnPer.Charts
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry MonoidalCategory CartesianMonoidalCategory MonObj Filter Topology TopologicalSpace TensorProduct in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
+/- English proof (translation)
+Introduce `g Λ _ F₀ K₀ R _ _ et M hrich hV hnil het io S d q q' hrel l`. Set `q'' : Λ →+ R` to `q' - ∑ i ∈ S, d i • q i`. Establish `hq'' : ∀ m, q'' m = q' m - ∑ i ∈ S, d i * q i m`. Introduce `m`. Simplify using `[q'', AddMonoidHom.finset_sum_apply, smul_eq_mul]`.
+
+Establish `hcl : K₀.perClD et M q'' = 0`. Establish `hc : ∀ p : Λ →+ R, K₀.perClD et M p = _root_.GlobalTheory.CatCoh.H1.mk _ (K₀.perZDLin et M p)` using `fun p => rfl`. Simplify using `only [hc] at hrel ⊢`. Simplify using `only [q'', map_sub, map_sum, map_smul, hrel, sub_self]`. Take `⟨G, hG0, hGsh⟩` from `_root_.GlobalTheory.ChartCobd.coboundary_on_charts K₀ et M hnil het q'' hcl`.
+
+Establish `hzero : q'' l = 0`. Rewrite using `[← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Set `Φ : ∀ k, R ⊗[ℂ] _root_.GlobalTheory.AnPer.Hol (K₀.W k) →ₗ[ℂ] _root_.GlobalTheory.AnPer.Hol (K₀.W k)` to `fun k => (TensorProduct.lid ℂ _).toLinearMap ∘ₗ LinearMap.rTensor _ φ`. Establish `hΦ : ∀ k r h, Φ k (r ⊗ₜ h) = φ r • h`.
+
+Introduce `k r h`. Simplify using `[Φ]`. Establish `hΦd : ∀ k a y, _root_.GlobalTheory.AnPer.dw a (Φ k y) = Φ k (LinearMap.lTensor R (_root_.GlobalTheory.AnPer.dw a).toLinearMap y)`. Introduce `k a y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul r h => simp [hΦ]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`. Establish `hΦs : ∀ {m k k'} (h : K₀.le m k' k) y, Φ k' (Algebra.TensorProduct.map (AlgHom.id ℂ R) (_root_.GlobalTheory.AnPer.Charts.shA h) y) = _root_.GlobalTheory.AnPer.Charts.sh h (Φ k y)`. Introduce `m k k' h y`.
+
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r b`. Simplify using `[hΦ, ← _root_.GlobalTheory.AnPer.Charts.shA_apply]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+
+Establish `hfsh : ∀ m k k' (h : K₀.le m k' k), _root_.GlobalTheory.AnPer.Charts.sh h (Φ k (G k)) = Φ k' (G k') + K₀.cst k' (algebraMap ℂ _ (-(φ (q'' m))))`. Introduce `m k k' h`. Establish `h1` using `congrArg (Φ k') (hGsh m k k' h)`. Rewrite `h1` using `[map_sub, hΦs, hΦ]`. Establish `h2 : K₀.cst k' (algebraMap ℂ _ (-(φ (q'' m)))) = -(φ (q'' m) • 1)`.
+
+Unfold `_root_.GlobalTheory.AnPer.Charts.cst`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Rewrite using `[h2, ← h1]`. Normalize the expressions using the abelian group laws. Take `⟨Gf, -, -, hper, hconst⟩` from `_root_.GlobalTheory.AnPer.Charts.glue K₀ hrich (fun k => Φ k (G k)) (by`.
+
+Introduce `k k' h`. Simplify using `[hfsh 0 k k' h])`. Establish `hc` using `hconst (fun k a => by rw [hΦd, hG0, map_zero])`. Set `p : _root_.GlobalTheory.AnPer.Tot Empty g` to `((0 : Empty → ℂ), (0 : Fin g → ℂ))`. Establish `hp` using `hper l (algebraMap ℂ _ (-(φ (q'' l)))) (fun k k' h => hfsh l k k' h) p (hV _)`.
+
+Establish `e : Gf (F₀.shift l p) = Gf p`. Combine the equalities or inequalities in the displayed calculation. Establish `hfn : (algebraMap ℂ (_root_.GlobalTheory.AnPer.Hol F₀.V) (-(φ (q'' l)))).fn p.1 = -(φ (q'' l))`. Unfold `_root_.GlobalTheory.AnPer.Hol.fn`. Simplify using `[hV]`.
+
+Rewrite `hp` using `[e, hfn]`. Take the linear combination `hp`. Rewrite using `[← sub_eq_zero, ← hq'' l]`. Conclude with `hzero`.
+-/
 theorem _root_.GlobalTheory.AnPer.perClD_relation_unique : ∀ {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F₀ : _root_.GlobalTheory.AnPer.Fam Empty g Λ} (K₀ : _root_.GlobalTheory.AnPer.Charts F₀) {R : Type} [CommRing R] [Algebra ℂ R] (et : _root_.GlobalTheory.AnPer.Hol F₀.V →+* R) (M : Ideal R), K₀.Rich → (∀ z, z ∈ F₀.V) → IsNilpotent M → (∀ (f : _root_.GlobalTheory.AnPer.Hol F₀.V), ∀ z ∈ F₀.V, et f = algebraMap ℂ R (f.fn z)) → ∀ {io : Type} (S : Finset io) (d : io → R) (q : io → (Λ →+ R)) (q' : Λ →+ R), K₀.perClD et M q' = ∑ i ∈ S, d i • K₀.perClD et M (q i) → ∀ l, q' l = ∑ i ∈ S, d i * q i l := by
   intro g Λ _ F₀ K₀ R _ _ et M hrich hV hnil het io S d q q' hrel l
   let q'' : Λ →+ R := q' - ∑ i ∈ S, d i • q i

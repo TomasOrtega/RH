@@ -11,6 +11,9 @@ namespace PositivityTheory.Xgn.A_pull_preserve
 
 open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles (restrictChart)
 
+/- English proof (translation)
+Unfold `mseg at h ⊢`. Rewrite `h`, the goal using `[Finset.prod_ne_zero_iff]`. Introduce `k _`. Conclude with `h (Sum.inl k) (Finset.mem_univ _)`.
+-/
 theorem below_ne {Ω : Type} [Field Ω] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (x : (Σ k, ι k) → Ω) {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)]
     (z : (Σ k, ι' k) → Ω) (s : ∀ k : K ⊕ K', Sum.elim ι ι' k)
@@ -23,6 +26,11 @@ theorem below_ne {Ω : Type} [Field Ω] {K : Type} [Fintype K] {ι : K → Type}
 variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {V : Type} [AddCommGroup V]
   [Module Ω V]
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`. Conclude with `AddSubgroup.subset_closure ⟨b * a, R.mul_mem hb ha, e, he, by rw [mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+
+Conclude with `zero_mem _`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `neg v _ hv => rw [smul_neg]`. Conclude with `neg_mem hv`.
+-/
 theorem smul_mem (R : Subalgebra O Ω) (L : AddSubgroup V) (b : Ω) (hb : b ∈ R) (v : V)
     (hv : v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L, v = a • e}) :
     b • v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L, v = a • e} := by
@@ -34,6 +42,9 @@ theorem smul_mem (R : Subalgebra O Ω) (L : AddSubgroup V) (b : Ω) (hb : b ∈ 
   | add v w _ _ hv hw => rw [smul_add]; exact add_mem hv hw
   | neg v _ hv => rw [smul_neg]; exact neg_mem hv
 
+/- English proof (translation)
+Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `v ⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, e, h he, rfl⟩`.
+-/
 theorem le_closure (R : Subalgebra O Ω) (L L' : AddSubgroup V) (h : L ≤ L') :
     AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L, v = a • e} ≤
       AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L', v = a • e} := by
@@ -41,6 +52,15 @@ theorem le_closure (R : Subalgebra O Ω) (L L' : AddSubgroup V) (h : L ≤ L') :
   rintro v ⟨a, ha, e, he, rfl⟩
   exact ⟨a, ha, e, h he, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`. Take `⟨c, hc, hce⟩` from `h e he`. Conclude with `⟨c, hc, AddSubgroup.subset_closure ⟨a, ha, _, hce, smul_comm _ _ _⟩⟩`.
+
+Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨c, hc, hv⟩` from `hv`. Take `⟨d, hd, hw⟩` from `hw`. Use `⟨c * d, mul_ne_zero hc hd, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, map_mul]`. Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `smul_mem R L' _ (R.algebraMap_mem d) _ hv`. Rewrite using `[mul_smul]`.
+
+Conclude with `smul_mem R L' _ (R.algebraMap_mem c) _ hw`. Consider the case `neg v _ hv`. Take `⟨c, hc, hv⟩` from `hv`. Conclude with `⟨c, hc, by rw [smul_neg]; exact neg_mem hv⟩`.
+-/
 theorem gen_closure [IsDomain O] (R : Subalgebra O Ω) (L L' : AddSubgroup V)
     (h : ∀ v ∈ L, ∃ c : O, c ≠ 0 ∧ algebraMap O Ω c • v ∈ L') (v : V)
     (hv : v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L, v = a • e}) :
@@ -66,6 +86,19 @@ theorem gen_closure [IsDomain O] (R : Subalgebra O Ω) (L L' : AddSubgroup V)
     obtain ⟨c, hc, hv⟩ := hv
     exact ⟨c, hc, by rw [smul_neg]; exact neg_mem hv⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`.
+
+Take `⟨e', he', rfl⟩` from `(h e).1 he`. Conclude with `⟨a • e', AddSubgroup.subset_closure ⟨a, ha, e', he', rfl⟩, smul_comm _ _ _⟩`. Consider the case `zero => exact ⟨0, zero_mem _, (smul_zero _).symm⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨e, he, rfl⟩` from `hv`.
+
+Take `⟨f, hf, rfl⟩` from `hw`. Conclude with `⟨e + f, add_mem he hf, (smul_add _ _ _).symm⟩`. Consider the case `neg v _ hv`. Take `⟨e, he, rfl⟩` from `hv`. Conclude with `⟨-e, neg_mem he, (smul_neg _ _).symm⟩`.
+
+Introduce and unpack `⟨e, he, rfl⟩`. Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem v hv`. Take `⟨a, ha, e, he, rfl⟩` from `hv`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, c • e, (h _).2 ⟨e, he, rfl⟩, smul_comm _ _ _⟩`.
+
+Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `add_mem hv hw`. Consider the case `neg v _ hv => rw [smul_neg]`.
+
+Conclude with `neg_mem hv`.
+-/
 theorem scaled_closure (R : Subalgebra O Ω) (L L' : AddSubgroup V) (c : Ω)
     (h : ∀ v, v ∈ L' ↔ ∃ e ∈ L, v = c • e) (v : V) :
     v ∈ AddSubgroup.closure {v | ∃ a ∈ R, ∃ e ∈ L', v = a • e} ↔
@@ -96,6 +129,11 @@ theorem scaled_closure (R : Subalgebra O Ω) (L L' : AddSubgroup V) (c : Ω)
 
 end PositivityTheory.Xgn.A_pull_preserve
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E E' K' _ _ ι' _ z EB E'B hP hP'`. Use `⟨fun h s hs => ?_, fun h s hs => ?_, fun c h s hs v => ?_⟩` and prove the remaining obligations. Rewrite using `[hP s hs, hP' s hs]`. Conclude with `PositivityTheory.Xgn.A_pull_preserve.le_closure _ _ _ (h _ (PositivityTheory.Xgn.A_pull_preserve.below_ne x z s hs))`. Rewrite using `[hP s hs, hP' s hs]`.
+
+Establish `h0` using `h _ (PositivityTheory.Xgn.A_pull_preserve.below_ne x z s hs)`. Conclude with `⟨PositivityTheory.Xgn.A_pull_preserve.gen_closure _ _ _ h0.1, PositivityTheory.Xgn.A_pull_preserve.gen_closure _ _ _ h0.2⟩`. Rewrite using `[hP s hs, hP' s hs]`. Conclude with `PositivityTheory.Xgn.A_pull_preserve.scaled_closure _ _ _ c (h _ (PositivityTheory.Xgn.A_pull_preserve.below_ne x z s hs)) v`.
+-/
 theorem PositivityTheory.Xgn.t_pull_preserve : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E E' : ChartBundle O (mseg x) N V) (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω) (EB E'B : ChartBundle O (mseg (joinCoord x z)) N V), IsPull O x z E EB → IsPull O x z E' E'B → (LatLE O x E E' → LatLE O (joinCoord x z) EB E'B) ∧ (SameGeneric O x E E' → SameGeneric O (joinCoord x z) EB E'B) ∧ (∀ c : Ω, IsScaled x c E.lat E'.lat → IsScaled (joinCoord x z) c EB.lat E'B.lat) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ E E' K' _ _ ι' _ z EB E'B hP hP'
   refine ⟨fun h s hs => ?_, fun h s hs => ?_, fun c h s hs v => ?_⟩

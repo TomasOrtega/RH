@@ -16,11 +16,19 @@ open GlobalTheory.LocFub.TopDens (dens_smul dens_add dens_zero)
 
 variable {n d : ℕ} {J : Type}
 
+/- English proof (translation)
+Rewrite using `[(pull_dz _ a).1, (pull_dz _ a).2]`. Simplify using `[bsL_apply, coordVec, EuclideanSpace.single_apply]`.
+-/
 theorem pull_bsL_dz (ε : Fin n ≃ Fin d ⊕ J) (a : Fin d) :
     pull (bsL ε) (dz a) = dz (ε.symm (.inl a)) ∧ pull (bsL ε) (dzb a) = dzb (ε.symm (.inl a)) := by
   rw [(pull_dz _ a).1, (pull_dz _ a).2]
   simp [bsL_apply, coordVec, EuclideanSpace.single_apply]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Subalgebra.coe_mul, Subalgebra.coe_mul, map_mul, ih]`. Use `congr 1`.
+
+Simplify using `[sym, (pull_bsL_dz ε a).1, (pull_bsL_dz ε a).2]`.
+-/
 theorem pull_bsL_prod (ε : Fin n ≃ Fin d ⊕ J) (s : Finset (Fin d)) :
     pull (bsL ε) ((∏ a ∈ s, (Complex.I / 2) • sym (a, a) : Ev d) : Alt d) =
       ((∏ a ∈ s, (Complex.I / 2) • sym (ε.symm (.inl a), ε.symm (.inl a)) : Ev n) : Alt n) := by
@@ -31,6 +39,13 @@ theorem pull_bsL_prod (ε : Fin n ≃ Fin d ⊕ J) (s : Finset (Fin d)) :
     congr 1
     simp [sym, (pull_bsL_dz ε a).1, (pull_bsL_dz ε a).2]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using SetLike.one_mem_graded (fun i => ⋀[ℂ]^i (Fin n ⊕ Fin n → ℂ))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Subalgebra.coe_mul, Finset.card_insert_of_notMem ha, show 2 * (s.card + 1) = 1 + 1 + 2 * s.card by ring]`. Use `SetLike.mul_mem_graded (A := fun i => ⋀[ℂ]^i (Fin n ⊕ Fin n → ℂ)) ?_ ih` and prove the remaining obligations.
+
+Rewrite using `[Subalgebra.coe_smul]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dz (g a) * dzb (g a) ∈ _`. Use `SetLike.mul_mem_graded (A := fun i => ⋀[ℂ]^i (Fin n ⊕ Fin n → ℂ)) ?_ ?_` and prove the remaining obligations. Simplify using `[dz, ExteriorAlgebra.exteriorPower]`.
+
+Simplify using `[dzb, ExteriorAlgebra.exteriorPower]`.
+-/
 theorem prod_mem (g : J → Fin n) (s : Finset J) :
     ((∏ j ∈ s, (Complex.I / 2) • sym (g j, g j) : Ev n) : Alt n) ∈ ⋀[ℂ]^(2 * s.card) (Fin n ⊕ Fin n → ℂ) := by
   induction s using Finset.induction_on with
@@ -46,6 +61,11 @@ theorem prod_mem (g : J → Fin n) (s : Finset J) :
     · simp [dz, ExteriorAlgebra.exteriorPower]
     · simp [dzb, ExteriorAlgebra.exteriorPower]
 
+/- English proof (translation)
+Establish `hc : T.card < d + d` using `by simpa using Finset.card_lt_card (Finset.ssubset_univ_iff.2 hT)`. Establish `hn : n = d + Fintype.card J` using `by simpa using Fintype.card_congr ε`. Establish `hm : pull (bsL ε) (bas d T) * ((∏ j : J, (Complex.I / 2) • sym (ε.symm (.inr j), ε.symm (.inr j)) : Ev n) : Alt n) ∈ ⋀[ℂ]^(T.card + 2 * (Finset.univ : Finset J).card) (Fin n ⊕ Fin n → ℂ)`. Use `SetLike.mul_mem_graded (A := fun i => ⋀[ℂ]^i (Fin n ⊕ Fin n → ℂ)) ?_ (prod_mem _ _)` and prove the remaining obligations. Rewrite using `[bas, ExteriorAlgebra.basis_apply _ T, CxForm.pull, ExteriorAlgebra.map_apply_ιMulti, ← exteriorPower.ιMulti_apply_coe]`.
+
+Conclude with `Subtype.property _`. Use `GlobalTheory.PullTop.repr_eq_zero_of_card_ne ((Pi.basisFun ℂ (Fin n ⊕ Fin n)).reindex finSumFinEquiv) ⟨_, hm⟩ (S := Finset.univ) (by simp only [Finset.card_univ, Fintype.card_fin]; omega)` as an intermediate fact. Rewrite using `[dens]`. Conclude with `div_eq_zero_iff.2 (Or.inl this)`.
+-/
 theorem dens_pull_bas [Fintype J] (ε : Fin n ≃ Fin d ⊕ J) {T : Finset (Fin (d + d))} (hT : T ≠ Finset.univ) :
     dens (pull (bsL ε) (bas d T) *
       ((∏ j : J, (Complex.I / 2) • sym (ε.symm (.inr j), ε.symm (.inr j)) : Ev n) : Alt n)) = 0 := by
@@ -64,11 +84,21 @@ theorem dens_pull_bas [Fintype J] (ε : Fin n ≃ Fin d ⊕ J) {T : Finset (Fin 
   rw [dens]
   exact div_eq_zero_iff.2 (Or.inl this)
 
+/- English proof (translation)
+Rewrite using `[vol, pull_bsL_prod, ← Subalgebra.coe_mul, vol, ← ε.symm.prod_comp, Fintype.prod_sum_type]`.
+-/
 theorem pull_vol_mul [Fintype J] (ε : Fin n ≃ Fin d ⊕ J) :
     pull (bsL ε) (vol d : Alt d) *
       ((∏ j : J, (Complex.I / 2) • sym (ε.symm (.inr j), ε.symm (.inr j)) : Ev n) : Alt n) = (vol n : Alt n) := by
   rw [vol, pull_bsL_prod, ← Subalgebra.coe_mul, vol, ← ε.symm.prod_comp, Fintype.prod_sum_type]
 
+/- English proof (translation)
+Introduce `n d J _ ε α`. Establish `hα : α ∈ Submodule.span ℂ (Set.range (bas d))` using `by rw [(bas d).span_eq]; trivial`. Proceed by induction on `hα using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨T, rfl⟩` from `hx`.
+
+Distinguish the cases in `hT : T = Finset.univ`. Take `⟨c, hc, e⟩` from `vol_eq d`. Establish `e' : bas d T = c⁻¹ • (vol d : Alt d)` using `by rw [e, hT, inv_smul_smul₀ hc]`. Rewrite using `[e', map_smul, smul_mul_assoc, dens_smul, dens_smul, dens_vol, pull_vol_mul, dens_vol]`. Rewrite using `[dens_pull_bas ε hT]`.
+
+Simplify using `[dens, hT]`. Consider the case `zero => simp [dens_zero]`. Consider the case `add x y _ _ hx hy => rw [map_add, add_mul, dens_add, dens_add, hx, hy]`. Consider the case `smul c x _ hx => rw [map_smul, smul_mul_assoc, dens_smul, dens_smul, hx]`.
+-/
 theorem dens_pull_mul_vol : ∀ (n d : ℕ) (J : Type) [Fintype J] (ε : Fin n ≃ Fin d ⊕ J) (α : Alt d), dens (pull (bsL ε) α * ((∏ j : J, (Complex.I / 2) • sym (ε.symm (.inr j), ε.symm (.inr j)) : Ev n) : Alt n)) = dens α := by
   intro n d J _ ε α
   have hα : α ∈ Submodule.span ℂ (Set.range (bas d)) := by rw [(bas d).span_eq]; trivial

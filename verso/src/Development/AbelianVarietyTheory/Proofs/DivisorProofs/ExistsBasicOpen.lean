@@ -12,6 +12,9 @@ namespace GlobalTheory.CechDR
 
 variable {X X' : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show φ.base x ∈ (⊤ : X.Opens) from trivial)`. Take `⟨f, hf, hxf⟩` from `W.2.exists_basicOpen_le (V := W.1 ⊓ φ ⁻¹ᵁ U) ⟨x, hx, hxU⟩ hx`. Conclude with `⟨⟨(⟨X'.basicOpen f, W.2.basicOpen f⟩, ⟨U, hU⟩), hf.trans inf_le_right⟩, f, rfl, hxf⟩`.
+-/
 theorem Pair.exists_basicOpen (φ : X' ⟶ X) (W : X'.affineOpens) {x : X'} (hx : x ∈ W.1) :
     ∃ (p : Pair φ) (f : Γ(X', W.1)), p.1.1.1 = X'.basicOpen f ∧ x ∈ p.1.1.1 := by
   obtain ⟨U, hU, hxU, -⟩ := TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens
@@ -19,6 +22,11 @@ theorem Pair.exists_basicOpen (φ : X' ⟶ X) (W : X'.affineOpens) {x : X'} (hx 
   obtain ⟨f, hf, hxf⟩ := W.2.exists_basicOpen_le (V := W.1 ⊓ φ ⁻¹ᵁ U) ⟨x, hx, hxU⟩ hx
   exact ⟨⟨(⟨X'.basicOpen f, W.2.basicOpen f⟩, ⟨U, hU⟩), hf.trans inf_le_right⟩, f, rfl, hxf⟩
 
+/- English proof (translation)
+Establish `hy : φ.base x ∈ p.1.2.1 ⊓ q.1.2.1` using `⟨p.2 hx.1, q.2 hx.2⟩`. Take `⟨U, hU, hxU, hUle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hy`. Take `⟨U', hU', hxU', hU'le⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X'.isBasis_affineOpens (show x ∈ p.1.1.1 ⊓ q.1.1.1 ⊓ φ ⁻¹ᵁ U from ⟨hx, hxU⟩)`. Use `⟨⟨(⟨U', hU'⟩, ⟨U, hU⟩), hU'le.trans inf_le_right⟩, ?_, ?_, hxU'⟩` and prove the remaining obligations. Conclude with `⟨hU'le.trans (inf_le_left.trans inf_le_left), hUle.trans inf_le_left⟩`.
+
+Conclude with `⟨hU'le.trans (inf_le_left.trans inf_le_right), hUle.trans inf_le_right⟩`.
+-/
 theorem Pair.exists_le_le (φ : X' ⟶ X) (p q : Pair φ) {x : X'} (hx : x ∈ p.1.1.1 ⊓ q.1.1.1) :
     ∃ r : Pair φ, r ≤ p ∧ r ≤ q ∧ x ∈ r.1.1.1 := by
   have hy : φ.base x ∈ p.1.2.1 ⊓ q.1.2.1 := ⟨p.2 hx.1, q.2 hx.2⟩
@@ -35,11 +43,17 @@ namespace GlobalTheory.CechDR
 open Opposite
 variable {R' : Type} [CommRing R'] {X X' : Scheme.{0}}
 
+/- English proof (translation)
+Take `⟨p, f, e, hxp⟩` from `Pair.exists_basicOpen φ W hx`. Conclude with `⟨p, show p.1.1.1 ≤ W.1 from e ▸ X'.basicOpen_le f, hxp⟩`.
+-/
 theorem Pair.exists_le (φ : X' ⟶ X) (W : X'.affineOpens) {x : X'} (hx : x ∈ W.1) :
     ∃ (p : Pair φ) (hp : p.1.1 ≤ W), x ∈ p.1.1.1 := by
   obtain ⟨p, f, e, hxp⟩ := Pair.exists_basicOpen φ W hx
   exact ⟨p, show p.1.1.1 ≤ W.1 from e ▸ X'.basicOpen_le f, hxp⟩
 
+/- English proof (translation)
+Use `TopCat.Presheaf.section_ext X'.sheaf W.1 a b fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨p, hp, hxp⟩` from `Pair.exists_le φ W hx`. Establish `e : (X'.presheaf.germ p.1.1.1 x hxp).hom ((X'.presheaf.map (homOfLE (show p.1.1.1 ≤ W.1 from hp)).op).hom a) = (X'.presheaf.germ p.1.1.1 x hxp).hom ((X'.presheaf.map (homOfLE (show p.1.1.1 ≤ W.1 from hp)).op).hom b)` using `congrArg _ (h p hp)`. Establish `k` using `X'.presheaf.germ_res (homOfLE (show p.1.1.1 ≤ W.1 from hp)) x hxp`. Conclude with `(congrArg (fun t ↦ t.hom a) k).symm.trans (e.trans (congrArg (fun t ↦ t.hom b) k))`.
+-/
 theorem sec_eq_of_pair (φ : X' ⟶ X) (s' : X' ⟶ Sp R') (W : X'.affineOpens)
     (a b : (OAff s').obj (op W))
     (h : ∀ (p : Pair φ) (hp : p.1.1 ≤ W), mp (OAff s') (homOfLE hp).op a = mp (OAff s') (homOfLE hp).op b) :

@@ -12,6 +12,11 @@ open scoped Matrix NNReal ENNReal Classical
 open NumberField IsDedekindDomain MeasureTheory Filter Topology GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ}
 open GlobalTheory.LFun GlobalTheory.ThK in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ N`. Take `⟨C, -, hC⟩` from `hA F E σ n d X W M`. Take `⟨C', k, -, h⟩` from `weighted hF hS hT hP.base.std hΦ N`. Use `⟨C' * C ^ k, k, fun g g' x => ?_⟩` and prove the remaining obligations. Take `⟨m, h1, h2, h3⟩` from `hC g g'`.
+
+Rewrite using `[mul_assoc, ← mul_pow]`. Conclude with `h _ _ m _ h1 h2 (impl_sOf hP.weil g g') h3 x`.
+-/
 theorem schwartz_decay_uniform (hA : HtBd) (hF : FinInv) (hS : Sob) (hT : TrBd) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s' → ∀ Φ ∈ schA F (Fin n × Fin d), ∀ N : ℕ, ∃ (C : ℝ) (k : ℕ), ∀ g h (x : Fin n × Fin d → AF F),
     ‖om (g, h) Φ x‖ * (1 + ‖fun i => evI F (x i)‖) ^ N ≤ C * ((ht g : ℝ) * ht h) ^ k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ N

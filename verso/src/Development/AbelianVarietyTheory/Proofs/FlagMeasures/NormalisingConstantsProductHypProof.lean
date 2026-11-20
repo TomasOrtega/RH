@@ -12,6 +12,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.LocalConst
 
+/- English proof (translation)
+Introduce `D X Y u C hB hG hcov`. Establish `hS : ∀ τ, GoodS D (lamD D τ) (locS hB u u τ)` using `fun τ => (hG.2 u τ).2`. Establish `hc : ∀ τ, 0 < cOf hB u τ` using `fun τ => (hS τ).2.2.2.2.2.2.2.1`. Use `set d : D.what₂.Tau → ℝ := fun τ => (Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℝ) with hd`. Use `set L : D.what₂.Tau → ℝ := fun τ => (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal with hL`.
+
+Establish `hcL : ∀ τ, cOf hB u τ = L τ / d τ` using `fun τ => rfl`. Establish `hdpos : ∀ τ, 0 < d τ`. Introduce `τ`. Break down `(show (0:ℝ) ≤ d τ by positivity).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+Use `hc τ` as an intermediate fact. Rewrite `this` using `[hcL, ← h, div_zero]`. Conclude with `absurd this (lt_irrefl 0)`. Establish `hLpos : ∀ τ, 0 < L τ`. Introduce `τ`.
+
+Break down `(show (0:ℝ) ≤ L τ from ENNReal.toReal_nonneg).lt_or_eq with h | h` into its components or cases. Conclude with `h`. Use `hc τ` as an intermediate fact. Rewrite `this` using `[hcL, ← h, zero_div]`. Conclude with `absurd this (lt_irrefl 0)`.
+
+Use `⟨fun τ => ⟨hc τ, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : cOf hB u τ * (Module.finrank ℂ (X.Vloc u (vOf X τ)) : ℝ) / (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal = 1`. Express the relevant statement in the definitionally equal form `L τ / d τ * d τ / L τ = 1`. Clear denominators, using `[(hdpos τ).ne', (hLpos τ).ne']` for the nonvanishing conditions. Unfold `sclOf`.
+
+Rewrite using `[e, Real.sqrt_one, Complex.ofReal_one]`. Take `⟨cN, hN0, hNT, hN⟩` from `GlobalTheory.T.unipotentHaar_eq_const_mul_transported_product D X C hB hG u`. Take `⟨cH, hH0, hHT, hHu, hH⟩` from `GlobalTheory.T.haarMeasure_besselUnitary_eq_pullback_product D X C hB hG u`. Establish `hP` using `GlobalTheory.T.prod_localQuotientMass_eq_measureRatio D X C hB hG u cN cH hN0 hNT hH0 hHT hN hH`. Establish `hP' : ∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ) = cN * cH`.
+
+Rewrite using `[← hP]`. Conclude with `Finset.prod_congr rfl fun τ _ => GlobalTheory.T.l2SG_phiOf_eq_l2SG_wT_of_goodLoc D X C hB hG u τ`. Establish `hFN : MeasurableSet (Y.FN u)` using `(Y.FN_fund u).1`. Establish `hmN : (X.muN u (Y.FN u)).toReal = cN.toReal * (covN C Y u).toReal`. Rewrite using `[hN _ hFN, ENNReal.toReal_mul]`.
+
+Both sides reduce to the same expression. Establish `hmH : (X.muH u Set.univ).toReal = cH.toReal` using `by rw [hHu]`. Establish `hkey : (∏ τ, L τ) * (covN C Y u).toReal = (X.muN u (Y.FN u)).toReal * (X.muH u Set.univ).toReal`. Establish `: (∏ τ, L τ) = (∏ τ, l2SG (C.nuS u τ) (phiOf hB u τ)).toReal`. Rewrite using `[ENNReal.toReal_prod]`.
+
+Rewrite using `[this, hP', ENNReal.toReal_mul, hmN, hmH]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdd : (Module.finrank ℂ (X.Vpi u) : ℝ) = ∏ τ, d τ`. Rewrite using `[Formalism.L2.SG.Pf.finrank_Vpi X u, Nat.cast_prod]`. Conclude with `(Fintype.prod_equiv X.pl.symm (fun τ => d τ) _ fun τ => rfl).symm`.
+
+Establish `hprod : ∏ τ, cOf hB u τ = (∏ τ, L τ) / ∏ τ, d τ`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun τ _ => hcL τ`. Unfold `Formalism.L2.SG.TermOp.scl Formalism.L2.SG.PoincareInHH.PoincareSetting.c0X`. Rewrite using `[hprod, ← hdd]`.
+
+Use `set mN := (X.muN u (Y.FN u)).toReal`. Use `set mH := (X.muH u Set.univ).toReal`. Use `set dd := (Module.finrank ℂ (X.Vpi u) : ℝ)`. Use `set V := X.volK2`. Use `set cv := (covN C Y u).toReal`.
+
+Establish `hdd0 : 0 < dd` using `by rw [hdd]; exact Finset.prod_pos fun τ _ => hdpos τ`. Establish `hmN0 : 0 ≤ mN` using `ENNReal.toReal_nonneg`. Establish `hmH0 : 0 ≤ mH` using `ENNReal.toReal_nonneg`. Establish `hV0 : 0 ≤ V` using `ENNReal.toReal_nonneg`. Establish `hc0 : 0 ≤ V * mN * mH / dd` using `by positivity`.
+
+Rewrite using `[Real.sqrt_mul_self hc0]`. Distinguish the cases in `h0 : V * mN * mH = 0`. Rewrite using `[h0, zero_div, _root_.inv_zero]`. Simplify using the standard rewrite rules. Establish `hV : V ≠ 0` using `by intro h; apply h0; rw [h]; ring`.
+
+Establish `hmN : mN ≠ 0` using `by intro h; apply h0; rw [h]; ring`. Establish `hmH : mH ≠ 0` using `by intro h; apply h0; rw [h]; ring`. Establish `e : (V * mN * mH / dd)⁻¹ * V * ((∏ τ, L τ) / dd) * cv = 1`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hkey`.
+
+Rewrite using `[e]`.
+-/
 theorem constC : ConstC := by
   intro D X Y u C hB hG hcov
   have hS : ∀ τ, GoodS D (lamD D τ) (locS hB u u τ) := fun τ => (hG.2 u τ).2

@@ -15,22 +15,39 @@ section General
 
 variable {R : Type u} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `hasSubst_of_constantCoeff_zero ha`.
+-/
 theorem hs {σ τ : Type*} [Finite σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ i, constantCoeff (a i) = 0) : HasSubst a :=
   hasSubst_of_constantCoeff_zero ha
 
+/- English proof (translation)
+The claim follows from `constantCoeff_subst_eq_zero (hs ha) ha hg`.
+-/
 theorem cc_subst {σ τ : Type*} [Finite σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ i, constantCoeff (a i) = 0) {g : MvPowerSeries σ R} (hg : constantCoeff g = 0) :
     constantCoeff (subst a g) = 0 :=
   constantCoeff_subst_eq_zero (hs ha) ha hg
 
+/- English proof (translation)
+Simplify using the standard rewrite rules.
+-/
 theorem cc_X {σ : Type*} (x : σ) : constantCoeff (X x : MvPowerSeries σ R) = 0 := by simp
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem cc_pderiv {σ : Type*} (g : MvPowerSeries σ R) (i : σ) :
     constantCoeff (pderiv R i g) = coeff (Finsupp.single i 1) g := by
   rw [← coeff_zero_eq_constantCoeff_apply, coeff_pderiv]
   simp
 
+/- English proof (translation)
+Rewrite using `[coeff_X]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`.
+
+Conclude with `h (Finsupp.single_left_injective one_ne_zero h')`.
+-/
 theorem coeff_X_single {σ : Type*} [DecidableEq σ] (i j : σ) :
     coeff (Finsupp.single i 1) (X j : MvPowerSeries σ R) = if i = j then 1 else 0 := by
   rw [coeff_X]
@@ -40,6 +57,9 @@ theorem coeff_X_single {σ : Type*} [DecidableEq σ] (i j : σ) :
     intro h'
     exact h (Finsupp.single_left_injective one_ne_zero h')
 
+/- English proof (translation)
+Rewrite using `[← cc_pderiv, Formalism.G.LogCR.pderiv_subst ha, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, cc_pderiv, Formalism.G.LogP.constantCoeff_subst_of_zero _ ha, cc_pderiv]`.
+-/
 theorem lin_subst {σ τ : Type*} [Fintype σ] [Finite τ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ j, constantCoeff (a j) = 0) (g : MvPowerSeries σ R) (i : τ) :
     coeff (Finsupp.single i 1) (g.subst a) =
@@ -54,12 +74,21 @@ section Law
 
 variable {R : Type u} [CommRing R] {ι : Type v} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `hs fun _ => cc_X _`.
+-/
 theorem hsX : HasSubst (fun i : ι => (vX i : MvPowerSeries (Fin 2 × ι) R)) :=
   hs fun _ => cc_X _
 
+/- English proof (translation)
+The claim follows from `hs fun _ => cc_X _`.
+-/
 theorem hsY : HasSubst (fun i : ι => (vY i : MvPowerSeries (Fin 2 × ι) R)) :=
   hs fun _ => cc_X _
 
+/- English proof (translation)
+The claim follows from `Formalism.FG.subst_injective_vector.{u, v, v} R ι τ f a b hf ha hb h`.
+-/
 theorem inj {f : ι → MvPowerSeries ι R} (hf : IsIdMod2 f) {τ : Type v} [Finite τ]
     {a b : ι → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0)
     (hb : ∀ i, constantCoeff (b i) = 0) (h : ∀ j, subst a (f j) = subst b (f j)) : a = b :=
@@ -67,6 +96,9 @@ theorem inj {f : ι → MvPowerSeries ι R} (hf : IsIdMod2 f) {τ : Type v} [Fin
 
 variable {f : ι → MvPowerSeries ι R} {F : ι → MvPowerSeries (Fin 2 × ι) R}
 
+/- English proof (translation)
+Rewrite using `[← subst_comp_subst_apply (hs hF0) (hs hb), hFG, subst_add (hs hb), atXv, atYv, subst_comp_subst_apply hsX (hs hb), subst_comp_subst_apply hsY (hs hb)]`. Simplify using `only [vX, vY, subst_X (hs hb)]`.
+-/
 theorem key (hF0 : ∀ i, constantCoeff (F i) = 0)
     (hFG : ∀ j, subst F (f j) = atXv (f j) + atYv (f j)) {τ : Type*}
     (b : Fin 2 × ι → MvPowerSeries τ R) (hb : ∀ x, constantCoeff (b x) = 0) (j : ι) :
@@ -92,8 +124,16 @@ def aL (F : ι → MvPowerSeries (Fin 2 × ι) R) : Fin 2 × ι → MvPowerSerie
 def aR (F : ι → MvPowerSeries (Fin 2 × ι) R) : Fin 2 × ι → MvPowerSeries (Fin 3 × ι) R :=
   fun x => if x.1 = 0 then v3 0 x.2 else subst c12 (F x.2)
 
+/- English proof (translation)
+The claim follows from `cc_X _`.
+-/
 theorem cc_swp (x : Fin 2 × ι) : constantCoeff (swp (R := R) x) = 0 := cc_X _
 
+/- English proof (translation)
+Establish `h : (fun i => subst swp (F i)) = F`. Use `inj hf (fun i => cc_subst cc_swp (hF0 i)) hF0 fun j => ?_` and prove the remaining obligations. Rewrite using `[key hF0 hFG swp cc_swp, hFG, add_comm (atXv (f j))]`. Both sides reduce to the same expression. Introduce `i`.
+
+Conclude with `congrFun h i`.
+-/
 theorem comm (hf : IsIdMod2 f) (hF0 : ∀ i, constantCoeff (F i) = 0)
     (hFG : ∀ j, subst F (f j) = atXv (f j) + atYv (f j)) : IsCommV F := by
   have h : (fun i => subst swp (F i)) = F := by
@@ -103,6 +143,11 @@ theorem comm (hf : IsIdMod2 f) (hF0 : ∀ i, constantCoeff (F i) = 0)
   intro i
   exact congrFun h i
 
+/- English proof (translation)
+Establish `h` using `congrArg (coeff (Finsupp.single x 1)) (hFG i)`. Rewrite `h` using `[lin_subst hF0, map_add, atXv, atYv, lin_subst (fun _ => cc_X _), lin_subst (fun _ => cc_X _)]`. Simplify using `only [hf.2, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Rewrite using `[h, coeff_X_single, coeff_X_single]`. Take `⟨a, k⟩` from `x`.
+
+Apply the tactic sequence `fin_cases a <;> by_cases hk : k = i <;> simp [hk]`.
+-/
 theorem lin (hf : IsIdMod2 f) (hF0 : ∀ i, constantCoeff (F i) = 0)
     (hFG : ∀ j, subst F (f j) = atXv (f j) + atYv (f j)) (i : ι) (x : Fin 2 × ι) :
     coeff (Finsupp.single x 1) (F i) = if x.2 = i then 1 else 0 := by
@@ -121,6 +166,9 @@ section FunEq
 
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+Introduce `d` and use `by classical rw [coeff_X] split_ifs <;> simp`.
+-/
 theorem integral_X {τ : Type*} (x : τ) : IntegralMv (X x : MvPowerSeries τ K) := fun d => by
   classical
   rw [coeff_X]

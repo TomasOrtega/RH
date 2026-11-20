@@ -8,6 +8,13 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 
 variable {p q : ℕ}
 
+/- English proof (translation)
+Use `⟨fun i j => (pY B * (pY B * pY C - pY C * pY B) - (pY B * pY C - pY C * pY B) * pY B) (Sum.inl i) (Sum.inr j), ?_⟩` and prove the remaining obligations. Establish `hh : (pY B * (pY B * pY C - pY C * pY B) - (pY B * pY C - pY C * pY B) * pY B)ᴴ = pY B * (pY B * pY C - pY C * pY B) - (pY B * pY C - pY C * pY B) * pY B`. Simplify using `only [conjTranspose_sub, conjTranspose_mul, pY_conjTranspose]`. Use `noncomm_ring`. Use extensionality with `a b`.
+
+Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Simplify using `[pY, pOf, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `only [pY, pOf, fromBlocks_apply₁₂, of_apply]`. Use `congrFun (congrFun hh (Sum.inr i)) (Sum.inl j)` as an intermediate fact. Rewrite using `[← this]`.
+
+Both sides reduce to the same expression. Simplify using `[pY, pOf, Matrix.mul_apply, Fintype.sum_sum_type]`.
+-/
 theorem ad_sq_pY (B C : Fin p → Fin q → ℂ) : ∃ D,
     pY B * (pY B * pY C - pY C * pY B) - (pY B * pY C - pY C * pY B) * pY B = pY D := by
   refine ⟨fun i j => (pY B * (pY B * pY C - pY C * pY B) - (pY B * pY C - pY C * pY B) * pY B)
@@ -25,6 +32,11 @@ theorem ad_sq_pY (B C : Fin p → Fin q → ℂ) : ∃ D,
     rfl
   · simp [pY, pOf, Matrix.mul_apply, Fintype.sum_sum_type]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact ⟨C, by simp⟩`. Consider the case `succ k ih`. Take `⟨D, hD⟩` from `ih`. Take `⟨E, hE⟩` from `ad_sq_pY B D`.
+
+Use `⟨E, ?_⟩` and prove the remaining obligations. Rewrite using `[show 2 * (k + 1) = (2 * k + 1) + 1 by ring, pow_succ', pow_succ', ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hD, adMat_mulVec, adMat_mulVec, hE]`.
+-/
 theorem adMat_pow_pY (B C : Fin p → Fin q → ℂ) (k : ℕ) : ∃ D,
     adMat (pY B) ^ (2 * k) *ᵥ vecM (pY C) = vecM (pY D) := by
   induction k with
@@ -36,6 +48,11 @@ theorem adMat_pow_pY (B C : Fin p → Fin q → ℂ) (k : ℕ) : ∃ D,
     rw [show 2 * (k + 1) = (2 * k + 1) + 1 by ring, pow_succ', pow_succ', ← Matrix.mulVec_mulVec,
       ← Matrix.mulVec_mulVec, hD, adMat_mulVec, adMat_mulVec, hE]
 
+/- English proof (translation)
+Use `open scoped Matrix.Norms.Operator in`. Use `Summable.of_norm_bounded (g := fun k : ℕ => ‖((k.factorial : ℂ)⁻¹) • (A ^ 2) ^ k‖) (NormedSpace.norm_expSeries_summable' (𝕂 := ℂ) (A ^ 2)) fun k => ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_smul, ← pow_mul, norm_inv, norm_inv, Complex.norm_natCast, Complex.norm_natCast]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Use `inv_anti₀ (by exact_mod_cast k.factorial_pos) ?_` and prove the remaining obligations.
+
+Conclude with `Nat.factorial_le (by omega)` after adjusting the coercions.
+-/
 theorem summable_sinhc {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) :
     Summable fun k : ℕ => (((2 * k + 1).factorial : ℂ)⁻¹) • A ^ (2 * k) := by
   open scoped Matrix.Norms.Operator in
@@ -47,6 +64,11 @@ theorem summable_sinhc {n : Type} [Fintype n] [DecidableEq n] (A : Matrix n n �
   refine inv_anti₀ (by exact_mod_cast k.factorial_pos) ?_
   exact_mod_cast Nat.factorial_le (by omega)
 
+/- English proof (translation)
+Establish `h` using `(summable_sinhc (adMat Y)).hasSum`. Set `f : Matrix (Ix p q × Ix p q) (Ix p q × Ix p q) ℂ →+ ℂ` to `{ toFun := fun M => (M *ᵥ vecM V) (a, b) map_zero' := by simp map_add' := fun M N => by simp [Matrix.add_mulVec] }`. Establish `hf : Continuous f` using `by show Continuous fun M : Matrix (Ix p q × Ix p q) (Ix p q × Ix p q) ℂ => (M *ᵥ vecM V) (a, b)`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `fun_prop`.
+
+Establish `h2` using `h.map f hf`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Simplify using `[f, Matrix.smul_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem hasSum_sAd (Y V : Mat p q) (a b : Ix p q) :
     HasSum (fun k : ℕ => (((2 * k + 1).factorial : ℂ)⁻¹) * (adMat Y ^ (2 * k) *ᵥ vecM V) (a, b))
       (sAd Y V a b) := by
@@ -65,6 +87,15 @@ theorem hasSum_sAd (Y V : Mat p q) (a b : Ix p q) :
     simp [f, Matrix.smul_mulVec]
   · rfl
 
+/- English proof (translation)
+Introduce `p q B C`. Use `choose D hD using adMat_pow_pY B C`. Establish `h` using `hasSum_sAd (pY B) (pY C)`. Simplify using `only [hD, vecM] at h`. Use extensionality with `a b`.
+
+Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j`. Use `h (Sum.inl i) (Sum.inl j)` as an intermediate fact. Simplify using `only [pY, pOf, fromBlocks_apply₁₁, Matrix.zero_apply, mul_zero] at this ⊢`. Conclude with `this.unique hasSum_zero`. Both sides reduce to the same expression.
+
+Establish `h1` using `h (Sum.inr i) (Sum.inl j)`. Establish `h2` using `(h (Sum.inl j) (Sum.inr i)).star`. Use `show _ = star (sAd (pY B) (pY C) (Sum.inl j) (Sum.inr i))`. Use `h1.unique ?_` and prove the remaining obligations. Use `h2 using 2 with k` and compare the differences between its conclusion and the goal.
+
+Simplify using `[pY, pOf]`. Use `h (Sum.inr i) (Sum.inr j)` as an intermediate fact. Simplify using `only [pY, pOf, fromBlocks_apply₂₂, Matrix.zero_apply, mul_zero] at this ⊢`. Conclude with `this.unique hasSum_zero`.
+-/
 theorem sAd_pY : ∀ (p q : ℕ) (B C : Fin p → Fin q → ℂ),
     sAd (pY B) (pY C) = pY (sP (pY B) C) := by
   intro p q B C

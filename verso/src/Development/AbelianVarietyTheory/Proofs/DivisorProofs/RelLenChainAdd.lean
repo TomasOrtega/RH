@@ -6,6 +6,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ v M _ _ X'' X' X r₁ r₂ h₂ h₁`. Take `⟨n, b, b', A, hA, hr₂⟩` from `h₂`. Take `⟨m, c, c', B, hB, hr₁⟩` from `h₁`. Establish `hnm : n = m` using `by simpa using Fintype.card_congr (b.indexEquiv c')`. Substitute `hnm` using the available equality.
+
+Establish `hU : ∀ i, (b i : M) = ∑ j, c'.toMatrix b j i • (c' j : M)`. Introduce `i`. Use `congrArg X'.subtype (c'.sum_repr (b i))` as an intermediate fact. Simplify using `only [map_sum, map_smul, Submodule.subtype_apply] at this`. Simplify using `only [Basis.toMatrix_apply]`.
+
+Conclude with `this.symm`. Establish `u : IsUnit (c'.toMatrix b).det`. Set `_` to `c'.invertibleToMatrix b`. Conclude with `Matrix.isUnit_det_of_invertible _`. Use `⟨n, c, b', B * c'.toMatrix b * A, fun k => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hA k]`. Repeatedly rewrite using `[hU, hB, Finset.smul_sum, smul_smul]`. Repeatedly rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.sum_smul]`. Use `(Finset.sum_congr rfl fun a _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Subring.coe_mul, Subring.coe_mul, v.map_mul, v.map_mul, v_unit v u, add_zero, hr₁, hr₂]`. Both sides reduce to the same expression.
+-/
 theorem relLen_chain_add : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (M : Type)
     [AddCommGroup M] [Module (Int0 v) M] (X'' X' X : Submodule (Int0 v) M) (r₁ r₂ : ℝ),
     RelLen v X'' X' r₂ → RelLen v X' X r₁ → RelLen v X'' X (r₁ + r₂) := by

@@ -47,6 +47,9 @@ def simGroup (j : A →+* S) (σ : S →+* S) (H : Matrix (Fin n) (Fin n) S) :
           ((g⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S).map σ) := by rw [hu, one_smul]
       _ = _ := by rw [mul_smul, ← key]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_simGroup {j : A →+* S} {σ : S →+* S} {H : Matrix (Fin n) (Fin n) S} {x : GL (Fin n) S × Aˣ} :
     x ∈ simGroup j σ H ↔ (x.1 : Matrix (Fin n) (Fin n) S)ᵀ * H * (x.1 : Matrix (Fin n) (Fin n) S).map σ =
       j (x.2 : A) • H := Iff.rfl
@@ -70,6 +73,9 @@ def simMap {j : A →+* S} {σ : S →+* S} {H : Matrix (Fin n) (Fin n) S}
     rw [Matrix.map_map, ← hc, h, ← hj]
     ext a b; simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem simMap_fst {j : A →+* S} {σ : S →+* S} {H : Matrix (Fin n) (Fin n) S}
     {j' : A' →+* S'} {σ' : S' →+* S'} {H' : Matrix (Fin n) (Fin n) S'}
     (φ : S →+* S') (ψ : A →+* A') (hσ : ∀ x, φ (σ x) = σ' (φ x)) (hj : ∀ a, φ (j a) = j' (ψ a))
@@ -78,6 +84,9 @@ def simMap {j : A →+* S} {σ : S →+* S} {H : Matrix (Fin n) (Fin n) S}
       Matrix (Fin n) (Fin n) S') = (((x : GL (Fin n) S × Aˣ).1 : GL (Fin n) S) : Matrix (Fin n) (Fin n) S).map φ :=
   rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem simMap_snd {j : A →+* S} {σ : S →+* S} {H : Matrix (Fin n) (Fin n) S}
     {j' : A' →+* S'} {σ' : S' →+* S'} {H' : Matrix (Fin n) (Fin n) S'}
     (φ : S →+* S') (ψ : A →+* A') (hσ : ∀ x, φ (σ x) = σ' (φ x)) (hj : ∀ a, φ (j a) = j' (ψ a))
@@ -94,11 +103,17 @@ variable (F : Type) [Field F] [NumberField F] [IsCMField F] {n : ℕ} (H : Matri
 
 def conjQ : F →ₐ[ℚ] F := RingHom.toRatAlgHom ((IsCMField.complexConj F).toRingEquiv.toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjQ_apply (x : F) : conjQ F x = IsCMField.complexConj F x := rfl
 
 def conjT (R : Type) [CommRing R] [Algebra ℚ R] : R ⊗[ℚ] F →+* R ⊗[ℚ] F :=
   (Algebra.TensorProduct.map (AlgHom.id ℚ R) (conjQ F)).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem conjT_tmul (R : Type) [CommRing R] [Algebra ℚ R] (r : R) (x : F) :
     conjT F R (r ⊗ₜ x) = r ⊗ₜ IsCMField.complexConj F x := rfl
 
@@ -134,6 +149,9 @@ def simQ : GQpts F H →* ℚˣ := (MonoidHom.snd _ _).comp (GQpts F H).subtype
 
 def simR (R : Type) [CommRing R] [Algebra ℚ R] : Gpts F H R →* Rˣ := (MonoidHom.snd _ _).comp (Gpts F H R).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem simR_bc (R : Type) [CommRing R] [Algebra ℚ R] (g : GQpts F H) :
     ((simR R (bc R g) : Rˣ) : R) = algebraMap ℚ R (simQ g : ℚ) := rfl
 
@@ -200,6 +218,13 @@ variable {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ} {H : Matri
 
 def gramAt (H : Matrix (Fin n) (Fin n) F) (τ : F →+* ℂ) : Matrix (Fin n) (Fin n) ℂ := (H.map τ)ᵀ
 
+/- English proof (translation)
+Establish `hH' : H.map (IsCMField.complexConj F : F →+* F) = Hᵀ`. Rewrite using `[← Matrix.transpose_transpose (H.map _), hH]`. Unfold `Matrix.IsHermitian gramAt`. Rewrite using `[Matrix.conjTranspose, Matrix.transpose_transpose]`. Use extensionality with `i j`.
+
+Use `congrArg (fun M => τ (M i j)) hH'` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply] at this ⊢`. Rewrite using `[← this]`. Establish `h2 : τ ((IsCMField.complexConj F : F →+* F) (H i j)) = (starRingEnd ℂ) (τ (H i j))` using `IsCMField.complexEmbedding_complexConj F τ (H i j)`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isHermitian_gramAt (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (τ : F →+* ℂ) :
     (gramAt H τ).IsHermitian := by
   have hH' : H.map (IsCMField.complexConj F : F →+* F) = Hᵀ := by
@@ -230,6 +255,9 @@ def sigPosH {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) : �
 def sigNegH {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.IsHermitian) : ℕ :=
   Fintype.card {i : Fin n // hA.eigenvalues i < 0}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sigPos_eq_sigPosH {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ}
     {H : Matrix (Fin n) (Fin n) F} (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (τ : F →+* ℂ) :
     sigPos hH τ = sigPosH (isHermitian_gramAt hH τ) := rfl
@@ -271,6 +299,9 @@ def uGroup (σ : S →+* Sᵐᵒᵖ) : Subgroup (Sˣ × Aˣ) where
           rw [← mul_assoc, hcc, one_mul]
       _ = _ := by rw [key, mul_one]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_uGroup {σ : S →+* Sᵐᵒᵖ} {x : Sˣ × Aˣ} :
     x ∈ uGroup σ ↔ ((x.1 : Sˣ) : S) * (σ ((x.1 : Sˣ) : S)).unop = algebraMap A S ((x.2 : Aˣ) : A) := Iff.rfl
 
@@ -286,11 +317,17 @@ def uMap {σ : S →+* Sᵐᵒᵖ} {σ' : S' →+* S'ᵐᵒᵖ} (φ : S →+* S'
     show φ g * (σ' (φ g)).unop = algebraMap A' S' (ψ c)
     rw [hσ, ← map_mul, hx', hj]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem uMap_fst {σ : S →+* Sᵐᵒᵖ} {σ' : S' →+* S'ᵐᵒᵖ} (φ : S →+* S') (ψ : A →+* A')
     (hσ : ∀ x, (σ' (φ x)).unop = φ (σ x).unop) (hj : ∀ a, φ (algebraMap A S a) = algebraMap A' S' (ψ a))
     (x : uGroup (A := A) σ) :
     (((uMap φ ψ hσ hj x : uGroup (A := A') σ') : S'ˣ × A'ˣ).1 : S') = φ ((x : Sˣ × Aˣ).1 : S) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem uMap_snd {σ : S →+* Sᵐᵒᵖ} {σ' : S' →+* S'ᵐᵒᵖ} (φ : S →+* S') (ψ : A →+* A')
     (hσ : ∀ x, (σ' (φ x)).unop = φ (σ x).unop) (hj : ∀ a, φ (algebraMap A S a) = algebraMap A' S' (ψ a))
     (x : uGroup (A := A) σ) :
@@ -308,6 +345,9 @@ def starT (R : Type) [CommRing R] [Algebra ℚ R] : R ⊗[ℚ] C →+* (R ⊗[�
       star).toRatAlgHom
     (fun x _ => Algebra.commute_algebraMap_left x _)).toRingHom
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `MulOpposite.unop (MulOpposite.op (r ⊗ₜ[ℚ] (1 : C)) * MulOpposite.op ((1 : R) ⊗ₜ[ℚ] (star x).unop)) = _`. Rewrite using `[← MulOpposite.op_mul, MulOpposite.unop_op, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+-/
 theorem starT_tmul (R : Type) [CommRing R] [Algebra ℚ R] (r : R) (x : C) :
     (starT star R (r ⊗ₜ x)).unop = r ⊗ₜ (star x).unop := by
   change MulOpposite.unop (MulOpposite.op (r ⊗ₜ[ℚ] (1 : C)) * MulOpposite.op ((1 : R) ⊗ₜ[ℚ] (star x).unop)) = _
@@ -344,9 +384,17 @@ def uSimQ : UQpts star →* ℚˣ := (MonoidHom.snd _ _).comp (UQpts star).subty
 def uSimR (R : Type) [CommRing R] [Algebra ℚ R] : UPts star R →* Rˣ :=
   (MonoidHom.snd _ _).comp (UPts star R).subtype
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem uSimR_ubc (R : Type) [CommRing R] [Algebra ℚ R] (g : UQpts star) :
     ((uSimR R (ubc R g) : Rˣ) : R) = algebraMap ℚ R (uSimQ g : ℚ) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map f (AlgHom.id ℚ C)) ((1 : R) ⊗ₜ (((g : Cˣ × ℚˣ).1 : Cˣ) : C)) = (1 : R') ⊗ₜ (((g : Cˣ × ℚˣ).1 : Cˣ) : C)`. Simplify using `[Algebra.TensorProduct.map_tmul]`.
+
+Apply `Units.ext` to reduce the goal to its premises. Conclude with `f.commutes _`.
+-/
 theorem ubcMap_ubc {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R'] (f : R →ₐ[ℚ] R')
     (g : UQpts star) : ubcMap f (ubc R g) = ubc R' g := by
   apply Subtype.ext
@@ -388,6 +436,9 @@ def FwOf (τ : F →+* PadicAlgCl p) : IntermediateField ℚ_[p] (PadicAlgCl p) 
 def embOf (τ : F →+* PadicAlgCl p) : F →+* FwOf τ :=
   τ.codRestrict (FwOf τ) (fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem embOf_apply (τ : F →+* PadicAlgCl p) (x : F) : ((embOf τ x : FwOf τ) : PadicAlgCl p) = τ x := rfl
 
 end Local
@@ -456,6 +507,11 @@ section BcLemmas
 
 variable {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ} {H : Matrix (Fin n) (Fin n) F}
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.map f (AlgHom.id ℚ F)) (Algebra.TensorProduct.includeRight (((g : GL (Fin n) F × ℚˣ).1 : Matrix (Fin n) (Fin n) F) i j)) = Algebra.TensorProduct.includeRight (((g : GL (Fin n) F × ℚˣ).1 : Matrix (Fin n) (Fin n) F) i j)`.
+
+Simplify using `[Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.map_tmul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [bcMap, bc, simMap_snd]`. Conclude with `f.commutes _`.
+-/
 theorem bcMap_bc {R R' : Type} [CommRing R] [Algebra ℚ R] [CommRing R'] [Algebra ℚ R'] (f : R →ₐ[ℚ] R')
     (g : GQpts F H) : bcMap f (bc R g) = bc R' g := by
   apply Subtype.ext
@@ -516,11 +572,17 @@ def localization₂ : G.GQp →* ℚ_[p]ˣ × ((i : Fin G.m) → GL (Fin G.n) (G
 
 def toP : G.GQ →* ℚ_[p]ˣ × ((i : Fin G.m) → GL (Fin G.n) (G.Fw i)) := G.localization₂.comp (ubc ℚ_[p])
 
+/- English proof (translation)
+Use `show ((((ubc ℚ_[p] g : UPts G.star ℚ_[p]) : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).2 : ℚ_[p]ˣ) : ℚ_[p]) = _`. Simplify using `only [ubc, uMap_snd]`. Both sides reduce to the same expression.
+-/
 theorem toPadic_fst (g : G.GQ) : (((G.toP g).1 : ℚ_[p]ˣ) : ℚ_[p]) = ((G.sim g : ℚ) : ℚ_[p]) := by
   show ((((ubc ℚ_[p] g : UPts G.star ℚ_[p]) : (ℚ_[p] ⊗[ℚ] G.C)ˣ × ℚ_[p]ˣ).2 : ℚ_[p]ˣ) : ℚ_[p]) = _
   simp only [ubc, uMap_snd]
   rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `G.locW w ((1 : ℚ_[p]) ⊗ₜ (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) = _`. Express the relevant statement in the definitionally equal form `(Algebra.ofId ℚ_[p] (Matrix (Fin G.n) (Fin G.n) (G.Fw w)) (1 : ℚ_[p])) * (G.rho w).toRatAlgHom (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) = _`. Rewrite using `[map_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem toPadic_snd (g : G.GQ) (w : G.W) :
     ((G.toP g).2 w : Matrix (Fin G.n) (Fin G.n) (G.Fw w)) = G.rho w (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C) := by
   change G.locW w ((1 : ℚ_[p]) ⊗ₜ (((g : G.Cˣ × ℚˣ).1 : G.Cˣ) : G.C)) = _
@@ -563,19 +625,34 @@ structure Level (G : HTGroup p) where
   K : OpenSubgroup G.GAf
   compact : IsCompact (K : Set G.GAf)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, by simp⟩`.
+-/
 theorem stQ_refl (γ : G.GQ) : G.StQ γ γ := ⟨1, by simp⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Conclude with `⟨x⁻¹, by rw [← hx]; group⟩`.
+-/
 theorem stQ_symm {γ γ' : G.GQ} (h : G.StQ γ γ') : G.StQ γ' γ := by
   obtain ⟨x, hx⟩ := h
   exact ⟨x⁻¹, by rw [← hx]; group⟩
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `h`. Take `⟨y, hy⟩` from `h'`. Conclude with `⟨y * x, by rw [← hy, ← hx]; group⟩`.
+-/
 theorem stQ_trans {γ γ' γ'' : G.GQ} (h : G.StQ γ γ') (h' : G.StQ γ' γ'') : G.StQ γ γ'' := by
   obtain ⟨x, hx⟩ := h
   obtain ⟨y, hy⟩ := h'
   exact ⟨y * x, by rw [← hy, ← hx]; group⟩
 
+/- English proof (translation)
+Introduce `v` and use `⟨1, by simp [toAf, ubcMap_ubc]⟩`.
+-/
 theorem stAf_toAf (γ₀ : G.GQ) : G.StAf γ₀ (G.toAf γ₀) := fun v => ⟨1, by simp [toAf, ubcMap_ubc]⟩
 
+/- English proof (translation)
+Use `show Module.End.IsSemisimple (LinearMap.mulLeft G.F (1 : G.C))`. Rewrite using `[LinearMap.mulLeft_one]`. Conclude with `Module.End.isSemisimple_id`.
+-/
 theorem isSS_one : G.IsSS 1 := by
   show Module.End.IsSemisimple (LinearMap.mulLeft G.F (1 : G.C))
   rw [LinearMap.mulLeft_one]
@@ -607,6 +684,13 @@ instance finiteDimensional_Fw (i : Fin G.m) : FiniteDimensional ℚ_[p] (G.Fw i)
   exact Module.Finite.of_injective (IntermediateField.inclusion hle).toLinearMap
     (IntermediateField.inclusion hle).injective
 
+/- English proof (translation)
+Introduce `v`. Establish `h1 : Matrix.toLin' (G.psiR v ((((1 : G.GR) : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) = LinearMap.id`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `⟨Module.End.isSemisimple_id, fun μ hμ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨x, hx⟩` from `hμ.exists_hasEigenvector`. Establish `h2 : x = μ • x` using `by simpa using hx.apply_eq_smul`. Establish `h3 : μ = 1`. Establish `: (μ - 1) • x = 0` using `by rw [sub_smul, one_smul, ← h2, sub_self]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 this).resolve_right hx.2)`.
+
+Simplify using `[h3]`.
+-/
 theorem isEllR_one : G.IsEllR 1 := by
   intro v
   have h1 : Matrix.toLin' (G.psiR v ((((1 : G.GR) : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) =
@@ -621,6 +705,13 @@ theorem isEllR_one : G.IsEllR 1 := by
     exact sub_eq_zero.1 ((smul_eq_zero.1 this).resolve_right hx.2)
   simp [h3]
 
+/- English proof (translation)
+Take `⟨v⟩ : Nonempty (InfinitePlace G.F)` from `inferInstance`. Use `haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)))`. Establish `hc` using `(h v).2 μ hμ`. Establish `hu : IsUnit (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C))` using `((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1.isUnit).map (G.psiR v)`.
+
+Establish `hdet` using `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`. Take `⟨x, hx⟩` from `hμ.exists_hasEigenvector`. Establish `hμ0 : μ ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : (G.psiR v (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).1 : (ℝ ⊗[ℚ] G.C)ˣ) : ℝ ⊗[ℚ] G.C)) *ᵥ x = 0`.
+
+Simplify `hx.apply_eq_smul` using `[Matrix.toLin'_apply]`. Conclude with `hx.2 (Matrix.eq_zero_of_mulVec_eq_zero hdet h0)`. Rewrite using `[← hc]`. Conclude with `pow_pos (norm_pos_iff.2 hμ0) 2`.
+-/
 theorem sim_pos_of_isEllR {γ : G.GR} (h : G.IsEllR γ) : 0 < (((γ : (ℝ ⊗[ℚ] G.C)ˣ × ℝˣ).2 : ℝˣ) : ℝ) := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace G.F) := inferInstance
   haveI : Nonempty (Fin G.n) := ⟨⟨0, G.n_pos⟩⟩
@@ -639,8 +730,17 @@ theorem sim_pos_of_isEllR {γ : G.GR} (h : G.IsEllR γ) : 0 < (((γ : (ℝ ⊗[�
   rw [← hc]
   exact pow_pos (norm_pos_iff.2 hμ0) 2
 
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalGroup G.GAf := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalGroup G.GR := inferInstance
+/- English proof (translation)
+The claim follows from `inferInstance`.
+-/
 example : IsTopologicalGroup G.GQp := inferInstance
 
 end HTGroup
@@ -649,6 +749,9 @@ section Herm
 
 variable {F : Type} [Field F] [NumberField F] [IsCMField F] {n : ℕ}
 
+/- English proof (translation)
+Use `(Matrix.inv_eq_left_inv ?_).symm` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hA, Matrix.map_one _ (map_zero f) (map_one f)]`.
+-/
 theorem map_nonsingInv {K L : Type*} [CommRing K] [CommRing L] (f : K →+* L) {A : Matrix (Fin n) (Fin n) K}
     (hA : IsUnit A.det) : (A⁻¹).map f = (A.map f)⁻¹ := by
   refine (Matrix.inv_eq_left_inv ?_).symm
@@ -676,15 +779,26 @@ def hermStar (H : Matrix (Fin n) (Fin n) F) (hdet : H.det ≠ 0) :
     apply MulOpposite.unop_injective
     simp [Matrix.map_add, Matrix.transpose_add, Matrix.mul_add, Matrix.add_mul]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem hermStar_apply (H : Matrix (Fin n) (Fin n) F) (hdet : H.det ≠ 0) (x : Matrix (Fin n) (Fin n) F) :
     (hermStar H hdet x).unop = (H.map (IsCMField.complexConj F : F →+* F))⁻¹ *
       (x.map (IsCMField.complexConj F : F →+* F))ᵀ * H.map (IsCMField.complexConj F : F →+* F) := rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[IsCMField.complexConj_apply_apply]`.
+-/
 theorem map_conj_conj (x : Matrix (Fin n) (Fin n) F) :
     (x.map (IsCMField.complexConj F : F →+* F)).map (IsCMField.complexConj F : F →+* F) = x := by
   ext i j
   simp [IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Establish `hT : H.map (IsCMField.complexConj F : F →+* F) = Hᵀ`. Rewrite using `[← Matrix.transpose_transpose (H.map _), hH]`. Establish `hu : IsUnit (H.map (IsCMField.complexConj F : F →+* F)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet |>.isUnit`.
+
+Establish `huH : IsUnit H.det` using `(Ne.isUnit hdet)`. Rewrite using `[hermStar_apply, hermStar_apply, Matrix.map_mul, Matrix.map_mul, map_nonsingInv _ hu, map_conj_conj, Matrix.transpose_map, map_conj_conj, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_nonsing_inv, ← hT]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem hermStar_hermStar {H : Matrix (Fin n) (Fin n) F} (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H)
     (hdet : H.det ≠ 0) (x : Matrix (Fin n) (Fin n) F) :
     (hermStar H hdet (hermStar H hdet x).unop).unop = x := by
@@ -700,6 +814,11 @@ theorem hermStar_hermStar {H : Matrix (Fin n) (Fin n) F} (hH : (H.map (IsCMField
   simp only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hu, Matrix.nonsing_inv_mul _ hu,
     Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hu : IsUnit (H.map (IsCMField.complexConj F : F →+* F)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet |>.isUnit`. Establish `e : ((algebraMap F (Matrix (Fin n) (Fin n) F) a).map (IsCMField.complexConj F : F →+* F))ᵀ = algebraMap F (Matrix (Fin n) (Fin n) F) (IsCMField.complexConj F a)`. Use extensionality with `i j`.
+
+Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.algebraMap_matrix_apply]`. Simplify using `[Matrix.algebraMap_matrix_apply, h, Ne.symm h]`. Rewrite using `[hermStar_apply, e, ← Algebra.commutes, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+-/
 theorem hermStar_algebraMap (H : Matrix (Fin n) (Fin n) F) (hdet : H.det ≠ 0) (a : F) :
     (hermStar H hdet (algebraMap F (Matrix (Fin n) (Fin n) F) a)).unop =
       algebraMap F (Matrix (Fin n) (Fin n) F) (IsCMField.complexConj F a) := by
@@ -714,6 +833,9 @@ theorem hermStar_algebraMap (H : Matrix (Fin n) (Fin n) F) (hdet : H.det ≠ 0) 
     · simp [Matrix.algebraMap_matrix_apply, h, Ne.symm h]
   rw [hermStar_apply, e, ← Algebra.commutes, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Matrix.algebraMap_matrix_apply]`. Simplify using `[Matrix.algebraMap_matrix_apply, h]`.
+-/
 theorem map_algebraMap_eq_scalar {K L : Type*} [Field K] [CommRing L] (f : K →+* L) (a : K) :
     (algebraMap K (Matrix (Fin n) (Fin n) K) a).map f = Matrix.scalar (Fin n) (f a) := by
   ext i j
@@ -721,6 +843,11 @@ theorem map_algebraMap_eq_scalar {K L : Type*} [Field K] [CommRing L] (f : K →
   · subst h; simp [Matrix.algebraMap_matrix_apply]
   · simp [Matrix.algebraMap_matrix_apply, h]
 
+/- English proof (translation)
+Establish `key : ∀ A B : Matrix (Fin n) (Fin n) K, A * B = c • 1 → B * A = c • 1`. Introduce `A B h`. Establish `h1 : A * (c⁻¹ • B) = 1` using `by rw [Matrix.mul_smul, h, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Rewrite `h2` using `[Matrix.smul_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨key A B, key B A⟩`.
+-/
 theorem mul_eq_smul_one_comm {K : Type*} [Field K] {A B : Matrix (Fin n) (Fin n) K} {c : K} (hc : c ≠ 0) :
     A * B = c • 1 ↔ B * A = c • 1 := by
   have key : ∀ A B : Matrix (Fin n) (Fin n) K, A * B = c • 1 → B * A = c • 1 := by
@@ -732,6 +859,13 @@ theorem mul_eq_smul_one_comm {K : Type*} [Field K] {A B : Matrix (Fin n) (Fin n)
       _ = c • 1 := by rw [h2]
   exact ⟨key A B, key B A⟩
 
+/- English proof (translation)
+Establish `hT : H.map (IsCMField.complexConj F : F →+* F) = Hᵀ`. Rewrite using `[← Matrix.transpose_transpose (H.map _), hH]`. Establish `hu : IsUnit (H.map (IsCMField.complexConj F : F →+* F)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet |>.isUnit`.
+
+Establish `e : ∀ M : Matrix (Fin n) (Fin n) F, (H.map (IsCMField.complexConj F : F →+* F))⁻¹ * M = c • 1 ↔ M = c • H.map (IsCMField.complexConj F : F →+* F)` using `fun M => ⟨fun h => by rw [← Matrix.mul_nonsing_inv_cancel_left _ M hu, h, Matrix.mul_smul, Matrix.mul_one], fun h => by rw [h, Matrix.mul_smul, Matrix.nonsing_inv_mul _ hu]⟩`. Rewrite using `[hermStar_apply, mul_eq_smul_one_comm hc, Matrix.mul_assoc, Matrix.mul_assoc, e, hT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact.
+
+Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem hermStar_mul_eq_iff {H : Matrix (Fin n) (Fin n) F}
     (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (hdet : H.det ≠ 0) {c : F} (hc : c ≠ 0)
     (g : Matrix (Fin n) (Fin n) F) :
@@ -754,6 +888,9 @@ theorem hermStar_mul_eq_iff {H : Matrix (Fin n) (Fin n) F}
     have := congrArg Matrix.transpose h
     simpa [Matrix.transpose_mul, Matrix.mul_assoc] using this
 
+/- English proof (translation)
+Establish `hc : algebraMap ℚ F (x.2 : ℚ) ≠ 0` using `(map_ne_zero _).2 x.2.ne_zero`. Rewrite using `[UQpts, mem_uGroup, ← hermStar_mul_eq_iff hH hdet hc, Algebra.algebraMap_eq_smul_one, algebraMap_smul]`.
+-/
 theorem mem_UQpts_hermStar_iff {H : Matrix (Fin n) (Fin n) F}
     (hH : (H.map (IsCMField.complexConj F : F →+* F))ᵀ = H) (hdet : H.det ≠ 0)
     (x : (Matrix (Fin n) (Fin n) F)ˣ × ℚˣ) :
@@ -828,13 +965,24 @@ instance isCyclotomicExtension_QI : IsCyclotomicExtension {4} ℚ QI := Cyclotom
 
 instance isCMField_QI : IsCMField QI := IsCyclotomicExtension.Rat.isCMField (S := {4}) QI ⟨4, rfl, by norm_num⟩
 
+/- English proof (translation)
+Use `IsCyclotomicExtension.finrank (n := 4) QI (Polynomial.cyclotomic.irreducible_rat (by norm_num))` as an intermediate fact. Rewrite using `[this]`. Evaluate the decidable proposition.
+-/
 theorem finrank_QI : Module.finrank ℚ QI = 2 := by
   have := IsCyclotomicExtension.finrank (n := 4) QI (Polynomial.cyclotomic.irreducible_rat (by norm_num))
   rw [this]; decide
 
+/- English proof (translation)
+The claim follows from `((IsCyclotomicExtension.zeta_spec 4 ℚ QI).pow (by norm_num) (show 4 = 2 * 2 by norm_num)).eq_neg_one_of_two_right`.
+-/
 theorem zeta_sq : (IsCyclotomicExtension.zeta 4 ℚ QI) ^ 2 = -1 :=
   ((IsCyclotomicExtension.zeta_spec 4 ℚ QI).pow (by norm_num) (show 4 = 2 * 2 by norm_num)).eq_neg_one_of_two_right
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[← finrank_QI]`. Conclude with `LinearEquiv.finrank_eq { toFun := fun x => (x : QI), invFun := fun x => ⟨x, Subfield.mem_top x⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Introduce `τ`. Use `⟨IsCyclotomicExtension.zeta 4 ℚ QI, Subfield.mem_top _, fun h => ?_⟩` and prove the remaining obligations.
+
+Establish `h3` using `congrArg (fun z => (τ z).re) zeta_sq`. Simplify using `only [map_pow, map_neg, map_one, pow_two, map_mul, Complex.mul_re, h, Complex.neg_re, Complex.one_re] at h3`. Use polynomial arithmetic with `[mul_self_nonneg (τ (IsCyclotomicExtension.zeta 4 ℚ QI)).re]`.
+-/
 theorem hK_QI : Module.finrank ℚ (⊤ : Subfield QI) = 2 ∧ ∀ τ : QI →+* ℂ, ∃ x ∈ (⊤ : Subfield QI), (τ x).im ≠ 0 := by
   constructor
   · rw [← finrank_QI]
@@ -850,6 +998,15 @@ theorem hK_QI : Module.finrank ℚ (⊤ : Subfield QI) = 2 ∧ ∀ τ : QI →+*
 
 instance fact_prime_five : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
+/- English proof (translation)
+Establish `h2 : ‖(2 : ℤ_[5])‖ = 1`. Use `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)` as an intermediate fact. Simplify using `using this`. Establish `h5 : ‖(5 : ℤ_[5])‖ < 1`. Use `PadicInt.norm_p (p := 5)` as an intermediate fact.
+
+Simplify using `only [Nat.cast_ofNat] at this`. Rewrite using `[this]`. Evaluate the numerical expressions. Establish `hn : ‖(Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).aeval (2 : ℤ_[5])‖ < ‖(Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).derivative.aeval (2 : ℤ_[5])‖ ^ 2`. Establish `e1 : (Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).aeval (2 : ℤ_[5]) = 5` using `by simp; norm_num`.
+
+Establish `e2 : (Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).derivative.aeval (2 : ℤ_[5]) = 2 * 2` using `by simp; norm_num`. Rewrite using `[e1, e2, norm_mul, h2]`. Simplify using `using h5`. Take `⟨s, hs, -⟩` from `hensels_lemma hn`. Use `⟨s, ?_⟩` and prove the remaining obligations.
+
+Simplify using `at hs`. Take the linear combination `hs`.
+-/
 theorem exists_sqrt_neg_one : ∃ s : ℤ_[5], s * s = -1 := by
   have h2 : ‖(2 : ℤ_[5])‖ = 1 := by
     have := (PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)
@@ -872,6 +1029,11 @@ theorem exists_sqrt_neg_one : ∃ s : ℤ_[5], s * s = -1 := by
 
 def sqrtNegOne : ℚ_[5] := ((exists_sqrt_neg_one.choose : ℤ_[5]) : ℚ_[5])
 
+/- English proof (translation)
+Establish `h` using `exists_sqrt_neg_one.choose_spec`. Establish `h'` using `congrArg (fun z : ℤ_[5] => (z : ℚ_[5])) h`. Simplify using `only [PadicInt.coe_mul, PadicInt.coe_neg, PadicInt.coe_one] at h'`. Unfold `sqrtNegOne`. Rewrite using `[pow_two, h']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sqrtNegOne_sq : sqrtNegOne ^ 2 + 1 = 0 := by
   have h := exists_sqrt_neg_one.choose_spec
   have h' := congrArg (fun z : ℤ_[5] => (z : ℚ_[5])) h
@@ -889,9 +1051,17 @@ def gaussianToQFive : QI →+* ℚ_[5] :=
 
 def Hc (c : ℚ) : Matrix (Fin 1) (Fin 1) QI := !![(c : QI)]
 
+/- English proof (translation)
+Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[Hc]`.
+-/
 theorem herm_Hc (c : ℚ) : ((Hc c).map (IsCMField.complexConj QI : QI →+* QI))ᵀ = Hc c := by
   ext i j; fin_cases i; fin_cases j; simp [Hc]
 
+/- English proof (translation)
+Establish `h` using `(isHermitian_gramAt (herm_Hc c) τ).det_eq_prod_eigenvalues`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [Fin.prod_univ_one, gramAt, Hc, Matrix.det_unique, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_fin_one, map_ratCast] at h`. Establish `h' : ((isHermitian_gramAt (herm_Hc c) τ).eigenvalues 0 : ℂ) = ((c : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_ratCast]`.
+
+Apply the tactic sequence `first | exact h | exact h.symm`. Conclude with `h'` after adjusting the coercions.
+-/
 theorem eig_Hc (c : ℚ) (τ : QI →+* ℂ) (i : Fin 1) :
     (isHermitian_gramAt (herm_Hc c) τ).eigenvalues i = c := by
   have h := (isHermitian_gramAt (herm_Hc c) τ).det_eq_prod_eigenvalues
@@ -902,6 +1072,11 @@ theorem eig_Hc (c : ℚ) (τ : QI →+* ℂ) (i : Fin 1) :
     rw [Complex.ofReal_ratCast]; first | exact h | exact h.symm
   exact_mod_cast h'
 
+/- English proof (translation)
+Unfold `sigPos sigNeg`. Simplify using `only [eig_Hc]`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases. Use `right`. Establish `h' : (c : ℝ) < 0` using `by exact_mod_cast h`.
+
+Simplify using `[h', not_lt.2 h'.le]`. Use `left`. Establish `h' : (0 : ℝ) < c` using `by exact_mod_cast h`. Simplify using `[h', not_lt.2 h'.le]`.
+-/
 theorem sig_Hc (c : ℚ) (hc : c ≠ 0) (τ : QI →+* ℂ) :
     (sigPos (herm_Hc c) τ = 1 ∧ sigNeg (herm_Hc c) τ = 1 - 1) ∨ (sigPos (herm_Hc c) τ = 0 ∧ sigNeg (herm_Hc c) τ = 1) := by
   unfold sigPos sigNeg
@@ -924,16 +1099,36 @@ def ex (c : ℚ) (hc : c ≠ 0) : HTGroup 5 :=
     (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
       (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 example : (ex 1 one_ne_zero).n = 1 := rfl
+/- English proof (translation)
+The claim follows from `HTGroup.isSS_one _`.
+-/
 example : (ex (-1) (by norm_num)).IsSS 1 := HTGroup.isSS_one _
+/- English proof (translation)
+The claim follows from `HTGroup.stQ_refl _ γ`.
+-/
 example (γ : (ex 1 one_ne_zero).GQ) : (ex 1 one_ne_zero).StQ γ γ := HTGroup.stQ_refl _ γ
+/- English proof (translation)
+The claim follows from `HTGroup.isEllR_one _`.
+-/
 example : (ex 1 one_ne_zero).IsEllR 1 := HTGroup.isEllR_one _
+/- English proof (translation)
+The claim follows from `(ex 1 one_ne_zero).rankC.trans rfl`.
+-/
 example : Module.finrank (ex 1 one_ne_zero).F (ex 1 one_ne_zero).C = 1 := (ex 1 one_ne_zero).rankC.trans rfl
 
 end Example
 
 namespace Example
 
+/- English proof (translation)
+Unfold `sigPos`. Simplify using `only [eig_Hc]`. Use `split_ifs with h`. Establish `h' : (0 : ℝ) < c` using `by exact_mod_cast h`. Simplify using `[h']`.
+
+Establish `h' : ¬ (0 : ℝ) < c` using `by exact_mod_cast h`. Simplify using `[h']`.
+-/
 theorem sigPos_Hc (c : ℚ) (τ : QI →+* ℂ) : sigPos (herm_Hc c) τ = if 0 < c then 1 else 0 := by
   unfold sigPos
   simp only [eig_Hc]
@@ -943,6 +1138,9 @@ theorem sigPos_Hc (c : ℚ) (τ : QI →+* ℂ) : sigPos (herm_Hc c) τ = if 0 <
   · have h' : ¬ (0 : ℝ) < c := by exact_mod_cast h
     simp [h']
 
+/- English proof (translation)
+Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank QI`. Establish `h2 : NumberField.InfinitePlace.nrRealPlaces QI = 0` using `NumberField.IsTotallyComplex.nrRealPlaces_eq_zero QI`. Rewrite `h1` using `[finrank_QI, h2]`. Rewrite using `[NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, h2]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem card_infinitePlace_QI : Fintype.card (InfinitePlace QI) = 1 := by
   have h1 := NumberField.InfinitePlace.card_add_two_mul_card_eq_rank QI
   have h2 : NumberField.InfinitePlace.nrRealPlaces QI = 0 := NumberField.IsTotallyComplex.nrRealPlaces_eq_zero QI
@@ -950,11 +1148,17 @@ theorem card_infinitePlace_QI : Fintype.card (InfinitePlace QI) = 1 := by
   rw [NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, h2]
   omega
 
+/- English proof (translation)
+Use `show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc 1) v.embedding = 1} = 1`. Simplify using `only [sigPos_Hc, zero_lt_one, if_true]`. Rewrite using `[Fintype.card_subtype_true, card_infinitePlace_QI]`.
+-/
 theorem a_ex_one : (ex 1 one_ne_zero).a = 1 := by
   show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc 1) v.embedding = 1} = 1
   simp only [sigPos_Hc, zero_lt_one, if_true]
   rw [Fintype.card_subtype_true, card_infinitePlace_QI]
 
+/- English proof (translation)
+Use `show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc (-1)) v.embedding = 1} = 0`. Simplify using `[sigPos_Hc]`.
+-/
 theorem a_ex_neg_one : (ex (-1) (by norm_num)).a = 0 := by
   show Fintype.card {v : InfinitePlace QI // sigPos (herm_Hc (-1)) v.embedding = 1} = 0
   simp [sigPos_Hc]

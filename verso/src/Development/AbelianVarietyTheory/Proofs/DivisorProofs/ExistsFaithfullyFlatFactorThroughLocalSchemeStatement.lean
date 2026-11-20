@@ -7,5 +7,8 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.Toroidal GlobalTheory.LocM G
 open scoped CategoryTheory.Obj
 open GlobalTheory.Desc
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme | exact GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme | (intros; apply GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_faithfullyFlat_factor_through_local_scheme : ∀ (S : Scheme.{0}) (R₁ : Type) [CommRing R₁] [IsLocalRing R₁] (ξ : Sp R₁ ⟶ S) (x : S), ξ (closedPoint R₁) = x → Flat ξ → ∃ ξ' : Sp R₁ ⟶ Spec (S.presheaf.stalk x), ξ' ≫ S.fromSpecStalk x = ξ ∧ Flat ξ' ∧ Surjective ξ' ∧ QuasiCompact ξ' := by
   first | exact @GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme | exact GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme | (intros; apply GlobalTheory.Desc.exists_faithfullyFlat_factor_localScheme <;> assumption)

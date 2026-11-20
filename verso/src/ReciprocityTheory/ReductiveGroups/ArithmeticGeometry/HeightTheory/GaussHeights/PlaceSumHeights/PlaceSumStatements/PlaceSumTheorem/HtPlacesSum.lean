@@ -2,6 +2,9 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.HeightTheory.GaussHe
 
 open NumberField
 
+/- English proof (translation)
+The claim follows from `PI.HtPlacesSumWork.places_over_height_one_prime 𝒜 d`.
+-/
 theorem HtPlacesSum {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Ω : ι → Type}
     [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] {WT : Type} [AddCommGroup WT] {A : ι → Type}
     [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)]

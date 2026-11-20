@@ -10,6 +10,11 @@ namespace GlobalTheory.InfZeroFinSum
 
 open Module
 
+/- English proof (translation)
+Establish `hz : z = ∑ i, (Algebra.TensorProduct.basis A b).repr z i • (Algebra.TensorProduct.basis A b) i` using `((Algebra.TensorProduct.basis A b).sum_repr z).symm`. Establish `hm : Algebra.TensorProduct.map f (AlgHom.id F E) z = ∑ i, f ((Algebra.TensorProduct.basis A b).repr z i) • (Algebra.TensorProduct.basis A' b) i` using `by conv_lhs => rw [hz]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+
+Rewrite using `[hm, (Algebra.TensorProduct.basis A' b).repr_sum_self]`.
+-/
 theorem repr_map_id {F A A' E ι : Type*} [Field F] [CommRing A] [Algebra F A] [CommRing A'] [Algebra F A']
     [CommRing E] [Algebra F E] [Fintype ι] [DecidableEq ι] (b : Basis ι F E) (f : A →ₐ[F] A')
     (z : A ⊗[F] E) (k : ι) :
@@ -26,6 +31,13 @@ theorem repr_map_id {F A A' E ι : Type*} [Field F] [CommRing A] [Algebra F A] [
       Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
   rw [hm, (Algebra.TensorProduct.basis A' b).repr_sum_self]
 
+/- English proof (translation)
+Establish `h1 : ∀ k, ((Algebra.TensorProduct.basis (Ai × Afn) b).repr z k).1 = 0`. Introduce `k`. Use `repr_map_id b (AlgHom.fst F Ai Afn) z k` as an intermediate fact. Rewrite `this` using `[hz, map_zero]`. Simplify using `using this.symm`.
+
+Use `conv_lhs => rw [← (Algebra.TensorProduct.basis (Ai × Afn) b).sum_repr z]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[repr_map_id b (AlgHom.snd F Ai Afn) z k]`. Establish `hc : (Algebra.TensorProduct.basis (Ai × Afn) b).repr z k = ((0 : Ai), AlgHom.snd F Ai Afn ((Algebra.TensorProduct.basis (Ai × Afn) b).repr z k))` using `Prod.ext (h1 k) rfl`. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Conclude with `congrArg (fun x => x ⊗ₜ[F] b k) hc`.
+-/
 theorem eq_sum_of_fst_zero {F Ai Afn E ι : Type*} [Field F] [CommRing Ai] [Algebra F Ai] [CommRing Afn]
     [Algebra F Afn] [CommRing E] [Algebra F E] [Fintype ι] [DecidableEq ι] (b : Basis ι F E)
     (z : (Ai × Afn) ⊗[F] E)
@@ -48,6 +60,9 @@ theorem eq_sum_of_fst_zero {F Ai Afn E ι : Type*} [Field F] [CommRing Ai] [Alge
 
 end GlobalTheory.InfZeroFinSum
 
+/- English proof (translation)
+Introduce `D z hz`. Conclude with `GlobalTheory.InfZeroFinSum.eq_sum_of_fst_zero (Module.finBasis D.host.F D.host.E) z hz`.
+-/
 theorem GlobalTheory.InfZeroFinSum.eq_sum_finCoord_of_infPart_eq_zero : ∀ (D : D7) (z : AE D), infPart D z = 0 → z = ∑ k, pairA D.host.F 0 (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D (GlobalTheory.HolDict.ShortVec.finPr D z) k) ⊗ₜ[D.host.F] Module.finBasis D.host.F D.host.E k := by
   intro D z hz
   exact GlobalTheory.InfZeroFinSum.eq_sum_of_fst_zero (Module.finBasis D.host.F D.host.E) z hz

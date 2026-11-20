@@ -16,5 +16,8 @@ open GlobalTheory.Core.Rk.IP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | exact GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | (intros; apply GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.euler_factor_from_doubling : GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.IndefiniteRowSideFullHecke.SimplePoleTwistedLift.SimplePole → ∀ D : D7, EulerRight D → DownNe D := by
   first | exact @GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | exact GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses | (intros; apply GlobalTheory.Core.Rk.Exh.Top.downNe_of_hypotheses <;> assumption)

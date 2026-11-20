@@ -15,6 +15,19 @@ open GlobalTheory.CompanionTheory.FexTheta
 noncomputable section
 namespace GlobalTheory.CompanionTheory.FexTheta
 
+/- English proof (translation)
+Introduce `K _ _ h2 c v m hok hsp g κ`. Establish `hstd : IsStd (GP.psiF v)` using `GlobalTheory.CompanionTheory.StdCharQ.stdChar v`. Establish `hχc : Continuous ((GP.psiF v)⁻¹ : AddChar (Qv v) Circle)`. Establish `: (((GP.psiF v)⁻¹ : AddChar (Qv v) Circle) : Qv v → Circle) = fun x => (GP.psiF v x)⁻¹`. Use function extensionality and compare the values at `x`.
+
+Conclude with `AddChar.inv_apply' _ _`. Rewrite using `[this]`. Conclude with `hstd.1.inv`. Establish `hχ1 : (GP.psiF v)⁻¹ ≠ 1` using `inv_ne_one.mpr hstd.2.1`. Consider the cases of `m with`.
+
+Consider the case `@sp w₁ w₂ i₁ i₂ Φ => exact absurd trivial hsp`. Consider the case `@ns w i σ η Φ => haveI := i`. Take `⟨hu, hσ, hη, hΦ⟩` from `hok`. Establish `hN : ((nv v κ : (Qv v)ˣ) : Qv v) = Algebra.norm (Qv v) ((atW w κ : (Kv K w)ˣ) : Kv K w)`. Establish `h1` using `GlobalTheory.T.local_norm_at_inert_place K h2 v w hu (κ : K)`.
+
+Establish `h3` using `GlobalTheory.T.local_component_rational_idele v (Units.map (Algebra.norm ℚ : K →* ℚ) κ)`. Use `show ((Ad3.R.lc v (pri (Units.map (Algebra.norm ℚ : K →* ℚ) κ)) : (Qv v)ˣ) : Qv v) = Algebra.norm (Qv v) (algebraMap K (Kv K w) (κ : K))`. Rewrite using `[h3, h1]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.T.field_weil_action_diagonal (Qv v) _ hχc hχ1 (Kv K w) (GlobalTheory.CompanionTheory.QuadPlace.finrank_eq_two_of_ne_refl K h2 v w i σ hσ) (continuous_adicCompletionMap v w) σ hσ η hη _ Φ hΦ (atW w κ) (nv v κ) hN g 1`.
+
+Rewrite `key` using `[one_mul]`. Establish `hWc : ∀ h : GL (Fin 2) (Qv v), (LM.ns w σ η Φ : LM c v).W h = GL2LocalData.piE (Kv K w) (GP.psiF v)⁻¹ σ η (localChar c w) h Φ 1`. Introduce `h`. Both sides reduce to the same expression. Rewrite using `[hWc, key]`.
+
+Both sides reduce to the same expression.
+-/
 theorem whittaker_diagonal_norm_field : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ¬ L.IsSp → ∀ (g : GL (Fin 2) (Qv v)) (κ : Kˣ),
     L.W (dg2 (nv v κ) 1 * g) = cW L κ * mp (nv v κ) (1 / 2) * locI L g κ := by

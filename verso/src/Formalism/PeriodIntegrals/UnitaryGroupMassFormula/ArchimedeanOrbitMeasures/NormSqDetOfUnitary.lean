@@ -30,6 +30,9 @@ def mulCR (c : Matrix (Fin n) (Fin n) ℂ) :
   (reimE (r := n) (m := m)).toLinearMap ∘ₗ ((mulLC (c := m) c).restrictScalars ℝ) ∘ₗ
     (reimE (r := n) (m := m)).symm.toLinearMap
 
+/- English proof (translation)
+Unfold `mulCR`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.coe_restrictScalars, mulLC_apply]`. Both sides reduce to the same expression.
+-/
 theorem mulCR_apply (c : Matrix (Fin n) (Fin n) ℂ) (y : EuclideanSpace ℝ (Fin n × Fin m × Bool)) :
     mulCR c y = reim (c * Matrix.of ((reimE (r := n) (m := m)).symm y)) := by
   unfold mulCR
@@ -44,6 +47,17 @@ def flatL (V β : Type) [Fintype V] [Fintype β] :
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Establish `hmeas : Measurable (fun z : V → β → ℝ => Function.uncurry z)`. Establish `h` using `(MeasurableEquiv.curry V β ℝ).symm.measurable`. Rewrite `h` using `[MeasurableEquiv.coe_curry_symm]`. Conclude with `h`. Establish `hU : MeasurePreserving (fun z : V → β → ℝ => Function.uncurry z) volume volume`.
+
+Use `⟨hmeas, ?_⟩` and prove the remaining obligations. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.map_apply hmeas (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun z : V → β → ℝ => Function.uncurry z) ⁻¹' Set.pi Set.univ s = Set.pi Set.univ (fun v => Set.pi Set.univ (fun b => s (v, b)))`. Use extensionality with `z`.
+
+Simplify using `[Function.uncurry]`. Rewrite using `[hpre, volume_pi, Measure.pi_pi]`. Simplify using `only [volume_pi, Measure.pi_pi]`. Rewrite using `[Fintype.prod_prod_type]`. Establish `hP` using `volume_preserving_pi (fun _ : V => PiLp.volume_preserving_ofLp β)`.
+
+Establish `hT` using `PiLp.volume_preserving_toLp (V × β)`. Establish `h` using `(hT.comp hU).comp hP`. Establish `hf : (⇑(flatL V β)) = (WithLp.toLp 2 ∘ fun z : V → β → ℝ => Function.uncurry z) ∘ (fun z : V → EuclideanSpace ℝ β => fun v => WithLp.ofLp (z v))`. Use function extensionality and compare the values at `z`. Both sides reduce to the same expression.
+
+Rewrite using `[hf]`. Conclude with `h.map_eq`.
+-/
 theorem flatL_pres (V β : Type) [Fintype V] [Fintype β] :
     (Measure.pi fun _ : V => (volume : Measure (EuclideanSpace ℝ β))).map (flatL V β) = volume := by
   classical
@@ -72,11 +86,21 @@ theorem flatL_pres (V β : Type) [Fintype V] [Fintype β] :
   rw [hf]
   exact h.map_eq
 
+/- English proof (translation)
+Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 (fun a _ => by split_ifs <;> norm_num)`.
+-/
 theorem detJm_ne {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε).det ≠ 0 := by
   unfold Formalism.REAL.Jm
   rw [Matrix.det_diagonal]
   exact Finset.prod_ne_zero_iff.2 (fun a _ => by split_ifs <;> norm_num)
 
+/- English proof (translation)
+Establish `h` using `congrArg Matrix.det hc`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hJ` using `detJm_ne ε`. Establish `h2 : star c.det * c.det = 1`. Establish `e : (star c.det * c.det) * (Formalism.REAL.Jm ε).det = 1 * (Formalism.REAL.Jm ε).det`.
+
+Rewrite using `[one_mul]`. Use `nth_rewrite 2 [← h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_right_cancel₀ hJ e`. Establish `h3 : ((Complex.normSq c.det : ℝ) : ℂ) = 1`.
+
+Rewrite using `[← Complex.mul_conj, mul_comm]`. Conclude with `h2`. Conclude with `h3` after adjusting the coercions.
+-/
 theorem normSq_det_of_unitary {n : ℕ} (ε : Fin n → Bool) (c : Matrix (Fin n) (Fin n) ℂ)
     (hc : cᴴ * Formalism.REAL.Jm ε * c = Formalism.REAL.Jm ε) : Complex.normSq c.det = 1 := by
   have h := congrArg Matrix.det hc
@@ -93,6 +117,29 @@ theorem normSq_det_of_unitary {n : ℕ} (ε : Fin n → Bool) (c : Matrix (Fin n
     exact h2
   exact_mod_cast h3
 
+/- English proof (translation)
+Introduce `V _ n m ε S w c ι κ _ _ L H hn hw hG hc hL1 hL2 hL3 hH1 hH2 hH3`. Take `⟨ιv, _, Lv, T, hLQ, hLn, hLs, hLT, hTb, hTn⟩` from `place_split L (fun v M => Mᴴ * Formalism.REAL.Jm (ε v) + Formalism.REAL.Jm (ε v) * M = 0 ∧ ∀ i ∈ S v, ∀ j ∈ S v, M i j = 0) hL1 (fun v => ⟨by simp, fun i _ j _ => rfl⟩) hL2 hL3`. Take `⟨κv, _, Hv, T', hHQ, hHn, hHs, hHT, hT'b, hT'n⟩` from `place_split H (fun v M => Mᴴ = M) hH1 (fun v => by simp) hH2 hH3`. Set `G : V → Matrix (Fin m) (Fin m) ℂ` to `fun v => (w v)ᴴ * Formalism.REAL.Jm (ε v) * w v`. Set `cst : V → ℝ` to `fun v => 2 ^ (n * m) / ‖(G v).det‖ ^ (S v).card`.
+
+Establish `hcst : ∀ v, 0 < cst v` using `fun v => div_pos (by positivity) (pow_pos (norm_pos_iff.2 (hG v)) _)`. Set `Φ : ∀ v, (EuclideanSpace ℝ (ιv v) × EuclideanSpace ℝ (κv v)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n × Fin m × Bool)` to `fun v => mulCR (c v) ∘ₗ (reimE (r := n) (m := m)).toLinearMap ∘ₗ jacM (w v) (w v * (G v)⁻¹) (Lv v) (Hv v)`. Establish `hΦ : ∀ v z, Φ v z = reim (c v * (Lv v z.1 * w v + (1 / 2 : ℂ) • (w v * (G v)⁻¹ * Hv v z.2)))`. Introduce `v z`. Simplify using `only [Φ, LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, mulCR_apply]`.
+
+Use `congr 2`. Establish `hPJ : ∀ v, (volume : Measure (EuclideanSpace ℝ (ιv v) × EuclideanSpace ℝ (κv v))).map (fun z => reim (Lv v z.1 * w v + (1 / 2 : ℂ) • (w v * (G v)⁻¹ * Hv v z.2))) = ENNReal.ofReal (cst v) • volume` using `fun v => h n m (ε v) (S v) (w v) (Lv v) (Hv v) (hn v) (hw v) (hG v) (hLQ v) (hLn v) (fun M h1 h2 => hLs v M ⟨h1, h2⟩) (hHQ v) (hHn v) (hHs v)`. Establish `hd : ∀ v, (c v).det ≠ 0` using `fun v h0 => by`. Use `normSq_det_of_unitary (ε v) (c v) (hc v)` as an intermediate fact. Rewrite `this` using `[h0]`.
+
+Simplify using `at this`. Establish `hΦm : ∀ v, (volume : Measure (EuclideanSpace ℝ (ιv v) × EuclideanSpace ℝ (κv v))).map (Φ v) = ((cst v).toNNReal : ℝ≥0∞) • volume`. Introduce `v`. Establish `e : (Φ v : _ → _) = (mulCR (m` using `m) (c v)) ∘ (fun z => reim (Lv v z.1 * w v + (1 / 2 : ℂ) • (w v * (G v)⁻¹ * Hv v z.2))) := rfl`. Establish `hm1 : Measurable (fun z : EuclideanSpace ℝ (ιv v) × EuclideanSpace ℝ (κv v) => reim (Lv v z.1 * w v + (1 / 2 : ℂ) • (w v * (G v)⁻¹ * Hv v z.2)))` using `((reimE (r := n) (m := m)).toLinearMap ∘ₗ jacM (w v) (w v * (G v)⁻¹) (Lv v) (Hv v)).continuous_of_finiteDimensional.measurable`.
+
+Rewrite using `[e, ← Measure.map_map (mulCR (m := m) (c v)).continuous_of_finiteDimensional.measurable hm1, hPJ v, Measure.map_smul]`. Establish `hC : (volume : Measure (EuclideanSpace ℝ (Fin n × Fin m × Bool))).map (mulCR (m` using `m) (c v)) = volume := by`. Establish `e2 : (mulCR (m` using `m) (c v) : _ → _) = fun y => reim (c v * Matrix.of ((reimE (r := n) (m := m)).symm y)) := funext (mulCR_apply (c v))`. Rewrite using `[e2, map_mulL (c v) (hd v), normSq_det_of_unitary (ε v) (c v) (hc v)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hC]`. Both sides reduce to the same expression. Set `F : (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ) →ₗ[ℝ] EuclideanSpace ℝ (V × Fin n × Fin m × Bool)` to `flatL V (Fin n × Fin m × Bool) ∘ₗ (LinearMap.pi fun v => Φ v ∘ₗ LinearMap.prodMap (LinearMap.proj v ∘ₗ T) (LinearMap.proj v ∘ₗ T'))`. Establish `hF : ∀ z, F z = reimV (fun v => c v * (L z.1 v * w v + (1 / 2 : ℂ) • (w v * ((w v)ᴴ * Formalism.REAL.Jm (ε v) * w v)⁻¹ * H z.2 v)))`. Introduce `z`.
+
+Establish `e1 : F z = flatL V (Fin n × Fin m × Bool) (fun v => Φ v (T z.1 v, T' z.2 v))` using `rfl`. Rewrite using `[e1]`. Simplify using `only [hΦ, hLT, hHT]`. Both sides reduce to the same expression. Establish `hmT` using `PI.AprimeInfG.measurePreserving_of_normSq T hTb hTn`.
+
+Establish `hmT'` using `PI.AprimeInfG.measurePreserving_of_normSq T' hT'b hT'n`. Establish `h12` using `hmT.prod hmT'`. Establish `h3` using `MeasurePreserving.symm (PI.AprimeInfG.piProdEquiv (fun v => EuclideanSpace ℝ (ιv v)) (fun v => EuclideanSpace ℝ (κv v))) (PI.AprimeInfG.measurePreserving_piProdEquiv (fun v => EuclideanSpace ℝ (ιv v)) (fun v => EuclideanSpace ℝ (κv v)) (fun v => volume) (fun v => volume))`. Establish `h123` using `h3.comp h12`. Establish `hPm : Measurable (fun x : ∀ v, EuclideanSpace ℝ (ιv v) × EuclideanSpace ℝ (κv v) => fun v => Φ v (x v))` using `measurable_pi_lambda _ fun v => (Φ v).continuous_of_finiteDimensional.measurable.comp (measurable_pi_apply v)`.
+
+Establish `h4` using `pi_map_smul (fun v => (volume : Measure (EuclideanSpace ℝ (ιv v))).prod volume) (fun v => (volume : Measure (EuclideanSpace ℝ (Fin n × Fin m × Bool)))) (fun v => Φ v) (fun v => (Φ v).continuous_of_finiteDimensional.measurable) (fun v => (cst v).toNNReal) (fun v => by rw [ENNReal. …`. Establish `hfun : (F : _ → _) = flatL V (Fin n × Fin m × Bool) ∘ ((fun x v => Φ v (x v)) ∘ ((PI.AprimeInfG.piProdEquiv (fun v => EuclideanSpace ℝ (ιv v)) (fun v => EuclideanSpace ℝ (κv v))).symm ∘ Prod.map T T'))` using `rfl`. Establish `hmap : (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)).map F = ENNReal.ofReal (∏ v, cst v) • volume`. Rewrite using `[hfun, ← Measure.map_map (flatL V (Fin n × Fin m × Bool)).continuous_of_finiteDimensional.measurable (hPm.comp h123.measurable), ← Measure.map_map hPm h123.measurable, show (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)) = volume.prod volume from rfl, h123.map_eq, h4 …`. Both sides reduce to the same expression.
+
+Establish `hpos : ENNReal.ofReal (∏ v, cst v) ≠ 0`. Rewrite using `[ne_eq, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `Finset.prod_pos fun v _ => hcst v`. Establish `: (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)).IsAddHaarMeasure`. Rewrite using `[show (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)) = volume.prod volume from rfl]`.
+
+Use `infer_instance`. Establish `hbij` using `bij_of_map (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ κ)) volume F _ hpos ENNReal.ofReal_ne_top hmap`. Conclude with `⟨(LinearEquiv.ofBijective F hbij).toContinuousLinearEquiv, fun z => hF z, hmap⟩`.
+-/
 theorem placeJacAll_of (h : PlaceJac) : PlaceJacAll := by
   classical
   intro V _ n m ε S w c ι κ _ _ L H hn hw hG hc hL1 hL2 hL3 hH1 hH2 hH3

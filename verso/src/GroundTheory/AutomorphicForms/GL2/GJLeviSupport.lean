@@ -15,6 +15,43 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {α : Type*} [LinearOrder α] {β : Fin n → α}
   {W : Type*} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (levi F n β) W}
 
+/- English proof (translation)
+Set `KM : ℕ → Subgroup (levi F n β)` to `fun m => (congruenceSubgroup F n m).subgroupOf (levi F n β)`. Establish `hKMo : ∀ m, IsOpen (KM m : Set (levi F n β))` using `fun m => isOpen_subgroupOf_levi (isOpen_congruenceSubgroup F n m)`. Establish `hKManti : ∀ {m m' : ℕ}, m ≤ m' → KM m' ≤ KM m` using `fun h x hx => Subgroup.mem_subgroupOf.2 (congruenceSubgroup_antitone F n h (Subgroup.mem_subgroupOf.1 hx))`. Take `⟨m₀, hm₀⟩` from `exists_subgroupOf_congruenceSubgroup_subset ((hσ w).mem_nhds (one_mem (stabilizerOf σ w)))`. Take `⟨m₁, hm₁⟩` from `exists_subgroupOf_congruenceSubgroup_subset ((mem_smoothVectors.1 hℓ).mem_nhds (one_mem (stabilizerOf (Representation.dual σ) ℓ)))`.
+
+Use `set m := max m₀ m₁ with hmdef`. Use `set K := KM m with hKdef`. Establish `hwK : w ∈ fixedVectors σ K` using `fun k hk => hm₀ (hKManti (le_max_left _ _) hk)`. Establish `hℓK : ∀ k ∈ K, ∀ x, ℓ (σ k x) = ℓ x` using `mem_fixedVectors_dual.1 fun k hk => hm₁ (hKManti (le_max_right _ _) hk)`. Set `K₀ : Subgroup (levi F n β)` to `(integralGL F n).subgroupOf (levi F n β)`.
+
+Establish `hK₀c : IsCompact (K₀ : Set (levi F n β))` using `isCompact_subgroupOf_levi (isCompact_integralGL F n)`. Establish `: CompactSpace K₀` using `isCompact_iff_compactSpace.1 hK₀c`. Establish `hQ : Finite (K₀ ⧸ K.subgroupOf K₀)`. Use `Subgroup.quotient_finite_of_isOpen _ ?_` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf]`.
+
+Conclude with `(hKMo m).preimage continuous_subtype_val`. Use `Fintype.ofFinite (K₀ ⧸ K.subgroupOf K₀)` as an intermediate fact. Set `R : Finset (levi F n β)` to `Finset.univ.image fun q : K₀ ⧸ K.subgroupOf K₀ => ((Quotient.out q : K₀) : levi F n β)`. Establish `hR : ∀ k ∈ K₀, ∃ r ∈ R, σ k w = σ r w`. Introduce `k hk`.
+
+Use `⟨_, Finset.mem_image_of_mem _ (Finset.mem_univ (QuotientGroup.mk (⟨k, hk⟩ : K₀))), ?_⟩` and prove the remaining obligations. Conclude with `act_eq_of_mk_eq σ hwK (a := ⟨k, hk⟩) (b := Quotient.out (QuotientGroup.mk (⟨k, hk⟩ : K₀) : K₀ ⧸ K.subgroupOf K₀)) (QuotientGroup.out_eq' _).symm`. Establish `hnorm : ∀ k ∈ K₀, ∀ x ∈ K, k * x * k⁻¹ ∈ K` using `fun k hk x hx => Subgroup.mem_subgroupOf.2 (by`. Simplify using `using conj_mem_congruenceSubgroup F n (Subgroup.mem_subgroupOf.1 hk) (Subgroup.mem_subgroupOf.1 hx))`. Set `V₂ : Finset W` to `R.image fun r => σ r w`.
+
+Establish `hU : ∀ S : Finset (Fin n), (∃ i j, β i = β j ∧ i ∈ S ∧ j ∉ S) → ∀ x : W, ∃ U : Finset (levi F n β), (∀ u ∈ U, (u : GL (Fin n) F) ∈ unipotentRadical F n (splitFun S)) ∧ x ∈ Submodule.span ℂ {y | ∃ u ∈ U, ∃ z, y = σ u z - z}` using `fun S hS x => exists_finset_of_isCuspidal hc hS x`. Use `choose! Uf hUf1 hUf2 using hU`. Set `Uall : Finset (levi F n β)` to `Finset.univ.biUnion fun S : Finset (Fin n) => V₂.biUnion (Uf S)`. Take `⟨t, ht⟩` from `exists_pow_mul_mem_of_isCompact F n (((Uall.image fun u : levi F n β => u.1) ∪ (Uall.image fun u : levi F n β => u.1⁻¹) : Finset (GL (Fin n) F)) : Set (GL (Fin n) F)).toFinite.isCompact`. Establish `hbu : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * (u : GL (Fin n) F) i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inl ⟨u, hu, rfl⟩)`.
+
+Establish `hbu' : ∀ u ∈ Uall, ∀ i j, (uniformizer F : F) ^ t * ((u : GL (Fin n) F)⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]` using `fun u hu => ht _ (by simp only [Finset.coe_union, Finset.coe_image, Set.mem_union, Set.mem_image, Finset.mem_coe]; exact Or.inr ⟨u, hu, rfl⟩)`. Use `set C : ℤ := ((t + m : ℕ) : ℤ) + 1 with hCdef`. Establish `hC : ((t + m : ℕ) : ℤ) < C` using `lt_add_one _`. Establish `hC0 : 0 < C` using `by positivity`. Use `⟨(n * C).toNat, ?_⟩` and prove the remaining obligations.
+
+Introduce `μ k₁ k₂ hk₁ hk₂ hne`. Use `set a : levi F n β := ⟨Cartan.diagPow F n μ, diagPow_mem_levi μ⟩ with hadef`. Establish `hk₁K : k₁ ∈ K₀` using `Subgroup.mem_subgroupOf.2 hk₁`. Establish `hk₂K : k₂ ∈ K₀` using `Subgroup.mem_subgroupOf.2 hk₂`. Take `⟨r₂, hr₂, hr₂v⟩` from `hR _ hk₂K`.
+
+Establish `hwV : σ r₂ w ∈ V₂` using `Finset.mem_image_of_mem _ hr₂`. Break down `gap_or_bounded (β := β) μ hC0 with ⟨θ, b, ⟨i, hib, hiθ⟩, ⟨j, hjb, hjθ⟩, hgap⟩ | hbd` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Use `set S : Finset (Fin n) := Finset.univ.filter fun j => β j = b ∧ θ ≤ μ j with hSdef`.
+
+Establish `hS : ∃ i j, β i = β j ∧ i ∈ S ∧ j ∉ S` using `⟨i, j, hib.trans hjb.symm, by simp [S, hib, hiθ], by simp [S, hjb, not_le.2 hjθ]⟩`. Establish `hsp` using `hUf2 S hS (σ r₂ w)`. Establish `hker : Submodule.span ℂ {y | ∃ u ∈ Uf S (σ r₂ w), ∃ z, y = σ u z - z} ≤ LinearMap.ker (ℓ ∘ₗ σ k₁ ∘ₗ σ a)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, x, rfl⟩`.
+
+Establish `huA : u ∈ Uall` using `Finset.mem_biUnion.2 ⟨S, Finset.mem_univ _, Finset.mem_biUnion.2 ⟨σ r₂ w, hwV, hu⟩⟩`. Establish `huN` using `hUf1 S hS (σ r₂ w) u hu`. Establish `hconj : a * u * a⁻¹ ∈ K`. Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations. Establish `hco : ((a * u * a⁻¹ : levi F n β) : GL (Fin n) F) = Cartan.diagPow F n μ * (u : GL (Fin n) F) * (Cartan.diagPow F n μ)⁻¹` using `rfl`.
+
+Rewrite using `[hco]`. Conclude with `diagPow_conj_mem_congruenceSubgroup hC (apply_eq_or_gap hgap u.2 huN) (apply_eq_or_gap hgap ((levi F n β).inv_mem u.2) ((unipotentRadical F n _).inv_mem huN)) (hbu u huA) (hbu' u huA)`. Establish `hconj' : k₁ * (a * u * a⁻¹) * k₁⁻¹ ∈ K` using `hnorm k₁ hk₁K _ hconj`. Establish `h1 : σ k₁ (σ a (σ u x)) = σ (k₁ * (a * u * a⁻¹) * k₁⁻¹) (σ k₁ (σ a x))`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`.
+
+Use `congr 2`. Use `group`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, map_sub]`. Rewrite using `[h1, hℓK _ hconj', sub_self]`. Establish `h0` using `hker hsp`.
+
+Rewrite `h0` using `[LinearMap.mem_ker]`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hr₂v]`. Simplify using `using h0`. Set `cb : α → ℤ` to `fun b => if h : ∃ k, β k = b then ((Finset.univ.filter fun k => β k = b).image μ).min' (by`. Take `⟨k, hk⟩` from `h`.
+
+Conclude with `⟨μ k, Finset.mem_image_of_mem _ (by simp [hk])⟩) else 0`. Establish `hcb_le : ∀ k, cb (β k) ≤ μ k`. Introduce `k`. Simplify using `only [cb, dif_pos (⟨k, rfl⟩ : ∃ j, β j = β k)]`. Conclude with `Finset.min'_le _ _ (Finset.mem_image_of_mem _ (by simp))`.
+
+Establish `hcb_mem : ∀ j, ∃ k, β k = β j ∧ cb (β j) = μ k`. Introduce `j`. Simplify using `only [cb, dif_pos (⟨j, rfl⟩ : ∃ k, β k = β j)]`. Take `⟨k, hk, hkeq⟩` from `Finset.mem_image.1 (Finset.min'_mem ((Finset.univ.filter fun k => β k = β j).image μ) _)`. Conclude with `⟨k, (Finset.mem_filter.1 hk).2, hkeq.symm⟩`.
+
+Use `⟨fun j => cb (β j), fun i j h => by simp only [h], fun i => ⟨hcb_le i, ?_⟩⟩` and prove the remaining obligations. Take `⟨k, hk, hkeq⟩` from `hcb_mem i`. Establish `h1` using `hbd i k hk.symm`. Establish `h2 : (((n * C).toNat : ℕ) : ℤ) = n * C` using `Int.toNat_of_nonneg (by positivity)`. Rewrite using `[h2]`.
+
+Use `show μ i ≤ cb (β i) + n * C`. Rewrite using `[hkeq]`. Conclude with `h1.le`.
+-/
 theorem exists_bound_of_coeff_ne_zero (hσ : IsSmooth σ) (hc : IsCuspidal σ) (w : W)
     {ℓ : Module.Dual ℂ W} (hℓ : ℓ ∈ smoothVectors (Representation.dual σ)) :
     ∃ N : ℕ, ∀ (μ : Fin n → ℤ) (k₁ k₂ : levi F n β), (k₁ : GL (Fin n) F) ∈ integralGL F n →

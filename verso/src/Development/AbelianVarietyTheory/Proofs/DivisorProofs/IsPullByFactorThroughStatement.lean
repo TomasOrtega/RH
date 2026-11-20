@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.Obj.IsPullBy.exists_of_comp | exact GlobalTheory.RealMult.Obj.IsPullBy.exists_of_comp | (intros; apply GlobalTheory.RealMult.Obj.IsPullBy.exists_of_comp <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.isPullBy_factor_through : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' S'' : Scheme.{0}} {X : Obj F 𝔠 S} {X' : Obj F 𝔠 S'} {X'' : Obj F 𝔠 S''}
     {b : S' ⟶ S} {b' : S'' ⟶ S'} {φ : X'.A.left ⟶ X.A.left} {χ : X''.A.left ⟶ X.A.left},
     X''.IsPullBy X (b' ≫ b) χ → X'.IsPullBy X b φ →

@@ -21,8 +21,22 @@ open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.Ph
 
 variable [IsDomain O]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem γA_apply (g : W.Gam) (a : LetA O n) (i : ZMod n) : W.γA g a i = W.γ₀ g (a i) := rfl
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `hR.2.2.2.2.1`. Rewrite `hw` using `[Formalism.MainNotions.UnusedSlot80.SatW.Eat_π₀]`. Establish `hq : (W.π₀ + ((PD.p : ℕ) : LetA O n)) = ps W 0` using `by rw [ps_zero]; rfl`. Rewrite `hw` using `[hq]`. Use `⟨w, hw, ((w⁻¹ : (LetA O n)ˣ) : LetA O n), Units.mul_inv w, fun i => ?_⟩` and prove the remaining obligations.
+
+Establish `h1 : PowerSeries.constantCoeff (W.q i) = PowerSeries.constantCoeff ((w : LetA O n) i) * PowerSeries.constantCoeff (ps W 0 i)`. Rewrite using `[hw, Pi.mul_apply, map_mul]`. Rewrite `h1` using `[show W.q i = W.q₀ from rfl, Formalism.MainNotions.UnusedSlot80.ArcF.constantCoeff_q_zero_eq_p]`. Establish `h2 : PowerSeries.constantCoeff (ps W 0 i) = ((PD.p : ℕ) : O)`. Rewrite using `[ps_zero]`.
+
+Simplify using `[LocWach.π₀, lA, Formalism.MainNotions.UnusedSlot80.ToolsR.π₀₁_cc hR]`. Rewrite `h1` using `[h2]`. Establish `hw1 : PowerSeries.constantCoeff ((w : LetA O n) i) = 1`. Establish `: ((PD.p : ℕ) : O) * (PowerSeries.constantCoeff ((w : LetA O n) i) - 1) = 0`. Take the linear combination `-h1`.
+
+Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `absurd h hp0`. Conclude with `sub_eq_zero.1 h`. Establish `h3 : PowerSeries.constantCoeff ((w : LetA O n) i) * PowerSeries.constantCoeff (((w⁻¹ : (LetA O n)ˣ) : LetA O n) i) = 1`. Rewrite using `[← map_mul, ← Pi.mul_apply, Units.mul_inv]`.
+
+Simplify using the standard rewrite rules. Rewrite `h3` using `[hw1, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem q_unit (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0) :
     ∃ w : LetA O n, W.q = w * ps W 0 ∧ ∃ w' : LetA O n, w * w' = 1 ∧
       ∀ i, PowerSeries.constantCoeff (w' i) = 1 := by
@@ -51,8 +65,32 @@ theorem q_unit (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : (
     simp
   rwa [hw1, one_mul] at h3
 
+/- English proof (translation)
+Simplify using `[abelian₂]`.
+-/
 theorem lam_zero (A : ArcP n) (a : ZMod n) : abelian₂ W A a 0 = 1 := by simp [abelian₂]
 
+/- English proof (translation)
+Introduce `e`. Proceed by induction on `e with`. Consider the case `zero => exact ⟨0, fun y _ => by simp [lam_zero]⟩`. Consider the case `succ e ih`. Take `⟨t, ht⟩` from `ih`.
+
+Use `set H : ℕ := A.Hs (c' + ((e + 1 : ℕ) : ZMod n)) (e + 1) 0 with hHdef`. Use `⟨H + t, fun y hy => ?_⟩` and prove the remaining obligations. Use `set z : W.DD T := abelian₂ W A (c' + (e : ZMod n)) e • ((W.φD T) ^ e) y with hzdef`. Take `⟨z', hz'N, hz'l, hzz'⟩` from `Formalism.MainNotions.UnusedSlot80.ArcC.arc_up W hs hR h5 A hA c' hc' e T hT _ (Formalism.MainNotions.UnusedSlot80.Relay2.Pp_phi W T c' e hy)`. Rewrite `hzz'` using `[one_smul]`.
+
+Establish `hzN : z ∈ W.N T` using `by rw [hzdef, hzz']; exact hz'N.1`. Establish `hzl : (letE (c' + (e : ZMod n)) : LetA O n) • z = z` using `by rw [hzdef, hzz']; exact hz'l`. Establish `h5T` using `h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)`. Establish `hQ : W.Q = W.q` using `by simp [LocWach.Q, hs]`. Use `set i : ZMod n := c' + ((e + 1 : ℕ) : ZMod n) with hidef`.
+
+Establish `hzNl : z ∈ W.Nl T (i - 1)`. Rewrite using `[show i - 1 = c' + (e : ZMod n) by rw [hidef]; push_cast; ring]`. Conclude with `⟨z, hzN, by rw [LinearMap.smul_apply, LinearMap.id_apply]; exact hzl⟩`. Establish `hM` using `h5T.1 i z hzNl`. Rewrite `hM` using `[hQ]`.
+
+Establish `hMH : Mw A.G₀ A.S A.η (A.ty i) ≤ H`. Use `Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' (e + 1) (e + 1) (by omega) le_rfl` as an intermediate fact. Rewrite `this` using `[Nat.sub_self]`. Then use the resulting hypothesis. Establish `hqN : W.q ^ H • W.φD T z ∈ W.N T`. Take `⟨dd, hdd⟩` from `Nat.exists_eq_add_of_le hMH`.
+
+Rewrite using `[hdd, pow_add, mul_comm, mul_smul]`. Conclude with `(W.N T).smul_mem _ hM`. Establish `hφl : (letE i : LetA O n) • W.φD T z = W.φD T z`. Use `φD_pow_letter W T (c' + (e : ZMod n)) z hzl 1` as an intermediate fact. Rewrite `this` using `[pow_one]`.
+
+Rewrite `this` using `[show c' + (e : ZMod n) + ((1 : ℕ) : ZMod n) = i by rw [hidef]; push_cast; ring]`. Then use the resulting hypothesis. Establish `hql : (letE i : LetA O n) • (W.q ^ H • W.φD T z) = W.q ^ H • W.φD T z`. Rewrite using `[smul_comm, hφl]`. Take `⟨w, hw, w', hww, hw'⟩` from `q_unit W hR hp0`. Establish `hp0w : ps W 0 = w' * W.q`.
+
+Rewrite using `[hw, ← mul_assoc, mul_comm w', hww, one_mul]`. Establish `e1 : abelian₂ W A i (e + 1) • ((W.φD T) ^ (e + 1)) y = w' ^ H • (W.q ^ H • W.φD T z)`. Rewrite using `[hidef, lam_succ, pow_apply_succ, smul_smul, hzdef, φD_smulA, smul_smul, hp0w]`. Unfold `LamUp`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hk : W.Q ^ H • W.φD T ((⟨z, hzN⟩ : ↥(W.N T)) : W.DD T) ∈ W.N T` using `by rw [hQ]; exact hqN`. Establish `e2` using `h3.2.2 ⟨z, hzN⟩ H hk`. Establish `e3 : (⟨W.Q ^ H • W.φD T z, hk⟩ : ↥(W.N T)) = ⟨W.q ^ H • W.φD T z, hqN⟩` using `Subtype.ext (by show W.Q ^ H • W.φD T z = W.q ^ H • W.φD T z; rw [hQ])`. Rewrite `e2` using `[e3]`.
+
+Rewrite using `[e1, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T ((W.N T).smul_mem _ hqN), Formalism.MainNotions.UnusedSlot80.ArcF.cmp_smul_letter W T i _ _ hqN hql, e2, Pi.pow_apply, map_pow, hw', one_pow, map_one, one_smul, ← Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T …`.
+-/
 theorem cmpD_lam (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (hp0 : ((PD.p : ℕ) : O) ≠ 0)
     (h5 : ∀ (T : LocLat G Qp LL O) (M h : ZMod n → ℕ), IsCrys PD T.ρ →
       Formalism.MainNotions.DeltaInvariantLattices.JumpsLet W T M h → Formalism.MainNotions.DeltaInvariantLattices.p5 W T M h)

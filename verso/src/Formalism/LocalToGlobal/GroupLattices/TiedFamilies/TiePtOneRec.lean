@@ -26,6 +26,9 @@ def HypT {L : ColLevel R F E sp gp C A clsLat} (t : Formalism.L2.Herm.GLevTie L 
     (∀ a b, ((((t.fr w h)⁻¹ * bc ((RingHom.fst _ _).comp (t.spl w h).toRingHom) x * t.fr w h)⁻¹ : GL (Fin R.k) _) :
       Matrix (Fin R.k) (Fin R.k) _) a b ∈ w.adicCompletionIntegers F) → x ∈ L.Uloc w
 
+/- English proof (translation)
+Substitute `hL` using the available equality. Introduce `w h x hx h1 h2`. Rewrite `h1`, `h2` using `[hfr, hspl]`. Take `⟨v, rfl⟩ : ∃ v, I.plc v = w` from `⟨I.pl.symm ⟨w, h⟩, by simp [LocId.plc]⟩`. Conclude with `(hH v x hx).2 ⟨h1, h2⟩`.
+-/
 theorem hypT_of {L L' : ColLevel R F E sp gp C A clsLat} (hL : L' = L) (t : Formalism.L2.Herm.GLevTie L' G) {nV : ℕ} {W Qq : Type}
     [CommRing W] [Field Qq] [Algebra W Qq] (I : LocId L p nV W Qq) (hfr : t.fr = I.fr) (hspl : t.spl = I.spl)
     (hH : HypAtP I) : HypT t := by
@@ -35,6 +38,11 @@ theorem hypT_of {L L' : ColLevel R F E sp gp C A clsLat} (hL : L' = L) (t : Form
   obtain ⟨v, rfl⟩ : ∃ v, I.plc v = w := ⟨I.pl.symm ⟨w, h⟩, by simp [LocId.plc]⟩
   exact (hH v x hx).2 ⟨h1, h2⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Establish `: J' = J` using `by ext x y; exact hJ x y`. Rewrite `hg` using `[this]`. Establish `e : (reGL (rfl : a = a) (E ⊗[F] R)).symm g = g`. Apply `(reGL (rfl : a = a) (E ⊗[F] R)).injective` to reduce the goal to its premises.
+
+Rewrite using `[MulEquiv.apply_symm_apply, reGL_rfl]`. Rewrite using `[e]`. Conclude with `hg`.
+-/
 theorem reGL_symm_mem_UPts {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (J' : Matrix (Fin b) (Fin b) E) (hJ : ∀ x y, J' x y = J (Fin.cast h.symm x) (Fin.cast h.symm y))
@@ -52,11 +60,19 @@ end Gen
 
 variable {D : D7} (X : Formalism.L2.Herm.Herm0 D)
 
+/- English proof (translation)
+Introduce `v x` and use `(X.g u w hg).completion_integers_iff v _ rfl x`.
+-/
 theorem locInt_locAt (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (B : GL (Fin D.R.k) D.host.E) : LocInt (locAt X u w hg B) :=
   fun v x => (X.g u w hg).completion_integers_iff v _ rfl x
 
 set_option maxHeartbeats 4000000 in
+/- English proof (translation)
+Use `locHyp_of (rank_eq_first_level D.R) (locAt X u w hg B) _ D.sp.gram0 (gramN_zero D) B rfl (fun v => (X.lev0 u).Uloc v) hU ?_` and prove the remaining obligations. Introduce `v x0 hx0 h1 h2`. Establish `hfr` using `hB _ ((X.g u w hg).pl v).2`. Use `hT _ ((X.g u w hg).pl v).2 x0 hx0 ?_ ?_` and prove the remaining obligations. Rewrite using `[hfr]`.
+
+Conclude with `h1`. Rewrite using `[hfr]`. Conclude with `h2`.
+-/
 theorem locHyp_locAt (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (hU : SameUloc X T u) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E) (hB : FrRat X u w hg B)
     (hT : HypT (X.g u w hg)) : LocHyp ((T u).cls0).lev (locAt X u w hg B) := by
@@ -68,6 +84,11 @@ theorem locHyp_locAt (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Wor
   · rw [hfr]; exact h1
   · rw [hfr]; exact h2
 
+/- English proof (translation)
+Introduce `hv`. Establish `hp : (D.what₂.places.resChar w).Prime` using `hg.1`. Establish `hg' : ∀ i, ¬ D.what₂.places.resChar w ∣ D.host.g i` using `fun i hd => hg.2.2.2.2.1 (((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime i)).1 hd) ▸ D.host.g_level i)`. Break down `hw with h | h` into its components or cases. Conclude with `natCast_notMem _ hp hv (hg' 0) h`.
+
+Conclude with `natCast_notMem _ hp hv (hg' 1) h`.
+-/
 theorem bad_notOver (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w))
     (w' : HeightOneSpectrum (𝓞 D.host.F)) (hw : w' ∈ badG D) : ((D.what₂.places.resChar w : ℕ) : 𝓞 D.host.F) ∉ w'.asIdeal := by
   intro hv
@@ -80,6 +101,9 @@ theorem bad_notOver (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+The claim follows from `ptOne_of _ (locInt_locAt X u w hg B) (locHyp_locAt X T u hU w hg B hB hT) (bad_notOver u w hg)`.
+-/
 theorem ptOne_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (hU : SameUloc X T u) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E) (hB : FrRat X u w hg B)
     (hT : HypT (X.g u w hg)) : PtOne ((T u).cls0).lev (D.gat u w hg) (locAt X u w hg B) :=

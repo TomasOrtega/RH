@@ -18,6 +18,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.Ord2.LevelOfOrd
 
+/- English proof (translation)
+Establish `hp : Prime ((l : ℕ) : 𝓞 ℚ)`. Rewrite using `[← MulEquiv.prime_iff Rat.ringOfIntegersEquiv, map_natCast]`. Conclude with `Nat.prime_iff_prime_int.1 Fact.out`. Conclude with `((((Ideal.span_singleton_prime hp.ne_zero).2 hp).isMaximal (mt Ideal.span_singleton_eq_bot.1 hp.ne_zero)).eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h)).symm`.
+-/
 theorem asIdeal_eq_span (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 ℚ)) (h : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) :
     v.asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)} := by
   have hp : Prime ((l : ℕ) : 𝓞 ℚ) := by
@@ -27,6 +30,19 @@ theorem asIdeal_eq_span (l : ℕ) [Fact l.Prime] (v : HeightOneSpectrum (𝓞 �
     (mt Ideal.span_singleton_eq_bot.1 hp.ne_zero)).eq_of_le v.isPrime.ne_top
     ((Ideal.span_singleton_le_iff_mem _).2 h)).symm
 
+/- English proof (translation)
+Introduce `l _ Ω _ _ _ e M V A κ he _ hcont haway hA hflag hine`. Take `⟨v, hvA, hlv⟩` from `hA`. Establish `hval : A.valuation (l : Ω) < 1`. Use `(hvA ((l : ℕ) : 𝓞 ℚ)).2 hlv` as an intermediate fact. Simplify using `using this`.
+
+Set `m : Fin 2 → ℤ` to `![(e : ℤ), -(e : ℤ)]`. Establish `hm : ∀ i (s : ↥(Dec (F` using `ℚ) A)), (s : G ℚ Ω) ∈ Ine (F := ℚ) A → κ i s = cycBar ℚ Ω l s ^ m i := by`. Introduce `i s hs`. Use `fin_cases i`. Conclude with `(hine s hs).1`.
+
+Conclude with `(hine s hs).2`. Use `⟨hcont, haway, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hwv : w = v` using `HeightOneSpectrum.ext ((asIdeal_eq_span l w hw).trans (asIdeal_eq_span l v hlv).symm)`. Substitute `hwv` using the available equality.
+
+Use `⟨A, hvA, fun _ => 1, κ, fun i s _ => rfl, hflag, fun i s hs => by rw [hm i s hs]; exact (mul_one _).symm, Or.inl ?_⟩` and prove the remaining obligations. Introduce `i j h`. Establish `hn : m i - m j - 1 ≠ 0`. Establish `: (1 : ℤ) ≤ e` using `by exact_mod_cast he`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [m] <;> omega`.
+
+Take `⟨g, hg, hgn⟩` from `UpperTheory.V.Ws.Pt.cycIne ℚ Ω l A hval _ hn`. Apply `hgn` to reduce the goal to its premises. Establish `hD : g ∈ Dec (F` using `ℚ) A := Ine_le_Dec A hg`. Establish `h1` using `DFunLike.congr_fun h ⟨g, hD⟩`. Rewrite `h1` using `[MonoidHom.mul_apply, MonoidHom.comp_apply, hm i ⟨g, hD⟩ hg, hm j ⟨g, hD⟩ hg]`.
+
+Express the relevant statement in the definitionally equal form `cycBar ℚ Ω l g ^ m i = cycBar ℚ Ω l g ^ m j * cycBar ℚ Ω l g at h1`. Rewrite using `[sub_sub, zpow_sub, zpow_add_one, ← h1, mul_inv_cancel]`.
+-/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e M : ℕ)
     (V : G ℚ Ω →* GL (Fin 2) (Qbar l)) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ),
     1 ≤ e → 1 ≤ M → Continuous V → LevelAway l M V → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ →
@@ -72,6 +88,9 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Ord2.LevelOfOrd.main | exact GlobalTheory.Ord2.LevelOfOrd.main | (intros; apply GlobalTheory.Ord2.LevelOfOrd.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.ordinary_flag_inertia_weights : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e M : ℕ)
     (V : G ℚ Ω →* GL (Fin 2) (Qbar l)) (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ),
     1 ≤ e → 1 ≤ M → Continuous V → LevelAway l M V → OverL l A → IsFlagOn V (Dec (F := ℚ) A) κ →

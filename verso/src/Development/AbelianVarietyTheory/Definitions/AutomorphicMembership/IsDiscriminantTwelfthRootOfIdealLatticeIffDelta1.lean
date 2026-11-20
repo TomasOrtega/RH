@@ -146,19 +146,40 @@ section Record
 
 variable (D : D7)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamOf_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : lamOf D.host cc δ = TaylorLogMetric.lamOf D cc δ := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isDiscriminantTwelfthRoot_host_iff (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) : IsDiscriminantTwelfthRootOfIdealLattice D.host cc δ ↔ TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem stdL_rec (N : ℕ) : stdL D.host N = StandardLatticesGL3.stdL D N := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detId_rec {N : ℕ} (L L' : Lt D.host N) : detId D.host L L' = TaylorLogMetric.detId D L L' := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem La_rec (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {N N' : ℕ} (L : Lt D.host N) (L' : Lt D.host N') :
     La D.host (TaylorLogMetric.embT D) (lamOf D.host cc δ) L L' = TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) L L' := rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem isDgen_rec (cD : D.what₂.Tau → ℂ) : IsDgen D.host (TaylorLogMetric.embT D) cD ↔ Formalism.L2.Ker.IsDgen D cD := Iff.rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem chiFac_rec (χ : TaylorLogMetric.IdE D → ℂ) (N N' : ℕ) (L : Lt D.host N) (L' : Lt D.host N') :
     chiFac D.host χ N N' L L' = Formalism.L2.Ker.Base.chiFac χ N N' L L' := rfl
 
@@ -176,19 +197,39 @@ def VacIn.toRec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : Formalism.L2
 def VacIn.ofRec (B : Formalism.L2.Ker.Base D cc δ) : VacIn D.host (TaylorLogMetric.embT D) cc δ :=
   ⟨B.L, B.lat, B.ω₀, B.t0, B.γ₀, B.gC, B.gC_spec, KapIn.ofRec B.kc⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VacIn.toRec_ofRec (B : Formalism.L2.Ker.Base D cc δ) : (VacIn.ofRec B).toRec = B := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VacIn.ofRec_toRec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : VacIn.ofRec V.toRec = V := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VacIn.thMM_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) : V.thMM = V.toRec.thMM := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VacIn.eNat_rec (V : VacIn D.host (TaylorLogMetric.embT D) cc δ) (χ : TaylorLogMetric.IdE D → ℂ) : V.eNat χ = V.toRec.eNat χ := rfl
 
 end Record
 
+/- English proof (translation)
+Simplify using `only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]`.
+-/
 example (Λ : AddSubgroup ℂ) {N N' : ℕ} (c : ℂ) (z w : VC ι N N') : Hf Λ (c • z) w = c * Hf Λ z w := by
   simp only [Hf, Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum, mul_div_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `z`. Establish `h0 : ∀ q : (⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥, ((Quotient.out q : (⊥ : AddSubgroup (VC ι N N'))) : VC ι N N') = 0` using `fun q => AddSubgroup.mem_bot.1 (Quotient.out q).2`. Establish `hU : Unique ((⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥)` using `⟨⟨QuotientAddGroup.mk 0⟩, fun q => by`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Rewrite using `[Subsingleton.elim x 0]`.
+
+Use the proof step `rfl⟩`. Simplify using `only [Iop, h0, finsum_unique]`. Simplify using `[al, U, Hf]`.
+-/
 example (Λ : AddSubgroup ℂ) {N N' : ℕ} (G : VC ι N N' → ℂ) : Iop H Λ ⊥ ⊥ G = G := by
   funext z
   have h0 : ∀ q : (⊥ : AddSubgroup (VC ι N N')) ⧸ (⊥ : AddSubgroup (VC ι N N')).addSubgroupOf ⊥,
@@ -201,6 +242,11 @@ example (Λ : AddSubgroup ℂ) {N N' : ℕ} (G : VC ι N N' → ℂ) : Iop H Λ 
   simp only [Iop, h0, finsum_unique]
   simp [al, U, Hf]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, t, ht, rfl⟩`. Conclude with `(H.AA0 : Submodule (𝓞 H.E) H.E).smul_mem (algebraMap (𝓞 H.K) (𝓞 H.E) c) ht`. Introduce `t ht`.
+
+Conclude with `Submodule.subset_span ⟨1, trivial, t, ht, by simp⟩`.
+-/
 theorem perAA_top : perAA H ⊤ = (H.AA0 : Submodule (𝓞 H.E) H.E) := by
   apply le_antisymm
   · refine Submodule.span_le.2 ?_

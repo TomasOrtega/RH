@@ -21,6 +21,9 @@ namespace GlobalTheory.WholeFlag.GlueProof.Compare
 
 open GlobalTheory.TrueGeo.SmallSec
 
+/- English proof (translation)
+Use extensionality with `r k`. Simplify using `only [cramerCol, Matrix.of_apply]`. Rewrite using `[minor_eq_mul_inv H T hT hd, minor_eq_mul_inv H T hT hd _ _ (σ _), mul_div_mul_right _ _ (Finset.prod_ne_zero_iff.2 fun j _ => hd _)]`.
+-/
 theorem cramerCol_mul_inv {K : Type} [Field K] {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) K) (T : Matrix (Fin g) (Fin g) K)
     (hT : T.BlockTriangular id) (hd : ∀ i, T i i ≠ 0) (σ : ∀ k : ℕ, Fin k → Fin (g + g)) :
     cramerCol H σ = cramerCol (H * T⁻¹) σ := by
@@ -33,16 +36,31 @@ section Val
 
 variable {Z : Scheme.{0}} [IsIntegral Z] {K : Type} [Field K] (y : Sp K ⟶ Z)
 
+/- English proof (translation)
+Rewrite using `[div_eq_mul_inv, Res.valAt_mul hf hh.inv.regAt, valAt_inv y hh, div_eq_mul_inv]`.
+-/
 theorem valAt_div {f h : Z.functionField} (hf : RegAt (below y) f) (hh : UnitAt (below y) h) :
     valAt y (f / h) = valAt y f / valAt y h := by
   rw [div_eq_mul_inv, Res.valAt_mul hf hh.inv.regAt, valAt_inv y hh, div_eq_mul_inv]
 
+/- English proof (translation)
+Simplify using `only [cramerCol, Matrix.of_apply]`. Rewrite using `[valAt_div y (minor_valAt y H hH _ _ _).1 (hu _ _), (minor_valAt y H hH _ _ _).2, (minor_valAt y H hH _ _ _).2]`.
+-/
 theorem valAt_cramerCol {g : ℕ} (H : Matrix (Fin (g + g)) (Fin g) Z.functionField) (σ : ∀ k : ℕ, Fin k → Fin (g + g))
     (hH : ∀ r l, RegAt (below y) (H r l)) (hu : ∀ (k : ℕ) (hk : k ≤ g), UnitAt (below y) (minorAt H k hk (σ k)))
     (r : Fin (g + g)) (k : Fin g) : valAt y (cramerCol H σ r k) = cramerCol (H.map (valAt y)) σ r k := by
   simp only [cramerCol, Matrix.of_apply]
   rw [valAt_div y (minor_valAt y H hH _ _ _).1 (hu _ _), (minor_valAt y H hH _ _ _).2, (minor_valAt y H hH _ _ _).2]
 
+/- English proof (translation)
+Take `⟨S, rfl⟩` from `exists_lift M hM`. Take `⟨R, rfl⟩` from `exists_lift N hN`. Establish `e : (S.map (algebraMap _ Z.functionField)).det = algebraMap _ Z.functionField S.det` using `(RingHom.map_det _ S).symm`. Establish `hS : IsUnit S.det`. Take `⟨a, ha, h⟩` from `hd`.
+
+Rewrite `h` using `[e]`. Rewrite using `[← IsFractionRing.injective (Z.presheaf.stalk (below y)) Z.functionField h]` and apply the resulting hypothesis. Establish `hinv : ∀ {A : Type} [CommRing A] (f : Z.presheaf.stalk (below y) →+* A), (S.map f)⁻¹ = S⁻¹.map f`. Introduce `A _ f`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul S hS, Matrix.map_one _ (map_zero f) (map_one f)]`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[e, Res.valAt_algebraMap, map_valAt_lift]`. Conclude with `RingHom.map_det _ S`. Rewrite using `[map_valAt_lift, map_valAt_lift, hinv, hinv, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply, Matrix.map_apply]`.
+
+Conclude with `Res.valAt_algebraMap y _`.
+-/
 theorem valAt_inv_mul {n : ℕ} (M N : Matrix (Fin n) (Fin n) Z.functionField) (hM : ∀ i j, RegAt (below y) (M i j))
     (hN : ∀ i j, RegAt (below y) (N i j)) (hd : UnitAt (below y) M.det) :
     valAt y M.det = (M.map (valAt y)).det ∧
@@ -70,6 +88,23 @@ end Val
 
 variable {F : Type} [Field F] [NumberField F] {Y : Var F}
 
+/- English proof (translation)
+Take `⟨_, _, _, _, hm, _, _, hTT, hGd0, hrl0, _, hHz0, _⟩` from `h`. Take `⟨hzU, hzL, hzmin⟩` from `hz`. Use `set Tz := T (V.π z) with hTz`. Establish `hT : Tz.BlockTriangular id` using `(hTT (V.π z)).1`. Establish `hTd : ∀ j, Tz j j = (d (V.π z) j : Y.Fn)` using `(hTT (V.π z)).2`.
+
+Establish `hHz : ∀ r l, RegAt z ((H q.1 * (Tz.map V.φ)⁻¹) r l)` using `hHz0 q.1 z hzU`. Establish `hGd : ∀ j, UnitAt z (V.φ (genAt (A j).D (V.π z) * d (V.π z) j))` using `fun j => V.unitAt_φ (hGd0 j (V.π z))`. Establish `hrl : ∀ j, UnitAt z (V.φ (genAt (A j).D (V.π z) ^ m) * (frames r q.2.2 j : V.G.functionField))`. Introduce `j`. Apply `hrl0 j (fun _ => q.2.2 j) z` to reduce the goal to its premises.
+
+Simplify using `only [LB.pull, LB.LinComb, LB.wchart]`. Simplify using `using hzL j`. Establish `hmin : ∀ (k : ℕ) (hk : k ≤ g), UnitAt z (minorAt (H q.1 * (Tz.map V.φ)⁻¹) k hk (q.2.1 k))`. Introduce `k hk`. Conclude with `(unitAt_minor_of_nmin V (H q.1) (frames r q.2.2) m hm k hk (q.2.1 k) Tz (d (V.π z)) (fun j => genAt (A j).D (V.π z)) hT hTd hHz hGd hrl).2 (unitAt_symm V |>.1 (hzmin k hk))`.
+
+Establish `hd : ∀ j, (Tz.map V.φ) j j ≠ 0` using `fun j => by`. Rewrite using `[Matrix.map_apply, hTd, map_ne_zero]`. Conclude with `Units.ne_zero _`. Establish `hTm` using `blockTriangular_map V hT`. Use `⟨hHz, hmin, cramerCol_mul_inv _ _ hTm hd _, fun i => ?_⟩` and prove the remaining obligations.
+
+Use `set a := minorAt (H q.1 * (Tz.map V.φ)⁻¹) ((i : ℕ) + 1) i.2 (q.2.1 ((i : ℕ) + 1)) with ha`. Use `set b := minorAt (H q.1 * (Tz.map V.φ)⁻¹) (i : ℕ) i.2.le (q.2.1 (i : ℕ)) with hb`. Establish `hua : UnitAt z a` using `hmin _ _`. Establish `hub : UnitAt z b` using `hmin _ _`. Use `set P := ∏ j : Fin (i : ℕ), (Tz.map V.φ) (Fin.castLE i.2.le j) (Fin.castLE i.2.le j) with hP`.
+
+Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hd _`. Establish `e1 : minorAt (H q.1) ((i : ℕ) + 1) i.2 (q.2.1 ((i : ℕ) + 1)) = a * (P * V.φ (d (V.π z) i))`. Rewrite using `[minor_eq_mul_inv (H q.1) _ hTm hd _ i.2, Fin.prod_univ_castSucc]`. Use `congr 2`. Establish `: Fin.castLE i.2 (Fin.last (i : ℕ)) = i` using `Fin.ext rfl`.
+
+Rewrite using `[this, Matrix.map_apply, hTd]`. Establish `e2 : minorAt (H q.1) (i : ℕ) i.2.le (q.2.1 (i : ℕ)) = b * P` using `minor_eq_mul_inv (H q.1) _ hTm hd _ i.2.le _`. Establish `hdi : V.φ (d (V.π z) i) ≠ 0` using `by rw [map_ne_zero]; exact Units.ne_zero _`. Unfold `chartC`. Rewrite using `[dif_pos, Units.val_mk0, e1, e2]`.
+
+Clear denominators, using `[hub.ne_zero, hP0]` for the nonvanishing conditions. Rewrite using `[e1, e2]`. Conclude with `div_ne_zero (mul_ne_zero hua.ne_zero (mul_ne_zero hP0 hdi)) (mul_ne_zero hub.ne_zero hP0)`.
+-/
 theorem chart_facts {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type}
     (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn)
@@ -120,6 +155,27 @@ theorem chart_facts {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V 
   · rw [e1, e2]
     exact div_ne_zero (mul_ne_zero hua.ne_zero (mul_ne_zero hP0 hdi)) (mul_ne_zero hub.ne_zero hP0)
 
+/- English proof (translation)
+Introduce `F _ _ Y C g A p V W ι U H J d T L m r h v hv e y hyW z yt hz hyt q b hq hb k i`. Establish `hby : below y.1 = V.π (below z)` using `by rw [← hz]; rfl`. Establish `hzs : z ≫ V.π ≫ Y.str = spMap (algebraMap F (AlgebraicClosure F))`. Rewrite using `[← Category.assoc, hz]`. Conclude with `y.2`.
+
+Establish `hcv` using `GlobalTheory.NormExt.asIdeal_closedPt V e z yt hzs hyt`. Establish `hp : ¬ IsUnit (p : V.X.presheaf.stalk (yt (IsLocalRing.closedPoint e.O)))`. Rewrite using `[GlobalTheory.Mean4O.Cover.RegOverP.isUnit_natCast_stalk_iff, hcv, not_not, ← hv, ← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.Nat.cast_ringChar`. Establish `hsp : below (z ≫ V.j) ⤳ yt (IsLocalRing.closedPoint e.O)`.
+
+Rewrite using `[← hyt]`. Conclude with `GlobalTheory.NormExt.below_specializes e yt`. Establish `key : ∀ c : Idx ι L, ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r c → ⊤ ≤ yt ⁻¹ᵁ U c.1 ∧ (∀ s l, RegAt (below (z ≫ V.j)) (chartM V H J c s l)) ∧ UnitAt (below (z ≫ V.j)) (chartM V H J c).det ∧ (∀ s l, e.w (valAt (z ≫ V.j) (chartM V H J c s l)) ≤ 1) ∧ e.w (valAt (z ≫ V.j) (chartM V H J c).det …`. Introduce `c hc`. Establish `hcc : yt (IsLocalRing.closedPoint e.O) ∈ chartOpen V U H L m r c` using `hc trivial`.
+
+Take `⟨hreg, hdet⟩` from `GlobalTheory.T.hodge_chart_height_bound A p V W U H J d T L m r h c _ hcc hp`. Establish `hzc : V.j (below z) ∈ chartOpen V U H L m r c` using `hsp.mem_open (chartOpen V U H L m r c).isOpen hcc`. Take `⟨f1, f2, f3, f4⟩` from `chart_facts A p V W U H J d T L m r h c (below z) hzc`. Rewrite `f1`, `f2`, `f3`, `f4` using `[← hby]`. Establish `hmv : ∀ (n : ℕ) (hn : n ≤ g) (σ : Fin n → Fin (g + g)), valAt z (minorAt (H c.1 * ((T (below y.1)).map V.φ)⁻¹) n hn σ) = minorAt (valMat V (H c.1) (T (below y.1)) z) n hn σ` using `fun n hn σ => (minor_valAt z _ f1 n hn σ).2`.
+
+Establish `hne : ∀ (n : ℕ) (hn : n ≤ g), minorAt (valMat V (H c.1) (T (below y.1)) z) n hn (c.2.1 n) ≠ 0` using `fun n hn => by rw [← hmv]; exact Res.valAt_ne_zero (f2 n hn)`. Take `⟨β, b1, b2, b3, b4⟩` from `cramerCol_tri_det (valMat V (H c.1) (T (below y.1)) z) c.2.1 hne`. Use `⟨fun x _ => (hc (x := x) trivial).1, fun s l => GlobalTheory.NormExt.regAt_of_specializes hsp (hreg s l), GlobalTheory.NormExt.unitAt_of_specializes hsp hdet, fun s l => ?_, ?_, β, _, b1, fun l => ?_, fun s l => ?_, ?_, ?_, f4 k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hyt]`. Conclude with `(GlobalTheory.NormExt.w_valAt_le_one_and_unitAt e yt (hreg s l)).1`.
+
+Rewrite using `[← hyt]`. Conclude with `GlobalTheory.NormExt.w_valAt_eq_one e yt hdet`. Rewrite using `[b2]`. Conclude with `div_ne_zero (hne _ _) (hne _ _)`. Rewrite using `[← b3, chartM, fullFrame_left, chartU, Matrix.map_apply, valAt_symm, f3]`.
+
+Conclude with `valAt_cramerCol z _ _ f1 f2 s l`. Rewrite using `[← b3]`. Conclude with `b4`. Rewrite using `[div_eq_mul_inv]`. Conclude with `(f2 _ _).mul (f2 _ _).inv`.
+
+Rewrite using `[valAt_div z (f2 _ _).regAt (f2 _ _), hmv, hmv, b2, inv_div]`. Take `⟨q1, q2, q3, q4, q5, βq, uq, q6, q7, q8, q9, q10, q11, q12⟩` from `key q hq`. Take `⟨b1, b2, -, b4, -, βb, ub, b6, b7, b8, b9, b10, b11, b12⟩` from `key b hb`. Take `⟨ν, -, -, hν⟩` from `h.2.2.2.2.2.2.2.2.2.2.2.2 v hv e y hyW z yt hz hyt`. Take `⟨v1, v2⟩` from `valAt_inv_mul (z ≫ V.j) _ _ q2 b2 q3`.
+
+Establish `main` using `GlobalTheory.WholeFlag.Glue.Lattice.compare_frames e.w e.O e.mem_O (valMat V (H q.1) (T (below y.1)) z) (valMat V (H b.1) (T (below y.1)) z) βq βb (q.2.1 g) (b.2.1 g) ((chartM V H J q).map (valAt (z ≫ V.j))) q6 b6 q7 b7 (fun s l => by rw [← q8]; exact q4 _ _) (fun s l => by rw [← …`. Establish `hcol : ∀ j, valAt (z ≫ V.j) (((chartM V H J q)⁻¹ * chartM V H J b) j (Fin.castAdd g k)) = (((chartM V H J q).map (valAt (z ≫ V.j)))⁻¹ * (valMat V (H b.1) (T (below y.1)) z * βb)) j k`. Introduce `j`. Rewrite using `[v2, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [← b8]; rfl`.
+
+Establish `hrat : valAt z ((chartC V H q k / chartC V H b k : V.G.functionFieldˣ) : V.G.functionField) = βb k k / βq k k`. Establish `hdk : V.φ (d (below y.1) k) ≠ 0` using `by rw [map_ne_zero]; exact Units.ne_zero _`. Rewrite using `[Units.val_div_eq_div_val, q11, b11, mul_div_mul_right _ _ hdk, valAt_div z q10.regAt b10, q12, b12, inv_div_inv]`. Rewrite using `[hcol, hcol, hrat]`. Conclude with `main`.
+-/
 theorem compare_charts : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} {C : CxSt F} {g : ℕ} (A : Fin g → Adl C Y) (p : ℕ) (V : Cover Y) (W : Y.X.Opens) {ι : Type} (U : ι → V.X.Opens) (H : ι → Matrix (Fin (g + g)) (Fin g) V.G.functionField) (J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (L : Fin g → LB V.X) (m : ℕ) (r : ∀ i, ((L i).pull V.j).ι → V.G.functionFieldˣ), Hyp A p V W U H J d T L m r → ∀ (v : HeightOneSpectrum (𝓞 F)), resP v = p → ∀ (e : Ext v) (y : AlgPt Y), below y.1 ∈ W → ∀ (z : Sp (AlgebraicClosure F) ⟶ V.G) (yt : Sp e.O ⟶ V.X), z ≫ V.π = y.1 → spMap e.O.subtype ≫ yt = z ≫ V.j → ∀ q b : Idx ι L, ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r q → ⊤ ≤ yt ⁻¹ᵁ chartOpen V U H L m r b → ∀ (k : Fin g) (i : Fin (g + g)), ((k : ℕ) < i → e.w (valAt (z ≫ V.j) (((chartM V H J q)⁻¹ * chartM V H J b) i (Fin.castAdd g k))) < 1) ∧ e.w (valAt (z ≫ V.j) (((chartM V H J q)⁻¹ * chartM V H J b) (Fin.castAdd g k) (Fin.castAdd g k)) - valAt z ((chartC V H q k / chartC V H b k : V.G.functionFieldˣ) : V.G.functionField)) < 1 := by
   intro F _ _ Y C g A p V W ι U H J d T L m r h v hv e y hyW z yt hz hyt q b hq hb k i
   have hby : below y.1 = V.π (below z) := by rw [← hz]; rfl

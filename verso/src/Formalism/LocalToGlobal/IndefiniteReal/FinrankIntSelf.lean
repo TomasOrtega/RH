@@ -13,6 +13,11 @@ namespace IdempotentLemmas
 
 variable {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
 
+/- English proof (translation)
+Unfold `charOf`. Distinguish the cases in `hf : Module.Finite K T`. Rewrite using `[map_mul τ, map_mul τ, LinearMap.trace_mul_comm K (τ h * τ g), ← mul_assoc, ← map_mul τ, inv_mul_cancel, map_one, one_mul]`. Establish `h0 : LinearMap.trace K T = 0` using `by first`. Consider the case `exact LinearMap.trace_eq_zero_of_not_finite hf`.
+
+Consider the case `exact LinearMap.trace_eq_zero_of_not_finite (R := K) (M := T) hf`. Consider the case `(rw [LinearMap.trace, dif_neg]; rintro ⟨_, ⟨b⟩⟩; exact hf (Module.Finite.of_basis b))`. Consider the case `(unfold LinearMap.trace; rw [dif_neg]; rintro ⟨_, ⟨b⟩⟩; exact hf (Module.Finite.of_basis b))`. Simplify using `[h0]`.
+-/
 lemma charOf_conj {T : Type} [AddCommGroup T] [Module K T] (τ : Representation K G T)
     (g h : G) : charOf τ (h * g * h⁻¹) = charOf τ g := by
   unfold charOf
@@ -27,6 +32,9 @@ lemma charOf_conj {T : Type} [AddCommGroup T] [Module K T] (τ : Representation 
       | (unfold LinearMap.trace; rw [dif_neg]; rintro ⟨_, ⟨b⟩⟩; exact hf (Module.Finite.of_basis b))
     simp [h0]
 
+/- English proof (translation)
+Unfold `eS`. Rewrite using `[smul_mul_assoc, Finset.sum_mul]`. Use `congr 1`. Repeatedly rewrite using `[smul_mul_assoc, ← map_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulRight y) _ _ (fun x => by simp [mul_inv_rev])`.
+-/
 lemma eS_mul_rho {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Module K V]
     (τ : Representation K G T) (ρ : Representation K G V) (y : G) :
     eS τ ρ * ρ y = (charOf τ 1 / (Fintype.card G : K)) • ∑ g : G, charOf τ (y * g⁻¹) • ρ g := by
@@ -36,6 +44,13 @@ lemma eS_mul_rho {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Mo
   simp_rw [smul_mul_assoc, ← map_mul]
   exact Fintype.sum_equiv (Equiv.mulRight y) _ _ (fun x => by simp [mul_inv_rev])
 
+/- English proof (translation)
+Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of y`. Rewrite using `[Representation.asAlgebraHom_of, Representation.asAlgebraHom_of, eS_mul_rho]`. Simplify using `only [charOf, ← map_mul]`. Consider the case `add f g hf hg`.
+
+Rewrite using `[map_add, mul_add, hf, hg, ← smul_add, ← Finset.sum_add_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, add_mul, map_add, add_smul]`. Consider the case `smul r f hf`.
+
+Rewrite using `[map_smul, mul_smul_comm, hf, smul_comm r, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_mul_assoc, map_smul, smul_eq_mul, mul_smul]`.
+-/
 lemma eS_mul_asAlg {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Module K V]
     (τ : Representation K G T) (ρ : Representation K G V) (a : MonoidAlgebra K G) :
     eS τ ρ * ρ.asAlgebraHom a = (charOf τ 1 / (Fintype.card G : K)) •
@@ -55,6 +70,11 @@ lemma eS_mul_asAlg {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [
     refine Finset.sum_congr rfl fun x _ => ?_
     rw [map_smul, smul_mul_assoc, map_smul, smul_eq_mul, mul_smul]
 
+/- English proof (translation)
+Rewrite using `[eS_mul_rho]`. Unfold `eS`. Rewrite using `[mul_smul_comm, Finset.mul_sum]`. Use `congr 1`. Repeatedly rewrite using `[mul_smul_comm, ← map_mul]`.
+
+Use `symm`. Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ (fun x => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`. Use `congr 1`. Rewrite using `[show g * (g * x)⁻¹ = g * x⁻¹ * g⁻¹ by group, charOf_conj]`.
+-/
 lemma eS_comm {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Module K V]
     (τ : Representation K G T) (ρ : Representation K G V) (g : G) :
     eS τ ρ * ρ g = ρ g * eS τ ρ := by
@@ -69,6 +89,11 @@ lemma eS_comm {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Modul
   congr 1
   rw [show g * (g * x)⁻¹ = g * x⁻¹ * g⁻¹ by group, charOf_conj]
 
+/- English proof (translation)
+Unfold `eS`. Rewrite using `[map_smul, map_sum, smul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+
+Both sides reduce to the same expression.
+-/
 lemma trace_eS {T U : Type} [AddCommGroup T] [Module K T] [AddCommGroup U] [Module K U]
     (τ : Representation K G T) (σ : Representation K G U) :
     LinearMap.trace K U (eS τ σ) =
@@ -80,6 +105,11 @@ lemma trace_eS {T U : Type} [AddCommGroup T] [Module K T] [AddCommGroup U] [Modu
   rw [map_smul, smul_eq_mul]
   rfl
 
+/- English proof (translation)
+Establish `hc : (Nat.card G : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`. Establish `: Invertible (Nat.card G : K)` using `invertibleOfNonzero hc`. Establish `h` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank τ σ`. Rewrite using `[← Nat.card_eq_fintype_card, ← h, mul_inv_cancel_left₀ hc]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+-/
 lemma sum_char_eq [CharZero K] {T U : Type} [AddCommGroup T] [Module K T] [FiniteDimensional K T]
     [AddCommGroup U] [Module K U] [FiniteDimensional K U]
     (τ : Representation K G T) (σ : Representation K G U) :
@@ -93,6 +123,15 @@ lemma sum_char_eq [CharZero K] {T U : Type} [AddCommGroup T] [Module K T] [Finit
   rw [mul_comm]
   rfl
 
+/- English proof (translation)
+Establish `hne : Representation.IntertwiningMap.id τ ≠ 0`. Take `⟨v, hv⟩` from `exists_ne (0 : T)`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Use `congrArg (fun f : Representation.IntertwiningMap τ τ => f v) h0` as an intermediate fact.
+
+Simplify using `using this`. Rewrite using `[finrank_eq_one_iff_of_nonzero' _ hne]`. Introduce `w`. Take `⟨c, hc⟩` from `h w.toLinearMap (fun g => w.isIntertwining' g)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+
+Apply `DFunLike.ext` to reduce the goal to its premises. Introduce `v`. Establish `hv : w v = c • v`. Rewrite using `[← Representation.IntertwiningMap.toLinearMap_apply, hc]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hv]`. Simplify using the standard rewrite rules.
+-/
 lemma finrank_int_self {T : Type} [AddCommGroup T] [Module K T] [Nontrivial T]
     (τ : Representation K G T)
     (h : ∀ f : T →ₗ[K] T, (∀ g : G, f ∘ₗ τ g = τ g ∘ₗ f) → ∃ c : K, f = c • LinearMap.id) :
@@ -115,6 +154,17 @@ lemma finrank_int_self {T : Type} [AddCommGroup T] [Module K T] [Nontrivial T]
   rw [hv]
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hf`. Establish `hf' : f.toLinearMap ≠ 0` using `fun h => hf (Representation.IntertwiningMap.ext (by simpa using h))`. Establish `hker : LinearMap.ker f.toLinearMap = ⊥`. Break down `hτ (LinearMap.ker f.toLinearMap) (fun g w hw => by` into its components or cases. Simplify using `only [LinearMap.mem_ker, Representation.IntertwiningMap.toLinearMap_apply] at hw ⊢`.
+
+Rewrite using `[f.isIntertwining, hw, map_zero]) with h | h`. Conclude with `h`. Conclude with `absurd (LinearMap.ker_eq_top.mp h) hf'`. Establish `hrange : LinearMap.range f.toLinearMap = ⊤`. Break down `hσ (LinearMap.range f.toLinearMap) (fun g w hw => by` into its components or cases.
+
+Take `⟨v, rfl⟩` from `hw`. Conclude with `⟨τ g v, LinearMap.congr_fun (f.isIntertwining' g) v⟩) with h | h`. Conclude with `absurd (LinearMap.range_eq_bot.mp h) hf'`. Conclude with `h`. Set `e : T ≃ₗ[K] U` to `LinearEquiv.ofBijective f.toLinearMap ⟨LinearMap.ker_eq_bot.mp hker, LinearMap.range_eq_top.mp hrange⟩`.
+
+Establish `he : ∀ x, e x = f x` using `fun x => rfl`. Apply `hch` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hconj : e.conj (τ g) = σ g`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `u`. Rewrite using `[LinearEquiv.conj_apply_apply, he, f.isIntertwining, ← he, LinearEquiv.apply_symm_apply]`. Use `show LinearMap.trace K T (τ g) = LinearMap.trace K U (σ g)`. Rewrite using `[← hconj, LinearMap.trace_conj']`.
+-/
 lemma int_eq_zero {T U : Type} [AddCommGroup T] [Module K T] [FiniteDimensional K T]
     [AddCommGroup U] [Module K U] [FiniteDimensional K U]
     (τ : Representation K G T) (σ : Representation K G U)
@@ -152,6 +202,9 @@ def eAlg {T : Type} [AddCommGroup T] [Module K T] (τ : Representation K G T) :
     MonoidAlgebra K G :=
   ∑ x : G, MonoidAlgebra.single x (charOf τ 1 / (Fintype.card G : K) * charOf τ x⁻¹)
 
+/- English proof (translation)
+Unfold `eAlg eS`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[Representation.asAlgebraHom_single, mul_smul]`.
+-/
 lemma asAlg_eAlg {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Module K V]
     (τ : Representation K G T) (ρ : Representation K G V) :
     ρ.asAlgebraHom (eAlg τ) = eS τ ρ := by
@@ -160,6 +213,9 @@ lemma asAlg_eAlg {T V : Type} [AddCommGroup T] [Module K T] [AddCommGroup V] [Mo
   refine Finset.sum_congr rfl fun x _ => ?_
   rw [Representation.asAlgebraHom_single, mul_smul]
 
+/- English proof (translation)
+Unfold `epP`. Rewrite using `[mul_smul_comm, smul_mul_assoc, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, smul_mul_assoc, hX]`.
+-/
 lemma comm_epP [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
     (ρ : Representation K G V) (X : Module.End K V) (hX : ∀ g, X * ρ g = ρ g * X)
     (H : Subgroup G) (χ : H →* (𝓞 K)ˣ) : X * epP H χ ρ = epP H χ ρ * X := by
@@ -169,6 +225,13 @@ lemma comm_epP [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
   refine Finset.sum_congr rfl fun h _ => ?_
   rw [mul_smul_comm, smul_mul_assoc, hX]
 
+/- English proof (translation)
+Establish `key : (∑ h : H, a h • π h) * (∑ h : H, a h • π h) = (Nat.card H : K) • ∑ h : H, a h • π h`. Rewrite using `[Finset.sum_mul]`. Establish `e0 : ∀ h : H, (a h • π h) * ∑ k : H, a k • π k = ∑ m : H, a m • π m`. Introduce `h`. Rewrite using `[Finset.mul_sum]`.
+
+Establish `e : ∀ k : H, (a h • π h) * (a k • π k) = a (h * k) • π (h * k)`. Introduce `k`. Rewrite using `[smul_mul_smul_comm, ha, map_mul]`. Repeatedly rewrite using `[e]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft h) (fun m => a m • π m)`.
+
+Repeatedly rewrite using `[e0]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul, Nat.card_eq_fintype_card]`. Rewrite using `[smul_mul_smul_comm, key, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 lemma idem_gen {V : Type} [AddCommGroup V] [Module K V] {H : Type} [Group H] {_ : Fintype H}
     (a : H → K) (ha : ∀ h k, a h * a k = a (h * k)) (π : H →* Module.End K V)
     (hn : (Nat.card H : K) ≠ 0) :
@@ -194,11 +257,29 @@ end IdempotentLemmas
 
 open IdempotentLemmas
 
+/- English proof (translation)
+Introduce `K _ G _ _ T _ _ τ V _ _ ρ a ha`. Rewrite using `[← Module.End.mul_eq_comp]`. Simplify `eS_mul_asAlg τ ρ a` using `[ha]`.
+-/
 theorem keyZero : KeyZero := by
   intro K _ G _ _ T _ _ τ V _ _ ρ a ha
   rw [← Module.End.mul_eq_comp]
   simpa [ha] using eS_mul_asAlg τ ρ a
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ S T _ _ _ τ hgood`. Take `⟨hnt, hirr, habs, hinj⟩` from `hgood`. Establish `hcomm : ∀ s t, ∃ c : K, eS (τ s) (τ t) = c • LinearMap.id` using `fun s t => habs t _ (fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp]`. Conclude with `eS_comm (τ s) (τ t) g)`.
+
+Establish `hdim : ∀ s, charOf (τ s) 1 = (finrank K (T s) : K)` using `fun s => by`. Unfold `charOf`. Rewrite using `[map_one, LinearMap.trace_one]`. Establish `hpos : ∀ s, (finrank K (T s) : K) ≠ 0` using `fun s => by haveI := hnt s`. Conclude with `(Module.finrank_pos (R := K) (M := T s)).ne'` after adjusting the coercions.
+
+Establish `hcard : (Fintype.card G : K) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `htr : ∀ s t, LinearMap.trace K (T t) (eS (τ s) (τ t)) = (finrank K (T s) : K) * finrank K (Representation.IntertwiningMap (τ s) (τ t))`. Introduce `s t`. Rewrite using `[trace_eS, sum_char_eq, hdim]`. Clear the denominators using the available nonvanishing facts.
+
+Establish `hone : ∀ s, finrank K (Representation.IntertwiningMap (τ s) (τ s)) = 1` using `fun s => by haveI := hnt s`. Conclude with `finrank_int_self (τ s) (habs s)`. Establish `hsum : ∀ s, ∑ x : G, charOf (τ s) x⁻¹ * charOf (τ s) x = (Fintype.card G : K)`. Introduce `s`. Rewrite using `[sum_char_eq, hone s, Nat.cast_one, mul_one]`.
+
+Use `⟨fun s => ?_, fun s t hst => ?_, hsum⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hcomm s s`. Establish `h1` using `htr s s`. Rewrite `h1` using `[hc, map_smul, LinearMap.trace_id, smul_eq_mul, hone s, Nat.cast_one, mul_one]`. Establish `h2 : (c - 1) * (finrank K (T s) : K) = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`.
+
+Establish `h3 : c = 1` using `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right (hpos s))`. Rewrite using `[hc, h3, one_smul]`. Take `⟨c, hc⟩` from `hcomm s t`. Establish `hne : charOf (τ s) ≠ charOf (τ t)` using `fun h => hst (hinj s t h)`. Use `haveI : Subsingleton (Representation.IntertwiningMap (τ s) (τ t)) := ⟨fun f g => (int_eq_zero (τ s) (τ t) (hirr s) (hirr t) hne f).trans (int_eq_zero (τ s) (τ t) (hirr s) (hirr t) hne g).symm⟩`.
+
+Establish `h1` using `htr s t`. Rewrite `h1` using `[hc, map_smul, LinearMap.trace_id, smul_eq_mul, Module.finrank_zero_of_subsingleton (R := K) (M := Representation.IntertwiningMap (τ s) (τ t)), Nat.cast_zero, mul_zero]`. Establish `h3 : c = 0` using `(mul_eq_zero.1 h1).resolve_right (hpos t)`. Rewrite using `[hc, h3, zero_smul]`.
+-/
 theorem schur : Schur := by
   intro K _ _ G _ _ S T _ _ _ τ hgood
   obtain ⟨hnt, hirr, habs, hinj⟩ := hgood
@@ -243,6 +324,13 @@ theorem schur : Schur := by
     have h3 : c = 0 := (mul_eq_zero.1 h1).resolve_right (hpos t)
     rw [hc, h3, zero_smul]
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ S T _ _ _ τ hgood V _ _ ρ`. Take `⟨h1, h2, -⟩` from `schur K G S T τ hgood`. Establish `key : ∀ s t, eS (τ s) ρ ∘ₗ eS (τ t) ρ = (charOf (τ s) 1 / (Fintype.card G : K)) • ∑ g : G, LinearMap.trace K (T s) (eS (τ t) (τ s) * τ s g⁻¹) • ρ g`. Introduce `s t`. Rewrite using `[← Module.End.mul_eq_comp, ← asAlg_eAlg (τ t) ρ, eS_mul_asAlg, asAlg_eAlg]`.
+
+Use `⟨fun s => ?_, fun s t hst => ?_⟩` and prove the remaining obligations. Rewrite using `[key, h1 s]`. Unfold `eS`. Use `congr 1`. Rewrite using `[key, h2 t s (Ne.symm hst)]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem idemE : IdemE := by
   intro K _ _ G _ _ S T _ _ _ τ hgood V _ _ ρ
   obtain ⟨h1, h2, -⟩ := schur K G S T τ hgood
@@ -257,6 +345,21 @@ theorem idemE : IdemE := by
   · rw [key, h2 t s (Ne.symm hst)]
     simp
 
+/- English proof (translation)
+Introduce `K _ _ G _ _ V _ _ _ _ ρ`. Establish `hs' : ∀ (r : 𝓞 K) (v : V), ((r : K)) • v = r • v` using `fun r v => algebraMap_smul K r v`. Establish `hcard : (Fintype.card G : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `⟨fun T _ _ _ τ => ⟨fun g => eS_comm τ ρ g, fun H χ => comm_epP ρ (eS τ ρ) (fun g => eS_comm τ ρ g) H χ, fun A hA a ha => ?_⟩, fun H χ => ⟨?_, fun A hA a ha => ?_⟩⟩` and prove the remaining obligations. Establish `hint : ∀ x : G, IsIntegral ℤ (charOf τ 1 * charOf τ x⁻¹)` using `fun x => (h K G T τ 1).1.mul (h K G T τ x⁻¹).1`.
+
+Establish `hd : (Fintype.card G : K) * (charOf τ 1 / (Fintype.card G : K)) = charOf τ 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hs', show ((Fintype.card G : 𝓞 K) : K) = (Fintype.card G : K) by simp, eS, LinearMap.smul_apply, smul_smul, hd, LinearMap.sum_apply, Finset.smul_sum]`. Use `A.sum_mem fun x _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, smul_smul]`.
+
+Establish `hx : charOf τ 1 * charOf τ x⁻¹ ∈ integralClosure ℤ K` using `hint x`. Set `r : 𝓞 K` to `⟨_, hx⟩`. Establish `hm` using `A.smul_mem r (hA x a ha)`. Establish `he : (charOf τ 1 * charOf τ x⁻¹) • ρ x a = r • ρ x a` using `hs' r (ρ x a)`. Rewrite using `[he]`.
+
+Conclude with `hm`. Establish `hn : (Nat.card H : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne' show epP H χ ρ * epP H χ ρ = epP H χ ρ`. Unfold `epP`. Conclude with `idem_gen (fun h : H => (((χ h⁻¹ : (𝓞 K)ˣ) : 𝓞 K) : K)) (fun h k => by simp only [mul_inv_rev, map_mul, Units.val_mul]; ring) (ρ.comp H.subtype) hn`. Establish `hn : (Nat.card H : K) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+
+Establish `hI : ((Fintype.card G : 𝓞 K) : K) * (Nat.card H : K)⁻¹ = ((H.index : 𝓞 K) : K)`. Establish `hG : (Fintype.card G : K) = (Nat.card H : K) * H.index`. Rewrite using `[← Nat.card_eq_fintype_card, ← H.card_mul_index, Nat.cast_mul]`. Simplify using `only [map_natCast]`. Rewrite using `[hG]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← hs']`. Unfold `epP`. Rewrite using `[LinearMap.smul_apply, smul_smul, hI, hs', LinearMap.sum_apply]`. Use `A.smul_mem _ (A.sum_mem fun h _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, hs']`. Conclude with `A.smul_mem _ (hA _ _ ha)`.
+-/
 theorem idemP_of (h : CharFacts) : IdemP := by
   intro K _ _ G _ _ V _ _ _ _ ρ
   have hs' : ∀ (r : 𝓞 K) (v : V), ((r : K)) • v = r • v := fun r v => algebraMap_smul K r v

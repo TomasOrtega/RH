@@ -9,6 +9,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open scoped Classical
 
+/- English proof (translation)
+Set `g` to `p.domRestrict S`. Take `⟨t, ht⟩` from `g.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict g)`. Take `⟨q, hq⟩` from `(LinearMap.range g).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Use `⟨S.subtype ∘ₗ t ∘ₗ q, fun y => (t (q y)).2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : q (p x) = ⟨p x, ⟨x, hx⟩, rfl⟩` using `LinearMap.congr_fun hq ⟨p x, ⟨x, hx⟩, rfl⟩`.
+
+Use `congrArg Subtype.val (LinearMap.congr_fun ht ⟨p x, ⟨x, hx⟩, rfl⟩)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, e]`. Conclude with `this`.
+-/
 theorem exists_section {A P : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] [Module ℂ P] (p : A →ₗ[ℂ] P)
     (S : Submodule ℂ A) : ∃ s : P →ₗ[ℂ] A, (∀ y, s y ∈ S) ∧ ∀ x ∈ S, p (s (p x)) = p x := by
   let g := p.domRestrict S
@@ -20,6 +25,13 @@ theorem exists_section {A P : Type} [AddCommGroup A] [Module ℂ A] [AddCommGrou
   simp only [LinearMap.comp_apply, Submodule.subtype_apply, e]
   exact this
 
+/- English proof (translation)
+Establish `e : ψ = (ψ - ψ') + ψ'` using `(sub_add_cancel _ _).symm`. Rewrite using `[e, l.map_add_univ, Finset.sum_eq_single ∅, Finset.piecewise_empty]`. Introduce `s _ hs`. Take `⟨v, hv⟩` from `Finset.nonempty_iff_ne_empty.2 hs`. Use `h _ (fun u => ?_) ⟨v, by rw [Finset.piecewise_eq_of_mem _ _ _ hv]; exact hk v⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hu : u ∈ s`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ hu]`. Conclude with `sub_mem (hψ u) (hψ' u)`. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ hu]`. Conclude with `hψ' u`.
+
+Conclude with `fun h => absurd (Finset.mem_univ _) h`.
+-/
 theorem ml_congr {ι : Type} [Fintype ι] {Y : ι → Type} [∀ v, AddCommGroup (Y v)] [∀ v, Module ℂ (Y v)] {Z : Type}
     [AddCommGroup Z] [Module ℂ Z] (l : MultilinearMap ℂ Y Z) (S K : ∀ v, Submodule ℂ (Y v))
     (h : ∀ ψ, (∀ v, ψ v ∈ S v) → (∃ v, ψ v ∈ K v) → l ψ = 0) (ψ ψ' : ∀ v, Y v) (hψ : ∀ v, ψ v ∈ S v) (hψ' : ∀ v, ψ' v ∈ S v)
@@ -34,6 +46,11 @@ theorem ml_congr {ι : Type} [Fintype ι] {Y : ι → Type} [∀ v, AddCommGroup
     · rw [Finset.piecewise_eq_of_notMem _ _ _ hu]; exact hψ' u
   · exact fun h => absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Take `⟨s₀, hs₀, hs₀'⟩` from `exists_section p S₀`. Use `choose s hs hs' using fun v => exists_section (q v) (S v)`. Use `⟨TensorProduct.lift ((PiTensorProduct.lift (R := ℂ) (s := Q) (E := Z)).toLinearMap ∘ₗ (MultilinearMap.compLinearMapₗ s) ∘ₗ l ∘ₗ s₀), fun f hf ψ hψ => ?_⟩` and prove the remaining obligations. Simplify using `only [TensorProduct.lift.tmul, LinearMap.comp_apply, LinearEquiv.coe_coe, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMapₗ_apply, MultilinearMap.compLinearMap_apply]`. Rewrite using `[ml_congr (l (s₀ (p f))) S (fun v => LinearMap.ker (q v)) (fun ψ h1 h2 => h _ (hs₀ _) ψ h1 (Or.inr h2)) _ ψ (fun v => hs v _) hψ (fun v => by rw [LinearMap.mem_ker, map_sub, hs' v _ (hψ v), sub_self])]`.
+
+Use `h (s₀ (p f) - f) (sub_mem (hs₀ _) hf) ψ hψ (Or.inl (by rw [map_sub, hs₀' f hf, sub_self]))` as an intermediate fact. Rewrite `this` using `[map_sub, MultilinearMap.sub_apply, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem desc {ι : Type} [Fintype ι] {A P Z : Type} {Y Q : ι → Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup P] [Module ℂ P]
     [AddCommGroup Z] [Module ℂ Z] [∀ v, AddCommGroup (Y v)] [∀ v, Module ℂ (Y v)] [∀ v, AddCommGroup (Q v)]
     [∀ v, Module ℂ (Q v)] (l : A →ₗ[ℂ] MultilinearMap ℂ Y Z) (p : A →ₗ[ℂ] P) (q : ∀ v, Y v →ₗ[ℂ] Q v) (S₀ : Submodule ℂ A)
@@ -56,13 +73,24 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 def Std (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) : Prop :=
   ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1
 
+/- English proof (translation)
+Use `filter_upwards [hw, h] with v h1 h2 using h2.trans h1`.
+-/
 theorem Std.congr {φ w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (h : ∀ᶠ v in cofinite, φ v = w v) : Std φ := by
   filter_upwards [hw, h] with v h1 h2 using h2.trans h1
 
+/- English proof (translation)
+Use `filter_upwards [T.eventually_cofinite_notMem] with v hv using h v hv`.
+-/
 theorem ev_of_off {φ w : ∀ v : Pl F, (κ → Fv F v) → ℂ} {T : Finset (Pl F)} (h : ∀ v ∉ T, φ v = w v) :
     ∀ᶠ v in cofinite, φ v = w v := by
   filter_upwards [T.eventually_cofinite_notMem] with v hv using h v hv
 
+/- English proof (translation)
+Set `E` to `(Fintype.equivFin (ι ⊕ ι')).symm`. Set `c : ι ⊕ ι' → ℂ` to `Sum.elim (fun _ => 1) fun _ => -1`. Use `tensInj F κ w hne hw T _ (fun i => c (E i)) (fun i => Sum.elim f f' (E i)) (fun i => Sum.elim φ φ' (E i)) (fun i => by rcases E i with j | j; exacts [h j, h' j]) (by rw [E.sum_comp (fun j => c j • pure (Sum.elim f f' j) (Sum.elim φ φ' j)), Fintype.sum_sum_type]` as an intermediate fact. Simplify using `[c, e])`. Rewrite `this` using `[E.sum_comp (fun j => c j • Sum.elim f f' j ⊗ₜ[ℂ] (PiTensorProduct.tprod ℂ fun v : T => Sum.elim φ φ' j v)), Fintype.sum_sum_type]`.
+
+Simplify `this` using `[c, ← sub_eq_add_neg, sub_eq_zero]`.
+-/
 theorem tens_eq {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w v ≠ 0) (hw : Std w) (T : Finset (Pl F)) {ι ι' : Type}
     [Fintype ι] [Fintype ι'] (f : ι → SInf F κ) (φ : ι → ∀ v : Pl F, (κ → Fv F v) → ℂ) (f' : ι' → SInf F κ)
     (φ' : ι' → ∀ v : Pl F, (κ → Fv F v) → ℂ) (h : ∀ i, ∀ v ∉ T, φ i v = w v) (h' : ∀ i, ∀ v ∉ T, φ' i v = w v)
@@ -79,6 +107,9 @@ theorem tens_eq {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w v �
     Fintype.sum_sum_type] at this
   simpa [c, ← sub_eq_add_neg, sub_eq_zero] using this
 
+/- English proof (translation)
+Use `congrArg (TensorProduct.map p (PiTensorProduct.map fun v : T => q v)) (tens_eq hne hw T f φ f' φ' h h' e)` as an intermediate fact. Simplify `this` using `only [map_sum, TensorProduct.map_tmul, PiTensorProduct.map_tprod]`.
+-/
 theorem tens_eq_map {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w v ≠ 0) (hw : Std w) (T : Finset (Pl F)) {ι ι' : Type}
     [Fintype ι] [Fintype ι'] (f : ι → SInf F κ) (φ : ι → ∀ v : Pl F, (κ → Fv F v) → ℂ) (f' : ι' → SInf F κ)
     (φ' : ι' → ∀ v : Pl F, (κ → Fv F v) → ℂ) (h : ∀ i, ∀ v ∉ T, φ i v = w v) (h' : ∀ i, ∀ v ∉ T, φ' i v = w v)
@@ -92,14 +123,25 @@ theorem tens_eq_map {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hne : ∀ v, w 
 def ext (w : ∀ v : Pl F, (κ → Fv F v) → ℂ) (T : Finset (Pl F)) (ψ : ∀ v : T, (κ → Fv F v) → ℂ) (v : Pl F) :
     (κ → Fv F v) → ℂ := if h : v ∈ T then ψ ⟨v, h⟩ else w v
 
+/- English proof (translation)
+The claim follows from `funext fun v => by unfold ext; split_ifs with hv exacts [rfl, (h v hv).symm]`.
+-/
 theorem ext_of {w φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} {T : Finset (Pl F)} (h : ∀ v ∉ T, φ v = w v) :
     ext w T (fun v => φ v) = φ := funext fun v => by
   unfold ext; split_ifs with hv
   exacts [rfl, (h v hv).symm]
 
+/- English proof (translation)
+Introduce `_ hv` and use `dif_neg hv`.
+-/
 theorem ext_off (w : ∀ v : Pl F, (κ → Fv F v) → ℂ) (T : Finset (Pl F)) (ψ) : ∀ v ∉ T, ext w T ψ v = w v :=
   fun _ hv => dif_neg hv
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Use `congr 1`. Establish `hf` using `GlobalTheory.PureFactor.mulSupport_finite _ (hw.congr (ev_of_off (ext_off w T ψ))) x`. Rewrite using `[← finprod_mem_univ, ← Set.union_compl_self (T : Set (Pl F)), finprod_mem_union' disjoint_compl_right (hf.inter_of_right _) (hf.inter_of_right _), finprod_mem_coe_finset, ← Finset.prod_coe_sort T]`. Use `congr 1`.
+
+Conclude with `Finset.prod_congr rfl fun v _ => by unfold ext; rw [dif_pos v.2]`. Conclude with `finprod_congr fun v => finprod_congr fun hv => by rw [ext_off w T ψ v hv]`.
+-/
 theorem pure_ext {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (T : Finset (Pl F)) (f : SInf F κ) (ψ) (x : κ → AF F) :
     pure f (ext w T ψ) x = f (fun i => evI F (x i)) * ((∏ v : T, ψ v fun i => evFin F v (x i)) *
       ∏ᶠ (v) (_ : v ∉ T), w v fun i => evFin F v (x i)) := by
@@ -113,6 +155,11 @@ theorem pure_ext {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (T : F
   · exact Finset.prod_congr rfl fun v _ => by unfold ext; rw [dif_pos v.2]
   · exact finprod_congr fun v => finprod_congr fun hv => by rw [ext_off w T ψ v hv]
 
+/- English proof (translation)
+Set `m : (κ → AF F) → MultilinearMap ℂ (fun v : T => (κ → Fv F v) → ℂ) ℂ` to `fun x => (MultilinearMap.mkPiAlgebra ℂ T ℂ).compLinearMap fun v => LinearMap.proj fun i => evFin F v (x i)`. Use `⟨{ toFun := fun f => MultilinearMap.pi fun x => (f (fun i => evI F (x i)) * ∏ᶠ (v) (_ : v ∉ T), w v fun i => evFin F v (x i)) • m x map_add' := fun f g => ?_, map_smul' := fun a f => ?_ }, fun f ψ => ?_⟩` and prove the remaining obligations. Use extensionality with `ψ x`. Simplify using `[add_mul]`. Use extensionality with `ψ x`.
+
+Simplify using `[mul_assoc]`. Use function extensionality and compare the values at `x`. Rewrite using `[pure_ext hw]`. Simplify using `[m]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pureML {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (T : Finset (Pl F)) :
     ∃ l : SInf F κ →ₗ[ℂ] MultilinearMap ℂ (fun v : T => (κ → Fv F v) → ℂ) ((κ → AF F) → ℂ),
       ∀ f ψ, l f ψ = pure f (ext w T ψ) := by
@@ -127,6 +174,19 @@ theorem exists_pureML {w : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hw : Std w) (
     rw [pure_ext hw]
     simp [m]; ring
 
+/- English proof (translation)
+Set `sh : (κ → AF F) → (κ → Fv F v) → κ → AF F` to `fun x y i => x i + GlobalTheory.EmbChart.atPlace v (y i - evFin F v (x i))`. Use `⟨{ toFun := fun Φ x => π (fun y => Φ (sh x y)) fun i => evFin F v (x i) map_add' := fun Φ Ψ => funext fun x => ?_, map_smul' := fun a Φ => funext fun x => ?_ }, fun f φ hφ => ?_⟩` and prove the remaining obligations. Conclude with `congrFun (π.map_add (fun y => Φ (sh x y)) fun y => Ψ (sh x y)) _`. Conclude with `congrFun (π.map_smul a fun y => Φ (sh x y)) _`. Take `⟨r, hr, hr'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hφ`.
+
+Establish `e : pure f φ = tens (evFin F v) (φ v) r` using `by rw [hr', Function.update_eq_self]`. Rewrite using `[← hr', e]`. Use function extensionality and compare the values at `x`. Establish `e2 : (fun y => tens (evFin F v) (φ v) r (sh x y)) = r x • φ v`. Use function extensionality and compare the values at `y`.
+
+Establish `h1 : (fun i => evFin F v (sh x y i)) = y` using `funext fun i => by`. Simplify using `only [sh, map_add, GlobalTheory.EmbChart.evFin_atPlace, add_sub_cancel]`. Establish `h2 : r (sh x y) = r x` using `hr x (fun i => GlobalTheory.EmbChart.atPlace v (y i - evFin F v (x i))) fun u hu => by`. Use function extensionality and compare the values at `i`. Use `show u * GlobalTheory.EmbChart.atPlace v (y i - evFin F v (x i)) = 0`.
+
+Use `Prod.ext (mul_zero u.1) (af_ext fun w => ?_)` and prove the remaining obligations. Use `show evalV F w (u.2 * singleFin v (y i - evFin F v (x i))) = evalV F w 0`. Rewrite using `[map_mul, map_zero]`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+
+Rewrite using `[show evalV F w u.2 = 0 from hu, zero_mul]`. Rewrite using `[evalV_singleFin_ne h, mul_zero]`. Simplify using `only [tens, h1, h2, Pi.smul_apply, smul_eq_mul, mul_comm]`. Express the relevant statement in the definitionally equal form `π (fun y => tens (evFin F v) (φ v) r (sh x y)) _ = _`. Rewrite using `[e2, map_smul]`.
+
+Simplify using `only [tens, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+-/
 theorem exists_factorOp (v : Pl F) (π : Module.End ℂ ((κ → Fv F v) → ℂ)) :
     ∃ O : Module.End ℂ ((κ → AF F) → ℂ), ∀ (f : SInf F κ) φ, Std φ → O (pure f φ) = pure f (Function.update φ v (π (φ v))) := by
   let sh : (κ → AF F) → (κ → Fv F v) → κ → AF F := fun x y i => x i + GlobalTheory.EmbChart.atPlace v (y i - evFin F v (x i))

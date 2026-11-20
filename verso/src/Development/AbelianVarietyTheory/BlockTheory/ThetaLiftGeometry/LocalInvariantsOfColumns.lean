@@ -26,6 +26,9 @@ def NoInv {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V]
     (ρ : Representation k Γ V) (D : Subgroup Γ) : Prop :=
   Representation.invariants (ρ.comp D.subtype) = ⊥
 
+/- English proof (translation)
+Unfold `NoInv`. Rewrite using `[Submodule.eq_bot_iff]`. Use `forall_congr' fun v => imp_congr ?_ Iff.rfl` and prove the remaining obligations. Rewrite using `[Representation.mem_invariants]`. Conclude with `⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g.1 g.2⟩`.
+-/
 theorem noInv_iff {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V]
     (ρ : Representation k Γ V) (D : Subgroup Γ) :
     NoInv ρ D ↔ ∀ v : V, (∀ g ∈ D, ρ g v = v) → v = 0 := by
@@ -35,6 +38,9 @@ theorem noInv_iff {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module 
   rw [Representation.mem_invariants]
   exact ⟨fun h g hg => h ⟨g, hg⟩, fun h g => h g.1 g.2⟩
 
+/- English proof (translation)
+Rewrite using `[noInv_iff]`. Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `hv (h v fun _ _ => rfl)`.
+-/
 example {k Γ V : Type} [Field k] [Group Γ] [AddCommGroup V] [Module k V] [Nontrivial V]
     (D : Subgroup Γ) : ¬ NoInv (Representation.trivial k Γ V) D := by
   rw [noInv_iff]

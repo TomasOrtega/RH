@@ -17,24 +17,44 @@ section Oev
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (v : HeightOneSpectrum (𝓞 F))
 
+/- English proof (translation)
+The claim follows from `Submodule.add_mem _ hx hy`.
+-/
 theorem oev_add {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
     x + y ∈ OEv (E := E) v := Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+The claim follows from `Submodule.zero_mem _`.
+-/
 theorem oev_zero : (0 : Fv F v ⊗[F] E) ∈ OEv (E := E) v := Submodule.zero_mem _
 
+/- English proof (translation)
+The claim follows from `Submodule.neg_mem _ hx`.
+-/
 theorem oev_neg {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) : -x ∈ OEv (E := E) v :=
   Submodule.neg_mem _ hx
 
+/- English proof (translation)
+The claim follows from `Submodule.smul_mem _ (⟨s, hs⟩ : v.adicCompletionIntegers F) hx`.
+-/
 theorem oev_smul {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F) {x : Fv F v ⊗[F] E}
     (hx : x ∈ OEv (E := E) v) : s • x ∈ OEv (E := E) v :=
   Submodule.smul_mem _ (⟨s, hs⟩ : v.adicCompletionIntegers F) hx
 
+/- English proof (translation)
+Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul y e => simp [sc, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul']`. Consider the case `add p q hp hq => rw [mul_add, hp, hq, smul_add]`.
+-/
 theorem sdc_sc_mul (x : Fv F v) (c : Fv F v ⊗[F] E) : sc (E := E) v x * c = x • c := by
   induction c using TensorProduct.induction_on with
   | zero => simp
   | tmul y e => simp [sc, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul']
   | add p q hp hq => rw [mul_add, hp, hq, smul_add]
 
+/- English proof (translation)
+Unfold `dV`. Use `split_ifs with h`. Take `⟨x, _, he⟩` from `h.choose_spec.2.2`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← he]`. Rewrite using `[show algebraMap F (Fv F v) ((x : 𝓞 F) : F) = (((x : 𝓞 F) : F) : v.adicCompletion F) from rfl, v.valuedAdicCompletion_eq_valuation']`.
+
+Conclude with `v.valuation_le_one x`. Conclude with `one_mem _`.
+-/
 theorem dV_int : dV v ∈ v.adicCompletionIntegers F := by
   unfold dV
   split_ifs with h
@@ -45,12 +65,20 @@ theorem dV_int : dV v ∈ v.adicCompletionIntegers F := by
     exact v.valuation_le_one x
   · exact one_mem _
 
+/- English proof (translation)
+Unfold `dV`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_ne_zero`.
+-/
 theorem dV_ne_zero : dV v ≠ 0 := by
   unfold dV
   split_ifs with h
   · exact h.choose_spec.1
   · exact one_ne_zero
 
+/- English proof (translation)
+Establish `hs : singleV F v (0 : Fv F v) = 0`. Establish `h` using `SdUniqW.singleV_add v (0 : Fv F v) 0`. Rewrite `h` using `[add_zero]`. Simplify using `using h`. Rewrite using `[psiV, hs]`.
+
+Use `AddChar.map_zero_eq_one ψ` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+-/
 theorem psiV_zero (ψ : AddChar (AF F) ℂ) : psiV F ψ v 0 = 1 := by
   have hs : singleV F v (0 : Fv F v) = 0 := by
     have h := SdUniqW.singleV_add v (0 : Fv F v) 0
@@ -60,11 +88,17 @@ theorem psiV_zero (ψ : AddChar (AF F) ℂ) : psiV F ψ v 0 = 1 := by
   convert AddChar.map_zero_eq_one ψ
   rfl
 
+/- English proof (translation)
+Introduce `h0`. Rewrite `h` using `[IsUnif, h0, map_zero]`. Conclude with `WithZero.coe_ne_zero h.symm`.
+-/
 theorem unif_ne_zero {ϖ : Fv F v} (h : IsUnif v ϖ) : ϖ ≠ 0 := by
   intro h0
   rw [IsUnif, h0, map_zero] at h
   exact WithZero.coe_ne_zero h.symm
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, h]`. Conclude with `le_of_lt (by decide)`.
+-/
 theorem unif_int {ϖ : Fv F v} (h : IsUnif v ϖ) : ϖ ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, h]
   exact le_of_lt (by decide)
@@ -82,10 +116,16 @@ def HO (a : ℕ) : AddSubgroup (HermR (Fv F v) σ a) where
   zero_mem' := fun _ _ => oev_zero v
   neg_mem' := fun {_} hx i j => oev_neg v (hx i j)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_HO {a : ℕ} (S : HermR (Fv F v) σ a) :
     S ∈ HO σ v a ↔ ∀ i j, (S : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j ∈ OEv (E := E) v :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite `hS`, the goal using `[mem_HO]`. Introduce `i j`. Rewrite using `[coe_hermSMul, Matrix.smul_apply]`. Conclude with `oev_smul v hs (hS i j)`.
+-/
 theorem smul_mem_HO {a : ℕ} {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers F)
     {S : HermR (Fv F v) σ a} (hS : S ∈ HO σ v a) : s • S ∈ HO σ v a := by
   rw [mem_HO] at hS ⊢
@@ -93,6 +133,13 @@ theorem smul_mem_HO {a : ℕ} {s : Fv F v} (hs : s ∈ v.adicCompletionIntegers 
   rw [coe_hermSMul, Matrix.smul_apply]
   exact oev_smul v hs (hS i j)
 
+/- English proof (translation)
+Use extensionality with `S`. Rewrite using `[SetLike.mem_coe, mem_smulSub]`. Simplify using `only [HermP, PO, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hS`.
+
+Use `⟨ϖ⁻¹ • S, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_HO]`. Introduce `i j`. Take `⟨c, hc, he⟩` from `hS i j`. Rewrite using `[coe_hermSMul, Matrix.smul_apply, he, sdc_sc_mul, smul_smul, inv_mul_cancel₀ hϖ, one_smul]`.
+
+Conclude with `hc`. Rewrite using `[smul_smul, mul_inv_cancel₀ hϖ, one_smul]`. Introduce and unpack `⟨p, hp, rfl⟩ i j`. Use `⟨(p : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j, hp i j, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_hermSMul, Matrix.smul_apply, sdc_sc_mul]`.
+-/
 theorem hermitianDivisible_eq_smul {a : ℕ} {ϖ : Fv F v} (hϖ : ϖ ≠ 0) :
     HermP v σ a ϖ = (smulSub ϖ (HO σ v a) : Set (HermR (Fv F v) σ a)) := by
   ext S
@@ -111,12 +158,18 @@ theorem hermitianDivisible_eq_smul {a : ℕ} {ϖ : Fv F v} (hϖ : ϖ ≠ 0) :
     refine ⟨(p : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) i j, hp i j, ?_⟩
     rw [coe_hermSMul, Matrix.smul_apply, sdc_sc_mul]
 
+/- English proof (translation)
+Simplify using `only [pairHerm, coe_hermSMul, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairHerm_smul_left {a : ℕ} (s : Fv F v) (S T : HermR (Fv F v) σ a) :
     pairHerm (Fv F v) σ a (s • S) T = s * pairHerm (Fv F v) σ a S T := by
   simp only [pairHerm, coe_hermSMul, Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul,
     smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `[pairHerm]`.
+-/
 theorem pairHerm_zero_right {a : ℕ} (S : HermR (Fv F v) σ a) :
     pairHerm (Fv F v) σ a S 0 = 0 := by
   simp [pairHerm]
@@ -143,6 +196,39 @@ def IdxHO (a : ℕ) : Prop :=
     ((HO σ v a).relIndex (smulSub (dV v)⁻¹ (HO σ v a)) : ℝ) = absV v (dV v) ^ (-((a : ℝ) ^ 2)) ∧
     ((smulSub ϖ (HO σ v a)).relIndex (HO σ v a) : ℝ) = qv v ^ (a ^ 2)
 
+/- English proof (translation)
+Introduce `hS hU hν ϖ hϖ`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hϖ0` using `unif_ne_zero v hϖ`. Establish `hd0` using `dV_ne_zero v`. Establish `hνsd : SdHerm F E σ (Fv F v) (psiV F ψ v) a (dT σ ψ v a)`.
+
+Simplify using `only [dT, dif_pos hν]`. Conclude with `hν.choose_spec`. Use `hνsd.1` as an intermediate fact. Use `set ν := dT σ ψ v a with hνdef`. Use `set L := HO σ v a with hLdef`.
+
+Use `set L' := smulSub (dV v)⁻¹ L with hL'def`. Take `⟨hLc, hLo⟩` from `hT`. Establish `hL'c : IsCompact (L' : Set (HermR (Fv F v) σ a))` using `isCompact_smulSub _ L hLc`. Establish `hL'o : IsOpen (L' : Set (HermR (Fv F v) σ a))` using `isOpen_smulSub _ (inv_ne_zero hd0) L hLo`. Establish `hχ : ∀ x t y : HermR (Fv F v) σ a, psiV F ψ v (pairHerm (Fv F v) σ a (t + x) y) = psiV F ψ v (pairHerm (Fv F v) σ a t y) * psiV F ψ v (pairHerm (Fv F v) σ a x y)`.
+
+Introduce `x t y`. Rewrite using `[pairHerm_add, psiV_add]`. Establish `h0 : ∀ y : HermR (Fv F v) σ a, psiV F ψ v (pairHerm (Fv F v) σ a y 0) = 1`. Introduce `y`. Rewrite using `[pairHerm_zero_right, psiV_zero]`.
+
+Establish `hA : ann (fun S T => psiV F ψ v (pairHerm (Fv F v) σ a S T)) (L : Set (HermR (Fv F v) σ a)) = L'`. Rewrite using `[Sd.ann_eq_cond v (psiV F ψ v) (dV v) (pairHerm (Fv F v) σ a) _ (hC hS)]`. Conclude with `hD hS hU`. Introduce `s hs x hx`. Conclude with `⟨s • x, smul_mem_HO σ v hs hx, fun y => pairHerm_smul_left σ v s x y⟩`.
+
+Establish `hle : L ≤ L'`. Introduce `S hS'`. Rewrite using `[hL'def, mem_smulSub]`. Use `⟨dV v • S, smul_mem_HO σ v (dV_int v) hS', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, inv_mul_cancel₀ hd0, one_smul]`.
+
+Take `⟨hN1, hN2⟩` from `hI hU ϖ hϖ`. Establish `hNz : L.relIndex L' ≠ 0`. Introduce `h`. Rewrite `hN1` using `[h, Nat.cast_zero]`. Use `Real.rpow_pos_of_pos (absV_dV_pos v) (-((a : ℝ) ^ 2))` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `Sd.vol_sq_mul_index hνsd hχ h0 L L' hLc hLo hL'c hL'o hA hle hNz`. Rewrite `key` using `[hN1]`. Establish `hp` using `absV_dV_pos v`. Establish `hvolL : ν.real (L : Set (HermR (Fv F v) σ a)) = absV v (dV v) ^ ((a : ℝ) ^ 2 / 2)`.
+
+Establish `e1 : absV v (dV v) ^ (-((a : ℝ) ^ 2)) = (absV v (dV v) ^ ((a : ℝ) ^ 2))⁻¹` using `Real.rpow_neg hp.le _`. Establish `e2 : (absV v (dV v) ^ ((a : ℝ) ^ 2 / 2)) ^ 2 = absV v (dV v) ^ ((a : ℝ) ^ 2)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hp.le]`. Evaluate the numerical expressions. Establish `hA2 : 0 < absV v (dV v) ^ ((a : ℝ) ^ 2)` using `Real.rpow_pos_of_pos hp _`.
+
+Rewrite `key` using `[e1]`. Establish `e3 : ν.real (L : Set (HermR (Fv F v) σ a)) ^ 2 = (absV v (dV v) ^ ((a : ℝ) ^ 2 / 2)) ^ 2`. Rewrite using `[e2]`. Clear denominators, using `at key` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `(pow_left_inj₀ measureReal_nonneg (Real.rpow_pos_of_pos hp _).le two_ne_zero).1 e3`. Establish `hle2 : smulSub ϖ L ≤ L`. Introduce `S hS'`. Rewrite `hS'` using `[mem_smulSub]`. Take `⟨p, hp', rfl⟩` from `hS'`.
+
+Conclude with `smul_mem_HO σ v (unif_int v hϖ) hp'`. Establish `hPo : IsOpen (smulSub ϖ L : Set (HermR (Fv F v) σ a))` using `isOpen_smulSub _ hϖ0 L hLo`. Establish `hPc : IsCompact (smulSub ϖ L : Set (HermR (Fv F v) σ a))` using `isCompact_smulSub _ L hLc`. Establish `hNz2 : (smulSub ϖ L).relIndex L ≠ 0`. Introduce `h`.
+
+Rewrite `hN2` using `[h, Nat.cast_zero]`. Use `pow_pos (qv_pos v) (a ^ 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `PI.VolStabSW.measure_eq_relIndex_mul ν (smulSub ϖ L) L hle2 hLo.measurableSet hPo.measurableSet hNz2`. Establish `h3 : ν.real (L : Set (HermR (Fv F v) σ a)) = ((smulSub ϖ L).relIndex L : ℝ) * ν.real (smulSub ϖ L : Set (HermR (Fv F v) σ a))`.
+
+Rewrite using `[measureReal_def, measureReal_def, h2, ENNReal.toReal_mul]`. Simplify using the standard rewrite rules. Rewrite `h3` using `[hN2, hvolL]`. Rewrite using `[hermitianDivisible_eq_smul σ v hϖ0, ← ENNReal.ofReal_toReal hPc.measure_lt_top.ne, ← measureReal_def]`. Use `congr 1`.
+
+Establish `hq` using `pow_pos (qv_pos v) (a ^ 2)`. Establish `e4 : qv v ^ (-((a : ℤ) ^ 2)) = (qv v ^ (a ^ 2))⁻¹`. Rewrite using `[zpow_neg]`. Use `congr 1`. Rewrite using `[e4, h3]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem sdVolH_of_top (a : ℕ) (hC : CondV σ J ψ v) (hT : TopH σ v a) (hD : DualH σ J ψ v a)
     (hI : IdxHO σ v a) : SdVolH σ J ψ v a := by
   intro hS hU hν ϖ hϖ

@@ -12,6 +12,11 @@ namespace GlobalTheory.MtId
 
 variable {D : D7}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hn, h⟩ κ`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use `(RingEquiv.eq_symm_apply _).1 (h κ a b)` as an intermediate fact. Conclude with `this`.
+
+Introduce `h`. Use `⟨rfl, fun κ a b => (RingEquiv.eq_symm_apply _).2 ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun g : GL (Fin V.rank) (EAf D) => g.val a b) (h κ)`.
+-/
 theorem idFrame_iff_unitFr {V : HSp D} (hF : D.host.F = maximalRealSubfield D.host.E) (P : principalLevelFrame.RowPsi V V.rank) :
     GlobalTheory.MtRead.IdFrame hF P ↔ GlobalTheory.MtIn.UnitFr P := by
   constructor
@@ -25,6 +30,9 @@ theorem idFrame_iff_unitFr {V : HSp D} (hF : D.host.F = maximalRealSubfield D.ho
 
 def castFr {V : HSp D} {n : ℕ} (hn : V.rank = n) (P : principalLevelFrame.RowPsi V V.rank) : principalLevelFrame.RowPsi V n := hn ▸ P
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `(idFrame_iff_unitFr hF P).2 h`.
+-/
 theorem idFrame_castFr {V : HSp D} {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (hn : V.rank = n)
     {P : principalLevelFrame.RowPsi V V.rank} (h : GlobalTheory.MtIn.UnitFr P) : GlobalTheory.MtRead.IdFrame hF (castFr hn P) := by
   subst hn

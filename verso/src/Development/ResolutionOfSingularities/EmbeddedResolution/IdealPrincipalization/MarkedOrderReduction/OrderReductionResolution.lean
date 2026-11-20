@@ -46,10 +46,20 @@ structure MonomialPrincipalizationHypotheses (hinv : ComapIsoInvariance.{u}) : P
   trivial_of_coSupport_empty : ∀ T : MarkedIdealWithBoundary.{u}, MonomialCenter.IsLocallyMonomialTriple T →
     orderAtLeastLocus T.ideal T.mult = ∅ → (monomialPrincipalization hinv T).length = 0
 
+/- English proof (translation)
+Rewrite using `[orderAtLeastLocus_comap_eqToHom, hJ, Set.preimage_empty]`.
+-/
 theorem orderAtLeastLocus_comap_eqToHom_eq_empty {A B : Scheme.{u}} (h : A = B) (J : B.IdealSheafData)
     (c : ℕ) (hJ : orderAtLeastLocus J c = ∅) : orderAtLeastLocus (J.comap (eqToHom h)) c = ∅ := by
   rw [orderAtLeastLocus_comap_eqToHom, hJ, Set.preimage_empty]
 
+/- English proof (translation)
+Rewrite `h` using `[hinv.coSupport_comap]`. Establish `hb : ∀ y : ↥B, (e.hom) ((e.inv) y) = y`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Set.not_nonempty_iff_eq_empty]`.
+
+Introduce and unpack `⟨y, hy⟩`. Establish `hmem : (e.inv) y ∈ ⇑e.hom ⁻¹' orderAtLeastLocus J c`. Establish `hby : (e.hom) ((e.inv) y) = y` using `hb y`. Simplify using `only [Set.mem_preimage, hby]`. Conclude with `hy`.
+
+Rewrite `hmem` using `[h]`. Simplify using `at hmem`.
+-/
 private theorem orderAtLeastLocus_eq_empty_of_comap_iso_hom_eq_empty (hinv : ComapIsoInvariance.{u}) {A B : Scheme.{u}}
     (e : A ≅ B) (J : B.IdealSheafData) (c : ℕ)
     (h : orderAtLeastLocus (J.comap e.hom) c = ∅) : orderAtLeastLocus J c = ∅ := by
@@ -68,6 +78,9 @@ private theorem orderAtLeastLocus_eq_empty_of_comap_iso_hom_eq_empty (hinv : Com
   rw [h] at hmem
   simp at hmem
 
+/- English proof (translation)
+Simplify using `[orderReductionSeq, h, emptyMarkedSequenceOfBlowups_length]`.
+-/
 theorem orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (f : PrincipalizationAssignment.{u}) (h : orderAtLeastLocus T.ideal T.mult = ∅) :
     (orderReductionSeq hinv T (principalizationOfDimLe T f)).length = 0 := by
@@ -86,12 +99,18 @@ abbrev orderReductionMonomialSequence (hinv : ComapIsoInvariance.{u}) (T : Marke
       ((companionIdealReduction hinv T (principalizationOfDimLe T f)).boundary (companionIdealReduction hinv T (principalizationOfDimLe T f)).length) :=
   MarkedBlowupSequenceData.ofMarkedSequence (monomialPrincipalization hinv (orderReductionMonomialTriple hinv T f))
 
+/- English proof (translation)
+The claim follows from `orderReductionData_eq hinv T (principalizationOfDimLe T f)`.
+-/
 theorem orderReductionData_eq_append (hinv : ComapIsoInvariance.{u}) (T : MarkedIdealWithBoundary.{u})
     (f : PrincipalizationAssignment.{u}) :
     orderReductionData hinv T (principalizationOfDimLe T f) =
       (companionIdealReduction hinv T (principalizationOfDimLe T f)).append (orderReductionMonomialSequence hinv T f) hinv :=
   orderReductionData_eq hinv T (principalizationOfDimLe T f)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hne`. Rewrite using `[MarkedBlowupSequenceData.boundarySupport_dataAt]`. Conclude with `hc`.
+-/
 private theorem hasPrincipalizationCenter_ofMarkedSequence {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
@@ -103,12 +122,20 @@ private theorem hasPrincipalizationCenter_ofMarkedSequence {k : Type u} [Field k
   · rw [MarkedBlowupSequenceData.boundarySupport_dataAt]
     exact hc
 
+/- English proof (translation)
+Rewrite `hi` using `[MarkedBlowupSequenceData.ofMarkedSequence_length]`. Then use the resulting hypothesis.
+-/
 private theorem lt_length_of_lt_ofMarkedSequence_length {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (i : ℕ)
     (hi : i < (MarkedBlowupSequenceData.ofMarkedSequence s).length) : i < s.length := by
   rwa [MarkedBlowupSequenceData.ofMarkedSequence_length] at hi
 
+/- English proof (translation)
+Establish `hlocMon` using `isLocallyMonomialTriple_tripleAtLength_companionIdealReduction hG hinv hspec hT hdim`. Rewrite `hi`, the goal using `[orderReductionData_eq hinv T (principalizationOfDimLe T A)]`. Use `MarkedBlowupSequenceData.append_dataAt_of_forall _ _ hinv (fun D => HasPrincipalizationCenter T.mult D) (isInvariantUnderIso_hasPrincipalizationCenter hG.maxContactTransport T.mult) (hasCenter_companionIdealReduction hG hinv hspec hT hdim) ?_ i hi` and prove the remaining obligations. Introduce `j hj`. Establish `hj'` using `lt_length_of_lt_ofMarkedSequence_length (monomialPrincipalization hinv (tripleAtLength T (companionIdealReduction hinv T (principalizationOfDimLe T A)) ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimLe T …`.
+
+Conclude with `hasPrincipalizationCenter_ofMarkedSequence (monomialPrincipalization hinv (tripleAtLength T (companionIdealReduction hinv T (principalizationOfDimLe T A)) ((companionIdealReduction hinv T (principalizationOfDimLe T A)).ideal (companionIdealReduction hinv T (principalizationOfDimL …`.
+-/
 private theorem hasCenter_orderReductionData (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -133,6 +160,9 @@ private theorem hasCenter_orderReductionData (hG : PrincipalizationGeometryHypot
     (hmon.center_nonempty _ hlocMon j hj')
     (hmon.cert _ hlocMon j hj')
 
+/- English proof (translation)
+Distinguish the cases in `hne : (orderAtLeastLocus T.ideal T.mult).Nonempty`. Rewrite `hi`, the goal using `[orderReductionSeq_eq_of_nonempty hinv T (principalizationOfDimLe T A) hne]`. Conclude with `(MarkedBlowupSequenceData.nonempty_center_and_certificate_of_hasPrincipalizationCenter (orderReductionData hinv T (principalizationOfDimLe T A)) T.mult (hasCenter_orderReductionData hG hinv hmon hspec hT hdim)).1 i hi`. Conclude with `absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)`.
+-/
 theorem center_support_nonempty_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -146,6 +176,9 @@ theorem center_support_nonempty_orderReductionSeq (hG : PrincipalizationGeometry
   · exact absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A
       (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)
 
+/- English proof (translation)
+Distinguish the cases in `hne : (orderAtLeastLocus T.ideal T.mult).Nonempty`. Rewrite `hi`, the goal using `[orderReductionSeq_eq_of_nonempty hinv T (principalizationOfDimLe T A) hne]`. Conclude with `(MarkedBlowupSequenceData.nonempty_center_and_certificate_of_hasPrincipalizationCenter (orderReductionData hinv T (principalizationOfDimLe T A)) T.mult (hasCenter_orderReductionData hG hinv hmon hspec hT hdim)).2 i hi`. Conclude with `absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)`.
+-/
 theorem certificate_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)
@@ -162,6 +195,9 @@ theorem certificate_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{
   · exact absurd (orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A
       (Set.not_nonempty_iff_eq_empty.mp hne)) (by omega)
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `hh`.
+-/
 private theorem orderAtLeastLocus_ideal_congr {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (d : MarkedBlowupSequenceData p I m E) (i j : ℕ) (h : i = j) (c : ℕ)
@@ -169,6 +205,9 @@ private theorem orderAtLeastLocus_ideal_congr {k : Type u} [Field k] {X : Scheme
   subst h
   exact hh
 
+/- English proof (translation)
+Rewrite using `[MarkedBlowupSequenceData.ofMarkedSequence_length, MarkedBlowupSequenceData.ofMarkedSequence_ideal]`. Conclude with `h`.
+-/
 private theorem orderAtLeastLocus_ofMarkedSequence_last_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (s : MarkedSequenceOfBlowups p I m E) (c : ℕ) (h : orderAtLeastLocus (s.ideal s.length) c = ∅) :
@@ -177,6 +216,13 @@ private theorem orderAtLeastLocus_ofMarkedSequence_last_eq_empty {k : Type u} [F
   rw [MarkedBlowupSequenceData.ofMarkedSequence_length, MarkedBlowupSequenceData.ofMarkedSequence_ideal]
   exact h
 
+/- English proof (translation)
+Establish `hlen : (s.append t hinv).length = s.length + t.length` using `MarkedBlowupSequenceData.append_length s t hinv`. Break down `Nat.eq_zero_or_pos t.length with h0 | hpos` into its components or cases. Use `orderAtLeastLocus_ideal_congr (s.append t hinv) s.length (s.append t hinv).length (by omega) m ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.append_ideal, MarkedBlowupSequenceData.appendIdeal_of_le_length s t (le_refl s.length)]`. Use `orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ ?_` and prove the remaining obligations.
+
+Establish `ht0 : orderAtLeastLocus (t.ideal 0) m = ∅` using `orderAtLeastLocus_ideal_congr t t.length 0 h0 m ht`. Rewrite `ht0` using `[t.ideal_zero]`. Conclude with `orderAtLeastLocus_eq_empty_of_comap_iso_hom_eq_empty hinv t.isoZero _ _ ht0`. Use `orderAtLeastLocus_ideal_congr (s.append t hinv) (s.length + t.length) (s.append t hinv).length hlen.symm m ?_` and prove the remaining obligations. Rewrite using `[MarkedBlowupSequenceData.append_ideal_length_add_length s t hinv hpos]`.
+
+Conclude with `orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ ht`.
+-/
 private theorem orderAtLeastLocus_append_last_eq_empty {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
     (hinv : ComapIsoInvariance.{u}) (s : MarkedBlowupSequenceData p I m E)
@@ -199,6 +245,11 @@ private theorem orderAtLeastLocus_append_last_eq_empty {k : Type u} [Field k] {X
     rw [MarkedBlowupSequenceData.append_ideal_length_add_length s t hinv hpos]
     exact orderAtLeastLocus_comap_eqToHom_eq_empty _ _ _ ht
 
+/- English proof (translation)
+Distinguish the cases in `hne : (orderAtLeastLocus T.ideal T.mult).Nonempty`. Establish `hlocMon` using `isLocallyMonomialTriple_tripleAtLength_companionIdealReduction hG hinv hspec hT hdim`. Establish `hres` using `hmon.resolves _ hlocMon`. Rewrite `hres` using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq]`. Rewrite using `[orderReductionSeq_eq_of_nonempty hinv T (principalizationOfDimLe T A) hne, MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq, MarkedBlowupSequenceData.toMarkedSequence_length, MarkedBlowupSequenceData.toMarkedSequence_ideal, orderReductionData_eq hin …`.
+
+Conclude with `orderAtLeastLocus_append_last_eq_empty hinv _ _ (orderAtLeastLocus_ofMarkedSequence_last_eq_empty _ T.mult hres)`. Rewrite using `[MarkedSequenceOfBlowups.isResolution_iff, MarkedSequenceOfBlowups.lastIdeal_eq, orderReductionSeq_length_eq_zero_of_orderAtLeastLocus_empty hinv T A (Set.not_nonempty_iff_eq_empty.mp hne), MarkedSequenceOfBlowups.ideal_zero, hinv.coSupport_comap, Set.not_nonempty_iff_eq_empty.mp …`.
+-/
 theorem isResolution_orderReductionSeq (hG : PrincipalizationGeometryHypotheses.{u}) (hinv : ComapIsoInvariance.{u})
     (hmon : MonomialPrincipalizationHypotheses hinv) {n : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsOrderReduction (fun d => d ≤ n) A B) {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible)

@@ -23,6 +23,11 @@ open ReciprocityTheory.L2DbarEstimates (V)
 
 variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 
+/- English proof (translation)
+Establish `h : (A.fn g * Φ) ⟨(i, (A.e i).symm z), (A.e i).map_target hz⟩ = ((g ((A.e i).symm z) : ℝ) : ℂ) • Φ ⟨(i, (A.e i).symm z), (A.e i).map_target hz⟩`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Simplify using `only [HolAtlas.reDens, HolAtlas.loc, dif_pos hz]`. Rewrite using `[h, dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc, Complex.re_ofReal_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem reDens_fn_mul (g : M → ℝ) (Φ : A.Fld) (i : A.ι) {z : V n} (hz : z ∈ (A.e i).target) :
     A.reDens (A.fn g * Φ) i z = g ((A.e i).symm z) * A.reDens Φ i z := by
   have h : (A.fn g * Φ) ⟨(i, (A.e i).symm z), (A.e i).map_target hz⟩ =
@@ -33,6 +38,15 @@ theorem reDens_fn_mul (g : M → ℝ) (Φ : A.Fld) (i : A.ι) {z : V n} (hz : z 
   rw [h, dens, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_div_assoc, Complex.re_ofReal_mul]
   rfl
 
+/- English proof (translation)
+Establish `hWm : MeasurableSet ((A.e i).source ∩ A.e i ⁻¹' U)` using `((A.e i).isOpen_inter_preimage hU).measurableSet`. Establish `hcompat` using `A.ofReal_compat (fun i v => ((ε : ℤ) : ℝ) * A.reDens (A.fn g * Φ) i v) (fun i j y hi hj => by`. Rewrite using `[reDens_fn_mul A g Φ i ((A.e i).map_source hi), reDens_fn_mul A g Φ j ((A.e j).map_source hj), (A.e i).left_inv hi, (A.e j).left_inv hj, A.reDens_compat hΦ i j y hi hj]`. Use the proof step `ring)`. Establish `hp : A.part (A.fn g * Φ) ε = ChartGlue.glueMeas A.e (fun i y => ENNReal.ofReal (((ε : ℤ) : ℝ) * A.reDens (A.fn g * Φ) i (A.e i y)))` using `rfl`.
+
+Establish `himg : A.e i '' ((A.e i).source ∩ A.e i ⁻¹' U) = U`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨-, hy⟩, rfl⟩`. Conclude with `hy`.
+
+Introduce `hz`. Conclude with `⟨(A.e i).symm z, ⟨(A.e i).map_target (hUt hz), by simpa [(A.e i).right_inv (hUt hz)] using hz⟩, (A.e i).right_inv (hUt hz)⟩`. Rewrite using `[hp, ChartGlue.glueMeas_apply _ _ A.holo hcompat i hWm Set.inter_subset_left, ChartGlue.chartMeas_apply_of_subset (A.e i) _ hWm Set.inter_subset_left, himg]`. Use `setLIntegral_congr_fun hU.measurableSet fun z hz => ?_` and prove the remaining obligations. Simplify using `only [(A.e i).right_inv (hUt hz), reDens_fn_mul A g Φ i (hUt hz)]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem part_fn_mul_chart [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] (g : M → ℝ) {Φ : A.Fld}
     (hΦ : A.IsForm Φ) (ε : ℤˣ) (i : A.ι) {U : Set (V n)} (hU : IsOpen U) (hUt : U ⊆ (A.e i).target) :
     A.part (A.fn g * Φ) ε ((A.e i).source ∩ A.e i ⁻¹' U) =
@@ -62,6 +76,25 @@ theorem part_fn_mul_chart [MeasurableSpace M] [BorelSpace M] [SecondCountableTop
 
 end General
 
+/- English proof (translation)
+Introduce `k _ B Y _ _ q p d hB hY π w E h H flB fl hfl A σ v hv Φ hΦ h0`. Use `haveI : CompactSpace (CxPts p σ) := CxPts.compactSpace σ hY.isProjOver`. Use `haveI : SecondCountableTopology (CxPts p σ) := CxPts.secondCountableTopology_of_isProjOver σ hY.isProjOver`. Establish `main : ∀ ε : ℤˣ, Filter.Tendsto (fun t : ℝ => (hY.atlas σ).part ((hY.atlas σ).fn (fun y => t / (1 - v y + t) ^ 2) * Φ) ε Set.univ) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)`. Introduce `ε`.
+
+Establish `loc : ∀ y : CxPts p σ, ∃ W : Set (CxPts p σ), IsOpen W ∧ y ∈ W ∧ Filter.Tendsto (fun t : ℝ => (hY.atlas σ).part ((hY.atlas σ).fn (fun y => t / (1 - v y + t) ^ 2) * Φ) ε W) (nhdsWithin 0 (Set.Ioi 0)) (nhds 0)`. Introduce `y`. Take `⟨c, G, s, O, hy, hO, hcy, hOt, hG, hGp⟩` from `GlobalTheory.T.flag_bundle_curvature_at_point k B Y q p d hB hY π w E h H flB fl hfl σ v hv y`. Take `⟨N, hN, hzN, hNO, C, hC, hle⟩` from `GlobalTheory.T.local_density_bound_near_point d O (fun _ => 1) G s (c.e y) hO hcy continuousOn_const hG fun z hz => (hGp z hz).1`. Take `⟨K, hK, hyK, hKN⟩` from `exists_compact_subset hN hzN`.
+
+Establish `hF` using `GlobalTheory.LineCos.continuousOn_cosSq s hG fun z hz => (hGp z hz).1`. Establish `hKO : K ⊆ O` using `hKN.trans hNO`. Establish `hKt : K ⊆ c.e.target` using `hKO.trans hOt`. Establish `hle' : Measure.map (fun z => GlobalTheory.LineCos.cosSq s (G (GlobalTheory.LineCos.base z)) (GlobalTheory.LineCos.fib z)) (volume.restrict K) ≤ C • volume.restrict (Set.Icc (0 : ℝ) 1)`. Use `le_trans ?_ hle` and prove the remaining obligations.
+
+Simplify using `only [ENNReal.ofReal_one]`. Rewrite using `[show (fun _ : ReciprocityTheory.L2DbarEstimates.V (d + 1) => (1 : ENNReal)) = 1 from rfl, withDensity_one]`. Conclude with `Measure.map_mono_of_aemeasurable (Measure.restrict_mono hKN le_rfl) ((hF.mono hNO).aemeasurable hN.measurableSet)`. Establish `hD : ContinuousOn (fun z => ((ε : ℤ) : ℝ) * (hY.atlas σ).reDens Φ c z) K` using `(continuousOn_const.mul ((hY.atlas σ).continuousOn_reDens hΦ c)).mono hKt`. Establish `hz0 : ∀ z ∈ K, GlobalTheory.LineCos.cosSq s (G (GlobalTheory.LineCos.base z)) (GlobalTheory.LineCos.fib z) = 1 → ((ε : ℤ) : ℝ) * (hY.atlas σ).reDens Φ c z = 0`.
+
+Introduce `z hz h1`. Establish `hzt : z ∈ ((hY.atlas σ).e c).target` using `hKt hz`. Use `h0 ⟨(c, ((hY.atlas σ).e c).symm z), ((hY.atlas σ).e c).map_target hzt⟩ (((hGp z (hKO hz)).2).trans h1)` as an intermediate fact. Simplify using `only [HolAtlas.reDens, HolAtlas.loc, dif_pos hzt, this, Complex.zero_re, mul_zero]`. Establish `hlim` using `GlobalTheory.T.tendsto_lintegral_poisson_kernel_boundary _ volume K _ _ C hK (hF.mono hKO) hD hz0 hC hle'`.
+
+Use `⟨((hY.atlas σ).e c).source ∩ (hY.atlas σ).e c ⁻¹' interior K, ((hY.atlas σ).e c).isOpen_inter_preimage isOpen_interior, ⟨hy, hyK⟩, ?_⟩` and prove the remaining obligations. Use `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hlim (fun t => zero_le) fun t => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[part_fn_mul_chart (hY.atlas σ) _ hΦ ε c isOpen_interior (interior_subset.trans hKt)]`. Use `le_trans (le_of_eq ?_) (lintegral_mono_set interior_subset)` and prove the remaining obligations.
+
+Use `setLIntegral_congr_fun isOpen_interior.measurableSet fun z hz => ?_` and prove the remaining obligations. Use `(hGp z (hKO (interior_subset hz))).2` as an intermediate fact. Use `beta_reduce`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+
+Use `choose W hWo hyW hW using loc`. Take `⟨T, hT⟩` from `isCompact_univ.elim_finite_subcover W hWo fun y _ => Set.mem_iUnion.2 ⟨y, hyW y⟩`. Establish `hs` using `tendsto_finset_sum T fun y _ => hW y`. Rewrite `hs` using `[Finset.sum_const_zero]`. Conclude with `tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds hs (fun t => zero_le) fun t => (measure_mono hT).trans (measure_biUnion_finset_le T _)`.
+
+Establish `h1` using `(ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp (main 1)`. Establish `h2` using `(ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp (main (-1))`. Use `h1.sub h2` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_zero, sub_zero]`. Conclude with `this`.
+-/
 theorem tendsto_integral_kernel_mul : ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d : ℕ)
     (hB : IsRegVar q d) (hY : IsRegVar p (d + 1)) (π : Y ⟶ B) (w : π ≫ q = p) (E : B.Modules) (h : VMetric q E 2) (H : h.IsCInf)
     (flB : Vert.Flag E 2) (fl : Vert.Flag ((Scheme.Modules.pullback π).obj E) 2),

@@ -9,6 +9,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.CovTop.VolUp
 
+/- English proof (translation)
+Introduce `E _ _ _ r Ψ G Λ Γ ν _ hΨ hfg hsp hΓ`. Use `haveI := GlobalTheory.SUCount.discrete_inReal hΨ G Γ Λ hfg hsp (fun γ hγ x hx => ((hΓ γ hγ).2 x).1 hx)`. Use `haveI := GlobalTheory.countable_of_discrete_subgroup (inReal Ψ G Γ)`. Take `⟨D, hD, hu, hF⟩` from `GlobalTheory.exists_isFundamentalDomain_subgroup (inReal Ψ G Γ)`. Use `⟨D, hD, ((hF ν).covolume_eq_volume).symm, fun s => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g, hg, -⟩` from `hu s`. Take `⟨δ, hδ, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 g.2)`. Establish `hmem : embGL Ψ r δ ∈ realSU Ψ G` using `e ▸ g.1.2`. Use `⟨δ, hδ, hmem, ?_⟩` and prove the remaining obligations. Establish `hg' : ((g : realSU Ψ G)) = ⟨embGL Ψ r δ, hmem⟩` using `Subtype.ext e.symm`.
+
+Rewrite using `[← hg']`. Conclude with `hg`.
+-/
 theorem exists_measurableSet_reps_covolume : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (Γ : Subgroup (GL (Fin r) E)) (ν : Measure (realSU Ψ G)) [ν.IsMulLeftInvariant], (∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) → Λ.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ → (∀ γ ∈ Γ, IsUStab G Λ γ) → ∃ S : Set (realSU Ψ G), MeasurableSet S ∧ ν S = covolume (inReal Ψ G Γ) (realSU Ψ G) ν ∧ ∀ s : realSU Ψ G, ∃ δ ∈ Γ, ∃ hδ : embGL Ψ r δ ∈ realSU Ψ G, (⟨embGL Ψ r δ, hδ⟩ : realSU Ψ G) * s ∈ S := by
   intro E _ _ _ r Ψ G Λ Γ ν _ hΨ hfg hsp hΓ
   haveI := GlobalTheory.SUCount.discrete_inReal hΨ G Γ Λ hfg hsp (fun γ hγ x hx => ((hΓ γ hγ).2 x).1 hx)

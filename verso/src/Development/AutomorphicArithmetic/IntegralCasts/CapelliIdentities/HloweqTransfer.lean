@@ -36,6 +36,11 @@ noncomputable def UpperTheory.Reformulated.B.Re4.inUJ :
           g)
         (@UpperTheory.Reformulated.B.Re4.Jm n ε)
 
+/- English proof (translation)
+Introduce `n ε g h hg hh`. Simplify using `only [Set.mem_setOf_eq, UpperTheory.Reformulated.B.Re4.inUJ, Units.val_mul] at hg hh ⊢`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = UpperTheory.Reformulated.B.Re4.Jm ε := by rw [hg, hh]`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.aux3 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g h :
@@ -170,6 +175,9 @@ theorem UpperTheory.Reformulated.B.Re4.aux3 :
         simp only [Matrix.mul_assoc]
     _ = UpperTheory.Reformulated.B.Re4.Jm ε := by rw [hg, hh]
 
+/- English proof (translation)
+Introduce `n ε`. Simplify using the standard rewrite rules.
+-/
 theorem UpperTheory.Reformulated.B.Re4.aux4 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @Eq (Matrix (Fin n) (Fin n) Complex)
@@ -273,6 +281,11 @@ theorem UpperTheory.Reformulated.B.Re4.aux4 :
   intro n ε
   simp
 
+/- English proof (translation)
+Introduce `n ε g hg`. Simplify using `only [Set.mem_setOf_eq, UpperTheory.Reformulated.B.Re4.inUJ] at hg ⊢`. Establish `h1 : g.val * (g⁻¹).val = 1` using `Units.mul_inv g`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`.
+
+Use `_ = (g.val * (g⁻¹).val).conjTranspose * UpperTheory.Reformulated.B.Re4.Jm ε * (g.val * (g⁻¹).val) := by`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = UpperTheory.Reformulated.B.Re4.Jm ε := by`. Rewrite using `[h1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.aux5 :
     ∀ {n : Nat} (ε : Fin n → Bool)
       {g :
@@ -506,6 +519,9 @@ noncomputable def UpperTheory.Reformulated.B.Re4.UJ :
               (@Matrix.semiring (Fin n) Complex Complex.instSemiring (Fin.fintype n) (instDecidableEqFin n)))))
 attribute [local instance] UpperTheory.Reformulated.B.Re4.instMeasurableSpaceUJ
 
+/- English proof (translation)
+Introduce `n ε`. Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.aux8 :
     ∀ {n : Nat} (ε : Fin n → Bool),
       @IsTopologicalGroup (↥(@UpperTheory.Reformulated.B.Re4.UJ n ε))
@@ -569,6 +585,9 @@ theorem UpperTheory.Reformulated.B.Re4.aux8 :
   intro n ε
   infer_instance
 
+/- English proof (translation)
+Introduce `n ε`. Conclude with `@BorelSpace.mk _ _ (UpperTheory.Reformulated.B.Re4.instMeasurableSpaceUJ n ε) rfl`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.aux9 :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @BorelSpace (↥(@UpperTheory.Reformulated.B.Re4.UJ n ε))
@@ -625,6 +644,9 @@ theorem UpperTheory.Reformulated.B.Re4.aux9 :
   intro n ε
   exact @BorelSpace.mk _ _ (UpperTheory.Reformulated.B.Re4.instMeasurableSpaceUJ n ε) rfl
 
+/- English proof (translation)
+Introduce `n ε`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → ℂ))`. Establish `hv : Continuous (fun g : (Matrix (Fin n) (Fin n) ℂ)ˣ => g.val)` using `Units.continuous_val`. Establish `hc : IsClosed {g : (Matrix (Fin n) (Fin n) ℂ)ˣ | g.val.conjTranspose * UpperTheory.Reformulated.B.Re4.Jm ε * g.val = UpperTheory.Reformulated.B.Re4.Jm ε}` using `isClosed_eq ((hv.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hv) continuous_const`. Conclude with `hc.locallyCompactSpace`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.laurent_T_neg_one_mul_T_one :
     ∀ (n : Nat) (ε : Fin n → Bool),
       @LocallyCompactSpace (↥(@UpperTheory.Reformulated.B.Re4.UJ n ε))
@@ -751,6 +773,9 @@ noncomputable def UpperTheory.Reformulated.B.Re4.muG :
         (@UpperTheory.Reformulated.B.Re4.aux8 n ε) (UpperTheory.Reformulated.B.Re4.instMeasurableSpaceUJ n ε) (UpperTheory.Reformulated.B.Re4.aux9 n ε)
         (UpperTheory.Reformulated.B.Re4.laurent_T_neg_one_mul_T_one n ε)
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.algebra_smulCommClass_complex :
     (@HAdd.hAdd Nat Nat Nat (@instHAdd Nat instAddNat) (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))
         (@OfNat.ofNat Nat (nat_lit 1) (instOfNatNat (nat_lit 1)))).AtLeastTwo := by
@@ -815,6 +840,9 @@ noncomputable def UpperTheory.Reformulated.B.Re4.Kset :
                 Complex.instAddCommMonoid)
               (@UpperTheory.Reformulated.B.Re4.d15 n ε) g))
 
+/- English proof (translation)
+Use `infer_instance`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.complex_normed_instance_compat :
     @IsBoundedSMul Complex Complex
       (@SeminormedRing.toPseudoMetricSpace Complex
@@ -2443,6 +2471,19 @@ noncomputable def UpperTheory.Reformulated.B.Re4.IsKTypeOf.{u_1} :
                     @UpperTheory.Reformulated.B.Re4.IsWtOn n H inst inst_1 (@UpperTheory.Reformulated.B.Re4.d21 n ε) σ μ v →
                       @UpperTheory.Reformulated.B.Re4.CDom n ε μ Λ))))
 
+/- English proof (translation)
+Take `⟨hfd, hst, hirr, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS`. Use `⟨inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`. Conclude with `⟨σ g w, hst g hg w hw, hA g hg w⟩`. Introduce `S' hle hst'`.
+
+Establish `hstab : UpperTheory.Reformulated.B.Re4.IsKStableOn ε σ (S ⊓ Submodule.comap A S')`. Introduce `g hg w hw`. Use `Submodule.mem_inf.2 ⟨hst g hg w hw.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hA g hg w]`. Conclude with `hst' g hg _ hw.2`.
+
+Break down `hirr _ inf_le_left hstab with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `hle hx`.
+
+Establish `hw0 : w ∈ S ⊓ Submodule.comap A S'` using `Submodule.mem_inf.2 ⟨hw, hx⟩`. Rewrite `hw0` using `[h, Submodule.mem_bot]`. Rewrite using `[hw0, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+
+Conclude with `le_antisymm hle (Submodule.map_le_iff_le_comap.2 (inf_eq_left.1 h))`. Use `⟨A v, ⟨v, hvS, rfl⟩, fun h => hv0 (hinj v hvS h), ?_⟩` and prove the remaining obligations. Introduce `θ hθ`. Rewrite using `[← hA _ hθ, hvw θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨w, hw, rfl⟩ hne hwt`.
+
+Use `hdom μ w hw (fun h => hne (by rw [h, map_zero])) ?_` and prove the remaining obligations. Introduce `θ hθ`. Use `sub_eq_zero.1 (hinj _ (S.sub_mem (hst _ hθ w hw) (S.smul_mem _ hw)) ?_)` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hA _ hθ, hwt θ hθ, sub_self]`.
+-/
 private theorem UpperTheory.Reformulated.B.Re4.ktype_map {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ε : Fin n → Bool) (σ : Matrix (Fin n) (Fin n) ℂ → H →L[ℂ] H) (Λ : Fin n → ℝ) (A : H →ₗ[ℂ] H)
     (hA : ∀ k ∈ UpperTheory.Reformulated.B.Re4.d21 ε, ∀ x : H, A (σ k x) = σ k (A x)) (S : Submodule ℂ H)
@@ -2478,6 +2519,9 @@ private theorem UpperTheory.Reformulated.B.Re4.ktype_map {n : ℕ} {H : Type*} [
     refine sub_eq_zero.1 (hinj _ (S.sub_mem (hst _ hθ w hw) (S.smul_mem _ hw)) ?_)
     rw [map_sub, map_smul, hA _ hθ, hwt θ hθ, sub_self]
 
+/- English proof (translation)
+Introduce `n ε Λ A hA S hinj hS`. Conclude with `UpperTheory.Reformulated.B.Re4.ktype_map ε (UpperTheory.Reformulated.B.Re4.rreg ε) Λ A hA S hinj hS`.
+-/
 theorem UpperTheory.Reformulated.B.Re4.hloweq_transfer :
     ∀ {n : Nat} {ε : Fin n → Bool} {Λ : Fin n → Real}
       (A :

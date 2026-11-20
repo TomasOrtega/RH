@@ -35,10 +35,16 @@ def coshProd (X : Matrix (Fin n) (Fin n) ℂ) : ℝ := ∏ i ∈ Finset.range (r
 def IsCartan (g X : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   IsInP ε X ∧ ∃ k₁ k₂, IsInK ε k₁ ∧ IsInK ε k₂ ∧ g = k₁ * NormedSpace.exp X * k₂
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction _ (fun r => 1 ≤ r) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl fun _ _ => Real.one_le_cosh _`.
+-/
 theorem one_le_coshProd (X : Matrix (Fin n) (Fin n) ℂ) : 1 ≤ coshProd ε X :=
   Finset.prod_induction _ (fun r => 1 ≤ r) (fun _ _ => one_le_mul_of_one_le_of_one_le) le_rfl
     fun _ _ => Real.one_le_cosh _
 
+/- English proof (translation)
+Use `⟨⟨?_, fun i j h => ?_⟩, by decide⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all`.
+-/
 example : IsInP ![true, false] !![0, 1; 1, 0] ∧ realRank ![true, false] = 1 := by
   refine ⟨⟨?_, fun i j h => ?_⟩, by decide⟩
   · ext i j; fin_cases i <;> fin_cases j <;> simp
@@ -63,6 +69,9 @@ def IsSignFrame (ε : Fin n → Bool) (b : GL (Fin n) (w.Completion ⊗[F] E)) :
 def inFrame (τ : EmbOver E w) (b : GL (Fin n) (w.Completion ⊗[F] E)) (g : GArch σ J w) : Matrix (Fin n) (Fin n) ℂ :=
   (b⁻¹ * AdelicU.matHom w.Completion σ J g * b).1.map (infEmb τ)
 
+/- English proof (translation)
+Simplify using `[IsSignFrame, JR, cT_one]`.
+-/
 example : IsSignFrame σ (1 : Matrix (Fin n) (Fin n) E) (w := w) (fun _ => true) 1 := by
   simp [IsSignFrame, JR, cT_one]
 

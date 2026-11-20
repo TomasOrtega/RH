@@ -9,6 +9,13 @@ section Units
 
 variable {M : Type} [TopologicalSpace M] [Monoid M] [ContinuousMul M] [T2Space M]
 
+/- English proof (translation)
+Use `⟨Units.isEmbedding_embedProduct, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (Units.embedProduct M) = {p : M × Mᵐᵒᵖ | p.1 * MulOpposite.unop p.2 = 1} ∩ {p : M × Mᵐᵒᵖ | MulOpposite.unop p.2 * p.1 = 1}`. Use extensionality with `⟨x, y⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+
+Establish `h1 : (u : M) = x` using `congrArg Prod.fst hu`. Establish `h2 : MulOpposite.op ((u⁻¹ : Mˣ) : M) = y` using `congrArg Prod.snd hu`. Substitute `h1 h2` using the available equality. Conclude with `⟨u.mul_inv, u.inv_mul⟩`. Introduce and unpack `⟨h1, h2⟩`.
+
+Conclude with `⟨⟨x, MulOpposite.unop y, h1, h2⟩, rfl⟩`. Rewrite using `[hr]`. Establish `hu : Continuous fun p : M × Mᵐᵒᵖ => MulOpposite.unop p.2` using `MulOpposite.continuous_unop.comp continuous_snd`. Conclude with `(isClosed_eq (continuous_fst.mul hu) continuous_const).inter (isClosed_eq (hu.mul continuous_fst) continuous_const)`.
+-/
 theorem isClosedEmbedding_embedProduct : IsClosedEmbedding (Units.embedProduct M) := by
   refine ⟨Units.isEmbedding_embedProduct, ?_⟩
   have hr : Set.range (Units.embedProduct M) =
@@ -36,15 +43,24 @@ section Mat
 variable (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R]
   (ι : Type) [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `(isClosedEmbedding_embedProduct (M := Matrix ι ι R)).isEmbedding.t2Space`.
+-/
 theorem generalLinear_t2Space [T2Space R] : T2Space (GL ι R) :=
   (isClosedEmbedding_embedProduct (M := Matrix ι ι R)).isEmbedding.t2Space
 
+/- English proof (translation)
+Establish `: LocallyCompactSpace (Matrix ι ι R)` using `inferInstanceAs (LocallyCompactSpace (ι → ι → R))`. Establish `: LocallyCompactSpace (Matrix ι ι R)ᵐᵒᵖ` using `(MulOpposite.opHomeomorph (M := Matrix ι ι R)).symm.isClosedEmbedding.locallyCompactSpace`. Conclude with `(isClosedEmbedding_embedProduct (M := Matrix ι ι R)).locallyCompactSpace`.
+-/
 theorem gl_locallyCompact [T2Space R] [LocallyCompactSpace R] : LocallyCompactSpace (GL ι R) := by
   have : LocallyCompactSpace (Matrix ι ι R) := inferInstanceAs (LocallyCompactSpace (ι → ι → R))
   have : LocallyCompactSpace (Matrix ι ι R)ᵐᵒᵖ :=
     (MulOpposite.opHomeomorph (M := Matrix ι ι R)).symm.isClosedEmbedding.locallyCompactSpace
   exact (isClosedEmbedding_embedProduct (M := Matrix ι ι R)).locallyCompactSpace
 
+/- English proof (translation)
+Establish `: SecondCountableTopology (Matrix ι ι R)` using `inferInstanceAs (SecondCountableTopology (ι → ι → R))`. Establish `: SecondCountableTopology (Matrix ι ι R)ᵐᵒᵖ` using `(MulOpposite.opHomeomorph (M := Matrix ι ι R)).symm.isEmbedding.secondCountableTopology`. Conclude with `(isClosedEmbedding_embedProduct (M := Matrix ι ι R)).isEmbedding.secondCountableTopology`.
+-/
 theorem gl_secondCountable [T2Space R] [SecondCountableTopology R] :
     SecondCountableTopology (GL ι R) := by
   have : SecondCountableTopology (Matrix ι ι R) :=
@@ -57,6 +73,9 @@ end Mat
 
 open PositivityTheory.RgEis
 
+/- English proof (translation)
+Establish `hv : Continuous fun g : GL (ι ⊕ ι) R => (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R)` using `Units.continuous_val`. Establish `hm : Continuous fun g : GL (ι ⊕ ι) R => (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R).map A.σ` using `hv.matrix_map hσ`. Conclude with `isClosed_eq ((hv.matrix_transpose.mul continuous_const).mul hm) continuous_const`.
+-/
 theorem isClosed_uSub {E R : Type} [Field E] [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] [T2Space R] (A : Ad E R) (hσ : Continuous A.σ) (ε : ℤˣ)
     (ι : Type) [Fintype ι] [DecidableEq ι] :
@@ -67,6 +86,11 @@ theorem isClosed_uSub {E R : Type} [Field E] [CommRing R] [TopologicalSpace R]
     hv.matrix_map hσ
   exact isClosed_eq ((hv.matrix_transpose.mul continuous_const).mul hm) continuous_const
 
+/- English proof (translation)
+Introduce `E R _ _ _ _ _ _ _ A hA ι _ _ ε`. Establish `hc` using `isClosed_uSub A hA.σcont ε ι`. Establish `hce : IsClosedEmbedding (Subtype.val : A.U ε ι → GL (ι ⊕ ι) R)` using `hc.isClosedEmbedding_subtypeVal`. Use `generalLinear_t2Space R (ι ⊕ ι)` as an intermediate fact. Use `gl_locallyCompact R (ι ⊕ ι)` as an intermediate fact.
+
+Use `gl_secondCountable R (ι ⊕ ι)` as an intermediate fact. Use `⟨generalLinear_t2Space R ι, gl_locallyCompact R ι, gl_secondCountable R ι, hce.isEmbedding.t2Space, hce.locallyCompactSpace, hce.isEmbedding.secondCountableTopology, ?_⟩` and prove the remaining obligations. Conclude with `hce.isCompact_preimage (hA.toGoodL.kcpt (ι ⊕ ι))`.
+-/
 theorem grpTop : PositivityTheory.RgEis.GrpTop := by
   intro E R _ _ _ _ _ _ _ A hA ι _ _ ε
   have hc := isClosed_uSub A hA.σcont ε ι

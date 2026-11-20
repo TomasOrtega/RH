@@ -10,6 +10,17 @@ open scoped InnerProductSpace ComplexOrder ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hone, one_mul]`. Use `_ = ∫⁻ y, ∫⁻ m, β (m⁻¹ * y) * φ y ∂ν ∂μ := by`. Use `lintegral_congr (fun y => ?_)` and prove the remaining obligations. Establish `hb : Measurable (fun m => β (m⁻¹ * y))` using `hβ.comp (measurable_inv.mul_const y)`.
+
+Conclude with `(lintegral_mul_const _ hb).symm`. Use `_ = ∫⁻ m, ∫⁻ y, β (m⁻¹ * y) * φ y ∂μ ∂ν := by`. Establish `hm : Measurable (fun p : G × G => β (p.2⁻¹ * p.1) * φ p.1)` using `(hβ.comp (measurable_snd.inv.mul measurable_fst)).mul (hφ.comp measurable_fst)`. Conclude with `lintegral_lintegral_swap (f := fun y m => β (m⁻¹ * y) * φ y) hm.aemeasurable`. Use `_ = ∫⁻ m, ∫⁻ y, β y * φ (m * y) ∂μ ∂ν := by`.
+
+Use `lintegral_congr (fun m => ?_)` and prove the remaining obligations. Establish `h` using `lintegral_mul_left_eq_self (μ := μ) (fun y => β (m⁻¹ * y) * φ y) m`. Simplify using `only [inv_mul_cancel_left] at h`. Conclude with `h.symm`. Use `_ = ∫⁻ y, ∫⁻ m, β y * φ (m * y) ∂ν ∂μ := by`.
+
+Establish `hm : Measurable (fun p : G × G => β p.2 * φ (p.1 * p.2))` using `(hβ.comp measurable_snd).mul (hφ.comp (measurable_fst.mul measurable_snd))`. Conclude with `lintegral_lintegral_swap (f := fun m y => β y * φ (m * y)) hm.aemeasurable`. Use `_ = ∫⁻ y, β y * ∫⁻ m, φ (m * y) ∂ν ∂μ := by`. Use `lintegral_congr (fun y => ?_)` and prove the remaining obligations. Establish `hb : Measurable (fun m => φ (m * y))` using `hφ.comp (measurable_mul_const y)`.
+
+Conclude with `lintegral_const_mul _ hb`.
+-/
 private theorem lintegral_eq_lintegral_weight_mul_lintegral {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (μ ν : Measure G) [SFinite μ] [SFinite ν] [μ.IsMulLeftInvariant]
     (β : G → ENNReal) (hβ : Measurable β) (hone : ∀ y, ∫⁻ m, β (m⁻¹ * y) ∂ν = 1)
@@ -39,6 +50,29 @@ private theorem lintegral_eq_lintegral_weight_mul_lintegral {G : Type} [Group G]
           have hb : Measurable (fun m => φ (m * y)) := hφ.comp (measurable_mul_const y)
           exact lintegral_const_mul _ hb
 
+/- English proof (translation)
+Establish `hkey` using `lintegral_eq_lintegral_weight_mul_lintegral μ ν β hβ hone`. Establish `hgl : ∫⁻ y, ‖g y‖ₑ ∂μ < ⊤` using `hgi.hasFiniteIntegral`. Establish `hnorm : ∀ y (z : ℂ), ‖((β y).toReal : ℂ) * z‖ₑ = β y * ‖z‖ₑ`. Introduce `y z`. Rewrite using `[enorm_mul]`.
+
+Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg, ENNReal.ofReal_toReal (hfin y)]`. Establish `hHm : Measurable (fun p : G × G => ((β p.2).toReal : ℂ) * g (p.1 * p.2))` using `(Complex.measurable_ofReal.comp (hβ.comp measurable_snd).ennreal_toReal).mul (hg.comp (measurable_fst.mul measurable_snd))`. Establish `hHi : Integrable (fun p : G × G => ((β p.2).toReal : ℂ) * g (p.1 * p.2)) (ν.prod μ)`. Use `⟨hHm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+
+Use `show ∫⁻ p, ‖((β p.2).toReal : ℂ) * g (p.1 * p.2)‖ₑ ∂(ν.prod μ) < ⊤`. Rewrite using `[lintegral_prod_symm _ hHm.enorm.aemeasurable]`. Simplify using `only [hnorm]`. Establish `h2 : ∀ y, ∫⁻ m, β y * ‖g (m * y)‖ₑ ∂ν = β y * ∫⁻ m, ‖g (m * y)‖ₑ ∂ν` using `fun y => lintegral_const_mul _ (hg.enorm.comp (measurable_mul_const y))`. Simplify using `only [h2]`.
+
+Rewrite using `[← hkey _ hg.enorm]`. Conclude with `hgl`. Establish `heq : ∀ y, ∫ m, ((β y).toReal : ℂ) * g (m * y) ∂ν = ((β y).toReal : ℂ) * ∫ m, g (m * y) ∂ν` using `fun y => integral_const_mul _ _`. Establish `hint0 : Integrable (fun y => ∫ m, ((β y).toReal : ℂ) * g (m * y) ∂ν) μ` using `hHi.integral_prod_right`. Establish `hint : Integrable (fun y => ((β y).toReal : ℂ) * ∫ m, g (m * y) ∂ν) μ` using `hint0.congr (ae_of_all _ heq)`.
+
+Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hKm : Measurable (fun p : G × G => ((β (p.1⁻¹ * p.2)).toReal : ℂ) * g p.2)` using `(Complex.measurable_ofReal.comp (hβ.comp (measurable_fst.inv.mul measurable_snd)).ennreal_toReal).mul (hg.comp measurable_snd)`. Establish `hKi : Integrable (fun p : G × G => ((β (p.1⁻¹ * p.2)).toReal : ℂ) * g p.2) (ν.prod μ)`. Use `⟨hKm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `show ∫⁻ p, ‖((β (p.1⁻¹ * p.2)).toReal : ℂ) * g p.2‖ₑ ∂(ν.prod μ) < ⊤`.
+
+Rewrite using `[lintegral_prod_symm _ hKm.enorm.aemeasurable]`. Simplify using `only [hnorm]`. Establish `h3 : ∀ y, ∫⁻ m, β (m⁻¹ * y) * ‖g y‖ₑ ∂ν = ‖g y‖ₑ`. Introduce `y`. Establish `hb : Measurable (fun m => β (m⁻¹ * y))` using `hβ.comp (measurable_inv.mul_const y)`.
+
+Rewrite using `[lintegral_mul_const _ hb, hone, one_mul]`. Simplify using `only [h3]`. Conclude with `hgl`. Establish `hβone : ∀ y, ∫ m, ((β (m⁻¹ * y)).toReal : ℂ) ∂ν = 1`. Introduce `y`.
+
+Establish `hb : Measurable (fun m => β (m⁻¹ * y))` using `hβ.comp (measurable_inv.mul_const y)`. Rewrite using `[integral_complex_ofReal, integral_toReal hb.aemeasurable (ae_of_all _ fun m => (hfin _).lt_top), hone, ENNReal.toReal_one, Complex.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `show g y = (∫ m, ((β (m⁻¹ * y)).toReal : ℂ) ∂ν) * g y`.
+
+Rewrite using `[hβone y, one_mul]`. Use `_ = ∫ y, ∫ m, ((β (m⁻¹ * y)).toReal : ℂ) * g y ∂ν ∂μ := by`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Conclude with `(integral_mul_const _ _).symm`. Use `_ = ∫ m, ∫ y, ((β (m⁻¹ * y)).toReal : ℂ) * g y ∂μ ∂ν := (integral_prod_symm _ hKi).symm.trans (integral_prod _ hKi)`.
+
+Use `_ = ∫ m, ∫ y, ((β y).toReal : ℂ) * g (m * y) ∂μ ∂ν := by`. Use `integral_congr_ae (ae_of_all _ fun m => ?_)` and prove the remaining obligations. Establish `h` using `integral_mul_left_eq_self (μ := μ) (fun y => ((β (m⁻¹ * y)).toReal : ℂ) * g y) m`. Simplify using `only [inv_mul_cancel_left] at h`. Conclude with `h.symm`.
+
+Use `_ = ∫ y, ∫ m, ((β y).toReal : ℂ) * g (m * y) ∂ν ∂μ := (integral_prod _ hHi).symm.trans (integral_prod_symm _ hHi)`. Use `_ = ∫ y, ((β y).toReal : ℂ) * ∫ m, g (m * y) ∂ν ∂μ := integral_congr_ae (ae_of_all _ heq)`.
+-/
 private theorem integrable_and_integral_eq_of_lintegral_weight_one {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (μ ν : Measure G) [SFinite μ] [SFinite ν] [μ.IsMulLeftInvariant]
     (β : G → ENNReal) (hβ : Measurable β) (hfin : ∀ y, β y ≠ ⊤) (hone : ∀ y, ∫⁻ m, β (m⁻¹ * y) ∂ν = 1)
@@ -111,6 +145,21 @@ private theorem integrable_and_integral_eq_of_lintegral_weight_one {G : Type} [G
     _ = ∫ y, ((β y).toReal : ℂ) * ∫ m, g (m * y) ∂ν ∂μ :=
         integral_congr_ae (ae_of_all _ heq)
 
+/- English proof (translation)
+Introduce `G _ _ _ _ _ _ _ _ μ _ N ν _hN hH β hβ hfin hone`. Establish `hH'` using `hH`. Unfold `IsHaarSub at hH'`. Use `haveI : IsFiniteMeasureOnCompacts ν := hH'.2.1`. Use `haveI : SigmaFinite ν := inferInstance`.
+
+Establish `hkey` using `lintegral_eq_lintegral_weight_mul_lintegral μ ν β hβ hone`. Use `⟨hkey, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hgm : Measurable (hf.aestronglyMeasurable.mk f)` using `hf.aestronglyMeasurable.stronglyMeasurable_mk.measurable`. Establish `hfg : f =ᵐ[μ] hf.aestronglyMeasurable.mk f` using `hf.aestronglyMeasurable.ae_eq_mk`. Take `⟨hgi, hgeq⟩` from `integrable_and_integral_eq_of_lintegral_weight_one μ ν β hβ hfin hone _ hgm (hf.congr hfg)`.
+
+Establish `hEm : MeasurableSet (toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y})` using `measurableSet_toMeasurable _ _`. Establish `hE0 : μ (toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}) = 0`. Rewrite using `[measure_toMeasurable]`. Conclude with `ae_iff.mp hfg`. Establish `hsub : {y | f y ≠ hf.aestronglyMeasurable.mk f y} ⊆ toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}` using `subset_toMeasurable _ _`.
+
+Establish `hind : Measurable ((toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}).indicator (1 : G → ENNReal))` using `measurable_one.indicator hEm`. Establish `h0` using `hkey _ hind`. Rewrite `h0` using `[lintegral_indicator_one hEm, hE0]`. Establish `hIm : Measurable (fun y => β y * ∫⁻ m, (toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}).indicator (1 : G → ENNReal) (m * y) ∂ν)` using `hβ.mul (hind.comp measurable_mul).lintegral_prod_left'`. Establish `hae` using `(lintegral_eq_zero_iff' hIm.aemeasurable).mp h0.symm`.
+
+Establish `hcong : (fun y => ((β y).toReal : ℂ) * ∫ m, f (m * y) ∂ν) =ᵐ[μ] (fun y => ((β y).toReal : ℂ) * ∫ m, hf.aestronglyMeasurable.mk f (m * y) ∂ν)` using `by filter_upwards [hae] with y hy`. Establish `hy' : β y * ∫⁻ m, (toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}).indicator (1 : G → ENNReal) (m * y) ∂ν = 0` using `hy`. Break down `mul_eq_zero.mp hy' with hb | hI` into its components or cases. Simplify using `[hb]`. Use `congr 1`.
+
+Establish `hmy : Measurable (fun m => (toMeasurable μ {y | f y ≠ hf.aestronglyMeasurable.mk f y}).indicator (1 : G → ENNReal) (m * y))` using `hind.comp (measurable_mul_const y)`. Establish `hae2` using `(lintegral_eq_zero_iff hmy).mp hI`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae2] with m hm`. Assume the negation of the conclusion as `hne`.
+
+Establish `hmE` using `hsub hne`. Simplify using `[Set.indicator_of_mem hmE] at hm`. Use `⟨hgi.congr hcong.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_congr_ae hfg, hgeq, integral_congr_ae hcong]`.
+-/
 theorem weil_formula_cutoff : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (N : Subgroup G) (ν : Measure G), IsClosed (N : Set G) → IsHaarSub (N : Set G) ν → ∀ β : G → ENNReal, Measurable β → (∀ y, β y ≠ ⊤) → (∀ y, ∫⁻ m, β (m⁻¹ * y) ∂ν = 1) → (∀ f : G → ENNReal, Measurable f → ∫⁻ y, f y ∂μ = ∫⁻ y, β y * ∫⁻ m, f (m * y) ∂ν ∂μ) ∧ ∀ f : G → ℂ, Integrable f μ → Integrable (fun y => ((β y).toReal : ℂ) * ∫ m, f (m * y) ∂ν) μ ∧ ∫ y, f y ∂μ = ∫ y, ((β y).toReal : ℂ) * ∫ m, f (m * y) ∂ν ∂μ := by
   intro G _ _ _ _ _ _ _ _ μ _ N ν _hN hH β hβ hfin hone
   have hH' := hH

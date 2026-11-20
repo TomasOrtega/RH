@@ -12,6 +12,27 @@ open scoped TensorProduct
 
 namespace GlobalTheory.FieldPair
 
+/- English proof (translation)
+Set `ψ : K ⊗[k] F →ₐ[K] W` to `IsScalarTower.toAlgHom K (K ⊗[k] F) W`. Establish `hψ : Function.Injective ψ` using `IsFractionRing.injective (K ⊗[k] F) W`. Establish `hy : AlgebraicIndependent K fun i => ψ (1 ⊗ₜ x i)`. Rewrite using `[algebraicIndependent_iff_injective_aeval]`. Establish `h1 : Function.Injective (Algebra.TensorProduct.map (AlgHom.id K K) (MvPolynomial.aeval (R` using `k) x)) := Module.Flat.lTensor_preserves_injective_linearMap (M := K) (MvPolynomial.aeval (R := k) x).toLinearMap (algebraicIndependent_iff_injective_aeval.1 hx.1)`.
+
+Establish `e : (MvPolynomial.aeval (R` using `K) fun i => ψ (1 ⊗ₜ x i)) = (ψ.comp (Algebra.TensorProduct.map (AlgHom.id K K) (MvPolynomial.aeval (R := k) x))).comp (MvPolynomial.algebraTensorAlgEquiv (σ := ι) k K).symm.toAlgHom := by`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `(hψ.comp h1).comp (MvPolynomial.algebraTensorAlgEquiv (σ := ι) k K).symm.injective`.
+
+Express the relevant statement in the definitionally equal form `IsTranscendenceBasis K fun i => ψ (1 ⊗ₜ x i)`. Rewrite using `[hy.isTranscendenceBasis_iff_isAlgebraic, ← IntermediateField.isAlgebraic_adjoin_iff_top]`. Set `E` to `IntermediateField.adjoin K (Set.range fun i => ψ (1 ⊗ₜ x i))`. Set `φ : F →+* W` to `(ψ : K ⊗[k] F →+* W).comp (Algebra.TensorProduct.includeRight (R := k) (A := K) (B := F)).toRingHom`. Establish `hm : ∀ a ∈ Algebra.adjoin k (Set.range x), φ a ∈ E`.
+
+Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨i, rfl⟩` from `ha`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨i, rfl⟩`.
+
+Consider the case `algebraMap r`. Establish `: φ (algebraMap k F r) = algebraMap K W (algebraMap k K r)`. Rewrite using `[← ψ.commutes]`. Express the relevant statement in the definitionally equal form `ψ (1 ⊗ₜ algebraMap k F r) = ψ (algebraMap k K r ⊗ₜ 1)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+
+Rewrite using `[this]`. Conclude with `E.algebraMap_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`.
+
+Conclude with `mul_mem ha hb`. Set `g : Algebra.adjoin k (Set.range x) →+* E` to `(φ.comp (Algebra.adjoin k (Set.range x)).val.toRingHom).codRestrict E fun a => hm a a.2`. Establish `hg : Function.Injective g` using `fun a b h => Subtype.ext (φ.injective (congrArg Subtype.val h))`. Establish `hT : ∀ a, ψ a ∈ algebraicClosure E W`. Introduce `a`.
+
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+
+Consider the case `tmul l f`. Establish `: l ⊗ₜ[k] f = algebraMap K _ l * ((1 : K) ⊗ₜ[k] f)` using `by simp`. Rewrite using `[this, map_mul, ψ.commutes]`. Use `mul_mem ((algebraicClosure E W).algebraMap_mem (algebraMap K E l)) ?_` and prove the remaining obligations. Rewrite using `[mem_algebraicClosure_iff]`.
+
+Conclude with `(hx.isAlgebraic.isAlgebraic f).ringHom_of_comp_eq g φ hg rfl`. Use `⟨fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := K ⊗[k] F) z`. Conclude with `mem_algebraicClosure_iff.1 (div_mem (hT a) (hT b))`.
+-/
 theorem isTranscendenceBasis_one_tmul {k K F W ι : Type} [Field k] [Field K] [Field F] [Field W]
     [Algebra k K] [Algebra k F] [Algebra K W] [Algebra (K ⊗[k] F) W]
     [IsScalarTower K (K ⊗[k] F) W] [IsFractionRing (K ⊗[k] F) W] {x : ι → F}
@@ -73,6 +94,15 @@ theorem isTranscendenceBasis_one_tmul {k K F W ι : Type} [Field k] [Field K] [F
   obtain ⟨a, b, -, rfl⟩ := IsFractionRing.div_surjective (A := K ⊗[k] F) z
   exact mem_algebraicClosure_iff.1 (div_mem (hT a) (hT b))
 
+/- English proof (translation)
+Establish `key : ∀ {A : Type} [Field A] [inst : Algebra k A] {l : ℕ} (u : Fin l → A), TrBasis (algebraMap k A) u ↔ IsTranscendenceBasis k u`. Introduce `A _ inst l u`. Establish `e : (algebraMap k A).toAlgebra = inst` using `Algebra.algebra_ext _ _ fun _ => rfl`. Unfold `TrBasis`. Rewrite using `[e]`.
+
+Rewrite `hx`, `hy`, the goal using `[key]`. Use `letI : Algebra K W := ((algebraMap (K ⊗[k] F) W).comp (algebraMap K (K ⊗[k] F))).toAlgebra`. Use `haveI : IsScalarTower K (K ⊗[k] F) W := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower k K W := IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply k (K ⊗[k] F) W, IsScalarTower.algebraMap_apply k K (K ⊗[k] F), ← IsScalarTower.algebraMap_apply]`.
+
+Establish `h` using `hx.sumElim_comp (isTranscendenceBasis_one_tmul (K := K) (W := W) hy)`. Rewrite using `[← isTranscendenceBasis_equiv finSumFinEquiv]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases.
+
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+-/
 theorem trBasis_append_tmul {k K F W : Type} [Field k] [Field K] [Field F] [Field W]
     [Algebra k K] [Algebra k F] [Algebra k W] [Algebra (K ⊗[k] F) W]
     [IsScalarTower k (K ⊗[k] F) W] [IsFractionRing (K ⊗[k] F) W] {n m : ℕ} {x : Fin n → K}
@@ -100,12 +130,38 @@ theorem trBasis_append_tmul {k K F W : Type} [Field k] [Field K] [Field F] [Fiel
   · simp
     rfl
 
+/- English proof (translation)
+Rewrite using `[← V.ord_nonneg_iff (div_ne_zero hf ht), div_eq_mul_inv, V.ord_mul hf (inv_ne_zero ht), V.ord_inv]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem Place.le_ord_iff_div_mem {k K : Type} [Field k] [Field K] {c : k →+* K} (V : Place c)
     {f t : K} (hf : f ≠ 0) (ht : t ≠ 0) : V.ord t ≤ V.ord f ↔ f / t ∈ V.ring := by
   rw [← V.ord_nonneg_iff (div_ne_zero hf ht), div_eq_mul_inv, V.ord_mul hf (inv_ne_zero ht),
     V.ord_inv]
   omega
 
+/- English proof (translation)
+Introduce `K κ κ' L _ _ _ _ _ _ _ _ _ _ _ n k k' x τ' R π ρ hx hτ hO hz hc hR hπ E hER hE M hk hM`. Take `⟨Q, hQ, z, hm, hdim, hEQ, hg, hb, hu, hJ, y, q, hy, hq, hform⟩` from `GlobalTheory.T.exists_regular_localModel_graph_of_place (L := L) n k k' x τ' R π ρ hx hτ hO hz hc hR hπ E hER hE`. Take `⟨k, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hw` using `trBasis_append_tmul (W := L) hx hτ`. Set `σ : Equiv.Perm (Fin (k + 1 + 1))` to `Equiv.swap 0 1`.
+
+Set `wt : Fin (k + 1 + 1) → ℕ` to `fun i => if i = 1 then M else 1`. Apply the tactic sequence `obtain ⟨V, hVQ, hV0, hVz, hVd, hVf⟩ := GlobalTheory.T.exists_weighted_monomial_valuation_of_parameters (algebraMap ℂ L) Q hQ (k + 1) (k' + n) (z ∘ σ) wt (by rw [σ.surjective.range_comp]; exact hm) hdim (by simp [wt]) (fun i => by simp only [wt]; split_ifs <;> omega) ⟨_, hw⟩`. Establish `hz0 : V.ord (z 0) = M` using `by simpa [σ, wt] using hVz 1`. Establish `hz0' : (z 0 : L) ≠ 0`. Introduce `h`.
+
+Rewrite `hz0` using `[h, Place.ord, map_zero, WithZero.log_zero]`. Use linear arithmetic over natural numbers and integers. Establish `hne : ∀ p : Q, IsUnit p → (p : L) ≠ 0` using `fun p hp => (hp.map Q.subtype).ne_zero`. Establish `hmul : ∀ (p : Q) (a : ℤ), IsUnit p → V.ord ((p : L) * (z 0 : L) ^ a) = M * a`. Introduce `p a hp`.
+
+Rewrite using `[V.ord_mul (hne p hp) (zpow_ne_zero _ hz0'), hV0 p hp, V.ord_zpow, hz0]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨V, fun r => hVQ _ (hEQ _ (hER _ r.2)), fun b hb0 => ?_, fun g hg0 => ?_, fun l a b h => ?_, fun l a b h0 h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨p, hp, e⟩` from `hb b hb0`. Rewrite using `[← e, hV0 p hp]`.
+
+Take `⟨p, hp, e⟩` from `hg g hg0`. Rewrite using `[e, hmul p _ hp]`. Take `⟨p, hp, e⟩` from `hu l a b h`. Rewrite using `[← e]`. Conclude with `⟨hne p hp, hV0 p hp⟩`.
+
+Take `⟨p, e, hp⟩` from `hJ M l a b h`. Rewrite `h0`, the goal using `[← e]`. Take `⟨s, hs, t, ht, rfl⟩` from `Submodule.mem_sup.1 hp`. Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 ht`. Rewrite using `[← hz0, V.le_ord_iff_div_mem h0 hz0']`.
+
+Use `push_cast`. Rewrite using `[add_div, mul_div_cancel_right₀ _ hz0']`. Use `add_mem ?_ (hVQ _ u.2)` and prove the remaining obligations. Distinguish the cases in `hs0 : (s : L) = 0`. Rewrite using `[hs0, zero_div]`.
+
+Conclude with `zero_mem _`. Rewrite using `[← V.le_ord_iff_div_mem hs0 hz0', hz0]`. Conclude with `hVd M s hs0 hs`. Establish `hd : dForm (algebraMap ℂ L) (fun i => (y i : L)) ≠ 0`. Introduce `h`.
+
+Establish `h1` using `(isFreeGen_dForm_of_trBasis _ hw).1 (a₁ := 1) (a₂ := 0) (by simp only [hform, h, smul_zero])`. Conclude with `one_ne_zero h1`. Establish `hs : ∑ i, (wt i : ℤ) = M + (k + 1)`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Establish `: ∀ i : Fin k, wt i.succ.succ = 1` using `fun i => if_neg (fun h => Fin.succ_ne_zero i (Fin.succ_injective _ h))`.
+
+Simplify using `[this, wt]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hVf y hy`. Rewrite using `[hform, V.formOrd_smul hw hd (mul_ne_zero (hne q hq) (zpow_ne_zero _ hz0')), hmul q _ hq]`. Rewrite `h1` using `[hs]`.
+
+Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem exists_place_weighted_over_place : ∀ {K κ κ' L : Type} [Field K] [Field κ] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ'] [Algebra ℂ L]
     [Algebra (K ⊗[ℂ] κ') L] [IsScalarTower ℂ (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]
     (n k k' : ℕ) (x : Fin n → K) (τ' : Fin k' → κ') (R : Subring K) (π : R →+* κ) (ρ : κ →ₐ[ℂ] κ'),

@@ -9,6 +9,9 @@ noncomputable section
 
 namespace Formalism.NG
 
+/- English proof (translation)
+Introduce `O _ _ _ X X' T T' Z p q b hspan hinj d _ _ R' _ hdet Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ D j Kc k0 hE he₁ hpt g₀ n hn π' ρπ hρπ α _ _ bl hbl ρk hρk hblk _ hcard`. Use `globalModule O X X' T T' Z p q b hspan hinj d R' hdet (ColNNJ r χ E e₁ δ D j Kc k0) g₀ n hn ?_ π' ρπ hρπ α bl hbl ρk hρk hblk hcard` and prove the remaining obligations. Introduce `x' hx'`. Take `⟨δx, hδx, hδ, hEr, he₁r, hfix, hL⟩` from `hpt x' hx'`. Conclude with `columnJ R' Tc (FractionRing O) (EvalSp O d R' x') G r χ E e₁ δ ι D j Kc k0 hE he₁ δx hδx hδ hEr he₁r hfix hL`.
+-/
 theorem globalColumn : StatGlobalColumn := by
   intro O _ _ _ X X' T T' Z p q b hspan hinj d _ _ R' _ hdet Tc _ _ _ _ G _ r χ E e₁ δ ι _ _ D j
     Kc k0 hE he₁ hpt g₀ n hn π' ρπ hρπ α _ _ bl hbl ρk hρk hblk _ hcard

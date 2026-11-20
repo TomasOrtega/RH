@@ -16,6 +16,23 @@ open GlobalTheory.UU
 noncomputable section
 namespace GlobalTheory.MBLow.TRank
 
+/- English proof (translation)
+Introduce `K _ _ _ x g hg m hm hm3 I pt hpt ϑ J hTJ c₀ c hrel`. Take `⟨th, hth, U, t, i₀, c', hUt, hi₀, hval⟩` from `hTJ`. Establish `hg1 : 1 ≤ g` using `hg ▸ x.g_pos`. Set `j₀ : Fin g` to `⟨0, hg1⟩`. Establish `hy : ∀ j : Fin g, epsLift (x.v (j.cast hg.symm)) ≫ (fst (baseOver (Sp K)) x.P.A).left = spMap (algebraMap K (DualNumber K))` using `fun j => by`.
+
+Rewrite using `[epsLift, ← Over.comp_left, lift_fst]`. Both sides reduce to the same expression. Use `choose f hf using fun j : Fin g => GlobalTheory.T.exists_linear_sectionValue_abelianPower K x (m ^ 2) (fun _ => i₀) (DualNumber K) _ (hy j)`. Use `set a := c₀ - ∑ j, c j * c' j with ha`. Set `Φ : EA x.P (𝟙 (Sp K)) (m ^ 2) →ₗ[K] K` to `a • ((TrivSqZeroExt.fstHom K K K).toLinearMap ∘ₗ f j₀) + ∑ j, c j • (TrivSqZeroExt.sndHom K K ∘ₗ f j)`.
+
+Establish `hΦ : ∀ s, Φ s = a * (f j₀ s).fst + ∑ j, c j * (f j s).snd` using `fun s => by`. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, smul_eq_mul]`. Both sides reduce to the same expression. Establish `hft : ∀ j i, f j (SecMod.mk (fst (baseOver (Sp K)) x.P.A).left (t i)) = valR (epsLift (x.v (j.cast hg.symm))) ((LPow x.P.A x.P.L ((m ^ 2 : ℕ) : ℤ) (baseOver (Sp K))).U fun _ => i₀) ((t i).f fun _ => i₀)` using `fun j i => hf j _`.
+
+Establish `hΦt : ∀ i, Φ (SecMod.mk (fst (baseOver (Sp K)) x.P.A).left (t i)) = 0` using `fun i => by`. Rewrite using `[hΦ]`. Simplify using `only [hft, hval]`. Use `set r := valR (𝟙 (Sp K)) ((x.P.L.pull (eSec x.P.A)).U fun _ => i₀) (x.rig.s fun _ => i₀).val ^ (m ^ 2)`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, TrivSqZeroExt.fst_inr, TrivSqZeroExt.snd_inr, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op, add_zero, zero_add, mul_ze …`.
+
+Establish `e1 : ∑ j, c j * (r * (J i j + c' j * ϑ i)) = r * ∑ j, c j * J i j + r * ϑ i * ∑ j, c j * c' j`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[e1, ha]`. Take the linear combination `r * hrel i`.
+
+Establish `hspan` using `GlobalTheory.T.span_thetaTranslates_torsion_eq_top K x m hm hm3 I pt hpt th hth U t hUt`. Establish `hΦ0 : Φ = 0` using `LinearMap.ext_on_range hspan fun i => by rw [hΦt i, LinearMap.zero_apply]`. Establish `hsep` using `GlobalTheory.T.sections_lineBundlePow_separate_firstJets_origin K x g hg (m ^ 2) (by nlinarith) i₀ hi₀ j₀ a c fun s => by`. Establish `h` using `congrArg (fun F => F (SecMod.mk (fst (baseOver (Sp K)) x.P.A).left s)) hΦ0`. Simplify using `only [LinearMap.zero_apply, hΦ] at h`.
+
+Rewrite `h` using `[hf j₀, Finset.sum_congr rfl fun j _ => by rw [hf j]]`. Conclude with `h`. Take `⟨h1, h2⟩` from `hsep`. Use `⟨?_, h2⟩` and prove the remaining obligations. Substitute `h2` using the available equality.
+
+Simplify `h1` using `[ha]`.
+-/
 theorem main : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (x : KeyIn K) (g : ℕ) (hg : x.P.g = g) (m : ℕ), Odd m → 3 ≤ m → ∀ (I : Type) (pt : I → (baseOver (Sp K) ⟶ x.P.A)), (∀ z : baseOver (Sp K) ⟶ x.P.A, z ^ (m ^ 2) = 1 → ∃ i, pt i = z) → ∀ ϑ J, ThJet x hg m pt ϑ J → ∀ (c₀ : K) (c : Fin g → K), (∀ i, c₀ * ϑ i + ∑ j, c j * J i j = 0) → c₀ = 0 ∧ c = 0 := by
   intro K _ _ _ x g hg m hm hm3 I pt hpt ϑ J hTJ c₀ c hrel
   obtain ⟨th, hth, U, t, i₀, c', hUt, hi₀, hval⟩ := hTJ

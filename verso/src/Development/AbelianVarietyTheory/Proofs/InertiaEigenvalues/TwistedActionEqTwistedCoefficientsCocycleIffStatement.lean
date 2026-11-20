@@ -18,6 +18,9 @@ open ReciprocityTheory.Def (Z1 B1 H1)
 open TensorProduct
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.actTw_eq_twCoef_and_isCoc_iff | exact GlobalTheory.actTw_eq_twCoef_and_isCoc_iff | (intros; apply GlobalTheory.actTw_eq_twCoef_and_isCoc_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twistedAction_eq_twistedCoefficients_cocycle_iff : ∀ {G : Type} [Group G] [TopologicalSpace G] {LL : Type} [Field LL] {O : Type} [CommRing O]
     [Algebra O LL] {V : Type} [AddCommGroup V] [Module LL V] [Module O V] [IsScalarTower O LL V]
     {ρ : Representation LL G V} (L : Lattice (O := O) ρ) (X : Type) [AddCommGroup X] [Module O X]

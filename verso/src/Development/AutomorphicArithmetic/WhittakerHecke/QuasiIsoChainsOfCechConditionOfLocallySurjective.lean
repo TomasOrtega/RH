@@ -7,6 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC Crystalli
 private abbrev vtx {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) : X.obj (op ⦋0⦌) ⟶ Q :=
   p.app (op ⦋0⦌)
 
+/- English proof (translation)
+Establish `h` using `p.naturality (SimplexCategory.const ⦋0⦌ n.unop i).op`. Simplify using `using h`.
+-/
 private lemma vtx_cond {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) (n : SimplexCategoryᵒᵖ)
     (i : Fin (n.unop.len + 1)) :
     X.map (SimplexCategory.const ⦋0⦌ n.unop i).op ≫ vtx p = p.app n := by
@@ -30,6 +33,35 @@ private noncomputable def nerveMap {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q) :
       erw [WidePullback.lift_base, WidePullback.lift_base]
       simpa using p.naturality g
 
+/- English proof (translation)
+Establish `hπ : ∀ (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}) (x : (X.obj n).obj (op U)) (i : Fin (n.unop.len + 1)), (WidePullback.π (fun _ : Fin (n.unop.len + 1) => vtx p) i).app (op U) (((_root_.nerveMap p).app n).app (op U) x) = (X.map (SimplexCategory.const ⦋0⦌ n.unop i).op).app (op U) x`. Introduce `n U x i`. Establish `e : (_root_.nerveMap p).app n ≫ WidePullback.π (fun _ : Fin (n.unop.len + 1) => vtx p) i = X.map (SimplexCategory.const ⦋0⦌ n.unop i).op`. Simplify using `only [_root_.nerveMap]`. Use `erw [WidePullback.lift_π]`.
+
+Establish `e2` using `NatTrans.congr_app e (op U)`. Rewrite `e2` using `[NatTrans.comp_app]`. Simplify using `using ConcreteCategory.congr_hom e2 x`. Establish `hb : ∀ (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}) (x : (X.obj n).obj (op U)), (WidePullback.base (fun _ : Fin (n.unop.len + 1) => vtx p)).app (op U) (((_root_.nerveMap p).app n).app (op U) x) = (p.app n).app (op U) x`. Introduce `n U x`.
+
+Establish `e : (_root_.nerveMap p).app n ≫ WidePullback.base (fun _ : Fin (n.unop.len + 1) => vtx p) = p.app n`. Simplify using `only [_root_.nerveMap]`. Use `erw [WidePullback.lift_base]`. Establish `e2` using `NatTrans.congr_app e (op U)`. Rewrite `e2` using `[NatTrans.comp_app]`.
+
+Simplify using `using ConcreteCategory.congr_hom e2 x`. Establish `hv : ∀ (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}) (x : (X.obj n).obj (op U)) (i : Fin (n.unop.len + 1)), (p.app (op ⦋0⦌)).app (op U) ((X.map (SimplexCategory.const ⦋0⦌ n.unop i).op).app (op U) x) = (p.app n).app (op U) x`. Introduce `n U x i`. Establish `e2` using `NatTrans.congr_app (vtx_cond p n i) (op U)`. Rewrite `e2` using `[NatTrans.comp_app]`.
+
+Establish `e3` using `ConcreteCategory.congr_hom e2 x`. Simplify using `only [ConcreteCategory.comp_apply] at e3`. Conclude with `e3`. Establish `hbπ : ∀ (n : SimplexCategoryᵒᵖ) (U : Scheme.{0}) (w : ((Arrow.mk (vtx p)).cechNerve.obj n).obj (op U)) (i : Fin (n.unop.len + 1)), (p.app (op ⦋0⦌)).app (op U) ((WidePullback.π (fun _ : Fin (n.unop.len + 1) => vtx p) i).app (op U) w) = (WidePullback.base (fun _ : Fin (n.unop.len + …`. Introduce `n U w i`.
+
+Establish `e2` using `NatTrans.congr_app (WidePullback.π_arrow (fun _ : Fin (n.unop.len + 1) => vtx p) i) (op U)`. Rewrite `e2` using `[NatTrans.comp_app]`. Simplify using `using ConcreteCategory.congr_hom e2 w`. Establish `key : ∀ n, IsIso ((_root_.nerveMap p).app n)`. Introduce `n`.
+
+Establish `hU : ∀ U : Schemeᵒᵖ, IsIso (((_root_.nerveMap p).app n).app U)`. Introduce `U`. Take `⟨U⟩` from `U`. Rewrite using `[isIso_iff_bijective]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `x y hxy`. Set `t : Fin (n.unop.len + 1) → Sx X 0 U` to `fun i => (X.map (SimplexCategory.const ⦋0⦌ n.unop i).op).app (op U) x`. Establish `ht : ∀ i j, (p.app (op ⦋0⦌)).app (op U) (t i) = (p.app (op ⦋0⦌)).app (op U) (t j)`. Introduce `i j`. Conclude with `(hv n U x i).trans (hv n U x j).symm`.
+
+Take `⟨z, -, huniq⟩` from `h n.unop.len U t ht`. Establish `hx : ∀ i, Sx.along (E` using `X) (N := n.unop.len) x (SimplexCategory.const ⦋0⦌ ⦋n.unop.len⦌ i) = t i := fun i => rfl`. Establish `hy : ∀ i, Sx.along (E` using `X) (N := n.unop.len) y (SimplexCategory.const ⦋0⦌ ⦋n.unop.len⦌ i) = t i := by`. Introduce `i`. Establish `a` using `hπ n U x i`.
+
+Establish `b` using `hπ n U y i`. Rewrite `a` using `[hxy]`. Conclude with `b.symm.trans a`. Conclude with `(huniq x hx).trans (huniq y hy).symm`. Introduce `w`.
+
+Set `t : Fin (n.unop.len + 1) → Sx X 0 U` to `fun i => (WidePullback.π (fun _ : Fin (n.unop.len + 1) => vtx p) i).app (op U) w`. Establish `ht : ∀ i j, (p.app (op ⦋0⦌)).app (op U) (t i) = (p.app (op ⦋0⦌)).app (op U) (t j)`. Introduce `i j`. Conclude with `(hbπ n U w i).trans (hbπ n U w j).symm`. Take `⟨z, hz, -⟩` from `h n.unop.len U t ht`.
+
+Use `⟨z, ?_⟩` and prove the remaining obligations. Apply `yonedaEquiv.symm.injective` to reduce the goal to its premises. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `i`. Apply `yonedaEquiv.injective` to reduce the goal to its premises.
+
+Simplify using `only [yonedaEquiv_comp]`. Use `erw [Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `(hπ n U z i).trans (hz i)`. Apply `yonedaEquiv.injective` to reduce the goal to its premises. Simplify using `only [yonedaEquiv_comp]`.
+
+Use `erw [Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Conclude with `(hb n U z).trans ((hv n U z 0).symm.trans ((congrArg (fun a => (p.app (op ⦋0⦌)).app (op U) a) (hz 0)).trans (hbπ n U w 0)))`. Conclude with `NatIso.isIso_of_isIso_app _`. Conclude with `NatIso.isIso_of_isIso_app _`.
+-/
 private theorem isIso_nerveMap_of_existsUnique_vertices {X : Spc} {Q : PSh} (p : X ⟶ disc.obj Q)
     (h : ∀ (n : ℕ) (U : Scheme.{0}) (t : Fin (n + 1) → Sx X 0 U),
       (∀ i j, (p.app (op ⦋0⦌)).app (op U) (t i) = (p.app (op ⦋0⦌)).app (op U) (t j)) →
@@ -113,6 +145,11 @@ private theorem isIso_nerveMap_of_existsUnique_vertices {X : Spc} {Q : PSh} (p :
     exact NatIso.isIso_of_isIso_app _
   exact NatIso.isIso_of_isIso_app _
 
+/- English proof (translation)
+Introduce `R _ X Q p h hs`. Establish `e : _root_.nerveMap p ≫ (Arrow.mk (vtx p)).augmentedCechNerve.hom = p`. Use extensionality with `n : 2`. Simplify using `[_root_.nerveMap, Arrow.augmentedCechNerve]`. Use `haveI := isIso_nerveMap_of_existsUnique_vertices p h`.
+
+Use `haveI := quasiIso_chains_cech_of_isLocallySurjective R (X _⦋0⦌) Q (vtx p) hs`. Rewrite using `[← e, Functor.map_comp]`. Use `infer_instance`.
+-/
 theorem UpperTheory.quasiIso_chains_of_cech_condition_of_locallySurjective :
     ∀ (R : Type) [CommRing R] (X : Spc) (Q : PSh) (p : X ⟶ disc.obj Q),
         (∀ (n : ℕ) (U : Scheme.{0}) (t : Fin (n + 1) → Sx X 0 U),

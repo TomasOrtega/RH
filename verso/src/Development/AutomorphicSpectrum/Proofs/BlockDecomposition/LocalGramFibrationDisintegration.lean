@@ -16,6 +16,21 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Free.FibreInv
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Establish `hemb : MeasurableEmbedding e` using `e.measurableEmbedding`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b`. Establish `hset : e ⁻¹' (f ⁻¹' {ι b} ∩ U)ᶜ = (f ⁻¹' {ι b} ∩ U)ᶜ`.
+
+Rewrite using `[Set.preimage_compl, Set.preimage_inter, hU]`. Use `congr 2`. Use extensionality with `v`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, hf]`. Use `show ((fib b).map e) _ = 0`.
+
+Rewrite using `[hemb.map_apply, hset]`. Conclude with `h1 b`. Introduce `φ hφ`. Establish `hr : μ.restrict U = (μ.restrict U).map e`. Use `hemb.restrict_map μ U` as an intermediate fact.
+
+Rewrite `this` using `[hμ, hU]`. Conclude with `this`. Rewrite using `[hr, hemb.lintegral_map, h2 (fun v => φ (e v)) (hφ.comp e.measurable)]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Simplify using `only [hemb.lintegral_map]`.
+
+Introduce `φ hφ hcs hts`. Establish `hts' : tsupport (φ ∘ e) ⊆ U`. Rewrite using `[tsupport_comp_eq_preimage, ← hU]`. Conclude with `Set.preimage_mono hts`. Take `⟨hi, hcont⟩` from `h3 (φ ∘ e) (hφ.comp e.continuous) (hcs.comp_isClosedEmbedding e.isClosedEmbedding) hts'`.
+
+Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hemb.integrable_map_iff]`. Conclude with `hi b hb`. Establish `: (fun b => ∫ v, φ v ∂((fib b).map e)) = fun b => ∫ v, (φ ∘ e) v ∂(fib b)`. Use function extensionality and compare the values at `b`.
+
+Conclude with `hemb.integral_map φ`. Rewrite using `[this]`. Conclude with `hcont`.
+-/
 theorem isFibreFamily_map_homeo {V X Y : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
     [TopologicalSpace X] [MeasurableSpace X] (μ : Measure V) (ν : Measure X) (f : V → Y) (ι : X → Y)
     (e : V ≃ₜ V) (hf : ∀ v, f (e v) = f v) (U : Set V) (hU : e ⁻¹' U = U) (hμ : μ.map e = μ)
@@ -56,6 +71,11 @@ theorem isFibreFamily_map_homeo {V X Y : Type} [TopologicalSpace V] [MeasurableS
       rw [this]
       exact hcont
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (Matrix.mulVecLin (g : Matrix (Fin M) (Fin M) K))`. Introduce `x y hxy`. Establish `h2` using `congrArg (((g⁻¹ : GL (Fin M) K) : Matrix (Fin M) (Fin M) K).mulVec) hxy`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at h2`. Conclude with `h2`.
+
+Conclude with `hX.map' (Matrix.mulVecLin (g : Matrix (Fin M) (Fin M) K)) (LinearMap.ker_eq_bot.2 hinj)`.
+-/
 theorem linearIndependent_mulVec {K : Type} [CommRing K] {M n : ℕ} (g : GL (Fin M) K) (X : Fin n → Fin M → K)
     (hX : LinearIndependent K X) :
     LinearIndependent K (fun a => (g : Matrix (Fin M) (Fin M) K).mulVec (X a)) := by
@@ -66,6 +86,19 @@ theorem linearIndependent_mulVec {K : Type} [CommRing K] {M n : ℕ} (g : GL (Fi
     exact h2
   exact hX.map' (Matrix.mulVecLin (g : Matrix (Fin M) (Fin M) K)) (LinearMap.ker_eq_bot.2 hinj)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S`. Establish `hR'` using `hR`. Take `⟨_, _, _, _, -, -, -, -⟩` from `hR'`. Take `⟨_, _, _, _, -, -, -, hbor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Establish `hbor'` using `hbor n M`.
+
+Take `⟨_, _, _, _, hlift⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Take `⟨g, hgc, hgf⟩` from `hlift M J hJ`. Take `⟨_, -, -, -, -, hact⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hσ M J hJ R`. Take `⟨hcont, hone, hmul, hgr⟩` from `hact n`. Establish `hcg : ∀ k : HA R σ J, Continuous (actW R σ J k : (Fin n → Fin M → R ⊗[F] E) → _)` using `fun k => hcont.comp (Continuous.prodMk_right k)`.
+
+Set `e : (Fin n → Fin M → R ⊗[F] E) ≃ₜ (Fin n → Fin M → R ⊗[F] E)` to `{ toFun := actW R σ J h invFun := actW R σ J h⁻¹ left_inv := fun X => by rw [← hmul, inv_mul_cancel, hone] right_inv := fun X => by rw [← hmul, mul_inv_cancel, hone] continuous_toFun := hcg h continuous_invFun := hcg h⁻¹ }`. Set `W : Set (Fin n → Fin M → R ⊗[F] E)` to `{X | LinearIndependent (R ⊗[F] E) X}`. Establish `hWo : IsOpen W` using `GlobalTheory.T.linearly_independent_frames_open F E σ hσ R hR n M`. Establish `hfree : ∀ (k : HA R σ J) (X : Fin n → Fin M → R ⊗[F] E), X ∈ W → actW R σ J k X ∈ W` using `fun k X hX => linearIndependent_mulVec (HA.mat R σ J k) X hX`. Establish `hU : e ⁻¹' W = W`.
+
+Use extensionality with `X`. Use `⟨fun hX => ?_, hfree h X⟩` and prove the remaining obligations. Establish `h2 : actW R σ J h⁻¹ (actW R σ J h X) ∈ W` using `hfree h⁻¹ _ hX`. Establish `h3 : actW R σ J h⁻¹ (actW R σ J h X) = X` using `by rw [← hmul, inv_mul_cancel, hone]`. Rewrite `h2` using `[h3]`.
+
+Conclude with `h2`. Establish `hμm : μ.map e = μ` using `GlobalTheory.T.unitary_action_preserves_haar_local F E σ hσ M J hJ R hR n μ hμ h`. Establish `ht` using `isFibreFamily_map_homeo μ ν (gramR R σ J) Subtype.val e (fun X => hgr h X) W hU hμm Set.univ m hm`. Establish `hm0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' Set.univ ∩ W) ν Set.univ m`. Rewrite using `[Set.preimage_univ, Set.univ_inter]`.
+
+Conclude with `hm`. Establish `ht0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' Set.univ ∩ W) ν Set.univ (fun b => (m b).map e)`. Rewrite using `[Set.preimage_univ, Set.univ_inter]`. Conclude with `ht`. Conclude with `GlobalTheory.T.measurable_embedding_of_injective_proper _ _ _ μ ν (gramR R σ J) g Subtype.val Subtype.val_injective hgc hgf W hWo Set.univ Set.univ isOpen_univ isOpen_univ subset_rfl m (fun b => (m b).map e) hm0 ht0 S (Set.mem_univ S)`.
+-/
 theorem map_actW_fibre_free : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFibFree R σ J n μ ν m → ∀ (h : HA R σ J) (S : HermR R σ n), (m S).map (actW R σ J h) = m S := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm h S
   have hR' := hR

@@ -14,11 +14,25 @@ def hσ (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
 
 def hs (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
+/- English proof (translation)
+Unfold `hσ`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 private lemma hsig_val_eq_ite (k r : ℕ) (i : Fin (2 * r + k + 1)) :
     (hσ k r i).val = if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val := by
   unfold hσ
   split_ifs <;> rfl
 
+/- English proof (translation)
+Unfold `Hpk hσ hs`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Distinguish the cases in `h1 : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h1]`.
+
+Establish `hne : i.val ≠ r + k` using `by omega`. Distinguish the cases in `h2 : j.val = 2 * r + k - i.val`. Establish `: j = ⟨2 * r + k - i.val, by omega⟩` using `Fin.ext h2`. Rewrite using `[if_pos this, if_neg hne]`. Break down `h1 with h1 | h1` into its components or cases.
+
+Rewrite using `[if_pos ⟨h1, by omega⟩]`. Rewrite using `[if_neg (by omega), if_pos ⟨by omega, by omega⟩]`. Establish `: j ≠ ⟨2 * r + k - i.val, by omega⟩` using `fun h => h2 (by rw [h])`. Rewrite using `[if_neg this, if_neg (by omega), if_neg (by omega), if_neg]`. Introduce and unpack `⟨_, _, h3⟩`.
+
+Conclude with `h2 (by rw [h3]; omega)`. Rewrite `h1` using `[if_neg h1] push Not`. Rewrite using `[if_neg (by omega), if_neg (by omega)]`. Distinguish the cases in `h3 : j = i`. Substitute `h3` using the available equality.
+
+Simplify using `[h1.1, h1.2]`. Rewrite using `[if_neg h3, if_neg]`. Introduce and unpack `⟨_, _, h4⟩`. Conclude with `h3 h4.symm`.
+-/
 lemma hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j = hσ k r i then hs k r i else 0 := by
   unfold Hpk hσ hs
@@ -47,17 +61,30 @@ lemma hpk_eq (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
       rintro ⟨_, _, h4⟩
       exact h3 h4.symm
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[hsig_val_eq_ite, hsig_val_eq_ite]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 lemma hσ_hσ (k r : ℕ) (i : Fin (2 * r + k + 1)) : hσ k r (hσ k r i) = i := by
   have hi := i.isLt
   apply Fin.ext
   rw [hsig_val_eq_ite, hsig_val_eq_ite]
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [hs, hsig_val_eq_ite]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`.
+-/
 lemma hs_mul (k r : ℕ) (i : Fin (2 * r + k + 1)) : hs k r i * hs k r (hσ k r i) = 1 := by
   have hi := i.isLt
   simp only [hs, hsig_val_eq_ite]
   split_ifs <;> first | (exfalso; omega) | norm_num
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (hσ k r i)]`. Rewrite using `[hpk_eq, hpk_eq, if_pos rfl, hσ_hσ, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+
+Rewrite using `[if_pos rfl, if_pos rfl]`. Conclude with `hs_mul k r _`. Rewrite using `[if_neg (Ne.symm h), if_neg h, mul_zero]`. Introduce `l _ hl`. Rewrite using `[hpk_eq, if_neg hl, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 lemma hpk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
   rw [Matrix.mul_apply, Finset.sum_eq_single (hσ k r i)]
@@ -72,15 +99,24 @@ lemma hpk_mul_self (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Simplify using `only [hs, hsig_val_eq_ite]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | rfl`.
+-/
 lemma hs_hσ (k r : ℕ) (i : Fin (2 * r + k + 1)) : hs k r (hσ k r i) = hs k r i := by
   have hi := i.isLt
   simp only [hs, hsig_val_eq_ite]
   split_ifs <;> first | (exfalso; omega) | rfl
 
+/- English proof (translation)
+Simplify using `only [hs]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 lemma star_hs (k r : ℕ) (i : Fin (2 * r + k + 1)) : star (hs k r i) = hs k r i := by
   simp only [hs]
   split_ifs <;> simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `(hσ_hσ k r j).symm`. Introduce and unpack `rfl`. Conclude with `(hσ_hσ k r i).symm`.
+-/
 lemma hσ_eq_iff (k r : ℕ) (i j : Fin (2 * r + k + 1)) : i = hσ k r j ↔ j = hσ k r i := by
   constructor
   · rintro rfl
@@ -88,6 +124,11 @@ lemma hσ_eq_iff (k r : ℕ) (i j : Fin (2 * r + k + 1)) : i = hσ k r j ↔ j =
   · rintro rfl
     exact (hσ_hσ k r i).symm
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, hpk_eq, hpk_eq]`. Distinguish the cases in `h : j = hσ k r i`. Substitute `h` using the available equality. Rewrite using `[if_pos (hσ_hσ k r i).symm, if_pos rfl, star_hs, hs_hσ]`.
+
+Rewrite using `[if_neg (fun h' => h ((hσ_eq_iff k r i j).1 h')), if_neg h, star_zero]`.
+-/
 lemma hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
   ext i j
   rw [Matrix.conjTranspose_apply, hpk_eq, hpk_eq]
@@ -96,8 +137,16 @@ lemma hpk_conjTranspose (k r : ℕ) : (Hpk k r)ᴴ = Hpk k r := by
     rw [if_pos (hσ_hσ k r i).symm, if_pos rfl, star_hs, hs_hσ]
   · rw [if_neg (fun h' => h ((hσ_eq_iff k r i j).1 h')), if_neg h, star_zero]
 
+/- English proof (translation)
+The claim follows from `Matrix.inv_eq_left_inv (hpk_mul_self k r)`.
+-/
 lemma hpk_inv (k r : ℕ) : (Hpk k r)⁻¹ = Hpk k r := Matrix.inv_eq_left_inv (hpk_mul_self k r)
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+-/
 lemma uh_mul {k r : ℕ} {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -108,6 +157,9 @@ lemma uh_mul {k r : ℕ} {a b : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
         simp only [Matrix.mul_assoc]
     _ = Hpk k r := by rw [ha', hb']
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Use `Matrix.isUnit_det_of_left_inverse (B := Hpk k r * aᴴ * Hpk k r) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [ha', hpk_mul_self]`.
+-/
 lemma uh_det {k r : ℕ} {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) : IsUnit a.det := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -116,6 +168,11 @@ lemma uh_det {k r : ℕ} {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
         simp only [Matrix.mul_assoc]
     _ = 1 := by rw [ha', hpk_mul_self]
 
+/- English proof (translation)
+Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hd : IsUnit a.det` using `uh_det ha`. Establish `hd' : IsUnit aᴴ.det`. Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hd.star`.
+
+Use `show (a⁻¹)ᴴ * Hpk k r * a⁻¹ = Hpk k r`. Rewrite using `[Matrix.conjTranspose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hd', Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one]`.
+-/
 lemma uh_inv {k r : ℕ} {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (ha : a ∈ UH (Hpk k r)) : a⁻¹ ∈ UH (Hpk k r) := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -130,27 +187,44 @@ lemma uh_inv {k r : ℕ} {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1))
     _ = Hpk k r := by
         rw [Matrix.nonsing_inv_mul _ hd', Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Use `show (Hpk k r)ᴴ * Hpk k r * Hpk k r = Hpk k r`. Rewrite using `[hpk_conjTranspose, hpk_mul_self, Matrix.one_mul]`.
+-/
 lemma hpk_mem (k r : ℕ) : Hpk k r ∈ UH (Hpk k r) := by
   show (Hpk k r)ᴴ * Hpk k r * Hpk k r = Hpk k r
   rw [hpk_conjTranspose, hpk_mul_self, Matrix.one_mul]
 
+/- English proof (translation)
+Rewrite using `[UH.eq_1]`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+-/
 private lemma isClosed_UH' (k r : ℕ) : IsClosed (UH (Hpk k r)) := by
   rw [UH.eq_1]
   exact isClosed_eq
     ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id)
     continuous_const
 
+/- English proof (translation)
+Rewrite using `[UH.eq_1]`. Simplify using the standard rewrite rules.
+-/
 private lemma one_mem_dualWeyl_complex (k r : ℕ) :
     (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) ∈ UH (Hpk k r) := by
   rw [UH.eq_1]
   simp
 
+/- English proof (translation)
+Introduce `k r`. Unfold `IsMatGroup`. Conclude with `⟨isClosed_UH' k r, one_mem_dualWeyl_complex k r, fun a ha b hb => uh_mul ha hb, fun a ha => ⟨uh_inv ha, Matrix.mul_nonsing_inv _ (uh_det ha)⟩⟩`.
+-/
 theorem unitary_hermitian_group : UHGroup := by
   intro k r
   unfold IsMatGroup
   exact ⟨isClosed_UH' k r, one_mem_dualWeyl_complex k r, fun a ha b hb => uh_mul ha hb,
     fun a ha => ⟨uh_inv ha, Matrix.mul_nonsing_inv _ (uh_det ha)⟩⟩
 
+/- English proof (translation)
+Introduce `k r z s hsx`. Rewrite `hsx` using `[Sset.eq_1, Set.mem_setOf_eq]`. Take `⟨h, hh, m, hm, rfl⟩` from `hsx`. Rewrite `hh` using `[UWset.eq_1, Set.mem_setOf_eq]`. Rewrite `hm` using `[Nset.eq_1, Set.mem_setOf_eq]`.
+
+Conclude with `uh_mul hh.1 hm.1`.
+-/
 theorem siegel_set_subset : SsetSub := by
   intro k r z s hsx
   rw [Sset.eq_1, Set.mem_setOf_eq] at hsx
@@ -159,6 +233,11 @@ theorem siegel_set_subset : SsetSub := by
   rw [Nset.eq_1, Set.mem_setOf_eq] at hm
   exact uh_mul hh.1 hm.1
 
+/- English proof (translation)
+Introduce `k r`. Establish `hK : IsCompact (Set.pi Set.univ fun _ : Fin (2 * r + k + 1) => Set.pi Set.univ fun _ : Fin (2 * r + k + 1) => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Establish `c2 : IsClosed {u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | uᴴ * u = 1}` using `isClosed_eq (continuous_id.matrix_conjTranspose.matrix_mul continuous_id) continuous_const`. Establish `hC : IsClosed {u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | u ∈ UH (Hpk k r) ∧ uᴴ * u = 1}` using `(isClosed_UH' k r).inter c2`. Use `hK.of_isClosed_subset hC (fun (u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) hu => ?_)` and prove the remaining obligations.
+
+Establish `hu' : u ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`. Conclude with `hu.2`. Conclude with `Set.mem_pi.2 fun i _ => Set.mem_pi.2 fun j _ => mem_closedBall_zero_iff.2 (entry_norm_bound_of_unitary hu' i j)`.
+-/
 theorem maximal_compact_isCompact : KCompact := by
   intro k r
   have hK : IsCompact (Set.pi Set.univ fun _ : Fin (2 * r + k + 1) =>
@@ -176,12 +255,46 @@ theorem maximal_compact_isCompact : KCompact := by
   exact Set.mem_pi.2 fun i _ => Set.mem_pi.2 fun j _ =>
     mem_closedBall_zero_iff.2 (entry_norm_bound_of_unitary hu' i j)
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt M hlt`. Conclude with `absurd (h n) (not_le.2 hn)`.
+-/
 lemma pow_bdd_le_one {x M : ℝ} (hx : 0 < x) (h : ∀ n : ℕ, x ^ n ≤ M) : x ≤ 1 := by
   by_contra hlt
   push_neg at hlt
   obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt M hlt
   exact absurd (h n) (not_le.2 hn)
 
+/- English proof (translation)
+Introduce `k r D hD g hg`. Rewrite `hD` using `[ModProps.eq_1]`. Take `⟨hpos, hmul, hconj, hbdd⟩` from `hD`. Establish `hH : Hpk k r ∈ UH (Hpk k r)` using `hpk_mem k r`. Establish `one_mem` using `one_mem_dualWeyl_complex k r`.
+
+Establish `hD1 : D 1 = 1`. Establish `h1` using `hmul 1 one_mem 1 one_mem`. Rewrite `h1` using `[Matrix.one_mul]`. Establish `h0` using `hpos 1 one_mem`. Conclude with `mul_left_cancel₀ h0.ne' (h1.symm.trans (mul_one (D 1)).symm)`.
+
+Establish `inv_D : ∀ x ∈ UH (Hpk k r), D x * D x⁻¹ = 1`. Introduce `x hx`. Rewrite using `[← hmul x hx x⁻¹ (uh_inv hx), Matrix.mul_nonsing_inv x (uh_det hx), hD1]`. Take `⟨M, hM⟩` from `hbdd {u | u ∈ UH (Hpk k r) ∧ uᴴ * u = 1} (fun v hv => hv.1) (hK k r)`. Establish `powle : ∀ v, v ∈ UH (Hpk k r) → vᴴ * v = 1 → D v ≤ 1`.
+
+Introduce `v hv hvu`. Establish `hvn : ∀ n : ℕ, v ^ n ∈ UH (Hpk k r) ∧ (v ^ n)ᴴ * v ^ n = 1 ∧ D (v ^ n) = D v ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+
+Use `⟨by rw [pow_zero]; exact one_mem, by rw [pow_zero]; simp, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero v, pow_zero (D v)]`. Conclude with `hD1`. Consider the case `succ n ih`. Take `⟨h1, h2, h3⟩` from `ih`.
+
+Use `⟨by rw [pow_succ]; exact uh_mul h1 hv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [h2, Matrix.mul_one, hvu]`.
+
+Rewrite using `[pow_succ v n, hmul _ h1 _ hv, h3, pow_succ (D v) n]`. Use `pow_bdd_le_one (M := M) (hpos v hv) (fun n => ?_)` and prove the remaining obligations. Rewrite using `[← (hvn n).2.2]`. Conclude with `hM _ ⟨(hvn n).1, (hvn n).2.1⟩`. Take `⟨u, p, hu, huu, hp, hph, rfl⟩` from `hPol k r g hg`.
+
+Establish `hu1 : D u = 1`. Establish `hui : u⁻¹ = uᴴ` using `Matrix.inv_eq_left_inv huu`. Establish `hdu : IsUnit u.det` using `Matrix.isUnit_det_of_left_inverse huu`. Establish `a1` using `powle u hu huu`. Establish `a2` using `powle u⁻¹ (uh_inv hu) (by`.
+
+Rewrite using `[hui, Matrix.conjTranspose_conjTranspose, ← hui]`. Conclude with `Matrix.mul_nonsing_inv u hdu)`. Establish `a3` using `inv_D u hu`. Establish `a4` using `hpos u hu`. Establish `a5` using `hpos u⁻¹ (uh_inv hu)`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `hHunit : IsUnit (Hpk k r)` using `(Matrix.isUnit_iff_isUnit_det _).2 (uh_det hH)`. Establish `hnorm : ∀ x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Hpk k r * x * (Hpk k r)⁻¹ ∈ UH (Hpk k r) ↔ x ∈ UH (Hpk k r)`. Introduce `x`. Rewrite using `[hpk_inv]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h4` using `uh_mul (uh_mul hH hx) hH`. Establish `e : Hpk k r * (Hpk k r * x * Hpk k r) * Hpk k r = x`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite `h4` using `[e]`. Then use the resulting hypothesis. Introduce `hx`. Conclude with `uh_mul (uh_mul hH hx) hH`. Establish `hp1 : D p = 1`. Establish `hpH : p * Hpk k r * p = Hpk k r`.
+
+Establish `h0 : pᴴ * Hpk k r * p = Hpk k r` using `hp`. Rewrite `h0` using `[hph]`. Then use the resulting hypothesis. Establish `hpinv : p⁻¹ = Hpk k r * p * Hpk k r`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hpH, hpk_mul_self]`. Establish `e1` using `hconj (Hpk k r) hHunit hnorm p hp`. Rewrite `e1` using `[hpk_inv, ← hpinv]`. Establish `a3` using `inv_D p hp`.
+
+Rewrite `a3` using `[e1]`. Establish `a4` using `hpos p hp`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hmul u hu p hp, hu1, hp1, one_mul]`.
+-/
 theorem trivG_of (hPol : PolarUH) (hK : KCompact) : TrivG := by
   intro k r D hD g hg
   rw [ModProps.eq_1] at hD

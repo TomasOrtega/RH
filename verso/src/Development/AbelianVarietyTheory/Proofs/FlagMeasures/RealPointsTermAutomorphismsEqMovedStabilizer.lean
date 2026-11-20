@@ -21,6 +21,9 @@ section Places
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {sig : E →ₐ[F] E} (A : Places F E sig) {n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[Places.bc]`. Simplify using `[Places.bc, h]`.
+-/
 private theorem bc_single' (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (i : Fin n) :
     A.bc p (Pi.single i 1 : Fin n → E) = Pi.single i 1 := by
   funext j
@@ -29,6 +32,11 @@ private theorem bc_single' (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) (i 
     simp [Places.bc]
   · simp [Places.bc, h]
 
+/- English proof (translation)
+Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.pi_ext' fun i => LinearMap.ext_ring ?_` and prove the remaining obligations. Establish `e₁` using `h₁ (Pi.single i 1)`. Establish `e₂` using `h₂ (Pi.single i 1)`. Rewrite `e₁`, `e₂` using `[bc_single']`.
+
+Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_single, LinearEquiv.coe_coe]`. Rewrite using `[e₁, e₂]`.
+-/
 theorem ext_unique (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     {g₁ g₂ : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)}
     (h₁ : A.Ext p g g₁) (h₂ : A.Ext p g g₂) : g₁ = g₂ := by
@@ -40,10 +48,20 @@ theorem ext_unique (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n
   simp only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_single, LinearEquiv.coe_coe]
   rw [e₁, e₂]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 private theorem mem_rat_iff_forall_exists_ext (K : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)))
     (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) : g ∈ A.rat K ↔ ∀ p, ∃ g' ∈ K p, A.Ext p g g' :=
   Iff.rfl
 
+/- English proof (translation)
+Rewrite using `[mem_rat_iff_forall_exists_ext, mem_rat_iff_forall_exists_ext, mem_rat_iff_forall_exists_ext]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun p => by`. Take `⟨g', hg', he⟩` from `h p`.
+
+Conclude with `⟨g', (Subgroup.mem_inf.1 hg').1, he⟩,`. Use `fun p => by`. Take `⟨g', hg', he⟩` from `h p`. Conclude with `⟨g', (Subgroup.mem_inf.1 hg').2, he⟩⟩`. Introduce and unpack `⟨h₁, h₂⟩ p`.
+
+Take `⟨g₁, hg₁, he₁⟩` from `h₁ p`. Take `⟨g₂, hg₂, he₂⟩` from `h₂ p`. Establish `hg : g₁ = g₂` using `ext_unique A p he₁ he₂`. Substitute `hg` using the available equality. Conclude with `⟨g₁, Subgroup.mem_inf.2 ⟨hg₁, hg₂⟩, he₁⟩`.
+-/
 theorem mem_rat_inf {K₁ K₂ : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep))}
     (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) :
     g ∈ A.rat (fun p => K₁ p ⊓ K₂ p) ↔ g ∈ A.rat K₁ ∧ g ∈ A.rat K₂ := by
@@ -63,6 +81,11 @@ theorem mem_rat_inf {K₁ K₂ : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃�
     subst hg
     exact ⟨g₁, Subgroup.mem_inf.2 ⟨hg₁, hg₂⟩, he₁⟩
 
+/- English proof (translation)
+Unfold `Places.lat`. Rewrite using `[Submodule.smul_span]`. Use `congr 1`. Establish `h' : ∀ x, g' (A.bc p x) = A.bc p (g x)` using `h`. Use extensionality with `v`.
+
+Simplify using `[Set.mem_smul_set, h']`.
+-/
 theorem lat_map (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     {g' : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)} (h : A.Ext p g g')
     (Λ : Submodule (𝓞 E) (Fin n → E)) :
@@ -74,6 +97,9 @@ theorem lat_map (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n �
   ext v
   simp [Set.mem_smul_set, h']
 
+/- English proof (translation)
+Introduce `x`. Apply `g'.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply, h, LinearEquiv.apply_symm_apply]`.
+-/
 theorem ext_symm (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n → E) ≃ₗ[E] (Fin n → E)}
     {g' : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)} (h : A.Ext p g g') :
     A.Ext p g.symm g'.symm := by
@@ -81,12 +107,20 @@ theorem ext_symm (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) {g : (Fin n �
   apply g'.injective
   rw [LinearEquiv.apply_symm_apply, h, LinearEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Conclude with `PlacesRec.lattice_local A n Λ hΛ`.
+-/
 private theorem mem_iff_forall_bc_mem_lat_and_finite (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ) :
     (∀ x, x ∈ Λ ↔ ∀ p, A.bc p x ∈ A.lat p Λ) ∧ (∀ p, IsLat (A.L p) (A.lat p Λ)) ∧
       {p | A.lat p Λ ≠ Submodule.span (A.L p).O
         (Set.range fun i => (Pi.single i 1 : Fin n → (A.loc p).Ep))}.Finite := by
   exact PlacesRec.lattice_local A n Λ hΛ
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `((mem_iff_forall_bc_mem_lat_and_finite A Λ hΛ).1 _).2 fun p => ?_` and prove the remaining obligations. Take `⟨g', he, hs⟩` from `hg p`. Establish `hy' : A.bc p y ∈ A.lat p Λ` using `Submodule.subset_span ⟨y, hy, rfl⟩`. Use `Submodule.smul_mem_pointwise_smul (A.bc p y) g' (A.lat p Λ) hy'` as an intermediate fact.
+
+Rewrite `this` using `[hs, LinearEquiv.smul_def, he]`. Conclude with `this`.
+-/
 theorem map_le_of_local (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ)
     (g : (Fin n → E) ≃ₗ[E] (Fin n → E))
     (hg : ∀ p, ∃ g', A.Ext p g g' ∧ g' • A.lat p Λ = A.lat p Λ) :
@@ -99,6 +133,11 @@ theorem map_le_of_local (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule
   rw [hs, LinearEquiv.smul_def, he] at this
   exact this
 
+/- English proof (translation)
+Use `le_antisymm (map_le_of_local A Λ hΛ g hg) ?_` and prove the remaining obligations. Establish `hs : Λ.map ((g.symm : (Fin n → E) →ₗ[E] (Fin n → E)).restrictScalars (𝓞 E)) ≤ Λ`. Use `map_le_of_local A Λ hΛ g.symm fun p => ?_` and prove the remaining obligations. Take `⟨g', he, hl⟩` from `hg p`. Use `⟨g'.symm, ext_symm A p he, ?_⟩` and prove the remaining obligations.
+
+Use `conv_lhs => rw [← hl]`. Conclude with `inv_smul_smul g' (A.lat p Λ)`. Introduce `x hx`. Use `⟨g.symm x, hs ⟨x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem map_eq_of_local (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ)
     (g : (Fin n → E) ≃ₗ[E] (Fin n → E))
     (hg : ∀ p, ∃ g', A.Ext p g g' ∧ g' • A.lat p Λ = A.lat p Λ) :
@@ -126,12 +165,20 @@ section Glob
 
 variable {D : D7}
 
+/- English proof (translation)
+Simplify using `only [NLam, NRat, IsAutLam, Set.mem_ofPred_eq]`. The claim follows by propositional logic.
+-/
 theorem nlam_iff (Λ : Submodule (𝓞 D.host.E) (VS D).V) {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     n ∈ NLam Λ F ↔ n ∈ NRat F ∧ Formalism.HermitianLatticesTheory.gmap n Λ = Λ := by
   simp only [NLam, NRat, IsAutLam, Set.mem_ofPred_eq]
   tauto
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨b y, ⟨y, hy, rfl⟩, rfl⟩`.
+
+Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+-/
 theorem gmap_mul (a b : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     Formalism.HermitianLatticesTheory.gmap (a * b) Λ = Formalism.HermitianLatticesTheory.gmap a (Formalism.HermitianLatticesTheory.gmap b Λ) := by
   ext x
@@ -142,6 +189,9 @@ theorem gmap_mul (a b : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (�
   · rintro ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨y, hy, rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Rewrite using `[← gmap_mul, inv_mul_cancel]`. Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+-/
 theorem gmap_inv_of (a : (VS D).V ≃ₗ[D.host.E] (VS D).V) {Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V}
     (h : Formalism.HermitianLatticesTheory.gmap a Λ' = Λ) : Formalism.HermitianLatticesTheory.gmap a⁻¹ Λ = Λ' := by
   subst h
@@ -153,6 +203,9 @@ variable {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T} {F0' : LF
   {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {G : GFrames (placesOf Z) D.R.rS D.R.k}
   (c : GCoord Z F0 F0' FP G)
 
+/- English proof (translation)
+Establish `hs : ∀ y, l ((ρ * l).symm y) = ρ.symm y` using `fun y => by`. Apply `ρ.injective` to reduce the goal to its premises. Rewrite using `[← LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Use extensionality with `x`. Simplify using `[GCoord.grp, LinearEquiv.mul_apply, hs]`.
+-/
 theorem grp_conj (ρ l n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
     c.grp (ρ * l) (l⁻¹ * n * l) = c.grp ρ n := by
   have hs : ∀ y, l ((ρ * l).symm y) = ρ.symm y := fun y => by
@@ -161,6 +214,11 @@ theorem grp_conj (ρ l n : (VS D).V ≃ₗ[D.host.E] (VS D).V) :
   ext x
   simp [GCoord.grp, LinearEquiv.mul_apply, hs]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [GCoord.lat, Formalism.HermitianLatticesTheory.gmap, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨n y, ⟨y, hy, rfl⟩, by simp [GCoord.grp]⟩`.
+
+Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨y, hy, rfl⟩, by simp [GCoord.grp]⟩`.
+-/
 theorem lat_map_grp (ρ n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule (𝓞 D.host.E) (VS D).V) :
     (c.lat ρ Λ).map (((c.grp ρ n : G.GLV) : G.V →ₗ[D.host.E] G.V).restrictScalars (𝓞 D.host.E)) =
       c.lat ρ (Formalism.HermitianLatticesTheory.gmap n Λ) := by
@@ -172,6 +230,9 @@ theorem lat_map_grp (ρ n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ : Submodule 
   · rintro ⟨_, ⟨y, hy, rfl⟩, rfl⟩
     exact ⟨_, ⟨y, hy, rfl⟩, by simp [GCoord.grp]⟩
 
+/- English proof (translation)
+Unfold `GCoord.lat at h`. Use `Submodule.map_injective_of_injective ?_ h` and prove the remaining obligations. Conclude with `(ρ.trans c.e).injective`.
+-/
 theorem lat_inj (ρ : (VS D).V ≃ₗ[D.host.E] (VS D).V) {Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V}
     (h : c.lat ρ Λ₁ = c.lat ρ Λ₂) : Λ₁ = Λ₂ := by
   unfold GCoord.lat at h
@@ -193,6 +254,11 @@ variable {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T} 
   (c : GCoord Z F0 F0' FP G)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `map_eq_of_local (placesOf Z) L hL σ fun p => ?_` and prove the remaining obligations. Take `⟨g', hg', he⟩` from `(show ∀ p, ∃ g' ∈ MulAction.stabilizer (G.S p).GLV ((placesOf Z).lat p L), (placesOf Z).Ext p σ g' from h) p`. Conclude with `⟨g', he, hg'⟩`.
+
+Introduce `h show ∀ p, ∃ g' ∈ MulAction.stabilizer (G.S p).GLV ((placesOf Z).lat p L), (placesOf Z).Ext p σ g'`. Introduce `p`. Take `⟨g', he⟩` from `hx p`. Use `⟨g', ?_, he⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, ← lat_map (placesOf Z) p he L, h]`.
+-/
 theorem mem_rat_stab_iff (L : G.Lt) (hL : Submodule.IsLattice D.host.E L) (σ : G.GLV)
     (hx : ∀ p, ∃ g', (placesOf Z).Ext p σ g') :
     σ ∈ (placesOf Z).rat (fun p => MulAction.stabilizer (G.S p).GLV ((placesOf Z).lat p L)) ↔
@@ -210,6 +276,15 @@ theorem mem_rat_stab_iff (L : G.Lt) (hL : Submodule.IsLattice D.host.E L) (σ : 
     refine ⟨g', ?_, he⟩
     rw [MulAction.mem_stabilizer_iff, ← lat_map (placesOf Z) p he L, h]
 
+/- English proof (translation)
+Establish `hM : LinearMap.toMatrix' (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) * LinearMap.toMatrix' (g.symm : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `: (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)).comp (g.symm : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) = LinearMap.id` using `LinearMap.ext fun x => by simp`. Rewrite using `[this, LinearMap.toMatrix'_id]`. Establish `hM' : LinearMap.toMatrix' (g.symm : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) * LinearMap.toMatrix' (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) = 1`.
+
+Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `: (g.symm : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)).comp (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) = LinearMap.id` using `LinearMap.ext fun x => by simp`. Rewrite using `[this, LinearMap.toMatrix'_id]`. Set `ι` to `(A.loc p).ιE`. Use `⟨LinearEquiv.ofLinearMap (Matrix.toLin' (ι.mapMatrix (LinearMap.toMatrix' (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁))))) (Matrix.toLin' (ι.mapMatrix (LinearMap.toMatrix' (g.symm : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁))))) ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.toLin'_mul, ← map_mul, hM, map_one, Matrix.toLin'_one]`. Rewrite using `[← Matrix.toLin'_mul, ← map_mul, hM', map_one, Matrix.toLin'_one]`. Introduce `x`. Use function extensionality and compare the values at `i`. Simplify using `only [LinearEquiv.coe_ofLinearMap, Matrix.toLin'_apply, Places.bc]`.
+
+Rewrite using `[show g x = Matrix.mulVec (LinearMap.toMatrix' (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁))) x from (LinearMap.toMatrix'_mulVec (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) x).symm, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+-/
 private theorem exists_ext' {F₁ E₁ : Type} [Field F₁] [NumberField F₁] [Field E₁] [NumberField E₁] [Algebra F₁ E₁]
     {sig : E₁ →ₐ[F₁] E₁} (A : Places F₁ E₁ sig) {m : ℕ} (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F₁))
     (g : (Fin m → E₁) ≃ₗ[E₁] (Fin m → E₁)) : ∃ g', A.Ext p g g' := by
@@ -239,6 +314,15 @@ private theorem exists_ext' {F₁ E₁ : Type} [Field F₁] [NumberField F₁] [
       (LinearMap.toMatrix'_mulVec (g : (Fin m → E₁) →ₗ[E₁] (Fin m → E₁)) x).symm, RingHom.map_mulVec]
     rfl
 
+/- English proof (translation)
+Establish `hx : ∀ p, ∃ g', (placesOf Z).Ext p (c.grp ρ n) g'` using `fun p => exists_ext' _ p _`. Establish `hS : c.grp ρ n ∈ G.stabL (c.lat ρ Λ) ↔ (c.grp ρ n ∈ G.N ∧ c.grp ρ n ∈ G.N') ∧ Formalism.HermitianLatticesTheory.gmap n Λ = Λ`. Use `(mem_rat_inf (placesOf Z) (K₁ := fun p => (G.S p).St) (K₂ := fun p => MulAction.stabilizer (G.S p).GLV ((placesOf Z).lat p (c.lat ρ Λ))) (c.grp ρ n)).trans ?_` and prove the remaining obligations. Use `and_congr (mem_rat_inf (placesOf Z) (K₁ := fun p => (G.S p).N) (K₂ := fun p => (G.S p).N') (c.grp ρ n)) ?_` and prove the remaining obligations. Rewrite using `[mem_rat_stab_iff (c.lat ρ Λ) hL (c.grp ρ n) hx, lat_map_grp]`.
+
+Conclude with `⟨lat_inj c ρ, fun h => by rw [h]⟩`. Rewrite using `[hS, nlam_iff Λ F n, nlam_iff Λ' F' (l⁻¹ * n * l), ← hN, ← grp_conj c ρ l n, ← hN']`. Establish `hl' : Formalism.HermitianLatticesTheory.gmap l⁻¹ Λ = Λ'` using `gmap_inv_of l hl`. Establish `e : Formalism.HermitianLatticesTheory.gmap (l⁻¹ * n * l) Λ' = Formalism.HermitianLatticesTheory.gmap l⁻¹ (Formalism.HermitianLatticesTheory.gmap n Λ)`. Rewrite using `[gmap_mul, gmap_mul, hl]`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h₁, h₂⟩, h₃, -⟩`. Conclude with `⟨⟨h₁, h₃⟩, h₂⟩`. Introduce and unpack `⟨⟨h₁, h₃⟩, h₂⟩`.
+
+Conclude with `⟨⟨h₁, h₂⟩, h₃, by rw [h₂, hl']⟩`.
+-/
 theorem key {Tu Tu' : D.host.E} (F : LFlag (VS D) D.R.rS Tu) (F' : LFlag (VS D) D.R.rS Tu')
     (ρ l : (VS D).V ≃ₗ[D.host.E] (VS D).V) (Λ Λ' : Submodule (𝓞 D.host.E) (VS D).V)
     (hl : Formalism.HermitianLatticesTheory.gmap l Λ' = Λ) (hL : Submodule.IsLattice D.host.E (c.lat ρ Λ))
@@ -269,6 +353,13 @@ end Key
 
 end GlobalTheory.RoEq
 
+/- English proof (translation)
+Introduce `D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hmv`. Take `⟨hN, hN', -⟩` from `GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hmv`. Establish `hT` using `(GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hmv).1`. Establish `hkey` using `fun n => GlobalTheory.RoEq.key c (lf D (X.Fu u)) (lf D (X.Fu u')) ρ t₀.lin t₀.lam t₀.lam' t₀.rep.2.2.2.1 hT.1 hN hN' n`. Use extensionality with `y`.
+
+Simplify using `only [Formalism.L2.SG.TermOp.ROinf, Formalism.L2.SG.TermOp.ROset, realPts, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, n, h₁, h₂, h₃, h₄⟩`. Conclude with `⟨x, n, h₁, h₂, (hkey n).1 ⟨h₃, h₄⟩⟩`. Introduce and unpack `⟨x, n, h₁, h₂, h₃⟩`.
+
+Take `⟨h₄, h₅⟩` from `(hkey n).2 h₃`. Conclude with `⟨x, n, h₁, h₂, h₄, h₅⟩`.
+-/
 theorem GlobalTheory.RoEq.roinf_eq_realPts : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → Formalism.L2.SG.TermOp.ROinf t₀ = realPts X {σ | c.grp ρ σ ∈ G.stabL (c.lat ρ t₀.lam)} := by
   intro D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hmv
   obtain ⟨hN, hN', -⟩ := GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hst hk w F00 F'0 FP hZ hG hAt G c t₀ ρ U U' hmv

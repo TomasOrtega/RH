@@ -37,11 +37,22 @@ def swV : (Fin I.n → I.E ⊗[I.F] Af I.F) →ₛₗ[sw I] (Fin I.n → Af I.F 
     simp only [Pi.smul_apply, smul_eq_mul, map_mul]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem swV_apply (v : Fin I.n → I.E ⊗[I.F] Af I.F) (i : Fin I.n) : swV I v i = swapE I (v i) := rfl
 
+/- English proof (translation)
+Introduce `v w h` and use `funext fun i => (swapE I).injective (congrFun h i)`.
+-/
 theorem swV_injective : Function.Injective (swV I) := fun v w h =>
   funext fun i => (swapE I).injective (congrFun h i)
 
+/- English proof (translation)
+Rewrite using `[← Submodule.map_span]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨w, hw, hwv⟩` from `Submodule.mem_map.mp h`. Rewrite `hw` using `[swV_injective I hwv]`. Then use the resulting hypothesis.
+
+Introduce `hv`. Conclude with `Submodule.mem_map.mpr ⟨v, hv, rfl⟩`.
+-/
 theorem swV_mem_span (T : Set (Fin I.n → I.E ⊗[I.F] Af I.F)) (v : Fin I.n → I.E ⊗[I.F] Af I.F) :
     swV I v ∈ Submodule.span (Af I.F ⊗[I.F] I.E) (swV I '' T) ↔ v ∈ Submodule.span (I.E ⊗[I.F] Af I.F) T := by
   rw [← Submodule.map_span]
@@ -52,6 +63,9 @@ theorem swV_mem_span (T : Set (Fin I.n → I.E ⊗[I.F] Af I.F)) (v : Fin I.n �
   · intro hv
     exact Submodule.mem_map.mpr ⟨v, hv, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, Formalism.UG.sigR, swapE]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem sigR_swap (t : I.E ⊗[I.F] Af I.F) :
     sigR (Af I.F) I.cm.sig (swapE I t) = swapE I (Formalism.UG.sigR I.cm.sig (Af I.F) t) := by
   induction t using TensorProduct.induction_on with
@@ -59,15 +73,24 @@ theorem sigR_swap (t : I.E ⊗[I.F] Af I.F) :
   | tmul a b => simp [sigR, Formalism.UG.sigR, swapE]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Simplify using `[swapE, Formalism.UG.inclE, inclR]`.
+-/
 private theorem swapE_inclE_eq (a : I.E) :
     swapE I (Formalism.UG.inclE (F := I.F) (Af I.F) a) = inclR (Af I.F) a := by
   simp [swapE, Formalism.UG.inclE, inclR]
 
+/- English proof (translation)
+Simplify using `only [hR, hA, Formalism.UG.hform, JR, Matrix.map_apply, map_sum, map_mul, swV_apply, sigR_swap, swapE_inclE_eq]`.
+-/
 theorem hR_swV (x y : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hR (Af I.F) I.cm.sig I.J (swV I x) (swV I y) = swapE I (hA I x y) := by
   simp only [hR, hA, Formalism.UG.hform, JR, Matrix.map_apply, map_sum, map_mul, swV_apply, sigR_swap,
     swapE_inclE_eq]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `only [ratV, swV_apply, incl]`. Conclude with `(swapE_inclE_eq I (w i)).symm`.
+-/
 theorem ratV_swV (w : Fin I.n → I.E) : ratV (F := I.F) (Af I.F) w = swV I (incl I w) := by
   funext i
   simp only [ratV, swV_apply, incl]
@@ -75,6 +98,21 @@ theorem ratV_swV (w : Fin I.n → I.E) : ratV (F := I.F) (Af I.F) w = swV I (inc
 
 end Swap
 
+/- English proof (translation)
+Take `⟨hU, hP⟩` from `h`. Establish `hmat` using `Bridge_mat (I := X.B.I) (hb := hb) y`. Establish `hlin : ∀ w : VA X.B.I, lin (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (tf X.B.I hb y) (swV X.B.I w) = swV X.B.I (X.B.I.fmat y *ᵥ w)`. Introduce `w`. Simplify using `only [lin, Matrix.mulVecLin_apply, hmat]`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[swV_apply]`. Conclude with `((sw X.B.I).map_mulVec (X.B.I.fmat y) w i).symm`. Establish `hsub : ∀ w : VA X.B.I, swV X.B.I ((X.B.I.fmat y - 1) *ᵥ w) = lin (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (tf X.B.I hb y) (swV X.B.I w) - swV X.B.I w`. Introduce `w`.
+
+Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, map_sub, hlin]`. Establish `hspan : ∀ (s : Set (Fin D.R.rS)) (v : VA X.B.I), swV X.B.I v ∈ spanR (F` using `X.B.I.F) (Af X.B.I.F) (frameOf X u).e s ↔ v ∈ Submodule.span (X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ((fun b => incl X.B.I (X.eR b)) '' s) := by`. Introduce `s v`. Establish `himg : (fun a => ratV (F` using `X.B.I.F) (Af X.B.I.F) ((frameOf X u).e a)) '' s = swV X.B.I '' ((fun b => incl X.B.I (X.eR b)) '' s) := by`. Rewrite using `[Set.image_image]`.
+
+Conclude with `Set.image_congr fun a _ => ratV_swV X.B.I _`. Unfold `spanR`. Rewrite using `[himg]`. Conclude with `swV_mem_span X.B.I _ v`. Establish `hperp : ∀ w : VA X.B.I, (∀ a, hA X.B.I (incl X.B.I (X.eR a)) w = 0) → InXperp (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u) (swV X.B.I w)`.
+
+Introduce `w hw a`. Rewrite using `[ratV_swV, hR_swV]`. Conclude with `(congrArg (swapE X.B.I) (hw a)).trans (map_zero _)`. Unfold `Formalism.L2.SG.HidaSetting.HidaSetting.NfinU Formalism.L2.SG.HidaSetting.Nfin`. Rewrite using `[Set.mem_setOf_eq]`.
+
+Use `⟨fun a => ?_, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hspan, hsub]`. Establish `h1` using `hU a`. Rewrite `h1` using `[ratV_swV]`. Conclude with `h1`.
+
+Rewrite using `[← Set.image_univ, ← hspan, hsub]`. Conclude with `hP _ (hperp _ fun a => Formalism.L2.SG.Pf.SlabNDensePf.adelicHermitian_hyperbolicE_anisotropic_eq_zero (X := X) (u := u) a)`. Rewrite using `[← Set.image_univ, ← hspan, hsub]`. Conclude with `hP _ (hperp _ hw)`.
+-/
 theorem nfinU_of_tf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Word) (y : X.B.I.Gf)
     (h : tf X.B.I hb y ∈ Nsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)) : y ∈ X.NfinU u := by
   obtain ⟨hU, hP⟩ := h
@@ -118,6 +156,17 @@ theorem nfinU_of_tf {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D
   · rw [← Set.image_univ, ← hspan, hsub]
     exact hP _ (hperp _ hw)
 
+/- English proof (translation)
+Introduce `D X u x hx`. Establish `hb` using `Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I`. Establish `: FiniteDimensional X.B.I.F X.B.I.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Take `⟨p, rfl⟩` from `(toHA X.B.I hb).surjective x`. Establish `hsp` using `MassDataMassesW.split_toHA X hb MassDataMassesW.splitIso_holds p`.
+
+Establish `hxf` using `((PI.UnitaryGroupMassFormula.MeasWCore.mem_Nsub_iff X.B.I.cm.sig X.B.I.J PI.UnitaryGroupMassFormula.MeasWCore.splT_bijective (frameOf X u) _).1 hx).2`. Establish `hxf' : tf X.B.I hb p.2 ∈ Nsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)`. Establish `e2 : haMap X.B.I.cm.sig X.B.I.J (sndA X.B.I.F) (toHA X.B.I hb p) = finHA X hb p.2` using `congrArg Prod.snd hsp`. Rewrite `hxf` using `[e2]`. Conclude with `hxf`.
+
+Establish `hy : p.2 ∈ X.NfinU u` using `nfinU_of_tf X hb u p.2 hxf'`. Establish `h1K : (1 : X.B.I.Gf) ∈ X.B.I.Kset` using `(Formalism.L2.SG.Closed.level_subgroup_properties X).2.1 1 (Formalism.L2.SG.Closed.level_subgroup_is_group X).1`. Establish `hUo : IsOpen {w : X.B.I.Gf | w⁻¹ * p.2 ∈ X.B.I.Kset}` using `(Formalism.L2.SG.Pf.kset_open X.B.I).preimage (continuous_inv.mul continuous_const)`. Establish `hyU : p.2 ∈ {w : X.B.I.Gf | w⁻¹ * p.2 ∈ X.B.I.Kset}` using `by show p.2⁻¹ * p.2 ∈ X.B.I.Kset`. Rewrite using `[inv_mul_cancel]`.
+
+Conclude with `h1K`. Take `⟨ν, hνGF, hν1, hν2, hνU⟩` from `Formalism.L2.SG.Pf.SlabNDensePf.nilradical_strong_approximation D X u p.2 hy _ hUo hyU`. Establish `hB` using `(MassDataMassesW.nRatBridge_holds X hb u ν).2 ⟨hνGF, hν1, hν2⟩`. Use `⟨(toHA X.B.I hb ν)⁻¹, Subgroup.inv_mem _ hB.1, Subgroup.inv_mem _ hB.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv, ← map_mul, MassDataMassesW.split_toHA X hb MassDataMassesW.splitIso_holds]`.
+
+Conclude with `(PIW.MassDataColumns.finHA_mem_Kf_iff X hb _).2 hνU`.
+-/
 theorem strongApproxN_holds : MassDataMassesW.StrongApproxN := by
   intro D X u x hx
   have hb := Formalism.L2.SG.Closed.AdBridgeIso_holds X.B.I

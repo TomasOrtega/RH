@@ -12,12 +12,20 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.HeightCounting.Up
 
+/- English proof (translation)
+Introduce `i a ha π hc hr` and use `h (D.nd.l i) (D.naut.iotaQC i) a ha π hc hr`.
+-/
 theorem galoisRepsCusp_of_galEx {D : D7} (h : GalEx D) : GlobalTheory.BlockComplement.GaloisRepsCusp D :=
   fun i a ha π hc hr => h (D.nd.l i) (D.naut.iotaQC i) a ha π hc hr
 
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `hP hL`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun L _ => ?_⟩` and prove the remaining obligations. Set `T' : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ l.a.A.wdT with }`. Establish `cg : CGTrue hL (withLoc L) T'` using `{ l.a.cg with }`.
+
+Conclude with `galoisRepsCusp_of_galEx (cg.galEx hL hP.what₂.fin hP.what₂.gal)`.
+-/
 theorem galoisRepsCusp_thirdSt : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AllSt fun _ _ _ _ _ _ x => ∀ l : LC hL x,
     GlobalTheory.CoefDuty.EvO l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => GlobalTheory.BlockComplement.GaloisRepsCusp D' := by
   intro hP hL

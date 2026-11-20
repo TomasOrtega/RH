@@ -15,6 +15,11 @@ open GlobalTheory.Core.Rk.IP
 
 namespace GlobalTheory.Core.Rk.IP
 
+/- English proof (translation)
+Introduce `D ψ θ S T χS χT om sS sT hW hθ hS hT K hK hc f hf`. Take `⟨hth, N, hN⟩` from `hf`. Take `⟨U, hU, hUK⟩` from `GlobalTheory.T.exists_common_level_compact_translates_thetaFunction D ψ S T χS χT om hW (K : Set (GA D S)) hK f hth`. Establish `hfd` using `GlobalTheory.T.finiteDimensional_thetaFunctions_level_fockDegree D ψ θ S T sS sT hW.std hθ hS hT U hU N`. Use `@Submodule.finiteDimensional_of_le _ _ _ _ _ _ _ hfd (Submodule.span_mono ?_)` and prove the remaining obligations.
+
+Introduce and unpack `g ⟨k, hk, rfl⟩`. Conclude with `⟨hW.om_pres _ f hth, hUK k hk, GlobalTheory.T.weilRep_preserves_fockDegree_of_commute_cartan D ψ θ S T χS χT om sS sT hW hθ k (hc k hk) N f hth hN⟩`.
+-/
 theorem isKFinVec_of_isFockVec : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T) (sS : RealMat S) (sT : RealMat T), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → ∀ K : Subgroup (GA D S), IsCompact (K : Set (GA D S)) → (∀ k ∈ K, ∀ τ, compAt θ τ (Formalism.L2.Theta.mt S k) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt S k)) → ∀ f, IsFockVec ψ θ S T sS sT f → IsKFinVec om K f := by
   intro D ψ θ S T χS χT om sS sT hW hθ hS hT K hK hc f hf
   obtain ⟨hth, N, hN⟩ := hf

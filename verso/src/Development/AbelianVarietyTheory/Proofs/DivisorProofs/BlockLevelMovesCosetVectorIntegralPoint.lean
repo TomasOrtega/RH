@@ -16,6 +16,17 @@ noncomputable section
 
 namespace GlobalTheory.FunObj.CosetMove
 
+/- English proof (translation)
+Establish `h0 : wdPh D T (a + b) ≠ 0` using `Complex.exp_ne_zero _`. Establish `hn : ∀ x : VC D N N', ‖wdPh D T x‖ = 1` using `fun x => by`. Simplify using `[wdPh, ee, Complex.norm_exp]`. Establish `hc : Hf D T b a = (starRingEnd ℂ) (Hf D T a b)`. Simplify using `only [Hf, map_div₀, map_sum, map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _` and prove the remaining obligations. Use `⟨wdPh D T a * wdPh D T b / wdPh D T (a + b) * Complex.exp ((Real.pi : ℂ) * (Hf D T b a - Hf D T a b) / 2), ?_, fun F => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_div, norm_mul, hn, hn, hn, Complex.norm_exp, hc]`. Establish `: (((Real.pi : ℂ) * ((starRingEnd ℂ) (Hf D T a b) - Hf D T a b) / 2)).re = 0`.
+
+Simplify using `[Complex.mul_re, Complex.sub_re, Complex.conj_re, Complex.div_re]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `z`. Simplify using `only [Wd, U, Pi.smul_apply, smul_eq_mul, VacMove.hf_add_left, VacMove.hf_add_right, add_assoc]`.
+
+Establish `: Complex.exp (-(Real.pi : ℂ) * (Hf D T z b + Hf D T a b) - (Real.pi : ℂ) * Hf D T b b / 2) * Complex.exp (-(Real.pi : ℂ) * Hf D T z a - (Real.pi : ℂ) * Hf D T a a / 2) = Complex.exp ((Real.pi : ℂ) * (Hf D T b a - Hf D T a b) / 2) * Complex.exp (-(Real.pi : ℂ) * (Hf D T z a + Hf …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
+
+Clear denominators, using `at this` for the nonvanishing conditions. Take the linear combination `(wdPh D T a * wdPh D T b * F (z + (a + b))) * this`.
+-/
 theorem wd_wd_norm (D : D7) (T : Tor D) {N N' : ℕ} (a b : VC D N N') :
     ∃ φ : ℂ, ‖φ‖ = 1 ∧ ∀ F, Wd D T a (Wd D T b F) = φ • Wd D T (a + b) F := by
   have h0 : wdPh D T (a + b) ≠ 0 := Complex.exp_ne_zero _
@@ -45,6 +56,45 @@ theorem wd_wd_norm (D : D7) (T : Tor D) {N N' : ℕ} (a b : VC D N N') :
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `D δ t0 hc a d e0 hv had W 𝔪 h𝔪 hcop _ h hh hblk`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `he` using `hv.1`. Establish `hT` using `VacMove.vac_TT h1 hc he`. Take `⟨G, hGdef⟩ : ∃ G, G = Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) a d) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) e0` from `⟨_, rfl⟩`.
+
+Take `⟨g', x', hg's, hg'm, hx'q, hx'd, hcen⟩` from `GlobalTheory.T.exists_skew_lattice_mover_with_determinant D 𝔪 h𝔪 hcop d`. Establish `hsd : SD D (skewLat D 𝔪 d)` using `VacMove.sd_of_moves hg'm`. Take `⟨χ, hχ⟩ : ∃ χ : ℂ, χ = ((W.chV.f x' ^ W.ep * W.chV'.f 1 ^ W.ep' : ℂˣ) : ℂ)` from `⟨_, rfl⟩`. Establish `hJ : W.Om 1 g' e0 = χ • G`. Rewrite using `[W.split 1 g' 1 x' (stdL D a) (skewLat D 𝔪 d) (FixKey.suppSplit_one D a) hg's (fun q hq hi => ⟨by simpa using FixKey.zeroAt_zero D q, hx'q q hq hi⟩) (by simp) hx'd (VacMove.moves_one D a) hg'm, hχ, hGdef]`.
+
+Both sides reduce to the same expression. Establish `hc0 : χ ≠ 0` using `by rw [hχ]; exact Units.ne_zero _`. Establish `hJe : G = χ⁻¹ • W.Om 1 g' e0`. Rewrite using `[hJ, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Establish `hgT : W.Om 1 g' e0 ∈ TT D (tor0 D ⊤ δ) a d` using `W.maps 1 g' e0 hT`.
+
+Establish `hJT : G ∈ TT D (tor0 D ⊤ δ) a d`. Rewrite using `[hJe]`. Conclude with `FixKey.TT_smul _ hgT`. Take `⟨xh, -, hxh⟩` from `VacInt.om_vac_right he hT W ((mem_intG h).1 hh)`. Take `⟨uh, huh⟩ : ∃ u : ℂ, u = ((W.chV.f xh ^ W.ep : ℂˣ) : ℂ)` from `⟨_, rfl⟩`.
+
+Rewrite `hxh` using `[← huh]`. Establish `hhG : W.Om 1 h G = uh • G`. Establish `e1` using `W.mul 1 1 h g' e0 hT`. Establish `e2` using `W.mul 1 1 g' h e0 hT`. Rewrite `e1`, `e2` using `[mul_one]`.
+
+Rewrite using `[hJe, W.smul _ _ _ _ hgT, ← e1, hcen, e2, hxh, W.smul _ _ _ _ hT, smul_comm]`. Take `⟨k, hk, hkx⟩` from `GlobalTheory.T.exists_integralUnitary_blockLevel_unitBlock D 𝔪 h𝔪 hcop had h hh hblk`. Take `⟨xk, -, hxk⟩` from `VacInt.om_vac_left he hT W ((mem_intG k).1 hk)`. Take `⟨uk, huk⟩ : ∃ u : ℂ, u = ((W.chV'.f xk ^ W.ep' : ℂˣ) : ℂ)` from `⟨_, rfl⟩`. Rewrite `hxk` using `[← huk]`.
+
+Establish `hkG : W.Om k 1 G = uk • G`. Establish `e1` using `W.mul k 1 1 g' e0 hT`. Establish `e2` using `W.mul 1 k g' 1 e0 hT`. Rewrite `e1` using `[mul_one, one_mul]`. Rewrite `e2` using `[one_mul, mul_one]`.
+
+Rewrite using `[hJe, W.smul _ _ _ _ hgT, ← e1, e2, hxk, W.smul _ _ _ _ hT, smul_comm]`. Establish `nuh : ‖uh‖ = 1`. Rewrite using `[huh, Units.val_zpow_eq_zpow_val, norm_zpow, W.chV.unitary, one_zpow]`. Establish `nuk : ‖uk‖ = 1`. Rewrite using `[huk, Units.val_zpow_eq_zpow_val, norm_zpow, W.chV'.unitary, one_zpow]`.
+
+Take `⟨x₀, hx₀⟩ : ∃ x, x = unitBlock D 0 a d` from `⟨_, rfl⟩`. Take `⟨m₁, hm₁, hl₁⟩` from `W.lift 1 h x₀ G hJT`. Take `⟨m₂, hm₂, hl₂⟩` from `W.lift k 1 x₀ G hJT`. Take `⟨Y₁, hY₁⟩ : ∃ Y : Matrix (Fin d) (Fin a) (AE D), Y = ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) * x₀.map (inc D)` from `⟨_, rfl⟩`. Take `⟨Y₂, hY₂⟩ : ∃ Y : Matrix (Fin d) (Fin a) (AE D), Y = x₀.map (inc D) * (((k : GL (Fin a) (AE D))⁻¹ : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D))` from `⟨_, rfl⟩`.
+
+Establish `hkx' : ∀ i j, (Y₁ - Y₂) i j ∈ hatId D 𝔪` using `by rw [hY₁, hY₂, hx₀]; exact hkx`. Take `⟨z, hz⟩` from `VacMove.MI_approx (cc := ⊤) top_ne_bot Y₂ (m₁ * m₂) (Nat.mul_pos hm₁ hm₂)`. Take `⟨w, hw𝔪, hw⟩` from `GlobalTheory.T.exists_ideal_matrix_congr_adelicMatrix_mod_nat D 𝔪 (Y₁ - Y₂) hkx' m₁ hm₁`. Establish `hc2 : CloseTo D ⊤ m₂ (k : GL (Fin a) (AE D)) ((1 : GA D d) : GL (Fin d) (AE D)) x₀ z`. Use `hz.of_dvd (m := m₂) (dvd_mul_left _ _)` as an intermediate fact.
+
+Introduce `i j`. Take `⟨y, hy, e⟩` from `this i j`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, hY₂]`. Simplify using the standard rewrite rules.
+
+Establish `hc1 : CloseTo D ⊤ m₁ ((1 : GA D a) : GL (Fin a) (AE D)) (h : GL (Fin d) (AE D)) x₀ (z + w)`. Establish `h3` using `(hz.of_dvd (m := m₁) (dvd_mul_right _ _)).add hw`. Establish `key : z.map (inc D) - Y₂ + (w.map (inc D) - (Y₁ - Y₂)) = (z + w).map (inc D) - Y₁`. Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, Matrix.map_apply, map_add]`.
+
+Normalize the expressions using the abelian group laws. Rewrite `h3` using `[key]`. Introduce `i j`. Take `⟨y, hy, e⟩` from `h3 i j`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e, hY₁]`. Simplify using the standard rewrite rules. Establish `hWh` using `hl₁ (z + w) hc1`. Establish `hWk` using `hl₂ z hc2`. Rewrite `hWh` using `[hhG, FixKey.wd_smul, VacMove.pt_add]`.
+
+Rewrite `hWk` using `[hkG, FixKey.wd_smul]`. Take `⟨φ, hφ1, hφ⟩` from `wd_wd_norm D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z) (pt D (tor0 D ⊤ δ) δ w)`. Establish `hBk : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))` using `VacMove.klat _ (VacMove.moves_one D a) hg'm`. Establish `hJB` using `GlobalTheory.T.latticeIntertwiner_standard_to_skew_mem_thetaSpace D δ hc e0 he 𝔪 hsd`. Rewrite `hJB` using `[← hGdef]`.
+
+Establish `hwB` using `(GlobalTheory.T.thetaPoint_mem_standard_and_skewLattice_of_entries_mem D δ 𝔪 w hw𝔪).2`. Establish `hfix : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ w) G = G` using `VacMove.wd_fix h1 hc hBk hJB hwB`. Establish `hφ0 : φ ≠ 0` using `by intro h0; rw [h0, norm_zero] at hφ1; exact zero_ne_one hφ1`. Establish `hsum` using `hφ G`. Rewrite `hsum` using `[hfix]`.
+
+Establish `hzw : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z + pt D (tor0 D ⊤ δ) δ w) G = φ⁻¹ • Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z) G`. Rewrite using `[hsum, smul_smul, inv_mul_cancel₀ hφ0, one_smul]`. Establish `huk0 : uk ≠ 0` using `by rw [huk]; exact Units.ne_zero _`. Use `⟨uh * φ⁻¹ * uk⁻¹, by rw [norm_mul, norm_mul, norm_inv, norm_inv, nuh, hφ1, nuk]; simp, k, hk, ?_⟩` and prove the remaining obligations. Establish `hWT : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G ∈ TT D (tor0 D ⊤ δ) a d` using `GlobalTheory.FinWeil.RatTransl.wd_mem_TT D h1 ⊤ δ hc a d _ _ hJT`.
+
+Unfold `cosetV`. Rewrite using `[← hx₀, ← hGdef]`. Rewrite using `[W.smul _ _ _ _ hWT, W.smul _ _ _ _ hWT]`. Express the relevant statement in the definitionally equal form `_ • W.Om 1 h (Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G) = _ • _ • W.Om k 1 (Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x₀) G)`. Rewrite using `[hWh, hWk, hzw, smul_smul, smul_smul, smul_smul, smul_smul]`.
+
+Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem om_cosetV_block : ∀ (D : D7) (δ t0 : ℂ), Crv D ⊤ δ → ∀ {a d : ℕ} (e0 : VC D a d → ℂ), oddE0 D ⊤ δ t0 a d e0 → a ≤ d → ∀ (W : WeilO D ⊤ δ a d e0) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → (∀ u, IntU D u → (u : AE D) - 1 ∈ hatId D (𝔪 * D.host.conj • 𝔪) → W.chV'.f u = 1) → ∀ h ∈ intG D d, (∀ i j : Fin d, j.1 < a → a ≤ i.1 → ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ hatId D 𝔪) → ∃ c : ℂ, ‖c‖ = 1 ∧ ∃ k ∈ intG D a, W.Om 1 h (cosetV D δ 𝔪 0 a d e0) = c • W.Om k 1 (cosetV D δ 𝔪 0 a d e0) := by
   intro D δ t0 hc a d e0 hv had W 𝔪 h𝔪 hcop _ h hh hblk
   have h1 := (GlobalTheory.InducedType.induced_type D).1

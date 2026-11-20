@@ -6,12 +6,22 @@ open Formalism.UG GlobalTheory.SatakeWeyl
 
 namespace GlobalTheory.SatakeWeyl
 
+/- English proof (translation)
+Use `antiJ_mul_apply (1 : Matrix (Fin n) (Fin n) L) i j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Rewrite using `[this, Matrix.one_apply]`.
+-/
 theorem antiJ_eq_one_rev {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if i.rev = j then 1 else 0 := by
   have := antiJ_mul_apply (1 : Matrix (Fin n) (Fin n) L) i j
   rw [Matrix.mul_one] at this
   rw [this, Matrix.one_apply]
 
+/- English proof (translation)
+Apply `exists_mat` to reduce the goal to its premises. Use extensionality with `i j`. Establish `h1 : cT σ (mat m) * antiJ L n * mat m = antiJ L n` using `m.2`. Establish `h2` using `congrFun (congrFun h1 (e i)) (e j)`. Rewrite `h2`, the goal using `[Matrix.mul_apply]`.
+
+Simplify using `only [P.fSatake_cTJ] at h2 ⊢`. Rewrite `h2`, the goal using `[antiJ_eq_one_rev]`. Rewrite `h2` using `[← hrev]`. Simplify using `only [he.eq_iff] at h2`. Rewrite using `[← h2]`.
+
+Use `Fintype.sum_of_injective e he _ _ ?_ ?_` and prove the remaining obligations. Introduce `l hl`. Rewrite using `[hm l (e j) (Or.inl hl), Matrix.one_apply_ne (fun h => hl ⟨j, h.symm⟩), mul_zero]`. Introduce `l`. Simplify using `only [Matrix.submatrix_apply, hrev]`.
+-/
 theorem exists_mat_submatrix {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n r : ℕ}
     (e : Fin r → Fin n) (he : Function.Injective e) (hrev : ∀ i, e i.rev = (e i).rev) (m : GU σ n)
     (hm : ∀ a b, (a ∉ Set.range e ∨ b ∉ Set.range e) → mat m a b = (1 : Matrix (Fin n) (Fin n) L) a b) :
@@ -32,6 +42,23 @@ theorem exists_mat_submatrix {L : Type} [Field L] [Valued L (WithZero (Multiplic
   · intro l
     simp only [Matrix.submatrix_apply, hrev]
 
+/- English proof (translation)
+Introduce `L _ _ σ n r e β γ ι hB hι u hu`. Take `⟨hmono, hrev, hβ, hβrev, hβe, hγ⟩` from `hB`. Establish `hu' : ∀ i j : Fin n, j.val ≤ i.val → mat u i j = (1 : Matrix (Fin n) (Fin n) L) i j` using `hu`. Establish `htri : (mat u).BlockTriangular β`. Introduce `a b hab`.
+
+Establish `hba : b < a` using `hβ.reflect_lt hab`. Rewrite using `[hu' a b hba.le, Matrix.one_apply_ne hba.ne']`. Take `⟨m, hmL, hmu, hrad⟩` from `hL L σ n β hβrev u htri`. Establish `hmL' : ∀ i j, β i ≠ β j → mat m i j = 0` using `hmL`. Establish `hm : ∀ a b, (a ∉ Set.range e ∨ b ∉ Set.range e) → mat m a b = (1 : Matrix (Fin n) (Fin n) L) a b`.
+
+Introduce `a b hab`. Distinguish the cases in `h : β a = β b`. Break down `hβe a b h with rfl | ⟨h1, h2⟩` into its components or cases. Rewrite using `[hmu a a rfl, hu' a a le_rfl]`. Break down `hab with h' | h'` into its components or cases.
+
+Conclude with `absurd h1 h'`. Conclude with `absurd h2 h'`. Rewrite using `[hmL' a b h, Matrix.one_apply_ne (fun e' : a = b => h (congrArg β e'))]`. Take `⟨a, ha⟩` from `exists_mat_submatrix e hmono.injective hrev m hm`. Establish `hιa : ι a = m`.
+
+Apply `mat_injective` to reduce the goal to its premises. Use extensionality with `x y`. Distinguish the cases in `hxy : x ∉ Set.range e ∨ y ∉ Set.range e`. Rewrite using `[(hι a).2 x y hxy, hm x y hxy]`. Use `push Not at hxy`.
+
+Take `⟨⟨i, rfl⟩, ⟨j, rfl⟩⟩` from `hxy`. Rewrite using `[(hι a).1 i j, ha, Matrix.submatrix_apply]`. Use `⟨a, ⟨?_, ?_⟩, m⁻¹ * u, hrad, by rw [hιa, mul_inv_cancel_left]⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `hij' : j ≤ i` using `hij`.
+
+Rewrite using `[ha, Matrix.submatrix_apply]`. Distinguish the cases in `h : β (e i) = β (e j)`. Rewrite using `[hmu _ _ h, hu' _ _ (hmono.monotone hij'), Matrix.one_apply, Matrix.one_apply]`. Simplify using `only [hmono.injective.eq_iff]`. Rewrite using `[hmL' _ _ h, Matrix.one_apply_ne (fun e' : i = j => h (by rw [e']))]`.
+
+Introduce `i j hij`. Rewrite using `[ha, Matrix.submatrix_apply]`. Conclude with `hmL' _ _ fun h => hij ((hγ i j).1 h)`.
+-/
 theorem unipSplit_of_leviPart (hL : LeviPart) : UnipSplit := by
   intro L _ _ σ n r e β γ ι hB hι u hu
   obtain ⟨hmono, hrev, hβ, hβrev, hβe, hγ⟩ := hB

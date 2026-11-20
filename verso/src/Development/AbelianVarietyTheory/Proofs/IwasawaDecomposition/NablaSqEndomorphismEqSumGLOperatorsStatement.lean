@@ -5,6 +5,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.IncludeLInje
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting GlobalTheory.HeightCounting.FormsStep NumberField IsDedekindDomain Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.NablaDensity.endo_eq_sum_sqAct | exact GlobalTheory.NablaDensity.endo_eq_sum_sqAct | (intros; apply GlobalTheory.NablaDensity.endo_eq_sum_sqAct <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.nablaSq_endomorphism_eq_sum_GL_operators : ∀ (k : Type) [Field k] [CharZero k] (N : ℕ) (lam : DomWeight N),
     (∀ M : Submodule k (MvPolynomial (Fin N × Fin N) k), M ≤ nablaSq k N lam →
       (∀ g : GL (Fin N) k, ∀ f ∈ M, sqAct k N lam g f ∈ M) → M = ⊥ ∨ M = nablaSq k N lam) →

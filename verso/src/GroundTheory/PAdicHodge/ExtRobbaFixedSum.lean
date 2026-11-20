@@ -28,6 +28,11 @@ def smallSubgroup (I : Set (Set.Ioc (0 : ℝ) ρ0)) (hI : I.Finite) (ε : Set.Io
     rw [this]
     exact hI.isOpen_biInter fun i _ => isOpen_lt (T.continuous_extNorm i) continuous_const
 
+/- English proof (translation)
+Take `⟨V, hV, hVU⟩` from `UniformSpace.mem_nhds_iff.1 hU`. Take `⟨I, hI, ε, hε, h⟩` from `T.exists_radii_of_mem_uniformity hV`. Use `⟨I, hI, ε, hε, fun x hx => hVU ?_⟩` and prove the remaining obligations. Use `h 0 x fun i hi => ?_` and prove the remaining obligations. Rewrite using `[zero_sub, T.extNorm_neg]`.
+
+Conclude with `hx i hi`.
+-/
 theorem exists_radii_of_mem_nhds_zero {U : Set (T.RobbaExt ρ0)} (hU : U ∈ 𝓝 (0 : T.RobbaExt ρ0)) :
     ∃ I : Set (Set.Ioc (0 : ℝ) ρ0), I.Finite ∧ ∃ ε : Set.Ioc (0 : ℝ) ρ0 → ℝ, (∀ i, 0 < ε i) ∧
       ∀ x : T.RobbaExt ρ0, (∀ i ∈ I, T.extNorm ρ0 i x < ε i) → x ∈ U := by
@@ -44,11 +49,17 @@ instance instNonarchimedeanAddGroupRobbaExt : NonarchimedeanAddGroup (T.RobbaExt
 
 variable {T}
 
+/- English proof (translation)
+The claim follows from `hs.map (T.res h) (T.continuous_res h)`.
+-/
 theorem HasSum.res {ι : Type*} {f : ι → T.RobbaExt ρ0} {s : T.RobbaExt ρ0} (hs : HasSum f s)
     {ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
     HasSum (fun i => T.res h (f i)) (T.res h s) :=
   hs.map (T.res h) (T.continuous_res h)
 
+/- English proof (translation)
+The claim follows from `hs.map (F.extFrob ρ0) (F.continuous_extFrob ρ0)`.
+-/
 theorem HasSum.extFrob (F : T.TeichFrob) {ι : Type*} {f : ι → T.RobbaExt ρ0} {s : T.RobbaExt ρ0}
     (hs : HasSum f s) : HasSum (fun i => F.extFrob ρ0 (f i)) (F.extFrob ρ0 s) :=
   hs.map (F.extFrob ρ0) (F.continuous_extFrob ρ0)

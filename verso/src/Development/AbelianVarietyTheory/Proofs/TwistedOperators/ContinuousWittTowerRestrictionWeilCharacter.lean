@@ -8,6 +8,25 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TowerRestrictChar
 
+/- English proof (translation)
+Introduce `D V V' W r C B hs ψ χS χT χS' χT' ω ω' hω hω' μ 𝓨 hμ c hc`. Take `⟨_, _, _, hg4, _⟩` from `Formalism.IndefR.Eqv.ga_facts D W`. Establish `hres` using `GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hω.std μ 𝓨 hμ`. Take `⟨f₀, hf₀, hne⟩` from `hres.2`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓨) := ⟨by rw [Measure.restrict_apply_univ, hμ.2.2]; exact ENNReal.one_lt_top⟩`.
+
+Use `set g := GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f₀ with hgdef`. Establish `hg : IsThetaFunO ψ V' W g` using `(hres.1 f₀ hf₀).2.1`. Establish `hcont1 : Continuous fun h : GA D W => (((1 : GA D V), h) : GA D V × GA D W)` using `continuous_const.prodMk continuous_id`. Establish `hcont1' : Continuous fun h : GA D W => (((1 : GA D V'), h) : GA D V' × GA D W)` using `continuous_const.prodMk continuous_id`. It suffices to establish `hC : Continuous fun h => (c h : ℂ) from continuous_induced_rng.2 hC`.
+
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `h₀`. Establish `hne₀ : ω' (1, h₀) g ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises.
+
+Establish `hinv : ω' (1, h₀⁻¹) * ω' (1, h₀) = 1`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, inv_mul_cancel, Prod.mk_one_one, map_one]`. Use `congrArg (fun T : Module.End ℂ (WO V' W → ℂ) => T g) hinv` as an intermediate fact. Simplify using `only [Module.End.mul_apply, h0, map_zero, Module.End.one_apply] at this`. Conclude with `this.symm`.
+
+Take `⟨x, hx⟩` from `Function.ne_iff.1 hne₀`. Use `set Dn : GA D W → ℂ := fun h => ω' (1, h) g x with hDn`. Establish `hDc : Continuous Dn` using `(hω'.om_cont g hg x).comp hcont1'`. Establish `hD0 : Dn h₀ ≠ 0` using `hx`. Use `set Nu : GA D W → ℂ := fun h => GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (1, h) f₀) x with hNu`.
+
+Establish `hNc : ContinuousAt Nu h₀` using `by haveI : SecondCountableTopology (GA D W) := hg4`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds h₀`. Take `⟨c₀, hc₀⟩` from `GlobalTheory.WeilSupBound.exists_sup_bound D ψ V W χS χT ω hω f₀ hf₀ ({(1 : GA D V)} ×ˢ K) (isCompact_singleton.prod hK)`. Use `MeasureTheory.continuousAt_of_dominated (bound := fun _ => c₀) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun h => ((hres.1 _ (hω.om_pres _ _ hf₀)).1 x).aestronglyMeasurable`.
+
+Use `filter_upwards [hKn] with h hh`. Conclude with `Filter.Eventually.of_forall fun y => hc₀ ((1 : GA D V), h) ⟨rfl, hh⟩ _`. Conclude with `integrable_const c₀`. Conclude with `Filter.Eventually.of_forall fun y => ((hω.om_cont f₀ hf₀ _).comp hcont1).continuousAt`. Establish `hq : ∀ h, Nu h = (c h : ℂ) * Dn h` using `fun h => by`.
+
+Use `congrFun (hc h f₀ hf₀) x` as an intermediate fact. Simplify `this` using `[hNu, hDn, hgdef]`. Establish `hev : ∀ᶠ h in nhds h₀, Dn h ≠ 0` using `hDc.continuousAt.eventually_ne hD0`. Establish `hdiv : ContinuousAt (fun h => Nu h / Dn h) h₀` using `hNc.div hDc.continuousAt hD0`. Use `hdiv.congr ?_` and prove the remaining obligations.
+
+Use `filter_upwards [hev] with h hh`. Rewrite using `[hq h, mul_div_assoc, div_self hh, mul_one]`.
+-/
 theorem continuous_char : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT χS' χT' : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ω' : GA D V' × GA D W →* Module.End ℂ (WO V' W → ℂ)), IsWeilDatumO ψ V W χS χT ω → IsWeilDatumO ψ V' W χS' χT' ω' → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D W.rank r) μ 𝓨 → ∀ c : GA D W →* Circle, (∀ h f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (1, h) f) = (c h : ℂ) • ω' (1, h) (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 f)) → Continuous c := by
   intro D V V' W r C B hs ψ χS χT χS' χT' ω ω' hω hω' μ 𝓨 hμ c hc
   obtain ⟨_, _, _, hg4, _⟩ := Formalism.IndefR.Eqv.ga_facts D W

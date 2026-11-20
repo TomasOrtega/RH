@@ -17,6 +17,9 @@ noncomputable def gA (n : ℕ) : Per.Ainf l →+* Per.AinfP l ⧸ Per.kerP l ^ n
 noncomputable def fD (n : ℕ) : Per.Acris0 l →+* Per.AinfP l ⧸ Per.kerP l ^ n :=
   (Ideal.Quotient.mk _).comp (Per.Acris0 l).val.toRingHom
 
+/- English proof (translation)
+Establish `h : IsUnit (algebraMap (Per.Ainf l) (Per.AinfP l) (l : Per.Ainf l))` using `IsLocalization.Away.algebraMap_isUnit _`. Establish `h2` using `h.map (Ideal.Quotient.mk (Per.kerP l ^ n))`. Rewrite `h2` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+-/
 theorem unit_l (n : ℕ) : IsUnit ((l : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) := by
   have h : IsUnit (algebraMap (Per.Ainf l) (Per.AinfP l) (l : Per.Ainf l)) :=
     IsLocalization.Away.algebraMap_isUnit _

@@ -24,6 +24,9 @@ def PLLocalStatement : Prop :=
         ∑ k, (m k : ℝ) * mInt (B k) (fun i => (Φ i).pullback Subtype.val continuous_subtype_val)
             (v ∘ Subtype.val) - mInt A (Fin.cons L Φ) v
 
+/- English proof (translation)
+The claim follows from `PLAux.pl_global`.
+-/
 theorem poincareLelong : PoincareLelongStatement := PLAux.pl_global
 
 end

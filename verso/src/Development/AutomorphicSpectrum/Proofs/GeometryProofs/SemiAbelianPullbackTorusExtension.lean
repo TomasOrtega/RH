@@ -21,6 +21,9 @@ section Alg
 
 variable {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {r : ℕ}
 
+/- English proof (translation)
+Use extensionality with `x`. Use `conv_lhs => rw [← (Module.Free.chooseBasis ℤ X).sum_repr x, map_sum]`. Simplify using `only [map_zsmul]`. Simplify using `[AddMonoidHom.finsetSum_apply, mul_comm]`.
+-/
 theorem hom_eq_sum {O : Type} [CommRing O] (δ : X →+ O) :
     δ = ∑ i, δ (Module.Free.chooseBasis ℤ X i) •
       (Int.castAddHom O).comp ((Module.Free.chooseBasis ℤ X).coord i).toAddMonoidHom := by
@@ -29,6 +32,11 @@ theorem hom_eq_sum {O : Type} [CommRing O] (δ : X →+ O) :
   simp only [map_zsmul]
   simp [AddMonoidHom.finsetSum_apply, mul_comm]
 
+/- English proof (translation)
+Use `⟨∑ i, bs.repr ((Module.Free.chooseBasis ℤ X).coord i).toAddMonoidHom a • Module.Free.chooseBasis ℤ X i, fun φ => ?_⟩` and prove the remaining obligations. Establish `e : φ = ∑ i, φ (Module.Free.chooseBasis ℤ X i) • ((Module.Free.chooseBasis ℤ X).coord i).toAddMonoidHom`. Use extensionality with `x`. Use `conv_lhs => rw [← (Module.Free.chooseBasis ℤ X).sum_repr x, map_sum]`. Simplify using `only [map_zsmul]`.
+
+Simplify using `[AddMonoidHom.finsetSum_apply, mul_comm]`. Use `conv_rhs => rw [e]`. Simplify using `[map_sum, mul_comm]`.
+-/
 theorem exists_dual (bs : Module.Basis (Fin r) ℤ (X →+ ℤ)) (a : Fin r) :
     ∃ x : X, ∀ φ : X →+ ℤ, φ x = bs.repr φ a := by
   refine ⟨∑ i, bs.repr ((Module.Free.chooseBasis ℤ X).coord i).toAddMonoidHom a • Module.Free.chooseBasis ℤ X i,
@@ -42,6 +50,9 @@ theorem exists_dual (bs : Module.Basis (Fin r) ℤ (X →+ ℤ)) (a : Fin r) :
   conv_rhs => rw [e]
   simp [map_sum, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg a`. Take `⟨x, hx⟩` from `exists_dual bs a`. Use `DFunLike.congr_fun hg x` as an intermediate fact. Simplify `this` using `[AddMonoidHom.finsetSum_apply, hx, Finsupp.single_apply]`.
+-/
 theorem indep {O : Type} [CommRing O] (bs : Module.Basis (Fin r) ℤ (X →+ ℤ)) :
     LinearIndependent O (fun a => (Int.castAddHom O).comp (bs a)) := by
   rw [Fintype.linearIndependent_iff]
@@ -50,6 +61,13 @@ theorem indep {O : Type} [CommRing O] (bs : Module.Basis (Fin r) ℤ (X →+ ℤ
   have := DFunLike.congr_fun hg x
   simpa [AddMonoidHom.finsetSum_apply, hx, Finsupp.single_apply] using this
 
+/- English proof (translation)
+Establish `key : ∀ φ : X →+ ℤ, (Int.castAddHom O).comp φ ∈ Submodule.span O (Set.range fun a => (Int.castAddHom O).comp (bs a))`. Introduce `φ`. Establish `e : (Int.castAddHom O).comp φ = ∑ a, ((bs.repr φ a : ℤ) : O) • (Int.castAddHom O).comp (bs a)`. Use extensionality with `x`. Establish `e₀` using `DFunLike.congr_fun (bs.sum_repr φ) x`.
+
+Rewrite `e₀` using `[AddMonoidHom.finsetSum_apply]`. Rewrite using `[AddMonoidHom.comp_apply, ← e₀, map_sum]`. Simplify using `[AddMonoidHom.finsetSum_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+
+Rewrite using `[eq_top_iff]`. Introduce `δ _`. Rewrite using `[hom_eq_sum δ]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (key _)`.
+-/
 theorem span_top {O : Type} [CommRing O] (bs : Module.Basis (Fin r) ℤ (X →+ ℤ)) :
     Submodule.span O (Set.range fun a => (Int.castAddHom O).comp (bs a)) = ⊤ := by
   have key : ∀ φ : X →+ ℤ, (Int.castAddHom O).comp φ ∈
@@ -68,6 +86,9 @@ theorem span_top {O : Type} [CommRing O] (bs : Module.Basis (Fin r) ℤ (X →+ 
   rw [hom_eq_sum δ]
   exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (key _)
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker io = ⊥` using `LinearMap.ker_eq_bot_of_injective h`. Establish `hi` using `(indep (O := O) bs).map' io hk`. Use `⟨hi, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.range_eq_map, ← span_top (O := O) bs, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression.
+-/
 theorem image_basis {O V : Type} [CommRing O] [AddCommGroup V] [Module O V] (bs : Module.Basis (Fin r) ℤ (X →+ ℤ))
     (io : (X →+ O) →ₗ[O] V) (h : Function.Injective io) :
     LinearIndependent O (fun a => io ((Int.castAddHom O).comp (bs a))) ∧
@@ -79,6 +100,9 @@ theorem image_basis {O V : Type} [CommRing O] [AddCommGroup V] [Module O V] (bs 
   rfl
 
 omit [Module.Free ℤ X] [Module.Finite ℤ X] in
+/- English proof (translation)
+Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem cast_comp {O K : Type} [CommRing O] [CommRing K] (c : O →+* K) (φ : X →+ ℤ) :
     c.toAddMonoidHom.comp ((Int.castAddHom O).comp φ) = (Int.castAddHom K).comp φ := by
   ext x; simp
@@ -89,11 +113,21 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(Over.pullback z).obj G, inferInstance, pullback.fst G.hom z, IsSemiAbelian.pullback z G hG, isGrpPullback_pullback G z⟩`.
+-/
 theorem exists_pull {S S' : Scheme.{0}} (G : Over S) [GrpObj G] (hG : IsSemiAbelian G) (z : S' ⟶ S) :
     ∃ (G₀ : Over S') (_ : GrpObj G₀) (ψ : G₀.left ⟶ G.left), IsSemiAbelian G₀ ∧ IsGrpPullback G₀ G z ψ :=
   ⟨(Over.pullback z).obj G, inferInstance, pullback.fst G.hom z, IsSemiAbelian.pullback z G hG,
     isGrpPullback_pullback G z⟩
 
+/- English proof (translation)
+Unfold `LieModel.Lifts`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← Category.assoc, h, Category.assoc, hM₀]`. Introduce `h`.
+
+Apply `hp.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h, Category.assoc, hM₀]`. Establish `w₂` using `Over.w (M₀.pt e)`. Establish `w₃` using `Over.w v`. Rewrite using `[Category.assoc, hw, ← Category.assoc, w₃, Category.assoc, w₂]`.
+
+Use `show (Spec.map _ ≫ 𝟙 _) ≫ Spec.map _ = Spec.map _ ≫ Spec.map _ ≫ 𝟙 _`. Rewrite using `[Category.comp_id, Category.comp_id, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext x <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem lifts_iff {R R' : Type} [CommRing R] [CommRing R'] (c : R →+* R') {X : Scheme.{0}} {z : Sp R ⟶ X} {G : Over X}
     [GrpObj G] {G₀ : Over (Sp R)} [GrpObj G₀] {ψ : G₀.left ⟶ G.left} (hp : IsGrpPullback G₀ G z ψ)
     {GK : Over (Sp R')} {φ₀ : GK.left ⟶ G₀.left} (hw : φ₀ ≫ G₀.hom = GK.hom ≫ spMap c)
@@ -116,6 +150,15 @@ theorem lifts_iff {R R' : Type} [CommRing R] [CommRing R'] (c : R →+* R') {X :
       congr 2
       ext x <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]
 
+/- English proof (translation)
+Introduce `X G _ _ hG L _ _ z GK _ φ τ G' _ φ'`. Set `_` to `τ.addCommGroup`. Set `_` to `τ.grpB`. Use `τ.free` as an intermediate fact. Use `τ.finite` as an intermediate fact.
+
+Introduce `hG' hφ hφ' MT hMT V V' _ _ _ _ M M' r bs`. Take `⟨G₀, _, ψ, hG₀, hp⟩` from `exists_pull G hG z`. Take `⟨φO, hF, hw⟩ : ∃ φO : GK.left ⟶ G₀.left, φO ≫ ψ = φ ∧ φO ≫ G₀.hom = GK.hom ≫ spMap (algebraMap (𝓞 L) L)` from `⟨hp.1.lift φ (GK.hom ≫ spMap (algebraMap (𝓞 L) L)) (by rw [hφ.1.w, Category.assoc]), hp.1.lift_fst _ _ _, hp.1.lift_snd _ _ _⟩`. Substitute `hF` using the available equality. Establish `hO : IsGrpPullback GK G₀ (spMap (algebraMap (𝓞 L) L)) φO` using `hp.cancel hφ hw`.
+
+Take `⟨M₀, hM₀⟩` from `(GlobalTheory.CompanionTheory.Ar.LieMove.main (𝓞 L) X z G G₀ ψ V hp).1 M`. Establish `hiff` using `lifts_iff (algebraMap (𝓞 L) L) hp hw M M₀ hM₀`. Take `⟨io, f, h1, h2, h3, h4, h5⟩` from `GlobalTheory.T.torus_extension_lie_lattice (𝓞 L) L G₀ G' GK τ φO φ' hG₀ hG' hO hφ' MT hMT V V' M₀ M'`. Take `⟨b1, b2⟩` from `image_basis bs io h3`. Use `⟨fun a => io ((Int.castAddHom (𝓞 L)).comp (bs a)), f, fun a => ?_, fun e v h => h2 e v ((hiff e v).2 h), b1, h4.trans b2, h5⟩` and prove the remaining obligations.
+
+Use `h1 ((Int.castAddHom (𝓞 L)).comp (bs a))` as an intermediate fact. Rewrite `this` using `[cast_comp]`. Conclude with `(hiff _ _).1 this`.
+-/
 theorem main : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ X) (GK : Over (Sp L)) [GrpObj GK] (φ : GK.left ⟶ G.left) (τ : TorusExtension GK) (G' : Over (Sp (𝓞 L))) [GrpObj G'] (φ' : τ.B.left ⟶ G'.left), letI := τ.addCommGroup; letI := τ.grpB; IsSemiAbelian G' → IsGrpPullback GK G (spMap (algebraMap (𝓞 L) L) ≫ z) φ → IsGrpPullback τ.B G' (spMap (algebraMap (𝓞 L) L)) φ' → ∀ (MT : LieModel (splitTorus (Sp L) τ.X) (𝟙 _) (τ.X →+ L)), IsCocharLie MT → ∀ (V V' : Type) [AddCommGroup V] [Module (𝓞 L) V] [AddCommGroup V'] [Module (𝓞 L) V'] (M : LieModel G z V) (M' : LieModel G' (𝟙 _) V') (r : ℕ) (bs : Module.Basis (Fin r) ℤ (τ.X →+ ℤ)), ∃ (ε : Fin r → V) (f : V →ₗ[𝓞 L] V'), (∀ a, M.Lifts (algebraMap (𝓞 L) L) φ (ε a) (MT.pt ((Int.castAddHom L).comp (bs a)) ≫ τ.i)) ∧ (∀ (e : V) (v : epsAt (𝟙 (Sp L)) ⟶ GK), M.Lifts (algebraMap (𝓞 L) L) φ e v → M'.Lifts (algebraMap (𝓞 L) L) φ' (f e) (v ≫ τ.q)) ∧ LinearIndependent (𝓞 L) ε ∧ LinearMap.ker f = Submodule.span (𝓞 L) (Set.range ε) ∧ ∀ e' : V', ∃ (a : 𝓞 L) (e : V), a ≠ 0 ∧ f e = a • e' := by
   intro X G _ _ hG L _ _ z GK _ φ τ G' _ φ'
   let _ := τ.addCommGroup

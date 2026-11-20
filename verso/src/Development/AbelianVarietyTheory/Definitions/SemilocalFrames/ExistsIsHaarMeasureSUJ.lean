@@ -161,8 +161,16 @@ def ClassU (n : ℕ) : Prop :=
       ∃ (s : Equiv.Perm (Fin n)) (mu : Fin n → ℝ), IsHCParam mu ∧ (∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) ∧
         UEquiv (ε ∘ s) (fun g => σ' (g.submatrix s.symm s.symm)) (π (ε ∘ s) mu)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem dsClass_iff : DSClass ↔ ∀ n, ClassU n := Iff.rfl
 
+/- English proof (translation)
+Use `⟨by simp [Fin.sum_univ_two]; norm_num, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro a b h fin_cases a <;> fin_cases b <;> simp_all <;> norm_num at h`. Apply the tactic sequence `intro a b fin_cases a <;> fin_cases b`. Conclude with `⟨0, by simp⟩`. Conclude with `⟨1, by simp; norm_num⟩`.
+
+Conclude with `⟨-1, by simp; norm_num⟩`. Conclude with `⟨0, by simp⟩`.
+-/
 theorem isParS_two : IsParS (![1 / 2, -1 / 2] : Fin 2 → ℝ) := by
   refine ⟨by simp [Fin.sum_univ_two]; norm_num, ?_, ?_⟩
   · intro a b h
@@ -174,26 +182,49 @@ theorem isParS_two : IsParS (![1 / 2, -1 / 2] : Fin 2 → ℝ) := by
     · exact ⟨-1, by simp; norm_num⟩
     · exact ⟨0, by simp⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem SUJ_eq (ε : Fin n → Bool) : SUJ ε = Formalism.MainNotions.BridgeLocGrowth.SUJ ε := rfl
 
+/- English proof (translation)
+The claim follows from `Formalism.MainNotions.BridgeLocGrowth.isClosed_SUJ ε`.
+-/
 theorem isClosed_SUJ_in_UJ (ε : Fin n → Bool) : IsClosed (SUJ ε : Set (UJ ε)) :=
   Formalism.MainNotions.BridgeLocGrowth.isClosed_SUJ ε
 
+/- English proof (translation)
+The claim follows from `inferInstanceAs (BorelSpace (SUJ ε : Set (UJ ε)))`.
+-/
 theorem borelSpace_SUJ (ε : Fin n → Bool) : BorelSpace (SUJ ε) :=
   inferInstanceAs (BorelSpace (SUJ ε : Set (UJ ε)))
 
+/- English proof (translation)
+The claim follows from `(borelSpace_SUJ ε).measurable_eq`.
+-/
 theorem measurableSpace_SUJ_eq (ε : Fin n → Bool) :
     (inferInstance : MeasurableSpace (SUJ ε)) = Formalism.MainNotions.BridgeLocGrowth.instMeasurableSpaceSUJ ε :=
   (borelSpace_SUJ ε).measurable_eq
 
+/- English proof (translation)
+Use `haveI := borelSpace_SUJ ε`. Use `haveI : LocallyCompactSpace (SUJ ε) := (isClosed_SUJ_in_UJ ε).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+-/
 theorem exists_isHaarMeasure_SUJ (ε : Fin n → Bool) : ∃ μ : Measure (SUJ ε), μ.IsHaarMeasure := by
   haveI := borelSpace_SUJ ε
   haveI : LocallyCompactSpace (SUJ ε) := (isClosed_SUJ_in_UJ ε).isClosedEmbedding_subtypeVal.locallyCompactSpace
   exact ⟨Measure.haar, inferInstance⟩
 
+/- English proof (translation)
+Simplify using `[UJset, inUJ, Kset, Jm, allPos, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]`.
+-/
 theorem mem_UJset_allPos_iff (g : Matrix (Fin n) (Fin n) ℂ) : g ∈ UJset (allPos n) ↔ g ∈ Kset (allPos n) := by
   simp [UJset, inUJ, Kset, Jm, allPos, Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose]
 
+/- English proof (translation)
+Establish `hemb` using `isClosedEmbeddingMatrix n (allPos n)`. Use `haveI : CompactSpace (UJ (allPos n)) := by`. Rewrite using `[← isCompact_univ_iff, hemb.1.isEmbedding.isCompact_iff, Set.image_univ, hemb.2]`. Use `(maximal_compact_facts n (allPos n)).2.1 using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext mem_UJset_allPos_iff`.
+
+Conclude with `isCompact_iff_compactSpace.1 (isClosed_SUJ_in_UJ (allPos n)).isCompact`.
+-/
 theorem compactSpace_SUJ_allPos : CompactSpace (SUJ (allPos n)) := by
   have hemb := isClosedEmbeddingMatrix n (allPos n)
   haveI : CompactSpace (UJ (allPos n)) := by
@@ -208,6 +239,15 @@ def stdFam (n : ℕ) : Fam n where
   ips := fun _ => inferInstance
   π := fun _ => stdRep
 
+/- English proof (translation)
+Use `stdRep_irred S fun g hg v hv => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq g.det (n := n + 1) (by omega)`. Establish `hd : star g.det * g.det = 1` using `Unitary.star_mul_self_of_mem (Matrix.det_of_mem_unitary hg.1)`. Establish `hz1 : ‖z‖ = 1`. Establish `h` using `congrArg norm hd`.
+
+Rewrite `h` using `[norm_mul, norm_star, ← hz, norm_pow, norm_one, ← pow_add]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) (by omega)).1 h`. Establish `hz0 : z ≠ 0` using `by rintro rfl; simp at hz1`. Establish `hzz : star z * z = 1`. Rewrite using `[Complex.star_def, Complex.conj_mul', hz1]`.
+
+Simplify using the standard rewrite rules. Establish `hmem : z⁻¹ • g ∈ KS (allPos (n + 1))`. Use `⟨mem_Kset_allPos ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', star_smul, Matrix.smul_mul, Matrix.mul_smul, Unitary.star_mul_self_of_mem hg.1, smul_smul, star_inv₀, ← mul_inv, hzz]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.det_smul, ← hz, Fintype.card_fin, ← mul_pow, inv_mul_cancel₀ hz0, one_pow]`. Establish `h` using `S.smul_mem z (hS _ hmem v hv)`. Establish `e : stdRep (z⁻¹ • g) v = z⁻¹ • stdRep g v` using `by simp [stdRep]`. Rewrite `h` using `[e, smul_smul, mul_inv_cancel₀ hz0, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem stdRep_irred_KS (S : Submodule ℂ (EuclideanSpace ℂ (Fin (n + 1))))
     (hS : Stable (KS (allPos (n + 1))) stdRep S) : S = ⊥ ∨ S = ⊤ := by
   refine stdRep_irred S fun g hg v hv => ?_
@@ -230,6 +270,11 @@ theorem stdRep_irred_KS (S : Submodule ℂ (EuclideanSpace ℂ (Fin (n + 1))))
   have e : stdRep (z⁻¹ • g) v = z⁻¹ • stdRep g v := by simp [stdRep]
   rwa [e, smul_smul, mul_inv_cancel₀ hz0, one_smul] at h
 
+/- English proof (translation)
+Take `⟨h1, h2, ⟨⟨h3, h4⟩, h5, h6⟩, -, -⟩` from `isSqIntIrr_std n`. Use `⟨h1, h2, ⟨⟨h3, fun a ha b hb => h4 a ha.1 b hb.1⟩, fun g hg => h5 g hg.1, fun v => (h6 v).mono fun g hg => hg.1⟩, fun S _ hS => stdRep_irred_KS S fun g hg => hS g ⟨(mem_UJset_allPos_iff g).2 hg.1, hg.2⟩, ?_⟩` and prove the remaining obligations. Introduce `μ _ v w`. Use `haveI := compactSpace_SUJ_allPos (n := n + 1)`. Use `haveI := borelSpace_SUJ (allPos (n + 1))`.
+
+Establish `hc : Continuous (fun g : SUJ (allPos (n + 1)) => umat g.1)` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_subtype_val`. Establish `hf : Continuous fun g : SUJ (allPos (n + 1)) => ⟪w, stdRep (umat g.1) v⟫_ℂ` using `continuous_const.inner ((h6 v).comp_continuous hc fun g => g.1.2)`. Conclude with `hf.memLp_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+-/
 theorem isSqIntIrrS_stdFam (lam : Fin (n + 1) → ℝ) : IsSqIntIrrS (allPos (n + 1)) ((stdFam (n + 1)).π lam) := by
   obtain ⟨h1, h2, ⟨⟨h3, h4⟩, h5, h6⟩, -, -⟩ := isSqIntIrr_std n
   refine ⟨h1, h2, ⟨⟨h3, fun a ha b hb => h4 a ha.1 b hb.1⟩, fun g hg => h5 g hg.1,
@@ -244,6 +289,9 @@ theorem isSqIntIrrS_stdFam (lam : Fin (n + 1) → ℝ) : IsSqIntIrrS (allPos (n 
     continuous_const.inner ((h6 v).comp_continuous hc fun g => g.1.2)
   exact hf.memLp_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> intro h <;> have h' := h.not_gt <;> funext a <;>`. Apply the tactic sequence `simp only [lowCh, rhoNh, rhoCh, Pi.add_apply, Pi.sub_apply, Finset.card_filter, Fin.sum_univ_two] <;>`. Apply the tactic sequence `fin_cases a <;> simp [h, h'] <;> ring`.
+-/
 theorem lowCh_two_split (x y : ℝ) :
     (y < x → lowCh ![true, false] ![x, y] = ![x + 1 / 2, y - 1 / 2]) ∧
       (x < y → lowCh ![true, false] ![x, y] = ![x - 1 / 2, y + 1 / 2]) := by
@@ -251,6 +299,9 @@ theorem lowCh_two_split (x y : ℝ) :
     simp only [lowCh, rhoNh, rhoCh, Pi.add_apply, Pi.sub_apply, Finset.card_filter, Fin.sum_univ_two] <;>
     fin_cases a <;> simp [h, h'] <;> ring
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;> intro h <;> have h' := h.not_gt <;> funext a <;>`. Apply the tactic sequence `simp only [lowCh, rhoNh, rhoCh, Pi.add_apply, Pi.sub_apply, Finset.card_filter, Fin.sum_univ_two] <;>`. Apply the tactic sequence `fin_cases a <;> simp [h, h', allPos] <;> ring`.
+-/
 theorem lowCh_two_compact (x y : ℝ) :
     (y < x → lowCh (allPos 2) ![x, y] = ![x - 1 / 2, y + 1 / 2]) ∧
       (x < y → lowCh (allPos 2) ![x, y] = ![x + 1 / 2, y - 1 / 2]) := by
@@ -258,6 +309,11 @@ theorem lowCh_two_compact (x y : ℝ) :
     simp only [lowCh, rhoNh, rhoCh, Pi.add_apply, Pi.sub_apply, Finset.card_filter, Fin.sum_univ_two] <;>
     fin_cases a <;> simp [h, h', allPos] <;> ring
 
+/- English proof (translation)
+Proceed by induction on `w generalizing p with`. Consider the case `nil => funext g`. Simplify using `[EwordS, Formalism.REAL.Ec, Formalism.REAL.Rd]`. Consider the case `cons q w ih`. Use function extensionality and compare the values at `g`.
+
+Establish `h` using `ih q`. Unfold `EwordS at h ⊢`. Rewrite using `[List.foldr_cons, h]`. Simplify using `[Formalism.REAL.Ec, Formalism.REAL.Rd]`.
+-/
 theorem EwordS_const (ε : Fin n → Bool) (c : ℂ) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     EwordS ε (p :: w) (fun _ => c) = fun _ => 0 := by
   induction w generalizing p with
@@ -269,6 +325,15 @@ theorem EwordS_const (ε : Fin n → Bool) (c : ℂ) (p : Fin n × Fin n) (w : L
     rw [List.foldr_cons, h]
     simp [Formalism.REAL.Ec, Formalism.REAL.Rd]
 
+/- English proof (translation)
+Rewrite `hs` using `[Fin.sum_univ_two]`. Establish `h0 : μ 0 = 0`. Assume the negation of the conclusion as `h0`. Use `h ![Real.pi / (2 * μ 0), -(Real.pi / (2 * μ 0))] (by simp [Fin.sum_univ_two])` as an intermediate fact. Establish `e : (∑ a, μ a * (![Real.pi / (2 * μ 0), -(Real.pi / (2 * μ 0))] : Fin 2 → ℝ) a) = Real.pi`.
+
+Establish `: μ 1 = -μ 0` using `by linarith`. Simplify using `[Fin.sum_univ_two, this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e, Complex.exp_pi_mul_I]`.
+
+Apply `hv` to reduce the goal to its premises. Establish `h2 : v = -v` using `by simpa using this`. Take the linear combination `h2 / 2`. Use function extensionality and compare the values at `a`. Use `fin_cases a`.
+
+Conclude with `h0`. Use `show μ 1 = 0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem isWtS_trivial_two {μ : Fin 2 → ℝ} {v : ℂ} (hs : ∑ a, μ a = 0) (hv : v ≠ 0)
     (h : IsWtS (fun _ : Matrix (Fin 2) (Fin 2) ℂ => (1 : ℂ →L[ℂ] ℂ)) μ v) : μ = 0 := by
   rw [Fin.sum_univ_two] at hs
@@ -287,6 +352,17 @@ theorem isWtS_trivial_two {μ : Fin 2 → ℝ} {v : ℂ} (hs : ∑ a, μ a = 0) 
   · exact h0
   · show μ 1 = 0; linarith
 
+/- English proof (translation)
+Establish `e : lowCh (allPos 2) ![1 / 2, -1 / 2] = 0`. Rewrite using `[(lowCh_two_compact _ _).1 (by norm_num)]`. Apply the tactic sequence `funext a; fin_cases a <;> simp <;> norm_num`. Establish `er : (![1 / 2, -1 / 2] : Fin 2 → ℝ) = Formalism.QuantumDeterminants.rhoStd 2`. Apply the tactic sequence `funext a; fin_cases a <;> simp [Formalism.QuantumDeterminants.rhoStd] <;> norm_num`.
+
+Use `⟨⟨inferInstance, inferInstance, ⟨⟨rfl, fun a _ b _ => rfl⟩, fun g _ v => rfl, fun v => continuousOn_const⟩, fun S _ _ => eq_bot_or_eq_top S, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ hμ v w haveI := compactSpace_SUJ_allPos (n := 2)`. Conclude with `memLp_const (μ := μ) ⟪w, v⟫_ℂ`. Introduce `v w _ _`. Use `⟨fun g _ => ⟨Set.univ, fun _ => ⟪w, v⟫_ℂ, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `m g _`. Rewrite using `[er, gelfVal_rho, zero_mul]`. Express the relevant statement in the definitionally equal form `gelfS (allPos 2) m (fun _ => ⟪w, v⟫_ℂ) g = 0`. Simplify using `only [gelfS, cycWord, List.ofFn_succ, EwordS_const, Finset.sum_const_zero]`. Rewrite using `[e]`.
+
+Use `⟨⊤, ⟨by simp, inferInstance, fun _ _ _ _ => trivial, fun S _ _ => eq_bot_or_eq_top S, ⟨1, trivial, one_ne_zero, fun θ _ => by simp⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `μ v hs _ hv h`. Rewrite using `[isWtS_trivial_two hs hv h]; exact ⟨0, by simp, by simp⟩`. Introduce and unpack `S ⟨-, -, -, -, ⟨v, hv, hv0, -⟩, -⟩`. Conclude with `(eq_bot_or_eq_top S).resolve_left fun h => hv0 (by simpa [h] using hv)`.
+
+Introduce and unpack `μ S ⟨hs, -, -, -, ⟨v, -, hv0, h⟩, -⟩`. Rewrite using `[isWtS_trivial_two hs hv0 h, e]; exact ⟨0, by simp, by simp⟩`.
+-/
 theorem isHCS_trivial_two :
     IsHCS (allPos 2) ![1 / 2, -1 / 2] (fun _ : Matrix (Fin 2) (Fin 2) ℂ => (1 : ℂ →L[ℂ] ℂ)) := by
   have e : lowCh (allPos 2) ![1 / 2, -1 / 2] = 0 := by
@@ -315,6 +391,9 @@ theorem isHCS_trivial_two :
   · rintro μ S ⟨hs, -, -, -, ⟨v, -, hv0, h⟩, -⟩
     rw [isWtS_trivial_two hs hv0 h, e]; exact ⟨0, by simp, by simp⟩
 
+/- English proof (translation)
+Introduce and unpack `⟨-, -, ⟨S, ⟨hs, -, -, -, ⟨v, -, hv0, h⟩, -⟩, -⟩, -⟩`. Use `congrFun (isWtS_trivial_two hs hv0 h) 0` as an intermediate fact. Rewrite `this` using `[(lowCh_two_split _ _).1 (by norm_num)]`. Simplify using `at this`.
+-/
 theorem not_isHCS_trivial_split :
     ¬ IsHCS ![true, false] ![1 / 2, -1 / 2] (fun _ : Matrix (Fin 2) (Fin 2) ℂ => (1 : ℂ →L[ℂ] ℂ)) := by
   rintro ⟨-, -, ⟨S, ⟨hs, -, -, -, ⟨v, -, hv0, h⟩, -⟩, -⟩, -⟩

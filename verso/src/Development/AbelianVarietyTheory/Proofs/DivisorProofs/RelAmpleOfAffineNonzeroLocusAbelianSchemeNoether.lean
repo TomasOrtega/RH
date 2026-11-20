@@ -17,6 +17,11 @@ noncomputable section
 
 namespace GlobalTheory.AffineLocusAmple
 
+/- English proof (translation)
+Introduce `R _ _ A _ hA M hM s hV hs`. Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `GlobalTheory.ProperFinite.relAmple_of_geometricFibres A hM fun K _ _ y => ?_` and prove the remaining obligations. Take `⟨n, a, ha⟩` from `GlobalTheory.T.exists_finite_translates_cover_geometric_fibre (Sp R) A hA _ K y fun z => hs (y z)`.
+
+Establish `: IsAffine (Over.mk y).left` using `inferInstanceAs (IsAffine (Sp K))`. Establish `h` using `GlobalTheory.T.isAmple_lineBundle_pullback_of_translates R A hA M hM _ _ rfl hV ⟨M, hM, s, rfl, rfl⟩ (Over.mk y) n a ha fun i => GlobalTheory.cechPic_sp_field_eq_zero K _`. Conclude with `h`.
+-/
 theorem relAmple_of_affine_nonzeroLocus : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB → ∀ s : LB.Sec M, IsAffineOpen (Out.nonzeroLocus s) → (∀ p : Sp R, ∃ x ∈ Out.nonzeroLocus s, A.hom x = p) → Out.RelAmple A M := by
   intro R _ _ A _ hA M hM s hV hs
   have := hA.proper

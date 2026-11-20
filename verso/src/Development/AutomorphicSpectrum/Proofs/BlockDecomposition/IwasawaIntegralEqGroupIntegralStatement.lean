@@ -7,6 +7,9 @@ open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 A
 open scoped ValuativeRel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.GL2Unfolding.Ptw.main | exact GlobalTheory.CompanionTheory.GL2Unfolding.Ptw.main | (intros; apply GlobalTheory.CompanionTheory.GL2Unfolding.Ptw.main <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.iwasawa_integral_eq_group_integral : ForS fun F _ _ _ _ _ _ ψ => ∀ (W₀ W' : GL (Fin 2) F → ℂ) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (s : ℂ), Φ ∈ LFS.SB F →
   ∀ p : Fˣ × Fˣ × GL (Fin 2) F, p.2.2 ∈ K2 F →
     iw (LFS.Wp ψ W₀ Φ) W' s p = ∫ g, Aq ψ W₀ W' Φ s (p, g) ∂LFS.hG ψ := by

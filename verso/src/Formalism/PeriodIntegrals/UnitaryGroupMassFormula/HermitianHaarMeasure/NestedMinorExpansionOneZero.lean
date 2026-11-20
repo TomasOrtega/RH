@@ -8,26 +8,41 @@ namespace PI.QnHermHaar
 
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
+/- English proof (translation)
+Unfold `Fin.succAbove`. Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all [Fin.lt_def]`.
+-/
 theorem valSuccAbove {n : ℕ} (p : Fin (n + 1)) (x : Fin n) :
     (p.succAbove x).val = if x.val < p.val then x.val else x.val + 1 := by
   unfold Fin.succAbove
   split_ifs with h1 h2 h2 <;> simp_all [Fin.lt_def]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[valSuccAbove]`. Unfold `skip1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem skip1Eq {t : ℕ} (i : Fin (t + 1)) (j : Fin t) : skip1 i j = i.succAbove j := by
   apply Fin.ext
   rw [valSuccAbove]
   unfold skip1
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `funext (skip1Eq i)`.
+-/
 theorem skip1Fun {t : ℕ} (i : Fin (t + 1)) : (skip1 i : Fin t → Fin (t + 1)) = i.succAbove :=
   funext (skip1Eq i)
 
+/- English proof (translation)
+Unfold `skip2`. Apply the tactic sequence `split_ifs <;> rfl`.
+-/
 theorem valSkip2 {t : ℕ} (i i' : Fin t) (j : Fin (t - 2)) :
     (skip2 i i' j).val =
       if j.val < i.val then j.val else if j.val + 1 < i'.val then j.val + 1 else j.val + 2 := by
   unfold skip2
   split_ifs <;> rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hx` using `x.isLt`. Simplify using `only [Function.comp, valSuccAbove, valSkip2]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem skip2Lt {t : ℕ} (i' : Fin (t + 2)) (k : Fin (t + 1)) (h : (k : ℕ) < (i' : ℕ)) :
     (skip2 (i'.succAbove k) i' : Fin t → Fin (t + 2)) = i'.succAbove ∘ k.succAbove := by
   funext x
@@ -36,6 +51,9 @@ theorem skip2Lt {t : ℕ} (i' : Fin (t + 2)) (k : Fin (t + 1)) (h : (k : ℕ) < 
   simp only [Function.comp, valSuccAbove, valSkip2]
   split_ifs <;> omega
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Apply `Fin.ext` to reduce the goal to its premises. Establish `hx` using `x.isLt`. Simplify using `only [Function.comp, valSuccAbove, valSkip2]`. Apply the tactic sequence `split_ifs <;> omega`.
+-/
 theorem skip2Gt {t : ℕ} (i' : Fin (t + 2)) (k : Fin (t + 1)) (h : ¬ (k : ℕ) < (i' : ℕ)) :
     (skip2 i' (i'.succAbove k) : Fin t → Fin (t + 2)) = i'.succAbove ∘ k.succAbove := by
   funext x
@@ -44,6 +62,17 @@ theorem skip2Gt {t : ℕ} (i' : Fin (t + 2)) (k : Fin (t + 1)) (h : ¬ (k : ℕ)
   simp only [Function.comp, valSuccAbove, valSkip2]
   split_ifs <;> omega
 
+/- English proof (translation)
+Establish `hR : ∀ i' : Fin (t + 2), ∑ k : Fin (t + 1), ((-1 : ℂ) ^ ((i' : ℕ) + (k : ℕ))) • (c (i'.succAbove k) * d i' * G (i'.succAbove ∘ k.succAbove)) = ∑ j : Fin (t + 2), ((if j < i' then ((-1 : ℂ) ^ ((j : ℕ) + (i' : ℕ))) • (c j * d i' * G (skip2 j i')) else 0) - (if i' < j then ((-1 : ℂ) …`. Introduce `i'`. Use `conv_rhs => rw [Fin.sum_univ_succAbove _ i']`. Simplify using `only [lt_irrefl, if_false, sub_zero, zero_add]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+
+Distinguish the cases in `hk : (k : ℕ) < (i' : ℕ)`. Establish `hv : ((i'.succAbove k : Fin (t + 2)) : ℕ) = k` using `by rw [valSuccAbove, if_pos hk]`. Establish `h1 : i'.succAbove k < i'` using `by rw [Fin.lt_def, hv]; exact hk`. Establish `h2 : ¬ i' < i'.succAbove k` using `by rw [Fin.lt_def, hv]; omega`. Rewrite using `[if_pos h1, if_neg h2, sub_zero, skip2Lt i' k hk, hv, add_comm (k : ℕ)]`.
+
+Establish `hv : ((i'.succAbove k : Fin (t + 2)) : ℕ) = k + 1` using `by rw [valSuccAbove, if_neg hk]`. Establish `h1 : ¬ i'.succAbove k < i'` using `by rw [Fin.lt_def, hv]; omega`. Establish `h2 : i' < i'.succAbove k` using `by rw [Fin.lt_def, hv]; omega`. Rewrite using `[if_pos h2, if_neg h1, zero_sub, skip2Gt i' k hk, hv, ← neg_smul]`. Use `congr 1`.
+
+Rewrite using `[← add_assoc, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hL : ∀ i i' : Fin (t + 2), (if i < i' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ))) • ((c i * d i' - c i' * d i) * G (skip2 i i')) else 0) = (if i < i' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ))) • (c i * d i' * G (skip2 i i')) else 0) - (if i < i' then ((-1 : ℂ) ^ ((i : ℕ) + (i' : ℕ))) • (c …`. Introduce `i i'`. Apply the tactic sequence `split_ifs <;> simp [sub_mul, smul_sub]`.
+
+Simplify using `only [hL, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_congr rfl (fun i' _ => hR i')]`. Simplify using `only [Finset.sum_sub_distrib]`. Use `congr 1`. Conclude with `Finset.sum_comm`.
+-/
 theorem pairSum {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (c d : Fin (t + 2) → A)
     (G : (Fin t → Fin (t + 2)) → A) :
     ∑ i : Fin (t + 2), ∑ i' : Fin (t + 2),
@@ -83,23 +112,41 @@ theorem pairSum {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (c d : Fin (t + 2
   congr 1
   exact Finset.sum_comm
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, map_intCast]`.
+-/
 theorem intCastMul {A : Type*} [Ring A] [Algebra ℂ A] (z : ℤ) (X : A) : (z : A) * X = (z : ℂ) • X := by
   rw [Algebra.smul_def, map_intCast]
 
+/- English proof (translation)
+Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem eSq (e : ℤˣ) : ((e : ℤ) : ℂ) * ((e : ℤ) : ℂ) = 1 := by
   rw [← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]; simp
 
+/- English proof (translation)
+The claim follows from `star_intCast _`.
+-/
 theorem starE (e : ℤˣ) : star (((e : ℤ) : ℂ)) = ((e : ℤ) : ℂ) := star_intCast _
 
+/- English proof (translation)
+Rewrite using `[Fin.prod_univ_succAbove ε i, ← mul_assoc, Int.units_mul_self, one_mul]`.
+-/
 theorem prodSA {t : ℕ} (ε : Fin (t + 1) → ℤˣ) (i : Fin (t + 1)) :
     ∏ k, ε (i.succAbove k) = ε i * ∏ k, ε k := by
   rw [Fin.prod_univ_succAbove ε i, ← mul_assoc, Int.units_mul_self, one_mul]
 
+/- English proof (translation)
+Establish `h` using `prodSA (fun y => ε (i.succAbove y)) k`. Rewrite using `[h, prodSA ε i, ← mul_assoc, mul_comm (ε (i.succAbove k)) (ε i)]`.
+-/
 theorem prodSA2 {t : ℕ} (ε : Fin (t + 2) → ℤˣ) (i : Fin (t + 2)) (k : Fin (t + 1)) :
     ∏ x, ε (i.succAbove (k.succAbove x)) = ε i * ε (i.succAbove k) * ∏ k, ε k := by
   have h := prodSA (fun y => ε (i.succAbove y)) k
   rw [h, prodSA ε i, ← mul_assoc, mul_comm (ε (i.succAbove k)) (ε i)]
 
+/- English proof (translation)
+Rewrite using `[hSM A (t + 1) t E ε hGl hE i.succAbove j.succAbove w, intCastMul, prodSA, prodSA, mul_mul_mul_comm, Int.units_mul_self, mul_one]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem star1 (hSM : StarMinor) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {t : ℕ}
     (E : Fin (t + 1) → Fin (t + 1) → A) (ε : Fin (t + 1) → ℤˣ) (hGl : GlRel E)
     (hE : ∀ a b, star (E a b) = (((ε a * ε b : ℤˣ) : ℤ) : A) * E b a) (i j : Fin (t + 1)) (w : ℂ) :
@@ -110,6 +157,9 @@ theorem star1 (hSM : StarMinor) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[hSM A (t + 2) t E ε hGl hE _ _ w, intCastMul]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[prodSA2, prodSA2, mul_mul_mul_comm, Int.units_mul_self, mul_one]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem star2 (hSM : StarMinor) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {t : ℕ}
     (E : Fin (t + 2) → Fin (t + 2) → A) (ε : Fin (t + 2) → ℤˣ) (hGl : GlRel E)
     (hE : ∀ a b, star (E a b) = (((ε a * ε b : ℤˣ) : ℤ) : A) * E b a) (i : Fin (t + 2)) (k : Fin (t + 1))
@@ -123,6 +173,9 @@ theorem star2 (hSM : StarMinor) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
   push_cast
   rfl
 
+/- English proof (translation)
+Establish `h` using `hMV A n t E y hGl hL hC a b w`. Simplify using `only [intCastMul] at h`. Move the coercions through the operations in `at h`. Conclude with `h`.
+-/
 theorem mvC (hMV : MoveVec) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E : Fin n → Fin n → A) (y : Fin n → A)
     (hGl : GlRel E) (hL : ∀ a b c, E a b * y c - y c * E a b = if a = c then -y b else 0)
     (hC : ∀ a b, y a * y b = y b * y a) (a : Fin t → Fin n) (b : Fin (t + 1) → Fin n) (w : ℂ) :
@@ -133,18 +186,27 @@ theorem mvC (hMV : MoveVec) {A : Type} [Ring A] [Algebra ℂ A] {n t : ℕ} (E :
   push_cast at h
   exact h
 
+/- English proof (translation)
+Simplify using `only [tA, skip1Fun]`.
+-/
 theorem nested_minor_expansion_zero_one {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin (t + 1) → Fin (t + 1) → A)
     (Y Yb : Fin (t + 1) → A) (x xb : Fin (t + 1) → ℂ) (u : ℂ) :
     tA E Y Yb x xb u 0 1 = -∑ i : Fin (t + 1), ∑ j : Fin (t + 1),
       ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * x j) • (Yb i * qminor E i.succAbove j.succAbove (u - 1)) := by
   simp only [tA, skip1Fun]
 
+/- English proof (translation)
+Simplify using `only [tA, skip1Fun]`.
+-/
 theorem nested_minor_expansion_one_zero {A : Type*} [Ring A] [Algebra ℂ A] {t : ℕ} (E : Fin (t + 1) → Fin (t + 1) → A)
     (Y Yb : Fin (t + 1) → A) (x xb : Fin (t + 1) → ℂ) (u : ℂ) :
     tA E Y Yb x xb u 1 0 = -∑ i : Fin (t + 1), ∑ j : Fin (t + 1),
       ((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * xb i) • (Y j * qminor E i.succAbove j.succAbove u) := by
   simp only [tA, skip1Fun]
 
+/- English proof (translation)
+Use `show star (qminor E id id u) = qminor E id id (star u)`. Rewrite using `[hSM A m m E ε hGl hE id id u, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+-/
 theorem star_transfer_diagonal_zero (hSM : StarMinor) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {m : ℕ}
     (E : Fin m → Fin m → A) (Y Yb : Fin m → A) (x xb : Fin m → ℂ) (ε : Fin m → ℤˣ) (hGl : GlRel E)
     (hE : ∀ a b, star (E a b) = (((ε a * ε b : ℤˣ) : ℤ) : A) * E b a) (u : ℂ) :
@@ -153,6 +215,19 @@ theorem star_transfer_diagonal_zero (hSM : StarMinor) {A : Type} [Ring A] [StarR
   rw [hSM A m m E ε hGl hE id id u, Int.units_mul_self]
   simp
 
+/- English proof (translation)
+Consider the cases of `m with`. Consider the case `zero => simp [tA]`. Consider the case `succ t`. Rewrite using `[nested_minor_expansion_zero_one, nested_minor_expansion_one_zero]`. Establish `hterm : ∀ i j : Fin (t + 1), star (((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * x j) • (Yb i * qminor E i.succAbove j.succAbove (u - 1))) = ((-1 : ℂ) ^ ((j : ℕ) + (i : ℕ)) * xb j) • (qminor E j.succAbove i.succAbove (star u - 1) * Y i)`.
+
+Introduce `i j`. Rewrite using `[star_smul, star_mul (Yb i), star1 hSM E ε hGl hE, hYb i, star_smul, star_star, starE, hxb j, star_mul, star_pow, star_neg, star_one, star_sub, star_one]`. Simplify using `only [smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `congr 1`. Establish `h1` using `eSq (ε i)`.
+
+Take the linear combination `((-1 : ℂ) ^ ((i : ℕ) + (j : ℕ)) * star (x j) * ((ε j : ℤ) : ℂ)) * h1`. Simplify using `only [star_neg, star_sum, hterm]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+
+Establish `hmv` using `mvC hMV E Y hGl hLY hYY a.succAbove id (star u)`. Simplify using `only [Function.id_comp, id] at hmv`. Establish `e1 : ∀ i : Fin (t + 1), ((-1 : ℂ) ^ ((a : ℕ) + (i : ℕ)) * xb a) • (qminor E a.succAbove i.succAbove (star u - 1) * Y i) = ((-1 : ℂ) ^ (a : ℕ) * xb a) • (((-1 : ℂ) ^ (i : ℕ)) • (qminor E a.succAbove i.succAbove (star u - 1) * Y i))`. Introduce `i`. Rewrite using `[smul_smul, pow_add]`.
+
+Put the polynomial expressions in normal form. Establish `e2 : ∀ j : Fin (t + 1), ((-1 : ℂ) ^ ((a : ℕ) + (j : ℕ)) * xb a) • (Y j * qminor E a.succAbove j.succAbove (star u)) = ((-1 : ℂ) ^ (a : ℕ) * xb a) • (((-1 : ℂ) ^ (j : ℕ)) • (Y j * qminor E a.succAbove j.succAbove (star u)))`. Introduce `j`. Rewrite using `[smul_smul, pow_add]`. Put the polynomial expressions in normal form.
+
+Simplify using `only [e1, e2, ← Finset.smul_sum, hmv]`.
+-/
 theorem star_transfer_zero_one (hSM : StarMinor) (hMV : MoveVec) {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
     [StarModule ℂ A] {m : ℕ}
     (E : Fin m → Fin m → A) (Y Yb : Fin m → A) (x xb : Fin m → ℂ) (ε : Fin m → ℤˣ) (hGl : GlRel E)

@@ -16,6 +16,9 @@ abbrev Qi : Type := CyclotomicField 4 ℚ
 
 instance cmQi : IsCMField Qi := IsCyclotomicExtension.Rat.isCMField Qi (S := {4}) ⟨4, rfl, by norm_num⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l, _, _, isPolarized_triv.2, isPolarized_triv.1⟩`.
+-/
 theorem hyp_inhabited (l : ℕ) [Fact l.Prime] : Nonempty (Qbar l ≃+* ℂ) ∧
     ∃ (π : CuspSub Qi 1) (χ : HChar (maximalRealSubfield Qi)), (CG.mk π).IsRegAlg ∧ IsPolarized π χ :=
   ⟨GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l, _, _, isPolarized_triv.2, isPolarized_triv.1⟩
@@ -23,12 +26,18 @@ theorem hyp_inhabited (l : ℕ) [Fact l.Prime] : Nonempty (Qbar l ≃+* ℂ) ∧
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] [IsCMField E]
   {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Introduce `h` and use `by obtain ⟨v⟩ : Nonempty (InfinitePlace (maximalRealSubfield E)) := inferInstance have h1 : (1 : ℂˣ) = (-1) ^ 1 := h.sign v have := congrArg (Units.val) h1 norm_num at this`.
+-/
 theorem not_isPolarized_one (π : CuspSub E 1) : ¬ IsPolarized π 1 := fun h => by
   obtain ⟨v⟩ : Nonempty (InfinitePlace (maximalRealSubfield E)) := inferInstance
   have h1 : (1 : ℂˣ) = (-1) ^ 1 := h.sign v
   have := congrArg (Units.val) h1
   norm_num at this
 
+/- English proof (translation)
+Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[H.weights τ]`. Express the relevant statement in the definitionally equal form `((CG.ofChar ξ).infChar _).map _ = _`. Rewrite using `[CG.infChar_ofChar, hn]`. Simplify using the standard rewrite rules.
+-/
 theorem HT_char {ξ : HChar E} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ}
     {r : G E Ω →* GL (Fin 1) (Qbar l)} {wt : ℤ} {HT : (E →+* Qbar l) → Multiset ℤ}
     (H : IsGalRepOf ((CuspSub.triv E le_rfl).twist ξ) χ ι r wt HT) (τ : E →+* Qbar l) {n : ℤ}
@@ -39,6 +48,17 @@ theorem HT_char {ξ : HChar E} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l
   rw [CG.infChar_ofChar, hn]
   simp
 
+/- English proof (translation)
+Take `⟨f, h0, hf⟩` from `h`. Establish `hact : ∀ g (φ : (CuspSub.triv E (le_refl 1)).V), (CuspSub.triv E le_rfl).locRep w g φ = φ` using `fun g φ => by`. Take `⟨c, e⟩` from `Submodule.mem_span_singleton.1 φ.2`. Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `act (.fin _) φ.1 = φ.1`.
+
+Rewrite using `[← e]`. Both sides reduce to the same expression. Set `L : ℂ ≃ₗ[ℂ] (CuspSub.triv E (le_refl 1)).V` to `LinearEquiv.toSpanNonzeroSingleton ℂ _ (oneFn E 1) oneFn_ne_zero`. Set `f' : σ.V →ₗ[ℂ] ℂ` to `L.symm.toLinearMap ∘ₗ f`. Establish `hf' : ∀ g v, f' (σ.ρ g v) = f' v` using `fun g v => by simp [f', hf, hact]`.
+
+Establish `h0' : f' ≠ 0` using `fun h => h0 (LinearMap.ext fun v => L.symm.injective (by simpa [f'] using LinearMap.congr_fun h v))`. Establish `hinj : Function.Injective f'`. Break down `((isIrreducible_iff _).1 σ.irred).2 (LinearMap.ker f') (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf', hv]) with h | h`.
+
+Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) h0'`. Establish `hsurj : Function.Surjective f'` using `LinearMap.range_eq_top.1 ((eq_bot_or_eq_top (LinearMap.range f')).resolve_left fun h => h0' (LinearMap.range_eq_bot.1 h))`. Use `(IrrGL.of_eq_of (σ := (SmGL.IrrRep.det (Fin 1) 1 hχ).ρ) (hs' := (SmGL.IrrRep.det (Fin 1) 1 hχ).smooth) (hi' := (SmGL.IrrRep.det (Fin 1) 1 hχ).irr)).2 ⟨.mk (LinearEquiv.ofBijective f' ⟨hinj, hsurj⟩) fun g => ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+
+Conclude with `(hf' g v).trans (one_smul ℂ _).symm`.
+-/
 theorem locComp_triv {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin 1) (w.adicCompletion E))}
     (h : (CuspSub.triv E le_rfl).IsLocComp w σ) (hχ) :
     IrrGL.of σ.ρ σ.smooth σ.irred = IrrGL.ofChar 1 hχ := by
@@ -66,6 +86,9 @@ theorem locComp_triv {w : HeightOneSpectrum (𝓞 E)} {σ : SmIrr (GL (Fin 1) (w
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `(exists_isWDOf_iff (h := h) (ι := ι) (r := (1 : G E Ω →* GL (Fin 1) (Qbar l))) hl (isTameChar_tameL h hl)).2 ⟨0, (isMonodromy_zero_iff (h := h)).2 (.of_trivial fun _ => rfl)⟩`. Establish `e : wdOf h hl ι (1 : G E Ω →* GL (Fin 1) (Qbar l)) = WD.mk (WDRep.diag h fun _ : Fin 1 => 1)` using `wdOf_eq_mk hl _ rfl fun g => LinearMap.ext fun v => funext fun i => by simp`. Rewrite using `[← e, hx.wdOf_eq hl]` and apply the resulting hypothesis.
+-/
 theorem isWDOf_one {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω}
     (h : IsPlaceOver A w) (ι : Qbar l ≃+* ℂ) :
     IsWDOf ι (1 : G E Ω →* GL (Fin 1) (Qbar l)) (WD.mk (WDRep.diag h fun _ : Fin 1 => 1)) := by
@@ -75,6 +98,9 @@ theorem isWDOf_one {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) �
     wdOf_eq_mk hl _ rfl fun g => LinearMap.ext fun v => funext fun i => by simp
   rwa [← e, hx.wdOf_eq hl]
 
+/- English proof (translation)
+The claim follows from `continuous_const ss W _ := let ⟨W', h⟩ := W.exists_isCompl; ⟨W', fun g v hv => by simpa using hv, h⟩ pol := by obtain ⟨μ, h1, h2⟩ := hpol refine ⟨μ, h1, fun c _ => ?_⟩ rw [h2] simpa using isConjDual_one c away w hl A h rc hrc σ hσ := by rw [rec_algNorm hrc] obtain ⟨a, ha, ε, -, H …`.
+-/
 theorem isGalRepOf_triv (χ : HChar (maximalRealSubfield E)) (ι : Qbar l ≃+* ℂ)
     (hpol : ∃ μ : G (maximalRealSubfield E) Ω →* (Qbar l)ˣ, IsLAdicCharOf ι χ μ ∧
       μ.comp (AlgEquiv.restrictScalarsHom (maximalRealSubfield E) : G E Ω →* _) = 1)
@@ -115,6 +141,9 @@ theorem isGalRepOf_triv (χ : HChar (maximalRealSubfield E)) (ι : Qbar l ≃+* 
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Rewrite using `[wdOf_cyc, WD.lpTw_add, show (1 : ℝ) + ((-2 : ℤ) : ℝ) / 2 = 0 by norm_num, WD.lpTw_zero]`. Simplify using `[WD.tempered_diag_iff]`.
+-/
 theorem pure_cyc {w : HeightOneSpectrum (𝓞 E)} (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) {A : ValuationSubring Ω}
     (h : IsPlaceOver A w) (ι : Qbar l ≃+* ℂ) :
     ((wdOf h hl ι ((Matrix.GeneralLinearGroup.scalar (Fin 1)).comp (cyc E Ω l))).lpTw (((-2 : ℤ) : ℝ) / 2)).tempered := by

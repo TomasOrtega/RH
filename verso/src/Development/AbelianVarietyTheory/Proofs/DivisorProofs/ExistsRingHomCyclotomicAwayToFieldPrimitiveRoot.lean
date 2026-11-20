@@ -6,6 +6,19 @@ open GlobalTheory.SiegelTor
 
 namespace GlobalTheory.CycLift
 
+/- English proof (translation)
+Introduce `M hM K _ y hy hMK`. Take `⟨p, hcp⟩` from `CharP.exists K`. Break down `CharP.char_is_prime_or_zero K p with hp | rfl` into its components or cases. Use `haveI : Fact p.Prime := ⟨hp⟩ haveI : CharZero (WittVector p K) := by`. Take `⟨q, hq⟩` from `CharP.exists (WittVector p K)`.
+
+Establish `h1 : ((q : ℕ) : K) = 0`. Use `congrArg (WittVector.constantCoeff : WittVector p K →+* K) (CharP.cast_eq_zero (WittVector p K) q)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Establish `h2 : p ∣ q` using `(CharP.cast_eq_zero_iff K p q).1 h1`. Break down `CharP.char_is_prime_or_zero (WittVector p K) q with h | h` into its components or cases.
+
+Establish `h3 : p = q` using `(Nat.prime_dvd_prime_iff_eq hp h).1 h2`. Substitute `h3` using the available equality. Conclude with `absurd (CharP.cast_eq_zero (WittVector p K) p) (WittVector.p_nonzero p K)`. Substitute `h` using the available equality. Conclude with `CharP.charP_to_charZero _`.
+
+Set `π : WittVector p K →+* K` to `WittVector.constantCoeff`. Establish `hcc : ∀ x : K, π (WittVector.teichmuller p x) = x` using `fun x => by simp [π]`. Establish `hu : IsPrimitiveRoot (WittVector.teichmuller p y) M` using `⟨by rw [← map_pow, hy.pow_eq_one, map_one], fun l hl => hy.dvd_of_pow_eq_one l (by`. Use `congrArg π hl` as an intermediate fact. Rewrite using `[map_pow, hcc, map_one] at this)⟩` and apply the resulting hypothesis.
+
+Establish `hnV : IsUnit (M : WittVector p K)`. Use `WittVector.isUnit_of_coeff_zero_ne_zero _ ?_` and prove the remaining obligations. Establish `: π (M : WittVector p K) ≠ 0` using `by rw [map_natCast]; exact hMK.ne_zero`. Conclude with `this`. Take `⟨f, -, hfζ⟩` from `exists_injective_hom hM hu hnV`.
+
+Conclude with `⟨π.comp f, by rw [RingHom.comp_apply, hfζ, hcc]⟩`. Use `haveI : CharZero K := CharP.charP_to_charZero K`. Take `⟨f, -, hfζ⟩` from `exists_injective_hom hM hy hMK`. Conclude with `⟨f, hfζ⟩`.
+-/
 theorem exists_hom_to_field : ∀ (M : ℕ), M ≠ 0 → ∀ (K : Type) [Field K] (y : K), IsPrimitiveRoot y M → IsUnit (M : K) →
     ∃ β : cycAway M →+* K, β (zetaAway M) = y := by
   intro M hM K _ y hy hMK

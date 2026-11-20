@@ -22,9 +22,17 @@ noncomputable def rightMulHomeo (h : GL (Fin 3) F) :
   continuous_toFun := Continuous.matrix_mul continuous_id continuous_const
   continuous_invFun := Continuous.matrix_mul continuous_id continuous_const
 
+/- English proof (translation)
+Simplify using `[mp, modulus_mul]`.
+-/
 theorem mp_mul_one (x y : Fˣ) : mp (x * y) 1 = mp x 1 * mp y 1 := by
   simp [mp, modulus_mul]
 
+/- English proof (translation)
+Take `⟨hl, hc⟩` from `hΦ`. Establish `hc' : HasCompactSupport (Φ ∘ rightMulHomeo h)` using `hc.comp_homeomorph (rightMulHomeo h)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant (fun X : Matrix (Fin 2) (Fin 3) F => Φ (X * (h : Matrix (Fin 3) (Fin 3) F)))` using `hl.comp_continuous (Continuous.matrix_mul continuous_id continuous_const)`. Conclude with `h1.comp (fun z => mp (GeneralLinearGroup.det h) 1 * z)`.
+
+Conclude with `HasCompactSupport.mul_left (f := fun _ => mp (GeneralLinearGroup.det h) 1) hc'`.
+-/
 theorem rtr_mem_SB (h : GL (Fin 3) F) {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (hΦ : Φ ∈ SB F) :
     rtr h Φ ∈ SB F := by
   obtain ⟨hl, hc⟩ := hΦ
@@ -37,6 +45,9 @@ theorem rtr_mem_SB (h : GL (Fin 3) F) {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} (h
     exact h1.comp (fun z => mp (GeneralLinearGroup.det h) 1 * z)
   · exact HasCompactSupport.mul_left (f := fun _ => mp (GeneralLinearGroup.det h) 1) hc'
 
+/- English proof (translation)
+Unfold `inn rtr`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Units.val_mul, Matrix.mul_assoc, mul_assoc]`.
+-/
 theorem inn_rtr (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ)
     (h : GL (Fin 3) F) (k : GL (Fin 2) F) (g : GL (Fin 3) F) :
     inn ψ (rtr h Φ) k g = mp (GeneralLinearGroup.det h) 1 * inn ψ Φ k (g * h) := by
@@ -45,6 +56,11 @@ theorem inn_rtr (ψ : AddChar F Circle) (Φ : Matrix (Fin 2) (Fin 3) F → ℂ)
   refine integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)
   simp only [Units.val_mul, Matrix.mul_assoc, mul_assoc]
 
+/- English proof (translation)
+Unfold `Wp`. Establish `h1 : (fun k : GL (Fin 2) F => W' k⁻¹ * mp (GeneralLinearGroup.det k) (3 / 2) * inn ψ (rtr h Φ) k g) = fun k => mp (GeneralLinearGroup.det h) 1 * (W' k⁻¹ * mp (GeneralLinearGroup.det k) (3 / 2) * inn ψ Φ k (g * h))`. Use function extensionality and compare the values at `k`. Rewrite using `[inn_rtr]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1, integral_const_mul, map_mul, mp_mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Wp_mul_right (ψ : AddChar F Circle) (W' : GL (Fin 2) F → ℂ)
     (Φ : Matrix (Fin 2) (Fin 3) F → ℂ) (h g : GL (Fin 3) F) :
     Wp ψ W' Φ (g * h) = Wp ψ W' (rtr h Φ) g := by
@@ -58,6 +74,9 @@ theorem Wp_mul_right (ψ : AddChar F Circle) (W' : GL (Fin 2) F → ℂ)
   rw [h1, integral_const_mul, map_mul, mp_mul_one]
   ring
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ ψ W' Φ h hΦ`. Conclude with `⟨rtr_mem_SB h hΦ, funext fun g => Wp_mul_right ψ W' Φ h g⟩`.
+-/
 theorem sTrans : Ad3.LFS.STrans := by
   intro F _ _ _ _ _ _ ψ W' Φ h hΦ
   exact ⟨rtr_mem_SB h hΦ, funext fun g => Wp_mul_right ψ W' Φ h g⟩

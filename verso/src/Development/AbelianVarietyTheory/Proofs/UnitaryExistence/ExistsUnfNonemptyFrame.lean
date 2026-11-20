@@ -18,6 +18,9 @@ open GlobalTheory.RecDict
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hN hT D Q h hX j σ`. Take `⟨X⟩` from `hX`. Take `⟨y⟩` from `GlobalTheory.nonempty_frPt_complex hN hT _ _ (Q.Dw j) _ (Q.Xo j) Q.c (h j) σ`. Conclude with `⟨{ Comp := Unit, X := fun _ => X, un := fun _ _ => y }, ⟨⟨(), fun _ => 0⟩⟩⟩`.
+-/
 theorem exists_unf_nonempty_frame : N1c → Out.SecTwistSt → ∀ (D : D7) (Q : Par D), (∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q) → Nonempty (Data D.host.E D.R.r) → ∀ j (σ : Q.c.F →+* ℂ), ∃ U : Unf (Q.Xo j) Q.c σ D.R.r, Nonempty (Σ k, Frame (U.X k).Ψ D.R.r) := by
   intro hN hT D Q h hX j σ
   obtain ⟨X⟩ := hX

@@ -14,12 +14,18 @@ section psi
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[Formalism.QuantumDeterminants.length_additive_holds k r z hz g hg h hh, mul_add, Complex.add_re, Complex.ofReal_add, mul_add, Complex.exp_add]`.
+-/
 theorem psi_mul_nset (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (c : ℂ) {g h : B.Mat k r}
     (hg : g ∈ QuantumDeterminants.Nset k r) (hh : h ∈ QuantumDeterminants.Nset k r) : psi k r z c (g * h) = psi k r z c g * psi k r z c h := by
   unfold psi
   rw [Formalism.QuantumDeterminants.length_additive_holds k r z hz g hg h hh, mul_add, Complex.add_re, Complex.ofReal_add, mul_add,
     Complex.exp_add]
 
+/- English proof (translation)
+Unfold `psi`. Rewrite using `[Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add]`. Establish `: (starRingEnd ℂ) (Complex.I * ((c * ell k r z g).re : ℂ)) + Complex.I * ((c * ell k r z g).re : ℂ) = 0`. Simplify using `[Complex.conj_ofReal]`. Rewrite using `[this, Complex.exp_zero]`.
+-/
 theorem star_psi_mul (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (g : B.Mat k r) :
     star (psi k r z c g) * psi k r z c g = 1 := by
   unfold psi
@@ -35,10 +41,18 @@ section eq
 variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
   [InnerProductSpace ℂ Wq]
 
+/- English proof (translation)
+Establish `: IsFiniteMeasureOnCompacts μ` using `⟨fun K hK => h.finite_compact K hK⟩`. Use `infer_instance`.
+-/
 theorem sigmaFinite_of_haar {U : Set (B.Mat k r)} {μ : Measure (Mt k r)} (h : B.IsHaarOn U μ) : SigmaFinite μ := by
   have : IsFiniteMeasureOnCompacts μ := ⟨fun K hK => h.finite_compact K hK⟩
   infer_instance
 
+/- English proof (translation)
+Establish `hH : IsUnit (Hpk k r).det` using `IsUnit.of_mul_eq_one (Hpk k r).det (by rw [← Matrix.det_mul, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one])`. Establish `h` using `congrArg Matrix.det (show nᴴ * Hpk k r * n = Hpk k r from hn)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `h2 : (nᴴ.det * n.det) * (Hpk k r).det = 1 * (Hpk k r).det`. Rewrite using `[one_mul]`.
+
+Take the linear combination `h`. Establish `h3` using `hH.mul_right_cancel h2`. Conclude with `IsUnit.of_mul_eq_one (nᴴ.det) (by rw [mul_comm]; exact h3)`.
+-/
 theorem isUnit_det_of_UH {n : B.Mat k r} (hn : n ∈ UH (Hpk k r)) : IsUnit n.det := by
   have hH : IsUnit (Hpk k r).det := IsUnit.of_mul_eq_one (Hpk k r).det
     (by rw [← Matrix.det_mul, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one])
@@ -66,6 +80,21 @@ def lmulHomeo (n : B.Mat k r) (hn : IsUnit n.det) : Mt k r ≃ₜ Mt k r where
     show Continuous fun x : Mt k r => n⁻¹ * Matrix.of x
     exact Continuous.matrix_mul continuous_const continuous_id
 
+/- English proof (translation)
+Establish `hU : IsUnit n.det` using `isUnit_det_of_UH hn.1`. Use `haveI := sigmaFinite_of_haar Bs.haarN`. Use `haveI := sigmaFinite_of_haar Bs.haarW'`. Use `set e := (lmulHomeo n hU).toMeasurableEquiv with he`. Use `set Φ : Mt k r × Mt k r ≃ᵐ Mt k r × Mt k r := MeasurableEquiv.prodCongr (MeasurableEquiv.refl _) e with hΦ`.
+
+Establish `hmpN : MeasurePreserving e Bs.μN Bs.μN`. Use `⟨e.measurable, ?_⟩` and prove the remaining obligations. Use `Bs.haarN.left n hn` as an intermediate fact. Establish `ee : ⇑e = lmulM n` using `by funext x; rfl`. Rewrite using `[ee]`.
+
+Conclude with `this`. Establish `hmp : MeasurePreserving Φ (Bs.μW'.prod Bs.μN) (Bs.μW'.prod Bs.μN)` using `(MeasurePreserving.id Bs.μW').prod hmpN`. Establish `h1 : Kr Bs F x = ∫ p : Mt k r × Mt k r, star (psi k r Bs.z' cStd (Matrix.of (Φ p).2)) • (F (x * Matrix.of (Φ p).2 * Matrix.of (Φ p).1)).comp (Bs.π' (Matrix.of (Φ p).1)⁻¹) ∂(Bs.μW'.prod Bs.μN)`. Unfold `Kr`. Conclude with `(hmp.integral_comp' (fun p : Mt k r × Mt k r => star (psi k r Bs.z' cStd (Matrix.of p.2)) • (F (x * Matrix.of p.2 * Matrix.of p.1)).comp (Bs.π' (Matrix.of p.1)⁻¹))).symm`.
+
+Establish `hae : ∀ᵐ p ∂(Bs.μW'.prod Bs.μN), p.2 ∈ QuantumDeterminants.Nset k r`. Establish `h0 : Bs.μN (QuantumDeterminants.Nset k r)ᶜ = 0` using `Bs.haarN.conc`. Establish `: (Bs.μW'.prod Bs.μN) ((Set.univ : Set (Mt k r)) ×ˢ ((QuantumDeterminants.Nset k r)ᶜ : Set (Mt k r))) = 0`. Rewrite using `[Measure.prod_prod, h0, mul_zero]`. Rewrite using `[ae_iff]`.
+
+Use `measure_mono_null (fun p hp => ?_) this` and prove the remaining obligations. Conclude with `⟨Set.mem_univ _, hp⟩`. Establish `h2 : Kr Bs F x = star (psi k r Bs.z' cStd n) • Kr Bs F (x * n)`. Rewrite using `[h1]`. Unfold `Kr`.
+
+Rewrite using `[← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Establish `hm : psi k r Bs.z' cStd (Matrix.of (Φ p).2) = psi k r Bs.z' cStd n * psi k r Bs.z' cStd (Matrix.of p.2)` using `psi_mul_nset Bs.z' Bs.z'_mem cStd hn hp`. Establish `hx : x * Matrix.of (Φ p).2 * Matrix.of (Φ p).1 = x * n * Matrix.of p.2 * Matrix.of p.1` using `by show x * (n * Matrix.of p.2) * Matrix.of p.1 = _`.
+
+Rewrite using `[Matrix.mul_assoc x n]`. Establish `h1' : Matrix.of (Φ p).1 = Matrix.of p.1` using `rfl`. Rewrite using `[hm, hx, h1', star_mul, smul_smul, mul_comm (star (psi k r Bs.z' cStd (Matrix.of p.2)))]`. Rewrite using `[h2, smul_smul, mul_comm (psi k r Bs.z' cStd n), star_psi_mul, one_smul]`.
+-/
 theorem kr_rightEq (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x n : B.Mat k r)
     (hn : n ∈ QuantumDeterminants.Nset k r) : Kr Bs F (x * n) = psi k r Bs.z' cStd n • Kr Bs F x := by
   have hU : IsUnit n.det := isUnit_det_of_UH hn.1
@@ -118,6 +147,11 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
 
 open Formalism.FourierDecayAlt.Q.QRR in
 
+/- English proof (translation)
+Unfold `RdV`. Establish `hfun : (fun t : ℝ => Kr Bs F (x * NormedSpace.exp ((t : ℂ) • X))) = fun t : ℝ => psi k r Bs.z' cStd (NormedSpace.exp ((t : ℂ) • X)) • Kr Bs F x`. Use function extensionality and compare the values at `t`. Apply `kr_rightEq` to reduce the goal to its premises. Apply `(exp_mem_nlev (pat_smul _ hX) _).1` to reduce the goal to its premises.
+
+Rewrite using `[dag_smul, hS, Complex.star_def, Complex.conj_ofReal, smul_neg]`. Rewrite using `[hfun]`. Conclude with `((hasDerivAt_psi Bs.z' Bs.z'_mem X).smul_const (Kr Bs F x)).deriv`.
+-/
 theorem rdV_kr (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x : B.Mat k r) (l : Fin r)
     (X : B.Mat k r) (hX : Pat k r l X) (hS : dag k r X = -X) :
     RdV X (Kr Bs F) x = (ell k r Bs.z' X - star (ell k r Bs.z' X)) • Kr Bs F x := by
@@ -131,6 +165,13 @@ theorem rdV_kr (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ]
   rw [hfun]
   exact ((hasDerivAt_psi Bs.z' Bs.z'_mem X).smul_const (Kr Bs F x)).deriv
 
+/- English proof (translation)
+Unfold `C3.dEll ell`. Rewrite using `[← Finset.sum_erase_add _ _ (Finset.mem_univ (⟨r - 1, by omega⟩ : Fin r)), ← Finset.sum_erase_add _ _ (Finset.mem_univ (⟨r - 1, by omega⟩ : Fin r))]`. Rewrite using `[dif_neg (by simp; omega), dif_neg (by simp; omega), add_zero]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+
+Introduce `a ha`. Establish `ha' : a ≠ ⟨r - 1, by omega⟩` using `Finset.ne_of_mem_erase ha`. Establish `: a.val + 1 < r`. Use `a.isLt` as an intermediate fact. Establish `: a.val ≠ r - 1` using `fun e => ha' (Fin.ext e)`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_pos this, dif_pos this]`.
+-/
 theorem dEll_eq_ell (z' : Fin (2 * r + k + 1) → ℂ) (X : B.Mat k r) (hr : 1 ≤ r) :
     C3.dEll k r z' X hr = ell k r z' X := by
   unfold C3.dEll ell
@@ -148,6 +189,11 @@ theorem dEll_eq_ell (z' : Fin (2 * r + k + 1) → ℂ) (X : B.Mat k r) (hr : 1 �
   rw [dif_pos this, dif_pos this]
 
 open Formalism.FourierDecayAlt.Q.QRR in
+/- English proof (translation)
+Introduce `a b hab`. Assume the negation of the conclusion as `hne`. Apply `hab` to reduce the goal to its premises. Establish `hl` using `l.isLt`. Break down `hX a b hne with ⟨h1, h2, h3⟩ | ⟨h1, h2, h3⟩` into its components or cases.
+
+Use `⟨by omega, fun h => ?_⟩; omega` and prove the remaining obligations. Use `⟨by omega, fun h => ?_⟩; omega` and prove the remaining obligations.
+-/
 theorem pat_inNp {l : Fin r} {X : B.Mat k r} (hX : Pat k r l X) : ∀ a b, ¬ C3.InNp k r a b → X a b = 0 := by
   intro a b hab
   by_contra hne
@@ -158,6 +204,11 @@ theorem pat_inNp {l : Fin r} {X : B.Mat k r} (hX : Pat k r l X) : ∀ a b, ¬ C3
   · refine ⟨by omega, fun h => ?_⟩; omega
 
 open Formalism.FourierDecayAlt.Q.QRR in
+/- English proof (translation)
+Take `⟨hpq, hW⟩` from `h`. Establish `hq` using `q.isLt`. Distinguish the cases in `hp : p.val < r`. Distinguish the cases in `hq2 : q.val ≤ 2 * r + k - p.val`. Conclude with `⟨⟨p.val, hp⟩, pat_single _ p q 1 (Or.inl ⟨rfl, hpq, hq2⟩)⟩`.
+
+Use `⟨⟨2 * r + k - q.val, by omega⟩, pat_single _ p q 1 (Or.inr ⟨by simp; omega, by simp; omega, by simp; omega⟩)⟩` and prove the remaining obligations. Establish `hq3 : r + k < q.val`. Assume the negation of the conclusion as `hc`. Conclude with `hW ⟨by omega, by omega, by omega, by omega⟩`. Use `⟨⟨2 * r + k - q.val, by omega⟩, pat_single _ p q 1 (Or.inr ⟨by simp; omega, by simp; omega, by simp; omega⟩)⟩` and prove the remaining obligations.
+-/
 theorem exists_pat (p q : Fin (2 * r + k + 1)) (h : C3.InNp k r p q) :
     ∃ l : Fin r, Pat k r l (Matrix.single p q (1 : ℂ)) := by
   obtain ⟨hpq, hW⟩ := h
@@ -171,6 +222,23 @@ theorem exists_pat (p q : Fin (2 * r + k + 1)) (h : C3.InNp k r p q) :
       exact hW ⟨by omega, by omega, by omega, by omega⟩
     refine ⟨⟨2 * r + k - q.val, by omega⟩, pat_single _ p q 1 (Or.inr ⟨by simp; omega, by simp; omega, by simp; omega⟩)⟩
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `exists_pat p q hpq`. Establish `hr : 1 ≤ r` using `by have := l.isLt; omega`. Use `set Z : B.Mat k r := Matrix.single p q (1 : ℂ) with hZ`. Establish `h1` using `rdV_kr Bs F x l _ (Formalism.FourierDecayAlt.Q.QRR.pat_hpart1 hl) (Formalism.FourierDecayAlt.Q.QRR.skew_hpart1 Z)`. Establish `h2` using `rdV_kr Bs F x l _ (Formalism.FourierDecayAlt.Q.QRR.pat_hpart2 hl) (Formalism.FourierDecayAlt.Q.QRR.skew_hpart2 Z)`.
+
+Use `set Λ : B.Mat k r → ℂ := fun X => ∑ a, ∑ b, X a b * C3.dpsiP k r Bs.z' a b with hΛ`. Establish `hΛ1 : ell k r Bs.z' (hpart1 (Hpk k r) Z) - star (ell k r Bs.z' (hpart1 (Hpk k r) Z)) = Λ (hpart1 (Hpk k r) Z)`. Rewrite using `[← dEll_eq_ell _ _ hr]`. Conclude with `(Formalism.FourierDecayAlt.P.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (Formalism.FourierDecayAlt.P.PBG.hermitian_part_one_mem_lie Z) (pat_inNp (Formalism.FourierDecayAlt.Q.QRR.pat_hpart1 hl))).symm`. Establish `hΛ2 : ell k r Bs.z' (hpart2 (Hpk k r) Z) - star (ell k r Bs.z' (hpart2 (Hpk k r) Z)) = Λ (hpart2 (Hpk k r) Z)`.
+
+Rewrite using `[← dEll_eq_ell _ _ hr]`. Conclude with `(Formalism.FourierDecayAlt.P.dpsi_is_derivation k r Bs.z' _ hr Bs.z'_mem (Formalism.FourierDecayAlt.P.PBG.hermitian_part_two_mem_lie Z) (pat_inNp (Formalism.FourierDecayAlt.Q.QRR.pat_hpart2 hl))).symm`. Establish `hsum : hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk k r) Z = Z`. Unfold `hpart1 hpart2`. Rewrite using `[smul_smul]`.
+
+Establish `hI : Complex.I ≠ 0` using `Complex.I_ne_zero`. Establish `: Complex.I * (1 / (2 * Complex.I)) = 1 / 2` using `by field_simp`. Rewrite using `[this, ← smul_add]`. Rewrite using `[show Z - (Hpk k r)⁻¹ * Zᴴ * Hpk k r + (Z + (Hpk k r)⁻¹ * Zᴴ * Hpk k r) = (2 : ℂ) • Z by`. Rewrite using `[two_smul]`.
+
+Use the proof step `abel]`. Rewrite using `[smul_smul]`. Evaluate the numerical expressions. Establish `hΛZ : Λ (hpart1 (Hpk k r) Z) + Complex.I * Λ (hpart2 (Hpk k r) Z) = C3.dpsiP k r Bs.z' p q`. Establish `hlin : Λ (hpart1 (Hpk k r) Z) + Complex.I * Λ (hpart2 (Hpk k r) Z) = Λ (hpart1 (Hpk k r) Z + Complex.I • hpart2 (Hpk k r) Z)`.
+
+Simplify using `only [hΛ, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_mul, Finset.sum_add_distrib, Finset.mul_sum, mul_assoc]`. Rewrite using `[hlin, hsum]`. Simplify using `only [hΛ, hZ, Matrix.single_apply]`. Rewrite using `[Finset.sum_eq_single p, Finset.sum_eq_single q]`. Simplify using the standard rewrite rules.
+
+Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `b _`. Simplify using `[Ne.symm ha]`. Simplify using the standard rewrite rules. Unfold `EabH`. Rewrite using `[h1, h2, hΛ1, hΛ2, smul_smul, ← add_smul, hΛZ]`.
+-/
 theorem kr_rule (Bs : B.RealPlaceData k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (x : B.Mat k r)
     (p q : Fin (2 * r + k + 1)) (hpq : C3.InNp k r p q) :
     EabH (Hpk k r) p q (Kr Bs F) x = C3.dpsiP k r Bs.z' p q • Kr Bs F x := by

@@ -11,6 +11,17 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.SgInf.SInt
 
+/- English proof (translation)
+Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide v hv ξ`. Establish `hURep : IsURepOn (GG k r) σ` using `hStd.2.1`. Establish `hDecay : Decay σ (DD σ w : Set H) a` using `hStd.2.2.2.2.2.2.2.1`. Take `⟨hz, hT, hπ, hHaar, -⟩` from `id hSide`. Establish `hstab : ∀ g ∈ GG k r, ∀ u ∈ (DD σ w : Set H), σ g u ∈ (DD σ w : Set H)` using `(GlobalTheory.T.smooth_vectors_dense_invariant k r σ w hURep).1`.
+
+Establish `hint` using `(GlobalTheory.T.besselForm_converges_equivariant_hermitian k r σ w a μG d z c π μS hStd hSide (DD σ w) hstab hDecay v hv v hv).1`. Set `f : Mt k r → (Wp →L[ℂ] Wp)` to `fun s => coef σ v v (Matrix.of s) • PiS (psiGen k r z c) π (Matrix.of s)⁻¹`. Set `L : (Wp →L[ℂ] Wp) →L[ℂ] ℂ` to `(innerSL ℂ ξ).comp (ContinuousLinearMap.apply ℂ Wp ξ)`. Establish `hL : ∀ A, L A = ⟪ξ, A ξ⟫_ℂ` using `fun A => rfl`. Establish `hRHS : ⟪ξ, be (psiGen k r z c) π μS σ v v ξ⟫_ℂ = ∫ s, L (f s) ∂μS`.
+
+Rewrite using `[← hL]`. Conclude with `(L.integral_comp_comm hint).symm`. Establish `hunim : μS.map invM = μS` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μS).1 hHaar).2`. Establish `hmeas : AEStronglyMeasurable (fun s => L (f s)) μS` using `L.continuous.comp_aestronglyMeasurable hint.aestronglyMeasurable`. Establish `hsub : ∀ᵐ t ∂μS, Matrix.of t ∈ Sset k r z` using `ae_iff.2 hHaar.2.2.1`.
+
+Establish `hchange : ∫ s, L (f s) ∂μS = ∫ t, L (f (invM t)) ∂μS` using `by conv_lhs => rw [← hunim]`. Conclude with `integral_map measurable_invM.aemeasurable (by rw [hunim]; exact hmeas)`. Rewrite using `[hRHS, hchange]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hsub] with t ht`.
+
+Establish `hGG : Matrix.of t ∈ GG k r` using `(GlobalTheory.T.bessel_subgroups_closed_unitaryW_compact k r z hz hT).2.2.2.1.1 ht`. Establish `hu : IsUnit (Matrix.of t : Mat k r).det` using `((uHGroup _ (Hpk k r) (Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1)).2.2 _ hGG).1`. Establish `hadj` using `((GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ).2.2.1 _ ht).2`. Simplify using `only [hL, f, coef, of_invM, Matrix.nonsing_inv_nonsing_inv _ hu, ContinuousLinearMap.smul_apply, inner_smul_right]`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_left]`.
+-/
 theorem sint_eq_inner_be : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ v ∈ DD σ w, ∀ ξ : Wp, ∫ t, ⟪v, σ (Matrix.of t)⁻¹ v⟫_ℂ * ⟪PiS (psiGen k r z c) π (Matrix.of t)⁻¹ ξ, ξ⟫_ℂ ∂μS = ⟪ξ, be (psiGen k r z c) π μS σ v v ξ⟫_ℂ := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide v hv ξ
   have hURep : IsURepOn (GG k r) σ := hStd.2.1

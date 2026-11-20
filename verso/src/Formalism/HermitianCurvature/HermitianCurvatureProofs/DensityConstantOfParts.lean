@@ -18,6 +18,9 @@ def DensCOfParts : Prop := KB.PhiZero → KB.KloostDens → BigCellVan → KB.De
 
 namespace Dens
 
+/- English proof (translation)
+Proceed by induction on `l generalizing a b with`. Consider the case `nil => simp [D.ptEntry]`. Consider the case `cons c l ih`. Apply the tactic sequence `cases a <;> cases b <;> simp [D.ptEntry, ih]`.
+-/
 theorem ptEntry_ones (l : List ℂ) (a b : ℕ) :
     D.ptEntry (l.map fun c => (1, c)) a b = if a = b ∧ a < l.length then l.getD a 0 else 0 := by
   induction l generalizing a b with
@@ -25,6 +28,11 @@ theorem ptEntry_ones (l : List ℂ) (a b : ℕ) :
   | cons c l ih =>
     cases a <;> cases b <;> simp [D.ptEntry, ih]
 
+/- English proof (translation)
+Use extensionality with `a b`. Establish `h : bigPt d = (List.ofFn d).map fun c => ((1 : ℕ), c)`. Simplify using `[bigPt, List.map_ofFn, Function.comp_def]`. Simplify using `only [D.ptMatN, h, ptEntry_ones, U.hMat, U.wP, Matrix.mul_diagonal, Matrix.of_apply, Equiv.Perm.one_apply, List.length_ofFn]`. Distinguish the cases in `hab : a = b`.
+
+Substitute `hab` using the available equality. Simplify using `[List.getD_eq_getElem?_getD]`. Establish `hab' : (a : ℕ) ≠ b` using `fun e => hab (Fin.ext e)`. Simplify using `[hab, hab']`.
+-/
 theorem ptMatN_bigPt {n : ℕ} (d : Fin n → ℂ) : D.ptMatN (bigPt d) n = U.hMat 1 d := by
   ext a b
   have h : bigPt d = (List.ofFn d).map fun c => ((1 : ℕ), c) := by
@@ -37,6 +45,11 @@ theorem ptMatN_bigPt {n : ℕ} (d : Fin n → ℂ) : D.ptMatN (bigPt d) n = U.hM
   · have hab' : (a : ℕ) ≠ b := fun e => hab (Fin.ext e)
     simp [hab, hab']
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `b hb`. Rewrite `hb` using `[bigPt, List.mem_ofFn]`. Take `⟨i, rfl⟩` from `hb`. Conclude with `⟨le_rfl, hd i⟩`.
+
+Simplify using `[D.ptSize, bigPt, List.map_ofFn, Function.comp_def, List.sum_ofFn]`.
+-/
 theorem isLocPt_bigPt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ i, d i ≠ 0) : D.IsLocPt (bigPt d) n := by
   refine ⟨?_, ?_⟩
   · intro b hb
@@ -47,6 +60,13 @@ theorem isLocPt_bigPt {n : ℕ} (d : Fin n → ℂ) (hd : ∀ i, d i ≠ 0) : D.
 
 end Dens
 
+/- English proof (translation)
+Introduce `hPZ hKD hBV Wp Wq _ _ _ _ _ _ P p F hC hR a`. Take `⟨Φ0, hs, hcs, hdet, hV⟩` from `hPZ Wp Wq P p F hC`. Distinguish the cases in `ha : D.IsLocPt a (P.r + 1)`. Establish `key : ∀ n, D.ptSize a = n → ∃ (σ : Equiv.Perm (Fin n)) (d : Fin n → ℂ), U.hMat σ d = D.ptMatN a n`. Introduce and unpack `n rfl`.
+
+Take `⟨σ, d, -, h⟩` from `Asm.exists_hMat a ha.1`. Conclude with `⟨σ, d, h⟩`. Take `⟨σ, d, hσd⟩` from `key _ ha.2`. Rewrite using `[hV a σ d ha hσd]`. Use `hKD (P.r + 1) (Wq →L[ℂ] Wp) Φ0 hs hcs hdet ?_ a σ d ha hσd` and prove the remaining obligations.
+
+Introduce `d' hd'`. Rewrite using `[← hV (bigPt d') 1 d' (Dens.isLocPt_bigPt d' hd') (Dens.ptMatN_bigPt d').symm]`. Conclude with `hBV Wp Wq P p F hC hR d' hd'`. Unfold `KB.Pl.V D.vecV`. Rewrite using `[dif_neg (fun h => ha h.1)]`.
+-/
 theorem density_constant_of_parts : DensCOfParts := by
   intro hPZ hKD hBV Wp Wq _ _ _ _ _ _ P p F hC hR a
   obtain ⟨Φ0, hs, hcs, hdet, hV⟩ := hPZ Wp Wq P p F hC
@@ -69,6 +89,9 @@ end Formalism.FourierDecayAlt.P.PBJ
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+The claim follows from `PBJ.density_constant_of_parts hPZ kloosterman_density hBV`.
+-/
 theorem pb_densC_of (hPZ : Formalism.FourierDecayAlt.KB.PhiZero) (hBV : PBJ.BigCellVan) : Formalism.FourierDecayAlt.KB.DensC :=
   PBJ.density_constant_of_parts hPZ kloosterman_density hBV
 

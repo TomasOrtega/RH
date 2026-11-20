@@ -25,6 +25,11 @@ def mulO (N N' : ℕ) (r : D.host.E) : TaylorLogMetric.VC D N N' →ₗ[ℂ] Tay
 
 variable {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Cd.Base D cc δ)
 
+/- English proof (translation)
+Establish `hle : La0 B N N' ≤ (La0 B N N').comap (mulO N N' (r : D.host.E)).toAddMonoidHom` using `by show TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') ≤ (TaylorLogMetric.La D (TaylorLogMetric.tor0 D cc δ) (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N')).comap (mulO N N' (r : D.host.E)).toAddMo …`. Rewrite using `[TaylorLogMetric.La, AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Rewrite using `[SetLike.mem_coe, AddSubgroup.mem_comap]`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+
+Use `⟨w, hw, r • A, Submodule.smul_mem _ r hA, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Simplify using `[mulO, TaylorLogMetric.embV, TaylorLogMetric.tor0, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hle hx`.
+-/
 theorem mul_integer_mem_base_lattice {N N' : ℕ} (r : 𝓞 D.host.E) {x : TaylorLogMetric.VC D N N'} (hx : x ∈ La0 B N N') :
     mulO N N' (r : D.host.E) x ∈ La0 B N N' := by
   have hle : La0 B N N' ≤ (La0 B N N').comap (mulO N N' (r : D.host.E)).toAddMonoidHom := by
@@ -40,6 +45,9 @@ theorem mul_integer_mem_base_lattice {N N' : ℕ} (r : 𝓞 D.host.E) {x : Taylo
     ring
   exact hle hx
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨star (r : D.host.E), by have h := (NumberField.RingOfIntegers.isIntegral_coe r).map (starRingEnd D.host.E).toIntAlgHom first | exact (mem_integralClosure_iff ℤ D.host.E).mpr h | exact h⟩, rfl⟩`.
+-/
 theorem star_int (r : 𝓞 D.host.E) : ∃ r' : 𝓞 D.host.E, (r' : D.host.E) = star (r : D.host.E) :=
   ⟨⟨star (r : D.host.E), by
     have h := (NumberField.RingOfIntegers.isIntegral_coe r).map (starRingEnd D.host.E).toIntAlgHom
@@ -47,6 +55,11 @@ theorem star_int (r : 𝓞 D.host.E) : ∃ r' : 𝓞 D.host.E, (r' : D.host.E) =
       | exact (mem_integralClosure_iff ℤ D.host.E).mpr h
       | exact h⟩, rfl⟩
 
+/- English proof (translation)
+Use function extensionality and compare the values at `τ i j`. Use `show TaylorLogMetric.embT D τ r * (gM (γ' : Matrix (Fin N') (Fin N') D.host.E) τ * Matrix.of (x τ) * (gM (γ : Matrix (Fin N) (Fin N) D.host.E) τ)ᴴ) i j = (gM (γ' : Matrix (Fin N') (Fin N') D.host.E) τ * Matrix.of (fun i j => TaylorLogMetric.embT D τ r * x τ i j) * (gM (γ : Matrix …`. Establish `h1 : Matrix.of (fun i j => TaylorLogMetric.embT D τ r * x τ i j) = TaylorLogMetric.embT D τ r • Matrix.of (x τ)`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h1, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]`.
+-/
 theorem mulO_phi {N N' : ℕ} (r : D.host.E) (γ : Matrix.unitaryGroup (Fin N) D.host.E)
     (γ' : Matrix.unitaryGroup (Fin N') D.host.E) (x : TaylorLogMetric.VC D N N') :
     mulO N N' r (phiU γ γ' x) = phiU γ γ' (mulO N N' r x) := by
@@ -60,6 +73,9 @@ theorem mulO_phi {N N' : ℕ} (r : D.host.E) (γ : Matrix.unitaryGroup (Fin N) D
     simp
   rw [h1, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [Formalism.L2.Ker.formV, LinearMap.mk₂'ₛₗ_apply, mulO, LinearMap.coe_mk, AddHom.coe_mk]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, embT_star', Complex.star_def, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mulO_adj (A : ℝ) {N N' : ℕ} (r : D.host.E) (x y : TaylorLogMetric.VC D N N') :
     Ker.formV A D.what₂.Tau N N' (mulO N N' r x) y = Ker.formV A D.what₂.Tau N N' x (mulO N N' (star r) y) := by
   simp only [Formalism.L2.Ker.formV, LinearMap.mk₂'ₛₗ_apply, mulO, LinearMap.coe_mk, AddHom.coe_mk]
@@ -68,6 +84,19 @@ theorem mulO_adj (A : ℝ) {N N' : ℕ} (r : D.host.E) (x y : TaylorLogMetric.VC
   rw [map_mul, embT_star', Complex.star_def, Complex.conj_conj]
   ring
 
+/- English proof (translation)
+Introduce `N γ Ae₁ hN hA₁ S hS₁`. Establish `hfix₁ : ∀ y : TaylorLogMetric.VC D N 1, (phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1).symm y = y → y = 0`. Introduce `y hy`. Apply `Ae₁.injective` to reduce the goal to its premises. Rewrite using `[hA₁, hy, sub_self, map_zero]`.
+
+Establish `hfix : ∀ x : TaylorLogMetric.VC D N 2, (phiU γ 1 : TaylorLogMetric.VC D N 2 ≃ₗ[ℂ] TaylorLogMetric.VC D N 2).symm x = x → x = 0`. Introduce `x hx`. Apply `(rowE D N 2).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[map_zero]`.
+
+Use `hfix₁ _ ?_` and prove the remaining obligations. Rewrite using `[← symm_coord (rowE D N 2) _ _ (map_row γ), hx]`. Take `⟨Ae, hA⟩` from `exists_cay (phiU γ 1 : TaylorLogMetric.VC D N 2 ≃ₗ[ℂ] TaylorLogMetric.VC D N 2) hfix`. Establish `c : Copies (rowE D N 2) (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 2) (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ)) (TaylorLogMetric.al D ( …` using `{ form := form_row _ N 2 char := al_row B hS N 2 lat := lat_row B N 2 map := map_row γ cay := fun x i => by`. Rewrite using `[hA, hA₁, map_sub, Pi.sub_apply, symm_coord (rowE D N 2) _ _ (map_row γ)] }`.
+
+Establish `hal0 : TaylorLogMetric.al D (TaylorLogMetric.tor0 D cc δ) (0 : TaylorLogMetric.VC D N 1) = 1`. Unfold `TaylorLogMetric.al TaylorLogMetric.Hf`. Simplify using the standard rewrite rules. Establish `hU₁` using `c.unitaryData₁ 0 (unitaryData hL hN (by decide) γ 1 Ae hA) (formV_herm' _ _ _ _) (formV_pos (area_pos' B) _ _ _) (phiL_isom _ _ _ _ _ _ _) hA₁ hal0 (al_phi _ _ _ _ _ _)`. Establish `hcard : 0 < S.card`.
+
+Take `⟨x, hx, -⟩` from `hS₁.2.2 0 (AddSubgroup.zero_mem _)`. Conclude with `Finset.card_pos.mpr ⟨x, hx⟩`. Take `⟨lam, s, hs, hrel⟩` from `hNeg (4 * S.card) (by omega)`. Take `⟨lam', hlam'⟩` from `star_int lam`. Establish `hM : Multipliers (Ker.formV (TaylorLogMetric.area (TaylorLogMetric.tor0 D cc δ).abelian₂) D.what₂.Tau N 1) (La0 B N 1) (phiU γ 1) (mulO N 1 (lam : D.host.E)) (mulO N 1 (star (lam : D.host.E))) (mulO N 1 (s : D.host.E)) S.card` using `{ lΛ := fun x hx => mul_integer_mem_base_lattice B lam hx l'Λ := fun x hx => by rw [← hlam']; exact mul_integer_mem_base_lattice B lam' hx sΛ := fun x hx => mul_integer_mem_base_lattice B s hx lδ := mulO_phi _ γ 1 l'δ := mulO_phi _ γ 1 sδ := mulO_phi _ γ 1 adj := mulO_adj _ _ sad …`.
+
+Use function extensionality and compare the values at `τ i j`. Use `show TaylorLogMetric.embT D τ (star (lam : D.host.E)) * (TaylorLogMetric.embT D τ (lam : D.host.E) * x τ i j) = -x τ i j + (4 * S.card) • (TaylorLogMetric.embT D τ (s : D.host.E) * x τ i j)`. Rewrite using `[← mul_assoc, ← map_mul, hrel, map_add, map_neg, map_one, map_mul, map_natCast, nsmul_eq_mul]`. Use `ring }`. Conclude with `gauss_sq hU₁ hM (fun x hx => card_smul_mem hS₁ hx) (fun x hx => alpha_mult hM (Real.sqrt D.host.d / 2) _ (fun _ => rfl) (B.qInt0 hS N 1) hx) hS₁`.
+-/
 theorem gaussRow_of (hS : B.StdOK) (hL : B.LatAll) (hNeg : NegOneNorm D) : GaussRow B := by
   intro N γ Ae₁ hN hA₁ S hS₁
   have hfix₁ : ∀ y : TaylorLogMetric.VC D N 1, (phiU γ 1 : TaylorLogMetric.VC D N 1 ≃ₗ[ℂ] TaylorLogMetric.VC D N 1).symm y = y → y = 0 := by

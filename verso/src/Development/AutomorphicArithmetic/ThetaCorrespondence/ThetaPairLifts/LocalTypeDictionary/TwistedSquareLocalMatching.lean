@@ -15,6 +15,31 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm
 namespace GlobalTheory.SquareLM
+/- English proof (translation)
+Introduce `hH hP hT hL D ψ θ hψ hθ W W₁ X A A₁ B a b`. Take `⟨Pr, ρ, q, q', hq, hq', hrk, hirr, hfac⟩` from `_root_.GlobalTheory.T.twisted_quotient_real hH hP hT hL D ψ θ hψ hθ W W₁ X A A₁ B a b`. Set `ι` to `{x : D.what₂.Tau × Matrix (Fin X.rank) (Fin X.rank) ℂ // x.2 ∈ lieAt X x.1}`. Establish `hirr' : ∀ N : Submodule ℂ Pr, (∀ i : ι, ∀ x ∈ N, ρ i.1.1 i.1.2 x ∈ N) → N = ⊥ ∨ N = ⊤` using `fun N hN => hirr N fun τ Y hY x hx => hN ⟨(τ, Y), hY⟩ x hx`. Establish `hS` using `GlobalTheory.dixmier_commutant_scalar ι Pr (fun i => ρ i.1.1 i.1.2) hrk hirr'`.
+
+Take `⟨h0, hadd, hsmul, hfadd, hfsmul⟩` from `GlobalTheory.FinFockLin.finF_lin D ψ θ hψ hθ true W X A B`. Take `⟨h0', hadd', hsmul', hfadd', hfsmul'⟩` from `GlobalTheory.FinFockLin.finF_lin D ψ θ hψ hθ false W₁ X A₁ B`. Use `⟨Pr, q, q', hq, hq', fun α β htr hexp => ⟨_root_.GlobalTheory.T.twist_triple_matches hH hP hT hL D ψ θ hψ hθ W W₁ X A A₁ B α β htr, ?_⟩⟩` and prove the remaining obligations. Introduce `ωA ωB Pi rf rl p p' hm`. Take `⟨hfa, hfb⟩` from `hfac α β htr hexp ωA ωB Pi rf rl p p' hm`.
+
+Set `S : Submodule ℂ (WO W X → ℂ)` to `{ carrier := {f | IsFinF ψ θ true A B f}, add_mem' := fun hf hg => hadd _ _ hf hg, zero_mem' := h0, smul_mem' := fun c _ hf => hsmul c _ hf }`. Set `S' : Submodule ℂ (WO W₁ X → ℂ)` to `{ carrier := {f | IsFinF ψ θ false A₁ B f}, add_mem' := fun hf hg => hadd' _ _ hf hg, zero_mem' := h0', smul_mem' := fun c _ hf => hsmul' c _ hf }`. Set `βA : S →ₗ[ℂ] PolF D X.rank W.rank →ₗ[ℂ] Pi` to `LinearMap.mk₂ ℂ (fun f P => p (fockF ψ θ true A B f.1 P)) (fun f g P => by`. Rewrite using `[Submodule.coe_add, hfadd _ _ _ f.2 g.2, map_add])`. Use the proof step `(fun c f P => by rw [Submodule.coe_smul, hfsmul _ _ _ f.2, map_smul]) (fun f P P' => by rw [map_add, map_add])`.
+
+Use the proof step `(fun c f P => by rw [map_smul, map_smul])`. Set `βB : S' →ₗ[ℂ] PolF D X.rank W₁.rank →ₗ[ℂ] Pi` to `LinearMap.mk₂ ℂ (fun f P => p' (fockF ψ θ false A₁ B f.1 P)) (fun f g P => by`. Rewrite using `[Submodule.coe_add, hfadd' _ _ _ f.2 g.2, map_add])`. Use the proof step `(fun c f P => by rw [Submodule.coe_smul, hfsmul' _ _ _ f.2, map_smul]) (fun f P P' => by rw [map_add, map_add])`. Use the proof step `(fun c f P => by rw [map_smul, map_smul])`.
+
+Establish `hspan : ∀ {M : HSp D} {ε : Bool} {A' : Fr M} {P : Type} [AddCommGroup P] [Module ℂ P] (pp : (WO M X → ℂ) →ₗ[ℂ] P), (algF ψ θ ε A' B).map pp = ⊤ → Submodule.span ℂ {y | ∃ f : {f // IsFinF ψ θ ε A' B f}, ∃ Q, y = pp (fockF ψ θ ε A' B f.1 Q)} = ⊤`. Introduce `M ε A' P _ _ pp h`. Rewrite using `[← h, algF, Submodule.map_span]`. Use `congr 1`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨f, Q, rfl⟩`. Conclude with `⟨_, ⟨f.1, Q, f.2, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨f, Q, hf, rfl⟩, rfl⟩`. Conclude with `⟨⟨f, hf⟩, Q, rfl⟩`.
+
+Take `⟨Pf, r, r', e, hr, hr', he, he'⟩` from `GlobalTheory.SquareLM.productForm ι Pr Pi _ _ _ _ (fun i => ρ i.1.1 i.1.2) (fun i => rl i.1.1 i.1.2) q q' βA βB ⊤ ⊤ hq hq' hirr' hS (fun f _ => by`. Take `⟨φ, h1, h2⟩` from `hfa f.1 f.2`. Conclude with `⟨φ, fun i => h1 i.1.1 i.1.2 i.2, LinearMap.ext fun P => h2 P⟩)`. Use the proof step `(fun f _ => by`. Take `⟨φ, h1, h2⟩` from `hfb f.1 f.2`.
+
+Conclude with `⟨φ, fun i => h1 i.1.1 i.1.2 i.2, LinearMap.ext fun P => h2 P⟩)`. Use the proof step `(by`. Rewrite using `[← hspan p hm.mapA.onto]`. Use `congr 1`. Use extensionality with `y`.
+
+Conclude with `⟨fun ⟨f, _, Q, h⟩ => ⟨⟨f.1, f.2⟩, Q, h⟩, fun ⟨f, Q, h⟩ => ⟨⟨f.1, f.2⟩, trivial, Q, h⟩⟩)`. Use the proof step `(by`. Rewrite using `[← hspan p' hm.mapB.onto]`. Use `congr 1`. Use extensionality with `y`.
+
+Conclude with `⟨fun ⟨f, _, Q, h⟩ => ⟨⟨f.1, f.2⟩, Q, h⟩, fun ⟨f, Q, h⟩ => ⟨⟨f.1, f.2⟩, trivial, Q, h⟩⟩)`. Take `⟨r₀, hr₀⟩` from `LinearMap.exists_extend r`. Take `⟨r₀', hr₀'⟩` from `LinearMap.exists_extend r'`. Establish `e₁ : ∀ f (hf : IsFinF ψ θ true A B f), r₀ f = r ⟨f, hf⟩` using `fun f hf => LinearMap.congr_fun hr₀ ⟨f, hf⟩`. Establish `e₂ : ∀ f (hf : IsFinF ψ θ false A₁ B f), r₀' f = r' ⟨f, hf⟩` using `fun f hf => LinearMap.congr_fun hr₀' ⟨f, hf⟩`.
+
+Use `⟨Pf, r₀, r₀', e, fun x => ?_, fun x => ?_, fun f hf P => ?_, fun f hf P => ?_⟩` and prove the remaining obligations. Take `⟨f, _, h⟩` from `hr x; exact ⟨f.1, f.2, by rw [e₁ f.1 f.2]; exact h⟩`. Take `⟨f, _, h⟩` from `hr' x; exact ⟨f.1, f.2, by rw [e₂ f.1 f.2]; exact h⟩`. Rewrite using `[e₁ f hf]`. Conclude with `he ⟨f, hf⟩ trivial P`.
+
+Rewrite using `[e₂ f hf]`. Conclude with `he' ⟨f, hf⟩ trivial P`.
+-/
 theorem twisted_square_local_matching : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.LocalMatching := by
   intro hH hP hT hL D ψ θ hψ hθ W W₁ X A A₁ B a b
@@ -85,6 +110,9 @@ end
 
 section
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareLM.twisted_square_local_matching | exact _root_.GlobalTheory.SquareLM.twisted_square_local_matching | (intros; apply _root_.GlobalTheory.SquareLM.twisted_square_local_matching <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.twisted_local_factors_match : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.LocalMatching := by
   first | exact @_root_.GlobalTheory.SquareLM.twisted_square_local_matching | exact _root_.GlobalTheory.SquareLM.twisted_square_local_matching | (intros; apply _root_.GlobalTheory.SquareLM.twisted_square_local_matching <;> assumption)
 end

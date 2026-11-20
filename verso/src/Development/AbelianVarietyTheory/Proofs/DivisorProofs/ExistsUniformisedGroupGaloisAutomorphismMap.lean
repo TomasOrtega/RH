@@ -13,6 +13,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Use `Ideal.map_le_of_le_comap fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`. Apply `(mem_nonunits_iff.1 ((mem_maximalIdeal x).1 hx))` to reduce the goal to its premises. Use `hu.map (σ.1.symm : R' ≃+* R')` as an intermediate fact.
+
+Simplify `this` using `[Gal.hom]`.
+-/
 theorem gal_map_maximalIdeal_le {R R' : Type} [CommRing R] [CommRing R'] [IsLocalRing R'] {ρ : R →+* R'} (σ : Gal ρ) :
     (maximalIdeal R').map (Gal.hom σ) ≤ maximalIdeal R' := by
   refine Ideal.map_le_of_le_comap fun x hx => ?_
@@ -22,6 +27,13 @@ theorem gal_map_maximalIdeal_le {R R' : Type} [CommRing R] [CommRing R'] [IsLoca
   have := hu.map (σ.1.symm : R' ≃+* R')
   simpa [Gal.hom] using this
 
+/- English proof (translation)
+Introduce `R _ _ _ _ R' _ _ _ ρ hρ D D' hD A' G' _ _ hG' U' σ`. Take `⟨hR', hinj, -⟩` from `hρ`. Establish `hσi : Function.Injective (Gal.hom σ)` using `σ.1.injective`. Take `⟨h, hPO⟩` from `GlobalTheory.T.exists_selfPullback_degenerationData_ringAutOver R R' ρ hinj D.toPre D'.toPre hD σ`. Take `⟨A'', U'', hU''⟩` from `GlobalTheory.T.exists_uniformisation_pullback_to_pullDeg R' R' _ _ hR' hR' (Gal.hom σ) hσi (gal_map_maximalIdeal_le σ) D' D' h A' G' hG' U'`.
+
+Take `⟨hid, hxe, hem⟩` from `GlobalTheory.T.exists_pullDeg_identity_self_admissible R' _ hR' D'`. Establish `hsa : IsSemiAbelian ((Over.pullback (specOf (Gal.hom σ))).obj G')` using `IsSemiAbelian.pullback _ G' hG'`. Take `⟨-, bc1, -, -, mbc1, -, hU1, -⟩` from `GlobalTheory.T.uniformisation_determined_by_degenerationData_normal R' hR' D' A'' ((Over.pullback (specOf (Gal.hom σ))).obj G') hsa U'' D' A' G' hG' U' hid`. Take `⟨h', bc, hU, hxe', hem', -, hmon⟩` from `GlobalTheory.T.isPullbackUniformisation_comp_id_pullback R' R' _ _ (Gal.hom σ) D' D' D' h hid A' A'' A' G' ((Over.pullback (specOf (Gal.hom σ))).obj G') G' (Iso.refl _) bc1 U' U'' U' hU'' hU1`. Use `haveI : IsMonHom bc.hom := hmon (by show IsMonHom (𝟙 _); infer_instance) mbc1`.
+
+Use `⟨bc.hom.left ≫ pullback.fst G'.hom (specOf (Gal.hom σ)), ?_, h', bc, rfl, hU, ?_⟩` and prove the remaining obligations. Conclude with `((isGrpPullback_of_iso bc).comp (isGrpPullback_pullback G' (spMap (Gal.hom σ)))).congr (Category.id_comp _) rfl`. Use `⟨fun x => by rw [hxe', hxe]; exact hPO.1 x, fun b c hb hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hem', reassoc_of% hem]`. Conclude with `hPO.2 b _ hb rfl`.
+-/
 theorem exists_galMap : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (σ : Gal ρ), ∃ a, GalMap hD U' σ a := by
   intro R _ _ _ _ R' _ _ _ ρ hρ D D' hD A' G' _ _ hG' U' σ
   obtain ⟨hR', hinj, -⟩ := hρ

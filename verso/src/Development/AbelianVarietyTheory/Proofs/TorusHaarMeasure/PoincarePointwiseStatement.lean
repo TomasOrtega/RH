@@ -21,14 +21,33 @@ noncomputable section
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Conclude with `⟨⟨_, not_not.mp (mt (X.cmType τ).mpr h)⟩⟩`.
+-/
 theorem nonempty_type (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   by_cases h : τ ∈ X.Ψ
   · exact ⟨⟨τ, h⟩⟩
   · exact ⟨⟨_, not_not.mp (mt (X.cmType τ).mpr h)⟩⟩
 
+/- English proof (translation)
+Introduce `τ` and use `(X.signature τ).choose_spec.2`.
+-/
 theorem isOrth_x0F (X : Data E r) : IsOrth X (x0F X) := fun τ => (X.signature τ).choose_spec.2
 
+/- English proof (translation)
+Introduce and unpack `⟨-, h0, hne⟩`. Take `⟨τ⟩` from `nonempty_type X`. Establish `hx : X.IsOrtho (x0F X)` using `isOrth_x0F X`. Establish `hdet : (mat (x0F X) τ).det ≠ 0` using `(X.signature τ).choose_spec.1`. Use `set y : Fin r → ℂ := Data.emb τ.1 ξ with hy`.
+
+Establish `hyy : hermC τ.1 X.Gm y y = 0` using `by rw [hy, hermC_emb, h0, map_zero]`. Establish `hre` using `PositiveSpanMatrices.re_self X hx τ hdet y`. Rewrite `hre` using `[hyy, Complex.zero_re]`. Establish `hsq : ∑ c : Fin r, ‖hermC τ.1 X.Gm y (col (mat (x0F X) τ) c)‖ ^ 2 = 0`. Break down `h with h | h` into its components or cases.
+
+Establish `hs : ∀ c : Fin r, sgn X.p0 (c : ℕ) = -1` using `fun c => by simp [sgn, h]`. Simplify using `only [hs, neg_one_mul, Finset.sum_neg_distrib] at hre`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : ∀ c : Fin r, sgn X.p0 (c : ℕ) = 1` using `fun c => by simp [sgn, h, c.isLt]`. Simplify using `only [hs, one_mul] at hre`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hall : ∀ c, hermC τ.1 X.Gm y (col (mat (x0F X) τ) c) = 0`. Introduce `c`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun c _ => sq_nonneg ‖hermC τ.1 X.Gm y (col (mat (x0F X) τ) c)‖)).mp hsq c (Finset.mem_univ c)` as an intermediate fact. Simplify using `using this`.
+
+Establish `hy0 : y = 0`. Rewrite using `[PositiveSpanMatrices.expand X hx τ hdet y]`. Simplify using `[hall]`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+
+Establish `: τ.1 (ξ a) = 0` using `congrFun hy0 a`. Conclude with `(map_eq_zero τ.1).mp this`.
+-/
 theorem not_isIso_of_definite (X : Data E r) (h : X.p0 = 0 ∨ X.p0 = r) (ξ : Fin r → E) :
     ¬ X.IsIso ξ := by
   rintro ⟨-, h0, hne⟩

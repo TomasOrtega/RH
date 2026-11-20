@@ -7,6 +7,9 @@ open ValuativeRel
 open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.addChar_norm_eq_one | exact GlobalTheory.addChar_norm_eq_one | (intros; apply GlobalTheory.addChar_norm_eq_one <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.local_character_unitary : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ∀ x : k, ‖ψ0 x‖ = 1 := by
   first | exact @GlobalTheory.addChar_norm_eq_one | exact GlobalTheory.addChar_norm_eq_one | (intros; apply GlobalTheory.addChar_norm_eq_one <;> assumption)

@@ -3,6 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
+/- English proof (translation)
+Introduce `l _ F n x m g`. Take `⟨h1, h2, -, -, h5, -⟩` from `UpperTheory.V.Pa.am_fin l F n x m g`. Establish `hA : (l : x.A) = 0` using `h5`. Establish `e : (l : x.K) = 0`. Use `congrArg (PowerSeries.constantCoeff (R := x.K)) hA` as an intermediate fact.
+
+Rewrite `this` using `[map_natCast, map_zero]`. Then use the resulting hypothesis. Establish `hc : CharP x.K l` using `(CharP.charP_iff_prime_eq_zero (Fact.out)).2 e`. Establish `hAm : (l : x.Am m) = 0`. Rewrite using `[← map_natCast (algebraMap x.A (x.Am m)), hA, map_zero]`. Establish `hDD : (l : DD (x.Am m) g) = 0`.
+
+Rewrite using `[← map_natCast (DD.C (X := x.Am m) (g := g)), hAm, map_zero]`. Use `haveI := h1`. Establish `ht : (algebraMap x.A (x.Am m) x.t) ^ m = 0`. Rewrite using `[← map_pow, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Use `⟨h1, h2, Finite.of_equiv _ DD.equiv.symm, fun y => by rw [nsmul_eq_mul, hAm, zero_mul], fun y => by rw [nsmul_eq_mul, hDD, zero_mul], ht, ?_, ?_, hc⟩` and prove the remaining obligations. Use `show (DD.C (algebraMap x.A (x.Am m) x.t)) ^ m = 0`. Rewrite using `[← map_pow, ht, map_zero]`. Introduce `hl show IsUnit (2 : PowerSeries x.K)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, map_ofNat]`.
+
+Apply `Ne.isUnit` to reduce the goal to its premises. Introduce `h2`. Establish `h2' : ((2 : ℕ) : x.K) = 0` using `by exact_mod_cast h2`. Rewrite `h2'` using `[CharP.cast_eq_zero_iff x.K l]`. Conclude with `hl ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 h2')`.
+-/
 theorem UpperTheory.V.Pa.finAm :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (n : ℕ) (x : NP F n) (m g : ℕ), Finite (x.Am m) ∧ Nat.card (x.Am m) = Nat.card x.K ^ m ∧ Finite (DD (x.Am m) g) ∧ (∀ y : x.Am m, l • y = 0) ∧ (∀ y : DD (x.Am m) g, l • y = 0) ∧ (algebraMap x.A (x.Am m) x.t) ^ m = 0 ∧ (algebraMap x.A (DD (x.Am m) g) x.t) ^ m = 0 ∧ (l ≠ 2 → IsUnit (2 : x.A)) ∧ CharP x.K l := by
   intro l _ F n x m g

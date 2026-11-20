@@ -17,6 +17,15 @@ section Core
 def IsUnitOver {E : Type} [Field E] [NumberField E] (l : ℕ) (y : (Af E)ˣ) : Prop :=
   ∀ P : HeightOneSpectrum (𝓞 E), Valued.v ((y : Af E) P) = 1 ∧ ((l : 𝓞 E) ∉ P.asIdeal → (y : Af E) P = 1)
 
+/- English proof (translation)
+Establish `key : ∀ x : (v.adicCompletion K)ˣ, Formalism.L2.Host.IsUnitAt v x → ∀ P : HeightOneSpectrum (𝓞 E), Valued.v ((upIdele K E (single v x) : Af E) P) ≤ 1` using `fun x hx P => by`. Use `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap_mapsTo K E P (x := (single v x : Af K) (P.under (𝓞 K))) ?_` and prove the remaining obligations. Use `show Valued.v ((single v x : Af K) (P.under (𝓞 K))) ≤ 1`. Distinguish the cases in `h : P.under (𝓞 K) = v`. Substitute `h` using the available equality.
+
+Rewrite using `[single_self]`. Conclude with `le_of_eq hx`. Rewrite using `[suppAt_single v x _ h, map_one]`. Use `fun P => ⟨le_antisymm (key x hx P) ?_, fun hP => ?_⟩` and prove the remaining obligations. Establish `h1` using `key x⁻¹ (by show Valued.v _ = 1`.
+
+Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, show Valued.v (x : v.adicCompletion K) = 1 from hx, inv_one]) P`. Rewrite `h1` using `[map_inv, map_inv, ← coe_coord, Fibre.coord_inv', Units.val_inv_eq_inv_val, map_inv₀, inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 (Units.ne_zero _)))]`. Conclude with `h1`. Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap K E P ((single v x : Af K) (P.under (𝓞 K))) = 1`. Rewrite using `[suppAt_single v x _ fun h => hP ?_, map_one]`.
+
+Substitute `h` using the available equality. Rewrite using `[← map_natCast (algebraMap (𝓞 K) (𝓞 E))]`. Conclude with `hv`.
+-/
 theorem isUnitOver_up {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E] {l : ℕ}
     {v : HeightOneSpectrum (𝓞 K)} (hv : (l : 𝓞 K) ∈ v.asIdeal) {x : (v.adicCompletion K)ˣ} (hx : Formalism.L2.Host.IsUnitAt v x) :
     IsUnitOver l (upIdele K E (single v x)) := by
@@ -42,6 +51,11 @@ theorem isUnitOver_up {K E : Type} [Field K] [NumberField K] [Field E] [NumberFi
     rw [← map_natCast (algebraMap (𝓞 K) (𝓞 E))]
     exact hv
 
+/- English proof (translation)
+Use `(Fibre.hasProd_loc ξ y).unique ?_` and prove the remaining obligations. Establish `e : (fun P => ξ.loc P (coord P y)) = fun _ => 1` using `funext fun P => by`. Distinguish the cases in `hP : (l : 𝓞 E) ∈ P.asIdeal`. Conclude with `h P hP _ (hy P).1`. Rewrite using `[show coord P y = 1 from Units.ext ((hy P).2 hP), map_one]`.
+
+Rewrite using `[e]`. Conclude with `hasProd_one`.
+-/
 theorem finPart_of_isUnitOver {E : Type} [Field E] [NumberField E] {l : ℕ} {ξ : HChar E}
     (h : ∀ P : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ P.asIdeal → ξ.UnrAt P) {y : (Af E)ˣ} (hy : IsUnitOver l y) :
     finPart ξ y = 1 := by
@@ -55,9 +69,29 @@ theorem finPart_of_isUnitOver {E : Type} [Field E] [NumberField E] {l : ℕ} {ξ
 
 variable {R : Ranks} {H : Host R} {I : Type} [Fintype I] {φ : I → H.E →+* ℂ} {s : ℕ} {κ : I → ℕ} {𝔣 : Ideal (OF H.E)} {χ : HChar H.E}
 
+/- English proof (translation)
+The claim follows from `mul_ne_zero h (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)`.
+-/
 theorem condQ_ne_bot {E : Type} [Field E] [NumberField E] {𝔣 : Ideal (OF E)} (h : 𝔣 ≠ ⊥) (Q : Finset (HeightOneSpectrum (OF E))) :
     condQ 𝔣 Q ≠ ⊥ := mul_ne_zero h (Finset.prod_ne_zero_iff.2 fun q _ => q.ne_bot)
 
+/- English proof (translation)
+Establish `: IsCMField H.E` using `H.isCMField_hostE`. Establish `: CharZero (AlgebraicClosure (FractionRing O))` using `ι.charZero_iff ι.injective |>.1 inferInstance`. Establish `: CharZero (FractionRing O)` using `RingHom.charZero (algebraMap _ (AlgebraicClosure (FractionRing O)))`. Establish `: CharZero O` using `RingHom.charZero (algebraMap _ (FractionRing O))`. Take `⟨τ₀, -⟩` from `hD.1 H.φ₀`.
+
+Set `Ω` to `AlgebraicClosure H.K`. Set `_ : Algebra H.K ℂ` to `((φ τ₀).comp (algebraMap H.K H.E)).toAlgebra`. Set `j : Ω →ₐ[H.K] ℂ` to `IsAlgClosed.lift`. Establish `hj : ∀ x : H.K, j.toRingHom (algebraMap H.K Ω x) = φ τ₀ x` using `j.commutes`. Take `⟨art, ha⟩` from `hA H.K Ω`.
+
+Take `⟨ρ, hρ, hg⟩` from `hG R H I φ s κ 𝔣 χ hD Ω j.toRingHom τ₀ hj art ha T₀ hT₀ h0 Q hQ inferInstance T hT`. Generalize the expression as in `j.toRingHom = j at hj hρ hg`. Use `Fintype.ofFinite (PicO (condQ 𝔣 Q))` as an intermediate fact. Take `⟨z, hz, hfix⟩` from `exists_fixed j (fun δ => (∑ᶠ q ∈ {q | π q⁻¹ = δ}, T q) / T₀) (fun r => ρ (r.comp π)) (fun r => by`. Rewrite using `[hρ, finsum_eq_sum_of_fintype, ← Finset.sum_fiberwise Finset.univ (fun q => π q⁻¹), Finset.sum_div]`.
+
+Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[show {q | π q⁻¹ = δ} = ↑(Finset.univ.filter fun q => π q⁻¹ = δ) by ext; simp, finsum_mem_coe_finset, ← mul_div_assoc, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hq).2, map_inv, map_inv, Units.val_inv_eq_inv_val, map_inv₀, MonoidHom.comp_apply]) δ`.
+
+Take `⟨v, A, hv, hA', hτ⟩` from `exists_inertia (K := H.K) hk hl hO (ι.comp j) fun x => by`. Rewrite using `[RingHom.comp_apply, hj]`. Conclude with `hE _ _`. Establish `hfin` using `hT₀.1`. Establish `hval : ∀ y, lamF s χ y ∈ (algebraMap (FractionRing O) (AlgebraicClosure (FractionRing O))).fieldRange.comap ι` using `fun y => by`.
+
+Use `mul_mem (finPart_mem hD.2.2.2.2.2.2.2.1 (condQ_ne_bot hD.2.2.2.2.1.1 ∅) (OrderUnits.finPart_eq_one H.E I φ hD.1 s κ 𝔣 ∅ χ hU hD.2.2.2.2.1 (fun _ h => absurd h (Finset.notMem_empty _)) hD.2.2.2.2.2) _ hE S hS y) ?_` and prove the remaining obligations. Rewrite using `[Complex.ofReal_pow]`. Conclude with `pow_mem (modF_mem _ y) s`. Rewrite using `[mul_comm, ← div_eq_mul_inv, ← map_div₀, ← hz]`. Use `(InfiniteGalois.mem_range_algebraMap_iff_fixed _).2 fun τ => ?_` and prove the remaining obligations.
+
+Take `⟨g, hgI, hgτ⟩` from `hτ τ`. Establish `hfx : ∀ x : Ω, ι (j x) ∈ (algebraMap (FractionRing O) (AlgebraicClosure (FractionRing O))).range → g x = x` using `fun x ⟨y, hy⟩ => (ι.comp j).injective ((hgτ x).trans (by rw [RingHom.comp_apply, ← hy, τ.commutes]))`. Take `⟨x, hx, hax⟩` from `(ha.ine v A hA' _).2 ⟨g⁻¹, inv_mem hgI, rfl⟩`. Use `(hgτ z).symm.trans (congrArg (ι.comp j) (hfix g.toRingEquiv fun r => ?_))` and prove the remaining obligations. Use `(hg g (fun x τ y h => hfx x (h ▸ hE _ _)) (fun x y h => hfx x (h ▸ hval y)) (single v x) hax (r.comp π)).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, hπ _ (isUnitOver_up hv hx), map_one, Units.val_one, map_one, inv_one, one_mul]`. Both sides reduce to the same expression.
+-/
 theorem partialSum_mem (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hG : RatioConj) (hU : UnramFin H.E) (hD : IsHostDatum H φ s κ 𝔣 χ)
     {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (hk : IsAlgClosed (IsLocalRing.ResidueField O)) {l : ℕ} (hl : l ≠ 0) (hO : (l : O) ∈ IsLocalRing.maximalIdeal O)
@@ -114,6 +148,9 @@ theorem partialSum_mem (hA : GlobalTheory.Published.GlobalArtinReciprocity) (hG 
   rw [MonoidHom.comp_apply, hπ _ (isUnitOver_up hv hx), map_one, Units.val_one, map_one, inv_one, one_mul]
   rfl
 
+/- English proof (translation)
+Use `⟨h.1, h.2.1, h.2.2.1, fun v P hP => ⟨fun hv => ?_, fun _ => (h.2.2.2 v P hP).2 (Finset.notMem_empty v)⟩⟩` and prove the remaining obligations. Use `((h.2.2.2 v P hP).2 (Finset.notMem_empty v) 1).2 ?_` and prove the remaining obligations. Rewrite using `[expIn, multiplicity_eq_zero.2 (hQ v hv).2]`. Conclude with `zero_le_one`.
+-/
 theorem isCMValueHeckeCharacter_auxiliarySet_of_empty {E : Type} [Field E] [NumberField E] {φ : I → E →+* ℂ} {𝔣 : Ideal (OF E)} {χ : HChar E}
     {Q : Finset (HeightOneSpectrum (OF E))} (hQ : IsFinSetSplitPlacesCoprimeConductor 𝔣 Q) (h : IsValChar φ s κ 𝔣 ∅ χ) : IsValChar φ s κ 𝔣 Q χ := by
   refine ⟨h.1, h.2.1, h.2.2.1, fun v P hP => ⟨fun hv => ?_, fun _ => (h.2.2.2 v P hP).2 (Finset.notMem_empty v)⟩⟩
@@ -121,6 +158,13 @@ theorem isCMValueHeckeCharacter_auxiliarySet_of_empty {E : Type} [Field E] [Numb
   rw [expIn, multiplicity_eq_zero.2 (hQ v hv).2]
   exact zero_le_one
 
+/- English proof (translation)
+Establish `: IsCMField H.E` using `H.isCMField_hostE`. Establish `hv` using `isCMValueHeckeCharacter_auxiliarySet_of_empty hQ hD.2.2.2.2.2`. Take `⟨Λ, hΛ⟩` from `exists_isHeckeL hD.2.2.2.2.1 hQ hv`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hD.2.2.2.2.1.2.1`. Take `⟨P₀, -⟩` from `(hD.2.2.2.2.1.2.2 ⟨M, hM.isPrime, fun h => hD.2.2.2.2.1.1 (le_bot_iff.1 (h ▸ hle))⟩ (Ideal.dvd_iff_le.2 hle)).1`.
+
+Establish `: ∀ q : HeightOneSpectrum (OF H.E), ∃ P, q ∈ Q → Over P q` using `fun q => by`. Distinguish the cases in `hq : q ∈ Q`. Take `⟨P, -, -, hP, -⟩` from `(hQ q hq).1`. Conclude with `⟨P, fun _ => hP⟩`. Conclude with `⟨P₀, fun h => absurd h hq⟩`.
+
+Use `choose Pq hPq using this`. Take `⟨h1, T, hT, -⟩` from `(isToricSum_iff _ _ _ _ _ _).1 (hL _ I φ hD.1 s κ 𝔣 Q χ Pq Λ hU hD.2.2.1 hD.2.2.2.2.1 hQ hv hPq hΛ)`. Conclude with `⟨h1, T, hT⟩`.
+-/
 theorem exists_classTerms (hL : ToricSumFormula) (hU : UnramFin H.E) (hD : IsHostDatum H φ s κ 𝔣 χ)
     {Q : Finset (HeightOneSpectrum (OF H.E))} (hQ : IsFinSetSplitPlacesCoprimeConductor 𝔣 Q) :
     Finite (PicO (condQ 𝔣 Q)) ∧ ∃ T : PicO (condQ 𝔣 Q) → ℂ, ∀ q, IsClassTerm φ s κ (condQ 𝔣 Q) χ q.out (T q) := by
@@ -140,6 +184,11 @@ theorem exists_classTerms (hL : ToricSumFormula) (hU : UnramFin H.E) (hD : IsHos
     (hL _ I φ hD.1 s κ 𝔣 Q χ Pq Λ hU hD.2.2.1 hD.2.2.2.2.1 hQ hv hPq hΛ)
   exact ⟨h1, T, hT⟩
 
+/- English proof (translation)
+Establish `: IsCMField H.E` using `H.isCMField_hostE`. Establish `hQ : IsFinSetSplitPlacesCoprimeConductor 𝔣 ∅` using `fun _ h => absurd h (Finset.notMem_empty _)`. Take `⟨Λ, hΛ⟩` from `exists_isHeckeL hD.2.2.2.2.1 hQ hD.2.2.2.2.2`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hD.2.2.2.2.1.2.1`. Take `⟨P₀, -⟩` from `(hD.2.2.2.2.1.2.2 ⟨M, hM.isPrime, fun h => hD.2.2.2.2.1.1 (le_bot_iff.1 (h ▸ hle))⟩ (Ideal.dvd_iff_le.2 hle)).1`.
+
+Use `⟨_, hL _ I φ hD.1 s κ 𝔣 ∅ χ (fun _ => P₀) Λ hU hD.2.2.1 hD.2.2.2.2.1 hQ hD.2.2.2.2.2 (fun _ h => absurd h (Finset.notMem_empty _)) hΛ, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.filter_empty, Finset.prod_empty, mul_one]`. Use `heckeL_ne_zero_nat exists_isHeckeL_of_hasInf H.E I φ hD.1 _ χ Λ s hD.2.2.2.2.2.1 hD.2.2.2.2.2.2.2.1 (fun i => ?_) hΛ hD.2.2.1` and prove the remaining obligations. Use `hD.2.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem exists_toricSum_ne_zero (hL : ToricSumFormula) (hU : UnramFin H.E) (hD : IsHostDatum H φ s κ 𝔣 χ) :
     ∃ T₀, IsToricSum φ s κ (condQ 𝔣 ∅) χ T₀ ∧ T₀ ≠ 0 := by
   have : IsCMField H.E := H.isCMField_hostE
@@ -161,6 +210,25 @@ section Record
 
 variable {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
+/- English proof (translation)
+Establish `: IsCMField D.host.E` using `D.host.isCMField_hostE`. Take `⟨art, ha⟩` from `hA D.host.E N.Om`. Set `θ : (Af D.host.E)ˣ →* X.RCG i Q` to `(liftOpen (X.art i Q) (X.art_cont i Q)).comp (art.comp (finIdele D.host.E))`. Establish `key : ∀ r : X.RCG i Q →* ℂˣ, ∃ ξ, Corr art (r.comp (X.art i Q)) ξ ∧ ∀ y, r (θ y) = finPart ξ y` using `fun r => by`. Take `⟨ξ, hξ⟩` from `exists_corr (r := r.comp (X.art i Q)) ha (Subgroup.isOpen_mono (fun g hg => by rw [MonoidHom.mem_ker, MonoidHom.comp_apply, hg, map_one]) (X.art_cont i Q))`.
+
+Use `⟨ξ, hξ, fun y => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `toAb_surjective (art (finIdele D.host.E y))`. Use `show r (liftOpen _ (X.art_cont i Q) (art (finIdele D.host.E y))) = _`. Rewrite using `[← hσ, liftOpen_toAb]`. Conclude with `(hξ _ σ hσ.symm).symm`.
+
+Establish `hQl : ∀ P : HeightOneSpectrum (𝓞 D.host.E), ((X.l i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal → P ∉ Q` using `fun P hP h => Finset.disjoint_left.1 hQ.2.1 h (X.twistExcludedPlaces_contains_residueChar i hP)`. Take `⟨n, hn⟩` from `exists_exponent X i Q`. Establish `hk : princ ⊔ hatOUnits (condQ 𝔣 (belowSet Q)) ≤ θ.ker`. Use `sup_le ?_ fun u hu => eq_one_of_chars (Ω := ℂ) fun r => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+
+Use `eq_one_of_chars (Ω := ℂ) fun r => ?_` and prove the remaining obligations. Take `⟨ξ, hξ, e⟩` from `key r`. Establish `hp` using `hξ.pow (m := X.l i ^ n) fun σ => by rw [MonoidHom.comp_apply, ← map_pow, hn, map_one]`. Use `finPart_mul_inf ξ k` as an intermediate fact. Rewrite `this` using `[inf_of_pow (pow_ne_zero n (X.lPrime i).out.ne_zero) hp, mul_one, ← e]`. Then use the resulting hypothesis.
+
+Take `⟨ξ, hξ, e⟩` from `key r`. Establish `hp` using `hξ.pow (m := X.l i ^ n) fun σ => by rw [MonoidHom.comp_apply, ← map_pow, hn, map_one]`. Rewrite using `[e]`. Use `OrderUnits.finPart_eq_one_of_level (trivOnF_of_corr ha hξ) (fun v => ?_) hu` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ belowSet Q`.
+
+Use `⟨1, ?_, fun P hP => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun q : HeightOneSpectrum (OF D.host.E) => q.asIdeal) hv) _`. Distinguish the cases in `hPl : ((X.l i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Conclude with `fun x hx _ => unrAt_of_corr ha hξ (hQl P hPl) x hx`.
+
+Conclude with `levelLe_one_of_pow (X.lPrime i).out hp hPl`. Conclude with `⟨0, by simp, fun P hP x hx _ => unrAt_of_corr ha hξ (fun hm => hv (Finset.mem_image.2 ⟨P, hm, HeightOneSpectrum.ext hP⟩)) x hx⟩`. Use `⟨QuotientGroup.lift _ θ hk, fun P _ hP σ hσ => ?_, fun y hy => eq_one_of_chars (Ω := ℂ) fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_inv_iff_mul_eq_one]`. Use `eq_one_of_chars (Ω := ℂ) fun r => ?_` and prove the remaining obligations.
+
+Take `⟨ξ, hξ, e⟩` from `key r`. Rewrite using `[map_mul, QuotientGroup.lift_mk, e, finPart_unifAt, hξ.val ha (N.plOm.2 P) (unrAt_of_corr ha hξ hP) hσ]`. Conclude with `inv_mul_cancel _`. Take `⟨ξ, hξ, e⟩` from `key r`. Rewrite using `[QuotientGroup.lift_mk, e]`.
+
+Conclude with `finPart_of_isUnitOver (fun P hP => unrAt_of_corr ha hξ (hQl P hP)) hy`.
+-/
 theorem exists_isRecMap (hA : GlobalTheory.Published.GlobalArtinReciprocity) {i : X.Tw} {Q : Finset (HeightOneSpectrum (𝓞 D.host.E))}
     (hQ : BlochKatoReduction.Gen.QOk X i Q) (𝔣 : Ideal (OF D.host.E)) :
     ∃ π : PicO (condQ 𝔣 (belowSet Q)) →* X.RCG i Q, IsRecMap X i Q π ∧
@@ -211,6 +279,11 @@ theorem exists_isRecMap (hA : GlobalTheory.Published.GlobalArtinReciprocity) {i 
     rw [QuotientGroup.lift_mk, e]
     exact finPart_of_isUnitOver (fun P hP => unrAt_of_corr ha hξ (hQl P hP)) hy
 
+/- English proof (translation)
+Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Establish `key : ∀ σ : D.host.E →+* ℂ, ι (σ x) ∈ (algebraMap (FractionRing (X.O i)) (Kbar X i)).range` using `fun σ => by`. Set `_ : Algebra D.host.E ℂ` to `D.host.φ₀.toAlgebra`. Establish `: IsScalarTower ℚ D.host.E ℂ` using `IsScalarTower.of_algebraMap_eq fun q => (map_ratCast D.host.φ₀ q).symm`. Establish `e : D.host.φ₀ (σ.toRatAlgHom.restrictNormal D.host.E x) = σ x` using `σ.toRatAlgHom.restrictNormal_commutes D.host.E x`.
+
+Rewrite using `[← e, ← D.embE_φ₀]`. Conclude with `⟨_, (h ⟨_, D.hostField_le_fixedField _⟩).symm⟩`. Consider the cases of `b`. Conclude with `key ((starRingEnd ℂ).comp σ)`. Conclude with `key σ`.
+-/
 theorem atSide_emb_mem {i : X.Tw} {ι : ℂ →+* Kbar X i}
     (h : ∀ x : D.LL0, ι (D.what₂.embLL (x : D.what₂.LL)) = toBar X i (X.emb0 i x)) (b : Bool) (σ : D.host.E →+* ℂ) (x : D.host.E) :
     atSide X b ι (σ x) ∈ (algebraMap (FractionRing (X.O i)) (Kbar X i)).range := by

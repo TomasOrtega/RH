@@ -16,6 +16,9 @@ open GlobalTheory.SWLink
 
 namespace GlobalTheory.SWLinkChart
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{ toFun := fun g => ⟨t⁻¹ * g.1 * t, (h _).1 g.2⟩ invFun := fun k => ⟨t * k.1 * t⁻¹, (h _).2 (by simpa [mul_assoc] using k.2)⟩ left_inv := fun g => Subtype.ext (by simp [mul_assoc]) right_inv := fun g => Subtype.ext (by simp [mul_assoc]) map_mul' := fun a b => Subtype.ext (by sim …`.
+-/
 theorem exists_conj {Γ : Type} [Group Γ] (H K : Subgroup Γ) (t : Γ) (h : ∀ g, g ∈ H ↔ t⁻¹ * g * t ∈ K) :
     ∃ κ : H ≃* K, ∀ g, (κ g).1 = t⁻¹ * g.1 * t :=
   ⟨{ toFun := fun g => ⟨t⁻¹ * g.1 * t, (h _).1 g.2⟩
@@ -24,6 +27,11 @@ theorem exists_conj {Γ : Type} [Group Γ] (H K : Subgroup Γ) (t : Γ) (h : ∀
      right_inv := fun g => Subtype.ext (by simp [mul_assoc])
      map_mul' := fun a b => Subtype.ext (by simp [mul_assoc]) }, fun _ => rfl⟩
 
+/- English proof (translation)
+Establish `h3 : S'ᵀ * Sᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Establish `e : (S' * g * S)ᵀ * (Sᵀ * J * C) * (C' * g' * C) = Sᵀ * (gᵀ * J * g') * C`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2, h3, Matrix.mul_one, Matrix.mul_one]`.
+
+Rewrite using `[e]`. Use `⟨fun h => by rw [h], fun h => ?_⟩` and prove the remaining obligations. Establish `f : ∀ X : Matrix (Fin k) (Fin k) R, S'ᵀ * (Sᵀ * X * C) * C' = X` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← f (gᵀ * J * g'), h, f]`.
+-/
 theorem gram_iff {R : Type} [CommRing R] {k : ℕ} (g g' S S' C C' J : Matrix (Fin k) (Fin k) R)
     (h1 : S * S' = 1) (h2 : C * C' = 1) :
     gᵀ * J * g' = J ↔ (S' * g * S)ᵀ * (Sᵀ * J * C) * (C' * g' * C) = Sᵀ * J * C := by
@@ -39,6 +47,11 @@ theorem gram_iff {R : Type} [CommRing R] {k : ℕ} (g g' S S' C C' J : Matrix (F
       _ = _ := by rw [h2, h3, Matrix.mul_one, Matrix.one_mul]
   rw [← f (gᵀ * J * g'), h, f]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg cj h` as an intermediate fact. Rewrite `this` using `[cj_mul, cj_mul, cj_cj, hW, cj_transpose, ← adj_eq]`. Then use the resulting hypothesis. Introduce `h`.
+
+Use `congrArg cj h` as an intermediate fact. Rewrite `this` using `[cj_mul, cj_mul, hW, adj_eq, cj_transpose, cj_cj]`. Then use the resulting hypothesis.
+-/
 theorem conj_iff {D : D7} {k : ℕ} (x W : Mx D k k) (hW : cj W = W) :
     xᵀ * W * cj x = W ↔ adj x * W * x = W := by
   constructor
@@ -49,32 +62,52 @@ theorem conj_iff {D : D7} {k : ℕ} (x W : Mx D k k) (hW : cj W = W) :
     have := congrArg cj h
     rwa [cj_mul, cj_mul, hW, adj_eq, cj_transpose, cj_cj] at this
 
+/- English proof (translation)
+Rewrite using `[rat_Jst, cj, block_matrix_map]`. Express the relevant statement in the definitionally equal form `StdUnn.blk4 (cj 0) (cj 1) (cj (-1)) (cj 0) = _`. Rewrite using `[cj_neg, cj_zero, cj_one]`.
+-/
 theorem cj_Jst (D : D7) (n : ℕ) :
     cj (rat (StdUnn.Jst D n) : Mx D (n + n) (n + n)) = rat (StdUnn.Jst D n) := by
   rw [rat_Jst, cj, block_matrix_map]
   change StdUnn.blk4 (cj 0) (cj 1) (cj (-1)) (cj 0) = _
   rw [cj_neg, cj_zero, cj_one]
 
+/- English proof (translation)
+Rewrite using `[← map_cAl, ← incM_eq]`. Conclude with `Iff.rfl`.
+-/
 theorem mem_UG_iff {D : D7} {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E) (g : GL (Fin k) (AE D)) :
     g ∈ UG (cAl D) (incM D.host.F J) ↔ (g.1 : Mx D k k)ᵀ * rat J * cj g.1 = rat J := by
   rw [← map_cAl, ← incM_eq]
   exact Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_HR_iff {D : D7} {k : ℕ} (J : Matrix (Fin k) (Fin k) D.host.E) (g : GL (Fin k) (AE D)) :
     g ∈ HR (AF D.host.F) D.sp.cm.sig J ↔ adj (g.1 : Mx D k k) * rat J * g.1 = rat J := Iff.rfl
 
+/- English proof (translation)
+Establish `hc : cj S * cj S' = 1` using `by rw [← cj_mul, h1, cj_one]`. Rewrite using `[← conj_iff _ _ hW, cj_mul, cj_mul, ← hG]`. Conclude with `gram_iff g (cj g) S S' (cj S) (cj S') J h1 hc`.
+-/
 theorem mat_iff {D : D7} {k : ℕ} (g S S' J W : Mx D k k) (h1 : S * S' = 1) (hG : Sᵀ * J * cj S = W) (hW : cj W = W) :
     gᵀ * J * cj g = J ↔ adj (S' * g * S) * W * (S' * g * S) = W := by
   have hc : cj S * cj S' = 1 := by rw [← cj_mul, h1, cj_one]
   rw [← conj_iff _ _ hW, cj_mul, cj_mul, ← hG]
   exact gram_iff g (cj g) S S' (cj S) (cj S') J h1 hc
 
+/- English proof (translation)
+Rewrite using `[mem_UG_iff, mem_HR_iff, Units.val_mul, Units.val_mul]`. Conclude with `mat_iff g.1 t.1 (t⁻¹).1 _ _ t.mul_inv hG hW`.
+-/
 theorem mem_iff {D : D7} {k : ℕ} (J W : Matrix (Fin k) (Fin k) D.host.E) (t : GL (Fin k) (AE D))
     (hG : (t.1 : Mx D k k)ᵀ * rat J * cj t.1 = rat W) (hW : cj (rat W : Mx D k k) = rat W) (g : GL (Fin k) (AE D)) :
     g ∈ UG (cAl D) (incM D.host.F J) ↔ t⁻¹ * g * t ∈ HR (AF D.host.F) D.sp.cm.sig W := by
   rw [mem_UG_iff, mem_HR_iff, Units.val_mul, Units.val_mul]
   exact mat_iff g.1 t.1 (t⁻¹).1 _ _ t.mul_inv hG hW
 
+/- English proof (translation)
+Introduce `D n J₂ T hG`. Establish `hW : (rat T.1 : Mx D (n + n) (n + n))ᵀ * rat J₂ * cj (rat T.1) = rat (StdUnn.Jst D n)`. Rewrite using `[← hG, rat_mul, rat_mul, cj_rat]`. Both sides reduce to the same expression. Take `⟨κ, hκ⟩` from `exists_conj _ _ _ (mem_iff J₂ (StdUnn.Jst D n) ⟨rat T.1, rat (T⁻¹).1, rat_mul_inv T, rat_inv_mul T⟩ hW (cj_Jst D n))`.
+
+Use `⟨κ, fun g => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Units.val (hκ g)`.
+-/
 theorem exists_isChartW : ∀ (D : D7) (n : ℕ) (J₂ : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E) (T : GL (Fin (n + n)) D.host.E), T.1ᵀ * J₂ * T.1.map D.sp.cm.sig = GlobalTheory.StdUnn.Jst D n → ∃ κ : UD D J₂ ≃* GlobalTheory.StdUnn.G D n, IsChartW T κ := by
   intro D n J₂ T hG
   have hW : (rat T.1 : Mx D (n + n) (n + n))ᵀ * rat J₂ * cj (rat T.1) = rat (StdUnn.Jst D n) := by

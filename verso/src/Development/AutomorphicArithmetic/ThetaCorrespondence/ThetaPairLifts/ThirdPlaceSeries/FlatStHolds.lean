@@ -24,6 +24,9 @@ namespace GlobalTheory.BigOn.Exp.TupLe.Swap
 end GlobalTheory.BigOn.Exp.TupLe.Swap
 namespace GlobalTheory.BigOn.Exp.TupLe
 open GlobalTheory.BigOn.Exp.TupLe.Swap in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p j hr hm B ψ t hB hB0 hψ hQ hxi hid`. Establish `hL : Links2 p` using `_root_.GlobalTheory.T.links2_of_single_index_twisted D L hT Gi Gl Kc Y cX ex Csz p hr hm.1`. Establish `hC : GlobalTheory.Hk3.Core (R2 p) (F2 p)` using `⟨hL.1.lev, hL.1.grp, hL.1.fam, hL.1.models, hL.1.chain, hL.1.thP⟩`. Conclude with `flat_gen _ _ _ _ _ _ (R2 p) (F2 p) hC p.qGuard j t (GlobalTheory.StdFrame.vStd_of_orthonormal_span _ j (p.stdV j)) B ψ hB hB0 hψ hQ hxi hid`.
+-/
 theorem flatSt_holds_alt : _root_.GlobalTheory.BigOn.Exp.TupLe.FlatCondition := by
   intro D L hT Gi Gl Kc Y cX ex Csz p j hr hm B ψ t hB hB0 hψ hQ hxi hid
   have hL : Links2 p := _root_.GlobalTheory.T.links2_of_single_index_twisted D L hT Gi Gl Kc Y cX ex Csz p hr hm.1

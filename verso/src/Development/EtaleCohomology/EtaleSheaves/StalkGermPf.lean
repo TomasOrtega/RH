@@ -18,32 +18,62 @@ def StalkCont : Prop := Cont → Hyp → ∀ (q : ℕ) {X S : Scheme.{0}} (p : X
 
 variable {Y X S : Scheme.{0}}
 
+/- English proof (translation)
+Rewrite using `[Functor.map_comp, pull_comp]`.
+-/
 theorem pull_mc {q : ℕ} {n i : ℤ} {A B C : Scheme.{0}} (a : A ⟶ B) (b : B ⟶ C) (x : Ht q (sch.obj C) n i) :
     pull _ (sch.map (a ≫ b)) (tw q i) n x = pull _ (sch.map a) _ _ (pull _ (sch.map b) _ _ x) := by
   rw [Functor.map_comp, pull_comp]
 
+/- English proof (translation)
+Establish `e : V.fromSpecStalkOfMem s hV ≫ S.homOfLE h = U.fromSpecStalkOfMem s (h hV)`. Rewrite using `[← cancel_mono U.ι]`. Simplify using the standard rewrite rules. Apply the tactic sequence `simp only [toO, resO]; rw [pullback.map_comp]; congr 1 <;> simp [e]`.
+-/
 theorem toO_res (p : X ⟶ S) (s : S) {V U : S.Opens} (h : V ≤ U) (hV : s ∈ V) :
     toO p s V hV ≫ resO p h = toO p s U (h hV) := by
   have e : V.fromSpecStalkOfMem s hV ≫ S.homOfLE h = U.fromSpecStalkOfMem s (h hV) := by
     rw [← cancel_mono U.ι]; simp
   simp only [toO, resO]; rw [pullback.map_comp]; congr 1 <;> simp [e]
 
+/- English proof (translation)
+Simplify using `only [toO, resO, fO]`. Rewrite using `[pullback.map_comp]`. Apply the tactic sequence `try rw [pullback.map_comp]`. Apply the tactic sequence `all_goals (try congr 1) <;> simp`.
+-/
 theorem toO_f (f : Y ⟶ X) (p : X ⟶ S) (s : S) (U : S.Opens) (hs : s ∈ U) :
     pullback.map (f ≫ p) (S.fromSpecStalk s) p (S.fromSpecStalk s) f (𝟙 _) (𝟙 _) (by simp) (by simp) ≫ toO p s U hs =
       toO (f ≫ p) s U hs ≫ fO f p U := by
   simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
   all_goals (try congr 1) <;> simp
 
+/- English proof (translation)
+Simplify using `only [toO, resO, fO]`. Rewrite using `[pullback.map_comp]`. Apply the tactic sequence `try rw [pullback.map_comp]`. Apply the tactic sequence `all_goals (try congr 1) <;> simp`.
+-/
 theorem res_f (f : Y ⟶ X) (p : X ⟶ S) {V U : S.Opens} (h : V ≤ U) :
     resO (f ≫ p) h ≫ fO f p U = fO f p V ≫ resO p h := by
   simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
   all_goals (try congr 1) <;> simp
 
+/- English proof (translation)
+Simplify using `only [toO, resO, fO]`. Rewrite using `[pullback.map_comp]`. Apply the tactic sequence `try rw [pullback.map_comp]`. Apply the tactic sequence `all_goals (try congr 1) <;> simp`.
+-/
 theorem res_res (p : X ⟶ S) {W V U : S.Opens} (h1 : W ≤ V) (h2 : V ≤ U) :
     resO p h1 ≫ resO p h2 = resO p (h1.trans h2) := by
   simp only [toO, resO, fO]; rw [pullback.map_comp]; try rw [pullback.map_comp]
   all_goals (try congr 1) <;> simp
 
+/- English proof (translation)
+Introduce `hC hH q Y X S f p _ _ _ _ _ _ hq i s he n`. Take `⟨ia, sa⟩` from `hS hC hH q p hq i n s`. Take `⟨ib, -⟩` from `hS hC hH q (f ≫ p) hq i n s`. Establish `hb` using `he n`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `U hs x hx`. Apply `ia U hs x` to reduce the goal to its premises. Apply `hb.1` to reduce the goal to its premises. Rewrite using `[map_zero, ← pull_mc, toO_f, pull_mc, hx, map_zero]`. Introduce `U hs y`.
+
+Take `⟨w, hw⟩` from `hb.2 (pull _ (sch.map (toO (f ≫ p) s U hs)) _ _ y)`. Take `⟨U1, hs1, x1, hx1⟩` from `sa w`. Establish `hs2 : s ∈ U ⊓ U1` using `⟨hs, hs1⟩`. Establish `hx2' : pull (ZMod q) (sch.map (toO p s (U ⊓ U1) hs2)) (tw q i) n (pull (ZMod q) (sch.map (resO p (inf_le_right : U ⊓ U1 ≤ U1))) (tw q i) n x1) = w`. Rewrite using `[← pull_mc, toO_res]`.
+
+Conclude with `hx1`. Take `⟨x2, hx2⟩ : ∃ x2 : H (ZMod q) (sch.obj (overO p (U ⊓ U1))) (tw q i) n, pull (ZMod q) (sch.map (toO p s (U ⊓ U1) hs2)) (tw q i) n x2 = w` from `⟨_, hx2'⟩`. Establish `e1 : pull _ (sch.map (toO (f ≫ p) s (U ⊓ U1) hs2)) _ _ (pull _ (sch.map (fO f p (U ⊓ U1))) _ _ x2) = pull _ (sch.map (pullback.map (f ≫ p) (S.fromSpecStalk s) p (S.fromSpecStalk s) f (𝟙 _) (𝟙 _) (by simp) (by simp))) (tw q i) n (pull _ (sch.map (toO p s (U ⊓ U1) hs2)) _ _ x2)`. Rewrite using `[← pull_mc, ← pull_mc, toO_f]`. Establish `e2 : pull _ (sch.map (toO (f ≫ p) s (U ⊓ U1) hs2)) _ _ (pull _ (sch.map (resO (f ≫ p) (inf_le_left : U ⊓ U1 ≤ U))) _ _ y) = pull _ (sch.map (toO (f ≫ p) s U hs)) (tw q i) n y`.
+
+Rewrite using `[← pull_mc, toO_res]`. Establish `h0 : pull _ (sch.map (toO (f ≫ p) s (U ⊓ U1) hs2)) _ _ (pull _ (sch.map (fO f p (U ⊓ U1))) _ _ x2 - pull _ (sch.map (resO (f ≫ p) (inf_le_left : U ⊓ U1 ≤ U))) _ _ y) = 0`. Rewrite using `[map_sub, e1, e2, hx2, hw, sub_self]`. Take `⟨V, hV, hsV, hd⟩` from `ib _ hs2 _ h0`. Use `⟨V, hV.trans inf_le_left, hsV, pull _ (sch.map (resO p hV)) _ _ x2, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hd` using `[map_sub, sub_eq_zero]`. Establish `g1 : pull _ (sch.map (fO f p V)) _ _ (pull _ (sch.map (resO p hV)) _ _ x2) = pull _ (sch.map (resO (f ≫ p) hV)) (tw q i) n (pull _ (sch.map (fO f p (U ⊓ U1))) _ _ x2)`. Rewrite using `[← pull_mc, ← pull_mc, res_f]`. Establish `g2 : pull _ (sch.map (resO (f ≫ p) hV)) (tw q i) n (pull _ (sch.map (resO (f ≫ p) (inf_le_left : U ⊓ U1 ≤ U))) _ _ y) = pull _ (sch.map (resO (f ≫ p) (hV.trans inf_le_left))) (tw q i) n y`. Rewrite using `[← pull_mc, res_res]`.
+
+Rewrite using `[g1, hd, g2]`.
+-/
 theorem StalkGerm_of (hS : StalkCont) : StalkGerm := by
   intro hC hH q Y X S f p _ _ _ _ _ _ hq i s he n
   obtain ⟨ia, sa⟩ := hS hC hH q p hq i n s

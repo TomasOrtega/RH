@@ -28,13 +28,24 @@ def lamLQ (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subty
     MbMod Z →ₗ[O] E :=
   (headCols Z).liftQ (lamL O Z) (fun k hk => by rw [LinearMap.mem_ker]; exact lamL_K O Z hu k hk)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamSQ_mk (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (y : Fin (r + 1) → O) : lamSQ O cj hO Z hu (Submodule.Quotient.mk y) = lamS O cj Z y := rfl
 
 omit hO in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lamLQ_mk (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (y : Fin (r + 1) → O) : lamLQ O Z hu (Submodule.Quotient.mk y) = lamL O Z y := rfl
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m'`. Rewrite `h` using `[iL_mk, iL_mk, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Rewrite `hl` using `[lamLQ_mk, lamLQ_mk]`. Establish `h' : (Submodule.Quotient.mk (Sum.elim (u - v) (0 : Fin (r + 1) → O)) : (Ix r → O) ⧸ relC O cj (Z.map O.subtype) t t') = 0`.
+
+Apply the tactic sequence `rw [← h]; congr 1; funext i; rcases i with i | i <;> simp`. Use `(ker_zero O cj hO Z hu t t' hη (u - v) 0 h' (by rw [map_sub, hl, sub_self]) (lamS_zero O cj Z)).1` as an intermediate fact. Rewrite `this` using `[Submodule.Quotient.mk_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem uniqL (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det) (t t' : O)
     (hη : EtaNZD O cj Z t t') (m m' : MbMod Z) (h : iL O cj hO Z t t' m = iL O cj hO Z t t' m')
     (hl : lamLQ O Z hu m = lamLQ O Z hu m') : m = m' := by
@@ -49,6 +60,11 @@ theorem uniqL (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.s
     (lamS_zero O cj Z)).1
   rwa [Submodule.Quotient.mk_sub, sub_eq_zero] at this
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ m'`. Rewrite `h` using `[iR_mk, iR_mk, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Rewrite `hl` using `[lamSQ_mk, lamSQ_mk]`. Establish `h' : (Submodule.Quotient.mk (Sum.elim (0 : Fin (r + 1) → O) (u - v)) : (Ix r → O) ⧸ relC O cj (Z.map O.subtype) t t') = 0`.
+
+Apply the tactic sequence `rw [← h]; congr 1; funext i; rcases i with i | i <;> simp`. Use `(ker_zero O cj hO Z hu t t' hη 0 (u - v) h' (map_zero _) (by rw [lamS_sub, hl, sub_self])).2` as an intermediate fact. Rewrite `this` using `[Submodule.Quotient.mk_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem uniqR (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det) (t t' : O)
     (hη : EtaNZD O cj Z t t') (m m' : MbMod (cjT O cj hO Z)) (h : iR O cj hO Z t t' m = iR O cj hO Z t t' m')
     (hl : lamSQ O cj hO Z hu m = lamSQ O cj hO Z hu m') : m = m' := by
@@ -69,6 +85,15 @@ variable (t t' : O) (Za Zb : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
   (θ : DDc O cj (Za.map O.subtype) t t' →ₗ[O] DDc O cj (Zb.map O.subtype) t t')
 include hηb
 
+/- English proof (translation)
+Take `⟨y', rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `hp : ((Submodule.Quotient.mk (Sum.elim (0 : Fin (r + 1) → O) y') : DDc O cj (Za.map O.subtype) t t'), ((0 : E), lamStarC cj (Za.map O.subtype) (fun b => (y' b : E)))) ∈ GamC O cj (Za.map O.subtype) t t'` using `⟨Sum.elim 0 y', fun a => rfl, by simp⟩`. Take `⟨Y₂, hY₂, he⟩` from `hΓ _ hp`. Simplify using `only [Prod.mk.injEq] at he`. Take `⟨h1, h2, h3⟩` from `he`.
+
+Establish `hl : Y₂ (Sum.inl (Fin.last r)) = 0` using `Subtype.ext h2.symm`. Establish `hY : Y₂ = Sum.elim (0 : Fin (r + 1) → O) (fun b => Y₂ (Sum.inr b))`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+
+Simplify using `using hl`. Simplify using `using hY₂ j`. Both sides reduce to the same expression. Use `⟨Submodule.Quotient.mk (fun b => Y₂ (Sum.inr b)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iR_mk, iR_mk, h1, ← hY]`.
+
+Rewrite using `[lamSQ_mk, lamSQ_mk]`. Conclude with `h3.symm`.
+-/
 theorem gs_ex (hΓ : ∀ p ∈ GamC O cj (Za.map O.subtype) t t', (θ p.1, p.2) ∈ GamC O cj (Zb.map O.subtype) t t')
     (m : MbMod (cjT O cj hO Za)) :
     ∃ n : MbMod (cjT O cj hO Zb), θ (iR O cj hO Za t t' m) = iR O cj hO Zb t t' n ∧
@@ -92,6 +117,15 @@ theorem gs_ex (hΓ : ∀ p ∈ GamC O cj (Za.map O.subtype) t t', (θ p.1, p.2) 
   · rw [iR_mk, iR_mk, h1, ← hY]
   · rw [lamSQ_mk, lamSQ_mk]; exact h3.symm
 
+/- English proof (translation)
+Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Establish `hp : ((Submodule.Quotient.mk (Sum.elim y (0 : Fin (r + 1) → O)) : DDc O cj (Za.map O.subtype) t t'), (lamC (Za.map O.subtype) (fun a => (y a : E)), (0 : E))) ∈ GamC' O cj (Za.map O.subtype) t t'` using `⟨Sum.elim y 0, fun b => rfl, by simp⟩`. Take `⟨Y₂, hY₂, he⟩` from `hΓ _ hp`. Simplify using `only [Prod.mk.injEq] at he`. Take `⟨h1, h2, h3⟩` from `he`.
+
+Establish `hl : Y₂ (Sum.inr (Fin.last r)) = 0` using `Subtype.ext h3.symm`. Establish `hY : Y₂ = Sum.elim (fun a => Y₂ (Sum.inl a)) (0 : Fin (r + 1) → O)`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Both sides reduce to the same expression.
+
+Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hl`. Simplify using `using hY₂ j`. Use `⟨Submodule.Quotient.mk (fun a => Y₂ (Sum.inl a)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[iL_mk, iL_mk, h1, ← hY]`.
+
+Rewrite using `[lamLQ_mk, lamLQ_mk, lamL_apply, lamL_apply]`. Conclude with `h2.symm`.
+-/
 theorem g_ex (hΓ : ∀ p ∈ GamC' O cj (Za.map O.subtype) t t', (θ p.1, p.2) ∈ GamC' O cj (Zb.map O.subtype) t t')
     (m : MbMod Za) :
     ∃ n : MbMod Zb, θ (iL O cj hO Za t t' m) = iL O cj hO Zb t t' n ∧ lamLQ O Zb hub n = lamLQ O Za hua m := by
@@ -114,6 +148,9 @@ theorem g_ex (hΓ : ∀ p ∈ GamC' O cj (Za.map O.subtype) t t', (θ p.1, p.2) 
   · rw [iL_mk, iL_mk, h1, ← hY]
   · rw [lamLQ_mk, lamLQ_mk, lamL_apply, lamL_apply]; exact h2.symm
 
+/- English proof (translation)
+Apply `uniqR O cj hO Zb hub t t' hηb` to reduce the goal to its premises. Rewrite using `[map_add (iR O cj hO Zb t t'), ← (hf (m + m')).1, ← (hf m).1, ← (hf m').1, map_add (iR O cj hO Za t t'), map_add θ]`. Rewrite using `[map_add (lamSQ O cj hO Zb hub), (hf (m + m')).2, (hf m).2, (hf m').2, map_add (lamSQ O cj hO Za hua)]`.
+-/
 theorem addR (f : MbMod (cjT O cj hO Za) → MbMod (cjT O cj hO Zb))
     (hf : ∀ m, θ (iR O cj hO Za t t' m) = iR O cj hO Zb t t' (f m) ∧ lamSQ O cj hO Zb hub (f m) = lamSQ O cj hO Za hua m)
     (m m' : MbMod (cjT O cj hO Za)) : f (m + m') = f m + f m' := by
@@ -121,6 +158,9 @@ theorem addR (f : MbMod (cjT O cj hO Za) → MbMod (cjT O cj hO Zb))
   · rw [map_add (iR O cj hO Zb t t'), ← (hf (m + m')).1, ← (hf m).1, ← (hf m').1, map_add (iR O cj hO Za t t'), map_add θ]
   · rw [map_add (lamSQ O cj hO Zb hub), (hf (m + m')).2, (hf m).2, (hf m').2, map_add (lamSQ O cj hO Za hua)]
 
+/- English proof (translation)
+Apply `uniqR O cj hO Zb hub t t' hηb` to reduce the goal to its premises. Rewrite using `[map_smul (iR O cj hO Zb t t'), ← (hf (c • m)).1, ← (hf m).1, map_smul (iR O cj hO Za t t'), map_smul θ]`. Rewrite using `[map_smul (lamSQ O cj hO Zb hub), (hf (c • m)).2, (hf m).2, map_smul (lamSQ O cj hO Za hua)]`.
+-/
 theorem smulR (f : MbMod (cjT O cj hO Za) → MbMod (cjT O cj hO Zb))
     (hf : ∀ m, θ (iR O cj hO Za t t' m) = iR O cj hO Zb t t' (f m) ∧ lamSQ O cj hO Zb hub (f m) = lamSQ O cj hO Za hua m)
     (c : O) (m : MbMod (cjT O cj hO Za)) : f (c • m) = c • f m := by
@@ -128,6 +168,9 @@ theorem smulR (f : MbMod (cjT O cj hO Za) → MbMod (cjT O cj hO Zb))
   · rw [map_smul (iR O cj hO Zb t t'), ← (hf (c • m)).1, ← (hf m).1, map_smul (iR O cj hO Za t t'), map_smul θ]
   · rw [map_smul (lamSQ O cj hO Zb hub), (hf (c • m)).2, (hf m).2, map_smul (lamSQ O cj hO Za hua)]
 
+/- English proof (translation)
+Apply `uniqL O cj hO Zb hub t t' hηb` to reduce the goal to its premises. Rewrite using `[map_add (iL O cj hO Zb t t'), ← (hf (m + m')).1, ← (hf m).1, ← (hf m').1, map_add (iL O cj hO Za t t'), map_add θ]`. Rewrite using `[map_add (lamLQ O Zb hub), (hf (m + m')).2, (hf m).2, (hf m').2, map_add (lamLQ O Za hua)]`.
+-/
 theorem addL (f : MbMod Za → MbMod Zb)
     (hf : ∀ m, θ (iL O cj hO Za t t' m) = iL O cj hO Zb t t' (f m) ∧ lamLQ O Zb hub (f m) = lamLQ O Za hua m)
     (m m' : MbMod Za) : f (m + m') = f m + f m' := by
@@ -135,6 +178,9 @@ theorem addL (f : MbMod Za → MbMod Zb)
   · rw [map_add (iL O cj hO Zb t t'), ← (hf (m + m')).1, ← (hf m).1, ← (hf m').1, map_add (iL O cj hO Za t t'), map_add θ]
   · rw [map_add (lamLQ O Zb hub), (hf (m + m')).2, (hf m).2, (hf m').2, map_add (lamLQ O Za hua)]
 
+/- English proof (translation)
+Apply `uniqL O cj hO Zb hub t t' hηb` to reduce the goal to its premises. Rewrite using `[map_smul (iL O cj hO Zb t t'), ← (hf (c • m)).1, ← (hf m).1, map_smul (iL O cj hO Za t t'), map_smul θ]`. Rewrite using `[map_smul (lamLQ O Zb hub), (hf (c • m)).2, (hf m).2, map_smul (lamLQ O Za hua)]`.
+-/
 theorem smulL (f : MbMod Za → MbMod Zb)
     (hf : ∀ m, θ (iL O cj hO Za t t' m) = iL O cj hO Zb t t' (f m) ∧ lamLQ O Zb hub (f m) = lamLQ O Za hua m)
     (c : O) (m : MbMod Za) : f (c • m) = c • f m := by
@@ -158,11 +204,17 @@ def gLin (hΓ : ∀ p ∈ GamC' O cj (Za.map O.subtype) t t', (θ p.1, p.2) ∈ 
     rw [RingHom.id_apply]
     exact smulL O cj hO t t' Za Zb hua hub hηb θ _ (fun m => (g_ex O cj hO t t' Za Zb hua hub hηb θ hΓ m).choose_spec) c m
 
+/- English proof (translation)
+The claim follows from `(gs_ex O cj hO t t' Za Zb hua hub hηb θ hΓ m).choose_spec`.
+-/
 theorem gsLin_spec (hΓ : ∀ p ∈ GamC O cj (Za.map O.subtype) t t', (θ p.1, p.2) ∈ GamC O cj (Zb.map O.subtype) t t')
     (m : MbMod (cjT O cj hO Za)) :
     θ (iR O cj hO Za t t' m) = iR O cj hO Zb t t' (gsLin O cj hO t t' Za Zb hua hub hηb θ hΓ m) ∧
       lamSQ O cj hO Zb hub (gsLin O cj hO t t' Za Zb hua hub hηb θ hΓ m) = lamSQ O cj hO Za hua m := (gs_ex O cj hO t t' Za Zb hua hub hηb θ hΓ m).choose_spec
 
+/- English proof (translation)
+The claim follows from `(g_ex O cj hO t t' Za Zb hua hub hηb θ hΓ m).choose_spec`.
+-/
 theorem gLin_spec (hΓ : ∀ p ∈ GamC' O cj (Za.map O.subtype) t t', (θ p.1, p.2) ∈ GamC' O cj (Zb.map O.subtype) t t')
     (m : MbMod Za) :
     θ (iL O cj hO Za t t' m) = iL O cj hO Zb t t' (gLin O cj hO t t' Za Zb hua hub hηb θ hΓ m) ∧

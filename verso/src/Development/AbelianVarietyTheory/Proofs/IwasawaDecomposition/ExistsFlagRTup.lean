@@ -11,6 +11,9 @@ noncomputable section
 
 namespace GlobalTheory.Mem.R3.FlagOnto
 
+/- English proof (translation)
+Introduce `X px I hX U L hI hV hL t y`. Take `⟨c, hc⟩` from `hL.is.βX`. Establish `hsep` using `GlobalTheory.ChainEquiv.places_sep L (mu0F (tuOf I U)) hL.is t`. Take `⟨κ, -, hκP, hκr⟩` from `GlobalTheory.ParahoricLift.liftsExist X.toD7.sp.X' L.βX (L.datXt t) L.ΛX _ hc hsep.1 hsep.2 y`. Conclude with `⟨⟨(finHom X.toD7.sp.X').rangeRestrict κ, hκP, Subgroup.mem_top _⟩, hκr⟩`.
+-/
 theorem exists_flag_rTup : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → ValsIn I → LevOf X I U L →
     ∀ (t : TupU I U) (y : G0 L.Pg X.toD7.R.r), ∃ q : (levEnv X.toD7.sp.X' L.βX (L.datXt t)).Q,

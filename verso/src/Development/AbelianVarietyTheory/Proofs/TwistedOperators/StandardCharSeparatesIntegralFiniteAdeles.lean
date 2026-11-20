@@ -10,6 +10,11 @@ namespace GlobalTheory.StdCharSep
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Rewrite `h` using `[GlobalTheory.PsiNontriv.isStd_fin_rat hψ, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h2 : ((Algebra.trace ℚ F x : ℚ) : ℂ) = ((n : ℚ) : ℂ)`.
+
+Rewrite `hn` using `[mul_comm (2 * Real.pi * Complex.I : ℂ)]`. Use `push_cast`. Conclude with `mul_right_cancel₀ hne hn`. Conclude with `h2` after adjusting the coercions.
+-/
 theorem trace_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (x : F)
     (h : ψ (pairA F 0 (algebraMap F (Af F) x)) = 1) : ∃ z : ℤ, Algebra.trace ℚ F x = z := by
   rw [GlobalTheory.PsiNontriv.isStd_fin_rat hψ, Complex.exp_eq_one_iff] at h
@@ -22,18 +27,31 @@ theorem trace_int_of_psi {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.Indefinit
     exact mul_right_cancel₀ hne hn
   exact_mod_cast h2
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Rewrite using `[GlobalTheory.PsiNontriv.isStd_fin_rat hψ, hz, Complex.exp_eq_one_iff]`. Conclude with `⟨z, by push_cast; ring⟩`.
+-/
 theorem psi_of_trace_int {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (x : F)
     (h : ∃ z : ℤ, Algebra.trace ℚ F x = z) : ψ (pairA F 0 (algebraMap F (Af F) x)) = 1 := by
   obtain ⟨z, hz⟩ := h
   rw [GlobalTheory.PsiNontriv.isStd_fin_rat hψ, hz, Complex.exp_eq_one_iff]
   exact ⟨z, by push_cast; ring⟩
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 s (fun a => psi_of_trace_int hψ _ (hs a)) w hw`.
+-/
 theorem psi_int_mul {ψ : AddChar (AF F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (s : F)
     (hs : ∀ a : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F ((a : F) * s) = z)
     (w : Af F) (hw : ∀ v : HeightOneSpectrum (𝓞 F), w v ∈ v.adicCompletionIntegers F) :
     ψ (pairA F 0 (w * algebraMap F (Af F) s)) = 1 :=
   GlobalTheory.IntDense.addChar_eq_one_of_integral F ψ hψ.1 s (fun a => psi_of_trace_int hψ _ (hs a)) w hw
 
+/- English proof (translation)
+Establish `h1 : k ∈ FractionalIdeal.dual ℤ ℚ (FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F))`. Rewrite using `[FractionalIdeal.mem_dual (FractionalIdeal.dual_ne_zero ℤ ℚ (GlobalTheory.AdLat.one_ne_zero_fracIdeal F))]`. Introduce `s hs`. Rewrite `hs` using `[FractionalIdeal.mem_dual (GlobalTheory.AdLat.one_ne_zero_fracIdeal F)]`. Take `⟨z, hz⟩` from `h s (fun a => by`.
+
+Take `⟨y, hy⟩` from `hs (a : F) ((FractionalIdeal.mem_one_iff _).2 ⟨a, rfl⟩)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[Algebra.traceForm_apply]`. Rewrite using `[mul_comm, ← hy]`. Use the proof step `simp)`.
+
+Conclude with `⟨z, by rw [Algebra.traceForm_apply, hz]; simp⟩`. Rewrite `h1` using `[FractionalIdeal.dual_dual]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 h1`.
+-/
 theorem mem_of_dual (k : F) (h : ∀ s : F, (∀ a : 𝓞 F, ∃ z : ℤ, Algebra.trace ℚ F ((a : F) * s) = z) →
     ∃ z : ℤ, Algebra.trace ℚ F (k * s) = z) : ∃ c : 𝓞 F, algebraMap (𝓞 F) F c = k := by
   have h1 : k ∈ FractionalIdeal.dual ℤ ℚ
@@ -51,6 +69,17 @@ theorem mem_of_dual (k : F) (h : ∀ s : F, (∀ a : 𝓞 F, ∃ z : ℤ, Algebr
   rw [FractionalIdeal.dual_dual] at h1
   exact (FractionalIdeal.mem_one_iff _).1 h1
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ b hb`. Assume the negation of the conclusion as `H`. Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) b`. Establish `hbk : b = algebraMap F (Af F) k + (b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k)` using `by abel`. Take `⟨o, ho⟩` from `mem_of_dual k (fun s hs => by`.
+
+Establish `hb1 : ψ (pairA F 0 (b * algebraMap F (Af F) s)) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `H ⟨s, hne, fun w hw => psi_int_mul hψ s hs w hw⟩`. Establish `hc1` using `psi_int_mul hψ s hs _ hk`. Establish `e : pairA F 0 (b * algebraMap F (Af F) s) = pairA F 0 (algebraMap F (Af F) (k * s)) + pairA F 0 ((b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k) * algebraMap F (Af F) s)`.
+
+Use `Prod.ext (add_zero 0).symm ?_` and prove the remaining obligations. Use `show b * algebraMap F (Af F) s = algebraMap F (Af F) (k * s) + (b - algebraMap F (FiniteAdeleRing (𝓞 F) F) k) * algebraMap F (Af F) s`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hb1` using `[e, AddChar.map_add_eq_mul, hc1, mul_one]`.
+
+Conclude with `trace_int_of_psi hψ _ hb1)`. Apply `hb` to reduce the goal to its premises. Introduce `v`. Rewrite using `[hbk]`. Use `add_mem ?_ (hk v)` and prove the remaining obligations.
+
+Use `show ((k : F) : v.adicCompletion F) ∈ v.adicCompletionIntegers F`. Rewrite using `[← ho]`. Conclude with `GroundTheory.Global.coe_algebraMap_mem_adicCompletionIntegers v o`.
+-/
 theorem exists_sep : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ b : FiniteAdeleRing (𝓞 F) F, ¬ (∀ v : HeightOneSpectrum (𝓞 F), b v ∈ v.adicCompletionIntegers F) →
     ∃ s : F, ψ (((0 : InfiniteAdeleRing F), b * algebraMap F (FiniteAdeleRing (𝓞 F) F) s) : AF F) ≠ 1 ∧

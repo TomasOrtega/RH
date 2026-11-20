@@ -10,6 +10,11 @@ open UpperTheory.V.Af (FrobEig algSat RepIso tw)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.Gal.TP.Sub
 
+/- English proof (translation)
+Introduce `Γ k _ _ a b`. Use `⟨fun r s g => GlobalTheory.EigTwist.charpoly_sumRep r s g, ?_, ?_⟩` and prove the remaining obligations. Introduce `c g`. Simplify using `[cp, rk1, Matrix.charpoly, Matrix.charmatrix, Matrix.det_unique]`. Introduce and unpack `r r' ⟨u, hu⟩ g`.
+
+Simplify using `only [cp, hu, Units.val_mul]`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.charpoly_units_conj u (r g : Matrix (Fin a) (Fin a) k)`.
+-/
 theorem UpperTheory.Gal.TP.Sub.cpFacts_holds :
     CpFacts := by
   intro Γ k _ _ a b

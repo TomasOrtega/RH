@@ -19,6 +19,13 @@ namespace GlobalTheory.ChainOnto.SatInv
 
 open GlobalTheory.LFun.ConjPlace in
 
+/- English proof (translation)
+Establish `hK` using `mem_iff_invT (n := n) (RingEquiv.refl (w.adicCompletion E)) (O := Ov E w) (O' := Ov E w) fun _ => Iff.rfl`. Establish `hd : invT (RingEquiv.refl (w.adicCompletion E)) n (dGL n u j)⁻¹ = dGL n u j` using `(invT_dGL _ u j).trans (congrArg (fun v => dGL n v j) (Units.ext rfl))`. Rewrite using `[Tj_apply, Tj_apply]`. Use `if_congr ⟨?_, ?_⟩ rfl rfl` and prove the remaining obligations. Introduce and unpack `⟨a, ha, b, hb, H⟩`.
+
+Use `⟨_, (hK _).1 (inv_mem hb), _, (hK _).1 (inv_mem ha), ?_⟩` and prove the remaining obligations. Rewrite using `[← hd, ← map_mul, ← map_mul, (invT _ n).apply_eq_iff_eq, ← inv_inv g, H]`. Use `group`. Introduce and unpack `⟨a, ha, b, hb, H⟩`. Take `⟨a, rfl⟩` from `(invT (RingEquiv.refl (w.adicCompletion E)) n).surjective a`.
+
+Take `⟨b, rfl⟩` from `(invT (RingEquiv.refl (w.adicCompletion E)) n).surjective b`. Rewrite `H` using `[← hd, ← map_mul, ← map_mul, (invT _ n).apply_eq_iff_eq]`. Use `⟨_, inv_mem ((hK b).2 hb), _, inv_mem ((hK a).2 ha), ?_⟩` and prove the remaining obligations. Rewrite using `[H]`. Use `group`.
+-/
 theorem Tj_inv_eq_invT {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (u : (w.adicCompletion E)ˣ) (j : ℕ) (g : GL (Fin n) (w.adicCompletion E)) :
     Tj ℂ n (Ov E w) (u : w.adicCompletion E) j g⁻¹ =
@@ -44,6 +51,9 @@ theorem Tj_inv_eq_invT {E : Type} [Field E] [NumberField E] (w : HeightOneSpectr
 
 open GlobalTheory.LFun.ConjPlace in
 
+/- English proof (translation)
+The claim follows from `Units.ext (Matrix.ext fun i j => by rw [invT_val, ← map_inv, invT_val, inv_inv]; rfl)`.
+-/
 theorem invT_invT {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (g : GL (Fin n) (w.adicCompletion E)) :
     invT (RingEquiv.refl (w.adicCompletion E)) n (invT (RingEquiv.refl (w.adicCompletion E)) n g) = g :=
@@ -52,6 +62,11 @@ theorem invT_invT {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (�
 
 open GlobalTheory.LFun.ConjPlace in
 
+/- English proof (translation)
+Establish `hK` using `mem_iff_invT (n := n) (RingEquiv.refl (w.adicCompletion E)) (O := Ov E w) (O' := Ov E w) fun _ => Iff.rfl`. Rewrite using `[heckeVec_comp_symm _ hK (Tj_mem_hecke hϖ j).1 hx]`. Take `⟨u, rfl⟩ : ∃ u : (w.adicCompletion E)ˣ, (u : w.adicCompletion E) = ϖ` from `⟨Units.mk0 ϖ fun e => by simp [IsUnifV, e] at hϖ, rfl⟩`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Conclude with `Tj_inv_eq_invT w n u j g`.
+-/
 theorem heckeVec_inv_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type)
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (x : V)
     (hx : x ∈ fixed ρ (KGL w n)) {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (j : ℕ) :
@@ -68,6 +83,15 @@ theorem heckeVec_inv_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpect
   exact Tj_inv_eq_invT w n u j g
 
 open GlobalTheory.LFun.ConjPlace in
+/- English proof (translation)
+Introduce `E _ _ w n V _ _ ρ x B h0 hx hB`. Establish `hK` using `mem_iff_invT (n := n) (RingEquiv.refl (w.adicCompletion E)) (O := Ov E w) (O' := Ov E w) fun _ => Iff.rfl`. Set `ρ'` to `ρ.comp (invT (RingEquiv.refl (w.adicCompletion E)) n).symm.toMonoidHom`. Establish `hx' : x ∈ fixed ρ' (KGL w n)` using `(mem_fixed_comp_symm _ hK).2 hx`. Establish `hs : ∀ g, (invT (RingEquiv.refl (w.adicCompletion E)) n).symm g = invT (RingEquiv.refl (w.adicCompletion E)) n g` using `fun g => (MulEquiv.symm_apply_eq _).2 (invT_invT w n g).symm`.
+
+Establish `hρ : ρ'.comp (invT (RingEquiv.refl (w.adicCompletion E)) n).symm.toMonoidHom = ρ` using `MonoidHom.ext fun g => by`. Simplify using `only [ρ', MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, hs, invT_invT]`. Prove the components needed by the constructor for the conclusion. Introduce `h ϖ hϖ j hj`. Rewrite using `[heckeVec_inv_eq w n V ρ x hx hϖ j]`.
+
+Conclude with `(isSatVecGL_invT (.refl _) (fun _ => rfl) rfl h).2.2.2 ϖ hϖ j hj`. Introduce `h`. Establish `h1 : IsSatVecGL w ρ' x (B.map (·⁻¹))` using `⟨h0, hx', by simpa using hB, fun ϖ hϖ j hj => (heckeVec_inv_eq w n V ρ x hx hϖ j).symm.trans (h ϖ hϖ j hj)⟩`. Establish `h2` using `isSatVecGL_invT (.refl _) (fun _ => rfl) rfl h1`. Rewrite `h2` using `[hρ, Multiset.map_map]`.
+
+Simplify using `using h2`.
+-/
 theorem satVec_iff_inv : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (x : V) (B : Multiset ℂˣ), x ≠ 0 → x ∈ fixed ρ (KGL w n) → B.card = n → (IsSatVecGL w ρ x B ↔ ∀ ϖ, IsUnifV E w ϖ → ∀ j ≤ n, heckeVec ρ (KGL w n) (fun g => Tj ℂ n (Ov E w) ϖ j g⁻¹) x = satEig (qV E w) n (B.map (·⁻¹)) j • x) := by
   intro E _ _ w n V _ _ ρ x B h0 hx hB
   have hK := mem_iff_invT (n := n) (RingEquiv.refl (w.adicCompletion E)) (O := Ov E w) (O' := Ov E w)

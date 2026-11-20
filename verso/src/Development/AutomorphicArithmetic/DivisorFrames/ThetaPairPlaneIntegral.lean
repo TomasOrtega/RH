@@ -13,6 +13,21 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 open GlobalTheory.ConeSmallUnf
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he w γ hγr hγu u Ψ hΨ`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by rw [hP.base.cm.2.2.1]; norm_num)`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hspl` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hΦ : om (u, 1) Ψ ∈ schA F (Fin n × Fin d)` using `hspl.pres (u, 1) Ψ hΨ`.
+
+Take `⟨G, hG⟩` from `GlobalTheory.AnisRatInv.exists_rat (inv_mem hγr)`. Establish `hGu : Gᵀ * X.J * G.map σ = X.J` using `GlobalTheory.AnisRatInv.unitary_rat _ G hG`. Establish `hGx : G *ᵥ H.x = H.x` using `GlobalTheory.AnisRatInv.incV_injective (F := F) (by`. Rewrite using `[← GlobalTheory.UnipLine.incM_mulVec_incV, ← hG]`. Conclude with `GlobalTheory.AnisRatInv.unip_fix (inv_mem hγu))`.
+
+Take `⟨a, t, b, hv⟩` from `GlobalTheory.UnipLine.span_E hH hP.herm (G *ᵥ H.y - H.y)`. Establish `hyx : form σ X.J H.y H.x ≠ 0` using `GlobalTheory.UnipLine.form_y_x_ne hH hP.herm`. Establish `ht : t = 0`. Establish `h0 : form σ X.J (G *ᵥ H.y - H.y) H.x = 0`. Rewrite using `[GlobalTheory.AnisRatInv.form_sub_left]`.
+
+Use `conv_lhs => rw [← hGx]`. Rewrite using `[GlobalTheory.AnisRatInv.form_mulVec σ X.J G hGu, hGx, sub_self]`. Rewrite `h0` using `[hv, GlobalTheory.AnisRatInv.form_add_left, GlobalTheory.AnisRatInv.form_add_left, GlobalTheory.AnisRatInv.form_smul_left, GlobalTheory.AnisRatInv.form_smul_left, hH.xx, (hH.orth b).1, mul_zero, zero_add, zero_add]`. Conclude with `(mul_eq_zero.1 h0).resolve_right hyx`. Substitute `ht` using the available equality.
+
+Establish `hGy : G *ᵥ H.y = H.y + H.ι *ᵥ b + a • H.x`. Rewrite `hv` using `[zero_smul, add_zero, sub_eq_iff_eq_add']`. Rewrite using `[hv]`. Normalize the expressions using the abelian group laws. Establish `hy : mat γ⁻¹ *ᵥ incV F H.y = incV F H.y + incM F H.ι *ᵥ incV F b + inclR (F` using `F) (AF F) a • incV F H.x := by`.
+
+Rewrite using `[hG, GlobalTheory.UnipLine.incM_mulVec_incV, GlobalTheory.UnipLine.incM_mulVec_incV, hGy]`. Use function extensionality and compare the values at `i`. Simplify using `only [incV, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul]`. Establish `hmul : om (γ * u, 1) Ψ = om (γ, 1) (om (u, 1) Ψ)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`.
+
+Establish `hph : B.ψ (⅟(2 : AF F) * Algebra.trace (AF F) (AE F E) (inclR (F` using `F) (AF F) a * GlobalTheory.UnipMass.hA σ W.J (incV F w) (incV F w))) = 1 := by`. Rewrite using `[GlobalTheory.UnipMass.hA_incV, ← map_mul, show inclR (F := F) (AF F) (a * form σ W.J w w) = (1 : AF F) ⊗ₜ[F] (a * form σ W.J w w) from rfl, GlobalTheory.SplitAdeleTrace.trace_baseChange_tmul, one_mul, GlobalTheory.ThK.AnisPhase.invOf_two_eq, ← map_mul]`. Conclude with `hψ.2.1 _`. Rewrite using `[hmul, UpperTheory.theta_pair_plane_compat hKP F E σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he γ hγu (incV F b) (inclR (F := F) (AF F) a) hy (incV F w) _ hΦ, hph, one_smul, ← GlobalTheory.ThetaExpandInv.incM_vecMulVec b w, GlobalTheory.ThetaExpandI …`.
+-/
 theorem UpperTheory.theta_pair_plane_integral :
     GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
                  (n d n₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (M : Model σ X W) (M₂ : Model σ X₁ W) (H : Plane E n n₁) (j₀ j₁ : ℕ)

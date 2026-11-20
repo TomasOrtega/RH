@@ -24,18 +24,27 @@ attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehle
 
 variable {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X}
 
+/- English proof (translation)
+The claim follows from `(congrArg (TrivSqZeroExt.snd (R := B)) (add_sub_add_comm (α := TrivSqZeroExt B Ω[B⁄R]) _ _ _ _)).trans (TrivSqZeroExt.snd_add _ _)`.
+-/
 theorem connForm_add {B : Type} [CommRing B] [Algebra R B] (f g : Z1 (O (dp0 R) s)) (x : Sp B ⟶ X)
     (hx : x ≫ s = spMap (algebraMap R B)) :
     connForm (f + g) x hx = connForm f x hx + connForm g x hx :=
   (congrArg (TrivSqZeroExt.snd (R := B))
     (add_sub_add_comm (α := TrivSqZeroExt B Ω[B⁄R]) _ _ _ _)).trans (TrivSqZeroExt.snd_add _ _)
 
+/- English proof (translation)
+The claim follows from `(congrArg (TrivSqZeroExt.snd (R := B)) (smul_sub r (_ : TrivSqZeroExt B Ω[B⁄R]) _).symm).trans (TrivSqZeroExt.snd_smul _ _)`.
+-/
 theorem connForm_smul {B : Type} [CommRing B] [Algebra R B] (r : R) (f : Z1 (O (dp0 R) s))
     (x : Sp B ⟶ X) (hx : x ≫ s = spMap (algebraMap R B)) :
     connForm (r • f) x hx = r • connForm f x hx :=
   (congrArg (TrivSqZeroExt.snd (R := B))
     (smul_sub r (_ : TrivSqZeroExt B Ω[B⁄R]) _).symm).trans (TrivSqZeroExt.snd_smul _ _)
 
+/- English proof (translation)
+Use `letI : Algebra B B' := (α : B →+* B').toAlgebra`. Use `haveI : IsScalarTower R B B' := IsScalarTower.of_algebraMap_eq fun r ↦ (α.commutes r).symm`. Rewrite using `[SemiHom.oneFormMap_eq_kaehlerDifferential_map _ fun _ ↦ rfl]`. Conclude with `eq_add_of_sub_eq' (connForm_map f x hx x' hx' e)`.
+-/
 theorem connForm_algHom {B B' : Type} [CommRing B] [Algebra R B] [CommRing B'] [Algebra R B']
     (α : B →ₐ[R] B') (f : Z1 (O (dp0 R) s)) (x : Sp B ⟶ X) (hx : x ≫ s = spMap (algebraMap R B))
     (x' : Sp B' ⟶ X) (hx' : x' ≫ s = spMap (algebraMap R B')) (e : spMap (α : B →+* B') ≫ x = x') :
@@ -63,8 +72,14 @@ def semiDiag : TrivSqZeroExt B Ω[B⁄R] →+* TrivSqZeroExt B' Ω[B'⁄R'] wher
   map_add' a b := by ext <;> simp
   map_mul' a b := by ext <;> simp
 
+/- English proof (translation)
+The claim follows from `add_zero _`.
+-/
 theorem fst_semiDiag (c : TrivSqZeroExt B Ω[B⁄R]) : (semiDiag ha c).fst = α c.fst := add_zero _
 
+/- English proof (translation)
+The claim follows from `zero_add _`.
+-/
 theorem snd_semiDiag (c : TrivSqZeroExt B Ω[B⁄R]) : (semiDiag ha c).snd = ha.m1 c.snd := zero_add _
 
 def semiDiagHom : (diagExt R B).thick x hx ⟶ h.obj ((diagExt R' B').thick x' hx') where
@@ -82,6 +97,15 @@ def semiDiagHom : (diagExt R B).thick x hx ⟶ h.obj ((diagExt R' B').thick x' h
     rw [fst_semiDiag, h0, map_zero]
   pt := e
 
+/- English proof (translation)
+Establish `k1` using `ev_sq f (semiTriv h ha hx hx' e) (h.functor.map ((diagExt R' B').secHom hx' (diagExt R' B').i fun _ ↦ rfl)) ((diagExt R B).secHom hx (diagExt R B).i fun _ ↦ rfl) (semiDiagHom h ha hx hx' e) fun c ↦ TrivSqZeroExt.ext (fst_semiDiag ha (TrivSqZeroExt.inl c)).symm ((snd_semiDiag ha ( …`. Establish `k2` using `ev_sq f (semiTriv h ha hx hx' e) (h.functor.map ((diagExt R' B').secHom hx' (diagSec R' B') (fst_derSec _))) ((diagExt R B).secHom hx (diagSec R B) (fst_derSec _)) (semiDiagHom h ha hx hx' e) fun c ↦ by`. Express the relevant statement in the definitionally equal form `diagSec R' B' (α c) = semiDiag ha (diagSec R B c)`. Use `ext`. Rewrite using `[fst_semiDiag, fst_derSec, fst_derSec]`.
+
+Rewrite using `[snd_semiDiag, snd_derSec, snd_derSec, SemiHom.m1_D]`. Establish `l1` using `congrArg (TrivSqZeroExt.snd (R := B')) k1`. Establish `l2` using `congrArg (TrivSqZeroExt.snd (R := B')) k2`. Express the relevant statement in the definitionally equal form `0 + _ = (semiDiag ha _).snd + _ at l1`. Express the relevant statement in the definitionally equal form `(diagSec R' B' (ev f (semiTriv h ha hx hx' e))).snd + _ = (semiDiag ha _).snd + _ at l2`.
+
+Rewrite `l1`, `l2` using `[snd_semiDiag]`. Establish `l3 : (diagSec R' B' (ev f (semiTriv h ha hx hx' e))).snd = D R' B' (ev f (semiTriv h ha hx hx' e))` using `snd_derSec _ _`. Rewrite `l2` using `[l3]`. Simplify using `only [connForm, TrivSqZeroExt.snd_sub, map_sub]`. Establish `key : ∀ a b c d e f : Ω[B'⁄R'], 0 + a = c + e → f + b = d + e → a - b = c - d + f` using `fun a b c d e f h1 h2 ↦ by linear_combination (norm := abel1) h1 - h2`.
+
+Conclude with `key _ _ _ _ _ _ l1 l2`.
+-/
 theorem connForm_pull (f : Z1 (O (dp0 R) s)) :
     connForm (h.coef.pullbackOneCocycle f) x' hx' =
       ha.m1 (connForm f x hx) + D R' B' (ev f (semiTriv h ha hx hx' e)) := by
@@ -144,6 +168,11 @@ def ptCmp : FirstDeRham s →ₗ[R] Hyp1 F :=
     exact ⟨fun T ↦ g (Thick.triv (F.obj T) (x T) (hx T)),
       Subtype.ext (Tot1.ext (fun _ _ _ ↦ rfl) fun T ↦ (crystallineConnectionForm_coboundaryZero g _ _).symm)⟩)
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Set `g : Tot0 F'` to `fun T ↦ ev f (semiTriv h (semiHom_coef m T) (hx _) (hx' T) (e T))`. Use `Hyp1.mk_eq_mk.2 ⟨-g, (map_neg _ g).trans (Tot1.ext (fun T T' a ↦ ?_) fun T ↦ ?_)⟩` and prove the remaining obligations. Establish `k` using `ev_sq f (semiTriv h (semiHom_coef m T) (hx _) (hx' T) (e T)) (h.functor.map ((ptFunctor x' hx' hc').map a).hom) ((ptFunctor x hx hc).map (m.G.map a)).hom (semiTriv h (semiHom_coef m T') (hx _) (hx' T') (e T')) fun b ↦ (m.naturality a b).symm`. Establish `key : ∀ a b c d : F'.obj T', a + b = c + d → -(d - a) = c - b` using `fun a b c d h1 ↦ by linear_combination h1`.
+
+Conclude with `key _ _ _ _ k`. Establish `k` using `connForm_pull h (semiHom_coef m T) (hx _) (hx' T) (e T) f`. Establish `key : ∀ a b c : Ω[F'.obj T⁄R'], a = b + c → -c = b - a` using `fun a b c h1 ↦ by rw [h1]; abel`. Conclude with `key _ _ _ k`.
+-/
 theorem pullHyp1_ptCmp {C' : Type u'} [Category.{v'} C'] {F' : C' ⥤ CommAlgCat.{0} R'}
     (x' : ∀ T : C', Sp (F'.obj T) ⟶ X') (hx' : ∀ T, x' T ≫ s' = spMap (algebraMap R' (F'.obj T)))
     (hc' : ∀ ⦃T T' : C'⦄ (a : T ⟶ T'), spMap (mp F' a : F'.obj T →+* F'.obj T') ≫ x' T = x' T')
@@ -179,6 +208,9 @@ instance (s : X ⟶ Sp R) (U : X.Opens) : Algebra R (Sec s U) :=
 def Sec.res (s : X ⟶ Sp R) {U V : X.Opens} (h : V ≤ U) : Sec s U →ₐ[R] Sec s V :=
   GlobalTheory.SectionsCommRing.Sections.restrict s h
 
+/- English proof (translation)
+The claim follows from `congrArg (fun q ↦ q.hom c) (X.presheaf.map_comp (homOfLE h).op (homOfLE h').op)`.
+-/
 theorem Sec.res_res (s : X ⟶ Sp R) {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (c : Sec s U) :
     Sec.res s (h'.trans h) c = Sec.res s h' (Sec.res s h c) :=
   congrArg (fun q ↦ q.hom c) (X.presheaf.map_comp (homOfLE h).op (homOfLE h').op)
@@ -213,16 +245,25 @@ abbrev ClosedForm (s : X ⟶ Sp R) : Submodule R (GlobForm s) := Closed1 (OAff s
 
 abbrev clForm (s : X ⟶ Sp R) : ClosedForm s →ₗ[R] HH1 s := ofForm (OAff s)
 
+/- English proof (translation)
+The claim follows from `Fil1_eq_range _`.
+-/
 theorem cechHodgeFiltration_eq_range (s : X ⟶ Sp R) : CechHodgeFiltration s = LinearMap.range (clForm s) := Fil1_eq_range _
 
 def affPt (s : X ⟶ Sp R) (U : X.affineOpens) : Sp (Sec s U.1) ⟶ X := U.2.fromSpec
 
+/- English proof (translation)
+Use `IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) U.2 le_top` as an intermediate fact. Rewrite `this` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Conclude with `this.symm`.
+-/
 theorem affPt_w (s : X ⟶ Sp R) (U : X.affineOpens) :
     affPt s U ≫ s = spMap (algebraMap R (Sec s U.1)) := by
   have := IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) U.2 le_top
   rw [IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp] at this
   exact this.symm
 
+/- English proof (translation)
+The claim follows from `IsAffineOpen.map_fromSpec U.2 V.2 (homOfLE h).op`.
+-/
 theorem affPt_res (s : X ⟶ Sp R) {U V : X.affineOpens} (h : V.1 ≤ U.1) :
     spMap (Sec.res s h : Sec s U.1 →+* Sec s V.1) ≫ affPt s U = affPt s V :=
   IsAffineOpen.map_fromSpec U.2 V.2 (homOfLE h).op
@@ -231,9 +272,15 @@ def cmpZZ (s : X ⟶ Sp R) : Z1 (O (dp0 R) s) →ₗ[R] cechDeRhamTotalCocyclesO
   ptZZ (F := OAff s) (fun U ↦ affPt s U.unop) (fun U ↦ affPt_w s U.unop)
     fun _ _ a ↦ affPt_res s (leOfHom a.unop)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpZZ_ω (s : X ⟶ Sp R) (f : Z1 (O (dp0 R) s)) (U : AffOp X) :
     (cmpZZ s f).1.2 U = connForm f (affPt s U.unop) (affPt_w s U.unop) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpZZ_f (s : X ⟶ Sp R) (f : Z1 (O (dp0 R) s)) {U V : AffOp X} (a : U ⟶ V) :
     (cmpZZ s f).1.1 U V a = ev f (Thick.trivHom (hx := affPt_w s U.unop)
       (T := Thick.triv _ _ (affPt_w s V.unop)) (Sec.res s (leOfHom a.unop))
@@ -243,6 +290,9 @@ def cmp1 (s : X ⟶ Sp R) : FirstDeRham s →ₗ[R] HH1 s :=
   ptCmp (F := OAff s) (fun U ↦ affPt s U.unop) (fun U ↦ affPt_w s U.unop)
     fun _ _ a ↦ affPt_res s (leOfHom a.unop)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comparison_mk (s : X ⟶ Sp R) (f : Z1 (O (dp0 R) s)) :
     cmp1 s (H1.mk _ f) = Hyp1.mk _ (cmpZZ s f) := rfl
 
@@ -250,9 +300,15 @@ def cmpO (s : X ⟶ Sp R) : FirstCohomStructureSheaf s →ₗ[R] HO1 s :=
   (ptCoef (F := OAff s) (fun U ↦ affPt s U.unop) (fun U ↦ affPt_w s U.unop)
     fun _ _ a ↦ affPt_res s (leOfHom a.unop)).pull1
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+-/
 theorem structureSheaf_comparison_comm (s : X ⟶ Sp R) (c : FirstDeRham s) : toHO1 s (cmp1 s c) = cmpO s (toH1O s c) := by
   obtain ⟨f, rfl⟩ := H1.mk_surjective _ c; rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `toHO1 s (cmp1 s c) = 0`. Rewrite using `[structureSheaf_comparison_comm, show toH1O s c = 0 from hc, map_zero]`.
+-/
 theorem comparison_mem_cechHodgeFiltration (s : X ⟶ Sp R) {c : FirstDeRham s} (hc : c ∈ F1 s) : cmp1 s c ∈ CechHodgeFiltration s := by
   change toHO1 s (cmp1 s c) = 0
   rw [structureSheaf_comparison_comm, show toH1O s c = 0 from hc, map_zero]
@@ -264,9 +320,15 @@ def cmpForm (s : X ⟶ Sp R) : Form s →ₗ[R] ClosedForm s where
   map_add' f g := Subtype.ext (Subtype.ext (funext fun _ ↦ connForm_add f.1 g.1 _ _))
   map_smul' r f := Subtype.ext (Subtype.ext (funext fun _ ↦ connForm_smul r f.1 _ _))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cmpForm_apply (s : X ⟶ Sp R) (f : Form s) (U : AffOp X) :
     (cmpForm s f).1.1 U = connForm f.1 (affPt s U.unop) (affPt_w s U.unop) := rfl
 
+/- English proof (translation)
+The claim follows from `congrArg (Hyp1.mk _) (Subtype.ext (Tot1.ext (fun _ _ _ ↦ f.2 _ rfl rfl) fun _ ↦ rfl))`.
+-/
 theorem comparison_formClass (s : X ⟶ Sp R) (f : Form s) : cmp1 s (Form.cl s f) = clForm s (cmpForm s f) :=
   congrArg (Hyp1.mk _) (Subtype.ext (Tot1.ext (fun _ _ _ ↦ f.2 _ rfl rfl) fun _ ↦ rfl))
 
@@ -275,9 +337,15 @@ section Pull
 abbrev Pair (φ : X' ⟶ X) : Type :=
   {p : X'.affineOpens × X.affineOpens // p.1.1 ≤ φ ⁻¹ᵁ p.2.1}
 
+/- English proof (translation)
+The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1`.
+-/
 theorem Pair.le_fst {φ : X' ⟶ X} {p q : Pair φ} (h : p ≤ q) : p.1.1 ≤ q.1.1 :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).1
 
+/- English proof (translation)
+The claim follows from `(Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2`.
+-/
 theorem Pair.le_snd {φ : X' ⟶ X} {p q : Pair φ} (h : p ≤ q) : p.1.2 ≤ q.1.2 :=
   (Prod.le_def.1 (Subtype.coe_le_coe.2 h)).2
 
@@ -297,10 +365,16 @@ variable {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X}
 def secPull (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (p : Pair φ) : Sec s p.1.2.1 →+* Sec s' p.1.1.1 :=
   (φ.appLE _ _ p.2).hom
 
+/- English proof (translation)
+The claim follows from `IsAffineOpen.SpecMap_appLE_fromSpec φ p.1.2.2 p.1.1.2 p.2`.
+-/
 theorem secPull_affPt (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (p : Pair φ) :
     spMap (secPull s s' p) ≫ affPt s p.1.2 = affPt s' p.1.1 ≫ φ :=
   IsAffineOpen.SpecMap_appLE_fromSpec φ p.1.2.2 p.1.1.2 p.2
 
+/- English proof (translation)
+Establish `e : spMap ((secPull s s' p).comp (algebraMap R _)) = spMap ((algebraMap R' _).comp σ)`. Rewrite using `[spMap_comp, spMap_comp, ← affPt_w, ← affPt_w, ← Category.assoc, secPull_affPt, Category.assoc, h, Category.assoc]`. Introduce `r b`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * _) (congrArg (fun q ↦ q.hom r) (Spec.map_injective e))`.
+-/
 theorem semiHom_secPull (h : φ ≫ s = s' ≫ spMap σ) (p : Pair φ) : SemiHom σ (secPull s s' p) := by
   have e : spMap ((secPull s s' p).comp (algebraMap R _)) = spMap ((algebraMap R' _).comp σ) := by
     rw [spMap_comp, spMap_comp, ← affPt_w, ← affPt_w, ← Category.assoc, secPull_affPt,
@@ -330,6 +404,9 @@ def IsPullForm (ω : GlobForm s) (ω' : GlobForm s') : Prop :=
 
 variable {h}
 
+/- English proof (translation)
+Establish `k : ∀ p : (Pair φ)ᵒᵖ, (pullGlob1 (pairRes φ s') ω').1 p = ω'.1 (op p.unop.1.1)` using `fun p ↦ cechDeRhamCoefMapOneForms_restrictAlongFunctor (OAff s') (pairFst φ) p (ω'.1 (op p.unop.1.1))`. Establish `k' : ∀ p : (Pair φ)ᵒᵖ, (pullGlob1 (pairPull h) ω).1 p = (semiHom_secPull h p.unop).m1 (ω.1 (op p.unop.1.2))` using `fun p ↦ rfl`. Use `⟨fun e p ↦ ?_, fun e ↦ Subtype.ext (funext fun p ↦ ?_)⟩` and prove the remaining obligations. Conclude with `(k' (op p)).symm.trans ((congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 (op p)) e).trans (k (op p)))`. Conclude with `(k' p).trans ((e p.unop).trans (k p).symm)`.
+-/
 theorem isPullForm_iff {ω : GlobForm s} {ω' : GlobForm s'} : IsPullForm h ω ω' ↔
     ∀ p : Pair φ, (semiHom_secPull h p).m1 (ω.1 (op p.1.2)) = ω'.1 (op p.1.1) := by
   have k : ∀ p : (Pair φ)ᵒᵖ, (pullGlob1 (pairRes φ s') ω').1 p = ω'.1 (op p.unop.1.1) := fun p ↦
@@ -341,40 +418,72 @@ theorem isPullForm_iff {ω : GlobForm s} {ω' : GlobForm s'} : IsPullForm h ω �
       ((congrArg (fun z : Glob1 (OPair φ s') ↦ z.1 (op p)) e).trans (k (op p)))
   · exact (k' p).trans ((e p.unop).trans (k p).symm)
 
+/- English proof (translation)
+The claim follows from `(map_zero _).trans (map_zero _).symm`.
+-/
 theorem IsPull1.zero : IsPull1 h 0 0 := (map_zero _).trans (map_zero _).symm
 
+/- English proof (translation)
+Unfold `IsPull1 at *`. Rewrite using `[map_add, map_add, ha, hb]`.
+-/
 theorem IsPull1.add {a b : HH1 s} {a' b' : HH1 s'} (ha : IsPull1 h a a') (hb : IsPull1 h b b') :
     IsPull1 h (a + b) (a' + b') := by
   unfold IsPull1 at *; rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Unfold `IsPull1 at *`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, ha]`. Both sides reduce to the same expression.
+-/
 theorem IsPull1.smul {a : HH1 s} {a' : HH1 s'} (ha : IsPull1 h a a') (r : R) :
     IsPull1 h (r • a) (σ r • a') := by
   unfold IsPull1 at *; rw [map_smulₛₗ, map_smulₛₗ, ha]; rfl
 
+/- English proof (translation)
+The claim follows from `(map_zero _).trans (map_zero _).symm`.
+-/
 theorem IsPull2.zero : IsPull2 h 0 0 := (map_zero _).trans (map_zero _).symm
 
+/- English proof (translation)
+Unfold `IsPull2 at *`. Rewrite using `[map_add, map_add, ha, hb]`.
+-/
 theorem IsPull2.add {a b : HH2 s} {a' b' : HH2 s'} (ha : IsPull2 h a a') (hb : IsPull2 h b b') :
     IsPull2 h (a + b) (a' + b') := by
   unfold IsPull2 at *; rw [map_add, map_add, ha, hb]
 
+/- English proof (translation)
+Unfold `IsPull2 at *`. Rewrite using `[map_smulₛₗ, map_smulₛₗ, ha]`. Both sides reduce to the same expression.
+-/
 theorem IsPull2.smul {a : HH2 s} {a' : HH2 s'} (ha : IsPull2 h a a') (r : R) :
     IsPull2 h (r • a) (σ r • a') := by
   unfold IsPull2 at *; rw [map_smulₛₗ, map_smulₛₗ, ha]; rfl
 
+/- English proof (translation)
+Unfold `IsPull1 IsPull2 at *`. Rewrite using `[pullHyp2_cup, pullHyp2_cup, ha, hb]`.
+-/
 theorem IsPull1.cup {a b : HH1 s} {a' b' : HH1 s'} (ha : IsPull1 h a a') (hb : IsPull1 h b b') :
     IsPull2 h (cupHH s a b) (cupHH s' a' b') := by
   unfold IsPull1 IsPull2 at *; rw [pullHyp2_cup, pullHyp2_cup, ha, hb]
 
+/- English proof (translation)
+Unfold `IsPull1 IsPullO at *`. Rewrite using `[← toO_pullHyp1, ← toO_pullHyp1, ha]`.
+-/
 theorem IsPull1.toO {a : HH1 s} {a' : HH1 s'} (ha : IsPull1 h a a') :
     IsPullO h (toHO1 s a) (toHO1 s' a') := by
   unfold IsPull1 IsPullO at *; rw [← toO_pullHyp1, ← toO_pullHyp1, ha]
 
+/- English proof (translation)
+Unfold `IsPull1`. Rewrite using `[pullHyp1_ofForm, pullHyp1_ofForm]`. Conclude with `congrArg _ (Subtype.ext e)`.
+-/
 theorem IsPullForm.cl {ω : ClosedForm s} {ω' : ClosedForm s'} (e : IsPullForm h ω.1 ω'.1) :
     IsPull1 h (clForm s ω) (clForm s' ω') := by
   unfold IsPull1
   rw [pullHyp1_ofForm, pullHyp1_ofForm]
   exact congrArg _ (Subtype.ext e)
 
+/- English proof (translation)
+Set `x' : ∀ p : (Pair φ)ᵒᵖ, Sp ((OPair φ s').obj p) ⟶ X'` to `fun p ↦ affPt s' p.unop.1.1`. Establish `hx' : ∀ p, x' p ≫ s' = spMap (algebraMap R' ((OPair φ s').obj p))` using `fun p ↦ affPt_w s' _`. Establish `hc' : ∀ ⦃p q : (Pair φ)ᵒᵖ⦄ (a : p ⟶ q), spMap (mp (OPair φ s') a : _ →+* _) ≫ x' p = x' q` using `fun _ _ a ↦ affPt_res s' (Pair.le_fst (leOfHom a.unop))`. Use `(pullHyp1_ptCmp _ _ _ x' hx' hc' h (pairPull h.w) (fun p ↦ secPull_affPt s s' p.unop) c).trans ?_` and prove the remaining obligations. Use `((pullHyp1_ptCmp _ _ _ x' hx' hc' (IsMor.id _ s') (pairRes φ s') (fun p ↦ ?_) _).trans ?_).symm` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `spMap (RingHom.id _) ≫ _ = _`. Rewrite using `[spMap_id, Category.id_comp, Category.comp_id]`. Both sides reduce to the same expression. Rewrite using `[IsMor.pullCohomologyOne_id]`.
+-/
 theorem comparison_pullback (h : IsMor (dp0 R) s (dp0 R') s' σ φ) (c : FirstDeRham s) :
     IsPull1 h.w (cmp1 s c) (cmp1 s' (h.pull1 c)) := by
   let x' : ∀ p : (Pair φ)ᵒᵖ, Sp ((OPair φ s').obj p) ⟶ X' := fun p ↦ affPt s' p.unop.1.1
@@ -390,9 +499,15 @@ theorem comparison_pullback (h : IsMor (dp0 R) s (dp0 R') s' σ φ) (c : FirstDe
 def pairIdTrans (X : Scheme.{0}) : pairSnd (𝟙 X) ⟶ pairFst (𝟙 X) where
   app p := (homOfLE (show p.unop.1.1 ≤ p.unop.1.2 from p.unop.2)).op
 
+/- English proof (translation)
+The claim follows from `pullHyp1_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c`.
+-/
 theorem isPull1_id (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) (c : HH1 s) : IsPull1 h c c :=
   pullHyp1_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c
 
+/- English proof (translation)
+The claim follows from `pullHyp2_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c`.
+-/
 theorem isPull2_id (h : 𝟙 X ≫ s = s ≫ spMap (RingHom.id R)) (c : HH2 s) : IsPull2 h c c :=
   pullHyp2_eq_of_natTrans (pairPull h) (pairRes _ s) (pairIdTrans X) (fun _ _ ↦ rfl) c
 
@@ -404,6 +519,9 @@ variable (R) (B : Type) [CommRing B] [Algebra R B]
 
 abbrev algStr : Sp B ⟶ Sp R := spMap (algebraMap R B)
 
+/- English proof (translation)
+The claim follows from `(Category.comp_id _).symm.trans (affPt_w (𝟙 (Sp B)) U)`.
+-/
 theorem affPt_eq (U : (Sp B).affineOpens) :
     affPt (algStr R B) U = Spec.map (secMap (𝟙 (Sp B)) U.1) :=
   (Category.comp_id _).symm.trans (affPt_w (𝟙 (Sp B)) U)
@@ -416,6 +534,9 @@ def toSec (U : (Sp B).affineOpens) : B →ₐ[R] Sec (algStr R B) U.1 :=
         ((congrArg (· ≫ algStr R B) (affPt_eq R B U)).symm.trans (affPt_w _ U))
       exact congrArg (fun q ↦ q.hom r) (Spec.map_injective e) }
 
+/- English proof (translation)
+The claim follows from `(Sec.res (𝟙 (Sp B)) (leOfHom a.unop)).commutes b`.
+-/
 theorem res_toSec ⦃U V : AffOp (Sp B)⦄ (a : U ⟶ V) (b : B) :
     mp (OAff (algStr R B)) a (toSec R B U.unop b) = toSec R B V.unop b :=
   (Sec.res (𝟙 (Sp B)) (leOfHom a.unop)).commutes b
@@ -427,11 +548,19 @@ def affEquiv : AlgebraFirstDeRham R B ≃ₗ[R] HH1 (algStr R B) :=
         le_top (a := U.unop.1))).op) fun _ _ ↦ rfl)
       (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of B)).inv))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem affEquiv_mk (ω : LinearMap.ker (dOne R B)) : affEquiv R B (Submodule.Quotient.mk ω) =
     clForm _ (coneForm (F := OAff (algStr R B)) (fun U ↦ toSec R B U.unop) (res_toSec R B) ω) := rfl
 
 open Polynomial
 
+/- English proof (translation)
+Proceed by induction on `ω using ind1 with`. Consider the case `h b c`. Rewrite using `[dOne_smul_D, polynomial_D_apply R b, polynomial_D_apply R c]`. Simplify using the standard rewrite rules. Consider the case `h0 => simp`.
+
+Consider the case `ha x y hx hy => rw [map_add, hx, hy, add_zero]`.
+-/
 theorem dOne_line (ω : Ω[R[X]⁄R]) : dOne R R[X] ω = 0 := by
   induction ω using ind1 with
   | h b c =>
@@ -447,12 +576,20 @@ def lineEquiv : (Ω[R[X]⁄R] ⧸ LinearMap.range (D R R[X]).toLinearMap) ≃ₗ
       exact ⟨fun ⟨x, hx, e⟩ ↦ e ▸ hx, fun hω ↦ ⟨⟨ω, dOne_line R ω⟩, hω, rfl⟩⟩)).symm.trans
     (affEquiv R R[X])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lineEquiv_mk (ω : Ω[R[X]⁄R]) : lineEquiv R (Submodule.Quotient.mk ω) =
     affEquiv R R[X] (Submodule.Quotient.mk ⟨ω, dOne_line R ω⟩) := rfl
 
 attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehler in
 variable {R B} in
 
+/- English proof (translation)
+Establish `c0 : coordLift (Thick.triv B x hx) = (Spec.preimage x).hom Polynomial.X` using `π_coordLift (Thick.triv B x hx)`. Establish `c1 : (coordLift ((diagExt R B).thick x hx)).fst = (Spec.preimage x).hom Polynomial.X` using `π_coordLift ((diagExt R B).thick x hx)`. Express the relevant statement in the definitionally equal form `TrivSqZeroExt.snd (R := B) ((TrivSqZeroExt.inl (coordLift (Thick.triv B x hx)) * (_ - TrivSqZeroExt.inl (coordLift (Thick.triv B x hx))) + (divided₂ (diagExt R B).sq).dpow 2 _) - (diagSec R B (coordLift (Thick.triv B x hx)) * (_ - diagSec R B (coordLift (Thick.triv B x hx))) + (d …`. Rewrite using `[squareZeroDividedPowers_dpow _ le_rfl, squareZeroDividedPowers_dpow _ le_rfl, c0]`. Establish `key : ∀ (c : TrivSqZeroExt B Ω[B⁄R]) (b : B), c.fst = b → TrivSqZeroExt.snd ((TrivSqZeroExt.inl b * (c - TrivSqZeroExt.inl b) + 0) - (diagSec R B b * (c - diagSec R B b) + 0)) = b • D R B b`.
+
+Introduce `c b h`. Simplify using `[h, smul_sub]`. Conclude with `key _ _ c1`.
+-/
 theorem connForm_tdt (x : Sp B ⟶ Sp R[X]) (hx : x ≫ lineStr R = spMap (algebraMap R B)) :
     connForm (tdt R).1 x hx =
       (Spec.preimage x).hom Polynomial.X • D R B ((Spec.preimage x).hom Polynomial.X) := by
@@ -472,6 +609,11 @@ theorem connForm_tdt (x : Sp B ⟶ Sp R[X]) (hx : x ≫ lineStr R = spMap (algeb
     simp [h, smul_sub]
   exact key _ _ c1
 
+/- English proof (translation)
+Rewrite using `[comparison_formClass, lineEquiv_mk, affEquiv_mk]`. Use `congrArg _ (Subtype.ext (Subtype.ext (funext fun U ↦ ?_)))` and prove the remaining obligations. Rewrite using `[cmpForm_apply, connForm_tdt, coneForm_apply, SemiHom.oneFormMap_smul_semilinear, SemiHom.m1_D]`. Establish `: Spec.preimage (affPt (lineStr R) U.unop) = secMap (𝟙 (Sp R[X])) U.unop.1`. Rewrite using `[affPt_eq]`.
+
+Conclude with `Spec.preimage_map _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem comparison_tdt_line : cmp1 (lineStr R) (Form.cl _ (tdt R)) =
     lineEquiv R (Submodule.Quotient.mk ((Polynomial.X : R[X]) • D R R[X] Polynomial.X)) := by
   rw [comparison_formClass, lineEquiv_mk, affEquiv_mk]
@@ -481,6 +623,9 @@ theorem comparison_tdt_line : cmp1 (lineStr R) (Form.cl _ (tdt R)) =
     rw [affPt_eq]; exact Spec.preimage_map _
   rw [this]; rfl
 
+/- English proof (translation)
+Rewrite using `[comparison_tdt_line, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]`. Use `⟨r • (Polynomial.X * Polynomial.X), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, Derivation.coeFn_coe, Derivation.leibniz, ← two_smul R, smul_smul, h, one_smul]`.
+-/
 example (r : R) (h : r * 2 = 1) : cmp1 (lineStr R) (Form.cl _ (tdt R)) = 0 := by
   rw [comparison_tdt_line, LinearEquiv.map_eq_zero_iff, Submodule.Quotient.mk_eq_zero]
   refine ⟨r • (Polynomial.X * Polynomial.X), ?_⟩

@@ -10,6 +10,9 @@ namespace GlobalTheory.NB.LT.EEBasic
 section General
 variable {B : Type} [CommRing B] (b : B)
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton b), Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton, map_pow]`.
+-/
 theorem pow_dvd_iff_eval (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣ x ↔
       AdicCompletion.eval (Ideal.span {b}) B k x = 0 := by
@@ -18,12 +21,18 @@ theorem pow_dvd_iff_eval (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton,
     map_pow]
 
+/- English proof (translation)
+Rewrite using `[AdicCompletion.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem eval_algebraMap (k : ℕ) (c : B) :
     AdicCompletion.eval (Ideal.span {b}) B k (algebraMap B (AdicCompletion (Ideal.span {b}) B) c)
       = Submodule.Quotient.mk c := by
   rw [AdicCompletion.algebraMap_apply]
   rfl
 
+/- English proof (translation)
+Rewrite `h` using `[pow_dvd_iff_eval, eval_algebraMap, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `h`.
+-/
 theorem pow_dvd_of_pow_dvd (k : ℕ) (c : B)
     (h : (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣
       algebraMap B (AdicCompletion (Ideal.span {b}) B) c) : b ^ k ∣ c := by
@@ -31,6 +40,9 @@ theorem pow_dvd_of_pow_dvd (k : ℕ) (c : B)
     Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton] at h
   exact h
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {b}) B k x)`. Conclude with `⟨c, by rw [pow_dvd_iff_eval, map_sub, eval_algebraMap, hc, sub_self]⟩`.
+-/
 theorem exists_pow_dvd_sub (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     ∃ c : B, (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣
       x - algebraMap B (AdicCompletion (Ideal.span {b}) B) c := by
@@ -38,6 +50,9 @@ theorem exists_pow_dvd_sub (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     (AdicCompletion.eval (Ideal.span {b}) B k x)
   exact ⟨c, by rw [pow_dvd_iff_eval, map_sub, eval_algebraMap, hc, sub_self]⟩
 
+/- English proof (translation)
+Establish `h : Ideal.span {algebraMap B (AdicCompletion (Ideal.span {b}) B) b} = (Ideal.span {b}).map (algebraMap B (AdicCompletion (Ideal.span {b}) B))`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[h, IsAdicComplete.map_algebraMap_iff]`. Conclude with `AdicCompletion.isAdicComplete (Submodule.fg_span_singleton b)`.
+-/
 theorem complete : IsAdicComplete
     (Ideal.span {algebraMap B (AdicCompletion (Ideal.span {b}) B) b})
     (AdicCompletion (Ideal.span {b}) B) := by
@@ -51,6 +66,11 @@ end General
 
 variable {O : Type} [CommRing O]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩ n`. Rewrite using `[coeff_C_mul]`. Conclude with `dvd_mul_right _ _`. Introduce `h choose q hq using h`.
+
+Conclude with `⟨PowerSeries.mk q, PowerSeries.ext fun n => by rw [coeff_C_mul, coeff_mk, hq]⟩`.
+-/
 theorem C_dvd_iff (c : O) (a : O⟦X⟧) : C c ∣ a ↔ ∀ n, c ∣ coeff n a := by
   constructor
   · rintro ⟨q, rfl⟩ n
@@ -60,12 +80,20 @@ theorem C_dvd_iff (c : O) (a : O⟦X⟧) : C c ∣ a ↔ ∀ n, c ∣ coeff n a 
     choose q hq using h
     exact ⟨PowerSeries.mk q, PowerSeries.ext fun n => by rw [coeff_C_mul, coeff_mk, hq]⟩
 
+/- English proof (translation)
+Rewrite `h`, the goal using `[C_dvd_iff]`. Introduce `n`. Use `h (n + m)` as an intermediate fact. Rewrite `this` using `[coeff_X_pow_mul]`. Then use the resulting hypothesis.
+-/
 theorem C_dvd_of_dvd_X_pow_mul (c : O) (m : ℕ) (a : O⟦X⟧) (h : C c ∣ X ^ m * a) : C c ∣ a := by
   rw [C_dvd_iff] at h ⊢
   intro n
   have := h (n + m)
   rwa [coeff_X_pow_mul] at this
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `h`. Take `⟨m, q, hq⟩` from `IsLocalization.Away.surj (X : O⟦X⟧) z`. Establish `h1 : algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (X ^ m * a) = algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (C c * q)`. Rewrite using `[map_mul, map_mul, map_pow, hz, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨n, hn⟩` from `IsLocalization.Away.exists_of_eq (X : O⟦X⟧) h1`. Use `C_dvd_of_dvd_X_pow_mul c (n + m) a ⟨X ^ n * q, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_assoc, hn]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem C_dvd_of_dvd_away (c : O) (a : O⟦X⟧)
     (h : algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (C c) ∣
       algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) a) : C c ∣ a := by
@@ -78,11 +106,19 @@ theorem C_dvd_of_dvd_away (c : O) (a : O⟦X⟧)
   refine C_dvd_of_dvd_X_pow_mul c (n + m) a ⟨X ^ n * q, ?_⟩
   rw [pow_add, mul_assoc, hn]; ring
 
+/- English proof (translation)
+Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply]`. Both sides reduce to the same expression.
+-/
 theorem algebraMap_EE (l : ℕ) (a : O⟦X⟧) : algebraMap O⟦X⟧ (EE O l) a =
     algebraMap (Localization.Away (X : O⟦X⟧)) (EE O l)
       (algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) a) := by
   rw [AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply]; rfl
 
+/- English proof (translation)
+Rewrite `h` using `[algebraMap_EE, ← map_natCast (algebraMap (Localization.Away (X : O⟦X⟧)) (EE O l)) l]`. Establish `h2` using `pow_dvd_of_pow_dvd _ k _ h`. Establish `e : (l : O⟦X⟧) ^ k = C ((l : O) ^ k)` using `by rw [map_pow, map_natCast]`. Rewrite using `[e]`. Apply `C_dvd_of_dvd_away` to reduce the goal to its premises.
+
+Rewrite using `[← e, map_pow, map_natCast]` and apply the resulting hypothesis.
+-/
 theorem saturated (l : ℕ) (a : O⟦X⟧) (k : ℕ)
     (h : (l : EE O l) ^ k ∣ algebraMap O⟦X⟧ (EE O l) a) : (l : O⟦X⟧) ^ k ∣ a := by
   rw [algebraMap_EE, ← map_natCast (algebraMap (Localization.Away (X : O⟦X⟧)) (EE O l)) l] at h
@@ -98,6 +134,17 @@ namespace GlobalTheory.NB.LT
 
 open EEBasic
 
+/- English proof (translation)
+Introduce `l O _ _ _ _ _ _ hl`. Use `⟨?_, ?_, ?_, ?_, saturated l⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `PowerSeries.ext fun n => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_zero]`. Use `IsHausdorff.haus (I := IsLocalRing.maximalIdeal O) inferInstance _ fun k => ?_` and prove the remaining obligations. Establish `h1` using `saturated l a k (by rw [ha]; exact dvd_zero _)`. Establish `e : (l : O⟦X⟧) ^ k = C ((l : O) ^ k)` using `by rw [map_pow, map_natCast]`. Rewrite `h1` using `[e, C_dvd_iff]`.
+
+Take `⟨q, hq⟩` from `h1 n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, hq]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ((IsLocalRing.mem_maximalIdeal _).2 hl) k)`. Rewrite using `[algebraMap_EE]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (X : O⟦X⟧)).map _`.
+
+Use `complete (l : Localization.Away (X : O⟦X⟧))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `x k`. Take `⟨c, hc⟩` from `exists_pow_dvd_sub (l : Localization.Away (X : O⟦X⟧)) k x`. Rewrite `hc` using `[map_natCast]`.
+
+Take `⟨m, q, hq⟩` from `IsLocalization.Away.surj (X : O⟦X⟧) c`. Use `⟨q, m, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_EE l q, ← hq, map_mul, algebraMap_EE, map_pow (algebraMap O⟦X⟧ _), ← sub_mul]`. Conclude with `hc.mul_right _`.
+-/
 theorem EE_basic : ∀ {l : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [CharZero O], l.Prime → ¬ IsUnit (l : O) → Function.Injective (algebraMap O⟦X⟧ (EE O l)) ∧ IsUnit (algebraMap O⟦X⟧ (EE O l) X) ∧ IsAdicComplete (Ideal.span {(l : EE O l)}) (EE O l) ∧ (∀ (x : EE O l) (k : ℕ), ∃ (a : O⟦X⟧) (m : ℕ), (l : EE O l) ^ k ∣ x * algebraMap O⟦X⟧ (EE O l) (X ^ m) - algebraMap O⟦X⟧ (EE O l) a) ∧ (∀ (a : O⟦X⟧) (k : ℕ), (l : EE O l) ^ k ∣ algebraMap O⟦X⟧ (EE O l) a → (l : O⟦X⟧) ^ k ∣ a) := by
   intro l O _ _ _ _ _ _ hl
   refine ⟨?_, ?_, ?_, ?_, saturated l⟩

@@ -12,6 +12,9 @@ section Gen
 
 variable (L : Type) [Field L] [NumberField L]
 
+/- English proof (translation)
+Use `(Filter.eventually_cofinite.mp (ordAt_eventually L x)).subset fun v hv h0 => hv ?_` and prove the remaining obligations. Use `show c v ^ ordAt L v x = 1`. Rewrite using `[h0, zpow_zero]`.
+-/
 theorem mulSupport_ord_finite (c : HeightOneSpectrum (𝓞 L) → ℂˣ) (x : Ideles L) :
     (Function.mulSupport fun v => c v ^ ordAt L v x).Finite := by
   refine (Filter.eventually_cofinite.mp (ordAt_eventually L x)).subset fun v hv h0 => hv ?_
@@ -27,11 +30,17 @@ def unrQ (c : HeightOneSpectrum (𝓞 L) → ℂˣ) : Ideles L →* ℂˣ where
 
 variable {L}
 
+/- English proof (translation)
+Use `show ∏ᶠ v, c v ^ ordAt L v u = 1`. Establish `h : ∀ v, c v ^ ordAt L v u = 1` using `fun v => by rw [(ordAt_eq_zero_iff L v u).mpr (hu v), zpow_zero]`. Simplify using `only [h, finprod_one]`.
+-/
 theorem unrQ_unit (c : HeightOneSpectrum (𝓞 L) → ℂˣ) {u : Ideles L} (hu : u ∈ unitIdeles L) : unrQ L c u = 1 := by
   show ∏ᶠ v, c v ^ ordAt L v u = 1
   have h : ∀ v, c v ^ ordAt L v u = 1 := fun v => by rw [(ordAt_eq_zero_iff L v u).mpr (hu v), zpow_zero]
   simp only [h, finprod_one]
 
+/- English proof (translation)
+Use `continuous_of_continuousAt_one Φ ?_` and prove the remaining obligations. Use `(continuousAt_const (y := (1 : ℂˣ))).congr ?_` and prove the remaining obligations. Conclude with `Filter.mem_of_superset (hO.mem_nhds (one_mem _)) fun u hu => (h u hu).symm`.
+-/
 theorem continuous_of_unit (hO : OpenUnits L) (Φ : Ideles L →* ℂˣ) (h : ∀ u ∈ unitIdeles L, Φ u = 1) : Continuous Φ := by
   refine continuous_of_continuousAt_one Φ ?_
   refine (continuousAt_const (y := (1 : ℂˣ))).congr ?_

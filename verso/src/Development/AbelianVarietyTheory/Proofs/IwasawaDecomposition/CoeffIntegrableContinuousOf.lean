@@ -11,6 +11,11 @@ namespace GlobalTheory.RootExch.CoefInt
 
 variable {D : D7} {A B : HSp D} {ι : A.V →ₗ[D.host.E] B.V}
 
+/- English proof (translation)
+Establish `i0 : IsTopologicalRing (AE D)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)`. Establish `i1 : IsModuleTopology (AF D.host.F) (AE D)` using `⟨rfl⟩`. Establish `hm : Continuous (mt B)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `ht : Continuous (Algebra.trace (AF D.host.F) (AE D))` using `IsModuleTopology.continuous_of_linearMap _`. Establish `ha : ∀ v, Continuous fun g => actV B g v` using `fun v => hm.matrix_mulVec continuous_const`.
+
+Use `hψ.comp (ht.comp (continuous_const.mul (continuous_finsetSum _ fun i _ => ?_)))` and prove the remaining obligations. Conclude with `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => continuous_const.mul ((continuous_apply b).comp (ha _))`.
+-/
 theorem continuous_psiN (d : BesselDatum A B ι) {ψ : AddChar (AF D.host.F) ℂ} (hψ : Continuous ψ) :
     Continuous (d.psiN ψ) := by
   have i0 : IsTopologicalRing (AE D) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := D.host.F) (E := D.host.E)
@@ -26,6 +31,9 @@ def FlagCocompact : Prop :=
   ∀ (D : D7) (B : HSp D) (ρ : ℕ) (e : Matrix (Fin B.rank) (Fin ρ) D.host.E), IsIsoSub B e →
     ∃ K : Set (NFlag B e), IsCompact K ∧ ∀ n, ∃ γ ∈ NFlagQ B e, ∃ k ∈ K, n = γ * k
 
+/- English proof (translation)
+Take `⟨K, hK, h⟩` from `H D B _ (GlobalTheory.BesselCompare.toBes d).e (GlobalTheory.BesselCompare.toBes d).e_iso`. Establish `hN` using `(GlobalTheory.BesselCompare.same_toBes d).2.2.1`. Use `⟨Subtype.val '' K, hK.image continuous_subtype_val, fun n hn => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, e⟩` from `h ⟨n, hN ▸ hn⟩`. Conclude with `⟨γ, hγ, k, ⟨k, hk, rfl⟩, congrArg Subtype.val e⟩`.
+-/
 theorem exists_compact (H : FlagCocompact) (d : BesselDatum A B ι) :
     ∃ K : Set (GA D B), IsCompact K ∧ ∀ n ∈ d.N, ∃ γ ∈ GQ B, ∃ k ∈ K, n = γ * k := by
   obtain ⟨K, hK, h⟩ := H D B _ (GlobalTheory.BesselCompare.toBes d).e (GlobalTheory.BesselCompare.toBes d).e_iso
@@ -34,6 +42,19 @@ theorem exists_compact (H : FlagCocompact) (d : BesselDatum A B ι) :
   obtain ⟨γ, hγ, k, hk, e⟩ := h ⟨n, hN ▸ hn⟩
   exact ⟨γ, hγ, k, ⟨k, hk, rfl⟩, congrArg Subtype.val e⟩
 
+/- English proof (translation)
+Introduce `D A B ι d ψ hψ ν 𝓝 hν F hF hinv`. Take `⟨b1, b2, b3, b4, b5, -, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B`. Establish `hbd : ∀ C : Set (GA D B), IsCompact C → ∃ M : ℝ, ∀ n ∈ d.N, ∀ g ∈ C, ‖F (n * g)‖ ≤ M`. Introduce `C hC`. Take `⟨K, hK, h⟩` from `exists_compact H d`.
+
+Take `⟨M, hM⟩` from `(hK.mul hC).exists_bound_of_continuousOn hF.continuousOn`. Use `⟨M, fun n hn g hg => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `h n hn`. Rewrite using `[mul_assoc, hinv γ hγ]`. Conclude with `hM _ (Set.mul_mem_mul hk hg)`.
+
+Establish `hfin : ν 𝓝 ≠ ⊤` using `by rw [hν.2.2]; exact ENNReal.one_ne_top`. Establish `: SecondCountableTopology d.N` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hχ : Continuous fun n : d.N => star (d.psiN ψ (n : GA D B))` using `((continuous_psiN d hψ.1).comp continuous_subtype_val).star`. Establish `hc : ∀ g, Continuous fun n : d.N => F ((n : GA D B) * g) * star (d.psiN ψ (n : GA D B))` using `fun g => (hF.comp (continuous_subtype_val.mul continuous_const)).mul hχ`. Establish `hn : ∀ g (n : d.N), ‖F ((n : GA D B) * g) * star (d.psiN ψ (n : GA D B))‖ = ‖F ((n : GA D B) * g)‖` using `fun g n => by rw [norm_mul, norm_star, BesselDatum.psiN, hψ.2.1, mul_one]`.
+
+Use `⟨fun g => ?_, ?_, hbd⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hbd {g} isCompact_singleton`. Conclude with `Measure.integrableOn_of_bounded (M := M) hfin (hc g).measurable.aestronglyMeasurable (.of_forall fun n => (hn g n).trans_le (hM n n.2 g rfl))`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Take `⟨C, hC, hCg⟩` from `exists_compact_mem_nhds g`.
+
+Take `⟨M, hM⟩` from `hbd C hC`. Establish `: IsFiniteMeasure (ν.restrict 𝓝)` using `isFiniteMeasure_restrict.2 hfin`. Use `continuousAt_of_dominated (bound := fun _ => M) (.of_forall fun x => (hc x).measurable.aestronglyMeasurable) ?_ (integrable_const M) (.of_forall fun n => ?_)` and prove the remaining obligations. Use `filter_upwards [hCg] with x hx`. Conclude with `.of_forall fun n => (hn x n).trans_le (hM n n.2 x hx)`.
+
+Conclude with `((hF.comp (continuous_const.mul continuous_id)).mul continuous_const).continuousAt`.
+-/
 theorem coeff_integrable_continuous_of (H : FlagCocompact) : ∀ (D : D7) (A B : HSp D) (ι : A.V →ₗ[D.host.E] B.V) (d : BesselDatum A B ι) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ ν 𝓝, d.IsUnitPair ν 𝓝 → ∀ F : GA D B → ℂ, Continuous F → (∀ γ ∈ GQ B, ∀ g, F (γ * g) = F g) → (∀ g, IntegrableOn (fun n : d.N => F ((n : GA D B) * g) * star (d.psiN ψ (n : GA D B))) 𝓝 ν) ∧ Continuous (d.coeff ψ ν 𝓝 F) ∧ ∀ C : Set (GA D B), IsCompact C → ∃ M : ℝ, ∀ n ∈ d.N, ∀ g ∈ C, ‖F (n * g)‖ ≤ M := by
   intro D A B ι d ψ hψ ν 𝓝 hν F hF hinv
   obtain ⟨b1, b2, b3, b4, b5, -, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B

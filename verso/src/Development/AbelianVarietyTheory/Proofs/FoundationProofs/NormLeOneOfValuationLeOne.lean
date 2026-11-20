@@ -31,13 +31,24 @@ def smallIdeal {C : Type} [NormedField C] [IsUltrametricDist C] (φ : K →+* C)
     exact (mul_le_of_le_one_left (norm_nonneg _) (GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral
       (map_isIntegral_int φ c.isIntegral_coe))).trans_lt ha
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_smallIdeal {C : Type} [NormedField C] [IsUltrametricDist C] (φ : K →+* C) (a : 𝓞 K) :
     a ∈ smallIdeal φ ↔ ‖φ (a : K)‖ < 1 := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral (map_isIntegral_int φ a.isIntegral_coe)`.
+-/
 theorem norm_int_le_one {C : Type} [NormedField C] [IsUltrametricDist C] (φ : K →+* C) (a : 𝓞 K) :
     ‖φ (a : K)‖ ≤ 1 :=
   GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral (map_isIntegral_int φ a.isIntegral_coe)
 
+/- English proof (translation)
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_smallIdeal]`. Simplify using the standard rewrite rules. Introduce `a b hab`. Assume the negation of the conclusion as `h`.
+
+Rewrite `h` using `[not_or, mem_smallIdeal, mem_smallIdeal, not_lt, not_lt]`. Establish `h2 : φ ((a * b : 𝓞 K) : K) = φ (a : K) * φ (b : K)` using `by simp`. Rewrite `hab` using `[mem_smallIdeal, h2, norm_mul]`. Conclude with `absurd (one_le_mul_of_one_le_of_one_le h.1 h.2) (not_le.2 hab)`.
+-/
 theorem smallIdeal_isPrime {C : Type} [NormedField C] [IsUltrametricDist C] (φ : K →+* C) :
     (smallIdeal φ).IsPrime := by
   refine ⟨?_, ?_⟩
@@ -50,6 +61,17 @@ theorem smallIdeal_isPrime {C : Type} [NormedField C] [IsUltrametricDist C] (φ 
     rw [mem_smallIdeal, h2, norm_mul] at hab
     exact absurd (one_le_mul_of_one_le_of_one_le h.1 h.2) (not_le.2 hab)
 
+/- English proof (translation)
+Establish `hsub : (w.asIdeal : Set (𝓞 K)) ⊆ ⋃ φ ∈ ((Finset.univ : Finset (K →ₐ[ℚ] C)) : Set (K →ₐ[ℚ] C)), (smallIdeal φ.toRingHom : Set (𝓞 K))`. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Simplify using `only [Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, SetLike.mem_coe, not_exists, mem_smallIdeal, not_lt] at hna`. Establish `h1 : ∀ φ : K →ₐ[ℚ] C, ‖φ (a : K)‖ = 1` using `fun φ => le_antisymm (norm_int_le_one φ.toRingHom a) (hna φ)`.
+
+Establish `h2` using `congrArg norm (Algebra.norm_eq_prod_embeddings ℚ C (a : K))`. Rewrite `h2` using `[norm_prod, Finset.prod_eq_one (fun φ _ => h1 φ), ← Algebra.coe_norm_int, map_intCast]`. Establish `h3 : ((Ideal.absNorm (Ideal.span {a}) : ℕ) : 𝓞 K) ∈ w.asIdeal` using `(Ideal.span_singleton_le_iff_mem _).2 ha (Ideal.absNorm_mem _)`. Rewrite `h3` using `[Ideal.absNorm_span_singleton]`. Establish `h4 : l ∣ (Algebra.norm ℤ a).natAbs`.
+
+Assume the negation of the conclusion as `hnd`. Establish `hc : IsCoprime (l : 𝓞 K) (((Algebra.norm ℤ a).natAbs : ℕ) : 𝓞 K)` using `Nat.Coprime.cast ((Nat.Prime.coprime_iff_not_dvd hl).2 hnd)`. Take `⟨u, v, huv⟩` from `hc`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ w.asIdeal.add_mem (w.asIdeal.mul_mem_left u hw) (w.asIdeal.mul_mem_left v h3)))`. Take `⟨c, hc⟩` from `Int.natCast_dvd.2 h4`.
+
+Rewrite `h2` using `[hc, Int.cast_mul, Int.cast_natCast, norm_mul]`. Establish `h5` using `(mul_le_of_le_one_right (norm_nonneg (l : C)) (IsUltrametricDist.norm_intCast_le_one C c)).trans_lt hlC`. Conclude with `absurd h2 h5.ne`. Establish `φ₀ : K →ₐ[ℚ] C` using `IsAlgClosed.lift`. Take `⟨φ, -, hφ⟩` from `(Ideal.subset_union_prime φ₀ φ₀ (fun φ _ _ _ => smallIdeal_isPrime φ.toRingHom)).1 hsub`.
+
+Conclude with `⟨φ.toRingHom, (w.isMaximal.eq_of_le (smallIdeal_isPrime _).ne_top hφ).symm⟩`.
+-/
 theorem exists_embedding_smallIdeal_eq {C : Type} [NormedField C] [IsUltrametricDist C] [IsAlgClosed C]
     [CharZero C] {l : ℕ} (hl : l.Prime) (hlC : ‖(l : C)‖ < 1) (w : HeightOneSpectrum (𝓞 K))
     (hw : (l : 𝓞 K) ∈ w.asIdeal) : ∃ φ : K →+* C, smallIdeal φ = w.asIdeal := by
@@ -83,6 +105,11 @@ theorem exists_embedding_smallIdeal_eq {C : Type} [NormedField C] [IsUltrametric
     (fun φ _ _ _ => smallIdeal_isPrime φ.toRingHom)).1 hsub
   exact ⟨φ.toRingHom, (w.isMaximal.eq_of_le (smallIdeal_isPrime _).ne_top hφ).symm⟩
 
+/- English proof (translation)
+Take `⟨n, ⟨d, hd⟩, hnd⟩` from `w.exists_primeCompl_mul_eq_of_integer y hy`. Establish `hd' : d ∉ smallIdeal φ` using `by rw [hφ]; exact hd`. Rewrite `hd'` using `[mem_smallIdeal, not_lt]`. Establish `h1 : ‖φ y‖ * ‖φ (d : K)‖ = ‖φ (n : K)‖`. Rewrite using `[← norm_mul, ← map_mul]`.
+
+Conclude with `congrArg (fun z => ‖φ z‖) hnd`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_le_one_of_valuation_le_one {C : Type} [NormedField C] [IsUltrametricDist C] (φ : K →+* C)
     (w : HeightOneSpectrum (𝓞 K)) (hφ : smallIdeal φ = w.asIdeal) (y : K) (hy : w.valuation K y ≤ 1) :
     ‖φ y‖ ≤ 1 := by
@@ -96,6 +123,13 @@ theorem norm_le_one_of_valuation_le_one {C : Type} [NormedField C] [IsUltrametri
     _ = ‖φ (n : K)‖ := h1
     _ ≤ 1 := norm_int_le_one φ n
 
+/- English proof (translation)
+Establish `hmem : ∀ x : K, σ x ∈ Qbar` using `fun x => mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom)`. Set `σ' : K →+* Qbar` to `σ.codRestrict Qbar hmem`. Use `letI : Algebra K Qbar := σ'.toAlgebra`. Use `letI : Algebra K ℂ_[l] := φ.toAlgebra`. Use `haveI : IsScalarTower ℚ K Qbar := IsScalarTower.of_algebraMap_eq fun q => ((eq_ratCast (algebraMap ℚ Qbar) q).trans (map_ratCast σ' q).symm).trans (congrArg σ' (eq_ratCast (algebraMap ℚ K) q).symm)`.
+
+Use `haveI : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ`. Use `haveI : Algebra.IsAlgebraic K Qbar := Algebra.IsAlgebraic.tower_top (K := ℚ) K`. Set `lam : Qbar →ₐ[K] ℂ_[l]` to `IsAlgClosed.lift`. Use `⟨lam.toRingHom, fun x => ?_⟩` and prove the remaining obligations. Unfold `lamC`.
+
+Rewrite using `[dif_pos (hmem x)]`. Conclude with `lam.commutes x`.
+-/
 theorem exists_lamC_eq {l : ℕ} [Fact l.Prime] (σ : K →+* ℂ) (φ : K →+* ℂ_[l]) :
     ∃ lam : Qbar →+* ℂ_[l], ∀ x : K, lamC lam (σ x) = φ x := by
   have hmem : ∀ x : K, σ x ∈ Qbar := fun x =>
@@ -114,11 +148,27 @@ theorem exists_lamC_eq {l : ℕ} [Fact l.Prime] (σ : K →+* ℂ) (φ : K →+*
   rw [dif_pos (hmem x)]
   exact lam.commutes x
 
+/- English proof (translation)
+Rewrite using `[← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), ← Padic.norm_p]`. Conclude with `PadicAlgCl.norm_extends l _`.
+-/
 theorem norm_prime_padicComplex (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   rw [← PadicComplex.coe_natCast, PadicComplex.norm_extends, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)),
     ← Padic.norm_p]
   exact PadicAlgCl.norm_extends l _
 
+/- English proof (translation)
+Introduce `K _ _ σ x l hl w e hx hw h`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `one_pos.trans hl1`. Establish `hlK : (l : K) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Take `⟨φ, hφ⟩` from `exists_embedding_smallIdeal_eq (C := ℂ_[l]) hl.out (by rw [norm_prime_padicComplex]; exact inv_lt_one_of_one_lt₀ hl1) w hw`.
+
+Take `⟨lam, hlam⟩` from `exists_lamC_eq σ φ`. Establish `hb` using `h lam`. Rewrite `hb` using `[hlam]`. Establish `hvx : w.valuation K x = WithZero.exp (-Formalism.DivisionValues.vw w x)` using `GlobalTheory.Idele.valuation_eq_exp_neg_count w hx`. Establish `hvl : w.valuation K (l : K) = WithZero.exp (-Formalism.DivisionValues.vw w (l : K))` using `GlobalTheory.Idele.valuation_eq_exp_neg_count w hlK`.
+
+Use `set n := Formalism.DivisionValues.vw w x`. Use `set m := Formalism.DivisionValues.vw w (l : K)`. Establish `hm : 0 ≤ m`. Establish `h1 : w.valuation K (l : K) ≤ 1`. Simplify using `using w.valuation_le_one (K := K) (l : 𝓞 K)`.
+
+Rewrite `h1` using `[hvl, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hy : w.valuation K ((l : K) ^ n / x ^ m) ≤ 1`. Rewrite using `[map_div₀, map_zpow₀, map_zpow₀, hvx, hvl, ← WithZero.exp_zsmul, ← WithZero.exp_zsmul, ← WithZero.exp_sub, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Simplify using `only [smul_eq_mul]`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `norm_le_one_of_valuation_le_one φ w hφ _ hy`. Establish `hφx : 0 < ‖φ x‖` using `norm_pos_iff.2 ((map_ne_zero φ).2 hx)`. Rewrite `h1` using `[map_div₀, map_zpow₀, map_zpow₀, norm_div, norm_zpow, norm_zpow, map_natCast, norm_prime_padicComplex, div_le_one (zpow_pos hφx _)]`. Establish `h2 : ‖φ x‖ ^ m ≤ ((l : ℝ) ^ e) ^ m` using `zpow_le_zpow_left₀ hm hφx.le hb`.
+
+Establish `h3` using `h1.trans h2`. Rewrite `h3` using `[inv_zpow', ← Real.rpow_intCast, ← Real.rpow_intCast, ← Real.rpow_mul hl0.le, Real.rpow_le_rpow_left_iff hl1]`. Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem neg_mul_vw_le_vw : ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (x : K) (l : ℕ) [Fact l.Prime] (w : Formalism.PairingDivisionLocalBalance.Pl K) (e : ℝ), x ≠ 0 → (l : 𝓞 K) ∈ w.asIdeal → (∀ lam : Qbar →+* ℂ_[l], ‖lamC lam (σ x)‖ ≤ (l : ℝ) ^ e) → -(e * (Formalism.DivisionValues.vw w (l : K) : ℝ)) ≤ (Formalism.DivisionValues.vw w x : ℝ) := by
   intro K _ _ σ x l hl w e hx hw h
   have hl1 : (1 : ℝ) < l := by exact_mod_cast hl.out.one_lt

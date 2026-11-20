@@ -32,6 +32,9 @@ def dg (n o : ℕ) {p : ℕ} (g : GL (Fin p) R) : GL (Fin n) R :=
 
 def shuf (R : Type) [CommRing R] (n m : ℕ) : GL (Fin n) R := toGL (eye R n 0 m (n - m) + eye R n (n - m) 0 m)
 
+/- English proof (translation)
+Unfold `toGL`. Rewrite using `[dif_pos g.isUnit]`. Conclude with `Units.ext rfl`.
+-/
 theorem toGL_val {n : ℕ} (g : GL (Fin n) R) : toGL (g : Matrix (Fin n) (Fin n) R) = g := by
   unfold toGL
   rw [dif_pos g.isUnit]

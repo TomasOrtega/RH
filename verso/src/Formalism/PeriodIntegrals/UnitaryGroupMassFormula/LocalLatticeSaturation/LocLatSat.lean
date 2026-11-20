@@ -11,6 +11,13 @@ namespace PI.LocLatSat.UnitaryGroupMassFormula
 variable {R K S : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K] [CommRing S] (φ : K →+* S) (O : Subring S) {n : ℕ}
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simpa using hx`. Consider the case `@insert a T ha ih`. Establish `hx'` using `ih (fun i hi => h0 i (Finset.mem_insert_of_mem hi))`. Establish `hfr : IsFractional R⁰ ((Λ ⊓ ⨅ i ∈ T, (LinearMap.ker (g i)).restrictScalars R).map ((g a).restrictScalars R))`.
+
+Establish `hfg : (Λ.map ((g a).restrictScalars R)).FG` using `hΛ.map _`. Conclude with `FractionalIdeal.isFractional_of_le (J := ⟨_, FractionalIdeal.isFractional_of_fg hfg⟩) (Submodule.map_mono inf_le_left)`. Establish `hs` using `step φ O _ (g a) hfr hx' (h0 a (Finset.mem_insert_self a T))`. Establish `e : Λ ⊓ ⨅ i ∈ insert a T, (LinearMap.ker (g i)).restrictScalars R = (Λ ⊓ ⨅ i ∈ T, (LinearMap.ker (g i)).restrictScalars R) ⊓ (LinearMap.ker (g a)).restrictScalars R`. Rewrite using `[Finset.iInf_insert]`.
+
+Conclude with `(inf_left_comm _ _ _).trans (inf_comm _ _)`. Rewrite using `[e]`. Conclude with `hs`.
+-/
 theorem steps {ι : Type*} [DecidableEq ι] (g : ι → (Fin n → K) →ₗ[K] K)
     (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) {x : Fin n → S} (hx : x ∈ latG φ O Λ)
     (T : Finset ι) (h0 : ∀ i ∈ T, fP φ (g i) x = 0) :
@@ -33,6 +40,25 @@ theorem steps {ι : Type*} [DecidableEq ι] (g : ι → (Fin n → K) →ₗ[K] 
     rw [e]
     exact hs
 
+/- English proof (translation)
+Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.span_mono (Set.image_mono (fun v hv => hv.1)) hx`. Establish `hle : Submodule.span O (bcG φ '' ((Λ ⊓ W.restrictScalars R : Submodule R _) : Set (Fin n → K))) ≤ (Submodule.span S (bcG φ '' (W : Set (Fin n → K)))).restrictScalars O`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `Submodule.subset_span ⟨v, hv.2, rfl⟩`. Conclude with `hle hx`. Introduce and unpack `x ⟨hxΛ, hxW⟩`.
+
+Set `b` to `Module.Basis.ofVectorSpace K W.dualAnnihilator`. Use `haveI : Fintype (Module.Basis.ofVectorSpaceIndex K W.dualAnnihilator) := Fintype.ofFinite _`. Set `g : Module.Basis.ofVectorSpaceIndex K W.dualAnnihilator → (Fin n → K) →ₗ[K] K` to `fun i => (b i : Module.Dual K _)`. Establish `hg : ∀ i w, w ∈ W → g i w = 0`. Introduce `i w hw`.
+
+Conclude with `(Submodule.mem_dualAnnihilator _).mp (b i).2 w hw`. Establish `h0 : ∀ i ∈ (Finset.univ : Finset _), fP φ (g i) x = 0`. Introduce `i _`. Establish `hle : Submodule.span S (bcG φ '' (W : Set (Fin n → K))) ≤ LinearMap.ker (fP φ (g i))`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨w, hw, rfl⟩`. Use `show fP φ (g i) (bcG φ w) = 0`. Rewrite using `[baseChange_apply_baseChange, hg i w hw, map_zero]`. Conclude with `hle hxW`. Establish `hs` using `steps φ O g Λ hΛ hxΛ Finset.univ h0`.
+
+Establish `hle2 : Λ ⊓ ⨅ i ∈ (Finset.univ : Finset _), (LinearMap.ker (g i)).restrictScalars R ≤ Λ ⊓ W.restrictScalars R`. Introduce `v hv`. Use `⟨hv.1, ?_⟩` and prove the remaining obligations. Establish `hv2 : ∀ i, (b i : Module.Dual K (Fin n → K)) v = 0`. Introduce `i`.
+
+Establish `h` using `(Submodule.mem_iInf _).mp ((Submodule.mem_inf.mp hv).2) i`. Conclude with `(Submodule.mem_iInf _).mp h (Finset.mem_univ i)`. Use `show v ∈ W`. Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := W), Submodule.mem_dualCoannihilator]`. Introduce `ψ hψ`.
+
+Establish `e` using `congrArg (fun d : W.dualAnnihilator => (d : Module.Dual K (Fin n → K)) v) (b.sum_repr ⟨ψ, hψ⟩)`. Simplify using `only at e`. Rewrite using `[← e]`. Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[Submodule.coe_smul, LinearMap.smul_apply, hv2, smul_zero]`. Conclude with `Submodule.span_mono (Set.image_mono hle2) hs`.
+-/
 theorem sat (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) (W : Submodule K (Fin n → K)) :
     (latG φ O (Λ ⊓ W.restrictScalars R) : Set (Fin n → S)) =
       (latG φ O Λ : Set (Fin n → S)) ∩ Submodule.span S (bcG φ '' (W : Set (Fin n → K))) := by
@@ -84,6 +110,9 @@ theorem sat (Λ : Submodule R (Fin n → K)) (hΛ : Λ.FG) (W : Submodule K (Fin
       rw [Submodule.coe_smul, LinearMap.smul_apply, hv2, smul_zero]
     exact Submodule.span_mono (Set.image_mono hle2) hs
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ sig p A n Λ W hΛ`. Conclude with `sat A.ιE A.O Λ hΛ W`.
+-/
 theorem locLatSat : PI.LocLatSat.Stmt := by
   intro F E _ _ _ _ _ sig p A n Λ W hΛ
   exact sat A.ιE A.O Λ hΛ W

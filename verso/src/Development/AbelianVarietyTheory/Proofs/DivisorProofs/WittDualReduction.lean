@@ -5,6 +5,33 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `p _ k _ _ _ M V _ _ _ _ _ _ r hr hker`. Establish `hσs : Function.Surjective (WittVector.constantCoeff : WittVector p k →+* k)` using `WittVector.constantCoeff_surjective p`. Establish `hpk : ∀ y : k, (p • y) = 0` using `fun y => by`. Rewrite using `[nsmul_eq_mul, CharP.cast_eq_zero, zero_mul]`. Establish `hσker : ∀ x : WittVector p k, WittVector.constantCoeff x = 0 → ∃ y, x = p • y`.
+
+Introduce `x hx`. Establish `hx' : x ∈ Ideal.span {(p : WittVector p k)}` using `(WittVector.mem_span_p_iff_coeff_zero_eq_zero x).2 (by simpa [WittVector.constantCoeff_apply] using hx)`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hx'`. Conclude with `⟨y, by rw [nsmul_eq_mul, ← hy, mul_comm]⟩`. Establish `hwd : ∀ (l : Module.Dual (WittVector p k) M) (m m' : M), r m = r m' → WittVector.constantCoeff (l m) = WittVector.constantCoeff (l m')`.
+
+Introduce `l m m' h`. Take `⟨n, hn⟩` from `(hker (m - m')).1 (by rw [map_sub, h, sub_self])`. Establish `h1 : l m - l m' = p • l n` using `by rw [← map_sub, hn, map_nsmul]`. Rewrite using `[← sub_eq_zero, ← map_sub, h1, map_nsmul, hpk]`. Establish `hg0 : ∀ (l : Module.Dual (WittVector p k) M) (m : M), WittVector.constantCoeff (l (Function.surjInv hr (r m))) = WittVector.constantCoeff (l m)` using `fun l m => hwd l _ _ (Function.surjInv_eq hr _)`.
+
+Set `g : Module.Dual (WittVector p k) M → Module.Dual k V` to `fun l => { toFun := fun v => WittVector.constantCoeff (l (Function.surjInv hr v)) map_add' := fun v w => by`. Take `⟨m, rfl⟩` from `hr v`. Take `⟨m', rfl⟩` from `hr w`. Rewrite using `[← map_add r, hg0, hg0, hg0, map_add, map_add]`. Use the proof step `map_smul' := fun c v => by`.
+
+Take `⟨a, rfl⟩` from `hσs c`. Take `⟨m, rfl⟩` from `hr v`. Rewrite using `[← LinearMap.map_smulₛₗ, hg0, hg0, map_smul, smul_eq_mul, map_mul, RingHom.id_apply, smul_eq_mul] }`. Establish `hg : ∀ l m, g l (r m) = WittVector.constantCoeff (l m)` using `fun l m => hg0 l m`. Set `r' : Module.Dual (WittVector p k) M →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] Module.Dual k V` to `{ toFun := g map_add' := fun l l' => by`.
+
+Use extensionality with `v`. Take `⟨m, rfl⟩` from `hr v`. Rewrite using `[LinearMap.add_apply, hg, hg, hg, LinearMap.add_apply, map_add]`. Use the proof step `map_smul' := fun a l => by`. Use extensionality with `v`.
+
+Take `⟨m, rfl⟩` from `hr v`. Rewrite using `[LinearMap.smul_apply, hg, hg, LinearMap.smul_apply, smul_eq_mul, map_mul, smul_eq_mul] }`. Establish `hr' : ∀ l m, r' l (r m) = WittVector.constantCoeff (l m)` using `hg`. Set `b` to `Module.Free.chooseBasis (WittVector p k) M`. Use `⟨r', hr', ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `f`. Set `a : Module.Free.ChooseBasisIndex (WittVector p k) M → WittVector p k` to `fun i => Function.surjInv hσs (f (r (b i)))`. Set `l : Module.Dual (WittVector p k) M` to `b.constr (WittVector p k) a`. Set `F1 : M →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] k` to `{ toFun := fun m => WittVector.constantCoeff (l m) map_add' := fun m m' => by rw [map_add, map_add] map_smul' := fun c m => by rw [map_smul, smul_eq_mul, map_mul, smul_eq_mul] }`. Establish `hF : F1 = f.comp r`.
+
+Use `b.ext fun i => ?_` and prove the remaining obligations. Use `show WittVector.constantCoeff (l (b i)) = f (r (b i))`. Rewrite using `[show l (b i) = a i from b.constr_basis _ _ _]`. Conclude with `Function.surjInv_eq hσs _`. Use `⟨l, ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `v`. Take `⟨m, rfl⟩` from `hr v`. Rewrite using `[hr']`. Conclude with `LinearMap.congr_fun hF m`. Introduce `l`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hz : ∀ m, WittVector.constantCoeff (l m) = 0` using `fun m => by`. Rewrite using `[← hr', h0, LinearMap.zero_apply]`. Use `choose w hw using fun i => hσker _ (hz (b i))`.
+
+Use `⟨b.constr (WittVector p k) w, b.ext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, b.constr_basis, hw]`. Introduce and unpack `⟨l', rfl⟩`. Rewrite using `[map_nsmul]`. Use extensionality with `v`.
+
+Rewrite using `[LinearMap.smul_apply, hpk, LinearMap.zero_apply]`.
+-/
 theorem wittDual_reduction : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (M V : Type) [AddCommGroup M] [Module (WittVector p k) M] [Module.Free (WittVector p k) M] [Module.Finite (WittVector p k) M] [AddCommGroup V] [Module k V] (r : M →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] V), Function.Surjective r → (∀ m, r m = 0 ↔ ∃ n, m = p • n) → ∃ r' : Module.Dual (WittVector p k) M →ₛₗ[(WittVector.constantCoeff : WittVector p k →+* k)] Module.Dual k V, (∀ l m, r' l (r m) = WittVector.constantCoeff (l m)) ∧ Function.Surjective r' ∧ ∀ l, r' l = 0 ↔ ∃ l', l = p • l' := by
   intro p _ k _ _ _ M V _ _ _ _ _ _ r hr hker
   have hσs : Function.Surjective (WittVector.constantCoeff : WittVector p k →+* k) :=

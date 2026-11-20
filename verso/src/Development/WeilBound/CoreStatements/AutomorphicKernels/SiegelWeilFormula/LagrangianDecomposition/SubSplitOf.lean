@@ -13,15 +13,26 @@ namespace PositivityTheory.SiegelWeilFormula.Ald
 
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[slice0, boxFun, mul_comm]`.
+-/
 theorem slice0_box {κ' κ'' : Type} (φ' : (κ' → AF F) → ℂ) (φ₁ : (κ'' → AF F) → ℂ) :
     slice0 κ' κ'' (boxFun φ' φ₁) = φ₁ 0 • φ' := by
   funext x
   simp [slice0, boxFun, mul_comm]
 
+/- English proof (translation)
+Rewrite using `[slice0_box, h, one_smul]`.
+-/
 theorem slice0_box_one {κ' κ'' : Type} (φ' : (κ' → AF F) → ℂ) {φ₁ : (κ'' → AF F) → ℂ} (h : φ₁ 0 = 1) :
     slice0 κ' κ'' (boxFun φ' φ₁) = φ' := by
   rw [slice0_box, h, one_smul]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [schr, boxFun, dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.zero_apply, mul_zero, add_zero, Function.comp_apply, Pi.add_apply]`. Establish `h1 : (x + Sum.elim p.1 (0 : κ'' → AF F)) ∘ Sum.inl = x ∘ Sum.inl + p.1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+
+Establish `h2 : (x + Sum.elim p.1 (0 : κ'' → AF F)) ∘ Sum.inr = x ∘ Sum.inr`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Simplify using `only [Function.comp_apply, mul_assoc, Finset.sum_const_zero, add_zero]`.
+-/
 theorem schr_box {κ' κ'' : Type} [Fintype κ'] [Fintype κ''] (ψ : AddChar (AF F) ℂ) (p : (κ' → AF F) × (κ' → AF F))
     (φ' : (κ' → AF F) → ℂ) (φ₀ : (κ'' → AF F) → ℂ) :
     schr ψ (Sum.elim p.1 (0 : κ'' → AF F), Sum.elim p.2 (0 : κ'' → AF F)) (boxFun φ' φ₀) = boxFun (schr ψ p φ') φ₀ := by
@@ -35,6 +46,29 @@ theorem schr_box {κ' κ'' : Type} [Fintype κ'] [Fintype κ''] (ψ : AddChar (A
   rw [h1, h2]
   simp only [Function.comp_apply, mul_assoc, Finset.sum_const_zero, add_zero]
 
+/- English proof (translation)
+Introduce `hSF F _ _ ψ hψ κ' κ'' _ _ W W' _ _ _ _ B B' dd dd' emb hemb G G' _ _ _ _ act act' j hj hact om om' hom φ₀ hφ₀ h0 hn hg`. Take `⟨hsl, hadm, -, hmeas⟩` from `hSF F κ' κ''`. Establish `key : ∀ g : G', ∀ φ ∈ schA F κ', om' g φ = slice0 κ' κ'' (om (j g) (boxFun φ φ₀))`. Introduce `g φ hφ`. Take `⟨φ₁, -, h1, -, hbox⟩` from `hg g`.
+
+Rewrite using `[hbox φ hφ, slice0_box_one _ h1]`. Establish `hbx : ∀ φ ∈ schA F κ', boxFun φ φ₀ ∈ schA F (κ' ⊕ κ'')` using `fun φ hφ => GlobalTheory.SchwartzBox.boxFun_mem_schA F κ' κ'' φ hφ φ₀ hφ₀`. Establish `pres : ∀ g : G', ∀ φ ∈ schA F κ', om' g φ ∈ schA F κ'`. Introduce `g φ hφ`. Rewrite using `[key g φ hφ]`.
+
+Conclude with `hsl _ (hom.pres (j g) _ (hbx φ hφ))`. Use `⟨⟨pres, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g w' φ hφ`. Take `⟨φ₁, hφ₁, h1, -, hbox⟩` from `hg g`. Establish `hs : Darboux.rho dd' ψ w' φ ∈ schA F κ'` using `GlobalTheory.SchrKeepsSchA.schr_mem_schA F ψ hψ κ' _ φ hφ`.
+
+Rewrite using `[key g _ hs]`. Establish `e1 : boxFun (Darboux.rho dd' ψ w' φ) φ₀ = Darboux.rho dd ψ (emb w') (boxFun φ φ₀)`. Simplify using `only [Darboux.rho]`. Rewrite using `[hemb w', schr_box]`. Rewrite using `[e1, hom.impl (j g) (emb w') _ (hbx φ hφ), hact g w', hbox φ hφ]`.
+
+Simplify using `only [Darboux.rho]`. Rewrite using `[hemb, schr_box, slice0_box_one _ h1]`. Introduce `g l hl`. Establish `hL : ((l ∘ₗ slice0 κ' κ'') ∘ₗ om (j g)) ∘ₗ PositivityTheory.ThKF0.Chr.boxL κ' φ₀ ∈ (adeleClass F).adm κ'` using `PositivityTheory.ThKF0.Chr.box_adm κ' κ'' φ₀ hφ₀ _ (hom.adm (j g) _ (hadm l hl))`. Introduce `g0 hg0`.
+
+Take `⟨T, hT⟩` from `hL g0 hg0`. Use `⟨T, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[← hT f]`. Establish `hm : pureA F (⇑f) g0 ∈ schA F κ'` using `Submodule.subset_span ⟨f, g0, hg0, rfl⟩`. Simplify using `only [LinearMap.comp_apply]`.
+
+Rewrite using `[key g _ hm]`. Both sides reduce to the same expression. Introduce `μ' hμ' g φ hφ`. Take `⟨φ₁, hφ₁, h1, hn1, hbox⟩` from `hg g`. Use `letI : MeasurableSpace (κ'' → AF F) := borel _`.
+
+Use `haveI : BorelSpace (κ'' → AF F) := ⟨rfl⟩`. Take `⟨μ'', hμ''⟩ : ∃ μ'' : Measure (κ'' → AF F), μ''.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Take `⟨μ, hμ, hprod⟩` from `hmeas μ' μ'' hμ' hμ''`. Establish `hp1` using `hprod (om' g φ) (pres g φ hφ) φ₁ hφ₁`. Establish `hp0` using `hprod φ hφ φ₀ hφ₀`.
+
+Rewrite `hp1` using `[← hbox φ hφ, hom.unit μ hμ (j g) _ (hbx φ hφ), hp0, hn1 μ'' hμ'']`. Take `⟨hne, hnt⟩` from `hn μ'' hμ''`. Conclude with `((ENNReal.mul_left_inj hne hnt).mp hp1).symm`. Introduce `l hl φ hφ`. Establish `hc` using `hom.cont (l ∘ₗ slice0 κ' κ'') (hadm l hl) _ (hbx φ hφ)`.
+
+Establish `e2 : (fun g : G' => l (om' g φ)) = (fun h : G => (l ∘ₗ slice0 κ' κ'') (om h (boxFun φ φ₀))) ∘ j`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp_apply, LinearMap.comp_apply]`. Rewrite using `[key g φ hφ]`. Rewrite using `[e2]`.
+
+Conclude with `hc.comp hj`.
+-/
 theorem subSplit_of : SliceFacts → SubSplit := by
   intro hSF F _ _ ψ hψ κ' κ'' _ _ W W' _ _ _ _ B B' dd dd' emb hemb G G' _ _ _ _ act act' j hj
     hact om om' hom φ₀ hφ₀ h0 hn hg

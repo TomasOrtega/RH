@@ -8,6 +8,11 @@ open Filter Topology
 
 namespace GlobalTheory.JacobianIndependence
 
+/- English proof (translation)
+Establish `hc : Continuous (fun x : Fin n → ℂ => (WithLp.toLp 2 x : EuclideanSpace ℂ (Fin n)))` using `PiLp.continuous_toLp 2 _`. Establish `h1 : ∀ᶠ x in 𝓝 (fun k => a k), MvPolynomial.eval x p = 0` using `(hc.tendsto (fun k => a k)).eventually h`. Rewrite `h1` using `[nhds_pi, Filter.Eventually, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `h1`. Use `MvPolynomial.funext_set t (fun i => infinite_of_mem_nhds _ (ht i)) ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Rewrite using `[map_zero]`. Conclude with `hsub (fun i _ => hx i (Set.mem_univ i))`.
+-/
 theorem eq_zero_of_eventually_eval {n : ℕ} (p : MvPolynomial (Fin n) ℂ)
     (a : EuclideanSpace ℂ (Fin n))
     (h : ∀ᶠ w in 𝓝 a, MvPolynomial.eval (fun k => w k) p = 0) : p = 0 := by
@@ -22,6 +27,13 @@ theorem eq_zero_of_eventually_eval {n : ℕ} (p : MvPolynomial (Fin n) ℂ)
   rw [map_zero]
   exact hsub (fun i _ => hx i (Set.mem_univ i))
 
+/- English proof (translation)
+Introduce `n f hf hdet p hp`. Use `set F : V n → V n := fun z : V n => (WithLp.toLp 2 fun k => f k z : V n) with hF`. Establish `hd : ∀ᶠ z in 𝓝 (0 : V n), DifferentiableAt ℂ F z` using `by filter_upwards [Filter.eventually_all.2 hf] with z hz`. Conclude with `differentiableAt_euclidean.2 hz`. Establish `ha : AnalyticAt ℂ F 0` using `GlobalTheory.SCV.analyticAt_iff_eventually_differentiableAt.2 hd`.
+
+Establish `hs : HasStrictFDerivAt F (((fderiv ℂ F 0).toContinuousLinearEquivOfDetNeZero hdet : V n ≃L[ℂ] V n) : V n →L[ℂ] V n) 0`. Rewrite using `[ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `ha.hasStrictFDerivAt`. Use `eq_zero_of_eventually_eval p (F 0) ?_` and prove the remaining obligations. Rewrite using `[← hs.map_nhds_eq_of_equiv, Filter.eventually_map]`.
+
+Conclude with `hp`.
+-/
 theorem eq_zero_of_det_fderiv_ne_zero :
     ∀ (n : ℕ) (f : Fin n → V n → ℂ), (∀ k, ∀ᶠ z in nhds (0 : V n), DifferentiableAt ℂ (f k) z) →
       (fderiv ℂ (fun z : V n => (WithLp.toLp 2 fun k => f k z : V n)) 0).det ≠ 0 →

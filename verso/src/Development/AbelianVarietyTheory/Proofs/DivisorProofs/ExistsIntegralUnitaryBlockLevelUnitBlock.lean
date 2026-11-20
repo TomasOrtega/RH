@@ -21,15 +21,26 @@ namespace GlobalTheory.FunObj.StdDatum.BlockPoint
 
 variable {D : D7}
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hM _ _)`.
+-/
 theorem det_mem_OhE {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE D)) (hM : ∀ i j, M i j ∈ OhE D) : M.det ∈ OhE D := by
   rw [Matrix.det_apply']
   exact sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => hM _ _)
 
+/- English proof (translation)
+Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+-/
 theorem one_mem_OhE {n : ℕ} (i j : Fin n) : (1 : Matrix (Fin n) (Fin n) (AE D)) i j ∈ OhE D := by
   rw [Matrix.one_apply]; split_ifs
   · exact one_mem _
   · exact zero_mem _
 
+/- English proof (translation)
+Rewrite using `[Matrix.adjugate_apply]`. Use `det_mem_OhE _ fun k l => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`. Rewrite using `[Pi.single_apply]`.
+
+Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `hM _ _`.
+-/
 theorem adjugate_mem_OhE {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE D)) (hM : ∀ i j, M i j ∈ OhE D) (i j : Fin n) :
     M.adjugate i j ∈ OhE D := by
   classical
@@ -42,6 +53,15 @@ theorem adjugate_mem_OhE {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE D)) (hM : ∀
     · exact zero_mem _
   · exact hM _ _
 
+/- English proof (translation)
+Establish `hsup : 𝔪 ⊔ D.host.conj • 𝔪 = ⊤`. Rewrite using `[← Ideal.add_eq_sup, Ideal.isCoprime_iff_add.1 hco, Ideal.one_eq_top]`. Establish `h1m : (1 : 𝓞 D.host.E) ∈ 𝔪 ⊔ D.host.conj • 𝔪` using `by rw [hsup]; exact Submodule.mem_top`. Take `⟨s, hs, t, ht, hst⟩` from `Submodule.mem_sup.1 h1m`. Use `⟨inc D (t : D.host.E), VacMove.inc_int D t, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e : 1 - inc D (t : D.host.E) = inc D (s : D.host.E) * 1`. Rewrite using `[mul_one, ← map_one (inc D), ← map_sub]`. Use `congr 1`. Establish `h3` using `congrArg (fun x : 𝓞 D.host.E => (x : D.host.E)) hst`. Move the coercions through the operations in `at h3`.
+
+Take the linear combination `-h3`. Rewrite using `[e]`. Conclude with `AddSubgroup.subset_closure ⟨s, hs, 1, one_mem _, rfl⟩`. Establish `h1 : inc D (t : D.host.E) ∈ hatId D (D.host.conj • 𝔪)` using `AddSubgroup.subset_closure ⟨t, ht, 1, one_mem _, (mul_one _).symm⟩`. Establish `h2` using `DetCong.sgA_mem_hatId h1`.
+
+Establish `hcc : D.host.conj * D.host.conj = 1` using `AlgEquiv.ext fun x => VacMove.conj_conj D x`. Rewrite `h2` using `[smul_smul, hcc, one_smul]`. Then use the resulting hypothesis.
+-/
 theorem exists_sep (𝔪 : Ideal (𝓞 D.host.E)) (hco : IsCoprime 𝔪 (D.host.conj • 𝔪)) :
     ∃ T ∈ OhE D, 1 - T ∈ hatId D 𝔪 ∧ sgA D T ∈ hatId D 𝔪 := by
   have hsup : 𝔪 ⊔ D.host.conj • 𝔪 = ⊤ := by
@@ -63,6 +83,15 @@ theorem exists_sep (𝔪 : Ideal (𝓞 D.host.E)) (hco : IsCoprime 𝔪 (D.host.
     have hcc : D.host.conj * D.host.conj = 1 := AlgEquiv.ext fun x => VacMove.conj_conj D x
     rwa [smul_smul, hcc, one_smul] at h2
 
+/- English proof (translation)
+Establish `e1 : (1 : Matrix (Fin a) (Fin a) (AE D)) i j = (H' * H) (Fin.castLE had i) (Fin.castLE had j)`. Rewrite using `[hHH, Matrix.one_apply, Matrix.one_apply]`. Simplify using `[Fin.castLE_inj]`. Establish `e3 : Finset.univ.filter (fun l : Fin d => l.1 < a) = Finset.univ.map (Fin.castLEEmb had)`. Use extensionality with `l`.
+
+Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Fin.castLEEmb_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hl`. Conclude with `⟨⟨l, hl⟩, rfl⟩`. Introduce and unpack `⟨l', rfl⟩`.
+
+Conclude with `l'.2`. Rewrite using `[Matrix.sub_apply, e1, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_filter_add_sum_filter_not Finset.univ (fun l : Fin d => l.1 < a), e3, Finset.sum_map]`. Simplify using `only [Matrix.of_apply, Fin.castLEEmb_apply]`. Rewrite using `[sub_add_cancel_left]`. Use `neg_mem (sum_mem fun l hl => mul_mem_hatId (hH' _ _) (hC l _ j.2 ?_))` and prove the remaining obligations.
+
+Conclude with `not_lt.1 (Finset.mem_filter.1 hl).2`.
+-/
 theorem block_inv_mul {a d : ℕ} (had : a ≤ d) (𝔪 : Ideal (𝓞 D.host.E)) (H H' : Matrix (Fin d) (Fin d) (AE D))
     (hH' : ∀ i j, H' i j ∈ OhE D) (hHH : H' * H = 1)
     (hC : ∀ i j : Fin d, j.1 < a → a ≤ i.1 → H i j ∈ hatId D 𝔪) (i j : Fin a) :
@@ -89,6 +118,9 @@ section Glue
 
 variable {R : Type*} [CommRing R] (σ : R →+* R) {n : ℕ}
 
+/- English proof (translation)
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hσ]`. Simplify using `[hσ, Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+-/
 theorem ct_comb (hσ : ∀ x, σ (σ x) = x) (f g c : R) (M N : Matrix (Fin n) (Fin n) R) :
     ((f • M + g • (N.map σ).transpose + c • (1 : Matrix (Fin n) (Fin n) R)).map σ).transpose =
       σ f • (M.map σ).transpose + σ g • N + σ c • (1 : Matrix (Fin n) (Fin n) R) := by
@@ -97,6 +129,19 @@ theorem ct_comb (hσ : ∀ x, σ (σ x) = x) (f g c : R) (M N : Matrix (Fin n) (
   · subst hij; simp [hσ]
   · simp [hσ, Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]
 
+/- English proof (translation)
+Establish `hs0 : σ f0 * σ f0 = σ f0` using `by rw [← map_mul, hidem]`. Establish `sf : σ f = σ f0 * (1 - f0)` using `by rw [hf, map_mul, map_sub, map_one, hσ]`. Establish `se : σ e = e` using `by rw [he, map_sub, map_sub, map_one, hσ]; ring`. Establish `hBA : (B.map σ).transpose * (M.map σ).transpose = σ f0 • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← Matrix.transpose_mul, ← Matrix.map_mul, hAB]`.
+
+Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+
+Establish `hff : f * f = f` using `by rw [hf]; linear_combination (1 - σ f0) ^ 2 * hidem + f0 * hs0`. Establish `hgg : σ f * σ f = σ f` using `by rw [← map_mul, hff]`. Establish `hfg : f * σ f = 0` using `by rw [sf, hf]; linear_combination (σ f0 * σ f0 - σ f0) * hidem`. Establish `hgf : σ f * f = 0` using `by rw [mul_comm, hfg]`. Establish `hfe : f * e = 0` using `by rw [he]; linear_combination -hff - hfg`.
+
+Establish `hef : e * f = 0` using `by rw [mul_comm, hfe]`. Establish `hge : σ f * e = 0` using `by rw [he]; linear_combination -hgg - hfg`. Establish `heg : e * σ f = 0` using `by rw [mul_comm, hge]`. Establish `hee : e * e = e` using `by rw [he]; linear_combination hff + hgg + 2 * hfg`. Establish `hff0 : f * f0 = f` using `by rw [hf]; linear_combination (1 - σ f0) * hidem`.
+
+Establish `hgs0 : σ f * σ f0 = σ f` using `by rw [sf]; linear_combination (1 - f0) * hs0`. Rewrite using `[ct_comb σ hσ, hσ, se]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.one_mul, Matrix.mul_one, smul_add]`. Simplify using `only [hff, hfg, hgf, hfe, hef, hge, heg, hgg, hee, zero_smul, add_zero, zero_add]`. Rewrite using `[hAB, hBA, smul_smul, smul_smul, hff0, hgs0, ← add_smul, ← add_smul, he]`.
+
+Rewrite using `[show σ f + f + (1 - f - σ f) = 1 by ring, one_smul]`.
+-/
 theorem glue_mul_ct (hσ : ∀ x, σ (σ x) = x) (M B : Matrix (Fin n) (Fin n) R) (f0 f e : R) (hidem : f0 * f0 = f0)
     (hf : f = f0 * (1 - σ f0)) (he : e = 1 - f - σ f) (hAB : M * B = f0 • (1 : Matrix (Fin n) (Fin n) R)) :
     (f • M + σ f • (B.map σ).transpose + e • (1 : Matrix (Fin n) (Fin n) R)) *
@@ -128,12 +173,42 @@ theorem glue_mul_ct (hσ : ∀ x, σ (σ x) = x) (M B : Matrix (Fin n) (Fin n) R
   rw [hAB, hBA, smul_smul, smul_smul, hff0, hgs0, ← add_smul, ← add_smul, he]
   rw [show σ f + f + (1 - f - σ f) = 1 by ring, one_smul]
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `[hσ]`.
+-/
 theorem ct_ct (hσ : ∀ x, σ (σ x) = x) (M : Matrix (Fin n) (Fin n) R) :
     (((M.map σ).transpose).map σ).transpose = M := by
   ext i j; simp [hσ]
 
 end Glue
 
+/- English proof (translation)
+Take `⟨T, hT, hT1, hTs⟩` from `exists_sep 𝔪 hco`. Establish `hdet` using `det_mem_OhE A hA`. Establish `hy : T * (A.det * δ') ∈ OhE D` using `mul_mem hT (mul_mem hdet hδ')`. Establish `hy1 : T * (A.det * δ') - 1 ∈ hatId D 𝔪`. Establish `e : T * (A.det * δ') - 1 = T * (δ' * A.det - 1) - (1 - T)` using `by ring`.
+
+Rewrite using `[e]`. Conclude with `sub_mem (mul_mem_hatId hT hδ) hT1`. Take `⟨g, hg, hidem, hf1⟩` from `GlobalTheory.T.exists_idempotent_powerLimit_congruentOne D 𝔪 h𝔪 _ hy hy1`. Take `⟨f0, hf0⟩ : ∃ f0, f0 = T * (A.det * δ') * g` from `⟨_, rfl⟩`. Rewrite `hidem`, `hf1` using `[← hf0]`.
+
+Establish `hf0O : f0 ∈ OhE D` using `hf0 ▸ mul_mem hy hg`. Establish `hs0O : sgA D f0 ∈ OhE D` using `VacMove.sgA_mem D hf0O`. Establish `hs0m : sgA D f0 ∈ hatId D 𝔪`. Establish `e : sgA D f0 = sgA D T * sgA D ((A.det * δ') * g)` using `by rw [hf0, mul_assoc, map_mul]`. Rewrite using `[e]`.
+
+Conclude with `mem_hatId_mul (VacMove.sgA_mem D (mul_mem (mul_mem hdet hδ') hg)) hTs`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin a) (Fin a) (AE D), B = (T * δ' * g) • A.adjugate` from `⟨_, rfl⟩`. Establish `hAB : A * B = f0 • (1 : Matrix (Fin a) (Fin a) (AE D))`. Rewrite using `[hB, Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, hf0]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hBO : ∀ i j, B i j ∈ OhE D` using `fun i j => by`. Rewrite using `[hB, Matrix.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (mul_mem (mul_mem hT hδ') hg) (adjugate_mem_OhE A hA i j)`. Take `⟨f, hf⟩ : ∃ f, f = f0 * (1 - sgA D f0)` from `⟨_, rfl⟩`.
+
+Take `⟨e, he⟩ : ∃ e, e = 1 - f - sgA D f` from `⟨_, rfl⟩`. Establish `sf : sgA D f = sgA D f0 * (1 - f0)` using `by rw [hf, map_mul, map_sub, map_one, VacMove.sgA_sgA]`. Establish `hfO : f ∈ OhE D` using `hf ▸ mul_mem hf0O (sub_mem (one_mem _) hs0O)`. Establish `hgO : sgA D f ∈ OhE D` using `VacMove.sgA_mem D hfO`. Establish `heO : e ∈ OhE D` using `he ▸ sub_mem (sub_mem (one_mem _) hfO) hgO`.
+
+Establish `hgm : sgA D f ∈ hatId D 𝔪`. Rewrite using `[sf]`. Conclude with `mem_hatId_mul (sub_mem (one_mem _) hf0O) hs0m`. Establish `h1f : 1 - f ∈ hatId D 𝔪`. Establish `e1 : 1 - f = -(f0 - 1) + f0 * sgA D f0` using `by rw [hf]; ring`.
+
+Rewrite using `[e1]`. Conclude with `add_mem (neg_mem hf1) (mul_mem_hatId hf0O hs0m)`. Establish `hem : e ∈ hatId D 𝔪` using `by rw [he]; exact sub_mem h1f hgm`. Establish `hKK` using `glue_mul_ct (sgA D) (VacMove.sgA_sgA D) A B f0 f e hidem hf he hAB`. Take `⟨K, hK⟩ : ∃ K : Matrix (Fin a) (Fin a) (AE D), K = f • A + sgA D f • (B.map (sgA D)).transpose + e • (1 : Matrix (Fin a) (Fin a) (AE D))` from `⟨_, rfl⟩`.
+
+Rewrite `hKK` using `[← hK]`. Establish `hKO : ∀ i j, K i j ∈ OhE D` using `fun i j => by`. Rewrite using `[hK]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `add_mem (add_mem (mul_mem hfO (hA i j)) (mul_mem hgO (VacMove.sgA_mem D (hBO j i)))) (mul_mem heO (one_mem_OhE i j))`.
+
+Set `kGL : GL (Fin a) (AE D)` to `⟨(K.map (sgA D)).transpose, K, mul_eq_one_comm.1 hKK, hKK⟩`. Establish `hmem : kGL ∈ GA D a`. Rewrite using `[PtsMem.mem_GA]`. Use `show (((K.map (sgA D)).transpose).map (sgA D)).transpose * (K.map (sgA D)).transpose = 1`. Rewrite using `[ct_ct (sgA D) (VacMove.sgA_sgA D)]`.
+
+Conclude with `hKK`. Use `⟨⟨kGL, hmem⟩, (mem_intG _).2 fun i j => ⟨?_, hKO i j⟩, fun i j => ?_⟩` and prove the remaining obligations. Use `show sgA D (K j i) ∈ OhE D`. Conclude with `VacMove.sgA_mem D (hKO j i)`. Use `show (A - K) i j ∈ hatId D 𝔪`.
+
+Establish `e2 : (A - K) i j = (1 - f) * A i j - sgA D f * sgA D (B j i) - e * (1 : Matrix (Fin a) (Fin a) (AE D)) i j`. Rewrite using `[hK]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
+
+Conclude with `sub_mem (sub_mem (mem_hatId_mul (hA i j) h1f) (mem_hatId_mul (VacMove.sgA_mem D (hBO j i)) hgm)) (mem_hatId_mul (one_mem_OhE i j) hem)`.
+-/
 theorem exists_unitary_near {a : ℕ} (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : 𝔪 ≠ ⊥) (hco : IsCoprime 𝔪 (D.host.conj • 𝔪))
     (A : Matrix (Fin a) (Fin a) (AE D)) (hA : ∀ i j, A i j ∈ OhE D) (δ' : AE D) (hδ' : δ' ∈ OhE D)
     (hδ : δ' * A.det - 1 ∈ hatId D 𝔪) :
@@ -204,6 +279,23 @@ theorem exists_unitary_near {a : ℕ} (𝔪 : Ideal (𝓞 D.host.E)) (h𝔪 : �
     exact sub_mem (sub_mem (mem_hatId_mul (hA i j) h1f) (mem_hatId_mul (VacMove.sgA_mem D (hBO j i)) hgm))
       (mem_hatId_mul (one_mem_OhE i j) hem)
 
+/- English proof (translation)
+Introduce `D 𝔪 h𝔪 hco a d had h hh hC`. Establish `hint` using `(mem_intG h).1 hh`. Establish `hHH : ((((h : GL (Fin d) (AE D))⁻¹ : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) * ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D))) = 1` using `Units.inv_mul _`. Establish `hAA` using `block_inv_mul had 𝔪 _ _ (fun i j => (hint i j).2) hHH hC`. Establish `hAAO : ∀ i j, ((Matrix.of fun i j : Fin a => (((h : GL (Fin d) (AE D))⁻¹ : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) (Fin.castLE had i) (Fin.castLE had j)) * (Matrix.of fun i j : Fin a => ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) (Fin.castLE had i) (Fin. …` using `fun i j => by`.
+
+Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hint _ _).2 (hint _ _).1`. Establish `hδ` using `DetCong.det_sub_one_mem_hatId_of _ hAAO hAA`. Rewrite `hδ` using `[Matrix.det_mul]`. Take `⟨k, hk, hK⟩` from `exists_unitary_near 𝔪 h𝔪 hco _ (fun i j => (hint _ _).1) _ (det_mem_OhE _ fun i j => (hint _ _).2) hδ`.
+
+Use `⟨k, hk, fun i j => ?_⟩` and prove the remaining obligations. Establish `hHP : (((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) * (unitBlock D 0 a d).map (inc D)) i j = ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i (Fin.castLE had j)`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.castLE had j)]`. Simplify using `[unitBlock]`. Introduce `l _ hl`.
+
+Establish `: l.1 ≠ j.1` using `fun e => hl (Fin.ext (by simpa using e))`. Establish `e0 : (unitBlock D 0 a d).map (inc D) l j = 0` using `by simp [unitBlock, this]`. Rewrite using `[e0, mul_zero]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+
+Rewrite using `[Matrix.sub_apply, hHP, Matrix.mul_apply]`. Distinguish the cases in `hi : i.1 < a`. Rewrite using `[Finset.sum_eq_single ⟨i.1, hi⟩]`. Establish `e1 : (unitBlock D 0 a d).map (inc D) i ⟨i.1, hi⟩ = 1` using `by simp [unitBlock]`. Rewrite using `[e1, one_mul]`.
+
+Use `hK ⟨i.1, hi⟩ j` as an intermediate fact. Conclude with `this`. Introduce `l _ hl`. Establish `: i.1 ≠ l.1` using `fun e => hl (Fin.ext (by simp [e]))`. Establish `e0 : (unitBlock D 0 a d).map (inc D) i l = 0` using `by simp [unitBlock, this]`.
+
+Rewrite using `[e0, zero_mul]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[Finset.sum_eq_zero fun l _ => by`. Establish `: i.1 ≠ l.1` using `by have := l.2; omega`.
+
+Establish `e0 : (unitBlock D 0 a d).map (inc D) i l = 0` using `by simp [unitBlock, this]`. Rewrite using `[e0, zero_mul], sub_zero]`. Conclude with `hC i _ j.2 (not_lt.1 hi)`.
+-/
 theorem exists_intG_unitBlock : ∀ (D : D7) (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → ∀ {a d : ℕ}, a ≤ d →
     ∀ h ∈ intG D d, (∀ i j : Fin d, j.1 < a → a ≤ i.1 →
       ((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) i j ∈ hatId D 𝔪) →

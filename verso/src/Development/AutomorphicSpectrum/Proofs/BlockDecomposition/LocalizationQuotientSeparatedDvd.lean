@@ -11,6 +11,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.CompanionTheory.SymmetricIndexRegularity
 
+/- English proof (translation)
+Establish `key : (fun j : Fin m => (S.orderEmbOfFin h j.rev).rev) = S.orderEmbOfFin h`. Apply `Finset.orderEmbOfFin_unique h` to reduce the goal to its premises. Introduce `j`. Conclude with `hS _ (Finset.orderEmbOfFin_mem S h _)`. Introduce `i j hij`.
+
+Conclude with `Fin.rev_lt_rev.mpr ((S.orderEmbOfFin h).strictMono (Fin.rev_lt_rev.mpr hij))`. Use `congrFun key j` as an intermediate fact. Rewrite using `[← this, Fin.rev_rev]`.
+-/
 theorem orderEmb_rev {n m : ℕ} (S : Finset (Fin n)) (h : S.card = m) (hS : ∀ i ∈ S, i.rev ∈ S) (j : Fin m) :
     S.orderEmbOfFin h j.rev = (S.orderEmbOfFin h j).rev := by
   have key : (fun j : Fin m => (S.orderEmbOfFin h j.rev).rev) = S.orderEmbOfFin h := by
@@ -22,6 +27,11 @@ theorem orderEmb_rev {n m : ℕ} (S : Finset (Fin n)) (h : S.card = m) (hS : ∀
   have := congrFun key j
   rw [← this, Fin.rev_rev]
 
+/- English proof (translation)
+Establish `: StrictAnti fun i : Fin n => x i - x i.rev`. Introduce `i j hij`. Establish `h1` using `hx hij`. Establish `h2` using `hx (Fin.rev_lt_rev.mpr hij)`. Use `show x j - x j.rev < x i - x i.rev`.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `this.injective`.
+-/
 theorem diff_injective {n : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x) :
     Function.Injective fun i : Fin n => x i - x i.rev := by
   have : StrictAnti fun i : Fin n => x i - x i.rev := by
@@ -32,19 +42,37 @@ theorem diff_injective {n : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x) :
     omega
   exact this.injective
 
+/- English proof (translation)
+Simplify using `only [nv, restr, orderEmb_rev S h hS]`.
+-/
 theorem nv_restr {n m : ℕ} (x : Fin n → ℤ) (S : Finset (Fin n)) (h : S.card = m) (hS : ∀ i ∈ S, i.rev ∈ S)
     (j : Fin m) : nv (restr x S h) j = x (S.orderEmbOfFin h j) - x (S.orderEmbOfFin h j).rev := by
   simp only [nv, restr, orderEmb_rev S h hS]
 
+/- English proof (translation)
+Introduce `_ _ hij` and use `hx ((S.orderEmbOfFin h).strictMono hij)`.
+-/
 theorem restr_strictAnti {n m : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x) (S : Finset (Fin n)) (h : S.card = m) :
     StrictAnti (restr x S h) :=
   fun _ _ hij => hx ((S.orderEmbOfFin h).strictMono hij)
 
+/- English proof (translation)
+Simplify using `[symIdx]`.
+-/
 theorem mem_symIdx {n : ℕ} {mid : Prop} [Decidable mid] {s : Finset (Fin (n / 2))} {i : Fin n} :
     i ∈ symIdx n mid s ↔ (∃ h : i.val < n / 2, (⟨i.val, h⟩ : Fin (n / 2)) ∈ s) ∨
       (∃ h : n - 1 - i.val < n / 2, (⟨n - 1 - i.val, h⟩ : Fin (n / 2)) ∈ s) ∨ (mid ∧ n % 2 = 1 ∧ i.val = n / 2) := by
   simp [symIdx]
 
+/- English proof (translation)
+Introduce `i hi`. Establish `hv : i.rev.val = n - 1 - i.val`. Use `i.isLt` as an intermediate fact. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hv' : n - 1 - i.rev.val = i.val`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hi`, the goal using `[mem_symIdx]`. Break down `hi with ⟨h, hs⟩ | ⟨h, hs⟩ | ⟨hm, ho, he⟩` into its components or cases.
+
+Use `right`. Use `left`. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Simplify `hs` using `only [hv']`. Use `left`.
+
+Use `⟨by omega, ?_⟩` and prove the remaining obligations. Simplify `hs` using `only [hv]`. Use `right`. Use `right`. Conclude with `⟨hm, ho, by omega⟩`.
+-/
 theorem symIdx_rev (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 2))) :
     ∀ i ∈ symIdx n mid s, i.rev ∈ symIdx n mid s := by
   intro i hi
@@ -65,6 +93,13 @@ theorem symIdx_rev (n : ℕ) (mid : Prop) [Decidable mid] (s : Finset (Fin (n / 
   · right; right
     exact ⟨hm, ho, by omega⟩
 
+/- English proof (translation)
+Establish `hi` using `i.isLt`. Rewrite `h₁`, `h₂` using `[mem_symIdx]`. Apply the tactic sequence `rcases h₁ with ⟨h, hs⟩ | ⟨h, hs⟩ | ⟨hm₁, ho, he⟩ <;> rcases h₂ with ⟨h', hs'⟩ | ⟨h', hs'⟩ | ⟨hm₂, ho', he'⟩`. Conclude with `(Finset.mem_compl.mp hs') hs`. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Conclude with `(Finset.mem_compl.mp hs') hs`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `hm ho ⟨hm₁, hm₂⟩`.
+-/
 theorem symIdx_disj (n : ℕ) (m₁ m₂ : Prop) [Decidable m₁] [Decidable m₂] (s : Finset (Fin (n / 2)))
     (hm : n % 2 = 1 → ¬ (m₁ ∧ m₂)) (i : Fin n) (h₁ : i ∈ symIdx n m₁ s) (h₂ : i ∈ symIdx n m₂ sᶜ) : False := by
   have hi := i.isLt
@@ -80,6 +115,19 @@ theorem symIdx_disj (n : ℕ) (m₁ m₂ : Prop) [Decidable m₁] [Decidable m�
   · omega
   · exact hm ho ⟨hm₁, hm₂⟩
 
+/- English proof (translation)
+Establish `hprod : (∏ i, (X - C (u₁ i))) * (∏ i, (X - C (u₂ i))) = ∏ i, (X - C (Sum.elim u₁ u₂ i))`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using the standard rewrite rules. Rewrite using `[hprod, separable_prod_X_sub_C_iff]`. Establish `hinj` using `diff_injective hx`.
+
+Establish `e₁ : ∀ i j, u₁ i = u₁ j → i = j`. Introduce `i j hij`. Use `congrArg ord hij` as an intermediate fact. Rewrite `this` using `[hu₁, hu₁, nv_restr x S₁ h₁ y₁, nv_restr x S₁ h₁ y₁]`. Conclude with `(S₁.orderEmbOfFin h₁).injective (hinj this)`.
+
+Establish `e₂ : ∀ i j, u₂ i = u₂ j → i = j`. Introduce `i j hij`. Use `congrArg ord hij` as an intermediate fact. Rewrite `this` using `[hu₂, hu₂, nv_restr x S₂ h₂ y₂, nv_restr x S₂ h₂ y₂]`. Conclude with `(S₂.orderEmbOfFin h₂).injective (hinj this)`.
+
+Establish `e₃ : ∀ i j, u₁ i = u₂ j → False`. Introduce `i j hij`. Use `congrArg ord hij` as an intermediate fact. Rewrite `this` using `[hu₁, hu₂, nv_restr x S₁ h₁ y₁, nv_restr x S₂ h₂ y₂]`. Establish `h` using `hinj this`.
+
+Use `hd _ (Finset.orderEmbOfFin_mem S₁ h₁ i) ?_` and prove the remaining obligations. Rewrite using `[show S₁.orderEmbOfFin h₁ i = S₂.orderEmbOfFin h₂ j from h]`. Conclude with `Finset.orderEmbOfFin_mem S₂ h₂ j`. Introduce and unpack `(i | i) (j | j) hij`. Conclude with `congrArg _ (e₁ _ _ hij)`.
+
+Conclude with `(e₃ _ _ hij).elim`. Conclude with `(e₃ _ _ hij.symm).elim`. Conclude with `congrArg _ (e₂ _ _ hij)`.
+-/
 theorem localization_quotient_separated_dvd {F : Type} [Field F] (ord : F → ℤ) {n a b : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x)
     (S₁ S₂ : Finset (Fin n)) (h₁ : S₁.card = a) (h₂ : S₂.card = b) (y₁ : ∀ i ∈ S₁, i.rev ∈ S₁)
     (y₂ : ∀ i ∈ S₂, i.rev ∈ S₂) (hd : ∀ i, i ∈ S₁ → i ∈ S₂ → False) (u₁ : Fin a → F) (u₂ : Fin b → F)
@@ -113,6 +161,15 @@ theorem localization_quotient_separated_dvd {F : Type} [Field F] (ord : F → �
   · exact (e₃ _ _ hij.symm).elim
   · exact congrArg _ (e₂ _ _ hij)
 
+/- English proof (translation)
+Introduce `hs1 E _ _ _ hU w hw n a ha b hb ϖ hϖ x hx hc y hy`. Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hy`. Distinguish the cases in `h0 : s.card = a / 2 ∧ sᶜ.card = (n - a) / 2 ∧ a % 2 + (n - a) % 2 = n % 2`. Use `swap`. Conclude with `absurd (dif_neg h0) hs`.
+
+Rewrite `hs` using `[dif_pos h0]`. Distinguish the cases in `h1 : (symIdx n (a % 2 = 1) s).card = a`. Use `swap`. Conclude with `absurd (dif_neg h1) hs`. Rewrite `hs` using `[dif_pos h1]`.
+
+Distinguish the cases in `h2 : (symIdx n ((n - a) % 2 = 1) sᶜ).card = n - a`. Use `swap`. Conclude with `absurd (dif_neg h2) hs`. Rewrite `hs` using `[dif_pos h2]`. Establish `hd1 : dcos a w (tdiag ϖ (restr x _ h1)) y.1 ≠ 0` using `fun h => hs (by rw [h]; simp)`.
+
+Establish `hd2 : dcos (n - a) w (tdiag ϖ (restr x _ h2)) y.2 ≠ 0` using `fun h => hs (by rw [h]; simp)`. Take `⟨-, -, u₁, hQ₁, hu₁⟩` from `hs1 hU w hw ϖ hϖ a _ (restr_strictAnti hx _ h1) y.1 ⟨1, by simpa using hd1⟩`. Take `⟨-, -, u₂, hQ₂, hu₂⟩` from `hs1 hU w hw ϖ hϖ (n - a) _ (restr_strictAnti hx _ h2) y.2 ⟨1, by simpa using hd2⟩`. Rewrite using `[hQ₁, hQ₂]`. Conclude with `localization_quotient_separated_dvd (fun z => ordL z) hx _ _ h1 h2 (symIdx_rev n _ s) (symIdx_rev n _ sᶜ) (symIdx_disj n _ _ s (by have := h0.2.2; omega)) u₁ u₂ (fun j => (hu₁ j).2) (fun j => (hu₂ j).2)`.
+-/
 theorem main : TwistedDoubleCosetStrictDiagonal → P_asmReg := by
   intro hs1 E _ _ _ hU w hw n a ha b hb ϖ hϖ x hx hc y hy
   obtain ⟨s, -, hs⟩ := Finset.exists_ne_zero_of_sum_ne_zero hy

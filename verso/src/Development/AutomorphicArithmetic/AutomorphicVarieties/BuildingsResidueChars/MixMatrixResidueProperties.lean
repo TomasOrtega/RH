@@ -5,26 +5,49 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.GradeZeroIn
 section
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)`.
+-/
 private theorem um_add_lt {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
   (IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+-/
 private theorem um_add_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a + b‖ ≤ 1 :=
   (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]; exact um_add_lt ha (by rwa [norm_neg])`.
+-/
 private theorem um_sub_lt {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a - b‖ < 1 := by
   rw [sub_eq_add_neg]; exact um_add_lt ha (by rwa [norm_neg])
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg]; exact um_add_le ha (by rwa [norm_neg])`.
+-/
 private theorem um_sub_le {a b : K} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a - b‖ ≤ 1 := by
   rw [sub_eq_add_neg]; exact um_add_le ha (by rwa [norm_neg])
 
+/- English proof (translation)
+Use `um_add_le h.le hx.le` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 private theorem le_of_cong {a x : K} (h : ‖a - x‖ < 1) (hx : ‖x‖ = 1) : ‖a‖ ≤ 1 := by
   have := um_add_le h.le hx.le
   rwa [sub_add_cancel] at this
 
+/- English proof (translation)
+Use `um_sub_lt ha hb` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis.
+-/
 private theorem diff_lt {a b x : K} (ha : ‖a - x‖ < 1) (hb : ‖b - x‖ < 1) : ‖a - b‖ < 1 := by
   have := um_sub_lt ha hb
   rwa [sub_sub_sub_cancel_right] at this
 
+/- English proof (translation)
+Establish `h0 : (2 : K) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`. Conclude with `zero_ne_one h2`. Establish `e : (2 : K)⁻¹ * (a + b) - x = (2 : K)⁻¹ * ((a - x) + (b - x))` using `by field_simp; ring`.
+
+Rewrite using `[e, norm_mul, norm_inv, h2, inv_one, one_mul]`. Conclude with `um_add_lt ha hb`.
+-/
 private theorem half_lt (h2 : ‖(2 : K)‖ = 1) {a b x : K} (ha : ‖a - x‖ < 1) (hb : ‖b - x‖ < 1) :
     ‖(2 : K)⁻¹ * (a + b) - x‖ < 1 := by
   have h0 : (2 : K) ≠ 0 := by
@@ -34,6 +57,29 @@ private theorem half_lt (h2 : ‖(2 : K)‖ = 1) {a b x : K} (ha : ‖a - x‖ <
   rw [e, norm_mul, norm_inv, h2, inv_one, one_mul]
   exact um_add_lt ha hb
 
+/- English proof (translation)
+Establish `hh : ∀ y : K, ‖(2 : K)⁻¹ * y‖ = ‖y‖` using `fun y => by rw [norm_mul, norm_inv, h2, inv_one, one_mul]`. Establish `h0 : (2 : K) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, norm_zero]`. Conclude with `zero_ne_one h2`.
+
+Establish `p : ‖A 1 0 / γ‖ < 1` using `by rwa [norm_div, hγ, div_one]`. Establish `p' : ‖-(A 1 0 / γ)‖ < 1` using `by rwa [norm_neg]`. Establish `qe : ‖γ * A 0 1‖ = ‖A 0 1‖` using `by rw [norm_mul, hγ, one_mul]`. Establish `q : ‖γ * A 0 1‖ ≤ 1` using `qe ▸ a01`. Establish `q' : ‖-(γ * A 0 1)‖ ≤ 1` using `by rwa [norm_neg]`.
+
+Establish `c00` using `le_of_cong a00 norm_one`. Establish `c11` using `le_of_cong a11 hx`. Establish `d00` using `le_of_cong b00 norm_one`. Establish `d11` using `le_of_cong b11 hx`. Establish `e01 : ‖mix γ A B 0 1‖ < 1` using `(hh _).trans_lt (um_sub_lt p b10)`.
+
+Establish `e02 : ‖mix γ A B 0 2‖ < 1` using `(hh _).trans_lt (diff_lt b11 a11)`. Establish `e03 : ‖mix γ A B 0 3‖ < 1` using `(hh _).trans_lt (um_add_lt p b10)`. Establish `e13 : ‖mix γ A B 1 3‖ < 1` using `(hh _).trans_lt (diff_lt a00 b00)`. Establish `e20 : ‖mix γ A B 2 0‖ < 1` using `(hh _).trans_lt (diff_lt b11 a11)`. Establish `e21 : ‖mix γ A B 2 1‖ < 1` using `(hh _).trans_lt (um_sub_lt p' b10)`.
+
+Establish `e23 : ‖mix γ A B 2 3‖ < 1` using `(hh _).trans_lt (um_add_lt p' b10)`. Establish `e31 : ‖mix γ A B 3 1‖ < 1` using `(hh _).trans_lt (diff_lt a00 b00)`. Establish `e00 : ‖mix γ A B 0 0‖ ≤ 1` using `(hh _).trans_le (um_add_le c11 d11)`. Establish `e11 : ‖mix γ A B 1 1‖ ≤ 1` using `(hh _).trans_le (um_add_le c00 d00)`. Establish `e22 : ‖mix γ A B 2 2‖ ≤ 1` using `(hh _).trans_le (um_add_le c11 d11)`.
+
+Establish `e33 : ‖mix γ A B 3 3‖ ≤ 1` using `(hh _).trans_le (um_add_le c00 d00)`. Establish `e10 : ‖mix γ A B 1 0‖ ≤ 1` using `(hh _).trans_le (um_sub_le q b01)`. Establish `e12 : ‖mix γ A B 1 2‖ ≤ 1` using `(hh _).trans_le (um_sub_le q' b01)`. Establish `e30 : ‖mix γ A B 3 0‖ ≤ 1` using `(hh _).trans_le (um_add_le q b01)`. Establish `e32 : ‖mix γ A B 3 2‖ ≤ 1` using `(hh _).trans_le (um_add_le q' b01)`.
+
+Use `⟨fun i j => ?_, fun i => ?_, fun i j hij hw => ?_, fun h => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j exacts [e00, e01.le, e02.le, e03.le, e10, e11, e12, e13.le, e20.le, e21.le, e22, e23.le, e30, e31.le, e32, e33]`. Use `fin_cases i exacts [half_lt h2 a11 b11, half_lt h2 a00 b00, half_lt h2 a11 b11, half_lt h2 a00 b00]`. Apply the tactic sequence `fin_cases i <;> fin_cases j all_goals first`. Consider the case `exact absurd rfl hij`.
+
+Consider the case `exact (hw (by decide)).elim`. Consider the case `assumption`. Establish `m10 : mix γ A B 1 0 = (2 : K)⁻¹ * (γ * A 0 1 - B 0 1)` using `rfl`. Establish `m12 : mix γ A B 1 2 = (2 : K)⁻¹ * (-(γ * A 0 1) - B 0 1)` using `rfl`. Establish `m30 : mix γ A B 3 0 = (2 : K)⁻¹ * (γ * A 0 1 + B 0 1)` using `rfl`.
+
+Establish `s : mix γ A B 1 0 + mix γ A B 3 0 = γ * A 0 1`. Rewrite using `[m10, m30]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `n : ‖mix γ A B 1 2‖ = ‖mix γ A B 3 0‖`.
+
+Rewrite using `[← norm_neg, m12, m30]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Break down `e10.eq_or_lt with h1 | h1` into its components or cases. Conclude with `Or.inl h1`.
+
+Break down `e30.eq_or_lt with h3 | h3` into its components or cases. Conclude with `Or.inr ⟨n.trans h3, h3⟩`. Use `um_add_lt h1 h3` as an intermediate fact. Rewrite `this` using `[s, qe, h]`. Conclude with `absurd this (lt_irrefl _)`.
+-/
 private theorem key (h2 : ‖(2 : K)‖ = 1) (γ : Kˣ) (x : K) (A B : Matrix (Fin 2) (Fin 2) K) (hγ : ‖(γ : K)‖ = 1) (hx : ‖x‖ = 1)
     (a00 : ‖A 0 0 - 1‖ < 1) (a11 : ‖A 1 1 - x‖ < 1) (a10 : ‖A 1 0‖ < 1) (a01 : ‖A 0 1‖ ≤ 1)
     (b00 : ‖B 0 0 - 1‖ < 1) (b11 : ‖B 1 1 - x‖ < 1) (b10 : ‖B 1 0‖ < 1) (b01 : ‖B 0 1‖ ≤ 1) :
@@ -95,6 +141,11 @@ private theorem key (h2 : ‖(2 : K)‖ = 1) (γ : Kˣ) (x : K) (A B : Matrix (F
 
 end
 
+/- English proof (translation)
+Introduce `l hl l2 γ x A B hγ hx hA hB`. Establish `h2 : ‖(2 : Qbar l)‖ = 1`. Establish `e : (2 : Qbar l) = algebraMap ℚ_[l] (Qbar l) ((2 : ℕ) : ℚ_[l])`. Rewrite using `[map_natCast]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes hl.out Nat.prime_two).2 l2`. Conclude with `key h2 γ x A B hγ hx hA.1 hA.2.1 hA.2.2.1 hA.2.2.2 hB.1 hB.2.1 hB.2.2.1 hB.2.2.2`.
+-/
 theorem UpperTheory.mixMatrix_residue_properties :
     UpperTheory.V.Sd.S2.MixRes := by
   intro l hl l2 γ x A B hγ hx hA hB

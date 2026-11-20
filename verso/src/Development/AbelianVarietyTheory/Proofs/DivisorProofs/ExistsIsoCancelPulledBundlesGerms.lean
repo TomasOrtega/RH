@@ -13,6 +13,9 @@ open Classical
 
 namespace GlobalTheory.IsoComp
 
+/- English proof (translation)
+Substitute `hG` using the available equality. Establish `hle : ∀ (J : PUnit → LL.ι) (K : PUnit → LP.ι), (LL.pull (θ ≫ φ)).U J ⊓ (LP.pull θ).U K ≤ θ ⁻¹ᵁ ((LL.pull φ).U J ⊓ LP.U (K PUnit.unit))` using `fun J K x hx => ⟨(mem_pull (F := φ)).2 ((mem_pull (F := θ ≫ φ)).1 hx.1), (mem_pull (F := θ)).1 hx.2⟩`. Take `⟨w, hw⟩ : ∃ w : LB.Iso (LP.pull θ) (LL.pull (θ ≫ φ)), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (i : LL.ι) (K : PUnit → LP.ι), (θ ≫ φ) (r z) ∈ LL.U i → r z ∈ (LP.pull θ).U K → gw w r z i K = gw ψ (r ≫ θ) z i (K PUnit.unit)` from `⟨⟨fun p => res (hle p.1 p.2) (pullU θ _ (ψ.s (p.1, p.2 PUnit.unit)))⟩, fun Z r z i K hi hK => (gm_res r z (hle (fun _ => i) K) ⟨mem_pull.2 hi, hK⟩ _).trans (gm_pull r θ z _ (hle (fun _ => i) K ⟨mem_pull.2 hi, hK⟩) _)⟩`. Use `⟨w, fun Z r z j j' k k' hj hj' hk hk' => ?_, hw⟩` and prove the remaining obligations. Rewrite using `[hw Z r z j k hj hk, hw Z r z j' k' hj' hk', gm_pull_g LP θ r z k k' hk hk', hψ Z (r ≫ θ) z j j' (k PUnit.unit) (k' PUnit.unit) hj hj' ((mem_pull (F := θ)).1 hk) ((mem_pull (F := θ)).1 hk'), Category.assoc]`.
+-/
 theorem pullIsoAlong {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (G : Y ⟶ XG) (hG : θ ≫ φ = G)
     {LP : LB XA} {LL : LB XG} (ψ : LB.Iso LP (LL.pull φ)) (hψ : PGen ψ) :
     ∃ w : LB.Iso (LP.pull θ) (LL.pull G), PGen w ∧
@@ -32,6 +35,11 @@ theorem pullIsoAlong {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (G 
   rw [hw Z r z j k hj hk, hw Z r z j' k' hj' hk', gm_pull_g LP θ r z k k' hk hk',
     hψ Z (r ≫ θ) z j j' (k PUnit.unit) (k' PUnit.unit) hj hj' ((mem_pull (F := θ)).1 hk) ((mem_pull (F := θ)).1 hk'), Category.assoc]
 
+/- English proof (translation)
+Establish `hle : ∀ (J : PUnit → LL.ι) (j : LM.ι), (LL.pull (𝟙 X)).U J ⊓ LM.U j ≤ LL.U (J PUnit.unit) ⊓ LM.U j` using `fun J j x hx => ⟨mem_pull.1 hx.1, hx.2⟩`. Take `⟨eP, hP⟩ : ∃ eP : LB.Iso LM (LL.pull (𝟙 X)), ∀ (Y : Scheme.{0}) (f : Y ⟶ X) (y : Y) (i : LL.ι) (j : LM.ι), f y ∈ LL.U i → f y ∈ LM.U j → gw eP f y i j = gm f y (LL.U i ⊓ LM.U j) (e.s (i, j))` from `⟨⟨fun p => res (hle p.1 p.2) (e.s (p.1 PUnit.unit, p.2))⟩, fun Y f y i j hi hj => gm_res f y (hle (fun _ => i) j) ⟨mem_pull.2 hi, hj⟩ _⟩`. Use `⟨eP, fun Y f y j j' k k' hj hj' hk hk' => ?_, hP⟩` and prove the remaining obligations. Establish `hm : f y ∈ LL.U j ⊓ LM.U k ⊓ (LL.U j' ⊓ LM.U k')` using `⟨⟨hj, hk⟩, hj', hk'⟩`. Establish `hm' : f y ∈ (LB.div LL LM).U (j, k) ⊓ (LB.div LL LM).U (j', k')` using `hm`.
+
+Establish `h1` using `congrArg (gm f y ((LB.div LL LM).U (j, k) ⊓ (LB.div LL LM).U (j', k'))) (he (j, k) (j', k'))`. Establish `hd : gm f y ((LB.div LL LM).U (j, k) ⊓ (LB.div LL LM).U (j', k')) ((LB.div LL LM).g (j, k) (j', k')) = gm f y (LL.U j ⊓ LL.U j') (LL.g j j') * (gm f y (LM.U k ⊓ LM.U k') (LM.g k k'))⁻¹` using `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res f y _ hm' _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res f y _ hm' _))))`. Rewrite using `[hP Y f y j k hj hk, hP Y f y j' k' hj' hk', Category.comp_id]`. Conclude with `(gm_res f y inf_le_left hm' _).symm.trans (h1.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) hd (gm_res f y inf_le_right hm' _))))`.
+-/
 theorem isoAsPullId {X : Scheme.{0}} {LL LM : LB X} (e : LB.Iso LM LL) (he : e.IsGen) :
     ∃ eP : LB.Iso LM (LL.pull (𝟙 X)), PGen eP ∧ ∀ (Y : Scheme.{0}) (f : Y ⟶ X) (y : Y) (i : LL.ι) (j : LM.ι),
       f y ∈ LL.U i → f y ∈ LM.U j → gw eP f y i j = gm f y (LL.U i ⊓ LM.U j) (e.s (i, j)) := by
@@ -53,6 +61,11 @@ theorem isoAsPullId {X : Scheme.{0}} {LL LM : LB X} (e : LB.Iso LM LL) (he : e.I
   exact (gm_res f y inf_le_left hm' _).symm.trans (h1.trans ((map_mul _ _ _).trans
     (congrArg₂ (· * ·) hd (gm_res f y inf_le_right hm' _))))
 
+/- English proof (translation)
+Introduce `Y XA XG θ φ fst hfst LP LL LM hP hL hM ψ e hψ he`. Take `⟨w'', hw'', hv''⟩` from `pullIsoAlong θ φ (fst ≫ 𝟙 XG) (by rw [Category.comp_id, hfst]) ψ ((isGen_iff ψ).1 hψ)`. Take `⟨eP, heP, hvP⟩` from `isoAsPullId e he`. Take `⟨w₀, T⟩` from `exists_cancel hL eP w'' heP hw'' hM (pull_isLB hP θ)`. Use `⟨w₀, (isGen_iff w₀).2 (T.pgen_cancel hL heP hw''), fun Z r z i j k hi hj hk => ?_⟩` and prove the remaining obligations.
+
+Establish `t` using `T Z r z i j (fun _ => k) hi hj (mem_pull.2 hk)`. Rewrite `t` using `[hv'' Z r z i (fun _ => k) hi (mem_pull.2 hk), hvP Z (r ≫ fst) z i j hi hj]`. Rewrite using `[t, inv_mul_cancel_left]`.
+-/
 theorem isoCancelGerm : ∀ {Y XA XG : Scheme.{0}} (θ : Y ⟶ XA) (φ : XA ⟶ XG) (fst : Y ⟶ XG), θ ≫ φ = fst →
     ∀ (LP : LB XA) (LL LM : LB XG), LP.IsLB → LL.IsLB → LM.IsLB →
     ∀ (ψ : LB.Iso LP (LL.pull φ)) (e : LB.Iso LM LL), ψ.IsGen → e.IsGen →

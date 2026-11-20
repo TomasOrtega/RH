@@ -14,6 +14,21 @@ namespace GlobalTheory.UnitWShapeSplit
 
 open GlobalTheory.UnitWShape
 
+/- English proof (translation)
+Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v t ι hι h hh`. Take `⟨S, hSB, huniq, hlin, hcomm⟩` from `exists_localOp hP F E σ B a a' G X om om' hTr v h hh`. Take `⟨hψc, hψ1, wT, wM, hA⟩` from `heisW B G X om om' hTr v t h S hSB hcomm`. Take `⟨hT0, hM0, hST, hSM⟩` from `hA ι hι`. Establish `hbij` using `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.IsLin.bij hι`.
+
+Use `set ht := (mat h).map (piW t) with hht`. Establish `hdet : IsUnit ht.det`. Establish `h1 : IsUnit (mat h).det` using `(Units.isUnit h.1).map Matrix.detMonoidHom`. Establish `h2` using `h1.map (piW t)`. Rewrite `h2` using `[RingHom.map_det]`.
+
+Conclude with `h2`. Establish `hsb` using `fun (w : (Fin a × Fin (a + a') → Fv F v) × (Fin a × Fin (a + a') → Fv F v)) (φ : (Fin a × Fin (a + a') → Fv F v) → ℂ) (hφ : φ ∈ SB _) => GlobalTheory.SchrSB.schr_mem_SB B.ψ hTr.base.std.1 v w φ hφ`. Establish `hL2 : ∀ x ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ y ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ c : ℂ, (fun Y : Matrix (Fin a) (Fin (a + a')) (Fv F v) => ι (S (c • x + y)) (Y * htᵀ)) = c • (fun Y : Matrix (Fin a) (Fin (a + a')) (Fv F v) => ι (S x) (Y * htᵀ)) + fun Y : Matrix (Fin a) …`. Introduce `x hx y hy c`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [hlin x hx y hy c, map_add, map_smul, Pi.add_apply, Pi.smul_apply]`. Establish `hT2 : ∀ C, ∀ x ∈ SB (Fin a × Fin (a + a') → Fv F v), schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT C) x ∈ SB (Fin a × Fin (a + a') → Fv F v) ∧ ι (schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT C) x) = (fun Y => ι x (Y + C)) ∧ (fun Y : Matrix (Fin a) (Fin (a + a')) (Fv F v) => ι (S (schr …`. Introduce `C x hx`. Use `⟨hsb _ x hx, hT0 C x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [hST C x hx, Matrix.add_mul]`. Establish `hM2 : ∀ l, ∀ x ∈ SB (Fin a × Fin (a + a') → Fv F v), schr (GlobalTheory.LatVac.psiAt B.ψ v) (wM l) x ∈ SB (Fin a × Fin (a + a') → Fv F v) ∧ ι (schr (GlobalTheory.LatVac.psiAt B.ψ v) (wM l) x) = (fun Y => GlobalTheory.LatVac.psiAt B.ψ v (l Y) * ι x Y) ∧ (fun Y : Matrix (Fin a) (Fi …`. Introduce `l x hx`. Use `⟨hsb _ x hx, hM0 l x hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [hSM l x hx, Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.transpose_one, Matrix.mul_one]`. Take `⟨c, hc⟩` from `GlobalTheory.T.eq_smul_of_commute_heisenberg_linearModel_schwartzBruhat (SB (Fin a × Fin (a + a') → Fv F v)) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hψ1 ι (fun x Y => ι (S x) (Y * htᵀ)) hbij hL2 (fun C => schr (GlobalTheory.LatVac.psiAt B.ψ v) (wT C)) (fun l => schr (GlobalTheory.L …`. Use `⟨c, fun φ hφ φ₁ _ hAct Y => ?_⟩` and prove the remaining obligations. Rewrite using `[huniq φ hφ φ₁ hAct]`. Establish `e` using `congrFun (hc φ hφ) (Y * (ht⁻¹)ᵀ)`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul] at e`. Rewrite `e` using `[Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.transpose_one, Matrix.mul_one]`. Then use the resulting hypothesis.
+-/
 theorem shape_split : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
     ∀ (v : Pl F) (t : E →ₐ[F] Fv F v) (ι : ((Fin a × Fin (a + a') → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin a) (Fin (a + a')) (Fv F v) → ℂ)), G.M.IsLinW B.ψ t 1 1 ι → (∀ h ∈ UAt σ G.W (evFin F v), ∃ c : ℂ, ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), ∀ φ₁ ∈ SB (Fin a × Fin (a + a') → Fv F v),

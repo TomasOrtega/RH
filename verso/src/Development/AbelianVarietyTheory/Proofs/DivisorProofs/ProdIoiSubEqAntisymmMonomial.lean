@@ -3,6 +3,11 @@ open MvPolynomial
 
 namespace GlobalTheory.VandermondeAntisym
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_comm' (t' := Finset.univ) (s' := fun j => Finset.Iio j) (fun i j => by simp [and_comm])]`. Rewrite using `[← Equiv.prod_comp (Fin.revPerm (n := n))]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply]`. Rewrite using `[← Fin.map_revPerm_Ioi, Finset.prod_map]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_Ioi_rev {R : Type*} [CommMonoid R] {n : ℕ} (f : Fin n → Fin n → R) :
     (∏ i : Fin n, ∏ j ∈ Finset.Ioi i, f (Fin.rev j) (Fin.rev i)) = ∏ i : Fin n, ∏ j ∈ Finset.Ioi i, f i j := by
   rw [Finset.prod_comm' (t' := Finset.univ) (s' := fun j => Finset.Iio j) (fun i j => by simp [and_comm])]
@@ -12,6 +17,11 @@ theorem prod_Ioi_rev {R : Type*} [CommMonoid R] {n : ℕ} (f : Fin n → Fin n �
   rw [← Fin.map_revPerm_Ioi, Finset.prod_map]
   simp
 
+/- English proof (translation)
+Establish `h : (Matrix.of fun i j : Fin n => (-X i : MvPolynomial (Fin n) ℝ) ^ (n - 1 - (j : ℕ))) = (Matrix.vandermonde (fun i : Fin n => (-X (Fin.rev i) : MvPolynomial (Fin n) ℝ))).submatrix Fin.revPerm Fin.revPerm`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.submatrix_apply, Matrix.vandermonde_apply, Fin.revPerm_apply, Fin.rev_rev, Fin.val_rev]`. Rewrite using `[Nat.sub_sub, Nat.add_comm 1]`. Rewrite using `[h, Matrix.det_submatrix_equiv_self, Matrix.det_vandermonde]`.
+
+Rewrite using `[← prod_Ioi_rev]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.rev_rev]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_eq (n : ℕ) :
     (Matrix.of fun i j : Fin n => (-X i : MvPolynomial (Fin n) ℝ) ^ (n - 1 - (j : ℕ))).det =
       ∏ i : Fin n, ∏ i' ∈ Finset.Ioi i, ((X i' : MvPolynomial (Fin n) ℝ) - X i) := by
@@ -29,6 +39,11 @@ end GlobalTheory.VandermondeAntisym
 
 open GlobalTheory.VandermondeAntisym in
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[← det_eq, Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, Int.cast_smul_eq_zsmul ℝ, map_prod]`. Use `congr 1`.
+
+Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem GlobalTheory.prod_Ioi_sub_eq_antisymm_monomial : ∀ n : ℕ, (∏ i : Fin n, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X i' - MvPolynomial.X i) : MvPolynomial (Fin n) ℝ) = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℝ) • rename σ (∏ i : Fin n, (-MvPolynomial.X i : MvPolynomial (Fin n) ℝ) ^ (n - 1 - (i : ℕ))) := by
   intro n
   rw [← det_eq, Matrix.det_apply]

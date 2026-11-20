@@ -22,16 +22,25 @@ namespace GlobalTheory.Unf.TermLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `bt : Matrix.BlockTriangular u.1 id` using `fun a b h => (hu a b).1 h`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_upperTriangular bt, Units.val_one]`. Conclude with `Finset.prod_eq_one fun i _ => (hu i i).2`.
+-/
 theorem det_uni {ρ : ℕ} {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) : Matrix.GeneralLinearGroup.det u = 1 := by
   have bt : Matrix.BlockTriangular u.1 id := fun a b h => (hu a b).1 h
   apply Units.ext
   rw [Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_of_upperTriangular bt, Units.val_one]
   exact Finset.prod_eq_one fun i _ => (hu i i).2
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, det_uni hu, map_one, NNReal.coe_one, Real.one_rpow]`.
+-/
 theorem halfMod_uni {ρ : ℕ} (n : ℕ) {u : GL (Fin ρ) (AE D)} (hu : u ∈ UX D ρ) :
     GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod n u = 1 := by
   rw [GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.halfMod, det_uni hu, map_one, NNReal.coe_one, Real.one_rpow]
 
+/- English proof (translation)
+Establish `h : ((a * b, 1) : GA D S × GA D T) = (a, 1) * (b, 1)` using `by simp`. Rewrite using `[h, map_mul, Module.End.mul_apply]`.
+-/
 theorem om_mul_left {S T : HSp D} (om : Om S T) (a b : GA D S) (f : WO S T → ℂ) :
     om (a * b, 1) f = om (a, 1) (om (b, 1) f) := by
   have h : ((a * b, 1) : GA D S × GA D T) = (a, 1) * (b, 1) := by simp
@@ -42,17 +51,26 @@ section Source
 variable {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) {χW : (AE D)ˣ →* Circle}
   {om : Om V W} {om' : Om V₀ W} {μ : Measure (Mx D W.rank ρ)} {𝓕 : Set (Mx D W.rank ρ)} {f : WO V W → ℂ}
 
+/- English proof (translation)
+Rewrite using `[hF.levi, det_uni hu, halfMod_uni _ hu, map_one, inv_one]`. Simplify using the standard rewrite rules.
+-/
 theorem mixS_levi_uni (hF : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.FormulasS d ψ χW om om' μ 𝓕 f) {u : GL (Fin ρ) (AE D)}
     (hu : u ∈ UX D ρ) (x : Mx D W.rank ρ) :
     d.mixS W ψ μ 𝓕 (om (d.levi u, 1) f) x = d.mixS W ψ μ 𝓕 f (x ⬝ u.1) := by
   rw [hF.levi, det_uni hu, halfMod_uni _ hu, map_one, inv_one]
   simp
 
+/- English proof (translation)
+Rewrite using `[hF.unip]`. Simplify using `only [heisO, zero_add, GlobalTheory.MixModel.symplOH_zero_left, AddChar.map_zero_eq_one, one_mul]`.
+-/
 theorem mixS_nB_zero (hF : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.FormulasS d ψ χW om om' μ 𝓕 f) (b : Mx D ρ V₀.rank)
     (x : Mx D W.rank ρ) : d.mixS W ψ μ 𝓕 (om (d.nB b, 1) f) x 0 = d.mixS W ψ μ 𝓕 f x (x ⬝ b) := by
   rw [hF.unip]
   simp only [heisO, zero_add, GlobalTheory.MixModel.symplOH_zero_left, AddChar.map_zero_eq_one, one_mul]
 
+/- English proof (translation)
+Rewrite using `[hF.centre]`. Both sides reduce to the same expression.
+-/
 theorem mixS_nC (hF : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.FormulasS d ψ χW om om' μ 𝓕 f) (c : skewA D ρ) (x : Mx D W.rank ρ)
     (w : WO V₀ W) : d.mixS W ψ μ 𝓕 (om (d.nC c, 1) f) x w = ψ (d.qS W c x) * d.mixS W ψ μ 𝓕 f x w := by
   rw [hF.centre]
@@ -66,6 +84,11 @@ namespace GlobalTheory.Unf.TermLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hp : d.pX ⬝ mt V (d.levi u * (d.nB b * d.nC c)) = u.1 ⬝ (d.pX + c.1 ⬝ d.pY + b ⬝ d.p0 - (half D • (b ⬝ plus V₀ b)) ⬝ d.pY)`. Rewrite using `[mt_mul, mt_mul, ← Matrix.mul_assoc, d.pX_levi, Matrix.mul_assoc, ← Matrix.mul_assoc d.pX, d.pX_nB]`. Simplify using `only [Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, d.pX_nC, d.wittDecomp_projAnisotropic_unipotentSkew, d.pY_nC]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]`.
+
+Rewrite using `[← Matrix.mul_assoc, hp]`. Simplify using `only [Matrix.mul_assoc, Matrix.add_mul, Matrix.sub_mul, d.pX_j0, d.pY_j0, d.p0_j0, Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero, sub_zero]`. Rewrite using `[← Matrix.mul_assoc, hp]`. Simplify using `only [Matrix.mul_assoc, Matrix.add_mul, Matrix.sub_mul, d.pX_jY, d.pY_jY, d.p0_jY, Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero]`.
+-/
 theorem blocks_flag {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (u : GL (Fin ρ) (AE D)) (b : Mx D ρ V₀.rank)
     (c : skewA D ρ) :
     mt V (d.levi u * (d.nB b * d.nC c)) ⬝ d.jX = d.jX ⬝ u.1 ∧
@@ -93,6 +116,23 @@ variable {D : D7}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `set γ := d.levi u * (d.nB b * d.nC c) with hγdef`. Take `⟨hX, h0, hY⟩` from `blocks_flag d u b c`. Rewrite `hX`, `h0`, `hY` using `[← hγdef]`. Establish `hM : mt V γ ∈ ratMx D V.rank V.rank` using `(mem_GQ_iff V γ).1 hγ`. Establish `hMi : mt V γ⁻¹ ∈ ratMx D V.rank V.rank` using `(mem_GQ_iff V γ⁻¹).1 (inv_mem hγ)`.
+
+Establish `hpX : d.pX ∈ ratMx D ρ V.rank` using `rat_mem _`. Establish `hjX : d.jX ∈ ratMx D V.rank ρ` using `rat_mem _`. Establish `hj0 : d.j0 ∈ ratMx D V.rank V₀.rank` using `rat_mem _`. Establish `hjY : d.jY ∈ ratMx D V.rank ρ` using `rat_mem _`. Establish `hu : u.1 ∈ ratMx D ρ ρ`.
+
+Establish `e : d.pX ⬝ (mt V γ ⬝ d.jX) = u.1` using `by rw [hX, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Rewrite using `[← e]`. Conclude with `ratMx_mul hpX (ratMx_mul hM hjX)`. Establish `hui : (u⁻¹).1 ∈ ratMx D ρ ρ`. Establish `e1 : mt V γ⁻¹ ⬝ d.jX = d.jX ⬝ (u⁻¹).1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = d.jX ⬝ (u⁻¹).1 := by rw [← hX, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Establish `e : d.pX ⬝ (mt V γ⁻¹ ⬝ d.jX) = (u⁻¹).1` using `by rw [e1, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Rewrite using `[← e]`.
+
+Conclude with `ratMx_mul hpX (ratMx_mul hMi hjX)`. Establish `hub : u.1 ⬝ b ∈ ratMx D ρ V₀.rank` using `by rw [← h0]; exact ratMx_mul hpX (ratMx_mul hM hj0)`. Establish `hb : b ∈ ratMx D ρ V₀.rank`. Establish `e : (u⁻¹).1 ⬝ (u.1 ⬝ b) = b`. Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`.
+
+Rewrite using `[← e]`. Conclude with `ratMx_mul hui hub`. Establish `hc : c.1 ∈ ratMx D ρ ρ`. Establish `e : c.1 = (u⁻¹).1 ⬝ (d.pX ⬝ (mt V γ ⬝ d.jY)) + half D • (b ⬝ plus V₀ b)`. Establish `h2 : (u⁻¹).1 ⬝ (u.1 ⬝ (c.1 - half D • (b ⬝ plus V₀ b))) = c.1 - half D • (b ⬝ plus V₀ b)`.
+
+Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[hY, h2, sub_add_cancel]`. Establish `hplus : plus V₀ b ∈ ratMx D V₀.rank ρ` using `by show giA V₀ ⬝ adj b ∈ ratMx D V₀.rank ρ`. Conclude with `ratMx_mul (rat_mem (V₀.gram⁻¹)) (ratMx_adj hb)`. Rewrite using `[e]`.
+
+Use `add_mem (ratMx_mul hui (ratMx_mul hpX (ratMx_mul hM hjY))) ?_` and prove the remaining obligations. Use `show incA D (1 / 2) • (b ⬝ plus V₀ b) ∈ ratMx D ρ ρ`. Conclude with `ratMx_smul (1 / 2) (ratMx_mul hb hplus)`. Conclude with `⟨hu, hub, hc⟩`.
+-/
 theorem rat_coords {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (u : GL (Fin ρ) (AE D)) (b : Mx D ρ V₀.rank)
     (c : skewA D ρ) (hγ : d.levi u * (d.nB b * d.nC c) ∈ GQ V) :
     u.1 ∈ ratMx D ρ ρ ∧ u.1 ⬝ b ∈ ratMx D ρ V₀.rank ∧ c.1 ∈ ratMx D ρ ρ := by
@@ -140,6 +180,15 @@ namespace GlobalTheory.Unf.TermLaw
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Establish `hint : ∀ p, IntegrableOn (G p) 𝓕 μ` using `fun p => covolOne_integrableOn h (G p) (hG.uncurry_left p) (hper p)`. Use `continuous_iff_continuousAt.2 fun p₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hev : ∀ᶠ p in nhds p₀, ∀ k ∈ K, ‖G p k - G p₀ k‖ < ε / 2` using `hK.eventually_forall_of_forall_eventually fun k hk => by`.
+
+Establish `hca : ContinuousAt (fun q : X × Mx D m n => ‖Function.uncurry G q - G p₀ q.2‖) (p₀, k)` using `(hG.sub ((hG.uncurry_left p₀).comp continuous_snd)).norm.continuousAt`. Establish `h1 : ‖Function.uncurry G (p₀, k) - G p₀ (p₀, k).2‖ < ε / 2`. Rewrite using `[Function.uncurry_apply_pair, sub_self, norm_zero]`. Conclude with `half_pos hε`. Conclude with `hca.eventually_lt continuousAt_const h1`.
+
+Use `filter_upwards [hev] with p hp`. Rewrite using `[dist_eq_norm, ← integral_sub (hint p) (hint p₀)]`. Establish `hb : ∀ a ∈ 𝓕, ‖G p a - G p₀ a‖ ≤ ε / 2` using `fun a _ => by`. Take `⟨γ, hγ, ha⟩` from `hKc a`. Rewrite using `[← hper p γ hγ a, ← hper p₀ γ hγ a]`.
+
+Conclude with `(hp _ ha).le`. Establish `h1 : μ 𝓕 = 1` using `h.2.2`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuous_periodic_integral {X : Type} [TopologicalSpace X] {m n : ℕ} {μ : Measure (Mx D m n)}
     {𝓕 : Set (Mx D m n)} (h : IsCovolOne (ratMx D m n) μ 𝓕) (G : X → Mx D m n → ℂ)
     (hG : Continuous (Function.uncurry G)) (hper : ∀ p, ∀ γ ∈ ratMx D m n, ∀ a, G p (γ + a) = G p a) :
@@ -170,6 +219,27 @@ end GlobalTheory.Unf.TermLaw
 
 namespace GlobalTheory.Unf.TermLaw
 
+/- English proof (translation)
+Introduce `D ψ V V₀ W ρ d χV χW om om' hW hW' vS Ψ hΨ`. Establish `hstd : IsStdChar D ψ (-1)` using `hW.std`. Establish `hMS` using `GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ V V₀ W ρ d χV χW om om' hW hW' vS.μ vS.𝓕 vS.covol`. Establish `hMV` using `(GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hstd).1 V V₀ W ρ d vS.μ vS.𝓕 vS.covol`. Establish `thP : ∀ p f, IsThetaFunO ψ V W f → IsThetaFunO ψ V W (om p f)` using `hW.om_pres`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x b u c`. Simplify using `only [term]`. Rewrite using `[om_mul_left, om_mul_left, mixS_nC d (hMS _ (thP _ _ (thP _ _ hΨ))), mixS_nB_zero d (hMS _ (thP _ _ hΨ)), mixS_levi_uni d (hMS _ hΨ) u.2]`. Introduce `γ hγQ hγN x x' hx'`.
+
+Take `⟨u, hu, b, c, rfl⟩` from `((GlobalTheory.MixPer.flag_jacobi_structure D V V₀ ρ d).1 γ).1 hγN`. Take `⟨hru, hrub, hrc⟩` from `rat_coords d u b c hγQ`. Establish `hblk : blockX d (d.levi u * (d.nB b * d.nC c)) = u.1`. Rewrite using `[blockX, (blocks_flag d u b c).1, ← Matrix.mul_assoc, d.pX_jX, Matrix.one_mul]`. Rewrite `hx'` using `[hblk]`.
+
+Simplify using `only [term]`. Rewrite using `[om_mul_left, om_mul_left, mixS_levi_uni d (hMS _ (thP _ _ (thP _ _ hΨ))) hu, mixS_nB_zero d (hMS _ (thP _ _ hΨ)), mixS_nC d (hMS _ hΨ), hx']`. Establish `hxu : rat x ⬝ u.1 ∈ ratMx D W.rank ρ` using `ratMx_mul (rat_mem x) hru`. Establish `hq : ψ (d.qS W c (rat x ⬝ u.1)) = 1` using `(((GlobalTheory.T.mixedModelCentralTerms_via_gramMatrices D).1 V V₀ W ρ d).2.2 ψ hstd).2.1 _ hxu c hrc`. Take `⟨β, hβ⟩` from `ratMx_mul (rat_mem x) hrub`.
+
+Establish `hθ` using `(hMV Ψ hΨ (rat x ⬝ u.1)).quasi β 0`. Rewrite `hθ` using `[add_zero, GlobalTheory.MixModel.symplOH_zero_right, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Establish `hβ' : ratW W V₀ β = rat x ⬝ u.1 ⬝ b` using `by rw [ratW_eq, Matrix.mul_assoc]; exact hβ`. Rewrite `hθ` using `[hβ']`. Rewrite using `[hq, one_mul, hθ]`.
+
+Introduce `δ hδ x x' hx`. Simplify using `only [term]`. Rewrite using `[(hMS _ hΨ).target δ (rat x)]`. Establish `e : mt W δ⁻¹ ⬝ rat x = rat x'` using `by rw [← hx, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul]`. Rewrite using `[e]`.
+
+Conclude with `hW'.om_aut 1 (one_mem _) δ hδ _ (hMV Ψ hΨ _)`. Introduce `x`. Establish `hψc : Continuous ψ` using `hstd.1.1`. Establish `hJ` using `GlobalTheory.T.weilDatum_theta_jointlyContinuous D ψ V W χV χW om hW Ψ hΨ`. Establish `hY : Continuous (d.extY W)` using `continuous_id.matrix_mul continuous_const`.
+
+Establish `hterm : (fun p => term ψ d W vS (om p Ψ) x) = fun p => ∫ a in vS.𝓕, ψ (symplOH V W (d.extY W a) (d.extX W (rat x))) * om p Ψ (d.extY W a + d.extX W (rat x) + d.ext0 W 0) ∂vS.μ`. Use function extensionality and compare the values at `p`. Simplify using `only [term, HypDec.mixS]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun a => d.integrandS_eq _ _ _ _)`. Rewrite using `[hterm]`.
+
+Use `continuous_periodic_integral vS.covol (fun p a => ψ (symplOH V W (d.extY W a) (d.extX W (rat x))) * om p Ψ (d.extY W a + d.extX W (rat x) + d.ext0 W 0)) ?_ ?_` and prove the remaining obligations. Use `(hψc.comp (GlobalTheory.OrientedHeis.continuous_symplOH (hY.comp continuous_snd) continuous_const)).mul ?_` and prove the remaining obligations. Conclude with `hJ.comp (continuous_fst.prodMk (((hY.comp continuous_snd).add continuous_const).add continuous_const))`. Introduce `p γ hγ a`. Establish `h` using `d.integrandS_periodic (thP p Ψ hΨ) (rat x) 0 γ hγ a`.
+
+Rewrite `h` using `[d.integrandS_eq, d.integrandS_eq]`. Then use the resulting hypothesis. Establish `h` using `(GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hstd V V₀ W ρ d vS Ψ hΨ).2.2.2.2 0`. Rewrite `h` using `[map_zero]`. Conclude with `h`.
+-/
 theorem term_laws : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (χV χW : (AE D)ˣ →* Circle) (om : Om V W) (om' : Om V₀ W), IsWeilDatumO ψ V W χV χW om → IsWeilDatumO ψ V₀ W χV χW om' → ∀ (vS : VolM D W.rank ρ) (Ψ : WO V W → ℂ), IsThetaFunO ψ V W Ψ → (∀ (x : Matrix (Fin W.rank) (Fin ρ) D.host.E) b (u : UX D ρ) c, term ψ d W vS (om (d.nC c * (d.nB b * d.levi u.1), 1) Ψ) x = ψ (d.qS W c (rat x)) * d.mixS W ψ vS.μ vS.𝓕 Ψ (rat x ⬝ u.1.1) (rat x ⬝ b)) ∧ (∀ γ ∈ GQ V, γ ∈ flagN d → ∀ x x' : Matrix (Fin W.rank) (Fin ρ) D.host.E, (rat x' : Mx D W.rank ρ) = rat x ⬝ blockX d γ → term ψ d W vS (om (γ, 1) Ψ) x = term ψ d W vS Ψ x') ∧ (∀ δ ∈ GQ W, ∀ x x' : Matrix (Fin W.rank) (Fin ρ) D.host.E, mt W δ ⬝ (rat x' : Mx D W.rank ρ) = rat x → term ψ d W vS (om (1, δ) Ψ) x = term ψ d W vS Ψ x') ∧ (∀ x, Continuous fun p : GA D V × GA D W => term ψ d W vS (om p Ψ) x) ∧ HasSum (term ψ d W vS Ψ) (Ψ 0) := by
   intro D ψ V V₀ W ρ d χV χW om om' hW hW' vS Ψ hΨ
   have hstd : IsStdChar D ψ (-1) := hW.std

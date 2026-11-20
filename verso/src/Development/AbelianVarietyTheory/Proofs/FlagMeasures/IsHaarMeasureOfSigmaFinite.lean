@@ -9,6 +9,13 @@ noncomputable section
 
 namespace GlobalTheory.SnMass.ProdQuot
 
+/- English proof (translation)
+Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts H)` from `inferInstance`. Establish `e` using `Measure.haarMeasure_unique ν K`. Rewrite using `[e]`. Use `Measure.IsHaarMeasure.smul _ (fun hc => hν (by rw [e, hc, zero_smul])) fun hc => hν ?_` and prove the remaining obligations. Rewrite using `[← Measure.measure_univ_eq_zero, ← iUnion_spanningSets ν]`.
+
+Use `measure_iUnion_null fun n => ?_` and prove the remaining obligations. Establish `h1` using `measure_spanningSets_lt_top ν n`. Establish `h2 : ν (spanningSets ν n) = ⊤ * Measure.haarMeasure K (spanningSets ν n)`. Use `congrArg (fun ρ : Measure H => ρ (spanningSets ν n)) e` as an intermediate fact. Simplify `this` using `[hc]`.
+
+Distinguish the cases in `h3 : Measure.haarMeasure K (spanningSets ν n) = 0`. Rewrite using `[h2, h3, mul_zero]`. Rewrite `h1` using `[h2, ENNReal.top_mul h3]`. Conclude with `absurd h1 (lt_irrefl _)`.
+-/
 theorem isHaarMeasure_of_sigmaFinite {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [MeasurableSpace H] [BorelSpace H] [SecondCountableTopology H] [LocallyCompactSpace H] (ν : Measure H)
     [SigmaFinite ν] [ν.IsMulLeftInvariant] (hν : ν ≠ 0) : ν.IsHaarMeasure := by
@@ -27,6 +34,21 @@ theorem isHaarMeasure_of_sigmaFinite {H : Type} [Group H] [TopologicalSpace H] [
   · rw [h2, ENNReal.top_mul h3] at h1
     exact absurd h1 (lt_irrefl _)
 
+/- English proof (translation)
+Establish `hce : Topology.IsClosedEmbedding R.subtype` using `hR.isClosedEmbedding_subtypeVal`. Establish `hφ : MeasurableEmbedding R.subtype` using `hce.measurableEmbedding`. Use `haveI : LocallyCompactSpace R := hce.locallyCompactSpace`. Use `haveI : SecondCountableTopology R := hce.isEmbedding.secondCountableTopology`. Establish `h2 : (μ.comap R.subtype).map R.subtype = μ`.
+
+Rewrite using `[hφ.map_comap]`. Use `Measure.restrict_eq_self_of_ae_mem ?_` and prove the remaining obligations. Establish `: Set.range R.subtype = (R : Set G)` using `Subtype.range_coe`. Rewrite using `[this]`. Conclude with `hc`.
+
+Use `set ν : Measure R := μ.comap R.subtype with hν`. Use `haveI : SigmaFinite ν := SigmaFinite.of_map _ hφ.measurable.aemeasurable (by rwa [h2])`. Use `haveI : ν.IsMulLeftInvariant := ⟨fun g => by`. Apply `hφ.map_injective` to reduce the goal to its premises. Establish `hm : Measurable fun x : G => (g : G) * x` using `measurable_const_mul _`.
+
+Rewrite using `[Measure.map_map hφ.measurable (measurable_const_mul g), h2]`. Use `conv_rhs => rw [← (hi g g.2).1, ← h2, Measure.map_map hm hφ.measurable]`. Use the proof step `rfl⟩`. Use `haveI : ν.IsMulRightInvariant := ⟨fun g => by`. Apply `hφ.map_injective` to reduce the goal to its premises.
+
+Establish `hm : Measurable fun x : G => x * (g : G)` using `measurable_mul_const _`. Rewrite using `[Measure.map_map hφ.measurable (measurable_mul_const g), h2]`. Use `conv_rhs => rw [← (hi g g.2).2, ← h2, Measure.map_map hm hφ.measurable]`. Use the proof step `rfl⟩`. Use `haveI : ν.IsHaarMeasure := isHaarMeasure_of_sigmaFinite ν fun h => h0 (by rw [← h2, h, Measure.map_zero])`.
+
+Take `⟨b, hb, h1⟩` from `GlobalTheory.exists_measurable_lintegral_coset_eq_one G R ν R.subtype hce`. Use `⟨fun x => (b x).toNNReal, hb.ennreal_toNNReal, fun g => ?_⟩` and prove the remaining obligations. Establish `hm : Measurable fun s => b (s * g)` using `hb.comp (measurable_mul_const g)`. Establish `h3 : ∫⁻ s, b (s * g) ∂μ = 1`. Rewrite using `[← h2, hφ.lintegral_map]`.
+
+Conclude with `h1 g`. Rewrite using `[← h3]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top hm (by rw [h3]; exact ENNReal.one_ne_top)] with s hs`. Conclude with `ENNReal.coe_toNNReal hs.ne`.
+-/
 theorem exists_cutoff {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (R : Subgroup G) (μ : Measure G)
     [SigmaFinite μ] (hR : IsClosed (R : Set G)) (h0 : μ ≠ 0) (hc : μ (R : Set G)ᶜ = 0)
@@ -68,6 +90,13 @@ theorem exists_cutoff {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
   filter_upwards [ae_lt_top hm (by rw [h3]; exact ENNReal.one_ne_top)] with s hs
   exact ENNReal.coe_toNNReal hs.ne
 
+/- English proof (translation)
+Establish `hb' : Measurable fun x => (b x : ℝ≥0∞)` using `hb.coe_nnreal_ennreal`. Use extensionality with `A hA`. Rewrite using `[Measure.map_apply hF hA, Measure.map_apply hF hA, withDensity_apply _ (hF hA), ← lintegral_indicator (hF hA), hν _ (hb'.indicator (hF hA)), ← lintegral_indicator_one (hF hA)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ F ⁻¹' A`.
+
+Rewrite using `[Set.indicator_of_mem hx, Pi.one_apply, ← h1 x]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hi] with s hs`. Rewrite using `[Set.indicator_of_mem (by simpa [hs] using hx)]`. Rewrite using `[Set.indicator_of_notMem hx, ← lintegral_zero (μ := μ)]`.
+
+Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hi] with s hs`. Rewrite using `[Set.indicator_of_notMem (by simpa [hs] using hx)]`.
+-/
 theorem map_eq {G : Type} [Group G] [MeasurableSpace G] (μG μ ν : Measure G) {b : G → ℝ≥0} (hb : Measurable b)
     (h1 : ∀ g, ∫⁻ s, (b (s * g) : ℝ≥0∞) ∂μ = 1)
     (hν : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, ∫⁻ s, f (s * x) ∂μ ∂ν)
@@ -88,6 +117,13 @@ theorem map_eq {G : Type} [Group G] [MeasurableSpace G] (μG μ ν : Measure G) 
     filter_upwards [hi] with s hs
     rw [Set.indicator_of_notMem (by simpa [hs] using hx)]
 
+/- English proof (translation)
+Establish `h` using `map_eq μG μ ν hb h1 hν hF hi`. Establish `e : (fun x => (b x : ℂ) * F x) = fun x => b x • F x`. Use extensionality with `x`. Simplify using `[NNReal.smul_def]`. Establish `hid : ∀ ρ : Measure ℂ, AEStronglyMeasurable (fun z : ℂ => z) ρ` using `fun ρ => continuous_id.aestronglyMeasurable`.
+
+Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← integral_withDensity_eq_integral_smul hb, ← integral_map hF.aemeasurable (hid _), ← integral_map hF.aemeasurable (hid _), h]`. Rewrite using `[← integrable_withDensity_iff_integrable_smul hb]`. Establish `h2` using `integrable_map_measure (μ := ν) (hid _) hF.aemeasurable`.
+
+Establish `h3` using `integrable_map_measure (μ := μG.withDensity fun x => b x) (hid _) hF.aemeasurable`. Rewrite `h2` using `[h]`. Conclude with `h2.symm.trans h3`.
+-/
 theorem integral_eq {G : Type} [Group G] [MeasurableSpace G] (μG μ ν : Measure G) {b : G → ℝ≥0} (hb : Measurable b)
     (h1 : ∀ g, ∫⁻ s, (b (s * g) : ℝ≥0∞) ∂μ = 1)
     (hν : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, ∫⁻ s, f (s * x) ∂μ ∂ν)

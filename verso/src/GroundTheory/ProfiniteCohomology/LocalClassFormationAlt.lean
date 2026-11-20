@@ -11,6 +11,9 @@ section Open
 
 variable {K Ksep : Type} [Field K] [Field Ksep] [Algebra K Ksep] [IsGalois K Ksep]
 
+/- English proof (translation)
+The claim follows from `InfiniteGalois.fixingSubgroup_fixedField ⟨(U : Subgroup Gal(Ksep/K)), U.isClosed⟩`.
+-/
 theorem fixingSubgroup_fixedField_openSubgroup (U : OpenSubgroup Gal(Ksep/K)) :
     (fixedField (U : Subgroup Gal(Ksep/K))).fixingSubgroup = U :=
   InfiniteGalois.fixingSubgroup_fixedField ⟨(U : Subgroup Gal(Ksep/K)), U.isClosed⟩
@@ -21,16 +24,25 @@ instance finiteDimensional_fixedField_openSubgroup (U : OpenSubgroup Gal(Ksep/K)
     rw [fixingSubgroup_fixedField_openSubgroup]
     exact U.isOpen)
 
+/- English proof (translation)
+Rewrite using `[finrank_eq_fixingSubgroup_index, fixingSubgroup_fixedField_openSubgroup]`.
+-/
 theorem index_openSubgroup (U : OpenSubgroup Gal(Ksep/K)) :
     (U : Subgroup Gal(Ksep/K)).index = Module.finrank K (fixedField (U : Subgroup Gal(Ksep/K))) := by
   rw [finrank_eq_fixingSubgroup_index, fixingSubgroup_fixedField_openSubgroup]
 
 omit [IsGalois K Ksep] in
 
+/- English proof (translation)
+Introduce `_ hx` and use `(mem_fixedField_iff _ _).2 fun σ hσ => (mem_fixedField_iff _ _).1 hx σ (h hσ)`.
+-/
 theorem fixedField_le_fixedField {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U) :
     fixedField (U : Subgroup Gal(Ksep/K)) ≤ fixedField (V : Subgroup Gal(Ksep/K)) :=
   fun _ hx => (mem_fixedField_iff _ _).2 fun σ hσ => (mem_fixedField_iff _ _).1 hx σ (h hσ)
 
+/- English proof (translation)
+Set `_` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Establish `: IsScalarTower K (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `h1` using `Subgroup.relIndex_mul_index (show (V : Subgroup Gal(Ksep/K)) ≤ U from h)`. Rewrite `h1` using `[index_openSubgroup, index_openSubgroup, ← Module.finrank_mul_finrank K (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))), mul_comm]`. Conclude with `Nat.eq_of_mul_eq_mul_left Module.finrank_pos h1`.
+-/
 theorem relIndex_eq_finrank {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U) :
     letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
     (V : Subgroup Gal(Ksep/K)).relIndex U =
@@ -50,15 +62,24 @@ def galFixedFieldToOpen (U : OpenSubgroup Gal(Ksep/K)) :
       ((mem_fixingSubgroup_iff _ _).2 fun x hx => σ.commutes ⟨x, hx⟩)
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_galFixedFieldToOpen_apply (U : OpenSubgroup Gal(Ksep/K))
     (σ : Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K)))) (x : Ksep) :
     ((galFixedFieldToOpen U σ : Gal(Ksep/K)) : Ksep → Ksep) x = σ x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `(continuous_restrictScalarsHom_of_tower K (fixedField (U : Subgroup Gal(Ksep/K))) Ksep).subtype_mk _`.
+-/
 theorem continuous_galFixedFieldToOpen (U : OpenSubgroup Gal(Ksep/K)) :
     Continuous (galFixedFieldToOpen U) :=
   (continuous_restrictScalarsHom_of_tower K (fixedField (U : Subgroup Gal(Ksep/K))) Ksep).subtype_mk _
 
+/- English proof (translation)
+Use `⟨fun σ τ h => AlgEquiv.ext fun x => ?_, fun τ => ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun ρ : (U : Subgroup Gal(Ksep/K)) => (ρ : Gal(Ksep/K)) x) h`. Establish `hτ : (τ : Gal(Ksep/K)) ∈ (fixedField (U : Subgroup Gal(Ksep/K))).fixingSubgroup` using `(fixingSubgroup_fixedField_openSubgroup U).ge τ.2`. Use `⟨fixingSubgroupEquiv _ ⟨τ, hτ⟩, Subtype.ext (AlgEquiv.ext fun x => rfl)⟩` and prove the remaining obligations.
+-/
 theorem galFixedFieldToOpen_bijective (U : OpenSubgroup Gal(Ksep/K)) :
     Function.Bijective (galFixedFieldToOpen U) := by
   refine ⟨fun σ τ h => AlgEquiv.ext fun x => ?_, fun τ => ?_⟩
@@ -71,14 +92,23 @@ noncomputable def galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K)) :
     Gal(Ksep/fixedField (U : Subgroup Gal(Ksep/K))) ≃* (U : Subgroup Gal(Ksep/K)) :=
   MulEquiv.ofBijective (galFixedFieldToOpen U) (galFixedFieldToOpen_bijective U)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem galFixedFieldEquivOpen_toMonoidHom (U : OpenSubgroup Gal(Ksep/K)) :
     (galFixedFieldEquivOpen U).toMonoidHom = galFixedFieldToOpen U :=
   rfl
 
+/- English proof (translation)
+The claim follows from `continuous_galFixedFieldToOpen U`.
+-/
 theorem continuous_galFixedFieldEquivOpen (U : OpenSubgroup Gal(Ksep/K)) :
     Continuous (galFixedFieldEquivOpen U).toMonoidHom :=
   continuous_galFixedFieldToOpen U
 
+/- English proof (translation)
+Establish `: IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) Ksep` using `IsGalois.tower_top_of_isGalois K _ Ksep`. Conclude with `(Continuous.homeoOfEquivCompactToT2 (f := (galFixedFieldEquivOpen U).toEquiv) (continuous_galFixedFieldToOpen U)).symm.continuous`.
+-/
 theorem continuous_galFixedFieldEquivOpen_symm (U : OpenSubgroup Gal(Ksep/K)) :
     Continuous (galFixedFieldEquivOpen U).symm.toMonoidHom := by
   have : IsGalois (fixedField (U : Subgroup Gal(Ksep/K))) Ksep :=
@@ -99,6 +129,9 @@ noncomputable def galUnitsOpenHom (U : OpenSubgroup Gal(Ksep/K)) :
       ext x
       rfl⟩
 
+/- English proof (translation)
+The claim follows from `Function.bijective_id`.
+-/
 theorem galUnitsOpenHom_bijective (U : OpenSubgroup Gal(Ksep/K)) :
     Function.Bijective (galUnitsOpenHom U).hom :=
   Function.bijective_id
@@ -112,11 +145,17 @@ noncomputable def openCohomologyIso (U : OpenSubgroup Gal(Ksep/K)) (n : ℕ) :
   asIso (cohomologyMapAlong (galFixedFieldEquivOpen U).toMonoidHom
     (continuous_galFixedFieldEquivOpen U) (galUnitsOpenHom U) n)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem openCohomologyIso_hom (U : OpenSubgroup Gal(Ksep/K)) (n : ℕ) :
     (openCohomologyIso U n).hom = cohomologyMapAlong (galFixedFieldEquivOpen U).toMonoidHom
       (continuous_galFixedFieldEquivOpen U) (galUnitsOpenHom U) n :=
   rfl
 
+/- English proof (translation)
+The claim follows from `IsScalarTower.of_algebraMap_eq' rfl cohomologyResLE (galUnits.{0} K Ksep) (show (V : Subgroup Gal(Ksep/K)) ≤ U from h) n ≫ (openCohomologyIso V n).hom = (openCohomologyIso U n).hom ≫ cohomologyMapAlong (AlgEquiv.restrictScalarsHom (fixedField (U : Subgroup Gal(Ksep/K)))) (continu …`.
+-/
 theorem cohomologyResLE_comp_openCohomologyIso {U V : OpenSubgroup Gal(Ksep/K)} (h : V ≤ U) (n : ℕ) :
     letI := (IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra
     haveI : IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K)))
@@ -146,11 +185,17 @@ noncomputable def localInv (U : OpenSubgroup Gal(Ksep/K)) : H2Open (galUnits.{0}
   (brauerInv (fixedField (U : Subgroup Gal(Ksep/K))) Ksep).comp
     (openCohomologyIso U 2).hom.hom.toAddMonoidHom
 
+/- English proof (translation)
+The claim follows from `AddMonoidHom.comp_apply _ _ x`.
+-/
 theorem localInv_apply (U : OpenSubgroup Gal(Ksep/K)) (x : H2Open (galUnits.{0} K Ksep) U) :
     localInv K Ksep U x =
       brauerInv (fixedField (U : Subgroup Gal(Ksep/K))) Ksep ((openCohomologyIso U 2).hom.hom x) :=
   AddMonoidHom.comp_apply _ _ x
 
+/- English proof (translation)
+The claim follows from `(brauerInv_bijective _ Ksep).comp ⟨(ModuleCat.mono_iff_injective _).1 inferInstance, (ModuleCat.epi_iff_surjective _).1 inferInstance⟩`.
+-/
 theorem localInv_bijective (U : OpenSubgroup Gal(Ksep/K)) : Function.Bijective (localInv K Ksep U) :=
   (brauerInv_bijective _ Ksep).comp
     ⟨(ModuleCat.mono_iff_injective _).1 inferInstance, (ModuleCat.epi_iff_surjective _).1 inferInstance⟩
@@ -158,11 +203,19 @@ theorem localInv_bijective (U : OpenSubgroup Gal(Ksep/K)) : Function.Bijective (
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [ValuativeRel Ksep]
   [TopologicalSpace Ksep] [IsValuativeTopology Ksep] [ValuativeExtension K Ksep] in
 
+/- English proof (translation)
+The claim follows from `(isZero_cohomology_one_galUnits (K := fixedField (U : Subgroup Gal(Ksep/K))) (L := Ksep)).of_iso (openCohomologyIso U 1)`.
+-/
 theorem isZero_H1_open (U : OpenSubgroup Gal(Ksep/K)) :
     Limits.IsZero (cohomology (Rep.res (U : Subgroup Gal(Ksep/K)).subtype (galUnits.{0} K Ksep)) 1) :=
   (isZero_cohomology_one_galUnits (K := fixedField (U : Subgroup Gal(Ksep/K))) (L := Ksep)).of_iso
     (openCohomologyIso U 1)
 
+/- English proof (translation)
+Set `_` to `(IntermediateField.inclusion (fixedField_le_fixedField h)).toRingHom.toAlgebra`. Establish `: IsScalarTower (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K))) Ksep` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower K (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: FiniteDimensional (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `Module.Finite.of_restrictScalars_finite K _ _`. Establish `: ValuativeExtension (fixedField (U : Subgroup Gal(Ksep/K))) (fixedField (V : Subgroup Gal(Ksep/K)))` using `IntermediateField.valuativeExtension_inclusion (fixedField_le_fixedField h)`.
+
+Establish `hsq` using `congrArg (fun φ => φ.hom x) (cohomologyResLE_comp_openCohomologyIso h 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at hsq`. Rewrite using `[localInv_apply, localInv_apply, hsq, ← brauerRes_eq, brauerInv_brauerRes, relIndex_eq_finrank h]`.
+-/
 theorem localInv_res (U V : OpenSubgroup Gal(Ksep/K)) (h : V ≤ U) (x : H2Open (galUnits.{0} K Ksep) U) :
     localInv K Ksep V ((cohomologyResLE (galUnits.{0} K Ksep) (show (V : Subgroup Gal(Ksep/K)) ≤ U from h)
       2).hom x) = (V : Subgroup Gal(Ksep/K)).relIndex U • localInv K Ksep U x := by
@@ -187,6 +240,9 @@ noncomputable def localClassFormation : ClassFormation (galUnits.{0} K Ksep) whe
   inv_res := localInv_res K Ksep
   inv_bijective := localInv_bijective K Ksep
 
+/- English proof (translation)
+Simplify using `only [localClassFormation]`.
+-/
 theorem localClassFormation_inv (U : OpenSubgroup Gal(Ksep/K)) :
     (localClassFormation K Ksep).inv U = localInv K Ksep U := by
   simp only [localClassFormation]

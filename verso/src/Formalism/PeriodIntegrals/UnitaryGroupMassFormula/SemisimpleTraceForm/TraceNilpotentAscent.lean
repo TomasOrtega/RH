@@ -6,6 +6,9 @@ namespace PI.SSAscent.UnitaryGroupMassFormula
 
 open Polynomial
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.IdempotentTraceVanishing.goal1 .. | (apply Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (intros; apply Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (apply @Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (intros; apply @Bl.IdempotentTraceVanishi …`.
+-/
 theorem trace_nilpotent_ascent : TraceNilStep := by
   first | exact Bl.IdempotentTraceVanishing.goal1 .. | (apply Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (intros; apply Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (apply @Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (intros; apply @Bl.IdempotentTraceVanishing.goal1 <;> assumption) | (apply @Bl.IdempotentTraceVanishing.goal1 <;> first | assumption | infer_instance)
 

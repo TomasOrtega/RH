@@ -19,6 +19,9 @@ def FramedX {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (W : Wt E a) {J : T
     ∀ (F : W.Sp →ₗ[ℂ] (UA E a → ℂ)) (R : ℝ), (∀ g i, ‖ι.symm (F (b g i) g)‖ ≤ R) →
       ∀ j g i, ‖ι.symm (opOf (RU E a) (t j) (F (b g i)) g)‖ ≤ R
 
+/- English proof (translation)
+Take `⟨d, b, h⟩` from `h`. Conclude with `⟨Fin d, b, h⟩`.
+-/
 theorem Framed.framedX {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {W : Wt E a} {J : Type} {t : J → (UA E a →₀ ℂ)}
     (h : Framed ι W t) : FramedX ι W t := by
   obtain ⟨d, b, h⟩ := h
@@ -34,6 +37,9 @@ def DenomLe (l d : ℕ) (g : UA E a) : Prop :=
 def IntW {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (lam : (E →+* ℂ) → DomWeight a) (f : UA E a →₀ ℂ) : Prop :=
   ∀ g ∈ f.support, g ∈ finU E a ∧ ∃ d : ℕ, DenomLe l d g ∧ ‖ι.symm (f g)‖ ≤ ((l : ℝ)⁻¹) ^ (a * d * wtSize lam)
 
+/- English proof (translation)
+Introduce `g hg` and use `⟨(h g hg).1, (h g hg).2.2⟩`.
+-/
 theorem intW_of {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {lam : (E →+* ℂ) → DomWeight a} {w₀ : HeightOneSpectrum (𝓞 E)}
     {f : UA E a →₀ ℂ} (h : IsIntegralOpW ι lam w₀ f) : IntW ι lam f :=
   fun g hg => ⟨(h g hg).1, (h g hg).2.2⟩

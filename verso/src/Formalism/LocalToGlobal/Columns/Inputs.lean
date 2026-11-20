@@ -21,6 +21,9 @@ variable {L Pl Pt : Type} [Field L]
 def ZSubHasBlocks (n : ℕ) (q : Pl → ℕ) (t : ℕ) (bl : List (Pl → L)) (sys : Pt → Pl × ℕ → L) (Z : Set Pt) : Prop :=
   ∀ x ∈ Z, HasBlocks n q t bl (sys x)
 
+/- English proof (translation)
+Introduce `x hx` and use `h x (hZ hx)`.
+-/
 theorem ZSubHasBlocks.mono {n : ℕ} {q : Pl → ℕ} {t : ℕ} {bl : List (Pl → L)} {sys : Pt → Pl × ℕ → L} {Z Z' : Set Pt}
     (h : ZSubHasBlocks n q t bl sys Z) (hZ : Z' ⊆ Z) : ZSubHasBlocks n q t bl sys Z' :=
   fun x hx => h x (hZ hx)

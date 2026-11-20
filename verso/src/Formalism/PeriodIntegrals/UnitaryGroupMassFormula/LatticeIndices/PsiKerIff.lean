@@ -12,10 +12,16 @@ variable {K T : Type} [Field K] [CommRing T] [Algebra K T] (O : ValuationSubring
 
 def toO (M : Matrix n n K) (hM : IntM O M) : Matrix n n O := fun i j => ⟨M i j, hM i j⟩
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem toO_map (M : Matrix n n K) (hM : IntM O M) : (toO O M hM).map (algebraMap O K) = M := by
   ext i j
   rfl
 
+/- English proof (translation)
+Introduce `M N h`. Use extensionality with `i j`. Establish `h1` using `congrFun (congrFun h i) j`. Conclude with `h1`.
+-/
 theorem map_inj : Function.Injective fun M : Matrix n n O => M.map (algebraMap O K) := by
   intro M N h
   ext i j
@@ -26,6 +32,9 @@ variable (θ : T ≃ₐ[K] K × K) (J : Matrix n n T) (P : GL n K) {H : Type} [G
   (hK : ∀ h x, x ∈ Lat O θ J P ↔ ((m h : GL n T) : Matrix n n T) *ᵥ x ∈ Lat O θ J P)
 
 include hK in
+/- English proof (translation)
+The claim follows from `conjP_int O θ J P (m h) fun x hx => (hK h x).mp hx`.
+-/
 theorem int_of (h : H) : IntM O (conjPrime₂ θ P (m h)) :=
   conjP_int O θ J P (m h) fun x hx => (hK h x).mp hx
 
@@ -38,6 +47,9 @@ def psiU (h : H) : GL n O :=
     simp only [Matrix.map_mul, toO_map, ← conjP_mul, ← map_mul, inv_mul_cancel, map_one, conjP_one]
     exact (Matrix.map_one _ (map_zero _) (map_one _)).symm⟩
 
+/- English proof (translation)
+The claim follows from `toO_map O _ (int_of O θ J P m hK h)`.
+-/
 theorem psiU_map (h : H) : ((psiU O θ J P m hK h : GL n O) : Matrix n n O).map (algebraMap O K) =
     conjPrime₂ θ P (m h) :=
   toO_map O _ (int_of O θ J P m hK h)
@@ -54,10 +66,22 @@ def psi : H →* GL n O where
     apply map_inj O
     simp only [Units.val_mul, Matrix.map_mul, psiU_map, map_mul, conjP_mul]
 
+/- English proof (translation)
+The claim follows from `psiU_map O θ J P m hK h`.
+-/
 theorem psi_map (h : H) : ((psi O θ J P m hK h : GL n O) : Matrix n n O).map (algebraMap O K) =
     conjPrime₂ θ P (m h) :=
   psiU_map O θ J P m hK h
 
+/- English proof (translation)
+Establish `key : ∀ i j, ((((psi O θ J P m hK h : GL n O) : Matrix n n O) - 1) i j : K) = (conjPrime₂ θ P (m h) - 1) i j`. Introduce `i j`. Rewrite using `[← psi_map O θ J P m hK h]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `H1 i j`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp (H1 i j)`. Use `⟨b, b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← key, ← hb]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `H1 i j`. Take `⟨w, hw, hwe⟩` from `H1 i j`. Use `Ideal.mem_span_singleton'.mpr ⟨⟨w, hw⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[key]`. Rewrite using `[hwe]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem psi_ker_iff (c : O) (h : H) :
     (∀ i j, (((psi O θ J P m hK h : GL n O) : Matrix n n O) - 1) i j ∈ Ideal.span {c}) ↔
       ∀ i j, ∃ w ∈ O, (conjPrime₂ θ P (m h) - 1) i j = (c : K) * w := by

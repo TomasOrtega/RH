@@ -12,6 +12,11 @@ namespace GlobalTheory.PlancherelZero
 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
+/- English proof (translation)
+Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Use `(continuousAt_const (y := ψ x)).congr ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds x one_pos] with z hz`. Establish `h1 : ψ (z - x) = 1` using `hψ.1 _ (by simpa [dist_eq_norm] using hz)`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem continuous_char (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous ψ := by
   rw [continuous_iff_continuousAt]
   intro x
@@ -21,21 +26,33 @@ theorem continuous_char (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) : Continuous �
   calc ψ x = ψ x * ψ (z - x) := by rw [h1, mul_one]
     _ = ψ z := by rw [← AddChar.map_add_eq_mul]; congr 1; abel
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x y`. Simplify using `[Et.kerK, Et.psiK, Algebra.traceForm_apply]`.
+-/
 theorem kerK_eq (A : Et F E) (ψ : AddChar F ℂ) :
     A.kerK ψ = fun x y => ψ (Algebra.traceForm F A.K x y) := by
   funext x y; simp [Et.kerK, Et.psiK, Algebra.traceForm_apply]
 
+/- English proof (translation)
+Establish `hl : Continuous ((Algebra.trace F A.K).comp (LinearMap.mulRight F y))` using `IsModuleTopology.continuous_of_linearMap _`. Conclude with `((continuous_char ψ hψ).comp hl).congr (fun x => by simp [Et.kerK, Et.psiK])`.
+-/
 theorem continuous_kerK (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (y : A.K) :
     Continuous fun x => A.kerK ψ x y := by
   have hl : Continuous ((Algebra.trace F A.K).comp (LinearMap.mulRight F y)) :=
     IsModuleTopology.continuous_of_linearMap _
   exact ((continuous_char ψ hψ).comp hl).congr (fun x => by simp [Et.kerK, Et.psiK])
 
+/- English proof (translation)
+The claim follows from `(hf.1.continuous.mul (continuous_kerK A ψ hψ y)).integrable_of_hasCompactSupport hf.2.mul_right`.
+-/
 theorem integrable_mul_kerK (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (μ : Measure A.K)
     [IsFiniteMeasureOnCompacts μ] {f : A.K → ℂ} (hf : IsTest f) (y : A.K) :
     Integrable (fun x => f x * A.kerK ψ x y) μ :=
   (hf.1.continuous.mul (continuous_kerK A ψ hψ y)).integrable_of_hasCompactSupport hf.2.mul_right
 
+/- English proof (translation)
+Unfold `fourB`. Rewrite using `[← integral_sub (integrable_mul_kerK A ψ hψ μ hf y) (integrable_mul_kerK A ψ hψ μ hg y)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[sub_mul]`.
+-/
 theorem fourB_sub (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (μ : Measure A.K)
     [IsFiniteMeasureOnCompacts μ] {f g : A.K → ℂ} (hf : IsTest f) (hg : IsTest g) (y : A.K) :
     fourB μ (A.kerK ψ) (f - g) y = fourB μ (A.kerK ψ) f y - fourB μ (A.kerK ψ) g y := by
@@ -43,6 +60,11 @@ theorem fourB_sub (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (μ : M
   rw [← integral_sub (integrable_mul_kerK A ψ hψ μ hf y) (integrable_mul_kerK A ψ hψ μ hg y)]
   congr 1; funext x; simp [sub_mul]
 
+/- English proof (translation)
+Establish `hc : Continuous fun x => ‖g x‖ ^ 2` using `(hg.1.continuous.norm).pow 2`. Establish `hs : HasCompactSupport ((fun z : ℂ => ‖z‖ ^ 2) ∘ g)` using `hg.2.comp_left (by simp)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hc.integrable_of_hasCompactSupport hs) (ae_of_all _ fun x => by simp only [Pi.zero_apply]; positivity)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+-/
 theorem lintegral_sq_eq_ofReal {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X]
     (μ : Measure X) [IsFiniteMeasureOnCompacts μ] {g : X → ℂ} (hg : IsTest g) :
     ∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ = ENNReal.ofReal (∫ x, ‖g x‖ ^ 2 ∂μ) := by
@@ -55,12 +77,18 @@ theorem lintegral_sq_eq_ofReal {X : Type} [TopologicalSpace X] [MeasurableSpace 
 
 variable [Unram F E]
 
+/- English proof (translation)
+Take `⟨-, -, hnd, -⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Rewrite using `[kerK_eq A ψ]`. Conclude with `(GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K (Algebra.traceForm F A.K) (Algebra.traceForm_isSymm (R := F) (S := A.K)) hnd).2 μK hsd.1 f hf`.
+-/
 theorem isTest_fourB (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (μK : Measure A.K)
     (hsd : SelfDual μK (A.kerK ψ)) {f : A.K → ℂ} (hf : IsTest f) : IsTest (fourB μK (A.kerK ψ) f) := by
   obtain ⟨-, -, hnd, -⟩ := GlobalTheory.T.etaleHermitianPair_structure_facts F E A
   rw [kerK_eq A ψ]
   exact (GlobalTheory.T.selfDual_measure_exists_unique_fourier_inversion F E ψ hψ A.K (Algebra.traceForm F A.K) (Algebra.traceForm_isSymm (R := F) (S := A.K)) hnd).2 μK hsd.1 f hf
 
+/- English proof (translation)
+Use `haveI := hsd.1`. Take `⟨-, -, hnd, -⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Establish `hB` using `kerK_eq A ψ`. Establish `hP` using `(GlobalTheory.T.selfDual_iff_lattice_volume_and_plancherel_alt F E ψ hψ A.K (Algebra.traceForm F A.K) (Algebra.traceForm_isSymm (R := F) (S := A.K)) hnd μK hsd.1).2 (hB ▸ hsd) f hf`. Rewrite using `[lintegral_sq_eq_ofReal μK (isTest_fourB A ψ hψ μK hsd hf), lintegral_sq_eq_ofReal μK hf, hB, hP]`.
+-/
 theorem plancherel (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (μK : Measure A.K)
     (hsd : SelfDual μK (A.kerK ψ)) {f : A.K → ℂ} (hf : IsTest f) :
     ∫⁻ y, ‖fourB μK (A.kerK ψ) f y‖ₑ ^ 2 ∂μK = ∫⁻ x, ‖f x‖ₑ ^ 2 ∂μK := by
@@ -79,15 +107,29 @@ variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [N
 
 def box (A : Et F E) (c : F) : Set A.K := {z | c • z ∈ A.OK}
 
+/- English proof (translation)
+The claim follows from `hO.preimage (continuous_const_smul c)`.
+-/
 theorem isOpen_box (A : Et F E) (hO : IsOpen A.OK) (c : F) : IsOpen (box A c) :=
   hO.preimage (continuous_const_smul c)
 
+/- English proof (translation)
+The claim follows from `hO.preimage (continuous_const_smul c)`.
+-/
 theorem isClosed_box (A : Et F E) (hO : IsClosed A.OK) (c : F) : IsClosed (box A c) :=
   hO.preimage (continuous_const_smul c)
 
+/- English proof (translation)
+The claim follows from `(Homeomorph.isCompact_preimage (Homeomorph.smulOfNeZero c hc)).2 hO`.
+-/
 theorem isCompact_box (A : Et F E) (hO : IsCompact A.OK) {c : F} (hc : c ≠ 0) : IsCompact (box A c) :=
   (Homeomorph.isCompact_preimage (Homeomorph.smulOfNeZero c hc)).2 hO
 
+/- English proof (translation)
+Use `⟨?_, HasCompactSupport.intro' (isCompact_box A hOk hc) (isClosed_box A hOc c) fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ box A c`. Use `filter_upwards [(isOpen_box A hOo c).mem_nhds hx, (IsLocallyConstant.iff_eventually_eq u).1 hu x] with y hy h`.
+
+Simplify using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx, h]`. Use `filter_upwards [(isClosed_box A hOc c).isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+-/
 theorem isTest_indicator_box (A : Et F E) {u : A.K → ℂ} (hu : IsLocallyConstant u) (hOo : IsOpen A.OK)
     (hOc : IsClosed A.OK) (hOk : IsCompact A.OK) {c : F} (hc : c ≠ 0) : IsTest ((box A c).indicator u) := by
   refine ⟨?_, HasCompactSupport.intro' (isCompact_box A hOk hc) (isClosed_box A hOc c)
@@ -100,6 +142,11 @@ theorem isTest_indicator_box (A : Et F E) {u : A.K → ℂ} (hu : IsLocallyConst
   · filter_upwards [(isClosed_box A hOc c).isOpen_compl.mem_nhds hx] with y hy
     simp [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
+/- English proof (translation)
+Unfold `fourB`. Apply the tactic sequence `have h : ∀ x, (box A c).indicator u x * A.kerK ψ x y = (box A c).indicator (fun x => u x * A.kerK ψ x y) x := fun x => by by_cases hx : x ∈ box A c <;> simp [hx]`. Repeatedly rewrite using `[h]`. Rewrite using `[integral_indicator hM]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `z`. Rewrite using `[Et.kerK, neg_mul, neg_neg, mul_comm z y]`.
+-/
 theorem fourB_indicator_box (A : Et F E) (ψ : AddChar F ℂ) (μ : Measure A.K) (u : A.K → ℂ) (c : F)
     (hM : MeasurableSet (box A c)) (y : A.K) :
     fourB μ (A.kerK ψ) ((box A c).indicator u) y = ∫ z in box A c, u z * A.psiK ψ (-((-y) * z)) ∂μ := by
@@ -115,6 +162,35 @@ end GlobalTheory.PlancherelZero
 
 namespace GlobalTheory.PlancherelZero
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ A ψ hψ μK hsd u hu hT hlim`. Use `haveI := hsd.1`. Take `⟨-, -, -, -, -, -, -, -, hnull, hOo, hOk, R, hR⟩` from `GlobalTheory.T.etaleHermitianPair_structure_facts F E A`. Establish `hOc : IsClosed A.OK`. Establish `hRo : IsOpen ((R.toAddSubgroup : AddSubgroup A.K) : Set A.K)` using `by rw [← hR] at hOo; exact hOo`.
+
+Rewrite using `[← hR]`. Conclude with `R.toAddSubgroup.isClosed_of_isOpen hRo`. Establish `h0 : (0 : A.K) ∈ A.OK` using `by rw [← hR]; exact R.zero_mem`. Take `⟨ϖ, hϖ0, hϖ1⟩` from `NormedField.exists_norm_lt_one F`. Establish `hpow : Tendsto (fun n : ℕ => ϖ ^ n) atTop (𝓝 0)` using `tendsto_pow_atTop_nhds_zero_of_norm_lt_one hϖ1`.
+
+Establish `hne : ∀ n : ℕ, ϖ ^ n ≠ 0` using `fun n => pow_ne_zero n (norm_pos_iff.1 hϖ0)`. Establish `hpow' : Tendsto (fun n : ℕ => ϖ ^ n) atTop (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨hpow, Eventually.of_forall hne⟩`. Use `set M : ℕ → Set A.K := fun n => box A (ϖ ^ n) with hMdef`. Establish `hMm : ∀ n, MeasurableSet (M n)` using `fun n => (isOpen_box A hOo _).measurableSet`. Use `set g : ℕ → A.K → ℂ := fun n => (M n).indicator u with hgdef`.
+
+Establish `hg : ∀ n, IsTest (g n)` using `fun n => isTest_indicator_box A hu hOo hOc hOk (hne n)`. Establish `hTc : ∀ n, Continuous (fourB μK (A.kerK ψ) (g n))` using `fun n => (isTest_fourB A ψ hψ μK hsd (hg n)).1.continuous`. Establish `huc : Continuous u` using `hu.continuous`. Establish `hum : Measurable fun z => ‖u z‖ₑ ^ 2` using `(huc.measurable.enorm).pow_const 2`. Use `set b : ℕ → ENNReal := fun n => ∫⁻ z, (M n)ᶜ.indicator (fun z => ‖u z‖ₑ ^ 2) z ∂μK with hbdef`.
+
+Establish `hev : ∀ z : A.K, ∀ᶠ n in atTop, z ∈ M n`. Introduce `z`. Establish `ht : Tendsto (fun n : ℕ => ϖ ^ n • z) atTop (𝓝 0)`. Simplify using `using hpow.smul_const z`. Conclude with `ht (hOo.mem_nhds h0)`.
+
+Establish `hb : Tendsto b atTop (𝓝 0)`. Use `tendsto_lintegral_of_dominated_convergence (μ := μK) (F := fun n z => (M n)ᶜ.indicator (fun z => ‖u z‖ₑ ^ 2) z) (f := fun _ => 0) (fun z => ‖u z‖ₑ ^ 2) (fun n => hum.indicator (hMm n).compl) (fun n => ae_of_all _ fun z => Set.indicator_le_self _ _ z) hT.ne (ae_of_all _ fun z => t …` as an intermediate fact. Simplify using `using this`. Establish `hlimF : ∀ y : A.K, IsUnit y → Tendsto (fun n => fourB μK (A.kerK ψ) (g n) y) atTop (𝓝 0)`. Introduce `y hy`.
+
+Conclude with `((hlim (-y) hy.neg).comp hpow').congr fun n => (fourB_indicator_box A ψ μK u _ (hMm n) y).symm`. Establish `hae : ∀ᵐ y ∂μK, IsUnit y` using `ae_iff.2 (hnull μK hsd.1)`. Establish `key : ∀ N, ∫⁻ x, ‖g N x‖ₑ ^ 2 ∂μK ≤ b N`. Introduce `N`. Rewrite using `[← plancherel A ψ hψ μK hsd (hg N)]`.
+
+Establish `hFd : ∀ n, ∫⁻ y, ‖fourB μK (A.kerK ψ) (g N) y - fourB μK (A.kerK ψ) (g n) y‖ₑ ^ 2 ∂μK = ∫⁻ x, ‖g N x - g n x‖ₑ ^ 2 ∂μK`. Introduce `n`. Use `plancherel A ψ hψ μK hsd (f := g N - g n) ⟨(hg N).1.sub (hg n).1, (hg N).2.sub (hg n).2⟩` as an intermediate fact. Simplify using `only [Pi.sub_apply] at this`. Rewrite using `[← this]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[fourB_sub A ψ hψ μK (hg N) (hg n) y]`. Establish `hpt : ∀ n x, ‖g N x - g n x‖ₑ ^ 2 ≤ (M N)ᶜ.indicator (fun z => ‖u z‖ₑ ^ 2) x + (M n)ᶜ.indicator (fun z => ‖u z‖ₑ ^ 2) x`. Introduce `n x`.
+
+Apply the tactic sequence `by_cases h1 : x ∈ M N <;> by_cases h2 : x ∈ M n <;> simp [g, h1, h2]`. Establish `hle : ∀ n, ∫⁻ x, ‖g N x - g n x‖ₑ ^ 2 ∂μK ≤ b N + b n`. Introduce `n`. Combine the equalities or inequalities in the displayed calculation. Establish `hliminf : ∀ᵐ y ∂μK, liminf (fun n => ‖fourB μK (A.kerK ψ) (g N) y - fourB μK (A.kerK ψ) (g n) y‖ₑ ^ 2) atTop = ‖fourB μK (A.kerK ψ) (g N) y‖ₑ ^ 2` using `by filter_upwards [hae] with y hy`.
+
+Establish `ht` using `((ENNReal.continuous_pow 2).tendsto _).comp ((continuous_enorm.tendsto _).comp ((tendsto_const_nhds (x := fourB μK (A.kerK ψ) (g N) y)).sub (hlimF y hy)))`. Simplify `ht.liminf_eq` using `[Function.comp_def]`. Combine the equalities or inequalities in the displayed calculation. Establish `: Tendsto (fun n => b N + b n) atTop (𝓝 (b N + 0))` using `tendsto_const_nhds.add hb`. Simplify using `using this.liminf_eq`.
+
+Establish `hsplit : ∀ N, ∫⁻ z, ‖u z‖ₑ ^ 2 ∂μK = ∫⁻ x, ‖g N x‖ₑ ^ 2 ∂μK + b N`. Introduce `N`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Apply the tactic sequence `by_cases h : x ∈ M N <;> simp [g, h]`. Use `_ = ∫⁻ x, ‖g N x‖ₑ ^ 2 ∂μK + b N := lintegral_add_right _ (hum.indicator (hMm N).compl)`. Establish `hT0 : ∫⁻ z, ‖u z‖ₑ ^ 2 ∂μK = 0`. Use `le_antisymm ?_ (by simp)` and prove the remaining obligations. Establish `h2 : Tendsto (fun N => b N + b N) atTop (𝓝 0)` using `by simpa using hb.add hb`.
+
+Conclude with `ge_of_tendsto' h2 fun N => (hsplit N).trans_le (add_le_add (key N) le_rfl)`. Establish `hae0 : u =ᵐ[μK] 0` using `by filter_upwards [(lintegral_eq_zero_iff hum).1 hT0] with z hz`. Simplify using `using hz`. Conclude with `(Continuous.ae_eq_iff_eq μK huc continuous_const).1 hae0`.
+-/
 theorem eq_zero_of_tendsto_fourier : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ (μK : Measure A.K), SelfDual μK (A.kerK ψ) → ∀ (u : A.K → ℂ), IsLocallyConstant u → ∫⁻ z, ‖u z‖ₑ ^ 2 ∂μK < ⊤ → (∀ a : A.K, IsUnit a → Tendsto (fun c : F => ∫ z in {z : A.K | c • z ∈ A.OK}, u z * A.psiK ψ (-(a * z)) ∂μK) (𝓝[≠] 0) (𝓝 0)) → u = 0 := by
   intro F E _ _ _ _ _ A ψ hψ μK hsd u hu hT hlim
   haveI := hsd.1

@@ -16,6 +16,9 @@ def GenFibNef.Statement : Prop :=
     IndefiniteRowSideFullHecke.Kleiman2.IsNefIdeal (FractionRing O) (NumbersDVR.genFib (mIdealOver O y)) β ↔
       IndefiniteRowSideFullHecke.Kleiman2.IsNef F y β
 
+/- English proof (translation)
+The claim follows from `h exO exF exΩ (Unit ⊕ Unit) (graphIdx 1 2) (graphVec (Kleiman.lineX exF) (Kleiman.lineX exF)) (graphDeg 0)`.
+-/
 example (h : GenFibNef.Statement) :=
   h exO exF exΩ (Unit ⊕ Unit) (graphIdx 1 2) (graphVec (Kleiman.lineX exF) (Kleiman.lineX exF)) (graphDeg 0)
 

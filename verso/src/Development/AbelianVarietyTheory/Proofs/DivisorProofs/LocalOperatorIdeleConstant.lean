@@ -11,12 +11,28 @@ namespace GlobalTheory.SchrLocConst
 
 open scoped GlobalTheory.VacAny
 
+/- English proof (translation)
+Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_valuationSubring _`. Establish `hC : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Conclude with `IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup hC (x := 0) (hO.mem_nhds (zero_mem _))`.
+-/
 theorem locallyCompact_Fv {F : Type} [Field F] [NumberField F] (v : Pl F) : LocallyCompactSpace (Fv F v) := by
   have hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) := Valued.isOpen_valuationSubring _
   have hC : IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) :=
     isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)
   exact IsCompact.locallyCompactSpace_of_mem_nhds_of_addGroup hC (x := 0) (hO.mem_nhds (zero_mem _))
 
+/- English proof (translation)
+Use `haveI := locallyCompact_Fv v`. Use `set f : ((κ → Fv F v) × (κ → Fv F v)) × (κ → Fv F v) → ℂ := fun p => schr (GlobalTheory.LatVac.psiAt ψ v) p.1 φ p.2 with hf`. Establish `hloc : IsLocallyConstant f`. Establish `hlin : Continuous fun p : ((κ → Fv F v) × (κ → Fv F v)) × (κ → Fv F v) => p.2 ⬝ᵥ p.1.2 + ⅟(2 : Fv F v) * (p.1.1 ⬝ᵥ p.1.2)` using `by fun_prop`. Conclude with `((GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt ψ hψ v)).comp_continuous hlin).mul (hφ.1.comp_continuous (by fun_prop))`.
+
+Rewrite `hloc`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `w₀`. Take `⟨C, hCc, hC⟩` from `exists_compact_mem_nhds w₀.1`. Use `set K : Set (κ → Fv F v) := (fun p : (κ → Fv F v) × (κ → Fv F v) => p.1 - p.2) '' (tsupport φ ×ˢ C) with hKdef`. Establish `hK : IsCompact K` using `(hφ.2.isCompact.prod hCc).image (by fun_prop)`.
+
+Establish `h1 : ∀ᶠ w in 𝓝 w₀, ∀ x ∈ K, f (w, x) = f (w₀, x)`. Use `hK.eventually_forall_of_forall_eventually fun x _ => ?_` and prove the remaining obligations. Establish `ha` using `hloc (w₀, x)`. Establish `hb : Tendsto (fun q : ((κ → Fv F v) × (κ → Fv F v)) × (κ → Fv F v) => (w₀, q.2)) (𝓝 (w₀, x)) (𝓝 (w₀, x))` using `((continuous_const.prodMk continuous_snd).tendsto (w₀, x))`. Use `filter_upwards [ha, hb.eventually ha] with q hq hq'`.
+
+Rewrite using `[hq, ← hq']`. Establish `h2 : ∀ᶠ w in 𝓝 w₀, w.1 ∈ C` using `continuous_fst.continuousAt.preimage_mem_nhds hC`. Establish `hz : ∀ w : (κ → Fv F v) × (κ → Fv F v), w.1 ∈ C → ∀ x ∉ K, f (w, x) = 0`. Introduce `w hw x hx`. Establish `: φ (x + w.1) = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx ⟨(x + w.1, w.1), ⟨h, hw⟩, by simp⟩`.
+
+Simplify using `only [hf, schr, this, mul_zero]`. Use `filter_upwards [h1, h2] with w hw hwC`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ K`. Conclude with `hw x hx`.
+
+Conclude with `(hz w hwC x hx).trans (hz w₀ (mem_of_mem_nhds hC) x hx).symm`.
+-/
 theorem isLocallyConstant_schr {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ)
     (v : Pl F) {κ : Type} [Fintype κ] {φ : (κ → Fv F v) → ℂ} (hφ : φ ∈ SB (κ → Fv F v)) :
     IsLocallyConstant fun w : (κ → Fv F v) × (κ → Fv F v) => schr (GlobalTheory.LatVac.psiAt ψ v) w φ := by
@@ -50,11 +66,23 @@ theorem isLocallyConstant_schr {F : Type} [Field F] [NumberField F] (ψ : AddCha
   · exact hw x hx
   · exact (hz w hwC x hx).trans (hz w₀ (mem_of_mem_nhds hC) x hx).symm
 
+/- English proof (translation)
+Apply the tactic sequence `ext k <;> simp [GlobalTheory.LatVac.locCo, map_smul]`.
+-/
 theorem locCo_smul {F : Type} [Field F] [NumberField F] {V : Type} [AddCommGroup V] [Module (AF F) V]
     {Bf : V → V → AF F} {κ : Type} [Fintype κ] (co : Darboux Bf κ) (v : Pl F) (a : AF F) (w : V) :
     GlobalTheory.LatVac.locCo co v (a • w) = evFin F v a • GlobalTheory.LatVac.locCo co v w := by
   ext k <;> simp [GlobalTheory.LatVac.locCo, map_smul]
 
+/- English proof (translation)
+Use `set m := Matrix.vecMulVec (incV F H.y) (incV F H'.x)`. Set `g₀ : E →ₗ[F] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v)` to `{ toFun := fun e => GlobalTheory.LatVac.locCo M.co v (((1 : AF F) ⊗ₜ[F] σ e : AE F E) • m) map_add' := fun e e' => by rw [map_add, TensorProduct.tmul_add, add_smul, map_add] map_smul' := fun c e => by`. Establish `h1 : (((1 : AF F) ⊗ₜ[F] σ (c • e) : AE F E) • m) = algebraMap F (AF F) c • ((((1 : AF F) ⊗ₜ[F] σ e : AE F E)) • m)`. Rewrite using `[AlgHom.map_smul_of_tower, TensorProduct.tmul_smul, smul_assoc, algebraMap_smul]`. Rewrite using `[h1, locCo_smul, AlgHom.commutes, algebraMap_smul, RingHom.id_apply] }`.
+
+Set `L` to `TensorProduct.AlgebraTensorModule.lift (LinearMap.toSpanSingleton (Fv F v) _ g₀)`. Use `⟨L, fun z => ?_⟩` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, add_smul, map_add, map_add, map_add, hx, hy]`.
+
+Consider the case `tmul a e`. Establish `e1 : cA σ (a ⊗ₜ[F] e) = a • ((1 : AF F) ⊗ₜ[F] σ e : AE F E)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Establish `e2 : compFin F E v (a ⊗ₜ[F] e) = evFin F v a ⊗ₜ[F] e` using `rfl`.
+
+Rewrite using `[e1, smul_assoc, locCo_smul, e2, TensorProduct.AlgebraTensorModule.lift_tmul]`. Both sides reduce to the same expression.
+-/
 theorem exists_linear_locCo_shift (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (H : Plane E n n₁)
     (H' : Plane E d d₁) (v : Pl F) : ∃ L : (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v),
@@ -80,6 +108,11 @@ theorem exists_linear_locCo_shift (F E : Type) [Field F] [NumberField F] [Field 
     rw [e1, smul_assoc, locCo_smul, e2, TensorProduct.AlgebraTensorModule.lift_tmul]
     rfl
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W M H H' hψ v ψ hψs`. Take `⟨L, hL⟩` from `exists_linear_locCo_shift F E σ M H H' v`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `⟨fun x => schr (GlobalTheory.LatVac.psiAt B.ψ v) (L x) ψ, (isLocallyConstant_schr B.ψ hψ v hψs).comp_continuous (IsModuleTopology.continuous_of_linearMap L), fun l _ => ?_⟩` and prove the remaining obligations. Rewrite using `[(locOp_rho M.co hψ v _ hψs).2, shiftB, hL]`.
+
+Both sides reduce to the same expression.
+-/
 theorem shiftB_locOp_locallyConstant : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (H : Plane E n n₁)
     (H' : Plane E d d₁), Continuous B.ψ → ∀ (v : Pl F), ∀ ψ ∈ SB (Fin n × Fin d → Fv F v),

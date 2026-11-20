@@ -14,6 +14,9 @@ namespace PositivityTheory.SiegelWeilFormula.Act.C1
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `hc : Continuous (cA σ : AE F E → AE F E)` using `IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap`. Establish `e : (nA σ d.Y d.b : Set (Matrix (Fin d.n) (Fin d.n) (AE F E))) = {β | βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))}` using `Set.ext fun β => kunf.mem_nA_iff hε β`. Rewrite using `[e]`. Conclude with `isClosed_eq continuous_id.matrix_transpose (((continuous_id.matrix_map hc).const_smul (((ε : ℤ) : AE F E))).neg)`.
+-/
 theorem isClosed_nA (d : SD σ) : IsClosed (nA σ d.Y d.b : Set (Matrix (Fin d.n) (Fin d.n) (AE F E))) := by
   obtain ⟨ε, hε⟩ := d.ok.frame.1
   have hc : Continuous (cA σ : AE F E → AE F E) := IsModuleTopology.continuous_of_linearMap (cA σ).toLinearMap
@@ -27,6 +30,9 @@ instance locCompact_nA (d : SD σ) : LocallyCompactSpace (nA σ d.Y d.b) :=
     inferInstanceAs (LocallyCompactSpace (Fin d.n → Fin d.n → AE F E))
   (isClosed_nA d).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
+/- English proof (translation)
+Establish `e1 : (β₀ +ᵥ β : nA σ d.Y d.b) = β₀.1 + β` using `rfl`. Establish `e2 : ((β₀.1 + β : nA σ d.Y d.b) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = β₀.1.1 + β.1` using `rfl`. Rewrite using `[e1, kunf.nb_add hN, mul_assoc, hφ _ (kunf.nb_rat hN β₀.2), e2, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul, AddChar.map_neg_eq_inv, kunf.psi_rat d.ok.good.std T β₀, inv_one, one_mul]`.
+-/
 theorem coef_periodic (d : SD σ) {nb : nA σ d.Y d.b → d.G} (hN : IsNMap d.b nb) (φ : d.G → ℂ)
     (hφ : ∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g) (T : nF σ d.Y d.b) (g : d.G) (β₀ : nF σ d.Y d.b)
     (β : nA σ d.Y d.b) :
@@ -39,6 +45,11 @@ theorem coef_periodic (d : SD σ) {nb : nA σ d.Y d.b → d.G} (hN : IsNMap d.b 
 
 variable {d : SD σ} {L : LD d}
 
+/- English proof (translation)
+Use `h.2.1` as an intermediate fact. Use `⟨(continuous_cj hU h.1 v).measurable, ?_⟩` and prove the remaining obligations. Establish `hl` using `latHaar (nA σ d.Y d.b) lam (nF σ d.Y d.b) (cjE hU h.1 v) (fun x => ⟨fun hx => ?_, fun hx => cj_rat hU h.1 hv hx⟩) 𝓖 h.2.2.1 (by rw [h.2.2.2]; exact one_ne_zero) (by rw [h.2.2.2]; exact ENNReal.one_ne_top)`. Conclude with `hl`. Use `cj_rat hU h.1 (neg_mem hv) hx` as an intermediate fact.
+
+Rewrite `this` using `[show cj hU h.1 (-v) (cjE hU h.1 v x) = x from cj_inv hU h.1 v x]`. Then use the resulting hypothesis.
+-/
 theorem cj_mp {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (h : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {uM : (Fin L.n → AE F E) → d.G} {ν : Measure (Fin L.n → AE F E)}
     {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) {v : Fin L.n → AE F E} (hv : v ∈ L.ratV) :
@@ -51,6 +62,19 @@ theorem cj_mp {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖
   · have := cj_rat hU h.1 (neg_mem hv) hx
     rwa [show cj hU h.1 (-v) (cjE hU h.1 v x) = x from cj_inv hU h.1 v x] at this
 
+/- English proof (translation)
+Use `h.2.1` as an intermediate fact. Establish `: VAddInvariantMeasure (nF σ d.Y d.b) (nA σ d.Y d.b) lam` using `⟨fun c s _ => measure_preimage_add lam c.1 s⟩`. Set `H : nA σ d.Y d.b → ℂ` to `fun β => φ (nb β * g) * d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1))))`. Establish `e1 : ∀ β, φ (nb β * (uM u * g)) * d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1)))) = H (cj hU h.1 u β)`. Introduce `β`.
+
+Establish `e : nb β * (uM u * g) = uM u * (nb (cj hU h.1 u β) * g)` using `by rw [nb_cj hU h.1 u β]; group`. Simplify using `only [H]`. Rewrite using `[e, hφ _ (uM_rat hU hu), trace_cj hU h.1 hT]`. Establish `hme : MeasurableEmbedding (cj hU h.1 u)` using `(cjE hU h.1 u).toHomeomorph.measurableEmbedding`. Establish `himg : (cj hU h.1 u) '' 𝓖 = (cj hU h.1 (-u)) ⁻¹' 𝓖`.
+
+Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩ show cj hU h.1 (-u) (cj hU h.1 u x) ∈ 𝓖`. Rewrite using `[cj_inv]` and apply the resulting hypothesis. Introduce `hy`.
+
+Use `⟨cj hU h.1 (-u) y, hy, ?_⟩` and prove the remaining obligations. Simplify using `using cj_inv hU h.1 (-u) y`. Establish `hfd : IsAddFundamentalDomain (nF σ d.Y d.b) ((cj hU h.1 (-u)) ⁻¹' 𝓖) lam`. Use `h.2.2.1.preimage_of_equiv (cj_mp h hU (neg_mem hu)).quasiMeasurePreserving (e := fun γ => ⟨cj hU h.1 u γ.1, cj_rat hU h.1 hu γ.2⟩) ⟨fun γ γ' hγ => ?_, fun γ => ?_⟩ fun γ x => ?_` and prove the remaining obligations. Use `congrArg (fun y : nF σ d.Y d.b => cj hU h.1 (-u) y.1) hγ` as an intermediate fact.
+
+Simplify using `only [cj_inv] at this`. Conclude with `Subtype.ext this`. Use `⟨⟨cj hU h.1 (-u) γ.1, cj_rat hU h.1 (neg_mem hu) γ.2⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using cj_inv hU h.1 (-u) γ.1`. Use `show cj hU h.1 (-u) ((cj hU h.1 u γ.1) + x) = γ.1 + cj hU h.1 (-u) x`.
+
+Rewrite using `[map_add, cj_inv]`. Unfold `fc`. Repeatedly rewrite using `[e1]`. Rewrite using `[← (cj_mp h hU hu).setIntegral_image_emb hme H 𝓖, himg, hfd.setIntegral_eq h.2.2.1 (fun β₀ β => coef_periodic d h.1 φ hφ T g β₀ β)]`.
+-/
 theorem fc_conj {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (h : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {uM : (Fin L.n → AE F E) → d.G} {ν : Measure (Fin L.n → AE F E)}
     {𝓤 : Set (Fin L.n → AE F E)} (hU : L.UData uM ν 𝓤) (φ : d.G → ℂ) (hφ : ∀ γ ∈ rat2 σ d.Y, ∀ g, φ (γ * g) = φ g)

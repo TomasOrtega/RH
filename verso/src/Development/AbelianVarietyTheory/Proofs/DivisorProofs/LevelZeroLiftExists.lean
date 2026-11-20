@@ -19,6 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.TieLift
 
+/- English proof (translation)
+The claim follows from `AtTw.of_forall fun Fm x hx i p hr hm w hw j g0 => GlobalTheory.GalLift.Transl.lifts (R2 p) j (GlobalTheory.BigOn.links2_of_rows _ _ _ _ _ _ _ _ _ _ p hr hm.1).1.lev g0`.
+-/
 theorem lift_principal : AtTw fun Fm x hx i p w j => ∀ g0 : G0 (R2 p).Pg (Fm.D x i).R.r,
     ∃ κ', Formalism.IndefR.Lev.IsLevelLift (Wc (Fm.D x i) j) ((R2 p).βW j) ((R2 p).datWp j (R2 p).triv) g0 κ' :=
   AtTw.of_forall fun Fm x hx i p hr hm w hw j g0 =>

@@ -13,6 +13,21 @@ namespace Formalism.ExtensionFiltration
 section Numbers
 open Finset Module NumberField
 
+/- English proof (translation)
+Introduce `Pl _ w w0 lcvD pq logOm C3 B0 llx La f m k Δ b xe CO h1 hw hΔ hpq hCO hlog hLa hf hm hk hkΔ hB0 hllx`. Substitute `hB0` using the available equality. Establish `hL0 : 0 ≤ CO * La` using `le_trans (abs_nonneg _) hlog`. Establish `hLa0 : 0 ≤ La` using `by nlinarith`. Establish `hpqa : |pq| ≤ k + m`.
+
+Establish `h` using `abs_sub_abs_le_abs_sub pq k`. Rewrite `h` using `[abs_of_pos (by linarith : (0:ℝ) < k)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkm : 0 ≤ k + m` using `by linarith`. Establish `hX0 : 0 ≤ (k + m) * Δ` using `mul_nonneg hkm hΔ`.
+
+Establish `hterm : ∀ ρ, pq * w ρ * logOm ≤ pq * w0 ρ * logOm + (k + m) * Δ * (CO * La)`. Introduce `ρ`. Establish `habs : |pq * (w ρ - w0 ρ) * logOm| ≤ (k + m) * Δ * (CO * La)`. Rewrite using `[abs_mul, abs_mul]`. Conclude with `mul_le_mul (mul_le_mul hpqa (hw ρ) (abs_nonneg _) hkm) hlog (abs_nonneg _) hX0`.
+
+Establish `e : pq * w ρ * logOm = pq * w0 ρ * logOm + pq * (w ρ - w0 ρ) * logOm` using `by ring`. Rewrite using `[e]`. Combine the linear relations using `[le_abs_self (pq * (w ρ - w0 ρ) * logOm)]`. Establish `hsum : ∑ ρ, pq * w ρ * logOm ≤ ∑ ρ, pq * w0 ρ * logOm + (Fintype.card Pl : ℝ) * ((k + m) * Δ * (CO * La))`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hf0 : 0 ≤ f` using `le_trans (Nat.cast_nonneg _) hf`. Establish `hm0 : 0 ≤ m` using `by linarith`. Establish `hb0 : 0 ≤ b` using `by linarith [mul_nonneg (by linarith : (0:ℝ) ≤ k) hΔ]`. Establish `hxe0 : 0 ≤ xe` using `by linarith`.
+
+Establish `hXY : (k + m) * Δ ≤ 4 * m * b`. Combine the linear relations using `[mul_nonneg hm0 (by linarith : (0:ℝ) ≤ 2 * b - k * Δ), mul_nonneg (mul_nonneg hm0 hΔ) (by linarith : (0:ℝ) ≤ k - 1), mul_nonneg hb0 (by linarith : (0:ℝ) ≤ m - 1)]`. Establish `hY0 : 0 ≤ 4 * m * b` using `mul_nonneg (mul_nonneg (by norm_num) hm0) hb0`. Establish `hB0nn : 0 ≤ f * m * b * xe` using `mul_nonneg (mul_nonneg (mul_nonneg hf0 hm0) hb0) hxe0`. Establish `hc1 : (Fintype.card Pl : ℝ) * ((k + m) * Δ * (CO * La)) ≤ f * ((k + m) * Δ * (CO * La))` using `mul_le_mul_of_nonneg_right hf (mul_nonneg hX0 hL0)`.
+
+Establish `hc2 : f * ((k + m) * Δ * (CO * La)) ≤ f * (4 * m * b * (CO * (3 * xe)))` using `mul_le_mul_of_nonneg_left (mul_le_mul hXY (mul_le_mul_of_nonneg_left hLa (by linarith)) hL0 hY0) hf0`. Establish `hc3 : 0 ≤ CO * (f * m * b * xe) * (llx - 1)` using `mul_nonneg (mul_nonneg (by linarith) hB0nn) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem weight_shift_constant : WShiftConst := by
   intro Pl _ w w0 lcvD pq logOm C3 B0 llx La f m k Δ b xe CO h1 hw hΔ hpq hCO hlog hLa hf hm hk hkΔ hB0 hllx
   subst hB0
@@ -57,6 +72,11 @@ theorem weight_shift_constant : WShiftConst := by
     mul_nonneg (mul_nonneg (by linarith) hB0nn) (by linarith)
   linarith
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `lt_of_lt_of_le one_pos hx`. Establish `hrd0 : 0 < rd` using `lt_of_lt_of_le one_pos hrd`. Establish `hb0 : 0 < b` using `by rw [hb]; exact Real.exp_pos L`. Establish `hlb : Real.log b = L` using `by rw [hb, Real.log_exp]`. Rewrite using `[hLa, ha, Real.log_mul (mul_pos hx0 hb0).ne' hrd0.ne', Real.log_mul hx0.ne' hb0.ne', hlb, ← hL]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem la_le_three (x eps L b a rd La : ℝ) (hx : 1 ≤ x) (hL : L = x ^ eps) (hb : b = Real.exp L)
     (ha : a = x * b) (hrd : 1 ≤ rd) (hrdL : Real.log rd ≤ L) (hlx : Real.log x ≤ L)
     (hLa : La = Real.log (a * rd)) : La ≤ 3 * x ^ eps := by
@@ -67,6 +87,9 @@ theorem la_le_three (x eps L b a rd La : ℝ) (hx : 1 ≤ x) (hL : L = x ^ eps) 
   rw [hLa, ha, Real.log_mul (mul_pos hx0 hb0).ne' hrd0.ne', Real.log_mul hx0.ne' hb0.ne', hlb, ← hL]
   linarith
 
+/- English proof (translation)
+Introduce `K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w w0 c1 ua muU muA muN muG mmax dA dB dN dg db C1 Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η a La R CO h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall hc1 hu …`. Establish `h` using `covolume_assembly_holds K d D hD hdD XW hXW M hM Pl w c1 ua muU muA muN muG mmax dA dB dN dg db C1 Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η h41 hcfl hfl hdA hAB hBε hε hP hdesc hcQ hΛ hεQ hd hsum hdb hdb3 hδ hδ12 hcut hmuN hmm hG h9 hsmall hc1 h …`. Establish `h3` using `la_le_three x eps L b a rd La hx hL hb ha hrd hrdL hlx hLa`. Conclude with `weight_shift_constant Pl w w0 _ pq logOm _ B0 llx La f m k (S + R) b (x ^ eps) CO h hww (by linarith) hpq hCO hOm h3 hcard hm hk (by linarith) hB0 hll`.
+-/
 theorem covolume_assembly_weighted_holds : CovolumeEstimateAnchoredWeights := by
   intro K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w w0 c1 ua muU muA muN muG mmax dA dB dN dg db
     C1 Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η a La R CO
@@ -82,6 +105,9 @@ theorem covolume_assembly_weighted_holds : CovolumeEstimateAnchoredWeights := by
   exact weight_shift_constant Pl w w0 _ pq logOm _ B0 llx La f m k (S + R) b (x ^ eps) CO h hww (by linarith) hpq hCO
     hOm h3 hcard hm hk (by linarith) hB0 hll
 
+/- English proof (translation)
+Introduce `K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w w0 c1 ua ι _ _ T DY A cs X cc z ρ R1 R2 Bn δ' h sl δc dc degc Ca Cb PPf e1 e2 muU muA muN muG mmax dA dB dN dg db Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η a La R CO a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a …`. Establish `h0` using `covolume_full_assembly_holds K d D hD hdD XW hXW M hM Pl w c1 ua ι T DY A cs X cc z ρ R1 R2 Bn δ' h sl δc dc degc Ca Cb PPf e1 e2 muU muA muN muG mmax dA dB dN dg db Cf Cc cfl ε δ Q P Λ G P9 pq q' logOm x eps L b rd Lchi llx LL0 B0 f m k S η a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 …`. Establish `h3` using `la_le_three x eps L b a rd La hx hL hb ha hrd hrdL hlx hLa`. Conclude with `weight_shift_constant Pl w w0 _ pq logOm _ B0 llx La f m k (S + R) b (x ^ eps) CO h0 hww (by linarith) hpq hCO hOm h3 hcard hm hk (by linarith) hB0 hll`.
+-/
 theorem covolume_full_assembly_weighted_holds : CovolumeEstimateOfAverageDegreeWeighted := by
   intro K _ _ _ _ d D hD hdD XW hXW M hM Pl _ w w0 c1 ua ι _ _ T DY A cs X cc z ρ R1 R2 Bn δ' h sl δc dc degc
     Ca Cb PPf e1 e2 muU muA muN muG mmax dA dB dN dg db Cf Cc cfl ε δ Q P Λ G P9
@@ -101,6 +127,19 @@ theorem covolume_full_assembly_weighted_holds : CovolumeEstimateOfAverageDegreeW
   exact weight_shift_constant Pl w w0 _ pq logOm _ B0 llx La f m k (S + R) b (x ^ eps) CO h0 hww (by linarith) hpq hCO
     hOm h3 hcard hm hk (by linarith) hB0 hll
 
+/- English proof (translation)
+Introduce `logOm v rd Lc L x b a hlog hv hrd hLc hx hb ha`. Establish `hrd0 : 0 < rd` using `by linarith`. Establish `hv' : v = rd / 2` using `by linarith`. Establish `hpv : Real.pi / v = 2 * Real.pi / rd` using `by rw [hv', div_div_eq_mul_div]; ring`. Establish `hl2pi : Real.log (2 * Real.pi / rd) = Real.log (2 * Real.pi) - Real.log rd` using `Real.log_div (by positivity) hrd0.ne'`.
+
+Establish `hlrd : 2 * Real.log 2 ≤ Real.log rd`. Establish `h4 : Real.log 4 ≤ Real.log rd` using `Real.log_le_log (by norm_num) hrd`. Establish `e : Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4:ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Apply the tactic sequence `first | norm_num | skip`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl2` using `Real.log_two_gt_d9`. Establish `hpi8 : Real.log (2 * Real.pi) ≤ 3 * Real.log 2`. Establish `h8 : Real.log (2 * Real.pi) ≤ Real.log 8` using `Real.log_le_log (by positivity) (by linarith [Real.pi_le_four])`. Establish `e : Real.log 8 = 3 * Real.log 2`.
+
+Rewrite using `[show (8:ℝ) = 2 ^ 3 by norm_num, Real.log_pow]`. Apply the tactic sequence `first | norm_num | skip`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpi0 : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith [Real.pi_gt_three])`. Establish `hg1` using `Real.eulerMascheroniConstant_lt_two_thirds`.
+
+Establish `hg0` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `hlx : 0 ≤ Real.log x` using `Real.log_nonneg hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hb0 : 0 < b` using `by rw [hb]; exact Real.exp_pos L`. Establish `hlar : Real.log (a * rd) = Real.log x + L + Real.log rd`.
+
+Rewrite using `[ha, Real.log_mul (mul_pos hx0 hb0).ne' hrd0.ne', Real.log_mul hx0.ne' hb0.ne', hb, Real.log_exp]`. Rewrite using `[hlar, hlog, hpv, hl2pi]`. Take `⟨hL1, hL2⟩` from `abs_le.1 hLc`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+-/
 theorem period_bound' : PeriodBound := by
   intro logOm v rd Lc L x b a hlog hv hrd hLc hx hb ha
   have hrd0 : 0 < rd := by linarith
@@ -145,6 +184,21 @@ section Core
 open NumberField.mixedEmbedding NumberField.InfinitePlace MeasureTheory
 open scoped ENNReal NNReal nonZeroDivisors
 
+/- English proof (translation)
+Set `f : InfinitePlace K → NNReal` to `fun w => (g w).toNNReal`. Establish `hmx : ∀ i, max (g i) 0 = g i` using `fun i => max_eq_left (hg i).le`. Establish `hr : nrRealPlaces K = 0`. Unfold `nrRealPlaces`. Rewrite using `[Fintype.card_eq_zero_iff, isEmpty_subtype]`.
+
+Conclude with `fun w => not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w)`. Establish `hm : ∀ w : InfinitePlace K, mult w = 2` using `fun w => by`. Unfold `mult`. Rewrite using `[if_neg (not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w))]`. Establish `hd : Module.finrank ℝ (mixedSpace K) = 2 * nrComplexPlaces K`.
+
+Rewrite using `[mixedEmbedding.finrank, ← card_add_two_mul_card_eq_rank, hr, zero_add]`. Establish `hL : minkowskiBound K I ≠ ⊤` using `by first`. Consider the case `exact (minkowskiBound_lt_top K I).ne`. Consider the case `exact (minkowskiBound_lt_top (K := K) (I := I)).ne`. Establish `hR : volume (convexBodyLT K f) ≠ ⊤`.
+
+Rewrite using `[convexBodyLT_volume]`. Simplify using the standard rewrite rules. Conclude with `ENNReal.mul_ne_top (ENNReal.pow_ne_top ENNReal.coe_ne_top) (ENNReal.prod_ne_top fun w _ => ENNReal.pow_ne_top ENNReal.coe_ne_top)`. Establish `key : minkowskiBound K I < volume (convexBodyLT K f)`. Rewrite using `[← ENNReal.toReal_lt_toReal hL hR, convexBodyLT_volume]`.
+
+Unfold `minkowskiBound`. Rewrite using `[volume_fundamentalDomain_fractionalIdealLatticeBasis, volume_fundamentalDomain_latticeBasis, hd]`. Simplify using `[hm, hr, convexBodyLTFactor, f, hmx]`. Apply the tactic sequence `rw [ENNReal.toReal_ofReal (by first | exact_mod_cast FractionalIdeal.absNorm_nonneg _ | positivity), Int.norm_eq_abs]`. Establish `e : ∀ N s : ℝ, N * (((2:ℝ) ^ nrComplexPlaces K)⁻¹ * s) * (2:ℝ) ^ (2 * nrComplexPlaces K) = N * 2 ^ nrComplexPlaces K * s`.
+
+Introduce `N s`. Establish `h2 : (2:ℝ) ^ nrComplexPlaces K ≠ 0` using `by positivity`. Rewrite using `[two_mul, pow_add]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Apply the tactic sequence `first | exact h | linarith [h]`. Take `⟨a, ha, ha0, hlt⟩` from `exists_ne_zero_mem_ideal_lt K I key`. Conclude with `⟨a, ha, ha0, fun w => lt_of_lt_of_eq (hlt w) (Real.coe_toNNReal _ (hg w).le)⟩`.
+-/
 theorem mk_lt (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (g : InfinitePlace K → ℝ) (hg : ∀ w, 0 < g w)
     (h : (FractionalIdeal.absNorm I.1 : ℝ) * (2:ℝ) ^ nrComplexPlaces K * Real.sqrt |(discr K : ℝ)| <
@@ -199,6 +253,19 @@ section Line
 variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] [AddCommGroup V]
   [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `set L : Submodule (𝓞 K) V := Submodule.span (𝓞 K) ({x} : Set V) with hL`. Establish `hLfg : L.FG` using `Submodule.fg_span (Set.finite_singleton x)`. Establish `hL0 : L ≠ ⊥`. Introduce `h`. Conclude with `hx ((Submodule.span_singleton_eq_bot).1 h)`.
+
+Establish `hrk : rkK (K` using `K) L = 1 := rkK_span_singleton x hx`. Establish `hf : 0 < nPl K` using `Fintype.card_pos`. Establish `hfR : (0 : ℝ) < (nPl K : ℝ)` using `by exact_mod_cast hf`. Take `⟨-, hmu, -⟩` from `size_maximal_slope K V ι b X hX L hLfg hL0`. Establish `hpos : 0 < ht b X L` using `(place_lattice_structure K V ι b X hX L hLfg).2.2`.
+
+Establish `hli : LinearIndependent K (fun _ : Fin 1 => x)` using `LinearIndependent.of_subsingleton (0 : Fin 1) hx`. Establish `hrange : Set.range (fun _ : Fin 1 => x) = {x}` using `Set.range_const`. Establish `hg` using `(height_gram_determinant K V ι b X hX 1 (fun _ : Fin 1 => x) hli).1`. Rewrite `hg` using `[hrange]`. Establish `hht : ht b X L = ∏ v, Formalism.HermitianLatticesTheory.normAt b X v x ^ 2`.
+
+Rewrite using `[hL, hg]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_one]`. Simplify using `only [gramPl, Matrix.of_apply]`. Rewrite using `[majAt_self_re]`.
+
+Establish `hlog : Real.log (ht b X L) = ∑ v, 2 * Real.log (Formalism.HermitianLatticesTheory.normAt b X v x)`. Rewrite using `[hht, Real.log_prod (s := Finset.univ) (f := fun v => Formalism.HermitianLatticesTheory.normAt b X v x ^ 2) (fun v _ => pow_ne_zero 2 (mink_normAt_pos b X hX v x hx).ne')]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_pow]`. Evaluate the numerical expressions.
+
+Rewrite using `[hmu]`. Unfold `size`. Rewrite using `[Real.log_rpow hpos, hrk, hlog, Nat.cast_one]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem muDef_line_eq (b : Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (hX : ∀ v, IsUnit (X v).det) (x : V) (hx : x ≠ 0) :
     muDef b X (Submodule.span (𝓞 K) ({x} : Set V)) =

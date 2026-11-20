@@ -16,13 +16,37 @@ variable {σ β : Type} [DecidableEq σ] [DecidableEq β]
 def splitAt (z : σ) : MvPolynomial σ ℝ →ₐ[ℝ] Polynomial (MvPolynomial σ ℝ) :=
   aeval fun y => if y = z then Polynomial.X else Polynomial.C (X y)
 
+/- English proof (translation)
+Simplify using `[splitAt]`.
+-/
 theorem splitAt_self (z : σ) : splitAt z (X z) = Polynomial.X := by simp [splitAt]
 
+/- English proof (translation)
+Simplify using `[splitAt, h]`.
+-/
 theorem splitAt_ne {z y : σ} (h : y ≠ z) : splitAt z (X y) = Polynomial.C (X y) := by simp [splitAt, h]
 
+/- English proof (translation)
+Simplify using `[splitAt, Polynomial.algebraMap_apply]`.
+-/
 theorem splitAt_C (z : σ) (a : ℝ) : splitAt z (C a) = Polynomial.C (C a) := by
   simp [splitAt, Polynomial.algebraMap_apply]
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on generalizing e k with`. Consider the case `C a`. Rewrite using `[splitAt_C, Polynomial.coeff_C]`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality.
+
+Simplify using the standard rewrite rules. Rewrite using `[if_neg hk, coeff_C, if_neg, coeff_zero]`. Introduce `h`. Use `DFunLike.congr_fun h z` as an intermediate fact. Simplify using `[he] at this`.
+
+Conclude with `hk this.symm`. Consider the case `add p q hp hq => simp [hp e he k, hq e he k]`. Consider the case `mul_X p y hp`. Rewrite using `[map_mul]`. Distinguish the cases in `hy : y = z`.
+
+Substitute `hy` using the available equality. Rewrite using `[splitAt_self]`. Consider the cases of `k with`. Consider the case `zero => simp [coeff_mul_X', he]`. Consider the case `succ k`.
+
+Rewrite using `[Polynomial.coeff_mul_X, Finsupp.single_add, ← add_assoc, coeff_mul_X, hp e he]`. Rewrite using `[splitAt_ne hy, Polynomial.coeff_mul_C, coeff_mul_X', coeff_mul_X']`. Establish `h1 : (y ∈ (e + Finsupp.single z k).support) ↔ y ∈ e.support`. Simplify using `[Finsupp.single_apply, Ne.symm hy]`. Distinguish the cases in `h2 : y ∈ e.support`.
+
+Rewrite using `[if_pos h2, if_pos (h1.2 h2), ← hp _ (by simp [he])]`. Use `congr 1`. Use extensionality with `w`. Distinguish the cases in `hw : w = z`. Substitute `hw` using the available equality.
+
+Simplify using `[he, Finsupp.single_apply, hy]`. Simplify using `[Finsupp.single_apply, Ne.symm hw]`. Rewrite using `[if_neg h2, if_neg (fun h => h2 (h1.1 h))]`.
+-/
 theorem coeff_splitAt (z : σ) (Q : MvPolynomial σ ℝ) (e : σ →₀ ℕ) (he : e z = 0) (k : ℕ) :
     coeff (e + Finsupp.single z k) Q = coeff e ((splitAt z Q).coeff k) := by
   induction Q using MvPolynomial.induction_on generalizing e k with
@@ -60,6 +84,11 @@ theorem coeff_splitAt (z : σ) (Q : MvPolynomial σ ℝ) (e : σ →₀ ℕ) (he
 def coProd {E R : Type} [DecidableEq E] [CommRing R] (A : Finset E) (f : E → R) : R :=
   ∑ p ∈ A, ∏ q ∈ A.erase p, f q
 
+/- English proof (translation)
+Rewrite using `[coProd, Finset.sum_union h, coProd, coProd, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite using `[Finset.erase_union_distrib, Finset.erase_eq_of_notMem (Finset.disjoint_left.1 h hp), Finset.prod_union (h.mono_left (Finset.erase_subset _ _))]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations.
+
+Rewrite using `[Finset.erase_union_distrib, Finset.erase_eq_of_notMem (Finset.disjoint_right.1 h hp), Finset.prod_union (h.mono_right (Finset.erase_subset _ _))]`.
+-/
 theorem coProd_union {E R : Type} [DecidableEq E] [CommRing R] {A B : Finset E} (h : Disjoint A B) (f : E → R) :
     coProd (A ∪ B) f = coProd A f * ∏ q ∈ B, f q + (∏ q ∈ A, f q) * coProd B f := by
   rw [coProd, Finset.sum_union h, coProd, coProd, Finset.sum_mul, Finset.mul_sum]
@@ -71,17 +100,26 @@ theorem coProd_union {E R : Type} [DecidableEq E] [CommRing R] {A B : Finset E} 
     rw [Finset.erase_union_distrib, Finset.erase_eq_of_notMem (Finset.disjoint_right.1 h hp),
       Finset.prod_union (h.mono_right (Finset.erase_subset _ _))]
 
+/- English proof (translation)
+Rewrite using `[coProd, Finset.sum_map, coProd]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.map_erase, Finset.prod_map]`.
+-/
 theorem coProd_map {E E' R : Type} [DecidableEq E] [DecidableEq E'] [CommRing R] (A : Finset E) (g : E ↪ E')
     (f : E' → R) : coProd (A.map g) f = coProd A fun a => f (g a) := by
   rw [coProd, Finset.sum_map, coProd]
   refine Finset.sum_congr rfl fun p _ => ?_
   rw [← Finset.map_erase, Finset.prod_map]
 
+/- English proof (translation)
+Establish `h` using `(Polynomial.monic_prod_X_sub_C f A).coeff_natDegree`. Rewrite `h` using `[Polynomial.natDegree_finset_prod_X_sub_C_eq_card]`. Then use the resulting hypothesis.
+-/
 theorem coeff_prod_card {E R : Type} [CommRing R] [Nontrivial R] (A : Finset E) (f : E → R) :
     (∏ q ∈ A, (Polynomial.X - Polynomial.C (f q))).coeff A.card = 1 := by
   have h := (Polynomial.monic_prod_X_sub_C f A).coeff_natDegree
   rwa [Polynomial.natDegree_finset_prod_X_sub_C_eq_card] at h
 
+/- English proof (translation)
+Rewrite using `[coProd, Polynomial.finset_sum_coeff]`. Use `Finset.sum_eq_zero fun p hp => Polynomial.coeff_eq_zero_of_natDegree_lt ?_` and prove the remaining obligations. Rewrite using `[Polynomial.natDegree_finset_prod_X_sub_C_eq_card]`. Conclude with `Finset.card_erase_lt_of_mem hp`.
+-/
 theorem coeff_coProd_card {E R : Type} [DecidableEq E] [CommRing R] [Nontrivial R] (A : Finset E) (f : E → R) :
     (coProd A fun q => Polynomial.X - Polynomial.C (f q)).coeff A.card = 0 := by
   rw [coProd, Polynomial.finset_sum_coeff]
@@ -89,6 +127,9 @@ theorem coeff_coProd_card {E R : Type} [DecidableEq E] [CommRing R] [Nontrivial 
   rw [Polynomial.natDegree_finset_prod_X_sub_C_eq_card]
   exact Finset.card_erase_lt_of_mem hp
 
+/- English proof (translation)
+Rewrite using `[coProd, Polynomial.finset_sum_coeff, Finset.sum_congr rfl (g := fun _ => (1 : R))]`. Simplify using the standard rewrite rules. Introduce `p hp`. Rewrite using `[← Finset.card_erase_of_mem hp, coeff_prod_card]`.
+-/
 theorem coeff_coProd_pred {E R : Type} [DecidableEq E] [CommRing R] [Nontrivial R] (A : Finset E) (f : E → R) :
     (coProd A fun q => Polynomial.X - Polynomial.C (f q)).coeff (A.card - 1) = (A.card : R) := by
   rw [coProd, Polynomial.finset_sum_coeff, Finset.sum_congr rfl (g := fun _ => (1 : R))]
@@ -103,6 +144,43 @@ def dif (p : σ × σ) : MvPolynomial σ ℝ := X p.1 - X p.2
 
 def chExp (blk : σ → β) (pos : σ → ℕ) (s : Finset σ) : σ →₀ ℕ := ∑ p ∈ chPairs blk pos s, Finsupp.single p.1 1
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on_min_value pos with`. Consider the case `empty => simp [chExp, chPairs]`. Consider the case `insert z s hz hmin ih`. Take `⟨ih1, ih2⟩` from `ih`. Use `set P := s.filter fun b => blk b = blk z with hP`.
+
+Set `g : σ ↪ σ × σ` to `⟨fun b => (z, b), fun a b h => (Prod.mk.inj h).2⟩`. Establish `hg : ∀ b, g b = (z, b)` using `fun _ => rfl`. Establish `hW : chPairs blk pos (insert z s) = chPairs blk pos s ∪ P.map g`. Use extensionality with `⟨a, b⟩`. Simplify using `only [chPairs, Finset.mem_filter, Finset.mem_product, Finset.mem_insert, Finset.mem_union, Finset.mem_map, hP, hg, Prod.mk.injEq]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨rfl | ha, rfl | hb⟩, h1, h2⟩`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inr ⟨b, ⟨hb, h1.symm⟩, rfl, rfl⟩`. Use `hmin a ha` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `Or.inl ⟨⟨ha, hb⟩, h1, h2⟩`. Introduce and unpack `(⟨⟨ha, hb⟩, h1, h2⟩ | ⟨x, ⟨hx, h1⟩, rfl, rfl⟩)`. Conclude with `⟨⟨Or.inr ha, Or.inr hb⟩, h1, h2⟩`. Use `⟨⟨Or.inl rfl, Or.inr hx⟩, h1.symm, lt_of_le_of_ne (hmin x hx) fun h => hz ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hinj _ _ h1.symm h]`. Conclude with `hx`. Establish `hmem : ∀ p ∈ chPairs blk pos s, p.1 ≠ z ∧ p.2 ≠ z`. Introduce `p hp`. Simplify using `only [chPairs, Finset.mem_filter, Finset.mem_product] at hp`.
+
+Conclude with `⟨fun h => hz (h ▸ hp.1.1), fun h => hz (h ▸ hp.1.2)⟩`. Establish `hdisj : Disjoint (chPairs blk pos s) (P.map g)`. Rewrite using `[Finset.disjoint_left]`. Introduce `p hp hq`. Take `⟨x, -, rfl⟩` from `Finset.mem_map.1 hq`.
+
+Conclude with `(hmem _ hp).1 rfl`. Establish `hE : chExp blk pos (insert z s) = chExp blk pos s + Finsupp.single z P.card`. Rewrite using `[chExp, hW, Finset.sum_union hdisj, Finset.sum_map, chExp]`. Simplify using `[hg]`. Establish `hE0 : chExp blk pos s z = 0`.
+
+Rewrite using `[chExp, Finsupp.finset_sum_apply]`. Conclude with `Finset.sum_eq_zero fun p hp => by simp [Finsupp.single_apply, (hmem p hp).1]`. Establish `hdif : ∀ p ∈ chPairs blk pos s, splitAt z (dif p) = Polynomial.C (dif p)`. Introduce `p hp`. Rewrite using `[dif, map_sub, map_sub, splitAt_ne (hmem p hp).1, splitAt_ne (hmem p hp).2]`.
+
+Establish `hD : splitAt z (∏ p ∈ chPairs blk pos s, dif p) = Polynomial.C (∏ p ∈ chPairs blk pos s, dif p)`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl hdif`. Establish `hG : splitAt z (coProd (chPairs blk pos s) dif) = Polynomial.C (coProd (chPairs blk pos s) dif)`. Simplify using `only [coProd, map_prod, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun p _ => Finset.prod_congr rfl fun q hq => hdif q (Finset.mem_of_mem_erase hq)`. Establish `hdif' : ∀ b ∈ P, splitAt z (dif (g b)) = Polynomial.X - Polynomial.C (X b)`. Introduce `b hb`. Establish `: b ≠ z` using `fun h => hz (h ▸ (Finset.mem_filter.1 hb).1)`. Express the relevant statement in the definitionally equal form `splitAt z (X z - X b) = _`.
+
+Rewrite using `[map_sub, splitAt_self, splitAt_ne this]`. Establish `hM : splitAt z (∏ p ∈ P.map g, dif p) = ∏ b ∈ P, (Polynomial.X - Polynomial.C (X b))`. Rewrite using `[Finset.prod_map, map_prod]`. Conclude with `Finset.prod_congr rfl hdif'`. Establish `hGP : splitAt z (coProd (P.map g) dif) = coProd P fun b => (Polynomial.X - Polynomial.C (X b))`.
+
+Rewrite using `[coProd_map]`. Simplify using `only [coProd, map_prod, map_sum]`. Conclude with `Finset.sum_congr rfl fun p _ => Finset.prod_congr rfl fun q hq => hdif' q (Finset.mem_of_mem_erase hq)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hE, coeff_splitAt _ _ _ hE0, hW, Finset.prod_union hdisj, map_mul, hD, hM, Polynomial.coeff_C_mul, coeff_prod_card, mul_one, ih1]`.
+
+Introduce `c`. Establish `hL : splitAt z (∑ x ∈ s, C (c (blk x)) * X x) = Polynomial.C (∑ x ∈ s, C (c (blk x)) * X x)`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `: x ≠ z` using `fun h => hz (h ▸ hx)`.
+
+Rewrite using `[map_mul, map_mul, splitAt_C, splitAt_ne this]`. Rewrite using `[hE, coeff_splitAt _ _ _ hE0, hW, coProd_union hdisj, Finset.sum_insert hz, Finset.sum_insert hz, map_mul, map_add, map_add, map_mul, map_mul, map_mul, hD, hM, hG, hGP, hL, splitAt_C, splitAt_self, add_mul, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_add, Polyn …`. Break down `P.eq_empty_or_nonempty with h0 | h0` into its components or cases. Establish `hn : blk z ∉ s.image blk`. Introduce `h`.
+
+Take `⟨x, hx, hx'⟩` from `Finset.mem_image.1 h`. Establish `: x ∈ P` using `Finset.mem_filter.2 ⟨hx, hx'⟩`. Simplify using `[h0] at this`. Rewrite using `[Finset.sum_insert hn, h0]`. Simplify using the standard rewrite rules.
+
+Establish `hn : blk z ∈ s.image blk`. Take `⟨x, hx⟩` from `h0`. Conclude with `Finset.mem_image.2 ⟨x, (Finset.mem_filter.1 hx).1, (Finset.mem_filter.1 hx).2⟩`. Establish `hpos : 0 < P.card` using `h0.card_pos`. Establish `h3` using `ih2 fun b => if b = blk z then 1 else 0`.
+
+Establish `h4 : (∑ x ∈ s, C (if blk x = blk z then (1 : ℝ) else 0) * X x : MvPolynomial σ ℝ) = ∑ x ∈ P, X x`. Rewrite using `[hP, Finset.sum_filter]`. Apply the tactic sequence `exact Finset.sum_congr rfl fun x _ => by split_ifs <;> simp`. Rewrite `h3` using `[h4, Finset.sum_boole, Finset.sum_ite_eq', if_pos hn, ← hP]`. Establish `h5 : ∀ F : Polynomial (MvPolynomial σ ℝ), (Polynomial.X * F).coeff P.card = F.coeff (P.card - 1)`.
+
+Introduce `F`. Rewrite using `[← Polynomial.coeff_X_mul F, Nat.sub_add_cancel hpos]`. Rewrite using `[Finset.insert_eq_of_mem hn, h5, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul, Polynomial.prod_X_sub_C_coeff_card_pred _ _ hpos, coeff_coProd_pred, coeff_add, mul_neg, coeff_neg, mul_comm (coProd _ _), h3, mul_comm _ (P.card : MvPolynomial σ ℝ), ← map_natC …`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem chain_coeff (blk : σ → β) (pos : σ → ℕ) (hinj : ∀ a b, blk a = blk b → pos a = pos b → a = b)
     (s : Finset σ) :
     coeff (chExp blk pos s) (∏ p ∈ chPairs blk pos s, dif p) = 1 ∧
@@ -207,6 +285,11 @@ theorem chain_coeff (blk : σ → β) (pos : σ → ℕ) (hinj : ∀ a b, blk a 
 
 end General
 
+/- English proof (translation)
+Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Rewrite using `[apolar_monomial, coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : e = u`. Substitute `h` using the available equality.
+
+Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, Ne.symm h]`. Consider the case `add p q hp hq => simp [hp, hq, mul_add]`.
+-/
 theorem apolar_monomial_left {V : Type} [Fintype V] [DecidableEq V] (e : V →₀ ℕ) (k : ℝ) (Q : MvPolynomial V ℝ) :
     apolar (monomial e k) Q = (k * ∏ x, ((e x).factorial : ℝ)) * coeff e Q := by
   induction Q using MvPolynomial.induction_on' with
@@ -229,8 +312,16 @@ def ends : ι × Fin N × Fin N ↪ (ι × Fin N) × (ι × Fin N) :=
     exact Prod.ext h.1.1 (Prod.ext h.1.2 h.2.2)⟩
 
 omit [Fintype ι] [DecidableEq ι] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ends_apply (e : ι × Fin N × Fin N) : ends e = ((e.1, e.2.1), (e.1, e.2.2)) := rfl
 
+/- English proof (translation)
+Use extensionality with `⟨⟨s, a⟩, ⟨t, b⟩⟩`. Simplify using `only [chPairs, blkOf, winSet, ends_apply, Finset.mem_filter, Finset.mem_product, Finset.mem_univ, true_and, Finset.mem_map, Prod.mk.injEq, decide_eq_decide, Fin.lt_def]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨rfl, h1⟩, h2⟩`. Conclude with `⟨(s, a, b), ⟨h2, by simp only; omega⟩, ⟨rfl, rfl⟩, rfl, rfl⟩`.
+
+Introduce and unpack `⟨⟨u, a', b'⟩, ⟨h1, h2⟩, ⟨rfl, rfl⟩, rfl, rfl⟩`. Simplify using `only at h1 h2 ⊢`. Conclude with `⟨⟨trivial, by omega⟩, h1⟩`.
+-/
 theorem chPairs_eq (j : ℕ) :
     chPairs (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ = (winSet ι N j).map ends := by
   ext ⟨⟨s, a⟩, ⟨t, b⟩⟩
@@ -243,6 +334,9 @@ theorem chPairs_eq (j : ℕ) :
     simp only at h1 h2 ⊢
     exact ⟨⟨trivial, by omega⟩, h1⟩
 
+/- English proof (translation)
+Rewrite using `[Fin.sum_univ_eq_sum_range (fun b => if p b then 1 else 0), ← Finset.card_filter, ← Nat.card_Ico]`. Use `congr 1`. Use extensionality with `b`. Simplify using `[h]`.
+-/
 theorem sum_fin_ite (p : ℕ → Prop) [DecidablePred p] (l u : ℕ) (h : ∀ b, (b < N ∧ p b) ↔ (l ≤ b ∧ b < u)) :
     ∑ b : Fin N, (if p b then 1 else 0 : ℕ) = u - l := by
   rw [Fin.sum_univ_eq_sum_range (fun b => if p b then 1 else 0), ← Finset.card_filter, ← Nat.card_Ico]
@@ -250,6 +344,15 @@ theorem sum_fin_ite (p : ℕ → Prop) [DecidablePred p] (l u : ℕ) (h : ∀ b,
   ext b
   simp [h]
 
+/- English proof (translation)
+Take `⟨s, i⟩` from `x`. Establish `h : chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ (s, i) = ∑ b : Fin N, (if ((i : ℕ) < j ↔ (b : ℕ) < j) ∧ (i : ℕ) < b then 1 else 0 : ℕ)`. Rewrite using `[chExp, Finsupp.finset_sum_apply, chPairs, Finset.sum_filter, Finset.univ_product_univ, Fintype.sum_prod_type, Finset.sum_eq_single (s, i), Fintype.sum_prod_type, Finset.sum_eq_single s]`. Simplify using `[blkOf]`. Introduce `t _ ht`.
+
+Simplify using `[blkOf, Ne.symm ht]`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[Finsupp.single_apply, hy]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[h]`. Use `i.2` as an intermediate fact. Simplify using `only`. Use `split_ifs with hi`. Rewrite using `[sum_fin_ite (fun b => ((i : ℕ) < j ↔ b < j) ∧ (i : ℕ) < b) (i + 1) j (fun b => by omega)]`.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[sum_fin_ite (fun b => ((i : ℕ) < j ↔ b < j) ∧ (i : ℕ) < b) (i + 1) N (fun b => by omega)]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem chExp_eq {j : ℕ} (hj : j < N) (x : ι × Fin N) :
     chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ x =
       if (x.2 : ℕ) < j then j - 1 - (x.2 : ℕ) else N - 1 - (x.2 : ℕ) := by
@@ -274,6 +377,9 @@ theorem chExp_eq {j : ℕ} (hj : j < N) (x : ι × Fin N) :
   · rw [sum_fin_ite (fun b => ((i : ℕ) < j ↔ b < j) ∧ (i : ℕ) < b) (i + 1) N (fun b => by omega)]
     omega
 
+/- English proof (translation)
+Use `⟨∏ x : ι × Fin N, (-1) ^ (chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ x), ?_⟩` and prove the remaining obligations. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (by simp), map_prod, ← Finset.prod_mul_distrib, fibPt]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[← chExp_eq hj, neg_pow, map_pow, map_neg, map_one]`.
+-/
 theorem exists_fibPt {j : ℕ} (hj : j < N) :
     ∃ k : ℝ, fibPt ι N j = monomial (chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ) k := by
   refine ⟨∏ x : ι × Fin N, (-1) ^ (chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ x), ?_⟩
@@ -281,6 +387,9 @@ theorem exists_fibPt {j : ℕ} (hj : j < N) :
   refine Finset.prod_congr rfl fun x _ => ?_
   rw [← chExp_eq hj, neg_pow, map_pow, map_neg, map_one]
 
+/- English proof (translation)
+Rewrite using `[mono, toForm, coeff_aeval_lin rootForm inc pderiv_rootForm constantCoeff_rootForm, ← smul_eq_mul, ← map_smul]`. Use `congr 1`. Rewrite using `[← C_mul', map_pow, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun e he => ?_` and prove the remaining obligations. Simplify using `[inc, hS e he, sub_mul, Finset.sum_sub_distrib, apply_ite (C : ℝ → Pol ι N), ite_mul, dif, ends_apply]`.
+-/
 theorem coeff_toForm (P : Pol ι N) (S : Finset (ι × Fin N × Fin N)) (hS : ∀ e ∈ S, e.2.1 < e.2.2) :
     coeff (mono S) (toForm P : FormPol ι N) = (-1) ^ S.card * apolar P (∏ e ∈ S, dif (ends e)) := by
   rw [mono, toForm, coeff_aeval_lin rootForm inc pderiv_rootForm constantCoeff_rootForm, ← smul_eq_mul, ← map_smul]
@@ -291,16 +400,31 @@ theorem coeff_toForm (P : Pol ι N) (S : Finset (ι × Fin N × Fin N)) (hS : �
 
 def wt (N j : ℕ) (b : ι × Bool) : ℝ := if b.2 then (N : ℝ) - j else -j
 
+/- English proof (translation)
+Use `sum_fin_ite (N := N) (fun b => b < j) 0 j (fun b => by omega)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+-/
 theorem sum_low {j : ℕ} (hj : j < N) : ∑ b : Fin N, (if (b : ℕ) < j then 1 else 0 : ℝ) = j := by
   have := sum_fin_ite (N := N) (fun b => b < j) 0 j (fun b => by omega)
   exact_mod_cast this
 
+/- English proof (translation)
+Use `sum_fin_ite (N := N) (fun b => j ≤ b) j N (fun b => by omega)` as an intermediate fact. Rewrite using `[← Nat.cast_sub hj.le, ← this]`. Use `push_cast`. Both sides reduce to the same expression.
+-/
 theorem sum_high {j : ℕ} (hj : j < N) : ∑ b : Fin N, (if j ≤ (b : ℕ) then 1 else 0 : ℝ) = N - j := by
   have := sum_fin_ite (N := N) (fun b => j ≤ b) j N (fun b => by omega)
   rw [← Nat.cast_sub hj.le, ← this]
   push_cast
   rfl
 
+/- English proof (translation)
+Rewrite using `[crSet, Finset.sum_filter, Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Establish `h1 : ∀ a b : Fin N, (if a < b ∧ (a : ℕ) < j ∧ j ≤ (b : ℕ) then v (τ, a) - v (τ, b) else 0) = (if j ≤ (b : ℕ) then 1 else 0 : ℝ) • (if (a : ℕ) < j then v (τ, a) else 0) - (if (a : ℕ) < j then 1 else 0 : ℝ) • (if j ≤ (b : ℕ) then v (τ, b) else 0)`. Introduce `a b`.
+
+Apply the tactic sequence `by_cases ha : (a : ℕ) < j <;> by_cases hb : j ≤ (b : ℕ) <;> simp [ha, hb]`. Introduce `h`. Rewrite `h` using `[Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [h1, Finset.sum_sub_distrib]`.
+
+Rewrite using `[Finset.sum_comm (f := fun a b : Fin N => (if (a : ℕ) < j then 1 else 0 : ℝ) • (if j ≤ (b : ℕ) then v (τ, b) else 0))]`. Simplify using `only [← Finset.sum_smul, sum_low hj, sum_high hj]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `ha : (a : ℕ) < j`.
+
+Simplify using `[wt, blkOf, ha, not_le.2 ha]`. Simplify using `[wt, blkOf, ha, not_lt.1 ha]`.
+-/
 theorem sum_cr {M : Type} [AddCommGroup M] [Module ℝ M] {j : ℕ} (hj : j < N) (v : ι × Fin N → M) :
     ∑ q ∈ crSet ι N j, (v (q.1, q.2.1) - v (q.1, q.2.2)) = ∑ x, wt N j (blkOf j x) • v x := by
   rw [crSet, Finset.sum_filter, Fintype.sum_prod_type, Fintype.sum_prod_type]
@@ -324,6 +448,21 @@ theorem sum_cr {M : Type} [AddCommGroup M] [Module ℝ M] {j : ℕ} (hj : j < N)
   · simp [wt, blkOf, ha, not_le.2 ha]
   · simp [wt, blkOf, ha, not_lt.1 ha]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_fibPt (ι := ι) hj`. Take `⟨hD, hG⟩` from `chain_coeff (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) (fun a b h h' => Prod.ext (Prod.mk.inj h).1 (Fin.ext h')) Finset.univ`. Establish `hG` using `hG (wt N j)`. Rewrite `hD`, `hG` using `[chPairs_eq]`. Rewrite `hD` using `[Finset.prod_map]`.
+
+Establish `hw : ∀ e ∈ winSet ι N j, e.2.1 < e.2.2` using `fun e he => (Finset.mem_filter.1 he).2.1`. Establish `himg : (Finset.univ : Finset (ι × Fin N)).image (blkOf j) = Finset.univ`. Use `Finset.eq_univ_of_forall fun ⟨τ, b⟩ => Finset.mem_image.2 ?_` and prove the remaining obligations. Consider the cases of `b`. Conclude with `⟨(τ, ⟨j, hj⟩), Finset.mem_univ _, by simp [blkOf]⟩`.
+
+Conclude with `⟨(τ, ⟨0, by omega⟩), Finset.mem_univ _, by simp [blkOf]; omega⟩`. Establish `h0 : ∑ x : ι × Fin N, wt N j (blkOf j x) = 0`. Simplify using `using (sum_cr (ι := ι) hj fun _ => (1 : ℝ)).symm`. Establish `h2 : ∑ b : ι × Bool, wt N j b = (Fintype.card ι : ℝ) * (N - 2 * j)`. Rewrite using `[Fintype.sum_prod_type]`.
+
+Simplify using `[wt]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [C_mul'] at hG`. Rewrite `hG` using `[himg, h0, h2, coProd_map, ← sum_cr hj, coProd, Finset.mul_sum, coeff_sum]`. Rewrite using `[coeff_toForm _ _ hw, hk, apolar_monomial_left, hD]`.
+
+Rewrite using `[Finset.sum_congr rfl (g := fun p => (-1) ^ (winSet ι N j).card * ((k * ∏ x, ((chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ x).factorial : ℝ)) * coeff (chExp (blkOf j) (fun x : ι × Fin N => (x.2 : ℕ)) Finset.univ) ((∑ q ∈ crSet ι N j, (X (q.1, q.2.1) - X (q.1, q.2 …`. Expand and normalize the polynomial expressions, which then agree. Introduce `p hp`. Rewrite using `[Finset.sum_mul, coeff_sum, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations.
+
+Establish `hq'` using `(Finset.mem_filter.1 hq).2`. Establish `hn : q ∉ (winSet ι N j).erase p` using `fun h => by`. Use `(Finset.mem_filter.1 (Finset.mem_of_mem_erase h)).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[coeff_toForm, apolar_monomial_left, Finset.card_insert_of_notMem hn, Finset.card_erase_add_one hp, Finset.prod_insert hn]`.
+
+Both sides reduce to the same expression. Introduce `e he`. Break down `Finset.mem_insert.1 he with rfl | he` into its components or cases. Conclude with `hq'.1`. Conclude with `hw e (Finset.mem_of_mem_erase he)`.
+-/
 theorem sum_coeff_fibPt (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) (h1 : 1 ≤ j) (hj : j < N) :
     ∑ p ∈ winSet ι N j, ∑ q ∈ crSet ι N j,
         coeff (mono (insert q ((winSet ι N j).erase p))) (toForm (fibPt ι N j) : FormPol ι N) =

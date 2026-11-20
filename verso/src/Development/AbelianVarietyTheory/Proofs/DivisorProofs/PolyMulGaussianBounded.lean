@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.PolynomialGaussianBounded
 
+/- English proof (translation)
+Introduce `c hc N`. Use `⟨Real.exp ((N : ℝ) ^ 2 / (4 * c)), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : ((1 : ℝ) + r) ^ N ≤ Real.exp ((N : ℝ) * r)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+
+Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[sq_nonneg (2 * c * r - N)]`.
+-/
 theorem poly_mul_gaussian_bounded :
     ∀ (c : ℝ), (0 : ℝ) < c → ∀ (N : ℕ), ∃ (C : ℝ), ∀ (r : ℝ), (0 : ℝ) ≤ r →
       ((1 : ℝ) + r) ^ N * Real.exp (-(c * r ^ (2 : ℕ))) ≤ C := by

@@ -7,6 +7,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `K _ G _ h1 h2`. Use `letI : GrpObj (Over.mk G.hom) := ‹GrpObj G›`. Conclude with `smooth_of_grpObj (f := G.hom)`.
+-/
 theorem grpObj_smooth_of_geometricallyReduced : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G], LocallyOfFiniteType G.hom → GeometricallyReduced G.hom → Smooth G.hom := by
   intro K _ G _ h1 h2
   letI : GrpObj (Over.mk G.hom) := ‹GrpObj G›

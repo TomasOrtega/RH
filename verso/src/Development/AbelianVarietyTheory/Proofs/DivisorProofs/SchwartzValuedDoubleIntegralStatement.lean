@@ -9,6 +9,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 open Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SchwInt.clm_iterated_integral | exact GlobalTheory.SchwInt.clm_iterated_integral | (intros; apply GlobalTheory.SchwInt.clm_iterated_integral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.schwartz_valued_double_integral : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     {α β : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [SecondCountableTopology α]
     [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] [SecondCountableTopology β]

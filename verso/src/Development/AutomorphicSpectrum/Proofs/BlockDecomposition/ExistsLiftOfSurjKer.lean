@@ -6,6 +6,9 @@ variable {G : ℕ → Type} [∀ n, CommRing (G n)] (f : ∀ n, G n →+* G (n +
   {L : Type} [CommRing L] (ι : ∀ n, G n →+* L)
   (t : ∀ n k, G n → G (n + k))
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => exact congrArg (y n) (t0 n x)`. Consider the case `succ k ih`. Establish `h : y (n + (k + 1)) (t n (k + 1) x) = y (n + k + 1) (f (n + k) (t n k x))` using `congrArg (y (n + k + 1)) (tS n k x)`. Rewrite using `[h, hy, ih]`.
+-/
 theorem apply_iter {T : Type} (y : ∀ n, G n → T)
     (t0 : ∀ n x, t n 0 x = x) (tS : ∀ n k x, t n (k + 1) x = f (n + k) (t n k x))
     (hy : ∀ n x, y (n + 1) (f n x) = y n x) (n k : ℕ) (x : G n) :
@@ -17,6 +20,9 @@ theorem apply_iter {T : Type} (y : ∀ n, G n → T)
       congrArg (y (n + k + 1)) (tS n k x)
     rw [h, hy, ih]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `ker n (a - b) (by rw [map_sub, h, sub_self])`. Establish `h1` using `apply_iter f t (fun n => (y n : G n → T)) t0 tS hy n k (a - b)`. Simplify using `only [hk, map_zero, map_sub] at h1`. Conclude with `sub_eq_zero.mp h1.symm`.
+-/
 theorem eq_of_same_stage {T : Type} [CommRing T] (y : ∀ n, G n →+* T)
     (t0 : ∀ n x, t n 0 x = x) (tS : ∀ n k x, t n (k + 1) x = f (n + k) (t n k x))
     (ker : ∀ n x, ι n x = 0 → ∃ k, t n k x = 0)
@@ -27,6 +33,11 @@ theorem eq_of_same_stage {T : Type} [CommRing T] (y : ∀ n, G n →+* T)
   simp only [hk, map_zero, map_sub] at h1
   exact sub_eq_zero.mp h1.symm
 
+/- English proof (translation)
+Establish `up : ∀ (n m : ℕ), n ≤ m → ∀ a : G n, ∃ a' : G m, ι m a' = ι n a ∧ y m a' = y n a`. Introduce `n m hnm a`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hnm`. Conclude with `⟨t n k a, apply_iter f t (fun n => (ι n : G n → L)) t0 tS hι n k a, apply_iter f t (fun n => (y n : G n → T)) t0 tS hy n k a⟩`. Take `⟨a', ha, hya⟩` from `up n (max n m) (le_max_left _ _) a`.
+
+Take `⟨b', hb, hyb⟩` from `up m (max n m) (le_max_right _ _) b`. Rewrite using `[← hya, ← hyb]`. Conclude with `eq_of_same_stage f ι t y t0 tS ker hy _ a' b' (by rw [ha, hb, h])`.
+-/
 theorem eq_of_iota_eq {T : Type} [CommRing T] (y : ∀ n, G n →+* T)
     (hι : ∀ n x, ι (n + 1) (f n x) = ι n x)
     (t0 : ∀ n x, t n 0 x = x) (tS : ∀ n k x, t n (k + 1) x = f (n + k) (t n k x))
@@ -43,6 +54,17 @@ theorem eq_of_iota_eq {T : Type} [CommRing T] (y : ∀ n, G n →+* T)
   rw [← hya, ← hyb]
   exact eq_of_same_stage f ι t y t0 tS ker hy _ a' b' (by rw [ha, hb, h])
 
+/- English proof (translation)
+Establish `key` using `eq_of_iota_eq f ι t y hι t0 tS ker hy`. Establish `rep : ∀ l : L, ∃ n, ∃ a : G n, ι n a = l` using `fun l => by`. Take `⟨n, w, hw⟩` from `surj 1 (fun _ => l)`. Conclude with `⟨n, w 0, hw 0⟩`. Use `choose r s hs using rep`.
+
+Set `z : L → T` to `fun l => y (r l) (s l)`. Establish `hz : ∀ n x, z (ι n x) = y n x` using `fun n x => key _ _ _ _ (hs _)`. Establish `two : ∀ l₁ l₂ : L, ∃ n, ∃ a b : G n, ι n a = l₁ ∧ ι n b = l₂` using `fun l₁ l₂ => by`. Take `⟨n, w, hw⟩` from `surj 2 ![l₁, l₂]`. Conclude with `⟨n, w 0, w 1, hw 0, hw 1⟩`.
+
+Use `⟨{ toFun := z, map_one' := ?_, map_zero' := ?_, map_mul' := ?_, map_add' := ?_ }, hz⟩` and prove the remaining obligations. Use `hz 0 1` as an intermediate fact. Simplify using `using this`. Introduce `l₁ l₂`. Take `⟨n, a, b, rfl, rfl⟩` from `two l₁ l₂`.
+
+Rewrite using `[← map_mul, hz, hz, hz, map_mul]`. Use `hz 0 0` as an intermediate fact. Simplify using `using this`. Introduce `l₁ l₂`. Take `⟨n, a, b, rfl, rfl⟩` from `two l₁ l₂`.
+
+Rewrite using `[← map_add, hz, hz, hz, map_add]`.
+-/
 theorem exists_lift_of_surj_ker
     (hι : ∀ n x, ι (n + 1) (f n x) = ι n x)
     (t0 : ∀ n x, t n 0 x = x) (tS : ∀ n k x, t n (k + 1) x = f (n + k) (t n k x))

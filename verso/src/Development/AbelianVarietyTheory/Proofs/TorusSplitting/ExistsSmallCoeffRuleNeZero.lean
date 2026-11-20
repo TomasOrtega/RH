@@ -19,6 +19,13 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj Formalism.L2.PjFree GlobalTheory.EtaForm GlobalTheory.EtaAn GlobalTheory.ArcQ
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Use `choose P hP hg using X.signature`. Apply the tactic sequence `have hs : ∀ a : ℕ, sgn X.p0 a ≠ 0 := fun a => by unfold sgn; split_ifs <;> norm_num`. Use `⟨fun τ => P τ, fun τ => ⟨hP τ, fun i => ?_⟩⟩` and prove the remaining obligations. Establish `e : dmin X.Gm (fun τ => P τ) τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[show gram τ.1 X.Gm (mat (fun τ => P τ) τ) = gram τ.1 X.Gm (P τ) from rfl, hg τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal]`. Unfold `psgn`. Use `push_cast`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) (i : ℕ)`. Rewrite using `[e, Complex.ofReal_re]`.
+
+Establish `h0 : psgn X.p0 i ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hs a`. Conclude with `mul_self_pos.2 h0`.
+-/
 theorem nonzeroRule_dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (X : ReciprocityTheory.ChartRestriction.G.FD.Data E r) : ∃ x, x ∈ X.dom := by
   choose P hP hg using X.signature
@@ -35,6 +42,21 @@ theorem nonzeroRule_dom_nonempty {E : Type} [Field E] [NumberField E] [IsCMField
   have h0 : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => hs a
   exact mul_self_pos.2 h0
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U _ hU hT R hR h1 h2`. Establish `hr : r = Dw.p + Dw.q` using `hU.1`. Substitute `hr` using the available equality. Take `⟨hfG, hfL, hcL, hcG, hdiv, ⟨x₀, hx₀⟩, hspan⟩` from `GlobalTheory.EtaCard.card_levGrp_and_span E H Dw R h1`. Take `⟨i, hi⟩` from `hdiv hR h2`.
+
+Use `letI hFin : Fintype (LatMod Dw R) := Fintype.ofFinite _`. Establish `hf : FD.fdeg E = I2.PT.f E` using `rfl`. Rewrite `hcL`, `hcG` using `[hf]`. Use `choose xk hxk using fun k => nonzeroRule_dom_nonempty (U.X k)`. Use `letI : Field (CAt σ) := inferInstanceAs (Field ℂ)`.
+
+Use `haveI : IsAlgClosed (CAt σ) := inferInstanceAs (IsAlgClosed ℂ)`. Set `e` to `Fintype.equivFin U.Comp`. Take `⟨cf, hcf, hne⟩` from `GlobalTheory.EtaForm.exists_small_coeff_etaValAt_ne_zero GlobalTheory.firstFiveLaws.1 E H Dw l Xo c R hR h1 (Dw.p + Dw.q) x₀ (CAt σ) (Fintype.card U.Comp) (fun a => U.un (e.symm a) ⟨xk _, hxk _⟩)`. Take `⟨f, hrule, -⟩` from `(GlobalTheory.EtaForm.isEtaRule_existsUnique_mem_sec GlobalTheory.firstFiveLaws.1 E H Dw l Xo c R hR (Fin (Dw.p + Dw.q) → LatMod Dw R) (Dw.p + Dw.q) (fun j => (cf j : ℤ)) (shiftFam R x₀)).1`. Use `⟨i, hFin, x₀, fun j => (cf j : ℤ), f, ?_, hi, ?_, ?_, ?_, hrule, ?_⟩` and prove the remaining obligations.
+
+Establish `hpos : 0 < Nat.card (LevGrp Dw (R ^ 4))` using `Nat.card_pos`. Rewrite `hpos` using `[hi]`. Conclude with `Nat.pos_of_mul_pos_left hpos`. Rewrite using `[Fintype.card_fun, Fintype.card_fin, ← Nat.card_eq_fintype_card, hcL, ← pow_mul]`. Conclude with `le_of_eq (by congr 1; ring)`.
+
+Introduce `j`. Rewrite using `[Nat.abs_cast]`. Conclude with `(hcf j).trans (Nat.mul_le_mul (le_max_right _ _) hcG)` after adjusting the coercions. Introduce `j`. Conclude with `hspan _ x₀ hx₀ j (LinearEquiv.refl _ _)`.
+
+Introduce `k`. Take `⟨a, rfl⟩` from `e.symm.surjective k`. Use `⟨xk _, hxk _, ?_⟩` and prove the remaining obligations. Establish `hv` using `(GlobalTheory.EtaForm.etaValAt_evR_of_fromTest E H Dw l Xo c R hR _ _ _ _ f hrule (CAt σ) (U.un (e.symm a) ⟨xk _, hxk _⟩) (hT _ _)).1`. Establish `h0` using `hne a _ hv`.
+
+Establish `e1 : rdU U f (e.symm a) (xk _) = toC (evR Xo c f (U.un (e.symm a) ⟨xk _, hxk _⟩))` using `dif_pos (hxk _)`. Rewrite using `[e1]`. Conclude with `h0`.
+-/
 theorem exists_small_coeff_rule_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → AllTest Xo c → ∀ (R : ℕ), Odd R → 1 < R → 2 ≤ r → ∃ (i : ℕ) (_ : Fintype (LatMod Dw R)) (x₀ : Fin r → Dw.La) (cf : (Fin r → LatMod Dw R) → ℤ) (f : Rul Xo c), 0 < i ∧ Nat.card (LevGrp Dw (R ^ 4)) = 2 * R ^ 4 * i ∧ Fintype.card (Fin r → LatMod Dw R) ≤ R ^ (2 * I2.PT.f E * r ^ 2) ∧ (∀ j, |cf j| ≤ (max 1 (Fintype.card U.Comp) * R ^ (8 * I2.PT.f E * r ^ 2) : ℕ)) ∧ Spans (shiftFam R x₀ : (Fin r → LatMod Dw R) → Fin r → LatMod Dw (R ^ 4)) ∧ IsEtaRule Xo c R cf (shiftFam R x₀) f ∧ ∀ k, ∃ x ∈ (U.X k).dom, rdU U f k x ≠ 0 := by
   intro E _ _ _ H Dw l Xo c σ r U _ hU hT R hR h1 h2
   have hr : r = Dw.p + Dw.q := hU.1

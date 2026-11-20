@@ -9,6 +9,9 @@ noncomputable section
 
 variable {d : ℕ}
 
+/- English proof (translation)
+Unfold `eF`. Establish `h : -(2 * (Real.pi : ℂ) * Complex.I * ((inner ℝ y ξ : ℝ) : ℂ)) = ((-(2 * Real.pi * inner ℝ y ξ) : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[h]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+-/
 private theorem norm_eF_eq_one (ξ y : E d) : ‖eF ξ y‖ = 1 := by
   unfold eF
   have h : -(2 * (Real.pi : ℂ) * Complex.I * ((inner ℝ y ξ : ℝ) : ℂ)) =
@@ -16,6 +19,11 @@ private theorem norm_eF_eq_one (ξ y : E d) : ‖eF ξ y‖ = 1 := by
   rw [h]
   exact Complex.norm_exp_ofReal_mul_I _
 
+/- English proof (translation)
+Rewrite using `[Real.fourier_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[smul_eq_mul]`. Unfold `eF`.
+
+Use `congr 1`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fourier_eq_integral_eF_mul (f : E d → ℂ) (ζ : E d) :
     𝓕 f ζ = ∫ x, eF ζ x * f x := by
   rw [Real.fourier_eq']
@@ -25,6 +33,11 @@ private theorem fourier_eq_integral_eF_mul (f : E d → ℂ) (ζ : E d) :
   unfold eF
   congr 1; congr 1; push_cast; ring
 
+/- English proof (translation)
+Rewrite using `[Real.fourierInv_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun η => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[smul_eq_mul]`. Unfold `eF`.
+
+Rewrite using `[inner_neg_right, real_inner_comm]`. Use `congr 1`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem fourierInv_eq_integral_eF_neg_mul (F : E d → ℂ) (y : E d) :
     𝓕⁻ F y = ∫ η, eF (-η) y * F η := by
   rw [Real.fourierInv_eq']
@@ -35,6 +48,19 @@ private theorem fourierInv_eq_integral_eF_neg_mul (F : E d → ℂ) (y : E d) :
   rw [inner_neg_right, real_inner_comm]
   congr 1; congr 1; push_cast; ring
 
+/- English proof (translation)
+Establish `hinv : ∀ y, k y = ∫ η, eF (-η) y * 𝓕 k η`. Introduce `y`. Rewrite using `[← fourierInv_eq_integral_eF_neg_mul]`. Conclude with `(congrFun (hkc.fourierInv_fourier_eq hk hK) y).symm`. Establish `hcχ : Continuous fun p : E d × E d => eF (-p.2) p.1`.
+
+Unfold `eF`. Use `fun_prop`. Establish `hint_r : Integrable (fun p : E d × E d => g p.1 * (eF (-p.2) p.1 * 𝓕 k p.2)) (volume.prod volume)`. Establish `hprod : Integrable (fun p : E d × E d => g p.1 * 𝓕 k p.2) (volume.prod volume)`. Conclude with `hg.mul_prod hK`.
+
+Use `hprod.mono ?_ (Filter.Eventually.of_forall fun p => le_of_eq ?_)` and prove the remaining obligations. Use `first`. Consider the case `exact hg.1.fst.mul (hcχ.aestronglyMeasurable.mul hK.1.snd)`. Consider the case `exact hg.1.comp_fst.mul (hcχ.aestronglyMeasurable.mul hK.1.comp_snd)`. Apply the tactic sequence `try dsimp only`.
+
+Rewrite using `[norm_mul, norm_mul, norm_mul, norm_eF_eq_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[integral_const_mul, ← hinv y]`.
+
+Use `_ = ∫ η, ∫ y, g y * (eF (-η) y * 𝓕 k η) := integral_integral_swap hint_r`. Use `_ = ∫ η, 𝓕 k η * 𝓕 g (-η) := by`. Use `integral_congr_ae (Filter.Eventually.of_forall fun η => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[fourier_eq_integral_eF_mul g (-η), ← integral_const_mul]`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ η, 𝓕 k (-η) * 𝓕 g η := by`. Conclude with `((integral_neg_eq_self (fun η => 𝓕 k η * 𝓕 g (-η)) volume).symm).trans (by simp only [neg_neg])`.
+-/
 theorem pf_parseval (g k : E d → ℂ) (hg : Integrable g) (hkc : Continuous k)
     (hk : Integrable k) (hK : Integrable (𝓕 k)) :
     ∫ y, g y * k y = ∫ η, 𝓕 k (-η) * 𝓕 g η := by
@@ -70,9 +96,19 @@ theorem pf_parseval (g k : E d → ℂ) (hg : Integrable g) (hkc : Continuous k)
     _ = ∫ η, 𝓕 k (-η) * 𝓕 g η := by
         exact ((integral_neg_eq_self (fun η => 𝓕 k η * 𝓕 g (-η)) volume).symm).trans (by simp only [neg_neg])
 
+/- English proof (translation)
+Conclude with `(contDiff_infty_iff_fderiv.1 hf).2`.
+-/
 private theorem contDiff_infty_fderiv_of_contDiff_infty {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : ContDiff ℝ ∞ (fderiv ℝ f) := by
   exact (contDiff_infty_iff_fderiv.1 hf).2
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => exact ⟨hk, hkc⟩`. Consider the case `cons j w ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show ContDiff ℝ ∞ (fun x => fderiv ℝ (dw w k) x (ev j))`. Conclude with `(contDiff_infty_fderiv_of_contDiff_infty h1).clm_apply contDiff_const`. Use `show HasCompactSupport (fun x => fderiv ℝ (dw w k) x (ev j))`. Use `(h2.fderiv ℝ).mono ?_` and prove the remaining obligations. Introduce `x hx`.
+
+Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+-/
 theorem pf_dw_smooth (L : List (Fin d)) (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc : HasCompactSupport k) :
     ContDiff ℝ ∞ (dw L k) ∧ HasCompactSupport (dw L k) := by
   induction L with
@@ -91,15 +127,24 @@ theorem pf_dw_smooth (L : List (Fin d)) (k : E d → ℂ) (hk : ContDiff ℝ ∞
       rw [h0]
       simp
 
+/- English proof (translation)
+Conclude with `(contDiff_infty_iff_fderiv.1 hf).1`.
+-/
 private theorem differentiable_of_contDiff_infty {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) : Differentiable ℝ f := by
   exact (contDiff_infty_iff_fderiv.1 hf).1
 
+/- English proof (translation)
+Use `⟨(-(2 * (Real.pi : ℂ) * Complex.I)) • (Complex.ofRealCLM.comp (innerSL ℝ ζ)), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply, smul_eq_mul]`. Rewrite using `[innerSL_apply_apply, real_inner_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem exists_clm_eq_neg_two_pi_I_inner (ζ : E d) :
     ∃ L : E d →L[ℝ] ℂ, ∀ x, L x = -(2 * (Real.pi : ℂ) * Complex.I * ((inner ℝ x ζ : ℝ) : ℂ)) := by
   refine ⟨(-(2 * (Real.pi : ℂ) * Complex.I)) • (Complex.ofRealCLM.comp (innerSL ℝ ζ)), fun x => ?_⟩
   rw [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply, smul_eq_mul]
   rw [innerSL_apply_apply, real_inner_comm]; ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[hL]`. Both sides reduce to the same expression.
+-/
 private theorem eF_eq_exp_comp_of_clm (ζ : E d) (L : E d →L[ℝ] ℂ)
     (hL : ∀ x, L x = -(2 * (Real.pi : ℂ) * Complex.I * ((inner ℝ x ζ : ℝ) : ℂ))) :
     eF ζ = fun x => Complex.exp (L x) := by
@@ -107,6 +152,23 @@ private theorem eF_eq_exp_comp_of_clm (ζ : E d) (L : E d →L[ℝ] ℂ)
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_clm_eq_neg_two_pi_I_inner ζ`. Establish `hχ` using `eF_eq_exp_comp_of_clm ζ L hL`. Establish `hχd : ∀ x, HasFDerivAt (eF ζ) (Complex.exp (L x) • L) x`. Introduce `x`. Rewrite using `[hχ]`.
+
+Conclude with `L.hasFDerivAt.cexp`. Establish `hχfd : ∀ x, fderiv ℝ (eF ζ) x v = eF ζ x * L v`. Introduce `x`. Rewrite using `[(hχd x).fderiv, ContinuousLinearMap.smul_apply, smul_eq_mul, hχ]`. Establish `hχc : Continuous (eF ζ)` using `by rw [hχ]; exact Complex.continuous_exp.comp L.continuous`.
+
+Establish `hkd : Differentiable ℝ k` using `differentiable_of_contDiff_infty hk`. Establish `hχdiff : Differentiable ℝ (eF ζ)` using `fun x => (hχd x).differentiableAt`. Establish `hDc : Continuous (fun x => fderiv ℝ k x v)` using `(contDiff_infty_fderiv_of_contDiff_infty hk).continuous.clm_apply continuous_const`. Establish `hDs : HasCompactSupport (fun x => fderiv ℝ k x v)`. Use `(hkc.fderiv ℝ).mono ?_` and prove the remaining obligations.
+
+Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`. Introduce `h0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[h0]`.
+
+Simplify using the standard rewrite rules. Establish `i1 : Integrable (fun x => fderiv ℝ (eF ζ) x v * k x)`. Establish `e : (fun x => fderiv ℝ (eF ζ) x v * k x) = fun x => eF ζ x * L v * k x`. Use function extensionality and compare the values at `x`. Rewrite using `[hχfd]`.
+
+Rewrite using `[e]`. Conclude with `((hχc.mul continuous_const).mul hk.continuous).integrable_of_hasCompactSupport hkc.mul_left`. Establish `i2 : Integrable (fun x => eF ζ x * fderiv ℝ k x v)` using `(hχc.mul hDc).integrable_of_hasCompactSupport hDs.mul_left`. Establish `i3 : Integrable (fun x => eF ζ x * k x)` using `(hχc.mul hk.continuous).integrable_of_hasCompactSupport hkc.mul_left`. Establish `hibp : ∫ x, eF ζ x * fderiv ℝ k x v = -∫ x, fderiv ℝ (eF ζ) x v * k x`.
+
+Conclude with `integral_mul_fderiv_eq_neg_fderiv_mul_of_integrable i1 i2 i3 (fun x _ => hχdiff x) (fun x _ => hkd x)`. Rewrite using `[fourier_eq_integral_eF_mul, fourier_eq_integral_eF_mul, hibp]`. Establish `e2 : (fun x => fderiv ℝ (eF ζ) x v * k x) = fun x => L v * (eF ζ x * k x)`. Use function extensionality and compare the values at `x`. Rewrite using `[hχfd]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, integral_const_mul, hL v, real_inner_comm]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pf_fourier_fderiv (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc : HasCompactSupport k) (v ζ : E d) :
     𝓕 (fun x => fderiv ℝ k x v) ζ = (2 * Real.pi * Complex.I * ((inner ℝ ζ v : ℝ) : ℂ)) * 𝓕 k ζ := by
   obtain ⟨L, hL⟩ := exists_clm_eq_neg_two_pi_I_inner ζ
@@ -145,6 +207,11 @@ theorem pf_fourier_fderiv (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc : Has
   rw [e2, integral_const_mul, hL v, real_inner_comm]
   ring
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp [dw]`. Consider the case `cons j w ih`. Take `⟨h1, h2⟩` from `pf_dw_smooth w k hk hkc`. Use `show 𝓕 (fun x => fderiv ℝ (dw w k) x (ev j)) ζ = _`.
+
+Rewrite using `[pf_fourier_fderiv _ h1 h2, ih, List.map_cons, List.prod_cons]`. Establish `hb : inner ℝ ζ (ev j) = ζ j`. Simplify using `[ev, EuclideanSpace.inner_single_right]`. Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pf_fourier_dw (L : List (Fin d)) (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc : HasCompactSupport k)
     (ζ : E d) :
     𝓕 (dw L k) ζ = (L.map fun j => 2 * Real.pi * Complex.I * ((ζ j : ℝ) : ℂ)).prod * 𝓕 k ζ := by
@@ -158,6 +225,11 @@ theorem pf_fourier_dw (L : List (Fin d)) (k : E d → ℂ) (hk : ContDiff ℝ �
       simp [ev, EuclideanSpace.inner_single_right]
     rw [hb]; ring
 
+/- English proof (translation)
+Rewrite using `[fourier_eq_integral_eF_mul, fourier_eq_integral_eF_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Establish `h : eF ζ y * eF ξ y = eF (ζ + ξ) y`. Simplify using `only [eF, ← Complex.exp_add, inner_add_right]`.
+
+Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pf_modulate (b : E d → ℂ) (ξ ζ : E d) : 𝓕 (fun y => b y * eF ξ y) ζ = 𝓕 b (ζ + ξ) := by
   rw [fourier_eq_integral_eF_mul, fourier_eq_integral_eF_mul]
   refine integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)
@@ -167,6 +239,11 @@ theorem pf_modulate (b : E d → ℂ) (ξ ζ : E d) : 𝓕 (fun y => b y * eF ξ
     congr 1; push_cast; ring
   rw [← h]; ring
 
+/- English proof (translation)
+Establish `hdecay : ∀ m n : ℕ, ∃ C : ℝ, ∀ x, ‖x‖ ^ m * ‖iteratedFDeriv ℝ n k x‖ ≤ C`. Introduce `m n`. Establish `hcn : Continuous fun x => iteratedFDeriv ℝ n k x`. Conclude with `hk.continuous_iteratedFDeriv (by exact_mod_cast (le_top : (n : ℕ∞) ≤ ⊤))`. Establish `hc : Continuous fun x : E d => ‖x‖ ^ m * ‖iteratedFDeriv ℝ n k x‖` using `(continuous_norm.pow m).mul hcn.norm`.
+
+Establish `hs : HasCompactSupport fun x : E d => ‖x‖ ^ m * ‖iteratedFDeriv ℝ n k x‖` using `((hkc.iteratedFDeriv (𝕜 := ℝ) n).norm).mul_left`. Take `⟨C, hC⟩` from `hc.bounded_above_of_compact_support hs`. Conclude with `⟨C, fun x => (le_abs_self _).trans (by simpa only [Real.norm_eq_abs] using hC x)⟩`. Set `S : SchwartzMap (E d) ℂ` to `⟨k, hk, hdecay⟩`. Conclude with `(SchwartzMap.fourierTransformCLM ℂ S).integrable`.
+-/
 theorem pf_fourier_integrable (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc : HasCompactSupport k) :
     Integrable (𝓕 k) := by
   have hdecay : ∀ m n : ℕ, ∃ C : ℝ, ∀ x, ‖x‖ ^ m * ‖iteratedFDeriv ℝ n k x‖ ≤ C := by
@@ -182,11 +259,19 @@ theorem pf_fourier_integrable (k : E d → ℂ) (hk : ContDiff ℝ ∞ k) (hkc :
   let S : SchwartzMap (E d) ℂ := ⟨k, hk, hdecay⟩
   exact (SchwartzMap.fourierTransformCLM ℂ S).integrable
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_clm_eq_neg_two_pi_I_inner ξ`. Rewrite using `[eF_eq_exp_comp_of_clm ξ L hL]`. Conclude with `Complex.contDiff_exp.comp L.contDiff`.
+-/
 theorem pf_eF_smooth (ξ : E d) : ContDiff ℝ ∞ (eF ξ) := by
   obtain ⟨L, hL⟩ := exists_clm_eq_neg_two_pi_I_inner ξ
   rw [eF_eq_exp_comp_of_clm ξ L hL]
   exact Complex.contDiff_exp.comp L.contDiff
 
+/- English proof (translation)
+Unfold `mono`. Establish `h : ∀ l, (2 * (Real.pi : ℂ) * Complex.I * (((-η) (w l) : ℝ) : ℂ)) = (-1) * (2 * Real.pi * Complex.I * ((η (w l) : ℝ) : ℂ))`. Introduce `l`. Rewrite using `[PiLp.neg_apply]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl (fun l _ => h l), Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← mul_assoc, ← mul_pow]`. Evaluate the numerical expressions.
+-/
 theorem pf_sign (n : ℕ) (w : Fin n → Fin d) (η : E d) :
     (-1 : ℂ) ^ n * ∏ l, (2 * Real.pi * Complex.I * (((-η) (w l) : ℝ) : ℂ)) = mono w η := by
   unfold mono
@@ -198,6 +283,23 @@ theorem pf_sign (n : ℕ) (w : Fin n → Fin d) (η : E d) :
     Fintype.card_fin, ← mul_assoc, ← mul_pow]
   norm_num
 
+/- English proof (translation)
+Introduce `d m b g hb hg hgc ξ`. Establish `hgi : Integrable g` using `hg.integrable_of_hasCompactSupport hgc`. Establish `term : ∀ n (w : Fin n → Fin d), ∫ y, g y * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => b n w y * eF ξ y) y) = conv (𝓕 (b n w)) (fun η => mono w η * 𝓕 g η) ξ`. Introduce `n w`. Establish `hs : ContDiff ℝ ∞ (fun y => b n w y * eF ξ y)` using `(hb n w).1.mul (pf_eF_smooth ξ)`.
+
+Establish `hc : HasCompactSupport (fun y => b n w y * eF ξ y)` using `(hb n w).2.mul_right`. Take `⟨D1, D2⟩` from `pf_dw_smooth (List.ofFn w) _ hs hc`. Establish `hD` using `pf_parseval g _ hgi D1.continuous (D1.continuous.integrable_of_hasCompactSupport D2) (pf_fourier_integrable _ D1 D2)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← integral_const_mul]`.
+
+Use `congr 1`. Use extensionality with `y`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ η, (-1 : ℂ) ^ n * (𝓕 (dw (List.ofFn w) (fun y => b n w y * eF ξ y)) (-η) * 𝓕 g η) := by`. Rewrite using `[hD, integral_const_mul]`.
+
+Use `_ = conv (𝓕 (b n w)) (fun η => mono w η * 𝓕 g η) ξ := by`. Unfold `conv`. Use `congr 1`. Use extensionality with `η`. Rewrite using `[pf_fourier_dw _ _ hs hc, pf_modulate, List.map_ofFn, List.prod_ofFn, neg_add_eq_sub]`.
+
+Simplify using `only [Function.comp_apply]`. Rewrite using `[← pf_sign n w η]`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : ∀ n (w : Fin n → Fin d), Integrable (fun y => g y * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => b n w y * eF ξ y) y))`. Introduce `n w`.
+
+Take `⟨D1, D2⟩` from `pf_dw_smooth (List.ofFn w) _ ((hb n w).1.mul (pf_eF_smooth ξ)) (hb n w).2.mul_right`. Conclude with `(hg.mul (continuous_const.mul D1.continuous)).integrable_of_hasCompactSupport hgc.mul_right`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `y`.
+
+Simplify using `only [trOp, Finset.mul_sum]`. Use `_ = ∑ n ∈ Finset.range (m + 1), ∫ y, ∑ w : Fin n → Fin d, g y * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => b n w y * eF ξ y) y) := integral_finsetSum _ (fun n _ => integrable_finsetSum _ (fun w _ => hint n w))`. Use `_ = ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, ∫ y, g y * ((-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => b n w y * eF ξ y) y) := by`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Conclude with `integral_finsetSum _ (fun w _ => hint n w)`.
+
+Use `_ = ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, conv (𝓕 (b n w)) (fun η => mono w η * 𝓕 g η) ξ := by`. Use `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `term n w`.
+-/
 theorem adjointPairingFourier : PairingFourier := by
   intro d m b g hb hg hgc ξ
   have hgi : Integrable g := hg.integrable_of_hasCompactSupport hgc

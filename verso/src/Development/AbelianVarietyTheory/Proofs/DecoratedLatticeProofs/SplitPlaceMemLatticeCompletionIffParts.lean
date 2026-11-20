@@ -15,6 +15,13 @@ noncomputable section
 
 namespace GlobalTheory.FinPl.SplitParts
 
+/- English proof (translation)
+Introduce `D k _ _ _ _ q S L y hy`. Establish `he : finPart D q.e ∈ intAE D` using `GlobalTheory.UpMem.finPart_e_int q`. Establish `hce : finPart D (cA D q.e) ∈ intAE D` using `(GlobalTheory.FinPl.FrameLat.cA_int_iff q.e).2 he`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Conclude with `⟨GlobalTheory.FinPl.LatIndHalf.mul_mem_latV he h, GlobalTheory.FinPl.LatIndHalf.mul_mem_latV hce h⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `e : y = (fun r => q.e * y r) + (fun r => cA D q.e * y r)`. Use function extensionality and compare the values at `r`. Rewrite using `[Pi.add_apply, ← add_mul, (GlobalTheory.FinPl.FrameLat.idem_iff q (y r)).1 (hy r)]`.
+
+Rewrite using `[e]`. Conclude with `add_mem h1 h2`.
+-/
 theorem mem_latV_iff_parts : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (y : Fin S.rank → AE D), (∀ r, y r ∈ GlobalTheory.FinPl.idAt D (· = q.v)) → (y ∈ GlobalTheory.FinPl.latV S L (· = q.v) ↔ (fun r => q.e * y r) ∈ GlobalTheory.FinPl.latV S L (· = q.v) ∧ (fun r => cA D q.e * y r) ∈ GlobalTheory.FinPl.latV S L (· = q.v)) := by
   intro D k _ _ _ _ q S L y hy
   have he : finPart D q.e ∈ intAE D := GlobalTheory.UpMem.finPart_e_int q

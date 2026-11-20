@@ -17,14 +17,25 @@ def rip (w : Fin g → ℂ) : (Fin g → ℂ) →ₗ[ℝ] ℝ where
   map_add' a b := by simp [add_mul, Finset.sum_add_distrib]
   map_smul' c a := by simp [Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rip_apply (w v : Fin g → ℂ) : rip w v = ∑ k, (v k * (starRingEnd ℂ) (w k)).re := rfl
 
+/- English proof (translation)
+Simplify using `only [rip_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rip_comm (w v : Fin g → ℂ) : rip w v = rip v w := by
   simp only [rip_apply]
   refine Finset.sum_congr rfl fun k _ => ?_
   simp [Complex.mul_re]
   ring
 
+/- English proof (translation)
+Establish `h' : ∑ k, Complex.normSq (v k) = 0`. Rewrite using `[← h, rip_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.ofReal_re]`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun k _ => Complex.normSq_nonneg (v k))).1 h'` as an intermediate fact.
+
+Use function extensionality and compare the values at `k`. Conclude with `Complex.normSq_eq_zero.1 (this k (Finset.mem_univ k))`.
+-/
 theorem eq_zero_of_rip_self {v : Fin g → ℂ} (h : rip v v = 0) : v = 0 := by
   have h' : ∑ k, Complex.normSq (v k) = 0 := by
     rw [← h, rip_apply]
@@ -34,6 +45,9 @@ theorem eq_zero_of_rip_self {v : Fin g → ℂ} (h : rip v v = 0) : v = 0 := by
   funext k
   exact Complex.normSq_eq_zero.1 (this k (Finset.mem_univ k))
 
+/- English proof (translation)
+Simplify using `only [rip_apply]`. Use `continuous_finset_sum _ fun k _ => Complex.continuous_re.comp ?_` and prove the remaining obligations. Conclude with `((continuous_apply k).comp continuous_snd).mul (Complex.continuous_conj.comp ((continuous_apply k).comp continuous_fst))`.
+-/
 theorem continuous_rip : Continuous fun q : (Fin g → ℂ) × (Fin g → ℂ) => rip q.1 q.2 := by
   simp only [rip_apply]
   refine continuous_finset_sum _ fun k _ => Complex.continuous_re.comp ?_
@@ -44,6 +58,13 @@ def gram (l : Fin r → Fin g → ℂ) : Matrix (Fin r) (Fin r) ℝ := Matrix.of
 
 def pair (l y : Fin r → Fin g → ℂ) : Matrix (Fin r) (Fin r) ℝ := Matrix.of fun j a => rip (l a) (y j)
 
+/- English proof (translation)
+Introduce `h`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `hs : ∀ a, rip (l a) (∑ i, v i • l i) = 0`. Introduce `a`.
+
+Use `congrFun hv0 a` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, gram, map_sum]`. Establish `hz : (∑ i, v i • l i) = 0`. Apply `eq_zero_of_rip_self` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Conclude with `funext fun i => Fintype.linearIndependent_iff.1 hl v hz i`.
+-/
 theorem det_gram_ne_zero {l : Fin r → Fin g → ℂ} (hl : LinearIndependent ℝ l) : (gram l).det ≠ 0 := by
   intro h
   obtain ⟨v, hv, hv0⟩ := Matrix.exists_vecMul_eq_zero_iff.2 h
@@ -62,6 +83,9 @@ theorem det_gram_ne_zero {l : Fin r → Fin g → ℂ} (hl : LinearIndependent �
 
 def coord (l y : Fin r → Fin g → ℂ) : Matrix (Fin r) (Fin r) ℝ := pair l y * (gram l)⁻¹
 
+/- English proof (translation)
+Establish `: pair l y = c * gram l`. Use extensionality with `j a`. Simplify using `[pair, gram, Matrix.mul_apply, hy j, map_sum]`. Rewrite using `[coord, this]`. Conclude with `Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_iff_ne_zero.2 (det_gram_ne_zero hl))`.
+-/
 theorem coord_eq {l y : Fin r → Fin g → ℂ} (hl : LinearIndependent ℝ l) (c : Matrix (Fin r) (Fin r) ℝ)
     (hy : ∀ j, y j = ∑ i, c j i • l i) : coord l y = c := by
   have : pair l y = c * gram l := by
@@ -70,6 +94,11 @@ theorem coord_eq {l y : Fin r → Fin g → ℂ} (hl : LinearIndependent ℝ l) 
   rw [coord, this]
   exact Matrix.mul_nonsing_inv_cancel_right _ _ (isUnit_iff_ne_zero.2 (det_gram_ne_zero hl))
 
+/- English proof (translation)
+Establish `hg : Continuous fun t => gram (l t)` using `continuous_matrix fun i a => continuous_rip.comp (((continuous_apply a).comp hl).prodMk ((continuous_apply i).comp hl))`. Establish `hp : Continuous fun t => pair (l t) (y t)` using `continuous_matrix fun j a => continuous_rip.comp (((continuous_apply a).comp hl).prodMk ((continuous_apply j).comp hy))`. Establish `hinv : Continuous fun t => (gram (l t))⁻¹`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv']`. Conclude with `(hg.matrix_det.inv₀ fun t => det_gram_ne_zero (hi t)).smul hg.matrix_adjugate`.
+
+Conclude with `hp.matrix_mul hinv`.
+-/
 theorem continuous_coord {T : Type*} [TopologicalSpace T] {l y : T → Fin r → Fin g → ℂ} (hl : Continuous l)
     (hy : Continuous y) (hi : ∀ t, LinearIndependent ℝ (l t)) : Continuous fun t => coord (l t) (y t) := by
   have hg : Continuous fun t => gram (l t) := continuous_matrix fun i a =>
@@ -83,34 +112,55 @@ theorem continuous_coord {T : Type*} [TopologicalSpace T] {l y : T → Fin r →
 
 def act (m : Matrix (Fin r) (Fin r) ℤ) (l : Fin r → Fin g → ℂ) : Fin r → Fin g → ℂ := fun j => ∑ i, m j i • l i
 
+/- English proof (translation)
+Simplify using `only [act, Matrix.map_apply, Int.cast_smul_eq_zsmul]`.
+-/
 theorem act_real (m : Matrix (Fin r) (Fin r) ℤ) (l : Fin r → Fin g → ℂ) (j : Fin r) :
     act m l j = ∑ i, (m.map (Int.cast : ℤ → ℝ)) j i • l i := by
   simp only [act, Matrix.map_apply, Int.cast_smul_eq_zsmul]
 
+/- English proof (translation)
+The claim follows from `coord_eq hl _ (act_real m l)`.
+-/
 theorem coord_act {l : Fin r → Fin g → ℂ} (hl : LinearIndependent ℝ l) (m : Matrix (Fin r) (Fin r) ℤ) :
     coord l (act m l) = m.map (Int.cast : ℤ → ℝ) :=
   coord_eq hl _ (act_real m l)
 
+/- English proof (translation)
+Use `(coord_act hl m).symm.trans ((congrArg (coord l) h).trans (coord_act hl m'))` as an intermediate fact. Use extensionality with `j i`. Simplify using `using congrFun (congrFun this j) i`.
+-/
 theorem act_injective {l : Fin r → Fin g → ℂ} (hl : LinearIndependent ℝ l) {m m' : Matrix (Fin r) (Fin r) ℤ}
     (h : act m l = act m' l) : m = m' := by
   have := (coord_act hl m).symm.trans ((congrArg (coord l) h).trans (coord_act hl m'))
   ext j i
   simpa using congrFun (congrFun this j) i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[act, Matrix.one_apply]`.
+-/
 theorem act_one (l : Fin r → Fin g → ℂ) : act 1 l = l := by
   funext j
   simp [act, Matrix.one_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [act, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem act_act (m n : Matrix (Fin r) (Fin r) ℤ) (l : Fin r → Fin g → ℂ) : act m (act n l) = act (m * n) l := by
   funext j
   simp only [act, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [act, Matrix.vecMul, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem sum_act_int (a : Fin r → ℤ) (m : Matrix (Fin r) (Fin r) ℤ) (l : Fin r → Fin g → ℂ) :
     ∑ j, a j • act m l j = ∑ i, (Matrix.vecMul a m) i • l i := by
   simp only [act, Matrix.vecMul, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Simplify using `only [act_real, Matrix.vecMul, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+-/
 theorem sum_act_real (c : Fin r → ℝ) (m : Matrix (Fin r) (Fin r) ℤ) (l : Fin r → Fin g → ℂ) :
     ∑ j, c j • act m l j = ∑ i, (Matrix.vecMul c (m.map (Int.cast : ℤ → ℝ))) i • l i := by
   simp only [act_real, Matrix.vecMul, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]
@@ -124,8 +174,18 @@ instance : DiscreteTopology (GLZ r) := ⟨rfl⟩
 
 def GLZ.mat (M : GLZ r) : Matrix (Fin r) (Fin r) ℤ := Units.val M
 
+/- English proof (translation)
+The claim follows from `Units.val_injective`.
+-/
 theorem GLZ.mat_injective : Function.Injective (GLZ.mat : GLZ r → _) := Units.val_injective
 
+/- English proof (translation)
+Establish `mem : ∀ {q : Fin r → Fin g → ℂ}, IsLatBasis S q → ∀ j, q j ∈ S` using `fun {q} hq j => (hq.2 _).2 ⟨Pi.single j 1, by simp [Pi.single_apply, ite_smul]⟩`. Use `choose m hm using fun j => (hl.2 _).1 (mem hl' j)`. Use `choose n hn using fun j => (hl'.2 _).1 (mem hl j)`. Establish `e1 : l' = act (Matrix.of m) l` using `funext hm`. Establish `e2 : l = act (Matrix.of n) l'` using `funext hn`.
+
+Establish `h1 : Matrix.of m * Matrix.of n = 1`. Use `act_injective hl'.1 ?_` and prove the remaining obligations. Rewrite using `[← act_act, ← e2, ← e1, act_one]`. Establish `h2 : Matrix.of n * Matrix.of m = 1`. Use `act_injective hl.1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← act_act, ← e1, ← e2, act_one]`. Conclude with `⟨⟨Matrix.of m, Matrix.of n, h1, h2⟩, e1⟩`.
+-/
 theorem exists_glz {S : Set (Fin g → ℂ)} {l l' : Fin r → Fin g → ℂ} (hl : IsLatBasis S l) (hl' : IsLatBasis S l') :
     ∃ M : GLZ r, l' = act M.mat l := by
   have mem : ∀ {q : Fin r → Fin g → ℂ}, IsLatBasis S q → ∀ j, q j ∈ S := fun {q} hq j =>
@@ -142,6 +202,17 @@ theorem exists_glz {S : Set (Fin g → ℂ)} {l l' : Fin r → Fin g → ℂ} (h
     rw [← act_act, ← e1, ← e2, act_one]
   exact ⟨⟨Matrix.of m, Matrix.of n, h1, h2⟩, e1⟩
 
+/- English proof (translation)
+Take `⟨m, n, hM, h1, h2⟩ : ∃ m n : Matrix (Fin r) (Fin r) ℤ, M.mat = m ∧ m * n = 1 ∧ n * m = 1` from `⟨M.mat, Units.inv M, rfl, Units.mul_inv M, Units.inv_mul M⟩`. Rewrite using `[hM]`. Establish `hr : m.map (Int.cast : ℤ → ℝ) * n.map (Int.cast : ℤ → ℝ) = 1`. Establish `h : (m * n).map (Int.castRingHom ℝ) = 1` using `by rw [h1]; simp`. Rewrite `h` using `[Matrix.map_mul]`.
+
+Conclude with `h`. Use `⟨Fintype.linearIndependent_iff.2 fun c hc j => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[sum_act_real]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hl.1 _ hc`. Establish `h0' : Matrix.vecMul c (m.map (Int.cast : ℤ → ℝ)) = 0` using `funext h0`.
+
+Establish `: c = Matrix.vecMul (Matrix.vecMul c (m.map (Int.cast : ℤ → ℝ))) (n.map (Int.cast : ℤ → ℝ))`. Rewrite using `[Matrix.vecMul_vecMul, hr, Matrix.vecMul_one]`. Rewrite using `[this, h0']`. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hw`. Take `⟨b, rfl⟩` from `(hl.2 _).1 hw`. Use `⟨Matrix.vecMul b n, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_act_int, Matrix.vecMul_vecMul, h2, Matrix.vecMul_one]`. Introduce and unpack `⟨a, rfl⟩`.
+
+Conclude with `(hl.2 _).2 ⟨Matrix.vecMul a m, sum_act_int a m l⟩`.
+-/
 theorem isLatBasis_act {S : Set (Fin g → ℂ)} {l : Fin r → Fin g → ℂ} (hl : IsLatBasis S l) (M : GLZ r) :
     IsLatBasis S (act M.mat l) := by
   obtain ⟨m, n, hM, h1, h2⟩ : ∃ m n : Matrix (Fin r) (Fin r) ℤ, M.mat = m ∧ m * n = 1 ∧ n * m = 1 :=
@@ -167,6 +238,13 @@ theorem isLatBasis_act {S : Set (Fin g → ℂ)} {l : Fin r → Fin g → ℂ} (
     · rintro ⟨a, rfl⟩
       exact (hl.2 _).2 ⟨Matrix.vecMul a m, sum_act_int a m l⟩
 
+/- English proof (translation)
+Establish `hc` using `continuous_coord hl hy hi`. Establish `he : ∀ t, coord (l t) (y t) = (M t).mat.map (Int.cast : ℤ → ℝ)` using `fun t => by`. Rewrite using `[h t, coord_act (hi t)]`. Establish `hp : Continuous fun t => ((M t).mat : Fin r → Fin r → ℤ)`. Use `continuous_pi fun j => continuous_pi fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[Int.isClosedEmbedding_coe_real.isEmbedding.continuous_iff]`. Establish `: Continuous fun t => coord (l t) (y t) j i` using `hc.matrix_elem j i`. Use `this.congr fun t => ?_` and prove the remaining obligations. Rewrite using `[he t]`. Both sides reduce to the same expression.
+
+Establish `hlc : IsLocallyConstant (fun t => ((M t).mat : Fin r → Fin r → ℤ))` using `(IsLocallyConstant.iff_continuous _).2 hp`. Conclude with `((IsLocallyConstant.desc M GLZ.mat hlc GLZ.mat_injective)).continuous`.
+-/
 theorem continuous_of_act {T : Type*} [TopologicalSpace T] {l y : T → Fin r → Fin g → ℂ} (hl : Continuous l)
     (hy : Continuous y) (hi : ∀ t, LinearIndependent ℝ (l t)) (M : T → GLZ r)
     (h : ∀ t, y t = act (M t).mat (l t)) : Continuous M := by
@@ -185,6 +263,9 @@ theorem continuous_of_act {T : Type*} [TopologicalSpace T] {l y : T → Fin r �
     (IsLocallyConstant.iff_continuous _).2 hp
   exact ((IsLocallyConstant.desc M GLZ.mat hlc GLZ.mat_injective)).continuous
 
+/- English proof (translation)
+The claim follows from `continuous_pi fun j => continuous_finset_sum _ fun i _ => (continuous_apply i).const_smul (m j i)`.
+-/
 theorem continuous_act (m : Matrix (Fin r) (Fin r) ℤ) : Continuous (act m : (Fin r → Fin g → ℂ) → _) :=
   continuous_pi fun j => continuous_finset_sum _ fun i _ => (continuous_apply i).const_smul (m j i)
 
@@ -195,9 +276,15 @@ abbrev Frames (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → 
 
 def proj (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (r : ℕ) : Frames B K r → ↥B := fun e => e.1.1
 
+/- English proof (translation)
+The claim follows from `continuous_fst.comp continuous_subtype_val`.
+-/
 theorem continuous_proj (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (r : ℕ) :
     Continuous (proj B K r) := continuous_fst.comp continuous_subtype_val
 
+/- English proof (translation)
+Take `⟨lam, han, hev⟩` from `hloc b₀ hb`. Establish `h` using `(han.eventually_analyticAt.and hev).and (hB.mem_nhds hb)`. Take `⟨V, hVs, hV, hbV⟩` from `eventually_nhds_iff.1 h`. Conclude with `⟨V, lam, hV, hbV, fun x hx => (hVs x hx).2, han, fun x hx => (hVs x hx).1.1.continuousAt.continuousWithinAt, fun x hx => (hVs x hx).1.2⟩`.
+-/
 theorem local_data {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Set (Fin g → ℂ)} (hB : IsOpen B)
     (hloc : ∀ b₀ ∈ B, ∃ lam : (Fin n → ℂ) → Fin r → Fin g → ℂ, AnalyticAt ℂ lam b₀ ∧
       ∀ᶠ b in 𝓝 b₀, IsLatBasis (K b) (lam b)) {b₀ : Fin n → ℂ} (hb : b₀ ∈ B) :
@@ -209,6 +296,17 @@ theorem local_data {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Set (Fin g
   exact ⟨V, lam, hV, hbV, fun x hx => (hVs x hx).2, han,
     fun x hx => (hVs x hx).1.1.continuousAt.continuousWithinAt, fun x hx => (hVs x hx).1.2⟩
 
+/- English proof (translation)
+Introduce `x₀`. Take `⟨V, lam, hV, hxV, hVB, -, hc, hbas⟩` from `local_data hB hloc x₀.2`. Apply `IsEvenlyCovered.to_isEvenlyCovered_preimage (I := GLZ r)` to reduce the goal to its premises. Establish `hU : IsOpen (Subtype.val ⁻¹' V : Set ↥B)` using `hV.preimage continuous_subtype_val`. Establish `hM : ∀ e : proj B K r ⁻¹' (Subtype.val ⁻¹' V : Set ↥B), ∃ M : GLZ r, e.1.1.2 = act M.mat (lam e.1.1.1.1)` using `fun e => exists_glz (hbas _ e.2) e.1.2`.
+
+Use `choose M hM using hM`. Establish `hcl : Continuous fun e : proj B K r ⁻¹' (Subtype.val ⁻¹' V : Set ↥B) => lam e.1.1.1.1` using `hc.comp_continuous (by fun_prop) fun e => e.2`. Establish `hMc : Continuous M` using `continuous_of_act hcl (by fun_prop) (fun e => (hbas _ e.2).1) M hM`. Use `⟨inferInstance, _, hxV, hU, hU.preimage (continuous_proj B K r), ?_⟩` and prove the remaining obligations. Use `⟨{ toFun := fun e => (⟨proj B K r e.1, e.2⟩, M e) invFun := fun q => ⟨⟨⟨q.1.1, act q.2.mat (lam q.1.1.1)⟩, isLatBasis_act (hbas _ q.1.2) q.2⟩, q.1.2⟩ left_inv := fun e => ?_ right_inv := fun q => ?_ continuous_toFun := ?_ continuous_invFun := ?_ }, fun e => rfl⟩` and prove the remaining obligations.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Prod.ext rfl (hM e).symm`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Apply `GLZ.mat_injective` to reduce the goal to its premises.
+
+Conclude with `act_injective (hbas _ q.1.2).1 (hM _).symm`. Conclude with `(Continuous.subtype_mk ((continuous_proj B K r).comp continuous_subtype_val) _).prodMk hMc`. Use `Continuous.subtype_mk (Continuous.subtype_mk ?_ _) _` and prove the remaining obligations. Use `(continuous_subtype_val.comp continuous_fst).prodMk ?_` and prove the remaining obligations. Rewrite using `[continuous_prod_of_discrete_right]`.
+
+Introduce `m`. Establish `hlu : Continuous fun u : ↥(Subtype.val ⁻¹' V : Set ↥B) => lam u.1.1` using `hc.comp_continuous (by fun_prop) fun u => u.2`. Conclude with `(continuous_act m.mat).comp hlu`.
+-/
 theorem isCoveringMap_proj {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Set (Fin g → ℂ)} (hB : IsOpen B)
     (hloc : ∀ b₀ ∈ B, ∃ lam : (Fin n → ℂ) → Fin r → Fin g → ℂ, AnalyticAt ℂ lam b₀ ∧
       ∀ᶠ b in 𝓝 b₀, IsLatBasis (K b) (lam b)) : IsCoveringMap (proj B K r) := by
@@ -245,6 +343,19 @@ theorem isCoveringMap_proj {B : Set (Fin n → ℂ)} {K : (Fin n → ℂ) → Se
       hc.comp_continuous (by fun_prop) fun u => u.2
     exact (continuous_act m.mat).comp hlu
 
+/- English proof (translation)
+Break down `B.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨0, by simp, by simp⟩`. Take `⟨a₀, ha₀⟩` from `hne`. Establish `hcs : ContractibleSpace ↥B` using `hconv.contractibleSpace ⟨a₀, ha₀⟩`. Establish `hlp : LocallyPathConnectedSpace ↥B` using `hB.locallyPathConnectedSpace`.
+
+Take `⟨l₀, -, hl₀⟩` from `hloc a₀ ha₀`. Establish `cov` using `isCoveringMap_proj (r := r) hB hloc`. Take `⟨F, ⟨-, hF⟩, -⟩` from `cov.existsUnique_continuousMap_lifts (ContinuousMap.id ↥B) ⟨a₀, ha₀⟩ ⟨⟨⟨a₀, ha₀⟩, l₀ a₀⟩, hl₀.self_of_nhds⟩ rfl`. Establish `hFb : ∀ x : ↥B, (F x).1.1 = x` using `fun x => congrFun hF x`. Establish `hbas : ∀ x : ↥B, IsLatBasis (K x) (F x).1.2` using `fun x => by`.
+
+Use `(F x).2` as an intermediate fact. Rewrite `this` using `[hFb x]`. Then use the resulting hypothesis. Set `lamG : (Fin n → ℂ) → Fin r → Fin g → ℂ` to `fun b => if h : b ∈ B then (F ⟨b, h⟩).1.2 else 0`. Establish `hlamG : ∀ x : ↥B, lamG x = (F x).1.2` using `fun x => by simp [lamG, x.2]`. Use `⟨lamG, fun b₀ hb₀ => ?_, fun b hb => hlamG ⟨b, hb⟩ ▸ hbas ⟨b, hb⟩⟩` and prove the remaining obligations.
+
+Take `⟨V, lam, hV, hbV, hVB, han, hc, hlat⟩` from `local_data hB hloc hb₀`. Establish `hM : ∀ t : ↥V, ∃ M : GLZ r, (F ⟨t, hVB t.2⟩).1.2 = act M.mat (lam t)` using `fun t => exists_glz (hlat _ t.2) (hbas ⟨t, hVB t.2⟩)`. Use `choose M hM using hM`. Establish `hMc : Continuous M` using `continuous_of_act (hc.comp_continuous continuous_subtype_val fun t => t.2) (by fun_prop) (fun t => (hlat _ t.2).1) M hM`. Establish `hopen : IsOpen (Subtype.val '' (M ⁻¹' {M ⟨b₀, hbV⟩}) : Set (Fin n → ℂ))` using `hV.isOpenMap_subtype_val _ ((isOpen_discrete _).preimage hMc)`.
+
+Establish `hev : lamG =ᶠ[𝓝 b₀] fun b => act (M ⟨b₀, hbV⟩).mat (lam b)` using `by filter_upwards [hopen.mem_nhds ⟨⟨b₀, hbV⟩, rfl, rfl⟩] with b hb`. Take `⟨t, ht, rfl⟩` from `hb`. Rewrite using `[show lamG t = (F ⟨t, hVB t.2⟩).1.2 from hlamG ⟨t, hVB t.2⟩, hM t, show M t = M ⟨b₀, hbV⟩ from ht]`. Establish `hd : DifferentiableAt ℂ (fun b => act (M ⟨b₀, hbV⟩).mat (lam b)) b₀`. Establish `hda` using `han.differentiableAt`.
+
+Use `differentiableAt_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [act, ← Int.cast_smul_eq_zsmul ℂ]`. Conclude with `DifferentiableAt.fun_sum fun i _ => (differentiableAt_pi.1 hda i).fun_const_smul _`. Conclude with `(hev.differentiableAt_iff.2 hd).differentiableWithinAt`.
+-/
 theorem exists_global (n g r : ℕ) (B : Set (Fin n → ℂ)) (K : (Fin n → ℂ) → Set (Fin g → ℂ)) (hB : IsOpen B)
     (hconv : Convex ℝ B)
     (hloc : ∀ b₀ ∈ B, ∃ lam : (Fin n → ℂ) → Fin r → Fin g → ℂ, AnalyticAt ℂ lam b₀ ∧

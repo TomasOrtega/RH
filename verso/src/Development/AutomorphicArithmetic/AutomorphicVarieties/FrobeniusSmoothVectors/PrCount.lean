@@ -2,6 +2,41 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
+/- English proof (translation)
+Introduce `K G W V T _ _ _ _ _ _ _ _ _ Gv _ loc ρ b φ hA hB`. Set `cob : W →ₗ[K] (G → W)` to `LinearMap.pi (fun s => ρ s - LinearMap.id)`. Establish `hcob : ∀ X s, cob X s = ρ s X - X` using `fun X s => rfl`. Set `C` to `LinearMap.range cob`. Set `f : T →ₗ[K] (G → W) ⧸ C` to `C.mkQ ∘ₗ φ`.
+
+Set `Ψ : Z1C loc ρ b →ₗ[K] (G → W) ⧸ C` to `C.mkQ ∘ₗ (LinearMap.fst K (G → W) (V → W)) ∘ₗ (Z1C loc ρ b).subtype`. Establish `hle : Submodule.comap (Z1C loc ρ b).subtype (continuousCoboundaries1 ρ b) ≤ LinearMap.ker Ψ`. Introduce and unpack `⟨x, hx⟩ hxB`. Rewrite `hxB` using `[Submodule.mem_comap]`. Take `⟨X, hX, -⟩` from `hxB`.
+
+Rewrite using `[LinearMap.mem_ker]`. Use `show C.mkQ x.1 = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨X, funext fun s => ((hX s).trans (hcob X s).symm).symm⟩`. Establish `hker : LinearMap.ker Ψ ≤ Submodule.comap (Z1C loc ρ b).subtype (continuousCoboundaries1 ρ b)`.
+
+Introduce and unpack `⟨x, hx⟩ hk`. Rewrite `hk` using `[LinearMap.mem_ker]`. Express the relevant statement in the definitionally equal form `C.mkQ x.1 = 0 at hk`. Rewrite `hk` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨X, hX⟩` from `hk`.
+
+Take `⟨-, -, hloc⟩` from `hx`. Rewrite using `[Submodule.mem_comap]`. Use `⟨X, fun s => (congrFun hX s).symm, fun v => ?_⟩` and prove the remaining obligations. Establish `hmem : X - x.2 v ∈ b v`. Use `hA v _ (fun s => ?_)` and prove the remaining obligations.
+
+Establish `h1` using `hloc v s`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← hX, hcob, map_sub]`. Normalize the expressions using the abelian group laws. Establish `h2` using `(b v).neg_mem hmem`.
+
+Rewrite `h2` using `[neg_sub]`. Then use the resulting hypothesis. Set `L` to `(Submodule.comap (Z1C loc ρ b).subtype (continuousCoboundaries1 ρ b)).liftQ Ψ hle`. Establish `hinj : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ hker`.
+
+Establish `hrange : ∀ y, L y ∈ LinearMap.range f`. Introduce `y`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨D, X, hD⟩` from `hB z.1 z.2`. Use `⟨D, ?_⟩` and prove the remaining obligations.
+
+Use `show C.mkQ (φ D) = C.mkQ z.1.1`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `⟨X, funext fun s => ?_⟩` and prove the remaining obligations. Use `show cob X s = φ D s - z.1.1 s`. Rewrite using `[hcob, hD]`.
+
+Normalize the expressions using the abelian group laws. Set `L' : H1C loc ρ b →ₗ[K] LinearMap.range f` to `L.codRestrict _ hrange`. Establish `hinj' : Function.Injective L'` using `fun a c h => hinj (congrArg Subtype.val h)`. Establish `h1 : Module.finrank K (H1C loc ρ b) ≤ Module.finrank K (LinearMap.range f)` using `LinearMap.finrank_le_finrank_of_injective hinj'`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker f`.
+
+Establish `h3` using `LinearMap.finrank_range_le f`. Use `⟨h1.trans h3, ?_⟩` and prove the remaining obligations. Introduce `X₀ D₀ hX₀ hD₀`. Distinguish the cases in `hinv : ∀ s, ρ s X₀ = X₀`. Establish `hH0 : X₀ ∈ coneH0 ρ b` using `by show (∀ g, ρ g X₀ = X₀) ∧ ∀ v, X₀ ∈ b v`.
+
+Conclude with `⟨hinv, fun v => hA v X₀ (fun s => by rw [hinv, sub_self]; exact (b v).zero_mem)⟩`. Establish `h4 : Module.finrank K (coneH0 ρ b) ≠ 0`. Rewrite using `[Ne, Submodule.finrank_eq_zero]`. Introduce `h`. Rewrite `hH0` using `[h]`.
+
+Conclude with `hX₀ ((Submodule.mem_bot K).1 hH0)`. Use linear arithmetic over natural numbers and integers. Use `push_neg at hinv`. Take `⟨s, hs⟩` from `hinv`. Establish `hD0 : D₀ ∈ LinearMap.ker f`.
+
+Rewrite using `[LinearMap.mem_ker]`. Use `show C.mkQ (φ D₀) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨X₀, funext fun t => (hcob X₀ t).trans (hD₀ t).symm⟩`. Establish `hne : D₀ ≠ 0`.
+
+Introduce and unpack `rfl`. Apply `hs` to reduce the goal to its premises. Establish `h5` using `hD₀ s`. Rewrite `h5` using `[map_zero, Pi.zero_apply]`. Conclude with `(sub_eq_zero.1 h5.symm)`.
+
+Establish `h4 : Module.finrank K (LinearMap.ker f) ≠ 0`. Rewrite using `[Ne, Submodule.finrank_eq_zero]`. Introduce `h`. Rewrite `hD0` using `[h]`. Conclude with `hne ((Submodule.mem_bot K).1 hD0)`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem UpperTheory.V.Fr.pr_count :
     ∀ {K G W V T : Type} [Field K] [Group G] [TopologicalSpace G] [AddCommGroup W] [Module K W] [Module.Finite K W] [AddCommGroup T] [Module K T] [Module.Finite K T] {Gv : V → Type} [∀ v, Group (Gv v)] (loc : ∀ v, Gv v →* G) (ρ : Representation K G W) (b : V → Submodule K W) (φ : T →ₗ[K] (G → W)), (∀ v Y, (∀ s, ρ (loc v s) Y - Y ∈ b v) → Y ∈ b v) → (∀ x ∈ Z1C loc ρ b, ∃ D X, ∀ s, φ D s = x.1 s + (ρ s X - X)) → Module.finrank K (H1C loc ρ b) ≤ Module.finrank K T ∧ ∀ (X₀ : W) (D₀ : T), X₀ ≠ 0 → (∀ s, φ D₀ s = ρ s X₀ - X₀) → Module.finrank K (H1C loc ρ b) + 1 ≤ Module.finrank K T + Module.finrank K (coneH0 ρ b) := by
   intro K G W V T _ _ _ _ _ _ _ _ _ Gv _ loc ρ b φ hA hB

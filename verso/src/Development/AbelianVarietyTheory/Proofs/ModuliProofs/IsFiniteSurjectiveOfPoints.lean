@@ -26,6 +26,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.HeckeIsogenyKernels GlobalTheory.He
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂, h₃, h₄, h₅⟩`. Conclude with `⟨h₂, h₂.coprime_of_ne (conj_isMaximal H P) (Ne.symm h₄), h₁, h₃, h₅⟩`. Introduce and unpack `⟨h₂, h₄, h₁, h₃, h₅⟩`. Use `⟨h₁, h₂, h₃, fun h => h₂.ne_top ?_, h₅⟩` and prove the remaining obligations.
+
+Rewrite using `[← h₄, show P.map (H.bar : 𝓞 E →+* 𝓞 E) = P from h, sup_idem]`.
+-/
 theorem splitPrime_iff (l : Level H) (p : ℕ) (P : Ideal (𝓞 E)) : IsSplitPrimeOff l p P ↔
     P.IsMaximal ∧ P ⊔ P.map (H.bar : 𝓞 E →+* 𝓞 E) = ⊤ ∧ p.Prime ∧ (p : 𝓞 E) ∈ P ∧ ¬ p ∣ l.M' := by
   constructor
@@ -43,6 +48,9 @@ def ptAct {S : Scheme.{0}} (t : SAB H S) (T : Over S) (a : 𝓞 E) : (T ⟶ t.G)
   haveI := t.act.hom a
   MonoidHom.mk' (fun x => x ≫ t.act.act a) fun x y => MonObj.mul_comp x y _
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => by show x ≫ _ = x; rw [t.act.one, Category.comp_id], fun a c x => by show x ≫ _ = (x ≫ _) ≫ _; rw [t.act.mul, Category.assoc], fun a c x => by show x ≫ _ = (x ≫ _) * (x ≫ _); rw [t.act.add, MonObj.comp_mul]⟩`.
+-/
 theorem isAct_ptAct {S : Scheme.{0}} (t : SAB H S) (T : Over S) : IsAct (ptAct t T) :=
   ⟨fun x => by show x ≫ _ = x; rw [t.act.one, Category.comp_id],
     fun a c x => by show x ≫ _ = (x ≫ _) ≫ _; rw [t.act.mul, Category.assoc],
@@ -51,9 +59,17 @@ theorem isAct_ptAct {S : Scheme.{0}} (t : SAB H S) (T : Over S) : IsAct (ptAct t
 abbrev ptWeil (t : SAB H (Sp k)) : ℕ → Pts t → Pts t → kˣ → Prop :=
   fun n g g' c => Out.WeilIs t.G t.PP.L n g g' (unitOn c)
 
+/- English proof (translation)
+The claim follows from `iff_of_eq (congrArg (Out.WeilIs t.G t.PP.L n x y) unitOn_one)`.
+-/
 theorem ptWeil_one (t : SAB H (Sp k)) (n : ℕ) (x y : Pts t) : ptWeil t n x y 1 ↔ Out.WeilIs t.G t.PP.L n x y 1 :=
   iff_of_eq (congrArg (Out.WeilIs t.G t.PP.L n x y) unitOn_one)
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x₁, x₂, x₃, h, h₁, h₂, h₃, h₄, h₅⟩`. Conclude with `⟨x₁, x₂, x₃, h, h₁, h₂, h₃, h₄, fun c hc => (ptWeil_one t p _ _).1 (h₅ c hc)⟩`. Introduce and unpack `⟨x₁, x₂, x₃, h, h₁, h₂, h₃, h₄, h₅⟩`.
+
+Conclude with `⟨x₁, x₂, x₃, h, h₁, h₂, h₃, h₄, fun c hc => (ptWeil_one t p _ _).2 (h₅ c hc)⟩`.
+-/
 theorem kerSet_eq (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (C₀ : Subgroup (Pts t)) :
     kerSet (ptAct t _) (ptWeil t) p P (P.map (H.bar : 𝓞 E →+* 𝓞 E)) C₀ = heckeKernel t p P C₀ := by
   ext x
@@ -66,6 +82,9 @@ theorem kerSet_eq (t : SAB H (Sp k)) (p : ℕ) (P : Ideal (𝓞 E)) (C₀ : Subg
 abbrev objPol (o : Obj D l b s) : Out.PolAV (Sp k) :=
   polOf o.t o.proper o.ample o.ktriv (obj_isAbelianScheme_dim_rigidified_sym E H D l B b _ s o).2.1
 
+/- English proof (translation)
+Take `⟨-, I, -⟩` from `o.geom k (𝟙 _) (Spec.preimage s).hom (by simp [spMap])`. Conclude with `⟨⟨I⟩, fun n z w c c' _ hz hw h h' => (unitOn_bijective k).1 (((hL.weil _ (objPol o) n _).1 z w hz hw).unique h h'), fun p hp => (hL.mulN _ (objPol o) p hp).2.2.2.2 k (𝟙 _) (Nat.cast_ne_zero.2 hp.ne')⟩`.
+-/
 theorem tate_facts [IsAlgClosed k] [CharZero k] (hL : Out.Laws) (o : Obj D l b s) :
     Nonempty (TateIso D k (Pts o.t) (fun a x => ptAct o.t _ a x) (ptWeil o.t)) ∧ Uniq (ptWeil o.t) ∧
       ∀ p : ℕ, 0 < p → Nat.card {x : Pts o.t // x ^ p = 1} = p ^ (2 * (Module.finrank ℚ E / 2 * (D.p + D.q))) := by
@@ -74,14 +93,23 @@ theorem tate_facts [IsAlgClosed k] [CharZero k] (hL : Out.Laws) (o : Obj D l b s
     (unitOn_bijective k).1 (((hL.weil _ (objPol o) n _).1 z w hz hw).unique h h'),
     fun p hp => (hL.mulN _ (objPol o) p hp).2.2.2.2 k (𝟙 _) (Nat.cast_ne_zero.2 hp.ne')⟩
 
+/- English proof (translation)
+Rewrite using `[ptWeil_one, Nat.cast_mul, pow_two]`.
+-/
 theorem weil_sq (t : SAB H (Sp k)) (p : ℕ) (x y : Pts t) :
     ptWeil t (p * p) x y 1 ↔ Out.WeilIs t.G t.PP.L ((p : ℤ) ^ 2) x y 1 := by
   rw [ptWeil_one, Nat.cast_mul, pow_two]
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.subtypeEquivRight fun x => (isAct_ptAct t _).kill_span_iff p x)`.
+-/
 theorem card_tors (t : SAB H (Sp k)) (p : ℕ) :
     Nat.card (t.tors (𝟙_ _) (Ideal.span {(p : 𝓞 E)})) = Nat.card {x : Pts t // x ^ p = 1} :=
   Nat.card_congr (Equiv.subtypeEquivRight fun x => (isAct_ptAct t _).kill_span_iff p x)
 
+/- English proof (translation)
+The claim follows from `Nat.card_congr (Equiv.subtypeEquivRight fun x => and_congr_right' ((isAct_ptAct t _).kill_span_iff p x))`.
+-/
 theorem card_inter_tors (t : SAB H (Sp k)) (p : ℕ) (C : Subgroup (Pts t)) :
     Nat.card ((C : Set (Pts t)) ∩ t.tors (𝟙_ _) (Ideal.span {(p : 𝓞 E)}) : Set (Pts t)) =
       Nat.card {x : Pts t // x ∈ C ∧ x ^ p = 1} :=
@@ -90,6 +118,9 @@ theorem card_inter_tors (t : SAB H (Sp k)) (p : ℕ) (C : Subgroup (Pts t)) :
 variable [IsAlgClosed k] [CharZero k] (hL : Out.Laws) (o : Obj D l b s) {p : ℕ} {P : Ideal (𝓞 E)}
 include hL
 
+/- English proof (translation)
+Take `⟨hP, hco, hp, hpP, -⟩` from `(splitPrime_iff l p P).1 h`. Take `⟨⟨I⟩, hu, hc⟩` from `tate_facts hL o`. Establish `hf : Finite {x : Pts o.t // x ^ p = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc p hp.pos]; exact (pow_pos hp.pos _).ne')`. Take `⟨C, e, c₁, c₂, c₃, c₄, c₅, c₆⟩` from `exists_subgroup I hu (isAct_ptAct _ _) hco hp.pos hpP h₀.1 h₀.2.1 hf`. Conclude with `⟨C, e.trans (kerSet_eq _ _ _ _), c₁, c₂, c₃, fun x hx y hy => (weil_sq _ _ _ _).1 (c₄ x hx y hy), c₅.trans (hc p hp.pos), by rw [card_tors, card_inter_tors, c₆, h₀.2.2.2]⟩`.
+-/
 theorem exists_heckeKer_of_datum (h : IsSplitPrimeOff l p P) {i : ℕ} {C₀ : Subgroup (Pts o.t)}
     (h₀ : IsHeckeDatum o.t P i C₀) :
     ∃ C : Subgroup (Pts o.t), (C : Set (Pts o.t)) = heckeKernel o.t p P C₀ ∧ o.t.HeckeKer (𝟙_ _) D P p i C := by
@@ -101,6 +132,13 @@ theorem exists_heckeKer_of_datum (h : IsSplitPrimeOff l p P) {i : ℕ} {C₀ : S
   exact ⟨C, e.trans (kerSet_eq _ _ _ _), c₁, c₂, c₃, fun x hx y hy => (weil_sq _ _ _ _).1 (c₄ x hx y hy),
     c₅.trans (hc p hp.pos), by rw [card_tors, card_inter_tors, c₆, h₀.2.2.2]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c₁, -, c₃, c₄, c₅, c₆⟩`. Take `⟨hP, hco, hp, hpP, -⟩` from `(splitPrime_iff l p P).1 h`. Take `⟨⟨I⟩, hu, hc⟩` from `tate_facts hL o`. Establish `hpos` using `pow_pos hp.pos (2 * (Module.finrank ℚ E / 2 * (D.p + D.q)))`.
+
+Establish `hf : Finite {x : Pts o.t // x ^ p = 1}` using `Nat.finite_of_card_ne_zero (by rw [hc p hp.pos]; exact hpos.ne')`. Take `⟨d₁, d₂, e⟩` from `eq_kerSet I hu (isAct_ptAct _ _) hco hp.pos hpP hf C c₁ c₃ (fun x hx y hy => (weil_sq _ _ _ _).2 (c₄ x hx y hy)) (c₅.trans (hc p hp.pos).symm)`. Establish `hm` using `card_eq_tors_mul C p`. Rewrite `c₆` using `[card_tors, card_inter_tors, hc p hp.pos]`. Rewrite `hm` using `[c₅]`.
+
+Establish `h₀` using `mul_ne_zero_iff.1 (hm ▸ hpos.ne')`. Conclude with `⟨_, ⟨d₁, d₂, Nat.finite_of_card_ne_zero h₀.2, mul_left_cancel₀ h₀.1 (hm.symm.trans c₆)⟩, e.trans (kerSet_eq _ _ _ _)⟩`. Introduce and unpack `⟨C₀, h₀, e⟩`. Take `⟨C', e', h'⟩` from `exists_heckeKer_of_datum hL o h h₀`. Rewrite using `[SetLike.coe_injective (e.trans e'.symm)]` and apply the resulting hypothesis.
+-/
 theorem heckeKer_iff (h : IsSplitPrimeOff l p P) (i : ℕ) (C : Subgroup (Pts o.t)) :
     o.t.HeckeKer (𝟙_ _) D P p i C ↔
       ∃ C₀, IsHeckeDatum o.t P i C₀ ∧ (C : Set (Pts o.t)) = heckeKernel o.t p P C₀ := by
@@ -142,6 +180,15 @@ section Transfer
 variable {B : Type} [CommRing B] {b : Base l B} {X : Scheme.{0}} {sX : X ⟶ Sp B} {k : Type} [Field k]
   {s : Sp k ⟶ Sp B}
 
+/- English proof (translation)
+Take `⟨ρ, hρ⟩` from `exists_ptsEquiv m.cart (𝟙_ (Over (Sp k))) y (Category.id_comp _)`. Establish `key : ∀ (T : Over (Sp k)) (y' : T.left ⟶ X) (_ : T.hom ≫ y = y') (n : ℤ) (x x' : T ⟶ o.t.G) (x₀ x₀' : Over.mk y' ⟶ u.t.G) (c : Γ(T.left, ⊤)ˣ), x₀.left = x.left ≫ m.cm.F → x₀'.left = x'.left ≫ m.cm.F → (Out.WeilIs o.t.G o.t.PP.L n x x' c ↔ Out.WeilIs u.t.G u.t.PP.L n x₀ x₀' c)`. Introduce `T y' e`. Substitute `e` using the available equality. Take `⟨w, hw, -⟩` from `m.lin`.
+
+Conclude with `fun n x x' x₀ x₀' c => weilIs_grpPullback_of_comm _ _ _ _ y m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩ T n x x' x₀ x₀' c`. Establish `tu : (toUnit (Over.mk y)).left = y` using `by simp`. Use `⟨ρ, m.cart.1.isoPullback, hρ, m.cart.1.isoPullback_hom_snd, fun x => ?_, fun a x => Over.OverMorphism.ext ?_, fun n x x' c => key _ y (Category.id_comp _) n x x' _ _ _ (hρ x) (hρ x'), fun a => Over.OverMorphism.ext ?_, fun a => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[fibPt, pullback.lift_fst, hρ, Category.assoc, m.cart.1.isoPullback_hom_fst]`.
+
+Rewrite using `[fibPt, pullback.lift_snd, Category.assoc, m.cart.1.isoPullback_hom_snd]`. Conclude with `(Over.w x).symm`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, m.act, Category.assoc]`. Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.eta a`.
+
+Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.etaA a`.
+-/
 theorem exists_fibre_equiv (u : Obj D l b sX) {o : Obj D l b s} {y : Sp k ⟶ X} (m : ObjMap o u y) :
     ∃ (ρ : Pts o.t ≃* (Over.mk y ⟶ u.t.G)) (e : o.t.G.left ≅ pullback u.t.G.hom y),
       (∀ x, (ρ x).left = x.left ≫ m.cm.F) ∧
@@ -175,6 +222,17 @@ def SamePoints {u : Obj D l b sX} {o : Obj D l b s} {y : Sp k ⟶ X} (m : ObjMap
     (C : Set (Over.mk y ⟶ u.t.G)) : Prop :=
   ∀ (x : Pts o.t) (x₀ : Over.mk y ⟶ u.t.G), x₀.left = x.left ≫ m.cm.F → (x ∈ C' ↔ x₀ ∈ C)
 
+/- English proof (translation)
+Take `⟨ρ, -, e₀, -, -, e₃, e₄, -⟩` from `exists_fibre_equiv u m`. Establish `mem : ∀ x, x ∈ C' ↔ ρ x ∈ C` using `fun x => h x _ (e₀ x)`. Establish `tor : ∀ J x, x ∈ o.t.tors (𝟙_ _) J ↔ ρ x ∈ u.t.tors (Over.mk y) J` using `fun J x => forall₂_congr fun a _ => by rw [← e₃, map_eq_one_iff _ ρ.injective]`. Establish `wl : ∀ (n : ℤ) x x', Out.WeilIs o.t.G o.t.PP.L n x x' 1 ↔ Out.WeilIs u.t.G u.t.PP.L n (ρ x) (ρ x') 1` using `fun n x x' => (iff_of_eq (congrArg (Out.WeilIs o.t.G o.t.PP.L n x x') unitOn_one)).symm.trans ((e₄ n x x' 1).trans (iff_of_eq (congrArg (Out.WeilIs u.t.G u.t.PP.L n (ρ x) (ρ x')) unitOn_one)))`. Establish `c₁ : Nat.card C' = Nat.card C` using `Nat.card_congr (ρ.toEquiv.subtypeEquiv mem)`.
+
+Establish `c₂ : ∀ J, Nat.card (o.t.tors (𝟙_ _) J) = Nat.card (u.t.tors (Over.mk y) J)` using `fun J => Nat.card_congr (ρ.toEquiv.subtypeEquiv (tor J))`. Establish `c₃ : ∀ J, Nat.card ((C' : Set (Pts o.t)) ∩ o.t.tors (𝟙_ _) J : Set (Pts o.t)) = Nat.card ((C : Set (Over.mk y ⟶ u.t.G)) ∩ u.t.tors (Over.mk y) J : Set (Over.mk y ⟶ u.t.G))` using `fun J => Nat.card_congr (ρ.toEquiv.subtypeEquiv fun x => and_congr (mem x) (tor J x))`. Unfold `SAB.HeckeKer`. Rewrite using `[c₁, c₂, c₃]`. Use `and_congr ?_ (and_congr ?_ (and_congr ?_ (and_congr ?_ Iff.rfl)))` and prove the remaining obligations.
+
+Rewrite using `[ρ.surjective.forall]`. Conclude with `forall_congr' fun x => imp_congr (mem x).symm (forall_congr' fun a => by rw [← e₃, mem])`. Use `forall₂_congr fun J _ => ?_` and prove the remaining obligations. Rewrite using `[Set.subset_def, Set.subset_def, ρ.surjective.forall]`. Conclude with `forall_congr' fun x => imp_congr (tor J x).symm (mem x).symm`.
+
+Rewrite using `[Set.subset_def, Set.subset_def, ρ.surjective.forall]`. Conclude with `forall_congr' fun x => imp_congr (mem x).symm (tor _ x).symm`. Rewrite using `[ρ.surjective.forall]`. Use `forall_congr' fun x => imp_congr (mem x).symm ?_` and prove the remaining obligations. Rewrite using `[ρ.surjective.forall]`.
+
+Conclude with `forall_congr' fun x' => imp_congr (mem x').symm (wl _ x x').symm`.
+-/
 theorem heckeKer_transfer {u : Obj D l b sX} {o : Obj D l b s} {y : Sp k ⟶ X} (m : ObjMap o u y)
     {C' : Subgroup (Pts o.t)} {C : Subgroup (Over.mk y ⟶ u.t.G)} (h : SamePoints m C' C) (P : Ideal (𝓞 E))
     (p i : ℕ) : u.t.HeckeKer (Over.mk y) D P p i C ↔ o.t.HeckeKer (𝟙_ _) D P p i C' := by
@@ -223,6 +281,9 @@ section Statements
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+The claim follows from `obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (y ≫ Xo.s) y' rfl rfl (by rw [h, spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]) Xo.univ`.
+-/
 theorem exists_fibre_obj (Xo : Moduli D l) (y y' : Sp k ⟶ Xo.X) (h : y' ≫ Xo.s = y ≫ Xo.s) :
     ∃ o : Obj D l (baseKA l) (y ≫ Xo.s), Nonempty (ObjMap o Xo.univ y') :=
   obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (y ≫ Xo.s) y' rfl rfl

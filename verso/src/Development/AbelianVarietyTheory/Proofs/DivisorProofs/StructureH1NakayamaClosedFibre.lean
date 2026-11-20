@@ -21,6 +21,9 @@ open TensorProduct
 
 namespace GlobalTheory.AbCohFibre
 
+/- English proof (translation)
+Establish `h1` using `congrArg (AlgebraTensorModule.cancelBaseChange R S (R ⧸ m) (R ⧸ m) M) hx`. Rewrite `h1` using `[AlgebraTensorModule.cancelBaseChange_tmul, one_smul, map_zero]`. Establish `h2` using `congrArg (TensorProduct.quotTensorEquivQuotSMul M m) h1`. Rewrite `h2` using `[TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, map_zero, Submodule.Quotient.mk_eq_zero]`. Conclude with `h2`.
+-/
 theorem mem_smul_top_of_tmul_tmul_eq_zero {R S M : Type} [CommRing R] [CommRing S] [Algebra R S] (m : Ideal R)
     [Algebra S (R ⧸ m)] [IsScalarTower R S (R ⧸ m)] [AddCommGroup M] [Module R M] (x : M)
     (hx : ((1 : R ⧸ m) ⊗ₜ[S] ((1 : S) ⊗ₜ[R] x) : (R ⧸ m) ⊗[S] (S ⊗[R] M)) = 0) :
@@ -31,6 +34,25 @@ theorem mem_smul_top_of_tmul_tmul_eq_zero {R S M : Type} [CommRing R] [CommRing 
   rw [TensorProduct.quotTensorEquivQuotSMul_mk_one_tmul, map_zero, Submodule.Quotient.mk_eq_zero] at h2
   exact h2
 
+/- English proof (translation)
+Introduce `R _ A _ hA m hm Y s' φ h x hx`. Use `haveI : m.IsMaximal := hm`. Use `haveI : m.IsPrime := hm.isPrime`. Set `f` to `spMap (algebraMap R (Localization.AtPrime m))`. Use `letI : GrpObj ((Over.pullback f).obj A) := Functor.grpObjObj`.
+
+Establish `hAm : IsAbelianScheme ((Over.pullback f).obj A)` using `GlobalTheory.AbLaw.CubeGen.isAb_baseChange hA f`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim (Localization.AtPrime m) ((Over.pullback f).obj A) hAm`. Establish `hsq0 : IsPullback (pullback.fst A.hom f) ((Over.pullback f).obj A).hom A.hom f` using `IsPullback.of_hasPullback A.hom f`. Use `hA.proper` as an intermediate fact. Take `⟨⟨e₁, he₁⟩, -⟩` from `GlobalTheory.AbCoh.flat_baseChange_HO R (Localization.AtPrime m) A.left _ A.hom _ _ hsq0 inferInstance inferInstance`.
+
+Take `⟨-, -, hbc, -⟩` from `GlobalTheory.AbCoh.oStr (Localization.AtPrime m) ((Over.pullback f).obj A) g hAm hg`. Set `ψ : Localization.AtPrime m →+* R ⧸ m` to `IsLocalization.lift (M := m.primeCompl) (g := Ideal.Quotient.mk m) (fun y : m.primeCompl => by show IsUnit (Ideal.Quotient.mk m (y : R))`. Establish `hy : Ideal.Quotient.mk m (y : R) ≠ 0` using `by rw [Ne, Ideal.Quotient.eq_zero_iff_mem]; exact y.2`. Use `letI := Ideal.Quotient.field m`. Conclude with `isUnit_iff_ne_zero.mpr hy)`.
+
+Use `letI : Algebra (Localization.AtPrime m) (R ⧸ m) := ψ.toAlgebra`. Establish `hcomp : (algebraMap (Localization.AtPrime m) (R ⧸ m)).comp (algebraMap R (Localization.AtPrime m)) = algebraMap R (R ⧸ m)` using `IsLocalization.lift_comp _`. Use `haveI : IsScalarTower R (Localization.AtPrime m) (R ⧸ m) := IsScalarTower.of_algebraMap_eq' hcomp.symm`. Establish `hsp : spMap (algebraMap (Localization.AtPrime m) (R ⧸ m)) ≫ f = spMap (algebraMap R (R ⧸ m))` using `by show Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hcomp]`.
+
+Set `φ' : Y ⟶ ((Over.pullback f).obj A).left` to `pullback.lift φ (s' ≫ spMap (algebraMap (Localization.AtPrime m) (R ⧸ m))) (by`. Rewrite using `[h.w, Category.assoc, hsp])`. Establish `hφ' : φ' ≫ pullback.fst A.hom f = φ` using `pullback.lift_fst _ _ _`. Establish `hs' : φ' ≫ ((Over.pullback f).obj A).hom = s' ≫ spMap (algebraMap (Localization.AtPrime m) (R ⧸ m))` using `pullback.lift_snd _ _ _`. Establish `hbig : IsPullback (φ' ≫ pullback.fst A.hom f) s' A.hom (spMap (algebraMap (Localization.AtPrime m) (R ⧸ m)) ≫ f)`.
+
+Rewrite using `[hφ', hsp]`. Conclude with `h`. Establish `hsq : IsPullback φ' s' ((Over.pullback f).obj A).hom (spMap (algebraMap (Localization.AtPrime m) (R ⧸ m)))` using `IsPullback.of_right hbig hs' hsq0`. Take `⟨e₂, he₂⟩` from `hbc (R ⧸ m) Y s' φ' hsq`. Establish `cong : ∀ (φ₁ : Y ⟶ A.left) (σ₁ : R →+* R ⧸ m) (h₁ : φ₁ ≫ A.hom = s' ≫ spMap σ₁), φ₁ = φ → σ₁ = algebraMap R (R ⧸ m) → GlobalTheory.CechDR.pullHO1 h₁ x = GlobalTheory.CechDR.pullHO1 h.w x`.
+
+Introduce and unpack `_ _ _ rfl rfl`. Both sides reduce to the same expression. Establish `h'' : (φ' ≫ pullback.fst A.hom f) ≫ A.hom = s' ≫ spMap ((algebraMap (Localization.AtPrime m) (R ⧸ m)).comp (algebraMap R (Localization.AtPrime m)))`. Rewrite using `[hφ', hcomp]`. Conclude with `h.w`.
+
+Establish `key : GlobalTheory.CechDR.pullHO1 hsq.w (GlobalTheory.CechDR.pullHO1 hsq0.w x) = 0`. Rewrite using `[GlobalTheory.CechDR.pullHO1_comp hsq0.w hsq.w h'', cong _ _ h'' hφ' hcomp]`. Conclude with `hx`. Establish `k1 : ((1 : R ⧸ m) ⊗ₜ[Localization.AtPrime m] (GlobalTheory.CechDR.pullHO1 hsq0.w x)) = 0`. Apply `e₂.injective` to reduce the goal to its premises.
+
+Rewrite using `[he₂, map_zero]`. Conclude with `key`. Establish `k2` using `congrArg (LinearMap.lTensor (R ⧸ m) e₁.symm.toLinearMap) k1`. Rewrite `k2` using `[LinearMap.lTensor_tmul, map_zero, ← he₁, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Conclude with `mem_smul_top_of_tmul_tmul_eq_zero m x k2`.
+-/
 theorem mem_smul_top_of_pull_eq_zero : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (m : Ideal R), m.IsMaximal → ∀ (Y : Scheme.{0}) (s' : Y ⟶ Sp (R ⧸ m)) (φ : Y ⟶ A.left) (h : IsPullback φ s' A.hom (spMap (algebraMap R (R ⧸ m)))) (x : GlobalTheory.CechDR.HO1 A.hom), GlobalTheory.CechDR.pullHO1 h.w x = 0 → x ∈ m • (⊤ : Submodule R (GlobalTheory.CechDR.HO1 A.hom)) := by
   intro R _ A _ hA m hm Y s' φ h x hx
   haveI : m.IsMaximal := hm

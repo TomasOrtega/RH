@@ -13,10 +13,16 @@ variable {k r : ℕ}
 
 attribute [local instance] Formalism.FourierDecayAlt.P.B7.properFD
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.S3dx6.norm_psi z c g`.
+-/
 theorem norm_psi_one (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ)
     (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : ‖psi k r z c g‖ = 1 :=
   Formalism.FourierDecayAlt.P.S3dx6.norm_psi z c g
 
+/- English proof (translation)
+Rewrite using `[Psi_eq, norm_smul, ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm, norm_mul, norm_mul, norm_mul, norm_star, norm_star, norm_psi_one, norm_psi_one, Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_unitary L.hz'.2 L.hπ' _ hp.2.2.1, Formalism.FourierDeca …`. Use polynomial arithmetic with `[norm_nonneg ξ, norm_nonneg ξ', norm_nonneg ⟪v, L.σ ((Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of x) w0⟫_ℂ, norm_nonneg ⟪v', L.σ ((Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ * Matrix.of x) w0⟫_ℂ]`.
+-/
 theorem norm_Psi_le (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) {p : PairSp k r} (hp : InPair L p) (x : Mt k r) :
     ‖Psi L w0 v v' ξ ξ' γ p x‖ ≤ ‖ξ‖ * ‖ξ'‖ *
@@ -29,6 +35,13 @@ theorem norm_Psi_le (L : LocBessel k r) (w0 v v' : L.Hs) (ξ : L.Wp) (ξ' : L.Wq
     norm_nonneg ⟪v, L.σ ((Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of x) w0⟫_ℂ,
     norm_nonneg ⟪v', L.σ ((Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ * Matrix.of x) w0⟫_ℂ]
 
+/- English proof (translation)
+Establish `hMy : M * y ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hM hy`. Establish `hMi : M⁻¹ ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hM`. Establish `h1` using `hC1 _ hMy`. Establish `h2` using `hC2 _ hy`. Establish `hn1 : 0 ≤ Formalism.FourierDecayAlt.B.gN (M * y) ^ (-a)` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg _) _`.
+
+Establish `hn2 : 0 ≤ Formalism.FourierDecayAlt.B.gN y ^ (-a)` using `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg _) _`. Establish `hinv : Formalism.FourierDecayAlt.B.gN (M * y) = Formalism.FourierDecayAlt.B.gN (y⁻¹ * M⁻¹)`. Rewrite using `[← Matrix.mul_inv_rev, ((hNI k r).2 _ hMy).1]`. Establish `hconv` using `Formalism.FourierDecayAlt.P.S3dx6.conv_pt hNI hb hab hy hMi`. Rewrite `hconv` using `[((hNI k r).2 _ hM).1]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (|C1| * |C2|) * (Formalism.FourierDecayAlt.B.gN y ^ (b - a) * Formalism.FourierDecayAlt.B.gN M ^ (-b)) := mul_le_mul_of_nonneg_left hconv (mul_nonneg (abs_nonneg _) (abs_nonneg _))`.
+-/
 theorem prod_coef_le {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H)}
     (hNI : Formalism.FourierDecayAlt.ThreeDimData.NormInv) {a b C1 C2 : ℝ} (hb : 0 ≤ b) (hab : b ≤ a) (v v' w0 : H)
@@ -57,9 +70,35 @@ theorem prod_coef_le {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     _ ≤ (|C1| * |C2|) * (Formalism.FourierDecayAlt.B.gN y ^ (b - a) * Formalism.FourierDecayAlt.B.gN M ^ (-b)) :=
         mul_le_mul_of_nonneg_left hconv (mul_nonneg (abs_nonneg _) (abs_nonneg _))
 
+/- English proof (translation)
+The claim follows from `(Formalism.FourierDecayAlt.P.S3dx6.gN_mt_cont (k := k) (r := r)).measurable.pow_const e`.
+-/
 theorem meas_gN_rpow (e : ℝ) : Measurable fun x : Mt k r => Formalism.FourierDecayAlt.B.gN (Matrix.of x) ^ e :=
   (Formalism.FourierDecayAlt.P.S3dx6.gN_mt_cont (k := k) (r := r)).measurable.pow_const e
 
+/- English proof (translation)
+Establish `hp0` using `hp`. Take `⟨hh, hn, hh', hn'⟩` from `hp`. Establish `hhU` using `uh_of_uw hh`. Establish `hnU` using `uh_of_n hn`. Establish `hh'U` using `uh_of_uw hh'`.
+
+Establish `hn'U` using `uh_of_n hn'`. Establish `hhi` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hhU`. Establish `hni` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hnU`. Establish `hh'i` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hh'U`. Establish `hn'i` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hn'U`.
+
+Use `set A := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ with hA`. Use `set B := (Matrix.of p.2.1)⁻¹ * (Matrix.of p.2.2)⁻¹ with hB`. Use `set M := (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of p.2.2 * Matrix.of p.2.1 with hM`. Establish `hAU : A ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hhi hni) hγ`. Establish `hBU : B ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hh'i hn'i`.
+
+Establish `hMU : M ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul (Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hAU hn'U) hh'U`. Establish `hMB : M * B = A`. Rewrite using `[hM, hB, hA]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.of p.2.1) (Matrix.of p.2.1)⁻¹, (Formalism.FourierDecayAlt.P.S3dx6.unit_of_uh hh'U).1, Matrix.one_mul, (Formalism.FourierDecayAlt.P.S3dx6.unit_of_uh hn'U).1, Matrix.mul_one]`.
+
+Establish `hlm : Measurable (lmulM (k` using `k) (r := r) B) := Formalism.FourierDecayAlt.P.B7.meas_mulM (f := fun _ => ((B : Matrix _ _ ℂ) : Mt k r)) measurable_const measurable_id`. Establish `hmp : MeasurePreserving (lmulM (k` using `k) (r := r) B) μG μG := ⟨hlm, hμG.2.2.2 B hBU⟩`. Use `set K1 : ℝ := ‖ξ‖ * ‖ξ'‖ * (|C1| * |C2|) * Formalism.FourierDecayAlt.B.gN M ^ (-b) with hK1`. Establish `hpt : ∀ᵐ x ∂μG, ‖Psi L w0 v v' ξ ξ' γ p x‖ₑ ≤ ENNReal.ofReal (K1 * Formalism.FourierDecayAlt.B.gN (Matrix.of (lmulM B x)) ^ (b - a))` using `by filter_upwards [ae_mem_sk hμG] with x hx`. Establish `hBx : B * Matrix.of x ∈ UH (Hpk k r)` using `Formalism.QuantumDeterminants.WeylGroupFacts.uh_mul hBU hx`.
+
+Rewrite using `[← ofReal_norm]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `e1 : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * γ * Matrix.of x = M * (B * Matrix.of x)`. Rewrite using `[← Matrix.mul_assoc, hMB]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[e1]`. Use `_ ≤ ‖ξ‖ * ‖ξ'‖ * ((|C1| * |C2|) * (Formalism.FourierDecayAlt.B.gN (B * Matrix.of x) ^ (b - a) * Formalism.FourierDecayAlt.B.gN M ^ (-b))) := mul_le_mul_of_nonneg_left (prod_coef_le hNI hb hab v v' w0 hC1 hC2 hMU hBx) (mul_nonneg (norm_nonneg _) (norm_nonneg _))`. Use `_ = K1 * Formalism.FourierDecayAlt.B.gN (Matrix.of (lmulM B x)) ^ (b - a) := by`. Rewrite using `[hK1]`. Use `show _ = _ * Formalism.FourierDecayAlt.B.gN (B * Matrix.of x) ^ (b - a)`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hK1n : 0 ≤ K1`. Rewrite using `[hK1]`. Use `Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg M) (-b)` as an intermediate fact. Check the signs of the components of the expression.
+
+Establish `hf : Measurable fun y : Mt k r => ENNReal.ofReal (K1 * Formalism.FourierDecayAlt.B.gN (Matrix.of y) ^ (b - a))` using `ENNReal.measurable_ofReal.comp ((meas_gN_rpow (b - a)).const_mul K1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_map hf hlm, hmp.map_eq]`. Use `_ = ENNReal.ofReal (∫ y, K1 * Formalism.FourierDecayAlt.B.gN (Matrix.of y) ^ (b - a) ∂μG) := by`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal (hI.const_mul K1)]`.
+
+Conclude with `Filter.Eventually.of_forall fun y => mul_nonneg hK1n (Real.rpow_nonneg (Formalism.FourierDecayAlt.P.S3dx6.gN_nonneg _) _)`. Use `_ = _ := by`. Rewrite using `[integral_const_mul, hK1]`. Unfold `Formalism.MainNotions.S.Pv.AmpDD.pairMaj`. Rewrite using `[← hM]`.
+
+Put the polynomial expressions in normal form.
+-/
 theorem lint_G_bound (L : LocBessel k r) {μG : Measure (Mt k r)}
     (hμG : PI.BesselPeriodGGP.IsHaarOn (UH (Hpk k r)) μG) (hNI : Formalism.FourierDecayAlt.ThreeDimData.NormInv)
     {a b C1 C2 : ℝ} (hb : 0 ≤ b) (hab : b ≤ a)

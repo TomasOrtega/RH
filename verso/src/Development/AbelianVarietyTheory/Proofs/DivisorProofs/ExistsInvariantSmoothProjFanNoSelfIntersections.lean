@@ -9,5 +9,8 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CompanionTheory.Ar.Fan.exists_smooth_fan_int`.
+-/
 theorem GlobalTheory.PolDeg.exists_inv_smooth_fan_noSelfInt : ∀ g : ℕ, ∃ φ : InvFun ℤ, IsPolFan (id : ℤ → ℤ) g φ ∧ NoSelfInt (id : ℤ → ℤ) g φ :=
   GlobalTheory.CompanionTheory.Ar.Fan.exists_smooth_fan_int

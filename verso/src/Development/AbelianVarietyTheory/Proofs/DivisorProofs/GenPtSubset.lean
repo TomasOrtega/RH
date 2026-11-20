@@ -40,38 +40,64 @@ abbrev mapV (e : Num G i j) (u : Pt G i j) : HomV G i j := mulG (negSp (spW G i 
 
 abbrev mapW (e : Num G i j) (u : Pt G i j) : HomW G i j := adjV₁ e u
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mulG_eq (S : HSp D) {n : ℕ} (y : Matrix (Fin n) (Fin S.rank) (AE D)) :
     mulG S y = HMul.hMul y (S.gram.map (incA D)) := rfl
 
 def divG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : Matrix (Fin n) (Fin S.rank) (AE D) :=
   HMul.hMul x ((S.gram⁻¹).map (incA D))
 
+/- English proof (translation)
+Rewrite using `[divG, mulG_eq, Matrix.mul_assoc, mul_eq_one_comm.1 (GlobalTheory.RouteCoords.inv_mul_gram S), Matrix.mul_one]`.
+-/
 theorem divG_mulG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : divG S (mulG S x) = x := by
   rw [divG, mulG_eq, Matrix.mul_assoc, mul_eq_one_comm.1 (GlobalTheory.RouteCoords.inv_mul_gram S), Matrix.mul_one]
 
+/- English proof (translation)
+Rewrite using `[divG, mulG_eq, Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram S, Matrix.mul_one]`.
+-/
 theorem mulG_divG (S : HSp D) {n : ℕ} (x : Matrix (Fin n) (Fin S.rank) (AE D)) : mulG S (divG S x) = x := by
   rw [divG, mulG_eq, Matrix.mul_assoc, GlobalTheory.RouteCoords.inv_mul_gram S, Matrix.mul_one]
 
+/- English proof (translation)
+The claim follows from `Matrix.add_mul _ _ _`.
+-/
 theorem mulG_add (S : HSp D) {n : ℕ} (x y : Matrix (Fin n) (Fin S.rank) (AE D)) : mulG S (x + y) = mulG S x + mulG S y :=
   Matrix.add_mul _ _ _
 
+/- English proof (translation)
+The claim follows from `Matrix.smul_mul _ _ _`.
+-/
 theorem mulG_smul (S : HSp D) {n : ℕ} (c : AF D.host.F) (x : Matrix (Fin n) (Fin S.rank) (AE D)) :
     mulG S (c • x) = c • mulG S x := Matrix.smul_mul _ _ _
 
 def ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : Pt G i j :=
   (fromCols (divG (negSp (spW G i j)) x.1)ᵀ ((divG (spV₁ G i j) (-x.2)).map (cA D))).submatrix id e.symm
 
+/- English proof (translation)
+Establish `h1 : (colV e (ofMaps e x))ᵀ = divG (negSp (spW G i j)) x.1` using `Matrix.ext fun a b => by`. Simplify using `only [colV, ofMaps, transpose_apply, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl]`. Conclude with `(congrArg (mulG (negSp (spW G i j))) h1).trans (mulG_divG _ _)`.
+-/
 theorem mapV_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapV e (ofMaps e x) = x.1 := by
   have h1 : (colV e (ofMaps e x))ᵀ = divG (negSp (spW G i j)) x.1 := Matrix.ext fun a b => by
     simp only [colV, ofMaps, transpose_apply, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl]
   exact (congrArg (mulG (negSp (spW G i j))) h1).trans (mulG_divG _ _)
 
+/- English proof (translation)
+Establish `h2 : ((ofMaps e x).submatrix id fun k => e (.inr k)).map (cA D) = divG (spV₁ G i j) (-x.2)` using `Matrix.ext fun a b => by`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply, GlobalTheory.DualPairCheck.cA_cA]`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h2).trans ((congrArg Neg.neg (mulG_divG _ _)).trans (neg_neg _))`.
+-/
 theorem mapW_ofMaps (e : Num G i j) (x : HomV G i j × HomW G i j) : mapW e (ofMaps e x) = x.2 := by
   have h2 : ((ofMaps e x).submatrix id fun k => e (.inr k)).map (cA D) = divG (spV₁ G i j) (-x.2) := Matrix.ext fun a b => by
     simp only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply,
       GlobalTheory.DualPairCheck.cA_cA]
   exact (congrArg (fun y => -mulG (spV₁ G i j) y) h2).trans ((congrArg Neg.neg (mulG_divG _ _)).trans (neg_neg _))
 
+/- English proof (translation)
+Establish `h1 : divG (negSp (spW G i j)) (mapV e u) = (colV e u)ᵀ` using `divG_mulG _ _`. Establish `h2 : divG (spV₁ G i j) (-mapW e u) = (u.submatrix id fun k => e (.inr k)).map (cA D)` using `(congrArg (divG (spV₁ G i j)) (neg_neg _)).trans (divG_mulG _ _)`. Use extensionality with `a b`. Take `⟨k | k, rfl⟩` from `e.surjective b`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inl, transpose_apply]`.
+
+Conclude with `congrFun (congrFun h1 k) a`. Simplify using `only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply]`. Conclude with `(congrArg (cA D) (congrFun (congrFun h2 a) k)).trans (GlobalTheory.DualPairCheck.cA_cA _)`.
+-/
 theorem ofMaps_maps (e : Num G i j) (u : Pt G i j) : ofMaps e (mapV e u, mapW e u) = u := by
   have h1 : divG (negSp (spW G i j)) (mapV e u) = (colV e u)ᵀ := divG_mulG _ _
   have h2 : divG (spV₁ G i j) (-mapW e u) = (u.submatrix id fun k => e (.inr k)).map (cA D) :=
@@ -83,18 +109,30 @@ theorem ofMaps_maps (e : Num G i j) (u : Pt G i j) : ofMaps e (mapV e u, mapW e 
   · simp only [ofMaps, submatrix_apply, id, Equiv.symm_apply_apply, fromCols_apply_inr, map_apply]
     exact (congrArg (cA D) (congrFun (congrFun h2 a) k)).trans (GlobalTheory.DualPairCheck.cA_cA _)
 
+/- English proof (translation)
+The claim follows from `mulG_add (negSp (spW G i j)) (colV e u)ᵀ (colV e u')ᵀ`.
+-/
 theorem mapV_add (e : Num G i j) (u u' : Pt G i j) : mapV e (u + u') = mapV e u + mapV e u' :=
   mulG_add (negSp (spW G i j)) (colV e u)ᵀ (colV e u')ᵀ
 
+/- English proof (translation)
+Establish `h : ((u + u').submatrix id fun k => e (.inr k)).map (cA D) = (u.submatrix id fun k => e (.inr k)).map (cA D) + (u'.submatrix id fun k => e (.inr k)).map (cA D)` using `Matrix.ext fun a b => map_add (cA D) _ _`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_add _ _ _)).trans (neg_add _ _))`.
+-/
 theorem mapW_add (e : Num G i j) (u u' : Pt G i j) : mapW e (u + u') = mapW e u + mapW e u' := by
   have h : ((u + u').submatrix id fun k => e (.inr k)).map (cA D) =
       (u.submatrix id fun k => e (.inr k)).map (cA D) + (u'.submatrix id fun k => e (.inr k)).map (cA D) :=
     Matrix.ext fun a b => map_add (cA D) _ _
   exact (congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_add _ _ _)).trans (neg_add _ _))
 
+/- English proof (translation)
+The claim follows from `mulG_smul (negSp (spW G i j)) c (colV e u)ᵀ`.
+-/
 theorem mapV_smul (e : Num G i j) (c : AF D.host.F) (u : Pt G i j) : mapV e (c • u) = c • mapV e u :=
   mulG_smul (negSp (spW G i j)) c (colV e u)ᵀ
 
+/- English proof (translation)
+Establish `h : ((c • u).submatrix id fun k => e (.inr k)).map (cA D) = c • (u.submatrix id fun k => e (.inr k)).map (cA D)` using `Matrix.ext fun a b => map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c _`. Conclude with `(congrArg (fun y => -mulG (spV₁ G i j) y) h).trans ((congrArg Neg.neg (mulG_smul _ _ _)).trans (smul_neg _ _).symm)`.
+-/
 theorem mapW_smul (e : Num G i j) (c : AF D.host.F) (u : Pt G i j) : mapW e (c • u) = c • mapW e u := by
   have h : ((c • u).submatrix id fun k => e (.inr k)).map (cA D) = c • (u.submatrix id fun k => e (.inr k)).map (cA D) :=
     Matrix.ext fun a b => map_smul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) c _
@@ -108,6 +146,9 @@ def maps (e : Num G i j) : Pt G i j ≃ₗ[AF D.host.F] HomV G i j × HomW G i j
   left_inv := ofMaps_maps e
   right_inv x := Prod.ext (mapV_ofMaps e x) (mapW_ofMaps e x)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem maps_apply (e : Num G i j) (u : Pt G i j) : maps e u = (mapV e u, mapW e u) := rfl
 
 abbrev sympPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (u u' : Pt G i j) : AF D.host.F :=
@@ -116,6 +157,19 @@ abbrev sympPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.G
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hJW : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = incA D D.host.xi0 • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e ((spV G i j).gram.map (incA D))ᵀ ((spV₁ G i j).gram.map (incA D))ᵀ`. Establish `k : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Γ.W.J = incA D D.host.xi0 • GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (spV G i j).gramᵀ) (GlobalTheory.IndefiniteRowSideFull …`. Rewrite using `[hWW, skewGram, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul]`. Use `congr 1`. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_map _ _ _ (map_zero _)`.
+
+Conclude with `k`. Establish `hJV : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V.J = (spW G i j).gram.map (incA D)`. Rewrite using `[hW, one_smul]`. Both sides reduce to the same expression. Establish `hN : (negSp (spW G i j)).gram.map (incA D) = -(spW G i j).gram.map (incA D)`.
+
+Rewrite using `[negSp_gram]`. Conclude with `Matrix.map_neg _ (map_neg _) _`. Establish `hA : hTens (R` using `AF D.host.F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) x x' = _ := GlobalTheory.RouteCoord …`. Establish `hB1 : hO _ _ (mapV e x) (mapV e x') = _` using `GlobalTheory.RouteCoords.orientedHermitianForm_quadSum_eq_trace (cA D : AE D → AE D) (((negSp (spW G i j)).gram⁻¹).map (incA D)) ((spV G i j).gram.map (incA D)) _ _`. Establish `hB2 : hO _ _ (mapW e x) (mapW e x') = _` using `GlobalTheory.RouteCoords.orientedHermitianForm_quadSum_eq_trace (cA D : AE D → AE D) (((spV₁ G i j).gram⁻¹).map (incA D)) ((spW G i j).gram.map (incA D)) _ _`.
+
+Establish `h1` using `GlobalTheory.RouteCoords.trace_first (cA D) ((negSp (spW G i j)).gram.map (incA D)) (((negSp (spW G i j)).gram⁻¹).map (incA D)) ((spV G i j).gram.map (incA D)) (GlobalTheory.RouteCoords.gram_conj_transpose _) (GlobalTheory.RouteCoords.inv_mul_gram _) (colV e x) (colV e x')`. Establish `h2` using `GlobalTheory.RouteCoords.trace_second (cA D) GlobalTheory.DualPairCheck.cA_cA (incA D D.host.xi0) GlobalTheory.RouteCoords.adeleConj_incl_skewElement_eq_neg ((spW G i j).gram.map (incA D)) ((spV₁ G i j).gram.map (incA D)) (((spV₁ G i j).gram⁻¹).map (incA D)) (GlobalTheory.RouteCo …`. Rewrite `h2` using `[Matrix.neg_mul, Matrix.neg_mul, Matrix.neg_mul, trace_neg, mul_neg, map_neg, neg_eq_iff_eq_neg]`. Unfold `sympPt symp symplO`. Rewrite using `[hA, hB1, hB2]`.
+
+Use `conv_rhs => arg 2`. Rewrite using `[← GlobalTheory.DualPairCheck.trace_cA]`. Rewrite using `[← map_add]`. Use `congr 1`. Use `erw [h2, h1]`.
+
+Rewrite using `[hN, hJW, hJV, Matrix.mul_smul, Matrix.smul_mul, Matrix.smul_mul, GlobalTheory.RouteCoords.mul_blk_mul_transpose, transpose_neg, Matrix.mul_neg, trace_smul, trace_neg, Matrix.add_mul, trace_add, submatrix_map, submatrix_map, smul_eq_mul]`. Unfold `colV`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem symp_eq (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) (x x' : Pt G i j) :
     sympPt Γ x x' = symplO _ _ (mapV e x) (mapV e x') + symplO _ _ (mapW e x) (mapW e x') := by
@@ -165,10 +219,16 @@ def box (e : Num G i j) (f₁ : HomV G i j → ℂ) (f₂ : HomW G i j → ℂ) 
 def heisPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (ψ : AddChar (AF D.host.F) ℂ) (u₀ : Pt G i j) (f : Pt G i j → ℂ) (u : Pt G i j) : ℂ :=
   ψ (⅟(2 : AF D.host.F) * sympPt Γ u u₀) * f (u + u₀)
 
+/- English proof (translation)
+Use `invOf_eq_right_inv ?_` and prove the remaining obligations. Rewrite using `[← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]`.
+-/
 theorem invOf_two : ⅟(2 : AF D.host.F) = algebraMap D.host.F (AF D.host.F) (1 / 2) := by
   refine invOf_eq_right_inv ?_
   rw [← map_ofNat (algebraMap D.host.F (AF D.host.F)) 2, ← map_mul, mul_one_div_cancel two_ne_zero, map_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u`. Unfold `heisPt box heisO symplOH`. Rewrite using `[symp_eq e Γ hW hWW, mul_add, AddChar.map_add_eq_mul, mapV_add, mapW_add, invOf_two]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisPt_box (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (hW : Γ.V.J = (1 : D.host.E) • (spW G i j).gram)
     (hWW : Γ.W.J = skewGram (spV G i j) (spV₁ G i j) e) (ψ : AddChar (AF D.host.F) ℂ) (u₀ : Pt G i j)
     (f₁ : HomV G i j → ℂ) (f₂ : HomW G i j → ℂ) :
@@ -181,6 +241,11 @@ theorem heisPt_box (e : Num G i j) (Γ : GlobalTheory.IndefiniteRowSideFullHecke
 abbrev thetaPt (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (ψ : AddChar (AF D.host.F) ℂ) (Φ : (Ix G i j → AF D.host.F) → ℂ)
     (u : Pt G i j) : ℂ := thetaSum D.host.F (Γ.M.co.rho ψ u Φ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Darboux.rho, schr, co.form, map_add, Prod.fst_add, Prod.snd_add, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, add_assoc x]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`.
+
+Take the linear combination `(-((co.e u).1 ⬝ᵥ (co.e u₀).2)) * invOf_two_add_invOf_two (R := R)`.
+-/
 theorem rho_rho {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup W] [Module R W] {B : W → W → R} [Fintype κ]
     (co : Darboux B κ) (ψ : AddChar R ℂ) (u u₀ : W) (Φ : (κ → R) → ℂ) :
     co.rho ψ u (co.rho ψ u₀ Φ) = ψ (⅟(2 : R) * B u u₀) • co.rho ψ (u + u₀) Φ := by
@@ -191,6 +256,9 @@ theorem rho_rho {R W κ : Type} [CommRing R] [Invertible (2 : R)] [AddCommGroup 
   simp only [add_dotProduct, dotProduct_add]
   linear_combination (-((co.e u).1 ⬝ᵥ (co.e u₀).2)) * invOf_two_add_invOf_two (R := R)
 
+/- English proof (translation)
+The claim follows from `funext fun u => (congrArg (thetaSum D.host.F) (rho_rho Γ.M.co ψ u u₀ Φ)).trans tsum_mul_left`.
+-/
 theorem thetaPt_rho (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j) (ψ : AddChar (AF D.host.F) ℂ) (Φ : (Ix G i j → AF D.host.F) → ℂ)
     (u₀ : Pt G i j) : thetaPt Γ ψ (Γ.M.co.rho ψ u₀ Φ) = heisPt Γ ψ u₀ (thetaPt Γ ψ Φ) :=
   funext fun u => (congrArg (thetaSum D.host.F) (rho_rho Γ.M.co ψ u u₀ Φ)).trans tsum_mul_left
@@ -219,6 +287,9 @@ def latPt (e : Num G i j) (v : Pl D.host.F) : AddSubgroup (Pt G i j) where
 def genPt (e : Num G i j) (v : Pl D.host.F) : Set (Pt G i j) :=
   {γ | (∃ γ' ∈ latPt e v, γ = 2 • γ') ∨ γ ∈ latPt e v ∧ ∃ ε, IsSplitIdem D ε ∧ γ ∈ mixHalf e ε}
 
+/- English proof (translation)
+Introduce and unpack `_ (⟨γ, h, rfl⟩ | h)`. Use `exacts [nsmul_mem h 2, h.1]`.
+-/
 theorem genPt_subset (e : Num G i j) (v : Pl D.host.F) : genPt e v ⊆ latPt e v := by
   rintro _ (⟨γ, h, rfl⟩ | h)
   exacts [nsmul_mem h 2, h.1]

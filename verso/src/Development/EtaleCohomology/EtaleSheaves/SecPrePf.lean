@@ -6,6 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC Opposite
 namespace LateralTheory.E.SecPrePf
 open LateralTheory.E.t_E3Cut
 
+/- English proof (translation)
+Take `⟨𝒰, hle⟩` from `Scheme.exists_cover_of_mem_grothendieckTopology hS`. Establish `: IsLocalRing A` using `hA.elim fun h _ => h.toIsLocalRing`. Take `⟨hcov, -⟩` from `(Scheme.presieve₀_mem_precoverage_iff _).1 𝒰.mem₀`. Take `⟨j, y, hy⟩` from `hcov (IsLocalRing.closedPoint A : PrimeSpectrum A)`. Establish `: Etale (𝒰.f j)` using `𝒰.map_prop j`.
+
+Establish `hsurj : Function.Surjective (𝒰.f j)`. Introduce `z`. Establish `hopen : IsOpen (Set.range (𝒰.f j))` using `(𝒰.f j).isOpenMap.isOpen_range`. Establish `hmem : (IsLocalRing.closedPoint A : PrimeSpectrum A) ∈ Set.range (𝒰.f j)` using `⟨y, hy⟩`. Conclude with `(IsLocalRing.specializes_closedPoint (z : PrimeSpectrum A)).mem_open hopen hmem`.
+
+Establish `: Surjective (𝒰.f j)` using `⟨hsurj⟩`. Take `⟨s, hs⟩` from `hSec A hA (𝒰.f j)`. Establish `h1 : S.arrows (𝒰.f j)` using `hle _ _ (Presieve.ofArrows.mk j)`. Establish `h2` using `S.downward_closed h1 s`. Rewrite `h2` using `[hs]`. Then use the resulting hypothesis.
+-/
 theorem id_mem (hSec : SHSection) (A : CommRingCat.{0}) (hA : SH A) {S : Sieve (Spec A)}
     (hS : S ∈ Scheme.etaleTopology (Spec A)) : S.arrows (𝟙 _) := by
   obtain ⟨𝒰, hle⟩ := Scheme.exists_cover_of_mem_grothendieckTopology hS
@@ -24,6 +31,9 @@ theorem id_mem (hSec : SHSection) (A : CommRingCat.{0}) (hA : SH A) {S : Sieve (
   have h2 := S.downward_closed h1 s
   rwa [hs] at h2
 
+/- English proof (translation)
+Use `id_mem hSec A hA (Scheme.etaleTopology.pullback_stable h hS)` as an intermediate fact. Simplify using `using this`.
+-/
 theorem mem_of_cov (hSec : SHSection) (A : CommRingCat.{0}) (hA : SH A) {V : Scheme.{0}} (h : Spec A ⟶ V)
     (S : Sieve V) (hS : S ∈ Scheme.etaleTopology V) : S.arrows h := by
   have := id_mem hSec A hA (Scheme.etaleTopology.pullback_stable h hS)
@@ -41,6 +51,15 @@ def sky (U : Scheme.{0}) (N : ModuleCat.{1} (ULift.{1} R)) : Scheme.{0}ᵒᵖ �
   map_id _ := by ext; simp
   map_comp _ _ := by ext; simp
 
+/- English proof (translation)
+Rewrite using `[Presheaf.isSheaf_iff_isSheaf_forget (s := forget (ModuleCat.{1} (ULift.{1} R))), isSheaf_iff_isSheaf_of_type]`. Introduce `V S hS x hx`. Establish `hc` using `hx.to_sieveCompatible`. Use `⟨fun h => x h (hU h S hS) (𝟙 U), ?_, ?_⟩` and prove the remaining obligations. Introduce `W f hf`.
+
+Use function extensionality and compare the values at `k`. Establish `e` using `congrFun (hc f k hf) (𝟙 U)`. Express the relevant statement in the definitionally equal form `x (k ≫ f) _ (𝟙 U) = x f hf k`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `x f hf (𝟙 U ≫ k) = _`.
+
+Rewrite using `[Category.id_comp]`. Introduce `t ht`. Use function extensionality and compare the values at `h`. Establish `e` using `congrFun (ht h (hU h S hS)) (𝟙 U)`. Express the relevant statement in the definitionally equal form `t (𝟙 U ≫ h) = _ at e`.
+
+Rewrite `e` using `[Category.id_comp]`. Conclude with `e`. Use the proof step `@[simps]`.
+-/
 theorem sky_isSheaf (U : Scheme.{0})
     (hU : ∀ {V : Scheme.{0}} (h : U ⟶ V) (S : Sieve V), S ∈ Scheme.etaleTopology V → S.arrows h)
     (N : ModuleCat.{1} (ULift.{1} R)) : Presheaf.IsSheaf Scheme.etaleTopology (sky U N) := by
@@ -77,6 +96,19 @@ def toSky (Q : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) (U : Scheme.{0}
     rw [op_comp, Quiver.Hom.op_unop, Q.map_comp]
     rfl
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `e` using `toSheafify_sheafifyLift Scheme.etaleTopology (toSky P U (𝟙 _)) (sky_isSheaf U hU _)`. Establish `e2` using `congrFun (congrArg (fun φ => (φ.app (op U)).hom x) e) (𝟙 U)`.
+
+Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply, hx, map_zero] at e2`. Establish `e3 : (P.map (𝟙 U).op).hom x = 0` using `e2.symm`. Rewrite `e3` using `[op_id, P.map_id]`. Then use the resulting hypothesis. Introduce `y`. Set `η` to `toSheafify Scheme.etaleTopology P`.
+
+Set `Q` to `sheafify Scheme.etaleTopology P`. Set `g : Q.obj (op U) ⟶ ModuleCat.of _ (Q.obj (op U) ⧸ LinearMap.range (η.app (op U)).hom)` to `ModuleCat.ofHom (Submodule.mkQ _)`. Establish `e` using `sheafify_hom_ext Scheme.etaleTopology (toSky Q U g) 0 (sky_isSheaf U hU _) (by`. Use extensionality with `V p`. Use function extensionality and compare the values at `h`.
+
+Establish `nat : (Q.map h.op).hom ((η.app V).hom p) = (η.app (op U)).hom ((P.map h.op).hom p)` using `(congrArg (fun φ => φ.hom p) (η.naturality h.op)).symm`. Simplify using `only [NatTrans.comp_app, toSky_app, Limits.comp_zero]`. Express the relevant statement in the definitionally equal form `(Submodule.mkQ _) ((Q.map h.op).hom (η.app V |>.hom p)) = 0`. Rewrite using `[nat, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨_, rfl⟩)`.
+
+Establish `e2` using `congrFun (congrArg (fun φ => (φ.app (op U)).hom y) e) (𝟙 U)`. Simplify using `only [toSky_app] at e2`. Express the relevant statement in the definitionally equal form `(Submodule.mkQ _) ((Q.map (𝟙 U).op).hom y) = 0 at e2`. Rewrite `e2` using `[op_id, Q.map_id, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨x, hx⟩` from `e2`.
+
+Conclude with `⟨x, hx⟩`.
+-/
 theorem toSheafify_bij (U : Scheme.{0})
     (hU : ∀ {V : Scheme.{0}} (h : U ⟶ V) (S : Sieve V), S ∈ Scheme.etaleTopology V → S.arrows h)
     (P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)) :
@@ -110,6 +142,9 @@ theorem toSheafify_bij (U : Scheme.{0})
     obtain ⟨x, hx⟩ := e2
     exact ⟨x, hx⟩
 
+/- English proof (translation)
+Introduce `_ q i A hA`. Conclude with `toSheafify_bij (R := ZMod q) (Spec A) (fun h S hS => mem_of_cov hSec A hA h S hS) (Scheme.Γ ⋙ twF q i)`.
+-/
 theorem SecPre_of (hSec : SHSection) : LateralTheory.E.SHEqvPf.SecPre := by
   intro _ q i A hA
   exact toSheafify_bij (R := ZMod q) (Spec A) (fun h S hS => mem_of_cov hSec A hA h S hS) (Scheme.Γ ⋙ twF q i)

@@ -7,12 +7,35 @@ namespace GlobalTheory.LevelCx
 
 open GlobalTheory.ColFilt
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zcomp_coe {C : Type*} [Category C] [Preadditive C] {K L M : CochainComplex C ℤ} {m n k : ℤ}
     (a : Cocycle K L m) (b : Cocycle L M n) (h : m + n = k) : (zcomp a b h).1 = a.1.comp b.1 h := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ofHom_coe {C : Type*} [Category C] [Preadditive C] {K L : CochainComplex C ℤ} (f : K ⟶ L) :
     (Cocycle.ofHom f).1 = Cochain.ofHom f := rfl
 
+/- English proof (translation)
+Introduce `R _ I _ _ K L _ _ g hg`. Establish `hb1 : ∀ p n' m (h : 0 + n' = m), Function.Bijective (cpre (Cocycle.ofHom ((CochainComplex.singleFunctor (Shv R) 0).map (g.f p))) I n' m h)`. Introduce `p n' m h`. Take `rfl : n' = m` from `by omega`. Conclude with `hg p n'`.
+
+Set `Φ : ∀ n, (∀ _ : Unit, Cochain L I (n - 0)) →+ Cochain K I n` to `fun n => AddMonoidHom.mk' (fun α => (Cochain.ofHom g).comp (α ()) (by omega)) (fun α β => Cochain.comp_add _ _ _ _)`. Establish `hΦ0 : ∀ n (α : ∀ _ : Unit, Cochain L I (n - 0)), Φ n α = (Cochain.ofHom g).comp (α ()) (by omega)` using `fun _ _ => rfl`. Establish `hΦ : ∀ n (α : ∀ _ : Unit, Cochain L I (n - 0)) (t q : ℤ) (hq : t + n = q), (Φ n α).v t q hq = g.f t ≫ (α ()).v t q (by omega)`. Introduce `n α t q hq`. Rewrite using `[hΦ0, Cochain.comp_v _ _ _ t t q (add_zero t) (by omega), Cochain.ofHom_v]`.
+
+Establish `key : ∀ n' n (h : 0 + n' = n), Function.Bijective (cpre (Cocycle.ofHom g) I n' n h)`. Introduce `n' n h`. Take `rfl : n' = n - 0` from `by omega`. Use `bijective_of_columns (isColumns_terms L) (isColumns_terms K) (fun _ : Unit => I) I (fun _ => 0) Φ (fun n m hnm α => by` as an intermediate fact. Rewrite using `[hΦ0, hΦ0, δ_comp (Cochain.ofHom g) (α ()) _ 1 (m - 0) m hnm (zero_add 1) (by omega), δ_ofHom, Cochain.zero_comp, smul_zero, add_zero])`.
+
+Use the proof step `(fun p n α hα => by show ∀ (c k t : ℤ) (h : c + k = t) (q : ℤ) (hq : t + n = q), p < c → ιTerm K c k t h ≫ (Φ n α).v t q hq = 0`. Introduce `c k t h q hq hc`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Take `rfl : c = t` from `by omega`.
+
+Establish `h0` using `eq_zero_of_ιTerm (hα () c 0 c h q (by omega) hc)`. Rewrite using `[hΦ, h0, comp_zero, comp_zero]`. Rewrite using `[ιTerm_ne _ _ _ _ _ hk, zero_comp])`. Use the proof step `(fun p _ => ⟨fun m x => cpre (Cocycle.ofHom ((CochainComplex.singleFunctor (Shv R) 0).map (g.f p))) I (m - 0) m (by omega) (x ()), fun m => (hb1 p (m - 0) m (by omega)).comp (Equiv.funUnique Unit _).bijective, fun n m h α _ a b ha hb => by`. Use `congrArg CohomologyClass.mk (Cocycle.ext (Cochain.ext _ _ fun k q hq => ?_))` and prove the remaining obligations.
+
+Rewrite using `[zcomp_coe, ofHom_coe, Cochain.comp_v _ _ _ k k q (add_zero k) (by omega), Cochain.ofHom_v, ha (), hb]`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Rewrite using `[restr_v _ _ p _ _ _ _ 0 p q (add_zero p) _ (by omega), restr_v _ _ p _ _ _ _ 0 p q (add_zero p) _ (by omega), hΦ, ιTerm_zero, ιTerm_zero, show ((CochainComplex.singleFunctor (Shv R) 0).map (g.f p)).f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (K.X p)).hom ≫ g.f …`. Conclude with `(Category.assoc _ _ _).trans (congrArg (_ ≫ ·) ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Iso.inv_hom_id_assoc _ _))))`.
+
+Conclude with `(HomologicalComplex.isZero_single_obj_X (ComplexShape.up ℤ) 0 (K.X p) k hk).eq_of_src _ _⟩)`. Use `n (fun x => cpre (Cocycle.ofHom g) I (n - 0) n h (x ()))`. Use the proof step `(fun a b hb => congrArg CohomologyClass.mk (Cocycle.ext (by rw [zcomp_coe, hb]; rfl)))`. Conclude with `this.comp (Equiv.funUnique Unit _).symm.bijective`. Introduce `n`.
+
+Conclude with `key n n (zero_add n)`.
+-/
 theorem main : ∀ (R : Type) [CommRing R] (I : Cx R) [I.IsStrictlyGE 0], (∀ n, Injective (I.X n)) →
     ∀ {K L : Cx R} [K.IsStrictlyLE 0] [L.IsStrictlyLE 0] (g : K ⟶ L),
     (∀ p n, Function.Bijective (cpull ((CochainComplex.singleFunctor (Shv R) 0).map (g.f p)) I n)) →

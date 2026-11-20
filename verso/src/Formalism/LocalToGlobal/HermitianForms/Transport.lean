@@ -8,6 +8,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
   {ι : Type} [Fintype ι]
 
+/- English proof (translation)
+Establish `h2 : x.1 = bc (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) γ * x'.1 * (κ⁻¹ : S.U).1 := by`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `hg γ hγ x' x κ⁻¹ h2 y y' hy` as an intermediate fact. Rewrite using `[this, map_inv]`.
+-/
 theorem AdFun_transport (S : StepLevel F E σ J T f bad) (emb : ι → E →+* ℂ)
     (g) (hg : g ∈ AdFun S emb) (γ : GL (Fin n) E) (hγ : γ ∈ UJ (σ : E →+* E) J)
     (x x' : UPts σ J (FiniteAdeleRing (𝓞 F) F)) (κ : S.U)

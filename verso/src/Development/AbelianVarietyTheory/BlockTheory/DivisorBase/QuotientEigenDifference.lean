@@ -191,6 +191,11 @@ def Stmt : Prop :=
 def PadicComplexThreeCases : Prop :=
   ∀ (l : ℕ) [Fact l.Prime], ValuedFieldThreeCases (PadicComplex.valued l).v (l : ℂ_[l])
 
+/- English proof (translation)
+Introduce `l hl`. Establish `h1 : (1 : ℝ≥0) < (l : ℝ≥0)` using `by exact_mod_cast hl.out.one_lt`. Establish `h0 : (0 : ℝ≥0) < (l : ℝ≥0)` using `lt_trans zero_lt_one h1`. Use `h _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[PadicComplex.valuation_p]`.
+
+Check the signs of the components of the expression. Rewrite using `[PadicComplex.valuation_p, div_lt_one h0]`. Conclude with `h1`.
+-/
 theorem stmtPadic_of_stmt (h : Stmt) : PadicComplexThreeCases := by
   intro l hl
   have h1 : (1 : ℝ≥0) < (l : ℝ≥0) := by exact_mod_cast hl.out.one_lt
@@ -203,6 +208,15 @@ noncomputable section Example
 
 variable {C : Type} [Field C] {w : Valuation C ℝ≥0}
 
+/- English proof (translation)
+Establish `hδ : (a true : C) - a false ≠ 0` using `sub_ne_zero.2 fun e => h (Subtype.ext e)`. Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨f, hf⟩` from `hx i`. Take `⟨t, ht⟩` from `Polynomial.sub_dvd_eval_sub (a true) (a false) f`.
+
+Use `⟨by rw [hf]; exact Subtype.prop _, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : w.valuationSubring => (z : C)) ht` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[hf, hf, this, mul_div_cancel_left₀ _ hδ]`. Conclude with `t.2`.
+
+Introduce `hx i`. Take `⟨h0, h1⟩` from `hx i`. Use `⟨Polynomial.C ⟨_, h0⟩ + Polynomial.C ⟨_, h1⟩ * (Polynomial.X - Polynomial.C (a false)), fun s => ?_⟩` and prove the remaining obligations. Consider the cases of `s`. Simplify using the standard rewrite rules.
+
+Simplify using `[div_mul_cancel₀ _ hδ]`.
+-/
 theorem mem_freeLattice_bool (a : Bool → w.valuationSubring) (h : a true ≠ a false) {r : ℕ}
     (x : Bool → Fin r → C) :
     x ∈ freeLattice a r ↔ ∀ i, x false i ∈ w.valuationSubring ∧
@@ -242,15 +256,34 @@ def resPair (a : Bool → w.valuationSubring) (r : ℕ) :
       rw [smul_eq_mul, Finset.mul_sum]
       exact Finset.sum_congr rfl fun i _ => by simp only [Pi.smul_apply, smul_eq_mul]; ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem resPair_apply (a : Bool → w.valuationSubring) (r : ℕ) (x y : Bool → Fin r → C) :
     resPair a r x y =
       ∑ i, (x true i * y true i - x false i * y false i) / ((a true : C) - a false) := rfl
 
+/- English proof (translation)
+Rewrite using `[resPair_apply, resPair_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+-/
 theorem resPair_comm (a : Bool → w.valuationSubring) (r : ℕ) (x y : Bool → Fin r → C) :
     resPair a r x y = resPair a r y x := by
   rw [resPair_apply, resPair_apply]
   exact Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Establish `hδ : (a true : C) - a false ≠ 0` using `sub_ne_zero.2 fun e => h (Subtype.ext e)`. Establish `hδm : (a true : C) - a false ∈ w.valuationSubring` using `sub_mem (a true).2 (a false).2`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Rewrite `hx`, `hy` using `[mem_freeLattice_bool a h]`.
+
+Rewrite using `[resPair_apply]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Take `⟨x0, x1⟩` from `hx i`. Take `⟨y0, y1⟩` from `hy i`. Establish `: (x true i * y true i - x false i * y false i) / ((a true : C) - a false) = (x true i - x false i) / ((a true : C) - a false) * y false i + x false i * ((y true i - y false i) / ((a true : C) - a false)) + ((a true : C) - a false) * ((x true i - x false i) / ((a true : C) - a fa …` using `by field_simp; ring`.
+
+Rewrite using `[this]`. Conclude with `add_mem (add_mem (mul_mem x1 y0) (mul_mem x0 y1)) (mul_mem (mul_mem hδm x1) y1)`. Introduce `hx`. Rewrite using `[mem_freeLattice_bool a h]`. Introduce `i`.
+
+Establish `h1` using `hx (fun _ => Pi.single i 1) ((mem_freeLattice_bool a h _).2 fun j => by`. Apply the tactic sequence `by_cases e : j = i <;> simp [e])`. Establish `h2` using `hx (fun s => Pi.single i (if s then (a true : C) - a false else 0)) ((mem_freeLattice_bool a h _).2 fun j => by`. Apply the tactic sequence `by_cases e : j = i <;> simp [e, hδ])`. Rewrite `h1`, `h2` using `[resPair_apply, Finset.sum_eq_single i (fun j _ e => by simp [e]) (by simp)]`.
+
+Simplify using `only [Pi.single_eq_same, mul_one] at h1`. Simplify using `only [Pi.single_eq_same, if_true, Bool.false_eq_true, if_false, mul_zero, sub_zero, mul_div_cancel_right₀ _ hδ] at h2`. Use `⟨?_, h1⟩` and prove the remaining obligations. Establish `: x false i = x true i - ((a true : C) - a false) * ((x true i - x false i) / ((a true : C) - a false))` using `by field_simp; ring`. Rewrite using `[this]`.
+
+Conclude with `sub_mem h2 (mul_mem hδm h1)`.
+-/
 theorem resPair_perfect (a : Bool → w.valuationSubring) (h : a true ≠ a false) (r : ℕ)
     (x : Bool → Fin r → C) :
     x ∈ freeLattice a r ↔ ∀ y ∈ freeLattice a r, resPair a r x y ∈ w.valuationSubring := by
@@ -296,6 +329,9 @@ def coordFil (a : Bool → w.valuationSubring) (κ : Bool → Fin 2) :
   add_mem' := fun hx hy => ⟨add_mem hx.1 hy.1, fun s => by simp [hx.2 s, hy.2 s]⟩
   smul_mem' := fun c _ hx => ⟨Submodule.smul_mem _ c hx.1, fun s => by simp [hx.2 s]⟩
 
+/- English proof (translation)
+Introduce `_ hx` and use `hx.1 stable := by rintro x ⟨hx, h0⟩ refine ⟨fun i => ?_, fun s => by simp [unif, h0 s]⟩ obtain ⟨f, hf⟩ := hx i exact ⟨Polynomial.X * f, fun s => by simp [unif, hf s, mul_comm]⟩ saturated := by rintro x hx c hc ⟨-, h0⟩ refine ⟨hx, fun s => ?_⟩ have := h0 s have hc' : (c : C) ≠ 0 : …`.
+-/
 theorem coordFil_isFiltration (a : Bool → w.valuationSubring) (κ : Bool → Fin 2) :
     IsFiltration a (coordFil a κ) where
   le := fun _ hx => hx.1
@@ -311,6 +347,11 @@ theorem coordFil_isFiltration (a : Bool → w.valuationSubring) (κ : Bool → F
     have hc' : (c : C) ≠ 0 := fun e => hc (Subtype.ext e)
     simpa [Algebra.smul_def, hc, hc'] using this
 
+/- English proof (translation)
+Establish `hδ : (a true : C) - a false ≠ 0` using `sub_ne_zero.2 fun e => h (Subtype.ext e)`. Establish `hδm : (a true : C) - a false ∈ w.valuationSubring` using `sub_mem (a true).2 (a false).2`. Use `⟨(mem_freeLattice_bool a h _).2 fun j => ?_, fun t => ?_⟩` and prove the remaining obligations. Establish `hsw : w ((a false : C) - a true) = w ((a true : C) - a false)` using `w.map_sub_swap _ _`. Apply the tactic sequence `cases s <;> by_cases e : j = i <;> simp [e, hδ, hδm, neg_div, hsw]`.
+
+Distinguish the cases in `e : t = s`. Substitute `e` using the available equality. Simplify using `[hi.symm]`. Simplify using `[e]`.
+-/
 theorem single_mem_coordFil (a : Bool → w.valuationSubring) (h : a true ≠ a false)
     (κ : Bool → Fin 2) (s : Bool) (i : Fin 2) (hi : i ≠ κ s) :
     (Pi.single s (Pi.single i ((a true : C) - a false)) : Bool → Fin 2 → C) ∈ coordFil a κ := by
@@ -323,6 +364,15 @@ theorem single_mem_coordFil (a : Bool → w.valuationSubring) (h : a true ≠ a 
     · subst e; simp [hi.symm]
     · simp [e]
 
+/- English proof (translation)
+Establish `hδ : (a true : C) - a false ≠ 0` using `sub_ne_zero.2 fun e => h (Subtype.ext e)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h0⟩ y ⟨-, h1⟩`. Establish `key : ∀ s i, x s i * y s i = 0`. Introduce `s i`.
+
+Distinguish the cases in `e : i = κ s`. Rewrite using `[e, h0, zero_mul]`. Establish `: i = κ' s`. Use `hκ s` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Rewrite using `[this, h1, mul_zero]`. Rewrite using `[resPair_apply]`. Simplify using `[key]`. Introduce `H`. Use `⟨hx, fun s => ?_⟩` and prove the remaining obligations.
+
+Use `H _ (single_mem_coordFil a h κ' s (κ s) (hκ s))` as an intermediate fact. Apply the tactic sequence `rw [resPair_apply, Finset.sum_eq_single (κ s) (fun j _ e => by cases s <;> simp [e]) (by simp)] at this`. Apply the tactic sequence `cases s <;> simpa [hδ] using this`.
+-/
 theorem coordFil_ann (a : Bool → w.valuationSubring) (h : a true ≠ a false)
     (κ κ' : Bool → Fin 2) (hκ : ∀ s, κ s ≠ κ' s) (x : Bool → Fin 2 → C)
     (hx : x ∈ freeLattice a 2) :
@@ -347,6 +397,17 @@ theorem coordFil_ann (a : Bool → w.valuationSubring) (h : a true ≠ a false)
       (fun j _ e => by cases s <;> simp [e]) (by simp)] at this
     cases s <;> simpa [hδ] using this
 
+/- English proof (translation)
+Establish `hδ : (a true : C) - a false ≠ 0` using `sub_ne_zero.2 fun e => h (Subtype.ext e)`. Establish `hne : (Pi.single (κ' s) ((a true : C) - a false) : Fin 2 → C) ≠ 0`. Introduce `e`. Use `congrFun e (κ' s)` as an intermediate fact. Simplify using `[hδ] at this`.
+
+Establish `: filSpace (coordFil a κ) s = Submodule.span C {(Pi.single (κ' s) ((a true : C) - a false) : Fin 2 → C)}`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, ⟨-, h0⟩, rfl⟩`. Use `Submodule.mem_span_singleton.2 ⟨x s (κ' s) / ((a true : C) - a false), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i`. Distinguish the cases in `e : i = κ' s`. Simplify using `[e, hδ]`. Establish `: i = κ s`. Use `hκ s` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`. Simplify using `[hκ s, h0 s]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`.
+
+Conclude with `⟨_, single_mem_coordFil a h κ s (κ' s) (hκ s).symm, by simp⟩`. Rewrite using `[this, finrank_span_singleton hne]`.
+-/
 theorem finrank_filSpace_coordFil (a : Bool → w.valuationSubring) (h : a true ≠ a false)
     (κ κ' : Bool → Fin 2) (hκ : ∀ s, κ s ≠ κ' s) (s : Bool) :
     Module.finrank C (filSpace (coordFil a κ) s) = 1 := by
@@ -374,6 +435,11 @@ theorem finrank_filSpace_coordFil (a : Bool → w.valuationSubring) (h : a true 
       exact ⟨_, single_mem_coordFil a h κ s (κ' s) (hκ s).symm, by simp⟩
   rw [this, finrank_span_singleton hne]
 
+/- English proof (translation)
+Establish `hκ : ∀ s : Bool, (if s then (0 : Fin 2) else 1) ≠ (if s then (1 : Fin 2) else 0)`. Evaluate the decidable proposition. Use `⟨⟨coordFil_isFiltration a _, coordFil_isFiltration a _, fun x y => ?_, resPair_perfect a h _, fun y => ?_, fun x hx => coordFil_ann a h _ _ hκ x hx, fun y hy => ?_⟩, finrank_filSpace_coordFil a h _ _ hκ⟩` and prove the remaining obligations. Rewrite using `[resPair_apply, resPair_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by simp only [unif, Pi.smul_apply, smul_eq_mul]; ring`.
+
+Simplify using `only [resPair_comm a _ _ y]`. Conclude with `resPair_perfect a h _ y`. Simplify using `only [resPair_comm a _ _ y]`. Conclude with `coordFil_ann a h _ _ (fun s => (hκ s).symm) y hy`.
+-/
 theorem exists_isDualDatum (a : Bool → w.valuationSubring) (h : a true ≠ a false) :
     IsDualDatum a (resPair a (1 + 1)) (coordFil a fun s => if s then 0 else 1)
         (coordFil a fun s => if s then 1 else 0) ∧

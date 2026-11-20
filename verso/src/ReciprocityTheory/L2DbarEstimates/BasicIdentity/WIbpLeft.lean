@@ -9,6 +9,19 @@ open scoped ComplexConjugate
 
 noncomputable section
 
+/- English proof (translation)
+Establish `hw : Ck n z 1 (fun x => (Real.exp (-ph x) : ℂ))` using `ck_expNeg n z 1 ph hph`. Establish `hbc : Ck n z 1 (fun x => conj (b x))` using `Ck.conj n z 1 b hb`. Use `set g : M → ℂ := fun x => conj (b x) * (Real.exp (-ph x) : ℂ) with hgdef`. Establish `hg : Ck n z 1 g` using `Ck.mul n z 1 _ _ hbc hw`. Establish `hdg : ∀ x, a x * db n z k g x = a x * conj (dTw n z ph k b x) * (Real.exp (-ph x) : ℂ)`.
+
+Introduce `x`. Establish `h1` using `db_mul n z _ _ hbc hw k x`. Use `beta_reduce at h1`. Rewrite using `[hgdef, h1, db_conj n z b k x, db_expNeg n z ph hph k x, dTw, db_ofReal n z ph k x]`. Simplify using `only [map_sub, map_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hL : (fun x => db n z k a x * conj (b x) * (Real.exp (-ph x) : ℂ)) = fun x => db n z k a x * g x`. Use function extensionality and compare the values at `x`. Simplify using `only [hgdef]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hR : (fun x => a x * conj (dTw n z ph k b x) * (Real.exp (-ph x) : ℂ)) = fun x => a x * db n z k g x`. Use function extensionality and compare the values at `x`. Conclude with `(hdg x).symm`. Rewrite using `[hL, hR]`. Break down `hc with hca | hcb` into its components or cases.
+
+Establish `h` using `integral_db_mul n z hz k g a hg ha hca`. Establish `e1 : (fun x => db n z k a x * g x) = fun x => g x * db n z k a x`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun x => a x * db n z k g x) = fun x => db n z k g x * a x`.
+
+Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, h, neg_neg]`. Establish `hgc : HasCompactSupport g` using `(hcb.comp_left (map_zero (starRingEnd ℂ))).mul_right`. Conclude with `integral_db_mul n z hz k a g ha hg hgc`.
+-/
 theorem wIbp_left (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] (z : M → V n) (hz : IsLocalHomeomorph z) (ph : M → ℝ)
     (k : Fin n) (a b : M → ℂ) (hph : CkR n z 1 ph) (ha : Ck n z 1 a) (hb : Ck n z 1 b)
@@ -51,6 +64,13 @@ theorem wIbp_left (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M] [Second
       (hcb.comp_left (map_zero (starRingEnd ℂ))).mul_right
     exact integral_db_mul n z hz k a g ha hg hgc
 
+/- English proof (translation)
+Introduce `z hz ph k a b hph ha hb hc`. Use `⟨wIbp_left n z hz ph k a b hph ha hb hc, ?_⟩` and prove the remaining obligations. Establish `h` using `wIbp_left n z hz ph k b a hph hb ha hc.symm`. Establish `h'` using `congrArg (starRingEnd ℂ) h`. Rewrite `h'` using `[← integral_conj, map_neg, ← integral_conj]`.
+
+Establish `e1 : (fun x => dTw n z ph k a x * conj (b x) * (Real.exp (-ph x) : ℂ)) = fun x => conj (b x * conj (dTw n z ph k a x) * (Real.exp (-ph x) : ℂ))`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun x => a x * conj (db n z k b x) * (Real.exp (-ph x) : ℂ)) = fun x => conj (db n z k b x * conj (a x) * (Real.exp (-ph x) : ℂ))`.
+
+Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, h', neg_neg]`.
+-/
 theorem wIbp (n : ℕ) (M : Type*) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] : WIbpStatement n M := by
   intro z hz ph k a b hph ha hb hc

@@ -10,9 +10,29 @@ open scoped ENNReal Pointwise
 
 namespace PositivityTheory.Rg.BcB.E1
 
+/- English proof (translation)
+The claim follows from `coe_diagUnits _ _`.
+-/
 theorem tor_val {E : Type} [Field E] [NumberField E] {n : ℕ} (x : Fin n → ℝ) : (An.tor E x : GA E n).val =
     diagonal fun i => ((posIdele (K := E) (Real.exp (x i)) (Real.exp_pos _) : (Ad E)ˣ) : Ad E) := coe_diagUnits _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ n Ω₀ hΩ`. Establish `hb : ∀ W : Submodule E (Fin n → E), ∃ C : ℝ, ∀ o ∈ Ω₀, ‖deg o W‖ ≤ C` using `fun W => hΩ.exists_bound_of_continuousOn ((h3 E n).2 W).continuousOn`. Use `choose c hc using hb`. Use `⟨∑ i : Fin n, |c (Submodule.span E {Pi.single i 1})| + |c ⊤|, fun x o ho => ⟨fun i => ?_, ?_⟩⟩` and prove the remaining obligations. Use `set M : Matrix (Fin n) (Fin 1) E := Matrix.of fun j _ => (Pi.single i 1 : Fin n → E) j with hM`.
+
+Establish `hr : Set.range Mᵀ = {Pi.single i 1}`. Use extensionality with `v`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`. Conclude with `⟨fun ⟨_, h⟩ => h.symm, fun h => ⟨0, h.symm⟩⟩`. Establish `hl : LinearIndependent E Mᵀ` using `linearIndependent_unique_iff.2 (by`.
+
+Express the relevant statement in the definitionally equal form `(Pi.single i 1 : Fin n → E) ≠ 0`. Use the proof step `simp)`. Establish `e` using `h2 E n 1 o (An.tor E x) (An.tor E fun _ : Fin 1 => x i) M hl (by`. Use extensionality with `j k`. Rewrite using `[tor_val, tor_val, diagonal_mul, mul_diagonal]`.
+
+Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[hM]`. Simplify using `[hM, h])`. Rewrite `e` using `[h1 E n 1 _ M hl, h1 E n 1 _ M hl, hr, ((h4 E).2 1 _).1]`.
+
+Rewrite using `[e]`. Establish `a1` using `Finset.single_le_sum (f := fun i : Fin n => |c (Submodule.span E {Pi.single i 1})|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `a2` using `(hc _ o ho).trans (le_abs_self (c (Submodule.span E {Pi.single i 1})))`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, add_sub_cancel_right]`. Rewrite `a2` using `[Real.norm_eq_abs]`.
+
+Combine the linear relations using `[abs_nonneg (c ⊤)]`. Establish `hr : Submodule.span E (Set.range (1 : Matrix (Fin n) (Fin n) E)ᵀ) = ⊤`. Rewrite using `[transpose_one, ← (Pi.basisFun E (Fin n)).span_eq]`. Use `congr 2`. Use function extensionality and compare the values at `i j`.
+
+Simplify using `[one_apply, Pi.single_apply, eq_comm]`. Establish `hl : LinearIndependent E (1 : Matrix (Fin n) (Fin n) E)ᵀ` using `Matrix.linearIndependent_cols_iff_isUnit.2 isUnit_one`. Establish `e` using `h2 E n n o (An.tor E x) (An.tor E x) 1 hl (by`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.one_mul])`. Rewrite `e` using `[h1 E n n _ 1 hl, h1 E n n _ 1 hl, hr, ((h4 E).2 n _).1]`.
+
+Rewrite using `[e, add_sub_cancel_right]`. Establish `a2` using `(hc ⊤ o ho).trans (le_abs_self _)`. Rewrite `a2` using `[Real.norm_eq_abs]`. Use `Finset.sum_nonneg (s := Finset.univ) (f := fun i : Fin n => |c (Submodule.span E {Pi.single i 1})|) fun _ _ => abs_nonneg _` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem degCell_of (h1 : DegBasis) (h2 : DegAdelic) (h3 : DegBdd) (h4 : TorNorm) : DegCell := by
   intro E _ _ _ n Ω₀ hΩ
   have hb : ∀ W : Submodule E (Fin n → E), ∃ C : ℝ, ∀ o ∈ Ω₀, ‖deg o W‖ ≤ C := fun W =>
@@ -57,6 +77,23 @@ theorem degCell_of (h1 : DegBasis) (h2 : DegAdelic) (h3 : DegBdd) (h4 : TorNorm)
       fun _ _ => abs_nonneg _
     linarith
 
+/- English proof (translation)
+Introduce `E _ _ _ n Ω₀ hΩ`. Take `⟨s1, s2, -, c, s4⟩` from `h1 E n`. Take `⟨r, hr⟩` from `s1 Ω₀ hΩ`. Take `⟨s, hs⟩` from `(h2 E n).1 1`. Take `⟨C, hC0, hC⟩` from `h4 E n`.
+
+Take `⟨C₁, hC₁0, hC₁⟩` from `h6 E n Ω₀ hΩ`. Use `set t : ℝ := |s| + |deg (1 : GA E n) ⊤| with ht`. Establish `ht0 : 0 ≤ t` using `by positivity`. Use `set d : ℝ := (Module.finrank ℚ E : ℝ) with hd`. Establish `hd0 : 0 ≤ d` using `Nat.cast_nonneg _`.
+
+Use `set C₂ : ℝ := 1 + C₁ * (1 + t + C) with hC₂`. Establish `hC₂0 : 0 < C₂` using `by positivity`. Use `⟨C₂ + (2 * d + |r| + |c|), by positivity, fun x o ho => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ γ, ‖x‖ / C₂ - 1 ≤ logSize (ratGL E n γ * (An.tor E x * o))` using `fun γ => by set h : GA E n := ratGL E n γ * (An.tor E x * o) with hh`. Establish `h0` using `s2 h`.
+
+Establish `a` using `hC₁ x o ho (t + C * (1 + logSize h)) (by positivity) (fun W _ => by`. Establish `b1` using `hC 1 h (img γ W)`. Rewrite `b1` using `[one_mul, hh, h3, ← hh]`. Establish `b2` using `hs ⟨img γ W, rfl⟩`. Combine the linear relations using `[le_abs_self s, abs_nonneg (deg (1 : GA E n) ⊤)]) (by`.
+
+Establish `b1` using `hC h h⁻¹ ⊤`. Establish `b2 : logSize h⁻¹ = logSize h` using `by rw [logSize, logSize, inv_inv, add_comm]`. Establish `b3 : deg h ⊤ = deg (An.tor E x * o : GA E n) ⊤` using `by rw [← h3 E n (An.tor E x * o) γ ⊤, img_top]`. Rewrite `b1` using `[mul_inv_cancel, b2, b3]`. Combine the linear relations using `[neg_abs_le (deg (1 : GA E n) ⊤), abs_nonneg s])`.
+
+Rewrite using `[sub_le_iff_le_add, div_le_iff₀ hC₂0]`. Establish `: 0 ≤ C₁ * (1 + t) * logSize h` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `a : ‖x‖ / C₂ - 1 ≤ red (An.tor E x * o : GA E n)` using `le_ciInf key`. Rewrite `a` using `[sub_le_iff_le_add, div_le_iff₀ hC₂0]`.
+
+Establish `a0` using `((h7 E n).2.1 (An.tor E x * o)).1`. Establish `: 0 ≤ (2 * d + |r| + |c|) * (1 + red (An.tor E x * o : GA E n))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `a1` using `((h7 E n).2.1 (An.tor E x * o)).2`. Establish `a2` using `s4 (An.tor E x) o`.
+
+Establish `a3` using `((h5 E).2 n x).2`. Establish `a4` using `hr o ho`. Establish `: 0 ≤ (C₂ + |r| + |c|) * ‖x‖` using `by positivity`. Use polynomial arithmetic with `[le_abs_self r, le_abs_self c]`.
+-/
 theorem redCell_of (h1 : SizeBasic) (h2 : DegBdd) (h3 : DegRat) (h4 : DegRight) (h5 : TorNorm) (h6 : CutBox)
     (h7 : RedBasic) : RedCell := by
   intro E _ _ _ n Ω₀ hΩ
@@ -106,37 +143,58 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 def pA (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (s : ℝ) : Ad E := 1 - sInf E 1 + sInf E fun _ => (s : ℂ)
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.CuspBoundSiegel.posIdele_exp, pA, Complex.ofReal_exp]`. Both sides reduce to the same expression.
+-/
 theorem posIdele_val (t : ℝ) : ((posIdele (K := E) (Real.exp t) (Real.exp_pos t) : (Ad E)ˣ) : Ad E) = pA E (Real.exp t) := by
   rw [GlobalTheory.CuspBoundSiegel.posIdele_exp, pA, Complex.ofReal_exp]
   rfl
 
+/- English proof (translation)
+Establish `h : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Express the relevant statement in the definitionally equal form `pInf E (pA E s) v = s`. Simplify using `only [pA, map_add, map_sub, map_one, h, sub_self, zero_add]`.
+-/
 theorem cV_pA (v : InfinitePlace E) (s : ℝ) : cV v (pA E s) = s := by
   have h : ∀ x, pInf E (sInf E x) = x := fun x => (infEq E).symm_apply_apply x
   change pInf E (pA E s) v = s
   simp only [pA, map_add, map_sub, map_one, h, sub_self, zero_add]
 
+/- English proof (translation)
+Establish `h : ∀ x, pFin E (sInf E x) = 0` using `fun x => rfl`. Express the relevant statement in the definitionally equal form `pLoc E w (pFin E (pA E s)) = 1`. Simplify using `only [pA, map_add, map_sub, map_one, h, sub_zero, add_zero]`.
+-/
 theorem cW_pA (w : HeightOneSpectrum (𝓞 E)) (s : ℝ) : cW w (pA E s) = 1 := by
   have h : ∀ x, pFin E (sInf E x) = 0 := fun x => rfl
   change pLoc E w (pFin E (pA E s)) = 1
   simp only [pA, map_add, map_sub, map_one, h, sub_zero, add_zero]
 
+/- English proof (translation)
+Use `continuous_const.add ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun s : ℝ => ((infEq E fun _ => (s : ℂ), 0) : InfiniteAdeleRing E × Af E)`. Conclude with `((continuous_infEq E).comp (continuous_pi fun _ => Complex.continuous_ofReal)).prodMk continuous_const`.
+-/
 theorem continuous_pA : Continuous (pA E) := by
   refine continuous_const.add ?_
   change Continuous fun s : ℝ => ((infEq E fun _ => (s : ℂ), 0) : InfiniteAdeleRing E × Af E)
   exact ((continuous_infEq E).comp (continuous_pi fun _ => Complex.continuous_ofReal)).prodMk continuous_const
 
+/- English proof (translation)
+Rewrite using `[IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem card_places : (2 : ℝ) * Fintype.card (InfinitePlace E) = Module.finrank ℚ E := by
   rw [IsTotallyComplex.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
     IsTotallyComplex.nrRealPlaces_eq_zero]
   push_cast
   ring
 
+/- English proof (translation)
+Simplify using `only [logAbs, cV_pA, cW_pA, norm_one, Real.log_one, finsum_zero, add_zero, Complex.norm_real, Real.norm_eq_abs, Real.abs_exp, Real.log_pow, Real.log_exp, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← card_places]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logAbs_pA (t : ℝ) : logAbs (pA E (Real.exp t)) = Module.finrank ℚ E * t := by
   simp only [logAbs, cV_pA, cW_pA, norm_one, Real.log_one, finsum_zero, add_zero, Complex.norm_real, Real.norm_eq_abs,
     Real.abs_exp, Real.log_pow, Real.log_exp, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← card_places]
   push_cast
   ring
 
+/- English proof (translation)
+Establish `h0 : (An.tor E (0 : Fin n → ℝ) : GA E n) = 1`. Use `JSqIntGlue.tor_add (K := E) (0 : Fin n → ℝ) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Rewrite using `[inv_eq_iff_mul_eq_one, ← JSqIntGlue.tor_add, add_neg_cancel, h0]`.
+-/
 theorem tor_inv {n : ℕ} (x : Fin n → ℝ) : (An.tor E x : GA E n)⁻¹ = An.tor E (-x) := by
   have h0 : (An.tor E (0 : Fin n → ℝ) : GA E n) = 1 := by
     have := JSqIntGlue.tor_add (K := E) (0 : Fin n → ℝ) 0
@@ -144,6 +202,17 @@ theorem tor_inv {n : ℕ} (x : Fin n → ℝ) : (An.tor E x : GA E n)⁻¹ = An.
     exact left_eq_mul.1 this
   rw [inv_eq_iff_mul_eq_one, ← JSqIntGlue.tor_add, add_neg_cancel, h0]
 
+/- English proof (translation)
+Establish `a1 : ∀ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v ((An.tor E x : GA E n).val p.1 p.2)‖ ^ 2) ≤ 2 * ‖x‖` using `fun v => by`. Establish `: (⨆ p : Fin n × Fin n, ‖cV v ((An.tor E x : GA E n).val p.1 p.2)‖ ^ 2) ≤ Real.exp (2 * ‖x‖)`. Use `Real.iSup_le (fun p => ?_) (Real.exp_pos _).le` and prove the remaining obligations. Rewrite using `[tor_val, diagonal_apply]`. Use `split_ifs`.
+
+Rewrite using `[posIdele_val, cV_pA, Complex.norm_real, Real.norm_eq_abs, Real.abs_exp, ← Real.exp_nat_mul]`. Use `(le_abs_self _).trans (norm_le_pi_norm x p.1)` as an intermediate fact. Conclude with `Real.exp_le_exp.2 (by push_cast; linarith)`. Simplify using `[(Real.exp_pos _).le]`. Use `(Real.posLog_le_posLog (Real.iSup_nonneg fun _ => by positivity) this).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Real.posLog_def]`. Conclude with `max_le (by positivity) (Real.log_exp _).le`. Establish `a2 : ∀ w, Real.posLog (⨆ p : Fin n × Fin n, ‖cW w ((An.tor E x : GA E n).val p.1 p.2)‖) = 0` using `fun w => by`. Rewrite using `[Real.posLog_eq_zero_iff, abs_of_nonneg (Real.iSup_nonneg fun _ => norm_nonneg _)]`. Use `Real.iSup_le (fun p => ?_) zero_le_one` and prove the remaining obligations.
+
+Rewrite using `[tor_val, diagonal_apply]`. Use `split_ifs`. Rewrite using `[posIdele_val, cW_pA, norm_one]`. Simplify using the standard rewrite rules. Simplify using `only [logSizeM, a2, finsum_zero, add_zero]`.
+
+Use `(Finset.sum_le_sum fun v _ => a1 v).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← card_places]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logSizeM_tor {n : ℕ} (x : Fin n → ℝ) : logSizeM (An.tor E x : GA E n).val ≤ Module.finrank ℚ E * ‖x‖ := by
   have a1 : ∀ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v ((An.tor E x : GA E n).val p.1 p.2)‖ ^ 2) ≤ 2 * ‖x‖ := fun v => by
     have : (⨆ p : Fin n × Fin n, ‖cV v ((An.tor E x : GA E n).val p.1 p.2)‖ ^ 2) ≤ Real.exp (2 * ‖x‖) := by
@@ -171,6 +240,11 @@ theorem logSizeM_tor {n : ℕ} (x : Fin n → ℝ) : logSizeM (An.tor E x : GA E
 
 end Tor
 
+/- English proof (translation)
+Introduce `E _ _ _`. Use `⟨fun t => by rw [posIdele_val, logAbs_pA], fun n x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← logAbs_pA, tor_val, det_diagonal]`. Simplify using `only [logAbs, map_prod, posIdele_val, cV_pA, cW_pA, Finset.prod_const_one, Real.exp_sum, Complex.ofReal_prod]`. Use `logSizeM_tor (E := E) (-x)` as an intermediate fact.
+
+Rewrite `this` using `[norm_neg]`. Rewrite using `[logSize, tor_inv]`. Combine the linear relations using `[logSizeM_tor (E := E) x]`.
+-/
 theorem torNorm_holds : TorNorm := by
   intro E _ _ _
   refine ⟨fun t => by rw [posIdele_val, logAbs_pA], fun n x => ⟨?_, ?_⟩⟩
@@ -181,6 +255,21 @@ theorem torNorm_holds : TorNorm := by
     rw [logSize, tor_inv]
     linarith [logSizeM_tor (E := E) x]
 
+/- English proof (translation)
+Introduce `E _ _ _ n ω t₀ hω ht`. Use `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E` as an intermediate fact. Set `f : Matrix (Fin n) (Fin n) (Ad E) × (Fin n → Fin n → ℝ) → Matrix (Fin n) (Fin n) (Ad E)` to `fun p => Matrix.of fun i j => p.1 i j * pA E (p.2 i j)`. Establish `hf : Continuous f` using `continuous_matrix fun i j => (continuous_fst.matrix_elem i j).mul (continuous_pA.comp ((continuous_apply j).comp ((continuous_apply i).comp continuous_snd)))`. Use `set B := Metric.closedBall (0 : Fin n → Fin n → ℝ) (Real.exp (n * t₀))`.
+
+Establish `hB : IsCompact B` using `isCompact_closedBall _ _`. Establish `k1` using `((hω.1.image Units.continuous_val).prod hB).image hf`. Establish `k2` using `(((hω.1.inv.image Units.continuous_val).prod hB).image hf).image MulOpposite.continuous_op`. Establish `key : ∀ x, admitted t₀ x → ∀ c ∈ adelicBorel (K` using `E) (n := n), ∃ s ∈ B, f ((c : GA E n).val, s) = ((An.tor E x : GA E n)⁻¹ * c * An.tor E x).val := by`. Introduce `x hx c hc`.
+
+Use `⟨fun i j => if i ≤ j then Real.exp (x j - x i) else 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg (Real.exp_pos _).le]`. Introduce `i`. Rewrite using `[pi_norm_le_iff_of_nonneg (Real.exp_pos _).le]`. Introduce `j`.
+
+Use `split_ifs with hij`. Rewrite using `[Real.norm_eq_abs, Real.abs_exp]`. Conclude with `Real.exp_le_exp.2 (by linarith [h n t₀ x ht hx i j hij])`. Simplify using `[(Real.exp_pos _).le]`. Use extensionality with `i j`.
+
+Rewrite using `[tor_inv, Units.val_mul, Units.val_mul, tor_val, tor_val, mul_diagonal, diagonal_mul]`. Simplify using `only [f, of_apply]`. Use `split_ifs with hij`. Rewrite using `[← posIdele_val, mul_right_comm, ← Units.val_mul, posIdele_mul, mul_comm]`. Use `congr 2`.
+
+Conclude with `JSqIntGlue.posIdele_congr (by rw [← Real.exp_add, Pi.neg_apply]; ring_nf) _ _`. Establish `: (c : GA E n).val i j = 0` using `hc (not_le.1 hij)`. Simplify using `[this]`. Use `⟨_, Units.isClosedEmbedding_embedProduct.isCompact_preimage (k1.prod k2), fun b hb x hx => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `key x hx b (hω.2 hb)`.
+
+Conclude with `⟨(_, s), ⟨⟨b, hb, rfl⟩, hs⟩, e⟩`. Take `⟨s, hs, e⟩` from `key x hx b⁻¹ (inv_mem (hω.2 hb))`. Use `⟨_, ⟨(_, s), ⟨⟨b⁻¹, Set.inv_mem_inv.2 hb, rfl⟩, hs⟩, e⟩, ?_⟩` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+-/
 theorem conjCpt_of (h : AdmLe) : ConjCpt := by
   intro E _ _ _ n ω t₀ hω ht
   have := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E

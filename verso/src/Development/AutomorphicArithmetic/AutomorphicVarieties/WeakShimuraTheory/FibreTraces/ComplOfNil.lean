@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 
 open IsLocalRing UpperTheory.V.Alg
 
+/- English proof (translation)
+Establish `smod : ∀ (K : Ideal Q) (x y : Q), (x ≡ y [SMOD K • (⊤ : Submodule Q Q)]) ↔ x - y ∈ K`. Introduce `K x y`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`.
+
+Use `(smod _ _ _).1 (hx N)` as an intermediate fact. Rewrite `this` using `[h, sub_zero, Ideal.mem_bot]`. Conclude with `this`. Introduce `f hf`. Use `⟨f N, fun n => ?_⟩` and prove the remaining obligations.
+
+Break down `le_total n N with hn | hn` into its components or cases. Conclude with `hf hn`. Use `(smod _ _ _).1 (hf hn)` as an intermediate fact. Rewrite `this` using `[h, Ideal.mem_bot, sub_eq_zero]`. Conclude with `(smod _ _ _).2 (by rw [this, sub_self]; exact Ideal.zero_mem _)`.
+-/
 private theorem compl_of_nil {Q : Type} [CommRing Q] (J : Ideal Q) (N : ℕ) (h : J ^ N = ⊥) : IsAdicComplete J Q := by
   have smod : ∀ (K : Ideal Q) (x y : Q), (x ≡ y [SMOD K • (⊤ : Submodule Q Q)]) ↔ x - y ∈ K := by
     intro K x y
@@ -20,6 +27,11 @@ private theorem compl_of_nil {Q : Type} [CommRing Q] (J : Ideal Q) (N : ℕ) (h 
       rw [h, Ideal.mem_bot, sub_eq_zero] at this
       exact (smod _ _ _).2 (by rw [this, sub_self]; exact Ideal.zero_mem _)
 
+/- English proof (translation)
+Establish `hle : (maximalIdeal R).map h ≤ maximalIdeal R'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `z hz`. Rewrite using `[Ideal.mem_comap, ← res_eq_zero_iff Λ R', res_map, res_eq_zero_iff]`. Conclude with `hz`.
+
+Use `Ideal.mem_map_of_mem h hy` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle n this`.
+-/
 private theorem mem_max {Λ R R' : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing R] [Algebra Λ R] [IsCO Λ R]
     [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (h : R →ₐ[Λ] R') (n : ℕ) {y : R} (hy : y ∈ maximalIdeal R ^ n) :
     h y ∈ maximalIdeal R' ^ n := by
@@ -32,6 +44,43 @@ private theorem mem_max {Λ R R' : Type} [CommRing Λ] [IsLocalRing Λ] [CommRin
   rw [Ideal.map_pow] at this
   exact Ideal.pow_right_mono hle n this
 
+/- English proof (translation)
+Establish `hJle : I ^ (n + 1) ≤ I` using `Ideal.pow_le_self (Nat.succ_ne_zero n)`. Establish `hunit : ∀ z : A, IsUnit (Ideal.Quotient.mk (I ^ (n + 1)) z) ↔ z ∉ I`. Introduce `z`. Prove the components needed by the constructor for the conclusion. Introduce `hu hz`.
+
+Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective v`. Rewrite `hv` using `[← map_mul, ← map_one (Ideal.Quotient.mk (I ^ (n + 1))), Ideal.Quotient.eq]`. Establish `h1 : z * w - 1 ∈ I` using `hJle hv`. Establish `h2 : z * w ∈ I` using `Ideal.mul_mem_right _ _ hz`.
+
+Establish `h3 : (1 : A) ∈ I`. Use `Ideal.sub_mem _ h2 h1` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `hI.ne_top ((Ideal.eq_top_iff_one _).2 h3)`. Introduce `hz`.
+
+Take `⟨w, i, hi, hwi⟩` from `hI.exists_inv hz`. Establish `hnil : IsNilpotent (Ideal.Quotient.mk (I ^ (n + 1)) i)` using `⟨n + 1, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.pow_mem_pow hi _⟩`. Establish `e : Ideal.Quotient.mk (I ^ (n + 1)) z * Ideal.Quotient.mk (I ^ (n + 1)) w = 1 - Ideal.Quotient.mk (I ^ (n + 1)) i`. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk (I ^ (n + 1))), ← map_sub]`. Use `congr 1`.
+
+Take the linear combination `hwi`. Establish `hu` using `hnil.isUnit_one_sub`. Rewrite `hu` using `[← e]`. Conclude with `isUnit_of_mul_isUnit_left hu`. Establish `hne : I ^ (n + 1) ≠ ⊤`.
+
+Introduce `ht`. Rewrite `hJle` using `[ht]`. Conclude with `hI.ne_top (top_le_iff.1 hJle)`. Use `haveI : Nontrivial (A ⧸ I ^ (n + 1)) := ⟨⟨0, 1, fun h01 => hne ((Ideal.eq_top_iff_one _).2 (Ideal.Quotient.eq_zero_iff_mem.1 ((map_one (Ideal.Quotient.mk (I ^ (n + 1)))).trans h01.symm)))⟩⟩`. Establish `hnonunit : ∀ y : A ⧸ I ^ (n + 1), ¬IsUnit y ↔ y ∈ I.map (Ideal.Quotient.mk (I ^ (n + 1)))`.
+
+Introduce `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[hunit, not_not, Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+
+Conclude with `⟨z, hz, rfl⟩`. Introduce and unpack `⟨z', hz', he⟩`. Rewrite `he` using `[Ideal.Quotient.eq]`. Use `Ideal.sub_mem _ hz' (hJle he)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis.
+
+Use `haveI hloc : IsLocalRing (A ⧸ I ^ (n + 1)) := IsLocalRing.of_nonunits_add (by`. Introduce `a b ha hb`. Rewrite `ha`, `hb`, the goal using `[mem_nonunits_iff]`. Rewrite `ha`, `hb`, the goal using `[hnonunit]`. Conclude with `Ideal.add_mem _ ha hb)`.
+
+Establish `hmax : maximalIdeal (A ⧸ I ^ (n + 1)) = I.map (Ideal.Quotient.mk (I ^ (n + 1)))`. Use extensionality with `y`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hnonunit]`. Establish `hpow : maximalIdeal (A ⧸ I ^ (n + 1)) ^ (n + 1) = ⊥`. Rewrite using `[hmax, ← Ideal.map_pow, Ideal.map_quotient_self]`.
+
+Establish `hres : ∀ z : A, ∃ a : Λ, z - algebraMap Λ A a ∈ I`. Introduce `z`. Take `⟨a, ha⟩` from `IsLocalRing.residue_surjective (x z)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hx, map_sub, AlgHom.commutes, ← ha]`.
+
+Conclude with `sub_eq_zero.2 rfl`. Establish `halg : ∀ a : Λ, algebraMap Λ (A ⧸ I ^ (n + 1)) a = Ideal.Quotient.mk (I ^ (n + 1)) (algebraMap Λ A a)`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply Λ A (A ⧸ I ^ (n + 1)), Ideal.Quotient.algebraMap_eq]`. Establish `hcompl : IsAdicComplete (maximalIdeal (A ⧸ I ^ (n + 1))) (A ⧸ I ^ (n + 1))` using `compl_of_nil _ (n + 1) hpow`.
+
+Establish `hlh : IsLocalHom (algebraMap Λ (A ⧸ I ^ (n + 1)))` using `⟨fun a ha => by`. Assume the negation of the conclusion as `hna`. Establish `ham : a ∈ maximalIdeal Λ` using `(IsLocalRing.mem_maximalIdeal a).2 hna`. Establish `h0 : x (algebraMap Λ A a) = 0`. Rewrite using `[AlgHom.commutes]`.
+
+Conclude with `(IsLocalRing.residue_eq_zero_iff a).2 ham`. Rewrite `h0` using `[← hx]`. Rewrite `ha` using `[halg, hunit]`. Conclude with `ha h0⟩`. Establish `hrs : ∀ y : A ⧸ I ^ (n + 1), ∃ a : Λ, y - algebraMap Λ _ a ∈ maximalIdeal (A ⧸ I ^ (n + 1))`.
+
+Introduce `y`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨a, ha⟩` from `hres z`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hmax, halg, ← map_sub]`.
+
+Conclude with `Ideal.mem_map_of_mem _ ha`. Use `haveI hco : IsCO Λ (A ⧸ I ^ (n + 1)) := IsCO.mk hcompl hlh hrs`. Use `⟨hco, hpow, ?_⟩` and prove the remaining obligations. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `z`.
+
+Take `⟨a, ha⟩` from `hres z`. Rewrite using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk]`. Establish `e1 : (res Λ (A ⧸ I ^ (n + 1))) (Ideal.Quotient.mk _ (z - algebraMap Λ A a)) = 0`. Rewrite using `[res_eq_zero_iff, hmax]`. Conclude with `Ideal.mem_map_of_mem _ ha`.
+
+Establish `e2 : x (z - algebraMap Λ A a) = 0` using `(hx _).1 ha`. Rewrite `e1` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite `e2` using `[map_sub, sub_eq_zero]`. Rewrite using `[e1, e2, ← halg]`. Simplify using `only [AlgHom.commutes]`.
+-/
 private theorem co_pow {Λ A : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing A] [Algebra Λ A] [IsNoetherianRing A]
     (x : A →ₐ[Λ] ResidueField Λ) (I : Ideal A) [hI : I.IsMaximal] (hx : ∀ z, z ∈ I ↔ x z = 0) (n : ℕ) :
     ∃ _ : IsCO Λ (A ⧸ I ^ (n + 1)), maximalIdeal (A ⧸ I ^ (n + 1)) ^ (n + 1) = ⊥ ∧
@@ -130,6 +179,37 @@ private theorem co_pow {Λ A : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing A]
   rw [e1, e2, ← halg]
   simp only [AlgHom.commutes]
 
+/- English proof (translation)
+Introduce `Λ A R _ _ _ _ _ _ _ _ _ _ H`. Take `⟨P, hP⟩ : ∃ P, P = (maximalIdeal R).comap (algebraMap A R)` from `⟨_, rfl⟩`. Rewrite using `[← hP]`. Set `x : A →ₐ[Λ] ResidueField Λ` to `(res Λ R).comp (IsScalarTower.toAlgHom Λ A R)`. Establish `hx : ∀ z, z ∈ P ↔ x z = 0`.
+
+Introduce `z`. Rewrite using `[hP, Ideal.mem_comap, ← res_eq_zero_iff Λ R]`. Conclude with `Iff.rfl`. Establish `hxsurj : Function.Surjective x`. Introduce `k`.
+
+Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective k`. Conclude with `⟨algebraMap Λ A a, by rw [AlgHom.commutes]; rfl⟩`. Establish `hPker : P = RingHom.ker (x : A →+* ResidueField Λ)`. Use extensionality with `z`. Rewrite using `[hx, RingHom.mem_ker]`.
+
+Both sides reduce to the same expression. Use `haveI hPmax : P.IsMaximal := by`. Rewrite using `[hPker]`. Conclude with `RingHom.ker_isMaximal_of_surjective _ hxsurj`. Establish `hB : ∀ k : ℕ, ∃ _ : IsCO Λ (A ⧸ P ^ (k + 1)), maximalIdeal (A ⧸ P ^ (k + 1)) ^ (k + 1) = ⊥ ∧ (res Λ (A ⧸ P ^ (k + 1))).comp (Ideal.Quotient.mkₐ Λ (P ^ (k + 1))) = x` using `fun k => co_pow x P hx k`.
+
+Establish `hcp : ∀ n : ℕ, (maximalIdeal R ^ n).comap (algebraMap A R) = P ^ n`. Introduce `n`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Consider the cases of `n with`.
+
+Consider the case `zero => simp`. Consider the case `succ k`. Take `⟨hco, hpow, hres⟩` from `hB k`. Take `⟨h, hh, -⟩` from `H (A ⧸ P ^ (k + 1)) (Ideal.Quotient.mkₐ Λ (P ^ (k + 1))) (by rw [hres])`. Establish `h1` using `mem_max h (k + 1) (Ideal.mem_comap.1 hz)`.
+
+Rewrite `h1` using `[hpow, Ideal.mem_bot]`. Establish `h2 : h (algebraMap A R z) = Ideal.Quotient.mk (P ^ (k + 1)) z`. Use `AlgHom.congr_fun hh z` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[h2, Ideal.Quotient.eq_zero_iff_mem]`.
+
+Conclude with `h1`. Rewrite using `[hP]`. Conclude with `Ideal.le_comap_pow (algebraMap A R) n`. Establish `hdense : ∀ (n : ℕ) (r : R), ∃ c : A, r - algebraMap A R c ∈ maximalIdeal R ^ n`. Introduce `n r`.
+
+Consider the cases of `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k`. Take `⟨hco, hpow, hres⟩` from `hB k`. Take `⟨h, hh, -⟩` from `H (A ⧸ P ^ (k + 1)) (Ideal.Quotient.mkₐ Λ (P ^ (k + 1))) (by rw [hres])`.
+
+Establish `hne : maximalIdeal R ^ (k + 1) ≠ ⊤`. Introduce `ht`. Establish `hle : maximalIdeal R ^ (k + 1) ≤ maximalIdeal R` using `Ideal.pow_le_self (Nat.succ_ne_zero k)`. Rewrite `hle` using `[ht]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal R).ne_top (top_le_iff.1 hle)`.
+
+Use `haveI : Nontrivial (R ⧸ maximalIdeal R ^ (k + 1)) := ⟨⟨0, 1, fun h01 => hne ((Ideal.eq_top_iff_one _).2 (Ideal.Quotient.eq_zero_iff_mem.1 ((map_one (Ideal.Quotient.mk (maximalIdeal R ^ (k + 1)))).trans h01.symm)))⟩⟩`. Use `haveI hcoQ : IsCO Λ (R ⧸ maximalIdeal R ^ (k + 1)) := co_quot Λ R _ (Ideal.Quotient.mkₐ Λ (maximalIdeal R ^ (k + 1))) (Ideal.Quotient.mkₐ_surjective Λ _)`. Set `j : (A ⧸ P ^ (k + 1)) →ₐ[Λ] (R ⧸ maximalIdeal R ^ (k + 1))` to `Ideal.quotientMapₐ (maximalIdeal R ^ (k + 1)) (IsScalarTower.toAlgHom Λ A R) (fun z hz => (hcp (k + 1)).ge hz)`. Take `⟨u, hu, huniq⟩` from `H (R ⧸ maximalIdeal R ^ (k + 1)) ((Ideal.Quotient.mkₐ Λ (maximalIdeal R ^ (k + 1))).comp (IsScalarTower.toAlgHom Λ A R)) (by`. Apply `AlgHom.ext` to reduce the goal to its premises.
+
+Introduce `z`. Simplify using `only [AlgHom.comp_apply]`. Conclude with `res_map _ _)`. Establish `e1 : j.comp h = u` using `huniq _ (by show (j.comp h).comp (IsScalarTower.toAlgHom Λ A R) = _`. Rewrite using `[AlgHom.comp_assoc, hh]`.
+
+Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `z`. Use the proof step `rfl)`. Establish `e2 : Ideal.Quotient.mkₐ Λ (maximalIdeal R ^ (k + 1)) = u` using `huniq _ rfl`. Establish `e3 : Ideal.Quotient.mkₐ Λ (maximalIdeal R ^ (k + 1)) r = j (h r)`.
+
+Rewrite using `[e2, ← e1]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `Ideal.Quotient.mk_surjective (h r)`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `e3` using `[← hz]`.
+
+Establish `e4 : j (Ideal.Quotient.mk _ z) = Ideal.Quotient.mk (maximalIdeal R ^ (k + 1)) (algebraMap A R z)` using `rfl`. Rewrite `e3` using `[e4, Ideal.Quotient.mkₐ_eq_mk]`. Conclude with `Ideal.Quotient.eq.1 e3`. Conclude with `⟨hPmax, ⟨inferInstance, IsCO.complete (O := Λ), hcp, hdense⟩⟩`.
+-/
 theorem UpperTheory.V.Ws.fibCpl :
     ∀ {Λ A R : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing A] [Algebra Λ A] [IsNoetherianRing A] [CommRing R] [Algebra Λ R] [IsCO Λ R] [Algebra A R] [IsScalarTower Λ A R],
           (∀ (R' : Type) [CommRing R'] [Algebra Λ R'] [IsCO Λ R'] (g : A →ₐ[Λ] R'), (res Λ R').comp g = (res Λ R).comp (IsScalarTower.toAlgHom Λ A R) →

@@ -12,26 +12,45 @@ open scoped BigOperators
 
 namespace GlobalTheory.EvenTheta.Isog
 
+/- English proof (translation)
+Simplify using `[lineSer, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow]`.
+-/
 theorem coeff_lineSer {K : Type*} [CommRing K] (e : PowerSeries K) (x : K) (n : ℕ) :
     PowerSeries.coeff n (lineSer e x) = PowerSeries.coeff n e - if n = 2 then x else 0 := by
   simp [lineSer, PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow]
 
+/- English proof (translation)
+Simplify using `[lineSer]`.
+-/
 theorem constantCoeff_lineSer {K : Type*} [CommRing K] (e : PowerSeries K) (x : K) :
     PowerSeries.constantCoeff (lineSer e x) = PowerSeries.constantCoeff e := by
   simp [lineSer]
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `IsUltrametricDist.norm_add_le_max a (-b)` as an intermediate fact. Rewrite `this` using `[norm_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis.
+-/
 theorem norm_sub_le_max' (a b : ℂ_[p]) : ‖a - b‖ ≤ max ‖a‖ ‖b‖ := by
   have := IsUltrametricDist.norm_add_le_max a (-b)
   rwa [norm_neg, ← sub_eq_add_neg] at this
 
+/- English proof (translation)
+Rewrite using `[coeff_lineSer]`. Use `(norm_sub_le_max' _ _).trans (max_le_max (he n) ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem norm_coeff_lineSer_le {e : PowerSeries ℂ_[p]} (he : IntSer e) (x : ℂ_[p]) (n : ℕ) :
     ‖PowerSeries.coeff n (lineSer e x)‖ ≤ max 1 ‖x‖ := by
   rw [coeff_lineSer]
   refine (norm_sub_le_max' _ _).trans (max_le_max (he n) ?_)
   split_ifs <;> simp
 
+/- English proof (translation)
+Break down `le_or_gt ‖x‖ 1 with hx | hx` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, constantCoeff_lineSer, he0, norm_one]`. Conclude with `max_le le_rfl hx`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[max_eq_right hx.le]`. Establish `h1` using `norm_sub_le_max' (PowerSeries.coeff 2 e) (PowerSeries.coeff 2 (lineSer e x))`. Establish `h2 : PowerSeries.coeff 2 e - PowerSeries.coeff 2 (lineSer e x) = x`. Rewrite using `[coeff_lineSer]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[h2]`. Break down `le_max_iff.1 h1 with h | h` into its components or cases. Conclude with `absurd (h.trans (he 2)) (not_le.2 hx)`. Conclude with `h`.
+-/
 theorem exists_norm_coeff_lineSer {e : PowerSeries ℂ_[p]} (he : IntSer e)
     (he0 : PowerSeries.constantCoeff e = 1) (x : ℂ_[p]) :
     ∃ n, max 1 ‖x‖ ≤ ‖PowerSeries.coeff n (lineSer e x)‖ := by
@@ -49,23 +68,40 @@ theorem exists_norm_coeff_lineSer {e : PowerSeries ℂ_[p]} (he : IntSer e)
     · exact absurd (h.trans (he 2)) (not_le.2 hx)
     · exact h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨1, hf⟩`.
+-/
 theorem IntSer.bdd {f : PowerSeries ℂ_[p]} (hf : IntSer f) : BddSer f := ⟨1, hf⟩
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[PowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem intSer_one : IntSer (1 : PowerSeries ℂ_[p]) := by
   intro n
   rw [PowerSeries.coeff_one]
   split_ifs <;> simp
 
+/- English proof (translation)
+The claim follows from `Finset.prod_induction g BddSer (fun a b ha hb => ((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.1 a b ha hb).2.2) (IntSer.bdd intSer_one) (fun i _ => hg i)`.
+-/
 theorem bdd_prod {ι : Type*} (s : Finset ι) (g : ι → PowerSeries ℂ_[p]) (hg : ∀ i, BddSer (g i)) :
     BddSer (∏ i ∈ s, g i) :=
   Finset.prod_induction g BddSer (fun a b ha hb => ((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.1 a b ha hb).2.2)
     (IntSer.bdd intSer_one) (fun i _ => hg i)
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => simpa using intSer_one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).1 _ _ ih hg).2.2`.
+-/
 theorem int_pow {g : PowerSeries ℂ_[p]} (hg : IntSer g) (k : ℕ) : IntSer (g ^ k) := by
   induction k with
   | zero => simpa using intSer_one
   | succ k ih => rw [pow_succ]; exact ((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).1 _ _ ih hg).2.2
 
+/- English proof (translation)
+Establish `hs : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `e1 : lineSer e x₀ = lineSer e x₁ + (x₁ - x₀) • PowerSeries.X ^ 2`. Rewrite using `[PowerSeries.smul_eq_C_mul]`. Simplify using `only [lineSer, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e1, PowerSeries.subst_add hs, PowerSeries.subst_smul hs, PowerSeries.subst_pow hs, PowerSeries.subst_X hs, PowerSeries.smul_eq_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem subst_lineSer_sub {e h : PowerSeries ℂ_[p]} (h0 : PowerSeries.constantCoeff h = 0)
     (x₀ x₁ : ℂ_[p]) :
     (PowerSeries.subst h (lineSer e x₀) : PowerSeries ℂ_[p]) - PowerSeries.subst h (lineSer e x₁) =
@@ -78,6 +114,17 @@ theorem subst_lineSer_sub {e h : PowerSeries ℂ_[p]} (h0 : PowerSeries.constant
     PowerSeries.subst_X hs, PowerSeries.smul_eq_C_mul]
   ring
 
+/- English proof (translation)
+Take `⟨h', rfl⟩` from `PowerSeries.X_dvd_iff.2 h0`. Establish `hi : IntSer h'` using `fun n => by simpa using hh (n + 1)`. Establish `hc0 : ‖PowerSeries.constantCoeff h'‖ = 1`. Use `PowerSeries.coeff_succ_X_mul 0 h'` as an intermediate fact. Simplify using `only [zero_add] at this`.
+
+Rewrite `h1` using `[this]`. Simplify using `using h1`. Establish `hne : PowerSeries.constantCoeff h' ≠ 0`. Introduce `h`. Rewrite `hc0` using `[h]`.
+
+Simplify using `at hc0`. Establish `hinv` using `(GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.2.2.2.1 h' hi hc0`. Establish `hb2` using `((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.1 _ _ hb (((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.1 _ _ ((GlobalTheory.T.padicComplex_integral_bounded_series_laws p).2.2.1 c⁻¹).1 (IntSer.bdd (int_pow hinv 2))).2.2)).2.2`. Establish `hm` using `PowerSeries.mul_inv_cancel h' hne`. Establish `hcc : (PowerSeries.C c : PowerSeries ℂ_[p]) * PowerSeries.C c⁻¹ = 1`.
+
+Rewrite using `[← map_mul, mul_inv_cancel₀ hc, map_one]`. Establish `e : Ψ * (PowerSeries.C c * (PowerSeries.X * h') ^ 2) * (PowerSeries.C c⁻¹ * h'⁻¹ ^ 2) = Ψ * PowerSeries.X ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hb2` using `[e]`. Take `⟨B, hB⟩` from `hb2`.
+
+Conclude with `⟨B, fun n => by simpa [PowerSeries.coeff_mul_X_pow] using hB (n + 2)⟩`.
+-/
 theorem bdd_of_mul_sq {Ψ h : PowerSeries ℂ_[p]} {c : ℂ_[p]} (hc : c ≠ 0) (hh : IntSer h)
     (h0 : PowerSeries.constantCoeff h = 0) (h1 : ‖PowerSeries.coeff 1 h‖ = 1)
     (hb : BddSer (Ψ * (PowerSeries.C c * h ^ 2))) : BddSer Ψ := by
@@ -109,6 +156,39 @@ end GlobalTheory.EvenTheta.Isog
 namespace GlobalTheory.EvenTheta
 open Isog
 
+/- English proof (translation)
+Introduce `p _ k e h S f x₀ x₁ y y' he he0 hh h0 h1 hk hS0 hf0 hf2 hf hS hy ⟨j₀, hj₀⟩ ⟨j₁, hj₁⟩ hx`. Take `⟨rI, rB, rC, -, -, rS, rM⟩` from `GlobalTheory.T.padicComplex_integral_bounded_series_laws p`. Establish `hs : PowerSeries.HasSubst h` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hG : ∀ x, BddSer (lineSer e x)` using `fun x => ⟨_, norm_coeff_lineSer_le he x⟩`. Establish `hG0 : ∀ x, PowerSeries.constantCoeff (lineSer e x) = 1` using `fun x => by`.
+
+Rewrite using `[constantCoeff_lineSer, he0]`. Establish `hGs : ∀ x n, ‖PowerSeries.coeff n (PowerSeries.subst h (lineSer e x) : PowerSeries ℂ_[p])‖ ≤ max 1 ‖x‖` using `fun x => rS _ h _ (norm_coeff_lineSer_le he x) hh h0`. Use `set P := ∏ i, lineSer e (y i) with hP`. Use `set P' := ∏ j, lineSer e (y' j) with hP'`. Establish `hPb : BddSer P` using `bdd_prod _ _ fun i => hG _`.
+
+Establish `hP'b : BddSer P'` using `bdd_prod _ _ fun i => hG _`. Establish `hP0 : PowerSeries.constantCoeff P = 1` using `by simp [hP, map_prod, hG0]`. Establish `hP'0 : PowerSeries.constantCoeff P' = 1` using `by simp [hP', map_prod, hG0]`. Establish `hinv` using `PowerSeries.mul_inv_cancel (S ^ (2 * k)) (by simp [hS0])`. Use `set Ψ : PowerSeries ℂ_[p] := PowerSeries.subst h S * (S ^ (2 * k))⁻¹ with hΨ`.
+
+Use `set A : PowerSeries ℂ_[p] := PowerSeries.subst h (lineSer e x₀) with hA`. Use `set B : PowerSeries ℂ_[p] := PowerSeries.subst h (lineSer e x₁) with hB`. Establish `eA : Ψ * A = P ^ 2`. Establish `h2 : (PowerSeries.subst h S : PowerSeries ℂ_[p]) * A = S ^ (2 * k) * P ^ 2`. Rewrite using `[hA, ← PowerSeries.subst_mul hs, ← hf2, PowerSeries.subst_pow hs, hf]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hΨ]`. Take the linear combination `(S ^ (2 * k))⁻¹ * h2 + P ^ 2 * hinv`. Establish `eB : Ψ * B = P'`. Rewrite `hS` using `[PowerSeries.subst_mul hs]`.
+
+Rewrite using `[hΨ]`. Take the linear combination `(S ^ (2 * k))⁻¹ * hS + P' * hinv`. Establish `eAB : A - B = PowerSeries.C (x₁ - x₀) * h ^ 2` using `subst_lineSer_sub h0 x₀ x₁`. Establish `hB0 : PowerSeries.constantCoeff B = 1`. Establish `e1 : lineSer e x₁ = 1 + PowerSeries.X * PowerSeries.mk fun n => PowerSeries.coeff (n + 1) (lineSer e x₁)` using `by conv_lhs => rw [PowerSeries.eq_X_mul_shift_add_const (lineSer e x₁)]`.
+
+Rewrite using `[hG0, map_one, add_comm]`. Establish `e2 : (PowerSeries.subst h (1 : PowerSeries ℂ_[p]) : PowerSeries ℂ_[p]) = 1`. Rewrite using `[← PowerSeries.coe_substAlgHom hs, map_one]`. Rewrite using `[hB, e1, PowerSeries.subst_add hs, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, e2]`. Simplify using `[h0]`.
+
+Establish `hΨ0 : PowerSeries.constantCoeff Ψ = 1`. Use `congrArg PowerSeries.constantCoeff eB` as an intermediate fact. Rewrite `this` using `[map_mul, hB0, hP'0, mul_one]`. Then use the resulting hypothesis. Establish `hΨb : BddSer Ψ`. Use `bdd_of_mul_sq (sub_ne_zero.2 hx.symm) hh h0 h1 ?_` and prove the remaining obligations.
+
+Rewrite using `[← eAB, mul_sub, eA, eB, sq]`. Conclude with `(rB _ _ (rB _ _ hPb hPb).2.2 hP'b).2.1`. Establish `hΨi : IntSer Ψ` using `GlobalTheory.T.integral_series_of_common_divisor_line_products p k (2 * k) e Ψ A B y y' (IntSer.bdd he) hΨb ⟨_, hGs x₀⟩ ⟨_, hGs x₁⟩ hΨ0 eA eB hy`. Establish `hP'm : ∀ n, ‖PowerSeries.coeff n P'‖ ≤ max 1 ‖x₁‖` using `fun n => by`. Use `rM Ψ B _ _ hΨi (hGs x₁) n` as an intermediate fact.
+
+Rewrite `this` using `[eB, one_mul]`. Then use the resulting hypothesis. Establish `hj : j₀ ≠ j₁`. Introduce and unpack `rfl`. Conclude with `hx (hj₀.symm.trans hj₁)`. Use `set R := ∏ j ∈ (Finset.univ.erase j₁).erase j₀, lineSer e (y' j) with hR`.
+
+Establish `hRb : BddSer R` using `bdd_prod _ _ fun i => hG _`. Establish `hR0 : PowerSeries.constantCoeff R = 1` using `by simp [hR, map_prod, hG0]`. Establish `eP' : P' = lineSer e x₁ * (lineSer e x₀ * R)`. Rewrite using `[hP', hR, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j₁), ← Finset.mul_prod_erase (Finset.univ.erase j₁) _ (a := j₀) (by simp [hj]), hj₀, hj₁]`. Establish `hGR : IntSer (lineSer e x₀ * R)` using `fun n => by`.
+
+Take `⟨i, hi⟩` from `exists_norm_coeff_lineSer he he0 x₁`. Establish `h3` using `GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ (hG x₁) (rB _ _ (hG x₀) hRb).2.2 (eP' ▸ hP'm) i n`. Establish `hpos : (0 : ℝ) < max 1 ‖x₁‖` using `lt_max_of_lt_left one_pos`. Establish `h4` using `mul_le_mul_of_nonneg_right hi (norm_nonneg (PowerSeries.coeff n (lineSer e x₀ * R)))`. Conclude with `le_of_mul_le_mul_left (by rw [mul_one]; exact h4.trans h3) hpos`.
+
+Establish `hGi : IntSer (lineSer e x₀)` using `fun n => by`. Establish `h3` using `GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ (hG x₀) hRb hGR n 0`. Rewrite `h3` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hR0, norm_one, mul_one]`. Then use the resulting hypothesis. Establish `hx0 : ‖x₀‖ ≤ 1`. Take `⟨i, hi⟩` from `exists_norm_coeff_lineSer he he0 x₀`.
+
+Conclude with `(le_max_right _ _).trans (hi.trans (hGi i))`. Establish `hPi : IntSer P` using `fun n => by`. Establish `hAi : IntSer A` using `rS _ h _ hGi hh h0`. Establish `h2 : IntSer (P * P)`. Rewrite using `[← sq, ← eA]`.
+
+Conclude with `(rI _ _ hΨi hAi).2.2`. Establish `h3` using `GlobalTheory.T.powerSeries_supNorm_mul_padicComplex p _ _ _ hPb hPb h2 n 0`. Rewrite `h3` using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, hP0, norm_one, mul_one]`. Then use the resulting hypothesis. Use `⟨GlobalTheory.T.powerSeriesCoeffNormLeOne_functional_equation_padic p f h (lineSer e x₀ ^ k) P (2 * k) hf0 hh h0 h1 hk (int_pow hGi k) (by simp [hG0]) hPi hP0 ?_, hx0⟩` and prove the remaining obligations. Rewrite using `[hf, pow_mul, hf2]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem intSer_of_isogeny_identities : ∀ (p : ℕ) [Fact p.Prime] (k : ℕ) (e h S f : PowerSeries ℂ_[p]) (x₀ x₁ : ℂ_[p]) (y : Fin k → ℂ_[p]) (y' : Fin (2 * k) → ℂ_[p]), IntSer e → PowerSeries.constantCoeff e = 1 → IntSer h → PowerSeries.constantCoeff h = 0 → ‖PowerSeries.coeff 1 h‖ = 1 → ‖((2 * k : ℕ) : ℂ_[p])‖ < 1 → PowerSeries.constantCoeff S = 1 → PowerSeries.constantCoeff f = 1 → f ^ 2 = S * lineSer e x₀ → (PowerSeries.subst h f : PowerSeries ℂ_[p]) = S ^ k * ∏ i, lineSer e (y i) → (PowerSeries.subst h (S * lineSer e x₁) : PowerSeries ℂ_[p]) = S ^ (2 * k) * ∏ j, lineSer e (y' j) → (∀ i j, y i ≠ y' j) → (∃ j, y' j = x₀) → (∃ j, y' j = x₁) → x₀ ≠ x₁ → IntSer f ∧ ‖x₀‖ ≤ 1 := by
   intro p _ k e h S f x₀ x₁ y y' he he0 hh h0 h1 hk hS0 hf0 hf2 hf hS hy ⟨j₀, hj₀⟩ ⟨j₁, hj₁⟩ hx
   obtain ⟨rI, rB, rC, -, -, rS, rM⟩ := GlobalTheory.T.padicComplex_integral_bounded_series_laws p

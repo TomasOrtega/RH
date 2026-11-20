@@ -16,6 +16,9 @@ open PositivityTheory.SiegelWeilFormula PositivityTheory.SiegelWeilFormula.KWhit
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσ, hM, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem conj_sym {ι κ : Type} [Fintype ι] (hσ : ∀ a, σ (σ a) = a) (P : Matrix ι κ E) (M : Matrix ι ι E) (s : E)
     (hM : ∀ i j, σ (M j i) = s * M i j) (i j : κ) :
     σ ((Pᵀ * M * P.map σ) j i) = s * (Pᵀ * M * P.map σ) i j := by
@@ -24,6 +27,9 @@ theorem conj_sym {ι κ : Type} [Fintype ι] (hσ : ∀ a, σ (σ a) = a) (P : M
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
+/- English proof (translation)
+Establish `hD : ∀ i j, σ (dbl J j i) = s * dbl J i j`. Apply the tactic sequence `rintro (i | i) (j | j) <;> simp [dbl, hJ]`. Establish `h` using `conj_sym hσ b.1 (dbl J) s hD (Sum.inl ⟨0, hn⟩) (Sum.inr ⟨0, hn⟩)`. Rewrite `h` using `[hb]`. Simplify using `using h`.
+-/
 theorem frame_sign (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (hn : 1 ≤ n) (J : Matrix (Fin n) (Fin n) E) (s : E)
     (hJ : ∀ i j, σ (J j i) = s * J i j) (b : GL (Fin n ⊕ Fin n) E) (ε : ℤˣ)
     (hb : b.1ᵀ * dbl J * b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) : (((ε : ℤ) : E)) = s := by
@@ -33,6 +39,11 @@ theorem frame_sign (hσ : ∀ a, σ (σ a) = a) {n : ℕ} (hn : 1 ≤ n) (J : Ma
   rw [hb] at h
   simpa using h
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨hrs, A, hA⟩` from `h`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul] at hA`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Establish `hs : 0 < s` using `by omega`.
+
+Use `congrFun (congrFun hA (Sum.inr ⟨0, hs⟩)) (Sum.inr ⟨0, hs⟩)` as an intermediate fact. Simplify using `at this`. Use `congrFun (congrFun hA (Sum.inl ⟨0, hr⟩)) (Sum.inl ⟨0, hr⟩)` as an intermediate fact. Simplify using `at this`.
+-/
 theorem ne_zero_of_sig {m r s : ℕ} (hm : 1 ≤ m) (M : Matrix (Fin m) (Fin m) ℂ) (h : HasSig M r s) : M ≠ 0 := by
   rintro rfl
   obtain ⟨hrs, A, hA⟩ := h
@@ -44,6 +55,9 @@ theorem ne_zero_of_sig {m r s : ℕ} (hm : 1 ≤ m) (M : Matrix (Fin m) (Fin m) 
   · have := congrFun (congrFun hA (Sum.inl ⟨0, hr⟩)) (Sum.inl ⟨0, hr⟩)
     simp at this
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[hc i j]`.
+-/
 theorem exists_ne_zero_of_map {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (f : E →+* ℂ) (c : ℂ) (h : c • J.map f ≠ 0) :
     ∃ i j, J i j ≠ 0 := by
   by_contra hc
@@ -52,6 +66,15 @@ theorem exists_ne_zero_of_map {m : ℕ} (J : Matrix (Fin m) (Fin m) E) (f : E �
   ext i j
   simp [hc i j]
 
+/- English proof (translation)
+Establish `hσ` using `sigma_sigma_of_good d.ok.good`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace F))`. Break down `d.ok.sign with ⟨hA, hY⟩ | ⟨hA, hY⟩` into its components or cases. Establish `he` using `frame_sign hσ d.ok.hn d.Y.J (-1) (fun i j => by rw [hY, neg_one_mul]) d.b ε hb`. Take `⟨i, j, hij⟩` from `exists_ne_zero_of_map d.A.J (d.B.emb w).1 1 (by rw [one_smul]; exact ne_zero_of_sig d.ok.hm _ (hA.sig w))`.
+
+Establish `h` using `herm i j`. Rewrite `h` using `[map_mul, hA.herm]`. Rewrite using `[he, neg_neg, one_mul]`. Conclude with `mul_right_cancel₀ hij h`. Establish `he` using `frame_sign hσ d.ok.hn d.Y.J 1 (fun i j => by rw [hY, one_mul]) d.b ε hb`.
+
+Take `⟨i, j, hij⟩` from `exists_ne_zero_of_map d.A.J (d.B.emb w).1 Complex.I (ne_zero_of_sig d.ok.hm _ (hA.sig w))`. Establish `h` using `herm i j`. Rewrite `h` using `[map_mul, hA.skew]`. Rewrite using `[he, neg_one_mul]`. Apply `mul_right_cancel₀ hij` to reduce the goal to its premises.
+
+Take the linear combination `-h`.
+-/
 theorem eta_sign (d : SD σ) {η : E} (herm : ∀ i j, σ (η * d.A.J j i) = η * d.A.J i j) {ε : ℤˣ}
     (hb : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0) :
     σ η = -(((ε : ℤ) : E)) * η := by

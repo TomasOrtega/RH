@@ -22,5 +22,8 @@ open scoped TensorProduct InnerProductSpace ComplexConjugate
 open GlobalTheory.EvenOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.EvenOnto.parBound_of_rapidDecay | exact GlobalTheory.EvenOnto.parBound_of_rapidDecay | (intros; apply GlobalTheory.EvenOnto.parBound_of_rapidDecay <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.evenRankChain_params_trivialBound_rapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, ParBound D := by
   first | exact @GlobalTheory.EvenOnto.parBound_of_rapidDecay | exact GlobalTheory.EvenOnto.parBound_of_rapidDecay | (intros; apply GlobalTheory.EvenOnto.parBound_of_rapidDecay <;> assumption)

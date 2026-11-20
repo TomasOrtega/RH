@@ -43,6 +43,9 @@ def glueM (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleR
       Matrix (Fin n) (Fin n) (AE F E) :=
   (Φ.symm.toRingHom.mapMatrix).comp (combine (InfinitePlace F) n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glueM_apply (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) {n : ℕ}
     (p : (InfinitePlace F → Matrix (Fin n) (Fin n) ℂ) × Matrix (Fin n) (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (i j : Fin n) : glueM Φ n p i j = Φ.symm (fun w => p.1 w i j, p.2 i j) := rfl
@@ -55,6 +58,9 @@ def rawT (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleRi
     (MonoidHom.prodMap (MulEquiv.piUnits.symm.toMonoidHom.comp (Pi.monoidHom fun v =>
       (MulAut.conj (P v)).toMonoidHom.comp ((Formalism.REAL.UJ (ε v)).subtype.comp (Pi.evalMonoidHom _ v)))) H.subtype))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rawT_val (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) {n : ℕ}
     (ε : InfinitePlace F → Fin n → Bool) (P : InfinitePlace F → (Matrix (Fin n) (Fin n) ℂ)ˣ)
     (H : Subgroup (GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) (x : (∀ v : InfinitePlace F, Formalism.REAL.UJ (ε v)) × H) :
@@ -70,6 +76,9 @@ def trHom (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (∀ v : InfinitePlace F, Formalism.REAL.UJ (ε v)) × H →* UA σ J :=
   (rawT Φ ε P H).codRestrict _ h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mat_trHom (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (Φ : AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
     (ε : InfinitePlace F → Fin n → Bool) (P : InfinitePlace F → (Matrix (Fin n) (Fin n) ℂ)ˣ)

@@ -25,6 +25,9 @@ noncomputable def stepSumVia (w : Sym E →₀ ℤ) (p : ℕ) [Fact p.Prime] {K 
       (fun τ i => spMap (dualMap (φ.comp (Scheme.stalkClosedPointTo y).hom)) ≫
         (Y.gr_spec (below y)).choose_spec.choose.v τ i) p (a.1 p) a.2.2
 
+/- English proof (translation)
+Take `⟨hp⟩` from `hp`. Unfold `lgOf stepSumVia`. Conclude with `dif_pos hp`.
+-/
 theorem lgOf_eq_stepSumVia (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) [hp : Fact (resP v).Prime] (ε : Ext v)
     (y : AlgPt Y.Y) :
     lgOf Y w v ε y = Real.log (ε.w (valAt y.1 (((∏ x : Letter Dw,
@@ -37,6 +40,9 @@ theorem lgOf_eq_stepSumVia (w : Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F
 
 end Free
 
+/- English proof (translation)
+Unfold `drVia stepSumVia`. Both sides reduce to the same expression.
+-/
 theorem drVia_eq_stepSumVia {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag) (k : s.Comp)
     (la : AllWt.Weight S.Dw) (p : ℕ) [Fact p.Prime] {K : Type} [Field K] (y : Sp K ⟶ (Φ.C k).Y.X)
     (φ : K →+* ℂ_[p]) (f : (Φ.C k).Y.Fn) :
@@ -46,10 +52,18 @@ theorem drVia_eq_stepSumVia {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ
   unfold drVia stepSumVia
   rfl
 
+/- English proof (translation)
+Rewrite using `[Real.exp_add, Real.exp_log hB, Real.mul_rpow hX (Real.exp_pos _).le, ← Real.exp_mul, ← mul_assoc, h, mul_comm c]`.
+-/
 theorem mul_exp_log_add {A B X S c : ℝ} (hB : 0 < B) (hX : 0 ≤ X) (h : A * B = X ^ c) :
     A * Real.exp (Real.log B + c * S) = (X * Real.exp S) ^ c := by
   rw [Real.exp_add, Real.exp_log hB, Real.mul_rpow hX (Real.exp_pos _).le, ← Real.exp_mul, ← mul_assoc, h, mul_comm c]
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hcop : Nat.gcd (resP v) p = 1` using `((Nat.coprime_primes (residueCharacteristic_prime v) hp.out).2 hne)`. Establish `h1` using `congrArg (Int.cast : ℤ → 𝓞 F) (Nat.gcd_eq_gcd_ab (resP v) p)`. Rewrite `h1` using `[hcop]`. Move the coercions through the operations in `at h1`.
+
+Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, h1]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ (residueCharacteristic_mem v)) (Ideal.mul_mem_right _ _ hv)`.
+-/
 theorem residueCharacteristic_eq_of_mem {F : Type} [Field F] [NumberField F] (p : ℕ) [hp : Fact p.Prime] (v : HeightOneSpectrum (𝓞 F))
     (hv : (p : 𝓞 F) ∈ v.asIdeal) : resP v = p := by
   by_contra hne
@@ -61,6 +75,13 @@ theorem residueCharacteristic_eq_of_mem {F : Type} [Field F] [NumberField F] (p 
   rw [Ideal.eq_top_iff_one, h1]
   exact Ideal.add_mem _ (Ideal.mul_mem_right _ _ (residueCharacteristic_mem v)) (Ideal.mul_mem_right _ _ hv)
 
+/- English proof (translation)
+Establish `hq` using `hp.out`. Establish `hw1 : e.w (p : AlgebraicClosure F) < 1`. Establish `h : (p : AlgebraicClosure F) = algebraMap F _ (algebraMap (𝓞 F) F (p : 𝓞 F))` using `by simp`. Rewrite using `[h, e.w_alg]`. Conclude with `(v.adicAbv_coe_lt_one_iff (HeightOneSpectrum.one_lt_absNorm_nnreal v) _).2 hv`.
+
+Establish `hw0 : 0 < e.w (p : AlgebraicClosure F)` using `e.w.pos (Nat.cast_ne_zero.2 hq.ne_zero)`. Establish `hlp : 0 < Real.log p` using `Real.log_pos (by exact_mod_cast hq.one_lt)`. Establish `hc : 0 < -Real.log (e.w (p : AlgebraicClosure F)) / Real.log p` using `div_pos (neg_pos.2 (Real.log_neg hw0 hw1)) hlp`. Establish `hio` using `ioOf_le_one_iff p hv e`. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases.
+
+Simplify using `[Real.zero_rpow hc.ne']`. Establish `h` using `log_w_eq p e (ioOf p e) hio z`. Establish `hn : 0 < ‖ioOf p e z‖` using `norm_pos_iff.2 ((map_ne_zero _).2 hz)`. Rewrite using `[Real.rpow_def_of_pos hn, mul_comm, ← h, Real.exp_log (e.w.pos hz)]`.
+-/
 theorem w_eq_norm_ioOf_rpow {F : Type} [Field F] [NumberField F] (p : ℕ) [hp : Fact p.Prime]
     (v : HeightOneSpectrum (𝓞 F)) (hv : (p : 𝓞 F) ∈ v.asIdeal) (e : Ext v) (z : AlgebraicClosure F) :
     e.w z = ‖ioOf p e z‖ ^ (-Real.log (e.w (p : AlgebraicClosure F)) / Real.log p) := by
@@ -79,6 +100,9 @@ theorem w_eq_norm_ioOf_rpow {F : Type} [Field F] [NumberField F] (p : ℕ) [hp :
     have hn : 0 < ‖ioOf p e z‖ := norm_pos_iff.2 ((map_ne_zero _).2 hz)
     rw [Real.rpow_def_of_pos hn, mul_comm, ← h, Real.exp_log (e.w.pos hz)]
 
+/- English proof (translation)
+Establish `hU : UnitAt (below y.1) ((t * u⁻¹ : Y.Fnˣ) : Y.Fn)`. Simplify `hu.iff_unitAt.1 ht` using `[div_eq_mul_inv]`. Establish `hR : RegAt (below y.1) (f * (u : Y.Fn))` using `hu.regularAt_iff.1 (Var.mem_riemannRochSpace_iff_regularAt_everywhere.1 hf (below y.1))`. Use `⟨e.w.pos (SmallSec.valAt_ne_zero hU), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← SmallSec.valAt_mul hR hU.regAt, mul_assoc, ← Units.val_mul, mul_comm t, ← mul_assoc, mul_inv_cancel, one_mul]`.
+-/
 theorem w_valAt_mul_change {F : Type} [Field F] [NumberField F] {Y : Var F} {v : HeightOneSpectrum (𝓞 F)} (e : Ext v)
     (y : AlgPt Y) {Δ : Y.Dv} {t u : Y.Fnˣ} (ht : Δ.IsEqn (below y.1) t) (hu : Δ.IsEqn (below y.1) u) {f : Y.Fn}
     (hf : f ∈ Y.H0 Δ) :
@@ -98,6 +122,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
+/- English proof (translation)
+Establish `hw` using `w_eq_norm_ioOf_rpow p v hv ε`. Take `rfl : resP v = p` from `residueCharacteristic_eq_of_mem p v hv`. Take `⟨hb, hm⟩` from `w_valAt_mul_change ε y (GradedLogInvariants.GlobalTheory.CompanionTheory.GradedInv.isEqn_prod Y (below y.1) (expo Dw w)) (Base.isEqn_eqn (divOf Y (expo Dw w)) (below y.1)) hf`. Use `rewrite [lgOf_eq_stepSumVia]`. Conclude with `mul_exp_log_add hb (norm_nonneg _) (hm.trans (hw _))`.
+-/
 theorem w_mul_exp_lgOf (w : Sym E →₀ ℤ) (p : ℕ) [Fact p.Prime] (v : HeightOneSpectrum (𝓞 F))
     (hv : (p : 𝓞 F) ∈ v.asIdeal) (ε : Ext v) (y : AlgPt Y.Y) {f : Y.Y.Fn} (hf : f ∈ Y.Y.H0 (divOf Y (expo Dw w))) :
     ε.w (valAt y.1 (f * (eqn (divOf Y (expo Dw w)) (below y.1) : Y.Y.Fn))) * Real.exp (lgOf Y w v ε y) =
@@ -114,6 +141,11 @@ theorem w_mul_exp_lgOf (w : Sym E →₀ ℤ) (p : ℕ) [Fact p.Prime] (v : Heig
 
 end Free
 
+/- English proof (translation)
+Introduce `D A N j S κ s Φ k la f hf p _ v hv e y`. Establish `hf' : f ∈ (Φ.C k).Y.H0 (divOf (Φ.C k) (expo S.Dw (drSym la)))` using `by rewrite [divOf_drSym Φ k la]`. Conclude with `hf`. Establish `h` using `w_mul_exp_lgOf (Φ.C k) (drSym la) p v hv e y hf'`. Use `rewrite [drVia_eq_stepSumVia]`.
+
+Unfold `finN`. Conclude with `h`.
+-/
 theorem finN_eq_drVia_rpow : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag) (k : s.Comp) (la : AllWt.Weight S.Dw) (f : (Φ.C k).Y.Fn), f ∈ (Φ.C k).Y.H0 ((Φ.C k).Lw la) → ∀ (p : ℕ) [Fact p.Prime] (v : HeightOneSpectrum (𝓞 D.what₂.LL)), (p : 𝓞 D.what₂.LL) ∈ v.asIdeal → ∀ (e : Ext v) (y : AlgPt (Φ.C k).Y), finN Φ k la v e y f = drVia Φ k la p y.1 (ioOf p e) f ^ (-Real.log (e.w p) / Real.log p) := by
   intro D A N j S κ s Φ k la f hf p _ v hv e y
   have hf' : f ∈ (Φ.C k).Y.H0 (divOf (Φ.C k) (expo S.Dw (drSym la))) := by

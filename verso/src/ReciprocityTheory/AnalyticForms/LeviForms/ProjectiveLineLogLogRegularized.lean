@@ -20,6 +20,35 @@ def ProjectiveLineLogLogInhabited : Prop :=
     ∃ C t₀ : ℝ, IsRegFamily p1 fsPot fsPot projectiveLinePairSection fsPot projectiveLineLogLog projectiveLineLogLogRegularized C t₀ ∧
       IsRegFamilyC2 p1 projectiveLinePairSection projectiveLineLogLog projectiveLineLogLogRegularized
 
+/- English proof (translation)
+Use `⟨Real.exp_pos _, (by rw [← Real.exp_zero]; exact Real.exp_lt_exp.2 (neg_lt_zero.2 (Real.exp_pos _))), fun t ht ht0 => ?_⟩` and prove the remaining obligations. Establish `hη` using `eps_pos ht ht0`. Establish `hL` using `logell_pos ht ht0`. Establish `hℓ` using `ell_pos ht ht0`. Establish `hr3 : 0 ≤ t ^ ((1 : ℝ) / 3)` using `Real.rpow_nonneg ht.le _`.
+
+Use `⟨llT_smooth t ht ht0, ?_, ?_, ?_, llT_psh t ht ht0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Distinguish the cases in `hy : y = OnePoint.infty`. Substitute `hy` using the available equality. Rewrite using `[llT_infty]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[llT_ne t hy]`. Use `rm_le (η := epsT 1 t) (a := llw y) (b := -Real.log (Real.log (1 / t))) (m := 0) hη.le (by linarith [projectiveLineLogLog_le_neg_one y]) (by linarith)` as an intermediate fact. Combine the linear relations using `[eps_le_one ht ht0]`. Introduce `y hy`.
+
+Rewrite using `[llT_ne t (fun h => hy ((mem_boundary_projectiveLine y).2 h))]`. Conclude with `rm_ge_left _ _ _`. Introduce `y`. Distinguish the cases in `hy : y = OnePoint.infty`. Substitute `hy` using the available equality.
+
+Rewrite using `[llT_infty]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[llT_ne t hy]`. Use `rm_ge_right (epsT 1 t) (llw y) (-Real.log (Real.log (1 / t)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Introduce `y hy hr`. Rewrite using `[llT_ne t (fun h => hy ((mem_boundary_projectiveLine y).2 h)), epsT_two]`. Establish `hc : -Real.log (Real.log (1 / t)) ≤ llw y`. Rewrite using `[llw]`. Conclude with `neg_le_neg (Real.log_le_log (rW_pos y) hr)`.
+
+Use `rm_le hη.le (le_refl (llw y)) hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `y hy`. Rewrite using `[llT_ne t (fun h => hy ((mem_boundary_projectiveLine y).2 h)), epsT_two]`. Establish `hrp` using `rW_pos y`.
+
+Establish `hre` using `projectiveLine_weight_ge_exp_one y`. Establish `h1 : Real.log (rW fsPot projectiveLinePairSection y) - Real.log (Real.log (1 / t)) ≤ rW fsPot projectiveLinePairSection y / Real.log (1 / t)`. Rewrite using `[← Real.log_div hrp.ne' hℓ.ne']`. Use `Real.log_le_sub_one_of_pos (div_pos hrp hℓ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h2 : rW fsPot projectiveLinePairSection y / Real.log (1 / t) ≤ epsT 1 t * rW fsPot projectiveLinePairSection y`. Establish `e : epsT 1 t * rW fsPot projectiveLinePairSection y = Real.log (Real.log (1 / t)) * rW fsPot projectiveLinePairSection y / Real.log (1 / t)`. Unfold `epsT`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+
+Apply `div_le_div_of_nonneg_right _ hℓ.le` to reduce the goal to its premises. Use `logell_big ht ht0` as an intermediate fact. Use polynomial arithmetic with `[one_le_exp_one]`. Establish `hc : -Real.log (Real.log (1 / t)) ≤ llw y + epsT 1 t * rW fsPot projectiveLinePairSection y`. Rewrite using `[llw]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : llw y ≤ llw y + epsT 1 t * rW fsPot projectiveLinePairSection y`. Use `mul_nonneg hη.le hrp.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `rm_le hη.le hm hc` as an intermediate fact.
+
+Establish `h5 : epsT 1 t / 2 ≤ epsT 1 t * rW fsPot projectiveLinePairSection y` using `by nlinarith [one_le_exp_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t' htt' ht0' y`. Establish `ht' : 0 < t'` using `lt_of_lt_of_le ht htt'`. Establish `hη'` using `eps_pos ht' ht0'`.
+
+Establish `hmono` using `eps_mono ht htt' ht0'`. Establish `hc : -Real.log (Real.log (1 / t)) ≤ -Real.log (Real.log (1 / t'))` using `neg_le_neg (Real.log_le_log (ell_pos ht' ht0') (ell_anti ht htt'))`. Rewrite using `[epsT_two]`. Distinguish the cases in `hy : y = OnePoint.infty`. Substitute `hy` using the available equality.
+
+Rewrite using `[llT_infty, llT_infty]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[llT_ne t hy, llT_ne t' hy]`. Use `rm_le (m := ReciprocityTheory.AnForm.A.regMax (epsT 1 t') ![llw y, -Real.log (Real.log (1 / t'))]) hη.le (rm_ge_left _ _ _) (le_trans hc (rm_ge_right _ _ _))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem projectiveLine_isRegFamily : IsRegFamily p1 fsPot fsPot projectiveLinePairSection fsPot llw llT 2 T0 := by
   refine ⟨Real.exp_pos _, (by rw [← Real.exp_zero]; exact Real.exp_lt_exp.2 (neg_lt_zero.2 (Real.exp_pos _))), fun t ht ht0 => ?_⟩
   have hη := eps_pos ht ht0
@@ -87,6 +116,9 @@ theorem projectiveLine_isRegFamily : IsRegFamily p1 fsPot fsPot projectiveLinePa
         hη.le (rm_ge_left _ _ _) (le_trans hc (rm_ge_right _ _ _))
       linarith
 
+/- English proof (translation)
+Introduce `u hu`. Use `filter_upwards [h] with t ht y hy`. Rewrite using `[ht y hy]`. Conclude with `refl_mem_uniformity hu`.
+-/
 theorem tuo_of_eventually {α β : Type*} [UniformSpace β] {F : ℝ → α → β} {f : α → β}
     {p : Filter ℝ} {K : Set α} (h : ∀ᶠ t in p, ∀ y ∈ K, F t y = f y) :
     TendstoUniformlyOn F f p K := by
@@ -95,6 +127,21 @@ theorem tuo_of_eventually {α β : Type*} [UniformSpace β] {F : ℝ → α → 
   rw [ht y hy]
   exact refl_mem_uniformity hu
 
+/- English proof (translation)
+Establish `hVeq : (p1.chart j).target ∩ (p1.chart j).symm ⁻¹' (bdry projectiveLinePairSection)ᶜ = {w | j = 1 → w 0 ≠ 0}` using `Set.ext fun w => chartV_iff j w`. Establish `hVo : IsOpen ((p1.chart j).target ∩ (p1.chart j).symm ⁻¹' (bdry projectiveLinePairSection)ᶜ)`. Rewrite using `[hVeq]`. Conclude with `isOpen_goodSet j`. Take `⟨δ, hδ, hδV⟩` from `hKc.exists_cthickening_subset_open hVo hK`.
+
+Establish `hC : IsCompact (Metric.cthickening δ K)` using `hKc.cthickening`. Establish `hgc : ContinuousOn (fun w => -Real.log (Real.exp 1 + 2 * fsGk j (fsQ w))) (Metric.cthickening δ K)` using `(contDiffOn_llwChart j).continuousOn.mono (fun w hw => (chartV_iff j w).1 (hδV hw))`. Take `⟨m, hm⟩` from `hC.bddBelow_image hgc`. Establish `hT : 0 < min T0 (Real.exp (-Real.exp (1 - m)))` using `lt_min (Real.exp_pos _) (Real.exp_pos _)`. Establish `hev : ∀ᶠ t in nhdsWithin 0 (Set.Ioi 0), ∀ w ∈ Metric.cthickening δ K, llT t ((p1.chart j).symm w) = llw ((p1.chart j).symm w)` using `by filter_upwards [Ioo_mem_nhdsGT hT] with t ht`.
+
+Introduce `w hw`. Establish `ht0 : t ≤ T0` using `le_trans ht.2.le (min_le_left _ _)`. Establish `ht1 : t ≤ Real.exp (-Real.exp (1 - m))` using `le_trans ht.2.le (min_le_right _ _)`. Establish `hwj : j = 1 → w 0 ≠ 0` using `(chartV_iff j w).1 (hδV hw)`. Rewrite using `[llT_chart_eq t j w hwj, projectiveLineLogLog_chart j w hwj]`.
+
+Apply `rm_eq_left (eps_pos ht.1 ht0).le` to reduce the goal to its premises. Establish `h1 : Real.exp (1 - m) ≤ Real.log (1 / t)` using `ell_ge ht.1 ht1`. Establish `h2 : 1 - m ≤ Real.log (Real.log (1 / t))`. Use `Real.log_le_log (Real.exp_pos _) h1` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+
+Establish `h3` using `eps_le_one ht.1 ht0`. Establish `h4 : m ≤ -Real.log (Real.exp 1 + 2 * fsGk j (fsQ w))` using `hm ⟨w, hw, rfl⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hloc : ∀ᶠ t in nhdsWithin 0 (Set.Ioi 0), ∀ y ∈ K, (llT t ∘ (p1.chart j).symm) =ᶠ[𝓝 y] (llw ∘ (p1.chart j).symm)` using `by filter_upwards [hev] with t ht y hy`. Establish `hmem : Metric.thickening δ K ∈ 𝓝 y` using `Metric.isOpen_thickening.mem_nhds (Metric.self_subset_thickening hδ K hy)`.
+
+Use `filter_upwards [hmem] with w hw`. Conclude with `ht w (Metric.thickening_subset_cthickening δ K hw)`. Use `⟨tuo_of_eventually ?_, tuo_of_eventually ?_, tuo_of_eventually ?_⟩` and prove the remaining obligations. Use `filter_upwards [hloc] with t ht y hy`. Conclude with `(ht y hy).eq_of_nhds`.
+
+Use `filter_upwards [hloc] with t ht y hy`. Conclude with `(ht y hy).fderiv_eq (𝕜 := ℝ)`. Use `filter_upwards [hloc] with t ht y hy`. Conclude with `((ht y hy).fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)`.
+-/
 theorem regFamilyC2_of_chart (j : Fin 2) (K : Set (Fin 1 → ℂ))
     (hK : K ⊆ (p1.chart j).target ∩ (p1.chart j).symm ⁻¹' (bdry projectiveLinePairSection)ᶜ) (hKc : IsCompact K) :
     TendstoUniformlyOn (fun t => llT t ∘ (p1.chart j).symm) (llw ∘ (p1.chart j).symm)
@@ -145,9 +192,31 @@ theorem regFamilyC2_of_chart (j : Fin 2) (K : Set (Fin 1 → ℂ))
   · filter_upwards [hloc] with t ht y hy
     exact ((ht y hy).fderiv (𝕜 := ℝ)).fderiv_eq (𝕜 := ℝ)
 
+/- English proof (translation)
+Introduce `j K hK hKc` and use `regFamilyC2_of_chart j K hK hKc`.
+-/
 theorem projectiveLine_isRegFamilyC2 : IsRegFamilyC2 p1 projectiveLinePairSection llw llT :=
   fun j K hK hKc => regFamilyC2_of_chart j K hK hKc
 
+/- English proof (translation)
+Introduce `e X _ A Θ L s hΘ hpos hL`. Establish `hT : (0 : ℝ) < Real.exp (-Real.exp 1)` using `Real.exp_pos _`. Establish `hT1 : Real.exp (-Real.exp 1) < 1` using `(by rw [← Real.exp_zero]; exact Real.exp_lt_exp.2 (neg_lt_zero.2 (Real.exp_pos _)))`. Establish `hεnn : ∀ t, 0 < t → t ≤ Real.exp (-Real.exp 1) → 0 ≤ epsT 1 t`. Introduce `t ht ht0`.
+
+Establish `h1 : Real.exp 1 ≤ Real.log (1 / t)` using `ell_ge ht ht0`. Establish `h2 : 0 ≤ Real.log (Real.log (1 / t))` using `Real.log_nonneg (by linarith [one_le_exp_one])`. Unfold `epsT`. Rewrite using `[one_mul]`. Conclude with `div_nonneg h2 (by linarith [Real.exp_pos 1])`.
+
+Establish `hlog : ∀ t, 0 < t → t ≤ Real.exp (-Real.exp 1) → 0 ≤ Real.log (Real.log (1 / t))`. Introduce `t ht ht0`. Establish `h1 : Real.exp 1 ≤ Real.log (1 / t)` using `ell_ge ht ht0`. Conclude with `Real.log_nonneg (by linarith [one_le_exp_one])`. Use `⟨⟨hT, hT1, fun t ht ht0 => ?_⟩, fun j K _ _ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Establish `hε` using `hεnn t ht ht0`. Establish `hr3 : 0 ≤ t ^ ((1 : ℝ) / 3)` using `Real.rpow_nonneg ht.le _`. Use `⟨fun j => contDiffOn_const, fun _ => zero_le_one, fun _ _ => le_refl _, fun _ => by linarith [hlog t ht ht0], ?_, fun _ _ _ => by linarith, fun y _ => ?_, fun t' htt' ht0' _ => ?_⟩` and prove the remaining obligations. Introduce `x j y hy w`. Establish `hyD : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x` using `⟨hy.1, hy.2.2⟩`.
+
+Establish `hc : ContDiffAt ℝ 2 (Θ.φ x ∘ (A.chart j).symm) y` using `((hΘ.1 x j).contDiffAt (((A.chart j).isOpen_inter_preimage_symm (Θ.isOpen_U x)).mem_nhds hyD)).of_le two_le_inf`. Establish `h0 : 0 ≤ levi (Θ.φ x ∘ (A.chart j).symm) y w`. Distinguish the cases in `hw : w = 0`. Rewrite using `[hw, levi_zero]`. Conclude with `(hpos x j y hyD w hw).le`.
+
+Use `show 0 ≤ levi (fun z => Θ.φ x ((A.chart j).symm z) + 0 + epsT 1 t * Θ.φ x ((A.chart j).symm z)) y w`. Simplify using `only [add_zero]`. Rewrite using `[levi_add_smul (f := fun z => Θ.φ x ((A.chart j).symm z)) (g := fun z => Θ.φ x ((A.chart j).symm z)) (epsT 1 t) hc hc w]`. Use `mul_nonneg hε h0` as an intermediate fact. Conclude with `add_nonneg h0 this`.
+
+Establish `h1 : Real.exp 1 ≤ rW L s y`. Use `hL y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_nonneg hε (le_trans (Real.exp_pos 1).le h1)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hεnn t' (lt_of_lt_of_le ht htt') ht0'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `tuo_of_eventually (Eventually.of_forall fun _ _ _ => rfl)`. Conclude with `tuo_of_eventually (Eventually.of_forall fun _ _ _ => rfl)`.
+
+Conclude with `tuo_of_eventually (Eventually.of_forall fun _ _ _ => rfl)`.
+-/
 theorem isRegFamily_inhabited : IsRegFamilyInhabitStatement := by
   intro e X _ A Θ L s hΘ hpos hL
   have hT : (0 : ℝ) < Real.exp (-Real.exp 1) := Real.exp_pos _
@@ -196,9 +265,15 @@ theorem isRegFamily_inhabited : IsRegFamilyInhabitStatement := by
   · exact tuo_of_eventually (Eventually.of_forall fun _ _ _ => rfl)
   · exact tuo_of_eventually (Eventually.of_forall fun _ _ _ => rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun y => logNormSec_nonpos y, singWeight, 2, T0, projectiveLine_isRegFamily, projectiveLine_isRegFamilyC2⟩`.
+-/
 theorem projectiveLineLogLog_inhabited : ProjectiveLineLogLogInhabited :=
   ⟨fun y => logNormSec_nonpos y, singWeight, 2, T0, projectiveLine_isRegFamily, projectiveLine_isRegFamilyC2⟩
 
+/- English proof (translation)
+The claim follows from `isRegFamily_inhabited`.
+-/
 theorem isRegFamilyInhabit : IsRegFamilyInhabitStatement := isRegFamily_inhabited
 
 end

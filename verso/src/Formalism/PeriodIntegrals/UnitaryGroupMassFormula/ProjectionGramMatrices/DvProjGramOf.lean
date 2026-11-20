@@ -8,6 +8,77 @@ namespace PI.Dv.ProjGramW
 
 open NumberField IsDedekindDomain Formalism.BasicNotions
 
+/- English proof (translation)
+Introduce `K _ _ _ _ A e n h _hconj hP hH w w' hww hDw _hDw' d a hB`. Establish `hee : e * e = e` using `hP.2.2.1`. Take `⟨hherm, hnd, hself⟩` from `hH`. Establish `hL2a` using `hA K A e n hP`. Use `set M := cutE A e A.L with hM`.
+
+Use `set P := imgE A e A.L with hPdef`. Use `set G : Matrix (Fin d) (Fin d) K := Matrix.of fun i j => h (a i) (a j) with hGdef`. Establish `hvn` using `vAdd_natCast_nonneg w n`. Distinguish the cases in `hG0 : G.det = 0`. Rewrite using `[hG0, vAdd_zero']`.
+
+Conclude with `mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) hvn`. Establish `hGu : IsUnit G.det` using `isUnit_iff_ne_zero.mpr hG0`. Use `set a' : Fin d → A.V := fun i => ∑ k, (G⁻¹) k i • a k with ha'`. Establish `hGH : G.conjTranspose = G`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.conjTranspose_apply, hGdef, Matrix.of_apply]`. Conclude with `(hherm (a j) (a i)).symm`. Establish `hdual : ∀ i j, h (a' i) (a j) = if i = j then 1 else 0`. Introduce `i j`. Establish `e1 : h (a' i) (a j) = ∑ k, star ((G⁻¹) k i) * G k j`.
+
+Simplify using `only [ha', map_sum, LinearMap.map_smulₛₗ, starRingEnd_apply, hGdef, Matrix.of_apply]`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`. Establish `e2 : ∑ k, star ((G⁻¹) k i) * G k j = ((G⁻¹).conjTranspose * G) i j`. Rewrite using `[Matrix.mul_apply]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, e2, Matrix.conjTranspose_nonsing_inv, hGH, Matrix.nonsing_inv_mul G hGu, Matrix.one_apply]`. Establish `ha_eq : ∀ j, ∑ i, G i j • a' i = a j`. Introduce `j`. Simplify using `only [ha', Finset.smul_sum, smul_smul]`.
+
+Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `: ∀ k, ∑ i, G i j * (G⁻¹) k i = (G⁻¹ * G) k j`. Introduce `k`. Rewrite using `[Matrix.mul_apply]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Repeatedly rewrite using `[this, Matrix.nonsing_inv_mul G hGu, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules. Establish `hli' : LinearIndependent K a'` using `linIndep_mat hB.1 G⁻¹ (Matrix.isUnit_nonsing_inv_det G hGu).ne_zero`. Use `set D := Submodule.span (𝓞 K) (Set.range a') with hDdef`.
+
+Use `set S := Submodule.span (𝓞 K) (Set.range a) with hSdef`. Establish `hDS : idxAt w D S = vAdd w G.det`. Use `hD K A.V w d a' hli' G hG0` as an intermediate fact. Establish `e : (fun j => ∑ i, G i j • a' i) = a` using `funext ha_eq`. Rewrite `this` using `[e]`.
+
+Conclude with `this`. Establish `hBw` using `hB.2 w (by simp)`. Establish `hBw'` using `hB.2 w' (by simp)`. Establish `hak : ∀ k, e (a k) = a k`. Introduce `k`.
+
+Take `⟨s, hs, hsx⟩` from `(locLe_zero_iff w _ _).mp hBw.1 (a k) (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hr : (algebraMap (𝓞 K) K s) • a k ∈ LinearMap.range e`. Rewrite using `[algebraMap_smul]`. Conclude with `hsx.2`. Establish `hr'` using `Submodule.smul_mem _ (algebraMap (𝓞 K) K s)⁻¹ hr`.
+
+Rewrite `hr'` using `[smul_smul, inv_mul_cancel₀ (algebraMap_ne_zero_of_not_mem w hs), one_smul]`. Take `⟨z, hz⟩` from `hr'`. Rewrite using `[← hz]`. Express the relevant statement in the definitionally equal form `(e * e) z = e z`. Rewrite using `[hee]`.
+
+Establish `ha'e : ∀ i, e (a' i) = a' i`. Introduce `i`. Simplify using `only [ha', map_sum, map_smul, hak]`. Establish `hLfg : A.L.FG` using `hP.1.2.1`. Establish `hMfg : M.FG` using `Submodule.FG.of_le hLfg inf_le_left`.
+
+Establish `hPfg : P.FG` using `hLfg.map _`. Establish `hDfg : D.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hSfg : S.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hsDS : Submodule.span K (D : Set A.V) = Submodule.span K (S : Set A.V)`. Rewrite using `[hDdef, hSdef, Submodule.span_span_of_tower, Submodule.span_span_of_tower]`.
+
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[← ha_eq j]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hsSM : Submodule.span K (S : Set A.V) = Submodule.span K (M : Set A.V)` using `le_antisymm (span_le_of_locLe w hBw.1) (span_le_of_locLe w hBw.2)`. Establish `hn0 : ((n : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr hP.2.1.ne'`.
+
+Establish `hsMP : Submodule.span K (M : Set A.V) = Submodule.span K (P : Set A.V)`. Apply `le_antisymm (Submodule.span_mono hL2a.2.1)` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Establish `h1` using `hL2a.1 x hx`.
+
+Establish `h2 : ((n : ℕ) : K) • x ∈ Submodule.span K (M : Set A.V)`. Establish `: ((n : ℕ) : K) • x = ((n : ℕ) : 𝓞 K) • x`. Rewrite using `[← algebraMap_smul K ((n : ℕ) : 𝓞 K) x, map_natCast]`. Rewrite using `[this]`. Conclude with `Submodule.subset_span h1`.
+
+Establish `h3` using `Submodule.smul_mem _ ((n : ℕ) : K)⁻¹ h2`. Rewrite `h3` using `[smul_smul, inv_mul_cancel₀ hn0, one_smul]`. Then use the resulting hypothesis. Take `⟨s', hs'S, hs'⟩` from `Formalism.HermitianLatticesTheory.indexBasic_denom w'.asIdeal.primeCompl M S hMfg (fun x hx => (locLe_zero_iff w' _ _).mp hBw'.2 x hx)`. Establish `hs'w : s' ∉ w'.asIdeal` using `hs'S`. Establish `hs'0 : s' ≠ 0` using `fun h0 => hs'w (h0 ▸ w'.asIdeal.zero_mem)`.
+
+Use `set t : 𝓞 K := RingOfIntegers.mapRingHom (starRingEnd K) s' with ht`. Establish `htK : algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K s')` using `rfl`. Establish `ht0 : t ≠ 0`. Introduce `h0`. Establish `: algebraMap (𝓞 K) K t = 0` using `by rw [h0, map_zero]`.
+
+Rewrite `this` using `[htK, star_eq_zero]`. Conclude with `algebraMap_ne_zero_of_not_mem w' hs'w this`. Establish `htw : t ∉ w.asIdeal`. Rewrite using `[← vAdd_eq_zero_iff w ht0, htK, ← hww, vAdd_eq_zero_iff w' hs'0]`. Conclude with `hs'w`.
+
+Establish `hint : ∀ i, ∀ x ∈ S, h (a' i) x ∈ Set.range (algebraMap (𝓞 K) K)`. Introduce `i`. Establish `hle : S ≤ (LinearMap.range (Algebra.linearMap (𝓞 K) K)).comap ((h (a' i)).restrictScalars (𝓞 K))`. Rewrite using `[hSdef, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.mem_range, Algebra.linearMap_apply]`. Rewrite using `[hdual]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`.
+
+Introduce `x hx`. Take `⟨r, hr⟩` from `hle hx`. Conclude with `⟨r, by simpa using hr⟩`. Establish `hDP : ∀ i, ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • a' i ∈ P`. Introduce `i`.
+
+Use `set ψ : Module.Dual K A.V := h (algebraMap (𝓞 K) K t • a' i) with hψ`. Establish `hψe : ψ ∘ₗ e = ψ`. Use extensionality with `y`. Simplify using `only [LinearMap.comp_apply, hψ]`. Rewrite using `[← hself, map_smul, ha'e]`.
+
+Establish `hψM : ψ ∈ Formalism.HN.dualLat M`. Introduce `m hm`. Establish `e1 : ψ m = h (a' i) (s' • m)`. Rewrite using `[hψ, LinearMap.map_smulₛₗ, ← algebraMap_smul K s' m, map_smul, htK]`. Simplify using `[starRingEnd_apply, star_star, smul_eq_mul]`.
+
+Rewrite using `[Algebra.smul_def]`. Rewrite using `[e1]`. Conclude with `hint i _ (hs' m hm)`. Take `⟨φ, hφ, hψφ⟩` from `(hL2a.2.2.2.2 ψ hψe).mp hψM`. Take `⟨u, hu⟩` from `exists_rep A h hnd φ`.
+
+Take `⟨s, hs, hsu⟩` from `hDw u (fun x hx => by rw [hu]; exact hφ x hx)`. Establish `heu : e u = algebraMap (𝓞 K) K t • a' i`. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hnd` to reduce the goal to its premises. Introduce `y`.
+
+Rewrite using `[map_sub, LinearMap.sub_apply, hself, hu]`. Express the relevant statement in the definitionally equal form `φ (e y) - ψ y = 0`. Rewrite using `[hψφ]`. Simplify using the standard rewrite rules. Use `⟨s * t, fun hm => ?_, ?_⟩` and prove the remaining obligations.
+
+Break down `w.isPrime.mem_or_mem hm with h1 | h1` into its components or cases. Conclude with `hs h1`. Conclude with `htw h1`. Use `⟨s • u, hsu, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, LinearMap.restrictScalars_apply, heu, algebraMap_smul, smul_smul]`.
+
+Establish `hLocDP : LocLe w 0 D P`. Rewrite using `[locLe_zero_iff]`. Establish `hle : D ≤ Formalism.HermitianLatticesTheory.locS w.asIdeal.primeCompl P`. Rewrite using `[hDdef, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+
+Take `⟨s, hs, hsP⟩` from `hDP i`. Conclude with `⟨s, hs, hsP⟩`. Introduce `x hx`. Take `⟨s, hs, hsP⟩` from `hle hx`. Conclude with `⟨s, hs, hsP⟩`.
+
+Establish `hsDP : Submodule.span K (D : Set A.V) = Submodule.span K (P : Set A.V)`. Rewrite using `[hsDS, hsSM, hsMP]`. Establish `h2` using `(hI K A.V w D P hDfg hPfg hsDP).2.1 S hSfg (by rw [← hsMP, ← hsSM])`. Establish `h3` using `idx_nonpos_of_loc hI w hDfg hPfg hsDP hLocDP`. Establish `h4` using `(hI K A.V w P M hPfg hMfg hsMP.symm).2.1 S hSfg hsSM`.
+
+Establish `h5` using `idx_eq_zero_of_loc hI w hMfg hSfg hBw.2 hBw.1`. Establish `h6` using `(hL2a.2.2.2.1 w).2.2`. Establish `h7 : ((min (dimE A e) (dimE A (1 - e)) : ℕ) : ℤ) ≤ (dimE A (1 - e) : ℤ)` using `Nat.cast_le.mpr (min_le_right _ _)`. Establish `h8` using `mul_le_mul_of_nonneg_right h7 hvn`. Establish `h9 : 0 ≤ (dimE A (1 - e) : ℤ) * vAdd w ((n : ℕ) : K)` using `mul_nonneg (Nat.cast_nonneg _) hvn`.
+
+Rewrite using `[← hDS]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem dvProjGram_of' (hA : ProjA) (hI : IdxCalc) (hD : IdxDet) : gram_det_kernel_base_level := by
   intro K _ _ _ _ A e n h _hconj hP hH w w' hww hDw _hDw' d a hB
   classical
@@ -195,6 +266,9 @@ theorem dvProjGram_of' (hA : ProjA) (hI : IdxCalc) (hD : IdxDet) : gram_det_kern
   rw [← hDS]
   linarith
 
+/- English proof (translation)
+The claim follows from `dvProjGram_of' hA hI (idxDet_of hI)`.
+-/
 theorem dvProjGram_of (hA : ProjA) (hI : IdxCalc) : gram_det_kernel_base_level :=
   dvProjGram_of' hA hI (idxDet_of hI)
 

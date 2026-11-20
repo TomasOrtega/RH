@@ -7,6 +7,9 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.LocDen
 
 namespace PI.VolStabS
 
+/- English proof (translation)
+The claim follows from `densAA_of fibLat_holds fFCount_holds (resAA_of hV latFacts_holds hH (idxAA_of idxL_holds hI) hC)`.
+-/
 theorem densAA_of_open (hV : VolAA) (hH : HensAA) (hI : IdxH) (hC : CntAA) : DensAA :=
   densAA_of fibLat_holds fFCount_holds
     (resAA_of hV latFacts_holds hH (idxAA_of idxL_holds hI) hC)

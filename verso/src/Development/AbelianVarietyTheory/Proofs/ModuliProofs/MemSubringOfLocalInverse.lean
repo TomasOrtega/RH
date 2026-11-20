@@ -21,6 +21,29 @@ open GlobalTheory.CechPic GlobalTheory.EndOnTorsion GlobalTheory.AmpleSpan
 
 variable {X Y Z : Scheme.{0}}
 
+/- English proof (translation)
+Establish `key : ∀ y ∈ W, ∃ h : Γ(Y, W), y ∈ Y.basicOpen h ∧ ∃ n, resG Y le h ^ n * b ∈ S` using `fun y hy => by`. Take `⟨O, t, u, hyO, hu, h1, h2⟩` from `loc y hy`. Take `⟨h, hle, hyh⟩` from `hW.exists_basicOpen_le (V := O) ⟨y, hyO⟩ hy`. Use `⟨h, hyh, ?_⟩` and prove the remaining obligations. Establish `hhW : Y.basicOpen h ≤ W` using `Y.basicOpen_le h`.
+
+Use `haveI := hW.isLocalization_basicOpen h`. Take `⟨l, a₀, ha₀⟩` from `IsLocalization.Away.surj h (resG Y hle t)`. Establish `ha₀' : resG Y hle t * resG Y hhW h ^ l = resG Y hhW a₀` using `ha₀`. Establish `g₀ : ∀ z ∈ Y.basicOpen h, gs (𝟙 Y) z _ t * gs (𝟙 Y) z _ h ^ l = gs (𝟙 Y) z _ a₀` using `fun z hz => by`. Establish `e` using `congrArg (gs (𝟙 Y) z _) ha₀'`.
+
+Rewrite `e` using `[gs_mul _ z _ hz, LBGerm.gs_pow _ z _ hz, gs_res _ z _ hz, gs_res _ z _ hz, gs_res _ z _ hz]`. Then use the resulting hypothesis. Establish `hc : Y.basicOpen (h * a₀) ≤ V` using `fun z hz => by`. Rewrite `hz` using `[Y.basicOpen_mul]`. Use `h1 z (hhW hz.1) ((isUnit_gs_iff (𝟙 Y) z _ (hle hz.1) t).1 ?_)` and prove the remaining obligations. Conclude with `isUnit_of_mul_isUnit_left ((g₀ z hz.1).symm ▸ (isUnit_gs_iff (𝟙 Y) z _ (hhW hz.1) a₀).2 hz.2)`.
+
+Establish `hc' : ∀ z ∈ V, z ∈ Y.basicOpen h → z ∈ Y.basicOpen (h * a₀)` using `fun z hz hzh => by`. Rewrite using `[Y.basicOpen_mul]`. Use `⟨hzh, (isUnit_gs_iff (𝟙 Y) z _ (hhW hzh) a₀).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← g₀ z hzh]`. Conclude with `(IsUnit.of_mul_eq_one_right _ (h2 z hz (hle hzh))).mul (((isUnit_gs_iff (𝟙 Y) z _ (hhW hzh) h).2 hzh).pow l)`.
+
+Establish `hcW : Y.basicOpen (h * a₀) ≤ W` using `Y.basicOpen_le _`. Use `haveI := hW.isLocalization_basicOpen (h * a₀)`. Take `⟨m, a, ha⟩` from `IsLocalization.Away.surj (h * a₀) (resG Y hc b)`. Establish `ha' : resG Y hc b * resG Y hcW (h * a₀) ^ m = resG Y hcW a` using `ha`. Take `⟨k, hk⟩` from `exists_pow_mul_eq_zero_of_res_basicOpen_eq_zero_of_isAffineOpen Y hV (resG Y le h ^ (m + l * m) * b - resG Y le a * u ^ m) (resG Y le h) (fn_ext fun z hz => by`.
+
+Establish `hz' : z ∈ V ⊓ Y.basicOpen h` using `(Y.basicOpen_res h (homOfLE le).op).le hz`. Establish `hzc` using `hc' z hz'.1 hz'.2`. Establish `e` using `congrArg (gs (𝟙 Y) z _) ha'`. Rewrite `e` using `[gs_mul _ z _ hzc, LBGerm.gs_pow _ z _ hzc, gs_res _ z _ hzc, gs_res _ z _ hzc, gs_res _ z _ hzc, gs_mul _ z _ (le hz'.1), ← g₀ z hz'.2]`. Use `(gs_res (𝟙 Y) z (Y.basicOpen_le _) hz _).trans (Eq.trans ?_ (LBGerm.gs_zero _ z _ hz).symm)` and prove the remaining obligations.
+
+Rewrite using `[gs_sub' _ z _ hz'.1, gs_mul _ z _ hz'.1, gs_mul _ z _ hz'.1, LBGerm.gs_pow _ z _ hz'.1, LBGerm.gs_pow _ z _ hz'.1, gs_res _ z _ hz'.1, gs_res _ z _ hz'.1, ← e]`. Establish `e2` using `congrArg (· ^ m) (h2 z hz'.1 (hle hz'.2))`. Simplify using `only [mul_pow, one_pow] at e2`. Simplify using `only [mul_pow, pow_add, pow_mul]`. Take the linear combination `(-(gs (𝟙 Y) z _ h ^ m * (gs (𝟙 Y) z _ h ^ l) ^ m * gs (𝟙 Y) z _ b)) * e2)`.
+
+Use `⟨k + (m + l * m), ?_⟩` and prove the remaining obligations. Establish `: resG Y le h ^ (k + (m + l * m)) * b = resG Y le h ^ k * (resG Y le a * u ^ m)`. Rewrite using `[pow_add]`. Take the linear combination `hk`. Rewrite using `[this]`.
+
+Conclude with `S.mul_mem (S.pow_mem (hS h) k) (S.mul_mem (hS a) (S.pow_mem hu m))`. Use `letI : Algebra Γ(Y, W) Γ(Y, V) := (resG Y le).toAlgebra`. Set `N : Submodule Γ(Y, W) Γ(Y, V)` to `{ carrier := S add_mem' := S.add_mem zero_mem' := S.zero_mem smul_mem' := fun c x hx => S.mul_mem (hS c) hx }`. Use `Submodule.mem_of_span_eq_top_of_smul_pow_mem N {h | ∃ n, resG Y le h ^ n * b ∈ S} ?_ b ?_` and prove the remaining obligations. Rewrite using `[← hW.self_le_iSup_basicOpen_iff]`.
+
+Introduce `y hy`. Take `⟨h, hyh, hn⟩` from `key y hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨h, hn⟩, hyh⟩`. Introduce and unpack `⟨h, n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+
+Rewrite `hn` using `[← map_pow]`. Conclude with `hn`.
+-/
 theorem mem_subring_of_local_inverse {W V : Y.Opens} (hW : IsAffineOpen W) (hV : IsAffineOpen V) (le : V ≤ W)
     (S : Subring Γ(Y, V)) (hS : ∀ a, resG Y le a ∈ S)
     (loc : ∀ y ∈ W, ∃ (O : Y.Opens) (t : Γ(Y, O)) (u : Γ(Y, V)), y ∈ O ∧ u ∈ S ∧
@@ -86,6 +109,17 @@ theorem mem_subring_of_local_inverse {W V : Y.Opens} (hW : IsAffineOpen W) (hV :
     rw [← map_pow] at hn
     exact hn
 
+/- English proof (translation)
+Take `⟨τ₁, g₁, h₁⟩` from `h₁`. Take `⟨τ₂, g₂, h₂⟩` from `h₂`. Establish `l₁ : ∀ J, ((tens A B).pull x).U J ≤ (A.pull x).U (fun _ => (J PUnit.unit).1)` using `fun J y hy => mem_pull.2 (mem_pull.1 hy).1`. Establish `l₂ : ∀ J, ((tens A B).pull x).U J ≤ (B.pull x).U (fun _ => (J PUnit.unit).2)` using `fun J y hy => mem_pull.2 (mem_pull.1 hy).2`. Establish `gen : ∀ {C : LB Y} {τ : (C.pull x).Gen}, τ.IsGen → ∀ (y : Sp R) j j', x y ∈ C.U j → x y ∈ C.U j' → gm (𝟙 _) y _ (τ.s fun _ => j) = gm x y _ (C.g j j') * gm (𝟙 _) y _ (τ.s fun _ => j')`.
+
+Introduce `C τ g y j j' hj hj'`. Establish `e` using `(isGen_iff_germ τ).1 g y (fun _ => j) (fun _ => j') (mem_pull.2 hj) (mem_pull.2 hj')`. Establish `e'` using `gm_pull_g C x (𝟙 _) y (fun _ => j) (fun _ => j') (mem_pull.2 hj) (mem_pull.2 hj')`. Rewrite `e'` using `[Category.id_comp]`. Conclude with `e.trans (congrArg (· * _) e')`.
+
+Establish `val : ∀ {C : LB Y} (τ : (C.pull x).Gen) (w : C.Sec) (a : R) j (y : Sp R) (hy : x y ∈ C.U j), (x.appLE _ _ (RepBC.pull_le C x fun _ => j)).hom (w.f j) = resG (Sp R) le_top ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a) * (show Γ(Sp R, (C.pull x).U fun _ => j) from (τ.s fun _ => …`. Introduce `C τ w a j y hy h`. Establish `hy' : y ∈ (C.pull x).U (fun _ => j)` using `mem_pull.2 hy`. Use `congrArg (gs (𝟙 _) y _) h` as an intermediate fact. Use `(SegreCoord.gs_appLE x y _ hy' _).symm.trans (this.trans ((gs_mul _ y _ hy' _ _).trans (congrArg₂ (· * ·) ?_ ?_)))` and prove the remaining obligations.
+
+Conclude with `(gs_res _ y _ hy' _).trans (SegreCoord.ev_eq y _).symm`. Conclude with `gs_unit _ y _ hy' _`. Use `SegreCoord.secCoord_mk (fun J => resG _ (l₁ J) (τ₁.s _).val * resG _ (l₂ J) (τ₂.s _).val) (fun y j => (gm (𝟙 _) y _ (τ₁.s fun _ => j.1)).val * (gm (𝟙 _) y _ (τ₂.s fun _ => j.2)).val) (fun J y hy => ?_) (fun y j _ => (Units.isUnit _).mul (Units.isUnit _)) (fun y j j' hj hj' => ?_) …` and prove the remaining obligations. Conclude with `(gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ hy _).trans (gs_unit _ y _ (l₁ J hy) _)) ((gs_res _ y _ hy _).trans (gs_unit _ y _ (l₂ J hy) _)))`. Rewrite using `[gen g₁ y j.1 j'.1 hj.1 hj'.1, gen g₂ y j.2 j'.2 hj.2 hj'.2, gm_tens A B x y j j' hj hj']`.
+
+Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : gs x y _ ((tensSec (s i.1) (t i.2)).f j) = gs x y _ ((s i.1).f j.1) * gs x y _ ((t i.2).f j.2)` using `(gs_mul _ y _ hj _ _).trans (congrArg₂ (· * ·) (gs_res _ y _ hj _) (gs_res _ y _ hj _))`. Rewrite using `[e, val τ₁ _ _ _ y hj.1 (h₁ i.1 (fun _ => j.1) _), val τ₂ _ _ _ y hj.2 (h₂ i.2 (fun _ => j.2) _), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem secCoord_tens {A B : LB Y} {σ₁ σ₂ : Type} {s : σ₁ → A.Sec} {t : σ₂ → B.Sec} {R : Type} [CommRing R]
     {x : Sp R ⟶ Y} {v₁ : σ₁ → R} {v₂ : σ₂ → R} (h₁ : SecCoord A s x v₁) (h₂ : SecCoord B t x v₂) :
     SecCoord (tens A B) (fun i : σ₁ × σ₂ => tensSec (s i.1) (t i.2)) x (fun i => v₁ i.1 * v₂ i.2) := by
@@ -128,6 +162,11 @@ theorem secCoord_tens {A B : LB Y} {σ₁ σ₂ : Type} {s : σ₁ → A.Sec} {t
     rw [e, val τ₁ _ _ _ y hj.1 (h₁ i.1 (fun _ => j.1) _), val τ₂ _ _ _ y hj.2 (h₂ i.2 (fun _ => j.2) _), map_mul]
     ring
 
+/- English proof (translation)
+Use `nonzeroLocus_eq_of _ _ (fun y hy => ?_) fun y k hk => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart_of_mem s hy`. Conclude with `⟨fun _ => j, mem_pull.2 hj⟩`. Establish `e : gs (𝟙 Y) y _ ((RepBC.secPull M f s).f k) = gs f y _ (s.f (k PUnit.unit))` using `SegreCoord.gs_appLE f y _ hk _`. Rewrite using `[e]`.
+
+Conclude with `(mem_nonzeroLocus_iff_gs s f y (mem_pull.1 hk)).symm`.
+-/
 theorem nonzeroLocus_pull (M : LB X) (f : Y ⟶ X) (s : M.Sec) :
     Out.nonzeroLocus (RepBC.secPull M f s) = f ⁻¹ᵁ Out.nonzeroLocus s := by
   refine nonzeroLocus_eq_of _ _ (fun y hy => ?_) fun y k hk => ?_
@@ -138,6 +177,9 @@ theorem nonzeroLocus_pull (M : LB X) (f : Y ⟶ X) (s : M.Sec) :
     rw [e]
     exact (mem_nonzeroLocus_iff_gs s f y (mem_pull.1 hk)).symm
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `exists_chart hM (x (IsLocalRing.closedPoint R))`. Use `SegreCoord.exists_secCoord hM (k := k) fun y => ?_` and prove the remaining obligations. Establish `: x ⁻¹ᵁ M.U k = ⊤` using `(IsLocalRing.closedPoint_mem_iff (x ⁻¹ᵁ M.U k)).1 hk`. Conclude with `this.ge (show y ∈ (⊤ : (Sp R).Opens) from trivial)`.
+-/
 theorem exists_secCoord_local {M : LB X} (hM : M.IsLB) {σ : Type} (th : σ → M.Sec) {R : Type} [CommRing R]
     [IsLocalRing R] (x : Sp R ⟶ X) : ∃ v, SecCoord M th x v := by
   obtain ⟨k, hk⟩ := exists_chart hM (x (IsLocalRing.closedPoint R))
@@ -151,10 +193,16 @@ variable {X₁ X₂ : Scheme.{0}} {M₁ : LB X₁} {M₂ : LB X₂} (a₁ : Y �
 def prodSec (s : M₁.Sec) (t : M₂.Sec) : (tens (M₁.pull a₁) (M₂.pull a₂)).Sec :=
   tensSec (RepBC.secPull M₁ a₁ s) (RepBC.secPull M₂ a₂ t)
 
+/- English proof (translation)
+Rewrite using `[prodSec, nonzeroLocus_tensSec, nonzeroLocus_pull, nonzeroLocus_pull]`.
+-/
 theorem nonzeroLocus_prodSec (s : M₁.Sec) (t : M₂.Sec) :
     Out.nonzeroLocus (prodSec a₁ a₂ s t) = a₁ ⁻¹ᵁ Out.nonzeroLocus s ⊓ a₂ ⁻¹ᵁ Out.nonzeroLocus t := by
   rw [prodSec, nonzeroLocus_tensSec, nonzeroLocus_pull, nonzeroLocus_pull]
 
+/- English proof (translation)
+Establish `h : y ∈ (tens (M₁.pull a₁) (M₂.pull a₂)).U (fun _ => j, fun _ => k)` using `⟨mem_pull.2 hj, mem_pull.2 hk⟩`. Conclude with `(gs_mul _ y _ h _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ h _).trans (SegreCoord.gs_appLE a₁ y _ h.1 _)) ((gs_res _ y _ h _).trans (SegreCoord.gs_appLE a₂ y _ h.2 _)))`.
+-/
 theorem gs_prodSec (s : M₁.Sec) (t : M₂.Sec) (y : Y) {j : M₁.ι} {k : M₂.ι} (hj : a₁ y ∈ M₁.U j) (hk : a₂ y ∈ M₂.U k) :
     gs (𝟙 Y) y _ ((prodSec a₁ a₂ s t).f (fun _ => j, fun _ => k)) = gs a₁ y _ (s.f j) * gs a₂ y _ (t.f k) := by
   have h : y ∈ (tens (M₁.pull a₁) (M₂.pull a₂)).U (fun _ => j, fun _ => k) := ⟨mem_pull.2 hj, mem_pull.2 hk⟩
@@ -162,12 +210,24 @@ theorem gs_prodSec (s : M₁.Sec) (t : M₂.Sec) (y : Y) {j : M₁.ι} {k : M₂
     ((gs_res _ y _ h _).trans (SegreCoord.gs_appLE a₁ y _ h.1 _))
     ((gs_res _ y _ h _).trans (SegreCoord.gs_appLE a₂ y _ h.2 _)))
 
+/- English proof (translation)
+The claim follows from `secCoord_tens ((RepBC.secCoord_pull M₁ th₁ a₁ y v₁).2 h₁) ((RepBC.secCoord_pull M₂ th₂ a₂ y v₂).2 h₂)`.
+-/
 theorem secCoord_prod {σ₁ σ₂ : Type} {th₁ : σ₁ → M₁.Sec} {th₂ : σ₂ → M₂.Sec} {R : Type} [CommRing R]
     {y : Sp R ⟶ Y} {v₁ : σ₁ → R} {v₂ : σ₂ → R} (h₁ : SecCoord M₁ th₁ (y ≫ a₁) v₁) (h₂ : SecCoord M₂ th₂ (y ≫ a₂) v₂) :
     SecCoord (tens (M₁.pull a₁) (M₂.pull a₂)) (fun i : σ₁ × σ₂ => prodSec a₁ a₂ (th₁ i.1) (th₂ i.2)) y
       (fun i => v₁ i.1 * v₂ i.2) :=
   secCoord_tens ((RepBC.secCoord_pull M₁ th₁ a₁ y v₁).2 h₁) ((RepBC.secCoord_pull M₂ th₂ a₂ y v₂).2 h₂)
 
+/- English proof (translation)
+Use extensionality with `F`. Simplify using `only [graphIdeal, idealOf, Ideal.mem_iInf, RingHom.mem_ker, Category.comp_id]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h R _ β y v ⟨hy, hv⟩`. Use `eq_zero_of_localization _ fun J hJ => ?_` and prove the remaining obligations.
+
+Set `φ` to `algebraMap R (Localization.AtPrime J)`. Take `⟨v₁, e₁⟩` from `exists_secCoord_local h₁ th₁ ((spMap φ ≫ y) ≫ a₁)`. Take `⟨v₂, e₂⟩` from `exists_secCoord_local h₂ th₂ ((spMap φ ≫ y) ≫ a₂)`. Take `⟨u, hu⟩` from `Coord.unique (isLB_tens (pull_isLB h₁ a₁) (pull_isLB h₂ a₂)) (secCoord_prod a₁ a₂ e₁ e₂) (Coord.baseChange hv φ)`. Use `h _ _ (φ.comp β) (spMap φ ≫ y) _ v₂ ⟨by rw [Category.assoc, hy, ← spMap_comp], Coord.scale e₁ u, e₂⟩` as an intermediate fact.
+
+Use `Eq.trans ?_ this` and prove the remaining obligations. Use `(MvPolynomial.map_eval₂Hom β v φ F).trans ?_` and prove the remaining obligations. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[hu, _root_.mul_assoc]`.
+
+Introduce and unpack `h R _ β y v₁ v₂ ⟨hy, e₁, e₂⟩`. Conclude with `h R _ β y _ ⟨hy, secCoord_prod a₁ a₂ e₁ e₂⟩`.
+-/
 theorem graphIdeal_eq {K σ₁ σ₂ : Type} [CommRing K] (s : Y ⟶ Sp K) (h₁ : M₁.IsLB) (h₂ : M₂.IsLB)
     (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec) :
     graphIdeal s M₁ th₁ a₁ M₂ th₂ a₂ = idealOf s (tens (M₁.pull a₁) (M₂.pull a₂))
@@ -191,6 +251,29 @@ theorem graphIdeal_eq {K σ₁ σ₂ : Type} [CommRing K] (s : Y ⟶ Sp K) (h₁
   · rintro h R _ β y v₁ v₂ ⟨hy, e₁, e₂⟩
     exact h R _ β y _ ⟨hy, secCoord_prod a₁ a₂ e₁ e₂⟩
 
+/- English proof (translation)
+Take `⟨c₁, V₁⟩` from `V₁`. Take `⟨c₂, V₂⟩` from `V₂`. Use `choose f₁ r₁ q₁ g₁ using V₁`. Use `choose f₂ r₂ q₂ g₂ using V₂`. Establish `q₁' : ∀ i j, IsRatio (th₁ j) (th₁ i) (r₁ i j)` using `q₁`.
+
+Establish `q₂' : ∀ i j, IsRatio (th₂ j) (th₂ i) (r₂ i j)` using `q₂`. Establish `o₁ : ∀ i, r₁ i i = 1` using `fun i => (q₁' i i).unique fun k => by rw [map_one, _root_.one_mul]`. Establish `o₂ : ∀ i, r₂ i i = 1` using `fun i => (q₂' i i).unique fun k => by rw [map_one, _root_.one_mul]`. Establish `m₁ : ∀ x, ∃ i, x ∈ Out.nonzeroLocus (th₁ i)` using `fun x => TopologicalSpace.Opens.mem_iSup.1 (by rw [c₁]; trivial)`. Establish `m₂ : ∀ x, ∃ i, x ∈ Out.nonzeroLocus (th₂ i)` using `fun x => TopologicalSpace.Opens.mem_iSup.1 (by rw [c₂]; trivial)`.
+
+Use `⟨top_le_iff.1 fun y _ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `m₁ (a₁ y)`. Take `⟨i', hi'⟩` from `m₂ (a₂ y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(i, i'), (nonzeroLocus_prodSec a₁ a₂ _ _).ge ⟨hi, hi'⟩⟩`. Introduce and unpack `⟨i, i'⟩`.
+
+Establish `eV` using `nonzeroLocus_prodSec a₁ a₂ (th₁ i) (th₂ i')`. Establish `hW : IsAffineOpen (a₁ ⁻¹ᵁ Out.nonzeroLocus (th₁ i))` using `(f₁ i).preimage a₁`. Establish `hV : IsAffineOpen (Out.nonzeroLocus (prodSec a₁ a₂ (th₁ i) (th₂ i')))`. Rewrite using `[eV, inf_comm, ← nonzeroLocus_pull M₂]`. Conclude with `isAffineOpen_nonzeroLocus_inf (pull_isLB h₂ a₂) _ hW`.
+
+Establish `l₁` using `eV.le.trans inf_le_left`. Establish `l₂` using `eV.le.trans inf_le_right`. Set `r : σ₁ × σ₂ → Γ(Y, Out.nonzeroLocus (prodSec a₁ a₂ (th₁ i) (th₂ i')))` to `fun j => (a₁.appLE _ _ l₁).hom (r₁ i j.1) * (a₂.appLE _ _ l₂).hom (r₂ i' j.2)`. Use `⟨hV, r, fun j => isRatio_of_gs (s := prodSec a₁ a₂ (th₁ j.1) (th₂ j.2)) fun y hy => ?_, fun f => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart h₁ (a₁ y)`.
+
+Take `⟨k', hk'⟩` from `exists_chart h₂ (a₂ y)`. Use `⟨(fun _ => k, fun _ => k'), ⟨mem_pull.2 hk, mem_pull.2 hk'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[gs_prodSec a₁ a₂ _ _ y hk hk', gs_prodSec a₁ a₂ _ _ y hk hk', gs_mul _ y _ hy, SegreCoord.gs_appLE a₁ y _ hy, SegreCoord.gs_appLE a₂ y _ hy, (q₁' i j.1).gs a₁ y (l₁ hy) hk, (q₂' i' j.2).gs a₂ y (l₂ hy) hk']`. Expand and normalize the polynomial expressions, which then agree. Set `c : K →+* Γ(Y, Out.nonzeroLocus (prodSec a₁ a₂ (th₁ i) (th₂ i')))` to `RingHom.comp ((a₁ ≫ p₁).appLE ⊤ _ le_top).hom (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom`.
+
+Set `S` to `(MvPolynomial.eval₂Hom c r).range`. Establish `hr : ∀ j, r j ∈ S` using `fun j => ⟨MvPolynomial.X j, MvPolynomial.eval₂Hom_X' _ _ _⟩`. Use `Exists.imp (fun F hF => Eq.symm hF) (RingHom.mem_range.1 (mem_subring_of_local_inverse hW hV l₁ S (fun a => ?_) (fun y _ => ?_) f))` and prove the remaining obligations. Take `⟨a, rfl⟩` from `a₁.app_surjective _ (f₁ i) a`. Take `⟨F, rfl⟩` from `g₁ i a`.
+
+Express the relevant statement in the definitionally equal form `(a₁.appLE _ _ l₁).hom _ ∈ S`. Rewrite using `[MvPolynomial.eval₂_comp_left]`. Use `MvPolynomial.eval₂_mem (fun d _ => ?_) fun j => ?_` and prove the remaining obligations. Conclude with `⟨MvPolynomial.C (MvPolynomial.coeff d F), (MvPolynomial.eval₂Hom_C _ _ _).trans (RepBC.appLE_appLE a₁ p₁ (U := ⊤) le_top l₁ le_top ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom (MvPolynomial.coeff d F))).symm⟩`. Use `hr (j, i')` as an intermediate fact.
+
+Simplify `this` using `only [r, o₂, map_one, _root_.mul_one, Function.comp_apply]`. Take `⟨k, hk⟩` from `m₂ (a₂ y)`. Use `⟨a₂ ⁻¹ᵁ Out.nonzeroLocus (th₂ k), (a₂.appLE _ _ le_rfl).hom (r₂ k i'), (a₂.appLE _ _ l₂).hom (r₂ i' k), hk, ?_, fun z hz hz' => eV.ge ⟨hz, ?_⟩, fun z hz hz' => ?_⟩` and prove the remaining obligations. Use `hr (i, k)` as an intermediate fact. Simplify `this` using `only [r, o₁, map_one, _root_.one_mul]`.
+
+Establish `hzk` using `Y.basicOpen_le _ hz'`. Establish `e` using `(isUnit_gs_iff (𝟙 Y) z _ hzk _).2 hz'`. Rewrite `e` using `[SegreCoord.gs_appLE a₂ z _ hzk, isUnit_gs_iff a₂ z _ hzk, (q₂' k i').basicOpen]`. Conclude with `e.2`. Take `⟨l, hl⟩` from `exists_chart h₂ (a₂ z)`.
+
+Rewrite using `[SegreCoord.gs_appLE a₂ z _ hz, SegreCoord.gs_appLE a₂ z _ hz']`. Use `((mem_nonzeroLocus_iff_gs (th₂ k) a₂ z hl).1 hz').mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, ← (q₂' k i').gs a₂ z hz' hl, ← (q₂' i' k).gs a₂ z (l₂ hz) hl, _root_.one_mul]`.
+-/
 theorem vAmp_prod {K σ₁ σ₂ : Type} [Field K] {p₁ : X₁ ⟶ Sp K} {p₂ : X₂ ⟶ Sp K} (h₁ : M₁.IsLB) (h₂ : M₂.IsLB)
     {th₁ : σ₁ → M₁.Sec} {th₂ : σ₂ → M₂.Sec} (V₁ : VAmp p₁ M₁ th₁) (V₂ : VAmp p₂ M₂ th₂) [IsClosedImmersion a₁] :
     VAmp (a₁ ≫ p₁) (tens (M₁.pull a₁) (M₂.pull a₂)) (fun i : σ₁ × σ₂ => prodSec a₁ a₂ (th₁ i.1) (th₂ i.2)) := by
@@ -260,6 +343,11 @@ theorem vAmp_prod {K σ₁ σ₂ : Type} [Field K] {p₁ : X₁ ⟶ Sp K} {p₂ 
 
 end Product
 
+/- English proof (translation)
+Introduce `K σ₁ σ₂ _ _ _ Y X₁ X₂ s p₁ p₂ M₁ M₂ th₁ th₂ a₁ a₂ h₁ h₂ V₁ V₂ _ e₁ _`. Establish `k₁` using `pull_isLB h₁ a₁`. Establish `k₂` using `pull_isLB h₂ a₂`. Establish `k` using `isLB_tens k₁ k₂`. Use `⟨_, fun i => prodSec a₁ a₂ (th₁ i.1) (th₂ i.2), k, e₁ ▸ vAmp_prod a₁ a₂ h₁ h₂ V₁ V₂, ?_, graphIdeal_eq a₁ a₂ s h₁ h₂ th₁ th₂, fun R _ y v₁ v₂ => secCoord_prod a₁ a₂, fun i i' u₁ u₂ j => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cls_eq_iff (LB.isLB_div k k₁) k₂, cls_div k k₁, cls_tens k₁ k₂, add_sub_cancel_left]`. Use `show resG Y _ ((a₁.appLE _ _ _).hom ((th₁ i.1).f _)) * resG Y _ ((a₂.appLE _ _ _).hom ((th₂ i.2).f _)) = resG Y _ ((a₁.appLE _ _ _).hom ((th₁ i'.1).f _)) * resG Y _ ((a₂.appLE _ _ _).hom ((th₂ i'.2).f _))`. Rewrite using `[u₁, u₂]`.
+-/
 theorem exists_product_system : ∀ (K σ₁ σ₂ : Type) [Field K] [Finite σ₁] [Finite σ₂] (Y X₁ X₂ : Scheme.{0}) (s : Y ⟶ Sp K) (p₁ : X₁ ⟶ Sp K) (p₂ : X₂ ⟶ Sp K) (M₁ : LB X₁) (M₂ : LB X₂) (th₁ : σ₁ → M₁.Sec) (th₂ : σ₂ → M₂.Sec) (a₁ : Y ⟶ X₁) (a₂ : Y ⟶ X₂), M₁.IsLB → M₂.IsLB → VAmp p₁ M₁ th₁ → VAmp p₂ M₂ th₂ → IsClosedImmersion a₁ → a₁ ≫ p₁ = s → a₂ ≫ p₂ = s → ∃ (M : LB Y) (th : σ₁ × σ₂ → M.Sec), M.IsLB ∧ VAmp s M th ∧ LBIso (LB.div M (M₁.pull a₁)) (M₂.pull a₂) ∧ graphIdeal s M₁ th₁ a₁ M₂ th₂ a₂ = idealOf s M th (𝟙 Y) ∧ (∀ (R : Type) [CommRing R] (y : Sp R ⟶ Y) v₁ v₂, SecCoord M₁ th₁ (y ≫ a₁) v₁ → SecCoord M₂ th₂ (y ≫ a₂) v₂ → SecCoord M th y (fun i => v₁ i.1 * v₂ i.2)) ∧ ∀ i i' : σ₁ × σ₂, (∀ j, (th₁ i.1).f j = (th₁ i'.1).f j) → (∀ j, (th₂ i.2).f j = (th₂ i'.2).f j) → ∀ j, (th i).f j = (th i').f j := by
   intro K σ₁ σ₂ _ _ _ Y X₁ X₂ s p₁ p₂ M₁ M₂ th₁ th₂ a₁ a₂ h₁ h₂ V₁ V₂ _ e₁ _
   have k₁ := pull_isLB h₁ a₁

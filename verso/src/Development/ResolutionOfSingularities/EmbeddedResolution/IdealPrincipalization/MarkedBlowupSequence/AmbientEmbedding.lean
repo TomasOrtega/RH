@@ -26,18 +26,27 @@ structure AmbientEmbedding {S : Scheme.{u}} (s : BlowupSequenceData S) (n : ℕ)
   emb_isClosedImmersion : AlgebraicGeometry.IsClosedImmersion emb
   isNoetherian_ambient_of_le_length : n ≤ s.length → AlgebraicGeometry.IsNoetherian ambient
 
+/- English proof (translation)
+Establish `: AlgebraicGeometry.IsClosedImmersion s.isoZero.hom` using `inferInstance`. Use `infer_instance`.
+-/
 private theorem isClosedImmersion_isoObjZero_hom_comp {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] (s : BlowupSequenceData S) :
     AlgebraicGeometry.IsClosedImmersion (s.isoZero.hom ≫ ι) := by
   have : AlgebraicGeometry.IsClosedImmersion s.isoZero.hom := inferInstance
   infer_instance
 
+/- English proof (translation)
+Use `hA` as an intermediate fact. Conclude with `hno A (Blowup.blowup Z) (Blowup.blowup.proj Z) Z (Blowup.blowup.isBlowupAlongIdealSheaf_proj Z)`.
+-/
 private theorem isNoetherian_blowup_of_isNoetherian (hno : BlowupPreservesNoetherian.{u})
     {A : Scheme.{u}} (hA : AlgebraicGeometry.IsNoetherian A) (Z : A.IdealSheafData) :
     AlgebraicGeometry.IsNoetherian (Blowup.blowup Z) := by
   have := hA
   exact hno A (Blowup.blowup Z) (Blowup.blowup.proj Z) Z (Blowup.blowup.isBlowupAlongIdealSheaf_proj Z)
 
+/- English proof (translation)
+Establish `h : imageIdealSheaf σ J = J.map σ` using `rfl`. Rewrite using `[h]`. Conclude with `Blowup.comap_map_of_isClosedImmersion σ J`.
+-/
 private theorem comap_imageIdealSheaf_of_isClosedImmersion {S' A : Scheme.{u}} (σ : S' ⟶ A)
     [AlgebraicGeometry.IsClosedImmersion σ] (J : S'.IdealSheafData) :
     (imageIdealSheaf σ J).comap σ = J := by
@@ -45,10 +54,24 @@ private theorem comap_imageIdealSheaf_of_isClosedImmersion {S' A : Scheme.{u}} (
   rw [h]
   exact Blowup.comap_map_of_isClosedImmersion σ J
 
+/- English proof (translation)
+Simplify using `[Scheme.IdealSheafData.support_comap]`.
+-/
 private theorem preimage_support_subset_support_comap {S' A : Scheme.{u}} (σ : S' ⟶ A) (Z : A.IdealSheafData) :
     σ.base ⁻¹' (Z.support : Set ↥A) ⊆ ((Z.comap σ).support : Set ↥S') := by
   simp [Scheme.IdealSheafData.support_comap]
 
+/- English proof (translation)
+Establish `hπ : Blowup.IsBlowupAlongIdealSheaf (Blowup.blowup.proj (imageIdealSheaf σ J)) (imageIdealSheaf σ J)` using `Blowup.blowup.isBlowupAlongIdealSheaf_proj _`. Establish `hcomap : (imageIdealSheaf σ J).comap σ = J` using `comap_imageIdealSheaf_of_isClosedImmersion σ J`. Establish `hsupp : ∀ T ∈ irreducibleComponents ↥S', ¬ (σ.base '' T) ⊆ ((imageIdealSheaf σ J).support : Set ↥A)`. Introduce `T hT hsub`. Use `hc T hT ?_` and prove the remaining obligations.
+
+Establish `h2` using `(Set.image_subset_iff.mp hsub).trans (preimage_support_subset_support_comap σ (imageIdealSheaf σ J))`. Rewrite `h2` using `[hcomap]`. Then use the resulting hypothesis. Take `⟨ψ, hψ1, hψ2⟩` from `hres A (Blowup.blowup (imageIdealSheaf σ J)) S' σ (Blowup.blowup.proj (imageIdealSheaf σ J)) (imageIdealSheaf σ J) hπ hsupp`. Rewrite `hψ2` using `[hcomap]`. Establish `hab : hψ2.lift f hf.1 ≫ ψ = f` using `hψ2.lift_comp f hf.1`.
+
+Establish `hba : hf.lift ψ hψ2.1 ≫ f = ψ` using `hf.lift_comp ψ hψ2.1`. Establish `hid1 : hψ2.lift f hf.1 ≫ hf.lift ψ hψ2.1 = 𝟙 S''`. Use `hf.hom_ext hf.1 ?_ (Category.id_comp f)` and prove the remaining obligations. Rewrite using `[Category.assoc, hba, hab]`. Establish `hid2 : hf.lift ψ hψ2.1 ≫ hψ2.lift f hf.1 = 𝟙 _`.
+
+Use `hψ2.hom_ext hψ2.1 ?_ (Category.id_comp ψ)` and prove the remaining obligations. Rewrite using `[Category.assoc, hab, hba]`. Establish `: IsIso (hψ2.lift f hf.1)` using `⟨⟨hf.lift ψ hψ2.1, hid1, hid2⟩⟩`. Use `⟨hψ2.lift f hf.1 ≫ (Blowup.strictTransform (Blowup.blowup.proj (imageIdealSheaf σ J)) (imageIdealSheaf σ J) σ.ker).subschemeι, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hψ1, ← Category.assoc, hab]`.
+
+Rewrite using `[Scheme.Hom.ker_comp_of_isIso]`. Conclude with `Scheme.IdealSheafData.ker_subschemeι _`.
+-/
 private theorem exists_closedImmersion_blowup_of_isBlowupAlongIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     {S' A : Scheme.{u}} [AlgebraicGeometry.IsLocallyNoetherian A] (σ : S' ⟶ A)
     [AlgebraicGeometry.IsClosedImmersion σ] (J : S'.IdealSheafData) {S'' : Scheme.{u}}
@@ -86,6 +109,9 @@ private theorem exists_closedImmersion_blowup_of_isBlowupAlongIdealSheaf (hres :
   · rw [Scheme.Hom.ker_comp_of_isIso]
     exact Scheme.IdealSheafData.ker_subschemeι _
 
+/- English proof (translation)
+Use `hσ` as an intermediate fact. Use `hA` as an intermediate fact. Establish `: AlgebraicGeometry.IsLocallyNoetherian A` using `inferInstance`. Conclude with `exists_closedImmersion_blowup_of_isBlowupAlongIdealSheaf hres σ (s.center n) (s.map n) (s.isBlowup n hn) hc`.
+-/
 private theorem exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (_hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (n : ℕ) (hn : n < s.length) (A : Scheme.{u}) (σ : s.obj n ⟶ A)
@@ -111,6 +137,9 @@ private def embeddingIntoAmbientBlowup (hres : FunctorialResolution.Blowup.Stric
     s.obj (n + 1) ⟶ Blowup.blowup (imageIdealSheaf σ (s.center n)) :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose
 
+/- English proof (translation)
+The claim follows from `(exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.1`.
+-/
 private theorem isClosedImmersion_embeddingIntoBlowupImageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (n : ℕ) (hn : n < s.length) (A : Scheme.{u}) (σ : s.obj n ⟶ A)
@@ -120,6 +149,9 @@ private theorem isClosedImmersion_embeddingIntoBlowupImageIdealSheaf (hres : Fun
     AlgebraicGeometry.IsClosedImmersion (embeddingIntoAmbientBlowup hres hno s n hn A σ hσ hA hc) :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.1
 
+/- English proof (translation)
+The claim follows from `(exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.2.1`.
+-/
 private theorem embeddingIntoBlowupImageIdealSheaf_comp_proj (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (n : ℕ) (hn : n < s.length) (A : Scheme.{u}) (σ : s.obj n ⟶ A)
@@ -130,6 +162,9 @@ private theorem embeddingIntoBlowupImageIdealSheaf_comp_proj (hres : FunctorialR
       s.map n ≫ σ :=
   (exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.2.1
 
+/- English proof (translation)
+The claim follows from `(exists_closedImmersion_blowup_imageIdealSheaf_of_lt_length hres hno s n hn A σ hσ hA hc).choose_spec.2.2`.
+-/
 private theorem ker_embeddingIntoBlowupImageIdealSheaf (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (n : ℕ) (hn : n < s.length) (A : Scheme.{u}) (σ : s.obj n ⟶ A)
@@ -172,6 +207,9 @@ private def ambientEmbeddingSucc (hres : FunctorialResolution.Blowup.StrictTrans
        isNoetherian_ambient_of_le_length := fun hle => absurd (Nat.lt_of_succ_le hle) h },
      s.map n ≫ st.emb⟩
 
+/- English proof (translation)
+Unfold `ambientEmbeddingSucc`. Rewrite using `[dif_pos h]`. Conclude with `Blowup.blowup.isBlowupAlongIdealSheaf_proj _`.
+-/
 private theorem isBlowupAlongIdealSheaf_succAmbientEmbeddingMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (hcen : ∀ i, i < s.length → ∀ T ∈ irreducibleComponents ↥(s.obj i),
@@ -182,6 +220,11 @@ private theorem isBlowupAlongIdealSheaf_succAmbientEmbeddingMorphism (hres : Fun
   rw [dif_pos h]
   exact Blowup.blowup.isBlowupAlongIdealSheaf_proj _
 
+/- English proof (translation)
+Unfold `ambientEmbeddingSucc`. Distinguish the cases in `h : n < s.length`. Rewrite using `[dif_pos h]`. Conclude with `embeddingIntoBlowupImageIdealSheaf_comp_proj hres hno s n h st.ambient st.emb st.emb_isClosedImmersion (st.isNoetherian_ambient_of_le_length (Nat.le_of_lt h)) (hcen n h)`. Rewrite using `[dif_neg h]`.
+
+Conclude with `Category.id_comp _`.
+-/
 private theorem succAmbientEmbedding_comp_blowupMorphism (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (hcen : ∀ i, i < s.length → ∀ T ∈ irreducibleComponents ↥(s.obj i),
@@ -197,6 +240,9 @@ private theorem succAmbientEmbedding_comp_blowupMorphism (hres : FunctorialResol
   · rw [dif_neg h]
     exact Category.id_comp _
 
+/- English proof (translation)
+Unfold `ambientEmbeddingSucc`. Rewrite using `[dif_pos h]`. Conclude with `ker_embeddingIntoBlowupImageIdealSheaf hres hno s n h st.ambient st.emb st.emb_isClosedImmersion (st.isNoetherian_ambient_of_le_length (Nat.le_of_lt h)) (hcen n h)`.
+-/
 private theorem ker_succAmbientEmbedding_eq_strictTransform (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) {S : Scheme.{u}} (s : BlowupSequenceData S)
     (hcen : ∀ i, i < s.length → ∀ T ∈ irreducibleComponents ↥(s.obj i),
@@ -229,6 +275,9 @@ private def ambientEmbeddingSuccMap {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientEmbedding ι s hres hno hcen (n + 1)).ambient ⟶ (ambientEmbedding ι s hres hno hcen n).ambient :=
   (ambientEmbeddingSucc hres hno s hcen n (ambientEmbedding ι s hres hno hcen n)).2
 
+/- English proof (translation)
+The claim follows from `isBlowupAlongIdealSheaf_succAmbientEmbeddingMorphism hres hno s hcen n (ambientEmbedding ι s hres hno hcen n) hn`.
+-/
 private theorem isBlowupAlongIdealSheaf_ambientBlowupMorphism {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -262,6 +311,9 @@ def embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
   (ambientEmbedding ι s hres hno hcen n).emb
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ambientBlowupSequence_length {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -270,6 +322,9 @@ theorem ambientBlowupSequence_length {S X : Scheme.{u}} (ι : S ⟶ X)
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     (ambientBlowupSequence ι s hres hno hcen).length = s.length := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ambientBlowupSequence_schemeAt_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -278,6 +333,9 @@ theorem ambientBlowupSequence_schemeAt_zero {S X : Scheme.{u}} (ι : S ⟶ X)
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     (ambientBlowupSequence ι s hres hno hcen).obj 0 = X := rfl
 
+/- English proof (translation)
+The claim follows from `rfl @[simp]`.
+-/
 theorem ambientBlowupSequence_isoObjZero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -287,6 +345,9 @@ theorem ambientBlowupSequence_isoObjZero {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientBlowupSequence ι s hres hno hcen).isoZero = Iso.refl X := rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ambientBlowupSequence_center {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -296,6 +357,9 @@ theorem ambientBlowupSequence_center {S X : Scheme.{u}} (ι : S ⟶ X)
     (ambientBlowupSequence ι s hres hno hcen).center n =
       imageIdealSheaf (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n) (s.center n) := rfl
 
+/- English proof (translation)
+The claim follows from `(ambientEmbedding ι s hres hno hcen n).isNoetherian_ambient_of_le_length hn`.
+-/
 theorem isNoetherian_ambientBlowupSequence_schemeAt {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -305,6 +369,9 @@ theorem isNoetherian_ambientBlowupSequence_schemeAt {S X : Scheme.{u}} (ι : S �
     AlgebraicGeometry.IsNoetherian ((ambientBlowupSequence ι s hres hno hcen).obj n) :=
   (ambientEmbedding ι s hres hno hcen n).isNoetherian_ambient_of_le_length hn
 
+/- English proof (translation)
+The claim follows from `(ambientEmbedding ι s hres hno hcen n).emb_isClosedImmersion`.
+-/
 theorem isClosedImmersion_embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -314,6 +381,9 @@ theorem isClosedImmersion_embeddingIntoAmbientBlowupSequence {S X : Scheme.{u}} 
     AlgebraicGeometry.IsClosedImmersion (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n) :=
   (ambientEmbedding ι s hres hno hcen n).emb_isClosedImmersion
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -322,6 +392,9 @@ theorem embeddingIntoAmbientBlowupSequence_zero {S X : Scheme.{u}} (ι : S ⟶ X
         ¬ T ⊆ ((s.center i).support : Set ↥(s.obj i))) :
     embeddingIntoAmbientBlowupSequence ι s hres hno hcen 0 = s.isoZero.hom ≫ ι := rfl
 
+/- English proof (translation)
+The claim follows from `succAmbientEmbedding_comp_blowupMorphism hres hno s hcen n (ambientEmbedding ι s hres hno hcen n)`.
+-/
 theorem embeddingIntoAmbientBlowupSequence_succ_comp_map {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -332,6 +405,9 @@ theorem embeddingIntoAmbientBlowupSequence_succ_comp_map {S X : Scheme.{u}} (ι 
       s.map n ≫ embeddingIntoAmbientBlowupSequence ι s hres hno hcen n :=
   succAmbientEmbedding_comp_blowupMorphism hres hno s hcen n (ambientEmbedding ι s hres hno hcen n)
 
+/- English proof (translation)
+The claim follows from `ker_succAmbientEmbedding_eq_strictTransform hres hno s hcen n (ambientEmbedding ι s hres hno hcen n) hn`.
+-/
 theorem ker_embeddingIntoAmbientBlowupSequence_succ {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -344,6 +420,13 @@ theorem ker_embeddingIntoAmbientBlowupSequence_succ {S X : Scheme.{u}} (ι : S �
         (embeddingIntoAmbientBlowupSequence ι s hres hno hcen n).ker :=
   ker_succAmbientEmbedding_eq_strictTransform hres hno s hcen n (ambientEmbedding ι s hres hno hcen n) hn
 
+/- English proof (translation)
+Use `⟨rfl, ⟨fun i _ => embeddingIntoAmbientBlowupSequence ι s hres hno hcen i, fun i _ => isClosedImmersion_embeddingIntoAmbientBlowupSequence ι s hres hno hcen i, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Use `show (s.isoZero.hom ≫ ι) ≫ 𝟙 X = s.isoZero.hom ≫ ι`. Conclude with `Category.comp_id _`. Introduce `i hi show embeddingIntoAmbientBlowupSequence ι s hres hno hcen (i + 1) ≫ (ambientBlowupSequence ι s hres hno hcen).toSequenceOfBlowups.transitionMapSucc i = s.toSequenceOfBlowups.transitionMapSucc i ≫ embeddingIntoAmbientBlowupSequence ι s hres hno hcen i`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_blowupMorphism, BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]`.
+
+Conclude with `embeddingIntoAmbientBlowupSequence_succ_comp_map ι s hres hno hcen i`. Introduce `i _`. Both sides reduce to the same expression. Introduce `i hi show (embeddingIntoAmbientBlowupSequence ι s hres hno hcen (i + 1)).ker = Blowup.strictTransform ((ambientBlowupSequence ι s hres hno hcen).toSequenceOfBlowups.transitionMapSucc i) ((ambientBlowupSequence ι s hres hno hcen).toSequenceOfBlowups.center i) (embeddingIntoAmbient …`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_blowupMorphism]`.
+
+Conclude with `ker_embeddingIntoAmbientBlowupSequence_succ ι s hres hno hcen i hi`.
+-/
 theorem isPushforwardBlowupSeq_ambientBlowupSequence {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
     (s : BlowupSequenceData S) (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})

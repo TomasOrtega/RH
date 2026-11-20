@@ -8,6 +8,17 @@ namespace GlobalTheory.TypeDim.IwahoriBruhat
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
+/- English proof (translation)
+Set `B : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => ⟨A i j, h1 i j⟩`. Establish `hres0 : ∀ x : 𝒪[k], IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (x : k) < 1`. Introduce `x`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+
+Establish `hBd : ∀ i, B i i = 1` using `fun i => Subtype.ext (h3 i)`. Establish `hRtri : ((IsLocalRing.residue 𝒪[k]).mapMatrix B).BlockTriangular id`. Introduce `i j hji`. Conclude with `(hres0 (B i j)).2 (h2 i j hji)`. Establish `hdet : IsUnit B.det`.
+
+Assume the negation of the conclusion as `hnu`. Establish `h0 : IsLocalRing.residue 𝒪[k] B.det = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hnu`. Rewrite `h0` using `[RingHom.map_det, Matrix.det_of_isUpperTriangular hRtri]`. Simplify using `[hBd, RingHom.mapMatrix_apply] at h0`. Use `⟨⟨Matrix.nonsingInvUnit B hdet, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Use `show red k n (Matrix.nonsingInvUnit B hdet) ∈ unipB 𝓀[k] (Fin n)`. Rewrite using `[GlobalTheory.SmGL.mem_unipB]`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocalRing.residue 𝒪[k] (B i j) = 0`. Conclude with `(hres0 (B i j)).2 (h2 i j hji)`.
+
+Express the relevant statement in the definitionally equal form `IsLocalRing.residue 𝒪[k] (B i i) = 1`. Rewrite using `[hBd, map_one]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem exists_unipLevel (A : Matrix (Fin n) (Fin n) k) (h1 : ∀ i j, valuation k (A i j) ≤ 1)
     (h2 : ∀ i j, j < i → valuation k (A i j) < 1) (h3 : ∀ i, A i i = 1) :
     ∃ u : unipLevel k n, (incl k n u).val = A := by
@@ -36,6 +47,9 @@ theorem exists_unipLevel (A : Matrix (Fin n) (Fin n) k) (h1 : ∀ i j, valuation
   · ext i j
     rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `(Matrix.isUnits_det_units g).ne_zero (Matrix.det_eq_zero_of_row_eq_zero i h)`.
+-/
 theorem exists_ne_zero (g : GL (Fin n) k) (i : Fin n) : ∃ j, g.val i j ≠ 0 := by
   by_contra h
   push Not at h
@@ -44,6 +58,19 @@ theorem exists_ne_zero (g : GL (Fin n) k) (i : Fin n) : ∃ j, g.val i j ≠ 0 :
 def Clean (g : Matrix (Fin n) (Fin n) k) (i : Fin n) : Prop :=
   ∃ j, (∀ j', j' ≠ j → g i j' = 0) ∧ ∀ i', i' ≠ i → g i' j = 0
 
+/- English proof (translation)
+Use `choose p hrow hcol using h`. Establish `hp : ∀ i, g.val i (p i) ≠ 0`. Introduce `i hz`. Take `⟨j, hj⟩` from `exists_ne_zero g i`. Distinguish the cases in `hji : j = p i`.
+
+Rewrite `hj` using `[hji]`. Conclude with `hj hz`. Conclude with `hj (hrow i j hji)`. Establish `hinj : Function.Injective p`. Introduce `i i' hii'`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hp i' (by rw [← hii']; exact hcol i i' (Ne.symm hne))`. Set `e : Fin n ≃ Fin n` to `Equiv.ofBijective p (Finite.injective_iff_bijective.mp hinj)`. Establish `he : ∀ b, p (e.symm b) = b` using `fun b => e.apply_symm_apply b`. Use `⟨e.symm, fun b => Units.mk0 (g.val (e.symm b) b) (by` and prove the remaining obligations.
+
+Use `hp (e.symm b)` as an intermediate fact. Rewrite using `[he b] at this), ?_⟩` and apply the resulting hypothesis. Use extensionality with `a b`. Rewrite using `[Units.val_mul, GlobalTheory.SmGL.val_diagT, Matrix.mul_diagonal, GlobalTheory.Parabolic.permGL_apply]`. Distinguish the cases in `hab : a = e.symm b`.
+
+Rewrite using `[if_pos hab, one_mul, Units.val_mk0, hab]`. Rewrite using `[if_neg hab, zero_mul]`. Apply `hrow a b` to reduce the goal to its premises. Introduce `hb`. Apply `hab` to reduce the goal to its premises.
+
+Rewrite using `[hb]`. Conclude with `(e.symm_apply_apply a).symm`.
+-/
 theorem monomial_of_clean (g : GL (Fin n) k) (h : ∀ i, Clean g.val i) :
     ∃ (w : Equiv.Perm (Fin n)) (c : Fin n → kˣ), g = GlobalTheory.Parabolic.permGL k w * diagT k (Fin n) c := by
   choose p hrow hcol using h
@@ -74,6 +101,11 @@ theorem monomial_of_clean (g : GL (Fin n) k) (h : ∀ i, Clean g.val i) :
     rw [hb]
     exact (e.symm_apply_apply a).symm
 
+/- English proof (translation)
+Rewrite using `[Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single i₀]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i₀) h`.
+-/
 private lemma one_add_col_mul_apply (G : Matrix (Fin n) (Fin n) k) (x : Fin n → k) (i₀ a c : Fin n) :
     ((1 + Matrix.of fun a b => if b = i₀ then x a else 0) * G) a c = G a c + x a * G i₀ c := by
   rw [Matrix.add_mul, Matrix.one_mul, Matrix.add_apply, Matrix.mul_apply]
@@ -85,6 +117,11 @@ private lemma one_add_col_mul_apply (G : Matrix (Fin n) (Fin n) k) (x : Fin n �
   · intro h
     exact absurd (Finset.mem_univ i₀) h
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single j₀]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+
+Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j₀) h`.
+-/
 private lemma mul_one_add_row_apply (H : Matrix (Fin n) (Fin n) k) (y : Fin n → k) (j₀ a c : Fin n) :
     (H * (1 + Matrix.of fun a b => if a = j₀ then y b else 0)) a c = H a c + H a j₀ * y c := by
   rw [Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.mul_apply]
@@ -96,6 +133,89 @@ private lemma mul_one_add_row_apply (H : Matrix (Fin n) (Fin n) k) (y : Fin n �
   · intro h
     exact absurd (Finset.mem_univ j₀) h
 
+/- English proof (translation)
+Use `set G : Matrix (Fin n) (Fin n) k := g.val with hG`. Use `set D : Finset (Fin n) := Finset.univ.filter (fun j => ∀ i ∈ S, G i j = 0) with hD`. Establish `memD : ∀ j, j ∈ D ↔ ∀ i ∈ S, G i j = 0`. Introduce `j`. Simplify using `only [hD, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Establish `hout : ∀ i, i ∉ S → ∀ j, j ∉ D → G i j = 0`. Introduce `i hi j hj`. Rewrite `hj` using `[memD]`. Use `push Not at hj`. Take `⟨i', hi', hne'⟩` from `hj`.
+
+Take `⟨c, hrow, hcol⟩` from `hS i' hi'`. Establish `hjc : j = c`. Assume the negation of the conclusion as `hh`. Conclude with `hne' (hrow j hh)`. Rewrite using `[hjc]`.
+
+Conclude with `hcol i (fun h => hi (h ▸ hi'))`. Take `⟨i1, hi1⟩` from `hne`. Rewrite `hi1` using `[Finset.mem_compl]`. Take `⟨j1, hj1⟩` from `exists_ne_zero g i1`. Establish `hj1D : j1 ∈ D`.
+
+Assume the negation of the conclusion as `hh`. Conclude with `hj1 (hout i1 hi1 j1 hh)`. Establish `hT : (Sᶜ ×ˢ D).Nonempty` using `⟨(i1, j1), Finset.mem_product.2 ⟨Finset.mem_compl.2 hi1, hj1D⟩⟩`. Take `⟨q, hqT, hqmax⟩` from `(Sᶜ ×ˢ D).exists_max_image (fun q => valuation k (G q.1 q.2)) hT`. Use `set M := valuation k (G q.1 q.2) with hM`.
+
+Establish `hmax : ∀ i, i ∉ S → ∀ j ∈ D, valuation k (G i j) ≤ M` using `fun i hi j hj => hqmax (i, j) (Finset.mem_product.2 ⟨Finset.mem_compl.2 hi, hj⟩)`. Establish `hM0 : M ≠ 0`. Introduce `h0`. Establish `h1` using `hmax i1 hi1 j1 hj1D`. Rewrite `h1` using `[h0]`.
+
+Conclude with `hj1 ((valuation k).zero_iff.1 (le_antisymm h1 zero_le))`. Establish `hMpos : 0 < M` using `zero_lt_iff.2 hM0`. Establish `hT' : ((Sᶜ ×ˢ D).filter (fun q => valuation k (G q.1 q.2) = M)).Nonempty` using `⟨q, Finset.mem_filter.2 ⟨hqT, rfl⟩⟩`. Take `⟨⟨i₀, j'⟩, hq'T, hq'max⟩` from `((Sᶜ ×ˢ D).filter (fun q => valuation k (G q.1 q.2) = M)).exists_max_image Prod.fst hT'`. Rewrite `hq'T` using `[Finset.mem_filter, Finset.mem_product, Finset.mem_compl]`.
+
+Take `⟨⟨hi₀, hj'D⟩, hj'M⟩` from `hq'T`. Establish `hD' : (D.filter (fun j => valuation k (G i₀ j) = M)).Nonempty` using `⟨j', Finset.mem_filter.2 ⟨hj'D, hj'M⟩⟩`. Take `⟨j₀, hj₀', hj₀min⟩` from `(D.filter (fun j => valuation k (G i₀ j) = M)).exists_min_image id hD'`. Rewrite `hj₀'` using `[Finset.mem_filter]`. Take `⟨hj₀, hpiv⟩` from `hj₀'`.
+
+Establish `hlow : ∀ i, i ∉ S → i₀ < i → valuation k (G i j₀) < M`. Introduce `i hi hlt`. Use `lt_of_le_of_ne (hmax i hi j₀ hj₀) (fun heq => ?_)` and prove the remaining obligations. Establish `h1` using `hq'max (i, j₀) (Finset.mem_filter.2 ⟨Finset.mem_product.2 ⟨Finset.mem_compl.2 hi, hj₀⟩, heq⟩)`. Conclude with `absurd hlt (not_lt.2 h1)`.
+
+Establish `hleft : ∀ j ∈ D, j < j₀ → valuation k (G i₀ j) < M`. Introduce `j hj hlt`. Use `lt_of_le_of_ne (hmax i₀ hi₀ j hj) (fun heq => ?_)` and prove the remaining obligations. Establish `h1` using `hj₀min j (Finset.mem_filter.2 ⟨hj, heq⟩)`. Conclude with `absurd hlt (not_lt.2 h1)`.
+
+Establish `hp0 : G i₀ j₀ ≠ 0`. Introduce `h0`. Apply `hM0` to reduce the goal to its premises. Rewrite using `[← hpiv, h0, Valuation.map_zero]`. Establish `hq1 : ∀ a, valuation k a ≤ M → valuation k (-(a / G i₀ j₀)) ≤ 1`.
+
+Introduce `a ha`. Rewrite using `[Valuation.map_neg, Valuation.map_div, hpiv]`. Conclude with `(div_le_one₀ hMpos).2 ha`. Establish `hq2 : ∀ a, valuation k a < M → valuation k (-(a / G i₀ j₀)) < 1`. Introduce `a ha`.
+
+Rewrite using `[Valuation.map_neg, Valuation.map_div, hpiv]`. Conclude with `(div_lt_one₀ hMpos).2 ha`. Set `x : Fin n → k` to `fun a => if a ∉ S ∧ a ≠ i₀ then -(G a j₀ / G i₀ j₀) else 0`. Set `y : Fin n → k` to `fun b => if b ∈ D ∧ b ≠ j₀ then -(G i₀ b / G i₀ j₀) else 0`. Set `U : Matrix (Fin n) (Fin n) k` to `1 + Matrix.of (fun a b => if b = i₀ then x a else 0)`.
+
+Set `U' : Matrix (Fin n) (Fin n) k` to `1 + Matrix.of (fun a b => if a = j₀ then y b else 0)`. Establish `hx0 : ∀ a, a ∈ S ∨ a = i₀ → x a = 0`. Introduce `a h`. Simplify using `only [x]`. Rewrite using `[if_neg]`.
+
+The claim follows by propositional logic. Establish `hy0 : ∀ b, b ∉ D ∨ b = j₀ → y b = 0`. Introduce `b h`. Simplify using `only [y]`. Rewrite using `[if_neg]`.
+
+The claim follows by propositional logic. Establish `hx1 : ∀ a, valuation k (x a) ≤ 1`. Introduce `a`. Distinguish the cases in `h : a ∉ S ∧ a ≠ i₀`. Simplify using `only [x, if_pos h]`.
+
+Conclude with `hq1 _ (hmax a h.1 j₀ hj₀)`. Simplify using `only [x, if_neg h, Valuation.map_zero]`. Conclude with `zero_le`. Establish `hx2 : ∀ a, i₀ < a → valuation k (x a) < 1`. Introduce `a hlt`.
+
+Distinguish the cases in `h : a ∉ S ∧ a ≠ i₀`. Simplify using `only [x, if_pos h]`. Conclude with `hq2 _ (hlow a h.1 hlt)`. Simplify using `only [x, if_neg h, Valuation.map_zero]`. Conclude with `zero_lt_one`.
+
+Establish `hy1 : ∀ b, valuation k (y b) ≤ 1`. Introduce `b`. Distinguish the cases in `h : b ∈ D ∧ b ≠ j₀`. Simplify using `only [y, if_pos h]`. Conclude with `hq1 _ (hmax i₀ hi₀ b h.1)`.
+
+Simplify using `only [y, if_neg h, Valuation.map_zero]`. Conclude with `zero_le`. Establish `hy2 : ∀ b, b < j₀ → valuation k (y b) < 1`. Introduce `b hlt`. Distinguish the cases in `h : b ∈ D ∧ b ≠ j₀`.
+
+Simplify using `only [y, if_pos h]`. Conclude with `hq2 _ (hleft b h.1 hlt)`. Simplify using `only [y, if_neg h, Valuation.map_zero]`. Conclude with `zero_lt_one`. Establish `hU : ∀ a b, U a b = (if a = b then 1 else 0) + (if b = i₀ then x a else 0)`.
+
+Introduce `a b`. Simplify using `only [U, Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]`. Establish `hU' : ∀ a b, U' a b = (if a = b then 1 else 0) + (if a = j₀ then y b else 0)`. Introduce `a b`. Simplify using `only [U', Matrix.add_apply, Matrix.one_apply, Matrix.of_apply]`.
+
+Establish `hUd : ∀ a, U a a = 1`. Introduce `a`. Rewrite using `[hU, if_pos rfl]`. Distinguish the cases in `h : a = i₀`. Rewrite using `[if_pos h, hx0 a (Or.inr h), add_zero]`.
+
+Rewrite using `[if_neg h, add_zero]`. Establish `hU'd : ∀ a, U' a a = 1`. Introduce `a`. Rewrite using `[hU', if_pos rfl]`. Distinguish the cases in `h : a = j₀`.
+
+Rewrite using `[if_pos h, hy0 a (Or.inr h), add_zero]`. Rewrite using `[if_neg h, add_zero]`. Establish `hU1 : ∀ a b, valuation k (U a b) ≤ 1`. Introduce `a b`. Distinguish the cases in `hab : a = b`.
+
+Rewrite using `[hab, hUd, Valuation.map_one]`. Rewrite using `[hU, if_neg hab, zero_add] split_ifs`. Conclude with `hx1 a`. Rewrite using `[Valuation.map_zero]`. Conclude with `zero_le`.
+
+Establish `hU'1 : ∀ a b, valuation k (U' a b) ≤ 1`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Rewrite using `[hab, hU'd, Valuation.map_one]`. Rewrite using `[hU', if_neg hab, zero_add] split_ifs`.
+
+Conclude with `hy1 b`. Rewrite using `[Valuation.map_zero]`. Conclude with `zero_le`. Establish `hU2 : ∀ a b, b < a → valuation k (U a b) < 1`. Introduce `a b hlt`.
+
+Rewrite using `[hU, if_neg hlt.ne', zero_add]`. Distinguish the cases in `hb : b = i₀`. Rewrite using `[if_pos hb]`. Conclude with `hx2 a (by rw [← hb]; exact hlt)`. Rewrite using `[if_neg hb, Valuation.map_zero]`.
+
+Conclude with `zero_lt_one`. Establish `hU'2 : ∀ a b, b < a → valuation k (U' a b) < 1`. Introduce `a b hlt`. Rewrite using `[hU', if_neg hlt.ne', zero_add]`. Distinguish the cases in `ha : a = j₀`.
+
+Rewrite using `[if_pos ha]`. Conclude with `hy2 b (by rw [← ha]; exact hlt)`. Rewrite using `[if_neg ha, Valuation.map_zero]`. Conclude with `zero_lt_one`. Take `⟨u, hu⟩` from `exists_unipLevel U hU1 hU2 hUd`.
+
+Take `⟨u', hu'⟩` from `exists_unipLevel U' hU'1 hU'2 hU'd`. Use `⟨u, u', i₀, hi₀, ?_⟩` and prove the remaining obligations. Establish `hprod : (incl k n u * g * incl k n u').val = U * G * U'`. Rewrite using `[Units.val_mul, Units.val_mul, hu, hu']`. Establish `hH : ∀ a c, (U * G) a c = G a c + x a * G i₀ c`.
+
+Introduce `a c`. Conclude with `one_add_col_mul_apply G x i₀ a c`. Establish `hF : ∀ a c, (U * G * U') a c = (U * G) a c + (U * G) a j₀ * y c`. Introduce `a c`. Conclude with `mul_one_add_row_apply (U * G) y j₀ a c`.
+
+Establish `hHi₀ : ∀ c, (U * G) i₀ c = G i₀ c`. Introduce `c`. Rewrite using `[hH, hx0 i₀ (Or.inr rfl), zero_mul, add_zero]`. Establish `hHj₀ : ∀ a, a ≠ i₀ → (U * G) a j₀ = 0`. Introduce `a ha`.
+
+Rewrite using `[hH]`. Distinguish the cases in `haS : a ∈ S`. Rewrite using `[hx0 a (Or.inl haS), zero_mul, add_zero]`. Conclude with `(memD j₀).1 hj₀ a haS`. Simplify using `only [x, if_pos (⟨haS, ha⟩ : a ∉ S ∧ a ≠ i₀)]`.
+
+Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Introduce `i hi`. Rewrite using `[hprod]`. Break down `Finset.mem_insert.1 hi with hii | hiS` into its components or cases.
+
+Rewrite using `[hii]`. Use `⟨j₀, fun c hc => ?_, fun i' hi' => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hHi₀, hHi₀]`. Distinguish the cases in `hcD : c ∈ D`. Simplify using `only [y, if_pos (⟨hcD, hc⟩ : c ∈ D ∧ c ≠ j₀)]`.
+
+Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`. Rewrite using `[hy0 c (Or.inl hcD), hout i₀ hi₀ c hcD, mul_zero, add_zero]`. Rewrite using `[hF, hHj₀ i' hi', zero_mul, add_zero]`. Take `⟨c, hrow, hcol⟩` from `hS i hiS`.
+
+Establish `hii₀ : i ≠ i₀` using `fun h => hi₀ (h ▸ hiS)`. Establish `hc0 : G i c ≠ 0`. Take `⟨j, hj⟩` from `exists_ne_zero g i`. Distinguish the cases in `hjc : j = c`. Rewrite `hj` using `[hjc]`.
+
+Conclude with `hj`. Conclude with `absurd (hrow j hjc) hj`. Establish `hcD : c ∉ D` using `fun h => hc0 ((memD c).1 h i hiS)`. Use `⟨c, fun c' hc' => ?_, fun i' hi' => ?_⟩` and prove the remaining obligations. Rewrite using `[hF, hHj₀ i hii₀, zero_mul, add_zero, hH, hx0 i (Or.inl hiS), zero_mul, add_zero]`.
+
+Conclude with `hrow c' hc'`. Rewrite using `[hF, hy0 c (Or.inl hcD), mul_zero, add_zero, hH, hcol i' hi', hcol i₀ (Ne.symm hii₀), mul_zero, add_zero]`.
+-/
 theorem step (g : GL (Fin n) k) (S : Finset (Fin n)) (hS : ∀ i ∈ S, Clean g.val i) (hne : (Sᶜ).Nonempty) :
     ∃ (u u' : unipLevel k n) (i₀ : Fin n), i₀ ∉ S ∧
       ∀ i ∈ insert i₀ S, Clean (incl k n u * g * incl k n u').val i := by
@@ -314,6 +434,19 @@ theorem step (g : GL (Fin n) k) (S : Finset (Fin n)) (hS : ∀ i ∈ S, Clean g.
     · rw [hF, hy0 c (Or.inl hcD), mul_zero, add_zero, hH, hcol i' hi', hcol i₀ (Ne.symm hii₀),
         mul_zero, add_zero]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero`. Introduce `g S hS hc`. Establish `hall : ∀ i, Clean g.val i`. Introduce `i`.
+
+Apply `hS` to reduce the goal to its premises. Assume the negation of the conclusion as `hi`. Establish `hmem : i ∈ Sᶜ` using `Finset.mem_compl.2 hi`. Rewrite `hc` using `[Finset.card_eq_zero]`. Rewrite `hmem` using `[hc]`.
+
+Conclude with `Finset.notMem_empty i hmem`. Take `⟨w, c, hwc⟩` from `monomial_of_clean g hall`. Conclude with `⟨1, 1, w, c, by simp [hwc]⟩`. Consider the case `succ m ih`. Introduce `g S hS hc`.
+
+Establish `hne : (Sᶜ).Nonempty` using `Finset.card_pos.1 (by omega)`. Take `⟨u, u', i₀, hi₀, hcl⟩` from `step g S hS hne`. Establish `hc' : ((insert i₀ S)ᶜ).card = m`. Rewrite using `[Finset.compl_insert, Finset.card_erase_of_mem (Finset.mem_compl.2 hi₀), hc]`. Use linear arithmetic over natural numbers and integers.
+
+Take `⟨j, j', w, c, h⟩` from `ih _ _ hcl hc'`. Use `⟨u⁻¹ * j, j' * u'⁻¹, w, c, ?_⟩` and prove the remaining obligations. Establish `hg : g = (incl k n u)⁻¹ * (incl k n u * g * incl k n u') * (incl k n u')⁻¹` using `by group`. Rewrite using `[hg, h]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`.
+
+Use `group`.
+-/
 theorem aux (m : ℕ) : ∀ (g : GL (Fin n) k) (S : Finset (Fin n)), (∀ i ∈ S, Clean g.val i) → (Sᶜ).card = m →
     ∃ (j j' : unipLevel k n) (w : Equiv.Perm (Fin n)) (c : Fin n → kˣ),
       g = incl k n j * (GlobalTheory.Parabolic.permGL k w * diagT k (Fin n) c) * incl k n j' := by
@@ -344,6 +477,9 @@ theorem aux (m : ℕ) : ∀ (g : GL (Fin n) k) (S : Finset (Fin n)), (∀ i ∈ 
     simp only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]
     group
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n g`. Conclude with `aux n g ∅ (by simp) (by simp)`.
+-/
 theorem iwahori_bruhat : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) (g : GL (Fin n) k), ∃ (j j' : unipLevel k n) (w : Equiv.Perm (Fin n)) (c : Fin n → kˣ),
       g = incl k n j * (GlobalTheory.Parabolic.permGL k w * diagT k (Fin n) c) * incl k n j' := by

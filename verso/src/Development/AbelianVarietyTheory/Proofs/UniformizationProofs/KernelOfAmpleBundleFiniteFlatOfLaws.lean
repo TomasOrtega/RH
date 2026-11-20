@@ -23,6 +23,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.KernelFlat
 
+/- English proof (translation)
+Introduce `hLaw V _ _ A _ hA L hL ha`. Take `⟨H, j, hj, hfin, hH⟩` from `GlobalTheory.T.exists_finite_closed_subscheme_represents_kernel_ample hLaw.globalFns V A hA L hL ha`. Use `⟨H, j, hj, hfin, GlobalTheory.T.flat_of_isFinite_of_flat_at_maximal V H hfin fun m _ => ?_, hH⟩` and prove the remaining obligations. Set `f` to `spMap (algebraMap V (Localization.AtPrime m))`. Establish `hA' : IsAbelianScheme ((Over.pullback f).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj f A hA`.
+
+Establish `: IsCommMonObj ((Over.pullback f).obj A)` using `hA'.comm`. Establish `hP : IsProjBy ((Over.pullback f).obj A).hom` using `(GlobalTheory.AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral _ A L hA hL ha (Localization.AtPrime m) f _ (pullback.fst A.hom f) (pullback.snd A.hom f) (IsPullback.of_hasPullback _ _)).1`. Establish `hL' : (L.pull (pullback.fst A.hom f)).IsLB` using `LB.isLB_pull hL _`. Establish `hj' : IsClosedImmersion ((Over.pullback f).map j).left` using `MorphismProperty.overPullbackMap (P := @IsClosedImmersion) f j hj`. Establish `hfin' : IsFinite ((Over.pullback f).obj H).hom` using `MorphismProperty.of_isPullback (P := @IsFinite) (IsPullback.of_hasPullback H.hom f) hfin`.
+
+Conclude with `GlobalTheory.T.lineBundleKernel_flat_of_finite_noetherian_local hLaw.globalFns (Localization.AtPrime m) ((Over.pullback f).obj A) hA' hP _ hL' (GlobalTheory.AbLaw.CubeAffine.triv_theta_of_isProjBy hLaw _ _ hA' hP _ hL') ((Over.pullback f).obj H) ((Over.pullback f).map j) hj' (Glo …`.
+-/
 theorem kernelFiniteFlat : Laws → GlobalTheory.Published.KernelFiniteFlatSt := by
   intro hLaw V _ _ A _ hA L hL ha
   obtain ⟨H, j, hj, hfin, hH⟩ := GlobalTheory.T.exists_finite_closed_subscheme_represents_kernel_ample hLaw.globalFns V A hA L hL ha

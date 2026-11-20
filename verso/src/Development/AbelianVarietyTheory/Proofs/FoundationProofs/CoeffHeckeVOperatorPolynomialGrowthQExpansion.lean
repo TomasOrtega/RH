@@ -6,6 +6,21 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 
 namespace GlobalTheory.EisM
 
+/- English proof (translation)
+Introduce `l a hl ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨C, A, h⟩` from `ha`. Establish `hC : 0 ≤ C`. Use `h 0` as an intermediate fact.
+
+Simplify using `at this`. Conclude with `le_trans (norm_nonneg _) this`. Use `⟨C, A, fun n => ?_⟩` and prove the remaining obligations. Unfold `Vo`. Use `split_ifs with hd`.
+
+Use `(h (n / l)).trans ?_ gcongr` and prove the remaining obligations. Conclude with `Nat.div_le_self n l` after adjusting the coercions. Simplify using `only [norm_zero]`. Check the signs of the components of the expression. Introduce `τ σ hσ`.
+
+Unfold `qs`. Establish `hinj : Function.Injective (fun m : ℕ => l * m)` using `fun x y hxy => Nat.eq_of_mul_eq_mul_left hl hxy`. Establish `hsupp : Function.support (fun n : ℕ => Vo l a n * cexp (2 * π * Complex.I * n * τ)) ⊆ Set.range (fun m : ℕ => l * m)`. Introduce `n hn`. Assume the negation of the conclusion as `hr`.
+
+Apply `hn` to reduce the goal to its premises. Establish `: ¬ l ∣ n`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hr ⟨m, rfl⟩`. Simplify using `[Vo, this]`.
+
+Rewrite using `[← hinj.tsum_eq hsupp]`. Use `congr 1`. Use extensionality with `m`. Establish `hl' : l ≠ 0` using `hl.ne'`. Simplify using `only [Vo, dvd_mul_right, if_true, Nat.mul_div_cancel_left m hl, hσ]`.
+
+Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Vo_polyB_qs : ∀ (l : ℕ) (a : ℕ → ℂ), 0 < l → PolyB a →
     PolyB (Vo l a) ∧ ∀ τ σ : ℍ, (σ : ℂ) = l * τ → qs (Vo l a) τ = qs a σ := by
   intro l a hl ha

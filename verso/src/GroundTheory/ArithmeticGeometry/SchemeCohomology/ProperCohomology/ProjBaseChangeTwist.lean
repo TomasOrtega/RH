@@ -35,6 +35,9 @@ def locMap (y : ProjectiveSpectrum (grading B n)) :
   Localization.localRingHom _ _
     (gradedMap A B n : MvPolynomial (Fin (n + 1)) A →+* MvPolynomial (Fin (n + 1)) B) rfl
 
+/- English proof (translation)
+The claim follows from `Localization.localRingHom_mk _ _ _ _ _ _`.
+-/
 lemma locMap_mk (y : ProjectiveSpectrum (grading B n)) (r : MvPolynomial (Fin (n + 1)) A)
     (s : (pt A y).asHomogeneousIdeal.toIdeal.primeCompl) :
     locMap y (Localization.mk r s) =
@@ -60,6 +63,9 @@ def twistPushSec {V : (projectiveSpace A n).Opens} (s : Γ(twistingSheaf (gradin
       rw [e]
       exact locMap_mk _ _ _)
 
+/- English proof (translation)
+Establish `: y.1.asHomogeneousIdeal.toIdeal.IsPrime` using `ProjectiveSpectrum.isPrime (y.1 : ProjectiveSpectrum (grading B n))`. Use `show HomogeneousLocalization.val (HomogeneousLocalization.localRingHom (gradedMap A B n) (pt A y.1).asHomogeneousIdeal.toIdeal y.1.asHomogeneousIdeal.toIdeal rfl (t.1 ⟨pt A y.1, y.2⟩)) = _`. Conclude with `HomogeneousLocalization.val_localRingHom _`.
+-/
 lemma val_app_apply {V : (projectiveSpace A n).Opens} (t : Γ(projectiveSpace A n, V))
     (y : baseChangeMap A B n ⁻¹ᵁ V) :
     ((((baseChangeMap A B n).app V t) : Γ(Proj (grading B n), _)).1 y).val =
@@ -70,6 +76,9 @@ lemma val_app_apply {V : (projectiveSpace A n).Opens} (t : Γ(projectiveSpace A 
     (pt A y.1).asHomogeneousIdeal.toIdeal y.1.asHomogeneousIdeal.toIdeal rfl (t.1 ⟨pt A y.1, y.2⟩)) = _
   exact HomogeneousLocalization.val_localRingHom _
 
+/- English proof (translation)
+Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show locMap y.1 ((t.1 ⟨pt A y.1, y.2⟩).val * ProjTwist.val s ⟨pt A y.1, y.2⟩) = (((baseChangeMap A B n).app V t).1 y).val * locMap y.1 (ProjTwist.val s ⟨pt A y.1, y.2⟩)`. Conclude with `(map_mul (locMap y.1) _ _).trans (congrArg (· * _) (val_app_apply t y).symm)`.
+-/
 lemma twistPushSec_smul {V : (projectiveSpace A n).Opens} (t : Γ(projectiveSpace A n, V))
     (s : Γ(twistingSheaf (grading A n) k, V)) :
     twistPushSec (B := B) k (t • s) = (baseChangeMap A B n).app V t • twistPushSec (B := B) k s := by
@@ -79,6 +88,9 @@ lemma twistPushSec_smul {V : (projectiveSpace A n).Opens} (t : Γ(projectiveSpac
     (((baseChangeMap A B n).app V t).1 y).val * locMap y.1 (ProjTwist.val s ⟨pt A y.1, y.2⟩)
   exact (map_mul (locMap y.1) _ _).trans (congrArg (· * _) (val_app_apply t y).symm)
 
+/- English proof (translation)
+Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Use `show locMap y.1 (ProjTwist.val s ⟨pt A y.1, y.2⟩ + ProjTwist.val s' ⟨pt A y.1, y.2⟩) = locMap y.1 (ProjTwist.val s ⟨pt A y.1, y.2⟩) + locMap y.1 (ProjTwist.val s' ⟨pt A y.1, y.2⟩)`. Conclude with `map_add _ _ _`.
+-/
 lemma twistPushSec_add {V : (projectiveSpace A n).Opens}
     (s s' : Γ(twistingSheaf (grading A n) k, V)) :
     twistPushSec (B := B) k (s + s') = twistPushSec k s + twistPushSec k s' := by
@@ -107,6 +119,9 @@ def pullbackTwistingSheafMap :
   ((Scheme.Modules.pullbackPushforwardAdjunction (baseChangeMap A B n)).homEquiv _ _).symm
     (twistToPushforward k)
 
+/- English proof (translation)
+Establish `h` using `((Scheme.Modules.pullbackPushforwardAdjunction (baseChangeMap A B n)).homEquiv_unit (twistingSheaf (grading A n) k) (twistingSheaf (grading B n) k) (pullbackTwistingSheafMap k))`. Rewrite `h` using `[pullbackTwistingSheafMap, Equiv.apply_symm_apply]`. Establish `h2` using `congrArg (fun g => (Scheme.Modules.Hom.app g V) s) h`. Simplify using `only [Scheme.Modules.Hom.comp_app, Scheme.Modules.pushforward_map_app] at h2`. Conclude with `h2.symm`.
+-/
 lemma pullbackTwistingSheafMap_unit {V : (projectiveSpace A n).Opens}
     (s : Γ(twistingSheaf (grading A n) k, V)) :
     (pullbackTwistingSheafMap (B := B) k).app _ (pullbackUnitApp (baseChangeMap A B n) _ V s) =
@@ -119,6 +134,11 @@ lemma pullbackTwistingSheafMap_unit {V : (projectiveSpace A n).Opens}
   simp only [Scheme.Modules.Hom.comp_app, Scheme.Modules.pushforward_map_app] at h2
   exact h2.symm
 
+/- English proof (translation)
+Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `locMap y.1 (ProjTwist.val (ProjTwist.upow (grading A n) hu k) ⟨pt A y.1, y.2⟩) = _`. Use `erw [ProjTwist.val_upow, ProjTwist.val_upow]`. Unfold `ProjTwist.twistFrac`.
+
+Use `(locMap_mk _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `map_pow (gradedMap A B n) u _`. Conclude with `Subtype.ext (map_pow (gradedMap A B n) u _)`.
+-/
 lemma twistPushSec_upow {u : MvPolynomial (Fin (n + 1)) A} (hu : u ∈ grading A n 1) :
     twistPushSec (B := B) k (ProjTwist.upow (grading A n) hu k) =
       ProjTwist.upow (grading B n) ((gradedMap A B n).2 hu) k := by

@@ -12,6 +12,31 @@ open scoped GlobalTheory.VacAny
 
 namespace GlobalTheory.LatticeDual
 
+/- English proof (translation)
+Use `haveI : Module.Finite R M := Module.Finite.iff_fg.mpr hM`. Use `haveI : Module.Free R M := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis R M`. Set `ι` to `Module.Free.ChooseBasisIndex R M`. Set `a : ι → (κ → K)` to `fun i => (b i : κ → K)`.
+
+Establish `hliR : LinearIndependent R a` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `hli : LinearIndependent K a` using `(LinearIndependent.iff_fractionRing R K).mp hliR`. Set `B` to `Module.Basis.sumExtend hli`. Establish `hfin : Finite (ι ⊕ Module.Basis.sumExtendIndex hli)` using `Module.Finite.finite_basis B`. Establish `: Finite (Module.Basis.sumExtendIndex hli)` using `Finite.of_injective (Sum.inr : _ → ι ⊕ _) Sum.inr_injective`.
+
+Establish `: Fintype (Module.Basis.sumExtendIndex hli)` using `Fintype.ofFinite _`. Establish `hB : ∀ i, B (Sum.inl i) = a i`. Introduce `i`. Simplify using `only [B, Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend, Equiv.symm_symm, Equiv.trans_apply, Equiv.sumCongr_apply]`. Both sides reduce to the same expression.
+
+Establish `key : ∀ f : (κ → K) →ₗ[K] K, (∀ i, f (a i) ∈ (algebraMap R K).range) → ∀ s ∈ M, f s ∈ (algebraMap R K).range`. Introduce `f hf s hs`. Establish `hs' : s = ∑ i, b.repr ⟨s, hs⟩ i • a i`. Use `congrArg Subtype.val (b.sum_repr ⟨s, hs⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`.
+
+Conclude with `this.symm`. Rewrite using `[hs', map_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[f.map_smul_of_tower]`. Take `⟨r, hr⟩` from `hf i`.
+
+Conclude with `⟨b.repr ⟨s, hs⟩ i * r, by rw [map_mul, hr, Algebra.smul_def]⟩`. Establish `dot : ∀ f : (κ → K) →ₗ[K] K, ∃ y : κ → K, ∀ x, x ⬝ᵥ y = f x`. Introduce `f`. Use `⟨fun k => f (fun j => if k = j then 1 else 0), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x]`.
+
+Simplify using `[dotProduct, smul_eq_mul]`. It suffices to establish `h : ∃ f : (κ → K) →ₗ[K] K, (∀ i, f (a i) ∈ (algebraMap R K).range) ∧ f t ∉ (algebraMap R K).range by`. Take `⟨f, hf, hft⟩` from `h`. Take `⟨y, hy⟩` from `dot f`. Conclude with `⟨y, fun s hs => (hy s).symm ▸ key f hf s hs, (hy t).symm ▸ hft⟩`.
+
+Distinguish the cases in `h1 : ∃ i, B.repr t (Sum.inl i) ∉ (algebraMap R K).range`. Take `⟨i, hi⟩` from `h1`. Use `⟨B.coord (Sum.inl i), fun i' => ?_, by simpa using hi⟩` and prove the remaining obligations. Rewrite using `[← hB, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+
+Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`. Distinguish the cases in `h2 : ∃ j, B.repr t (Sum.inr j) ≠ 0`. Take `⟨j, hj⟩` from `h2`. Use `⟨(z / B.repr t (Sum.inr j)) • B.coord (Sum.inr j), fun i => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, ← hB, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply, if_neg Sum.inl_ne_inr, smul_zero]`. Conclude with `⟨0, map_zero _⟩`. Rewrite using `[LinearMap.smul_apply, Module.Basis.coord_apply, smul_eq_mul, div_mul_cancel₀ _ hj]`. Conclude with `hz`. Use `push_neg at h1 h2`.
+
+Use `choose c hc using h1`. It suffices to derive a contradiction. Apply `ht` to reduce the goal to its premises. Establish `htc : t = ∑ i, c i • a i` using `by conv_lhs => rw [← B.sum_repr t]`. Rewrite using `[Fintype.sum_sum_type]`.
+
+Simplify using `[h2, hB, ← hc, algebraMap_smul]`. Rewrite using `[htc]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (b i).2`.
+-/
 theorem exists_integral_form_separating {R K : Type} [CommRing R] [IsDomain R]
     [IsPrincipalIdealRing R] [Field K] [Algebra R K] [IsFractionRing R K] {κ : Type} [Fintype κ]
     (M : Submodule R (κ → K)) (hM : M.FG) (z : K) (hz : z ∉ (algebraMap R K).range)
@@ -89,6 +114,25 @@ end GlobalTheory.LatticeDual
 
 namespace GlobalTheory.LatticeDual
 
+/- English proof (translation)
+Introduce `F _ _ v κ _ ψ₀ hψ A hA hbd t ht`. Set `O` to `HeightOneSpectrum.adicCompletionIntegers F v`. Establish `hrange : ∀ x : Fv F v, x ∈ (algebraMap O (Fv F v)).range ↔ x ∈ O` using `fun x => ⟨fun ⟨r, hr⟩ => hr ▸ r.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Establish `hψO : ∀ x ∈ O, ψ₀ x = 1` using `fun x hx => by`. Simplify using `using (hψ 1).mpr (one_mem _) x hx`.
+
+Set `M : Submodule O (κ → Fv F v)` to `{ carrier := A add_mem' := fun h h' => A.add_mem h h' zero_mem' := A.zero_mem smul_mem' := fun c x hx => hA _ c.2 x hx }`. Take `⟨c, hc0, hc⟩` from `hbd`. Set `N : Submodule O (κ → Fv F v)` to `Submodule.span O (Set.range fun k : κ => c⁻¹ • (Pi.single k 1 : κ → Fv F v))`. Establish `hN : N.FG` using `Submodule.fg_span (Set.finite_range _)`. Establish `hMN : M ≤ N`.
+
+Introduce `s hs`. Establish `hs' : s = ∑ k, (⟨c * s k, hc s hs k⟩ : O) • (c⁻¹ • (Pi.single k 1 : κ → Fv F v))`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show s j = c * s j * c⁻¹`.
+
+Rewrite using `[mul_comm c, mul_inv_cancel_right₀ hc0]`. Rewrite using `[hs']`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Establish `hMfg : M.FG` using `by haveI := isNoetherian_of_fg_of_noetherian N hN`. Establish `h1 : (M.comap N.subtype).FG` using `IsNoetherian.noetherian _`.
+
+Establish `h2` using `h1.map N.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hMN]`. Then use the resulting hypothesis. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hϖ0 : (ϖ : Fv F v) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hz : (ϖ : Fv F v)⁻¹ ∉ (algebraMap O (Fv F v)).range`.
+
+Rewrite using `[hrange]`. Introduce `h`. Apply `hϖ.not_isUnit` to reduce the goal to its premises. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `[hϖ0]`.
+
+Assume the negation of the conclusion as `htA`. Take `⟨y', hyA, hyt⟩` from `exists_integral_form_separating M hMfg _ hz t htA`. Simplify using `only [hrange] at hyA hyt`. Choose the witnesses or unpack the hypotheses as in `⟨b, hb, hbψ⟩ : ∃ b ∈ O, ψ₀ ((t ⬝ᵥ y') * b) ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+
+Use `push_neg at h`. Conclude with `hyt ((hψ _).mp h)`. Apply `hbψ` to reduce the goal to its premises. Use `ht (b • y') (fun s hs => by` as an intermediate fact. Rewrite using `[dotProduct_smul, smul_eq_mul, mul_comm]`.
+
+Conclude with `hψO _ (mul_mem (hyA s hs) hb))`. Rewrite `this` using `[dotProduct_smul, smul_eq_mul, mul_comm]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_mem_doubleOrth : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (κ : Type) [Fintype κ] (ψ₀ : AddChar (Fv F v) ℂ),
     (∀ x : Fv F v, (∀ y ∈ HeightOneSpectrum.adicCompletionIntegers F v, ψ₀ (x * y) = 1) ↔ x ∈ HeightOneSpectrum.adicCompletionIntegers F v) →
     ∀ A : AddSubgroup (κ → Fv F v), (∀ c ∈ HeightOneSpectrum.adicCompletionIntegers F v, ∀ t ∈ A, c • t ∈ A) →

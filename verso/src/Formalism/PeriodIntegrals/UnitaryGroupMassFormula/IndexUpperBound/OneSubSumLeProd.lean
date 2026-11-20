@@ -5,6 +5,13 @@ namespace PI.UnitaryGroupMassFormula.IndexUBound
 
 open Finset
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Establish `hm : ∀ i ∈ s, i ∈ insert a s` using `fun i hi => Finset.mem_insert_of_mem hi`.
+
+Establish `hQ0 : 0 ≤ ∏ i ∈ s, P i` using `Finset.prod_nonneg fun i hi => hP0 i (hm i hi)`. Establish `hQ1 : ∏ i ∈ s, P i ≤ 1` using `Finset.prod_le_one (fun i hi => hP0 i (hm i hi)) (fun i hi => hP1 i (hm i hi))`. Establish `h` using `ih (fun i hi => hP0 i (hm i hi)) (fun i hi => hP1 i (hm i hi)) (fun i hi => hb i (hm i hi)) (fun i hi => hPb i (hm i hi))`. Establish `ha1` using `hP1 a (Finset.mem_insert_self a s)`. Establish `hab` using `hPb a (Finset.mem_insert_self a s)`.
+
+Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 ha1) (sub_nonneg.2 hQ1)]`.
+-/
 theorem one_sub_sum_le_prod {ι : Type*} [DecidableEq ι] (s : Finset ι) (P b : ι → ℝ)
     (hP0 : ∀ i ∈ s, 0 ≤ P i) (hP1 : ∀ i ∈ s, P i ≤ 1) (hb : ∀ i ∈ s, 0 ≤ b i)
     (hPb : ∀ i ∈ s, 1 - b i ≤ P i) : 1 - ∑ i ∈ s, b i ≤ ∏ i ∈ s, P i := by
@@ -22,6 +29,11 @@ theorem one_sub_sum_le_prod {ι : Type*} [DecidableEq ι] (s : Finset ι) (P b :
     have hab := hPb a (Finset.mem_insert_self a s)
     nlinarith [mul_nonneg (sub_nonneg.2 ha1) (sub_nonneg.2 hQ1)]
 
+/- English proof (translation)
+Rewrite using `[Finset.prod_pow_eq_pow_sum, ← Finset.sum_range_id]`. Use `congr 1`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot hr]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem prod_Ico_pow (g : ℝ) (r : ℕ) :
     ∏ i ∈ Ico 1 r, g ^ i = g ^ (r * (r - 1) / 2) := by
   rw [Finset.prod_pow_eq_pow_sum, ← Finset.sum_range_id]
@@ -31,12 +43,26 @@ theorem prod_Ico_pow (g : ℝ) (r : ℕ) :
   · rw [Finset.range_eq_Ico, Finset.sum_eq_sum_Ico_succ_bot hr]
     simp
 
+/- English proof (translation)
+Rewrite using `[← PI.UnitaryGroupMassFormula.IndexUBound.prod_Ico_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sub, mul_one, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hg)]`.
+-/
 theorem prod_factor (g : ℝ) (hg : g ≠ 0) (r : ℕ) :
     ∏ i ∈ Ico 1 r, (g ^ i - 1) = g ^ (r * (r - 1) / 2) * ∏ i ∈ Ico 1 r, (1 - g⁻¹ ^ i) := by
   rw [← PI.UnitaryGroupMassFormula.IndexUBound.prod_Ico_pow, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ => ?_
   rw [mul_sub, mul_one, inv_pow, mul_inv_cancel₀ (pow_ne_zero _ hg)]
 
+/- English proof (translation)
+Establish `hg0 : 0 < g` using `by linarith`. Use `set x := g⁻¹ with hx`. Establish `hx0 : 0 < x` using `inv_pos.2 hg0`. Establish `hx1 : x ≤ 1` using `inv_le_one_of_one_le₀ (by linarith)`. Establish `hxg : x * g = 1` using `inv_mul_cancel₀ hg0.ne'`.
+
+Establish `hpow0 : ∀ i : ℕ, 0 ≤ x ^ i` using `fun i => pow_nonneg hx0.le i`. Establish `hpow1 : ∀ i : ℕ, x ^ i ≤ 1` using `fun i => pow_le_one₀ hx0.le hx1`. Establish `hf0 : ∀ i ∈ Ico 1 r, 0 ≤ 1 - x ^ i` using `fun i _ => sub_nonneg.2 (hpow1 i)`. Establish `hf1 : ∀ i ∈ Ico 1 r, 1 - x ^ i ≤ 1` using `fun i _ => by linarith [hpow0 i]`. Use `⟨Finset.prod_nonneg hf0, Finset.prod_le_one hf0 hf1, ?_⟩` and prove the remaining obligations.
+
+Establish `hS : (∑ i ∈ Ico 1 r, x ^ i) * (g - 1) ≤ 1`. Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Simplify using the standard rewrite rules. Establish `h` using `geom_sum_Ico_mul x hr`. Establish `e : (∑ i ∈ Ico 1 r, x ^ i) * (g - 1) = 1 - x ^ r * g`.
+
+Take the linear combination `(-g) * h + ((∑ i ∈ Ico 1 r, x ^ i) + 1) * hxg`. Rewrite using `[e]`. Use polynomial arithmetic with `[hpow0 r]`. Establish `hS' : ∑ i ∈ Ico 1 r, x ^ i ≤ 1 / (g - 1)`. Rewrite using `[le_div_iff₀ (by linarith)]`.
+
+Conclude with `hS`. Establish `h1` using `PI.UnitaryGroupMassFormula.IndexUBound.one_sub_sum_le_prod (Ico 1 r) (fun i => 1 - x ^ i) (fun i => x ^ i) hf0 hf1 (fun i _ => hpow0 i) (fun i _ => le_refl _)`. Use `beta_reduce at h1`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem inner_bounds (g : ℝ) (hg : 2 ≤ g) (r : ℕ) :
     0 ≤ ∏ i ∈ Ico 1 r, (1 - g⁻¹ ^ i) ∧ ∏ i ∈ Ico 1 r, (1 - g⁻¹ ^ i) ≤ 1 ∧
       1 - 1 / (g - 1) ≤ ∏ i ∈ Ico 1 r, (1 - g⁻¹ ^ i) := by

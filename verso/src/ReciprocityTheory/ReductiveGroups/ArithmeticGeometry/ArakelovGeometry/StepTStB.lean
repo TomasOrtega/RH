@@ -8,6 +8,9 @@ namespace ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
 
 open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 
+/- English proof (translation)
+Unfold `ringKrullDim`. Use `Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) ?_` and prove the remaining obligations. Introduce `P Q hPQ`. Conclude with `Ideal.IsIntegral.comap_lt_comap (I := P.asIdeal) (J := Q.asIdeal) hPQ`.
+-/
 theorem ringKrullDim_le_of_isIntegral' {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [Algebra.IsIntegral R S] : ringKrullDim S ≤ ringKrullDim R := by
   unfold ringKrullDim
@@ -19,11 +22,17 @@ section Arith
 
 variable {Ω : Type*} [Field Ω] [CharZero Ω]
 
+/- English proof (translation)
+Rewrite using `[coordIdeal, RingHom.mem_ker, coneMap, aeval_X, mul_eq_zero, Polynomial.C_eq_zero]`. Simplify using `[Polynomial.X_ne_zero]`.
+-/
 theorem X_mem_coordIdeal_iff {J : Type} (v : J → Ω) (i : J) :
     (X i : MvPolynomial J ℤ) ∈ coordIdeal ℤ v ↔ v i = 0 := by
   rw [coordIdeal, RingHom.mem_ker, coneMap, aeval_X, mul_eq_zero, Polynomial.C_eq_zero]
   simp [Polynomial.X_ne_zero]
 
+/- English proof (translation)
+Rewrite using `[IsHorizontal, eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, coordIdeal, RingHom.mem_ker, coneMap, aeval_C]`. Rewrite using `[Submodule.mem_bot]`. Simplify using `using hn`.
+-/
 theorem isHorizontal_coordIdeal {κ : Type} (v : Ix κ → Ω) :
     IsHorizontal (ι := GlobalTheory κ) (coordIdeal ℤ v) := by
   rw [IsHorizontal, eq_bot_iff]
@@ -32,6 +41,13 @@ theorem isHorizontal_coordIdeal {κ : Type} (v : Ix κ → Ω) :
   rw [Submodule.mem_bot]
   simpa using hn
 
+/- English proof (translation)
+Use `⟨{f | f ∈ coordIdeal ℤ v ∧ ∃ n, f.IsHomogeneous n}, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨_, n, hn⟩`. Use `⟨fun _ => n, fun m hm k => ?_⟩` and prove the remaining obligations. Establish `h1 : Finsupp.degree m = n`. Rewrite using `[Finsupp.degree_eq_weight_one]`.
+
+Conclude with `hn (mem_support_iff.mp hm)`. Rewrite `h1` using `[Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Consider the cases of `k`. Simplify using `using h1`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Introduce `f hf`. Rewrite using `[← sum_homogeneousComponent f]`. Conclude with `Ideal.sum_mem _ fun d _ => Ideal.subset_span ⟨coordIdeal_isHomogIdeal ℤ v f hf d, d, homogeneousComponent_isHomogeneous d f⟩`. Conclude with `Ideal.span_le.mpr fun f hf => hf.1`.
+-/
 theorem isMultiHomogIdeal_coordIdeal {κ : Type} [Fintype κ] (v : Ix κ → Ω) :
     IsMultiHomogIdeal (ι := GlobalTheory κ) (coordIdeal ℤ v) := by
   refine ⟨{f | f ∈ coordIdeal ℤ v ∧ ∃ n, f.IsHomogeneous n}, ?_, ?_⟩
@@ -50,6 +66,9 @@ theorem isMultiHomogIdeal_coordIdeal {κ : Type} [Fintype κ] (v : Ix κ → Ω)
         ⟨coordIdeal_isHomogIdeal ℤ v f hf d, d, homogeneousComponent_isHomogeneous d f⟩
     · exact Ideal.span_le.mpr fun f hf => hf.1
 
+/- English proof (translation)
+Rewrite using `[coneMap, coneMap, aeval_rename]`. Both sides reduce to the same expression.
+-/
 theorem coneMap_rename {J J' : Type} (v : J → Ω) (e : J' → J) (p : MvPolynomial J' ℤ) :
     coneMap ℤ v (rename e p) = coneMap ℤ (v ∘ e) p := by
   rw [coneMap, coneMap, aeval_rename]
@@ -61,6 +80,9 @@ section Dim
 
 variable {Ω : Type*} [Field Ω] [CharZero Ω] {J : Type} [Fintype J] {D : ℕ}
 
+/- English proof (translation)
+Take `⟨p, hp, he⟩` from `h`. Use `⟨p, hp, hval ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, ← he, Polynomial.hom_eval₂]`.
+-/
 theorem isIntegralElem_of_comp {R S T : Type*} [CommRing R] [CommRing S] [CommRing T]
     (f : R →+* S) (val : S →+* T) (hval : Function.Injective val) {s : S}
     (h : (val.comp f).IsIntegralElem (val s)) : f.IsIntegralElem s := by
@@ -68,6 +90,21 @@ theorem isIntegralElem_of_comp {R S T : Type*} [CommRing R] [CommRing S] [CommRi
   refine ⟨p, hp, hval ?_⟩
   rw [map_zero, ← he, Polynomial.hom_eval₂]
 
+/- English proof (translation)
+Establish `hinj : Function.Injective (coneMap ℤ (v ∘ e))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `p hp`. Establish `: p ∈ coordIdeal ℤ (v ∘ e)` using `by simpa [coordIdeal, RingHom.mem_ker] using hp`. Rewrite `this` using `[hf.free]`.
+
+Conclude with `(Ideal.mem_bot).mp this`. Use `set φ := AlgEquiv.ofInjective (coneMap ℤ (v ∘ e)) hinj`. Establish `hgen : ∀ i, (coneMap ℤ (v ∘ e) : MvPolynomial (Fin (D + 1)) ℤ →+* Polynomial Ω).IsIntegralElem (Polynomial.C (v i) * Polynomial.X)`. Introduce `i`. Establish `hi : IsIntegral (coneMap ℤ (v ∘ e)).range (Polynomial.C (v i) * Polynomial.X : Polynomial Ω)` using `hf.integral i`.
+
+Take `⟨p, hp, hps⟩` from `hi`. Use `⟨p.map φ.symm.toRingEquiv.toRingHom, hp.map _, ?_⟩` and prove the remaining obligations. Establish `hcomp : ((coneMap ℤ (v ∘ e) : MvPolynomial (Fin (D + 1)) ℤ →+* Polynomial Ω).comp φ.symm.toRingEquiv.toRingHom) = algebraMap (coneMap ℤ (v ∘ e)).range (Polynomial Ω)`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Establish `h1 : ((φ (φ.symm r) : (coneMap ℤ (v ∘ e)).range) : Polynomial Ω) = coneMap ℤ (v ∘ e) (φ.symm r)` using `rfl`.
+
+Rewrite `h1` using `[AlgEquiv.apply_symm_apply]`. Conclude with `h1.symm`. Rewrite using `[Polynomial.eval₂_map, hcomp]`. Conclude with `hps`. Proceed by induction on `q using MvPolynomial.induction_on with`.
+
+Consider the case `C a`. Establish `: coneMap ℤ v (C a) = coneMap ℤ (v ∘ e) (C a)` using `by simp`. Rewrite using `[this]`. Conclude with `RingHom.isIntegralElem_map _`. Consider the case `add p q hp hq`.
+
+Rewrite using `[map_add]`. Conclude with `RingHom.IsIntegralElem.add _ hp hq`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`. Use `RingHom.IsIntegralElem.mul _ hp ?_` and prove the remaining obligations.
+
+Simplify `hgen i` using `[coneMap]`.
+-/
 theorem isIntegralElem_coneMap (v : J → Ω) (e : Fin (D + 1) → J) (hf : IsProjFrame v e)
     (q : MvPolynomial J ℤ) :
     (coneMap ℤ (v ∘ e) : MvPolynomial (Fin (D + 1)) ℤ →+* Polynomial Ω).IsIntegralElem
@@ -109,18 +146,35 @@ theorem isIntegralElem_coneMap (v : J → Ω) (e : Fin (D + 1) → J) (hf : IsPr
     refine RingHom.IsIntegralElem.mul _ hp ?_
     simpa [coneMap] using hgen i
 
+/- English proof (translation)
+Conclude with `(injective_iff_map_eq_zero _).2 fun p hp => by`. Establish `h : p ∈ coordIdeal ℤ (v ∘ e)` using `(RingHom.mem_ker).2 hp`. Rewrite `h` using `[hf.free, Ideal.mem_bot]`. Then use the resulting hypothesis.
+-/
 theorem coneMap_injective_of_frame (v : J → Ω) (e : Fin (D + 1) → J) (hf : IsProjFrame v e) :
     Function.Injective (coneMap ℤ (v ∘ e)) := by
   exact (injective_iff_map_eq_zero _).2 fun p hp => by
     have h : p ∈ coordIdeal ℤ (v ∘ e) := (RingHom.mem_ker).2 hp
     rwa [hf.free, Ideal.mem_bot] at h
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField, Nat.card_eq_fintype_card, Fintype.card_fin]`. Rewrite using `[show ((D + 2 : ℕ) : WithBot ℕ∞) = 1 + ((D + 1 : ℕ) : WithBot ℕ∞) by norm_cast; omega]`.
+-/
 theorem ringKrullDim_mvPoly_fin_int :
     ringKrullDim (MvPolynomial (Fin (D + 1)) ℤ) = ((D + 2 : ℕ) : WithBot ℕ∞) := by
   rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField,
     Nat.card_eq_fintype_card, Fintype.card_fin]
   rw [show ((D + 2 : ℕ) : WithBot ℕ∞) = 1 + ((D + 1 : ℕ) : WithBot ℕ∞) by norm_cast; omega]
 
+/- English proof (translation)
+Establish `hq : ringKrullDim (MvPolynomial J ℤ ⧸ coordIdeal ℤ v) = ringKrullDim (coneMap ℤ v).range` using `ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerEquivRange (coneMap ℤ v)).toRingEquiv`. Set `f : MvPolynomial (Fin (D + 1)) ℤ →+* (coneMap ℤ v).range` to `((coneMap ℤ v).rangeRestrict.comp (rename e)).toRingHom`. Establish `hvalf : ((coneMap ℤ v).range.val : (coneMap ℤ v).range →+* Polynomial Ω).comp f = (coneMap ℤ (v ∘ e) : MvPolynomial (Fin (D + 1)) ℤ →+* Polynomial Ω)`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations. Simplify using `[f, coneMap_rename]`.
+
+Establish `hinj : Function.Injective f`. Introduce `a b hab`. Apply `coneMap_injective_of_frame v e hf` to reduce the goal to its premises. Use `congrArg ((coneMap ℤ v).range.val : (coneMap ℤ v).range →+* Polynomial Ω) hab` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, ← RingHom.comp_apply, hvalf]`.
+
+Conclude with `this`. Establish `hint : f.IsIntegral` using `fun s => by`. Take `⟨q, hq⟩` from `s.2`. Apply `isIntegralElem_of_comp f ((coneMap ℤ v).range.val : (coneMap ℤ v).range →+* Polynomial Ω) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[hvalf]`.
+
+Express the relevant statement in the definitionally equal form `RingHom.IsIntegralElem _ (s : Polynomial Ω)`. Rewrite using `[← hq]`. Conclude with `isIntegralElem_coneMap v e hf q`. Rewrite using `[hq]`. Apply `le_antisymm` to reduce the goal to its premises.
+
+Set `_` to `f.toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin (D + 1)) ℤ) (coneMap ℤ v).range` using `⟨hint⟩`. Rewrite using `[← ringKrullDim_mvPoly_fin_int]`. Conclude with `ringKrullDim_le_of_isIntegral'`. Conclude with `le_ringKrullDim_of_isIntegral f hint hinj _ ringKrullDim_mvPoly_fin_int.ge`.
+-/
 theorem ringKrullDim_quot_of_frame (v : J → Ω) (e : Fin (D + 1) → J) (hf : IsProjFrame v e) :
     ringKrullDim (MvPolynomial J ℤ ⧸ coordIdeal ℤ v) = ((D + 2 : ℕ) : WithBot ℕ∞) := by
   have hq : ringKrullDim (MvPolynomial J ℤ ⧸ coordIdeal ℤ v) =

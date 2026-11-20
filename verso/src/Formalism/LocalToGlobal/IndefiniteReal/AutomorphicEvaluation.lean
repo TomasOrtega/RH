@@ -18,16 +18,29 @@ def ev (M : DSModel V S) (v₀ : M.Vec) : MMap M →ₗ[ℂ] (GA D V → ℂ) wh
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_apply (M : DSModel V S) (v₀ : M.Vec) (T : MMap M) : ev M v₀ T = T v₀ := rfl
 
 def IsLowVec (M : DSModel V S) (v₀ : M.Vec) : Prop :=
   ∀ τ, IsLowUnit (M.ε τ) (M.lam τ) (M.σ τ) (v₀ τ : M.H τ)
 
+/- English proof (translation)
+The claim follows from `(h v₀ v₀').2`.
+-/
 theorem ev_pair (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T T' : MMap M) {c : ℂ}
     (h : IsMultIP M μ 𝓕 T T' c) (v₀ v₀' : M.Vec) :
     ∫ g in 𝓕, star (ev M v₀ T g) * ev M v₀' T' g ∂μ = c * ∏ τ, ⟪(v₀ τ : M.H τ), (v₀' τ : M.H τ)⟫_ℂ :=
   (h v₀ v₀').2
 
+/- English proof (translation)
+Establish `h1` using `ev_pair M μ 𝓕 T T h v₀ v₀`. Establish `h2 : ∏ τ, ⟪(v₀ τ : M.H τ), (v₀ τ : M.H τ)⟫_ℂ = 1`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[inner_self_eq_norm_sq_to_K, hv τ]`. Evaluate the numerical expressions.
+
+Rewrite `h1` using `[h2, mul_one]`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+
+Use `norm_cast`.
+-/
 theorem ev_norm (M : DSModel V S) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (T : MMap M) {c : ℂ}
     (h : IsMultIP M μ 𝓕 T T c) (v₀ : M.Vec) (hv : ∀ τ, ‖(v₀ τ : M.H τ)‖ = 1) :
     ∫ g in 𝓕, ((‖ev M v₀ T g‖ ^ 2 : ℝ) : ℂ) ∂μ = c := by
@@ -50,6 +63,11 @@ def ResInj (M : DSModel V S) (C : Submodule ℂ (MMap M)) {TK : Type} [AddCommGr
 def ResInjVec (M : DSModel V S) (C : Submodule ℂ (MMap M)) : Prop :=
   ∀ T ∈ C, ∀ v : M.Vec, (∀ τ, (v τ : M.H τ) ≠ 0) → T v = 0 → T = 0
 
+/- English proof (translation)
+Introduce `T hT h0`. Take `⟨v, hv0, x, hx⟩` from `hv`. Use `h T hT v hv0 ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun h0 x`. Rewrite `h1` using `[LinearMap.comp_apply, hx, PiTensorProduct.lift.tprod, LinearMap.zero_apply]`.
+
+Conclude with `h1`.
+-/
 theorem resInj_of_vec (M : DSModel V S) (C : Submodule ℂ (MMap M)) {TK : Type} [AddCommGroup TK] [Module ℂ TK]
     (emb : TK →ₗ[ℂ] ⨂[ℂ] τ, M.sm τ) (h : ResInjVec M C)
     (hv : ∃ v : M.Vec, (∀ τ, (v τ : M.H τ) ≠ 0) ∧ ∃ x, emb x = PiTensorProduct.tprod ℂ v) : ResInj M C emb := by

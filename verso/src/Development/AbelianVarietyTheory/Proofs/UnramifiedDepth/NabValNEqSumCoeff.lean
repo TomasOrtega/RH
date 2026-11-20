@@ -7,6 +7,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Set `L : MvPowerSeries σ K →ₗ[K] K` to `{ toFun := F, map_add' := hadd, map_smul' := fun t f => by simpa using hsmul t f }`. Establish `hL : ∀ f, L f = F f` using `fun _ => rfl`. Use `⟨(Finsupp.finite_of_degree_le (σ := σ) N).toFinset, fun f => ?_⟩` and prove the remaining obligations. Use `set S := (Finsupp.finite_of_degree_le (σ := σ) N).toFinset with hS`. Establish `hg : F (f - ∑ μ ∈ S, MvPowerSeries.coeff μ f • MvPowerSeries.monomial μ (1 : K)) = 0`.
+
+Apply `hvan` to reduce the goal to its premises. Introduce `ν hν`. Establish `hνS : ν ∈ S` using `by simpa [hS] using hν`. Rewrite using `[map_sub, map_sum, Finset.sum_eq_single_of_mem ν hνS]`. Simplify using the standard rewrite rules.
+
+Introduce `μ _ hne`. Rewrite using `[map_smul, MvPowerSeries.coeff_monomial_ne (Ne.symm hne)]`. Simplify using the standard rewrite rules. Rewrite `hg` using `[← hL, map_sub, map_sum, sub_eq_zero]`. Rewrite using `[← hL, hg]`.
+
+Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hL, smul_eq_mul]`.
+-/
 theorem functional_eq_sum_coeff_of_vanish {σ K : Type} [CommRing K] [Finite σ]
     (F : MvPowerSeries σ K → K) (N : ℕ)
     (hadd : ∀ f g, F (f + g) = F f + F g) (hsmul : ∀ (t : K) f, F (t • f) = t * F f)
@@ -33,6 +42,9 @@ theorem functional_eq_sum_coeff_of_vanish {σ K : Type} [CommRing K] [Finite σ]
   refine Finset.sum_congr rfl fun μ _ => ?_
   rw [map_smul, hL, smul_eq_mul]
 
+/- English proof (translation)
+Introduce `K _ _ d O _ _ B h w0 m n ι _ cp u P`. Take `⟨h1, h2, -, -⟩` from `GlobalTheory.T.nablaValueCopies_bilinear K d O B h w0 m n ι cp u`. Conclude with `functional_eq_sum_coeff_of_vanish (fun f => nabValN B K h w0 m f cp u P) P.totalDegree (fun f g => h1 f g P) (fun t f => h2 t f P) (fun f hf => GlobalTheory.T.invariantValueCopies_eq_zero_of_low_coeff K d O B h w0 m n ι cp u f P hf)`.
+-/
 theorem nabValN_eq_sum_coeff : ∀ (K : Type) [CommRing K] [Algebra ℚ K] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB K d O) (h : PS K 2 d) (w0 : O) (m n : ℕ) (ι : Type) [Fintype ι] (cp : ι → Fin n) (u : ι → Fin d → K), ∀ (P : MvPolynomial ι K), ∃ S : Finset (Fin n × Fin d →₀ ℕ), ∀ f : PS K n d, nabValN B K h w0 m f cp u P = ∑ μ ∈ S, MvPowerSeries.coeff μ f * nabValN B K h w0 m (MvPowerSeries.monomial μ (1 : K)) cp u P := by
   intro K _ _ d O _ _ B h w0 m n ι _ cp u P
   obtain ⟨h1, h2, -, -⟩ := GlobalTheory.T.nablaValueCopies_bilinear K d O B h w0 m n ι cp u

@@ -11,13 +11,26 @@ namespace GlobalTheory.OrbFinAf.KottLat
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Introduce `i` and use `by rw [map_add, Finsupp.add_apply]; exact Subring.add_mem _ (ha i) (hb i)`.
+-/
 theorem isIntV_add (G : HTGroup p) (v : AwayP p) {a b : Qv v ⊗[ℚ] G.C} (ha : IsIntV G v a)
     (hb : IsIntV G v b) : IsIntV G v (a + b) := fun i => by
   rw [map_add, Finsupp.add_apply]; exact Subring.add_mem _ (ha i) (hb i)
 
+/- English proof (translation)
+Introduce `i` and use `by rw [map_zero, Finsupp.zero_apply]; exact Subring.zero_mem _`.
+-/
 theorem isIntV_zero (G : HTGroup p) (v : AwayP p) : IsIntV G v 0 := fun i => by
   rw [map_zero, Finsupp.zero_apply]; exact Subring.zero_mem _
 
+/- English proof (translation)
+Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact Filter.Eventually.of_forall fun v => by rw [map_zero]; exact isIntV_zero G v`. Consider the case `tmul a c`. Establish `h1 : ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), AfP.eval v a ∈ v.1.adicCompletionIntegers ℚ` using `a.2`. Establish `h2 : ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), ∀ i, algebraMap ℚ (Qv v) ((Module.finBasis ℚ G.C).repr c i) ∈ v.1.adicCompletionIntegers ℚ`.
+
+Simplify using `only [Filter.eventually_all]`. Introduce `i`. Conclude with `eventually_rat_mem_integers _`. Use `filter_upwards [h1, h2] with v hv1 hv2 i`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.id_apply, IsIntV, basV, Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`.
+
+Conclude with `Subring.mul_mem _ hv1 (hv2 i)`. Consider the case `add y z hy hz => filter_upwards [hy, hz] with v h1 h2`. Rewrite using `[map_add]`. Conclude with `isIntV_add G v h1 h2`.
+-/
 theorem eventually_isIntV_map (G : HTGroup p) (y : AfP p ⊗[ℚ] G.C) :
     ∀ᶠ v in (Filter.cofinite : Filter (AwayP p)),
       IsIntV G v (Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C) y) := by
@@ -41,6 +54,19 @@ end GlobalTheory.OrbFinAf.KottLat
 
 namespace GlobalTheory.OrbFinAf.KottLat
 
+/- English proof (translation)
+Establish `lift : ∀ a : A, (∀ i j, Φ.symm a i j ∈ R) → ∃ M : Matrix (Fin n) (Fin n) R, M.map R.subtype = Φ.symm a` using `fun a h => ⟨fun i j => ⟨_, h i j⟩, by ext i j; rfl⟩`. Take `⟨Γ, hΓ⟩` from `lift _ hγ`. Take `⟨Δ, hΔ⟩` from `lift _ hδ`. Establish `hcΓ : Γ.charpoly.map R.subtype = (Φ.symm γ₀).charpoly`. Rewrite using `[← Matrix.charpoly_map, hΓ]`.
+
+Establish `hcΔ : Δ.charpoly.map R.subtype = (Φ.symm γ₀).charpoly`. Rewrite using `[← Matrix.charpoly_map, hΔ]`. Establish `e : Φ.symm ((g⁻¹ * γ₀ * g : Aˣ) : A) = (((Units.map (Φ.symm : A ≃+* _).toRingHom.toMonoidHom g)⁻¹ : (Matrix (Fin n) (Fin n) K)ˣ) : Matrix (Fin n) (Fin n) K) * Φ.symm γ₀ * ((Units.map (Φ.symm : A ≃+* _).toRingHom.toMonoidHom g : (Matrix (Fin n) (Fin n) K)ˣ) : Matrix (Fin n) (Fin n …`. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul]`. Both sides reduce to the same expression.
+
+Rewrite using `[e, Matrix.charpoly_mul_comm, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `hinj : Function.Injective (Polynomial.map R.subtype)` using `Polynomial.map_injective _ Subtype.val_injective`. Establish `heq : Γ.charpoly = Δ.charpoly` using `hinj (hcΓ.trans hcΔ.symm)`. Establish `hQ : Q = Γ.charpoly` using `hinj (hQm.trans hcΓ.symm)`. Take `⟨u, hu⟩` from `GlobalTheory.T.semilocal_conjugate_same_charpoly R hfin n Γ Δ heq (hQ ▸ hQs)`.
+
+Set `F : Matrix (Fin n) (Fin n) R →* A` to `(Φ.toRingHom.comp R.subtype.mapMatrix).toMonoidHom`. Set `U : Aˣ` to `Units.map F u`. Establish `hUs : Φ.symm (U : A) = (u : Matrix (Fin n) (Fin n) R).map R.subtype` using `Φ.symm_apply_apply _`. Establish `hUs' : Φ.symm ((U⁻¹ : Aˣ) : A) = ((u⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R).map R.subtype`. Rewrite using `[show U⁻¹ = Units.map F u⁻¹ from (map_inv (Units.map F) u).symm]`.
+
+Conclude with `Φ.symm_apply_apply _`. Use `⟨U, Units.ext (Φ.symm.injective ?_), fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul U, Units.val_mul γ₀, map_mul, map_mul, hUs, ← hΔ, ← hΓ, ← Matrix.map_mul, ← Matrix.map_mul, hu]`. Rewrite using `[hUs, Matrix.map_apply]`. Conclude with `(u : Matrix (Fin n) (Fin n) R) i j |>.2`.
+
+Rewrite using `[hUs', Matrix.map_apply]`. Conclude with `((u⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i j |>.2`.
+-/
 theorem conj_integral {A K : Type} [Ring A] [CommRing K] {n : ℕ} (R : Subring K)
     (Φ : Matrix (Fin n) (Fin n) K ≃+* A) (hfin : Set.Finite {I : Ideal R | I.IsMaximal})
     (Q : Polynomial R) (hQs : Q.Separable) (γ₀ : Aˣ) (hQm : Q.map R.subtype = (Φ.symm γ₀).charpoly)

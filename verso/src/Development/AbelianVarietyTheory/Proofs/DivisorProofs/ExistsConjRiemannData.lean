@@ -15,6 +15,9 @@ open scoped CategoryTheory.Obj
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `(pullback.map_comp ψ φ ψ φ g f w'.symm w'.symm w.symm w.symm).symm`.
+-/
 theorem sqMap_comp {S S' S'' : Scheme.{0}} {A : Over S} {A' : Over S'} {A'' : Over S''} {f : S' ⟶ S}
     {g : S'' ⟶ S'} {φ : A'.left ⟶ A.left} {ψ : A''.left ⟶ A'.left} (w : φ ≫ A.hom = A'.hom ≫ f)
     (w' : ψ ≫ A'.hom = A''.hom ≫ g) (w'' : (ψ ≫ φ) ≫ A.hom = A''.hom ≫ g ≫ f) :
@@ -42,8 +45,14 @@ def conj : P.RiemannData (spMap (starRingEnd ℂ) ≫ y) :=
     χ := _
     isAH := ConjUnif.conjPull_isAH h d.u d.isAH }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem conj_H : d.conj.H = d.H.map star := rfl
 
+/- English proof (translation)
+Establish `e : (d.conj.u.ex z).left ≫ d.conj.φ = cj ≫ (show Sp ℂ ⟶ _ from (d.u.ex (star z)).left) ≫ d.φ` using `ArchMetricCompare.cjPt_comp' (isGrpPullback_pullback d.B cj) _`. Unfold `fn`. Rewrite using `[← Points.valAt'_eq_valR, ← Points.valAt'_eq_valR]`. Conclude with `(congrArg (valAt' · W f) e).trans (val_cj _ _ _)`.
+-/
 theorem conj_fn (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (z : Fin P.g → ℂ) :
     d.conj.fn W f z = star (d.fn W f (star z)) := by
   have e : (d.conj.u.ex z).left ≫ d.conj.φ = cj ≫ (show Sp ℂ ⟶ _ from (d.u.ex (star z)).left) ≫ d.φ :=
@@ -52,6 +61,11 @@ theorem conj_fn (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (z : Fin P.g → ℂ)
   rw [← Points.valAt'_eq_valR, ← Points.valAt'_eq_valR]
   exact (congrArg (valAt' · W f) e).trans (val_cj _ _ _)
 
+/- English proof (translation)
+Establish `D` using `(d.differentiableAt_fn f h).hasFDerivAt.star_star`. Rewrite `D` using `[star_zero]`. Establish `e : d.conj.fn W f = star ∘ d.fn W f ∘ star` using `funext (d.conj_fn W f)`. Use function extensionality and compare the values at `a`. Unfold `cov`.
+
+Rewrite using `[e, D.fderiv]`. Simplify using the standard rewrite rules.
+-/
 theorem conj_cov (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (h : ⊤ ≤ (y ≫ LieVB.unitSec P.A) ⁻¹ᵁ W) :
     d.conj.cov W f = star (d.cov W f) := by
   have D := (d.differentiableAt_fn f h).hasFDerivAt.star_star
@@ -64,6 +78,9 @@ theorem conj_cov (W : P.A.left.Opens) (f : Γ(P.A.left, W)) (h : ⊤ ≤ (y ≫ 
 
 end PPAS.RiemannData
 
+/- English proof (translation)
+Introduce `_ _ _ d` and use `⟨d.conj, d.conj_H, d.conj_cov⟩`.
+-/
 theorem PPAS.exists_conj_riemannData : ∀ (S : Scheme.{0}) (P : PPAS S) (y : Sp ℂ ⟶ S) (d : P.RiemannData y), ∃ d' : P.RiemannData (spMap (starRingEnd ℂ) ≫ y), d'.H = d.H.map star ∧ ∀ (W : P.A.left.Opens) (f : Γ(P.A.left, W)), ⊤ ≤ (y ≫ LieVB.unitSec P.A) ⁻¹ᵁ W → d'.cov W f = star (d.cov W f) :=
   fun _ _ _ d => ⟨d.conj, d.conj_H, d.conj_cov⟩
 

@@ -9,13 +9,22 @@ noncomputable section
 
 namespace GlobalTheory.CompanionTheory.Ar.BT.TanLift
 
+/- English proof (translation)
+Conclude with `MonObj.comp_one u`.
+-/
 theorem comp_one_over {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) : u ≫ (1 : X ⟶ M) = 1 := by
   exact MonObj.comp_one u
 
+/- English proof (translation)
+Conclude with `MonObj.comp_mul u a b`.
+-/
 theorem comp_mul_over {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) (a b : X ⟶ M) :
     u ≫ (a * b) = (u ≫ a) * (u ≫ b) := by
   exact MonObj.comp_mul u a b
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero]`. Conclude with `GlobalTheory.CompanionTheory.Ar.BT.TanLift.comp_one_over u`. Consider the case `succ n ih => rw [pow_succ, pow_succ, GlobalTheory.CompanionTheory.Ar.BT.TanLift.comp_mul_over, ih]`.
+-/
 theorem comp_pow_over {S : Scheme.{0}} {X Y M : Over S} [GrpObj M] (u : Y ⟶ X) (a : X ⟶ M) (n : ℕ) :
     u ≫ a ^ n = (u ≫ a) ^ n := by
   induction n with
@@ -27,15 +36,24 @@ section
 variable {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Spec (CommRingCat.of R) ⟶ S}
   {L : Type} [AddCommGroup L] [Module R L]
 
+/- English proof (translation)
+Establish `h : M.pt 0 * M.pt 0 = M.pt 0` using `by rw [← M.5, add_zero]`. Conclude with `mul_eq_left.mp h`.
+-/
 theorem pt_zero (M : LieModel G x L) : M.pt 0 = 1 := by
   have h : M.pt 0 * M.pt 0 = M.pt 0 := by rw [← M.5, add_zero]
   exact mul_eq_left.mp h
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, GlobalTheory.CompanionTheory.Ar.BT.TanLift.pt_zero]`. Consider the case `succ n ih => rw [succ_nsmul, M.5, ih, pow_succ]`.
+-/
 theorem pt_nsmul (M : LieModel G x L) (e : L) (n : ℕ) : M.pt (n • e) = M.pt e ^ n := by
   induction n with
   | zero => rw [zero_smul, pow_zero, GlobalTheory.CompanionTheory.Ar.BT.TanLift.pt_zero]
   | succ n ih => rw [succ_nsmul, M.5, ih, pow_succ]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl, hc]`.
+-/
 theorem dualMap_epsMul (I : Ideal R) (c : R) (hc : Ideal.Quotient.mk I c = 0) :
     (dualMap (Ideal.Quotient.mk I)).comp (epsMul c) =
       ((algebraMap (R ⧸ I) (DualNumber (R ⧸ I))).comp (Ideal.Quotient.mk I)).comp
@@ -44,6 +62,9 @@ theorem dualMap_epsMul (I : Ideal R) (c : R) (hc : Ideal.Quotient.mk I c = 0) :
   · simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl]
   · simp [dualMap, epsMul, TrivSqZeroExt.algebraMap_eq_inl, hc]
 
+/- English proof (translation)
+Use `RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 theorem dualMap_algebraMap (I : Ideal R) :
     (dualMap (Ideal.Quotient.mk I)).comp (algebraMap R (DualNumber R)) =
       (algebraMap (R ⧸ I) (DualNumber (R ⧸ I))).comp (Ideal.Quotient.mk I) := by
@@ -53,6 +74,21 @@ theorem dualMap_algebraMap (I : Ideal R) :
 
 end
 
+/- English proof (translation)
+Introduce `R _ _ T _ _ Γ S G _ _ x N i hi L _ _ M e`. Take `⟨-, -, hinj, htors⟩` from `hi`. Set `Y : Over (Spec (CommRingCat.of R))` to `Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk (Ideal.span {(N : R)})))))`. Establish `hu : Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (GlobalTheory.CompanionTheory.Ar.epsAt x).hom = (Over.mk (Y.hom ≫ x)).hom`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.epsAt, Over.mk_hom, Y]`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp, GlobalTheory.CompanionTheory.Ar.BT.TanLift.dualMap_algebraMap]`. Set `u : Over.mk (Y.hom ≫ x) ⟶ GlobalTheory.CompanionTheory.Ar.epsAt x` to `Over.homMk _ hu`. Set `u₀ : Over.mk (Y.hom ≫ x) ⟶ Over.mk x` to `Over.homMk Y.hom rfl`. Establish `hN : Ideal.Quotient.mk (Ideal.span {(N : R)}) (N : R) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`. Establish `htan : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (M.pt e).left = (1 : Over.mk x ⟶ G).left` using `M.2 e`.
+
+Establish `hg : (u ≫ M.pt e) ^ N = 1`. Rewrite using `[← GlobalTheory.CompanionTheory.Ar.BT.TanLift.comp_pow_over, ← GlobalTheory.CompanionTheory.Ar.BT.TanLift.pt_nsmul, ← Nat.cast_smul_eq_nsmul R, ← GlobalTheory.CompanionTheory.Ar.BT.TanLift.comp_one_over u₀]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e₁ : (u ≫ M.pt ((N : R) • e)).left = Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ Spec.map (CommRingCat.ofHom (GlobalTheory.CompanionTheory.Ar.epsMul (N : R))) ≫ (M.pt e).left`. Rewrite using `[Over.comp_left, M.6]`.
+
+Both sides reduce to the same expression. Establish `e₂ : (u₀ ≫ (1 : Over.mk x ⟶ G)).left = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (M.pt e).l …`. Rewrite using `[Over.comp_left, htan]`. Both sides reduce to the same expression. Rewrite using `[e₁, e₂, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, GlobalTheory.CompanionTheory.Ar.BT.TanLift.dualMap_epsMul _ _ hN]`.
+
+Take `⟨y, hy⟩` from `(htors Y (u ≫ M.pt e)).1 hg`. Use `⟨y.left, ⟨Over.w y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Both sides reduce to the same expression. Introduce and unpack `v ⟨hv₁, hv₂⟩`.
+
+Establish `hv : Over.homMk (U` using `Y) (V := Γ.G) v hv₁ = y := by`. Use `hinj Y _ y ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ≫ i = _`. Rewrite using `[hv₂, hy]`. Both sides reduce to the same expression.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tangent_mod_torsion : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (L : Type) [AddCommGroup L] [Module R L] (M : LieModel G x L) (e : L), ∃! (v : Spec (CommRingCat.of (DualNumber (R ⧸ Ideal.span {(N : R)}))) ⟶ Γ.G.left), v ≫ Γ.G.hom = Spec.map (CommRingCat.ofHom ((algebraMap (R ⧸ Ideal.span {(N : R)}) (DualNumber (R ⧸ Ideal.span {(N : R)}))).comp (Ideal.Quotient.mk _))) ∧ v ≫ i = Spec.map (CommRingCat.ofHom (dualMap (Ideal.Quotient.mk (Ideal.span {(N : R)})))) ≫ (M.pt e).left := by
   intro R _ _ T _ _ Γ S G _ _ x N i hi L _ _ M e
   obtain ⟨-, -, hinj, htors⟩ := hi

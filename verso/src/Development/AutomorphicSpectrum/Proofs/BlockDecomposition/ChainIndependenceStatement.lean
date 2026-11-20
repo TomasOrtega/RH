@@ -3,5 +3,8 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ChainIndependen
 import Development.WeilBound.CoreStatements.FiniteTypeHarishChandra.SupportExistsAll
 open ReciprocityTheory.Ty.Fin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.TyFin.chainIndep | exact GlobalTheory.CompanionTheory.TyFin.chainIndep | (intros; apply GlobalTheory.CompanionTheory.TyFin.chainIndep <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chain_independence : ReciprocityTheory.Ty.Fin.St.ChainIndep := by
   first | exact @GlobalTheory.CompanionTheory.TyFin.chainIndep | exact GlobalTheory.CompanionTheory.TyFin.chainIndep | (intros; apply GlobalTheory.CompanionTheory.TyFin.chainIndep <;> assumption)

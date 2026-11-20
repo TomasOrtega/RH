@@ -36,6 +36,9 @@ def Rw {B : Type} [NormedAddCommGroup B] [NormedSpace ℂ B] (ε : Fin n → Boo
 def formOf {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (T : W →ₗ[ℂ] W) : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ :=
   (innerₛₗ ℂ).compl₂ T
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem formOf_apply {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (T : W →ₗ[ℂ] W) (y x : W) :
     formOf T y x = ⟪y, T x⟫_ℂ := rfl
 
@@ -43,6 +46,9 @@ def funJet {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ε : Fin
     (f : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (l : List (Fin n × Fin n)) : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ :=
   formOf (Rw ε l f 1 : W →L[ℂ] W).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem funJet_apply {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ε : Fin n → Bool)
     (f : Matrix (Fin n) (Fin n) ℂ → (W →L[ℂ] W)) (l : List (Fin n × Fin n)) (y x : W) :
     funJet ε f l y x = ⟪y, Rw ε l f 1 x⟫_ℂ := rfl
@@ -52,6 +58,9 @@ def modJet {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [Normed
     W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ :=
   ((innerₛₗ ℂ).compl₂ (ew E l ∘ₗ j.toLinearMap)) ∘ₛₗ j.toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem modJet_apply {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] (E : Fin n → Fin n → Module.End ℂ V) (j : W →ₗᵢ[ℂ] V) (l : List (Fin n × Fin n))
     (y x : W) : modJet E j l y x = ⟪j y, ew E l (j x)⟫_ℂ := rfl
@@ -73,6 +82,11 @@ def JetRel (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ V) (Λ 
   ∀ (l : List (Fin n × Fin n)) (G : Fin n × Fin n → W), arr1 j G ∈ Vminus ε E Λ u →
     ∀ y : W, ∑ p, B (l ++ [p]) y (G p) = 0
 
+/- English proof (translation)
+Use `⟨fun l₁ l₂ a b c d => ?_, fun l a b hab y x x' hx => ?_, fun l a b hab y y' x hy => ?_, fun l G hG y => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 l₁ l₂ a b c d`. Establish `h2` using `h'.1 l₁ l₂ a b c d`. Rewrite using `[sub_sub_sub_comm, h1, h2]`. Apply the tactic sequence `split_ifs <;> (ext y x; simp only [LinearMap.sub_apply, LinearMap.zero_apply]; ring)`.
+
+Simplify using `only [LinearMap.sub_apply, h.2.1 l a b hab y x x' hx, h'.2.1 l a b hab y x x' hx]`. Simplify using `only [LinearMap.sub_apply, h.2.2.1 l a b hab y y' x hy, h'.2.2.1 l a b hab y y' x hy]`. Simplify using `only [LinearMap.sub_apply, Finset.sum_sub_distrib, h.2.2.2 l G hG y, h'.2.2.2 l G hG y, sub_self]`.
+-/
 theorem JetRel.sub {ε : Fin n → Bool} {E : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {u : V}
     {j : W →ₗᵢ[ℂ] V} {B B' : List (Fin n × Fin n) → W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ} (h : JetRel ε E Λ u j B)
     (h' : JetRel ε E Λ u j B') : JetRel ε E Λ u j (fun l => B l - B' l) := by

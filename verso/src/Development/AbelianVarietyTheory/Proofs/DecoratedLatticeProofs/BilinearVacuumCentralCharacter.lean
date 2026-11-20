@@ -25,6 +25,17 @@ namespace GlobalTheory.AvgMid
 
 open scoped ContDiff
 
+/- English proof (translation)
+Establish `hF' : ∀ F, Q F → Continuous fun p : K × R => fderiv ℝ (F p.1) p.2` using `fun F h => continuous_clm_apply.2 fun u => hc _ (hq F h u)`. Establish `hint : ∀ F, Q F → ∀ x, Integrable (fun k => fderiv ℝ (F k) x) μ` using `fun F h x => by`. Establish `c : Continuous fun k => fderiv ℝ (F k) x` using `(hF' F h).comp (continuous_id.prodMk continuous_const)`. Take `⟨C, hC⟩` from `isCompact_univ.exists_bound_of_continuousOn c.continuousOn`. Conclude with `Integrable.of_bound c.aestronglyMeasurable C (ae_of_all _ fun k => hC k (Set.mem_univ _))`.
+
+Establish `hder : ∀ F, Q F → ∀ x₀, HasFDerivAt (fun x => ∫ k, F k x ∂μ) (∫ k, fderiv ℝ (F k) x₀ ∂μ) x₀`. Introduce `F h x₀`. Take `⟨C, hC⟩` from `(isCompact_univ.prod (isCompact_closedBall x₀ 1)).exists_bound_of_continuousOn (hF' F h).continuousOn`. Establish `c : ∀ x, Continuous fun k => F k x` using `fun x => (hc F h).comp (continuous_id.prodMk continuous_const)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (μ := μ) (F := fun x k => F k x) (F' := fun x k => fderiv ℝ (F k) x) (x₀ := x₀) (bound := fun _ => C) (Metric.closedBall_mem_nhds x₀ zero_lt_one) (Filter.Eventually.of_forall fun x => (c x).aestronglyMeasurable) (GlobalTheory.AvgFam. …`.
+
+Establish `key : ∀ n : ℕ, ∀ F, Q F → ContDiff ℝ n fun x => ∫ k, F k x ∂μ`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun F h => contDiff_zero.2 (GlobalTheory.AvgFam.continuous_avg μ (hc F h))`. Consider the case `succ n ih`.
+
+Introduce `F h`. Rewrite using `[show ((n + 1 : ℕ) : WithTop ℕ∞) = (n : WithTop ℕ∞) + 1 by push_cast; rfl, contDiff_succ_iff_fderiv_apply]`. Use `⟨fun x => (hder F h x).differentiableAt, by simp, fun u => ?_⟩` and prove the remaining obligations. Establish `e : (fun x => fderiv ℝ (fun x => ∫ k, F k x ∂μ) x u) = fun x => ∫ k, fderiv ℝ (F k) x u ∂μ`. Use function extensionality and compare the values at `x`.
+
+Rewrite using `[(hder F h x).fderiv, ContinuousLinearMap.integral_apply (hint F h x)]`. Rewrite using `[e]`. Conclude with `ih _ (hq F h u)`. Conclude with `fun F h => contDiff_infty.2 fun n => key n F h`.
+-/
 theorem contDiff_mean {K R : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
     [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R] (μ : Measure K) [IsFiniteMeasure μ]
     (Q : (K → R → ℂ) → Prop) (hc : ∀ F, Q F → Continuous fun p : K × R => F p.1 p.2)
@@ -63,6 +74,17 @@ theorem contDiff_mean {K R : Type} [TopologicalSpace K] [CompactSpace K] [Measur
       exact ih _ (hq F h u)
   exact fun F h => contDiff_infty.2 fun n => key n F h
 
+/- English proof (translation)
+Establish `key : ∀ F ∈ Submodule.span ℂ G, (Continuous fun q : K × R => F q.1 q.2) ∧ (∀ k, Differentiable ℝ (F k)) ∧ ∀ u, (fun k x => fderiv ℝ (F k) x u) ∈ Submodule.span ℂ G`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF => exact hG F hF`. Consider the case `zero => exact ⟨continuous_const, fun k => differentiable_const _, fun u => by`.
+
+Establish `: (fun (k : K) x => fderiv ℝ ((0 : K → R → ℂ) k) x u) = 0` using `by funext k x; simp`. Rewrite using `[this]`. Conclude with `zero_mem _⟩`. Consider the case `add F F' _ _ h h'`. Use `⟨h.1.add h'.1, fun k => (h.2.1 k).add (h'.2.1 k), fun u => ?_⟩` and prove the remaining obligations.
+
+Establish `: (fun k x => fderiv ℝ ((F + F') k) x u) = (fun k x => fderiv ℝ (F k) x u) + fun k x => fderiv ℝ (F' k) x u`. Use function extensionality and compare the values at `k x`. Rewrite using `[Pi.add_apply, fderiv_add (h.2.1 k x) (h'.2.1 k x)]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+
+Conclude with `add_mem (h.2.2 u) (h'.2.2 u)`. Consider the case `smul c F _ h`. Use `⟨h.1.const_smul c, fun k => (h.2.1 k).const_smul c, fun u => ?_⟩` and prove the remaining obligations. Establish `: (fun k x => fderiv ℝ ((c • F) k) x u) = c • fun k x => fderiv ℝ (F k) x u`. Use function extensionality and compare the values at `k x`.
+
+Rewrite using `[Pi.smul_apply, fderiv_const_smul (h.2.1 k x)]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c (h.2.2 u)`. Conclude with `fun F hF => contDiff_mean μ (fun F => F ∈ Submodule.span ℂ G) (fun F h => (key F h).1) (fun F h => (key F h).2.1) (fun F h => (key F h).2.2) _ (Submodule.subset_span hF)`.
+-/
 theorem contDiff_mean_span {K R : Type} [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]
     [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R] (μ : Measure K) [IsFiniteMeasure μ]
     (G : Set (K → R → ℂ)) (hG : ∀ F ∈ G, (Continuous fun q : K × R => F q.1 q.2) ∧ (∀ k, Differentiable ℝ (F k)) ∧
@@ -100,6 +122,15 @@ open GlobalTheory.FockCompare GlobalTheory.OrientedHeis GlobalTheory.ThetaGrowth
 variable {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : Om S T} {θ : InfFam D}
   {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
+/- English proof (translation)
+Take `⟨g, h⟩` from `p`. Establish `hψ` using `hom.std`. Establish `h1` using `dv_apply hc u (hom.om_pres (g, h) f hf) (w + iotaW σ T S x)`. Establish `h2 : fderiv ℝ (fun y : RW T S => om (g, h) f (w + iotaW σ T S x + iotaW σ T S y)) 0 = fderiv ℝ (fun y : RW T S => om (g, h) f (w + iotaW σ T S y)) x`. Use `fderiv_comp_add_left (𝕜 := ℝ) (f := fun y : RW T S => om (g, h) f (w + iotaW σ T S y)) (x := 0) x` as an intermediate fact.
+
+Rewrite `this` using `[add_zero]`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[map_add, add_assoc]`.
+
+Establish `h3 : dv θ σ S T (mov θ g⁻¹ h⁻¹ u) f = ∑ j, ((e.repr (mov θ g⁻¹ h⁻¹ u) j : ℝ) : ℂ) • dv θ σ S T (e j) f`. Use `congrArg (fun z => ((dvL hc hψ S T z ⟨f, hf⟩ : thetaSub ψ S T) : WO S T → ℂ)) (e.sum_repr (mov θ g⁻¹ h⁻¹ u))` as an intermediate fact. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul] at this`. Conclude with `this.symm`. Rewrite `h1` using `[h2, dv_om hom hc g h u hf, h3, map_sum, map_add (piW θ T S), hc.pi_iota]`.
+
+Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fderiv_om (hom : IsWeilDatumO ψ S T χS χT om) (hc : Chart θ σ) {n : ℕ} (e : Module.Basis (Fin n) ℝ (RW T S))
     (p : GA D S × GA D T) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (w : WO S T) (x u : RW T S) :
     fderiv ℝ (fun y : RW T S => om p f (w + iotaW σ T S y)) x u =
@@ -125,6 +156,9 @@ theorem fderiv_om (hom : IsWeilDatumO ψ S T χS χT om) (hc : Chart θ σ) {n :
   rw [h1]
   ring
 
+/- English proof (translation)
+Establish `hr : Continuous fun z : RW T S => ((e.repr z j : ℝ) : ℂ)` using `Complex.continuous_ofReal.comp (e.coord j).continuous_of_finiteDimensional`. Establish `hm : Continuous fun k => mov θ (p k).1⁻¹ (p k).2⁻¹ u` using `Continuous.comp (g := fun z : (GA D S × GA D T) × RW T S => mov θ z.1.1⁻¹ z.1.2⁻¹ z.2) (f := fun k => (p k, u)) (GlobalTheory.ThetaJointCont.continuous_mov₂ hθ) (hp.prodMk continuous_const)`. Conclude with `Continuous.comp (g := fun z : RW T S => ((e.repr z j : ℝ) : ℂ)) hr hm`.
+-/
 theorem continuous_coord (hθ : IsInfFam θ) {n : ℕ} (e : Module.Basis (Fin n) ℝ (RW T S)) {K : Type} [TopologicalSpace K]
     {p : K → GA D S × GA D T} (hp : Continuous p) (u : RW T S) (j : Fin n) :
     Continuous fun k => ((e.repr (mov θ (p k).1⁻¹ (p k).2⁻¹ u) j : ℝ) : ℂ) := by
@@ -135,6 +169,19 @@ theorem continuous_coord (hθ : IsInfFam θ) {n : ℕ} (e : Module.Basis (Fin n)
       (GlobalTheory.ThetaJointCont.continuous_mov₂ hθ) (hp.prodMk continuous_const)
   exact Continuous.comp (g := fun z : RW T S => ((e.repr z j : ℝ) : ℂ)) hr hm
 
+/- English proof (translation)
+Introduce `w`. Establish `hψ` using `hom.std`. Set `e` to `Module.finBasis ℝ (RW T S)`. Set `G : Set (K → RW T S → ℂ)` to `{F | ∃ (a : K → ℂ) (c : RW T S → ℂ) (f : WO S T → ℂ), Continuous a ∧ ContDiff ℝ ∞ c ∧ IsThetaFunO ψ S T f ∧ F = fun k x => a k * (c x * om (p k) f (w + iotaW σ T S x))}`. Establish `key : ∀ F ∈ G, (Continuous fun q : K × RW T S => F q.1 q.2) ∧ (∀ k, Differentiable ℝ (F k)) ∧ ∀ u, (fun k x => fderiv ℝ (F k) x u) ∈ Submodule.span ℂ G`.
+
+Introduce and unpack `_ ⟨a, c, f, ha, hcc, hf, rfl⟩`. Establish `hs : ∀ k, Differentiable ℝ fun x => om (p k) f (w + iotaW σ T S x)` using `fun k => (theta_sm hc (hom.om_pres (p k) f hf) w).differentiable (by simp)`. Establish `hcd : Differentiable ℝ c` using `hcc.differentiable (by simp)`. Use `⟨(ha.comp continuous_fst).mul ((hcc.continuous.comp continuous_snd).mul ((GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf).comp ((hp.comp continuous_fst).prodMk (continuous_const.add ((hc.continuous_iota T S).comp continuous_snd))))), fun k => (hcd.mul (hs k)).const_mul …` and prove the remaining obligations. Establish `e1 : (fun k x => fderiv ℝ (fun x => a k * (c x * om (p k) f (w + iotaW σ T S x))) x u) = (fun k x => a k * ((fderiv ℝ c x u + c x * ((Real.pi * Complex.I) * (omO S T (piW θ T S w + x) u : ℝ))) * om (p k) f (w + iotaW σ T S x))) + ∑ j, fun k x => (a k * ((e.repr (mov θ (p k).1⁻¹ ( …`.
+
+Use function extensionality and compare the values at `k x`. Use `(((hcd x).hasFDerivAt.mul (hs k x).hasFDerivAt).const_mul (a k)).fderiv` as an intermediate fact. Use `erw [this]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply, smul_eq_mul, Pi.add_apply, Finset.sum_apply]`. Rewrite using `[fderiv_om hom hc e (p k) hf w x u]`.
+
+Simplify using `only [mul_add, Finset.mul_sum]`. Rewrite using `[add_right_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+
+Rewrite using `[e1]`. Use `add_mem (Submodule.subset_span ⟨a, _, f, ha, ?_, hf, rfl⟩) (Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨_, c, _, ?_, hcc, theta_dv hc hψ (e j) hf, rfl⟩)` and prove the remaining obligations. Establish `h1 : ContDiff ℝ ∞ fun x : RW T S => ((omO S T).flip u (piW θ T S w + x) : ℝ)` using `(LinearMap.toContinuousLinearMap ((omO S T).flip u)).contDiff.comp (contDiff_const.add contDiff_id)`. Conclude with `((hcc.fderiv_right (m := ∞) (by simp)).clm_apply contDiff_const).add (hcc.mul (contDiff_const.mul (Complex.ofRealCLM.contDiff.comp h1)))`. Conclude with `ha.mul (continuous_coord hc.inf e hp u j)`.
+
+Use `contDiff_mean_span μ G key _ ⟨a, fun _ => 1, f, ha, contDiff_const, hf, rfl⟩` as an intermediate fact. Simplify `this` using `only [one_mul]`.
+-/
 theorem sm_mean (hom : IsWeilDatumO ψ S T χS χT om) (hc : Chart θ σ) {K : Type} [TopologicalSpace K] [CompactSpace K]
     [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ] {p : K → GA D S × GA D T} (hp : Continuous p)
     {a : K → ℂ} (ha : Continuous a) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -185,6 +232,25 @@ end Smooth
 
 open scoped ComplexOrder in
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Establish `hpm : ∀ σ : D.host.E →+* ℂ, (S.gram.map σ).PosDef ∨ (-S.gram.map σ).PosDef`. Introduce `σ`. Establish `h0 : ∀ τ, (Formalism.BasicNotions.TH.gramAt D S τ).PosDef ∨ (-Formalism.BasicNotions.TH.gramAt D S τ).PosDef` using `fun τ => by`. Use `(hy.cart τ).2.2` as an intermediate fact.
+
+Apply the tactic sequence `rcases hy.pm τ with h | h <;> rw [h] at this`. Conclude with `Or.inl (by simpa using this)`. Conclude with `Or.inr (by simpa using this)`. Take `⟨τ, rfl | rfl⟩` from `GlobalTheory.DefLiftMult.exists_tauE D σ`. Conclude with `h0 τ`.
+
+Establish `e : S.gram.map ((starRingEnd ℂ).comp (tauE D τ)) = (Formalism.BasicNotions.TH.gramAt D S τ)ᴴᵀ`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `(h0 τ).imp (fun h => h.conjTranspose.transpose) fun h => ?_` and prove the remaining obligations.
+
+Use `h.conjTranspose.transpose` as an intermediate fact. Rewrite `this` using `[conjTranspose_neg, transpose_neg]`. Then use the resulting hypothesis. Establish `hd : S.IsDefinite`. Introduce `σ`. Break down `hpm σ with h | h` into its components or cases.
+
+Conclude with `Or.inl (GlobalTheory.DefLiftMult.sig_of_posDef h (hy.sig σ))`. Use `Or.inr ?_` and prove the remaining obligations. Establish `hs` using `hy.sig σ`. Generalize the expression as in `S.sig σ = pq at hs ⊢`. Take `⟨p, q⟩` from `pq`.
+
+Take `⟨hn, Q, hQ⟩` from `Formalism.UG.P.sig_data _ p q hs`. Establish `hp : p = 0`. Assume the negation of the conclusion as `hp`. Establish `j : Fin p` using `⟨0, Nat.pos_of_ne_zero hp⟩`. Establish `h1` using `(h.posSemidef.conjTranspose_mul_mul_same Q).diag_nonneg (i := Sum.inl j)`.
+
+Rewrite `h1` using `[Matrix.mul_neg, Matrix.neg_mul, hQ]`. Simplify using `[Formalism.UG.Jpq] at h1`. Conclude with `absurd h1 (by norm_num)`. Substitute `hp` using the available equality. Simplify using `at hn`.
+
+Rewrite using `[hn]`. Establish `hcl : IsClosed (Subgroup.center (GA D S) : Set (GA D S))`. Establish `: (Subgroup.center (GA D S) : Set (GA D S)) = ⋂ g, {z | g * z = z * g}`. Use extensionality with `z`. Simplify using `[Subgroup.mem_center_iff]`.
+
+Rewrite using `[this]`. Conclude with `isClosed_iInter fun g => isClosed_eq (continuous_const.mul continuous_id) (continuous_id.mul continuous_const)`. Use `haveI hc : CompactSpace ↥(GinfC S ⊓ Subgroup.center (GA D S)) := isCompact_iff_compactSpace.1 ((Formalism.IndefR.Eqv.isCompact_GinfC hy.sig hd).inter_right hcl)`. Use `⟨hc, Measure.haarMeasure ⊤, ⟨?_⟩, inferInstance⟩` and prove the remaining obligations. Conclude with `Measure.haarMeasure_self`.
+-/
 theorem exists_haar {S : HSp D} {y : DefSp S} (hy : y.Is) : CompactSpace ↥(GinfC S ⊓ Subgroup.center (GA D S)) ∧
     ∃ ν : Measure ↥(GinfC S ⊓ Subgroup.center (GA D S)), IsProbabilityMeasure ν ∧ ν.IsMulLeftInvariant := by
   obtain ⟨i1, i2, i3, i4, i5, -⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S
@@ -233,6 +299,11 @@ theorem exists_haar {S : HSp D} {y : DefSp S} (hy : y.Is) : CompactSpace ↥(Gin
   refine ⟨hc, Measure.haarMeasure ⊤, ⟨?_⟩, inferInstance⟩
   exact Measure.haarMeasure_self
 
+/- English proof (translation)
+Take `⟨-, -, -, -, -, B, hB, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Take `⟨C, hC⟩` from `(isCompact_univ.prod hB).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨C, fun k w => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hcov w`. Rewrite using `[← GlobalTheory.OrientedHeis.theta_norm_periodic hψ (hF k) γ hγ w]`.
+
+Conclude with `hC (k, _) ⟨Set.mem_univ _, h⟩`.
+-/
 theorem family_bounded {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {K : Type} [TopologicalSpace K] [CompactSpace K]
     {F : K → WO S T → ℂ} (hF : ∀ k, IsThetaFunO ψ S T (F k)) (hc : Continuous fun q : K × WO S T => F q.1 q.2) :
     ∃ C : ℝ, ∀ k w, ‖F k w‖ ≤ C := by
@@ -243,6 +314,11 @@ theorem family_bounded {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {K : Type} [Top
   rw [← GlobalTheory.OrientedHeis.theta_norm_periodic hψ (hF k) γ hγ w]
   exact hC (k, _) ⟨Set.mem_univ _, h⟩
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Establish `h1` using `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D S hS v Unit (fun _ _ => 1) continuous_const (fun _ _ _ _ => rfl)).1 ()`. Use `haveI : IsFiniteMeasure (v.μ.restrict v.𝓕) := (integrable_const_iff.1 h1).resolve_left one_ne_zero`. Take `⟨C, hC⟩` from `(GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D S hS v Unit (fun g _ => Ψ g) (hΨ.2.comp continuous_fst) (fun γ hγ g _ => hΨ.1 γ hγ g)).2.2 ()`. Establish `hC'` using `hC.self_of_nhds`.
+
+Rewrite using `[integral_integral_swap]`. Simplify using `only [GlobalTheory.T.setIntegral_fundamentalDomain_right_translate_invariant D S v.μ v.𝓕 v.haar v.fund Ψ hΨ.1]`. Simplify using the standard rewrite rules. Conclude with `Integrable.of_bound (hΨ.2.comp (continuous_fst.mul (hb.comp continuous_snd))).aestronglyMeasurable C (ae_of_all _ fun q => hC' _)`.
+-/
 theorem integral_mean_translate {S : HSp D} (hS : CoCpt S) (v : Vol S) {K : Type} [TopologicalSpace K]
     [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsProbabilityMeasure ν]
     {b : K → GA D S} (hb : Continuous b) {Ψ : GA D S → ℂ} (hΨ : IsContAut S Ψ) :
@@ -271,11 +347,17 @@ def vacSub (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO 
     fun u hu => by rw [GlobalTheory.SplitScalar.heisO_smul, hf.2.1 u hu],
     fun i hi u hu hu' => by rw [GlobalTheory.SplitScalar.heisO_smul, hf.2.2 i hi u hu hu']⟩
 
+/- English proof (translation)
+The claim follows from `Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))`.
+-/
 theorem theta_comb {S T : HSp D} (hψ : IsStdChar D ψ (-1)) {c : WO S T →₀ ℂ} (hc : IsFinComb c) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (comb ψ S T c f) :=
   Finset.sum_induction _ (IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) GlobalTheory.OrientedHeis.theta_zero
     fun u hu => GlobalTheory.OrientedHeis.theta_smul _ (GlobalTheory.FinTranslate.isThetaFunO_heisO hψ.1.1 hψ.1.2.1 hf (hc u hu))
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Simplify using `only [GlobalTheory.FrComb.comb_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+-/
 theorem comb_smul {S T : HSp D} (c : WO S T →₀ ℂ) (a : ℂ) (f : WO S T → ℂ) :
     comb ψ S T c (a • f) = a • comb ψ S T c f := by
   funext w
@@ -293,6 +375,11 @@ variable [CompactSpace ↥(GinfC S ⊓ Subgroup.center (GA D S))] {ν : Measure 
   [IsProbabilityMeasure ν] {χ : GA D S → ℂ}
 
 omit [CompactSpace ↥(GinfC S ⊓ Subgroup.center (GA D S))] [IsProbabilityMeasure ν] in
+/- English proof (translation)
+Use function extensionality and compare the values at `w`. Rewrite using `[heisO]`. Simplify using `only [mean]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Rewrite using `[hom.om_heis b.1 1 u f hf, GlobalTheory.FrComb.actO_real b.2.1 (GinfC T).one_mem hu, heisO]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_mean (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) {u : WO S T}
     (hu : u.map (infPart D) = 0) : heisO ψ S T u (mean om ν χ f) = mean om ν χ (heisO ψ S T u f) := by
   funext w
@@ -304,6 +391,13 @@ theorem heisO_mean (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ} (
   rw [hom.om_heis b.1 1 u f hf, GlobalTheory.FrComb.actO_real b.2.1 (GinfC T).one_mem hu, heisO]
   ring
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Take `⟨σ, hc⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Establish `hp : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => ((b.1, 1) : GA D S × GA D T)` using `continuous_subtype_val.prodMk continuous_const`. Use `⟨fun γ w => ?_, ?_, ?_, ((GlobalTheory.FockCompare.smooth_iff_sm_and_real_lines D θ σ hc T S).1 _).2 (sm_mean hom hc ν hp hχ hf)⟩` and prove the remaining obligations. Simplify using `only [mean]`.
+
+Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[(hom.om_pres _ f hf).quasi]`. Expand and normalize the polynomial expressions, which then agree.
+
+Take `⟨U, hU, h⟩` from `hf.level`. Conclude with `⟨U, hU, fun u hu h0 => by rw [heisO_mean hom hf h0, h u hu h0]⟩`. Conclude with `GlobalTheory.AvgFam.continuous_avg ν ((hχ.comp continuous_fst).mul ((GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf).comp ((hp.comp continuous_fst).prodMk continuous_snd)))`.
+-/
 theorem theta_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : IsInfFam θ)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (mean om ν χ f) := by
@@ -324,6 +418,9 @@ theorem theta_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ :
   · exact GlobalTheory.AvgFam.continuous_avg ν ((hχ.comp continuous_fst).mul
       ((GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf).comp ((hp.comp continuous_fst).prodMk continuous_snd)))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨theta_mean hom hθ hχ hf.1, fun u hu => by rw [heisO_mean hom hf.1 (GlobalTheory.FrComb.nsmul_fin (GlobalTheory.SplitScalar.latO_fin hu) 2), hf.2.1 u hu], fun i hi u hu hu' => by rw [heisO_mean hom hf.1 (GlobalTheory.SplitScalar.latO_fin hu), hf.2.2 i hi u hu hu']⟩`.
+-/
 theorem vac_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : IsInfFam θ)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1) {LS : Set (Fin S.rank → D.host.E)}
     {LT : Set (Fin T.rank → D.host.E)} {f : WO S T → ℂ} (hf : f ∈ vacSub ψ S T (latO S T LS LT fun _ => True)) :
@@ -332,6 +429,11 @@ theorem vac_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : I
     fun u hu => by rw [heisO_mean hom hf.1 (GlobalTheory.FrComb.nsmul_fin (GlobalTheory.SplitScalar.latO_fin hu) 2), hf.2.1 u hu],
     fun i hi u hu hu' => by rw [heisO_mean hom hf.1 (GlobalTheory.SplitScalar.latO_fin hu), hf.2.2 i hi u hu hu']⟩
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Use function extensionality and compare the values at `w`. Establish `e : ∀ b : ↥(GinfC S ⊓ Subgroup.center (GA D S)), χ b.1 * om (b.1, 1) (comb ψ S T c f) w = ∑ x ∈ c.support, c x * (ψ (symplOH S T w x) * (χ b.1 * om (b.1, 1) f (w + x)))` using `fun b => by`. Rewrite using `[GlobalTheory.FrComb.om_comb hom b.2.1 (GinfC T).one_mem hc hf, GlobalTheory.FrComb.comb_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+
+Rewrite using `[GlobalTheory.FrComb.comb_apply]`. Simplify using `only [mean, e]`. Rewrite using `[integral_finset_sum]`. Simplify using `only [integral_const_mul]`. Conclude with `fun x _ => ((GlobalTheory.AvgFam.integrable_of_continuous ν (hχ.mul ((hom.om_cont f hf _).comp (continuous_subtype_val.prodMk continuous_const)))).const_mul _).const_mul _`.
+-/
 theorem comb_mean (hom : IsWeilDatumO ψ S T χS χT om)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1) {c : WO S T →₀ ℂ} (hc : IsFinComb c)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : comb ψ S T c (mean om ν χ f) = mean om ν χ (comb ψ S T c f) := by
@@ -348,6 +450,13 @@ theorem comb_mean (hom : IsWeilDatumO ψ S T χS χT om)
   · exact fun x _ => ((GlobalTheory.AvgFam.integrable_of_continuous ν (hχ.mul ((hom.om_cont f hf _).comp
       (continuous_subtype_val.prodMk continuous_const)))).const_mul _).const_mul _
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Establish `hth : ∀ (g : GA D S) (h : GA D T) (b : ↥(GinfC S ⊓ Subgroup.center (GA D S))), IsThetaFunO ψ S T (χ b.1 • om (g * b.1, h) f)` using `fun g h b => GlobalTheory.OrientedHeis.theta_smul _ (hom.om_pres _ f hf)`. Establish `hco : ∀ (g : GA D S) (h : GA D T), Continuous fun q : ↥(GinfC S ⊓ Subgroup.center (GA D S)) × WO S T => (χ q.1.1 • om (g * q.1.1, h) f) q.2` using `fun g h => (hχ.comp continuous_fst).mul ((GlobalTheory.ThetaJointCont.continuous_om_oriented hom hf).comp (((continuous_const.mul (continuous_subtype_val.comp continuous_fst)).prodMk continuous_const).prodMk continuous_snd))`. Establish `e : ∀ b : ↥(GinfC S ⊓ Subgroup.center (GA D S)), om (g, h) (χ b.1 • om (1 * b.1, 1) f) = χ b.1 • om (g * b.1, h) f` using `fun b => by`. Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul, mul_one]`.
+
+Establish `e0 : mean om ν χ f = fun y => ∫ b, (χ b.1 • om (1 * b.1, 1) f) y ∂ν`. Use function extensionality and compare the values at `y`. Simplify using `only [mean, one_mul, Pi.smul_apply, smul_eq_mul]`. Use `GlobalTheory.T.weilOperator_integral_comm_of_bounded_finiteMeasure D ψ S T χS χT om hom _ ν (fun b => χ b.1 • om (1 * b.1, 1) f) (g, h) (hth 1 1) (hco 1 1) (family_bounded hom.std (hth 1 1) (hco 1 1)) (by simp only [e]; exact hco g h) (by simp only [e]; exact family_bounded hom.s …` as an intermediate fact. Rewrite using `[e0, this]`.
+
+Simplify using `only [e, Pi.smul_apply, smul_eq_mul]`.
+-/
 theorem om_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : IsInfFam θ)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (g : GA D S) (h : GA D T) (w : WO S T) :
@@ -371,6 +480,11 @@ theorem om_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : Is
   rw [e0, this]
   simp only [e, Pi.smul_apply, smul_eq_mul]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Use function extensionality and compare the values at `w`. Rewrite using `[om_mean hom hθ hχ hf, Pi.smul_apply, smul_eq_mul, mean, ← integral_mul_left_eq_self (fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1 * om (b.1, 1) f w) b', ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+
+Use `hm b'⁻¹ (b' * b)` as an intermediate fact. Simplify using `only [Subgroup.coe_inv, Subgroup.coe_mul, inv_mul_cancel_left] at this`. Rewrite using `[this, Subgroup.coe_mul, mul_assoc]`.
+-/
 theorem eigen_mean [ν.IsMulLeftInvariant] (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : IsInfFam θ)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1)
     (hm : ∀ b b' : ↥(GinfC S ⊓ Subgroup.center (GA D S)), χ (b.1 * b'.1) = χ b.1 * χ b'.1) {f : WO S T → ℂ}
@@ -387,6 +501,13 @@ theorem eigen_mean [ν.IsMulLeftInvariant] (hom : IsWeilDatumO ψ S T χS χT om
   simp only [Subgroup.coe_inv, Subgroup.coe_mul, inv_mul_cancel_left] at this
   rw [this, Subgroup.coe_mul, mul_assoc]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D S`. Establish `hΨ : IsContAut S fun h => Φ h * om (h, h₂) f 0`. Use `⟨fun γ hγ g => ?_, hΦ.2.mul ((hom.om_cont f hf 0).comp (continuous_id.prodMk continuous_const))⟩` and prove the remaining obligations. Establish `e : ((γ * g, h₂) : GA D S × GA D T) = (γ, 1) * (g, h₂)` using `by simp`. Simplify using `only []`.
+
+Rewrite using `[e, map_mul, Module.End.mul_apply, hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf), hΦ.1 γ hγ g]`. Rewrite using `[← integral_mean_translate hS v ν continuous_subtype_val hΨ]`. Use `congr 1`. Use function extensionality and compare the values at `h`. Rewrite using `[om_mean hom hθ hχ hf, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[he]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lift_mean (hom : IsWeilDatumO ψ S T χS χT om) {θ : InfFam D} (hθ : IsInfFam θ) (hS : CoCpt S) (v : Vol S)
     (hχ : Continuous fun b : ↥(GinfC S ⊓ Subgroup.center (GA D S)) => χ b.1) {f : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) {Φ : GA D S → ℂ} (hΦ : IsContAut S Φ)
@@ -413,6 +534,11 @@ section Lift
 
 variable {A S A' : HSp D} {χA χS χS' χA' : (AE D)ˣ →* Circle} {oma : Om A S} {omb : Om S A'}
 
+/- English proof (translation)
+Use `⟨fun γ hγ h => ?_, (GlobalTheory.T.continuous_integral_compactAutomorphicQuotient_param D A hA v (GA D S) (fun g h => oma (g, h) X 0 * φ g) ((hw.om_cont X hX 0).mul (hφ.2.comp continuous_fst)) fun γ hγ g h => ?_).2.1⟩` and prove the remaining obligations. Simplify using `only []`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `e : ((g, γ * h) : GA D A × GA D S) = (1, γ) * (g, h)` using `by simp`.
+
+Rewrite using `[e, map_mul, Module.End.mul_apply, hw.om_aut 1 (one_mem _) γ hγ _ (hw.om_pres _ _ hX)]`. Establish `e : ((γ * g, h) : GA D A × GA D S) = (γ, 1) * (g, h)` using `by simp`. Rewrite using `[e, map_mul, Module.End.mul_apply, hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ _ hX), hφ.1 γ hγ g]`.
+-/
 theorem contAut_lift (hw : IsWeilDatumO ψ A S χA χS oma) (hA : CoCpt A) (v : Vol A) {X : WO A S → ℂ}
     (hX : IsThetaFunO ψ A S X) {φ : GA D A → ℂ} (hφ : IsContAut A φ) :
     IsContAut S fun h => ∫ g in v.𝓕, oma (g, h) X 0 * φ g ∂v.μ := by
@@ -426,6 +552,11 @@ theorem contAut_lift (hw : IsWeilDatumO ψ A S χA χS oma) (hA : CoCpt A) (v : 
   · have e : ((γ * g, h) : GA D A × GA D S) = (γ, 1) * (g, h) := by simp
     rw [e, map_mul, Module.End.mul_apply, hw.om_aut γ hγ 1 (one_mem _) _ (hw.om_pres _ _ hX), hφ.1 γ hγ g]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `u v`. Simplify using `only [biComb]`. Establish `e1 : (fun u' => comb ψ S A' c' (fun v => ∑ i, X i u' * Y i v) v) = fun u' => ∑ i, comb ψ S A' c' (Y i) v * X i u'`. Use function extensionality and compare the values at `u'`. Rewrite using `[comb_sum_mul]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Rewrite using `[e1, comb_sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem biComb_sum (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) {n : ℕ} (X : Fin n → WO A S → ℂ) (Y : Fin n → WO S A' → ℂ) :
     biComb ψ A S A' c c' (fun u v => ∑ i, X i u * Y i v) =
       fun u v => ∑ i, comb ψ A S c (X i) u * comb ψ S A' c' (Y i) v := by
@@ -439,6 +570,17 @@ theorem biComb_sum (c : WO A S →₀ ℂ) (c' : WO S A' →₀ ℂ) {n : ℕ} (
   rw [e1, comb_sum_mul]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Establish `hint : ∀ h₀ h₁, omb (h₁, h₂) (fun v => oma (h₀, h₁) (fun u => ∑ i, X i u * Y i v) 0) 0 = ∑ i, oma (h₀, h₁) (X i) 0 * omb (h₁, h₂) (Y i) 0`. Introduce `h₀ h₁`. Establish `e1 : ∀ v, (fun u => ∑ i, X i u * Y i v) = ∑ i, Y i v • X i`. Introduce `v`. Use function extensionality and compare the values at `u`.
+
+Simplify using `[Finset.sum_apply, mul_comm]`. Establish `e2 : (fun v => oma (h₀, h₁) (fun u => ∑ i, X i u * Y i v) 0) = ∑ i, oma (h₀, h₁) (X i) 0 • Y i`. Use function extensionality and compare the values at `v`. Rewrite using `[e1 v, map_sum]`. Simplify using `[Finset.sum_apply, mul_comm]`.
+
+Rewrite using `[e2, map_sum]`. Simplify using `[Finset.sum_apply]`. Establish `hin : ∀ h₁, ∫ h₀ in vA.𝓕, φ h₀ * ∑ i, oma (h₀, h₁) (X i) 0 * omb (h₁, h₂) (Y i) 0 ∂vA.μ = ∑ i, (∫ g in vA.𝓕, oma (g, h₁) (X i) 0 * φ g ∂vA.μ) * omb (h₁, h₂) (Y i) 0`. Introduce `h₁`. Establish `e : (fun h₀ => φ h₀ * ∑ i, oma (h₀, h₁) (X i) 0 * omb (h₁, h₂) (Y i) 0) = fun h₀ => ∑ i, oma (h₀, h₁) (X i) 0 * φ h₀ * omb (h₁, h₂) (Y i) 0`.
+
+Use function extensionality and compare the values at `h₀; rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e, integral_finset_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_mul_const _ _`. Conclude with `fun i _ => (integrableOn_kernel hA vA hwa (hX i) hφ h₁).mul_const _`. Simplify using `only [biLift, hint, hin]`.
+
+Rewrite using `[integral_finset_sum]`. Introduce `i _`. Conclude with `Integrable.congr (integrableOn_kernel hS vS hwb (hY i) (contAut_lift hwa hA vA (hX i) hφ) h₂) (Filter.Eventually.of_forall fun h₁ => mul_comm _ _)`.
+-/
 theorem biLift_sum (hwa : IsWeilDatumO ψ A S χA χS oma) (hwb : IsWeilDatumO ψ S A' χS' χA' omb) (hA : CoCpt A)
     (hS : CoCpt S) (vA : Vol A) (vS : Vol S) {n : ℕ} {X : Fin n → WO A S → ℂ} {Y : Fin n → WO S A' → ℂ}
     (hX : ∀ i, IsThetaFunO ψ A S (X i)) (hY : ∀ i, IsThetaFunO ψ S A' (Y i)) {φ : GA D A → ℂ} (hφ : IsContAut A φ)

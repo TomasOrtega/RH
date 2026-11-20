@@ -31,10 +31,16 @@ def doubleCosetSetoid (Φ : G ≃ₜ* G₁ × G₂) (Γ : Subgroup G) (K : Subgr
 
 def leftCosetSet (K : Subgroup G₂) (s : G₂) : Set G₂ := {y | s⁻¹ * y ∈ K}
 
+/- English proof (translation)
+The claim follows from `hK.preimage (continuous_const_mul s⁻¹)`.
+-/
 theorem isOpen_leftCosetSet {K : Subgroup G₂} (hK : IsOpen (K : Set G₂)) (s : G₂) :
     IsOpen (leftCosetSet K s) :=
   hK.preimage (continuous_const_mul s⁻¹)
 
+/- English proof (translation)
+Establish `: leftCosetSet K s = (s * ·) '' (K : Set G₂)`. Rewrite using `[Set.image_mul_left]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hK.image (continuous_const_mul s)`.
+-/
 theorem isCompact_leftCosetSet {K : Subgroup G₂} (hK : IsCompact (K : Set G₂)) (s : G₂) :
     IsCompact (leftCosetSet K s) := by
   have : leftCosetSet K s = (s * ·) '' (K : Set G₂) := by
@@ -47,31 +53,54 @@ def sliceMeasure (Φ : G ≃ₜ* G₁ × G₂) (μ : Measure G) (V : Set G₂) :
 
 variable {Φ : G ≃ₜ* G₁ × G₂} {μ : Measure G} {V : Set G₂}
 
+/- English proof (translation)
+The claim follows from `(continuous_fst.comp Φ.continuous).measurable`.
+-/
 theorem measurable_fst_comp (Φ : G ≃ₜ* G₁ × G₂) : Measurable fun x => (Φ x).1 :=
   (continuous_fst.comp Φ.continuous).measurable
 
+/- English proof (translation)
+The claim follows from `((isOpen_univ.prod hV).preimage Φ.continuous).measurableSet`.
+-/
 theorem measurableSet_preimage_univ_prod (hV : IsOpen V) : MeasurableSet (Φ ⁻¹' (univ ×ˢ V)) :=
   ((isOpen_univ.prod hV).preimage Φ.continuous).measurableSet
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[mem_prod]`.
+-/
 theorem preimage_prod_eq (A : Set G₁) :
     Φ ⁻¹' (A ×ˢ V) = (fun x => (Φ x).1) ⁻¹' A ∩ Φ ⁻¹' (univ ×ˢ V) := by
   ext x
   simp [mem_prod]
 
+/- English proof (translation)
+Rewrite using `[Measure.restrict_apply' (measurableSet_preimage_univ_prod hV), preimage_prod_eq]`.
+-/
 theorem measure_preimage_prod_eq_restrict (hV : IsOpen V) (A : Set G₁) :
     μ (Φ ⁻¹' (A ×ˢ V)) = μ.restrict (Φ ⁻¹' (univ ×ˢ V)) ((fun x => (Φ x).1) ⁻¹' A) := by
   rw [Measure.restrict_apply' (measurableSet_preimage_univ_prod hV), preimage_prod_eq]
 
+/- English proof (translation)
+Rewrite using `[sliceMeasure, Measure.map_apply (measurable_fst_comp Φ) hA, measure_preimage_prod_eq_restrict hV]`.
+-/
 theorem sliceMeasure_apply (hV : IsOpen V) {A : Set G₁} (hA : MeasurableSet A) :
     sliceMeasure Φ μ V A = μ (Φ ⁻¹' (A ×ˢ V)) := by
   rw [sliceMeasure, Measure.map_apply (measurable_fst_comp Φ) hA,
     measure_preimage_prod_eq_restrict hV]
 
+/- English proof (translation)
+Rewrite using `[measure_preimage_prod_eq_restrict hV]`. Conclude with `Measure.le_map_apply (measurable_fst_comp Φ).aemeasurable A`.
+-/
 theorem measure_preimage_prod_le (hV : IsOpen V) (A : Set G₁) :
     μ (Φ ⁻¹' (A ×ˢ V)) ≤ sliceMeasure Φ μ V A := by
   rw [measure_preimage_prod_eq_restrict hV]
   exact Measure.le_map_apply (measurable_fst_comp Φ).aemeasurable A
 
+/- English proof (translation)
+Use `(forall_measure_preimage_mul_iff _).1 fun g A hA => ?_` and prove the remaining obligations. Rewrite using `[sliceMeasure_apply hV (measurable_const_mul g hA), sliceMeasure_apply hV hA]`. Establish `: Φ ⁻¹' (((g * ·) ⁻¹' A) ×ˢ V) = (fun x => Φ.symm (g, 1) * x) ⁻¹' (Φ ⁻¹' (A ×ˢ V))`. Use extensionality with `x`. Simplify using `[mem_prod]`.
+
+Rewrite using `[this, measure_preimage_mul]`.
+-/
 theorem sliceMeasure_isMulLeftInvariant [μ.IsMulLeftInvariant] (hV : IsOpen V) :
     (sliceMeasure Φ μ V).IsMulLeftInvariant := by
   refine (forall_measure_preimage_mul_iff _).1 fun g A hA => ?_
@@ -82,6 +111,9 @@ theorem sliceMeasure_isMulLeftInvariant [μ.IsMulLeftInvariant] (hV : IsOpen V) 
     simp [mem_prod]
   rw [this, measure_preimage_mul]
 
+/- English proof (translation)
+Use `⟨fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[sliceMeasure_apply hV hA.isClosed.measurableSet]`. Establish `: IsCompact (Φ ⁻¹' (A ×ˢ V))` using `(Homeomorph.isCompact_preimage Φ.toHomeomorph).2 (hA.prod hVc)`. Conclude with `this.measure_lt_top`.
+-/
 theorem sliceMeasure_isFiniteMeasureOnCompacts [T2Space G₁] [IsFiniteMeasureOnCompacts μ]
     (hV : IsOpen V) (hVc : IsCompact V) : IsFiniteMeasureOnCompacts (sliceMeasure Φ μ V) := by
   refine ⟨fun A hA => ?_⟩
@@ -92,12 +124,18 @@ theorem sliceMeasure_isFiniteMeasureOnCompacts [T2Space G₁] [IsFiniteMeasureOn
 
 variable [LocallyCompactSpace G₁] [T2Space G₁] [SecondCountableTopology G₁] [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Use `sliceMeasure_isMulLeftInvariant (Φ := Φ) (μ := μ) hV` as an intermediate fact. Use `sliceMeasure_isFiniteMeasureOnCompacts (Φ := Φ) (μ := μ) hV hVc` as an intermediate fact. Conclude with `⟨_, Measure.isMulLeftInvariant_eq_smul _ _⟩`.
+-/
 theorem sliceMeasure_eq_smul_haar (hV : IsOpen V) (hVc : IsCompact V) :
     ∃ c : ℝ≥0, sliceMeasure Φ μ V = c • Measure.haar := by
   have := sliceMeasure_isMulLeftInvariant (Φ := Φ) (μ := μ) hV
   have := sliceMeasure_isFiniteMeasureOnCompacts (Φ := Φ) (μ := μ) hV hVc
   exact ⟨_, Measure.isMulLeftInvariant_eq_smul _ _⟩
 
+/- English proof (translation)
+Use `⟨measurable_fst_comp Φ, fun A hA => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sliceMeasure Φ μ V A = 0`. Take `⟨c, hc⟩` from `sliceMeasure_eq_smul_haar (Φ := Φ) (μ := μ) hV hVc`. Rewrite using `[hc, Measure.smul_apply, hA, smul_zero]`.
+-/
 theorem quasiMeasurePreserving_fst_comp (hV : IsOpen V) (hVc : IsCompact V) :
     Measure.QuasiMeasurePreserving (fun x => (Φ x).1) (μ.restrict (Φ ⁻¹' (univ ×ˢ V)))
       (Measure.haar : Measure G₁) := by
@@ -106,11 +144,17 @@ theorem quasiMeasurePreserving_fst_comp (hV : IsOpen V) (hVc : IsCompact V) :
   obtain ⟨c, hc⟩ := sliceMeasure_eq_smul_haar (Φ := Φ) (μ := μ) hV hVc
   rw [hc, Measure.smul_apply, hA, smul_zero]
 
+/- English proof (translation)
+Rewrite using `[measure_preimage_prod_eq_restrict hV]`. Conclude with `(quasiMeasurePreserving_fst_comp hV hVc).preimage_null hN`.
+-/
 theorem measure_preimage_prod_null (hV : IsOpen V) (hVc : IsCompact V) {N : Set G₁}
     (hN : (Measure.haar : Measure G₁) N = 0) : μ (Φ ⁻¹' (N ×ˢ V)) = 0 := by
   rw [measure_preimage_prod_eq_restrict hV]
   exact (quasiMeasurePreserving_fst_comp hV hVc).preimage_null hN
 
+/- English proof (translation)
+Rewrite using `[preimage_prod_eq]`. Conclude with `(nullMeasurableSet_restrict (measurableSet_preimage_univ_prod hV).nullMeasurableSet).1 (hA.preimage (quasiMeasurePreserving_fst_comp hV hVc))`.
+-/
 theorem nullMeasurableSet_preimage_prod (hV : IsOpen V) (hVc : IsCompact V) {A : Set G₁}
     (hA : NullMeasurableSet A (Measure.haar : Measure G₁)) :
     NullMeasurableSet (Φ ⁻¹' (A ×ˢ V)) μ := by
@@ -118,6 +162,9 @@ theorem nullMeasurableSet_preimage_prod (hV : IsOpen V) (hVc : IsCompact V) {A :
   exact (nullMeasurableSet_restrict (measurableSet_preimage_univ_prod hV).nullMeasurableSet).1
     (hA.preimage (quasiMeasurePreserving_fst_comp hV hVc))
 
+/- English proof (translation)
+Use `(measure_preimage_prod_le hV A).trans_lt ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `sliceMeasure_eq_smul_haar (Φ := Φ) (μ := μ) hV hVc`. Rewrite using `[hc, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top hA`.
+-/
 theorem measure_preimage_prod_lt_top (hV : IsOpen V) (hVc : IsCompact V) {A : Set G₁}
     (hA : (Measure.haar : Measure G₁) A < ∞) : μ (Φ ⁻¹' (A ×ˢ V)) < ∞ := by
   refine (measure_preimage_prod_le hV A).trans_lt ?_
@@ -127,6 +174,51 @@ theorem measure_preimage_prod_lt_top (hV : IsOpen V) (hVc : IsCompact V) {A : Se
 
 end Setup
 
+/- English proof (translation)
+Introduce `Φ Γ _ K S hKc hKo hinj hcover hFD μ _`. Set `R` to `doubleCosetSetoid Φ Γ K`. Set `rep : Quotient R → G₂` to `fun q => if h : ∃ t ∈ S, Quotient.mk R t = q then h.choose else 1`. Establish `rep_spec : ∀ t ∈ S, rep (Quotient.mk R t) ∈ S ∧ Quotient.mk R (rep (Quotient.mk R t)) = Quotient.mk R t`. Introduce `t ht`.
+
+Establish `h : ∃ t' ∈ S, Quotient.mk R t' = Quotient.mk R t` using `⟨t, ht, rfl⟩`. Simplify using `only [rep, dif_pos h]`. Conclude with `h.choose_spec`. Set `T : Finset (Quotient R)` to `S.image (Quotient.mk R)`. Establish `hT : ∀ q ∈ T, rep q ∈ S ∧ Quotient.mk R (rep q) = q`.
+
+Introduce `q hq`. Take `⟨t, ht, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `rep_spec t ht`. Set `F : G₂ → Set G₁` to `fun s => if hs : s ∈ S then (hFD s hs (Measure.haar : Measure G₁)).choose else ∅`. Establish `hF : ∀ s ∈ S, IsFundamentalDomain (sliceGroup Φ Γ K s) (F s) Measure.haar ∧ (Measure.haar : Measure G₁) (F s) < ∞`.
+
+Introduce `s hs`. Simplify using `only [F, dif_pos hs]`. Conclude with `(hFD s hs Measure.haar).choose_spec`. Establish `hVo` using `isOpen_leftCosetSet hKo`. Establish `hVc` using `isCompact_leftCosetSet hKc`.
+
+Set `P : G₂ → Set G` to `fun s => Φ ⁻¹' (F s ×ˢ leftCosetSet K s)`. Use `⟨⋃ q ∈ T, P (rep q), IsFundamentalDomain.mk'' ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations. Use `NullMeasurableSet.biUnion T.countable_toSet fun q hq => ?_` and prove the remaining obligations. Conclude with `nullMeasurableSet_preimage_prod (hVo _) (hVc _) (hF _ (hT q hq).1).1.nullMeasurableSet`. Set `Nbad : G₂ → Set G₁` to `fun s => {a | ¬ ∃ δ : sliceGroup Φ Γ K s, δ • a ∈ F s}`.
+
+Set `B : Set G` to `⋃ η : Γ, ⋃ s ∈ S, (fun x => (η : G)⁻¹ * x) ⁻¹' (Φ ⁻¹' (Nbad s ×ˢ leftCosetSet K s))`. Establish `hB : μ B = 0`. Use `measure_iUnion_null fun η => ?_` and prove the remaining obligations. Use `(measure_biUnion_null_iff S.countable_toSet).2 fun s hs => ?_` and prove the remaining obligations. Rewrite using `[measure_preimage_mul]`.
+
+Conclude with `measure_preimage_prod_null (hVo _) (hVc _) (ae_iff.1 (hF s hs).1.ae_covers)`. Use `ae_iff.2 (measure_mono_null ?_ hB)` and prove the remaining obligations. Introduce `x hx`. Assume the negation of the conclusion as `hxB`. Apply `hx` to reduce the goal to its premises.
+
+Take `⟨γ, hγ, t, ht, k, hk, hxt⟩` from `hcover (Φ x).2`. Establish `ht' : Quotient.mk R t = Quotient.mk R (Φ x).2` using `Quotient.sound ⟨γ, hγ, k, hk, hxt⟩`. Take `⟨hs, hsq⟩` from `rep_spec t ht`. Take `⟨η, hη, k', hk', hx2⟩ : R (rep (Quotient.mk R t)) (Φ x).2` from `Quotient.exact (hsq.trans ht')`. Establish `e2 : (Φ ((η : G)⁻¹ * x)).2 = rep (Quotient.mk R t) * k'`.
+
+Simplify using `[hx2, mul_assoc]`. Establish `hgood : ¬ (Φ ((η : G)⁻¹ * x)).1 ∈ Nbad (rep (Quotient.mk R t))`. Introduce `hbad`. Apply `hxB` to reduce the goal to its premises. Use `mem_iUnion.2 ⟨⟨η, hη⟩, mem_iUnion₂.2 ⟨_, hs, ?_⟩⟩` and prove the remaining obligations.
+
+Use `⟨hbad, ?_⟩` and prove the remaining obligations. Use `show (rep (Quotient.mk R t))⁻¹ * (Φ ((η : G)⁻¹ * x)).2 ∈ K`. Rewrite using `[e2, inv_mul_cancel_left]`. Conclude with `hk'`. Simplify using `only [Nbad, Set.mem_ofPred_eq, not_not] at hgood`.
+
+Take `⟨δ, hδ⟩` from `hgood`. Take `⟨ζ, hζ, hζK, hζ1⟩` from `mem_sliceGroup.1 δ.2`. Use `⟨⟨ζ * η⁻¹, Γ.mul_mem hζ (Γ.inv_mem hη)⟩, ?_⟩` and prove the remaining obligations. Use `mem_iUnion₂.2 ⟨Quotient.mk R t, Finset.mem_image_of_mem _ ht, ?_⟩` and prove the remaining obligations. Use `show Φ ((ζ * η⁻¹ : G) * x) ∈ F _ ×ˢ leftCosetSet K _`.
+
+Rewrite using `[mul_assoc, map_mul]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.fst_mul, hζ1]`. Conclude with `hδ`. Use `show (rep (Quotient.mk R t))⁻¹ * ((Φ ζ).2 * (Φ ((η : G)⁻¹ * x)).2) ∈ K`.
+
+Rewrite using `[e2]`. Establish `: (rep (Quotient.mk R t))⁻¹ * ((Φ ζ).2 * (rep (Quotient.mk R t) * k')) = (rep (Quotient.mk R t))⁻¹ * (Φ ζ).2 * rep (Quotient.mk R t) * k'`. Simplify using `only [mul_assoc]`. Rewrite using `[this]`. Conclude with `K.mul_mem hζK hk'`.
+
+Introduce `g hg`. Set `M : G₂ → Set G` to `fun s => ⋃ (h : (Φ g).1 ∈ sliceGroup Φ Γ K s), Φ ⁻¹' ((((⟨(Φ g).1, h⟩ : sliceGroup Φ Γ K s) • F s) ∩ F s) ×ˢ leftCosetSet K s)`. Establish `hM : μ (⋃ s ∈ S, M s) = 0`. Use `(measure_biUnion_null_iff S.countable_toSet).2 fun s hs => ?_` and prove the remaining obligations. Use `measure_iUnion_null fun h => ?_` and prove the remaining obligations.
+
+Use `measure_preimage_prod_null (hVo _) (hVc _) ?_` and prove the remaining obligations. Establish `hne : (⟨(Φ g).1, h⟩ : sliceGroup Φ Γ K s) ≠ 1`. Introduce `h1`. Conclude with `hg (Subtype.ext (hinj g g.2 (congrArg Subtype.val h1)))`. Use `(hF s hs).1.aedisjoint hne` as an intermediate fact.
+
+Simplify `this` using `[Function.onFun, AEDisjoint]`. Use `measure_mono_null ?_ hM` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, hz2⟩`. Rewrite `hz1` using `[mem_smul_set_iff_inv_smul_mem]`. Take `⟨q, hq, hzq⟩` from `mem_iUnion₂.1 hz1`.
+
+Take `⟨q', hq', hzq'⟩` from `mem_iUnion₂.1 hz2`. Establish `hgz : Φ (g⁻¹ • z) = ((Φ g).1⁻¹ * (Φ z).1, (Φ g).2⁻¹ * (Φ z).2)`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, map_mul]`. Simplify using `[Prod.ext_iff]`. Take `⟨hzF, hzK⟩` from `hzq`.
+
+Take `⟨hzF', hzK'⟩` from `hzq'`. Express the relevant statement in the definitionally equal form `(Φ (g⁻¹ • z)).1 ∈ F (rep q) at hzF`. Express the relevant statement in the definitionally equal form `(Φ (g⁻¹ • z)).2 ∈ leftCosetSet K (rep q) at hzK`. Rewrite `hzF`, `hzK` using `[hgz]`. Simplify using `only at hzF hzK`.
+
+Express the relevant statement in the definitionally equal form `(rep q)⁻¹ * ((Φ g).2⁻¹ * (Φ z).2) ∈ K at hzK`. Express the relevant statement in the definitionally equal form `(rep q')⁻¹ * (Φ z).2 ∈ K at hzK'`. Establish `e1 : Quotient.mk R (rep q) = Quotient.mk R (Φ z).2` using `Quotient.sound ⟨g, g.2, _, hzK, by group⟩`. Establish `e2 : Quotient.mk R (rep q') = Quotient.mk R (Φ z).2` using `Quotient.sound ⟨1, Γ.one_mem, _, hzK', by simp⟩`. Establish `hqq : q = q'`.
+
+Rewrite using `[← (hT q hq).2, ← (hT q' hq').2, e1, e2]`. Substitute `hqq` using the available equality. Establish `hslice : (Φ g).1 ∈ sliceGroup Φ Γ K (rep q)`. Use `mem_sliceGroup.2 ⟨g, g.2, ?_, rfl⟩` and prove the remaining obligations. Establish `: (rep q)⁻¹ * (Φ g).2 * rep q = ((rep q)⁻¹ * (Φ z).2) * ((rep q)⁻¹ * ((Φ g).2⁻¹ * (Φ z).2))⁻¹` using `by group`.
+
+Rewrite using `[this]`. Conclude with `K.mul_mem hzK' (K.inv_mem hzK)`. Use `mem_iUnion₂.2 ⟨rep q, (hT q hq).1, mem_iUnion.2 ⟨hslice, ?_⟩⟩` and prove the remaining obligations. Use `⟨⟨?_, hzF'⟩, hzK'⟩` and prove the remaining obligations. Rewrite using `[mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul]`.
+
+Conclude with `hzF`. Conclude with `fun g => (measurePreserving_smul g μ).quasiMeasurePreserving`. Use `(measure_biUnion_finset_le T _).trans_lt (ENNReal.sum_lt_top.2 fun q hq => ?_)` and prove the remaining obligations. Conclude with `measure_preimage_prod_lt_top (hVo _) (hVc _) (hF _ (hT q hq).1).2`.
+-/
 theorem DoubleCosetCovolume.proof (G G₁ G₂ : Type*) [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [Group G₁] [TopologicalSpace G₁]
     [IsTopologicalGroup G₁] [LocallyCompactSpace G₁] [T2Space G₁] [SecondCountableTopology G₁]

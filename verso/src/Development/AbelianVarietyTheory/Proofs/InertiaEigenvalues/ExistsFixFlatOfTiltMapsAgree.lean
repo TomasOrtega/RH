@@ -13,6 +13,29 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BSP
 
+/- English proof (translation)
+Introduce `l _ K bk O _ _ _ _ _ ψ h0 hu hc ψ' hs`. Establish `hflat : ψ' bk.flat = ψ bk.flat`. Establish `h` using `hs X`. Rewrite `h` using `[bk.ev_X, WittVector.teichmuller_coeff_zero]`. Conclude with `h.symm`.
+
+Establish `hW` using `GlobalTheory.T.wittVector_map_breuilKisin_ev_eq l K bk O ψ ψ' h0 hc hs`. Take `⟨θ₁, hθ₁, hinj₁, hdom, hdiv⟩` from `GlobalTheory.T.exists_injective_map_integers_Cl_to_wittQuotient l K bk O ψ h0 hu hc`. Take `⟨θ₂', hθ₂', hinj₂', -, -⟩` from `GlobalTheory.T.exists_injective_map_integers_Cl_to_wittQuotient l K bk O ψ' (hflat ▸ h0) (hflat ▸ hu) (hflat ▸ hc)`. Establish `hI : Ideal.span {WittVector.map ψ' (bk.ev bk.E)} = Ideal.span {WittVector.map ψ (bk.ev bk.E)}`. Rewrite using `[hW bk.E]`.
+
+Set `θ₂` to `(Ideal.quotEquivOfEq hI).toRingHom.comp θ₂'`. Establish `hθ₂ : ∀ a : Ainf l, θ₂ (Per.θ l a) = Ideal.Quotient.mk _ (WittVector.map ψ' a)`. Introduce `a`. Simplify using `only [θ₂, RingHom.comp_apply, hθ₂' a, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, Ideal.quotEquivOfEq_mk]`. Establish `hinj₂ : Function.Injective θ₂` using `(Ideal.quotEquivOfEq hI).injective.comp hinj₂'`.
+
+Use `haveI := hdom`. Establish `hK : ∀ r : ↥(OL K), θ₁ (intToOC K r) = θ₂ (intToOC K r)`. Introduce `r`. Take `⟨x, hx⟩` from `Ideal.Quotient.mk_surjective (bk.str r)`. Rewrite using `[← bk.θ_ev r x hx, hθ₁, hθ₂, hW x]`.
+
+Take `⟨g, halg, hl⟩` from `GlobalTheory.T.exists_galois_eq_embeddings_OC_mod_prime l K _ θ₁ θ₂ hinj₁ hinj₂ hK`. Take `⟨hroot, hfix⟩` from `GlobalTheory.T.untiltOfTiltRoot_flat_algebraic_and_galois_fix l K bk`. Establish `key : ∀ z : OCb l, ψ z = ψ' z → ψ ((frobeniusEquiv (OCb l) l).symm z) = ψ' ((frobeniusEquiv (OCb l) l).symm z)`. Introduce `z hz`. Apply `frobenius_inj O l` to reduce the goal to its premises.
+
+Rewrite using `[← RingHom.map_frobenius, ← RingHom.map_frobenius, frobenius_apply_frobeniusEquiv_symm, hz]`. Establish `hiter : ∀ n : ℕ, ψ (((frobeniusEquiv (OCb l) l).symm)^[n] bk.flat) = ψ' (((frobeniusEquiv (OCb l) l).symm)^[n] bk.flat)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact hflat.symm`.
+
+Consider the case `succ n ih => rw [Function.iterate_succ_apply']`. Conclude with `key _ ih`. Establish `hθroot : ∀ n : ℕ, θ₁ (GlobalTheory.MemLoc.rootT bk.flat n) = θ₂ (GlobalTheory.MemLoc.rootT bk.flat n)`. Introduce `n`. Establish `e : GlobalTheory.MemLoc.rootT bk.flat n = Per.θ l (WittVector.teichmuller l (((frobeniusEquiv (OCb l) l).symm)^[n] bk.flat))`.
+
+Rewrite using `[GlobalTheory.MemLoc.rootT, WittVector.fontaineTheta_teichmuller]`. Rewrite using `[e, hθ₁, hθ₂, WittVector.map_teichmuller, WittVector.map_teichmuller, hiter n]`. Use `⟨g, ?_, ?_⟩` and prove the remaining obligations. Use `hfix (g : GQ l) bk.flat fun n => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hroot n`.
+
+Establish `h` using `halg _ ⟨z, hz⟩`. Rewrite `h` using `[← hθroot n]`. Conclude with `(hinj₁ h).symm`. Establish `hext` using `GlobalTheory.T.ringHom_eq_of_perfect_of_dvd_sub_adicSeparated l (OCb l) O (ψ bk.flat) bk.Ep.natDegree bk.deg_pos hc.toIsHausdorff ψ' (ψ.comp (Per.σF (g : GQ l))) fun y => ?_`. Introduce `y`.
+
+Conclude with `RingHom.congr_fun hext y`. Establish `hmk` using `hl (Per.θ l (WittVector.teichmuller l y))`. Rewrite `hmk` using `[← GlobalTheory.RingBasics.θ_σA, hθ₁, hθ₂]`. Establish `e2 : Per.σA (g : GQ l) (WittVector.teichmuller l y) = WittVector.teichmuller l (Per.σF (g : GQ l) y)`. Conclude with `GlobalTheory.RingIface.sigA_teich l (g : GQ l) y`.
+
+Rewrite `hmk` using `[e2, WittVector.map_teichmuller, WittVector.map_teichmuller, ← map_sub]`. Establish `h` using `hdiv _ hmk`. Rewrite `h` using `[← WittVector.constantCoeff_apply, map_sub, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero, WittVector.teichmuller_coeff_zero]`. Simplify `h` using `[RingHom.comp_apply]`.
+-/
 theorem exists_galK_fixFlat_of_tilt_maps_agree : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (O : Type)
     [CommRing O] [IsDomain O] [ValuationRing O] [CharP O l] [PerfectRing O l] (ψ : OCb l →+* O),
     ψ bk.flat ≠ 0 → ¬ IsUnit (ψ bk.flat) → IsAdicComplete (Ideal.span {ψ bk.flat}) O →

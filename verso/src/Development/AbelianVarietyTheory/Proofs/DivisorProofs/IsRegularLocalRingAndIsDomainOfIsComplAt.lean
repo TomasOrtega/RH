@@ -12,6 +12,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChart
 
+/- English proof (translation)
+Introduce `W _ _ I _ R _ _ ψ hψ _`. Take `⟨hnoeth, -, hflat, hmap, -⟩` from `hψ`. Use `haveI : IsRegularRing W := GlobalTheory.isRegularRing_of_isRegularLocalRing W`. Use `set q : Ideal (MvPolynomial I W) := (maximalIdeal R).comap ψ with hq`. Use `haveI : q.IsPrime := Ideal.comap_isPrime ψ (maximalIdeal R)`.
+
+Set `L` to `Localization.AtPrime q`. Use `haveI : IsRegularLocalRing L := IsRegularRing.isRegularLocalRing_localization q`. Establish `hu : ∀ y : q.primeCompl, IsUnit (ψ y)`. Introduce `y`. Assume the negation of the conclusion as `h`.
+
+Conclude with `y.2 ((mem_maximalIdeal _).2 h)`. Set `φ : L →+* R` to `IsLocalization.lift (M := q.primeCompl) hu`. Use `letI : Algebra (MvPolynomial I W) R := ψ.toAlgebra`. Use `letI : Algebra L R := φ.toAlgebra`. Use `haveI : IsScalarTower (MvPolynomial I W) L R := IsScalarTower.of_algebraMap_eq (fun a => by`.
+
+Express the relevant statement in the definitionally equal form `ψ a = φ (algebraMap _ L a)`. Conclude with `(IsLocalization.lift_eq (M := q.primeCompl) hu a).symm)`. Use `haveI : Module.Flat (MvPolynomial I W) R := hflat`. Use `haveI : IsLocalizedModule q.primeCompl (LinearMap.id : R →ₗ[MvPolynomial I W] R) := isLocalizedModule_id q.primeCompl R L`. Use `haveI : Module.Flat L R := Module.Flat.of_isLocalizedModule L q.primeCompl (LinearMap.id : R →ₗ[MvPolynomial I W] R)`.
+
+Use `haveI : IsNoetherianRing R := hnoeth`. Establish `hm : maximalIdeal R = (maximalIdeal L).map (algebraMap L R)`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal, Ideal.map_map, ← IsScalarTower.algebraMap_eq]`. Conclude with `hmap.symm`. Use `haveI hreg : IsRegularLocalRing R := GlobalTheory.isRegularLocalRing_of_flat_of_map_eq_maximalIdeal L R (maximalIdeal L) hm`.
+
+Conclude with `⟨hreg, (GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).1⟩`.
+-/
 theorem isRegularLocalRing_and_isDomain_of_isComplAt :
     ∀ (W : Type) [CommRing W] [IsRegularLocalRing W] (I : Type) [Fintype I] (R : Type) [CommRing R]
       [IsLocalRing R] (ψ : MvPolynomial I W →+* R), IsComplAt ψ → IsLocalHom (ψ.comp MvPolynomial.C) →

@@ -10,6 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
+/- English proof (translation)
+Introduce `x hx y hy c`. Establish `hcx` using `Submodule.smul_mem (locallyConstantCompactSupport G ℂ ℂ) c hx`. Rewrite using `[ha _ _ hcx.1.continuous hcx.2 hy.1.continuous hy.2, hs]`.
+-/
 private theorem lin_of {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G] (Λ : (G → ℂ) → ℂ)
     (hs : ∀ (c : ℂ) (φ : G → ℂ), Λ (c • φ) = c * Λ φ)
     (ha : ∀ φ ψ : G → ℂ, Continuous φ → HasCompactSupport φ → Continuous ψ → HasCompactSupport ψ →
@@ -20,6 +23,21 @@ private theorem lin_of {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalG
   have hcx := Submodule.smul_mem (locallyConstantCompactSupport G ℂ ℂ) c hx
   rw [ha _ _ hcx.1.continuous hcx.2 hy.1.continuous hy.2, hs]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, -⟩` from `UpperTheory.V.Z.Tf.Orb.gLTop F n`. Establish `key : ∀ x ∈ comm μ, Continuous x ∧ HasCompactSupport x ∧ Λ x = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+
+Take `⟨a, b, ha', hb, rfl⟩` from `hx`. Establish `ham : a ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ`. Break down `ha' with rfl | ⟨l, hl, rfl⟩` into its components or cases. Conclude with `indicator_mem_locallyConstantCompactSupport (GLnLocal.isCompact_integralGL F n) (GLnLocal.isOpen_integralGL F n) (1 : ℂ)`. Conclude with `(UpperTheory.ConvolutionTheory.H.dcoShape F n l hl).2.2.1`.
+
+Take `⟨c1, c2⟩ : Continuous (groupConv μ a b) ∧ HasCompactSupport (groupConv μ a b)` from `UpperTheory.V.Z.Tf.Orb.convTest _ μ inferInstance a b ham.1.continuous ham.2 hb.1.continuous hb.2`. Take `⟨d1, d2⟩ : Continuous (groupConv μ b a) ∧ HasCompactSupport (groupConv μ b a)` from `UpperTheory.V.Z.Tf.Orb.convTest _ μ inferInstance b a hb.1.continuous hb.2 ham.1.continuous ham.2`. Establish `e : groupConv μ a b - groupConv μ b a = groupConv μ a b + (-1 : ℂ) • groupConv μ b a`. Rewrite using `[neg_one_smul, sub_eq_add_neg]`. Establish `hneg : Continuous ((-1 : ℂ) • groupConv μ b a)` using `d1.const_smul _`.
+
+Establish `hnegc : HasCompactSupport ((-1 : ℂ) • groupConv μ b a)` using `HasCompactSupport.mono d2 (Function.support_const_smul_subset _ _)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Continuous.add c1 hneg`. Rewrite using `[e]`.
+
+Conclude with `HasCompactSupport.add c2 hnegc`. Rewrite using `[e, ha _ _ c1 c2 hneg hnegc, hs, hc a b ha' ham hb]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `⟨continuous_const, HasCompactSupport.zero, ?_⟩` and prove the remaining obligations.
+
+Use `hs 0 0` as an intermediate fact. Simplify using `using this`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨hx.1.add hy.1, hx.2.1.add hy.2.1, by rw [ha _ _ hx.1 hx.2.1 hy.1 hy.2.1, hx.2.2, hy.2.2, add_zero]⟩`. Consider the case `smul c x _ hx`.
+
+Conclude with `⟨hx.1.const_smul c, HasCompactSupport.mono hx.2.1 (Function.support_const_smul_subset _ _), by rw [hs, hx.2.2, mul_zero]⟩`. Conclude with `fun x hx => (key x hx).2.2`.
+-/
 private theorem comm_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
     [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure]
     (Λ : (GL (Fin n) F → ℂ) → ℂ)
@@ -66,6 +84,11 @@ private theorem comm_zero {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
         by rw [hs, hx.2.2, mul_zero]⟩
   exact fun x hx => (key x hx).2.2
 
+/- English proof (translation)
+Unfold `PositivityTheory.Rg.Tf.Loc.IsTwRegSemisimple at hr`. Unfold `PositivityTheory.Rg.Tf.Loc.IsRegSemisimple`. Rewrite `hr` using `[hN, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Establish `h : ((PositivityTheory.Rg.Tf.Loc.incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = ((γ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).map (algebraMap k E)` using `rfl`. Rewrite `hr` using `[h, Matrix.charpoly_map]`.
+
+Conclude with `(Polynomial.separable_map _).1 hr`.
+-/
 private theorem reg_of_norm {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ} (σ : E ≃ₐ[k] E)
     {δ x : GL (Fin n) E} {γ : GL (Fin n) k} (hr : PositivityTheory.Rg.Tf.Loc.IsTwRegSemisimple σ δ)
     (hN : PositivityTheory.Rg.Tf.Loc.normGL σ δ = x * PositivityTheory.Rg.Tf.Loc.incl γ * x⁻¹) :
@@ -78,6 +101,21 @@ private theorem reg_of_norm {k E : Type} [Field k] [Field E] [Algebra k E] {n : 
   rw [h, Matrix.charpoly_map] at hr
   exact (Polynomial.separable_map _).1 hr
 
+/- English proof (translation)
+Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ hu σ hσ n _ _ _ _ μE μk hE hk h1 h2 P hP z`. Take `⟨hq, -⟩` from `UpperTheory.ConvolutionTheory.H.unrQ k E hu`. Rewrite `h1` using `[(UpperTheory.ConvolutionTheory.H.defBridge E n).1]`. Rewrite `h2` using `[(UpperTheory.ConvolutionTheory.H.defBridge k n).1]`. Establish `hq' : (qF E : ℂ) = (qF k : ℂ) ^ Module.finrank k E` using `by rw [hq]; push_cast; rfl`.
+
+Take `⟨g, hg1, hg2, hg3, hg4⟩` from `UpperTheory.ConvolutionTheory.H.deepAbs k E n (Module.finrank k E) Module.finrank_pos hq' μE μk h1 h2 P hP z`. Establish `hcE : ∀ (δ : GL (Fin n) E) (μδ : Measure (PositivityTheory.Rg.Tf.Loc.twCent (PositivityTheory.Rg.Tf.Loc.sigmaGL σ) δ)), PositivityTheory.Rg.Tf.Loc.IsTwRegSemisimple σ δ → μδ.IsHaarMeasure → ∀ x ∈ comm μE, PositivityTheory.Rg.Tf.Loc.twOrbIntegralC (PositivityTheory.Rg.Tf.Loc.sigma …`. Introduce `δ μδ hr hm`. Take `⟨ls, la⟩` from `UpperTheory.V.Z.Tf.Orb.twOrbLin_holds k E σ hσ n μE inferInstance δ hr μδ hm`. Establish `tc` using `UpperTheory.V.Z.Tf.Orb.twOrbComm_holds k E σ hσ n μE inferInstance δ hr μδ hm`.
+
+Use `comm_zero μE _ ls la fun a b ha' ham hb => ?_` and prove the remaining obligations. Use `tc a b ham.1.continuous ham.2 hb.1.continuous hb.2 fun x => ?_` and prove the remaining obligations. Break down `ha' with rfl | ⟨l, hl, rfl⟩` into its components or cases. Conclude with `(UpperTheory.ConvolutionTheory.H.sigInv k E σ n x).1`. Conclude with `(UpperTheory.ConvolutionTheory.H.sigInv k E σ n x).2 l`.
+
+Establish `hck : ∀ (γ : GL (Fin n) k) (μγ : Measure (Subgroup.centralizer {γ})), PositivityTheory.Rg.Tf.Loc.IsRegSemisimple γ → μγ.IsHaarMeasure → ∀ x ∈ comm μk, PositivityTheory.Rg.Tf.Loc.orbIntegralC μk γ μγ x = 0`. Introduce `γ μγ hr hm`. Take `⟨ls, la⟩` from `UpperTheory.V.Z.Tf.Orb.orbLin_holds k n μk inferInstance γ hr μγ hm`. Establish `oc` using `UpperTheory.V.Z.Tf.Orb.orbComm_holds k n μk inferInstance γ hr μγ hm`. Conclude with `comm_zero μk _ ls la fun a b _ ham hb => oc a b ham.1.continuous ham.2 hb.1.continuous hb.2`.
+
+Establish `hlk : ∀ (γ : GL (Fin n) k) (μγ : Measure (Subgroup.centralizer {γ})), PositivityTheory.Rg.Tf.Loc.IsRegSemisimple γ → μγ.IsHaarMeasure → ∀ x ∈ locallyConstantCompactSupport (GL (Fin n) k) ℂ ℂ, ∀ y ∈ locallyConstantCompactSupport (GL (Fin n) k) ℂ ℂ, ∀ c : ℂ, PositivityTheory.Rg.Tf. …`. Introduce `γ μγ hr hm`. Take `⟨ls, la⟩` from `UpperTheory.V.Z.Tf.Orb.orbLin_holds k n μk inferInstance γ hr μγ hm`. Conclude with `lin_of _ ls la`. Use `⟨g, hg1, hg2, hg3, fun p hp h f hh hf => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `δ γ x μδ μγ hr hN hδ hγ hm`. Establish `hrγ` using `reg_of_norm σ hr hN`. Take `⟨ls, la⟩` from `UpperTheory.V.Z.Tf.Orb.twOrbLin_holds k E σ hσ n μE inferInstance δ hr μδ hδ`. Conclude with `hg4 p hp h f hh hf (PositivityTheory.Rg.Tf.Loc.twOrbIntegralC (PositivityTheory.Rg.Tf.Loc.sigmaGL σ) μE δ μδ) (PositivityTheory.Rg.Tf.Loc.orbIntegralC μk γ μγ) (lin_of _ ls la) (hcE δ μδ hr hδ) (hlk γ μγ hrγ hγ) (hck γ μγ hrγ hγ) fun a ha => (UpperTheory.ConvolutionTheory.H.thMat …`. Introduce `γ μγ hr hnot hγ`.
+
+Conclude with `(hg4 p hp h f hh hf (fun _ => 0) (PositivityTheory.Rg.Tf.Loc.orbIntegralC μk γ μγ) (fun _ _ _ _ _ => by simp) (fun _ _ => rfl) (hlk γ μγ hr hγ) (hck γ μγ hr hγ) fun a ha => ((UpperTheory.ConvolutionTheory.H.thMatch k E hu σ hσ n μE μk a ha).2 γ μγ hr hnot hγ).symm).symm`.
+-/
 theorem UpperTheory.ConvolutionTheory.H.deepHecke :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
       [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

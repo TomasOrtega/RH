@@ -21,6 +21,11 @@ open MvPolynomial (X)
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `a b h`. Establish `hinv : ∀ x : S, (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom (toΓ S x) = x`. Introduce `x`. Unfold `toΓ`. Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`.
+
+Both sides reduce to the same expression. Rewrite using `[← hinv a, ← hinv b, h]`.
+-/
 theorem shortSum_toΓ_injective (S : Type) [CommRing S] : Function.Injective (toΓ S) := by
   intro a b h
   have hinv : ∀ x : S, (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom (toΓ S x) = x := by
@@ -30,6 +35,9 @@ theorem shortSum_toΓ_injective (S : Type) [CommRing S] : Function.Injective (to
     rfl
   rw [← hinv a, ← hinv b, h]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `hN.pow (n := 2)`. Rewrite `hN2` using `[hk, pow_succ, pow_mul, h2, one_pow, _root_.one_mul]`. Conclude with `hN2`.
+-/
 private theorem eq_one_of_sq_eq_one_of_pow_odd_sq_eq_one {M : Type*} [CommMonoid M] (x : M) (N : ℕ) (hN : Odd N)
     (h2 : x ^ 2 = 1) (hN2 : x ^ (N ^ 2) = 1) : x = 1 := by
   obtain ⟨k, hk⟩ := hN.pow (n := 2)
@@ -38,6 +46,41 @@ private theorem eq_one_of_sq_eq_one_of_pow_odd_sq_eq_one {M : Type*} [CommMonoid
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hL E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hTr hLev P T _ _ _ y z1 tp1 F1 z2 tp2 F2 hz1 hg1 htp1 hF1 hz2 hg2 htp2 hF2 q`. Take `⟨hNodd, hMN, hNL⟩` from `hLev`. Establish `hN0 : 0 < N` using `hNodd.pos`. Establish `hLa : Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ.La` using `hNL.trans inf_le_left`. Establish `hsurj` using `(GlobalTheory.T.isotropic_enumeration_surjective_local_ring hL E H Dw l Xo T y.x n Λ N hU hN0 hLa z1 hz1 hg1).1`.
+
+Establish `h58` using `GlobalTheory.T.torsion_isotropic_commutator_pairing hL E H Dw l Xo T y.x n Λ N hU hN0 hLa`. Establish `h56` using `GlobalTheory.T.inZh_geoInj_stable_alt E H Dw l Xo n Λ N`. Establish `h57` using `(GlobalTheory.UnivPairing.weilIs_univ_pull_exists_unique hL E H Dw l Xo N hN0).2.1`. Establish `hz2inj : Function.Injective z2`. Introduce `i i' h`.
+
+Set `g : ptO Xo (spMap (IsLocalRing.residue T) ≫ y.x) ⟶ ptO Xo y.x` to `Over.homMk (spMap (IsLocalRing.residue T)) rfl`. Conclude with `hg2 (IsLocalRing.ResidueField T) (IsLocalRing.residue T) g rfl (congrArg (fun (w : Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (b : Fin n) => g ≫ w b) h)`. Take `⟨u, hu⟩ : ∃ u : Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G), ∀ b, u b = (tp1 q b)⁻¹ * tp2 q b` from `⟨_, fun _ => rfl⟩`. Establish `htp : ∀ b, tp2 q b = tp1 q b * u b` using `fun b => by`. Rewrite using `[hu, mul_inv_cancel_left]`.
+
+Establish `hlev : ∀ a : Dw.La, levPt Xo y.x a ^ N = 1`. Introduce `a`. Take `⟨k, hk⟩` from `hMN`. Unfold `levPt`. Rewrite using `[← MonObj.comp_pow, hk, pow_mul, (GlobalTheory.moduli_univ_eta_killed hL E H Dw l Xo a).2.2, one_pow, MonObj.comp_one]`.
+
+Establish `hu1 : ∀ b, u b ^ N = 1` using `fun b => by`. Rewrite using `[hu, mul_pow, inv_pow, (htp1 q b).1, (htp2 q b).1, inv_mul_cancel]`. Establish `hsq : ∀ x : ptO Xo y.x ⟶ Xo.univ.t.G, x ^ N = 1 → x ^ (N ^ 2) = 1` using `fun x hx => by`. Rewrite using `[sq, pow_mul, hx, one_pow]`. Establish `ht2 : ∀ b, tp1 q b ^ (N ^ 2) = 1` using `fun b => by`.
+
+Rewrite using `[sq, pow_mul, (htp1 q b).1, hlev]`. Establish `hkill : ∀ b, ∃ j, KilledBy Xo (l.Mb ^ j) (tp1 q b) ∧ KilledBy Xo (l.Mb ^ j) (u b)`. Introduce `b`. Take `⟨j1, hj1⟩` from `(htp1 q b).2`. Take `⟨j2, hj2⟩` from `(htp2 q b).2`.
+
+Establish `mono : ∀ {i j : ℕ} (t : ptO Xo y.x ⟶ Xo.univ.t.G), i ≤ j → KilledBy Xo (l.Mb ^ i) t → KilledBy Xo (l.Mb ^ j) t` using `fun t hij ht a ha => ht a (Ideal.pow_le_pow_right hij ha)`. Use `⟨max j1 j2, mono _ (le_max_left _ _) hj1, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Use `Xo.univ.t.act.hom a` as an intermediate fact. Establish `k1` using `mono _ (le_max_left _ _) hj1 a ha`.
+
+Establish `k2` using `mono _ (le_max_right _ _) hj2 a ha`. Establish `h1 : ((tp1 q b)⁻¹ ≫ Xo.univ.t.act.act a) * (tp1 q b ≫ Xo.univ.t.act.act a) = 1`. Rewrite using `[← MonObj.mul_comp, inv_mul_cancel, MonObj.one_comp]`. Rewrite `h1` using `[k1, _root_.mul_one]`. Rewrite using `[hu, MonObj.mul_comp, h1, k2, _root_.one_mul]`.
+
+Establish `hInU : InZh Xo Λ N u` using `h56.2.2.2 hTr (ptO Xo y.x) u (fun b => by`. Take `⟨j, -, hj⟩` from `hkill b`. Conclude with `⟨hu1 b, j, hj⟩)`. Establish `hw : ∀ i, ∃ j, z1 j = fun b => u b * z2 i b` using `fun i => hsurj _ (h56.2.1 _ u (z2 i) hInU (hz2 i))`. Use `choose ρ hρ using hw`.
+
+Establish `hρinj : Function.Injective ρ`. Introduce `i i' h`. Apply `hz2inj` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Establish `hii` using `(hρ i).symm.trans ((congrArg z1 h).trans (hρ i'))`.
+
+Conclude with `mul_left_cancel (show u b * z2 i b = u b * z2 i' b from congrFun hii b)`. Establish `hρbij : Function.Bijective ρ` using `Finite.injective_iff_bijective.mp hρinj`. Establish `key : ∀ i, (∑ m ∈ P.support, algebraMap c.F T (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F2 q i b) (colOf m b)) = ∑ m ∈ P.support, algebraMap c.F T (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F1 q (ρ i) b) (colOf m b)`. Introduce `i`. Establish `he : ∀ b, ∃ e : Γ((ptO Xo y.x).left, ⊤)ˣ, WeilIs Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (u b) (z2 i b) e` using `fun b => (h57 (ptO Xo y.x) (u b) (z2 i b) (hsq _ (hu1 b)) ((hz2 i).1 b)).imp fun _ h => h.1`.
+
+Use `choose e he using he`. Establish `hpe : ∏ b, e b = 1` using `h58.1 u (z2 i) e hInU (hz2 i) he`. Establish `hr : ∀ b, ∃ r : T, (toΓ T r) ^ 2 = ((e b : Γ((ptO Xo y.x).left, ⊤))) ∧ r ^ (N ^ 2) = 1 ∧ ∀ α, nab y ((N : ℤ) ^ 2) (F2 q i b) α = r * nab y ((N : ℤ) ^ 2) (F1 q (ρ i) b) α`. Introduce `b`. Take `⟨j, hj1, hj2⟩` from `hkill b`.
+
+Establish `hW1` using `h58.2 (tp1 q b) (u b) j (ht2 b) (hsq _ (hu1 b)) hj1 hj2`. Establish `hA : IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (z2 i b) (tp1 q b * u b) (F2 q i b)`. Rewrite using `[← htp b]`. Conclude with `hF2 q i b`. Establish `hB : IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (u b * z2 i b) (tp1 q b) (F1 q (ρ i) b)`.
+
+Establish `h1` using `hF1 q (ρ i) b`. Rewrite `h1` using `[hρ i]`. Conclude with `h1`. Take `⟨r, hr1, hr2, hr3⟩` from `GlobalTheory.T.thetaGroup_shift_halfTorsion_root hL E H Dw l Xo T y.x N hNodd y.s (tp1 q b) (u b) (z2 i b) (e b) (ht2 b) (hsq _ (hu1 b)) ((hz2 i).1 b) hW1 (he b) _ _ hA hB`. Conclude with `⟨r, hr1, hr2, GlobalTheory.T.connection_linear_in_section E H Dw l Xo c nab hnab T y N _ _ r hr3⟩`.
+
+Use `choose r hr using hr`. Establish `hprod : ∏ b, r b = 1`. Apply `eq_one_of_sq_eq_one_of_pow_odd_sq_eq_one _ N hNodd` to reduce the goal to its premises. Apply `shortSum_toΓ_injective T` to reduce the goal to its premises. Rewrite using `[map_one, map_pow, map_prod, ← Finset.prod_pow, Finset.prod_congr rfl (fun b _ => (hr b).1), ← Units.coe_prod, hpe, Units.val_one]`.
+
+Rewrite using `[← Finset.prod_pow]`. Conclude with `Finset.prod_eq_one (fun b _ => (hr b).2.1)`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[Finset.prod_congr rfl (fun b _ => (hr b).2.2 (colOf m b)), Finset.prod_mul_distrib, hprod, _root_.one_mul]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun i _ => key i)]`. Conclude with `(hρbij.sum_comp (fun j => ∑ m ∈ P.support, algebraMap c.F T (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F1 q j b) (colOf m b))).symm`.
+-/
 theorem shortSum_indep_local : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (n : ℕ) (Λ : GenLat E n) (N : ℕ), Λ.Unimod → Λ.TrivAt l.M → Λ.LevOK N l.M → ∀ (P : MvPolynomial (LtN Dw n) c.F) (T : Type) [CommRing T] [IsLocalRing T] [Algebra c.F T] (y : FrPt Xo c T) (z1 : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (tp1 : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (F1 : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))) (z2 : Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (tp2 : (Fin n → LevQ Dw l) → Fin n → (ptO Xo y.x ⟶ Xo.univ.t.G)) (F2 : (Fin n → LevQ Dw l) → Fin (Λ.zCard N (Dw.p + Dw.q)) → Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (ptO Xo y.x))), (∀ i, InZh Xo Λ N (z1 i)) → GeoInj Xo y.x z1 → (∀ q b, tp1 q b ^ N = levPt Xo y.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp1 q b)) → (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (z1 i b) (tp1 q b) (F1 q i b)) → (∀ i, InZh Xo Λ N (z2 i)) → GeoInj Xo y.x z2 → (∀ q b, tp2 q b ^ N = levPt Xo y.x (levRep (q b)) ∧ ∃ j : ℕ, KilledBy Xo (l.Mb ^ j) (tp2 q b)) → (∀ q i b, IsUUOver Xo.univ.t.G Xo.univ.t.PP N y.s (z2 i b) (tp2 q b) (F2 q i b)) → ∀ q, ∑ i, ∑ m ∈ P.support, algebraMap c.F T (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F1 q i b) (colOf m b) = ∑ i, ∑ m ∈ P.support, algebraMap c.F T (P.coeff m) * ∏ b, nab y ((N : ℤ) ^ 2) (F2 q i b) (colOf m b) := by
   intro hL E _ _ _ H Dw l Xo c _ nab hnab n Λ N hU hTr hLev P T _ _ _ y z1 tp1 F1 z2 tp2 F2 hz1 hg1 htp1 hF1 hz2 hg2 htp2 hF2 q
   obtain ⟨hNodd, hMN, hNL⟩ := hLev

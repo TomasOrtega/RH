@@ -5,6 +5,11 @@ open scoped TensorProduct
 
 namespace GlobalTheory.TwSys.TameScalar
 
+/- English proof (translation)
+Introduce `hv'`. Establish `hc : IsCoprime ((p : ℕ) : 𝓞 E) ((q : ℕ) : 𝓞 E)` using `Nat.Coprime.cast ((Nat.coprime_primes hp hq).2 h)`. Take `⟨a, b, hab⟩` from `hc`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← hab]`.
+
+Conclude with `v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')`.
+-/
 theorem not_mem_placesOver {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (h : p ≠ q)
     {v : HeightOneSpectrum (𝓞 E)} (hv : v ∈ placesOver E p) : v ∉ placesOver E q := by
   intro hv'
@@ -14,6 +19,9 @@ theorem not_mem_placesOver {E : Type} [Field E] [NumberField E] {p q : ℕ} (hp 
   rw [Ideal.eq_top_iff_one, ← hab]
   exact v.asIdeal.add_mem (v.asIdeal.mul_mem_left _ hv) (v.asIdeal.mul_mem_left _ hv')
 
+/- English proof (translation)
+Establish `e : ((u⁻¹ : Oˣ) : O) ^ 2 - 1 = -(((u⁻¹ : Oˣ) : O) ^ 2 * ((u : O) ^ 2 - 1))`. Rewrite using `[mul_sub, ← mul_pow, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(((u⁻¹).isUnit.pow 2).mul h).neg`.
+-/
 theorem isUnit_inv_sq_sub_one {O : Type} [CommRing O] (u : Oˣ) (h : IsUnit ((u : O) ^ 2 - 1)) :
     IsUnit (((u⁻¹ : Oˣ) : O) ^ 2 - 1) := by
   have e : ((u⁻¹ : Oˣ) : O) ^ 2 - 1 = -(((u⁻¹ : Oˣ) : O) ^ 2 * ((u : O) ^ 2 - 1)) := by
@@ -21,11 +29,29 @@ theorem isUnit_inv_sq_sub_one {O : Type} [CommRing O] (u : Oˣ) (h : IsUnit ((u 
   rw [e]
   exact (((u⁻¹).isUnit.pow 2).mul h).neg
 
+/- English proof (translation)
+Establish `e : x ^ 2 - 1 = (x - 1) * (x + 1)` using `by ring`. Rewrite `h` using `[e]`. Conclude with `isUnit_of_mul_isUnit_left h`.
+-/
 theorem isUnit_sub_one {O : Type} [CommRing O] (x : O) (h : IsUnit (x ^ 2 - 1)) : IsUnit (x - 1) := by
   have e : x ^ 2 - 1 = (x - 1) * (x + 1) := by ring
   rw [e] at h
   exact isUnit_of_mul_isUnit_left h
 
+/- English proof (translation)
+Introduce `D N X bkP i s z h hz`. Take `⟨v, hv, A, hA, hzA, hu, -⟩` from `hz`. Establish `hlp : (X.l i).Prime` using `(X.lPrime i).out`. Establish `hv' : v ∈ placesOver D.host.E (if X.l i = D.host.pde then D.host.pde' else D.host.pde)`. Rewrite using `[← X.pD_eq i]`.
+
+Conclude with `hv`. Establish `hp : (if X.l i = D.host.pde then D.host.pde' else D.host.pde).Prime` using `by split_ifs exacts [D.host.pde'_prime, D.host.pde_prime]`. Establish `hl : v ∉ placesOver D.host.E (X.l i)`. Use `not_mem_placesOver hp hlp ?_ hv'` and prove the remaining obligations. Use `split_ifs with hh`.
+
+Rewrite using `[hh]`. Conclude with `D.host.pde_ne.symm`. Conclude with `fun e => hh e.symm`. Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k => by`. Use `not_mem_placesOver hp (D.host.g_prime k) ?_ hv'` and prove the remaining obligations.
+
+Use `split_ifs`. Use `exacts [(D.host.pde_ne_g k).2, (D.host.pde_ne_g k).1]`. Establish `h1 : X.rhoS i s z = 1` using `h.1 v hl hg A hA z hzA`. Establish `h2 : chiS i s z = if X.side i s then X.delta i z else (X.delta i z)⁻¹` using `X.twistCharacterFamily_at_auxiliaryPlaces i _ _ v hv A hA z hzA`. Establish `h3 : IsUnit ((((chiS i s z)⁻¹ : (X.O0 i)ˣ) : X.O0 i) ^ 2 - 1)`.
+
+Rewrite using `[h2]`. Use `split_ifs`. Conclude with `isUnit_inv_sq_sub_one _ hu`. Rewrite using `[inv_inv]`. Conclude with `hu`.
+
+Use `⟨(chiS i s z)⁻¹, ?_, h3, isUnit_sub_one _ h3, ?_⟩` and prove the remaining obligations. Rewrite using `[Tmat, h1, Units.val_one]`. Establish `h4 : cycZ D.host.E N.Om (X.l i) z = 1`. Use `Units.ext (PadicInt.ext_of_toZModPow.1 fun n => ?_)` and prove the remaining obligations. Rewrite using `[cycZ_toZModPow_eq hl hA (q := 1) (fun x hx => by simpa using hzA.2 x hx) n]`.
+
+Simplify using the standard rewrite rules. Simplify using `[eps0, h4]`.
+-/
 theorem exists_scalar_tmat_of_tame_inertia : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (z : GE N), IsotypicValuationAtRing bkP i s → IsTameInertiaElementAtTwistPrime X i z → ∃ d : (X.O0 i)ˣ, Tmat i s z = (d : X.O0 i) • (1 : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) ∧ IsUnit ((d : X.O0 i) ^ 2 - 1) ∧ IsUnit ((d : X.O0 i) - 1) ∧ eps0 X i z = 1 := by
   intro D N X bkP i s z h hz
   obtain ⟨v, hv, A, hA, hzA, hu, -⟩ := hz

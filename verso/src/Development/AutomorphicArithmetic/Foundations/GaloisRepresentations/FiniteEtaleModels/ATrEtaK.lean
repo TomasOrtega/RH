@@ -10,6 +10,29 @@ open GlobalTheory.UPel.HT.HeckeAd (IsTranslA heckeSubA)
 open scoped TensorProduct
 open UpperTheory.Gal.FiniteEtaleModels
 
+/- English proof (translation)
+Introduce `p _ D G L R _ _ gb h X s M₁ M₂ o' o ψ hT n κ c₁ c₂ hM1 hM2 x y hxy`. Take `⟨v, hv, hxv⟩` from `hxy`. Use `haveI : IsMonHom ψ := hT.1`. Take `⟨hM13, hM1c⟩` from `M₁.2`. Take `⟨hM23, hM2c⟩` from `M₂.2`.
+
+Establish `hne1 : (M₁ : ℕ) ≠ 0` using `by omega`. Establish `hne2 : (M₂ : ℕ) ≠ 0` using `by omega`. Establish `hne1'` using `hne1`. Establish `hne2'` using `hne2`. Rewrite `hne1`, `hM1c` using `[hM1]`.
+
+Rewrite `hne2`, `hM2c` using `[hM2]`. Establish `hn0 : 0 < n` using `Nat.pos_of_ne_zero (fun h0 => hne2 (by simp [h0]))`. Establish `hκ0 : 0 < κ` using `Nat.pos_of_ne_zero (fun h0 => hne1 (by simp [h0]))`. Establish `hc10 : 0 < c₁` using `Nat.pos_of_ne_zero (fun h0 => hne1 (by simp [h0]))`. Establish `hc20 : 0 < c₂` using `Nat.pos_of_ne_zero (fun h0 => hne2 (by simp [h0]))`.
+
+Establish `hnc : n.Coprime p` using `Nat.Coprime.coprime_dvd_left ⟨c₂, rfl⟩ hM2c`. Establish `hnκc : (n * κ).Coprime p` using `Nat.Coprime.coprime_dvd_left ⟨c₁, rfl⟩ hM1c`. Establish `hpc : ∀ (f : 𝟙_ (Over X) ⟶ o'.A) (k : ℕ), (f ^ k) ≫ ψ = (f ≫ ψ) ^ k`. Introduce `f k`. Proceed by induction on `k with`.
+
+Consider the case `zero => rw [_root_.pow_zero, _root_.pow_zero, MonObj.one_comp]`. Consider the case `succ k ih => rw [_root_.pow_succ, _root_.pow_succ, MonObj.mul_comp, ih]`. Use `set a := o'.eta (c₁ • x) ≫ ψ with ha`. Use `set b := o.eta (c₂ • y) with hb`. Establish `haN : a ^ (M₁ : ℕ) = 1`.
+
+Rewrite using `[ha, ← hpc]`. Conclude with `(congrArg (· ≫ ψ) ((GObj.eta_nsmul o' _ _).symm.trans (GObj.eta_ker o' _))).trans (MonObj.one_comp ψ)`. Establish `hbN : b ^ (M₂ : ℕ) = 1` using `(GObj.eta_nsmul o _ _).symm.trans (GObj.eta_ker o _)`. Establish `hunit : IsUnit (((M₁ : ℕ) * (M₂ : ℕ) : ℕ) : Γ(X, ⊤))`. Establish `hR : IsUnit (((M₁ : ℕ) * (M₂ : ℕ) : ℕ) : R)`.
+
+Rewrite using `[← map_natCast (algebraMap ℚ R)]`. Use `IsUnit.map (algebraMap ℚ R) (IsUnit.mk0 _ ?_)` and prove the remaining obligations. Conclude with `Nat.mul_ne_zero hne1' hne2'` after adjusting the coercions. Use `hR.map ((s.appTop).hom.comp (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom)` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[← _root_.mul_inv_eq_one]`. Establish `hpow : (a * b⁻¹) ^ ((M₁ : ℕ) * (M₂ : ℕ)) = 1`. Rewrite using `[mul_pow, _root_.inv_pow, _root_.pow_mul, haN, _root_.mul_comm (M₁ : ℕ), _root_.pow_mul, hbN, _root_.one_pow, _root_.one_pow, inv_one, _root_.mul_one]`. Use `GlobalTheory.TorsGeomPow.pow_eq_one_of_geometric_points X o.A o.ab _ hunit _ (a * b⁻¹) hpow 1 ?_` as an intermediate fact. Simplify using `using this`.
+
+Introduce `k _ _ ξ`. Rewrite using `[_root_.pow_one, MonObj.comp_mul, GrpObj.comp_inv, _root_.mul_inv_eq_one]`. Rewrite using `[show Over.homMk ξ _ = toUnit (Over.mk (ξ ≫ (𝟙_ (Over X)).hom)) from Subsingleton.elim _ _]`. Take `⟨β, hβ⟩` from `GlobalTheory.UPel.HT.GenCmp.exists_spMap ((ξ ≫ (𝟙_ (Over X)).hom) ≫ s)`. Take `⟨I', I'', h1, h2, hev⟩` from `hT.2.2.2.2 k (ξ ≫ (𝟙_ (Over X)).hom) β hβ`.
+
+Establish `e1 : I'.ev (M₁ : ℕ) (c₁ • x) = I'.ev (n * κ) x` using `(KerBy.ev_nsmul _ (I'.add _) c₁ x).trans ((congrArg (fun m => I'.ev m x ^ c₁) hM1).trans (I'.tower (n * κ) c₁ (Nat.mul_pos hn0 hκ0) hc10 x))`. Establish `e2 : I''.ev (M₂ : ℕ) (c₂ • y) = I''.ev n y` using `(KerBy.ev_nsmul _ (I''.add _) c₂ y).trans ((congrArg (fun m => I''.ev m y ^ c₂) hM2).trans (I''.tower n c₂ hn0 hc20 y))`. Establish `e3 : I''.ev (n * κ) (κ • y) = I''.ev n y` using `(KerBy.ev_nsmul _ (I''.add _) κ y).trans (I''.tower n κ hn0 hκ0 y)`. Establish `e4 : I'.ev (n * κ) x ≫ ψ = I''.ev (n * κ) (κ • y)` using `(hev (n * κ) (Nat.mul_pos hn0 hκ0) hnκc x (κ • y)).mpr ⟨v, hv, by rw [GlobalTheory.HeckeApprox.inAf_nsmul]; exact hxv⟩`. Rewrite using `[ha, hb, ← Category.assoc]`.
+
+Conclude with `(congrArg (· ≫ ψ) ((h1 _).trans e1)).trans (e4.trans (e3.trans (e2.symm.trans (h2 _).symm)))`.
+-/
 theorem UpperTheory.Gal.FiniteEtaleModels.trEtaK_holds :
     TrEtaK := by
   intro p _ D G L R _ _ gb h X s M₁ M₂ o' o ψ hT n κ c₁ c₂ hM1 hM2 x y hxy

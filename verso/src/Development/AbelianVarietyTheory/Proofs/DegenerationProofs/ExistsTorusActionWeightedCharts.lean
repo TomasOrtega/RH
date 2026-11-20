@@ -24,6 +24,17 @@ noncomputable section
 namespace GlobalTheory.ZH.FibTorus
 open GlobalTheory.ZJ
 
+/- English proof (translation)
+Set `b` to `Matrix.vecMul a m⁻¹`. Establish `hb : Matrix.vecMul b m = a`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hm, Matrix.vecMul_one]`. Use `⟨fun i => b (e i.1), fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : w j = c`.
+
+Establish `h1 : a j = ∑ i, b (e i) * m (e i) j`. Rewrite using `[← hb, Matrix.vecMul, dotProduct]`. Conclude with `(e.sum_comp fun i => b i * m i j).symm`. Rewrite using `[h1, ← Fintype.sum_subtype_add_sum_subtype (fun i => w' i = c)]`. Rewrite using `[Finset.sum_eq_zero (s := (Finset.univ : Finset {i // ¬ w' i = c})), add_zero]`.
+
+Introduce `i _`. Establish `: m (e i.1) j = 0`. Assume the negation of the conclusion as `hne`. Conclude with `i.2 ((h _ _ hne).trans hj)`. Rewrite using `[this, mul_zero]`.
+
+Establish `h1 : a j = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hj (ha j hne)`. Rewrite using `[h1, Finset.sum_eq_zero]`. Introduce `i _`.
+
+Establish `: m (e i.1) j = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hj ((h _ _ hne).symm.trans i.2)`. Rewrite using `[this, mul_zero]`.
+-/
 theorem block {k I J C : Type} [Field k] [Fintype I] [Fintype J] (m : Matrix J J k) (hm : IsUnit m.det)
     (e : I ≃ J) (w' : I → C) (w : J → C) (h : ∀ i j, m (e i) j ≠ 0 → w' i = w j) (c : C) (a : J → k)
     (ha : ∀ j, a j ≠ 0 → w j = c) :
@@ -56,9 +67,15 @@ theorem block {k I J C : Type} [Field k] [Fintype I] [Fintype J] (m : Matrix J J
 def cst {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (U : X.Opens) : k →+* Γ(X, U) :=
   (p.appLE ⊤ U le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem constFn_eq {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (U : X.Opens) (a : k) :
     constFn p U a = cst p U a := rfl
 
+/- English proof (translation)
+Introduce `l`. Rewrite using `[h l]`. Simplify using `only [fun i => hF i l, hab, constFn_eq, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum, _root_.mul_assoc]`. Conclude with `Finset.sum_comm`.
+-/
 theorem isLin_comp {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {H : LB X} {I J : Type} [Fintype I]
     [Fintype J] {F : J → H.Sec} {F' : I → H.Sec} {m : I → J → k} (hF : ∀ i, IsLin p F (m i) (F' i))
     {a : J → k} {b : I → k} (hab : ∀ j, a j = ∑ i, b i * m i j) {φ : H.Sec} (h : IsLin p F a φ) :
@@ -69,6 +86,11 @@ theorem isLin_comp {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {H 
     _root_.mul_assoc]
   exact Finset.sum_comm
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hb.2 s`. Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp only [map_zero, mul_zero, WtPart.cf_zero]`. Consider the case `add x y hx hy => simp only [map_add, mul_add, WtPart.cf_add, hx, hy]`. Consider the case `single ψ c`.
+
+Rewrite using `[AddMonoidAlgebra.liftNCRingHom_single, ← _root_.mul_assoc, ← map_mul, WtPart.cf_mono, WtPart.cf_mono, mul_ite, mul_zero]`.
+-/
 theorem cf_mul {A R X : Type} [CommRing A] [CommRing R] [AddCommGroup X]
     {f : A →+* R} {m : Multiplicative X →* R}
     (hb : Function.Bijective (AddMonoidAlgebra.liftNCRingHom f m (fun _ _ => Commute.all _ _)))
@@ -83,6 +105,9 @@ theorem cf_mul {A R X : Type} [CommRing A] [CommRing R] [AddCommGroup X]
 
 variable {k : Type} [Field k] (Φ : FibPre k)
 
+/- English proof (translation)
+Rewrite using `[constFn_eq, constFn_eq, ← Over.w Φ.D.q]`. Unfold `cst`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.app_eq_appLE]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`.
+-/
 theorem app_constFn (U : Φ.E.B.left.Opens) (a : k) :
     (Φ.D.q.left.app U).hom (constFn Φ.E.B.hom U a) = constFn Φ.G.hom (Φ.D.q.left ⁻¹ᵁ U) a := by
   rw [constFn_eq, constFn_eq, ← Over.w Φ.D.q]
@@ -91,6 +116,11 @@ theorem app_constFn (U : Φ.E.B.left.Opens) (a : k) :
     Scheme.Hom.app_eq_appLE]
   erw [Scheme.Hom.appLE_comp_appLE]
 
+/- English proof (translation)
+Unfold `FibPre.wt`. Rewrite using `[h l]`. Use `(WtPart.cf_sum (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) α _ _).trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cf_mul (Φ.D.coord (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l)) α _ _)` and prove the remaining obligations.
+
+Rewrite using `[app_constFn]`. Both sides reduce to the same expression.
+-/
 theorem wt_lin {d : ℕ} {J : Type} [Fintype J] {F : J → (Φ.H d).Sec} {a : J → k} {φ : (Φ.H d).Sec}
     (h : IsLin Φ.G.hom F a φ) (α : Φ.E.X) (l : Φ.N₀.ι) :
     Φ.wt φ α l = ∑ i, constFn Φ.E.B.hom _ (a i) * Φ.wt (F i) α l := by
@@ -102,11 +132,19 @@ theorem wt_lin {d : ℕ} {J : Type} [Fintype J] {F : J → (Φ.H d).Sec} {a : J 
   rw [app_constFn]
   rfl
 
+/- English proof (translation)
+Assume the negation of the conclusion as `h0`. Conclude with `hne (h ⟨l, h0⟩)`.
+-/
 theorem wt_eq_zero {d : ℕ} {φ : (Φ.H d).Sec} {α β : Φ.E.X} (h : Φ.Pure α φ) (hne : β ≠ α) (l : Φ.N₀.ι) :
     Φ.wt φ β l = 0 := by
   by_contra h0
   exact hne (h ⟨l, h0⟩)
 
+/- English proof (translation)
+Introduce and unpack `β ⟨l, hl⟩`. Assume the negation of the conclusion as `hne`. Apply `hl` to reduce the goal to its premises. Rewrite using `[wt_lin Φ h]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hi : a i = 0`. Rewrite using `[hi, constFn_eq, map_zero, zero_mul]`. Rewrite using `[wt_eq_zero Φ (ha i hi) hne, mul_zero]`.
+-/
 theorem pure_lin {d : ℕ} {J : Type} [Fintype J] {F : J → (Φ.H d).Sec} {a : J → k} {φ : (Φ.H d).Sec}
     (h : IsLin Φ.G.hom F a φ) {α : Φ.E.X} (ha : ∀ i, a i ≠ 0 → Φ.Pure α (F i)) : Φ.Pure α φ := by
   rintro β ⟨l, hl⟩
@@ -121,12 +159,18 @@ theorem pure_lin {d : ℕ} {J : Type} [Fintype J] {F : J → (Φ.H d).Sec} {a : 
 def OnlyShort {X : Type} [AddCommGroup X] (q : QuadraticMap ℤ X ℝ) (N : ℕ) (α : X) : Prop :=
   ∀ ν : X, ν ≠ 0 → q α < q (α + N • ν)
 
+/- English proof (translation)
+Introduce `ν` and use `by by_cases hν : ν = 0 · rw [hν, smul_zero, add_zero] · exact (h ν hν).le`.
+-/
 theorem OnlyShort.short {X : Type} [AddCommGroup X] {q : QuadraticMap ℤ X ℝ} {N : ℕ} {α : X}
     (h : OnlyShort q N α) : Short q N α := fun ν => by
   by_cases hν : ν = 0
   · rw [hν, smul_zero, add_zero]
   · exact (h ν hν).le
 
+/- English proof (translation)
+Distinguish the cases in `hν : ν = 0`. Rewrite using `[e, hν, smul_zero, add_zero]`. Establish `h1` using `hβ (-ν)`. Rewrite `h1` using `[e, smul_neg, add_neg_cancel_right]`. Conclude with `absurd (h ν hν) (not_lt.2 h1)`.
+-/
 theorem OnlyShort.eq {X : Type} [AddCommGroup X] {q : QuadraticMap ℤ X ℝ} {N : ℕ} {α β : X}
     (h : OnlyShort q N α) (hβ : Short q N β) {ν : X} (e : β = α + N • ν) : β = α := by
   by_cases hν : ν = 0
@@ -135,6 +179,13 @@ theorem OnlyShort.eq {X : Type} [AddCommGroup X] {q : QuadraticMap ℤ X ℝ} {N
     rw [e, smul_neg, add_neg_cancel_right] at h1
     exact absurd (h ν hν) (not_lt.2 h1)
 
+/- English proof (translation)
+Introduce `ν hν`. Rewrite using `[zero_add, map_zero]`. Assume the negation of the conclusion as `hle`. Establish `hx : (N • ν : X) ≠ 0`. Rewrite using `[← natCast_zsmul]`.
+
+Conclude with `smul_ne_zero (Int.natCast_ne_zero.2 hN) hν`. Establish `hfin : {x | ¬ 1 ≤ q x}.Finite` using `Filter.eventually_cofinite.1 (hq.eventually_ge_atTop 1)`. Use `Set.infinite_of_injective_forall_mem (f := fun n : ℤ => n • (N • ν)) (smul_left_injective ℤ hx) (fun n => ?_) hfin` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `¬ 1 ≤ q (n • (N • ν))`. Rewrite using `[QuadraticMap.map_smul, zsmul_eq_mul]`.
+
+Establish `: ((n * n : ℤ) : ℝ) * q (N • ν) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (by exact_mod_cast mul_self_nonneg n) (not_lt.1 hle)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem onlyShort_zero {X : Type} [AddCommGroup X] [Module.Free ℤ X] {q : QuadraticMap ℤ X ℝ}
     (hq : Filter.Tendsto q Filter.cofinite Filter.atTop) {N : ℕ} (hN : N ≠ 0) : OnlyShort q N 0 := by
   intro ν hν
@@ -157,6 +208,11 @@ variable {Φ} {N : ℕ} {q : QuadraticMap ℤ Φ.E.X ℝ} {J : Type} [Fintype J]
   {F : J → (Φ.H 1).Sec} (hG : Φ.Good N q cls F) {α : Φ.E.X} (hα : OnlyShort q N α)
 include hG hα
 
+/- English proof (translation)
+Introduce `β hβ`. Take `⟨hs, ν, hν⟩` from `hG.supp i β hβ`. Take `⟨n, hn⟩` from `hi`. Use `hα.eq hs (ν := ν - n) ?_` and prove the remaining obligations. Rewrite using `[hν, hn, smul_sub]`.
+
+Normalize the expressions using the abelian group laws.
+-/
 theorem pure_of_cls {i : J} (hi : ∃ n, α = cls i + N • n) : Φ.Pure α (F i) := by
   intro β hβ
   obtain ⟨hs, ν, hν⟩ := hG.supp i β hβ
@@ -165,6 +221,11 @@ theorem pure_of_cls {i : J} (hi : ∃ n, α = cls i + N • n) : Φ.Pure α (F i
   rw [hν, hn, smul_sub]
   abel
 
+/- English proof (translation)
+Take `⟨a, ha, hw⟩` from `hG.onto α hα.short φ hφ`. Take `⟨ψ, hψ, -⟩` from `SecRatio.existsUnique_isLin Φ.G.hom F a`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. It suffices to establish `φ = ψ from this ▸ hψ`. Use `WtPart.sec_ext Φ _ _ fun β l => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hβ : β = α`. Rewrite using `[hβ, hw, wt_lin Φ hψ]`. Rewrite using `[wt_eq_zero Φ hφ hβ, wt_eq_zero Φ (pure_lin Φ hψ fun i hi => pure_of_cls hG hα (ha i hi)) hβ]`.
+-/
 theorem exists_isLin {φ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) :
     ∃ a : J → k, (∀ i, a i ≠ 0 → ∃ n, α = cls i + N • n) ∧ IsLin Φ.G.hom F a φ := by
   obtain ⟨a, ha, hw⟩ := hG.onto α hα.short φ hφ
@@ -178,11 +239,17 @@ theorem exists_isLin {φ : (Φ.H 1).Sec} (hφ : Φ.Pure α φ) :
 
 end Span
 
+/- English proof (translation)
+The claim follows from `congrArg (fun φ => φ.hom u) (Scheme.Hom.map_appLE m hm (homOfLE h).op)`.
+-/
 theorem ap_res {Y Z : Scheme.{0}} (m : Z ⟶ Y) {U W : Y.Opens} (h : W ≤ U)
     (hm : ⊤ ≤ m ⁻¹ᵁ W) (hg : ⊤ ≤ m ⁻¹ᵁ U) (u : Γ(Y, U)) :
     (m.appLE W ⊤ hm).hom (resG Y h u) = (m.appLE U ⊤ hg).hom u :=
   congrArg (fun φ => φ.hom u) (Scheme.Hom.map_appLE m hm (homOfLE h).op)
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun φ => φ.hom u) (Scheme.Hom.appLE_comp_appLE j m U ⊤ ⊤ _ _)`.
+-/
 theorem ap_comp {X Y Z : Scheme.{0}} (j : Z ⟶ Y) (m : Y ⟶ X) (n : Z ⟶ X) (e : n = j ≫ m) {U : X.Opens}
     (hm : ⊤ ≤ m ⁻¹ᵁ U) (hn : ⊤ ≤ n ⁻¹ᵁ U) (u : Γ(X, U)) :
     j.appTop.hom ((m.appLE U ⊤ hm).hom u) = (n.appLE U ⊤ hn).hom u := by
@@ -190,6 +257,11 @@ theorem ap_comp {X Y Z : Scheme.{0}} (j : Z ⟶ Y) (m : Y ⟶ X) (n : Z ⟶ X) (
   rw [← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   exact congrArg (fun φ => φ.hom u) (Scheme.Hom.appLE_comp_appLE j m U ⊤ ⊤ _ _)
 
+/- English proof (translation)
+Use `Y.sheaf.eq_of_locally_eq' U ⊤ (fun l => homOfLE le_top) hU.ge _ _ fun l => ?_` and prove the remaining obligations. Apply `(FunDescent.res_bijective (U l)).1` to reduce the goal to its premises. Establish `e : ∀ w : Γ(Y, ⊤), (FunDescent.res (U l)).hom (resG Y le_top w) = (U l).ι.appTop.hom w` using `fun w => by`. Use `(ap_res (U l).ι le_top _ le_top w).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+
+Both sides reduce to the same expression. Conclude with `(e u).trans ((h l).trans (e v).symm)`.
+-/
 theorem eq_of_cover {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (hU : ⨆ l, U l = ⊤) {u v : Γ(Y, ⊤)}
     (h : ∀ l, (U l).ι.appTop.hom u = (U l).ι.appTop.hom v) : u = v := by
   refine Y.sheaf.eq_of_locally_eq' U ⊤ (fun l => homOfLE le_top) hU.ge _ _ fun l => ?_
@@ -200,6 +272,13 @@ theorem eq_of_cover {Y : Scheme.{0}} {I : Type} (U : I → Y.Opens) (hU : ⨆ l,
     rfl
   exact (e u).trans ((h l).trans (e v).symm)
 
+/- English proof (translation)
+Introduce `Y t g h₁ h₂`. Use `eq_of_cover (fun l => g.left ⁻¹ᵁ U l) (by rw [← Scheme.Hom.preimage_iSup, hU, Scheme.Hom.preimage_top]) fun l => ?_` and prove the remaining obligations. Set `Y' : Over S` to `Over.mk ((g.left ⁻¹ᵁ U l).ι ≫ Y.hom)`. Set `j : Y' ⟶ Y` to `Over.homMk (g.left ⁻¹ᵁ U l).ι rfl`. Establish `e : ((j ≫ t) ≫ i) * (j ≫ g) = j ≫ ((t ≫ i) * g)`.
+
+Rewrite using `[Category.assoc, MonObj.comp_mul]`. Establish `k₁ : ⊤ ≤ (j ≫ g).left ⁻¹ᵁ V` using `fun y _ => h₁ (x := j.left y) trivial`. Establish `k₂ : ⊤ ≤ (((j ≫ t) ≫ i) * (j ≫ g)).left ⁻¹ᵁ V`. Rewrite using `[e]`. Conclude with `fun y _ => h₂ (x := j.left y) trivial`.
+
+Use `h l Y' (j ≫ t) (j ≫ g) k₁ k₂ (fun y _ => y.2)` as an intermediate fact. Express the relevant statement in the definitionally equal form `j.left.appTop.hom _ = j.left.appTop.hom _`. Rewrite using `[map_mul, ap_comp j.left _ _ (congrArg Over.Hom.left e) h₂ k₂, ap_comp j.left _ _ rfl h₁ k₁, this]`. Use `congr 1`.
+-/
 theorem hasWt_of_cover {S : Scheme.{0}} {H : Over S} [GrpObj H] {X : Type} [AddCommGroup X]
     (i : splitTorus S X ⟶ H) {I : Type} (U : I → H.left.Opens) (hU : ⨆ l, U l = ⊤) {V : H.left.Opens}
     {u : Γ(H.left, V)} {χ : X}
@@ -223,6 +302,9 @@ theorem hasWt_of_cover {S : Scheme.{0}} {H : Over S} [GrpObj H] {X : Type} [AddC
   rw [map_mul, ap_comp j.left _ _ (congrArg Over.Hom.left e) h₂ k₂, ap_comp j.left _ _ rfl h₁ k₁, this]
   congr 1
 
+/- English proof (translation)
+Establish `h' : ⊤ ≤ g ⁻¹ᵁ (W ⊓ H.U l)` using `le_inf h hl`. Use `congrArg (g.appLE _ ⊤ h').hom (hr l)` as an intermediate fact. Rewrite `this` using `[map_mul, ap_res g _ h' hl, ap_res g _ h' hl, ap_res g _ h' h]`. Then use the resulting hypothesis.
+-/
 theorem ap_ratio {X Y : Scheme.{0}} {H : LB X} {s t : H.Sec} {W : X.Opens} {r : Γ(X, W)} (hr : IsRatio s t W r)
     (g : Y ⟶ X) (l : H.ι) (h : ⊤ ≤ g ⁻¹ᵁ W) (hl : ⊤ ≤ g ⁻¹ᵁ H.U l) :
     (g.appLE _ ⊤ hl).hom (s.f l) = (g.appLE _ ⊤ h).hom r * (g.appLE _ ⊤ hl).hom (t.f l) := by
@@ -230,6 +312,13 @@ theorem ap_ratio {X Y : Scheme.{0}} {H : LB X} {s t : H.Sec} {W : X.Opens} {r : 
   have := congrArg (g.appLE _ ⊤ h').hom (hr l)
   rwa [map_mul, ap_res g _ h' hl, ap_res g _ h' hl, ap_res g _ h' h] at this
 
+/- English proof (translation)
+Use `hasWt_of_cover Φ.D.i (Φ.H d).U (Φ.H_isLB d).cover fun l Y t g h h' hl => ?_` and prove the remaining obligations. Establish `hl'` using `TorusTranslate.translate_le Φ.D t g (Φ.N₀.U l) hl`. Establish `e₁` using `TorusTranslate.translate_pure Φ.D t g (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l) α (φ.f l) (fun β hβ => wt_eq_zero Φ hφ hβ l) hl hl'`. Establish `e₂` using `TorusTranslate.translate_pure Φ.D t g (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l) 0 (ψ.f l) (fun β hβ => wt_eq_zero Φ hψ hβ l) hl hl'`. Rewrite `e₂` using `[charUnit_zero_val, map_one, _root_.one_mul]`.
+
+Establish `e₃` using `ap_ratio hr g.left l h hl`. Establish `e₄` using `ap_ratio hr ((t ≫ Φ.D.i) * g).left l h' hl'`. Establish `hu : IsUnit ((g.left.appLE _ ⊤ hl).hom (ψ.f l))`. Establish `h' : ⊤ ≤ g.left ⁻¹ᵁ (W ⊓ (Φ.H d).U l)` using `le_inf h hl`. Use `(SecRatio.isUnit_res ψ l (inf_le_left.trans hW) (inf_le_right : W ⊓ (Φ.H d).U l ≤ _)).map (g.left.appLE _ ⊤ h').hom` as an intermediate fact.
+
+Rewrite `this` using `[ap_res g.left _ h' hl]`. Then use the resulting hypothesis. Apply `hu.mul_right_cancel` to reduce the goal to its premises. Conclude with `(congrArg _ e₂.symm).trans (e₄.symm.trans (e₁.trans ((congrArg _ e₃).trans (_root_.mul_assoc _ _ _).symm)))`.
+-/
 theorem hasWt_ratio {d : ℕ} {φ ψ : (Φ.H d).Sec} {α : Φ.E.X} (hφ : Φ.Pure α φ) (hψ : Φ.Pure 0 ψ)
     {W : Φ.G.left.Opens} (hW : W ≤ nonzeroLocus ψ) {r : Γ(Φ.G.left, W)} (hr : IsRatio φ ψ W r) :
     HasWt Φ.D.i W r α := by
@@ -250,6 +339,9 @@ theorem hasWt_ratio {d : ℕ} {φ ψ : (Φ.H d).Sec} {α : Φ.E.X} (hφ : Φ.Pur
   apply hu.mul_right_cancel
   exact (congrArg _ e₂.symm).trans (e₄.symm.trans (e₁.trans ((congrArg _ e₃).trans (_root_.mul_assoc _ _ _).symm)))
 
+/- English proof (translation)
+Use `Φ.D.q_affine` as an intermediate fact. Use `(invariant_functions_descend _ _ _ _ Φ.D.q Φ.D.i Φ.D.q_hom Φ.D.i_hom Φ.D.q_flat Φ.D.q_surjective inferInstance Φ.D.isKernel V).2.2 u fun Z t g h₁ h₂ => ?_` and prove the remaining obligations. Rewrite using `[hu Z t g h₂ h₁, charUnit_zero_val, map_one, _root_.one_mul]`.
+-/
 theorem exists_app_eq {V : Φ.E.B.left.Opens} {u : Γ(Φ.G.left, Φ.D.q.left ⁻¹ᵁ V)}
     (hu : HasWt Φ.D.i _ u 0) : ∃ a, (Φ.D.q.left.app V).hom a = u := by
   have := Φ.D.q_affine
@@ -262,11 +354,17 @@ variable {S : Scheme.{0}} {H : Over S} [GrpObj H] {X X' : Type} [AddCommGroup X]
   {i : splitTorus S X ⟶ H} {V : H.left.Opens}
 open SplitTorusPow
 
+/- English proof (translation)
+Introduce `Y t g hg`. Rewrite using `[← Category.assoc]`. Conclude with `h Y _ g hg`.
+-/
 theorem stable_map (f : X →+ X') (h : Stable i V) : Stable (torusMap S f ≫ i) V := by
   intro Y t g hg
   rw [← Category.assoc]
   exact h Y _ g hg
 
+/- English proof (translation)
+Introduce `Y t g h₁ h₂`. Use `h Y (t ≫ torusMap S f) g h₁ (by rwa [Category.assoc])` as an intermediate fact. Rewrite `this` using `[Over.comp_left, FunDescent.comp_appTop_apply, torusMap_char]`. Rewrite using `[← this]`. Simplify using `only [Category.assoc]`.
+-/
 theorem hasWt_map (f : X →+ X') {u : Γ(H.left, V)} {χ : X} (h : HasWt i V u χ) :
     HasWt (torusMap S f ≫ i) V u (f χ) := by
   intro Y t g h₁ h₂
@@ -275,6 +373,9 @@ theorem hasWt_map (f : X →+ X') {u : Γ(H.left, V)} {χ : X} (h : HasWt i V u 
   rw [← this]
   simp only [Category.assoc]
 
+/- English proof (translation)
+Apply `(splitTorusPointsEquiv S X _).injective` to reduce the goal to its premises. Rewrite using `[points_comp_torusMap, ← Category.id_comp (torusMap S f.symm.toAddMonoidHom), points_comp_torusMap]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+-/
 theorem torusMap_comp_symm (f : X ≃+ X') :
     torusMap S f.symm.toAddMonoidHom ≫ torusMap S f.toAddMonoidHom = 𝟙 _ := by
   apply (splitTorusPointsEquiv S X _).injective
@@ -284,6 +385,9 @@ theorem torusMap_comp_symm (f : X ≃+ X') :
 
 end Change
 
+/- English proof (translation)
+Introduce `l`. Use `congrArg (Φ.D.q.left.app _).hom (hr l)` as an intermediate fact. Rewrite `this` using `[map_mul, ← WtPart.rapp, ← WtPart.rapp, ← WtPart.rapp]`. Rewrite using `[hs, ht]`. Conclude with `this`.
+-/
 theorem isRatio_app {s t : Φ.N₀.Sec} {s' t' : (Φ.H 1).Sec}
     (hs : ∀ l, s'.f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom (s.f l))
     (ht : ∀ l, t'.f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom (t.f l)) {V : Φ.E.B.left.Opens} {r : Γ(Φ.E.B.left, V)}
@@ -294,6 +398,13 @@ theorem isRatio_app {s t : Φ.N₀.Sec} {s' t' : (Φ.H 1).Sec}
   rw [hs, ht]
   exact this
 
+/- English proof (translation)
+Substitute `hW` using the available equality. Take `⟨v, rfl⟩` from `exists_app_eq Φ hu`. Take `⟨-, r₀, hr₀, hc⟩` from `hs.2 a trivial`. Establish `hv : v ∈ Subring.closure _` using `hc.ge trivial`. Use `Subring.mem_comap.1 (Subring.closure_le.2 ?_ hv)` and prove the remaining obligations.
+
+Introduce and unpack `_ (⟨c, rfl⟩ | ⟨j, rfl⟩)`. Use `Subring.subset_closure (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[app_constFn]`. Conclude with `⟨_, rfl⟩`. Use `Subring.subset_closure (Or.inr ⟨j, ?_⟩)` and prove the remaining obligations.
+
+Conclude with `(SecRatio.existsUnique_isRatio (Φ.H_isLB 1) _ _ _ hW').unique (hr j) (isRatio_app Φ (hf j) (hf a) (hr₀ j))`.
+-/
 theorem gen {I : Type} {s : I → Φ.N₀.Sec} (hs : ImmBy Φ.E.B.hom Φ.N₀ s Set.univ) {s' : I → (Φ.H 1).Sec}
     (hf : ∀ i l, (s' i).f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom ((s i).f l)) (a : I)
     {W : Φ.G.left.Opens} (hW : W = Φ.D.q.left ⁻¹ᵁ nonzeroLocus (s a)) (hW' : W ≤ nonzeroLocus (s' a))
@@ -313,6 +424,11 @@ theorem gen {I : Type} {s : I → Φ.N₀.Sec} (hs : ImmBy Φ.E.B.hom Φ.N₀ s 
     exact (SecRatio.existsUnique_isRatio (Φ.H_isLB 1) _ _ _ hW').unique (hr j)
       (isRatio_app Φ (hf j) (hf a) (hr₀ j))
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hl' : x ∈ H.U l` using `X.basicOpen_le _ hl`. Assume the negation of the conclusion as `hn`. Establish `h1` using `(Scheme.mem_basicOpen X _ x hl').1 hl`. Rewrite `h1` using `[h l, map_sum]`.
+
+Use `(IsLocalRing.mem_maximalIdeal _).1 (Ideal.sum_mem _ fun i _ => ?_) h1` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 fun hu => hn ⟨i, ?_⟩)` and prove the remaining obligations. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨l, (Scheme.mem_basicOpen X _ x hl').2 hu⟩`.
+-/
 theorem exists_mem_of_isLin {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {H : LB X} {I : Type}
     [Fintype I] {F : I → H.Sec} {b : I → k} {φ : H.Sec} (h : IsLin p F b φ) {x : X} (hx : x ∈ nonzeroLocus φ) :
     ∃ i, x ∈ nonzeroLocus (F i) := by
@@ -326,6 +442,9 @@ theorem exists_mem_of_isLin {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ 
   refine Ideal.mul_mem_left _ _ ((IsLocalRing.mem_maximalIdeal _).2 fun hu => hn ⟨i, ?_⟩)
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨l, (Scheme.mem_basicOpen X _ x hl').2 hu⟩
 
+/- English proof (translation)
+Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 hs`. Establish `e` using `congrArg X.basicOpen (hr l)`. Rewrite `e` using `[Scheme.basicOpen_mul]`. Use `erw [X.basicOpen_res (s.f l) (homOfLE _).op, X.basicOpen_res r (homOfLE _).op] at e`. Conclude with `(e.le ⟨⟨hx, X.basicOpen_le _ hl⟩, hl⟩).1.2`.
+-/
 theorem mem_basicOpen_ratio {X : Scheme.{0}} {H : LB X} {s t : H.Sec} {W : X.Opens} {r : Γ(X, W)}
     (hr : IsRatio s t W r) {x : X} (hx : x ∈ W) (hs : x ∈ nonzeroLocus s) : x ∈ X.basicOpen r := by
   obtain ⟨l, hl⟩ := TopologicalSpace.Opens.mem_iSup.1 hs
@@ -334,6 +453,13 @@ theorem mem_basicOpen_ratio {X : Scheme.{0}} {H : LB X} {s t : H.Sec} {W : X.Ope
   erw [X.basicOpen_res (s.f l) (homOfLE _).op, X.basicOpen_res r (homOfLE _).op] at e
   exact (e.le ⟨⟨hx, X.basicOpen_le _ hl⟩, hl⟩).1.2
 
+/- English proof (translation)
+Establish `hG` using `isSemiAbelian_of_isGt _ Φ.E Φ.G ⟨Φ.D⟩`. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Establish `: CompactSpace Φ.G.left` using `QuasiCompact.compactSpace_of_compactSpace Φ.G.hom`. Assume the negation of the conclusion as `hne`.
+
+Establish `hn : ((U : Set Φ.G.left)ᶜ).Nonempty`. Rewrite using `[Set.nonempty_compl]`. Conclude with `fun e => hne (TopologicalSpace.Opens.ext e)`. Take `⟨x, hxU, hx⟩` from `U.isOpen.isClosed_compl.exists_closed_singleton hn`. Establish `h0` using `h (Over.homMk (pointOfClosedPoint (K := k) Φ.G.hom x hx) (pointOfClosedPoint_comp (K := k) Φ.G.hom x hx))`.
+
+Establish `: pointOfClosedPoint (K` using `k) Φ.G.hom x hx (IsLocalRing.closedPoint k) ∈ U := h0 (x := IsLocalRing.closedPoint k) trivial`. Conclude with `hxU ((pointOfClosedPoint_apply (K := k) Φ.G.hom x hx (IsLocalRing.closedPoint k)) ▸ this)`.
+-/
 theorem eq_top_of_points [IsAlgClosed k] (U : Φ.G.left.Opens) (h : ∀ x : Φ.Pt, ⊤ ≤ x.left ⁻¹ᵁ U) : U = ⊤ := by
   have hG := isSemiAbelian_of_isGt _ Φ.E Φ.G ⟨Φ.D⟩
   have := hG.smooth
@@ -349,6 +475,27 @@ theorem eq_top_of_points [IsAlgClosed k] (U : Φ.G.left.Opens) (h : ∀ x : Φ.P
     h0 (x := IsLocalRing.closedPoint k) trivial
   exact hxU ((pointOfClosedPoint_apply (K := k) Φ.G.hom x hx (IsLocalRing.closedPoint k)) ▸ this)
 
+/- English proof (translation)
+Introduce `hL hL2 k _ _ Φ g N N' q J _ cls F F' π m Ch e cl hB hG hg hm hlin hcl hc₀ hwt hW`. Establish `: Fintype Ch.I` using `Fintype.ofFinite _`. Take `⟨b, hb, -⟩` from `exists_basis_unique_min_and_sums_separated Φ.E.X q hG.pos _ g N N' _ rfl (by omega) hB.lll hB.sep`. Establish `h0 : OnlyShort q N 0` using `onlyShort_zero hG.pos (by have := hB.four; omega)`. Establish `hb' : ∀ n, OnlyShort q N (b n)` using `fun n x hx => (hb n x hx).1`.
+
+Establish `pure : ∀ α, OnlyShort q N α → ∀ i, Ch.wt i = cl α → Φ.Pure α (F' (e i))` using `fun α hα i hi => pure_lin Φ (hlin _) fun j hj => pure_of_cls hG hα ((hcl _ _).1 (hi.symm.trans (hwt i j hj)))`. Establish `span : ∀ α, OnlyShort q N α → ∀ c, cl α = c → ∀ φ : (Φ.H 1).Sec, Φ.Pure α φ → ∃ a : {i // Ch.wt i = c} → k, IsLin Φ.G.hom (fun i : {i // Ch.wt i = c} => F' (e i.1)) a φ`. Introduce `α hα c hc φ hφ`. Take `⟨a, ha, hl⟩` from `exists_isLin hG hα hφ`. Take `⟨a', ha'⟩` from `block m hm e Ch.wt (fun j => cl (cls j)) hwt c a fun j hj => ((hcl _ _).2 (ha j hj)).symm.trans hc`.
+
+Conclude with `⟨a', isLin_comp (F := F) (m := fun (i : {i // Ch.wt i = c}) j => m (e i.1) j) (fun i => hlin (e i.1)) ha' hl⟩`. Establish `pure0 : ∀ i : {i // Ch.wt i = Ch.c₀}, Φ.Pure 0 (F' (e i.1))` using `fun i => pure 0 h0 _ (i.2.trans hc₀.symm)`. Use `choose s hs₁ hs₂ hs₃ using fun i => (FibPre.pure_zero k Φ).2 _ (pure0 i)`. Establish `hs : ImmBy Φ.E.B.hom Φ.N₀ s Set.univ`. Take `⟨n, t, ht⟩` from `GlobalTheory.T.exists_closedImmersion_abelianPart_bundle hL hL2 k Φ N hB.four π`.
+
+Use `Φ.E.isAbelian.proper` as an intermediate fact. Use `SpanImm.immBy_of_span k _ _ _ Φ.isLB _ _ t s ht fun i => ?_` and prove the remaining obligations. Take `⟨φ, hφ, hw⟩` from `(FibPre.pure_zero k Φ).1 (t i)`. Take `⟨a, ha⟩` from `span 0 h0 _ hc₀ φ hφ`. Use `⟨a, fun l => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hw, wt_lin Φ ha]`. Simplify using `only [hs₁]`. Set `f : Φ.E.X ≃+ (Fin (Module.finrank ℤ Φ.E.X) → ℤ)` to `b.equivFun.toAddEquiv`. Establish `hf : ∀ n, f.toAddMonoidHom (b n) = Pi.single n 1` using `fun n => by`. Use extensionality with `n'`.
+
+Simplify using `[f, Pi.single_apply, Finsupp.single_apply, eq_comm]`. Use `Φ.D.i_hom` as an intermediate fact. Use `SplitTorusPow.isMonHom_torusMap (S := Sp k) f.toAddMonoidHom` as an intermediate fact. Use `⟨fun n => cl (b n), (isSemiAbelian_of_isGt _ Φ.E Φ.G ⟨Φ.D⟩).geomConnected, SplitTorusPow.torusMap (Sp k) f.toAddMonoidHom ≫ Φ.D.i, inferInstance, fun a => ?_, fun a j hj => ?_, fun a j n hj => ?_, fun n x => ?_, fun a u hu => ?_⟩` and prove the remaining obligations. Use `stable_map _ ?_` and prove the remaining obligations.
+
+Rewrite using `[(hW a).1, hs₃]`. Conclude with `fun Y t g => TorusTranslate.translate_le Φ.D t g _`. Use `hasWt_map f.toAddMonoidHom (hasWt_ratio Φ (pure0 ⟨j, hj⟩) (pure0 a) (hW a).1.le ((hW a).2 j))` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Use `hasWt_map f.toAddMonoidHom (hasWt_ratio Φ (pure _ (hb' n) j hj) (pure0 a) (hW a).1.le ((hW a).2 j))` as an intermediate fact.
+
+Rewrite `this` using `[hf]`. Then use the resulting hypothesis. Establish `hU` using `eq_top_of_points Φ (⨆ j : {i // Ch.wt i = cl (b n)}, nonzeroLocus (F' (e j.1))) fun y => by`. Take `⟨φ, hφ, hy⟩` from `GlobalTheory.T.exists_pureWeight_section_ne_zero_at hL hL2 k Φ N hB.four π (b n) y`. Take `⟨a, ha⟩` from `span _ (hb' n) _ rfl φ hφ`. Conclude with `fun z hz => TopologicalSpace.Opens.mem_iSup.2 (exists_mem_of_isLin ha (hy hz))`.
+
+Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hU.ge (show x ∈ ⊤ from trivial))`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (Ch.cover.ge (show x ∈ ⊤ from trivial))`. Conclude with `⟨a, j.1, j.2, mem_basicOpen_ratio ((hW a).2 j.1) ha hj⟩`. Establish `hu'` using `hasWt_map f.symm.toAddMonoidHom hu`. Rewrite `hu'` using `[← Category.assoc, torusMap_comp_symm, Category.id_comp, map_zero]`.
+
+Use `Subring.closure_mono (Set.union_subset_union_right _ ?_) (gen Φ hs hs₂ a ((hW a).1.trans (hs₃ a)) (hW a).1.le (r := fun j => Ch.r a j.1) (fun j => (hW a).2 j.1) hu')` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨j.1, j.2, rfl⟩`.
+-/
 theorem exists_split : Out.Laws → Out.Laws2 → ∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (g N N' : ℕ) (q : QuadraticMap ℤ Φ.E.X ℝ) (J : Type) [Fintype J] (cls : J → Φ.E.X) (F F' : J → (Φ.H 1).Sec) (π : Φ.Pol N) (m : Matrix J J k) (Ch : GlobalTheory.ZJ.Charts Φ.G.left) (e : Ch.I ≃ J) (cl : Φ.E.X → Ch.Cl), Big g N N' → Φ.Good N q cls F → π.PB.g + Module.finrank ℤ Φ.E.X = g → IsUnit m.det → (∀ i, IsLin Φ.G.hom F (m i) (F' i)) → (∀ α β, cl α = cl β ↔ ∃ n, α = β + N • n) → cl 0 = Ch.c₀ → (∀ i j, m (e i) j ≠ 0 → Ch.wt i = cl (cls j)) → (∀ i, Ch.W i = nonzeroLocus (F' (e i.1)) ∧ ∀ j, IsRatio (F' (e j)) (F' (e i.1)) (Ch.W i) (Ch.r i j)) → ∃ c : Fin (Module.finrank ℤ Φ.E.X) → Ch.Cl, GlobalTheory.ZJ.Charts.Split (H := Φ.G) Ch c := by
   intro hL hL2 k _ _ Φ g N N' q J _ cls F F' π m Ch e cl hB hG hg hm hlin hcl hc₀ hwt hW
   have : Fintype Ch.I := Fintype.ofFinite _

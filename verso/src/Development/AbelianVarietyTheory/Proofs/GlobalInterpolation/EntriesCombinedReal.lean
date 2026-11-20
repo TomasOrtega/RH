@@ -21,6 +21,11 @@ namespace GlobalTheory.Fc.JoinLinked
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Substitute `hF` using the available equality. Take `rfl` from `eq_of_heq hP`. Take `rfl` from `eq_of_heq hS`. Take `rfl` from `eq_of_heq ht`. Substitute `hc` using the available equality.
+
+Conclude with `h`.
+-/
 theorem move {D : D7} {F0 F0' : ∀ u, Formalism.L2.Forms.Forms0 D u} (hF : F0 = F0')
     (Φ : ∀ F : (∀ u, Formalism.L2.Forms.Forms0 D u), ∀ P : GlobalTheory.Mem.SRe.SPack D F, GlobalTheory.Mem.SRe.SRest P → Formalism.L2.Theta.GA D (D.sp.Y 0) → ℝ → Prop)
     {P' : GlobalTheory.Mem.SRe.SPack D F0'} {S' : GlobalTheory.Mem.SRe.SRest P'} {t t' : Formalism.L2.Theta.GA D (D.sp.Y 0)} {c c' : ℝ}
@@ -33,6 +38,9 @@ theorem move {D : D7} {F0 F0' : ∀ u, Formalism.L2.Forms.Forms0 D u} (hF : F0 =
   subst hc
   exact h
 
+/- English proof (translation)
+Introduce `V _ S θ M J χ μ 𝓕` and use `(GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`.
+-/
 theorem schurAll (hH : GlobalTheory.Published.HarishChandraFinite) (hC : GlobalTheory.Published.CuspRapidDecay) (D : D7) :
     Formalism.IndefR.Links.SchurAll D :=
   fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2
@@ -45,6 +53,9 @@ open Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalis
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {K : Formalism.MainNotions.G.Consts}
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl K Yd cX}
 
+/- English proof (translation)
+Substitute `hS0` using the available equality. Establish `hRR` using `(GlobalTheory.Mem.R3.rowLat_ties hR _ _ _ _ _ x.A3 _ x.R x.F x.cG _ x.Y x.Z x.pins hH).1`. Conclude with `(GlobalTheory.Mem.KJoinLat.join_subspace_real_data_lattice D L hT Gi Gl K Yd cX ex x Rc P S y c 1 (schurAll hR.2.2.2.1 hR.2.2.2.2 D) hPins hH hH.ok hH.sep hRR (rowConditions_at_companion_from_readings D L hT Gi Gl K Yd cX ex x).2.1 hSee hEv hRow).1`.
+-/
 theorem join_linked_realization (hR : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
     (x : TwIn ex) (Rc : Formalism.L2.RecT ex) (S0 : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (P : SPack D fun u => (Rc.T.cols.forms u).to0)
@@ -70,6 +81,15 @@ variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL}
 
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Use `show Nonempty (Formalism.L2.SG.JoinSI.JoinSI (R := b.R) (S := b.S) (Q := b.B.Q))`. Establish `hPins : RealPins (R3.realTOf w.y.y)`. Establish `h : (fun r : RPk b.R b.S => RealPins r.B.Q) (rpkB b)` using `t.pins`. Rewrite `h` using `[w.y.eq]`. Conclude with `h`.
+
+Take `⟨sP, sS, hP, hS, hSeq⟩` from `w.s`. Establish `hx : w.a.x = w.x` using `eq_of_heq w.ax`. Establish `hM` using `GlobalTheory.Mem.R3.StageMove.spectralStage_point_rowPlacement_transfer _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ w.a _ q.sat`. Rewrite `hM` using `[hx]`. Establish `hF : (fun u => (b.R.T.cols.forms u).to0) = fun u => (q.x.col.C.forms u).to0`.
+
+Rewrite using `[w.recPin.s.cols]`. Establish `hN` using `move hF (fun _ P S t c => SeeAt w.x.R.toRealDat w.x.F.lv2 P.X P.inst t ∧ EvalTieT (MP w.x.R.toRealDat) w.x.R.toRealDat.ν0 w.x.R.toRealDat.fd0 (EP w.x.R.toRealDat w.x.F.lv2) P.X P.G (iotaX P.X P.inst).toMulEquiv t c ∧ RowJ w.x.R.toRealDat w.x.Y.eE P.X P.inst P.G t S.j) (P := sP) ( …`. Establish `hJ` using `join_linked_realization hR w.x b.R b.S sP sS hSeq w.y.y w.y.y.cS hPins w.y.intersectionNumber_baseChange hN.1 hN.2.1 hN.2.2`. Establish `h : (fun r : RPk b.R b.S => Nonempty (Formalism.L2.SG.JoinSI.JoinSI (R` using `b.R) (S := b.S) (Q := r.B.Q))) (rpkX w.y.y) := hJ`. Rewrite `h` using `[← w.y.eq]`.
+
+Conclude with `h`.
+-/
 theorem selJ_of_wit (hR : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧
       GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay)
     {K : Ctx} {q : WPt p.s K} {c : ℝ} {b : Bundle (q.w.D q.Z) q.O c} (w : BWit q b) (t : b.Comparison₂) : R1.P_selJ _ _ c b := by
@@ -99,6 +119,9 @@ section Constructions₂
 
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL}
 
+/- English proof (translation)
+Use `GlobalTheory.Fc.Built.ind (R := R) (fun K β c b _ _ hl => ?_) hb` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R s.1 s.2.1 c s.2.2) he` as an intermediate fact. Conclude with `cast this.symm (h K q c b' w)`.
+-/
 theorem of_built {R : BdP Bundle} {Q : V4.Slot} {κ : Par}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : Bundle (q.w.D q.Z) q.O c), BWit q b → R _ _ c b)
     {D : D7} {O : Obj D} {c : ℝ} {b : Bundle D O c} (hb : GlobalTheory.Fc.Built Q (IsLinked p) κ D O c b) : R D O c b := by
@@ -107,6 +130,9 @@ theorem of_built {R : BdP Bundle} {Q : V4.Slot} {κ : Par}
   have := congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R s.1 s.2.1 c s.2.2) he
   exact cast this.symm (h K q c b' w)
 
+/- English proof (translation)
+Take `⟨S, hS, hA⟩` from `hA`. Use `⟨S, hS, Row.imp hA fun 𝒜 σ s H => ?_⟩` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Take `⟨κ, -, -, t⟩` from `s Fm hc`. Conclude with `of_built (R := fun D O c b => A D O c b → R D O c b) h (t x hx i).1 (H Fm hc x hx i)`.
+-/
 theorem at_atAll {A R : BdP Bundle}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : Bundle (q.w.D q.Z) q.O c), BWit q b → A _ _ c b → R _ _ c b)
     (hA : RL.At p fun S L => Row S L (AtAll A)) : RL.At p fun S L => Row S L (AtAll R) := by
@@ -118,6 +144,9 @@ theorem at_atAll {A R : BdP Bundle}
 
 end Constructions₂
 
+/- English proof (translation)
+Introduce `_ _ h1 h2 h3 h4 h5 _ _ _ _ _ _ hT` and use `at_atAll (A := HasTie) (R := R1.P_selJ) (fun _ _ _ _ w ht => selJ_of_wit ⟨h1, h2, h3, h4, h5⟩ w (Classical.choice ht)) hT`.
+-/
 theorem at_selJ : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.DiscreteSeriesCover →
     GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay →
     ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), RL.At (prmR N S Γ) R1.PeriodAdmissibilityAtBundlePoints →

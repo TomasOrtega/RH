@@ -15,6 +15,19 @@ open Formalism.L2.Indef (DefBase DefSide DefCols)
 open Formalism.L2.DIV (PathData EmbAt IsExpansion ColsInt RowsInt LastInt UnitsInt StabDvd)
 open Formalism.AtG (PerBd colRhs)
 
+/- English proof (translation)
+Introduce `K _ _ _ Bs Df Dc u t Nu w g _ pb Dg Rg hw hpb hG`. Take `⟨ι, X, D, j1, hι, hX, hc, hr, hl, hu, hD, hgD, he⟩` from `hG`. Establish `hpl : Formalism.EigenvalueLevelCeiling.plc w = g` using `Formalism.L2.DIV.embeddingForces_holds K w g ι hι`. Establish `hram : Formalism.EigenvalueLevelCeiling.ramw w = vw w (g : K)`. Unfold `Formalism.EigenvalueLevelCeiling.ramw`.
+
+Rewrite using `[hpl]`. Establish `hr1 : (1 : ℝ) ≤ (Formalism.EigenvalueLevelCeiling.ramw w : ℝ)` using `by exact_mod_cast (Formalism.EigenvalueLevelCeiling.ramBasic K w).2.1`. Establish `hr0 : (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) ≠ 0` using `by linarith`. Establish `hq0 : 0 < ‖(g : ℂ_[g])‖` using `Formalism.DworkPowerSeriesWeights.norm_l_pos g`. Establish `main : PerBd Dc u Nu t w (-(∑ j, (Dg j : ℝ) * (vw w pb : ℝ)) - (∑ j, Rg j) * (vw w (g : K) : ℝ))`.
+
+Use `Formalism.L2.DIV.valuation_of_entry_bounds Dc u t Nu w _ g ι X D j1 (fun j => -((Dg j : ℝ) * (vw w pb : ℝ) / (Formalism.EigenvalueLevelCeiling.ramw w : ℝ)) - Rg j) hι hX hc hr hl hu hD ?_ ?_` and prove the remaining obligations. Introduce `π j`. Establish `h` using `he π j`. Rewrite `h` using `[hι pb hpb, ← Real.rpow_natCast, ← Real.rpow_mul hq0.le, mul_assoc, ← Real.rpow_add hq0]`. Establish `hpos : 0 < ‖(g : ℂ_[g])‖ ^ ((vw w pb : ℝ) / (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * (Dg j : ℝ) + Rg j)` using `Real.rpow_pos_of_pos hq0 _`.
+
+Establish `h2 : ‖X.e π j‖ ≤ (‖(g : ℂ_[g])‖ ^ ((vw w pb : ℝ) / (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * (Dg j : ℝ) + Rg j))⁻¹`. Rewrite using `[← one_div, le_div_iff₀ hpos]`. Conclude with `h`. Rewrite `h2` using `[← Real.rpow_neg hq0.le]`. Use `h2.trans (le_of_eq ?_)` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[padicValNat.eq_zero_of_not_dvd hgD, ← hram]`. Establish `hterm : ∀ j, (Formalism.EigenvalueLevelCeiling.ramw w : ℝ) * (-((Dg j : ℝ) * (vw w pb : ℝ) / (Formalism.EigenvalueLevelCeiling.ramw w : ℝ)) - Rg j - ((0 : ℕ) : ℝ)) = -((Dg j : ℝ) * (vw w pb : ℝ)) - Rg j * (Formalism.EigenvalueLevelCeiling.ramw w : ℝ)`. Introduce `j`.
+
+Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl (fun j _ => hterm j), Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_mul]`. Conclude with `⟨main, fun Jx sx nn cg E0 h => Formalism.AtG.UnitPeriodBounds.perBd_mono h main⟩`.
+-/
 theorem column_bound_of_paths : ColBoundOfPaths := by
   intro K _ _ _ Bs Df Dc u t Nu w g _ pb Dg Rg hw hpb hG
   obtain ⟨ι, X, D, j1, hι, hX, hc, hr, hl, hu, hD, hgD, he⟩ := hG
@@ -51,6 +64,13 @@ theorem column_bound_of_paths : ColBoundOfPaths := by
         Finset.sum_neg_distrib, Finset.sum_mul]
   exact ⟨main, fun Jx sx nn cg E0 h => Formalism.AtG.UnitPeriodBounds.perBd_mono h main⟩
 
+/- English proof (translation)
+Introduce `K _ _ w g hw J _ pb cg Dg Rg E0 hpb hcg hR`. Unfold `colRhs`. Establish `hc : (vw w cg : ℝ) = 0`. Take `⟨k, hk, hk1⟩` from `hcg`. Conclude with `Formalism.AtG.root_of_unity_valuation_zero K cg k hk hk1 w` after adjusting the coercions.
+
+Establish `hp : ∀ j, (vw w (pb ^ Dg j) : ℝ) = (Dg j : ℝ) * (vw w pb : ℝ)`. Introduce `j`. Rewrite using `[Formalism.AtG.PlacesLyingOver.vw_pow' w pb hpb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hv : (0 : ℝ) < (vw w (g : K) : ℝ)` using `by exact_mod_cast hw`. Simplify using `only [hp, hc]`. Use `mul_le_mul_of_nonneg_right hR hv.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem column_right_side_le : ColRhsLe := by
   intro K _ _ w g hw J _ pb cg Dg Rg E0 hpb hcg hR
   unfold colRhs

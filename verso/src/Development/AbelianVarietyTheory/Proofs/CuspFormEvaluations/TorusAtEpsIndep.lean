@@ -9,33 +9,62 @@ namespace GlobalTheory.SemicharIndep
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
+/- English proof (translation)
+The claim follows from `IsCMField.complexConj_apply_apply E a`.
+-/
 theorem cc_cc (a : E) : cc (cc a) = a := IsCMField.complexConj_apply_apply E a
 
+/- English proof (translation)
+The claim follows from `map_mul (IsCMField.complexConj E) a b`.
+-/
 theorem cc_mul (a b : E) : cc (a * b) = cc a * cc b := map_mul (IsCMField.complexConj E) a b
 
+/- English proof (translation)
+The claim follows from `map_sub (IsCMField.complexConj E) a b`.
+-/
 theorem cc_sub (a b : E) : cc (a - b) = cc a - cc b := map_sub (IsCMField.complexConj E) a b
 
+/- English proof (translation)
+The claim follows from `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a`.
+-/
 theorem trace_conj (a : E) : Algebra.trace ℚ E (cc a) = Algebra.trace ℚ E a :=
   Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) a
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem herm_smul_left (G : Matrix (Fin r) (Fin r) E) (a : E) (u v : Fin r → E) :
     herm G (a • u) v = a * herm G u v := by
   simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, cc_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem herm_smul_right (G : Matrix (Fin r) (Fin r) E) (a : E) (u v : Fin r → E) :
     herm G u (a • v) = cc a * herm G u v := by
   simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, cc_mul]
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   ring
 
+/- English proof (translation)
+Simplify using `[herm, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem herm_add_left (G : Matrix (Fin r) (Fin r) E) (u u' v : Fin r → E) :
     herm G (u + u') v = herm G u v + herm G u' v := by
   simp [herm, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `[herm, cc, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem herm_add_right (G : Matrix (Fin r) (Fin r) E) (u v v' : Fin r → E) :
     herm G u (v + v') = herm G u v + herm G u v' := by
   simp [herm, cc, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Establish `h : cc (herm G u v) = ∑ a, ∑ b, cc (u a * G a b * cc (v b))`. Simplify using `only [herm, cc, map_sum]`. Rewrite using `[h, herm, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[cc_mul, cc_mul, cc_cc, hG]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cc_herm {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a) (u v : Fin r → E) :
     cc (herm G u v) = herm G v u := by
   have h : cc (herm G u v) = ∑ a, ∑ b, cc (u a * G a b * cc (v b)) := by
@@ -47,39 +76,70 @@ theorem cc_herm {G : Matrix (Fin r) (Fin r) E} (hG : ∀ a b, cc (G a b) = G b a
 noncomputable def B (X : Data E r) (u v : Fin r → E) : ℚ :=
   Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v)
 
+/- English proof (translation)
+Unfold `B`. Rewrite using `[← trace_conj, ← map_neg, cc_mul, cc_herm X.Gm_herm, X.ξ0_im, neg_mul]`.
+-/
 theorem B_skew (X : Data E r) (u v : Fin r → E) : B X u v = -B X v u := by
   unfold B
   rw [← trace_conj, ← map_neg, cc_mul, cc_herm X.Gm_herm, X.ξ0_im, neg_mul]
 
+/- English proof (translation)
+Unfold `B`. Rewrite using `[herm_smul_left, herm_smul_right, cc_cc]`.
+-/
 theorem B_adj (X : Data E r) (a : E) (u v : Fin r → E) : B X (a • u) v = B X u (cc a • v) := by
   unfold B
   rw [herm_smul_left, herm_smul_right, cc_cc]
 
+/- English proof (translation)
+Unfold `B`. Rewrite using `[herm_add_left, mul_add, map_add]`.
+-/
 theorem B_add_left (X : Data E r) (u u' v : Fin r → E) : B X (u + u') v = B X u v + B X u' v := by
   unfold B
   rw [herm_add_left, mul_add, map_add]
 
+/- English proof (translation)
+Unfold `B`. Rewrite using `[herm_add_right, mul_add, map_add]`.
+-/
 theorem B_add_right (X : Data E r) (u v v' : Fin r → E) : B X u (v + v') = B X u v + B X u v' := by
   unfold B
   rw [herm_add_right, mul_add, map_add]
 
+/- English proof (translation)
+Unfold `B`. Rewrite using `[herm_smul_right, herm_smul_right, herm_smul_right, cc_sub, sub_mul, mul_sub, map_sub]`.
+-/
 theorem B_sub_smul (X : Data E r) (a b : E) (u v : Fin r → E) :
     B X u ((a - b) • v) = B X u (a • v) - B X u (b • v) := by
   unfold B
   rw [herm_smul_right, herm_smul_right, herm_smul_right, cc_sub, sub_mul, mul_sub, map_sub]
 
+/- English proof (translation)
+Rewrite using `[B_skew, B_adj]`.
+-/
 theorem B_swap (X : Data E r) (a : E) (u v : Fin r → E) : B X v (a • u) = -B X u (cc a • v) := by
   rw [B_skew, B_adj]
 
+/- English proof (translation)
+Rewrite using `[EFf, neg_mul, map_neg, B]`.
+-/
 theorem EFf_eq (X : Data E r) (u v : Fin r → E) : EFf X.ξ0 X.Gm u v = -B X u v := by
   rw [EFf, neg_mul, map_neg, B]
 
+/- English proof (translation)
+Take `⟨k, hk⟩` from `X.EF_int u hu v hv`. Rewrite `hk` using `[EFf_eq]`. Conclude with `⟨-k, by push_cast; linarith⟩`.
+-/
 theorem B_int (X : DataX E r) {u v : Fin r → E} (hu : u ∈ X.Λ) (hv : v ∈ X.Λ) :
     ∃ k : ℤ, B X.toData u v = k := by
   obtain ⟨k, hk⟩ := X.EF_int u hu v hv
   rw [EFf_eq] at hk
   exact ⟨-k, by push_cast; linarith⟩
 
+/- English proof (translation)
+Use `choose! f hf using hy`. Set `φ : X.Λ →+ ℤ` to `AddMonoidHom.mk' (fun u => f u) (fun u v => by`. Establish `h1` using `hf _ (u + v).2`. Establish `h2` using `hf _ u.2`. Establish `h3` using `hf _ v.2`.
+
+Rewrite `h1` using `[Submodule.coe_add, B_add_left, h2, h3]`. Establish `: ((f ((u : Fin r → E) + v) : ℤ) : ℚ) = f u + f v` using `by linarith`. Conclude with `this)` after adjusting the coercions. Take `⟨x, hx, h⟩` from `X.EF_perf φ`. Use `⟨x, hx, fun u hu => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `h ⟨u, hu⟩`. Rewrite `h1` using `[EFf_eq, ← B_skew]`. Rewrite using `[hf u hu, ← h1]`. Both sides reduce to the same expression.
+-/
 theorem exists_half (X : DataX E r) (y : Fin r → E)
     (hy : ∀ u ∈ X.Λ, ∃ k : ℤ, B X.toData u y = 2 * k) :
     ∃ x ∈ X.Λ, ∀ u ∈ X.Λ, B X.toData u y = 2 * B X.toData u x := by
@@ -101,13 +161,30 @@ theorem exists_half (X : DataX E r) (y : Fin r → E)
 def Par (X : Data E r) (w : 𝓞 E) : Prop :=
   ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ, B X u (((w : E) - cc (w : E)) • v) - B X u v = 2 * k
 
+/- English proof (translation)
+The claim follows from `X.Λ.smul_mem w hv`.
+-/
 theorem smul_mem (X : Data E r) (w : 𝓞 E) {v : Fin r → E} (hv : v ∈ X.Λ) : (w : E) • v ∈ X.Λ :=
   X.Λ.smul_mem w hv
 
+/- English proof (translation)
+The claim follows from `X.Λ.smul_mem (IsCMField.ringOfIntegersComplexConj E w) hv`.
+-/
 theorem cc_smul_mem (X : Data E r) (w : 𝓞 E) {v : Fin r → E} (hv : v ∈ X.Λ) :
     cc (w : E) • v ∈ X.Λ :=
   X.Λ.smul_mem (IsCMField.ringOfIntegersComplexConj E w) hv
 
+/- English proof (translation)
+Take `⟨x, hx, h⟩` from `exists_half X ((((w : E) - cc (w : E)) - ((w' : E) - cc (w' : E))) • v) (fun u hu => by`. Take `⟨k, hk⟩` from `hw u hu v hv`. Take `⟨l, hl⟩` from `hw' u hu v hv`. Use `⟨k - l, ?_⟩` and prove the remaining obligations. Rewrite using `[B_sub_smul]`.
+
+Use `push_cast`. Use the proof step `linarith)`. Establish `h1` using `h v hv`. Rewrite `h1` using `[B_sub_smul, B_sub_smul, B_sub_smul]`. Establish `h2` using `B_swap X.toData (w : E) v v`.
+
+Establish `h3` using `B_swap X.toData (w' : E) v v`. Take `⟨k, hk⟩` from `hw v hv x hx`. Establish `hm : (cc (w : E) - (w : E)) • v ∈ X.Λ`. Rewrite using `[sub_smul]`. Conclude with `sub_mem (cc_smul_mem X.toData w hv) (smul_mem X.toData w hv)`.
+
+Establish `h4` using `h _ hm`. Rewrite `h4` using `[B_adj, B_adj, cc_sub, cc_cc, smul_smul]`. Establish `h5` using `B_swap X.toData (((w : E) - cc (w : E)) * (((w : E) - cc (w : E)) - ((w' : E) - cc (w' : E)))) v v`. Establish `h6 : cc (((w : E) - cc (w : E)) * (((w : E) - cc (w : E)) - ((w' : E) - cc (w' : E)))) = ((w : E) - cc (w : E)) * (((w : E) - cc (w : E)) - ((w' : E) - cc (w' : E)))`. Simplify using `only [cc_mul, cc_sub, cc_cc]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite `h5` using `[h6]`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem parity_eq (X : DataX E r) {w w' : 𝓞 E} (hw : Par X.toData w) (hw' : Par X.toData w')
     {v : Fin r → E} (hv : v ∈ X.Λ) :
     ∃ k : ℤ, B X.toData v ((w : E) • v) - B X.toData v ((w' : E) • v) = 2 * k := by
@@ -136,6 +213,13 @@ theorem parity_eq (X : DataX E r) {w w' : 𝓞 E} (hw : Par X.toData w) (hw' : P
   push_cast
   linarith
 
+/- English proof (translation)
+Establish `h` using `Real.cos_int_mul_pi k`. Rewrite `h` using `[← Int.cast_negOnePow]`. Break down `hs with rfl | rfl` into its components or cases. Rewrite using `[← h]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h, ← Real.cos_neg]`. Use `congr 1`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cos_sign {s : ℝ} (hs : s = 1 ∨ s = -1) (k : ℤ) :
     Real.cos (Real.pi * (s * (((k : ℚ)) : ℝ))) = ((k.negOnePow : ℤ) : ℝ) := by
   have h := Real.cos_int_mul_pi k
@@ -144,6 +228,9 @@ theorem cos_sign {s : ℝ} (hs : s = 1 ∨ s = -1) (k : ℤ) :
   · rw [← h]; congr 1; push_cast; ring
   · rw [← h, ← Real.cos_neg]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Establish `h` using `A.eps_eq v hv`. Rewrite `h` using `[A.im_eq v hv _ (smul_mem X A.w0 hv)]`. Unfold `B at hk`. Rewrite `h` using `[hk, cos_sign A.sg_pm]`. Conclude with `h` after adjusting the coercions.
+-/
 theorem eps_val {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) {v : Fin r → E} (hv : v ∈ X.Λ)
     {k : ℤ} (hk : B X v ((A.w0 : E) • v) = k) : A.T.eps (A.φ v) = (k.negOnePow : ℤ) := by
   have h := A.eps_eq v hv
@@ -152,6 +239,17 @@ theorem eps_val {X : Data E r} {x : Frame X.Ψ r} (A : TorusAt X x) {v : Fin r �
   rw [hk, cos_sign A.sg_pm] at h
   exact_mod_cast h
 
+/- English proof (translation)
+Introduce `u hu v hv`. Establish `huv` using `add_mem hu hv`. Take `⟨a, ha⟩` from `B_int X hu (smul_mem X.toData A.w0 hu)`. Take `⟨b, hb⟩` from `B_int X hv (smul_mem X.toData A.w0 hv)`. Take `⟨c, hc⟩` from `B_int X huv (smul_mem X.toData A.w0 huv)`.
+
+Take `⟨d, hd⟩` from `B_int X hu hv`. Establish `h` using `A.T.eps_add (A.φ u) ((A.lat _).2 ⟨u, hu, rfl⟩) (A.φ v) ((A.lat _).2 ⟨v, hv, rfl⟩)`. Establish `hd'` using `hd`. Unfold `B at hd'`. Rewrite `h` using `[← map_add, eps_val A hu ha, eps_val A hv hb, eps_val A huv hc, A.im_eq u hu v hv, hd', cos_sign A.sg_pm]`.
+
+Establish `h1 : c.negOnePow = (a + b + d).negOnePow`. Rewrite using `[Int.negOnePow_add, Int.negOnePow_add]`. Use `ext`. Use `push_cast`. Conclude with `h` after adjusting the coercions.
+
+Take `⟨k, hk⟩` from `(Int.negOnePow_eq_iff _ _).1 h1`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[smul_add, B_add_left, B_add_right, B_add_right, ha, hb, B_swap X.toData _ u v]`. Establish `hk' : (c : ℚ) - (a + b + d) = k + k` using `by exact_mod_cast hk`. Rewrite using `[B_sub_smul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem par_of_torusAt (X : DataX E r) {x : Frame X.Ψ r} (A : TorusAt X.toData x) :
     Par X.toData A.w0 := by
   intro u hu v hv
@@ -183,6 +281,11 @@ namespace GlobalTheory
 
 open SemicharIndep in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X _ x x' A A' γ hγ v hv`. Take `⟨a, ha⟩` from `B_int X hv (smul_mem X.toData A.w0 hv)`. Take `⟨b, hb⟩` from `B_int X hv (smul_mem X.toData A'.w0 hv)`. Establish `hb' : B X.toData ((γ : Matrix (Fin r) (Fin r) E).mulVec v) ((A'.w0 : E) • (γ : Matrix (Fin r) (Fin r) E).mulVec v) = b`. Rewrite using `[← hb, B, B, ← Matrix.mulVec_smul, hγ.1]`.
+
+Rewrite using `[eps_val A hv ha, eps_val A' ((hγ.2 v).1 hv) hb']`. Take `⟨k, hk⟩` from `parity_eq X (par_of_torusAt X A') (par_of_torusAt X A) hv`. Rewrite `hk` using `[ha, hb]`. Establish `hk' : b - a = 2 * k` using `by exact_mod_cast hk`. Rewrite using `[(Int.negOnePow_eq_iff b a).2 ⟨k, by omega⟩]`.
+-/
 theorem torusAt_eps_indep : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r), (∃ w0 : 𝓞 E, ∀ u ∈ X.Λ, ∀ v ∈ X.Λ, ∃ k : ℤ, Algebra.trace ℚ E (X.ξ0 * herm X.Gm u (((w0 : E) - cc (w0 : E)) • v)) - Algebra.trace ℚ E (X.ξ0 * herm X.Gm u v) = 2 * k) → ∀ (x x' : Frame X.Ψ r) (A : TorusAt X.toData x) (A' : TorusAt X.toData x') (γ : GL (Fin r) E), IsUStab X.Gm X.Λ γ → ∀ v ∈ X.Λ, A'.T.eps (A'.φ ((γ : Matrix (Fin r) (Fin r) E).mulVec v)) = A.T.eps (A.φ v) := by
   intro E _ _ _ r X _ x x' A A' γ hγ v hv
   obtain ⟨a, ha⟩ := B_int X hv (smul_mem X.toData A.w0 hv)

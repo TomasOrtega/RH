@@ -11,6 +11,13 @@ noncomputable section
 
 universe u w
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ N x T hK pp hpp`. Take `⟨c₁, h₁⟩` from `hL k Ω N x T hK pp hpp`. Take `⟨c₂, h₂⟩` from `hG k Ω N x T hK pp hpp`. Use `⟨max c₁ c₂, fun b c hb hc I => ?_⟩` and prove the remaining obligations. Use `(h₂ b c hb (le_of_max_le_right hc) I).trans (sup_le ?_ le_sup_right)` and prove the remaining obligations.
+
+Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, hcomp, rfl⟩`. Take `⟨t, ht, hts⟩` from `h₁ b c hb (le_of_max_le_left hc) s hs hcomp`. Establish `he : s I = t - (t - s I)` using `by abel`. Rewrite using `[SetLike.mem_coe, he]`.
+
+Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left (Submodule.subset_span (SetLike.mem_coe.mpr ht))) (Submodule.mem_sup_right (hts I))`.
+-/
 theorem StepThree.OnW.proof (hL : StepThree.OnW.Lift.Statement.{u, w})
     (hG : StepThree.OnW.Gen.Statement.{u, w}) : StepThree.OnW.Statement.{u, w} := by
   intro k _ Ω _ _ N x T hK pp hpp

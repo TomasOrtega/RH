@@ -7,6 +7,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.DerivativeJacqu
 
 namespace GlobalTheory.RgGu.Nup2
 
+/- English proof (translation)
+Introduce `k _ _ _ _` and use `GlobalTheory.T.nu_pair_of_derivatives_jacquet k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top (GlobalTheory.T.derivative_jacquet_holds k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top) (GlobalTheory.T.jm_theta_holds k PositivityTheory.Tls2.BZGL.irreducibleAdmissi …`.
+-/
 theorem nuPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.BZSeg.NuPair k := fun k _ _ _ _ =>
   GlobalTheory.T.nu_pair_of_derivatives_jacquet k PositivityTheory.Tls2.BZGL.irreducibleAdmissibleGL_top

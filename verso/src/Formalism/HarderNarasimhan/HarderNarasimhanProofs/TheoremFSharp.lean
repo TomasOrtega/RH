@@ -8,6 +8,15 @@ noncomputable section
 
 namespace Formalism.HN
 
+/- English proof (translation)
+Break down `lt_or_eq_of_le hu with hu' | hu'` into its components or cases. Conclude with `frameB_share m x s u τ hu' hτ hsum hle`. Substitute `hu'` using the available equality. Establish `hempty : ∀ i, univ.filter (fun j => x i j < s - τ) = ∅`. Introduce `i`.
+
+Assume the negation of the conclusion as `hne`. Take `⟨j, hj⟩` from `Finset.nonempty_iff_ne_empty.2 hne`. Establish `hj'` using `(Finset.mem_filter.1 hj).2`. Establish `hlt : ∑ i, ∑ j, x i j < ∑ i, ∑ _j : Fin (m i), s`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
+
+Introduce `i' _`. Conclude with `Finset.sum_le_sum fun j' _ => by linarith [hle i' j']`. Conclude with `⟨i, mem_univ _, Finset.sum_lt_sum (fun j' _ => by linarith [hle i j']) ⟨j, mem_univ _, by linarith⟩⟩`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at hlt`. Rewrite `hsum` using `[Finset.sum_mul]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hempty]`.
+-/
 theorem thmF_share {I : Type} [Fintype I] (m : I → ℕ) (x : ∀ i, Fin (m i) → ℝ) (s u τ : ℝ)
     (hu : 0 ≤ u) (hτ : 0 ≤ τ) (hsum : (∑ i, (m i : ℝ)) * s ≤ ∑ i, ∑ j, x i j)
     (hle : ∀ i j, x i j ≤ s + u) :
@@ -32,6 +41,43 @@ theorem thmF_share {I : Type} [Fintype I] (m : I → ℕ) (x : ∀ i, Fin (m i) 
       linarith
     simp [hempty]
 
+/- English proof (translation)
+Use `set Bv : ∀ i, EuclideanSpace ℂ (ι i) →ₗ[ℂ] EuclideanSpace ℂ κ := fun i => Matrix.toEuclideanLin (Y'⁻¹ * (LinearMap.toMatrix (b i) b' (B i)).map v.embedding * Y i) with hBv`. Use `set Ba : ∀ i, EuclideanSpace ℂ (ι i) →ₗ[ℂ] EuclideanSpace ℂ (κ ⊕ κ₁) := fun i => Matrix.toEuclideanLin (Ball i) with hBa`. Set `M` to `⨆ i, (Nt i).map ((B i).restrictScalars (𝓞 K))`. Set `eq : ∀ (α : Type) [Fintype α], (α → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ α` to `fun α _ => (WithLp.linearEquiv 2 ℂ (α → ℂ)).symm`. Set `Nτ : ∀ i, Submodule ℂ (EuclideanSpace ℂ (ι i))` to `fun i => (Submodule.span ℂ (Formalism.HermitianLatticesTheory.fcoord (b i) (fun _ => Y i) v '' (Nt i : Set (V i)))).map (eq (ι i)).toLinearMap`.
+
+Establish `hNτ : ∀ i, finrank ℂ (Nτ i) = rkK (Nt i)`. Introduce `i`. Rewrite using `[LinearEquiv.finrank_map_eq]`. Conclude with `PlaceDecomposition.finrank_span_complex (b i) (fun _ => Y i) (fun _ => hY i) (Nt i) v`. Set `T : Submodule ℂ (EuclideanSpace ℂ κ)` to `(Submodule.span ℂ (Formalism.HermitianLatticesTheory.fcoord b' (fun _ => Y') v '' (M : Set W))).map (eq κ).toLinearMap`.
+
+Establish `hT : finrank ℂ T = rkK M`. Rewrite using `[LinearEquiv.finrank_map_eq]`. Conclude with `PlaceDecomposition.finrank_span_complex b' (fun _ => Y') (fun _ => hY') M v`. Establish `hST : (⨆ i, (Nτ i).map (Bv i)) ≤ T`. Use `iSup_le fun i => ?_` and prove the remaining obligations.
+
+Rewrite using `[Submodule.map_le_iff_le_comap]`. Use `show Submodule.map _ _ ≤ _`. Rewrite using `[Submodule.map_le_iff_le_comap, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [Submodule.mem_comap, SetLike.mem_coe]`.
+
+Use `Submodule.mem_map.2 ⟨Formalism.HermitianLatticesTheory.fcoord b' (fun _ => Y') v (B i x), Submodule.subset_span ⟨B i x, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i (Submodule.mem_map_of_mem (f := (B i).restrictScalars (𝓞 K)) hx)`. Rewrite using `[PlaceOperatorNorms.fcoord_map (b i) (fun _ => Y i) b' (fun _ => Y') (fun _ => hY i) v (B i) x]`. Simplify using `only [LinearEquiv.coe_coe, hBv, Matrix.toLpLin_apply, Matrix.toEuclideanLin, eq]`. Both sides reduce to the same expression.
+
+Set `P : EuclideanSpace ℂ (κ ⊕ κ₁) →ₗ[ℂ] EuclideanSpace ℂ κ` to `(eq κ).toLinearMap ∘ₗ LinearMap.funLeft ℂ ℂ Sum.inl ∘ₗ (eq (κ ⊕ κ₁)).symm.toLinearMap`. Establish `hPB : ∀ i, P ∘ₗ Ba i = Bv i`. Introduce `i`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Use extensionality with `k`. Establish `e1 : ∀ (A : Matrix (κ ⊕ κ₁) (ι i) ℂ), (P (Matrix.toEuclideanLin A x)) k = ∑ j, A (Sum.inl k) j * x j`. Introduce `A`. Simplify using `[P, eq, Matrix.toEuclideanLin, Matrix.mulVec, dotProduct]`. Establish `e2 : ∀ (A : Matrix κ (ι i) ℂ), (Matrix.toEuclideanLin A x) k = ∑ j, A k j * x j`.
+
+Introduce `A`. Simplify using `[Matrix.toEuclideanLin, Matrix.mulVec, dotProduct]`. Rewrite using `[LinearMap.comp_apply]`. Simplify using `only [Ba, Bv]`. Rewrite using `[e1, e2]`.
+
+Simplify using `only [hBall]`. Establish `hPsurj : LinearMap.range P = ⊤`. Use `LinearMap.range_eq_top.2 fun y => ⟨(eq (κ ⊕ κ₁)) (Sum.elim ((eq κ).symm y) 0), ?_⟩` and prove the remaining obligations. Use extensionality with `k`. Simplify using `[P, eq, LinearMap.funLeft]`.
+
+Establish `hkerP : finrank ℂ (LinearMap.ker P) = Fintype.card κ₁`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker P`. Rewrite `h` using `[hPsurj, finrank_top, finrank_euclideanSpace, finrank_euclideanSpace, Fintype.card_sum]`. Use linear arithmetic over natural numbers and integers. Set `S` to `⨆ i, (Nτ i).map (Ba i)`.
+
+Establish `hPS : S.map P ≤ T`. Establish `: S.map P = ⨆ i, (Nτ i).map (Bv i)`. Simplify using `only [S, Submodule.map_iSup, ← Submodule.map_comp, hPB]`. Rewrite using `[this]`. Conclude with `hST`.
+
+Establish `hSdim : finrank ℂ S ≤ finrank ℂ (S.map P) + Fintype.card κ₁`. Establish `h` using `LinearMap.finrank_range_add_finrank_ker (P ∘ₗ S.subtype)`. Rewrite `h` using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `hk : finrank ℂ (LinearMap.ker (P ∘ₗ S.subtype)) ≤ finrank ℂ (LinearMap.ker P)`. Rewrite using `[LinearMap.ker_comp, ← Submodule.finrank_map_subtype_eq]`.
+
+Conclude with `Submodule.finrank_mono (Submodule.map_comap_le _ _)`. Use linear arithmetic over natural numbers and integers. Establish `h1 : 0 < ∑ i, finrank ℂ (EuclideanSpace ℂ (ι i))`. Simplify using `only [finrank_euclideanSpace]`. Conclude with `hpos`.
+
+Establish `h2 : (∑ i, hs2 (frK (c i) (Ba i) - LinearMap.id)) ≤ e * ∑ i, (finrank ℂ (EuclideanSpace ℂ (ι i)) : ℝ)`. Simplify using `only [finrank_euclideanSpace]`. Conclude with `hF2`. Establish `h3 : (LinearMap.trace ℂ (EuclideanSpace ℂ (κ ⊕ κ₁)) (frQ c Ba ∘ₗ frQ c Ba)).re ≤ (1 + η) * (LinearMap.trace ℂ (EuclideanSpace ℂ (κ ⊕ κ₁)) (frQ c Ba)).re ^ 2 / (finrank ℂ (EuclideanSpace ℂ (κ ⊕ κ₁)) : ℝ)`. Simplify using `only [finrank_euclideanSpace]`.
+
+Conclude with `hF1`. Establish `h4 : (∑ i, ((finrank ℂ (EuclideanSpace ℂ (ι i)) : ℝ) - finrank ℂ (Nτ i))) ≤ ε * ∑ i, (finrank ℂ (EuclideanSpace ℂ (ι i)) : ℝ)`. Simplify using `only [finrank_euclideanSpace, hNτ]`. Conclude with `hcor`. Establish `hLA'` using `hLA I (fun i => EuclideanSpace ℂ (ι i)) (EuclideanSpace ℂ (κ ⊕ κ₁)) Ba c Nτ e η ε hc h1 h2 he0 he1 hη h3 h4`.
+
+Rewrite `hLA'` using `[finrank_euclideanSpace]`. Establish `hsum` using `Submodule.finrank_add_finrank_orthogonal S`. Rewrite `hsum` using `[finrank_euclideanSpace, Fintype.card_sum]`. Establish `hmono` using `Submodule.finrank_mono hPS`. Rewrite `hmono` using `[hT]`.
+
+Establish `hsum' : (finrank ℂ S : ℝ) + (finrank ℂ Sᗮ : ℝ) = (Fintype.card κ : ℝ) + Fintype.card κ₁` using `by exact_mod_cast hsum`. Establish `hmono' : (finrank ℂ (S.map P) : ℝ) ≤ (rkK M : ℝ)` using `by exact_mod_cast hmono`. Establish `hSdim' : (finrank ℂ S : ℝ) ≤ finrank ℂ (S.map P) + Fintype.card κ₁`. Conclude with `hSdim` after adjusting the coercions. Establish `hLA'' : (finrank ℂ Sᗮ : ℝ) ≤ (η + 4 * ε + 4 * Real.sqrt e) * (Fintype.card (κ ⊕ κ₁) : ℝ)` using `hLA'`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem thmF_place {K W κ κ₁ I : Type} [Field K] [NumberField K] [StarRing K]
     [IsTotallyComplex K] [AddCommGroup W] [Module K W] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     [Fintype κ] [DecidableEq κ] [Fintype κ₁] [DecidableEq κ₁] [Fintype I]
@@ -158,6 +204,9 @@ theorem thmF_place {K W κ κ₁ I : Type} [Field K] [NumberField K] [StarRing K
       (Fintype.card (κ ⊕ κ₁) : ℝ) := hLA'
   linarith
 
+/- English proof (translation)
+Simplify using `[hs2, frK, LinearMap.trace_id]`.
+-/
 theorem hilbert_schmidt_zero_map {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
     (c : ℝ) : hs2 (frK c (0 : E →ₗ[ℂ] F) - LinearMap.id) = finrank ℂ E := by
@@ -165,6 +214,83 @@ theorem hilbert_schmidt_zero_map {E F : Type*} [NormedAddCommGroup E] [InnerProd
 
 set_option maxHeartbeats 4000000 in
 
+/- English proof (translation)
+Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ hX' hX hY hY' hccFG hccSpan hNFG hNSpan hR hBN hht hs hu hmax hHH hHH0 hδ0 hδ1 hcard hBall hγ hF2 he0 he1 hF1 hη`. Establish `: FiniteDimensional K W` using `Module.Finite.of_basis b'`. Establish `hn : 0 < Module.finrank ℚ K` using `Module.finrank_pos`. Establish `hnR : (0 : ℝ) < (Module.finrank ℚ K : ℝ)` using `by exact_mod_cast hn`. Establish `hδ' : 0 < 1 - δ` using `by linarith`.
+
+Establish `hRR : (0 : ℝ) < ∑ i, (Fintype.card (ι i) : ℝ)` using `by exact_mod_cast hR`. Establish `hD : 0 < Fintype.card κ`. Assume the negation of the conclusion as `hD0`. Establish `hκ0 : Fintype.card κ = 0` using `by omega`. Establish `hall : (Fintype.card (κ ⊕ κ₁) : ℝ) = 0`.
+
+Establish `h1 : (1 - δ) * (Fintype.card (κ ⊕ κ₁) : ℝ) ≤ 0`. Rewrite `hcard` using `[hκ0, Nat.cast_zero]`. Conclude with `hcard`. Establish `h2 : (0:ℝ) ≤ (Fintype.card (κ ⊕ κ₁) : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hemp : IsEmpty (κ ⊕ κ₁)` using `Fintype.card_eq_zero_iff.1 (by exact_mod_cast hall)`. Establish `hz : ∀ i, Matrix.toEuclideanLin (Ball i) = 0`. Introduce `i`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+
+Use extensionality with `k`. Conclude with `isEmptyElim k`. Establish `hF2'` using `hF2`. Simplify using `only [hz, hilbert_schmidt_zero_map, finrank_euclideanSpace] at hF2'`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hLN : ∀ i, IsLat (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i)` using `fun i => (place_lattice_structure K (V i) (ι i) (b i) (X i) (hX i) (N i) (hNFG i)).1`. Establish `hrkN : ∀ i, rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) = Module.finrank ℚ K * Fintype.card (ι i)` using `fun i => by`. Rewrite using `[(place_lattice_structure K (V i) (ι i) (b i) (X i) (hX i) (N i) (hNFG i)).2.1, frameB_rkK_top (b i) (N i) (hNSpan i)]`. Establish `hLcc : IsLat (Formalism.HermitianLatticesTheory.realize b' X') cc` using `(place_lattice_structure K W κ b' X' hX' cc hccFG).1`. Establish `hrkcc : rk (Formalism.HermitianLatticesTheory.realize b' X') cc = Module.finrank ℚ K * Fintype.card κ`.
+
+Rewrite using `[(place_lattice_structure K W κ b' X' hX' cc hccFG).2.1, frameB_rkK_top b' cc hccSpan]`. Establish `hNne : ∀ i, Fintype.card (ι i) ≠ 0 → N i ≠ ⊥`. Introduce `i hci h0`. Establish `hc` using `frameB_rkK_top (b i) (N i) (hNSpan i)`. Rewrite `hc` using `[h0]`.
+
+Establish `h00 : rkK (⊥ : Submodule (𝓞 K) (V i)) = 0` using `by simp [rkK]`. Use linear arithmetic over natural numbers and integers. Establish `hccne : cc ≠ ⊥`. Introduce `h0`. Establish `hc` using `frameB_rkK_top b' cc hccSpan`.
+
+Rewrite `hc` using `[h0]`. Establish `h00 : rkK (⊥ : Submodule (𝓞 K) W) = 0` using `by simp [rkK]`. Use linear arithmetic over natural numbers and integers. Set `θ : ℝ → I → ℝ` to `fun τ i => (s - τ + h i - slopeNormalisingConstant K) / 2`. Set `Nt : ℝ → ∀ i, Submodule (𝓞 K) (V i)` to `fun τ i => hnStep (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) (θ τ i)`.
+
+Establish `hNtle : ∀ τ i, Nt τ i ≤ N i` using `fun τ i => (frameB_hnStep _ _ _ _ _ (hLN i) (θ τ i)).1.1`. Establish `hNtFG : ∀ τ i, (Nt τ i).FG` using `fun τ i => Submodule.FG.of_le (hNFG i) (hNtle τ i)`. Establish `hrkNt : ∀ τ i, rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (Nt τ i) = Module.finrank ℚ K * rkK (Nt τ i)` using `fun τ i => (place_lattice_structure K (V i) (ι i) (b i) (X i) (hX i) (Nt τ i) (hNtFG τ i)).2.1`. Establish `hcor : ∀ τ, 0 ≤ τ → (∑ i, ((Fintype.card (ι i) : ℝ) - rkK (Nt τ i))) ≤ (u / (u + τ)) * ∑ i, (Fintype.card (ι i) : ℝ)`. Introduce `τ hτ`.
+
+Establish `hsh` using `thmF_share (fun i => rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i)) (fun i j => 2 * slopeList (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) j + slopeNormalisingConstant K - h i) s u τ hu hτ ?_ ?_`. Establish `hfilt : ∀ i, ((univ.filter (fun j => 2 * slopeList (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) j + slopeNormalisingConstant K - h i < s - τ)).card : ℝ) = (Module.finrank ℚ K : ℝ) * ((Fintype.card (ι i) : ℝ) - rkK (Nt τ i))`. Introduce `i`. Apply the tactic sequence `rw [Finset.filter_congr (q := fun j => slopeList (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) j < θ τ i) (fun j _ => by simp only [θ]; constructor <;> intro hj <;> linarith), frameB_count_lt _ (N i) (hLN i) (θ τ i)]`. Express the relevant statement in the definitionally equal form `(rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) : ℝ) - rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (Nt τ i) = _`.
+
+Rewrite using `[hrkN i, hrkNt τ i]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hfilt, hrkN] at hsh`. Move the coercions through the operations in `at hsh`.
+
+Rewrite `hsh` using `[← Finset.mul_sum, ← Finset.mul_sum, mul_assoc]`. Use `le_of_mul_le_mul_left hsh hnR` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : ∀ i, ∑ j, (2 * slopeList (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) j + slopeNormalisingConstant K - h i) = (Module.finrank ℚ K : ℝ) * ((Fintype.card (ι i) : ℝ) * (muDef (b i) (X i) (N i) - h i))`. Introduce `i`.
+
+Distinguish the cases in `hci : Fintype.card (ι i) = 0`. Establish `h0 : rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) = 0` using `by rw [hrkN i, hci, mul_zero]`. Establish `: IsEmpty (Fin (rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i)))`. Rewrite using `[h0]`. Conclude with `Fin.isEmpty'`.
+
+Simplify using `[hci]`. Repeatedly rewrite using `[add_sub_assoc]`. Rewrite using `[frameB_sum_sl _ (N i) (hLN i) (by rw [hrkN i]; exact (Nat.mul_pos hn (Nat.pos_of_ne_zero hci)).ne'), hrkN i, frameB_muDef]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Finset.sum_congr rfl fun i _ => hx i, ← Finset.mul_sum]`. Simplify using `only [hrkN]`. Use `push_cast`. Rewrite using `[← Finset.mul_sum, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (by rw [mul_comm]; exact hs) hnR.le`.
+
+Introduce `i j`. Distinguish the cases in `hci : Fintype.card (ι i) = 0`. It suffices to derive a contradiction. Establish `hj : (j : ℕ) < rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i)` using `j.isLt`. Establish `h0 : rk (Formalism.HermitianLatticesTheory.realize (b i) (X i)) (N i) = 0` using `by rw [hrkN i, hci, mul_zero]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hext` using `((polygon_extreme_slopes _ _ _ _ (N i) (hLN i) (hNne i hci)).1 j).2`. Establish `hm` using `hmax i`. Rewrite `hm` using `[frameB_muMaxDef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Set `θ' : ℝ → ℝ` to `fun τ => (s - τ - slopeNormalisingConstant K) / 2`. Set `St : ℝ → Submodule (𝓞 K) W` to `fun τ => hnStep (Formalism.HermitianLatticesTheory.realize b' X') cc (θ' τ)`. Set `M : ℝ → Submodule (𝓞 K) W` to `fun τ => ⨆ i, (Nt τ i).map ((B i).restrictScalars (𝓞 K))`. Establish `hMle : ∀ τ, M τ ≤ St τ`. Introduce `τ`.
+
+Use `iSup_le fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : (Nt τ i).map ((B i).restrictScalars (𝓞 K)) = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Establish `hBi : B i ≠ 0`.
+
+Introduce `hb`. Apply `h0` to reduce the goal to its premises. Use `eq_bot_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, _, rfl⟩`. Simplify using `[hb]`.
+
+Establish `hNt0 : Nt τ i ≠ ⊥`. Introduce `h'`. Apply `h0` to reduce the goal to its premises. Rewrite using `[h']`. Conclude with `Submodule.map_bot _`.
+
+Establish `hsi` using `(slope_inequality_mean K (V i) (ι i) W κ (b i) (X i) b' X' (hX i) hX' (B i) (Nt τ i) (hNtFG τ i) h0).1`. Establish `hst` using `(frameB_hnStep _ _ _ _ _ (hLN i) (θ τ i)).2.1 hNt0`. Establish `hhi` using `hht i hBi`. Use `(frameB_hnStep _ _ _ _ _ hLcc (θ' τ)).2.2.1 _ ?_ h0 ?_` and prove the remaining obligations. Conclude with `le_trans (Submodule.map_mono (hNtle τ i)) (hBN i)`.
+
+Rewrite `hsi` using `[frameB_muMinDef, frameB_muMinDef]`. Simplify using `only [θ, θ'] at hst ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hStle : ∀ τ, St τ ≤ cc` using `fun τ => (frameB_hnStep _ _ _ _ _ hLcc (θ' τ)).1.1`. Establish `hStFG : ∀ τ, (St τ).FG` using `fun τ => Submodule.FG.of_le hccFG (hStle τ)`.
+
+Establish `hrkSt : ∀ τ, rk (Formalism.HermitianLatticesTheory.realize b' X') (St τ) = Module.finrank ℚ K * rkK (St τ)` using `fun τ => (place_lattice_structure K W κ b' X' hX' (St τ) (hStFG τ)).2.1`. Establish `hrkM : ∀ τ, rkK (M τ) ≤ rkK (St τ)` using `fun τ => Submodule.finrank_mono (Submodule.span_mono (SetLike.coe_subset_coe.2 (hMle τ)))`. Set `w : ℝ → ℝ` to `fun τ => (1 - δ)⁻¹ * (η + 4 * (u / (u + τ)) + 4 * Real.sqrt e)`. Establish `hplace : ∀ τ, 0 ≤ τ → (Fintype.card κ : ℝ) - rkK (M τ) ≤ w τ * Fintype.card κ`. Introduce `τ hτ`.
+
+Establish `h1` using `thmF_place hLA b' b B v Y Y' Ball γ e η (u / (u + τ)) (Nt τ) hY hY' hγ hR hBall hF2 he0 he1 hη hF1 (hcor τ hτ)`. Establish `hc0 : 0 ≤ η + 4 * (u / (u + τ)) + 4 * Real.sqrt e`. Use `div_nonneg hu (by linarith : (0:ℝ) ≤ u + τ)` as an intermediate fact. Use `Real.sqrt_nonneg e` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hA : (Fintype.card (κ ⊕ κ₁) : ℝ) ≤ (1 - δ)⁻¹ * Fintype.card κ`. Rewrite using `[le_inv_mul_iff₀ hδ']`. Conclude with `hcard`. Establish `h2` using `mul_le_mul_of_nonneg_left hA hc0`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hcnt : ∀ τ ∈ Set.Icc (0 : ℝ) HH, ((univ.filter (fun j => 2 * slopeList (Formalism.HermitianLatticesTheory.realize b' X') cc j + slopeNormalisingConstant K < s - τ)).card : ℝ) ≤ w τ * (rk (Formalism.HermitianLatticesTheory.realize b' X') cc : ℕ)`. Introduce `τ hτ`. Apply the tactic sequence `rw [Finset.filter_congr (q := fun j => slopeList (Formalism.HermitianLatticesTheory.realize b' X') cc j < θ' τ) (fun j _ => by simp only [θ']; constructor <;> intro hj <;> linarith), frameB_count_lt _ cc hLcc (θ' τ)]`. Express the relevant statement in the definitionally equal form `(rk (Formalism.HermitianLatticesTheory.realize b' X') cc : ℝ) - rk (Formalism.HermitianLatticesTheory.realize b' X') (St τ) ≤ _`. Rewrite using `[hrkcc, hrkSt τ]`.
+
+Use `push_cast`. Establish `h1` using `hplace τ hτ.1`. Establish `h2 : (rkK (M τ) : ℝ) ≤ rkK (St τ)` using `by exact_mod_cast hrkM τ`. Establish `h3 : (Fintype.card κ : ℝ) - rkK (St τ) ≤ w τ * Fintype.card κ` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+
+Establish `hlow : ∀ j, s - HH ≤ 2 * slopeList (Formalism.HermitianLatticesTheory.realize b' X') cc j + slopeNormalisingConstant K`. Introduce `j`. Establish `hext` using `((polygon_extreme_slopes _ _ _ _ cc hLcc hccne).1 j).1`. Rewrite `hHH` using `[frameB_muMinDef]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hwc : ContinuousOn w (Set.uIcc 0 HH) ∧ (∫ τ in (0:ℝ)..HH, w τ) = (1 - δ)⁻¹ * (4 * u * Real.log (1 + HH / u) + (η + 4 * Real.sqrt e) * HH)`. Break down `lt_or_eq_of_le hu with hu' | hu'` into its components or cases. Establish `h4cont : ContinuousOn (fun τ : ℝ => 4 * (u / (u + τ))) (Set.uIcc 0 HH)`. Rewrite using `[Set.uIcc_of_le hHH0]`. Use `continuousOn_const.mul (continuousOn_const.div (continuousOn_const.add continuousOn_id) ?_)` and prove the remaining obligations.
+
+Introduce `τ hτ`. Use `hτ.1` as an intermediate fact. Conclude with `(by linarith : (0 : ℝ) < u + τ).ne'`. Establish `hweq : w = fun τ => (1 - δ)⁻¹ * (η + 4 * Real.sqrt e) + (1 - δ)⁻¹ * (4 * (u / (u + τ)))`. Use function extensionality and compare the values at `τ`.
+
+Simplify using `only [w]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hweq]`. Use `⟨continuousOn_const.add (continuousOn_const.mul h4cont), ?_⟩` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_add intervalIntegrable_const (h4cont.intervalIntegrable.const_mul _), intervalIntegral.integral_const, intervalIntegral.integral_const_mul, frameB_integral u HH hu' hHH0, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hweq : w = fun _ => (1 - δ)⁻¹ * (η + 4 * Real.sqrt e)`. Use function extensionality and compare the values at `τ`. Simplify using `only [w, ← hu', zero_div, mul_zero, add_zero]`. Rewrite using `[hweq]`.
+
+Use `⟨continuousOn_const, ?_⟩` and prove the remaining obligations. Rewrite using `[intervalIntegral.integral_const, smul_eq_mul]`. Simplify using `only [← hu', mul_zero, zero_mul, zero_add, sub_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwint : IntervalIntegrable w MeasureTheory.volume 0 HH` using `hwc.1.intervalIntegrable`.
+
+Establish `hminint : IntervalIntegrable (fun τ => min 1 (w τ)) MeasureTheory.volume 0 HH` using `ContinuousOn.intervalIntegrable (u := fun τ => min 1 (w τ)) (continuous_min.comp_continuousOn (continuousOn_const.prodMk hwc.1))`. Establish `hrkpos : 0 < rk (Formalism.HermitianLatticesTheory.realize b' X') cc` using `by rw [hrkcc]; exact Nat.mul_pos hn hD`. Establish `hLC` using `layer_cake_formula (rk (Formalism.HermitianLatticesTheory.realize b' X') cc) (fun j => 2 * slopeList (Formalism.HermitianLatticesTheory.realize b' X') cc j + slopeNormalisingConstant K) s HH w hrkpos hHH0 hlow hminint hcnt`. Establish `hmean : (∑ j, (2 * slopeList (Formalism.HermitianLatticesTheory.realize b' X') cc j + slopeNormalisingConstant K)) / (rk (Formalism.HermitianLatticesTheory.realize b' X') cc : ℝ) = muDef b' X' cc`. Rewrite using `[frameB_sum_sl _ cc hLcc hrkpos.ne', frameB_muDef]`.
+
+Establish `: (rk (Formalism.HermitianLatticesTheory.realize b' X') cc : ℝ) ≠ 0` using `by exact_mod_cast hrkpos.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite `hLC` using `[hmean]`. Establish `hle` using `intervalIntegral.integral_mono_on hHH0 hminint hwint (fun τ _ => min_le_right 1 (w τ))`. Establish `hI` using `hwc.2`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem theoremFSharp_of (hLA : FrameLA1) : TheoremFSharp := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ
     s u HH e η δ hX' hX hY hY' hccFG hccSpan hNFG hNSpan hR hBN hht hs hu hmax hHH hHH0
@@ -385,8 +511,14 @@ theorem theoremFSharp_of (hLA : FrameLA1) : TheoremFSharp := by
   have hI := hwc.2
   linarith
 
+/- English proof (translation)
+The claim follows from `theoremFSharp_of frame_linear_algebra_first`.
+-/
 theorem frame_theorem_sharp : TheoremFSharp := theoremFSharp_of frame_linear_algebra_first
 
+/- English proof (translation)
+Introduce `K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 h23 h24 h25 h26`. Use `H K W κ κ₁ I V ι b' X' cc b X N B h v Y Y' Ball γ s u HH e η δ h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 h23 h24 h25 h26` as an intermediate fact. Establish `hI : (1 : ℝ) ≤ (Fintype.card I : ℝ)` using `by exact_mod_cast Fintype.card_pos`. Establish `hl : 0 ≤ Real.log (Fintype.card I : ℝ)` using `Real.log_nonneg hI`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem theoremF_of_sharp (H : TheoremFSharp) : TheoremF := by
   intro K W κ κ₁ I _ _ _ _ _ _ _ _ _ _ _ _ _ _ V ι _ _ _ _ _ _ b' X' cc b X N B h v Y Y' Ball γ
     s u HH e η δ h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22
@@ -397,6 +529,9 @@ theorem theoremF_of_sharp (H : TheoremFSharp) : TheoremF := by
   have hl : 0 ≤ Real.log (Fintype.card I : ℝ) := Real.log_nonneg hI
   linarith
 
+/- English proof (translation)
+The claim follows from `theoremF_of_sharp frame_theorem_sharp`.
+-/
 theorem frame_theorem_log_ideal : TheoremF := theoremF_of_sharp frame_theorem_sharp
 
 end Formalism.HN

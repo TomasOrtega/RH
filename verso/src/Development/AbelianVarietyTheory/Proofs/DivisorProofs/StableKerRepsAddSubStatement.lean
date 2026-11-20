@@ -7,5 +7,8 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.AddMonoidHomEqZ
 open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Published GlobalTheory.CMModel Formalism.L2.Th1.F
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CMModel.stable_kerReps_add_sub | exact GlobalTheory.CMModel.stable_kerReps_add_sub | (intros; apply GlobalTheory.CMModel.stable_kerReps_add_sub <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.stable_sum_elim_of_isKerReps_add_sub_sqrtNegNat : ∀ (p : ℕ) (F : IntermediateField ℚ ℂ) (L : PeriodPair) (a : ℤ) (S S' : Finset ℂ), L.g₂ ∈ F → L.g₃ ∈ F → MulStable L (sqrtNegNat p) → IsKerReps L (a + sqrtNegNat p) S → IsKerReps L (a - sqrtNegNat p) S' → Stable L F (Sum.elim (fun t : S => (t : ℂ)) (fun t : S' => (t : ℂ))) := by
   first | exact @GlobalTheory.CMModel.stable_kerReps_add_sub | exact GlobalTheory.CMModel.stable_kerReps_add_sub | (intros; apply GlobalTheory.CMModel.stable_kerReps_add_sub <;> assumption)

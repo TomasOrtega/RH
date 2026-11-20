@@ -6,6 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SiegelUnitInTowe
 open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym
 
+/- English proof (translation)
+Introduce `Ω _ _ _ ε X c x hx`. Establish `hne` using `siegel_ne_zero Ω ε X c x hx`. Take `⟨h1, h2⟩` from `TopUnits.siegel_hol X hx`. Use `⟨hne, fun W hW => ?_⟩` and prove the remaining obligations. Establish `a1` using `(W.valuation_le_one_iff _).mpr (KU.hol Ω ε X _ h1 W hW)`.
+
+Establish `a2` using `(W.valuation_le_one_iff _).mpr (KU.hol Ω ε X _ h2 W hW)`. Establish `a3 : W.valuation (siegel X c x) * W.valuation (siegel X c x)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hne, map_one]`. Use `le_antisymm a1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`.
+
+Use `push_neg at hlt`. Use `mul_lt_one_of_lt_of_le hlt a2` as an intermediate fact. Rewrite `this` using `[a3]`. Conclude with `lt_irrefl _ this`.
+-/
 theorem UpperTheory.V.Z.Kato.Sym.KU.sgU :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (c : ℕ) (x : Fin 2 → ℚ), GlobalTheory.Sieg.admitted c x → IsU X (siegel X c x) := by
   intro Ω _ _ _ ε X c x hx

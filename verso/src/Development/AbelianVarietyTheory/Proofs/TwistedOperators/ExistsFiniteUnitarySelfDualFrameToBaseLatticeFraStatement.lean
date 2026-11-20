@@ -9,5 +9,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SelfDualFrameConj.frame_conj | exact GlobalTheory.SelfDualFrameConj.frame_conj | (intros; apply GlobalTheory.SelfDualFrameConj.frame_conj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_finiteUnitary_selfDualFrame_to_baseLatticeFrame : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∃ t ∈ GfC V, IsFrame (finE V t * β) (Formalism.L2.Herm.crdLat V V.L0) := by
   first | exact @GlobalTheory.SelfDualFrameConj.frame_conj | exact GlobalTheory.SelfDualFrameConj.frame_conj | (intros; apply GlobalTheory.SelfDualFrameConj.frame_conj <;> assumption)

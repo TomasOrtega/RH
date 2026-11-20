@@ -18,12 +18,36 @@ def unipFund (E : Type) [Field E] [NumberField E] (n : ℕ) : Set (NA E n) :=
 
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB E).1 hγ`. Use `(GlobalTheory.SmGL.mem_unipB (Ad E)).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[ratGL, h1 i j hij]`. Simplify using `[ratGL, h2 i]`.
+-/
 theorem ratGL_mem_NA {γ : GL (Fin n) E} (hγ : γ ∈ GlobalTheory.SmGL.unipB E (Fin n)) : ratGL E n γ ∈ NA E n := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.SmGL.mem_unipB E).1 hγ
   refine (GlobalTheory.SmGL.mem_unipB (Ad E)).2 ⟨fun i j hij => ?_, fun i => ?_⟩
   · simp [ratGL, h1 i j hij]
   · simp [ratGL, h2 i]
 
+/- English proof (translation)
+Establish `hfd : IsFundamentalDomain ((NE E n).subgroupOf (NA E n)) (unipFund E n) ν`. Use `IsFundamentalDomain.mk' ?_ ?_` and prove the remaining obligations. Use `MeasurableSet.nullMeasurableSet ?_` and prove the remaining obligations. Establish `: unipFund E n = ⋂ i : Fin n, ⋂ j : Fin n, ⋂ (_ : i < j), (fun u : NA E n => ((u : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j) ⁻¹' GroundTheory.Global.fundamentalSet E`. Use extensionality with `u`.
+
+Simplify using `[unipFund]`. Rewrite using `[this]`. Use `MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => MeasurableSet.iInter fun _ => ?_` and prove the remaining obligations. Use `(Continuous.measurable ?_) (GroundTheory.Global.measurableSet_fundamentalSet E)` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_elem i j`.
+
+Introduce `x`. Take `⟨γ, ⟨hγ, hγD⟩, huniq⟩` from `GlobalTheory.T.existsUnique_ratUnitriangular_mul_entries_mem_fundamentalSet E n (x : GA E n) x.2`. Use `⟨⟨⟨ratGL E n γ, ratGL_mem_NA hγ⟩, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨γ, hγ, rfl⟩)⟩, fun i j hij => hγD i j hij, ?_⟩` and prove the remaining obligations. Introduce `g hg`. Take `⟨γ', hγ', hγ'g⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 g.2)`.
+
+Establish `he : γ' = γ` using `huniq γ' ⟨hγ', fun i j hij => by`. Use `hg i j hij` as an intermediate fact. Rewrite using `[hγ'g]`. Conclude with `this⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((g : NA E n) : GA E n) = ratGL E n γ`. Rewrite using `[← hγ'g, he]`. Establish `hE : Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `hG : Countable ((NE E n).subgroupOf (NA E n))`.
+
+Establish `h : ∀ g : (NE E n).subgroupOf (NA E n), ∃ γ : GL (Fin n) E, ratGL E n γ = ((g : NA E n) : GA E n)` using `fun g => by`. Take `⟨γ, -, hγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 g.2)`. Conclude with `⟨γ, hγ⟩`. Use `choose f hf using h`. Establish `: Countable (Matrix (Fin n) (Fin n) E)` using `inferInstanceAs (Countable (Fin n → Fin n → E))`.
+
+Establish `: Countable (GL (Fin n) E)` using `Function.Injective.countable (f := fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E)) fun a b h => Units.ext h`. Conclude with `Function.Injective.countable (f := f) fun a b hab => Subtype.ext (Subtype.ext (by rw [← hf a, ← hf b, hab]))`. Establish `hinv : SMulInvariantMeasure ((NE E n).subgroupOf (NA E n)) (NA E n) ν` using `⟨fun g s _ => by`. Establish `: (fun x : NA E n => g • x) = fun x => (g : NA E n) * x` using `rfl`. Use `show ν ((fun x => g • x) ⁻¹' s) = ν s`.
+
+Rewrite using `[this]`. Conclude with `measure_preimage_mul ν (g : NA E n) s⟩`. Use `⟨unipFund E n, hfd, pos_iff_ne_zero.2 (hfd.measure_ne_zero (NeZero.ne ν)), ?_⟩` and prove the remaining obligations. Use `set C : Set (Ad E) := closure (GroundTheory.Global.fundamentalSetInfinite E) ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (FiniteAdeleRing (𝓞 E) E)) with hCdef`. Establish `hC : IsCompact C` using `(GroundTheory.Global.isCompact_closure_fundamentalSetInfinite E).prod (GroundTheory.Global.isCompact_integralFiniteAdeles E)`.
+
+Use `set K : Set (GA E n) := {g : GA E n | g ∈ NA E n ∧ ∀ i j : Fin n, i < j → (g : Matrix (Fin n) (Fin n) (Ad E)) i j ∈ C} with hKdef`. Establish `hK : IsCompact ((Subtype.val : NA E n → GA E n) ⁻¹' K)`. Rewrite using `[Subtype.isCompact_iff, Set.image_preimage_eq_inter_range, Subtype.range_coe_subtype, Set.inter_eq_left.2 (fun g hg => hg.1)]`. Conclude with `GlobalTheory.T.isCompact_adelicUnitriangular_entries_mem_compact E n C hC`. Use `(measure_mono fun u hu => ?_).trans_lt hK.measure_lt_top` and prove the remaining obligations.
+
+Use `⟨u.2, fun i j hij => ?_⟩` and prove the remaining obligations. Establish `h` using `hu i j hij`. Conclude with `⟨subset_closure h.1, h.2⟩`.
+-/
 theorem exists_fundamentalDomain_NE (E : Type) [Field E] [NumberField E] (n : ℕ) [MeasurableSpace (GA E n)]
     [BorelSpace (GA E n)] (ν : Measure (NA E n)) [ν.IsHaarMeasure] : ∃ D : Set (NA E n),
     IsFundamentalDomain ((NE E n).subgroupOf (NA E n)) D ν ∧ 0 < ν D ∧ ν D < ⊤ := by

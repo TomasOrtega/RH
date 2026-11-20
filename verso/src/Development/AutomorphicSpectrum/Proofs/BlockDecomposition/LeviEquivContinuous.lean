@@ -10,6 +10,27 @@ open DoubleCoset (doubleCoset)
 
 namespace GlobalTheory.CompanionTheory.LeviCont
 
+/- English proof (translation)
+Establish `hcont : ∀ (Ψ : Levi k m → GL (Fin N) k) (ρ : ∀ a, GL (m a) k → Matrix (m a) (m a) k), (∀ a, Continuous (ρ a)) → (∀ g a (i j : m a), (Ψ g : Matrix (Fin N) (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩) = ρ a (g a) i j) → (∀ g a b (i : m a) (j : m b), a ≠ b → (Ψ g : Matrix (Fin N) (Fin N) k) (e …`. Introduce `Ψ ρ hρ hs hn`. Use `continuous_pi fun r => continuous_pi fun s => ?_` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective r`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective s`.
+
+Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Repeatedly rewrite using `[hs]`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp ((hρ a).comp (continuous_apply a)))`. Repeatedly rewrite using `[hn _ _ _ _ _ hab]`.
+
+Conclude with `continuous_const`. Establish `hinv : ∀ g, ((φ g : levi k N β) : GL (Fin N) k)⁻¹ = leviEmb k e g⁻¹`. Introduce `g`. Rewrite using `[← hφ, map_inv, Subgroup.coe_inv]`. Establish `hs1 : ∀ g a (i j : m a), ((φ g : levi k N β) : GL (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩) = (g a : Matrix (m a) (m a) k) i j`.
+
+Introduce `g a i j`. Rewrite using `[hφ]`. Conclude with `leviEmb_apply_same k e g a i j`. Establish `hs2 : ∀ g a (i j : m a), (((φ g : levi k N β) : GL (Fin N) k)⁻¹ : GL (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩) = (((g a)⁻¹ : GL (m a) k) : Matrix (m a) (m a) k) i j`. Introduce `g a i j`.
+
+Rewrite using `[hinv]`. Conclude with `leviEmb_apply_same k e g⁻¹ a i j`. Establish `hn1 : ∀ g a b (i : m a) (j : m b), a ≠ b → ((φ g : levi k N β) : GL (Fin N) k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0`. Introduce `g a b i j hab`. Rewrite using `[hφ]`.
+
+Conclude with `leviEmb_apply_ne k e g hab i j`. Establish `hn2 : ∀ g a b (i : m a) (j : m b), a ≠ b → (((φ g : levi k N β) : GL (Fin N) k)⁻¹ : GL (Fin N) k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0`. Introduce `g a b i j hab`. Rewrite using `[hinv]`. Conclude with `leviEmb_apply_ne k e g⁻¹ hab i j`.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_induced_rng.2 (Units.continuous_iff.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Conclude with `hcont (fun g => (φ g : GL (Fin N) k)) (fun a u => (u : Matrix (m a) (m a) k)) (fun a => Units.continuous_val) hs1 hn1`. Conclude with `hcont (fun g => ((φ g : GL (Fin N) k))⁻¹) (fun a u => ((u⁻¹ : GL (m a) k) : Matrix (m a) (m a) k)) (fun a => Units.continuous_coe_inv) hs2 hn2`. Use `continuous_pi fun a => Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h : ∀ h : levi k N β, ((φ.symm h a : GL (m a) k) : Matrix (m a) (m a) k) i j = ((h : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩)`. Introduce `h`. Rewrite using `[← hs1, MulEquiv.apply_symm_apply]`. Repeatedly rewrite using `[Function.comp_apply, h]`.
+
+Conclude with `(continuous_apply _).comp ((continuous_apply _).comp ((Units.continuous_val (M := Matrix (Fin N) (Fin N) k)).comp continuous_subtype_val))`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h : ∀ h : levi k N β, (((φ.symm h a)⁻¹ : GL (m a) k) : Matrix (m a) (m a) k) i j = (((h : GL (Fin N) k))⁻¹ : GL (Fin N) k) (e ⟨a, i⟩) (e ⟨a, j⟩)`. Introduce `h`. Rewrite using `[← hs2, MulEquiv.apply_symm_apply]`.
+
+Repeatedly rewrite using `[h]`. Conclude with `(continuous_apply _).comp ((continuous_apply _).comp ((Units.continuous_coe_inv (M := Matrix (Fin N) (Fin N) k)).comp continuous_subtype_val))`.
+-/
 theorem levi_iso_homeo (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {α : Type} [Fintype α] {N : ℕ} {m : α → Type} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] (e : (Σ i, m i) ≃ Fin N) (β : Fin N → ℕ) (φ : Levi k m ≃* levi k N β) (hφ : ∀ g, ((φ g : levi k N β) : GL (Fin N) k) = leviEmb k e g) : Continuous φ ∧ Continuous φ.symm := by
   have hcont : ∀ (Ψ : Levi k m → GL (Fin N) k) (ρ : ∀ a, GL (m a) k → Matrix (m a) (m a) k),
       (∀ a, Continuous (ρ a)) →

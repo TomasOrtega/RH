@@ -13,6 +13,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `hD hS S G _ _ P β K _ _ f N hN hsm hfin hfl hsur hpr x hx hxy`. Take `⟨σ, hσ, hinv⟩` from `hS S G K f N P β x hx`. Conclude with `hpr x (hD S G K f N hN hsm hfin hfl hsur _ P β.isLB _ σ hσ (fun y hy => hinv y hy (hxy y hy)))`.
+-/
 theorem biext_pairing_nondegenerate_geometric_fibre :
   (∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (K : Type) [Field K] [IsAlgClosed K] (f : Spec (CommRingCat.of K) ⟶ S) (N : ℕ), (N : K) ≠ 0 → Smooth G.hom → IsFinite ((𝟙 G) ^ N : G ⟶ G).left → Flat ((𝟙 G) ^ N : G ⟶ G).left → Surjective ((𝟙 G) ^ N : G ⟶ G).left →
     ∀ (X : Scheme.{0}) (M : ReciprocityTheory.ChartRestriction.G.Semi.LB X), M.IsLB → ∀ (ψ : (G ⊗ Over.mk f).left ⟶ X)

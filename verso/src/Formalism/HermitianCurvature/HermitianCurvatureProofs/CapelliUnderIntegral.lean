@@ -12,6 +12,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Simplify using `only [Q.Glev, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Conclude with `h`. Introduce `h`.
+
+Conclude with `⟨h, fun a ha => by simp at ha⟩`.
+-/
 theorem glev0 {k r : ℕ} (g : Mat k r) : g ∈ Q.Glev k r 0 ↔ g ∈ GV k r := by
   simp only [Q.Glev, Set.mem_setOf_eq]
   constructor
@@ -20,6 +25,9 @@ theorem glev0 {k r : ℕ} (g : Mat k r) : g ∈ Q.Glev k r 0 ↔ g ∈ GV k r :=
   · intro h
     exact ⟨h, fun a ha => by simp at ha⟩
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons i L ih`. Simplify using `only [List.map_cons, List.sum_cons]`. Conclude with `(h i (by simp)).add (ih (fun j hj => h j (by simp [hj])))`.
+-/
 theorem integrable_map_sum {α ι E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] [NormedSpace ℝ E]
     {μ : Measure α} (L : List ι) (φ : ι → α → E) (h : ∀ i ∈ L, Integrable (φ i) μ) :
     Integrable (fun x => (L.map (fun i => φ i x)).sum) μ := by
@@ -29,6 +37,11 @@ theorem integrable_map_sum {α ι E : Type*} [MeasurableSpace α] [NormedAddComm
     simp only [List.map_cons, List.sum_cons]
     exact (h i (by simp)).add (ih (fun j hj => h j (by simp [hj])))
 
+/- English proof (translation)
+Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons i L ih`. Establish `hi` using `h i (by simp)`. Establish `hL : ∀ j ∈ L, Integrable (φ j) μ` using `fun j hj => h j (by simp [hj])`.
+
+Simplify using `only [List.map_cons, List.sum_cons]`. Rewrite using `[integral_add hi (integrable_map_sum L φ hL), ih hL]`.
+-/
 theorem integral_map_sum {α ι E : Type*} [MeasurableSpace α] [NormedAddCommGroup E] [NormedSpace ℝ E]
     {μ : Measure α} (L : List ι) (φ : ι → α → E) (h : ∀ i ∈ L, Integrable (φ i) μ) :
     ∫ x, (L.map (fun i => φ i x)).sum ∂μ = (L.map (fun i => ∫ x, φ i x ∂μ)).sum := by
@@ -48,6 +61,19 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `hJW hRR k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hThr hF g hg`. Take `⟨L, hLw, hL⟩` from `CapelliWordSumExpansion.cvWordSumG k r Y`. Establish `hCk : CkOn (m : ℕ∞) (GV k r) F` using `hF.choose_spec.1`. Establish `hCkn : CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (GV k r) F` using `B5.ckOn_mono (by exact_mod_cast hnm) hCk`. Establish `hJ` using `hJW k r Wp Wq D A m F hThr hF`.
+
+Establish `hJck : CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (Om k r D.z D.z') (JF D F)`. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hc, he⟩` from `hJ.1 g₀ ⟨(CapelliUnderIntegral.glev0 g₀).2 hg₀.1, hg₀.2⟩`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast hnm), fun g' hg'U hg'G => he g' hg'U ((CapelliUnderIntegral.glev0 g').2 hg'G)⟩`. Establish `hw : ∀ cw ∈ L, (∀ X ∈ cw.2, unitLie k r X) ∧ cw.2.length ≤ m` using `fun cw h => ⟨(hLw cw h).1, (hLw cw h).2.trans hnm⟩`.
+
+Establish `hword : ∀ cw ∈ L, Integrable (fun p => xiP D p • Rw cw.2 (rho D p F) g) D.μSS ∧ Rw cw.2 (JF D F) g = ∫ p, xiP D p • Rw cw.2 (rho D p F) g ∂D.μSS`. Introduce `cw hcw`. Take `⟨hint, heq⟩` from `hJ.2 [] cw.2 (by simp) (hw cw hcw).1 (by simpa using (hw cw hcw).2) g hg`. Establish `hae : (fun p => xiP D p • rho D p (dLR ([].map (AdL p)) (cw.2.map (AdR p)) F) g) =ᵐ[D.μSS] (fun p => xiP D p • Rw cw.2 (rho D p F) g)` using `by filter_upwards [B5.ae_inSS D] with p hp`. Establish `e` using `hRR k r Wp Wq D m F p hp hCk [] cw.2 (by simp) (fun X hX => ((hw cw hcw).1 X hX).1) (by simpa using (hw cw hcw).2) g hg.1`.
+
+Simplify using `only [List.map_nil] at e ⊢`. Rewrite using `[← e]`. Both sides reduce to the same expression. Conclude with `⟨hint.congr hae, (show Rw cw.2 (JF D F) g = dLR [] cw.2 (JF D F) g from rfl).trans (heq.trans (integral_congr_ae hae))⟩`. Rewrite using `[hL _ _ (JF D F) hJck g hg hg.1]`.
+
+Establish `hae2 : (fun p => xiP D p • Q.CV k r Y (rho D p F) g) =ᵐ[D.μSS] (fun p => (L.map (fun cw => cw.1 • (xiP D p • Rw cw.2 (rho D p F) g))).sum)` using `by filter_upwards [B5.ae_inSS D] with p hp`. Rewrite using `[hL _ _ (rho D p F) (B5.ckOn_rho D hp hCkn) g hg.1 hg.1, List.smul_sum, List.map_map]`. Use `congr 1`. Use `List.map_congr_left (fun cw _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+
+Conclude with `smul_comm _ _ _`. Rewrite using `[integral_congr_ae hae2, CapelliUnderIntegral.integral_map_sum L (fun cw p => cw.1 • (xiP D p • Rw cw.2 (rho D p F) g)) (fun cw hcw => (hword cw hcw).1.smul cw.1)]`. Use `congr 1`. Use `List.map_congr_left (fun cw hcw => ?_)` and prove the remaining obligations. Rewrite using `[integral_smul, (hword cw hcw).2]`.
+-/
 theorem CapelliUnderIntegral.cvUnderInt_of_jWords : Formalism.FourierDecayAlt.JF.JWords → Formalism.FourierDecayAlt.JF.RwRho → Formalism.FourierDecayAlt.JF.CVUnderInt := by
   intro hJW hRR k r Wp Wq _ _ _ _ _ _ D A m F Y hnm hThr hF g hg
   obtain ⟨L, hLw, hL⟩ := CapelliWordSumExpansion.cvWordSumG k r Y

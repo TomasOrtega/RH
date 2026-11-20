@@ -6,6 +6,13 @@ open scoped TensorProduct ENNReal NNReal Matrix
 
 namespace GlobalTheory.CompanionTheory.SW.GramEmpty
 
+/- English proof (translation)
+Establish `h1` using `h (fun _ => 1) measurable_const`. Establish `hc : (fun b => ∫⁻ _, (1 : ℝ≥0∞) ∂(m b)) = fun _ => m S Set.univ`. Use function extensionality and compare the values at `b`. Rewrite using `[Subsingleton.elim b S]`. Simplify using the standard rewrite rules.
+
+Rewrite `h1` using `[hc]`. Simplify using `only [lintegral_const, one_mul, hμ, hν, mul_one] at h1`. Use extensionality with `s _`. Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases. Simplify using the standard rewrite rules.
+
+Rewrite using `[Subsingleton.eq_univ_of_nonempty hs, ← h1]`. Simplify using the standard rewrite rules.
+-/
 theorem fibre_eq_dirac_of_unique {V X : Type} [MeasurableSpace V] [MeasurableSpace X] [Subsingleton V]
     [Subsingleton X] (μ : Measure V) (ν : Measure X) (m : X → Measure V) (x₀ : V)
     (hμ : μ Set.univ = 1) (hν : ν Set.univ = 1)
@@ -27,6 +34,17 @@ theorem fibre_eq_dirac_of_unique {V X : Type} [MeasurableSpace V] [MeasurableSpa
 end GlobalTheory.CompanionTheory.SW.GramEmpty
 
 open GlobalTheory.CompanionTheory.SW.GramEmpty in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ M J _ R _ _ _ _ _ _ d b lam _ m hm S`. Take `⟨-, h2, -⟩` from `hm`. Use `haveI : Subsingleton (HermR R σ 0) := ⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩`. Use `haveI : IsEmpty {p : Fin 0 × Fin 0 // p.1 < p.2} := ⟨fun p => p.1.1.elim0⟩`. Establish `hU : {X : Fin 0 → Fin M → R ⊗[F] E | IsUnit (gramR R σ J X).det} = Set.univ`.
+
+Use extensionality with `X`. Simplify using the standard rewrite rules. Establish `hμ : coordW R b lam 0 M Set.univ = 1`. Unfold `coordW`. Rewrite using `[Measure.pi_of_empty]`.
+
+Simplify using the standard rewrite rules. Establish `hν : coordHerm R σ b lam 0 Set.univ = 1`. Unfold `coordHerm`. Rewrite using `[Measure.comap_apply _ (Function.injective_of_subsingleton _) (fun s _ => Subsingleton.measurableSet) _ MeasurableSet.univ]`. Establish `: (Set.univ : Set ((Fin 0 → R) × ({p : Fin 0 × Fin 0 // p.1 < p.2} → R ⊗[F] E))) = Set.univ ×ˢ Set.univ` using `by simp`.
+
+Rewrite using `[Set.image_univ_of_surjective, this, Measure.prod_prod, Measure.pi_of_empty, Measure.pi_of_empty]`. Simplify using the standard rewrite rules. Introduce `y`. Conclude with `⟨0, Subsingleton.elim _ _⟩`. Use `fibre_eq_dirac_of_unique _ _ m _ hμ hν (fun φ hφ => ?_) S` and prove the remaining obligations.
+
+Use `h2 φ hφ` as an intermediate fact. Rewrite `this` using `[hU, Measure.restrict_univ]`. Conclude with `this`.
+-/
 theorem GlobalTheory.CompanionTheory.SW.GramEmpty.fibre_gram_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E), ∀ (lam : Measure R), lam.IsAddHaarMeasure → ∀ m, IsGramFib R σ J 0 (coordW R b lam 0 M) (coordHerm R σ b lam 0) m → ∀ S, m S = Measure.dirac (fun a => a.elim0) := by
   intro F E _ _ _ _ _ σ _ M J _ R _ _ _ _ _ _ d b lam _ m hm S
   obtain ⟨-, h2, -⟩ := hm

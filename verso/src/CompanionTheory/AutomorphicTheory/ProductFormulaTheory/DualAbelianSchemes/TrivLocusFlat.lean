@@ -36,22 +36,49 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace CompanionTheory.PfDual
 
+/- English proof (translation)
+The claim follows from `MainStatements.Hodge.Free.h1Le`.
+-/
 theorem h1Le : H1StructureDimLe := MainStatements.Hodge.Free.h1Le
 
+/- English proof (translation)
+The claim follows from `trivLocus_pf`.
+-/
 theorem trivLocus : TrivLocus := trivLocus_pf
 
+/- English proof (translation)
+The claim follows from `fewEquations_pf h1Le`.
+-/
 theorem fewEquations : FewEquations := fewEquations_pf h1Le
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.CechFlatComplex`.
+-/
 theorem ciFlat : CIFlat := GlobalTheory.T.CechFlatComplex
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.TrivFlat.trivLocusFlat fewEquations ciFlat`.
+-/
 theorem trivLocusFlat : TrivLocusFlat := @GlobalTheory.CompanionTheory.TrivFlat.trivLocusFlat fewEquations ciFlat
 
+/- English proof (translation)
+The claim follows from `pointSurj_pf addAcyclic_pf`.
+-/
 theorem pointSurj : PointSurj := pointSurj_pf addAcyclic_pf
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.DualAb.finDual_of_univNoeth (@GlobalTheory.CompanionTheory.DualUniv.univNoeth trivLocus trivLocusFlat pointSurj)`.
+-/
 theorem finDual : FinDual := @GlobalTheory.CompanionTheory.DualAb.finDual_of_univNoeth (@GlobalTheory.CompanionTheory.DualUniv.univNoeth trivLocus trivLocusFlat pointSurj)
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.KTrivSpread.kTrivModel_of_trivLocus trivLocus`.
+-/
 theorem kTrivModel : KTrivModel := @GlobalTheory.CompanionTheory.KTrivSpread.kTrivModel_of_trivLocus trivLocus
 
+/- English proof (translation)
+The claim follows from `@GlobalTheory.CompanionTheory.DualScheme.ktrivDual kTrivModel finDual`.
+-/
 theorem kTrivDual : KTrivDual := @GlobalTheory.CompanionTheory.DualScheme.ktrivDual kTrivModel finDual
 
 end CompanionTheory.PfDual

@@ -6,6 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.CentreOver
 
+/- English proof (translation)
+Rewrite `hx` using `[Scheme.IdealSheafData.mem_support_iff]`. Use `push_neg at hx`. Take `⟨U, hU⟩` from `hx`. Rewrite `hU` using `[Scheme.mem_zeroLocus_iff]`. Use `push_neg at hU`.
+
+Take `⟨f, hf, hxf⟩` from `hU`. Use `⟨X.affineBasicOpen f, 1, hxf, Submonoid.one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_one, ← J.map_ideal_basicOpen U f]`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ hf) (X.toRingedSpace.isUnit_res_basicOpen f)`.
+-/
 theorem cartAt_of_notMem_support {X : Scheme.{0}} (J : X.IdealSheafData) (x : X) (hx : x ∉ J.support) :
     CartAt J x := by
   rw [Scheme.IdealSheafData.mem_support_iff] at hx

@@ -16,6 +16,13 @@ namespace LocalGlobalIndex
 variable {K : Type*} [Field K] [NumberField K]
 variable {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Establish `h : ∀ v ∈ T, ∃ c : 𝓞 K, (∃ o ∈ v.adicCompletionIntegers K, algebraMap K (v.adicCompletion K) (c : K) - r v = algebraMap K (v.adicCompletion K) (N : K) * o) ∧ ∀ u ∈ T, u ≠ v → ∃ o ∈ u.adicCompletionIntegers K, algebraMap K (u.adicCompletion K) (c : K) = algebraMap K (u.adicComplet …` using `fun v hv => Theta.Ex1GL.exists_approx v T N hN (hr v hv)`. Use `choose! c hc hc' using h`. Use `⟨∑ w ∈ T, c w, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨o, ho, hov⟩` from `hc v hv`. Establish `hw : ∀ w ∈ T.erase v, ∃ o ∈ v.adicCompletionIntegers K, algebraMap K (v.adicCompletion K) (c w : K) = algebraMap K (v.adicCompletion K) (N : K) * o` using `fun w hw => hc' w (Finset.mem_of_mem_erase hw) v hv (Finset.ne_of_mem_erase hw).symm`.
+
+Use `choose! o' ho' hov' using hw`. Use `⟨o + ∑ w ∈ T.erase v, o' w, add_mem ho (sum_mem fun w hw => ho' w hw), ?_⟩` and prove the remaining obligations. Establish `e : ((∑ w ∈ T, c w : 𝓞 K) : K) = (c v : K) + ∑ w ∈ T.erase v, (c w : K)`. Rewrite using `[← Finset.add_sum_erase T c hv]`. Use `push_cast`.
+
+Both sides reduce to the same expression. Rewrite using `[e, map_add, map_sum, Finset.sum_congr rfl hov', ← Finset.mul_sum, mul_add, ← hov]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_approx_finset (T : Finset (HeightOneSpectrum (𝓞 K))) (N : 𝓞 K) (hN : N ≠ 0)
     (r : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K)
     (hr : ∀ v ∈ T, r v ∈ v.adicCompletionIntegers K) :
@@ -44,6 +51,17 @@ theorem exists_approx_finset (T : Finset (HeightOneSpectrum (𝓞 K))) (N : 𝓞
   rw [e, map_add, map_sum, Finset.sum_congr rfl hov', ← Finset.mul_sum, mul_add, ← hov]
   ring
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp hL`. Establish `hLv : ∀ v : HeightOneSpectrum (𝓞 K), localLattice v L = span (v.adicCompletionIntegers K) (Set.range fun i => toLocal v (g i))` using `fun v => by`. Rewrite using `[← hg, LatticeOfLocalisations.localLattice_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hc : ∀ v ∈ T, ∃ cc : Fin n → v.adicCompletionIntegers K, ∑ i, cc i • toLocal v (g i) = y v`.
+
+Introduce `v hv`. Establish `h` using `hy v hv`. Rewrite `h` using `[hLv v]`. Conclude with `(mem_span_range_iff_exists_fun _).mp h`. Use `choose! cc hcc using hc`.
+
+Establish `ha : ∀ i, ∃ a : 𝓞 K, ∀ v ∈ T, ∃ o ∈ v.adicCompletionIntegers K, algebraMap K (v.adicCompletion K) (a : K) - (cc v i : v.adicCompletion K) = algebraMap K (v.adicCompletion K) (N : K) * o` using `fun i => exists_approx_finset T N hN (fun v => (cc v i : v.adicCompletion K)) fun v _ => (cc v i).2`. Use `choose a hav using ha`. Use `⟨∑ i, a i • g i, sum_mem fun i _ => L.smul_mem _ (hg ▸ subset_span ⟨i, rfl⟩), fun v hv => ?_⟩` and prove the remaining obligations. Use `choose o ho hov using fun i => hav i v hv`. Use `⟨∑ i, (⟨o i, ho i⟩ : v.adicCompletionIntegers K) • toLocal v (g i), ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hLv v]`. Conclude with `sum_mem fun i _ => smul_mem _ _ (subset_span ⟨i, rfl⟩)`. Rewrite using `[← hcc v hv, map_sum, ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LatticeOfLocalisations.toLocal_smul', ← algebraMap_smul (v.adicCompletion K) (cc v i), ← algebraMap_smul (v.adicCompletion K) (⟨o i, ho i⟩ : v.adicCompletionIntegers K), smul_smul]`.
+
+Use `congrArg (· • toLocal v (g i)) (hov i) using 1` and compare the differences between its conclusion and the goal. Conclude with `(sub_smul (algebraMap K (v.adicCompletion K) (a i : K)) (cc v i : v.adicCompletion K) (toLocal v (g i))).symm`. Both sides reduce to the same expression.
+-/
 theorem exists_mem_near (L : Submodule (𝓞 K) V) (hL : L.FG) (T : Finset (HeightOneSpectrum (𝓞 K)))
     (N : 𝓞 K) (hN : N ≠ 0) (y : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K ⊗[K] V)
     (hy : ∀ v ∈ T, y v ∈ localLattice v L) :
@@ -84,6 +102,23 @@ theorem exists_mem_near (L : Submodule (𝓞 K) V) (hL : L.FG) (T : Finset (Heig
         (toLocal v (g i))).symm
     · rfl
 
+/- English proof (translation)
+Take `⟨n, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.mp M.fg`. Establish `hgK : span K (Set.range g) = ⊤`. Rewrite using `[eq_top_iff, ← M.span_eq, span_le, ← hg]`. Conclude with `fun x hx => span_le_restrictScalars (𝓞 K) K (Set.range g) hx`. Establish `: Module.Finite K V` using `⟨⟨Finset.univ.image g, by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, hgK]⟩⟩`.
+
+Set `e` to `Module.finBasis K V`. Take `⟨c, hc, hcF⟩` from `LatticeOfLocalisations.exists_smul_mem_span_basis e g`. Set `F₀ : FullLattice K V` to `⟨span (𝓞 K) (Set.range e), fg_span (Set.finite_range e), by rw [Submodule.span_span_of_tower, e.span_eq]⟩`. Take `⟨d, hd, hdF⟩` from `exists_smulSub_le M F₀`. Use `set b := d * c with hb_def`.
+
+Establish `hb : b ≠ 0` using `mul_ne_zero hd hc`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb`. Use `set T := (finite_mem_asIdeal hb).toFinset with hT`. Take `⟨x₁, hx₁, hnear⟩` from `exists_mem_near M.carrier M.fg T b hb (fun v => toLocal v x) fun v _ => hx v`. Use `set z : V := (b : K)⁻¹ • (x - x₁) with hz`.
+
+Establish `hzv : ∀ v, toLocal v z ∈ localLattice v M.carrier`. Introduce `v`. Establish `hz' : toLocal v z = (algebraMap K (v.adicCompletion K) (b : K))⁻¹ • (toLocal v x - toLocal v x₁)`. Rewrite using `[hz, map_smul, map_sub, ← algebraMap_smul (v.adicCompletion K) (b : K)⁻¹, map_inv₀]`. Distinguish the cases in `hv : v ∈ T`.
+
+Take `⟨w, hw, hxw⟩` from `hnear v hv`. Rewrite using `[hz', ← neg_sub, hxw, smul_neg, smul_smul, inv_mul_cancel₀ ((map_ne_zero _).mpr hbK), one_smul]`. Conclude with `neg_mem hw`. Establish `hbv : b ∉ v.asIdeal` using `by simpa [hT] using hv`. Rewrite using `[hz']`.
+
+Conclude with `LatticeOfLocalisations.smul_mem_of_mem_integers v _ (Theta.Ex1GL.inv_mem_of_notMem v hbv) (sub_mem (hx v) (subset_span ⟨x₁, hx₁, rfl⟩))`. Establish `hcz : c • z ∈ span (𝓞 K) (Set.range e)`. Use `LatticeOfLocalisations.mem_span_of_forall_toLocal_mem e fun v => ?_` and prove the remaining obligations. Rewrite using `[LatticeOfLocalisations.toLocal_smul']`. Conclude with `LatticeOfLocalisations.smul_localLattice_mem v c (fun m hm => hcF m (by rw [hg]; exact hm)) (hzv v)`.
+
+Establish `hbz : b • z ∈ M.carrier`. Rewrite using `[hb_def, mul_smul]`. Conclude with `hdF (mem_smulSub_of_mem d hcz)`. Establish `hxz : b • z = x - x₁`. Rewrite using `[← algebraMap_smul K b z, hz, smul_smul, ← RingOfIntegers.coe_eq_algebraMap, mul_inv_cancel₀ hbK, one_smul]`.
+
+Establish `h` using `add_mem hbz hx₁`. Rewrite `h` using `[hxz, sub_add_cancel]`. Then use the resulting hypothesis.
+-/
 theorem mem_of_forall_toLocal_mem (M : FullLattice K V) {x : V}
     (hx : ∀ v, toLocal v x ∈ localLattice v M.carrier) : x ∈ M.carrier := by
   classical
@@ -137,6 +172,33 @@ end LocalGlobalIndex
 
 open LocalGlobalIndex in
 
+/- English proof (translation)
+Introduce `K _ _ V _ _ _ _ M₁ M₂ h21`. Take `⟨b, hb, hbM⟩` from `exists_smulSub_le M₂ M₁`. Establish `hbM' : ∀ m ∈ M₁.carrier, b • m ∈ M₂.carrier` using `fun m hm => hbM (mem_smulSub_of_mem b hm)`. Establish `hbK : (b : K) ≠ 0` using `by exact_mod_cast hb`. Use `set S := (finite_mem_asIdeal hb).toFinset with hS`.
+
+Establish `hout : ∀ v, v ∉ S → localLattice v M₁.carrier ≤ localLattice v M₂.carrier`. Introduce `v hv y hy`. Establish `hbv : b ∉ v.asIdeal` using `by simpa [hS] using hv`. Establish `e : y = (algebraMap K (v.adicCompletion K) (b : K))⁻¹ • (algebraMap K (v.adicCompletion K) (b : K) • y)`. Rewrite using `[smul_smul, inv_mul_cancel₀ ((map_ne_zero _).mpr hbK), one_smul]`.
+
+Rewrite using `[e]`. Conclude with `LatticeOfLocalisations.smul_mem_of_mem_integers v _ (Theta.Ex1GL.inv_mem_of_notMem v hbv) (LatticeOfLocalisations.smul_localLattice_mem v b hbM' hy)`. Set `A` to `fun v : HeightOneSpectrum (𝓞 K) => (localLattice v M₁.carrier).toAddSubgroup`. Set `B` to `fun v : HeightOneSpectrum (𝓞 K) => (localLattice v M₂.carrier).toAddSubgroup`. Set `ι : ∀ v, M₁.carrier →+ A v` to `fun v => { toFun := fun m => ⟨toLocal v (m : V), subset_span ⟨m, m.2, rfl⟩⟩ map_zero' := by ext; simp map_add' := fun m m' => by ext; simp }`.
+
+Set `Φ : M₁.carrier →+ ∀ v : S, A v.1 ⧸ (B v.1).addSubgroupOf (A v.1)` to `AddMonoidHom.pi fun v => (QuotientAddGroup.mk' _).comp (ι v.1)`. Establish `hΦ : ∀ (m : M₁.carrier) (v : S), Φ m v = 0 ↔ toLocal v.1 (m : V) ∈ localLattice v.1 M₂.carrier`. Introduce `m v`. Use `show QuotientAddGroup.mk' _ (ι v.1 m) = 0 ↔ _`. Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`.
+
+Both sides reduce to the same expression. Establish `hker : Φ.ker = (M₂.carrier.comap M₁.carrier.subtype).toAddSubgroup`. Use extensionality with `m`. Rewrite using `[AddMonoidHom.mem_ker, Submodule.mem_toAddSubgroup, Submodule.mem_comap, Submodule.coe_subtype]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `mem_of_forall_toLocal_mem M₂ fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Conclude with `(hΦ m ⟨v, hv⟩).mp (congrFun h ⟨v, hv⟩)`. Conclude with `hout v hv (subset_span ⟨m, m.2, rfl⟩)`.
+
+Introduce `h`. Use function extensionality and compare the values at `v`. Conclude with `(hΦ m v).mpr (subset_span ⟨m, h, rfl⟩)`. Establish `hsurj : Function.Surjective Φ`. Introduce `q`.
+
+Use `choose y hy using fun v : S => QuotientAddGroup.mk'_surjective _ (q v)`. Take `⟨x, hx, hnear⟩` from `exists_mem_near M₁.carrier M₁.fg S b hb (fun v => if h : v ∈ S then ((y ⟨v, h⟩ : A v) : v.adicCompletion K ⊗[K] V) else 0) (fun v hv => by simp only [dif_pos hv]; exact (y ⟨v, hv⟩).2)`. Use `⟨⟨x, hx⟩, funext fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy v]`. Use `show QuotientAddGroup.mk' _ (ι v.1 ⟨x, hx⟩) = _`.
+
+Rewrite using `[QuotientAddGroup.mk'_apply, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Take `⟨w, hw, hxw⟩` from `hnear v.1 v.2`. Rewrite `hxw` using `[dif_pos v.2]`. Establish `e : ((-(ι v.1 ⟨x, hx⟩) + y v : A v.1) : v.1.adicCompletion K ⊗[K] V) = -(algebraMap K (v.1.adicCompletion K) (b : K) • w)`. Rewrite using `[← hxw]`.
+
+Use `push_cast`. Use `show -(toLocal v.1 x) + _ = _`. Normalize the expressions using the abelian group laws. Use `show _ ∈ localLattice v.1 M₂.carrier`. Rewrite using `[e]`.
+
+Conclude with `neg_mem (LatticeOfLocalisations.smul_localLattice_mem v.1 b hbM' hw)`. Establish `hcard : Nat.card (M₁.carrier ⧸ M₂.carrier.comap M₁.carrier.subtype) = ∏ v : S, Nat.card (A v.1 ⧸ (B v.1).addSubgroupOf (A v.1))`. Rewrite using `[← Nat.card_pi]`. Conclude with `Nat.card_congr ((QuotientAddGroup.quotientAddEquivOfEq hker.symm).toEquiv.trans (QuotientAddGroup.quotientKerEquivOfSurjective Φ hsurj).toEquiv)`. Rewrite using `[hcard, Nat.cast_prod, finprod_eq_prod_of_mulSupport_subset (s := S), ← Finset.prod_coe_sort S]`.
+
+Both sides reduce to the same expression. Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Establish `h1 : (localLattice v M₂.carrier).toAddSubgroup.relIndex (localLattice v M₁.carrier).toAddSubgroup = 1` using `AddSubgroup.relIndex_eq_one.mpr fun y hy => hout v hvS hy`.
+
+Simplify using `only [h1, Nat.cast_one]`.
+-/
 theorem LocalGlobalIndex.proof : LocalGlobalIndex.Statement := by
   intro K _ _ V _ _ _ _ M₁ M₂ h21
   classical

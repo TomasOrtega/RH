@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `F _ _ p hp`. Establish `hprime : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `hP : (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime hprime.ne_zero).mpr hprime`. Establish `hinj : Function.Injective (algebraMap ℤ (NumberField.RingOfIntegers F))` using `(algebraMap ℤ (NumberField.RingOfIntegers F)).injective_int`. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := NumberField.RingOfIntegers F) (Ideal.span {(p : ℤ)}) ⊥ (by`.
+
+Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot]`. Establish `hx0 : x = 0` using `hinj (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `Ideal.zero_mem _)`.
+
+Establish `hmem : (p : NumberField.RingOfIntegers F) ∈ Q`. Establish `h : (p : ℤ) ∈ Q.comap (algebraMap ℤ (NumberField.RingOfIntegers F))`. Rewrite using `[hQP]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h` using `[Ideal.mem_comap, map_natCast]`.
+
+Conclude with `h`. Use `⟨⟨Q, hQ, ?_⟩, hmem⟩` and prove the remaining obligations. Introduce `hbot`. Rewrite `hmem` using `[hbot, Ideal.mem_bot]`. Conclude with `hp.ne_zero (Nat.cast_eq_zero.mp hmem)`.
+-/
 theorem UpperTheory.Reformulated.B.Qk8.exists_place :
     ∀ {F : Type} [inst : Field F] [NumberField F] (p : ℕ),
     Nat.Prime p →

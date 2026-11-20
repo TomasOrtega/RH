@@ -12,6 +12,25 @@ namespace GlobalTheory.Mum.Two
 
 open CoordCompare TorusCoord in
 
+/- English proof (translation)
+Use `g₁.q_flat` as an intermediate fact. Use `g₁.q_surj` as an intermediate fact. Use `g₁.q_affine` as an intermediate fact. Establish `p₁` using `isPart_inl D₁.P.L D₂.P.L`. Establish `p₂` using `isPart_inr D₁.P.L D₂.P.L`.
+
+Establish `hp : (Over.map (thick R I e)).map a ≫ g₂.pG = g₁.pG ≫ b`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `h1 : a.left ≫ g₂.q.left = g₁.q.left ≫ ((Over.pullback (thick R I e)).map b).left` using `congrArg (fun q => q.left) hq`. Establish `h2 : ((Over.pullback (thick R I e)).map b).left ≫ pullback.fst D₂.P.A.hom (thick R I e) = pullback.fst D₁.P.A.hom (thick R I e) ≫ b.left` using `pullback.lift_fst _ _ _`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) h1).trans ((Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) h2).trans (Category.assoc _ _ _).symm)))`.
+
+Establish `e₁ : ∀ k, a.left ≫ D₂.Oφ g₂.pG χ k = g₁.q.left ≫ pullback.fst D₁.P.A.hom (thick R I e) ≫ D₂.Oφ b χ k` using `fun k => (WeightPf.Oφ_comp ((Over.map (thick R I e)).map a) g₂.pG χ k).trans ((congrArg (D₂.Oφ · χ k) hp).trans ((WeightPf.Oφ_comp g₁.pG b χ k).symm.trans (Category.assoc _ _ _)))`. Establish `e₂ : ∀ k, D₁.Oφ g₁.pG (h χ) k = g₁.q.left ≫ pullback.fst D₁.P.A.hom (thick R I e) ≫ D₁.Oφ (𝟙 _) (h χ) k` using `fun k => (congrArg (D₁.Oφ · (h χ) k) (Category.comp_id g₁.pG).symm).trans ((WeightPf.Oφ_comp g₁.pG (𝟙 _) (h χ) k).symm.trans (Category.assoc _ _ _))`. Take `⟨u, hu, hu'⟩` from `exists_gen (jn_isLB D₁ D₂) (φ' := fun k => g₁.q.left ≫ pullback.fst D₁.P.A.hom (thick R I e) ≫ Sum.elim (fun k => D₁.Oφ (𝟙 _) (h χ) k ≫ coprod.inl) (fun k => D₂.Oφ b χ k ≫ coprod.inr) k) (ε' := Sum.elim Oε Oinvε) (fun U _ f => by`. Use `(Fintype.prod_sum_type _).trans (Eq.trans ?_ (Fintype.prod_sum_type _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => ?_) (Finset.prod_congr rfl fun k _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `refine congrArg₂ (· ^ ·) (congrArg f ?_) (show -Oinvε k = Oε k by fin_cases k <;> rfl)`. Conclude with `(congrArg (· ≫ coprod.inl) (e₂ k)).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Category.assoc _ _ _)))`. Use `congrArg (fun ψ => f ψ ^ Oinvε k) ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ coprod.inr) (e₁ k)).trans ((Category.assoc _ _ _).trans (congrArg (_ ≫ ·) (Category.assoc _ _ _)))))`. Use the proof step `(LB.mulGen (JN D₁ D₂) _ _ _ _ (LB.invGen (JN D₁ D₂) _ _ (p₁.gen (g₁.t (h χ)))) (LB.pullGen (JN D₁ D₂) _ _ (p₂.gen (g₂.t χ)) a.left))`.
+
+Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (invGen_isGen _ _ _ _ (p₁.gen_isGen (g₁.t_gen _))) (pullGen_isGen _ _ _ _ (p₂.gen_isGen (g₂.t_gen χ)) _))`. Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₁).left) (z : Z) (J), Good (JN D₁ D₂) z J → val u r z J = (val (g₁.t (h χ)) r z (rl J))⁻¹ * val (g₂.t χ) (r ≫ a.left) z (rr J)` using `fun Z r z J hJ => (hu' Z r z J hJ).trans ((Geo.Tor.val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((Geo.Tor.val_inv _ _).trans (congrArg (·⁻¹) (p₁.val_gen _ _ z hJ))) ((Geo.Tor.val_pull hJ _ _ _).trans (p₂.val_gen _ _ z hJ))))`. Take `⟨v, hv₁, hv₂⟩` from `exists_gen_of_val_eq (jn_isLB D₁ D₂) _ _ g₁.q.left u hu (fun Z r r' z J hJ hr => by`. Rewrite using `[hv Z r z J hJ, hv Z r' z J hJ]`. Establish `hw : r ≫ (thickObj R I e G₁).hom = r' ≫ (thickObj R I e G₁).hom`.
+
+Rewrite using `[← Over.w g₁.q, reassoc_of% hr]`. Set `Z' : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))` to `Over.mk (r' ≫ (thickObj R I e G₁).hom)`. Set `c : Z' ⟶ thickObj R I e G₁` to `Over.homMk r hw`. Set `c' : Z' ⟶ thickObj R I e G₁` to `Over.homMk r' rfl`. Take `⟨τ, hτ⟩` from `exists_torus g₁ c c' (Over.OverMorphism.ext hr)`.
+
+Establish `hτa : c ≫ a = ((τ ≫ t) ≫ g₂.i) * (c' ≫ a)`. Rewrite using `[hτ, MonObj.mul_comp, Category.assoc, hi, Category.assoc]`. Establish `v₁` using `val_torus g₁ (h χ) (Z := Z') (p₁.good hJ) τ c'`. Establish `v₂` using `val_torus g₂ χ (Z := Z') (p₂.good hJ) (τ ≫ t) (c' ≫ a)`. Rewrite `v₁` using `[← hτ]`.
+
+Rewrite `v₂` using `[← hτa]`. Establish `v₀ : gm (τ ≫ t).left z ⊤ (charUnit _ D₂.X χ) = gm τ.left z ⊤ (charUnit _ D₁.X (h χ))` using `(gm_pull τ.left t.left z ⊤ trivial _).symm.trans ((gm_res τ.left z (V := ⊤) (U := t.left ⁻¹ᵁ ⊤) (fun _ _ => trivial) trivial _).symm.trans (congrArg _ (ht χ)))`. Use `(congrArg₂ (fun s s' => s⁻¹ * s') v₁ v₂).trans ?_` and prove the remaining obligations. Rewrite using `[v₀, mul_inv, _root_.mul_mul_mul_comm, inv_mul_cancel, _root_.one_mul]`. Use the proof step `rfl)`.
+
+Use `⟨v, hv₁, fun Z x z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv₂ Z x z J hJ, hv Z x z J hJ, mul_inv_cancel_left]`.
+-/
 theorem exists_level_ratio {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D₁ D₂ : DegPre R} {e : ℕ}
     {G₁ G₂ : Over (Sp R)} [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂]
     (g₁ : GtCoord I D₁ e G₁) (g₂ : GtCoord I D₂ e G₂) (a : thickObj R I e G₁ ⟶ thickObj R I e G₂) [IsMonHom a]
@@ -92,6 +111,9 @@ theorem exists_level_ratio {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D
   refine ⟨v, hv₁, fun Z x z J hJ => ?_⟩
   rw [hv₂ Z x z J hJ, hv Z x z J hJ, mul_inv_cancel_left]
 
+/- English proof (translation)
+Establish `e0 : ∀ k, eSec B ≫ D.Oφ p χ k = eSec D.P.A ≫ D.Oφ (𝟙 _) χ k` using `fun k => (WeightPf.Oφ_comp η[B] p χ k).trans ((congrArg (D.Oφ · χ k) ((IsMonHom.one_hom p).trans (Category.comp_id _).symm)).trans (WeightPf.Oφ_comp η[D.P.A] (𝟙 _) χ k).symm)`. Simplify using `only [e0]`. Conclude with `(EndData.prod_unit D (𝟙 _) χ h).2`.
+-/
 theorem prod_unit_hom {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {B : Over (Sp R)} [GrpObj B] (p : B ⟶ D.P.A)
     [IsMonHom p] (χ : D.X) {U : Type} [CommGroup U] (h : (Spec (CommRingCat.of R) ⟶ D.P.A.left) → U) :
     ∏ k, h (eSec B ≫ D.Oφ p χ k) ^ Oinvε k = 1 := by
@@ -103,6 +125,21 @@ theorem prod_unit_hom {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) {B : O
 
 open EndData in
 
+/- English proof (translation)
+Introduce `R _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ a b h ⟨ha, hb, hq, hh⟩ χ`. Establish `hC` using `hR.2.2.2`. Establish `hB` using `jn_isLB D₁.toPre D₂.toPre`. Establish `p₁` using `isPart_inl D₁.toPre.P.L D₂.toPre.P.L`. Establish `p₂` using `isPart_inr D₁.toPre.P.L D₂.toPre.P.L`.
+
+Use `choose t ht hi using hh`. Use `choose v hv vv using fun e => exists_level_ratio (U₁.gt e) (U₂.gt e) ((Over.pullback (thick R I e)).map a) b h (t e) (ht e) (hi e) (hq e) χ`. Establish `down₁ : ∀ χ e (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₁).left) (z : Z) (J), Good D₁.toPre.P.L z J → val ((U₁.gt (e + 1)).t χ) (r ≫ thickMap R I e G₁) z J = val ((U₁.gt e).t χ) r z J` using `fun χ e Z r z J hJ => (val_pull hJ _ _ _).symm.trans (val_corr hJ (U₁.gt_t e χ) r)`. Establish `down₂ : ∀ χ e (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G₂).left) (z : Z) (J), Good D₂.toPre.P.L z J → val ((U₂.gt (e + 1)).t χ) (r ≫ thickMap R I e G₂) z J = val ((U₂.gt e).t χ) r z J` using `fun χ e Z r z J hJ => (val_pull hJ _ _ _).symm.trans (val_corr hJ (U₂.gt_t e χ) r)`. Take `⟨u, hu, uv⟩` from `T.exists_generator_of_compatible_thickening_generators R I hC D₁.toPre.P.A D₁.toPre.P.isAb.smooth (AbProj.isProjBy_of_isPullback D₁.toPre.P (IsPullback.id_horiz _)) _ (JN D₁.toPre D₂.toPre) _ _ _ _ hB (fun _ _ => rfl) v hv (fun e z J hJ => by`.
+
+Use `(U₁.gt e).q_flat` as an intermediate fact. Use `(U₁.gt e).q_surj` as an intermediate fact. Use `val_eq_of_flat hB _ _ _ _ (fun k => ?_) (U₁.gt e).q.left (fun x J hJ => ?_) z J hJ` and prove the remaining obligations. Rewrite using `[← Category.assoc, trans_fst, Category.id_comp]`. Establish `k₁` using `vv (e + 1) _ (𝟙 _ ≫ thickMap R I e G₁) x J hJ`.
+
+Establish `k₀` using `vv e _ (𝟙 _) x J hJ`. Rewrite `k₁` using `[down₁ _ _ _ _ _ _ (p₁.good hJ), Category.assoc, trans_map, ← Category.assoc, down₂ _ _ _ _ _ _ (p₂.good hJ), k₀, Category.id_comp, Category.id_comp, UnifCompare.trans_comp_q]`. Rewrite using `[Category.comp_id]`. Conclude with `(mul_left_cancel k₁).symm)`. Use `⟨u, ⟨hu, fun Z r z J hJ => ?_⟩, fun e Z x z J hJ => ?_⟩` and prove the remaining obligations.
+
+Use `(val_pull hJ _ _ _).symm.trans ((val_corr hJ (t' := LB.oneGen _) (corr_of_val hB fun y J hJ => Eq.trans ?_ (val_one _).symm) r).trans (val_one _))` and prove the remaining obligations. Use `val_eq_one I hB (fun V _ k => ?_) _ (pullGen_isGen _ _ _ _ hu _) (fun e z J hJ => ?_) y J hJ` and prove the remaining obligations. Use `(Fintype.prod_sum_type _).trans ((congrArg₂ (· * ·) (Eq.trans ?_ (prod_unit D₁.toPre (𝟙 _) (h χ) (fun ψ => k (ψ ≫ coprod.inl))).1) (Eq.trans ?_ (prod_unit_hom D₂.toPre b χ (fun ψ => k (ψ ≫ coprod.inr))))).trans ((_root_.mul_one _).trans (Fintype.prod_empty _).symm))` and prove the remaining obligations. Conclude with `Finset.prod_congr rfl fun j _ => congrArg (fun ψ => k ψ ^ Oε j) (Category.assoc _ _ _).symm`. Conclude with `Finset.prod_congr rfl fun j _ => congrArg (fun ψ => k ψ ^ Oinvε j) (Category.assoc _ _ _).symm`.
+
+Use `(U₁.gt e).q_hom` as an intermediate fact. Establish `k` using `vv e _ (1 : 𝟙_ (Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) ⟶ thickObj R I e G₁).left z J hJ`. Rewrite `k` using `[← Over.comp_left, ← Over.comp_left, MonObj.one_comp, MonObj.one_comp, TorusCoord.val_unit _ _ (p₂.good hJ), TorusCoord.val_unit _ _ (p₁.good hJ), _root_.one_mul, ← uv e _ _ z J hJ]`. Establish `o : (1 : 𝟙_ (Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) ⟶ thickObj R I e D₁.toPre.P.A) = η[thickObj R I e D₁.toPre.P.A]` using `by simp [Hom.one_def]`. Rewrite `k` using `[o]`.
+
+Conclude with `(val_pull hJ _ _ _).trans ((congrArg (fun p => val u p z J) (UnitValue.eSec_pullback_fst (thick R I e) D₁.toPre.P.A).symm).trans k.symm)`. Use `(vv e Z x z J hJ).trans (congrArg (_ * ·) ((uv e Z _ z J hJ).symm.trans ?_))` and prove the remaining obligations. Conclude with `congrArg (fun p => val u p z J) (Category.assoc _ _ _)`.
+-/
 theorem coord_of_lin : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), AdmBase R I → ∀ (D₁ D₂ : DegData R I) (A₁ A₂ : PolAV (Sp (FractionRing R))) (G₁ G₂ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] [GrpObj G₂] [IsCommMonObj G₂] (U₁ : UnifPre I D₁ A₁ G₁) (U₂ : UnifPre I D₂ A₂ G₂) (a : G₁ ⟶ G₂) (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (h : D₂.toPre.X →+ D₁.toPre.X), Lin U₁ U₂ a b h → Coord U₁ U₂ a b h := by
   intro R _ _ I hR D₁ D₂ A₁ A₂ G₁ G₂ _ _ _ _ U₁ U₂ a b h ⟨ha, hb, hq, hh⟩ χ
   have hC := hR.2.2.2

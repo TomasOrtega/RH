@@ -11,6 +11,11 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.A
 
 noncomputable section
 
+/- English proof (translation)
+Introduce `n d s y v hs`. Establish `hV : IsOpen {z | AnalyticAt ℂ s z}` using `isOpen_analyticAt ℂ s`. Establish `hC : ∀ z ∈ {z | AnalyticAt ℂ s z}, ContDiffAt ℝ 2 (euclPot ∘ s) z` using `fun z hz => ((contDiff_euclPot n).of_le (WithTop.coe_le_coe.mpr le_top)).contDiffAt.comp z (hz.restrictScalars (𝕜 := ℝ)).contDiffAt`. Use `gradDensNonneg_thm d (fun _ => euclPot ∘ s) v _ hV (fun _ => fun z hz => (hC z hz).contDiffWithinAt) ?_ y hs` and prove the remaining obligations. Introduce `_ z hz ξ`.
+
+Rewrite using `[levi_comp ξ hz ((contDiff_euclPot n).of_le (WithTop.coe_le_coe.mpr le_top)).contDiffAt, TubeFormComparison.levi_euclPot]`. Conclude with `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+-/
 theorem EnergyDensNonneg.proof : EnergyDensNonneg.Statement := by
   intro n d s y v hs
   have hV : IsOpen {z | AnalyticAt ℂ s z} := isOpen_analyticAt ℂ s

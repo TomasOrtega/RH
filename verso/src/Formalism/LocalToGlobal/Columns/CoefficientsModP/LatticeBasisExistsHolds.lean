@@ -15,27 +15,48 @@ section Basic
 
 variable {K : Type} [Field K] [NumberField K] {W : Type} [AddCommGroup W] [Module (𝓞 K) W]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem lc_mem_locP (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) (x : W) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L ↔ ∃ s : 𝓞 K, s ∉ w.asIdeal ∧ s • x ∈ L := Iff.rfl
 
+/- English proof (translation)
+Introduce `h` and use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`.
+-/
 theorem lc_one_notMem (w : HeightOneSpectrum (𝓞 K)) : (1 : 𝓞 K) ∉ w.asIdeal :=
   fun h => w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)
 
+/- English proof (translation)
+Introduce `h` and use `(w.isPrime.mem_or_mem h).elim hs ht`.
+-/
 theorem lc_mul_notMem (w : HeightOneSpectrum (𝓞 K)) {s t : 𝓞 K} (hs : s ∉ w.asIdeal) (ht : t ∉ w.asIdeal) :
     s * t ∉ w.asIdeal := fun h => (w.isPrime.mem_or_mem h).elim hs ht
 
+/- English proof (translation)
+Introduce `h` and use `hs (h ▸ w.asIdeal.zero_mem)`.
+-/
 theorem lc_ne_zero_of_notMem (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K} (hs : s ∉ w.asIdeal) : s ≠ 0 :=
   fun h => hs (h ▸ w.asIdeal.zero_mem)
 
+/- English proof (translation)
+Introduce `x hx` and use `(lc_mem_locP w L x).2 ⟨1, lc_one_notMem w, by simpa using hx⟩`.
+-/
 theorem lc_le_locP (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) : L ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L :=
   fun x hx => (lc_mem_locP w L x).2 ⟨1, lc_one_notMem w, by simpa using hx⟩
 
+/- English proof (translation)
+Use `le_antisymm ?_ (lc_le_locP w _)` and prove the remaining obligations. Introduce and unpack `x ⟨s, hs, t, ht, hx⟩`. Conclude with `⟨t * s, lc_mul_notMem w ht hs, by rwa [mul_smul]⟩`.
+-/
 theorem localized_localized (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) :
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L) = Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L := by
   refine le_antisymm ?_ (lc_le_locP w _)
   rintro x ⟨s, hs, t, ht, hx⟩
   exact ⟨t * s, lc_mul_notMem w ht hs, by rwa [mul_smul]⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hx⟩`. Conclude with `⟨t * s, lc_mul_notMem w ht hs, by rwa [mul_smul]⟩`. Conclude with `fun hx => Submodule.smul_mem _ s hx`.
+-/
 theorem smul_mem_localized_iff (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) {s : 𝓞 K} (hs : s ∉ w.asIdeal)
     (x : W) : s • x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L ↔ x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L := by
   constructor
@@ -43,6 +64,13 @@ theorem smul_mem_localized_iff (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (
     exact ⟨t * s, lc_mul_notMem w ht hs, by rwa [mul_smul]⟩
   · exact fun hx => Submodule.smul_mem _ s hx
 
+/- English proof (translation)
+Introduce `x hx`. Set `I : Ideal (𝓞 K)` to `B.colon {x}`. Assume the negation of the conclusion as `hxB`. Establish `hI : I ≠ ⊤`. Introduce `hI`.
+
+Establish `h1 : (1 : 𝓞 K) ∈ I` using `by rw [hI]; trivial`. Rewrite `h1` using `[Submodule.mem_colon_singleton]`. Conclude with `hxB (by simpa using h1)`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal I hI`. Take `⟨s, hs, hsx⟩` from `h ((plEquiv K).symm ⟨m, hm⟩) hx`.
+
+Conclude with `hs (hIm (Submodule.mem_colon_singleton.2 hsx))`.
+-/
 theorem lc_le_of_le_locP {A B : Submodule (𝓞 K) W}
     (h : ∀ w : HeightOneSpectrum (𝓞 K), A ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal B) : A ≤ B := by
   intro x hx
@@ -57,14 +85,23 @@ theorem lc_le_of_le_locP {A B : Submodule (𝓞 K) W}
   obtain ⟨s, hs, hsx⟩ := h ((plEquiv K).symm ⟨m, hm⟩) hx
   exact hs (hIm (Submodule.mem_colon_singleton.2 hsx))
 
+/- English proof (translation)
+The claim follows from `lc_le_of_le_locP fun w => (lc_le_locP w A).trans (h w)`.
+-/
 theorem le_of_forall_localized_le {A B : Submodule (𝓞 K) W}
     (h : ∀ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal A ≤ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal B) : A ≤ B :=
   lc_le_of_le_locP fun w => (lc_le_locP w A).trans (h w)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (le_of_forall_localized_le fun w => (h w).le) (le_of_forall_localized_le fun w => (h w).ge)`.
+-/
 theorem eq_of_forall_localized_eq {A B : Submodule (𝓞 K) W}
     (h : ∀ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal A = Formalism.HermitianLatticesTheory.localization₂ w.asIdeal B) : A = B :=
   le_antisymm (le_of_forall_localized_le fun w => (h w).le) (le_of_forall_localized_le fun w => (h w).ge)
 
+/- English proof (translation)
+The claim follows from `le_antisymm (lc_le_of_le_locP fun w => iInf_le _ w) (le_iInf fun w => lc_le_locP w T)`.
+-/
 theorem lc_iInf_locP (T : Submodule (𝓞 K) W) :
     ⨅ w : HeightOneSpectrum (𝓞 K), Formalism.HermitianLatticesTheory.localization₂ w.asIdeal T = T :=
   le_antisymm (lc_le_of_le_locP fun w => iInf_le _ w) (le_iInf fun w => lc_le_locP w T)
@@ -79,17 +116,31 @@ section Gen
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+The claim follows from `mem_atW_iff.symm`.
+-/
 theorem mem_localized_iff_mem_baseChange (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal L ↔ x ∈ atW w L := mem_atW_iff.symm
 
+/- English proof (translation)
+Rewrite using `[← atW_restrictScalars, ← atW_restrictScalars, h]`.
+-/
 theorem localized_eq_of_baseChange_eq (w : HeightOneSpectrum (𝓞 K)) {A B : Submodule (𝓞 K) V} (h : atW w A = atW w B) :
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal A = Formalism.HermitianLatticesTheory.localization₂ w.asIdeal B := by
   rw [← atW_restrictScalars, ← atW_restrictScalars, h]
 
+/- English proof (translation)
+The claim follows from `Submodule.span_span_of_tower (𝓞 K) (Ow w) S`.
+-/
 theorem lc_atW_span (w : HeightOneSpectrum (𝓞 K)) (S : Set V) :
     atW w (Submodule.span (𝓞 K) S) = Submodule.span (Ow w) S :=
   Submodule.span_span_of_tower (𝓞 K) (Ow w) S
 
+/- English proof (translation)
+Take `⟨κ, hκ, b, bK, hb⟩` from `exists_basis_atW w hfg hsp`. Use `⟨κ, hκ, bK, localized_eq_of_baseChange_eq w ?_⟩` and prove the remaining obligations. Rewrite using `[lc_atW_span]`. Establish `h1 : Set.range bK = (atW w A).subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `hb i`. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+-/
 theorem lc_exists_basis (w : HeightOneSpectrum (𝓞 K)) {A : Submodule (𝓞 K) V} (hfg : A.FG)
     (hsp : Submodule.span K (A : Set V) = ⊤) :
     ∃ (κ : Type) (_ : Fintype κ) (bK : Module.Basis κ K V),
@@ -106,6 +157,17 @@ theorem lc_exists_basis (w : HeightOneSpectrum (𝓞 K)) {A : Submodule (𝓞 K)
 
 end Gen
 
+/- English proof (translation)
+Introduce `K _ _ n M hM w`. Take `⟨κ, hκ, bK, hb⟩` from `lc_exists_basis w hM.fg hM.span_eq_top`. Establish `hcard : Fintype.card κ = n`. Rewrite using `[← Module.finrank_eq_card_basis bK, Module.finrank_fin_fun]`. Set `e : κ ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`.
+
+Set `b' : Module.Basis (Fin n) K (Fin n → K)` to `bK.reindex e`. Set `B : GL (Fin n) K` to `⟨(Pi.basisFun K (Fin n)).toMatrix b', b'.toMatrix (Pi.basisFun K (Fin n)), Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩`. Use `⟨B, ?_⟩` and prove the remaining obligations. Unfold `IsBasisAt`. Rewrite using `[hb]`.
+
+Use `congr 2`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Use `⟨e i, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `show (Pi.basisFun K (Fin n)).toMatrix b' a (e i) = bK i a`. Simplify using `[Module.Basis.toMatrix_apply, b']`. Introduce and unpack `⟨j, rfl⟩`. Use `⟨e.symm j, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `a`. Use `show bK (e.symm j) a = (Pi.basisFun K (Fin n)).toMatrix b' a j`. Simplify using `[Module.Basis.toMatrix_apply, b']`.
+-/
 theorem latticeBasisExists_holds : BasisAtEx := by
   intro K _ _ n M hM w
   obtain ⟨κ, hκ, bK, hb⟩ := lc_exists_basis w hM.fg hM.span_eq_top
@@ -139,6 +201,15 @@ section PrimeTo
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Establish `hfin : FiniteMultiplicity w.asIdeal (Ideal.span {d})`. Use `FiniteMultiplicity.of_not_isUnit ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.isUnit_iff]`. Conclude with `w.isPrime.ne_top`. Simplify using `using hd`.
+
+Take `⟨I, hI, hnd⟩` from `hfin.exists_eq_pow_mul_and_not_dvd`. Establish `h1 : ¬ I ≤ w.asIdeal` using `fun h => hnd (Ideal.dvd_iff_le.2 h)`. Take `⟨t, htI, htw⟩` from `SetLike.not_le_iff_exists.1 h1`. Use `⟨t, htw, fun w' hw' => ?_⟩` and prove the remaining obligations. Establish `h2 : ¬ w.asIdeal ^ multiplicity w.asIdeal (Ideal.span {d}) ≤ w'.asIdeal`.
+
+Introduce `h`. Establish `h3 : w.asIdeal ≤ w'.asIdeal` using `w'.isPrime.le_of_pow_le h`. Conclude with `hw' (HeightOneSpectrum.ext (w.isMaximal.eq_of_le w'.isPrime.ne_top h3).symm)`. Take `⟨r, hr, hrw⟩` from `SetLike.not_le_iff_exists.1 h2`. Use `⟨r, hrw, ?_⟩` and prove the remaining obligations.
+
+Establish `h4 : r * t ∈ Ideal.span {d}`. Rewrite using `[hI]`. Conclude with `Ideal.mul_mem_mul hr htI`. Conclude with `Ideal.mem_span_singleton.1 h4`.
+-/
 theorem lc_primeTo (d : 𝓞 K) (hd : d ≠ 0) (w : HeightOneSpectrum (𝓞 K)) :
     ∃ t : 𝓞 K, t ∉ w.asIdeal ∧
       ∀ w' : HeightOneSpectrum (𝓞 K), w' ≠ w → ∃ r : 𝓞 K, r ∉ w'.asIdeal ∧ d ∣ r * t := by
@@ -168,9 +239,23 @@ section Sandwich
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_one`.
+-/
 theorem lc_mem_one_iff (x : K) : x ∈ (1 : Submodule (𝓞 K) K) ↔ ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = x :=
   Submodule.mem_one
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hx a`. Unfold `colLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨j, rfl⟩` from `hy`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Use `split_ifs`. Conclude with `Submodule.one_le.1 le_rfl`. Conclude with `zero_mem _`.
+
+Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul r y _ hy => exact Submodule.smul_mem _ r hy`. Introduce `hx choose r hr using fun a => (lc_mem_one_iff (x a)).1 (hx a)`. Establish `e : x = ∑ j : Fin n, r j • (fun a : Fin n => ((1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a j)`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single a]`. Simplify using `[Algebra.smul_def, hr]`. Introduce `b _ hb`. Simplify using `[Matrix.one_apply, Ne.symm hb]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+-/
 theorem lc_mem_colLat_one (x : Fin n → K) :
     x ∈ colLat (1 : GL (Fin n) K) ↔ ∀ a, x a ∈ (1 : Submodule (𝓞 K) K) := by
   constructor
@@ -198,9 +283,17 @@ theorem lc_mem_colLat_one (x : Fin n → K) :
     rw [e]
     exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[← colLat_mul, mul_one]`.
+-/
 theorem lc_colLat_eq_gLat (B : GL (Fin n) K) : colLat B = gLat B (colLat 1) := by
   rw [← colLat_mul, mul_one]
 
+/- English proof (translation)
+Unfold `gLat`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `hx`.
+
+Conclude with `⟨_, hx, by simp⟩`.
+-/
 theorem lc_mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x : Fin n → K) :
     x ∈ gLat g M ↔ ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x ∈ M := by
   unfold gLat
@@ -210,10 +303,16 @@ theorem lc_mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x
   · intro hx
     exact ⟨_, hx, by simp⟩
 
+/- English proof (translation)
+Rewrite using `[lc_colLat_eq_gLat, lc_mem_gLat, lc_mem_colLat_one]`.
+-/
 theorem lc_mem_colLat (B : GL (Fin n) K) (x : Fin n → K) :
     x ∈ colLat B ↔ ∀ a, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈ (1 : Submodule (𝓞 K) K) := by
   rw [lc_colLat_eq_gLat, lc_mem_gLat, lc_mem_colLat_one]
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨j, rfl⟩`.
+-/
 theorem lc_col_mem_colLat (B : GL (Fin n) K) (j : Fin n) :
     (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a j) ∈ colLat B := Submodule.subset_span ⟨j, rfl⟩
 
@@ -221,12 +320,32 @@ section Gen
 
 variable {V : Type} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.general_b_fact_second''''''''.goal1 .. | (apply Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (intros; apply @Bl.ge …`.
+-/
 theorem lc_exists_smul_mem (M : Submodule (𝓞 K) V) {x : V} (hx : x ∈ Submodule.span K (M : Set V)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ M := by
   first | exact Bl.general_b_fact_second''''''''.goal1 .. | (apply Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_second''''''''.goal1 <;> assumption) | (apply @Bl.general_b_fact_second''''''''.goal1 <;> first | assumption | infer_instance)
 
 end Gen
 
+/- English proof (translation)
+Take `⟨S, hS⟩` from `hM.fg`. Take `⟨d1, hd1⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (S.biUnion fun x => Finset.univ.image fun a : Fin n => x a)`. Establish `h1 : ∀ x ∈ M, (d1 : 𝓞 K) • x ∈ colLat (1 : GL (Fin n) K)`. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+
+Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Rewrite using `[lc_mem_colLat_one]`. Introduce `a`. Take `⟨r, hr⟩` from `hd1 (y a) (Finset.mem_biUnion.2 ⟨y, hy, Finset.mem_image.2 ⟨a, Finset.mem_univ _, rfl⟩⟩)`.
+
+Conclude with `(lc_mem_one_iff _).2 ⟨r, hr⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `add_mem hy hz`.
+
+Consider the case `smul r y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hy`. Establish `h2 : ∀ j : Fin n, ∃ d : 𝓞 K, d ≠ 0 ∧ d • (fun a : Fin n => ((1 : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a j) ∈ M` using `fun j => lc_exists_smul_mem M (by rw [hM.span_eq_top]; trivial)`. Use `choose e he hem using h2`. Establish `h3 : ∀ x ∈ colLat (1 : GL (Fin n) K), (∏ j, e j) • x ∈ M`.
+
+Introduce `x hx`. Unfold `colLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`.
+
+Rewrite using `[← Finset.mul_prod_erase Finset.univ e (Finset.mem_univ j), mul_comm, mul_smul]`. Conclude with `M.smul_mem _ (hem j)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`.
+
+Conclude with `add_mem hy hz`. Consider the case `smul r y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r hy`. Use `⟨d1 * ∏ j, e j, mul_ne_zero (nonZeroDivisors.ne_zero d1.2) (Finset.prod_ne_zero_iff.2 fun j _ => he j), ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+
+Rewrite using `[mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (h1 x hx)`. Introduce `x hx`. Rewrite using `[mul_smul]`. Conclude with `M.smul_mem _ (h3 x hx)`.
+-/
 theorem lc_sandwich (M : Submodule (𝓞 K) (Fin n → K)) (hM : Submodule.IsLattice K M) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ (∀ x ∈ M, d • x ∈ colLat (1 : GL (Fin n) K)) ∧
       (∀ x ∈ colLat (1 : GL (Fin n) K), d • x ∈ M) := by
@@ -277,10 +396,20 @@ section Entries
 
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[mem_localized_iff_mem_baseChange, mem_atW_one_iff, mem_range_ow_iff]`.
+-/
 theorem mem_localized_one_iff (w : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K) ↔ x ∈ (algebraMap (Ow w) K).range := by
   rw [mem_localized_iff_mem_baseChange, mem_atW_one_iff, mem_range_ow_iff]
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩ a`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `(lc_mem_colLat B _).1 hx a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul]`. Then use the resulting hypothesis.
+
+Introduce `h choose s hs hx using h`. Use `⟨∏ a, s a, ?_, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Take `⟨a, _, ha⟩` from `(w.isPrime.prod_mem_iff).1 hmem`. Conclude with `hs a ha`.
+
+Rewrite using `[lc_mem_colLat]`. Introduce `a`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, ← Finset.mul_prod_erase Finset.univ s (Finset.mem_univ a), mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hx a)`.
+-/
 theorem mem_localized_columnLattice_iff (w : HeightOneSpectrum (𝓞 K)) (B : GL (Fin n) K) (x : Fin n → K) :
     x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (colLat B) ↔
       ∀ a, (((B⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈
@@ -303,6 +432,13 @@ theorem mem_localized_columnLattice_iff (w : HeightOneSpectrum (𝓞 K)) (B : GL
         mul_smul]
       exact Submodule.smul_mem _ _ (hx a)
 
+/- English proof (translation)
+Establish `h1 : (fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a b) ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M`. Rewrite using `[hB]`. Conclude with `lc_le_locP w _ (lc_col_mem_colLat B b)`. Take `⟨s, hs, h2⟩` from `h1`. Establish `h3` using `hd _ h2`.
+
+Rewrite `h3` using `[hB', smul_comm, smul_mem_localized_iff w _ hs, mem_localized_columnLattice_iff]`. Establish `h4` using `h3 a`. Rewrite `h4` using `[Matrix.mulVec_smul, Pi.smul_apply, Algebra.smul_def]`. Establish `e : (((B'⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ fun a : Fin n => (B : Matrix (Fin n) (Fin n) K) a b) a = ((B'⁻¹ * B : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b`. Rewrite using `[Units.val_mul, Matrix.mul_apply]`.
+
+Both sides reduce to the same expression. Rewrite `h4` using `[e]`. Then use the resulting hypothesis.
+-/
 theorem lc_entries (w : HeightOneSpectrum (𝓞 K)) {M M' : Submodule (𝓞 K) (Fin n → K)} {B B' : GL (Fin n) K}
     (hB : IsBasisAt w M B) (hB' : IsBasisAt w M' B') (d : 𝓞 K)
     (hd : ∀ x ∈ M, d • x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal M') (a b : Fin n) :
@@ -322,6 +458,9 @@ theorem lc_entries (w : HeightOneSpectrum (𝓞 K)) {M M' : Submodule (𝓞 K) (
     rfl
   rwa [e] at h4
 
+/- English proof (translation)
+Use `lc_entries w hB hB' 1 (fun x hx => by rw [one_smul]; exact lc_le_locP w _ hx) a b` as an intermediate fact. Rewrite `this` using `[map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem lc_entries_same (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)} {B B' : GL (Fin n) K}
     (hB : IsBasisAt w M B) (hB' : IsBasisAt w M B') (a b : Fin n) :
     ((B'⁻¹ * B : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈
@@ -329,6 +468,13 @@ theorem lc_entries_same (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K)
   have := lc_entries w hB hB' 1 (fun x hx => by rw [one_smul]; exact lc_le_locP w _ hx) a b
   rwa [map_one, one_mul] at this
 
+/- English proof (translation)
+Use `choose U hU using fun a b => (mem_localized_one_iff w _).1 (h a b)`. Use `choose U' hU' using fun a b => (mem_localized_one_iff w _).1 (h' a b)`. Establish `e1 : (Matrix.of U).map (algebraMap (Ow w) K) = (g : Matrix (Fin n) (Fin n) K)`. Use extensionality with `a b`. Conclude with `hU a b`.
+
+Establish `e2 : (Matrix.of U').map (algebraMap (Ow w) K) = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Use extensionality with `a b`. Conclude with `hU' a b`. Establish `hinj : Function.Injective fun A : Matrix (Fin n) (Fin n) (Ow w) => A.map (algebraMap (Ow w) K)` using `Matrix.map_injective (algebraMap_ow_injective w)`. Use `⟨⟨Matrix.of U, Matrix.of U', hinj ?_, hinj ?_⟩, e1⟩` and prove the remaining obligations.
+
+Use `show (Matrix.of U * Matrix.of U').map (algebraMap (Ow w) K) = (1 : Matrix (Fin n) (Fin n) (Ow w)).map _`. Rewrite using `[Matrix.map_mul, e1, e2, Matrix.map_one _ (map_zero _) (map_one _), ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `show (Matrix.of U' * Matrix.of U).map (algebraMap (Ow w) K) = (1 : Matrix (Fin n) (Fin n) (Ow w)).map _`. Rewrite using `[Matrix.map_mul, e1, e2, Matrix.map_one _ (map_zero _) (map_one _), ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+-/
 theorem lc_liftOw (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) K)
     (h : ∀ a b, (g : Matrix (Fin n) (Fin n) K) a b ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (1 : Submodule (𝓞 K) K))
     (h' : ∀ a b, ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b ∈
@@ -353,6 +499,9 @@ theorem lc_liftOw (w : HeightOneSpectrum (𝓞 K)) (g : GL (Fin n) K)
     rw [Matrix.map_mul, e1, e2, Matrix.map_one _ (map_zero _) (map_one _), ← Units.val_mul, inv_mul_cancel,
       Units.val_one]
 
+/- English proof (translation)
+Use `lc_liftOw w _ (lc_entries_same w hB hB') ?_` and prove the remaining obligations. Establish `e : (B'⁻¹ * B)⁻¹ = B⁻¹ * B'` using `by rw [mul_inv_rev, inv_inv]`. Rewrite using `[e]`. Conclude with `lc_entries_same w hB' hB`.
+-/
 theorem lc_unitOw (w : HeightOneSpectrum (𝓞 K)) {M : Submodule (𝓞 K) (Fin n → K)} {B B' : GL (Fin n) K}
     (hB : IsBasisAt w M B) (hB' : IsBasisAt w M B') :
     ∃ u : GL (Fin n) (Ow w), (u : Matrix (Fin n) (Fin n) (Ow w)).map (algebraMap (Ow w) K) =
@@ -368,6 +517,17 @@ section LocalConditions
 
 variable {K : Type} [Field K] [NumberField K] {W : Type} [AddCommGroup W] [Module (𝓞 K) W]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hcl w]`. Conclude with `localization_mono w.asIdeal (iInf_le _ w)`. Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `h1 w x hx`.
+
+Take `⟨t, ht, htw⟩` from `lc_primeTo (d * d) (mul_ne_zero hd hd) w`. Use `⟨t * s, lc_mul_notMem w ht hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_iInf]`. Introduce `w'`. Distinguish the cases in `hw : w' = w`.
+
+Rewrite using `[hw]`. Conclude with `(Λ w).smul_mem _ hx`. Take `⟨r, hr, c, hc⟩` from `htw w' hw`. Rewrite using `[← hcl w']`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+
+Establish `e : r • (t * s) • x = c • d • s • d • x`. Simplify using `only [smul_smul]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`.
+
+Conclude with `(Λ w').smul_mem c (h2 w' _ hsx)`.
+-/
 theorem localized_iInf (Λ : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) W) (Λ₀ : Submodule (𝓞 K) W) (d : 𝓞 K) (hd : d ≠ 0)
     (hcl : ∀ w, Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Λ w) = Λ w)
     (h1 : ∀ w, ∀ x ∈ Λ w, d • x ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal Λ₀) (h2 : ∀ w, ∀ x ∈ Λ₀, d • x ∈ Λ w)

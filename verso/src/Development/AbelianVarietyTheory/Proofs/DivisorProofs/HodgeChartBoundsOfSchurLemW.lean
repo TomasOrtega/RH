@@ -15,10 +15,16 @@ noncomputable section
 
 namespace GlobalTheory.HodgeChartRow
 
+/- English proof (translation)
+Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Finset.mul_sum, mul_assoc]`.
+-/
 theorem smulMulVec {R : Type*} [CommSemiring R] {m : Type*} [Fintype m] (c : R) (A : Matrix m m R)
     (x : m → R) : (c • A) *ᵥ x = c • (A *ᵥ x) := by
   ext i; simp [mulVec, dotProduct, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[add_mulVec, dotProduct_add, sum_mulVec, dotProduct_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smulMulVec, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem quad_decomp {g a : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) (Bs : Fin a → Matrix (Fin g) (Fin g) ℝ)
     (t : Fin a → ℝ) (x : Fin g → ℝ) :
     x ⬝ᵥ (A + ∑ i, t i • Bs i) *ᵥ x = x ⬝ᵥ A *ᵥ x + ∑ i, t i * (x ⬝ᵥ Bs i *ᵥ x) := by
@@ -27,10 +33,16 @@ theorem quad_decomp {g a : ℕ} (A : Matrix (Fin g) (Fin g) ℝ) (Bs : Fin a →
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smulMulVec, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Simplify using `only [polydisc, Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_lt (by fun_prop) continuous_const`.
+-/
 theorem isOpen_polydisc (n : ℕ) (ρ : ℝ) : IsOpen (polydisc n ρ) := by
   simp only [polydisc, Set.setOf_forall]
   exact isOpen_iInter_of_finite fun k => isOpen_lt (by fun_prop) continuous_const
 
+/- English proof (translation)
+Establish `: punctured ha ρ = polydisc n ρ ∩ ⋂ i : Fin a, {z : Fin n → ℂ | z (Fin.castLE ha i) ≠ 0}`. Use extensionality with `z`. Simplify using `[punctured]`. Rewrite using `[this]`. Conclude with `(isOpen_polydisc n ρ).inter (isOpen_iInter_of_finite fun i => isOpen_ne_fun (by fun_prop) continuous_const)`.
+-/
 theorem isOpen_punctured {n a : ℕ} (ha : a ≤ n) (ρ : ℝ) : IsOpen (punctured ha ρ) := by
   have : punctured ha ρ = polydisc n ρ ∩ ⋂ i : Fin a, {z : Fin n → ℂ | z (Fin.castLE ha i) ≠ 0} := by
     ext z; simp [punctured]
@@ -38,6 +50,71 @@ theorem isOpen_punctured {n a : ℕ} (ha : a ≤ n) (ρ : ℝ) : IsOpen (punctur
   exact (isOpen_polydisc n ρ).inter
     (isOpen_iInter_of_finite fun i => isOpen_ne_fun (by fun_prop) continuous_const)
 
+/- English proof (translation)
+Introduce `n a g rk ha τ₀ B hP`. Take `⟨T₀, c₁, C₁, M, β, hT₀, hc₁, hM, hβ, hBq, hY'⟩` from `GlobalTheory.T.periodChart_uniform_constants_half_polydisc n a g rk τ₀ B hS hP`. Take `⟨W, hW'⟩` from `hW g a (fun i => (B i).map (Int.cast : ℤ → ℝ)) c₁ C₁ hc₁ hP.psd`. Establish `hBnn : ∀ i (x : Fin g → ℝ), 0 ≤ x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x` using `fun i x => by`. Simplify using `using (posSemidef_iff_dotProduct_mulVec.1 (hP.psd i)).2 x`.
+
+Establish `hBsymm : ∀ i (j k : Fin g), (B i k j : ℝ) = B i j k` using `fun i j k => by`. Simplify using `using (hP.psd i).isHermitian.apply j k`. Use `set W' : ℝ := max W 0 with hW'def`. Use `set ρ : ℝ := min (1 / 2) (Real.exp (-(4 * Real.pi * T₀))) with hρ`. Establish `hρ0 : 0 < ρ` using `lt_min (by norm_num) (Real.exp_pos _)`.
+
+Establish `hρ2 : ρ ≤ 1 / 2` using `min_le_left _ _`. Establish `hρ1 : ρ ≤ 1` using `hρ2.trans (by norm_num)`. Establish `hsymR : ∀ x ∈ polydisc n 1, (imPeriod ha τ₀ B x).IsSymm` using `fun x hx => IsSymm.ext fun j k => by simp [imPeriod, Matrix.sum_apply, hBsymm, (hP.symm x hx).apply]`. Establish `hsymC : ∀ x ∈ polydisc n 1, (hodgeGram ha τ₀ B x).IsSymm` using `fun x hx => IsSymm.ext fun j k => by simp [hodgeGram, (hsymR x hx).apply j k]`. Establish `hhermC : ∀ x ∈ polydisc n 1, (hodgeGram ha τ₀ B x).IsHermitian` using `fun x hx => by`.
+
+Use extensionality with `j k`. Simplify using `[hodgeGram, conjTranspose_apply, (hsymR x hx).apply j k]`. Establish `hz1 : ∀ z ∈ punctured ha ρ, z ∈ punctured ha 1` using `fun z hz => ⟨fun k => (hz.1 k).trans_le hρ1, hz.2⟩`. Establish `hzh : ∀ z ∈ punctured ha ρ, z ∈ polydisc n (1 / 2)` using `fun z hz k => (hz.1 k).trans_le hρ2`. Establish `ht : ∀ z ∈ punctured ha ρ, ∀ i : Fin a, 2 * T₀ < tlog (z (Fin.castLE ha i))`.
+
+Introduce `z hz i`. Establish `h0 : 0 < ‖z (Fin.castLE ha i)‖` using `norm_pos_iff.2 (hz.2 i)`. Establish `h1 : ‖z (Fin.castLE ha i)‖ < Real.exp (-(4 * Real.pi * T₀))` using `(hz.1 _).trans_le (min_le_right _ _)`. Establish `h2 : Real.log ‖z (Fin.castLE ha i)‖ < -(4 * Real.pi * T₀)`. Rewrite using `[← Real.log_exp (-(4 * Real.pi * T₀))]`.
+
+Conclude with `Real.log_lt_log h0 h1`. Rewrite using `[tlog, lt_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[Real.pi_pos]`. Establish `hdec : ∀ z, imPeriod ha τ₀ B z = ((τ₀ z).map Complex.im + T₀ • ∑ i, (B i).map (Int.cast : ℤ → ℝ)) + ∑ i, (tlog (z (Fin.castLE ha i)) - T₀) • (B i).map (Int.cast : ℤ → ℝ)` using `fun z => by`. Simplify using `only [imPeriod, sub_smul, Finset.sum_sub_distrib, Finset.smul_sum]`.
+
+Normalize the expressions using the abelian group laws. Establish `hq : ∀ z (x : Fin g → ℝ), x ⬝ᵥ imPeriod ha τ₀ B z *ᵥ x = x ⬝ᵥ ((τ₀ z).map Complex.im + T₀ • ∑ i, (B i).map (Int.cast : ℤ → ℝ)) *ᵥ x + ∑ i, (tlog (z (Fin.castLE ha i)) - T₀) * (x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x)` using `fun z x => by rw [hdec z, quad_decomp]`. Establish `hYlow : ∀ z ∈ punctured ha ρ, ∀ x, c₁ * (x ⬝ᵥ x) ≤ x ⬝ᵥ imPeriod ha τ₀ B z *ᵥ x`. Introduce `z hz x`. Rewrite using `[hq]`.
+
+Use `((hY' z (hzh z hz)).2.1 x)` as an intermediate fact. Establish `: 0 ≤ ∑ i, (tlog (z (Fin.castLE ha i)) - T₀) * (x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x)` using `Finset.sum_nonneg fun i _ => mul_nonneg (by linarith [ht z hz i]) (hBnn i x)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hYBi : ∀ z ∈ punctured ha ρ, ∀ i (x : Fin g → ℝ), (tlog (z (Fin.castLE ha i)) - T₀) * (x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x) ≤ x ⬝ᵥ imPeriod ha τ₀ B z *ᵥ x`. Introduce `z hz i x`.
+
+Rewrite using `[hq]`. Establish `h1` using `((hY' z (hzh z hz)).2.1 x)`. Establish `h2 : 0 ≤ x ⬝ᵥ x` using `by simpa [dotProduct] using Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) => mul_self_nonneg (x j)`. Establish `h3` using `Finset.single_le_sum (f := fun i => (tlog (z (Fin.castLE ha i)) - T₀) * (x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x)) (fun i _ => mul_nonneg (by linarith [ht z hz i]) (hBnn i x)) (Finset.mem_univ i)`. Use the polynomial consequences of the given equalities and inequalities.
+
+Use `set K₁ : ℝ := 2 * g * M / c₁ + a with hK₁`. Establish `hK₁0 : 0 ≤ K₁` using `by positivity`. Use `set C : ℝ := max (max C₁ β) (max (g * (2 * g * M / c₁ + W' * a)) (2 * (1 / 4 * K₁ ^ 2))) with hC`. Use `⟨ρ, c₁, C, hρ0, hρ2, hc₁, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
+
+Establish `hs : (imPeriod ha τ₀ B z - c₁ • (1 : Matrix (Fin g) (Fin g) ℝ)).IsSymm` using `(hsymR z (hz1 z hz).1).sub (isSymm_one.smul c₁)`. Use `posSemidef_iff_dotProduct_mulVec.2 ⟨?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[IsHermitian, conjTranspose_eq_transpose_of_trivial]`. Conclude with `hs`. Simplify using `only [star_trivial, sub_mulVec, smulMulVec, one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`.
+
+Combine the linear relations using `[hYlow z hz x]`. Introduce `z hz`. Use `set S : ℝ := ∑ i : Fin a, tlog (z (Fin.castLE ha i))`. Establish `hs : ((C * (1 + S)) • (1 : Matrix (Fin g) (Fin g) ℝ) - imPeriod ha τ₀ B z).IsSymm` using `(isSymm_one.smul _).sub (hsymR z (hz1 z hz).1)`. Use `posSemidef_iff_dotProduct_mulVec.2 ⟨?_, fun x => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[IsHermitian, conjTranspose_eq_transpose_of_trivial]`. Conclude with `hs`. Simplify using `only [star_trivial, sub_mulVec, smulMulVec, one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Rewrite using `[hq]`. Establish `h2 : 0 ≤ x ⬝ᵥ x` using `by simpa [dotProduct] using Finset.sum_nonneg fun j (_ : j ∈ Finset.univ) => mul_self_nonneg (x j)`.
+
+Establish `h1` using `(hY' z (hzh z hz)).2.2.1 x`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => by linarith [ht z hz i]`. Establish `h3 : ∑ i, (tlog (z (Fin.castLE ha i)) - T₀) * (x ⬝ᵥ ((B i).map (Int.cast : ℤ → ℝ)) *ᵥ x) ≤ S * (β * (x ⬝ᵥ x))`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Use `hBq i x` as an intermediate fact. Use `hBnn i x` as an intermediate fact. Use `ht z hz i` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hC1 : C₁ ≤ C` using `(le_max_left _ _).trans (le_max_left _ _)`.
+
+Establish `hCβ : β ≤ C` using `(le_max_right _ _).trans (le_max_left _ _)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hC1 h2, mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hCβ h2) hS0]`. Introduce `z hz`. Establish `hzp` using `hz1 z hz`. Take `⟨hGpsd, hG⟩` from `GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz`.
+
+Use `⟨PosDef.one, hGpsd, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hgn0 : 0 ≤ gnorm (poincareGram a z) ξ` using `gnorm_nonneg _ _`. Take `⟨hξk, hξi⟩` from `hG ξ`. Establish `hξ : ‖ξ‖ ≤ 2 * gnorm (poincareGram a z) ξ` using `(pi_norm_le_iff_of_nonneg (by positivity)).2 hξk`. Rewrite using `[conn_hodgeGram ha hP hzp.1 ξ, (GlobalTheory.T.hodgeMetricGramMatrix_local_holomorphic_imPart n a g rk ha τ₀ B hP z hzp).2.1 ξ]`.
+
+Establish `ht'0 : ∀ i, 0 < (fun i => tlog (z (Fin.castLE ha i)) - T₀) i` using `fun i => by`. Simplify using `only`. Combine the linear relations using `[ht z hz i]`. Establish `hWY : ∀ i x, ‖((fun i => tlog (z (Fin.castLE ha i)) - T₀) i • ((imPeriod ha τ₀ B z)⁻¹ * (fun i => (B i).map (Int.cast : ℤ → ℝ)) i)) *ᵥ x‖ ≤ W' * ‖x‖`. Introduce `i x`.
+
+Use `hW' _ (fun i => tlog (z (Fin.castLE ha i)) - T₀) (hY' z (hzh z hz)).1 (hY' z (hzh z hz)).2.1 (hY' z (hzh z hz)).2.2.1 ht'0 i x` as an intermediate fact. Use `beta_reduce at this ⊢`. Rewrite `this` using `[← hdec z]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _))`. Establish `key` using `GlobalTheory.T.connectionMatrix_gramOperatorNorm_le g a (imPeriod ha τ₀ B z) (fun i => (B i).map (Int.cast : ℤ → ℝ)) (of fun j k => fderiv ℂ (fun x => τ₀ x j k) z ξ) (fun i => ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))) (fun i => tlog (z (Fin.castLE ha …`.
+
+Use `key.trans ?_` and prove the remaining obligations. Establish `hs : ∀ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀) ≤ gnorm (poincareGram a z) ξ`. Introduce `i`. Establish `hz0 : 0 < ‖z (Fin.castLE ha i)‖` using `norm_pos_iff.2 (hz.2 i)`. Establish `htt` using `ht z hz i`.
+
+Establish `hpi` using `Real.pi_gt_three`. Establish `e : ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ = ‖ξ (Fin.castLE ha i)‖ / (2 * Real.pi * ‖z (Fin.castLE ha i)‖)`. Rewrite using `[norm_div, norm_mul, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le]`. Evaluate the numerical expressions. Rewrite using `[e, div_div, div_le_iff₀ (mul_pos (by positivity) (by linarith))]`.
+
+Establish `h1` using `hξi i`. Establish `h2 : tlog (z (Fin.castLE ha i)) ≤ Real.pi * (tlog (z (Fin.castLE ha i)) - T₀)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀) ≤ a * gnorm (poincareGram a z) ξ`.
+
+Use `(Finset.sum_le_sum fun i _ => hs i).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hC3 : g * (2 * g * M / c₁ + W' * a) ≤ C` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hW0 : 0 ≤ W'` using `le_max_right _ _`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hC' : 0 ≤ 1 / 4 * K₁ ^ 2` using `by positivity`. Establish `hPD : ∀ z ∈ punctured ha ρ, ((imPeriod ha τ₀ B z).map Complex.ofReal).PosDef` using `fun z hz => (GlobalTheory.T.hodgeCurvature_dual_metric_pointwise_bound g a (imPeriod ha τ₀ B z) (fun i => (B i).map (Int.cast : ℤ → ℝ)) 0 0 (fun i => tlog (z (Fin.castLE ha i)) - T₀) c₁ 0 hc₁ le_rfl (hsymR z (hz1 z hz).1) (hYlow z hz) hP.psd (fun i => show 0 < tlog _ - T₀ by lina …`. Establish `hPos : IsPosFrame (punctured ha ρ) (hodgeGram ha τ₀ B)` using `⟨isOpen_punctured ha ρ, fun j k z hz => ((GlobalTheory.T.hodgeMetricGramMatrix_local_holomorphic_imPart n a g rk ha τ₀ B hP z (hz1 z hz)).1 j k).contDiffWithinAt, hPD⟩`. Use `(twoFormBound_curv_two_mul hPos (fun z hz => (GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz).1) hC' ?_).mono ((le_max_right _ _).trans (le_max_right _ _))` and prove the remaining obligations. Introduce `z hz ξ v`.
+
+Establish `hzp` using `hz1 z hz`. Take `⟨hB1, hB2, hB3⟩` from `GlobalTheory.T.hodgeMetricGramMatrix_local_holomorphic_imPart n a g rk ha τ₀ B hP z hzp`. Take `⟨hGpsd, hG⟩` from `GlobalTheory.T.poincareMetric_punctured_polydisc_bounds n a ha ρ hρ1 z hz`. Establish `hpd` using `hPD z hz`. Establish `hgn0 : 0 ≤ gnorm (poincareGram a z) ξ` using `gnorm_nonneg _ _`.
+
+Take `⟨hξk, hξi⟩` from `hG ξ`. Establish `hξ : ‖ξ‖ ≤ 2 * gnorm (poincareGram a z) ξ` using `(pi_norm_le_iff_of_nonneg (by positivity)).2 hξk`. Rewrite using `[GlobalTheory.T.chernCurvature_form_self_eq_dual_norm n g (hodgeGram ha τ₀ B) z (hB1.of_le (by norm_cast)) ((isUnit_iff_isUnit_det _).1 hpd.isUnit) (mem_of_superset ((isOpen_polydisc n 1).mem_nhds hzp.1) fun x hx => hsymC x hx) (mem_of_superset ((isOpen_polydisc n 1).mem_nhds hzp …`. Take `⟨-, hbd⟩` from `GlobalTheory.T.hodgeCurvature_dual_metric_pointwise_bound g a (imPeriod ha τ₀ B z) (fun i => (B i).map (Int.cast : ℤ → ℝ)) (of fun j k => fderiv ℂ (fun x => τ₀ x j k) z ξ) (fun i => ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))) (fun i => tlog (z (Fin.cast …`. Establish `hbd'` using `hbd v`.
+
+Use `beta_reduce at hbd'`. Establish `hs : ∀ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀) ≤ gnorm (poincareGram a z) ξ`. Introduce `i`. Establish `hz0 : 0 < ‖z (Fin.castLE ha i)‖` using `norm_pos_iff.2 (hz.2 i)`. Establish `htt` using `ht z hz i`.
+
+Establish `hpi` using `Real.pi_gt_three`. Establish `e : ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ = ‖ξ (Fin.castLE ha i)‖ / (2 * Real.pi * ‖z (Fin.castLE ha i)‖)`. Rewrite using `[norm_div, norm_mul, norm_mul, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_of_nonneg Real.pi_pos.le]`. Evaluate the numerical expressions. Rewrite using `[e, div_div, div_le_iff₀ (mul_pos (by positivity) (by linarith))]`.
+
+Establish `h1` using `hξi i`. Establish `h2 : tlog (z (Fin.castLE ha i)) ≤ Real.pi * (tlog (z (Fin.castLE ha i)) - T₀)`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀) ≤ a * gnorm (poincareGram a z) ξ`.
+
+Use `(Finset.sum_le_sum fun i _ => hs i).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsum0 : 0 ≤ ∑ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀)` using `Finset.sum_nonneg fun i _ => div_nonneg (norm_nonneg _) (by linarith [ht z hz i])`. Establish `hK : g * (M * ‖ξ‖) / c₁ + ∑ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀) ≤ K₁ * gnorm (poincareGram a z) ξ`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hnc : ‖(1 / (2 * Complex.I) : ℂ)‖ = 1 / 2` using `by simp`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, hnc]`. Simplify using `only [hodgeGram]`. Establish `hX0 : 0 ≤ g * (M * ‖ξ‖) / c₁ + ∑ i, ‖ξ (Fin.castLE ha i) / (2 * Real.pi * Complex.I * z (Fin.castLE ha i))‖ / (tlog (z (Fin.castLE ha i)) - T₀)` using `by positivity`. Establish `hsq` using `pow_le_pow_left₀ hX0 hK 2`.
+
+Establish `hv0 : 0 ≤ gnorm (hodgeGram ha τ₀ B z) v ^ 2` using `sq_nonneg _`. Establish `hv0' : 0 ≤ gnorm ((imPeriod ha τ₀ B z).map Complex.ofReal) v ^ 2` using `sq_nonneg _`. Establish `hstep` using `mul_le_mul_of_nonneg_right hsq hv0'`. Use polynomial arithmetic with `[hbd', hstep]`.
+-/
 theorem hodgeChartBounds_of_schur_lemW (hS : ∀ (k l : ℕ) (a bt : Matrix (Fin k) (Fin k) ℝ) (b : Matrix (Fin k) (Fin l) ℝ) (d : Matrix (Fin l) (Fin l) ℝ) (C₀ c₀ b₀ : ℝ), 0 ≤ C₀ → 0 < c₀ → 0 < b₀ → a.IsSymm → d.IsSymm → bt.IsSymm → (∀ x, |x ⬝ᵥ a.mulVec x| ≤ C₀ * (x ⬝ᵥ x)) → (∀ y, (b.mulVec y) ⬝ᵥ (b.mulVec y) ≤ C₀ ^ 2 * (y ⬝ᵥ y)) → (∀ y, c₀ * (y ⬝ᵥ y) ≤ y ⬝ᵥ d.mulVec y) → (∀ x, b₀ * (x ⬝ᵥ x) ≤ x ⬝ᵥ bt.mulVec x) → ∀ z : Fin k ⊕ Fin l → ℝ, ((1 + C₀ / c₀) ^ 2 * max 1 (1 / c₀))⁻¹ * (z ⬝ᵥ z) ≤ z ⬝ᵥ (Matrix.fromBlocks (a + ((1 + C₀ + C₀ ^ 2 / c₀) / b₀) • bt) b b.transpose d).mulVec z) (hW : ∀ (g a : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℝ) (c C : ℝ), 0 < c → (∀ i, (B i).PosSemidef) → ∃ W : ℝ, ∀ (Y' : Matrix (Fin g) (Fin g) ℝ) (t : Fin a → ℝ), Y'.IsSymm → (∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y'.mulVec x) → (∀ x, x ⬝ᵥ Y'.mulVec x ≤ C * (x ⬝ᵥ x)) → (∀ i, 0 < t i) → ∀ i x, ‖(t i • ((Y' + ∑ l, t l • B l)⁻¹ * B i)).mulVec x‖ ≤ W * ‖x‖) : HodgeChartBounds := by
   intro n a g rk ha τ₀ B hP
   obtain ⟨T₀, c₁, C₁, M, β, hT₀, hc₁, hM, hβ, hBq, hY'⟩ := GlobalTheory.T.periodChart_uniform_constants_half_polydisc n a g rk τ₀ B hS hP

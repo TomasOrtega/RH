@@ -12,6 +12,27 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Substitute `hsz` using the available equality. Establish `hP : D.ptSize (h0 ++ [(n + 1, t)]) = D.ptSize h0 + (n + 1)` using `Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append h0 (n + 1) t`. Establish `hloc : D.IsLocPt (h0 ++ [(n + 1, t)]) (D.ptSize (h0 ++ [(n + 1, t)]))`. Use `⟨fun b hb => ?_, rfl⟩` and prove the remaining obligations. Break down `List.mem_append.mp hb with hb | hb` into its components or cases.
+
+Conclude with `hpb b hb`. Simplify using `only [List.mem_singleton] at hb`. Substitute `hb` using the available equality. Conclude with `⟨by omega, ht⟩`. Establish `hlocH` using `Formalism.FourierDecayAlt.P.Dx2.SL.isLocPt_head hloc`.
+
+Establish `hspec` using `(Formalism.FourierDecayAlt.P.ptPerm_spec _ _ hloc).1`. Establish `hspec'` using `(Formalism.FourierDecayAlt.P.ptPerm_spec _ _ hlocH).1`. Establish `hσ : ∀ q : Fin (D.ptSize (h0 ++ [(n + 1, t)])), ((Formalism.FourierDecayAlt.P.Dx2.SL.sigP (n` using `n) (D.ptPerm h0)) (Fin.cast hP q)).val = (D.ptPerm (h0 ++ [(n + 1, t)]) q).val := by`. Introduce `q`. Rewrite using `[hspec q, Formalism.FourierDecayAlt.P.Dx2.SL.partner_append (n + 1) t h0 q.val (by have := q.isLt; omega)]`.
+
+Distinguish the cases in `h1 : q.val < D.ptSize h0`. Rewrite using `[if_pos h1]`. Establish `e : Fin.cast hP q = Fin.castAdd (n + 1) ⟨q.val, h1⟩` using `Fin.ext rfl`. Rewrite using `[e, Formalism.FourierDecayAlt.P.Dx2.SL.blockPerm_castAdd]`. Conclude with `hspec' ⟨q.val, h1⟩`.
+
+Rewrite using `[if_neg h1]`. Establish `e : Fin.cast hP q = Fin.natAdd (D.ptSize h0) ⟨q.val - D.ptSize h0, by have` using `q.isLt; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[e, Formalism.FourierDecayAlt.P.Dx2.SL.blockPerm_natAdd]`. Simplify using `only [Fin.val_natAdd, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hd : ∀ q : Fin (D.ptSize (h0 ++ [(n + 1, t)])), Formalism.FourierDecayAlt.P.Dx2.SL.dP (n` using `n) (D.ptDiag h0) t (Fin.cast hP q) = D.ptDiag (h0 ++ [(n + 1, t)]) q := by`. Introduce `q`. Simplify using `only [D.ptDiag]`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.SL.scal_append (n + 1) t h0 q.val (by have := q.isLt; omega)]`. Distinguish the cases in `h1 : q.val < D.ptSize h0`.
+
+Rewrite using `[if_pos h1]`. Establish `e : Fin.cast hP q = Fin.castAdd (n + 1) ⟨q.val, h1⟩` using `Fin.ext rfl`. Rewrite using `[e, Formalism.FourierDecayAlt.P.Dx2.SL.dP, Fin.addCases_left]`. Both sides reduce to the same expression. Rewrite using `[if_neg h1]`.
+
+Establish `e : Fin.cast hP q = Fin.natAdd (D.ptSize h0) ⟨q.val - D.ptSize h0, by have` using `q.isLt; omega⟩ := Fin.ext (by simp; omega)`. Rewrite using `[e, Formalism.FourierDecayAlt.P.Dx2.SL.dP, Fin.addCases_right]`. Use `set ρ := r - D.ptSize (h0 ++ [(n + 1, t)]) with hρ`. Establish `hS : ∀ (Gx : B.Mat k r → (Wq →L[ℂ] Wp)) (γ : B.Mat k ρ), D.sliceAt k r T.base.z T.base.z' Gx (h0 ++ [(n + 1, t)]) γ = U.PhiFun (p` using `D.ptSize h0 + (n + 1)) (s := 0) k ρ (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h0)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h0) t) (D.castV (by omega) T.base.z) (D.castV (by omega) T.base.z') (D.castF (by omega) Gx) (fun a => a.elim0) γ := by`. Introduce `Gx γ`.
+
+Take `⟨-, hT2⟩` from `Formalism.FourierDecayAlt.P.Dx2.SL.phi_transport (k := k) (ρ := ρ) hP _ _ hσ _ _ hd (D.castV (by omega) T.base.z) (D.castV (by omega) T.base.z') (D.castF (by omega) Gx) γ`. Unfold `D.sliceAt`. Rewrite using `[dif_pos (by omega), hT2]`. Simplify using `only [Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV, Formalism.FourierDecayAlt.P.Dx2.SL.castF_castF]`. Unfold `PBE.xs`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.JCTx6.Link2.castF_self]`. Use function extensionality and compare the values at `γ`. Conclude with `hS _ γ`.
+-/
 theorem xs_eq_phi {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq]
     (T : D.LevTower k r Wp Wq) (χ : ℝ → ℝ) (ε : ℝ) (i : ℕ) (hi : i ≤ r) (w : List C.Letter)
@@ -79,11 +100,49 @@ theorem xs_eq_phi {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProdu
   funext γ
   exact hS _ γ
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => le_trans he (h.2.2 g hg hne)⟩`.
+-/
 theorem ccCoefM_mono {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {Bs : B.RealPlaceData k r Wp Wq} {A : ℝ} {mm : ℕ} {e e' : ℝ} {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (h : JC.CCCoefM Bs A mm e F) (he : e' ≤ e) : JC.CCCoefM Bs A mm e' F :=
   ⟨h.1, h.2.1, fun g hg hne => le_trans he (h.2.2 g hg hne)⟩
 
+/- English proof (translation)
+Take `⟨Cp, hCp0, hCp⟩` from `posCoreCont`. Use `⟨16 * Cp, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc k r Wp Wq _ _ _ _ _ _ T χ A₀ N P0 hPk hPr hk2 hχ hA₀ ε hε i hi w hw h0 m hc hpb hm hsz t0 ht0 a`. Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Establish `hPt : ∀ t : ℂ, D.ptSize (h0 ++ [(n + 1, t)]) = i` using `fun t => by`.
+
+Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append]`. Conclude with `hsz`. Establish `hd0 : ∀ q, D.ptDiag h0 q ≠ 0` using `fun q => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne h0 hpb q q.2`. Establish `e1 : r = D.ptSize h0 + (n + 1) + (r - i)` using `by omega`. Establish `e2 : D.ptSize h0 + (n + 1) + (r - i) = r` using `by omega`.
+
+Establish `hj1 : 1 ≤ D.ptSize h0 + (n + 1)` using `by omega`. Take `⟨Θ, hΘ, hΘF⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Let.lettersDD k (D.ptSize h0 + (n + 1)) (r - i) Wp Wq (D.castV e1 T.base.z) (D.castV e1 T.base.z') (by omega) w a hj1`. Establish `hU : ∀ hh : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV k r) hh → ∀ g ∈ B.GV k (D.ptSize h0 + (n + 1) + (r - i)), U.DjU k (D.ptSize h0 + (n + 1)) (r - i) g ≠ 0 → D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a) g = B.opApply Θ (D.castF e2 (D.cutF T.base χ h …`. Introduce `hh hsm g hg hD`. Establish `hFc : B.CkOn ⊤ (B.GV k r) (D.cutF T.base χ hh ε)` using `Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF T.base hχ hsm ε`.
+
+Establish `h1 : D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a) = D.uwG k (D.ptSize h0 + (n + 1) + (r - i)) (D.castV e1 T.base.z) (D.castV e1 T.base.z') (D.castF e2 (D.cutF T.base χ hh ε)) (D.ptSize h0 + (n + 1)) (by omega) w a`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx6.Link2.castF_uwG e2 _ _ _ _ hi (by omega)]`. Conclude with `Formalism.FourierDecayAlt.P.JCTx6.Link2.uwG_level _ _ _ hsz.symm _ _ w a`. Rewrite using `[h1, hΘF _ (Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_castF e2 hFc) g hg hD]`. Establish `hFrel : ∀ hh : B.Mat k r → (Wq →L[ℂ] Wp), B.CkOn ⊤ (B.GV k r) hh → ∀ g ∈ B.GV k (D.ptSize h0 + (n + 1) + (r - i)), U.DjU k (D.ptSize h0 + (n + 1)) (r - i) g ≠ 0 → D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a) g = B.opApply Θ (fun x => ((χ (Gf k (D.ptSi …`.
+
+Introduce `hh hsm g hg hD`. Rewrite using `[hU hh hsm g hg hD, Formalism.FourierDecayAlt.P.JCTx6.Link2.castF_cutF e2]`. Use `set nd := 2 * r + k + 1 with hnd`. Use `set As := 11 * (N * nd ^ 2 + nd ^ 3) + 5 with hAs`. Take `⟨b1, b2, b3, b4, b5⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Link2.budgetAs r k N w.length (D.ptSize h0 + (n + 1)) hk2 hw (by omega)`.
+
+Establish `hmmU : P5.mmUser P0 N = 5 + 3 * (r + 1) * (N + 2) * nd + N * r`. Simplify using `only [P5.mmUser, P5.nV, hPk, hPr, hnd]`. Establish `hAU : P5.Auser P0 N = 127 * ((r : ℝ) + 1) ^ 3 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)`. Simplify using `only [P5.Auser, P5.nV, hPk, hPr, hnd]`. Apply the tactic sequence `try (push_cast; try ring)`.
+
+Establish `hX1 : (1 : ℝ) ≤ (N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3` using `by exact_mod_cast b5`. Establish `hAsR : (As : ℝ) = 11 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) + 5`. Rewrite using `[hAs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hR1 : (1 : ℝ) ≤ (r : ℝ) + 1` using `by have : (0 : ℝ) ≤ r := Nat.cast_nonneg r; linarith`. Establish `hsumR : (((D.ptSize h0 + (n + 1) + (r - i) : ℕ) : ℝ)) = (r : ℝ)` using `by exact_mod_cast e2`. Take `⟨ε', hε', hQ⟩` from `hCp k (D.ptSize h0) n (r - i) Wp Wq (D.castV e1 T.base.z) (D.castV e1 T.base.z') (Formalism.FourierDecayAlt.P.Dx1.SN.castV_inWb e1 _ T.base.z_mem) (Formalism.FourierDecayAlt.P.Dx1.SN.castV_inWb e1 _ T.base.z'_mem) Θ _ _ hΘ χ A₀ ε hχ hε (D.ptPerm h0) (D.ptDiag h0) t0 hd0 ht0 As (P …`. Rewrite using `[hsumR, hAU, hAsR]`. Establish `hR3 : (1 : ℝ) ≤ ((r : ℝ) + 1) ^ 3` using `one_le_pow₀ hR1`.
+
+Establish `: 0 ≤ ((r : ℝ) + 1) ^ 3 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)` using `by positivity`. Use the proof step `nlinarith)`. Use the proof step `(by`. Rewrite using `[hsumR, hAsR]`. Establish `hR4 : 0 ≤ ((r : ℝ) + 1) ^ 4` using `by positivity`.
+
+Establish `hX0 : 0 ≤ (N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3` using `by linarith`. Establish `s1 : Cp * ((r : ℝ) + 1) ^ 4 * (11 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) + 5) ≤ Cp * ((r : ℝ) + 1) ^ 4 * (16 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3))`. Apply `mul_le_mul_of_nonneg_left _ (by positivity); linarith` to reduce the goal to its premises. Establish `s2 : 16 * Cp * (((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3)) ≤ Cc * (((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3))` using `mul_le_mul_of_nonneg_right hCc (by positivity)`. Establish `s3 : Cc * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (nd : ℝ) ^ 2 + (nd : ℝ) ^ 3) ≤ A₀`.
+
+Establish `hndR : (nd : ℝ) = 2 * (r : ℝ) + k + 1` using `by rw [hnd]; push_cast; ring`. Rewrite using `[hndR]`. Conclude with `hA₀`. Use the proof step `nlinarith)`. Establish `hz1 : U.lowV k (D.ptSize h0 + (n + 1)) (r - i) (D.castV e1 T.base.z) = (T.bs i).z`.
+
+Establish `hzl : T.base.z = D.castV (by omega) (liftVec k i (r - i) (T.bs i).z)` using `(T.z_lev _ hi).symm`. Rewrite using `[hzl, Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV]`. Conclude with `Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec hsz _ _`. Establish `hz1' : U.lowV k (D.ptSize h0 + (n + 1)) (r - i) (D.castV e1 T.base.z') = (T.bs i).z'`. Establish `hzl' : T.base.z' = D.castV (by omega) (liftVec k i (r - i) (T.bs i).z')` using `(T.z'_lev _ hi).symm`.
+
+Rewrite using `[hzl', Formalism.FourierDecayAlt.P.Dx2.SL.castV_castV]`. Conclude with `Formalism.FourierDecayAlt.P.JCTx6.Link2.lowV_liftVec hsz _ _`. Use `⟨ε', hε', fun hh c hsm hcl => ?_⟩` and prove the remaining obligations. Take `⟨δ, Kb, Dd, hδ, hDd, hnear⟩` from `hQ (D.castF e2 hh) c (PBE.ccle_castF e2 hcl) _ (hFrel hh hsm)`. Establish `key : ∀ t : ℂ, t ≠ 0 → PBE.xs T χ ε i hi w (h0 ++ [(n + 1, t)]) (hc t) hh a = fun γ => U.PhiFun (p` using `D.ptSize h0 + (n + 1)) (s := 0) k (r - i) (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h0)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h0) t) (D.castV e1 T.base.z) (D.castV e1 T.base.z') (D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a)) (fun …`.
+
+Take `⟨-, -, hsupp0, -⟩` from `hnear t0 (by rw [dist_self]; exact hδ)`. Use `⟨δ, Kb, Dd, hδ, hDd, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨htne, hB, hsupp, hD⟩` from `hnear t ht`. Establish `hsub : PBE.xs T χ ε i hi w (h0 ++ [(n + 1, t)]) (hc t) hh a - PBE.xs T χ ε i hi w (h0 ++ [(n + 1, t0)]) (hc t0) hh a = fun γ => U.PhiFun (p` using `D.ptSize h0 + (n + 1)) (s := 0) k (r - i) (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h0)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h0) t) (D.castV e1 T.base.z) (D.castV e1 T.base.z') (D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a)) (fun …`. Rewrite using `[key t htne, key t0 ht0]`.
+
+Both sides reduce to the same expression. Rewrite using `[hsub, key t htne]`. Use `⟨htne, ⟨hB.1, ⟨_, hB⟩, fun γ hγ hne => ?_⟩, hB, ⟨hD.1, ⟨_, hD⟩, fun γ hγ hne => ?_⟩, hD⟩` and prove the remaining obligations. Use `hsupp γ hγ hne` as an intermediate fact. Rewrite `this` using `[hz1, hz1']`. Then use the resulting hypothesis.
+
+Distinguish the cases in `h1 : U.PhiFun (p := D.ptSize h0 + (n + 1)) (s := 0) k (r - i) (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h0)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h0) t) (D.castV e1 T.base.z) (D.castV e1 T.base.z') (D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh …`. Establish `hne0 : U.PhiFun (p` using `D.ptSize h0 + (n + 1)) (s := 0) k (r - i) (Formalism.FourierDecayAlt.P.Dx2.SL.sigP (D.ptPerm h0)) (Formalism.FourierDecayAlt.P.Dx2.SL.dP (D.ptDiag h0) t0) (D.castV e1 T.base.z) (D.castV e1 T.base.z') (D.castF e2 (D.uwG k r T.base.z T.base.z' (D.cutF T.base χ hh ε) i hi w a)) (fun …`. Introduce `h2`. Apply `hne` to reduce the goal to its premises. Simplify using `only [h1, h2, sub_zero]`.
+
+Use `hsupp0 γ hγ hne0` as an intermediate fact. Rewrite `this` using `[hz1, hz1']`. Then use the resulting hypothesis. Use `hsupp γ hγ h1` as an intermediate fact. Rewrite `this` using `[hz1, hz1']`. Then use the resulting hypothesis.
+-/
 theorem sliceContQa : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
     ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -213,6 +272,13 @@ theorem sliceContQa : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
     · have := hsupp γ hγ h1
       rwa [hz1, hz1'] at this
 
+/- English proof (translation)
+Take `⟨Cs, hCs0, hCs⟩` from `sliceContQa`. Use `⟨Cs, hCs0, ?_⟩` and prove the remaining obligations. Introduce `Cc hCc k r Wp Wq _ _ _ _ _ _ T χ A₀ N P0 hPk hPr hk2 hχ hA₀ ε hε i hi w hw h0 m hc hpb hm hsz t0 ht0`. Establish `H` using `fun a : Wd.Ix (Fin w.length) => hCs Cc hCc k r Wp Wq T χ A₀ N P0 hPk hPr hk2 hχ hA₀ ε hε i hi w hw h0 m hc hpb hm hsz t0 ht0 a`. Use `choose ef hef hP using H`.
+
+Use `⟨Finset.univ.inf' Finset.univ_nonempty ef, (Finset.lt_inf'_iff Finset.univ_nonempty).2 (fun a _ => hef a), fun a hh c hsm hcl => ?_⟩` and prove the remaining obligations. Establish `hle : Finset.univ.inf' Finset.univ_nonempty ef ≤ ef a` using `Finset.inf'_le _ (Finset.mem_univ a)`. Take `⟨δ, Kb, Dd, hδ, hDd, hn⟩` from `hP a hh c hsm hcl`. Use `⟨δ, Kb, Dd, hδ, hDd, fun t ht => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5⟩` from `hn t ht`.
+
+Conclude with `⟨h1, ccCoefM_mono h2 hle, h3, ccCoefM_mono h4 hle, h5⟩`.
+-/
 theorem sliceContQ : ∃ Cs : ℝ, 0 ≤ Cs ∧ ∀ Cc : ℝ, Cs ≤ Cc →
     ∀ (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

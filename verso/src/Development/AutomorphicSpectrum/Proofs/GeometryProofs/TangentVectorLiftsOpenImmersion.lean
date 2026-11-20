@@ -11,6 +11,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.CompanionTheory.Ggeo.DOpen
 
+/- English proof (translation)
+Introduce `A T φ _ g W y v hv`. Establish `hcl : IsLocalRing.closedPoint (DualNumber ℂ) ∈ v ⁻¹ᵁ φ.opensRange`. Establish `h0 : ⊤ ≤ (W 0 ≫ φ) ⁻¹ᵁ φ.opensRange` using `fun p _ => (show (W 0 ≫ φ) p ∈ Set.range φ from ⟨W 0 p, by simp⟩)`. Establish `hpt : v (IsLocalRing.closedPoint _) = (W 0 ≫ φ) ReciprocityTheory.ChartRestriction.G.PullbackSections.cpt`. Establish `hcomp : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v = W 0 ≫ φ` using `hv.1`.
+
+Rewrite using `[← hcomp, Scheme.Hom.comp_apply, spMap, Spec_closedPoint]`. Use `show v (IsLocalRing.closedPoint _) ∈ φ.opensRange`. Rewrite using `[hpt]`. Conclude with `h0 trivial`. Establish `htop : ⊤ ≤ v ⁻¹ᵁ φ.opensRange` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.dual_top_le _ hcl`.
+
+Establish `hrange : Set.range v ⊆ Set.range φ`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `htop (show p ∈ (⊤ : (Sp (DualNumber ℂ)).Opens) from trivial)`. Take `⟨v', rfl⟩ : ∃ v', v' ≫ φ = v` from `⟨IsOpenImmersion.lift φ v hrange, IsOpenImmersion.lift_fac _ _ _⟩`. Use `⟨v', rfl, ?_, fun U' h f' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← cancel_mono φ, Category.assoc]`. Conclude with `hv.1`. Establish `key : ∀ (U : T.Opens) (U' : A.Opens) (e : φ ⁻¹ᵁ U = U') (h : ⊤ ≤ v' ⁻¹ᵁ U') (f : Γ(T, U)), TrivSqZeroExt.snd (show DualNumber ℂ from (Scheme.ΓSpecIso (CommRingCat.of (DualNumber ℂ))).hom.hom ((v'.appLE U' ⊤ h).hom (φ.appLE U U' e.ge f))) = fderiv ℂ (fun z => valAt' (W z) U' (φ.ap …`. Introduce `U U' e h f`. Substitute `e` using the available equality.
+
+Establish `hU : ⊤ ≤ (v' ≫ φ) ⁻¹ᵁ U` using `h`. Establish `happ : φ.appLE U (φ ⁻¹ᵁ U) (le_refl (φ ⁻¹ᵁ U)) f = φ.app U f`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Establish `hfun : (fun z => valAt' (W z) (φ ⁻¹ᵁ U) (φ.app U f)) = fun z => valAt' ((fun x => W x ≫ φ) z) U f`. Use function extensionality and compare the values at `fun z => ReciprocityTheory.ChartRestriction.G.PullbackSections.valAt'_comp (W z) φ U f`.
+
+Use `erw [happ]`. Rewrite using `[hfun, ← hv.2 U hU f, Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression. Establish `hpre : φ ⁻¹ᵁ (φ ''ᵁ U') = U'` using `φ.preimage_image_eq U'`. Use `key (φ ''ᵁ U') U' hpre h ((φ.appIso U').inv f')` as an intermediate fact.
+
+Establish `hf : φ.appLE (φ ''ᵁ U') U' hpre.ge ((φ.appIso U').inv f') = f'`. Establish `hh : φ.appLE (φ ''ᵁ U') U' hpre.ge = (φ.appIso U').hom` using `(Scheme.Hom.appIso_hom' φ U').symm`. Rewrite using `[hh]`. Conclude with `ConcreteCategory.congr_hom (φ.appIso U').inv_hom_id f'`. Rewrite `this` using `[hf]`. Then use the resulting hypothesis.
+-/
 theorem isDerivAt0_lift_of_isOpenImmersion :
     ∀ (A T : Scheme.{0}) (φ : A ⟶ T) [IsOpenImmersion φ] (g : ℕ) (W : (Fin g → ℂ) → (Sp ℂ ⟶ A))
       (y : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ T),

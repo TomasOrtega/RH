@@ -9,6 +9,9 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Use `(UpperTheory.Zero.LLC.Pr.adm k N V π hs hi).2 (KOne k (Fin N)) ?_ ?_` and prove the remaining obligations. Rewrite using `[← levelPre_bot]`. Conclude with `isOpen_levelPre _`. Rewrite using `[← levelPre_bot]`. Conclude with `isCompact_levelPre _`.
+-/
 private theorem fd_fixed {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V)
     (hs : IsSmooth π) (hi : π.IsIrreducible) : FiniteDimensional ℂ (fixed π (KOne k (Fin N))) := by
@@ -18,12 +21,18 @@ private theorem fd_fixed {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   · rw [← levelPre_bot]
     exact isCompact_levelPre _
 
+/- English proof (translation)
+Introduce `x y`. Use `show LinearMap.trace ℂ _ (η (y⁻¹ * x * y)) = LinearMap.trace ℂ _ (η x)`. Rewrite using `[map_mul, LinearMap.trace_mul_comm, ← map_mul, ← mul_assoc, mul_inv_cancel, one_mul]`.
+-/
 private theorem isCl_trace {G : Type} [Group G] {r : ℕ} (η : Representation ℂ G (Fin r → ℂ)) :
     IsCl (fun g => LinearMap.trace ℂ (Fin r → ℂ) (η g)) := by
   intro x y
   show LinearMap.trace ℂ _ (η (y⁻¹ * x * y)) = LinearMap.trace ℂ _ (η x)
   rw [map_mul, LinearMap.trace_mul_comm, ← map_mul, ← mul_assoc, mul_inv_cancel, one_mul]
 
+/- English proof (translation)
+Take `⟨c, hc, hcY⟩` from `hF F s d N hd`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Rewrite using `[hcY Y (fun g => LinearMap.trace ℂ (Fin r → ℂ) (η g)) (isCl_trace η), h0, mul_zero]`.
+-/
 private theorem frob_step (hF : FrobL) {F : Type} [Field F] [Finite F] {s : ℕ} {d : Fin s → ℕ} {N : ℕ}
     (hd : ∑ i, d i = N) (Y : ∀ i, GL (Fin (d i)) F → ℂ) {r : ℕ}
     (η : Representation ℂ (GL (Fin N) F) (Fin r → ℂ))
@@ -35,6 +44,11 @@ private theorem frob_step (hF : FrobL) {F : Type} [Field F] [Finite F] {s : ℕ}
   apply h
   rw [hcY Y (fun g => LinearMap.trace ℂ (Fin r → ℂ) (η g)) (isCl_trace η), h0, mul_zero]
 
+/- English proof (translation)
+Establish `key : ∀ p : parab F (stdBlocks d hd), LinearMap.trace ℂ (PiTensorProduct ℂ fun a => W a) (piTensor σ (leviProj F (stdBlocks d hd) p)) = ∏ i, Y i (leviProj F (stdBlocks d hd) p i)`. Introduce `p`. Rewrite using `[(hT s _ W σ).2]`. Conclude with `Finset.prod_congr rfl fun a _ => hY a _`. Unfold `Meets`.
+
+Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype, key]`. Conclude with `h`.
+-/
 private theorem meets_parab (hT : TensTr) {F : Type} [Field F] {s : ℕ} {d : Fin s → ℕ} {N : ℕ}
     (hd : ∑ i, d i = N) {W : Fin s → Type} [∀ a, AddCommGroup (W a)] [∀ a, Module ℂ (W a)]
     [∀ a, FiniteDimensional ℂ (W a)] (σ : ∀ a, Representation ℂ (GL (Fin (d a)) F) (W a))
@@ -54,6 +68,11 @@ private theorem meets_parab (hT : TensTr) {F : Type} [Field F] {s : ℕ} {d : Fi
   simp only [MonoidHom.comp_apply, Subgroup.coe_subtype, key]
   exact h
 
+/- English proof (translation)
+Use `⟨f.toLinearMap ∘ₗ Ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hΨ0` to reduce the goal to its premises. Use `LinearMap.ext fun x => hf ?_` and prove the remaining obligations. Use `LinearMap.congr_fun h0 x` as an intermediate fact.
+
+Simplify using `using this`. Introduce `g x`. Use `LinearMap.congr_fun (f.isIntertwining' g) (Ψ x)` as an intermediate fact. Simplify `this` using `[hΨ]`.
+-/
 private theorem compose_map {G X U U' : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGroup U] [Module ℂ U]
     [AddCommGroup U'] [Module ℂ U'] {ρ : Representation ℂ G U} {ρ' : Representation ℂ G U'}
     {η : Representation ℂ G X} (Ψ : X →ₗ[ℂ] U) (f : ρ.IntertwiningMap ρ') (hf : Function.Injective f)
@@ -69,6 +88,21 @@ private theorem compose_map {G X U U' : Type} [Group G] [AddCommGroup X] [Module
     have := LinearMap.congr_fun (f.isIntertwining' g) (Ψ x)
     simpa [hΨ] using this
 
+/- English proof (translation)
+Introduce `hMI hF hJD hTT hAvg hInd hTI`. Introduce `k _ _ _ _ _ θ N V _ _ π hs hi s x c hd hE hx T hT hP`. Take `⟨e⟩` from `hE`. Take `⟨r, η, hη⟩` from `hT`. Establish `hTη : T = fun g => LinearMap.trace ℂ (Fin r → ℂ) (η g)`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hη g]`. Both sides reduce to the same expression. Substitute `hTη` using the available equality. Establish `hJ : J θ (List.ofFn fun a => ((x a).fst, c a)) N = hcL (List.ofFn fun i => (⟨(x i).fst, cusp θ (x i).fst (c i)⟩ : (m : ℕ) × (GL (Fin m) 𝓀[k] → ℂ))) N`.
+
+Rewrite using `[← JD_nil, (hJD 𝓀[k] θ).1]`. Simplify using `[List.map_ofFn, Function.comp_def]`. Establish `h1 : ∑ᶠ g, star (hcL (List.ofFn fun i => (⟨(x i).fst, cusp θ (x i).fst (c i)⟩ : (m : ℕ) × (GL (Fin m) 𝓀[k] → ℂ))) N g) * LinearMap.trace ℂ (Fin r → ℂ) (η g) ≠ 0`. Rewrite using `[← hJ]`. Conclude with `hP`.
+
+Establish `h2` using `frob_step hF (d := fun a => (x a).fst) hd (fun i => cusp θ (x i).fst (c i)) η h1`. Use `haveI hfd : ∀ a, FiniteDimensional ℂ (fixed (x a).rep (KOne k (Fin (x a).fst))) := fun a => fd_fixed _ (x a).snd.rep.smooth (x a).snd.rep.irr`. Establish `h3` using `meets_parab hTT hd (fun a => levelZero (x a).rep) (fun i => cusp θ (x i).fst (c i)) hx η h2`. Use `haveI := (hTT s _ _ (fun a => levelZero (x a).rep)).1`. Take `⟨ψ, hψ0, hψ⟩` from `((hMI _ _ _ _ _).1).1 h3`.
+
+Take `⟨j, hj, hjx⟩` from `hTI k s (fun a => (x a).fst) _ (fun a => (x a).rep)`. Take `⟨Φ, ev, hΦ1, hΦ2, hΦ3⟩` from `hInd k N s (fun a => (x a).fst) hd _ _ _ _ j hj hjx`. Take `⟨Ψ, hΨ0, hΨ⟩` from `hAvg _ (parab 𝓀[k] (stdBlocks (fun a => (x a).fst) hd)) _ _ _ _ _ _ η Φ ev ψ hΦ1 hΦ2 hΦ3 hψ hψ0`. Establish `hinj : Function.Injective (levelZeroMap e.symm.toIntertwiningMap)`. Apply `levelZeroMap_injective` to reduce the goal to its premises.
+
+Introduce `a b hab`. Use `congrArg e hab` as an intermediate fact. Simplify using `using this`. Take `⟨F', hF0, hF'⟩` from `compose_map Ψ (levelZeroMap e.symm.toIntertwiningMap) hinj hΨ0 hΨ`. Use `haveI := fd_fixed π hs hi`.
+
+Conclude with `((hMI _ _ _ (levelZero π) η).2).2 ⟨F', hF0, hF'⟩`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.lblFull :
     MeetsIff → FrobL → JDEq → TensTr → AvgMap → IndMap → TensInc → UpperTheory.Gal.InertialTypesAlt.LblFull := by
   intro hMI hF hJD hTT hAvg hInd hTI

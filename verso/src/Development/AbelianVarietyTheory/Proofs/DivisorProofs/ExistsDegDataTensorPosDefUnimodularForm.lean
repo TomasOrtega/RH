@@ -28,6 +28,15 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.Mum.TensPol
 
+/- English proof (translation)
+Establish `hform : FormEq (X` using `B.left) (Y := (𝟙_ (Over (Spec (CommRingCat.of R)))).left) (PEmpty.elim : PEmpty → _) PEmpty.elim (GlobalTheory.LamBiext.flatφ (tensφ pr) (fun _ : PUnit => eSec A')) (GlobalTheory.LamBiext.flatε (tensε W) (fun _ : PUnit => (1 : ℤ))) := by`. Introduce `U _ h`. Simplify using `only [GlobalTheory.LamBiext.flatφ, GlobalTheory.LamBiext.flatε, GlobalTheory.Mum.TensRig.eSec_tensφ pr hpr, _root_.one_mul, Finset.univ_eq_empty, Finset.prod_empty, Fintype.prod_prod_type, Fin.prod_univ_four, tensε, Oε]`. Simplify using the standard rewrite rules. Take `⟨t, ht, htv⟩` from `exists_gen hM hform (LB.oneGen M) (GlobalTheory.Mum.TensRig.oneGen_isGen' _)`.
+
+Take `⟨a, ha, hmaps⟩` from `Transport.exists_transport (DVR.linComb_isLB L' hL' (fun _ : PUnit => eSec A') (fun _ => 1)) (DVR.linComb_isLB _ (DVR.linComb_isLB M hM (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => 1)) (LB.linCombIso w (fun _ : PUnit => eSec A') (fun _ => 1)) (DVR.linCombIso_isGen w …`. Use `⟨a, ha, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `hPM` using `(GlobalTheory.GtCubeCompare.maps_iff_pm w (fun _ : PUnit => eSec A') (fun _ => 1) a _).1 hmaps`. Establish `hp : (toUnit (TK R)).left z ∈ LB.wchart (LB.LinComb M (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => fun k => J (ptK η[A'] ≫ tensφ pr k))` using `Set.mem_iInter.2 fun _ => Set.mem_iInter.2 fun k => hJ (ptK η[A'] ≫ tensφ pr k)`. Establish `hq : (toUnit (TK R)).left z ∈ LB.wchart L' (fun _ : PUnit => eSec A') (fun _ => J' (ptK η[A']))` using `Set.mem_iInter.2 fun _ => hJ' (ptK η[A'])`.
+
+Establish `E` using `hPM _ (toUnit (TK R)).left z _ _ hp hq`. Establish `L1 : gm (toUnit (TK R)).left z (LB.wchart (LB.LinComb M (tensφ pr) (tensε W)) (fun _ : PUnit => eSec A') (fun _ => fun k => J (ptK η[A'] ≫ tensφ pr k))) ((GlobalTheory.LamBiext.nest M (tensφ pr) (tensε W) (fun _ : PUnit => eSec A') (fun _ => 1) t).s (fun _ => fun k => J (ptK η[A' …`. Use `(gm_res _ z (GlobalTheory.LamBiext.nest_le M (tensφ pr) (tensε W) (fun _ : PUnit => eSec A') _) hp _).trans ?_` and prove the remaining obligations. Conclude with `(val_of t (toUnit (TK R)).left z J (fun p => J (ptK η[A'] ≫ tensφ pr p.2)) (fun x => congrArg J (Category.assoc _ _ _).symm)).symm.trans ((htv _ _ z J hJ).trans (val_one _))`. Rewrite `E` using `[L1, Fintype.prod_unique, zpow_one]`.
+
+Rewrite using `[val_pull hJ' a (toUnit (TK R)).left (𝟙 _), val_of a _ z J' (fun _ => J' (ptK η[A'])) (fun _ => by rw [Category.id_comp]; rfl), Category.id_comp, mul_comm]`. Conclude with `E.symm`.
+-/
 theorem rig_exists {R : Type} [CommRing R] [IsDomain R] {B : Over (Spec (CommRingCat.of R))} [GrpObj B] {M : LB B.left}
     (hM : M.IsLB) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {A' : Over (Spec (CommRingCat.of R))} [GrpObj A'] {L' : LB A'.left}
     (hL' : L'.IsLB) (pr : Fin r → (A' ⟶ B)) (hpr : ∀ i, IsMonHom (pr i)) (w : LB.Iso L' (LB.LinComb M (tensφ pr) (tensε W)))
@@ -77,6 +86,17 @@ namespace GlobalTheory.Mum.TensPol
 
 variable {R : Type} [CommRing R] [IsDomain R]
 
+/- English proof (translation)
+Set `H : ((TK R).left ⟶ Q.B.left) → ((TK R).left.presheaf.stalk z)ˣ` to `fun ψ => gm ψ z _ (Q.M.L.g (J ψ) (J₀ ψ))`. Set `F : Fin r → Fin r → ((TK R).left.presheaf.stalk z)ˣ` to `fun i j => ∏ a, H (lamPts (toUnit (TK R) ≫ Q.c (y i)) (toUnit (TK R) ≫ Q.c (y j)) a) ^ Oε a`. Establish `h₁` using `gm_isGen hw x.left z _ _ k k₀ (hJ.mem (tensφ pr) x.left) (hJ₀.mem (tensφ pr) x.left) hk hk₀`. Establish `h₂ : gm x.left z _ ((LB.LinComb Q.M.L (tensφ pr) (tensε W)).g (fun a => J (x.left ≫ tensφ pr a)) (fun a => J₀ (x.left ≫ tensφ pr a))) = ∏ i, ∏ j, F i j ^ W i j`. Use `(gm_linComb Q.M.L (tensφ pr) (tensε W) x.left z _ _ (hJ.mem (tensφ pr) x.left) (hJ₀.mem (tensφ pr) x.left)).trans ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `∏ a, H (x.left ≫ tensφ pr a) ^ tensε W a = _`. Rewrite using `[Fintype.prod_prod_type, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.Mum.TraitWit.comp_tensφ, hx, hx, ← zpow_mul, mul_comm]`. Both sides reduce to the same expression. Establish `h₃ : ∀ i j, val (Q.tau (y i) (y j)) (𝟙 _) z J = (F i j)⁻¹ * val (Q.tau (y i) (y j)) (𝟙 _) z J₀` using `fun i j => by`. Use `(gen_trans (Q.tau_gen (y i) (y j)) (𝟙 _) z (hJ.mem _ _) (hJ₀.mem _ _)).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∏ a, H (𝟙 _ ≫ lamPts (toUnit (TK R) ≫ Q.c (y i)) (toUnit (TK R) ≫ Q.c (y j)) a) ^ negε a = _`.
+
+Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp, ← zpow_neg]`. Use `congr 1`. Apply the tactic sequence `fin_cases a <;> rfl`.
+
+Use `(congrArg₂ (· * ·) (h₁.trans (congrArg (· * _ * _) h₂)) (Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => congrArg (· ^ W i j) (h₃ i j))).trans ?_` and prove the remaining obligations. Simplify using `only [mul_zpow, inv_zpow, Finset.prod_mul_distrib, Finset.prod_inv_distrib, gv]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+-/
 theorem formula_trans (Q : Data R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B' : Over (Sp R)} {L' : LB B'.left}
     (pr : Fin r → (B' ⟶ Q.B)) {w : LB.Iso L' (LB.LinComb Q.M.L (tensφ pr) (tensε W))} (hw : w.IsGen) (x : TK R ⟶ B')
     (y : Fin r → Q.X) (hx : ∀ i, x ≫ pr i = toUnit (TK R) ≫ Q.c (y i)) (z : (TK R).left) (J J₀) (hJ : Good Q.M.L z J)
@@ -113,6 +133,11 @@ theorem formula_trans (Q : Data R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B
   simp only [ofMul_mul, ofMul_inv]
   abel
 
+/- English proof (translation)
+Set `z₀ : (TK R).left` to `closedPoint (FractionRing R)`. Take `⟨J₀, hJ₀, -⟩` from `exists_good _ Q.M.isLB z₀ (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨J₁, hJ₁, -⟩` from `exists_good _ hL z₀ (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Take `⟨t, ht, hv⟩` from `exists_gen_val (F := FractionRing R) hL (K := PUnit) (fun _ => x.left) (fun _ => -1) hJ₁ (gm x.left z₀ _ (w.s (fun a => J₀ (x.left ≫ tensφ pr a), J₁ x.left)) * ∏ i, ∏ j, val (Q.tau (y i) (y j)) (𝟙 _) z₀ J₀ ^ W i j)`. Use `⟨t, ht, fun z J J' hJ hJ' => ?_⟩` and prove the remaining obligations.
+
+Take `rfl : z = z₀` from `Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) _ _`. Establish `a` using `gen_trans ht (𝟙 (TK R).left) z₀ (hJ'.mem (fun _ : PUnit => x.left) _) (hJ₁.mem (fun _ : PUnit => x.left) _)`. Establish `b : trF (L` using `L') (fun _ : PUnit => x.left) (fun _ => -1) (𝟙 (TK R).left) z₀ (fun _ => J' (𝟙 _ ≫ x.left)) (fun _ => J₁ (𝟙 _ ≫ x.left)) = (gm x.left z₀ _ (L'.g (J' x.left) (J₁ x.left)))⁻¹ := by`. Rewrite using `[trF, Fintype.prod_unique, zpow_neg_one, Category.id_comp]`. Conclude with `(a.trans (congrArg₂ (· * ·) b hv)).trans (formula_trans Q W pr hw x y hx z₀ J J₀ hJ hJ₀ (J' x.left) (J₁ x.left) (hJ' _) (hJ₁ _)).symm`.
+-/
 theorem exists_psi (Q : Data R) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) {B' : Over (Sp R)} {L' : LB B'.left} (hL : L'.IsLB)
     (pr : Fin r → (B' ⟶ Q.B)) {w : LB.Iso L' (LB.LinComb Q.M.L (tensφ pr) (tensε W))} (hw : w.IsGen) (x : TK R ⟶ B')
     (y : Fin r → Q.X) (hx : ∀ i, x ≫ pr i = toUnit (TK R) ≫ Q.c (y i)) :
@@ -144,10 +169,16 @@ def cpt {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A' : Over (
     {pr : Fin r → (A' ⟶ Q.B)} (lim : IsLimit (Fan.mk A' pr)) (y : Fin r → Q.X) : 𝟙_ (Over (Sp R)) ⟶ A' :=
   lim.lift (Fan.mk _ fun i => Q.c (y i))
 
+/- English proof (translation)
+The claim follows from `lim.fac (Fan.mk _ fun i => Q.c (y i)) ⟨i⟩`.
+-/
 theorem cpt_pr {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A' : Over (Sp R)}
     {pr : Fin r → (A' ⟶ Q.B)} (lim : IsLimit (Fan.mk A' pr)) (y : Fin r → Q.X) (i : Fin r) : cpt lim y ≫ pr i = Q.c (y i) :=
   lim.fac (Fan.mk _ fun i => Q.c (y i)) ⟨i⟩
 
+/- English proof (translation)
+Use `lim.hom_ext fun i => ?_` and prove the remaining obligations. Use `hpr i.as` as an intermediate fact. Express the relevant statement in the definitionally equal form `cpt lim (a + b) ≫ pr i.as = (cpt lim a * cpt lim b) ≫ pr i.as`. Rewrite using `[MonObj.mul_comp, cpt_pr, cpt_pr, cpt_pr]`. Conclude with `Q.c_add _ _`.
+-/
 theorem cpt_add {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A' : Over (Sp R)} [GrpObj A']
     {pr : Fin r → (A' ⟶ Q.B)} (hpr : ∀ i, IsMonHom (pr i)) (lim : IsLimit (Fan.mk A' pr)) (a b : Fin r → Q.X) :
     cpt lim (a + b) = cpt lim a * cpt lim b := by
@@ -157,6 +188,11 @@ theorem cpt_add {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A' 
   rw [MonObj.mul_comp, cpt_pr, cpt_pr, cpt_pr]
   exact Q.c_add _ _
 
+/- English proof (translation)
+Use `lim.hom_ext fun i => ?_` and prove the remaining obligations. Use `hpr i.as` as an intermediate fact. Express the relevant statement in the definitionally equal form `cpt lim 0 ≫ pr i.as = η[A'] ≫ pr i.as`. Rewrite using `[cpt_pr, IsMonHom.one_hom]`. Establish `h` using `Q.c_add 0 0`.
+
+Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+-/
 theorem cpt_zero {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A' : Over (Sp R)} [GrpObj A']
     {pr : Fin r → (A' ⟶ Q.B)} (hpr : ∀ i, IsMonHom (pr i)) (lim : IsLimit (Fan.mk A' pr)) :
     cpt lim (0 : Fin r → Q.X) = η[A'] := by
@@ -168,6 +204,19 @@ theorem cpt_zero {R : Type} [CommRing R] [IsDomain R] {Q : Data R} {r : ℕ} {A'
   rw [add_zero] at h
   exact mul_eq_left.1 h.symm
 
+/- English proof (translation)
+Introduce `R _ _ _ hR Q hQ r W hW hdet`. Use `haveI : IsNoetherianRing R := hR.1`. Take `⟨P', pr, hpr, ⟨lim⟩, ⟨w, hw⟩⟩` from `GlobalTheory.T.exists_principally_polarised_power_unimodular_form R Q W hW hdet`. Take `⟨sym, hsym, hsr⟩` from `GlobalTheory.SelfUnif.exists_sym P'`. Take `⟨rig, hrig, hrv⟩` from `rig_exists Q.M.isLB W P'.isLB pr hpr w hw`.
+
+Establish `hL : Laws` using `GlobalTheory.lawsAndExpansions.1.1`. Establish `cub` using `(hL.cube _ P' ⟨P'.L, rig, P'.isLB, hrig⟩ rfl).1.some`. Use `choose psi hpsi hpv using fun y : Fin r → Q.X => exists_psi Q W P'.isLB pr hw (toUnit (TK R) ≫ cpt lim y) y (fun i => by rw [Category.assoc, cpt_pr])`. Set `D' : DegPre R` to `{ P := P' rig := rig rig_gen := hrig cub := cub sym := sym sym_gen := hsym sym_rig := hsr X := Fin r → Q.X c := cpt lim c_add := cpt_add hpr lim psi := psi psi_gen := hpsi }`. Establish `hv : ∀ (y : D'.X) z J J', Good Q.M.L z J → Good D'.P.L z J' → val (D'.psi y) (𝟙 _) z J' = gm (D'.xK y) z _ (w.s (fun k => J (D'.xK y ≫ tensφ pr k), J' (D'.xK y))) * ∏ i, ∏ j, val (Q.tau ((AddEquiv.refl D'.X) y i) ((AddEquiv.refl D'.X) y j)) (𝟙 _) z J ^ W i j` using `fun y z J J' hJ hJ' => hpv y z J J' hJ hJ'`.
+
+Establish `hc : ∀ (y : D'.X) i, D'.c y ≫ pr i = Q.c ((AddEquiv.refl D'.X) y i)` using `fun y i => cpt_pr lim y i`. Establish `h0 : ∀ (z : (TK R).left) (J' : ((TK R).left ⟶ D'.P.A.left) → D'.P.L.ι), Good D'.P.L z J' → val (D'.psi 0) (𝟙 _) z J' * val D'.rigK (𝟙 _) z J' = 1`. Introduce `z J' hJ'`. Take `⟨J, hJ, -⟩` from `exists_good Q.M.L Q.M.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `h1` using `hpv 0 z J J' hJ hJ'`.
+
+Establish `h2` using `hrv z J J' hJ hJ'`. Establish `hprod : (∏ i, ∏ j, val (Q.tau ((0 : Fin r → Q.X) i) ((0 : Fin r → Q.X) j)) (𝟙 _) z J ^ W i j) = 1` using `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun j _ => by`. Rewrite using `[show (0 : Fin r → Q.X) i = 0 from rfl, Q.val_tau_zero _ z J hJ, one_zpow]`. Rewrite `h1` using `[hprod, _root_.mul_one]`. Use `show val (psi 0) (𝟙 _) z J' * val (LB.pullGen P'.L _ _ rig (toUnit (TK R)).left) (𝟙 _) z J' = 1`.
+
+Rewrite using `[h1, _root_.mul_comm]`. Establish `hz` using `cpt_zero hpr lim (Q := Q)`. Use `revert h2`. Generalize the expression as in `cpt lim 0 = x at hz ⊢`. Substitute `hz` using the available equality.
+
+Conclude with `id`. Take `⟨hpos, htend⟩` from `GlobalTheory.T.tensorDegenerationData_psi_pos_tendsto_zero R hR Q D' W pr hpr lim (AddEquiv.refl _) hc w hw hv hW hQ`. Conclude with `⟨⟨D', GlobalTheory.T.tensorDegenerationData_psi_even R hR Q D' W pr hpr lim (AddEquiv.refl _) hc w hw hv, GlobalTheory.T.tensorDegenerationData_tau_bimultiplicative R hR Q D' W pr hpr lim (AddEquiv.refl _) hc w hw hv h0, hpos, htend⟩, pr, AddEquiv.refl _, w, hpr, ⟨lim⟩, hc, hw, h …`.
+-/
 theorem exists_tensPol : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ Q : Data R, Q.IsPos (maximalIdeal R) →
   ∀ {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det →
   ∃ (D' : DegData R (maximalIdeal R)) (pr : Fin r → (D'.toPre.P.A ⟶ Q.B)) (xe : D'.toPre.X ≃+ (Fin r → Q.X))

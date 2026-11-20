@@ -8,6 +8,11 @@ open Matrix
 
 namespace PSymplDetBound
 
+/- English proof (translation)
+Establish `h0 : (0 : ℝ) ≤ (2 * (n : ℝ)) ^ n` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ (by positivity)` to reduce the goal to its premises. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Use `_ = (2 * ((n + 1 : ℕ) : ℝ)) ^ (n + 1) := by push_cast; ring`.
+-/
 theorem step_bound (n : ℕ) (ρ : ℝ) (hle : ρ ≤ 2 * ((n : ℝ) + 1)) :
     ρ * (2 * (n : ℝ)) ^ n ≤ (2 * ((n + 1 : ℕ) : ℝ)) ^ (n + 1) := by
   have h0 : (0 : ℝ) ≤ (2 * (n : ℝ)) ^ n := by positivity
@@ -22,6 +27,13 @@ theorem step_bound (n : ℕ) (ρ : ℝ) (hle : ρ ≤ 2 * ((n : ℝ) + 1)) :
 
 end PSymplDetBound
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `G _ _`. Use `⟨1, Submonoid.one_mem _, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.det_isEmpty]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `G hG hpos`. Take `⟨ρsq, _, _, hle, P, hP, _, hdet⟩` from `h1 n ((2 * (n : ℝ)) ^ n) G hG hpos (fun H hH hHpos => ih H hH hHpos)`.
+
+Conclude with `⟨P, hP, hdet.trans (PSymplDetBound.step_bound n ρsq hle)⟩`.
+-/
 theorem SymplDetBound.proof (h1 : SymplStep.Statement) : SymplDetBound.Statement := by
   intro n
   induction n with

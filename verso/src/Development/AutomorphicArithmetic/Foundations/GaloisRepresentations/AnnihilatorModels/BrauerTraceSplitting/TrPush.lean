@@ -9,6 +9,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV 
 
 namespace UpperTheory.Gal.crystallineComparison.Br
 
+/- English proof (translation)
+Introduce `l _ B Z Y p q s hs n tr htr W x m σ hσ hiso z`. Conclude with `htr W (x ≫ p) x rfl (Fin m) σ (fun j => by rw [← hs, ← Category.assoc, hσ j]) ⟨hσ, hiso⟩ z`.
+-/
 theorem trPush : TrPush := by
   intro l _ B Z Y p q s hs n tr htr W x m σ hσ hiso z
   exact htr W (x ≫ p) x rfl (Fin m) σ (fun j => by rw [← hs, ← Category.assoc, hσ j]) ⟨hσ, hiso⟩ z

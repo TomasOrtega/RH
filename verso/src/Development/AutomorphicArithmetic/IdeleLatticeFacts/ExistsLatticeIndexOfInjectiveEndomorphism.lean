@@ -19,16 +19,31 @@ variable {E V : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)}
   [Module (P.adicCompletion E) V] [Module (P.adicCompletionIntegers E) V]
   [IsScalarTower (P.adicCompletionIntegers E) (P.adicCompletion E) V]
 
+/- English proof (translation)
+Establish `h0 : Ideal.absNorm P.asIdeal ≠ 0` using `fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `h1 : Ideal.absNorm P.asIdeal ≠ 1` using `fun h => P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)`. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem one_lt_norm (P : HeightOneSpectrum (𝓞 E)) : 1 < Ideal.absNorm P.asIdeal := by
   have h0 : Ideal.absNorm P.asIdeal ≠ 0 := fun h => P.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
   have h1 : Ideal.absNorm P.asIdeal ≠ 1 := fun h => P.isPrime.ne_top (Ideal.absNorm_eq_one_iff.mp h)
   omega
 
+/- English proof (translation)
+Rewrite using `[← GroundTheory.Global.normalizedAbv_apply]`. Conclude with `GroundTheory.Global.normalizedAbv_eq_zpow P hx`.
+-/
 private theorem norm_eq_zpow {x : P.adicCompletion E} (hx : x ≠ 0) :
     ‖x‖ = (Ideal.absNorm P.asIdeal : ℝ) ^ (Valued.v x).log := by
   rw [← GroundTheory.Global.normalizedAbv_apply]
   exact GroundTheory.Global.normalizedAbv_eq_zpow P hx
 
+/- English proof (translation)
+Use `haveI : Module.Finite (P.adicCompletionIntegers E) A := Module.Finite.iff_fg.mpr hfg`. Use `haveI : Module.IsTorsionFree (P.adicCompletionIntegers E) A := LocalLatticeIndex.isTorsionFree A`. Use `haveI : Module.Free (P.adicCompletionIntegers E) A := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis (P.adicCompletionIntegers E) A`. Establish `hli : LinearIndependent (P.adicCompletionIntegers E) (A.subtype ∘ b)` using `b.linearIndependent.map' A.subtype (Submodule.ker_subtype A)`.
+
+Establish `hliK : LinearIndependent (P.adicCompletion E) (A.subtype ∘ b)` using `hli.localization (P.adicCompletion E) (nonZeroDivisors (P.adicCompletionIntegers E))`. Establish `hspO : Submodule.span (P.adicCompletionIntegers E) (Set.range (A.subtype ∘ b)) = A`. Rewrite using `[Set.range_comp, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspK : ⊤ ≤ Submodule.span (P.adicCompletion E) (Set.range (A.subtype ∘ b))`. Rewrite using `[← hsp]`.
+
+Apply `Submodule.span_le.mpr` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[← hspO]`. Conclude with `Submodule.span_le_restrictScalars (P.adicCompletionIntegers E) (P.adicCompletion E) _ hx`. Use `⟨_, Module.Basis.mk hliK hspK, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Module.Basis.coe_mk]`. Conclude with `hspO`.
+-/
 private theorem exists_basis (A : Submodule (P.adicCompletionIntegers E) V) (hfg : A.FG)
     (hsp : Submodule.span (P.adicCompletion E) (A : Set V) = ⊤) :
     ∃ (m : ℕ) (c : Module.Basis (Fin m) (P.adicCompletion E) V),
@@ -53,6 +68,15 @@ private theorem exists_basis (A : Submodule (P.adicCompletionIntegers E) V) (hfg
   rw [Module.Basis.coe_mk]
   exact hspO
 
+/- English proof (translation)
+Establish `hAfg : A.FG` using `ha ▸ Submodule.fg_span (Set.finite_range a)`. Establish `hAsp : Submodule.span (P.adicCompletion E) (A : Set V) = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← a.span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+
+Rewrite using `[← ha]`. Conclude with `Submodule.subset_span`. Establish `himg : (B : Set V) = (a.equiv c (Equiv.refl _)) '' (A : Set V)`. Establish `key : (Submodule.span (P.adicCompletionIntegers E) (Set.range a)).map ((a.equiv c (Equiv.refl _)).toLinearMap.restrictScalars (P.adicCompletionIntegers E)) = B`. Rewrite using `[← Submodule.span_image, ← Set.range_comp, ← hc]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[← key, ha, Submodule.map_coe]`. Both sides reduce to the same expression.
+
+Conclude with `LocalLatticeIndex.index_eq_det A B _ hAfg hAsp himg hBA`.
+-/
 private theorem relIndex_eq_inv_norm_det_basis_change {m : ℕ} (a c : Module.Basis (Fin m) (P.adicCompletion E) V)
     (A B : Submodule (P.adicCompletionIntegers E) V)
     (ha : Submodule.span (P.adicCompletionIntegers E) (Set.range a) = A)
@@ -77,6 +101,15 @@ private theorem relIndex_eq_inv_norm_det_basis_change {m : ℕ} (a c : Module.Ba
     rfl
   exact LocalLatticeIndex.index_eq_det A B _ hAfg hAsp himg hBA
 
+/- English proof (translation)
+Establish `hN : (1 : ℝ) < Ideal.absNorm P.asIdeal` using `by exact_mod_cast one_lt_norm P`. Establish `hpos : (0 : ℝ) < (Ideal.absNorm P.asIdeal : ℝ) ^ k` using `zpow_pos (by linarith) k`. Establish `hr : 1 ≤ r`. Break down `Nat.eq_zero_or_pos r with h0 | h0` into its components or cases. Rewrite `h` using `[h0, Nat.cast_zero]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h0`. Establish `hk : 0 ≤ k`. Establish `h1 : (1 : ℝ) ≤ (Ideal.absNorm P.asIdeal : ℝ) ^ k`. Rewrite using `[← h]`.
+
+Conclude with `hr` after adjusting the coercions. Conclude with `(one_le_zpow_iff_right₀ hN).mp h1`. Use `⟨k.toNat, ?_⟩` and prove the remaining obligations. Establish `h2 : (r : ℝ) = ((Ideal.absNorm P.asIdeal ^ k.toNat : ℕ) : ℝ)`. Rewrite using `[h, Nat.cast_pow, ← zpow_natCast, Int.toNat_of_nonneg hk]`.
+
+Conclude with `h2` after adjusting the coercions.
+-/
 private theorem exists_nat_pow_eq_of_real_eq_zpow_absNorm (r : ℕ) (k : ℤ) (h : (r : ℝ) = (Ideal.absNorm P.asIdeal : ℝ) ^ k) :
     ∃ n : ℕ, r = Ideal.absNorm P.asIdeal ^ n := by
   have hN : (1 : ℝ) < Ideal.absNorm P.asIdeal := by exact_mod_cast one_lt_norm P
@@ -96,6 +129,13 @@ private theorem exists_nat_pow_eq_of_real_eq_zpow_absNorm (r : ℕ) (k : ℤ) (h
     rw [h, Nat.cast_pow, ← zpow_natCast, Int.toNat_of_nonneg hk]
   exact_mod_cast h2
 
+/- English proof (translation)
+Take `⟨m, a, ha⟩` from `exists_basis A hA hsA`. Take `⟨m', c, hc⟩` from `exists_basis B hB hsB`. Establish `hm : m' = m`. Establish `h1` using `Module.finrank_eq_card_basis a`. Establish `h2` using `Module.finrank_eq_card_basis c`.
+
+Simplify using `only [Fintype.card_fin] at h1 h2`. Use linear arithmetic over natural numbers and integers. Substitute `hm` using the available equality. Establish `h` using `relIndex_eq_inv_norm_det_basis_change a c A B ha hc hBA`. Establish `hdet : LinearMap.det ((a.equiv c (Equiv.refl _)).toLinearMap) ≠ 0` using `(LinearEquiv.isUnit_det' _).ne_zero`.
+
+Rewrite `h` using `[norm_eq_zpow hdet, ← _root_.zpow_neg]`. Conclude with `exists_nat_pow_eq_of_real_eq_zpow_absNorm _ _ h`.
+-/
 private theorem relIndex_pow (A B : Submodule (P.adicCompletionIntegers E) V) (hA : A.FG)
     (hsA : Submodule.span (P.adicCompletion E) (A : Set V) = ⊤) (hB : B.FG)
     (hsB : Submodule.span (P.adicCompletion E) (B : Set V) = ⊤) (hBA : B ≤ A) :
@@ -114,6 +154,47 @@ private theorem relIndex_pow (A B : Submodule (P.adicCompletionIntegers E) V) (h
   rw [norm_eq_zpow hdet, ← _root_.zpow_neg] at h
   exact exists_nat_pow_eq_of_real_eq_zpow_absNorm _ _ h
 
+/- English proof (translation)
+Take `⟨m, a, ha⟩` from `exists_basis L hfg hsp`. Use `haveI : FiniteDimensional (P.adicCompletion E) V := Module.Finite.of_basis a`. Set `Te : V ≃ₗ[(P.adicCompletion E)] V` to `LinearEquiv.ofInjectiveEndo T hinj`. Establish `hTe : (Te : V →ₗ[(P.adicCompletion E)] V) = T` using `LinearMap.ext fun x => rfl`. Set `t` to `a.map Te`.
+
+Use `set TL := L.map (T.restrictScalars (P.adicCompletionIntegers E)) with hTLdef`. Establish `ht : Submodule.span (P.adicCompletionIntegers E) (Set.range t) = TL`. Rewrite using `[hTLdef, ← ha, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Establish `hTLfg : TL.FG` using `hfg.map _`.
+
+Establish `hTLsp : Submodule.span (P.adicCompletion E) (TL : Set V) = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← t.span_eq]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Rewrite using `[← ht]`.
+
+Conclude with `Submodule.subset_span`. Use `set M := L ⊓ TL with hMdef`. Establish `hMle1 : M ≤ L` using `inf_le_left`. Establish `hMle2 : M ≤ TL` using `inf_le_right`. Establish `hMfg : M.FG` using `by haveI : IsNoetherian (P.adicCompletionIntegers E) L := isNoetherian_of_fg_of_noetherian L hfg`.
+
+Establish `hM : M = (TL.comap L.subtype).map L.subtype`. Rewrite using `[Submodule.map_comap_subtype]`. Rewrite using `[hM]`. Conclude with `(IsNoetherian.noetherian _).map _`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors (P.adicCompletionIntegers E)) (Finset.univ : Finset (Fin m × Fin m)) (fun ij => t.repr (a ij.1) ij.2)`.
+
+Establish `hai : ∀ i, a i ∈ L`. Introduce `i`. Rewrite using `[← ha]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `hbai : ∀ i, (b : (P.adicCompletionIntegers E)) • a i ∈ TL`.
+
+Introduce `i`. Rewrite using `[← ht]`. Rewrite using `[← t.sum_repr (a i), Finset.smul_sum]`. Apply `Submodule.sum_mem` to reduce the goal to its premises. Introduce `j _`.
+
+Take `⟨y, hy⟩` from `hb (i, j) (Finset.mem_univ _)`. Rewrite using `[← smul_assoc]`. Simplify using `only at hy`. Rewrite using `[← hy, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+
+Establish `hbM : ∀ i, (b : (P.adicCompletionIntegers E)) • a i ∈ M` using `fun i => ⟨L.smul_mem _ (hai i), hbai i⟩`. Establish `hbne : algebraMap (P.adicCompletionIntegers E) (P.adicCompletion E) (b : (P.adicCompletionIntegers E)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hMsp : Submodule.span (P.adicCompletion E) (M : Set V) = ⊤`. Apply `eq_top_iff.mpr` to reduce the goal to its premises. Rewrite using `[← a.span_eq, Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e : a i = (algebraMap (P.adicCompletionIntegers E) (P.adicCompletion E) (b : (P.adicCompletionIntegers E)))⁻¹ • ((b : (P.adicCompletionIntegers E)) • a i)`. Rewrite using `[← algebraMap_smul (P.adicCompletion E) (b : (P.adicCompletionIntegers E)) (a i), smul_smul, inv_mul_cancel₀ hbne, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hbM i))`.
+
+Take `⟨m', c, hc⟩` from `exists_basis M hMfg hMsp`. Establish `hm : m' = m`. Establish `h1` using `Module.finrank_eq_card_basis a`. Establish `h2` using `Module.finrank_eq_card_basis c`. Simplify using `only [Fintype.card_fin] at h1 h2`.
+
+Use linear arithmetic over natural numbers and integers. Substitute `hm` using the available equality. Establish `h1` using `relIndex_eq_inv_norm_det_basis_change a c L M ha hc hMle1`. Establish `h2` using `relIndex_eq_inv_norm_det_basis_change t c TL M ht hc hMle2`. Establish `e1 : idx L TL = M.toAddSubgroup.relIndex TL.toAddSubgroup`.
+
+Unfold `idx`. Rewrite using `[hMdef]`. Conclude with `(AddSubgroup.inf_relIndex_right L.toAddSubgroup TL.toAddSubgroup).symm`. Establish `e2 : idx TL L = M.toAddSubgroup.relIndex L.toAddSubgroup`. Unfold `idx`.
+
+Rewrite using `[hMdef]`. Conclude with `(AddSubgroup.inf_relIndex_left L.toAddSubgroup TL.toAddSubgroup).symm`. Take `⟨i, hi⟩` from `relIndex_pow TL M hTLfg hTLsp hMfg hMsp hMle2`. Take `⟨j, hj⟩` from `relIndex_pow L M hfg hsp hMfg hMsp hMle1`. Use `⟨i, j, by rw [e1]; exact hi, by rw [e2]; exact hj, ?_⟩` and prove the remaining obligations.
+
+Establish `hcomp : ((t.equiv c (Equiv.refl _)).toLinearMap).comp T = (a.equiv c (Equiv.refl _)).toLinearMap`. Apply `a.ext` to reduce the goal to its premises. Introduce `k`. Establish `hk : T (a k) = t k` using `by show T (a k) = (a.map Te) k`. Rewrite using `[Module.Basis.map_apply]`.
+
+Both sides reduce to the same expression. Use `show (t.equiv c (Equiv.refl _)) (T (a k)) = (a.equiv c (Equiv.refl _)) (a k)`. Rewrite using `[hk]`. Simplify using the standard rewrite rules. Establish `hdT : LinearMap.det T ≠ 0`.
+
+Rewrite using `[← hTe]`. Conclude with `(LinearEquiv.isUnit_det' Te).ne_zero`. Establish `hd2 : LinearMap.det ((t.equiv c (Equiv.refl _)).toLinearMap) ≠ 0` using `(LinearEquiv.isUnit_det' _).ne_zero`. Establish `hN : (1 : ℝ) < Ideal.absNorm P.asIdeal` using `by exact_mod_cast one_lt_norm P`. Establish `hnorm : ‖LinearMap.det T‖ = (Ideal.absNorm P.asIdeal : ℝ) ^ ((i : ℤ) - j)`.
+
+Establish `n1 : ‖LinearMap.det ((a.equiv c (Equiv.refl _)).toLinearMap)‖ = ‖LinearMap.det ((t.equiv c (Equiv.refl _)).toLinearMap)‖ * ‖LinearMap.det T‖`. Rewrite using `[← hcomp, LinearMap.det_comp, norm_mul]`. Rewrite `h1` using `[hj]`. Rewrite `h2` using `[hi]`. Move the coercions through the operations in `at h1 h2`.
+
+Establish `p2 : ‖LinearMap.det ((t.equiv c (Equiv.refl _)).toLinearMap)‖ ≠ 0` using `norm_ne_zero_iff.mpr hd2`. Rewrite using `[zpow_sub₀ (by positivity), zpow_natCast, zpow_natCast, h1, h2, n1]`. Clear the denominators using the available nonvanishing facts. Rewrite `hnorm` using `[norm_eq_zpow hdT]`. Establish `hlog` using `zpow_right_injective₀ (by linarith : (0 : ℝ) < Ideal.absNorm P.asIdeal) (ne_of_gt hN) hnorm`.
+
+Rewrite using `[← hlog, WithZero.exp_log ((Valuation.ne_zero_iff _).mpr hdT)]`.
+-/
 private theorem main (L : Submodule (P.adicCompletionIntegers E) V)
     (T : V →ₗ[P.adicCompletion E] V) (hfg : L.FG)
     (hsp : Submodule.span (P.adicCompletion E) (L : Set V) = ⊤) (hinj : Function.Injective T) :
@@ -229,6 +310,9 @@ private theorem main (L : Submodule (P.adicCompletionIntegers E) V)
 end
 end UpperTheory.LocIdx
 
+/- English proof (translation)
+Introduce `E V _ _ P _ _ _ _ L T hfg hsp hinj`. Conclude with `UpperTheory.LocIdx.main L T hfg hsp hinj`.
+-/
 theorem UpperTheory.exists_lattice_index_of_injective_endomorphism :
     ∀ {E V : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) [AddCommGroup V]
         [Module (P.adicCompletion E) V] [Module (P.adicCompletionIntegers E) V]

@@ -12,6 +12,31 @@ namespace PositivityTheory.Xgn.CurveExistence
 
 open IsLocalRing
 
+/- English proof (translation)
+Set `χ : B →+* D` to `π.comp (algebraMap B S)`. Set `p : Ideal B` to `RingHom.ker χ`. Use `haveI hp : p.IsPrime := RingHom.ker_isPrime χ`. Establish `hpm : p ≤ m` using `fun b hb => by`. Assume the negation of the conclusion as `hbm`.
+
+Establish `hu : IsUnit (algebraMap B S b)` using `IsLocalization.map_units S (⟨b, hbm⟩ : m.primeCompl)`. Conclude with `(hu.map π).ne_zero hb`. Set `B'` to `B ⧸ p`. Set `c : ResidueField O →+* B'` to `Ideal.Quotient.lift (maximalIdeal O) ((Ideal.Quotient.mk p).comp (algebraMap O B)) fun o ho => Ideal.Quotient.eq_zero_iff_mem.2 (h0 o ho)`. Use `letI : Algebra (ResidueField O) B' := c.toAlgebra`.
+
+Use `haveI : IsScalarTower O (ResidueField O) B' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Algebra.FiniteType O B' := inferInstanceAs (Algebra.FiniteType O (B ⧸ p))`. Use `haveI : Algebra.FiniteType (ResidueField O) B' := Algebra.FiniteType.of_restrictScalars_finiteType O _ _`. Use `letI : Algebra B' D := (RingHom.kerLift χ).toAlgebra`. Establish `hinj : Function.Injective (algebraMap B' D)` using `RingHom.kerLift_injective χ`.
+
+Establish `hab : ∀ b : B, algebraMap B' D (Ideal.Quotient.mk p b) = π (algebraMap B S b)` using `fun _ => rfl`. Set `m' : Ideal B'` to `m.map (Ideal.Quotient.mk p)`. Establish `hcm : m'.comap (Ideal.Quotient.mk p) = m`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hpm]`. Use `haveI hm' : m'.IsMaximal := (Ideal.map_eq_top_or_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective hm).resolve_left fun h => by`.
+
+Apply `hm.ne_top` to reduce the goal to its premises. Rewrite using `[← hcm]`. Express the relevant statement in the definitionally equal form `Ideal.comap _ (Ideal.map _ _) = _`. Rewrite using `[h, Ideal.comap_top]`. Establish `hmem : ∀ b : B, Ideal.Quotient.mk p b ∈ m' ↔ b ∈ m` using `fun b => by`.
+
+Rewrite using `[← Ideal.mem_comap, hcm]`. Use `haveI : IsLocalization.AtPrime D m' := by`. Use `⟨⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`.
+
+Establish `hb : b ∉ m` using `fun h => hy ((hmem b).2 h)`. Conclude with `(IsLocalization.map_units S (⟨b, hb⟩ : m.primeCompl)).map π`. Introduce `z`. Take `⟨t, rfl⟩` from `hπ z`. Take `⟨⟨a, b⟩, e⟩` from `IsLocalization.surj m.primeCompl t`.
+
+Use `⟨⟨Ideal.Quotient.mk p a, ⟨Ideal.Quotient.mk p b, fun h => b.2 ((hmem b).1 h)⟩⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π t * π (algebraMap B S b) = π (algebraMap B S a)`. Rewrite using `[← map_mul, e]`. Introduce `a b e`. Conclude with `⟨1, by rw [hinj e]⟩`.
+
+Establish `hht : (m'.height : WithBot ℕ∞) = 1`. Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height m' D, hd]`. Establish `hB' : ringKrullDim B' = 1`. Rewrite using `[← GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient (ResidueField O) m', hht, ringKrullDim_eq_zero_of_isField ((Ideal.Quotient.maximal_ideal_iff_isField_quotient m').1 hm'), add_zero]`. Take `⟨n, hn, htr⟩` from `GroundTheory.Arith.Abelian.Jacobian.exists_ringKrullDim_eq_trdeg (ResidueField O) (A := B')`.
+
+Establish `hn1 : n = 1`. Rewrite `hn` using `[hB']`. Conclude with `hn.symm` after adjusting the coercions. Substitute `hn1` using the available equality. Use `letI : Algebra (ResidueField O) D := ((algebraMap B' D).comp c).toAlgebra`.
+
+Use `haveI : IsScalarTower (ResidueField O) B' D := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : FaithfulSMul B' D := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI : Algebra.IsAlgebraic B' D := IsLocalization.isAlgebraic D m'.primeCompl`. Use `haveI : FaithfulSMul (ResidueField O) B' := (faithfulSMul_iff_algebraMap_injective _ _).2 c.injective`. Establish `hD : Algebra.trdeg (ResidueField O) D = 1`.
+
+Rewrite using `[← trdeg_add_eq (ResidueField O) B' (A := D), trdeg_eq_zero (R := B') (A := D), add_zero, htr, Nat.cast_one]`. Use `⟨inferInstance, fun o => rfl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.fg_top_iff] haveI : Algebra.EssFiniteType B' D := Algebra.EssFiniteType.of_isLocalization D m'.primeCompl haveI : Algebra.EssFiniteType D (FractionRing D) := Algebra.EssFiniteType.of_isLocalization _ (nonZeroDivisors D) haveI := Algebra.EssFiniteType.comp (Resi …`. Conclude with `Algebra.EssFiniteType.comp (ResidueField O) D _`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_isFractionRing (ResidueField O) (A := D), hD]`.
+-/
 theorem alg (O B S D : Type) [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B] [Algebra.FiniteType O B]
     (m : Ideal B) [hm : m.IsMaximal] [CommRing S] [Algebra B S] [IsLocalization.AtPrime S m]
     [CommRing D] [IsDomain D] (π : S →+* D) (hπ : Function.Surjective π) (hd : ringKrullDim D = 1)
@@ -90,6 +115,13 @@ theorem alg (O B S D : Type) [CommRing O] [IsLocalRing O] [CommRing B] [Algebra 
     exact Algebra.EssFiniteType.comp (ResidueField O) D _
   · rw [GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_isFractionRing (ResidueField O) (A := D), hD]
 
+/- English proof (translation)
+Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Set `ψ : CommRingCat.of O ⟶ Γ(X, U)` to `(Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ s.appLE ⊤ U le_top`. Establish `hψ : hU.fromSpec ≫ s = Spec.map ψ`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec s (isAffineOpen_top _) hU le_top, IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv, ← Spec.map_comp]`. Establish `hft : ψ.hom.FiniteType` using `(HasRingHomProperty.appLE @LocallyOfFiniteType s inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of O)).inv).2)`.
+
+Use `⟨(ψ ≫ X.presheaf.germ U x hxU).hom, ?_, fun D _ _ π hπ hd h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[← hU.fromSpecStalk_eq_fromSpecStalk hxU, IsAffineOpen.fromSpecStalk, Category.assoc, hψ, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `letI : Algebra O Γ(X, U) := ψ.hom.toAlgebra haveI : Algebra.FiniteType O Γ(X, U) := hft`. Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hxU⟩`.
+
+Use `haveI := hU.primeIdealOf_isMaximal_of_isClosed ⟨x, hxU⟩ hx`. Use `haveI := hU.isLocalization_stalk ⟨x, hxU⟩`. Conclude with `alg O Γ(X, U) (X.presheaf.stalk x) D (hU.primeIdealOf ⟨x, hxU⟩).asIdeal π hπ hd h0`.
+-/
 theorem chart {X : Scheme.{0}} {O : Type} [CommRing O] [IsLocalRing O] (s : X ⟶ Spec (CommRingCat.of O))
     [LocallyOfFiniteType s] (x : X) (hx : IsClosed ({x} : Set X)) :
     ∃ β : O →+* X.presheaf.stalk x, X.fromSpecStalk x ≫ s = Spec.map (CommRingCat.ofHom β) ∧
@@ -119,6 +151,11 @@ theorem chart {X : Scheme.{0}} {O : Type} [CommRing O] [IsLocalRing O] (s : X �
     haveI := hU.isLocalization_stalk ⟨x, hxU⟩
     exact alg O Γ(X, U) (X.presheaf.stalk x) D (hU.primeIdealOf ⟨x, hxU⟩).asIdeal π hπ hd h0
 
+/- English proof (translation)
+Use `set η : Spec (CommRingCat.of R) ⟶ X := Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x.1 with hη`. Establish `hs : centre η ⤳ x.1`. Establish `: centre η ∈ Set.range (X.fromSpecStalk x.1)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `key` using `ProjectiveLinePlaces.stalk_square hs (𝟙 _) (Scheme.stalkClosedPointTo η) (CommRingCat.ofHom φ) ((Scheme.Spec_stalkClosedPointTo_fromSpecStalk η).trans (by rw [Spec.map_id, Category.id_comp]; exact hη))`.
+
+Establish `k2 : (Scheme.stalkClosedPointTo η).hom ((X.presheaf.stalkSpecializes hs).hom σ) = φ σ` using `congrArg (fun g => g.hom σ) key`. Establish `k3` using `ProjectiveLinePlaces.genMap_specializes (ξ := ξ) hs h x.2 σ`. Use `⟨⟨h, _, k3, k2⟩, fun hu => (CptModel.unitAt_iff ξ _ _).2 ⟨_, ?_, k3⟩⟩` and prove the remaining obligations. Establish `hl` using `Scheme.isLocalHom_stalkClosedPointTo η`. Conclude with `hl.map_nonunit _ (by rw [← k2] at hu; exact hu)`.
+-/
 theorem val_stalk {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (hξ : IsCptGen ξ)
     (x : Cpt ξ) {R : Type} [CommRing R] [IsLocalRing R] (φ : X.presheaf.stalk x.1 →+* R)
     (h : genPt ξ ⤳ centre (Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x.1)) (σ : X.presheaf.stalk x.1) :
@@ -140,6 +177,45 @@ theorem val_stalk {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCa
 end PositivityTheory.Xgn.CurveExistence
 
 open IsLocalRing PositivityTheory.Xgn.CurveExistence in
+/- English proof (translation)
+Introduce `X Ω _ ξ O _ _ _ _ s _ ϖ hϖ _ hs hξ y x g hy hyx hx hg hgy hgx`. Use `haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s`. Take `⟨β, hβ, hfun⟩` from `chart s x.1 hx`. Take `⟨γ, rfl⟩` from `hg`. Establish `hξx : Spec.map (CommRingCat.ofHom (genMap ξ x)) ≫ X.fromSpecStalk x.1 = ξ`.
+
+Conclude with `(congrArg (· ≫ X.fromSpecStalk x.1) (Spec.map_comp (X.presheaf.stalkSpecializes x.2) (Scheme.stalkClosedPointTo ξ))).trans ((Category.assoc _ _ _).trans ((congrArg (Spec.map (Scheme.stalkClosedPointTo ξ) ≫ ·) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk x.2)).trans (Scheme.Spec …`. Establish `hcomp : ∀ {R : Type} [CommRing R] (φ : X.presheaf.stalk x.1 →+* R), (Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x.1) ≫ s = Spec.map (CommRingCat.ofHom (φ.comp β))`. Introduce `R _ φ`. Rewrite using `[Category.assoc, hβ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+
+Establish `hβo : ∀ o, genMap ξ x (β o) = algebraMap O Ω o` using `fun o => by`. Establish `e` using `hcomp (genMap ξ x)`. Rewrite `e` using `[hξx, hs]`. Conclude with `(congrArg (fun f => f.hom o) (Spec.map_injective e)).symm`. Set `ρ : X.presheaf.stalk x.1 →+* X.presheaf.stalk y.1` to `(X.presheaf.stalkSpecializes hyx).hom`.
+
+Set `q : Ideal (X.presheaf.stalk x.1)` to `(maximalIdeal _).comap ρ`. Use `haveI hq : q.IsPrime := Ideal.comap_isPrime _ _`. Establish `hqm : ∀ σ, σ ∉ q ↔ unitAt ξ y (genMap ξ x σ)` using `fun σ => by`. Establish `e0 : genMap ξ y (ρ σ) = genMap ξ x σ` using `ProjectiveLinePlaces.genMap_specializes hyx y.2 x.2 σ`. Rewrite using `[← e0, CptModel.unitAt_iff]`.
+
+Express the relevant statement in the definitionally equal form `¬ (ρ σ ∈ maximalIdeal _) ↔ _`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `⟨fun h => ⟨_, h, rfl⟩, fun ⟨t, ht, e⟩ => hξ.inj y e ▸ ht⟩`. Establish `hγq : γ ∉ q` using `(hqm γ).2 hgy`. Establish `hγu : ¬ IsUnit γ` using `fun h => hgx ((CptModel.unitAt_iff ξ x _).2 ⟨γ, h, rfl⟩)`.
+
+Establish `hϖq : β ϖ ∈ q`. Assume the negation of the conclusion as `h`. Conclude with `hy (hβo ϖ ▸ (hqm _).1 h)`. Use `haveI : IsLocalRing (X.presheaf.stalk x.1 ⧸ q) := IsLocalRing.of_surjective' (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk q) := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+
+Establish `hγ0 : Ideal.Quotient.mk q γ ≠ 0` using `fun h => hγq (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Take `⟨P, hP, hγP, hd⟩` from `PositivityTheory.Xgn.exists_prime_dim_one_avoiding (X.presheaf.stalk x.1 ⧸ q) (Ideal.Quotient.mk q γ) hγ0 fun hF => by`. Take `⟨b, hb⟩` from `hF.mul_inv_cancel hγ0`. Conclude with `hγu (IsLocalHom.map_nonunit γ (IsUnit.of_mul_eq_one b hb))`. Set `D` to `(X.presheaf.stalk x.1 ⧸ q) ⧸ P`.
+
+Set `π : X.presheaf.stalk x.1 →+* D` to `(Ideal.Quotient.mk P).comp (Ideal.Quotient.mk q)`. Establish `hπq : ∀ σ ∈ q, π σ = 0` using `fun σ h => by`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P (Ideal.Quotient.mk q σ) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 h, map_zero]`. Take `⟨alg, halg, hfg, htr⟩` from `hfun D π (Ideal.Quotient.mk_surjective.comp Ideal.Quotient.mk_surjective) hd fun o ho => by`.
+
+Rewrite `ho` using `[hϖ.maximalIdeal_eq]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ho`. Rewrite using `[map_mul, map_mul, hπq _ hϖq, mul_zero]`. Set `φ : X.presheaf.stalk x.1 →+* FractionRing D` to `(algebraMap D (FractionRing D)).comp π`. Establish `hφγ : φ γ ≠ 0` using `fun h => hγP (Ideal.Quotient.eq_zero_iff_mem.1 ((map_eq_zero_iff _ (IsFractionRing.injective D (FractionRing D))).1 h))`.
+
+Establish `hφq : ∀ σ ∈ q, φ σ = 0` using `fun σ h => by`. Express the relevant statement in the definitionally equal form `algebraMap D _ (π σ) = 0`. Rewrite using `[hπq σ h, map_zero]`. Set `η : Spec (CommRingCat.of (FractionRing D)) ⟶ X` to `Spec.map (CommRingCat.ofHom φ) ≫ X.fromSpecStalk x.1`. Establish `hyη : y.1 ⤳ centre η`.
+
+Establish `e1 : y.1 = X.fromSpecStalk x.1 (⟨q, hq⟩ : PrimeSpectrum _)`. Use `congrArg (fun f => f (closedPoint (X.presheaf.stalk y.1))) (Scheme.SpecMap_stalkSpecializes_fromSpecStalk hyx)` as an intermediate fact. Conclude with `(Scheme.fromSpecStalk_closedPoint.symm.trans this.symm :)`. Establish `e2 : (⟨q, hq⟩ : PrimeSpectrum _) ⤳ PrimeSpectrum.comap φ (closedPoint _)` using `(PrimeSpectrum.le_iff_specializes _ _).1 fun σ h => by`. Express the relevant statement in the definitionally equal form `φ σ ∈ maximalIdeal _`.
+
+Rewrite using `[hφq σ h]`. Conclude with `zero_mem _`. Rewrite using `[e1]`. Conclude with `e2.map (X.fromSpecStalk x.1).continuous`. Establish `hη : genPt ξ ⤳ centre η` using `y.2.trans hyη`.
+
+Take `⟨C, hw, htriv, -, hall⟩` from `exists_curve_of_function_field _ _ hfg htr`. Establish `hk : ∀ i (a : ResidueField O), algebraMap _ (FractionRing D) a ∈ (C.v i).valuationSubring` using `fun i a => by`. Express the relevant statement in the definitionally equal form `C.v i _ ≤ 1`. Distinguish the cases in `h : a = 0`. Simplify using `[h]`.
+
+Conclude with `(htriv i a h).le`. Set `b : ∀ i, O →+* (C.v i).valuationSubring` to `fun i => (φ.comp β).codRestrict _ fun o => (halg o) ▸ hk i (residue O o)`. Establish `hz` using `fun i => existsUnique_valuationRing_lift O (C.v i).valuationSubring (FractionRing D) (b i) X s η (hcomp φ)`. Take `⟨W, hW, hloc⟩` from `IsLocalRing.exists_factor_valuationRing φ`. Take `⟨i, rfl, -⟩` from `hall W (by`.
+
+Introduce and unpack `rfl`. Use `hγu (hloc.map_nonunit γ (IsUnit.of_mul_eq_one ⟨(φ γ)⁻¹, trivial⟩ (Subtype.ext ?_)))` and prove the remaining obligations. Conclude with `mul_inv_cancel₀ hφγ)`. Use `fun a => by`. Take `⟨o, rfl⟩` from `residue_surjective a`.
+
+Rewrite using `[halg]`. Conclude with `hW (β o)`. Set `φ' : X.presheaf.stalk x.1 →+* (C.v i).valuationSubring` to `φ.codRestrict _ hW`. Use `haveI : IsLocalHom φ' := hloc`. Establish `hzi : Spec.map (CommRingCat.ofHom φ') ≫ X.fromSpecStalk x.1 = (hz i).choose` using `(hz i).choose_spec.2 _ ⟨by`.
+
+Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use the proof step `rfl, hcomp φ'⟩`. Establish `h0 : ValAt ξ η (algebraMap O Ω ϖ) 0`. Use `(val_stalk hξ x φ hη (β ϖ)).1` as an intermediate fact. Rewrite `this` using `[hβo, hφq _ hϖq]`. Then use the resulting hypothesis.
+
+Use `⟨{ k := ResidueField O, κ := FractionRing D, fg := hfg, trdeg := htr, C := C, w_pos := hw, triv := htriv, all := hall, η := η, η_spec := hη, η_zero := h0, z := fun j => (hz j).choose, z_gen := fun j => (hz j).choose_spec.1.1 }, i, hyη, (val_stalk hξ x φ hη γ).2 (IsUnit.mk0 _ hφγ) …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `centre (hz i).choose = x.1`. Rewrite using `[← hzi]`. Express the relevant statement in the definitionally equal form `X.fromSpecStalk x.1 (PrimeSpectrum.comap φ' (closedPoint _)) = x.1`. Rewrite using `[comap_closedPoint]`.
+
+Conclude with `Scheme.fromSpecStalk_closedPoint`.
+-/
 theorem PositivityTheory.Xgn.exists_curve_through_special_point : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] (s : X ⟶ Spec (CommRingCat.of O)) [IsProper s] (ϖ : O), Irreducible ϖ → Function.Injective (algebraMap O Ω) → ξ ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → IsCptGen ξ → ∀ (y x : Cpt ξ) (g : Ω), ¬ unitAt ξ y (algebraMap O Ω ϖ) → y.1 ⤳ x.1 → IsClosed ({x.1} : Set X) → g ∈ regAt ξ x → unitAt ξ y g → ¬ unitAt ξ x g → ∃ (Γ : FibreCurve ξ (algebraMap O Ω ϖ)) (i : Γ.C.I), y.1 ⤳ centre Γ.η ∧ unitAt ξ ⟨centre Γ.η, Γ.η_spec⟩ g ∧ centre (Γ.z i) = x.1 := by
   intro X Ω _ ξ O _ _ _ _ s _ ϖ hϖ _ hs hξ y x g hy hyx hx hg hgy hgx
   haveI : IsLocallyNoetherian X := LocallyOfFiniteType.isLocallyNoetherian s

@@ -9,6 +9,17 @@ open scoped ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory.JSW
 
+/- English proof (translation)
+Introduce `E _ _ _ a π`. Set `S : Submodule ℂ (GA E a → ℂ)` to `{ carrier := {F | ∀ (γ : GL (Fin a) E) (g : GA E a), F (ratGL E a γ * g) = F g} add_mem' := by`. Introduce `F G hF hG γ g`. Simplify using `only [Pi.add_apply, hF γ g, hG γ g]`. Use the proof step `zero_mem' := by intro γ g; rfl`.
+
+Use the proof step `smul_mem' := by`. Introduce `c F hF γ g`. Simplify using `only [Pi.smul_apply, hF γ g] }`. Establish `hS : mspanR π ≤ S`. Use `sInf_le ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `φ hφ γ g`. Conclude with `(π.cusp φ hφ).1.left γ g`. Introduce `F hF h γ g show F (ratGL E a γ * g * h) = F (g * h)`. Rewrite using `[mul_assoc]`. Conclude with `hF γ (g * h)`.
+
+Introduce `F hF X _ ν _ k γ' _ γ g show (∫ x, k x * F (ratGL E a γ * g * infGL E a (γ' x)) ∂ν) = ∫ x, k x * F (g * infGL E a (γ' x)) ∂ν`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, hF γ (g * infGL E a (γ' x))]`. Introduce `F hF`.
+
+Conclude with `hS hF`.
+-/
 theorem mspanR_left_invariant : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CuspSub E a), ∀ F ∈ GlobalTheory.JSW.mspanR π,
     ∀ (γ : GL (Fin a) E) (g : GA E a), F (ratGL E a γ * g) = F g := by
   intro E _ _ _ a π

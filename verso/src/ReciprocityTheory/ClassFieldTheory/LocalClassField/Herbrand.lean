@@ -8,12 +8,20 @@ universe u
 
 variable {k G : Type u} [CommRing k] [CommGroup G] [Fintype G] {M : Type u} [AddCommGroup M] [Module k M]
 
+/- English proof (translation)
+Establish `: φ.ker = H` using `by ext x; rw [AddMonoidHom.mem_ker, hk]`. Substitute `this` using the available equality. Conclude with `⟨(QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm⟩`.
+-/
 theorem nonempty_of_surjective {X Y : Type*} [AddCommGroup X] [AddCommGroup Y] (H : AddSubgroup X)
     (φ : X →+ Y) (hφ : Surjective φ) (hk : ∀ x, φ x = 0 ↔ x ∈ H) : Nonempty (Y ≃+ X ⧸ H) := by
   have : φ.ker = H := by ext x; rw [AddMonoidHom.mem_ker, hk]
   subst this
   exact ⟨(QuotientAddGroup.quotientKerEquivOfSurjective φ hφ).symm⟩
 
+/- English proof (translation)
+Establish `: NeZero i` using `⟨hi0⟩`. Set `π` to `Rep.FiniteCyclicGroup.groupCohomologyπEven (Rep.of ρ) g hg i hi`. Establish `hπ : Surjective π.hom`. Rewrite using `[← ModuleCat.epi_iff_surjective]`. Simplify using `only [π, Rep.FiniteCyclicGroup.groupCohomologyπEven]`.
+
+Conclude with `epi_comp' (@IsIso.epi_of_iso _ _ _ _ _ (Iso.isIso_inv _)) (epi_comp' inferInstance inferInstance)`. Use `nonempty_of_surjective _ (π.hom.toAddMonoidHom) hπ ?_` and prove the remaining obligations. Introduce `x`. Conclude with `Rep.FiniteCyclicGroup.groupCohomologyπEven_eq_zero_iff (Rep.of ρ) g hg i hi x`.
+-/
 theorem nonempty_groupCohomology_even (ρ : Representation k G M) (g : G)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi0 : i ≠ 0) (hi : Even i) :
     Nonempty (groupCohomology (Rep.of ρ) i ≃+ TateZerothCohomology ρ g) := by
@@ -27,6 +35,11 @@ theorem nonempty_groupCohomology_even (ρ : Representation k G M) (g : G)
   intro x
   exact Rep.FiniteCyclicGroup.groupCohomologyπEven_eq_zero_iff (Rep.of ρ) g hg i hi x
 
+/- English proof (translation)
+Set `π` to `Rep.FiniteCyclicGroup.groupCohomologyπOdd (Rep.of ρ) g hg i hi`. Establish `hπ : Surjective π.hom`. Rewrite using `[← ModuleCat.epi_iff_surjective]`. Simplify using `only [π, Rep.FiniteCyclicGroup.groupCohomologyπOdd]`. Conclude with `epi_comp' (@IsIso.epi_of_iso _ _ _ _ _ (Iso.isIso_inv _)) (epi_comp' inferInstance inferInstance)`.
+
+Use `nonempty_of_surjective _ (π.hom.toAddMonoidHom) hπ ?_` and prove the remaining obligations. Introduce `x`. Conclude with `Rep.FiniteCyclicGroup.groupCohomologyπOdd_eq_zero_iff (Rep.of ρ) g hg i hi x`.
+-/
 theorem nonempty_groupCohomology_odd (ρ : Representation k G M) (g : G)
     (hg : ∀ x, x ∈ Subgroup.zpowers g) (i : ℕ) (hi : Odd i) :
     Nonempty (groupCohomology (Rep.of ρ) i ≃+ H1 ρ g) := by

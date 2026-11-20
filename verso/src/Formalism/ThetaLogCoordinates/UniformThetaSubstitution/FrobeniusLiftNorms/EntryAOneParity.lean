@@ -15,14 +15,23 @@ namespace ValuationParity
 
 def par (ν : ℕ) : ZMod (2 * ν) →+* ZMod 2 := ZMod.castHom (Dvd.intro ν rfl) (ZMod 2)
 
+/- English proof (translation)
+Use `haveI : NeZero (2 * ν) := ⟨by have := NeZero.ne ν; omega⟩`. Use `show ZMod.cast x = _`. Conclude with `ZMod.cast_eq_val x`.
+-/
 lemma par_eq {ν : ℕ} [NeZero ν] (x : ZMod (2 * ν)) : par ν x = ((x.val : ℕ) : ZMod 2) := by
   haveI : NeZero (2 * ν) := ⟨by have := NeZero.ne ν; omega⟩
   show ZMod.cast x = _
   exact ZMod.cast_eq_val x
 
+/- English proof (translation)
+Rewrite using `[par_eq, ZMod.val_natCast]`.
+-/
 lemma val_mod_two {ν : ℕ} [NeZero ν] (x : ZMod (2 * ν)) : x.val % 2 = (par ν x).val := by
   rw [par_eq, ZMod.val_natCast]
 
+/- English proof (translation)
+Rewrite using `[map_add, map_one, map_mul]`. Establish `h2 : par ν 2 = 0`. Rewrite using `[map_ofNat]`. Both sides reduce to the same expression. Rewrite using `[h2, zero_mul, add_zero]`.
+-/
 lemma par_odd {ν : ℕ} (y : ZMod (2 * ν)) : par ν (1 + 2 * y) = 1 := by
   rw [map_add, map_one, map_mul]
   have h2 : par ν 2 = 0 := by
@@ -30,10 +39,18 @@ lemma par_odd {ν : ℕ} (y : ZMod (2 * ν)) : par ν (1 + 2 * y) = 1 := by
     rfl
   rw [h2, zero_mul, add_zero]
 
+/- English proof (translation)
+Rewrite using `[val_mod_two, h, par_odd]`. Both sides reduce to the same expression.
+-/
 lemma val_odd {ν : ℕ} [NeZero ν] {x y : ZMod (2 * ν)} (h : x = 1 + 2 * y) : x.val % 2 = 1 := by
   rw [val_mod_two, h, par_odd]
   rfl
 
+/- English proof (translation)
+Rewrite using `[val_mod_two, val_mod_two]`. Establish `hs : par ν s' = par ν s + 1`. Rewrite using `[show s' = s + (1 + 2 * y) by rw [← h]; ring, map_add, par_odd]`. Rewrite using `[hs]`. Generalize the expression as in `par ν s = a`.
+
+Use `revert a`. Evaluate the decidable proposition.
+-/
 lemma parity_ne {ν : ℕ} [NeZero ν] {s s' y : ZMod (2 * ν)} (h : s' - s = 1 + 2 * y) :
     s'.val % 2 ≠ s.val % 2 := by
   rw [val_mod_two, val_mod_two]
@@ -44,6 +61,9 @@ lemma parity_ne {ν : ℕ} [NeZero ν] {s s' y : ZMod (2 * ν)} (h : s' - s = 1 
   revert a
   decide
 
+/- English proof (translation)
+Use `⟨⟨h, by rw [ZMod.natCast_zmod_val]; ring⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `e ⟨_, he⟩`. Establish `he' : ((e : ℕ) : ZMod n) = s' - s` using `by rw [← he]; ring`. Rewrite using `[← he', ZMod.val_natCast]`. Conclude with `Nat.mod_le _ _`.
+-/
 lemma isLeast_val {n : ℕ} [NeZero n] (s s' : ZMod n) (h : 1 ≤ (s' - s).val) :
     IsLeast {e : ℕ | 1 ≤ e ∧ s + (e : ZMod n) = s'} (s' - s).val := by
   refine ⟨⟨h, by rw [ZMod.natCast_zmod_val]; ring⟩, ?_⟩
@@ -52,6 +72,19 @@ lemma isLeast_val {n : ℕ} [NeZero n] (s s' : ZMod n) (h : 1 ≤ (s' - s).val) 
   rw [← he', ZMod.val_natCast]
   exact Nat.mod_le _ _
 
+/- English proof (translation)
+Use `haveI : NeZero (2 * ν) := ⟨by have := NeZero.ne ν; omega⟩`. Establish `hA1 : p ^ (1 + 2 * φ.2.1.val) ≤ dAof p φ (pairFirst φ, φ.2.2.2.2)`. Simplify using `only [dAof, Finsupp.add_apply, Finsupp.single_eq_same]`. Conclude with `Nat.le_add_right _ _`. Establish `hA2 : p ^ (2 * φ.2.2.1.val) ≤ dAof p φ (pairSecond φ, φ.2.2.2.2)`.
+
+Simplify using `only [dAof, Finsupp.add_apply, Finsupp.single_eq_same]`. Conclude with `Nat.le_add_left _ _`. Distinguish the cases in `hij : φ.2.2.1.val ≤ φ.2.1.val`. Establish `hodd : pairSecond φ - pairFirst φ = 1 + 2 * ((φ.2.1.val : ZMod (2 * ν)) - (φ.2.2.1.val : ZMod (2 * ν)))`. Unfold `pairFirst pairSecond`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hv` using `val_odd hodd`. Establish `heq : pairFirst φ + ((1 + 2 * φ.2.1.val : ℕ) : ZMod (2 * ν)) = pairSecond φ + ((2 * φ.2.2.1.val : ℕ) : ZMod (2 * ν))`. Unfold `pairFirst pairSecond`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `hL (2 * ν) (pairFirst φ) (pairSecond φ) (1 + 2 * φ.2.1.val) (2 * φ.2.2.1.val) _ (by omega) heq (isLeast_val (pairFirst φ) (pairSecond φ) (by omega))`. Conclude with `⟨pairFirst φ, pairSecond φ, Or.inl ⟨rfl, rfl⟩, hv, parity_ne hodd, le_trans (Nat.pow_le_pow_right hp hd) hA1⟩`. Establish `hodd : pairFirst φ - pairSecond φ = 1 + 2 * ((φ.2.2.1.val : ZMod (2 * ν)) - (φ.2.1.val : ZMod (2 * ν)) - 1)`. Unfold `pairFirst pairSecond`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hv` using `val_odd hodd`. Establish `heq : pairSecond φ + ((2 * φ.2.2.1.val : ℕ) : ZMod (2 * ν)) = pairFirst φ + ((1 + 2 * φ.2.1.val : ℕ) : ZMod (2 * ν))`. Unfold `pairFirst pairSecond`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hd` using `hL (2 * ν) (pairSecond φ) (pairFirst φ) (2 * φ.2.2.1.val) (1 + 2 * φ.2.1.val) _ (by omega) heq (isLeast_val (pairSecond φ) (pairFirst φ) (by omega))`. Conclude with `⟨pairSecond φ, pairFirst φ, Or.inr ⟨rfl, rfl⟩, hv, parity_ne hodd, le_trans (Nat.pow_le_pow_right hp hd) hA2⟩`.
+-/
 lemma charge_exists (hL : ChargeLemma) {ν r0 r1 E : ℕ} [NeZero ν] (p : ℕ) (hp : 1 ≤ p)
     (φ : PhiI ν r0 r1 E) :
     ∃ s s' : ZMod (2 * ν), ((s = pairFirst φ ∧ s' = pairSecond φ) ∨ (s = pairSecond φ ∧ s' = pairFirst φ)) ∧
@@ -93,6 +126,17 @@ lemma charge_exists (hL : ChargeLemma) {ν r0 r1 E : ℕ} [NeZero ν] (p : ℕ) 
     exact ⟨pairSecond φ, pairFirst φ, Or.inr ⟨rfl, rfl⟩, hv, parity_ne hodd,
       le_trans (Nat.pow_le_pow_right hp hd) hA2⟩
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun φ _ => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w φ = 0`. Simplify using `[hw]`. Take `⟨h1, h2⟩` from `h φ hw`.
+
+Rewrite using `[Finset.sum_eq_single (c φ).1]`. Rewrite using `[Finset.sum_eq_single (c φ).2]`. Simplify using the standard rewrite rules. Introduce `e _ he`. Rewrite using `[if_neg]`.
+
+Introduce `hc`. Apply `he` to reduce the goal to its premises. Rewrite using `[hc]`. Introduce `h'`. Conclude with `absurd h2 h'`.
+
+Introduce `s _ hs`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hc`. Apply `hs` to reduce the goal to its premises.
+
+Rewrite using `[hc]`. Introduce `h'`. Conclude with `absurd h1 h'`.
+-/
 lemma sum_charge {Φ S : Type} [Fintype Φ] [DecidableEq S] (TT : Finset S) (R : Finset ℕ)
     (c : Φ → S × ℕ) (w : Φ → ℕ) (h : ∀ φ, w φ ≠ 0 → (c φ).1 ∈ TT ∧ (c φ).2 ∈ R) :
     ∑ s ∈ TT, ∑ e ∈ R, ∑ φ, (if c φ = (s, e) then w φ else 0) = ∑ φ, w φ := by
@@ -124,6 +168,19 @@ lemma sum_charge {Φ S : Type} [Fintype Φ] [DecidableEq S] (TT : Finset S) (R :
       · intro h'
         exact absurd h1 h'
 
+/- English proof (translation)
+Establish `hφ : ∀ φ, (if c φ = (s, e') then p ^ (2 * e' + 1) * α φ else 0) ≤ ∑ b, α φ * dAof p φ (s, b)`. Introduce `φ`. Use `split_ifs with h`. Establish `h1` using `hc φ`. Simplify using `only [h] at h1`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `Nat.zero_le _`. Establish `hk : ∀ k : KapI ν r1 E, (if (k.1, k.2.1.val) = (s, e') then p ^ (2 * e' + 1) * β k else 0) ≤ ∑ b, β k * dBof p k (s, b)`. Introduce `k`. Use `split_ifs with h`.
+
+Simplify using `only [Prod.mk.injEq] at h`. Take `⟨h1, h2⟩` from `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h1, ← h2]`. Simplify using `[dBof, mul_comm]`.
+
+Use `_ ≤ ∑ b, β k * dBof p k (s, b) := Finset.single_le_sum (f := fun b => β k * dBof p k (s, b)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)`. Conclude with `Nat.zero_le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [mul_ite, mul_zero]`.
+
+Use `_ ≤ (∑ φ, ∑ b, α φ * dAof p φ (s, b)) + ∑ k : KapI ν r1 E, ∑ b, β k * dBof p k (s, b) := add_le_add (Finset.sum_le_sum fun φ _ => hφ φ) (Finset.sum_le_sum fun k _ => hk k)`. Use `_ = ∑ b, ((∑ φ, α φ * dAof p φ (s, b)) + ∑ k, β k * dBof p k (s, b)) := by`. Rewrite using `[Finset.sum_add_distrib]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_comm`. Use `_ ≤ ∑ b, e (s, b) := Finset.sum_le_sum fun b _ => hτ (s, b)`.
+
+Use `_ = alN e s := rfl`.
+-/
 lemma level_le {ν r0 r1 E : ℕ} [NeZero ν] (p : ℕ) (e : TpV ν r1 → ℕ) (α : PhiI ν r0 r1 E → ℕ)
     (β : KapI ν r1 E →₀ ℕ)
     (hτ : ∀ τ, ∑ φ, α φ * dAof p φ τ + ∑ k, β k * dBof p k τ ≤ e τ)
@@ -174,6 +231,55 @@ end ValuationParity
 
 open ValuationParity in
 
+/- English proof (translation)
+Introduce `K _ _ p ν r0 r1 C _ u F TT ξ e l sf T I hyp`. Break down `hS K p ν r0 r1 C u F TT ξ e l sf T I hyp with h0 | ⟨E, α, β, hαTT, hβTT, hτ, hhasse, hbound⟩` into its components or cases. Rewrite using `[h0, norm_zero]`. Conclude with `Real.rpow_nonneg (Nat.cast_nonneg _) _`. Establish `hp : 2 < p` using `hyp.2.1`.
+
+Establish `hp1 : (1 : ℝ) < p` using `by exact_mod_cast (by omega : 1 < p)`. Use `choose sφ s'φ hor hodd hpar hle using fun φ : PhiI ν r0 r1 E => charge_exists hL p (by omega) φ`. Take `⟨c, hcdef⟩ : ∃ c : PhiI ν r0 r1 E → ZMod (2 * ν) × ℕ, ∀ φ, c φ = (sφ φ, ((s'φ φ - sφ φ).val - 1) / 2)` from `⟨_, fun _ => rfl⟩`. Establish `hc2 : ∀ φ, 2 * (c φ).2 + 1 = (s'φ φ - sφ φ).val`. Introduce `φ`.
+
+Use `hodd φ` as an intermediate fact. Rewrite using `[hcdef]`. Use linear arithmetic over natural numbers and integers. Establish `hc1 : ∀ φ, (c φ).1 = sφ φ` using `fun φ => by rw [hcdef]`. Establish `hc : ∀ φ, p ^ (2 * (c φ).2 + 1) ≤ dAof p φ ((c φ).1, φ.2.2.2.2)` using `fun φ => by`.
+
+Rewrite using `[hc2, hc1]`. Conclude with `hle φ`. Establish `hsTT : ∀ φ, α φ ≠ 0 → sφ φ ∈ TT ∧ s'φ φ ∈ TT`. Introduce `φ hα`. Take `⟨h1, h2⟩` from `hαTT φ hα`.
+
+Break down `hor φ with ⟨hs1, hs2⟩ | ⟨hs1, hs2⟩` into its components or cases. Conclude with `⟨hs1 ▸ h1, hs2 ▸ h2⟩`. Conclude with `⟨hs1 ▸ h2, hs2 ▸ h1⟩`. Take `⟨Ee, hEe⟩ : ∃ Ee : Finset ℕ, Ee = (Finset.univ.image fun φ => (c φ).2) ∪ (Finset.univ.image fun k : KapI ν r1 E => k.2.1.val)` from `⟨_, rfl⟩`. Take `⟨chN, hchN⟩ : ∃ chN : ZMod (2 * ν) → ℕ → ℕ, ∀ s e', chN s e' = ∑ φ, if c φ = (s, e') then α φ else 0` from `⟨_, fun _ _ => rfl⟩`.
+
+Take `⟨iN, hiN⟩ : ∃ iN : ZMod (2 * ν) → ℕ → ℕ, ∀ s e', iN s e' = ∑ k : KapI ν r1 E, if (k.1, k.2.1.val) = (s, e') then β k else 0` from `⟨_, fun _ _ => rfl⟩`. Establish `hlev : ∀ s e', p ^ (2 * e' + 1) * (chN s e' + iN s e') ≤ alN e s` using `fun s e' => by`. Rewrite using `[hchN, hiN]`. Conclude with `level_le p e α β hτ c hc s e'`. Establish `hcapN : ∀ s e', iN s e' ≤ capN sf (s + ((2 * e' + 1 : ℕ) : ZMod (2 * ν)))`.
+
+Introduce `s e'`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hhasse` to reduce the goal to its premises. Use `hC K (ZMod (2 * ν)) (KapI ν r1 E) r0 r1 C l sf T I (fun k => k.1 + ((2 * k.2.1.val + 1 : ℕ) : ZMod (2 * ν))) (fun k a => ξ k.1 a ^ (p ^ (2 * k.2.1.val + 1))) (fun k => k.2.2) (Finset.univ.filter fun k : KapI ν r1 E => (k.1, k.2.1.val) = (s, e')) (s + ((2 * e' + 1 : ℕ) : ZMod (2 * …` and prove the remaining obligations.
+
+Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq] at hk`. Rewrite using `[hk.1, hk.2]`. Introduce `k hk k' hk'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Prod.mk.injEq] at hk hk'`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[hk.1, hk.2, hk'.1, hk'.2]`. Rewrite `hlt` using `[hiN, ← Finset.sum_filter]`. Conclude with `hlt`. Establish `hcoreA` using `hA (2 * ν) (p : ℝ) TT (dSet TT) (fun s => (alN e s : ℝ)) (fun s => (capN sf s : ℝ)) (deLoss p r0 r1 TT (alN e) (lsN l sf)) (gamP p * ∑ s ∈ TT, (alN e s : ℝ) - (∑ φ, (α φ : ℝ)) - (∑ k, (β k : ℝ)) - deLoss p r0 r1 TT (alN e) (lsN l sf)) (fun s e' => (iN s e' : ℝ)) (fun s e' => (chN …`.
+
+Use `case hE =>`. Introduce `s e' he'`. Prove the components needed by the constructor for the conclusion. Use `show (iN s e' : ℝ) = 0`. Rewrite using `[hiN, Nat.cast_eq_zero]`.
+
+Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hk`. Apply `he'` to reduce the goal to its premises. Simplify using `only [Prod.mk.injEq] at hk`.
+
+Rewrite using `[hEe, ← hk.2]`. Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))`. Use `show (chN s e' : ℝ) = 0`. Rewrite using `[hchN, Nat.cast_eq_zero]`. Use `Finset.sum_eq_zero fun φ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[if_neg]`. Introduce `hφ`. Apply `he'` to reduce the goal to its premises. Establish `he2 : (c φ).2 = e'` using `by rw [hφ]`. Rewrite using `[hEe, ← he2]`.
+
+Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))`. Use `case hD =>`. Introduce `s e' hn`. Use `show (chN s e' : ℝ) = 0`. Rewrite using `[hchN, Nat.cast_eq_zero]`.
+
+Use `Finset.sum_eq_zero fun φ _ => ?_` and prove the remaining obligations. Use `split_ifs with hφ`. Assume the negation of the conclusion as `hα`. Apply `hn` to reduce the goal to its premises. Take `⟨h1, h2⟩` from `hsTT φ hα`.
+
+Establish `hs : sφ φ = s` using `by rw [← hc1, hφ]`. Establish `he : (c φ).2 = e'` using `by rw [hφ]`. Rewrite using `[dSet, Finset.mem_image]`. Use `⟨s'φ φ, Finset.mem_filter.mpr ⟨h2, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`.
+
+Conclude with `hpar φ`. Rewrite using `[← hs, ← hc2, he]`. Both sides reduce to the same expression. Use `case hmain =>`. Establish `hsumch : ∑ s ∈ TT, ∑ e' ∈ Ee, (chN s e' : ℝ) = ∑ φ, (α φ : ℝ)`.
+
+Establish `h` using `sum_charge TT Ee c (fun φ => α φ) (fun φ hα => ⟨by rw [hc1]; exact (hsTT φ hα).1, by rw [hEe]; exact Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))⟩)`. Simplify using `only [← hchN] at h`. Conclude with `h` after adjusting the coercions. Establish `hsumi : ∑ s ∈ TT, ∑ e' ∈ Ee, (iN s e' : ℝ) = ∑ k, (β k : ℝ)`. Establish `h` using `sum_charge TT Ee (fun k : KapI ν r1 E => (k.1, k.2.1.val)) (fun k => β k) (fun k hk => ⟨hβTT k hk, by`.
+
+Rewrite using `[hEe]`. Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))⟩)`. Simplify using `only [← hiN] at h`. Conclude with `h` after adjusting the coercions. Use `show gamP (p : ℝ) * ∑ s ∈ TT, (alN e s : ℝ) - ∑ s ∈ TT, ∑ e' ∈ Ee, (chN s e' : ℝ) - ∑ s ∈ TT, ∑ e' ∈ Ee, (iN s e' : ℝ) - deLoss p r0 r1 TT (alN e) (lsN l sf) ≤ _`.
+
+Rewrite using `[hsumch, hsumi]`. Use `case h6 =>`. Introduce `s _ e' _`. Use `show (chN s e' : ℝ) + (iN s e' : ℝ) ≤ (alN e s : ℝ) / (p : ℝ) ^ (2 * e' + 1)`. Rewrite using `[le_div_iff₀ (pow_pos (by positivity) _)]`.
+
+Establish `h` using `hlev s e'`. Rewrite `h` using `[mul_comm]`. Conclude with `h` after adjusting the coercions. Use `case h7 =>`. Introduce `s _ e' _`.
+
+Use `show (iN s e' : ℝ) ≤ min ((alN e s : ℝ) / (p : ℝ) ^ (2 * e' + 1)) ((capN sf (s + ((2 * e' + 1 : ℕ) : ZMod (2 * ν))) : ℝ))`. Apply `le_min` to reduce the goal to its premises. Rewrite using `[le_div_iff₀ (pow_pos (by positivity) _)]`. Establish `h` using `hlev s e'`. Establish `h' : iN s e' * p ^ (2 * e' + 1) ≤ alN e s`.
+
+Rewrite using `[mul_comm]`. Conclude with `le_trans (Nat.mul_le_mul_left _ (Nat.le_add_left _ _)) h`. Conclude with `h'` after adjusting the coercions. Conclude with `hcapN s e'` after adjusting the coercions. Use `le_trans hbound (Real.rpow_le_rpow_of_exponent_le hp1.le ?_)` and prove the remaining obligations.
+
+Combine the linear relations using `[hcoreA]`.
+-/
 theorem entryExcessBound_of (hS : EntryStar) (hC : HitsCapPos) (hA : ExcessGainBound) (hL : ChargeLemma) : EntryExcessBound := by
   intro K _ _ p ν r0 r1 C _ u F TT ξ e l sf T I hyp
   rcases hS K p ν r0 r1 C u F TT ξ e l sf T I hyp with h0 | ⟨E, α, β, hαTT, hβTT, hτ, hhasse, hbound⟩

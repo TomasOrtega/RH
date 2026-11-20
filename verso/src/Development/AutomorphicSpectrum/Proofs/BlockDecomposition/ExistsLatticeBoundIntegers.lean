@@ -8,6 +8,13 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 
 namespace GlobalTheory.CompanionTheory.LatCOK
 
+/- English proof (translation)
+Introduce `l _ K _`. Take `⟨s, hs⟩` from `GlobalTheory.CompanionTheory.LocalIntegers.exists_finset_generators l K`. Use `choose c hc using GlobalTheory.T.integer_mem_lattice_sub_bound l K`. Use `⟨2 * s.sup c, fun k a => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hs a`.
+
+Establish `h1 : Lat.kP l K a = ∑ i ∈ s, algClToBdR l (algebraMap ℚ_[l] (PadicAlgCl l) (d i : ℚ_[l])) * Lat.kP l K i`. Establish `h2 : Lat.kP l K a = algClToBdR l (((a : K) : PadicAlgCl l))` using `rfl`. Rewrite using `[h2, hd, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`.
+
+Both sides reduce to the same expression. Rewrite using `[h1, map_sum]`. Use `Subring.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `Subring.mul_mem _ (GlobalTheory.CompanionTheory.LatCZp.padicInt_mem_sub l _ k (d i)) (hc i _ k (Nat.mul_le_mul_left 2 (Finset.le_sup hi)))`.
+-/
 theorem exists_uniform_mem_sub : ∀ (l : ℕ) [Fact l.Prime]
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K],
     ∃ M : ℕ, ∀ (k : ℕ) (a : OK l K),

@@ -6,6 +6,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.BoundedDenomina
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology Filter GroundTheory.Global PositivityTheory.Rg.Base1 GlobalTheory.CompanionTheory.BasePsi
 open scoped ENNReal NNReal Classical
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.BasePsi.th_pure_rv_zero_bound | exact GlobalTheory.CompanionTheory.BasePsi.th_pure_rv_zero_bound | (intros; apply GlobalTheory.CompanionTheory.BasePsi.th_pure_rv_zero_bound <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.theta_series_uniform_bound_compact : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F, Continuous θ → ∀ r : ℝ → (AF F)ˣ, IsRay θ r →
     ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (G : Ainf F → ℝ) (g : ∀ v : HeightOneSpectrum (𝓞 F), Fv F v → ℝ),
     Continuous G → HasCompactSupport G → (∀ v ∈ S, Continuous (g v) ∧ HasCompactSupport (g v)) →

@@ -5,6 +5,9 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace Formalism.L2.SG.Pf.Cnt
 
+/- English proof (translation)
+The claim follows from `Formalism.L2.SG.Pf.G5.alphaDisc_of_discOnto (Formalism.L2.SG.Pf.discriminantNormShapes.discOnto_of_uDModel Formalism.L2.SG.Pf.Cnt.unitary_discriminant_model)`.
+-/
 theorem alpha_discriminant_holds : AlphaDisc :=
   Formalism.L2.SG.Pf.G5.alphaDisc_of_discOnto
     (Formalism.L2.SG.Pf.discriminantNormShapes.discOnto_of_uDModel Formalism.L2.SG.Pf.Cnt.unitary_discriminant_model)

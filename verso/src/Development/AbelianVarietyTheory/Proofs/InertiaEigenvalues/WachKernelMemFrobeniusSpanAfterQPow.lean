@@ -23,18 +23,35 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : LocWach PD LL O v n)
 
+/- English proof (translation)
+Establish `h` using `W.φD_smul T (algebraMap (LetA O n) W.EE a) x`. Rewrite `h` using `[algebraMap_smul, W.φE_ext, algebraMap_smul]`. Conclude with `h`.
+-/
 theorem φD_smulA' (T : LocLat G Qp LL O) (a : LetA O n) (x : W.DD T) :
     W.φD T (a • x) = W.φA a • W.φD T x := by
   have h := W.φD_smul T (algebraMap (LetA O n) W.EE a) x
   rw [algebraMap_smul, W.φE_ext, algebraMap_smul] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]`.
+-/
 theorem map_smulA {T T' : LocLat G Qp LL O} (f : LatHom T.L T'.L) (a : LetA O n) (x : W.DD T) :
     W.map f (a • x) = a • W.map f x := by
   rw [← algebraMap_smul W.EE a x, LinearMap.map_smul, algebraMap_smul]
 
 variable {m : ℕ} (u : Fin m → LetA O n)
 
+/- English proof (translation)
+Establish `hadd : ∀ w w' : W.DD T, (∃ z : Fin m → W.DD T, (∀ j, z j ∈ S) ∧ w = ∑ j, u j • W.φD T (z j)) → (∃ z : Fin m → W.DD T, (∀ j, z j ∈ S) ∧ w' = ∑ j, u j • W.φD T (z j)) → ∃ z : Fin m → W.DD T, (∀ j, z j ∈ S) ∧ w + w' = ∑ j, u j • W.φD T (z j)`. Introduce and unpack `w w' ⟨z, hz, rfl⟩ ⟨z', hz', rfl⟩`. Use `⟨z + z', fun j => S.add_mem (hz j) (hz' j), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, smul_add, Finset.sum_add_distrib]`. Establish `key : ∀ w ∈ φspan W T S, ∀ a : LetA O n, ∃ z : Fin m → W.DD T, (∀ j, z j ∈ S) ∧ a • w = ∑ j, u j • W.φD T (z j)`.
+
+Introduce `w hw`. Unfold `φspan at hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `a`.
+
+Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨c, rfl⟩` from `hdec a`. Use `⟨fun j => c j • y, fun j => S.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[φD_smulA', mul_smul]`. Consider the case `zero => intro a; exact ⟨0, fun j => S.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy => intro a`. Rewrite using `[smul_add]`. Conclude with `hadd _ _ (hx a) (hy a)`.
+
+Consider the case `smul b x _ hx => intro a`. Rewrite using `[smul_smul]`. Conclude with `hx (a * b)`. Simplify using `using key w hw 1`.
+-/
 theorem mem_sum_form (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T))
     (hdec : ∀ a : LetA O n, ∃ c : Fin m → LetA O n, a = ∑ j, u j * W.φA (c j))
     {w : W.DD T} (hw : w ∈ φspan W T S) :
@@ -64,6 +81,17 @@ theorem mem_sum_form (T : LocLat G Qp LL O) (S : Submodule (LetA O n) (W.DD T))
     | smul b x _ hx => intro a; rw [smul_smul]; exact hx (a * b)
   simpa using key w hw 1
 
+/- English proof (translation)
+Introduce `y hy`. Rewrite `hy` using `[Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Take `⟨k, hk⟩` from `W.N_φinv T₁ _ hy`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `hk' : W.Q ^ k • W.map ι y ∈ φspan W T₁ (W.N T₁)` using `hk`.
+
+Take `⟨w, hw, he⟩` from `mem_sum_form W u T₁ (W.N T₁) hdec hk'`. Establish `hπ0 : ∀ j, W.map π (w j) = 0`. Use `hind _ (fun j => hπN _ (hw j)) ?_` and prove the remaining obligations. Establish `h1` using `congrArg (W.map π) he`. Rewrite `h1` using `[map_smulA, (hex _).2 ⟨y, rfl⟩, smul_zero, map_sum]`.
+
+Rewrite using `[h1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulA, W.map_φ]`. Use `choose w' hw' using fun j => (hex (w j)).1 (hπ0 j)`. Establish `hmem : ∀ j, w' j ∈ (W.N T₁).comap ((W.map ι).restrictScalars (LetA O n))`.
+
+Introduce `j`. Rewrite using `[Submodule.mem_comap, LinearMap.restrictScalars_apply, hw']`. Conclude with `hw j`. Establish `heq : W.Q ^ k • y = ∑ j, u j • W.φD T₀ (w' j)`. Apply `hinj` to reduce the goal to its premises.
+
+Rewrite using `[map_smulA, he, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulA, W.map_φ, hw']`. Rewrite using `[heq]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨w' j, hmem j, rfl⟩)` and prove the remaining obligations.
+-/
 theorem phispan_of (hdec : ∀ a : LetA O n, ∃ c : Fin m → LetA O n, a = ∑ j, u j * W.φA (c j))
     {T₀ T₁ T₂ : LocLat G Qp LL O} (ι : LatHom T₀.L T₁.L) (π : LatHom T₁.L T₂.L)
     (hinj : Function.Injective (W.map ι)) (hex : Function.Exact (W.map ι) (W.map π))
@@ -100,6 +128,9 @@ theorem phispan_of (hdec : ∀ a : LetA O n, ∃ c : Fin m → LetA O n, a = ∑
 
 end Generic
 
+/- English proof (translation)
+Introduce `D HW F l _ K s LL h W T₀ T₁ T₂ ι π c0 c1 c2 hses`. Establish `hex` using `GlobalTheory.EtaleExact.DD_exact D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h T₀ T₁ T₂ ι π hses`. Conclude with `phispan_of W (fun j : Fin l => (fun _ => ((1 : PowerSeries ↥(OL LL)) + PowerSeries.X) ^ (j : ℕ) : AA K LL)) (GlobalTheory.T.wachLetterRing_frobenius_decomposition D HW l K s LL h) ι π hex.1 hex.2.1 (fun x hx => W.map_N π c1 c2 x hx) (GlobalTheory.T.wachFrobenius_flat_crystalline …`.
+-/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ (T₀ T₁ T₂ : Lt K LL) (ι : LatHom T₀.L T₁.L) (π : LatHom T₁.L T₂.L), IsCrys ((D.loc l).PD K) T₀.ρ → IsCrys ((D.loc l).PD K) T₁.ρ → IsCrys ((D.loc l).PD K) T₂.ρ → IsSESLat (Qp := ℚ_[l]) ι π → ∀ y ∈ (W.N T₁).comap ((W.map ι).restrictScalars (AA K LL)), ∃ k : ℕ, W.Q ^ k • y ∈ φspan W T₀ ((W.N T₁).comap ((W.map ι).restrictScalars (AA K LL))) := by
   intro D HW F l _ K s LL h W T₀ T₁ T₂ ι π c0 c1 c2 hses
   have hex := GlobalTheory.EtaleExact.DD_exact D HW F (GlobalTheory.Decompl.fontaine_and_decompletion D HW F) l K s LL h

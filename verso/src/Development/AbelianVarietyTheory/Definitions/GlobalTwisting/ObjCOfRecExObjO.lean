@@ -18,6 +18,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 
 namespace GlobalTheory.EX.OB.Bridge
 
+/- English proof (translation)
+Take `⟨sp, hT, hY, hA, hV, hz, X, h1, rfl⟩` from `h`. Establish `key : ∀ B : Pre, B = Pre.ofCh P Lv sp hT hY hA hV hz → ∀ v : B.Word, ∃ u', B.T v = Lv.T u'`. Introduce and unpack `B rfl v`. Conclude with `⟨v, rfl⟩`. Take `⟨u', hu⟩` from `key X.B.toPre h1 u`.
+
+Conclude with `⟨u', (X.C.A_T u).trans hu⟩`.
+-/
 theorem exists_T_of_over {D : D7} {P : PreCh} {Lv : LevCh P} (h : Over D P Lv) (u : D.what₂.Word) :
     ∃ u', (D.mem u).A.T = Lv.T u' := by
   obtain ⟨sp, hT, hY, hA, hV, hz, X, h1, rfl⟩ := h
@@ -27,6 +32,17 @@ theorem exists_T_of_over {D : D7} {P : PreCh} {Lv : LevCh P} (h : Over D P Lv) (
   obtain ⟨u', hu⟩ := key X.B.toPre h1 u
   exact ⟨u', (X.C.A_T u).trans hu⟩
 
+/- English proof (translation)
+Use `⟨cs⁻¹ ^ ((2 * eps / 3)⁻¹), fun s R T hs hx hR hT h => ?_⟩` and prove the remaining obligations. Establish `hx1` using `s.one_lt_alt`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hel` using `s.eps_lt`. Establish `hm : (1 : ℝ) ≤ R.m`.
+
+Use `le_trans ?_ hR.2.1.1` and prove the remaining obligations. Rewrite using `[Real.one_le_sqrt, Scale.delta1, ← Real.rpow_one_add' hx0.le (by linarith)]`. Conclude with `Real.one_le_rpow hx1.le (by linarith)`. Establish `h1 : cs⁻¹ ≤ s.x ^ (2 * eps / 3)`. Use `Real.rpow_le_rpow (by positivity) hx (show 0 ≤ 2 * eps / 3 by positivity)` as an intermediate fact.
+
+Rewrite `this` using `[Real.rpow_inv_rpow (by positivity) (by positivity)]`. Then use the resulting hypothesis. Establish `h2 : s.L = s.x ^ (2 * eps / 3) * s.x ^ (s.eps / 3)`. Rewrite using `[Scale.L, ← Real.rpow_add hx0, hs]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `h3 : 1 ≤ cs * s.x ^ (2 * eps / 3)`. Use `mul_le_mul_of_nonneg_left h1 hc.le` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hc.ne']`. Then use the resulting hypothesis. Establish `h4 : 0 < s.x ^ (s.eps / 3)` using `by positivity`. Establish `h5 : s.x ^ (s.eps / 3) ≤ cs * R.m * s.L`.
+
+Establish `: cs * R.m * s.L = (cs * s.x ^ (2 * eps / 3) * R.m) * s.x ^ (s.eps / 3)` using `by rw [h2]; ring`. Rewrite using `[this]`. Conclude with `le_mul_of_one_le_left h4.le (one_le_mul_of_one_le_of_one_le h3 hm)`. Rewrite using `[Scale.X', ← Real.le_log_iff_exp_le hT]`. Conclude with `h5.trans h`.
+-/
 theorem scale_X'_le_of_log (eps cs : ℝ) (he : 0 < eps) (hc : 0 < cs) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (T : ℝ),
     s.eps = eps → x0 ≤ s.x → RankVal s R → 0 < T → cs * R.m * s.L ≤ Real.log T → s.X' ≤ T := by
   refine ⟨cs⁻¹ ^ ((2 * eps / 3)⁻¹), fun s R T hs hx hR hT h => ?_⟩
@@ -53,6 +69,15 @@ theorem scale_X'_le_of_log (eps cs : ℝ) (he : 0 < eps) (hc : 0 < cs) : ∃ x0 
   rw [Scale.X', ← Real.le_log_iff_exp_le hT]
   exact h5.trans h
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `GlobalTheory.scale_poly_comparison eps 0 1 he one_pos`. Use `⟨max x0 4, fun s R hs hx hR => ?_⟩` and prove the remaining obligations. Establish `hx4 : 4 ≤ s.x` using `(le_max_right _ _).trans hx`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hel` using `s.eps_lt`.
+
+Establish `hn : 1 ≤ R.n` using `Formalism.HC.Frame.ord_pos _`. Establish `h2 : (2 : ℝ) ≤ s.x ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.sqrt_eq_rpow]`. Conclude with `Real.le_sqrt_of_sq_le (by linarith)`. Establish `h3 : (R.n : ℝ) ≤ s.x ^ (3 : ℝ)`.
+
+Establish `a1 : s.x ^ (2 + 8 * s.eps) ≤ s.x ^ ((5 : ℝ) / 2)` using `Real.rpow_le_rpow_of_exponent_le (by linarith) (by linarith)`. Establish `a2 : s.x ^ (3 : ℝ) = s.x ^ ((1 : ℝ) / 2) * s.x ^ ((5 : ℝ) / 2)`. Rewrite using `[← Real.rpow_add hx0]`. Evaluate the numerical expressions. Rewrite using `[a2]`.
+
+Conclude with `hR.1.2.trans (mul_le_mul h2 a1 (by positivity) (by positivity))`. Use `((h s hs ((le_max_left _ _).trans hx)).2.2.2.2.2.1 R.n hn h3).1` as an intermediate fact. Simplify using `using this`.
+-/
 theorem scale_one_le_w'' (eps : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks),
     s.eps = eps → x0 ≤ s.x → RankVal s R → 1 ≤ s.w'' R.n := by
   obtain ⟨x0, h⟩ := GlobalTheory.scale_poly_comparison eps 0 1 he one_pos
@@ -74,6 +99,25 @@ theorem scale_one_le_w'' (eps : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : Sca
   have := ((h s hs ((le_max_left _ _).trans hx)).2.2.2.2.2.1 R.n hn h3).1
   simpa using this
 
+/- English proof (translation)
+Rewrite using `[DC.objC_withObj_iff]`. Take `⟨ε0, h0, hRec⟩` from `hRec`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb e1 e2 e3 e4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, hRec⟩` from `hRec eps C8 C5 c6 Cb e1 e2 e3 e4`. Use `⟨⟨K0.pre, K0.t, fun l => max (K0.mid l) 10, K0.last⟩, fun C hS hC8 hL => ?_⟩` and prove the remaining obligations.
+
+Establish `hL0 : C.Large K0 C.P.CF` using `⟨hL.1, trivial, fun c hc => (le_max_left _ _).trans (hL.2.2.1 c hc), hL.2.2.2⟩`. Establish `hg : 10 ≤ C.cX.err.g` using `(le_max_right _ _).trans (hL.2.2.1 _ (by simp [FC.cMid]))`. Take `⟨c1, hRec⟩` from `hRec C hS hC8 hL0`. Use `⟨max c1 0, fun cD hcD => ?_⟩` and prove the remaining obligations. Establish `hcD0 : 0 ≤ cD` using `(le_max_right _ _).trans hcD`.
+
+Take `⟨c2, hRec⟩` from `hRec cD ((le_max_left _ _).trans hcD)`. Use `⟨max c2 402, fun ch hch => ?_⟩` and prove the remaining obligations. Establish `hch0 : 402 ≤ ch` using `(le_max_right _ _).trans hch`. Take `⟨cs, x1, hcs, hRec⟩` from `hRec ch ((le_max_left _ _).trans hch)`. Take `⟨x2, h2⟩` from `chGood_of_host eps C5 c6 Cb cD ch C e1 e3 hS hcD0 hch0`.
+
+Take `⟨x3, h3⟩` from `exists_levCh_of_levelPrime hLP eps cs C e1 e3 hcs hS`. Take `⟨x4, h4⟩` from `exists_sizeData_over eps cD ch C e1 e3 hS hcD0 hch0`. Take `⟨x5, h5⟩` from `scale_X'_le_of_log eps cs e1 hcs`. Take `⟨x6, h6⟩` from `scale_one_le_w'' eps e1`. Use `⟨max (max (max x1 x2) (max x3 x4)) (max x5 x6), ?_⟩` and prove the remaining obligations.
+
+Introduce `s R H q0 a b M c u0 hs hx hR hCT hH hq0 hW hM hc hu`. Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨y1, y2⟩, y3, y4⟩, y5, y6⟩` from `hx`. Rewrite `hH` using `[← hC8, hq0]`. Take `⟨hcW, w0, k1, k2, k3, k4, k5, k6, k7, k8, hCh⟩` from `h2 s R H a b M c u0 hs y2 hR hCT hH hW hM hc`.
+
+Take `⟨du, Ds, hdu, hDs, hlog, hRec⟩` from `hRec s _ _ _ _ hs y1 hCh`. Take `⟨Lv, l1, l2, l3⟩` from `h3 cD ch s _ _ _ _ _ du Ds hs y3 hCh.ok hdu hDs hlog`. Take `⟨D, Y, hO, hRO, hLO, hTW, hQ⟩` from `hRec Lv l1 l2 l3`. Take `⟨hA, ⟨L0, m1, m2, m3⟩, g0, g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, eW, g11⟩` from `h4 s _ _ _ _ _ Lv D hs y4 hCh.ok l3 hO hRO`. Establish `hDR : D.R = R` using `g0`.
+
+Establish `hT : ∀ u, s.X' ≤ ((D.mem u).A.T : ℝ)`. Introduce `u`. Take `⟨u', hu'⟩` from `exists_T_of_over hO u`. Establish `w` using `(Lv.T_win u').1`. Rewrite `w` using `[l1, l2, l3]`.
+
+Rewrite using `[hu']`. Use `le_trans (h5 s R _ hs y5 hR ?_ (hlog u')) w` and prove the remaining obligations. Establish `: (0 : ℝ) < du u'` using `by exact_mod_cast hdu u'`. Establish `: 0 < GamS C s R` using `Real.exp_pos _`. Check the signs of the components of the expression.
+
+Take `⟨p, n1, n2, n3, n4⟩` from `Led.exists_ledPart C cD ch s D Y R.toFrame a b L0 hS hg (by rw [hDR]) m1 m2 m3 hA (by rw [hDR]; exact h6 s R hs y6 hR) hT hRO hLO`. Conclude with `⟨p.pt, n1, p.pt_val n3, hA, ⟨hDR, g1, g2, g3, g4, g5, g6, g7, g8, g9.trans (R.toFrame.val_ofNat_of_lt hu), g10, p.pt_wtEq n2, ⟨eW, g11⟩, hO.field⟩, p.pt_canon n4, hQ p n1 n2 n3 n4, hRO.tame, hRO.mink, twAt_tr (nPrime p.L) p.ht hTW⟩`.
+-/
 theorem objC_of_recEx (QO : ∀ D : D7, Obj D → Prop) (hLP : LevelPrime) (hRec : RecEx QO) : DC.ObjC (DC.withObj (ptO QO)) := by
   rw [DC.objC_withObj_iff]
   obtain ⟨ε0, h0, hRec⟩ := hRec
@@ -124,9 +168,15 @@ theorem objC_of_recEx (QO : ∀ D : D7, Obj D → Prop) (hLP : LevelPrime) (hRec
       hO.field⟩, p.pt_canon n4,
     hQ p n1 n2 n3 n4, hRO.tame, hRO.mink, twAt_tr (nPrime p.L) p.ht hTW⟩
 
+/- English proof (translation)
+The claim follows from `objC_of_recEx (objO Q) hLP hRec`.
+-/
 theorem objC_of_recEx_objO (Q : PtProp) (hLP : LevelPrime) (hRec : RecEx (objO Q)) : DC.ObjC (DC.withObj Q) :=
   objC_of_recEx (objO Q) hLP hRec
 
+/- English proof (translation)
+Introduce `h` and use `DC.not_objC_false hH ((objC_of_recEx _ hLP h).imp fun _ _ hp => hp.1.1)`.
+-/
 theorem not_recEx_false (hLP : LevelPrime) (hH : DC.HostW) : ¬ RecEx (fun _ _ => False) := fun h =>
   DC.not_objC_false hH ((objC_of_recEx _ hLP h).imp fun _ _ hp => hp.1.1)
 

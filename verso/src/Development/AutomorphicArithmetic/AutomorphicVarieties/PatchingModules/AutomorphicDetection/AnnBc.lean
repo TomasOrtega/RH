@@ -11,6 +11,11 @@ open scoped TensorProduct
 
 namespace UpperTheory.V.Pa
 
+/- English proof (translation)
+Rewrite `ha`, the goal using `[Module.mem_annihilator]`. Introduce `t`. Rewrite using `[algebraMap_smul]`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact smul_zero _`.
+
+Consider the case `tmul b m => rw [← TensorProduct.tmul_smul, ha, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`.
+-/
 private theorem ann_bc {BB B MM : Type} [CommRing BB] [CommRing B] [Algebra BB B] [AddCommGroup MM] [Module BB MM]
     {a : BB} (ha : a ∈ Module.annihilator BB MM) : algebraMap BB B a ∈ Module.annihilator B (B ⊗[BB] MM) := by
   rw [Module.mem_annihilator] at ha ⊢
@@ -21,6 +26,19 @@ private theorem ann_bc {BB B MM : Type} [CommRing BB] [CommRing B] [Algebra BB B
   | tmul b m => rw [← TensorProduct.tmul_smul, ha, TensorProduct.tmul_zero]
   | add x y hx hy => rw [smul_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Use `haveI := P.fin`. Establish `hyp` using `fun i => yPrime R σ (fun a => s (MvPowerSeries.X a)) f P.BB P.cpl (q i) (hq i).1 (hq i).2.2.1 (hq i).2.2.2`. Use `letI iAlgR : ∀ i, Algebra R (B i) := fun i => ((algebraMap P.BB (B i)).comp (algebraMap R P.BB)).toAlgebra`. Use `haveI iTow : ∀ i, IsScalarTower R P.BB (B i) := fun i => IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `outOfNil Λ R σ s ii (Module.annihilator R X) ι q (d + Fintype.card σ) B (fun i => Module.annihilator (B i) (B i ⊗[P.BB] P.MM)) (fun i => (hq i).2.1) (fun i => (hyp i).2.2.2 (B i) (hcpl i)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce `i x hx`. Take `⟨k, hk⟩` from `Ideal.mem_comap.mp (P.nil hx)`. Use `Ideal.mem_comap.mpr ⟨k, ?_⟩` and prove the remaining obligations. Use `ann_bc (B := B i) hk` as an intermediate fact. Rewrite `this` using `[← map_pow]`.
+
+Rewrite using `[← map_pow]`. Conclude with `this`. Introduce `i Z hZ`. Take `⟨La, _, _, _, hLcpl, hreg, hdim⟩` from `hLa i`. Rewrite using `[pmDim Λ R σ (s.comp MvPowerSeries.C) (fun a => s (MvPowerSeries.X a)) f ii X P (q i) d La (B i) hC (hq i).1 (hq i).2.2.1 (hq i).2.2.2 hLcpl hreg hdim (hcpl i) Z hZ]`.
+
+Introduce `i Q hQ _ hy`. Use `pmFib R σ (fun a => s (MvPowerSeries.X a)) f ii X P (B i) Q hQ (fun a => hy a)` as an intermediate fact. Rewrite `this` using `[Ideal.comap_comap]`. Conclude with `this`. Introduce `i i' Z Q hZ hQ hSZ hZQ hy hQq`.
+
+Establish `hP : Ideal.comap (algebraMap P.BB (B i)) Q ≤ Ideal.map (algebraMap R P.BB) (q i')` using `(hyp i').2.2.1 _ (Ideal.comap_isPrime _ Q) (fun a => hy a) (by rw [Ideal.comap_comap]; exact hQq)`. Take `⟨Z', hZ', hS', hc⟩` from `pmMove P.BB P.MM (B i) (B i') _ Z (hcpl i') hZ hSZ (le_trans (Ideal.comap_mono hZQ) hP)`. Use `⟨Z', hZ', hS', ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.comap (algebraMap R P.BB)) hc` as an intermediate fact. Rewrite `this` using `[Ideal.comap_comap, Ideal.comap_comap]`.
+
+Conclude with `this`.
+-/
 private theorem s5_lemma {Λ R σ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [CommRing R]
     [IsNoetherianRing R] [Fintype σ] (s : MvPowerSeries σ Λ →+* R) (f : R) (ii : Ideal R) (X : Type)
     [AddCommGroup X] [Module R X] [Module Λ X] [Module.Free Λ X] [Module.Finite Λ X] [Module.Finite R X]
@@ -66,6 +84,13 @@ private theorem s5_lemma {Λ R σ : Type} [CommRing Λ] [IsLocalRing Λ] [IsNoet
     rw [Ideal.comap_comap, Ideal.comap_comap] at this
     exact this
 
+/- English proof (translation)
+Introduce `Λ R σ _ _ _ _ _ _ _ _ _ s U f ii M _ _ X _ _ _ _ _ hU hC hX hM1 hM2 hG ι q d hq hLa`. Take `⟨P⟩` from `pmodEx Λ R σ s U f ii M X hU hC hX hM1 hM2 hG`. Use `haveI : IsNoetherianRing P.BB := P.cpl.noeth`. Use `haveI hfinR : Module.Finite R X := by`. Use `letI : Algebra Λ R := (s.comp MvPowerSeries.C).toAlgebra`.
+
+Use `haveI : IsScalarTower Λ R X := ⟨fun a r x => by`. Rewrite using `[Algebra.smul_def, mul_smul, hC]`. Use the proof step `rfl⟩`. Conclude with `Module.Finite.of_restrictScalars_finite Λ R X`. Establish `hp` using `fun i => (yPrime R σ (fun a => s (MvPowerSeries.X a)) f P.BB P.cpl (q i) (hq i).1 (hq i).2.2.1 (hq i).2.2.2).1`.
+
+Conclude with `s5_lemma s f ii X hC P ι q d hq hLa (fun i => @CplAt P.BB _ (Ideal.map (algebraMap R P.BB) (q i)) (hp i)) (fun i => by haveI := hp i`. Conclude with `isCplAt_cplAt P.BB _)`.
+-/
 theorem s5 : S5 := by
   intro Λ R σ _ _ _ _ _ _ _ _ _ s U f ii M _ _ X _ _ _ _ _ hU hC hX hM1 hM2 hG ι q d hq hLa
   obtain ⟨P⟩ := pmodEx Λ R σ s U f ii M X hU hC hX hM1 hM2 hG

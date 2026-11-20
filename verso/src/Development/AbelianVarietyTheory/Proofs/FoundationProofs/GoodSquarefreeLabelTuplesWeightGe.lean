@@ -18,9 +18,19 @@ def tupleMass {ι : Type} [Fintype ι] (N : ℕ) (P : (ι → (ZMod g)[X]) → P
 
 variable {g} {ι : Type} [Fintype ι] {N : ℕ}
 
+/- English proof (translation)
+Conclude with `Finset.prod_nonneg fun v _ => inv_nonneg.mpr (Nat.cast_nonneg _)`.
+-/
 theorem tupleWeight_nonneg (F : ι → (ZMod g)[X]) : 0 ≤ ∏ v, ((torusCard g (F v) : ℝ))⁻¹ := by
   exact Finset.prod_nonneg fun v _ => inv_nonneg.mpr (Nat.cast_nonneg _)
 
+/- English proof (translation)
+Unfold `tupleMass`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun F hF => ?_` and prove the remaining obligations. Establish `hw` using `tupleWeight_nonneg F`. Establish `hmem : ∀ v, F v ∈ sqSet g N` using `fun v => Fintype.mem_piFinset.mp hF v`.
+
+Distinguish the cases in `hP : P F`. Rewrite using `[if_pos hP]`. Break down `h F hmem hP with hQ | hR` into its components or cases. Apply the tactic sequence `rw [if_pos hQ]; split_ifs <;> linarith`. Apply the tactic sequence `rw [if_pos hR]; split_ifs <;> linarith`.
+
+Apply the tactic sequence `rw [if_neg hP]; split_ifs <;> linarith`.
+-/
 theorem tupleMass_le_add {P Q R : (ι → (ZMod g)[X]) → Prop}
     (h : ∀ F, (∀ v, F v ∈ sqSet g N) → P F → Q F ∨ R F) :
     tupleMass g N P ≤ tupleMass g N Q + tupleMass g N R := by
@@ -36,6 +46,11 @@ theorem tupleMass_le_add {P Q R : (ι → (ZMod g)[X]) → Prop}
     · rw [if_pos hR]; split_ifs <;> linarith
   · rw [if_neg hP]; split_ifs <;> linarith
 
+/- English proof (translation)
+Unfold `tupleMass`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_le_sum fun F _ => ?_` and prove the remaining obligations. Establish `hz : ∀ j ∈ s, 0 ≤ (if Q j F then ∏ v, ((torusCard g (F v) : ℝ))⁻¹ else 0)` using `fun j _ => by split_ifs`. Conclude with `tupleWeight_nonneg F`.
+
+Conclude with `le_rfl`. Use `split_ifs with h`. Take `⟨i, hi, hQ⟩` from `h`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.sum_nonneg hz`.
+-/
 theorem tupleMass_exists_le {κ : Type} (s : Finset κ) (Q : κ → (ι → (ZMod g)[X]) → Prop) :
     tupleMass g N (fun F => ∃ i ∈ s, Q i F) ≤ ∑ i ∈ s, tupleMass g N (Q i) := by
   unfold tupleMass
@@ -52,6 +67,11 @@ theorem tupleMass_exists_le {κ : Type} (s : Finset κ) (Q : κ → (ι → (ZMo
         Finset.single_le_sum (f := fun j => if Q j F then ∏ v, ((torusCard g (F v) : ℝ))⁻¹ else 0) hz hi
   · exact Finset.sum_nonneg hz
 
+/- English proof (translation)
+Unfold `tupleMass mass`. Repeatedly rewrite using `[Finset.sum_filter]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun F _ => ?_` and prove the remaining obligations. Use `split_ifs with h`.
+
+Conclude with `Finset.prod_congr rfl fun v _ => (if_pos (h v)).symm`. Use `push Not at h`. Take `⟨v, hv⟩` from `h`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ v) (if_neg hv)).symm`.
+-/
 theorem tupleMass_forall (A : ι → (ZMod g)[X] → Prop) :
     tupleMass g N (fun F => ∀ v, A v (F v)) = ∏ v, mass g N (A v) := by
   unfold tupleMass mass
@@ -64,6 +84,15 @@ theorem tupleMass_forall (A : ι → (ZMod g)[X] → Prop) :
     obtain ⟨v, hv⟩ := h
     exact (Finset.prod_eq_zero (Finset.mem_univ v) (if_neg hv)).symm
 
+/- English proof (translation)
+Establish `hm : ∀ B : (ZMod g)[X] → Prop, 0 ≤ mass g N B` using `fun B => by`. Unfold `mass`. Conclude with `Finset.sum_nonneg fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)`. Establish `key : tupleMass g N (fun F : ι → (ZMod g)[X] => A (F v)) = tupleMass g N (fun F => ∀ w, (if w = v then A else fun _ => True) (F w))`. Unfold `tupleMass`.
+
+Use `Finset.sum_congr rfl fun F _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have hiff : A (F v) ↔ ∀ w, (if w = v then A else fun _ => True) (F w) := ⟨fun h w => by by_cases hw : w = v <;> simp_all, fun h => by simpa using h v⟩`. Distinguish the cases in `h : A (F v)`. Rewrite using `[if_pos h, if_pos (hiff.mp h)]`. Rewrite using `[if_neg h, if_neg (mt hiff.mpr h)]`.
+
+Rewrite using `[key, tupleMass_forall, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ v), if_pos rfl]`. Establish `hrest : ∏ w ∈ Finset.univ.erase v, mass g N (if w = v then A else fun _ => True) ≤ 1`. Apply `Finset.prod_le_one` to reduce the goal to its premises. Conclude with `fun w _ => hm _`. Introduce `w hw`.
+
+Rewrite using `[if_neg (Finset.ne_of_mem_erase hw)]`. Conclude with `h1`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem tupleMass_single_le (h1 : (mass g N fun _ => True) ≤ 1) (v : ι) (A : (ZMod g)[X] → Prop) :
     tupleMass g N (fun F : ι → (ZMod g)[X] => A (F v)) ≤ mass g N A := by
   have hm : ∀ B : (ZMod g)[X] → Prop, 0 ≤ mass g N B := fun B => by
@@ -88,6 +117,47 @@ theorem tupleMass_single_le (h1 : (mass g N fun _ => True) ≤ 1) (v : ι) (A : 
   calc mass g N A * _ ≤ mass g N A * 1 := mul_le_mul_of_nonneg_left hrest (hm A)
     _ = _ := mul_one _
 
+/- English proof (translation)
+Introduce `g _ N m q d ι _ ch hN hg hqd`. Establish `hm : ∀ B : (ZMod g)[X] → Prop, 0 ≤ mass g N B` using `fun B => by`. Unfold `mass`. Conclude with `Finset.sum_nonneg fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)`. Establish `h1 : (mass g N fun _ => True) ≤ 1` using `(GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N`.
+
+Establish `hg0 : (0 : ℝ) < g` using `by exact_mod_cast (Fact.out : g.Prime).pos`. Establish `hg4 : (4096 : ℝ) ≤ g` using `by exact_mod_cast hg`. Establish `hN' : (100000 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hall : 1 - 2 * (Fintype.card ι : ℝ) / g ≤ tupleMass g N (fun _ : ι → (ZMod g)[X] => True)`. Establish `e` using `tupleMass_forall (g := g) (N := N) (fun (_ : ι) (_ : (ZMod g)[X]) => True)`.
+
+Simplify using `only [implies_true] at e`. Rewrite using `[e]`. Establish `h2 : 0 ≤ 1 - 2 / (g : ℝ)`. Rewrite using `[sub_nonneg, div_le_one hg0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `h3 : (-2 : ℝ) ≤ -2 / g`. Rewrite using `[le_div_iff₀ hg0]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ∀ f ∈ sqSet g N, (f.Monic ∧ f.natDegree = N ∧ f.coeff 0 ≠ 0) ∧ Squarefree f`.
+
+Introduce `f hf`. Unfold `sqSet at hf`. Rewrite `hf` using `[Finset.mem_filter, Finset.mem_image]`. Take `⟨⟨c, -, rfl⟩, hsf, hc0⟩` from `hf`. Establish `hdeg` using `degree_sum_fin_lt c`.
+
+Use `⟨⟨monic_X_pow_add hdeg, ?_, hc0⟩, hsf⟩` and prove the remaining obligations. Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]`. Establish `hE1 : tupleMass g N (fun F : ι → (ZMod g)[X] => ∃ v ∈ Finset.univ, ¬ RootsApart g N (F v)) ≤ (Fintype.card ι : ℝ) * (23 * Real.log g / Real.sqrt g)`. Combine the equalities or inequalities in the displayed calculation. Establish `hE2 : ∀ c : ι → Fin m → (ZMod g)ˣ, tupleMass g N (fun F : ι → (ZMod g)[X] => ∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g (c p.1 p.2) (F p.1)) ≤ (Fintype.card ι : ℝ) * m * (1 / (4 * ((min q d : ℕ) : ℝ)) + (1 + Real.log N) / ((g : ℝ) - 1))`.
+
+Introduce `c`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_prod, Fintype.card_fin, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hE4 : tupleMass g N (fun F : ι → (ZMod g)[X] => ∃ a ∈ Finset.Icc 1 (N / 2), ∀ v, HasDiv g a (F v)) ≤ (N : ℝ) / 2 * (7 / 8) ^ Fintype.card ι`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_Icc]`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `_ = ((N / 2 : ℕ) : ℝ) * (7 / 8) ^ Fintype.card ι := by`. Rewrite using `[Finset.sum_const, Nat.card_Icc, nsmul_eq_mul, Nat.add_sub_cancel]`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right Nat.cast_div_le (by positivity)`. Establish `hL : (1 : ℝ) ≤ 10 * Real.log N`. Establish `: (1 : ℝ) ≤ Real.log N`.
+
+Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hE5 : tupleMass g N (fun F : ι → (ZMod g)[X] => ∀ v, ¬ HasPrimeFactor g N (F v)) ≤ Real.exp (-((Fintype.card ι : ℝ) / (10 * Real.log N)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (Real.exp (-(1 / (10 * Real.log N)))) ^ Fintype.card ι := by`. Use `pow_le_pow_left₀ ?_ ?_ _` and prove the remaining obligations. Establish `: 1 / (10 * Real.log N) ≤ 1` using `by rw [div_le_one (by linarith)]; exact hL`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Combine the linear relations using `[Real.add_one_le_exp (-(1 / (10 * Real.log N)))]`. Use `_ = _ := by rw [← Real.exp_nat_mul]; congr 1; ring`. Establish `hsplit : ∀ F : ι → (ZMod g)[X], (∀ v, F v ∈ sqSet g N) → True → Good g N ch F ∨ ((∃ v ∈ Finset.univ, ¬ RootsApart g N (F v)) ∨ ((∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g (ch p.1 p.2) (F p.1)) ∨ ((∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g ((fun v j = …`. Introduce `F hF _`. Assume the negation of the conclusion as `hcon`.
+
+Simplify using `only [not_or] at hcon`. Take `⟨hG, h1', h2', h3', h4', h5'⟩` from `hcon`. Apply `hG` to reduce the goal to its premises. Establish `hA : ∀ v, RootsApart g N (F v)` using `fun v => Classical.byContradiction fun h => h1' ⟨v, Finset.mem_univ _, h⟩`. Establish `hB : ∀ v j, RootsAvoid g (ch v j) (F v)` using `fun v j => Classical.byContradiction fun h => h2' ⟨(v, j), Finset.mem_univ _, h⟩`.
+
+Establish `hC : ∀ v j, RootsAvoid g (ch v j)⁻¹ (F v)` using `fun v j => Classical.byContradiction fun h => h3' ⟨(v, j), Finset.mem_univ _, h⟩`. Establish `hD : ∀ a : ℕ, 1 ≤ a → 2 * a ≤ N → ∃ v, ¬ HasDiv g a (F v)` using `fun a ha1 ha2 => by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h4' ⟨a, Finset.mem_Icc.mpr ⟨ha1, by omega⟩, h⟩`.
+
+Establish `hE : ∃ v, HasPrimeFactor g N (F v)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `h5' h`. Unfold `Good Formalism.CyclotomicNorms.IsGood`.
+
+Conclude with `⟨⟨fun v => (hsq _ (hF v)).1, fun v => (hsq _ (hF v)).2, fun l hl hl' v => hA v l hl hl', fun l hl hlg v j => hB v j l hl hlg, hD, hE⟩, ⟨fun v => (hsq _ (hF v)).1, fun v => (hsq _ (hF v)).2, fun l hl hl' v => hA v l hl hl', fun l hl hlg v j => hC v j l hl hlg, hD, hE⟩⟩`. Establish `hor : ∀ {P Q : (ι → (ZMod g)[X]) → Prop}, tupleMass g N (fun F => P F ∨ Q F) ≤ tupleMass g N P + tupleMass g N Q` using `fun {_ _} => tupleMass_le_add fun _ _ h => h`. Establish `hgood : tupleMass g N (Good g N ch) = ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹`. Unfold `tupleMass goodSet`. Rewrite using `[Finset.sum_filter]`.
+
+Establish `s0` using `tupleMass_le_add hsplit`. Establish `s1` using `hor (P := fun F => (∃ v ∈ Finset.univ, ¬ RootsApart g N (F v))) (Q := fun F => (∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g (ch p.1 p.2) (F p.1)) ∨ ((∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g ((fun v j => (ch v j)⁻¹) p.1 p.2) (F p.1)) ∨ ((∃ a ∈ Finset. …`. Establish `s2` using `hor (P := fun F => (∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g (ch p.1 p.2) (F p.1))) (Q := fun F => (∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g ((fun v j => (ch v j)⁻¹) p.1 p.2) (F p.1)) ∨ ((∃ a ∈ Finset.Icc 1 (N / 2), ∀ v, HasDiv g a (F v)) ∨ (∀ v, ¬ …`. Establish `s3` using `hor (P := fun F => (∃ p ∈ (Finset.univ : Finset (ι × Fin m)), ¬ RootsAvoid g ((fun v j => (ch v j)⁻¹) p.1 p.2) (F p.1))) (Q := fun F => (∃ a ∈ Finset.Icc 1 (N / 2), ∀ v, HasDiv g a (F v)) ∨ (∀ v, ¬ HasPrimeFactor g N (F v)))`. Establish `s4` using `hor (P := fun F => (∃ a ∈ Finset.Icc 1 (N / 2), ∀ v, HasDiv g a (F v))) (Q := fun F => (∀ v, ¬ HasPrimeFactor g N (F v)))`.
+
+Use `beta_reduce at s0 s1 s2 s3 s4`. Establish `b2` using `hE2 ch`. Establish `b3` using `hE2 (fun v j => (ch v j)⁻¹)`. Establish `hb4` using `s4.trans (add_le_add hE4 hE5)`. Establish `hb3` using `s3.trans (add_le_add b3 hb4)`.
+
+Establish `hb2` using `s2.trans (add_le_add b2 hb3)`. Establish `hb1` using `s1.trans (add_le_add hE1 hb2)`. Establish `hb0` using `s0.trans (add_le_add le_rfl hb1)`. Rewrite using `[← hgood]`. Unfold `badBound`.
+
+Rewrite using `[Real.rpow_natCast]`. Use `ring_nf at hall hb0 ⊢`. Combine the linear relations using `only [hall, hb0]`.
+-/
 theorem goodSet_weight_ge : ∀ (g : ℕ) [Fact g.Prime], ∀ (N m q d : ℕ) (ι : Type) [Fintype ι] (ch : ι → Fin m → (ZMod g)ˣ), 100000 ≤ N → 2 ^ 12 ≤ g → (q.Prime ∧ d.Prime ∧ q ≠ 2 ∧ d ≠ 2 ∧ q ≠ d ∧ 16 ≤ max q d ∧ 16 * q * d ∣ g - 1) → 1 - (badBound g (Fintype.card ι) m N ((min q d : ℕ) : ℝ) - (Fintype.card ι : ℝ) / g) ≤ ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹ := by
   intro g _ N m q d ι _ ch hN hg hqd
   have hm : ∀ B : (ZMod g)[X] → Prop, 0 ≤ mass g N B := fun B => by

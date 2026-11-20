@@ -11,6 +11,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory.DetLine
 
+/- English proof (translation)
+Take `⟨e₀, he₀, hb₀⟩` from `BdryUnit.exists_eigEquiv Y.m0.toSABMap.cart Y.m0.toSABMap.act x (x ≫ toX Xo c) rfl`. Take `⟨e, he, hb⟩` from `BdryUnit.exists_eigEquiv Y.m.cart Y.m.act x ((x ≫ Y.jQ) ≫ genι Y) (Category.assoc _ _ _)`. Use `⟨e₀.symm.trans e, fun n v => ⟨fun i => ⟨e₀.symm (v i), ?_, (he _).symm⟩, fun χ => ?_⟩⟩` and prove the remaining obligations. Conclude with `(he₀ _).symm.trans (congrArg (fun z => z.left) (e₀.apply_symm_apply (v i)))`. Establish `h` using `hb₀ χ n fun i => e₀.symm (v i)`.
+
+Establish `hv : (fun i => e₀ (e₀.symm (v i))) = v` using `funext fun i => e₀.apply_symm_apply (v i)`. Rewrite `h` using `[hv]`. Conclude with `h.symm.trans (hb χ n fun i => e₀.symm (v i))`.
+-/
 theorem exists_vecEquiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
     (Y : Model Xo c β) {R : Type} [CommRing R] (x : Sp R ⟶ Xo.XF c) :
@@ -28,6 +33,13 @@ theorem exists_vecEquiv {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     rw [hv] at h
     exact h.symm.trans (hb χ n fun i => e₀.symm (v i))
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O _ β Y U τ R _ j x`. Take `⟨e, he⟩` from `exists_vecEquiv Y x`. Establish `hs : (x ≫ Y.jQ) ≫ genStr Y = x ≫ toF Xo c`. Rewrite using `[Category.assoc]`. Conclude with `congrArg (x ≫ ·) Y.jQ_over`.
+
+Use `⟨fun v w h => ⟨fun i => e (v i), fun i => e (w i), ⟨hs.trans h.1, ?_, ((he _ v).2 _).1 h.2.2.1, ((he _ w).2 _).1 h.2.2.2⟩, (he _ v).1, (he _ w).1⟩, fun V vb wb hU h => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `subset_closure ⟨x z, h.2.1 ⟨z, rfl⟩, by simp⟩`. Take `⟨v, rfl⟩ : ∃ v : Fin D.p → _, vb = fun i => e (v i)` from `⟨fun i => e.symm (vb i), funext fun i => (e.apply_symm_apply _).symm⟩`. Take `⟨w, rfl⟩ : ∃ w : Fin D.q → _, wb = fun i => e (w i)` from `⟨fun i => e.symm (wb i), funext fun i => (e.apply_symm_apply _).symm⟩`.
+
+Conclude with `⟨v, w, ⟨hs.symm.trans h.1, hU, ((he _ v).2 _).2 h.2.2.1, ((he _ w).2 _).2 h.2.2.2⟩, (he _ v).1, (he _ w).1⟩`.
+-/
 theorem frame_transfer : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (R : Type) [CommRing R] (j : c.F →+* R) (x : Sp R ⟶ Xo.XF c), (∀ v w, FrU Xo c U τ j x v w → ∃ vb wb, FrY Y (compactOf Y U) τ j (x ≫ Y.jQ) vb wb ∧ SameVecs Y x v vb ∧ SameVecs Y x w wb) ∧ (∀ (V : Set (gen Y)) vb wb, Set.range x ⊆ U → FrY Y V τ j (x ≫ Y.jQ) vb wb → ∃ v w, FrU Xo c U τ j x v w ∧ SameVecs Y x v vb ∧ SameVecs Y x w wb) := by
   intro E _ _ _ H D l Xo c O _ β Y U τ R _ j x
   obtain ⟨e, he⟩ := exists_vecEquiv Y x

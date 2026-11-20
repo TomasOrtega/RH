@@ -3,6 +3,13 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.PowerSumTraces.
 open MeasureTheory NumberField GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory.C Polynomial Topology
 
+/- English proof (translation)
+Introduce `K _ _ n N U hN hU`. Establish `hU' : IsOpen (Subtype.val '' (U : Set (AdelicGLn.integralFiniteGL K n)))` using `(AdelicGLn.isOpen_integralFiniteGL K n).isOpenMap_subtype_val _ hU`. Establish `hp : Continuous fun g : normOneGL K n => AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)` using `(AdelicGLn.prodEquiv K n).continuous.comp continuous_subtype_val`. Establish `ha : Continuous fun g : normOneGL K n => archEquiv K n (AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)).1` using `(archEquiv K n).continuous.comp hp.fst`. Establish `hf : Continuous fun g : normOneGL K n => (AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)).2` using `hp.snd`.
+
+Use `⟨(fun g : normOneGL K n => archEquiv K n (AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)).1) ⁻¹' N ∩ (fun g : normOneGL K n => (AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)).2) ⁻¹' (Subtype.val '' (U : Set (AdelicGLn.integralFiniteGL K n))), Filter.inter_mem ?_ ?_, …` and prove the remaining obligations. Use `ha.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Simplify `hN` using `only [OneMemClass.coe_one, map_one, Prod.fst_one]`. Use `(hU'.preimage hf).mem_nhds ⟨1, U.one_mem, ?_⟩` and prove the remaining obligations. Simplify using `only [OneMemClass.coe_one, map_one, Prod.snd_one]`.
+
+Introduce and unpack `g ⟨hg, u, hu, e⟩`. Use `⟨_, hg, u, hu, ?_⟩` and prove the remaining obligations. Establish `e' : (u : AdelicGLn.FiniteAdelicGL K n) = (AdelicGLn.prodEquiv K n (g : AdelicGLn.AdelicGL K n)).2` using `e`. Rewrite using `[e']`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.exists_nhds_one_normOneGL_factorization :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (N : Set (archGroup K n)) (U : Subgroup (AdelicGLn.integralFiniteGL K n)), N ∈ 𝓝 (1 : archGroup K n) → IsOpen (U : Set (AdelicGLn.integralFiniteGL K n)) → ∃ N' ∈ 𝓝 (1 : normOneGL K n), ∀ g ∈ N', ∃ a ∈ N, ∃ u ∈ U, g = archP K n a * retractOne (finEmb K n (u : AdelicGLn.integralFiniteGL K n)) := by
   intro K _ _ n N U hN hU

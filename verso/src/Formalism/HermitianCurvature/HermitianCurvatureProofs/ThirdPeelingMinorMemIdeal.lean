@@ -6,10 +6,26 @@ namespace Formalism.FourierDecayAlt.P.SignAntidiagonal
 
 open Formalism.FourierDecayAlt.C3 Formalism.REAL Formalism.QuantumDeterminants
 
+/- English proof (translation)
+Rewrite using `[pe_val]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem pe_lt {k r p : ℕ} (h : p < 2 * r + k + 1) : (pe k r p).val = p := by
   rw [pe_val]
   omega
 
+/- English proof (translation)
+Establish `hv' : v = ∑ w : Fin (k + 1), v (wI k r w) • bvec (wI k r w)`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, bvec, smul_eq_mul]`. Distinguish the cases in `hi : r ≤ i.val ∧ i.val ≤ r + k`.
+
+Rewrite using `[Finset.sum_eq_single ⟨i.val - r, by omega⟩]`. Establish `e : wI k r ⟨i.val - r, by omega⟩ = i` using `Fin.ext (by simp only [wI]; omega)`. Rewrite using `[e, Pi.single_eq_same, mul_one]`. Introduce `w _ hw`. Rewrite using `[Pi.single_eq_of_ne, mul_zero]`.
+
+Introduce `e`. Apply `hw` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [wI, Fin.val_mk] at this ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[hv i (by omega)]`. Use `symm`.
+
+Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `w _`. Rewrite using `[Pi.single_eq_of_ne, mul_zero]`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact.
+
+Simplify using `only [wI] at this`. Use linear arithmetic over natural numbers and integers. Use `conv_lhs => rw [hv']`. Simplify using `only [herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]`.
+-/
 theorem herm_wsum (k r : ℕ) (v y : Fin (2 * r + k + 1) → ℂ) (hv : inWb k r v) :
     herm (Hpk k r) v y = ∑ w : Fin (k + 1), v (wI k r w) * herm (Hpk k r) (bvec (wI k r w)) y := by
   have hv' : v = ∑ w : Fin (k + 1), v (wI k r w) • bvec (wI k r w) := by
@@ -42,6 +58,9 @@ theorem herm_wsum (k r : ℕ) (v y : Fin (2 * r + k + 1) → ℂ) (hv : inWb k r
   conv_lhs => rw [hv']
   simp only [herm, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, smul_eq_mul]
 
+/- English proof (translation)
+Establish `h1 : min p (2 * r + k) = p` using `by omega`. Establish `hw : (wI k r w).val = r + w.val` using `rfl`. Establish `hwk` using `w.isLt`. Simplify using `only [dpsiP, pe_val, h1, hw]`. Rewrite using `[if_neg (by omega), if_pos (by omega)]`.
+-/
 theorem dpsi_e_w (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (p : ℕ) (hp : p < r) (w : Fin (k + 1)) :
     dpsiP k r z' (pe k r p) (wI k r w) = if p + 1 = r then z' (wI k r w) else 0 := by
   have h1 : min p (2 * r + k) = p := by omega
@@ -50,6 +69,9 @@ theorem dpsi_e_w (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (p : ℕ) (hp : 
   simp only [dpsiP, pe_val, h1, hw]
   rw [if_neg (by omega), if_pos (by omega)]
 
+/- English proof (translation)
+Establish `hw : (wI k r w).val = r + w.val` using `rfl`. Establish `hwk` using `w.isLt`. Simplify using `only [dpsiP, ps_val, hw]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos (by omega)]`. Simplify using `only [show (2 * r + k - l = r + k + 1) ↔ (l + 1 = r) by omega]`.
+-/
 theorem dpsi_middle_last_basis (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (l : ℕ) (hl : l < r) (w : Fin (k + 1)) :
     dpsiP k r z' (wI k r w) (ps k r l) = if l + 1 = r then herm (Hpk k r) (bvec (wI k r w)) z' else 0 := by
   have hw : (wI k r w).val = r + w.val := rfl
@@ -58,6 +80,11 @@ theorem dpsi_middle_last_basis (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (l
   rw [if_neg (by omega), if_neg (by omega), if_pos (by omega)]
   simp only [show (2 * r + k - l = r + k + 1) ↔ (l + 1 = r) by omega]
 
+/- English proof (translation)
+Establish `c1 : ¬(2 * r + k - a < r ∧ 2 * r + k - b < r)` using `by omega`. Establish `c2 : ¬(2 * r + k - a < r ∧ r ≤ 2 * r + k - b ∧ 2 * r + k - b ≤ r + k)` using `by omega`. Establish `c3 : ¬(r ≤ 2 * r + k - a ∧ 2 * r + k - a ≤ r + k ∧ r + k < 2 * r + k - b)` using `by omega`. Establish `c4 : r + k < 2 * r + k - a ∧ r + k < 2 * r + k - b` using `by omega`. Establish `c5 : (2 * r + k - b = 2 * r + k - a + 1) ↔ (b + 1 = a)` using `by omega`.
+
+Establish `c6 : ¬(2 * r + k - a ≤ r + k)` using `by omega`. Simplify using `only [dpsiP, ps_val, c1, c2, c3, c4, c5, c6, if_false, if_true, and_self, and_false, false_and, and_true]`.
+-/
 theorem dpsi_last_basis_shift (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (a b : ℕ) (ha : a < r) (hb : b < r) :
     dpsiP k r z' (ps k r a) (ps k r b) = if b + 1 = a then 1 else 0 := by
   have c1 : ¬(2 * r + k - a < r ∧ 2 * r + k - b < r) := by omega
@@ -68,6 +95,27 @@ theorem dpsi_last_basis_shift (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ) (a 
   have c6 : ¬(2 * r + k - a ≤ r + k) := by omega
   simp only [dpsiP, ps_val, c1, c2, c3, c4, c5, c6, if_false, if_true, and_self, and_false, false_and, and_true]
 
+/- English proof (translation)
+Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `i hi _`. Establish `hi0 : i = 0` using `by omega`.
+
+Substitute `hi0` using the available equality. Establish `e : (fun l : Fin 0 => ps k r (if l.val < 0 then l.val else l.val + 1)) = fun l : Fin 0 => ps k r l.val`. Use function extensionality and compare the values at `fun l => l.elim0`. Rewrite using `[e, sub_self]`. Conclude with `Submodule.zero_mem _`.
+
+Consider the case `succ m ih`. Introduce `i hi hr`. Break down `Nat.lt_or_ge i (m + 1) with hlt | hge` into its components or cases. Establish `hih` using `ih i (by omega) (by omega)`. Establish `hu : ell + ((m + 1 : ℕ) : ℂ) - 1 = ell + (m : ℂ)` using `by push_cast; ring`.
+
+Rewrite using `[hu]`. Establish `hstep : qminor E (fun l : Fin (m + 1) => ps k r (if l.val < i then l.val else l.val + 1)) (fun l : Fin (m + 1) => ps k r l.val) (ell + (m : ℂ)) - qminor E (fun l : Fin m => ps k r (if l.val < i then l.val else l.val + 1)) (fun l : Fin m => ps k r l.val) (ell + (m : ℂ) - 1) ∈ Idea …`. Establish `hc` using `peel_core (Ideal.span (rgen k r z' E)) (ι := Unit) (fun _ => (1 : ℂ)) (fun l : Fin (m + 1) => qminor E ((fun l : Fin (m + 1) => ps k r (if l.val < i then l.val else l.val + 1)) ∘ Fin.castSucc) ((fun l : Fin (m + 1) => ps k r l.val) ∘ l.succAbove) (ell + (m : ℂ) - 1)) (fun l _ => …`. Rewrite using `[Formalism.FourierDecayAlt.P.expansion_last_line A (2 * r + k + 1) m E hG]`. Establish `hm : ¬ (m < i)` using `by omega`.
+
+Simplify `hc` using `[Fin.succAbove_last, Fin.val_last, hm, Function.comp_def, Fin.coe_castSucc]`. Introduce `l`. Establish `hl` using `l.isLt`. Establish `hne : ps k r (m + 1) ≠ ps k r l.val`. Introduce `e`.
+
+Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [ps_val] at this`. Use linear arithmetic over natural numbers and integers. Establish `hin : InNp k r (ps k r (m + 1)) (ps k r l.val)`. Simplify using `only [InNp, ps_val]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hd : dpsiP k r z' (ps k r (m + 1)) (ps k r l.val) = if l.val = m then 1 else 0`. Rewrite using `[dpsi_last_basis_shift k r z' (m + 1) l.val (by omega) (by omega)]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`. Simplify using `only [Finset.univ_unique, Finset.sum_singleton, one_smul, last_iff]`.
+
+Rewrite using `[tm_offdiag _ _ hne, ← hd]`. Conclude with `mem_gen hin`. Establish `hsum` using `(Ideal.span (rgen k r z' E)).add_mem hstep hih`. Rewrite `hsum` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Establish `hi1 : i = m + 1` using `by omega`.
+
+Substitute `hi1` using the available equality. Establish `e : (fun l : Fin (m + 1) => ps k r (if l.val < m + 1 then l.val else l.val + 1)) = fun l : Fin (m + 1) => ps k r l.val`. Use function extensionality and compare the values at `l`. Rewrite using `[if_pos l.isLt]`. Rewrite using `[e, sub_self]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem third_peeling_minor_mem_ideal {A : Type} [Ring A] [Algebra ℂ A] (k r : ℕ) (z' : Fin (2 * r + k + 1) → ℂ)
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → A) (hG : GlRel E) (ell : ℂ) : ∀ (m i : ℕ), i ≤ m → m + 1 ≤ r →
     qminor E (fun l : Fin m => ps k r (if l.val < i then l.val else l.val + 1)) (fun l : Fin m => ps k r l.val)
@@ -129,11 +177,17 @@ theorem third_peeling_minor_mem_ideal {A : Type} [Ring A] [Algebra ℂ A] (k r :
       rw [e, sub_self]
       exact Submodule.zero_mem _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [sR, Formalism.QuantumDeterminants.esI, Fin.coe_castLE, ps_val]`.
+-/
 private theorem sR_eq_ps (k r j : ℕ) (hj : j ≤ r) : sR k r j hj = fun l : Fin j => ps k r l.val := by
   funext l
   apply Fin.ext
   simp only [sR, Formalism.QuantumDeterminants.esI, Fin.coe_castLE, ps_val]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `l`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only [sR, Formalism.QuantumDeterminants.esI, Fin.coe_castLE, ps_val, succAbove_val]`.
+-/
 private theorem sR_succAbove_eq_ps (k r m : ℕ) (hm : m + 1 ≤ r) (i : Fin (m + 1)) :
     (fun l : Fin m => sR k r (m + 1) hm (i.succAbove l)) =
       fun l : Fin m => ps k r (if l.val < i.val then l.val else l.val + 1) := by
@@ -141,11 +195,31 @@ private theorem sR_succAbove_eq_ps (k r m : ℕ) (hm : m + 1 ≤ r) (i : Fin (m 
   apply Fin.ext
   simp only [sR, Formalism.QuantumDeterminants.esI, Fin.coe_castLE, ps_val, succAbove_val]
 
+/- English proof (translation)
+Introduce `A _ _ k r z' E hG m hm i ell`. Rewrite using `[sR_succAbove_eq_ps, sR_eq_ps, sR_eq_ps]`. Conclude with `third_peeling_minor_mem_ideal k r z' E hG ell m i.val (by have := i.isLt; omega) hm`.
+-/
 theorem third_peeling_identity : PeelingDualColumn := by
   intro A _ _ k r z' E hG m hm i ell
   rw [sR_succAbove_eq_ps, sR_eq_ps, sR_eq_ps]
   exact third_peeling_minor_mem_ideal k r z' E hG ell m i.val (by have := i.isLt; omega) hm
 
+/- English proof (translation)
+Introduce `A _ _ k m z' yb E i u hz'`. Establish `ha : xR k (m + 1) (m + 1) le_rfl = fun l : Fin (m + 1) => pe k (m + 1) l.val`. Use function extensionality and compare the values at `l; ext; simp only [xR, eI, Fin.val_castLE]; rw [pe_lt (by omega)]`. Establish `hb : (fun l : Fin m => xR k (m + 1) (m + 1) le_rfl (i.succAbove l)) = fun l : Fin m => pe k (m + 1) (if l.val < i.val then l.val else l.val + 1)`. Apply the tactic sequence `funext l; ext; simp only [xR, eI, Fin.val_castLE, succAbove_val, pe_val]; all_goals (split_ifs <;> omega)`.
+
+Establish `hi : xR k (m + 1) i.val (by have` using `i.isLt; omega) = fun l : Fin i.val => pe k (m + 1) l.val := by`. Use function extensionality and compare the values at `l; ext; simp only [xR, eI, Fin.val_castLE]; rw [pe_lt (by omega)]`. Rewrite using `[hb, ha, hi]`. Establish `step` using `peel_col (Ideal.span (rgen k (m + 1) z' E)) E (fun w => herm (Hpk k (m + 1)) (bvec (wI k (m + 1) w)) yb) (fun l : Fin (m + 1) => pe k (m + 1) l.val) (fun l : Fin m => pe k (m + 1) (if l.val < i.val then l.val else l.val + 1)) (wI k (m + 1)) u (herm (Hpk k (m + 1)) z' yb) (by`. Introduce `l`.
+
+Use `l.isLt` as an intermediate fact. Apply `hT_of _ _ _ (fun w => dpsiP k (m + 1) z' (pe k (m + 1) l.val) (wI k (m + 1) w))` to reduce the goal to its premises. Introduce `w`. Establish `hw` using `w.isLt`. Establish `hne : pe k (m + 1) l.val ≠ wI k (m + 1) w`.
+
+Introduce `h2; have h3 := congrArg Fin.val h2; rw [pe_lt (by omega)] at h3; simp only [wI] at h3; omega`. Rewrite using `[tm_offdiag _ _ hne]`. Apply `mem_gen` to reduce the goal to its premises. Simplify using `only [InNp, wI]; rw [pe_lt (by omega)]; omega`. Simplify using `only [dpsi_e_w k (m + 1) z' l.val (by omega), last_iff]`.
+
+Distinguish the cases in `hl : l.val = m`. Establish `e : l.val + 1 = m + 1` using `by omega`. Simplify using `only [e, if_true, hl]`. Rewrite using `[herm_wsum k (m + 1) z' yb hz']`. Use `congr 1`.
+
+Use extensionality with `w`. Expand and normalize the polynomial expressions, which then agree. Establish `e : ¬ (l.val + 1 = m + 1)` using `by omega`. Simplify using `[e, hl])`. Establish `hc : ((fun l : Fin (m + 1) => pe k (m + 1) l.val) ∘ Fin.castSucc) = fun l : Fin m => pe k (m + 1) l.val`.
+
+Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules. Rewrite `step` using `[hc]`. Establish `h2` using `smul_mem' _ (herm (Hpk k (m + 1)) z' yb) (first_peeling_minor_mem_ideal k (m + 1) z' E u m i.val (by omega) (by omega))`. Use `Ideal.add_mem _ step h2` as an intermediate fact.
+
+Rewrite `this` using `[smul_sub]`. Simplify using `using this`.
+-/
 theorem second_peeling_identity : PeelingCovector := by
   intro A _ _ k m z' yb E i u hz'
   have ha : xR k (m + 1) (m + 1) le_rfl = fun l : Fin (m + 1) => pe k (m + 1) l.val := by
@@ -185,6 +259,21 @@ theorem second_peeling_identity : PeelingCovector := by
   rw [smul_sub] at this
   simpa using this
 
+/- English proof (translation)
+Introduce `A _ _ k m z' yb E hG i ell hz hy`. Rewrite using `[sR_succAbove_eq_ps, sR_eq_ps, sR_eq_ps]`. Establish `hrow` using `peel_row (Ideal.span (rgen k (m + 1) z' E)) E hG (fun w : Fin (k + 1) => yb (wI k (m + 1) w)) (fun l : Fin m => ps k (m + 1) (if l.val < i.val then l.val else l.val + 1)) (wI k (m + 1)) (fun l : Fin (m + 1) => ps k (m + 1) l.val) (ell + (m : ℂ)) (herm (Hpk k (m + 1)) yb z') ?_`. Establish `hp` using `third_peeling_minor_mem_ideal k (m + 1) z' E hG ell m i.val (by have := i.isLt; omega) le_rfl`. Establish `hsm` using `smul_mem' (Ideal.span (rgen k (m + 1) z' E)) (herm (Hpk k (m + 1)) yb z') hp`.
+
+Simplify using `only [Function.comp_def, Fin.coe_castSucc] at hrow`. Establish `hsum` using `(Ideal.span (rgen k (m + 1) z' E)).add_mem hrow hsm`. Rewrite `hsum` using `[smul_sub, sub_add_sub_cancel]`. Conclude with `hsum`. Introduce `l`.
+
+Use `hT_of _ _ _ (fun w => dpsiP k (m + 1) z' (wI k (m + 1) w) (ps k (m + 1) l.val)) _ ?_ ?_` and prove the remaining obligations. Introduce `w`. Establish `hl` using `l.isLt`. Establish `hw : (wI k (m + 1) w).val = m + 1 + w.val` using `rfl`. Establish `hwk` using `w.isLt`.
+
+Establish `hne : wI k (m + 1) w ≠ ps k (m + 1) l.val`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `only [ps_val, hw] at this`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hin : InNp k (m + 1) (wI k (m + 1) w) (ps k (m + 1) l.val)`. Simplify using `only [InNp, ps_val, hw]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[tm_offdiag _ _ hne]`. Conclude with `mem_gen hin`.
+
+Simplify using `only [dpsi_middle_last_basis k (m + 1) z' l.val l.isLt]`. Distinguish the cases in `hlm : l = Fin.last m`. Establish `hv : l.val + 1 = m + 1` using `by rw [hlm, Fin.val_last]`. Rewrite using `[if_pos hlm]`. Simplify using `only [hv, if_true]`.
+
+Rewrite using `[herm_wsum k (m + 1) yb z' hy]`. Establish `hv : ¬ (l.val + 1 = m + 1)` using `fun e => hlm (Fin.ext (by rw [Fin.val_last]; omega))`. Rewrite using `[if_neg hlm]`. Simplify using `only [hv, if_false, mul_zero, Finset.sum_const_zero]`.
+-/
 theorem fourth_peeling_identity : PeelingDualCovector := by
   intro A _ _ k m z' yb E hG i ell hz hy
   rw [sR_succAbove_eq_ps, sR_eq_ps, sR_eq_ps]
@@ -224,6 +313,9 @@ theorem fourth_peeling_identity : PeelingDualCovector := by
         rw [if_neg hlm]
         simp only [hv, if_false, mul_zero, Finset.sum_const_zero]
 
+/- English proof (translation)
+Introduce `_` and use `⟨first_peeling_identity, second_peeling_identity, third_peeling_identity, fourth_peeling_identity⟩`.
+-/
 theorem peeling_of_parts : PeelOfParts := fun _ => ⟨first_peeling_identity, second_peeling_identity, third_peeling_identity, fourth_peeling_identity⟩
 
 end Formalism.FourierDecayAlt.P.SignAntidiagonal

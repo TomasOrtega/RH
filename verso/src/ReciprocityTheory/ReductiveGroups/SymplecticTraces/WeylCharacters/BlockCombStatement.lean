@@ -28,10 +28,16 @@ def BlockCombStatement : Prop :=
       alt (cnt ε false) (a ∘ blk ε false) (t ∘ blk ε false) ∧
     ∀ b : Bool, rhoK ε ∘ blk ε b = delta (cnt ε b)
 
+/- English proof (translation)
+Establish `h` using `Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl r`. Conclude with `(Finset.mem_filter.mp h).2`.
+-/
 theorem blk_mem {n : ℕ} (ε : Fin n → Bool) (b : Bool) (r : Fin (cnt ε b)) : ε (blk ε b r) = b := by
   have h := Finset.orderEmbOfFin_mem (univ.filter fun i : Fin n => ε i = b) rfl r
   exact (Finset.mem_filter.mp h).2
 
+/- English proof (translation)
+Introduce `_ _ h` and use `(Finset.orderEmbOfFin (univ.filter fun i : Fin n => ε i = b) rfl).strictMono h`.
+-/
 theorem blk_strictMono {n : ℕ} (ε : Fin n → Bool) (b : Bool) : StrictMono (blk ε b) :=
   fun _ _ h => (Finset.orderEmbOfFin (univ.filter fun i : Fin n => ε i = b) rfl).strictMono h
 

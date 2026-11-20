@@ -6,6 +6,17 @@ namespace GlobalTheory.ZModFlat
 
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `set n := a.down.val with hn`. Establish `ha : a = (n : ULift.{1} (ZMod q))`. Apply `ULift.down_injective` to reduce the goal to its premises. Rewrite using `[ULift.down_natCast, hn, ZMod.natCast_zmod_val]`. Establish `hq : ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `by ext; simp`.
+
+Establish `hgq : Nat.gcd n q ∣ q` using `Nat.gcd_dvd_right n q`. Establish `hgn : Nat.gcd n q ∣ n` using `Nat.gcd_dvd_left n q`. Use `⟨q / Nat.gcd n q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ← Nat.cast_mul]`. Establish `: q ∣ q / Nat.gcd n q * n`.
+
+Establish `h` using `Nat.mul_dvd_mul (dvd_refl (q / Nat.gcd n q)) hgn`. Rewrite `h` using `[Nat.div_mul_cancel hgq]`. Then use the resulting hypothesis. Take `⟨m, hm⟩` from `this`. Rewrite using `[hm, Nat.cast_mul, hq, zero_mul]`. Apply `hdiv (Nat.gcd n q) (q / Nat.gcd n q) (Nat.mul_div_cancel' hgq)` to reduce the goal to its premises.
+
+Establish `h1 : n • y = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), ← ha, hy]`. Establish `h2 : q • y = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), hq, zero_smul]`. Establish `hb : ((Nat.gcd n q : ℕ) : ℤ) = n * Nat.gcdA n q + q * Nat.gcdB n q` using `Nat.gcd_eq_gcd_ab n q`.
+
+Establish `h3 : ((n : ℤ) * Nat.gcdA n q) • y = 0`. Rewrite using `[mul_comm, mul_smul, natCast_zsmul, h1, smul_zero]`. Establish `h4 : ((q : ℤ) * Nat.gcdB n q) • y = 0`. Rewrite using `[mul_comm, mul_smul, natCast_zsmul, h2, smul_zero]`. Rewrite using `[← natCast_zsmul, hb, add_smul, h3, h4, add_zero]`.
+-/
 theorem exists_mul_eq_zero_of_smul_eq_zero (q : ℕ) [NeZero q] (M : Type 1) [AddCommGroup M]
     [Module (ULift.{1} (ZMod q)) M]
     (hdiv : ∀ d e : ℕ, d * e = q → ∀ x : M, d • x = 0 → ∃ y : M, x = e • y)
@@ -39,6 +50,23 @@ theorem exists_mul_eq_zero_of_smul_eq_zero (q : ℕ) [NeZero q] (M : Type 1) [Ad
       rw [mul_comm, mul_smul, natCast_zsmul, h2, smul_zero]
     rw [← natCast_zsmul, hb, add_smul, h3, h4, add_zero]
 
+/- English proof (translation)
+Introduce `q _ M _ _ hdiv`. Use `haveI : IsPrincipalIdealRing (ULift.{1} (ZMod q)) := IsPrincipalIdealRing.of_surjective ((ULift.ringEquiv (R := ZMod q)).symm.toRingHom.comp (Int.castRingHom (ZMod q))) (by`. Introduce `x`. Take `⟨z, hz⟩` from `ZMod.intCast_surjective x.down`. Conclude with `⟨z, by apply ULift.down_injective; simpa using hz⟩)`.
+
+Rewrite using `[Module.Flat.iff_rTensor_injective']`. Introduce `J`. Take `⟨a, ha⟩` from `(IsPrincipalIdealRing.principal J).principal`. Set `b : J` to `⟨a, by rw [ha]; exact Submodule.mem_span_singleton_self a⟩`. Establish `hall : ∀ t : J ⊗[ULift.{1} (ZMod q)] M, ∃ y : M, t = b ⊗ₜ y`.
+
+Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul r x`. Establish `hr : (r : ULift.{1} (ZMod q)) ∈ Submodule.span (ULift.{1} (ZMod q)) {a}` using `ha ▸ r.2`.
+
+Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp hr`. Use `⟨c • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul]`. Use `congr 1`. Use `ext`.
+
+Simplify using `[b, ← hc]`. Consider the case `add s t hs ht`. Take `⟨y1, rfl⟩` from `hs`. Take `⟨y2, rfl⟩` from `ht`. Conclude with `⟨y1 + y2, (TensorProduct.tmul_add _ _ _).symm⟩`.
+
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Take `⟨y, rfl⟩` from `hall t`. Establish `hy : a • y = 0`. Use `congrArg (TensorProduct.lid (ULift.{1} (ZMod q)) M) ht` as an intermediate fact.
+
+Simplify `this` using `[b]`. Take `⟨e, he, z, rfl⟩` from `exists_mul_eq_zero_of_smul_eq_zero q M hdiv a y hy`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q)), ← TensorProduct.smul_tmul]`. Establish `: ((e : ULift.{1} (ZMod q))) • b = 0`. Use `ext`.
+
+Simplify using `[b, he]`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+-/
 theorem flat_of_divisibility : ∀ (q : ℕ) [NeZero q] (M : Type 1) [AddCommGroup M]
     [Module (ULift.{1} (ZMod q)) M],
     (∀ d e : ℕ, d * e = q → ∀ x : M, d • x = 0 → ∃ y : M, x = e • y) →

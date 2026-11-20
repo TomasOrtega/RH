@@ -13,6 +13,11 @@ namespace GlobalTheory.ChainPts.SysB.RingJ
 
 open GlobalTheory.PDivGroup GlobalTheory.PerfdLat GlobalTheory.RingChain GlobalTheory.Sandwich
 
+/- English proof (translation)
+Use `⟨fun ⟨r, hr⟩ => ?_, map_dvd _⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `ha`. Take `⟨x', y, hy⟩` from `LatDescent.adic_surj A q (ec.symm r)`. Take `⟨b, hb⟩` from `LatDescent.adic_inj A q (x - a * x') (algebraMap A _ a * y) (ec.injective (by`. Establish `h1` using `congrArg ec hy`.
+
+Rewrite `h1` using `[ec.apply_symm_apply, map_add, map_mul, he, he]`. Rewrite using `[map_mul, map_mul, he, he, he, map_sub, map_mul, hr, h1]`. Use the proof step `ring))`. Conclude with `⟨x' + t * b, by rw [mul_add, ← mul_assoc, ← ht, ← hb]; ring⟩`.
+-/
 theorem dvd_iff_of_completion {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {q : A}
     (ec : AdicCompletion (Ideal.span {q}) A ≃+* R) (he : ∀ a, ec (algebraMap A _ a) = algebraMap A R a) {a : A}
     (ha : a ∣ q) (x : A) : algebraMap A R a ∣ algebraMap A R x ↔ a ∣ x := by
@@ -25,6 +30,19 @@ theorem dvd_iff_of_completion {A R : Type} [CommRing A] [CommRing R] [Algebra A 
     rw [map_mul, map_mul, he, he, he, map_sub, map_mul, hr, h1]; ring))
   exact ⟨x' + t * b, by rw [mul_add, ← mul_assoc, ← ht, ← hb]; ring⟩
 
+/- English proof (translation)
+Introduce `p _ D A _ GG pol ε c n o e π γ Lie Om _ _ _ _ cω pr C η hC _ hη hπ y x`. Distinguish the cases in `hp : IsUnit (p : A)`. Establish `hu : IsUnit π` using `isUnit_of_dvd_unit hπ hp`. Use `⟨fun _ j => hu.dvd, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (C.j y)`.
+
+Rewrite using `[← hz, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨(↑u⁻¹ : A) • _, trivial, by rw [smul_smul, Units.mul_inv, one_smul]⟩`. Take `⟨S, _, ec, he, hε, eL, eO, hL, -, hOf⟩` from `hC hp`. Substitute `e` using the available equality.
+
+Establish `key : ∀ j : Fin GG.height, algebraMap A S.R π ∣ (c.baseChange S.R hε).alDual (eL (1 ⊗ₜ y)) j - algebraMap A S.R (pr y (η j))` using `fun j => by`. Take `⟨v, hv⟩` from `(GG.omega_val_eq_zero_iff 1 (dlog GG (c.t' j) - cω (η j))).1 (by`. Express the relevant statement in the definitionally equal form `(dlog GG (c.t' j)).1 1 - (cω (η j)).1 1 = 0`. Rewrite using `[hη j]`. Conclude with `sub_self _)`.
+
+Establish `h1 : (c.baseChange S.R hε).alDual (eL (1 ⊗ₜ y)) j = eL (1 ⊗ₜ y) ((GG.toBase S.R).omega (dlog GG (c.t' j)))`. Rewrite using `[← dlog_bcChar]`. Both sides reduce to the same expression. Rewrite using `[h1, ← hL, ← map_sub, ← map_sub, hv, map_smulₛₗ, map_smul, pow_one, smul_eq_mul]`. Conclude with `(map_dvd _ hπ).mul_right _`.
+
+Rewrite using `[hOf.j y x, mem_base, ← hOf.pi_eq]`. Establish `h2 : ∀ j : Fin GG.height, (π ∣ x.1 j - pr y (η j)) ↔ algebraMap A S.R π ∣ algebraMap A S.R (x.1 j) - (c.baseChange S.R hε).alDual (eL (1 ⊗ₜ y)) j` using `fun j => by`. Rewrite using `[← dvd_iff_of_completion ec he hπ, map_sub, ← sub_add_sub_cancel _ ((c.baseChange S.R hε).alDual (eL (1 ⊗ₜ y)) j)]`. Conclude with `dvd_add_left (key j)`. Simplify using `only [h2]`.
+
+Use `⟨fun ⟨z, hz⟩ j => ⟨z j, (congrFun hz j).symm⟩, fun h => ?_⟩` and prove the remaining obligations. Use `choose z hz using h`. Conclude with `⟨z, funext fun j => (hz j).symm⟩`.
+-/
 theorem ringJSt : RingJSt := by
   intro p _ D A _ GG pol ε c n o e π γ Lie Om _ _ _ _ cω pr C η hC _ hη hπ y x
   by_cases hp : IsUnit (p : A)

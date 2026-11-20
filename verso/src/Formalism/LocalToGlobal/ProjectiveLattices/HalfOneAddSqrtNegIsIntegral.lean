@@ -13,17 +13,28 @@ open scoped Pointwise
 
 instance instCMFieldHost (D : D7) : IsCMField D.host.E := D.host.isCMField_hostE
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ 2 + Polynomial.C (D.host.d : ℤ), by monicity!, by simp [Polynomial.eval₂_add, D.host.sqrtMinusD_sq]⟩`.
+-/
 theorem sqrtMinusD_isIntegral (D : D7) : IsIntegral ℤ D.host.sqrtMinusD :=
   ⟨Polynomial.X ^ 2 + Polynomial.C (D.host.d : ℤ), by monicity!, by
     simp [Polynomial.eval₂_add, D.host.sqrtMinusD_sq]⟩
 
 def rtE (D : D7) : 𝓞 D.host.E := ⟨D.host.sqrtMinusD, sqrtMinusD_isIntegral D⟩
 
+/- English proof (translation)
+Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_pow, map_neg, map_natCast]`. Conclude with `D.host.sqrtMinusD_sq`.
+-/
 theorem rtE_sq (D : D7) : rtE D ^ 2 = -(D.host.d : 𝓞 D.host.E) := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   rw [map_pow, map_neg, map_natCast]
   exact D.host.sqrtMinusD_sq
 
+/- English proof (translation)
+Take `⟨m, hm⟩ : ∃ m : ℕ, D.host.d + 1 = 4 * m` from `⟨(D.host.d + 1) / 4, by have := D.host.hyp.2.2.2.1; omega⟩`. Use `set c : D.host.E := (1 + D.host.sqrtMinusD) / 2`. Establish `hc : c ^ 2 - c + (m : D.host.E) = 0`. Establish `e : ((D.host.d : ℕ) : D.host.E) + 1 = 4 * (m : D.host.E)` using `by exact_mod_cast hm`. Establish `hs` using `D.host.sqrtMinusD_sq`.
+
+Simplify using `only [c]`. Take the linear combination `(1 / 4 : D.host.E) * hs - (1 / 4 : D.host.E) * e`. Conclude with `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (m : ℤ), by monicity!, by`. Simplify using `[Polynomial.eval₂_sub, Polynomial.eval₂_add, hc]⟩`.
+-/
 theorem half_one_add_sqrt_neg_isIntegral (D : D7) : IsIntegral ℤ ((1 + D.host.sqrtMinusD) / 2) := by
   obtain ⟨m, hm⟩ : ∃ m : ℕ, D.host.d + 1 = 4 * m :=
     ⟨(D.host.d + 1) / 4, by have := D.host.hyp.2.2.2.1; omega⟩
@@ -38,6 +49,9 @@ theorem half_one_add_sqrt_neg_isIntegral (D : D7) : IsIntegral ℤ ((1 + D.host.
 
 def w0E (D : D7) : 𝓞 D.host.E := ⟨(1 + D.host.sqrtMinusD) / 2, half_one_add_sqrt_neg_isIntegral D⟩
 
+/- English proof (translation)
+Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_mul, map_add, map_one, map_ofNat]`. Use `show 2 * ((1 + D.host.sqrtMinusD) / 2) = 1 + D.host.sqrtMinusD`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem two_w0E (D : D7) : 2 * w0E D = 1 + rtE D := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   rw [map_mul, map_add, map_one, map_ofNat]
@@ -68,20 +82,32 @@ def hostOf (D : D7) (hU : Algebra.Unramified (𝓞 (maximalRealSubfield D.host.E
   rt0 := D.host.φ₀ D.host.sqrtMinusD
   sqrt_neg_disc_sq := by rw [← map_pow, D.host.sqrtMinusD_sq]; simp
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E (a : D.host.E)) = _`. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Conclude with `(D.host.toHostAx.conjE_apply _ _).symm`.
+-/
 theorem barE_eq_conj (D : D7) (a : 𝓞 D.host.E) : ((barE D a : 𝓞 D.host.E) : D.host.E) = D.host.conj (a : D.host.E) := by
   apply D.host.φ₀.injective
   show D.host.φ₀ (IsCMField.complexConj D.host.E (a : D.host.E)) = _
   rw [IsCMField.complexEmbedding_complexConj]
   exact (D.host.toHostAx.conjE_apply _ _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem barE_eq_star (D : D7) (a : 𝓞 D.host.E) :
     ((barE D a : 𝓞 D.host.E) : D.host.E) = (letI := D.host.cmStar; star (a : D.host.E)) := rfl
 
+/- English proof (translation)
+Establish `h` using `barE_eq_conj D (rtE D)`. Establish `h2` using `D.host.conj_sqrtMinusD`. Conclude with `h.trans h2`.
+-/
 theorem cc_sqrtMinusD (D : D7) : IsCMField.complexConj D.host.E D.host.sqrtMinusD = -D.host.sqrtMinusD := by
   have h := barE_eq_conj D (rtE D)
   have h2 := D.host.conj_sqrtMinusD
   exact h.trans h2
 
+/- English proof (translation)
+Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_sub, map_one]`. Use `show IsCMField.complexConj D.host.E ((1 + D.host.sqrtMinusD) / 2) = 1 - (1 + D.host.sqrtMinusD) / 2`. Rewrite using `[map_div₀, map_add, map_one, cc_sqrtMinusD, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem conj_w0E (D : D7) : barE D (w0E D) = 1 - w0E D := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   rw [map_sub, map_one]
@@ -91,9 +117,17 @@ theorem conj_w0E (D : D7) : barE D (w0E D) = 1 - w0E D := by
 
 def mE (D : D7) : ℕ := (D.host.d + 1) / 4
 
+/- English proof (translation)
+Use `D.host.hyp.2.2.2.1` as an intermediate fact. Unfold `mE`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mE_spec (D : D7) : 4 * mE D = D.host.d + 1 := by
   have := D.host.hyp.2.2.2.1; unfold mE; omega
 
+/- English proof (translation)
+Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises. Rewrite using `[map_pow, map_sub, map_natCast]`. Use `show ((1 + D.host.sqrtMinusD) / 2) ^ 2 = (1 + D.host.sqrtMinusD) / 2 - (mE D : D.host.E)`. Establish `e : ((D.host.d : ℕ) : D.host.E) + 1 = 4 * (mE D : D.host.E)` using `by exact_mod_cast (mE_spec D).symm`. Establish `hs` using `D.host.sqrtMinusD_sq`.
+
+Take the linear combination `(1 / 4 : D.host.E) * hs - (1 / 4 : D.host.E) * e`.
+-/
 theorem w0E_sq (D : D7) : w0E D ^ 2 = w0E D - (mE D : 𝓞 D.host.E) := by
   apply IsFractionRing.injective (𝓞 D.host.E) D.host.E
   rw [map_pow, map_sub, map_natCast]
@@ -102,6 +136,11 @@ theorem w0E_sq (D : D7) : w0E D ^ 2 = w0E D - (mE D : 𝓞 D.host.E) := by
   have hs := D.host.sqrtMinusD_sq
   linear_combination (1 / 4 : D.host.E) * hs - (1 / 4 : D.host.E) * e
 
+/- English proof (translation)
+Introduce `P hP`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t`. Apply `IsFractionRing.injective (𝓞 D.host.E) D.host.E` to reduce the goal to its premises.
+
+Conclude with `ht.symm`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem cmUnram_conj (D : D7) : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → ∃ θ : 𝓞 D.host.E,
     θ - RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ ∉ P := by
   intro P hP
@@ -115,6 +154,9 @@ theorem cmUnram_conj (D : D7) : ∀ P : Ideal (𝓞 D.host.E), P.IsMaximal → �
 def hostOfB (D : D7) (hB : UnramBridge) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E :=
   hostOf D (hB D.host.E (cmUnram_conj D))
 
+/- English proof (translation)
+Introduce `K _ _ _ h` and use `unramBridge_holds K h`.
+-/
 theorem unramBridge : UnramBridge := fun K _ _ _ h => unramBridge_holds K h
 
 def hostOfRecord (D : D7) : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E := hostOfB D unramBridge
@@ -129,6 +171,9 @@ def pIdeal (D : D7) (p : ℕ) : Ideal (𝓞 D.host.E) :=
 
 def MbOf (D : D7) (ps : List ℕ) : Ideal (𝓞 D.host.E) := (ps.map (pIdeal D)).prod
 
+/- English proof (translation)
+Take `⟨G, rfl, hG⟩` from `h`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Ideal.span_mono (fun x hx => ⟨Ideal.subset_span hx, hG hx⟩)`. Conclude with `Ideal.span_le.2 (fun x hx => hx.1)`.
+-/
 theorem fromK_of_gen {R : Type} [CommRing R] {I : Ideal R} {A : Subalgebra ℤ R}
     (h : ∃ G : Set R, I = Ideal.span G ∧ G ⊆ A) : I = Ideal.span {a | a ∈ I ∧ a ∈ A} := by
   obtain ⟨G, rfl, hG⟩ := h
@@ -136,6 +181,9 @@ theorem fromK_of_gen {R : Type} [CommRing R] {I : Ideal R} {A : Subalgebra ℤ R
   · exact Ideal.span_mono (fun x hx => ⟨Ideal.subset_span hx, hG hx⟩)
   · exact Ideal.span_le.2 (fun x hx => hx.1)
 
+/- English proof (translation)
+The claim follows from `| [] => ⟨{1}, by simp [MbOf], by intro x hx; rw [Set.mem_singleton_iff.1 hx]; exact Subalgebra.one_mem _⟩ | p :: t => by obtain ⟨G, hG, hGA⟩ := MbOf_gen D t refine ⟨{(p : 𝓞 D.host.E), w0E D - (cRoot D p : 𝓞 D.host.E)} * G, ?_, ?_⟩ · rw [MbOf, List.map_cons, List.prod_cons, ← MbOf …`.
+-/
 theorem MbOf_gen (D : D7) : ∀ ps : List ℕ, ∃ G : Set (𝓞 D.host.E),
     MbOf D ps = Ideal.span G ∧ G ⊆ Algebra.adjoin ℤ {w0E D}
   | [] => ⟨{1}, by simp [MbOf], by
@@ -152,6 +200,9 @@ theorem MbOf_gen (D : D7) : ∀ ps : List ℕ, ∃ G : Set (𝓞 D.host.E),
         · exact Subalgebra.sub_mem _ (Algebra.subset_adjoin (Set.mem_singleton _))
             (Subalgebra.intCast_mem _ _)
 
+/- English proof (translation)
+The claim follows from `fromK_of_gen (MbOf_gen D ps)`.
+-/
 theorem MbOf_fromK (D : D7) (ps : List ℕ) :
     MbOf D ps = Ideal.span {a | a ∈ MbOf D ps ∧ a ∈ Algebra.adjoin ℤ {w0E D}} :=
   fromK_of_gen (MbOf_gen D ps)
@@ -169,6 +220,13 @@ def MbCopLaw (D : D7) (ps : List ℕ) : Prop := MbOf D ps ⊔ (MbOf D ps).map (b
 
 def SplitOK (D : D7) (p : ℕ) : Prop := p.Prime ∧ p ≠ 2 ∧ jacobiSym (-(D.host.d : ℤ)) p = 1
 
+/- English proof (translation)
+Use `Fact.mk hp.1` as an intermediate fact. Take `⟨r, hr⟩` from `ZMod.isSquare_of_jacobiSym_eq_one hp.2.2`. Establish `h2 : (2 : ZMod p) ≠ 0`. Introduce `h`. Establish `h' : ((2 : ℕ) : ZMod p) = 0` using `by exact_mod_cast h`.
+
+Rewrite `h'` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hp.2.1 ((Nat.prime_dvd_prime_iff_eq hp.1 Nat.prime_two).1 h')`. Use `set h := (2 : ZMod p)⁻¹`. Establish `hh : 2 * h = 1` using `mul_inv_cancel₀ h2`. Establish `e4 : (4 : ZMod p) * (mE D : ZMod p) = (D.host.d : ZMod p) + 1` using `by exact_mod_cast congrArg (Nat.cast : ℕ → ZMod p) (mE_spec D)`.
+
+Move the coercions through the operations in `at hr`. Take `⟨c, hc⟩` from `ZMod.intCast_surjective ((1 + r) * h)`. Use `⟨c, (ZMod.intCast_zmod_eq_zero_iff_dvd _ p).1 ?_⟩` and prove the remaining obligations. Move the coercions through the operations in `[hc]`. Take the linear combination `(-h ^ 2) * hr + h ^ 2 * e4 + ((1 + r) * h - (mE D : ZMod p) * (2 * h + 1)) * hh`.
+-/
 theorem exists_cRoot (D : D7) {p : ℕ} (hp : SplitOK D p) : ∃ c : ℤ, (p : ℤ) ∣ c ^ 2 - c + mE D := by
   have := Fact.mk hp.1
   obtain ⟨r, hr⟩ := ZMod.isSquare_of_jacobiSym_eq_one hp.2.2
@@ -186,9 +244,21 @@ theorem exists_cRoot (D : D7) {p : ℕ} (hp : SplitOK D p) : ∃ c : ℤ, (p : �
   push_cast [hc]
   linear_combination (-h ^ 2) * hr + h ^ 2 * e4 + ((1 + r) * h - (mE D : ZMod p) * (2 * h + 1)) * hh
 
+/- English proof (translation)
+Rewrite using `[cRoot, dif_pos (exists_cRoot D hp)]`. Conclude with `Classical.choose_spec (exists_cRoot D hp)`.
+-/
 theorem cRoot_spec (D : D7) {p : ℕ} (hp : SplitOK D p) : (p : ℤ) ∣ cRoot D p ^ 2 - cRoot D p + mE D := by
   rw [cRoot, dif_pos (exists_cRoot D hp)]; exact Classical.choose_spec (exists_cRoot D hp)
 
+/- English proof (translation)
+Apply `IsCoprime.symm` to reduce the goal to its premises. Rewrite using `[Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp.1)]`. Introduce `hdiv`. Take `⟨t, ht⟩` from `cRoot_spec D hp`. Establish `e : (4 : ℤ) * (mE D : ℤ) = (D.host.d : ℤ) + 1` using `by exact_mod_cast mE_spec D`.
+
+Establish `hd : (D.host.d : ℤ) = 4 * (cRoot D p ^ 2 - cRoot D p + mE D) - (1 - 2 * cRoot D p) ^ 2`. Take the linear combination `(-1 : ℤ) * e`. Establish `hpd : (p : ℤ) ∣ D.host.d`. Rewrite using `[hd]`. Conclude with `dvd_sub (Dvd.dvd.mul_left ⟨t, ht⟩ 4) (dvd_pow hdiv two_ne_zero)`.
+
+Establish `hpeq : p = D.host.d` using `(Nat.prime_dvd_prime_iff_eq hp.1 D.host.hyp.2.1).1 (Int.natCast_dvd_natCast.1 hpd)`. Establish `hj` using `hp.2.2`. Rewrite `hj` using `[hpeq]`. Establish `: NeZero D.host.d` using `⟨D.host.hyp.2.1.ne_zero⟩`. Establish `h0 : jacobiSym (-(D.host.d : ℤ)) D.host.d = 0`.
+
+Rewrite using `[jacobiSym.eq_zero_iff_not_coprime]`. Use `show Nat.gcd (-(D.host.d : ℤ)).natAbs (D.host.d : ℤ).natAbs ≠ 1`. Simplify using `[D.host.hyp.2.1.ne_one]`. Rewrite using `[h0] at hj; exact absurd hj (by decide)`.
+-/
 theorem cRoot_coprime (D : D7) {p : ℕ} (hp : SplitOK D p) : IsCoprime (1 - 2 * cRoot D p) (p : ℤ) := by
   apply IsCoprime.symm
   rw [Prime.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp.1)]
@@ -209,11 +279,25 @@ theorem cRoot_coprime (D : D7) {p : ℕ} (hp : SplitOK D p) : IsCoprime (1 - 2 *
     simp [D.host.hyp.2.1.ne_one]
   rw [h0] at hj; exact absurd hj (by decide)
 
+/- English proof (translation)
+Rewrite using `[pIdeal, Ideal.map_span, Set.image_pair]`. Simplify using `[conj_w0E]`.
+-/
 theorem map_pIdeal (D : D7) (p : ℕ) : (pIdeal D p).map (bH D) =
     Ideal.span {(p : 𝓞 D.host.E), 1 - w0E D - (cRoot D p : 𝓞 D.host.E)} := by
   rw [pIdeal, Ideal.map_span, Set.image_pair]
   simp [conj_w0E]
 
+/- English proof (translation)
+Rewrite using `[map_pIdeal, pIdeal, Ideal.span_pair_mul_span_pair]`. Take `⟨t, ht⟩` from `cRoot_spec D hp`. Take `⟨u, v, huv⟩` from `cRoot_coprime D hp`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`.
+
+Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton]`. Break down `hz with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `dvd_mul_right _ _`.
+
+Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Use `⟨(t : 𝓞 D.host.E), ?_⟩` and prove the remaining obligations. Establish `hw` using `w0E_sq D`. Establish `ht' : ((cRoot D p ^ 2 - cRoot D p + mE D : ℤ) : 𝓞 D.host.E) = ((p * t : ℤ) : 𝓞 D.host.E)` using `by rw [ht]`.
+
+Move the coercions through the operations in `at ht'`. Take the linear combination `(-1 : 𝓞 D.host.E) * hw + ht'`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`. Establish `huv' : ((u * (1 - 2 * cRoot D p) + v * p : ℤ) : 𝓞 D.host.E) = ((1 : ℤ) : 𝓞 D.host.E)` using `by rw [huv]`. Move the coercions through the operations in `at huv'`.
+
+Establish `e : (p : 𝓞 D.host.E) = (u : 𝓞 D.host.E) * ((p : 𝓞 D.host.E) * (1 - w0E D - (cRoot D p : 𝓞 D.host.E))) + (u : 𝓞 D.host.E) * ((w0E D - (cRoot D p : 𝓞 D.host.E)) * (p : 𝓞 D.host.E)) + (v : 𝓞 D.host.E) * ((p : 𝓞 D.host.E) * (p : 𝓞 D.host.E))`. Take the linear combination `(-(p : 𝓞 D.host.E)) * huv'`. Establish `key` using `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_left (Ideal.span {(p : 𝓞 D.host.E) * (p : 𝓞 D.host.E), (p : 𝓞 D.host.E) * (1 - w0E D - (cRoot D p : 𝓞 D.host.E)), (w0E D - (cRoot D p : 𝓞 D.host.E)) * (p : 𝓞 D.host.E), (w0E D - (cRoot D p : 𝓞 D.host.E)) * (1 - w0E D - (cRoot D p : …`. Rewrite `key` using `[← e]`. Then use the resulting hypothesis.
+-/
 theorem pIdeal_mul_bar (D : D7) {p : ℕ} (hp : SplitOK D p) :
     pIdeal D p * (pIdeal D p).map (bH D) = Ideal.span {(p : 𝓞 D.host.E)} := by
   rw [map_pIdeal, pIdeal, Ideal.span_pair_mul_span_pair]
@@ -249,6 +333,13 @@ theorem pIdeal_mul_bar (D : D7) {p : ℕ} (hp : SplitOK D p) :
       (Ideal.mul_mem_left _ (v : 𝓞 D.host.E) (Ideal.subset_span (Set.mem_insert _ _)))
     rwa [← e] at key
 
+/- English proof (translation)
+Rewrite using `[Ideal.isCoprime_iff_sup_eq, map_pIdeal, pIdeal, Ideal.eq_top_iff_one]`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Take `⟨u, v, huv⟩` from `cRoot_coprime D hp`. Establish `huv' : ((u * (1 - 2 * cRoot D p) + v * p : ℤ) : 𝓞 D.host.E) = ((1 : ℤ) : 𝓞 D.host.E)` using `by rw [huv]`.
+
+Move the coercions through the operations in `at huv'`. Establish `e : (1 : 𝓞 D.host.E) = (u : 𝓞 D.host.E) * (w0E D - (cRoot D p : 𝓞 D.host.E)) + (u : 𝓞 D.host.E) * (1 - w0E D - (cRoot D p : 𝓞 D.host.E)) + (v : 𝓞 D.host.E) * (p : 𝓞 D.host.E)`. Take the linear combination `(-1 : 𝓞 D.host.E) * huv'`. Establish `key` using `Ideal.add_mem _ (Ideal.add_mem _ (Ideal.mul_mem_left _ (u : 𝓞 D.host.E) (Ideal.mem_sup_left (S := Ideal.span {(p : 𝓞 D.host.E), w0E D - (cRoot D p : 𝓞 D.host.E)}) (T := Ideal.span {(p : 𝓞 D.host.E), 1 - w0E D - (cRoot D p : 𝓞 D.host.E)}) (Ideal.subset_span (Set.mem_insert_of_mem …`. Rewrite `key` using `[← e]`. Then use the resulting hypothesis.
+
+Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hp.1 hq.1).2 hpq)`. Establish `huv' : ((u * p + v * q : ℤ) : 𝓞 D.host.E) = ((1 : ℤ) : 𝓞 D.host.E)` using `by rw [huv]`. Move the coercions through the operations in `at huv'`. Establish `key` using `Ideal.add_mem _ (Ideal.mul_mem_left _ (u : 𝓞 D.host.E) (Ideal.mem_sup_left (S := Ideal.span {(p : 𝓞 D.host.E), w0E D - (cRoot D p : 𝓞 D.host.E)}) (T := Ideal.span {(q : 𝓞 D.host.E), 1 - w0E D - (cRoot D q : 𝓞 D.host.E)}) (Ideal.subset_span (Set.mem_insert _ _)))) (Ideal.mul_mem_l …`. Rewrite `key` using `[huv']`. Then use the resulting hypothesis.
+-/
 theorem isCoprime_pq (D : D7) {p q : ℕ} (hp : SplitOK D p) (hq : SplitOK D q) :
     IsCoprime (pIdeal D p) ((pIdeal D q).map (bH D)) := by
   rw [Ideal.isCoprime_iff_sup_eq, map_pIdeal, pIdeal, Ideal.eq_top_iff_one]
@@ -276,6 +367,9 @@ theorem isCoprime_pq (D : D7) {p q : ℕ} (hp : SplitOK D p) (hq : SplitOK D q) 
       (Ideal.mul_mem_left _ (v : 𝓞 D.host.E) (Ideal.mem_sup_right (Ideal.subset_span (Set.mem_insert _ _))))
     rwa [huv'] at key
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp [isCoprime_one_right] | q :: t, h => by rw [List.map_cons, List.prod_cons] exact IsCoprime.mul_right (h q (by simp)) (isCoprime_list_right a B t (fun r hr => h r (by simp [hr])))`.
+-/
 theorem isCoprime_list_right {R : Type} [CommSemiring R] (a : R) (B : ℕ → R) :
     ∀ qs : List ℕ, (∀ q ∈ qs, IsCoprime a (B q)) → IsCoprime a (qs.map B).prod
   | [], _ => by simp [isCoprime_one_right]
@@ -283,6 +377,9 @@ theorem isCoprime_list_right {R : Type} [CommSemiring R] (a : R) (B : ℕ → R)
       rw [List.map_cons, List.prod_cons]
       exact IsCoprime.mul_right (h q (by simp)) (isCoprime_list_right a B t (fun r hr => h r (by simp [hr])))
 
+/- English proof (translation)
+The claim follows from `| [], _, _ => by simp [isCoprime_one_left] | p :: t, qs, h => by rw [List.map_cons, List.prod_cons] exact IsCoprime.mul_left (isCoprime_list_right _ B qs (h p (by simp))) (isCoprime_list A B t qs (fun r hr => h r (by simp [hr])))`.
+-/
 theorem isCoprime_list {R : Type} [CommSemiring R] (A B : ℕ → R) :
     ∀ ps qs : List ℕ, (∀ p ∈ ps, ∀ q ∈ qs, IsCoprime (A p) (B q)) → IsCoprime (ps.map A).prod (qs.map B).prod
   | [], _, _ => by simp [isCoprime_one_left]
@@ -291,12 +388,18 @@ theorem isCoprime_list {R : Type} [CommSemiring R] (A B : ℕ → R) :
       exact IsCoprime.mul_left (isCoprime_list_right _ B qs (h p (by simp)))
         (isCoprime_list A B t qs (fun r hr => h r (by simp [hr])))
 
+/- English proof (translation)
+The claim follows from `| [] => by simp [MbOf, Ideal.map_top] | p :: t => by rw [MbOf, List.map_cons, List.prod_cons, Ideal.map_mul, ← MbOf, map_MbOf D t, List.map_cons, List.prod_cons]`.
+-/
 theorem map_MbOf (D : D7) : ∀ ps : List ℕ,
     (MbOf D ps).map (bH D) = (ps.map (fun p => (pIdeal D p).map (bH D))).prod
   | [] => by simp [MbOf, Ideal.map_top]
   | p :: t => by
       rw [MbOf, List.map_cons, List.prod_cons, Ideal.map_mul, ← MbOf, map_MbOf D t, List.map_cons, List.prod_cons]
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp [MbProdLaw, MbOf, Ideal.map_top] | p :: t, h => by have ih := MbProd_of D t (fun q hq => h q (by simp [hq])) unfold MbProdLaw at ih ⊢ rw [MbOf, List.map_cons, List.prod_cons, Ideal.map_mul, ← MbOf, mul_mul_mul_comm, pIdeal_mul_bar D (h p (by simp)), ih, Ideal.s …`.
+-/
 theorem MbProd_of (D : D7) : ∀ ps : List ℕ, (∀ p ∈ ps, SplitOK D p) → MbProdLaw D ps
   | [], _ => by simp [MbProdLaw, MbOf, Ideal.map_top]
   | p :: t, h => by
@@ -305,11 +408,17 @@ theorem MbProd_of (D : D7) : ∀ ps : List ℕ, (∀ p ∈ ps, SplitOK D p) → 
       rw [MbOf, List.map_cons, List.prod_cons, Ideal.map_mul, ← MbOf, mul_mul_mul_comm, pIdeal_mul_bar D (h p (by simp)),
         ih, Ideal.span_singleton_mul_span_singleton, List.prod_cons, Nat.cast_mul]
 
+/- English proof (translation)
+Rewrite using `[MbCopLaw, ← Ideal.isCoprime_iff_sup_eq, map_MbOf]`. Conclude with `isCoprime_list (pIdeal D) (fun p => (pIdeal D p).map (bH D)) ps ps (fun p hp q hq => isCoprime_pq D (h p hp) (h q hq))`.
+-/
 theorem MbCop_of (D : D7) (ps : List ℕ) (h : ∀ p ∈ ps, SplitOK D p) : MbCopLaw D ps := by
   rw [MbCopLaw, ← Ideal.isCoprime_iff_sup_eq, map_MbOf]
   exact isCoprime_list (pIdeal D) (fun p => (pIdeal D p).map (bH D)) ps ps
     (fun p hp q hq => isCoprime_pq D (h p hp) (h q hq))
 
+/- English proof (translation)
+The claim follows from `| [], _, h => (h rfl).elim | p :: t, hp, _ => by rw [List.prod_cons] have h1 : 1 ≤ t.prod := by rw [Nat.one_le_iff_ne_zero, Ne, List.prod_eq_zero_iff] intro h0 have := hp 0 (by simp [h0]) omega have := hp p (by simp) nlinarith`.
+-/
 theorem three_le_prod : ∀ ps : List ℕ, (∀ p ∈ ps, 3 ≤ p) → ps ≠ [] → 3 ≤ ps.prod
   | [], _, h => (h rfl).elim
   | p :: t, hp, _ => by
@@ -322,6 +431,9 @@ theorem three_le_prod : ∀ ps : List ℕ, (∀ p ∈ ps, 3 ≤ p) → ps ≠ []
       have := hp p (by simp)
       nlinarith
 
+/- English proof (translation)
+The claim follows from `| [], _ => by simp | p :: t, h => by rw [List.prod_cons] exact (h p (by simp)).mul (odd_prod_of t (fun q hq => h q (by simp [hq])))`.
+-/
 theorem odd_prod_of : ∀ ps : List ℕ, (∀ p ∈ ps, Odd p) → Odd ps.prod
   | [], _ => by simp
   | p :: t, h => by
@@ -341,6 +453,11 @@ def levelOfPs (D : D7) {hU} (ps : List ℕ) (hp : ∀ p ∈ ps, p.Prime ∧ p �
   A := 1
   A_pos := Nat.one_pos
 
+/- English proof (translation)
+Introduce `p hp`. Establish `hj` using `hS.2 p hp`. Simplify using `at hp`. Break down `hp with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `⟨D.host.g_prime 0, hS.1 0, hj⟩`.
+
+Conclude with `⟨D.host.g_prime 1, hS.1 1, hj⟩`. Conclude with `⟨D.host.pde_prime, by have := D.host.pde_mod.1; omega, hj⟩`. Conclude with `⟨D.host.pde'_prime, by have := D.host.pde_mod.2; omega, hj⟩`.
+-/
 theorem splitOK_of (D : D7) (hS : SplitPrimes D) :
     ∀ p ∈ [D.host.g 0, D.host.g 1, D.host.pde, D.host.pde'], SplitOK D p := by
   intro p hp
@@ -361,14 +478,23 @@ def levelDeep (D : D7) {hU} (hS : SplitPrimes D) : ReciprocityTheory.ChartRestri
   have h := splitOK_of D hS
   levelOfPs D _ (fun p hp => ⟨(h p hp).1, (h p hp).2.1⟩) (by simp) (MbProd_of D _ h) (MbCop_of D _ h)
 
+/- English proof (translation)
+Simplify using `[levelOf, levelOfPs]`.
+-/
 theorem levelOf_M (D : D7) (hU) (hS : SplitPrimes D) :
     (levelOf D (hU := hU) hS).M = D.host.g 0 * D.host.g 1 ∧ (levelOf D (hU := hU) hS).A = 1 := by
   simp [levelOf, levelOfPs]
 
+/- English proof (translation)
+Simplify using `[levelDeep, levelOfPs, mul_assoc]`.
+-/
 theorem levelDeep_M (D : D7) (hU) (hS : SplitPrimes D) :
     (levelDeep D (hU := hU) hS).M = D.host.g 0 * D.host.g 1 * D.host.pde * D.host.pde' := by
   simp [levelDeep, levelOfPs, mul_assoc]
 
+/- English proof (translation)
+The claim follows from `barE_eq_conj D a`.
+-/
 theorem hostOf_bar (D : D7) (hU) (a : 𝓞 D.host.E) :
     (((hostOf D hU).bar a : 𝓞 D.host.E) : D.host.E) = D.host.conj (a : D.host.E) := barE_eq_conj D a
 
@@ -388,6 +514,9 @@ def efQ (D : D7) (j : ℕ) : latW D j →ₗ[ℤ] latW D j →ₗ[ℤ] ℚ :=
     (fun x y y' => by simp [map_add, mul_add])
     (fun c x y => by simp [map_zsmul]; rw [mul_left_comm, ← zsmul_eq_mul, map_zsmul, zsmul_eq_mul])
 
+/- English proof (translation)
+The claim follows from `(h x y).choose_spec.symm`.
+-/
 theorem choose_cast {M : Type} [AddCommGroup M] (B : M →ₗ[ℤ] M →ₗ[ℤ] ℚ) (h : ∀ x y, ∃ n : ℤ, B x y = n)
     (x y : M) : (((h x y).choose : ℤ) : ℚ) = B x y := (h x y).choose_spec.symm
 
@@ -403,6 +532,9 @@ def intForm {M : Type} [AddCommGroup M] (B : M →ₗ[ℤ] M →ₗ[ℤ] ℚ) (h
     (fun c x y => Int.cast_injective (α := ℚ) (by
       rw [smul_eq_mul, Int.cast_mul, choose_cast, choose_cast, map_zsmul, zsmul_eq_mul]))
 
+/- English proof (translation)
+The claim follows from `choose_cast B h x y`.
+-/
 theorem intForm_cast {M : Type} [AddCommGroup M] (B : M →ₗ[ℤ] M →ₗ[ℤ] ℚ) (h : ∀ x y, ∃ n : ℤ, B x y = n)
     (x y : M) : ((intForm B h x y : ℤ) : ℚ) = B x y := choose_cast B h x y
 
@@ -424,6 +556,9 @@ def sgnW (D : D7) (j : ℕ) : ℤ := if ∃ hI : DatInt D j, DomFor D j (intForm
 
 def efW (D : D7) (j : ℕ) (hI : DatInt D j) : LinearMap.BilinForm ℤ (latW D j) := sgnW D j • intForm (efQ D j) hI
 
+/- English proof (translation)
+Simplify using `only [efQ, LinearMap.mk₂_apply, Submodule.coe_smul]`. Rewrite using `[← algebraMap_smul D.host.E a (x : (D.sp.W j).V), ← algebraMap_smul D.host.E (barE D a) (y : (D.sp.W j).V), LinearMap.map_smulₛₗ₂, map_smul]`. Both sides reduce to the same expression.
+-/
 theorem efQ_adj (D : D7) (j : ℕ) (a : 𝓞 D.host.E) (x y : latW D j) :
     efQ D j (a • x) y = efQ D j x (barE D a • y) := by
   simp only [efQ, LinearMap.mk₂_apply, Submodule.coe_smul]
@@ -431,22 +566,36 @@ theorem efQ_adj (D : D7) (j : ℕ) (a : 𝓞 D.host.E) (x y : latW D j) :
     LinearMap.map_smulₛₗ₂, map_smul]
   rfl
 
+/- English proof (translation)
+Simplify using `only [efW, LinearMap.smul_apply]`. Use `congr 1`. Conclude with `Int.cast_injective (α := ℚ) ((intForm_cast _ hI _ _).trans ((efQ_adj D j a x y).trans (intForm_cast _ hI _ _).symm))`.
+-/
 theorem efW_adj (D : D7) (j : ℕ) (hI : DatInt D j) (a : 𝓞 D.host.E) (x y : latW D j) :
     efW D j hI (a • x) y = efW D j hI x (barE D a • y) := by
   simp only [efW, LinearMap.smul_apply]
   congr 1
   exact Int.cast_injective (α := ℚ) ((intForm_cast _ hI _ _).trans ((efQ_adj D j a x y).trans (intForm_cast _ hI _ _).symm))
 
+/- English proof (translation)
+Simplify using `only [Host.xi0, map_neg, map_div₀, map_one, map_mul, map_natCast, cc_sqrtMinusD]`. Rewrite using `[mul_neg, div_neg]`.
+-/
 theorem conj_xi0_alt (D : D7) : IsCMField.complexConj D.host.E D.host.xi0 = -D.host.xi0 := by
   simp only [Host.xi0, map_neg, map_div₀, map_one, map_mul, map_natCast, cc_sqrtMinusD]
   rw [mul_neg, div_neg]
 
+/- English proof (translation)
+Rewrite using `[Algebra.trace_eq_of_equiv_equiv (RingEquiv.refl ℚ) (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) (RingHom.ext_rat _ _) z]`. Both sides reduce to the same expression.
+-/
 theorem trace_cc (D : D7) (z : D.host.E) :
     Algebra.trace ℚ D.host.E (IsCMField.complexConj D.host.E z) = Algebra.trace ℚ D.host.E z := by
   rw [Algebra.trace_eq_of_equiv_equiv (RingEquiv.refl ℚ) (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E)
     (RingHom.ext_rat _ _) z]
   rfl
 
+/- English proof (translation)
+Simplify using `only [efQ, LinearMap.mk₂_apply]`. Establish `hh : IsCMField.complexConj D.host.E ((D.sp.W j).hT x x) = (D.sp.W j).hT x x` using `LinearMap.isSymm_def.1 (D.sp.W j).herm x x`. Establish `hz : IsCMField.complexConj D.host.E (D.host.xi0 * (D.sp.W j).hT x x) = -(D.host.xi0 * (D.sp.W j).hT x x)`. Rewrite using `[map_mul, conj_xi0_alt, hh, neg_mul]`. Establish `ht` using `trace_cc D (D.host.xi0 * (D.sp.W j).hT x x)`.
+
+Rewrite `ht` using `[hz, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem efQ_alt (D : D7) (j : ℕ) (x : latW D j) : efQ D j x x = 0 := by
   simp only [efQ, LinearMap.mk₂_apply]
   have hh : IsCMField.complexConj D.host.E ((D.sp.W j).hT x x) = (D.sp.W j).hT x x :=
@@ -458,10 +607,20 @@ theorem efQ_alt (D : D7) (j : ℕ) (x : latW D j) : efQ D j x x = 0 := by
   rw [hz, map_neg] at ht
   linarith
 
+/- English proof (translation)
+Simplify using `only [efW, LinearMap.smul_apply]`. Rewrite using `[Int.cast_injective (α := ℚ) ((intForm_cast _ hI x x).trans ((efQ_alt D j x).trans Int.cast_zero.symm)), smul_zero]`.
+-/
 theorem efW_alt (D : D7) (j : ℕ) (hI : DatInt D j) (x : latW D j) : efW D j hI x x = 0 := by
   simp only [efW, LinearMap.smul_apply]
   rw [Int.cast_injective (α := ℚ) ((intForm_cast _ hI x x).trans ((efQ_alt D j x).trans Int.cast_zero.symm)), smul_zero]
 
+/- English proof (translation)
+Take `⟨a, ha, hAA⟩` from `D.host.AA.isFractional`. Establish `ha0 : algebraMap (𝓞 D.host.E) D.host.E a ≠ 0`. Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero ha (IsFractionRing.injective _ D.host.E (h0.trans (map_zero _).symm))`. Set `f : (D.sp.W j).V →ₗ[𝓞 D.host.E] (D.sp.W j).V` to `(LinearMap.lsmul D.host.E (D.sp.W j).V (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹).restrictScalars (𝓞 D.host.E)`.
+
+Establish `hN : ((D.sp.W j).L0.map f).FG` using `(D.sp.W j).standardTuple_isLattice.fg.map f`. Establish `hle : latW D j ≤ (D.sp.W j).L0.map f`. Rewrite using `[latW, Submodule.span_le]`. Introduce and unpack `v ⟨b, hb, x, hx, rfl⟩`. Take `⟨d, hd⟩` from `hAA b hb`.
+
+Use `⟨d • x, (D.sp.W j).L0.smul_mem d hx, ?_⟩` and prove the remaining obligations. Use `show (algebraMap (𝓞 D.host.E) D.host.E a)⁻¹ • (d • x) = b • x`. Rewrite using `[← algebraMap_smul D.host.E d x, hd, Algebra.smul_def, smul_smul, ← mul_assoc, inv_mul_cancel₀ ha0, one_mul]`. Conclude with `Module.Finite.iff_fg.2 (isNoetherian_submodule.1 (isNoetherian_of_fg_of_noetherian _ hN) _ hle)`.
+-/
 theorem latW_fin (D : D7) (j : ℕ) : Module.Finite (𝓞 D.host.E) (latW D j) := by
   obtain ⟨a, ha, hAA⟩ := D.host.AA.isFractional
   have ha0 : algebraMap (𝓞 D.host.E) D.host.E a ≠ 0 := by
@@ -479,6 +638,13 @@ theorem latW_fin (D : D7) (j : ℕ) : Module.Finite (𝓞 D.host.E) (latW D j) :
     rw [← algebraMap_smul D.host.E d x, hd, Algebra.smul_def, smul_smul, ← mul_assoc, inv_mul_cancel₀ ha0, one_mul]
   exact Module.Finite.iff_fg.2 (isNoetherian_submodule.1 (isNoetherian_of_fg_of_noetherian _ hN) _ hle)
 
+/- English proof (translation)
+Use `latW_fin D j` as an intermediate fact. Establish `hF : Module.Flat (𝓞 D.host.E) (latW D j)`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce `x hx`. Take `⟨⟨r, hr⟩, hrx⟩` from `(Submodule.mem_torsion_iff x).1 hx`.
+
+Establish `h0 : r • x = 0` using `hrx`. Establish `h1 : r • (x : (D.sp.W j).V) = 0` using `by rw [← Submodule.coe_smul, h0]; rfl`. Rewrite `h1` using `[← algebraMap_smul D.host.E r (x : (D.sp.W j).V), smul_eq_zero]`. Break down `h1 with h | h` into its components or cases. Conclude with `absurd (IsFractionRing.injective _ D.host.E (h.trans (map_zero _).symm)) (nonZeroDivisors.ne_zero hr)`.
+
+Conclude with `(Submodule.mem_bot _).2 (Subtype.ext h)`. Use `Module.finitePresentation_of_finite (𝓞 D.host.E) (latW D j)` as an intermediate fact. Conclude with `Module.Flat.projective_of_finitePresentation`.
+-/
 theorem latW_proj (D : D7) (j : ℕ) : Module.Projective (𝓞 D.host.E) (latW D j) := by
   have := latW_fin D j
   have hF : Module.Flat (𝓞 D.host.E) (latW D j) := by

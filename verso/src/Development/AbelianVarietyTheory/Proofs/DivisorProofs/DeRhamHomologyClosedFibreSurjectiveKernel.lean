@@ -17,6 +17,17 @@ namespace GlobalTheory.HdRFibre
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `C₀ _ _ A₀ _ _ hA O _ a`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim C₀ A₀ hA`. Take `⟨hFree, -, hBC, -, -⟩` from `GlobalTheory.T.abelianScheme_firstDeRham_structure`. Establish `hh` using `isGrpPullback_pullback A₀ (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀)))`. Establish `hbc` using `(hBC C₀ A₀ g hA hg (IsLocalRing.ResidueField C₀) _ _ hh).1`.
+
+Take `⟨hfin, hproj, -⟩` from `hFree.prim hA hg`. Use `haveI := Module.finitePresentation_of_projective C₀ (primDR A₀)`. Use `haveI : Module.Free C₀ (primDR A₀) := Module.free_of_flat_of_isLocalRing`. Use `⟨hbc.bcMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h'`.
+
+Set `l : primDR A₀ →ₗ[C₀] IsLocalRing.ResidueField C₀` to `{ toFun c := h' ((Published.AbelianDeRham.bcMor hh).pull c) map_add' c d := by rw [map_add, map_add] map_smul' r c := by`. Rewrite using `[map_smulₛₗ, map_smul, smul_eq_mul, RingHom.id_apply, Algebra.smul_def] }`. Take `⟨hh', hhl⟩` from `Module.projective_lifting_property (Algebra.linearMap C₀ (IsLocalRing.ResidueField C₀)) l IsLocalRing.residue_surjective`. Conclude with `⟨hh', hbc.corr_iff.1 fun c ↦ (LinearMap.congr_fun hhl c).symm⟩`. Introduce `x hx`.
+
+Establish `hc` using `hbc.corr_iff.2 hx`. Use `GlobalTheory.CrysFree.mem_smul_top_of_forall _ x fun c ↦ ?_` and prove the remaining obligations. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Conclude with `(hc c).symm.trans (LinearMap.zero_apply _)`. Introduce `x h haveI := a.hom x haveI := (OAct.pullback (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀))) A₀ a).hom x`.
+
+Use `hbc.corr_iff.1 ?_` and prove the remaining obligations. Conclude with `GrpMor.Corr.push (m := Published.AbelianDeRham.bcMor hh) (Published.AbelianDeRham.bcMor hh) (a.act x) ((OAct.pullback (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀))) A₀ a).act x) (pullback.lift_fst _ _ _).symm (hbc.corr_iff.2 rfl)`.
+-/
 theorem fibre_baseChange : ∀ (C₀ : Type) [CommRing C₀] [IsLocalRing C₀] (A₀ : Over (Sp C₀)) [GrpObj A₀] [IsCommMonObj A₀], IsAbelianScheme A₀ → ∀ (O : Type) [CommRing O] (a : OAct O A₀), ∃ f : HdR A₀ →ₛₗ[algebraMap C₀ (IsLocalRing.ResidueField C₀)] HdR ((Over.pullback (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀)))).obj A₀), Function.Surjective f ∧ (∀ h, f h = 0 → h ∈ IsLocalRing.maximalIdeal C₀ • (⊤ : Submodule C₀ (HdR A₀))) ∧ ∀ (x : O) (h : HdR A₀), f (act (dp0 C₀) (𝟙 _) a x h) = act (dp0 (IsLocalRing.ResidueField C₀)) (𝟙 _) (OAct.pullback (spMap (algebraMap C₀ (IsLocalRing.ResidueField C₀))) A₀ a) x (f h) := by
   intro C₀ _ _ A₀ _ _ hA O _ a
   obtain ⟨g, hg⟩ := GlobalTheory.AbelianDim.exists_relDim C₀ A₀ hA

@@ -19,9 +19,15 @@ open GlobalTheory.CovTop GlobalTheory.BigTop
 
 namespace GlobalTheory.CovTop
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.covolume_of_height hS hX (GlobalTheory.T.exists_ch2Const_of_prints (GlobalTheory.CovTop.hypotheses3_of_slim hS hX.cube).2.1.base hX.y.alt hX.arr)`.
+-/
 theorem covolX_of_slim₂ (hS : Slim) (hX : GlobalTheory.CovTop.HypothesesXH) : CovolX :=
   GlobalTheory.T.covolume_of_height hS hX (GlobalTheory.T.exists_ch2Const_of_prints (GlobalTheory.CovTop.hypotheses3_of_slim hS hX.cube).2.1.base hX.y.alt hX.arr)
 
+/- English proof (translation)
+The claim follows from `covolX_of_slim₂`.
+-/
 example : Slim → HypothesesXH → CovolX := covolX_of_slim₂
 
 end GlobalTheory.CovTop

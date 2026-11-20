@@ -16,10 +16,24 @@ variable {n g : ℕ} {Λ : Type} [AddCommGroup Λ] [Countable Λ]
   {e : Λ → Λ → ℝ}
 
 omit [Countable Λ] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => (h.1 x).mono hVU, fun b hb => h.2 b (hVU hb)⟩`.
+-/
 theorem IsHolMarkingOn.mono {U V : Set (Fin n → ℂ)} {P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
     (h : IsHolMarkingOn Γ Q e U P) (hVU : V ⊆ U) : IsHolMarkingOn Γ Q e V P :=
   ⟨fun x => (h.1 x).mono hVU, fun b hb => h.2 b (hVU hb)⟩
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_const_addEquiv_of_range_eq n g Λ Λ (U ∩ V) (hU.inter hV) hc hne P P' (fun x => (h.1 x).mono inter_subset_left) (fun x => (h'.1 x).mono inter_subset_right) (fun b hb => ⟨(h.2 b hb.1).1, (h'.2 b hb.2).1, by`. Rewrite using `[(h.2 b hb.1).2.1, (h'.2 b hb.2).2.1]⟩)`. Establish `hR : ∀ b ∈ U ∩ V, ∀ x, P' b (T.symm x) = P b x` using `fun b hb x => by`. Rewrite using `[hT b hb, T.apply_symm_apply]`. Use `⟨fun b => (P' b).comp T.symm.toAddMonoidHom, ⟨fun x => h'.1 (T.symm x), ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce `b hb`. Take `⟨hi, hr, hq⟩` from `h'.2 b hb`. Use `⟨hi.comp T.symm.injective, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨T.symm x, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨T x, by simp⟩`.
+
+Introduce `x y`. Take `⟨c, hc'⟩` from `hne`. Establish `h1` using `(h.2 c hc'.1).2.2 x y`. Establish `h2` using `(h'.2 c hc'.2).2.2 (T.symm x) (T.symm y)`. Rewrite `h2` using `[hR c hc' x, hR c hc' y, h1]`.
+
+Simplify using `using (hq (T.symm x) (T.symm y)).trans h2.symm`. Introduce `b hb ext1 x`. Conclude with `hR b hb x`.
+-/
 theorem IsHolMarkingOn.exists_twist {U V : Set (Fin n → ℂ)} (hU : IsOpen U) (hV : IsOpen V)
     (hc : IsPreconnected (U ∩ V)) (hne : (U ∩ V).Nonempty)
     {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
@@ -53,6 +67,13 @@ theorem IsHolMarkingOn.exists_twist {U V : Set (Fin n → ℂ)} (hU : IsOpen U) 
     ext1 x
     exact hR b hb x
 
+/- English proof (translation)
+Take `⟨R, hR, hRP⟩` from `h.exists_twist hU hV hc hne h'`. Establish `eU : ∀ b ∈ U, (if b ∈ U then P b else R b) = P b` using `fun b hb => if_pos hb`. Establish `eV : ∀ b ∈ V, (if b ∈ U then P b else R b) = R b` using `fun b hb => by`. Distinguish the cases in `hbU : b ∈ U`. Rewrite using `[if_pos hbU, hRP b ⟨hbU, hb⟩]`.
+
+Rewrite using `[if_neg hbU]`. Use `⟨fun b => if b ∈ U then P b else R b, fun x => ?_, ?_⟩` and prove the remaining obligations. Establish `d1 : DifferentiableOn ℂ (fun b => (if b ∈ U then P b else R b) x) U` using `(h.1 x).congr fun b hb => by rw [eU b hb]`. Establish `d2 : DifferentiableOn ℂ (fun b => (if b ∈ U then P b else R b) x) V` using `(hR.1 x).congr fun b hb => by rw [eV b hb]`. Introduce and unpack `b (hb | hb)`.
+
+Conclude with `((d1 b hb).differentiableAt (hU.mem_nhds hb)).differentiableWithinAt`. Conclude with `((d2 b hb).differentiableAt (hV.mem_nhds hb)).differentiableWithinAt`. Introduce and unpack `b (hb | hb)`. Simplify `h.2 b hb` using `only [eU b hb]`. Simplify `hR.2 b hb` using `only [eV b hb]`.
+-/
 theorem IsHolMarkingOn.exists_glue {U V : Set (Fin n → ℂ)} (hU : IsOpen U) (hV : IsOpen V)
     (hc : IsPreconnected (U ∩ V)) (hne : (U ∩ V).Nonempty)
     {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
@@ -77,6 +98,9 @@ theorem IsHolMarkingOn.exists_glue {U V : Set (Fin n → ℂ)} (hU : IsOpen U) (
     · simpa only [eU b hb] using h.2 b hb
     · simpa only [eV b hb] using hR.2 b hb
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `exists_const_addEquiv_of_range_eq n g Λ Λ W hW hc ⟨b₀, hb₀⟩ P P' h.1 h'.1 (fun b hb => ⟨(h.2 b hb).1, (h'.2 b hb).1, by rw [(h.2 b hb).2.1, (h'.2 b hb).2.1]⟩)`. Establish `hid : ∀ x, T x = x` using `fun x => (h.2 b₀ hb₀).1 (by rw [← hT b₀ hb₀, h0])`. Introduce `b hb`. Use `ext1 x`. Rewrite using `[hT b hb, hid]`.
+-/
 theorem IsHolMarkingOn.eq_of_eq_at {W : Set (Fin n → ℂ)} (hW : IsOpen W) (hc : IsPreconnected W)
     {P P' : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ))}
     (h : IsHolMarkingOn Γ Q e W P) (h' : IsHolMarkingOn Γ Q e W P')
@@ -88,6 +112,13 @@ theorem IsHolMarkingOn.eq_of_eq_at {W : Set (Fin n → ℂ)} (hW : IsOpen W) (hc
   ext1 x
   rw [hT b hb, hid]
 
+/- English proof (translation)
+Take `⟨U₀, hU₀, hC₀, -, hbU₀, -, P₀, hP₀⟩` from `H b₀ hb₀`. Establish `H' : ∀ b ∈ B, ∃ U : Set (Fin n → ℂ), IsOpen U ∧ Convex ℝ U ∧ U ⊆ B ∧ b₀ ∈ U ∧ b ∈ U ∧ ∃ R, IsHolMarkingOn Γ Q e U R ∧ R b₀ = P₀ b₀`. Introduce `b hb`. Take `⟨U, hU, hC, hUB, h0, h1, P, hP⟩` from `H b hb`. Take `⟨R, hR, hRP⟩` from `hP₀.exists_twist hU₀ hU (hC₀.inter hC).isPreconnected ⟨b₀, hbU₀, h0⟩ hP`.
+
+Conclude with `⟨U, hU, hC, hUB, h0, h1, R, hR, hRP b₀ ⟨hbU₀, h0⟩⟩`. Use `choose! U hU hC hUB h0 h1 R hR hRb using H'`. Establish `key : ∀ b ∈ B, ∀ c ∈ U b, R c c = R b c` using `fun b hb c hcb => by`. Establish `hc : c ∈ B` using `hUB b hb hcb`. Conclude with `((hR c hc).mono inter_subset_left).eq_of_eq_at ((hU c hc).inter (hU b hb)) ((hC c hc).inter (hC b hb)).isPreconnected ((hR b hb).mono inter_subset_right) ⟨h0 c hc, h0 b hb⟩ ((hRb c hc).trans (hRb b hb).symm) c ⟨h1 c hc, hcb⟩`.
+
+Use `⟨fun b => R b b, fun x b hb => ?_, fun b hb => (hR b hb).2 b (h1 b hb)⟩` and prove the remaining obligations. Establish `hn` using `(hU b hb).mem_nhds (h1 b hb)`. Establish `hev : (fun c => R c c x) =ᶠ[nhds b] fun c => R b c x` using `by filter_upwards [hn] with c hc`. Rewrite using `[key b hb c hc]`. Conclude with `(((hR b hb).1 x b (h1 b hb)).differentiableAt hn).congr_of_eventuallyEq hev |>.differentiableWithinAt`.
+-/
 theorem exists_marking_of_convex_family {B : Set (Fin n → ℂ)} {b₀ : Fin n → ℂ} (hb₀ : b₀ ∈ B)
     (H : ∀ b ∈ B, ∃ U : Set (Fin n → ℂ), IsOpen U ∧ Convex ℝ U ∧ U ⊆ B ∧ b₀ ∈ U ∧ b ∈ U ∧
       ∃ P, IsHolMarkingOn Γ Q e U P) :
@@ -113,6 +144,29 @@ theorem exists_marking_of_convex_family {B : Set (Fin n → ℂ)} {b₀ : Fin n 
   exact (((hR b hb).1 x b (h1 b hb)).differentiableAt hn).congr_of_eventuallyEq hev
     |>.differentiableWithinAt
 
+/- English proof (translation)
+Set `γ : ℝ →ᵃ[ℝ] (Fin n → ℂ)` to `AffineMap.lineMap a b`. Establish `hγ : Continuous γ`. Establish `: (γ : ℝ → Fin n → ℂ) = fun t => t • (b - a) + a`. Use function extensionality and compare the values at `fun t => AffineMap.lineMap_apply_module' a b t`. Rewrite using `[this]`.
+
+Use `fun_prop`. Establish `hγ0 : γ 0 = a` using `AffineMap.lineMap_apply_zero a b`. Establish `hγ1 : γ 1 = b` using `AffineMap.lineMap_apply_one a b`. Establish `hmem : ∀ r ∈ Icc (0 : ℝ) 1, γ r ∈ B` using `fun r hr => hconv.segment_subset ha hb (by rw [segment_eq_image_lineMap]; exact ⟨r, hr, rfl⟩)`. Set `ι` to `{N : Set (Fin n → ℂ) // IsOpen N ∧ N ⊆ B ∧ ∃ P, IsHolMarkingOn Γ Q e N P}`.
+
+Set `c : ι → Set unitInterval` to `fun N => (fun s : unitInterval => γ s) ⁻¹' N.1`. Take `⟨t, ht0, hmono, ⟨m, hm⟩, hcov⟩` from `exists_monotone_Icc_subset_open_cover_unitInterval (c := c) (fun N => N.2.1.preimage (hγ.comp continuous_subtype_val)) (fun s _ => by`. Take `⟨N, h1, h2, h3, h4⟩` from `H _ (hmem s s.2)`. Conclude with `mem_iUnion.2 ⟨⟨N, h1, h3, h4⟩, h2⟩)`. Establish `claim : ∀ k, ∃ δ : ℝ, 0 < δ ∧ Metric.thickening δ (γ '' Icc 0 (t k : ℝ)) ⊆ B ∧ ∃ P, IsHolMarkingOn Γ Q e (Metric.thickening δ (γ '' Icc 0 (t k : ℝ))) P`.
+
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Take `⟨N, hN, haN, hNB, P, hP⟩` from `H a ha`. Establish `hsub : γ '' Icc 0 (t 0 : ℝ) ⊆ N`.
+
+Introduce and unpack `_ ⟨r, hr, rfl⟩`. Establish `hr0 : r = 0` using `le_antisymm (by simpa [ht0] using hr.2) hr.1`. Rewrite using `[hr0, hγ0]`. Conclude with `haN`. Take `⟨δ, hδ, hth⟩` from `(isCompact_Icc.image hγ).exists_thickening_subset_open hN hsub`.
+
+Conclude with `⟨δ, hδ, hth.trans hNB, P, hP.mono hth⟩`. Consider the case `succ k ih`. Take `⟨δ₁, hδ₁, hB₁, P₁, hP₁⟩` from `ih`. Take `⟨N, hN⟩` from `hcov k`. Take `⟨hNo, hNB, P₂, hP₂⟩` from `N.2`.
+
+Establish `hle : (t k : ℝ) ≤ t (k + 1)` using `hmono (Nat.le_succ k)`. Establish `h0 : (0 : ℝ) ≤ t k` using `(t k).2.1`. Establish `hsub : γ '' Icc (t k : ℝ) (t (k + 1)) ⊆ N.1`. Introduce and unpack `_ ⟨r, hr, rfl⟩`. Establish `hr' : r ∈ Icc (0 : ℝ) 1` using `⟨h0.trans hr.1, hr.2.trans (t (k + 1)).2.2⟩`.
+
+Conclude with `hN (show (⟨r, hr'⟩ : unitInterval) ∈ Icc (t k) (t (k + 1)) from ⟨hr.1, hr.2⟩)`. Take `⟨δ₂, hδ₂, hth⟩` from `(isCompact_Icc.image hγ).exists_thickening_subset_open hNo hsub`. Establish `hδ : 0 < min δ₁ δ₂` using `lt_min hδ₁ hδ₂`. Establish `hA : Metric.thickening (min δ₁ δ₂) (γ '' Icc 0 (t k : ℝ)) ⊆ Metric.thickening δ₁ (γ '' Icc 0 (t k : ℝ))` using `Metric.thickening_mono (min_le_left _ _) _`. Establish `hC : Metric.thickening (min δ₁ δ₂) (γ '' Icc (t k : ℝ) (t (k + 1))) ⊆ N.1` using `(Metric.thickening_mono (min_le_right _ _) _).trans hth`.
+
+Establish `hKs : γ '' Icc 0 (t (k + 1) : ℝ) = γ '' Icc 0 (t k : ℝ) ∪ γ '' Icc (t k : ℝ) (t (k + 1))`. Rewrite using `[← image_union, Icc_union_Icc_eq_Icc h0 hle]`. Establish `hconvA` using `((convex_Icc (0 : ℝ) (t k)).affine_image γ).thickening (min δ₁ δ₂)`. Establish `hconvC` using `((convex_Icc (t k : ℝ) (t (k + 1))).affine_image γ).thickening (min δ₁ δ₂)`. Establish `hpt : γ (t k) ∈ Metric.thickening (min δ₁ δ₂) (γ '' Icc 0 (t k : ℝ)) ∩ Metric.thickening (min δ₁ δ₂) (γ '' Icc (t k : ℝ) (t (k + 1)))` using `⟨Metric.self_subset_thickening hδ _ ⟨_, ⟨h0, le_rfl⟩, rfl⟩, Metric.self_subset_thickening hδ _ ⟨_, ⟨le_rfl, hle⟩, rfl⟩⟩`.
+
+Take `⟨R, hR⟩` from `(hP₁.mono hA).exists_glue (P' := P₂) Metric.isOpen_thickening Metric.isOpen_thickening (hconvA.inter hconvC).isPreconnected ⟨_, hpt⟩ (hP₂.mono hC)`. Use `⟨min δ₁ δ₂, hδ, ?_, R, ?_⟩` and prove the remaining obligations. Rewrite using `[hKs, Metric.thickening_union]`. Conclude with `union_subset (hA.trans hB₁) (hC.trans hNB)`. Rewrite using `[hKs, Metric.thickening_union]`.
+
+Conclude with `hR`. Take `⟨δ, hδ, hδB, P, hP⟩` from `claim m`. Establish `htm : (t m : ℝ) = 1` using `by rw [hm m le_rfl]; rfl`. Rewrite `hδB`, `hP` using `[htm]`. Conclude with `⟨_, Metric.isOpen_thickening, ((convex_Icc (0 : ℝ) 1).affine_image γ).thickening δ, hδB, Metric.self_subset_thickening hδ _ ⟨0, ⟨le_rfl, zero_le_one⟩, hγ0⟩, Metric.self_subset_thickening hδ _ ⟨1, ⟨zero_le_one, le_rfl⟩, hγ1⟩, P, hP⟩`.
+-/
 theorem exists_marking_tube {B : Set (Fin n → ℂ)} (hconv : Convex ℝ B)
     (H : ∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧
       ∃ P, IsHolMarkingOn Γ Q e N P)
@@ -190,6 +244,11 @@ theorem exists_marking_tube {B : Set (Fin n → ℂ)} (hconv : Convex ℝ B)
 
 end
 
+/- English proof (translation)
+Introduce `n g Λ _ _ B _ hconv Γ Q e H`. Break down `B.eq_empty_or_nonempty with rfl | ⟨b₀, hb₀⟩` into its components or cases. Conclude with `⟨fun _ => 0, fun x => by simp, by simp⟩`. Establish `H' : ∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧ ∃ P, IsHolMarkingOn Γ Q e N P` using `fun b hb => by`. Take `⟨N, h1, h2, h3, P, h4, h5⟩` from `H b hb`.
+
+Conclude with `⟨N, h1, h2, h3, P, h4, h5⟩`. Take `⟨P, hP⟩` from `exists_marking_of_convex_family hb₀ (fun b hb => exists_marking_tube hconv H' hb₀ hb)`. Conclude with `⟨P, hP.1, hP.2⟩`.
+-/
 theorem exists_global_marking_of_local : ∀ (n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Countable Λ] (B : Set (Fin n → ℂ)), IsOpen B → Convex ℝ B → ∀ (Γ : (Fin n → ℂ) → AddSubgroup (Fin g → ℂ)) (Q : (Fin n → ℂ) → (Fin g → ℂ) → (Fin g → ℂ) → ℝ) (e : Λ → Λ → ℝ), (∀ b₀ ∈ B, ∃ N : Set (Fin n → ℂ), IsOpen N ∧ b₀ ∈ N ∧ N ⊆ B ∧ ∃ P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ)), (∀ x, DifferentiableOn ℂ (fun b => P b x) N) ∧ ∀ b ∈ N, Function.Injective (P b) ∧ (P b).range = Γ b ∧ ∀ x y, Q b (P b x) (P b y) = e x y) → ∃ P : (Fin n → ℂ) → (Λ →+ (Fin g → ℂ)), (∀ x, DifferentiableOn ℂ (fun b => P b x) B) ∧ ∀ b ∈ B, Function.Injective (P b) ∧ (P b).range = Γ b ∧ ∀ x y, Q b (P b x) (P b y) = e x y := by
   intro n g Λ _ _ B _ hconv Γ Q e H
   rcases B.eq_empty_or_nonempty with rfl | ⟨b₀, hb₀⟩

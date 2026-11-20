@@ -15,10 +15,18 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 namespace Mdl
 
+/- English proof (translation)
+The claim follows from `isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)`.
+-/
 theorem isFrame_chart_bc (Z : Mdl Y i₀) (a : Fin Z.m) {k : Type} [CommRing k] (φ : Γ(Z.X, (Z.U a).1) →+* k) :
     IsFrame (Y Z.i).t (φ.comp (Z.alg a)) (spMap φ ≫ Z.chart a ≫ Z.π) ((Z.fr a).bc φ) :=
   isFrame_bc E H Dw _ _ _ _ _ _ _ φ _ _ (Z.frame a)
 
+/- English proof (translation)
+Establish `e : spMap (φ.comp ((Z.alg a).comp (Z.i.c.V W).subtype)) = spMap (φ'.comp ((Z.alg a').comp (Z.i.c.V W).subtype))`. Use `congrArg (· ≫ Z.s) h` as an intermediate fact. Simplify using `only [Category.assoc, Z.alg_s] at this`. Simplify `this` using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `e'` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+
+Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (Z.i.c.V W)) e'`.
+-/
 theorem comp_alg_eq (Z : Mdl Y i₀) {a a' : Fin Z.m} {k : Type} [Field k] {φ : Γ(Z.X, (Z.U a).1) →+* k}
     {φ' : Γ(Z.X, (Z.U a').1) →+* k} (h : spMap φ ≫ Z.chart a = spMap φ' ≫ Z.chart a') :
     φ.comp (Z.alg a) = φ'.comp (Z.alg a') := by
@@ -30,6 +38,9 @@ theorem comp_alg_eq (Z : Mdl Y i₀) {a a' : Fin Z.m} {k : Type} [Field k] {φ :
   have e' := congrArg CommRingCat.Hom.hom (Spec.map_injective e)
   exact IsLocalization.ringHom_ext (nonZeroDivisors (Z.i.c.V W)) e'
 
+/- English proof (translation)
+Take `⟨a, φ, rfl, hu, hs⟩` from `hw`. Use `⟨a, φ, rfl, hu, SameFlag.of_properLE ?_ hu h hs⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Conclude with `Z.isFrame_chart_bc a φ`.
+-/
 theorem flagAt_of_properLE (Z : Mdl Y i₀) {ty ty' : (E →+* ℂ) → Finset ℕ} (h : ProperLE Dw ty' ty) {k : Type} [Field k]
     {w : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k} (hw : Pre.FlagAt { Z.toPre with ty := ty } w u) :
     Pre.FlagAt { Z.toPre with ty := ty' } w u := by
@@ -51,6 +62,9 @@ def withType (Z : Mdl Y i₀) (ty : (E →+* ℂ) → Finset ℕ) (h₁ : Proper
       obtain ⟨w, hw, uniq⟩ := Z.bij k f y hy u hu
       exact ⟨w, ⟨hw.1, Z.flagAt_of_properLE h₁ hw.2⟩, fun w' hw' => uniq w' ⟨hw'.1, Z.flagAt_of_properLE h₂ hw'.2⟩⟩ }
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => Z.flagAt_of_properLE h₂ h, fun h => Z.flagAt_of_properLE h₁ h⟩`.
+-/
 theorem flagAt_withType (Z : Mdl Y i₀) {ty : (E →+* ℂ) → Finset ℕ} (h₁ : ProperLE Dw ty Z.ty) (h₂ : ProperLE Dw Z.ty ty)
     {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k} : (Z.withType ty h₁ h₂).FlagAt w u ↔ Z.FlagAt w u :=
   ⟨fun h => Z.flagAt_of_properLE h₂ h, fun h => Z.flagAt_of_properLE h₁ h⟩
@@ -74,18 +88,27 @@ def addTop (Z : Mdl Y i₀) (σ : E →+* ℂ) : Mdl Y i₀ :=
 
 end Mdl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, c, (Z₂.flagAt_withType h₁ h₂).1 d⟩, fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, c, (Z₂.flagAt_withType h₁ h₂).2 d⟩⟩`.
+-/
 theorem natImg_withType_right {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) → Finset ℕ} (h₁ : ProperLE Dw ty Z₂.ty)
     (h₂ : ProperLE Dw Z₂.ty ty) {k : Type} [Field k] {w₁ : Sp k ⟶ Z₁.X} {w₂ : Sp k ⟶ Z₂.X} :
     NatImg Z₁ (Z₂.withType ty h₁ h₂) w₁ w₂ ↔ NatImg Z₁ Z₂ w₁ w₂ :=
   ⟨fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, c, (Z₂.flagAt_withType h₁ h₂).1 d⟩,
     fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, c, (Z₂.flagAt_withType h₁ h₂).2 d⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, (Z₁.flagAt_withType h₁ h₂).1 c, d⟩, fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, (Z₁.flagAt_withType h₁ h₂).2 c, d⟩⟩`.
+-/
 theorem natImg_withType_left {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) → Finset ℕ} (h₁ : ProperLE Dw ty Z₁.ty)
     (h₂ : ProperLE Dw Z₁.ty ty) {k : Type} [Field k] {w₁ : Sp k ⟶ Z₁.X} {w₂ : Sp k ⟶ Z₂.X} :
     NatImg (Z₁.withType ty h₁ h₂) Z₂ w₁ w₂ ↔ NatImg Z₁ Z₂ w₁ w₂ :=
   ⟨fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, (Z₁.flagAt_withType h₁ h₂).1 c, d⟩,
     fun ⟨τ, mu, u, a, b, c, d⟩ => ⟨τ, mu, u, a, b, (Z₁.flagAt_withType h₁ h₂).2 c, d⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h.1.2.2 σ k (h₂ σ k hk a b) a b⟩, fun k _ w hw => (natImg_withType_right h₁ h₂).1 (h.2 k w hw)⟩, fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h.1.2.2 σ k (h₁ σ k hk a b) a b⟩, fun k _ w hw => (natImg_withType_right h₁ h₂).2 (h.2 k w h …`.
+-/
 theorem isNatMap_withType_right {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) → Finset ℕ} (h₁ : ProperLE Dw ty Z₂.ty)
     (h₂ : ProperLE Dw Z₂.ty ty) {f : Z₁.X ⟶ Z₂.X} : IsNatMap Z₁ (Z₂.withType ty h₁ h₂) f ↔ IsNatMap Z₁ Z₂ f :=
   ⟨fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h.1.2.2 σ k (h₂ σ k hk a b) a b⟩,
@@ -93,6 +116,9 @@ theorem isNatMap_withType_right {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) →
     fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h.1.2.2 σ k (h₁ σ k hk a b) a b⟩,
       fun k _ w hw => (natImg_withType_right h₁ h₂).2 (h.2 k w hw)⟩⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h₁ σ k (h.1.2.2 σ k hk a b) a b⟩, fun k _ w hw => (natImg_withType_left h₁ h₂).1 (h.2 k w hw)⟩, fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h₂ σ k (h.1.2.2 σ k hk a b) a b⟩, fun k _ w hw => (natImg_withType_left h₁ h₂).2 (h.2 k w hw) …`.
+-/
 theorem isNatMap_withType_left {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) → Finset ℕ} (h₁ : ProperLE Dw ty Z₁.ty)
     (h₂ : ProperLE Dw Z₁.ty ty) {f : Z₁.X ⟶ Z₂.X} : IsNatMap (Z₁.withType ty h₁ h₂) Z₂ f ↔ IsNatMap Z₁ Z₂ f :=
   ⟨fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h₁ σ k (h.1.2.2 σ k hk a b) a b⟩,
@@ -100,14 +126,23 @@ theorem isNatMap_withType_left {Z₁ Z₂ : Mdl Y i₀} {ty : (E →+* ℂ) → 
     fun h => ⟨⟨h.1.1, h.1.2.1, fun σ k hk a b => h₂ σ k (h.1.2.2 σ k hk a b) a b⟩,
       fun k _ w hw => (natImg_withType_left h₁ h₂).2 (h.2 k w hw)⟩⟩
 
+/- English proof (translation)
+The claim follows from `(isNatMap_withType_left (Z₁ := Z) h₁ h₂).2 ((isNatMap_withType_right (Z₁ := Z) h₁' h₂').2 (Inhab.isMap_id hp hW Z).isNatMap)`.
+-/
 theorem isNatMap_id_withType (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) {ty ty' : (E →+* ℂ) → Finset ℕ}
     (h₁ : ProperLE Dw ty Z.ty) (h₂ : ProperLE Dw Z.ty ty) (h₁' : ProperLE Dw ty' Z.ty) (h₂' : ProperLE Dw Z.ty ty') :
     IsNatMap (Z.withType ty h₁ h₂) (Z.withType ty' h₁' h₂') (𝟙 Z.X) :=
   (isNatMap_withType_left (Z₁ := Z) h₁ h₂).2 ((isNatMap_withType_right (Z₁ := Z) h₁' h₂').2 (Inhab.isMap_id hp hW Z).isNatMap)
 
+/- English proof (translation)
+The claim follows from `isNatMap_id_withType hp hW Z _ _ _ _`.
+-/
 example (hp : p ≠ 0) (hW : (p : ℂ) ∈ W.nonunits) (Z : Mdl Y i₀) (σ σ' : E →+* ℂ) :
     IsNatMap (Z.addTop σ) (Z.addTop σ') (𝟙 Z.X) := isNatMap_id_withType hp hW Z _ _ _ _
 
+/- English proof (translation)
+The claim follows from `Inhab.nonempty_bases hp.ne_zero hW Y i₀`.
+-/
 example (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) : Nonempty (Bases Y i₀) := Inhab.nonempty_bases hp.ne_zero hW Y i₀
 
 end GlobalTheory.LocM

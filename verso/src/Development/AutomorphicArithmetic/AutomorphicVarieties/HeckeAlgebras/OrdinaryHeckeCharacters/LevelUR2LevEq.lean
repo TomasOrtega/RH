@@ -11,11 +11,21 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `_ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) _ ∈ w.asIdeal`. Rewrite using `[map_natCast]`.
+-/
 private theorem le_mem_under {l : ℕ} {L : Type} [Field L] [NumberField L] [IsCMField L] (w : Plc L) :
     ((l : ℕ) : 𝓞 L) ∈ w.asIdeal ↔ ((l : ℕ) : 𝓞 (Lp L)) ∈ (w.under (𝓞 (Lp L))).asIdeal := by
   change _ ↔ algebraMap (𝓞 (Lp L)) (𝓞 L) _ ∈ w.asIdeal
   rw [map_natCast]
 
+/- English proof (translation)
+Distinguish the cases in `h' : ((l : ℕ) : 𝓞 L) ∉ w'.asIdeal`. Establish `h0 : ((l : ℕ) : 𝓞 L) ∉ w.asIdeal`. Rewrite using `[le_mem_under, ← h, ← le_mem_under]`. Conclude with `h'`. Take `⟨_, x, rfl⟩` from `g`.
+
+Unfold `CaseU.cmp at hg ⊢`. Rewrite `hg` using `[dif_pos h0]`. Rewrite using `[dif_pos h']`. Conclude with `UpperTheory.mem_maximalCompact_of_under_eq L n x w w' h hg`. Unfold `CaseU.cmp`.
+
+Rewrite using `[dif_neg h']`. Conclude with `one_mem _`.
+-/
 private theorem le_cmp_same {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {w w' : Plc L}
     (h : w'.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))) (g : Ga l L n)
     (hg : cmp n w g ∈ KO (w.adicCompletion L) (Fin n)) : cmp n w' g ∈ KO (w'.adicCompletion L) (Fin n) := by
@@ -32,6 +42,17 @@ private theorem le_cmp_same {l : ℕ} [Fact l.Prime] {L : Type} [Field L] [Numbe
     rw [dif_neg h']
     exact one_mem _
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n hn V₀ V Q₀ Q c m τ₀ K₀ K h0 hK u`. Establish `hem : ∀ q : Q₀.Q, False` using `fun q => by`. Use `Q₀.notS q ?_` and prove the remaining obligations. Rewrite using `[← h0, Q₀.range]`. Conclude with `Or.inr ⟨q, rfl⟩`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨h1, h2⟩` from `levelUR2LevOut l L Ω s n hn V Q c m τ₀ K u hu`. Use `UpperTheory.mem_heckeLevel_of_local_components_mem l L Ω s n hn V₀ Q₀ c m τ₀ K₀ u (fun w hw => ?_) fun q => (hem q).elim` and prove the remaining obligations. Distinguish the cases in `hw' : w.under (𝓞 (Lp L)) ∈ V.S'`.
+
+Rewrite `hw'` using `[Q.range]`. Break down `hw' with hw' | ⟨q, hq⟩` into its components or cases. Conclude with `(hw (h0 ▸ hw')).elim`. Use `le_cmp_same (w := Q.wq q) hq.symm _ ?_` and prove the remaining obligations. Establish `h3` using `h2 q`.
+
+Rewrite `h3` using `[hK q]`. Conclude with `h3`. Conclude with `h1 w hw'`. Introduce `hu`. Take `⟨h1, _⟩` from `levelUR2LevOut l L Ω s n hn V₀ Q₀ c m τ₀ K₀ u hu`.
+
+Use `UpperTheory.mem_heckeLevel_of_local_components_mem l L Ω s n hn V Q c m τ₀ K u (fun w hw => h1 w fun hw' => hw ?_) fun q => ?_` and prove the remaining obligations. Rewrite using `[Q.range]`. Conclude with `Or.inl (h0 ▸ hw')`. Rewrite using `[hK q]`. Conclude with `h1 _ (h0 ▸ Q.notS q)`.
+-/
 theorem UpperTheory.V.Hi.levelUR2LevEq :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n → ∀ (V₀ V : s.Lev) (Q₀ : QData V₀) (Q : QData V) (c : Coef l) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O) (K₀ : (hset Q₀ τ₀).Lev) (K : (hset Q τ₀).Lev), V₀.S' = s.S → (∀ q, K.1 q = KO ((Q.wq q).adicCompletion L) (Fin n)) → ∀ u : Ub n s, u ∈ (hset Q τ₀).lev K ↔ u ∈ (hset Q₀ τ₀).lev K₀ := by
   intro l _ L Ω _ _ _ _ _ _ s n hn V₀ V Q₀ Q c m τ₀ K₀ K h0 hK u

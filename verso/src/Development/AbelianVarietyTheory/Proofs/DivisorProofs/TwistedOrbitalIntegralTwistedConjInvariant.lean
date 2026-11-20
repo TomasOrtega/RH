@@ -9,10 +9,19 @@ namespace GlobalTheory.TwOrbConj
 
 variable {G : Type} [Group G]
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_rStab {H : Type} [Group H] (u : H → ℂ) (k : H) : k ∈ GlobalTheory.BCT.rStab u ↔ ∀ x, u (x * k) = u x := Iff.rfl
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_twCent (θ : G →* G) (δ x : G) : x ∈ GlobalTheory.BCT.twCent θ δ ↔ x * δ = δ * θ x := Iff.rfl
 
+/- English proof (translation)
+Use `first`. Consider the case `(rw [Subgroup.map_equiv_eq_comap_symm, Subgroup.relIndex_comap, Subgroup.map_map]; simp)`. Consider the case `exact Subgroup.relIndex_map_map_of_injective _ _ φ.injective`. Consider the case `simp [Subgroup.relIndex]`.
+-/
 theorem relIndex_map_equiv (φ : G ≃* G) (H L : Subgroup G) :
     (H.map φ.toMonoidHom).relIndex (L.map φ.toMonoidHom) = H.relIndex L := by
   first
@@ -20,6 +29,15 @@ theorem relIndex_map_equiv (φ : G ≃* G) (H L : Subgroup G) :
   | exact Subgroup.relIndex_map_map_of_injective _ _ φ.injective
   | simp [Subgroup.relIndex]
 
+/- English proof (translation)
+Establish `hR : GlobalTheory.BCT.rStab (fun h => u (a * h)) = GlobalTheory.BCT.rStab u`. Use extensionality with `k`. Rewrite using `[mem_rStab, mem_rStab]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+
+Simplify `h (a⁻¹ * x)` using `[mul_assoc]`. Introduce `h x`. Simplify `h (a * x)` using `[mul_assoc]`. Unfold `GlobalTheory.BCT.avg`. Rewrite using `[hR]`.
+
+Use `congr 1`. Establish `hc : ∀ q : H ⧸ GlobalTheory.BCT.rStab u, u (a * q.out) = u (a • q).out`. Introduce `q`. Take `⟨r, hr⟩` from `QuotientGroup.mk_out_eq_mul (GlobalTheory.BCT.rStab u) (a * q.out)`. Establish `hq : (a • q) = (QuotientGroup.mk (a * q.out) : H ⧸ GlobalTheory.BCT.rStab u)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`.
+
+Both sides reduce to the same expression. Rewrite using `[hq, hr]`. Conclude with `((mem_rStab u r).1 r.2 (a * q.out)).symm`. Repeatedly rewrite using `[hc]`. Conclude with `finsum_comp_equiv (f := fun q : H ⧸ GlobalTheory.BCT.rStab u => u q.out) (MulAction.toPerm a)`.
+-/
 theorem avg_left {H : Type} [Group H] (u : H → ℂ) (a : H) :
     GlobalTheory.BCT.avg (fun h => u (a * h)) = GlobalTheory.BCT.avg u := by
   have hR : GlobalTheory.BCT.rStab (fun h => u (a * h)) = GlobalTheory.BCT.rStab u := by
@@ -44,6 +62,11 @@ theorem avg_left {H : Type} [Group H] (u : H → ℂ) (a : H) :
   simp_rw [hc]
   exact finsum_comp_equiv (f := fun q : H ⧸ GlobalTheory.BCT.rStab u => u q.out) (MulAction.toPerm a)
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv]`. Simplify using `only [MulAut.conj_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Use `H.mul_mem (H.mul_mem hh hx) (H.inv_mem hh)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `hx`. Conclude with `H.mul_mem (H.mul_mem (H.inv_mem hh) hx) hh`.
+-/
 theorem map_conj_self (H : Subgroup G) {h : G} (hh : h ∈ H) :
     H.map (MulAut.conj h).toMonoidHom = H := by
   ext x
@@ -56,6 +79,9 @@ theorem map_conj_self (H : Subgroup G) {h : G} (hh : h ∈ H) :
   · intro hx
     exact H.mul_mem (H.mul_mem (H.inv_mem hh) hx) hh
 
+/- English proof (translation)
+Rewrite using `[Subgroup.map_map]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+-/
 theorem map_conj_mul (L : Subgroup G) (a b : G) :
     L.map (MulAut.conj (a * b)).toMonoidHom = (L.map (MulAut.conj b).toMonoidHom).map (MulAut.conj a).toMonoidHom := by
   rw [Subgroup.map_map]
@@ -63,6 +89,11 @@ theorem map_conj_mul (L : Subgroup G) (a b : G) :
   ext x
   simp [MulAut.conj_apply, mul_assoc]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Subgroup.mem_map_equiv]`. Establish `e : (MulAut.conj g⁻¹).symm x = g * x * g⁻¹` using `by simp [MulAut.conj_symm_apply]`. Rewrite using `[e, mem_twCent, mem_twCent, map_mul, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem twCent_conj (θ : G →* G) (δ g : G) :
     GlobalTheory.BCT.twCent θ (g⁻¹ * δ * θ g) = (GlobalTheory.BCT.twCent θ δ).map (MulAut.conj g⁻¹).toMonoidHom := by
   ext x
@@ -81,6 +112,15 @@ theorem twCent_conj (θ : G →* G) (δ g : G) :
 
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
+/- English proof (translation)
+Unfold `GlobalTheory.BCT.cptPart`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Set `h : G ≃ₜ G` to `(Homeomorph.mulLeft c).trans (Homeomorph.mulRight c⁻¹)`. Establish `hh : ∀ x, h x = (MulAut.conj c).toMonoidHom x` using `fun x => by`.
+
+Simplify using `[h, MulAut.conj_apply]`. Establish `hz : ∀ t, (Subgroup.zpowers ((MulAut.conj c).toMonoidHom t) : Set G) = h '' (Subgroup.zpowers t : Set G)`. Introduce `t`. Rewrite using `[← MonoidHom.map_zpowers, Subgroup.coe_map]`. Use extensionality with `y`.
+
+Simplify using `only [Set.mem_image, hh]`. Establish `hk : ∀ t, IsCompact (closure (Subgroup.zpowers ((MulAut.conj c).toMonoidHom t) : Set G)) ↔ IsCompact (closure (Subgroup.zpowers t : Set G))`. Introduce `t`. Rewrite using `[hz, ← Homeomorph.image_closure, Homeomorph.isCompact_image]`. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨t, ht, rfl⟩, hc⟩`. Conclude with `⟨t, ⟨ht, (hk t).1 hc⟩, rfl⟩`. Introduce and unpack `⟨t, ⟨ht, hc⟩, rfl⟩`. Conclude with `⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩`.
+-/
 theorem cptPart_map (c : G) (T : Subgroup G) :
     GlobalTheory.BCT.cptPart (T.map (MulAut.conj c).toMonoidHom) = (GlobalTheory.BCT.cptPart T).map (MulAut.conj c).toMonoidHom := by
   unfold GlobalTheory.BCT.cptPart
@@ -105,6 +145,9 @@ theorem cptPart_map (c : G) (T : Subgroup G) :
   · rintro ⟨t, ⟨ht, hc⟩, rfl⟩
     exact ⟨⟨t, ht, rfl⟩, (hk t).2 hc⟩
 
+/- English proof (translation)
+Substitute `hT hL` using the available equality. Rewrite using `[← Subgroup.map_inf_eq _ _ _ (MulAut.conj c).injective, cptPart_map, relIndex_map_equiv]`.
+-/
 theorem relIndex_conj (c : G) (T T' L L' : Subgroup G) (hT : T' = T.map (MulAut.conj c).toMonoidHom)
     (hL : L' = L.map (MulAut.conj c).toMonoidHom) :
     (T' ⊓ L').relIndex (GlobalTheory.BCT.cptPart T') = (T ⊓ L).relIndex (GlobalTheory.BCT.cptPart T) := by
@@ -115,10 +158,20 @@ def summand (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (y : G) : 
   (((GlobalTheory.BCT.twCent θ δ ⊓ K.map (MulAut.conj y).toMonoidHom).relIndex (GlobalTheory.BCT.cptPart (GlobalTheory.BCT.twCent θ δ)) : ℕ) : ℂ) *
     GlobalTheory.BCT.avg fun k : K => f ((y * k)⁻¹ * δ * θ (y * k))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem twOrb_eq (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) :
     GlobalTheory.BCT.twOrb θ K δ f = ∑ᶠ q : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G),
       summand θ K δ f (Quotient.out q) := rfl
 
+/- English proof (translation)
+Unfold `summand`. Use `congr 1`. Conclude with `congrArg (fun n : ℕ => (n : ℂ)) (relIndex_conj t _ _ _ _ (map_conj_self _ ht).symm (by rw [map_conj_mul, map_conj_mul, map_conj_self K hk]))`. Establish `hd : t⁻¹ * δ * θ t = δ`. Rewrite using `[mul_assoc, ← (mem_twCent θ δ t).1 ht, inv_mul_cancel_left]`.
+
+Establish `hfun : (fun k' : K => f ((t * y * k * k')⁻¹ * δ * θ (t * y * k * k'))) = fun k' : K => (fun k'' : K => f ((y * k'')⁻¹ * δ * θ (y * k''))) (⟨k, hk⟩ * k')`. Use function extensionality and compare the values at `k'`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [map_mul, _root_.mul_inv_rev]`. Use `group`. Use `_ = (y * (k * ↑k'))⁻¹ * δ * θ (y * (k * ↑k')) := by rw [hd]`. Rewrite using `[hfun]`. Conclude with `avg_left (fun k'' : K => f ((y * k'')⁻¹ * δ * θ (y * k''))) ⟨k, hk⟩`.
+-/
 theorem summand_rep (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (y : G) {t k : G}
     (ht : t ∈ GlobalTheory.BCT.twCent θ δ) (hk : k ∈ K) : summand θ K δ f (t * y * k) = summand θ K δ f y := by
   unfold summand
@@ -139,6 +192,11 @@ theorem summand_rep (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (y
     rw [hfun]
     exact avg_left (fun k'' : K => f ((y * k'')⁻¹ * δ * θ (y * k''))) ⟨k, hk⟩
 
+/- English proof (translation)
+Unfold `summand`. Use `congr 1`. Conclude with `congrArg (fun n : ℕ => (n : ℂ)) (relIndex_conj g⁻¹ _ _ _ _ (twCent_conj θ δ g) (by rw [← map_conj_mul, inv_mul_cancel_left]))`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+
+Use `congr 1`. Simplify using `only [map_mul, _root_.mul_inv_rev]`. Use `group`.
+-/
 theorem summand_twist (θ : G →* G) (K : Subgroup G) (δ g : G) (f : G → ℂ) (x : G) :
     summand θ K (g⁻¹ * δ * θ g) f x = summand θ K δ f (g * x) := by
   unfold summand
@@ -184,6 +242,11 @@ end GlobalTheory.TwOrbConj
 
 namespace GlobalTheory.TwOrbConj
 
+/- English proof (translation)
+Introduce `G _ _ _ θ K δ g f _`. Rewrite using `[twOrb_eq, twOrb_eq]`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Rewrite using `[summand_twist]`.
+
+Take `⟨t, ht, k, hk, he⟩` from `(DoubleCoset.eq _ _ _ _).1 (DoubleCoset.out_eq' (GlobalTheory.BCT.twCent θ δ) K (DoubleCoset.mk _ K (g * Quotient.out q))).symm`. Use `show _ = summand θ K δ f (Quotient.out (DoubleCoset.mk (GlobalTheory.BCT.twCent θ δ) K (g * Quotient.out q)))`. Rewrite using `[he, summand_rep θ K δ f _ ht hk]`. Use `_ = ∑ᶠ q, summand θ K δ f (Quotient.out q) := finsum_comp_equiv (f := fun q : DoubleCoset.Quotient (GlobalTheory.BCT.twCent θ δ : Set G) (K : Set G) => summand θ K δ f (Quotient.out q)) (dcEquiv θ K δ g)`.
+-/
 theorem twOrb_twConj : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* G) (K : Subgroup G)
     (δ g : G) (f : G → ℂ), (∀ x : G, (GlobalTheory.BCT.rStab fun k : K => f ((x * k)⁻¹ * δ * θ (x * k))).index ≠ 0) →
     GlobalTheory.BCT.twOrb θ K (g⁻¹ * δ * θ g) f = GlobalTheory.BCT.twOrb θ K δ f := by

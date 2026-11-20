@@ -22,11 +22,19 @@ namespace GlobalTheory.GLDuality
 noncomputable def topVec (r : ℕ) (lam : DomWeight r) : nablaSq ℂ r lam :=
   ⟨extremal ℂ r lam, hwMem ℂ r r le_rfl _ (factNatW r lam).1⟩
 
+/- English proof (translation)
+The claim follows from `Subtype.ext ((factSqHighestWeight ℂ r lam).2 g h1 h2)`.
+-/
 theorem sqRep_topVec_of_unitriangular (r : ℕ) (lam : DomWeight r) (g : GL (Fin r) ℂ)
     (h1 : (g : Matrix (Fin r) (Fin r) ℂ).BlockTriangular id) (h2 : ∀ a, (g : Matrix (Fin r) (Fin r) ℂ) a a = 1) :
     sqRep ℂ r lam g (topVec r lam) = topVec r lam :=
   Subtype.ext ((factSqHighestWeight ℂ r lam).2 g h1 h2)
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Establish `h` using `(factSqHighestWeight ℂ r (pad r a)).1 t`. Establish `e : ((∏ i, t i ^ (pad r a).w i : ℂˣ) : ℂ) = ∏ i, (t i : ℂ) ^ rowNu (r` using `r) a.1 i := by`. Simplify using `[pad]`. Rewrite `h` using `[e]`.
+
+Conclude with `h`.
+-/
 theorem sqRep_topVec_diag {m : ℕ} (r : ℕ) (a : Part m) (t : Fin r → ℂˣ) :
     sqRep ℂ r (pad r a) (diagGL ℂ r t) (topVec r (pad r a)) =
       (∏ i, (t i : ℂ) ^ rowNu (r := r) a.1 i) • topVec r (pad r a) := by
@@ -37,6 +45,13 @@ theorem sqRep_topVec_diag {m : ℕ} (r : ℕ) (a : Part m) (t : Fin r → ℂˣ)
   rw [e] at h
   exact h
 
+/- English proof (translation)
+Take `⟨T, hT⟩` from `GlobalTheory.Proof.GenericSubmoduleMonomials.exists_pairing n n' (min n n')`. Take `⟨hE, hN⟩` from `GlobalTheory.GLDuality.pairing_equivariant_and_ne_zero n n' (min n n') T hT`. Take `⟨j, hj, hj0⟩` from `GlobalTheory.GLDuality.exists_map_nablaSq_pad n (min n n') (min_le_left _ _) a`. Take `⟨j', hj', hj0'⟩` from `GlobalTheory.GLDuality.exists_map_nablaSq_pad n' (min n n') (min_le_right _ _) a`. Use `⟨⟨TensorProduct.lift (T.compl₁₂ j j'), fun p => ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `v w`. Simplify using `only [LinearMap.comp_apply, pieceRep_tmul, TensorProduct.lift.tmul, LinearMap.compl₁₂_apply]`. Express the relevant statement in the definitionally equal form `T (j (sqRep ℂ n _ p.1 v)) (j' (sqRep ℂ n' _ p.2 w)) = matRep n n' (p.1, p.2) (T (j v) (j' w))`. Rewrite using `[hj, hj', hE]`.
+
+Express the relevant statement in the definitionally equal form `T (j _) (j' _) ≠ 0`. Rewrite using `[hj0 _ rfl, hj0' _ rfl]`. Conclude with `hN _ _ _`.
+-/
 theorem exists_intertwining_piece (n n' : ℕ) (a : Part (min n n')) :
     ∃ φ : (pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).IntertwiningMap
       (polyRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ))),
@@ -55,6 +70,11 @@ theorem exists_intertwining_piece (n n' : ℕ) (a : Part (min n n')) :
     rw [hj0 _ rfl, hj0' _ rfl]
     exact hN _ _ _
 
+/- English proof (translation)
+Establish `hφ : ∀ (g : GL (Fin n) ℂ) (h : GL (Fin n') ℂ) v w, matRep n n' (g, h) (φ (v ⊗ₜ w)) = φ (sqRep ℂ n _ g v ⊗ₜ sqRep ℂ n' _ h w)` using `fun g h v w => by`. Use `Representation.IntertwiningMap.isIntertwining _ _ φ (g, h) (v ⊗ₜ w)` as an intermediate fact. Rewrite `this` using `[pieceRep_tmul]`. Conclude with `this.symm`. Use `⟨GlobalTheory.GLDuality.mem_dualWeyl_of_unitriangular_fixed n n' _ _ (fun g h1 h2 => ?_) (fun t => ?_), GlobalTheory.GLDuality.rowDiv_eq_zero_of_matRep_unipotent_fixed n n' _ fun g h1 h2 => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hφ, sqRep_topVec_of_unitriangular _ _ g h1 h2, map_one, Module.End.one_apply]`. Rewrite using `[hφ, sqRep_topVec_diag, map_one, Module.End.one_apply, ← TensorProduct.smul_tmul', map_smul]`. Rewrite using `[hφ, sqRep_topVec_of_unitriangular _ _ g h1 h2, map_one, Module.End.one_apply]`.
+-/
 theorem map_topVec_highest (n n' : ℕ) (a : Part (min n n'))
     (φ : (pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).IntertwiningMap
       (polyRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)))) :
@@ -71,6 +91,15 @@ theorem map_topVec_highest (n n' : ℕ) (a : Part (min n n'))
   · rw [hφ, sqRep_topVec_diag, map_one, Module.End.one_apply, ← TensorProduct.smul_tmul', map_smul]
   · rw [hφ, sqRep_topVec_of_unitriangular _ _ g h1 h2, map_one, Module.End.one_apply]
 
+/- English proof (translation)
+Establish `hX : ∀ (a : Fin n') (s : Fin n), sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (diagGL ℂ n t : Matrix (Fin n) (Fin n) ℂ))ᵀ (X (a, s)) = C (t s : ℂ) * X (a, s)`. Introduce `a s`. Rewrite using `[← matRep_apply, matRep_X]`. Simplify using `[diagGL, Matrix.one_apply, Matrix.diagonal_apply, apply_ite C]`. Establish `e : (colAdd ℂ (r` using `n') l j c).comp (sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (diagGL ℂ n t : Matrix (Fin n) (Fin n) ℂ))ᵀ) = (sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (diagGL ℂ n t : Matrix (Fin n) (Fin n) ℂ))ᵀ).comp (colAdd ℂ l j (c * t j * (t l)⁻¹)) := by`.
+
+Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, hX]`. Distinguish the cases in `hs : s = j`. Substitute `hs` using the available equality.
+
+Simplify using `only [colAdd, map_mul, algHom_C, aeval_X, if_true, map_add, hX, algebraMap_eq]`. Establish `: (C ((t l)⁻¹ : ℂ) : MvPolynomial (Fin n' × Fin n) ℂ) * C (t l : ℂ) = 1`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Simplify using `only [Units.val_inv_eq_inv_val] at this ⊢`.
+
+Take the linear combination `(-(C c * C (t s : ℂ) * X (a, l))) * this`. Simplify using `only [colAdd, map_mul, algHom_C, aeval_X, if_neg hs, hX, algebraMap_eq]`. Conclude with `DFunLike.congr_fun e v`.
+-/
 theorem colAdd_matRep_diag {n n' : ℕ} (t : Fin n → ℂˣ) (l j : Fin n) (c : ℂ)
     (v : MvPolynomial (Fin n' × Fin n) ℂ) :
     colAdd ℂ l j c (matRep n n' (diagGL ℂ n t, 1) v) =
@@ -98,6 +127,11 @@ theorem colAdd_matRep_diag {n n' : ℕ} (t : Fin n → ℂˣ) (l j : Fin n) (c :
     · simp only [colAdd, map_mul, algHom_C, aeval_X, if_neg hs, hX, algebraMap_eq]
   exact DFunLike.congr_fun e v
 
+/- English proof (translation)
+Take `⟨v, hv, hv0, hf⟩` from `GlobalTheory.GLDuality.exists_colAdd_fixed_of_stable n n' N hN hst`. Set `M : Submodule ℂ (MvPolynomial (Fin n' × Fin n) ℂ)` to `{ carrier := {w | w ∈ N ∧ ∀ l j : Fin n, l < j → ∀ c : ℂ, colAdd ℂ l j c w = w} add_mem' := fun ha hb => ⟨N.add_mem ha.1 hb.1, fun l j h c => by rw [map_add, ha.2 l j h, hb.2 l j h]⟩ zero_mem' := ⟨N.zero_mem, fun l j h c => map_zero _⟩ smul_mem' := fun a _ ha => ⟨N.smul_mem a ha. …`. Establish `hM : ∀ t : Fin n → ℂˣ, ∀ w ∈ M, matRep n n' (diagGL ℂ n t, 1) w ∈ M` using `fun t w hw => ⟨hst _ w hw.1, fun l j h c => by rw [colAdd_matRep_diag, hw.2 l j h]⟩`. Take `⟨d, hd⟩` from `ne_zero_iff.mp hv0`. Establish `hw` using `GlobalTheory.GLDuality.weightedHomogeneousComponent_colW_mem n n' M hM (Finsupp.weight (colW n' n) d) v ⟨hv, hf⟩`.
+
+Use `⟨_, _, hw.1, ne_zero_iff.2 ⟨d, ?_⟩, (dualWeylPoint ℂ n' n _ _).2 ⟨weightedHomogeneousComponent_isWeightedHomogeneous _ _, hw.2⟩⟩` and prove the remaining obligations. Rewrite using `[coeff_weightedHomogeneousComponent, if_pos rfl]` and apply the resulting hypothesis.
+-/
 theorem exists_mem_dualWeyl_of_stable (n n' : ℕ) (N : Submodule ℂ (MvPolynomial (Fin n' × Fin n) ℂ)) (hN : N ≠ ⊥)
     (hst : ∀ g : GL (Fin n) ℂ, ∀ v ∈ N, matRep n n' (g, 1) v ∈ N) :
     ∃ (ν : Fin n → ℕ) (v : MvPolynomial (Fin n' × Fin n) ℂ), v ∈ N ∧ v ≠ 0 ∧ v ∈ dualWeyl ℂ n' n ν := by
@@ -116,6 +150,11 @@ theorem exists_mem_dualWeyl_of_stable (n n' : ℕ) (N : Submodule ℂ (MvPolynom
     ⟨weightedHomogeneousComponent_isWeightedHomogeneous _ _, hw.2⟩⟩
   rwa [coeff_weightedHomogeneousComponent, if_pos rfl]
 
+/- English proof (translation)
+Take `⟨ν, v, hv, hv0, hvd⟩` from `exists_mem_dualWeyl_of_stable n n' N hN fun g => hst (g, 1)`. Establish `hU : ∀ u ∈ Matrix.unitaryGroup (Fin n') ℂ, ∀ f ∈ N ⊓ dualWeyl ℂ n' n ν, rowAct ℂ u f ∈ N ⊓ dualWeyl ℂ n' n ν`. Introduce `u hu f hf`. Use `⟨?_, dualWeylRowStable ℂ n' n ν u f hf.2⟩` and prove the remaining obligations. Establish `h1` using `hst (1, unitaryIncl n' (Matrix.UnitaryGroup.transpose ⟨u, hu⟩)) f hf.1`.
+
+Rewrite `h1` using `[matRep_one_left]`. Conclude with `h1`. Take `⟨w, hw, hw0, hk⟩` from `exists_killed_of_rowDivClosed _ (rowDivClosed_of_rowAct_stable _ (rowAct_mem_of_unitary_stable _ hU)) (fun e => hv0 ((Submodule.eq_bot_iff _).1 e v ⟨hv, hvd⟩))`. Conclude with `⟨ν, w, hw.1, hw0, hw.2, hk⟩`.
+-/
 theorem exists_highest_of_stable (n n' : ℕ) (N : Submodule ℂ (MvPolynomial (Fin n' × Fin n) ℂ)) (hN : N ≠ ⊥)
     (hst : ∀ p : GL (Fin n) ℂ × GL (Fin n') ℂ, ∀ v ∈ N, matRep n n' p v ∈ N) :
     ∃ (ν : Fin n → ℕ) (v : MvPolynomial (Fin n' × Fin n) ℂ), v ∈ N ∧ v ≠ 0 ∧ v ∈ dualWeyl ℂ n' n ν ∧
@@ -133,6 +172,23 @@ theorem exists_highest_of_stable (n n' : ℕ) (N : Submodule ℂ (MvPolynomial (
     (fun e => hv0 ((Submodule.eq_bot_iff _).1 e v ⟨hv, hvd⟩))
   exact ⟨ν, w, hw.1, hw0, hw.2, hk⟩
 
+/- English proof (translation)
+Establish `h1` using `irreducibleDistinct_gl (min_le_left n n')`. Establish `h2` using `irreducibleDistinct_gl (min_le_right n n')`. Establish `hirr : ∀ a : Part (min n n'), (pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).IsIrreducible` using `fun a => GlobalTheory.OuterTensor.isIrreducible_outer_tprod _ _ _ _ _ _ (h1.1 a) (h2.1 a)`. Establish `hdis : ∀ a b : Part (min n n'), a ≠ b → ∀ φ : (pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).IntertwiningMap (pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) b), φ = 0`. Introduce `a b hab`.
+
+Use `GlobalTheory.outerTensor_intertwining_eq_zero_of_left _ _ _ _ _ _ _ _ _ _ fun ψ => ?_` and prove the remaining obligations. Use `h1.1 a` as an intermediate fact. Use `h1.1 b` as an intermediate fact. Use `(Representation.IsIrreducible.bijective_or_eq_zero ψ).resolve_left fun hb => hab (h1.2 a b ?_)` and prove the remaining obligations. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective ψ.toLinearMap hb) ψ.isIntertwining'⟩`.
+
+Use `choose φ hφ using exists_intertwining_piece n n'`. Set `Φ : (Representation.directSum fun a : Part (min n n') => pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).IntertwiningMap (polyRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)))` to `⟨DirectSum.toModule ℂ _ _ (fun i => (φ i).toLinearMap), fun g => by`. Use `DirectSum.linearMap_ext ℂ fun i => LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `[(φ i).isIntertwining]⟩`. Establish `hΦ : ∀ i v, Φ (DirectSum.lof ℂ _ _ i v) = φ i v` using `fun i v => DirectSum.toModule_lof ℂ (φ := fun i => (φ i).toLinearMap) i v`.
+
+Establish `hinj : Function.Injective Φ.toLinearMap`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `GlobalTheory.directSum_eq_zero_of_toModule_eq_zero _ _ hirr hdis Φ ?_ (DFinsupp.support x) x (fun j hj => DFinsupp.notMem_support_iff.1 hj) hx` and prove the remaining obligations. Introduce `i v hv`.
+
+Use `hirr i` as an intermediate fact. Establish `hi` using `(Representation.IsIrreducible.injective_or_eq_zero (φ i)).resolve_right (fun e => hφ i (by rw [e]; rfl))`. Apply `hi` to reduce the goal to its premises. Rewrite using `[← hΦ, hv, map_zero]`. Establish `hsurj : Function.Surjective Φ.toLinearMap`.
+
+Rewrite using `[← LinearMap.range_eq_top]`. Assume the negation of the conclusion as `hM`. Take `⟨N, hN, hNM, hst⟩` from `GlobalTheory.GLDuality.Compl.exists_stable_disjoint n n' _ hM (by`. Introduce and unpack `p _ ⟨x, rfl⟩`. Conclude with `⟨_, Representation.IntertwiningMap.isIntertwining _ _ Φ p x⟩)`.
+
+Take `⟨ν, v, hv, hv0, hvd, hk⟩` from `exists_highest_of_stable n n' N hN hst`. Take `⟨a, rfl⟩` from `(GlobalTheory.GLDuality.HighestLine.highest_line n' n ν v hvd hk hv0).1`. Take `⟨ht1, ht2⟩` from `map_topVec_highest n n' a (φ a)`. Take `⟨c, hc⟩` from `(GlobalTheory.GLDuality.HighestLine.highest_line n' n _ _ ht1 ht2 (hφ a)).2 v hvd hk`. Use `hv0 ((Submodule.eq_bot_iff _).1 hNM v ⟨hv, ?_⟩)` and prove the remaining obligations.
+
+Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ ⟨_, hΦ a _⟩`. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective Φ.toLinearMap ⟨hinj, hsurj⟩) Φ.isIntertwining'⟩`.
+-/
 theorem nonempty_equiv_polyRep (n n' : ℕ) :
     Nonempty ((Representation.directSum fun a : Part (min n n') =>
       pieceRep (MonoidHom.id (GL (Fin n) ℂ)) (MonoidHom.id (GL (Fin n') ℂ)) a).Equiv
@@ -189,5 +245,8 @@ theorem nonempty_equiv_polyRep (n n' : ℕ) :
 
 end GlobalTheory.GLDuality
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.Published.glHoweDuality_of_equiv fun n n' _ _ => GlobalTheory.GLDuality.nonempty_equiv_polyRep n n'`.
+-/
 theorem GlobalTheory.Published.glHoweDuality_holds : GlobalTheory.Published.GLHoweDuality :=
   GlobalTheory.Published.glHoweDuality_of_equiv fun n n' _ _ => GlobalTheory.GLDuality.nonempty_equiv_polyRep n n'

@@ -46,11 +46,29 @@ section Lemmas
 
 variable {C : Type} [Field C] {V : VF C}
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact Bl.PowMulVecEigen.goal1 .. | (apply Bl.PowMulVecEigen.goal1 <;> assumption) | (intros; apply Bl.PowMulVecEigen.goal1 <;> assumption) | (apply @Bl.PowMulVecEigen.goal1 <;> assumption) | (intros; apply @Bl.PowMulVecEigen.goal1 <;> assumption) | (apply @Bl.PowMulVecEig …`.
+-/
 theorem aeval_mulVec {n : ℕ} (A : Matrix (Fin n) (Fin n) C) (w : Fin n → C) (lam : C)
     (h : Matrix.mulVec A w = lam • w) (f : Polynomial C) :
     Matrix.mulVec (Polynomial.aeval A f) w = f.eval lam • w := by
   first | exact Bl.PowMulVecEigen.goal1 .. | (apply Bl.PowMulVecEigen.goal1 <;> assumption) | (intros; apply Bl.PowMulVecEigen.goal1 <;> assumption) | (apply @Bl.PowMulVecEigen.goal1 <;> assumption) | (intros; apply @Bl.PowMulVecEigen.goal1 <;> assumption) | (apply @Bl.PowMulVecEigen.goal1 <;> first | assumption | infer_instance)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, w i ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hw (funext hc)`. Take `⟨i, -, hi⟩` from `Finset.exists_min_image Finset.univ (fun i => V.v (w i)) ⟨i0, Finset.mem_univ _⟩`.
+
+Establish `hwi : w i ≠ 0`. Introduce `h0`. Use `hi i0 (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, AddValuation.map_zero, top_le_iff, AddValuation.top_iff]`. Conclude with `hi0 this`.
+
+Establish `hrow : lam * w i = ∑ j, A i j * w j`. Use `congrFun h i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Establish `hge : V.v (w i) ≤ V.v (lam * w i)`.
+
+Rewrite using `[hrow]`. Use `AddValuation.map_le_sum V.v fun j _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul]`. Establish `h1` using `hA i j`. Unfold `VF.Ge at h1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite `hge` using `[AddValuation.map_mul]`. Unfold `VF.Ge`. Establish `hne : V.v (w i) ≠ ⊤` using `(AddValuation.ne_top_iff V.v).mpr hwi`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hne`.
+
+Rewrite `hge` using `[← hr]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h2 : V.v lam + (r : WithTop ℝ) < 0 + (r : WithTop ℝ)`. Conclude with `WithTop.add_lt_add_right (WithTop.coe_ne_top) hlt`.
+
+Rewrite `h2` using `[zero_add]`. Conclude with `absurd (lt_of_le_of_lt hge h2) (lt_irrefl _)`.
+-/
 theorem eig_int {n : ℕ} (A : Matrix (Fin n) (Fin n) C) (hA : ∀ i j, V.Ge 0 (A i j)) (w : Fin n → C) (hw : w ≠ 0)
     (lam : C) (h : Matrix.mulVec A w = lam • w) : V.Ge 0 lam := by
   obtain ⟨i0, hi0⟩ : ∃ i, w i ≠ 0 := by

@@ -24,6 +24,11 @@ open scoped Formalism.Per NNReal
 
 namespace GlobalTheory.BKLim.LimLink
 
+/- English proof (translation)
+Use `first`. Consider the case `exact @_root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq`. Consider the case `exact _root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq`. Consider the case `(apply _root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq <;> assumption)`.
+
+Consider the case `(intros; apply @_root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq ..)`.
+-/
 theorem dvd_iff_map_eq {R : Type*} [CommRing R] {p q : Type*} (a : R) (A B : Matrix p q R) :
     (∀ i j, a ∣ (A - B) i j) ↔
       A.map (Ideal.Quotient.mk (Ideal.span {a})) = B.map (Ideal.Quotient.mk (Ideal.span {a})) := by
@@ -35,6 +40,9 @@ theorem dvd_iff_map_eq {R : Type*} [CommRing R] {p q : Type*} (a : R) (A B : Mat
   | (intros; apply @_root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq <;> first | assumption | infer_instance)
   | (intros; exact _root_.GlobalTheory.DvdSubMapMk.dvd_sub_iff_map_mk_eq ..)
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using the standard rewrite rules.
+-/
 theorem map_smul_ringHom {R S : Type*} [CommRing R] [CommRing S] {p q : Type*} (f : R →+* S) (r : R)
     (A : Matrix p q R) : (r • A).map f = f r • A.map f := by
   ext i j; simp
@@ -42,6 +50,39 @@ theorem map_smul_ringHom {R S : Type*} [CommRing R] [CommRing S] {p q : Type*} (
 end GlobalTheory.BKLim.LimLink
 
 open GlobalTheory.BKLim.LimLink in
+/- English proof (translation)
+Introduce `l _ K bk τ hτ d N ρ tw F T0 R H1 H2 H3 Y T hY H5 n`. Take `⟨hu, -, -, -⟩` from `GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ`. Establish `huN : IsUnit (inclW l τ ^ N)` using `hu.pow N`. Take `⟨π, key, key'⟩ : ∃ π : WCb l →+* (WCb l ⧸ Ideal.span {(l : WCb l) ^ n}), (∀ {p q : ℕ} (A B : Matrix (Fin p) (Fin q) (WCb l)), (∀ i j, (l : WCb l) ^ n ∣ (A - B) i j) → A.map π = B.map π) ∧ (∀ {p q : ℕ} (A B : Matrix (Fin p) (Fin q) (WCb l)), A.map π = B.map π → ∀ i j, (l : WCb l) …` from `⟨_, fun A B => (dvd_iff_map_eq _ A B).1, fun A B => (dvd_iff_map_eq _ A B).2⟩`. Take `⟨m, hnm, hm⟩` from `H2 n`.
+
+Establish `hcol : ∀ j : Fin (tw.d' m), ∃ (v : Fin d → WCb l) (c : Fin d → bk.S), (∀ i, (l : WCb l) ^ n ∣ v i - R m i j) ∧ T0 *ᵥ v = T *ᵥ fun a => bk.evW (c a)`. Introduce `j`. Take `⟨v, hv1, hv2⟩` from `hm (Pi.single j 1)`. Take `⟨hOE, y, hy⟩` from `H3 v hv2`. Take `⟨c, hc⟩` from `H5 y ⟨v, hOE, hy⟩`.
+
+Use `⟨v, c, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `hs : (fun a => bk.evW ((Pi.single j (1 : bk.S) : Fin (tw.d' m) → bk.S) a)) = Pi.single j 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = j`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Use `hv1 i` as an intermediate fact. Rewrite `this` using `[hs]`.
+
+Simplify `this` using `[Matrix.mulVec_single_one]`. Establish `h1 : (fun i => inclW l (y i)) = inclW l τ ^ N • (T *ᵥ fun a => bk.evW (c a))`. Rewrite using `[hc]`. Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec, hY, Matrix.smul_mulVec]`.
+
+Both sides reduce to the same expression. Rewrite `h1` using `[hy]`. Conclude with `huN.smul_left_cancel.1 h1`. Use `choose V C hV hVC using hcol`. Set `Rn : Matrix (Fin d) (Fin (tw.d' m)) bk.S` to `Matrix.of fun i j => C j i`.
+
+Establish `hTR : T * Rn.map bk.evW = T0 * Matrix.of (fun i j => V j i)`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (hVC j) i` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply, Rn]`.
+
+Conclude with `this.symm`. Establish `hfirst : (zW (tw.Pi m) * (F m).T).map π = (T * Rn.map bk.evW).map π`. Establish `e1 : (zW (tw.Pi m) * (F m).T).map π = (T0 * R m).map π` using `key _ _ (fun i j => (pow_dvd_pow _ hnm).trans (H1 m i j))`. Establish `e2 : (R m).map π = (Matrix.of fun i j => V j i).map π` using `key _ _ (fun i j => by`. Use `hV j i` as an intermediate fact.
+
+Rewrite using `[← dvd_neg]`. Simplify `this)` using `[neg_sub]`. Rewrite using `[e1, hTR, Matrix.map_mul, Matrix.map_mul, e2]`. Take `⟨Ym, Y'm, hYm, hYY⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N (tw.d' m) (fun g => (tw.ρ' m g).val) (F m)`. Take `⟨Sm, hSm⟩` from `(tw.onto m).surj`.
+
+Use `⟨m, hnm, Rn, Y'm * Sm.map (algebraMap ℤ_[l] (Ainf l)), key' _ _ hfirst, ?_⟩` and prove the remaining obligations. Establish `hinc : ∀ x : ℤ_[l], inclW l (algebraMap ℤ_[l] (Ainf l) x) = algebraMap ℤ_[l] (WCb l) x` using `fun x => (inclWA l).commutes x`. Establish `hFY : (F m).T * Y'm.map (inclW l) = inclW l τ ^ N • (1 : Matrix (Fin (tw.d' m)) (Fin (tw.d' m)) (WCb l))`. Apply `huN.smul_left_cancel.1` to reduce the goal to its premises. Rewrite using `[← Matrix.smul_mul, ← hYm, ← Matrix.map_mul, hYY, map_smul_ringHom, Matrix.map_one _ (map_zero _) (map_one _), smul_smul, map_pow, ← pow_add, two_mul]`.
+
+Establish `hQ : ((Rn.map bk.ev) * (Y'm * Sm.map (algebraMap ℤ_[l] (Ainf l)))).map (inclW l) = Rn.map bk.evW * (Y'm.map (inclW l) * zW Sm)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.map_map, Matrix.map_map]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[hinc]`.
+
+Establish `hS1 : (zW (tw.Pi m * Sm)).map π = (1 : Matrix (Fin d) (Fin d) (WCb l)).map π`. Apply `key` to reduce the goal to its premises. Introduce `i j`. Establish `e : (zW (tw.Pi m * Sm) - 1) i j = algebraMap ℤ_[l] (WCb l) ((tw.Pi m * Sm - 1 : Matrix (Fin d) (Fin d) ℤ_[l]) i j)`. Simplify using `only [zW, Matrix.sub_apply, Matrix.map_apply, map_sub]`.
+
+Use `congr 1`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[e]`. Use `(pow_dvd_pow _ hnm).trans ?_` and prove the remaining obligations. Use `map_dvd (algebraMap ℤ_[l] (WCb l)) (hSm i j)` as an intermediate fact.
+
+Simplify using `using this`. Establish `hE : inclW l τ ^ N • (zW (tw.Pi m) * (F m).T * (Y'm.map (inclW l) * zW Sm)) = inclW l τ ^ (2 * N) • zW (tw.Pi m * Sm)`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (F m).T, hFY, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, smul_smul, ← pow_add, ← two_mul]`. Simplify using `only [zW, Matrix.map_mul]`. Apply `key'` to reduce the goal to its premises.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQ, hY, Matrix.smul_mul, ← Matrix.mul_assoc]`. Use `_ = (inclW l τ ^ N • ((zW (tw.Pi m) * (F m).T) * (Y'm.map (inclW l) * zW Sm))).map π := by`. Rewrite using `[map_smul_ringHom, map_smul_ringHom, Matrix.map_mul, Matrix.map_mul (L := zW (tw.Pi m) * (F m).T), hfirst]`. Use `_ = (inclW l τ ^ (2 * N) • zW (tw.Pi m * Sm)).map π := by rw [hE]`.
+
+Use `_ = (inclW l τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (WCb l))).map π := by`. Rewrite using `[map_smul_ringHom, map_smul_ringHom, hS1]`.
+-/
 theorem GlobalTheory.BKLim.limit_basis_link_mod : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Pre bk N (tw.d' n) fun g => (tw.ρ' n g).val) (T0 : Matrix (Fin d) (Fin d) (WCb l)) (R : ∀ n, Matrix (Fin d) (Fin (tw.d' n)) (WCb l)), (∀ n i j, (l : WCb l) ^ n ∣ (zW (tw.Pi n) * (F n).T - T0 * R n) i j) → (∀ n, ∃ m, n ≤ m ∧ ∀ s : Fin (tw.d' m) → bk.S, ∃ v : Fin d → WCb l, (∀ i, (l : WCb l) ^ n ∣ (v - R m *ᵥ fun j => bk.evW (s j)) i) ∧ ∀ k, ∃ s' : Fin (tw.d' k) → bk.S, ∀ i, (l : WCb l) ^ k ∣ (v - R k *ᵥ fun j => bk.evW (s' j)) i) → (∀ v : Fin d → WCb l, (∀ k, ∃ s' : Fin (tw.d' k) → bk.S, ∀ i, (l : WCb l) ^ k ∣ (v - R k *ᵥ fun j => bk.evW (s' j)) i) → (∀ i, v i ∈ bk.OE) ∧ ∃ y : Fin d → Ainf l, (fun i => inclW l (y i)) = inclW l τ ^ N • (T0 *ᵥ v)) → ∀ (Y : Matrix (Fin d) (Fin d) (Ainf l)) (T : Matrix (Fin d) (Fin d) (WCb l)), Y.map (inclW l) = inclW l τ ^ N • T → (∀ y : Fin d → Ainf l, (∃ w : Fin d → WCb l, (∀ i, w i ∈ bk.OE) ∧ (fun i => inclW l (y i)) = inclW l τ ^ N • (T0 *ᵥ w)) → ∃ c : Fin d → bk.S, y = Y *ᵥ fun a => bk.ev (c a)) → ∀ n, ∃ m, n ≤ m ∧ ∃ (Rn : Matrix (Fin d) (Fin (tw.d' m)) bk.S) (Q : Matrix (Fin (tw.d' m)) (Fin d) (Ainf l)), (∀ i j, (l : WCb l) ^ n ∣ (zW (tw.Pi m) * (F m).T - T * Rn.map bk.evW) i j) ∧ ∀ i j, (l : WCb l) ^ n ∣ (Y.map (inclW l) * (Rn.map bk.ev * Q).map (inclW l) - inclW l τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (WCb l))) i j := by
   intro l _ K bk τ hτ d N ρ tw F T0 R H1 H2 H3 Y T hY H5 n
   obtain ⟨hu, -, -, -⟩ := GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ

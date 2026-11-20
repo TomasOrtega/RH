@@ -1,5 +1,12 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `G W _ _ _ ρ`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : IsSimpleOrder (Subrepresentation ρ)` using `h`. Use `⟨?_, fun N hN => ?_⟩` and prove the remaining obligations.
+
+Establish `hne : (⊥ : Submodule ℂ W) ≠ ⊤` using `fun e => (bot_ne_top (α := Subrepresentation ρ)) (Subrepresentation.toSubmodule_injective e)`. Conclude with `(Submodule.nontrivial_iff ℂ).mp ⟨⊥, ⊤, hne⟩`. Break down `h'.eq_bot_or_eq_top ⟨N, fun g v hv => hN g v hv⟩ with e | e` into its components or cases. Conclude with `Or.inl (congrArg Subrepresentation.toSubmodule e)`. Conclude with `Or.inr (congrArg Subrepresentation.toSubmodule e)`.
+
+Introduce and unpack `⟨hW, h⟩`. Establish `hne : (⊥ : Subrepresentation ρ) ≠ ⊤` using `fun e => (bot_ne_top (α := Submodule ℂ W)) (congrArg Subrepresentation.toSubmodule e)`. Establish `h' : IsSimpleOrder (Subrepresentation ρ)` using `{ exists_pair_ne := ⟨⊥, ⊤, hne⟩ eq_bot_or_eq_top := fun σ => (h σ.toSubmodule fun g v hv => σ.apply_mem_toSubmodule g hv).imp (fun e => Subrepresentation.toSubmodule_injective e) (fun e => Subrepresentation.toSubmodule_injective e) }`. Conclude with `h'`.
+-/
 theorem UpperTheory.Reformulated.B.Ra6.irr_iff :
     ∀ {G W : Type} [inst : Group G] [inst_1 : AddCommGroup W]
     [inst_2 : _root_.Module ℂ W] (ρ : Representation ℂ G W),

@@ -77,6 +77,9 @@ def RelativeDeterminantEquation (D : D7) (T : Tor D) (e : FamE D) : Prop :=
     e N N' L₁.1 L'.1 = fun z => ((chiQ D (D.relDet N L L₁) ^ (((N' / 2 : ℕ) : ℤ)) : ℂˣ) : ℂ) *
       Iop D T (La D T L.1 L'.1) (La D T L₁.1 L'.1) (e N N' L.1 L'.1) z)
 
+/- English proof (translation)
+Establish `hx : ∃ y, idl y = idl x` using `⟨x, rfl⟩`. Unfold `chiRec`. Rewrite using `[dif_pos hx, h hx.choose_spec]`.
+-/
 theorem chiRec_idl (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : Function.Injective idl) (x : D.Dt ⧸ D.UO) :
     chiRec D idl (idl x) = ((chiQ D x : ℂˣ) : ℂ) := by
   have hx : ∃ y, idl y = idl x := ⟨x, rfl⟩
@@ -221,6 +224,11 @@ def adm1 (D : D7) : Prop :=
 
 def AdmittedStatements (D : D7) : Prop := adm1 D
 
+/- English proof (translation)
+Take `⟨hinj, hN, hmul, hz, -⟩` from `h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `𝔞 𝔟 ha hb`. Take `⟨x, rfl⟩` from `(hN 𝔞).1 ha`. Take `⟨y, rfl⟩` from `(hN 𝔟).1 hb`.
+
+Rewrite using `[← hmul, chiRec_idl D idl hinj, chiRec_idl D idl hinj, chiRec_idl D idl hinj, map_mul]`. Simplify using the standard rewrite rules. Introduce `z`. Rewrite using `[← hz z, chiRec_idl D idl hinj]`. Conclude with `D.rest_detCharacter_on_unitary_eq z`.
+-/
 theorem isChi_chiRec (D : D7) (idl : D.Dt ⧸ D.UO → IdE D) (h : RelDetPinned D idl) :
     IsChi D (chiRec D idl) := by
   obtain ⟨hinj, hN, hmul, hz, -⟩ := h

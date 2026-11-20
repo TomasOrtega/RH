@@ -25,6 +25,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.Grid 
 
 namespace GlobalTheory.BotMove.Fst
 
+/- English proof (translation)
+Use `⟨hA.1, fun y => (hA.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.Grid.neg_gram, hc]`. Simplify using `[GlobalTheory.Grid.neg_gram] at hc ⊢`. Conclude with `neg_eq_iff_eq_neg.2 hc`.
+-/
 private theorem selfDual_neg {D : D7} {A : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin A.rank → D.host.E)} (hA : IsSelfDualC A Λ) :
     IsSelfDualC (GlobalTheory.Grid.neg A) Λ := by
   refine ⟨hA.1, fun y => (hA.2 y).trans (forall₂_congr fun x _ => ⟨fun ⟨c, hc⟩ => ⟨-c, ?_⟩, fun ⟨c, hc⟩ => ⟨-c, ?_⟩⟩)⟩
@@ -32,6 +35,11 @@ private theorem selfDual_neg {D : D7} {A : HSp D} {Λ : Submodule (𝓞 D.host.E
   · simp [GlobalTheory.Grid.neg_gram] at hc ⊢
     exact neg_eq_iff_eq_neg.2 hc
 
+/- English proof (translation)
+Establish `hs : ∀ x (F : WO S T → ℂ), heisO ψ S T x (c • F) = c • heisO ψ S T x F` using `fun x F => by`. Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun Φ hΦ x hx => ?_, fun Φ hΦ y hy => ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hs, h.trans Φ hΦ x hx]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hs, h.modul Φ hΦ y hy]`. Rewrite using `[LinearMap.smul_apply, h.vac]`.
+-/
 private theorem placeModel_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {e : AE D} {Λ : AddSubgroup (WO S T)}
     {f₀ : WO S T → ℂ} {Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ)}
     (h : IsPlaceModel ψ (symplO S T) (heisO ψ S T) e Λ 1 f₀ Tm) (c : ℂ) :
@@ -45,6 +53,11 @@ private theorem placeModel_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T :
   · rw [LinearMap.smul_apply, LinearMap.smul_apply, hs, h.modul Φ hΦ y hy]
   · rw [LinearMap.smul_apply, h.vac]
 
+/- English proof (translation)
+Take `⟨⟨T₀, hT₀⟩, hall⟩` from `h`. Use `⟨⟨c⁻¹ • T₀, ?_⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Use `placeModel_smul hT₀ c⁻¹` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hc]`. Then use the resulting hypothesis. Establish `e1 : f = (c • T') Φ` using `hall _ (placeModel_smul hT' c) show c⁻¹ • f = T' Φ`.
+
+Rewrite using `[e1, LinearMap.smul_apply, inv_smul_smul₀ hc]`.
+-/
 private theorem thetaAt_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {e : AE D} {Λ : AddSubgroup (WO S T)}
     {f₀ Φ f : WO S T → ℂ} {c : ℂ} (hc : c ≠ 0)
     (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ 1 (c • f₀) Φ f) :
@@ -57,6 +70,15 @@ private theorem thetaAt_smul {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HS
     show c⁻¹ • f = T' Φ
     rw [e1, LinearMap.smul_apply, inv_smul_smul₀ hc]
 
+/- English proof (translation)
+Establish `key` using `GlobalTheory.VacMove.mem_latO_iff_actO hΛ hM hΛ' hM' hb hb'`. Establish `key'` using `GlobalTheory.VacMove.mem_latO_iff_actO hM hΛ hM' hΛ' (GlobalTheory.VacMove.moves_inv hb) (GlobalTheory.VacMove.moves_inv hb')`. Establish `omm : ∀ p q (X : WO S T → ℂ), om p (om q X) = om (p * q) X` using `fun p q X => by`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+
+Take `⟨⟨T₀, hT₀⟩, hall⟩` from `hf`. Establish `th0` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hW.std S T Λ Λ' hΛ hΛ' e hee hinf f₀ hf₀ T₀ hT₀`. Use `⟨⟨_, GlobalTheory.SplitMove.isPlaceModel_move₂ hW key hT₀ th0⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Establish `th1` using `GlobalTheory.SchrTheta.isTheta_placeModel D ψ hW.std S T M M' hM hM' e hee hinf _ (hW.om_pres _ _ hf₀) T' hT'`. Establish `pm` using `GlobalTheory.SplitMove.isPlaceModel_move₂ hW key' hT' th1`.
+
+Establish `ev : om (b⁻¹, b'⁻¹) (om (b, b') f₀) = f₀`. Rewrite using `[omm, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression. Rewrite `pm` using `[ev]`. Establish `hf' : f = om (b⁻¹, b'⁻¹) (T' fun t => Φ (actO S T b⁻¹ b'⁻¹ t))` using `hall _ pm`.
+
+Rewrite using `[hf', omm, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+-/
 private theorem thetaAt_move {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hW : IsWeilDatumO ψ S T χS χT om)
     {Λ M : GlobalTheory.FinPl.Lat S} {Λ' M' : GlobalTheory.FinPl.Lat T} (hΛ : IsSelfDualC S Λ) (hM : IsSelfDualC S M) (hΛ' : IsSelfDualC T Λ')
@@ -82,6 +104,11 @@ private theorem thetaAt_move {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HS
   have hf' : f = om (b⁻¹, b'⁻¹) (T' fun t => Φ (actO S T b⁻¹ b'⁻¹ t)) := hall _ pm
   rw [hf', omm, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]; rfl
 
+/- English proof (translation)
+Establish `e1 : (Formalism.L2.Theta.mt T h⁻¹).map (toEAf D) = ((Lev.finE T h)⁻¹).val`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Establish `e2 : (Formalism.L2.Theta.mt S g).map (toEAf D) = (Lev.finE S g).val` using `rfl`. Rewrite using `[frMapO, frMapO, actO, inv_inv, Matrix.map_mul, Matrix.map_mul, e1, e2, _root_.mul_inv_rev, Units.val_mul, Units.val_mul]`.
+
+Simplify using `only [Matrix.mul_assoc]`.
+-/
 private theorem frMapO_move {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D))
     (g : GA D S) (h : GA D T) (x : WO S T) :
     frMapO S T (Lev.finE S g * βS) (Lev.finE T h * βT) x = frMapO S T βS βT (actO S T g⁻¹ h⁻¹ x) := by
@@ -91,6 +118,9 @@ private theorem frMapO_move {D : D7} (S T : HSp D) (βS : GL (Fin S.rank) (Lev.E
   rw [frMapO, frMapO, actO, inv_inv, Matrix.map_mul, Matrix.map_mul, e1, e2, _root_.mul_inv_rev, Units.val_mul, Units.val_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Unfold `stdFst`. Rewrite using `[frMapO_move, GlobalTheory.SchrMove.isHalf_actO_iff g⁻¹ h⁻¹ x]`.
+-/
 private theorem stdFst_move {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (I : Ideal (𝓞 D.host.E)) (S T : HSp D)
     (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (g : GA D S) (h : GA D T) :
     stdFst ν e I S T (Lev.finE S g * βS) (Lev.finE T h * βT) = fun x => stdFst ν e I S T βS βT (actO S T g⁻¹ h⁻¹ x) := by
@@ -100,6 +130,13 @@ private theorem stdFst_move {D : D7} (ν : (AE D)ˣ →* Circle) (e : AE D) (I :
 
 end GlobalTheory.BotMove.Fst
 
+/- English proof (translation)
+Introduce `D T A A' WW Y ψ θ α β νH S hY ΛA ΛA' ΛW hA _ hW g _ g' _ h _ mA _ mW t₀ r r' hr hv _ t`. Establish `ho` using `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum (hY.idem t)`. Establish `mA' : GlobalTheory.FinPl.Moves (neg A) ((ofSgn true A).symm g) Y.rA.Λ ΛA (fun _ => True)` using `mA`. Establish `h1` using `GlobalTheory.BotMove.Fst.thetaAt_move (S := neg A) (hY.weil t) (GlobalTheory.BotMove.Fst.selfDual_neg hY.rigA.1) (GlobalTheory.BotMove.Fst.selfDual_neg hA) hY.rigW.1 hW mA' mW ho.idem ho.infPart_eq hY.isVac.2.theta (hY.fst t)`. Establish `e1 : ∀ F, (Y.ω t).toSgn true ((ofSgn true A).symm g, h) F = Y.ω t (g, h) F` using `fun F => rfl`.
+
+Rewrite `h1` using `[e1, e1, hv t]`. Establish `h2` using `GlobalTheory.BotMove.Fst.thetaAt_smul (hr t).1 h1`. Establish `e2` using `GlobalTheory.BotMove.Fst.stdFst_move (α t / β t) (Y.e t) (Y.ideal S t) A WW Y.rA.β Y.rW.β g h`. Use `show IsThetaAt ψ (symplO (neg A) WW) (heisO ψ (neg A) WW) (Y.e t) (latO (neg A) WW ΛA ΛW fun _ => True) 1 (Y.ω t₀ (g, h) Y.vac) (stdFst (α t / β t) (Y.e t) (Y.ideal S t) A WW (Lev.finE A g * Y.rA.β) (Lev.finE WW h * Y.rW.β)) ((r t)⁻¹ • Y.ω t (g, h) (Y.f t))`. Rewrite using `[e2]`.
+
+Conclude with `h2`.
+-/
 theorem _root_.GlobalTheory.T.movedFiniteDatum_negHom_eq_standardPair_first : ∀ {D : D7} {T : Type} {A A' WW : HSp D} (Y : Tri T A A' WW) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D)
     (α β : T → ((AE D)ˣ →* Circle)) (νH : T → HChar D.host.E) (S : T → Finset (Formalism.L2.DIV.Pl D.host.E)),
     Y.Is ψ θ α β νH S →

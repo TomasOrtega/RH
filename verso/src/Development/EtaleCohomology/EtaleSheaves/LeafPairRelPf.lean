@@ -6,6 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 
 namespace LateralTheory.E.LeafPairRelPf
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem incl_incl {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' R'' : Subalgebra k Ω} (h : R ≤ R')
     (h' : R' ≤ R'') : incl h' ≫ incl h = incl (h.trans h') := by
   rw [← Spec.map_comp]
@@ -18,6 +21,15 @@ def LeafFactorStage : Prop := ∀ (k : Type) [Field k] (Ω : Type) [Field Ω] [A
       g ≫ f = pullback.snd p (incl h) ≫ incl h ∧
       pullback.lift w (c ≫ toR R') (by rw [Category.assoc, toR_incl]; exact hs.w) ≫ g = a
 
+/- English proof (translation)
+Introduce `k _ Ω _ _ R hRfg C0 C1 c0 γ1 h1fp D0 q v0 hq hs`. Take `⟨R1, hR1, E, p1, w, hp1, hsE⟩` from `hO k Ω (γ1 ≫ c0) h1fp`. Establish `h0 : R ≤ R ⊔ R1` using `le_sup_left`. Establish `h1 : R1 ≤ R ⊔ R1` using `le_sup_right`. Establish `hfg : (R ⊔ R1).FG` using `hRfg.sup hR1`.
+
+Establish `hsE'` using `pb_lift h1 hsE`. Establish `hlfp : LocallyOfFinitePresentation (pullback.snd q (incl h0))` using `(fp_snd q (incl h0) hq).1`. Take `⟨S, h, hS, g, hg1, hg2⟩` from `hF k Ω (R ⊔ R1) hfg (γ1 ≫ c0) (pullback.snd p1 (incl h1)) _ (fp_snd _ _ hp1) hsE' (pullback.snd q (incl h0)) hlfp (γ1 ≫ pullback.lift v0 (c0 ≫ toR (R ⊔ R1)) (by rw [Category.assoc, toR_incl]; exact hs.w)) (by simp only [Category.assoc, pullback.lift_snd])`. Use `⟨S, h0.trans h, hS, pullback (pullback.snd p1 (incl h1)) (incl h), pullback.lift (g ≫ pullback.fst q (incl h0)) (pullback.snd _ _) ?_, pullback.lift (pullback.lift w ((γ1 ≫ c0) ≫ toR (R ⊔ R1)) (by rw [Category.assoc, toR_incl]; exact hsE.w)) ((γ1 ≫ c0) ≫ toR S) (by simp only [Cat …` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hg1, Category.assoc, incl_incl]`.
+
+Rewrite using `[pullback.lift_snd]`. Conclude with `fp_snd _ _ (fp_snd _ _ hp1)`. Use `pb_lift h hsE' using 2` and compare the differences between its conclusion and the goal. Conclude with `pullback.lift_snd _ _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc, pullback.lift_fst, ← Category.assoc, hg2, Category.assoc, pullback.lift_fst]`. Simplify using `only [Category.assoc, pullback.lift_snd]`.
+-/
 theorem LeafPairRel_of (hO : LeafObjFP) (hF : LeafFactorStage) : LeafPairRel := by
   intro k _ Ω _ _ R hRfg C0 C1 c0 γ1 h1fp D0 q v0 hq hs
   obtain ⟨R1, hR1, E, p1, w, hp1, hsE⟩ := hO k Ω (γ1 ≫ c0) h1fp

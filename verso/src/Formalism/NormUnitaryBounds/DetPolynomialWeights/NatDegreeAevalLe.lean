@@ -8,6 +8,9 @@ namespace Formalism.NormUnitaryCountingLemmas.H1OnPoints
 
 variable {R : Type*} [CommRing R]
 
+/- English proof (translation)
+Establish `h` using `congrFun hd j`. Rewrite `h` using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, blockWt, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, Fintype.sum_prod_type] at h`. Simplify `h` using `[Finset.sum_ite_eq, Finset.sum_comm]`.
+-/
 lemma blockSum {N n : ℕ} {ν : Fin N → ℕ} (d : Fin N × Fin n →₀ ℕ)
     (hd : Finsupp.weight (blockWt N n) d = ν) (j : Fin N) : ∑ k, d (j, k) = ν j := by
   have h := congrFun hd j
@@ -16,6 +19,13 @@ lemma blockSum {N n : ℕ} {ν : Fin N → ℕ} (d : Fin N × Fin n →₀ ℕ)
     mul_one, mul_zero, Fintype.sum_prod_type] at h
   simpa [Finset.sum_ite_eq, Finset.sum_comm] using h
 
+/- English proof (translation)
+Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum, aeval_monomial]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWt N n) d = ν` using `hF (mem_support_iff.mp hd)`.
+
+Establish `hprod : (d.prod fun p k => lam p.1 ^ k) = ∏ j, lam j ^ ν j`. Rewrite using `[Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show ∏ k, lam j ^ d (j, k) = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, blockSum d hw j]`.
+
+Establish `: (d.prod fun p k => (lam p.1 * y p) ^ k) = (d.prod fun p k => lam p.1 ^ k) * d.prod fun p k => y p ^ k`. Rewrite using `[← Finsupp.prod_mul]`. Simplify using `[mul_pow]`. Rewrite using `[this, hprod]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 lemma aeval_scale {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin N → ℕ}
     (F : MvPolynomial (Fin N × Fin n) R)
     (hF : IsWeightedHomogeneous (blockWt N n) F ν) (lam : Fin N → S) (y : Fin N × Fin n → S) :
@@ -37,6 +47,11 @@ lemma aeval_scale {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin N
   rw [this, hprod]
   ring
 
+/- English proof (translation)
+Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `[shear, Polynomial.algebraMap_apply]`. Consider the case `add p q hp hq => simp only [map_add, Polynomial.eval₂_add, hp, hq]`. Consider the case `mul_X p q hp`.
+
+Simplify using `only [map_mul, Polynomial.eval₂_mul, hp]`. Use `congr 1`. Simplify using `only [shear, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+-/
 lemma shear_eval {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} (i j : Fin N)
     (y : Fin N × Fin n → S) (s : S) (G : MvPolynomial (Fin N × Fin n) R) :
     Polynomial.eval₂ (aeval y).toRingHom s (shear R i j G) =
@@ -51,6 +66,9 @@ lemma shear_eval {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} (i j : Fin N
     simp only [shear, aeval_X]
     split_ifs <;> simp <;> ring
 
+/- English proof (translation)
+Establish `h` using `(Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hF).2 i) j) hij`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `h`.
+-/
 lemma shear_eq {N n : ℕ} {ν : Fin N → ℕ} {F : MvPolynomial (Fin N × Fin n) R} (hF : F ∈ H R ν)
     (i j : Fin N) (hij : i < j) : shear R i j F = Polynomial.C F := by
   have h := (Submodule.mem_iInf _).mp ((Submodule.mem_iInf _).mp
@@ -58,6 +76,9 @@ lemma shear_eq {N n : ℕ} {ν : Fin N → ℕ} {F : MvPolynomial (Fin N × Fin 
   rw [LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[← shear_eval, shear_eq hF i j hij, Polynomial.eval₂_C]`. Both sides reduce to the same expression.
+-/
 lemma shear_inv {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin N → ℕ}
     {F : MvPolynomial (Fin N × Fin n) R} (hF : F ∈ H R ν) (i j : Fin N) (hij : i < j)
     (y : Fin N × Fin n → S) (s : S) :
@@ -65,6 +86,13 @@ lemma shear_inv {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin N �
   rw [← shear_eval, shear_eq hF i j hij, Polynomial.eval₂_C]
   rfl
 
+/- English proof (translation)
+Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a T haT ih`. Establish `ha0 : a ≠ 0` using `fun h => hT (h ▸ Finset.mem_insert_self _ _)`. Establish `h0T : (0 : Fin (N + 1)) ∉ T` using `fun h => hT (Finset.mem_insert_of_mem h)`.
+
+Establish `key : (fun p : Fin (N + 1) × Fin n => y p + if p.1 ∈ insert a T then s p.1 * y (0, p.2) else 0) = fun p => (fun q : Fin (N + 1) × Fin n => y q + if q.1 ∈ T then s q.1 * y (0, q.2) else 0) p + if p.1 = a then s a * (fun q : Fin (N + 1) × Fin n => y q + if q.1 ∈ T then s q.1 * y (0 …`. Use function extensionality and compare the values at `p`. Distinguish the cases in `hpa : p.1 = a`. Establish `: p.1 ∉ T` using `hpa ▸ haT`. Simplify using `[hpa, h0T, haT]`.
+
+Simplify using `[hpa, Finset.mem_insert]`. Rewrite using `[key, shear_inv hF 0 a (Fin.pos_iff_ne_zero.mpr ha0), ih h0T]`.
+-/
 lemma shear_multi {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin (N + 1) → ℕ}
     {F : MvPolynomial (Fin (N + 1) × Fin n) R} (hF : F ∈ H R ν)
     (y : Fin (N + 1) × Fin n → S) (s : Fin (N + 1) → S) (T : Finset (Fin (N + 1)))
@@ -87,6 +115,11 @@ lemma shear_multi {S : Type*} [CommRing S] [Algebra R S] {N n : ℕ} {ν : Fin (
       · simp [hpa, Finset.mem_insert]
     rw [key, shear_inv hF 0 a (Fin.pos_iff_ne_zero.mpr ha0), ih h0T]
 
+/- English proof (translation)
+Rewrite using `[F.as_sum, map_sum]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun d hd => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (blockWt (N + 1) n) d = ν` using `hF (mem_support_iff.mp hd)`. Rewrite using `[aeval_monomial, Polynomial.algebraMap_apply]`. Use `(Polynomial.natDegree_C_mul_le _ _).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[Finsupp.prod_fintype _ _ (by simp)]`. Use `(Polynomial.natDegree_prod_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← blockSum d hw 0, Fintype.sum_prod_type]`. Simplify using the standard rewrite rules.
+-/
 lemma natDegree_aeval_le {B : Type*} [CommRing B] [Algebra R B] {N n : ℕ} {ν : Fin (N + 1) → ℕ}
     (F : MvPolynomial (Fin (N + 1) × Fin n) R) (hF : IsWeightedHomogeneous (blockWt (N + 1) n) F ν)
     (y : Fin (N + 1) × Fin n → Polynomial B)

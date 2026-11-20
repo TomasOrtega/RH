@@ -32,6 +32,9 @@ namespace GlobalTheory.Asc.VanBessel
 
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {ρ : ℕ} {B : BesL D ρ} {J : JacL D ρ} (s : StBF ψ B J)
 
+/- English proof (translation)
+Use `⟨continuous_const.mul h.cont, fun γ hγ hN n hn => by rw [h.left γ hγ hN n hn], fun c' n hn => by rw [h.cen c' n hn]; ring, fun j a h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨v, u, c', e1, e2, e3, e4, e5⟩` from `h.dep j a h1 h2 h3`. Conclude with `⟨v, u, c', e1, e2, e3, e4, fun n hn n' hn' => by rw [e5 n hn n' hn']; ring⟩`.
+-/
 theorem isTh_const_mul {V V₀ W : HSp D} {d : HypDec V V₀ ρ} {x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E} {Th : GA D V → ℂ}
     (h : IsTh ψ d W x₀ Th) (c : ℂ) : IsTh ψ d W x₀ fun n => c * Th n := by
   refine ⟨continuous_const.mul h.cont, fun γ hγ hN n hn => by rw [h.left γ hγ hN n hn],
@@ -39,6 +42,9 @@ theorem isTh_const_mul {V V₀ W : HSp D} {d : HypDec V V₀ ρ} {x₀ : Matrix 
   obtain ⟨v, u, c', e1, e2, e3, e4, e5⟩ := h.dep j a h1 h2 h3
   exact ⟨v, u, c', e1, e2, e3, e4, fun n hn n' hn' => by rw [e5 n hn n' hn']; ring⟩
 
+/- English proof (translation)
+Simplify using `only [fl, flFun, mul_assoc, integral_const_mul]`.
+-/
 theorem fl_const_mul {V V₀ W : HSp D} (d : HypDec V V₀ ρ) (v : VolM D W.rank ρ) (vb : VolM D ρ V₀.rank) (vU : VolU D ρ)
     (Th : GA D V → ℂ) (c : ℂ) (x : Mx D W.rank ρ) (Ψ : WO V W → ℂ) :
     fl ψ d W v vb vU (fun n => c * Th n) x Ψ = c * fl ψ d W v vb vU Th x Ψ := by
@@ -59,6 +65,15 @@ def gen (φ : GA D B.A → ℂ) : Gen ψ B.V B.V₀ J.W ρ (GA D B.A) where
   g := fun h₀ => B.o.emb (h₀, 1)
   Th := fun h₀ n => φ h₀ * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)
 
+/- English proof (translation)
+Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D B.A`. Use `haveI : BorelSpace (GA D B.A) := ⟨rfl⟩`. Use `haveI := B.vA.haar`. Establish `hTh` using `(GlobalTheory.T.besselLevel_unfolding_character_and_flatMap D ψ ρ B J s).1`. Establish `hg : Continuous fun h₀ : GA D B.A => B.o.emb (h₀, 1)` using `B.o.continuous_emb.comp (continuous_id.prodMk continuous_const)`.
+
+Use `⟨s.weil, (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).1, inferInstanceAs (SFinite (B.vA.μ.restrict B.vA.𝓕)), hg, fun y => isTh_const_mul hTh (φ y), (hφ.2.1.comp continuous_fst).mul (hTh.cont.comp continuous_snd), fun y => ‖φ y‖, hφ.2.1.norm.measurabl …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖φ y * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)‖ ≤ ‖φ y‖`. Rewrite using `[norm_mul, norm_star, psiBes, psiE, s.weil.std.1.2.1, mul_one]`. Take `⟨C, a, hC⟩` from `GlobalTheory.T.unitaryQuotientHeight_orthogonalSum_comparable D B.V₀ B.A B.L B.o`. Establish `hq : Continuous fun y : GA D B.A => quotHeight B.V₀ (B.o.emb (y, 1)) ^ k` using `((continuous_quotHeight B.V₀).comp hg).pow k`.
+
+Establish `h` using `hφ.integrableOn_mul_of_le B.vA.haar B.vA.fund (f := fun y => ((quotHeight B.V₀ (B.o.emb (y, 1)) ^ k : ℝ) : ℂ)) (Complex.continuous_ofReal.comp hq).measurable.aestronglyMeasurable (C := C ^ k) (A := a * k) fun y => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (pow_pos (quotHeight_pos _ _) k).le, pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (quotHeight_pos _ _).le (hC y).2 k`. Use `(Integrable.norm h).congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖((quotHeight B.V₀ (B.o.emb (y, 1)) ^ k : ℝ) : ℂ) * φ y‖ = ‖φ y‖ * quotHeight B.V₀ (B.o.emb (y, 1)) ^ k`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (pow_pos (quotHeight_pos _ _) k).le, mul_comm]`.
+-/
 theorem gen_is {φ : GA D B.A → ℂ} (hφ : RapidDec B.A φ) : (gen s φ).Is := by
   obtain ⟨i1, i2, i3⟩ := GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D B.A
   haveI : BorelSpace (GA D B.A) := ⟨rfl⟩
@@ -83,6 +98,9 @@ theorem gen_is {φ : GA D B.A → ℂ} (hφ : RapidDec B.A φ) : (gen s φ).Is :
     change ‖((quotHeight B.V₀ (B.o.emb (y, 1)) ^ k : ℝ) : ℂ) * φ y‖ = ‖φ y‖ * quotHeight B.V₀ (B.o.emb (y, 1)) ^ k
     rw [norm_mul, Complex.norm_real, Real.norm_of_nonneg (pow_pos (quotHeight_pos _ _) k).le, mul_comm]
 
+/- English proof (translation)
+Simplify using `only [Gen.lhs, BesL.per, besPer, besFun]`. Use `congrArg _ (funext fun h₀ => congrArg _ (funext fun n => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ h₀ * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n.1) * s.lift G Φ (n.1 * embA B.d B.o h₀) = _`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem gen_lhs (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W → ℂ) :
     (gen s φ).lhs G Φ = B.per ψ φ (s.lift G Φ) := by
   simp only [Gen.lhs, BesL.per, besPer, besFun]
@@ -90,6 +108,9 @@ theorem gen_lhs (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) (Φ : WO B.V J.W 
   change φ h₀ * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n.1) * s.lift G Φ (n.1 * embA B.d B.o h₀) = _
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `h`. Use `congrArg (G h * ·) (congrArg _ (funext fun h₀ => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fl ψ B.d J.W s.vS s.vT s.vU (fun n => φ h₀ * star (psiBes ψ B.d 1 (vecB B.o B.ζ) n)) (xZero J.d) (s.om (embA B.d B.o h₀, h) Φ) = _`. Rewrite using `[fl_const_mul, (GlobalTheory.T.besselLevel_unfolding_character_and_flatMap D ψ ρ B J s).2 _ (s.weil.om_pres _ _ hΦ)]`.
+-/
 theorem gen_ker (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) {Φ : WO B.V J.W → ℂ} (hΦ : IsThetaFunO ψ B.V J.W Φ) :
     (gen s φ).ker G Φ = fun h => G h * ∫ h₀ in B.vA.𝓕, φ h₀ * flBF s (s.om (embA B.d B.o h₀, h) Φ) 0 ∂B.vA.μ := by
   funext h
@@ -98,10 +119,18 @@ theorem gen_ker (φ : GA D B.A → ℂ) (G : GA D J.W → ℂ) {Φ : WO B.V J.W 
     (s.om (embA B.d B.o h₀, h) Φ) = _
   rw [fl_const_mul, (GlobalTheory.T.besselLevel_unfolding_character_and_flatMap D ψ ρ B J s).2 _ (s.weil.om_pres _ _ hΦ)]
 
+/- English proof (translation)
+The claim follows from `(GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).1.1 _ Ψ hΨ).2`.
+-/
 theorem flBF_theta {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) : IsThetaFunO ψ B.V₀ J.W₀ (flBF s Ψ) :=
   (GlobalTheory.T.flatThetaMaps_converge_thetaFunctions D ψ s.weil.std B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.vU J.d.e
     (GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).1.1 _ Ψ hΨ).2
 
+/- English proof (translation)
+Take `⟨n, hn, h', rfl⟩` from `(GlobalTheory.MixPer.Decomp.mem_jacGrp_iff J.d).1 hγ.2`. Take `⟨hnQ, hh'⟩` from `((GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d).2.2.2.2.2 n hn h').1 hγ.1`. Establish `hψ` using `s.weil.std.1`. Establish `hΞ` using `flBF_theta s hΨ`. Establish `hy : yZero B.V₀ ρ (vecB B.o B.ζ) ∈ ratMx D B.V₀.rank ρ` using `neg_mem (GlobalTheory.UnfKer.zEll_rat _ _ _)`.
+
+Rewrite using `[← map_one (embA B.d B.o), GlobalTheory.T.besselToJacobiFlatMap_equivariant D ψ ρ B J s Ψ hΨ 1 n hn h', psiFlag_eq, GlobalTheory.CharLaws.psiBes_rat ψ J.d hψ.2.2.1 1 0 hnQ, star_one, one_smul, Prod.mk_one_one, map_one, Prod.mk_one_one, map_one, Module.End.one_apply, opA, GlobalTh …`.
+-/
 theorem flBF_rat {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) {γ : GA D J.W}
     (hγ : γ ∈ GQ J.W ⊓ jacGrp J.d) : flBF s (s.om (1, γ) Ψ) 0 = flBF s Ψ 0 := by
   obtain ⟨n, hn, h', rfl⟩ := (GlobalTheory.MixPer.Decomp.mem_jacGrp_iff J.d).1 hγ.2
@@ -114,6 +143,9 @@ theorem flBF_rat {Ψ : WO B.V J.W → ℂ} (hΨ : IsThetaFunO ψ B.V J.W Ψ) {γ
     star_one, one_smul, Prod.mk_one_one, map_one, Prod.mk_one_one, map_one, Module.End.one_apply, opA,
     GlobalTheory.UnfKer.jacT_rat hψ J.d B.V₀ hy hnQ (s.weil₀.om_pres _ _ hΞ), s.weil₀.om_aut 1 (one_mem _) h' hh' _ hΞ]
 
+/- English proof (translation)
+Rewrite using `[← Module.End.mul_apply, ← map_mul s.om, Prod.mk_mul_mk]`.
+-/
 theorem om_om (g g' : GA D B.V) (h h' : GA D J.W) (Φ : WO B.V J.W → ℂ) :
     s.om (g * g', h * h') Φ = s.om (g, h) (s.om (g', h') Φ) := by
   rw [← Module.End.mul_apply, ← map_mul s.om, Prod.mk_mul_mk]
@@ -124,6 +156,39 @@ namespace GlobalTheory.Asc
 
 open VanBessel in
 
+/- English proof (translation)
+Introduce `D ψ ρ B J s 𝒮 Γ₀ K hL φ G hφ hG hGK hvan Φ hΦ𝒮`. Establish `hΦ` using `hL.theta Φ hΦ𝒮`. Take `⟨hb, -, hx, hR, hemb, hrat⟩` from `GlobalTheory.T.unfolding_base_point_fourierJacobi_group D J.W J.W₀ ρ J.d`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D B.A`. Take `⟨j1, j2, j3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W`.
+
+Use `haveI : BorelSpace (GA D B.A) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D J.W) := ⟨rfl⟩`. Use `haveI := B.vA.haar`. Use `haveI := s.vW.haar`. Establish `ha` using `gen_is s hφ`.
+
+Take `⟨-, -, hfd⟩` from `GlobalTheory.T.rational_unitary_subgroup_countable_discrete_fundDomain D J.W (GQ J.W ⊓ jacGrp J.d) inf_le_left`. Take `⟨𝓑, h𝓑⟩` from `hfd s.vW.μ s.vW.haar`. Establish `h𝓑'` using `h𝓑`. Rewrite `h𝓑'` using `[← hR]`. Establish `hint` using `(GlobalTheory.T.thetaLift_unfolding_integrated_over_family D ψ B.V B.V₀ J.W ρ (GA D B.A) (gen s φ) ha G Φ hG hΦ 𝓑 h𝓑').2.1`.
+
+Establish `hcut` using `GlobalTheory.T.integral_strip_eq_zero_of_real_modulation_vanishing D ψ B.V B.V₀ J.W ρ (GA D B.A) (gen s φ) ha G hG Φ hΦ (fun c hc => by`. Rewrite using `[gen_lhs]`. Use `hvan _ (hL.real Φ hΦ𝒮 _ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(c ⬝ B.d.pY).map (finPart D) = 0`. Establish `hm : (c ⬝ B.d.pY).map (finPart D) = c.map (finPart D) * (B.d.pY).map (finPart D)` using `Matrix.map_mul`.
+
+Rewrite using `[hm, hc, Matrix.zero_mul]) 𝓑 h𝓑'`. Rewrite `hint`, `hcut` using `[gen_ker s φ G hΦ]`. Use `set f : GA D J.W → ℂ := fun h => G h * ∫ h₀ in B.vA.𝓕, φ h₀ * flBF s (s.om (embA B.d B.o h₀, h) Φ) 0 ∂B.vA.μ with hf`. Establish `hm : Measurable f`. Establish `hc` using `GlobalTheory.T.continuous_flatMap_weilRepresentation_joint D ψ B.V B.V₀ J.W J.W₀ ρ ρ B.d J.d s.vS s.vT s.χV s.χW s.om s.weil s.vU J.d.e hb.1 Φ hΦ`.
+
+Establish `he : Continuous (embA B.d B.o)` using `B.d.continuous_embed.comp (B.o.continuous_emb.comp (continuous_id.prodMk continuous_const))`. Establish `hq : Continuous fun p : GA D J.W × GA D B.A => (((embA B.d B.o p.2, p.1), yZero B.V₀ ρ (vecB B.o B.ζ), 0) : (GA D B.V × GA D J.W) × Mx D B.V₀.rank ρ × WO B.V₀ J.W₀)` using `((he.comp continuous_snd).prodMk continuous_fst).prodMk continuous_const`. Establish `hF : Continuous fun p : GA D J.W × GA D B.A => flBF s (s.om (embA B.d B.o p.2, p.1) Φ) 0`. Use `(hc.comp hq).congr fun p => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, ← hx]`.
+
+Both sides reduce to the same expression. Establish `hK : Continuous fun p : GA D J.W × GA D B.A => φ p.2 * flBF s (s.om (embA B.d B.o p.2, p.1) Φ) 0` using `(hφ.2.1.comp continuous_snd).mul hF`. Conclude with `hG.2.1.measurable.mul (hK.measurable.stronglyMeasurable.integral_prod_right' (ν := B.vA.μ.restrict B.vA.𝓕)).measurable`. Establish `hinv : ∀ γ ∈ GQ J.W ⊓ jacGrp J.d, ∀ g, f (γ * g) = f g` using `fun γ hγ g => by`. Simplify using `only [hf]`.
+
+Rewrite using `[hG.1 γ hγ.1]`. Use `congrArg (G g * ·) (congrArg _ (funext fun h₀ => ?_))` and prove the remaining obligations. Rewrite using `[← one_mul (embA B.d B.o h₀), om_om, flBF_rat s (s.weil.om_pres _ _ hΦ) hγ, one_mul]`. Establish `hval : ∀ h h' (n : flagN J.d), f (n.1 * J.d.emb0 h' * h) = fjAllFun ψ J.d B.o B.ζ s.om₀ B.vA.μ B.vA.𝓕 φ (rTrans h G) (flBF s (s.om (1, h) Φ)) h' n` using `fun h h' n => by`. Simplify using `only [hf]`.
+
+Rewrite using `[fjAllFun, rTrans, mul_assoc (G _), ← integral_const_mul (star _)]`. Use `congrArg (G _ * ·) (congrArg _ (funext fun h₀ => ?_))` and prove the remaining obligations. Rewrite using `[← mul_one (embA B.d B.o h₀), om_om, GlobalTheory.T.besselToJacobiFlatMap_equivariant D ψ ρ B J s _ (s.weil.om_pres _ _ hΦ) h₀ n.1 n.2 h', Pi.smul_apply, smul_eq_mul, fjKer]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨-, -, -, -, hconj, hinj, -⟩` from `GlobalTheory.MixPer.flag_jacobi_structure D J.W J.W₀ ρ J.d`.
+
+Establish `hclN` using `(GlobalTheory.T.flag_subgroups_closed_normal_cocompact' D J.W J.W₀ ρ J.d).1`. Take `⟨⟨hRcl, hRhaar⟩, -⟩` from `GlobalTheory.T.fourierJacobi_bessel_groups_closed_haar_product D J.W J.W₀ J.W₀ (GlobalTheory.UnfBessel.zeroSp D) ρ J.d (GlobalTheory.UnfBessel.orthZero J.W₀) J.vN.ν J.vN.𝓝 J.vN.unit`. Take `⟨hνh, h𝓝, -⟩` from `J.vN.unit`. Establish `hμR : (semiMeas (flagN J.d) J.d.emb0 J.v0.μ J.vN.ν).IsHaarMeasure` using `hRhaar J.v0.μ J.v0.haar`. Take `⟨𝓡, h𝓡, hsem⟩` from `GlobalTheory.T.semidirect_haar_measure_fundamental_domain D J.W J.W₀ (flagN J.d) J.d.emb0 hemb hclN hconj hinj hrat J.v0 J.vN.ν J.vN.𝓝 hνh h𝓝 hμR`.
+
+Take `⟨hsplit, hunim, -⟩` from `((GlobalTheory.T.unitaryAdelic_inf_fin_split_periods_unimodular D J.W).2.2.2.2.2 J.W₀ ρ J.d).1`. Take `⟨habs, hTc⟩` from `GlobalTheory.T.besselMean_period_converges_continuous D ψ ρ B J s φ G Φ hφ hG hΦ`. Establish `hmeas : ∀ h, Measurable fun g => f (g * h)` using `fun h => hm.comp (measurable_mul_const h)`. Establish `habs' : ∀ h, AbsConv J.v0.μ J.v0.𝓕 J.vN.ν J.vN.𝓝 fun h' n => f (n.1 * J.d.emb0 h' * h)` using `fun h => by`. Simplify using `only [hval]`.
+
+Conclude with `habs h`. Establish `hfun : ∀ h, ∫ r in 𝓡, f ((r : GA D J.W) * h) ∂(semiMeas (flagN J.d) J.d.emb0 J.v0.μ J.vN.ν) = J.perAll ψ B s.om₀ φ (rTrans h G) (flBF s (s.om (1, h) Φ))` using `fun h => by`. Use `((hsem (fun g => f (g * h)) (hmeas h)).2 (habs' h)).trans ?_` and prove the remaining obligations. Simplify using `only [JacL.perAll, fjAll, hval]`. Establish `key` using `GlobalTheory.T.continuousMean_vanishing_on_strips_at_one D J.W s.vW (jacGrp J.d) K hRcl hsplit hL.fin hL.cpt hL.opn _ hμR (hunim _ hμR) 𝓡 𝓑 h𝓡 h𝓑 f hm hinv hint (fun h => ((hsem (fun g => f (g * h)) (hmeas h)).1).2 (habs' h)) (hTc.congr fun h => (hfun h).symm) (fun k hk g => by`.
+
+Simplify using `only [hf]`. Rewrite using `[hGK k hk]`. Use `congrArg (G g * ·) (congrArg _ (funext fun h₀ => ?_))` and prove the remaining obligations. Rewrite using `[← mul_one (embA B.d B.o h₀), om_om, hL.fix Φ hΦ𝒮 k hk, mul_one])`. Use the proof step `(fun h hh => by`.
+
+Rewrite using `[← hR, ← hx]`. Use `hL.supp Φ hΦ𝒮 h fun h0 => hh ?_` and prove the remaining obligations. Establish `h0' : flBF s (s.om (1, h) Φ) = 0` using `h0`. Use `hval h 1 1` as an intermediate fact. Rewrite `this` using `[map_one, OneMemClass.coe_one, one_mul, one_mul]`.
+
+Rewrite using `[this, h0']`. Simplify using `only [fjAllFun, fjKer, opA, OneMemClass.coe_one, jacT_one, map_zero, id, Pi.zero_apply, mul_zero, integral_zero])`. Use the proof step `(fun C hC hCi => by`. Rewrite using `[← hR]`. Conclude with `⟨(GlobalTheory.T.adelicStripSet_measurable_read_on_realPart D J.W ρ J.d.e hb C hC hCi).1, hcut C hC hCi⟩)`.
+
+Establish `h1` using `hfun 1`. Simplify using `only [mul_one] at h1`. Rewrite `h1` using `[show rTrans 1 G = G from funext fun h => congrArg G (mul_one h), Prod.mk_one_one, map_one, Module.End.one_apply]`. Conclude with `h1.symm.trans key`.
+-/
 theorem vanBF : ∀ D : D7, VanBF D := by
   intro D ψ ρ B J s 𝒮 Γ₀ K hL φ G hφ hG hGK hvan Φ hΦ𝒮
   have hΦ := hL.theta Φ hΦ𝒮

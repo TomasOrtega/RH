@@ -11,13 +11,36 @@ section Proj
 
 variable {A : Type*} [CommRing A] {n : ℕ}
 
+/- English proof (translation)
+Introduce `i j` and use `h j i`.
+-/
 theorem entIn_transpose {J : AddSubgroup A} {X : Matrix (Fin n) (Fin n) A} (h : EntIn J X) : EntIn J X.transpose :=
   fun i j => h j i
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul]; exact hJ _ (h i j)`.
+-/
 theorem entIn_smul {J : AddSubgroup A} (e : A) (hJ : ∀ x ∈ J, e * x ∈ J) {X : Matrix (Fin n) (Fin n) A}
     (h : EntIn J X) : EntIn J (e • X) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul]; exact hJ _ (h i j)
 
+/- English proof (translation)
+Use `set X := (x : Matrix (Fin n) (Fin n) A) - 1 with hXd`. Use `set Y := ((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) - 1 with hYd`. Establish `hx1 : (x : Matrix (Fin n) (Fin n) A) = 1 + X` using `by rw [hXd]; abel`. Establish `hy1 : ((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = 1 + Y` using `by rw [hYd]; abel`. Establish `hXY : X + Y + X * Y = 0`.
+
+Establish `h1 : (x : Matrix (Fin n) (Fin n) A) * ((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Rewrite `h1` using `[hx1, hy1]`. Establish `h2 : (1 + X) * (1 + Y) = (1 : Matrix (Fin n) (Fin n) A) + (X + Y + X * Y)`. Simplify using `only [add_mul, mul_add, one_mul, mul_one]`.
+
+Normalize the expressions using the abelian group laws. Rewrite `h1` using `[h2]`. Simplify using `using h1`. Establish `hYX : Y + X + Y * X = 0`. Establish `h1 : ((x⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) * (x : Matrix (Fin n) (Fin n) A) = 1`.
+
+Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite `h1` using `[hx1, hy1]`. Establish `h2 : (1 + Y) * (1 + X) = (1 : Matrix (Fin n) (Fin n) A) + (Y + X + Y * X)`. Simplify using `only [add_mul, mul_add, one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+
+Rewrite `h1` using `[h2]`. Simplify using `using h1`. Establish `hv : (1 + e • X) * (1 + e • Y) = 1`. Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]`. Establish `: e • Y + (e • X + e • (X * Y)) = e • (X + Y + X * Y)` using `by rw [smul_add, smul_add]; abel`.
+
+Rewrite using `[add_assoc, this, hXY, smul_zero, add_zero]`. Establish `hv' : (1 + e • Y) * (1 + e • X) = 1`. Rewrite using `[add_mul, one_mul, mul_add, mul_one, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he]`. Establish `: e • X + (e • Y + e • (Y * X)) = e • (Y + X + Y * X)` using `by rw [smul_add, smul_add]; abel`. Rewrite using `[add_assoc, this, hYX, smul_zero, add_zero]`.
+
+Set `y : GL (Fin n) A` to `⟨1 + e • X, 1 + e • Y, hv, hv'⟩`. Establish `hyv : (y : Matrix (Fin n) (Fin n) A) - 1 = e • X` using `by simp [y]`. Establish `hyi : ((y⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) - 1 = e • Y` using `by show (1 + e • Y) - 1 = e • Y`. Simplify using the standard rewrite rules. Establish `key` using `inv_sub_one f hf hJ y (fun i j h => by`.
+
+Rewrite using `[hyv, Matrix.smul_apply, hlow i j h, smul_zero]) (by rw [hyv]; exact hx)`. Rewrite `key` using `[hyi]`. Conclude with `key.1`.
+-/
 theorem proj_inv (f : Fin n → ℕ) (hf : ∀ i, f i < n) {J : AddSubgroup A} (hJ : ∀ x ∈ J, ∀ y ∈ J, x * y ∈ J)
     (e : A) (he : e * e = e) (x : GL (Fin n) A)
     (hlow : ∀ i j, f i ≤ f j → ((x : Matrix (Fin n) (Fin n) A) - 1) i j = 0)
@@ -70,10 +93,16 @@ open Formalism.MainNotions.S.Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
   {p : HeightOneSpectrum (𝓞 F)} {L : LocAt F E sig p} {n : ℕ}
 
+/- English proof (translation)
+Rewrite `hx` using `[h]`. Conclude with `latS_mono ht hx`.
+-/
 theorem latS_of_eq {c c' t : L.Fp} (h : c' = c * t) (ht : t ∈ 𝒪[L.Fp]) {x : L.Ep} (hx : x ∈ latS L c') :
     x ∈ latS L c := by
   rw [h] at hx; exact latS_mono ht hx
 
+/- English proof (translation)
+Introduce `i j` and use `latS_of_eq h ht (hX i j)`.
+-/
 theorem entIn_latS_of_eq {c c' t : L.Fp} (h : c' = c * t) (ht : t ∈ 𝒪[L.Fp]) {X : Matrix (Fin n) (Fin n) L.Ep}
     (hX : EntIn (latS L c') X) : EntIn (latS L c) X := fun i j => latS_of_eq h ht (hX i j)
 

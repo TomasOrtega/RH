@@ -11,6 +11,9 @@ namespace Formalism.L2.Herm
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+The claim follows from `bridge_star_holds D.R D.host x`.
+-/
 theorem star_conj {D : D7} (x : D.host.E) : star x = D.host.conj x := bridge_star_holds D.R D.host x
 
 def toErrX {D : D7} (X : FullTied D) : ErrX D where
@@ -25,6 +28,11 @@ def toErrX {D : D7} (X : FullTied D) : ErrX D where
   vPl_inj := fun u a b h => (X.base.vT u).injective (Subtype.ext h)
   norm_mem_place_ideal := fun u v => (X.base.vT u v).2
 
+/- English proof (translation)
+Simplify using `only [PiGLevel]`. Introduce `u i v h`. Establish `e : (X.levelZeroCompatibility u).piG = (X.levelZeroCompatibility D.u₀).piG` using `X.piG u D.u₀`. Establish `k` using `(X.levelZeroCompatibility u).splitG_pi i v h`. Rewrite `k` using `[e, star_conj]`.
+
+Conclude with `k`.
+-/
 theorem piGLevel {D : D7} (X : FullTied D) : PiGLevel D X.base.lev0 (toErrX X) := by
   simp only [PiGLevel]
   intro u i v h
@@ -33,6 +41,9 @@ theorem piGLevel {D : D7} (X : FullTied D) : PiGLevel D X.base.lev0 (toErrX X) :
   rw [e, star_conj] at k
   exact k
 
+/- English proof (translation)
+Simplify using `only [PiTLevel]`. Introduce `u v z hz y`. Conclude with `(X.levelZeroCompatibility u).fM_pi _ _ z hz y`.
+-/
 theorem piTLevel {D : D7} (X : FullTied D) : PiTLevel D X.base.lev0 (toErrX X) := by
   simp only [PiTLevel]
   intro u v z hz y
@@ -77,6 +88,9 @@ structure ExtraTied {D : D7} (X : FullTied D) {L : SizeData₂ D} {hT : GatTies 
     haveI : Fact (D.what₂.places.resChar w).Prime := ⟨D.what₂.places.resChar_prime w⟩
     GIwPos u w h (ex.ker u w h)
 
+/- English proof (translation)
+Take `⟨h1, h2, _⟩` from `J`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Conclude with `piGLevel X`.
+-/
 theorem JoinTied.piG_lev {D : D7} {X : FullTied D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTied X lev eX Gt) : PiGLevel D lev eX := by
   obtain ⟨h1, h2, _⟩ := J
@@ -84,6 +98,9 @@ theorem JoinTied.piG_lev {D : D7} {X : FullTied D} {lev : LevelData D} {eX : Err
   subst h2
   exact piGLevel X
 
+/- English proof (translation)
+Take `⟨h1, h2, _⟩` from `J`. Substitute `h1` using the available equality. Substitute `h2` using the available equality. Conclude with `piTLevel X`.
+-/
 theorem JoinTied.piT_lev {D : D7} {X : FullTied D} {lev : LevelData D} {eX : ErrX D} {Gt : GatTies D}
     (J : JoinTied X lev eX Gt) : PiTLevel D lev eX := by
   obtain ⟨h1, h2, _⟩ := J

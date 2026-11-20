@@ -21,10 +21,16 @@ def frameMap (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] {r : ℕ} (w : Fin r �
     ext τ
     simp [Finset.mul_sum, mul_assoc, Finset.sum_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem frameMap_apply (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] {r : ℕ} (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ)
     (k : ℤ) (hF : ∀ j, IsMF Γ (w j) (F j)) (g : Π j : Fin r, ModularForm 𝒮ℒ (k - w j)) :
     ⇑(frameMap Γ w F k hF g) = ∑ j, ⇑(g j) * F j := rfl
 
+/- English proof (translation)
+Establish `h` using `ModularForm.mul_slash_SL2 (k - w j) (w j) x (⇑(g j)) (F j)`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, IsMF.slash_top (isMF_coe_top (g j)) x]`.
+-/
 theorem mul_slash_levelOne {r : ℕ} (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ) (k : ℤ)
     (g : Π j : Fin r, ModularForm 𝒮ℒ (k - w j)) (j : Fin r) (x : SL(2, ℤ)) :
     (⇑(g j) * F j) ∣[k] x = ⇑(g j) * (F j ∣[w j] x) := by
@@ -32,6 +38,17 @@ theorem mul_slash_levelOne {r : ℕ} (w : Fin r → ℤ) (F : Fin r → ℍ → 
   rw [sub_add_cancel] at h
   rw [h, IsMF.slash_top (isMF_coe_top (g j)) x]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `g hg`. Establish `hsum : ∑ j, ⇑(g j) * F j = 0`. Rewrite using `[← frameMap_apply Γ w F k hF g, hg]`. Both sides reduce to the same expression.
+
+Establish `hrow : ∀ i τ, ∑ j, (g j) τ * (F j ∣[w j] s i) τ = 0`. Introduce `i τ`. Establish `h1 : (∑ j, ⇑(g j) * F j) ∣[k] s i = 0`. Rewrite using `[hsum]`. Conclude with `SlashAction.zero_slash _ _`.
+
+Rewrite `h1` using `[SlashAction.sum_slash]`. Simplify using `only [mul_slash_levelOne w F k g _ (s i)] at h1`. Establish `h2` using `congrFun h1 τ`. Simplify `h2` using `[Finset.sum_apply]`. Establish `hv : ∀ τ, (fun j => (g j) τ) = 0`.
+
+Introduce `τ`. Apply `Matrix.eq_zero_of_mulVec_eq_zero (hdet τ)` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, evM, Matrix.of_apply, Pi.zero_apply]`. Rewrite using `[← hrow i τ]`.
+
+Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Use function extensionality and compare the values at `j`. Use extensionality with `τ`. Conclude with `congrFun (hv τ) j`.
+-/
 theorem frameMap_injective (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] {r : ℕ} (s : Fin r → SL(2, ℤ))
     (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ) (k : ℤ) (hF : ∀ j, IsMF Γ (w j) (F j))
     (hdet : ∀ τ, (evM s w F τ).det ≠ 0) : Function.Injective (frameMap Γ w F k hF) := by
@@ -61,6 +78,11 @@ theorem frameMap_injective (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] {r : ℕ}
   ext τ
   exact congrFun (hv τ) j
 
+/- English proof (translation)
+Introduce `Γ r s w F k hΓ hfin hF hdet`. Establish `hinj` using `frameMap_injective Γ s w F k hF hdet`. Establish `: Module.Finite ℂ (Π j : Fin r, ModularForm 𝒮ℒ (k - w j))` using `Module.Finite.of_injective (frameMap Γ w F k hF) hinj`. Establish `: ∀ j, Module.Finite ℂ (ModularForm 𝒮ℒ (k - w j))` using `fun j => Module.Finite.of_surjective (LinearMap.proj (R := ℂ) (φ := fun j : Fin r => ModularForm 𝒮ℒ (k - w j)) j) (fun y => ⟨Pi.single j y, by simp⟩)`. Rewrite using `[← Module.finrank_pi_fintype]`.
+
+Conclude with `LinearMap.finrank_le_finrank_of_injective hinj`.
+-/
 theorem finrank_sum_le_of_frame : ∀ (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ)
     (F : Fin r → ℍ → ℂ) (k : ℤ), Γ.FiniteIndex → FiniteDimensional ℂ (ModularForm Γ k) →
     (∀ j, IsMF Γ (w j) (F j)) → (∀ τ, (evM s w F τ).det ≠ 0) →

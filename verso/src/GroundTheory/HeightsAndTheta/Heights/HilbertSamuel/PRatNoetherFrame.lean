@@ -19,6 +19,11 @@ section Normalization
 
 variable {k : Type*} [Field k] {R : Type*} [CommRing R] [Algebra k R] {J : Type*} [Fintype J]
 
+/- English proof (translation)
+Set `e` to `Fintype.equivFin J`. Use `⟨Fintype.card J, fun j s => if s = e.symm j then 1 else 0, fun t => ?_⟩` and prove the remaining obligations. Establish `hf : forms v (fun j s => if s = e.symm j then (1 : k) else 0) = fun j => v (e.symm j)`. Use function extensionality and compare the values at `j`. Simplify using `[forms, ite_smul]`.
+
+Rewrite using `[hf]`. Establish `: v t = (aeval (fun j => v (e.symm j)) : MvPolynomial (Fin _) k →ₐ[k] R) (X (e t))`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `RingHom.isIntegralElem_map _`.
+-/
 theorem exists_intOver_start (v : J → R) :
     ∃ r, ∃ L : Fin r → J → k, ∀ t, IntOver k (forms v L) (v t) := by
   classical
@@ -33,6 +38,9 @@ theorem exists_intOver_start (v : J → R) :
   rw [this]
   exact RingHom.isIntegralElem_map _
 
+/- English proof (translation)
+The claim follows from `| 0, _, _, _ => algebraicIndependent_empty_type_iff.mpr hinj | r + 1, L, hL, hmin => by by_contra hnot rw [algebraicIndependent_iff] at hnot push Not at hnot obtain ⟨F, hF, hF0⟩ := hnot obtain ⟨lam, h0⟩ := exists_isIntegralElem_linear (forms v L) F hF0 hF refine hmin r (Nat.lt_su …`.
+-/
 theorem algebraicIndependent_of_minimal [Infinite k] (hinj : Function.Injective (algebraMap k R))
     (v : J → R) : ∀ (r : ℕ) (L : Fin r → J → k), (∀ t, IntOver k (forms v L) (v t)) →
       (∀ r' < r, ∀ L' : Fin r' → J → k, ¬ ∀ t, IntOver k (forms v L') (v t)) →
@@ -52,6 +60,9 @@ theorem algebraicIndependent_of_minimal [Infinite k] (hinj : Function.Injective 
     rw [hf]
     exact intOver_trans (forms v L) lam h0 (hL t)
 
+/- English proof (translation)
+Establish `hex` using `exists_intOver_start (k := k) v`. Take `⟨L, hL⟩` from `Nat.find_spec hex`. Conclude with `⟨_, L, algebraicIndependent_of_minimal hinj v _ L hL fun r' hr' L' hL' => Nat.find_min hex hr' ⟨L', hL'⟩, hL⟩`.
+-/
 theorem exists_indep_normalization [Infinite k] (hinj : Function.Injective (algebraMap k R)) (v : J → R) :
     ∃ r, ∃ L : Fin r → J → k, AlgebraicIndependent k (forms v L) ∧ ∀ t, IntOver k (forms v L) (v t) := by
   classical
@@ -66,6 +77,9 @@ section Cone
 
 variable {Ω : Type} [Field Ω] [CharZero Ω] {J : Type}
 
+/- English proof (translation)
+Rewrite using `[map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Polynomial.algebraMap_apply, ← mul_assoc, ← map_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem sum_smul_cone [Fintype J] (x : J → Ω) (c : J → ℚ) :
     ∑ t, c t • (Polynomial.C (x t) * Polynomial.X) =
       Polynomial.C (∑ t, (c t : Ω) * x t) * Polynomial.X := by
@@ -74,6 +88,9 @@ theorem sum_smul_cone [Fintype J] (x : J → Ω) (c : J → ℚ) :
   rw [Algebra.smul_def, Polynomial.algebraMap_apply, ← mul_assoc, ← map_mul]
   simp
 
+/- English proof (translation)
+Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [coneMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, map_X, hp]`. Simplify using `[coneMap]`.
+-/
 theorem coneMap_map_int (x : J → Ω) (f : MvPolynomial J ℤ) :
     coneMap ℚ x (MvPolynomial.map (Int.castRingHom ℚ) f) = coneMap ℤ x f := by
   induction f using MvPolynomial.induction_on with
@@ -81,6 +98,15 @@ theorem coneMap_map_int (x : J → Ω) (f : MvPolynomial J ℤ) :
   | add p q hp hq => simp only [map_add, hp, hq]
   | mul_X p i hp => simp only [map_mul, map_X, hp]; simp [coneMap]
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Take `⟨N, hN, g, hg⟩` from `exists_int_mul_eq_qmap f`. Establish `hg0 : g ∈ coordIdeal ℤ x`. Rewrite using `[coordIdeal, RingHom.mem_ker, ← coneMap_map_int]`.
+
+Express the relevant statement in the definitionally equal form `coneMap ℚ x (qmap g) = 0`. Rewrite using `[← hg, map_mul, RingHom.mem_ker.mp hf, mul_zero]`. Establish `hmem : (N : MvPolynomial J ℚ) * f ∈ (coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ))`. Rewrite using `[hg]`. Conclude with `Ideal.mem_map_of_mem _ hg0`.
+
+Establish `hu : IsUnit (N : MvPolynomial J ℚ)`. Establish `h1 : (N : MvPolynomial J ℚ) = C (N : ℚ)` using `by simp`. Rewrite using `[h1]`. Conclude with `(isUnit_iff_ne_zero.mpr (by exact_mod_cast hN)).map C`. Establish `h2` using `Ideal.mul_mem_left _ (↑hu.unit⁻¹ : MvPolynomial J ℚ) hmem`.
+
+Rewrite `h2` using `[← mul_assoc, hu.val_inv_mul, one_mul]`. Then use the resulting hypothesis. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, coneMap_map_int]`. Conclude with `RingHom.mem_ker.mp hg`.
+-/
 theorem ker_coneMap_rat (x : J → Ω) :
     RingHom.ker (coneMap ℚ x) = (coordIdeal ℤ x).map (MvPolynomial.map (Int.castRingHom ℚ)) := by
   apply le_antisymm
@@ -105,6 +131,15 @@ theorem ker_coneMap_rat (x : J → Ω) :
     rw [Ideal.mem_comap, RingHom.mem_ker, coneMap_map_int]
     exact RingHom.mem_ker.mp hg
 
+/- English proof (translation)
+Consider the cases of `a with`. Consider the case `bot`. Rewrite `h` using `[WithBot.bot_add]`. Conclude with `absurd h.symm (WithBot.natCast_ne_bot (n + 1))`. Consider the case `coe b`.
+
+Consider the cases of `b with`. Consider the case `top`. It suffices to derive a contradiction. Establish `h2 : ((⊤ + 1 : ℕ∞) : WithBot ℕ∞) = (((n + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `by exact_mod_cast h`. Establish `h3 : (⊤ + 1 : ℕ∞) = ((n + 1 : ℕ) : ℕ∞)` using `WithBot.coe_injective h2`.
+
+Establish `h4 : ((n : ℕ∞) + 1) ≠ ⊤` using `by exact_mod_cast ENat.natCast_ne_top (n + 1)`. Conclude with `h4 h3.symm`. Consider the case `coe b`. Establish `h1 : ((b + 1 : ℕ) : WithBot ℕ∞) = ((n + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h`. Establish `h2 : b + 1 = n + 1` using `by exact_mod_cast h1`.
+
+Establish `h3 : b = n` using `by omega`. Substitute `h3` using the available equality. Both sides reduce to the same expression.
+-/
 theorem withBot_eq_of_add_one {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 = ((n + 1 : ℕ) : WithBot ℕ∞)) :
     a = (n : WithBot ℕ∞) := by
   cases a with
@@ -126,6 +161,13 @@ theorem withBot_eq_of_add_one {a : WithBot ℕ∞} {n : ℕ} (h : a + 1 = ((n + 
       subst h3
       rfl
 
+/- English proof (translation)
+Take `⟨-, ⟨hprime, -, -⟩, hH, hdim⟩` from `h`. Establish `: (coordIdeal ℤ x).IsPrime` using `hprime`. Establish `hch : ∀ m : ℤ, (C m : MvPolynomial (Ix κ) ℤ) ∈ coordIdeal ℤ x → m = 0`. Introduce `m hm`. Establish `hm' : m ∈ (coordIdeal ℤ x).comap (C : ℤ →+* MvPolynomial (Ix κ) ℤ)` using `hm`.
+
+Establish `hm'' : m ∈ (⊥ : Ideal ℤ)` using `hH ▸ hm'`. Conclude with `(Ideal.mem_bot).mp hm''`. Take `⟨-, -, hd⟩` from `ReciprocityTheory.AnForm.R.extQ_spec (coordIdeal ℤ x) hch`. Rewrite `hdim` using `[Fintype.card_unit]`. Rewrite `hd` using `[hdim]`.
+
+Establish `e1` using `((Ideal.quotEquivOfEq (ker_coneMap_rat x)).symm).trans (Ideal.quotientKerEquivRange (coneMap ℚ x)).toRingEquiv`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv e1]`. Conclude with `withBot_eq_of_add_one hd`.
+-/
 theorem ringKrullDim_coneRing_rat {κ : Type} [Fintype κ] (x : Ix κ → Ω) (D : ℕ)
     (h : IsArithVar (ι := GlobalTheory κ) (coordIdeal ℤ x) (D + 1)) :
     ringKrullDim (coneMap ℚ x).range = ((D + 1 : ℕ) : WithBot ℕ∞) := by
@@ -144,11 +186,21 @@ theorem ringKrullDim_coneRing_rat {κ : Type} [Fintype κ] (x : Ix κ → Ω) (D
   rw [← ringKrullDim_eq_of_ringEquiv e1]
   exact withBot_eq_of_add_one hd
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`.
+-/
 theorem ringKrullDim_mvPolynomial_rat (r : ℕ) :
     ringKrullDim (MvPolynomial (Fin r) ℚ) = (r : WithBot ℕ∞) := by
   rw [MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field,
     Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h1 : coneMap ℚ x (C a) = (aeval w : MvPolynomial (Fin r) ℚ →ₐ[ℚ] Polynomial Ω) (C a)`. Simplify using `[coneMap]`. Rewrite using `[h1]`.
+
+Conclude with `RingHom.isIntegralElem_map _`. Consider the case `add p q hp hq`. Rewrite using `[map_add]`. Conclude with `RingHom.IsIntegralElem.add _ hp hq`. Consider the case `mul_X p i hp`.
+
+Rewrite using `[map_mul]`. Use `RingHom.IsIntegralElem.mul _ hp ?_` and prove the remaining obligations. Establish `h1 : coneMap ℚ x (X i) = Polynomial.C (x i) * Polynomial.X` using `by simp [coneMap]`. Rewrite using `[h1]`. Conclude with `hint i`.
+-/
 theorem intOver_coneMap (x : J → Ω) {r : ℕ} (w : Fin r → Polynomial Ω)
     (hint : ∀ t, IntOver ℚ w (Polynomial.C (x t) * Polynomial.X)) (q : MvPolynomial J ℚ) :
     IntOver ℚ w (coneMap ℚ x q) := by
@@ -168,6 +220,21 @@ theorem intOver_coneMap (x : J → Ω) {r : ℕ} (w : Fin r → Polynomial Ω)
     rw [h1]
     exact hint i
 
+/- English proof (translation)
+Use `set w := forms (fun j => Polynomial.C (x j) * Polynomial.X) L with hw`. Set `ψ : MvPolynomial (Fin r) ℚ →ₐ[ℚ] MvPolynomial (Ix κ) ℚ` to `aeval fun k => ∑ t, L k t • X t`. Set `g : MvPolynomial (Fin r) ℚ →ₐ[ℚ] (coneMap ℚ x).range` to `(coneMap ℚ x).rangeRestrict.comp ψ`. Establish `hval : ((coneMap ℚ x).range.val).comp g = aeval w`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises.
+
+Introduce `k`. Rewrite using `[aeval_X]`. Express the relevant statement in the definitionally equal form `coneMap ℚ x (ψ (X k)) = w k`. Simplify using `[ψ, hw, forms, coneMap]`. Establish `hvalx : ∀ p, ((g p : (coneMap ℚ x).range) : Polynomial Ω) = aeval w p` using `fun p => by`.
+
+Rewrite using `[← hval]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective g`. Introduce `a b hab`. Conclude with `hind (by rw [← hvalx, ← hvalx, hab])`.
+
+Establish `hcomp : ((coneMap ℚ x).range.val : (coneMap ℚ x).range →+* Polynomial Ω).comp (g : MvPolynomial (Fin r) ℚ →+* (coneMap ℚ x).range) = (aeval w : MvPolynomial (Fin r) ℚ →ₐ[ℚ] Polynomial Ω)` using `RingHom.ext fun p => hvalx p`. Establish `hintg : (g : MvPolynomial (Fin r) ℚ →+* (coneMap ℚ x).range).IsIntegral`. Introduce `s`. Take `⟨q, hq⟩` from `s.2`. Apply `isIntegralElem_of_comp (g : MvPolynomial (Fin r) ℚ →+* (coneMap ℚ x).range) ((coneMap ℚ x).range.val : (coneMap ℚ x).range →+* Polynomial Ω) Subtype.val_injective` to reduce the goal to its premises.
+
+Rewrite using `[hcomp]`. Express the relevant statement in the definitionally equal form `IntOver ℚ w (s : Polynomial Ω)`. Rewrite using `[← hq]`. Conclude with `intOver_coneMap x w hint q`. Establish `hdim` using `ringKrullDim_coneRing_rat x D h`.
+
+Establish `h1 : (r : WithBot ℕ∞) ≤ ringKrullDim (coneMap ℚ x).range` using `le_ringKrullDim_of_isIntegral _ hintg hinj r (ringKrullDim_mvPolynomial_rat r).ge`. Establish `h2 : ringKrullDim (coneMap ℚ x).range ≤ (r : WithBot ℕ∞)`. Set `_` to `(g : MvPolynomial (Fin r) ℚ →+* (coneMap ℚ x).range).toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin r) ℚ) (coneMap ℚ x).range` using `⟨hintg⟩`. Rewrite using `[← ringKrullDim_mvPolynomial_rat r]`.
+
+Conclude with `ringKrullDim_le_of_isIntegral'`. Rewrite `h1`, `h2` using `[hdim]`. Establish `h3 : ((D + 1 : ℕ) : WithBot ℕ∞) = (r : WithBot ℕ∞)` using `le_antisymm h2 h1`. Conclude with `h3.symm` after adjusting the coercions.
+-/
 theorem rank_eq {κ : Type} [Fintype κ] (x : Ix κ → Ω) (D : ℕ)
     (h : IsArithVar (ι := GlobalTheory κ) (coordIdeal ℤ x) (D + 1)) {r : ℕ} (L : Fin r → Ix κ → ℚ)
     (hind : AlgebraicIndependent ℚ (forms (fun j => Polynomial.C (x j) * Polynomial.X) L))
@@ -214,6 +281,13 @@ theorem rank_eq {κ : Type} [Fintype κ] (x : Ix κ → Ω) (D : ℕ)
   have h3 : ((D + 1 : ℕ) : WithBot ℕ∞) = (r : WithBot ℕ∞) := le_antisymm h2 h1
   exact_mod_cast h3.symm
 
+/- English proof (translation)
+Establish `hs` using `hL.linearIndepOn_id`. Set `b` to `Module.Basis.extend hs`. Set `σ` to `b.indexEquiv (Pi.basisFun ℚ J)`. Establish `hsub : ∀ k, L k ∈ hs.extend (Set.subset_univ _)` using `fun k => Module.Basis.subset_extend hs (Set.mem_range_self k)`. Set `B : Matrix J J ℚ` to `Matrix.of fun i => ((σ.symm i : hs.extend (Set.subset_univ _)) : J → ℚ)`.
+
+Establish `hBrow : LinearIndependent ℚ (fun i => B i)`. Establish `h1` using `b.linearIndependent.comp σ.symm σ.symm.injective`. Rewrite `h1` using `[Module.Basis.coe_extend]`. Conclude with `h1`. Establish `hdet : IsUnit B.det` using `(Matrix.isUnit_iff_isUnit_det B).mp (Matrix.linearIndependent_rows_iff_isUnit.mp hBrow)`.
+
+Use `⟨B, fun k => σ ⟨L k, hsub k⟩, fun a c hac => hL.injective (congrArg Subtype.val (σ.injective hac)), ⟨B⁻¹, fun v => ⟨?_, ?_⟩⟩, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`. Express the relevant statement in the definitionally equal form `((σ.symm (σ ⟨L k, hsub k⟩) : hs.extend (Set.subset_univ _)) : J → ℚ) = L k`. Rewrite using `[Equiv.symm_apply_apply]`.
+-/
 theorem exists_completion [Fintype J] {n : ℕ} (L : Fin n → J → ℚ) (hL : LinearIndependent ℚ L) :
     ∃ (B : Matrix J J ℚ) (e : Fin n → J), Function.Injective e ∧ IsInvMat B ∧ ∀ k, B (e k) = L k := by
   classical
@@ -239,6 +313,23 @@ theorem exists_completion [Fintype J] {n : ℕ} (L : Fin n → J → ℚ) (hL : 
 
 end Cone
 
+/- English proof (translation)
+Introduce `D Ω _ _ κ _ x hx`. Take `⟨r, L, hind, hint⟩` from `exists_indep_normalization (k := ℚ) (R := Polynomial Ω) (algebraMap ℚ (Polynomial Ω)).injective (fun j : Ix κ => Polynomial.C (x j) * Polynomial.X)`. Take `rfl` from `rank_eq x D hx L hind hint`. Use `set v : Ix κ → Polynomial Ω := fun j => Polynomial.C (x j) * Polynomial.X with hv`. Establish `hlin : LinearIndependent ℚ L`.
+
+Set `φ : (Ix κ → ℚ) →ₗ[ℚ] Polynomial Ω` to `{ toFun := fun c => ∑ t, c t • v t map_add' := fun a b => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun a c => by simp [Finset.smul_sum, smul_smul] }`. Conclude with `LinearIndependent.of_comp φ hind.linearIndependent`. Take `⟨B, e, he, hB, hBe⟩` from `exists_completion L hlin`. Establish `hy : (fun k => Polynomial.C ((matAct B x ∘ e) k) * Polynomial.X) = forms v L`. Use function extensionality and compare the values at `k`.
+
+Rewrite using `[forms, hv, sum_smul_cone]`. Simplify using `[matAct, hBe]`. Use `⟨B, e, hB, he, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff]`. Introduce `p hp`.
+
+Rewrite using `[Ideal.mem_bot]`. Establish `hp0 : coneMap ℤ (matAct B x ∘ e) p = 0` using `RingHom.mem_ker.mp hp`. Establish `h2` using `coneMap_map_int (matAct B x ∘ e) p`. Rewrite `h2` using `[hp0, coneMap, hy]`. Establish `h3 : MvPolynomial.map (Int.castRingHom ℚ) p = 0` using `hind (by rw [h2, map_zero])`.
+
+Conclude with `qmap_injective (by rw [qmap, h3, map_zero])`. Use `set A : MvPolynomial (Fin (D + 1)) ℚ →ₐ[ℚ] Polynomial Ω := aeval (forms v L) with hA`. Establish `hS : coneRing ℚ (matAct B x ∘ e) = A.range`. Rewrite using `[coneRing, coneMap, hy]`. Rewrite using `[hS]`.
+
+Establish `hvi : ∀ t, IsIntegral A.range (v t)`. Introduce `t`. Take `⟨p, hp, hpa⟩` from `hint t`. Use `⟨p.map (A.rangeRestrict : MvPolynomial (Fin (D + 1)) ℚ →+* _), hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`.
+
+Conclude with `hpa`. Rewrite using `[show Polynomial.C (matAct B x i) * Polynomial.X = ∑ j, B i j • v j from (sum_smul_cone x (B i)).symm]`. Use `IsIntegral.sum _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`. Use `IsIntegral.mul ?_ (hvi j)` and prove the remaining obligations.
+
+Establish `hm : algebraMap ℚ (Polynomial Ω) (B i j) ∈ A.range` using `Subalgebra.algebraMap_mem _ _`. Conclude with `isIntegral_algebraMap (R := A.range) (A := Polynomial Ω) (x := ⟨_, hm⟩)`.
+-/
 theorem proof : RatNoetherFrame.Statement := by
   intro D Ω _ _ κ _ x hx
   classical

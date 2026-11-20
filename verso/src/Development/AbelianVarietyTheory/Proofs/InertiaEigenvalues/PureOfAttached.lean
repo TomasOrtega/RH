@@ -8,6 +8,15 @@ open GlobalTheory.TripleGal Formalism Formalism.BasicNotions Formalism.BasicNoti
 
 namespace GlobalTheory.TripleGal
 
+/- English proof (translation)
+Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hA, hR, -⟩`. Use `⟨ι, fun v hl hS A hAv σ hσ z hz => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS ⟨Or.inl (Set.mem_iUnion.2 ⟨k, hk⟩), hl⟩`. Establish `hp : v ∉ D.ntw.pD i` using `fun hk => hS ⟨Or.inr (Finset.mem_coe.2 hk), hl⟩`. Establish `hu` using `hR.unr v hg hp`.
+
+Establish `hf` using `hA.frob v hl hu A σ hAv hσ`. Establish `ht` using `(D.naut.tempered_unr _ hu).1 (hA.temp v hl)`. Rewrite `hf` using `[Tgl_coe]`. Rewrite `hz` using `[hf, D.naut.frobEig_tw _ _ hu, IsRoot.def, eval_multiset_prod, Multiset.prod_eq_zero_iff]`. Simplify using `only [Multiset.mem_map] at hz`.
+
+Take `⟨_, ⟨_, ⟨α, hα, rfl⟩, rfl⟩, h0⟩ : ∃ p, (∃ β, (∃ α, α ∈ D.naut.frobEig (D.naut.locG π v) ∧ α * ((normV v : ℕ) : ℂ) ^ (((1 - (D.R.t : ℝ)) / 2 : ℝ) : ℂ) = β) ∧ Polynomial.X - C β = p) ∧ eval z p = 0` from `hz`. Establish `hpos : 0 < normV v`. Establish `: Finite (𝓞 D.host.E ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Conclude with `Nat.card_pos`. Rewrite `h0` using `[eval_sub, eval_X, eval_C, sub_eq_zero]`.
+
+Rewrite using `[h0, norm_mul, ht α hα, one_mul, Complex.norm_natCast_cpow_of_pos hpos, Complex.ofReal_re]`.
+-/
 theorem pure_of_tripleAtt : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAtt D.naut bkP i s → ∃ ι, Pure i s ι := by
   rintro D bkP i s ⟨ι, π₁, π, -, hA, hR, -⟩

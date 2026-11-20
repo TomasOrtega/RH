@@ -14,6 +14,9 @@ namespace GlobalTheory.ThetaExpandXInv
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
+/- English proof (translation)
+Establish `h1 : incM F (1 : Matrix (Fin d₁) (Fin d₁) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one]`. Unfold `incM`. Rewrite using `[Matrix.map_mul]`.
+-/
 theorem incM_mul_one {n n₁ d₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) E) (U : Matrix (Fin n₁) (Fin d₁) E) :
     incM F (ι * U) = incM F ι * incM F U * (incM F (1 : Matrix (Fin d₁) (Fin d₁) E))ᵀ := by
   have h1 : incM F (1 : Matrix (Fin d₁) (Fin d₁) E) = 1 :=
@@ -22,6 +25,9 @@ theorem incM_mul_one {n n₁ d₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) E) (U :
   unfold incM
   rw [Matrix.map_mul]
 
+/- English proof (translation)
+Take `⟨s, t, U, h⟩` from `GlobalTheory.ThetaExpandInv.exists_split (n := d₁) hH hL xᵀ`. Use `⟨s, t, Uᵀ, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Matrix.transpose h`. Simplify using `only [Matrix.transpose_transpose, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_vecMulVec] at h'`. Conclude with `h'`.
+-/
 theorem exists_split_left {n n₁ d₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {B : Base F E} {H : Plane E n n₁} {j₀ j₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ j₀ j₁) (hL : X.L.IsLattice E) (x : Matrix (Fin n) (Fin d₁) E) :
     ∃ (s t : Fin d₁ → E) (U : Matrix (Fin n₁) (Fin d₁) E),
@@ -33,6 +39,13 @@ theorem exists_split_left {n n₁ d₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n�
     Matrix.transpose_vecMulVec] at h'
   exact h'
 
+/- English proof (translation)
+Introduce `_ F E _ _ _ _ _ σ B n d₁ X W₁ M₁ hM₁ n₁ X₁ H j₀ j₁ M₂ hH hM₂ e' he hB hsig x φ hφ`. Take `⟨r, s, r', s', hX, -⟩` from `hsig`. Establish `hψ : IsStd B.ψ` using `hB.std`. Take `⟨a, t, U, hx⟩` from `exists_split_left hH hX.lat x`. Establish `key : ∀ w : Fin d₁ → E, thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (M₁.co.rho B.ψ (incM F x) φ))) = thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F (w + t))) φ))`.
+
+Introduce `w`. Establish `hsum : Matrix.vecMulVec H.y w + x = Matrix.vecMulVec H.x a + (H.ι * U + Matrix.vecMulVec H.y (w + t))`. Rewrite using `[hx, Matrix.vecMulVec_add]`. Normalize the expressions using the abelian group laws. Establish `hiso : incM F (Matrix.vecMulVec H.x a) ∈ ({u | ∃ z, u = Matrix.vecMulVec (incV F H.x) z} : Set (Matrix (Fin n) (Fin d₁) (AE F E)))` using `⟨incV F a, GlobalTheory.ThetaExpandInv.incM_vecMulVec H.x a⟩`.
+
+Rewrite using `[← GlobalTheory.ThetaExpandInv.incM_vecMulVec, GlobalTheory.ThetaExpandInv.rho_rat_rho_rat M₁ hψ hM₁, hsum, ← GlobalTheory.ThetaExpandInv.rho_rat_rho_rat M₁ hψ hM₁, he.inv _ hiso _ (GlobalTheory.HeisSchA.rho_mem_schA M₁ B.ψ hψ _ φ hφ), ← GlobalTheory.ThetaExpandInv.rho_rat_rho_ra …`. Rewrite using `[tsum_congr key]`. Conclude with `(Equiv.addRight t).tsum_eq (fun w : Fin d₁ → E => thetaSum F (e' (M₁.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) φ)))`.
+-/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d₁ : ℕ) (X : Spc F E n) (W₁ : Spc F E d₁) (M₁ : Model σ X W₁), M₁.IsGood B.ψ →
     ∀ (n₁ : ℕ) (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ W₁), H.IsAdapted σ B X X₁ j₀ j₁ → M₂.IsGood B.ψ →

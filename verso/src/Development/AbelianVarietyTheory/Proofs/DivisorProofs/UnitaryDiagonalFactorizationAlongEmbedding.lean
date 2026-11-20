@@ -8,6 +8,15 @@ namespace GlobalTheory.SatakeWeyl
 
 open Classical in
 
+/- English proof (translation)
+Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal]`. Distinguish the cases in `hb : b ∈ Set.range e`. Rewrite using `[if_pos hb, mul_one]`. Distinguish the cases in `ha : a ∈ Set.range e`.
+
+Take `⟨i, rfl⟩` from `ha`. Take `⟨j, rfl⟩` from `hb`. Rewrite using `[(hι s).1, hs]`. Simplify using `[Matrix.diagonal_apply, he.eq_iff]`. Establish `hab : a ≠ b` using `fun h => ha (h ▸ hb)`.
+
+Rewrite using `[(hι s).2 a b (Or.inl ha), Matrix.one_apply_ne hab, Matrix.diagonal_apply_ne _ hab]`. Rewrite using `[if_neg hb, (hι s).2 a b (Or.inr hb)]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+
+Rewrite using `[Matrix.one_apply_ne hab, Matrix.diagonal_apply_ne _ hab, zero_mul]`.
+-/
 theorem emb_mul_diagonal {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {n r : ℕ}
     {e : Fin r → Fin n} {ι : GU σ r →* GU σ n} (he : Function.Injective e) (hι : IsEmb e ι)
     (D : Fin n → L) (s : GU σ r) (hs : mat s = Matrix.diagonal (D ∘ e)) :
@@ -29,6 +38,17 @@ theorem emb_mul_diagonal {L : Type} [Field L] [Valued L (WithZero (Multiplicativ
       simp
     · rw [Matrix.one_apply_ne hab, Matrix.diagonal_apply_ne _ hab, zero_mul]
 
+/- English proof (translation)
+Introduce `L _ _ σ n r e ι he hι D D' t t' s s' ht ht' hs hs' hD`. Establish `h1` using `emb_mul_diagonal he hι D s hs`. Establish `h2` using `emb_mul_diagonal he hι D' s' hs'`. Establish `hZ : (fun a => if a ∈ Set.range e then (1 : L) else D' a) = fun a => if a ∈ Set.range e then (1 : L) else D a`. Use function extensionality and compare the values at `a`.
+
+Distinguish the cases in `ha : a ∈ Set.range e`. Rewrite using `[if_pos ha, if_pos ha]`. Rewrite using `[if_neg ha, if_neg ha, hD a ha]`. Establish `hz : mat ((ι s)⁻¹ * t) = Matrix.diagonal (fun a => if a ∈ Set.range e then (1 : L) else D a)`. Rewrite using `[mat_mul, ht, ← h1, ← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]`.
+
+Use `⟨(ι s)⁻¹ * t, by group, ?_, fun g => ?_⟩` and prove the remaining obligations. Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul, hz, ← hZ, ht', ← h2]`. Apply `mat_injective` to reduce the goal to its premises. Rewrite using `[mat_mul, mat_mul (ι g), hz]`.
+
+Use extensionality with `a b`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Conclude with `mul_comm _ _`.
+
+Distinguish the cases in `ha : a ∈ Set.range e`. Distinguish the cases in `hb : b ∈ Set.range e`. Rewrite using `[if_pos ha, if_pos hb, one_mul, mul_one]`. Rewrite using `[(hι g).2 a b (Or.inr hb), Matrix.one_apply_ne hab, mul_zero, zero_mul]`. Rewrite using `[(hι g).2 a b (Or.inl ha), Matrix.one_apply_ne hab, mul_zero, zero_mul]`.
+-/
 theorem embTorus : EmbTorus := by
   classical
   intro L _ _ σ n r e ι he hι D D' t t' s s' ht ht' hs hs' hD

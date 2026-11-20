@@ -12,16 +12,37 @@ def mixF (τ₀ : D.what₂.Tau) (B B' : GL (Fin (D.R.N 0)) D.host.E) : D.what�
   fun τ => if τ = τ₀ then atInf (embT D) (B'⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1 τ
     else atInf (embT D) (B⁻¹ : GL (Fin (D.R.N 0)) D.host.E).1 τ
 
+/- English proof (translation)
+Simplify using `only [atInf, Units.val_mul, Matrix.map_mul]`.
+-/
 private theorem atInf_mul' (X Y : GL (Fin (D.R.N 0)) D.host.E) (τ : D.what₂.Tau) :
     atInf (embT D) (X * Y : GL (Fin (D.R.N 0)) D.host.E).1 τ =
       atInf (embT D) X.1 τ * atInf (embT D) Y.1 τ := by
   simp only [atInf, Units.val_mul, Matrix.map_mul]
 
+/- English proof (translation)
+Simplify using `only [atInf, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 private theorem atInf_one' (τ : D.what₂.Tau) :
     atInf (embT D) (1 : GL (Fin (D.R.N 0)) D.host.E).1 τ = 1 := by
   simp only [atInf, Units.val_one]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Set `N : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ` to `fun τ => if τ = τ₀ then atInf (embT D) (B'⁻¹ * B₁' : GL (Fin (D.R.N 0)) D.host.E).1 τ else atInf (embT D) (B⁻¹ * B₁ : GL (Fin (D.R.N 0)) D.host.E).1 τ`. Set `N' : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ` to `fun τ => if τ = τ₀ then atInf (embT D) (B₁'⁻¹ * B' : GL (Fin (D.R.N 0)) D.host.E).1 τ else atInf (embT D) (B₁⁻¹ * B : GL (Fin (D.R.N 0)) D.host.E).1 τ`. Establish `hmul : ∀ τ, N τ * N' τ = 1`. Introduce `τ`. Distinguish the cases in `hτ : τ = τ₀`.
+
+Simplify using `only [N, N', if_pos hτ]`. Rewrite using `[← atInf_mul', show B'⁻¹ * B₁' * (B₁'⁻¹ * B') = 1 by group, atInf_one']`. Simplify using `only [N, N', if_neg hτ]`. Rewrite using `[← atInf_mul', show B⁻¹ * B₁ * (B₁⁻¹ * B) = 1 by group, atInf_one']`. Establish `hN : ∀ τ a b, N τ a b ∈ bwA_Ow D w`.
+
+Introduce `τ a b`. Distinguish the cases in `hτ : τ = τ₀`. Simplify using `only [N, if_pos hτ]`. Conclude with `bwG_change_mem D u w hw τ hB₁' hB' a b`. Simplify using `only [N, if_neg hτ]`.
+
+Conclude with `bwG_change_mem D u w hw τ hB₁ hB a b`. Establish `hN' : ∀ τ a b, N' τ a b ∈ bwA_Ow D w`. Introduce `τ a b`. Distinguish the cases in `hτ : τ = τ₀`. Simplify using `only [N', if_pos hτ]`.
+
+Conclude with `bwG_change_mem D u w hw τ hB' hB₁' a b`. Simplify using `only [N', if_neg hτ]`. Conclude with `bwG_change_mem D u w hw τ hB hB₁ a b`. Establish `hfac : mixF τ₀ B B' = fun τ => N τ * mixF τ₀ B₁ B₁' τ`. Use function extensionality and compare the values at `τ`.
+
+Distinguish the cases in `hτ : τ = τ₀`. Simplify using `only [mixF, N, if_pos hτ]`. Rewrite using `[← atInf_mul', show B'⁻¹ * B₁' * B₁'⁻¹ = B'⁻¹ by group]`. Simplify using `only [mixF, N, if_neg hτ]`. Rewrite using `[← atInf_mul', show B⁻¹ * B₁ * B₁⁻¹ = B⁻¹ by group]`.
+
+Use `⟨MvPolynomial.C (∏ τ, (N τ).det ^ shiftOf (lamT u 0) τ) * subP N P, bwG_intSpan_allSubP D w _ N _ (fun τ => local_GL_stabilises_lattice D w _ _ _ (N τ) (N' τ) (hmul τ) (hN τ) (hN' τ)) P hP, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hfac, fnOf_mul]`.
+-/
 theorem mixed_change (w : D.what₂.places.Pl) (hw : OverT D u w) (τ₀ : D.what₂.Tau)
     {L L' : Set (Fin (D.R.N 0) → D.host.E)} {B B₁ B' B₁' : GL (Fin (D.R.N 0)) D.host.E}
     (hB : IsLocBasis (D.mem u).A.T L B) (hB₁ : IsLocBasis (D.mem u).A.T L B₁)

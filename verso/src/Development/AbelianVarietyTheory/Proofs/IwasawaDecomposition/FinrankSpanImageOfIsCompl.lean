@@ -14,6 +14,17 @@ open scoped TensorProduct
 
 namespace GlobalTheory.RedRank
 
+/- English proof (translation)
+Set `φ : S ⊗[R] P →ₗ[S] M'` to `(g ∘ₗ P.subtype).liftBaseChange S`. Set `π` to `P.linearProjOfIsCompl Q hPQ`. Establish `hφ : Function.Injective φ`. Use `Function.LeftInverse.injective (g := (π.baseChange S) ∘ₗ hb.equiv.symm.toLinearMap) fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul s y`. Establish `h1 : hb.equiv.symm (g y) = (1 : S) ⊗ₜ[R] (y : M)`. Rewrite using `[LinearEquiv.symm_apply_eq, IsBaseChange.equiv_tmul, one_smul]`. Simplify using `[φ, h1, π, TensorProduct.smul_tmul']`.
+
+Conclude with `congrArg (s ⊗ₜ[R] ·) (Submodule.linearProjOfIsCompl_apply_left hPQ y)`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.comp_apply] at hx hy ⊢`. Rewrite using `[hx, hy]`. Establish `hr : LinearMap.range φ = Submodule.span S (g '' P)`. Use `le_antisymm ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s y => simpa [φ] using Submodule.smul_mem _ s (Submodule.subset_span (Set.mem_image_of_mem g y.2))`. Consider the case `add x y hx hy => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hx hy`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `LinearMap.mem_range.2 ⟨(1 : S) ⊗ₜ[R] (⟨y, hy⟩ : P), by simp [φ]⟩`. Rewrite using `[← hr, LinearMap.finrank_range_of_inj hφ, Module.finrank_baseChange]`.
+-/
 theorem finrank_span_image_of_isCompl {R S M M' : Type*} [CommRing R] [Nontrivial R] [Field S] [Algebra R S]
     [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] [Module S M'] [IsScalarTower R S M']
     {g : M →ₗ[R] M'} (hb : IsBaseChange S g) {P Q : Submodule R M} (hPQ : IsCompl P Q)
@@ -46,6 +57,19 @@ end GlobalTheory.RedRank
 
 open GlobalTheory.EigenSplit in
 
+/- English proof (translation)
+Introduce `D A N j S κ p ct τ`. Use `S.Dw.fin` as an intermediate fact. Use `S.Dw.proj` as an intermediate fact. Establish `: Module.Finite ℤ S.Dw.La` using `.trans (𝓞 D.host.E) _`. Establish `: Module.Flat ℤ S.Dw.La` using `Module.Flat.trans ℤ (𝓞 D.host.E) S.Dw.La`.
+
+Establish `: Module.Free ct.V₀ (ct.V₀ ⊗[ℤ] S.Dw.La)` using `Module.free_of_flat_of_isLocalRing`. Set `ρZ : 𝓞 D.host.E →+* Module.End ℤ S.Dw.La` to `Module.toModuleEnd ℤ S.Dw.La`. Take `⟨Q, hQ⟩` from `exists_isCompl_eigenSub_of_valuationRing (baseChangeAction ct.V₀ ρZ) (embV κ.c ct.W (embOf D τ))`. Use `free_eigenSub_of_valuationRing (baseChangeAction ct.V₀ ρZ) (embV κ.c ct.W (embOf D τ))` as an intermediate fact. Use `finite_eigenSub_of_valuationRing (baseChangeAction ct.V₀ ρZ) (embV κ.c ct.W (embOf D τ))` as an intermediate fact.
+
+Establish `hg : ∀ x, ct.redLa x = extendTensor ℤ ct.V₀ ct.kbar S.Dw.La x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `(map_zero _).symm`. Consider the case `tmul r a => rfl`.
+
+Consider the case `add x y hx hy => rw [map_add, hx, hy]`. Conclude with `(map_add _ x y).symm`. Establish `h0 : Module.finrank ct.kbar (ct.eigBar τ) = Module.finrank ct.V₀ (eigenSub (baseChangeAction ct.V₀ ρZ) (embV κ.c ct.W (embOf D τ)))`. Rewrite using `[At.eigBar, show (ct.redLa : _ → _) = extendTensor ℤ ct.V₀ ct.kbar S.Dw.La from funext hg]`. Conclude with `GlobalTheory.RedRank.finrank_span_image_of_isCompl (P := eigenSub (baseChangeAction ct.V₀ ρZ) (embV κ.c ct.W (embOf D τ))) (isBaseChange_extendTensor ℤ ct.V₀ ct.kbar S.Dw.La) hQ`.
+
+Use `letI : Algebra ct.V₀ ℂ := ((algebraMap κ.c.F ℂ).comp (algebraMap ct.V₀ κ.c.F)).toAlgebra`. Establish `hσ : Function.Injective fun σ : D.host.E →+* ℂ => embV κ.c ct.W σ` using `fun σ σ' h => IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 D.host.E)) (RingHom.ext fun a => congrArg (fun f : 𝓞 D.host.E →+* ct.V₀ => (((f a : ct.V₀) : κ.c.F) : ℂ)) h)`. Establish `h1` using `finrank_eigenSub_of_charZero (E := D.host.E) (A := ct.V₀) (N := ct.V₀ ⊗[ℤ] S.Dw.La) (ρ := baseChangeAction ct.V₀ ρZ) (M := ℂ ⊗[ℤ] S.Dw.La) (ρ' := baseChangeAction (ℂ) ρZ) (f := extendTensor ℤ ct.V₀ (ℂ) S.Dw.La) (S := ℂ) hσ (NumberField.Embeddings.card D.host.E ℂ) (extendTensor_eq …`. Establish `h2` using `GlobalTheory.TensorDet.finrank_eigenSub (O := ℤ) (M := S.Dw.La) (k := ℂ) ((algebraMap ct.V₀ (ℂ)).comp (embV κ.c ct.W (embOf D τ))) (RingHom.ext_int _ _)`. Establish `h3 : GlobalTheory.TensorDet.rightAction (ℂ) ℤ (𝓞 D.host.E) S.Dw.La = baseChangeAction (ℂ) ρZ`.
+
+Use extensionality with `a : 1`. Rewrite using `[GlobalTheory.TensorDet.rightAction_apply, baseChangeAction_apply]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3, h1, S.Dw.rank, S.rank_eq]`. Rewrite using `[h0, h2]`.
+-/
 theorem GlobalTheory.LocM.At.finrank_eigBar : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (p : ℕ) (ct : At S κ p),
     ∀ τ : PsiT D, Module.finrank ct.kbar (ct.eigBar τ) = N := by
   intro D A N j S κ p ct τ

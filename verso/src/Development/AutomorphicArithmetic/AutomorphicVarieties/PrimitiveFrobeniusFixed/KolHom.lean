@@ -7,13 +7,26 @@ open scoped nonZeroDivisors Pointwise
 section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
+/- English proof (translation)
+Simplify using `only [opP, map_mul, mul_pow]`. Conclude with `mul_div_mul_comm _ _ _ _`.
+-/
 private theorem opP_mul' (δ : G ℚ Ω) (a : ℕ) (x y : Ω) : opP δ a (x * y) = opP δ a x * opP δ a y := by
   simp only [opP, map_mul, mul_pow]
   exact mul_div_mul_comm _ _ _ _
 
+/- English proof (translation)
+The claim follows from `div_ne_zero ((map_ne_zero δ).2 hx) (pow_ne_zero _ hx)`.
+-/
 private theorem opP_ne' (δ : G ℚ Ω) (a : ℕ) {x : Ω} (hx : x ≠ 0) : opP δ a x ≠ 0 :=
   div_ne_zero ((map_ne_zero δ).2 hx) (pow_ne_zero _ hx)
 
+/- English proof (translation)
+Establish `hy0 : y ≠ 0`. Introduce `h0`. Rewrite `hy` using `[h0, zero_pow hM]`. Conclude with `hy rfl`. Establish `hw : (x / y) ^ M = 1` using `by rw [div_pow, h, div_self hy]`.
+
+Establish `hw0 : x / y ≠ 0`. Introduce `h0`. Rewrite `hw` using `[h0, zero_pow hM]`. Conclude with `zero_ne_one hw`. Establish `hx : x = y * (x / y)` using `(mul_div_cancel₀ x hy0).symm`.
+
+Establish `h1 : opP δ a (x / y) = 1`. Unfold `opP`. Rewrite using `[hδ _ hw, div_self (pow_ne_zero _ hw0)]`. Rewrite using `[hx, opP_mul', h1, mul_one]`.
+-/
 private theorem opP_eq' {M a : ℕ} (hM : M ≠ 0) {δ : G ℚ Ω} (hδ : Pows M a δ) {x y : Ω} (hy : y ^ M ≠ 0)
     (h : x ^ M = y ^ M) : opP δ a x = opP δ a y := by
   have hy0 : y ≠ 0 := by
@@ -31,6 +44,9 @@ private theorem opP_eq' {M a : ℕ} (hM : M ≠ 0) {δ : G ℚ Ω} (hδ : Pows M
     rw [hδ _ hw, div_self (pow_ne_zero _ hw0)]
   rw [hx, opP_mul', h1, mul_one]
 
+/- English proof (translation)
+Rewrite `h` using `[← pow_add]`. Establish `h2 : ζ ^ (j.val + k.val) = ζ ^ ((j + k).val)`. Rewrite using `[ZMod.val_add]`. Use `conv_lhs => rw [← Nat.mod_add_div (j.val + k.val) M, pow_add, pow_mul, hζ.pow_eq_one, one_pow, mul_one]`. Conclude with `ZMod.val_injective M (hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) (h.trans h2))`.
+-/
 private theorem zeta_inj' {M : ℕ} [NeZero M] {ζ : Ω} (hζ : IsPrimitiveRoot ζ M) {i j k : ZMod M}
     (h : ζ ^ i.val = ζ ^ j.val * ζ ^ k.val) : i = j + k := by
   rw [← pow_add] at h
@@ -42,6 +58,39 @@ private theorem zeta_inj' {M : ℕ} [NeZero M] {ζ : Ω} (hζ : IsPrimitiveRoot 
 
 end
 
+/- English proof (translation)
+Introduce `Ω _ _ _ M F n a _ hFn hMF ζ hζ δ hδ y hy hfix κ hK`. Establish `hM : M ≠ 0` using `NeZero.ne M`. Establish `gb` using `galBasic Ω (F * n) hFn`. Establish `gbF : fixMu ℚ Ω (F * n) ≤ fixMu ℚ Ω F` using `gb.2.2.2.2.2.2.2.2.1 F (dvd_mul_right F n)`. Take `⟨Y₀, hY₀, hK'⟩` from `hK`.
+
+Establish `hgy : ∀ g : G ℚ Ω, g y / y ≠ 0` using `fun g => div_ne_zero ((map_ne_zero g).mpr hy) hy`. Establish `hY0 : Y₀ ≠ 0`. Introduce `h0`. Rewrite `hY₀` using `[h0, zero_pow hM]`. Conclude with `hy hY₀.symm`.
+
+Establish `hA : opP δ a Y₀ ≠ 0` using `opP_ne' δ a hY0`. Establish `key : ∀ Y : Ω, Y ^ M = y → ∀ g ∈ fixMu ℚ Ω F, ∀ z : Ω, z ^ M = g y / y → ζ ^ (κ g).val = g (opP δ a Y) / opP δ a Y / opP δ a z`. Introduce `Y hY g hg z hz`. Take `⟨z₀, -, hz₀, hκ⟩` from `hK' g hg`. Establish `e1 : opP δ a Y = opP δ a Y₀` using `opP_eq' hM hδ (by rw [hY₀]; exact hy) (hY.trans hY₀.symm)`.
+
+Establish `e2 : opP δ a z = opP δ a z₀` using `opP_eq' hM hδ (by rw [hz₀]; exact hgy g) (hz.trans hz₀.symm)`. Rewrite using `[e1, e2]`. Conclude with `hκ`. Establish `hmul : ∀ u ∈ fixMu ℚ Ω F, ∀ v ∈ fixMu ℚ Ω F, κ (u * v) = κ u + κ v`. Introduce `u hu v hv`.
+
+Take `⟨zu, -, hzu, hκu⟩` from `hK' u hu`. Take `⟨zv, hzvfix, hzv, hκv⟩` from `hK' v hv`. Establish `hzu0 : zu ≠ 0`. Introduce `h0`. Rewrite `hzu` using `[h0, zero_pow hM]`.
+
+Conclude with `hgy u hzu.symm`. Establish `hzv0 : zv ≠ 0`. Introduce `h0`. Rewrite `hzv` using `[h0, zero_pow hM]`. Conclude with `hgy v hzv.symm`.
+
+Establish `huy : u y ≠ 0` using `(map_ne_zero u).mpr hy`. Establish `hz : (u zv * zu) ^ M = (u * v) y / y`. Rewrite using `[mul_pow, ← map_pow, hzv, hzu, map_div₀, AlgEquiv.mul_apply]`. Clear the denominators using the available nonvanishing facts. Establish `euv` using `key Y₀ hY₀ (u * v) (mul_mem hu hv) (u zv * zu) hz`.
+
+Establish `hcomm : δ (u zv) = u (δ zv)` using `gb.2.2.2.2.2.1 zv hzvfix δ u`. Establish `hPu : opP δ a (u zv) = u (opP δ a zv)`. Unfold `opP`. Rewrite using `[hcomm, map_div₀, map_pow]`. Rewrite `euv` using `[opP_mul', hPu, AlgEquiv.mul_apply]`.
+
+Establish `hfixζ : u (ζ ^ (κ v).val) = ζ ^ (κ v).val`. Apply `hu` to reduce the goal to its premises. Take `⟨c, hc⟩` from `hMF`. Rewrite using `[hc, pow_mul, ← pow_mul ζ, mul_comm (κ v).val M, pow_mul, hζ.pow_eq_one, one_pow, one_pow]`. Establish `ev' : ζ ^ (κ v).val = u (v (opP δ a Y₀)) / u (opP δ a Y₀) / u (opP δ a zv)`.
+
+Rewrite using `[← hfixζ, hκv, map_div₀, map_div₀]`. Establish `hB : opP δ a zu ≠ 0` using `opP_ne' δ a hzu0`. Establish `huA : u (opP δ a Y₀) ≠ 0` using `(map_ne_zero u).mpr hA`. Establish `huC : u (opP δ a zv) ≠ 0` using `(map_ne_zero u).mpr (opP_ne' δ a hzv0)`. Apply `zeta_inj' hζ` to reduce the goal to its premises.
+
+Rewrite using `[euv, hκu, ev']`. Clear the denominators using the available nonvanishing facts. Use `⟨hmul, ?_, key⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`.
+
+Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Establish `hint : IsIntegral ℚ (opP δ a Y₀)` using `(Algebra.IsAlgebraic.isAlgebraic _).isIntegral`. Use `haveI := IntermediateField.adjoin.finiteDimensional hint`. Set `H : Set (G ℚ Ω)` to `(fixMu ℚ Ω (F * n) : Set (G ℚ Ω)) ∩ ((IntermediateField.adjoin ℚ {opP δ a Y₀}).fixingSubgroup : Set (G ℚ Ω))`. Establish `hHo : IsOpen H` using `gb.2.1.inter (IntermediateField.fixingSubgroup_isOpen _)`.
+
+Establish `hH0 : ∀ h ∈ H, κ h = 0`. Introduce and unpack `h ⟨h1, h2⟩`. Establish `e` using `key Y₀ hY₀ h (gbF h1) 1 (by rw [one_pow, hfix h h1, div_self hy])`. Establish `hP1 : opP δ a (1 : Ω) = 1` using `by simp [opP]`. Establish `hfx : h (opP δ a Y₀) = opP δ a Y₀` using `(IntermediateField.mem_fixingSubgroup_iff _ _).mp h2 _ (IntermediateField.mem_adjoin_simple_self ℚ _)`.
+
+Rewrite `e` using `[hP1, hfx, div_self hA, div_one]`. Establish `e0` using `zeta_inj' hζ (i := κ h) (j := 0) (k := 0) (by rw [e, ZMod.val_zero, pow_zero, one_mul])`. Simplify using `using e0`. Establish `hS : IsOpen {w : fixMu ℚ Ω F | (x : G ℚ Ω)⁻¹ * w ∈ H}` using `hHo.preimage (continuous_const.mul continuous_subtype_val)`. Establish `hx : x ∈ {w : fixMu ℚ Ω F | (x : G ℚ Ω)⁻¹ * w ∈ H}` using `by show (x : G ℚ Ω)⁻¹ * x ∈ H`.
+
+Rewrite using `[inv_mul_cancel]`. Conclude with `⟨one_mem _, one_mem _⟩`. Use `filter_upwards [hS.mem_nhds hx] with w hw`. Establish `hw' : (x : G ℚ Ω)⁻¹ * w ∈ fixMu ℚ Ω F` using `gbF hw.1`. Establish `e` using `hmul x x.2 _ hw'`.
+
+Rewrite `e` using `[mul_inv_cancel_left, hH0 _ hw, add_zero]`. Conclude with `e`.
+-/
 theorem UpperTheory.V.ML.kolHom :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (M F n a : ℕ) [NeZero M], F * n ≠ 0 → M ∣ F → ∀ (ζ : Ω), IsPrimitiveRoot ζ M → ∀ δ : G ℚ Ω, Pows M a δ → ∀ y : Ω, y ≠ 0 → (∀ h ∈ fixMu ℚ Ω (F * n), h y = y) →
     ∀ κ : G ℚ Ω → ZMod M, IsKol M F n ζ δ a y κ →

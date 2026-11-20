@@ -13,6 +13,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module Qp V]
     (ρ : Representation Qp G V) {d : ℕ} (e : Basis (Fin d) Qp V)
 
+/- English proof (translation)
+Simplify using `only [map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply, Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Finsupp.single_apply, hj]`.
+
+Simplify using the standard rewrite rules.
+-/
 private theorem coord_sum (c : Fin d → BdR) (i : Fin d) :
     (TensorProduct.lid Qp BdR) (LinearMap.rTensor BdR (e.coord i) (∑ j, e j ⊗ₜ[Qp] c j)) = c i := by
   simp only [map_sum, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, Basis.coord_apply, Basis.repr_self]
@@ -22,6 +27,13 @@ private theorem coord_sum (c : Fin d → BdR) (i : Fin d) :
     simp [Finsupp.single_apply, hj]
   · simp
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ i`. Rewrite using `[← coord_sum e c i, ← hz]`. Use `clear hz`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v x`. Use `((PD.Fil a).restrictScalars Qp).smul_mem (e.coord i v) x.2` as an intermediate fact. Simplify using `using this`. Consider the case `add x y hx hy`.
+
+Simplify using `only [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Introduce `h`. Conclude with `Submodule.sum_mem _ fun j _ => ⟨e j ⊗ₜ ⟨c j, h j⟩, rfl⟩`.
+-/
 private theorem sum_mem_fil_iff (a : ℤ) (c : Fin d → BdR) :
     ∑ j, e j ⊗ₜ[Qp] c j ∈ FilV PD (LL := Qp) (V := V) a ↔ ∀ i, c i ∈ PD.Fil a := by
   constructor
@@ -39,6 +51,13 @@ private theorem sum_mem_fil_iff (a : ℤ) (c : Fin d → BdR) :
   · intro h
     exact Submodule.sum_mem _ fun j _ => ⟨e j ⊗ₜ ⟨c j, h j⟩, rfl⟩
 
+/- English proof (translation)
+Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Use `conv_rhs => rw [← h g]`. Simplify using `only [map_sum, Matrix.mulVec, dotProduct, tmul_sum, Matrix.map_apply, LinearMap.toMatrix_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ρ g (e j) ⊗ₜ[Qp] PD.actdR g (c j) = _`. Use `conv_lhs => rw [← e.sum_repr (ρ g (e j))]`. Rewrite using `[sum_tmul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[smul_tmul, Algebra.smul_def]`.
+-/
 private theorem sum_mem_DdR (c : Fin d → BdR)
     (h : ∀ g, ((LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp BdR)).mulVec (fun j => PD.actdR g (c j)) = c) :
     ∑ j, e j ⊗ₜ[Qp] c j ∈ DdR PD ρ := by
@@ -54,6 +73,39 @@ private theorem sum_mem_DdR (c : Fin d → BdR)
   refine Finset.sum_congr rfl fun i _ => ?_
   rw [smul_tmul, Algebra.smul_def]
 
+/- English proof (translation)
+Set `A : G → Matrix (Fin d) (Fin d) BdR` to `fun g => (LinearMap.toMatrix e e (ρ g)).map (algebraMap Qp BdR)`. Establish `hA : ∀ g i j, A g i j ∈ PD.Fil 0` using `fun g i j => by`. Express the relevant statement in the definitionally equal form `algebraMap Qp BdR _ ∈ _`. Rewrite using `[IsScalarTower.algebraMap_apply Qp K BdR, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ PD.one_mem`.
+
+Establish `hcol : ∀ j g, (A g).mulVec (fun i => PD.actdR g (N i j)) = fun i => N i j` using `fun j g => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (congrFun (hg g) i) j`. Establish `hN' : N' * N = 1` using `mul_eq_one_comm.1 hN`. Establish `hA' : ∀ g, N' * A g = N'.map (PD.actdR g)` using `fun g => by`.
+
+Establish `h2 : N.map (PD.actdR g) * N'.map (PD.actdR g) = 1`. Use `congrArg (fun X : Matrix (Fin d) (Fin d) BdR => X.map (PD.actdR g : BdR →+* BdR)) hN` as an intermediate fact. Simplify using `only [Matrix.map_mul] at this`. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this`.
+
+Combine the equalities or inequalities in the displayed calculation. Introduce `i j`. Establish `hFa : Antitone fun a => (PD.Fil a).toAddSubgroup` using `antitone_int_of_succ_le fun a => PD.Fil_anti a`. Set `R : G → (Fin d → BdR) →+ (Fin d → BdR)` to `fun g => { toFun := fun c => (A g).mulVec (fun j => PD.actdR g (c j)) map_zero' := by simp [← Pi.zero_def] map_add' := fun x y => by`. Rewrite using `[← Matrix.mulVec_add]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `}`. Set `FM : ℤ → AddSubgroup (Fin d → BdR)` to `fun a => AddSubgroup.pi Set.univ fun _ => (PD.Fil a).toAddSubgroup`. Establish `hFM : ∀ a c, c ∈ FM a ↔ ∀ i, c i ∈ PD.Fil a` using `fun a c => by`.
+
+Simplify using `[FM, AddSubgroup.mem_pi]`. Take `⟨m, k, b, c, h, hs⟩` from `GlobalTheory.DRFil.filtered (G := G) (fun g => (PD.actdR g : BdR →+* BdR)) R (fun a => (PD.Fil a).toAddSubgroup) FM (fun g b x => by`. Express the relevant statement in the definitionally equal form `(A g).mulVec _ = _ • (A g).mulVec _`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `j`. Use the proof step `simp)`. Use the proof step `PD.Fil_mul`. Use the proof step `(fun a c x z hx hz => (hFM _ _).2 fun i => PD.Fil_mul _ _ _ _ hx ((hFM _ _).1 hz i))`. Use the proof step `PD.Fil_G`.
+
+Use the proof step `(fun g a z hz => (hFM _ _).2 fun i => by`. Express the relevant statement in the definitionally equal form `∑ j, A g i j * PD.actdR g (z j) ∈ _`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Use `PD.Fil_mul _ _ _ _ (hA g i j) (PD.Fil_G g _ _ ((hFM _ _).1 hz j))` as an intermediate fact. Rewrite using `[zero_add] at this)` and apply the resulting hypothesis.
+
+Use `hinv hT hFa (fun a a' h z hz => (hFM _ _).2 fun i => hFa h ((hFM _ _).1 hz i)) PD.Fil_exh`. Use the proof step `(fun x => by choose r hr using fun i => PD.Fil_exh (x i)`. Take `⟨a, ha⟩` from `(Set.finite_range r).bddBelow`. Conclude with `⟨a, (hFM _ _).2 fun i => hFa (ha ⟨i, rfl⟩) (hr i)⟩)`. Use `0 (fun i => (1 : Matrix (Fin d) (Fin d) BdR) i j)`.
+
+Use the proof step `((hFM _ _).2 fun i => by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Use `exacts [PD.one_mem, Submodule.zero_mem _])`. Use `d (fun i => N' i j) (fun j i => N i j) (fun j g => hcol j g)`.
+
+Use the proof step `(by`. Use function extensionality and compare the values at `i`. Rewrite using `[← hN, Matrix.mul_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun x _ => mul_comm _ _)`. Establish `h3 : N' i j = ∑ n, b n * N'.mulVec (c n) i`.
+
+Establish `h4` using `congrFun (congrArg N'.mulVec hs) i`. Rewrite `h4` using `[Matrix.mulVec_sum, Finset.sum_apply]`. Simplify using `only [Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul] at h4`. Rewrite using `[← h4]`. Conclude with `(congrFun (congrFun (mul_one N') i) j).symm`.
+
+Rewrite using `[h3]`. Use `Submodule.sum_mem _ fun n _ => ?_` and prove the remaining obligations. Take `⟨hc, hk, hb⟩` from `h n`. Distinguish the cases in `hk1 : w + 1 ≤ k n`. Establish `h5 : ∑ j, e j ⊗ₜ[Qp] c n j ∈ DdR PD ρ ⊓ FilV PD (LL` using `Qp) (V := V) (w + 1) := ⟨sum_mem_DdR PD ρ e _ hc, (sum_mem_fil_iff PD e (w + 1) _).2 fun i => hFa hk1 ((hFM _ _).1 hk i)⟩`.
+
+Rewrite `h5` using `[h1, Submodule.mem_bot]`. Establish `h6 : c n = 0` using `funext fun i => by`. Rewrite using `[← coord_sum e (c n) i, h5]`. Simplify using the standard rewrite rules. Rewrite using `[h6]`.
+
+Simplify using the standard rewrite rules. Establish `h5 : b n ∈ PD.Fil (-w)` using `hFa (show -w ≤ 0 - k n by omega) hb`. Take `⟨κ, hκ⟩` from `PD.invdR (N'.mulVec (c n) i) fun g => by`. Establish `h6 : (A g).mulVec (fun j => PD.actdR g (c n j)) = c n` using `hc g`. Use `conv_rhs => rw [← h6, Matrix.mulVec_mulVec, hA' g]`.
+
+Simplify using `[Matrix.mulVec, dotProduct]`. Establish `h6 : N'.mulVec (c n) i ∈ PD.Fil 0`. Rewrite using `[← hκ, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ PD.one_mem`. Simplify using `using PD.Fil_mul _ _ _ _ h5 h6`.
+-/
 private theorem core
     (hinv : ∀ a b, b ∈ PD.Fil a → b ∉ PD.Fil (a + 1) → ∃ β ∈ PD.Fil (-a), β * b - 1 ∈ PD.Fil 1)
     (hT : ∀ n x, x ∈ PD.Fil n → (∀ g, PD.actdR g x - x ∈ PD.Fil (n + 1)) →
@@ -155,6 +207,15 @@ private theorem core
 
 end Coord
 
+/- English proof (translation)
+Introduce `l _ K V _ _ _ ρ d e M M' hM hg b h1`. Take `⟨T⟩` from `tiedP l`. Take `⟨Θ⟩` from `GlobalTheory.MemLoc.TiedTheta.nonempty_thetaL l _ _ T`. Establish `key` using `core ((PP l).PD K) ρ e (GlobalTheory.DRFil.graded_inv Θ K) (GlobalTheory.DRFil.graded_invariants T Θ K) b h1 (M.map (PP l).ιB) (M'.map (PP l).ιB) (by`. Use `congrArg (fun X : Matrix (Fin d) (Fin d) (Bcr l) => X.map ((PP l).ιB : Bcr l →+* Bdr l)) hM` as an intermediate fact.
+
+Simplify using `only [Matrix.map_mul] at this`. Rewrite `this` using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `this)`. Use the proof step `(fun g => by`. Use extensionality with `i j`.
+
+Use `congrArg (PP l).ιB (congrFun (congrFun (hg g) i) j)` as an intermediate fact. Rewrite using `[Matrix.map_apply, ← this, Matrix.mul_apply, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, map_mul, AlgHom.commutes]`. Rewrite using `[← (PP l).PD_actB K g, ← (PP l).PD_ι K, ← (PP l).PD_ι K, ((PP l).PD K).ι_comm])`.
+
+Conclude with `fun i j => (GlobalTheory.DRFil.fil_iff K _ _ _).1 (key i j)`.
+-/
 theorem UpperTheory.de_rham_inf_filtration :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) {V : Type} [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) {d : ℕ} (e : Basis (Fin d) ℚ_[l] V) (M M' : Matrix (Fin d) (Fin d) (Bcr l)), M * M' = 1 → (∀ g : ↥(GK K), (LinearMap.toMatrix e e (ρ g)).map (algebraMap ℚ_[l] (Bcr l)) * M.map ((PP l).actQ (g : GQ l)) = M) → ∀ b : ℤ, DdR ((PP l).PD K) ρ ⊓ FilV ((PP l).PD K) (LL := ℚ_[l]) (V := V) (b + 1) = ⊥ → ∀ i j, (PP l).ιB (M' i j) ∈ ((PP l).PD (botExt l)).Fil (-b) := by
   intro l _ K V _ _ _ ρ d e M M' hM hg b h1

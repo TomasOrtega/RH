@@ -12,16 +12,31 @@ open CategoryTheory
 
 variable {Γ : Type} [Group Γ] [Fintype Γ]
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `[MonoidAlgebra.coeff_sum, Finset.sum_apply', Finsupp.single_apply]`.
+-/
 theorem eq_sum_single (e : MonoidAlgebra ℂ Γ) : e = ∑ q : Γ, MonoidAlgebra.single q (e.coeff q) := by
   classical
   ext x
   simp [MonoidAlgebra.coeff_sum, Finset.sum_apply', Finsupp.single_apply]
 
+/- English proof (translation)
+Rewrite using `[MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype]`. Introduce `q`. Simplify using the standard rewrite rules.
+-/
 theorem coeff_mul_fin (a b : MonoidAlgebra ℂ Γ) (x : Γ) :
     (a * b).coeff x = ∑ q, a.coeff q * b.coeff (q⁻¹ * x) := by
   rw [MonoidAlgebra.coeff_mul_apply_left, Finsupp.sum_fintype]
   intro q; simp
 
+/- English proof (translation)
+Set `T : ρ →ₗ[ℂ] ρ` to `∑ q : Γ, e.coeff q • ρ.ρ q`. Establish `hTA : T = Representation.asAlgebraHom ρ.ρ e` using `by conv_rhs => rw [eq_sum_single e]`. Simplify using `only [T, map_sum, Representation.asAlgebraHom_single]`. Establish `hcomm : ∀ h : Γ, ∀ v : ρ, T (ρ.ρ h v) = ρ.ρ h (T v)`. Introduce `h v`.
+
+Establish `h1 : Representation.asAlgebraHom ρ.ρ (e * MonoidAlgebra.single h 1) = Representation.asAlgebraHom ρ.ρ (MonoidAlgebra.single h 1 * e)`. Rewrite using `[he]`. Rewrite `h1` using `[map_mul, map_mul, Representation.asAlgebraHom_single, one_smul]`. Rewrite using `[hTA]`. Conclude with `LinearMap.congr_fun h1 v`.
+
+Set `f' : ρ ⟶ ρ` to `⟨FGModuleCat.ofHom T, fun g => by`. Use extensionality with `v`. Conclude with `hcomm g v⟩`. Take `⟨c, hc⟩` from `CategoryTheory.endomorphism_simple_eq_smul_id ℂ f'`. Use `⟨c, fun v => ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun φ : ρ ⟶ ρ => φ.hom.hom v) hc` as an intermediate fact. Conclude with `this.symm`.
+-/
 theorem exists_scalar (e : MonoidAlgebra ℂ Γ) (he : ∀ w, e * w = w * e) (ρ : FDRep ℂ Γ) [Simple ρ] :
     ∃ c : ℂ, ∀ v : ρ, (∑ q : Γ, e.coeff q • ρ.ρ q) v = c • v := by
   let T : ρ →ₗ[ℂ] ρ := ∑ q : Γ, e.coeff q • ρ.ρ q
@@ -43,6 +58,13 @@ theorem exists_scalar (e : MonoidAlgebra ℂ Γ) (he : ∀ w, e * w = w * e) (ρ
   have := congrArg (fun φ : ρ ⟶ ρ => φ.hom.hom v) hc
   exact this.symm
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[coeff_mul_fin, MonoidAlgebra.coeff_smul_apply, smul_eq_mul]`. Simplify using `only [Formalism.IrreducibleCountingLemmas.TYPES.zIdem_coeff]`. Establish `hT : (∑ q : Γ, e.coeff q • ρ.ρ q) = c • (1 : Module.End ℂ ρ)` using `LinearMap.ext fun v => by simp [hc v]`. Establish `h1 : ∀ q : Γ, ρ.ρ (q⁻¹ * x)⁻¹ = ρ.ρ x⁻¹ * ρ.ρ q` using `fun q => by rw [mul_inv_rev, inv_inv, map_mul]`.
+
+Establish `h2 : ∑ q : Γ, e.coeff q * LinearMap.trace ℂ ρ (ρ.ρ x⁻¹ * ρ.ρ q) = LinearMap.trace ℂ ρ (ρ.ρ x⁻¹ * ∑ q : Γ, e.coeff q • ρ.ρ q)`. Simplify using `only [Finset.mul_sum, mul_smul_comm, map_sum, map_smul, smul_eq_mul]`. Establish `h3 : ∑ q : Γ, e.coeff q * ((Module.finrank ℂ ρ : ℂ) / Fintype.card Γ * LinearMap.trace ℂ ρ (ρ.ρ (q⁻¹ * x)⁻¹)) = (Module.finrank ℂ ρ : ℂ) / Fintype.card Γ * ∑ q : Γ, e.coeff q * LinearMap.trace ℂ ρ (ρ.ρ x⁻¹ * ρ.ρ q)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h2, hT, mul_smul_comm, mul_one, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem mul_zIdem_eq_smul (e : MonoidAlgebra ℂ Γ) (ρ : FDRep ℂ Γ) (c : ℂ)
     (hc : ∀ v : ρ, (∑ q : Γ, e.coeff q • ρ.ρ q) v = c • v) :
     e * Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ = c • Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ := by
@@ -65,6 +87,23 @@ theorem mul_zIdem_eq_smul (e : MonoidAlgebra ℂ Γ) (ρ : FDRep ℂ Γ) (c : �
 end GlobalTheory.PrimCentIdem
 
 open GlobalTheory.PrimCentIdem in
+/- English proof (translation)
+Introduce `g a _ L τ`. Take `⟨hfin, hsum⟩` from `GlobalTheory.SerOSys.zIdem_finite_and_finsum_eq_one (GL (Fin a) (ZMod g))`. Establish `hex : ∃ ρ : FDRep ℂ (GL (Fin a) (ZMod g)), CategoryTheory.Simple ρ ∧ L.idem τ * Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`.
+
+Apply `L.idem_ne τ` to reduce the goal to its premises. Rewrite using `[← mul_one (L.idem τ), ← hsum, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Use `Finset.sum_eq_zero fun z hz => ?_` and prove the remaining obligations. Take `⟨ρ, hρ, rfl⟩` from `(Set.Finite.mem_toFinset hfin).1 hz`. Conclude with `hno ρ hρ`.
+
+Take `⟨ρ, hρ, hne⟩` from `hex`. Use `haveI := hρ`. Use `⟨ρ, hρ, ?_⟩` and prove the remaining obligations. Use `set e := L.idem τ with he_def`. Use `set z := Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ with hz_def`.
+
+Establish `hzz : z * z = z` using `(GlobalTheory.SerOSys.zIdem_centralIdempotent ρ hρ).1`. Establish `hee : e * e = e` using `L.idem_idem τ`. Establish `hec : ∀ w, e * w = w * e` using `L.idem_central τ`. Establish `hzc : ∀ w, z * w = w * z` using `(GlobalTheory.SerOSys.zIdem_centralIdempotent ρ hρ).2`. Take `⟨c, hc⟩` from `exists_scalar e hec ρ`.
+
+Establish `hmul : e * z = c • z` using `mul_zIdem_eq_smul e ρ c hc`. Establish `hze : z * e = e * z` using `hzc e`. Establish `hprim` using `L.idem_prim τ (e * z) (calc e * z * (e * z) = e * (z * e) * z := by simp only [mul_assoc] _ = e * (e * z) * z := by rw [hze] _ = (e * e) * (z * z) := by simp only [mul_assoc] _ = e * z := by rw [hee, hzz]) (fun w => calc e * z * w = e * (z * w) := mul_assoc _ _ _ _ = e * (w * z) …`. Establish `hez : e * z = e` using `hprim.resolve_left hne`. Establish `hcz : c • z ≠ 0` using `hmul ▸ hne`.
+
+Establish `hc0 : c ≠ 0` using `fun h => hcz (by rw [h, zero_smul])`. Establish `hz0 : z ≠ 0` using `fun h => hcz (by rw [h, smul_zero])`. Establish `hidem : (c * c - c) • z = 0`. Establish `h1 : (c • z) * (c • z) = c • z` using `by rw [← hmul, hez, hee]`. Rewrite `h1` using `[smul_mul_smul_comm, hzz]`.
+
+Rewrite using `[sub_smul, h1, sub_self]`. Establish `hcc : c * c - c = 0` using `(smul_eq_zero.1 hidem).resolve_right hz0`. Establish `hc1 : c = 1`. Establish `: c * (c - 1) = 0` using `by rw [mul_sub, mul_one]; exact hcc`. Break down `mul_eq_zero.1 this with h | h` into its components or cases.
+
+Conclude with `absurd h hc0`. Conclude with `sub_eq_zero.1 h`. Rewrite using `[← hez, hmul, hc1, one_smul]`.
+-/
 theorem GlobalTheory.PrimCentIdem.main : ∀ (g a : ℕ) [Fact g.Prime] (L : PairedCharacterCondition.LzData g) (τ : L.Irr a),
     ∃ ρ : FDRep ℂ (GL (Fin a) (ZMod g)), CategoryTheory.Simple ρ ∧ L.idem τ = Formalism.IrreducibleCountingLemmas.TYPES.zIdem ρ := by
   intro g a _ L τ

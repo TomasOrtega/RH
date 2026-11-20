@@ -2,6 +2,21 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.LocalGroupAnaly
 open PositivityTheory.Rg.Tf.Geo UpperTheory.ConvolutionTheory.G UpperTheory.ConvolutionTheory.T4
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Global GroundTheory.Global.SemiLocal
 
+/- English proof (translation)
+Introduce `hK hT hU hC F _ _ n hn γ hγ`. Establish `hincl : PositivityTheory.Rg.Tf.Loc.incl γ = γ`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hnorm : PositivityTheory.Rg.Tf.Loc.normGL (1 : F ≃ₐ[F] F) γ = PositivityTheory.Rg.Tf.Loc.incl γ`.
+
+Rewrite using `[hincl, PositivityTheory.Rg.Tf.Loc.normGL, Module.finrank_self]`. Simplify using `[PositivityTheory.Rg.Tf.Loc.twNorm]`. Establish `h1 : ∀ τ : F ≃ₐ[F] F, τ ∈ Subgroup.zpowers (1 : F ≃ₐ[F] F)` using `fun τ => by`. Establish `: τ = 1` using `AlgEquiv.ext fun x => τ.commutes x`. Rewrite using `[this]`.
+
+Conclude with `one_mem _`. Take `⟨-, -, -, c4, -, -, -, c8⟩` from `hC F F 1 n`. Use `filter_upwards [hK F F 1 h1 n hn γ γ hγ hnorm] with v hv x`. Establish `hdiag : mapGL n (atFin v) (AdelicGLn.diagonal F n γ) = mapGL n (incFin F v) (finAt v (AdelicGLn.diagonal F n γ))`. Establish `h` using `c4 v (AdelicGLn.diagonal F n γ)`.
+
+Rewrite `h` using `[c8, hincl]`. Conclude with `h`. Establish `hgal : ∀ y : GL (Fin n) (CompletionsOver F v), mapGL n (galFin (1 : F ≃ₐ[F] F) v) y = y` using `fun y => by`. Rewrite using `[((hT F).2.2 v).1]`. Use extensionality with `i j`.
+
+Both sides reduce to the same expression. Establish `key` using `hv (mapGL n (incFin F v) x)`. Rewrite `key` using `[hdiag, hgal, ← map_inv, ← map_mul, ← map_mul, hU F F n v]`. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, ht, y, hy, e⟩`. Use `⟨t, ht, t⁻¹ * x, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[← hU F F n v, map_mul, map_inv, e, inv_mul_cancel_left]`. Conclude with `hy`. Introduce and unpack `⟨t, ht, y, hy, rfl⟩`.
+
+Conclude with `⟨t, ht, mapGL n (incFin F v) y, (hU F F n v y).2 hy, map_mul _ _ _⟩`.
+-/
 theorem UpperTheory.maximalCompactNorm_of_unit_criterion :
     K1 → Triv → UnitIff → Compat → SelmerRankBoundLaurent := by
   intro hK hT hU hC F _ _ n hn γ hγ

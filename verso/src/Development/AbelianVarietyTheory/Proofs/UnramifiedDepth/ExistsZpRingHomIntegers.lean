@@ -21,10 +21,26 @@ namespace GlobalTheory
 section
 open Polynomial
 
+/- English proof (translation)
+The claim follows from `(Polynomial.aeval_algHom_apply π.toIntAlgHom x f).symm`.
+-/
 private theorem zpMap_map_aeval {R' R : Type} [CommRing R'] [CommRing R] (π : R' →+* R)
     (f : ℤ[X]) (x : R') : π (Polynomial.aeval x f) = Polynomial.aeval (π x) f :=
   (Polynomial.aeval_algHom_apply π.toIntAlgHom x f).symm
 
+/- English proof (translation)
+Set `φ : AdjoinRoot f →+* B` to `AdjoinRoot.lift (algebraMap ℤ B) ζ h0`. Set `α : AdjoinRoot f →+* R` to `AdjoinRoot.lift (algebraMap ℤ R) z hz`. Establish `hφ : ∀ g : ℤ[X], φ (AdjoinRoot.mk f g) = Polynomial.aeval ζ g` using `fun g => AdjoinRoot.lift_mk _ _`. Establish `hα : ∀ g : ℤ[X], α (AdjoinRoot.mk f g) = Polynomial.aeval z g` using `fun g => AdjoinRoot.lift_mk _ _`. Use `letI : Algebra (AdjoinRoot f) B := φ.toAlgebra`.
+
+Establish `halg : algebraMap (AdjoinRoot f) B = φ` using `rfl`. Set `S' : Submonoid (AdjoinRoot f)` to `S.map (Nat.castRingHom (AdjoinRoot f))`. Use `haveI : IsLocalization S' B := by`. Use `(isLocalization_iff _ _).mpr ⟨?_, fun b => ?_, fun {a c} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, hn, rfl⟩`.
+
+Simplify using `using hS n hn`. Take `⟨n, hn, g, hg⟩` from `hsurj b`. Use `⟨(AdjoinRoot.mk f g, ⟨_, n, hn, rfl⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [halg, hφ]`. Simplify using `using hg`.
+
+Take `⟨a, rfl⟩` from `AdjoinRoot.mk_surjective a`. Take `⟨c, rfl⟩` from `AdjoinRoot.mk_surjective c`. Rewrite `h` using `[halg, hφ, hφ, ← sub_eq_zero, ← map_sub]`. Rewrite using `[AdjoinRoot.mk_eq_mk.mpr (hinj _ h)]`. Establish `hu : ∀ y : S', IsUnit (α y)`.
+
+Introduce and unpack `⟨_, n, hn, rfl⟩`. Simplify using `using hS' n hn`. Use `⟨IsLocalization.lift hu, ?_⟩` and prove the remaining obligations. Establish `h1 : ζ = algebraMap (AdjoinRoot f) B (AdjoinRoot.mk f Polynomial.X)`. Rewrite using `[halg, hφ, Polynomial.aeval_X]`.
+
+Rewrite using `[h1, IsLocalization.lift_eq, hα, Polynomial.aeval_X]`.
+-/
 private theorem zpMap_general {B R : Type} [CommRing B] [CommRing R]
     (f : ℤ[X]) (ζ : B) (S : Submonoid ℕ) (h0 : Polynomial.aeval ζ f = 0)
     (hinj : ∀ g : ℤ[X], Polynomial.aeval ζ g = 0 → f ∣ g)
@@ -66,12 +82,26 @@ private def zpMap_S (p : ℕ) : Submonoid ℕ where
   mul_mem' := fun ha hb => ⟨mul_ne_zero ha.1 hb.1, Nat.Coprime.mul_left ha.2 hb.2⟩
   one_mem' := ⟨one_ne_zero, Nat.coprime_one_left p⟩
 
+/- English proof (translation)
+Establish `hmem : (n : ℂ)⁻¹ ∈ Geo.Tor.ZP p M` using `Subring.subset_closure (Or.inr ⟨n, hn.2, rfl⟩)`. Use `IsUnit.of_mul_eq_one (⟨_, hmem⟩ : Geo.Tor.ZP p M) (Subtype.ext ?_)` and prove the remaining obligations. Establish `: (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hn.1`. Simplify using `[this]`.
+-/
 private theorem zpMap_isUnit (p M n : ℕ) (hn : n ∈ zpMap_S p) : IsUnit (n : Geo.Tor.ZP p M) := by
   have hmem : (n : ℂ)⁻¹ ∈ Geo.Tor.ZP p M := Subring.subset_closure (Or.inr ⟨n, hn.2, rfl⟩)
   refine IsUnit.of_mul_eq_one (⟨_, hmem⟩ : Geo.Tor.ZP p M) (Subtype.ext ?_)
   have : (n : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr hn.1
   simp [this]
 
+/- English proof (translation)
+Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | ⟨n, hn, rfl⟩` into its components or cases. Conclude with `⟨1, one_mem _, Polynomial.X, by simpa [Geo.Tor.zetaZP] using hx⟩`. Distinguish the cases in `h : n = 0`.
+
+Conclude with `⟨1, one_mem _, 0, by simp [h]⟩`. Establish `: (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr h`. Conclude with `⟨n, ⟨h, hn⟩, 1, by simp [this]⟩`. Consider the case `zero => exact ⟨1, one_mem _, 0, by simp⟩`. Consider the case `one => exact ⟨1, one_mem _, 1, by simp⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨n, hn, g, hg⟩` from `hx`. Take `⟨m, hm, k, hk⟩` from `hy`. Use `⟨n * m, mul_mem hn hm, g * (m : ℤ[X]) + k * (n : ℤ[X]), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_natCast, Nat.cast_mul, ← hg, ← hk]`.
+
+Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨n, hn, g, hg⟩` from `hx`. Conclude with `⟨n, hn, -g, by rw [map_neg, ← hg, neg_mul]⟩`. Consider the case `mul x y _ _ hx hy`.
+
+Take `⟨n, hn, g, hg⟩` from `hx`. Take `⟨m, hm, k, hk⟩` from `hy`. Use `⟨n * m, mul_mem hn hm, g * k, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Nat.cast_mul, ← hg, ← hk]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem zpMap_surj (p M : ℕ) (x : ℂ) (hx : x ∈ Geo.Tor.ZP p M) :
     ∃ n ∈ zpMap_S p, ∃ g : ℤ[X],
       x * (n : ℂ) = Polynomial.aeval ((Geo.Tor.zetaZP p M : Geo.Tor.ZP p M) : ℂ) g := by
@@ -101,6 +131,11 @@ private theorem zpMap_surj (p M : ℕ) (x : ℂ) (hx : x ∈ Geo.Tor.ZP p M) :
     simp only [map_mul, Nat.cast_mul, ← hg, ← hk]
     ring
 
+/- English proof (translation)
+Establish `hp : (p : O) ∈ Ideal.jacobson (⊥ : Ideal O)` using `IsAdicComplete.le_jacobson_bot (Ideal.span {(p : O)}) (Ideal.subset_span rfl)`. Establish `hc : IsCoprime (n : O) (p : O)` using `Nat.Coprime.cast hn`. Take `⟨a, b, hab⟩` from `hc`. Establish `hu` using `Ideal.mem_jacobson_bot.mp hp (-b)`. Establish `: (p : O) * -b + 1 = a * n` using `by rw [← hab]; ring`.
+
+Rewrite `hu` using `[this]`. Conclude with `isUnit_of_mul_isUnit_right hu`.
+-/
 private theorem zpMap_unit (p : ℕ) (O : Type) [CommRing O]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (n : ℕ) (hn : n.Coprime p) : IsUnit (n : O) := by
   have hp : (p : O) ∈ Ideal.jacobson (⊥ : Ideal O) :=
@@ -112,6 +147,25 @@ private theorem zpMap_unit (p : ℕ) (O : Type) [CommRing O]
   rw [this] at hu
   exact isUnit_of_mul_isUnit_right hu
 
+/- English proof (translation)
+Establish `hpos : 0 < M` using `Nat.pos_of_ne_zero hM`. Use `haveI : NeZero M := ⟨hM⟩`. Establish `hprim : IsPrimitiveRoot ((Geo.Tor.zetaZP p M : Geo.Tor.ZP p M) : ℂ) M` using `Complex.isPrimitiveRoot_exp M hM`. Establish `hmin` using `cyclotomic_eq_minpoly hprim hpos`. Establish `hcoe : ∀ g : ℤ[X], ((Polynomial.aeval (Geo.Tor.zetaZP p M) g : Geo.Tor.ZP p M) : ℂ) = Polynomial.aeval ((Geo.Tor.zetaZP p M : Geo.Tor.ZP p M) : ℂ) g` using `fun g => zpMap_map_aeval (Geo.Tor.ZP p M).subtype g _`.
+
+Establish `h0 : Polynomial.aeval (Geo.Tor.zetaZP p M) (cyclotomic M ℤ) = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hcoe, hmin]`. Conclude with `minpoly.aeval _ _`. Take `⟨w, hw⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C M`.
+
+Establish `hvw : v w ≤ 1`. Establish `h1 : v w ^ M = 1` using `by rw [← map_pow, hw.pow_eq_one, map_one]`. Conclude with `((pow_eq_one_iff_of_nonneg zero_le hM).mp h1).le`. Take `⟨z, rfl⟩` from `hv.exists_of_le_one hvw`. Establish `hminw` using `cyclotomic_eq_minpoly hw hpos`.
+
+Establish `hz : Polynomial.aeval z (cyclotomic M ℤ) = 0`. Apply `hv.hom_inj` to reduce the goal to its premises. Rewrite using `[zpMap_map_aeval, map_zero, hminw]`. Conclude with `minpoly.aeval _ _`. Establish `hsurj : ∀ b : Geo.Tor.ZP p M, ∃ n ∈ zpMap_S p, ∃ g : ℤ[X], b * (n : Geo.Tor.ZP p M) = Polynomial.aeval (Geo.Tor.zetaZP p M) g`.
+
+Introduce `b`. Take `⟨n, hn, g, hg⟩` from `zpMap_surj p M b b.2`. Conclude with `⟨n, hn, g, Subtype.ext (by rw [hcoe, ← hg]; simp)⟩`. Take `⟨β, hβ⟩` from `zpMap_general (cyclotomic M ℤ) (Geo.Tor.zetaZP p M) (zpMap_S p) h0 (fun g hg => by`. Rewrite using `[hmin]`.
+
+Use `minpoly.isIntegrallyClosed_dvd (hprim.isIntegral hpos) ?_` and prove the remaining obligations. Rewrite using `[← hcoe, hg]`. Use the proof step `rfl)`. Use the proof step `(zpMap_isUnit p M) hsurj (fun n hn => zpMap_unit p O n hn.2) z hz`. Establish `hMu : IsUnit (M : O)` using `zpMap_unit p O M hMp`.
+
+Use `⟨β, ?_, hMu, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`. Take `⟨n, hn, g, hg⟩` from `hsurj b`. Establish `h1 : Polynomial.aeval (algebraMap O C z) g = 0`.
+
+Rewrite using `[← zpMap_map_aeval, ← hβ, ← zpMap_map_aeval, ← hg, map_mul, hb, zero_mul, map_zero]`. Establish `h2 : cyclotomic M ℤ ∣ g`. Rewrite using `[hminw]`. Conclude with `minpoly.isIntegrallyClosed_dvd (hw.isIntegral hpos) h1`. Take `⟨q, rfl⟩` from `h2`.
+
+Rewrite `hg` using `[map_mul, h0, zero_mul]`. Conclude with `((zpMap_isUnit p M n hn).mul_left_eq_zero).mp hg`. Introduce `k _ gk haveI : NeZero (M : k) := ⟨by simpa using (hMu.map gk).ne_zero⟩`. Rewrite using `[← isRoot_cyclotomic_iff, hβ, IsRoot.def, ← map_cyclotomic_int, ← algebraMap_int_eq, eval_map_algebraMap, ← zpMap_map_aeval, hz, map_zero]`.
+-/
 private theorem zpMap_main (p : ℕ) (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O)
     [IsAdicComplete (Ideal.span {(p : O)}) O] (M : ℕ) (hM : M ≠ 0) (hMp : M.Coprime p) :
@@ -171,6 +225,9 @@ private theorem zpMap_main (p : ℕ) (C : Type) [Field C] [IsAlgClosed C] [CharZ
 
 end
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v O _ _ hv _ _ M hM hMp`. Conclude with `zpMap_main p C v O hv M hM hMp`.
+-/
 theorem exists_zp_ringHom_integers : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C], v.Integers O → ∀ [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] (M : ℕ), M ≠ 0 → M.Coprime p → ∃ β : Geo.Tor.ZP p M →+* O, Function.Injective β ∧ IsUnit (M : O) ∧ ∀ (k : Type) [Field k] (gk : O →+* k), IsPrimitiveRoot (gk (β (Geo.Tor.zetaZP p M))) M := by
   intro p _ C _ _ _ v O _ _ hv _ _ M hM hMp
   exact zpMap_main p C v O hv M hM hMp

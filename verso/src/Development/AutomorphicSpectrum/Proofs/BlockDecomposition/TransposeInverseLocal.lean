@@ -12,6 +12,9 @@ namespace GlobalTheory.CompanionTheory.TransposeInverse
 
 open Ad3.R (G2 dia2 LInv)
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose`. Rewrite using `[Matrix.transpose_mul]`.
+-/
 theorem ti_mul {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] (a b : GL n R) :
     ti (a * b) = ti a * ti b := by
   apply Units.ext

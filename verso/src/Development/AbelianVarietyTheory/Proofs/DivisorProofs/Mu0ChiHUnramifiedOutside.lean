@@ -24,6 +24,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Chars Base stepFa
 
 namespace GlobalTheory.TwistUnr
 
+/- English proof (translation)
+Introduce `D T Lc sc G μ₀ hL i j t w hw hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Formalism.L2.Host.IsMu0.unr (Lc.C.isMu0 j) w ?_` and prove the remaining obligations. Introduce `k hmemE`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t w hw`.
+
+Use `haveI : Finite (Formalism.L2.DIV.kP w) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Establish `: w.asIdeal.IsPrime` using `w.isPrime`. Use `haveI : Fintype (Formalism.L2.DIV.kP w) := Fintype.ofFinite _`. Establish `h0g : ((D.host.g k : ℕ) : Formalism.L2.DIV.kP w) = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem (I := w.asIdeal)).2 hmemE` as an intermediate fact.
+
+Simplify using `using this`. Establish `h0q : ((q : ℕ) : Formalism.L2.DIV.kP w) = 0`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (Formalism.L2.DIV.kP w)`. Establish `hd1 : ringChar (Formalism.L2.DIV.kP w) ∣ D.host.g k` using `ringChar.dvd h0g`.
+
+Establish `hd2 : ringChar (Formalism.L2.DIV.kP w) ∣ q` using `ringChar.dvd h0q`. Establish `hcop : Nat.Coprime q (D.host.g k)` using `(Nat.coprime_primes hq (D.host.g_prime k)).2 (hne k)`. Establish `h1 : ringChar (Formalism.L2.DIV.kP w) = 1` using `Nat.eq_one_of_dvd_coprimes hcop hd2 hd1`. Conclude with `CharP.ringChar_ne_one h1`. Establish `hi` using `i.isLt`.
+
+Conclude with `G.ch.unr (D.R.m - (i : ℕ)) (by omega) (Nat.sub_le _ _) w hS`.
+-/
 theorem mu0_chiH_unrAt : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} (G : GridData Lc sc) {μ₀ : T}, Lc.Is μ₀ →
     ∀ (i j : Fin D.R.m) (t : T) (w : HeightOneSpectrum (𝓞 D.host.E)), w ∈ Lc.Q t → w.under (𝓞 D.host.F) ∉ G.pl.S0 →
       (Lc.C.mu0 j).UnrAt w ∧ (G.ch.chiH (D.R.m - i)).UnrAt w := by

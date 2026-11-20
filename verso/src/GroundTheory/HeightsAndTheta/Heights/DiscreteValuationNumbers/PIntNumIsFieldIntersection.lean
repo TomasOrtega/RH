@@ -10,12 +10,20 @@ noncomputable section
 
 universe u
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hV.1, (h2 F K ι V).1 hV.2.1, hV.2.2⟩`.
+-/
 private theorem isMultiProjPrime_of_vocab (h2 : VocabMultiHomogIdeal.Statement.{u})
     {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {V : Ideal (MRing ι F)}
     (hV : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiProjPrime V) : IsMultiProjPrime V :=
   ⟨hV.1, (h2 F K ι V).1 hV.2.1, hV.2.2⟩
 
+/- English proof (translation)
+Rewrite using `[Finsupp.sum, finsum_eq_sum_of_support_subset]`. Introduce `W hW`. Rewrite `hW` using `[Function.mem_support]`. Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff]`. Introduce `h0`.
+
+Conclude with `hW (by rw [h0, zero_mul])`.
+-/
 private theorem finsum_mul_eq_finsupp_sum {α : Type*} (D : α →₀ ℤ) (J : α → ℤ) :
     ∑ᶠ W, D W * J W = D.sum fun W m => m * J W := by
   classical
@@ -26,6 +34,15 @@ private theorem finsum_mul_eq_finsupp_sum {α : Type*} (D : α →₀ ℤ) (J : 
   intro h0
   exact hW (by rw [h0, zero_mul])
 
+/- English proof (translation)
+Introduce `F _ K _ _ ι _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `V L i hV hi`. Establish `hL : L = (![] : Fin 0 → K → ℤ)` using `funext fun j => Fin.elim0 j`. Substitute `hL` using the available equality.
+
+Conclude with `h4 F K ι V i (isMultiProjPrime_of_vocab h2 hV.1) hV.2 hi`. Introduce `V n L A f g hV hs`. Take `⟨α, β, hf, hg, hfV, hgV, hαβ⟩` from `hs`. Establish `key` using `h5 F K ι n V (isMultiProjPrime_of_vocab h2 hV.1) hV.2 L A f g α β ((h1 F K ι f α).1 hf) ((h1 F K ι g β).1 hg) hfV hgV hαβ`. Use `key.trans ?_` and prove the remaining obligations.
+
+Establish `hD : ∀ W, ratDiv V f g W = ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv V f g W`. Introduce `W`. Simplify using `only [ratDiv, ReciprocityTheory.ChartRestriction.G.AI.I1.ratDiv, Finsupp.sub_apply, Finsupp.mapRange_apply]`. Rewrite using `[h3 F K ι V f W, h3 F K ι V g W]`. Simplify using `only [cycEval, ReciprocityTheory.ChartRestriction.G.AI.I1.cycEval, hD]`.
+
+Conclude with `finsum_mul_eq_finsupp_sum _ _`.
+-/
 theorem IntNumIsFieldIntersection.proof (h1 : VocabMultiHomog.Statement.{u})
     (h2 : VocabMultiHomogIdeal.Statement.{u}) (h3 : VocabDivCycle.Statement.{u})
     (h4 : IntNumPoint.Statement.{u}) (h5 : IntNumRatSection.Statement.{u}) :

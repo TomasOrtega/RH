@@ -3,10 +3,18 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Stabili
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N
 open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Base UpperTheory.V.Sd
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.StabilizerIsOpen.stab_open ρ v h`.
+-/
 private theorem stab_open {G V : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) (v : V) (h : {k | ρ k v = v} ∈ nhds (1 : G)) : IsOpen {k | ρ k v = v} :=
   _root_.UpperTheory.Reformulated.B.StabilizerIsOpen.stab_open ρ v h
 
+/- English proof (translation)
+Establish `h1 : ((Submodule.span ℂ (Set.range f)).map S.subtype).FG` using `(Module.Finite.iff_fg.1 hf).map _`. Establish `h2 : ((Submodule.span ℂ (Set.range g)).map S.subtype).FG` using `(Module.Finite.iff_fg.1 hg).map _`. Establish `h3` using `Module.Finite.iff_fg.2 (h1.mul h2)`. Establish `h4 : FiniteDimensional ℂ ((Submodule.span ℂ (Set.range h)).map S.subtype)`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range f)).map S.subtype * (Submodule.span ℂ (Set.range g)).map S.subtype) (Submodule.map_le_iff_le_comap.2 (Submodule.span_le.2 ?_))` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Submodule.subtype_apply, e]`. Conclude with `Submodule.mul_mem_mul ⟨_, Submodule.subset_span ⟨i, rfl⟩, rfl⟩ ⟨_, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`. Conclude with `Module.Finite.iff_fg.2 (Submodule.fg_of_fg_map_injective S.subtype S.injective_subtype (Module.Finite.iff_fg.1 h4))`.
+-/
 private theorem fin_mul {X ι : Type*} (S : Submodule ℂ (X → ℂ)) (f g h : ι → S) (e : ∀ i, (h i).1 = (f i).1 * (g i).1)
     (hf : FiniteDimensional ℂ (Submodule.span ℂ (Set.range f)))
     (hg : FiniteDimensional ℂ (Submodule.span ℂ (Set.range g))) :
@@ -22,6 +30,15 @@ private theorem fin_mul {X ι : Type*} (S : Submodule ℂ (X → ℂ)) (f g h : 
     exact Submodule.mul_mem_mul ⟨_, Submodule.subset_span ⟨i, rfl⟩, rfl⟩ ⟨_, Submodule.subset_span ⟨i, rfl⟩, rfl⟩
   exact Module.Finite.iff_fg.2 (Submodule.fg_of_fg_map_injective S.subtype S.injective_subtype (Module.Finite.iff_fg.1 h4))
 
+/- English proof (translation)
+Introduce `F _ _ _ a φ ψ χ e hφ hψ hz`. Establish `hrt : ∀ g, (TR.rt F a g χ).1 = (TR.rt F a g φ).1 * (TR.rt F a g ψ).1` using `fun g => by`. Use function extensionality and compare the values at `x`. Simplify using `only [TR.rt_apply, Pi.mul_apply, e]`. Use `⟨fun γ g => ?_, ?_, ?_, hz, fun g => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, Pi.mul_apply, Pi.mul_apply, hφ.left, hψ.left]`. Use `stab_open _ _ (Filter.mem_of_superset ((hφ.level.inter hψ.level).mem_nhds ⟨by simp, by simp⟩) fun k hk => ?_)` and prove the remaining obligations. Establish `h1 : TR.rt F a (finGL F a k) φ = φ` using `hk.1`. Establish `h2 : TR.rt F a (finGL F a k) ψ = ψ` using `hk.2`. Express the relevant statement in the definitionally equal form `TR.rt F a (finGL F a k) χ = χ`.
+
+Conclude with `Subtype.ext (by rw [hrt, h1, h2, e])`. Conclude with `fin_mul _ _ _ _ (fun k => hrt _) hφ.kfin hψ.kfin`. Take `⟨C, N, h1⟩` from `hφ.growth g`. Take `⟨C', N', h2⟩` from `hψ.growth g`. Use `⟨C * C', N + N', fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[e, Pi.mul_apply, norm_mul]`. Use `(mul_le_mul (h1 y) (h2 y) (norm_nonneg _) ((norm_nonneg _).trans (h1 y))).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem UpperTheory.V.Sd.Hm.mulaut :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ) (φ ψ χ : TR.Sm F a), χ.1 = φ.1 * ψ.1 →
         TR.IsAutForm φ → TR.IsAutForm ψ →

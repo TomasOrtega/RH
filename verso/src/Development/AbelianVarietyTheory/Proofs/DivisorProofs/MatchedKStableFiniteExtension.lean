@@ -23,6 +23,9 @@ noncomputable section
 
 namespace GlobalTheory.KStableCompl
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT j k hk f hf f₁ h`. Conclude with `GlobalTheory.KInfFockDeg.fockDeg_stable_kInf F E σ B a (a + a') G.V G.W G.M om X.β (X.β / X.α) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil k hk j f hf f₁ h`.
+-/
 theorem fockDeg_kStable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' →
@@ -32,6 +35,35 @@ theorem fockDeg_kStable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [Nu
   exact GlobalTheory.KInfFockDeg.fockDeg_stable_kInf F E σ B a (a + a') G.V G.W G.M om X.β (X.β / X.α) (a - G.p) G.p
     (a + a' - (G.p + G.q)) (G.p + G.q) hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil k hk j f hf f₁ h
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT j S hSU hS`. Use `haveI := GlobalTheory.WeilAdm.HaarSplit.volume_isAddHaar F (Fin a × Fin (a + a'))`. Use `haveI : BorelSpace (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F) := inferInstance`. Use `haveI hU : FiniteDimensional ℂ (GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j) := GlobalTheory.FockDegFin.fockDeg_finiteDimensional F E σ B a (a + a') G.V G.W G.M (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) hT.base hT.geo.hV hT.geo.hW hT.geo.hM j`. Use `haveI hSfin : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSU`.
+
+Set `ι : SInf F (Fin a × Fin (a + a')) →ₗ[ℂ] Lp ℂ 2 (volume : Measure (Fin a × Fin (a + a') → mixedEmbedding.mixedSpace F))` to `(SchwartzMap.toLpCLM ℂ ℂ 2 volume).toLinearMap`. Establish `hι : Function.Injective ι` using `SchwartzMap.injective_toLp 2 volume`. Set `K` to `S.map ι`. Use `haveI : FiniteDimensional ℂ K := Module.Finite.map S ι`. Establish `hE` using `(GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hT).2.2.2`.
+
+Establish `hle` using `GlobalTheory.IndLine.fockDeg_le_pol G.M B.ψ B.emb j`. Use `⟨GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j ⊓ Kᗮ.comap ι, inf_le_left, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `k hk f ⟨hfU, hfK⟩ f₁ h1`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_KInf F E σ B a (a + a') G.V G.W G.M om X.β (X.β / X.α) hT.base hT.geo.hM hT.weil k hk`. Establish `huniq : ∀ g ∈ GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j, ∀ g₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (1, k)) g g₁ → g₁ = A g`.
+
+Introduce `g hg g₁ hg₁`. Take `⟨g₂, -, -, hu⟩` from `hE k hk g (hle hg)`. Rewrite using `[hu g₁ hg₁, hu (A g) (hA g)]`. Establish `hnorm : ∀ g, ‖ι (A g)‖ = ‖ι g‖`. Introduce `g`.
+
+Establish `e` using `GlobalTheory.T.compact_weil_l2_invariant F E σ B a (a + a') G.V G.W G.M om X.β (X.β / X.α) hT.base hT.geo.hM hT.weil k hk g (A g) (hA g)`. Use `show ‖(A g).toLp 2 volume‖ = ‖g.toLp 2 volume‖`. Rewrite using `[SchwartzMap.norm_toLp, SchwartzMap.norm_toLp, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top, eLpNorm_eq_lintegral_rpow_enorm two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.rpow_two]`. Rewrite using `[e]`.
+
+Establish `hinner : ∀ g h, inner ℂ (ι (A g)) (ι (A h)) = inner ℂ (ι g) (ι h)`. Introduce `g h`. Rewrite using `[inner_eq_sum_norm_sq_div_four, inner_eq_sum_norm_sq_div_four]`. Simplify using `only [← map_add, ← map_sub, ← map_smul, hnorm]`. Establish `hAS : ∀ s ∈ S, A s ∈ S` using `fun s hs => hS k hk s hs (A s) (hA s)`.
+
+Set `AS : S →ₗ[ℂ] S` to `A.restrict hAS`. Establish `hinj : Function.Injective AS`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `s hs`. Rewrite `hs` using `[LinearMap.mem_ker]`.
+
+Establish `h0 : A s = 0` using `congrArg Subtype.val hs`. Establish `: ‖ι s‖ = 0` using `by rw [← hnorm, h0, map_zero, norm_zero]`. Rewrite `this` using `[norm_eq_zero, ← map_zero ι]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext (hι this))`. Establish `hsurj : Function.Surjective AS` using `LinearMap.injective_iff_surjective.mp hinj`.
+
+Rewrite using `[huniq f hfU f₁ h1]`. Use `⟨GlobalTheory.KInfFockDeg.fockDeg_stable_kInf F E σ B a (a + a') G.V G.W G.M om X.β (X.β / X.α) (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q) hT.base hT.geo.hV hT.geo.hW hT.geo.hM hT.weil k hk j f hfU (A f) (hA f), ?_⟩` and prove the remaining obligations. Use `show ι (A f) ∈ Kᗮ`. Rewrite using `[Submodule.mem_orthogonal]`. Introduce and unpack `_ ⟨s, hs, rfl⟩`.
+
+Take `⟨s', hs'⟩` from `hsurj ⟨s, hs⟩`. Establish `e : A s'.1 = s` using `congrArg Subtype.val hs'`. Rewrite using `[← e, hinner]`. Conclude with `(Submodule.mem_orthogonal K (ι f)).1 hfK (ι s'.1) ⟨s'.1, s'.2, rfl⟩`. Rewrite using `[eq_bot_iff]`.
+
+Introduce and unpack `s ⟨hs, -, hsK⟩`. Establish `h1 : ι s ∈ K` using `⟨s, hs, rfl⟩`. Establish `h2 : ι s = 0`. Use `(Submodule.mem_orthogonal K (ι s)).1 hsK (ι s) h1` as an intermediate fact. Conclude with `inner_self_eq_zero.1 this`.
+
+Rewrite `h2` using `[← map_zero ι]`. Conclude with `(Submodule.mem_bot ℂ).2 (hι h2)`. Use `le_antisymm (sup_le hSU inf_le_left) ?_` and prove the remaining obligations. Introduce `u hu`. Take `⟨s, hs, hse⟩` from `(K.orthogonalProjection (ι u)).2`.
+
+Establish `hmem : ι u - K.starProjection (ι u) ∈ Kᗮ` using `Submodule.sub_starProjection_mem_orthogonal (ι u)`. Establish `hu' : u = s + (u - s)` using `by abel`. Rewrite using `[hu']`. Use `Submodule.add_mem_sup hs ⟨Submodule.sub_mem _ hu (hSU hs), ?_⟩` and prove the remaining obligations. Use `show ι (u - s) ∈ Kᗮ`.
+
+Rewrite using `[map_sub, hse]`. Conclude with `hmem`.
+-/
 theorem exists_kStable_compl_fockDeg : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
     IsTriple B G X om om' →
@@ -116,6 +148,25 @@ theorem exists_kStable_compl_fockDeg : GlobalTheory.ThK.KP → ∀ (F E : Type) 
     rw [map_sub, hse]
     exact hmem
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM U₀ hU₀`. Establish `hT` using `hM.triple`. Establish `hA` using `fockDeg_kStable hKP F E σ B a a' G X om om' hT`. Establish `hC` using `exists_kStable_compl_fockDeg hKP F E σ B a a' G X om om' hT`. Establish `hE` using `(GlobalTheory.T.real_line_polynomial_equivariance hKP F E σ B a a' G X om om' hT).2.2.2`.
+
+Establish `hadd` using `GlobalTheory.T.matched_polynomial_triple_product hKP F E σ B a a' G X om om' R Rf hM`. Establish `hV` using `(GlobalTheory.T.low_part_compact_stable hKP F E σ B a a' G X om om' R Rf hM).1`. Establish `hle` using `GlobalTheory.IndLine.fockDeg_le_pol G.M B.ψ B.emb`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, U₀ ≤ (GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j).map R.p := by`. Establish `htop : (⨆ j, (GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j).map R.p) = ⊤`.
+
+Rewrite using `[← Submodule.map_iSup, ← GlobalTheory.IndLine.pol_eq_iSup_fockDeg]`. Conclude with `hM.real.quot.onto`. Establish `hdir : Directed (· ≤ ·) (fun j => (GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j).map R.p)` using `Monotone.directed_le fun i j hij => Submodule.map_mono (GlobalTheory.IndLine.fockDeg_mono G.M B.ψ B.emb hij)`. Establish `hfg : U₀.FG` using `Module.Finite.iff_fg.mp hU₀`. Establish `hc : IsCompactElement U₀` using `(Submodule.fg_iff_compact U₀).mp hfg`.
+
+Take `⟨x, ⟨j, rfl⟩, hx⟩` from `(CompleteLattice.isCompactElement_iff_le_of_directed_sSup_le _ U₀).mp hc (Set.range fun j => (GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j).map R.p) (Set.range_nonempty _) hdir.directedOn_range (by simp only [sSup_range, htop, le_top])`. Conclude with `⟨j, hx⟩`. Set `S` to `GlobalTheory.IndLine.fockDeg G.M B.ψ B.emb j ⊓ (lowPartInf B G.M R.p).comap R.p`. Establish `hSst : ∀ k ∈ KInf σ G.W B.emb, ∀ f ∈ S, ∀ f₁ : SInf F (Fin a × Fin (a + a')), Acts (evI F) (om (1, k)) f f₁ → f₁ ∈ S` using `fun k hk f hf f₁ h1 => ⟨hA j k hk f hf.1 f₁ h1, hV k hk f (hle j hf.1) f₁ h1 hf.2⟩`. Take `⟨T, hTle, hTst, hST, hST'⟩` from `hC j S inf_le_left hSst`.
+
+Establish `h00 : ∀ k, Acts (evI F) (om (1, k)) (0 : SInf F (Fin a × Fin (a + a'))) (0 : SInf F (Fin a × Fin (a + a')))`. Introduce `k r _`. Establish `: tens (evI F) (⇑(0 : SInf F (Fin a × Fin (a + a')))) r = 0`. Use function extensionality and compare the values at `x`. Simplify using `[tens]`.
+
+Rewrite using `[this, map_zero]`. Use `⟨T.map R.p, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `k hk f hf f₁ h1 ⟨t, ht, hpt⟩`. Take `⟨t₁, -, ht₁, -⟩` from `hE k hk t (hle j (hTle ht))`. Establish `e` using `hadd k hk f hf t (hle j (hTle ht)) 0 (Submodule.zero_mem _) f₁ t₁ 0 h1 ht₁ (h00 k) (by rw [map_zero, add_zero, hpt])`.
+
+Rewrite `e` using `[map_zero, add_zero]`. Rewrite using `[e]`. Conclude with `⟨t₁, hTst k hk t ht t₁ ht₁, rfl⟩`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `x ⟨hxV, t, ht, rfl⟩`.
+
+Establish `: t ∈ S ⊓ T` using `⟨⟨hTle ht, hxV⟩, ht⟩`. Rewrite `this` using `[hST, Submodule.mem_bot]`. Simplify using `[this]`. Use `hj.trans ?_` and prove the remaining obligations. Rewrite using `[← hST', Submodule.map_sup]`.
+
+Conclude with `sup_le_sup_right (Submodule.map_le_iff_le_comap.mpr inf_le_right) _`.
+-/
 theorem exists_kStable_compl : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)
     (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf →

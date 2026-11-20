@@ -6,6 +6,45 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `O B _ _ _ _ hft s s' g u hred hu hgen`. Take `⟨S, hS⟩` from `hft.out`. Set `N : Ideal O` to `Ideal.span ((S.image fun b => s' b - s b : Finset O) : Set O)`. Establish `hNfg : N.FG` using `⟨_, rfl⟩`. Establish `h1 : ∀ b, s' b - s b ∈ N`.
+
+Introduce `b`. Establish `hb : b ∈ Algebra.adjoin O (S : Set B)` using `hS ▸ Algebra.mem_top`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Conclude with `Ideal.subset_span (by`.
+
+Simplify using `only [Finset.coe_image]`. Conclude with `⟨x, hx, rfl⟩)`. Consider the case `algebraMap r => simp`. Consider the case `add x y _ _ hx hy`. Establish `: s' (x + y) - s (x + y) = (s' x - s x) + (s' y - s y)`.
+
+Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `N.add_mem hx hy`. Consider the case `mul x y _ _ hx hy`.
+
+Establish `: s' (x * y) - s (x * y) = s' x * (s' y - s y) + s y * (s' x - s x)`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `N.add_mem (N.mul_mem_left _ hy) (N.mul_mem_left _ hx)`.
+
+Establish `h2 : ∀ y ∈ (IsLocalRing.maximalIdeal O).map (algebraMap O B), ∀ c : B, s' (c * y) - s (c * y) ∈ IsLocalRing.maximalIdeal O * N`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`.
+
+Introduce `c`. Establish `: s' (c * algebraMap O B a) - s (c * algebraMap O B a) = a * (s' c - s c)`. Simplify using `only [map_mul, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+
+Conclude with `Ideal.mul_mem_mul ha (h1 c)`. Consider the case `zero => intro c`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Introduce `c`.
+
+Establish `: s' (c * (x + y)) - s (c * (x + y)) = (s' (c * x) - s (c * x)) + (s' (c * y) - s (c * y))`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `Ideal.add_mem _ (hx c) (hy c)`.
+
+Consider the case `smul a x _ hx`. Introduce `c`. Use `hx (c * a)` as an intermediate fact. Rewrite `this` using `[_root_.mul_assoc]`. Then use the resulting hypothesis. Establish `h3 : ∀ j ∈ Ideal.span (Set.range fun i => u i - algebraMap O B (s (u i))), s j = 0 ∧ s' j = 0`.
+
+Introduce `j hj`. Establish `a1 : Ideal.span (Set.range fun i => u i - algebraMap O B (s (u i))) ≤ RingHom.ker (s : B →+* O)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[RingHom.mem_ker]`.
+
+Establish `a2 : Ideal.span (Set.range fun i => u i - algebraMap O B (s (u i))) ≤ RingHom.ker (s' : B →+* O)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `[RingHom.mem_ker, hu i]`. Conclude with `⟨a1 hj, a2 hj⟩`.
+
+Establish `h4 : ∀ x, s' x - s x ∈ IsLocalRing.maximalIdeal O * N`. Introduce `x`. Establish `hb : s (x - algebraMap O B (s x)) = 0` using `by simp`. Establish `hb' : s' (x - algebraMap O B (s x)) = s' x - s x` using `by simp`. Take `⟨t, ht, hmem⟩` from `hgen _ hb`.
+
+Take `⟨j, hj, y, hy, hjy⟩` from `Submodule.mem_sup.1 hmem`. Establish `ht' : IsUnit (s' t)`. Assume the negation of the conclusion as `hn`. Establish `m1 : s' t ∈ IsLocalRing.maximalIdeal O` using `hn`. Establish `m2` using `Ideal.add_mem _ (hred t) m1`.
+
+Rewrite `m2` using `[sub_add_cancel]`. Conclude with `m2 ht`. Take `⟨j1, j2⟩` from `h3 j hj`. Establish `e1` using `congrArg s hjy`. Establish `e2` using `congrArg s' hjy`.
+
+Rewrite `e1` using `[map_add, map_mul, hb, j1]`. Rewrite `e2` using `[map_add, map_mul, hb', j2]`. Establish `h5` using `h2 y hy 1`. Rewrite `h5` using `[_root_.one_mul]`. Establish `: s' y - s y = s' t * (s' x - s x)`.
+
+Take the linear combination `e2 - e1`. Rewrite `h5` using `[this]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ ht').1 h5`. Establish `hN : N = ⊥`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal O) N hNfg ?_ ?_` and prove the remaining obligations.
+
+Rewrite using `[Ideal.span_le]`. Introduce `z hz`. Simplify using `only [Finset.coe_image] at hz`. Take `⟨x, _, rfl⟩` from `hz`. Conclude with `h4 x`.
+
+Conclude with `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Use extensionality with `b`. Use `h1 b` as an intermediate fact. Rewrite `this` using `[hN, Ideal.mem_bot, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem algHom_eq_of_reduction_eq_of_coords_eq :
     ∀ (O B : Type) [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B] [Algebra.FiniteType O B] (s s' : B →ₐ[O] O) (g : ℕ) (u : Fin g → B), (∀ b, s b - s' b ∈ IsLocalRing.maximalIdeal O) → (∀ i, s (u i) = s' (u i)) → (∀ b, s b = 0 → ∃ t : B, IsUnit (s t) ∧ t * b ∈ Ideal.span (Set.range fun i => u i - algebraMap O B (s (u i))) ⊔ (IsLocalRing.maximalIdeal O).map (algebraMap O B)) → s = s' := by
   intro O B _ _ _ _ hft s s' g u hred hu hgen

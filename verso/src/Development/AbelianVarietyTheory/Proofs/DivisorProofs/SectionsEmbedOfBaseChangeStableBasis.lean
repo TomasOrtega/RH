@@ -12,6 +12,15 @@ noncomputable section
 
 namespace GlobalTheory.HomFixUniv
 
+/- English proof (translation)
+Establish `hp : IsProper B.hom` using `hB.proper`. Set `t : Spec (CommRingCat.of Rg) ⟶ (topS Rg).left` to `(Sp Rg).topIso.inv`. Use `choose b' hb' using fun i => GlobalTheory.AbLaw.SecBC.exists_pullSec B M (k : ℤ) (homAt t) (bB i)`. Establish `hspan` using `(hb Rg t b' hb').2`. Establish `hE` using `GlobalTheory.AmpleSpan.embedsBy_baseAt B hM hVA (isAffineOpen_top (Sp Rg)) t b' hspan`.
+
+Establish `hS` using `fun i => GlobalTheory.SpanFrame.secScal_of_isPullSec B hM (k : ℤ) (homAt t) (hb' i)`. Use `haveI : IsIso (homAt t) := by haveI : IsIso ((Over.forget _).map (homAt t)) := by change IsIso t; infer_instance`. Conclude with `isIso_of_reflects_iso (homAt t) (Over.forget _)`. Use `haveI : IsIso (homAt t ▷ B).left := inferInstanceAs (IsIso ((Over.forget _).map (homAt t ▷ B)))`. Use `haveI : IsAffine (baseAt t).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of Rg)))`.
+
+Establish `hw : (homAt t ▷ B).left ≫ fA B = (fst (baseAt t) B).left ≫ 𝟙 _`. Establish `e1` using `Over.w (homAt t ▷ B)`. Establish `e2` using `Over.w (fst (baseAt t) B)`. Establish `e3 : (baseAt t).hom = 𝟙 _` using `by simp [baseAt, t, baseOver]`. Rewrite using `[Category.comp_id, fA, e1, ← e2, e3, Category.comp_id]`.
+
+Establish `sq : IsPullback (inv (homAt t ▷ B).left) (fA B) (fst (baseAt t) B).left (𝟙 _)`. Use `IsPullback.of_horiz_isIso ⟨?_⟩` and prove the remaining obligations. Rewrite using `[IsIso.inv_comp_eq, Category.comp_id, hw, Category.comp_id]`. Conclude with `GlobalTheory.AmpleSpan.EmbedsBy.secScal hM sq hE fun i => GlobalTheory.AmpleSpan.secScal_symm hM (hS i) (IsIso.inv_hom_id _)`.
+-/
 theorem embedsBy_fA_of_isBCBasis (Rg : Type) [CommRing Rg] (B : Over (Sp Rg)) [GrpObj B] (M : LB B.left) (k mB : ℕ)
     (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))) (hB : IsAbelianScheme B) (hM : M.IsLB) (_hk : 1 ≤ k)
     (hVA : VeryAmpleAt B M k) (hb : IsBCBasis B M k bB) : GlobalTheory.AmpleSpan.EmbedsBy (GlobalTheory.HomFixUniv.fA B) bB := by
@@ -37,6 +46,9 @@ theorem embedsBy_fA_of_isBCBasis (Rg : Type) [CommRing Rg] (B : Over (Sp Rg)) [G
   exact GlobalTheory.AmpleSpan.EmbedsBy.secScal hM sq hE
     fun i => GlobalTheory.AmpleSpan.secScal_symm hM (hS i) (IsIso.inv_hom_id _)
 
+/- English proof (translation)
+The claim follows from `embedsBy_fA_of_isBCBasis`.
+-/
 example : ∀ (Rg : Type) [CommRing Rg] (B : Over (Sp Rg)) [GrpObj B] (M : LB B.left) (k mB : ℕ) (bB : Fin mB → LB.Sec (LPow B M (k : ℤ) (topS Rg))), IsAbelianScheme B → M.IsLB → 1 ≤ k → VeryAmpleAt B M k → IsBCBasis B M k bB → GlobalTheory.AmpleSpan.EmbedsBy (GlobalTheory.HomFixUniv.fA B) bB :=
   embedsBy_fA_of_isBCBasis
 

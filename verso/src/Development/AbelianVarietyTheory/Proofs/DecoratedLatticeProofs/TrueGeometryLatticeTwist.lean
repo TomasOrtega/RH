@@ -16,6 +16,21 @@ open GlobalTheory.StepData GlobalTheory.SplitWeil
 
 open scoped Pointwise in
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hT' j hj t J hJ α g`. Establish `hle : ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t' (J' : QJ a t'), J'.Reads → ∀ (α' : J'.Ch j), GlobalTheory.LevProd.relax J j hj α ≤ GlobalTheory.LevProd.relax J' j hj α'`. Introduce `t J hJ α t' J' hJ' α' x hx`. Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨GlobalTheory.T.true_geometry_lattice_index_value W hW u a ha hT' j hj t J hJ α t' J' hJ' α' x hx, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hx).1).2`.
+
+Conclude with `(Subgroup.mem_pi _).2 fun i _ => GlobalTheory.T.true_geometry_lattice_index_step W hW u a ha hT' j hj t J hJ α t' J' hJ' x hx i`. Establish `hUp : GlobalTheory.LevProd.Up a j hj = GlobalTheory.LevProd.relax J j hj α`. Establish `hex : ∃ t, ∃ J : QJ a t, J.Reads ∧ Nonempty (J.Ch j)` using `⟨t, J, hJ, ⟨α⟩⟩`. Unfold `GlobalTheory.LevProd.Up`. Rewrite using `[dif_pos hex]`.
+
+Conclude with `le_antisymm (hle _ _ hex.choose_spec.choose_spec.1 _ _ _ hJ α) (hle _ _ hJ α _ _ hex.choose_spec.choose_spec.1 _)`. Rewrite using `[hUp]`. Establish `hN : (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.LevProd.twAt J)).Normal`. Unfold `GlobalTheory.FinPl.grpAt GlobalTheory.FinPl.congGrp`. Conclude with `MonoidHom.normal_ker _`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `hf` using `GlobalTheory.T.true_geometry_lattice_measure_value W hW u a ha hT' j hj t J hJ α g hg`. Use `⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_inf.2 ⟨Subgroup.mem_sup_left hg, ?_⟩, ?_⟩, hf⟩` and prove the remaining obligations. Conclude with `((hJ.is.U j (by omega) _ g).1 hg).1`.
+
+Conclude with `(Subgroup.mem_pi _).2 fun i _ => GlobalTheory.T.true_geometry_lattice_measure_step W hW u a ha hT' j hj t J hJ α i (hf i)`. Introduce and unpack `⟨hr, hH⟩`. Establish `hs` using `(Subgroup.mem_inf.1 (Subgroup.mem_inf.1 hr).1).1`. Establish `: g ∈ ((J.A.U j (J.ι j α) : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))) * (GlobalTheory.FinPl.grpAt ((I.rec7 l Z).sp.X j) (GlobalTheory.LevProd.twAt J) : Set (GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j))))`. Rewrite using `[← Subgroup.mul_normal]`.
+
+Conclude with `hs`. Take `⟨x, hx, n, hn, rfl⟩` from `this`. Establish `hn' : n ∈ J.A.U j (J.ι j α)`. Use `GlobalTheory.T.true_geometry_lattice_conjugate W hW u a ha hT' j hj t J hJ α n hn fun i => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.T.true_geometry_lattice_measure_value W hW u a ha hT' j hj t J hJ α x hx i`.
+
+Establish `h2` using `hH i`. Rewrite `h2` using `[map_mul, Pi.mul_apply]`. Simplify using `using (Subgroup.mul_mem_cancel_left _ h1).1 h2`. Conclude with `mul_mem hx hn'`.
+-/
 theorem GlobalTheory.LevProd.level_eq_up_inf : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m), ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) g, g ∈ J.A.U j (J.ι j α) ↔ g ∈ GlobalTheory.LevProd.Up a j hj ∧ ∀ i, GlobalTheory.LevProd.phi J j hj g i ∈ GlobalTheory.LevProd.H J j hj α i := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hT' j hj t J hJ α g
 

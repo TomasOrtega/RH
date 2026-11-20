@@ -13,14 +13,23 @@ open GroundTheory.Automorphic.FourierWhittaker
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)`.
+-/
 theorem continuous_psiNeg :
     Continuous fun X : Pos a → Ad E => (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) :=
   continuous_subtype_val.comp (GroundTheory.Global.continuous_adelicChar.comp (continuous_supSum 0).neg)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem whit_eq (F : GA E a → ℂ) (g : GA E a) :
     GlobalTheory.JSW.whit F g = ∫ X in vecDomain E (Pos a),
       F (uGL X * g) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ) ∂vecMeasure E (Pos a) := rfl
 
+/- English proof (translation)
+Establish `hcont : Continuous fun X : Pos a → Ad E => F (uGL X * g) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ)` using `(hF.comp (continuous_uGL.mul continuous_const)).mul continuous_psiNeg`. Conclude with `(hcont.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure`.
+-/
 theorem integrableOn_whit {F : GA E a → ℂ} (hF : Continuous F) (g : GA E a) :
     IntegrableOn (fun X => F (uGL X * g) * (GroundTheory.Global.adelicChar E (-supSum 0 X) : ℂ))
       (vecDomain E (Pos a)) (vecMeasure E (Pos a)) := by
@@ -28,6 +37,9 @@ theorem integrableOn_whit {F : GA E a → ℂ} (hF : Continuous F) (g : GA E a) 
     (hF.comp (continuous_uGL.mul continuous_const)).mul continuous_psiNeg
   exact (hcont.continuousOn.integrableOn_compact isCompact_closure_vecDomain).mono_set subset_closure
 
+/- English proof (translation)
+Rewrite using `[whit_eq, whit_eq, whit_eq, ← integral_const_mul, ← integral_add (integrableOn_whit hF g) ((integrableOn_whit hG g).const_mul c)]`. Use `congr 1`. Use function extensionality and compare the values at `X`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem whit_add_mul {F G : GA E a → ℂ} (hF : Continuous F) (hG : Continuous G) (c : ℂ) (g : GA E a) :
     GlobalTheory.JSW.whit (fun x => F x + c * G x) g = GlobalTheory.JSW.whit F g + c * GlobalTheory.JSW.whit G g := by
   rw [whit_eq, whit_eq, whit_eq, ← integral_const_mul,
@@ -36,6 +48,25 @@ theorem whit_add_mul {F G : GA E a → ℂ} (hF : Continuous F) (hG : Continuous
   funext X
   ring
 
+/- English proof (translation)
+Use `set μ := (vecMeasure E (Pos a)).restrict (vecDomain E (Pos a)) with hμ`. Use `haveI : IsFiniteMeasure μ := ⟨by rw [hμ, Measure.restrict_apply_univ, vecMeasure_vecDomain]; exact ENNReal.one_lt_top⟩`. Set `ψ : (Pos a → Ad E) → ℂ` to `fun Y => (GroundTheory.Global.adelicChar E (-supSum 0 Y) : ℂ)`. Set `f : (Pos a → Ad E) → X → ℂ` to `fun Y x => k x * F (uGL Y * g * infGL E a (γ x)) * ψ Y`. Establish `hmeas : Measurable (Function.uncurry f)` using `by haveI : BorelSpace ((Pos a → Ad E) × Lie E a) := Prod.borelSpace`.
+
+Establish `hc : ContinuousOn (fun p : (Pos a → Ad E) × Lie E a => chart F (uGL p.1 * g) p.2) (Set.univ ×ˢ invSet E a)` using `(GlobalTheory.ConstTermSmooth.continuousOn_chart hF).comp (((continuous_uGL.comp continuous_fst).mul continuous_const).prodMk continuous_snd).continuousOn fun p hp => ⟨Set.mem_univ _, hp.2⟩`. Establish `hφ : Measurable fun p : (Pos a → Ad E) × X => ((p.1, toL (γ p.2).val) : (Pos a → Ad E) × Lie E a)` using `measurable_fst.prodMk (hk.2.1.comp measurable_snd)`. Establish `h1 : Measurable fun p : (Pos a → Ad E) × X => chart F (uGL p.1 * g) (toL (γ p.2).val)`. Establish `e : (fun p : (Pos a → Ad E) × X => chart F (uGL p.1 * g) (toL (γ p.2).val)) = (Set.univ ×ˢ invSet E a).restrict (fun p : (Pos a → Ad E) × Lie E a => chart F (uGL p.1 * g) p.2) ∘ fun p => (⟨(p.1, toL (γ p.2).val), Set.mem_univ _, val_mem_invSet _⟩ : (Set.univ ×ˢ invSet E a : Set ( …` using `rfl`. Rewrite using `[e]`.
+
+Conclude with `hc.restrict.measurable.comp hφ.subtype_mk`. Establish `e2 : Function.uncurry f = fun p => k p.2 * chart F (uGL p.1 * g) (toL (γ p.2).val) * ψ p.1`. Use function extensionality and compare the values at `p`. Conclude with `congrArg (fun z => k p.2 * z * ψ p.1) (chart_val F _ _).symm`. Rewrite using `[e2]`.
+
+Conclude with `((hk.1.comp measurable_snd).mul h1).mul (continuous_psiNeg.measurable.comp measurable_fst)`. Take `⟨C, N, hC⟩` from `hgr ((fun Y => uGL Y * g) '' closure (vecDomain E (Pos a))) (isCompact_closure_vecDomain.image (continuous_uGL.mul continuous_const))`. Establish `hint : Integrable (Function.uncurry f) (μ.prod ν)`. Establish `hb : Integrable (fun p : (Pos a → Ad E) × X => (1 : ℝ) * (C * (‖k p.2‖ * height (γ p.2) ^ N))) (μ.prod ν)` using `(integrable_const (1 : ℝ)).mul_prod ((hk.2.2 N).const_mul C)`. Establish `hae : ∀ᵐ p ∂(μ.prod ν), p.1 ∈ vecDomain E (Pos a)` using `Measure.quasiMeasurePreserving_fst.ae (ae_restrict_mem measurableSet_vecDomain)`.
+
+Use `hb.mono' hmeas.aestronglyMeasurable (hae.mono fun p hp => ?_)` and prove the remaining obligations. Establish `hb1` using `hC (uGL p.1 * g) ⟨p.1, subset_closure hp, rfl⟩ (γ p.2)`. Express the relevant statement in the definitionally equal form `‖k p.2 * F (uGL p.1 * g * infGL E a (γ p.2)) * (GroundTheory.Global.adelicChar E (-supSum 0 p.1) : ℂ)‖ ≤ _`. Rewrite using `[norm_mul, norm_mul, Circle.norm_coe, mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hin : ∀ Y, GlobalTheory.JSW.kerInf ν k γ F (uGL Y * g) * ψ Y = ∫ x, f Y x ∂ν` using `fun Y => by`. Simplify using `only [f, GlobalTheory.JSW.kerInf]`. Rewrite using `[integral_mul_const]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[whit_eq]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `Y`. Conclude with `hin Y`. Use `_ = ∫ x, ∫ Y, f Y x ∂μ ∂ν := integral_integral_swap hint`. Use `_ = _ := by`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[whit_eq, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `Y`.
+
+Simplify using `only [f, ψ, mul_assoc]`.
+-/
 theorem whit_kerInf {F : GA E a → ℂ} (hF : Continuous F)
     (hgr : ∀ K : Set (GA E a), IsCompact K → ∃ (C : ℝ) (N : ℕ), ∀ g ∈ K, ∀ y : GL (Fin a) (Cinf E),
       ‖F (g * infGL E a y)‖ ≤ C * height y ^ N)
@@ -99,6 +130,9 @@ theorem whit_kerInf {F : GA E a → ℂ} (hF : Continuous F)
         funext Y
         simp only [f, ψ, mul_assoc]
 
+/- English proof (translation)
+Introduce `E _ _ _ a F G hF hG hFg _`. Conclude with `⟨fun c g => whit_add_mul hF hG c g, fun X _ ν _ k γ hk g => whit_kerInf hF hFg ν hk g⟩`.
+-/
 theorem whit_linear_kerInf : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F G : GA E a → ℂ),
     Continuous F → Continuous G →
     (∀ K : Set (GA E a), IsCompact K → ∃ (C : ℝ) (N : ℕ), ∀ g ∈ K, ∀ y : GL (Fin a) (Cinf E),

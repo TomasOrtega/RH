@@ -20,11 +20,19 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 open Complex in
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.col, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.col_map_eq (P : Matrix (Fin r) (Fin r) E) (τ : E →+* ℂ) (k : Fin r) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.col (P.map τ) k = _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ (P *ᵥ Pi.single k 1) := by
   ext a
   simp [_root_.ReciprocityTheory.ChartRestriction.G.FD.col, _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Matrix.mulVec, dotProduct, Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[Data.mulVec_eq_sum_col (P.map τ) u, Data.mulVec_eq_sum_col (P.map τ) w, hermC_sum_left]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_left, hermC_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right, col_map_eq, col_map_eq, hermC_emb]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((P.map τ) *ᵥ u) ((P.map τ) *ᵥ w) =
       ∑ k, ∑ l, u k * conj (w l) * τ (herm X.Gm (P *ᵥ Pi.single k 1) (P *ᵥ Pi.single l 1)) := by
@@ -35,6 +43,9 @@ theorem hermC_expand (τ : E →+* ℂ) (P : Matrix (Fin r) (Fin r) E) (u w : Fi
   rw [hermC_smul_right, col_map_eq, col_map_eq, hermC_emb]
   ring
 
+/- English proof (translation)
+Establish `h1 : ((1 : Matrix (Fin r) (Fin r) E).map τ) = 1` using `Matrix.map_one τ τ.map_zero τ.map_one`. Use `conv_rhs => rw [← one_mulVec u, ← one_mulVec w, ← h1]`. Rewrite using `[hermC_expand, hermC_expand]`. Simplify using `only [hγ, one_mulVec]`.
+-/
 theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ) (u w : Fin r → ℂ) :
     hermC τ X.Gm ((γ.map τ) *ᵥ u) ((γ.map τ) *ᵥ w) = hermC τ X.Gm u w := by
@@ -43,6 +54,11 @@ theorem hermC_stab {γ : Matrix (Fin r) (Fin r) E}
   rw [hermC_expand, hermC_expand]
   simp only [hγ, one_mulVec]
 
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [gram, of_apply]`. Establish `hc : ∀ c, col (γ.map τ * Y) c = (γ.map τ) *ᵥ col Y c`. Introduce `c`. Use function extensionality and compare the values at `i`.
+
+Simplify using `[col, Matrix.mul_apply, mulVec, dotProduct]`. Rewrite using `[hc, hc, hermC_stab X hγ]`.
+-/
 theorem gram_stab {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ x y, herm X.Gm (γ *ᵥ x) (γ *ᵥ y) = herm X.Gm x y) (τ : E →+* ℂ)
     (Y : Matrix (Fin r) (Fin r) ℂ) : gram τ X.Gm (γ.map τ * Y) = gram τ X.Gm Y := by
@@ -57,6 +73,11 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 open Complex in
+/- English proof (translation)
+Establish `h : ((γ : Matrix (Fin r) (Fin r) E).map τ)⁻¹ = ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ τ.map_zero τ.map_one]`. Rewrite using `[Matrix.mul_inv_rev, ← Matrix.mulVec_mulVec, h]`. Use `congr 1`.
+
+Use extensionality with `i`. Conclude with `(RingHom.map_mulVec τ _ v i).symm`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.inv_lact (γ : GL (Fin r) E) (τ : E →+* ℂ) (Y : Matrix (Fin r) (Fin r) ℂ)
     (v : Fin r → E) :
     ((γ : Matrix (Fin r) (Fin r) E).map τ * Y)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ v =
@@ -71,6 +92,19 @@ theorem _root_.GlobalTheory.FlagMahler.inv_lact (γ : GL (Fin r) E) (τ : E →+
   ext i
   exact (RingHom.map_mulVec τ _ v i).symm
 
+/- English proof (translation)
+Use `set Gt := X.Gm.map τ with hGtdef`. Establish `hGt : Gt.det ≠ 0`. Establish `e : (X.Gm.map τ).det = τ X.Gm.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[hGtdef, e]`. Conclude with `(map_ne_zero τ).mpr X.Gm_det`.
+
+Establish `hGG : Gt * Gt⁻¹ = 1` using `mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hGt)`. Use `set q : Fin r → ℂ := fun k => conj (Gt⁻¹ k l) with hq`. Establish `h1 : hermC τ X.Gm (col Y b) q = Y l b`. Establish `e : ∀ a, ∑ c, Y a b * τ (X.Gm a c) * conj (q c) = Y a b * (Gt * Gt⁻¹) a l`. Introduce `a`.
+
+Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [hq, Complex.conj_conj, hGtdef, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hermC, col]`.
+
+Repeatedly rewrite using `[e, hGG, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `h2` using `IntegralBasisReduction.hermC_normal X hY _ hg (col Y b) q`. Establish `h3 : Y⁻¹ *ᵥ col Y b = Pi.single b 1`. Establish `: col Y b = Y *ᵥ Pi.single b 1` using `by funext i; simp [col]`. Rewrite using `[this, mulVec_mulVec, nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hY), one_mulVec]`.
+
+Rewrite `h2` using `[h3]`. Simplify using `only [Pi.single_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h2`. Rewrite using `[← h1, h2, norm_mul, Complex.norm_conj]`. Establish `hs : ‖(((sgn X.p0 (b : ℕ) : ℝ) : ℂ))‖ = 1`. Apply the tactic sequence `unfold sgn; split_ifs <;> simp`.
+
+Rewrite using `[hs, one_mul]`. Simplify using `only [mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hq, Complex.norm_conj, mul_comm]`.
+-/
 theorem entry_bound {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} (hY : Y.det ≠ 0)
     (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (l b : Fin r) :
     ‖Y l b‖ ≤ ∑ k, ‖(X.Gm.map τ)⁻¹ k l‖ * ‖Y⁻¹ b k‖ := by
@@ -111,6 +145,9 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 open Complex in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem _root_.GlobalTheory.FlagMahler.comp_le_Qy (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (τ : X.Ψ)
     (p : Fin r → E) (b : Fin r) :
     X.c τ * ‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 p) b‖ ^ 2 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y p := by
@@ -131,6 +168,13 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 open Complex in
+/- English proof (translation)
+Establish `he : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (∑ i, q i • f i) = ∑ i, (q i : ℂ) • _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (f i)`. Use extensionality with `a`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Finset.sum_apply, map_sum, Rat.smul_def]`. Rewrite using `[he, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hc` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ`. Establish `h` using `_root_.GlobalTheory.FlagMahler.comp_le_Qy X y τ (f i) b`.
+
+Establish `h2 : ‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (f i)) b‖ ^ 2 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y (f i) / X.c τ`. Rewrite using `[le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Use polynomial arithmetic with `[sq_nonneg (‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (f i)) b‖ - 1)]`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.comb_bound (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (τ : X.Ψ)
     {ι : Type} [Fintype ι] (q : ι → ℚ) (f : ι → Fin r → E) (b : Fin r) :
     ‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (∑ i, q i • f i)) b‖ ≤
@@ -157,6 +201,15 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `IsCompact (_root_.GlobalTheory.FlagMahler.Kset X R : Set (X.Ψ → Fin r → Fin r → ℂ))`. Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Establish `: (_root_.GlobalTheory.FlagMahler.Kset X R : Set (X.Ψ → Fin r → Fin r → ℂ)) = ⋂ τ : X.Ψ, ({w : X.Ψ → Fin r → Fin r → ℂ | _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (Matrix.of (w τ)) = diagonal (fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sg …`. Use extensionality with `w`. Simplify using `only [_root_.GlobalTheory.FlagMahler.Kset, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_inter_iff]`.
+
+Rewrite using `[this]`. Use `isClosed_iInter fun τ => IsClosed.inter ?_ ?_` and prove the remaining obligations. Use `isClosed_eq ?_ continuous_const` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.gram, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, _root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply]`.
+
+Use `fun_prop`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun c => isClosed_le (by fun_prop) continuous_const`. Use `(Metric.isBounded_iff_subset_closedBall 0).mpr ⟨|R|, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg (abs_nonneg R)).mpr fun τ => ?_` and prove the remaining obligations.
+
+Use `(pi_norm_le_iff_of_nonneg (abs_nonneg R)).mpr fun a => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (abs_nonneg R)).mpr fun c => ?_` and prove the remaining obligations. Conclude with `((hw τ).2 a c).trans (le_abs_self R)`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.Kset_compact (R : ℝ) :
     IsCompact (_root_.GlobalTheory.FlagMahler.Kset X R) := by
   change IsCompact (_root_.GlobalTheory.FlagMahler.Kset X R : Set (X.Ψ → Fin r → Fin r → ℂ))
@@ -183,6 +236,15 @@ theorem _root_.GlobalTheory.FlagMahler.Kset_compact (R : ℝ) :
     refine (pi_norm_le_iff_of_nonneg (abs_nonneg R)).mpr fun c => ?_
     exact ((hw τ).2 a c).trans (le_abs_self R)
 
+/- English proof (translation)
+Introduce `h0`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `h1 : gram τ X.Gm Y *ᵥ star v = 0`. Use function extensionality and compare the values at `a`. Establish `e : ∑ b, hermC τ X.Gm (col Y a) (col Y b) * star (v b) = hermC τ X.Gm (col Y a) (Y *ᵥ v)`.
+
+Rewrite using `[Data.mulVec_eq_sum_col, hermC_sum_right]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hermC_smul_right, Complex.star_def, mul_comm]`. Simplify using `only [mulVec, dotProduct, gram, of_apply, Pi.zero_apply, Pi.star_apply]`. Rewrite using `[e, hv0, hermC_zero_right]`.
+
+Rewrite `h1` using `[hg]`. Apply `hv` to reduce the goal to its premises. Use function extensionality and compare the values at `b`. Establish `h2` using `congrFun h1 b`. Rewrite `h2` using `[mulVec_diagonal]`.
+
+Apply the tactic sequence `have hs : ((sgn p0 (b : ℕ) : ℝ) : ℂ) ≠ 0 := by unfold sgn; split_ifs <;> norm_num`. Establish `h3 : star (v b) = 0` using `(mul_eq_zero.mp h2).resolve_left hs`. Simplify using `using h3`.
+-/
 theorem det_ne_of_gram {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} {p0 : ℕ}
     (hg : gram τ X.Gm Y = diagonal fun a : Fin r => ((sgn p0 (a : ℕ) : ℝ) : ℂ)) : Y.det ≠ 0 := by
   intro h0
@@ -204,6 +266,13 @@ theorem det_ne_of_gram {τ : E →+* ℂ} {Y : Matrix (Fin r) (Fin r) ℂ} {p0 :
   have h3 : star (v b) = 0 := (mul_eq_zero.mp h2).resolve_left hs
   simpa using h3
 
+/- English proof (translation)
+Introduce `w hw τ`. Establish `hg` using `(hw τ).1`. Use `⟨det_ne_of_gram X hg, fun i => ?_⟩` and prove the remaining obligations. Establish `e : dmin X.Gm w τ i = ((psgn X.p0 i : ℝ) : ℂ)`. Unfold `dmin lminor`.
+
+Rewrite using `[hg, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal]`. Simplify using `only [psgn, Complex.ofReal_prod, Fin.val_castLE]`. Conclude with `Fin.prod_univ_eq_prod_range (fun a => ((sgn X.p0 a : ℝ) : ℂ)) i`. Rewrite using `[e, Complex.ofReal_re]`. Apply the tactic sequence `have hne : psgn X.p0 i ≠ 0 := Finset.prod_ne_zero_iff.mpr fun a _ => by unfold sgn; split_ifs <;> norm_num`.
+
+Conclude with `mul_self_pos.mpr hne`.
+-/
 theorem Kset_sub (R : ℝ) : Kset X R ⊆ X.dom := by
   intro w hw τ
   have hg := (hw τ).1
@@ -220,6 +289,13 @@ theorem Kset_sub (R : ℝ) : Kset X R ⊆ X.dom := by
 
 end
 
+/- English proof (translation)
+Rewrite using `[← hermC_emb, IntegralBasisReduction.hermC_normal X (hy τ).1 _ (hy τ).2]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hc` using `QuadraticLatticeForms.c_pos X τ`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations.
+
+Establish `hs : ‖(((sgn X.p0 (a : ℕ) : ℝ) : ℂ))‖ = 1`. Apply the tactic sequence `unfold sgn; split_ifs <;> simp`. Rewrite using `[norm_mul, norm_mul, hs, one_mul, Complex.norm_conj]`. Establish `h1` using `(comp_le_Qy X y τ p a).trans hp`. Establish `h2` using `(comp_le_Qy X y τ q a).trans hq`.
+
+Rewrite using `[le_div_iff₀ hc]`. Use `set u := ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 p) a‖`. Use `set w := ‖((y τ)⁻¹ *ᵥ Data.emb τ.1 q) a‖`. Use polynomial arithmetic with `[mul_nonneg hc.le (sq_nonneg (u - w))]`. Use `_ = _ := by simp`.
+-/
 theorem norm_herm_le {y : X.Ψ → Matrix (Fin r) (Fin r) ℂ} (hy : IntegralBasisReduction.IsNormal X y) {C : ℝ}
     {p q : Fin r → E} (hp : QuadraticLatticeForms.Qy X y p ≤ C) (hq : QuadraticLatticeForms.Qy X y q ≤ C) (τ : X.Ψ) :
     ‖τ.1 (herm X.Gm p q)‖ ≤ r * (C / X.c τ) := by
@@ -244,6 +320,13 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `he : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (α • v) = (τ.1 α) • _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v`. Use extensionality with `a`.
+
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb]`. Rewrite using `[he, Matrix.mulVec_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`. Rewrite using `[← Finset.mul_sum]`. Establish `h1 : ‖τ.1 α‖ ^ 2 ≤ ∑ σ : X.Ψ, ‖σ.1 α‖ ^ 2` using `Finset.single_le_sum (f := fun σ : X.Ψ => ‖σ.1 α‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ τ)`.
+
+Establish `h2 : 0 ≤ ∑ a, ‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v) a‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `h3` using `(_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ).le`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 (mul_nonneg h3 h2)]`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.Qy_smul_le (y : X.Ψ → Matrix (Fin r) (Fin r) ℂ) (α : E) (v : Fin r → E) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y (α • v) ≤ (∑ σ : X.Ψ, ‖σ.1 α‖ ^ 2) * _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y v := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy
@@ -263,6 +346,15 @@ theorem _root_.GlobalTheory.FlagMahler.Qy_smul_le (y : X.Ψ → Matrix (Fin r) (
   have h3 := (_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ).le
   nlinarith [mul_le_mul_of_nonneg_right h1 (mul_nonneg h3 h2)]
 
+/- English proof (translation)
+Establish `hd : (X.den : E) ≠ 0` using `by exact_mod_cast X.den_ne`. Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le E ℂ (∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ * |B τ|)`. Use `(hfin.preimage (f := fun α => (X.den : E) * α) (fun a _ b _ h => mul_left_cancel₀ hd h)).subset ?_` and prove the remaining obligations. Introduce and unpack `α ⟨h1, h2⟩`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 ((X.den : E) * α)‖ ≤ ∑ τ : X.Ψ, ‖τ.1 (X.den : E)‖ * |B τ|`.
+
+Introduce `τ`. Rewrite using `[map_mul, norm_mul]`. Use `(mul_le_mul_of_nonneg_left ((h2 τ).trans (le_abs_self _)) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun τ : X.Ψ => ‖τ.1 (X.den : E)‖ * |B τ|) (fun _ _ => by positivity) (Finset.mem_univ τ)`. Use `⟨h1, fun φ => ?_⟩` and prove the remaining obligations.
+
+Distinguish the cases in `hφ : φ ∈ X.Ψ`. Conclude with `key ⟨φ, hφ⟩`. Establish `h3 : ComplexEmbedding.conjugate φ ∈ X.Ψ` using `(X.cmType _).mpr (by rw [TraceIntegralBasis.conj_conj]; exact hφ)`. Establish `h4` using `key ⟨_, h3⟩`. Simplify using `only [ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj] at h4`.
+
+Conclude with `h4`.
+-/
 theorem finite_bounded (B : X.Ψ → ℝ) :
     {α : E | IsIntegral ℤ ((X.den : E) * α) ∧ ∀ τ : X.Ψ, ‖τ.1 α‖ ≤ B τ}.Finite := by
   have hd : (X.den : E) ≠ 0 := by exact_mod_cast X.den_ne
@@ -290,6 +382,11 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Use `(Set.finite_Icc (-(⌈|D|⌉ + 1)) (⌈|D|⌉ + 1)).subset fun n hn => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq] at hn`. Establish `hc : |D| ≤ (⌈|D|⌉ : ℝ)` using `Int.le_ceil _`. Establish `hD` using `le_abs_self D`. Establish `h1 : (n : ℝ) ≤ ⌈|D|⌉ + 1` using `by nlinarith [sq_nonneg ((n : ℝ) - 1)]`.
+
+Establish `h2 : -((⌈|D|⌉ : ℝ) + 1) ≤ n` using `by nlinarith [sq_nonneg ((n : ℝ) + 1)]`. Conclude with `⟨by exact_mod_cast h2, by exact_mod_cast h1⟩`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.finite_int_sq (D : ℝ) : {n : ℤ | (n : ℝ) ^ 2 ≤ D}.Finite := by
   refine (Set.finite_Icc (-(⌈|D|⌉ + 1)) (⌈|D|⌉ + 1)).subset fun n hn => ?_
   simp only [Set.mem_setOf_eq] at hn
@@ -299,6 +396,11 @@ theorem _root_.GlobalTheory.FlagMahler.finite_int_sq (D : ℝ) : {n : ℤ | (n :
   have h2 : -((⌈|D|⌉ : ℝ) + 1) ≤ n := by nlinarith [sq_nonneg ((n : ℝ) + 1)]
   exact ⟨by exact_mod_cast h2, by exact_mod_cast h1⟩
 
+/- English proof (translation)
+Establish `h1` using `finite_bounded X fun τ => r * (C / X.c τ)`. Establish `h2` using `fun k : Free.ChooseBasisIndex ℤ (𝓞 E) => finite_int_sq (D * ((∑ σ : X.Ψ, ‖σ.1 (RingOfIntegers.basis E k : E)‖ ^ 2) * C))`. Establish `h3` using `Set.Finite.pi' (fun _ : ι => Set.Finite.pi' fun _ : ι => h1)`. Establish `h4` using `Set.Finite.pi' (fun k => Set.Finite.pi' fun _ : ι => Set.Finite.pi' fun _ : ι => h2 k)`. Use `(h3.prod h4).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, ⟨y, hy, hf, hr⟩, rfl⟩`. Use `⟨fun i j => ⟨X.Λ_int _ (f i).2 _ (f j).2, norm_herm_le X hy (hf i) (hf j)⟩, fun k i j => ?_⟩` and prove the remaining obligations. Use `(hr _ j).trans (mul_le_mul_of_nonneg_left ?_ hD)` and prove the remaining obligations. Rewrite using `[HermitianLatticeMaps.smul_coe]`. Conclude with `(Qy_smul_le X y _ _).trans (mul_le_mul_of_nonneg_left (hf i) (Finset.sum_nonneg fun _ _ => by positivity))`.
+-/
 theorem finite_types {ι : Type} [Fintype ι] [DecidableEq ι] (C D : ℝ) (hD : 0 ≤ D) :
     (HermitianLatticeMaps.ty X '' {f : Basis ι ℤ X.Λ | ∃ y, IntegralBasisReduction.IsNormal X y ∧
       (∀ i, QuadraticLatticeForms.Qy X y (f i) ≤ C) ∧
@@ -326,6 +428,25 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Establish `hΨ : ∀ φ : E →+* ℂ, φ ∉ X.Ψ → ComplexEmbedding.conjugate φ ∈ X.Ψ`. Introduce `φ hφ`. Use `(X.cmType (ComplexEmbedding.conjugate φ)).mpr ?_` and prove the remaining obligations. Simplify `hφ` using `[ComplexEmbedding.conjugate]`. Use `set B' : ℝ := ∑ τ : X.Ψ, r * |C| / X.c τ with hB'`.
+
+Establish `hherm : ∀ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.IsNormal X y → ∀ u v : Fin r → E, _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y u ≤ C → _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y v ≤ …`. Introduce `y hy u v hu hv`. Establish `key : ∀ τ : X.Ψ, ‖τ.1 (_root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v)‖ ≤ B'`. Introduce `τ`. Establish `hc` using `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ`.
+
+Use `le_trans ?_ (Finset.single_le_sum (f := fun σ : X.Ψ => (r : ℝ) * |C| / X.c σ) (fun σ _ => by have := _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X σ; positivity) (Finset.mem_univ τ))` and prove the remaining obligations. Rewrite using `[← _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC_emb, _root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.hermC_normal X (hy τ).1 _ (hy τ).2]`. Use `((norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => (?_ : _ ≤ |C| / X.c τ))).trans ?_` and prove the remaining obligations. Establish `hsn : ‖((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ)‖ = 1`. Apply the tactic sequence `unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> simp`.
+
+Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, hsn, one_mul]`. Establish `h1` using `_root_.GlobalTheory.FlagMahler.comp_le_Qy X y τ u a`. Establish `h2` using `_root_.GlobalTheory.FlagMahler.comp_le_Qy X y τ v a`. Rewrite using `[le_div_iff₀ hc]`. Use polynomial arithmetic with `[sq_nonneg (‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 u) a‖ - ‖((y τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v) a‖), le_abs_self C]`.
+
+Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_div_assoc]`. Introduce `φ`. Distinguish the cases in `hφ : φ ∈ X.Ψ`. Conclude with `key ⟨φ, hφ⟩`. Use `key ⟨_, hΨ φ hφ⟩` as an intermediate fact.
+
+Simplify `this` using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hden : (X.den : E) ≠ 0` using `by exact_mod_cast X.den_ne`. Use `set Fz : Set E := {z | IsIntegral ℤ ((X.den : E) * z) ∧ ∀ φ : E →+* ℂ, ‖φ ((X.den : E) * z)‖ ≤ (∑ ψ : E →+* ℂ, ‖ψ (X.den : E)‖) * B'} with hFzdef`. Establish `hFz : Fz.Finite` using `((Embeddings.finite_of_norm_le E ℂ ((∑ ψ : E →+* ℂ, ‖ψ (X.den : E)‖) * B')).preimage (fun a _ b _ h => mul_left_cancel₀ hden h)).subset fun z hz => hz`. Use `((Set.Finite.pi fun i => Set.Finite.pi fun j => hFz).prod (Set.Finite.pi fun k => Set.Finite.pi fun i => Set.Finite.pi fun j => _root_.GlobalTheory.FlagMahler.finite_int_sq (9 ^ finrank ℤ X.Λ * ((∑ σ : X.Ψ, ‖σ.1 (RingOfIntegers.basis E k : E)‖ ^ 2) * |C|) / m))).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `t ⟨f, rfl, y, hy, hfC, hfrep⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty, Set.mem_pi, Set.mem_univ, true_implies]`. Introduce `i j`. Use `⟨X.Λ_int _ (f i).2 _ (f j).2, fun φ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[map_mul, norm_mul]`. Conclude with `mul_le_mul (Finset.single_le_sum (f := fun ψ : E →+* ℂ => ‖ψ (X.den : E)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ φ)) (hherm y hy _ _ (hfC i) (hfC j) φ) (norm_nonneg _) (Finset.sum_nonneg fun _ _ => norm_nonneg _)`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`. Introduce `k i j`. Use `(hfrep _ j).trans ?_` and prove the remaining obligations.
+
+Use `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left ?_ (by positivity)) hm.le` and prove the remaining obligations. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.smul_coe]`. Conclude with `(_root_.GlobalTheory.FlagMahler.Qy_smul_le X y _ _).trans (mul_le_mul_of_nonneg_left ((hfC i).trans (le_abs_self C)) (Finset.sum_nonneg fun _ _ => sq_nonneg _))`.
+-/
 private theorem finite_setOf_reduced_bounded_invariants (C m : ℝ) (hm : 0 < m) :
     {t | ∃ f : Basis (Fin (finrank ℤ X.Λ)) ℤ X.Λ, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f = t ∧
       ∃ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.IsNormal X y ∧ (∀ i, _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y (f i) ≤ C) ∧
@@ -391,6 +512,9 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Use extensionality with `a b`. Simplify using `only [_root_.ReciprocityTheory.ChartRestriction.G.FD.gram, _root_.ReciprocityTheory.ChartRestriction.G.FD.hermC, _root_.ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 private theorem gram_eq_transpose_mul_map (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (Y : Matrix (Fin r) (Fin r) ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ G Y = Yᵀ * G.map τ * Y.map (starRingEnd ℂ) := by
@@ -403,6 +527,15 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Introduce `w hw`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.dom _root_.ReciprocityTheory.ChartRestriction.G.FD.GG`. Introduce `τ`. Establish `hg` using `(hw τ).1`. Establish `hs : ∀ a : ℕ, _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a ≠ 0`.
+
+Apply the tactic sequence `intro a; unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg Matrix.det hg` as an intermediate fact. Rewrite `this` using `[gram_eq_transpose_mul_map, det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul, det_diagonal]`.
+
+Conclude with `(Finset.prod_ne_zero_iff.mpr fun a _ => by exact_mod_cast hs a) this.symm`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.dmin _root_.ReciprocityTheory.ChartRestriction.G.FD.lminor _root_.ReciprocityTheory.ChartRestriction.G.FD.psgn`. Rewrite using `[hg, submatrix_diagonal _ _ (Fin.castLE_injective _), det_diagonal, Finset.prod_range]`. Simplify using `only [Function.comp_apply, Fin.coe_castLE]`. Rewrite using `[← Complex.ofReal_prod, Complex.ofReal_re, ← Finset.prod_mul_distrib]`.
+
+Conclude with `Finset.prod_pos fun a _ => mul_self_pos.mpr (hs _)`.
+-/
 private theorem kset_subset_dom (R : ℝ) :
     _root_.GlobalTheory.FlagMahler.Kset X R ⊆ X.dom := by
   intro w hw
@@ -427,6 +560,15 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Establish `hG : (γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * (γ : Matrix (Fin r) (Fin r) E).map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc = X.Gm`. Use extensionality with `a b`. Use `hγ.1 (Pi.single a 1) (Pi.single b 1)` as an intermediate fact. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm at this`. Simplify using `[mulVec_single, Pi.single_apply, apply_ite _root_.ReciprocityTheory.ChartRestriction.G.FD.cc, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_one, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_zero] at this`.
+
+Rewrite using `[← this]`. Simplify using `only [Matrix.mul_apply, transpose_apply, map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hc : ((γ : Matrix (Fin r) (Fin r) E).map τ).map (starRingEnd ℂ) = ((γ : Matrix (Fin r) (Fin r) E).map _root_.ReciprocityTheory.ChartRestriction.G.FD.cc).map τ`. Use extensionality with `a b`.
+
+Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc]`. Rewrite using `[gram_eq_transpose_mul_map, gram_eq_transpose_mul_map, Matrix.map_mul, hc, transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, Matrix.map_mul, transpose_map]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hG]`.
+-/
 private theorem gram_map_mul_of_isUStab {γ : GL (Fin r) E} (hγ : _root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab X.Gm X.Λ γ)
     (τ : E →+* ℂ) (Y : Matrix (Fin r) (Fin r) ℂ) :
     _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ X.Gm ((γ : Matrix (Fin r) (Fin r) E).map τ * Y) = _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ X.Gm Y := by
@@ -456,6 +598,23 @@ open NumberField Module in
 open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
+/- English proof (translation)
+Establish `hG : IsUnit (X.Gm.map τ.1).det`. Rewrite using `[show (X.Gm.map τ.1).det = τ.1 X.Gm.det from (RingHom.map_det τ.1 X.Gm).symm]`. Conclude with `((map_ne_zero τ.1).mpr X.Gm_det).isUnit`. Establish `hs : ∀ a : ℕ, _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 a ≠ 0`. Apply the tactic sequence `intro a; unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> norm_num`.
+
+Establish `hWd : IsUnit W.det`. Use `(Ne.isUnit fun h0 => ?_)` and prove the remaining obligations. Use `congrArg Matrix.det hW` as an intermediate fact. Rewrite `this` using `[gram_eq_transpose_mul_map, det_mul, det_mul, det_transpose, h0, zero_mul, zero_mul, det_diagonal]`. Conclude with `(Finset.prod_ne_zero_iff.mpr fun a _ => by exact_mod_cast hs a) this.symm`.
+
+Establish `hM : (Wᴴ * (X.Gm.map τ.1)ᵀ) * W = diagonal (fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ))`. Use `congrArg transpose hW` as an intermediate fact. Rewrite `this` using `[gram_eq_transpose_mul_map, transpose_mul, transpose_mul, transpose_transpose, diagonal_transpose]`. Rewrite using `[Matrix.mul_assoc]`. Conclude with `this`.
+
+Establish `hMu : IsUnit (Wᴴ * (X.Gm.map τ.1)ᵀ).det`. Rewrite using `[det_mul, det_conjTranspose, det_transpose]`. Conclude with `hWd.star.mul hG`. Establish `hWeq : W l c = (((X.Gm.map τ.1)⁻¹)ᵀ * (W⁻¹)ᴴ * diagonal (fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ))) l c`. Establish `h1 : W = (Wᴴ * (X.Gm.map τ.1)ᵀ)⁻¹ * diagonal (fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ))`.
+
+Rewrite using `[← hM, Matrix.nonsing_inv_mul_cancel_left _ _ hMu]`. Use `nth_rewrite 1 [h1]`. Simplify using `only [Matrix.mul_inv_rev, Matrix.transpose_nonsing_inv, Matrix.conjTranspose_nonsing_inv]`. Establish `hr : ∀ k, (W⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (Pi.single k 1)) c = W⁻¹ c k`. Introduce `k`.
+
+Establish `: _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (Pi.single k (1 : E)) = Pi.single k 1`. Use extensionality with `a`. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb, Pi.single_apply, apply_ite τ.1]`. Rewrite using `[this]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+
+Simplify using `only [hr]`. Establish `hsn : ‖((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (c : ℕ) : ℝ) : ℂ)‖ = 1`. Apply the tactic sequence `unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.sgn; split_ifs <;> simp`. Rewrite using `[hWeq, mul_diagonal, Matrix.mul_apply, norm_mul, hsn, mul_one]`. Use `(norm_sum_le _ _).trans (le_of_eq (Finset.sum_congr rfl fun k _ => ?_))` and prove the remaining obligations.
+
+Rewrite using `[norm_mul, transpose_apply, conjTranspose_apply, norm_star]`.
+-/
 private theorem norm_entry_le_of_gram_eq_diagonal_sgn (τ : X.Ψ) (W : Matrix (Fin r) (Fin r) ℂ)
     (hW : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm W = diagonal (fun a : Fin r => ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ)))
     (l c : Fin r) :
@@ -507,6 +666,39 @@ open Matrix in
 open scoped ComplexConjugate in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) in
 
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.MahlerCompactnessCriterion`. Introduce `r X ε hε`. Take `⟨S, hS⟩` from `X.Γ_index`. Use `set n := finrank ℤ X.Λ with hn`. Establish `hm : 0 < ε ^ 2` using `by positivity`.
+
+Use `set C : ℝ := 2 ^ (n * (n - 1)) * |(_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Bm X (_root_.ReciprocityTheory.ChartRestriction.G.FD.RealPlaceEmbeddings.zb X)).det| / (ε ^ 2) ^ (n - 1) with hC`. Use `set T := {t | ∃ f : Basis (Fin n) ℤ X.Λ, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f = t ∧ ∃ y, _root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.IsNormal X y ∧ (∀ i, _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLattic …`. Establish `hT : T.Finite` using `finite_setOf_reduced_bounded_invariants X C (ε ^ 2) hm`. Set `g : _ → Basis (Fin n) ℤ X.Λ` to `fun t => if h : t ∈ T then Classical.choose h else _root_.ReciprocityTheory.ChartRestriction.G.FD.RealPlaceEmbeddings.zb X`. Establish `hg : ∀ t ∈ T, _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X (g t) = t`.
+
+Introduce `t ht`. Simplify using `only [g, dif_pos ht]`. Conclude with `(Classical.choose_spec ht).1`. Use `set R : ℝ := ∑ t ∈ hT.toFinset, ∑ s ∈ S, |_root_.GlobalTheory.FlagMahler.bound X C (g t) s| with hR`. Use `⟨_root_.GlobalTheory.FlagMahler.Kset X R, _root_.GlobalTheory.FlagMahler.Kset_compact X R, kset_subset_dom X R, ?_⟩` and prove the remaining obligations.
+
+Introduce `x hx hla`. Take `⟨b, hb, hnorm⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.FD.MajorantNormalForms.exists_normal_frame X hx`. Use `set y : X.Ψ → Matrix (Fin r) (Fin r) ℂ := fun τ => _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) τ with hy`. Establish `hxdom` using `hx`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.dom _root_.ReciprocityTheory.ChartRestriction.G.FD.GG at hxdom`.
+
+Establish `hbor` using `hb`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor at hbor`. Establish `hynorm : _root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.IsNormal X y`. Introduce `τ`. Use `⟨?_, (hnorm τ).1⟩` and prove the remaining obligations.
+
+Use `show (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (hxdom τ).1 (hbor τ).1`. Establish `hQy : ∀ v : Fin r → E, _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y v = ∑ τ, X.c τ * X.maj x τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 v)`. Introduce `v`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[(hnorm τ).2]`. Establish `hsq : ε ^ 2 ≤ X.firstMinimumSq x`. Establish `h1 : ε ≤ √(X.firstMinimumSq x)` using `hla`.
+
+Conclude with `(Real.le_sqrt' hε).mp h1`. Establish `hmin : ∀ v ∈ X.Λ, v ≠ 0 → ε ^ 2 ≤ _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.Qy X y v`. Introduce `v hv hv0`. Use `hsq.trans ?_` and prove the remaining obligations. Rewrite using `[hQy]`.
+
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Data.firstMinimumSq`. Use `csInf_le ⟨0, ?_⟩ ⟨v, hv, hv0, rfl⟩` and prove the remaining obligations. Introduce and unpack `t ⟨w, -, hw0, rfl⟩`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ).le (X.maj_pos hx τ (_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_ne_zero τ.1 hw0)).le`. Take `⟨f, hfC, hfrep⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.FD.IntegralBasisReduction.reduce X hynorm hm hmin`.
+
+Establish `htT : _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f ∈ T` using `⟨f, rfl, y, hynorm, hfC, hfrep⟩`. Take `⟨γ, hγU, -, hγinv⟩` from `_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.exists_gl X (f := f) (f' := g (_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f)) (hg _ htT).symm`. Take `⟨s, hsS, hsΓ⟩` from `hS γ hγU`. Use `⟨s⁻¹ * γ, hsΓ, b, hb, ?_⟩` and prove the remaining obligations. Introduce `τ`.
+
+Establish `hW : _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact (s⁻¹ * γ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) τ = ((s⁻¹ * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * y τ` using `rfl`. Establish `hgram : _root_.ReciprocityTheory.ChartRestriction.G.FD.gram τ.1 X.Gm (_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact (s⁻¹ * γ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) τ) = diagonal (fun a : Fin r => ((_ro …`. Rewrite using `[hW, gram_map_mul_of_isUStab X (X.Γ_stab _ hsΓ)]`. Conclude with `(hnorm τ).1`. Use `⟨hgram, fun l c => ?_⟩` and prove the remaining obligations.
+
+Establish `hcoord : ∀ k, ‖((_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact (s⁻¹ * γ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) τ)⁻¹ *ᵥ _root_.ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (Pi.single k 1)) c‖ ≤ …`. Introduce `k`. Rewrite using `[hW, _root_.GlobalTheory.FlagMahler.inv_lact, _root_.mul_inv_rev, inv_inv, Units.val_mul, ← Matrix.mulVec_mulVec, hγinv]`. Use `(_root_.GlobalTheory.FlagMahler.comb_bound X y τ _ (fun i => (f i : Fin r → E)) c).trans ?_` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+
+Use `_root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X τ` as an intermediate fact. Use `gcongr`. Conclude with `(hfC i).trans (le_abs_self C)`. Apply the tactic sequence `have hentry := norm_entry_le_of_gram_eq_diagonal_sgn X τ _ hgram l c`. Use `show ‖_root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.lact (s⁻¹ * γ) (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b)) τ l c‖ ≤ R`.
+
+Use `hentry.trans ?_` and prove the remaining obligations. Establish `hQ : ∀ (σ : X.Ψ) (k : Fin r), 0 ≤ ∑ i, ‖(((_root_.ReciprocityTheory.ChartRestriction.G.FD.RealPlaceEmbeddings.qb X (g (_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f))).repr ((s : Matrix (Fin r) (Fin r) E) *ᵥ Pi.single k 1) i : ℚ) : ℂ)‖ * (1 + |C| / X. …` using `fun σ k => Finset.sum_nonneg fun i _ => mul_nonneg (norm_nonneg _) (by have := _root_.ReciprocityTheory.ChartRestriction.G.FD.QuadraticLatticeForms.c_pos X σ; positivity)`. Use `(Finset.sum_le_sum fun k _ => mul_le_mul_of_nonneg_left (hcoord k) (norm_nonneg _)).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_trans (le_abs_self (_root_.GlobalTheory.FlagMahler.bound X C (g (_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f)) s)) ?_)` and prove the remaining obligations. Unfold `_root_.GlobalTheory.FlagMahler.bound`.
+
+Use `le_trans ?_ (Finset.single_le_sum (fun σ _ => Finset.sum_nonneg fun l' _ => Finset.sum_nonneg fun k _ => mul_nonneg (norm_nonneg _) (hQ σ k)) (Finset.mem_univ τ))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun l' : Fin r => ∑ k : Fin r, ‖(X.Gm.map τ.1)⁻¹ k l'‖ * ∑ i, ‖(((_root_.ReciprocityTheory.ChartRestriction.G.FD.RealPlaceEmbeddings.qb X (g (_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f))).repr ((s : Matrix (Fin r) (Fin r) …`. Rewrite using `[hR]`. Establish `ht : _root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f ∈ hT.toFinset` using `hT.mem_toFinset.mpr htT`. Use `le_trans ?_ (Finset.single_le_sum (fun t _ => Finset.sum_nonneg fun s' _ => abs_nonneg (_root_.GlobalTheory.FlagMahler.bound X C (g t) s')) ht)` and prove the remaining obligations.
+
+Conclude with `Finset.single_le_sum (f := fun s' => |_root_.GlobalTheory.FlagMahler.bound X C (g (_root_.ReciprocityTheory.ChartRestriction.G.FD.HermitianLatticeMaps.ty X f)) s'|) (fun _ _ => abs_nonneg _) hsS`.
+-/
 theorem _root_.GlobalTheory.FlagMahler.mahler_compactness : _root_.ReciprocityTheory.ChartRestriction.G.FD.MahlerCompactnessCriterion (E := E) := by
   classical
   unfold _root_.ReciprocityTheory.ChartRestriction.G.FD.MahlerCompactnessCriterion

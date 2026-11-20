@@ -52,6 +52,9 @@ def conePoints {κ : Type} [Fintype κ] [DecidableEq κ] {m : κ → ℕ}
     (I : Ideal (MvPolynomial (Coord m) ℤ)) (F : Type*) [CommRing F] : Set (Cone m F) :=
   {z | BlockNonzero z ∧ ∀ f ∈ I, evalCone z f = 0}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem points_eq_conePoints (P : ArithVariety n) (F : Type*) [CommRing F] :
     P.points F = conePoints P.ideal F := rfl
 
@@ -163,10 +166,18 @@ section Examples
 variable (n)
 
 omit [Fintype ι] in
+/- English proof (translation)
+The claim follows from `fun k h ↦ X_ne_zero (⟨k, c k⟩ : Coord n) ((Submodule.mem_bot _).mp h)`.
+-/
 theorem isLive_whole (c : (k : ι) → Fin (n k + 1)) : IsLive (ArithVariety.whole n) c :=
   fun k h ↦ X_ne_zero (⟨k, c k⟩ : Coord n) ((Submodule.mem_bot _).mp h)
 
 omit [Fintype ι] in
+/- English proof (translation)
+Introduce `h`. Establish `h1 : Ideal.Quotient.mk (ArithVariety.whole n).ideal (X v) = 0` using `IsFractionRing.injective (CoordRing _) (FunField _) (h.trans (map_zero _).symm)`. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem]`. Express the relevant statement in the definitionally equal form `X v ∈ (⊥ : Ideal (MvPolynomial (Coord n) ℤ)) at h1`. Rewrite `h1` using `[Submodule.mem_bot]`.
+
+Conclude with `X_ne_zero v h1`.
+-/
 theorem genPt_whole_ne_zero (v : Coord n) : genPt (ArithVariety.whole n) v ≠ 0 := by
   intro h
   have h1 : Ideal.Quotient.mk (ArithVariety.whole n).ideal (X v) = 0 :=
@@ -176,6 +187,9 @@ theorem genPt_whole_ne_zero (v : Coord n) : genPt (ArithVariety.whole n) v ≠ 0
   rw [Submodule.mem_bot] at h1
   exact X_ne_zero v h1
 
+/- English proof (translation)
+Unfold `chartPow`. Rewrite using `[Finset.prod_eq_single k₀ (fun k _ hk ↦ by simp [hk]) (by simp)]`. Simplify using `[zpow_neg, div_eq_mul_inv, mul_pow]`.
+-/
 theorem powBlock_ξ_eq (k₀ : ι) (e : ℕ) (c : (k : ι) → Fin (n k + 1)) (j : Fin (n k₀ + 1)) :
     genPt (ArithVariety.whole n) ⟨k₀, j⟩ ^ e *
         chartPow (ArithVariety.whole n) c (-(fun k ↦ if k = k₀ then (e : ℤ) else 0)) =
@@ -253,6 +267,11 @@ def blockPowLine (k₀ : ι) (e : ℕ) : HermLine n where
     simp
   metric_smooth := (contDiffOn_l2Norm_block k₀).pow e
 
+/- English proof (translation)
+Introduce `h`. Unfold `AddBlockData.ext ReciprocityTheory.ChartRestriction.G.Geo.mCoordIdeal at h`. Rewrite `h` using `[RingHom.mem_ker]`. Simplify using `only [AddBlockData.lift, ReciprocityTheory.ChartRestriction.G.Geo.mConeMap, aeval_rename, powChartForms, chartMonomial, map_mul, map_prod, map_pow, aeval_X, Function.comp_apply] at h`. Simplify using `only [mul_eq_zero, Finset.prod_eq_zero_iff, pow_eq_zero_iff', C_eq_zero, X_ne_zero, or_false] at h`.
+
+Break down `h with ⟨k, -, h, -⟩ | ⟨h, -⟩` into its components or cases. Conclude with `genPt_whole_ne_zero n _ h`. Conclude with `genPt_whole_ne_zero n _ h`.
+-/
 theorem powBlock_lift_not_mem (k₀ : ι) (e : ℕ) (c : (k : ι) → Fin (n k + 1))
     (j : Fin (n k₀ + 1)) :
     (powBlock n k₀ e).lift ((powChartForms n k₀ e).g c j) ∉ (powBlock n k₀ e).ext := by
@@ -364,11 +383,17 @@ section ExamplesT1
 
 variable (n)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl, fun c j ↦ powBlock_lift_not_mem n k₀ 1 c j⟩`.
+-/
 theorem chartForms_hypotheses_block_power (k₀ : ι) :
     (blockPowLine n k₀ 1).deg = (powBlock n k₀ 1).deg ∧
       ∀ c j, (powBlock n k₀ 1).lift ((powChartForms n k₀ 1).g c j) ∉ (powBlock n k₀ 1).ext :=
   ⟨rfl, fun c j ↦ powBlock_lift_not_mem n k₀ 1 c j⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isHomogeneous_one _ _, fun w _ ↦ by simp, by simp [val]⟩`.
+-/
 theorem smallSections_hypotheses_block_power (k₀ : ι) :
     (MvPolynomial.IsHomogeneous (1 : MvPolynomial (Fin ((powBlock n k₀ 1).m + 1)) ℤ) 0) ∧
     (∀ w ∈ conePoints (powBlock n k₀ 1).ext ℂ,
@@ -614,6 +639,9 @@ def constSection (P : ArithVariety n) (a : ι → ℤ) (ha : ∀ b, a b = 0) : I
   regular _ _ := ⟨0, 1, ⟨0, isWeightedHomogeneous_one ℤ (coordDeg n), fun b ↦ by simp [ha b]⟩,
     by simp [chartMonomial]⟩
 
+/- English proof (translation)
+Simplify using `[monomialOf, val, genPt, map_prod, map_pow]`.
+-/
 theorem val_monomialOf (P : ArithVariety n) (μ : Coord n → ℕ) :
     val P (monomialOf μ) = ∏ v, genPt P v ^ μ v := by
   simp [monomialOf, val, genPt, map_prod, map_pow]
@@ -625,6 +653,13 @@ abbrev projectivePointSizes : Unit → ℕ := fun _ ↦ 0
 def exSection : IntegralSection (ArithVariety.whole projectiveLineSizes) (powDivStd (HermLine.standard projectiveLineSizes) 1).deg :=
   constSection _ _ fun _ ↦ by simp [powDivStd, HermLine.standard]
 
+/- English proof (translation)
+Introduce `z hz c d e' he _`. Take `⟨-, hmem⟩` from `he`. Establish `h0 : e' = chartMonomial c d`. Use `(Submodule.mem_bot _).mp hmem` as an intermediate fact. Simplify `this` using `[exSection, constSection, sub_eq_zero]`.
+
+Substitute `h0` using the available equality. Establish `hS` using `((HermLine.standard projectiveLineSizes).metric_pos z hz.1).ne'`. Establish `hm : (powDivStd (HermLine.standard projectiveLineSizes) 1).metric z = 1`. Express the relevant statement in the definitionally equal form `(HermLine.standard projectiveLineSizes).metric z ^ 1 / (HermLine.standard projectiveLineSizes).metric z = 1`. Rewrite using `[pow_one, div_self hS]`.
+
+Rewrite using `[hm, mul_one, Real.exp_zero]`. Conclude with `div_self_le_one _`.
+-/
 theorem exSection_supNormLE :
     IntegralSection.SupNormLE (powDivStd (HermLine.standard projectiveLineSizes) 1) exSection 0 := by
   intro z hz c d e' he _
@@ -640,6 +675,11 @@ theorem exSection_supNormLE :
   rw [hm, mul_one, Real.exp_zero]
   exact div_self_le_one _
 
+/- English proof (translation)
+Use `⟨by norm_num, le_rfl, ?_, exSection_supNormLE, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `(Submodule.mem_bot _).mp h` as an intermediate fact. Simplify using `[exSection, constSection] at this`. Use function extensionality and compare the values at `b`.
+
+Simplify using `[powBlock, twistPow, HermLine.standard]`.
+-/
 theorem sectionInjectivity_hypotheses_projectiveLine :
     1 < 2 ∧ 1 ≤ 1 ∧ exSection.num ∉ (ArithVariety.whole projectiveLineSizes).ideal ∧
       IntegralSection.SupNormLE (powDivStd (HermLine.standard projectiveLineSizes) 1) exSection 0 ∧
@@ -651,6 +691,15 @@ theorem sectionInjectivity_hypotheses_projectiveLine :
   · funext b
     simp [powBlock, twistPow, HermLine.standard]
 
+/- English proof (translation)
+Use `⟨fun _ ↦ rfl, ?_, Nat.one_pos, fun _ ↦ by simp, ?_⟩` and prove the remaining obligations. Introduce `z _ μ hμ`. Establish `hv : ∀ v : Coord projectivePointSizes, v = ⟨(), 0⟩`. Introduce and unpack `⟨⟨⟩, i⟩`. Rewrite using `[Fin.fin_one_eq_zero i]`.
+
+Establish `h1 : μ ⟨(), 0⟩ = 1`. Use `hμ ()` as an intermediate fact. Simplify using `only [projectivePointSizes, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero] at this`. Conclude with `this`. Establish `he : evalCone z (monomialOf μ) = z () 0`.
+
+Simplify using `only [monomialOf, evalCone]`. Rewrite using `[Fintype.prod_eq_single ⟨(), 0⟩ (fun v hv' ↦ absurd (hv v) hv'), h1, pow_one, eval₂_X]`. Rewrite using `[he]`. Express the relevant statement in the definitionally equal form `‖z () 0‖ ≤ ∏ k, l2Norm (z k)`. Rewrite using `[Fintype.prod_unique]`.
+
+Conclude with `norm_le_l2Norm (z ()) 0`. Rewrite using `[val_monomialOf]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun v _ ↦ pow_ne_zero _ (genPt_whole_ne_zero projectivePointSizes v)`.
+-/
 theorem monomialMap_hypotheses_point :
     (∀ k, (HermLine.standard projectivePointSizes).deg k = ((fun _ ↦ 1 : Unit → ℕ) k : ℤ)) ∧
       MonomialsBoundedBy (ArithVariety.whole projectivePointSizes) (HermLine.standard projectivePointSizes) (fun _ ↦ 1) ∧ 0 < 1 ∧
@@ -675,6 +724,11 @@ theorem monomialMap_hypotheses_point :
   · rw [val_monomialOf]
     exact Finset.prod_ne_zero_iff.mpr fun v _ ↦ pow_ne_zero _ (genPt_whole_ne_zero projectivePointSizes v)
 
+/- English proof (translation)
+Use `⟨?_, Nat.prime_two⟩` and prove the remaining obligations. Rewrite using `[show (ArithVariety.whole projectivePointSizes).ideal = ⊥ from rfl, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`. Establish `hc : Nat.card (Coord projectivePointSizes) = 1`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_sigma]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hc, Fintype.card_unit]`. Use `norm_cast`.
+-/
 theorem weightedDegree_hypotheses_point :
     ringKrullDim (MvPolynomial (Coord projectivePointSizes) ℤ ⧸ (ArithVariety.whole projectivePointSizes).ideal) =
       ((0 + 1 + Fintype.card Unit : ℕ) : WithBot ℕ∞) ∧ Nat.Prime 2 := by
@@ -689,6 +743,9 @@ theorem weightedDegree_hypotheses_point :
   rw [hc, Fintype.card_unit]
   norm_cast
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(EuclideanSpace.basisFun (Fin 1) ℝ).orthonormal.linearIndependent, fun i ↦ ((EuclideanSpace.basisFun (Fin 1) ℝ).orthonormal.1 i).le, fun i ↦ AddSubgroup.subset_closure (Set.mem_range_self i)⟩`.
+-/
 theorem hadamardGram_hypotheses_unit_basis :
     LinearIndependent ℝ (EuclideanSpace.basisFun (Fin 1) ℝ) ∧
       (∀ i, ‖EuclideanSpace.basisFun (Fin 1) ℝ i‖ ≤ 1) ∧
@@ -698,6 +755,11 @@ theorem hadamardGram_hypotheses_unit_basis :
     fun i ↦ ((EuclideanSpace.basisFun (Fin 1) ℝ).orthonormal.1 i).le,
     fun i ↦ AddSubgroup.subset_closure (Set.mem_range_self i)⟩
 
+/- English proof (translation)
+Use `⟨one_pos, (EuclideanSpace.basisFun (Fin 1) ℝ).orthonormal.linearIndependent, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`. Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Conclude with `((EuclideanSpace.basisFun (Fin 1) ℝ).orthonormal.1 0).le`.
+
+Rewrite using `[Finset.coe_singleton, Set.range_unique]`. Both sides reduce to the same expression.
+-/
 theorem latticePointCount_hypotheses_unit :
     (0 : ℝ) < 1 ∧ LinearIndependent ℝ (EuclideanSpace.basisFun (Fin 1) ℝ) ∧
       (∀ s ∈ ({EuclideanSpace.basisFun (Fin 1) ℝ 0} : Finset (EuclideanSpace ℝ (Fin 1))), ‖s‖ ≤ 1) ∧
@@ -713,6 +775,11 @@ theorem latticePointCount_hypotheses_unit :
   · rw [Finset.coe_singleton, Set.range_unique]
     rfl
 
+/- English proof (translation)
+Use `⟨le_rfl, fun x y ↦ ?_, fun k x ↦ by simp [abs_mul], fun x hx ↦ ?_⟩` and prove the remaining obligations. Use `push_cast`. Conclude with `abs_add_le _ _`. Rewrite using `[neg_zero, Real.exp_zero]`. Establish `: (1 : ℤ) ≤ |x|` using `Int.one_le_abs hx`.
+
+Conclude with `this` after adjusting the coercions.
+-/
 theorem latticePacking_hypotheses_integers :
     (0 : ℝ) ≤ 0 ∧ (∀ x y : ℤ, |((x + y : ℤ) : ℝ)| ≤ |(x : ℝ)| + |(y : ℝ)|) ∧
       (∀ k x : ℤ, |((k • x : ℤ) : ℝ)| = |(k : ℝ)| * |(x : ℝ)|) ∧
@@ -737,6 +804,9 @@ def gaussianLinePt :=
 def ratBasis : Module.Basis (Fin 1) ℤ (𝓞 ℚ) :=
   (Module.Basis.singleton (Fin 1) ℤ).map Rat.ringOfIntegersEquiv.symm.toAddEquiv.toIntLinearEquiv
 
+/- English proof (translation)
+Simplify using `[ratBasis]`.
+-/
 theorem ratBasis_apply (m : Fin 1) : ratBasis m = 1 := by
   simp [ratBasis]
 
@@ -744,6 +814,15 @@ def pairEquiv : Fin 1 × Fin 1 ≃ Fin (0 + 1) := finProdFinEquiv.trans (finCong
 
 def stdPhi : (HermitianBundle.standard ℚ 1).carrier ≃ₗ[𝓞 ℚ] (Fin 1 → 𝓞 ℚ) := LinearEquiv.refl _ _
 
+/- English proof (translation)
+Use `⟨fun _ ↦ Matrix.PosDef.one, fun _ ↦ by simp, fun _ ↦ rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `σ w _`. Express the relevant statement in the definitionally equal form `∏ k : Unit, l2Norm _ = _`. Rewrite using `[Fintype.prod_unique]`. Generalize the expression as in `hp : (pairEquiv.symm 0).2 = t`.
+
+Rewrite `hp` using `[Fin.fin_one_eq_zero t]`. Simplify using `[l2Norm, hermNorm, ratBasis_apply, dotProduct, Complex.conj_mul', hp]`. Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re, Real.sqrt_sq (norm_nonneg _)]`. Introduce `σ' x y`. Use `(HermitianMetric.standard_inner (K := ℚ) (Fin 1) σ' ((1 : ComplexAt σ') ⊗ₜ[𝓞 ℚ] (x : Fin 1 → 𝓞 ℚ)) ((1 : ComplexAt σ') ⊗ₜ[𝓞 ℚ] (y : Fin 1 → 𝓞 ℚ))).trans ?_` and prove the remaining obligations.
+
+Use `show ∑ i : Fin 1, starRingEnd ℂ (σ' ((x : Fin 1 → 𝓞 ℚ) i : ℚ) * (ofComplex σ').symm 1) * (σ' ((y : Fin 1 → 𝓞 ℚ) i : ℚ) * (ofComplex σ').symm 1) = _`. Simplify using `[dotProduct, stdPhi, mul_comm]`. Both sides reduce to the same expression. Introduce `h`. Use `congrFun h 0` as an intermediate fact.
+
+Conclude with `one_ne_zero this`.
+-/
 theorem pointHeightDegree_hypotheses_example :
     (∀ σ : ℚ →+* ℂ, ((fun _ : ℚ →+* ℂ ↦ (1 : Matrix (Fin 1) (Fin 1) ℂ)) σ).PosDef) ∧
     (∀ σ : ℚ →+* ℂ, (fun _ ↦ (1 : Matrix (Fin 1) (Fin 1) ℂ)) (ComplexEmbedding.conjugate σ) =

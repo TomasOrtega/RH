@@ -9,6 +9,9 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.NonemptyLoca
 open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations TensorProduct GlobalTheory.PZ GlobalTheory.BKReal GlobalTheory.Prism Formalism.BasicNotions.Examples₂.LB GlobalTheory.MemLoc GlobalTheory.AinfK GlobalTheory.AcrisK GlobalTheory.DiscEval GroundTheory.LocalField.FormalGroup
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PZ.ltData_read_OC | exact GlobalTheory.PZ.ltData_read_OC | (intros; apply GlobalTheory.PZ.ltData_read_OC <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lubin_tate_torsion_sequence : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (χ : ↥(GK K) →* (↥K.1)ˣ) (π : ↥(OL K)) (z : ℕ → Om l), LTData K χ π z →
     ∃ (hπ : Irreducible π) (hF : IsLubinTateSeries π (ltSeries K π)) (v : ℕ → OC l), v 0 = 0 ∧ v 1 ≠ 0 ∧
       (∀ n, intToOC K π * v (n + 1) + v (n + 1) ^ l ^ fK K = v n) ∧

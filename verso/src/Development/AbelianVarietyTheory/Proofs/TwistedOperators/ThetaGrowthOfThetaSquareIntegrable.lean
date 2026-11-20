@@ -12,6 +12,13 @@ open scoped Topology Pointwise ENNReal NNReal TensorProduct
 
 namespace GlobalTheory.KernelSeminorm
 
+/- English proof (translation)
+Establish `: DiscreteTopology (G ⧸ U)` using `QuotientAddGroup.discreteTopology hU`. Establish `hT : ((QuotientAddGroup.mk : G → G ⧸ U) '' K).Finite` using `(hK.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Use `⟨(hT.toFinset.card).factorial, Nat.factorial_pos _, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab, e⟩` from `Finset.exists_ne_map_eq_of_card_lt_of_maps_to (s := Finset.range (hT.toFinset.card + 1)) (t := hT.toFinset) (by simp) (f := fun k => (QuotientAddGroup.mk (k • x) : G ⧸ U)) fun k _ => by simpa using ⟨_, hx k, rfl⟩`. Use `wlog h : a < b generalizing a b`.
+
+Conclude with `this b hb a ha hab.symm e.symm (lt_of_le_of_ne (not_lt.1 h) hab.symm)`. Establish `h1 : (b - a) • x ∈ U`. Use `QuotientAddGroup.eq.1 e` as an intermediate fact. Rewrite `this` using `[← Nat.add_sub_cancel' h.le, add_nsmul, neg_add_cancel_left]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `Nat.dvd_factorial (Nat.sub_pos_of_lt h) ((Nat.sub_le b a).trans (Nat.le_of_lt_succ (Finset.mem_range.1 hb)))`.
+
+Rewrite using `[hc, mul_nsmul]`. Conclude with `nsmul_mem h1 c`.
+-/
 theorem exists_nsmul_mem {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] {U : AddSubgroup G}
     (hU : IsOpen (U : Set G)) {K : Set G} (hK : IsCompact K) :
     ∃ m : ℕ, 0 < m ∧ ∀ x, (∀ k : ℕ, k • x ∈ K) → m • x ∈ U := by
@@ -32,6 +39,13 @@ theorem exists_nsmul_mem {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTop
   rw [hc, mul_nsmul]
   exact nsmul_mem h1 c
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `(GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact G Γ K hK hc).2 f hf hp`. Set `E : G ≃ᵐ G` to `e.toHomeomorph.toMeasurableEquiv`. Establish `hm : MeasurePreserving E μ (μ.map E)` using `⟨E.measurable, rfl⟩`. Establish `h2 : (μ.map E).IsAddHaarMeasure` using `e.isAddHaarMeasure_map μ`. Establish `h3 : IsAddFundamentalDomain Γ (E.symm ⁻¹' 𝓕) (μ.map E)` using `h𝓕.preimage_of_equiv (hm.symm E).quasiMeasurePreserving (e := fun γ : Γ => (⟨e γ, (he _).2 γ.2⟩ : Γ)) ⟨fun a b hab => Subtype.ext (e.injective (congrArg Subtype.val hab)), fun b => ⟨⟨e.symm b, (he _).1 (by simp)⟩, Subtype.ext (e.apply_symm_apply _)⟩⟩ fun γ x => by`.
+
+Express the relevant statement in the definitionally equal form `e.symm (e γ + x) = γ + e.symm x`. Rewrite using `[map_add, e.symm_apply_apply]`. Establish `h4 : E ⁻¹' (E.symm ⁻¹' 𝓕) = 𝓕` using `by ext x; simp`. Establish `h5` using `(hN _ _ h2 h3).2.2.1`. Rewrite `h5` using `[E.map_apply, h4, h1, E.restrict_map, lintegral_map_equiv, h4]`.
+
+Rewrite using `[(hN _ _ h' h𝓕').2.2.1, h1']`. Conclude with `h5`.
+-/
 theorem lintegral_comp_aut {G : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
     (Γ : AddSubgroup G) [DiscreteTopology Γ] {K : Set G} (hK : IsCompact K) (hc : ∀ x : G, ∃ γ ∈ Γ, γ + x ∈ K)
@@ -62,6 +76,17 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.UG Glob
 
 variable (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Establish `: IsModuleTopology (AF F) (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (AF F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Take `⟨s, b, hb⟩` from `FiniteDimensional.exists_is_basis_integral (𝓞 F) F E`. Establish `hb' : ∀ i, IsIntegral ℤ (b i)` using `fun i => isIntegral_trans _ (hb i)`. Take `⟨C, hC, hC'⟩` from `exists_compact_adeles (F := F) 0 1`.
+
+Set `e` to `(Algebra.TensorProduct.basis (AF F) b.traceDual).equivFun`. Establish `he : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`. Use `⟨e.symm '' Set.pi Set.univ fun _ => C, (isCompact_univ_pi fun _ => hC).image he, fun H h1 hf => ?_⟩` and prove the remaining obligations. Take `⟨d, hd, hdc, hv⟩` from `GlobalTheory.SmoothForms.denom_global H h1 hf`. Use `⟨d, hd, hdc, fun z h0 hz k => ⟨e (k • d • z), fun i _ => ?_, e.symm_apply_apply _⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[map_nsmul, map_nsmul, Pi.smul_apply, Pi.smul_apply]`. Use `hC' _ (fun w => ?_) 1 one_pos (by simp) fun v => ?_` and prove the remaining obligations. Establish `h2` using `repr_map b.traceDual (fstA F) z i`. Rewrite `h2` using `[h0, map_zero, Finsupp.zero_apply]`. Establish `h3 : evInf F w (e z i) = 0`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.AutFunCompare.evW w (fstA F ((Algebra.TensorProduct.basis (AF F) b.traceDual).repr z i)) = 0`. Rewrite using `[← h2, map_zero]`. Rewrite using `[map_nsmul, map_nsmul, h3]`. Simplify using the standard rewrite rules. Rewrite using `[Nat.cast_one, one_mul, map_nsmul, map_nsmul, nsmul_eq_mul, nsmul_eq_mul, norm_mul]`.
+
+Use `mul_le_one₀ (GlobalTheory.SmoothForms.denom_norm_natCast_le_one v k) (norm_nonneg _) (hv v _ ?_)` and prove the remaining obligations. Conclude with `(congrArg nnnorm (repr_map b.traceDual (evFin F v) z i)).symm.trans_le ((nnnorm_repr_le_absFin b hb' v _ i).trans (hz v))`.
+-/
 theorem exists_compact_denom : ∃ C : Set (AF F ⊗[F] E), IsCompact C ∧ ∀ H : HeightOneSpectrum (𝓞 F) → ℝ≥0,
     (∀ v, 1 ≤ H v) → (Function.mulSupport H).Finite → ∃ d : ℕ, 0 < d ∧ (d : ℝ≥0) ≤ ∏ᶠ v, H v ∧ ∀ z : AF F ⊗[F] E,
       Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z = 0 → (∀ v, absFin F v (compFin F E v z) ≤ H v) →
@@ -91,6 +116,9 @@ theorem exists_compact_denom : ∃ C : Set (AF F ⊗[F] E), IsCompact C ∧ ∀ 
     exact (congrArg nnnorm (repr_map b.traceDual (evFin F v) z i)).symm.trans_le
       ((nnnorm_repr_le_absFin b hb' v _ i).trans (hz v))
 
+/- English proof (translation)
+Use `(absFin_le_normFin F v ((a.1 * u * b.1).map (compFin F E v)) i j).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `(normFin_mul_le _ v _ _).trans (mul_le_mul' ((normFin_mul_le _ v _ _).trans ?_) (le_htOf _ (bc (compFin F E v) b)))` and prove the remaining obligations. Conclude with `(mul_le_of_le_one_right' ((normFin_le_iff _ v).2 hu)).trans (le_htOf _ (bc (compFin F E v) a))`.
+-/
 theorem absFin_mul_mul_le {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (a : GL m (AF F ⊗[F] E))
     (b : GL n (AF F ⊗[F] E)) (u : Matrix m n (AF F ⊗[F] E)) (v : HeightOneSpectrum (𝓞 F))
     (hu : ∀ i j, absFin F v (compFin F E v (u i j)) ≤ 1) (i : m) (j : n) :
@@ -109,6 +137,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ Formalism.L2.Theta.AE D} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D}
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => unfold actO`. Rewrite using `[zero_nsmul, zero_nsmul, Matrix.mul_zero, Matrix.zero_mul]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, ← ih]`. Unfold `actO`.
+
+Rewrite using `[Matrix.mul_add, Matrix.add_mul]`.
+-/
 theorem actO_nsmul (g : GA D S) (h : GA D T) (n : ℕ) (u : WO S T) : actO S T g h (n • u) = n • actO S T g h u := by
   induction n with
   | zero => unfold actO; rw [zero_nsmul, zero_nsmul, Matrix.mul_zero, Matrix.zero_mul]
@@ -116,6 +149,19 @@ theorem actO_nsmul (g : GA D S) (h : GA D T) (n : ℕ) (u : WO S T) : actO S T g
 
 open GlobalTheory.AdelicU Formalism.UG in
 
+/- English proof (translation)
+Take `⟨i1, i2, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `hev : ∀ᶠ u in 𝓝 (0 : WO S T), ∀ i j v, absFin D.host.F v (compFin D.host.F D.host.E v (u i j)) ≤ 1` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ((continuous_id.matrix_elem i j).tendsto' (0 : WO S T) 0 rfl).eventually (eventually_absFin_le_one_nhds D.host.F)`. Take `⟨K₀, h0, hsub, hK₀⟩` from `LocallyCompactSpace.local_compact_nhds (X := WA T S) 0 _ hev`. Take `⟨C, hC, hden⟩` from `exists_compact_denom D.host.F D.host.E`. Establish `hK : IsCompact (X` using `WA T S) (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => C) := isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC`.
+
+Take `⟨m, hm, hmul⟩` from `exists_nsmul_mem (G := WA T S) hU hK`. Use `⟨K₀, h0, hK₀, m, fun g h => ?_⟩` and prove the remaining obligations. Establish `f1` using `finite_mulSupport_htFin D.host.F (Formalism.L2.Theta.matHom S g)`. Establish `f2` using `finite_mulSupport_htFin D.host.F (Formalism.L2.Theta.matHom T h⁻¹)`. Take `⟨d, hd, hdc, hz⟩` from `hden (fun v => htFin D.host.F v (bc (compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom T h⁻¹)) * htFin D.host.F v (bc (compFin D.host.F D.host.E v) (Formalism.L2.Theta.matHom S g))) (fun v => one_le_mul_of_one_le_of_one_le (one_le_htOf _ _) (one_le_htOf _ _)) ((f2.union f1) …`.
+
+Use `⟨m * d, by positivity, ?_, fun u hu hinf => ?_⟩` and prove the remaining obligations. Rewrite `hdc` using `[finprod_mul_distrib f2 f1]`. Establish `h1 : (d : ℝ≥0) ≤ heightGL D.host.F (Formalism.L2.Theta.matHom T h⁻¹) * heightGL D.host.F (Formalism.L2.Theta.matHom S g)` using `hdc.trans (mul_le_mul' (le_mul_of_one_le_left' (Finset.one_le_prod' fun _ _ => one_le_htOf _ _)) (le_mul_of_one_le_left' (Finset.one_le_prod' fun _ _ => one_le_htOf _ _)))`. Establish `h2 : (d : ℝ) ≤ height T h⁻¹ * height S g` using `by unfold GlobalTheory.Grow.height; exact_mod_cast h1`. Rewrite `h2` using `[GlobalTheory.Grow.height_inv, mul_comm]`.
+
+Rewrite using `[Nat.cast_mul]`. Conclude with `mul_le_mul_of_nonneg_left h2 m.cast_nonneg`. Establish `e : actO S T g⁻¹ h⁻¹ ((m * d) • u) = m • d • actO S T g⁻¹ h⁻¹ u`. Rewrite using `[actO_nsmul, mul_nsmul']`. Rewrite using `[e]`.
+
+Use `hmul _ fun k i _ j _ => hz (actO S T g⁻¹ h⁻¹ u i j) ?_ (fun v => ?_) k` and prove the remaining obligations. Establish `hv : (actO S T g⁻¹ h⁻¹ u).map (infPart D) = 0`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hinf, Matrix.mul_zero, Matrix.zero_mul]`. Conclude with `congrFun (congrFun hv i) j`.
+
+Unfold `actO`. Rewrite using `[inv_inv]`. Conclude with `absFin_mul_mul_le D.host.F D.host.E (Formalism.L2.Theta.matHom T h⁻¹) (Formalism.L2.Theta.matHom S g) u v (fun i j => hsub hu i j v) i j`.
+-/
 theorem exists_level_multiple {U : AddSubgroup (WO S T)} (hU : IsOpen (U : Set (WO S T))) :
     ∃ K₀ ∈ 𝓝 (0 : WO S T), IsCompact K₀ ∧ ∃ m : ℕ, ∀ (g : GA D S) (h : GA D T), ∃ n : ℕ, 0 < n ∧
       (n : ℝ) ≤ m * (height S g * height T h) ∧ ∀ u ∈ K₀, u.map (infPart D) = 0 → actO S T g⁻¹ h⁻¹ (n • u) ∈ U := by
@@ -157,6 +203,9 @@ theorem exists_level_multiple {U : AddSubgroup (WO S T)} (hU : IsOpen (U : Set (
       exact absFin_mul_mul_le D.host.F D.host.E (Formalism.L2.Theta.matHom T h⁻¹) (Formalism.L2.Theta.matHom S g) u v
         (fun i j => hsub hu i j v) i j
 
+/- English proof (translation)
+The claim follows from `(Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => le_add_of_nonneg_right (norm_nonneg (infMat D.sp.cm.sig T.gram (θ τ) g⁻¹ i j))).trans (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig T.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig T.gram (θ τ) g⁻¹ i j‖)) ( …`.
+-/
 theorem sum_norm_compAt_le (τ : D.what₂.Tau) (g : GA D T) :
     ∑ i, ∑ j, ‖compAt θ τ (Formalism.L2.Theta.mt T g) i j‖ ≤ normInf θ T g :=
   (Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ =>
@@ -164,6 +213,13 @@ theorem sum_norm_compAt_le (τ : D.what₂.Tau) (g : GA D T) :
     (Finset.single_le_sum (f := fun τ => ∑ i, ∑ j, (‖infMat D.sp.cm.sig T.gram (θ τ) g i j‖ +
       ‖infMat D.sp.cm.sig T.gram (θ τ) g⁻¹ i j‖)) (fun _ _ => by positivity) (Finset.mem_univ τ))
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ normInf θ T h` using `by unfold normInf; positivity`. Establish `h0' : 0 ≤ normInf θ S g⁻¹` using `by unfold normInf; positivity`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun τ => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => (pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Establish `h1 : ∑ k, ‖compAt θ τ (Formalism.L2.Theta.mt T h) i k‖ ≤ normInf θ T h` using `(Finset.single_le_sum (f := fun i => ∑ k, ‖compAt θ τ (Formalism.L2.Theta.mt T h) i k‖) (fun _ _ => by positivity) (Finset.mem_univ i)).trans (sum_norm_compAt_le τ h)`. Establish `h2 : ∑ l, ‖compAt θ τ (Formalism.L2.Theta.mt S g⁻¹) l j‖ ≤ normInf θ S g⁻¹` using `(Finset.sum_le_sum fun l _ => Finset.single_le_sum (f := fun j => ‖compAt θ τ (Formalism.L2.Theta.mt S g⁻¹) l j‖) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (sum_norm_compAt_le τ g⁻¹)`.
+
+Express the relevant statement in the definitionally equal form `‖∑ l, (∑ k, compAt θ τ (Formalism.L2.Theta.mt T h) i k * u τ k l) * compAt θ τ (Formalism.L2.Theta.mt S g⁻¹) l j‖ ≤ _`. Use `(norm_sum_le _ _).trans (le_trans ?_ (mul_le_mul_of_nonneg_left h2 (by positivity)))` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+
+Use `mul_le_mul_of_nonneg_right ((norm_sum_le _ _).trans (le_trans ?_ (mul_le_mul_of_nonneg_right h1 (norm_nonneg u)))) (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((norm_le_pi_norm _ l).trans ((norm_le_pi_norm _ k).trans (norm_le_pi_norm u τ))) (norm_nonneg _)`.
+-/
 theorem norm_mov_le_normInf (g : GA D S) (h : GA D T) (u : RW T S) :
     ‖mov θ g h u‖ ≤ normInf θ T h * ‖u‖ * normInf θ S g⁻¹ := by
   have h0 : 0 ≤ normInf θ T h := by unfold normInf; positivity
@@ -194,6 +250,11 @@ open Classical in
 def letter (a : D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) : RW T S :=
   fun τ i j => if τ = a.1 then if i = a.2.1 then if j = a.2.2.1 then (if a.2.2.2 then Complex.I else 1) else 0 else 0 else 0
 
+/- English proof (translation)
+Take `⟨L, hL, e, e'⟩` from `exists_line hc hψ (letter a)`. Establish `: L = lineAt θ a.1 (Matrix.single a.2.1 a.2.2.1 (if a.2.2.2 then Complex.I else 1))`. Use `GlobalTheory.RealLineAt.lineAt_unique D θ hc.inf _ _ a.1 _ _ _ ⟨hL.1, hL.2, fun t τ => ?_⟩ (isLineAt_lineAt hc.inf _ _)` and prove the remaining obligations. Rewrite using `[e]`. Use `(congrFun (hc.pi_iota T S (t • letter a)) τ).trans ?_` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `i j`. Apply the tactic sequence `by_cases h1 : τ = a.1 <;> simp [letter, Matrix.single, h1, ite_and, @eq_comm _ i, @eq_comm _ j]`. Rewrite using `[e', this]`. Both sides reduce to the same expression.
+-/
 theorem dv_letter (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (a : D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)
     (f : WO S T → ℂ) : dv θ σ S T (letter a) f = heisDer ψ θ a f := by
   classical
@@ -207,6 +268,9 @@ theorem dv_letter (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (a : D.what₂.
   rw [e', this]
   rfl
 
+/- English proof (translation)
+Use `⟨fun a => if a.2.2.2 then (z a.1 a.2.1 a.2.2.1).im else (z a.1 a.2.1 a.2.2.1).re, fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `: ‖z a.1 a.2.1 a.2.2.1‖ ≤ ‖z‖` using `(norm_le_pi_norm _ _).trans ((norm_le_pi_norm _ _).trans (norm_le_pi_norm z _)) beta_reduce split_ifs exacts [(Complex.abs_im_le_norm _).trans this, (Complex.abs_re_le_norm _).trans this]`. Use function extensionality and compare the values at `τ i j`. Simplify using `[letter, Fintype.sum_prod_type, Finset.sum_apply, Finset.sum_add_distrib, Finset.sum_ite_irrel, add_comm]`.
+-/
 theorem exists_coord (z : RW T S) : ∃ c : D.what₂.Tau × Fin T.rank × Fin S.rank × Bool → ℝ,
     (∀ a, |c a| ≤ ‖z‖) ∧ z = ∑ a, c a • letter a := by
   classical
@@ -220,6 +284,13 @@ theorem exists_coord (z : RW T S) : ∃ c : D.what₂.Tau × Fin T.rank × Fin S
 
 variable {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
 
+/- English proof (translation)
+Take `⟨c, h1, rfl⟩` from `exists_coord z`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `(Finset.le_sum_of_subadditive (fun m : thetaSub ψ S T => sobO ψ θ μ 𝓕 p m.1) ?_ (fun x y => sobO_add_le hψ hc.inf x.2 y.2 p) _ _).trans ((Finset.sum_le_card_nsmul _ _ (ρ * sobO ψ θ μ 𝓕 (p + 1) m.1) fun a _ => ?_).trans_eq ?_)` and prove the remaining obligations. Use `sobO_smul (ψ := ψ) (θ := θ) (μ := μ) (𝓕 := 𝓕) (f := 0) p 0` as an intermediate fact. Rewrite `this` using `[zero_smul, enorm_zero, zero_mul]`.
+
+Conclude with `this.le`. Rewrite using `[map_smul, LinearMap.smul_apply]`. Express the relevant statement in the definitionally equal form `sobO ψ θ μ 𝓕 p ((c a : ℂ) • dv θ σ S T (letter a) m.1) ≤ _`. Rewrite using `[sobO_smul, dv_letter hc hψ]`. Use `mul_le_mul' ?_ (sobO_heisDer_le p a)` and prove the remaining obligations.
+
+Rewrite using `[enorm_eq_nnnorm, ENNReal.coe_le_coe, ← NNReal.coe_le_coe, coe_nnnorm, Complex.norm_real]`. Conclude with `(h1 a).trans hz`. Rewrite using `[nsmul_eq_mul, Finset.card_univ, ENNReal.coe_mul, ENNReal.coe_natCast, mul_assoc]`.
+-/
 theorem sobO_dvL_le (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (p : ℕ) {ρ : ℝ≥0} {z : RW T S} (hz : ‖z‖ ≤ ρ)
     (m : thetaSub ψ S T) : sobO ψ θ μ 𝓕 p (dvL hc hψ S T z m).1 ≤
       (Fintype.card (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) * ρ : ℝ≥0) * sobO ψ θ μ 𝓕 (p + 1) m.1 := by
@@ -239,6 +310,13 @@ theorem sobO_dvL_le (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) (p : ℕ) {ρ
     exact (h1 a).trans hz
   · rw [nsmul_eq_mul, Finset.card_univ, ENNReal.coe_mul, ENNReal.coe_natCast, mul_assoc]
 
+/- English proof (translation)
+Establish `h0 : ∀ (p : ℕ) (f : WO S T → ℂ), l2O μ 𝓕 f ≤ ((1 + Fintype.card (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) * ρ : ℝ≥0) : ℝ≥0∞) ^ p * sobO ψ θ μ 𝓕 p f` using `fun p f => ((sobO_zero (ψ := ψ) (θ := θ)).ge.trans (sobO_mono p.zero_le)).trans (le_mul_of_one_le_left' (one_le_pow₀ (ENNReal.one_le_coe_iff.2 le_self_add)))`. Proceed by induction on `p with`. Consider the case `zero`. Introduce `l hl _ m`. Rewrite using `[List.length_eq_zero_iff.1 (Nat.le_zero.1 hl)]`.
+
+Conclude with `h0 0 _`. Consider the case `succ p ih`. Introduce `l hl hz m`. Consider the cases of `l with`. Consider the case `nil => exact h0 _ _`.
+
+Consider the case `cons z l`. Use `(ih l (by simpa using hl) (fun v hv => hz v (List.mem_cons_of_mem _ hv)) _).trans ?_` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc]`. Conclude with `mul_le_mul_right ((sobO_dvL_le hc hψ p (hz z List.mem_cons_self) m).trans (mul_le_mul_left (ENNReal.coe_le_coe.2 le_add_self) _)) _`.
+-/
 theorem l2O_foldl_dvL_le_pow_mul_sobO (hc : Chart θ σ) (hψ : IsStdChar D ψ (-1)) {ρ : ℝ≥0} (p : ℕ) : ∀ (l : List (RW T S)), l.length ≤ p →
     (∀ z ∈ l, ‖z‖ ≤ ρ) → ∀ m : thetaSub ψ S T, l2O μ 𝓕 (l.foldl (fun m z => dvL hc hψ S T z m) m).1 ≤
       ((1 + Fintype.card (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) * ρ : ℝ≥0) : ℝ≥0∞) ^ p * sobO ψ θ μ 𝓕 p m.1 := by
@@ -261,6 +339,15 @@ theorem l2O_foldl_dvL_le_pow_mul_sobO (hc : Chart θ σ) (hψ : IsStdChar D ψ (
       exact mul_le_mul_right ((sobO_dvL_le hc hψ p (hz z List.mem_cons_self) m).trans
         (mul_le_mul_left (ENNReal.coe_le_coe.2 le_add_self) _)) _
 
+/- English proof (translation)
+Take `⟨i1, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: IsModuleTopology (AF D.host.F) (Formalism.L2.Theta.AE D)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (Formalism.L2.Theta.AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `hn' : (n : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `h1 : incA D (n : D.host.E)⁻¹ * (n : Formalism.L2.Theta.AE D) = 1`.
+
+Rewrite using `[← map_natCast (incA D), ← map_mul, inv_mul_cancel₀ hn', map_one]`. Establish `hl : ∀ x : WA T S, (n • x).map (incA D (n : D.host.E)⁻¹ * ·) = x` using `fun x => by`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `incA D (n : D.host.E)⁻¹ * (n • x i j) = _`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, h1, one_mul]`.
+
+Use `⟨{ toFun := fun x => n • x invFun := fun x => x.map (incA D (n : D.host.E)⁻¹ * ·) left_inv := hl right_inv := fun x => ?_ map_add' := fun x y => nsmul_add x y n continuous_toFun := continuous_nsmul n continuous_invFun := continuous_id.matrix_map (continuous_const.mul continuous_i …` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `n • (incA D (n : D.host.E)⁻¹ * x i j) = _`. Rewrite using `[nsmul_eq_mul, ← mul_assoc, mul_comm (n : Formalism.L2.Theta.AE D), h1, one_mul]`. Introduce and unpack `⟨γ, hγ⟩`.
+
+Use `⟨γ.map ((n : D.host.E)⁻¹ * ·), ?_⟩` and prove the remaining obligations. Rewrite using `[← hl x]`. Use extensionality with `i j`. Conclude with `(map_mul (incA D) _ _).trans (congrArg (incA D (n : D.host.E)⁻¹ * ·) (congrFun (congrFun hγ i) j))`.
+-/
 theorem exists_dilation {n : ℕ} (hn : 0 < n) :
     ∃ e : WA T S ≃ₜ+ WA T S, (∀ x, e x = n • x) ∧ ∀ x, e x ∈ ratL T S ↔ x ∈ ratL T S := by
   obtain ⟨i1, -⟩ := GlobalTheory.AdelicMatrixLattice.lattice D T S
@@ -290,6 +377,25 @@ theorem exists_dilation {n : ℕ} (hn : 0 < n) :
     ext i j
     exact (map_mul (incA D) _ _).trans (congrArg (incA D (n : D.host.E)⁻¹ * ·) (congrFun (congrFun hγ i) j))
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, K, hK, hcov⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Establish `: BorelSpace (WA T S)` using `⟨rfl⟩`. Take `⟨⟨μ₀, 𝓕₀, hμ, h𝓕, h1⟩, -⟩` from `GlobalTheory.meanSquare_addFundamentalDomain_of_cocompact (WA T S) (ratL T S) K hK hcov`. Establish `: Countable (ratL T S)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Set `ι : (Fin N → ℝ) →+ WA T S` to `(iotaW σ T S).comp b.equivFun.symm.toLinearMap.toAddMonoidHom`.
+
+Set `π : WA T S →+ (Fin N → ℝ)` to `b.equivFun.toLinearMap.toAddMonoidHom.comp (piW θ T S)`. Establish `hι : Continuous ι` using `(hc.continuous_iota T S).comp b.equivFunL.symm.continuous`. Establish `hπ : Continuous π` using `b.equivFunL.continuous.comp (continuous_pi' hc.inf T S)`. Establish `hπι : ∀ t, π (ι t) = t` using `fun t => by show b.equivFun (piW θ T S (iotaW σ T S (b.equivFun.symm t))) = t`. Rewrite using `[hc.pi_iota, LinearEquiv.apply_symm_apply]`.
+
+Establish `hιπ : ∀ w, ι (π w) = iotaW σ T S (piW θ T S w)` using `fun w => by show iotaW σ T S (b.equivFun.symm (b.equivFun (piW θ T S w))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Take `⟨c, K₁, hK₁, hreal⟩` from `lintegral_real_le (G := WA T S) μ₀ ι π hι hπ hπι hK₀ h0 (isCompact_univ_pi fun _ : Fin N => isCompact_Icc (a := (0 : ℝ)) (b := 1))`. Take `⟨M, hM⟩` from `lintegral_compact_le (G := WA T S) (ratL T S) μ₀ h𝓕 hK₁`. Use `⟨c * M, fun μ 𝓕 hm n hn φ hφ hl => ?_⟩` and prove the remaining obligations.
+
+Take `⟨e, he, heL⟩` from `exists_dilation (S := S) (T := T) hn`. Establish `hsum : ∀ t : Fin N → ℝ, 0 + ∑ i, iotaW σ T S (t i • n • b i) = e (ι t)` using `fun t => by`. Rewrite using `[he]`. Use `show _ = n • iotaW σ T S (b.equivFun.symm t)`. Rewrite using `[zero_add, Module.Basis.equivFun_symm_apply, ← map_nsmul, Finset.smul_sum, map_sum]`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_comm]`. Establish `en : ∀ z : ℂ, ENNReal.ofReal (‖z‖ ^ 2) = ‖z‖ₑ ^ 2` using `fun z => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`. Establish `hmeas : Measurable fun w : WA T S => ‖φ (e w)‖ₑ ^ 2` using `(hφ.cont.comp e.continuous).measurable.enorm.pow_const 2`. Establish `a1` using `hreal _ hmeas fun w hw => by`.
+
+Establish `hinf : (w - ι (π w)).map (infPart D) = 0`. Establish `hp : piW θ T S (w - ι (π w)) = 0` using `by rw [hιπ, AddMonoidHom.map_sub, hc.pi_iota, sub_self]`. Use extensionality with `i j`. Conclude with `ThetaCont.infPart_eq_zero hc _ fun τ => congrFun (congrFun (congrFun hp τ) i) j`. Use `GlobalTheory.HeisOrtho.norm_heisO hψ.1 φ (n • (w - ι (π w))) (e (ι (π w)))` as an intermediate fact.
+
+Rewrite `this` using `[hl _ hw hinf, ← he, ← map_add, add_sub_cancel]`. Rewrite using `[← en, ← en, this]`. Establish `a2` using `hM _ hmeas fun γ hγ w => by`. Rewrite using `[← en, ← en, map_add, theta_norm_periodic hψ hφ _ ((heL γ).2 hγ)]`. Establish `a3` using `lintegral_comp_aut (G := WA T S) (ratL T S) hK hcov e heL hμ h𝓕 h1 hm.1 hm.2.1 hm.2.2 hφ.cont (theta_norm_periodic hψ hφ)`.
+
+Simplify using `only [hsum]`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun t => ‖φ (e (ι t))‖ ^ 2) (Filter.Eventually.of_forall fun w => by positivity) ((hφ.cont.comp (e.continuous.comp hι)).norm.pow 2).aestronglyMeasurable]`. Simplify using `only [en]`. Establish `a4` using `a1.trans (mul_le_mul_right (a2.trans_eq (congrArg _ (a3.trans (l2O_sq_eq_lintegral μ 𝓕 φ).symm))) _)`. Use `(ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.coe_ne_top (ENNReal.mul_ne_top (ENNReal.natCast_ne_top M) (ENNReal.pow_ne_top (l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hm.1 hm.2.1 hφ)))) a4).trans_eq ?_` and prove the remaining obligations.
+
+Simplify using `[mul_assoc]`.
+-/
 theorem cube_dilate_bound (hψ : IsStdChar D ψ (-1)) (hc : Chart θ σ) {N : ℕ} (b : Module.Basis (Fin N) ℝ (RW T S))
     {K₀ : Set (WO S T)} (h0 : K₀ ∈ 𝓝 (0 : WO S T)) (hK₀ : IsCompact K₀) :
     ∃ c : ℝ≥0, ∀ (μ : Measure (WO S T)) (𝓕 : Set (WO S T)), IsCovolOne (ratL T S) μ 𝓕 → ∀ n : ℕ, 0 < n →
@@ -345,6 +451,11 @@ theorem cube_dilate_bound (hψ : IsStdChar D ψ (-1)) (hc : Chart θ σ) {N : �
     (ENNReal.pow_ne_top (l2NormOnFundamentalDomain_thetaFunction_ne_top hψ hm.1 hm.2.1 hφ)))) a4).trans_eq ?_
   simp [mul_assoc]
 
+/- English proof (translation)
+Use `(norm_mov_le_normInf _ _ _).trans ?_` and prove the remaining obligations. Establish `a1 : normInf θ T h⁻¹ ≤ ‖CT‖ * height T h` using `(hCT h⁻¹).trans (by rw [height_inv]; exact mul_le_mul_of_nonneg_right (le_abs_self _) (height_pos T h).le)`. Establish `a2 : normInf θ S g⁻¹⁻¹ ≤ ‖CS‖ * height S g` using `(hCS _).trans (by rw [inv_inv]; exact mul_le_mul_of_nonneg_right (le_abs_self _) (height_pos S g).le)`. Establish `a3 : ‖n • u‖ ≤ m * (height S g * height T h) * κ` using `norm_nsmul_le.trans (mul_le_mul hn hu (norm_nonneg _) (n.cast_nonneg.trans hn))`. Establish `a4 : 0 ≤ normInf θ S g⁻¹⁻¹` using `by unfold normInf; positivity`.
+
+Establish `a5 : 0 ≤ ‖CT‖ * height T h` using `mul_nonneg (norm_nonneg _) (height_pos T h).le`. Use `(mul_le_mul (mul_le_mul a1 a3 (norm_nonneg _) a5) a2 a4 (mul_nonneg a5 ((norm_nonneg _).trans a3))).trans_eq ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem norm_mov_nsmul_le {CS CT m κ : ℝ} (hCS : ∀ g : GA D S, normInf θ S g ≤ CS * height S g)
     (hCT : ∀ h : GA D T, normInf θ T h ≤ CT * height T h) (g : GA D S) (h : GA D T) {n : ℕ}
     (hn : (n : ℝ) ≤ m * (height S g * height T h)) {u : RW T S} (hu : ‖u‖ ≤ κ) :
@@ -361,6 +472,33 @@ theorem norm_mov_nsmul_le {CS CT m κ : ℝ} (hCS : ∀ g : GA D S, normInf θ S
   refine (mul_le_mul (mul_le_mul a1 a3 (norm_nonneg _) a5) a2 a4 (mul_nonneg a5 ((norm_nonneg _).trans a3))).trans_eq ?_
   ring
 
+/- English proof (translation)
+Introduce `ψ θ hθ U hU`. Distinguish the cases in `hψ : IsStdChar D ψ (-1)`. Use `swap`. Conclude with `⟨0, fun _ _ _ h => absurd h.std hψ⟩`. Take `⟨σ, hc⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`.
+
+Establish `b` using `Module.finBasis ℝ (RW T S)`. Generalize the expression as in `Module.finrank ℝ (RW T S) = N at b ⊢`. Take `⟨K₀, h0, hK₀, m, hlev⟩` from `exists_level_multiple hU`. Take `⟨c, hcube⟩` from `cube_dilate_bound hψ hc b h0 hK₀`. Take `⟨CS, hCS⟩` from `normInf_le_height S hθ`.
+
+Take `⟨CT, hCT⟩` from `normInf_le_height T hθ`. Set `R : ℝ≥0` to `‖CT‖₊ * (m * ‖fun i => b i‖₊) * ‖CS‖₊`. Set `Q : ℝ≥0` to `1 + Fintype.card (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool) * R`. Use `⟨NNReal.sqrt (4 ^ N * c) * Q ^ N, fun χS χT om hom μ 𝓕 hm f hf g h => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hnle, hlev⟩` from `hlev g h`.
+
+Establish `hg` using `height_pos S g`. Establish `hh` using `height_pos T h`. Take `⟨X, hX⟩ : ∃ X : ℝ≥0, height S g * height T h = X` from `⟨⟨_, (mul_pos hg hh).le⟩, rfl⟩`. Establish `hX1 : 1 ≤ X`. Rewrite using `[← NNReal.coe_le_coe, ← hX]`.
+
+Conclude with `one_le_mul_of_one_le_of_one_le (one_le_height S g) (one_le_height T h)`. Take `⟨s, hs⟩ : ∃ s : ℝ≥0, sobO ψ θ μ 𝓕 N f = s` from `⟨_, (ENNReal.coe_toNNReal (sobO_ne_top hψ hθ hm.1 hm.2.1 hf.1 N)).symm⟩`. Set `wd : List (RW T S) → thetaSub ψ S T` to `fun l => l.foldl (fun m z => dvL hc hψ S T z m) ⟨f, hf.1⟩`. Set `A : ℕ → Set (WO S T → ℂ)` to `fun p => {F | ∃ l : List (RW T S), l.length ≤ p ∧ (∀ u ∈ l, ‖u‖ ≤ (R * X ^ 2 : ℝ≥0)) ∧ F = om (g, h) (wd l).1}`. Establish `key` using `sobolev_iter N 0 (fun i r => iotaW σ T S (r • n • b i)) A (c * ((Q * X ^ 2) ^ N * s : ℝ≥0) ^ 2) 0 (fun i => (hc.continuous_iota T S).comp (continuous_id.smul continuous_const)) (fun p q hpq F ⟨l, h1, h2⟩ => ⟨l, h1.trans hpq, h2⟩) ?_ ?_ (om (g, h) f) ⟨[], le_rfl, by simp, rfl⟩`.
+
+Rewrite using `[hs, hX, ← NNReal.coe_pow, ENNReal.ofReal_coe_nnreal, ← ENNReal.coe_mul, ← ENNReal.coe_mul, enorm_eq_nnnorm, ENNReal.coe_le_coe, ← pow_le_pow_iff_left₀ zero_le zero_le two_ne_zero]`. Establish `e : ∀ Q : ℝ≥0, (NNReal.sqrt (4 ^ N * c) * Q ^ N * s * X ^ (2 * N)) ^ 2 = 4 ^ N * (c * ((Q * X ^ 2) ^ N * s) ^ 2)`. Introduce `Q`. Rewrite using `[mul_assoc, mul_assoc, mul_pow (NNReal.sqrt _), NNReal.sq_sqrt]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `key` after adjusting the coercions. Introduce and unpack `p _ ⟨l, h1, h2, rfl⟩`. Establish `hF` using `hom.om_pres (g, h) _ (wd l).2`. Use `⟨hF.cont, fun i => ⟨_, ⟨l ++ [mov θ g⁻¹ h⁻¹ (n • b i)], by simpa using h1, fun u hu => ?_, ?_⟩, sobolev_step hc hψ (n • b i) hF⟩⟩` and prove the remaining obligations.
+
+Break down `List.mem_append.1 hu with hu | hu` into its components or cases. Conclude with `h2 u hu`. Rewrite using `[List.mem_singleton.1 hu]`. Use `(norm_mov_nsmul_le hCS hCT g h hnle (norm_le_pi_norm (fun i => b i) i)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[hX]`.
+
+Both sides reduce to the same expression. Rewrite using `[dv_om hom hc g h (n • b i) (wd l).2]`. Simplify using `only [wd, List.foldl_append]`. Both sides reduce to the same expression. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`.
+
+Use `(hcube μ 𝓕 hm n hn _ (hom.om_pres (g, h) _ (wd l).2) fun u hu hinf => ?_).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ ENNReal.toReal_nonneg ?_ 2) c.coe_nonneg)` and prove the remaining obligations. Establish `hv : (actO S T g⁻¹ h⁻¹ (n • u)).map (infPart D) = 0`. Establish `: (n • u).map (infPart D) = 0`. Use extensionality with `i j`. Establish `h3 : infPart D (u i j) = 0` using `congrFun (congrFun hinf i) j`.
+
+Conclude with `(map_nsmul (infPart D) n (u i j)).trans ((congrArg (n • ·) h3).trans (nsmul_zero n))`. Unfold `actO`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, this, Matrix.mul_zero, Matrix.zero_mul]`. Establish `e` using `hom.om_heis g h (actO S T g⁻¹ h⁻¹ (n • u)) _ (wd l).2`. Rewrite `e` using `[words_level hc hψ hv l _ (hf.2 _ (hlev u hu hinf) hv), actO_mul, mul_inv_cancel, mul_inv_cancel, actO_one]`.
+
+Conclude with `e.symm`. Rewrite using `[l2O_om_apply_eq_of_isThetaFunO hom hm.1 hm.2.1 (wd l).2]`. Use `ENNReal.toReal_le_coe_of_le_coe ((l2O_foldl_dvL_le_pow_mul_sobO hc hψ N l (by simpa using h1) h2 _).trans ?_)` and prove the remaining obligations. Rewrite using `[hs, ← ENNReal.coe_pow, ← ENNReal.coe_mul, ENNReal.coe_le_coe]`. Use `mul_le_mul_left (pow_le_pow_left₀ zero_le ?_ N) _` and prove the remaining obligations.
+
+Conclude with `(add_le_add (one_le_pow₀ hX1) (mul_assoc _ R _).ge).trans_eq (by rw [add_mul, one_mul])`.
+-/
 theorem kernelBound (S T : HSp D) :
     GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelGrowth.KernelBound S T (2 * Module.finrank ℝ (RW T S)) (Module.finrank ℝ (RW T S)) := by
   intro ψ θ hθ U hU
@@ -432,6 +570,9 @@ theorem kernelBound (S T : HSp D) :
       refine mul_le_mul_left (pow_le_pow_left₀ zero_le ?_ N) _
       exact (add_le_add (one_le_pow₀ hX1) (mul_assoc _ R _).ge).trans_eq (by rw [add_mul, one_mul])
 
+/- English proof (translation)
+Introduce `r N` and use `by refine ⟨2 * (2 * r * N), 2 * r * N, fun D V W hr hN => ?_⟩ have e : Module.finrank ℝ (RW W V) = 2 * r * N := by have h1 : Fintype.card D.what₂.Tau = r := by have := (GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).1.1 rw [Fintype.card_of_bijective (GlobalThe …`.
+-/
 theorem thetaGrowthUnif : GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelGrowth.ThetaGrowthUnif := fun r N => by
   refine ⟨2 * (2 * r * N), 2 * r * N, fun D V W hr hN => ?_⟩
   have e : Module.finrank ℝ (RW W V) = 2 * r * N := by
@@ -444,6 +585,9 @@ theorem thetaGrowthUnif : GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelGro
     ring
   exact e ▸ kernelBound V W
 
+/- English proof (translation)
+The claim follows from `thetaGrowthUnif.thetaGrowth D`.
+-/
 theorem thetaGrowth (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.ThetaKernelGrowth.ThetaGrowth D := thetaGrowthUnif.thetaGrowth D
 
 end GlobalTheory.KernelSeminorm

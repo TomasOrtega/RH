@@ -14,11 +14,19 @@ namespace ZM
 def IK {dim : (E →+* ℂ) → ℕ} (I : Submodule ℤ (Vsp dim)) : Submodule ℤ (IR I) :=
   I.comap ((IR I).subtype.toAddMonoidHom.toIntLinearMap)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_IK {dim : (E →+* ℂ) → ℕ} {I : Submodule ℤ (Vsp dim)} {x : IR I} :
     x ∈ IK I ↔ (x : Vsp dim) ∈ I := Iff.rfl
 
 variable [IsCMField E] {X : PT E} {DF : ℕ} {P : Par X DF} {I : Submodule ℤ (Vsp X.dim)}
 
+/- English proof (translation)
+Set `f : IK I → X.L` to `fun x => ⟨((x : IR I) : Vsp X.dim), hI.le (mem_IK.1 x.2)⟩`. Establish `hc : Continuous f` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `h` using `congrArg Subtype.val hxy`.
+
+Conclude with `Subtype.ext (Subtype.ext h)`. Conclude with `DiscreteTopology.of_continuous_injective hc hinj`.
+-/
 theorem IK_discrete (hI : IsSplit P I) : DiscreteTopology (IK I) := by
   let f : IK I → X.L := fun x => ⟨((x : IR I) : Vsp X.dim), hI.le (mem_IK.1 x.2)⟩
   have hc : Continuous f :=
@@ -29,6 +37,11 @@ theorem IK_discrete (hI : IsSplit P I) : DiscreteTopology (IK I) := by
     exact Subtype.ext (Subtype.ext h)
   exact DiscreteTopology.of_continuous_injective hc hinj
 
+/- English proof (translation)
+Apply `Submodule.map_injective_of_injective (IR I).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Use `show _ = Submodule.span ℝ (I : Set (Vsp X.dim))`. Use `congr 1`. Use extensionality with `y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `mem_IK.1 hz`. Introduce `hy`. Conclude with `⟨⟨y, Submodule.subset_span hy⟩, mem_IK.2 hy, rfl⟩`.
+-/
 theorem IK_span : Submodule.span ℝ (IK I : Set (IR I)) = ⊤ := by
   apply Submodule.map_injective_of_injective (IR I).injective_subtype
   rw [Submodule.map_span, Submodule.map_top, Submodule.range_subtype]
@@ -41,6 +54,9 @@ theorem IK_span : Submodule.span ℝ (IK I : Set (IR I)) = ⊤ := by
   · intro hy
     exact ⟨⟨y, Submodule.subset_span hy⟩, mem_IK.2 hy, rfl⟩
 
+/- English proof (translation)
+Use `haveI := IK_discrete hI`. Use `haveI : IsZLattice ℝ (IK I) := ⟨IK_span⟩`. Conclude with `⟨inferInstance, inferInstance, ZLattice.rank ℝ (IK I)⟩`.
+-/
 theorem IK_lattice (hI : IsSplit P I) : ∃ (_ : DiscreteTopology (IK I)) (_ : IsZLattice ℝ (IK I)),
     Module.finrank ℤ (IK I) = Module.finrank ℝ (IR I) := by
   haveI := IK_discrete hI
@@ -55,10 +71,16 @@ def Ib (hI : IsSplit P I) : Module.Basis (Fin (Module.finrank ℝ (IR I))) ℝ (
     (Fintype.equivFinOfCardEq (by
       rw [← Module.finrank_eq_card_chooseBasisIndex, ZLattice.rank ℝ]))
 
+/- English proof (translation)
+Unfold `Ib`. Rewrite using `[Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]`.
+-/
 theorem Ib_span (hI : IsSplit P I) : Submodule.span ℤ (Set.range (Ib hI)) = IK I := by
   unfold Ib
   rw [Module.Basis.range_reindex, Module.Basis.ofZLatticeBasis_span]
 
+/- English proof (translation)
+Establish `h : Ib hI i ∈ IK I`. Rewrite using `[← Ib_span hI]`. Conclude with `Submodule.subset_span (Set.mem_range_self i)`. Conclude with `mem_IK.1 h`.
+-/
 theorem Ib_mem (hI : IsSplit P I) (i : Fin (Module.finrank ℝ (IR I))) :
     ((Ib hI i : IR I) : Vsp X.dim) ∈ I := by
   have h : Ib hI i ∈ IK I := by
@@ -66,6 +88,9 @@ theorem Ib_mem (hI : IsSplit P I) (i : Fin (Module.finrank ℝ (IR I))) :
     exact Submodule.subset_span (Set.mem_range_self i)
   exact mem_IK.1 h
 
+/- English proof (translation)
+The claim follows from `((Module.Basis.is_basis_iff_det _).1 ⟨(Ib hI).linearIndependent, (Ib hI).span_eq⟩).ne_zero`.
+-/
 theorem Ib_det_ne (hI : IsSplit P I) : (Col.ob (IR I)).toBasis.det (Ib hI) ≠ 0 := ((Module.Basis.is_basis_iff_det _).1 ⟨(Ib hI).linearIndependent, (Ib hI).span_eq⟩).ne_zero
 
 def zmG (I : Submodule ℤ (Vsp X.dim)) (s : (Fin 1 → Vsp X.dim) → ℂ) (v : Vsp X.dim) : ℂ :=

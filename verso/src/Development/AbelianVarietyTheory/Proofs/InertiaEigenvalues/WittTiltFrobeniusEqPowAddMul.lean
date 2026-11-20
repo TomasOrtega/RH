@@ -4,6 +4,9 @@ open scoped Formalism.Per
 
 namespace GlobalTheory.FrobCong
 
+/- English proof (translation)
+Establish `h0 : sigma l a w - w ^ l ∈ Ideal.span {(l : Wq l a)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, map_sub, map_pow]`. Simplify using `[WittVector.constantCoeff_apply, coeff_sigma]`. Take `⟨x, hx⟩` from `Ideal.mem_span_singleton'.1 h0`. Conclude with `⟨x, by rw [mul_comm, hx]; ring⟩`.
+-/
 theorem sigma_eq_pow_add (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (w : Wq l a) :
     ∃ x : Wq l a, sigma l a w = w ^ l + (l : Wq l a) * x := by
   have h0 : sigma l a w - w ^ l ∈ Ideal.span {(l : Wq l a)} := by

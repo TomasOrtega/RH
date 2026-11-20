@@ -6,6 +6,17 @@ open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct G
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι _ _ R _ _ M _ _ _ _ ℳ _ _ r d g hg hsat hinj`. Use `set K := Submodule.span (MvPolynomial ι R) (Set.range g) with hK`. Establish `hhom : K.IsHomogeneous ℳ` using `isHomogeneous_span_gr ℳ (by`. Introduce and unpack `_ ⟨l, rfl⟩`. Conclude with `⟨d l, hg l⟩)`.
+
+Use `letI : Decomposition (grSub ℳ K) := grSubDecomposition ℳ hhom`. Establish `hfin : Module.Finite (MvPolynomial ι R) K` using `Module.Finite.span_of_finite _ (Set.finite_range g)`. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.cubeComplex_gradedModule_exactAt_of_large_degree ι R K (grSub ℳ K) hfin`. Use `⟨n₀, fun n hn y hy => ?_⟩` and prove the remaining obligations. Establish `hf` using `isGradedMap_subtype ℳ K`.
+
+Establish `hb` using `(grAug_bijective_iff (ι := ι) (grSub ℳ K) n).2 ⟨hn₀ n hn 0, hn₀ n hn 1⟩`. Use `haveI : IsIso (grCechMap hf n) := isIso_grCechMap hf (fun i m hm => ⟨0, by rw [(map_eq_zero_iff _ K.injective_subtype).1 hm, smul_zero]⟩) (fun i y => by simpa using hsat i y) n`. Establish `hs : Function.Surjective (grHMap hf n 0).hom` using `((ConcreteCategory.isIso_iff_bijective (grHMap hf n 0)).1 inferInstance).2`. Take `⟨z, hz⟩` from `hs (grAug ι ℳ n ⟨y, hy⟩)`. Take `⟨y₀, rfl⟩` from `hb.2 z`.
+
+Rewrite `hz` using `[grHMap_grAug]`. Establish `h0 : y - (y₀.1 : M) = 0` using `hinj _ fun i => by`. Establish `e : toHomLoc ℳ {i} n ⟨y, hy⟩ = toHomLoc ℳ {i} n (hf.piece n y₀)`. Rewrite using `[← cechHomologyZeroIso_grAug ℳ n ⟨y, hy⟩ ⟨{i}, rfl⟩, ← cechHomologyZeroIso_grAug ℳ n (hf.piece n y₀) ⟨{i}, rfl⟩, hz]`. Establish `e' : awayFrac M (xProd R {i}) 0 y = awayFrac M (xProd R {i}) 0 (y₀.1 : M)` using `congrArg Subtype.val e`.
+
+Rewrite `e'` using `[← sub_eq_zero, ← map_sub, awayFrac_eq_zero_iff]`. Simplify using `using e'`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `y₀.1.2`.
+-/
 theorem mem_span_of_saturating_of_le : ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] [IsNoetherianRing R] (M : Type) [AddCommGroup M] [Module R M] [Module (MvPolynomial ι R) M] [IsScalarTower R (MvPolynomial ι R) M] (ℳ : ℤ → Submodule R M) [PolyGradedSMul ι ℳ] [Decomposition ℳ] (r : ℕ) (d : Fin r → ℤ) (g : Fin r → M), (∀ l, g l ∈ ℳ (d l)) → (∀ (i : ι) (y : M), ∃ k : ℕ, (X i : MvPolynomial ι R) ^ k • y ∈ Submodule.span (MvPolynomial ι R) (Set.range g)) → (∀ y : M, (∀ i : ι, ∃ k : ℕ, (X i : MvPolynomial ι R) ^ k • y = 0) → y = 0) → ∃ n₀ : ℤ, ∀ n, n₀ ≤ n → ∀ y ∈ ℳ n, y ∈ Submodule.span (MvPolynomial ι R) (Set.range g) := by
   intro ι _ _ R _ _ M _ _ _ _ ℳ _ _ r d g hg hsat hinj
   set K := Submodule.span (MvPolynomial ι R) (Set.range g) with hK

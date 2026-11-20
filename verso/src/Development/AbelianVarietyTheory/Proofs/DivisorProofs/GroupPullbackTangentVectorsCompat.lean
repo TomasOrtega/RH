@@ -16,6 +16,21 @@ namespace GlobalTheory.LiePull
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Set `up : ∀ w : Sp (DualNumber K) ⟶ t.G.left, w ≫ t.G.hom = spMap (algebraMap K (DualNumber K)) ≫ x0 → (epsR K ⟶ A)` to `fun w h => Over.homMk (hθ.1.lift w _ h) (hθ.1.lift_snd _ _ _)`. Establish `hup : ∀ w h, (up w h).left ≫ θ = w` using `fun w h => hθ.1.lift_fst _ _ _`. Establish `inj : ∀ {T : Over (Sp K)} {a b : T ⟶ A}, a.left ≫ θ = b.left ≫ θ → a = b` using `fun h => Over.OverMorphism.ext (hθ.1.hom_ext h ((Over.w _).trans (Over.w _).symm))`. Establish `one : ∀ T : Over (Sp K), (1 : T ⟶ A).left ≫ θ = (1 : Over.mk (T.hom ≫ x0) ⟶ t.G).left` using `fun T => congrArg (fun q => q.left) (map_one (pushHom hθ T))`. Establish `tan : ∀ w : epsR K ⟶ A, IsTangent w ↔ IsTanAtG t x0 (w.left ≫ θ)` using `fun w => by`.
+
+Establish `e : (1 : Chart.sp (R₀` using `K) K ⟶ A).left ≫ θ = (1 : Over.mk x0 ⟶ t.G).left := (one _).trans (congrArg (· ≫ (η[t.G]).left) (show Spec.map (CommRingCat.ofHom (RingHom.id K)) ≫ x0 = x0 by simp))`. Rewrite using `[← Chart.isTan_iff]`. Use `⟨fun h => ⟨Over.w (pushPt hθ.1.w w), ?_⟩, fun h => inj ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (fun q => q.left ≫ θ) h).trans e)`. Conclude with `(Category.assoc _ _ _).trans (h.2.trans e.symm)`.
+
+Establish `pr : ∀ {n} (a : Fin n → (epsR K ⟶ A)), (List.ofFn a).prod.left ≫ θ = (List.ofFn fun i => (pushPt hθ.1.w (a i) : tEpsG x0 ⟶ t.G)).prod.left` using `fun a => congrArg (fun q => q.left) ((map_list_prod (pushHom hθ (epsR K)) _).trans (by rw [List.map_ofFn]; rfl))`. Establish `comb : ∀ {n} (c : Fin n → K) (v : Fin n → (epsR K ⟶ A)) w, IsLieComb c v w ↔ IsCombAtG t x0 (fun i => (v i).left ≫ θ) c (w.left ≫ θ)` using `fun c v w => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨fun i => pushPt hθ.1.w (a i), fun i => (congrArg (· ≫ θ) (ha i)).trans (Category.assoc _ _ _), (pr a).symm⟩`.
+
+Introduce and unpack `⟨a, ha, hw⟩`. Use `⟨fun i => up (a i).left (Over.w _), fun i => hθ.1.hom_ext ?_ ?_, inj (hw.symm.trans (Eq.trans ?_ (pr _).symm))⟩` and prove the remaining obligations. Conclude with `(hup _ _).trans ((ha i).trans (Category.assoc _ _ _).symm)`. Use `(Over.w (up (a i).left (Over.w _))).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (spMap (epsScaleR (c i)) ≫ ·) (Over.w (v i))).symm` and prove the remaining obligations.
+
+Conclude with `(Over.w (Chart.spMap (Chart.scaleD (c i)))).symm`. Establish `: a = fun i => (pushPt hθ.1.w (up (a i).left (Over.w _)) : tEpsG x0 ⟶ t.G)`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hup (a i).left (Over.w _)).symm`. Conclude with `congrArg (fun q : _ → (tEpsG x0 ⟶ t.G) => (List.ofFn q).prod.left) this`. Set `v : Fin m → (epsR K ⟶ A)` to `fun j => up (u j) (hu j).1`.
+
+Establish `hv : (fun i => (v i).left ≫ θ) = u` using `funext fun j => hup _ _`. Use `⟨v, ⟨fun j => (tan _).2 (by rw [hup]; exact hu j), fun w hw => ?_⟩, fun j => hup _ _⟩` and prove the remaining obligations. Establish `key : ∀ c, IsLieComb c v w ↔ IsCombAtG t x0 u c (w.left ≫ θ)` using `fun c => by`. Rewrite using `[comb, hv]`. Take `⟨c, hc1, hc2⟩` from `hc _ ((tan w).1 hw)`.
+
+Conclude with `⟨c, (key c).2 hc1, fun c' h' => hc2 c' ((key c').1 h')⟩`.
+-/
 theorem exists_lieBasis_of_tanBasis {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}}
     (t : SAB H X0) {K : Type} [CommRing K] (x0 : Sp K ⟶ X0) (A : Over (Sp K)) [GrpObj A] (θ : A.left ⟶ t.G.left)
     (hθ : IsGrpPullback A t.G x0 θ) {m : ℕ} (u : Fin m → (Sp (DualNumber K) ⟶ t.G.left))
@@ -61,6 +76,9 @@ theorem exists_lieBasis_of_tanBasis {E : Type} [Field E] [NumberField E] [IsCMFi
   obtain ⟨c, hc1, hc2⟩ := hc _ ((tan w).1 hw)
   exact ⟨c, (key c).2 hc1, fun c' h' => hc2 c' ((key c').1 h')⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H X0 t K _ x0 A _ θ hθ m u hu hc`. Conclude with `exists_lieBasis_of_tanBasis t x0 A θ hθ u hu hc`.
+-/
 theorem lieBasis_of_tanBasis : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X0 : Scheme.{0}} (t : ReciprocityTheory.ChartRestriction.G.Geo.Tor.SAB H X0) {K : Type} [CommRing K] (x0 : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ X0) (A : Over (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K)) [GrpObj A] (θ : A.left ⟶ t.G.left), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback A t.G x0 θ → ∀ {m : ℕ} (u : Fin m → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber K) ⟶ t.G.left)), (∀ j, Formalism.L2.Pj.IsTanAtG t x0 (u j)) → (∀ w, Formalism.L2.Pj.IsTanAtG t x0 w → ∃! c : Fin m → K, Formalism.L2.Pj.IsCombAtG t x0 u c w) → ∃ v : Fin m → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.epsR K ⟶ A), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsLieBasis v ∧ ∀ j, (v j).left ≫ θ = u j :=
   by
   intro E _ _ _ H X0 t K _ x0 A _ θ hθ m u hu hc

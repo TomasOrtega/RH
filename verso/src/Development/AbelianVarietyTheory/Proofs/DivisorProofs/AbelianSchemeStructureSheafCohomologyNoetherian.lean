@@ -19,6 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.AbCohRing
 
+/- English proof (translation)
+Rewrite using `[Module.rankAtStalk_eq_finrank_tensorProduct]`. Use `haveI : Module.Free (Localization.AtPrime p.asIdeal) (Localization.AtPrime p.asIdeal ⊗[R] M) := Module.free_of_flat_of_isLocalRing`. Establish `e` using `(AlgebraTensorModule.cancelBaseChange R (Localization.AtPrime p.asIdeal) p.asIdeal.ResidueField p.asIdeal.ResidueField M)`. Rewrite using `[← e.finrank_eq]`. Conclude with `(Module.finrank_baseChange (S := Localization.AtPrime p.asIdeal) (R := p.asIdeal.ResidueField) (M' := Localization.AtPrime p.asIdeal ⊗[R] M)).symm`.
+-/
 theorem rankAtStalk_eq_finrank_residueField {R M : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] (p : PrimeSpectrum R) :
     Module.rankAtStalk M p = Module.finrank p.asIdeal.ResidueField (p.asIdeal.ResidueField ⊗[R] M) := by
@@ -31,6 +34,11 @@ theorem rankAtStalk_eq_finrank_residueField {R M : Type} [CommRing R] [AddCommGr
   exact (Module.finrank_baseChange (S := Localization.AtPrime p.asIdeal) (R := p.asIdeal.ResidueField)
     (M' := Localization.AtPrime p.asIdeal ⊗[R] M)).symm
 
+/- English proof (translation)
+Use `letI : GrpObj ((Over.pullback (spMap f)).obj A) := Functor.grpObjObj`. Establish `hP` using `isGrpPullback_pullback A (spMap f)`. Take `⟨hPA, -⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback f A ((Over.pullback (spMap f)).obj A) (pullback.fst A.hom (spMap f)) g hP hA hg`. Set `e : Over.mk s' ≅ (Over.pullback (spMap f)).obj A` to `Over.isoMk h.isoPullback (by simp)`. Use `letI gr : GrpObj (Over.mk s') := GrpObj.ofIso e.symm`.
+
+Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} g` as an intermediate fact. Use `⟨gr, GlobalTheory.Compare.AbelianSchemeTorusCompare.isAbelianScheme_of_iso e ?_ hPA, MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) h hg⟩` and prove the remaining obligations. Use `haveI : IsMonHom e.symm.hom := inferInstance`. Conclude with `isMonHom_inv_of_iso e.symm`.
+-/
 theorem exists_grpObj_of_isPullback {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R')
     (A : Over (Sp R)) [GrpObj A] (g : ℕ) {X' : Scheme.{0}} (s' : X' ⟶ Sp R') (φ : X' ⟶ A.left)
     (h : IsPullback φ s' A.hom (spMap f)) (hA : IsAbelianScheme A)
@@ -52,6 +60,11 @@ end GlobalTheory.AbCohRing
 
 namespace GlobalTheory.AbCohRing
 
+/- English proof (translation)
+Use `hA.proper` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `GlobalTheory.T.structure_cohomology_residue_field_fibre R A.left A.hom inferInstance inferInstance (GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA) ?_` and prove the remaining obligations. Introduce `R' _ _ _ _ k _ _ α hα X' s' φ X₀ s₀ ψ hφ w`. Take `⟨_, hA', hg'⟩` from `exists_grpObj_of_isPullback (algebraMap R R') A g s' φ hφ hA hg`.
+
+Conclude with `GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' (Over.mk s') g hA' hg' k α hα X₀ s₀ ψ w`.
+-/
 theorem fp_and_bc (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) :
     (Module.Finite R (HO1 A.hom) ∧ Module.Projective R (HO1 A.hom)) ∧
@@ -63,6 +76,11 @@ theorem fp_and_bc (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R))
   obtain ⟨_, hA', hg'⟩ := exists_grpObj_of_isPullback (algebraMap R R') A g s' φ hφ hA hg
   exact GlobalTheory.T.abelianSchemeSpecialFibre_cohomology_lift_artinian R' (Over.mk s') g hA' hg' k α hα X₀ s₀ ψ w
 
+/- English proof (translation)
+Set `κ` to `p.asIdeal.ResidueField`. Establish `hpb` using `IsPullback.of_hasPullback A.hom (spMap (algebraMap R κ))`. Take `⟨e, -⟩` from `hb κ _ _ _ hpb`. Take `⟨_, hA', hg'⟩` from `exists_grpObj_of_isPullback (algebraMap R κ) A g _ _ hpb hA hg`. Establish `hκ` using `(GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField κ _ g hA' hg').2.1`.
+
+Rewrite using `[rankAtStalk_eq_finrank_residueField, ← hκ]`. Conclude with `e.finrank_eq`.
+-/
 theorem rankAtStalk_HO1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) [Module.Finite R (HO1 A.hom)]
     [Module.Projective R (HO1 A.hom)] (hb : StructureSheafH1BaseChange A.hom) (p : PrimeSpectrum R) :
@@ -75,6 +93,11 @@ theorem rankAtStalk_HO1 (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g 
   rw [rankAtStalk_eq_finrank_residueField, ← hκ]
   exact e.finrank_eq
 
+/- English proof (translation)
+Introduce `R _ _ A _ g hA hg`. Take `⟨⟨h1f, h1p⟩, ⟨h2f, h2p⟩, hb1, hb2⟩` from `fp_and_bc R A g hA hg`. Use `⟨⟨h1f, h1p, rankAtStalk_HO1 R A g hA hg hb1⟩, ?_, hb1, hb2⟩` and prove the remaining obligations. Use `GlobalTheory.T.wedge_property_from_fibres R A.left A.hom h1f h1p h2f h2p hb1 hb2 (GlobalTheory.T.cup_self_zero_abelian_h1 R A g hA hg) ?_` and prove the remaining obligations. Introduce `k _ _ X' s' φ h`.
+
+Take `⟨_, hA', hg'⟩` from `exists_grpObj_of_isPullback (algebraMap R k) A g s' φ h hA hg`. Conclude with `(GlobalTheory.T.abelianVariety_structureSheaf_cohomology_anyField k (Over.mk s') g hA' hg').2.2.1`.
+-/
 theorem oStr_noetherian : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom →
     FP R (HO1 A.hom) g ∧ WedgeO (OAff A.hom) ∧ StructureSheafH1BaseChange A.hom ∧ StructureSheafH2BaseChange A.hom := by

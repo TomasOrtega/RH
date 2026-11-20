@@ -43,6 +43,21 @@ structure Reads (α β : T → ((AE D)ˣ →* Circle)) (S : T → Finset (Height
 
   unit : ∀ v : Bs.P, v.1 ∈ Xc.T → AUnit (Bs.τ v)
 
+/- English proof (translation)
+Establish `hT` using `hm.triple`. Set `u : Xc.T → Bs.P` to `fun v => ⟨v.1, hT.chars.sub v.2⟩`. Use `choose ι ι' φ₀ φ₀' l1 l2 l3 l4 l5 l6 l7 l8 l9 l10 l11 using fun v : Xc.T => UpperTheory.exists_local_zeta_data_realizing_standard_pair _ _ D.sp.cm.sig Bs _ _ Γ Xc Rf (u v) hT.chars.heckeα hT.chars.heckeβ (hm.fin.zeta (u v) v.2) hT.geo.hM hT.geo.hM' (X.c t (splitPrime (Bs.τ (u v)) …`. Establish `hν : Xc.ν = α t / β t` using `by rw [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars.ν, hR.eα, hR.eβ]`. Establish `hψ : Bs.ψ = ψ` using `hG.pairA.psi`.
+
+Rewrite `l7`, `l8` using `[hν]`. Rewrite `l1`, `l2` using `[hψ]`. Establish `hS : ∀ w, w ∈ S t ↔ ∃ v : Xc.T, splitPrime (Bs.τ (u v)) = w` using `fun w => (hR.pl w).trans ⟨fun ⟨v, hv, e⟩ => ⟨⟨v.1, hv⟩, e⟩, fun ⟨v, e⟩ => ⟨u v, v.2, e⟩⟩`. Set `φ : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (Fin A.rank × Fin (A.rank + A'.rank) → Fv D.host.F v) → ℂ` to `fun v => if h : v ∈ Xc.T then φ₀ ⟨v, h⟩ else Γ.M.vac v`. Set `φ' : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (Fin A'.rank × Fin (A.rank + A'.rank) → Fv D.host.F v) → ℂ` to `fun v => if h : v ∈ Xc.T then φ₀' ⟨v, h⟩ else Γ.M'.vac v`.
+
+Establish `e1 : ∀ v (h : v ∈ Xc.T), φ v = φ₀ ⟨v, h⟩` using `fun v h => dif_pos h`. Establish `e1' : ∀ v (h : v ∈ Xc.T), φ' v = φ₀' ⟨v, h⟩` using `fun v h => dif_pos h`. Establish `e2 : ∀ v ∉ Xc.T, φ v = Γ.M.vac v` using `fun v h => dif_neg h`. Establish `e2' : ∀ v ∉ Xc.T, φ' v = Γ.M'.vac v` using `fun v h => dif_neg h`. Establish `s1 : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _ ∧ φ v ≠ 0` using `fun v => by`.
+
+Distinguish the cases in `h : v ∈ Xc.T`. Rewrite using `[e1 v h]`. Conclude with `⟨l5 _, l10 _⟩`. Rewrite using `[e2 v h]`. Conclude with `⟨(hT.geo.hM.vac v).1, (hT.geo.hM.vac v).2.1⟩`.
+
+Establish `s2 : ∀ v, φ' v ∈ GlobalTheory.WeilM.SB _ ∧ φ' v ≠ 0` using `fun v => by`. Distinguish the cases in `h : v ∈ Xc.T`. Rewrite using `[e1' v h]`. Conclude with `⟨l6 _, l11 _⟩`. Rewrite using `[e2' v h]`.
+
+Conclude with `⟨(hT.geo.hM'.vac v).1, (hT.geo.hM'.vac v).2.1⟩`. Use `⟨φ, φ', fun v => (s1 v).1, fun v => (s2 v).1, e2, e2', fun v => (s1 v).2, fun v => (s2 v).2, fun v h => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1 v h, e1' v h]`. Conclude with `l9 ⟨v, h⟩`. Conclude with `UpperTheory.thetaLift_triple_local_split_places D T A A' WW X ψ θ α β νH S hX hX.rank Bs Γ.V Γ.W Γ.M hG.pairA hG.latA t Xc.T (fun v => Bs.τ (u v)) hS (fun v => Γ.V.bas v) (fun v => Γ.W.bas v) ι (fun v => hG.basA (u v)) (fun v => hG.basW (u v) (hR.unit (u v) v.2)) l1 l3 φ (fun v = …`.
+
+Conclude with `UpperTheory.triple_dualCoord_split_places_of_isPair_isLat D T A A' WW X ψ θ α β νH S hX hX.rank Bs Γ.V' Γ.W Γ.M' hG.pairB hG.latB t Xc.T (fun v => Bs.τ (u v)) hS (fun v => Γ.V'.bas v) (fun v => Γ.W.bas v) ι' (fun v => hG.basB (u v)) (fun v => hG.basW (u v) (hR.unit (u v) v.2)) l2 …`.
+-/
 theorem exists_fin (hX : X.Is ψ θ α β νH S) (hG : IsStageGeo ψ X FA FA' FW hX.rank Bs Γ) {t : T}
     {Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars D.host.F D.host.E} (hR : Reads α β S Bs t Xc) {om om' R Rf}
     (hm : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf) {g g'}
@@ -90,6 +105,11 @@ theorem exists_fin (hX : X.Is ψ θ α β νH S) (hG : IsStageGeo ψ X FA FA' FW
       (fun v => Γ.V'.bas v) (fun v => Γ.W.bas v) ι' (fun v => hG.basB (u v)) (fun v => hG.basW (u v) (hR.unit (u v) v.2)) l2 l4 φ'
       (fun v => (s2 v).1) e2' (fun v => by rw [e1' v.1 v.2]; exact l8 v) g' hg'
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `UpperTheory.exists_thO_eq_of_isLatVac_thetaFun D ψ ε S₀ WW d e Bs Vs Ws M hP ΛS ΛX hL f hf.2.theta hf.2.lat`. Use `⟨g, fun h0 => ?_, hg⟩` and prove the remaining obligations. Take `⟨⟨p, hp⟩, hn⟩` from `hf.2.norm`. Establish `h1` using `hn p hp`. Establish `h2 : f = 0`.
+
+Rewrite using `[hg, h0]`. Use function extensionality and compare the values at `x`. Simplify using `[thO, GlobalTheory.WeilM.thetaSum, GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Rewrite `h1` using `[h2]`. Simplify using `[nrm2] at h1`.
+-/
 theorem exists_vac {ε : Bool} {S₀ : HSp D} {d : ℕ} {e : Fin d ≃ Fin WW.rank} {Vs : Spc D.host.F D.host.E S₀.rank}
     {Ws : Spc D.host.F D.host.E d} {M : Model D.sp.cm.sig Vs Ws} (hP : IsPair ψ ε S₀ WW e Bs Vs Ws M)
     {ΛS : Submodule (𝓞 D.host.E) (Fin S₀.rank → D.host.E)} {ΛX : Submodule (𝓞 D.host.E) (Fin WW.rank → D.host.E)}
@@ -106,6 +126,25 @@ theorem exists_vac {ε : Bool} {S₀ : HSp D} {d : ℕ} {e : Fin d ≃ Fin WW.ra
   rw [h2] at h1
   simp [nrm2] at h1
 
+/- English proof (translation)
+Establish `hψ` using `hX.isVac.1`. Establish `hθ` using `hX.isVac.2.inf`. Take `⟨g, g0, hg⟩` from `exists_vac (ε := true) hG.pairA hG.latA hX.isVac`. Take `⟨g', g0', hg'⟩` from `exists_vac (ε := false) hG.pairB hG.latB hX.isVac'`. Establish `hco : ∀ {κ : Type} (T₀ : Finset (HeightOneSpectrum (𝓞 D.host.F))) {φ vac : ∀ v : HeightOneSpectrum (𝓞 D.host.F), (κ → Fv D.host.F v) → ℂ}, (∀ v ∉ T₀, φ v = vac v) → ∀ᶠ v in Filter.cofinite, φ v = vac v` using `fun T₀ _ _ h => Filter.Eventually.mono T₀.finite_toSet.compl_mem_cofinite fun v hv => h v hv`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Φ, Φ', hΦ, hΦ', eΦ, eΦ'⟩ : ∃ (Φ : PolF D WW.rank A.rank →ₗ[ℂ] SInf D.host.F (Fin A.rank × Fin (A.rank + A'.rank))) (Φ' : PolF D WW.rank A'.rank →ₗ[ℂ] SInf D.host.F (Fin A'.rank × Fin (A.rank + A'.rank))), LinearMap.range Φ = Γ.M.Pol Bs.ψ Bs.emb ∧ LinearMap.range Φ' = Γ.M'.Pol Bs …`. Take `⟨φ, φ', s, s', v, v', n, n', -, e, e'⟩` from `exists_fin hX hG r₁ m₁ hg hg'`. Take `⟨Φ, h1, h2⟩` from `UpperTheory.thetaLift_pure_tensor_of_isFinF D ψ true A WW _ hX.rank Bs Γ.V Γ.W Γ.M hG.pairA θ hθ FA FW hG.cartA g g0 φ s (hco _ v) n (e ▸ (hd t₁).2.2.1)`. Take `⟨Φ', h1', h2'⟩` from `UpperTheory.thetaLift_pure_tensor_of_isFinF D ψ false A' WW _ hX.rank Bs Γ.V' Γ.W Γ.M' hG.pairB θ hθ FA' FW hG.cartB g' g0' φ' s' (hco _ v') n' (e' ▸ (hd t₁).2.2.2.1)`. Conclude with `⟨Φ, Φ', h1, h1', h2, h2'⟩`.
+
+Take `⟨-, Pi, p, p', J, -, hJ, -, hI, hI', P', hP', hint⟩` from `hF`. Establish `mP' : Φ' P' ∈ Γ.M'.Pol Bs.ψ Bs.emb` using `hΦ' ▸ LinearMap.mem_range_self _ _`. Take `⟨f, mf, ef⟩ : R.p' (Φ' P') ∈ (Γ.M.Pol Bs.ψ Bs.emb).map R.p` from `by rw [m₁.real.quot.onto]; trivial`. Take `⟨P, rfl⟩ : f ∈ LinearMap.range Φ` from `hΦ ▸ mf`. Take `⟨Pr, qm, qm', -, -, hLM⟩` from `GlobalTheory.T.local_matching_of_howe_duality hP.howeDualityReal hP hK hM D ψ θ hψ hθ A A' WW FA FA' FW a b`.
+
+Establish `key : ∀ t Xc om om' Rf c, Reads α β S Bs t Xc → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsConst Bs Γ Xc om om' R Rf c → lam t • p P = c • p' P'`. Introduce `t Xc om om' Rf c r m k`. Take `⟨hT, hE, -, -, hk, hk'⟩` from `hd t`. Take `⟨Pim, rf, rl, pm, pm', hmm⟩` from `GlobalTheory.T.triple_match_existence hP.howeDualityReal hP hK hM D ψ θ hψ hθ A A' WW FA FA' FW _ _ hT (hLM _ _ hT hE).1 (X.ω t) (X.ω' t) (hX.weil t) (hX.weil' t)`. Take `⟨φ, φ', s, s', v, v', -, -, l, e, e'⟩` from `exists_fin hX hG r m hg hg'`.
+
+Take `⟨cA, cB, hO, dA, dB⟩` from `UpperTheory.exists_seesaw_intertwiners_of_triple D ψ θ hθ T A A' WW X FA FA' FW hX.rank Bs Γ hG Xc om om' m.triple (X.ω t) (X.ω' t) (by rw [r.eα, r.eβ]; exact hX.weil t) (by rw [r.eα, r.eβ]; exact hX.weil' t)`. Rewrite `hO` using `[r.eα, r.eβ]`. Establish `d1` using `dA _ (GlobalTheory.TensUniq.pure_mem_schA (Φ P) φ s (((hco _ v).and m.triple.geo.hM.std).mono fun v h => h.1.trans h.2))`. Establish `d2` using `dB _ (GlobalTheory.TensUniq.pure_mem_schA (Φ' P') φ' s' (((hco _ v').and m.triple.geo.hM'.std).mono fun v h => h.1.trans h.2))`. Rewrite `d1` using `[eΦ φ s (hco _ v), ← e]`.
+
+Rewrite `d2` using `[eΦ' φ' s' (hco _ v'), ← e']`. Establish `h1` using `GlobalTheory.StageGeo.const_on_pure hP hK D ψ θ A A' WW FA FA' FW _ _ _ _ _ _ _ _ _ Bs Γ Xc om om' cA cB hθ hT hO hX.meas' (hX.weil' t) hmm.mapB.stabM.1 R Rf c m k _ mf _ mP' φ φ' s s' v v' ef l _ _ d1 d2 (fun h => by`. Simplify using `only [hk']`. Conclude with `hint t h)`. Establish `h2 : X.I ψ θ t P = c • X.I' ψ θ t P'`.
+
+Use function extensionality and compare the values at `h`. Establish `h3` using `congrFun h1 h`. Simplify using `only [thetaInt, _root_.Pi.smul_apply, hk, hk'] at h3`. Conclude with `h3`. Use `hJ t ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, map_smul, ← hI, ← hI' t P' (hint t), h2]`. Establish `q₁` using `key _ _ _ _ _ _ r₁ m₁ k₁`. Establish `q₂` using `key _ _ _ _ _ _ r₂ m₂ k₂`. Use `smul_left_injective ℂ hP' ?_` and prove the remaining obligations. Use `show (c₁ * lam t₂) • p' P' = (c₂ * lam t₁) • p' P'`.
+
+Rewrite using `[mul_comm c₁, mul_comm c₂, mul_smul, mul_smul, ← q₁, ← q₂, smul_comm]`.
+-/
 theorem const_ratio (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree) (hM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching)
     (hX : X.Is ψ θ α β νH S) (hG : IsStageGeo ψ X FA FA' FW hX.rank Bs Γ) {a b : D.what₂.Tau → ℚ}
     (hd : ∀ t : T, IsTriple A A' WW (α t) (β t) ∧ (∀ τ, HasInfExp D (α t) τ (a τ) ∧ HasInfExp D (β t) τ (b τ)) ∧

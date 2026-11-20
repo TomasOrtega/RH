@@ -9,6 +9,11 @@ namespace NFOne
 def Vv {k r j : ℕ} (y : Fin j → Fin (2 * r + k + 1) → ℂ) (N : Matrix (Fin j) (Fin j) ℂ) (c : ℕ) :
     Fin (2 * r + k + 1) → ℂ := if h : c < j then ∑ a, N ⟨c, h⟩ a • y a else 0
 
+/- English proof (translation)
+Unfold `herm`. Simplify using `only [dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun l _ => by ring`.
+-/
 private theorem herm_sum_smul_left' {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) {ι : Type*} [Fintype ι]
     (α : ι → ℂ) (v : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     herm H (∑ a, α a • v a) w = ∑ a, α a * herm H (v a) w := by
@@ -20,6 +25,9 @@ private theorem herm_sum_smul_left' {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) {
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Unfold `herm`. Simplify using `only [dotProduct, Pi.star_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, star_sum, star_mul', Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => by ring`.
+-/
 private theorem herm_sum_smul_right' {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) {ι : Type*} [Fintype ι]
     (β : ι → ℂ) (v : Fin n → ℂ) (w : ι → Fin n → ℂ) :
     herm H v (∑ a, β a • w a) = ∑ a, star (β a) * herm H v (w a) := by
@@ -29,6 +37,9 @@ private theorem herm_sum_smul_right' {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => by ring
 
+/- English proof (translation)
+Rewrite using `[herm_sum_smul_left']`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[herm_sum_smul_right']`. Simplify using `[hyy]`.
+-/
 theorem herm_comb (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (hyy : ∀ a a', herm (Hpk k r) (y a) (y a') = 0) (α β : Fin j → ℂ) :
     herm (Hpk k r) (∑ a, α a • y a) (∑ a, β a • y a) = 0 := by
@@ -37,17 +48,26 @@ theorem herm_comb (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
   rw [herm_sum_smul_right']
   simp [hyy]
 
+/- English proof (translation)
+Rewrite using `[herm_sum_smul_right']`. Simplify using `[hzy]`.
+-/
 theorem herm_Hpk_of_inWb_eq_sum_wI (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (z' : Fin (2 * r + k + 1) → ℂ)
     (hzy : ∀ a, herm (Hpk k r) z' (y a) = 0) (β : Fin j → ℂ) :
     herm (Hpk k r) z' (∑ a, β a • y a) = 0 := by
   rw [herm_sum_smul_right']
   simp [hzy]
 
+/- English proof (translation)
+Unfold `Vv`. Rewrite using `[dif_neg (by omega)]`.
+-/
 theorem Vv_zero {k r j : ℕ} (y : Fin j → Fin (2 * r + k + 1) → ℂ) (N : Matrix (Fin j) (Fin j) ℂ)
     (c : ℕ) (hc : j ≤ c) : Vv y N c = 0 := by
   unfold Vv
   rw [dif_neg (by omega)]
 
+/- English proof (translation)
+Unfold `Vv`. Rewrite using `[dif_pos hb, dif_pos hc]`. Conclude with `herm_comb k r j y hyy _ _`.
+-/
 theorem Vv_iso (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (N : Matrix (Fin j) (Fin j) ℂ)
     (hyy : ∀ a a', herm (Hpk k r) (y a) (y a') = 0) (b c : ℕ) (hb : b < j) (hc : c < j) :
     herm (Hpk k r) (Vv y N b) (Vv y N c) = 0 := by
@@ -55,6 +75,9 @@ theorem Vv_iso (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (N : Ma
   rw [dif_pos hb, dif_pos hc]
   exact herm_comb k r j y hyy _ _
 
+/- English proof (translation)
+Unfold `Vv`. Use `split_ifs with h`. Conclude with `herm_Hpk_of_inWb_eq_sum_wI k r j y z' hzy _`. Simplify using `[herm]`.
+-/
 theorem hermitian_orthogonal_projection_vector (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ) (N : Matrix (Fin j) (Fin j) ℂ)
     (z' : Fin (2 * r + k + 1) → ℂ) (hzy : ∀ a, herm (Hpk k r) z' (y a) = 0) (c : ℕ) :
     herm (Hpk k r) z' (Vv y N c) = 0 := by
@@ -63,6 +86,11 @@ theorem hermitian_orthogonal_projection_vector (k r j : ℕ) (y : Fin j → Fin 
   · exact herm_Hpk_of_inWb_eq_sum_wI k r j y z' hzy _
   · simp [herm]
 
+/- English proof (translation)
+Establish `hq2` using `q.isLt`. Establish `hb' : (sg k r q).val < r` using `by simp only [sg_val]; omega`. Establish `h` using `hy2 a ⟨(sg k r q).val, hb'⟩ (Nat.le_of_not_lt hb)`. Establish `he : esI k r ⟨(sg k r q).val, hb'⟩ = q`. Apply `Fin.ext` to reduce the goal to its premises.
+
+Simplify using `only [esI, sg_val]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[he]`. Conclude with `h`.
+-/
 theorem y_esI_zero (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (hy2 : ∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0)
     (a : Fin j) (q : Fin (2 * r + k + 1)) (hq : r + k < q.val) (hb : ¬ (sg k r q).val < j) :
@@ -77,6 +105,15 @@ theorem y_esI_zero (k r j : ℕ) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
   rw [he] at h
   exact h
 
+/- English proof (translation)
+Establish `hq2` using `q.isLt`. Unfold `Vv`. Rewrite using `[dif_pos hb]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Distinguish the cases in `hs : (sg k r q).val < j`.
+
+Establish `hsr : sR k r j hj ⟨(sg k r q).val, hs⟩ = q`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (sg k r q).val = q.val`. Simplify using `only [sg_val]`. Use linear arithmetic over natural numbers and integers.
+
+Establish `h` using `congrFun (congrFun hNM ⟨b, hb⟩) ⟨(sg k r q).val, hs⟩`. Rewrite `h` using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, hsr, Matrix.one_apply, Fin.ext_iff] at h`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+
+Establish `h0 : ∀ a, y a q = 0` using `fun a => y_esI_zero k r j y hy2 a q hq hs`. Simplify using `only [h0, mul_zero, Finset.sum_const_zero]`. Rewrite using `[if_neg (by omega)]`.
+-/
 theorem projection_vector_coordinate (k r j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (N : Matrix (Fin j) (Fin j) ℂ)
     (hy2 : ∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0)
@@ -102,6 +139,31 @@ theorem projection_vector_coordinate (k r j : ℕ) (hj : j ≤ r) (y : Fin j →
     simp only [h0, mul_zero, Finset.sum_const_zero]
     rw [if_neg (by omega)]
 
+/- English proof (translation)
+Establish `hp2` using `p.isLt`. Establish `hsRv : ∀ l : Fin j, (sR k r j hj l).val = 2 * r + k - l.val` using `fun l => rfl`. Rewrite using `[show (Pm k r j (Vv y N) *ᵥ (fun q => if r + k < q.val then y a q else 0)) p = ∑ q, Pm k r j (Vv y N) p q * (if r + k < q.val then y a q else 0) from rfl]`. Use `split_ifs with hp`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[P_rowS k r j _ p q hp, zero_mul]`. Establish `key : ∀ q : Fin (2 * r + k + 1), Pm k r j (Vv y N) p q * (if r + k < q.val then y a q else 0) = if r + k < q.val ∧ (sg k r q).val < j then Vv y N (sg k r q).val p * y a q else 0`. Introduce `q`. Distinguish the cases in `hq : r + k < q.val`. Rewrite using `[if_pos hq]`.
+
+Distinguish the cases in `hs : (sg k r q).val < j`. Rewrite using `[if_pos ⟨hq, hs⟩]`. Use `congr 1`. Distinguish the cases in `hpr : p.val < r`. Rewrite using `[P_XS k r j _ p q hpr hq, if_pos hs]`.
+
+Conclude with `P_WS k r j _ p q (by omega) (by omega) hq`. Rewrite using `[if_neg (fun h => hs h.2), y_esI_zero k r j y hy2 a q hq hs, mul_zero]`. Rewrite using `[if_neg hq, mul_zero, if_neg (fun h => hq h.1)]`. Simplify using `only [key]`. Establish `hinj : Function.Injective (sR k r j hj)`.
+
+Introduce `l1 l2 h`. Establish `h'` using `congrArg Fin.val h`. Rewrite `h'` using `[hsRv, hsRv]`. Use `l1.isLt` as an intermediate fact. Use `l2.isLt` as an intermediate fact.
+
+Conclude with `Fin.ext (by omega)`. Establish `hzero : ∀ q ∉ Set.range (sR k r j hj), (if r + k < q.val ∧ (sg k r q).val < j then Vv y N (sg k r q).val p * y a q else 0) = 0`. Introduce `q hq`. Rewrite using `[if_neg]`. Introduce and unpack `⟨h1, h2⟩`.
+
+Apply `hq` to reduce the goal to its premises. Use `⟨⟨(sg k r q).val, h2⟩, Fin.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hsRv]`. Use `q.isLt` as an intermediate fact. Simplify using `only [sg_val]`.
+
+Use linear arithmetic over natural numbers and integers. Establish `hval : ∀ l : Fin j, Vv y N l.val p * y a (sR k r j hj l) = (if r + k < (sR k r j hj l).val ∧ (sg k r (sR k r j hj l)).val < j then Vv y N (sg k r (sR k r j hj l)).val p * y a (sR k r j hj l) else 0)`. Introduce `l`. Establish `hl` using `l.isLt`. Establish `e : (sg k r (sR k r j hj l)).val = l.val` using `by rw [sg_val, hsRv]; omega`.
+
+Rewrite using `[if_pos ⟨by rw [hsRv]; omega, by omega⟩, e]`. Rewrite using `[← Fintype.sum_of_injective (sR k r j hj) hinj _ _ hzero hval]`. Establish `hV : ∀ l : Fin j, Vv y N l.val p = ∑ a', N l a' * y a' p`. Introduce `l`. Unfold `Vv`.
+
+Rewrite using `[dif_pos l.isLt]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Fin.eta]`. Simplify using `only [hV]`. Establish `h1 : y a p = ∑ a', (∑ l, y a (sR k r j hj l) * N l a') * y a' p`. Use `fun a' => congrFun (congrFun hMN a) a'` as an intermediate fact.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply] at this`. Simplify using `only [this, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[h1]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Conclude with `Finset.sum_congr rfl fun a' _ => Finset.sum_congr rfl fun l _ => by ring`.
+-/
 theorem nf_sum (k r j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (N : Matrix (Fin j) (Fin j) ℂ)
     (hy2 : ∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0)
@@ -173,6 +235,9 @@ theorem nf_sum (k r j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) �
     rw [Finset.sum_comm]
     exact Finset.sum_congr rfl fun a' _ => Finset.sum_congr rfl fun l _ => by ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, nf_sum k r j hj y N hy2 hMN a p]`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem nf (k r j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → ℂ)
     (N : Matrix (Fin j) (Fin j) ℂ)
     (hy2 : ∀ (a : Fin j) (b : Fin r), j ≤ b.val → y a (esI k r b) = 0)
@@ -182,6 +247,11 @@ theorem nf (k r j : ℕ) (hj : j ≤ r) (y : Fin j → Fin (2 * r + k + 1) → �
   simp only [Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply, nf_sum k r j hj y N hy2 hMN a p]
   split_ifs <;> simp
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply]`. Establish `h : (Pm k r j V *ᵥ bvec (eI k r a)) p = 0`. Rewrite using `[show (Pm k r j V *ᵥ bvec (eI k r a)) p = ∑ q, Pm k r j V p q * bvec (eI k r a) q from rfl]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+
+Distinguish the cases in `hq : q = eI k r a`. Substitute `hq` using the available equality. Rewrite using `[P_colX k r j V p _ a.isLt, zero_mul]`. Simplify using `[bvec, Pi.single_apply, hq]`. Rewrite using `[h, add_zero]`.
+-/
 theorem cols_X (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (1 + Pm k r j V) *ᵥ bvec (eI k r a) = bvec (eI k r a) := by
   funext p
@@ -195,6 +265,17 @@ theorem cols_X (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (a : Fin 
     · simp [bvec, Pi.single_apply, hq]
   rw [h, add_zero]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply]`. It suffices to establish `h : (Pm k r j V *ᵥ z') p = 0 by rw [h, add_zero]`. Establish `hterm : ∀ q : Fin (2 * r + k + 1), Pm k r j V p q * z' q = if p.val < r then -(star (V p.val q) * (Hpk k r *ᵥ z') q) else 0`. Introduce `q`.
+
+Establish `hq2` using `q.isLt`. Distinguish the cases in `hW : r ≤ q.val ∧ q.val ≤ r + k`. Rewrite using `[Hpk_mulVec, if_pos hW]`. Distinguish the cases in `hp : p.val < r`. Rewrite using `[P_XW k r j V p q hp hW.1 hW.2, if_pos hp]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[P_rowWS_colW k r j V p q (by omega) hW.2, if_neg hp, zero_mul]`. Establish `hzq : z' q = 0` using `hz q (by omega)`. Establish `hz2 : z' (sg k r q) = 0` using `hz (sg k r q) (by simp only [sg_val]; omega)`. Rewrite using `[hzq, mul_zero, Hpk_mulVec, if_neg hW, hz2, mul_zero, neg_zero, ite_self]`.
+
+Rewrite using `[show (Pm k r j V *ᵥ z') p = ∑ q, Pm k r j V p q * z' q from rfl]`. Simplify using `only [hterm]`. Distinguish the cases in `hp : p.val < r`. Simplify using `only [if_pos hp, Finset.sum_neg_distrib, neg_eq_zero]`. Use `Vz p.val` as an intermediate fact.
+
+Rewrite `this` using `[herm_eq]`. Conclude with `this`. Simplify using `[if_neg hp]`.
+-/
 theorem z_fix (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (z' : Fin (2 * r + k + 1) → ℂ)
     (hz : inWb k r z') (Vz : ∀ c, herm (Hpk k r) z' (V c) = 0) :
     (1 + Pm k r j V) *ᵥ z' = z' := by
@@ -223,6 +304,15 @@ theorem z_fix (k r j : ℕ) (V : ℕ → Fin (2 * r + k + 1) → ℂ) (z' : Fin 
     exact this
   · simp [if_neg hp]
 
+/- English proof (translation)
+Introduce `k r z' j hj y hz hy2 hdet hzy hyy`. Establish `hu : IsUnit (Matrix.of fun a b : Fin j => y a (sR k r j hj b)).det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `hMN : (Matrix.of fun a b : Fin j => y a (sR k r j hj b)) * (Matrix.of fun a b : Fin j => y a (sR k r j hj b))⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hNM : (Matrix.of fun a b : Fin j => y a (sR k r j hj b))⁻¹ * (Matrix.of fun a b : Fin j => y a (sR k r j hj b)) = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `⟨1 + Pm k r j (Vv y (Matrix.of fun a b : Fin j => y a (sR k r j hj b))⁻¹), ?_, fun a q => if r + k < q.val then y a q else 0, fun a => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [N0set, UH, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `unitary_P k r j _ (fun c hc => Vv_zero y _ c hc) (fun b hb q hq => projection_vector_coordinate k r j hj y _ hy2 hNM b hb q hq) (fun b c hb hc => Vv_iso k r j y _ hyy b c hb hc)`. Conclude with `fun a => cols_X k r j _ a`. Conclude with `z_fix k r j _ z' hz (fun c => hermitian_orthogonal_projection_vector k r j y _ z' hzy c)`.
+
+Introduce `p q hq1 hq2 hp`. Rewrite using `[Matrix.add_apply, P_rowWS_colW k r j _ p q hp hq2, add_zero, Matrix.one_apply]`. Introduce `p q hq hp`. Rewrite using `[Matrix.add_apply, P_rowS k r j _ p q hp, add_zero, Matrix.one_apply]`. Conclude with `nf k r j hj y _ hy2 hMN a`.
+
+Introduce `p hp`. Conclude with `if_neg (show ¬ (r + k < p.val) by omega)`. Introduce `p hp`. Conclude with `if_pos hp`.
+-/
 theorem normFormOne : IsotropicNormalFormPartial := by
   intro k r z' j hj y hz hy2 hdet hzy hyy
   have hu : IsUnit (Matrix.of fun a b : Fin j => y a (sR k r j hj b)).det := isUnit_iff_ne_zero.mpr hdet

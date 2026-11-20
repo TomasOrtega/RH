@@ -7,6 +7,9 @@ open scoped ComplexConjugate
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
+/- English proof (translation)
+Simplify using `only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im]`. Use polynomial arithmetic with `[sq_nonneg (a.re + b.re), sq_nonneg (a.im + b.im)]`.
+-/
 lemma normSq_sub_le_two (a b : ℂ) :
     Complex.normSq (a - b) ≤ 2 * Complex.normSq a + 2 * Complex.normSq b := by
   simp only [Complex.normSq_apply, Complex.sub_re, Complex.sub_im]
@@ -16,6 +19,9 @@ namespace Data
 
 variable {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Unfold `Jp`. Rewrite using `[X.ppos_sub, smul_sub]`. Normalize the expressions using the abelian group laws.
+-/
 lemma Jp_sub (x : Frame X.Ψ r) (τ : X.Ψ) (u v : Fin r → ℂ) :
     X.Jp x τ (u - v) = X.Jp x τ u - X.Jp x τ v := by
   unfold Jp
@@ -26,6 +32,15 @@ section perTau
 
 variable {x : Frame X.Ψ r} {τ : X.Ψ}
 
+/- English proof (translation)
+Establish `hJ : X.Jp x τ (c • v) = c • X.Jp x τ v`. Unfold `Jp`. Rewrite using `[X.ppos_smul, smul_comm (2 : ℂ) c, ← smul_sub]`. Establish `hH : ∀ u w, hermC τ.1 X.Gm (c • u) (c • w) = (Complex.normSq c : ℂ) * hermC τ.1 X.Gm u w`. Introduce `u w`.
+
+Unfold `hermC`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `hself (c • v)`. Rewrite `h1` using `[show X.Hf x τ (c • v) (c • v) = hermC τ.1 X.Gm (X.Jp x τ (c • v)) (c • v) from rfl, hJ, hH, show hermC τ.1 X.Gm (X.Jp x τ v) v = X.Hf x τ v v from rfl, hself v]`.
+
+Conclude with `h1.symm` after adjusting the coercions.
+-/
 lemma maj_smul (hself : ∀ v, X.Hf x τ v v = (X.maj x τ v : ℂ)) (c : ℂ) (v : Fin r → ℂ) :
     X.maj x τ (c • v) = Complex.normSq c * X.maj x τ v := by
   have hJ : X.Jp x τ (c • v) = c • X.Jp x τ v := by
@@ -45,10 +60,16 @@ lemma maj_smul (hself : ∀ v, X.Hf x τ v v = (X.maj x τ v : ℂ)) (c : ℂ) (
     show hermC τ.1 X.Gm (X.Jp x τ v) v = X.Hf x τ v v from rfl, hself v] at h1
   exact_mod_cast h1.symm
 
+/- English proof (translation)
+Establish `h1` using `X.maj_smul hself (0 : ℂ) 0`. Simplify using `using h1`.
+-/
 lemma maj_zero' (hself : ∀ v, X.Hf x τ v v = (X.maj x τ v : ℂ)) : X.maj x τ 0 = 0 := by
   have h1 := X.maj_smul hself (0 : ℂ) 0
   simpa using h1
 
+/- English proof (translation)
+Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, X.maj_zero' hself]`. Conclude with `(hpos v hv).le`.
+-/
 lemma maj_nonneg' (hself : ∀ v, X.Hf x τ v v = (X.maj x τ v : ℂ))
     (hpos : ∀ v, v ≠ 0 → 0 < X.maj x τ v) (v : Fin r → ℂ) : 0 ≤ X.maj x τ v := by
   by_cases hv : v = 0
@@ -59,6 +80,11 @@ variable {e : Fin r → ℂ} (δ : (Fin r → ℂ) →ₗ[ℂ] ℂ) (hx : x ∈ 
   (hq : X.d2q x τ e ≠ 0) (hself : ∀ v, X.Hf x τ v v = (X.maj x τ v : ℂ))
 include hx he hq hself
 
+/- English proof (translation)
+Establish `hfz : hermC τ.1 X.Gm (X.Jp x τ e) (X.d2z x τ e δ) = 0`. Rewrite using `[hsym, unipotent_shift_orthogonal_Je X δ hx he hq, map_zero]`. Establish `hze : hermC τ.1 X.Gm (X.Jp x τ (X.d2z x τ e δ)) e = 0`. Rewrite using `[Jp_adj X hx, unipotent_shift_orthogonal_Je X δ hx he hq]`. Establish `h3 : X.Hf x τ (C • e - b • X.d2z x τ e δ) (C • e - b • X.d2z x τ e δ) = C * conj C * X.Hf x τ e e + b * conj b * X.Hf x τ (X.d2z x τ e δ) (X.d2z x τ e δ)` using `by show hermC τ.1 X.Gm (X.Jp x τ (C • e - b • X.d2z x τ e δ)) (C • e - b • X.d2z x τ e δ) = C * conj C * hermC τ.1 X.Gm (X.Jp x τ e) e + b * conj b * hermC τ.1 X.Gm (X.Jp x τ (X.d2z x τ e δ)) (X.d2z x τ e δ)`.
+
+Rewrite using `[Jp_sub, Jp_smul, Jp_smul]`. Simplify using `only [hC_sub_left, hC_smul_left, hC_sub_right, hC_smul_right, hfz, hze]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[hself, hself, hself, Complex.mul_conj, Complex.mul_conj]`. Conclude with `h3` after adjusting the coercions.
+-/
 lemma maj_Ce_bz (C b : ℂ) :
     X.maj x τ (C • e - b • X.d2z x τ e δ) =
       Complex.normSq C * X.maj x τ e + Complex.normSq b * X.maj x τ (X.d2z x τ e δ) := by
@@ -77,6 +103,13 @@ lemma maj_Ce_bz (C b : ℂ) :
   rw [hself, hself, hself, Complex.mul_conj, Complex.mul_conj] at h3
   exact_mod_cast h3
 
+/- English proof (translation)
+Establish `k1 : hermC τ.1 X.Gm (X.Jp x τ w) e = 0` using `by rw [Jp_adj X hx, hw2]`. Establish `k2 : hermC τ.1 X.Gm (X.Jp x τ w) (X.Jp x τ e) = 0`. Rewrite using `[Jp_adj X hx, Jp_Jp X hx, hw1]`. Establish `k3 : hermC τ.1 X.Gm (X.Jp x τ e) w = 0` using `by rw [hsym, hw2, map_zero]`. Establish `k4 : hermC τ.1 X.Gm e w = 0` using `by rw [hsym, hw1, map_zero]`.
+
+Establish `k5` using `hermitian_pairing_Je_Je_zero X hx he`. Establish `k6 : hermC τ.1 X.Gm (X.Jp x τ e) e = X.Hf x τ e e` using `rfl`. Establish `k7 : hermC τ.1 X.Gm e (X.Jp x τ e) = X.Hf x τ e e` using `hermitian_pairing_e_Je X hx`. Establish `h3 : X.Hf x τ (w + a • e + b • X.Jp x τ e) (w + a • e + b • X.Jp x τ e) = a * conj a * X.Hf x τ e e + b * conj b * X.Hf x τ e e + X.Hf x τ w w` using `by show hermC τ.1 X.Gm (X.Jp x τ (w + a • e + b • X.Jp x τ e)) (w + a • e + b • X.Jp x τ e) = a * conj a * X.Hf x τ e e + b * conj b * X.Hf x τ e e + hermC τ.1 X.Gm (X.Jp x τ w) w`. Rewrite using `[Jp_add, Jp_add, Jp_smul, Jp_smul, Jp_Jp X hx]`.
+
+Simplify using `only [hC_add_left, hC_smul_left, hC_add_right, hC_smul_right, k1, k2, k3, k4, k5, k6, k7, he]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[hself, hself, hself, Complex.mul_conj, Complex.mul_conj]`. Conclude with `h3` after adjusting the coercions.
+-/
 lemma maj_decomp (w : Fin r → ℂ) (hw1 : hermC τ.1 X.Gm w e = 0)
     (hw2 : hermC τ.1 X.Gm w (X.Jp x τ e) = 0) (a b : ℂ) :
     X.maj x τ (w + a • e + b • X.Jp x τ e) =
@@ -100,6 +133,39 @@ lemma maj_decomp (w : Fin r → ℂ) (hw1 : hermC τ.1 X.Gm w e = 0)
   rw [hself, hself, hself, Complex.mul_conj, Complex.mul_conj] at h3
   exact_mod_cast h3
 
+/- English proof (translation)
+Establish `hnn` using `maj_nonneg' X hself hpos`. Establish `hqQ : X.d2q x τ e = (X.maj x τ e : ℂ)` using `hself e`. Establish `hQ : 0 < X.maj x τ e`. Break down `(hnn e).lt_or_eq with h | h` into its components or cases. Conclude with `h`.
+
+Conclude with `absurd (by rw [hqQ, ← h]; simp) hq`. Use `set Q := X.maj x τ e with hQdef`. Use `set z := X.d2z x τ e δ with hzdef`. Establish `hA : Matrix.mulVec (X.d2n x τ e δ - 1) v = (δ (X.d2pi x τ e v) - δ z / 2 * X.d2b x τ e v) • e - X.d2b x τ e v • z`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, unipotent_mulVec_formula]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hA, maj_Ce_bz X δ hx he hq hself]`. Establish `hv : v = X.d2pi x τ e v + X.d2a x τ e v • e + X.d2b x τ e v • X.Jp x τ e`. Rewrite using `[hyperbolic_projection_apply]`. Normalize the expressions using the abelian group laws.
+
+Establish `hw1` using `hyperbolic_projection_perp_e X hx he hq v`. Establish `hw2` using `hyperbolic_projection_perp_Je X hx he hq v`. Use `conv_rhs => rw [hv, maj_decomp X hx he hq hself _ hw1 hw2]`. Establish `hz1 : hermC τ.1 X.Gm (X.Jp x τ z) e = 0` using `by rw [Jp_adj X hx, unipotent_shift_orthogonal_Je X δ hx he hq]`. Establish `hz2 : hermC τ.1 X.Gm (X.Jp x τ z) (X.Jp x τ e) = 0`.
+
+Rewrite using `[Jp_adj X hx, Jp_Jp X hx, unipotent_shift_orthogonal_e X δ hx he hq]`. Establish `hmJz : X.maj x τ (X.Jp x τ z) = X.maj x τ z`. Establish `h1` using `hself (X.Jp x τ z)`. Establish `h2` using `hself z`. Establish `h3 : X.Hf x τ (X.Jp x τ z) (X.Jp x τ z) = X.Hf x τ z z` using `by show hermC τ.1 X.Gm (X.Jp x τ (X.Jp x τ z)) (X.Jp x τ z) = X.Hf x τ z z`.
+
+Rewrite using `[Jp_Jp X hx, Hf_eq X x hx]`. Both sides reduce to the same expression. Rewrite `h3` using `[h1, h2]`. Conclude with `h3` after adjusting the coercions. Establish `hZc : (X.maj x τ z : ℂ) = (Q : ℂ) * δ (X.Jp x τ z)`.
+
+Rewrite using `[← hself z, ← hqQ]`. Use `show hermC τ.1 X.Gm (X.Jp x τ z) z = _`. Rewrite using `[unipotent_shift_spec X δ hx he hq, hyperbolic_projection_of_perp X hx he hq hz1 hz2]`. Establish `hdJ : δ (X.Jp x τ z) = ((X.maj x τ z / Q : ℝ) : ℂ)`. Establish `hQc : (Q : ℂ) ≠ 0` using `by exact_mod_cast hQ.ne'`.
+
+Use `push_cast`. Rewrite using `[hZc]`. Clear the denominators using the available nonvanishing facts. Establish `hZ0` using `hnn z`. Establish `hZ : X.maj x τ z ≤ κ ^ 2 * Q`.
+
+Establish `h` using `hδ _ hz1 hz2`. Rewrite `h` using `[maj_smul X hself, hdJ, Complex.normSq_ofReal, hmJz]`. Establish `h' : X.maj x τ z * X.maj x τ z ≤ κ ^ 2 * Q * X.maj x τ z`. Establish `e1 : X.maj x τ z / Q * (X.maj x τ z / Q) * Q = X.maj x τ z * X.maj x τ z / Q`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite `h` using `[e1, div_le_iff₀ hQ]`. Use the polynomial consequences of the given equalities and inequalities. Break down `hZ0.lt_or_eq with h0 | h0` into its components or cases. Conclude with `le_of_mul_le_mul_right h' h0`. Rewrite using `[← h0]`.
+
+Check the signs of the components of the expression. Establish `hDz : Complex.normSq (δ z) ≤ κ ^ 4`. Establish `h` using `hδ z (unipotent_shift_orthogonal_e X δ hx he hq) (unipotent_shift_orthogonal_Je X δ hx he hq)`. Rewrite `h` using `[maj_smul X hself]`. Establish `h2 : Complex.normSq (δ z) * Q ≤ κ ^ 4 * Q` using `by nlinarith`.
+
+Conclude with `le_of_mul_le_mul_right h2 hQ`. Establish `hw` using `hyperbolic_projection_perp_e X hx he hq v`. Establish `hD` using `hδ (X.d2pi x τ e v) hw1 hw2`. Rewrite `hD` using `[maj_smul X hself]`. Establish `hC : Complex.normSq (δ (X.d2pi x τ e v) - δ z / 2 * X.d2b x τ e v) ≤ 2 * Complex.normSq (δ (X.d2pi x τ e v)) + Complex.normSq (δ z) * Complex.normSq (X.d2b x τ e v) / 2`.
+
+Establish `h1` using `normSq_sub_le_two (δ (X.d2pi x τ e v)) (δ z / 2 * X.d2b x τ e v)`. Establish `h2 : Complex.normSq (δ z / 2 * X.d2b x τ e v) = Complex.normSq (δ z) * Complex.normSq (X.d2b x τ e v) / 4`. Rewrite using `[Complex.normSq_mul, Complex.normSq_div]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hWn` using `hnn (X.d2pi x τ e v)`. Establish `hAn` using `Complex.normSq_nonneg (X.d2a x τ e v)`. Establish `hBn` using `Complex.normSq_nonneg (X.d2b x τ e v)`. Establish `hDn` using `Complex.normSq_nonneg (δ (X.d2pi x τ e v))`.
+
+Establish `hDzn` using `Complex.normSq_nonneg (δ z)`. Establish `hk4 : κ ^ 4 ≤ κ ^ 2` using `pow_le_pow_of_le_one hκ0 hκ1 (by norm_num)`. Establish `t1` using `mul_le_mul_of_nonneg_right hC hQ.le`. Establish `t2` using `mul_le_mul_of_nonneg_left hZ hBn`. Establish `t3` using `mul_le_mul_of_nonneg_right hDz (mul_nonneg hBn hQ.le)`.
+
+Establish `t4` using `mul_le_mul_of_nonneg_right hk4 (mul_nonneg hBn hQ.le)`. Establish `t5` using `mul_nonneg (sq_nonneg κ) (mul_nonneg hAn hQ.le)`. Establish `t6` using `mul_nonneg (sq_nonneg κ) hWn`. Establish `t7` using `mul_nonneg (sq_nonneg κ) (mul_nonneg hBn hQ.le)`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 lemma unipotent_sub_one_majorant_bound (hpos : ∀ v, v ≠ 0 → 0 < X.maj x τ v) (κ : ℝ) (hκ0 : 0 ≤ κ) (hκ1 : κ ≤ 1)
     (hδ : ∀ u, hermC τ.1 X.Gm u e = 0 → hermC τ.1 X.Gm u (X.Jp x τ e) = 0 →
       X.maj x τ (δ u • e) ≤ κ ^ 2 * X.maj x τ u) (v : Fin r → ℂ) :

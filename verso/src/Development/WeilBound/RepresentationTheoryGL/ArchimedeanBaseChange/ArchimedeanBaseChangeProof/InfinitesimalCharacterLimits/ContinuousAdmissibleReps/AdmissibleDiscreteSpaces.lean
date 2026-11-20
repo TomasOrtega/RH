@@ -20,14 +20,23 @@ def contK : Submodule ℂ (Kinf E n → ℂ) where
 def lI (X : Submodule ℂ (Kinf E n → ℂ)) : Submodule ℂ (Kinf E n → ℂ) :=
   ⨅ k₀ : Kinf E n, X.comap (LinearMap.funLeft ℂ ℂ (fun k => k₀ * k))
 
+/- English proof (translation)
+Simplify using `only [lI, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem mem_lI {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} :
     w ∈ lI X ↔ ∀ k₀, (fun k => w (k₀ * k)) ∈ X := by
   simp only [lI, Submodule.mem_iInf, Submodule.mem_comap]
   rfl
 
+/- English proof (translation)
+Introduce `w hw` and use `by simpa only [one_mul] using mem_lI.1 hw 1`.
+-/
 theorem lI_le (X : Submodule ℂ (Kinf E n → ℂ)) : lI X ≤ X := fun w hw => by
   simpa only [one_mul] using mem_lI.1 hw 1
 
+/- English proof (translation)
+The claim follows from `mem_lI.2 fun k₀ => by simpa only [mul_assoc] using mem_lI.1 hw (k₁ * k₀)`.
+-/
 theorem lI_left {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (hw : w ∈ lI X) (k₁ : Kinf E n) :
     (fun k => w (k₁ * k)) ∈ lI X :=
   mem_lI.2 fun k₀ => by simpa only [mul_assoc] using mem_lI.1 hw (k₁ * k₀)
@@ -35,9 +44,17 @@ theorem lI_left {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (h
 def rS (X : Submodule ℂ (Kinf E n → ℂ)) : Submodule ℂ (Kinf E n → ℂ) :=
   Submodule.span ℂ {v | ∃ w ∈ X, ∃ k : Kinf E n, v = fun x => w (x * k)}
 
+/- English proof (translation)
+Introduce `w hw` and use `Submodule.subset_span ⟨w, hw, 1, funext fun x => by rw [mul_one]⟩`.
+-/
 theorem le_rS (X : Submodule ℂ (Kinf E n → ℂ)) : X ≤ rS X := fun w hw =>
   Submodule.subset_span ⟨w, hw, 1, funext fun x => by rw [mul_one]⟩
 
+/- English proof (translation)
+Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨u, hu, k', rfl⟩` from `hv`. Conclude with `Submodule.subset_span ⟨u, hu, k * k', funext fun x => by simp only [mul_assoc]⟩`. Consider the case `zero => exact Submodule.zero_mem _`.
+
+Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+-/
 theorem rS_right {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (hw : w ∈ rS X) (k : Kinf E n) :
     (fun x => w (x * k)) ∈ rS X := by
   induction hw using Submodule.span_induction with
@@ -48,6 +65,11 @@ theorem rS_right {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (
   | add x y _ _ hx hy => exact Submodule.add_mem _ hx hy
   | smul a x _ hx => exact Submodule.smul_mem _ a hx
 
+/- English proof (translation)
+Establish `: FiniteDimensional ℂ (lI X)` using `Submodule.finiteDimensional_of_le (lI_le X)`. Set `Lm : Kinf E n → lI X →ₗ[ℂ] lI X` to `fun k₀ => { toFun := fun y => ⟨fun k => y.1 (k₀ * k), lI_left y.2 k₀⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `B : Module.Dual ℂ (lI X) →ₗ[ℂ] lI X →ₗ[ℂ] (Kinf E n → ℂ)` to `LinearMap.mk₂ ℂ (fun ℓ y => fun k₀ => ℓ (Lm k₀ y)) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp)`. Establish `hle : rS (lI X) ≤ LinearMap.range (TensorProduct.lift B)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨w, hw, k, rfl⟩`. Use `⟨((LinearMap.proj k : (Kinf E n → ℂ) →ₗ[ℂ] ℂ).comp (lI X).subtype) ⊗ₜ ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.lift.tmul]`. Both sides reduce to the same expression. Conclude with `Submodule.finiteDimensional_of_le hle`.
+-/
 theorem fd_rS_lI (X : Submodule ℂ (Kinf E n → ℂ)) [FiniteDimensional ℂ X] : FiniteDimensional ℂ (rS (lI X)) := by
   have : FiniteDimensional ℂ (lI X) := Submodule.finiteDimensional_of_le (lI_le X)
   let Lm : Kinf E n → lI X →ₗ[ℂ] lI X := fun k₀ =>
@@ -81,6 +103,13 @@ def rR (U : Submodule ℂ (Kinf E n → ℂ)) (hU : ∀ u ∈ U, ∀ k, (fun x =
     change u.1 (x * (k₁ * k₂)) = u.1 (x * k₁ * k₂)
     rw [mul_assoc])
 
+/- English proof (translation)
+Introduce `ℓ w`. Establish `h : Submodule.span ℂ (Set.range fun x : Kinf E n => ((LinearMap.proj x : (Kinf E n → ℂ) →ₗ[ℂ] ℂ).comp U.subtype : U →ₗ[ℂ] ℂ)) = ⊤`. Use `Submodule.span_eq_top_of_ne_zero fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+
+Conclude with `hz (Subtype.ext (funext fun x => hcon _ ⟨x, rfl⟩))`. Establish `hl : ℓ ∈ (⊤ : Submodule ℂ (U →ₗ[ℂ] ℂ))` using `Submodule.mem_top`. Rewrite `hl` using `[← h]`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem y hy`.
+
+Take `⟨x, rfl⟩` from `hy`. Conclude with `(hc w.1 w.2).comp (continuous_const_mul x)`. Consider the case `zero => exact continuous_const`. Consider the case `add y z _ _ hy hz => exact hy.add hz`. Consider the case `smul c y _ hy => exact hy.const_smul c`.
+-/
 theorem isContRep_rR (U : Submodule ℂ (Kinf E n → ℂ)) (hU : ∀ u ∈ U, ∀ k, (fun x => u (x * k)) ∈ U)
     (hc : ∀ u ∈ U, Continuous u) [FiniteDimensional ℂ U] : GlobalTheory.Published.AutFin.IsContRep (rR U hU) := by
   intro ℓ w
@@ -100,6 +129,9 @@ theorem isContRep_rR (U : Submodule ℂ (Kinf E n → ℂ)) (hU : ∀ u ∈ U, �
   | add y z _ _ hy hz => exact hy.add hz
   | smul c y _ hy => exact hy.const_smul c
 
+/- English proof (translation)
+Establish `h1 : Continuous fun k : Kinf E n => chart φ.1 g (toL (Unitary.toUnits k).val)` using `(φ.2 g).continuousOn.comp_continuous (f := fun k : Kinf E n => toL (Unitary.toUnits k).val) continuous_subtype_val fun k => val_mem_invSet _`. Simplify using `only [chart_val] at h1`. Conclude with `h1`.
+-/
 theorem cont_K [NumberField E] [IsCMField E] (φ : Sm E n) (g : GA E n) :
     Continuous fun k : Kinf E n => φ.1 (g * infGL E n (Unitary.toUnits k)) := by
   have h1 : Continuous fun k : Kinf E n => chart φ.1 g (toL (Unitary.toUnits k).val) :=
@@ -108,6 +140,11 @@ theorem cont_K [NumberField E] [IsCMField E] (φ : Sm E n) (g : GA E n) :
   simp only [chart_val] at h1
   exact h1
 
+/- English proof (translation)
+Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨w, hw, k, rfl⟩` from `hv`. Establish `hc : Continuous w` using `(lI_le _ hw).2`.
+
+Conclude with `hc.comp (continuous_mul_const k)`. Consider the case `zero => exact continuous_zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact hx.const_smul a`.
+-/
 theorem cont_rS (W : Submodule ℂ (Kinf E n → ℂ)) :
     ∀ u ∈ rS (lI (W ⊓ contK E n)), Continuous u := by
   intro u hu
@@ -124,6 +161,17 @@ end AdmDiscPf
 
 open AdmDiscPf in
 
+/- English proof (translation)
+Introduce `E _ _ _ M K' W' hK' hW' V hV`. Take `⟨φ₀, hφ₀, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Establish `hA : PrAdm.SupSpansPsiPart V φ₀ = V`. Break down `hV.irred _ (PrAdm.admissible_span_le V φ₀) (PrAdm.isStable_admissible_span hV.stable φ₀) with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ PrAdm.mem_admissible_span_self hφ₀)) h0`.
+
+Conclude with `h`. Establish `: FiniteDimensional ℂ (W' ⊓ contK E M : Submodule ℂ (Kinf E M → ℂ))` using `Submodule.finiteDimensional_of_le inf_le_left`. Establish `: FiniteDimensional ℂ (rS (lI (W' ⊓ contK E M)))` using `fd_rS_lI _`. Establish `hU : ∀ u ∈ rS (lI (W' ⊓ contK E M)), ∀ k, (fun x => u (x * k)) ∈ rS (lI (W' ⊓ contK E M))` using `fun u hu k => rS_right hu k`. Establish `hfd` using `PrAdm.finiteDimensional_admissible_isotypic hV.aut (hV.aut φ₀ hφ₀) hK' (rR _ hU) (isContRep_rR _ hU (cont_rS W'))`.
+
+Use `Submodule.finiteDimensional_of_le (S₂ := PrAdm.SupSpansPsiPart V φ₀ ⊓ typePart K' (rR (rS (lI (W' ⊓ contK E M))) hU)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `φ ⟨hφV, hT⟩`. Use `⟨hA.symm ▸ hφV, fun k hk => Subtype.ext (funext fun g => hT.1 k hk g), fun g => ?_⟩` and prove the remaining obligations. Establish `hf : (fun k : Kinf E M => (cptRep E M k φ).1 g) ∈ lI (W' ⊓ contK E M)`. Use `mem_lI.2 fun k₀ => ⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `show (fun k => φ.1 (g * infGL E M (Unitary.toUnits (k₀ * k)))) ∈ W'`. Use `hT.2 (g * infGL E M (Unitary.toUnits k₀))` as an intermediate fact. Simplify `this` using `only [map_mul, mul_assoc]`. Use `show Continuous fun k => φ.1 (g * infGL E M (Unitary.toUnits (k₀ * k)))`. Use `cont_K φ (g * infGL E M (Unitary.toUnits k₀))` as an intermediate fact.
+
+Simplify `this` using `only [map_mul, mul_assoc]`. Establish `hfU` using `le_rS _ hf`. Use `Submodule.subset_span ⟨(LinearMap.proj 1 : (Kinf E M → ℂ) →ₗ[ℂ] ℂ).comp (rS (lI (W' ⊓ contK E M))).subtype, ⟨_, hfU⟩, funext fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(cptRep E M k φ).1 g = (cptRep E M (1 * k) φ).1 g`. Rewrite using `[one_mul]`.
+-/
 theorem admissible_discrete_spaces : AdmDisc := by
   intro E _ _ _ M K' W' hK' hW' V hV
   obtain ⟨φ₀, hφ₀, h0⟩ := (Submodule.ne_bot_iff _).1 hV.ne_bot

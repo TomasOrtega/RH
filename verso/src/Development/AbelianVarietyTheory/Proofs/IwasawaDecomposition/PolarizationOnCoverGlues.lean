@@ -11,6 +11,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 
 namespace GlobalTheory.TorRef
 
+/- English proof (translation)
+Introduce `x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `hle : Ideal.span (Set.range a) ≤ (Z.s x).asIdeal`. Rewrite using `[Ideal.span_le]`.
+
+Introduce and unpack `_ ⟨i, rfl⟩`. Assume the negation of the conclusion as `hi`. Apply `h i` to reduce the goal to its premises. Rewrite using `[(hu i).2.2.1]`. Conclude with `hi`.
+
+Rewrite `hle` using `[hC.2.2]`. Conclude with `(Z.s x).isPrime.ne_top (top_le_iff.1 hle)`.
+-/
 theorem exists_mem_range_chart {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} {I : Type} {R : I → Type} [∀ i, CommRing (R i)] {a : I → 𝓞 c.F}
     {b : ∀ i, 𝓞 c.F →+* R i} {ω : ∀ i, R i →+* c.F} (Z : GMod Xo c) (C : ∀ i, Model Xo c (ω i))
@@ -29,6 +36,11 @@ theorem exists_mem_range_chart {E : Type} [Field E] [NumberField E] [IsCMField E
   rw [hC.2.2] at hle
   exact (Z.s x).isPrime.ne_top (top_le_iff.1 hle)
 
+/- English proof (translation)
+Introduce `hPM E _ _ _ H D l Xo c I _ R _ a b ω Z C u φ m BD htw hC hu hP`. Establish `hcov` using `exists_mem_range_chart Z C u hC hu`. Establish `hoi : ∀ i, IsOpenImmersion (u i)` using `fun i => (hu i).1`. Take `⟨DZ, hD⟩` from `GlobalTheory.T.glue_effective_cartier u BD hoi hcov (GlobalTheory.T.polarization_twisted_cover hPM Z C u φ m BD htw hC hu hP)`. Use `⟨DZ, GlobalTheory.T.polarization_glue_cover Z C u φ DZ BD hoi (fun i => (hu i).2.2.2.1) (fun i => (hu i).2.2.2.2) hcov hD (fun i => (hP i).1), ?_⟩` and prove the remaining obligations.
+
+Establish `hpr : IsProper Z.s` using `projProper _ _ _ Z.proj`. Establish `hc : CompactSpace Z.X` using `QuasiCompact.compactSpace_of_compactSpace Z.s`. Establish `hq : QuasiSeparatedSpace Z.X` using `quasiSeparatedSpace_of_quasiSeparated Z.s`. Conclude with `GlobalTheory.T.ample_of_local_affine_cover Z.s u a (polOf Z m DZ) hc hq hC.2.2 hoi (fun i => (hu i).2.2.1) (fun i => (GlobalTheory.T.polarization_open_immersion Z (C i) (u i) DZ (BD i) m (hoi i) (hu i).2.2.2.2 (hD i)).1 (hP i).2)`.
+-/
 theorem isPol_of_charts : PolMapSt → ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)]
     {a : I → 𝓞 c.F} {b : ∀ i, 𝓞 c.F →+* R i} {ω : ∀ i, R i →+* c.F} (Z : GMod Xo c) (C : ∀ i, Model Xo c (ω i))

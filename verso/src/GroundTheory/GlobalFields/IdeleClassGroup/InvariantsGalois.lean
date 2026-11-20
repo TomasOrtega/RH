@@ -12,6 +12,9 @@ noncomputable section
 
 namespace FiniteSubfield
 
+/- English proof (translation)
+The claim follows from `show fixedField (U : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) ≤ fixedField (U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) from fun x hx ↦ (mem_fixedField_iff _ x).2 fun g hg ↦ (mem_fixedField_iff _ x).1 hx g (h hg)`.
+-/
 theorem ofOpenSubgroup_le {U U' : OpenSubgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} (h : U' ≤ U) :
     ofOpenSubgroup U ≤ ofOpenSubgroup U' :=
   show fixedField (U : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) ≤ fixedField (U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)) from
@@ -23,6 +26,9 @@ namespace IdeleClassLimit
 
 open FiniteSubfield
 
+/- English proof (translation)
+Substitute `hK hL` using the available equality. Conclude with `congrArg Subtype.val (norm_fixedEquiv h c)`.
+-/
 theorem coe_norm_of_eq {K L : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} [(L.subgroupOf K).FiniteIndex]
     {F E : FiniteSubfield} (h : F ≤ E) (hK : K = F.1.fixingSubgroup) (hL : L = E.1.fixingSubgroup)
     (c : IdeleClassGroup E.1) (hc : of E c ∈ fixedModule IdeleClassLimit L) :
@@ -31,6 +37,9 @@ theorem coe_norm_of_eq {K L : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} [(L.subgroupOf
   subst hK hL
   exact congrArg Subtype.val (norm_fixedEquiv h c)
 
+/- English proof (translation)
+The claim follows from `coe_norm_of_eq (ofOpenSubgroup_le hUU') (fixingSubgroup_ofOpenSubgroup U).symm (fixingSubgroup_ofOpenSubgroup U').symm c hc`.
+-/
 theorem coe_norm_openSubgroup {U U' : OpenSubgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄)} (hUU' : U' ≤ U)
     (c : IdeleClassGroup (ofOpenSubgroup U').1)
     (hc : of (ofOpenSubgroup U') c ∈ fixedModule IdeleClassLimit (U' : Subgroup (ℚ̄ ≃ₐ[ℚ] ℚ̄))) :
@@ -53,6 +62,11 @@ instance {F E : FiniteSubfield} [Fact (F ≤ E)] : IsScalarTower ℚ F.1 E.1 :=
 instance {F E : FiniteSubfield} [Fact (F ≤ E)] : FiniteDimensional F.1 E.1 :=
   FiniteDimensional.right ℚ F.1 E.1
 
+/- English proof (translation)
+Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup E.1, mem_fixedField_iff]`. Introduce `l hl`. Establish `hc : g⁻¹ * l * g ∈ E.1.fixingSubgroup`. Establish `h1` using `hN.conj_mem ⟨l, IntermediateField.fixingSubgroup_le (show F.1 ≤ E.1 from h) hl⟩ (by rwa [Subgroup.mem_subgroupOf]) (⟨g, hg⟩ : F.1.fixingSubgroup)⁻¹`. Rewrite `h1` using `[Subgroup.mem_subgroupOf]`.
+
+Simplify using `using h1`. Establish `h2` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hc x hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, ← AlgEquiv.mul_apply g, mul_inv_cancel, AlgEquiv.one_apply]`. Use `_ = g x := by rw [h2]`.
+-/
 theorem apply_mem_of_normal {F E : FiniteSubfield} (h : F ≤ E)
     [hN : (E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal] {g : ℚ̄ ≃ₐ[ℚ] ℚ̄}
     (hg : g ∈ F.1.fixingSubgroup) {x : ℚ̄} (hx : x ∈ E.1) : g x ∈ E.1 := by
@@ -89,10 +103,18 @@ def restrictHom : F.1.fixingSubgroup →* (E.1 ≃ₐ[F.1] E.1) where
   map_mul' _ _ := AlgEquiv.ext fun _ ↦ Subtype.ext rfl
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_restrictHom_apply (g : F.1.fixingSubgroup) (x : E.1) :
     ((restrictHom g x : E.1) : ℚ̄) = (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) x :=
   rfl
 
+/- English proof (translation)
+Introduce `σ`. Set `σ' : ℚ̄ ≃ₐ[ℚ] ℚ̄` to `(σ.restrictScalars ℚ).liftNormal ℚ̄`. Establish `hσ' : ∀ x : E.1, σ' x = σ x` using `fun x ↦ (σ.restrictScalars ℚ).liftNormal_commutes ℚ̄ x`. Establish `hmem : σ' ∈ F.1.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`.
+
+Introduce `x hx`. Establish `h1` using `hσ' (algebraMap F.1 E.1 ⟨x, hx⟩)`. Rewrite `h1` using `[σ.commutes]`. Conclude with `h1`. Conclude with `⟨⟨σ', hmem⟩, AlgEquiv.ext fun x ↦ Subtype.ext (hσ' x)⟩`.
+-/
 theorem restrictHom_surjective :
     Function.Surjective (restrictHom : F.1.fixingSubgroup →* (E.1 ≃ₐ[F.1] E.1)) := by
   intro σ
@@ -106,6 +128,11 @@ theorem restrictHom_surjective :
     exact h1
   exact ⟨⟨σ', hmem⟩, AlgEquiv.ext fun x ↦ Subtype.ext (hσ' x)⟩
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, Subgroup.mem_subgroupOf, IntermediateField.mem_fixingSubgroup_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hg x hx`. Conclude with `congrArg (fun σ : E.1 ≃ₐ[F.1] E.1 ↦ ((σ ⟨x, hx⟩ : E.1) : ℚ̄)) hg`.
+
+Introduce `hg`. Conclude with `AlgEquiv.ext fun x ↦ Subtype.ext (hg x x.2)`.
+-/
 theorem ker_restrictHom :
     (restrictHom : F.1.fixingSubgroup →* (E.1 ≃ₐ[F.1] E.1)).ker =
       E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup := by
@@ -117,6 +144,9 @@ theorem ker_restrictHom :
   · intro hg
     exact AlgEquiv.ext fun x ↦ Subtype.ext (hg x x.2)
 
+/- English proof (translation)
+Apply `IsGalois.of_card_aut_eq_finrank` to reduce the goal to its premises. Establish `h1 : E.1.fixingSubgroup.relIndex F.1.fixingSubgroup = Module.finrank F.1 E.1` using `relIndex_fixingSubgroup hFE.out`. Rewrite using `[← h1, ← Nat.card_congr (QuotientGroup.quotientKerEquivOfSurjective _ (restrictHom_surjective (F := F) (E := E))).toEquiv, ker_restrictHom]`. Both sides reduce to the same expression.
+-/
 theorem isGalois_of_normal : IsGalois F.1 E.1 := by
   apply IsGalois.of_card_aut_eq_finrank
   have h1 : E.1.fixingSubgroup.relIndex F.1.fixingSubgroup = Module.finrank F.1 E.1 :=
@@ -134,11 +164,19 @@ open FiniteSubfield GroundTheory.LocalField
 variable {F E : FiniteSubfield} [hFE : Fact (F ≤ E)]
   [(E.1.fixingSubgroup.subgroupOf F.1.fixingSubgroup).Normal]
 
+/- English proof (translation)
+The claim follows from `smul_of_eq_of_ideleClassEquiv _ ((restrictHom (E := E) g : E.1 ≃ₐ[F.1] E.1) : E.1 ≃+* E.1) (fun _ ↦ rfl) c`.
+-/
 theorem smul_of_of_normal (g : F.1.fixingSubgroup) (c : IdeleClassGroup E.1) :
     (g : ℚ̄ ≃ₐ[ℚ] ℚ̄) • of E c = of E (restrictHom (E := E) g • c) :=
   smul_of_eq_of_ideleClassEquiv _ ((restrictHom (E := E) g : E.1 ≃ₐ[F.1] E.1) : E.1 ≃+* E.1)
     (fun _ ↦ rfl) c
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `hc g hg`. Conclude with `(smul_of_of_normal ⟨g, hg⟩ c).trans (congrArg _ (hc _))`. Introduce `hc σ`. Take `⟨g, rfl⟩` from `restrictHom_surjective σ`.
+
+Apply `of_injective E` to reduce the goal to its premises. Rewrite using `[← smul_of_of_normal g]`. Conclude with `hc g g.2`.
+-/
 theorem mem_invariants_iff (c : IdeleClassGroup E.1) :
     c ∈ invariants (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1) ↔
       of E c ∈ fixedModule IdeleClassLimit F.1.fixingSubgroup := by
@@ -168,10 +206,16 @@ def invariantsEquiv :
         exact ⟨⟨c, (mem_invariants_iff c).2 ha⟩, rfl⟩))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_invariantsEquiv (c : invariants (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)) :
     (invariantsEquiv c : IdeleClassLimit) = of E c :=
   rfl
 
+/- English proof (translation)
+Use `isGalois_of_normal (F := F) (E := E)` as an intermediate fact. Rewrite using `[tateNorm_apply, ← ideleClassMap_ideleClassNorm]`. Conclude with `of_ideleClassMap hFE.out _`.
+-/
 theorem of_tateNorm (c : IdeleClassGroup E.1) :
     of E (tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1) c) =
       of F (FiniteSubfield.ideleClassNorm hFE.out c) := by
@@ -179,6 +223,11 @@ theorem of_tateNorm (c : IdeleClassGroup E.1) :
   rw [tateNorm_apply, ← ideleClassMap_ideleClassNorm]
   exact of_ideleClassMap hFE.out _
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h1`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[norm_fixedEquiv hFE.out, coe_fixedEquiv, ← of_tateNorm, h1, map_one]`. Both sides reduce to the same expression.
+
+Introduce `h1`. Apply `of_injective E` to reduce the goal to its premises. Rewrite using `[of_tateNorm, map_one, ← coe_fixedEquiv, ← norm_fixedEquiv hFE.out, h1]`. Both sides reduce to the same expression.
+-/
 theorem tateNorm_eq_one_iff (c : IdeleClassGroup E.1) :
     tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1) c = 1 ↔
       norm IdeleClassLimit F.1.fixingSubgroup E.1.fixingSubgroup (fixedEquiv E c) = 1 := by
@@ -192,6 +241,13 @@ theorem tateNorm_eq_one_iff (c : IdeleClassGroup E.1) :
     rw [of_tateNorm, map_one, ← coe_fixedEquiv, ← norm_fixedEquiv hFE.out, h1]
     rfl
 
+/- English proof (translation)
+Rewrite using `[GroundTheory.LocalField.augmentation, MonoidHom.map_closure, Abstract.augmentation]`. Use `congr 1`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨σ, c, rfl⟩, rfl⟩`.
+
+Take `⟨g, rfl⟩` from `restrictHom_surjective σ`. Use `⟨g, g.2, of E c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[fixedModule_fixingSubgroup]`. Conclude with `⟨c, rfl⟩`. Rewrite using `[map_div, smul_of_of_normal g c]`.
+
+Introduce and unpack `⟨g, hg, a, ha, rfl⟩`. Rewrite `ha` using `[fixedModule_fixingSubgroup]`. Take `⟨c, rfl⟩` from `ha`. Conclude with `⟨restrictHom ⟨g, hg⟩ • c / c, ⟨_, c, rfl⟩, by`. Rewrite using `[map_div, ← smul_of_of_normal ⟨g, hg⟩ c]⟩`.
+-/
 theorem map_augmentation :
     (GroundTheory.LocalField.augmentation (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)).map (of E) =
       Abstract.augmentation IdeleClassLimit F.1.fixingSubgroup E.1.fixingSubgroup := by
@@ -211,6 +267,9 @@ theorem map_augmentation :
     exact ⟨restrictHom ⟨g, hg⟩ • c / c, ⟨_, c, rfl⟩, by
       rw [map_div, ← smul_of_of_normal ⟨g, hg⟩ c]⟩
 
+/- English proof (translation)
+Rewrite using `[coe_invariantsEquiv, norm_fixedEquiv hFE.out, coe_fixedEquiv]`. Conclude with `of_tateNorm c`.
+-/
 theorem coe_invariantsEquiv_tateNorm (c : IdeleClassGroup E.1) :
     (invariantsEquiv ⟨tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1) c,
       tateNorm_mem_invariants c⟩ : IdeleClassLimit) =
@@ -218,6 +277,11 @@ theorem coe_invariantsEquiv_tateNorm (c : IdeleClassGroup E.1) :
   rw [coe_invariantsEquiv, norm_fixedEquiv hFE.out, coe_fixedEquiv]
   exact of_tateNorm c
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨⟨y, hy⟩, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Subgroup.mem_subgroupOf]`. Take `⟨c, rfl⟩` from `hx`. Conclude with `⟨fixedEquiv E c, Subtype.ext (coe_invariantsEquiv_tateNorm c).symm⟩`.
+
+Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨c, rfl⟩` from `(fixedEquiv E).surjective b`. Conclude with `⟨⟨tateNorm _ _ c, tateNorm_mem_invariants c⟩, ⟨c, rfl⟩, Subtype.ext (coe_invariantsEquiv_tateNorm c)⟩`.
+-/
 theorem map_range_tateNorm :
     ((tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)).range.subgroupOf
       (invariants (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1))).map
@@ -257,10 +321,20 @@ def kerEquiv :
       exact ⟨c, (tateNorm_eq_one_iff c).2 ha, rfl⟩))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_coe_kerEquiv (c : (tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)).ker) :
     ((kerEquiv c : fixedModule IdeleClassLimit E.1.fixingSubgroup) : IdeleClassLimit) = of E c :=
   rfl
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[SetLike.mem_coe, Subgroup.mem_subgroupOf]`. Rewrite using `[Subgroup.mem_comap]`. Express the relevant statement in the definitionally equal form `of E (x : IdeleClassGroup E.1) ∈ _`.
+
+Rewrite using `[← map_augmentation]`. Conclude with `Subgroup.mem_map_of_mem _ hx`. Introduce `y hy`. Take `⟨x, rfl⟩` from `kerEquiv.surjective y`. Rewrite `hy` using `[Subgroup.mem_comap]`.
+
+Express the relevant statement in the definitionally equal form `of E (x : IdeleClassGroup E.1) ∈ _ at hy`. Rewrite `hy` using `[← map_augmentation, Subgroup.mem_map_iff_mem (of_injective E)]`. Conclude with `⟨x, Subgroup.mem_subgroupOf.2 hy, rfl⟩`.
+-/
 theorem map_augmentation_subgroupOf :
     ((GroundTheory.LocalField.augmentation (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)).subgroupOf
       (tateNorm (E.1 ≃ₐ[F.1] E.1) (IdeleClassGroup E.1)).ker).map

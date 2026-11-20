@@ -10,6 +10,9 @@ open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheor
 
 open scoped InnerProductSpace Topology
 
+/- English proof (translation)
+Establish `hcont : Continuous fun g => π g v` using `π.continuous_orbit v`. Establish `ht : Filter.Tendsto (fun g => ‖π g v - v‖) (𝓝 (1 : G)) (𝓝 ‖π 1 v - v‖)` using `(hcont.sub continuous_const).norm.tendsto 1`. Rewrite `ht` using `[UnitaryRep.map_one_apply, sub_self, norm_zero]`. Conclude with `ht.eventually_lt_const (half_pos hpos)`.
+-/
 private theorem near_one_nhds {G H : Type*} [Group G] [TopologicalSpace G] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] (π : UnitaryRep G H) {v : H} (hpos : 0 < ‖v‖) :
     {g : G | ‖π g v - v‖ < ‖v‖ / 2} ∈ 𝓝 (1 : G) := by
@@ -19,6 +22,21 @@ private theorem near_one_nhds {G H : Type*} [Group G] [TopologicalSpace G] [Norm
   rw [UnitaryRep.map_one_apply, sub_self, norm_zero] at ht
   exact ht.eventually_lt_const (half_pos hpos)
 
+/- English proof (translation)
+Establish `hcont : Continuous fun g => π g v` using `π.continuous_orbit v`. Establish `hin : ∫ g, (ρ g : ℂ) * ⟪v, π g v⟫_ℂ ∂ν = 0`. Establish `h1` using `CuspidalProjection.inner_integrated_ccToL1 ν π β v v`. Rewrite `h1` using `[h2, inner_zero_right]`. Simplify using `only [hβa] at h1`.
+
+Conclude with `h1.symm`. Establish `hρi : Integrable ρ ν`. Assume the negation of the conclusion as `h`. Rewrite `hρ1` using `[integral_undef h]`. Conclude with `zero_ne_one hρ1`.
+
+Establish `hint : ∀ F : G → ℂ, Continuous F → Integrable (fun g => (ρ g : ℂ) * F g) ν` using `fun F hF => by`. Simplify using `only [← hβa]`. Conclude with `(β.continuous.mul hF).integrable_of_hasCompactSupport (β.hasCompactSupport.mul_right)`. Establish `hc1 : Continuous fun g => ⟪v, π g v⟫_ℂ` using `continuous_const.inner hcont`. Establish `e : ∫ g, (ρ g : ℂ) * ⟪v, π g v - v⟫_ℂ ∂ν = -⟪v, v⟫_ℂ`.
+
+Establish `h3 : (fun g => (ρ g : ℂ) * ⟪v, π g v - v⟫_ℂ) = fun g => (ρ g : ℂ) * ⟪v, π g v⟫_ℂ - (ρ g : ℂ) * ⟪v, v⟫_ℂ`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_sub_right, mul_sub]`. Rewrite using `[h3, integral_sub (hint _ hc1) (hint _ continuous_const), hin, integral_mul_const, integral_complex_ofReal, hρ1]`. Simplify using the standard rewrite rules.
+
+Establish `hb : ‖∫ g, (ρ g : ℂ) * ⟪v, π g v - v⟫_ℂ ∂ν‖ ≤ ∫ g, ρ g * (‖v‖ * (‖v‖ / 2)) ∂ν`. Use `norm_integral_le_of_norm_le (hρi.mul_const _) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Break down `eq_or_ne (ρ g) 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Establish `hg : ‖π g v - v‖ < ‖v‖ / 2` using `hρN g h0`.
+
+Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hρ0 g)]`. Use `mul_le_mul_of_nonneg_left ?_ (hρ0 g)` and prove the remaining obligations. Conclude with `(norm_inner_le_norm _ _).trans (mul_le_mul_of_nonneg_left hg.le hpos.le)`. Rewrite `hb` using `[e, integral_mul_const, hρ1, one_mul, norm_neg, inner_self_eq_norm_sq_to_K]`. Establish `h4 : ‖((‖v‖ : ℝ) : ℂ) ^ 2‖ = ‖v‖ ^ 2` using `by simp`.
+
+Establish `h5 : ‖v‖ ^ 2 ≤ ‖v‖ * (‖v‖ / 2)`. Rewrite using `[← h4]`. Simplify using `using hb`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 private theorem exists_bump_nonzero {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (ν : Measure G) [ν.IsHaarMeasure] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -63,6 +81,11 @@ private theorem exists_bump_nonzero {G H : Type*} [Group G] [TopologicalSpace G]
     simpa using hb
   nlinarith
 
+/- English proof (translation)
+Introduce `K _ _ n μ _ ν _ v hv`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖v‖` using `norm_pos_iff.2 hne`. Take `⟨ρ, hρ0, hρt, hρ1, -, -, hρN, -⟩` from `exists_archBump ν (near_one_nhds ((rightRegularRep (rationalGLOne K n) μ).compHom (archP K n) continuous_archP) hpos)`. Set `β : TI K n` to `⟨⟨fun a => (ρ a : ℂ), hρt.continuous _⟩, hρt.2⟩`.
+
+Conclude with `exists_bump_nonzero ν _ hpos ρ β (fun _ => rfl) hρ0 hρ1 hρN (hv β hρt.1)`.
+-/
 theorem UpperTheory.ConvolutionTheory.Dp.diracSep :
     UpperTheory.ConvolutionTheory.Dp.DiracSep := by
   intro K _ _ n μ _ ν _ v hv

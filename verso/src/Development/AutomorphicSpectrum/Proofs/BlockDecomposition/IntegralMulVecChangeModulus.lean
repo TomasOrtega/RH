@@ -9,6 +9,9 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Scale
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n W _ _ w F l c`. Conclude with `smInt_mulVec k n W w F l c`.
+-/
 theorem smInt_subst : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (w : GL (Fin n) k) (F : (Fin n → k) → W),
     IsLocallyConstant F → HasCompactSupport F →
     @GlobalTheory.CompanionTheory.Rodier.smInt _ _ (borel _) _ _ (muD k n) (fun d => F ((w⁻¹ : GL (Fin n) k).1.mulVec d)) =

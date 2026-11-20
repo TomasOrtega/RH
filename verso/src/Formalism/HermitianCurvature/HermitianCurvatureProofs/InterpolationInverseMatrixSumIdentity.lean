@@ -10,6 +10,13 @@ namespace Formalism.FourierDecayAlt.P.NFx3
 
 open Formalism.FourierDecayAlt.NF Formalism.FourierDecayAlt.M Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Establish `h1 : ∑ j ∈ range n, Y ^ j • (if j < m then a j else if j = m then t else 0) = ∑ j ∈ range (m + 1), Y ^ j • (if j < m then a j else if j = m then t else 0)`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [mem_range] at hj ⊢`.
+
+Use linear arithmetic over natural numbers and integers. Introduce `j hj hj'`. Simplify using `only [mem_range] at hj hj'`. Rewrite using `[if_neg (by omega), if_neg (by omega), smul_zero]`. Rewrite using `[h1, Finset.sum_range_succ, if_neg (lt_irrefl m), if_pos rfl, add_comm]`.
+
+Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j hj => by rw [if_pos (mem_range.mp hj)]`.
+-/
 theorem poly_pad {A : Type} [Ring A] [Algebra ℂ A] (m n : ℕ) (hmn : m < n) (t : A) (a : ℕ → A) (Y : ℂ) :
     ∑ j ∈ range n, Y ^ j • (if j < m then a j else if j = m then t else 0) = Y ^ m • t + ∑ j ∈ range m, Y ^ j • a j := by
   have h1 : ∑ j ∈ range n, Y ^ j • (if j < m then a j else if j = m then t else 0) =
@@ -26,6 +33,39 @@ theorem poly_pad {A : Type} [Ring A] [Algebra ℂ A] (m n : ℕ) (hmn : m < n) (
   congr 1
   exact Finset.sum_congr rfl fun j hj => by rw [if_pos (mem_range.mp hj)]
 
+/- English proof (translation)
+Introduce `P L hP hL`. Take `⟨hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, -, -, hT⟩` from `hL`. Take `⟨hs, hsz, -, hsG, -, -⟩` from `star_generators P`. Establish `hH` using `transfer_hermitian P hP`. Establish `hE : ∀ Y a b, star (QQr P Y a b) = QQr P (star Y) b a` using `fun Y a b => by`.
+
+Rewrite using `[← hH Y]`. Both sides reduce to the same expression. Establish `hszb : star (zbA P) = zA P` using `by rw [← hsz, star_star]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show star L.ζ = L.ζb`.
+
+Rewrite using `[hz, hzb, hsz]`. Use `show star L.TT = L.TT`. Rewrite using `[hT]`. Simplify using the standard rewrite rules. Introduce `l show star (L.c l) = L.cb l ∧ star (L.ci l) = L.cbi l ∧ star (L.p l) = -L.pb l`.
+
+Rewrite using `[hc, hcb, hci, hcbi, hp, hpb]`. Conclude with `hs l`. Conclude with `⟨fun Y hY => by rw [hH Y, hY], transfer_rtt P hP, transfer_determinant P hP, Mx8.qC_real P⟩`. Introduce `Y Y'`. Conclude with `lower_left_commute_model P hP Y Y'`.
+
+Introduce `Y show t22 P Y = L.GG * NF.xA (kap P) Y`. Rewrite using `[hG]`. Both sides reduce to the same expression. Conclude with `fun f => Mx7.star_kap P f`. Introduce `f g hg`.
+
+Establish `: ∃ w, g = sc P w`. Simplify using `only [PreLevel.ops, PreLevel.fns, PreLevel.ofLevel, hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Apply the tactic sequence `rcases hg with (((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl)) | ⟨l, rfl⟩) | ⟨l, rfl⟩ <;>`. Conclude with `⟨_, rfl⟩`. Take `⟨w, rfl⟩` from `this`.
+
+Conclude with `Mx7.kap_comm_sc P f w`. Take `⟨a11, a12, a21, a22, h⟩` from `transfer_leading P hP`. Use `⟨P.k + 2, fun a b j => !![if j < P.k + 1 then a11 j else if j = P.k + 1 then 1 else 0, if j < P.k then a12 j else if j = P.k then -zA P else 0; if j < P.k then a21 j else if j = P.k then -zbA P else 0, if j < P.k - 1 then a22 j else if j = P.k - 1 then ggA P else 0] a b, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y a b`. Take `⟨h1, h2, h3, h4⟩` from `h Y`.
+
+Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `h1.trans (poly_pad (P.k + 1) (P.k + 2) (by omega) _ a11 Y).symm`. Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[← smul_neg]; exact (poly_pad P.k (P.k + 2) (by omega) _ a12 Y).symm`. Use `h3.trans ?_` and prove the remaining obligations.
+
+Rewrite using `[← smul_neg]; exact (poly_pad P.k (P.k + 2) (by omega) _ a21 Y).symm`. Conclude with `h4.trans (poly_pad (P.k - 1) (P.k + 2) (by omega) _ a22 Y).symm`. Introduce `Y show t21 P Y = -(Y ^ P.k • L.ζb) + _`. Rewrite using `[(h Y).2.2.1, hzb]`. Use `congr 1`.
+
+Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `show _ = Y ^ j • (if j < P.k then a21 j else _)`. Rewrite using `[if_pos (Finset.mem_range.1 hj)]`. Introduce `Y`. Take `⟨z1, -, z3, z4⟩` from `transfer_zeta P Y`.
+
+Take `⟨w1, -, w3, w4⟩` from `transfer_zeta P (star Y)`. Establish `e21 : star (t21 P (star Y)) = t12 P Y` using `by have := hE (star Y) 1 0; rwa [star_star] at this`. Establish `e12 : star (t12 P (star Y)) = t21 P Y` using `by have := hE (star Y) 0 1; rwa [star_star] at this`. Establish `e22 : star (t22 P (star Y)) = t22 P Y` using `by have := hE (star Y) 1 1; rwa [star_star] at this`. Establish `s1` using `congrArg star w1`.
+
+Establish `s3` using `congrArg star w3.eq`. Establish `s4` using `congrArg star w4.eq`. Simplify using `only [star_sub, star_mul, star_neg, e21, e12, e22, hsz] at s1 s3 s4`. Use `show t21 P Y * L.ζ = L.ζ * t21 P Y - t22 P Y ∧ t22 P Y * L.ζ = L.ζ * t22 P Y ∧ t12 P Y * L.ζ = L.ζ * t12 P Y ∧ t12 P Y * L.ζb = L.ζb * t12 P Y + t22 P Y ∧ t21 P Y * L.ζb = L.ζb * t21 P Y ∧ t22 P Y * L.ζb = L.ζb * t22 P Y`. Rewrite using `[hz, hzb]`.
+
+Use `⟨?_, z4.eq, z3.eq, ?_, s3.symm, s4.symm⟩` and prove the remaining obligations. Rewrite `z1` using `[sub_eq_iff_eq_add]`. Rewrite using `[z1]`. Normalize the expressions using the abelian group laws. Rewrite `s1` using `[sub_eq_iff_eq_add]`.
+
+Rewrite using `[s1]`. Normalize the expressions using the abelian group laws. Introduce `Y a b g hg`. Establish `key : ∀ l, ∀ x ∈ Wd.ops (siteA P l), Commute (QQr P Y a b) x` using `fun l => Mx8.commutes_of_ent P l _ (Mx8.QQr_ent P l) Y a b`. Simplify using `only [PreLevel.crdOps, PreLevel.ofLevel, hp, hpb, hc, hci, hcb, hcbi, Set.mem_union, Set.mem_range] at hg`.
+
+Break down `hg with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩` into its components or cases. Conclude with `key l _ (Or.inl (by simp [Wd.hol, siteA]))`. Conclude with `key l _ (Or.inl (by simp [Wd.hol, siteA]))`. Conclude with `key l _ (Or.inr (by rw [← (hs l).1, star_star]; simp [Wd.hol, siteA]))`. Conclude with `key l _ (Or.inr (by rw [← (hs l).2.1, star_star]; simp [Wd.hol, siteA]))`.
+
+Conclude with `key l _ (Or.inl (by simp [Wd.hol, siteA]))`. Establish `h` using `key l (-pbA P l) (Or.inr (by rw [← (hs l).2.2, star_star]; simp [Wd.hol, siteA]))`. Simplify using `using h.neg_right`.
+-/
 theorem modelSHyp : ModelSHyp := by
   intro P L hP hL
   obtain ⟨hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, -, -, hT⟩ := hL
@@ -106,11 +146,21 @@ theorem modelSHyp : ModelSHyp := by
     · have h := key l (-pbA P l) (Or.inr (by rw [← (hs l).2.2, star_star]; simp [Wd.hol, siteA]))
       simpa using h.neg_right
 
+/- English proof (translation)
+Introduce `P A _ _ _ d`. Unfold `Q.NFData.Rel RelCore RelNorm`. The claim follows by propositional logic.
+-/
 theorem relIsCoreNorm : RelIsCoreNorm := by
   intro P A _ _ _ d
   unfold Q.NFData.Rel RelCore RelNorm
   tauto
 
+/- English proof (translation)
+Introduce `h1 h2 h3 h4 h5 h6 hB hC hN hR P A _ _ _ L0 QQ κ hP hS`. Take `⟨b, SS, hF, hRa, hCo⟩` from `hB h1 h2 h3 P A L0 QQ κ hP hS`. Take `⟨L, hE, hn, hns, hst, hcore, hent⟩` from `hC P A L0 QQ κ b SS hP hS hF hRa hCo`. Take `⟨hnorm, h11⟩` from `hN h1 h2 h3 h4 h5 h6 P A L0 QQ κ b SS L hP hS hF hRa hCo hE hn hns hst hcore (fun Y => ⟨(hent Y).1, (hent Y).2.1⟩)`. Use `⟨⟨L, κ, SS⟩, hE, rfl, hst, (hR P A _).2 ⟨hcore, hnorm⟩, fun Y => ?_⟩` and prove the remaining obligations.
+
+Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `h11 Y`. Conclude with `(hent Y).2.1`. Conclude with `(hent Y).1`.
+
+Conclude with `(hent Y).2.2`.
+-/
 theorem thmSOfSteps : ThmSOfSteps := by
   intro h1 h2 h3 h4 h5 h6 hB hC hN hR P A _ _ _ L0 QQ κ hP hS
   obtain ⟨b, SS, hF, hRa, hCo⟩ := hB h1 h2 h3 P A L0 QQ κ hP hS
@@ -125,6 +175,11 @@ theorem thmSOfSteps : ThmSOfSteps := by
   · exact (hent Y).1
   · exact (hent Y).2.2
 
+/- English proof (translation)
+Introduce `hT hPre hH Wp Wq _ _ _ _ _ _ P z z' π π' hpl X`. Take `⟨L0, hL0⟩` from `hPre Wp Wq P z z' π π' hpl X`. Take `⟨κ, hS⟩` from `hH Wp Wq P z z' π π' hpl X L0 hL0`. Take `⟨d, hE, -, hst, hrel, hq⟩` from `hT P _ L0 X.QQ κ hpl.1 hS`. Take `⟨e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13⟩` from `hE`.
+
+Use `⟨d, ?_, hst, hrel, hq⟩` and prove the remaining obligations. Unfold `Q.IsActualLevel`. Rewrite using `[e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13]`. Conclude with `hL0`.
+-/
 theorem normalFormOfS : NormalFormOfS := by
   intro hT hPre hH Wp Wq _ _ _ _ _ _ P z z' π π' hpl X
   obtain ⟨L0, hL0⟩ := hPre Wp Wq P z z' π π' hpl X
@@ -136,6 +191,9 @@ theorem normalFormOfS : NormalFormOfS := by
   rw [e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13]
   exact hL0
 
+/- English proof (translation)
+Introduce `hT hPre hP hC hTy hS hZ hL h22 _` and use `normalFormOfS hT hPre (hP hS hZ hL h22 hC hTy)`.
+-/
 theorem normalFormFromModuleOfParts : NormalFormFromModuleOfParts :=
   fun hT hPre hP hC hTy hS hZ hL h22 _ => normalFormOfS hT hPre (hP hS hZ hL h22 hC hTy)
 
@@ -147,6 +205,9 @@ namespace Formalism.FourierDecayAlt.P.NFx3
 
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.NF
 
+/- English proof (translation)
+Establish `hIπ` using `Mx3.tyInterlaces P hP π`. Establish `hIσ` using `Mx3.tyInterlaces P hP σ`. Establish `o` using `(Mx3.ord P.k P.u P.u' (M.rho P π) hIπ i hi).2.2.2 j hj hij`. Establish `b` using `hIσ i hi`. Combine the linear relations using `[o.1, b.2.2.1]`.
+-/
 theorem rho_sep (P : M.Par) (hP : P.OK) (π σ : M.Ty P) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1))
     (hj : j ∈ Icc 1 (P.k - 1)) (hij : i < j) : M.rho P π j < M.rho P σ i := by
   have hIπ := Mx3.tyInterlaces P hP π
@@ -157,9 +218,21 @@ theorem rho_sep (P : M.Par) (hP : P.OK) (π σ : M.Ty P) {i j : ℕ} (hi : i ∈
 
 def xPoly (P : M.Par) (ρ : M.Ty P) : ℂ[X] := ∏ i ∈ Icc 1 (P.k - 1), (X + C (M.rho P ρ i : ℂ))
 
+/- English proof (translation)
+Simplify using `[xPoly, M.xC, Polynomial.eval_prod]`.
+-/
 theorem eval_xPoly (P : M.Par) (ρ : M.Ty P) (Y : ℂ) : (xPoly P ρ).eval Y = M.xC P ρ Y := by
   simp [xPoly, M.xC, Polynomial.eval_prod]
 
+/- English proof (translation)
+Apply `(hTy P hP).2` to reduce the goal to its premises. Introduce `i hi`. Establish `h0 : (xPoly P σ).eval (-(M.rho P σ i : ℂ)) = 0`. Rewrite using `[eval_xPoly]`. Unfold `M.xC`.
+
+Conclude with `Finset.prod_eq_zero hi (by ring)`. Rewrite `h0` using `[← h, eval_xPoly]`. Unfold `M.xC at h0`. Take `⟨j, hj, hz⟩` from `Finset.prod_eq_zero_iff.1 h0`. Establish `hr : M.rho P ρ j = M.rho P σ i`.
+
+Establish `: ((M.rho P ρ j : ℝ) : ℂ) = (M.rho P σ i : ℂ)` using `by linear_combination hz`. Conclude with `this` after adjusting the coercions. Break down `lt_trichotomy i j with hlt | heq | hgt` into its components or cases. Conclude with `absurd hr (rho_sep P hP ρ σ hi hj hlt).ne`. Substitute `heq` using the available equality.
+
+Conclude with `hr`. Conclude with `absurd hr.symm (rho_sep P hP σ ρ hj hi hgt).ne`.
+-/
 theorem xPoly_inj (P : M.Par) (hP : P.OK) (hTy : M.TyComplete) {ρ σ : M.Ty P} (h : xPoly P ρ = xPoly P σ) :
     ρ = σ := by
   apply (hTy P hP).2
@@ -180,6 +253,9 @@ theorem xPoly_inj (P : M.Par) (hP : P.OK) (hTy : M.TyComplete) {ρ σ : M.Ty P} 
     exact hr
   · exact absurd hr.symm (rho_sep P hP σ ρ hj hi hgt).ne
 
+/- English proof (translation)
+Take `⟨Y0, hY0⟩` from `Infinite.exists_notMem_finset ((Finset.univ : Finset (M.Ty P × M.Ty P)).biUnion fun pr => (xPoly P pr.1 - xPoly P pr.2).roots.toFinset)`. Use `⟨Y0, fun ρ σ hne heq => hY0 ?_⟩` and prove the remaining obligations. Establish `hp : xPoly P ρ - xPoly P σ ≠ 0` using `fun h0 => hne (xPoly_inj P hP hTy (sub_eq_zero.1 h0))`. Use `Finset.mem_biUnion.2 ⟨(ρ, σ), Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hp, IsRoot.def, eval_sub, eval_xPoly, eval_xPoly, heq, sub_self]`.
+-/
 theorem exists_sep (P : M.Par) (hP : P.OK) (hTy : M.TyComplete) :
     ∃ Y0 : ℂ, ∀ ρ σ : M.Ty P, ρ ≠ σ → M.xC P ρ Y0 ≠ M.xC P σ Y0 := by
   classical
@@ -193,6 +269,11 @@ theorem exists_sep (P : M.Par) (hP : P.OK) (hTy : M.TyComplete) :
 def lag {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → ℂ) (ρ : ι) : ℂ[X] :=
   ∏ σ ∈ Finset.univ.erase ρ, (C (x ρ - x σ)⁻¹ * (X - C (x σ)))
 
+/- English proof (translation)
+Simplify using `only [lag, Polynomial.eval_prod, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_sub, Polynomial.eval_X]`. Use `split_ifs with h`. Substitute `h` using the available equality. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `τ hτ`.
+
+Establish `hne : x σ - x τ ≠ 0` using `sub_ne_zero.mpr (hx σ τ (Finset.ne_of_mem_erase hτ).symm)`. Conclude with `inv_mul_cancel₀ hne`. Apply `Finset.prod_eq_zero (i := σ) (Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩)` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+-/
 theorem eval_lag {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → ℂ) (hx : ∀ ρ σ, ρ ≠ σ → x ρ ≠ x σ) (ρ σ : ι) :
     (lag x ρ).eval (x σ) = if σ = ρ then 1 else 0 := by
   simp only [lag, Polynomial.eval_prod, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_sub,
@@ -206,6 +287,9 @@ theorem eval_lag {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → ℂ) (hx
   · apply Finset.prod_eq_zero (i := σ) (Finset.mem_erase.mpr ⟨h, Finset.mem_univ _⟩)
     simp
 
+/- English proof (translation)
+Use `Polynomial.induction_on' p (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `hp.add_left hq`. Rewrite using `[Polynomial.aeval_monomial]`. Conclude with `Commute.mul_left (Algebra.commutes a y) (h.pow_left n)`.
+-/
 theorem aeval_commute {A : Type*} [Ring A] [Algebra ℂ A] {T y : A} (h : Commute T y) (p : ℂ[X]) :
     Commute (aeval T p) y := by
   refine Polynomial.induction_on' p (fun p q hp hq => ?_) (fun n a => ?_)
@@ -218,6 +302,9 @@ section Lin
 
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {i : Fin (r + 1)} {D : Set (Mx k r)}
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (Qx2.smooth_zero : SmoothLev k r i D (fun _ => (0 : E)))`. Consider the case `insert σ s hσ ih`. Use `Qx2.smooth_add (Qx2.smooth_smul (hf σ) (a σ)) ih` as an intermediate fact. Simplify `this` using `only [Finset.sum_insert hσ]`.
+-/
 theorem smooth_fsum {ι : Type*} (s : Finset ι) (a : ι → ℂ) (f : ι → Mx k r → E)
     (hf : ∀ σ, SmoothLev k r i D (f σ)) : SmoothLev k r i D (fun y => ∑ σ ∈ s, a σ • f σ y) := by
   classical
@@ -227,12 +314,20 @@ theorem smooth_fsum {ι : Type*} (s : Finset ι) (a : ι → ℂ) (f : ι → Mx
     have := Qx2.smooth_add (Qx2.smooth_smul (hf σ) (a σ)) ih
     simpa only [Finset.sum_insert hσ] using this
 
+/- English proof (translation)
+Establish `h` using `hT.lin (fun _ => 0) (fun _ => 0) 1 Qx2.smooth_zero Qx2.smooth_zero g hg`. Simplify using `only [smul_zero, add_zero, one_smul] at h`. Simplify using `using h`.
+-/
 theorem ll_zero_val {T : (Mx k r → E) → Mx k r → E} (hT : Qx2.LL k r i D T) {g : Mx k r}
     (hg : g ∈ Glev k r i ∩ D) : T (fun _ => 0) g = 0 := by
   have h := hT.lin (fun _ => 0) (fun _ => 0) 1 Qx2.smooth_zero Qx2.smooth_zero g hg
   simp only [smul_zero, add_zero, one_smul] at h
   simpa using h
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using ll_zero_val hT hg`. Consider the case `insert σ s hσ ih`. Establish `e : (fun y => ∑ τ ∈ insert σ s, a τ • f τ y) = fun y => (∑ τ ∈ s, a τ • f τ y) + a σ • f σ y`. Use function extensionality and compare the values at `y`.
+
+Rewrite using `[Finset.sum_insert hσ, add_comm]`. Rewrite using `[e, hT.lin _ _ _ (smooth_fsum s a f hf) (hf σ) g hg, ih, Finset.sum_insert hσ, add_comm]`.
+-/
 theorem ll_fsum {T : (Mx k r → E) → Mx k r → E} (hT : Qx2.LL k r i D T) {ι : Type*} (s : Finset ι) (a : ι → ℂ)
     (f : ι → Mx k r → E) (hf : ∀ σ, SmoothLev k r i D (f σ)) {g : Mx k r} (hg : g ∈ Glev k r i ∩ D) :
     T (fun y => ∑ σ ∈ s, a σ • f σ y) g = ∑ σ ∈ s, a σ • T (f σ) g := by
@@ -252,6 +347,9 @@ section Slices
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
   [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Use `NFx1.APL.end_ext fun Φ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c g`. Distinguish the cases in `hx : (c, g) ∈ DomR k r z z'`. Conclude with `h Φ c hx.1 g ⟨hx.2.1, hx.2.2⟩`. Rewrite using `[(A Φ).2.1 (c, g) hx, (B Φ).2.1 (c, g) hx]`.
+-/
 theorem end_ext_dom {A B : Module.End ℂ (RadSp k r z z' π π')}
     (h : ∀ Φ : RadSp k r z z' π π', ∀ c ∈ OmX r, ∀ g ∈ Glev k r (Fin.last r) ∩ Qx5.Dp k r z z',
       ((A Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = (B Φ : Fn k r (Wq →L[ℂ] Wp)) c g) : A = B := by
@@ -261,12 +359,18 @@ theorem end_ext_dom {A B : Module.End ℂ (RadSp k r z z' π π')}
   · exact h Φ c hx.1 g ⟨hx.2.1, hx.2.2⟩
   · rw [(A Φ).2.1 (c, g) hx, (B Φ).2.1 (c, g) hx]
 
+/- English proof (translation)
+Simplify using `[LinearMap.sum_apply, Finset.sum_apply]`.
+-/
 theorem coe_fsum {ι : Type*} (s : Finset ι) (A : ι → Module.End ℂ (RadSp k r z z' π π'))
     (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r) :
     (((∑ ρ ∈ s, A ρ) Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g =
       ∑ ρ ∈ s, ((A ρ Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g := by
   simp [LinearMap.sum_apply, Finset.sum_apply]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_smulEnd (s : ℂ) (A : Module.End ℂ (RadSp k r z z' π π')) (Φ : RadSp k r z z' π π')
     (c : Fin r → ℂ) (g : Mx k r) :
     (((s • A) Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g =
@@ -274,6 +378,13 @@ theorem coe_smulEnd (s : ℂ) (A : Module.End ℂ (RadSp k r z z' π π')) (Φ :
 
 variable (Xo : ActualOps k r z z' π π')
 
+/- English proof (translation)
+Establish `hG : ((GGl k r z z' g : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hg.2.ne'`. Rewrite using `[Module.End.mul_apply, NFx1.APL.fn_coe]`. Use `show fnVal k r z z' 5 g • ((Xo.t Y0 1 1 Ψ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = _`. Rewrite using `[Xo.t_apply Y0 1 1 Ψ (c, g) ⟨hc, hg.1, hg.2⟩]`. Establish `hll` using `Qx2.ll_tL (E := Wq →L[ℂ] Wp) (i := Fin.last r) (Qx5.Dp_open k r z z') z z' Y0 1 1`.
+
+Rewrite using `[hll.loc _ (fun y => ∑ σ, a σ • dec σ y) (fun y hy => hΨ y hy) g hg, ll_fsum hll _ a dec hsm hg]`. Simplify using `only [hev _ g hg, Finset.smul_sum, smul_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[show fnVal k r z z' 5 g = ((GGl k r z z' g : ℂ))⁻¹ from rfl]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem T_slice (Y0 : ℂ) {ι : Type*} [Fintype ι] (x : ι → ℂ) {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (dec : ι → Mx k r → (Wq →L[ℂ] Wp))
     (hsm : ∀ σ, SmoothLev k r (Fin.last r) (Qx5.Dp k r z z') (dec σ))
@@ -296,6 +407,13 @@ theorem T_slice (Y0 : ℂ) {ι : Type*} [Fintype ι] (x : ι → ℂ) {c : Fin r
   rw [show fnVal k r z z' 5 g = ((GGl k r z z' g : ℂ))⁻¹ from rfl]
   field_simp
 
+/- English proof (translation)
+Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `b Ψ a hΨ g hg`. Rewrite using `[Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, coe_smulEnd]`. Simplify using `only [Module.End.one_apply, hΨ g hg, Finset.smul_sum, smul_smul, Polynomial.eval_C]`. Introduce `p q hp hq Ψ a hΨ g hg`.
+
+Rewrite using `[map_add]`. Simplify using `only [LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, hp Ψ a hΨ g hg, hq Ψ a hΨ g hg, Polynomial.eval_add, add_mul, add_smul, Finset.sum_add_distrib]`. Introduce `n b ih Ψ a hΨ g hg`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply, ih _ (fun σ => x σ * a σ) (fun g' hg' => T_slice Xo Y0 x hc dec hsm hev Ψ a hΨ hg') g hg]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+
+Simplify using `only [Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ks (Y0 : ℂ) {ι : Type*} [Fintype ι] (x : ι → ℂ) {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (dec : ι → Mx k r → (Wq →L[ℂ] Wp))
     (hsm : ∀ σ, SmoothLev k r (Fin.last r) (Qx5.Dp k r z z') (dec σ))
@@ -322,6 +440,9 @@ theorem ks (Y0 : ℂ) {ι : Type*} [Fintype ι] (x : ι → ℂ) {c : Fin r → 
     congr 1
     ring
 
+/- English proof (translation)
+Rewrite using `[ks Xo Y0 x hc dec hsm hev (lag x ρ) Ψ a hΨ g hg]`. Simplify using `only [eval_lag x hx]`. Simplify using `[ite_smul, Finset.sum_ite_eq']`.
+-/
 theorem lag_slice (Y0 : ℂ) {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → ℂ)
     (hx : ∀ ρ σ, ρ ≠ σ → x ρ ≠ x σ) {c : Fin r → ℂ} (hc : c ∈ OmX r)
     (dec : ι → Mx k r → (Wq →L[ℂ] Wp))
@@ -345,6 +466,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [NormedAddC
   [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par} {z z' : Fin (2 * P.r + P.k + 1) → ℂ}
   {π : Mx P.k P.r → (Wp →L[ℂ] Wp)} {π' : Mx P.k P.r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Take `⟨dec, hmem, hsum, hev⟩` from `hT22 Wp Wq P z z' π π' (Qx5.Dp P.k P.r z z') hpl (Qx5.Dp_dom _ _ _ _) (fun g hg => hg.ne') _ (Qx5.slice_FF hpl.2.1 hpl.2.2.1 Φ.2 hc)`. Conclude with `⟨dec, fun σ => (hmem σ).1, fun g hg => by simp [hsum g hg], hev⟩`.
+-/
 theorem dec_of (hT22 : RadialDecompositionSpectral) (hpl : IsPlace P z z' π π') (Φ : RadSp P.k P.r z z' π π')
     {c : Fin P.r → ℂ} (hc : c ∈ OmX P.r) :
     ∃ dec : M.Ty P → Mx P.k P.r → (Wq →L[ℂ] Wp),
@@ -357,6 +481,23 @@ theorem dec_of (hT22 : RadialDecompositionSpectral) (hpl : IsPlace P z z' π π'
     (fun g hg => hg.ne') _ (Qx5.slice_FF hpl.2.1 hpl.2.2.1 Φ.2 hc)
   exact ⟨dec, fun σ => (hmem σ).1, fun g hg => by simp [hsum g hg], hev⟩
 
+/- English proof (translation)
+Take `⟨Y0, hY0⟩` from `exists_sep P hpl.1 hTy`. Set `x : M.Ty P → ℂ` to `fun ρ => M.xC P ρ Y0`. Establish `hx : ∀ ρ σ, ρ ≠ σ → x ρ ≠ x σ` using `hY0`. Establish `hsl1 : ∀ (Φ : RadSp P.k P.r z z' π π') (c : Fin P.r → ℂ) (hc : c ∈ OmX P.r) (dec : M.Ty P → Mx P.k P.r → (Wq →L[ℂ] Wp)) (hsm : ∀ σ, SmoothLev P.k P.r (Fin.last P.r) (Qx5.Dp P.k P.r z z') (dec σ)) (hJ : ∀ g ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx5.Dp P.k P.r z z', (Φ : Fn P.k P.r (Wq → …`. Introduce `Φ c hc dec hsm hJ hev ρ g hg`.
+
+Rewrite using `[lag_slice Xo Y0 x hx hc dec hsm (fun σ => hev σ Y0) Φ (fun _ => 1) hJ ρ hg, one_smul]`. Use `⟨fun ρ => aeval (Xo.fn 5 * Xo.t Y0 1 1) (lag x ρ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `end_ext_dom fun Φ c hc g hg => ?_` and prove the remaining obligations. Take `⟨dec, hsm, hJ, hev⟩` from `dec_of hT22 hpl Φ hc`. Rewrite using `[coe_fsum, Module.End.one_apply, hJ g hg]`.
+
+Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[hsl1 Φ c hc dec hsm hJ hev ρ g hg, one_smul]`. Introduce `ρ σ`. Use `end_ext_dom fun Φ c hc g hg => ?_` and prove the remaining obligations. Take `⟨dec, hsm, hJ, hev⟩` from `dec_of hT22 hpl Φ hc`.
+
+Establish `hΨ : ∀ g' ∈ Glev P.k P.r (Fin.last P.r) ∩ Qx5.Dp P.k P.r z z', ((aeval (Xo.fn 5 * Xo.t Y0 1 1) (lag x σ) Φ : RadSp P.k P.r z z' π π') : Fn P.k P.r (Wq →L[ℂ] Wp)) c g' = ∑ τ, (if τ = σ then (1 : ℂ) else 0) • dec τ g'`. Introduce `g' hg'`. Rewrite using `[hsl1 Φ c hc dec hsm hJ hev σ g' hg']`. Simplify using `[ite_smul]`. Rewrite using `[Module.End.mul_apply, lag_slice Xo Y0 x hx hc dec hsm (fun τ => hev τ Y0) _ _ hΨ ρ hg]`.
+
+Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[hsl1 Φ c hc dec hsm hJ hev ρ g hg, one_smul]`. Simplify using the standard rewrite rules. Introduce `Y`.
+
+Use `end_ext_dom fun Φ c hc g hg => ?_` and prove the remaining obligations. Take `⟨dec, hsm, hJ, hev⟩` from `dec_of hT22 hpl Φ hc`. Establish `hll` using `Qx2.ll_tL (E := Wq →L[ℂ] Wp) (i := Fin.last P.r) (Qx5.Dp_open P.k P.r z z') z z' Y 1 1`. Rewrite using `[Xo.t_apply Y 1 1 Φ (c, g) ⟨hc, hg.1, hg.2⟩, hll.loc _ (fun y => ∑ σ, (1 : ℂ) • dec σ y) (fun y hy => hJ y hy) g hg, ll_fsum hll _ _ dec hsm hg, Module.End.mul_apply, NFx1.APL.fn_coe]`. Use `show _ = fnVal P.k P.r z z' 4 g • ((∑ ρ, M.xC P ρ Y • aeval (Xo.fn 5 * Xo.t Y0 1 1) (lag x ρ)) Φ : Fn P.k P.r (Wq →L[ℂ] Wp)) c g`.
+
+Rewrite using `[coe_fsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[coe_smulEnd, hsl1 Φ c hc dec hsm hJ hev ρ g hg, hev ρ Y g hg, one_smul, smul_smul, show fnVal P.k P.r z z' 4 g = ((GGl P.k P.r z z' g : ℝ) : ℂ) from rfl]`. Introduce `ρ l i`. Use `aeval_commute ?_ _` and prove the remaining obligations.
+
+Conclude with `(show Commute (Xo.op l i) (Xo.fn 5) from NFx1.APL.op_fn Xo l i 5).symm.mul_left (hop Y0 l i)`. Introduce `ρ j`. Use `aeval_commute ?_ _` and prove the remaining obligations. Conclude with `(show Commute (Xo.fn 5) (Xo.fn j) from (NFx1.APL.mul_fn Xo 5).comm (NFx1.APL.mul_fn Xo j)).mul_left (hfn Y0 j)`.
+-/
 theorem spectral (hT22 : RadialDecompositionSpectral) (hTy : M.TyComplete) (hpl : IsPlace P z z' π π')
     (Xo : ActualOps P.k P.r z z' π π')
     (hop : ∀ Y l i, Commute (Xo.t Y 1 1) (Xo.op l i)) (hfn : ∀ Y j, Commute (Xo.t Y 1 1) (Xo.fn j)) :
@@ -433,6 +574,19 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Establish `key : ∀ (j : ℕ) (hj : j < m) (x : M), e ((∑ i : Fin m, W ⟨j, hj⟩ i • F (v i)) x) = c j x`. Introduce `j hj x`. Establish `e1 : e ((∑ i : Fin m, W ⟨j, hj⟩ i • F (v i)) x) = ∑ i : Fin m, W ⟨j, hj⟩ i • ∑ l : Fin m, (v i) ^ (l : ℕ) • c l x`. Rewrite using `[LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, map_smul, h]`. Simplify using `only [Finset.sum_range]`. Rewrite using `[e1]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Repeatedly rewrite using `[← Finset.sum_smul]`. Establish `e2 : ∀ l : Fin m, (∑ i : Fin m, W ⟨j, hj⟩ i * v i ^ (l : ℕ)) = (W * Matrix.vandermonde v) ⟨j, hj⟩ l`. Introduce `l`. Simplify using `only [Matrix.mul_apply, Matrix.vandermonde_apply]`. Repeatedly rewrite using `[e2, hWV, Matrix.one_apply]`.
+
+Rewrite using `[Finset.sum_eq_single (⟨j, hj⟩ : Fin m)]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg (fun h' => hb h'.symm), zero_smul]`. Introduce `hn`.
+
+Conclude with `absurd (Finset.mem_univ _) hn`. Use `⟨fun j => if hj : j < m then ∑ i : Fin m, W ⟨j, hj⟩ i • F (v i) else 0, fun Y => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => he ?_` and prove the remaining obligations. Rewrite using `[h, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+
+Establish `hj' : j < m` using `Finset.mem_range.1 hj`. Rewrite using `[LinearMap.smul_apply, map_smul]`. Simplify using `only`. Rewrite using `[dif_pos hj', key j hj' x]`.
+-/
 theorem interpolation_inverse_matrix_sum_identity {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (e : M →ₗ[ℂ] N) (he : Function.Injective e) (F : ℂ → Module.End ℂ M) (m : ℕ) (c : ℕ → M → N)
     (h : ∀ Y v, e (F Y v) = ∑ j ∈ Finset.range m, Y ^ j • c j v)
@@ -471,6 +625,9 @@ theorem interpolation_inverse_matrix_sum_identity {M N : Type*} [AddCommGroup M]
   dsimp only
   rw [dif_pos hj', key j hj' x]
 
+/- English proof (translation)
+Use `interpolation_inverse_matrix_sum_identity e he F m c h (fun i : Fin m => ((i : ℕ) : ℂ)) _ (Matrix.nonsing_inv_mul _ ?_)` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero, Matrix.det_vandermonde_ne_zero_iff]`. Introduce `i j hij`. Conclude with `Fin.ext (by simpa using hij)`.
+-/
 theorem interp {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N]
     (e : M →ₗ[ℂ] N) (he : Function.Injective e) (F : ℂ → Module.End ℂ M) (m : ℕ) (c : ℕ → M → N)
     (h : ∀ Y v, e (F Y v) = ∑ j ∈ Finset.range m, Y ^ j • c j v) :
@@ -480,6 +637,11 @@ theorem interp {M N : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [M
   intro i j hij
   exact Fin.ext (by simpa using hij)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, APL.algebraMap_Pr]`. Simplify using `only [Q.mkP, Algebra.algebraMap_eq_smul_one]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show s • (1 : Module.End ℂ V) * a = s • a`. Rewrite using `[smul_mul_assoc, one_mul]`.
+
+Use `show (starRingEnd ℂ) s • (1 : (Module.End ℂ V)ᵐᵒᵖ) * MulOpposite.op b = (starRingEnd ℂ) s • MulOpposite.op b`. Apply `MulOpposite.unop_injective` to reduce the goal to its premises. Simplify using `[mul_smul_comm]`.
+-/
 theorem smul_mkPair {V : Type*} [AddCommGroup V] [Module ℂ V] (s : ℂ) (a b : Module.End ℂ V) :
     s • Q.mkP a b = Q.mkP (s • a) ((starRingEnd ℂ) s • b) := by
   rw [Algebra.smul_def, APL.algebraMap_Pr]
@@ -491,6 +653,11 @@ theorem smul_mkPair {V : Type*} [AddCommGroup V] [Module ℂ V] (s : ℂ) (a b :
     apply MulOpposite.unop_injective
     simp [mul_smul_comm]
 
+/- English proof (translation)
+Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Both sides reduce to the same expression. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, Finset.sum_insert hi, ih]`.
+
+Both sides reduce to the same expression.
+-/
 theorem sum_mkPair {V : Type*} [AddCommGroup V] [Module ℂ V] {ι : Type*} (t : Finset ι) (a b : ι → Module.End ℂ V) :
     ∑ i ∈ t, Q.mkP (a i) (b i) = Q.mkP (∑ i ∈ t, a i) (∑ i ∈ t, b i) := by
   classical
@@ -505,10 +672,21 @@ section Pair
 
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem neg_mkPair (a b : Module.End ℂ V) : -Q.mkP a b = Q.mkP (-a) (-b) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem star_mkP (a b : Module.End ℂ V) : star (Q.mkP a b) = Q.mkP b a := rfl
 
+/- English proof (translation)
+Simplify using `only [Q.mkP, Commute, SemiconjBy]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show a * c = c * a`. Conclude with `h1.eq`. Use `show MulOpposite.op b * MulOpposite.op d = MulOpposite.op d * MulOpposite.op b`.
+
+Rewrite using `[← MulOpposite.op_mul, ← MulOpposite.op_mul, h2.eq]`.
+-/
 theorem mkPair_commute {a b c d : Module.End ℂ V} (h1 : Commute a c) (h2 : Commute b d) :
     Commute (Q.mkP a b) (Q.mkP c d) := by
   simp only [Q.mkP, Commute, SemiconjBy]
@@ -518,6 +696,9 @@ theorem mkPair_commute {a b c d : Module.End ℂ V} (h1 : Commute a c) (h2 : Com
   · show MulOpposite.op b * MulOpposite.op d = MulOpposite.op d * MulOpposite.op b
     rw [← MulOpposite.op_mul, ← MulOpposite.op_mul, h2.eq]
 
+/- English proof (translation)
+Use `show t * v = v * t`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem comm_inv {t u v : Module.End ℂ V} (h : Commute t u) (huv : u * v = 1) (hvu : v * u = 1) : Commute t v := by
   show t * v = v * t
   calc t * v = v * u * (t * v) := by rw [hvu, one_mul]
@@ -528,6 +709,9 @@ theorem comm_inv {t u v : Module.End ℂ V} (h : Commute t u) (huv : u * v = 1) 
 
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Simplify using `only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, ho, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem sum_mul_sum (Pj : ι → Module.End ℂ V) (ho : ∀ i j, Pj i * Pj j = if i = j then Pj i else 0) (a b : ι → ℂ) :
     (∑ i, a i • Pj i) * (∑ j, b j • Pj j) = ∑ i, (a i * b i) • Pj i := by
   simp only [Finset.sum_mul, Finset.mul_sum, smul_mul_smul_comm, ho, smul_ite, smul_zero,
@@ -555,10 +739,16 @@ def kapOf (Pj : ι → Module.End ℂ V) (hs : ∑ i, Pj i = 1) (ho : ∀ i j, P
       Algebra.algebraMap_eq_smul_one]
     rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem kapOf_apply (Pj : ι → Module.End ℂ V) (hs : ∑ i, Pj i = 1)
     (ho : ∀ i j, Pj i * Pj j = if i = j then Pj i else 0) (f : ι → ℂ) :
     kapOf Pj hs ho f = Q.mkP (∑ i, f i • Pj i) (∑ i, star (f i) • Pj i) := rfl
 
+/- English proof (translation)
+Conclude with `Commute.sum_left _ _ _ fun i _ => (h i).smul_left (f i)`.
+-/
 theorem sum_comm_of (Pj : ι → Module.End ℂ V) (f : ι → ℂ) {A : Module.End ℂ V} (h : ∀ i, Commute (Pj i) A) :
     Commute (∑ i, f i • Pj i) A := by
   exact Commute.sum_left _ _ _ fun i _ => (h i).smul_left (f i)
@@ -570,6 +760,13 @@ section Ops
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
   [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Use `APL.end_ext fun Φ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `c g`. Use `show ((X.t Y a b (X.fn j Φ) : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = ((X.fn j (X.t Y a b Φ) : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g + s • ((X.t Y 1 1 Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g`. Distinguish the cases in `hx : (c, g) ∈ DomR k r z z'`. Establish `e1 : ((X.t Y a b (X.fn j Φ) : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = tL k r z z' (Fin.last r) Y a b (((X.fn j Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c) g` using `X.t_apply Y a b _ (c, g) hx`.
+
+Establish `e2 : ((X.t Y a b Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = tL k r z z' (Fin.last r) Y a b ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) g` using `X.t_apply Y a b Φ (c, g) hx`. Establish `e3 : ((X.t Y 1 1 Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = tL k r z z' (Fin.last r) Y 1 1 ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) g` using `X.t_apply Y 1 1 Φ (c, g) hx`. Rewrite using `[e1]`. Simplify using `only [APL.fn_coe]`. Rewrite using `[e2, e3]`.
+
+Conclude with `hpt Φ c g hx`. Rewrite using `[(X.t Y a b (X.fn j Φ)).2.1 (c, g) hx, (X.fn j (X.t Y a b Φ)).2.1 (c, g) hx, (X.t Y 1 1 Φ).2.1 (c, g) hx, smul_zero, add_zero]`.
+-/
 theorem op_zeta (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) (j : Fin 6) (s : ℂ)
     (hpt : ∀ (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r), (c, g) ∈ DomR k r z z' →
       tL k r z z' (Fin.last r) Y a b (fun x => fnVal k r z z' j x • (Φ : Fn k r (Wq →L[ℂ] Wp)) c x) g =
@@ -596,12 +793,33 @@ theorem op_zeta (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) (j : Fin
   · rw [(X.t Y a b (X.fn j Φ)).2.1 (c, g) hx, (X.fn j (X.t Y a b Φ)).2.1 (c, g) hx,
       (X.t Y 1 1 Φ).2.1 (c, g) hx, smul_zero, add_zero]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fnVal_zero (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) :
     fnVal k r z z' 0 g = zetaL k r z z' (Fin.last r) g := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fnVal_two (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Mx k r) :
     fnVal k r z z' 2 g = star (zetaL k r z z' (Fin.last r) g) := rfl
 
+/- English proof (translation)
+Establish `H : ∀ (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r), (c, g) ∈ DomR k r z z' →`. Set `f : Mx k r → (Wq →L[ℂ] Wp)` to `(Φ : Fn k r (Wq →L[ℂ] Wp)) c`. Set `ζ : Mx k r → ℂ` to `zetaL k r z z' (Fin.last r)`. Use `tL k r z z' (Fin.last r) Y 1 0 (fun x => ζ x • f x) g = ζ g • tL k r z z' (Fin.last r) Y 1 0 f g - tL k r z z' (Fin.last r) Y 1 1 f g ∧ tL k r z z' (Fin.last r) Y 1 1 (fun x => ζ x • f x) g = ζ g • tL k r z z' (Fin.last r) Y 1 1 f g ∧ tL k r z z' (Fin.last r) Y 0 1 (fun x => ζ x …`. Use `fun Φ c g hx => hZ (Wq →L[ℂ] Wp) k r z z' (Qx5.Dp k r z z') ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) hz hz' (Qx5.Dp_open k r z z') (Qx5.slice_smooth Φ.2 hx.1) g ⟨hx.2.1, hx.2.2⟩ Y`.
+
+Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `op_zeta X Y 1 0 0 (-1) fun Φ c g hx => by` as an intermediate fact. Simplify using `only [fnVal_zero]`. Rewrite using `[(H Φ c g hx).1, neg_one_smul]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[this, neg_one_smul, ← sub_eq_add_neg]`. Use `op_zeta X Y 1 1 0 0 fun Φ c g hx => by` as an intermediate fact. Simplify using `only [fnVal_zero]`. Rewrite using `[(H Φ c g hx).2.1, zero_smul, add_zero]`. Rewrite using `[this, zero_smul, add_zero]`.
+
+Use `op_zeta X Y 0 1 0 0 fun Φ c g hx => by` as an intermediate fact. Simplify using `only [fnVal_zero]`. Rewrite using `[(H Φ c g hx).2.2.1, zero_smul, add_zero]`. Rewrite using `[this, zero_smul, add_zero]`. Use `op_zeta X Y 0 1 2 1 fun Φ c g hx => by` as an intermediate fact.
+
+Simplify using `only [fnVal_two]`. Rewrite using `[(H Φ c g hx).2.2.2.1, one_smul]`. Rewrite using `[this, one_smul]`. Use `op_zeta X Y 1 0 2 0 fun Φ c g hx => by` as an intermediate fact. Simplify using `only [fnVal_two]`.
+
+Rewrite using `[(H Φ c g hx).2.2.2.2.1, zero_smul, add_zero]`. Rewrite using `[this, zero_smul, add_zero]`. Use `op_zeta X Y 1 1 2 0 fun Φ c g hx => by` as an intermediate fact. Simplify using `only [fnVal_two]`. Rewrite using `[(H Φ c g hx).2.2.2.2.2, zero_smul, add_zero]`.
+
+Rewrite using `[this, zero_smul, add_zero]`.
+-/
 theorem zeta_ids (hZ : Q.ZetaComm) (hz : inWb k r z) (hz' : inWb k r z') (X : ActualOps k r z z' π π') (Y : ℂ) :
     X.t Y 1 0 * X.fn 0 = X.fn 0 * X.t Y 1 0 - X.t Y 1 1 ∧ X.t Y 1 1 * X.fn 0 = X.fn 0 * X.t Y 1 1 ∧
     X.t Y 0 1 * X.fn 0 = X.fn 0 * X.t Y 0 1 ∧ X.t Y 0 1 * X.fn 2 = X.fn 2 * X.t Y 0 1 + X.t Y 1 1 ∧
@@ -639,6 +857,13 @@ theorem zeta_ids (hZ : Q.ZetaComm) (hz : inWb k r z) (hz' : inWb k r z') (X : Ac
       simp only [fnVal_two]; rw [(H Φ c g hx).2.2.2.2.2, zero_smul, add_zero]
     rw [this, zero_smul, add_zero]
 
+/- English proof (translation)
+Establish `hpw : ∀ (Y : ℂ) (Φ : RadSp k r z z' π π'), (RadSp k r z z' π π').subtype ((X.t Y a b - Y ^ m • ℓ) Φ) = ∑ j ∈ Finset.range m, Y ^ j • (fun c g => if (c, g) ∈ DomR k r z z' then A' j ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) g else 0 : Fn k r (Wq →L[ℂ] Wp))`. Introduce `Y Φ`. Use function extensionality and compare the values at `c g`. Simplify using `only [Submodule.subtype_apply, LinearMap.sub_apply, LinearMap.smul_apply, Submodule.coe_sub, Submodule.coe_smul, Finset.sum_apply, Pi.sub_apply, Pi.smul_apply]`. Distinguish the cases in `hx : (c, g) ∈ DomR k r z z'`.
+
+Establish `e : ((X.t Y a b Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g = tL k r z z' (Fin.last r) Y a b ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) g` using `X.t_apply Y a b Φ (c, g) hx`. Simplify using `only [if_pos hx]`. Rewrite using `[e, hpt Φ c g hx Y]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_neg hx, smul_zero, Finset.sum_const_zero]`.
+
+Rewrite using `[(X.t Y a b Φ).2.1 (c, g) hx, (ℓ Φ).2.1 (c, g) hx, smul_zero, sub_zero]`. Take `⟨C, hC⟩` from `interp (RadSp k r z z' π π').subtype Subtype.val_injective (fun Y => X.t Y a b - Y ^ m • ℓ) m (fun j Φ => fun c g => if (c, g) ∈ DomR k r z z' then A' j ((Φ : Fn k r (Wq →L[ℂ] Wp)) c) g else 0) hpw`. Use `⟨C, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hC Y]`. Normalize the expressions using the abelian group laws.
+-/
 theorem rep_of (X : ActualOps k r z z' π π') (a b : Fin 2) (m : ℕ) (ℓ : Module.End ℂ (RadSp k r z z' π π'))
     (A' : ℕ → (Mx k r → (Wq →L[ℂ] Wp)) → Mx k r → (Wq →L[ℂ] Wp))
     (hpt : ∀ (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r), (c, g) ∈ DomR k r z z' → ∀ Y : ℂ,
@@ -672,6 +897,9 @@ theorem rep_of (X : ActualOps k r z z' π π') (a b : Fin 2) (m : ℕ) (ℓ : Mo
 
 end Ops
 
+/- English proof (translation)
+Simplify using `[Q.mdim]`.
+-/
 theorem mdim_last (k r : ℕ) : Q.mdim k r (Fin.last r) = k + 1 := by
   simp [Q.mdim]
 
@@ -680,14 +908,39 @@ section Main
 variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp]
   [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem QQ_apply (X : ActualOps k r z z' π π') (Y : ℂ) (a b : Fin 2) :
     X.QQ Y a b = Q.mkP (X.t Y a b) (X.t (star Y) b a) := rfl
 
+/- English proof (translation)
+Rewrite using `[LinearMap.neg_apply, Submodule.coe_neg, Pi.neg_apply, Pi.neg_apply, APL.fn_coe]`.
+-/
 theorem neg_fn_pt (X : ActualOps k r z z' π π') (j : Fin 6) (Φ : RadSp k r z z' π π') (c : Fin r → ℂ) (g : Mx k r) :
     (((-X.fn j) Φ : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g =
       -(fnVal k r z z' j g • (Φ : Fn k r (Wq →L[ℂ] Wp)) c g) := by
   rw [LinearMap.neg_apply, Submodule.coe_neg, Pi.neg_apply, Pi.neg_apply, APL.fn_coe]
 
+/- English proof (translation)
+Take `⟨hp, hpb, hc, hci, hcb, hcbi, hz, hzi, hzb, hzbi, hG, hGi, -⟩` from `hL0`. Use `⟨fun g hg => ?_, fun hx2 hy2 g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [PreLevel.crdOps, Set.mem_union, Set.mem_range] at hg`. Break down `hg with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩` into its components or cases. Rewrite using `[hc l]`.
+
+Conclude with `mkPair_commute (hx1 l 1) (hy1 l 4)`. Rewrite using `[hci l]`. Conclude with `mkPair_commute (hx1 l 2) (hy1 l 5)`. Rewrite using `[hcb l]`. Conclude with `mkPair_commute (hx1 l 4) (hy1 l 1)`.
+
+Rewrite using `[hcbi l]`. Conclude with `mkPair_commute (hx1 l 5) (hy1 l 2)`. Rewrite using `[hp l]`. Conclude with `mkPair_commute (hx1 l 0) (hy1 l 3).neg_right`. Rewrite using `[hpb l]`.
+
+Conclude with `mkPair_commute (hx1 l 3) (hy1 l 0).neg_right`. Simplify using `only [PreLevel.ops, PreLevel.fns, Set.mem_union, Set.mem_range, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with (((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl)) | ⟨l, rfl⟩) | ⟨l, rfl⟩` into its components or cases. Rewrite using `[hc l]`. Conclude with `mkPair_commute (hx1 l 1) (hy1 l 4)`.
+
+Rewrite using `[hci l]`. Conclude with `mkPair_commute (hx1 l 2) (hy1 l 5)`. Rewrite using `[hcb l]`. Conclude with `mkPair_commute (hx1 l 4) (hy1 l 1)`. Rewrite using `[hcbi l]`.
+
+Conclude with `mkPair_commute (hx1 l 5) (hy1 l 2)`. Rewrite using `[hz]`. Conclude with `mkPair_commute (hx2 0) (hy2 2)`. Rewrite using `[hzi]`. Conclude with `mkPair_commute (hx2 1) (hy2 3)`.
+
+Rewrite using `[hzb]`. Conclude with `mkPair_commute (hx2 2) (hy2 0)`. Rewrite using `[hzbi]`. Conclude with `mkPair_commute (hx2 3) (hy2 1)`. Rewrite using `[hG]`.
+
+Conclude with `mkPair_commute (hx2 4) (hy2 4)`. Rewrite using `[hGi]`. Conclude with `mkPair_commute (hx2 5) (hy2 5)`. Rewrite using `[hp l]`. Conclude with `mkPair_commute (hx1 l 0) (hy1 l 3).neg_right`.
+
+Rewrite using `[hpb l]`. Conclude with `mkPair_commute (hx1 l 3) (hy1 l 0).neg_right`.
+-/
 theorem comm_ops_of (X : ActualOps k r z z' π π') (L0 : PreLevel (Q.Pr (RadSp k r z z' π π')) r)
     (hL0 : IsActualPre X L0) {x y : Module.End ℂ (RadSp k r z z' π π')}
     (hx1 : ∀ l i, Commute x (X.op l i)) (hy1 : ∀ l i, Commute y (X.op l i)) :
@@ -728,9 +981,57 @@ def padC {R : Type*} [Zero R] (m : ℕ) (ℓ : R) (C : ℕ → R) (j : ℕ) : R 
 def sel {R : Type*} (x00 x01 x10 x11 : R) (a b : Fin 2) : R :=
   if a = 0 then (if b = 0 then x00 else x01) else (if b = 0 then x10 else x11)
 
+/- English proof (translation)
+Simplify using `[M.xC]`.
+-/
 theorem star_xC (P : M.Par) (ρ : M.Ty P) (Y : ℂ) : star (M.xC P ρ Y) = M.xC P ρ (star Y) := by
   simp [M.xC]
 
+/- English proof (translation)
+Introduce `hSt hZ hL h22 hTC hTy Wp Wq _ _ _ _ _ _ P z z' π π' hpl X L0 hL0`. Establish `hz : inWb P.k P.r z` using `hpl.2.1`. Establish `hz' : inWb P.k P.r z'` using `hpl.2.2.1`. Establish `hTT` using `Qx5.place_alt_alt hpl`. Establish `Z` using `zeta_ids hZ hz hz' X`.
+
+Establish `hop : ∀ Y (a b : Fin 2) l i, Commute (X.t Y a b) (X.op l i)` using `fun Y a b l i => (hTC Wp Wq P z z' π π' hpl X l i).1 Y a b`. Take `⟨f01, f10, f23, f32, f45, f54⟩` from `APL.fn_inv X hTT`. Establish `hfn : ∀ Y j, Commute (X.t Y 1 1) (X.fn j)`. Introduce `Y j`. Establish `c0 : Commute (X.t Y 1 1) (X.fn 0)` using `(Z Y).2.1`.
+
+Establish `c2 : Commute (X.t Y 1 1) (X.fn 2)` using `(Z Y).2.2.2.2.2`. Establish `c4 : Commute (X.t Y 1 1) (X.fn 4)`. Rewrite using `[APL.fn_GG X]`. Conclude with `(c0.mul_right c2).sub_right (Algebra.commute_algebraMap_right _ _)`. Use `fin_cases j`.
+
+Conclude with `c0`. Conclude with `comm_inv c0 f01 f10`. Conclude with `c2`. Conclude with `comm_inv c2 f23 f32`. Conclude with `c4`.
+
+Conclude with `comm_inv c4 f45 f54`. Take `⟨Pj, hsum, horth, h22', hPop, hPfn⟩` from `spectral h22 hTy hpl X (fun Y l i => hop Y 1 1 l i) hfn`. Take `⟨hp, hpb, hc, hci, hcb, hcbi, hζ, hζi, hζb, hζbi, hG, hGi, hT⟩` from `id hL0`. Take `⟨A, hA⟩` from `hL (Wq →L[ℂ] Wp) P.k P.r z z' (Fin.last P.r) hz hz'`. Establish `hmd` using `mdim_last P.k P.r`.
+
+Take `⟨C00, h00⟩` from `rep_of X 0 0 (P.k + 1) 1 (A 0 0) fun Φ c g hx Y => by`. Take `⟨h1, -, -, -⟩` from `hA _ _ (Qx5.Dp_open _ _ _ _) (Qx5.slice_smooth Φ.2 hx.1) g ⟨hx.2.1, hx.2.2⟩ Y`. Rewrite `h1` using `[hmd]`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+
+Take `⟨C01, h01⟩` from `rep_of X 0 1 P.k (-X.fn 0) (A 0 1) fun Φ c g hx Y => by`. Take `⟨-, h2, -, -⟩` from `hA _ _ (Qx5.Dp_open _ _ _ _) (Qx5.slice_smooth Φ.2 hx.1) g ⟨hx.2.1, hx.2.2⟩ Y`. Rewrite `h2` using `[hmd, Nat.add_sub_cancel]`. Rewrite using `[h2, neg_fn_pt, fnVal_zero, smul_neg, smul_smul, mul_comm]`. Take `⟨crystallineComparison, h10⟩` from `rep_of X 1 0 P.k (-X.fn 2) (A 1 0) fun Φ c g hx Y => by`.
+
+Take `⟨-, -, h3, -⟩` from `hA _ _ (Qx5.Dp_open _ _ _ _) (Qx5.slice_smooth Φ.2 hx.1) g ⟨hx.2.1, hx.2.2⟩ Y`. Rewrite `h3` using `[hmd, Nat.add_sub_cancel]`. Rewrite using `[h3, neg_fn_pt, fnVal_two, smul_neg, smul_smul, mul_comm]`. Take `⟨C11, h11⟩` from `rep_of X 1 1 P.k 0 (A 1 1) fun Φ c g hx Y => by`. Take `⟨-, -, -, h4⟩` from `hA _ _ (Qx5.Dp_open _ _ _ _) (Qx5.slice_smooth Φ.2 hx.1) g ⟨hx.2.1, hx.2.2⟩ Y`.
+
+Rewrite `h4` using `[hmd, Nat.add_sub_cancel]`. Rewrite using `[h4]`. Simplify using the standard rewrite rules. Establish `pad : ∀ (a b : Fin 2) (m : ℕ) (ℓ : Module.End ℂ (RadSp P.k P.r z z' π π')) (C : ℕ → Module.End ℂ (RadSp P.k P.r z z' π π')), m < P.k + 2 → (∀ Y, X.t Y a b = Y ^ m • ℓ + ∑ j ∈ Finset.range m, Y ^ j • C j) → ∀ Y, X.t Y a b = ∑ j ∈ Finset.range (P.k + 2), Y ^ j • padC m ℓ C j` using `fun a b m ℓ C hm h Y => by rw [h Y]; exact (poly_pad m (P.k + 2) hm ℓ C Y).symm`. Use `set S := sel (padC (P.k + 1) 1 C00) (padC P.k (-X.fn 0) C01) (padC P.k (-X.fn 2) crystallineComparison) (padC P.k 0 C11) with hS`.
+
+Establish `hDD : ∀ Y (a b : Fin 2), X.t Y a b = ∑ j ∈ Finset.range (P.k + 2), Y ^ j • S a b j`. Introduce `Y a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `pad 0 0 (P.k + 1) 1 C00 (by omega) h00 Y`. Conclude with `pad 0 1 P.k (-X.fn 0) C01 (by omega) h01 Y`.
+
+Conclude with `pad 1 0 P.k (-X.fn 2) crystallineComparison (by omega) h10 Y`. Conclude with `pad 1 1 P.k 0 C11 (by omega) h11 Y`. Use `⟨kapOf Pj hsum horth, ?_, ?_, ?_, (hSt Wp Wq P z z' π π' hpl X).1, (hSt Wp Wq P z z' π π' hpl X).2, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hζ, hζb]`. Both sides reduce to the same expression.
+
+Rewrite using `[hT, Complex.star_def, Complex.conj_ofReal]`. Introduce `l`. Rewrite using `[hc, hcb, hci, hcbi, hp, hpb, neg_mkPair, neg_neg]`. Conclude with `⟨rfl, rfl, rfl⟩`. Introduce `Y`.
+
+Rewrite using `[hG, QQ_apply]`. Unfold `NF.xA`. Rewrite using `[kapOf_apply, APL.mkPair_mul_mkPair, APL.mkPair_inj]`. Use `⟨h22' Y, ?_⟩` and prove the remaining obligations. Rewrite using `[h22' (star Y)]`.
+
+Simplify using `only [star_xC]`. Conclude with `(sum_comm_of Pj _ fun ρ => hPfn ρ 4).eq.symm`. Introduce `f`. Rewrite using `[kapOf_apply, kapOf_apply, star_mkP]`. Simplify using `only [star_star]`.
+
+Introduce `f g hg`. Rewrite using `[kapOf_apply]`. Conclude with `(comm_ops_of X L0 hL0 (fun l i => sum_comm_of Pj _ fun ρ => hPop ρ l i) (fun l i => sum_comm_of Pj _ fun ρ => hPop ρ l i)).2 (fun j => sum_comm_of Pj _ fun ρ => hPfn ρ j) (fun j => sum_comm_of Pj _ fun ρ => hPfn ρ j) g hg`. Use `⟨P.k + 2, fun a b j => Q.mkP (S a b j) (S b a j), fun Y a b => ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[QQ_apply, hDD Y a b, hDD (star Y) b a]`.
+
+Simplify using `only [smul_mkPair, map_pow, starRingEnd_apply]`. Rewrite using `[sum_mkPair]`. Rewrite using `[QQ_apply, hζb, h10 Y, h01 (star Y)]`. Simplify using `only [smul_mkPair, map_pow, starRingEnd_apply]`. Rewrite using `[sum_mkPair, neg_mkPair, APL.mkPair_add_mkPair, APL.mkPair_inj]`.
+
+Prove the components needed by the constructor for the conclusion. Rewrite using `[smul_neg]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[hS, sel, padC, Finset.mem_range.1 hj]`.
+
+Rewrite using `[smul_neg]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Simplify using `[hS, sel, padC, Finset.mem_range.1 hj]`. Introduce `Y`.
+
+Take `⟨z1, z2, z3, z4, z5, z6⟩` from `Z Y`. Take `⟨w1, w2, w3, w4, w5, w6⟩` from `Z (star Y)`. Rewrite using `[hζ, hζb]`. Simplify using `only [QQ_apply]`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_sub_mkPair, APL.mkPair_inj]`. Conclude with `⟨z1, by rw [w4]; abel⟩`. Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_inj]`. Conclude with `⟨z2, w6.symm⟩`. Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_inj]`.
+
+Conclude with `⟨z3, w5.symm⟩`. Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_add_mkPair, APL.mkPair_inj]`. Conclude with `⟨z4, by rw [w1]; abel⟩`. Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_inj]`. Conclude with `⟨z5, w3.symm⟩`.
+
+Rewrite using `[APL.mkPair_mul_mkPair, APL.mkPair_mul_mkPair, APL.mkPair_inj]`. Conclude with `⟨z6, w2.symm⟩`. Introduce `Y a b g hg`. Rewrite using `[QQ_apply]`. Conclude with `(comm_ops_of X L0 hL0 (fun l i => hop Y a b l i) (fun l i => hop (star Y) b a l i)).1 g hg`.
+-/
 theorem actualSHypOfParts : ActualSHypOfParts := by
   intro hSt hZ hL h22 hTC hTy Wp Wq _ _ _ _ _ _ P z z' π π' hpl X L0 hL0
   have hz : inWb P.k P.r z := hpl.2.1
@@ -853,15 +1154,30 @@ end Formalism.FourierDecayAlt.P.NFx3
 
 namespace Formalism.FourierDecayAlt.P
 
+/- English proof (translation)
+Conclude with `NFx3.modelSHyp`.
+-/
 theorem model_hypotheses : Formalism.FourierDecayAlt.NF.ModelSHyp := by
   exact NFx3.modelSHyp
+/- English proof (translation)
+Conclude with `NFx3.thmSOfSteps`.
+-/
 theorem theorem_S_of_steps : Formalism.FourierDecayAlt.NF.ThmSOfSteps := by
   exact NFx3.thmSOfSteps
+/- English proof (translation)
+Conclude with `NFx3.normalFormOfS`.
+-/
 theorem normal_form_of_S : Formalism.FourierDecayAlt.NF.NormalFormOfS := by
   exact NFx3.normalFormOfS
+/- English proof (translation)
+Conclude with `NFx3.normalFormFromModuleOfParts`.
+-/
 theorem normal_form_from_module : Formalism.FourierDecayAlt.NF.NormalFormFromModuleOfParts := by
   exact NFx3.normalFormFromModuleOfParts
 
+/- English proof (translation)
+Conclude with `NFx3.actualSHypOfParts`.
+-/
 theorem actual_hypotheses_of_parts : Formalism.FourierDecayAlt.NF.ActualSHypOfParts := by
   exact NFx3.actualSHypOfParts
 

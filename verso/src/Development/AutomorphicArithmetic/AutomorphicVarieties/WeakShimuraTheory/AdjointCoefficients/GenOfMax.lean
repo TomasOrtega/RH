@@ -3,6 +3,13 @@ import Mathlib.Topology.Algebra.ClopenNhdofOne
 
 open IsLocalRing UpperTheory.V UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
+/- English proof (translation)
+Introduce `b`. Proceed by induction on `b with`. Consider the case `zero => intro _ s hs`. Simplify using `at hs`. Simplify using `[hs]`.
+
+Consider the case `succ b ih`. Introduce `hb s hs`. Take `⟨n, hn⟩` from `hl (z ^ l ^ a) (s ^ l ^ b) (by rw [← pow_mul, ← pow_succ, h1]) (by rw [← pow_mul, ← pow_succ, hs]) h0`. Take `⟨c, rfl⟩ : ∃ c, a = c + b` from `⟨a - b, by omega⟩`. Establish `h2 : (s / z ^ (l ^ c * n)) ^ l ^ b = 1`.
+
+Rewrite using `[div_pow, hn, ← pow_mul, ← pow_mul, pow_add, mul_right_comm, div_self']`. Establish `h3` using `ih (by omega) _ h2`. Establish `h4` using `mul_mem h3 (Subgroup.npow_mem_zpowers z (l ^ c * n))`. Rewrite `h4` using `[div_mul_cancel]`. Then use the resulting hypothesis.
+-/
 private theorem gen_of_max {A : Type} [CommGroup A] (l : ℕ)
     (hl : ∀ s t : A, s ^ l = 1 → t ^ l = 1 → s ≠ 1 → ∃ n : ℕ, t = s ^ n)
     (a : ℕ) (z : A) (h1 : z ^ l ^ (a + 1) = 1) (h0 : z ^ l ^ a ≠ 1) :
@@ -21,6 +28,29 @@ private theorem gen_of_max {A : Type} [CommGroup A] (l : ℕ)
     have h4 := mul_mem h3 (Subgroup.npow_mem_zpowers z (l ^ c * n))
     rwa [div_mul_cancel] at h4
 
+/- English proof (translation)
+Distinguish the cases in `hx : ∃ x : A, x ^ l = 1 ∧ x ≠ 1`. Take `⟨x, hx1, hx0⟩` from `hx`. Take `⟨U, hU, hxU⟩` from `hres x hx0`. Set `P : ℕ → Prop` to `fun a => ∃ s : A, s ^ l ^ (a + 1) = 1 ∧ s ^ l ^ a ≠ 1`. Establish `hP0 : P 0` using `⟨x, by simpa using hx1, by simpa using hx0⟩`.
+
+Establish `hbd : ∀ a, P a → a ≤ U.index`. Introduce and unpack `a ⟨s, h1, h0⟩`. Assume the negation of the conclusion as `hlt`. Take `⟨n, hn⟩` from `hl (s ^ l ^ a) x (by rw [← pow_mul, ← pow_succ, h1]) hx1 h0`. Apply `hxU` to reduce the goal to its premises.
+
+Rewrite using `[hn]`. Apply `pow_mem` to reduce the goal to its premises. Establish `d1 : orderOf (QuotientGroup.mk' U s) ∣ l ^ (a + 1)`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[← map_pow, h1, map_one]`.
+
+Establish `d2 : orderOf (QuotientGroup.mk' U s) ∣ U.index` using `orderOf_dvd_natCard _`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow hp).1 d1`. Establish `d3 : l ^ j ≤ U.index` using `hj ▸ Nat.le_of_dvd (Nat.pos_of_ne_zero hU) d2`. Establish `d4 : j < l ^ j` using `Nat.lt_pow_self hp.one_lt`. Establish `d5 : orderOf (QuotientGroup.mk' U s) ∣ l ^ a` using `hj ▸ pow_dvd_pow l (by omega)`.
+
+Establish `d6` using `orderOf_dvd_iff_pow_eq_one.1 d5`. Rewrite `d6` using `[← map_pow, ← MonoidHom.mem_ker, QuotientGroup.ker_mk']`. Conclude with `d6`. Take `⟨z, h1, h0⟩ : P (Nat.findGreatest P U.index)` from `Nat.findGreatest_spec (Nat.zero_le _) hP0`. Use `⟨z, ⟨_, h1⟩, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `s ⟨c, hc⟩`. Establish `key : ∀ c, s ^ l ^ c = 1 → s ^ l ^ (Nat.findGreatest P U.index + 1) = 1`. Introduce `c`. Proceed by induction on `c with`. Consider the case `zero => intro h`.
+
+Simplify using `at h`. Simplify using `[h]`. Consider the case `succ c ih`. Introduce `h`. Distinguish the cases in `h' : s ^ l ^ c = 1`.
+
+Conclude with `ih h'`. Establish `hPc : P c` using `⟨s, h, h'⟩`. Use `Nat.le_findGreatest (hbd c hPc) hPc` as an intermediate fact. Conclude with `orderOf_dvd_iff_pow_eq_one.1 ((orderOf_dvd_of_pow_eq_one h).trans (pow_dvd_pow l (by omega)))`. Establish `hm` using `gen_of_max l hl _ z h1 h0 _ le_rfl s (key c hc)`.
+
+Establish `hf : IsOfFinOrder z` using `isOfFinOrder_iff_pow_eq_one.2 ⟨_, pow_pos hp.pos _, h1⟩`. Take `⟨n, hn⟩` from `hf.mem_powers_iff_mem_zpowers.2 hm`. Conclude with `⟨n, hn.symm⟩`. Use `⟨1, ⟨0, by simp⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨c, hc⟩`.
+
+Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero]`. Proceed by induction on `c with`. Consider the case `zero => simpa using hc`. Consider the case `succ c ih`.
+
+Apply `ih` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨_, by rw [← pow_mul, ← pow_succ, hc], h⟩`.
+-/
 private theorem cyc_abs {A : Type} [CommGroup A] (l : ℕ) (hp : l.Prime)
     (hres : ∀ x : A, x ≠ 1 → ∃ U : Subgroup A, U.index ≠ 0 ∧ x ∉ U)
     (hl : ∀ s t : A, s ^ l = 1 → t ^ l = 1 → s ≠ 1 → ∃ n : ℕ, t = s ^ n) :
@@ -79,6 +109,27 @@ private theorem cyc_abs {A : Type} [CommGroup A] (l : ℕ) (hp : l.Prime)
       by_contra h
       exact hx ⟨_, by rw [← pow_mul, ← pow_succ, hc], h⟩
 
+/- English proof (translation)
+Introduce `Γ _ _ _ _ _ _ l hp H hH hl`. Unfold `MuGen muOf`. Establish `hcl : IsClosed (((⁅H, H⁆ : Subgroup Γ).topologicalClosure : Subgroup Γ) : Set Γ)` using `Subgroup.isClosed_topologicalClosure _`. Establish `hcomm : ∀ a ∈ H, ∀ b ∈ H, a * b * a⁻¹ * b⁻¹ ∈ (⁅H, H⁆ : Subgroup Γ).topologicalClosure` using `fun a ha b hb => Subgroup.le_topologicalClosure _ (Subgroup.commutator_mem_commutator ha hb)`. Generalize the expression as in `(⁅H, H⁆ : Subgroup Γ).topologicalClosure = C at hl hcl hcomm ⊢`.
+
+Use `haveI hN : (C.subgroupOf H).Normal := ⟨fun c hc h => by`. Rewrite `hc`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `using mul_mem (hcomm h h.2 c c.2) hc⟩`. Set `π` to `QuotientGroup.mk' (C.subgroupOf H)`. Establish `hπ : Function.Surjective π` using `QuotientGroup.mk'_surjective _`.
+
+Establish `h1 : ∀ x : H, π x = 1 ↔ (x : Γ) ∈ C` using `fun x => by`. Rewrite using `[← MonoidHom.mem_ker, QuotientGroup.ker_mk', Subgroup.mem_subgroupOf]`. Establish `h2 : ∀ x y : H, π x = π y ↔ (x : Γ) * (y : Γ)⁻¹ ∈ C` using `fun x y => by`. Rewrite using `[← mul_inv_eq_one, ← map_inv, ← map_mul, h1]`. Simplify using the standard rewrite rules.
+
+Use `letI : CommGroup (H ⧸ C.subgroupOf H) := { (inferInstance : Group (H ⧸ C.subgroupOf H)) with mul_comm := fun a b => by`. Take `⟨a, rfl⟩` from `hπ a`. Take `⟨b, rfl⟩` from `hπ b`. Rewrite using `[← map_mul, ← map_mul, h2]`. Simplify `hcomm a a.2 b b.2 }` using `[mul_assoc]`.
+
+Use `(cyc_abs (A := H ⧸ C.subgroupOf H) l hp.out ?_ ?_).elim ?_` and prove the remaining obligations. Use `rotate_left 2`. Introduce and unpack `z ⟨⟨a, ha⟩, hz⟩`. Take `⟨z, rfl⟩` from `hπ z`. Use `⟨z, ⟨z.2, a, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Rewrite `ha` using `[← map_pow, h1]`. Simplify using `using ha`. Introduce and unpack `s ⟨hs, c, hc⟩`. Take `⟨n, hn⟩` from `hz (π ⟨s, hs⟩) ⟨c, by rw [← map_pow, h1]; simpa using hc⟩`. Rewrite `hn` using `[← map_pow, h2]`.
+
+Conclude with `⟨n, by simpa using hn⟩`. Introduce `x hx`. Take `⟨x, rfl⟩` from `hπ x`. Establish `ho : IsOpen {g : Γ | (x : Γ) * g ∉ C}` using `hcl.isOpen_compl.preimage (continuous_const_mul (x : Γ))`. Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ho (by simpa [← h1] using hx)`.
+
+Use `⟨(N.toSubgroup.subgroupOf H).map π, ?_, ?_⟩` and prove the remaining obligations. Use `ne_zero_of_dvd_ne_zero ?_ (Subgroup.index_map_dvd _ hπ) haveI : Finite (Γ ⧸ N.toSubgroup) := Subgroup.quotient_finite_of_isOpen _ N.isOpen' haveI : N.toSubgroup.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient` and prove the remaining obligations. Conclude with `Subgroup.FiniteIndex.index_ne_zero`. Introduce and unpack `⟨n, hn, e⟩`. Establish `hn' : (n : Γ)⁻¹ ∈ N.toSubgroup` using `inv_mem (Subgroup.mem_subgroupOf.1 hn)`.
+
+Conclude with `hN hn' ((h2 x n).1 e.symm)`. Introduce `s t hs ht h0`. Take `⟨s, rfl⟩` from `hπ s`. Take `⟨t, rfl⟩` from `hπ t`. Rewrite `hs`, `ht` using `[← map_pow, h1]`.
+
+Take `⟨n, hn⟩` from `hl s s.2 t t.2 (by simpa using hs) (by simpa using ht) (by rwa [← h1])`. Conclude with `⟨n, by rw [← map_pow, h2]; simpa using hn⟩`.
+-/
 theorem UpperTheory.V.Ws.X1.muCyc :
     ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ] [T2Space Γ] [TotallyDisconnectedSpace Γ] (l : ℕ) [Fact l.Prime] (H : Subgroup Γ), IsClosed (H : Set Γ) → (∀ s ∈ H, ∀ t ∈ H, s ^ l ∈ (⁅H, H⁆ : Subgroup Γ).topologicalClosure → t ^ l ∈ (⁅H, H⁆ : Subgroup Γ).topologicalClosure → s ∉ (⁅H, H⁆ : Subgroup Γ).topologicalClosure → ∃ n : ℕ, t * (s ^ n)⁻¹ ∈ (⁅H, H⁆ : Subgroup Γ).topologicalClosure) → ∃ ζ, MuGen H (muOf l H) ζ := by
   intro Γ _ _ _ _ _ _ l hp H hH hl

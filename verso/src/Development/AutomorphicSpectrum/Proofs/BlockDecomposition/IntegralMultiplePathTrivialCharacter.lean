@@ -21,6 +21,11 @@ variable {D : D7} {r : ℕ}
 
 def eFin (D : D7) : AF D.host.F := 1 - GlobalTheory.FinTranslate.eInf D
 
+/- English proof (translation)
+Use `show ((1 : Ainf D.host.F × Af D.host.F) - (1, 0)) * (x : Ainf D.host.F × Af D.host.F) = ((0 : Ainf D.host.F), (x : Ainf D.host.F × Af D.host.F).2)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show ((1 : Ainf D.host.F) - 1) * x.1 = 0`. Rewrite using `[sub_self, zero_mul]`. Use `show ((1 : Af D.host.F) - 0) * x.2 = x.2`.
+
+Rewrite using `[sub_zero, one_mul]`.
+-/
 theorem eFin_mul (D : D7) (x : AF D.host.F) : eFin D * x = pairA D.host.F 0 (sndA D.host.F x) := by
   show ((1 : Ainf D.host.F × Af D.host.F) - (1, 0)) * (x : Ainf D.host.F × Af D.host.F) =
     ((0 : Ainf D.host.F), (x : Ainf D.host.F × Af D.host.F).2)
@@ -30,6 +35,9 @@ theorem eFin_mul (D : D7) (x : AF D.host.F) : eFin D * x = pairA D.host.F 0 (snd
   · show ((1 : Af D.host.F) - 0) * x.2 = x.2
     rw [sub_zero, one_mul]
 
+/- English proof (translation)
+Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Use `show Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) (GlobalTheory.FinTranslate.eInf D ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`.
+-/
 theorem finPart_eInf (D : D7) : finPart D (GlobalTheory.FinTranslate.eInf D • (1 : AE D)) = 0 := by
   rw [← Algebra.algebraMap_eq_smul_one]
   show Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)
@@ -37,6 +45,9 @@ theorem finPart_eInf (D : D7) : finPart D (GlobalTheory.FinTranslate.eInf D • 
   rw [Algebra.TensorProduct.map_tmul]
   exact TensorProduct.zero_tmul _ _
 
+/- English proof (translation)
+Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Use `show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) (GlobalTheory.FinTranslate.eInf D ⊗ₜ[D.host.F] (1 : D.host.E)) = 1`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+-/
 theorem infPart_eInf (D : D7) : infPart D (GlobalTheory.FinTranslate.eInf D • (1 : AE D)) = 1 := by
   rw [← Algebra.algebraMap_eq_smul_one]
   show Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)
@@ -44,6 +55,11 @@ theorem infPart_eInf (D : D7) : infPart D (GlobalTheory.FinTranslate.eInf D • 
   rw [Algebra.TensorProduct.map_tmul]
   rfl
 
+/- English proof (translation)
+Use `sub_eq_zero.mp (hσ.ext _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_sub, finPart_eInf, sub_zero]`. Conclude with `hσ.fin _`. Introduce `τ`. Rewrite using `[map_sub, map_sub, infPart_eInf, map_one]`.
+
+Simplify using `only [rs, hσ.comp]`. Simplify using the standard rewrite rules.
+-/
 theorem rs_one {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) :
     rs σ 1 = GlobalTheory.FinTranslate.eInf D • (1 : AE D) := by
   refine sub_eq_zero.mp (hσ.ext _ ?_ ?_)
@@ -54,6 +70,9 @@ theorem rs_one {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : G
     simp only [rs, hσ.comp]
     simp
 
+/- English proof (translation)
+Use `show GlobalTheory.MixModel.rat a.1 - rs σ 1 • a.1.map (incA D) = eFin D • a.1.map (incA D)`. Rewrite using `[rs_one hσ, smul_one_smul, eFin, sub_smul, one_smul]`. Both sides reduce to the same expression.
+-/
 theorem diff_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : GlobalTheory.FockCompare.Chart θ σ) (a : HermE D r) :
     ((GlobalTheory.CompanionTheory.HermPoisson.ofHermE a).1 - path hσ a 1).1 = eFin D • a.1.map (incA D) := by
   show GlobalTheory.MixModel.rat a.1 - rs σ 1 • a.1.map (incA D) = eFin D • a.1.map (incA D)
@@ -63,27 +82,47 @@ theorem diff_eq {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (hσ : 
 def S (V : HSp D) (A : Mx D r r) (y : Mx D V.rank r) : AF D.host.F :=
   halfTr (Matrix.trace (HMul.hMul A (inner V y y) : Mx D r r))
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfTr_smul (c : AF D.host.F) (x : AE D) : halfTr (c • x) = c * halfTr x := by
   simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_smul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA]`. Rewrite using `[map_nsmul]`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfTr_nsmul (n : ℕ) (x : AE D) : halfTr (n • x) = n • halfTr x := by
   simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA]
   rw [map_nsmul]
   simp only [nsmul_eq_mul]
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem halfTr_add (x x' : AE D) : halfTr (x + x') = halfTr x + halfTr x' := by
   simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_add]
   ring
 
+/- English proof (translation)
+Simplify using `only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_zero, mul_zero]`.
+-/
 theorem halfTr_zero : halfTr (0 : AE D) = 0 := by
   simp only [GlobalTheory.StdUnn.halfTr, GlobalTheory.StdUnn.trA, map_zero, mul_zero]
 
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mul, Matrix.trace_smul, halfTr_nsmul]`.
+-/
 theorem halfTr_trace_nsmul (n : ℕ) (M B : Mx D r r) :
     halfTr (Matrix.trace (HMul.hMul (n • M) B : Mx D r r)) = n • halfTr (Matrix.trace (HMul.hMul M B : Mx D r r)) := by
   rw [Matrix.smul_mul, Matrix.trace_smul, halfTr_nsmul]
 
+/- English proof (translation)
+Take `⟨N1, hN1, hK⟩` from `GlobalTheory.CompanionTheory.SW.Core.AfTop.exists_mul_mem_Oh_of_isCompact F C hC`. Take `⟨N2, hN2, hU⟩` from `GlobalTheory.CompanionTheory.SW.Core.AfTop.exists_mul_Oh_subset F _ (GlobalTheory.FinTranslate.eventually_fin_eq_one hψ)`. Use `⟨N2 * N1, Nat.mul_pos hN2 hN1, fun c hc => ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (pairA F 0 ((N2 : Af F) * ((N1 : Af F) * c))) = 1` using `hU _ (hK c hc)`. Establish `h2 : (N2 * N1) • pairA F 0 c = pairA F 0 ((N2 : Af F) * ((N1 : Af F) * c))` using `by show (N2 * N1) • ((0 : Ainf F), c) = ((0 : Ainf F), (N2 : Af F) * ((N1 : Af F) * c))`.
+
+Rewrite using `[Prod.smul_mk, smul_zero, ← mul_assoc, ← Nat.cast_mul, ← nsmul_eq_mul]`. Rewrite using `[← AddChar.map_nsmul_eq_pow, h2, h1]`.
+-/
 theorem pow_eq_one_of_compact {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ)
     {C : Set (Af F)} (hC : IsCompact C) : ∃ N : ℕ, 0 < N ∧ ∀ c ∈ C, ψ (pairA F 0 c) ^ N = 1 := by
   obtain ⟨N1, hN1, hK⟩ := GlobalTheory.CompanionTheory.SW.Core.AfTop.exists_mul_mem_Oh_of_isCompact F C hC
@@ -96,6 +135,17 @@ theorem pow_eq_one_of_compact {F : Type} [Field F] [NumberField F] {ψ : AddChar
     rw [Prod.smul_mk, smul_zero, ← mul_assoc, ← Nat.cast_mul, ← nsmul_eq_mul]
   rw [← AddChar.map_nsmul_eq_pow, h2, h1]
 
+/- English proof (translation)
+Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA at hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Use `⟨tsupport g, (show IsLocallyConstant g ∧ HasCompactSupport g from hg).2, fun y hy => subset_tsupport g ?_⟩` and prove the remaining obligations.
+
+Conclude with `right_ne_zero_of_mul hy`. Consider the case `zero => exact ⟨∅, isCompact_empty, fun y hy => (hy rfl).elim⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨K1, hK1, h1⟩` from `hx`. Take `⟨K2, hK2, h2⟩` from `hy`.
+
+Use `⟨K1 ∪ K2, hK1.union hK2, fun z hz => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hxz : x z = 0`. Use `right`. Apply `h2` to reduce the goal to its premises. Simplify `hz` using `[hxz]`.
+
+Use `left`. Conclude with `h1 z hxz`. Consider the case `smul a x _ hx`. Take `⟨K, hK, h⟩` from `hx`. Use `⟨K, hK, fun y hy => h y ?_⟩` and prove the remaining obligations.
+
+Introduce `h0`. Apply `hy` to reduce the goal to its premises. Simplify using `[h0]`.
+-/
 private theorem supp_lemma_5 {θ : InfFam D} {m n : ℕ} {φ : Mx D m n → ℂ} (hφ : φ ∈ schwartzA θ m n) :
     ∃ K : Set (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E), IsCompact K ∧
       ∀ y, φ y ≠ 0 → (fun i j => finPart D (y i j)) ∈ K := by
@@ -123,6 +173,11 @@ private theorem supp_lemma_5 {θ : InfFam D} {m n : ℕ} {φ : Mx D m n → ℂ}
     apply hy
     simp [h0]
 
+/- English proof (translation)
+Set `f : (Af D.host.F ⊗[D.host.F] D.host.E) →ₗ[Af D.host.F] (Af D.host.F ⊗[D.host.F] D.host.E)` to `{ toFun := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig map_add' := map_add _ map_smul' := fun c z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy] }`.
+
+Conclude with `IsModuleTopology.continuous_of_linearMap f`.
+-/
 private theorem continuous_sigRf_lemma_7 : Continuous (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig) := by
   let f : (Af D.host.F ⊗[D.host.F] D.host.E) →ₗ[Af D.host.F] (Af D.host.F ⊗[D.host.F] D.host.E) :=
     { toFun := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig
@@ -134,6 +189,13 @@ private theorem continuous_sigRf_lemma_7 : Continuous (Formalism.MainNotions.Glo
         | add x y hx hy => simp only [smul_add, map_add, hx, hy] }
   exact IsModuleTopology.continuous_of_linearMap f
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero] <;> rfl`. Consider the case `tmul a e`. Establish `h1 : (a ⊗ₜ[D.host.F] e : AE D) = a • ((1 : AF D.host.F) ⊗ₜ[D.host.F] e : AE D)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+
+Establish `h2 : finPart D (a ⊗ₜ[D.host.F] e) = sndA D.host.F a • ((1 : Af D.host.F) ⊗ₜ[D.host.F] e)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using `[Formalism.L2.Theta.finPart]`. Rewrite using `[h2, h1]`. Simplify using `only [map_smul, GlobalTheory.CompanionTheory.HermPoisson.trace_one_tmul', smul_eq_mul, map_mul, AlgHom.commutes]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem trace_bc_lemma_8 (z : AE D) :
     sndA D.host.F (Algebra.trace (AF D.host.F) (AE D) z) =
       Algebra.trace (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) (finPart D z) := by
@@ -149,6 +211,17 @@ private theorem trace_bc_lemma_8 (z : AE D) :
     simp only [map_smul, GlobalTheory.CompanionTheory.HermPoisson.trace_one_tmul', smul_eq_mul, map_mul, AlgHom.commutes]
   | add x y hx hy => simp only [map_add, hx, hy]
 
+/- English proof (translation)
+Take `⟨K, hK, hKy⟩` from `supp_lemma_5 hφ`. Set `Φ : (Fin V.rank → Fin r → Af D.host.F ⊗[D.host.F] D.host.E) → Af D.host.F` to `fun w => algebraMap D.host.F (Af D.host.F) (1 / 2) * Algebra.trace (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E) (Matrix.trace (A.map (finPart D) * (((Matrix.of w).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig))ᵀ * ((GlobalTheory …`. Establish `hΦ : Continuous Φ`. Establish `hσc` using `continuous_sigRf_lemma_7 (D := D)`. Establish `htr : Continuous (Algebra.trace (Af D.host.F) (Af D.host.F ⊗[D.host.F] D.host.E))` using `by fun_prop`.
+
+Establish `hof : Continuous (fun w : Fin V.rank → Fin r → Af D.host.F ⊗[D.host.F] D.host.E => Matrix.of w)` using `continuous_id`. Conclude with `continuous_const.mul (htr.comp (Continuous.matrix_trace (continuous_const.matrix_mul ((hof.matrix_map hσc).matrix_transpose.matrix_mul (continuous_const.matrix_mul hof)))))`. Establish `hS : ∀ y : Mx D V.rank r, sndA D.host.F (S V A y) = Φ (fun i j => finPart D (y i j))`. Introduce `y`. Establish `hM : (HMul.hMul A (inner V y y) : Mx D r r).map (finPart D) = A.map (finPart D) * (((Matrix.of fun i j => finPart D (y i j)).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Af D.host.F) D.sp.cm.sig))ᵀ * ((GlobalTheory.MixModel.gA V).map (finPart D) * Matrix.o …`.
+
+Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, GlobalTheory.MixModel.adj, GlobalTheory.StdUnn.inner, map_sum, GlobalTheory.CompanionTheory.WSum.finPart_cA]`. Establish `ht : ∀ M : Mx D r r, finPart D (Matrix.trace M) = Matrix.trace (M.map (finPart D))`. Introduce `M`. Simplify using `[Matrix.trace, map_sum]`.
+
+Use `show sndA D.host.F (algebraMap D.host.F (AF D.host.F) (1 / 2) * Algebra.trace (AF D.host.F) (AE D) (Matrix.trace (HMul.hMul A (inner V y y) : Mx D r r))) = _`. Rewrite using `[map_mul, AlgHom.commutes, trace_bc_lemma_8, ht, hM]`. Take `⟨N, hN, hC⟩` from `pow_eq_one_of_compact hψ (hK.image hΦ)`. Use `⟨N, hN, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[eFin_mul, hS y]`.
+
+Conclude with `hC _ ⟨_, hKy y hy, rfl⟩`.
+-/
 theorem level_pow {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) (A : Mx D r r)
     {θ : InfFam D} {φ : Mx D V.rank r → ℂ} (hφ : φ ∈ schwartzA θ V.rank r) :
     ∃ N : ℕ, 0 < N ∧ ∀ y, φ y ≠ 0 → ψ (eFin D * S V A y) ^ N = 1 := by
@@ -185,6 +258,9 @@ theorem level_pow {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) 
   rw [eFin_mul, hS y]
   exact hC _ ⟨_, hKy y hy, rfl⟩
 
+/- English proof (translation)
+Introduce `D r V ψ hψ θ σ hσ a φ hφ`. Take `⟨N, hN, hy⟩` from `level_pow hψ V (a.1.map (incA D)) hφ`. Use `⟨N, hN, fun y hy0 => ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.coe_nsmul, diff_eq hσ a, halfTr_trace_nsmul, Matrix.smul_mul, Matrix.trace_smul, halfTr_smul, AddChar.map_nsmul_eq_pow]`. Conclude with `hy y hy0`.
+-/
 theorem level : ∀ (D : D7) (r : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D) (hσ : GlobalTheory.FockCompare.Chart θ σ) (a : HermE D r) (φ : Mx D V.rank r → ℂ), φ ∈ schwartzA θ V.rank r → ∃ N : ℕ, 0 < N ∧ ∀ y, φ y ≠ 0 → ψ (halfTr (Matrix.trace (HMul.hMul (N • ((GlobalTheory.CompanionTheory.HermPoisson.ofHermE a).1 - path hσ a 1)).1 (inner V y y) : Mx D r r))) = 1 := by
   intro D r V ψ hψ θ σ hσ a φ hφ
   obtain ⟨N, hN, hy⟩ := level_pow hψ V (a.1.map (incA D)) hφ

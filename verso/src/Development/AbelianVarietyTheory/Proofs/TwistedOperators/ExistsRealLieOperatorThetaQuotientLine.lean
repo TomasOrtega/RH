@@ -20,6 +20,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.WeilM
 
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Introduce `r _ x`. Establish `e : tens (evI F) (⇑(0 : SInf F κ)) r = 0` using `by funext y; simp [tens]`. Rewrite using `[e]`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const _ _`.
+-/
 theorem actsD_zero' (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) :
     ActsD (evI F) (fun t => ⇑(L t)) ⇑(0 : SInf F κ) ⇑(0 : SInf F κ) := by
   intro r _ x
@@ -30,6 +33,27 @@ theorem actsD_zero' (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) :
 
 open scoped Classical in
 
+/- English proof (translation)
+Establish `e : ∀ (r : (κ → AF F) → ℂ) (φ ψ : SInf F κ), tens (evI F) ⇑(c • φ + ψ) r = c • tens (evI F) ⇑φ r + tens (evI F) ⇑ψ r`. Introduce `r φ ψ`. Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `key : ∀ r, Rest (evI F) ⇑f r → Rest (evI F) ⇑g r → ∀ x, HasDerivAt (fun t => L t (tens (evI F) ⇑(c • f + g) r) x) (tens (evI F) ⇑(c • f₁ + g₁) r x) 0`. Introduce `r h1 h2 x`. Rewrite using `[e, e]`. Establish `h` using `((hf r h1 x).const_mul c).add (hg r h2 x)`. Establish `hfun : (fun t => L t (c • tens (evI F) ⇑f r + tens (evI F) ⇑g r) x) = (fun t => c * L t (tens (evI F) ⇑f r) x) + (fun t => L t (tens (evI F) ⇑g r) x)`.
+
+Use function extensionality and compare the values at `t`. Simplify using `[map_add, map_smul]`. Rewrite using `[hfun, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `h`. Use `set g₀ : (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) → ℂ := (intPts F κ).indicator 1 with hg₀def`.
+
+Establish `hg₀ : g₀ ∈ SB (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)` using `indicator_intPts_mem_SB`. Establish `hg₀0 : g₀ 0 = 1` using `by rw [hg₀def, Set.indicator_of_mem zero_mem_intPts]; rfl`. Use `set r₀ : (κ → AF F) → ℂ := fun x => g₀ (fun i => (x i).2) with hr₀def`. Establish `hr₀inv : ∀ x z, At (evI F) z → r₀ (x + z) = r₀ x`. Introduce `x z hz`.
+
+Express the relevant statement in the definitionally equal form `g₀ (fun i => (x i + z i).2) = g₀ (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`. Rewrite using `[fin_eq_zero_of_at hz, add_zero]`.
+
+Establish `htens₀ : ∀ φ : (κ → mixedEmbedding.mixedSpace F) → ℂ, tens (evI F) φ r₀ = pureA F φ g₀` using `fun φ => rfl`. Establish `hrest₀ : ∀ φ : SInf F κ, Rest (evI F) ⇑φ r₀` using `fun φ => ⟨hr₀inv, by rw [htens₀]; exact Submodule.subset_span ⟨φ, g₀, hg₀, rfl⟩⟩`. Establish `hzeroT : ∀ r : (κ → AF F) → ℂ, tens (evI F) ⇑(0 : SInf F κ) r = 0`. Introduce `r`. Use function extensionality and compare the values at `x`.
+
+Simplify using `[tens]`. Introduce `r hr x`. Distinguish the cases in `h0 : c • f + g = 0`. Establish `hz : c • f₁ + g₁ = 0`. Use extensionality with `a`.
+
+Establish `h` using `key r₀ (hrest₀ f) (hrest₀ g) (ptAt a 0)`. Rewrite `h` using `[h0, hzeroT]`. Simplify using `only [map_zero, Pi.zero_apply] at h`. Establish `h'` using `h.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Rewrite `h'` using `[htens₀, pureA_ptAt, hg₀0, mul_one]`.
+
+Simplify using `using h'`. Rewrite using `[h0, hz, hzeroT]`. Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `hasDerivAt_const _ _`. Establish `hR : (fun y => r (fun i => ((0 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf F), y i))) ∈ SB (κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)` using `mem_SB_of_pureA_mem h0 (tens_eq_pureA _ hr.1 ▸ hr.2)`.
+
+Establish `hrest : ∀ φ : SInf F κ, Rest (evI F) ⇑φ r` using `fun φ => ⟨hr.1, by rw [tens_eq_pureA _ hr.1]; exact Submodule.subset_span ⟨φ, _, hR, rfl⟩⟩`. Conclude with `key r (hrest f) (hrest g) x`.
+-/
 theorem actsD_comb (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ) {f f₁ g g₁ : SInf F κ}
     (hf : ActsD (evI F) (fun t => ⇑(L t)) ⇑f ⇑f₁) (hg : ActsD (evI F) (fun t => ⇑(L t)) ⇑g ⇑g₁) :
     ActsD (evI F) (fun t => ⇑(L t)) ⇑(c • f + g) ⇑(c • f₁ + g₁) := by
@@ -82,11 +106,17 @@ theorem actsD_comb (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ
       ⟨hr.1, by rw [tens_eq_pureA _ hr.1]; exact Submodule.subset_span ⟨φ, _, hR, rfl⟩⟩
     exact key r (hrest f) (hrest g) x
 
+/- English proof (translation)
+Simplify `actsD_comb L 1 hf hg` using `only [one_smul]`.
+-/
 theorem actsD_add (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) {f f₁ g g₁ : SInf F κ}
     (hf : ActsD (evI F) (fun t => ⇑(L t)) ⇑f ⇑f₁) (hg : ActsD (evI F) (fun t => ⇑(L t)) ⇑g ⇑g₁) :
     ActsD (evI F) (fun t => ⇑(L t)) ⇑(f + g) ⇑(f₁ + g₁) := by
   simpa only [one_smul] using actsD_comb L 1 hf hg
 
+/- English proof (translation)
+Simplify `actsD_comb L c hf (actsD_zero' L)` using `only [add_zero]`.
+-/
 theorem actsD_smul (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ) {f f₁ : SInf F κ}
     (hf : ActsD (evI F) (fun t => ⇑(L t)) ⇑f ⇑f₁) :
     ActsD (evI F) (fun t => ⇑(L t)) ⇑(c • f) ⇑(c • f₁) := by
@@ -94,6 +124,25 @@ theorem actsD_smul (L : ℝ → Module.End ℂ ((κ → AF F) → ℂ)) (c : ℂ
 
 end GlobalTheory.RealLieOp
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ a a' Bs Γ Xc om om' R Rf hM γ hγ`. Set `L : ℝ → Module.End ℂ ((Fin a × Fin (a + a') → AF F) → ℂ)` to `fun t => om (1, γ (Multiplicative.ofAdd t))`. Set `L' : ℝ → Module.End ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ)` to `fun t => om' (1, γ (Multiplicative.ofAdd t))`. Set `S : Set (R.Pi × R.Pi)` to `{z | ∃ f f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a × Fin (a + a')), f ∈ Γ.M.Pol Bs.ψ Bs.emb ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (fun t => ⇑(L t)) ⇑f ⇑f₁ …`. Establish `hspan : ∀ z ∈ Submodule.span ℂ S, ∃ (f f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a × Fin (a + a'))) (f' f₁' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a' × Fin (a + a'))), f ∈ Γ.M.Pol Bs.ψ Bs.emb ∧ GlobalTheory.Indefinit …`.
+
+Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Break down `hz with ⟨f, f₁, hf, h1, rfl⟩ | ⟨f, f₁, hf, h1, rfl⟩` into its components or cases. Conclude with `⟨f, f₁, 0, 0, hf, h1, zero_mem _, GlobalTheory.RealLieOp.actsD_zero' L', by simp⟩`.
+
+Conclude with `⟨0, 0, f, f₁, zero_mem _, GlobalTheory.RealLieOp.actsD_zero' L, hf, h1, by simp⟩`. Consider the case `zero => exact ⟨0, 0, 0, 0, zero_mem _, GlobalTheory.RealLieOp.actsD_zero' L, zero_mem _, GlobalTheory.RealLieOp.actsD_zero' L', Prod.ext (by simp) (by simp)⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨f, f₁, f', f₁', hf, h1, hf', h1', rfl⟩` from `hx`. Take `⟨g, g₁, g', g₁', hg, h2, hg', h2', rfl⟩` from `hy`.
+
+Use `⟨f + g, f₁ + g₁, f' + g', f₁' + g₁', add_mem hf hg, GlobalTheory.RealLieOp.actsD_add L h1 h2, add_mem hf' hg', GlobalTheory.RealLieOp.actsD_add L' h1' h2', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Prod.mk_add_mk]`. Use `abel_nf`. Consider the case `smul c x _ hx`. Take `⟨f, f₁, f', f₁', hf, h1, hf', h1', rfl⟩` from `hx`.
+
+Use `⟨c • f, c • f₁, c • f', c • f₁', Submodule.smul_mem _ c hf, GlobalTheory.RealLieOp.actsD_smul L c h1, Submodule.smul_mem _ c hf', GlobalTheory.RealLieOp.actsD_smul L' c h1', ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, Prod.smul_mk, smul_add]`. Establish `hgraph : ∀ z ∈ Submodule.span ℂ S, z.1 = 0 → z.2 = 0`. Introduce `z hz hz0`. Take `⟨f, f₁, f', f₁', hf, h1, hf', h1', rfl⟩` from `hspan z hz`.
+
+Establish `e : R.p f + R.p' f' = 0` using `hz0`. Establish `e2 : R.p f = R.p' (-f')` using `by rw [map_neg]; exact eq_neg_of_add_eq_zero_left e`. Establish `hn : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ActsD (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (fun t => ⇑(L' t)) ⇑(-f') ⇑(-f₁')`. Simplify `GlobalTheory.RealLieOp.actsD_smul L' (-1) h1'` using `only [neg_one_smul]`. Use `hM.real.lie γ hγ f hf (-f') (neg_mem hf') f₁ (-f₁') h1 hn e2` as an intermediate fact.
+
+Use `show R.p f₁ + R.p' f₁' = 0`. Rewrite using `[this, map_neg, neg_add_cancel]`. Take `⟨T, hT⟩` from `LinearMap.exists_extend (Submodule.span ℂ S).toLinearPMap.toFun`. Establish `hT' : ∀ z ∈ Submodule.span ℂ S, T z.1 = z.2`. Introduce `z hz`.
+
+Establish `hz' : z ∈ (Submodule.span ℂ S).toLinearPMap.graph`. Rewrite using `[Submodule.toLinearPMap_graph_eq _ hgraph]`. Conclude with `hz`. Take `⟨y, hy1, hy2⟩` from `(LinearPMap.mem_graph_iff _).1 hz'`. Rewrite using `[← hy1, ← hy2]`.
+
+Conclude with `LinearMap.congr_fun hT y`. Use `⟨T, fun f hf f₁ h1 => ?_, fun f hf f₁ h1 => ?_⟩` and prove the remaining obligations. Conclude with `(hT' (R.p f, R.p f₁) (Submodule.subset_span (Or.inl ⟨f, f₁, hf, h1, rfl⟩))).symm`. Conclude with `(hT' (R.p' f, R.p' f₁) (Submodule.subset_span (Or.inr ⟨f, f₁, hf, h1, rfl⟩))).symm`.
+-/
 theorem GlobalTheory.RealLieOp.exists_realOp : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {a a' : ℕ}
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
     (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V Γ.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Γ.V' Γ.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a')

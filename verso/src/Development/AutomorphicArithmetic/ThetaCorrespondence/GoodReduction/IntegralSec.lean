@@ -15,6 +15,21 @@ open GlobalTheory.HTLat GlobalTheory.Published GlobalTheory.Published.AbVarRed I
 attribute [local instance] Over.cartesianMonoidalCategory
 
 open GlobalTheory.Cartier in
+/- English proof (translation)
+Take `⟨u, hu⟩` from `GlobalTheory.exists_secMaps hP hM v hv t`. Set `t' : M.Sec` to `⟨fun m => resG X le_top g₀ * u.f m, fun m m' => by`. Establish `e` using `u.compat m m'`. Express the relevant statement in the definitionally equal form `resG X _ _ = _ * resG X _ _ at e ⊢`. Rewrite using `[map_mul, map_mul, resG_resG, resG_resG, e, mul_left_comm]⟩`.
+
+Use `⟨t', ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨n, j⟩`. Take `⟨m, rfl⟩ : ∃ m : M.ι, j = fun _ => m` from `⟨j ⟨⟩, rfl⟩`. Use `ext_germ fun y hy => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `LB.mem_of_cover hP (f y)`.
+
+Set `V : Y.Opens` to `N.U n ⊓ (M.pull f).U (fun _ => m) ⊓ (P.pull f).U (fun _ => i)`. Establish `hyV : y ∈ V` using `⟨hy, (pull_U P f (fun _ => i)).ge hi⟩`. Establish `h₂ : V ≤ N.U n ⊓ (M.pull f).U (fun _ => m)` using `inf_le_left`. Establish `hn : V ≤ N.U n` using `inf_le_left.trans inf_le_left`. Establish `hq : V ≤ (P.pull f).U (fun _ => i)` using `inf_le_right`.
+
+Establish `hm : V ≤ f ⁻¹ᵁ M.U m` using `(h₂.trans inf_le_right).trans (pull_U M f (fun _ => m)).le`. Establish `hi' : V ≤ f ⁻¹ᵁ P.U i` using `hq.trans (pull_U P f (fun _ => i)).le`. Establish `h₃ : V ≤ f ⁻¹ᵁ (M.U m ⊓ P.U i)` using `le_inf hm hi'`. Rewrite using `[← germ_resG h₂ y hyV, ← germ_resG h₂ y hyV]`. Use `congr 1`.
+
+Establish `e₁` using `hb.on n (fun _ => i) hn hq`. Establish `e₂` using `H n i m V (le_inf hn hq) h₂ h₃`. Establish `e₃` using `congrArg (fun a => resG Y h₃ ((f.app _).hom a)) (hu (m, i))`. Simplify using `only [map_mul, app_resG, resG_resG] at e₃`. Establish `e₄ : resG Y hq ((secPull t f).f (fun _ => i)) = resG Y hi' ((f.app _).hom (t.f i))` using `resG_resG _ _ _`.
+
+Establish `e₅ : resG Y (h₂.trans inf_le_right) ((secPull t' f).f (fun _ => m)) = resG Y (le_top : V ≤ f ⁻¹ᵁ ⊤) ((f.app ⊤).hom g₀) * resG Y hm ((f.app _).hom (u.f m))`. Use `(resG_resG _ _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Y hm ((f.app _).hom (resG X le_top g₀ * u.f m)) = _`. Rewrite using `[map_mul, map_mul, app_resG, resG_resG]`. Both sides reduce to the same expression.
+
+Rewrite using `[map_mul, resG_resG, resG_resG, e₅, e₃]`. Use `e₁.trans ?_` and prove the remaining obligations. Rewrite using `[e₂, e₄]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem UpperTheory.Lit.Nos.IntegralSec.sec_of_rel {X Y : Scheme.{0}} (f : Y ⟶ X) (P M : LB X) (N : LB Y)
     (hP : P.IsLB) (hM : M.IsLB) (w : LB.Iso (M.pull f) N) (w₁ : LB.Iso (P.pull f) N)
     (v : LB.Iso P M) (hv : v.IsGen) (g₀ : Γ(X, ⊤))
@@ -63,6 +78,9 @@ private theorem UpperTheory.Lit.Nos.IntegralSec.sec_of_rel {X Y : Scheme.{0}} (f
   rw [e₂, e₄]
   ring
 
+/- English proof (translation)
+Establish `e : (Scheme.ΓSpecIso (CommRingCat.of W)).inv ≫ p.appTop ≫ f.appTop = CommRingCat.ofHom (algebraMap W K') ≫ (Scheme.ΓSpecIso (CommRingCat.of K')).inv ≫ q.appTop`. Rewrite using `[← Scheme.Hom.comp_appTop, h, Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Conclude with `congrArg (fun φ => resG Y (le_top : V ≤ ⊤) (φ.hom a)) e.symm`.
+-/
 private theorem UpperTheory.Lit.Nos.IntegralSec.cst_algebraMap {W K' : Type} [CommRing W] [Field K'] [Algebra W K']
     {X Y : Scheme.{0}} (p : X ⟶ Sp W) (f : Y ⟶ X) (q : Y ⟶ Sp K')
     (h : f ≫ p = q ≫ spMap (algebraMap W K')) (V : Y.Opens) (a : W) :
@@ -73,6 +91,11 @@ private theorem UpperTheory.Lit.Nos.IntegralSec.cst_algebraMap {W K' : Type} [Co
     rw [← Scheme.Hom.comp_appTop, h, Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc]
   exact congrArg (fun φ => resG Y (le_top : V ≤ ⊤) (φ.hom a)) e.symm
 
+/- English proof (translation)
+Establish `e : (Scheme.ΓSpecIso (CommRingCat.of K')).inv ≫ q.appTop ≫ Y.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op ≫ x.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of K')).hom = 𝟙 _`. Rewrite using `[Scheme.Hom.map_appLE_assoc]`. Establish `: q.appTop ≫ x.appLE ⊤ ⊤ le_top = 𝟙 _`. Establish `h1 : x.appLE ⊤ ⊤ le_top = x.appTop` using `(Scheme.Hom.app_eq_appLE x).symm`. Rewrite using `[h1, ← Scheme.Hom.comp_appTop, hx, Scheme.Hom.id_appTop]`.
+
+Rewrite using `[reassoc_of% this, Iso.inv_hom_id]`. Conclude with `congrArg (fun φ => φ.hom c) e`.
+-/
 private theorem UpperTheory.Lit.Nos.IntegralSec.ev_cst {K' : Type} [Field K'] {Y : Scheme.{0}} (q : Y ⟶ Sp K')
     (x : Sp K' ⟶ Y) (hx : x ≫ q = 𝟙 _) (V : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ V) (c : K') :
     (Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE V ⊤ h).hom (GlobalTheory.AbLaw.cst q V c)) = c := by
@@ -85,6 +108,11 @@ private theorem UpperTheory.Lit.Nos.IntegralSec.ev_cst {K' : Type} [Field K'] {Y
     rw [reassoc_of% this, Iso.inv_hom_id]
   exact congrArg (fun φ => φ.hom c) e
 
+/- English proof (translation)
+Establish `key : ∀ (g g' : Sp K' ⟶ X) (_ : g = g') (k : ⊤ ≤ g ⁻¹ᵁ U) (k' : ⊤ ≤ g' ⁻¹ᵁ U), g.appLE U ⊤ k = g'.appLE U ⊤ k'`. Introduce and unpack `g _ rfl k k'`. Both sides reduce to the same expression. Establish `e : f.appLE U V hle ≫ x.appLE V ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of K')).hom = e₀.appLE U ⊤ h₀ ≫ (Scheme.ΓSpecIso (CommRingCat.of W)).hom ≫ CommRingCat.ofHom (algebraMap W K')`. Establish `h1 : (spMap (algebraMap W K')).appLE ⊤ ⊤ le_top = (spMap (algebraMap W K')).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`.
+
+Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc, ← Category.assoc, Scheme.Hom.appLE_comp_appLE]`. Use `congr 1`. Conclude with `(key _ _ hx _ _).trans ((Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm.trans (congrArg (e₀.appLE U ⊤ h₀ ≫ ·) h1))`. Conclude with `congrArg (fun φ => φ.hom s) e`.
+-/
 private theorem UpperTheory.Lit.Nos.IntegralSec.ev_pull {W K' : Type} [CommRing W] [Field K'] [Algebra W K']
     {X Y : Scheme.{0}} (f : Y ⟶ X) (x : Sp K' ⟶ Y) (e₀ : Sp W ⟶ X)
     (hx : x ≫ f = spMap (algebraMap W K') ≫ e₀) (U : X.Opens) (V : Y.Opens) (hle : V ≤ f ⁻¹ᵁ U)
@@ -105,6 +133,17 @@ private theorem UpperTheory.Lit.Nos.IntegralSec.ev_pull {W K' : Type} [CommRing 
       (congrArg (e₀.appLE U ⊤ h₀ ≫ ·) h1))
   exact congrArg (fun φ => φ.hom s) e
 
+/- English proof (translation)
+Introduce `W K' _ _ _ _ _ _ G P M N hP hM _ w w₁ _ _ hI v c hv hrel t b hb`. Take `⟨e₀, -, x, hx₁, hx₂, i, m, n, hi, hm, h₁, h₂, a, ha⟩` from `hI`. Establish `hle : ∀ (n : N.ι) (i : P.ι) (m : M.ι), N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m) ≤ pullback.fst G.hom (spMap (algebraMap W K')) ⁻¹ᵁ (M.U m ⊓ P.U i)` using `fun n i m => le_inf (inf_le_right.trans (GlobalTheory.Cartier.pull_U M _ (fun _ => m)).le) ((inf_le_left.trans inf_le_right).trans (GlobalTheory.Cartier.pull_U P _ (fun _ => i)).le)`. Establish `h₃ : ⊤ ≤ x ⁻¹ᵁ (N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m))` using `fun y hy => ⟨h₁ hy, (h₂ hy).2⟩`. Establish `h₀ : ⊤ ≤ e₀ ⁻¹ᵁ (M.U m ⊓ P.U i)` using `fun y hy => ⟨hm hy, hi hy⟩`.
+
+Establish `hres : ∀ (U V : (pullback G.hom (spMap (algebraMap W K'))).Opens) (k : V ≤ U) (hU : ⊤ ≤ x ⁻¹ᵁ U) (hV : ⊤ ≤ x ⁻¹ᵁ V) (s : Γ(pullback G.hom (spMap (algebraMap W K')), U)), (x.appLE V ⊤ hV).hom (GlobalTheory.AbLaw.rs _ k s) = (x.appLE U ⊤ hU).hom s` using `fun U V k hU hV s => congrArg (fun φ => φ.hom s) (Scheme.Hom.map_appLE x hV (homOfLE k).op)`. Establish `e` using `congrArg (fun s => (Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h₃).hom s)) (hrel n i m (hle n i m))`. Simplify using `only [map_mul] at e`. Use `erw [hres _ _ _ h₁, hres _ _ _ h₂, UpperTheory.Lit.Nos.IntegralSec.ev_cst _ x hx₂, UpperTheory.Lit.Nos.IntegralSec.ev_pull _ x e₀ hx₁ _ _ _ _ h₀] at e`. Establish `hu : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of K')).hom.hom ((x.appLE _ ⊤ h₂).hom (w.s (n, fun _ => m)).val))` using `((Units.isUnit _).map _).map _`.
+
+Establish `hv₀ : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of W)).hom.hom ((e₀.appLE _ ⊤ h₀).hom (v.s (m, i)).val))` using `((Units.isUnit _).map _).map _`. Establish `e'` using `mul_right_cancel₀ hu.ne_zero (ha.symm.trans e)`. Take `⟨r, hr⟩` from `hv₀.exists_right_inv`. Establish `hc : c = algebraMap W K' (a * r)`. Rewrite using `[map_mul, e', _root_.mul_assoc, ← map_mul]`.
+
+Conclude with `((congrArg (fun z => c * algebraMap W K' z) hr).trans (by rw [map_one, _root_.mul_one])).symm`. Use `UpperTheory.Lit.Nos.IntegralSec.sec_of_rel _ P M N hP hM w w₁ v hv (G.hom.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of W)).inv.hom (a * r))) ?_ t b hb` and prove the remaining obligations. Introduce `n i m V k₁ k₂ k₃`. Establish `k : V ≤ N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m)` using `le_inf k₁ (k₂.trans inf_le_right)`. Establish `e` using `congrArg (GlobalTheory.AbLaw.rs _ k) (hrel n i m (hle n i m))`.
+
+Rewrite `e` using `[map_mul, map_mul, GlobalTheory.AbLaw.rs_cst, hc, UpperTheory.Lit.Nos.IntegralSec.cst_algebraMap G.hom _ _ pullback.condition]`. Use `((GlobalTheory.AbLaw.rs_rs _ _ _).symm.trans e).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) (congrArg (_ * ·) (GlobalTheory.LB.resG_appLE _ _ k _)) (GlobalTheory.AbLaw.rs_rs _ _ _)`.
+-/
 theorem UpperTheory.Lit.Nos.integralSec :
     ∀ (W K' : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] (G : Over (Sp W)) (P M : LB G.left) (N : LB (pullback G.hom (spMap (algebraMap W K')))), P.IsLB → M.IsLB → N.IsLB → ∀ (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) N) (w₁ : LB.Iso (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))) N), w.IsGen → w₁.IsGen → GlobalTheory.SectionLattice.IntegralAtSection G.hom w w₁ → ∀ (v : LB.Iso P M) (c : K'), v.IsGen → (∀ (n : N.ι) (i : P.ι) (m : M.ι) (hle : N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m) ≤ pullback.fst G.hom (spMap (algebraMap W K')) ⁻¹ᵁ (M.U m ⊓ P.U i)), GlobalTheory.AbLaw.rs _ (inf_le_left : N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m) ≤ N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i)) (w₁.s (n, fun _ => i)).val = GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) _ c * ((pullback.fst G.hom (spMap (algebraMap W K'))).appLE (M.U m ⊓ P.U i) _ hle).hom (v.s (m, i)).val * GlobalTheory.AbLaw.rs _ (le_inf (inf_le_left.trans inf_le_left) inf_le_right : N.U n ⊓ (P.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => i) ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m) ≤ N.U n ⊓ (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))).U (fun _ => m)) (w.s (n, fun _ => m)).val) → ∀ (t : P.Sec) (b : N.Sec), GlobalTheory.Cartier.SecMaps w₁ (GlobalTheory.Cartier.secPull t (pullback.fst G.hom (spMap (algebraMap W K')))) b → ∃ t' : M.Sec, GlobalTheory.Cartier.SecMaps w (GlobalTheory.Cartier.secPull t' (pullback.fst G.hom (spMap (algebraMap W K')))) b := by
   intro W K' _ _ _ _ _ _ G P M N hP hM _ w w₁ _ _ hI v c hv hrel t b hb

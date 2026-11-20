@@ -11,6 +11,9 @@ namespace GlobalTheory.Proof.unipotentRadicals_act_affine_unfoldingSpaces
 
 variable {F : Type} [Field F] {n' c' n c : ℕ}
 
+/- English proof (translation)
+Use extensionality with `s l`. Simplify using `using h s l`.
+-/
 theorem hom_ext {a b : ℕ} {x y : (Fin a → F) →ₗ[F] (Fin b → F)}
     (h : ∀ s l, x (Pi.single s 1) l = y (Pi.single s 1) l) : x = y := by
   ext s l
@@ -26,10 +29,32 @@ noncomputable def linPart (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) :
     simp only [LinearMap.sub_apply, LinearMap.smul_apply, Pi.sub_apply, Pi.smul_apply, linearMap_unfolding_apply_single, RingHom.id_apply]
     split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[linearMap_unfolding_apply_single, dif_pos p.2]`.
+-/
 theorem unfoldingAffineLinearMap_apply_freeEntry (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (t : Loc.FC n' c' n c → F) (p : Loc.FC n' c' n c) :
     Loc.xx1 xj t (Pi.single p.1.2 1) p.1.1 = t p := by
   rw [linearMap_unfolding_apply_single, dif_pos p.2]
 
+/- English proof (translation)
+Establish `key : ∀ l : Fin (n' + c'), l.1 < n' + s → x (Pi.single l 1) ∈ Loc.Ufl F n c s`. Introduce `l hl`. Distinguish the cases in `hln : l.1 < n'`. Establish `hsingle : (Pi.single l (1 : F) : Fin (n' + c') → F) = Loc.inX F n' c' (Pi.single (⟨l.1, hln⟩ : Fin n') 1)`. Use function extensionality and compare the values at `m`.
+
+Rewrite using `[inX_apply]`. Use `split_ifs with hm`. Distinguish the cases in `hml : m = l`. Substitute `hml` using the available equality. Simplify using the standard rewrite rules.
+
+Establish `hne : (⟨m.1, hm⟩ : Fin n') ≠ ⟨l.1, hln⟩` using `fun he => hml (Fin.ext (by simpa using he))`. Simplify using `[hml, hne]`. Establish `hml : m ≠ l` using `fun he => hm (he ▸ hln)`. Simplify using `[hml]`. Rewrite using `[hsingle, h1]`.
+
+Conclude with `inX_mem_Ufl s _`. Establish `hle : n' ≤ l.1` using `not_lt.1 hln`. Establish `hsingle : (Pi.single l (1 : F) : Fin (n' + c') → F) = Loc.eN F (n' + c') (n' + (l.1 - n'))`. Use function extensionality and compare the values at `m`. Rewrite using `[Nat.add_sub_cancel' hle]`.
+
+Distinguish the cases in `hml : m = l`. Substitute `hml` using the available equality. Simplify using `[Loc.eN]`. Establish `hv : m.1 ≠ l.1` using `fun he => hml (Fin.ext he)`. Simplify using `[Loc.eN, hml, hv]`.
+
+Rewrite using `[hsingle, ← sub_add_cancel (x (Loc.eN F (n' + c') (n' + (l.1 - n')))) (Loc.eN F (n + c) (n + (l.1 - n')))]`. Conclude with `Submodule.add_mem _ (Ufl_mono (by omega) (h3 (l.1 - n'))) (eN_mem_Ufl (by omega))`. Rewrite using `[← Finset.univ_sum_single v, map_sum]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.1 < n' + s`.
+
+Establish `hsm : (Pi.single l (v l) : Fin (n' + c') → F) = v l • Pi.single l 1`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hml : m = l`. Substitute `hml` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[hml]`. Rewrite using `[hsm, map_smul]`. Conclude with `Submodule.smul_mem _ _ (key l hl)`. Establish `hz : v l = 0` using `(mem_Ufl.1 hv) l hl`. Rewrite using `[hz, Pi.single_zero, map_zero]`.
+
+Conclude with `Submodule.zero_mem _`.
+-/
 theorem map_Ufl {xj : (Fin n' → F) →ₗ[F] (Fin n → F)} {x : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F)}
     (h1 : ∀ v, x (Loc.inX F n' c' v) = Loc.inX F n c (xj v))
     (h3 : ∀ s : ℕ, x (Loc.eN F (n' + c') (n' + s)) - Loc.eN F (n + c) (n + s) ∈ Loc.Ufl F n c s)
@@ -78,6 +103,31 @@ theorem map_Ufl {xj : (Fin n' → F) →ₗ[F] (Fin n → F)} {x : (Fin (n' + c'
     rw [hz, Pi.single_zero, map_zero]
     exact Submodule.zero_mem _
 
+/- English proof (translation)
+Introduce `H F _ n' c' n c hc hc' r hr r' hr' xj'`. Establish `hR : Loc.R1cond F n c r` using `hr.1`. Establish `hR' : Loc.R1cond F n' c' r'` using `hr'.1`. Take `⟨γ, hγ⟩` from `exists_res hr`. Take `⟨γ', hγ'⟩` from `exists_res hr'`.
+
+Take `⟨xj, hxj⟩ : ∃ xj : (Fin n' → F) →ₗ[F] (Fin n → F), xj = γ.symm.toLinearMap ∘ₗ xj' ∘ₗ γ'.symm.toLinearMap` from `⟨_, rfl⟩`. Establish `hy : ∀ t, ∃ t', r.toLinearMap ∘ₗ Loc.xx1 xj t ∘ₗ r'.toLinearMap = Loc.xx1 xj' t'`. Introduce `t`. Take `⟨c1, c2, c3⟩` from `(H F n' c' n c hc hc' xj (Loc.xx1 xj t)).1 ⟨t, rfl⟩`. Use `(H F n' c' n c hc hc' xj' _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[hγ', c1, hγ, hxj]`. Simplify using the standard rewrite rules. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+
+Rewrite using `[hR'.2.1, c2, hR.2.1]`. Introduce `s`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Establish `hsplit : r (Loc.xx1 xj t (r' (Loc.eN F (n' + c') (n' + s)))) - Loc.eN F (n + c) (n + s) = r (Loc.xx1 xj t (Loc.eN F (n' + c') (n' + s)) - Loc.eN F (n + c) (n + s)) + (r (Loc.eN F (n + c) (n + s)) - Loc.eN F (n + c) (n + s)) + r (Loc.xx1 xj t (r' (Loc.eN F (n' + c') (n' + s)) - Lo …`. Simplify using `only [map_sub]`.
+
+Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem _ (Submodule.add_mem _ (hR.1 s _ (c3 s)) (hR.2.2 s)) (hR.1 s _ (map_Ufl c1 c3 s (hR'.2.2 s)))`. Take `⟨f, hf⟩ : ∃ f : (Loc.FC n' c' n c → F) → (Loc.FC n' c' n c → F), ∀ t p, f t p = (r.toLinearMap ∘ₗ Loc.xx1 xj t ∘ₗ r'.toLinearMap) (Pi.single p.1.2 1) p.1.1` from `⟨_, fun _ _ => rfl⟩`. Establish `hyf : ∀ t, r.toLinearMap ∘ₗ Loc.xx1 xj t ∘ₗ r'.toLinearMap = Loc.xx1 xj' (f t)`.
+
+Introduce `t`. Take `⟨t', ht'⟩` from `hy t`. Establish `hft : f t = t'`. Use function extensionality and compare the values at `p`. Rewrite using `[hf, ht', unfoldingAffineLinearMap_apply_freeEntry]`.
+
+Rewrite using `[hft, ht']`. Take `⟨L, hL⟩ : ∃ L : (Loc.FC n' c' n c → F) →ₗ[F] (Loc.FC n' c' n c → F), ∀ t p, L t p = (r.toLinearMap ∘ₗ linPart xj t ∘ₗ r'.toLinearMap) (Pi.single p.1.2 1) p.1.1` from `⟨{ toFun := fun t p => (r.toLinearMap ∘ₗ linPart xj t ∘ₗ r'.toLinearMap) (Pi.single p.1.2 1) p.1.1 map_add' := fun t u => by`. Use function extensionality and compare the values at `p`. Simplify using `only [map_add, LinearMap.add_comp, LinearMap.comp_add, LinearMap.add_apply, Pi.add_apply]`. Use the proof step `map_smul' := fun a t => by`.
+
+Use function extensionality and compare the values at `p`. Simplify using `only [map_smul, LinearMap.smul_comp, LinearMap.comp_smul, LinearMap.smul_apply, Pi.smul_apply, RingHom.id_apply] }, fun _ _ => rfl⟩`. Establish `hxx : ∀ t : Loc.FC n' c' n c → F, Loc.xx1 xj t = linPart xj t + Loc.xx1 xj 0`. Introduce `t`. Simplify using `only [linPart, LinearMap.coe_mk, AddHom.coe_mk, sub_add_cancel]`.
+
+Establish `hLf : ∀ t, L t + f 0 = f t`. Introduce `t`. Use function extensionality and compare the values at `p`. Rewrite using `[Pi.add_apply, hL, hf, hf, hxx t]`. Simplify using `only [LinearMap.comp_add, LinearMap.add_comp, LinearMap.add_apply, Pi.add_apply]`.
+
+Establish `hinj : Function.Injective L`. Introduce `t u htu`. Establish `hfe : f t = f u` using `by rw [← hLf t, ← hLf u, htu]`. Establish `hyy : r.toLinearMap ∘ₗ Loc.xx1 xj t ∘ₗ r'.toLinearMap = r.toLinearMap ∘ₗ Loc.xx1 xj u ∘ₗ r'.toLinearMap` using `by rw [hyf t, hyf u, hfe]`. Establish `hx : Loc.xx1 xj t = Loc.xx1 xj u`.
+
+Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv` using `congrArg (fun g => r.symm (g (r'.symm v))) hyy`. Simplify using `using hv`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `rw [← unfoldingAffineLinearMap_apply_freeEntry xj t p, ← unfoldingAffineLinearMap_apply_freeEntry xj u p, hx]`.
+
+Use `⟨xj, LinearEquiv.ofInjectiveEndo L hinj, f 0, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hyf t]`. Use `congr 1`. Conclude with `(hLf t).symm`.
+-/
 theorem affine_action : (∀ (F : Type) [Field F] (n' c' n c : ℕ), 1 ≤ c → c' = c + 1 → ∀ (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (x : (Fin (n' + c') → F) →ₗ[F] (Fin (n + c) → F)), (∃ t : Loc.FC n' c' n c → F, x = Loc.xx1 xj t) ↔ ((∀ v, x (Loc.inX F n' c' v) = Loc.inX F n c (xj v)) ∧ x (Loc.eN F (n' + c') n') = Loc.eN F (n + c) n ∧ ∀ s : ℕ, x (Loc.eN F (n' + c') (n' + s)) - Loc.eN F (n + c) (n + s) ∈ Loc.Ufl F n c s)) → ∀ (F : Type) [Field F] (n' c' n c : ℕ), 1 ≤ c → c' = c + 1 → ∀ r ∈ Loc.R1 F n c, ∀ r' ∈ Loc.R1 F n' c', ∀ xj' : (Fin n' → F) →ₗ[F] (Fin n → F), ∃ (xj : (Fin n' → F) →ₗ[F] (Fin n → F)) (T : (Loc.FC n' c' n c → F) ≃ₗ[F] (Loc.FC n' c' n c → F)) (b : Loc.FC n' c' n c → F), ∀ t, r.toLinearMap ∘ₗ Loc.xx1 xj t ∘ₗ r'.toLinearMap = Loc.xx1 xj' (T t + b) := by
   intro H F _ n' c' n c hc hc' r hr r' hr' xj'
   have hR : Loc.R1cond F n c r := hr.1

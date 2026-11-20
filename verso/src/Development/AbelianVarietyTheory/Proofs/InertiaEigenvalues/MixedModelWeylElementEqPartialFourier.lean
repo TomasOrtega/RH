@@ -3,6 +3,27 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.RowMap
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.UnramifiedStandardAddCharConductorPropertiesStatement
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ hU r M ψ hψ f hf`. Use `letI := M.mF`. Use `haveI := M.bF`. Use `haveI := M.haarF`. Use `haveI : LocallyCompactSpace F := hU.lcF`.
+
+Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Establish `hψc : Continuous (fun x => ψ x)` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).1.continuous`. Use function extensionality and compare the values at `Y`. Take `⟨A, b, c, l⟩` from `Y`. Establish `hw : ((wS F : SpecialLinearGroup (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = !![0, 1; -1, 0]` using `rfl`.
+
+Simplify using `only [WeilMix.negB, WeilMix.ptrB, WeilMix.rowAct, WeilMix.rowMap, fourG, hw]`. Simplify using the standard rewrite rules. Use `set μ : Measure (Fin r → F) := Measure.pi fun _ : Fin r => M.μF with hμ`. Use `haveI : μ.IsNegInvariant := Measure.IsAddHaarMeasure.isNegInvariant_of_regular μ`. Use `set G : (Fin r → F) → ℂ := fun x => (∫ b', f (A, b', x, l) * ψ (b' ⬝ᵥ c) ∂μ) * ψ (x ⬝ᵥ b) with hG`.
+
+Use `set H : (Fin r → F) → (Fin r → F) → ℂ := fun x b' => f (A, b', x, l) * ψ (b' ⬝ᵥ c) * ψ (x ⬝ᵥ b) with hH`. Establish `hHc : Continuous (Function.uncurry H)`. Establish `h1 : Continuous (fun p : (Fin r → F) × (Fin r → F) => f (A, p.2, p.1, l))` using `hf.1.continuous.comp (by fun_prop)`. Establish `h2 : Continuous (fun p : (Fin r → F) × (Fin r → F) => ψ (p.2 ⬝ᵥ c))` using `hψc.comp (continuous_snd.dotProduct continuous_const)`. Establish `h3 : Continuous (fun p : (Fin r → F) × (Fin r → F) => ψ (p.1 ⬝ᵥ b))` using `hψc.comp (continuous_fst.dotProduct continuous_const)`.
+
+Conclude with `(h1.mul h2).mul h3`. Establish `hHs : HasCompactSupport (Function.uncurry H)`. Use `HasCompactSupport.intro ((hf.2.isCompact).image (show Continuous (fun Y : Gl r F => (Y.2.2.1, Y.2.1)) by fun_prop)) ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hne`.
+
+Apply `hp` to reduce the goal to its premises. Use `⟨(A, p.2, p.1, l), subset_tsupport _ ?_, rfl⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[Function.uncurry, H, h0]`.
+
+Establish `hint : Integrable (Function.uncurry H) (μ.prod μ)` using `hHc.integrable_of_hasCompactSupport hHs`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [G, neg_dotProduct, neg_neg]`.
+
+Both sides reduce to the same expression. Use `_ = ∫ x, G x ∂μ := integral_neg_eq_self G μ`. Use `_ = ∫ x, ∫ b', H x b' ∂μ ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+
+Simplify using `only [G, H]`. Rewrite using `[integral_mul_const]`. Use `_ = ∫ b', ∫ x, H x b' ∂μ ∂μ := integral_integral_swap hint`. Use `_ = _ := by`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b'`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [H]`. Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul, dotProduct_comm b' c, add_comm]`.
+-/
 theorem GlobalTheory.JR.WeilMix.negB_ptrB_wS_ptrB : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∀ f : Gl r F → ℂ, IsTest f → WeilMix.negB (WeilMix.ptrB M ψ (WeilMix.rowAct (wS F) (WeilMix.ptrB M ψ f))) = fourG M ψ f := by
   intro F E _ _ _ _ hU r M ψ hψ f hf
   letI := M.mF

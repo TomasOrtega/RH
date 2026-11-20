@@ -16,14 +16,27 @@ namespace GlobalTheory.CompanionTheory.UnfoldingAlt.TiDeriv
 abbrev archT (Y : ArchMatrix ℚ 3) : ArchMatrix ℚ 3 :=
   Matrix.transpose (show Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ) from Y)
 
+/- English proof (translation)
+The claim follows from `Matrix.exp_transpose _`.
+-/
 theorem exp_archT (Y : ArchMatrix ℚ 3) : NormedSpace.exp (archT Y) = archT (NormedSpace.exp Y) :=
   Matrix.exp_transpose _
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose`. Rewrite using `[Matrix.transpose_mul]`.
+-/
 theorem ti_mul' (a b : G3) : ti (a * b) = ti a * ti b := by
   apply Units.ext
   change (b.inv * a.inv).transpose = a.inv.transpose * b.inv.transpose
   rw [Matrix.transpose_mul]
 
+/- English proof (translation)
+Establish `e : (AdelicGLn.prodEquiv ℚ 3 g)⁻¹ = AdelicGLn.prodEquiv ℚ 3 g⁻¹` using `(map_inv _ _).symm`. Establish `e1 : ((AdelicGLn.prodEquiv ℚ 3 g).1)⁻¹ = (AdelicGLn.prodEquiv ℚ 3 g⁻¹).1` using `congrArg Prod.fst e`. Establish `e2 : ((AdelicGLn.prodEquiv ℚ 3 g).2)⁻¹ = (AdelicGLn.prodEquiv ℚ 3 g⁻¹).2` using `congrArg Prod.snd e`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(Units.val (g⁻¹ : G3) b a).1 = Units.val ((AdelicGLn.prodEquiv ℚ 3 g).1)⁻¹ b a`. Rewrite using `[e1]`. Both sides reduce to the same expression. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Units.val (g⁻¹ : G3) b a).2 = Units.val ((AdelicGLn.prodEquiv ℚ 3 g).2)⁻¹ b a`.
+
+Rewrite using `[e2]`. Both sides reduce to the same expression.
+-/
 theorem prodEquiv_ti (g : G3) : AdelicGLn.prodEquiv ℚ 3 (ti g) =
     (ti (AdelicGLn.prodEquiv ℚ 3 g).1, ti (AdelicGLn.prodEquiv ℚ 3 g).2) := by
   have e : (AdelicGLn.prodEquiv ℚ 3 g)⁻¹ = AdelicGLn.prodEquiv ℚ 3 g⁻¹ := (map_inv _ _).symm
@@ -37,6 +50,13 @@ theorem prodEquiv_ti (g : G3) : AdelicGLn.prodEquiv ℚ 3 (ti g) =
     change (Units.val (g⁻¹ : G3) b a).2 = Units.val ((AdelicGLn.prodEquiv ℚ 3 g).2)⁻¹ b a
     rw [e2]; rfl
 
+/- English proof (translation)
+Apply `(AdelicGLn.prodEquiv ℚ 3).injective` to reduce the goal to its premises. Rewrite using `[prodEquiv_ti, prodEquiv_infEmb, prodEquiv_infEmb]`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Units.val ((archEquiv ℚ 3).symm x)⁻¹ b a = Units.val ((archEquiv ℚ 3).symm y) a b`.
+
+Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `(archMatrixEquiv ℚ 3).symm (((x⁻¹ : archGroup ℚ 3) : (ArchMatrix ℚ 3)ˣ) : ArchMatrix ℚ 3) b a = (archMatrixEquiv ℚ 3).symm ((y : (ArchMatrix ℚ 3)ˣ) : ArchMatrix ℚ 3) a b`. Rewrite using `[hxy]`. Both sides reduce to the same expression. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `Units.val (1 : AdelicGLn.FiniteAdelicGL ℚ 3)⁻¹ b a = Units.val (1 : AdelicGLn.FiniteAdelicGL ℚ 3) a b`. Rewrite using `[inv_one]`. Conclude with `congrFun (congrFun (Matrix.transpose_one (n := Fin 3) (α := FiniteAdeleRing (𝓞 ℚ) ℚ)) a) b`.
+-/
 theorem ti_infEmb (x y : archGroup ℚ 3)
     (hxy : ((y : (ArchMatrix ℚ 3)ˣ) : ArchMatrix ℚ 3) =
       archT (((x⁻¹ : archGroup ℚ 3) : (ArchMatrix ℚ 3)ˣ) : ArchMatrix ℚ 3)) :
@@ -55,6 +75,9 @@ theorem ti_infEmb (x y : archGroup ℚ 3)
     rw [inv_one]
     exact congrFun (congrFun (Matrix.transpose_one (n := Fin 3) (α := FiniteAdeleRing (𝓞 ℚ) ℚ)) a) b
 
+/- English proof (translation)
+Apply `ti_infEmb` to reduce the goal to its premises. Establish `e : ((((isExpLieAlgebra ℚ 3).expG Y)⁻¹ : archGroup ℚ 3) : (ArchMatrix ℚ 3)ˣ).val = NormedSpace.exp (-(Y : ArchMatrix ℚ 3))` using `coe_expUnit_inv ℝ (ArchMatrix ℚ 3) _`. Rewrite using `[e, IsExpLieAlgebra.coe_expG, hZ, exp_archT]`.
+-/
 theorem ti_infEmb_expG (Y Z : archLie ℚ 3)
     (hZ : (Z : ArchMatrix ℚ 3) = archT (-(Y : ArchMatrix ℚ 3))) :
     ti (infEmb ℚ 3 ((isExpLieAlgebra ℚ 3).expG Y)) = infEmb ℚ 3 ((isExpLieAlgebra ℚ 3).expG Z) := by
@@ -66,12 +89,24 @@ theorem ti_infEmb_expG (Y Z : archLie ℚ 3)
 def eL (i j : Fin 3) : archLie ℚ 3 :=
   ⟨(Matrix.single i j 1 : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ)), Submodule.mem_top⟩
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(-t) • (Matrix.single j i 1 : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ)) = Matrix.transpose (-(t • (Matrix.single i j 1 : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ))))`. Rewrite using `[Matrix.transpose_neg, Matrix.transpose_smul, Matrix.transpose_single, neg_smul]`.
+-/
 theorem eL_smul (i j : Fin 3) (t : ℝ) :
     (((-t) • eL j i : archLie ℚ 3) : ArchMatrix ℚ 3) = archT (-((t • eL i j : archLie ℚ 3) : ArchMatrix ℚ 3)) := by
   change (-t) • (Matrix.single j i 1 : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ)) =
     Matrix.transpose (-(t • (Matrix.single i j 1 : Matrix (Fin 3) (Fin 3) (mixedEmbedding.mixedSpace ℚ))))
   rw [Matrix.transpose_neg, Matrix.transpose_smul, Matrix.transpose_single, neg_smul]
 
+/- English proof (translation)
+Introduce `F c i j h`. Use function extensionality and compare the values at `g`. Establish `h1` using `(isExpLieAlgebra ℚ 3).hasDerivAt_rightDeriv (h g) (eL i j) 1`. Establish `h2` using `(isExpLieAlgebra ℚ 3).hasDerivAt_rightDeriv (F.2 (c * ti g)) (eL j i) 1`. Establish `h2' : HasDerivAt (fun t : ℝ => archSlice (F : G3 → ℂ) (c * ti g) (1 * (isExpLieAlgebra ℚ 3).expG (t • eL j i))) ((isExpLieAlgebra ℚ 3).rightDeriv (eL j i) (archSlice (F : G3 → ℂ) (c * ti g)) 1) (-(0 : ℝ))`.
+
+Simplify using `using h2`. Establish `h3` using `h2'.scomp (0 : ℝ) (hasDerivAt_neg (0 : ℝ))`. Establish `hfun : (fun t : ℝ => archSlice (fun g : G3 => (F : G3 → ℂ) (c * ti g)) g (1 * (isExpLieAlgebra ℚ 3).expG (t • eL i j))) = (fun t : ℝ => archSlice (F : G3 → ℂ) (c * ti g) (1 * (isExpLieAlgebra ℚ 3).expG (t • eL j i))) ∘ Neg.neg`. Use function extensionality and compare the values at `t`. Simplify using `only [one_mul, archSlice_apply, Function.comp]`.
+
+Rewrite using `[ti_mul', ti_infEmb_expG _ _ (eL_smul i j t), mul_assoc]`. Rewrite `h1` using `[hfun]`. Establish `h4` using `h1.unique h3`. Establish `eL1 : ((EA i j ⟨fun g : G3 => (F : G3 → ℂ) (c * ti g), h⟩ : archSmooth ℚ 3) : G3 → ℂ) g = (isExpLieAlgebra ℚ 3).rightDeriv (eL i j) (archSlice (fun g : G3 => (F : G3 → ℂ) (c * ti g)) g) 1` using `uAction_ι_apply _ _ g`. Establish `eL2 : ((EA j i F : archSmooth ℚ 3) : G3 → ℂ) (c * ti g) = (isExpLieAlgebra ℚ 3).rightDeriv (eL j i) (archSlice (F : G3 → ℂ) (c * ti g)) 1` using `uAction_ι_apply _ _ _`.
+
+Rewrite using `[eL1, eL2, h4]`. Simplify using the standard rewrite rules.
+-/
 theorem EA_comp_ti : ∀ (F : archSmooth ℚ 3) (c : G3) (i j : Fin 3) (h : IsArchSmooth (fun g : G3 => (F : G3 → ℂ) (c * ti g))),
     ((EA i j ⟨fun g : G3 => (F : G3 → ℂ) (c * ti g), h⟩ : archSmooth ℚ 3) : G3 → ℂ) =
       fun g : G3 => -((EA j i F : archSmooth ℚ 3) : G3 → ℂ) (c * ti g) := by

@@ -18,6 +18,13 @@ open GlobalTheory.ZM
 
 namespace GlobalTheory.PELPeriod
 
+/- English proof (translation)
+Establish `pa : ∀ {T : Over B'} (x : T ⟶ G'), pushPt h.1.w (x ≫ w') = pushPt h.1.w x ≫ w` using `fun x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hw, Category.assoc])`. Establish `pd : ∀ {T : Over B'} (x : T ⟶ G'), pushPt h.1.w (x ≫ wd') = pushPt h.1.w x ≫ wd` using `fun x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, hwd, Category.assoc])`. Establish `hB : (L.pull φ).IsLB` using `pull_isLB hL φ`.
+
+Establish `h₁ : LBIso (cubeLB G' ![fst G' G' ≫ w', snd G' G'] (L.pull φ)) (cubeLB G' ![fst G' G', snd G' G' ≫ wd'] (L.pull φ))`. Set `U` to `lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))`. Use `LBIso.chartPull (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullLinComb L _ _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) ha` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa _).trans (by simp [U])`.
+
+Simplify using `[U]`. Use `fin_cases i`. Simplify using `[U]`. Conclude with `(pd _).trans (by simp [U])`. Conclude with `LBIso.trans (DVR.linComb_isLB L' hL' _ _) (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB L' hL' _ _) (GlobalTheory.PowPrimitive.lbIso_linComb hb _ _) (LBIso.trans (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB _ hB _ _) (DVR.linComb_isLB L' hL' _ _) h₁ (GlobalTheory.PowPrimitive.lb …`.
+-/
 theorem adjoint_baseChange {B B' : Scheme.{0}} {G : Over B} {G' : Over B'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {f : B' ⟶ B} {φ : G'.left ⟶ G.left} {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB)
     (hL' : L'.IsLB) (h : IsGrpPullback G' G f φ) (hb : LBIso L' (L.pull φ)) {w wd : G ⟶ G} {w' wd' : G' ⟶ G'}
@@ -68,6 +75,19 @@ def tateIsoMap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
   tower n m hn hm x := by rw [← map_pow, I.tower n m hn hm]
   isom n hn x y := he _ _ _ _ (I.isom n hn x y)
 
+/- English proof (translation)
+Take `⟨τ, φ, hφ, hL, hj, hd⟩` from `h`. Use `haveI := hφ`. Use `haveI := t.ab.comm`. Establish `hi : IsGrpPullback t.A τ.G (𝟙 _) φ.inv.left` using `GlobalTheory.FibreAct.isGrpPullback_of_iso φ.inv`. Establish `e₁ : φ.inv.left ≫ φ.hom.left = 𝟙 _` using `by rw [← Over.comp_left, φ.inv_hom_id, Over.id_left]`.
+
+Establish `hL' : LBIso t.L (τ.PP.L.pull φ.inv.left)` using `LBIso.chartPull (chartPullSec t.L _ _ e₁) (chartPullPull τ.PP.L _ _ rfl) hL.symm`. Take `⟨act, hact⟩` from `GlobalTheory.FibreAct.exists_lift_act hi τ.act`. Establish `hact' : ∀ c, act.act c ≫ φ.inv = φ.inv ≫ τ.act.act c` using `fun c => Over.OverMorphism.ext (hact c)`. Establish `hact'' : ∀ c, τ.act.act c ≫ φ.hom = φ.hom ≫ act.act c` using `fun c => by`. Rewrite using `[← Iso.inv_comp_eq, ← Category.assoc, ← hact', Category.assoc, φ.inv_hom_id, Category.comp_id]`.
+
+Take `⟨hdet, I, hζ, hpt⟩` from `hd ℂ (𝟙 _) em (Category.id_comp _)`. Use `⟨act, fun j => ?_, fun σ => ?_, fun c => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(cancel_epi φ.hom).1 ((hact'' _).symm.trans (hj j))`. Establish `L : ∀ n, LieMult act (𝟙 _) σ n ↔ LieMult τ.act (𝟙 _) σ n` using `fun n => by`. Rewrite using `[GlobalTheory.LiePull.lieMult_pull _ _ _ _ _ _ _ _ _ hi hact ℂ _ σ n, Category.comp_id]`.
+
+Conclude with `⟨fun hs => (L _).2 ((hdet σ).1 hs), fun hs => (L _).2 ((hdet σ).2 hs)⟩`. Conclude with `adjoint_baseChange τ.PP.isLB t.isLB hi hL' (hact c) (hact _) (τ.adj c)`. Set `ψ : (Over.mk (𝟙 (Sp ℂ)) ⟶ τ.G) ≃* (Over.mk (𝟙 (Sp ℂ)) ⟶ t.A)` to `{ toFun := fun y => y ≫ φ.hom invFun := fun y => y ≫ φ.inv left_inv := fun y => by simp right_inv := fun y => by simp map_mul' := fun y y' => MonObj.mul_comp _ _ _ }`. Establish `W : ∀ (s : Sp ℂ ⟶ Sp ℂ), 𝟙 (Sp ℂ) ≫ 𝟙 (Sp ℂ) = s → ∀ (n : ℤ) (x y : Over.mk (𝟙 (Sp ℂ)) ⟶ t.A) (x₀ y₀ : Over.mk s ⟶ τ.G) (c : Γ(Sp ℂ, ⊤)ˣ), x₀.left = x.left ≫ φ.inv.left → y₀.left = y.left ≫ φ.inv.left → Out.WeilIs τ.G τ.PP.L n x₀ y₀ c → Out.WeilIs t.A t.L n x y c`. Introduce and unpack `_ rfl n x y x₀ y₀ c hx hy`.
+
+Conclude with `(GlobalTheory.weilIs_grpPullback_of_comm _ _ τ.G t.A _ _ _ _ τ.PP.isLB t.isLB hi hL' (Over.mk (𝟙 _)) n x y x₀ y₀ c hx hy).2`. Establish `hψ : ∀ y : Over.mk (𝟙 (Sp ℂ)) ⟶ τ.G, y.left = (ψ y).left ≫ φ.inv.left` using `fun y => by show y.left = ((y ≫ φ.hom) ≫ φ.inv).left`. Simplify using the standard rewrite rules. Use `⟨tateIsoMap I ψ (fun c y => ?_) (fun n y y' c => W _ (Category.id_comp _) n _ _ y y' _ (hψ y) (hψ y')), hζ, fun i => ?_⟩` and prove the remaining obligations. Use `show (y ≫ τ.act.act c) ≫ φ.hom = (y ≫ φ.hom) ≫ act.act c`.
+
+Rewrite using `[Category.assoc, hact'', Category.assoc]`. Conclude with `(congrArg (fun z => z.left) (hpt i)).trans (Category.id_comp _)`.
+-/
 theorem exists_act {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {o : Type}
     [CommRing o] {g k : ℕ} {J : Type} {b : TBase o k} {em : o →+* ℂ} {a : J → 𝓞 E}
     {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o} {t : TObj g k J b (spMap em)} (h : PELClass D a bas ρ em t) :

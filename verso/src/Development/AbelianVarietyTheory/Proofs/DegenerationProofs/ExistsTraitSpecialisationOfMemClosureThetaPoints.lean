@@ -21,6 +21,11 @@ noncomputable section
 namespace GlobalTheory.ThetaClosure
 open GlobalTheory.ThetaCharts GlobalTheory.LevCover
 
+/- English proof (translation)
+Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `h : ∑ i ∈ s.support, s i = d`. Use `hG (MvPolynomial.mem_support_iff.1 hs)` as an intermediate fact. Simplify `this` using `[Finsupp.weight_apply, Finsupp.sum]`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem eval₂_smul {R K J : Type} [CommRing R] [CommRing K] (f : R →+* K) {G : MvPolynomial J R} {d : ℕ}
     (hG : G.IsHomogeneous d) (c : K) (v : J → K) :
     MvPolynomial.eval₂ f (c • v) G = c ^ d * MvPolynomial.eval₂ f v G := by
@@ -32,6 +37,13 @@ theorem eval₂_smul {R K J : Type} [CommRing R] [CommRing K] (f : R →+* K) {G
   simp only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h]
   ring
 
+/- English proof (translation)
+Set `S` to `(NormedField.valuation (K := C)).valuationSubring`. Establish `hS : ∀ x, x ∈ S ↔ ‖x‖ ≤ 1` using `fun x => by`. Rewrite using `[Valuation.mem_valuationSubring_iff, NormedField.valuation_apply]`. Conclude with `Iff.rfl`. Use `⟨S, AlgebraicClosure (IsLocalRing.ResidueField S), inferInstance, inferInstance, (algebraMap _ _).comp (IsLocalRing.residue S), ((algebraMap (FractionRing W) C).comp (algebraMap W _)).codRestrict S.toSubring fun w => (hS _).2 (h.1 w), hS, fun x hx => ?_, fun _ => rfl⟩` and prove the remaining obligations.
+
+Rewrite using `[RingHom.comp_apply, (IsLocalRing.residue_eq_zero_iff x).2, map_zero]`. Introduce and unpack `⟨u, rfl⟩`. Establish `e : ((u : S) : C) * ((u⁻¹ : Sˣ) : S) = 1` using `congrArg (fun z : S => (z : C)) u.mul_inv`. Establish `e'` using `congrArg norm e`. Rewrite `e'` using `[norm_mul, norm_one]`.
+
+Use `(hS _).1 ((u⁻¹ : Sˣ) : S).2` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg ((u : S) : C), norm_nonneg (((u⁻¹ : Sˣ) : S) : C)]`.
+-/
 theorem exists_residue {W C : Type} [CommRing W] [IsDomain W] [IsLocalRing W] [NormedField C] [IsUltrametricDist C]
     [Algebra (FractionRing W) C] (h : CExt W (IsLocalRing.maximalIdeal W) C) :
     ∃ (S : ValuationSubring C) (κ : Type) (_ : Field κ) (_ : IsAlgClosed κ) (res : S →+* κ) (j : W →+* S),
@@ -53,6 +65,11 @@ theorem exists_residue {W C : Type} [CommRing W] [IsDomain W] [IsLocalRing W] [N
   have := (hS _).1 ((u⁻¹ : Sˣ) : S).2
   nlinarith [norm_nonneg ((u : S) : C), norm_nonneg (((u⁻¹ : Sˣ) : S) : C)]
 
+/- English proof (translation)
+Establish `hinj` using `IsFractionRing.injective W (FractionRing W)`. Establish `hr : ∀ x, g x ∈ (algebraMap W (FractionRing W)).range` using `fun x => by`. Establish `h1 : IsIntegral ℚ x` using `IsIntegral.of_finite ℚ x`. Establish `h2 : IsIntegral W (g x)` using `h1.map_of_comp_eq (algebraMap ℚ W) g (Subsingleton.elim _ _)`. Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral h2`.
+
+Set `e` to `RingEquiv.ofBijective (algebraMap W (FractionRing W)).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), RingHom.rangeRestrict_surjective _⟩`. Conclude with `⟨e.symm.toRingHom.comp (g.codRestrict _ hr), RingHom.ext fun x => congrArg Subtype.val (e.apply_symm_apply (g.codRestrict _ hr x))⟩`.
+-/
 theorem exists_lift_of_finite {F W : Type} [Field F] [Algebra ℚ F] [FiniteDimensional ℚ F] [CommRing W] [IsDomain W]
     [IsIntegrallyClosed W] [Algebra ℚ W] (g : F →+* FractionRing W) :
     ∃ b : F →+* W, (algebraMap W (FractionRing W)).comp b = g := by
@@ -66,6 +83,9 @@ theorem exists_lift_of_finite {F W : Type} [Field F] [Algebra ℚ F] [FiniteDime
   exact ⟨e.symm.toRingHom.comp (g.codRestrict _ hr), RingHom.ext fun x =>
     congrArg Subtype.val (e.apply_symm_apply (g.codRestrict _ hr x))⟩
 
+/- English proof (translation)
+Use `haveI := o.closed`. Use `haveI := o.charZero`. Take `⟨-, h2, h3, -⟩` from `GlobalTheory.T.thetaCoordinates_exist_unique_separate_points hL K (Sp K) o.P (𝟙 _) m hm (Nat.cast_ne_zero.2 hm.pos.ne') D.La (o.I.ev (m ^ 2)) (fun a => (o.I.onto _ (pow_pos hm.pos 2) _).2 ⟨a, rfl⟩)`. Conclude with `(h3 v').trans (h2 1 v v' ((h3 v).1 hv))`.
+-/
 theorem theta_iff (hL : Laws) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {K : Type}
     [Field K] (o : Full D K) {m : ℕ} (hm : Odd m) {v v' : D.La → K} (hv : o.Theta m v) :
     o.Theta m v' ↔ ∃ c : Kˣ, v' = (c : K) • v := by
@@ -75,12 +95,62 @@ theorem theta_iff (hL : Laws) {E : Type} [Field E] [NumberField E] [IsCMField E]
     (o.I.ev (m ^ 2)) (fun a => (o.I.onto _ (pow_pos hm.pos 2) _).2 ⟨a, rfl⟩)
   exact (h3 v').trans (h2 1 v v' ((h3 v).1 hv))
 
+/- English proof (translation)
+Take `⟨N, i, hi, hq, rfl⟩` from `h`. Use `isProper_str R N` as an intermediate fact. Conclude with `⟨inferInstance, inferInstance⟩`.
+-/
 theorem finiteType_of_qproj {R : Type} [CommRing R] {X : Scheme.{0}} {f : X ⟶ Sp R} (h : IsQProjOver f) :
     QuasiCompact f ∧ LocallyOfFiniteType f := by
   obtain ⟨N, i, hi, hq, rfl⟩ := h
   have := isProper_str R N
   exact ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Introduce `hV h6 hU hX hT hE hA E _ _ _ H D l Xo c W₀ Y K _ _ _ m ρ z v hm hc hv hvan`. Use `letI := H.starRing`. Establish `hL : Laws` using `hV.1.1`. Establish `hN : 0 < m ^ 2` using `pow_pos hm.pos 2`. Use `haveI := c.fin`.
+
+Establish `hζ : IsPrimitiveRoot (zeta (m ^ 2)) (m ^ 2)` using `Complex.isPrimitiveRoot_exp _ hN.ne'`. Set `L : IntermediateField c.F ℂ` to `IntermediateField.adjoin c.F {zeta (m ^ 2)}`. Use `haveI : FiniteDimensional c.F L := IntermediateField.adjoin.finiteDimensional (hζ.isIntegral hN).tower_top`. Set `ξ₀ : L` to `⟨zeta (m ^ 2), IntermediateField.mem_adjoin_simple_self _ _⟩`. Establish `hξ₀ : IsPrimitiveRoot ξ₀ (m ^ 2)` using `IsPrimitiveRoot.of_map_of_injective (f := L.val.toRingHom) hζ Subtype.val_injective`.
+
+Set `ξ : Lˣ` to `(hξ₀.isUnit hN.ne').unit`. Establish `hξ : IsPrimitiveRoot ξ (m ^ 2)` using `IsPrimitiveRoot.coe_units_iff.1 hξ₀`. Set `r₀ : c.F` to `IntermediateField.inclusion c.le (baseKA l).ρ`. Take `⟨hqc, hlft⟩` from `finiteType_of_qproj Xo.qproj`. Take `⟨Ix, _, A, _, x, gam, J, _, q, w, hq, hft, hs, hcov, hpt⟩` from `exists_charts (L := L) hL hV.1.2.1 Y.oF (pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)) hm hξ`.
+
+Set `χ₀ : MvPolynomial (Fin 2) ℤ →+* L` to `cf ξ₀ (algebraMap c.F L r₀)`. Establish `hχ₀ : L.val.toRingHom.comp χ₀ = cf (zeta (m ^ 2)) H.rt0`. Use `MvPolynomial.ringHom_ext (fun n => by simp) fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Simplify using `[χ₀, ξ₀]`.
+
+Simplify using `[χ₀]`. Both sides reduce to the same expression. Establish `key : ∀ (G : MvPolynomial D.La (MvPolynomial (Fin 2) ℤ)) (d : ℕ), G.IsHomogeneous d → (∀ i, MvPolynomial.eval₂ ((gam i).comp χ₀) (fun a => w i (q a)) G = 0) → MvPolynomial.eval₂ (cf z ρ) v G = 0` using `fun G d hG h0 => by`. Use `hvan G ⟨hm, ⟨d, hG⟩, fun o hρ hz u hu => ?_⟩` and prove the remaining obligations. Take `⟨I', hI'⟩` from `GlobalTheory.TateRoot.exists_tateIso_zeta_eq E H D l ℂ _ _ _ o.I l.A (zeta l.A) l.A_pos (Complex.isPrimitiveRoot_exp _ l.A_pos.ne')`.
+
+Take `⟨y, ⟨hy, φ, h1, h2, h3, -⟩, -⟩` from `(GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hV h6 hU hX hT hE hA E H D l Xo c W₀ Y ℂ c.F.val.toRingHom).1 { o with I := I' } (fun r hr => hρ.trans hr.symm) (fun r hr => hI'.trans hr.symm)`. Take `⟨i, f, hf, hth⟩` from `hcov ℂ y o φ L.val.toRingHom ⟨h1, h2, h3⟩ hy hz`. Take `⟨s, rfl⟩` from `(theta_iff hL o hm hth).1 hu`. Establish `e` using `congrArg f (h0 i)`. Rewrite `e` using `[MvPolynomial.eval₂_comp_left, ← RingHom.comp_assoc, hf, hχ₀, map_zero]`.
+
+Rewrite using `[eval₂_smul _ hG]`. Conclude with `mul_eq_zero_of_right _ e`. Set `r` to `Function.surjInv hq`. Establish `hr : ∀ j, q (r j) = j` using `Function.surjInv_eq hq`. Establish `hvr : ∀ a, v (r (q a)) = v a` using `fun a => by`.
+
+Use `key (MvPolynomial.X (r (q a)) - MvPolynomial.X a) 1 ((MvPolynomial.isHomogeneous_X _ _).sub (MvPolynomial.isHomogeneous_X _ _)) fun i => by simp [hr]` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Use `letI : ∀ i, Algebra ℚ (A i) := fun i => (((gam i).comp (algebraMap c.F L)).comp (algebraMap ℚ c.F)).toAlgebra`. Use `haveI := Fintype.ofFinite J`. Take `⟨i, W, _, _, _, _, f, s, w', hW, hs0, hf, hw⟩` from `GlobalTheory.T.cone_closure_arc_of_integral_image_reduction_alt GlobalTheory.T.exists_complete_discreteValuationRing_of_mem_closure_cones_alt GlobalTheory.T.exists_field_of_isIntegral_image' _ (cf (zeta (m ^ 2)) H.rt0) (fun p => by`.
+
+Establish `h1 : IsIntegral ℤ H.rt0` using `IsIntegral.of_pow two_pos (by`. Rewrite using `[H.sqrt_neg_disc_sq]`. Conclude with `(isIntegral_natCast H.d).neg)`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using isIntegral_algebraMap (R := ℤ) (A := ℂ) (x := a)`.
+
+Consider the case `add p p' hp hp' => rw [map_add]`. Conclude with `hp.add hp'`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul]`. Use `hp.mul ?_` and prove the remaining obligations.
+
+Use `fin_cases i`. Simplify using `using hζ.isIntegral hN`. Simplify using `using h1)`. Use `K J Ix (cf z ρ) hc A`. Use the proof step `(fun i => (hft i).comp (RingHom.finite_algebraMap.2 (inferInstance : Module.Finite ℚ c.F)).finiteType)`.
+
+Use the proof step `(fun i => (gam i).comp χ₀) (fun i p hp => by`. Establish `: χ₀ p = 0` using `Subtype.val_injective ((RingHom.congr_fun hχ₀ p).trans hp)`. Rewrite using `[RingHom.comp_apply, this, map_zero])`. Use `w (fun j => v (r j)) (fun h => hv (funext fun a => (hvr a).symm.trans (congrFun h (q a))))`. Use the proof step `(fun G d hG h0 => by`.
+
+Use `key (MvPolynomial.rename r G) d hG.rename_isHomogeneous fun i => by` as an intermediate fact. Rewrite using `[MvPolynomial.eval₂_rename]`. Simplify `h0 i` using `only [Function.comp_def, hr]`. Rewrite using `[MvPolynomial.eval₂_rename] at this)` and apply the resulting hypothesis. Use `haveI : CharZero W := charZero_of_injective_algebraMap (algebraMap K W).injective`.
+
+Establish `hcdv : CDV W` using `⟨inferInstance, hW, inferInstance⟩`. Take `⟨C, _, _, _, _, _, g, hg, hext⟩` from `GlobalTheory.Ex.exists_complete_isAlgClosed_cExt W (FractionRing W)`. Establish `hg' : ∀ t, g t = algebraMap (FractionRing W) C t` using `hg`. Use `haveI : CharZero C := charZero_of_injective_algebraMap (algebraMap (FractionRing W) C).injective`. Take `⟨S, κ, _, _, res, j, hS, hres, hj⟩` from `exists_residue hext`.
+
+Use `letI : Algebra ℚ W := ((algebraMap K W).comp (algebraMap ℚ K)).toAlgebra`. Take `⟨b, hb⟩` from `exists_lift_of_finite (f.comp ((gam i).comp (algebraMap c.F L)))`. Set `bF : c.F →+* C` to `(g.comp f).comp ((gam i).comp (algebraMap c.F L))`. Take `⟨o₁, ho₁⟩` from `(GlobalTheory.T.fullTorsionObject_existsUnique_moduliPoint hV h6 hU hX hT hE hA E H D l Xo c W₀ Y C bF).2.1 (spMap g ≫ spMap f ≫ x i)`. Take `⟨M, -⟩` from `GlobalTheory.T.moduli_model_ultrametric_points hV h6 hU hX hT hE hA E H D l Xo c W₀ Y C W hcdv hext (FractionRing W) g hg (spMap f ≫ x i) (b.comp (c.V W₀).subtype) (by`.
+
+Rewrite using `[Model.j, Category.assoc Y.jQ, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, Category.assoc, ← Category.assoc (x i), hs, spMap_comp'', spMap_comp'', ← RingHom.comp_assoc, ← hb]`. Use `Eq.trans ?_ (congrArg (spMap _ ≫ ·) (spMap_comp'' _ (algebraMap W (FractionRing W))).symm)` and prove the remaining obligations. Rewrite using `[spMap_comp'']) o₁ ho₁`. Rewrite `ho₁` using `[← Category.assoc, spMap_comp'']`. Take `⟨φ, h1, h2, h3, -⟩` from `ho₁`.
+
+Take `⟨hdet, -⟩` from `Y.oF.geom C (𝟙 _ ≫ spMap (g.comp f) ≫ x i) (bF.comp (IntermediateField.inclusion c.le).toRingHom) (by`. Rewrite using `[Category.id_comp, pullback.condition, Category.assoc, ← Category.assoc (x i), hs, spMap_comp'', spMap_comp''])`. Set `o₂ : Full D C` to `{ o₁ with ρ := bF r₀ ρ_sq := by`. Use `congrArg (bF.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ_sq` as an intermediate fact. Rewrite `this` using `[map_pow, map_neg, map_natCast]`. Then use the resulting hypothesis.
+
+Use `det := fun τ => by`. Establish `e` using `GlobalTheory.LiePull.lieMult_pull _ _ _ Y.oF.t.G o₁.P.A _ φ Y.oF.t.act (ofRingAct o₁.oa.toRingAct) h1 h3 C (𝟙 _) τ`. Rewrite using `[e, e]`. Conclude with `hdet τ }`. Take `⟨I', hI', hth⟩` from `hpt i C (g.comp f) o₂ φ ⟨h1, h2, h3⟩`.
+
+Establish `hjK : ∀ p, (j (algebraMap K W (cf z ρ p)) : C) = g (f (gam i (χ₀ p)))` using `fun p => by`. Rewrite using `[hj, ← hg', ← hf]`. Both sides reduce to the same expression. Use `⟨C, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, S, κ, inferInstance, inferInstance, res, (res.comp j).comp (algebraMap K W), { o₂ with I := I' }, { M with }, fun a => j (w' (q a)), j (algebraMap K W ρ), j (algebraMap K W z), fun n hn => ?_, hS, hres …` and prove the remaining obligations. Establish `h1` using `hext.1 (algebraMap K W n)`.
+
+Establish `h2` using `hext.1 (algebraMap K W (n : K)⁻¹)`. Establish `e : algebraMap (FractionRing W) C (algebraMap W _ (algebraMap K W n)) * algebraMap (FractionRing W) C (algebraMap W _ (algebraMap K W (n : K)⁻¹)) = 1`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), map_one, map_one, map_one]`. Establish `e'` using `congrArg norm e`. Rewrite `e'` using `[norm_mul, norm_one]`.
+
+Rewrite `e'`, `h1` using `[map_natCast, map_natCast, map_natCast]`. Use polynomial arithmetic with `[norm_nonneg (n : C)]`. Use `(theta_iff hL _ hm hth).2 ⟨Units.mk0 (g s) ((map_ne_zero g).2 hs0), funext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hj, ← hg', (hw _).1, map_mul]`. Both sides reduce to the same expression.
+
+Use `hres (j (w' (q a) - algebraMap K W (v (r (q a))))) (by rw [hj]; exact hext.2 _ (hw _).2)` as an intermediate fact. Rewrite `this` using `[map_sub, map_sub, sub_eq_zero, hvr]`. Conclude with `this`. Use `hjK (MvPolynomial.X 1)` as an intermediate fact. Simplify using `only [χ₀, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X] at this`.
+
+Conclude with `this`. Use `hjK (MvPolynomial.X 0)` as an intermediate fact. Simplify using `only [χ₀, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X] at this`. Conclude with `this.trans hI'.symm`.
+-/
 theorem exists_trait : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (W₀ : ValuationSubring ℂ) (Y : Model Xo c (c.V W₀).subtype), ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (m : ℕ) (ρ z : K) (v : D.La → K), Odd m → Compat H (m ^ 2) z ρ → v ≠ 0 → (∀ G, VanishC D m G → MvPolynomial.eval₂ (cf z ρ) v G = 0) → ∃ (C : Type) (_ : NontriviallyNormedField C) (_ : IsUltrametricDist C) (_ : CompleteSpace C) (_ : IsAlgClosed C) (_ : CharZero C) (S : ValuationSubring C) (κ : Type) (_ : Field κ) (_ : IsAlgClosed κ) (res : S →+* κ) (i : K →+* κ) (o : Full D C) (_ : Mdl o) (v' : D.La → S) (r' z' : S), (∀ n : ℕ, 0 < n → ‖(n : C)‖ = 1) ∧ (∀ x, x ∈ S ↔ ‖x‖ ≤ 1) ∧ (∀ x : S, ‖(x : C)‖ < 1 → res x = 0) ∧ o.Theta m (fun x => v' x) ∧ (∀ x, res (v' x) = i (v x)) ∧ (r' : C) = o.ρ ∧ res r' = i ρ ∧ (z' : C) = o.I.ζ (m ^ 2) ∧ res z' = i z := by
   intro hV h6 hU hX hT hE hA E _ _ _ H D l Xo c W₀ Y K _ _ _ m ρ z v hm hc hv hvan
   letI := H.starRing

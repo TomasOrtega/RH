@@ -6,5 +6,8 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (SCF intO)
 open GlobalTheory.LocM GlobalTheory.LocM.Cht
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.LocM.RootsPrescribe.roots | exact GlobalTheory.LocM.RootsPrescribe.roots | (intros; apply GlobalTheory.LocM.RootsPrescribe.roots <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chart_roots_holds : GlobalTheory.LocM.Cht.RootsSt := by
   first | exact @GlobalTheory.LocM.RootsPrescribe.roots | exact GlobalTheory.LocM.RootsPrescribe.roots | (intros; apply GlobalTheory.LocM.RootsPrescribe.roots <;> assumption)

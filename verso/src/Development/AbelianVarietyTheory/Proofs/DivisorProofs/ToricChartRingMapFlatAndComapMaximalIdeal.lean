@@ -15,12 +15,26 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.LocRegFlat
 
+/- English proof (translation)
+Set `_` to `X.presheaf.algebra_section_stalk ⟨x, hx⟩`. Use `hU.isLocalization_stalk ⟨x, hx⟩` as an intermediate fact. Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl)`.
+-/
 theorem germ_flat {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (x : X) (hx : x ∈ U) :
     (X.presheaf.germ U x hx).hom.Flat := by
   let _ := X.presheaf.algebra_section_stalk ⟨x, hx⟩
   have := hU.isLocalization_stalk ⟨x, hx⟩
   exact RingHom.flat_algebraMap_iff.2 (IsLocalization.flat (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal.primeCompl)
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c Y U k _ m d ξ hx he mm hmm hmem`. Establish `key : GlobalTheory.LocReg.chartHom Y U ξ hx = ((Y.X.presheaf.germ U.1 (genι Y (ξ (closedPoint _))) hx ≫ (genι Y).stalkMap (ξ (closedPoint _))) ≫ Scheme.stalkClosedPointTo ξ).hom`. Establish `h` using `(genι Y).germ_stalkMap U.1 (ξ (closedPoint _)) hx`. Unfold `GlobalTheory.LocReg.chartHom`. Rewrite using `[h]`.
+
+Both sides reduce to the same expression. Rewrite using `[key]`. Simplify using `only [CommRingCat.hom_comp]`. Establish `hg` using `germ_flat U.2 _ hx`. Establish `hs : ((genι Y).stalkMap (ξ (closedPoint _))).hom.Flat` using `RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)`.
+
+Use `⟨(hg.comp hs).comp he.1, ?_⟩` and prove the remaining obligations. Use `symm`. Use `hmm.eq_of_le (Ideal.comap_ne_top _ (maximalIdeal.isMaximal _).ne_top) ?_` and prove the remaining obligations. Introduce `f hf`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`.
+
+Introduce `hu`. Apply `hmem f hf` to reduce the goal to its premises. Rewrite using `[Scheme.mem_basicOpen]`. Simplify using `only [RingHom.comp_apply] at hu`. Conclude with `isUnit_of_map_unit ((genι Y).stalkMap _).hom _ (isUnit_of_map_unit (Scheme.stalkClosedPointTo ξ).hom _ hu)`.
+
+Conclude with `hx`.
+-/
 theorem chartHom_flat_comap : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (U : Y.X.affineOpens) (k : Type) [Field k] (m d : ℕ) (ξ : Sp (ChartRing k m d) ⟶ gen Y) (hx : ξ (closedPoint _) ∈ genι Y ⁻¹ᵁ U.1), IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ∀ mm : Ideal Γ(Y.X, U.1), mm.IsMaximal → (∀ f ∈ mm, genι Y (ξ (closedPoint _)) ∉ Y.X.basicOpen f) → (GlobalTheory.LocReg.chartHom Y U ξ hx).Flat ∧ (maximalIdeal (ChartRing k m d)).comap (GlobalTheory.LocReg.chartHom Y U ξ hx) = mm := by
   intro E _ _ _ H Dw l Xo c Y U k _ m d ξ hx he mm hmm hmem
   have key : GlobalTheory.LocReg.chartHom Y U ξ hx = ((Y.X.presheaf.germ U.1 (genι Y (ξ (closedPoint _))) hx ≫

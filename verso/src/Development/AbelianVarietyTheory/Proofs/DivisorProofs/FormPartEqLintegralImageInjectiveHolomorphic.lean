@@ -16,6 +16,37 @@ open Function
 
 namespace GlobalTheory.FlagCell2.ChangeOfVariables
 
+/- English proof (translation)
+Introduce `M _ _ _ _ _ n A β hβ Ω Φ γ hΩ hinj hloc s T hT hTΩ`. Use `set ρ : A.ι → M → ℝ≥0∞ := fun k y => ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β k (A.e k y))).re) with hρ`. Establish `hp : A.part β s = ChartGlue.glueMeas A.e ρ` using `rfl`. Establish `hρc : ∀ k l y, y ∈ (A.e k).source → y ∈ (A.e l).source → ρ k y = ENNReal.ofReal (‖ChartGlue.transDet (A.e k) (A.e l) y‖ ^ 2) * ρ l y`. Introduce `k l y hk hl`.
+
+Establish `h1` using `A.loc_crd β (⟨(k, y), hk⟩ : A.Pt)`. Establish `h2` using `A.loc_crd β (⟨(l, y), hl⟩ : A.Pt)`. Establish `h3` using `hβ.compat (⟨(k, y), hk⟩ : A.Pt) ⟨(l, y), hl⟩ rfl`. Simplify using `only [hρ]`. Use `erw [h1, h2, h3, dens_pull]`.
+
+Rewrite using `[Complex.re_ofReal_mul, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Simplify using `only [ChartGlue.transDet]`. Expand and normalize the polynomial expressions, which then agree. Establish `chart : ∀ (i : A.ι) (P : Set M), MeasurableSet P → P ⊆ (A.e i).source → P ⊆ Ω → MeasurableSet (Φ '' P) ∧ A.part β s P = ∫⁻ v in Φ '' P, ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (γ v)).re)`.
+
+Introduce `i P hP hPs hPΩ`. Use `set g : V n → V n := Φ ∘ (A.e i).symm with hg`. Establish `hQ : MeasurableSet (A.e i '' P)` using `ChartGlue.measurableSet_image (A.e i) hP hPs`. Establish `hder : ∀ v ∈ A.e i '' P, HasFDerivWithinAt g ((fderiv ℂ g v).restrictScalars ℝ) (A.e i '' P) v`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+
+Conclude with `((hloc ⟨(i, y), hPs hy⟩ (hPΩ hy)).1.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Establish `hinjg : Set.InjOn g (A.e i '' P)`. Introduce and unpack `_ ⟨y, hy, rfl⟩ _ ⟨z, hz, rfl⟩ hyz`. Simplify using `only [hg, Function.comp_apply, (A.e i).left_inv (hPs hy), (A.e i).left_inv (hPs hz)] at hyz`. Rewrite using `[hinj (hPΩ hy) (hPΩ hz) hyz]`.
+
+Establish `himg : Φ '' P = g '' (A.e i '' P)`. Rewrite using `[Set.image_image]`. Conclude with `Set.image_congr fun y hy => by simp only [hg, Function.comp_apply, (A.e i).left_inv (hPs hy)]`. Use `⟨himg ▸ measurable_image_of_fderivWithin hQ hder hinjg, ?_⟩` and prove the remaining obligations. Rewrite using `[hp, ChartGlue.glueMeas_apply A.e ρ A.holo hρc i hP hPs, ChartGlue.chartMeas_apply_of_subset _ _ hP hPs, himg, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hQ hder hinjg]`.
+
+Use `setLIntegral_congr_fun hQ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hx` using `hloc ⟨(i, y), hPs hy⟩ (hPΩ hy)`. Establish `hl` using `A.loc_crd β (⟨(i, y), hPs hy⟩ : A.Pt)`. Establish `hdet : ((fderiv ℂ g (A.e i y)).restrictScalars ℝ).det = Algebra.norm ℝ (fderiv ℂ g (A.e i y)).det` using `LinearMap.det_restrictScalars (f := (fderiv ℂ g (A.e i y) : V n →ₗ[ℂ] V n))`.
+
+Establish `hx2 : β ⟨(i, y), hPs hy⟩ = pull (fderiv ℂ g (A.e i y)) (γ (Φ y))` using `hx.2`. Establish `hgy : g (A.e i y) = Φ y` using `by simp only [hg, Function.comp_apply, (A.e i).left_inv (hPs hy)]`. Use `beta_reduce`. Rewrite using `[hdet, hgy]`. Simplify using `only [hρ, (A.e i).left_inv (hPs hy)]`.
+
+Use `erw [hl, hx2, dens_pull]`. Rewrite using `[Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity), Complex.re_ofReal_mul, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Break down `Set.eq_empty_or_nonempty T with rfl | ⟨y₀, -⟩` into its components or cases.
+
+Simplify using the standard rewrite rules. Take `⟨C, hCc, hCU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun j => (A.e j).source) (fun j => (A.e j).open_source)`. Take `⟨f, hf⟩` from `(hCc.insert (A.cover y₀).choose).exists_eq_range (Set.insert_nonempty _ _)`. Use `set U : ℕ → Set M := fun k => (A.e (f k)).source with hU`. Establish `hUo : ∀ k, IsOpen (U k)` using `fun k => (A.e (f k)).open_source`.
+
+Use `set P : ℕ → Set M := fun k => T ∩ disjointed U k with hPdef`. Establish `hPm : ∀ k, MeasurableSet (P k)` using `fun k => hT.inter (MeasurableSet.disjointed (fun k => (hUo k).measurableSet) k)`. Establish `hPU : ∀ k, P k ⊆ U k` using `fun k => Set.inter_subset_right.trans (disjointed_subset U k)`. Establish `hPΩ : ∀ k, P k ⊆ Ω` using `fun k => Set.inter_subset_left.trans hTΩ`. Establish `hPd : Pairwise (Disjoint on P)` using `(disjoint_disjointed U).mono fun k l h => h.mono Set.inter_subset_right Set.inter_subset_right`.
+
+Establish `hTP : T = ⋃ k, P k`. Rewrite using `[← Set.inter_iUnion, iUnion_disjointed, eq_comm, Set.inter_eq_left]`. Introduce `y _`. Establish `hy : y ∈ ⋃ j, (A.e j).source` using `Set.mem_iUnion.2 (A.cover y)`. Rewrite `hy` using `[← hCU]`.
+
+Take `⟨l, hl, hy⟩` from `Set.mem_iUnion₂.1 hy`. Take `⟨k, rfl⟩` from `hf.le (Set.mem_insert_of_mem _ hl)`. Conclude with `Set.mem_iUnion.2 ⟨k, hy⟩`. Establish `hIm : ∀ k, MeasurableSet (Φ '' P k)` using `fun k => (chart (f k) (P k) (hPm k) (hPU k) (hPΩ k)).1`. Establish `hId : Pairwise (Disjoint on fun k => Φ '' P k)`.
+
+Introduce `k l hkl`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ ⟨y, hy, hxy⟩`. Use `hinj (hPΩ l hy) (hPΩ k hx) hxy` as an intermediate fact. Substitute `this` using the available equality.
+
+Conclude with `Set.disjoint_left.1 (hPd hkl) hx hy`. Rewrite using `[hTP, Set.image_iUnion, measure_iUnion hPd hPm, lintegral_iUnion hIm hId]`. Conclude with `tsum_congr fun k => (chart (f k) (P k) (hPm k) (hPU k) (hPΩ k)).2`.
+-/
 theorem part_eq_lintegral_image : ∀ (M : Type) [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (n : ℕ) (A : HolAtlas M n) (β : A.Fld), A.IsForm β → ∀ (Ω : Set M) (Φ : M → V n) (γ : V n → Alt n), IsOpen Ω → Set.InjOn Φ Ω → (∀ x : A.Pt, x.pt ∈ Ω → DifferentiableAt ℂ (Φ ∘ x.ch.symm) x.crd ∧ β x = pull (fderiv ℂ (Φ ∘ x.ch.symm) x.crd) (γ (Φ x.pt))) → ∀ (s : ℤˣ) (T : Set M), MeasurableSet T → T ⊆ Ω → A.part β s T = ∫⁻ v in Φ '' T, ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (γ v)).re) := by
   intro M _ _ _ _ _ n A β hβ Ω Φ γ hΩ hinj hloc s T hT hTΩ
   set ρ : A.ι → M → ℝ≥0∞ := fun k y => ENNReal.ofReal (((s : ℤ) : ℝ) * (dens (A.loc β k (A.e k y))).re) with hρ

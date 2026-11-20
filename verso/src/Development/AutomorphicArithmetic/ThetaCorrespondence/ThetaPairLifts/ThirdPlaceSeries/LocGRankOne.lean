@@ -18,6 +18,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.The
 noncomputable section
 namespace GlobalTheory.LiftSplitLoc
 open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.LocLanglands in
+/- English proof (translation)
+Use `haveI := host_isCMField D.host`. Use `set χ' := (CGu.equivChar D.host.E (cg.e 1 π)).1 with hχ'`. Use `set χ := (cs.e1 π).1 with hχ`. Establish `hloc : ∀ v, T.e v (D.naut.locG π v) = _root_.GlobalTheory.CuspRep.ParLawsT.locParT hL (CG.ofChar χ') (D.nd.plOm.2 v)` using `fun v => by`. Rewrite using `[cg.loc, hχ', CGu.ofChar_equivChar]`.
+
+Both sides reduce to the same expression. Establish `unr' : ∀ v, D.naut.unr (D.naut.locG π v) ↔ χ'.UnrAt v` using `fun v => by`. Rewrite using `[T.unr, hloc v]`. Conclude with `_root_.GlobalTheory.RankOneComp.locParT_ofChar_unr_iff_unrAt hL χ' _`. Establish `hchar : χ' = χ`.
+
+Rewrite using `[← mul_inv_eq_one]`. Apply `GlobalTheory.HeckeSplitRow.eq_one_of_split D.host` to reduce the goal to its premises. Use `filter_upwards [D.naut.locG_unr_ae π] with v hv _`. Establish `u1` using `(cs.unr_iff π v).1 hv`. Establish `u2` using `(unr' v).1 hv`.
+
+Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HChar.loc_mul, HChar.loc_inv, u1 x hx, u2 x hx, inv_one, mul_one]`. Establish `hf` using `cs.frob π v u1`. Establish `hf' : D.naut.frobEig (D.naut.locG π v) = {(((χ'.val v)⁻¹ : ℂˣ) : ℂ)}`. Rewrite using `[T.frobEig _ _ hv, hloc v]`.
+
+Conclude with `_root_.GlobalTheory.RankOneComp.frobEig_locParT_ofChar_of_unrAt hL χ' _ u2`. Rewrite `hf` using `[hf', Multiset.singleton_inj, Units.val_inj, inv_inj]`. Rewrite using `[HChar.val_mul, HChar.val_inv, hf, mul_inv_cancel]`. Establish `hcomp : IsComp χ w (χ.loc w)` using `⟨ParLaws.isSmoothChar_loc χ w, fun _ => rfl⟩`. Take `⟨ξ₀, -, huniq, -⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E χ w`.
+
+Establish `hξ : ξ = χ.loc w` using `(huniq _ h).trans (huniq _ hcomp).symm`. Substitute `hξ` using the available equality. Rewrite using `[hloc, _root_.GlobalTheory.CuspRep.ParLaws.local_parameter_of_hecke_character_eq_reciprocity, _root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep]`. Rewrite using `[hchar]`. Both sides reduce to the same expression.
+-/
 theorem locG_rankOne_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : CharFrame D} (T : GlobalTheory.RowTie.WDTie D.nd D.naut)
     (cg : _root_.GlobalTheory.HeightCounting.CGTrueT hL D T) (cs : CharSide D cf) (π : D.naut.CG 1) (w : PlE D.host)
     (ξ : (w.adicCompletion D.host.E)ˣ →* ℂˣ) (h : IsComp (cs.e1 π).1 w ξ) :

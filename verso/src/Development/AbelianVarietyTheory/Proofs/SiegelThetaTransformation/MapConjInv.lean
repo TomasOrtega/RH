@@ -19,6 +19,9 @@ noncomputable def anti (G P x₁ x₂ : Matrix (Fin r) (Fin r) ℂ) : Matrix (Fi
 
 variable {G Gi P x₁ x₂ g₁ g₂ u₁ u₂ : Matrix (Fin r) (Fin r) ℂ} {c : ℂ}
 
+/- English proof (translation)
+Establish `e : (2 * c)⁻¹ * c = 2⁻¹` using `by field_simp`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, e]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]`. Use `module`.
+-/
 theorem den_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) (hc : c ≠ 0) :
     ((2 * c)⁻¹ • (Gi * (h₁ - h₂))) * (c • ((1 - (2 : ℂ) • q) * G)) +
       (2 : ℂ)⁻¹ • (Gi * (h₁ + h₂) * G) = Gi * (h₂ * q + h₁ * (1 - q)) * G := by
@@ -28,6 +31,9 @@ theorem den_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) (hc : c ≠ 0) :
     Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]
   module
 
+/- English proof (translation)
+Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]`. Use `module`.
+-/
 theorem num_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) :
     ((2 : ℂ)⁻¹ • (h₁ + h₂)) * (c • ((1 - (2 : ℂ) • q) * G)) + (c / 2) • ((h₁ - h₂) * G) =
       c • ((h₁ * (1 - q) - h₂ * q) * G) := by
@@ -35,6 +41,9 @@ theorem num_eq (h₁ h₂ q : Matrix (Fin r) (Fin r) ℂ) :
     Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]
   module
 
+/- English proof (translation)
+Establish `e : c * (2 * -c)⁻¹ = -2⁻¹` using `by field_simp`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, e]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]`. Use `module`.
+-/
 theorem den'_eq (k₁ k₂ p : Matrix (Fin r) (Fin r) ℂ) (hc : c ≠ 0) :
     (c • (G * (1 - (2 : ℂ) • p))) * ((2 * -c)⁻¹ • ((k₁ - k₂) * Gi)) +
       (2 : ℂ)⁻¹ • (G * ((k₁ + k₂) * Gi)) = G * (p * k₁ + (1 - p) * k₂) * Gi := by
@@ -44,16 +53,25 @@ theorem den'_eq (k₁ k₂ p : Matrix (Fin r) (Fin r) ℂ) (hc : c ≠ 0) :
     Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul]
   module
 
+/- English proof (translation)
+Rewrite using `[← Matrix.map_mul, h]`. Simplify using the standard rewrite rules.
+-/
 theorem map_conj_inv (h : g₁ * u₁ = 1) : g₁.map conj * u₁.map conj = 1 := by
   rw [← Matrix.map_mul, h]
   simp
 
+/- English proof (translation)
+Apply the tactic sequence `constructor <;>`. Apply the tactic sequence `simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hP, Matrix.mul_one, Matrix.one_mul] <;> abel`.
+-/
 theorem proj_parts (hP : P * P = P) (a b : Matrix (Fin r) (Fin r) ℂ) :
     P * (P * a + (1 - P) * b) = P * a ∧ (1 - P) * (P * a + (1 - P) * b) = (1 - P) * b := by
   constructor <;>
   simp only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hP,
     Matrix.mul_one, Matrix.one_mul] <;> abel
 
+/- English proof (translation)
+Establish `e : G * g₂.map conj = u₂ᵀ * G`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lin, lin, (proj_parts hP _ _).1, (proj_parts hP _ _).2, Matrix.map_mul, ← Matrix.mul_assoc G, e, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv h₁]`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`.
+-/
 theorem lin_act (hP : P * P = P) (h₁ : g₁ * u₁ = 1) (h₂ : g₂ * u₂ = 1)
     (hg : g₂ᵀ * G * g₂.map conj = G) :
     lin G P (g₁ * x₁) (g₂ * x₂) = P * lin G P x₁ x₂ * u₂ + (1 - P) * lin G P x₁ x₂ * u₁ := by
@@ -65,6 +83,9 @@ theorem lin_act (hP : P * P = P) (h₁ : g₁ * u₁ = 1) (h₂ : g₂ * u₂ = 
     e, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv h₁]
   simp only [transpose_mul, transpose_transpose, Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `e : g₁ᵀ * G = G * u₁.map conj`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[anti, anti, (proj_parts hP _ _).1, (proj_parts hP _ _).2, transpose_mul, Matrix.mul_assoc x₁ᵀ, e, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv h₂, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem anti_act (hP : P * P = P) (h₁ : g₁ * u₁ = 1) (h₂ : g₂ * u₂ = 1)
     (hg : g₁ᵀ * G * g₁.map conj = G) :
     anti G P (g₁ * x₁) (g₂ * x₂) =
@@ -76,6 +97,13 @@ theorem anti_act (hP : P * P = P) (h₁ : g₁ * u₁ = 1) (h₂ : g₂ * u₂ =
     Matrix.mul_assoc x₁ᵀ, e, Matrix.mul_inv_rev, Matrix.inv_eq_right_inv h₂, Matrix.map_mul]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hG' : Gi * G = 1` using `mul_eq_one_comm.1 hG`. Establish `e1 : x₁ᵀ * x₁⁻¹ᵀ = 1`. Rewrite using `[← transpose_mul, nonsing_inv_mul _ (Ne.isUnit hx₁), transpose_one]`. Establish `e2 : x₂⁻¹.map conj * x₂.map conj = 1` using `map_conj_inv (nonsing_inv_mul _ (Ne.isUnit hx₂))`. Establish `a1 : (lin G P x₁ x₂)ᵀ * P = G * x₂.map conj * P`.
+
+Rewrite using `[← hPt, ← transpose_mul, hPt, lin, (proj_parts hP _ _).1, transpose_mul, hPt, transpose_transpose]`. Establish `a2 : P * anti G P x₁ x₂ = P * (x₁ᵀ * G)` using `(proj_parts hP _ _).1`. Establish `l : anti G P x₁ x₂ * Gi * (lin G P x₁ x₂)ᵀ * P = P * x₁ᵀ * G * x₂.map conj * P`. Rewrite using `[Matrix.mul_assoc, a1, Matrix.mul_assoc, ← Matrix.mul_assoc Gi, ← Matrix.mul_assoc Gi, hG', Matrix.one_mul, anti, Matrix.add_mul, Matrix.mul_assoc (1 - P), ← Matrix.mul_assoc (map _ _), e2, Matrix.one_mul, Matrix.sub_mul, hP, Matrix.one_mul, sub_self, add_zero]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[l, ← Matrix.mul_assoc, ← Matrix.mul_assoc, a2, Matrix.mul_assoc P (x₁ᵀ * G), Matrix.mul_assoc x₁ᵀ G Gi, hG, Matrix.mul_one, lin, transpose_add, transpose_mul, transpose_mul (1 - P), transpose_sub, transpose_one, hPt, transpose_transpose, Matrix.mul_add, Matrix.mul_assoc P x₁ᵀ (x …`. Simplify using `only [Matrix.mul_assoc]`.
+-/
 theorem comm_proj (hP : P * P = P) (hPt : Pᵀ = P) (hG : G * Gi = 1) (hx₁ : x₁.det ≠ 0)
     (hx₂ : x₂.det ≠ 0) :
     anti G P x₁ x₂ * Gi * (lin G P x₁ x₂)ᵀ * P = P * (anti G P x₁ x₂ * Gi * (lin G P x₁ x₂)ᵀ) := by
@@ -98,6 +126,27 @@ theorem comm_proj (hP : P * P = P) (hPt : Pᵀ = P) (hG : G * Gi = 1) (hx₁ : x
     ← Matrix.mul_assoc x₁ᵀ x₁⁻¹ᵀ, e1, Matrix.one_mul, Matrix.mul_sub, hP, Matrix.mul_one, sub_self, add_zero]
   simp only [Matrix.mul_assoc]
 
+/- English proof (translation)
+Establish `hG' : Gi * G = 1` using `mul_eq_one_comm.1 hG`. Establish `hcm` using `comm_proj hP hPt hG hx₁ hx₂`. Rewrite using `[lin_act hP h₁ h₂ hg₂, anti_act hP h₁ h₂ hg₁]`. Generalize the expression as in `lin G P x₁ x₂ = L at *`. Generalize the expression as in `anti G P x₁ x₂ = A at *`.
+
+Establish `l1 : L * L⁻¹ = 1` using `mul_nonsing_inv _ (Ne.isUnit hL)`. Establish `l2 : L⁻¹ * L = 1` using `nonsing_inv_mul _ (Ne.isUnit hL)`. Establish `a1 : A * A⁻¹ = 1` using `mul_nonsing_inv _ (Ne.isUnit hA)`. Establish `a2 : A⁻¹ * A = 1` using `nonsing_inv_mul _ (Ne.isUnit hA)`. Establish `hGih : Giᴴ = Gi`.
+
+Establish `: Giᴴ * G = 1` using `by rw [← hGh, ← conjTranspose_mul, hG, conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Use `set p := L⁻¹ * P * L with hp`. Use `set p' := A⁻¹ * P * A with hp'`. Establish `hS' : S = 1 - (2 : ℂ) • p`.
+
+Rewrite using `[hS, hp, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, l2, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hpp : p * p = p`. Combine the equalities or inequalities in the displayed calculation. Establish `hLp : L * p = P * L` using `by rw [hp, ← Matrix.mul_assoc, ← Matrix.mul_assoc, l1, Matrix.one_mul]`. Establish `hAp : A * p' = P * A`.
+
+Rewrite using `[hp', ← Matrix.mul_assoc, ← Matrix.mul_assoc, a1, Matrix.one_mul]`. Establish `hrel : pᵀ * G = G * p'`. Establish `t : Lᵀ * L⁻¹ᵀ = 1` using `by rw [← transpose_mul, l2, transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a2, Matrix.mul_one, hG, Matrix.one_mul, hp, transpose_mul, transpose_mul, hPt]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Use `_ = G * A⁻¹ * (A * Gi * Lᵀ * P) * L⁻¹ᵀ * G := by simp only [Matrix.mul_assoc]`. Use `_ = G * (A⁻¹ * P * A) * (Gi * (Lᵀ * L⁻¹ᵀ) * G) := by rw [hcm]; simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [t, Matrix.mul_one, hG', Matrix.mul_one]`. Establish `hSt : Sᵀ = 1 - (2 : ℂ) • pᵀ` using `by rw [hS', transpose_sub, transpose_one, transpose_smul]`.
+
+Use `⟨p * u₂ + (1 - p) * u₁, p' * u₁.map conj + (1 - p') * u₂.map conj, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hLp, Matrix.mul_one, Matrix.one_mul]`. Simplify using `only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hAp, Matrix.mul_one, Matrix.one_mul]`. Rewrite using `[hZ, hSt, den_eq _ _ _ hc]`. Simplify using `only [transpose_add, transpose_mul, transpose_sub, transpose_one]`.
+
+Establish `k : ∀ u : Matrix (Fin r) (Fin r) ℂ, uᵀᴴ = u.map conj` using `fun u => by ext; simp`. Establish `e : (1 - (2 : ℂ) • pᵀ) * G = G * (1 - (2 : ℂ) • p')`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, hrel, Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[hZ, hSt, e, ← den'_eq _ _ _ hc]`. Simplify using `only [conjTranspose_smul, conjTranspose_mul, conjTranspose_add, conjTranspose_sub, k, hGh, hGih, star_inv₀, star_mul', hc', star_ofNat]`.
+
+Establish `e : S * (p * u₂ + (1 - p) * u₁) = (1 - p) * u₁ - p * u₂`. Rewrite using `[hS']`. Simplify using `only [Matrix.mul_add, Matrix.mul_sub, Matrix.sub_mul, ← Matrix.mul_assoc, hpp, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul]`. Use `module`. Rewrite using `[hZ, hSt, num_eq, e]`.
+
+Simplify using `only [transpose_mul, transpose_sub, transpose_one]`.
+-/
 theorem cplx (hP : P * P = P) (hPt : Pᵀ = P) (hGh : Gᴴ = G) (hG : G * Gi = 1) (hc : c ≠ 0)
     (hc' : star c = -c) (hx₁ : x₁.det ≠ 0) (hx₂ : x₂.det ≠ 0) (h₁ : g₁ * u₁ = 1)
     (h₂ : g₂ * u₂ = 1) (hg₁ : g₁ᵀ * G * g₁.map conj = G) (hg₂ : g₂ᵀ * G * g₂.map conj = G)
@@ -165,6 +214,15 @@ theorem cplx (hP : P * P = P) (hPt : Pᵀ = P) (hGh : Gᴴ = G) (hG : G * Gi = 1
     rw [hZ, hSt, num_eq, e]
     simp only [transpose_mul, transpose_sub, transpose_one]
 
+/- English proof (translation)
+Establish `e1 : (C * Z + D)ᴴ = (Z * Cᴴ + Dᴴ) - (2 * I) • (imH Z * Cᴴ)`. Establish `: (2 * I) * (2 * I)⁻¹ = 1` using `mul_inv_cancel₀ (by simp)`. Rewrite using `[imH, Matrix.smul_mul, smul_smul, this, one_smul, conjTranspose_add, conjTranspose_mul, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws. Establish `e2 : (C * Z + D) * Cᴴ = C * (Z * Cᴴ + Dᴴ)`.
+
+Rewrite using `[Matrix.add_mul, Matrix.mul_add, h, Matrix.mul_assoc]`. Establish `hQh : (C * Z + D)ᴴ.det ≠ 0` using `by rw [det_conjTranspose]; simpa using hQ`. Generalize the expression as in `C * Z + D = Q at *`. Generalize the expression as in `Z * Cᴴ + Dᴴ = Q' at *`. Generalize the expression as in `imH Z = Y at *`.
+
+Establish `e3 : Q⁻¹ * Y'⁻¹ = Y⁻¹ * Qᴴ`. Rewrite using `[← hI, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.mul_assoc, nonsing_inv_mul _ (Ne.isUnit hQh), Matrix.mul_one]`. Establish `e4 : Cᴴ * Q'⁻¹ = Q⁻¹ * C`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc Q⁻¹, nonsing_inv_mul _ (Ne.isUnit hQ), Matrix.one_mul]`.
+
+Use `_ = _ := by`. Rewrite using `[e2, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit hQ'), Matrix.mul_one]`. Rewrite using `[e3, e1, Matrix.mul_assoc, Matrix.sub_mul, mul_nonsing_inv _ (Ne.isUnit hQ'), Matrix.smul_mul, Matrix.mul_assoc, e4, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_smul, ← Matrix.mul_assoc, nonsing_inv_mul _ (Ne.isUnit hY), Matrix.one_mul, sub_add_cancel]`.
+-/
 theorem gauss {C D Z Y' : Matrix (Fin r) (Fin r) ℂ} (h : C * Dᴴ = D * Cᴴ)
     (hQ : (C * Z + D).det ≠ 0) (hQ' : (Z * Cᴴ + Dᴴ).det ≠ 0) (hY : (imH Z).det ≠ 0)
     (hI : (C * Z + D)ᴴ * Y' * (C * Z + D) = imH Z) :
@@ -197,19 +255,33 @@ end Cplx
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
+/- English proof (translation)
+Use `X.ξ0_ne` as an intermediate fact. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, this]`.
+-/
 theorem kappa_ne : X.κ0 ≠ 0 := by
   have := X.ξ0_ne
   rcases X.κ0_xi with h | h <;> simp [h, this]
 
+/- English proof (translation)
+Use `X.ξ0_im` as an intermediate fact. Rewrite `this` using `[cc]`. Apply the tactic sequence `rcases X.κ0_xi with h | h <;> simp [h, cc, this, map_ofNat]`.
+-/
 theorem cc_kappa : cc X.κ0 = -X.κ0 := by
   have := X.ξ0_im
   rw [cc] at this
   rcases X.κ0_xi with h | h <;> simp [h, cc, this, map_ofNat]
 
+/- English proof (translation)
+Use extensionality with `a b`. Conclude with `X.Gm_herm b a`.
+-/
 theorem ccT_Gm : ccT X.Gm = X.Gm := by
   ext a b
   exact X.Gm_herm b a
 
+/- English proof (translation)
+Use extensionality with `a b`. Use `h (Pi.single a 1) (Pi.single b 1)` as an intermediate fact. Simplify using `only [herm, mulVec_single_one, Pi.single_apply, cc, apply_ite, map_one, map_zero] at this`. Simplify using `only [ite_mul, mul_ite, one_mul, mul_one, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_ite_irrel, Finset.sum_const_zero] at this`. Rewrite using `[← this, Finset.sum_comm]`.
+
+Simplify using `[Matrix.mul_apply, ccT, cc, Finset.sum_mul]`.
+-/
 theorem un_mat {γ : GL (Fin r) E} (h : IsUn X γ) :
     (γ : Matrix (Fin r) (Fin r) E)ᵀ * X.Gm * ccT (γ : Matrix (Fin r) (Fin r) E)ᵀ = X.Gm := by
   ext a b
@@ -220,6 +292,13 @@ theorem un_mat {γ : GL (Fin r) E} (h : IsUn X γ) :
   rw [← this, Finset.sum_comm]
   simp [Matrix.mul_apply, ccT, cc, Finset.sum_mul]
 
+/- English proof (translation)
+Establish `hk` using `kappa_ne X`. Establish `hG : X.Gm⁻¹ * X.Gm = 1` using `nonsing_inv_mul _ (Ne.isUnit X.Gm_det)`. Establish `e : (2 * (X.κ0 / 4))⁻¹ * (X.κ0 / 4) = 2⁻¹` using `by field_simp`. Rewrite using `[dblT, fromBlocks_multiply, ← fromBlocks_one]`. Use `congr 1`.
+
+Simplify using `only [Matrix.mul_one, Matrix.mul_neg, neg_neg]`. Use `module`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hG, e, mul_comm (X.κ0 / 4)]`.
+
+Use `module`.
+-/
 theorem dblT_left : Matrix.fromBlocks ((2 : E)⁻¹ • (1 : Matrix (Fin r) (Fin r) E)) (-((2 : E)⁻¹ • 1))
     ((2 * (X.κ0 / 4))⁻¹ • X.Gm⁻¹) ((2 * (X.κ0 / 4))⁻¹ • X.Gm⁻¹) * dblT X = 1 := by
   have hk := kappa_ne X
@@ -232,6 +311,11 @@ theorem dblT_left : Matrix.fromBlocks ((2 : E)⁻¹ • (1 : Matrix (Fin r) (Fin
   · simp
   · simp only [Matrix.smul_mul, Matrix.mul_smul, smul_smul, hG, e, mul_comm (X.κ0 / 4)]; module
 
+/- English proof (translation)
+Establish `hk` using `kappa_ne X`. Establish `e : (2 * (X.κ0 / 4))⁻¹ * (X.κ0 / 4) = 2⁻¹` using `by field_simp`. Rewrite using `[iota, Matrix.inv_eq_left_inv (dblT_left X), dblT, fromBlocks_multiply, fromBlocks_multiply]`. Generalize the expression as in `(γ₁⁻¹).1ᵀ = h₁`. Generalize the expression as in `(γ₂⁻¹).1ᵀ = h₂`.
+
+Apply the tactic sequence `congr 1 <;>`. Apply the tactic sequence `simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, smul_smul, e, mul_comm (X.κ0 / 4)] <;> module`.
+-/
 theorem iota_eq (γ₁ γ₂ : GL (Fin r) E) : iota X γ₁ γ₂ = Matrix.fromBlocks
     ((2 : E)⁻¹ • ((γ₁⁻¹).1ᵀ + (γ₂⁻¹).1ᵀ)) ((X.κ0 / 4 / 2) • (((γ₁⁻¹).1ᵀ - (γ₂⁻¹).1ᵀ) * X.Gm))
     ((2 * (X.κ0 / 4))⁻¹ • (X.Gm⁻¹ * ((γ₁⁻¹).1ᵀ - (γ₂⁻¹).1ᵀ)))
@@ -246,10 +330,20 @@ theorem iota_eq (γ₁ γ₂ : GL (Fin r) E) : iota X γ₁ γ₂ = Matrix.fromB
     Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_zero, add_zero,
     zero_add, Matrix.mul_neg, Matrix.neg_mul, smul_smul, e, mul_comm (X.κ0 / 4)] <;> module
 
+/- English proof (translation)
+Apply the tactic sequence `ext (i | i) (j | j) <;> rfl`.
+-/
 theorem ccT_blocks (a b c d : Matrix (Fin r) (Fin r) E) :
     ccT (Matrix.fromBlocks a b c d) = Matrix.fromBlocks (ccT a) (ccT c) (ccT b) (ccT d) := by
   ext (i | i) (j | j) <;> rfl
 
+/- English proof (translation)
+Establish `e1 : ccT ((X.κ0 / 4) • X.Gm) = -((X.κ0 / 4) • X.Gm)`. Use extensionality with `a b`. Establish `h1` using `cc_kappa X`. Establish `h2` using `X.Gm_herm b a`. Rewrite `h1`, `h2` using `[cc]`.
+
+Simplify using `[ccT, cc, h1, h2, map_ofNat, neg_div]`. Establish `e2 : ccT (-1 : Matrix (Fin r) (Fin r) E) = -1`. Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [ccT, cc, Matrix.one_apply, h, eq_comm]`. Rewrite using `[dblT, ccT_blocks, e1, e2, HAct.ccT_one, Matrix.J, fromBlocks_multiply, fromBlocks_multiply]`.
+
+Apply the tactic sequence `congr 1 <;>`. Apply the tactic sequence `simp only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_neg] <;> module`.
+-/
 theorem dblT_form : dblT X * Matrix.J (Fin r) E * ccT (dblT X) =
     Matrix.fromBlocks ((X.κ0 / 2) • X.Gm) 0 0 (-((X.κ0 / 2) • X.Gm)) := by
   have e1 : ccT ((X.κ0 / 4) • X.Gm) = -((X.κ0 / 4) • X.Gm) := by
@@ -266,6 +360,9 @@ theorem dblT_form : dblT X * Matrix.J (Fin r) E * ccT (dblT X) =
   simp only [Matrix.mul_one, Matrix.one_mul, Matrix.mul_zero, add_zero,
     zero_add, Matrix.mul_neg, Matrix.neg_mul, neg_neg] <;> module
 
+/- English proof (translation)
+Establish `e : (γ⁻¹).1ᵀ * γ.1ᵀ = 1` using `by rw [← transpose_mul, Units.mul_inv, transpose_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [HAct.ccT_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [e, HAct.ccT_one, Matrix.one_mul, Matrix.mul_one]`.
+-/
 theorem un_inv {γ : GL (Fin r) E} (h : IsUn X γ) :
     (γ⁻¹).1ᵀ * X.Gm * ccT (γ⁻¹).1ᵀ = X.Gm := by
   have e : (γ⁻¹).1ᵀ * γ.1ᵀ = 1 := by rw [← transpose_mul, Units.mul_inv, transpose_one]
@@ -274,6 +371,15 @@ theorem un_inv {γ : GL (Fin r) E} (h : IsUn X γ) :
         simp only [HAct.ccT_mul, Matrix.mul_assoc]
     _ = _ := by rw [e, HAct.ccT_one, Matrix.one_mul, Matrix.mul_one]
 
+/- English proof (translation)
+Establish `hT : (dblT X)⁻¹ * dblT X = 1`. Rewrite using `[Matrix.inv_eq_left_inv (dblT_left X)]`. Conclude with `dblT_left X`. Establish `z : ccT (0 : Matrix (Fin r) (Fin r) E) = 0` using `by ext; simp [ccT, cc]`. Establish `hH : Matrix.fromBlocks (γ₁⁻¹).1ᵀ 0 0 (γ₂⁻¹).1ᵀ * (dblT X * Matrix.J (Fin r) E * ccT (dblT X)) * ccT (Matrix.fromBlocks (γ₁⁻¹).1ᵀ 0 0 (γ₂⁻¹).1ᵀ) = dblT X * Matrix.J (Fin r) E * ccT (dblT X)`.
+
+Rewrite using `[dblT_form, ccT_blocks, z, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, un_inv X h₁, un_inv X h₂, smul_zero, neg_zero]`. Establish `h : ccT (iota X γ₁ γ₂) ∈ UU E r`. Express the relevant statement in the definitionally equal form `ccT (ccT _) * _ * _ = _`. Rewrite using `[HAct.ccT_ccT, iota, HAct.ccT_mul, HAct.ccT_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((dblT X)⁻¹ * dblT X) * Matrix.J (Fin r) E * ccT ((dblT X)⁻¹ * dblT X) := by`. Rewrite using `[hH]`. Simplify using `only [HAct.ccT_mul, Matrix.mul_assoc]`.
+
+Use `_ = _ := by rw [hT, HAct.ccT_one, Matrix.one_mul, Matrix.mul_one]`. Use `(HAct.group_part h).2.2.1` as an intermediate fact. Rewrite `this` using `[HAct.ccT_ccT]`. Then use the resulting hypothesis.
+-/
 theorem iota_mem {γ₁ γ₂ : GL (Fin r) E} (h₁ : IsUn X γ₁) (h₂ : IsUn X γ₂) :
     iota X γ₁ γ₂ ∈ UU E r := by
   have hT : (dblT X)⁻¹ * dblT X = 1 := by
@@ -303,12 +409,18 @@ theorem iota_mem {γ₁ γ₂ : GL (Fin r) E} (h₁ : IsUn X γ₁) (h₂ : IsUn
 noncomputable def prj : Matrix (Fin r) (Fin r) ℂ :=
   Matrix.diagonal fun a : Fin r => if (a : ℕ) < X.p0 then 1 else 0
 
+/- English proof (translation)
+Rewrite using `[prj, diagonal_mul_diagonal]`. Use `congr 1`. Use extensionality with `a`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem prj_sq : prj X * prj X = prj X := by
   rw [prj, diagonal_mul_diagonal]
   congr 1
   ext a
   split_ifs <;> simp
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [aLin, lin, prj, Matrix.sub_mul, Matrix.one_mul, Matrix.add_apply, Matrix.sub_apply, diagonal_mul, of_apply, transpose_apply]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.mul_apply, mat]`.
+-/
 theorem aLin_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aLin X x₁ x₂ τ = lin (X.Gm.map τ.1) (prj X) (mat x₁ τ) (mat x₂ τ) := by
   ext a c
@@ -316,6 +428,9 @@ theorem aLin_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     diagonal_mul, of_apply, transpose_apply]
   split_ifs <;> simp [Matrix.mul_apply, mat]
 
+/- English proof (translation)
+Use extensionality with `a c`. Simplify using `only [aAnti, anti, prj, Matrix.sub_mul, Matrix.one_mul, Matrix.add_apply, Matrix.sub_apply, diagonal_mul, of_apply, transpose_apply]`. Apply the tactic sequence `split_ifs <;> simp [Matrix.mul_apply, mat]`.
+-/
 theorem aAnti_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     aAnti X x₁ x₂ τ = anti (X.Gm.map τ.1) (prj X) (mat x₁ τ) (mat x₂ τ) := by
   ext a c
@@ -323,6 +438,11 @@ theorem aAnti_eq (x₁ x₂ : Frame X.Ψ r) (τ : X.Ψ) :
     diagonal_mul, of_apply, transpose_apply]
   split_ifs <;> simp [Matrix.mul_apply, mat]
 
+/- English proof (translation)
+Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `only [prj, sgn, diagonal_apply_eq, Matrix.sub_apply, Matrix.smul_apply, one_apply_eq]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+
+Simplify using `[prj, h]`.
+-/
 theorem sgn_eq : Matrix.diagonal (fun a : Fin r => (-(sgn X.p0 a : ℝ) : ℂ)) =
     1 - (2 : ℂ) • prj X := by
   ext a b
@@ -332,6 +452,17 @@ theorem sgn_eq : Matrix.diagonal (fun a : Fin r => (-(sgn X.p0 a : ℝ) : ℂ)) 
     split_ifs <;> norm_num
   · simp [prj, h]
 
+/- English proof (translation)
+Establish `hG : X.Gm.map τ.1 * X.Gm⁻¹.map τ.1 = 1`. Rewrite using `[← Matrix.map_mul, mul_nonsing_inv _ (Ne.isUnit X.Gm_det)]`. Simplify using the standard rewrite rules. Establish `hG'` using `mul_eq_one_comm.1 hG`. Establish `hu : ∀ γ : GL (Fin r) E, γ.1.map τ.1 * (γ⁻¹).1.map τ.1 = 1` using `fun γ => by`.
+
+Rewrite using `[← Matrix.map_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Establish `hg : ∀ γ, IsUn X γ → (γ.1.map τ.1)ᵀ * X.Gm.map τ.1 * (γ.1.map τ.1).map conj = X.Gm.map τ.1` using `fun γ h => by`. Use `congrArg (fun m => m.map τ.1) (un_mat X h)` as an intermediate fact. Simplify using `only [Matrix.map_mul, HAct.map_ccT] at this`.
+
+Conclude with `this`. Establish `hc : τ.1 X.κ0 / 4 ≠ 0` using `by simp [kappa_ne X]`. Establish `hc' : star (τ.1 X.κ0 / 4) = -(τ.1 X.κ0 / 4)`. Rewrite using `[Complex.star_def, map_div₀, ← HAct.emb_cc, cc_kappa, map_neg, map_ofNat, neg_div]`. Establish `hGh : (X.Gm.map τ.1)ᴴ = X.Gm.map τ.1` using `by rw [← HAct.map_ccT, ccT_Gm]`.
+
+Rewrite `hL` using `[aLin_eq]`. Rewrite `hA` using `[aAnti_eq]`. Take `⟨M, M', m1, m2, m3, m4, m5⟩` from `cplx (prj_sq X) (diagonal_transpose _) hGh hG hc hc' (hx₁ τ).1 (hx₂ τ).1 (hu γ₁) (hu γ₂) (hg γ₁ h₁) (hg γ₂ h₂) hL hA rfl rfl`. Establish `sm : ∀ (s : E) (m : Matrix (Fin r) (Fin r) E), (s • m).map τ.1 = τ.1 s • m.map τ.1` using `fun s m => by ext; simp`. Establish `ad : ∀ (s m : Matrix (Fin r) (Fin r) E), (s + m).map τ.1 = s.map τ.1 + m.map τ.1` using `fun s m => by ext; simp`.
+
+Establish `sb : ∀ (s m : Matrix (Fin r) (Fin r) E), (s - m).map τ.1 = s.map τ.1 - m.map τ.1` using `fun s m => by ext; simp`. Simplify using `only [hDen, hDen', dblZ, iota_eq, toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, sm, ad, sb, Matrix.map_mul, transpose_map, map_inv₀, map_mul, map_div₀, map_ofNat, sgn_eq, aLin_eq, aAnti_eq]`. Use `⟨M, M', m1, m2, ?_, ?_, m5⟩` and prove the remaining obligations. Rewrite using `[m3, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hG, Matrix.one_mul]`. Rewrite using `[m4, Matrix.mul_assoc, hG', Matrix.mul_one]`.
+-/
 theorem place {γ₁ γ₂ : GL (Fin r) E} (h₁ : IsUn X γ₁) (h₂ : IsUn X γ₂) {x₁ x₂ : Frame X.Ψ r}
     (hx₁ : x₁ ∈ X.dom) (hx₂ : x₂ ∈ X.dom) (τ : X.Ψ) (hL : (aLin X x₁ x₂ τ).det ≠ 0)
     (hA : (aAnti X x₁ x₂ τ).det ≠ 0) :
@@ -374,6 +505,9 @@ theorem place {γ₁ γ₂ : GL (Fin r) E} (h₁ : IsUn X γ₁) (h₂ : IsUn X 
   · rw [m3, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hG, Matrix.one_mul]
   · rw [m4, Matrix.mul_assoc, hG', Matrix.mul_one]
 
+/- English proof (translation)
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc m⁻¹, nonsing_inv_mul _ (Ne.isUnit hm), Matrix.one_mul]`. Use `_ = _ := by`. Rewrite using `[← h, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit hq), Matrix.mul_one]`.
+-/
 theorem inv_swap {a q m : Matrix (Fin r) (Fin r) ℂ} (h : a * q = m * a) (hq : q.det ≠ 0)
     (hm : m.det ≠ 0) : a * q⁻¹ = m⁻¹ * a := by
   calc a * q⁻¹ = m⁻¹ * (m * a) * q⁻¹ := by
@@ -382,19 +516,31 @@ theorem inv_swap {a q m : Matrix (Fin r) (Fin r) ℂ} (h : a * q = m * a) (hq : 
         rw [← h, Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ (Ne.isUnit hq),
           Matrix.mul_one]
 
+/- English proof (translation)
+Use `congrArg det h` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, mul_comm m.det]`. Conclude with `mul_left_cancel₀ ha this`.
+-/
 theorem det_swap {a q m : Matrix (Fin r) (Fin r) ℂ} (h : a * q = m * a) (ha : a.det ≠ 0) :
     q.det = m.det := by
   have := congrArg det h
   rw [det_mul, det_mul, mul_comm m.det] at this
   exact mul_left_cancel₀ ha this
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem of_at {α β : Type} (f : α → β → ℂ) (k : α) : Matrix.of f k = f k := rfl
 
+/- English proof (translation)
+Simplify using `only [mul_pow, pow_add]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem det_factor {l a q d : ℂ} (hl : l ≠ 0) (ha : a ≠ 0) (hq : q ≠ 0) (hd : d ≠ 0) (m : ℕ) :
     ((l * (q * d) * (a * q)) ^ m)⁻¹ * (q * d) ^ (m + m) = d ^ m * ((l * a) ^ m)⁻¹ := by
   simp only [mul_pow, pow_add]
   field_simp
 
+/- English proof (translation)
+Rewrite using `[mul_mul_mul_comm, h, ← Complex.exp_add, h', mul_assoc]`.
+-/
 theorem exp_factor {a b c d u v w : ℂ} (h : a * b = d * c) (h' : u + v = w) :
     a * cexp u * (b * cexp v) = d * (c * cexp w) := by
   rw [mul_mul_mul_comm, h, ← Complex.exp_add, h', mul_assoc]
@@ -403,6 +549,27 @@ end GlobalTheory.SW.DblPair
 
 open GlobalTheory.SW.DblPair in
 
+/- English proof (translation)
+Introduce `E _ _ _ r X g bas idx n _ hn γ₁ γ₂ h₁ h₂`. Establish `hι` using `iota_mem X h₁ h₂`. Take `⟨⟨g1, -, g3, -⟩, hact⟩` from `unitary_act_halfSpace E X.Ψ r _ hι`. Use `⟨hι, ∏ τ : X.Ψ, τ.1 (iota X γ₁ γ₂).det ^ (n / 2), ?_, fun x₁ hx₁ x₂ hx₂ => ?_⟩` and prove the remaining obligations. Conclude with `Finset.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ ((map_ne_zero _).2 g1.ne_zero)`.
+
+Take `⟨-, hZ, hd⟩` from `GlobalTheory.SW.dblZ_mem_Hn E r X x₁ hx₁ x₂ hx₂`. Establish `hq` using `(hact _ hZ).1`. Use `choose M M' m1 m2 m3 m4 m5 using fun τ => place X h₁ h₂ hx₁ hx₂ τ (hd τ).1 (hd τ).2.1`. Establish `hG : ∀ τ : X.Ψ, (X.Gm.map τ.1).det ≠ 0` using `fun τ => by`. Establish `: (X.Gm.map τ.1).det = τ.1 X.Gm.det` using `(RingHom.map_det τ.1 X.Gm).symm`.
+
+Rewrite using `[this]`. Conclude with `(map_ne_zero _).2 X.Gm_det`. Establish `hQ' : ∀ τ, (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ).det ≠ 0` using `fun τ h => (hq τ).1 (by rw [← (hq τ).2.1, h, zero_mul])`. Establish `dM : ∀ τ, (M τ).det = (hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ).det` using `fun τ => by`. Rewrite using `[det_swap (m3 τ) (hG τ), det_transpose]`.
+
+Establish `dM' : ∀ τ, (M' τ).det = (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ).det` using `fun τ => det_swap (m4 τ).symm (hG τ)`. Establish `i1 : ∀ τ, X.Gm.map τ.1 * (hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ = (M τ)⁻¹ᵀ * X.Gm.map τ.1` using `fun τ => by`. Rewrite using `[inv_swap (m3 τ) (hq τ).1 (by rw [det_transpose, dM]; exact (hq τ).1), transpose_nonsing_inv]`. Establish `i2 : ∀ τ, X.Gm.map τ.1 * (M' τ)⁻¹ = (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ * X.Gm.map τ.1` using `fun τ => inv_swap (m4 τ).symm (by rw [dM']; exact hQ' τ) (hQ' τ)`. Establish `hA : hAct X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) = dblZ X (lact γ₁ x₁) (lact γ₂ x₂)`.
+
+Use function extensionality and compare the values at `τ`. Rewrite using `[hAct, m5, Matrix.smul_mul, Matrix.mul_assoc, i1]`. Simplify using `only [dblZ, m1, Matrix.mul_inv_rev, transpose_mul, Matrix.mul_assoc]`. Use `⟨hA, fun z₁ w => ?_⟩` and prove the remaining obligations. Establish `hz : dblz X idx (lact γ₁ x₁) (lact γ₂ x₂) z₁ w = fun τ => Matrix.of fun k => (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ *ᵥ dblz X idx x₁ x₂ z₁ w τ k`.
+
+Use function extensionality and compare the values at `τ k`. Simplify using `only [dblz, of_at, m2, Matrix.mul_inv_rev, mulVec_smul, mulVec_mulVec, ← Matrix.mul_assoc, i2]`. Establish `hz' : dblz' X idx (lact γ₁ x₁) (lact γ₂ x₂) z₁ w = fun τ => Matrix.of fun k => dblz' X idx x₁ x₂ z₁ w τ k ᵥ* (hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹`. Use function extensionality and compare the values at `τ k`. Simplify using `only [dblz', of_at, m1, Matrix.mul_inv_rev, smul_vecMul, vecMul_vecMul, i1]`.
+
+Rewrite using `[← mulVec_mulVec, ← vecMul_vecMul, vecMul_transpose]`. Use `⟨hz, hz', ?_⟩` and prove the remaining obligations. Establish `hb` using `fun τ : X.Ψ => HAct.map_mem τ.1 g3`. Rewrite using `[kZero, kZero, hFac, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, hz, hz', ← hA]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+
+Establish `hcd : (iota X γ₁ γ₂).toBlocks₂₁.map τ.1 * ((iota X γ₁ γ₂).toBlocks₂₂.map τ.1)ᴴ = (iota X γ₁ γ₂).toBlocks₂₂.map τ.1 * ((iota X γ₁ γ₂).toBlocks₂₁.map τ.1)ᴴ`. Establish `h` using `hb τ`. Rewrite `h` using `[HAct.map_ccT, HAct.map_blocks, fromBlocks_conjTranspose]`. Simplify `(HAct.blocks h).2.2.2` using `only [conjTranspose_conjTranspose]`. Establish `hga : (hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ * (imH (hAct X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ))⁻¹ * (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ + (2 * I) • ((hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ * (iota X γ₁ γ₂).toBlocks₂₁.map τ.1) = (imH (dblZ X x₁ x₂ τ))⁻¹` using `gauss hcd (hq τ).1 (hQ' τ) (hZ τ).det_pos.ne' (hq τ).2.2.2`.
+
+Take `⟨m, rfl⟩` from `hn`. Establish `hm : (m + m) / 2 = m` using `by omega`. Use `exp_factor ?_ ?_` and prove the remaining obligations. Rewrite using `[m1, m2, det_mul, det_mul, dM, dM', hm, ← (hq τ).2.1]`. Conclude with `det_factor (hd τ).1 (hd τ).2.1 (hQ' τ) ((map_ne_zero _).2 g1.ne_zero) m`.
+
+Rewrite using `[← hga]`. Simplify using `only [of_at, add_mulVec, dotProduct_add, Finset.sum_add_distrib, smul_mulVec, dotProduct_smul, smul_eq_mul, ← Finset.mul_sum, ← dotProduct_mulVec, mulVec_mulVec, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem GlobalTheory.SW.iota_act_dbl : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ γ₁ γ₂ : GL (Fin r) E, IsUn X γ₁ → IsUn X γ₂ → iota X γ₁ γ₂ ∈ UU E r ∧ ∃ a : ℂ, a ≠ 0 ∧ ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, hAct X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) = dblZ X (lact γ₁ x₁) (lact γ₂ x₂) ∧ ∀ z₁ w : Fin n → Fin g → ℂ, (dblz X idx (lact γ₁ x₁) (lact γ₂ x₂) z₁ w = fun τ => Matrix.of fun k => (hDen' X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹ *ᵥ dblz X idx x₁ x₂ z₁ w τ k) ∧ (dblz' X idx (lact γ₁ x₁) (lact γ₂ x₂) z₁ w = fun τ => Matrix.of fun k => dblz' X idx x₁ x₂ z₁ w τ k ᵥ* (hDen X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) τ)⁻¹) ∧ kZero X idx (lact γ₁ x₁) (lact γ₂ x₂) z₁ w * hFac X.Ψ (iota X γ₁ γ₂) (dblZ X x₁ x₂) (dblz X idx x₁ x₂ z₁ w) (dblz' X idx x₁ x₂ z₁ w) = a * kZero X idx x₁ x₂ z₁ w := by
   intro E _ _ _ r X g bas idx n _ hn γ₁ γ₂ h₁ h₂
   have hι := iota_mem X h₁ h₂

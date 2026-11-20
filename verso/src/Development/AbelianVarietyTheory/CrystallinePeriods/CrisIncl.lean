@@ -14,9 +14,15 @@ open scoped Formalism.Per
 
 open Reformulated.AutPerF in
 
+/- English proof (translation)
+Conclude with `(CrisDeRhamLog.Bridge.CrisIncl.exists_incl l).imp fun _ h => ⟨h.1, h.2⟩`.
+-/
 theorem exists_incl (l : ℕ) [Fact l.Prime] : ∃ ι : Per.Bcris l →+* Per.BdR l, Per.IsCrisDR l ι := by
   exact (CrisDeRhamLog.Bridge.CrisIncl.exists_incl l).imp fun _ h => ⟨h.1, h.2⟩
 
+/- English proof (translation)
+Conclude with `CrisRestriction.Bridge.CrisIncl.exists_restrict l ι ⟨h.1, h.2⟩`.
+-/
 theorem exists_restrict (l : ℕ) [Fact l.Prime] (ι : Per.Bcris l →+* Per.BdR l) (h : Per.IsCrisDR l ι) :
     ∃ j : Per.Acris l →+* Per.BdRp l,
       (∀ x : Per.Acris l,
@@ -28,6 +34,9 @@ theorem exists_restrict (l : ℕ) [Fact l.Prime] (ι : Per.Bcris l →+* Per.BdR
           Ideal.Quotient.mk _ (algebraMap (Per.Ainf l) (Per.AinfP l) a) := by
   exact CrisRestriction.Bridge.CrisIncl.exists_restrict l ι ⟨h.1, h.2⟩
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev | exact FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev .. | (intros; apply FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev <;> assumption)`.
+-/
 theorem factorial_mul_ev (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (y : Per.BdRp l) (he : e.untilt = 1)
     (h : Per.IsLog l e y) (n : ℕ) :
     ((n.factorial : ℕ) : Per.AinfP l ⧸ Per.kerP l ^ n) * Per.ev l n y =
@@ -35,6 +44,9 @@ theorem factorial_mul_ev (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (y : Per.BdRp l
         (algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1)) ^ (k + 1)) := by
   first | exact @FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev | exact FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev .. | (intros; apply FactorialMulEvaluation.Bridge.CrisIncl.factorial_mul_ev <;> assumption)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @LogOfPartial.Bridge.CrisIncl.isLog_of_partial | exact LogOfPartial.Bridge.CrisIncl.isLog_of_partial .. | (intros; apply LogOfPartial.Bridge.CrisIncl.isLog_of_partial <;> assumption)`.
+-/
 theorem isLog_of_partial (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt = 1) (y : Per.BdRp l)
     (h : ∀ n : ℕ, ∃ c : Per.AinfP l, ((n.factorial : ℕ) : Per.AinfP l) * c =
       ∑ k ∈ Finset.range n, (-1) ^ k * ((n.factorial / (k + 1) : ℕ) : Per.AinfP l) *
@@ -42,10 +54,16 @@ theorem isLog_of_partial (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt 
       Per.ev l n y = Ideal.Quotient.mk _ c) : Per.IsLog l e y := by
   first | exact @LogOfPartial.Bridge.CrisIncl.isLog_of_partial | exact LogOfPartial.Bridge.CrisIncl.isLog_of_partial .. | (intros; apply LogOfPartial.Bridge.CrisIncl.isLog_of_partial <;> assumption)
 
+/- English proof (translation)
+Apply the tactic sequence `first | exact @LogUniqueAlt.Bridge.CrisIncl.log_unique | exact LogUniqueAlt.Bridge.CrisIncl.log_unique .. | (intros; apply LogUniqueAlt.Bridge.CrisIncl.log_unique <;> assumption)`.
+-/
 theorem log_unique (l : ℕ) [Fact l.Prime] (e : Per.Fl l) (he : e.untilt = 1) (y y' : Per.BdRp l)
     (h : Per.IsLog l e y) (h' : Per.IsLog l e y') : y = y' := by
   first | exact @LogUniqueAlt.Bridge.CrisIncl.log_unique | exact LogUniqueAlt.Bridge.CrisIncl.log_unique .. | (intros; apply LogUniqueAlt.Bridge.CrisIncl.log_unique <;> assumption)
 
+/- English proof (translation)
+Conclude with `CrisInclusionPeriod.Bridge.CrisIncl.incl_aB l ι ⟨h.1, h.2⟩ a`.
+-/
 theorem incl_aB (l : ℕ) [Fact l.Prime] (ι : Per.Bcris l →+* Per.BdR l) (h : Per.IsCrisDR l ι) (a : Per.Ainf l) :
     ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l)
       (algebraMap (Per.AinfP l) (Per.BdRp l) (algebraMap (Per.Ainf l) (Per.AinfP l) a)) := by

@@ -9,11 +9,19 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option synthInstance.maxHeartbeats 200000
 
+/- English proof (translation)
+Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+-/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
   ext x
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
+/- English proof (translation)
+Establish `h1 : ∀ τ : L →+* ℂ, cEmb τ k = 1` using `fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord τ) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.mapMonoidHom (fun y : Emb l (fun v : V.frame.Vl => s.w v.1) => GlobalTheory.Branching.sqRep ℂ n (lam y.res) (cEmb (ι.toRingHom.comp y.res) k)) = 1`. Simplify using `only [h1, map_one]`.
+
+Conclude with `map_one _`.
+-/
 private theorem infRep_fin {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (V : s.Lev) (ι : Qbar l ≃+* ℂ) (lam : Wt L l n) {k : UA L n}
     (hk : k ∈ finU L n) : infRep (V := V) ι lam k = 1 := by
@@ -25,6 +33,15 @@ private theorem infRep_fin {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Num
   simp only [h1, map_one]
   exact map_one _
 
+/- English proof (translation)
+Use `Prod.ext ?_ (funext fun u => ?_)` and prove the remaining obligations. Establish `h : (away l L n).rangeRestrict y = 1`. Use `Subtype.ext (funext fun u => GlobalTheory.DefU.LocRet.mem_locU_ne hy fun h => u.2 ?_)` and prove the remaining obligations. Establish `h2 : ((l : ℕ) : 𝓞 (Lp L)) ∈ (u.1.under (𝓞 (Lp L))).asIdeal`. Rewrite using `[h, w_under]`.
+
+Conclude with `v.2`. Establish `h3 : algebraMap (𝓞 (Lp L)) (𝓞 L) (l : 𝓞 (Lp L)) ∈ u.1.asIdeal` using `h2`. Rewrite `h3` using `[map_natCast]`. Then use the resulting hypothesis. Rewrite using `[map_mul, h]`. Both sides reduce to the same expression.
+
+Express the relevant statement in the definitionally equal form `cLoc (s.w u.1) (x * y) = cLoc (s.w u.1) x * Pi.mulSingle (M := fun u : V.frame.Vl => GLw n (s.w u.1)) v (cLoc (s.w v.1) y) u`. Rewrite using `[map_mul]`. Use `congr 1`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality.
+
+Rewrite using `[Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne huv]`. Conclude with `GlobalTheory.DefU.LocRet.mem_locU_ne hy fun h => huv (Subtype.ext ((w_under s u.1).symm.trans (h.trans (w_under s v.1))))`.
+-/
 private theorem comps {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (V : s.Lev) [DecidableEq V.frame.Vl] (v : V.frame.Vl) (x y : UA L n)
     (hy : y ∈ locU n (s.w v.1)) :
@@ -53,6 +70,11 @@ private theorem comps {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberFi
       exact GlobalTheory.DefU.LocRet.mem_locU_ne hy fun h =>
         huv (Subtype.ext ((w_under s u.1).symm.trans (h.trans (w_under s v.1))))
 
+/- English proof (translation)
+Introduce `l _ L Ω _ _ _ _ _ _ s n _ V Q c ι m τ₀ lam d e ξ _ v j hj hj' F g i ℓ`. Use function extensionality and compare the values at `x`. Establish `h1` using `@comps l _ L Ω _ _ _ _ _ _ s n V (fun a b => Classical.propDecidable (a = b)) v x (j g) (hj g)`. Rewrite `h1` using `[hj']`. Establish `h2 : infRep (V` using `V) ι lam (x * j g)⁻¹ = infRep (V := V) ι lam x⁻¹ := by`.
+
+Rewrite using `[mul_inv_rev, map_mul, infRep_fin V ι lam ((finU L n).inv_mem (Subgroup.mem_inf.1 (hj g)).1), one_mul]`. Express the relevant statement in the definitionally equal form `_ = toForm ι e (F i) ℓ (x * j g)`. Unfold `toForm`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Hi.partUR2AtV :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →
     ∀ (V : s.Lev) (Q : QData V) (c : Coef l) (ι : Qbar l ≃+* ℂ) (m : ℕ) (τ₀ : KT n (wt s) →* GL (Fin m) c.O)

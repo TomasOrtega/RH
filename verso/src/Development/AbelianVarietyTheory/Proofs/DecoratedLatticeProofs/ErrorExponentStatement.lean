@@ -19,10 +19,16 @@ noncomputable section
 
 namespace GlobalTheory.Core.Mi.PerCmp
 
+/- English proof (translation)
+Substitute `h` using the available equality. Conclude with `⟨RingEquiv.refl _, fun _ => HEq.rfl⟩`.
+-/
 theorem exists_castE {D : D7} {I : Formalism.MainNotions.S.AutInst} (h : I = instOf D) :
     ∃ ιE : I.E ≃+* D.host.E, ∀ y, ιE y ≍ y := by
   subst h; exact ⟨RingEquiv.refl _, fun _ => HEq.rfl⟩
 
+/- English proof (translation)
+Substitute `h` using the available equality. Use function extensionality and compare the values at `k`. Conclude with `(eq_of_heq (hι _)).symm`.
+-/
 theorem crdY_eq {D : D7} {I : Formalism.MainNotions.S.AutInst} (h : I = instOf D) (ιE : I.E ≃+* D.host.E)
     (hι : ∀ y, ιE y ≍ y) (hr : (D.sp.Y 0).rank = I.n) (x : Fin I.n → I.E) :
     crdY h x = fun k => ιE (x (Fin.cast hr k)) := by
@@ -42,6 +48,9 @@ variable {D : D7} {X : HidaSetting.HidaSetting D} {h : X.B.I = instOf D} {u : D.
   {V₀ A L : HSp D} {d : HypDec (D.sp.Y 0) V₀ D.R.rS} {o : OrthDec V₀ A L}
   {ζ : Fin L.rank → D.host.E} {lam : D.host.E}
 
+/- English proof (translation)
+Establish `h1 : Function.Injective d.e.mulVec`. Introduce `x y hxy`. Use `congrArg (fun v => (d.e'.conjTranspose * HSpace.gram S).mulVec v) hxy` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, d.e'e]`. Conclude with `Matrix.mulVec_injective_iff.mp h1`.
+-/
 theorem hyp_linIndep {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     LinearIndependent D.host.E d.e.transpose := by
   have h1 : Function.Injective d.e.mulVec := by
@@ -50,11 +59,21 @@ theorem hyp_linIndep {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     simpa [Matrix.mulVec_mulVec, d.e'e] using this
   exact Matrix.mulVec_injective_iff.mp h1
 
+/- English proof (translation)
+Use `congrArg Matrix.conjTranspose d.i₀e` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_mul, gram_conjTranspose, Matrix.mul_assoc]`.
+-/
 theorem hyp_e_i₀ {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) :
     d.e.conjTranspose * HSpace.gram S * d.i₀ = 0 := by
   have := congrArg Matrix.conjTranspose d.i₀e
   simpa [Matrix.conjTranspose_mul, gram_conjTranspose, Matrix.mul_assoc] using this
 
+/- English proof (translation)
+Take `⟨ιE, hι⟩` from `exists_castE h`. Establish `hr` using `rank_eq X h`. Establish `hA` using `GlobalTheory.Core.TieSign.simpleSum_eq D d (fun a => crdY h (X.eR a)) (fun a => crdY h (X.fR a)) (crdY h (X.zR u)) (vecB o ζ) 1 lam one_ne_zero hS.ne (by simp only [one_mul]; exact hS.e_eq) (by simp only [one_mul]; exact hS.f_eq) (by rw [one_smul]; exact hS.z_eq) n`. Establish `hc` using `GlobalTheory.Core.TieSign.core D ψ hψ X.B.I h ιE hι hr X.psiEf X.psiEf_add X.psiEf_int X.psiEf_rat X.B.g (Pf.modulus_g_ne_zero X) X.eR X.fR (X.zR u) n`. Establish `e1 : (fun a => crdY h (X.eR a)) = fun a k => ιE (X.eR a (Fin.cast hr k))`.
+
+Use function extensionality and compare the values at `fun a => crdY_eq h ιE hι hr _`. Establish `e2 : ∀ a, crdY h (X.fR a) = fun k => ιE (X.fR a (Fin.cast hr k))` using `fun a => crdY_eq h ιE hι hr _`. Rewrite `hA` using `[e1, crdY_eq h ιE hι hr (X.zR u), Finset.sum_congr rfl fun a _ => by rw [e2 a]]`. Establish `hg : θ * lam⁻¹ = ((X.B.g : ℕ) : D.host.E)⁻¹`. Rewrite using `[hθ, thetaS, X.g_eq, one_div]`.
+
+Rewrite using `[psiBes, hA, ← mul_assoc, ← map_mul, hg]`. Conclude with `hc`.
+-/
 theorem Scaled.tieψ (hS : Scaled X h u d o ζ lam) {ψ : AddChar (AF ↥D.host.F) ℂ}
     (hψ : IsStdChar D ψ (-1)) {θ : D.host.E} (hθ : θ * lam⁻¹ = thetaS D) (n : GA D (D.sp.Y 0)) :
     star (psiBes ψ d θ (vecB o ζ) n) =
@@ -134,6 +153,13 @@ def FrameLaw (X : HidaSetting.HidaSetting D) (h : X.B.I = instOf D) (u : D.what�
 
 def posReals : Set ℂ := {c | ∃ r : ℝ, 0 < r ∧ c = r}
 
+/- English proof (translation)
+Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag S (isIsoSub_e d)`. Use `haveI : Countable (NFlagQ S d.e) := by`. Establish `hinj : Function.Injective (fun x : NFlagQ S d.e => (⟨x.1.1, x.2⟩ : GQ S))` using `fun x y hxy => Subtype.ext (Subtype.ext (congrArg (fun z : GQ S => z.1) hxy))`. Conclude with `hinj.countable`. Unfold `besPer`.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `h𝓝.setIntegral_eq h𝓝' fun γ n => ?_` and prove the remaining obligations. Establish `hγ : ((γ : flagN d) : GA D S) ∈ GQ S` using `Subgroup.mem_subgroupOf.1 γ.2`. Express the relevant statement in the definitionally equal form `besFun ψ θ d o ζ φ f a ((γ : flagN d) * n) = _`. Simplify using `only [besFun, Subgroup.coe_mul]`.
+
+Rewrite using `[psiBes_mul d ψ θ _ γ.1.2 n.2, GlobalTheory.CharLaws.psiBes_rat ψ d hψ.2.2.1 θ _ hγ, one_mul, mul_assoc ((γ : flagN d) : GA D S), hf _ hγ]`.
+-/
 theorem besPer_domN {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : OrthDec S₀ A L)
     (ζ : Fin L.rank → D.host.E) {ψ : AddChar (AF ↥D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ)
     (θ : D.host.E) (μ 𝓕) (ν : Measure (flagN d)) (hν : ν.IsHaarMeasure) {𝓝 𝓝' : Set (flagN d)}
@@ -155,6 +181,9 @@ theorem besPer_domN {S S₀ A L : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (o : 
   rw [psiBes_mul d ψ θ _ γ.1.2 n.2, GlobalTheory.CharLaws.psiBes_rat ψ d hψ.2.2.1 θ _ hγ, one_mul,
     mul_assoc ((γ : flagN d) : GA D S), hf _ hγ]
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D B.A`. Use `haveI := B.vA.haar`. Conclude with `h𝓕.setIntegral_eq B.vA.fund fun γ x => Shift.inner_left B ψ hψ φ f hφ hf γ.2 x`.
+-/
 theorem besPer_domA {ρ : ℕ} (B : GlobalTheory.Unf.BesLev D ρ) {ψ : AddChar (AF ↥D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) {𝓕 : Set (GA D B.A)} (h𝓕 : IsFundamentalDomain (GQ B.A) 𝓕 B.vA.μ)
     (φ : GA D B.A → ℂ) (f : GA D B.V → ℂ) (hφ : ∀ γ ∈ GQ B.A, ∀ g, φ (γ * g) = φ g)

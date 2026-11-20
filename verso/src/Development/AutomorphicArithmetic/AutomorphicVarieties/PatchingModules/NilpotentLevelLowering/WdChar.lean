@@ -7,6 +7,11 @@ open UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Hi UpperTheory.V.AlgebraToo
 open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hsep : (Polynomial.X ^ d - Polynomial.C (1 : ℂ)).Separable` using `Polynomial.separable_X_pow_sub_C 1 (Nat.cast_ne_zero.mpr hd) one_ne_zero`. Establish `h1' : minpoly ℂ M ∣ Polynomial.X ^ d - Polynomial.C 1` using `minpoly.dvd ℂ M (by simp [h1])`. Establish `hsq : Squarefree (minpoly ℂ M)` using `hsep.squarefree.squarefree_of_dvd h1'`.
+
+Establish `h2 : minpoly ℂ M ∣ (Polynomial.X - 1) ^ n` using `hc ▸ Matrix.minpoly_dvd_charpoly M`. Establish `h3 : minpoly ℂ M ∣ Polynomial.X - 1` using `(hsq.dvd_pow_iff_dvd hn.ne').mp h2`. Establish `h4` using `(minpoly.dvd_iff).mp h3`. Simplify `h4` using `[sub_eq_zero]`.
+-/
 private theorem unip_eq_one {n d : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hd : d ≠ 0) (h1 : M ^ d = 1)
     (hc : M.charpoly = (Polynomial.X - 1) ^ n) : M = 1 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -20,6 +25,19 @@ private theorem unip_eq_one {n d : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (hd : d
   have h4 := (minpoly.dvd_iff).mp h3
   simpa [sub_eq_zero] using h4
 
+/- English proof (translation)
+Introduce `l _ E Ω _ _ _ _ _ Bq w hB hl n ι r x hx`. Establish `hxe : wdOf hB hl ι r = x` using `IsWDOf.wdOf_eq hl hx`. Take `⟨t, ht, φ, hφ, N, a, hmon, -, -⟩` from `hx`. Prove the components needed by the constructor for the conclusion. Introduce `σ`.
+
+Rewrite using `[← hxe, IsMonodromy.charPol_wdOf hl ht hmon ι σ]`. Conclude with `Matrix.charpoly_map _ ι.toRingHom`. Introduce `σ hσ hc`. Establish `hσI : σ ∈ Ine Bq` using `GlobalTheory.TameQuot.ineKer_le_Ine Bq l hσ`. Set `τ : Ine Bq` to `⟨σ, hσI⟩`.
+
+Establish `htτ : t τ = 1` using `(GlobalTheory.TameQuot.eq_one_iff_mem_ineKer E Ω l Bq w hB hl t ht.1 ht.2 τ).mpr hσ`. Establish `hval : tval t τ = 0` using `by simp [tval, htτ]`. Take `⟨-, U, hU, hUr⟩` from `hmon`. Use `haveI := compactSpace_Ine (E := E) Bq`. Use `haveI : Finite (Ine Bq ⧸ U) := Subgroup.quotient_finite_of_isOpen U hU`.
+
+Use `haveI : U.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hd : U.normalCore.index ≠ 0` using `Subgroup.FiniteIndex.index_ne_zero`. Establish `hpow : τ ^ U.normalCore.index ∈ U` using `U.normalCore_le (U.normalCore.pow_index_mem τ)`. Establish `hr : (r σ : Matrix (Fin n) (Fin n) (Qbar l)) ^ U.normalCore.index = 1`. Use `hUr _ hpow` as an intermediate fact.
+
+Rewrite `this` using `[tval_pow, hval, mul_zero, zero_smul, IsNilpotent.exp_zero, Subgroup.coe_pow, map_pow, Units.val_pow_eq_pow_val]`. Conclude with `this`. Establish `hM : (r σ : Matrix (Fin n) (Fin n) (Qbar l)).map ι = 1`. Apply `unip_eq_one _ hd _ hc` to reduce the goal to its premises. Establish `e : (r σ : Matrix (Fin n) (Fin n) (Qbar l)).map ι = ι.toRingHom.mapMatrix (r σ : Matrix (Fin n) (Fin n) (Qbar l))` using `rfl`.
+
+Rewrite using `[e, ← map_pow, hr, map_one]`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.map_injective ι.injective ?_` and prove the remaining obligations. Use `show (r σ : Matrix (Fin n) (Fin n) (Qbar l)).map ι = (1 : Matrix (Fin n) (Fin n) (Qbar l)).map ι`. Rewrite using `[hM, Matrix.map_one _ (map_zero ι) (map_one ι)]`.
+-/
 theorem UpperTheory.V.Pa.Lev.wdChar :
     ∀ (l : ℕ) [Fact l.Prime] (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (Bq : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (hB : IsPlaceOver Bq w), ((l : ℕ) : 𝓞 E) ∉ w.asIdeal → ∀ (n : ℕ) (ι : Qbar l ≃+* ℂ) (r : G E Ω →* GL (Fin n) (Qbar l)) (x : WD hB), IsWDOf ι r x → (∀ σ : Weil hB, ((r σ : Matrix (Fin n) (Fin n) (Qbar l)).map ι).charpoly = x.charPol σ) ∧ ∀ σ ∈ GlobalTheory.TameQuot.ineKer E Bq l, ((r σ : Matrix (Fin n) (Fin n) (Qbar l)).map ι).charpoly = (Polynomial.X - 1) ^ n → r σ = 1 := by
   intro l _ E Ω _ _ _ _ _ Bq w hB hl n ι r x hx

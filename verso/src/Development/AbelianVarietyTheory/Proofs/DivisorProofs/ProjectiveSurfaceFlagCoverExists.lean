@@ -23,6 +23,15 @@ open GlobalTheory
 
 namespace GlobalTheory.FlagCover
 
+/- English proof (translation)
+Take `⟨M, φ, hM, hφ⟩` from `GlobalTheory.T.vector_bundle_surface_nonzero_line_quotient k T hT E r hE`. Use `hE.isFiniteQC` as an intermediate fact. Use `hM.isFiniteQC` as an intermediate fact. Take `⟨T', _, _, ρ, hT', hc, hd, hC⟩` from `GlobalTheory.T.surface_alteration_effective_cartier k T hT (QCoh.annihilatorSheaf (cokernel φ)) fun h => VB.genericPoint_notMem_support_cokernel_of_ne_zero T E M φ hM hφ ((QCoh.coe_support_annihilatorSheaf _).le h)`. Take `⟨hsub, hK⟩` from `VB.isSubbundle_kernel_of_locally_principal T' _ _ ((Scheme.Modules.pullback ρ).map φ) r (hE.pullback ρ) (hM.pullback ρ) (VB.exists_image_principal_of_effCartier T T' ρ E M φ _ hE hM hC)`.
+
+Set `S : ShortComplex T'.Modules` to `ShortComplex.mk _ _ (cokernel.condition (kernel.ι ((Scheme.Modules.pullback ρ).map φ)))`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_cokernel _ }`. Take `⟨s, h₃⟩` from `hsub.isVB_cokernel`. Establish `h₂ : IsVB S.X₂ (r + 1)` using `hE.pullback ρ`. Establish `h₃' : IsVB S.X₃ s` using `h₃`.
+
+Establish `hs : s = 1`. Use `h₂.isFiniteQC` as an intermediate fact. Establish `g` using `genRank_shortExact hS`. Rewrite `g` using `[(show IsVB S.X₁ r from hK).genRank_eq, h₂.genRank_eq, h₃'.genRank_eq]`. Use linear arithmetic over natural numbers and integers.
+
+Substitute `hs` using the available equality. Conclude with `⟨T', inferInstance, inferInstance, ρ, S, det S.X₃ 1, hT', hc, hd, hS, ⟨Iso.refl _⟩, h₃'.isLB_det, ⟨h₃'.isoDet⟩, hK⟩`.
+-/
 theorem step (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T] (hT : IsProjSurface k T)
     (E : T.Modules) (r : ℕ) (hE : IsVB E (r + 1)) :
     ∃ (T' : Scheme.{0}) (_ : Algebra k Γ(T', ⊤)) (_ : IsIntegral T') (ρ : T' ⟶ T)
@@ -52,6 +61,11 @@ theorem step (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsInt
   exact ⟨T', inferInstance, inferInstance, ρ, S, det S.X₃ 1, hT', hc, hd, hS, ⟨Iso.refl _⟩, h₃'.isLB_det,
     ⟨h₃'.isoDet⟩, hK⟩
 
+/- English proof (translation)
+Consider the cases of `h with`. Consider the case `nil h => exact .nil (h.of_iso φ.symm)`. Consider the case `cons S hS hL e h`. Set `S' : ShortComplex X.Modules` to `ShortComplex.mk (S.f ≫ φ.hom) (φ.inv ≫ S.g) (by simp)`. Establish `ψ : S ≅ S'` using `ShortComplex.isoMk (Iso.refl _) φ (Iso.refl _) (by simp [S']) (by simp [S'])`.
+
+Conclude with `.cons S' (ShortComplex.shortExact_of_iso ψ hS) hL e h`.
+-/
 theorem hasFlag_of_iso {X : Scheme.{0}} {E E' : X.Modules} {l : List (LB X)} (h : HasFlag E l) (φ : E ≅ E') :
     HasFlag E' l := by
   cases h with
@@ -61,6 +75,9 @@ theorem hasFlag_of_iso {X : Scheme.{0}} {E E' : X.Modules} {l : List (LB X)} (h 
     have ψ : S ≅ S' := ShortComplex.isoMk (Iso.refl _) φ (Iso.refl _) (by simp [S']) (by simp [S'])
     exact .cons S' (ShortComplex.shortExact_of_iso ψ hS) hL e h
 
+/- English proof (translation)
+Use `hS.epi_g` as an intermediate fact. Use `haveI := h₁.isQuasicoherent`. Use `haveI := GlobalTheory.FlagPull.isQuasicoherent_X₂ S hS h₃`. Conclude with `ShortComplex.ShortExact.mk' (QCoh.exact_map_pullback f hS.exact).1 (GlobalTheory.FlagPull.mono_pullback_map_f f S hS h₃) (QCoh.exact_map_pullback f hS.exact).2`.
+-/
 theorem shortExact_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortComplex X.Modules) (hS : S.ShortExact)
     {r s : ℕ} (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) : (S.map (Scheme.Modules.pullback f)).ShortExact := by
   have := hS.epi_g
@@ -69,6 +86,13 @@ theorem shortExact_pullback {X Y : Scheme.{0}} (f : Y ⟶ X) (S : ShortComplex X
   exact ShortComplex.ShortExact.mk' (QCoh.exact_map_pullback f hS.exact).1
     (GlobalTheory.FlagPull.mono_pullback_map_f f S hS h₃) (QCoh.exact_map_pullback f hS.exact).2
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero`. Introduce `T _ _ hT E hE`. Conclude with `⟨T, inferInstance, inferInstance, 𝟙 T, 1, [], hT, Category.id_comp _, isGenFinite_id, .nil (isVB_zero_iff.1 (hE.pullback (𝟙 T)))⟩`. Consider the case `succ r ih`.
+
+Introduce `T _ _ hT E hE`. Take `⟨T₁, _, _, ρ, S, L, hT₁, hc, hd, hS, ⟨e₂⟩, hL, ⟨e₃⟩, h₁⟩` from `step k T hT E r hE`. Take `⟨T₂, _, _, ρ', d', l, hT₂, hc', hd', hfl⟩` from `ih T₁ hT₁ S.X₁ h₁`. Establish `h₃ : IsVB S.X₃ 1` using `(isVB_toMod hL).of_iso e₃.symm`. Establish `hS'` using `shortExact_pullback ρ' S hS h₁ h₃`.
+
+Take `⟨φ⟩` from `nonempty_pullback_toMod_iso hL ρ'`. Establish `H : HasFlag ((Scheme.Modules.pullback ρ').obj S.X₂) (L.pull ρ' :: l)` using `.cons (S.map (Scheme.Modules.pullback ρ')) hS' (Semi.LB.isLB_pull hL ρ') ((Scheme.Modules.pullback ρ').mapIso e₃ ≪≫ φ) hfl`. Use `⟨T₂, inferInstance, inferInstance, ρ' ≫ ρ, d' * 1, L.pull ρ' :: l, hT₂, ?_, GlobalTheory.T.gen_finite_comp_degree_mul _ _ _ ρ' ρ d' 1 hd' hd, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hc, hc']`. Conclude with `hasFlag_of_iso H ((Scheme.Modules.pullback ρ').mapIso e₂ ≪≫ (Scheme.Modules.pullbackComp ρ' ρ).app E)`.
+-/
 theorem exists_of_rank (k : Type) [Field k] (r : ℕ) : ∀ (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T],
     IsProjSurface k T → ∀ E : T.Modules, IsVB E r →
       ∃ (T' : Scheme.{0}) (_ : Algebra k Γ(T', ⊤)) (_ : IsIntegral T') (ρ : T' ⟶ T) (d : ℕ)
@@ -94,6 +118,9 @@ theorem exists_of_rank (k : Type) [Field k] (r : ℕ) : ∀ (T : Scheme.{0}) [Al
     · rw [Category.assoc, hc, hc']
     · exact hasFlag_of_iso H ((Scheme.Modules.pullback ρ').mapIso e₂ ≪≫ (Scheme.Modules.pullbackComp ρ' ρ).app E)
 
+/- English proof (translation)
+Introduce `k _ T _ _ hT E r hE` and use `exists_of_rank k r T hT E hE`.
+-/
 theorem flagCoverExists : ∀ (k : Type) [Field k] (T : Scheme.{0}) [Algebra k Γ(T, ⊤)] [IsIntegral T],
     IsProjSurface k T → FlagCoverExists k T :=
   fun k _ T _ _ hT E r hE => exists_of_rank k r T hT E hE

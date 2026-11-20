@@ -19,16 +19,61 @@ section Abstract
 
 variable {p : ℕ} [Fact p.Prime] {J : Type} [Fintype J]
 
+/- English proof (translation)
+Use `Finset.sum_induction f (fun x => ‖x‖ < ε) (fun a b ha hb => ?_) (by simpa using hε) fun i _ => h i` and prove the remaining obligations. Conclude with `(IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)`.
+-/
 theorem norm_sum_lt {I : Type} [Fintype I] (f : I → PadicAlgCl p) {ε : ℝ} (hε : 0 < ε) (h : ∀ i, ‖f i‖ < ε) :
     ‖∑ i, f i‖ < ε := by
   refine Finset.sum_induction f (fun x => ‖x‖ < ε) (fun a b ha hb => ?_) (by simpa using hε) fun i _ => h i
   exact (IsUltrametricDist.norm_add_le_max a b).trans_lt (max_lt ha hb)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `[Matrix.mulVec, dotProduct]`.
+-/
 theorem map_mulVec' {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (A : Matrix J J R) (w : J → R) :
     (A.map f).mulVec (fun j => f (w j)) = fun j => f (A.mulVec w j) := by
   funext j
   simp [Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Take `⟨i₀, -, hi₀⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖v j‖) ⟨j, Finset.mem_univ _⟩`. Use `(mul_le_mul_of_nonneg_right (hi₀ j (Finset.mem_univ _)) hε.le).trans ?_` and prove the remaining obligations. Distinguish the cases in `h0 : v i₀ = 0`. Simplify `hx 0 M.zero_mem` using `[h0]`. Establish `hpos : 0 < ‖v i₀‖` using `norm_pos_iff.2 h0`.
+
+Set `r` to `IsLocalRing.residue (OO p)`. Set `W : Submodule (kb p) (J → kb p)` to `{ carrier := {z | ∃ w : J → OO p, P.mulVec w = w ∧ v i₀ • (fun j => (w j : PadicAlgCl p)) ∈ M ∧ z = fun j => r (w j)} add_mem' := by`. Introduce and unpack `_ _ ⟨w, h1, h2, rfl⟩ ⟨w', h1', h2', rfl⟩`. Use `⟨w + w', by rw [Matrix.mulVec_add, h1, h1'], ?_, funext fun j => by simp⟩` and prove the remaining obligations. Use `M.add_mem h2 h2' using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`. Use the proof step `zero_mem' := ⟨0, by simp, by`. Use `M.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+
+Use the proof step `simp, funext fun j => by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨w, h1, h2, rfl⟩`. Take `⟨a, rfl⟩` from `IsLocalRing.residue_surjective c`. Use `⟨a • w, by rw [Matrix.mulVec_smul, h1], ?_, funext fun j => by simp [r]⟩` and prove the remaining obligations.
+
+Use `M.smul_mem a h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `v i₀ * ((a : PadicAlgCl p) * w j) = (a : PadicAlgCl p) * (v i₀ * w j)`. Use `ring }`. Establish `hW` using `hirr W (by`.
+
+Introduce and unpack `_ ⟨w, h1, -, rfl⟩`. Rewrite using `[map_mulVec', h1])`. Use the proof step `(by`. Introduce and unpack `h hh _ ⟨w, h1, h2, rfl⟩`. Use `⟨(A h).mulVec w, ?_, ?_, map_mulVec' _ _ _⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mulVec_mulVec, hcomm h hh, ← Matrix.mulVec_mulVec, h1]`. Establish `h3` using `hM h hh _ h2`. Rewrite `h3` using `[Matrix.mulVec_smul]`. Establish `h4` using `map_mulVec' (OO p).subtype (A h) w`. Simplify using `only [ValuationSubring.coe_subtype] at h4 h3`.
+
+Rewrite using `[h4] at h3)` and apply the resulting hypothesis. Set `w₀ : J → OO p` to `fun j => ⟨v j / v i₀, (mem_OO_iff _).2 (by`. Rewrite using `[norm_div, div_le_one hpos]`. Conclude with `hi₀ j (Finset.mem_univ _))⟩`. Establish `hw₀ : v i₀ • (fun j => (w₀ j : PadicAlgCl p)) = v`.
+
+Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `v i₀ * (v j / v i₀) = v j`. Clear the denominators using the available nonvanishing facts. Establish `hmem : (fun j => r (w₀ j)) ∈ W`. Use `⟨w₀, ?_, hw₀.symm ▸ hv, rfl⟩` and prove the remaining obligations.
+
+Establish `h4` using `map_mulVec' (OO p).subtype P w₀`. Simplify using `only [ValuationSubring.coe_subtype] at h4 hPv`. Rewrite `hPv` using `[← hw₀, Matrix.mulVec_smul, h4]`. Use function extensionality and compare the values at `j`. Conclude with `Subtype.ext (mul_left_cancel₀ h0 (congrFun hPv j))`.
+
+Break down `hW with hW | hW` into its components or cases. Rewrite `hmem` using `[hW, Submodule.mem_bot]`. Establish `h1 : w₀ i₀ = 1` using `Subtype.ext (div_self h0)`. Establish `h2` using `congrFun hmem i₀`. Simplify using `[h1] at h2`.
+
+Establish `hcol : P.mulVec (fun j => P j i₁) = fun j => P j i₁`. Use function extensionality and compare the values at `j`. Conclude with `congrFun (congrFun hP j) i₁`. Take `⟨w, h1, h2, h3⟩` from `hW (fun j => r (P j i₁)) (by rw [map_mulVec', hcol])`. Establish `hz : ∀ j, ‖((P j i₁ - w j : OO p) : PadicAlgCl p)‖ < 1` using `fun j => by`.
+
+Rewrite using `[← not_isUnit_OO_iff, ← IsLocalRing.residue_ne_zero_iff_isUnit, not_not, map_sub]`. Conclude with `sub_eq_zero.2 (congrFun h3 j)`. Establish `hfix : ∀ j, (P j i₁ - w j : OO p) = ∑ i, P j i * (P i i₁ - w i)` using `fun j => by`. Establish `h5` using `congrFun hcol j`. Establish `h6` using `congrFun h1 j`.
+
+Simplify using `only [Matrix.mulVec, dotProduct] at h5 h6`. Simplify using `only [mul_sub, Finset.sum_sub_distrib, h5, h6]`. Establish `hsum : ∑ j, ((P j i₁ - w j : OO p) : PadicAlgCl p) * x j = ∑ i, ((P i i₁ - w i : OO p) : PadicAlgCl p) * ∑ j, (P j i : PadicAlgCl p) * x j`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hfix j, AddSubmonoidClass.coe_finsetSum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hlt : ‖∑ j, ((P j i₁ - w j : OO p) : PadicAlgCl p) * x j‖ < ε`. Rewrite using `[hsum]`. Use `norm_sum_lt _ hε fun i => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (hle i) (norm_nonneg _)).trans_lt (by nlinarith [hz i])`.
+
+Establish `hdec : ∑ j, (P j i₁ : PadicAlgCl p) * x j = ∑ j, ((P j i₁ - w j : OO p) : PadicAlgCl p) * x j + ∑ j, (w j : PadicAlgCl p) * x j`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hw : ε ≤ ‖∑ j, (w j : PadicAlgCl p) * x j‖`. Rewrite `hge` using `[hdec]`. Use `hge.trans (IsUltrametricDist.norm_add_le_max _ _)` as an intermediate fact. Break down `le_max_iff.1 this with h | h` into its components or cases. Conclude with `absurd h (not_le.2 hlt)`.
+
+Conclude with `h`. Establish `h7` using `hx _ h2`. Rewrite `h7` using `[smul_dotProduct, smul_eq_mul, norm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left hw hpos.le).trans h7`.
+-/
 theorem norm_mul_le_of_irreducible {I : Type} (P : Matrix J J (OO p)) (hP : P * P = P) (s : Set I)
     (A : I → Matrix J J (OO p)) (hcomm : ∀ h ∈ s, P * A h = A h * P)
     (hirr : ∀ W : Submodule (kb p) (J → kb p),
@@ -147,6 +192,11 @@ section System
 
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω}
 
+/- English proof (translation)
+Use `Fintype.ofFinite T` as an intermediate fact. Rewrite using `[ThetaSys.proj, finsum_eq_sum_of_fintype, smul_mul_assoc, mul_smul_comm, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Establish `h1 : eStd S.g _ h t = 0` using `hh t t.2`.
+
+Rewrite using `[mul_smul_comm, smul_mul_assoc, S.ρ_add _ _ (by rw [Weights.eStd_swap, h1, neg_zero, smul_zero]), S.ρ_add _ _ (by rw [h1, smul_zero]), add_comm]`.
+-/
 theorem proj_mul_comm (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N) (h : S.Gam) (hh : h ∈ S.perp T) :
     S.proj T c * S.ρ h = S.ρ h * S.proj T c := by
   have := Fintype.ofFinite T
@@ -170,6 +220,15 @@ def bdd (H : AddSubgroup S.Gam) (δ : ℝ) (hδ : 0 ≤ δ) : Submodule (OO p) (
     rw [smul_dotProduct, smul_eq_mul, norm_mul]
     exact (mul_le_mul_of_nonneg_right ((mem_OO_iff _).1 c.2) (norm_nonneg _)).trans (by simpa using he a ha)
 
+/- English proof (translation)
+Introduce `a ha`. Take `⟨k, hk⟩` from `hev h a`. Establish `h1 : ∀ i, ∑ n, (φ (S.ρ h n i) : PadicAlgCl p) * y₀ ⟨S.ev a n, S.ev_mem a n⟩ = (φ (S.ζ ^ k) : PadicAlgCl p) * y₀ ⟨S.ev (a + S.r • h) i, S.ev_mem _ i⟩` using `fun i => by`. Simplify using `only [hφ, ← map_mul, ← map_sum]`. Use `congr 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul]`. Conclude with `hk i`. Establish `h2 : (((S.ρ h).map φ).map (OO p).subtype).mulVec e ⬝ᵥ (fun i => y₀ ⟨S.ev a i, S.ev_mem a i⟩) = (φ (S.ζ ^ k) • e) ⬝ᵥ (fun i => y₀ ⟨S.ev (a + S.r • h) i, S.ev_mem _ i⟩)`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((φ (S.ζ ^ k) : PadicAlgCl p) * e i) * _`. Rewrite using `[mul_right_comm, ← h1 i, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(φ (S.ρ h n i) : PadicAlgCl p) * e i * _ = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(bdd y₀ H δ hδ).smul_mem _ he _ (H.add_mem ha (H.nsmul_mem hh _))`.
+-/
 theorem bdd_stable (φ : o →+* OO p) (hφ : ∀ a, (φ a : PadicAlgCl p) = y₀ (algebraMap o S.R a))
     (hev : ∀ a h : S.Gam, ∃ e : ℕ, ∀ i, ∑ n, algebraMap o Ω (S.ρ a n i) * S.ev h n =
       algebraMap o Ω (S.ζ ^ e) * S.ev (h + S.r • a) i)
@@ -197,6 +256,13 @@ theorem bdd_stable (φ : o →+* OO p) (hφ : ∀ a, (φ a : PadicAlgCl p) = y�
   rw [h2]
   exact (bdd y₀ H δ hδ).smul_mem _ he _ (H.add_mem ha (H.nsmul_mem hh _))
 
+/- English proof (translation)
+Use `Fintype.ofFinite T` as an intermediate fact. Establish `h1 : (((S.proj T c).map φ).map (OO p).subtype).mulVec e = ∑ t : T, φ (Ring.inverse (Nat.card T : o) * S.ζN ^ (-(c t)).val) • (((S.ρ t).map φ).map (OO p).subtype).mulVec e`. Use function extensionality and compare the values at `j`. Rewrite using `[ThetaSys.proj, finsum_eq_sum_of_fintype, Finset.sum_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul, Finset.mul_sum, map_sum, Finset.sum_mul, Pi.smul_apply, Finset.smul_sum]`.
+
+Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (OO p).subtype _ * _`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[h1]`. Conclude with `M.sum_mem fun t _ => M.smul_mem _ (hM t t.2 e he)`.
+-/
 theorem proj_stable (φ : o →+* OO p) (T : AddSubgroup S.Gam) (c : T →+ ZMod S.N)
     (M : Submodule (OO p) (S.J → PadicAlgCl p))
     (hM : ∀ t ∈ T, ∀ e ∈ M, (((S.ρ t).map φ).map (OO p).subtype).mulVec e ∈ M) (e : S.J → PadicAlgCl p)
@@ -219,6 +285,13 @@ theorem proj_stable (φ : o →+* OO p) (T : AddSubgroup S.Gam) (c : T →+ ZMod
 
 variable {y₀} (τ : S.Test p y₀)
 
+/- English proof (translation)
+Use `by_contra! h0`. Take `⟨k, hk, h⟩` from `τ.eq α hα`. Use `Fintype.ofFinite (S.perp τ.yy.ker)` as an intermediate fact. Establish `h1 : (⟨_, hk⟩ : S.R) = ∑ t : S.perp τ.yy.ker, algebraMap o S.R (S.ζ ^ (k.2 t).val) * ∑ j, algebraMap o S.R (S.proj _ (τ.wt α) j k.1) * ⟨S.ev t j, S.ev_mem t j⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `only [ThetaSys.FF, finsum_eq_sum_of_fintype, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul]`. Both sides reduce to the same expression. Rewrite `h` using `[h1, map_sum]`. Use `(norm_sum_lt _ (mul_pos τ.δ_pos (Real.exp_pos _)) fun t => ?_).ne h` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, map_sum]`.
+
+Simplify using `only [map_mul]`. Conclude with `(mul_le_mul_of_nonneg_right (hint _) (norm_nonneg _)).trans_lt (by simpa using h0 t t.2 k.1)`.
+-/
 theorem exists_le_norm (hint : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) {α : τ.X}
     (hα : ∀ v₀, τ.q α ≤ τ.q (α + S.N • v₀)) : ∃ t ∈ S.perp τ.yy.ker, ∃ i, τ.δ * Real.exp (-(τ.q α / S.N)) ≤
       ‖∑ j, y₀ (algebraMap o S.R (S.proj _ (τ.wt α) j i)) * y₀ ⟨S.ev t j, S.ev_mem t j⟩‖ := by
@@ -236,6 +309,23 @@ theorem exists_le_norm (hint : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1)
   simp only [map_mul]
   exact (mul_le_mul_of_nonneg_right (hint _) (norm_nonneg _)).trans_lt (by simpa using h0 t t.2 k.1)
 
+/- English proof (translation)
+Establish `hint : ∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1` using `fun a => hφ a ▸ (mem_OO_iff _).1 (φ a).2`. Establish `: IsDomain o` using `(ArithBase.inj (o := o) (Ω := Ω)).isDomain`. Use `FreeNear.finite_char S (S.perp τ.yy.ker)` as an intermediate fact. Use `Fintype.ofFinite (S.perp τ.yy.ker →+ ZMod S.N)` as an intermediate fact. Take `⟨hmul, hsum⟩` from `FreeNear.proj_orthogonal S _ τ.isoFree`.
+
+Establish `hpp` using `TestBasis.perp_perp S τ.yy.ker`. Establish `hTH : S.perp τ.yy.ker ≤ τ.yy.ker` using `τ.isoFree.1.trans hpp.le`. Use `le_antisymm (Submodule.span_le.2 ?_) fun e he => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, l, i, hα, hl, rfl⟩ a ha`. Establish `h1` using `τ.le α hα a ha i`.
+
+Simplify using `only [dotProduct, _root_.mul_assoc, ← Finset.mul_sum, norm_mul]`. Use `(mul_le_mul hl h1 (norm_nonneg _) (Real.exp_pos _).le).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← Real.exp_add, add_neg_cancel, Real.exp_zero, _root_.mul_one]`. Establish `hst` using `bdd_stable y₀ φ hφ hev τ.yy.ker τ.δ τ.δ_pos.le`. Set `ψ : o →+* PadicAlgCl p` to `(OO p).subtype.comp φ`.
+
+Establish `he' : e = ∑ c : S.perp τ.yy.ker →+ ZMod S.N, (ψ.mapMatrix (S.proj _ c)).mulVec e`. Rewrite using `[← Matrix.sum_mulVec, ← map_sum, hsum, map_one, Matrix.one_mulVec]`. Rewrite using `[he']`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Take `⟨α, hα, rfl⟩` from `(test_weights o Ω S p y₀ τ).1 c`.
+
+Establish `hPP : S.proj _ (τ.wt α) * S.proj _ (τ.wt α) = S.proj _ (τ.wt α)` using `by rw [hmul, if_pos rfl]`. Establish `hfix : (ψ.mapMatrix (S.proj _ (τ.wt α))).mulVec ((ψ.mapMatrix (S.proj _ (τ.wt α))).mulVec e) = (ψ.mapMatrix (S.proj _ (τ.wt α))).mulVec e`. Rewrite using `[Matrix.mulVec_mulVec, ← map_mul, hPP]`. Establish `hv : (ψ.mapMatrix (S.proj _ (τ.wt α))).mulVec e ∈ bdd y₀ τ.yy.ker τ.δ τ.δ_pos.le` using `proj_stable φ _ _ _ (fun t ht => hst t (hTH ht)) e he`. Generalize the expression as in `(ψ.mapMatrix (S.proj _ (τ.wt α))).mulVec e = v at hfix hv`.
+
+Take `⟨t, ht, i₁, hi₁⟩` from `exists_le_norm τ hint hα`. Establish `key` using `norm_mul_le_of_irreducible (φ.mapMatrix (S.proj _ (τ.wt α))) (by rw [← map_mul, hPP]) (S.perp (S.perp τ.yy.ker) : Set S.Gam) (fun h => φ.mapMatrix (S.ρ h)) (fun h hh => by rw [← map_mul, ← map_mul, proj_mul_comm _ _ h hh]) (hirr _) (bdd y₀ τ.yy.ker τ.δ τ.δ_pos.le) (fun h hh => hs …`. Establish `hv' : v = ∑ i, fun j => v i * y₀ (algebraMap o S.R (S.proj _ (τ.wt α) j i))`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply, ← congrFun hfix j]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hφ, _root_.mul_comm]`. Both sides reduce to the same expression. Rewrite using `[hv']`. Use `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨α, v i, i, hα, ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h1` using `key i`. Rewrite `h1` using `[mul_left_comm, mul_le_iff_le_one_right τ.δ_pos, Real.exp_neg, ← div_eq_mul_inv, div_le_one (Real.exp_pos _)]`. Conclude with `h1`.
+-/
 theorem E_eq_bdd [ArithBase o Ω] (φ : o →+* OO p) (hφ : ∀ a, (φ a : PadicAlgCl p) = y₀ (algebraMap o S.R a))
     (hev : ∀ a h : S.Gam, ∃ e : ℕ, ∀ i, ∑ n, algebraMap o Ω (S.ρ a n i) * S.ev h n =
       algebraMap o Ω (S.ζ ^ e) * S.ev (h + S.r • a) i)

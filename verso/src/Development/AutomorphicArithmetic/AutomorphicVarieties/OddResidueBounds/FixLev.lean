@@ -3,6 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
+/- English proof (translation)
+Use `haveI : NeZero (l ^ k) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ k)`. Establish `h1` using `cyclotomicCharacter.spec l g ζ hζ.pow_eq_one`.
+
+Rewrite `h1` using `[h ζ hζ.pow_eq_one]`. Establish `h2` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h1`. Conclude with `(ZMod.val_injective _ h2).symm`. Introduce and unpack `h t ht`. Rewrite using `[cyclotomicCharacter.spec l g t ht, h]`.
+-/
 private theorem pow_cyc_char_iff_toZModPow_eq {Ω : Type} [Field Ω] (l : ℕ) [Fact l.Prime] [∀ i, HasEnoughRootsOfUnity Ω (l ^ i)]
     (g : Ω ≃+* Ω) (k : ℕ) (c : ZMod (l ^ k)) :
     (∀ t : Ω, t ^ (l ^ k) = 1 → g t = t ^ c.val) ↔
@@ -18,10 +23,36 @@ private theorem pow_cyc_char_iff_toZModPow_eq {Ω : Type} [Field Ω] (l : ℕ) [
   · rintro h t ht
     rw [cyclotomicCharacter.spec l g t ht, h]
 
+/- English proof (translation)
+Use `conv_rhs => rw [← Nat.mod_add_div a n, pow_add, pow_mul, ht, one_pow, mul_one]`.
+-/
 private theorem pow_mod_eq_pow_of_pow_eq_one {Ω : Type} [Field Ω] (t : Ω) (n a : ℕ) (ht : t ^ n = 1) :
     t ^ (a % n) = t ^ a := by
   conv_rhs => rw [← Nat.mod_add_div a n, pow_add, pow_mul, ht, one_pow, mul_one]
 
+/- English proof (translation)
+Introduce `E Ω _ _ _ _ _ l _ N m _`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Use `haveI : NeZero (l : Ω) := ⟨Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero⟩`. Establish `key : ∀ (g : G E Ω) (k : ℕ), PadicInt.toZModPow k ((cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G E Ω) Ω g) : ℤ_[l]ˣ) : ℤ_[l]) = 1 ↔ ∀ t : Ω, t ^ (l ^ k) = 1 → g t = t`.
+
+Introduce `g k`. Rewrite using `[← pow_cyc_char_iff_toZModPow_eq l _ k 1]`. Use `forall_congr' fun t => imp_congr_right fun ht => ?_` and prove the remaining obligations. Rewrite using `[ZMod.val_one_eq_one_mod, pow_mod_eq_pow_of_pow_eq_one t _ 1 ht, pow_one]`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [Un, levU, Subgroup.mem_inf, Subgroup.mem_top, true_and, Subgroup.mem_comap, KStar.TotallyRealRoots.princ, cycZ, MonoidHom.mem_ker, KStar.TotallyRealRoots.redPow, MonoidHom.comp_apply, Units.ext_iff, Units.coe_map, MonoidHom.coe_coe, Units.val_one]`. Express the relevant statement in the definitionally equal form `_ ↔ PadicInt.toZModPow m _ = 1`. Rewrite using `[key]`.
+
+Both sides reduce to the same expression. Introduce `g hg`. Break down `Subgroup.mem_inf.1 hg with ⟨h1, h2⟩` into its components or cases. Establish `hχ : cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G E Ω) Ω g) = 1`. Simplify `h1` using `only [Uinf, cycU, Subgroup.mem_inf, Subgroup.mem_top, true_and, MonoidHom.mem_ker, cycZ, MonoidHom.comp_apply]`.
+
+Establish `hl : ∀ k, ∀ t : Ω, t ^ (l ^ k) = 1 → g t = t` using `fun k => (key g k).1 (by rw [hχ, Units.val_one, map_one])`. Establish `hN : ∀ t : Ω, t ^ N = 1 → g t = t` using `h2`. Take `⟨e, N', hndvd, hNe⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (NeZero.ne N) l (Fact.out : l.Prime).one_lt.ne'`. Establish `hcop : Nat.Coprime (l ^ (e + m)) N'` using `Nat.Coprime.pow_left _ ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hndvd)`. Introduce `x hx`.
+
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow (Nat.mul_ne_zero (NeZero.ne N) (pow_ne_zero _ (Fact.out : l.Prime).ne_zero))]`. Conclude with `zero_ne_one hx`. Establish `hxA : x ^ (l ^ (e + m) * N') = 1`.
+
+Rewrite using `[← hx, hNe, pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : g (x ^ N') = x ^ N'` using `hl (e + m) _ (by rw [← pow_mul, mul_comm, hxA])`. Establish `h4 : g (x ^ (l ^ (e + m))) = x ^ (l ^ (e + m))`.
+
+Apply `hN` to reduce the goal to its premises. Rewrite using `[hNe, ← pow_mul, show l ^ (e + m) * (l ^ e * N') = (l ^ (e + m) * N') * l ^ e by ring, pow_mul, hxA, one_pow]`. Establish `hyA : (g x * x⁻¹) ^ (l ^ (e + m)) = 1`. Rewrite using `[mul_pow, inv_pow, ← map_pow, h4, mul_inv_cancel₀ (pow_ne_zero _ hx0)]`. Establish `hyB : (g x * x⁻¹) ^ N' = 1`.
+
+Rewrite using `[mul_pow, inv_pow, ← map_pow, h3, mul_inv_cancel₀ (pow_ne_zero _ hx0)]`. Establish `hy : (g x * x⁻¹) ^ (Nat.gcd (l ^ (e + m)) N') = 1` using `pow_gcd_eq_one.2 ⟨hyA, hyB⟩`. Rewrite `hy` using `[Nat.Coprime.gcd_eq_one hcop, pow_one]`. Conclude with `(mul_inv_eq_one₀ hx0).1 hy`. Introduce `M _ b σ hdvd hσ`.
+
+Establish `hc` using `(pow_cyc_char_iff_toZModPow_eq l σ m (((b : ZMod M).val : ℕ) : ZMod (l ^ m))).1 (by`. Introduce `t ht`. Rewrite using `[ZMod.val_natCast, pow_mod_eq_pow_of_pow_eq_one t _ _ ht]`. Apply `hσ` to reduce the goal to its premises. Take `⟨q, rfl⟩` from `hdvd`.
+
+Rewrite using `[pow_mul, ht, one_pow])`. Establish `hmem : ((cyclotomicCharacter Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) - (((b : ZMod M).val : ℕ) : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow m)`. Rewrite using `[RingHom.mem_ker, map_sub, hc, map_natCast, sub_self]`. Rewrite `hmem` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Conclude with `hmem`.
+-/
 theorem UpperTheory.V.Odd.fixLev :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (N m : ℕ) [NeZero N], fixMu E Ω (l ^ m) = Un E Ω l m ∧ Uinf E Ω l ⊓ fixMu E Ω N ≤ fixMu E Ω (N * l ^ m) ∧ ∀ (M : ℕ) [NeZero M] (b : (ZMod M)ˣ) (σ : Ω ≃+* Ω), l ^ m ∣ M → CycLift M b σ → (l : ℤ_[l]) ^ m ∣ ((cyclotomicCharacter Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) - (((b : ZMod M).val : ℕ) : ℤ_[l]) := by
   intro E Ω _ _ _ _ _ l _ N m _

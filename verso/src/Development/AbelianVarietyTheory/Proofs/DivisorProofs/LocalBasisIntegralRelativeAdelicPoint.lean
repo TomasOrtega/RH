@@ -20,20 +20,36 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Use `(Valuation.integer.integers (NormedField.valuation (K := K))).mem_of_integral hx.tower_top` as an intermediate fact. Rewrite `this` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `this` after adjusting the coercions.
+-/
 theorem norm_le_one_of_isIntegral' {K : Type} [NormedField K] [IsUltrametricDist K] {x : K} (hx : IsIntegral ℤ x) :
     ‖x‖ ≤ 1 := by
   have := (Valuation.integer.integers (NormedField.valuation (K := K))).mem_of_integral hx.tower_top
   rw [Valuation.mem_integer_iff, NormedField.valuation_apply] at this
   exact_mod_cast this
 
+/- English proof (translation)
+The claim follows from `norm_le_one_of_isIntegral' ((RingOfIntegers.isIntegral_coe r).map inc.toIntAlgHom)`.
+-/
 theorem norm_inc_le_one (inc : E →+* PadicAlgCl l) (r : 𝓞 E) : ‖inc (r : E)‖ ≤ 1 :=
   norm_le_one_of_isIntegral' ((RingOfIntegers.isIntegral_coe r).map inc.toIntAlgHom)
 
+/- English proof (translation)
+Establish `h : (m : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (m : ℚ_[l])` using `(map_natCast _ m).symm`. Rewrite using `[h, norm_algebraMap', Padic.norm_natCast_eq_one_iff]`. Conclude with `((Fact.out : l.Prime).coprime_iff_not_dvd).mpr hm`.
+-/
 theorem norm_natCast_eq_one' {m : ℕ} (hm : ¬ l ∣ m) : ‖(m : PadicAlgCl l)‖ = 1 := by
   have h : (m : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (m : ℚ_[l]) := (map_natCast _ m).symm
   rw [h, norm_algebraMap', Padic.norm_natCast_eq_one_iff]
   exact ((Fact.out : l.Prime).coprime_iff_not_dvd).mpr hm
 
+/- English proof (translation)
+Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, x, hx, rfl⟩` from `hy`. Take `⟨r, hr⟩` from `hL x hx a`. Establish `e : c ⊗ₜ[F] x a = (c ⊗ₜ[F] (1 : E)) * ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x a)`.
+
+Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Use `show ‖ev (c ⊗ₜ[F] x a)‖ ≤ 1`. Rewrite using `[e, map_mul, norm_mul, hev.1, ← hr]`. Conclude with `mul_le_one₀ (hev.2.1 c hc) (norm_nonneg _) (norm_inc_le_one inc r)`. Consider the case `zero => simp`.
+
+Consider the case `add y w _ _ hy hw => show ‖ev (y a + w a)‖ ≤ 1`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hy hw)`. Consider the case `neg y _ hy => show ‖ev (-(y a))‖ ≤ 1`. Rewrite using `[map_neg, norm_neg]` and apply the resulting hypothesis.
+-/
 theorem norm_ev_latHat_le_one (inc : E →+* PadicAlgCl l)
     (ev : FiniteAdeleRing (𝓞 F) F ⊗[F] E →+* PadicAlgCl l) (hev : EvOk inc ev) {M : ℕ}
     (L : Set (Fin M → E)) (hL : ∀ x ∈ L, ∀ i, x i ∈ (algebraMap (𝓞 E) E).range)
@@ -67,6 +83,11 @@ section Space
 
 variable {D : D7}
 
+/- English proof (translation)
+Establish `hx' : ∑ j, x j • V.frame j ∈ V.L0` using `hx`. Rewrite `hx'` using `[hL0, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hx'`. Establish `hc' : ∑ j, ((c j : D.host.E)) • V.frame j = ∑ j, x j • V.frame j`. Rewrite using `[← hc]`.
+
+Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(algebraMap_smul D.host.E (c j) (V.frame j))`. Establish `h2` using `congrArg (fun v => V.frame.repr v i) hc'`. Simplify using `only [Module.Basis.repr_sum_self] at h2`. Conclude with `⟨c i, h2⟩`.
+-/
 theorem selfDualLattice_frame_span_integral_coordinates (V : Formalism.BasicNotions.TH.HSp D) (hL0 : V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame))
     (x : Fin V.rank → D.host.E) (hx : x ∈ StandardLattice.L0c D V) (i : Fin V.rank) :
     x i ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -90,6 +111,17 @@ section Space
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `Bridge.hLat at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Establish `hx'` using `hx`. Simplify using `only [Set.mem_ofPred, Subgroup.coe_inv] at hx'`.
+
+Conclude with `norm_ev_latHat_le_one inc ev hev (StandardLattice.L0c D V) (fun x hx i => selfDualLattice_frame_span_integral_coordinates V hL0 x hx i) _ hx' a`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, TensorProduct.tmul_zero]`. Rewrite using `[show (fun _ : Fin V.rank => (0 : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)) = 0 from rfl]`. Simplify using the standard rewrite rules.
+
+Consider the case `add x w _ _ hx hw`. Establish `e : (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (x + w) i) = (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] x i) + (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] w i)`. Use function extensionality and compare the values at `i`. Simplify using `[TensorProduct.tmul_add]`. Rewrite using `[e, Matrix.mulVec_add, Pi.add_apply, map_add]`.
+
+Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hw)`. Consider the case `smul r x _ hx`. Establish `e : (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (r • x) i) = ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (r : D.host.E)) • (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] x i)`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+
+Use `congr 1`. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul, norm_mul, hev.1]`. Conclude with `mul_le_one₀ (norm_inc_le_one inc r) (norm_nonneg _) hx`.
+-/
 theorem norm_ev_hLat_le_one (V : Formalism.BasicNotions.TH.HSp D) (hL0 : V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame))
     {l : ℕ} [Fact l.Prime] (inc : D.host.E →+* PadicAlgCl l)
     (ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l) (hev : EvOk inc ev)
@@ -129,6 +161,15 @@ end GlobalTheory.LocBasisInt
 
 namespace GlobalTheory.LocBasisInt
 
+/- English proof (translation)
+Introduce `D V l _ inc ev hev hL0 y B hB a b`. Take `⟨s, hs, hmem⟩` from `(hB (fun k => B.val k b)).2 ⟨1, fun h => (Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h), fun c => by`. Establish `e : Matrix.mulVec (B⁻¹).val (fun k => B.val k b) c = ((B⁻¹).val * B.val) c b` using `rfl`. Rewrite using `[e, Units.inv_mul, Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp⟩⟩`. Establish `h` using `norm_ev_hLat_le_one V hL0 inc ev hev y _ hmem a`. Establish `e : (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (((s : D.host.E) • fun k => B.val k b) i)) = ((1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] (s : D.host.E)) • (fun i => (1 : FiniteAdeleRing (𝓞 D.host.F) D.host.F) ⊗ₜ[D.host.F] B.val i b)`. Use function extensionality and compare the values at `i`.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Rewrite `h` using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, map_mul, norm_mul, hev.1, map_natCast, norm_natCast_eq_one' hs, one_mul]`. Rewrite using `[← map_inv, Units.val_mul, Matrix.mul_apply]`. Use `le_of_eq_of_le (congrArg norm ?_) h` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct, map_sum]`.
+
+Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hev.1]`. Both sides reduce to the same expression.
+-/
 theorem locBasis_integral : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) (l : ℕ) [Fact l.Prime] (inc : D.host.E →+* PadicAlgCl l) (ev : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E →+* PadicAlgCl l), EvOk inc ev → V.L0 = Submodule.span (𝓞 D.host.E) (Set.range V.frame) → ∀ (y : Bridge.Gf V) (B : GL (Fin V.rank) D.host.E), Formalism.L2.Forms.IsLocBasis l (Bridge.hLat V y : Set (Fin V.rank → D.host.E)) B → ∀ a b, ‖((Matrix.GeneralLinearGroup.map ev (y : GL (Fin V.rank) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)))⁻¹ * Matrix.GeneralLinearGroup.map inc B).val a b‖ ≤ 1 := by
   intro D V l _ inc ev hev hL0 y B hB a b
   obtain ⟨s, hs, hmem⟩ := (hB (fun k => B.val k b)).2 ⟨1, fun h => (Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h), fun c => by

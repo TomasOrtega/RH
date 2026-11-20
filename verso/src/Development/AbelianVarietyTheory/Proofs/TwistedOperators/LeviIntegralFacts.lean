@@ -14,6 +14,15 @@ open MeasureTheory Topology in
 open scoped ENNReal in
 open ValuativeRel Matrix in
 
+/- English proof (translation)
+Take `⟨h1, h2⟩` from `(_root_.GlobalTheory.SplitFlip.mem_KO_iff g).1 hg`. Establish `hdet : ∀ M : Matrix n n k, (∀ i j, M i j ∈ (valuation k).integer) → M.det ∈ (valuation k).integer`. Introduce `M hM`. Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (prod_mem fun i _ => hM _ _) _`. Apply `_root_.GlobalTheory.SmGL.nabs_eq_one` to reduce the goal to its premises. Establish `hd1 : valuation k ((GeneralLinearGroup.det g : kˣ) : k) ≤ 1`. Rewrite using `[← Valuation.mem_integer_iff, Matrix.GeneralLinearGroup.val_det_apply]`.
+
+Conclude with `hdet _ h1`. Establish `hd2 : valuation k (((GeneralLinearGroup.det g)⁻¹ : kˣ) : k) ≤ 1`. Rewrite using `[← map_inv, ← Valuation.mem_integer_iff, Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `hdet _ h2`. Establish `hprod : valuation k ((GeneralLinearGroup.det g : kˣ) : k) * valuation k (((GeneralLinearGroup.det g)⁻¹ : kˣ) : k) = 1`.
+
+Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Conclude with `le_antisymm hd1 (hprod ▸ mul_le_of_le_one_right' hd2)`.
+-/
 theorem _root_.GlobalTheory.SmGL.LeviInt.nabs_det_eq_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : Type} [Fintype n] [DecidableEq n] {g : GL n k}
     (hg : g ∈ _root_.GlobalTheory.SplitWeil.KO k n) :
@@ -41,6 +50,29 @@ theorem _root_.GlobalTheory.SmGL.LeviInt.nabs_det_eq_one {k : Type} [Field k] [V
 open MeasureTheory Topology in
 open scoped ENNReal in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e`. Establish `hT2 : T2Space k` using `(_root_.GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)).2`. Establish `hlevi : ∀ (g : _root_.GlobalTheory.SmGL.Levi k m) (u : GL n k), u ∈ _root_.GlobalTheory.SmGL.unipRad k e → (_root_.GlobalTheory.SmGL.leviEmb k e g * u ∈ _root_.GlobalTheory.SplitWeil.KO k n ↔ (∀ a, g a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)) ∧ u ∈ _root_.GlobalTheory.SplitWei …`. Introduce `g u hu`. Rewrite using `[← Subgroup.inv_mem_iff, mul_inv_rev, ← map_inv]`.
+
+Use `(_root_.GlobalTheory.SmGL.UnitInd.unip_mul_levi_mem_KO e ⟨u⁻¹, inv_mem hu⟩ g⁻¹).trans ?_` and prove the remaining obligations. Establish `hinv : ∀ a, (g⁻¹) a = (g a)⁻¹` using `fun a => rfl`. Simplify using `only [hinv, Subgroup.inv_mem_iff]`. Conclude with `and_comm`. Establish `hproj : ∀ p : _root_.GlobalTheory.SmGL.parab k e, (p : GL n k) ∈ _root_.GlobalTheory.SplitWeil.KO k n → ∀ a, _root_.GlobalTheory.SmGL.leviProj k e p a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)`.
+
+Introduce `p hp a`. Take `⟨u, hu, hpu⟩` from `_root_.GlobalTheory.SmGL.exists_levi_mul_unip k e p`. Rewrite `hp` using `[hpu]`. Conclude with `((hlevi _ u hu).1 hp).1 a`. Establish `hmod : ∀ g : _root_.GlobalTheory.SmGL.Levi k m, (∀ a, g a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)) → _root_.GlobalTheory.SmGL.modulus k m g = 1`.
+
+Introduce `g hg`. Unfold `_root_.GlobalTheory.SmGL.modulus`. Conclude with `Finset.prod_eq_one fun a _ => by`. Rewrite using `[_root_.GlobalTheory.SmGL.LeviInt.nabs_det_eq_one (hg a), one_zpow]`. Establish `hmul : ∀ g h : _root_.GlobalTheory.SmGL.Levi k m, _root_.GlobalTheory.SmGL.modulus k m (g * h) = _root_.GlobalTheory.SmGL.modulus k m g * _root_.GlobalTheory.SmGL.modulus k m h`.
+
+Introduce `g h`. Unfold `_root_.GlobalTheory.SmGL.modulus`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, ← _root_.GlobalTheory.SmGL.nabs_mul', ← map_mul]`.
+
+Both sides reduce to the same expression. Establish `hcont : Continuous (_root_.GlobalTheory.SmGL.leviProj k e)`. Use `continuous_pi fun a => Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, _root_.GlobalTheory.SmGL.leviProj_apply]`.
+
+Conclude with `(Units.continuous_val.comp continuous_subtype_val).matrix_elem _ _`. Establish `hinv : ∀ p : _root_.GlobalTheory.SmGL.parab k e, (_root_.GlobalTheory.SmGL.leviProj k e p a)⁻¹ = _root_.GlobalTheory.SmGL.leviProj k e p⁻¹ a`. Introduce `p`. Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+
+Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [hinv, _root_.GlobalTheory.SmGL.leviProj_apply, Subgroup.coe_inv]`. Conclude with `(Units.continuous_coe_inv.comp continuous_subtype_val).matrix_elem _ _`. Establish `hP : IsClosed (_root_.GlobalTheory.SmGL.parab k e : Set (GL n k))`. Establish `hset : (_root_.GlobalTheory.SmGL.parab k e : Set (GL n k)) = ⋂ (a) (b) (i : m a) (j : m b) (_ : b < a), {g : GL n k | (g : Matrix n n k) (e ⟨a, i⟩) (e ⟨b, j⟩) = 0}`.
+
+Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, _root_.GlobalTheory.SmGL.mem_parab_iff]`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[hset]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (Units.continuous_val.matrix_elem _ _) continuous_const`.
+
+Establish `hN : IsClosed (_root_.GlobalTheory.SmGL.unipRad k e : Set (GL n k))`. Establish `hset : (_root_.GlobalTheory.SmGL.unipRad k e : Set (GL n k)) = (_root_.GlobalTheory.SmGL.parab k e : Set (GL n k)) ∩ ⋂ (a) (i : m a) (j : m a), {g : GL n k | (g : Matrix n n k) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (m a) (m a) k) i j}`. Use extensionality with `g`. Rewrite using `[SetLike.mem_coe, _root_.GlobalTheory.SmGL.mem_unipRad]`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq, SetLike.mem_coe]`.
+
+Rewrite using `[hset]`. Conclude with `hP.inter (isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (Units.continuous_val.matrix_elem _ _) continuous_const)`. Use `⟨hlevi, hproj, hmod, hmul, _root_.GlobalTheory.SmGL.UnitInd.isLocallyConstant_modulus.continuous, hcont, hP, hN, fun g => ?_⟩` and prove the remaining obligations. Take `⟨u, h, w, hw, rfl⟩` from `_root_.GlobalTheory.SmGL.UnitInd.exists_iwasawa e g`. Conclude with `⟨_, mul_mem (_root_.GlobalTheory.SmGL.unipRad_le_parab k e u.2) (_root_.GlobalTheory.SmGL.leviEmb_mem_parab k e h), w, hw, rfl⟩`.
+-/
 theorem _root_.GlobalTheory.SmGL.LeviInt.levi_integral_facts : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n), (∀ (g : _root_.GlobalTheory.SmGL.Levi k m) (u : GL n k), u ∈ _root_.GlobalTheory.SmGL.unipRad k e → (_root_.GlobalTheory.SmGL.leviEmb k e g * u ∈ _root_.GlobalTheory.SplitWeil.KO k n ↔ (∀ a, g a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)) ∧ u ∈ _root_.GlobalTheory.SplitWeil.KO k n)) ∧ (∀ p : _root_.GlobalTheory.SmGL.parab k e, (p : GL n k) ∈ _root_.GlobalTheory.SplitWeil.KO k n → ∀ a, _root_.GlobalTheory.SmGL.leviProj k e p a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)) ∧ (∀ g : _root_.GlobalTheory.SmGL.Levi k m, (∀ a, g a ∈ _root_.GlobalTheory.SplitWeil.KO k (m a)) → _root_.GlobalTheory.SmGL.modulus k m g = 1) ∧ (∀ g h : _root_.GlobalTheory.SmGL.Levi k m, _root_.GlobalTheory.SmGL.modulus k m (g * h) = _root_.GlobalTheory.SmGL.modulus k m g * _root_.GlobalTheory.SmGL.modulus k m h) ∧ Continuous (_root_.GlobalTheory.SmGL.modulus k m) ∧ Continuous (_root_.GlobalTheory.SmGL.leviProj k e) ∧ IsClosed (_root_.GlobalTheory.SmGL.parab k e : Set (GL n k)) ∧ IsClosed (_root_.GlobalTheory.SmGL.unipRad k e : Set (GL n k)) ∧ ∀ g : GL n k, ∃ p ∈ _root_.GlobalTheory.SmGL.parab k e, ∃ x ∈ _root_.GlobalTheory.SplitWeil.KO k n, g = p * x := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e
   have hT2 : T2Space k := (_root_.GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)).2

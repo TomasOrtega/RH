@@ -8,6 +8,9 @@ namespace UpperTheory.V.Z.GSp4Splitting.Low
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.GKCoh GlobalTheory.WigAlg PositivityTheory.Rg.Cz
 
+/- English proof (translation)
+Introduce `u`. Establish `e` using `(GlobalTheory.capelli_cuspSub E n π τ χ h).2 (u - ((n : ℂ) - 1) / 2)`. Rewrite `e` using `[sub_add_cancel]`. Rewrite using `[e, Finset.prod_congr rfl fun k _ => show u - ((n : ℂ) - 1) / 2 + χ k = u + (l k : ℂ) by rw [hl]; ring]`.
+-/
 private theorem hasChar_of {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (π : CuspSub E n)
     (τ : E →+* ℂ) (χ : Fin n → ℂ) (h : HasInfCharGL π.V τ (Multiset.map χ Finset.univ.val)) (l : Fin n → ℤ)
     (hl : ∀ k, χ k = (l k : ℂ) + ((n : ℂ) - 1) / 2) : HasChar (cx τ (lieOp π)) fun k => (l k : ℂ) := by
@@ -19,6 +22,21 @@ private theorem hasChar_of {E : Type} [Field E] [NumberField E] [IsTotallyComple
 end UpperTheory.V.Z.GSp4Splitting.Low
 
 open NumberField GlobalTheory.CuspRep GlobalTheory.GKCoh GlobalTheory.WigAlg PositivityTheory.Rg.Cz UpperTheory.V.Z.GSp4Splitting.Low in
+/- English proof (translation)
+Introduce `E _ _ _ n hn π hr w lam hlam hch`. Take `⟨hK, hc⟩` from `J.kData_holds E n`. Take `⟨ℓ, hℓ, hw⟩` from `whitLie_holds E n π`. Establish `hG` using `GK.gkData_holds E n π`. Establish `ex : ∀ τ : E →+* ℂ, ∃ l : Fin n → ℤ, Function.Injective l ∧ (HasChar (cx τ (lieOp π)) fun k => (l k : ℂ)) ∧ (τ = w.embedding → ∀ a, l a = lam a - (a : ℕ)) ∧ (τ = barE E w.embedding → ∀ a, l a = -lam a - ((n : ℤ) - 1) + (a : ℕ))` using `fun τ => by`.
+
+Distinguish the cases in `h1 : τ = w.embedding`. Substitute `h1` using the available equality. Use `⟨fun a => lam a - (a : ℕ), StrictAnti.injective fun i j hij => ?_, hasChar_of π _ _ hch.1 _ fun k => ?_, fun _ _ => rfl, fun e => absurd e.symm (hK.ne _)⟩` and prove the remaining obligations. Use `hlam hij.le` as an intermediate fact. Establish `: (i : ℕ) < j` using `hij`.
+
+Use linear arithmetic over natural numbers and integers. Simplify using `only [infOf, if_true]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : τ = barE E w.embedding`.
+
+Substitute `h2` using the available equality. Use `⟨fun a => -lam a - ((n : ℤ) - 1) + (a : ℕ), StrictMono.injective fun i j hij => ?_, hasChar_of π _ _ hch.2 _ fun k => ?_, fun e => absurd e h1, fun _ _ => rfl⟩` and prove the remaining obligations. Use `hlam hij.le` as an intermediate fact. Establish `: (i : ℕ) < j` using `hij`. Use linear arithmetic over natural numbers and integers.
+
+Simplify using `only [infOf, Bool.false_eq_true, if_false]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨l, hl, hl'⟩` from `GlobalTheory.CompanionTheory.RgCz.charInt_at π hr τ`. Conclude with `⟨l, hl, hl', fun e => absurd e h1, fun e => absurd e h2⟩`.
+
+Use `choose l hinj hchar h1 h2 using ex`. Take `⟨s, hs⟩` from `kType_holds n hn π.V (E →+* ℂ) (Kinf E n) _ _ _ _ hK hG l hinj hchar ℓ hℓ hw`. Take `⟨ν, ψ, h0, hH, hcone⟩` from `low_abs _ _ _ _ hK hG l s hs w.embedding lam hlam (h1 _ rfl) (h2 _ rfl)`. Use `⟨ν, ψ.1, ψ.2, fun e => h0 (Subtype.ext e), ⟨fun a => ?_, fun a b hab he => ?_⟩, hcone⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (hH.1 a)`.
+
+Conclude with `congrArg Subtype.val (hH.2 a b hab he)`.
+-/
 theorem UpperTheory.V.Z.GSp4Splitting.lowType :
     LowType := by
   classical

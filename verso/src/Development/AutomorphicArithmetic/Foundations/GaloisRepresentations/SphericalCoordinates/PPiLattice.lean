@@ -5,6 +5,19 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
+/- English proof (translation)
+Introduce `g k Λ hd hs`. Prove the components needed by the constructor for the conclusion. Set `φ : ↥(AddSubgroup.pi Set.univ fun _ : Fin k => Λ) → (Fin k → ↥Λ)` to `fun x i => ⟨x.1 i, (AddSubgroup.mem_pi _).mp x.2 i trivial⟩`. Use `DiscreteTopology.of_continuous_injective (f := φ) ?_ ?_` and prove the remaining obligations. Use `continuous_pi fun i => ?_` and prove the remaining obligations.
+
+Conclude with `((continuous_apply i).comp continuous_subtype_val).subtype_mk _`. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun z => (z i : Fin g → ℂ)) hxy` as an intermediate fact.
+
+Simplify `this` using `[φ]`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Rewrite using `[← Finset.univ_sum_single w]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hw : w i ∈ Submodule.span ℝ (Λ : Set (Fin g → ℂ))` using `by rw [hs]; trivial`. Establish `hmap : (Submodule.span ℝ (Λ : Set (Fin g → ℂ))).map (LinearMap.single ℝ (fun _ : Fin k => Fin g → ℂ) i) ≤ Submodule.span ℝ ↑(AddSubgroup.pi Set.univ fun _ : Fin k => Λ)`. Rewrite using `[Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+
+Simplify using `only [SetLike.mem_coe, AddSubgroup.mem_pi]`. Introduce `j _`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hv`.
+
+Simplify using `[hj]`. Conclude with `hmap ⟨w i, hw, rfl⟩`.
+-/
 theorem UpperTheory.Gal.W2.piLattice_of :
     UpperTheory.Gal.W2.PiLattice := by
   intro g k Λ hd hs

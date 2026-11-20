@@ -37,6 +37,31 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open scoped Classical in
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' h`. Take `⟨hb, hg, hc, -, hw⟩` from `h`. Use `choose A hA hAθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hV'.sig w) (hg.hV'.cartan w)`. Use `choose C hC hCθ using fun w => GlobalTheory.T.cartanEigen_orthonormalFrame_exists _ _ _ _ _ (hg.hW.sig w) (hg.hW.cartan w)`. Establish `hA1 : ∀ w, IsFrame ((1 : ℂ) • (incM F G.V'.J).map (piInf (B.emb w))) (A w)` using `fun w => by`.
+
+Rewrite using `[incM_map_piInf, one_smul]`. Conclude with `hA w`. Establish `hC1 : ∀ w, IsFrame (Complex.I • (incM F G.W.J).map (piInf (B.emb w))) (C w)` using `fun w => by`. Rewrite using `[incM_map_piInf]`. Conclude with `hC w`.
+
+Establish `fr : Framed B.emb (incM F G.V'.J) (incM F G.W.J) 1 Complex.I A C` using `⟨one_mul _, hA1, hC1⟩`. Establish `hD` using `GlobalTheory.T.archHeisenbergDerivatives_exist`. Establish `hvl` using `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives hD`. Establish `hfe` using `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives hD`. Establish `hsec` using `GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar hK.base hD hfe hvl (GlobalTheory.T.lieScalar_of_prints_derEx_vacLine hK.base hD hvl)`.
+
+Establish `hfst` using `GlobalTheory.T.lieFirst_of_lieSecond' hsec`. Take `⟨Φ, hΦ⟩` from `hfe F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C hb.cm hb.std fr`. Establish `hr` using `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws GlobalTheory.RealLift.actsLaws hD hvl F E σ _ _ _ _ _ _ G.V' G.W G.M' B.ψ B.emb A C Φ hb.cm hb.std fr hAθ hCθ hΦ`. Establish `hwp : IsUWeilPair (cA σ) (adeleClass F) B.ψ (-1) (incM F G.V'.J) (incM F G.W.J) G.M'.co X.α (X.α / X.β) om'` using `hw`. Establish `hW2` using `hsec F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co 1 Complex.I A C Φ _ X.α B.mα hb.cm hb.std fr hΦ hwp.1 hc.expα`.
+
+Take `⟨d, hd, hB1⟩` from `hwp.2.1`. Establish `hW1` using `hfst F E σ _ _ _ _ _ _ _ B.ψ B.emb _ _ G.M'.co d 1 Complex.I A C Φ _ _ _ hb.cm hb.std fr hΦ hd hB1 (hasExp_div B.emb hc.expα hc.expβ)`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`. Establish `hL` using `GlobalTheory.RealLift.actsLaws`. Establish `mem : ∀ T, Φ T ∈ G.M'.Pol B.ψ B.emb` using `fun T => hr ▸ LinearMap.mem_range_self Φ T`.
+
+Establish `pol : ∀ f ∈ G.M'.Pol B.ψ B.emb, ∃ T, f = Φ T` using `fun f hf => by`. Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`. Conclude with `⟨T, rfl⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ hγ f hf f₁ h1`. Take `⟨T, rfl⟩` from `pol f hf`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin a') _ _ B.emb (incM F G.V'.J) 1 A hb.cm hA1 γ hγ`. Establish `h2` using `(hL F _ (Φ T) _ f₁).1 _ (fun t => map_zero _) (hW1 γ hγ Yg hY T)`. Establish `e` using `(hL F _ (Φ T) _ f₁).2.2.1 _ h2 h1`.
+
+Rewrite using `[← e]`. Conclude with `mem _`. Introduce `k hk f hf f₁ h1`. Take `⟨T, rfl⟩` from `pol f hf`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.RealLift.exists_line_of_upq F E σ (Fin a') _ _ B.emb (incM F G.V'.J) 1 A G.V'.θ hb.cm hA1 hAθ k hk.1 hk.2`.
+
+Take `⟨U, -, hSA⟩` from `GlobalTheory.ExpAct.expAct_fock F _ _ Φ _ ((om'.comp (MonoidHom.inl _ _)).comp γ) (GlobalTheory.RealLift.locFin_sumPl _ _ _ fun w => locFin_fock1 _ _ _ _ (Yg w) (hKC w) _) (fun t l hl => hadm _ l hl) (fun T => hW1 γ hγ Yg hgen T)`. Establish `h2` using `(hL F _ (Φ T) (Φ (U T)) f₁).2.1 _ (map_zero _) (hSA T)`. Rewrite `h2` using `[MonoidHom.comp_apply, hγ1]`. Establish `e` using `(hL F _ (Φ T) _ f₁).2.2.2.1 _ h2 h1`. Rewrite using `[← e]`.
+
+Conclude with `mem _`. Introduce `γ hγ f hf`. Take `⟨T, rfl⟩` from `pol f hf`. Take `⟨Yg, -, hY⟩` from `GlobalTheory.T.oneParamSubgroup_generators_exist F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C hb.cm hC1 γ hγ`. Establish `h2` using `(hL F _ (Φ T) _ (Φ T)).1 _ (fun t => map_zero _) (hW2 γ hγ Yg hY T)`.
+
+Conclude with `⟨_, mem _, h2, fun f₂ h3 => (hL F _ (Φ T) _ _).2.2.1 _ h3 h2⟩`. Introduce `k hk f hf`. Take `⟨T, rfl⟩` from `pol f hf`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.RealLift.exists_line_of_upq F E σ (Fin (a + a')) _ _ B.emb (incM F G.W.J) Complex.I C G.W.θ hb.cm hC1 hCθ k hk.1 hk.2`. Take `⟨U, -, hSA⟩` from `GlobalTheory.ExpAct.expAct_fock F _ _ Φ _ ((om'.comp (MonoidHom.inr _ _)).comp γ) (GlobalTheory.RealLift.locFin_sumPl _ _ _ fun w => locFin_fock2 _ _ _ _ (Yg w) (hKC w) _) (fun t l hl => hadm _ l hl) (fun T => hW2 γ hγ Yg hgen T)`.
+
+Establish `h2` using `(hL F _ (Φ T) (Φ (U T)) (Φ (U T))).2.1 _ (map_zero _) (hSA T)`. Rewrite `h2` using `[MonoidHom.comp_apply, hγ1]`. Conclude with `⟨_, mem _, h2, fun f₂ h3 => (hL F _ (Φ T) _ _).2.2.2.1 _ h3 h2⟩`.
+-/
 theorem polStab' : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W),

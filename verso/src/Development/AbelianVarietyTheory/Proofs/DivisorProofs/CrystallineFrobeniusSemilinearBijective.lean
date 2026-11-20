@@ -14,6 +14,15 @@ namespace GlobalTheory.CrysFlatBC
 
 open GlobalTheory.SmoothLift
 
+/- English proof (translation)
+Introduce `R D _ _ _ _ π κ hκ hπ X s t φ hs hs' hs'' ht hφ m`. Substitute `hφ ht` using the available equality. Take `⟨e₁, e₂, -, -, n⟩` from `(GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations : GlobalTheory.Published.CrystallineSmoothLift)`. Establish `hb : spMap π ≫ spMap (algebraMap R D) = 𝟙 _`. Rewrite using `[← Cris.spMap_comp, show π.comp (algebraMap R D) = RingHom.id R from RingHom.ext hπ, Cris.spMap_id]`.
+
+Take `⟨X', q, s', H⟩ : ∃ (X' : Scheme.{0}) (q : X' ⟶ X) (s' : X' ⟶ Sp D), IsPullback q s' s (spMap (algebraMap R D))` from `⟨_, _, _, IsPullback.of_hasPullback _ _⟩`. Set `i : X ⟶ X'` to `H.lift (𝟙 X) (s ≫ spMap π) (by rw [Category.assoc, hb]; simp)`. Establish `hiq : i ≫ q = 𝟙 X` using `H.lift_fst _ _ _`. Establish `his : i ≫ s' = s ≫ spMap π` using `H.lift_snd _ _ _`. Establish `hp : IsPullback i s s' (spMap π)` using `IsPullback.of_right (by rw [hiq, hb]; exact IsPullback.id_horiz s) his H`.
+
+Establish `k1 : Smooth s'` using `MorphismProperty.of_isPullback (P := @Smooth) H hs`. Establish `k2 : IsSeparated s'` using `MorphismProperty.of_isPullback (P := @IsSeparated) H hs'`. Establish `k3 : QuasiCompact s'` using `MorphismProperty.of_isPullback (P := @QuasiCompact) H hs''`. Set `D₀` to `Data.self s hs hs' hs''`. Set `D'` to `Data.ofQuot κ hκ π (fun a ↦ ⟨_, hπ a⟩) rfl s' s i k1 k2 k3 hp _ rfl`.
+
+Establish `w : 𝟙 X ≫ 𝟙 X = i ≫ q` using `by rw [hiq, Category.id_comp]`. Establish `key` using `(n D₀ D' (algebraMap R D) q (𝟙 X) H.w m w).1`. Take `⟨e, e', he⟩ : ∃ (e : Cris.H1 (dp0 R) s ≃ₗ[R] HH1 s) (e' : Cris.H1 κ (s ≫ spMap π) ≃ₗ[D] HH1 s'), ∀ c, IsPull1 H.w (e c) (e' (m.pull1 c))` from `⟨e₁ D₀, e₁ D', key⟩`. Conclude with `(GlobalTheory.T.liftBaseChange_bijective_linearEquiv_square_univ R D (Cris.H1 (dp0 R) s) (HH1 s) (Cris.H1 κ (s ≫ spMap π)) (HH1 s') e.toLinearMap e'.toLinearMap m.pull1 (pullHH1 H.w) e.bijective e'.bijective fun c ↦ (he c).eq_pullHH1).2 (GlobalTheory.T.hyper_cohomology_flat_base_ …`.
+-/
 theorem bijective_liftSemi_pull1 : ∀ (R D : Type) [CommRing R] [CommRing D] [Algebra R D] [Module.Flat R D] (π : D →+* R) (κ : DividedPowers (RingHom.ker π)), IsNilDP κ → (∀ a : R, π (algebraMap R D a) = a) → ∀ (X : Scheme.{0}) (s : X ⟶ Sp R) (t : X ⟶ Sp D) (φ : X ⟶ X), Smooth s → IsSeparated s → QuasiCompact s → t = s ≫ spMap π → φ = 𝟙 X → ∀ m : IsMor (dp0 R) s κ t (algebraMap R D) φ, Function.Bijective (liftSemi m.pull1) := by
   intro R D _ _ _ _ π κ hκ hπ X s t φ hs hs' hs'' ht hφ m
   subst hφ ht

@@ -8,6 +8,37 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.DefU
 open MeasureTheory GroundTheory.Automorphic.Spherical UpperTheory.Gal.Gen
 
+/- English proof (translation)
+Introduce `hPF E _ _ _ l _ ι a w₀ K hK lam P hD Jx t η hFr hact U hU ε hε`. Take `⟨W, f, hW, hf0, hfU, hfK, -⟩` from `GlobalTheory.T.exists_algebraicForm_weight_level_smooth_at_place E a lam K U hK hU w₀`. Establish `hWe : Wt.ofFam lam = W` using `funext fun v => by show lam v.embedding = W v`. Rewrite using `[← hW, Wt.at_embedding]`. Rewrite `hD`, `hFr` using `[hWe]`.
+
+Take `⟨X, b, hbd, hdef, hne⟩` from `hFr`. Choose the witnesses or unpack the hypotheses as in `⟨g₀, i₀, hz⟩ : ∃ g i, f.1 (b g i) g ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf0 (hdef f h)`.
+
+Use `set z₀ := f.1 (b g₀ i₀) g₀ with hz₀`. Set `f₁ : algForms W` to `z₀⁻¹ • f`. Establish `hf₁ : ∀ v g, f₁.1 v g = z₀⁻¹ * f.1 v g` using `fun v g => rfl`. Establish `hf₁K : f₁ ∈ fixedBy W K` using `fun k hk v g => by rw [hf₁, hf₁, hfK k hk v g]`. Establish `hf₁U : ∀ v, f₁.1 v ∈ U` using `fun v => U.smul_mem _ (hfU v)`.
+
+Take `⟨R₀, hR₀⟩` from `hbd f₁`. Use `set R := max R₀ 1 with hRdef`. Establish `hRpos : 0 < R` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hR : ∀ g i, ‖ι.symm (f₁.1 (b g i) g)‖ ≤ R` using `fun g i => (hR₀ g i).trans (le_max_left _ _)`. Take `⟨G, hG, e, he, hfe⟩` from `hD f₁ hf₁K (ε / R) (div_pos hε hRpos)`.
+
+Take `⟨I, F, hI, hsum⟩` from `(hPF E a W K P).2.2.2.2 G hG`. Set `T : Jx → Module.End ℂ (W.Sp →ₗ[ℂ] (UA E a → ℂ))` to `fun j => LinearMap.llcomp ℂ W.Sp (UA E a → ℂ) (UA E a → ℂ) (GlobalTheory.CongSc.opL (t j))`. Set `ev : UA E a × X → (W.Sp →ₗ[ℂ] (UA E a → ℂ)) →ₗ[ℂ] ℂ` to `fun x => (LinearMap.proj x.1) ∘ₗ (LinearMap.applyₗ (b x.1 x.2))`. Establish `hT : ∀ j (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)) v, T j F' v = opOf (RU E a) (t j) (F' v)` using `fun _ _ _ => rfl`. Establish `hev : ∀ x (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)), ev x F' = F' (b x.1 x.2) x.1` using `fun _ _ => rfl`.
+
+Establish `hne' : ∀ (F' : W.Sp →ₗ[ℂ] (UA E a → ℂ)) (R' : ℝ), (∀ x, ‖ι.symm (ev x F')‖ ≤ R') → ∀ j x, ‖ι.symm (ev x (T j F'))‖ ≤ R'` using `fun F' R' hR' j x => hne F' R' (fun g i => hR' (g, i)) j x.1 x.2`. Establish `heig0 : ∀ j, T j f₁.1 = η U j • f₁.1`. Introduce `j`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+
+Rewrite using `[hT, LinearMap.smul_apply]`. Conclude with `hact U hU.aut (f₁.1 v) (hf₁U v) (fun x hx => funext fun g => hf₁K x hx v g) j`. Establish `hnorm : ‖ι.symm (ev (g₀, i₀) f₁.1)‖ = 1`. Establish `: ev (g₀, i₀) f₁.1 = 1`. Rewrite using `[hev]`.
+
+Use `show z₀⁻¹ * f.1 (b g₀ i₀) g₀ = 1`. Conclude with `inv_mul_cancel₀ hz`. Rewrite using `[this, map_one, norm_one]`. Set `vv : ↥I → (W.Sp →ₗ[ℂ] (UA E a → ℂ))` to `fun π => -(F π.1).1`. Set `η' : ↥I → Jx → ℂ` to `fun π => η π.1.V`.
+
+Establish `heig : ∀ π j, T j (vv π) = η' π j • vv π`. Introduce and unpack `⟨π, hπ⟩ j`. Take `⟨-, hfin, hfix, -⟩` from `hI π hπ`. Establish `h : T j (F π).1 = η π.V j • (F π).1`. Apply `LinearMap.ext` to reduce the goal to its premises.
+
+Introduce `v`. Rewrite using `[hT, LinearMap.smul_apply]`. Conclude with `hact π.V π.isAut _ (AutSub.mem_finPart.1 hfin v) (fun x hx => funext fun g => hfix x hx v g) j`. Use `show T j (-(F π).1) = η π.V j • -(F π).1`. Rewrite using `[map_neg, h, smul_neg]`.
+
+Establish `hvsum : f₁.1 + ∑ π, vv π = f₁.1 - G.1`. Establish `h1 : ∑ π, vv π = -G.1`. Simplify using `only [vv]`. Rewrite using `[Finset.sum_neg_distrib, Finset.sum_coe_sort I (fun π => (F π).1), hsum, Submodule.coe_sum]`. Rewrite using `[h1, sub_eq_add_neg]`.
+
+Establish `hbound : ∀ x, ‖ι.symm (ev x (f₁.1 + ∑ π, vv π))‖ ≤ ε`. Introduce `x`. Establish `h1 : ev x (f₁.1 + ∑ π, vv π) = e x.1 * f₁.1 (b x.1 x.2) x.1`. Rewrite using `[hvsum, hev]`. Conclude with `hfe _ _`.
+
+Rewrite using `[h1, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨s, c, hs, hP⟩` from `GlobalTheory.T.eigenvector_small_sub_finite_eigen_approx_inequality l ι (W.Sp →ₗ[ℂ] (UA E a → ℂ)) (UA E a × X) Jx ↥I T ev hne' f₁.1 (η U) (g₀, i₀) heig0 hnorm vv η' heig ε hbound`. Use `⟨s, c, ?_, hP⟩` and prove the remaining obligations. Introduce `z hz'`.
+
+Take `⟨⟨π, hπ⟩, rfl⟩` from `hs z hz'`. Take `⟨hPπ, hfin, hfix, hF0⟩` from `hI π hπ`. Use `⟨π.V, ?_, hPπ, rfl⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.T.isAutomorphicOfWeight_of_nonzero_fixed_finPart_form E a π W K (F π) hfin hF0 (fun k hk v g => hfix k hk v g)`. Establish `hl' : (fun τ => W.at τ) = lam` using `funext hW`.
+
+Rewrite `h` using `[hl']`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.Gal.Gen.toPolyX_pf :
     UpperTheory.Gal.Gen.PartFacts → UpperTheory.Gal.Gen.ToPolyX := by
   intro hPF E _ _ _ l _ ι a w₀ K hK lam P hD Jx t η hFr hact U hU ε hε

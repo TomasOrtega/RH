@@ -5,6 +5,43 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 
 open IsLocalRing Matrix UpperTheory.V.Hi
 
+/- English proof (translation)
+Introduce `Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U hF c N x hcov huniq`. Unfold `Iwa.ContChar at hθ`. Take `⟨tt, htt1, htt⟩` from `UpperTheory.exists_iwahori_torus_projection Gp X.I`. Take `⟨s, hs⟩` from `UpperTheory.exists_linear_section_automorphicFunctions_of_free Γ Ga Gp X A m τ θ U hF c N x hcov huniq tt (fun b hb t => ((htt b hb).1 t).1)`. Establish `hN_le : X.I.N ≤ X.I.Iw c`.
+
+Unfold `Iwa.Iw`. Conclude with `le_sup_left.trans le_sup_left`. Establish `hT_le : X.I.T ≤ X.I.Iw c`. Unfold `Iwa.Iw`. Conclude with `le_sup_right.trans le_sup_left`.
+
+Establish `hNm_le : X.I.Nm c ≤ X.I.Iw c`. Unfold `Iwa.Iw`. Conclude with `le_sup_right`. Establish `hIw0 : X.I.Iw c ≤ X.I.Iw 0`. Unfold `Iwa.Iw`.
+
+Conclude with `sup_le_sup_left (X.I.Nm_anti (Nat.zero_le c)) _`. Establish `key : ∀ (k : ℕ) (a e w : A), e - 1 ∈ maximalIdeal A ^ k → a * (e * w) - a * w ∈ maximalIdeal A ^ k`. Introduce `k a e w h`. Rewrite using `[show a * (e * w) - a * w = (a * w) * (e - 1) by ring]`. Conclude with `Ideal.mul_mem_left _ _ h`.
+
+Establish `hright : ∀ (γ : Γ) (i : Fin N) (u : X.Ub) (b y : Gp), X.glob γ * x i * ((u : Ga), b) * (1, y) = X.glob γ * x i * ((u : Ga), b * y)`. Introduce `γ i u b y`. Rewrite using `[mul_assoc]`. Conclude with `congrArg _ (Prod.ext (mul_one _) rfl)`. Establish `hdiff : ∀ v (k c' : ℕ), c ≤ c' → (∀ t : X.I.T, (t : Gp) ∈ X.I.Tc c' → (θ t : A) - 1 ∈ maximalIdeal A ^ k) → ∀ y ∈ X.I.Nm c', ∀ g j, s v (g * (1, y)) j - s v g j ∈ maximalIdeal A ^ k`.
+
+Introduce `v k c' hcc' hk y hy g j`. Take `⟨γ, i, u, hu, b, hb, rfl⟩` from `hcov g`. Establish `hb0 : b ∈ X.I.Iw 0` using `hIw0 hb`. Establish `hyc : y ∈ X.I.Nm c` using `X.I.Nm_anti hcc' hy`. Take `⟨s0, hs0, hts⟩` from `(htt b hb0).2.2 c' y hy`.
+
+Establish `hby : b * y ∈ X.I.Iw c` using `mul_mem hb (hNm_le hyc)`. Rewrite using `[hright, hs v γ i u hu (b * y) hby, hs v γ i u hu b hb, hts, map_mul, mul_inv, Units.val_mul, mul_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Apply `key` to reduce the goal to its premises. Establish `h` using `hk s0 hs0`.
+
+Establish `hinv` using `Units.inv_mul (θ s0)`. Establish `: (((θ s0)⁻¹ : Aˣ) : A) - 1 = -(((θ s0)⁻¹ : Aˣ) : A) * ((θ s0 : A) - 1)`. Take the linear combination `hinv`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ h`.
+
+Use `⟨s, fun v => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Unfold `Frame.Sp Frame.Amb`. Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (_ ∧ _ ∧ _ ∧ _)`.
+
+Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ' g`. Take `⟨γ, i, u, hu, b, hb, rfl⟩` from `hcov g`. Rewrite using `[show X.glob γ' * (X.glob γ * x i * ((u : Ga), b)) = X.glob (γ' * γ) * x i * ((u : Ga), b) by`. Rewrite using `[map_mul]`.
+
+Simplify using `only [mul_assoc], hs v _ i u hu b hb, hs v γ i u hu b hb]`. Unfold `fixd show ∀ n ∈ X.I.N, _`. Introduce `n hn`. Use function extensionality and compare the values at `g`. Use `show s v (g * (1, n)) = s v g`.
+
+Take `⟨γ, i, u, hu, b, hb, rfl⟩` from `hcov g`. Rewrite using `[hright, hs v γ i u hu (b * n) (mul_mem hb (hN_le hn)), hs v γ i u hu b hb, (htt b (hIw0 hb)).2.1 n hn]`. Introduce `t`. Use function extensionality and compare the values at `g`. Use `show s v (g * (1, (t : Gp))) = _`.
+
+Take `⟨γ, i, u, hu, b, hb, rfl⟩` from `hcov g`. Rewrite using `[hright, hs v γ i u hu (b * t) (mul_mem hb (hT_le t.2)), Pi.smul_apply, hs v γ i u hu b hb, ((htt b (hIw0 hb)).1 t).2, map_mul, mul_inv, Units.val_mul, mul_comm (((θ (tt b))⁻¹ : Aˣ) : A), mul_smul]`. Introduce `k`. Take `⟨c0, hc0⟩` from `hθ k`. Conclude with `⟨max c c0, fun y hy g j => hdiff v k (max c c0) (le_max_left _ _) (fun t ht => hc0 t (X.I.Tc_anti (le_max_right _ _) ht)) y hy g j⟩`.
+
+Unfold `fixd show ∀ u' ∈ U, _`. Introduce `u' hu'`. Use function extensionality and compare the values at `g`. Rewrite using `[Frame.ra_apply]`. Take `⟨γ, i, u, hu, b, hb, rfl⟩` from `hcov g`.
+
+Rewrite using `[show X.glob γ * x i * ((u : Ga), b) * ((u' : Ga), 1) = X.glob γ * x i * (((u * u' : X.Ub) : Ga), b) by`. Rewrite using `[mul_assoc]`. Conclude with `congrArg _ (Prod.ext rfl (mul_one _)),`. Use `hs v γ i (u * u') (mul_mem hu hu') b hb, hs v γ i u hu b hb, Matrix.mulVec_smul,`. Use the proof step `Matrix.mulVec_mulVec, ← Units.val_mul, ← map_mul, show u' * (u * u')⁻¹ = u⁻¹ by group]`.
+
+Introduce `i j`. Establish `e : x i = X.glob 1 * x i * (((1 : X.Ub) : Ga), (1 : Gp))` using `by simp`. Rewrite using `[e, hs v 1 i 1 U.one_mem 1 (X.I.Iw c).one_mem, htt1]`. Simplify using the standard rewrite rules. Introduce `k hk y hy`.
+
+Unfold `Frame.valIn`. Rewrite using `[Submodule.mem_pi]`. Introduce `g _`. Rewrite using `[Submodule.mem_pi]`. Introduce `j _`.
+
+Conclude with `hdiff v k c le_rfl hk y hy g j`.
+-/
 theorem UpperTheory.exists_section_automorphicSpace_with_prescribed_values :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (A : Type) [CommRing A] [IsCNL A] (m : ℕ) (τ : X.Ub →* GL (Fin m) A) (θ : X.I.T →* Aˣ), X.I.ContChar θ → ∀ U : Subgroup X.Ub, X.Free τ θ U → ∀ (c N : ℕ) (x : Fin N → Ga × Gp), (∀ g, ∃ γ i, ∃ u ∈ U, ∃ b ∈ X.I.Iw c, g = X.glob γ * x i * ((u : Ga), b)) → (∀ i j γ, ∀ u ∈ U, ∀ b ∈ X.I.Iw c, x j = X.glob γ * x i * ((u : Ga), b) → i = j) → ∃ s : (Fin N × Fin m → A) →ₗ[A] X.Fn A m, ∀ v, s v ∈ X.Sp τ θ U ∧ (∀ i j, s v (x i) j = v (i, j)) ∧ ∀ k : ℕ, (∀ t : X.I.T, (t : Gp) ∈ X.I.Tc c → (θ t : A) - 1 ∈ maximalIdeal A ^ k) → ∀ y ∈ X.I.Nm c, X.rp A m y (s v) - s v ∈ X.valIn A m k := by
   intro Γ Ga Gp _ _ _ X A _ _ m τ θ hθ U hF c N x hcov huniq

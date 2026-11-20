@@ -3,6 +3,9 @@ open Complex DirichletCharacter ArithmeticFunction MeasureTheory Filter Topology
 
 namespace GlobalTheory
 
+/- English proof (translation)
+The claim follows from `|((starRingEnd ℂ) f₁ * f₂).im| = |((starRingEnd ℂ) e₁ * e₂).im| ∧ 2 * ‖f₁‖ ^ 2 ≤ ‖e₁‖ ^ 2 := by have hN : 0 < ‖e₁‖ ^ 2 := lt_of_le_of_lt (by positivity) h set k : ℤ := round (((starRingEnd ℂ) e₁ * e₂).re / ‖e₁‖ ^ 2) with hk refine ⟨e₂ - k • e₁, e₁, ?_, ?_, ?_⟩ · apply le_antisymm …`.
+-/
 theorem plane_lattice_reduction_step (e₁ e₂ : ℂ)
     (h : 2 * |((starRingEnd ℂ) e₁ * e₂).im| < ‖e₁‖ ^ 2) :
     ∃ f₁ f₂ : ℂ, Submodule.span ℤ {f₁, f₂} = Submodule.span ℤ {e₁, e₂} ∧
@@ -58,6 +61,9 @@ theorem plane_lattice_reduction_step (e₁ e₂ : ℂ)
     have h4 : N * (2 * M) ≤ N * N := by nlinarith
     exact le_of_mul_le_mul_left h4 hN
 
+/- English proof (translation)
+The claim follows from `|((starRingEnd ℂ) f₁ * f₂).im| = |((starRingEnd ℂ) e₁ * e₂).im| ∧ ‖f₁‖ ^ 2 ≤ 2 * |((starRingEnd ℂ) e₁ * e₂).im| := by induction n with | zero => intro e₁ e₂ h exact ⟨e₁, e₂, rfl, rfl, by simpa using h⟩ | succ n ih => intro e₁ e₂ h by_cases hc : ‖e₁‖ ^ 2 ≤ 2 * |((starRingEnd ℂ) e₁ …`.
+-/
 theorem plane_lattice_short_basis_of_bound_pow_two (n : ℕ) : ∀ e₁ e₂ : ℂ,
     ‖e₁‖ ^ 2 ≤ 2 ^ n * (2 * |((starRingEnd ℂ) e₁ * e₂).im|) →
     ∃ f₁ f₂ : ℂ, Submodule.span ℤ {f₁, f₂} = Submodule.span ℤ {e₁, e₂} ∧
@@ -78,6 +84,9 @@ theorem plane_lattice_short_basis_of_bound_pow_two (n : ℕ) : ∀ e₁ e₂ : �
         linarith)
       exact ⟨f₁, f₂, hs'.trans hs, hi'.trans hi, hi ▸ hn'⟩
 
+/- English proof (translation)
+The claim follows from `|((starRingEnd ℂ) f₁ * f₂).im| = |((starRingEnd ℂ) e₁ * e₂).im| ∧ ‖f₁‖ ^ 2 ≤ 2 * |((starRingEnd ℂ) e₁ * e₂).im| := by intro e₁ e₂ h have hD : 0 < 2 * |((starRingEnd ℂ) e₁ * e₂).im| := by positivity obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (‖e₁‖ ^ 2 / (2 * |((starRingEnd ℂ) e₁ * …`.
+-/
 theorem plane_lattice_short_basis : ∀ e₁ e₂ : ℂ, ((starRingEnd ℂ) e₁ * e₂).im ≠ 0 →
     ∃ f₁ f₂ : ℂ, Submodule.span ℤ {f₁, f₂} = Submodule.span ℤ {e₁, e₂} ∧
       |((starRingEnd ℂ) f₁ * f₂).im| = |((starRingEnd ℂ) e₁ * e₂).im| ∧

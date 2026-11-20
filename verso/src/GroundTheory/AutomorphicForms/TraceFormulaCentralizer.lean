@@ -19,10 +19,16 @@ def mapOfLe {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) : RightCosetSpace H₁ 
     rintro a b ⟨η, rfl⟩
     exact ⟨⟨η, h η.2⟩, rfl⟩)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem mapOfLe_mk {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) (x : G) :
     mapOfLe h (mk H₁ x) = mk H₂ x :=
   rfl
 
+/- English proof (translation)
+The claim follows from `measurable_from_quotient.2 measurable_quotient_mk''`.
+-/
 theorem measurable_mapOfLe [MeasurableSpace G] {H₁ H₂ : Subgroup G} (h : H₁ ≤ H₂) :
     Measurable (mapOfLe h) :=
   measurable_from_quotient.2 measurable_quotient_mk''
@@ -30,6 +36,9 @@ theorem measurable_mapOfLe [MeasurableSpace G] {H₁ H₂ : Subgroup G} (h : H�
 def centralizerLattice (Γ : Subgroup G) (γ : G) : Subgroup (Subgroup.centralizer {γ}) :=
   Γ.comap (Subgroup.centralizer {γ}).subtype
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_centralizerLattice {Γ : Subgroup G} {γ : G} {h : Subgroup.centralizer {γ}} :
     h ∈ centralizerLattice Γ γ ↔ (h : G) ∈ Γ :=
   Iff.rfl
@@ -40,6 +49,9 @@ section Topology
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
 
+/- English proof (translation)
+The claim follows from `Set.isClosed_centralizer {γ}`.
+-/
 theorem isClosed_centralizer (γ : G) : IsClosed (Subgroup.centralizer {γ} : Set G) :=
   Set.isClosed_centralizer {γ}
 
@@ -62,6 +74,33 @@ instance secondCountableTopology_centralizer [SecondCountableTopology G] (γ : G
 
 variable [LocallyCompactSpace G] (Γ : Subgroup G) [DiscreteTopology Γ]
 
+/- English proof (translation)
+Take `⟨C, hC, hCcov⟩` from `exists_isCompact_subset_mk_image (Γ := Γ) isCompact_univ`. Use `set K₀ : Set G := (fun c => c * γ * c⁻¹) '' C with hK₀`. Establish `hK₀c : IsCompact K₀` using `hC.image (by fun_prop)`. Establish `hT : {t : Γ | (t : G) ∈ K₀}.Finite` using `finite_setOf_mem_of_isCompact Γ hK₀c`. Set `dd : Γ → Γ` to `fun t => if h : ∃ d : Γ, d⁻¹ * γ * d = t then h.choose else 1`.
+
+Establish `hdd : ∀ t : Γ, (∃ d : Γ, d⁻¹ * γ * d = t) → (dd t)⁻¹ * γ * dd t = t`. Introduce `t h`. Simplify using `only [dd, dif_pos h]`. Conclude with `h.choose_spec`. Use `set K : Set G := ⋃ t ∈ {t : Γ | (t : G) ∈ K₀}, ((dd t : Γ) : G) • C with hK`.
+
+Establish `hKc : IsCompact K` using `hT.isCompact_biUnion fun t _ => hC.smul _`. Use `set K' : Set (Subgroup.centralizer {(γ : G)}) := Subtype.val ⁻¹' K`. Establish `hK'c : IsCompact K'` using `(isClosed_centralizer (γ : G)).isClosedEmbedding_subtypeVal.isCompact_preimage hKc`. Use `⟨?_⟩` and prove the remaining obligations. Establish `hcov : mk (centralizerLattice Γ (γ : G)) '' K' = univ`.
+
+Use `eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Take `⟨h, rfl⟩` from `mk_surjective _ y`. Take `⟨c, hcC, hc⟩` from `hCcov (mem_univ (mk Γ (h : G)))`. Take `⟨η, hη⟩` from `mk_eq_mk_iff.1 hc`. Express the relevant statement in the definitionally equal form `(η : G) * h = c at hη`.
+
+Establish `hhγ : (h : G)⁻¹ * γ * h = γ` using `mem_centralizer_singleton_iff.1 h.2`. Use `set t : Γ := η * γ * η⁻¹ with ht`. Establish `htK : (t : G) ∈ K₀`. Use `⟨c, hcC, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, ← hη]`.
+
+Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Use `congr 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hhγ]`.
+
+Use `_ = γ := by group`. Establish `hd` using `hdd t ⟨η⁻¹, by rw [ht, inv_inv]⟩`. Use `set d := dd t`. Establish `hdG : ((d : G))⁻¹ * γ * d = (η : G) * γ * (η : G)⁻¹`. Use `congrArg Subtype.val hd` as an intermediate fact.
+
+Move the coercions through the operations in `at this`. Rewrite using `[this, ht]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hεZ : ((η : G)⁻¹ * (d : G)⁻¹) ∈ Subgroup.centralizer {(γ : G)}`.
+
+Rewrite using `[mem_centralizer_singleton_iff]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hdG]`. Use `group`. Use `_ = γ := by group`.
+
+Use `set ε : Subgroup.centralizer {(γ : G)} := ⟨_, hεZ⟩`. Establish `hεΓ : ε ∈ centralizerLattice Γ (γ : G)`. Rewrite using `[mem_centralizerLattice]`. Conclude with `Γ.mul_mem (Γ.inv_mem η.2) (Γ.inv_mem d.2)`. Use `⟨(⟨ε, hεΓ⟩ : centralizerLattice Γ (γ : G))⁻¹ • h, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(ε : G)⁻¹ * h ∈ K`. Rewrite using `[hK]`. Use `mem_iUnion₂.2 ⟨t, htK, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_smul_set_iff']`. Use `hcC using 1` and compare the differences between its conclusion and the goal.
+
+Rewrite using `[← hη]`. Express the relevant statement in the definitionally equal form `(d : G)⁻¹ * (((η : G)⁻¹ * (d : G)⁻¹)⁻¹ * h) = (η : G) * h`. Use `group`. Conclude with `mk_smul _ _`. Rewrite using `[← hcov]`.
+
+Conclude with `hK'c.image (continuous_mk _)`.
+-/
 theorem compactSpace_centralizerLattice [CompactSpace (RightCosetSpace Γ)] (γ : Γ) :
     CompactSpace (RightCosetSpace (centralizerLattice Γ (γ : G))) := by
   classical
@@ -150,6 +189,15 @@ variable [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [SecondCount
 
 omit [LocallyCompactSpace G] [T2Space G] in
 
+/- English proof (translation)
+Use `IsFundamentalDomain.mk' ((measurableSet_fundamentalDomain _).preimage ((continuous_subtype_val.mul continuous_const).measurable)).nullMeasurableSet fun h => ?_` and prove the remaining obligations. Take `⟨η, hη, hηu⟩` from `existsUnique_smul_mem_fundamentalDomain (centralizerIn Γ γ) ((h : G) * x)`. Establish `hηZ : (η : G) ∈ Subgroup.centralizer {γ}` using `centralizerIn_le_centralizer Γ γ η.2`. Establish `hηΓ : (⟨η, hηZ⟩ : Subgroup.centralizer {γ}) ∈ centralizerLattice Γ γ` using `centralizerIn_le Γ γ η.2`. Use `⟨⟨⟨η, hηZ⟩, hηΓ⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(η : G) * (h : G) * x ∈ fundamentalDomain (centralizerIn Γ γ)`. Rewrite using `[mul_assoc]`. Conclude with `hη`. Introduce and unpack `⟨⟨l, hlZ⟩, hlΓ⟩ hl`. Express the relevant statement in the definitionally equal form `l * (h : G) * x ∈ fundamentalDomain (centralizerIn Γ γ) at hl`.
+
+Establish `hlC : l ∈ centralizerIn Γ γ` using `Subgroup.mem_inf.2 ⟨hlΓ, hlZ⟩`. Use `hηu ⟨l, hlC⟩ (by` as an intermediate fact. Express the relevant statement in the definitionally equal form `l * ((h : G) * x) ∈ fundamentalDomain (centralizerIn Γ γ)`. Rewrite using `[← mul_assoc]`. Conclude with `hl)`.
+
+Establish `hl' : l = η` using `congrArg Subtype.val this`. Substitute `hl'` using the available equality. Both sides reduce to the same expression.
+-/
 theorem isFundamentalDomain_centralizerLattice (γ : G) (ν : Measure (Subgroup.centralizer {γ}))
     (x : G) : IsFundamentalDomain (centralizerLattice Γ γ)
       {h : Subgroup.centralizer {γ} | (h : G) * x ∈ fundamentalDomain (centralizerIn Γ γ)} ν := by
@@ -175,6 +223,17 @@ theorem isFundamentalDomain_centralizerLattice (γ : G) (ν : Measure (Subgroup.
 
 variable (μ : Measure G)
 
+/- English proof (translation)
+Use `set E := fundamentalDomain (centralizerIn Γ γ)`. Use `set vol := quotientMeasure (centralizerLattice Γ γ) ν univ`. Use extensionality with `A hA`. Establish `hmk : Measurable (mk (Subgroup.centralizer {γ}))` using `measurable_quotient_mk''`. Establish `hEm : MeasurableSet E` using `measurableSet_fundamentalDomain _`.
+
+Rewrite using `[Measure.smul_apply, Measure.map_apply (measurable_mapOfLe _) hA, quotientMeasure_apply μ (isFundamentalDomain_fundamentalDomain _ μ) (measurable_mapOfLe _ hA), smul_eq_mul]`. Establish `hS : ∀ x : G, ν {h : Subgroup.centralizer {γ} | (h : G) * x ∈ E} = vol` using `fun x => (quotientMeasure_univ ν (isFundamentalDomain_centralizerLattice Γ γ ν x)).symm`. Establish `hw` using `hρ ((mk (Subgroup.centralizer {γ}) ⁻¹' A ∩ E).indicator 1) (A.indicator fun _ => vol) (measurable_one.indicator ((hmk hA).inter hEm)) (fun x => ?_)`. Rewrite `hw` using `[lintegral_indicator_one ((hmk hA).inter hEm), lintegral_indicator_const hA]`. Rewrite using `[← hw]`.
+
+Both sides reduce to the same expression. Establish `hind : (fun h : Subgroup.centralizer {γ} => (mk (Subgroup.centralizer {γ}) ⁻¹' A ∩ E).indicator (1 : G → ℝ≥0∞) ((h : G) * x)) = fun h => (A.indicator fun _ => (1 : ℝ≥0∞)) (mk _ x) * {h : Subgroup.centralizer {γ} | (h : G) * x ∈ E}.indicator (1 : Subgroup.centralizer {γ} → ℝ≥0∞) h`. Use function extensionality and compare the values at `h`. Establish `hmkh : mk (Subgroup.centralizer {γ}) ((h : G) * x) = mk _ x` using `mk_smul h x`. Distinguish the cases in `hx : mk (Subgroup.centralizer {γ}) x ∈ A`.
+
+Distinguish the cases in `hE : (h : G) * x ∈ E`. Simplify using `[indicator, hx, hE, hmkh]`. Simplify using `[indicator, hx, hE]`. Simplify using `[indicator, hx, hmkh]`. Establish `hSm : MeasurableSet {h : Subgroup.centralizer {γ} | (h : G) * x ∈ E}` using `hEm.preimage (continuous_subtype_val.mul continuous_const).measurable`.
+
+Rewrite using `[hind, lintegral_const_mul _ (measurable_one.indicator hSm), lintegral_indicator_one hSm, hS x]`. Distinguish the cases in `hx : mk (Subgroup.centralizer {γ}) x ∈ A`. Simplify using `[indicator, hx]`. Simplify using `[indicator, hx]`.
+-/
 theorem smul_eq_map_of_isWeilMeasure [μ.IsMulLeftInvariant] (γ : G)
     (ν : Measure (Subgroup.centralizer {γ})) [ν.IsMulLeftInvariant]
     {ρ : Measure (RightCosetSpace (Subgroup.centralizer {γ}))}
@@ -217,6 +276,9 @@ theorem smul_eq_map_of_isWeilMeasure [μ.IsMulLeftInvariant] (γ : G)
     · simp [indicator, hx]
     · simp [indicator, hx]
 
+/- English proof (translation)
+Establish `hmeas : Measurable (conjOrbitFun (Subgroup.centralizer {γ}) le_rfl f)` using `measurable_from_quotient.2 (f.continuous.comp (by fun_prop)).measurable`. Rewrite using `[← integral_smul_measure, smul_eq_map_of_isWeilMeasure Γ μ γ ν hρ, integral_map (measurable_mapOfLe _).aemeasurable hmeas.aestronglyMeasurable]`. Use `integral_congr_ae (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Take `⟨x, rfl⟩` from `mk_surjective _ y`. Both sides reduce to the same expression.
+-/
 theorem integral_conjOrbitFun_eq_smul [μ.IsMulLeftInvariant] (γ : G)
     (ν : Measure (Subgroup.centralizer {γ})) [ν.IsMulLeftInvariant]
     {ρ : Measure (RightCosetSpace (Subgroup.centralizer {γ}))}

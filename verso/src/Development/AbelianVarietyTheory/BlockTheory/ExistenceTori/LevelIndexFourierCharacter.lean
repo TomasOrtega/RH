@@ -17,17 +17,26 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 def conjHalf (l : Level H) : Ideal (𝓞 E) := l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)
 
+/- English proof (translation)
+Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `h1` using `H.bar_eq (H.bar a)`. Establish `h2` using `H.bar_eq a`. Rewrite using `[h1, h2, IsCMField.complexConj_apply_apply]`.
+-/
 theorem bar_bar (H : Host E) (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
   have h1 := H.bar_eq (H.bar a)
   have h2 := H.bar_eq a
   rw [h1, h2, IsCMField.complexConj_apply_apply]
 
+/- English proof (translation)
+Take `⟨b, hb, rfl⟩` from `(Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha`. Establish `: H.bar ((H.bar : 𝓞 E →+* 𝓞 E) b) = b` using `bar_bar H b`. Rewrite using `[this]` and apply the resulting hypothesis.
+-/
 theorem bar_mem_of_mem_conjHalf (l : Level H) {a : 𝓞 E} (ha : a ∈ conjHalf l) : H.bar a ∈ l.Mb := by
   obtain ⟨b, hb, rfl⟩ := (Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) H.bar.surjective).1 ha
   have : H.bar ((H.bar : 𝓞 E →+* 𝓞 E) b) = b := bar_bar H b
   rwa [this]
 
+/- English proof (translation)
+Establish `h : a * b ∈ Ideal.span {(l.M : 𝓞 E)}` using `l.prod ▸ Ideal.mul_mem_mul ha hb`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 h`. Conclude with `⟨z, by rw [← hz, mul_comm]⟩`.
+-/
 theorem mul_mem_span_level (l : Level H) {a b : 𝓞 E} (ha : a ∈ l.Mb) (hb : b ∈ conjHalf l) :
     ∃ z : 𝓞 E, a * b = (l.M : 𝓞 E) * z := by
   have h : a * b ∈ Ideal.span {(l.M : 𝓞 E)} := l.prod ▸ Ideal.mul_mem_mul ha hb
@@ -36,6 +45,11 @@ theorem mul_mem_span_level (l : Level H) {a b : 𝓞 E} (ha : a ∈ l.Mb) (hb : 
 
 def IsSep (l : Level H) (c : 𝓞 E) : Prop := c ∈ conjHalf l ∧ c - 1 ∈ l.Mb
 
+/- English proof (translation)
+Establish `h : (1 : 𝓞 E) ∈ l.Mb ⊔ conjHalf l`. Rewrite using `[conjHalf, l.coprime]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations.
+
+Establish `: b - 1 = -a` using `by rw [← hab]; ring`. Rewrite using `[this]`. Conclude with `neg_mem ha`.
+-/
 theorem exists_isSep (l : Level H) : ∃ c, IsSep l c := by
   have h : (1 : 𝓞 E) ∈ l.Mb ⊔ conjHalf l := by
     rw [conjHalf, l.coprime]; trivial
@@ -46,6 +60,9 @@ theorem exists_isSep (l : Level H) : ∃ c, IsSep l c := by
 
 def sep (l : Level H) : 𝓞 E := (exists_isSep l).choose
 
+/- English proof (translation)
+The claim follows from `(exists_isSep l).choose_spec`.
+-/
 theorem sep_spec (l : Level H) : IsSep l (sep l) := (exists_isSep l).choose_spec
 
 variable (D : Datum H) (l : Level H)
@@ -54,6 +71,11 @@ abbrev NamedCl : Type := D.La ⧸ (l.Mb • (⊤ : Submodule (𝓞 E) D.La))
 
 abbrev ConjCl : Type := D.La ⧸ (conjHalf l • (⊤ : Submodule (𝓞 E) D.La))
 
+/- English proof (translation)
+Use `haveI := D.fin`. Use `haveI : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) D.La`. Establish `hM : (l.M : ℤ) ≠ 0` using `by have := l.three_le; omega`. Use `Module.finite_of_fg_torsion _ fun x => ⟨⟨(l.M : ℤ), mem_nonZeroDivisors_of_ne_zero hM⟩, ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`.
+
+Express the relevant statement in the definitionally equal form `(l.M : ℤ) • (Submodule.Quotient.mk y : D.La ⧸ (I • (⊤ : Submodule (𝓞 E) D.La))) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Conclude with `Submodule.smul_mem_smul hI Submodule.mem_top`.
+-/
 theorem finite_quot (I : Ideal (𝓞 E)) (hI : (l.M : 𝓞 E) ∈ I) :
     Finite (D.La ⧸ (I • (⊤ : Submodule (𝓞 E) D.La))) := by
   haveI := D.fin
@@ -66,6 +88,9 @@ theorem finite_quot (I : Ideal (𝓞 E)) (hI : (l.M : 𝓞 E) ∈ I) :
     ← Nat.cast_smul_eq_nsmul (𝓞 E)]
   exact Submodule.smul_mem_smul hI Submodule.mem_top
 
+/- English proof (translation)
+Rewrite using `[conjHalf, l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+-/
 theorem level_mem_mul : (l.M : 𝓞 E) ∈ l.Mb * conjHalf l := by
   rw [conjHalf, l.prod]; exact Ideal.mem_span_singleton_self _
 
@@ -75,12 +100,18 @@ instance finite_namedCl : Finite (NamedCl D l) := finite_quot D l _
 instance finite_conjCl : Finite (ConjCl D l) := finite_quot D l _
   (Ideal.mul_le_inf (level_mem_mul l)).2
 
+/- English proof (translation)
+Take `⟨z, hz⟩` from `mul_mem_span_level l ha hb`. Rewrite using `[hz, mul_smul, Nat.cast_smul_eq_nsmul, map_nsmul]`. Simplify using the standard rewrite rules.
+-/
 theorem ef_smul_eq_zero {a b : 𝓞 E} (ha : a ∈ l.Mb) (hb : b ∈ conjHalf l) (u v : D.La) :
     ((D.EF u ((a * b) • v) : ℤ) : ZMod l.M) = 0 := by
   obtain ⟨z, hz⟩ := mul_mem_span_level l ha hb
   rw [hz, mul_smul, Nat.cast_smul_eq_nsmul, map_nsmul]
   simp
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hu (fun m hm w _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[D.adj, ← mul_smul]`. Conclude with `ef_smul_eq_zero D l (bar_mem_of_mem_conjHalf l hm) hc w v`. Rewrite using `[map_add, LinearMap.add_apply, Int.cast_add, hx, hy, add_zero]`.
+-/
 theorem ef_left_zero {c : 𝓞 E} (hc : c ∈ conjHalf l) {u : D.La}
     (hu : u ∈ conjHalf l • (⊤ : Submodule (𝓞 E) D.La)) (v : D.La) :
     ((D.EF u (c • v) : ℤ) : ZMod l.M) = 0 := by
@@ -89,6 +120,9 @@ theorem ef_left_zero {c : 𝓞 E} (hc : c ∈ conjHalf l) {u : D.La}
     exact ef_smul_eq_zero D l (bar_mem_of_mem_conjHalf l hm) hc w v
   · rw [map_add, LinearMap.add_apply, Int.cast_add, hx, hy, add_zero]
 
+/- English proof (translation)
+Use `Submodule.smul_induction_on hv (fun m hm w _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[← mul_smul, mul_comm]`. Conclude with `ef_smul_eq_zero D l hm hc u w`. Rewrite using `[smul_add, map_add, Int.cast_add, hx, hy, add_zero]`.
+-/
 theorem ef_right_zero {c : 𝓞 E} (hc : c ∈ conjHalf l) (u : D.La) {v : D.La}
     (hv : v ∈ l.Mb • (⊤ : Submodule (𝓞 E) D.La)) :
     ((D.EF u (c • v) : ℤ) : ZMod l.M) = 0 := by
@@ -108,6 +142,9 @@ def pairOne (a : ConjCl D l) (x : NamedCl D l) : ZMod l.M :=
     rw [smul_sub, map_sub, Int.cast_sub, sub_eq_zero] at h2
     exact h1.trans h2)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((D.EF u (sep l • v) : ℤ) : ZMod l.M) = _`. Establish `h1` using `ef_smul_eq_zero D l hc.2 (sep_spec l).1 u v`. Establish `h2` using `ef_smul_eq_zero D l (sep_spec l).2 hc.1 u v`. Rewrite `h1`, `h2` using `[sub_mul, _root_.one_mul, sub_smul, map_sub, Int.cast_sub, sub_eq_zero]`. Rewrite using `[← h1, ← h2, mul_comm]`.
+-/
 theorem pairOne_mk {c : 𝓞 E} (hc : IsSep l c) (u v : D.La) :
     pairOne D l (Submodule.Quotient.mk u) (Submodule.Quotient.mk v) = ((D.EF u (c • v) : ℤ) : ZMod l.M) := by
   change ((D.EF u (sep l • v) : ℤ) : ZMod l.M) = _
@@ -119,6 +156,13 @@ theorem pairOne_mk {c : 𝓞 E} (hc : IsSep l c) (u v : D.La) :
 def pairing {n : ℕ} (a : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) : ZMod l.M :=
   ∑ b, pairOne D l (a b) (t b)
 
+/- English proof (translation)
+Establish `hM : l.M ≠ 0` using `by have := l.three_le; omega`. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Establish `hM' : l.M' ≠ 0` using `Nat.lcm_ne_zero hM l.A_pos.ne'`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hk; exact hM' hk`. Establish `: zeta l.M = zeta l.M' ^ k`.
+
+Rewrite using `[zeta, zeta, ← Complex.exp_nat_mul, hk]`. Use `congr 1`. Establish `: (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk0`. Establish `: (l.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hM`. Use `push_cast`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `pow_mem c.zeta_mem k`.
+-/
 theorem zeta_level_mem (c : Coeff l) : zeta l.M ∈ c.F := by
   have hM : l.M ≠ 0 := by have := l.three_le; omega
   obtain ⟨k, hk⟩ : l.M ∣ l.M' := Nat.dvd_lcm_left _ _
@@ -139,6 +183,9 @@ variable {l} in
 def zetaM (c : Coeff l) : c.F := ⟨zeta l.M, zeta_level_mem l c⟩
 
 variable {l} in
+/- English proof (translation)
+The claim follows from `IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom) (Complex.isPrimitiveRoot_exp l.M (by have := l.three_le; omega)) Subtype.val_injective`.
+-/
 theorem zetaM_prim (c : Coeff l) : IsPrimitiveRoot (zetaM c) l.M :=
   IsPrimitiveRoot.of_map_of_injective (f := c.F.val.toRingHom)
     (Complex.isPrimitiveRoot_exp l.M (by have := l.three_le; omega)) Subtype.val_injective
@@ -166,6 +213,9 @@ def levPtCl (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (x : 
       exact h2
     simp only [levPt, this])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem levPtCl_mk (Xo : Moduli D l) {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) (u : D.La) :
     levPtCl Xo x0 (Submodule.Quotient.mk u) = levPt Xo x0 u := rfl
 
@@ -207,6 +257,11 @@ def indicatorCl (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) : (Fin n �
 def indCoeff (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) : c.F :=
   fourier c (indicatorCl c x₀) t
 
+/- English proof (translation)
+Rewrite using `[indCoeff, fourier, Finset.sum_eq_single x₀]`. Simplify using `[indicatorCl, eChar]`. Introduce `b _ hb`. Simplify using `[indicatorCl, hb]`. Introduce `h`.
+
+Simplify using `at h`.
+-/
 theorem indCoeff_eq (c : Coeff l) {n : ℕ} (x₀ : Fin n → ConjCl D l) (t : Fin n → NamedCl D l) :
     indCoeff c x₀ t = (Nat.card (Fin n → NamedCl D l) : c.F)⁻¹ * (zetaM c ^ (pairing D l x₀ t).val)⁻¹ := by
   rw [indCoeff, fourier, Finset.sum_eq_single x₀]

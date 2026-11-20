@@ -6,6 +6,11 @@ noncomputable section
 
 namespace GlobalTheory.Diag.PG.NodeParameters
 
+/- English proof (translation)
+Establish `h0 : 0 ≤ 4 + 18 / eps` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul h0]`. Establish `: 3 / eps * (eps / 3) = 1` using `by field_simp`. Rewrite using `[this, Real.rpow_one]`.
+
+Use `_ ≤ x ^ (eps / 3) := Real.rpow_le_rpow (by positivity) hx (by positivity)`.
+-/
 theorem y_ge {eps x : ℝ} (he : 0 < eps) (hx : (4 + 18 / eps) ^ (3 / eps) ≤ x) :
     4 + 18 / eps ≤ x ^ (eps / 3) := by
   have h0 : 0 ≤ 4 + 18 / eps := by positivity
@@ -15,14 +20,25 @@ theorem y_ge {eps x : ℝ} (he : 0 < eps) (hx : (4 + 18 / eps) ^ (3 / eps) ≤ x
         rw [this, Real.rpow_one]
     _ ≤ x ^ (eps / 3) := Real.rpow_le_rpow (by positivity) hx (by positivity)
 
+/- English proof (translation)
+Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem xeps_eq {eps x : ℝ} (hx : 0 ≤ x) : x ^ eps = (x ^ (eps / 3)) ^ 3 := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul hx]; congr 1; push_cast; ring
 
+/- English proof (translation)
+Use `Real.log_le_rpow_div hx (by positivity : 0 < eps / 3)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem logx_le' {eps x : ℝ} (he : 0 < eps) (hx : 0 ≤ x) : Real.log x ≤ 3 * x ^ (eps / 3) / eps := by
   have := Real.log_le_rpow_div hx (by positivity : 0 < eps / 3)
   calc _ ≤ _ := this
     _ = _ := by field_simp
 
+/- English proof (translation)
+Establish `hq : 0 ≤ 18 / eps` using `by positivity`. Establish `h1 : 1 ≤ y` using `by linarith`. Establish `h2 : y * (4 + 18 / eps) ≤ y ^ 2` using `by rw [sq]; exact mul_le_mul_of_nonneg_left hy (by linarith)`. Establish `h3 : y ^ 2 ≤ y ^ 3` using `pow_le_pow_right₀ h1 (by norm_num)`. Establish `e1 : 6 * (3 * y / eps) = y * (18 / eps)` using `by ring`.
+
+Establish `e2 : 5 * (3 * y / eps) = y * (15 / eps)` using `by ring`. Establish `h4 : y * (15 / eps) ≤ y * (18 / eps)` using `mul_le_mul_of_nonneg_left (div_le_div_of_nonneg_right (by norm_num) he.le) (by linarith)`. Establish `h5 : 0 ≤ y * (18 / eps)` using `by positivity`. Rewrite using `[e1, e2]`. Apply the tactic sequence `constructor <;> nlinarith`.
+-/
 theorem poly {eps y : ℝ} (he : 0 < eps) (hy : 4 + 18 / eps ≤ y) :
     2 + 2 * y + 6 * (3 * y / eps) ≤ y ^ 3 ∧ 2 + 5 * (3 * y / eps) ≤ y ^ 3 := by
   have hq : 0 ≤ 18 / eps := by positivity
@@ -37,6 +53,19 @@ theorem poly {eps y : ℝ} (he : 0 < eps) (hy : 4 + 18 / eps ≤ y) :
   rw [e1, e2]
   constructor <;> nlinarith
 
+/- English proof (translation)
+Establish `hx0 : 0 < x` using `by linarith`. Establish `hyg` using `y_ge he hx`. Take `⟨p1, p2⟩` from `poly he hyg`. Establish `hl` using `logx_le' he hx0.le`. Establish `hxe : x ^ eps = (x ^ (eps / 3)) ^ 3` using `xeps_eq hx0.le`.
+
+Rewrite using `[hxe]`. Use `set y := x ^ (eps / 3) with hy`. Establish `h4 : (4 : ℝ) ≤ Real.exp 2`. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Establish `e : Real.exp 2 = Real.exp 1 * Real.exp 1` using `by rw [← Real.exp_add]; norm_num`.
+
+Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : (3 : ℝ) ≤ Real.exp 2` using `by linarith`. Establish `ex : x = Real.exp (Real.log x)` using `(Real.exp_log hx0).symm`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[← ex]`. Use `gcongr`. Use `_ = Real.exp (2 + 2 * y + 6 * Real.log x) := by`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_nat_mul, ← Real.exp_add, ← Real.exp_add]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Use `_ ≤ Real.exp (y ^ 3) := Real.exp_le_exp.2 (by nlinarith)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ex]`. Use `gcongr`.
+
+Use `_ = Real.exp (2 + 5 * Real.log x) := by`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Use `push_cast`. Put the polynomial expressions in normal form. Use `_ ≤ Real.exp (y ^ 3) := Real.exp_le_exp.2 (by nlinarith)`.
+-/
 theorem exp_big {eps x : ℝ} (he : 0 < eps) (hx1 : 1 ≤ x) (hx : (4 + 18 / eps) ^ (3 / eps) ≤ x) :
     4 * Real.exp (x ^ (eps / 3)) ^ 2 * x ^ 6 ≤ Real.exp (x ^ eps) ∧
       3 * x ^ 5 ≤ Real.exp (x ^ eps) := by
@@ -69,6 +98,11 @@ end GlobalTheory.Diag.PG.NodeParameters
 
 namespace GlobalTheory.Diag.PG.NodeParameters
 
+/- English proof (translation)
+Establish `hx : 0 < L.sc.x` using `lt_trans one_pos L.sc.one_lt_alt`. Establish `hn : (0 : ℝ) < D.R.n`. Establish `: 0 < D.R.n` using `D.R.ord_pos`. Conclude with `this` after adjusting the coercions. Establish `hX : 0 < L.sc.X'` using `by unfold Scale.X'; positivity`.
+
+Unfold `Scale.w'' Scale.b' Scale.a`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem w''_eq {D : D7} (L : SizeData₂ D) : L.sc.w'' D.R.n = L.sc.b / (L.sc.X' * D.R.n) := by
   have hx : 0 < L.sc.x := lt_trans one_pos L.sc.one_lt_alt
   have hn : (0 : ℝ) < D.R.n := by
@@ -78,6 +112,15 @@ theorem w''_eq {D : D7} (L : SizeData₂ D) : L.sc.w'' D.R.n = L.sc.b / (L.sc.X'
   unfold Scale.w'' Scale.b' Scale.a
   field_simp
 
+/- English proof (translation)
+Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `hx0 : 0 ≤ x` using `by linarith`. Establish `ha0 : 0 ≤ a` using `by rw [ha]; positivity`. Establish `hab : b ≤ a` using `by rw [ha]; exact le_mul_of_one_le_left hb0 hx1`. Establish `hdiv : a / c ≤ a` using `div_le_self ha0 hc`.
+
+Establish `hfl : ((⌊bp / x⌋ : ℤ) : ℝ) ≤ bp / x` using `Int.floor_le _`. Establish `hbx : bp / x ≤ bp` using `div_le_self hbp hx1`. Establish `hx5 : x ≤ x ^ 5`. Use `pow_le_pow_right₀ hx1 (by norm_num : 1 ≤ 5); simpa using this` as an intermediate fact. Establish `h1 : x * b ≤ x ^ 5 * b` using `mul_le_mul_of_nonneg_right hx5 hb0`.
+
+Establish `h2 : x ^ 5 ≤ x ^ 5 * b` using `le_mul_of_one_le_right (by positivity) hb1`. Establish `h3 : 3 * x ^ 5 * b ≤ b * b` using `mul_le_mul_of_nonneg_right hB hb0`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the linear relations using `only [hs, hab, haT.1, hu1, hk]`. Rewrite using `[sq]`.
+
+Combine the linear relations using `only [hu1, haT.2, hdiv, ha, h1, h2, h3, hk5, hk]`. Combine the linear relations using `only [hb1t, huk]`. Combine the linear relations using `only [hb1e, hfl, hbx, hbT, huk, hk]`.
+-/
 theorem top_real {x b a c k aT bT bp b1 u1 uk s : ℝ} (hx1 : 1 ≤ x) (hb1 : 1 ≤ b) (ha : a = x * b) (hc : 1 ≤ c)
     (hk : 3 ≤ k) (hk5 : k ≤ x ^ 5) (hB : 3 * x ^ 5 ≤ b) (hs : s ≤ b)
     (hu1 : u1 = aT + (k - 1) / 2) (huk : uk = -bT - (k - 1) / 2)
@@ -103,12 +146,50 @@ theorem top_real {x b a c k aT bT bp b1 u1 uk s : ℝ} (hx1 : 1 ≤ x) (hb1 : 1 
   · linarith only [hb1t, huk]
   · linarith only [hb1e, hfl, hbx, hbT, huk, hk]
 
+/- English proof (translation)
+Establish `h1 : eta ≤ t * eta` using `le_mul_of_one_le_left he.le ht`. Establish `h2 : w / x ≤ w / 2` using `div_le_div_of_nonneg_left hw0.le two_pos hx2`. Combine the linear relations using `only [hw, hc, h1, h2, hte, hs]`.
+-/
 theorem node_real {bj ej w eta t x s : ℝ} (hw : w ≤ ej) (hc : -eta ≤ bj - ej) (ht : 1 ≤ t) (he : 0 < eta)
     (hte : t * eta ≤ w / x) (hx2 : 2 ≤ x) (hw0 : 0 < w) (hs : s ≤ w / 2) : s ≤ bj := by
   have h1 : eta ≤ t * eta := le_mul_of_one_le_left he.le ht
   have h2 : w / x ≤ w / 2 := div_le_div_of_nonneg_left hw0.le two_pos hx2
   linarith only [hw, hc, h1, h2, hte, hs]
 
+/- English proof (translation)
+Introduce `eps he he52`. Use `⟨max 2 ((4 + 18 / eps) ^ (3 / eps)), ?_⟩` and prove the remaining obligations. Introduce `D L P hS heps hx`. Substitute `heps` using the available equality. Establish `hx2 : 2 ≤ L.sc.x` using `le_trans (le_max_left _ _) hx`.
+
+Establish `hxb : (4 + 18 / L.sc.eps) ^ (3 / L.sc.eps) ≤ L.sc.x` using `le_trans (le_max_right _ _) hx`. Take `⟨hN, -, hK, -, hT, -, -, -, -, -, -, -, -, hEta, -, -, -, -, hBm, -⟩` from `hS`. Take `⟨hA, hB⟩` from `exp_big he (by linarith) hxb`. Establish `hx1 : (1 : ℝ) ≤ L.sc.x` using `by linarith`. Establish `hx0 : (0 : ℝ) < L.sc.x` using `by linarith`.
+
+Establish `hbdef : bx L.sc.x L.sc.eps = L.sc.b` using `rfl`. Establish `hbe : Real.exp (L.sc.x ^ L.sc.eps) = L.sc.b` using `rfl`. Establish `hXe : Real.exp (L.sc.x ^ (L.sc.eps / 3)) = L.sc.X'` using `rfl`. Rewrite `hA`, `hB` using `[hbe]`. Rewrite `hA` using `[hXe]`.
+
+Establish `hb1 : 1 ≤ L.sc.b` using `Real.one_le_exp (Real.rpow_nonneg hx0.le _)`. Establish `hb0 : 0 < L.sc.b` using `by linarith`. Establish `hX0 : 0 < L.sc.X'` using `by unfold Scale.X'; positivity`. Establish `hn0 : (0 : ℝ) < D.R.n`. Establish `: 0 < D.R.n` using `D.R.ord_pos`.
+
+Conclude with `this` after adjusting the coercions. Establish `hth : szTh L = L.sc.eps / 100` using `rfl`. Establish `hn3 : (D.R.n : ℝ) ≤ L.sc.x ^ 3`. Establish `h` using `hN.2`. Rewrite `h` using `[hth]`.
+
+Establish `e` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith : 2 + 8 * L.sc.eps + L.sc.eps / 100 ≤ (3 : ℝ))`. Establish `e3 : L.sc.x ^ (3 : ℝ) = L.sc.x ^ (3 : ℕ)`. Rewrite using `[show (3 : ℝ) = ((3 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite `e` using `[e3]`. Conclude with `le_trans h e`.
+
+Establish `hk5 : (D.R.k : ℝ) ≤ L.sc.x ^ 5`. Establish `h` using `hK.2`. Rewrite `h` using `[hth]`. Establish `e` using `Real.rpow_le_rpow_of_exponent_le hx1 (by linarith : 9 / 2 + 10 * L.sc.eps + L.sc.eps / 100 ≤ (5 : ℝ))`. Establish `e5 : L.sc.x ^ (5 : ℝ) = L.sc.x ^ (5 : ℕ)`.
+
+Rewrite using `[show (5 : ℝ) = ((5 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]`. Rewrite `e` using `[e5]`. Conclude with `le_trans h e`. Establish `hw0` using `S.w''_pos L`. Establish `hsq : Real.sqrt L.sc.b ≤ L.sc.w'' D.R.n / 2`.
+
+Establish `hw` using `w''_eq L`. Establish `hn6 : (D.R.n : ℝ) ^ 2 ≤ L.sc.x ^ 6`. Use `pow_le_pow_left₀ hn0.le hn3 2` as an intermediate fact. Rewrite `this` using `[← pow_mul]`. Simplify using `using this`.
+
+Establish `h4 : 4 * L.sc.X' ^ 2 * (D.R.n : ℝ) ^ 2 ≤ L.sc.b`. Establish `: 4 * L.sc.X' ^ 2 * (D.R.n : ℝ) ^ 2 ≤ 4 * L.sc.X' ^ 2 * L.sc.x ^ 6` using `mul_le_mul_of_nonneg_left hn6 (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw0' : 0 ≤ L.sc.w'' D.R.n / 2` using `by positivity`. Rewrite using `[← Real.sqrt_sq hw0']`.
+
+Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[hw, div_div, div_pow, le_div_iff₀ (by positivity)]`. Use `mul_le_mul_of_nonneg_left h4 hb0.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hwb` using `S.w''_le_b L`.
+
+Establish `hk3 : 3 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hk3r : (3 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk3`. Establish `hm0 : 0 < D.R.m` using `by have := D.R.two_le_m; omega`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ j`.
+
+Use `⟨?_, L.b_le τ j⟩` and prove the remaining obligations. Establish `hwj` using `S.wj_ge L τ (j.1 + 1) (by omega) (by omega)`. Establish `e : wj D (j.1 + 1) τ = (((D.hc τ).e j : ℚ) : ℝ)`. Establish `: j.1 + 1 - 1 < D.R.m` using `by omega`. Simplify using `only [wj, dif_pos this]`.
+
+Both sides reduce to the same expression. Rewrite `hwj` using `[e]`. Establish `hc` using `abs_le.1 (L.be_close τ j j)`. Move the coercions through the operations in `at hc`. Rewrite using `[hbdef]`.
+
+Conclude with `node_real hwj hc.1 hT.1 L.etaSz_pos hEta.2.2.2.1 hx2 hw0 hsq`. Introduce `τ`. Conclude with `hBm τ hm0`. Introduce and unpack `τ ⟨t, ht⟩`. Establish `hk0 : 0 < D.R.k` using `by omega`.
+
+Take `⟨hu1, huk⟩` from `L.top_u τ t hk0 ht`. Establish `hden : 1 ≤ (D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)`. Establish `h1 : 1 ≤ L.sc.x ^ (Scale.A / 2)` using `Real.one_le_rpow hx1 (by unfold Scale.A; norm_num)`. Establish `h2 : (1 : ℝ) ≤ D.R.k` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hb'0 : 0 ≤ L.sc.b'` using `by unfold Scale.b' Scale.a Scale.b Scale.X'; positivity`. Rewrite using `[hbdef]`. Conclude with `top_real hx1 hb1 rfl hden hk3r hk5 hB (le_trans hsq (by linarith)) hu1 huk (L.aT_win t) (L.bT_ge t) hb'0 (L.top_b τ t hm0 ht) (P.topPlace_first_bound τ t hm0 ht)`.
+-/
 theorem nodes_of_parameters : ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x0 : ℝ, ∀ (D : D7) (L : SizeData₂ D)
     (_ : ParameterChoice' D L), SizesAt L → L.sc.eps = eps → x0 ≤ L.sc.x → Nodes D L.sc.x eps := by
   intro eps he he52

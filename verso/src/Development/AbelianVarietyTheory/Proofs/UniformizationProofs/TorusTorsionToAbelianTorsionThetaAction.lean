@@ -23,6 +23,13 @@ namespace GlobalTheory.UU.Eqv
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
 
+/- English proof (translation)
+Take `⟨x, hx⟩` from `hU`. Set `p : PrimeSpectrum W` to `φ.left z`. Establish `e : (TA R W).hom (φ.left z) = (TF (R` using `R) F).hom z := by`. Rewrite using `[← Scheme.Hom.comp_apply, Over.w]`. Establish `hp : p.asIdeal = ⊥`.
+
+Use `Ideal.eq_bot_of_comap_eq_bot (R := R) (eq_bot_iff.2 fun r hr => ?_)` and prove the remaining obligations. Establish `h0 : r ∈ PrimeSpectrum.asIdeal (R` using `R) ((TA R W).hom (φ.left z)) := hr`. Rewrite `h0` using `[e]`. Establish `h1 : algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r) ∈ PrimeSpectrum.asIdeal (R` using `F) z := h0`. Establish `hz : PrimeSpectrum.asIdeal (R` using `F) z = ⊥ := @Ideal.eq_bot_of_prime _ _ _ (PrimeSpectrum.isPrime _)`.
+
+Rewrite `h1` using `[hz, Ideal.mem_bot, map_eq_zero, map_eq_zero_iff _ (IsFractionRing.injective R (FractionRing R))]`. Conclude with `Ideal.mem_bot.2 h1`. Establish `hle : p.asIdeal ≤ PrimeSpectrum.asIdeal (R` using `W) x := hp ▸ bot_le`. Conclude with `((PrimeSpectrum.le_iff_specializes _ _).1 hle).mem_open U.isOpen hx`.
+-/
 theorem mem_of_nonempty {W : Type} [CommRing W] [IsDomain W] [Algebra R W] [Module.Finite R W]
     (φ : TF (R := R) F ⟶ TA R W) (z : (TF (R := R) F).left) (U : (TA R W).left.Opens)
     (hU : (U : Set (TA R W).left).Nonempty) : φ.left z ∈ U := by
@@ -45,22 +52,41 @@ theorem mem_of_nonempty {W : Type} [CommRing W] [IsDomain W] [Algebra R W] [Modu
 section Pull
 variable {T : Over (Spec (CommRingCat.of R))} {φ : TF (R := R) F ⟶ T}
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext h.1`.
+-/
 theorem pull_b {g : GtPt D T} {g' : GtPtF D F} (h : GtPt.IsPullF F φ.left g g') : g'.b = φ ≫ g.b :=
   Over.OverMorphism.ext h.1
 
+/- English proof (translation)
+The claim follows from `(val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]))`.
+-/
 theorem pull_val {g : GtPt D T} {g' : GtPtF D F} (h : GtPt.IsPullF F φ.left g g') (χ : D.X) {y J}
     (hJ : Good D.P.L y J) : val (g'.s χ) (𝟙 _) y J = val (g.s χ) φ.left y J :=
   (val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans (by rw [Category.id_comp]))
 
+/- English proof (translation)
+Rewrite using `[← Category.assoc, comp_toUnit]`.
+-/
 theorem comp_cT (χ : D.X) : φ ≫ DegPre.cT D T χ = DegPre.cF D F χ := by
   rw [← Category.assoc, comp_toUnit]
 
+/- English proof (translation)
+Rewrite using `[← comp_cT (φ := φ)]`. Conclude with `val_cub D.cub φ hJ _ _ _`.
+-/
 theorem val_cubAtT {y J} (hJ : Good D.P.L y J) (χ : D.X) (a b : T ⟶ D.P.A) :
     val (DegPre.cubAtT D T (DegPre.cT D T χ) a b) φ.left y J =
       cubV D.cub y J (DegPre.cF D F χ) (φ ≫ a) (φ ≫ b) := by
   rw [← comp_cT (φ := φ)]
   exact val_cub D.cub φ hJ _ _ _
 
+/- English proof (translation)
+Establish `: IsProper D.P.A.hom` using `D.P.isAb.proper`. Establish `: D.P.A.left.IsSeparated`. Rewrite using `[Scheme.isSeparated_iff, ← terminal.comp_from D.P.A.hom]`. Use `infer_instance`. Take `⟨z⟩ : Nonempty (TF (R` from `R) F).left := ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum F)⟩`.
+
+Establish `dom : IsDominant φ.left` using `⟨dense_iff_inter_open.2 fun U hU hne => ⟨φ.left z, hd z ⟨U, hU⟩ hne, z, rfl⟩⟩`. Take `⟨hb, hv⟩` from `(isAdd_iff _ _ _).1 H`. Use `⟨Over.OverMorphism.ext (ext_of_isDominant φ.left ?_), fun χ => GlobalTheory.TauPull.corr_of_dense D.P.isLB φ.left z (hd z) fun J hJ => ?_⟩` and prove the remaining obligations. Rewrite `hb` using `[pull_b p₁, pull_b p₂, pull_b p₃, ← MonObj.comp_mul]`. Conclude with `congrArg (fun q => q.left) hb`.
+
+Establish `e` using `hv χ z J hJ`. Rewrite `e` using `[pull_val p₁ χ hJ, pull_val p₂ χ hJ, pull_val p₃ χ hJ, pull_b p₁, pull_b p₂]`. Conclude with `(val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) rfl (val_cubAtT hJ χ _ _)).trans (e.trans (val_mul hJ _ _ _).symm))`.
+-/
 theorem isAdd_of_pull [IsReduced T.left] (hd : ∀ z (U : T.left.Opens), (U : Set T.left).Nonempty → φ.left z ∈ U)
     {g₁ g₂ g₃ : GtPt D T} {h₁ h₂ h₃ : GtPtF D F} (p₁ : GtPt.IsPullF F φ.left g₁ h₁) (p₂ : GtPt.IsPullF F φ.left g₂ h₂)
     (p₃ : GtPt.IsPullF F φ.left g₃ h₃) (H : h₁.IsAdd h₂ h₃) : g₁.IsAdd g₂ g₃ := by
@@ -79,6 +105,9 @@ theorem isAdd_of_pull [IsReduced T.left] (hd : ∀ z (U : T.left.Opens), (U : Se
     exact (val_mul hJ _ _ _).trans ((congrArg₂ (· * ·) rfl (val_cubAtT hJ χ _ _)).trans
       (e.trans (val_mul hJ _ _ _).symm))
 
+/- English proof (translation)
+Use `GlobalTheory.TorusExt.gt_ext_val (by rw [pull_b p, pull_b p', a.1, a'.1]) fun χ y J hJ => ?_` and prove the remaining obligations. Use `(pull_val p χ hJ).trans (Eq.trans ?_ (pull_val p' χ hJ).symm)` and prove the remaining obligations. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (a.2 χ) φ.left)`. Establish `e'` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (a'.2 χ) φ.left)`. Conclude with `mul_right_cancel (e.trans e'.symm)`.
+-/
 theorem pull_eq_of_isAdd {g₁ g₂ g₃ g₃' : GtPt D T} {h h' : GtPtF D F} (a : g₁.IsAdd g₂ g₃) (a' : g₁.IsAdd g₂ g₃')
     (p : GtPt.IsPullF F φ.left g₃ h) (p' : GtPt.IsPullF F φ.left g₃' h') : h = h' := by
   refine GlobalTheory.TorusExt.gt_ext_val (by rw [pull_b p, pull_b p', a.1, a'.1]) fun χ y J hJ => ?_
@@ -95,9 +124,15 @@ variable {G : Over (Spec (CommRingCat.of R))}
 def liftK (y : TF (R := R) F ⟶ G) : TFK (R := R) F ⟶ (Over.pullback (jK R)).obj G :=
   Over.homMk (pullback.lift y.left (jFK (R := R) F) (Over.w y)) (pullback.lift_snd _ _ _)
 
+/- English proof (translation)
+The claim follows from `pullback.lift_fst _ _ _`.
+-/
 theorem liftK_fst (y : TF (R := R) F ⟶ G) : (liftK y).left ≫ pullback.fst G.hom (jK R) = y.left :=
   pullback.lift_fst _ _ _
 
+/- English proof (translation)
+Establish `e` using `toBase_mul_pullback G (jK R) _ (liftK y) (liftK y')`. Establish `a : ∀ u : TF (R` using `R) F ⟶ G, toBase (A := G) (A' := (Over.pullback (jK R)).obj G) (g := pullback.fst G.hom (jK R)) pullback.condition (liftK u) = u := fun u => Over.OverMorphism.ext (liftK_fst u)`. Rewrite `e` using `[a, a]`. Use `Over.OverMorphism.ext (pullback.hom_ext ((liftK_fst _).trans (congrArg (fun q => q.left) e).symm) ?_)` and prove the remaining obligations. Conclude with `(Over.w (liftK (y * y'))).trans (Over.w (liftK y * liftK y')).symm`.
+-/
 theorem liftK_mul [GrpObj G] (y y' : TF (R := R) F ⟶ G) : liftK (y * y') = liftK y * liftK y' := by
   have e := toBase_mul_pullback G (jK R) _ (liftK y) (liftK y')
   have a : ∀ u : TF (R := R) F ⟶ G, toBase (A := G) (A' := (Over.pullback (jK R)).obj G)
@@ -108,6 +143,25 @@ theorem liftK_mul [GrpObj G] (y y' : TF (R := R) F ⟶ G) : liftK (y * y') = lif
 
 end Generic
 
+/- English proof (translation)
+Introduce `hL hL2 V _ _ _ hV D A G _ _ U N hN`. Use `hV.1` as an intermediate fact. Use `hV.2.2` as an intermediate fact. Establish `: CharZero (Kbar V)` using `algebraRat.charZero _`. Establish `hN0 : N ≠ 0` using `by omega`.
+
+Establish `hfin : Finite {g : GtPtF D (Kbar V) // GtTors D N g}` using `Nat.finite_of_card_ne_zero (by`. Rewrite using `[(GlobalTheory.GtCount.card_gtTors hL hL2 V D (Kbar V) N (Nat.cast_ne_zero.2 hN0)).1]`. Conclude with `pow_ne_zero _ hN0)`. Establish `hs : {g : GtPtF D (Kbar V) | GtTors D N g}.Finite` using `hfin`. Take `⟨W, _, _, _, φ, hW, hg⟩` from `GlobalTheory.torsion_points_integral V hV D N hN hs.toFinset fun g h => hs.mem_toFinset.1 h`.
+
+Use `hW.1` as an intermediate fact. Use `hW.2.2.1` as an intermediate fact. Establish `: IsReduced (TA V W).left` using `inferInstanceAs (IsReduced (Spec (CommRingCat.of W)))`. Establish `hd` using `mem_of_nonempty φ`. Use `choose x hx hxu using GlobalTheory.UU.RedOnto.main V hV D A G U W hW`.
+
+Establish `add` using `fun g g' g'' => GlobalTheory.UU.RedAdd.main hL.globalFns V hV D A G U W hW _ _ _ g g' g'' (hx g) (hx g') (hx g'')`. Use `choose i ip ih using fun g : {g : GtPtF D (Kbar V) // GtTors D N g} => hg g.1 (hs.mem_toFinset.2 g.2)`. Use `U.gen_hom` as an intermediate fact. Use `U.semi.separated` as an intermediate fact. Take `⟨z⟩ : Nonempty (TF (R` from `V) (Kbar V)).left := ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Kbar V))⟩`.
+
+Establish `dom : IsDominant φ.left` using `⟨dense_iff_inter_open.2 fun U hU hne => ⟨φ.left z, hd z ⟨U, hU⟩ hne, z, rfl⟩⟩`. Use `⟨fun g => liftK (φ ≫ x (i g)) ≫ U.gen.hom, fun g g' e => ?_, fun g => ?_, fun g g' g'' h => ?_⟩` and prove the remaining obligations. Establish `e₁ : liftK (φ ≫ x (i g)) = liftK (φ ≫ x (i g'))` using `(cancel_mono U.gen.hom).1 e`. Establish `e₂ : φ.left ≫ (x (i g)).left = φ.left ≫ (x (i g')).left` using `(liftK_fst _).symm.trans ((congrArg (fun q => q.left ≫ pullback.fst G.hom (jK V)) e₁).trans (liftK_fst _))`. Establish `e₃ : x (i g) = x (i g')` using `Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated G.hom ((Over.w _).trans (Over.w _).symm) φ.left e₂)`.
+
+Take `⟨o, -, ho⟩` from `ih g`. Establish `o1 : x o = 1` using `(add o o o).2.2 ho`. Conclude with `Subtype.ext (pull_eq_of_isAdd ((add (i g) o (i g)).1.1 (by rw [o1, _root_.mul_one])) ((add (i g) o (i g')).1.1 (by rw [o1, _root_.mul_one, e₃])) (ip g) (ip g'))`. Use `GlobalTheory.T.torsionTranslation_acts_on_expansions hL hL2 V hV D A G U W hW (Kbar V) φ N hN (x (i g)) (i g) g.1 _ ?_ (hx _) (ip g) ?_` and prove the remaining obligations. Take `⟨o, ⟨gs, h₀, hs, rfl⟩, ho⟩` from `ih g`.
+
+Establish `key : ∀ n (hn : n < N + 1), x (gs ⟨n, hn⟩) = x (i g) ^ n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact fun _ => ((add (gs 0) (gs 0) (gs 0)).2.2 h₀).trans (pow_zero _).symm`. Consider the case `succ n ihn`.
+
+Conclude with `fun hn => ((add _ _ _).1.2 (hs ⟨n, by omega⟩)).trans ((congrArg (· * x (i g)) (ihn (by omega))).trans (pow_succ _ _).symm)`. Conclude with `(key N (Nat.lt_succ_self N)).symm.trans ((add _ (i g) (i g)).2.2 ho)`. Use `show (liftK (φ ≫ x (i g)) ≫ U.gen.hom).left ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK V) = _`. Rewrite using `[← Category.assoc, ← Over.comp_left, Category.assoc, U.gen.hom_inv_id, Category.comp_id]`. Conclude with `liftK_fst _`.
+
+Establish `e : x (i g'') = x (i g) * x (i g')` using `(add _ _ _).1.2 (isAdd_of_pull hd (ip g) (ip g') (ip g'') h) show liftK (φ ≫ x (i g'')) ≫ U.gen.hom = _`. Rewrite using `[e, MonObj.comp_mul, liftK_mul, MonObj.mul_comp]`.
+-/
 theorem main : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {_} _ _ U => ∀ N : ℕ, 1 ≤ N → ∃ m : {g : GtPtF D (Kbar V) // GtTors D N g} → (TFK (R := V) (Kbar V) ⟶ A.A), Function.Injective m ∧ (∀ g, U.Acts (Kbar V) N 0 g.1 (m g)) ∧ ∀ g g' g'', GtPtF.IsAdd g.1 g'.1 g''.1 → m g'' = m g * m g') := by
   intro hL hL2 V _ _ _ hV D A G _ _ U N hN
   classical

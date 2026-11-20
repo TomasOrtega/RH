@@ -7,6 +7,13 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `R _ d μ hμ u F r hF α hα`. Unfold `invDer`. Rewrite using `[map_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+
+Rewrite using `[map_smul]`. Unfold `atZero`. Rewrite using `[(coeff_subst_restrict_sum (pderiv R (Sum.inr i) (subst μ F))).1 α, coeff_pderiv]`. Establish `h` using `coeff_subst_eq_zero_of_degree_lt R (Fin d) (Fin d ⊕ Fin d) μ F (r + 1) hμ hF (α.mapDomain Sum.inl + Finsupp.single (Sum.inr i) 1) (by`. Rewrite using `[map_add, Finsupp.degree_mapDomain, Finsupp.degree_single]`.
+
+Use the proof step `omega)`. Rewrite using `[h, zero_mul, smul_zero]`.
+-/
 theorem invDer_coeff_eq_zero_of_degree_lt :
     ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
       (∀ i, constantCoeff (μ i) = 0) → ∀ (u : Fin d → R) (F : MvPowerSeries (Fin d) R) (r : ℕ),

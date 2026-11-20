@@ -17,6 +17,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Apply `GlobalTheory.LB.f_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `finSec_eq_zero_of_cover V hc (s.f i) fun a => ?_` and prove the remaining obligations. Establish `h₁ : rs X (inf_le_left : L.U i ⊓ V a ≤ L.U i) (s.f i) = rs X (inf_le_inf le_rfl (hV a) : L.U i ⊓ V a ≤ L.U i ⊓ L.U (c a)) (L.g i (c a)).val * rs X (inf_le_right : L.U i ⊓ V a ≤ V a) (rs X (hV a) (s.f (c a)))`. Establish `h` using `congrArg (rs X (inf_le_inf le_rfl (hV a) : L.U i ⊓ V a ≤ L.U i ⊓ L.U (c a))) (s.compat i (c a))`.
+
+Rewrite `h` using `[map_mul]`. Simplify using `only [rs_rs] at h ⊢`. Conclude with `h`. Rewrite using `[h₁, h a, map_zero, mul_zero]`.
+-/
 theorem sec_eq_zero_of_local {X : Scheme.{0}} {L : LB X} {I : Type} (V : I → X.Opens)
     (hc : ⨆ a, V a = ⊤) (c : I → L.ι) (hV : ∀ a, V a ≤ L.U (c a)) (s : LB.Sec L)
     (h : ∀ a, rs X (hV a) (s.f (c a)) = 0) : s = 0 := by
@@ -33,6 +38,9 @@ theorem sec_eq_zero_of_local {X : Scheme.{0}} {L : LB X} {I : Type} (V : I → X
     exact h
   rw [h₁, h a, map_zero, mul_zero]
 
+/- English proof (translation)
+The claim follows from `sub_eq_zero.1 (sec_eq_zero_of_local V hc c hV _ fun a => by rw [GlobalTheory.LB.sub_f, map_sub, h a, sub_self])`.
+-/
 theorem sec_eq_of_local {X : Scheme.{0}} {L : LB X} {I : Type} (V : I → X.Opens)
     (hc : ⨆ a, V a = ⊤) (c : I → L.ι) (hV : ∀ a, V a ≤ L.U (c a)) (s t : LB.Sec L)
     (h : ∀ a, rs X (hV a) (s.f (c a)) = rs X (hV a) (t.f (c a))) : s = t :=
@@ -45,12 +53,18 @@ variable {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R']
   {f' : X' ⟶ Spec (CommRingCat.of R')}
   (E : {v : Fin Q.a → R' // (Q.D₀.map g).mulVec v = 0} ≃ LB.Sec (M.pull π))
 
+/- English proof (translation)
+Rewrite using `[← Scheme.Hom.preimage_iSup, Q.cover]`. Conclude with `top_unique fun _ _ => trivial`.
+-/
 theorem Perf.iSup_preimage : ⨆ i, π ⁻¹ᵁ Q.W i = ⊤ := by
   rw [← Scheme.Hom.preimage_iSup, Q.cover]
   exact top_unique fun _ _ => trivial
 
 include Q in
 
+/- English proof (translation)
+Use `sec_eq_of_local (fun i => π ⁻¹ᵁ Q.W i) Q.iSup_preimage (fun i => fun _ => Q.ch i) (fun i => le_pull M π (Q.le i)) _ _ fun i => ?_` and prove the remaining obligations. Use `(hE _ i).trans (Eq.trans ?_ ((map_add (rs X' (le_pull M π (Q.le i))) ((E v).f fun _ => Q.ch i) ((E w).f fun _ => Q.ch i)).trans (congrArg₂ (· + ·) (hE v i) (hE w i))).symm)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem Perf.sec_add
     (hE : ∀ v i, rs X' (le_pull M π (Q.le i)) ((E v).f (fun _ => Q.ch i)) =
         ∑ k, cst f' (π ⁻¹ᵁ Q.W i) (v.1 k) * (π.app (Q.W i)).hom (Q.u k i))
@@ -64,6 +78,11 @@ theorem Perf.sec_add
 
 include Q in
 
+/- English proof (translation)
+Use `sec_eq_of_local (fun i => π ⁻¹ᵁ Q.W i) Q.iSup_preimage (fun i => fun _ => Q.ch i) (fun i => le_pull M π (Q.le i)) _ _ fun i => ?_` and prove the remaining obligations. Establish `key : rs X' (le_pull M π (Q.le i)) (resG X' le_top (cst f' ⊤ r)) = cst f' (π ⁻¹ᵁ Q.W i) r`. Express the relevant statement in the definitionally equal form `rs X' _ (rs X' le_top _) = _`. Rewrite using `[rs_rs, rs_cst]`. Use `(hE _ i).trans (Eq.trans ?_ ((map_mul (rs X' (le_pull M π (Q.le i))) (resG X' le_top (cst f' ⊤ r)) ((E v).f fun _ => Q.ch i)).trans (congrArg₂ (· * ·) key (hE v i))).symm)` and prove the remaining obligations.
+
+Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, _root_.mul_assoc]`.
+-/
 theorem Perf.sec_smul
     (hE : ∀ v i, rs X' (le_pull M π (Q.le i)) ((E v).f (fun _ => Q.ch i)) =
         ∑ k, cst f' (π ⁻¹ᵁ Q.W i) (v.1 k) * (π.app (Q.W i)).hom (Q.u k i))
@@ -80,18 +99,27 @@ theorem Perf.sec_smul
 
 end PerfSec
 
+/- English proof (translation)
+Apply `GlobalTheory.LB.f_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `map_add _ _ _`.
+-/
 theorem finSecPullId_add {X : Scheme.{0}} {M : LB X} (s t : LB.Sec M) :
     finSecPullId (s + t) = finSecPullId s + finSecPullId t := by
   apply GlobalTheory.LB.f_injective
   funext j
   exact map_add _ _ _
 
+/- English proof (translation)
+Apply `GlobalTheory.LB.f_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `(map_mul _ _ _).trans (congrArg (· * _) (rs_rs _ _ _))`.
+-/
 theorem finSecPullId_smul {X : Scheme.{0}} {M : LB X} (a : Γ(X, ⊤)) (s : LB.Sec M) :
     finSecPullId (a • s) = a • finSecPullId s := by
   apply GlobalTheory.LB.f_injective
   funext j
   exact (map_mul _ _ _).trans (congrArg (· * _) (rs_rs _ _ _))
 
+/- English proof (translation)
+Use `sec_eq_zero_of_local Q.W Q.cover Q.ch Q.le s fun j => ?_` and prove the remaining obligations. Establish `hle : Q.W j ≤ (M.pull (𝟙 X)).U (fun _ => Q.ch j)` using `le_trans (show Q.W j ≤ (𝟙 X) ⁻¹ᵁ Q.W j from fun _ hx => hx) (le_pull M (𝟙 X) (Q.le j))`. Establish `h` using `congrArg (fun σ : LB.Sec (M.pull (𝟙 X)) => rs X hle (σ.f (fun _ => Q.ch j))) hs`. Use `Eq.trans ?_ (h.trans (map_zero (rs X hle)))` and prove the remaining obligations. Conclude with `(rs_rs _ _ _).symm`.
+-/
 theorem eq_zero_of_finSecPullId {X : Scheme.{0}} {R : Type} [CommRing R]
     {f : X ⟶ Spec (CommRingCat.of R)} {M : LB X} (Q : Perf f M) (s : LB.Sec M)
     (hs : finSecPullId s = 0) : s = 0 := by
@@ -106,6 +134,31 @@ end GlobalTheory.AbLaw
 
 namespace GlobalTheory.AbLaw
 
+/- English proof (translation)
+Introduce `W _ _ _ X f M hf hp hM`. Take `⟨Q⟩` from `nonempty_perf_of_noetherian W X f hf hp M hM`. Establish `hpb : IsPullback (𝟙 X) f f (Spec.map (CommRingCat.ofHom (RingHom.id W)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.id_horiz f`.
+
+Take `⟨E, hE⟩` from `Q.sec W (RingHom.id W) X (𝟙 X) f hpb`. Set `φ : LB.Sec M → Fin Q.a → W` to `fun s => (E.symm (finSecPullId s)).1`. Establish `hadd : ∀ s t, φ (s + t) = φ s + φ t`. Introduce `s t`. Establish `h` using `Q.sec_add E hE (E.symm (finSecPullId s)) (E.symm (finSecPullId t))`.
+
+Rewrite `h` using `[E.apply_symm_apply, E.apply_symm_apply, ← finSecPullId_add, ← E.eq_symm_apply]`. Conclude with `(congrArg Subtype.val h).symm`. Establish `hsmul : ∀ (r : W) s, φ (cst f ⊤ r • s) = r • φ s`. Introduce `r s`. Establish `h` using `Q.sec_smul E hE r (E.symm (finSecPullId s))`.
+
+Rewrite `h` using `[E.apply_symm_apply, ← finSecPullId_smul, ← E.eq_symm_apply]`. Conclude with `(congrArg Subtype.val h).symm`. Establish `φ0 : φ 0 = 0`. Establish `h` using `hsmul 0 0`. Rewrite `h` using `[smul_zero, zero_smul]`. Then use the resulting hypothesis.
+
+Establish `hinj : ∀ s t, φ s = φ t → s = t`. Introduce `s t h`. Establish `hst : finSecPullId s = finSecPullId t` using `E.symm.injective (Subtype.ext h)`. Establish `e` using `finSecPullId_add (s - t) t`. Rewrite `e` using `[sub_add_cancel, hst]`.
+
+Establish `h2 : finSecPullId (s - t) = 0` using `add_right_cancel (e.symm.trans (zero_add _).symm)`. Conclude with `sub_eq_zero.1 (eq_zero_of_finSecPullId Q _ h2)`. Set `N : Submodule W (Fin Q.a → W)` to `{ carrier := Set.range φ add_mem' := by`. Introduce and unpack `_ _ ⟨s, rfl⟩ ⟨t, rfl⟩`. Conclude with `⟨s + t, hadd s t⟩`.
+
+Use the proof step `zero_mem' := ⟨0, φ0⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r _ ⟨s, rfl⟩`. Conclude with `⟨cst f ⊤ r • s, hsmul r s⟩ }`. Establish `memN : ∀ s, φ s ∈ N` using `fun s => ⟨s, rfl⟩`.
+
+Take `⟨n, b⟩` from `Submodule.basisOfPid (Pi.basisFun W (Fin Q.a)) N`. Establish `hb : ∀ j, ∃ s, φ s = (b j).1` using `fun j => (b j).2`. Use `choose t ht using hb`. Set `φh : LB.Sec M →+ (Fin Q.a → W)` to `{ toFun := φ, map_zero' := φ0, map_add' := hadd }`. Establish `hsum : ∀ c : Fin n → W, φ (∑ j, cst f ⊤ (c j) • t j) = ∑ j, c j • (b j).1`.
+
+Introduce `c`. Express the relevant statement in the definitionally equal form `φh _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => (hsmul (c j) (t j)).trans (by rw [ht])`. Use `⟨n, t, fun u => ⟨fun j => b.repr ⟨φ u, memN u⟩ j, ?_, ?_⟩⟩` and prove the remaining obligations.
+
+Apply `hinj` to reduce the goal to its premises. Rewrite using `[hsum]`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨φ u, memN u⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h.symm`.
+
+Introduce `c hc`. Establish `h : (⟨φ u, memN u⟩ : N) = ∑ j, c j • b j`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`.
+
+Rewrite using `[← hsum, ← hc]`. Use function extensionality and compare the values at `j`. Rewrite using `[h, Module.Basis.repr_sum_self]`.
+-/
 theorem exists_basis_sec_of_isDiscreteValuationRing : ∀ (W : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of W)) (M : LB X), Flat f → GlobalTheory.AbLaw.IsProjBy f → M.IsLB → ∃ (n : ℕ) (t : Fin n → LB.Sec M), ∀ u : LB.Sec M, ∃! c : Fin n → W, u = ∑ j, GlobalTheory.AbLaw.cst f ⊤ (c j) • t j := by
   intro W _ _ _ X f M hf hp hM
   obtain ⟨Q⟩ := nonempty_perf_of_noetherian W X f hf hp M hM

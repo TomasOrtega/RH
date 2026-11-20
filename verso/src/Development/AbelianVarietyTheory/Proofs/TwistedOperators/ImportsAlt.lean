@@ -2,6 +2,11 @@ import Mathlib
 
 namespace GlobalTheory.LemmaTwoFortyThirteen
 
+/- English proof (translation)
+Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨a, ha, hav⟩` from `h v`. Establish `hK : algebraMap R K a ≠ 0`. Simplify using `using (IsFractionRing.injective R K).ne ha`.
+
+Establish `hv : v = (algebraMap R K a)⁻¹ • (a • v)`. Rewrite using `[← algebraMap_smul K a v, smul_smul, inv_mul_cancel₀ hK, one_smul]`. Rewrite using `[hv]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hav)`.
+-/
 theorem main {R K V : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] [AddCommGroup V] [Module R V] [Module K V] [IsScalarTower R K V]
     (M : Submodule R V) (h : ∀ v : V, ∃ a : R, a ≠ (0 : R) ∧ a • v ∈ M) :

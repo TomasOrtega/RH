@@ -23,6 +23,13 @@ namespace GlobalTheory
 
 namespace PreTorusInvariance
 
+/- English proof (translation)
+Establish `E` using `fun {p q : V} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₁` using `E h₁`. Establish `a₂` using `E h₂`. Establish `a₃` using `E h₃`. Establish `b₁` using `E (h (x * y * u))`.
+
+Establish `b₂` using `E (h (x * y))`. Establish `b₃` using `E (h (x * u))`. Establish `b₄` using `E (h (y * u))`. Establish `b₅` using `E (h x)`. Establish `b₆` using `E (h y)`.
+
+Establish `b₇` using `E (h u)`. Establish `b₈` using `E (h 1)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv] at *`. Take the linear combination `(norm := abel) a₁ - a₂ + a₃ - b₁ + b₂ + b₃ + b₄ - b₅ - b₆ - b₇ + b₈`.
+-/
 theorem cube_alg {V : Type} [CommGroup V] {A : Type} [CommGroup A] {a W W' d : A → V} (h : ∀ x, a x * W' x = W x * d x)
     {x y u : A} {C C' c c' : V}
     (h₁ : C * W (x * y) * W (x * u) * W (y * u) * W 1 = W (x * y * u) * W x * W y * W u * c)
@@ -37,6 +44,11 @@ theorem cube_alg {V : Type} [CommGroup V] {A : Type} [CommGroup A] {a W W' d : A
   simp only [ofMul_mul, ofMul_inv] at *
   linear_combination (norm := abel) a₁ - a₂ + a₃ - b₁ + b₂ + b₃ + b₄ - b₅ - b₆ - b₇ + b₈
 
+/- English proof (translation)
+Establish `E` using `fun {p q : V} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₁` using `E h₁`. Establish `a₂` using `E h₂`. Establish `a₃` using `E h₃`. Establish `b₁` using `E (h x)`.
+
+Establish `b₂` using `E (h x⁻¹)`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul] at *`. Take the linear combination `(norm := abel) a₁ - a₂ + a₃ + b₁ - b₂`.
+-/
 theorem even_alg {V : Type} [CommGroup V] {A : Type} [CommGroup A] {a W W' d : A → V} (h : ∀ x, a x * W' x = W x * d x)
     {x : A} {s s' c c' : V} (h₁ : s * W x = W x⁻¹ * c) (h₂ : s' * W' x = W' x⁻¹ * c') (h₃ : c * d x = d x⁻¹ * c') :
     s * a x = a x⁻¹ * s' := by
@@ -47,6 +59,11 @@ theorem even_alg {V : Type} [CommGroup V] {A : Type} [CommGroup A] {a W W' d : A
   simp only [ofMul_mul] at *
   linear_combination (norm := abel) a₁ - a₂ + a₃ + b₁ - b₂
 
+/- English proof (translation)
+Take `⟨-, s, c⟩` from `h.vals T z N' N hN' hN d (fun x => by rw [hd, Category.comp_id])`. Use `⟨fun x => ?_, fun x y u => ?_⟩` and prove the remaining obligations. Establish `s` using `s (β x)`. Rewrite `s` using `[Category.comp_id, ← map_inv]`. Then use the resulting hypothesis. Establish `c` using `c (β x) (β y) (β u)`.
+
+Rewrite `c` using `[_root_.id, cubV_toBase_id]`. Simplify using `only [map_mul, map_one]`. Conclude with `c`.
+-/
 theorem vals_id {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {P P' : CP G}
     {w : LB.Iso P'.L.L (P.L.L.pull (𝟙 G.left))} {hw : 𝟙 G.left ≫ G.hom = G.hom ≫ 𝟙 _}
     (h : IsCPMap P' P (𝟙 _) (𝟙 G.left) hw w) {T : Over S} {z : T.left} {N N'} (hN : Good P.L.L z N)
@@ -74,6 +91,9 @@ def cubP (g : GtCoord I D e G) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1
     ((Over.map (thick R I e)).map x ≫ g.pG) ((Over.map (thick R I e)).map y ≫ g.pG)
     ((Over.map (thick R I e)).map u ≫ g.pG)
 
+/- English proof (translation)
+Establish `k : ∀ {a a' : T ⟶ thickObj R I e G}, a ≫ g.q = a' ≫ g.q → (Over.map (thick R I e)).map a ≫ g.pG = (Over.map (thick R I e)).map a' ≫ g.pG` using `fun h => Over.OverMorphism.ext (TorusInvariance.pG_congr g h)`. Unfold `cubP`. Rewrite using `[k ha, k hb]`.
+-/
 theorem cubP_congr (g : GtCoord I D e G) {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (z : T.left)
     (J : (T.left ⟶ D.P.A.left) → D.P.L.ι) {a b a' b' : T ⟶ thickObj R I e G} (c : T ⟶ thickObj R I e G)
     (ha : a ≫ g.q = a' ≫ g.q) (hb : b ≫ g.q = b' ≫ g.q) : cubP g z J a b c = cubP g z J a' b' c := by
@@ -83,6 +103,17 @@ theorem cubP_congr (g : GtCoord I D e G) {T : Over (Spec (CommRingCat.of (R ⧸ 
   unfold cubP
   rw [k ha, k hb]
 
+/- English proof (translation)
+Take `⟨N, hN⟩` from `exists_good_pt U.P.L.isLB z`. Take `⟨N', hN'⟩` from `exists_good_pt U'.P.L.isLB z`. Take `⟨W, hW⟩ : ∃ W : (T ⟶ thickObj R I e G) → (T.left.presheaf.stalk z)ˣ, ∀ x, W x = gw (U.w e) x.left z (J (x.left ≫ (U.gt e).pG.left)) (fun _ => N (x.left ≫ (fstG I e G).left))` from `⟨_, fun _ => rfl⟩`. Take `⟨W', hW'⟩ : ∃ W : (T ⟶ thickObj R I e G) → (T.left.presheaf.stalk z)ˣ, ∀ x, W x = gw (U'.w e) x.left z (J' (x.left ≫ (U'.gt e).pG.left)) (fun _ => N' (x.left ≫ (fstG I e G).left))` from `⟨_, fun _ => rfl⟩`. Take `⟨d, hd⟩ : ∃ d : ((Over.map (thick R I e)).obj T ⟶ G) → (T.left.presheaf.stalk z)ˣ, ∀ x, d x = gw wL x.left z (N x.left) (N' x.left)` from `⟨_, fun _ => rfl⟩`.
+
+Take `⟨-, s₁, c₁⟩` from `U.w_vals e T z N J hN hJ W hW`. Take `⟨-, s₂, c₂⟩` from `U'.w_vals e T z N' J' hN' hJ' W' hW'`. Set `β : (T ⟶ thickObj R I e G) →* ((Over.map (thick R I e)).obj T ⟶ G)` to `MonoidHom.mk' (fun x => (Over.map (thick R I e)).map x ≫ fstG I e G) fun x y => toBase_mul_pullback G (thick R I e) T x y`. Take `⟨s₃, c₃⟩` from `vals_id hL (T := (Over.map (thick R I e)).obj T) hN hN' d hd β`. Establish `h : ∀ x : T ⟶ thickObj R I e G, a x.left * W' x = W x * d (β x)` using `fun x => by`.
+
+Rewrite using `[ha, hW, hW', hd]`. Conclude with `sq _ x.left z _ _ _ _ (hJ _) (hJ' _) (hN _) (hN' _)`. Use `⟨fun x => ?_, fun x y v => ?_⟩` and prove the remaining obligations. Conclude with `even_alg (a := fun x => a x.left) (d := fun x => d (β x)) h (s₁ x) (s₂ x) (s₃ x)`. Take `⟨c, hc⟩ : ∃ c : (T.left.presheaf.stalk z)ˣ, c = cubV U.P.c (T` from `(Over.map (thick R I e)).obj T) z N (β x) (β y) (β v) := ⟨_, rfl⟩`.
+
+Take `⟨c', hc'⟩ : ∃ c : (T.left.presheaf.stalk z)ˣ, c = cubV U'.P.c (T` from `(Over.map (thick R I e)).obj T) z N' (β x) (β y) (β v) := ⟨_, rfl⟩`. Establish `k₁ : cubP (U.gt e) z J x y v * W (x * y) * W (x * v) * W (y * v) * W 1 = W (x * y * v) * W x * W y * W v * c` using `(c₁ x y v).trans (congrArg (_ * ·) hc.symm)`. Establish `k₂ : cubP (U'.gt e) z J' x y v * W' (x * y) * W' (x * v) * W' (y * v) * W' 1 = W' (x * y * v) * W' x * W' y * W' v * c'` using `(c₂ x y v).trans (congrArg (_ * ·) hc'.symm)`. Establish `k₃ : c * d (β (x * y)) * d (β (x * v)) * d (β (y * v)) * d (β 1) = d (β (x * y * v)) * d (β x) * d (β y) * d (β v) * c'`. Rewrite using `[hc, hc']`.
+
+Conclude with `c₃ x y v`. Establish `k` using `cube_alg (A := T ⟶ thickObj R I e G) (a := fun x => a x.left) (d := fun x => d (β x)) h k₁ k₂ k₃`. Conclude with `k`.
+-/
 theorem vals (u : LB.Iso (D'.P.L.pull (U'.gt e).pG.left) (D.P.L.pull (U.gt e).pG.left))
     {wL : LB.Iso U'.P.L.L (U.P.L.L.pull (𝟙 G.left))} {hw : 𝟙 G.left ≫ G.hom = G.hom ≫ 𝟙 _}
     (hL : IsCPMap U'.P U.P (𝟙 _) (𝟙 G.left) hw wL)
@@ -140,6 +171,21 @@ end PreTorusInvariance
 open TorusInvariance PreTorusInvariance in
 set_option maxHeartbeats 400000 in
 
+/- English proof (translation)
+Introduce `R _ _ _ I D D' A A' G _ _ U U' wL hw hL e β hβ u hu sq Z₀ τ₀ y₀ z₀ jM jM' m m'`. Use `(U.gt e).q_hom` as an intermediate fact. Use `(U'.gt e).q_hom` as an intermediate fact. Use `(U.gt e).i_hom` as an intermediate fact. Use `U.semi.geomConnected` as an intermediate fact.
+
+Use `connectedSpace_spec_quotient (I ^ (e + 1)) (Z₀.hom z₀)` as an intermediate fact. Establish `: GeometricallyConnected (thickObj R I e G).hom` using `inferInstanceAs (GeometricallyConnected (pullback.snd G.hom (thick R I e)))`. Establish `: ConnectedSpace (thickObj R I e G).left` using `GroupConn.connectedSpace_of_section (thickObj R I e G).hom (η : 𝟙_ _ ⟶ thickObj R I e G).left (Over.w _)`. Establish `hq : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.X), (τ ≫ (U.gt e).i) ≫ (U.gt e).q = (1 : Z ⟶ thickObj R I e G) ≫ (U.gt e).q` using `fun τ => by`. Rewrite using `[Category.assoc, (U.gt e).isKernel.w, MonObj.one_comp, ← Category.assoc, comp_toUnit, Hom.one_def]`.
+
+Establish `hq' : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.X), (τ ≫ (U.gt e).i) ≫ (U'.gt e).q = (1 : Z ⟶ thickObj R I e G) ≫ (U'.gt e).q` using `fun τ => by`. Rewrite using `[← cancel_mono β.hom, Category.assoc _ _ β.hom, Category.assoc _ _ β.hom, hβ]`. Conclude with `hq τ`. Establish `hp : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.X) (y : Z ⟶ thickObj R I e G), ((τ ≫ (U.gt e).i) * y).left ≫ (U.gt e).pG.left = y.left ≫ (U.gt e).pG.left` using `fun τ y => pG_congr _ (by rw [MonObj.mul_comp, hq, ← MonObj.mul_comp, _root_.one_mul])`. Establish `hp' : ∀ {Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (τ : Z ⟶ splitTorus _ D.X) (y : Z ⟶ thickObj R I e G), ((τ ≫ (U.gt e).i) * y).left ≫ (U'.gt e).pG.left = y.left ≫ (U'.gt e).pG.left` using `fun τ y => pG_congr _ (by rw [MonObj.mul_comp, hq', ← MonObj.mul_comp, _root_.one_mul])`.
+
+Take `⟨ρ, key⟩` from `exists_ratio_translate (U.gt e).i D.P.isLB D'.P.isLB u hu (fun _ => hp) (fun _ => hp')`. Establish `triv` using `ratio_eq_one (U.gt e).i ρ (fun Z z => by`. Take `⟨J, hJ⟩` from `exists_good_pt D.P.isLB z`. Take `⟨J', hJ'⟩` from `exists_good_pt D'.P.isLB z`. Take `⟨a, ha⟩ : ∃ a : (Z.left ⟶ (thickObj R I e G).left) → (Z.left.presheaf.stalk z)ˣ, ∀ r, a r = gw u r z (J (r ≫ (U.gt e).pG.left)) (fun _ => J' (r ≫ (U'.gt e).pG.left))` from `⟨_, fun _ => rfl⟩`.
+
+Take `⟨s, c⟩` from `vals u hL sq hJ hJ' a ha`. Use `⟨a, fun t y => ?_, fun t t' y => ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[ha, ha, hp, hp']`. Conclude with `key Z t y z _ _ (hJ _) (hJ' _)`. Establish `p` using `c (t ≫ (U.gt e).i) (t' ≫ (U.gt e).i) y`.
+
+Establish `q` using `c 1 1 y`. Rewrite `p` using `[cubP_congr (U.gt e) z J y (hq t) (hq t'), cubP_congr (U'.gt e) z J' y (hq' t) (hq' t')]`. Rewrite using `[prod_psum, prod_psum]`. Conclude with `mul_right_cancel (p.symm.trans q)`. Establish `p` using `s (t ≫ (U.gt e).i)`.
+
+Establish `q` using `s 1`. Rewrite `p` using `[pG_congr (U.gt e) (hq t), pG_congr (U'.gt e) (hq' t)]`. Conclude with `cancel_even p q)`. Rewrite using `[key Z₀ τ₀ y₀ z₀ jM jM' m m', triv, map_one, _root_.one_mul]`.
+-/
 theorem preU_comparison_torus_invariant : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R) (D D' : DegPre R) (A A' : PolAV (Sp (FractionRing R))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : PreU I D A G) (U' : PreU I D' A' G) (wL : LB.Iso U'.P.L.L (U.P.L.L.pull (𝟙 G.left))) (hw : 𝟙 G.left ≫ G.hom = G.hom ≫ 𝟙 _), IsCPMap U'.P U.P (𝟙 _) (𝟙 G.left) hw wL → ∀ (e : ℕ) (β : thickObj R I e D'.P.A ≅ thickObj R I e D.P.A), (U'.gt e).q ≫ β.hom = (U.gt e).q → ∀ u : LB.Iso (D'.P.L.pull (U'.gt e).pG.left) (D.P.L.pull (U.gt e).pG.left), u.IsGen → (∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (jM : D.P.L.ι) (jM' : D'.P.L.ι) (jL : U.P.L.L.ι) (jL' : U'.P.L.L.ι), (U.gt e).pG.left (r z) ∈ D.P.L.U jM → (U'.gt e).pG.left (r z) ∈ D'.P.L.U jM' → (fstG I e G).left (r z) ∈ U.P.L.L.U jL → (fstG I e G).left (r z) ∈ U'.P.L.L.U jL' → gw u r z jM (fun _ => jM') * gw (U'.w e) r z jM' (fun _ => jL') = gw (U.w e) r z jM (fun _ => jL) * gw wL (r ≫ (fstG I e G).left) z jL jL') → ∀ (Z : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (τ : Z ⟶ splitTorus _ D.X) (y : Z ⟶ thickObj R I e G) (z : Z.left) (jM : D.P.L.ι) (jM' : D'.P.L.ι), (U.gt e).pG.left (y.left z) ∈ D.P.L.U jM → (U'.gt e).pG.left (y.left z) ∈ D'.P.L.U jM' → gw u ((τ ≫ (U.gt e).i) * y).left z jM (fun _ => jM') = gw u y.left z jM (fun _ => jM') := by
   intro R _ _ _ I D D' A A' G _ _ U U' wL hw hL e β hβ u hu sq Z₀ τ₀ y₀ z₀ jM jM' m m'
   have := (U.gt e).q_hom

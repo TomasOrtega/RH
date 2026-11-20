@@ -6,6 +6,15 @@ open scoped RealInnerProductSpace FourierTransform SchwartzMap
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set k := finrank ℤ Λ + 1`. Take `⟨C, hC, hg⟩` from `GroundTheory.Global.exists_norm_le_inv_one_add_pow h (k + N)`. Establish `hs : Summable fun l : Λ => C * ((1 + ‖l‖) ^ k)⁻¹`. Apply `Summable.mul_left` to reduce the goal to its premises. Establish `hs` using `ZLattice.summable_norm_pow_inv (L := Λ) k (by omega)`.
+
+Use `Summable.of_norm_bounded_eventually hs ?_` and prove the remaining obligations. Use `filter_upwards [(Set.finite_singleton (0 : Λ)).compl_mem_cofinite] with l hl`. Establish `hpos : 0 < ‖l‖` using `norm_pos_iff.mpr hl`. Rewrite using `[Real.norm_of_nonneg (by positivity), inv_pow]`. Use `gcongr`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hs.of_nonneg_of_le (fun _ => by positivity) fun l => ?_` and prove the remaining obligations. Establish `hp : 0 < 1 + ‖(l : V)‖` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hg _`.
+
+Use `_ = C * ((1 + ‖(l : V)‖) ^ k)⁻¹ := by`. Rewrite using `[pow_add]`. Clear the denominators using the available nonvanishing facts. Use `_ = C * ((1 + ‖l‖) ^ k)⁻¹ := rfl`.
+-/
 theorem schwartz_summable_norm_mul_one_add_pow {V : Type*} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (Λ : Submodule ℤ V) [DiscreteTopology Λ]
     (h : 𝓢(V, ℂ)) (N : ℕ) : Summable fun l : Λ => ‖h l‖ * (1 + ‖(l : V)‖) ^ N := by
@@ -31,6 +40,29 @@ theorem schwartz_summable_norm_mul_one_add_pow {V : Type*} [NormedAddCommGroup V
         field_simp
     _ = C * ((1 + ‖l‖) ^ k)⁻¹ := rfl
 
+/- English proof (translation)
+Set `E` to `EuclideanSpace ℝ (Fin (finrank ℝ V))`. Set `T : E ≃L[ℝ] V` to `(toEuclidean (E := V)).symm`. Set `A₀ : V ≃ₗ[ℝ] E` to `(P.flip.toDual hP.flip) ≪≫ₗ T.toLinearEquiv.dualMap ≪≫ₗ (LinearMap.BilinForm.toDual (innerₗ E) GroundTheory.Global.innerₗ_nondegenerate).symm`. Set `A : V ≃L[ℝ] E` to `A₀.toContinuousLinearEquiv`. Establish `hA : ∀ μ y, ⟪A μ, y⟫ = P (T y) μ`.
+
+Introduce `μ y`. Establish `h` using `LinearMap.BilinForm.toDual_def (B := innerₗ E) GroundTheory.Global.innerₗ_nondegenerate (m := A₀ μ) (n := y)`. Establish `h2 : ⟪A μ, y⟫ = (innerₗ E) (A₀ μ) y` using `rfl`. Rewrite using `[h2, ← h]`. Simplify using `only [A₀, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`.
+
+Both sides reduce to the same expression. Set `L : Submodule ℤ E` to `ZLattice.comap ℝ Λ T.toLinearMap`. Use `haveI : DiscreteTopology L := inferInstanceAs (DiscreteTopology (ZLattice.comap ℝ Λ T.toLinearMap))`. Use `haveI : IsZLattice ℝ L := inferInstanceAs (IsZLattice ℝ (ZLattice.comap ℝ Λ T.toLinearMap))`. Establish `hL : ∀ y, y ∈ L ↔ T y ∈ Λ` using `fun y => Iff.rfl`.
+
+Set `g : 𝓢(E, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℝ T f`. Establish `hg : ∀ y, g y = f (T y)` using `fun y => rfl`. Set `Λ' : Submodule ℤ V` to `ZLattice.comap ℝ (GroundTheory.Global.dualLattice L) A.toLinearMap`. Use `haveI : DiscreteTopology Λ' := inferInstanceAs (DiscreteTopology (ZLattice.comap ℝ (GroundTheory.Global.dualLattice L) A.toLinearMap))`. Establish `hmem : ∀ μ : V, (∀ l ∈ Λ, ∃ k : ℤ, P l μ = k) ↔ A μ ∈ GroundTheory.Global.dualLattice L`.
+
+Introduce `μ`. Rewrite using `[GroundTheory.Global.mem_dualLattice]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite using `[hA]`.
+
+Conclude with `h _ ((hL y).mp hy)`. Introduce `h l hl`. Use `h (T.symm l) ((hL _).mpr (by simpa using hl))` as an intermediate fact. Rewrite `this` using `[hA, T.apply_symm_apply]`. Then use the resulting hypothesis. Set `h : 𝓢(V, ℂ)` to `SchwartzMap.compCLMOfContinuousLinearEquiv ℝ A (𝓕 g)`.
+
+Establish `hh : ∀ μ, h μ = 𝓕 (g : E → ℂ) (A μ)` using `fun μ => rfl`. Use `⟨fun μ => (ZLattice.covolume L)⁻¹ • h μ, fun N => ?_, fun x => ?_⟩` and prove the remaining obligations. Set `e : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} ≃ Λ'` to `Equiv.subtypeEquivRight hmem`. Establish `hs` using `(e.summable_iff.mpr (schwartz_summable_norm_mul_one_add_pow Λ' h N)).mul_left ‖(ZLattice.covolume L)⁻¹‖`. Use `hs.congr fun μ => ?_` and prove the remaining obligations.
+
+Rewrite using `[norm_smul, mul_assoc]`. Both sides reduce to the same expression. Set `e : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} ≃ GroundTheory.Global.dualLattice L` to `A.toEquiv.subtypeEquiv hmem`. Set `e' : L ≃ Λ` to `T.toEquiv.subtypeEquiv hL`. Establish `hs` using `e.hasSum_iff.mpr (GroundTheory.Global.LatticePoisson.hasSum_smul_fourier (L := L) g (T.symm x))`.
+
+Establish `hper : GroundTheory.Global.LatticePoisson.per L g (T.symm x) = ∑' l : Λ, f (x + l)`. Rewrite using `[GroundTheory.Global.LatticePoisson.per, ← e'.tsum_eq]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[hg, map_add, T.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Rewrite `hs` using `[hper]`. Use `hs using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `μ`. Establish `he : (e μ : E) = A μ` using `rfl`. Simplify using `only [Function.comp_apply, he, hA, T.apply_symm_apply, hh, Real.fourierChar_apply, smul_mul_assoc]`.
+
+Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem periodisation_hasSum_fourier_bilinForm {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (P : LinearMap.BilinForm ℝ V) (hP : P.Nondegenerate)

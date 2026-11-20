@@ -5,6 +5,9 @@ noncomputable section
 open NumberField IsDedekindDomain IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr
 open UpperTheory.GalN.V
 
+/- English proof (translation)
+Take `⟨⟨f, hf⟩, hw⟩` from `hf`. Apply the tactic sequence `exact ⟨hirr, mkQ' (newformAut0 P (2 * e + 1) (by omega) f l Ω ι W _ hf) fun _ => hw, hlev, ⟨_, hcyc, dual_two W⟩, Keep.safeUGap hlev fun i j => by fin_cases i <;> fin_cases j <;> simp <;> omega⟩`.
+-/
 theorem UpperTheory.V.Z.Win.A4.newAdmS (P : Hypotheses₂) (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e M : ℕ)
     (he : 1 ≤ e) (W : G ℚ Ω →* GL (Fin 2) (Qbar l)) (hirr : IsIrr W)
     (hf : (∃ f : Newform (2 * e + 1), f.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))) ∧ WitQ ι W)
@@ -14,6 +17,9 @@ theorem UpperTheory.V.Z.Win.A4.newAdmS (P : Hypotheses₂) (Ω : Type) [Field Ω
   exact ⟨hirr, mkQ' (newformAut0 P (2 * e + 1) (by omega) f l Ω ι W _ hf) fun _ => hw, hlev, ⟨_, hcyc, dual_two W⟩,
     Keep.safeUGap hlev fun i j => by fin_cases i <;> fin_cases j <;> simp <;> omega⟩
 
+/- English proof (translation)
+The claim follows from `@UpperTheory.V.Z.Win.A4.newAdmS`.
+-/
 example : type_of% @UpperTheory.GalN.V.newAdm := @UpperTheory.V.Z.Win.A4.newAdmS
 
 end

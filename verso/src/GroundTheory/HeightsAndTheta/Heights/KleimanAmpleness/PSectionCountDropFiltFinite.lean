@@ -19,6 +19,15 @@ section
 variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : ℕ}
   {x : Fin (N + 1) → Ω}
 
+/- English proof (translation)
+Establish `hsub : ∀ I : Chart x, Subsingleton (F.sub I ⧸ SubSystem.quotSub F (F.twist (idealSys x pp)) I)`. Introduce `I`. Take `⟨i, hi⟩` from `I.2.1`. Establish `hxi : x i ≠ 0` using `(mem_support x).mp (I.2.2 hi)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations.
+
+Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[Submodule.Quotient.eq]`. Express the relevant statement in the definitionally equal form `((a - b : F.sub I) : Ω) ∈ (F.twist (idealSys x pp)).sub I`. Rewrite using `[SubSystem.twist_sub_eq_mul_of_line]`.
+
+Establish `h1 : (1 : Ω) ∈ (idealSys x pp).sub I` using `Submodule.subset_span ⟨X i, X i, 1, hpp i, X_mem_monos hi, isHomogeneous_X _ _, isHomogeneous_X _ _, by rw [aeval_X, div_self hxi]⟩`. Simplify using `using Submodule.mul_mem_mul h1 (a - b).2`. Establish `hC : Subsingleton (Cech.Cochain (fun I : Chart x => F.sub I ⧸ SubSystem.quotSub F (F.twist (idealSys x pp)) I) 0)`. Unfold `Cech.Cochain`. Conclude with `⟨fun a b => funext fun I => (hsub I.1).elim _ _⟩`.
+
+Unfold `SubSystem.quotH Cech.H`. Use `infer_instance`.
+-/
 theorem quotH_zero_subsingleton_of_irrelevant (F : SubSystem S x Ω) (pp : Ideal (Poly S N))
     (hpp : ∀ i, (X i : Poly S N) ∈ pp) :
     Subsingleton (SubSystem.quotH F (F.twist (idealSys x pp)) 0) := by
@@ -46,6 +55,21 @@ theorem quotH_zero_subsingleton_of_irrelevant (F : SubSystem S x Ω) (pp : Ideal
 
 end
 
+/- English proof (translation)
+Introduce `S _ _ Ω _ _ N x Q pp c hpp hhom hle`. Distinguish the cases in `hirr : ∀ i, (X i : Poly S N) ∈ pp`. Use `quotH_zero_subsingleton_of_irrelevant (Q.twist (twistSys S x c)) pp hirr infer_instance` as an intermediate fact. Use `push Not at hirr`. Take `⟨j, hj'⟩` from `hirr`.
+
+Establish `hj : x j ≠ 0` using `fun h0 => hj' (hle (by`. Rewrite using `[mem_primeOf_of_isHomogeneous x (isHomogeneous_X S j), aeval_X, h0]))`. Establish `hPtj` using `PrimeFiltration.Point.proof S Ω N x pp hpp hhom hle j hj hj'`. Choose the witnesses or unpack the hypotheses as in `⟨K', _, _, ψ, hker⟩ : ∃ (K' : Type w) (_ : Field K') (_ : Algebra S K') (ψ : chartRing S x (singleChart hj) →ₐ[S] K'), RingHom.ker ψ = chartPrime pp hj := by`. Establish `: (chartPrime pp hj).IsPrime` using `hPtj.1`.
+
+Establish `: IsDomain (chartRing S x (singleChart hj) ⧸ chartPrime pp hj)` using `Ideal.Quotient.isDomain _`. Use `⟨FractionRing (chartRing S x (singleChart hj) ⧸ chartPrime pp hj), inferInstance, inferInstance, (IsScalarTower.toAlgHom S _ _).comp (Ideal.Quotient.mkₐ S (chartPrime pp hj)), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `algebraMap _ (FractionRing (chartRing S x (singleChart hj) ⧸ chartPrime pp hj)) (Ideal.Quotient.mk (chartPrime pp hj) a) = 0 ↔ _`.
+
+Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hxy : ∀ i, ψ (ratio hj i) ≠ 0 → x i ≠ 0`. Introduce `i hi h0`. Apply `hi` to reduce the goal to its premises. Establish `: ratio (S` using `S) hj i = 0 := Subtype.ext (show x i / x j = 0 by rw [h0, zero_div])`.
+
+Rewrite using `[this, map_zero]`. Establish `hy0 : (fun i => ψ (ratio hj i)) ≠ 0`. Introduce `h0`. Establish `h1` using `congrFun h0 j`. Rewrite `h1` using `[ratio_self hj ψ]`.
+
+Conclude with `one_ne_zero h1`. Take `⟨Q', r, hr⟩` from `PrimeFiltration.Restrict.proof S Ω N x pp hpp hhom hle j hj hj' K' ψ hker hxy Q`. Establish `hRD : RestrictData Q.toSubSystem hxy Q'.toSubSystem r` using `⟨fun I => (hr I).1, fun I => (hr I).2.1, fun I => (hr I).2.2.1, fun I => (hr I).2.2.2⟩`. Take `⟨E1⟩` from `hRQ S Ω N x pp hpp hhom hle j hj hj' K' ψ hker hxy Q Q' r hRD c 0`. Take `⟨E2⟩` from `hH0 S K' N _ K' (Q'.toSubSystem.twist (twistSys S (fun l => ψ (ratio hj l)) c)) hy0`.
+
+Establish `hfin` using `(hFS S K' N _ (Q'.tensorProd (twistBundle S _ c)) hy0).1`. Establish `hfin' : Module.Finite S (Q'.toSubSystem.twist (twistSys S (fun l => ψ (ratio hj l)) c)).secs` using `hfin`. Conclude with `Module.Finite.equiv (E1.trans E2).symm`.
+-/
 theorem SectionCount.Drop.Filt.Finite.proof
     (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w})
     (hH0 : CechZerothCohomologySections.Statement.{u, w, w})

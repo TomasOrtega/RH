@@ -15,6 +15,11 @@ open scoped ValuativeRel
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
+/- English proof (translation)
+Rewrite using `[evalAt_esymmL, Multiset.map_map, Finset.esymm_map_val]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Rewrite using `[monomialChar_apply]`. Simplify using `only [lamS, Function.comp_apply]`. Rewrite using `[← Finset.prod_subset (Finset.subset_univ S) (fun i _ hi => by simp [hi])]`.
+
+Conclude with `Finset.prod_congr rfl fun i hi => by simp [hi]`.
+-/
 private theorem esymm_eq (z : Fin n → ℂˣ) (r : ℕ) :
     evalAt z (esymmL n r) = ((Finset.univ.val.map z).map fun b : ℂˣ => (b : ℂ)).esymm r := by
   rw [evalAt_esymmL, Multiset.map_map, Finset.esymm_map_val]
@@ -24,10 +29,16 @@ private theorem esymm_eq (z : Fin n → ℂˣ) (r : ℕ) :
   rw [← Finset.prod_subset (Finset.subset_univ S) (fun i _ hi => by simp [hi])]
   exact Finset.prod_congr rfl fun i hi => by simp [hi]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[lamS]`.
+-/
 private theorem lamS_univ : lamS (Finset.univ : Finset (Fin n)) = fun _ => 1 := by
   funext i
   simp [lamS]
 
+/- English proof (translation)
+Establish `h : unipC (F` using `F) Finset.univ c = 1 := by`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Rewrite using `[coe_unipC, Matrix.add_apply, cMat_apply_of_not c (fun h => h.2.1 (Finset.mem_univ _)), add_zero]`. Both sides reduce to the same expression. Rewrite using `[gMat, h, one_mul, lamS_univ]`.
+-/
 private theorem gMat_univ (c : Pairs (Finset.univ : Finset (Fin n)) → 𝓀[F]) :
     gMat Finset.univ c = torusPow F n (fun _ => 1) := by
   have h : unipC (F := F) Finset.univ c = 1 := by
@@ -39,6 +50,23 @@ private theorem gMat_univ (c : Pairs (Finset.univ : Finset (Fin n)) → 𝓀[F])
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
+/- English proof (translation)
+Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Establish `hp : (Finset.univ : Finset (Fin n)).powersetCard n = {Finset.univ}`. Use `Finset.powersetCard_self (Finset.univ : Finset (Fin n))` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Then use the resulting hypothesis. Establish `h1 : ∀ g, f (g * torusPow F n (fun _ => 1)) = monomialChar (fun _ : Fin n => 1) z * f g`.
+
+Introduce `g`. Establish `h` using `hT g`. Use `haveI : IsEmpty (Pairs (Finset.univ : Finset (Fin n))) := ⟨fun p => p.2.2.1 (Finset.mem_univ _)⟩`. Establish `hc : ∀ I : Fintype (Pairs (Finset.univ : Finset (Fin n)) → 𝓀[F]), (@Finset.univ _ I).card = 1`. Introduce `I`.
+
+Rewrite using `[Subsingleton.elim I Unique.fintype]`. Both sides reduce to the same expression. Rewrite `h` using `[integral_minusculeHecke_mul hf, evalAt_satakeTransform_minusculeHecke z le_rfl, evalAt_esymmL, hp, Finset.sum_singleton, Finset.sum_singleton, Finset.sum_congr rfl (fun c _ => by rw [gMat_univ c]), Finset.sum_const, hc, one_smul, lamS_univ, Nat.sub_self, mul_zero, pow_zero, mul_ …`. Conclude with `mul_left_cancel₀ hK h`. Establish `h2 : ∀ g, f (g * torusPow F n (fun _ => -1)) = monomialChar (fun _ : Fin n => -1) z * f g`.
+
+Introduce `g`. Establish `h` using `h1 (g * torusPow F n (fun _ => -1))`. Establish `e : (fun _ : Fin n => (-1 : ℤ)) + (fun _ => 1) = 0` using `by funext i; simp`. Establish `e' : torusPow F n (fun _ => -1) * torusPow F n (fun _ => 1) = 1`. Establish `: (fun _ : Fin n => (-1 : ℤ)) = -(fun _ => 1)` using `rfl`.
+
+Rewrite using `[this, torusPow_neg, inv_mul_cancel]`. Rewrite `h` using `[mul_assoc, e', mul_one]`. Rewrite using `[h, ← mul_assoc, ← monomialChar_add, e, monomialChar_zero, one_mul]`. Introduce `g`. Use `set g₀ := torusPow F n (fun _ : Fin n => (-1 : ℤ))`.
+
+Establish `e` using `integral_mul_left_eq_self (μ := μ) (fun x => (centralHecke μ : HeckeAlgebra μ) x * f (g * x)) g₀`. Rewrite using `[← e]`. Establish `hpt : (fun y => (centralHecke μ : HeckeAlgebra μ) (g₀ * y) * f (g * (g₀ * y))) = (integralGL F n : Set (GL (Fin n) F)).indicator (fun _ => f (g * g₀))`. Use function extensionality and compare the values at `y`. Rewrite using `[centralHecke_apply]`.
+
+Establish `hiff : g₀ * y ∈ centralSet F n ↔ y ∈ (integralGL F n : Set (GL (Fin n) F))`. Rewrite using `[mem_centralSet, inv_mul_cancel_left]`. Both sides reduce to the same expression. Distinguish the cases in `hy : y ∈ (integralGL F n : Set (GL (Fin n) F))`. Rewrite using `[Set.indicator_of_mem (hiff.2 hy), Set.indicator_of_mem hy, one_mul, ← mul_assoc, hf _ _ hy]`.
+
+Rewrite using `[Set.indicator_of_notMem (mt hiff.1 hy), Set.indicator_of_notMem hy, zero_mul]`. Rewrite using `[hpt, integral_indicator (isOpen_integralGL F n).measurableSet, setIntegral_const, Complex.real_smul, h2, satakeTransform_centralHecke, map_smul, Spherical.monomial, evalAt_single, one_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem central_of_top (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g)
     (hT : minusculeHecke μ n ∈ eigenSubalgebra μ z f hf) : centralHecke μ ∈ eigenSubalgebra μ z f hf := by
@@ -91,6 +119,11 @@ private theorem central_of_top (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     Spherical.monomial, evalAt_single, one_mul, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `g`. Establish `hcs : HasCompactSupport fun x => (minusculeHecke μ r : HeckeAlgebra μ) x * f (g * x)`. Use `HasCompactSupport.intro (isCompact_minusculeSet r) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [minusculeHecke_apply, Set.indicator_of_notMem hx, zero_mul]`. Rewrite using `[integral_eq_smul_finsum_coset μ (integralOpen F n) (isCompact_integralGL F n) hcs (fun x k hk => by`.
+
+Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ (minusculeHecke μ r) k hk x).2, ← mul_assoc, hf _ k hk]),`. Use the proof step `Complex.real_smul, evalAt_satakeTransform_minusculeHecke z hr, mul_assoc, mul_assoc, ← mul_assoc (sqrtQ F ^ _), ← h g]`. Both sides reduce to the same expression.
+-/
 private theorem minuscule_mem (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) {r : ℕ} (hr : r ≤ n)
     (h : ∀ g, ∑ᶠ c : GL (Fin n) F ⧸ integralGL F n,
@@ -108,6 +141,17 @@ private theorem minuscule_mem (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
 
 end General
 
+/- English proof (translation)
+Introduce `hD hTj _ E _ _ n w ψ hψ B W hW hE h1`. Take `⟨hK, hu, hq, hN⟩` from `hD E n w`. Choose the witnesses or unpack the hypotheses as in `⟨z, rfl⟩ : ∃ z : Fin n → ℂˣ, Finset.univ.val.map z = B := by`. Take `⟨l, rfl⟩` from `Quotient.exists_rep B`. Establish `hl : l.length = n` using `hE.card`.
+
+Substitute `hl` using the available equality. Conclude with `⟨l.get, by rw [Fin.univ_val_map, List.ofFn_get]; rfl⟩`. Use `borelize (GL (Fin n) (w.adicCompletion E))`. Set `μ : Measure (GL (Fin n) (w.adicCompletion E))` to `Measure.haar`. Establish `hf : ∀ g, ∀ k ∈ GLnLocal.integralGL (w.adicCompletion E) n, W (g * k) = W g`.
+
+Rewrite using `[hK]`. Conclude with `hE.inv`. Establish `hT : ∀ r ≤ n, Spherical.minusculeHecke μ r ∈ Spherical.eigenSubalgebra μ z W hf`. Introduce `r hr`. Use `minuscule_mem z hf hr fun g => ?_` and prove the remaining obligations.
+
+Rewrite using `[hK, ← hTj E n w r hr, hE.eig _ hu r hr g, hq r hr, esymm_eq, GlobalTheory.LFun.satEig]`. Establish `htop` using `Spherical.eigenSubalgebra_eq_top z hf hT (central_of_top z hf (hT n le_rfl))`. Use function extensionality and compare the values at `g`. Use `Spherical.eq_smul_sphericalWhittaker (μ := μ) (ψ₀ := ψ) (fun x hx => hψ.1 x ((GroundTheory.Global.mem_valuationInteger_iff w x).1 hx)) (by` as an intermediate fact. Take `⟨x, hx, hx'⟩` from `hψ.2 _ hu`.
+
+Conclude with `⟨x, (GroundTheory.Global.mem_valuationInteger_iff w _).2 hx, hx'⟩) z`. Use the proof step `(fun u hu g => by rw [(hN u hu).2 ψ, hW u (hN u hu).1 g]) hf`. Use the proof step `(fun h => show h ∈ Spherical.eigenSubalgebra μ z W hf from htop ▸ Algebra.mem_top) g`. Rewrite using `[this, h1, zero_mul]`. Both sides reduce to the same expression.
+-/
 theorem UpperTheory.V.Af.Smo.sphZero :
     UpperTheory.V.Af.Smo.SphDict → UpperTheory.V.Af.Smo.TjSet → UpperTheory.V.Af.Smo.CentLoc → UpperTheory.V.Af.Smo.SphZero := by
   intro hD hTj _ E _ _ n w ψ hψ B W hW hE h1

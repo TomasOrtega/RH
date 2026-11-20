@@ -18,6 +18,9 @@ namespace GlobalTheory.ShFam.Hor.Mark
 
 section Lin
 
+/- English proof (translation)
+Use `⟨((AddMonoidHom.ofInjective hf).trans (AddEquiv.addSubgroupCongr h)).trans (AddMonoidHom.ofInjective hg).symm, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [AddEquiv.trans_apply, AddMonoidHom.apply_ofInjective_symm]`. Both sides reduce to the same expression.
+-/
 theorem exists_addEquiv {A B C : Type} [AddCommGroup A] [AddCommGroup B] [AddCommGroup C] (f : A →+ C) (g : B →+ C)
     (hf : Function.Injective f) (hg : Function.Injective g) (h : f.range = g.range) :
     ∃ T : A ≃+ B, ∀ a, g (T a) = f a := by
@@ -28,11 +31,29 @@ theorem exists_addEquiv {A B C : Type} [AddCommGroup A] [AddCommGroup B] [AddCom
 
 variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W] {r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Real.finrank_eq_int_finrank_of_discrete hd]`. Conclude with `(finrank_span_eq_card hv).symm`.
+-/
 theorem real_indep {v : Fin r → W} (hv : LinearIndependent ℤ v)
     (hd : DiscreteTopology (Submodule.span ℤ (Set.range v))) : LinearIndependent ℝ v := by
   rw [linearIndependent_iff_card_eq_finrank_span, Real.finrank_eq_int_finrank_of_discrete hd]
   exact (finrank_span_eq_card hv).symm
 
+/- English proof (translation)
+Set `M : B → (Fin r → ℝ) →L[ℝ] W` to `fun b => ∑ m, (ContinuousLinearMap.proj m).smulRight (lam b m)`. Establish `hM : ∀ b c, M b c = ∑ m, c m • lam b m` using `fun b c => by simp [M]`. Establish `hMc : ContinuousAt M b₀`. Use `tendsto_finset_sum _ fun m _ => ?_` and prove the remaining obligations. Conclude with `((ContinuousLinearMap.smulRightL ℝ (Fin r → ℝ) W (ContinuousLinearMap.proj m)).continuous.continuousAt.comp (continuousAt_pi.1 hl m))`.
+
+Take `⟨K, hK0, hK⟩` from `(M b₀).toLinearMap.exists_antilipschitzWith (LinearMap.ker_eq_bot'.2 fun c hc =>`. Use function extensionality and compare the values at `(Fintype.linearIndependent_iff.1 hi c ((hM b₀ c).symm.trans hc)))`. Set `c : B → Fin r → ℝ` to `fun b m => t b m`. Establish `hc : ∀ b, ∑ m, t b m • lam b m = M b (c b)` using `fun b => by simp [hM, c, Int.cast_smul_eq_zsmul]`. Establish `h1 : Tendsto (fun b => (K : ℝ) * ‖M b₀ - M b‖) (𝓝 b₀) (𝓝 0)`.
+
+Use `((tendsto_const_nhds (x := M b₀)).sub hMc).norm.const_mul (K : ℝ)` as an intermediate fact. Simplify using `using this`. Establish `h2 : Tendsto (fun b => (K : ℝ) * ‖M b (c b - c b₀)‖) (𝓝 b₀) (𝓝 0)`. Use `(ht.sub (hMc.clm_apply (continuousAt_const (y := c b₀)))).tendsto.norm.const_mul (K : ℝ)` as an intermediate fact. Simplify `this` using `[hc]`.
+
+Use `filter_upwards [h1.eventually (gt_mem_nhds one_half_pos), h2.eventually (gt_mem_nhds one_half_pos)] with b e1 e2`. Establish `e3 : ‖c b - c b₀‖ ≤ K * ‖M b₀ (c b - c b₀)‖` using `ZeroHomClass.bound_of_antilipschitz _ hK _`. Establish `e4 : ‖M b₀ (c b - c b₀)‖ ≤ ‖M b (c b - c b₀)‖ + ‖M b₀ - M b‖ * ‖c b - c b₀‖`. Use `le_trans ?_ (add_le_add le_rfl ((M b₀ - M b).le_opNorm _))` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (norm_add_le _ _)` and prove the remaining obligations.
+
+Simplify using the standard rewrite rules. Establish `e5 : ‖c b - c b₀‖ < 1`. Use `mul_le_mul_of_nonneg_left e4 K.2` as an intermediate fact. Use polynomial arithmetic with `[norm_nonneg (c b - c b₀)]`. Use function extensionality and compare the values at `m`.
+
+Establish `e6` using `(norm_le_pi_norm (c b - c b₀) m).trans_lt e5`. Rewrite `e6` using `[Real.norm_eq_abs]`. Establish `e7 : |t b m - t b₀ m| < 1`. Establish `: ((|t b m - t b₀ m| : ℤ) : ℝ) < 1` using `by simpa [c] using e6`. Conclude with `this` after adjusting the coercions.
+
+Conclude with `sub_eq_zero.1 (Int.abs_lt_one_iff.1 e7)`.
+-/
 theorem eventually_coord_eq {B : Type} [TopologicalSpace B] {b₀ : B} {lam : B → Fin r → W} {t : B → Fin r → ℤ}
     (hl : ContinuousAt lam b₀) (hi : LinearIndependent ℝ (lam b₀))
     (ht : ContinuousAt (fun b => ∑ m, t b m • lam b m) b₀) : ∀ᶠ b in 𝓝 b₀, t b = t b₀ := by
@@ -81,24 +102,41 @@ def IsEx {y : Sp ℂ ⟶ S} (e : (Fin g → ℂ) → (Over.mk y ⟶ G)) : Prop :
     ∀ v : epsPt y ⟶ G, spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (e 0).left →
       ∃! w, IsDerivAt0 (fun z => (e z).left) w v.left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Over.homMk (h.1.lift p.left y ((Over.w p).trans hx.symm)) (h.1.lift_snd _ _ _), h.1.lift_fst _ _ _⟩`.
+-/
 theorem exists_up (h : IsGrpPullback G' G f φ) (hx : y ≫ f = x) (p : Over.mk x ⟶ G) :
     ∃ q : Over.mk y ⟶ G', q.left ≫ φ = p.left :=
   ⟨Over.homMk (h.1.lift p.left y ((Over.w p).trans hx.symm)) (h.1.lift_snd _ _ _), h.1.lift_fst _ _ _⟩
 
+/- English proof (translation)
+The claim follows from `Over.OverMorphism.ext (h.1.hom_ext e ((Over.w p).trans (Over.w q).symm))`.
+-/
 theorem up_ext (h : IsGrpPullback G' G f φ) {T : Over S'} {p q : T ⟶ G'} (e : p.left ≫ φ = q.left ≫ φ) : p = q :=
   Over.OverMorphism.ext (h.1.hom_ext e ((Over.w p).trans (Over.w q).symm))
 
+/- English proof (translation)
+Substitute `hx` using the available equality. Conclude with `(h.2 (Over.mk y) p' q' p q hp.symm hq.symm).symm`.
+-/
 theorem up_mul (h : IsGrpPullback G' G f φ) (hx : y ≫ f = x) {p q : Over.mk x ⟶ G} {p' q' : Over.mk y ⟶ G'}
     (hp : p'.left ≫ φ = p.left) (hq : q'.left ≫ φ = q.left) : (p' * q').left ≫ φ = (p * q).left := by
   subst hx
   exact (h.2 (Over.mk y) p' q' p q hp.symm hq.symm).symm
 
+/- English proof (translation)
+Rewrite using `[← mul_eq_left (a := p'), ← mul_eq_left (a := p)]`. Conclude with `⟨fun e => Over.OverMorphism.ext (by rw [← up_mul h hx hp hp, e, hp]), fun e => up_ext h (by rw [up_mul h hx hp hp, e, hp])⟩`.
+-/
 theorem up_eq_one (h : IsGrpPullback G' G f φ) (hx : y ≫ f = x) {p : Over.mk x ⟶ G} {p' : Over.mk y ⟶ G'}
     (hp : p'.left ≫ φ = p.left) : p' = 1 ↔ p = 1 := by
   rw [← mul_eq_left (a := p'), ← mul_eq_left (a := p)]
   exact ⟨fun e => Over.OverMorphism.ext (by rw [← up_mul h hx hp hp, e, hp]),
     fun e => up_ext h (by rw [up_mul h hx hp hp, e, hp])⟩
 
+/- English proof (translation)
+Take `rfl : (fun z => (e' z).left ≫ φ) = e` from `funext he`. Simplify using `only [isDerivAt0_iff]`. Use `⟨fun H => ?_, fun H => H.comp φ⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `(holAt_of_isHolTo hol (Set.mem_univ 0)).exists_isDerivAt w`. Take `rfl : u = v` from `h.1.hom_ext ((hu.comp φ).unique H) (hu.over.trans hv.symm)`.
+
+Conclude with `hu`.
+-/
 theorem up_deriv (h : IsGrpPullback G' G f φ) {e : (Fin g → ℂ) → (Sp ℂ ⟶ G.left)}
     {e' : (Fin g → ℂ) → (Over.mk y ⟶ G')} (he : ∀ z, (e' z).left ≫ φ = e z)
     (hol : IsHolTo Set.univ fun z => (e' z).left) {w : Fin g → ℂ} {v : Sp (DualNumber ℂ) ⟶ G'.left}
@@ -111,6 +149,11 @@ theorem up_deriv (h : IsGrpPullback G' G f φ) {e : (Fin g → ℂ) → (Sp ℂ 
   obtain rfl : u = v := h.1.hom_ext ((hu.comp φ).unique H) (hu.over.trans hv.symm)
   exact hu
 
+/- English proof (translation)
+Establish `hol : IsHolTo Set.univ fun z => (e' z).left` using `isHolTo_of_holAt isOpen_univ fun z _ => holAt_of_isPullback h.1 (by simpa only [he] using holAt_of_isHolTo H.2.1 (Set.mem_univ z)) (by simpa only [show ∀ t, (e' t).left ≫ G'.hom = y from fun t => Over.w (e' t)] using holAt_const y z)`. Use `⟨fun z w => up_ext h (by rw [up_mul h hx (he z) (he w), he, H.1]), hol, fun v hv => ?_⟩` and prove the remaining obligations. Establish `hw : v.left ≫ G'.hom = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y` using `Over.w v`. Simplify using `only [← up_deriv h he hol hw]`. Use `H.2.2 (Over.homMk (v.left ≫ φ) ?_) ?_` and prove the remaining obligations.
+
+Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, hw, Category.assoc, hx]`. Both sides reduce to the same expression. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) hv).trans (he 0))`.
+-/
 theorem IsEx.up (h : IsGrpPullback G' G f φ) (hx : y ≫ f = x) {e : (Fin g → ℂ) → (Over.mk x ⟶ G)} (H : IsEx e)
     {e' : (Fin g → ℂ) → (Over.mk y ⟶ G')} (he : ∀ z, (e' z).left ≫ φ = (e z).left) : IsEx e' := by
   have hol : IsHolTo Set.univ fun z => (e' z).left :=
@@ -124,12 +167,20 @@ theorem IsEx.up (h : IsGrpPullback G' G f φ) (hx : y ≫ f = x) {e : (Fin g →
   · rw [Category.assoc, h.1.w, ← Category.assoc, hw, Category.assoc, hx]; rfl
   · exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) hv).trans (he 0))
 
+/- English proof (translation)
+Introduce `U hU` and use `by have := h U (e.self_of_nhds ▸ hU) refine ⟨?_, fun f => (this.2 f).congr_of_eventuallyEq (e.mono fun t ht => by simp only [ht])⟩ filter_upwards [e, this.1] with t h1 h2 using h1 ▸ h2`.
+-/
 theorem HolAt.congr {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X : Scheme.{0}} {y y' : V → (Sp ℂ ⟶ X)}
     {b : V} (h : HolAt y b) (e : ∀ᶠ t in 𝓝 b, y' t = y t) : HolAt y' b := fun U hU => by
   have := h U (e.self_of_nhds ▸ hU)
   refine ⟨?_, fun f => (this.2 f).congr_of_eventuallyEq (e.mono fun t ht => by simp only [ht])⟩
   filter_upwards [e, this.1] with t h1 h2 using h1 ▸ h2
 
+/- English proof (translation)
+Establish `H : ∀ b z, ∃ q : Over.mk (y b) ⟶ G', b ∈ B → q.left ≫ φ = (e b z).left` using `fun b z => by`. Distinguish the cases in `hb : b ∈ B`. Conclude with `(exists_up h (hx b hb) _).imp fun _ h _ => h`. Conclude with `⟨1, fun h => (hb h).elim⟩`. Use `choose e' he using H`.
+
+Establish `hB` using `isOpen_of_isHolTo hol`. Use `⟨e', fun b hb z => he b z hb, isHolTo_of_holAt hB fun bz hbz => holAt_of_isPullback h.1 (HolAt.congr (holAt_of_isHolTo hol hbz) (eventually_of_mem (hB.mem_nhds hbz) fun t ht => he _ _ ht.1)) ?_⟩` and prove the remaining obligations. Simplify using `only [show ∀ b z, (e' b z).left ≫ G'.hom = y b from fun b z => Over.w (e' b z)]`. Conclude with `HolAt.precomp (c := y) (k := fun bz : V × W => bz.1) (holy _ hbz.1) differentiableAt_fst`.
+-/
 theorem exists_up_family (h : IsGrpPullback G' G f φ) {V W : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedAddCommGroup W] [NormedSpace ℂ W] {B : Set V} {y : V → (Sp ℂ ⟶ S')} {x : V → (Sp ℂ ⟶ S)}
     (hx : ∀ b ∈ B, y b ≫ f = x b) (holy : ∀ b ∈ B, HolAt y b) {e : ∀ b, W → (Over.mk (x b) ⟶ G)}
@@ -147,6 +198,9 @@ theorem exists_up_family (h : IsGrpPullback G' G f φ) {V W : Type} [NormedAddCo
   simp only [show ∀ b z, (e' b z).left ≫ G'.hom = y b from fun b z => Over.w (e' b z)]
   exact HolAt.precomp (c := y) (k := fun bz : V × W => bz.1) (holy _ hbz.1) differentiableAt_fst
 
+/- English proof (translation)
+Take `⟨L, hL, -⟩` from `existsUnique_linear H.1 H'.1 H.2.1 H'.2.1 H'.2.2`. Take `⟨L', hL', -⟩` from `existsUnique_linear H'.1 H.1 H'.2.1 H.2.1 H.2.2`. Conclude with `⟨LinearEquiv.ofLinear L L' ((existsUnique_linear H'.1 H'.1 H'.2.1 H'.2.1 H'.2.2).unique (fun z => (hL' z).trans (hL _)) fun _ => rfl) ((existsUnique_linear H.1 H.1 H.2.1 H.2.1 H.2.2).unique (fun z => (hL z).trans (hL' _)) fun _ => rfl), hL⟩`.
+-/
 theorem IsEx.exists_equiv {e : (Fin g → ℂ) → (Over.mk x ⟶ G)} {e' : (Fin g' → ℂ) → (Over.mk x ⟶ G)} (H : IsEx e)
     (H' : IsEx e') : ∃ L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ), ∀ z, e z = e' (L z) := by
   obtain ⟨L, hL, -⟩ := existsUnique_linear H.1 H'.1 H.2.1 H'.2.1 H'.2.2
@@ -155,6 +209,9 @@ theorem IsEx.exists_equiv {e : (Fin g → ℂ) → (Over.mk x ⟶ G)} {e' : (Fin
     ((existsUnique_linear H'.1 H'.1 H'.2.1 H'.2.1 H'.2.2).unique (fun z => (hL' z).trans (hL _)) fun _ => rfl)
     ((existsUnique_linear H.1 H.1 H.2.1 H.2.1 H.2.2).unique (fun z => (hL z).trans (hL' _)) fun _ => rfl), hL⟩
 
+/- English proof (translation)
+Establish `key : ∀ (U : X.Opens) (f : Γ(X, U)), fderiv ℂ (fun z => valAt' (e (L z)) U f) 0 w = fderiv ℂ (fun z => valAt' (e z) U f) 0 (L w)` using `fun U f => by`. Use `L.toContinuousLinearEquiv.comp_right_fderiv (f := fun z => valAt' (e z) U f) (x := 0)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `DFunLike.congr_fun this w`. Simplify using `only [IsDerivAt0, key, map_zero]`.
+-/
 theorem deriv_comp_equiv {X : Scheme.{0}} {e : (Fin g' → ℂ) → (Sp ℂ ⟶ X)} (L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ))
     (w : Fin g → ℂ) (v : Sp (DualNumber ℂ) ⟶ X) : IsDerivAt0 (fun z => e (L z)) w v ↔ IsDerivAt0 e (L w) v := by
   have key : ∀ (U : X.Opens) (f : Γ(X, U)), fderiv ℂ (fun z => valAt' (e (L z)) U f) 0 w =
@@ -170,6 +227,11 @@ section Dom
 
 variable {n k : ℕ}
 
+/- English proof (translation)
+Establish `: logDom n k = Set.univ.pi fun j : Fin n => if (j : ℕ) < k then {z : ℂ | z.re < 0} else Metric.ball 0 1`. Use extensionality with `s`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [*]`. Rewrite using `[this]`.
+
+Use `convex_pi fun j _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `exacts [convex_halfSpace_re_lt 0, convex_ball _ _]`.
+-/
 theorem convex_logDom : Convex ℝ (logDom n k) := by
   have : logDom n k = Set.univ.pi fun j : Fin n =>
       if (j : ℕ) < k then {z : ℂ | z.re < 0} else Metric.ball 0 1 := by
@@ -181,20 +243,34 @@ theorem convex_logDom : Convex ℝ (logDom n k) := by
   split_ifs
   exacts [convex_halfSpace_re_lt 0, convex_ball _ _]
 
+/- English proof (translation)
+Rewrite using `[logDom, Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Use `split_ifs`. Use `exacts [isOpen_lt (by fun_prop) continuous_const, isOpen_lt (by fun_prop) continuous_const]`.
+-/
 theorem isOpen_logDom : IsOpen (logDom n k) := by
   rw [logDom, Set.setOf_forall]
   refine isOpen_iInter_of_finite fun j => ?_
   split_ifs
   exacts [isOpen_lt (by fun_prop) continuous_const, isOpen_lt (by fun_prop) continuous_const]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun j => if (j : ℕ) < k then -1 else 0, fun j => by split_ifs with h <;> simp [h]⟩`.
+-/
 theorem nonempty_logDom : (logDom n k).Nonempty :=
   ⟨fun j => if (j : ℕ) < k then -1 else 0, fun j => by split_ifs with h <;> simp [h]⟩
 
+/- English proof (translation)
+Use `differentiable_pi.2 fun j => ?_` and prove the remaining obligations. Unfold `logExp`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+-/
 theorem differentiable_logExp : Differentiable ℂ (logExp k : (Fin n → ℂ) → Fin n → ℂ) := by
   refine differentiable_pi.2 fun j => ?_
   unfold logExp
   split_ifs <;> fun_prop
 
+/- English proof (translation)
+Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `j`. Use `hs j` as an intermediate fact. Unfold `logExp`. Use `split_ifs at this ⊢`.
+
+Rewrite using `[Complex.norm_exp, Real.exp_lt_one_iff]` and apply the resulting hypothesis. Conclude with `this`.
+-/
 theorem logExp_mem {s : Fin n → ℂ} (hs : s ∈ logDom n k) : logExp k s ∈ Metric.ball (0 : Fin n → ℂ) 1 := by
   rw [mem_ball_zero_iff, pi_norm_lt_iff one_pos]
   intro j
@@ -212,6 +288,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {ch : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)} {ex : ExpMaps Z σ g'}
   {lam : (Fin n → ℂ) → Fin r → Fin g' → ℂ} {ρ : Fin g' → Fin r → ℂ}
 
+/- English proof (translation)
+Take `⟨-, -, -, hadd, hol, hd⟩` from `h`. Use `⟨hadd x hx, isHolTo_of_holAt isOpen_univ fun z _ => ?_, fun v hv => (hd x hx).2 v.left ⟨Over.w v, ?_⟩⟩` and prove the remaining obligations. Use `(holAt_of_isHolTo hol (z := (ch x, z)) ⟨ch.map_source hx, trivial⟩).precomp (k := fun z => (ch x, z)) (by fun_prop)` as an intermediate fact. Establish `e : ∀ x', x' = x → (fun t => (ex x' t).left) = fun t => (ex x t).left` using `by rintro _ rfl; rfl`. Conclude with `e _ (ch.left_inv hx) ▸ this`.
+
+Rewrite using `[hv, map_zero_eq_one (hadd x hx)]`.
+-/
 theorem isEx_chart (h : IsExpChart ch ex) {x : CxPts (genStr Z) σ} (hx : x ∈ ch.source) : IsEx (ex x) := by
   obtain ⟨-, -, -, hadd, hol, hd⟩ := h
   refine ⟨hadd x hx, isHolTo_of_holAt isOpen_univ fun z _ => ?_, fun v hv => (hd x hx).2 v.left ⟨Over.w v, ?_⟩⟩
@@ -234,6 +315,11 @@ section Point
 
 variable {x : CxPts (genStr Z) σ} {i : Fin Fu.n} {P : (Fu.Di i).La →+ (Fin g → ℂ)} {y : Sp ℂ ⟶ Xo.XF c}
 
+/- English proof (translation)
+Establish `hy' : y ≫ Z.jQ ≫ pullback.fst _ _ = x.1 ≫ genι Z` using `by rw [← Category.assoc, hy]`. Establish `H₁ : IsEx e₁` using `IsEx.up Z.m0.toSABMap.cart hu ⟨Fu.ex_add i P hP, isHolTo_ex Fu i hP, (Fu.ex_diff i P hP).2⟩ h₁`. Establish `H₂ : IsEx e₂` using `(isEx_chart h hx).up Z.m.cart hy' h₂`. Take `⟨L, hL⟩` from `H₁.exists_equiv H₂`. Use `⟨H₂, L, ⟨fun z => ?_, fun w v hv => ?_⟩, hL⟩` and prove the remaining obligations.
+
+Rewrite using `[← up_eq_one Z.m0.toSABMap.cart hu (h₁ z), ← up_eq_one Z.m.cart hy' (h₂ _), hL]`. Rewrite using `[up_deriv Z.m0.toSABMap.cart h₁ H₁.2.1 hv, up_deriv Z.m.cart h₂ H₂.2.1 hv, ← deriv_comp_equiv (e := fun z => (e₂ z).left)]`. Simplify using `only [hL]`.
+-/
 theorem exists_match_of_lifts (h : IsExpChart ch ex) (hx : x ∈ ch.source)
     (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P) (hu : y ≫ pullback.fst _ _ = Fu.u i P)
     (hy : y ≫ Z.jQ = x.1) {e₁ : (Fin g → ℂ) → (Over.mk y ⟶ Z.oF.t.G)} {e₂ : (Fin g' → ℂ) → (Over.mk y ⟶ Z.oF.t.G)}
@@ -249,6 +335,13 @@ theorem exists_match_of_lifts (h : IsExpChart ch ex) (hx : x ∈ ch.source)
       ← deriv_comp_equiv (e := fun z => (e₂ z).left)]
     simp only [hL]
 
+/- English proof (translation)
+Take `⟨i, Q, P, W', y, hP, hu, hy, hv, hQ⟩` from `T.exists_periods_in_frame_off_boundary E H Dw l Xo c O β Z σ g e Fu a hi`. Use `choose e₁ h₁ using fun z => exists_up Z.m0.toSABMap.cart hu (Fu.ex i P z)`. Use `choose e₂ h₂ using fun z => exists_up Z.m.cart (x := a.1.1 ≫ genι Z) (y := y) (by rw [← Category.assoc, hy]) (ex a.1 z)`. Take `⟨-, L, hL, -⟩` from `exists_match_of_lifts h hx hP hu hy h₁ h₂`. Establish `hWW : ∀ z, L (W' z) = W z` using `fun z => by`.
+
+Take `⟨v, h1, h2, h3⟩` from `hv z`. Conclude with `((h.2.2.2.2.2 a.1 hx).2 _ (a.2.tan z.1 z.2)).unique (h2 ▸ (hL.2 _ v h1).1 h3) (hW z)`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `L.surjective w`. Establish `hw : w ∈ Submodule.span ℝ (Set.range P)` using `hP.2.2.2.1.ge trivial`.
+
+Use `(Submodule.span_le (p := ((LinearMap.range (Fintype.linearCombination ℂ W)).comap L.toLinearMap).restrictScalars ℝ)).2 ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨Q v, by simp [Fintype.linearCombination_apply, hQ, hWW]⟩`.
+-/
 theorem dirs_surjective (Fu : Fam Xo c σ e) (h : IsExpChart ch ex) (a : CxFr Z σ) (hx : a.1 ∈ ch.source)
     (hi : Inner a.1) {W : Letter Dw → Fin g' → ℂ} (hW : Dirs a (fun w => (ex a.1 w).left) W) :
     LinearMap.range (Fintype.linearCombination ℂ W) = ⊤ := by
@@ -267,6 +360,13 @@ theorem dirs_surjective (Fu : Fam Xo c σ e) (h : IsExpChart ch ex) (a : CxFr Z 
   rintro _ ⟨v, rfl⟩
   exact ⟨Q v, by simp [Fintype.linearCombination_apply, hQ, hWW]⟩
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective _ (dirs_surjective Fu h a hx hi hW)`. Establish `hs' : ∀ w, ∑ z, s w z • W z = w` using `fun w => by`. Simplify `DFunLike.congr_fun hs w` using `[Fintype.linearCombination_apply]`. Use `⟨(s ∘ₗ L.toLinearMap).toAddMonoidHom.comp P, ⟨P, fun z => L.symm (W z), y, hP, hu, hy, fun z => ?_, fun v => L.injective ?_⟩, fun v => hs' _⟩` and prove the remaining obligations. Establish `hw : a.2.v z.1 z.2 ≫ Z.t.G.hom = (spMap (algebraMap ℂ (DualNumber ℂ)) ≫ y) ≫ Z.jQ ≫ pullback.fst _ _`.
+
+Rewrite using `[(a.2.tan z.1 z.2).1, ← hy]`. Simplify using `only [Category.assoc]`. Use `⟨Z.m.cart.1.lift _ _ hw, Z.m.cart.1.lift_snd _ _ _, Z.m.cart.1.lift_fst _ _ _, (hL.2 _ _ (Z.m.cart.1.lift_snd _ _ _)).2 ?_⟩` and prove the remaining obligations. Rewrite using `[Z.m.cart.1.lift_fst, L.apply_symm_apply]`. Conclude with `hW z`.
+
+Simplify using `using (hs' _).symm`.
+-/
 theorem exists_per (h : IsExpChart ch ex) (a : CxFr Z σ) (hx : a.1 ∈ ch.source) (hi : Inner a.1)
     (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P) (hu : y ≫ pullback.fst _ _ = Fu.u i P)
     (hy : y ≫ Z.jQ = a.1.1) {L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)} (hL : Match Fu ex a.1 i P y L)
@@ -287,6 +387,11 @@ theorem exists_per (h : IsExpChart ch ex) (a : CxFr Z σ) (hx : a.1 ∈ ch.sourc
     exact hW z
   · simpa using (hs' _).symm
 
+/- English proof (translation)
+Establish `key : ∀ w, L.symm w ∈ P.range ↔ w ∈ LinearMap.range (Fintype.linearCombination ℤ b)` using `fun w => by`. Rewrite using `[← Fu.ex_ker i P hP, hL.1, L.apply_symm_apply, hk]`. Simplify using `only [LinearMap.mem_range, Fintype.linearCombination_apply, eq_comm]`. Use `⟨real_indep hb ?_, exists_addEquiv (L.toLinearMap.toAddMonoidHom.comp P) (Fintype.linearCombination ℤ b).toAddMonoidHom (L.injective.comp hP.2.1) hb.fintypeLinearCombination_injective (AddSubgroup.ext fun w => ?_)⟩` and prove the remaining obligations. Use `hP.2.2.1` as an intermediate fact.
+
+Rewrite using `[← Fintype.range_linearCombination]`. Conclude with `DiscreteTopology.of_continuous_injective (β := P.range) (f := fun w => ⟨L.symm w.1, (key _).2 w.2⟩) ((L.symm.toContinuousLinearEquiv.continuous.comp continuous_subtype_val).subtype_mk _) fun w w' h => Subtype.ext (L.symm.injective (congrArg Subtype.val h))`. Use `Iff.trans ?_ (key w)` and prove the remaining obligations. Conclude with `exists_congr fun v => L.eq_symm_apply.symm`.
+-/
 theorem exists_marking (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.relab c σ (e j).1) P)
     {L : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g' → ℂ)} (hL : Match Fu ex x i P y L) {b : Fin r → Fin g' → ℂ}
     (hb : LinearIndependent ℤ b) (hk : ∀ w, ex x w = 1 ↔ ∃ m : Fin r → ℤ, w = ∑ j, m j • b j) :
@@ -307,6 +412,11 @@ theorem exists_marking (hP : IsPeriod (Fu.Di i) (fun j => Formalism.L2.PjFree.re
 
 end Point
 
+/- English proof (translation)
+Introduce `U f`. Establish `key : ∀ (U' : X.Opens) (_ : i ⁻¹ᵁ (i ''ᵁ U) = U') (f : Γ(X, U')), IsOpen {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U'} ∧ DifferentiableOn ℂ (fun b => valAt' (y b) U' f) {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U'}`. Introduce and unpack `_ rfl f`. Establish `: IsIso (i.app (i ''ᵁ U))` using `i.isIso_app _ (i.image_le_opensRange U)`. Take `⟨g, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (i.app (i ''ᵁ U))).2 f`.
+
+Use `h (i ''ᵁ U) g` as an intermediate fact. Simplify using `only [valAt'_eq_valR, valR_comp] at this`. Conclude with `this`. Conclude with `key U (i.preimage_image_eq U) f`.
+-/
 theorem isHolTo_of_open {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X Y : Scheme.{0}} (i : X ⟶ Y)
     [IsOpenImmersion i] {B : Set V} {y : V → (Sp ℂ ⟶ X)} (h : IsHolTo B fun b => y b ≫ i) : IsHolTo B y := by
   intro U f
@@ -320,6 +430,9 @@ theorem isHolTo_of_open {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {X
     exact this
   exact key U (i.preimage_image_eq U) f
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Use `⟨IsOpenImmersion.lift Z.jQ x.1 ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Take `rfl : p = IsLocalRing.closedPoint ℂ` from `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `not_not.1 hx`.
+-/
 theorem exists_under {x : CxPts (genStr Z) σ} (hx : Inner x) : ∃ y : Sp ℂ ⟶ Xo.XF c, y ≫ Z.jQ = x.1 := by
   have := Z.jQ_open
   refine ⟨IsOpenImmersion.lift Z.jQ x.1 ?_, IsOpenImmersion.lift_fac _ _ _⟩
@@ -327,6 +440,9 @@ theorem exists_under {x : CxPts (genStr Z) σ} (hx : Inner x) : ∃ y : Sp ℂ �
   obtain rfl : p = IsLocalRing.closedPoint ℂ := Subsingleton.elim (α := PrimeSpectrum ℂ) _ _
   exact not_not.1 hx
 
+/- English proof (translation)
+Establish `ht : logExp k s ∈ ch.target` using `h.1.1 ▸ logExp_mem hs`. Use `⟨ht, ch.map_target ht, (h.2.1 _ (ch.map_target ht)).2 fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[ch.right_inv ht, logExp, if_pos hj]`. Conclude with `Complex.exp_ne_zero _`.
+-/
 theorem pt_mem (h : IsLogChart k ch ex lam ρ) {s : Fin n → ℂ} (hs : s ∈ logDom n k) :
     logExp k s ∈ ch.target ∧ ch.symm (logExp k s) ∈ ch.source ∧ Inner (ch.symm (logExp k s)) := by
   have ht : logExp k s ∈ ch.target := h.1.1 ▸ logExp_mem hs
@@ -334,6 +450,9 @@ theorem pt_mem (h : IsLogChart k ch ex lam ρ) {s : Fin n → ℂ} (hs : s ∈ l
   rw [ch.right_inv ht, logExp, if_pos hj]
   exact Complex.exp_ne_zero _
 
+/- English proof (translation)
+Establish `hx : IsHolTo (ch.target ×ˢ (Set.univ : Set (Fin g' → ℂ))) (fun zw => (ex (ch.symm zw.1) zw.2).left)` using `h.1.2.2.2.2.1`. Use `isHolTo_of_holAt (hB.prod isOpen_univ) fun bz hbz => ?_` and prove the remaining obligations. Establish `d : DifferentiableAt ℂ (fun t : (Fin n → ℂ) × (Fin g' → ℂ) => (logExp k t.1, t.2)) bz` using `((differentiable_logExp _).comp bz differentiableAt_fst).prodMk differentiableAt_snd`. Establish `hh` using `holAt_of_isHolTo hx (z := (logExp k bz.1, bz.2)) ⟨(pt_mem h (hBD hbz.1)).1, trivial⟩`. Conclude with `HolAt.precomp (c := fun zw : (Fin n → ℂ) × (Fin g' → ℂ) => (ex (ch.symm zw.1) zw.2).left) (k := fun t : (Fin n → ℂ) × (Fin g' → ℂ) => (logExp k t.1, t.2)) (z := bz) hh d`.
+-/
 theorem isHolTo_chart (h : IsLogChart k ch ex lam ρ) {B : Set (Fin n → ℂ)} (hB : IsOpen B) (hBD : B ⊆ logDom n k) :
     IsHolTo (B ×ˢ Set.univ) fun t : (Fin n → ℂ) × (Fin g' → ℂ) => (ex (ch.symm (logExp k t.1)) t.2).left := by
   have hx : IsHolTo (ch.target ×ˢ (Set.univ : Set (Fin g' → ℂ))) (fun zw => (ex (ch.symm zw.1) zw.2).left) :=
@@ -352,6 +471,25 @@ def Marks (s : Fin n → ℂ) (i : Fin Fu.n) (T : (Fu.Di i).La ≃+ (Fin r → �
     ∃ (Q : (Fu.Di i).La →+ (Letter Dw → ℂ)) (gm : (Fu.Di i).La ≃ₗ[𝓞 E] (Fu.Di i).La), Per Fu a i Q ∧
       IsIsom (Fu.Di i) gm ∧ ∀ v, ∑ z, Q (gm v) z • W z = ∑ m, T v m • lam s m
 
+/- English proof (translation)
+Use `Z.jQ_open` as an intermediate fact. Take `⟨y₁, -⟩` from `exists_under (pt_mem h hs₁).2.2`. Establish `hy : ∀ s, ∃ y : Sp ℂ ⟶ Xo.XF c, s ∈ logDom n k → y ≫ Z.jQ = (ch.symm (logExp k s)).1` using `fun s => by`. Distinguish the cases in `hs : s ∈ logDom n k`. Conclude with `(exists_under (pt_mem h hs).2.2).imp fun _ h _ => h`.
+
+Conclude with `⟨y₁, fun h => (hs h).elim⟩`. Use `choose y hy using hy`. Establish `holy : IsHolTo (logDom n k) y` using `isHolTo_of_open Z.jQ (isHolTo_of_holAt isOpen_logDom fun s hs => HolAt.congr ((holAt_of_isHolTo h.1.2.2.1 (pt_mem h hs).1).precomp (differentiable_logExp s)) (eventually_of_mem (isOpen_logDom.mem_nhds hs) hy))`. Take `⟨B, i, P, hB, hB₁, hBD, hP, hu⟩` from `Fu.lift n (logDom n k) (fun s => y s ≫ pullback.fst _ _) isOpen_logDom (fun s hs => by`. Rewrite using `[Category.assoc, pullback.condition, ← Z.jQ_over, Category.assoc, ← Category.assoc (y s), hy s hs, ← Category.assoc, (ch.symm (logExp k s)).2, ← Spec.map_comp]`.
+
+Use the proof step `rfl)`. Use the proof step `(isHolTo_of_holAt isOpen_logDom fun s hs => (holAt_of_isHolTo holy hs).comp _) s₁ hs₁`. Establish `hu' : ∀ s ∈ B, y s ≫ pullback.fst _ _ = Fu.u i (P s)` using `fun s hs => (hu s hs).symm`. Establish `hy' : ∀ s ∈ B, y s ≫ Z.jQ ≫ pullback.fst _ _ = (ch.symm (logExp k s)).1 ≫ genι Z` using `fun s hs => by`. Rewrite using `[← Category.assoc, hy s (hBD hs)]`.
+
+Establish `holy'` using `fun s (hs : s ∈ B) => holAt_of_isHolTo holy (hBD hs)`. Take `⟨e₁, h₁, hol₁⟩` from `exists_up_family Z.m0.toSABMap.cart hu' holy' (e := fun s => Fu.ex i (P s)) (Fu.hol i n B P hB hP).2`. Take `⟨e₂, h₂, hol₂⟩` from `exists_up_family Z.m.cart hy' holy' (e := fun s => ex (ch.symm (logExp k s))) (isHolTo_chart h hB hBD)`. Establish `hM` using `fun s (hs : s ∈ B) => exists_match_of_lifts h.1 (pt_mem h (hBD hs)).2.1 (hP.1 s hs) (hu' s hs) (hy s (hBD hs)) (h₁ s hs) (h₂ s hs)`. Take `⟨-, L₁, hL₁, -⟩` from `hM s₁ hB₁`.
+
+Establish `hL : ∀ s, ∃ L, s ∈ B → Match Fu ex (ch.symm (logExp k s)) i (P s) (y s) L ∧ ∀ z, e₁ s z = e₂ s (L z)` using `fun s => by`. Distinguish the cases in `hs : s ∈ B`. Conclude with `(hM s hs).2.imp fun _ h _ => h`. Conclude with `⟨L₁, fun h => (hs h).elim⟩`. Use `choose L hL using hL`.
+
+Establish `hm` using `fun s (hs : s ∈ B) => exists_marking (hP.1 s hs) (hL s hs).1 (h.2.2.2.1 s (hBD hs)).1 (h.2.2.2.1 s (hBD hs)).2.1`. Take `⟨hi, T₁, -⟩` from `hm s₁ hB₁`. Establish `hT : ∀ s, ∃ T : (Fu.Di i).La ≃+ (Fin r → ℤ), s ∈ B → ∀ v, ∑ m, T v m • lam s m = L s (P s v)` using `fun s => by`. Distinguish the cases in `hs : s ∈ B`. Conclude with `(hm s hs).2.imp fun _ h _ => h`.
+
+Conclude with `⟨T₁, fun h => (hs h).elim⟩`. Use `choose T hT using hT`. Establish `hLc` using `((differentiableOn_linear hol₁ hol₂ (fun s hs => (hM s hs).1.2.2) (h := fun s => (L s).toLinearMap) fun s hs => (hL s hs).2).continuousOn).continuousAt (hB.mem_nhds hB₁)`. Establish `hev : ∀ v, ∀ᶠ s in 𝓝 s₁, T s v = T s₁ v` using `fun v => eventually_coord_eq (t := fun s => T s v) (h.2.2.1.continuousAt (isOpen_logDom.mem_nhds hs₁)) hi ((hLc.clm_apply ((hP.2 v).continuousOn.continuousAt (hB.mem_nhds hB₁))).congr (eventually_of_mem (hB.mem_nhds hB₁) fun s hs => (hT s hs v).symm))`. Use `⟨i, T s₁, ?_⟩` and prove the remaining obligations.
+
+Use `filter_upwards [hB.mem_nhds hB₁, eventually_all.2 fun m : Fin r => hev ((T s₁).symm (Pi.single m 1))] with s hs hsT a W ha hW`. Establish `hTT : ∀ v, T s v = T s₁ v` using `fun v => by`. Take `⟨w, rfl⟩` from `(T s₁).symm.surjective v`. Establish `: ((T s₁).symm.trans (T s)).toAddMonoidHom = AddMonoidHom.id _` using `AddMonoidHom.functions_ext' _ _ _ fun m => AddMonoidHom.ext_int (by simpa using hsT m)`. Simplify using `using DFunLike.congr_fun this w`.
+
+Take `⟨Q, hQ, hQ'⟩` from `exists_per h.1 a (ha ▸ (pt_mem h (hBD hs)).2.1) (ha ▸ (pt_mem h (hBD hs)).2.2) (hP.1 s hs) (hu' s hs) (ha ▸ hy s (hBD hs)) (ha ▸ (hL s hs).1) hW`. Conclude with `⟨Q, LinearEquiv.refl _ _, hQ, fun _ _ => rfl, fun v => by`. Rewrite using `[LinearEquiv.refl_apply, hQ', ← hT s hs, hTT]⟩`.
+-/
 theorem exists_local (Fu : Fam Xo c σ e) (h : IsLogChart k ch ex lam ρ) {s₁ : Fin n → ℂ} (hs₁ : s₁ ∈ logDom n k) :
     ∃ i T, ∀ᶠ s in 𝓝 s₁, Marks Fu k ch ex lam s i T := by
   have := Z.jQ_open
@@ -414,6 +552,15 @@ theorem exists_local (Fu : Fam Xo c σ e) (h : IsLogChart k ch ex lam ρ) {s₁ 
   exact ⟨Q, LinearEquiv.refl _ _, hQ, fun _ _ => rfl, fun v => by
     rw [LinearEquiv.refl_apply, hQ', ← hT s hs, hTT]⟩
 
+/- English proof (translation)
+Take `⟨f⟩` from `EigLoc.exists_eigFrame E H Dw l Xo c O β Z ℂ σ _ (ch.symm (logExp k s)).2`. Use `choose W hW _ using fun z : Letter Dw => (h.1.2.2.2.2.2 _ (pt_mem h hs).2.1).2 _ (f.tan z.1 z.2)`. Take `⟨Q, u, hQ, hu, e₁⟩` from `h₁ ⟨_, f⟩ W rfl hW`. Take `⟨Q', u', hQ', hu', e₂⟩` from `h₂ ⟨_, f⟩ W rfl hW`. Apply the tactic sequence `have cmp := GlobalTheory.T.two_markings_differ_by_level_isometry E H Dw l Xo c O β Z σ g e Fu ⟨_, f⟩`.
+
+Take `rfl : i = j` from `cmp.1 _ _ _ _ hQ hQ'`. Take `⟨d, hd, -, e₃⟩` from `cmp.2 _ _ _ hQ hQ'`. Establish `hT : ∀ v, T v = T' (u'.symm (d (u v)))` using `fun v => (h.2.2.2.1 s hs).1.fintypeLinearCombination_injective (by`. Rewrite using `[Fintype.linearCombination_apply, Fintype.linearCombination_apply, ← e₁, ← e₂, u'.apply_symm_apply, e₃])`. Introduce `a W' ha hW'`.
+
+Take `⟨R, t, hR, ht, e₄⟩` from `h₃ a W' ha hW'`. Use `⟨R, ((u.trans d).trans u'.symm).trans t, hR, fun v w => ?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[ht, ← hu', u'.apply_symm_apply, u'.apply_symm_apply, hd, hu]`. Rewrite using `[hT]`.
+
+Conclude with `e₄ _`.
+-/
 theorem Marks.trans (h : IsLogChart k ch ex lam ρ) {s s' : Fin n → ℂ} (hs : s ∈ logDom n k) {i j : Fin Fu.n}
     {T : (Fu.Di i).La ≃+ (Fin r → ℤ)} {T' : (Fu.Di j).La ≃+ (Fin r → ℤ)} (h₁ : Marks Fu k ch ex lam s i T)
     (h₂ : Marks Fu k ch ex lam s j T') (h₃ : Marks Fu k ch ex lam s' j T') : Marks Fu k ch ex lam s' i T := by
@@ -435,6 +582,11 @@ theorem Marks.trans (h : IsLogChart k ch ex lam ρ) {s s' : Fin n → ℂ} (hs :
   · rw [hT]
     exact e₄ _
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ g e Fu n g' r k ch ex lam ρ h`. Take `⟨s₀, hs₀⟩` from `nonempty_logDom (n := n) (k := k)`. Take `⟨i, T₀, h₀⟩` from `exists_local Fu h hs₀`. Use `⟨i, T₀, fun s hs => convex_logDom.isPreconnected.induction₂' (fun s s' => Marks Fu k ch ex lam s i T₀ → Marks Fu k ch ex lam s' i T₀) (fun x hx => ?_) (fun _ _ _ _ _ _ h1 h2 => h2 ∘ h1) hs₀ hs h₀.self_of_nhds⟩` and prove the remaining obligations. Take `⟨j, T₁, h₁⟩` from `exists_local Fu h hx`.
+
+Use `filter_upwards [self_mem_nhdsWithin, h₁.filter_mono nhdsWithin_le_nhds] with y hy h₂`. Conclude with `⟨fun h₃ => h₃.trans h hx h₁.self_of_nhds h₂, fun h₃ => h₃.trans h hy h₂ h₁.self_of_nhds⟩`.
+-/
 theorem exists_marking_const : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Letter Dw) (Fu : Fam Xo c σ e) (n g' r k : ℕ) (ch : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex : ExpMaps Z σ g') (lam : (Fin n → ℂ) → Fin r → Fin g' → ℂ) (ρ : Fin g' → Fin r → ℂ), IsLogChart k ch ex lam ρ → ∃ (i : Fin Fu.n) (T₀ : (Fu.Di i).La ≃+ (Fin r → ℤ)), ∀ s ∈ logDom n k, ∀ (a : CxFr Z σ) (W : Letter Dw → Fin g' → ℂ), a.1 = ch.symm (logExp k s) → Dirs a (fun w => (ex a.1 w).left) W → ∃ (Q : (Fu.Di i).La →+ (Letter Dw → ℂ)) (gm : (Fu.Di i).La ≃ₗ[𝓞 E] (Fu.Di i).La), Per Fu a i Q ∧ IsIsom (Fu.Di i) gm ∧ ∀ v, ∑ z, Q (gm v) z • W z = ∑ m, T₀ v m • lam s m := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ g e Fu n g' r k ch ex lam ρ h
   obtain ⟨s₀, hs₀⟩ := nonempty_logDom (n := n) (k := k)

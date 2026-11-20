@@ -130,6 +130,9 @@ section gen
 
 variable (P : M.Par)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Use `show ∑ π', ((1 : MA.A P (MA.DQ P)) π π').1 (f π') = f π`. Rewrite using `[Finset.sum_eq_single π (fun π' _ h => by rw [Matrix.one_apply_ne (Ne.symm h)]; rfl) (fun h => absurd (Finset.mem_univ π) h), Matrix.one_apply_eq]`. Both sides reduce to the same expression.
+-/
 theorem jdh_actA_one (f : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 1 f = f := by
   funext π
   show ∑ π', ((1 : MA.A P (MA.DQ P)) π π').1 (f π') = f π
@@ -137,11 +140,17 @@ theorem jdh_actA_one (f : M.Ty P → MA.SmQ P.r P.TT) : MA.actA P 1 f = f := by
     (fun h => absurd (Finset.mem_univ π) h), Matrix.one_apply_eq]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Use `show ∑ π', (a π π').1 0 = 0`. Conclude with `Finset.sum_eq_zero fun π' _ => map_zero _`.
+-/
 theorem jdh_actA_zeroR (a : MA.A P (MA.DQ P)) : MA.actA P a 0 = 0 := by
   funext π
   show ∑ π', (a π π').1 0 = 0
   exact Finset.sum_eq_zero fun π' _ => map_zero _
 
+/- English proof (translation)
+Use function extensionality and compare the values at `π`. Use `show ∑ π', (a π π').1 (x π' + y π') = ∑ π', (a π π').1 (x π') + ∑ π', (a π π').1 (y π')`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => map_add _ _ _`.
+-/
 theorem jdh_actA_addR (a : MA.A P (MA.DQ P)) (x y : M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (x + y) = MA.actA P a x + MA.actA P a y := by
   funext π
@@ -149,24 +158,39 @@ theorem jdh_actA_addR (a : MA.A P (MA.DQ P)) (x y : M.Ty P → MA.SmQ P.r P.TT) 
   rw [← Finset.sum_add_distrib]
   exact Finset.sum_congr rfl fun _ _ => map_add _ _ _
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil => simp only [List.map_nil, List.sum_nil]`. Conclude with `jdh_actA_zeroR P a`. Consider the case `cons i l ih => simp only [List.map_cons, List.sum_cons]`. Rewrite using `[jdh_actA_addR, ih]`.
+-/
 theorem jdh_actA_listsum {ι : Type} (a : MA.A P (MA.DQ P)) (l : List ι) (g : ι → M.Ty P → MA.SmQ P.r P.TT) :
     MA.actA P a (l.map g).sum = (l.map fun i => MA.actA P a (g i)).sum := by
   induction l with
   | nil => simp only [List.map_nil, List.sum_nil]; exact jdh_actA_zeroR P a
   | cons i l ih => simp only [List.map_cons, List.sum_cons]; rw [jdh_actA_addR, ih]
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨g, rfl⟩)))`.
+-/
 theorem jdh_kap_mem (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (g : M.Ty P → ℂ) :
     MA.kap P (MA.DQ P) g ∈ Submonoid.closure (MA.bddSet P L) :=
   Submonoid.subset_closure (Or.inl (Or.inl (Or.inr ⟨g, rfl⟩)))
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inl (Or.inr ⟨l, Finset.mem_Icc.1 hl, rfl⟩))`.
+-/
 theorem jdh_SSn_mem (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (l : ℕ) (hl : l ∈ Finset.Icc 1 (P.k - 1)) :
     SSn P L l ∈ Submonoid.closure (MA.bddSet P L) :=
   Submonoid.subset_closure (Or.inl (Or.inr ⟨l, Finset.mem_Icc.1 hl, rfl⟩))
 
+/- English proof (translation)
+The claim follows from `Submonoid.subset_closure (Or.inr ⟨l, Finset.mem_Icc.1 hl, rfl⟩)`.
+-/
 theorem jdh_SSns_mem (L : R.LevelData (MA.A P (MA.DQ P)) P.r) (l : ℕ) (hl : l ∈ Finset.Icc 1 (P.k - 1)) :
     star (SSn P L l) ∈ Submonoid.closure (MA.bddSet P L) :=
   Submonoid.subset_closure (Or.inr ⟨l, Finset.mem_Icc.1 hl, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[Algebra.smul_def, ← (MA.kap P (MA.DQ P)).commutes c]`. Both sides reduce to the same expression.
+-/
 theorem jdh_smul_eq (c : ℂ) (a : MA.A P (MA.DQ P)) : c • a = MA.kap P (MA.DQ P) (fun _ => c) * a := by
   rw [Algebra.smul_def, ← (MA.kap P (MA.DQ P)).commutes c]
   rfl
@@ -191,6 +215,11 @@ def HReal (X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))) : Prop :=
       MA.actA (D.parOf S v) X (trJ S T v e J) =
         (ts.map fun t => MA.actA (D.parOf S v) t.1 (trJ S T v e (B.opApply t.2 J))).sum
 
+/- English proof (translation)
+Use `⟨[(1, Θ)], fun t ht => ?_, fun J hJ => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[List.mem_singleton]`. Substitute `ht` using the available equality. Conclude with `⟨Submonoid.one_mem _, hΘ⟩`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`.
+
+Rewrite using `[jdh_actA_one, h J hJ]`.
+-/
 theorem hReal_op {X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (Θ : B.DiffOp S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (hΘ : HatOK Cc S T v Θ)
     (h : ∀ J ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v),
@@ -203,10 +232,18 @@ theorem hReal_op {X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (Θ : B.DiffOp S
   · simp only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]
     rw [jdh_actA_one, h J hJ]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨[], fun t ht => absurd ht List.not_mem_nil, fun J _ => by simp only [List.map_nil, List.sum_nil]; exact Gauge.actA_zero _ _⟩`.
+-/
 theorem hReal_zero : HReal Cc S T v e L 0 :=
   ⟨[], fun t ht => absurd ht List.not_mem_nil, fun J _ => by
     simp only [List.map_nil, List.sum_nil]; exact Gauge.actA_zero _ _⟩
 
+/- English proof (translation)
+Take `⟨ts, hts, hJ⟩` from `hX`. Take `⟨ts', hts', hJ'⟩` from `hY`. Use `⟨ts ++ ts', fun t ht => ?_, fun J hJJ => ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 ht with h | h` into its components or cases. Conclude with `hts t h`.
+
+Conclude with `hts' t h`. Rewrite using `[Gauge.actA_add, hJ J hJJ, hJ' J hJJ, List.map_append, List.sum_append]`.
+-/
 theorem hReal_add {X Y : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (hX : HReal Cc S T v e L X)
     (hY : HReal Cc S T v e L Y) : HReal Cc S T v e L (X + Y) := by
   obtain ⟨ts, hts, hJ⟩ := hX
@@ -217,6 +254,11 @@ theorem hReal_add {X Y : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (hX : HReal C
     · exact hts' t h
   · rw [Gauge.actA_add, hJ J hJJ, hJ' J hJJ, List.map_append, List.sum_append]
 
+/- English proof (translation)
+Take `⟨ts, hts, hJ⟩` from `hX`. Use `⟨ts.map fun t => (b * t.1, t.2), fun t ht => ?_, fun J hJJ => ?_⟩` and prove the remaining obligations. Take `⟨t', ht', rfl⟩` from `List.mem_map.1 ht`. Conclude with `⟨Submonoid.mul_mem _ hb (hts t' ht').1, (hts t' ht').2⟩`. Rewrite using `[Gauge.actA_mul, hJ J hJJ, jdh_actA_listsum, List.map_map]`.
+
+Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `t _`. Simplify using `only [Function.comp_apply]`. Rewrite using `[Gauge.actA_mul]`.
+-/
 theorem hReal_mul {b X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))}
     (hb : b ∈ Submonoid.closure (MA.bddSet (D.parOf S v) L)) (hX : HReal Cc S T v e L X) :
     HReal Cc S T v e L (b * X) := by
@@ -231,6 +273,11 @@ theorem hReal_mul {b X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))}
     simp only [Function.comp_apply]
     rw [Gauge.actA_mul]
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `hReal_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+
+Conclude with `hReal_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+-/
 theorem hReal_sum {ι : Type} (s : Finset ι) (X : ι → MA.A (D.parOf S v) (MA.DQ (D.parOf S v)))
     (h : ∀ i ∈ s, HReal Cc S T v e L (X i)) : HReal Cc S T v e L (∑ i ∈ s, X i) := by
   classical
@@ -240,11 +287,17 @@ theorem hReal_sum {ι : Type} (s : Finset ι) (X : ι → MA.A (D.parOf S v) (MA
     rw [Finset.sum_insert ha]
     exact hReal_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
+/- English proof (translation)
+Rewrite using `[jdh_smul_eq]`. Conclude with `hReal_mul (jdh_kap_mem _ L _) hX`.
+-/
 theorem hReal_smul (c : ℂ) {X : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (hX : HReal Cc S T v e L X) :
     HReal Cc S T v e L (c • X) := by
   rw [jdh_smul_eq]
   exact hReal_mul (jdh_kap_mem _ L _) hX
 
+/- English proof (translation)
+Rewrite using `[sub_eq_add_neg, ← neg_one_smul ℂ Y]`. Conclude with `hReal_add hX (hReal_smul _ hY)`.
+-/
 theorem hReal_sub {X Y : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (hX : HReal Cc S T v e L X)
     (hY : HReal Cc S T v e L Y) : HReal Cc S T v e L (X - Y) := by
   rw [sub_eq_add_neg, ← neg_one_smul ℂ Y]
@@ -252,6 +305,23 @@ theorem hReal_sub {X Y : MA.A (D.parOf S v) (MA.DQ (D.parOf S v))} (hX : HReal C
 
 end realise
 
+/- English proof (translation)
+Take `⟨KA, hKA0, hA⟩` from `hA`. Take `⟨KR, -, hR⟩` from `hR`. Use `⟨max KA KR, le_max_of_le_left hKA0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v e L hFr hGa hL X hX`. Establish `hQQ` using `hG (max KA KR) E Wp Wq S T f χ ν' m₀ top A₀ hB v e hFr hGa`.
+
+Establish `hA'` using `hA (max KA KR) (le_max_left _ _) E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hL`. Establish `hR'` using `hR (max KA KR) (le_max_right _ _) E Wp Wq S T f χ ν' m₀ top A₀ hB v e L hFr hQQ hL`. It suffices to establish `hH : HReal (max KA KR) S T v e L X by`. Take `⟨ts, hts, hJ⟩` from `hH`. Conclude with `⟨ts, hts, hJ⟩`.
+
+Establish `rA : ∀ y : ℂ, HReal (max KA KR) S T v e L (L.Ahat y)` using `fun y => by`. Take `⟨Θ, Θv, hΘ, -, h⟩` from `hA' y`. Conclude with `hReal_op Θ hΘ fun J hJ => (h J hJ).1`. Establish `rAv : ∀ y : ℂ, HReal (max KA KR) S T v e L (L.Ahatv y)` using `fun y => by`. Take `⟨Θ, Θv, -, hΘv, h⟩` from `hA' y`.
+
+Conclude with `hReal_op Θv hΘv fun J hJ => (h J hJ).2`. Establish `rR : ∀ y : ℝ, HReal (max KA KR) S T v e L (RhM (D.parOf S v) L y)` using `fun y => by`. Take `⟨Θ, Θv, hΘ, -, h⟩` from `hR' y`. Conclude with `hReal_op Θ hΘ fun J hJ => (h J hJ).1`. Establish `rRv : ∀ y : ℝ, HReal (max KA KR) S T v e L (RhvM (D.parOf S v) L y)` using `fun y => by`.
+
+Take `⟨Θ, Θv, -, hΘv, h⟩` from `hR' y`. Conclude with `hReal_op Θv hΘv fun J hJ => (h J hJ).2`. Take `⟨ν, hinj, hreg⟩` from `h4 (D.parOf S v)`. Break down `hX with (((⟨y, rfl⟩ | ⟨y, rfl⟩) | ⟨y, rfl⟩) | ⟨y, rfl⟩)` into its components or cases. Conclude with `rA y`.
+
+Rewrite using `[(h3 (D.parOf S v) L ν hinj y).1]`. Use `hReal_sum _ _ fun j _ => hReal_smul _ ?_` and prove the remaining obligations. Rewrite using `[h1 (D.parOf S v) L hL (ν j) (hreg j)]`. Use `hReal_sub (hReal_mul (jdh_kap_mem _ L _) (rR (ν j))) (hReal_sum _ _ fun l hl => ?_)` and prove the remaining obligations. Use `hReal_mul ?_ (rA _)` and prove the remaining obligations.
+
+Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (jdh_kap_mem _ L _) (jdh_SSn_mem _ L l hl)) (jdh_kap_mem _ L _)`. Conclude with `rAv y`. Rewrite using `[(h3 (D.parOf S v) L ν hinj y).2]`. Use `hReal_sum _ _ fun j _ => hReal_smul _ ?_` and prove the remaining obligations. Rewrite using `[h2 (D.parOf S v) L hL (ν j) (hreg j)]`.
+
+Use `hReal_sub (hReal_mul (jdh_kap_mem _ L _) (rRv (ν j))) (hReal_sum _ _ fun l hl => ?_)` and prove the remaining obligations. Use `hReal_mul ?_ (rAv _)` and prove the remaining obligations. Conclude with `Submonoid.mul_mem _ (Submonoid.mul_mem _ (jdh_kap_mem _ L _) (jdh_kap_mem _ L _)) (jdh_SSns_mem _ L l hl)`.
+-/
 theorem jDHatOp_of_hatLeaves (hA : JDOpA) (hR : JDOpR) (hG : JDGaugeQQ) (h1 : ResidueSplittingModelAlgebra) (h2 : MirrorResidueSplittingModelAlgebra)
     (h3 : JDHatLagrange) (h4 : JDHatNodes) : JDHatOp := by
   obtain ⟨KA, hKA0, hA⟩ := hA

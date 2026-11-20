@@ -25,6 +25,9 @@ def homF (A : Submodule R M) (w : ℕ) : Submodule R ((Fin 2 → R) → M) where
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => x, fun _ => hx, fun u => by simp⟩`.
+-/
 private lemma const_mem_homF_zero {A : Submodule R M} {x : M} (hx : x ∈ A) :
     (fun _ : Fin 2 → R => x) ∈ _root_.GlobalTheory.KZ.PolAct.homF A 0 :=
   ⟨fun _ => x, fun _ => hx, fun u => by simp⟩
@@ -32,6 +35,13 @@ private lemma const_mem_homF_zero {A : Submodule R M} {x : M} (hx : x ∈ A) :
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
+/- English proof (translation)
+Take `⟨c, hc, hbu⟩` from `hb`. Use `⟨Fin.cons 0 c, fun i => ?_, fun u => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[A.zero_mem]`. Simplify using `[hc]`.
+
+Simplify using `only`. Rewrite using `[hbu, Finset.smul_sum]`. Use `conv_rhs => rw [Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ, smul_zero, zero_add, Fin.val_succ, Nat.add_sub_add_right, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma coord_zero_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
     {b : (Fin 2 → R) → M} (hb : b ∈ _root_.GlobalTheory.KZ.PolAct.homF A n) :
     (fun u => u 0 • b u) ∈ _root_.GlobalTheory.KZ.PolAct.homF A (n + 1) := by
@@ -52,6 +62,13 @@ private lemma coord_zero_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
+/- English proof (translation)
+Take `⟨c, hc, hbu⟩` from `hb`. Use `⟨fun j => if h : (j : ℕ) < n + 1 then c ⟨j, h⟩ else 0, fun j => ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hc _`. Conclude with `A.zero_mem`.
+
+Simplify using `only`. Rewrite using `[hbu, Finset.smul_sum]`. Use `conv_rhs => rw [Fin.sum_univ_castSucc]`. Simplify using `only [Fin.coe_castSucc, Fin.is_lt, dif_pos, Fin.val_last, lt_self_iff_false, dif_neg, not_false_eq_true, smul_zero, add_zero, Fin.eta, smul_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Establish `hi : n + 1 - (i : ℕ) = n - (i : ℕ) + 1` using `Nat.sub_add_comm (Nat.lt_succ_iff.mp i.isLt)`. Rewrite using `[hi, pow_succ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private lemma coord_one_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
     {b : (Fin 2 → R) → M} (hb : b ∈ _root_.GlobalTheory.KZ.PolAct.homF A n) :
     (fun u => u 1 • b u) ∈ _root_.GlobalTheory.KZ.PolAct.homF A (n + 1) := by
@@ -75,6 +92,9 @@ private lemma coord_one_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
+/- English proof (translation)
+Establish `h` using `(_root_.GlobalTheory.KZ.PolAct.homF A (n + 1)).add_mem ((_root_.GlobalTheory.KZ.PolAct.homF A (n + 1)).smul_mem α (coord_zero_smul_mem_homF_succ hb)) ((_root_.GlobalTheory.KZ.PolAct.homF A (n + 1)).smul_mem β (coord_one_smul_mem_homF_succ hb))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[add_smul, mul_smul]`.
+-/
 private lemma linear_form_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
     {b : (Fin 2 → R) → M} (hb : b ∈ _root_.GlobalTheory.KZ.PolAct.homF A n) (α β : R) :
     (fun u => (α * u 0 + β * u 1) • b u) ∈ _root_.GlobalTheory.KZ.PolAct.homF A (n + 1) := by
@@ -90,6 +110,11 @@ private lemma linear_form_smul_mem_homF_succ {A : Submodule R M} {n : ℕ}
 open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hb`. Consider the case `succ k ih`. Establish `h` using `linear_form_smul_mem_homF_succ ih α β`.
+
+Use `show _ ∈ _root_.GlobalTheory.KZ.PolAct.homF A (n + k + 1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `only [pow_succ', mul_smul]`.
+-/
 private lemma linear_form_pow_smul_mem_homF_add {A : Submodule R M} {n : ℕ}
     {b : (Fin 2 → R) → M} (hb : b ∈ _root_.GlobalTheory.KZ.PolAct.homF A n) (α β : R) :
     ∀ k : ℕ, (fun u => (α * u 0 + β * u 1) ^ k • b u) ∈
@@ -108,6 +133,15 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
 
+/- English proof (translation)
+Take `⟨c, hc, hbu⟩` from `hb`. Establish `hterm : ∀ i : Fin (w + 1), (fun u : Fin 2 → R => ((m 0 0 * u 0 + m 0 1 * u 1) ^ (i : ℕ) * (m 1 0 * u 0 + m 1 1 * u 1) ^ (w - (i : ℕ))) • φ (c i)) ∈ _root_.GlobalTheory.KZ.PolAct.homF A w`. Introduce `i`. Establish `h0` using `const_mem_homF_zero (hφ _ (hc i))`. Establish `h1` using `linear_form_pow_smul_mem_homF_add h0 (m 1 0) (m 1 1) (w - i)`.
+
+Establish `h2` using `linear_form_pow_smul_mem_homF_add h1 (m 0 0) (m 0 1) i`. Establish `hdeg : 0 + (w - (i : ℕ)) + i = w`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[hdeg]`.
+
+Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `only [mul_smul]`. Establish `hsum` using `Submodule.sum_mem (_root_.GlobalTheory.KZ.PolAct.homF A w) (t := Finset.univ) (fun i _ => hterm i)`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `u`. Simplify using `[hbu, map_sum, map_smul, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Finset.sum_apply]`.
+-/
 theorem _root_.GlobalTheory.KZ.PolAct.subst_mem {A : Submodule R M} {w : ℕ} (φ : M →ₗ[R] M)
     (hφ : ∀ a ∈ A, φ a ∈ A)
     (m : Matrix (Fin 2) (Fin 2) R) {b : (Fin 2 → R) → M}
@@ -138,6 +172,9 @@ open scoped MatrixGroups TensorProduct in
 open Matrix in
 variable {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] in
 
+/- English proof (translation)
+Introduce `b hb`. Conclude with `_root_.GlobalTheory.KZ.PolAct.subst_mem (A := X.A l) (w := w) _ h _ hb`.
+-/
 theorem _root_.GlobalTheory.KZ.PolAct.act_mem_pol {Ω : Type} [Field Ω] [Algebra ℚ Ω]
     {ε : Ω →+* ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε) (l w : ℕ) [Fact l.Prime]
     (m : Matrix (Fin 2) (Fin 2) ℤ)

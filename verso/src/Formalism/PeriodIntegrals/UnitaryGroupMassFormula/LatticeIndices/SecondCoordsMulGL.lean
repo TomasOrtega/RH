@@ -11,22 +11,42 @@ variable {K : Type*} [Field K] (O : ValuationSubring K) {ι : Type*} [Fintype ι
 
 def glK (c : GL ι O) : GL ι K := Units.map (RingHom.mapMatrix O.subtype).toMonoidHom c
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem glK_val (c : GL ι O) : ((glK O c : GL ι K) : Matrix ι ι K) = (c : Matrix ι ι O).map O.subtype := rfl
 
+/- English proof (translation)
+Rewrite using `[glK, ← map_inv]`. Both sides reduce to the same expression.
+-/
 theorem glK_inv (c : GL ι O) : (((glK O c)⁻¹ : GL ι K) : Matrix ι ι K) = ((c⁻¹ : GL ι O) : Matrix ι ι O).map O.subtype := by
   rw [glK, ← map_inv]; rfl
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hM i j) (hw j)`.
+-/
 theorem intVec_mulVec {M : Matrix ι ι K} (hM : ∀ i j, M i j ∈ O) {w : ι → K} (hw : ∀ i, w i ∈ O) (i : ι) :
     (M *ᵥ w) i ∈ O := by
   simp only [Matrix.mulVec, dotProduct]
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hM i j) (hw j)
 
+/- English proof (translation)
+Rewrite using `[glK_val]`. Conclude with `((c : Matrix ι ι O) i j).2`.
+-/
 theorem glK_int (c : GL ι O) (i j : ι) : ((glK O c : GL ι K) : Matrix ι ι K) i j ∈ O := by
   rw [glK_val]; exact ((c : Matrix ι ι O) i j).2
 
+/- English proof (translation)
+Rewrite using `[glK_inv]`. Conclude with `(((c⁻¹ : GL ι O) : Matrix ι ι O) i j).2`.
+-/
 theorem glK_inv_int (c : GL ι O) (i j : ι) : (((glK O c)⁻¹ : GL ι K) : Matrix ι ι K) i j ∈ O := by
   rw [glK_inv]; exact (((c⁻¹ : GL ι O) : Matrix ι ι O) i j).2
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `intVec_mulVec O (glK_int O c) h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `h i`.
+
+Conclude with `intVec_mulVec O (glK_inv_int O c) h i`.
+-/
 theorem intVec_inv_iff (c : GL ι O) (w : ι → K) :
     (∀ i, ((((glK O c)⁻¹ : GL ι K) : Matrix ι ι K) *ᵥ w) i ∈ O) ↔ ∀ i, w i ∈ O := by
   constructor
@@ -36,6 +56,11 @@ theorem intVec_inv_iff (c : GL ι O) (w : ι → K) :
   · intro h i
     exact intVec_mulVec O (glK_inv_int O c) h i
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `intVec_mulVec O (M := (((glK O c)⁻¹ : GL ι K) : Matrix ι ι K)ᵀ) (fun a b => glK_inv_int O c b a) h i` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Matrix.transpose_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.transpose_one, Matrix.one_mulVec]`. Then use the resulting hypothesis. Introduce `h i`.
+
+Conclude with `intVec_mulVec O (M := (((glK O c : GL ι K) : Matrix ι ι K))ᵀ) (fun a b => glK_int O c b a) h i`.
+-/
 theorem intVec_tr_iff (c : GL ι O) (w : ι → K) :
     (∀ i, (((glK O c : GL ι K) : Matrix ι ι K)ᵀ *ᵥ w) i ∈ O) ↔ ∀ i, w i ∈ O := by
   constructor
@@ -60,18 +85,31 @@ section Loc
 variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p)
   (Q : GL (IdxD D) (FpX X p))
 
+/- English proof (translation)
+Unfold `crd1`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]`.
+-/
 theorem firstCoords_mul_GL (c : GL (IdxD D) (OvA X p)) (v : Fin X.B.I.n → TpX X p) :
     crd1 X p θ (Q * glK (OvA X p) c) v =
       (((glK (OvA X p) c)⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p)) *ᵥ crd1 X p θ Q v := by
   unfold crd1
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Unfold `crd2`. Rewrite using `[Units.val_mul, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]`.
+-/
 theorem secondCoords_mul_GL (c : GL (IdxD D) (OvA X p)) (v : Fin X.B.I.n → TpX X p) :
     crd2 X p θ (Q * glK (OvA X p) c) v =
       ((glK (OvA X p) c : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p))ᵀ *ᵥ crd2 X p θ Q v := by
   unfold crd2
   rw [Units.val_mul, Matrix.transpose_mul, ← Matrix.mulVec_mulVec]
 
+/- English proof (translation)
+Establish `h1 : (((reindex₂ X p Q)⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) = Matrix.reindex (idxEquiv X).symm (idxEquiv X).symm ((Q⁻¹ : GL (IdxD D) (FpX X p)) : Matrix (IdxD D) (IdxD D) (FpX X p))`. Unfold `reindex₂`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Establish `h2 : Matrix.transpose ((reindex₂ X p Q : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p)) * Matrix.transpose (J1 X p θ) = Matrix.reindex (idxEquiv X).symm (idxEquiv X).symm ((Q : Matrix (IdxD D) (IdxD D) (FpX X p))ᵀ * (Matrix.reindex (idxEquiv X) (idxEq …`.
+
+Rewrite using `[frA_reindex_mul, ← Matrix.transpose_reindex, ← Matrix.transpose_reindex]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[Matrix.reindex_apply, J1, jm1, JR, th1]`. Rewrite using `[h1, h2, frA_int_reindex, frA_int_reindex]`.
+
+Unfold `crd1 crd2 IntVec`. Rewrite using `[Matrix.mulVec_mulVec]`. Both sides reduce to the same expression.
+-/
 theorem latRhs_iff (x : Fin X.B.I.n → TpX X p) :
     ((∀ i, (Matrix.mulVec (((reindex₂ X p Q)⁻¹ : GL (Fin X.B.I.n) (FpX X p)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (FpX X p))
         fun j => th1 X p θ (x j)) i ∈ p.1.adicCompletionIntegers X.B.I.F) ∧
@@ -97,11 +135,17 @@ theorem latRhs_iff (x : Fin X.B.I.n → TpX X p) :
   rw [Matrix.mulVec_mulVec]
   rfl
 
+/- English proof (translation)
+Introduce `x`. Rewrite using `[h x, latRhs_iff]`.
+-/
 theorem latBasis_of_crd (h : ∀ x, x ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) ↔
     IntVec (OvA X p) (crd1 X p θ Q x) ∧ IntVec (OvA X p) (crd2 X p θ Q x)) : LatBasis X p θ (reindex₂ X p Q) := by
   intro x
   rw [h x, latRhs_iff]
 
+/- English proof (translation)
+Apply `latBasis_of_crd` to reduce the goal to its premises. Introduce `x`. Rewrite using `[latCrd_of X p θ Q hL x]`. Unfold `IntVec`. Rewrite using `[firstCoords_mul_GL, secondCoords_mul_GL, intVec_inv_iff, intVec_tr_iff]`.
+-/
 theorem latBasis_mulGL (hL : LatBasis X p θ (reindex₂ X p Q)) (c : GL (IdxD D) (OvA X p)) :
     LatBasis X p θ (reindex₂ X p (Q * glK (OvA X p) c)) := by
   apply latBasis_of_crd

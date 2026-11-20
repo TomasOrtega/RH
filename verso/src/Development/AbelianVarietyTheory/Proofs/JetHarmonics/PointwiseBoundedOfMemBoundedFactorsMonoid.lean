@@ -9,6 +9,11 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.R Formalism.FourierDeca
 
 namespace GlobalTheory.HatNF.BoundedFactors
 
+/- English proof (translation)
+Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, star_mul, h, ih (fun i => f i.succ) (fun i => g i.succ) (fun l => h _) (fun l m => hc _ _)]`. Use `(Commute.list_prod_left _ _ ?_).eq` and prove the remaining obligations.
+
+Introduce `x hx`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `hc _ _`.
+-/
 theorem star_prod_ofFn {A : Type} [Ring A] [StarRing A] {r : ℕ} (f g : Fin r → A)
     (h : ∀ l, star (f l) = g l) (hc : ∀ l m, Commute (g l) (g m)) :
     star (List.ofFn f).prod = (List.ofFn g).prod := by
@@ -22,6 +27,11 @@ theorem star_prod_ofFn {A : Type} [Ring A] [StarRing A] {r : ℕ} (f g : Fin r �
     obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hx
     exact hc _ _
 
+/- English proof (translation)
+Establish `h1 : star L.Drb = L.Dr` using `star_prod_ofFn _ _ (fun l => by rw [← hc l, star_star]) (fun l m => L.fns_comm _ (by simp) _ (by simp))`. Establish `h2 : star L.Dri = L.Drbi` using `star_prod_ofFn _ _ hi (fun l m => L.fns_comm _ (by simp) _ (by simp))`. Rewrite using `[star_mul, h1, h2]`. Use `(Commute.list_prod_left _ _ ?_).eq` and prove the remaining obligations. Introduce `x hx`.
+
+Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Use `Commute.list_prod_right _ _ ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨j, rfl⟩` from `(List.mem_ofFn' _ _).1 hy`. Conclude with `L.fns_comm _ (by simp) _ (by simp)`.
+-/
 theorem star_phase {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {r : ℕ} (L : LevelData A r)
     (hc : ∀ l, star (L.c l) = L.cb l) (hi : ∀ l, star (L.ci l) = L.cbi l) :
     star (L.Drb * L.Dri) = L.Dr * L.Drbi := by
@@ -45,16 +55,29 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
   {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq}
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules.
+-/
 theorem hsInner_self_norm (A : Wq →L[ℂ] Wp) : ‖B.hsInner A A‖ = ‖B.hsVec A‖ ^ 2 := by
   unfold B.hsInner
   rw [inner_self_eq_norm_sq_to_K]
   simp
 
+/- English proof (translation)
+Unfold `B.hsInner`. Rewrite using `[mul_comm]`. Conclude with `norm_inner_le_norm _ _`.
+-/
 theorem hsInner_norm_le (A C : Wq →L[ℂ] Wp) : ‖B.hsInner A C‖ ≤ ‖B.hsVec A‖ * ‖B.hsVec C‖ := by
   unfold B.hsInner
   rw [mul_comm]
   exact norm_inner_le_norm _ _
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `hb`. Use `⟨Real.sqrt C, Real.sqrt_nonneg _, fun Φ x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha Φ (b.1 Φ) x hx`. Establish `h2 : nv ((star b).1 (b.1 Φ)) x ≤ C * nv Φ x` using `h Φ x hx`. Establish `h3 : nv (b.1 Φ) x ^ 2 ≤ nv Φ x * nv ((star b).1 (b.1 Φ)) x`.
+
+Unfold `nv`. Rewrite using `[← hsInner_self_norm, h1]`. Conclude with `hsInner_norm_le _ _`. Establish `h0 : 0 ≤ nv Φ x` using `norm_nonneg _`. Establish `h4 : nv (b.1 Φ) x ^ 2 ≤ (Real.sqrt C * nv Φ x) ^ 2`.
+
+Rewrite using `[mul_pow, Real.sq_sqrt hC]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 h0]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg _) h0) two_ne_zero).1 h4`.
+-/
 theorem ptB_of_star_mul_self (b : RA P Bs) (ha : PtAdj P Bs b) (hb : PtB P Bs (star b * b)) : PtB P Bs b := by
   obtain ⟨C, hC, h⟩ := hb
   refine ⟨Real.sqrt C, Real.sqrt_nonneg _, fun Φ x hx => ?_⟩
@@ -70,6 +93,15 @@ theorem ptB_of_star_mul_self (b : RA P Bs) (ha : PtAdj P Bs b) (hb : PtB P Bs (s
     nlinarith [mul_le_mul_of_nonneg_left h2 h0]
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg _) h0) two_ne_zero).1 h4
 
+/- English proof (translation)
+Take `⟨C, hC, h⟩` from `hb`. Use `⟨C, hC, fun Ψ x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `ha ((star b).1 Ψ) Ψ x hx`. Establish `h2` using `h ((star b).1 Ψ) x hx`. Establish `h3 : nv ((star b).1 Ψ) x ^ 2 ≤ nv (b.1 ((star b).1 Ψ)) x * nv Ψ x`.
+
+Unfold `nv`. Rewrite using `[← hsInner_self_norm, ← h1]`. Conclude with `hsInner_norm_le _ _`. Establish `h0 : 0 ≤ nv Ψ x` using `norm_nonneg _`. Establish `h0' : 0 ≤ nv ((star b).1 Ψ) x` using `norm_nonneg _`.
+
+Break down `h0'.eq_or_lt with he | hp` into its components or cases. Rewrite using `[← he]`. Conclude with `mul_nonneg hC h0`. Establish `h4 : nv ((star b).1 Ψ) x * nv ((star b).1 Ψ) x ≤ nv ((star b).1 Ψ) x * (C * nv Ψ x)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 h0]`.
+
+Conclude with `le_of_mul_le_mul_left h4 hp`.
+-/
 theorem ptB_star (b : RA P Bs) (ha : PtAdj P Bs b) (hb : PtB P Bs b) : PtB P Bs (star b) := by
   obtain ⟨C, hC, h⟩ := hb
   refine ⟨C, hC, fun Ψ x hx => ?_⟩
@@ -89,6 +121,15 @@ theorem ptB_star (b : RA P Bs) (ha : PtAdj P Bs b) (hb : PtB P Bs b) : PtB P Bs 
 
 end
 
+/- English proof (translation)
+Introduce `Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hN`. Take `⟨⟨-, -, hRel, -, hc, hi, -⟩, -⟩` from `GlobalTheory.T.normalForm_actualOperators_algebraicHypotheses Wp Wq P Bs X μ L st l0 d hD hN`. Establish `hκ` using `GlobalTheory.T.radialPairConstants_pointwiseAdjoint_bounded Wp Wq P Bs X μ L st l0 d hD hN`. Take `⟨⟨h1, hmul⟩, hζi, hζbi, hD1, hD2, hD3, hD4, -⟩` from `GlobalTheory.T.pointwise_bounded_radial_ops_closure_and_functions Wp Wq P Bs X μ L st l0 d hD hN`. Establish `hS` using `GlobalTheory.T.radialRaisingOperators_pointwiseAdjointPair Wp Wq P Bs X μ L st l0 d hD hN`.
+
+Establish `hSb : ∀ l ∈ Finset.Icc 1 (P.k - 1), PtB P Bs (d.SS l)` using `fun l hl => ptB_of_star_mul_self _ (hS l hl) (by rw [hRel.2.2.2.2.2 l hl]; exact (hκ _).2)`. Establish `hSs : ∀ l ∈ Finset.Icc 1 (P.k - 1), PtB P Bs (star (d.SS l))` using `fun l hl => ptB_star _ (hS l hl) (hSb l hl)`. Introduce `b hb`. Proceed by induction on `hb using Submonoid.closure_induction with`. Consider the case `one => exact h1`.
+
+Consider the case `mul x y _ _ hx hy => exact hmul _ _ hx hy`. Consider the case `mem x hx`. Break down `hx with ((hx | ⟨f, rfl⟩) | ⟨l, hl, rfl⟩) | ⟨l, hl, rfl⟩` into its components or cases. Break down `hx with rfl | rfl | rfl | rfl exacts [hζi, hζbi, hD1, hD2]` into its components or cases. Conclude with `(hκ f).2`.
+
+Conclude with `hmul _ _ hD3 (hSb l (by simpa using hl))`. Use `show PtB P Bs (star (d.L.Drb * d.L.Dri * d.SS l))`. Rewrite using `[star_mul, star_phase d.L hc hi]`. Conclude with `hmul _ _ (hSs l (by simpa using hl)) hD4`.
+-/
 theorem ptB_of_mem_bmon : ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq) (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r)) (L : LevelData (RA P Bs) P.r) (st : Start (RA P Bs)) (l0 : ℕ) (d : Q.NFData P (RA P Bs)), P5.IsData P Bs.z Bs.z' Bs.π Bs.π' X μ L st l0 → IsNF X d → ∀ b ∈ bmon d, PtB P Bs b := by
   intro Wp Wq _ _ _ _ _ _ P Bs X μ L st l0 d hD hN
   obtain ⟨⟨-, -, hRel, -, hc, hi, -⟩, -⟩ := GlobalTheory.T.normalForm_actualOperators_algebraicHypotheses Wp Wq P Bs X μ L st l0 d hD hN

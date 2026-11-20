@@ -19,6 +19,15 @@ open Classical
 noncomputable section
 namespace GlobalTheory.ThetaSmoothF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
+/- English proof (translation)
+Take `⟨lam, hl, hlam⟩` from `GlobalTheory.HeisLineDiffF.exists_log (_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB)`. Set `φ : (IxF F nS nT → ℂ) →+ ℂ` to `{ toFun := fun v => lam (symplOHF σ JS JT ξ₀ x (iotaVF ι v)) map_zero' := by rw [iotaVF_zero, GlobalTheory.HeisLineDiffF.symplOHF_zero_right, map_zero] map_add' := fun u v => by rw [iotaVF_add, GlobalTheory.HeisLineDiffF.symplOHF_add_right, map_add] }`. Establish `hφ : Continuous φ` using `hl.comp (GlobalTheory.HeisLineDiffF.continuous_symplOHF σ JS JT ξ₀ x (continuous_iotaVF hι))`. Set `eqv` to `(Module.finBasis ℝ (IxF F nS nT → ℂ)).equivFunL`. Set `L' : (Fin (Module.finrank ℝ (IxF F nS nT → ℂ)) → ℝ) →+ WOF F E nS nT` to `(iotaHom ι).comp eqv.symm.toLinearEquiv.toAddMonoidHom`.
+
+Establish `hL' : Continuous L'` using `(continuous_iotaVF hι).comp eqv.symm.continuous`. Establish `hsm` using `hf.smooth _ L' hL' (fun t => real_iotaVF hι _) x`. Establish `hg : ContDiff ℝ ∞ fun v : IxF F nS nT → ℂ => f (x + iotaVF ι v)`. Establish `h1` using `hsm.comp eqv.contDiff`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `v`. Simplify using `[L', iotaHom]`. Establish `e : (fun v : IxF F nS nT → ℂ => heisOF σ JS JT ξ₀ B.ψ (iotaVF ι v) f x) = fun v => Complex.exp (φ.toRealLinearMap hφ v) * f (x + iotaVF ι v)`. Use function extensionality and compare the values at `v`. Rewrite using `[heisOF, hlam _ (GlobalTheory.HeisLineDiffF.sndA_symplOHF σ JS JT ξ₀ x _ (real_iotaVF hι v))]`.
+
+Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `((φ.toRealLinearMap hφ).contDiff.cexp).mul hg`.
+-/
 theorem contDiff_heis_iota_k (σ : E →ₐ[F] E) (B : Base F E) (hB : _root_.UpperTheory.TP.W.GoodK σ B) {nS nT : ℕ}
     (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E) (ξ₀ : E)
     {θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)} {ι : (InfinitePlace F → ℂ) →+ AEF F E} (hι : IsChartF θ ι)
@@ -49,6 +58,19 @@ theorem contDiff_heis_iota_k (σ : E →ₐ[F] E) (B : Base F E) (hB : _root_.Up
   exact ((φ.toRealLinearMap hφ).contDiff.cexp).mul hg
 end GlobalTheory.ThetaSmoothF
 open GlobalTheory.ThetaSmoothF in
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' θ hθ ι hι hψ f hf`. Establish `hstd` using `_root_.GlobalTheory.T.standard_additive_character_sign F E σ B hB`. Set `H` to `HMF (nS := nS) (nT := nT) JS JT ξ₀ (fun w : InfinitePlace F => (B.emb w).1)`. Set `B₀ : (IxF F nS nT → ℂ) →ₗ[ℝ] (IxF F nS nT → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun x y => (star y ⬝ᵥ H *ᵥ x).im) (fun x x' y => by simp [Matrix.mulVec_add, dotProduct_add]) (fun c x y => by simp [Matrix.mulVec_smul, dotProduct_smul]) (fun x y y' => by simp [add_dotProduct]) (fun c x y => by simp [star_smul, smul_dotProduct])`. Set `om : (IxF F nS nT → ℂ) →L[ℝ] (IxF F nS nT → ℂ) →L[ℝ] ℝ` to `LinearMap.toContinuousLinearMap ((LinearMap.toContinuousLinearMap (𝕜 := ℝ)).toLinearMap ∘ₗ B₀)`.
+
+Establish `e : (fun x y => om x y) = fun x y => (star y ⬝ᵥ H *ᵥ x).im` using `rfl`. Establish `hH : IsHeis (fun x y : IxF F nS nT → ℂ => (star y ⬝ᵥ H *ᵥ x).im) (rhoVF σ JS JT ξ₀ B.ψ hψ ι)`. Use `⟨fun g => ?_, fun u v g => ?_, fun u g => norm_rhoBF hψ _ g, fun g => ?_⟩` and prove the remaining obligations. Use `show rhoBF σ JS JT ξ₀ B.ψ hψ (iotaVF ι 0) g = g`. Rewrite using `[iotaVF_zero]`.
+
+Conclude with `rhoBF_zero hψ g`. Use `show rhoBF σ JS JT ξ₀ B.ψ hψ (iotaVF ι u) (rhoBF σ JS JT ξ₀ B.ψ hψ (iotaVF ι v) g) = _ • rhoBF σ JS JT ξ₀ B.ψ hψ (iotaVF ι (u + v)) g`. Rewrite using `[rhoBF_rhoBF, iotaVF_add, _root_.GlobalTheory.T.archimedean_chart_theta_equivariant F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' θ hθ ι hι u v]`. Conclude with `(GlobalTheory.T.continuous_heisenbergOperatorBoundedThetaFunctions F E σ nS nT JS JT ξ₀ B.ψ hψ g).comp (continuous_iotaVF hι)`. Use `GlobalTheory.T.heisenberg_smooth_of_weak_derivative_closed_set (IxF F nS nT → ℂ) (BBF σ JS JT ξ₀ B.ψ) om (rhoVF σ JS JT ξ₀ B.ψ hψ ι) (e ▸ hH) (WOF F E nS nT) (ev _ _) norm_ev_le (fun b C => norm_QB_le b) (fun x v => ⟨B.ψ (symplOHF σ JS JT ξ₀ x (iotaVF ι v)), x + iotaVF ι v, fun b …` and prove the remaining obligations.
+
+Introduce `g hg x`. Conclude with `(_root_.GlobalTheory.ThetaSmoothF.contDiff_heis_iota_k σ B hB JS JT ξ₀ hι hg x).differentiable (by simp)`. Introduce `g hg z`. Set `L : ℝ →+ WOF F E nS nT` to `{ toFun := fun t => iotaVF ι (t • z) map_zero' := by rw [zero_smul, iotaVF_zero] map_add' := fun s t => by rw [add_smul, iotaVF_add] }`. Establish `hL : Continuous L` using `(continuous_iotaVF hι).comp (continuous_id.smul continuous_const)`.
+
+Establish `hL0 : ∀ t, (L t).map (finPartF F E) = 0` using `fun t => real_iotaVF hι _`. Set `d : WOF F E nS nT → ℂ` to `fun w => deriv (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) g.1 w) 0`. Establish `hlev : ∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧ ∀ u ∈ U, u.map (infPartF F E) = 0 → heisOF σ JS JT ξ₀ B.ψ u d = d`. Take `⟨U, hU, hUf⟩` from `hg.level`. Conclude with `⟨U, hU, fun u hu hu0 => _root_.GlobalTheory.T.theta_function_rapid_decay F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' hstd g.1 L hL hL0 u hu0 (hUf u hu hu0)⟩`.
+
+Establish `hsm : ∀ (k : ℕ) (L' : (Fin k → ℝ) →+ WOF F E nS nT), Continuous L' → (∀ t, (L' t).map (finPartF F E) = 0) → ∀ w, ContDiff ℝ ∞ fun t => d (w + L' t)` using `fun k L' hL' hL'0 w => _root_.GlobalTheory.T.theta_function_integrable F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' hstd g.1 hg L hL hL0 k L' hL' hL'0 w`. Establish `hd : IsThetaFunOF σ JS JT ξ₀ B.ψ d` using `⟨fun γ w => _root_.GlobalTheory.T.theta_function_moderate_growth F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' hstd g.1 hg L hL hL0 γ w, hlev, _root_.GlobalTheory.T.theta_integral_unfolding F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' hstd d hlev hsm, hsm⟩`. Establish `hb` using `GlobalTheory.T.orientedModelThetaFunction_bounded F E σ nS nT JS JT ξ₀ B.ψ hψ d hd`. Use `⟨toBF d hd.cont hb hd.quasi, hd, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(_root_.GlobalTheory.T.theta_function_smooth_vectors F E σ B hB nS nT JS JT hS hT ξ₀ hξ hξ' hstd g.1 hg L hL hL0 x).hasDerivAt`.
+-/
 theorem GlobalTheory.ThetaSmoothF.sm_of_thetaF_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
       IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, ξ₀ ≠ 0 → σ ξ₀ = -ξ₀ → ∀ θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ),

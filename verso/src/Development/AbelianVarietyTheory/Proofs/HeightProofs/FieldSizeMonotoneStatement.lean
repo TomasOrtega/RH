@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.HeightFunctions.FiniteDimens
 open NumberField IsDedekindDomain GlobalTheory.FieldSize
 open scoped IntermediateField nonZeroDivisors
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FieldSize.sz_mono_and_of_le | exact GlobalTheory.FieldSize.sz_mono_and_of_le | (intros; apply GlobalTheory.FieldSize.sz_mono_and_of_le <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.field_size_monotone : (∀ (F : IntermediateField ℚ ℂ) (a b a' b' : ℝ), Sz F a b → a ≤ a' → b ≤ b' → Sz F a' b') ∧ ∀ (F F' : IntermediateField ℚ ℂ) (a b : ℝ), F ≤ F' → Sz F' a b → Sz F a b := by
   first | exact @GlobalTheory.FieldSize.sz_mono_and_of_le | exact GlobalTheory.FieldSize.sz_mono_and_of_le | (intros; apply GlobalTheory.FieldSize.sz_mono_and_of_le <;> assumption)

@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.UnipConj.LineModulus.addEquivAddHaarChar_imLine | exact GlobalTheory.UnipConj.LineModulus.addEquivAddHaarChar_imLine | (intros; apply GlobalTheory.UnipConj.LineModulus.addEquivAddHaarChar_imLine <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.imaginary_line_measure_scaling : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (l : (AE F E)ˣ) [IsTopologicalAddGroup (GlobalTheory.UnipConj.imLine σ)] [LocallyCompactSpace (GlobalTheory.UnipConj.imLine σ)]
     [MeasurableSpace (GlobalTheory.UnipConj.imLine σ)] [BorelSpace (GlobalTheory.UnipConj.imLine σ)]

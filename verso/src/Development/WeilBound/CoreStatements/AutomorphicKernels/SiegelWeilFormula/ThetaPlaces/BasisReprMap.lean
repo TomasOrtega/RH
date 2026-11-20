@@ -12,6 +12,9 @@ section Repr
 variable {k : Type} [Field k] {R S B : Type} [CommRing R] [CommRing S] [CommRing B] [Algebra k R] [Algebra k S]
   [Algebra k B]
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => simp [Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+-/
 theorem basis_repr_map' {J : Type} (b : Module.Basis J k B) (ρ : R →ₐ[k] S) (x : R ⊗[k] B) (i : J) :
     (Algebra.TensorProduct.basis S b).repr (Algebra.TensorProduct.map ρ (AlgHom.id k B) x) i =
       ρ ((Algebra.TensorProduct.basis R b).repr x i) := by
@@ -31,6 +34,9 @@ def mapV (v : HeightOneSpectrum (𝓞 F)) :
     HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E →ₐ[F] HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E :=
   Algebra.TensorProduct.map (phiV v) (AlgHom.id F E)
 
+/- English proof (translation)
+Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem mapV_eq (v : HeightOneSpectrum (𝓞 F)) (x : HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E) :
     mapV v x = Algebra.TensorProduct.map (HeckeCharacterZeroLocus.SiegelWeilU.evalV F v) (AlgHom.id F E)
       (Algebra.TensorProduct.map (HeckeCharacterZeroLocus.SiegelWeilU.sndA F) (AlgHom.id F E) x) := by
@@ -42,22 +48,40 @@ theorem mapV_eq (v : HeightOneSpectrum (𝓞 F)) (x : HeckeCharacterZeroLocus.Si
 def IntV (bs : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) (z : HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) : Prop :=
   ∀ k, (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs).repr z k ∈ v.adicCompletionIntegers F
 
+/- English proof (translation)
+Use `filter_upwards [a.2.2] with v hv`. Conclude with `hv`.
+-/
 theorem ev_int_adele (a : HeckeCharacterZeroLocus.SiegelWeilU.AF F) :
     ∀ᶠ v in cofinite, phiV v a ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F := by
   filter_upwards [a.2.2] with v hv
   exact hv
 
+/- English proof (translation)
+Use `filter_upwards [ev_int_adele (algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.AF F) f)] with v hv`. Rewrite `hv` using `[AlgHom.commutes]`. Then use the resulting hypothesis.
+-/
 theorem ev_int_F (f : F) :
     ∀ᶠ v in cofinite, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) f ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F := by
   filter_upwards [ev_int_adele (algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.AF F) f)] with v hv
   rwa [AlgHom.commutes] at hv
 
+/- English proof (translation)
+Introduce `k`. Rewrite using `[map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Conclude with `sum_mem fun i hi => h i hi k`.
+-/
 theorem intV_sum (bs : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) {ι : Type} (s : Finset ι)
     (z : ι → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E) (h : ∀ i ∈ s, IntV bs v (z i)) : IntV bs v (∑ i ∈ s, z i) := by
   intro k
   rw [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]
   exact sum_mem fun i hi => h i hi k
 
+/- English proof (translation)
+Use `set bA := Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) bs`. Establish `h1 : ∀ᶠ v in cofinite, ∀ k, phiV v (bA.repr c k) ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => ev_int_adele _`. Establish `h2 : ∀ᶠ v in cofinite, ∀ k j l, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) (bs.repr (bs k * bs j) l) ∈ (v : HeightOneSpectrum (𝓞 F)).adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun j => Filter.eventually_all.2 fun l => ev_int_F _`. Use `filter_upwards [h1, h2] with v hv1 hv2`. Introduce `z hz l`.
+
+Use `set bV := Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs`. Establish `hc : mapV v c = ∑ k, phiV v (bA.repr c k) • bV k` using `by conv_lhs => rw [← bV.sum_repr (mapV v c)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mapV, basis_repr_map']`. Establish `hzz : z = ∑ j, bV.repr z j • bV j` using `(bV.sum_repr z).symm`.
+
+Establish `hprod : bV.repr (mapV v c * z) l = ∑ k, ∑ j, (phiV v (bA.repr c k) * bV.repr z j) * algebraMap F _ (bs.repr (bs k * bs j) l)`. Rewrite using `[hc]`. Use `conv_lhs => rw [hzz]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [smul_mul_smul_comm, map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, bV, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, mul_one, Algebra.TensorProduct.basis_repr_tmul, Finsupp.mapRange_apply, one_smul]`.
+
+Rewrite using `[hprod]`. Conclude with `sum_mem fun k _ => sum_mem fun j _ => mul_mem (mul_mem (hv1 k) (hz j)) (hv2 k j l)`.
+-/
 theorem ev_mul_int (bs : Module.Basis (Fin 2) F E) (c : HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E) :
     ∀ᶠ v in cofinite, ∀ z, IntV bs v z → IntV bs v (mapV v c * z) := by
   set bA := Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.AF F) bs
@@ -88,6 +112,11 @@ theorem ev_mul_int (bs : Module.Basis (Fin 2) F E) (c : HeckeCharacterZeroLocus.
 def IntM (bs : Module.Basis (Fin 2) F E) (v : HeightOneSpectrum (𝓞 F)) {p q : ℕ}
     (M : Matrix (Fin p) (Fin q) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)) : Prop := ∀ i j, IntV bs v (M i j)
 
+/- English proof (translation)
+Establish `h : ∀ᶠ v in cofinite, ∀ i j, ∀ z, IntV bs v z → IntV bs v (mapV v (A i j) * z)` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => ev_mul_int bs (A i j)`. Use `filter_upwards [h] with v hv`. Introduce `p M hM i j`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`. Use `intV_sum bs v _ _ fun l _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[mul_comm]`. Conclude with `hv l j _ (hM i l)`.
+-/
 theorem ev_matmul_int (bs : Module.Basis (Fin 2) F E) {q : ℕ} (A : Matrix (Fin q) (Fin q) (HeckeCharacterZeroLocus.SiegelWeilU.AF F ⊗[F] E)) :
     ∀ᶠ v in cofinite, ∀ (p : ℕ) (M : Matrix (Fin p) (Fin q) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)),
       IntM bs v M → IntM bs v (M * A.map (mapV v)) := by

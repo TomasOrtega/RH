@@ -7,5 +7,8 @@ open scoped TensorProduct InnerProductSpace
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.PairLift
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.PairLift.cuspAll_of_lowAll | exact GlobalTheory.PairLift.cuspAll_of_lowAll | (intros; apply GlobalTheory.PairLift.cuspAll_of_lowAll <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.thetaLifts_cuspidal_of_lower_tower_lifts_vanish : ∀ (D : D7) (X : ProvA), Inputs D X → LowAll D X → CuspAll D X := by
   first | exact @GlobalTheory.PairLift.cuspAll_of_lowAll | exact GlobalTheory.PairLift.cuspAll_of_lowAll | (intros; apply GlobalTheory.PairLift.cuspAll_of_lowAll <;> assumption)

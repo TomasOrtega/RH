@@ -26,18 +26,39 @@ section View
 
 variable {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts) (a b : G.HH D → ℤ)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem partner_view (p : ℕ) (t : G.HH D) (e : ℕ) : G.partner D p t e = GC.partner (viewD D) p t e := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fill_view (j : ℕ) (z : Bool × G.HH D) : G.fill X b j z = GC.fill (viewX X) b j z := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem VV_view (p : ℕ) : G.VV X K a b p = GC.VV (viewX X) K a b p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem TTP_view (p : ℕ) : G.TTP X K a b p = GC.TTP (viewX X) K a b p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tauP_view (p : ℕ) : G.tauP X K a b p = GC.tauP (viewX X) K a b p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ioP_viewX (p : ℕ) : G.ioP X K a b p = GC.ioP (viewX X) K a b p := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gainP_eq_gainP_viewX (p j : ℕ) : G.gainP X K a b p j = GC.gainP (viewX X) K a b p j := rfl
 
 end View
@@ -49,6 +70,13 @@ structure GAll where
   a : GC.HH D → ℤ
   b : GC.HH D → ℤ
 
+/- English proof (translation)
+Take `⟨⟨R, ⟨TT, T2, u0, cls⟩, hPf⟩, ⟨sc, Sc, eta⟩, ⟨bs, bs_orb, bs_step, off, off_top, off_thin, off_thick, kapI, ep⟩, a, b⟩` from `A`. Take `⟨⟨R', ⟨TT', T2', u0', cls'⟩, hPf'⟩, ⟨sc', Sc', eta'⟩, ⟨bs', bs_orb', bs_step', off', off_top', off_thin', off_thick', kapI', ep'⟩, a', b'⟩` from `A'`. Simplify using `only at hR hTT hT2 hu0 hcls hhP hsc hSc heta hbs hoff hkap hep ha hb`. Substitute `hR hT2 hcls hsc hSc heta hkap hep` using the available equality. Establish `hTTe : TT = TT'` using `Finset.image_injective (fun x y h => Fin.ext h) hTT`.
+
+Establish `hu0e : u0 = u0'` using `Fin.ext hu0`. Establish `hPfe : hPf = hPf'` using `funext fun p => Fin.ext (hhP p)`. Substitute `hTTe hu0e hPfe` using the available equality. Establish `hbse : bs = bs'` using `funext fun h => funext fun t => Fin.ext (hbs h t h t rfl rfl)`. Establish `hoffe : off = off'` using `funext fun j => funext fun z => hoff j z.1 z.2 z.2 rfl`.
+
+Establish `hae : a = a'` using `funext fun t => ha t t rfl`. Establish `hbe : b = b'` using `funext fun t => hb t t rfl`. Substitute `hbse hoffe hae hbe` using the available equality. Both sides reduce to the same expression.
+-/
 theorem GAll.ext_val (A A' : GAll) (hR : A.D.R = A'.D.R)
     (hTT : A.D.host.TT.image Formalism.HC.Frame.A.val = A'.D.host.TT.image Formalism.HC.Frame.A.val)
     (hT2 : A.D.host.T2 = A'.D.host.T2) (hu0 : A.D.host.u0.val = A'.D.host.u0.val)
@@ -103,6 +131,13 @@ end GAll
 
 def allOf {D : D7} {L : SizeData₂ D} (X : G.Inst D L) : GAll := ⟨viewD D, viewL L, viewX X, G.aL L, G.bL L⟩
 
+/- English proof (translation)
+Establish `key : ∀ {E E' : D7} (s : G.HH E) (s' : G.HH E'), E.host.TT.image Formalism.HC.Frame.A.val = E'.host.TT.image Formalism.HC.Frame.A.val → s.val = s'.val → s ∈ E.host.TT → s' ∈ E'.host.TT`. Introduce `E E' s s' hT hs hm`. Establish `h1 : s.val ∈ E'.host.TT.image Formalism.HC.Frame.A.val`. Rewrite using `[← hT]`. Conclude with `Finset.mem_image_of_mem _ hm`.
+
+Take `⟨u, hu, hu'⟩` from `Finset.mem_image.mp h1`. Establish `hus : u = s'` using `Fin.ext (hu'.trans hs)`. Conclude with `hus ▸ hu`. Distinguish the cases in `h : t ∈ D.host.TT`. Establish `h'` using `key t t' hTT ht h`.
+
+Rewrite using `[dif_pos h, dif_pos h']`. Conclude with `hf ⟨t, h⟩ ⟨t', h'⟩ ht`. Establish `h' : t' ∉ D'.host.TT` using `fun h' => h (key t' t hTT.symm ht.symm h')`. Rewrite using `[dif_neg h, dif_neg h']`.
+-/
 theorem extension_by_zero_val_eq {D D' : D7} {P : Prop} (_he : P)
     (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val) (f : D.host.TT → ℤ) (f' : D'.host.TT → ℤ)
     (hf : ∀ (t : D.host.TT) (t' : D'.host.TT), (t : D.R.A).val = (t' : D'.R.A).val → f t = f' t')
@@ -126,6 +161,17 @@ theorem extension_by_zero_val_eq {D D' : D7} {P : Prop} (_he : P)
   · have h' : t' ∉ D'.host.TT := fun h' => h (key t' t hTT.symm ht.symm h')
     rw [dif_neg h, dif_neg h']
 
+/- English proof (translation)
+Establish `hN : H.toHostRaw.condN = H'.toHostRaw.condN`. Simplify using `only [Formalism.HC.HostRaw.condN, hq, hd, hQS]`. Establish `hps : ∀ p, H.toHostRaw.psAt p = H'.toHostRaw.psAt p`. Introduce `p`. Unfold `Formalism.HC.HostRaw.psAt`.
+
+Distinguish the cases in `hc : Nat.Coprime p H.toHostRaw.condN`. Establish `hc' : Nat.Coprime p H'.toHostRaw.condN`. Rewrite using `[← hN]`. Conclude with `hc`. Rewrite using `[dif_pos hc, dif_pos hc']`.
+
+Establish `e` using `H.flPS (ZMod.unitOfCoprime p hc)`. Establish `e'` using `H'.flPS (ZMod.unitOfCoprime p hc')`. Rewrite using `[e, e']`. Simplify using `only [ZMod.coe_unitOfCoprime, ZMod.val_natCast, Formalism.HC.HostRaw.condN, hq, hd, hQS]`. Establish `hc' : ¬ Nat.Coprime p H'.toHostRaw.condN`.
+
+Rewrite using `[← hN]`. Conclude with `hc`. Rewrite using `[dif_neg hc, dif_neg hc']`. Use function extensionality and compare the values at `p`. Unfold `Formalism.BasicNotions.Host.cls Formalism.BasicNotions.primeClass`.
+
+Rewrite using `[hps p]`. Simplify using `only [Formalism.HC.HostRaw.small, hq, hd, hQS]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+-/
 theorem host_cls_eq {R R' : Ranks} {H : Host R} {H' : Host R'} (hq : H.q = H'.q) (hd : H.d = H'.d)
     (hQS : H.QS = H'.QS) : H.cls = H'.cls := by
   have hN : H.toHostRaw.condN = H'.toHostRaw.condN := by
@@ -153,6 +199,9 @@ theorem host_cls_eq {R R' : Ranks} {H : Host R} {H' : Host R'} (hq : H.q = H'.q)
   simp only [Formalism.HC.HostRaw.small, hq, hd, hQS]
   split_ifs <;> simp_all
 
+/- English proof (translation)
+Use `GAll.ext_val _ _ hR hTT hT2 hu0 hcls hhP hsc hSc heta hbs hoff hkap hep ?_ ?_` and prove the remaining obligations. Introduce `t t' ht`. Conclude with `extension_by_zero_val_eq hR hTT _ _ haT t t' ht`. Introduce `t t' ht`. Conclude with `extension_by_zero_val_eq hR hTT _ _ hbT t t' ht`.
+-/
 theorem allOf_eq {D D' : D7} {L : SizeData₂ D} {L' : SizeData₂ D'} (X : G.Inst D L) (X' : G.Inst D' L')
     (hR : D.R = D'.R) (hTT : D.host.TT.image Formalism.HC.Frame.A.val = D'.host.TT.image Formalism.HC.Frame.A.val)
     (hT2 : D.host.T2 = D'.host.T2) (hu0 : D.host.u0.val = D'.host.u0.val)
@@ -179,6 +228,11 @@ variable {D : D7} (L0 : SizeData₂ D) (X0 : G.Inst D L0) (K : G.Consts) (dr : S
   (hg : ∀ i, ¬ (G.IsResidueClassZero D (D.host.g i) ∨ G.IsSg D (D.host.g i)))
   (hu : ∀ w, D.what₂.muAt w = D.what₂.mu0 → ∀ j, 1 ≤ j → j ≤ D.R.m → Fval L0 j w = 0)
 
+/- English proof (translation)
+Establish `hof : D.R.ofNat ((t : D.R.A).val) = (t : D.R.A)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[Formalism.HC.Frame.ofNat, Formalism.HC.Frame.A.ofVal, Formalism.HC.Frame.A.val]`. Conclude with `Nat.mod_eq_of_lt (t : D.R.A).2`. Use `show G.fill X0 (G.bL L0) j (G.partner D p t e) = GC.fill (viewX X0) (G.bL L0) j (GC.partner (viewD D) p (D.R.ofNat (t : D.R.A).val) e)`.
+
+Rewrite using `[hof, fill_view, partner_view]`.
+-/
 theorem tie_wPart_V (j : ℕ) (t : D.host.TT) (p e : ℕ) :
     (tieWeightData L0 X0 K dr len hw hg hu).wPart j t p e =
       (allOf X0).wPartV j (t : D.R.A).val p e := by
@@ -190,6 +244,9 @@ theorem tie_wPart_V (j : ℕ) (t : D.host.TT) (p e : ℕ) :
     GC.fill (viewX X0) (G.bL L0) j (GC.partner (viewD D) p (D.R.ofNat (t : D.R.A).val) e)
   rw [hof, fill_view, partner_view]
 
+/- English proof (translation)
+Distinguish the cases in `h : (p : ℝ) ≤ L0.sc.X'' D.R.n`. Rewrite using `[tie_gainTot_below L0 X0 K dr len hw hg hu p hp h]`. Conclude with `(if_pos h).symm`. Rewrite using `[tie_gainTot_above L0 X0 K dr len hw hg hu p (not_le.1 h)]`. Conclude with `(if_neg h).symm`.
+-/
 theorem tie_gainTot_V (p : ℕ) (hp : p.Prime) :
     gainTot (tieWeightData L0 X0 K dr len hw hg hu) p = (allOf X0).gainTotV K p := by
   by_cases h : (p : ℝ) ≤ L0.sc.X'' D.R.n
@@ -198,6 +255,9 @@ theorem tie_gainTot_V (p : ℕ) (hp : p.Prime) :
   · rw [tie_gainTot_above L0 X0 K dr len hw hg hu p (not_le.1 h)]
     exact (if_neg h).symm
 
+/- English proof (translation)
+Distinguish the cases in `h : (p : ℝ) ≤ L0.sc.X'' D.R.n`. Rewrite using `[tie_ioTot_below L0 X0 K dr len hw hg hu p hp h]`. Conclude with `(if_pos h).symm`. Rewrite using `[tie_ioTot_above L0 X0 K dr len hw hg hu p (not_le.1 h)]`. Conclude with `(if_neg h).symm`.
+-/
 theorem tie_ioTot_V (p : ℕ) (hp : p.Prime) :
     ioTot (tieWeightData L0 X0 K dr len hw hg hu) p = (allOf X0).ioTotV K p := by
   by_cases h : (p : ℝ) ≤ L0.sc.X'' D.R.n
@@ -207,12 +267,20 @@ theorem tie_ioTot_V (p : ℕ) (hp : p.Prime) :
     exact (if_neg h).symm
 
 open Classical in
+/- English proof (translation)
+The claim follows from `tie_TTwVals L0 X0 K dr len hw hg hu p hp`.
+-/
 theorem tie_TTwVals_V (p : ℕ) (hp : p.Prime) :
     TTwVals (tieWeightData L0 X0 K dr len hw hg hu) p = if UnderSupp L0 p then {(allOf X0).TTPv K p} else ∅ :=
   tie_TTwVals L0 X0 K dr len hw hg hu p hp
 
 end Tied
 
+/- English proof (translation)
+Use `⟨fun t t' ht j p e => ?_, fun p hp => ⟨?_, ?_, fun hU => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[tie_wPart_V, tie_wPart_V, hA, ht]`. Rewrite using `[tie_gainTot_V _ _ _ _ _ _ _ _ p hp, tie_gainTot_V _ _ _ _ _ _ _ _ p hp, hA]`. Rewrite using `[tie_ioTot_V _ _ _ _ _ _ _ _ p hp, tie_ioTot_V _ _ _ _ _ _ _ _ p hp, hA]`. Rewrite using `[tie_TTwVals_V _ _ _ _ _ _ _ _ p hp, tie_TTwVals_V _ _ _ _ _ _ _ _ p hp, hA]`.
+
+Distinguish the cases in `h : UnderSupp L0 p`. Rewrite using `[if_pos h, if_pos (hU.1 h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hU.2 h'))]`.
+-/
 theorem tie_invariance {D D' : D7} (L0 : SizeData₂ D) (L0' : SizeData₂ D') (X0 : G.Inst D L0) (X0' : G.Inst D' L0')
     (K : G.Consts) (dr dr' : Set ℕ) (len : D.what₂.Word → D.what₂.places.Pl → ℚ)
     (len' : D'.what₂.Word → D'.what₂.places.Pl → ℚ) (hw : 1 ≤ L0.sc.w'' D.R.n) (hw' : 1 ≤ L0'.sc.w'' D'.R.n)

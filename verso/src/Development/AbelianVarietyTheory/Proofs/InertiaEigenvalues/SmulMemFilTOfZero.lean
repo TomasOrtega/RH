@@ -11,6 +11,11 @@ namespace GlobalTheory.BKGal.XiFil
 
 variable {l : ℕ} [Fact l.Prime]
 
+/- English proof (translation)
+Establish `h` using `GlobalTheory.BdRQuot.mem_FilD_nat (l := l) 0 x`. Rewrite `h` using `[Nat.cast_zero]`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, -, rfl⟩`.
+
+Conclude with `⟨z, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, GlobalTheory.BdRQuot.mem_filtration_zero z, rfl⟩`.
+-/
 theorem mem_FilD_zero_iff (x : Per.BdR l) :
     x ∈ Per.FilD l 0 ↔ ∃ z : Per.BdRp l, x = algebraMap (Per.BdRp l) (Per.BdR l) z := by
   have h := GlobalTheory.BdRQuot.mem_FilD_nat (l := l) 0 x
@@ -22,12 +27,18 @@ theorem mem_FilD_zero_iff (x : Per.BdR l) :
   · rintro ⟨z, rfl⟩
     exact ⟨z, GlobalTheory.BdRQuot.mem_filtration_zero z, rfl⟩
 
+/- English proof (translation)
+Take `⟨z, rfl⟩` from `(mem_FilD_zero_iff x).1 hx`. Rewrite using `[← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ z hy`.
+-/
 theorem mul_mem_FilD_of_zero {x y : Per.BdR l} {n : ℤ} (hx : x ∈ Per.FilD l 0) (hy : y ∈ Per.FilD l n) :
     x * y ∈ Per.FilD l n := by
   obtain ⟨z, rfl⟩ := (mem_FilD_zero_iff x).1 hx
   rw [← Algebra.smul_def]
   exact Submodule.smul_mem _ z hy
 
+/- English proof (translation)
+Take `⟨e, he⟩` from `GlobalTheory.MemLoc.BdRField.exists_isEps l`. Take `⟨w, rfl⟩` from `(GlobalTheory.MemLoc.TiedUnif.mem_FilD_iff he _ x).1 hx`. Take `⟨w', rfl⟩` from `(GlobalTheory.MemLoc.TiedUnif.mem_FilD_iff he _ y).1 hy`. Rewrite using `[mul_mul_mul_comm, ← Units.val_mul, ← zpow_add, add_neg_cancel, zpow_zero, Units.val_one, one_mul, ← map_mul]`. Conclude with `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero _`.
+-/
 theorem mul_mem_FilD_neg {x y : Per.BdR l} {m : ℕ} (hx : x ∈ Per.FilD l m) (hy : y ∈ Per.FilD l (-(m : ℤ))) :
     x * y ∈ Per.FilD l 0 := by
   obtain ⟨e, he⟩ := GlobalTheory.MemLoc.BdRField.exists_isEps l
@@ -49,6 +60,15 @@ def filT (C : GlobalTheory.MemLoc.Core l) (T : LocLat G ℚ_[l] K O) (n : ℤ) :
   Submodule.span O {w | ∃ (β : Per.Bcris l) (x : ↥T.L.T), C.ι β ∈ Per.FilD l n ∧
     w = ((1 : O) ⊗ₜ[ℤ_[l]] β) ⊗ₜ[O] x}
 
+/- English proof (translation)
+Proceed by induction on `hr using Submodule.span_induction with`. Consider the case `mem r hr`. Take `⟨β, hβ, rfl⟩` from `hr`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`.
+
+Take `⟨β', x, hβ', rfl⟩` from `hv`. Rewrite using `[smul_tmul', smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Conclude with `Submodule.subset_span ⟨β * β', x, hmul β β' hβ hβ', rfl⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`.
+
+Consider the case `add v v' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`. Consider the case `smul o v _ h => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ o h`. Consider the case `zero => rw [zero_smul]`.
+
+Conclude with `zero_mem _`. Consider the case `add r r' _ _ h h' => rw [add_smul]`. Conclude with `add_mem h h'`. Consider the case `smul o r _ h => rw [smul_assoc]`. Conclude with `Submodule.smul_mem _ o h`.
+-/
 theorem smul_mem_filT {C : GlobalTheory.MemLoc.Core l} {T : LocLat G ℚ_[l] K O} {a b c : ℤ}
     (hmul : ∀ β β' : Per.Bcris l, C.ι β ∈ Per.FilD l a → C.ι β' ∈ Per.FilD l b → C.ι (β * β') ∈ Per.FilD l c)
     {r : OB l O} (hr : r ∈ filO O C a) {v : TW (OB l O) T} (hv : v ∈ filT C T b) : r • v ∈ filT C T c := by
@@ -67,10 +87,16 @@ theorem smul_mem_filT {C : GlobalTheory.MemLoc.Core l} {T : LocLat G ℚ_[l] K O
   | add r r' _ _ h h' => rw [add_smul]; exact add_mem h h'
   | smul o r _ h => rw [smul_assoc]; exact Submodule.smul_mem _ o h
 
+/- English proof (translation)
+The claim follows from `smul_mem_filT (fun β β' h h' => by rw [map_mul]; exact mul_mem_FilD_of_zero h h') hr hv`.
+-/
 theorem smul_mem_filT_of_zero {C : GlobalTheory.MemLoc.Core l} {T : LocLat G ℚ_[l] K O} {n : ℤ} {r : OB l O}
     (hr : r ∈ filO O C 0) {v : TW (OB l O) T} (hv : v ∈ filT C T n) : r • v ∈ filT C T n :=
   smul_mem_filT (fun β β' h h' => by rw [map_mul]; exact mul_mem_FilD_of_zero h h') hr hv
 
+/- English proof (translation)
+The claim follows from `smul_mem_filT (fun β β' h h' => by rw [map_mul]; exact mul_mem_FilD_neg h h') hr hv`.
+-/
 theorem smul_mem_filT_neg {C : GlobalTheory.MemLoc.Core l} {T : LocLat G ℚ_[l] K O} {m : ℕ} {r : OB l O}
     (hr : r ∈ filO O C m) {v : TW (OB l O) T} (hv : v ∈ filT C T (-(m : ℤ))) : r • v ∈ filT C T 0 :=
   smul_mem_filT (fun β β' h h' => by rw [map_mul]; exact mul_mem_FilD_neg h h') hr hv

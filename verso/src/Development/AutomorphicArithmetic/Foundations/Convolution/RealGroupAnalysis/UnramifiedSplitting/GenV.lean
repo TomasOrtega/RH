@@ -9,11 +9,67 @@ open UpperTheory.V.Af.Smo (Eig EigAt)
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H
 open scoped Classical
 
+/- English proof (translation)
+Use `show (x.1 * y.1) i k = _`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_two]`.
+-/
 private theorem ml {R : Type} [CommRing R] (x y : Matrix.SpecialLinearGroup (Fin 2) R) (i k : Fin 2) :
     (x * y).1 i k = x.1 i 0 * y.1 0 k + x.1 i 1 * y.1 1 k := by
   show (x.1 * y.1) i k = _
   rw [Matrix.mul_apply, Fin.sum_univ_two]
 
+/- English proof (translation)
+Introduce `K _ _ v g hg`. Take `⟨⟨j, hj⟩, hJ⟩` from `jEx K v`. Take `⟨-, -, -, je⟩` from `hJ j hj`. Use `clear hJ`. Take `⟨sa, sm, sc, -⟩` from `sgLaws K v`.
+
+Establish `s0 : sg v (0 : Kv v) = 0` using `by simpa using (sm 0 0).symm`. Use `set C := Subgroup.closure ({x : G1 K | ∃ b, IsInt (cp v b) ∧ x = nU b} ∪ {wW K}) with hC`. Establish `hw : wW K ∈ C` using `Subgroup.subset_closure (Or.inr rfl)`. Establish `hn : ∀ b, IsInt (cp v b) → nU b ∈ C` using `fun b hb => Subgroup.subset_closure (Or.inl ⟨b, hb, rfl⟩)`. Set `nv : Kv v → Matrix.SpecialLinearGroup (Fin 2) (Kv v)` to `fun b => ⟨!![1, b; 0, 1], by simp [Matrix.det_fin_two]⟩`.
+
+Set `lv : Kv v → Matrix.SpecialLinearGroup (Fin 2) (Kv v)` to `fun b => ⟨!![1, 0; b, 1], by simp [Matrix.det_fin_two]⟩`. Set `wv : Matrix.SpecialLinearGroup (Fin 2) (Kv v)` to `⟨!![0, 1; -1, 0], by simp [Matrix.det_fin_two]⟩`. Establish `jn : ∀ b, j (nv b) = nU (sg v b)` using `fun b => by`. Use extensionality with `i k : 1`. Rewrite using `[je]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nv, nU, s0]`. Establish `jl : ∀ b, j (lv b) * wW K = wW K * nU (-sg v b)` using `fun b => by`. Establish `: j (lv b) = ⟨!![1, 0; sg v b, 1], by simp [Matrix.det_fin_two]⟩`. Use extensionality with `i k : 1`. Rewrite using `[je]`.
+
+Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [lv, s0]`. Rewrite using `[this]`. Use extensionality with `i k : 1`. Use `(ml _ _ i k).trans (Eq.trans ?_ (ml _ _ i k).symm)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [wW, nU]`.
+
+Establish `one : IsInt (1 : Kv v)` using `(map_one (Valued.v (R := Kv v))).le`. Establish `h1 : ∀ x : Matrix.SpecialLinearGroup (Fin 2) (Kv v), (∀ i k, IsInt (x i k)) → Valued.v (x 1 0) = 1 → j x ∈ C` using `fun x hx hc => by`. Establish `c0 : x 1 0 ≠ 0` using `fun e => by simp [e] at hc`. Establish `hd` using `x.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`.
+
+Establish `e : x = nv ((x 0 0 - 1) / x 1 0) * lv (x 1 0) * nv ((x 1 1 - 1) / x 1 0)`. Use extensionality with `i k : 1`. Simplify using `only [ml]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nv, lv] <;> field_simp`. Apply the tactic sequence `all_goals first | ring1 | linear_combination hd | linear_combination (-1 : Kv v) * hd`.
+
+Establish `hi : ∀ y, IsInt y → IsInt (cp v (sg v ((y - 1) / x 1 0)))` using `fun y hy => by`. Rewrite using `[sc]`. Use `show Valued.v _ ≤ 1`. Rewrite using `[map_div₀, hc, div_one]`. Conclude with `Valuation.map_sub_le _ hy one`.
+
+Rewrite using `[e, map_mul, map_mul, jn, jn, eq_mul_inv_of_mul_eq (jl _)]`. Use `C.mul_mem (C.mul_mem (hn _ (hi _ (hx 0 0))) (C.mul_mem (C.mul_mem hw (hn _ ?_)) (C.inv_mem hw))) (hn _ (hi _ (hx 1 1)))` and prove the remaining obligations. Rewrite using `[map_neg, sc]`. Use `show Valued.v _ ≤ 1`. Rewrite using `[Valuation.map_neg, hc]`.
+
+Establish `zero : IsInt (0 : Kv v)` using `by simp [IsInt]`. Apply the tactic sequence `have hwv : j wv ∈ C := h1 wv (fun i k => by fin_cases i <;> fin_cases k <;> simp [wv, IsInt]) (by simp [wv])`. Establish `h2 : ∀ x : Matrix.SpecialLinearGroup (Fin 2) (Kv v), (∀ i k, IsInt (x i k)) → j x ∈ C` using `fun x hx => by`. Distinguish the cases in `hc : Valued.v (x 1 0) = 1`. Conclude with `h1 x hx hc`.
+
+Establish `hd` using `x.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `ha : Valued.v (x 0 0) = 1`. Assume the negation of the conclusion as `ha`. Establish `a1 : Valued.v (x 0 0 * x 1 1) < 1`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_lt_of_le (lt_of_le_of_ne (hx 0 0) ha) (hx 1 1)`. Establish `a2 : Valued.v (x 0 1 * x 1 0) < 1`. Rewrite using `[map_mul, mul_comm]`. Conclude with `mul_lt_one_of_lt_of_le (lt_of_le_of_ne (hx 1 0) hc) (hx 0 1)`.
+
+Use `Valuation.map_sub_lt _ a1 a2` as an intermediate fact. Rewrite `this` using `[hd, map_one]`. Conclude with `lt_irrefl _ this`. Establish `e : ∀ k, (wv * x) 0 k = x 1 k ∧ (wv * x) 1 k = -x 0 k` using `fun k => by`. Apply the tactic sequence `constructor <;> rw [ml] <;> simp [wv]`.
+
+Use `h1 (wv * x) (fun i k => by fin_cases i` as an intermediate fact. Conclude with `(e k).1 ▸ hx 1 k`. Use `show Valued.v ((wv * x) 1 k) ≤ 1`. Rewrite using `[(e k).2, Valuation.map_neg]`. Conclude with `hx 0 k) (by rw [(e 0).2, Valuation.map_neg, ha])`.
+
+Rewrite `this` using `[map_mul]`. Conclude with `(C.mul_mem_cancel_left hwv).1 this`. Set `p : G1 K →* Matrix.SpecialLinearGroup (Fin 2) (Kv v)` to `Matrix.SpecialLinearGroup.map (cp v)`. Establish `pa : ∀ k i l, p k i l = cp v (k i l)` using `fun _ _ _ => rfl`. Establish `pj : ∀ x, p (j x) = x` using `fun x => by`.
+
+Use extensionality with `i k : 1`. Rewrite using `[pa, je, map_add, sc]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp`. Establish `cm : ∀ x k, p k = 1 → j x * k = k * j x` using `fun x k hk => by`. Establish `hk' : ∀ i l y, k i l * sg v y = sg v ((1 : Matrix (Fin 2) (Fin 2) (Kv v)) i l * y)` using `fun i l y => by`.
+
+Rewrite using `[sm, ← pa, hk]`. Both sides reduce to the same expression. Use extensionality with `i l : 1`. Simplify using `only [ml, je, add_mul, mul_add, mul_comm (sg v _), hk']`. Apply the tactic sequence `fin_cases i <;> fin_cases l <;> simp [s0, Matrix.one_apply, add_comm]`.
+
+Establish `h3 : ∀ k : G1 K, k * (j (p k))⁻¹ ∈ C` using `fun k => by`. Establish `hk : k ∈ Subgroup.closure (Set.range (nU (F` using `K)) ∪ {wW K}) := (gen K).1 ▸ Subgroup.mem_top k`. Establish `one' : ∀ k : G1 K, p (k * (j (p k))⁻¹) = 1` using `fun k => by rw [map_mul, map_inv, pj, mul_inv_cancel]`. Proceed by induction on `hk using Subgroup.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with ⟨b, rfl⟩ | rfl` into its components or cases. Establish `e1 : p (nU b) = nv (cp v b)`. Use extensionality with `i k : 1`. Rewrite using `[pa]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nv, nU]`.
+
+Establish `e2 : nU b = nU (b - sg v (cp v b)) * nU (sg v (cp v b))`. Use extensionality with `i k : 1`. Rewrite using `[ml]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [nU]`. Rewrite using `[e1, jn, mul_inv_eq_of_eq_mul e2]`.
+
+Conclude with `hn _ (by rw [map_sub, sc, sub_self]; exact zero)`. Establish `e1 : p (wW K) = wv`. Use extensionality with `i k : 1`. Rewrite using `[pa]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [wv, wW]`.
+
+Rewrite using `[e1]`. Conclude with `C.mul_mem hw (C.inv_mem hwv)`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy`. Establish `e` using `cm (p x)⁻¹ _ (one' y)`.
+
+Establish `e' : x * y * (j (p (x * y)))⁻¹ = x * (j (p x))⁻¹ * (y * (j (p y))⁻¹)`. Rewrite using `[mul_assoc x (j (p x))⁻¹, ← map_inv j (p x), e, map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[e']`. Conclude with `C.mul_mem hx hy`.
+
+Consider the case `inv x _ hx`. Establish `e` using `cm (p x) _ (one' x)`. Establish `e' : x⁻¹ * (j (p x⁻¹))⁻¹ = (x * (j (p x))⁻¹)⁻¹`. Rewrite using `[map_inv, map_inv, inv_inv]`. Establish `: j (p x) * x = x * j (p x)`.
+
+Establish `h` using `congrArg (· * j (p x)) e`. Simplify `h` using `[mul_assoc]`. Rewrite using `[_root_.mul_inv_rev, inv_inv, inv_mul_eq_iff_eq_mul, ← mul_assoc, ← this, mul_inv_cancel_right]`. Rewrite using `[e']`. Conclude with `C.inv_mem hx`.
+
+Use `C.mul_mem (h3 g) (h2 (p g) fun i k => hg i k)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Then use the resulting hypothesis.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.H.genV :
     ∀ (K : Type) [Field K] [NumberField K] (v : P K) (g : G1 K), IntAt v g → g ∈ Subgroup.closure ({x : G1 K | ∃ b, IsInt (cp v b) ∧ x = nU b} ∪ {wW K}) := by
   intro K _ _ v g hg

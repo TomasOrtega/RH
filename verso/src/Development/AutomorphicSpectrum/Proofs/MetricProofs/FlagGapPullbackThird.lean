@@ -24,24 +24,45 @@ section Holo
 
 variable {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X} {W W' : Set X} {f g : X → ℂ}
 
+/- English proof (translation)
+Introduce `j` and use `(h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono s))`.
+-/
 theorem holo_mono (h : A.HoloOn W f) (s : W' ⊆ W) : A.HoloOn W' f := fun j =>
   (h j).mono (Set.inter_subset_inter_right _ (Set.preimage_mono s))
 
+/- English proof (translation)
+Introduce `_` and use `analyticOnNhd_const`.
+-/
 theorem holo_const (c : ℂ) : A.HoloOn W fun _ => c := fun _ => analyticOnNhd_const
 
+/- English proof (translation)
+Introduce `j` and use `(hf j).add (hg j)`.
+-/
 theorem holo_add (hf : A.HoloOn W f) (hg : A.HoloOn W g) : A.HoloOn W fun t => f t + g t :=
   fun j => (hf j).add (hg j)
 
+/- English proof (translation)
+Introduce `j` and use `(hf j).mul (hg j)`.
+-/
 theorem holo_mul (hf : A.HoloOn W f) (hg : A.HoloOn W g) : A.HoloOn W fun t => f t * g t :=
   fun j => (hf j).mul (hg j)
 
+/- English proof (translation)
+Introduce `j` and use `(hf j).div (hg j) fun _ hy => h0 _ hy.2`.
+-/
 theorem holo_div (hf : A.HoloOn W f) (hg : A.HoloOn W g) (h0 : ∀ t ∈ W, g t ≠ 0) :
     A.HoloOn W fun t => f t / g t :=
   fun j => (hf j).div (hg j) fun _ hy => h0 _ hy.2
 
+/- English proof (translation)
+Introduce `j y hy` and use `AnalyticAt.zpow (hf j y hy) (h0 _ hy.2)`.
+-/
 theorem holo_zpow (n : ℤ) (hf : A.HoloOn W f) (h0 : ∀ t ∈ W, f t ≠ 0) : A.HoloOn W fun t => f t ^ n :=
   fun j y hy => AnalyticAt.zpow (hf j y hy) (h0 _ hy.2)
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using holo_const (A := A) (W := W) 0`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `holo_add (h a (Finset.mem_insert_self _ _)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem holo_sum {T : Type} (s : Finset T) {F : T → X → ℂ} (h : ∀ a ∈ s, A.HoloOn W (F a)) :
     A.HoloOn W fun t => ∑ a ∈ s, F a t := by
   induction s using Finset.induction_on with
@@ -50,6 +71,9 @@ theorem holo_sum {T : Type} (s : Finset T) {F : T → X → ℂ} (h : ∀ a ∈ 
     simp only [Finset.sum_insert ha]
     exact holo_add (h a (Finset.mem_insert_self _ _)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using holo_const (A := A) (W := W) 1`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `holo_mul (h a (Finset.mem_insert_self _ _)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem holo_prod {T : Type} (s : Finset T) {F : T → X → ℂ} (h : ∀ a ∈ s, A.HoloOn W (F a)) :
     A.HoloOn W fun t => ∏ a ∈ s, F a t := by
   induction s using Finset.induction_on with
@@ -58,6 +82,11 @@ theorem holo_prod {T : Type} (s : Finset T) {F : T → X → ℂ} (h : ∀ a ∈
     simp only [Finset.prod_insert ha]
     exact holo_mul (h a (Finset.mem_insert_self _ _)) (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Introduce `t ht`. Take `⟨j, hj⟩` from `A.cover t`. Establish `h1 : AnalyticAt ℂ (f ∘ (A.chart j).symm) (A.chart j t)` using `h j _ ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using ht⟩`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) t` using `ContinuousAt.comp h1.continuousAt ((A.chart j).continuousAt hj)`. Establish `h3 : ((f ∘ (A.chart j).symm) ∘ A.chart j) =ᶠ[𝓝 t] f` using `by filter_upwards [(A.chart j).open_source.mem_nhds hj] with u hu`.
+
+Simplify using `[(A.chart j).left_inv hu]`. Conclude with `(h2.congr h3).continuousWithinAt`.
+-/
 theorem holo_continuousOn (hW : IsOpen W) (h : A.HoloOn W f) : ContinuousOn f W := by
   intro t ht
   obtain ⟨j, hj⟩ := A.cover t
@@ -83,6 +112,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
 def zc (v : (Σ k, ιk k) → (Σ k, ι k)) (R : AnLogRes (mCoordIdeal (y ∘ v)) ⊤ e) (x t : R.X) : (Σ k, ι k) → ℂ :=
   Function.extend v (R.lift x t) fun _ => 1
 
+/- English proof (translation)
+Distinguish the cases in `h : ∃ a, v a = q`. Take `⟨a, rfl⟩` from `h`. Establish `: (fun t => zc v R x t (v a)) = fun t => R.lift x t a`. Use function extensionality and compare the values at `fun t => hb.2.1.extend_apply _ _ _`. Rewrite using `[this]`.
+
+Conclude with `R.holo x a`. Establish `: (fun t => zc v R x t q) = fun _ => 1` using `funext fun t => Function.extend_apply' _ _ _ h`. Rewrite using `[this]`. Conclude with `holo_const 1`.
+-/
 theorem zc_holo (hb : IsBlockMap κ v) (x : R.X) (q : Σ k, ι k) : R.A.HoloOn (R.U x) fun t => zc v R x t q := by
   by_cases h : ∃ a, v a = q
   · obtain ⟨a, rfl⟩ := h
@@ -94,6 +128,17 @@ theorem zc_holo (hb : IsBlockMap κ v) (x : R.X) (q : Σ k, ι k) : R.A.HoloOn (
     rw [this]
     exact holo_const 1
 
+/- English proof (translation)
+Take `⟨hb, -, -, hl⟩` from `hyp`. Take `⟨z₀, hz₀, hv, c₀, hc₀, hcb⟩` from `hl t`. Take `⟨c, hc, hcl⟩` from `R.compat x t t ⟨ht, R.mem_U t⟩`. Set `c' : K → ℂ` to `Function.extend κ c fun _ => 1`. Establish `hcκ : ∀ a, c' (κ a) = c a` using `fun a => hb.1.extend_apply _ _ _`.
+
+Establish `hc' : ∀ k, c' k ≠ 0` using `fun k => by`. Distinguish the cases in `h : ∃ a, κ a = k`. Take `⟨a, rfl⟩` from `h`. Rewrite using `[hcκ]`. Conclude with `hc a`.
+
+Establish `: c' k = 1` using `Function.extend_apply' _ _ _ h`. Rewrite using `[this]`. Conclude with `one_ne_zero`. Establish `T` using `(TorusAct.main K ι Φ y z₀ c' hc').2 hz₀`. Use `⟨fun q => c' q.1 * z₀ q, T.1, ?_, ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `q show c' (v q).1 * z₀ (v q) = R.lift x t q`. Rewrite using `[hb.2.2.1 q, hcκ, hcl]`. Use `show c q.1 * z₀ (v q) = c q.1 * R.lift t t q`. Rewrite using `[← hv]`. Both sides reduce to the same expression.
+
+Use `⟨fun k => c' k.1 * c₀ k, fun k => mul_ne_zero (hc' _) (hc₀ _), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Establish `h1` using `congrFun hcb q`. Use `show c' q.1.1 * basePart M.blk z₀ q = c' q.1.1 * c₀ q.1 * _`. Rewrite using `[h1, mul_assoc]`.
+-/
 theorem exists_pt (hyp : IsStepHyp M BM p κ v R pr) (x t : R.X) (ht : t ∈ R.U x) :
     ∃ z ∈ mcPts (mCoordIdeal y), z ∘ v = R.lift x t ∧
       SameOrbit (basePart M.blk z) (BM.Rb.lift (pr t) (pr t)) := by
@@ -121,6 +166,9 @@ theorem exists_pt (hyp : IsStepHyp M BM p κ v R pr) (x t : R.X) (ht : t ∈ R.U
     show c' q.1.1 * basePart M.blk z₀ q = c' q.1.1 * c₀ q.1 * _
     rw [h1, mul_assoc]
 
+/- English proof (translation)
+Take `⟨q, hq⟩` from `hb.2.2.2 ⟨k, i⟩ hk`. Rewrite using `[← hq]`. Use `show Function.extend v (R.lift x t) _ (v q) = _`. Rewrite using `[hb.2.1.extend_apply, ← hz]`. Both sides reduce to the same expression.
+-/
 theorem zc_eq (hb : IsBlockMap κ v) {x t : R.X} {z : (Σ k, ι k) → ℂ} (hz : z ∘ v = R.lift x t) {k : K}
     (hk : k ∈ Set.range κ) (i : ι k) : zc v R x t ⟨k, i⟩ = z ⟨k, i⟩ := by
   obtain ⟨q, hq⟩ := hb.2.2.2 ⟨k, i⟩ hk
@@ -129,14 +177,23 @@ theorem zc_eq (hb : IsBlockMap κ v) {x t : R.X} {z : (Σ k, ι k) → ℂ} (hz 
   rw [hb.2.1.extend_apply, ← hz]
   rfl
 
+/- English proof (translation)
+The claim follows from `funext fun q => zc_eq hyp.1 hz (hyp.2.1 _ (Or.inl q.1.2)) q.2`.
+-/
 theorem base_eq (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} {z : (Σ k, ι k) → ℂ} (hz : z ∘ v = R.lift x t) :
     basePart M.blk (zc v R x t) = basePart M.blk z :=
   funext fun q => zc_eq hyp.1 hz (hyp.2.1 _ (Or.inl q.1.2)) q.2
 
+/- English proof (translation)
+Unfold `baseMono`. Rewrite using `[h]`.
+-/
 theorem baseMono_eq (F : FrameData ι Ψ N M.Ω M.blk) {z z' : (Σ k, ι k) → ℂ}
     (h : basePart M.blk z = basePart M.blk z') : baseMono M F p z = baseMono M F p z' := by
   unfold baseMono; rw [h]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `I`. Unfold `plk`. Rewrite using `[base_eq hyp hz]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [zc_eq hyp.1 hz (hyp.2.1 _ (Or.inr hk)) m]`.
+-/
 theorem plk_eq (hyp : IsStepHyp M BM p κ v R pr) (F : FrameData ι Ψ N M.Ω M.blk) {k₀ : K}
     (hk : M.blk p = some k₀) {x t : R.X} {z : (Σ k, ι k) → ℂ} (hz : z ∘ v = R.lift x t) :
     plk M F k₀ (zc v R x t) = plk M F k₀ z := by
@@ -145,23 +202,35 @@ theorem plk_eq (hyp : IsStepHyp M BM p κ v R pr) (F : FrameData ι Ψ N M.Ω M.
   rw [base_eq hyp hz]
   exact Finset.sum_congr rfl fun m _ => by rw [zc_eq hyp.1 hz (hyp.2.1 _ (Or.inr hk)) m]
 
+/- English proof (translation)
+Take `⟨z, hz, hv, -⟩` from `exists_pt hyp x t ht`. Rewrite using `[base_eq hyp hv]`. Conclude with `(GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).1 z hz`.
+-/
 theorem base_mem (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} (ht : t ∈ R.U x) :
     basePart M.blk (zc v R x t) ∈ mcPts (mCoordIdeal M.x) := by
   obtain ⟨z, hz, hv, -⟩ := exists_pt hyp x t ht
   rw [base_eq hyp hv]
   exact (GlobalTheory.T.flag_model_base_projection_points K ι Φ y Ψ N j M).1 z hz
 
+/- English proof (translation)
+Take `⟨z, -, hv, c, hc, hcb⟩` from `exists_pt hyp x t ht`. Rewrite using `[base_eq hyp hv, hcb, (TorusAct.main _ _ M.Ω M.x _ c hc).1]`. Conclude with `BM.good l _ hl`.
+-/
 theorem good_at (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} (ht : t ∈ R.U x) {l : Fin BM.q}
     (hl : pr t ∈ BM.O l) : M.GoodAt (BM.F l) (mCoordIdeal (basePart M.blk (zc v R x t))) := by
   obtain ⟨z, -, hv, c, hc, hcb⟩ := exists_pt hyp x t ht
   rw [base_eq hyp hv, hcb, (TorusAct.main _ _ M.Ω M.x _ c hc).1]
   exact BM.good l _ hl
 
+/- English proof (translation)
+Introduce `h` and use `hG.1 k (by show mConeMap b (X ⟨k, F.c k⟩) = 0 rw [mConeMap, aeval_X, h, map_zero, zero_mul])`.
+-/
 theorem chart_ne {F : FrameData ι Ψ N M.Ω M.blk} {b : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hG : M.GoodAt F (mCoordIdeal b)) (k : NonPluckerBlocks M.blk) : b ⟨k, F.c k⟩ ≠ 0 := fun h => hG.1 k (by
   show mConeMap b (X ⟨k, F.c k⟩) = 0
   rw [mConeMap, aeval_X, h, map_zero, zero_mul])
 
+/- English proof (translation)
+Distinguish the cases in `hk : ∀ p', M.blk p' ≠ some k`. Conclude with `hyp.2.1 k (Or.inl hk)`. Distinguish the cases in `hp : M.blk p = some k`. Conclude with `hyp.2.1 k (Or.inr hp)`. Conclude with `(h ((dif_neg hk).trans (if_neg hp))).elim`.
+-/
 theorem dy_range (hyp : IsStepHyp M BM p κ v R pr) (k : K) (h : M.dy p k ≠ 0) : k ∈ Set.range κ := by
   by_cases hk : ∀ p', M.blk p' ≠ some k
   · exact hyp.2.1 k (Or.inl hk)
@@ -169,6 +238,9 @@ theorem dy_range (hyp : IsStepHyp M BM p κ v R pr) (k : K) (h : M.dy p k ≠ 0)
     · exact hyp.2.1 k (Or.inr hp)
     · exact (h ((dif_neg hk).trans (if_neg hp))).elim
 
+/- English proof (translation)
+Rewrite using `[GlobalTheory.T.flag_gap_pullback_first K ι Φ y Ψ N j M n BM p Kk ιk κ v e R pr hyp x t z ht hbd hz hv, ← hv, ← fsHerm_h_blockMap K ι Kk ιk κ v (M.dy p) z hyp.1 (dy_range hyp), stepGap]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem log_side (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} (ht : t ∈ R.U x) (hbd : pr t ∉ bdry BM.s)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal y)) (hv : z ∘ v = R.lift x t) :
     Real.log ((fsHerm ιk fun k => M.dy p (κ k)).h (R.lift x t)) + stepPh M BM p v R pr t =
@@ -177,10 +249,16 @@ theorem log_side (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} (ht : t ∈ R.U 
     ← fsHerm_h_blockMap K ι Kk ιk κ v (M.dy p) z hyp.1 (dy_range hyp), stepGap]
   ring
 
+/- English proof (translation)
+The claim follows from `(R.isOpen_U x).inter ((BM.O_open l).preimage hyp.2.2.1.1)`.
+-/
 theorem dom_open (hyp : IsStepHyp M BM p κ v R pr) (x : R.X) (l : Fin BM.q) :
     IsOpen (R.U x ∩ pr ⁻¹' BM.O l) :=
   (R.isOpen_U x).inter ((BM.O_open l).preimage hyp.2.2.1.1)
 
+/- English proof (translation)
+The claim follows from `ValHolo.holoOn_valAt _ _ M.Ω M.x s e R.X R.A _ (fun t => basePart M.blk (zc v R x t)) y₀ (dom_open hyp x l) h₀ (fun q => holo_mono (zc_holo hyp.1 x ⟨q.1.1, q.2⟩) Set.inter_subset_left) (fun _ ht => base_mem hyp ht.1) hs`.
+-/
 theorem val_nhd (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (l : Fin BM.q)
     (h₀ : y₀ ∈ R.U x ∩ pr ⁻¹' BM.O l) (s : M.Ω)
     (hs : RegAt M.x (mCoordIdeal (basePart M.blk (zc v R x y₀))) s) :
@@ -190,16 +268,29 @@ theorem val_nhd (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (l : Fin BM.q)
     (fun q => holo_mono (zc_holo hyp.1 x ⟨q.1.1, q.2⟩) Set.inter_subset_left)
     (fun _ ht => base_mem hyp ht.1) hs
 
+/- English proof (translation)
+Unfold `baseMono`. Use `holo_prod _ fun k _ => holo_zpow _ ?_ fun t ht => chart_ne (good_at hyp ht.1 ht.2) k` and prove the remaining obligations. Conclude with `holo_mono (zc_holo hyp.1 x ⟨k.1, (BM.F l).c k⟩) Set.inter_subset_left`.
+-/
 theorem baseMono_holo (hyp : IsStepHyp M BM p κ v R pr) (x : R.X) (l : Fin BM.q) :
     R.A.HoloOn (R.U x ∩ pr ⁻¹' BM.O l) fun t => baseMono M (BM.F l) p (zc v R x t) := by
   unfold baseMono
   refine holo_prod _ fun k _ => holo_zpow _ ?_ fun t ht => chart_ne (good_at hyp ht.1 ht.2) k
   exact holo_mono (zc_holo hyp.1 x ⟨k.1, (BM.F l).c k⟩) Set.inter_subset_left
 
+/- English proof (translation)
+The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (chart_ne (good_at hyp ht.1 ht.2) k)`.
+-/
 theorem baseMono_ne (hyp : IsStepHyp M BM p κ v R pr) {x t : R.X} {l : Fin BM.q}
     (ht : t ∈ R.U x ∩ pr ⁻¹' BM.O l) : baseMono M (BM.F l) p (zc v R x t) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (chart_ne (good_at hyp ht.1 ht.2) k)
 
+/- English proof (translation)
+Establish `hG₀` using `good_at hyp hy₀ hl`. Take `⟨W, hW, hy, hsub, hval⟩` from `val_nhd hyp x y₀ l ⟨hy₀, hl⟩ ((BM.F l).υ p)⁻¹ (hG₀.2.2 p hp).2.2`. Use `⟨W, fun _ => 1, fun t => baseMono M (BM.F l) p (zc v R x t) * valAt M.x ((BM.F l).υ p)⁻¹ (basePart M.blk (zc v R x t)), hW, hy, fun t ht => (hsub ht).1, fun t ht => (hsub ht).2, fun a b => holo_const _, fun t _ => ⟨isBlockDiag_one, by simp⟩, holo_mul (holo_mono (baseMono_holo hyp …` and prove the remaining obligations. Use `mul_ne_zero (baseMono_ne hyp (hsub ht)) fun h0 => ?_` and prove the remaining obligations. Establish `hmem` using `base_mem hyp (hsub ht).1`.
+
+Establish `hg` using `((good_at hyp (hsub ht).1 (hsub ht).2).2.2 p hp)`. Establish `hr` using `ValRing.regAt_valAt_ring _ _ M.Ω M.x _ hmem`. Establish `h1` using `(hr.2.2.2.2 _ _ hg.2.1 hg.2.2).2.2.1`. Rewrite `h1` using `[mul_inv_cancel₀ hg.1, hr.2.2.2.1, h0, mul_zero]`. Conclude with `one_ne_zero h1`.
+
+Take `⟨z, hz, hv, ho⟩` from `exists_pt hyp x t (hsub ht).1`. Rewrite using `[log_side hyp (hsub ht).1 hbd hz hv, GlobalTheory.T.log_block_metric_off_boundary K ι Φ y Ψ N j M n BM p l (pr t) z hp ⟨(hsub ht).2, hbd⟩ hz ho]`. Use `show _ = blockPot j p.2 (BM.G l p.1 (pr t)) 1 + Real.log ‖baseMono M (BM.F l) p (zc v R x t) * valAt M.x ((BM.F l).υ p)⁻¹ (basePart M.blk (zc v R x t))‖`. Rewrite using `[base_eq hyp hv, baseMono_eq (BM.F l) (base_eq hyp hv)]`.
+-/
 theorem chart_none (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (hy₀ : y₀ ∈ R.U x) (hp : M.blk p = none)
     (l : Fin BM.q) (hl : pr y₀ ∈ BM.O l) : ∃ W H D, IsStepChart M BM p κ v R pr x y₀ W l H D := by
   have hG₀ := good_at hyp hy₀ hl
@@ -222,6 +313,23 @@ theorem chart_none (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (hy₀ : y�
       valAt M.x ((BM.F l).υ p)⁻¹ (basePart M.blk (zc v R x t))‖
     rw [base_eq hyp hv, baseMono_eq (BM.F l) (base_eq hyp hv)]
 
+/- English proof (translation)
+Establish `hG₀` using `good_at hyp hy₀ hl`. Establish `h1 : ∀ q : Finset (Fin N) × ι k₀, ∃ W' : Set R.X, IsOpen W' ∧ y₀ ∈ W' ∧ W' ⊆ R.U x ∩ pr ⁻¹' BM.O l ∧ R.A.HoloOn W' fun t => valAt M.x ((BM.F l).u' q.1 ⟨k₀, q.2⟩) (basePart M.blk (zc v R x t))` using `fun q => val_nhd hyp x y₀ l ⟨hy₀, hl⟩ _ (hG₀.2.1 _ _).2`. Use `choose Wq hWq hyq hsq hvq using h1`. Set `W₁ : Set R.X` to `(R.U x ∩ pr ⁻¹' BM.O l) ∩ ⋂ q, Wq q`. Establish `hW₁ : IsOpen W₁` using `(dom_open hyp x l).inter (isOpen_iInter_of_finite hWq)`.
+
+Establish `hs₁ : W₁ ⊆ R.U x ∩ pr ⁻¹' BM.O l` using `Set.inter_subset_left`. Set `w : R.X → Finset (Fin N) → ℂ` to `fun t => plk M (BM.F l) k₀ (zc v R x t)`. Establish `hw : ∀ I, R.A.HoloOn W₁ fun t => w t I` using `fun I => by`. Use `holo_sum _ fun m _ => holo_mul ?_ ?_` and prove the remaining obligations. Conclude with `holo_mono (hvq (I, m)) fun t ht => Set.mem_iInter.1 ht.2 (I, m)`.
+
+Conclude with `holo_mono (zc_holo hyp.1 x _) fun t ht => (hs₁ ht).1`. Take `⟨z₀, hz₀, hv₀, ho₀⟩` from `exists_pt hyp x y₀ hy₀`. Take `⟨I₀, hI₀, hne₀⟩` from `GlobalTheory.T.block_metric_row_echelon_local K ι Φ y Ψ N j M n BM p k₀ l (pr y₀) z₀ hp hl hz₀ ho₀`. Rewrite `hne₀` using `[← plk_eq hyp _ hp hv₀]`. Take `⟨C, B, hCB⟩` from `GrChart.exists_isGrChart N j p.2 I₀ M.j_le hI₀`.
+
+Set `W : Set R.X` to `W₁ ∩ (fun t => w t I₀) ⁻¹' {0}ᶜ`. Establish `hW : IsOpen W` using `(holo_continuousOn hW₁ (hw I₀)).isOpen_inter_preimage hW₁ isOpen_compl_singleton`. Establish `hs : W ⊆ W₁` using `Set.inter_subset_left`. Establish `hne : ∀ t ∈ W, w t I₀ ≠ 0` using `fun t ht => ht.2`. Establish `hy : y₀ ∈ W` using `⟨⟨⟨hy₀, hl⟩, Set.mem_iInter.2 hyq⟩, hne₀⟩`.
+
+Use `⟨W, fun t => grMat C B I₀ (w t), fun t => baseMono M (BM.F l) p (zc v R x t) * w t I₀, hW, hy, fun t ht => (hs₁ (hs ht)).1, fun t ht => (hs₁ (hs ht)).2, fun a b => ?_, fun t ht => ?_, holo_mul (holo_mono (baseMono_holo hyp x l) (hs.trans hs₁)) (holo_mono (hw I₀) hs), fun t ht => …` and prove the remaining obligations. Establish `: (fun t => grMat C B I₀ (w t) a b) = fun t => C a b + ∑ I, w t I / w t I₀ * B I a b`. Use function extensionality and compare the values at `t`. Simplify using `[grMat, Matrix.add_apply, Matrix.sum_apply]`. Rewrite using `[this]`.
+
+Use `holo_add (holo_const _) (holo_sum _ fun I _ => holo_mul ?_ (holo_const _))` and prove the remaining obligations. Conclude with `holo_div (holo_mono (hw I) hs) (holo_mono (hw I₀) hs) hne`. Take `⟨z, hz, hv, ho⟩` from `exists_pt hyp x t (hs₁ (hs ht)).1`. Take `⟨h, a, hh, hd, ha, hw', -⟩` from `GlobalTheory.T.block_metric_grassmann_chart_local K ι Φ y Ψ N j M n BM p k₀ l (pr t) z hp (hs₁ (hs ht)).2 hz ho`. Establish `e` using `plk_eq hyp (BM.F l) hp hv`.
+
+Use `hCB h a (w t) hh hd ha (fun I hI => by rw [← hw' I hI]; exact congrFun e I) (hne t ht)` as an intermediate fact. Conclude with `⟨this.1, this.2.1⟩`. Take `⟨z, hz, hv, ho⟩` from `exists_pt hyp x t (hs₁ (hs ht)).1`. Establish `e` using `plk_eq hyp (BM.F l) hp hv`. Establish `hnz : plk M (BM.F l) k₀ z I₀ ≠ 0` using `by rw [← e]; exact hne t ht`.
+
+Rewrite using `[log_side hyp (hs₁ (hs ht)).1 hbd hz hv, GlobalTheory.T.block_metric_explicit_matrix_form K ι Φ y Ψ N j M n BM p k₀ l (pr t) z I₀ C B hp hCB ⟨(hs₁ (hs ht)).2, hbd⟩ hz ho hnz]`. Simplify using `only [w]`. Rewrite using `[e, baseMono_eq (BM.F l) (base_eq hyp hv)]`.
+-/
 theorem chart_some (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (hy₀ : y₀ ∈ R.U x) {k₀ : K}
     (hp : M.blk p = some k₀) (l : Fin BM.q) (hl : pr y₀ ∈ BM.O l) :
     ∃ W H D, IsStepChart M BM p κ v R pr x y₀ W l H D := by
@@ -270,6 +378,11 @@ theorem chart_some (hyp : IsStepHyp M BM p κ v R pr) (x y₀ : R.X) (hy₀ : y�
     simp only [w]
     rw [e, baseMono_eq (BM.F l) (base_eq hyp hv)]
 
+/- English proof (translation)
+Introduce `hyp x y₀ hy₀`. Take `⟨l, hl⟩` from `BM.O_cover (pr y₀)`. Break down `hp : M.blk p with _ | k₀` into its components or cases. Take `⟨W, H, D, h⟩` from `chart_none hyp x y₀ hy₀ hp l hl`. Conclude with `⟨W, l, H, D, h⟩`.
+
+Take `⟨W, H, D, h⟩` from `chart_some hyp x y₀ hy₀ hp l hl`. Conclude with `⟨W, l, H, D, h⟩`.
+-/
 theorem hasStepCharts (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ]
     (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n : ℕ)
     (BM : BaseMetric M n) (p : Ψ × Fin N) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)]

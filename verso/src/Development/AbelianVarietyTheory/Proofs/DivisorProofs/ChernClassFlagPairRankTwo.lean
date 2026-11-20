@@ -18,6 +18,11 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 
 namespace GlobalTheory.FlagRankTwo
 
+/- English proof (translation)
+Introduce `O _ _ _ p _ _ _ B hB W W' ψ R R' k Q`. Use `GlobalTheory.T.flag_pair_chern_exchange_identity (B.toITh p) (R.toFPair p) (R'.toFPair p) k Q (fun E E' a => GlobalTheory.VertComm.capDeg_vp_comm O p B hB E E' a) ?_ ?_ (fun D y => GlobalTheory.T.flag_pair_capDeg_difference_zero O p B hB W W' ψ R R' D y) (fun y => GlobalTheory.T. …` and prove the remaining obligations. Establish `h3` using `congrArg firstChernPic (R.fl.cls_det.symm.trans R'.fl.cls_det)`. Simplify using `only [Fin.sum_univ_two, map_add, firstChernPic_class] at h3`. Conclude with `h3`.
+
+Express the relevant statement in the definitionally equal form `GlobalTheory.Vert.Model.toQ (R.div 0).cls + GlobalTheory.Vert.Model.toQ (R.div 1).cls = GlobalTheory.Vert.Model.toQ (R'.div 0).cls + GlobalTheory.Vert.Model.toQ (R'.div 1).cls`. Rewrite using `[← map_add, ← map_add, GlobalTheory.T.flag_pair_divisor_class_sum O B W W' ψ R, GlobalTheory.T.flag_pair_divisor_class_sum O B W W' ψ R']`.
+-/
 theorem ck_flagPair_rank_two : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (W W' : B.X.Modules) (ψ : B.GenIso W W') (R R' : GlobalTheory.Vert.Model.FlagPair ψ 2) (k : ℕ) (Q : PicSym B.X), ck (R.toFPair p) k Q = ck (R'.toFPair p) k Q := by
   intro O _ _ _ p _ _ _ B hB W W' ψ R R' k Q
   refine GlobalTheory.T.flag_pair_chern_exchange_identity (B.toITh p) (R.toFPair p) (R'.toFPair p) k Q

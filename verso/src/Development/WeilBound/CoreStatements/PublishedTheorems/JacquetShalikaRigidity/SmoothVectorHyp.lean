@@ -20,20 +20,35 @@ structure Hyp (E : Type) [Field E] [NumberField E] (k : ℕ) : Prop where
   pos : ∀ g : GA E k, 0 < dmin g
   rt : ∀ h : GA E k, ∃ B : ℝ, 1 ≤ B ∧ ∀ g, dmin (g * h) ≤ B * dmin g
 
+/- English proof (translation)
+Break down `le_total 1 b with h1 | h1` into its components or cases. Rewrite using `[min_eq_left h1]; exact (min_le_left _ _).trans (by linarith)`. Rewrite using `[min_eq_right h1]`. Conclude with `(min_le_right _ _).trans h`.
+-/
 lemma min_le_of (a b D : ℝ) (hD : 1 ≤ D) (h : a ≤ D * b) : min 1 a ≤ D * min 1 b := by
   rcases le_total 1 b with h1 | h1
   · rw [min_eq_left h1]; exact (min_le_left _ _).trans (by linarith)
   · rw [min_eq_right h1]; exact (min_le_right _ _).trans h
 
+/- English proof (translation)
+The claim follows from `pow_pos (lt_min one_pos (H.pos g)) M`.
+-/
 lemma wt_pos (H : Hyp E k) (M : ℕ) (g : GA E k) : 0 < wt M g :=
   pow_pos (lt_min one_pos (H.pos g)) M
 
+/- English proof (translation)
+The claim follows from `pow_le_one₀ (le_min zero_le_one (H.pos g).le) (min_le_left _ _)`.
+-/
 lemma wt_le_one (H : Hyp E k) (M : ℕ) (g : GA E k) : wt M g ≤ 1 :=
   pow_le_one₀ (le_min zero_le_one (H.pos g).le) (min_le_left _ _)
 
+/- English proof (translation)
+The claim follows from `(continuous_const.min H.cont).pow M`.
+-/
 lemma wt_cont (H : Hyp E k) (M : ℕ) : Continuous (wt M : GA E k → ℝ) :=
   (continuous_const.min H.cont).pow M
 
+/- English proof (translation)
+Unfold `wt`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (le_min zero_le_one (H.pos _).le) (min_le_of _ _ _ hD h) M`.
+-/
 lemma wt_le (H : Hyp E k) (M : ℕ) (g c : GA E k) (D : ℝ) (hD : 1 ≤ D)
     (h : dmin (g * c) ≤ D * dmin g) : wt M (g * c) ≤ D ^ M * wt M g := by
   unfold wt
@@ -46,11 +61,17 @@ def W (H : Hyp E k) (M : ℕ) : XB E k :=
       rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (wt_pos H M g).le]
       exact wt_le_one H M g
 
+/- English proof (translation)
+The claim follows from `Complex.continuous_ofReal.comp (((wt_cont H M).comp (continuous_mul_const h)).div (wt_cont H M) fun g => (wt_pos H M g).ne')`.
+-/
 lemma ratio_cont (H : Hyp E k) (M : ℕ) (h : GA E k) :
     Continuous fun g : GA E k => ((wt M (g * h) / wt M g : ℝ) : ℂ) :=
   Complex.continuous_ofReal.comp
     (((wt_cont H M).comp (continuous_mul_const h)).div (wt_cont H M) fun g => (wt_pos H M g).ne')
 
+/- English proof (translation)
+Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (wt_pos H M _).le (wt_pos H M g).le), div_le_iff₀ (wt_pos H M g)]`. Conclude with `wt_le H M g h D hD hd`.
+-/
 lemma ratio_le (H : Hyp E k) (M : ℕ) (h g : GA E k) (D : ℝ) (hD : 1 ≤ D)
     (hd : dmin (g * h) ≤ D * dmin g) : ‖((wt M (g * h) / wt M g : ℝ) : ℂ)‖ ≤ D ^ M := by
   rw [Complex.norm_real, Real.norm_eq_abs,
@@ -62,6 +83,9 @@ def Q (H : Hyp E k) (M : ℕ) (h : GA E k) : XB E k :=
     (ratio_cont H M h) ((H.rt h).choose ^ M) fun g =>
       ratio_le H M h g _ (H.rt h).choose_spec.1 ((H.rt h).choose_spec.2 g)
 
+/- English proof (translation)
+The claim follows from `(BoundedContinuousFunction.norm_le (pow_nonneg (zero_le_one.trans hD) M)).mpr fun g => ratio_le H M h g D hD (hd g)`.
+-/
 lemma norm_Q_le (H : Hyp E k) (M : ℕ) (h : GA E k) (D : ℝ) (hD : 1 ≤ D)
     (hd : ∀ g, dmin (g * h) ≤ D * dmin g) : ‖Q H M h‖ ≤ D ^ M :=
   (BoundedContinuousFunction.norm_le (pow_nonneg (zero_le_one.trans hD) M)).mpr fun g =>
@@ -82,13 +106,22 @@ def rho (H : Hyp E k) (M : ℕ) : GA E k →* (XB E k →L[ℂ] XB E k) where
     have := (wt_pos H M (g * h)).ne'
     field_simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma rho_apply (H : Hyp E k) (M : ℕ) (h g : GA E k) (x : XB E k) :
     rho H M h x g = ((wt M (g * h) / wt M g : ℝ) : ℂ) * x (g * h) := rfl
 
 def J (H : Hyp E k) (M : ℕ) : XB E k →L[ℂ] XB E k := ContinuousLinearMap.mul ℂ (XB E k) (W H M)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma J_apply (H : Hyp E k) (M : ℕ) (x : XB E k) (g : GA E k) : J H M x g = (wt M g : ℂ) * x g := rfl
 
+/- English proof (translation)
+Use extensionality with `g`. Rewrite using `[J_apply, rho_apply, Rt_apply, J_apply, ← mul_assoc, ← Complex.ofReal_mul]`. Use `congr 2`. Use `(wt_pos H M g).ne'` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+-/
 lemma inter (H : Hyp E k) (M : ℕ) (h : GA E k) (x : XB E k) : J H M (rho H M h x) = Rt E k h (J H M x) := by
   ext g
   rw [J_apply, rho_apply, Rt_apply, J_apply, ← mul_assoc, ← Complex.ofReal_mul]
@@ -96,6 +129,9 @@ lemma inter (H : Hyp E k) (M : ℕ) (h : GA E k) (x : XB E k) : J H M (rho H M h
   have := (wt_pos H M g).ne'
   field_simp
 
+/- English proof (translation)
+Introduce `x y hxy`. Use extensionality with `g`. Establish `e` using `congrArg (fun z : XB E k => z g) hxy`. Simplify using `only [J_apply] at e`. Conclude with `mul_left_cancel₀ (Complex.ofReal_ne_zero.mpr (wt_pos H M g).ne') e`.
+-/
 lemma inj (H : Hyp E k) (M : ℕ) : Function.Injective (J H M) := by
   intro x y hxy
   ext g
@@ -105,6 +141,11 @@ lemma inj (H : Hyp E k) (M : ℕ) : Function.Injective (J H M) := by
 
 variable [IsTotallyComplex E]
 
+/- English proof (translation)
+Establish `e : orb (repI E k) (J H M x) = fun A => J H M (orb ((rho H M).comp (infGL E k)) x A)`. Use function extensionality and compare the values at `A`. Unfold `orb`. Use `split_ifs with hA`. Conclude with `(inter H M _ x).symm`.
+
+Conclude with `(map_zero (J H M)).symm`. Unfold `SmV`. Rewrite using `[e]`. Conclude with `hx.continuousLinearMap_comp ((J H M).restrictScalars ℝ)`.
+-/
 lemma smv (H : Hyp E k) (M : ℕ) (x : XB E k) (hx : SmV ((rho H M).comp (infGL E k)) x) :
     SmV (repI E k) (J H M x) := by
   have e : orb (repI E k) (J H M x) = fun A => J H M (orb ((rho H M).comp (infGL E k)) x A) := by
@@ -119,6 +160,19 @@ lemma smv (H : Hyp E k) (M : ℕ) (x : XB E k) (hx : SmV ((rho H M).comp (infGL 
 
 end SmoothVectorHyp
 
+/- English proof (translation)
+Introduce `hH hK E _ _ _ k hk M`. Take `⟨h1, -, -, -, -, ⟨B, N, -, h6⟩, -⟩` from `hH E k`. Take `⟨kc, kpos, kle, -, kcpt, -⟩` from `hK E k hk`. Establish `H : SmoothVectorHyp.Hyp E k` using `⟨kc, kpos, fun h => by`. Take `⟨B, hB, hB'⟩` from `kcpt {h} isCompact_singleton`.
+
+Conclude with `⟨B, hB, hB' h rfl⟩⟩`. Use `⟨SmoothVectorHyp.rho H M, SmoothVectorHyp.J H M, ⟨fun x g => rfl, SmoothVectorHyp.inter H M, SmoothVectorHyp.inj H M, ?_⟩, fun x hx => SmoothVectorHyp.smv H M x hx⟩` and prove the remaining obligations. Establish `hne : Nonempty {ξ : Fin k → E // ξ ≠ 0}` using `⟨⟨fun _ => 1, fun h => one_ne_zero (congrFun h ⟨0, hk⟩)⟩⟩`. Use `⟨max B 1 ^ M, N * M, pow_nonneg (zero_le_one.trans (le_max_right _ _)) M, fun y x => ?_⟩` and prove the remaining obligations. Take `⟨P, hP⟩ : ∃ P : ℝ, P = 1 + ‖(Matrix.of.symm y.val : LieI (InfinitePlace E) k)‖ + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) k)‖` from `⟨_, rfl⟩`.
+
+Rewrite using `[← hP]`. Establish `hP1 : 1 ≤ P`. Rewrite using `[hP]`. Combine the linear relations using `[norm_nonneg (Matrix.of.symm y.val : LieI (InfinitePlace E) k), norm_nonneg (Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) k)]`. Establish `hPinv : 1 + ‖(Matrix.of.symm y⁻¹.val : LieI (InfinitePlace E) k)‖ + ‖(Matrix.of.symm y⁻¹⁻¹.val : LieI (InfinitePlace E) k)‖ = P`.
+
+Rewrite using `[inv_inv, hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : 1 ≤ max B 1 * P ^ N` using `one_le_mul_of_one_le_of_one_le (le_max_right _ _) (one_le_pow₀ hP1)`. Establish `hDpos : 0 < max B 1 * P ^ N` using `zero_lt_one.trans_le hD`. Establish `hd : ∀ g, dmin (g * infGL E k y) ≤ max B 1 * P ^ N * dmin g`.
+
+Introduce `g`. Rewrite using `[← div_le_iff₀' hDpos]`. Use `show _ ≤ ⨅ ξ : {ξ : Fin k → E // ξ ≠ 0}, ht g ξ.1`. Use `le_ciInf fun ξ => ?_` and prove the remaining obligations. Rewrite using `[div_le_iff₀' hDpos]`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPinv, mul_assoc g, ← map_mul, mul_inv_cancel, map_one, mul_one]`. Use `_ ≤ max B 1 * P ^ N * ht g ξ.1 := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) (pow_nonneg (zero_le_one.trans hP1) _)) (h1 g ξ.1 ξ.2).le`. Express the relevant statement in the definitionally equal form `‖SmoothVectorHyp.Q H M (infGL E k y) * Rt E k (infGL E k y) x‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem secondCohomologyBound_of_boundaryBound : H0 → K1 → K2 := by
   intro hH hK E _ _ _ k hk M
   obtain ⟨h1, -, -, -, -, ⟨B, N, -, h6⟩, -⟩ := hH E k

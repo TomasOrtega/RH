@@ -8,23 +8,41 @@ open scoped Classical
 section
 variable {F : Type} [Field F] [NumberField F]
 
+/- English proof (translation)
+Simplify using `only [ψ, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+-/
 private theorem psi_add (a b : A F) : ψ (a + b) = ψ a * ψ b := by
   simp only [ψ, AddChar.map_add_eq_mul, Circle.coe_mul]
 
+/- English proof (translation)
+Conclude with `Circle.norm_coe _`.
+-/
 private theorem norm_psi (a : A F) : ‖ψ a‖ = 1 := by
   exact Circle.norm_coe _
 
+/- English proof (translation)
+The claim follows from `continuous_subtype_val.comp continuous_adelicChar`.
+-/
 private theorem cont_psi : Continuous (ψ : A F → ℂ) :=
   continuous_subtype_val.comp continuous_adelicChar
 
+/- English proof (translation)
+Simplify using `only [B4, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem B_add (δ : F) (y v v' : V4 F) : B4 δ y (v + v') = B4 δ y v + B4 δ y v' := by
   simp only [B4, Pi.add_apply]
   ring
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;> simp [B4] <;> ring`.
+-/
 private theorem B_single (δ : F) (y : V4 F) (i : Fin 4) (a : A F) :
     B4 δ y (Pi.single i a) = a * B4 δ y (Pi.single i 1) := by
   fin_cases i <;> simp [B4] <;> ring
 
+/- English proof (translation)
+Unfold `B4`. Conclude with `((continuous_const.mul (((continuous_apply 2).mul continuous_const).sub (continuous_const.mul ((continuous_apply 3).mul continuous_const)))).sub ((continuous_apply 1).mul continuous_const)).sub ((continuous_apply 0).mul continuous_const)`.
+-/
 private theorem cont_B (δ : F) (v : V4 F) : Continuous fun y : V4 F => B4 δ y v := by
   unfold B4
   exact ((continuous_const.mul (((continuous_apply 2).mul continuous_const).sub
@@ -33,24 +51,47 @@ private theorem cont_B (δ : F) (v : V4 F) : Continuous fun y : V4 F => B4 δ y 
 
 variable [IsTotallyReal F]
 
+/- English proof (translation)
+Simplify using `[cw]`.
+-/
 private theorem cw_add (w : InfinitePlace F) (a b : A F) : cw w (a + b) = cw w a + cw w b := by
   simp [cw]
+/- English proof (translation)
+Simplify using `[cw]`.
+-/
 private theorem cw_sub (w : InfinitePlace F) (a b : A F) : cw w (a - b) = cw w a - cw w b := by
   simp [cw]
+/- English proof (translation)
+Simplify using `[cw]`.
+-/
 private theorem cw_mul (w : InfinitePlace F) (a b : A F) : cw w (a * b) = cw w a * cw w b := by
   simp [cw]
+/- English proof (translation)
+Simplify using `[cw]`.
+-/
 private theorem cw_neg (w : InfinitePlace F) (a : A F) : cw w (-a) = -cw w a := by
   simp [cw]
+/- English proof (translation)
+Establish `h1 : cw w (1 : A F) = 1` using `by simp [cw]`. Rewrite using `[show (2 : A F) = 1 + 1 by norm_num, cw_add, h1]`. Evaluate the numerical expressions.
+-/
 private theorem cw_two (w : InfinitePlace F) : cw w (2 : A F) = 2 := by
   have h1 : cw w (1 : A F) = 1 := by simp [cw]
   rw [show (2 : A F) = 1 + 1 by norm_num, cw_add, h1]
   norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `fin_cases i <;>`. Apply the tactic sequence `simp [Ops.p, B4, O.x_apply, cw_add, cw_sub, cw_mul, cw_neg, cw_two] <;> ring`.
+-/
 private theorem p_apply (δ : F) (O : Ops F) (w : InfinitePlace F) (i : Fin 4) (φ : S4 F) (y : V4 F) :
     (O.p δ w i φ).1 y = cc * cw w (B4 δ y (Pi.single i 1)) * φ.1 y := by
   fin_cases i <;>
     simp [Ops.p, B4, O.x_apply, cw_add, cw_sub, cw_mul, cw_neg, cw_two] <;> ring
 
+/- English proof (translation)
+Take `⟨h1, -, -, -, -, h6, -, -⟩` from `atLaws F w`. Rewrite using `[B_add, psi_add, B_single, h6, h1]`. Use `congr 2`. Simplify using `only [cw]`. Use `push_cast`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem psi_shift (δ : F) (w : InfinitePlace F) (i : Fin 4) (y v : V4 F) (t : ℝ) :
     ψ (B4 δ y (v + Pi.single i (at1 w t))) =
       ψ (B4 δ y v) * Complex.exp (cc * cw w (B4 δ y (Pi.single i 1)) * t) := by
@@ -61,6 +102,11 @@ private theorem psi_shift (δ : F) (w : InfinitePlace F) (i : Fin 4) (y v : V4 F
   push_cast
   ring
 
+/- English proof (translation)
+Establish `hm : ∀ t, AEStronglyMeasurable (fun y => f y * u t y) μ` using `fun t => hf.1.mul (hu t)`. Establish `hm' : ∀ t, AEStronglyMeasurable (fun y => G y * u t y) μ` using `fun t => hG.1.mul (hu t)`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun t y => f y * u t y) (F' := fun t y => G y * u t y) (x₀ := (0 : ℝ)) (s := Set.univ) (bound := fun y => ‖G y‖) univ_mem (Eventually.of_forall hm) (hf.mono (hm 0) (ae_of_all _ fun y => by rw [norm_mul, hn, mul_one] …` and prove the remaining obligations. Use `((hd t y).const_mul (f y)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hc]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem deriv_gen {X : Type} [MeasurableSpace X] (μ : Measure X) (f G : X → ℂ) (u : ℝ → X → ℂ) (c : X → ℂ)
     (hf : Integrable f μ) (hG : Integrable G μ) (hu : ∀ t, AEStronglyMeasurable (u t) μ)
     (hn : ∀ t y, ‖u t y‖ = 1) (hd : ∀ t y, HasDerivAt (fun s => u s y) (c y * u t y) t)
@@ -81,6 +127,11 @@ private theorem deriv_gen {X : Type} [MeasurableSpace X] (μ : Measure X) (f G :
   rw [hc]
   ring
 
+/- English proof (translation)
+Establish `h1 : HasDerivAt (fun s : ℝ => cc * cw w (B4 δ y (Pi.single i 1)) * (s : ℂ)) (cc * cw w (B4 δ y (Pi.single i 1))) t`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := t)).const_mul (cc * cw w (B4 δ y (Pi.single i 1)))`. Establish `h2` using `h1.cexp.const_mul (ψ (B4 δ y v))`. Simplify using `only [psi_shift]`. Use `h2.congr_deriv ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem psi_deriv (δ : F) (w : InfinitePlace F) (i : Fin 4) (y v : V4 F) (t : ℝ) :
     HasDerivAt (fun s : ℝ => ψ (B4 δ y (v + Pi.single i (at1 w s))))
       (cc * cw w (B4 δ y (Pi.single i 1)) * ψ (B4 δ y (v + Pi.single i (at1 w t)))) t := by
@@ -92,6 +143,9 @@ private theorem psi_deriv (δ : F) (w : InfinitePlace F) (i : Fin 4) (y v : V4 F
   refine h2.congr_deriv ?_
   ring
 
+/- English proof (translation)
+The claim follows from `deriv_gen (adeleMeasurePi F) φ.1 (O.p δ w i φ).1 u c (integrable_of_mem_schwartzBruhatPi φ.2) (integrable_of_mem_schwartzBruhatPi (O.p δ w i φ).2) hu hn hd hc`.
+-/
 private theorem deriv_ops (O : Ops F) (δ : F) (w : InfinitePlace F) (i : Fin 4) (φ : S4 F) (u : ℝ → V4 F → ℂ) (c : V4 F → ℂ)
     (hu : ∀ t, AEStronglyMeasurable (u t) (adeleMeasurePi F)) (hn : ∀ t y, ‖u t y‖ = 1)
     (hd : ∀ t y, HasDerivAt (fun s => u s y) (c y * u t y) t) (hc : ∀ y, (O.p δ w i φ).1 y = c y * φ.1 y) :
@@ -99,6 +153,15 @@ private theorem deriv_ops (O : Ops F) (δ : F) (w : InfinitePlace F) (i : Fin 4)
   deriv_gen (adeleMeasurePi F) φ.1 (O.p δ w i φ).1 u c (integrable_of_mem_schwartzBruhatPi φ.2)
     (integrable_of_mem_schwartzBruhatPi (O.p δ w i φ).2) hu hn hd hc
 
+/- English proof (translation)
+Take `⟨-, -, -, -, h0, -, -, -⟩` from `atLaws F w`. Take `⟨u, hu⟩ : ∃ u : ℝ → V4 F → ℂ, ∀ t y, u t y = ψ (B4 δ y (v + Pi.single i (at1 w t)))` from `⟨_, fun _ _ => rfl⟩`. Establish `hm : ∀ t, AEStronglyMeasurable (u t) (adeleMeasurePi F)` using `fun t => by`. Rewrite using `[show u t = fun y => ψ (B4 δ y (v + Pi.single i (at1 w t))) from funext (hu t)]`. Conclude with `(cont_psi.comp (cont_B δ _)).aestronglyMeasurable`.
+
+Establish `hn : ∀ t y, ‖u t y‖ = 1` using `fun t y => by rw [hu]; exact norm_psi _`. Establish `hd : ∀ t y, HasDerivAt (fun s => u s y) (cc * cw w (B4 δ y (Pi.single i 1)) * u t y) t` using `fun t y => by`. Rewrite using `[show (fun s => u s y) = fun s => ψ (B4 δ y (v + Pi.single i (at1 w s))) from funext fun s => hu s y, hu]`. Conclude with `psi_deriv δ w i y v t`. Establish `h` using `deriv_ops O δ w i φ u (fun y => cc * cw w (B4 δ y (Pi.single i 1))) hm hn hd (fun y => p_apply δ O w i φ y)`.
+
+Establish `e1 : (fun t : ℝ => ft4 δ φ.1 (v + Pi.single i (at1 w t))) = fun t => ∫ y, φ.1 y * u t y ∂(adeleMeasurePi F)`. Simplify using `only [ft4, hu]`. Establish `e2 : ft4 δ (O.p δ w i φ).1 v = ∫ y, (O.p δ w i φ).1 y * u 0 y ∂(adeleMeasurePi F)`. Simplify using `only [ft4, hu, h0, Pi.single_zero, add_zero]`. Rewrite using `[e1, e2]`.
+
+Conclude with `h`.
+-/
 private theorem key (δ : F) (O : Ops F) (w : InfinitePlace F) (i : Fin 4) (φ : S4 F) (v : V4 F) :
     HasDerivAt (fun t : ℝ => ft4 δ φ.1 (v + Pi.single i (at1 w t))) (ft4 δ (O.p δ w i φ).1 v) 0 := by
   obtain ⟨-, -, -, -, h0, -, -, -⟩ := atLaws F w
@@ -120,6 +183,11 @@ private theorem key (δ : F) (O : Ops F) (w : InfinitePlace F) (i : Fin 4) (φ :
 
 end
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W O w i`. Use `LinearMap.ext fun φ => Subtype.ext (funext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[W.Om_w (O.p D.δ w i φ) v]`. Establish `hd` using `O.d_spec w i (W.Om (wW F) φ) v`.
+
+Simplify using `only [W.Om_w] at hd`. Conclude with `hd.unique (key D.δ O w i φ v)`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.dW :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (O : Ops F) w i, O.d w i * W.Om (wW F) = W.Om (wW F) * O.p D.δ w i := by
   intro F E _ _ _ _ _ _ _ D W O w i

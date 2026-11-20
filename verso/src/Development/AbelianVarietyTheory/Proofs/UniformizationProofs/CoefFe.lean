@@ -22,6 +22,21 @@ noncomputable section
 namespace GlobalTheory.UT.CoefFE
 open GlobalTheory.UT.CoefBasic
 
+/- English proof (translation)
+Introduce `hL R _ _ D F _ _ k y h o hh ho w w₁ hw hw₁ vw s α`. Take `⟨hb, hs⟩` from `(isIota_iff _ _).1 hh`. Take `⟨ob, os⟩` from `(isZero_iff _).1 ho`. Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D) (F := F) hL.1.globalFns k y α`. Use `coef_eq fun z J hJ => ?_` and prove the remaining obligations.
+
+Establish `e` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (s.fe y α u hu hc) _ (DegPre.zF D F).left z J hJ`. Establish `u₀` using `val_corr hJ hc (𝟙 _)`. Rewrite `u₀` using `[val_pull hJ, Category.id_comp]`. Establish `m` using `val_famMult (𝟙 (TF (R := R) F)) hJ k y α`. Establish `p₁ : val (GeneratorPullback.powGen D.P.L _ _ (D.psi y) k) ((𝟙 (TF (R` using `R) F) : _ ⟶ _).left ≫ jFK (R := R) F) z J = val (D.psi y) ((𝟙 (TF (R := R) F) : _ ⟶ _).left ≫ jFK (R := R) F) z J ^ k := map_pow _ _ _`.
+
+Establish `p₂ : val (GeneratorPullback.powGen D.P.L _ _ D.rigK k) ((𝟙 (TF (R` using `R) F) : _ ⟶ _).left ≫ jFK (R := R) F) z J = val D.rigK ((𝟙 (TF (R := R) F) : _ ⟶ _).left ≫ jFK (R := R) F) z J ^ k := map_pow _ _ _`. Rewrite `m` using `[p₁, p₂, Over.id_left, Category.id_comp]`. Establish `r : val D.rigK (jFK (R` using `R) F) z J = rigV D (TF (R := R) F).hom z J := val_pull hJ _ _ _`. Establish `z₁ : lift (𝟙 (TF (R` using `R) F)) o.b = DegPre.zF D F := by rw [ob]; rfl`. Establish `z₂ : DegPre.zF D F ≫ DegPre.trF D F y = lift (𝟙 (TF (R` using `R) F)) h.b := by`.
+
+Establish `a₁ : DegPre.zF D F ≫ fst _ _ = 𝟙 _` using `lift_fst _ _`. Establish `a₂ : DegPre.zF D F ≫ DegPre.prB D F = 1` using `lift_snd _ _`. Rewrite using `[trF_eq]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, tr_fst, a₁, lift_fst]`.
+
+Rewrite using `[lift_snd, hb, Category.assoc]`. Use `(congrArg (_ ≫ ·) (tr_pr D F _)).trans ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, a₂, ← Category.assoc, a₁, Category.id_comp, _root_.one_mul]`. Rewrite `e` using `[← Over.comp_left, z₂, u₀]`. Establish `t` using `hs α z J hJ`.
+
+Rewrite `t` using `[Category.id_comp]`. Rewrite using `[isCoef_coef h hw α s z J hJ, z₁, e, os _ z J hJ, hw₁.2 z J hJ, t, vw z J hJ]`. Establish `m'` using `congrArg Units.val m`. Rewrite `m'` using `[r]`. Simplify using `only [Units.val_one, _root_.mul_one, id, mul_pow, _root_.mul_assoc]`.
+
+Conclude with `congrArg₂ (· * ·) rfl m'.symm`.
+-/
 theorem coef_fe : LL → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (y : D.X) (h o : GtPtF D F), GtPtF.IsIota y h → o.IsZero → ∀ (w : Frm D F k h.b) (w₁ : Frm D F k o.b), w.IsGen → FrmOne w₁ → (∀ z J, Good D.P.L z J → val w (𝟙 _) z J = (@id ((TF (R := R) F).left.presheaf.stalk z)ˣ (val (D.psi y) (jFK (R := R) F) z J) * rigV D (TF (R := R) F).hom z J) ^ k) → ∀ (s : Fam D F k) (α : D.X), coef s o w₁ (α + k • y) = coef s h w α := by
   intro hL R _ _ D F _ _ k y h o hh ho w w₁ hw hw₁ vw s α
   obtain ⟨hb, hs⟩ := (isIota_iff _ _).1 hh

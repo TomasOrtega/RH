@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.CobColumn
 
+/- English proof (translation)
+Introduce `l _ P K ι _ _ ρ₀ c₀ β h`. Set `Φ : (ι → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR →ₗ[ℚ_[l]] (ι → P.R.BdR)` to `(piScalarRight ℚ_[l] ℚ_[l] P.R.BdR ι).toLinearMap ∘ₗ (TensorProduct.comm ℚ_[l] _ _).toLinearMap`. Establish `hΦinj : Function.Injective Φ` using `(piScalarRight ℚ_[l] ℚ_[l] P.R.BdR ι).injective.comp (TensorProduct.comm ℚ_[l] _ _).injective`. Establish `hΦ : ∀ v b i, Φ (v ⊗ₜ b) i = algebraMap ℚ_[l] P.R.BdR (v i) * b`. Introduce `v b i`.
+
+Simplify using `[Φ, piScalarRight_apply, piScalarRightHom_tmul, Algebra.smul_def]`. Establish `hact : ∀ g v b, actVdR (P.PD K) (repOf ρ₀) g (v ⊗ₜ b) = repOf ρ₀ g v ⊗ₜ P.actQdR (g : GQ l) b`. Introduce `g v b`. Rewrite using `[← P.PD_actdR K g b]`. Both sides reduce to the same expression.
+
+Use `⟨∑ x, Pi.single x 1 ⊗ₜ β x, fun g => hΦinj ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `hi` using `congrFun (h g) i`. Simplify using `only [map_sub, map_sum, Pi.sub_apply, Finset.sum_apply, hact, hΦ, repOf_apply, mul_one]`. Rewrite using `[hi]`.
+
+Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 2`. Rewrite using `[Finset.sum_eq_single x (fun y _ hy => by simp [Pi.single_eq_of_ne hy]) (by simp)]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `x _ hx`. Simplify using `[Pi.single_eq_of_ne' hx]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem coboundary_tmul_of_column : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (ι : Type) [Fintype ι] [DecidableEq ι]
     (ρ₀ : ↥(GK K) →* GL ι ℚ_[l]) (c₀ : ↥(GK K) → ι → ℚ_[l]) (β : ι → P.R.BdR),
     (∀ g : ↥(GK K), (fun x => algebraMap ℚ_[l] P.R.BdR (c₀ g x)) =

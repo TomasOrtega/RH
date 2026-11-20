@@ -58,11 +58,19 @@ variable (S : B.RealPlaceData k r Wp Wq) {γ : B.Mat k r} (hγ : γ ∈ B.GV k r
   (he : ∀ p, G.upper (e p) = (lowS w p.1)ᴴ * (lowP w p.2)ᴴ)
 
 include hγ hd hZw hpos in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun x => Dx2.Rad.exists_rho S hγ hpos hd hZw x, Dx2.Rad.u_inj S hγ hpos hd hZw, fun _ hρ => Dx2.Rad.u_lstg S hγ hpos hd hZw hρ⟩`.
+-/
 theorem good : Dx2.Rad.Good S γ w d :=
   ⟨fun x => Dx2.Rad.exists_rho S hγ hpos hd hZw x, Dx2.Rad.u_inj S hγ hpos hd hZw,
     fun _ hρ => Dx2.Rad.u_lstg S hγ hpos hd hZw hρ⟩
 
 include hγ hd hZw hpos in
+/- English proof (translation)
+Establish `h` using `Dx2.Rad.exists_rho S hγ hpos hd hZw x`. Establish `e1 : rhoX S γ w x = h.choose` using `by show Formalism.FourierDecayAlt.D.rhoOfU S γ (Dx2.Rad.low w x)ᴴ = _`. Unfold `Formalism.FourierDecayAlt.D.rhoOfU`. Rewrite using `[dif_pos h]`. Rewrite using `[e1, UC.lowS_eq_low]`.
+
+Conclude with `h.choose_spec`.
+-/
 theorem rhoX_spec (x : C2.Lstidx w → ℂ) :
     rhoX S γ w x ∈ C6.Rset γ ∧ C2.uMap k r S.z (rhoX S γ w x) = (lowS w x)ᴴ := by
   have h := Dx2.Rad.exists_rho S hγ hpos hd hZw x
@@ -74,6 +82,11 @@ theorem rhoX_spec (x : C2.Lstidx w → ℂ) :
   exact h.choose_spec
 
 include hγ hd hZw hpos in
+/- English proof (translation)
+Establish `h1` using `(rhoX_spec S hγ hd hZw hpos x).1`. Establish `hu` using `PI.StabSplit.GV_unit k r hγ`. Establish `e : rhoP S γ w x = (γ⁻¹ * rhoX S γ w x * γ)⁻¹`. Unfold `rhoP`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, mul_assoc]`.
+
+Rewrite using `[e]`. Conclude with `Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv h1.2`.
+-/
 theorem rhoP_N (x : C2.Lstidx w → ℂ) : rhoP S γ w x ∈ Nset k r := by
   have h1 := (rhoX_spec S hγ hd hZw hpos x).1
   have hu := PI.StabSplit.GV_unit k r hγ
@@ -83,18 +96,34 @@ theorem rhoP_N (x : C2.Lstidx w → ℂ) : rhoP S γ w x ∈ Nset k r := by
   rw [e]
   exact Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_inv h1.2
 
+/- English proof (translation)
+The claim follows from `UC.LT_ct (UC.lowerUnipotent_mem w y).1`.
+-/
 theorem lowPH_UT (y : C2.LPidx w → ℂ) : (lowP w y)ᴴ ∈ C2.UTset (r + 1) :=
   UC.LT_ct (UC.lowerUnipotent_mem w y).1
 
+/- English proof (translation)
+The claim follows from `UC.LT_ct (UC.lowS_mem w x).1`.
+-/
 theorem lowSH_UT (x : C2.Lstidx w → ℂ) : (lowS w x)ᴴ ∈ C2.UTset (r + 1) :=
   UC.LT_ct (UC.lowS_mem w x).1
 
 include he in
+/- English proof (translation)
+Rewrite using `[he p]`. Conclude with `UC.prod_UT w p`.
+-/
 theorem upper_e_UT (p : (C2.Lstidx w → ℂ) × (C2.LPidx w → ℂ)) : G.upper (e p) ∈ C2.UTset (r + 1) := by
   rw [he p]
   exact UC.prod_UT w p
 
 include hγ hd hZw hpos he in
+/- English proof (translation)
+Establish `hz : C2.StdZ k r S.z` using `⟨S.z_mem, S.T_pos⟩`. Establish `hUF` using `Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z hz`. Take `⟨hρR, hρu⟩` from `rhoX_spec S hγ hd hZw hpos x`. Establish `hτv` using `A.tau_N hz (lowPH_UT y)`. Establish `hτe` using `A.tau_N hz (upper_e_UT e he (x, y))`.
+
+Establish `h1 : (C2.tauM k r S.z (lowP w y)ᴴ)⁻¹ ∈ Nset k r` using `WeylGroupFacts.mem_n_inv hτv`. Establish `h2 : (rhoX S γ w x)⁻¹ ∈ Nset k r` using `WeylGroupFacts.mem_n_inv hρR.1`. Establish `hN : m0L S γ w e x y ∈ Nset k r` using `WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_mul h1 h2) hτe`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Unfold `m0L`.
+
+Rewrite using `[(hUF.1 _ (A.n_in_S (WeylGroupFacts.mem_n_mul h1 h2))).2.2 _ (A.n_in_S hτe), (hUF.1 _ (A.n_in_S h1)).2.2 _ (A.n_in_S h2), A.uMap_inv hz hτv, A.uMap_inv hz hρR.1, hρu, (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z hz _ (lowPH_UT y)).2.2, (Formalism.FourierDecayAlt.P.c2_tau_mem k …`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[Matrix.adjugate_mul, A.det_UT (lowSH_UT x), one_smul, Matrix.mul_one, Matrix.adjugate_mul, A.det_UT (lowPH_UT y), one_smul]`.
+-/
 theorem left_stabilizer_mem (x : C2.Lstidx w → ℂ) (y : C2.LPidx w → ℂ) : m0L S γ w e x y ∈ C2.N0set k r S.z := by
   have hz : C2.StdZ k r S.z := ⟨S.z_mem, S.T_pos⟩
   have hUF := Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z hz
@@ -118,6 +147,11 @@ theorem left_stabilizer_mem (x : C2.Lstidx w → ℂ) (y : C2.LPidx w → ℂ) :
           A.det_UT (lowPH_UT y), one_smul]
 
 include hγ hd hZw hpos in
+/- English proof (translation)
+Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Establish `hUF` using `Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z' hz'`. Establish `hρ` using `rhoP_N S hγ hd hZw hpos x`. Establish `hτ` using `A.tau_N hz' (UC.upper_mem u)`. Rewrite using `[← (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z' hz' _ (UC.upper_mem u)).2.2, ← (hUF.1 _ (A.n_in_S hρ)).2.2 _ (A.n_in_S hτ)]`.
+
+Conclude with `(hUF.1 _ (A.n_in_S (WeylGroupFacts.mem_n_mul hρ hτ))).2.1`.
+-/
 theorem uP_UT (x : C2.Lstidx w → ℂ) (u : G.UT (r + 1) → ℂ) :
     C2.uMap k r S.z' (rhoP S γ w x) * G.upper u ∈ C2.UTset (r + 1) := by
   have hz' : C2.StdZ k r S.z' := ⟨S.z'_mem, S.T'_pos⟩
@@ -129,6 +163,11 @@ theorem uP_UT (x : C2.Lstidx w → ℂ) (u : G.UT (r + 1) → ℂ) :
   exact (hUF.1 _ (A.n_in_S (WeylGroupFacts.mem_n_mul hρ hτ))).2.1
 
 include hγ hd hZw hpos in
+/- English proof (translation)
+Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Establish `hUF` using `Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z' hz'`. Establish `hρ` using `rhoP_N S hγ hd hZw hpos x`. Establish `hτa` using `A.tau_N hz' (uP_UT S hγ hd hZw hpos x u)`. Establish `hτ` using `A.tau_N hz' (UC.upper_mem u)`.
+
+Establish `h1` using `WeylGroupFacts.mem_n_inv hτa`. Establish `hN : m0R S γ w x u ∈ Nset k r` using `WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_mul h1 hρ) hτ`. Use `⟨hN, ?_⟩` and prove the remaining obligations. Unfold `m0R`. Rewrite using `[(hUF.1 _ (A.n_in_S (WeylGroupFacts.mem_n_mul h1 hρ))).2.2 _ (A.n_in_S hτ), (hUF.1 _ (A.n_in_S h1)).2.2 _ (A.n_in_S hρ), A.uMap_inv hz' hτa, (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z' hz' _ (uP_UT S hγ hd hZw hpos x u)).2.2, (Formalism.FourierDecayAlt.P.c2_tau_mem k r S.z' …`.
+-/
 theorem right_stabilizer_mem (x : C2.Lstidx w → ℂ) (u : G.UT (r + 1) → ℂ) : m0R S γ w x u ∈ C2.N0set k r S.z' := by
   have hz' : C2.StdZ k r S.z' := ⟨S.z'_mem, S.T'_pos⟩
   have hUF := Formalism.FourierDecayAlt.P.unipotent_map_frame k r S.z' hz'
@@ -147,6 +186,11 @@ theorem right_stabilizer_mem (x : C2.Lstidx w → ℂ) (u : G.UT (r + 1) → ℂ
 
 include hγ hd hZw hpos he in
 
+/- English proof (translation)
+Establish `hz : C2.StdZ k r S.z` using `⟨S.z_mem, S.T_pos⟩`. Establish `hz' : C2.StdZ k r S.z'` using `⟨S.z'_mem, S.T'_pos⟩`. Establish `hρ` using `(rhoX_spec S hγ hd hZw hpos x).1`. Establish `hρu : IsUnit (rhoX S γ w x).det` using `PI.StabSplit.GV_unit k r hρ.1.1`. Establish `hγu : IsUnit γ.det` using `PI.StabSplit.GV_unit k r hγ`.
+
+Establish `hA : IsUnit (C2.tauM k r S.z (lowP w q.1.2.1)ᴴ).det` using `PI.StabSplit.GV_unit k r (A.tau_N hz (lowPH_UT q.1.2.1)).1`. Establish `hM` using `uP_UT S hγ hd hZw hpos x q.2.2.1`. Establish `hB : IsUnit (C2.tauM k r S.z' (C2.uMap k r S.z' (rhoP S γ w x) * G.upper q.2.2.1)).det` using `PI.StabSplit.GV_unit k r (A.tau_N hz' hM).1`. Simplify using `only [Xi, Xi0, Tx, C6.actR, Equiv.apply_symm_apply, UC.upper_utc hM, m0L, m0R, ← mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hA, Matrix.mul_nonsing_inv_cancel_right _ _ hB, Matrix.mul_nonsing_inv _ hρu]`. Simplify using `only [rhoP, ← mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hρu, Matrix.mul_nonsing_inv_cancel_right _ _ hγu, Matrix.nonsing_inv_mul _ hγu, one_mul]`.
+-/
 theorem Xi_eq (x : C2.Lstidx w → ℂ) (q : RR k r w) :
     Xi S w e x q = C6.actR γ (rhoX S γ w x) (Xi0 S w (Tx S γ w e x q)) := by
   have hz : C2.StdZ k r S.z := ⟨S.z_mem, S.T_pos⟩

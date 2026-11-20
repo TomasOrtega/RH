@@ -10,6 +10,19 @@ open GlobalTheory.CompanionTheory.Ar.Num.FamEx GlobalTheory.CompanionTheory.Ar.B
 
 namespace PositivityTheory.Xgn.FunctionAtPoint
 
+/- English proof (translation)
+Use `haveI : z.asIdeal.IsPrime := PrimeSpectrum.isPrime z`. Use `letI alg : Algebra R ((Spec (CommRingCat.of R)).presheaf.stalk z) := StructureSheaf.stalkAlgebra R z`. Use `haveI loc : IsLocalization.AtPrime ((Spec (CommRingCat.of R)).presheaf.stalk z) z.asIdeal := StructureSheaf.IsLocalization.to_stalk R z`. Establish `hu : ∀ s : z.asIdeal.primeCompl, IsUnit (φ s)`. Introduce `s`.
+
+Use `IsUnit.mk0 _ fun h => s.2 ?_` and prove the remaining obligations. Establish `h0 : (s : R) = 0` using `hφ (h.trans (map_zero φ).symm)`. Rewrite using `[h0]`. Conclude with `z.asIdeal.zero_mem`. Set `lam : (Spec (CommRingCat.of R)).presheaf.stalk z →+* Ω` to `IsLocalization.lift (M := z.asIdeal.primeCompl) hu`.
+
+Set `lam' : (Spec (CommRingCat.of R)).presheaf.stalk z ⟶ CommRingCat.of Ω` to `CommRingCat.ofHom lam`. Establish `hlam : ∀ r : R, lam (algebraMap R _ r) = φ r` using `fun r => IsLocalization.lift_eq hu r`. Establish `e0 : (Spec (CommRingCat.of R)).fromSpecStalk z = Spec.map (CommRingCat.ofHom (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk z)))` using `Spec.fromSpecStalk_eq' _ _`. Establish `e1 : Spec.map (CommRingCat.ofHom lam) ≫ (Spec (CommRingCat.of R)).fromSpecStalk z = spMap φ`. Rewrite using `[e0, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Conclude with `RingHom.ext hlam`. Establish `e2 : Spec.map (x.stalkMap z ≫ lam') ≫ X.fromSpecStalk (x z) = ξ`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ x) e1).trans hx)`.
+
+Establish `e3 : spMap (genMap ξ ⟨x z, hz⟩) ≫ X.fromSpecStalk (x z) = ξ` using `GlobalTheory.CompanionTheory.Ar.LieStalk.spMap_genMap_fromSpecStalk ⟨x z, hz⟩`. Establish `e4 : x.stalkMap z ≫ lam' = CommRingCat.ofHom (genMap ξ ⟨x z, hz⟩)` using `Spec.map_injective ((cancel_mono (X.fromSpecStalk (x z))).1 (e2.trans e3.symm))`. Establish `e5 : lam ((x.stalkMap z).hom a) = genMap ξ ⟨x z, hz⟩ a` using `ConcreteCategory.congr_hom e4 a`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj z.asIdeal.primeCompl ((x.stalkMap z).hom a)`. Use `⟨r, s, s.2, ?_, fun hr => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← e5, ← hlam, ← hlam, ← map_mul, mul_comm]`. Conclude with `congrArg lam hrs`. Establish `h1 : IsUnit (algebraMap R ((Spec (CommRingCat.of R)).presheaf.stalk z) r)` using `IsLocalization.map_units _ (⟨r, hr⟩ : z.asIdeal.primeCompl)`. Rewrite `h1` using `[← hrs]`. Conclude with `isUnit_of_map_unit (x.stalkMap z).hom a (isUnit_of_mul_isUnit_left h1)`.
+-/
 theorem germ_frac {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) {R : Type} [CommRing R]
     (φ : R →+* Ω) (hφ : Function.Injective φ) (x : Spec (CommRingCat.of R) ⟶ X) (hx : spMap φ ≫ x = ξ)
     (z : Spec (CommRingCat.of R)) (hz : genPt ξ ⤳ x z) (a : X.presheaf.stalk (x z)) :
@@ -51,6 +64,13 @@ theorem germ_frac {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCa
     rw [← hrs] at h1
     exact isUnit_of_map_unit (x.stalkMap z).hom a (isUnit_of_mul_isUnit_left h1)
 
+/- English proof (translation)
+Take `⟨a, rfl⟩` from `hb`. Take `⟨r, s, hs, e, hu⟩` from `germ_frac ξ φ hφ x hx z hz a`. Establish `e1 : s = w * r`. Apply `hφ` to reduce the goal to its premises. Rewrite using `[map_mul, ← e, mul_left_comm, hw, _root_.mul_one]`.
+
+Establish `hr : r ∉ z.asIdeal` using `fun h => hs (e1 ▸ z.asIdeal.mul_mem_left w h)`. Take `⟨a', ha'⟩` from `(hu hr).exists_right_inv`. Use `⟨a', ?_⟩` and prove the remaining obligations. Establish `e2` using `congrArg (genMap ξ ⟨x z, hz⟩) ha'`. Rewrite `e2` using `[map_mul, map_one]`.
+
+Rewrite using `[← _root_.one_mul (genMap ξ ⟨x z, hz⟩ a'), ← hw, _root_.mul_assoc, e2, _root_.mul_one]`.
+-/
 theorem inv_reg {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) {R : Type} [CommRing R]
     (φ : R →+* Ω) (hφ : Function.Injective φ) (x : Spec (CommRingCat.of R) ⟶ X) (hx : spMap φ ≫ x = ξ)
     (z : Spec (CommRingCat.of R)) (hz : genPt ξ ⤳ x z) {b : Ω} (hb : b ∈ regAt ξ ⟨x z, hz⟩) (w : R)
@@ -69,6 +89,19 @@ theorem inv_reg {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.
 
 end PositivityTheory.Xgn.FunctionAtPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd p _ _ A _ _ _ m _ _ O _ _ _ _ _ _ _ G c' hc' P z`. Establish `hC : HasConstants ℤ A y` using `(GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd A).2.2.2.1`. Establish `hφ : Function.Injective (algebraMap (CR O y c') Ω)` using `Subtype.val_injective`. Establish `hinv` using `fun {b : Ω} (hb : b ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩) (w : CR O y c') => PositivityTheory.Xgn.FunctionAtPoint.inv_reg 𝔐.ξ _ hφ P.x P.x_gen z (𝔐.all _) hb w`. Take `⟨c'', hc''⟩ : ∃ c'', InChart 𝔐.ξ (mseg y) c'' ⟨P.x z, 𝔐.all _⟩` from `𝔐.tie.cover ⟨P.x z, 𝔐.all _⟩`.
+
+Establish `hA : ∀ a : A, algebraMap A Ω a ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩` using `fun a => GlobalTheory.CompanionTheory.Ar.Fam.chartRing_le_regAt ℤ y c'' _ hc'' (fun o => by simp) (hC c'' hc''.1 a)`. Use `⟨⟨hc', fun j => ?_⟩, fun o => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : mseg y c'' / mseg y c' ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩` using `hinv (hc''.2 c') ⟨mseg y c'' / mseg y c', Algebra.subset_adjoin ⟨c'', rfl⟩⟩ (by`. Establish `h0` using `hc''.1`. Express the relevant statement in the definitionally equal form `mseg y c'' / mseg y c' * (mseg y c' / mseg y c'') = 1`.
+
+Use the proof step `field_simp)`. Establish `h2` using `mul_mem (hc''.2 j) h1`. Establish `h0` using `hc''.1`. Establish `e : mseg y j / mseg y c'' * (mseg y c'' / mseg y c') = mseg y j / mseg y c'` using `by field_simp`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+
+Take `⟨⟨a, s⟩, has⟩` from `IsLocalization.surj m.primeCompl o`. Take `⟨u, hu⟩` from `(IsLocalization.map_units O s).exists_left_inv`. Establish `h1 : algebraMap O Ω u ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩` using `hinv (hA s) (algebraMap O (CR O y c') u) (by`. Express the relevant statement in the definitionally equal form `algebraMap O Ω u * _ = 1`. Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul, hu, map_one])`.
+
+Establish `e : o = algebraMap A O a * u`. Establish `has' : o * algebraMap A O s = algebraMap A O a` using `has`. Rewrite using `[← has', _root_.mul_assoc, mul_comm _ u, hu, _root_.mul_one]`. Rewrite using `[e, map_mul, ← IsScalarTower.algebraMap_apply]`. Conclude with `mul_mem (hA a) h1`.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨r, s, hs, e, -⟩` from `PositivityTheory.Xgn.FunctionAtPoint.germ_frac 𝔐.ξ _ hφ P.x P.x_gen z (𝔐.all _) a`. Conclude with `⟨r, s, hs, e⟩`.
+-/
 theorem PositivityTheory.Xgn.exists_function_at_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (z : Spec (CommRingCat.of (CR O y c'))), InChart 𝔐.ξ (mseg y) c' ⟨P.x z, 𝔐.all _⟩ ∧ (∀ o : O, algebraMap O Ω o ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩) ∧ ∀ a ∈ regAt 𝔐.ξ ⟨P.x z, 𝔐.all _⟩, ∃ r s : CR O y c', s ∉ z.asIdeal ∧ (s : Ω) * a = r := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hd p _ _ A _ _ _ m _ _ O _ _ _ _ _ _ _ G c' hc' P z
   have hC : HasConstants ℤ A y := (GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hd A).2.2.2.1

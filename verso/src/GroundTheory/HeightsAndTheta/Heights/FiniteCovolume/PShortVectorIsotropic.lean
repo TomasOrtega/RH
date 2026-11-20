@@ -11,6 +11,15 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
   [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E]
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `M D La g x hLa hx hlen`. Apply `h₆ _ (hLa.integral x hx x hx)` to reduce the goal to its premises. Introduce `w`. Use `set y := vecAt v x`. Use `set z := invApply g y`.
+
+Establish `hP : IsMajorantOf (gramAt h v w) (M.P w)` using `⟨M.posDef w, (h₂ w).1, (h₂ w).2, M.siegel w⟩`. Take `⟨hnn, hsq⟩` from `h₅ M z`. Establish `hlen0 : 0 ≤ M.len z` using `Real.sqrt_nonneg _`. Establish `hsq1 : M.len z ^ 2 < 1` using `by nlinarith`. Establish `hterm : (star (z w) ⬝ᵥ (M.P w *ᵥ z w)).re ≤ M.len z ^ 2`.
+
+Rewrite using `[hsq]`. Conclude with `Finset.single_le_sum (f := fun w' => (star (z w') ⬝ᵥ (M.P w' *ᵥ z w')).re) (fun w' _ => hnn w') (Finset.mem_univ w)`. Establish `hform : w.embedding (h.toSesq x x) = star (z w) ⬝ᵥ (gramAt h v w *ᵥ z w)`. Rewrite using `[h₁ w x x, h₃ g y y w]`. Rewrite using `[← InfinitePlace.norm_embedding_eq, hform]`.
+
+Conclude with `lt_of_le_of_lt ((h₄ _ _ hP (z w)).trans hterm) hsq1`.
+-/
 theorem ShortVectorIsotropic.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (h₁ : HermAtPlace.Statement h v) (h₂ : GramAtData.Statement h v)
     (h₃ : ArchInvariant.Statement h v) (h₄ : MajorantBound.Statement ι)

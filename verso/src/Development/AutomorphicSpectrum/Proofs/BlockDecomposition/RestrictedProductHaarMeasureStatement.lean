@@ -4,6 +4,9 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.SiegelW
 open MeasureTheory Topology
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.SW.FactS.OpenFactor.prod_factor_open | exact GlobalTheory.CompanionTheory.SW.FactS.OpenFactor.prod_factor_open | (intros; apply GlobalTheory.CompanionTheory.SW.FactS.OpenFactor.prod_factor_open <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.restricted_product_haar_measure : ∀ {ι : Type} [Fintype ι]
   {G₀ : Type} [Group G₀] [TopologicalSpace G₀] [IsTopologicalGroup G₀] [T2Space G₀]
   [LocallyCompactSpace G₀] [SecondCountableTopology G₀]

@@ -8,6 +8,21 @@ namespace GlobalTheory.LocLatInert
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Take `⟨x, hx1, hx2⟩` from `hx`. Establish `hvx : Valued.v x = 1`. Use `le_antisymm hx1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hx0 : x ≠ 0`.
+
+Introduce `h0`. Rewrite `hvx` using `[h0, map_zero]`. Conclude with `zero_ne_one hvx`. Establish `hsx0 : σ x ≠ 0`. Introduce `h0`.
+
+Rewrite `hvx` using `[← hv, h0, map_zero]`. Conclude with `zero_ne_one hvx`. Establish `hd : x - σ x ≠ 0`. Introduce `h0`. Rewrite `hx2` using `[← neg_sub, h0, neg_zero, map_zero]`.
+
+Conclude with `zero_ne_one hx2`. Establish `hvd : Valued.v (x - σ x) = 1` using `by rw [← neg_sub, Valuation.map_neg, hx2]`. Use `⟨σ x * x⁻¹, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, hσ]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[map_mul, map_inv₀, hv, hvx, inv_one, mul_one]`. Rewrite using `[map_mul, map_mul, map_inv₀, hσ, map_inv₀, hv, hvx, inv_one, mul_one]`. Rewrite using `[sub_ne_zero]`. Introduce `h`. Apply `hd` to reduce the goal to its premises.
+
+Establish `: x = σ x`. Clear denominators, using `at h` for the nonvanishing conditions. Conclude with `h`. Rewrite using `[← this, sub_self]`. Establish `e : (1 - σ x * x⁻¹)⁻¹ = x * (x - σ x)⁻¹`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, map_inv₀, hvx, hvd]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_unit_of_inert (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x)
     (hv : ∀ x, Valued.v (σ x) = Valued.v x)
     (hx : ∃ x, Valued.v x ≤ 1 ∧ Valued.v (σ x - x) = 1) :
@@ -47,6 +62,27 @@ theorem exists_unit_of_inert (σ : K →+* K) (hσ : ∀ x, σ (σ x) = x)
     rw [e, map_mul, map_inv₀, hvx, hvd]
     simp
 
+/- English proof (translation)
+Establish `hdd : ∀ j, Function.update (1 : Fin n → K) i u j * Function.update (1 : Fin n → K) i (σ u) j = 1`. Introduce `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, Function.update_self, Function.update_self, mul_comm, hu]`. Rewrite using `[Function.update_of_ne hj, Function.update_of_ne hj, Pi.one_apply, mul_one]`.
+
+Set `D : GL (Fin n) K` to `⟨Matrix.diagonal (Function.update 1 i u), Matrix.diagonal (Function.update 1 i (σ u)), by rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]; exact congrArg _ (funext hdd), by`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Conclude with `congrArg _ (funext fun j => by rw [mul_comm]; exact hdd j)⟩`. Establish `hDU : D ∈ Formalism.UG.UJ σ 1`. Simplify using `only [Formalism.UG.UJ, Formalism.UG.cT]`.
+
+Use `show ((Matrix.diagonal (Function.update (1 : Fin n → K) i u)).map σ)ᵀ * 1 * Matrix.diagonal (Function.update (1 : Fin n → K) i u) = 1`. Rewrite using `[Matrix.diagonal_map (map_zero σ), Matrix.diagonal_transpose, Matrix.mul_one, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+
+Rewrite using `[hj, Function.update_self, hu]`. Rewrite using `[Function.update_of_ne hj, Pi.one_apply, map_one, mul_one]`. Establish `hent : ∀ (c : K), Valued.v c ≤ 1 → ∀ a b, Valued.v (Matrix.diagonal (Function.update (1 : Fin n → K) i c) a b) ≤ 1`. Introduce `c hc a b`. Rewrite using `[Matrix.diagonal_apply]`.
+
+Use `split_ifs`. Distinguish the cases in `ha : a = i`. Rewrite using `[ha, Function.update_self]`. Conclude with `hc`. Rewrite using `[Function.update_of_ne ha, Pi.one_apply, map_one]`.
+
+Rewrite using `[map_zero]`. Conclude with `zero_le`. Establish `hDw` using `hU D hDU (hent u hu1) (hent (σ u) hu2) w hw`. Establish `e1 : (D : Matrix (Fin n) (Fin n) K) *ᵥ w - w = Pi.single i ((u - 1) * w i)`. Use function extensionality and compare the values at `j`.
+
+Use `show (Matrix.diagonal (Function.update (1 : Fin n → K) i u) *ᵥ w) j - w j = _`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, Function.update_self, Pi.single_eq_same]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Function.update_of_ne hj, Pi.single_eq_of_ne hj, Pi.one_apply, one_mul, sub_self]`. Establish `hsub : Pi.single i ((u - 1) * w i) ∈ L` using `e1 ▸ L.sub_mem hDw hw`. Establish `hc : Valued.v (-(1 - u)⁻¹) ≤ 1` using `by rw [Valuation.map_neg]; exact hu4`. Establish `hfin` using `hO _ hc _ hsub`. Use `hfin using 1` and compare the differences between its conclusion and the goal.
+
+Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Rewrite using `[hj, Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hj, Pi.single_eq_of_ne hj, smul_zero]`.
+-/
 theorem single_mem_of_mem (σ : K →+* K) {n : ℕ} (L : AddSubgroup (Fin n → K))
     (hO : ∀ a : K, Valued.v a ≤ 1 → ∀ w ∈ L, a • w ∈ L)
     (hU : ∀ U : GL (Fin n) K, U ∈ Formalism.UG.UJ σ 1 → (∀ i j, Valued.v (U.1 i j) ≤ 1) →
@@ -107,6 +143,19 @@ theorem single_mem_of_mem (σ : K →+* K) {n : ℕ} (L : AddSubgroup (Fin n →
     ring
   · rw [Pi.smul_apply, Pi.single_eq_of_ne hj, Pi.single_eq_of_ne hj, smul_zero]
 
+/- English proof (translation)
+Establish `hPP : (Equiv.swap i j).permMatrix K * (Equiv.swap i j).permMatrix K = 1`. Rewrite using `[← Matrix.permMatrix_mul, Equiv.swap_mul_self, Matrix.permMatrix_one]`. Set `P : GL (Fin n) K` to `⟨(Equiv.swap i j).permMatrix K, (Equiv.swap i j).permMatrix K, hPP, hPP⟩`. Establish `hmap : ((Equiv.swap i j).permMatrix K).map σ = (Equiv.swap i j).permMatrix K`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.map_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]`. Use `split_ifs`. Conclude with `map_one σ`. Conclude with `map_zero σ`. Establish `hPU : P ∈ Formalism.UG.UJ σ 1`.
+
+Simplify using `only [Formalism.UG.UJ, Formalism.UG.cT]`. Use `show (((Equiv.swap i j).permMatrix K).map σ)ᵀ * 1 * (Equiv.swap i j).permMatrix K = 1`. Rewrite using `[hmap, Matrix.transpose_permMatrix, Matrix.mul_one, ← Matrix.permMatrix_mul, mul_inv_cancel, Matrix.permMatrix_one]`. Establish `hent : ∀ a b, Valued.v (((Equiv.swap i j).permMatrix K) a b) ≤ 1`. Introduce `a b`.
+
+Simplify using `only [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]`. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le`.
+
+Establish `hP` using `hU P hPU hent hent _ h`. Establish `e : (P : Matrix (Fin n) (Fin n) K) *ᵥ Pi.single i t = Pi.single j t` using `by show (Equiv.swap i j).permMatrix K *ᵥ Pi.single i t = Pi.single j t`. Rewrite using `[Matrix.permMatrix_mulVec]`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, Pi.single_apply, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`.
+
+Conclude with `e ▸ hP`.
+-/
 theorem single_mem_swap (σ : K →+* K) {n : ℕ} (L : AddSubgroup (Fin n → K))
     (hU : ∀ U : GL (Fin n) K, U ∈ Formalism.UG.UJ σ 1 → (∀ i j, Valued.v (U.1 i j) ≤ 1) →
       (∀ i j, Valued.v ((U⁻¹).1 i j) ≤ 1) → ∀ w ∈ L, U.1 *ᵥ w ∈ L)
@@ -147,6 +196,19 @@ namespace GlobalTheory.LocLatInert
 
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
+/- English proof (translation)
+Establish `hvN : Valued.v N ≠ 0` using `(Valuation.ne_zero_iff _).2 hN`. Set `S : Set ℤ` to `{m | ∃ t ∈ I, Valued.v t = WithZero.exp m}`. Establish `hS : S.Nonempty` using `⟨WithZero.log (Valued.v N), N, hNI, (WithZero.exp_log hvN).symm⟩`. Establish `hbdd : BddAbove S`. Use `⟨-WithZero.log (Valued.v N), ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `m ⟨t, ht, hvt⟩`. Establish `h1` using `hb t ht`. Rewrite `h1` using `[map_mul, hvt, ← WithZero.exp_log hvN, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Take `⟨t0, ht0, hvt0⟩ : sSup S ∈ S` from `Int.csSup_mem hS hbdd`.
+
+Use `⟨sSup S, fun t => ⟨fun ht => ?_, fun ht => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `h0 : t = 0`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le`. Establish `hvt : Valued.v t ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
+
+Rewrite using `[← WithZero.exp_log hvt, WithZero.exp_le_exp]`. Conclude with `le_csSup hbdd ⟨t, ht, (WithZero.exp_log hvt).symm⟩`. Establish `ht00 : t0 ≠ 0`. Introduce `h0`. Rewrite `hvt0` using `[h0, map_zero]`.
+
+Conclude with `WithZero.exp_ne_zero hvt0.symm`. Establish `e : t = (t * t0⁻¹) * t0` using `by field_simp`. Rewrite using `[e]`. Use `hmul _ ?_ t0 ht0` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, hvt0]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem set_classify (I : Set K) (hmul : ∀ a : K, Valued.v a ≤ 1 → ∀ t ∈ I, a * t ∈ I)
     (N : K) (hN : N ≠ 0) (hNI : N ∈ I) (hb : ∀ t ∈ I, Valued.v (N * t) ≤ 1) :
     ∃ M : ℤ, ∀ t, t ∈ I ↔ Valued.v t ≤ WithZero.exp M := by
@@ -183,6 +245,29 @@ end GlobalTheory.LocLatInert
 
 namespace GlobalTheory.LocLatInert
 
+/- English proof (translation)
+Introduce `E _ _ P σ hσ hv hx ϖ hϖ n L N hN hO hN' hb hU`. Take `⟨u, hu, hu1, hu2, hu3, hu4⟩` from `exists_unit_of_inert σ hσ hv hx`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨0, fun w => ⟨fun _ i => i.elim0, fun _ => ?_⟩⟩` and prove the remaining obligations. Establish `hw : w = 0` using `funext fun i => i.elim0`.
+
+Rewrite using `[hw]`. Conclude with `L.zero_mem`. Set `i0 : Fin n` to `⟨0, hn⟩`. Set `I : Set (P.adicCompletion E)` to `{t | Pi.single i0 t ∈ L}`. Establish `hIall : ∀ (i : Fin n) t, Pi.single i t ∈ L ↔ t ∈ I` using `fun i t => ⟨single_mem_swap σ L hU i i0 t, single_mem_swap σ L hU i0 i t⟩`.
+
+Establish `hmul : ∀ a : P.adicCompletion E, Valued.v a ≤ 1 → ∀ t ∈ I, a * t ∈ I`. Introduce `a ha t ht`. Establish `e : Pi.single i0 (a * t) = a • (Pi.single i0 t : Fin n → P.adicCompletion E)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i0`.
+
+Rewrite using `[hj, Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, smul_eq_mul]`. Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hj, Pi.single_eq_of_ne hj, smul_zero]`. Use `show Pi.single i0 (a * t) ∈ L`. Rewrite using `[e]`. Conclude with `hO a ha _ ht`.
+
+Establish `hNI : N ∈ I`. Establish `h1` using `hN' (Pi.single i0 1) fun i => by`. Distinguish the cases in `hi : i = i0`. Rewrite using `[hi, Pi.single_eq_same, map_one]`. Rewrite using `[Pi.single_eq_of_ne hi, map_zero]`.
+
+Conclude with `zero_le`. Establish `e : N • (Pi.single i0 1 : Fin n → P.adicCompletion E) = Pi.single i0 N`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i0`. Rewrite using `[hj, Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, smul_eq_mul, mul_one]`.
+
+Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne hj, Pi.single_eq_of_ne hj, smul_zero]`. Use `show Pi.single i0 N ∈ L`. Rewrite using `[← e]`. Conclude with `h1`. Establish `hbI : ∀ t ∈ I, Valued.v (N * t) ≤ 1` using `fun t ht => by`.
+
+Establish `h1` using `hb _ ht i0`. Rewrite `h1` using `[Pi.single_eq_same]`. Then use the resulting hypothesis. Take `⟨M, hM⟩` from `set_classify I hmul N hN hNI hbI`. Establish `key : ∀ t : P.adicCompletion E, Valued.v (ϖ ^ M * t) ≤ 1 ↔ Valued.v t ≤ WithZero.exp M`. Introduce `t`.
+
+Rewrite using `[map_mul, map_zpow₀, hϖ, ← WithZero.exp_zsmul, smul_eq_mul, mul_neg_one]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← WithZero.exp_add, add_neg_cancel, WithZero.exp_zero, one_mul]`.
+
+Use `_ ≤ WithZero.exp M * 1 := by gcongr`. Use `_ = WithZero.exp M := mul_one _`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Use `⟨M, fun w => ⟨fun hw i => ?_, fun hw => ?_⟩⟩` and prove the remaining obligations.
+
+Conclude with `(key (w i)).2 ((hM (w i)).1 ((hIall i (w i)).1 (single_mem_of_mem σ L hO hU u hu hu1 hu2 hu3 hu4 w hw i)))`. Rewrite using `[← Finset.univ_sum_single w]`. Conclude with `L.sum_mem fun i _ => (hIall i (w i)).2 ((hM (w i)).2 ((key (w i)).1 (hw i)))`.
+-/
 theorem stable_lattice_eq_zpow_std : ∀ (E : Type) [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E)) (σ : P.adicCompletion E →+* P.adicCompletion E), (∀ x, σ (σ x) = x) → (∀ x, Valued.v (σ x) = Valued.v x) → (∃ x, Valued.v x ≤ 1 ∧ Valued.v (σ x - x) = 1) → ∀ (ϖ : P.adicCompletion E), Valued.v ϖ = WithZero.exp (-1 : ℤ) → ∀ (n : ℕ) (L : AddSubgroup (Fin n → P.adicCompletion E)) (N : P.adicCompletion E), N ≠ 0 → (∀ a : P.adicCompletion E, Valued.v a ≤ 1 → ∀ w ∈ L, a • w ∈ L) → (∀ w : Fin n → P.adicCompletion E, (∀ i, Valued.v (w i) ≤ 1) → N • w ∈ L) → (∀ w ∈ L, ∀ i, Valued.v (N * w i) ≤ 1) → (∀ U : GL (Fin n) (P.adicCompletion E), U ∈ Formalism.UG.UJ σ 1 → (∀ i j, Valued.v (U.1 i j) ≤ 1) → (∀ i j, Valued.v ((U⁻¹).1 i j) ≤ 1) → ∀ w ∈ L, U.1 *ᵥ w ∈ L) → ∃ k : ℤ, ∀ w, w ∈ L ↔ ∀ i, Valued.v (ϖ ^ k * w i) ≤ 1 := by
   intro E _ _ P σ hσ hv hx ϖ hϖ n L N hN hO hN' hb hU
   obtain ⟨u, hu, hu1, hu2, hu3, hu4⟩ := exists_unit_of_inert σ hσ hv hx

@@ -6,12 +6,39 @@ section
 
 variable {G κ V : Type} [Group G] [Field κ] [AddCommGroup V] [Module κ V]
 
+/- English proof (translation)
+Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+-/
 private theorem hmul (σ : G →* Module.End κ V) (a b : G) (v : V) : σ a (σ b v) = σ (a * b) v := by
   rw [map_mul]; rfl
 
+/- English proof (translation)
+The claim follows from `Function.LeftInverse.injective (g := σ g⁻¹) fun v => by rw [hmul]; simp`.
+-/
 private theorem hinj (σ : G →* Module.End κ V) (g : G) : Function.Injective (σ g) :=
   Function.LeftInverse.injective (g := σ g⁻¹) fun v => by rw [hmul]; simp
 
+/- English proof (translation)
+Take `⟨S, ⟨hS, hd⟩, hmax⟩` from `(wellFounded_gt (α := Submodule κ V)).has_min {F | (∀ g ∈ U, ∀ v ∈ F, σ g v ∈ F) ∧ finrank κ W ∣ finrank κ F} ⟨⊥, by simp +contextual, by simp⟩`. Establish `hle : ∀ g, W ≤ S.comap (σ g)`. Introduce `g`. Assume the negation of the conclusion as `hg`. Establish `hcom : ∀ h ∈ U, ∀ v ∈ S.comap (σ g), σ h v ∈ S.comap (σ g)`.
+
+Introduce `h hh v hv`. Use `hS (g * h * g⁻¹) (hn.conj_mem h hh g) _ hv` as an intermediate fact. Rewrite `this` using `[hmul, inv_mul_cancel_right, ← hmul]`. Conclude with `this`. Establish `hb : S.comap (σ g) ⊓ W = ⊥`.
+
+Assume the negation of the conclusion as `hne`. Use `hmin _ hne (fun h hh v hv => ⟨hcom h hh v hv.1, hW h hh v hv.2⟩) ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_ne inf_le_right fun h => hg (inf_eq_right.mp h)`. Establish `hb' : S ⊓ W.map (σ g) = ⊥`. Rewrite using `[eq_bot_iff]`.
+
+Introduce and unpack `_ ⟨h1, w, hw, rfl⟩`. Establish `: w ∈ S.comap (σ g) ⊓ W` using `⟨h1, hw⟩`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Simplify using `[this]`. Establish `hr : finrank κ (W.map (σ g)) = finrank κ W` using `(Submodule.equivMapOfInjective _ (hinj σ g) W).finrank_eq.symm`.
+
+Establish `hs` using `Submodule.finrank_sup_add_finrank_inf_eq S (W.map (σ g))`. Rewrite `hs` using `[hb', hr, finrank_bot, add_zero]`. Use `hmax (S ⊔ W.map (σ g)) ⟨?_, by rw [hs]; exact dvd_add hd dvd_rfl⟩ ?_` and prove the remaining obligations. Introduce `h hh v hv`. Take `⟨a, ha, _, ⟨b, hb, rfl⟩, rfl⟩` from `Submodule.mem_sup.mp hv`.
+
+Rewrite using `[map_add]`. Use `Submodule.add_mem_sup (hS h hh a ha) ⟨_, hW _ (hn.conj_mem' h hh g) b hb, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hmul]`. Use `congr 2`. Use `group`.
+
+Use `lt_of_le_of_ne le_sup_left fun h => hg fun w hw => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, h]`. Conclude with `Submodule.mem_sup_right ⟨w, hw, rfl⟩`. Break down `hirr (⨅ g, S.comap (σ g)) (fun g v hv => by` into its components or cases. Rewrite `hv`, the goal using `[Submodule.mem_iInf]`.
+
+Introduce `k`. Use `hv (k * g)` as an intermediate fact. Rewrite `this` using `[Submodule.mem_comap, ← hmul]`. Conclude with `this) with h | h`. Conclude with `absurd (le_bot_iff.mp (h ▸ le_iInf hle)) hW0`.
+
+Establish `: S = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `: v ∈ ⨅ g, S.comap (σ g)` using `by rw [h]; trivial`. Simplify using `using (Submodule.mem_iInf _).mp this 1`.
+
+Rewrite `hd` using `[this, finrank_top]`. Then use the resulting hypothesis.
+-/
 private theorem min_dvd [FiniteDimensional κ V] (σ : G →* Module.End κ V) (U : Subgroup G) [hn : U.Normal]
     (hirr : ∀ W : Submodule κ V, (∀ g, ∀ v ∈ W, σ g v ∈ W) → W = ⊥ ∨ W = ⊤)
     (W : Submodule κ V) (hW0 : W ≠ ⊥) (hW : ∀ g ∈ U, ∀ v ∈ W, σ g v ∈ W)
@@ -70,6 +97,15 @@ private def eig (σ : G →* Module.End κ V) {U : Subgroup G} (μ : U →* κˣ
   zero_mem' u := by simp
   smul_mem' c a ha u := by rw [map_smul, ha u, smul_comm]
 
+/- English proof (translation)
+Rewrite using `[iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero]`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+
+Introduce `v hv h0`. Rewrite `h0` using `[Finset.sum_insert ha]`. Establish `key : ∀ j ∈ s, v j = 0`. Introduce `j hj`. Take `⟨u, hu⟩` from `DFunLike.ne_iff.mp (show j ≠ a from fun h => ha (h ▸ hj))`.
+
+Use `ih (fun i => ((i u : κ) - a u) • v i) (fun i hi => Submodule.smul_mem _ _ (hv i (Finset.mem_insert_of_mem hi))) (by` as an intermediate fact. Establish `h1` using `congrArg (σ u) h0`. Rewrite `h1` using `[map_add, map_sum, map_zero, hv a (Finset.mem_insert_self _ _) u, Finset.sum_congr rfl fun i hi => hv i (Finset.mem_insert_of_mem hi) u]`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← Finset.smul_sum]`. Rewrite using `[eq_neg_of_add_eq_zero_right h1, eq_neg_of_add_eq_zero_right h0, smul_neg, sub_self]) j hj`.
+
+Conclude with `(smul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr fun h => hu (Units.ext h))`. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases. Rewrite `h0` using `[Finset.sum_eq_zero key, add_zero]`. Then use the resulting hypothesis. Conclude with `key i hi`.
+-/
 private theorem eig_indep (σ : G →* Module.End κ V) (U : Subgroup G) :
     iSupIndep fun μ : U →* κˣ => eig σ μ := by
   classical
@@ -107,6 +143,11 @@ private theorem eig_indep (σ : G →* Module.End κ V) (U : Subgroup G) :
 
 attribute [local instance] conjAct
 
+/- English proof (translation)
+Introduce `u`. Use `congrArg (σ g) (hv (MulAut.conjNormal g⁻¹ u))` as an intermediate fact. Rewrite `this` using `[map_smul, hmul]`. Rewrite using `[hmul]`. Use `this using 3` and compare the differences between its conclusion and the goal.
+
+Simplify using `[mul_assoc]`. Both sides reduce to the same expression.
+-/
 private theorem eig_smul (σ : G →* Module.End κ V) {U : Subgroup G} [U.Normal] (μ : U →* κˣ) (g : G) {v : V}
     (hv : v ∈ eig σ μ) : σ g v ∈ eig σ (g • μ) := by
   intro u
@@ -117,6 +158,11 @@ private theorem eig_smul (σ : G →* Module.End κ V) {U : Subgroup G} [U.Norma
   · simp [mul_assoc]
   · rfl
 
+/- English proof (translation)
+Establish `key : ∀ (μ : U →* κˣ) (g : G), finrank κ (eig σ μ) ≤ finrank κ (eig σ (g • μ))` using `fun μ g => by`. Rewrite using `[(Submodule.equivMapOfInjective _ (hinj σ g) (eig σ μ)).finrank_eq]`. Apply `Submodule.finrank_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `eig_smul σ μ g hv`.
+
+Use `le_antisymm ?_ (key μ g)` and prove the remaining obligations. Use `key (g • μ) g⁻¹` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Then use the resulting hypothesis.
+-/
 private theorem eig_rank [FiniteDimensional κ V] (σ : G →* Module.End κ V) {U : Subgroup G} [U.Normal]
     (μ : U →* κˣ) (g : G) : finrank κ (eig σ (g • μ)) = finrank κ (eig σ μ) := by
   have key : ∀ (μ : U →* κˣ) (g : G), finrank κ (eig σ μ) ≤ finrank κ (eig σ (g • μ)) := fun μ g => by
@@ -128,6 +174,23 @@ private theorem eig_rank [FiniteDimensional κ V] (σ : G →* Module.End κ V) 
   have := key (g • μ) g⁻¹
   rwa [inv_smul_smul] at this
 
+/- English proof (translation)
+Set `X` to `MulAction.orbit G μ`. Set `E : X → Submodule κ V` to `fun x => eig σ x.1`. Establish `hind : iSupIndep E` using `(eig_indep σ U).comp Subtype.val_injective`. Establish `hr : ∀ x, finrank κ (E x) = finrank κ (eig σ μ)`. Introduce and unpack `⟨_, g, rfl⟩`.
+
+Conclude with `eig_rank σ μ g`. Establish `hE0 : ∀ x, E x ≠ ⊥` using `fun x h => hμ (by`. Rewrite using `[← Submodule.finrank_eq_zero, ← hr x, h, finrank_bot])`. Establish `htop : ⨆ x, E x = ⊤`. Use `(hirr _ fun g v hv => ?_).resolve_left fun h => hE0 ⟨μ, MulAction.mem_orbit_self μ⟩ (le_bot_iff.mp (h ▸ le_iSup E _))` and prove the remaining obligations.
+
+Establish `: ⨆ x, E x ≤ (⨆ x, E x).comap (σ g)` using `iSup_le fun x w hw => le_iSup E (g • x) (eig_smul σ x.1 g hw)`. Conclude with `this hv`. Use `choose b hb hb0 using fun x => Submodule.exists_mem_ne_zero_of_ne_bot (hE0 x)`. Establish `hli : LinearIndependent κ b` using `hind.linearIndependent E hb hb0`. Use `haveI : Finite X := hli.finite`.
+
+Use `haveI : Fintype X := Fintype.ofFinite X`. Establish `hcard : Fintype.card X * finrank κ (eig σ μ) = n`. Rewrite using `[← hn, ← (LinearEquiv.ofBijective (DirectSum.coeLinearMap E) (DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind htop)).finrank_eq, finrank_directSum]`. Simplify using `only [hr, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Break down `hp.eq_one_or_self_of_dvd _ (Dvd.intro_left _ hcard) with h | h` into its components or cases.
+
+Use `right`. Rewrite `hcard` using `[h, mul_one]`. Set `e : X ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`. Set `B : Basis X κ V` to `Basis.mk hli (htop.ge.trans (iSup_le fun x w hw => by`. Take `⟨a, ha⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨b x, hb x⟩ : E x) (fun h => hb0 _ (congrArg Subtype.val h))).mp ((hr _).trans h) ⟨w, hw⟩`.
+
+Establish `ha' : a • b x = w` using `congrArg Subtype.val ha`. Conclude with `ha' ▸ Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)))`. Establish `hB : ∀ i, B.reindex e i = b (e.symm i)` using `fun i => by simp [B]`. Use `⟨B.reindex e, fun i => (e.symm i).1, e.permCongrHom.toMonoidHom.comp (MulAction.toPermHom G X), Subtype.val_injective.comp e.symm.injective, fun i u => by rw [hB]; exact hb _ u, fun g i => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1` using `(finrank_eq_one_iff_of_nonzero' (⟨b (g • e.symm i), hb _⟩ : E (g • e.symm i)) (fun h => hb0 _ (congrArg Subtype.val h))).mp ((hr _).trans h) ⟨_, eig_smul σ _ g (hb (e.symm i))⟩`.
+
+Take `⟨a, ha⟩` from `h1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB]`. Simplify using `using (congrArg Subtype.val ha).symm`. Take `⟨g, hg⟩` from `MulAction.exists_smul_eq G (e.symm i) (e.symm j)`.
+
+Conclude with `⟨g, by simp [hg]⟩`. Conclude with `Or.inl (Submodule.eq_top_of_finrank_eq (h.trans hn.symm))`.
+-/
 private theorem of_eig [FiniteDimensional κ V] (σ : G →* Module.End κ V) (U : Subgroup G) [U.Normal]
     (hirr : ∀ W : Submodule κ V, (∀ g, ∀ v ∈ W, σ g v ∈ W) → W = ⊥ ∨ W = ⊤) {n : ℕ} (hp : n.Prime)
     (hn : finrank κ V = n) (μ : U →* κˣ) (hμ : eig σ μ ≠ ⊥) :
@@ -180,6 +243,11 @@ private theorem of_eig [FiniteDimensional κ V] (σ : G →* Module.End κ V) (U
       exact ⟨g, by simp [hg]⟩
   · exact Or.inl (Submodule.eq_top_of_finrank_eq (h.trans hn.symm))
 
+/- English proof (translation)
+Take `⟨v, hv0, hv⟩` from `finrank_eq_one_iff'.mp h1`. Establish `hv0' : (v : V) ≠ 0` using `fun h => hv0 (Subtype.ext h)`. Use `choose c hc using fun u : U => hv ⟨_, hW u u.2 v v.2⟩`. Establish `hc' : ∀ u : U, σ u v = c u • (v : V)` using `fun u => (congrArg Subtype.val (hc u)).symm`. Establish `hc0 : ∀ u, c u ≠ 0` using `fun u h => hv0' (hinj σ u (by rw [hc', h]; simp))`.
+
+Use `⟨MonoidHom.mk' (fun u => Units.mk0 (c u) (hc0 u)) fun a b => Units.ext ?_, (Submodule.ne_bot_iff _).mpr ⟨v, hc', hv0'⟩⟩` and prove the remaining obligations. Use `smul_left_injective κ hv0' ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `c (a * b) • (v : V) = (c a * c b) • (v : V)`. Rewrite using `[← hc', Subgroup.coe_mul, ← hmul, hc', map_smul, hc', smul_smul, mul_comm]`.
+-/
 private theorem exists_eig (σ : G →* Module.End κ V) (U : Subgroup G) (W : Submodule κ V)
     (hW : ∀ g ∈ U, ∀ v ∈ W, σ g v ∈ W) (h1 : finrank κ W = 1) : ∃ μ : U →* κˣ, eig σ μ ≠ ⊥ := by
   obtain ⟨v, hv0, hv⟩ := finrank_eq_one_iff'.mp h1
@@ -195,6 +263,17 @@ private theorem exists_eig (σ : G →* Module.End κ V) (U : Subgroup G) (W : S
 
 end
 
+/- English proof (translation)
+Introduce `G κ _ _ _ n hp r hirr U _`. Set `σ : G →* Module.End κ (Fin n → κ)` to `{ toFun := fun g => Matrix.toLin' (gm r g) map_one' := by simp [gm, Module.End.one_eq_id] map_mul' := fun a b => by simp [gm, Matrix.toLin'_mul, Module.End.mul_eq_comp] }`. Establish `hirr' : ∀ W : Submodule κ (Fin n → κ), (∀ g, ∀ v ∈ W, σ g v ∈ W) → W = ⊥ ∨ W = ⊤` using `fun W hW => hirr W fun g _ v hv => hW g v hv`. Establish `hn : finrank κ (Fin n → κ) = n` using `finrank_fin_fun κ`. Use `haveI : Nontrivial (Fin n → κ) := finrank_pos_iff.mp (hn.symm ▸ hp.pos)`.
+
+Take `⟨W, ⟨hW0, hW⟩, hmin⟩` from `(wellFounded_lt (α := Submodule κ (Fin n → κ))).has_min {F | F ≠ ⊥ ∧ ∀ g ∈ U, ∀ v ∈ F, σ g v ∈ F} ⟨⊤, top_ne_bot, fun _ _ _ _ => trivial⟩`. Establish `hd` using `min_dvd σ U hirr' W hW0 hW fun F h1 h2 => hmin F ⟨h1, h2⟩`. Rewrite `hd` using `[hn]`. Break down `hp.eq_one_or_self_of_dvd _ hd with h | h` into its components or cases. Take `⟨μ, hμ⟩` from `exists_eig σ U W hW h`.
+
+Use `Or.inr ((of_eig σ U hirr' hp hn μ hμ).imp (fun ht u hu => ⟨μ ⟨u, hu⟩, ?_⟩) id)` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `: v ∈ eig σ μ` using `by rw [ht]; trivial`. Simplify `this ⟨u, hu⟩` using `[σ]`.
+
+Use `left`. Introduce `F hF`. Establish `hW' : W = ⊤` using `Submodule.eq_top_of_finrank_eq (h.trans hn.symm)`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_or]`.
+
+Conclude with `hmin F ⟨hne.1, hF⟩ (hW' ▸ lt_top_iff_ne_top.mpr hne.2)`.
+-/
 theorem UpperTheory.V.Pr.cliffPrime :
     UpperTheory.V.Pr.CliffPrime := by
   intro G κ _ _ _ n hp r hirr U _

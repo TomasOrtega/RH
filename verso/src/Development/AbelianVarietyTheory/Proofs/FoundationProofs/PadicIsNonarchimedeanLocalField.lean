@@ -10,6 +10,11 @@ namespace GlobalTheory.SplitWeil
 section Padic
 variable (p : ℕ) [Fact p.Prime]
 
+/- English proof (translation)
+Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Rewrite using `[(isEquiv (valuation ℚ_[p]) Padic.mulValuation).lt_iff_lt]`. Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Distinguish the cases in `hx : x = 0`.
+
+Simplify using `[hx, hy, zero_lt_iff]`. Rewrite using `[Padic.norm_eq_zpow_log_mulValuation hx, Padic.norm_eq_zpow_log_mulValuation hy, zpow_lt_zpow_iff_right₀ hp, WithZero.log_lt_log (by simpa using hx) (by simpa using hy)]`.
+-/
 theorem padic_valuation_lt_iff (x y : ℚ_[p]) :
     valuation ℚ_[p] x < valuation ℚ_[p] y ↔ ‖x‖ < ‖y‖ := by
   have hp : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
@@ -47,6 +52,11 @@ end Padic
 
 variable (k : Type*) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
+
+Use `haveI : ProperSpace k := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Conclude with `secondCountable_of_proper`.
+-/
 theorem secondCountable : SecondCountableTopology k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
   haveI := isUniformAddGroup_of_addCommGroup (G := k)
@@ -58,19 +68,37 @@ theorem secondCountable : SecondCountableTopology k := by
   haveI : ProperSpace k := .of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k
   exact secondCountable_of_proper
 
+/- English proof (translation)
+Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`.
+-/
 theorem t2Space : T2Space k := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
   haveI := isUniformAddGroup_of_addCommGroup (G := k)
   infer_instance
 
+/- English proof (translation)
+The claim follows from `Valuation.isOpen_integer`.
+-/
 theorem isOpen_int : IsOpen (𝒪[k] : Set k) := Valuation.isOpen_integer
 
+/- English proof (translation)
+The claim follows from `IsNonarchimedeanLocalField.isCompact_closedBall k 1`.
+-/
 theorem isCompact_int : IsCompact (𝒪[k] : Set k) := IsNonarchimedeanLocalField.isCompact_closedBall k 1
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 theorem nabs_mul (x y : kˣ) : nabs k (x * y) = nabs k x * nabs k y := by simp [nabs]
 
+/- English proof (translation)
+Simplify using `[nabs]`.
+-/
 theorem nabs_one : nabs k 1 = 1 := by simp [nabs]
 
+/- English proof (translation)
+Simplify `distribHaarChar_pos (A := k) (g := x)` using `[nabs]`.
+-/
 theorem nabs_pos (x : kˣ) : 0 < nabs k x := by
   simpa [nabs] using distribHaarChar_pos (A := k) (g := x)
 
@@ -78,6 +106,9 @@ variable {k}
 
 def cball (s : kˣ) : Set k := {x | valuation k x ≤ valuation k (s : k)}
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `only [cball, Set.mem_setOf_eq, SetLike.mem_coe, Valuation.mem_integer_iff, Units.smul_def, smul_eq_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Rewrite using `[inv_mul_le_iff₀ (by simp [zero_lt_iff]), mul_one]`.
+-/
 theorem cball_eq_smul (s : kˣ) : cball s = s • (𝒪[k] : Set k) := by
   ext x
   rw [Set.mem_smul_set_iff_inv_smul_mem]
@@ -85,15 +116,31 @@ theorem cball_eq_smul (s : kˣ) : cball s = s • (𝒪[k] : Set k) := by
     smul_eq_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]
   rw [inv_mul_le_iff₀ (by simp [zero_lt_iff]), mul_one]
 
+/- English proof (translation)
+Rewrite using `[cball_eq_smul]`. Conclude with `(isOpen_int k).smul s`.
+-/
 theorem isOpen_cball (s : kˣ) : IsOpen (cball s) := by
   rw [cball_eq_smul]; exact (isOpen_int k).smul s
 
+/- English proof (translation)
+The claim follows from `IsNonarchimedeanLocalField.isCompact_closedBall k _`.
+-/
 theorem isCompact_cball (s : kˣ) : IsCompact (cball s) :=
   IsNonarchimedeanLocalField.isCompact_closedBall k _
 
+/- English proof (translation)
+The claim follows from `(isOpen_cball s).mem_nhds (by simp [cball])`.
+-/
 theorem cball_mem_nhds (s : kˣ) : cball s ∈ 𝓝 (0 : k) :=
   (isOpen_cball s).mem_nhds (by simp [cball])
 
+/- English proof (translation)
+Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff U).mp hU`. Take `⟨y, hy⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `γ.ne_zero (by simpa using hy.symm)`.
+
+Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Use `⟨Units.mk0 (r * y) (mul_ne_zero hr0 hy0), fun z hz => hγ ?_⟩` and prove the remaining obligations. Establish `hz' : valuation k z ≤ valuation k (r * y)` using `hz`. Use `lt_of_le_of_lt hz' ?_` and prove the remaining obligations.
+
+Rewrite using `[map_mul, hy]`. Conclude with `mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1`.
+-/
 theorem exists_cball_subset {U : Set k} (hU : U ∈ 𝓝 (0 : k)) : ∃ s : kˣ, cball s ⊆ U := by
   obtain ⟨γ, hγ⟩ := (IsValuativeTopology.mem_nhds_zero_iff U).mp hU
   obtain ⟨y, hy⟩ := ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)
@@ -112,6 +159,9 @@ section Meas
 variable [MeasurableSpace k] [BorelSpace k]
 
 variable (k) in
+/- English proof (translation)
+Set `K : TopologicalSpace.PositiveCompacts k` to `⟨⟨𝒪[k], isCompact_int k⟩, by`. Simplify using `only [(isOpen_int k).interior_eq]`. Conclude with `⟨0, zero_mem _⟩⟩`. Conclude with `⟨Measure.addHaarMeasure K, inferInstance, Measure.addHaarMeasure_self⟩`.
+-/
 theorem exists_isUnitVol : ∃ ν : Measure k, IsUnitVol ν := by
   let K : TopologicalSpace.PositiveCompacts k :=
     ⟨⟨𝒪[k], isCompact_int k⟩, by
@@ -119,18 +169,29 @@ theorem exists_isUnitVol : ∃ ν : Measure k, IsUnitVol ν := by
       exact ⟨0, zero_mem _⟩⟩
   exact ⟨Measure.addHaarMeasure K, inferInstance, Measure.addHaarMeasure_self⟩
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Rewrite using `[cball_eq_smul, distribHaarChar_mul]`.
+-/
 theorem measure_cball (ν : Measure k) [ν.IsAddHaarMeasure] (s : kˣ) :
     ν (cball s) = distribHaarChar k s * ν (𝒪[k] : Set k) := by
   haveI := secondCountable k
   haveI := t2Space k
   rw [cball_eq_smul, distribHaarChar_mul]
 
+/- English proof (translation)
+Simplify using `[Measure.real, measure_cball, nabs]`.
+-/
 theorem measureReal_cball (ν : Measure k) [ν.IsAddHaarMeasure] (s : kˣ) :
     ν.real (cball s) = nabs k s * ν.real (𝒪[k] : Set k) := by
   simp [Measure.real, measure_cball, nabs]
 
 end Meas
 
+/- English proof (translation)
+Use `borelize k`. Take `⟨ν, hν, h1⟩` from `exists_isUnitVol k`. Establish `h` using `measureReal_cball ν x`. Establish `: cball x = (𝒪[k] : Set k)`. Use extensionality with `y`.
+
+Simplify using `[cball, hx, Valuation.mem_integer_iff]`. Rewrite `h` using `[this, Measure.real, h1]`. Simplify using `using h.symm`.
+-/
 theorem nabs_eq_one_of_valuation_eq_one {x : kˣ} (hx : valuation k (x : k) = 1) : nabs k x = 1 := by
   borelize k
   obtain ⟨ν, hν, h1⟩ := exists_isUnitVol k
@@ -140,11 +201,29 @@ theorem nabs_eq_one_of_valuation_eq_one {x : kˣ} (hx : valuation k (x : k) = 1)
   rw [this, Measure.real, h1] at h
   simpa using h.symm
 
+/- English proof (translation)
+Rewrite using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton, cball, Set.mem_setOf_eq, hx]`. Conclude with `(Valuation.Integers.le_iff_dvd (Valuation.integer.integers (valuation k)))`.
+-/
 theorem mem_cball_uniformiser {ϖ : 𝒪[k]} (hϖ : Irreducible ϖ) {x : kˣ} (hx : (x : k) = ϖ) (y : 𝒪[k]) :
     (y : k) ∈ cball x ↔ y ∈ 𝓂[k] := by
   rw [hϖ.maximalIdeal_eq, Ideal.mem_span_singleton, cball, Set.mem_setOf_eq, hx]
   exact (Valuation.Integers.le_iff_dvd (Valuation.integer.integers (valuation k)))
 
+/- English proof (translation)
+Use `borelize k`. Take `⟨ν, hν, h1⟩` from `exists_isUnitVol k`. Use `choose l hl using IsLocalRing.residue_surjective (R := 𝒪[k])`. Set `S : 𝓀[k] → Set k` to `fun r => (fun z => -(l r : k) + z) ⁻¹' cball x`. Establish `hS : ∀ (r : 𝓀[k]) (y : 𝒪[k]), (y : k) ∈ S r ↔ IsLocalRing.residue _ y = r`.
+
+Introduce `r y`. Use `mem_cball_uniformiser hϖ hx (-(l r) + y)` as an intermediate fact. Rewrite `this` using `[← IsLocalRing.residue_eq_zero_iff, map_add, map_neg, hl, neg_add_eq_zero, eq_comm]`. Simplify `this` using `[S]`. Establish `hsub : ∀ r, S r ⊆ (𝒪[k] : Set k)`.
+
+Introduce `r z hz`. Establish `h2 : -(l r : k) + z ∈ 𝒪[k]`. Establish `: valuation k (-(l r : k) + z) ≤ valuation k (x : k)` using `hz`. Rewrite `this` using `[hx]`. Conclude with `this.trans ((Valuation.mem_integer_iff _ _).mp ϖ.2)`.
+
+Simplify using `using add_mem (l r).2 h2`. Establish `hU : (𝒪[k] : Set k) = ⋃ r, S r`. Use `Set.Subset.antisymm (fun z hz => ?_) (Set.iUnion_subset hsub)` and prove the remaining obligations. Conclude with `Set.mem_iUnion.mpr ⟨_, (hS _ ⟨z, hz⟩).mpr rfl⟩`. Establish `hd : Pairwise (Function.onFun Disjoint S)`.
+
+Introduce `r r' hr`. Use `Set.disjoint_left.mpr fun z hz hz' => hr ?_` and prove the remaining obligations. Conclude with `((hS r ⟨z, hsub r hz⟩).mp hz).symm.trans ((hS r' ⟨z, hsub r hz⟩).mp hz')`. Establish `hm : ∀ r, MeasurableSet (S r)` using `fun r => ((isOpen_cball x).preimage (by fun_prop)).measurableSet`. Establish `h2 : ν (𝒪[k] : Set k) = ∑' r, ν (S r)` using `by rw [hU, measure_iUnion hd hm]`.
+
+Establish `h3 : ∀ r, ν (S r) = distribHaarChar k x`. Introduce `r`. Simplify using `only [S]`. Rewrite using `[measure_preimage_add, measure_cball, h1, mul_one]`. Use `haveI := Fintype.ofFinite 𝓀[k]`.
+
+Simplify using `only [h3, h1, tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at h2`. Establish `h4` using `congrArg ENNReal.toReal h2`. Simplify using `only [ENNReal.toReal_one, ENNReal.toReal_mul, ENNReal.toReal_natCast, ENNReal.coe_toReal] at h4`. Rewrite using `[resCard, Nat.card_eq_fintype_card, nabs]`. Conclude with `eq_inv_of_mul_eq_one_right h4.symm`.
+-/
 theorem nabs_uniformiser {ϖ : 𝒪[k]} (hϖ : Irreducible ϖ) {x : kˣ} (hx : (x : k) = ϖ) :
     nabs k x = (resCard k : ℝ)⁻¹ := by
   borelize k
@@ -187,10 +266,16 @@ theorem nabs_uniformiser {ϖ : 𝒪[k]} (hϖ : Irreducible ϖ) {x : kˣ} (hx : (
 section Om
 variable {a b : Type*} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[om, nabs_one]`.
+-/
 theorem om_one (Φ : Matrix b a k → ℂ) : om μ (1 : GL a k) (1 : GL b k) Φ = Φ := by
   funext x
   simp [om, nabs_one]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [om, map_mul, nabs_mul, Real.mul_rpow (nabs_pos k _).le (nabs_pos k _).le, _root_.mul_inv_rev, Units.val_mul, Complex.ofReal_mul, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem om_mul (g g' : GL a k) (h h' : GL b k) (Φ : Matrix b a k → ℂ) :
     om μ (g * g') (h * h') Φ = om μ g h (om μ g' h' Φ) := by
   funext x
@@ -210,6 +295,9 @@ def sideMul (g : GL a k) (h : GL b k) : Matrix b a k ≃ₜ Matrix b a k where
   continuous_toFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
   continuous_invFun := (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
+/- English proof (translation)
+Establish `h1 : Φ ∘ sideMul g h ∈ SB (Matrix b a k)` using `⟨hΦ.1.comp_continuous (sideMul g h).continuous, hΦ.2.comp_homeomorph _⟩`. Conclude with `(SB _).smul_mem _ h1`.
+-/
 theorem om_mem_SB (g : GL a k) (h : GL b k) {Φ : Matrix b a k → ℂ} (hΦ : Φ ∈ SB (Matrix b a k)) :
     om μ g h Φ ∈ SB (Matrix b a k) := by
   have h1 : Φ ∘ sideMul g h ∈ SB (Matrix b a k) :=
@@ -225,6 +313,11 @@ def ratCircle : AddCircle (1 : ℚ) →+ AddCircle (1 : ℝ) :=
     rintro _ ⟨n, rfl⟩
     exact ⟨n, by simp⟩)
 
+/- English proof (translation)
+Proceed by induction on `x using QuotientAddGroup.induction_on with | H r => ?_`. Establish `h' : (((r : ℝ)) : AddCircle (1 : ℝ)) = 0` using `h`. Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 h'`. Use `(AddCircle.coe_eq_zero_iff _).2 ⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[zsmul_eq_mul, mul_one]`.
+
+Conclude with `hn` after adjusting the coercions.
+-/
 theorem ratCircle_eq_zero {x : AddCircle (1 : ℚ)} (h : ratCircle x = 0) : x = 0 := by
   induction x using QuotientAddGroup.induction_on with | H r => ?_
   have h' : (((r : ℝ)) : AddCircle (1 : ℝ)) = 0 := h
@@ -235,6 +328,23 @@ theorem ratCircle_eq_zero {x : AddCircle (1 : ℚ)} (h : ratCircle x = 0) : x = 
 
 variable (k) in
 
+/- English proof (translation)
+Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (ϖ : k) ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `hlt : ∀ y : 𝒪[k], y ∈ 𝓂[k] ↔ valuation k (y : k) < 1` using `fun y => by`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one`.
+
+Establish `hϖ1 : valuation k (ϖ : k) < 1` using `(hlt ϖ).mp hϖ.not_isUnit`. Set `A` to `(𝒪[k]).toAddSubgroup`. Establish `hne : (QuotientAddGroup.mk (ϖ : k)⁻¹ : k ⧸ A) ≠ 0`. Rewrite using `[Ne, QuotientAddGroup.eq_zero_iff]`. Introduce `h`.
+
+Establish `h' : valuation k (ϖ : k)⁻¹ ≤ 1` using `(Valuation.mem_integer_iff _ _).mp h`. Rewrite `h'` using `[map_inv₀, inv_le_one₀ (by simp [zero_lt_iff, h0])]`. Conclude with `absurd hϖ1 (not_lt.mpr h')`. Take `⟨c, hc⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne`. Set `χ : k →+ AddCircle (1 : ℝ)` to `ratCircle.comp (AddMonoidHom.comp c (QuotientAddGroup.mk' A))`.
+
+Use `⟨AddCircle.toCircle_addChar.compAddMonoidHom χ, fun x => ⟨fun h => ?_, fun h y hy => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Rewrite `hx` using `[Units.val_one, map_one, not_le]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at hx`. Establish `hxi : valuation k x⁻¹ < 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_lt_one_of_one_lt₀ hx`. Establish `h1` using `(mem_cball_uniformiser hϖ (x := Units.mk0 _ h0) rfl ⟨x⁻¹, (Valuation.mem_integer_iff _ _).mpr hxi.le⟩).mpr ((hlt _).mpr hxi)`.
+
+Establish `h2 : valuation k x⁻¹ ≤ valuation k (ϖ : k)` using `h1`. Establish `h3` using `h (ϖ : k)⁻¹ (by`. Rewrite `h2`, the goal using `[map_inv₀]`. Conclude with `inv_le_of_inv_le₀ (by simp [zero_lt_iff, hx0]) h2)`. Establish `h4 : AddCircle.toCircle (χ (ϖ : k)⁻¹) = AddCircle.toCircle (0 : AddCircle (1 : ℝ))`.
+
+Rewrite using `[AddCircle.toCircle_zero]`. Conclude with `h3`. Conclude with `hc (ratCircle_eq_zero (AddCircle.injective_toCircle one_ne_zero h4))`. Establish `hy' : (QuotientAddGroup.mk y : k ⧸ A) = 0`. Rewrite using `[QuotientAddGroup.eq_zero_iff]`.
+
+Conclude with `(Valuation.mem_integer_iff _ _).mpr (by simpa using hy.trans h)`. Establish `: χ y = 0` using `by show ratCircle (c (QuotientAddGroup.mk y)) = 0`. Rewrite using `[hy', map_zero, map_zero]`. Use `show AddCircle.toCircle (χ y) = 1`. Rewrite using `[this, AddCircle.toCircle_zero]`.
+-/
 theorem exists_hasConductor_one : ∃ ψ : AddChar k Circle, HasConductor ψ 1 := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[k]
   have h0 : (ϖ : k) ≠ 0 := by simpa using hϖ.ne_zero
@@ -279,9 +389,17 @@ theorem exists_hasConductor_one : ∃ ψ : AddChar k Circle, HasConductor ψ 1 :
 
 variable {ψ : AddChar k Circle} {c : kˣ}
 
+/- English proof (translation)
+The claim follows from `(h c).mpr le_rfl y hy`.
+-/
 theorem HasConductor.eq_one (h : HasConductor ψ c) {y : k} (hy : y ∈ cball c) : ψ y = 1 :=
   (h c).mpr le_rfl y hy
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Establish `h1` using `(h (r⁻¹ * c)).mp fun y _ => by simp`. Rewrite `h1` using `[map_mul, map_inv₀, inv_mul_le_iff₀ (by simp [zero_lt_iff, hr0])]`.
+
+Conclude with `absurd (mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1) (not_lt.mpr h1)`.
+-/
 theorem HasConductor.ne_one (h : HasConductor ψ c) : ψ ≠ 1 := by
   rintro rfl
   obtain ⟨r, hr, hr1⟩ := Valuation.IsNontrivial.exists_lt_one (v := valuation k)
@@ -290,6 +408,11 @@ theorem HasConductor.ne_one (h : HasConductor ψ c) : ψ ≠ 1 := by
   rw [map_mul, map_inv₀, inv_mul_le_iff₀ (by simp [zero_lt_iff, hr0])] at h1
   exact absurd (mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1) (not_lt.mpr h1)
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Establish `: (fun z => -x + z) ⁻¹' cball c ∈ 𝓝 x` using `((isOpen_cball c).preimage (by fun_prop)).mem_nhds (by simp [cball])`. Use `filter_upwards [this] with z hz`. Establish `h1` using `h.eq_one hz`. Establish `h2 : z = x + (-x + z)` using `by ring`.
+
+Rewrite using `[h2, AddChar.map_add_eq_mul, h1, mul_one]`.
+-/
 theorem HasConductor.isLocallyConstant (h : HasConductor ψ c) : IsLocallyConstant ψ := by
   refine (IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_
   have : (fun z => -x + z) ⁻¹' cball c ∈ 𝓝 x :=
@@ -299,8 +422,18 @@ theorem HasConductor.isLocallyConstant (h : HasConductor ψ c) : IsLocallyConsta
   have h2 : z = x + (-x + z) := by ring
   rw [h2, AddChar.map_add_eq_mul, h1, mul_one]
 
+/- English proof (translation)
+The claim follows from `h.isLocallyConstant.continuous`.
+-/
 theorem HasConductor.continuous (h : HasConductor ψ c) : Continuous ψ := h.isLocallyConstant.continuous
 
+/- English proof (translation)
+Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (by simp [cball])`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Apply `hx` to reduce the goal to its premises. Establish `h1` using `(h (s * x)).mp fun y hy => by`. Use `hne (y * x⁻¹) (by` as an intermediate fact. Rewrite using `[cball, Set.mem_setOf_eq, map_mul, map_inv₀, mul_inv_le_iff₀ (by simp [zero_lt_iff, hx0]), ← map_mul]`. Conclude with `hy)`.
+
+Rewrite `this` using `[inv_mul_cancel_right₀ hx0]`. Then use the resulting hypothesis. Rewrite using `[cball, Set.mem_setOf_eq, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, le_mul_inv_iff₀ (by simp [zero_lt_iff]), mul_comm, ← map_mul]`. Conclude with `h1`.
+-/
 theorem HasConductor.exists_ne_one (h : HasConductor ψ c) (s : kˣ) {x : k} (hx : x ∉ cball (c * s⁻¹)) :
     ∃ t ∈ cball s, ψ (t * x) ≠ 1 := by
   have hx0 : x ≠ 0 := by
@@ -318,13 +451,26 @@ theorem HasConductor.exists_ne_one (h : HasConductor ψ c) (s : kˣ) {x : k} (hx
     le_mul_inv_iff₀ (by simp [zero_lt_iff]), mul_comm, ← map_mul]
   exact h1
 
+/- English proof (translation)
+Rewrite `*` using `[cball, Set.mem_setOf_eq]`. Conclude with `Valuation.map_add_le _ hx hy`.
+-/
 theorem add_mem_cball {s : kˣ} {x y : k} (hx : x ∈ cball s) (hy : y ∈ cball s) : x + y ∈ cball s := by
   rw [cball, Set.mem_setOf_eq] at *
   exact Valuation.map_add_le _ hx hy
 
+/- English proof (translation)
+Simplify `hx` using `[cball]`.
+-/
 theorem neg_mem_cball {s : kˣ} {x : k} (hx : x ∈ cball s) : -x ∈ cball s := by
   simpa [cball] using hx
 
+/- English proof (translation)
+Establish `h1 : ∀ᶠ t in 𝓝 (0 : k), ∀ x ∈ tsupport f, f (x + t) = f x`. Use `IsCompact.eventually_forall_of_forall_eventually hf.2 fun x _ => ?_` and prove the remaining obligations. Establish `h2 : IsLocallyConstant fun q : k × k => (f (q.2 + q.1), f q.2)` using `(hf.1.comp_continuous (by fun_prop)).prodMk (hf.1.comp_continuous continuous_snd)`. Use `filter_upwards [h2.eventually_eq (0, x)] with q hq`. Simplify using `only [Prod.mk.injEq, add_zero] at hq`.
+
+Rewrite using `[hq.1, hq.2]`. Take `⟨s, hs⟩` from `exists_cball_subset h1`. Use `⟨s, fun t ht x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ tsupport f`. Conclude with `hs ht x hx`.
+
+Distinguish the cases in `hx' : x + t ∈ tsupport f`. Use `hs (neg_mem_cball ht) _ hx'` as an intermediate fact. Rewrite using `[← this, add_neg_cancel_right]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+-/
 theorem exists_cball_invariant {f : k → ℂ} (hf : f ∈ SB k) :
     ∃ s : kˣ, ∀ t ∈ cball s, ∀ x, f (x + t) = f x := by
   have h1 : ∀ᶠ t in 𝓝 (0 : k), ∀ x ∈ tsupport f, f (x + t) = f x := by
@@ -345,6 +491,11 @@ theorem exists_cball_invariant {f : k → ℂ} (hf : f ∈ SB k) :
 
 variable [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure]
 
+/- English proof (translation)
+Take `⟨t, ht, hne⟩` from `h.exists_ne_one s hy`. Establish `h1` using `integral_add_right_eq_self (μ := ν) (fun x => f x * (ψ (x * y) : ℂ)) t`. Establish `h2 : ∀ x, f (x + t) * (ψ ((x + t) * y) : ℂ) = (ψ (t * y) : ℂ) * (f x * (ψ (x * y) : ℂ))`. Introduce `x`. Rewrite using `[hs t ht, add_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h2, integral_const_mul] at h1`. Establish `h3 : (ψ (t * y) : ℂ) - 1 ≠ 0` using `fun h4 => hne (Circle.ext (by simpa using sub_eq_zero.mp h4))`. Use `(mul_eq_zero.mp ?_).resolve_left h3` and prove the remaining obligations. Rewrite using `[sub_mul, h1, one_mul, sub_self]`.
+-/
 theorem fourier_eq_zero (h : HasConductor ψ c) {s : kˣ} {f : k → ℂ}
     (hs : ∀ t ∈ cball s, ∀ x, f (x + t) = f x) {y : k} (hy : y ∉ cball (c * s⁻¹)) :
     ∫ x, f x * (ψ (x * y) : ℂ) ∂ν = 0 := by
@@ -358,6 +509,17 @@ theorem fourier_eq_zero (h : HasConductor ψ c) {s : kˣ} {f : k → ℂ}
   refine (mul_eq_zero.mp ?_).resolve_left h3
   rw [sub_mul, h1, one_mul, sub_self]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x ∈ cball s`. Rewrite using `[Set.indicator_of_mem hx]`. Establish `: ∀ y, (cball (c * s⁻¹)).indicator (fun _ => (1 : ℂ)) y * (ψ (y * x) : ℂ) = (cball (c * s⁻¹)).indicator (fun _ => (1 : ℂ)) y`. Introduce `y`. Distinguish the cases in `hy : y ∈ cball (c * s⁻¹)`.
+
+Establish `h1 : y * x ∈ cball c`. Establish `h2 : valuation k (y * x) ≤ valuation k (((c * s⁻¹ : kˣ) : k) * s)`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_mul' hy hx`. Rewrite `h2` using `[← Units.val_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+
+Rewrite using `[h.eq_one h1, Circle.coe_one, mul_one]`. Simplify using `[Set.indicator_of_notMem hy]`. Simplify using `only [this]`. Rewrite using `[integral_indicator_const _ (isOpen_cball _).measurableSet]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[Set.indicator_of_notMem hx]`. Use `fourier_eq_zero ν h (s := c * s⁻¹) (fun t ht y => ?_) (by simpa using hx)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ cball (c * s⁻¹)`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (add_mem_cball hy ht)]`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem]`.
+
+Introduce `h1`. Conclude with `hy (by simpa using add_mem_cball h1 (neg_mem_cball ht))`.
+-/
 theorem fourier_indicator (h : HasConductor ψ c) (s : kˣ) (x : k) :
     ∫ y, (cball (c * s⁻¹)).indicator (fun _ => (1 : ℂ)) y * (ψ (y * x) : ℂ) ∂ν =
       (cball s).indicator (fun _ => (ν.real (cball (c * s⁻¹)) : ℂ)) x := by
@@ -385,6 +547,21 @@ theorem fourier_indicator (h : HasConductor ψ c) (s : kˣ) (x : k) :
       intro h1
       exact hy (by simpa using add_mem_cball h1 (neg_mem_cball ht))
 
+/- English proof (translation)
+Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Take `⟨s, hs⟩` from `exists_cball_invariant hf`. Use `set e : k → ℂ := (cball (c * s⁻¹)).indicator (fun _ => (1 : ℂ)) with he`. Establish `h1 : ∀ y, ∫ x, f x * (ψ (x * y) : ℂ) ∂ν = ∫ x, f x * (e y * (ψ (y * x) : ℂ)) ∂ν`.
+
+Introduce `y`. Distinguish the cases in `hy : y ∈ cball (c * s⁻¹)`. Simplify using `[he, Set.indicator_of_mem hy, mul_comm y]`. Simplify using `[he, Set.indicator_of_notMem hy, fourier_eq_zero ν h hs hy]`. Establish `hei : Integrable e ν` using `(integrable_indicator_iff (isOpen_cball _).measurableSet).mpr (integrableOn_const (isCompact_cball _).measure_lt_top.ne)`.
+
+Establish `hfi : Integrable f ν` using `hf.1.continuous.integrable_of_hasCompactSupport hf.2`. Establish `hint : Integrable (Function.uncurry fun y x => f x * (e y * (ψ (y * x) : ℂ))) (ν.prod ν)`. Establish `h2` using `(hei.mul_prod hfi).mul_bdd (c := 1) (g := fun q : k × k => (ψ (q.1 * q.2) : ℂ)) (Continuous.aestronglyMeasurable (continuous_subtype_val.comp (h.continuous.comp (by fun_prop)))) (Filter.Eventually.of_forall fun q => (Circle.norm_coe _).le)`. Use `h2.congr (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [Function.uncurry]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Rewrite using `[integral_integral_swap hint]`. Simplify using `only [integral_const_mul, he, fourier_indicator ν h s]`. Establish `h3 : ∀ x, f x * (cball s).indicator (fun _ => (ν.real (cball (c * s⁻¹)) : ℂ)) x = (cball s).indicator (fun _ => (ν.real (cball (c * s⁻¹)) : ℂ) * f 0) x`.
+
+Introduce `x`. Distinguish the cases in `hx : x ∈ cball s`. Use `hs x hx 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, this, mul_comm]`.
+
+Simplify using `[Set.indicator_of_notMem hx]`. Simplify using `only [h3]`. Rewrite using `[integral_indicator_const _ (isOpen_cball _).measurableSet, measureReal_cball, measureReal_cball, Complex.real_smul, ← mul_assoc, ← Complex.ofReal_mul]`. Use `congr 2`. Establish `h4 : nabs k c = nabs k s * nabs k (c * s⁻¹)`.
+
+Rewrite using `[← nabs_mul, mul_comm, inv_mul_cancel_right]`. Rewrite using `[h4]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem fourier_inversion (h : HasConductor ψ c) {f : k → ℂ} (hf : f ∈ SB k) :
     ∫ y, (∫ x, f x * (ψ (x * y) : ℂ) ∂ν) ∂ν =
       ((ν.real (𝒪[k] : Set k) ^ 2 * nabs k c : ℝ) : ℂ) * f 0 := by
@@ -430,6 +607,9 @@ theorem fourier_inversion (h : HasConductor ψ c) {f : k → ℂ} (hf : f ∈ SB
 
 omit [ν.IsAddHaarMeasure] in
 
+/- English proof (translation)
+Use `haveI := hν.1`. Use `⟨hν.1, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[fourier_inversion ν h hf, Measure.real, hν.2, nabs_one]`. Simplify using the standard rewrite rules.
+-/
 theorem isSelfDual_of_isUnitVol (h : HasConductor ψ 1) (hν : IsUnitVol ν) : IsSelfDual ψ ν := by
   haveI := hν.1
   refine ⟨hν.1, fun f hf => ?_⟩

@@ -18,25 +18,44 @@ section Transport
 
 variable {h : HermitianForm F E W}
 
+/- English proof (translation)
+The claim follows from `g.2 x y`.
+-/
 theorem sesq_unitary_smul (g : h.unitaryGroup) (x y : W) :
     h.toSesq (g • x) (g • y) = h.toSesq x y :=
   g.2 x y
 
+/- English proof (translation)
+The claim follows from `map_smul (g : W ≃ₗ[E] W) a x`.
+-/
 theorem unitary_smul_scalar_smul (g : h.unitaryGroup) (a : E) (x : W) : g • (a • x) = a • (g • x) :=
   map_smul (g : W ≃ₗ[E] W) a x
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `x ∈ ((g⁻¹ : h.unitaryGroup) : W ≃ₗ[E] W) • La ↔ _`. Rewrite using `[AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
+-/
 theorem mem_inv_smul_iff {g : h.unitaryGroup} {La : AddSubgroup W} {x : W} :
     x ∈ g⁻¹ • La ↔ g • x ∈ La := by
   change x ∈ ((g⁻¹ : h.unitaryGroup) : W ≃ₗ[E] W) • La ↔ _
   rw [AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem]
   rfl
 
+/- English proof (translation)
+Use extensionality with `a`. Express the relevant statement in the definitionally equal form `a • x ∈ g⁻¹ • La ↔ a • (g • x) ∈ La`. Rewrite using `[mem_inv_smul_iff, unitary_smul_scalar_smul]`.
+-/
 theorem lineCoeffs_inv_smul (g : h.unitaryGroup) (La : AddSubgroup W) (x : W) :
     lineCoeffs (E := E) (g⁻¹ • La) x = lineCoeffs (E := E) La (g • x) := by
   ext a
   change a • x ∈ g⁻¹ • La ↔ a • (g • x) ∈ La
   rw [mem_inv_smul_iff, unitary_smul_scalar_smul]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[mem_inv_smul_iff]`. Express the relevant statement in the definitionally equal form `(∀ x ∈ g⁻¹ • La, h.toSesq y x ∈ integralClosure ℤ E) ↔ ∀ x ∈ La, h.toSesq (g • y) x ∈ integralClosure ℤ E`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`.
+
+Establish `hx' : g⁻¹ • x ∈ g⁻¹ • La` using `by rw [mem_inv_smul_iff, smul_inv_smul]; exact hx`. Use `hy _ hx'` as an intermediate fact. Rewrite `this` using `[← sesq_unitary_smul g, smul_inv_smul]`. Then use the resulting hypothesis. Introduce `hy x hx`. Rewrite `hx` using `[mem_inv_smul_iff]`.
+
+Rewrite using `[← sesq_unitary_smul g]`. Conclude with `hy _ hx`.
+-/
 theorem dualLattice_inv_smul (g : h.unitaryGroup) (La : AddSubgroup W) :
     dualLattice h (g⁻¹ • La) = g⁻¹ • dualLattice h La := by
   ext y
@@ -53,6 +72,23 @@ theorem dualLattice_inv_smul (g : h.unitaryGroup) (La : AddSubgroup W) :
     rw [← sesq_unitary_smul g]
     exact hy _ hx
 
+/- English proof (translation)
+Use `set γ : W ≃ₗ[E] W := ((g⁻¹ : h.unitaryGroup) : W ≃ₗ[E] W) with hγ`. Establish `hinj : Function.Injective (DistribMulAction.toAddMonoidEnd (W ≃ₗ[E] W) W γ)` using `fun x y hxy => γ.injective hxy`. Establish `hrel : (g⁻¹ • La).relIndex (dualLattice h (g⁻¹ • La)) = La.relIndex (dualLattice h La)`. Rewrite using `[dualLattice_inv_smul]`. Express the relevant statement in the definitionally equal form `(γ • La).relIndex (γ • dualLattice h La) = _`.
+
+Rewrite using `[AddSubgroup.pointwise_smul_def, AddSubgroup.pointwise_smul_def]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ hinj`. Use `⟨⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x hx`. Rewrite `hx`, the goal using `[mem_inv_smul_iff]`.
+
+Rewrite using `[unitary_smul_scalar_smul]`. Conclude with `hLa.isLattice.smul_mem a _ hx`. Establish `hfg` using `hLa.isLattice.fg`. Express the relevant statement in the definitionally equal form `(γ • La).FG`. Rewrite using `[AddSubgroup.pointwise_smul_def]`.
+
+Rewrite `hfg`, the goal using `[AddSubgroup.fg_iff_exists_fin_addMonoidHom]`. Take `⟨k, f, hf⟩` from `hfg`. Conclude with `⟨k, γ.toLinearMap.toAddMonoidHom.comp f, by`. Rewrite using `[AddMonoidHom.range_comp, hf]`. Use the proof step `rfl⟩`.
+
+Establish `hset : ((g⁻¹ • La : AddSubgroup W) : Set W) = γ.toLinearMap '' (La : Set W)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨g • y, mem_inv_smul_iff.1 hy, inv_smul_smul g y⟩`.
+
+Introduce and unpack `⟨x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `g⁻¹ • x ∈ g⁻¹ • La`. Rewrite using `[mem_inv_smul_iff, smul_inv_smul]`. Conclude with `hx`. Rewrite using `[hset, Submodule.span_image, hLa.isLattice.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`.
+
+Conclude with `LinearEquiv.surjective _`. Introduce `x hx y hy`. Rewrite `hx`, `hy` using `[mem_inv_smul_iff]`. Rewrite using `[← sesq_unitary_smul g]`. Conclude with `hLa.integral _ hx _ hy`.
+
+Rewrite using `[hrel]`. Conclude with `hLa.index_ne_zero`. Rewrite using `[hrel]`. Conclude with `hLa.index_le`.
+-/
 theorem isDIntegral_inv_smul (g : h.unitaryGroup) {D : ℕ} {La : AddSubgroup W}
     (hLa : IsDIntegral h D La) : IsDIntegral h D (g⁻¹ • La) := by
   set γ : W ≃ₗ[E] W := ((g⁻¹ : h.unitaryGroup) : W ≃ₗ[E] W) with hγ
@@ -101,6 +137,17 @@ theorem isDIntegral_inv_smul (g : h.unitaryGroup) {D : ℕ} {La : AddSubgroup W}
 
 end Transport
 
+/- English proof (translation)
+Introduce `v₀ w₀ hp h' hh' D`. Take `⟨KK, hKK, n, hn, H⟩` from `h₂ D`. Take `⟨D', hD'⟩` from `h₃ v₀ w₀ hp h' hh' D n hn`. Use `⟨KK, hKK, n, D', hn, fun La l hLa hl => ?_⟩` and prove the remaining obligations. Take `⟨v, w, hvl, hvw, hK, hdec⟩` from `H La l hLa hl`.
+
+Take `⟨g, hgv, hgw⟩` from `h₁ v₀ w₀ v w hp hvw`. Establish `hI : lineCoeffs (E` using `E) (g⁻¹ • La) v₀ = lineCoeffs (E := E) La v := by`. Rewrite using `[lineCoeffs_inv_smul, hgv]`. Establish `hJ : lineCoeffs (E` using `E) (g⁻¹ • La) w₀ = lineCoeffs (E := E) La w := by`. Rewrite using `[lineCoeffs_inv_smul, hgw]`.
+
+Establish `hwv : h.toSesq w v = 1`. Rewrite using `[← h.isSymm.eq v w, hvw.2.2, map_one]`. Establish `hsplit : ∀ x ∈ g⁻¹ • La, ∃ a ∈ lineCoeffs (E` using `E) (g⁻¹ • La) v₀, ∃ b ∈ lineCoeffs (E := E) (g⁻¹ • La) w₀, n • x - a • v₀ - b • w₀ ∈ hypComplement h v₀ w₀ := by`. Introduce `x hx`. Rewrite `hx` using `[mem_inv_smul_iff]`.
+
+Take `⟨ha, hb⟩` from `hdec _ hx`. Use `⟨(n : E) * h.toSesq w (g • x), by rw [hI]; exact ha, (n : E) * h.toSesq v (g • x), by rw [hJ]; exact hb, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_hypComplement, ← sesq_unitary_smul g v₀, ← sesq_unitary_smul g w₀, hgv, hgw, ← Nat.cast_smul_eq_nsmul E, smul_sub, smul_sub, unitary_smul_scalar_smul, unitary_smul_scalar_smul, unitary_smul_scalar_smul, hgv, hgw]`. Simplify using `only [map_sub, map_smul, smul_eq_mul, hvw.1, hvw.2.1, hvw.2.2, hwv]`. Apply the tactic sequence `constructor <;> ring`.
+
+Use `⟨g, g⁻¹ • La, smul_inv_smul g La, hgv ▸ hvl, ?_, hsplit, hD' _ (isDIntegral_inv_smul g hLa) hsplit⟩` and prove the remaining obligations. Rewrite using `[hI, hJ]`. Conclude with `hK`.
+-/
 theorem AdaptedReduction.proof (h : HermitianForm F E W) [FiniteDimensional E W]
     (h₁ : HyperbolicPairTransitive.Statement h) (h₂ : LineNormalForm.Statement h)
     (h₃ : ComplementLattice.Statement h) : AdaptedReduction.Statement h := by

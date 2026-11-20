@@ -13,18 +13,29 @@ private def UpperTheory.Reformulated.B.BlockConjugation.blk {k : Type} [CommRing
     Matrix (Fin (n + 1)) (Fin (n + 1)) k :=
   Matrix.of (Fin.cons (Fin.cons 1 0) (fun i => Fin.cons 0 (A i)))
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.mul_apply, Fin.sum_univ_succ]`.
+-/
 private theorem UpperTheory.Reformulated.B.BlockConjugation.blk_mul {k : Type} [CommRing k] {n : ℕ} (A B : Matrix (Fin n) (Fin n) k) :
     UpperTheory.Reformulated.B.BlockConjugation.blk A * UpperTheory.Reformulated.B.BlockConjugation.blk B = UpperTheory.Reformulated.B.BlockConjugation.blk (A * B) := by
   ext i j
   refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>
     simp [UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.mul_apply, Fin.sum_univ_succ]
 
+/- English proof (translation)
+Use extensionality with `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>`. Simplify using `[UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.one_apply, (Fin.succ_ne_zero _).symm]`.
+-/
 private theorem UpperTheory.Reformulated.B.BlockConjugation.blk_one {k : Type} [CommRing k] {n : ℕ} :
     UpperTheory.Reformulated.B.BlockConjugation.blk (1 : Matrix (Fin n) (Fin n) k) = 1 := by
   ext i j
   refine Fin.cases ?_ (fun i => ?_) i <;> refine Fin.cases ?_ (fun j => ?_) j <;>
     simp [UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.one_apply, (Fin.succ_ne_zero _).symm]
 
+/- English proof (translation)
+Take `⟨a, ha⟩` from `Function.ne_iff.mp hv`. Establish `hd : (((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol a v).submatrix id (Equiv.swap 0 a)).det ≠ 0`. Rewrite using `[Matrix.det_permute', ← Matrix.cramer_apply, Matrix.cramer_one]`. Use `mul_ne_zero ?_ (by simpa using ha)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Equiv.swap 0 a)) with h | h <;> simp [h]`.
+
+Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd, fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol a v).submatrix id (Equiv.swap 0 a)) i 0 = v i`. Simplify using the standard rewrite rules.
+-/
 private theorem UpperTheory.Reformulated.B.BlockConjugation.exists_col {k : Type} [Field k] {n : ℕ} (v : Fin (n + 1) → k) (hv : v ≠ 0) :
     ∃ Q : GL (Fin (n + 1)) k, ∀ i, (Q : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i 0 = v i := by
   obtain ⟨a, ha⟩ := Function.ne_iff.mp hv
@@ -36,6 +47,9 @@ private theorem UpperTheory.Reformulated.B.BlockConjugation.exists_col {k : Type
   change (((1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k).updateCol a v).submatrix id (Equiv.swap 0 a)) i 0 = v i
   simp
 
+/- English proof (translation)
+Apply the tactic sequence `refine ⟨?_, fun i => ?_, fun i j => ?_⟩ <;>`. Simplify using `[UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.mul_apply, Fin.sum_univ_succ, hM]`.
+-/
 private theorem UpperTheory.Reformulated.B.BlockConjugation.conj_blk {k : Type} [CommRing k] {n : ℕ} (A B : Matrix (Fin n) (Fin n) k)
     (M : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (hM : ∀ i : Fin n, M i.succ 0 = 0) :
     (UpperTheory.Reformulated.B.BlockConjugation.blk A * M * UpperTheory.Reformulated.B.BlockConjugation.blk B) 0 0 = M 0 0 ∧
@@ -45,6 +59,35 @@ private theorem UpperTheory.Reformulated.B.BlockConjugation.conj_blk {k : Type} 
   refine ⟨?_, fun i => ?_, fun i j => ?_⟩ <;>
     simp [UpperTheory.Reformulated.B.BlockConjugation.blk, Matrix.mul_apply, Fin.sum_univ_succ, hM]
 
+/- English proof (translation)
+Introduce `H k _ _ _ _ _ n r κ v hr hv hev`. Take `⟨Q, hQ⟩` from `UpperTheory.Reformulated.B.BlockConjugation.exists_col v hv`. Set `r₁ : H →* GL (Fin (n + 1)) k` to `(MulAut.conj Q⁻¹).toMonoidHom.comp r`. Establish `hr₁ : ∀ g, r₁ g = Q⁻¹ * r g * Q⁻¹⁻¹` using `fun g => rfl`. Establish `hc₁ : Continuous r₁`.
+
+Establish `: (⇑r₁) = fun g => Q⁻¹ * r g * Q⁻¹⁻¹` using `funext hr₁`. Rewrite using `[this]`. Conclude with `(continuous_const.mul hr).mul continuous_const`. Establish `hQv : (Q : Matrix (Fin (n + 1)) (Fin (n + 1)) k).mulVec (Pi.single 0 1) = v`. Use extensionality with `i`.
+
+Simplify using `[hQ]`. Establish `hcol : ∀ g i, (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i 0 = ((κ 0 g : k) • (Pi.single 0 1 : Fin (n + 1) → k)) i`. Introduce `g i`. Establish `h1 : (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k).mulVec (Pi.single 0 1) = ((κ 0 g : k) • (Pi.single 0 1 : Fin (n + 1) → k))`. Rewrite using `[hr₁, inv_inv, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hQv, hev, Matrix.mulVec_smul, ← hQv, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+
+Rewrite using `[← h1]`. Simplify using the standard rewrite rules. Establish `h0 : ∀ g (i : Fin n), (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) i.succ 0 = 0`. Introduce `g i`. Rewrite using `[hcol]`.
+
+Simplify using the standard rewrite rules. Establish `h00 : ∀ g, (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k) 0 0 = (κ 0 g : k)`. Introduce `g`. Rewrite using `[hcol]`. Simplify using the standard rewrite rules.
+
+Set `φ : H →* Matrix (Fin n) (Fin n) k` to `{ toFun := fun g => (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k).submatrix Fin.succ Fin.succ map_one' := by`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Use the proof step `map_mul' := fun a b => by`. Use extensionality with `i j`.
+
+Rewrite using `[map_mul, Units.val_mul]`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Fin.sum_univ_succ, h0, zero_mul, zero_add] }`. Establish `hφ : ∀ g, φ g = (r₁ g : Matrix (Fin (n + 1)) (Fin (n + 1)) k).submatrix Fin.succ Fin.succ` using `fun g => rfl`. Use `⟨Q⁻¹, r₁, φ.toHomUnits, hr₁, hc₁, ?_, h0, h00, fun g i j => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`.
+
+Use `⟨(Units.continuous_val.comp hc₁).matrix_submatrix _ _, ?_⟩` and prove the remaining obligations. Establish `: (fun g => (((φ.toHomUnits g)⁻¹ : (Matrix (Fin n) (Fin n) k)ˣ) : Matrix (Fin n) (Fin n) k)) = fun g => (((r₁ g)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k).submatrix Fin.succ Fin.succ`. Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv, ← map_inv]`. Both sides reduce to the same expression.
+
+Rewrite using `[this]`. Conclude with `(Units.continuous_coe_inv.comp hc₁).matrix_submatrix _ _`. Introduce and unpack `⟨a, ha⟩`. Set `b : GL (Fin (n + 1)) k` to `⟨UpperTheory.Reformulated.B.BlockConjugation.blk (a : Matrix (Fin n) (Fin n) k), UpperTheory.Reformulated.B.BlockConjugation.blk ((a⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k), by rw [UpperTheory.Reformulated.B.BlockConjugation.blk_mul, Units.mul_inv, UpperTheory.Reformulated. …`. Use `⟨b * Q⁻¹, fun s => ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((b * Q⁻¹ * r s * (b * Q⁻¹)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = UpperTheory.Reformulated.B.BlockConjugation.blk (a : Matrix (Fin n) (Fin n) k) * (r₁ s : Matrix (Fin (n + 1)) (Fin (n + 1)) k) * UpperTheory.Reformulated.B.BlockConjugation.blk ((a⁻¹ …`. Establish `: b * Q⁻¹ * r s * (b * Q⁻¹)⁻¹ = b * r₁ s * b⁻¹`. Rewrite using `[hr₁]`. Use `group`. Rewrite using `[this]`.
+
+Both sides reduce to the same expression. Take `⟨c1, c2, c3⟩` from `UpperTheory.Reformulated.B.BlockConjugation.conj_blk (a : Matrix (Fin n) (Fin n) k) ((a⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) _ (h0 s)`. Take `⟨d1, d2⟩` from `ha s`. Establish `e' : ((a * φ.toHomUnits s * a⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (a : Matrix (Fin n) (Fin n) k) * (r₁ s : Matrix (Fin (n + 1)) (Fin (n + 1)) k).submatrix Fin.succ Fin.succ * ((a⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)` using `rfl`. Rewrite `d1`, `d2` using `[e']`.
+
+Rewrite using `[e]`. Use `⟨fun i j => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Introduce `h`. Conclude with `absurd h (Fin.not_lt_zero _)`.
+
+Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Introduce `_`. Conclude with `c2 i`. Introduce `h`. Rewrite using `[c3]`.
+
+Conclude with `d1 i j (Fin.succ_lt_succ_iff.mp h)`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[c1, h00]`. Rewrite using `[c3]`. Conclude with `d2 i`.
+-/
 theorem UpperTheory.Reformulated.B.BlockConjugation.exists_common_eigenline :
     ∀ {H k : Type} [inst : Group H] [inst_1 : TopologicalSpace H] [inst_2 : Field k] [inst_3 : TopologicalSpace k]
       [IsTopologicalRing k] {n : ℕ} (r : H →* GL (Fin (n + (1 : ℕ))) k) (κ : Fin (n + (1 : ℕ)) → H →* kˣ)

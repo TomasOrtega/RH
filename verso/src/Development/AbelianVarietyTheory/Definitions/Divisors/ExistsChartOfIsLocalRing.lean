@@ -23,10 +23,16 @@ variable {Z Z' : Scheme.{0}} {S S' : Type} [CommRing S] [CommRing S']
 def ev (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) : Γ(Z, U) →+* S :=
   (z.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom).hom
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem ev_congr {z z' : Sp S ⟶ Z} (e : z = z') (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (h' : ⊤ ≤ z' ⁻¹ᵁ U) :
     ev z U h = ev z' U h' := by
   subst e; rfl
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE z π U V ⊤ e h]`. Both sides reduce to the same expression.
+-/
 theorem ev_appLE (z : Sp S ⟶ Z') (π : Z' ⟶ Z) {U : Z.Opens} {V : Z'.Opens} (e : V ≤ π ⁻¹ᵁ U)
     (h : ⊤ ≤ z ⁻¹ᵁ V) (h' : ⊤ ≤ (z ≫ π) ⁻¹ᵁ U) (a : Γ(Z, U)) :
     ev z V h ((π.appLE U V e).hom a) = ev (z ≫ π) U h' a := by
@@ -34,12 +40,18 @@ theorem ev_appLE (z : Sp S ⟶ Z') (π : Z' ⟶ Z) {U : Z.Opens} {V : Z'.Opens} 
   rw [← Scheme.Hom.appLE_comp_appLE z π U V ⊤ e h]
   rfl
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← Scheme.Hom.map_appLE z h (homOfLE e).op]`. Both sides reduce to the same expression.
+-/
 theorem ev_res (z : Sp S ⟶ Z) {U V : Z.Opens} (e : V ≤ U) (h : ⊤ ≤ z ⁻¹ᵁ V) (h' : ⊤ ≤ z ⁻¹ᵁ U) (a : Γ(Z, U)) :
     ev z V h (resG Z e a) = ev z U h' a := by
   unfold ev
   rw [← Scheme.Hom.map_appLE z h (homOfLE e).op]
   rfl
 
+/- English proof (translation)
+Unfold `ev`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (spMap φ) z U ⊤ ⊤ h le_rfl, Category.assoc]`. Establish `: (spMap φ).appLE ⊤ ⊤ le_rfl = (spMap φ).appTop` using `Scheme.Hom.appLE_eq_app _`. Rewrite using `[this, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+-/
 theorem ev_spMap (φ : S →+* S') (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z ⁻¹ᵁ U) (h' : ⊤ ≤ (spMap φ ≫ z) ⁻¹ᵁ U) :
     ev (spMap φ ≫ z) U h' = φ.comp (ev z U h) := by
   unfold ev
@@ -48,18 +60,33 @@ theorem ev_spMap (φ : S →+* S') (z : Sp S ⟶ Z) (U : Z.Opens) (h : ⊤ ≤ z
   rw [this, Scheme.ΓSpecIso_naturality]
   rfl
 
+/- English proof (translation)
+Introduce `x _` and use `h (Set.mem_univ (g x))`.
+-/
 theorem le_preimage_comp {T : Scheme.{0}} (g : T ⟶ Z') {z : Z' ⟶ Z} {U : Z.Opens} (h : ⊤ ≤ z ⁻¹ᵁ U) :
     ⊤ ≤ (g ≫ z) ⁻¹ᵁ U := fun x _ => h (Set.mem_univ (g x))
 
+/- English proof (translation)
+Introduce `x hx` and use `e (h hx)`.
+-/
 theorem le_preimage_map {T : Scheme.{0}} {z : T ⟶ Z'} (π : Z' ⟶ Z) {U : Z.Opens} {V : Z'.Opens} (e : V ≤ π ⁻¹ᵁ U)
     (h : ⊤ ≤ z ⁻¹ᵁ V) : ⊤ ≤ (z ≫ π) ⁻¹ᵁ U := fun x hx => e (h hx)
 
+/- English proof (translation)
+Introduce `_ hx` and use `e (h hx)`.
+-/
 theorem le_preimage_mono {T : Scheme.{0}} {z : T ⟶ Z} {U V : Z.Opens} (e : V ≤ U)
     (h : ⊤ ≤ z ⁻¹ᵁ V) : ⊤ ≤ z ⁻¹ᵁ U := fun _ hx => e (h hx)
 
+/- English proof (translation)
+Introduce `_ hx` and use `⟨h hx, h' hx⟩`.
+-/
 theorem le_preimage_inf {T : Scheme.{0}} {z : T ⟶ Z} {U V : Z.Opens} (h : ⊤ ≤ z ⁻¹ᵁ U)
     (h' : ⊤ ≤ z ⁻¹ᵁ V) : ⊤ ≤ z ⁻¹ᵁ (U ⊓ V) := fun _ hx => ⟨h hx, h' hx⟩
 
+/- English proof (translation)
+Establish `h1` using `IsAffineOpen.SpecMap_appLE_fromSpec z hU (isAffineOpen_top (Sp S)) h`. Rewrite `h1` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Use `show Spec.map (z.appLE U ⊤ h ≫ (Scheme.ΓSpecIso (CommRingCat.of S)).hom) ≫ hU.fromSpec = z`. Rewrite using `[Spec.map_comp, Category.assoc, h1, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+-/
 theorem spMap_ev (z : Sp S ⟶ Z) {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ z ⁻¹ᵁ U) :
     spMap (ev z U h) ≫ hU.fromSpec = z := by
   have h1 := IsAffineOpen.SpecMap_appLE_fromSpec z hU (isAffineOpen_top (Sp S)) h
@@ -70,9 +97,15 @@ theorem spMap_ev (z : Sp S ⟶ Z) {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ �
 
 def tau {U : Z.Opens} (hU : IsAffineOpen U) : Sp Γ(Z, U) ⟶ Z := hU.fromSpec
 
+/- English proof (translation)
+Introduce `x _` and use `e (hU.range_fromSpec.le ⟨x, rfl⟩)`.
+-/
 theorem tau_le {U V : Z.Opens} (hU : IsAffineOpen U) (e : U ≤ V) : ⊤ ≤ tau hU ⁻¹ᵁ V :=
   fun x _ => e (hU.range_fromSpec.le ⟨x, rfl⟩)
 
+/- English proof (translation)
+Establish `h1` using `spMap_ev (tau hU) hU h`. Establish `h2 : spMap (ev (tau hU) U h) = spMap (RingHom.id _)`. Rewrite using `[← cancel_mono hU.fromSpec, h1]`. Conclude with `((Category.id_comp _).symm.trans (congrArg (· ≫ hU.fromSpec) (Spec.map_id _).symm))`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h2)`.
+-/
 theorem ev_tau_self {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ tau hU ⁻¹ᵁ U) : ev (tau hU) U h = RingHom.id _ := by
   have h1 := spMap_ev (tau hU) hU h
   have h2 : spMap (ev (tau hU) U h) = spMap (RingHom.id _) := by
@@ -80,16 +113,27 @@ theorem ev_tau_self {U : Z.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ tau hU ⁻�
     exact ((Category.id_comp _).symm.trans (congrArg (· ≫ hU.fromSpec) (Spec.map_id _).symm))
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h2)
 
+/- English proof (translation)
+Rewrite using `[← ev_res (tau hU) e (tau_le hU le_rfl) h, ev_tau_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_tau {U V : Z.Opens} (hU : IsAffineOpen U) (e : U ≤ V) (h : ⊤ ≤ tau hU ⁻¹ᵁ V) (a : Γ(Z, V)) :
     ev (tau hU) V h a = resG Z e a := by
   rw [← ev_res (tau hU) e (tau_le hU le_rfl) h, ev_tau_self]
   rfl
 
+/- English proof (translation)
+Rewrite using `[ev_spMap f (tau hU) U (tau_le hU le_rfl), ev_tau_self]`. Both sides reduce to the same expression.
+-/
 theorem ev_spMap_tau {U : Z.Opens} (hU : IsAffineOpen U) (f : Γ(Z, U) →+* S) (h : ⊤ ≤ (spMap f ≫ tau hU) ⁻¹ᵁ U) :
     ev (spMap f ≫ tau hU) U h = f := by
   rw [ev_spMap f (tau hU) U (tau_le hU le_rfl), ev_tau_self]
   rfl
 
+/- English proof (translation)
+Apply `TopCat.Presheaf.section_ext Z.sheaf V` to reduce the goal to its premises. Introduce `p hp`. Take `⟨N, hN, e⟩` from `h p hp`. Take `⟨_, ⟨W, hW, rfl⟩, hpW, hle⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (show p ∈ ((V ⊓ N : Z.Opens) : Set Z) from ⟨hp, hN⟩) (V ⊓ N).isOpen`. Establish `hWV : W ≤ V` using `fun q hq => (hle hq).1`.
+
+Establish `e0` using `e _ (tau hW) (tau_le hW hWV) (tau_le hW fun q hq => (hle hq).2)`. Rewrite `e0` using `[ev_tau hW hWV, ev_tau hW hWV]`. Establish `e1` using `Z.presheaf.germ_res_apply (homOfLE hWV) p hpW a`. Establish `e2` using `Z.presheaf.germ_res_apply (homOfLE hWV) p hpW b`. Conclude with `e1.symm.trans ((congrArg _ e0).trans e2)`.
+-/
 theorem ext_ev_loc {V : Z.Opens} {a b : Γ(Z, V)}
     (h : ∀ p ∈ V, ∃ N : Z.Opens, p ∈ N ∧ ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V),
       ⊤ ≤ z ⁻¹ᵁ N → ev z V hz a = ev z V hz b) : a = b := by
@@ -105,10 +149,18 @@ theorem ext_ev_loc {V : Z.Opens} {a b : Γ(Z, V)}
   have e2 := Z.presheaf.germ_res_apply (homOfLE hWV) p hpW b
   exact e1.symm.trans ((congrArg _ e0).trans e2)
 
+/- English proof (translation)
+The claim follows from `ext_ev_loc fun _ hp => ⟨V, hp, fun S _ z hz _ => h S z hz⟩`.
+-/
 theorem ext_ev {V : Z.Opens} {a b : Γ(Z, V)}
     (h : ∀ (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hz : ⊤ ≤ z ⁻¹ᵁ V), ev z V hz a = ev z V hz b) : a = b :=
   ext_ev_loc fun _ hp => ⟨V, hp, fun S _ z hz _ => h S z hz⟩
 
+/- English proof (translation)
+Use `⟨hc, fun i => Units.ext (ext_ev fun S _ z hz => ?_), fun i j k => Units.ext (ext_ev fun S _ z hz => ?_)⟩` and prove the remaining obligations. Establish `hii` using `le_preimage_inf hz hz`. Establish `e` using `h i i i S z hii hii hii`. Establish `hu : IsUnit (ev z _ hii (L.g i i).val)` using `(L.g i i).isUnit.map _`. Establish `e1 : ev z _ hii (L.g i i).val = 1` using `hu.mul_left_cancel (e.trans (_root_.mul_one _).symm)`.
+
+Use `(ev_res z _ hz hii _).trans (e1.trans (map_one _).symm)` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `((congrArg₂ (· * ·) (ev_res z _ hz _ _) (ev_res z _ hz _ _)).trans (h i j k S z (le_preimage_mono inf_le_left hz) (le_preimage_mono (le_inf (inf_le_left.trans inf_le_right) inf_le_right) hz) (le_preimage_mono (le_inf (inf_le_left.trans inf_le_left) inf_le_right) hz))).trans (ev_r …`.
+-/
 theorem isLB_of_ev (L : LB Z) (hc : ⨆ i, L.U i = ⊤)
     (h : ∀ (i j k : L.ι) (S : Type) [CommRing S] (z : Sp S ⟶ Z) (hij : ⊤ ≤ z ⁻¹ᵁ (L.U i ⊓ L.U j))
       (hjk : ⊤ ≤ z ⁻¹ᵁ (L.U j ⊓ L.U k)) (hik : ⊤ ≤ z ⁻¹ᵁ (L.U i ⊓ L.U k)),
@@ -125,6 +177,9 @@ theorem isLB_of_ev (L : LB Z) (hc : ⨆ i, L.U i = ⊤)
         (le_preimage_mono (le_inf (inf_le_left.trans inf_le_right) inf_le_right) hz)
         (le_preimage_mono (le_inf (inf_le_left.trans inf_le_left) inf_le_right) hz))).trans (ev_res z _ hz _ _).symm
 
+/- English proof (translation)
+Establish `: z (IsLocalRing.closedPoint S) ∈ ⨆ i, U i` using `by rw [hc]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨i, ((IsLocalRing.closed_point_mem_iff (U := z ⁻¹ᵁ U i)).1 hi).ge⟩`.
+-/
 theorem exists_chart_of_isLocalRing [IsLocalRing S] {J : Type} {U : J → Z.Opens} (hc : ⨆ i, U i = ⊤)
     (z : Sp S ⟶ Z) : ∃ i, ⊤ ≤ z ⁻¹ᵁ U i := by
   have : z (IsLocalRing.closedPoint S) ∈ ⨆ i, U i := by rw [hc]; trivial
@@ -144,6 +199,9 @@ def epsHom (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0} (h : spMap φ
     rw [← h, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg])
 
 omit [IsCommMonObj G] in
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (epsMul (φ a)) ≫ spMap (dualMap φ) ≫ v.left = spMap (dualMap φ) ≫ spMap (epsMul a) ≫ v.left`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_epsMul]`.
+-/
 theorem smT_epsHom (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0} (h : spMap φ ≫ x = x') (a : S)
     (v : overAt x (DualNumber S) ⟶ G) : smT x' (φ a) (epsHom φ h ≫ v) = epsHom φ h ≫ smT x a v := by
   apply Over.OverMorphism.ext
@@ -157,20 +215,35 @@ def tanPull (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0} (h : spMap �
   map_add' u v := tanM_ext (MonObj.comp_mul _ _ _)
   map_smul' a v := tanM_ext (smT_epsHom φ h a (tv v)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tanPull_left (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0} (h : spMap φ ≫ x = x') (v : TanM x G) :
     (tv (tanPull φ h v)).left = spMap (dualMap φ) ≫ (tv v).left := rfl
 
+/- English proof (translation)
+The claim follows from `tanM_ext (Over.OverMorphism.ext h)`.
+-/
 theorem tan_ext_left {x : Sp S ⟶ X0} {u v : TanM x G} (h : (tv u).left = (tv v).left) : u = v :=
   tanM_ext (Over.OverMorphism.ext h)
 
+/- English proof (translation)
+The claim follows from `tanM_ext (Category.assoc _ _ _).symm`.
+-/
 theorem tanPull_actR {O : Type} [CommRing O] (A : OAct O G) (φ : S →+* S') {x : Sp S ⟶ X0} {x' : Sp S' ⟶ X0}
     (h : spMap φ ≫ x = x') (a : O) (v : TanM x G) : tanPull φ h (actR A a v) = actR A a (tanPull φ h v) :=
   tanM_ext (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Simplify using `only [tv, toMul_sum, Subgroup.val_finsetProd]`.
+-/
 theorem tv_sum' {x : Sp S ⟶ X0} {κ : Type} (s : Finset κ) (f : κ → TanM x G) :
     tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   simp only [tv, toMul_sum, Subgroup.val_finsetProd]
 
+/- English proof (translation)
+Apply `RingHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [dualMap]`.
+-/
 theorem dualMap_comp {S'' : Type} [CommRing S''] (φ : S →+* S') (ψ : S' →+* S'') :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) := by
   apply RingHom.ext
@@ -186,6 +259,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 
 variable {S S' : Type} [CommRing S] [CommRing S']
 
+/- English proof (translation)
+Establish `key : ∀ (f : Γ(Y.X, M.U) →+* S) (x : Sp S ⟶ Y.X), spMap f ≫ M.hU.fromSpec = x → ∃ b : Module.Basis (Fin M.n) S (TanM x Y.t.G), (∀ j, (tv (b j)).left = spMap (dualMap f) ≫ M.v₀ j) ∧ ∀ a j, actR Y.t.act a (b j) = ∑ i, f (M.ρ a i j) • b i`. Introduce and unpack `f _ rfl`. Establish `hp : ∃ t' : SAB H (Sp S), Nonempty (SABMap t' Y.t (spMap f ≫ M.hU.fromSpec))`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap f ≫ M.hU.fromSpec) Y.t`. Conclude with `⟨_, ⟨m⟩⟩`.
+
+Take `⟨t', ⟨m⟩⟩` from `hp`. Take `⟨v', hv', hb, hact⟩` from `M.lie S f _ m`. Set `u : Fin M.n → TanM (spMap f ≫ M.hU.fromSpec) Y.t.G` to `fun j => mkT (pushHom m.cart (epsR S) (v' j)) ((PullbackSections.isTangent_iff m.cart _).1 (hb.1 j))`. Establish `hcomb : ∀ (a : Fin M.n → S) (w : epsR S ⟶ t'.G), IsLieComb a v' w ↔ pushHom m.cart (epsR S) w = tv (∑ i, a i • u i)` using `fun a w => by`. Rewrite using `[PullbackSections.isLieComb_iff m.cart, tv_sum']`.
+
+Both sides reduce to the same expression. Establish `hbij : Function.Bijective (Fintype.linearCombination S u)`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Take `⟨p, hp⟩` from `PullbackSections.push_surj m.cart (tv W)`.
+
+Establish `ht : IsTangent p` using `(PullbackSections.isTangent_iff m.cart p).2 (by rw [hp]; exact tv_mem W)`. Use `(existsUnique_congr fun a => ?_).1 (hb.2 p ht)` and prove the remaining obligations. Rewrite using `[hcomb, hp, Fintype.linearCombination_apply]`. Conclude with `⟨fun e => (tanM_ext e).symm, fun e => by rw [e]⟩`. Set `e` to `LinearEquiv.ofBijective _ hbij`.
+
+Establish `he : ∀ j, (Pi.basisFun S (Fin M.n)).map e j = u j` using `fun j => by`. Simplify using `[e, Fintype.linearCombination_apply_single]`. Use `⟨(Pi.basisFun S (Fin M.n)).map e, fun j => by rw [he]; exact hv' j, fun a j => ?_⟩` and prove the remaining obligations. Simplify using `only [he]`. Apply `tanM_ext` to reduce the goal to its premises.
+
+Rewrite using `[← (hcomb _ _).1 (hact a j)]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((v' j).left ≫ m.φ) ≫ (Y.t.act.act a).left = ((v' j).left ≫ _) ≫ m.φ`. Rewrite using `[Category.assoc, Category.assoc, m.act]`. Conclude with `key _ x (spMap_ev x M.hU h)`.
+-/
 theorem exists_lieBasis (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) :
     ∃ b : Module.Basis (Fin M.n) S (TanM x Y.t.G),
       (∀ j, (tv (b j)).left = spMap (dualMap (ev x M.U h)) ≫ M.v₀ j) ∧
@@ -229,14 +315,23 @@ theorem exists_lieBasis (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹�
 def lieBasis (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) : Module.Basis (Fin M.n) S (TanM x Y.t.G) :=
   (exists_lieBasis M x h).choose
 
+/- English proof (translation)
+The claim follows from `(exists_lieBasis M x h).choose_spec.1 j`.
+-/
 theorem lieBasis_left (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (j : Fin M.n) :
     (tv (lieBasis M x h j)).left = spMap (dualMap (ev x M.U h)) ≫ M.v₀ j :=
   (exists_lieBasis M x h).choose_spec.1 j
 
+/- English proof (translation)
+The claim follows from `(exists_lieBasis M x h).choose_spec.2 a j`.
+-/
 theorem actR_lieBasis (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (a : 𝓞 E) (j : Fin M.n) :
     actR Y.t.act a (lieBasis M x h j) = ∑ i, ev x M.U h (M.ρ a i j) • lieBasis M x h i :=
   (exists_lieBasis M x h).choose_spec.2 a j
 
+/- English proof (translation)
+Substitute `e` using the available equality. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, lieBasis_left, lieBasis_left, ev_spMap φ x M.U h, dualMap_comp, ← spMap_comp', Category.assoc]`.
+-/
 theorem tanPull_lieBasis (M : MChart Y) (φ : S →+* S') {x : Sp S ⟶ Y.X} {x' : Sp S' ⟶ Y.X} (e : spMap φ ≫ x = x')
     (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x' ⁻¹ᵁ M.U) (j : Fin M.n) :
     tanPull φ e (lieBasis M x h j) = lieBasis M x' h' j := by
@@ -247,15 +342,24 @@ theorem tanPull_lieBasis (M : MChart Y) (φ : S →+* S') {x : Sp S ⟶ Y.X} {x'
 def vec (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) : (Fin M.n → S) ≃ₗ[S] TanM x Y.t.G :=
   (lieBasis M x h).equivFun.symm
 
+/- English proof (translation)
+The claim follows from `Module.Basis.equivFun_symm_apply _ _`.
+-/
 theorem vec_apply (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (cv : Fin M.n → S) :
     vec M x h cv = ∑ j, cv j • lieBasis M x h j := Module.Basis.equivFun_symm_apply _ _
 
+/- English proof (translation)
+Rewrite using `[vec_apply, vec_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smulₛₗ, tanPull_lieBasis M φ e h h']`.
+-/
 theorem tanPull_vec (M : MChart Y) (φ : S →+* S') {x : Sp S ⟶ Y.X} {x' : Sp S' ⟶ Y.X} (e : spMap φ ≫ x = x')
     (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x' ⁻¹ᵁ M.U) (cv : Fin M.n → S) :
     tanPull φ e (vec M x h cv) = vec M x' h' (fun j => φ (cv j)) := by
   rw [vec_apply, vec_apply, map_sum]
   exact Finset.sum_congr rfl fun j _ => by rw [map_smulₛₗ, tanPull_lieBasis M φ e h h']
 
+/- English proof (translation)
+Rewrite using `[vec_apply, vec_apply, map_sum]`. Simplify using `only [map_smul, actR_lieBasis, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [_root_.mul_comm]`.
+-/
 theorem actR_vec (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (a : 𝓞 E) (cv : Fin M.n → S) :
     actR Y.t.act a (vec M x h cv) = vec M x h (((M.ρ a).map (ev x M.U h)).mulVec cv) := by
   rw [vec_apply, vec_apply, map_sum]
@@ -264,6 +368,9 @@ theorem actR_vec (M : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) 
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [_root_.mul_comm]
 
+/- English proof (translation)
+Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: Y.X.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from Y.s]`. Use the proof step `infer_instance⟩`. Conclude with `M.hU.inf M'.hU`.
+-/
 theorem isAffineOpen_inf (M M' : MChart Y) : IsAffineOpen (M.U ⊓ M'.U) := by
   have := projProper _ _ _ Y.proj
   have : Y.X.IsSeparated := ⟨by
@@ -275,6 +382,11 @@ def chg (M M' : MChart Y) : Matrix (Fin M.n) (Fin M'.n) Γ(Y.X, M.U ⊓ M'.U) :=
   (lieBasis M (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_left)).toMatrix
     (lieBasis M' (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_right))
 
+/- English proof (translation)
+Establish `e : spMap (ev x _ hh) ≫ tau (isAffineOpen_inf M M') = x` using `spMap_ev x _ hh`. Use extensionality with `i j`. Establish `h1` using `(lieBasis M (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_left)).sum_toMatrix_smul_self (lieBasis M' (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_right)) j`. Establish `h2` using `congrArg (tanPull (G := Y.t.G) _ e) h1`. Rewrite `h2` using `[map_sum, tanPull_lieBasis M' _ e _ h']`.
+
+Simplify using `only [map_smulₛₗ, tanPull_lieBasis M _ e _ h] at h2`. Rewrite using `[Module.Basis.toMatrix_apply, ← h2, Module.Basis.repr_sum_self]`. Both sides reduce to the same expression.
+-/
 theorem chg_map (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x ⁻¹ᵁ M'.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U)) :
     (chg M M').map (ev x _ hh) = (lieBasis M x h).toMatrix (lieBasis M' x h') := by
@@ -288,6 +400,9 @@ theorem chg_map (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U
   rw [Module.Basis.toMatrix_apply, ← h2, Module.Basis.repr_sum_self]
   rfl
 
+/- English proof (translation)
+Rewrite using `[chg_map M M' x h h' hh]`. Apply `(lieBasis M x h).equivFun.injective` to reduce the goal to its premises. Rewrite using `[vec, LinearEquiv.apply_symm_apply, vec_apply, map_sum]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Module.Basis.toMatrix_apply, Finset.sum_apply, _root_.mul_comm]`.
+-/
 theorem vec_chg (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x ⁻¹ᵁ M'.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U)) (cv : Fin M'.n → S) :
     vec M x h (((chg M M').map (ev x _ hh)).mulVec cv) = vec M' x h' cv := by
@@ -306,9 +421,15 @@ variable {R R' : Type} [CommRing R] [CommRing R']
 def rdet {n n' : ℕ} (A : Matrix (Fin n) (Fin n') R) : R :=
   if h : n = n' then (A.submatrix id (Fin.cast h)).det else 1
 
+/- English proof (translation)
+Rewrite using `[rdet, dif_pos rfl]`. Both sides reduce to the same expression.
+-/
 theorem rdet_self {n : ℕ} (A : Matrix (Fin n) (Fin n) R) : rdet A = A.det := by
   rw [rdet, dif_pos rfl]; rfl
 
+/- English proof (translation)
+Distinguish the cases in `h : n = n'`. Substitute `h` using the available equality. Rewrite using `[rdet_self, rdet_self, RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[rdet, rdet, dif_neg h, dif_neg h, map_one]`.
+-/
 theorem map_rdet (φ : R →+* R') {n n' : ℕ} (A : Matrix (Fin n) (Fin n') R) : φ (rdet A) = rdet (A.map φ) := by
   by_cases h : n = n'
   · subst h
@@ -317,6 +438,9 @@ theorem map_rdet (φ : R →+* R') {n n' : ℕ} (A : Matrix (Fin n) (Fin n') R) 
 
 variable {N : Type} [AddCommGroup N] [Module R N]
 
+/- English proof (translation)
+Use `nontriviality R`. Take `rfl : n₁ = n₂` from `by simpa using Fintype.card_congr (b₁.indexEquiv b₂)`. Take `rfl : n₁ = n₃` from `by simpa using Fintype.card_congr (b₁.indexEquiv b₃)`. Rewrite using `[rdet_self, rdet_self, rdet_self, ← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix]`.
+-/
 theorem rdet_toMatrix_mul {n₁ n₂ n₃ : ℕ} (b₁ : Module.Basis (Fin n₁) R N) (b₂ : Module.Basis (Fin n₂) R N)
     (b₃ : Module.Basis (Fin n₃) R N) :
     rdet (b₁.toMatrix b₂) * rdet (b₂.toMatrix b₃) = rdet (b₁.toMatrix b₃) := by
@@ -325,6 +449,9 @@ theorem rdet_toMatrix_mul {n₁ n₂ n₃ : ℕ} (b₁ : Module.Basis (Fin n₁)
   obtain rfl : n₁ = n₃ := by simpa using Fintype.card_congr (b₁.indexEquiv b₃)
   rw [rdet_self, rdet_self, rdet_self, ← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix]
 
+/- English proof (translation)
+Establish `h` using `rdet_toMatrix_mul b₁ b₂ b₁`. Rewrite `h` using `[Module.Basis.toMatrix_self, rdet_self, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ h`.
+-/
 theorem isUnit_rdet_toMatrix {n₁ n₂ : ℕ} (b₁ : Module.Basis (Fin n₁) R N) (b₂ : Module.Basis (Fin n₂) R N) :
     IsUnit (rdet (b₁.toMatrix b₂)) := by
   have h := rdet_toMatrix_mul b₁ b₂ b₁
@@ -344,13 +471,22 @@ def detChg (M M' : MChart Y) : Γ(Y.X, M.U ⊓ M'.U)ˣ := (isUnit_rdet_toMatrix
   (lieBasis M (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_left))
   (lieBasis M' (tau (isAffineOpen_inf M M')) (tau_le _ inf_le_right))).unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem detChg_val (M M' : MChart Y) : (detChg M M').val = rdet (chg M M') := rfl
 
+/- English proof (translation)
+Rewrite using `[detChg_val, map_rdet, chg_map M M' x h h']`.
+-/
 theorem ev_detChg (M M' : MChart Y) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x ⁻¹ᵁ M'.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U)) :
     ev x _ hh (detChg M M').val = rdet ((lieBasis M x h).toMatrix (lieBasis M' x h')) := by
   rw [detChg_val, map_rdet, chg_map M M' x h h']
 
+/- English proof (translation)
+Rewrite using `[ev_detChg M M' x (le_preimage_mono inf_le_left h₁) (le_preimage_mono inf_le_right h₁), ev_detChg M' M'' x (le_preimage_mono inf_le_right h₁) (le_preimage_mono inf_le_right h₂), ev_detChg M M'' x (le_preimage_mono inf_le_left h₁) (le_preimage_mono inf_le_right h₂), rdet_toMatrix_ …`.
+-/
 theorem ev_detChg_mul (M M' M'' : MChart Y) (x : Sp S ⟶ Y.X) (h₁ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U))
     (h₂ : ⊤ ≤ x ⁻¹ᵁ (M'.U ⊓ M''.U)) (h₃ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M''.U)) :
     ev x _ h₁ (detChg M M').val * ev x _ h₂ (detChg M' M'').val = ev x _ h₃ (detChg M M'').val := by
@@ -363,11 +499,27 @@ structure GChart (Y : Model Xo c β) extends MChart Y where
     s i = (Y.t.G.hom.appLE W (Y.t.G.hom ⁻¹ᵁ W ⊓ Y.t.PP.L.U i) inf_le_left).hom a *
       resG Y.t.G.left (inf_le_inf_right _ (Y.t.G.hom.preimage_mono hW)) (θ i)
 
+/- English proof (translation)
+The claim follows from `ext_ev fun _ _ z hz => by rw [ev_res z h' hz (le_preimage_mono h' hz), ev_res z h _ (le_preimage_mono (h'.trans h) hz), ev_res z _ hz]`.
+-/
 theorem resG_resG {Z : Scheme.{0}} {U V W : Z.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(Z, U)) :
     resG Z h' (resG Z h a) = resG Z (h'.trans h) a :=
   ext_ev fun _ _ z hz => by
     rw [ev_res z h' hz (le_preimage_mono h' hz), ev_res z h _ (le_preimage_mono (h'.trans h) hz), ev_res z _ hz]
 
+/- English proof (translation)
+Take `⟨J, -, MM, hM⟩` from `exists_finite_mchart_cover E H Dw l Xo c O β Y hP`. Take `⟨j, hx⟩` from `hM x`. Generalize the expression as in `MM j = M at hx`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Y.X` using `LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+
+Establish `: GlobalTheory.IsNormalScheme Y.X` using `GlobalTheory.IsNormalScheme.of_pred Y.normal`. Take `⟨W, hxW, hW⟩` from `GlobalTheory.ModelChart.exists_open_isDomain Y.X x`. Take `⟨V, hxV, θ, hθ, hg, nz⟩` from `hP x`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hle⟩` from `Y.X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ ((M.U ⊓ (W ⊓ V) : Y.X.Opens) : Set Y.X) from ⟨hx, hxW, hxV⟩) (M.U ⊓ (W ⊓ V)).isOpen`. Establish `hUM : U ≤ M.U` using `fun q hq => (hle hq).1`.
+
+Establish `hUV : U ≤ V` using `fun q hq => (hle hq).2.2`. Set `r : Γ(Y.X, M.U) →+* Γ(Y.X, U)` to `ev (tau hU) M.U (tau_le hU hUM)`. Establish `hr : spMap r ≫ M.hU.fromSpec = hU.fromSpec` using `spMap_ev (tau hU) M.hU _`. Use `⟨⟨⟨U, hU, hW U hxU fun q hq => (hle hq).2.1, _, GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono hUV) hθ, fun y hy => ?_, M.n, fun j => spMap (dualMap r) ≫ M.v₀ j, fun a => (M.ρ a).map r, fun R' _ f t' m => ?_⟩, fun W' hW' s hs => ?_⟩, hxU⟩` and prove the remaining obligations. Take `⟨g, i, rfl, hg⟩` from `nz y (hUV hy)`.
+
+Use `⟨g, i, rfl, ?_⟩` and prove the remaining obligations. Use `show g ∈ Y.t.G.left.basicOpen (Y.t.G.left.presheaf.map (homOfLE _).op (θ i))`. Rewrite using `[Scheme.basicOpen_res]`. Conclude with `⟨⟨hy, (Y.t.G.left.basicOpen_le _ hg).2⟩, hg⟩`. Establish `cast : ∀ (p q : Sp R' ⟶ Y.X) (_ : p = q) (n : SABMap t' Y.t p), ∃ n' : SABMap t' Y.t q, n'.φ = n.φ`.
+
+Introduce and unpack `p q rfl n`. Conclude with `⟨n, rfl⟩`. Take `⟨m', hm'⟩` from `cast _ (spMap (f.comp r) ≫ M.hU.fromSpec) (by rw [← spMap_comp', Category.assoc, hr]) m`. Take `⟨v', hv', hb, ha⟩` from `M.lie R' (f.comp r) t' m'`. Use `⟨v', fun j => ?_, hb, ha⟩` and prove the remaining obligations.
+
+Rewrite using `[← hm', hv']`. Use `show spMap (dualMap (f.comp r)) ≫ _ = spMap (dualMap f) ≫ _`. Rewrite using `[dualMap_comp, ← spMap_comp', Category.assoc]`. Simplify using `only [resG_resG]`. Conclude with `hg W' (hW'.trans hUV) s hs`.
+-/
 theorem exists_gChart [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) (x : Y.X) :
     ∃ M : GChart Y, x ∈ M.U := by
   obtain ⟨J, -, MM, hM⟩ := exists_finite_mchart_cover E H Dw l Xo c O β Y hP
@@ -409,6 +561,9 @@ def thRat (M M' : GChart Y) : Γ(Y.X, M.U ⊓ M'.U) :=
   (M.gen _ inf_le_left _
     (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono inf_le_right) M'.θ_mem)).exists.choose
 
+/- English proof (translation)
+Establish `hg : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ (M.U ⊓ M'.U) ⊓ Y.t.PP.L.U i)` using `fun p hp => ⟨⟨(h hp).1, (h' hp).1⟩, (h hp).2⟩`. Establish `e` using `congrArg (ev g _ hg) ((M.gen _ inf_le_left _ (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono inf_le_right) M'.θ_mem)).exists.choose_spec i)`. Rewrite `e` using `[map_mul, ev_res g _ hg h', ev_res g _ hg h, ev_appLE g _ _ hg hh]`. Conclude with `e`.
+-/
 theorem ev_thRat (M M' : GChart Y) (g : Sp S ⟶ Y.t.G.left) (i : Y.t.PP.L.ι)
     (h : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M.U ⊓ Y.t.PP.L.U i)) (h' : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M'.U ⊓ Y.t.PP.L.U i))
     (hh : ⊤ ≤ (g ≫ Y.t.G.hom) ⁻¹ᵁ (M.U ⊓ M'.U)) :
@@ -419,6 +574,11 @@ theorem ev_thRat (M M' : GChart Y) (g : Sp S ⟶ Y.t.G.left) (i : Y.t.PP.L.ι)
   rw [map_mul, ev_res g _ hg h', ev_res g _ hg h, ev_appLE g _ _ hg hh] at e
   exact e
 
+/- English proof (translation)
+Establish `key : ∀ e ∈ ({a, b} : Set Γ(Y.X, W)), ∀ i, resG Y.t.G.left (inf_le_inf_right _ (Y.t.G.hom.preimage_mono hW')) (M'.θ i) = (Y.t.G.hom.appLE W (Y.t.G.hom ⁻¹ᵁ W ⊓ Y.t.PP.L.U i) inf_le_left).hom e * resG Y.t.G.left (inf_le_inf_right _ (Y.t.G.hom.preimage_mono hW)) (M.θ i)` using `fun e he i => ext_ev fun S _ g hg => by`. Establish `h` using `le_preimage_mono (inf_le_inf_right _ (Y.t.G.hom.preimage_mono hW)) hg`. Establish `h'` using `le_preimage_mono (inf_le_inf_right _ (Y.t.G.hom.preimage_mono hW')) hg`. Establish `hh` using `le_preimage_map Y.t.G.hom inf_le_left hg`. Rewrite using `[map_mul, ev_res g _ hg h', ev_res g _ hg h, ev_appLE g _ _ hg hh]`.
+
+Conclude with `H e he S g i h h' hh`. Conclude with `(M.gen W hW _ (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono hW') M'.θ_mem)).unique (key a (by simp)) (key b (by simp))`.
+-/
 theorem thRat_unique (M M' : GChart Y) {W : Y.X.Opens} (hW : W ≤ M.U) (hW' : W ≤ M'.U) {a b : Γ(Y.X, W)}
     (H : ∀ e ∈ ({a, b} : Set Γ(Y.X, W)), ∀ (S : Type) [CommRing S] (g : Sp S ⟶ Y.t.G.left) (i : Y.t.PP.L.ι)
       (h : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M.U ⊓ Y.t.PP.L.U i)) (h' : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M'.U ⊓ Y.t.PP.L.U i))
@@ -437,6 +597,11 @@ theorem thRat_unique (M M' : GChart Y) {W : Y.X.Opens} (hW : W ≤ M.U) (hW' : W
   exact (M.gen W hW _ (GlobalTheory.ModelChart.res_mem_secOn _ (Y.t.G.hom.preimage_mono hW') M'.θ_mem)).unique
     (key a (by simp)) (key b (by simp))
 
+/- English proof (translation)
+Use `thRat_unique M M'' (h₁.trans inf_le_left) (h₂.trans inf_le_right) ?_` and prove the remaining obligations. Introduce `e he S _ g i h h'' hh`. Establish `h' : ⊤ ≤ g ⁻¹ᵁ (Y.t.G.hom ⁻¹ᵁ M'.U ⊓ Y.t.PP.L.U i)` using `fun p hp => ⟨(h₁ (hh hp)).2, (h hp).2⟩`. Break down `he with rfl | rfl` into its components or cases. Rewrite using `[map_mul, ev_res _ h₁ hh (le_preimage_mono h₁ hh), ev_res _ h₂ hh (le_preimage_mono h₂ hh), ev_thRat M' M'' g i h' h'' (le_preimage_mono h₂ hh), ev_thRat M M' g i h h' (le_preimage_mono h₁ hh)]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ev_res _ h₃ hh (le_preimage_mono h₃ hh), ev_thRat M M'' g i h h'' (le_preimage_mono h₃ hh)]`.
+-/
 theorem thRat_mul (M M' M'' : GChart Y) {W : Y.X.Opens} (h₁ : W ≤ M.U ⊓ M'.U) (h₂ : W ≤ M'.U ⊓ M''.U)
     (h₃ : W ≤ M.U ⊓ M''.U) :
     resG _ h₁ (thRat M M') * resG _ h₂ (thRat M' M'') = resG _ h₃ (thRat M M'') := by
@@ -449,6 +614,9 @@ theorem thRat_mul (M M' M'' : GChart Y) {W : Y.X.Opens} (h₁ : W ≤ M.U ⊓ M'
     ring
   · rw [ev_res _ h₃ hh (le_preimage_mono h₃ hh), ev_thRat M M'' g i h h'' (le_preimage_mono h₃ hh)]
 
+/- English proof (translation)
+Use `thRat_unique M M inf_le_left inf_le_left ?_` and prove the remaining obligations. Introduce `e he S _ g i h h' hh`. Break down `he with rfl | rfl` into its components or cases. Conclude with `ev_thRat M M g i h h' hh`. Rewrite using `[map_one, _root_.one_mul]`.
+-/
 theorem thRat_self (M : GChart Y) : thRat M M = 1 := by
   refine thRat_unique M M inf_le_left inf_le_left ?_
   intro e he S _ g i h h' hh
@@ -456,6 +624,9 @@ theorem thRat_self (M : GChart Y) : thRat M M = 1 := by
   · exact ev_thRat M M g i h h' hh
   · rw [map_one, _root_.one_mul]
 
+/- English proof (translation)
+Establish `h` using `thRat_mul M M' M (W := M.U ⊓ M'.U) le_rfl (le_inf inf_le_right inf_le_left) (le_inf inf_le_left inf_le_left)`. Rewrite `h` using `[thRat_self, map_one]`. Establish `e : resG Y.X (le_rfl : M.U ⊓ M'.U ≤ M.U ⊓ M'.U) (thRat M M') = thRat M M'` using `ext_ev fun _ _ z hz => ev_res z _ hz hz _`. Rewrite `h` using `[e]`. Conclude with `IsUnit.of_mul_eq_one _ h`.
+-/
 theorem isUnit_thRat (M M' : GChart Y) : IsUnit (thRat M M') := by
   have h := thRat_mul M M' M (W := M.U ⊓ M'.U) le_rfl (le_inf inf_le_right inf_le_left) (le_inf inf_le_left inf_le_left)
   rw [thRat_self, map_one] at h
@@ -466,8 +637,14 @@ theorem isUnit_thRat (M M' : GChart Y) : IsUnit (thRat M M') := by
 
 def thUnit (M M' : GChart Y) : Γ(Y.X, M.U ⊓ M'.U)ˣ := (isUnit_thRat M M').unit
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem thUnit_val (M M' : GChart Y) : (thUnit M M').val = thRat M M' := rfl
 
+/- English proof (translation)
+Establish `hW : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U ⊓ M''.U)` using `le_preimage_inf h₁ (le_preimage_mono inf_le_right h₂)`. Establish `e` using `congrArg (ev x _ hW) (thRat_mul M M' M'' (W := M.U ⊓ M'.U ⊓ M''.U) inf_le_left (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (le_inf (inf_le_left.trans inf_le_left) inf_le_right))`. Rewrite `e` using `[map_mul, ev_res x _ hW h₁, ev_res x _ hW h₂, ev_res x _ hW h₃]`. Then use the resulting hypothesis.
+-/
 theorem ev_thRat_mul (M M' M'' : GChart Y) (x : Sp S ⟶ Y.X) (h₁ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M'.U))
     (h₂ : ⊤ ≤ x ⁻¹ᵁ (M'.U ⊓ M''.U)) (h₃ : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ M''.U)) :
     ev x _ h₁ (thRat M M') * ev x _ h₂ (thRat M' M'') = ev x _ h₃ (thRat M M'') := by
@@ -476,6 +653,9 @@ theorem ev_thRat_mul (M M' M'' : GChart Y) (x : Sp S ⟶ Y.X) (h₁ : ⊤ ≤ x 
     (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (le_inf (inf_le_left.trans inf_le_left) inf_le_right))
   rwa [map_mul, ev_res x _ hW h₁, ev_res x _ hW h₂, ev_res x _ hW h₃] at e
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ev_unit_inv {Z : Scheme.{0}} (z : Sp S ⟶ Z) {U : Z.Opens} (h : ⊤ ≤ z ⁻¹ᵁ U) (u : Γ(Z, U)ˣ) :
     ev z U h (u⁻¹).val = ((Units.map (ev z U h).toMonoidHom u)⁻¹).val := rfl
 
@@ -491,19 +671,31 @@ def de : LB Y.X := GlobalTheory.CechPic.dual (pushPP Y)
 
 variable {Y}
 
+/- English proof (translation)
+The claim follows from `isLB_of_ev _ (eq_top_iff.2 fun x _ => (exists_gChart hP x).elim fun M hM => TopologicalSpace.Opens.mem_iSup.2 ⟨M.toMChart, hM⟩) fun i j k _ _ z => ev_detChg_mul i j k z`.
+-/
 theorem isLB_detLie [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : (detLie Y).IsLB :=
   isLB_of_ev _ (eq_top_iff.2 fun x _ => (exists_gChart hP x).elim fun M hM =>
       TopologicalSpace.Opens.mem_iSup.2 ⟨M.toMChart, hM⟩)
     fun i j k _ _ z => ev_detChg_mul i j k z
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CechPic.isLB_dual (isLB_detLie hP)`.
+-/
 theorem isLB_detOm [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : (detOm Y).IsLB :=
   GlobalTheory.CechPic.isLB_dual (isLB_detLie hP)
 
+/- English proof (translation)
+The claim follows from `isLB_of_ev _ (eq_top_iff.2 fun x _ => (exists_gChart hP x).elim fun M hM => TopologicalSpace.Opens.mem_iSup.2 ⟨M, hM⟩) fun i j k _ _ z => ev_thRat_mul i j k z`.
+-/
 theorem isLB_pushPP [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : (pushPP Y).IsLB :=
   isLB_of_ev _ (eq_top_iff.2 fun x _ => (exists_gChart hP x).elim fun M hM =>
       TopologicalSpace.Opens.mem_iSup.2 ⟨M, hM⟩)
     fun i j k _ _ z => ev_thRat_mul i j k z
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CechPic.isLB_dual (isLB_pushPP hP)`.
+-/
 theorem isLB_de [IsNoetherianRing O] (hP : PushInvertible Y.t.G Y.t.PP.L) : (de Y).IsLB :=
   GlobalTheory.CechPic.isLB_dual (isLB_pushPP hP)
 

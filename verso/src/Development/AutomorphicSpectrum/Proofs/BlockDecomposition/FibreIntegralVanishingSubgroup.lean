@@ -18,6 +18,21 @@ open scoped TensorProduct
 
 namespace GlobalTheory.CompanionTheory.BZPsiPG.FibOnto
 
+/- English proof (translation)
+Introduce `k _ _ _ _ i t V W _ _ _ _ τ σ c K₁ hK z b h1 h2`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt t c`. Rewrite using `[Set.indicator_of_mem (show v ∈ (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt t c : Set (Fin t → k)) from hv)]`. Establish `hm : midV k i t v ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt (i + t) c`.
+
+Introduce `j`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => show Fin.append (0 : Fin i → k) v (Fin.castAdd t j) ∈ _`. Rewrite using `[Fin.append_left]`. Conclude with `(zero_mem (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt i c)) j`.
+
+Consider the case `right j => show Fin.append (0 : Fin i → k) v (Fin.natAdd i j) ∈ _`. Rewrite using `[Fin.append_right]`. Conclude with `hv j`. Establish `hp : uM k (i + t) (midV k i t v) * levi k (i + t) 1 ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK` using `⟨_, hm, 1, one_mem _, rfl⟩`. Establish `e` using `h1 1 _ hp`.
+
+Rewrite `e` using `[map_one]`. Simplify `e` using `[fibV]`. Rewrite using `[Set.indicator_of_notMem (show v ∉ (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt t c : Set (Fin t → k)) from hv)]`. Apply `h2` to reduce the goal to its premises. Introduce and unpack `⟨h, β, hβ, e⟩`.
+
+Take `⟨x, q, hq⟩` from `GlobalTheory.T.parabolic_unipotent_levi_decomp k i t h`. Take `⟨y, hy, b', hb', rfl⟩` from `hβ`. Rewrite `e` using `[hq, uM_levi_mul_uM_levi]`. Take `⟨e1, e2⟩` from `uM_levi_inj _ (show uM k (i + t) (midV k i t v) * levi k (i + t) 1 = _ from e)`. Establish `hq' : (q : GL (Fin (i + t)) k) = b'⁻¹` using `eq_inv_of_mul_eq_one_left e2.symm`.
+
+Apply `hv` to reduce the goal to its premises. Introduce `j`. Establish `e3` using `congrFun e1 (Fin.natAdd i j)`. Establish `e4 : midV k i t v (Fin.natAdd i j) = v j` using `Fin.append_right _ _ _`. Establish `e5 : topV k i t x (Fin.natAdd i j) = 0` using `Fin.append_right _ _ _`.
+
+Rewrite `e3` using `[Pi.add_apply, e4, e5, zero_add, hq']`. Rewrite using `[e3]`. Conclude with `mulVec_mem_latt (hK (inv_mem hb')) hy _`.
+-/
 theorem fibV_one_bump : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (τ : Representation ℂ (Mir k i) V) (σ : Representation ℂ (GL (Fin t) k) W) (c : kˣ) (K₁ : Subgroup (GL (Fin (i + t)) k)) (hK : K₁ ≤ GlobalTheory.SplitWeil.KO k (Fin (i + t))) (z : V ⊗[ℂ] W) (b : cIndSpace (HPG k i t) (hRep τ σ)), (∀ (h : HPG k i t) (β : Mir k (i + t)), β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK → b.1.1.1 ((h : Mir k (i + t)) * β) = hRep τ σ h z) → (∀ p : Mir k (i + t), (¬ ∃ h : HPG k i t, ∃ β ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.Bgrp (i + t) c K₁ hK, p = (h : Mir k (i + t)) * β) → b.1.1.1 p = 0) → fibV b 1 = (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt t c : Set (Fin t → k)).indicator (fun _ => z) := by
   intro k _ _ _ _ i t V W _ _ _ _ τ σ c K₁ hK z b h1 h2
   funext v

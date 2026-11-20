@@ -48,12 +48,21 @@ def UnifAt : Prop :=
 
 variable {Xo c}
 
+/- English proof (translation)
+Introduce `la hla T io e ho` and use `h₂ T io (h₁ la hla T io e ho)`.
+-/
 theorem unifAt_of (h₁ : ModelAt Xo c) (h₂ : UnifOfModel Xo c) : UnifAt Xo c :=
   fun la hla T io e ho => h₂ T io (h₁ la hla T io e ho)
 
+/- English proof (translation)
+Introduce `h` and use `hn (by simpa using h.map b)`.
+-/
 example {O : Type} [CommRing O] (T : CDVR) (b : O →+* T.V) (n : ℕ) (hn : ¬ IsUnit (n : T.V)) : ¬ IsUnit (n : O) :=
   fun h => hn (by simpa using h.map b)
 
+/- English proof (translation)
+Introduce `hM`. Apply `h` to reduce the goal to its premises. Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hM`.
+-/
 theorem PrimeToLevel.not_mem_M {la : HeightOneSpectrum (𝓞 c.F)} (h : PrimeToLevel c la) :
     ((l.M : ℕ) : 𝓞 c.F) ∉ la.asIdeal := by
   intro hM

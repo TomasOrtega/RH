@@ -10,10 +10,18 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 
 namespace GlobalTheory.CompanionTheory.TubeFourier.PhiInv
 
+/- English proof (translation)
+Apply the tactic sequence `apply Complex.ext <;> simp [dot, pt, rdot]`.
+-/
 theorem dot_pt_eq (x y t : ℝ × ℝ) :
     dot (pt x y) t = ((rdot x t : ℝ) : ℂ) + Complex.I * ((rdot y t : ℝ) : ℂ) := by
   apply Complex.ext <;> simp [dot, pt, rdot]
 
+/- English proof (translation)
+Establish `h1 : Integrable (fun x : ℝ => Real.exp (-1 * x ^ 2))` using `integrable_exp_neg_mul_sq one_pos`. Establish `h2` using `h1.mul_prod h1`. Rewrite `h2` using `[← Measure.volume_eq_prod]`. Use `h2.congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`.
+
+Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem integrable_gaussian_prod :
     Integrable (fun y : ℝ × ℝ => Real.exp (-(y.1 ^ 2 + y.2 ^ 2))) := by
   have h1 : Integrable (fun x : ℝ => Real.exp (-1 * x ^ 2)) := integrable_exp_neg_mul_sq one_pos
@@ -25,6 +33,11 @@ theorem integrable_gaussian_prod :
   congr 1
   ring
 
+/- English proof (translation)
+Unfold `phi`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[smul_smul, dot_pt_eq, ← Complex.exp_add]`.
+
+Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phi_eq_smul {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X]
     (G : ℂ × ℂ → X) (x t : ℝ × ℝ) :
     phi G x t = Complex.exp (-((rdot x t : ℝ) : ℂ)) •
@@ -37,12 +50,26 @@ theorem phi_eq_smul {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [Compl
   congr 2
   ring
 
+/- English proof (translation)
+Rewrite using `[phi_eq_smul, smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]`.
+-/
 theorem hat_eq_smul {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X]
     (G : ℂ × ℂ → X) (x t : ℝ × ℝ) :
     (∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • G (pt x y)) =
       Complex.exp ((rdot x t : ℝ) : ℂ) • phi G x t := by
   rw [phi_eq_smul, smul_smul, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_smul]
 
+/- English proof (translation)
+Introduce `X _ _ _ G x hc ⟨M, hM⟩ hphic ⟨ε, hε, M', hM'⟩ y`. Establish `hint : Integrable (fun y : ℝ × ℝ => G (pt x y))` using `Integrable.mono' (integrable_gaussian_prod.const_mul M) hc.aestronglyMeasurable (Eventually.of_forall fun y => hM y)`. Establish `hdx : ∀ t, dot (pt x 0) t = ((rdot x t : ℝ) : ℂ)`. Introduce `t`. Rewrite using `[dot_pt_eq]`.
+
+Simplify using `[rdot]`. Establish `hl : ((pt x 0).1.re, (pt x 0).2.re) = x` using `by simp [pt]`. Establish `hint2 : Integrable (fun t : ℝ × ℝ => ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • G (pt x y))`. Establish `h0` using `(GlobalTheory.T.exponential_fourier_integral_bound X (phi G x) (pt x 0) ε M' hε hphic (by rw [hl]; exact hM')).1`. Use `h0.congr (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+
+Use `show Complex.exp (dot (pt x 0) t) • phi G x t = ∫ y : ℝ × ℝ, Complex.exp (-(Complex.I * ((rdot y t : ℝ) : ℂ))) • G (pt x y)`. Rewrite using `[hdx, hat_eq_smul]`. Establish `key` using `GlobalTheory.T.fourier_inversion_real_plane X (fun y => G (pt x y)) hc hint hint2 y`. Rewrite using `[key]`. Unfold `inv`.
+
+Use `congr 1`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hat_eq_smul, smul_smul, dot_pt_eq, ← Complex.exp_add]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem inv_phi_eq : ∀ (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] [CompleteSpace X] (G : ℂ × ℂ → X)
     (x : ℝ × ℝ), Continuous (fun y => G (pt x y)) →
     (∃ M : ℝ, ∀ y : ℝ × ℝ, ‖G (pt x y)‖ ≤ M * Real.exp (-(y.1 ^ 2 + y.2 ^ 2))) →

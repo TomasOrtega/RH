@@ -18,6 +18,9 @@ structure RowLocTied (D : D7) (lp : LPTiedPlaceholder D) (F : RowFrame D) : Prop
 
 variable {D : D7} {lp : LPTiedPlaceholder D} {F : RowFrame D}
 
+/- English proof (translation)
+Take `⟨α, -, e⟩` from `h.sat i σ v w hw Dv hα`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+-/
 theorem RowLocTied.card_satW (h : RowLocTied D lp F) (i : D.nd.Loc) (σ : D.what₂.FT) v (w : PlE D.host) (hw : NG.OverPl w v)
     (Dv : InertDatum D.host.E D.R.r v w) (hα : ∃ α, NG.SatAtS (F.rep σ).S Dv α) :
     Multiset.card (D.naut.satW i σ w) = D.R.r / 2 := by

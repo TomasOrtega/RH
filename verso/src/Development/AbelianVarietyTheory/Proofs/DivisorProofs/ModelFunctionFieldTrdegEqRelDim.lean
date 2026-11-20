@@ -8,6 +8,11 @@ open CategoryTheory Limits AlgebraicGeometry
 
 namespace GlobalTheory.Vert.Model
 
+/- English proof (translation)
+Use `letI := a.toAlgebra`. Use `letI := b.toAlgebra`. Unfold `Algebra.trdeg`. Use `ciSup_le' fun i => ?_` and prove the remaining obligations. Establish `hi : AlgebraicIndependent K' (v ∘ ((↑) : i.1 → L))` using `(algebraicIndependent_ringHom_iff_of_comp_eq u v v.injective h).mpr i.2`.
+
+Conclude with `hi.cardinalMk_le_trdeg`.
+-/
 theorem trdeg_le_of_isoSquare {K L K' L' : Type} [CommRing K] [CommRing L] [CommRing K']
     [CommRing L'] [Nontrivial K'] (a : K →+* L) (b : K' →+* L') (u : K ≃+* K') (v : L ≃+* L')
     (h : b.comp (u : K →+* K') = (v : L →+* L').comp a) :
@@ -20,6 +25,11 @@ theorem trdeg_le_of_isoSquare {K L K' L' : Type} [CommRing K] [CommRing L] [Comm
     (algebraicIndependent_ringHom_iff_of_comp_eq u v v.injective h).mpr i.2
   exact hi.cardinalMk_le_trdeg
 
+/- English proof (translation)
+Use `haveI : Nontrivial K' := u.injective.nontrivial`. Use `le_antisymm (trdeg_le_of_isoSquare a b u v h) (trdeg_le_of_isoSquare b a u.symm v.symm ?_)` and prove the remaining obligations. Use extensionality with `y`. Use `congrArg (fun φ : K →+* L' => φ (u.symm y)) h` as an intermediate fact. Simplify using `only [RingHom.coe_comp, RingHom.coe_coe, Function.comp_apply, RingEquiv.apply_symm_apply] at this`.
+
+Simplify using `[this]`.
+-/
 theorem trdeg_eq_of_isoSquare {K L K' L' : Type} [CommRing K] [CommRing L] [CommRing K']
     [CommRing L'] [Nontrivial K] (a : K →+* L) (b : K' →+* L') (u : K ≃+* K') (v : L ≃+* L')
     (h : b.comp (u : K →+* K') = (v : L →+* L').comp a) :
@@ -33,6 +43,13 @@ theorem trdeg_eq_of_isoSquare {K L K' L' : Type} [CommRing K] [CommRing L] [Comm
     at this
   simp [this]
 
+/- English proof (translation)
+Use `letI := (Spec.preimage (Z.X.fromSpecStalk (genericPoint Z.X) ≫ Z.str)).hom.toAlgebra`. Take `⟨A, _, _, _, _, _, j, _, -, hj, hA⟩` from `exists_affine_chart_trdeg_eq Z.str (genericPoint Z.X)`. Take `⟨d, hd⟩` from `exists_trdeg_eq_natCast O (A := A)`. Establish `h₁` using `topologicalKrullDim_preimage_genericPoint_eq Z.str (hA.symm.trans hd)`. Establish `h₂` using `topologicalKrullDim_eq_of_isEmbedding Z.gen.ι.isOpenEmbedding.isEmbedding (Z := Z.str ⁻¹' {genericPoint (Spec (.of O))}) (by`.
+
+Rewrite using `[Scheme.Opens.range_ι, genericPoint_eq_bot_of_affine]`. Use extensionality with `x`. Conclude with `mem_gen_iff_eq_bot.trans ⟨fun h => PrimeSpectrum.ext h, fun h => congrArg PrimeSpectrum.asIdeal h⟩)`. Rewrite `h₂` using `[h₁, topologicalKrullDim_gen]`. Take `rfl : d = Z.relDim` from `by exact_mod_cast h₂`.
+
+Conclude with `hA.symm.trans hd`.
+-/
 theorem trdeg_functionField_eq_relDim {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : Model O) :
     letI := (Spec.preimage (Z.X.fromSpecStalk (genericPoint Z.X) ≫ Z.str)).hom.toAlgebra
@@ -52,6 +69,11 @@ theorem trdeg_functionField_eq_relDim {O : Type} [CommRing O] [IsDomain O]
   obtain rfl : d = Z.relDim := by exact_mod_cast h₂
   exact hA.symm.trans hd
 
+/- English proof (translation)
+Establish `n` using `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (.of O)).inv g)) (Scheme.ΓSpecIso_naturality (Spec.preimage (Z.X.fromSpecStalk (genericPoint Z.X) ≫ Z.str)))`. Simplify using `only [Spec.map_preimage, Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Iso.inv_hom_id_apply] at n`. Rewrite using `[fnConst, RingHom.comp_apply, const_eq, ← n]`. Establish `hid : (Spec (Z.X.presheaf.stalk (genericPoint Z.X))).presheaf.map (homOfLE (le_top : (⊤ : (Spec (Z.X.presheaf.stalk (genericPoint Z.X))).Opens) ≤ ⊤)).op = 𝟙 _`. Rewrite using `[show (homOfLE (le_top : (⊤ : (Spec (Z.X.presheaf.stalk (genericPoint Z.X))).Opens) ≤ ⊤)) = 𝟙 _ from rfl, op_id, CategoryTheory.Functor.map_id]`.
+
+Rewrite using `[hid, CommRingCat.id_apply, Iso.inv_hom_id_apply]`. Both sides reduce to the same expression.
+-/
 theorem fnConst_eq_residue {O : Type} [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : Model O) (g : O) :
     Z.fnConst g = (Z.X.residue (genericPoint Z.X)).hom
@@ -68,6 +90,13 @@ theorem fnConst_eq_residue {O : Type} [CommRing O] [IsDomain O]
   rw [hid, CommRingCat.id_apply, Iso.inv_hom_id_apply]
   rfl
 
+/- English proof (translation)
+Introduce `O _ _ _ Z`. Establish `hf : IsField (Z.X.presheaf.stalk (genericPoint Z.X))` using `Field.toIsField Z.X.functionField`. Use `letI : Field (Z.X.presheaf.stalk (genericPoint Z.X)) := hf.toField`. Establish `hbij : Function.Bijective (Z.X.residue (genericPoint Z.X)).hom`. Use `⟨?_, Ideal.Quotient.mk_surjective⟩` and prove the remaining obligations.
+
+Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Establish `h0 : a ∈ IsLocalRing.maximalIdeal (Z.X.presheaf.stalk (genericPoint Z.X))` using `(IsLocalRing.residue_eq_zero_iff a).1 ha`. Rewrite `h0` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Then use the resulting hypothesis. Set `v` to `RingEquiv.ofBijective (Z.X.residue (genericPoint Z.X)).hom hbij`. Use `trdeg_eq_of_isoSquare (Spec.preimage (Z.X.fromSpecStalk (genericPoint Z.X) ≫ Z.str)).hom Z.fnConst (RingEquiv.refl O) v (RingHom.ext fun g => (fnConst_eq_residue Z g))` as an intermediate fact.
+
+Conclude with `this.symm.trans (trdeg_functionField_eq_relDim Z)`.
+-/
 theorem trdeg_fnFld_eq_relDim_ofResidue : ∀ (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O),
     letI := Z.fnConst.toAlgebra; Algebra.trdeg O Z.fnFld = Z.relDim := by

@@ -22,6 +22,11 @@ def frU {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A 
 
 abbrev stU : ℂˣ →* ((Sp ℂ).presheaf.stalk pt)ˣ := Units.map toStalk.toMonoidHom
 
+/- English proof (translation)
+Establish `h` using `le_wchart_chartAt hL φ y`. Use `Units.ext (((gs_unit y pt _ (h trivial) _).symm.trans (gs_eq_toStalk _ _ h _)).trans (congrArg toStalk ?_))` and prove the remaining obligations. Use `((div_eq_iff (frameProd_ne_zero hz ε h)).1 hc).trans ?_` and prove the remaining obligations. Use `map_prod (Units.coeHom ℂ) (fun k => frU u hL (z k) ^ ε k) Finset.univ` as an intermediate fact. Simplify using `only [map_zpow, Units.coeHom_apply] at this`.
+
+Rewrite using `[Units.val_mul, this]`. Simplify using `only [frameProd, hz _]`. Both sides reduce to the same expression.
+-/
 theorem val_eq_stU {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u : HolUnif A L g} (hL : L.IsLB)
     {Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ A.left)} {ε : K → ℤ} (t : LB.Gen (LB.LinComb L φ ε))
     {y : Sp ℂ ⟶ Y} {z : K → Fin g → ℂ} (hz : IsLift u φ y z) {c : ℂˣ} (hc : genVal u hL t y z = c) :
@@ -38,6 +43,9 @@ theorem val_eq_stU {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} {u :
 
 variable {D : Out.DegPre ℂ} {g : ℕ} {u : HolUnif D.P.A D.P.L g} {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ}
 
+/- English proof (translation)
+Use `(val_eq_stU D.P.isLB D.cub.t (isLift_cube u ![a, b, c]) (c := 1) (genVal_cube_of_face D.P.isLB h D.cub.t D.cub.isGen (D.cub.face 0) ![a, b, c])).trans (congrArg stU ?_)` and prove the remaining obligations. Use `(_root_.one_mul _).trans ((prod_thK fun I => frU u D.P.isLB (∑ k ∈ I, ![a, b, c] k)).trans ?_)` and prove the remaining obligations. Simplify using `only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val]`.
+-/
 theorem th_eq (h : u.IsAH Hm χ) (a b c : Fin g → ℂ) :
     th D (T := 𝟙_ (Over (Sp ℂ))) pt (chartAt D.P.isLB) (u.ex a) (u.ex b) (u.ex c) =
       stU (frU u D.P.isLB (a + b + c) * (frU u D.P.isLB (a + b))⁻¹ * (frU u D.P.isLB (a + c))⁻¹ *
@@ -47,6 +55,11 @@ theorem th_eq (h : u.IsAH Hm χ) (a b c : Fin g → ℂ) :
   refine (_root_.one_mul _).trans ((prod_thK fun I => frU u D.P.isLB (∑ k ∈ I, ![a, b, c] k)).trans ?_)
   simp only [sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val]
 
+/- English proof (translation)
+Proceed by induction on `j with`. Consider the case `zero => simp [cubN]`. Consider the case `succ n ih`. Rewrite using `[cubN, Finset.prod_range_succ, ← cubN, ih, ← ex_nsmul, ← u.ex_add, th_eq h, ← map_mul, succ_nsmul, ← add_assoc a]`. Use `congrArg stU ?_` and prove the remaining obligations.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow]`. Use `module`.
+-/
 theorem cubN_eq (h : u.IsAH Hm χ) (j : ℕ) (a m x : Fin g → ℂ) :
     cubN (th D (T := 𝟙_ (Over (Sp ℂ))) pt (chartAt D.P.isLB)) j (u.ex a) (u.ex m) (u.ex x) =
       stU (frU u D.P.isLB (a + j • m + x) * (frU u D.P.isLB (a + j • m))⁻¹ * (frU u D.P.isLB (a + x))⁻¹ *
@@ -64,11 +77,33 @@ theorem cubN_eq (h : u.IsAH Hm χ) (j : ℕ) (a m x : Fin g → ℂ) :
 
 variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ]
 
+/- English proof (translation)
+Use `(TF_hom (R := ℂ) ℂ).trans ?_` and prove the remaining obligations. Rewrite using `[show toF (R := ℂ) ℂ = RingHom.id ℂ from (IsScalarTower.algebraMap_eq ℂ (FractionRing ℂ) ℂ).symm, CommRingCat.ofHom_id, Spec.map_id]`.
+-/
 theorem jFK_jK : Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ = 𝟙 _ := by
   refine (TF_hom (R := ℂ) ℂ).trans ?_
   rw [show toF (R := ℂ) ℂ = RingHom.id ℂ from (IsScalarTower.algebraMap_eq ℂ (FractionRing ℂ) ℂ).symm,
     CommRingCat.ofHom_id, Spec.map_id]
 
+/- English proof (translation)
+Establish `hL` using `D.P.isLB`. Establish `hJ` using `good_chartAt hL`. Establish `cp : ∀ x, cP D (𝟙_ (Over (Sp ℂ))) x = D.c x` using `fun x => by`. Rewrite using `[cP, Subsingleton.elim (toUnit (𝟙_ (Over (Sp ℂ)))) (𝟙 _), Category.id_comp]`. Establish `hc : u.ex (ca + j • cm) = D.c (α + j • mu)`.
+
+Rewrite using `[u.ex_add, ex_nsmul, ha, hm, ← cp, ← cp, ← cp, cPoint_add, cPoint_nsmul]`. Establish `hs : u.ex (cm + ca) = D.c (mu + α)` using `by rw [u.ex_add, ha, hm, ← cp, ← cp, ← cp, cPoint_add]`. Establish `tr : (u.ex z).left ≫ (trB D mu).left = (u.ex (z + cm)).left` using `congrArg (fun m : 𝟙_ (Over (Sp ℂ)) ⟶ D.P.A => m.left) (show u.ex z ≫ trB D mu = u.ex (z + cm) by`. Rewrite using `[MonObj.comp_mul, Category.comp_id, comp_cP, cp, u.ex_add, hm])`. Establish `hz : IsLift u (Sum.elim (D.famφB (α + j • mu)) (fun i => (trB D mu).left ≫ D.famφB α i)) (u.ex z).left (Sum.elim ![z, z + (ca + j • cm), ca + j • cm, 0] ![z + cm, z + cm + ca, ca, 0])`.
+
+Introduce and unpack `(k | k)`. Conclude with `isLift_fam hc z k`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) tr).trans (isLift_fam ha (z + cm) k))`. Establish `e` using `sval_feTranslate D j mu α s (u.ex z).left hJ`. Rewrite `e` using `[tr]`.
+
+Use `(secVal_eq_mul hL e (isLift_fam hc z) (isLift_fam ha (z + cm)) hz fun f => ?_).trans (congrArg _ ?_)` and prove the remaining obligations. Simplify using `only [Out.DegPre.deltaε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[_root_.mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Establish `lp : ∀ x c, u.ex c = D.c x → IsLift u (fun _ : PUnit => Out.ptK (D.c x)) (Out.jFK (R` using `ℂ) ℂ) (fun _ => c) := fun x c hx _ => by show Out.jFK (R := ℂ) ℂ ≫ Out.jK ℂ ≫ (D.c x).left = _`. Rewrite using `[← Category.assoc, jFK_jK, hx]`.
+
+Conclude with `Category.id_comp _`. Establish `va` using `val_eq_stU hL _ (lp _ _ ha) ea`. Establish `vm` using `val_eq_stU hL _ (lp _ _ hm) em`. Establish `vs` using `val_eq_stU hL _ (lp _ _ hs) es`. Establish `vr : val D.rigK (Out.jFK (R` using `ℂ) ℂ) pt (chartAt hL) = stU (frU u hL 0) := by`.
+
+Use `(val_pull hJ _ _ _).trans ((congrArg (fun q => val (L := D.P.L) D.rig q pt (chartAt hL)) jFK_jK).trans ?_)` and prove the remaining obligations. Use `(val_eq_stU hL D.rig (z := fun _ => 0) (fun _ => ?_) (c := 1) (genVal_rig hL hr)).trans ?_` and prove the remaining obligations. Rewrite using `[ex_zero, Hom.one_def]`. Simplify using `[eSec]`. Simplify using the standard rewrite rules.
+
+Set `κ : 𝟙_ (Over (Sp ℂ)) ⟶ Out.TK ℂ` to `Over.homMk (Out.jFK (R := ℂ) ℂ) jFK_jK`. Establish `v` using `val_feGen D j mu α (u.ex z) κ hJ`. Rewrite `v` using `[(cp α).trans ha.symm, (cp mu).trans hm.symm, cubN_eq h, th_eq h, val_tau D _ hJ, show κ.left = Out.jFK (R := ℂ) ℂ from rfl]`. Use `erw [va, vm, vs, vr] at v`. Take `⟨G, hG⟩ : IsUnit (genVal u hL (feGen D j mu α) _ _)` from `(genVal_ne_zero hL _ hz).isUnit`.
+
+Establish `v'` using `val_eq_stU hL (feGen D j mu α) hz hG.symm`. Simplify using `only [← map_inv, ← map_pow, ← map_mul] at v`. Establish `w` using `Units.map_injective (f := toStalk.toMonoidHom) toStalk.injective (v'.symm.trans v)`. Use `hG.symm.trans (congrArg Units.val ?_)` and prove the remaining obligations. Simplify using `only [Out.DegPre.deltaε, Out.DegPre.famε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fin.prod_univ_four, Matrix.cons_val, Fintype.prod_unique] at w`.
+
+Rewrite `w` using `[add_comm (ca + j • cm) z, add_comm cm z, show ca + z + cm = z + cm + ca by abel, add_comm cm ca]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `w'` using `congrArg Additive.ofMul w`. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_pow, ofMul_zpow] at w' ⊢`. Take the linear combination `(norm := module) w'`.
+-/
 theorem secVal_feTranslate (h : u.IsAH Hm χ) (hr : u.IsRig D.rig) (j : ℕ) {α mu : D.X} {ca cm : Fin g → ℂ}
     (ha : u.ex ca = D.c α) (hm : u.ex cm = D.c mu) {pa pm ps : ℂˣ}
     (ea : genVal u D.P.isLB (D.psi α) (Out.jFK (R := ℂ) ℂ) (fun _ => ca) = pa)
@@ -140,6 +175,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {he : eSec P.toPre.P.A ≫ φ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A}
   {w : LB.Iso P.toPre.P.L (a.D₀.P.L.pull φ)} {e : a.D₀.X ≃ₗ[𝓞 E] P.toPre.X} (hW : WitData a P oP φ he w e)
 
+/- English proof (translation)
+Use `choose u hu using fun i => FormalValue.isUnit_valR _ _ (hi i) (w.s (fun _ => j₀ i, jf i))`. Use `⟨u, hu, toStkA_injective ?_⟩` and prove the remaining obligations. Establish `m : ∀ i, (p ≫ P.toPre.famφB (e α) i) (cpt Z) ∈ (a.D₀.P.L.pull φ).U (fun _ => j₀ i) ⊓ P.toPre.P.L.U (jf i)` using `fun i => hi i trivial`. Establish `m₁ : p (cpt Z) ∈ LB.wchart P.toPre.P.L (P.toPre.famφB (e α)) jf` using `Set.mem_iInter.2 fun i => (m i).2`. Establish `m₂ : (p ≫ φ) (cpt Z) ∈ LB.wchart a.D₀.P.L (a.D₀.famφB α) j₀` using `Set.mem_iInter.2 fun i => (congrArg (fun q => q (p (cpt Z)) ∈ a.D₀.P.L.U (j₀ i)) (famφB_comp hW α i)).mp (mem_pull.1 (m i).1)`.
+
+Establish `H₁` using `secThrough_pullB hW j α s _ p (cpt Z) j₀ jf (fun i => mem_pull.1 (m i).1) (fun i => (m i).2)`. Establish `H₂ : toStkA (cpt Z) (∏ i, u i ^ Out.DegPre.famε j i : Zˣ) = (∏ i, gw w (p ≫ P.toPre.famφB (e α) i) (cpt Z) (j₀ i) (jf i) ^ Out.DegPre.famε j i).val`. Use `congrArg Units.val ((map_prod (Units.map (toStkA (cpt Z)).toMonoidHom) _ _).trans (Finset.prod_congr rfl fun i _ => (map_zpow _ _ _).trans (congrArg (· ^ _) (Units.ext ?_))))` and prove the remaining obligations. Conclude with `(congrArg (toStkA (cpt Z)) (hu i)).trans (toStkA_valR _ _ _ (hi i) _)`. Establish `H₃ : constVal (p ≫ P.toPre.P.A.hom) (cpt Z) r = toStkA (cpt Z) (κ r)`.
+
+Rewrite using `[hp, ← Category.id_comp (spMap κ)]`. Conclude with `(constVal_specMap _ κ _ r).trans (gs_eq (𝟙 _) _ ⊤ trivial _)`. Use `(map_mul _ _ _).trans ((congrArg₂ (· * ·) H₂ ((FormalValue.toStkA_valR_eq_gs _ _ _ ((top_le_iff_cpt _ _).2 m₁) _).trans (gs_smul P.toPre.P.A.hom p (cpt Z) _ m₁ r _))).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) H₃.symm ((FormalValue.toStkA_valR_eq_gs _ _ _ ((top_ …` and prove the remaining obligations. Conclude with `_root_.mul_left_comm _ _ _`.
+-/
 theorem valR_smul_pullB (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) (r : PowerSeries k) (Z : Type) [CommRing Z]
     [IsLocalRing Z] (p : Sp Z ⟶ P.toPre.P.A.left) (κ : PowerSeries k →+* Z) (jf : Fin 4 → P.toPre.P.L.ι)
     (j₀ : Fin 4 → a.D₀.P.L.ι) (hp : p ≫ P.toPre.P.A.hom = spMap κ)
@@ -172,6 +214,13 @@ theorem valR_smul_pullB (j : ℕ) (α : a.D₀.X) (s : SecBMod a.D₀ j α) (r :
 
 end Pull
 
+/- English proof (translation)
+Use `⟨F ∪ ((Finset.range e).biUnion L).image i, Finset.subset_union_left, PowerSeries.X_pow_dvd_iff.2 fun k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sum, PowerSeries.coeff_mk, sub_eq_zero, ← Finset.sum_subset (s₁ := (L k).image i), Finset.sum_image hi.injOn]`. Use `Finset.sum_congr rfl fun mu hmu => ?_` and prove the remaining obligations. Rewrite using `[h₁, PowerSeries.coeff_mul_C, PowerSeries.coeff_X_pow, if_pos ((hL _ _).1 hmu).symm, _root_.one_mul]`. Conclude with `(Finset.image_subset_image (Finset.subset_biUnion_of_mem L (Finset.mem_range.2 hk))).trans Finset.subset_union_right`.
+
+Introduce `x _ hx`. Distinguish the cases in `hx' : ∃ mu, i mu = x`. Take `⟨mu, rfl⟩` from `hx'`. Rewrite using `[h₁, PowerSeries.coeff_mul_C, PowerSeries.coeff_X_pow, if_neg, zero_mul]`. Conclude with `fun hk' => hx (Finset.mem_image_of_mem _ ((hL _ _).2 hk'.symm))`.
+
+Rewrite using `[h₂ x fun mu e => hx' ⟨mu, e⟩, map_zero]`.
+-/
 theorem exists_sum_sub_mem {S T : Type} {i : S → T} (hi : Function.Injective i) {n : S → ℕ} {c : S → ℂ}
     {h : T → ℂ⟦X⟧} (h₁ : ∀ mu, h (i mu) = PowerSeries.X ^ n mu * PowerSeries.C (c mu)) (h₂ : ∀ x, (∀ mu, i mu ≠ x) → h x = 0)
     {L : ℕ → Finset S} (hL : ∀ k mu, mu ∈ L k ↔ n mu = k) (e : ℕ) (F : Finset T) :
@@ -192,6 +241,11 @@ theorem exists_sum_sub_mem {S T : Type} {i : S → T} (hi : Function.Injective i
       exact fun hk' => hx (Finset.mem_image_of_mem _ ((hL _ _).2 hk'.symm))
     · rw [h₂ x fun mu e => hx' ⟨mu, e⟩, map_zero]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[HahnSeries.coeff_single_mul, _root_.one_mul, AnArc.coeff_FSum, LaurentSeries.coe_algebraMap, PowerSeries.coeff_coe]`. Use `split_ifs with hn`. Use `(Finset.sum_eq_zero fun mu hmu => ?_).symm` and prove the remaining obligations. Use `hm mu` as an intermediate fact.
+
+Rewrite `this` using `[A.mem_level.1 hmu]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[PowerSeries.coeff_mk, Int.natCast_natAbs, abs_of_nonneg (not_lt.1 hn)]`.
+-/
 theorem algebraMap_mk_eq {O : Type} [CommRing O] [StarRing O] (A : AnArc O) (j : ℕ) [NeZero j] (α : A.X)
     (th : (Fin A.gB → ℂ) → ℂ) (v : A.V) {m : ℕ} (hm : ∀ mu, 0 ≤ (m : ℤ) + A.exponent j α mu) :
     algebraMap ℂ⟦X⟧ ℂ⸨X⸩ (PowerSeries.mk fun k => ∑ mu ∈ A.level j α ((k : ℤ) - m), A.term j α th mu v) =

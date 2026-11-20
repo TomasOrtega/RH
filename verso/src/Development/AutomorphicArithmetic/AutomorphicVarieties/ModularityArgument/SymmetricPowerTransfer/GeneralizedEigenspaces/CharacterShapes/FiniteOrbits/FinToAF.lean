@@ -11,6 +11,45 @@ open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob UpperT
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `hex : ∀ x : G, ∃ f : Fi, (f : G)⁻¹ * x ∈ In`. Introduce `x`. Take `⟨f, hf, k, hk, rfl⟩` from `hdec x`. Conclude with `⟨⟨f, hf⟩, by simpa using hk⟩`. Use `choose p hp using hex`.
+
+Establish `hpu : ∀ (f : Fi) (k : G), k ∈ In → p ((f : G) * k) = f`. Introduce `f k hk`. Establish `h2 : ((p ((f : G) * k) : G)⁻¹ * f) ∈ In`. Use `In.mul_mem (hp ((f : G) * k)) (In.inv_mem hk)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+
+Establish `h3 : ((p ((f : G) * k) : G)⁻¹ * f) ∈ Fi` using `Fi.mul_mem (Fi.inv_mem (p _).2) f.2`. Conclude with `Subtype.ext (inv_mul_eq_one.mp (hint _ h3 h2))`. Establish `hfac : ∀ g : G, ∃ k ∈ In, g = (p g : G) * k` using `fun g => ⟨_, hp g, by simp⟩`. Establish `hmulR : ∀ (g : G) (f : Fi), p (g * f) = p g * f`. Introduce `g f`.
+
+Take `⟨k, hk, hg⟩` from `hfac g`. Establish `: g * f = ((p g * f : Fi) : G) * k`. Establish `h` using `(hcomm f f.2 k hk).eq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, hpu _ _ hk]`.
+
+Establish `hmulL : ∀ (f : Fi) (g : G), p ((f : G) * g) = f * p g`. Introduce `f g`. Take `⟨k, hk, hg⟩` from `hfac g`. Establish `: (f : G) * g = ((f * p g : Fi) : G) * k`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[this, hpu _ _ hk]`. Establish `hmulIn : ∀ (g k : G), k ∈ In → p (g * k) = p g`. Introduce `g k hk`. Take `⟨k', hk', hg⟩` from `hfac g`. Establish `: g * k = (p g : G) * (k' * k)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, hpu _ _ (In.mul_mem hk' hk)]`. Establish `hinL : ∀ (k g : G), k ∈ In → p (k * g) = p g`. Introduce `k g hk`. Take `⟨k', hk', hg⟩` from `hfac g`.
+
+Establish `: k * g = (p g : G) * (k * k')`. Establish `h` using `(hcomm (p g) (p g).2 k hk).eq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, hpu _ _ (In.mul_mem hk hk')]`. Use `⟨fun x => R (c x)⁻¹ (Φ (p x)), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `γ hγ g`. Establish `hk` using `hp γ`. Establish `hγ' : (p γ : G) * ((p γ : G)⁻¹ * γ) = γ` using `by simp`. Establish `hcγ : c ((p γ : G)⁻¹ * γ) = c γ`. Rewrite using `[map_mul, map_inv, hc _ (p γ).2]`.
+
+Simplify using the standard rewrite rules. Establish `hpp : p (γ * g) = p γ * p g`. Establish `: γ * g = (p γ : G) * (((p γ : G)⁻¹ * γ) * g)` using `by simp [mul_assoc]`. Rewrite using `[this, hmulL, hinL _ _ hk]`. Establish `h` using `hL (p γ) _ hk (by rw [hγ']; exact hγ) (p g)`.
+
+Simplify using `only [hpp, h, hcγ, map_mul, mul_inv_rev, Module.End.mul_apply]`. Rewrite using `[← Module.End.mul_apply (R (c γ)⁻¹), ← map_mul]`. Simplify using the standard rewrite rules. Introduce `x hx g`. Simplify using `only [hmulIn g x hx, map_mul, mul_inv_rev, map_inv, Module.End.mul_apply]`.
+
+Introduce `u hu g`. Establish `h` using `hmulR g ⟨u, hU hu⟩`. Simplify using `only at h`. Simplify using `only [h, map_mul, hc u (hU hu), mul_one]`. Rewrite using `[hV ⟨u, hU hu⟩ hu]`.
+
+Introduce `g`. Establish `h` using `hpu g 1 In.one_mem`. Rewrite `h` using `[mul_one]`. Simplify using `[h, hc _ g.2]`. Introduce `x cc hfo heig`.
+
+Take `⟨hfo', hDC, -, Rr, hR1, hR2, hR3⟩` from `dcSub G V Fi U x hfo (fun u hu => ⟨1, U.one_mem, by simp, by simpa using hU hu, by simpa using hU hu⟩) hN`. Establish `hΦ : ∀ u ∈ U.subgroupOf Fi, ∀ g, Φ (g * u) = Φ g` using `fun u hu g => hV u hu g`. Establish `hsum` using `(dcBasic Fi V (U.subgroupOf Fi) x hfo' Φ hΦ).2.2.2.2 Rr hR1 hR2`. Establish `hφ : ∀ u ∈ U, ∀ g, (fun x => R (c x)⁻¹ (Φ (p x))) (g * u) = (fun x => R (c x)⁻¹ (Φ (p x))) g`. Introduce `u hu g`.
+
+Establish `h` using `hmulR g ⟨u, hU hu⟩`. Simplify using `only at h`. Simplify using `only [h, map_mul, hc u (hU hu), mul_one]`. Rewrite using `[hV ⟨u, hU hu⟩ hu]`. Establish `hsum'` using `(dcBasic G V U x hfo (fun x => R (c x)⁻¹ (Φ (p x))) hφ).2.2.2.2 (Rr.map (Function.Embedding.subtype _)) (by`.
+
+Introduce `y hy`. Take `⟨r, hr, rfl⟩` from `Finset.mem_map.mp hy`. Conclude with `(hDC r).1 (hR1 r hr))`. Use the proof step `(by`. Introduce `y hy`.
+
+Take `⟨r, ⟨hr, hry⟩, hu⟩` from `hR3 y hy`. Use `⟨r, ⟨Finset.mem_map.mpr ⟨r, hr, rfl⟩, hry⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `r' ⟨hr', hry'⟩`. Take `⟨r'', hr'', rfl⟩` from `Finset.mem_map.mp hr'`. Simplify using `using congrArg Subtype.val (hu r'' ⟨hr'', hry'⟩))`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[hsum' g, Finset.sum_map]`. Establish `hE` using `congrFun heig (p g)`. Rewrite `hE` using `[hsum (p g)]`. Simplify using `only [Function.Embedding.subtype_apply, Pi.smul_apply]`.
+
+Establish `: ∀ r : Fi, R (c (g * r))⁻¹ (Φ (p (g * r))) = R (c g)⁻¹ (Φ (p g * r))`. Introduce `r`. Rewrite using `[hmulR, map_mul, hc _ r.2, mul_one]`. Simplify using `only [this]`. Rewrite using `[← map_sum, hE, Pi.smul_apply, map_smul]`.
+-/
 private theorem core {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     (Fi In Rt U : Subgroup G) [hN : Fi.Normal] (c : G →* H) (R : Representation ℂ H V)
     (hdec : ∀ x : G, ∃ f ∈ Fi, ∃ k ∈ In, x = f * k)
@@ -127,6 +166,11 @@ private theorem core {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module
     simp only [this]
     rw [← map_sum, hE, Pi.smul_apply, map_smul]
 
+/- English proof (translation)
+Introduce `L _ _ _ n V _ _ R U hU Φ hL hV`. Take `⟨-, -, hdec, hcomm, hext, hmem, -, -⟩` from `uaFacts L n`. Establish `hN : (finU L n).Normal` using `⟨fun x hx g => (hmem _).1.2 fun τ => by`. Simplify using `[((hmem x).1.1 hx) τ]⟩`. Take `⟨φ, h1, h2, h3, h4, h5⟩` from `core (finU L n) (infU L n) (ratU L n) U (infC L n) R hdec hcomm (fun x hx hx' => hext x 1 (fun w => by simpa using (hmem x).2.1 hx' w) (fun τ => by simpa using (hmem x).1.1 hx τ)) (fun x hx => by`.
+
+Use function extensionality and compare the values at `v`. Conclude with `(hmem x).1.1 hx v.embedding)`. Use `hU Φ hL hV`. Conclude with `⟨φ, ⟨h1, h2, h3⟩, h4, h5⟩`.
+-/
 theorem UpperTheory.V.Z.Sym.So.finToAF :
     UpperTheory.V.Z.Sym.So.FinToAF := by
   intro L _ _ _ n V _ _ R U hU Φ hL hV

@@ -4,6 +4,9 @@ import Mathlib
 import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.IsHolFormConst
 open NumberField GlobalTheory.RealMult
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.RealMult.exists_trace_pairing_of_integral | exact GlobalTheory.RealMult.exists_trace_pairing_of_integral | (intros; apply GlobalTheory.RealMult.exists_trace_pairing_of_integral <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.lattice_real_multiplication_integral : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔠 : FracId F) (c : 𝔠.elt), IsTotPos (c : F) →
     ∀ (Λ : Submodule ℤ (Fin (Module.finrank ℚ F) → ℂ)) (e : Fin (Module.finrank ℚ F) ≃ (F →+* ℝ)) (h : Fin (Module.finrank ℚ F) → ℝ),
     (∀ (a : 𝓞 F) (l : Fin (Module.finrank ℚ F) → ℂ), l ∈ Λ → (fun j ↦ (e j (a : F) : ℂ) * l j) ∈ Λ) →

@@ -4,6 +4,33 @@ namespace GlobalTheory
 
 open Algebra
 
+/- English proof (translation)
+Use `set M : Submonoid S := Algebra.algebraMapSubmonoid S (nonZeroDivisors R) with hM`. Set `T` to `Localization M`. Establish `hinj : Function.Injective (algebraMap R S)` using `FaithfulSMul.algebraMap_injective R S`. Establish `hMle : M ≤ nonZeroDivisors S`. Introduce and unpack `_ ⟨r, hr, rfl⟩`.
+
+Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hinj).2 (nonZeroDivisors.ne_zero hr))`. Use `haveI : IsDomain T := IsLocalization.isDomain_localization hMle`. Establish `hTinj : Function.Injective (algebraMap S T)` using `IsLocalization.injective T hMle`. Establish `hbot : (⊥ : Ideal T).IsMaximal`. Take `⟨m, hm⟩` from `Ideal.exists_maximal T`.
+
+Establish `hmp` using `hm.isPrime`. Use `set Q := m.comap (algebraMap S T)`. Establish `hQ : Q.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hdisj : Disjoint (M : Set S) Q` using `((IsLocalization.isPrime_iff_isPrime_disjoint M T m).1 hmp).2`. Establish `hQc : Q.comap (algebraMap R S) = ⊥`.
+
+Rewrite using `[eq_bot_iff]`. Introduce `r hr`. Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `hr0`. Establish `hrM : algebraMap R S r ∈ M` using `⟨r, mem_nonZeroDivisors_of_ne_zero hr0, rfl⟩`.
+
+Conclude with `Set.disjoint_left.1 hdisj hrM hr`. Establish `hQb : Q = ⊥` using `h Q hQ hQc`. Establish `: m = ⊥`. Rewrite using `[← IsLocalization.map_comap M T m]`. Express the relevant statement in the definitionally equal form `Ideal.map (algebraMap S T) Q = ⊥`.
+
+Rewrite using `[hQb, Ideal.map_bot]`. Rewrite using `[← this]`. Conclude with `hm`. Establish `hfield : IsField T` using `Ring.isField_iff_maximal_bot.2 hbot`. Use `letI : Field T := hfield.toField`.
+
+Set `K` to `Localization (nonZeroDivisors R)`. Use `haveI : IsScalarTower R K T := inferInstance`. Use `haveI : Algebra.FiniteType K T := by`. Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType R S).out`. Use `⟨⟨s.image (algebraMap S T), ?_⟩⟩` and prove the remaining obligations.
+
+Rewrite using `[_root_.eq_top_iff]`. Introduce `t _`. Take `⟨x, ⟨_, ⟨r, hr, rfl⟩⟩, rfl⟩` from `IsLocalization.exists_mk'_eq M t`. Establish `hx : algebraMap S T x ∈ Algebra.adjoin K ((s.image (algebraMap S T) : Finset T) : Set T)`. Establish `hxs : x ∈ Algebra.adjoin R (s : Set S)` using `hs ▸ Algebra.mem_top`.
+
+Use `Algebra.adjoin_induction (fun y hy => ?_) (fun r' => ?_) (fun a b _ _ ha hb => ?_) (fun a b _ _ ha hb => ?_) hxs` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_coe.1 hy)))`. Rewrite using `[← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply R K T]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Rewrite using `[map_add]`.
+
+Conclude with `add_mem ha hb`. Rewrite using `[map_mul]`. Conclude with `mul_mem ha hb`. Establish `he : IsLocalization.mk' T x (⟨algebraMap R S r, ⟨r, hr, rfl⟩⟩ : M) = algebraMap K T (IsLocalization.mk' K (1 : R) (⟨r, hr⟩ : nonZeroDivisors R)) * algebraMap S T x`. Rewrite using `[IsLocalization.mk'_eq_iff_eq_mul]`.
+
+Establish `h3 : algebraMap K T (IsLocalization.mk' K (1 : R) (⟨r, hr⟩ : nonZeroDivisors R)) * algebraMap S T (algebraMap R S r) = 1`. Rewrite using `[← IsScalarTower.algebraMap_apply R S T, IsScalarTower.algebraMap_apply R K T, ← map_mul]`. Use `IsLocalization.mk'_spec K (1 : R) (⟨r, hr⟩ : nonZeroDivisors R)` as an intermediate fact. Simplify using `only [map_one] at this`. Rewrite using `[this, map_one]`.
+
+Express the relevant statement in the definitionally equal form `_ = _ * _ * algebraMap S T (algebraMap R S r)`. Rewrite using `[mul_right_comm, h3, one_mul]`. Rewrite using `[he]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ _) hx`. Use `haveI : Module.Finite K T := finite_of_finite_type_of_isJacobsonRing K T`.
+
+Use `haveI : Algebra.IsAlgebraic K T := Algebra.IsAlgebraic.of_finite K T`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : IsAlgebraic K (algebraMap S T x)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `h2 : IsAlgebraic R (algebraMap S T x)` using `(IsFractionRing.isAlgebraic_iff R K T).2 h1`. Conclude with `(isAlgebraic_algHom_iff (IsScalarTower.toAlgHom R S T) hTinj).1 h2`.
+-/
 theorem isAlgebraic_of_finiteType_of_comap_eq_bot
     (R S : Type) [CommRing R] [IsDomain R] [CommRing S] [IsDomain S] [Algebra R S]
     [FaithfulSMul R S] [Algebra.FiniteType R S]

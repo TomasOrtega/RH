@@ -12,6 +12,11 @@ open Formalism.QuantumDeterminants Formalism.MainNotions.S PI.AmpRootCommon PI.A
 
 variable {k r : ℕ}
 
+/- English proof (translation)
+Rewrite using `[Hpk_apply]`. Establish `hb` using `b.isLt`. Establish `hj` using `j.isLt`. Establish `he : (esI k r b).val = 2 * r + k - b.val` using `rfl`. Establish `hE : (eI k r b).val = b.val` using `rfl`.
+
+Simplify using `only [hτ, hs, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+-/
 theorem Hpk_eI (b : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r b) j = if j = esI k r b then 1 else 0 := by
   rw [Hpk_apply]
@@ -22,11 +27,19 @@ theorem Hpk_eI (b : Fin r) (j : Fin (2 * r + k + 1)) :
   simp only [hτ, hs, Fin.ext_iff]
   split_ifs <;> first | rfl | (exfalso; omega)
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Hpk_eI, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem Hpk_mulVec_eI (y : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
     (Hpk k r *ᵥ y) (eI k r b) = y (esI k r b) := by
   simp only [Matrix.mulVec, dotProduct, Hpk_eI, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq',
     Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[Hpk_apply]`. Use `split_ifs with h`.
+
+Apply the tactic sequence `rw [hw j (by unfold hτ at h; split_ifs at h <;> omega), mul_zero]`. Rewrite using `[zero_mul]`.
+-/
 theorem Hpk_mulVec_low {w : Fin (2 * r + k + 1) → ℂ} (hw : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → w i = 0)
     (i : Fin (2 * r + k + 1)) (hi : i.val ≤ r + k) : (Hpk k r *ᵥ w) i = 0 := by
   simp only [Matrix.mulVec, dotProduct]
@@ -37,6 +50,9 @@ theorem Hpk_mulVec_low {w : Fin (2 * r + k + 1) → ℂ} (hw : ∀ i : Fin (2 * 
   · rw [hw j (by unfold hτ at h; split_ifs at h <;> omega), mul_zero]
   · rw [zero_mul]
 
+/- English proof (translation)
+Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - j.val) = j.val`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem esI_of (j : Fin (2 * r + k + 1)) (hj : r + k < j.val) :
     esI k r ⟨2 * r + k - j.val, by omega⟩ = j := by
   apply Fin.ext
@@ -44,6 +60,11 @@ theorem esI_of (j : Fin (2 * r + k + 1)) (hj : r + k < j.val) :
   have := j.isLt
   omega
 
+/- English proof (translation)
+Unfold `fvec`. Use `split_ifs with h`. Unfold `bvec`. Rewrite using `[Pi.single_eq_of_ne]`. Introduce `he`.
+
+Establish `h'` using `congrArg Fin.val he`. Establish `hv : (eI k r ⟨a.val, h⟩).val = a.val` using `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `hz i (Or.inr hi)`.
+-/
 theorem fvec_high {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (r + 1)) (i : Fin (2 * r + k + 1))
     (hi : r + k < i.val) : fvec k r z a i = 0 := by
   unfold fvec
@@ -56,11 +77,25 @@ theorem fvec_high {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin (
     omega
   · exact hz i (Or.inr hi)
 
+/- English proof (translation)
+Unfold `fvec`. Rewrite using `[dif_pos (show (Fin.castSucc c).val < r from c.isLt)]`. Both sides reduce to the same expression.
+-/
 theorem fvec_cs (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r) : fvec k r z (Fin.castSucc c) = bvec (eI k r c) := by
   unfold fvec
   rw [dif_pos (show (Fin.castSucc c).val < r from c.isLt)]
   rfl
 
+/- English proof (translation)
+Establish `hterm : ∀ j, a i j * y j = if j = i then y i else 0`. Introduce `j`. Distinguish the cases in `hj1 : j.val < r`. Establish `h2` using `ha.2.1 ⟨j.val, hj1⟩ i (by show j.val ≤ i.val; omega)`. Establish `hej : eI k r ⟨j.val, hj1⟩ = j` using `Fin.ext rfl`.
+
+Rewrite `h2` using `[hej, if_neg (fun h => by rw [h] at hi; omega)]`. Rewrite using `[h2, zero_mul, if_neg (fun h => by rw [h] at hj1; omega)]`. Distinguish the cases in `hj2 : j.val ≤ r + k`. Rewrite using `[ha.2.2 i j (by omega) hj2 hi]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hij, if_neg (Ne.symm hij), zero_mul]`. Establish `hyj : y j = 0`. Use `hy ⟨2 * r + k - j.val, by have := j.isLt; omega⟩` as an intermediate fact.
+
+Rewrite `this` using `[esI_of j (by omega)]`. Then use the resulting hypothesis. Rewrite using `[hyj, mul_zero]`. Use `split_ifs with hji`. Substitute `hji` using the available equality. Conclude with `hyj.symm`.
+
+Both sides reduce to the same expression. Simplify using `only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem nset_fix {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (ha : a ∈ Nset k r)
     {y : Fin (2 * r + k + 1) → ℂ} (hy : ∀ b : Fin r, y (esI k r b) = 0)
     (i : Fin (2 * r + k + 1)) (hi : r ≤ i.val) : (a *ᵥ y) i = y i := by
@@ -87,6 +122,9 @@ theorem nset_fix {a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (h
         · rfl
   simp only [Matrix.mulVec, dotProduct, hterm, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Use `show β j = 0`. Establish `h1` using `congrFun h (ptσ p j)`. Simplify using `only [Matrix.mulVec, dotProduct, zhat_pt hP, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Pi.zero_apply, ptσ_invol] at h1`. Conclude with `(mul_eq_zero.mp h1).resolve_left (ptζ_ne p _)`.
+-/
 theorem zhat_mulVec_inj {z z' : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     {p : Point ℂ (r + 1)} (hP : ZhatO k r z z' g = ptMat p) {β : Fin (r + 1) → ℂ}
     (h : Zhat k r z z' g *ᵥ β = 0) : β = 0 := by
@@ -97,6 +135,21 @@ theorem zhat_mulVec_inj {z z' : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2
     Finset.mem_univ, if_true, Pi.zero_apply, ptσ_invol] at h1
   exact (mul_eq_zero.mp h1).resolve_left (ptζ_ne p _)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Establish `hc : ∀ c : Fin r, (if h : (Fin.castSucc c).val < r then x (eI k r ⟨(Fin.castSucc c).val, h⟩) else 0) = x (eI k r c)`. Introduce `c`. Rewrite using `[dif_pos (show (Fin.castSucc c).val < r from c.isLt)]`. Both sides reduce to the same expression.
+
+Establish `hl : (if h : (Fin.last r).val < r then x (eI k r ⟨(Fin.last r).val, h⟩) else 0) = 0`. Rewrite using `[dif_neg (show ¬ (Fin.last r).val < r from lt_irrefl r)]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [hc, hl, mul_zero, add_zero, Fm, Matrix.of_apply, fvec_cs, bvec]`.
+
+Distinguish the cases in `hi : i.val < r`. Rewrite using `[Finset.sum_eq_single ⟨i.val, hi⟩]`. Establish `hei : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`. Rewrite using `[hei, Pi.single_eq_same, one_mul]`. Introduce `c _ hc'`.
+
+Rewrite using `[Pi.single_eq_of_ne, zero_mul]`. Introduce `he`. Apply `hc'` to reduce the goal to its premises. Establish `h'` using `congrArg Fin.val he`. Establish `hv : (eI k r c).val = c.val` using `rfl`.
+
+Conclude with `Fin.ext (by rw [← hv, ← h'])`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hx i (by omega)]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+
+Introduce `c _`. Rewrite using `[Pi.single_eq_of_ne, zero_mul]`. Introduce `he`. Establish `h'` using `congrArg Fin.val he`. Establish `hv : (eI k r c).val = c.val` using `rfl`.
+
+Use `c.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 theorem fm_low (z' : Fin (2 * r + k + 1) → ℂ) (x : Fin (2 * r + k + 1) → ℂ)
     (hx : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → x i = 0) :
     Fm k r z' *ᵥ (fun b : Fin (r + 1) => if h : b.val < r then x (eI k r ⟨b.val, h⟩) else 0) = x := by
@@ -134,6 +187,15 @@ theorem fm_low (z' : Fin (2 * r + k + 1) → ℂ) (x : Fin (2 * r + k + 1) → �
     have := c.isLt
     omega
 
+/- English proof (translation)
+Establish `hgg : g * g⁻¹ = 1` using `uh_mul_inv hg`. Establish `hgw : g *ᵥ (g⁻¹ *ᵥ w) = w` using `by rw [Matrix.mulVec_mulVec, hgg, Matrix.one_mulVec]`. Establish `hrep` using `fm_low z' (g⁻¹ *ᵥ w) hw'`. Establish `hZ : Zhat k r z z' g *ᵥ (fun b : Fin (r + 1) => if h : b.val < r then (g⁻¹ *ᵥ w) (eI k r ⟨b.val, h⟩) else 0) = (Fm k r z)ᴴ *ᵥ (Hpk k r *ᵥ w)`. Rewrite using `[zhat_eq, ← Matrix.mulVec_mulVec, hrep, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hgw]`.
+
+Establish `hzero : (Fm k r z)ᴴ *ᵥ (Hpk k r *ᵥ w) = 0`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, Fm, Matrix.of_apply, Pi.zero_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`.
+
+Distinguish the cases in `hi : i.val ≤ r + k`. Use `Hpk_mulVec_low hw i hi` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Rewrite using `[this, mul_zero]`. Rewrite using `[fvec_high hz a i (by omega), star_zero, zero_mul]`.
+
+Establish `hc0` using `zhat_mulVec_inj hP (hZ.trans hzero)`. Establish `hgw0 : g⁻¹ *ᵥ w = 0` using `by rw [← hrep, hc0, Matrix.mulVec_zero]`. Rewrite using `[← hgw, hgw0, Matrix.mulVec_zero]`.
+-/
 theorem cap_zero {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) {p : Point ℂ (r + 1)}
     (hP : ZhatO k r z z' g = ptMat p) {w : Fin (2 * r + k + 1) → ℂ}
@@ -159,6 +221,11 @@ theorem cap_zero {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
   have hgw0 : g⁻¹ *ᵥ w = 0 := by rw [← hrep, hc0, Matrix.mulVec_zero]
   rw [← hgw, hgw0, Matrix.mulVec_zero]
 
+/- English proof (translation)
+Establish `hgg : g * g⁻¹ = 1` using `uh_mul_inv hg`. Establish `hd1 : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (a *ᵥ v - v) i = 0`. Introduce `i hi`. Rewrite using `[Pi.sub_apply, nset_fix ha.1 h1 i hi, sub_self]`. Establish `hd2 : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → (g⁻¹ *ᵥ (a *ᵥ v - v)) i = 0`.
+
+Introduce `i hi`. Establish `e : g⁻¹ *ᵥ (a *ᵥ v) = (g⁻¹ * a * g) *ᵥ (g⁻¹ *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc (g⁻¹ * a), hgg, Matrix.mul_one]`. Rewrite using `[Matrix.mulVec_sub, Pi.sub_apply, e, nset_fix ha.2 h2 i hi, sub_self]`. Conclude with `sub_eq_zero.mp (cap_zero hz hg hP hd1 hd2)`.
+-/
 theorem rstab_fix {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z)
     {g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) {p : Point ℂ (r + 1)}
     (hP : ZhatO k r z z' g = ptMat p) (ha : a ∈ RStab k r g) {v : Fin (2 * r + k + 1) → ℂ}
@@ -178,12 +245,20 @@ def GV (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r 
     Matrix (Fin (2 * r + k + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) ℂ :=
   Matrix.of fun i j => gramVec k r z z' g j i
 
+/- English proof (translation)
+Use extensionality with `i j`. Simplify using `only [gramM, herm, GV, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, dotProduct, Matrix.mulVec, Pi.star_apply]`.
+-/
 theorem gramM_eq (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     gramM k r z z' g = (GV k r z z' g)ᴴ * (Hpk k r * GV k r z z' g) := by
   ext i j
   simp only [gramM, herm, GV, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, dotProduct,
     Matrix.mulVec, Pi.star_apply]
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, GV, Matrix.of_apply, gramVec, fvec_cs, bvec, Pi.single_apply]`. Rewrite using `[Finset.sum_eq_single (eI k r b)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[hc]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem gv_inl (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (y : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
     ((GV k r z z' g)ᴴ *ᵥ y) (Sum.inl (Fin.castSucc b)) = y (eI k r b) := by
@@ -196,18 +271,29 @@ theorem gv_inl (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k 
   · intro h
     exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Simplify using `only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, GV, Matrix.of_apply, gramVec, fvec_cs, bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+-/
 theorem gv_inr (z z' : Fin (2 * r + k + 1) → ℂ) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)
     (y : Fin (2 * r + k + 1) → ℂ) (b : Fin r) :
     ((GV k r z z' g)ᴴ *ᵥ y) (Sum.inr (Fin.castSucc b)) = (gᴴ *ᵥ y) (eI k r b) := by
   simp only [Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, GV, Matrix.of_apply, gramVec, fvec_cs,
     bvec, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+/- English proof (translation)
+Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem uh_ct_H {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     gᴴ * Hpk k r = Hpk k r * g⁻¹ := by
   have h : gᴴ * Hpk k r * g = Hpk k r := hg
   calc gᴴ * Hpk k r = gᴴ * Hpk k r * (g * g⁻¹) := by rw [uh_mul_inv hg, Matrix.mul_one]
     _ = Hpk k r * g⁻¹ := by rw [← Matrix.mul_assoc, h]
 
+/- English proof (translation)
+Use `⟨fun b => ?_, fun b => ?_⟩` and prove the remaining obligations. Use `congrFun hv (Sum.inl (Fin.castSucc b))` as an intermediate fact. Rewrite `this` using `[gv_inl, Hpk_mulVec_eI]`. Conclude with `this`. Use `congrFun hv (Sum.inr (Fin.castSucc b))` as an intermediate fact.
+
+Rewrite `this` using `[gv_inr, Matrix.mulVec_mulVec, uh_ct_H hg, ← Matrix.mulVec_mulVec, Hpk_mulVec_eI]`. Conclude with `this`.
+-/
 theorem perp_esI {z z' : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ UH (Hpk k r)) {v : Fin (2 * r + k + 1) → ℂ} (hv : (GV k r z z' g)ᴴ *ᵥ (Hpk k r *ᵥ v) = 0) :
     (∀ b : Fin r, v (esI k r b) = 0) ∧ (∀ b : Fin r, (g⁻¹ *ᵥ v) (esI k r b) = 0) := by
@@ -219,6 +305,13 @@ theorem perp_esI {z z' : Fin (2 * r + k + 1) → ℂ} {g : Matrix (Fin (2 * r + 
     rw [gv_inr, Matrix.mulVec_mulVec, uh_ct_H hg, ← Matrix.mulVec_mulVec, Hpk_mulVec_eI] at this
     exact this
 
+/- English proof (translation)
+Use `set G := Vᴴ * (H * V) with hG`. Establish `hGi : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G hdet`. Establish `hv : ∀ v, d *ᵥ v = 0`. Introduce `v`. Use `set c := G⁻¹ *ᵥ (Vᴴ *ᵥ (H *ᵥ v)) with hc`.
+
+Establish `hu : Vᴴ *ᵥ (H *ᵥ (v - V *ᵥ c)) = 0`. Rewrite using `[Matrix.mulVec_sub, Matrix.mulVec_sub, Matrix.mulVec_mulVec (M := H) (N := V), Matrix.mulVec_mulVec (M := Vᴴ) (N := H * V), ← hG, hc, Matrix.mulVec_mulVec (M := G) (N := G⁻¹), hGi, Matrix.one_mulVec, sub_self]`. Establish `h3` using `h2 _ hu`. Rewrite `h3` using `[Matrix.mulVec_sub, Matrix.mulVec_mulVec (M := d) (N := V), h1, Matrix.zero_mulVec, sub_zero]`. Conclude with `h3`.
+
+Use extensionality with `i j`. Use `congrFun (hv (Pi.single j 1)) i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+-/
 theorem mat_eq_zero_of_span {ι : Type*} [Fintype ι] [DecidableEq ι] {m : ℕ} (H : Matrix (Fin m) (Fin m) ℂ)
     (V : Matrix (Fin m) ι ℂ) (hdet : IsUnit (Vᴴ * (H * V)).det) (d : Matrix (Fin m) (Fin m) ℂ)
     (h1 : d * V = 0) (h2 : ∀ v, Vᴴ *ᵥ (H *ᵥ v) = 0 → d *ᵥ v = 0) : d = 0 := by
@@ -238,6 +331,31 @@ theorem mat_eq_zero_of_span {ι : Type*} [Fintype ι] [DecidableEq ι] {m : ℕ}
   have := congrFun (hv (Pi.single j 1)) i
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply] using this
 
+/- English proof (translation)
+Establish `hx : g⁻¹ * a * g ∈ Nset k r` using `ha.2`. Establish `hy : g⁻¹ * b * g ∈ Nset k r` using `hb.2`. Establish `hra` using `flag_rel hz hz' hg ha`. Establish `hrb` using `flag_rel hz hz' hg hb`. Rewrite `hra` using `[hab]`.
+
+Establish `hUd : IsUnit (flagMat k r z b)ᴴ.det`. Rewrite using `[Matrix.det_conjTranspose, Matrix.det_of_upperTriangular (flagMat_upper hb.1), Finset.prod_eq_one fun i _ => flagMat_diag hb.1 i, star_one]`. Conclude with `isUnit_one`. Establish `hZ : Zhat k r z z' g * (flagMat k r z' (g⁻¹ * a * g) - flagMat k r z' (g⁻¹ * b * g)) = 0`. Establish `e : (flagMat k r z b)ᴴ * (Zhat k r z z' g * (flagMat k r z' (g⁻¹ * a * g) - flagMat k r z' (g⁻¹ * b * g))) = 0`.
+
+Rewrite using `[Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hra, hrb, sub_self]`. Establish `e2` using `congrArg (fun M => ((flagMat k r z b)ᴴ)⁻¹ * M) e`. Simplify using `only [Matrix.mul_zero] at e2`. Rewrite `e2` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hUd, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `hM : flagMat k r z' (g⁻¹ * a * g) - flagMat k r z' (g⁻¹ * b * g) = 0`.
+
+Use extensionality with `i c`. Establish `hcol : (fun l => (flagMat k r z' (g⁻¹ * a * g) - flagMat k r z' (g⁻¹ * b * g)) l c) = 0`. Apply `zhat_mulVec_inj hP` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Use `congrFun (congrFun hZ m) c` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Conclude with `congrFun hcol i`. Establish `hfl'` using `sub_eq_zero.mp hM`. Establish `hcols : ∀ j, a *ᵥ gramVec k r z z' g j = b *ᵥ gramVec k r z z' g j`. Introduce `j`.
+
+Break down `j with c | c` into its components or cases. Establish `hA` using `mul_Fm hz ha.1`. Establish `hB` using `mul_Fm hz hb.1`. Establish `hAB : a * Fm k r z = b * Fm k r z` using `by rw [hA, hB, hab]`. Use function extensionality and compare the values at `m`.
+
+Use `congrFun (congrFun hAB m) c` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Fm, gramVec]`. Establish `hA` using `mul_Fm hz' hx`. Establish `hB` using `mul_Fm hz' hy`. Establish `hAB : (g⁻¹ * a * g) * Fm k r z' = (g⁻¹ * b * g) * Fm k r z'` using `by rw [hA, hB, hfl']`.
+
+Establish `hgg : g * g⁻¹ = 1` using `uh_mul_inv hg`. Establish `key : ∀ e : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, e *ᵥ (g *ᵥ fvec k r z' c) = g *ᵥ ((g⁻¹ * e * g) *ᵥ fvec k r z' c)`. Introduce `e`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hgg, Matrix.one_mul]`. Use `show a *ᵥ (g *ᵥ fvec k r z' c) = b *ᵥ (g *ᵥ fvec k r z' c)`.
+
+Rewrite using `[key a, key b]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Use `congrFun (congrFun hAB m) c` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Fm]`.
+
+Establish `hd1 : (a - b) * GV k r z z' g = 0`. Use extensionality with `m j`. Use `congrFun (hcols j) m` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.sub_apply, GV, Matrix.of_apply, sub_mul, Finset.sum_sub_distrib, Matrix.zero_apply]`. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+
+Rewrite using `[this, sub_self]`. Establish `hd2 : ∀ v, (GV k r z z' g)ᴴ *ᵥ (Hpk k r *ᵥ v) = 0 → (a - b) *ᵥ v = 0`. Introduce `v hv`. Take `⟨h1, h2⟩` from `perp_esI hg hv`. Rewrite using `[Matrix.sub_mulVec, rstab_fix hz hg hP ha h1 h2, rstab_fix hz hg hP hb h1 h2, sub_self]`.
+
+Establish `hdet' : IsUnit ((GV k r z z' g)ᴴ * (Hpk k r * GV k r z z' g)).det`. Rewrite using `[← gramM_eq]`. Conclude with `isUnit_iff_ne_zero.mpr hdet`. Conclude with `sub_eq_zero.mp (mat_eq_zero_of_span (Hpk k r) (GV k r z z' g) hdet' (a - b) hd1 hd2)`.
+-/
 theorem rstab_inj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     {p : Point ℂ (r + 1)} (hP : ZhatO k r z z' g = ptMat p) (hdet : (gramM k r z z' g).det ≠ 0)
@@ -308,6 +426,13 @@ theorem rstab_inj {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : 
     exact isUnit_iff_ne_zero.mpr hdet
   exact sub_eq_zero.mp (mat_eq_zero_of_span (Hpk k r) (GV k r z z' g) hdet' (a - b) hd1 hd2)
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.add_apply]`. Simplify using `only [vM, rootCoords]`. Distinguish the cases in `hq : (i, j) ∈ rootPat p`. Rewrite using `[dif_pos hq]`.
+
+Establish `hij : i ≠ j` using `ne_of_lt (mem_rootPat.mp hq).1`. Rewrite using `[Matrix.one_apply_ne hij, zero_add]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hq, add_zero]`. Distinguish the cases in `hji : j ≤ i`.
+
+Rewrite using `[flagMat_lower ha.1 i j hji, Matrix.one_apply]`. Establish `hij : i < j` using `not_le.mp hji`. Establish `hne : blockIdx p.1 i.val ≠ blockIdx p.1 j.val` using `fun h => hq (mem_rootPat.mpr ⟨hij, h⟩)`. Establish `hlt : (ptσ p i).val < (ptσ p j).val` using `blk_lt p.1 i.val j.val hij (by rw [p.2.2]; exact j.isLt) hne`. Rewrite using `[(flag_offblock hz hz' hg hP ha i j hlt).2, Matrix.one_apply_ne (ne_of_lt hij)]`.
+-/
 theorem flagZ_eq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     {p : Point ℂ (r + 1)} (hP : ZhatO k r z z' g = ptMat p)
@@ -330,6 +455,11 @@ theorem flagZ_eq {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : i
         blk_lt p.1 i.val j.val hij (by rw [p.2.2]; exact j.isLt) hne
       rw [(flag_offblock hz hz' hg hP ha i j hlt).2, Matrix.one_apply_ne (ne_of_lt hij)]
 
+/- English proof (translation)
+Introduce `x hx y hy hxy`. Establish `h1` using `flagZ_eq hz hz' hg hP hx`. Establish `h2` using `flagZ_eq hz hz' hg hP hy`. Establish `hfl : flagMat k r z (Matrix.of x) = flagMat k r z (Matrix.of y)` using `by show flagMat k r z x = flagMat k r z y`. Rewrite using `[h1, h2]`.
+
+Use `congr 1`. Conclude with `congrArg (vM (rootPat p)) hxy`. Conclude with `Matrix.of.injective (rstab_inj hz hz' hg hP hdet hx hy hfl)`.
+-/
 theorem rootCoords_injOn {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r))
     {p : Point ℂ (r + 1)} (hP : ZhatO k r z z' g = ptMat p) (hdet : (gramM k r z z' g).det ≠ 0) :

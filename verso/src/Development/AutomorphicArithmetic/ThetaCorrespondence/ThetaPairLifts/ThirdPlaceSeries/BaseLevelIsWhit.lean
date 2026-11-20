@@ -24,6 +24,25 @@ end GlobalTheory.ShareOn.WhitBase
 namespace GlobalTheory.ShareOn
 open GlobalTheory.ShareOn.WhitBase
 open Formalism.L2.DIV in
+/- English proof (translation)
+Introduce `D L hT Gi Gl Kc Y cX ex Csz p hR`. Take `⟨Pg, pl, res, ψ', eC, hL, -⟩` from `hR.psi`. Rewrite `hL` using `[p.eGtie]`. Unfold `HalfUnip`. Generalize the expression as in `p.R.eG.trans p.cG = e at hL ⊢`.
+
+Set `ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ` to `fun kv => D.what₂.embLL.toMonoidHom.compAddChar ((ψ' (pl kv).1).compAddMonoidHom ((res kv).symm.toAddMonoidHom.comp (-AddMonoidHom.id _)))`. Establish `hψ : ∀ kv c, ψ kv c = D.what₂.embLL (ψ' (pl kv).1 ((res kv).symm (-c)))` using `fun _ _ => rfl`. Set `iso` to `p.P.P0.equivMapOfInjective e.toMonoidHom e.injective`. Establish `hiso : ∀ g0 : p.P.P0, ((iso g0 : p.P.P0.map e.toMonoidHom) : G0g D.nd) = e g0` using `fun _ => rfl`. Set `lam : (p.P.P0.map e.toMonoidHom) →* ℂˣ` to `(Units.map D.what₂.embLL.toMonoidHom).comp (p.P.ψ0⁻¹.comp iso.symm.toMonoidHom)`.
+
+Establish `hlam : ∀ g, ((lam g : ℂˣ) : ℂ) = D.what₂.embLL ((p.P.ψ0 (iso.symm g) : D.what₂.LLˣ) : D.what₂.LL)⁻¹`. Introduce `g`. Use `show D.what₂.embLL (((p.P.ψ0 (iso.symm g))⁻¹ : D.what₂.LLˣ) : D.what₂.LL) = _`. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `⟨lam, ψ, ⟨?_, ?_, ?_⟩, ?_, ⟨0, ?_⟩⟩` and prove the remaining obligations.
+
+Introduce `kv h1`. Apply `hL.gen (pl kv).1 (pl kv).2` to reduce the goal to its premises. Use extensionality with `x`. Establish `h2 : ψ kv (-(res kv x)) = 1` using `by rw [h1, AddChar.one_apply]`. Rewrite `h2` using `[hψ, neg_neg, RingEquiv.symm_apply_apply]`.
+
+Rewrite using `[AddChar.one_apply]`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[h2, map_one]`. Introduce `g`. Rewrite using `[Subgroup.mem_map_equiv, mem_iff_of_lvlTie hL]`.
+
+Simplify using `only [MulEquiv.apply_symm_apply]`. Introduce `g`. Establish `hg0 : e (iso.symm g) = (g : G0g D.nd)` using `by rw [← hiso, MulEquiv.apply_symm_apply]`. Establish `hg : eC (iso.symm g) ∈ (Formalism.L2.DIV.P0 Pg D.R.r ψ').H` using `(hL.p0 _).1 (iso.symm g).2`. Rewrite using `[hlam, chi_of_lvlTie hL _ hg, ← Finset.prod_inv_distrib, map_prod]`.
+
+Rewrite using `[← Fintype.prod_equiv pl (fun kv => D.what₂.embLL (ψ' (pl kv).1 (edgeSum supEdge (eC (iso.symm g) (pl kv))))⁻¹) _ (fun _ => rfl)]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[← hg0, hL.comp _ kv]`. Simplify using `only [entN_map]`. Rewrite using `[← map_sum, ← edgeSum_supEdge_eq, hψ, ← map_neg, RingEquiv.symm_apply_apply, AddChar.map_neg_eq_inv]`.
+
+Introduce `g h`. Establish `: iso.symm ⟨_, h⟩ = g`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Subtype.ext rfl`. Rewrite using `[hlam, this, ← Units.val_inv_eq_inv_val]`.
+
+Both sides reduce to the same expression. Introduce `g hg v`. Conclude with `(mem_iff_of_lvlTie hL g).1 hg ⟨0, v⟩`.
+-/
 theorem isWhit_and_eq_embLL_inv_and_halfUnip : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), p.PointConditions' → ∃ (lam : (p.P.P0.map (p.R.eG.trans p.cG).toMonoidHom) →* ℂˣ) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ), GlobalTheory.BadCount.IsWhit D _ lam ψ ∧ (∀ (g : p.P.P0) (h : (p.R.eG.trans p.cG) g ∈ p.P.P0.map (p.R.eG.trans p.cG).toMonoidHom), ((lam ⟨_, h⟩ : ℂˣ) : ℂ) = D.what₂.embLL ((p.P.ψ0⁻¹ g : D.what₂.LLˣ) : D.what₂.LL)) ∧ HalfUnip p p.P.P0 := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hR
   obtain ⟨Pg, pl, res, ψ', eC, hL, -⟩ := hR.psi

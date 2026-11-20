@@ -13,6 +13,9 @@ namespace GlobalTheory.SeeSaw.Resc
 
 variable {D : D7}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem heisO_smul (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (s : ℂ) (f : WO S T → ℂ) :
     heisO ψ S T w (s • f) = s • heisO ψ S T w f := by
   funext x; simp only [heisO, Pi.smul_apply, smul_eq_mul]; ring
@@ -23,6 +26,9 @@ namespace GlobalTheory.SeeSaw.Resc
 
 variable {D : D7} {m n : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `only [Datum.dRho, hh, Pi.smul_apply, smul_eq_mul]`. Conclude with `deriv_const_mul_field _`.
+-/
 theorem dRho_smul (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ))
     (hh : ∀ w (s : ℂ) f, hs w (s • f) = s • hs w f) (θ : InfFam D) (τ : D.what₂.Tau)
     (z : Matrix (Fin m) (Fin n) ℂ) (s : ℂ) (f : Mx D m n → ℂ) :
@@ -31,6 +37,9 @@ theorem dRho_smul (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ))
   simp only [Datum.dRho, hh, Pi.smul_apply, smul_eq_mul]
   exact deriv_const_mul_field _
 
+/- English proof (translation)
+Simplify using `only [aPlusAll, aPlus, crea, dRho_smul hs hh, smul_sub, smul_comm s]`.
+-/
 theorem aPlusAll_smul (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ))
     (hh : ∀ w (s : ℂ) f, hs w (s • f) = s • hs w f) (θ : InfFam D)
     (J : D.what₂.Tau → Matrix (Fin m) (Fin n) ℂ → Matrix (Fin m) (Fin n) ℂ)
@@ -38,6 +47,9 @@ theorem aPlusAll_smul (hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → �
     aPlusAll hs θ J B B' k (s • f) = s • aPlusAll hs θ J B B' k f := by
   simp only [aPlusAll, aPlus, crea, dRho_smul hs hh, smul_sub, smul_comm s]
 
+/- English proof (translation)
+Unfold `opPow`. Proceed by induction on `(Multiset.toList (Finsupp.toMultiset k)) with`. Consider the case `nil => rfl`. Consider the case `cons i l ih => simp only [List.foldr_cons, ih, hA]`.
+-/
 theorem opPow_smul {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : ∀ i (s : ℂ) f, A i (s • f) = s • A i f)
     (k : ι →₀ ℕ) (s : ℂ) (f : X → ℂ) : opPow A k (s • f) = s • opPow A k f := by
   unfold opPow
@@ -45,6 +57,9 @@ theorem opPow_smul {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : 
   | nil => rfl
   | cons i l ih => simp only [List.foldr_cons, ih, hA]
 
+/- English proof (translation)
+Unfold `pureTensorL`. Establish `: (fun k : ι →₀ ℕ => opPow A k (s • f)) = s • fun k => opPow A k f`. Use function extensionality and compare the values at `k`. Conclude with `opPow_smul A hA k s f`. Rewrite using `[this, map_smul]`.
+-/
 theorem pureTensorL_smul {ι X : Type} (A : ι → (X → ℂ) → (X → ℂ)) (hA : ∀ i (s : ℂ) f, A i (s • f) = s • A i f)
     (s : ℂ) (f : X → ℂ) : pureTensorL A (s • f) = s • pureTensorL A f := by
   unfold pureTensorL
@@ -58,6 +73,9 @@ namespace GlobalTheory.SeeSaw.Resc
 
 variable {D : D7}
 
+/- English proof (translation)
+The claim follows from `pureTensorL_smul _ (aPlusAll_smul _ (heisO_smul ψ S T) _ _ _ _) s f`.
+-/
 theorem pureTensorO_smul (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D)
     (sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)
     (BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ)

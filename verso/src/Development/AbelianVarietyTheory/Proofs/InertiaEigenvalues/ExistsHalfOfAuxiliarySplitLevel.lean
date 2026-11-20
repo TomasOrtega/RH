@@ -9,6 +9,19 @@ noncomputable section
 
 namespace GlobalTheory.HalfCharacter
 
+/- English proof (translation)
+Introduce `D T hJ pd haux`. Take `⟨hodd, -, hjac, -, -⟩` from `haux`. Establish `hH : T.Q.PinHost` using `hJ.toLawsM.pins.1`. Establish `hw : T.Q.H.w0 = w0E D`. Establish `h1` using `T.Q.H.two_weight_eq_one_add_root`.
+
+Establish `h3 : T.Q.H.rt = rtE D` using `RingOfIntegers.ext hH.2.1`. Rewrite `h1` using `[h3, ← two_w0E D]`. Conclude with `mul_left_cancel₀ two_ne_zero h1`. Establish `hb : (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = bH D` using `RingHom.ext fun a => RingOfIntegers.ext (T.Q.H.bar_eq a)`. Establish `hsp : ∀ p ∈ pd.primeFactorsList, SplitOK D p`.
+
+Introduce `p hp`. Establish `hpr` using `Nat.prime_of_mem_primeFactorsList hp`. Establish `hdvd` using `Nat.dvd_of_mem_primeFactorsList hp`. Use `⟨hpr, ?_, hjac p hpr hdvd⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+
+Conclude with `(Nat.not_even_iff_odd.2 hodd) (even_iff_two_dvd.2 hdvd)`. Establish `hpd0 : pd ≠ 0` using `hodd.pos.ne'`. Use `⟨MbOf D pd.primeFactorsList, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `MbOf_fromK D _`.
+
+Rewrite using `[hb]`. Establish `h` using `MbProd_of D pd.primeFactorsList hsp`. Unfold `MbProdLaw at h`. Rewrite using `[h, Nat.prod_primeFactorsList hpd0]`. Rewrite using `[hb]`.
+
+Conclude with `MbCop_of D _ hsp`.
+-/
 theorem exists_half_of_auxiliary_split_level : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ pd : ℕ, GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.IsAuxiliarySplitSquarefreeLevel D T.Q.l.M pd →
   ∃ I : Ideal (𝓞 D.host.E), I = Ideal.span {x | x ∈ I ∧ x ∈ Algebra.adjoin ℤ {T.Q.H.w0}} ∧
     I * I.map (T.Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) = Ideal.span {(pd : 𝓞 D.host.E)} ∧

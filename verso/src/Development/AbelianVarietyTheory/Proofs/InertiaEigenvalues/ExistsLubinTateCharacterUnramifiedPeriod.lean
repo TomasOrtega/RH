@@ -11,6 +11,25 @@ noncomputable section
 open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pst GlobalTheory.PMon TensorProduct
 open scoped Formalism.Per
 
+/- English proof (translation)
+Introduce `l _ P AI T K s hs`. Take `⟨E, ω, -, -, hE, -⟩` from `GlobalTheory.T.unramifiedExt_fixedField_frobeniusPow_degree l s hs`. Take `⟨x, hu, hφ, h1, h2, hj⟩` from `GlobalTheory.LTPeriod.main l P AI T K s hs`. Establish `h1' : P.ιB x ∈ Fil P 1` using `(mem_Fil_iff P K).2 h1`. Establish `h2' : P.ιB x ∉ Fil P 2` using `fun h => h2 ((mem_Fil_iff P K).1 h)`.
+
+Establish `hj' : ∀ j, 0 < j → j < s → ev P j x ∈ Fil P 0 ∧ ev P j x ∉ Fil P 1` using `fun j h0 hjs => ⟨(mem_Fil_iff P K).2 (hj j h0 hjs).1, fun h => (hj j h0 hjs).2 ((mem_Fil_iff P K).1 h)⟩`. Set `K' : FinExt l` to `supExt K E`. Establish `hKK' : K.1 ≤ K'.1` using `le_sup_left`. Establish `hEK' : E.1 ≤ K'.1` using `le_sup_right`. Use `choose a ha hax using fun g : GQ l => GlobalTheory.T.lubinTate_period_conj_ratio_unramified l P AI T s hs x hu hφ h1' h2' hj' g`.
+
+Establish `hx0 : x ≠ 0`. Introduce `h0`. Apply `h2'` to reduce the goal to its premises. Rewrite using `[h0, map_zero]`. Conclude with `Fil_zero_mem 2`.
+
+Use `haveI : Nontrivial P.R.B := ⟨⟨x, 0, hx0⟩⟩`. Establish `hcancel : ∀ c c' : ↥(MaximalUnramifiedExtension l), algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c * x = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c' * x → c = c'` using `fun c c' h => (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B).injective (hu.mul_right_cancel h)`. Establish `hfix : ∀ (g : ↥(GK K')) (h : GQ l), P.actQ (g : GQ l) (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (a h)) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (a h)` using `fun g h => act_kur P g (hEK' ((hE (a h)).1 (ha h)))`. Establish `hmul : ∀ g h : ↥(GK K'), a ((g : GQ l) * (h : GQ l)) = a g * a h`. Introduce `g h`.
+
+Apply `hcancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hone : a 1 = 1`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[← hax, map_one, AlgEquiv.one_apply, map_one, one_mul]`.
+
+Establish `hne : ∀ g, a g ≠ 0`. Introduce `g h0`. Establish `h` using `hax g`. Rewrite `h` using `[h0, map_zero, zero_mul]`. Conclude with `hx0 ((P.actQ g).injective (h.trans (map_zero _).symm))`.
+
+Set `χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ` to `{ toFun := fun g => Units.mk0 (a g) (hne g) map_one' := Units.ext hone map_mul' := fun g h => Units.ext (hmul g h) }`. Use `⟨K', hKK', hu.unit, χ, fun c hc => hEK' ((hE c).1 hc), fun g => ha _, ?_, fun g => ?_, ?_, ?_, fun j h0 hjs => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.continuous_galois_character_filtration_one l P AI T K' x h1' h2' (fun g => a g) (fun g => hax g)`. Rewrite using `[IsUnit.unit_spec]`. Conclude with `hax g`.
+
+Rewrite using `[IsUnit.unit_spec]`. Conclude with `h1'`. Rewrite using `[IsUnit.unit_spec]`. Conclude with `h2'`. Rewrite using `[IsUnit.unit_spec]`.
+
+Conclude with `hj' j h0 hjs`.
+-/
 theorem GlobalTheory.LTChar.main : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (s : ℕ), 0 < s → ∃ (K' : FinExt l) (_ : K.1 ≤ K'.1) (x : P.R.Bˣ) (χ : ↥(GK K') →* (↥(MaximalUnramifiedExtension l))ˣ), (∀ c : ↥(MaximalUnramifiedExtension l), fr l s c = c → (c : Om l) ∈ K'.1) ∧ (∀ g, fr l s (χ g : ↥(MaximalUnramifiedExtension l)) = χ g) ∧ (Continuous fun g => (((χ g : (↥(MaximalUnramifiedExtension l))ˣ) : ↥(MaximalUnramifiedExtension l)) : Om l)) ∧ (∀ g : ↥(GK K'), P.actQ (g : GQ l) (x : P.R.B) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (χ g : ↥(MaximalUnramifiedExtension l)) * x) ∧ P.ιB x ∈ Fil P 1 ∧ P.ιB x ∉ Fil P 2 ∧ ∀ j, 0 < j → j < s → ev P j x ∈ Fil P 0 ∧ ev P j x ∉ Fil P 1 := by
   intro l _ P AI T K s hs
   obtain ⟨E, ω, -, -, hE, -⟩ := GlobalTheory.T.unramifiedExt_fixedField_frobeniusPow_degree l s hs

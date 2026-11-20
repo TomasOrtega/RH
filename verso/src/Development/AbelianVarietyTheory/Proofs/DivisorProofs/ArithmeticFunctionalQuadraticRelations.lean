@@ -18,10 +18,16 @@ namespace GlobalTheory.ThetaRR.Elim
 
 variable {k : Type} [CommRing k] {S : Scheme.{0}} [IsIntegral S] {p : S ⟶ Sp k}
 
+/- English proof (translation)
+Simplify using `[lin, Pi.single_apply, apply_ite, ite_mul]`.
+-/
 theorem lin_single {ι : Type} [Fintype ι] [DecidableEq ι] (i : ι) :
     (lin fun j => (((Pi.single i 1 : ι → ℤ) j : ℤ) : ℝ)) = MvPolynomial.X i := by
   simp [lin, Pi.single_apply, apply_ite, ite_mul]
 
+/- English proof (translation)
+Take `⟨Ψ, hΨ⟩` from `((HC.arExists k S p _ hp).2 (Fin 0) fun i => i.elim0).2`. Establish `e` using `hΨ.1 0`. Simplify using `only [lin, comb, Finset.univ_eq_empty, Finset.sum_empty, Finset.toList_empty, List.foldr_nil] at e`. Rewrite using `[← e]`. Simplify using the standard rewrite rules.
+-/
 theorem gdeg_triv (HC : GlobalTheory.Published.ArCalc) {d : ℕ} (hp : IsArithVar p (d + 1)) :
     gdeg (HermLB.triv p) (d + 1) = 0 := by
   obtain ⟨Ψ, hΨ⟩ := ((HC.arExists k S p _ hp).2 (Fin 0) fun i => i.elim0).2
@@ -30,11 +36,29 @@ theorem gdeg_triv (HC : GlobalTheory.Published.ArCalc) {d : ℕ} (hp : IsArithVa
   rw [← e]
   simp
 
+/- English proof (translation)
+Rewrite using `[(HermLB.isometric_raise_triv _ hu hc).gdeg_eq, ← gdeg_triv HC hp]`. Simplify using `only [gdeg, chInt, HermLB.raise, Weight.chernInt, Weight.chernPart_addFn_const]`.
+-/
 theorem gdeg_fnB_const (HC : GlobalTheory.Published.ArCalc) {d : ℕ} (hp : IsArithVar p (d + 1)) (c : ℝ) (hu) (hc) :
     gdeg (fnB (p := p) (fun _ _ => c) hu hc) (d + 1) = 0 := by
   rw [(HermLB.isometric_raise_triv _ hu hc).gdeg_eq, ← gdeg_triv HC hp]
   simp only [gdeg, chInt, HermLB.raise, Weight.chernInt, Weight.chernPart_addFn_const]
 
+/- English proof (translation)
+Introduce `HC k _ S _ p hS M D t I a ρ H`. Establish `hp : IsArithVar p 1` using `hS.toIsArithVar`. Establish `hu (σ : k →+* ℂ) (y : CxPts p σ) : CInfAt (fun _ => (2 : ℝ)) y` using `cInfAt_const _ y`. Establish `hc (σ σ' : k →+* ℂ) : (Weight.ofFun (p` using `p) (σ := σ) fun _ => (2 : ℝ)).IsConj (Weight.ofFun (σ := σ') fun _ => (2 : ℝ)) := fun _ _ _ _ _ => rfl`. Set `L : Fin 2 → HermLB p` to `![M, D]`.
+
+Set `F : Option (Fin 2) → HermLB p` to `fun o => o.elim (fnB (fun _ _ => 2) hu hc) L`. Take `⟨Φ, hΦ⟩` from `((HC.arExists k S p 1 hp).2 _ F).1`. Establish `key (o : Option (Fin 2)) : Φ (MvPolynomial.X (some 0) * MvPolynomial.X o) - t * gdeg (F o) 1 / 2 = -(Φ (MvPolynomial.X (some 1) * MvPolynomial.X o) / 2) ∧ Φ (MvPolynomial.X (some 0) * MvPolynomial.X (some 0)) / 2 - I / 2 = Φ (MvPolynomial.X (some 1) * MvPolynomial.X (some 1)) / 8 …`. Set `e : Fin 3 → Option (Fin 2)` to `![some 0, some 1, o]`. Establish `h` using `H (F o) _ (((HC.arIso k S p 1 hp).2 _ F Φ hΦ).2.2 (Fin 3) ![M, D, F o] (fun j => Pi.single (e j) 1) fun j => by`.
+
+Use `isometric_comb_single F (e j)` as an intermediate fact. Apply the tactic sequence `fin_cases j <;> exact this)`. Simplify using `only [lin_single, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, MvPolynomial.aeval_X, sq] at h`. Conclude with `h`. Establish `deg (i : Fin 2) : Φ (MvPolynomial.X (some i) * MvPolynomial.X none) = gdeg (L i) 1`.
+
+Establish `h` using `HC.arChange k S p 1 hp (Fin 2) L _ hu hc Φ hΦ (Pi.single i 1)`. Rewrite `h` using `[lin_single, MvPolynomial.rename_X, pow_one, mul_comm]`. Rewrite using `[h, ← (isometric_comb_single L i).gdeg_eq, gdeg, chInt, chInt, mul_finsum]`. Use `finsum_congr fun σ => ?_` and prove the remaining obligations. Rewrite using `[← Weight.chernInt_const_mul]`.
+
+Evaluate the numerical expressions. Establish `h0` using `(key none).1`. Establish `z : gdeg (F none) 1 = 0` using `gdeg_fnB_const HC hp 2 hu hc`. Rewrite `h0` using `[deg, deg, z]`. Establish `h1` using `(key (some 0)).1`.
+
+Take `⟨h2, h3⟩` from `key (some 1)`. Rewrite `h1` using `[mul_comm (MvPolynomial.X (some 1))]`. Express the relevant statement in the definitionally equal form `gdeg M 1 - _ = -(gdeg D 1 / 2) at h0`. Express the relevant statement in the definitionally equal form `_ - t * gdeg M 1 / 2 = _ at h1`. Express the relevant statement in the definitionally equal form `_ - t * gdeg D 1 / 2 = _ at h2`.
+
+Establish `hM : gdeg M 1 = -(gdeg D 1 / 2)` using `by linarith`. Rewrite `h1` using `[hM]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem elim : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (S : Scheme.{0}) [IsIntegral S] (p : S ⟶ Sp k), IsRegSurf p → ∀ (M D : HermLB p) (t I a ρ : ℝ), (∀ (N : HermLB p) (Ψ : MvPolynomial (Fin 3) ℝ →ₗ[ℝ] ℝ), IsArFun ![M, D, N] 1 Ψ → Ψ (MvPolynomial.X 0 * MvPolynomial.X 2) - t * gdeg N 1 / 2 = -(Ψ (MvPolynomial.X 1 * MvPolynomial.X 2) / 2) ∧ Ψ (MvPolynomial.X 0 ^ 2) / 2 - I / 2 = Ψ (MvPolynomial.X 1 ^ 2) / 8 - a / 12 + ρ / 2 * gdeg D 1) → a = 6 * I + (6 * ρ + 3 * t) * gdeg D 1 := by
   intro HC k _ S _ p hS M D t I a ρ H
   have hp : IsArithVar p 1 := hS.toIsArithVar

@@ -36,6 +36,9 @@ noncomputable def specIso :
     rw [this]
     exact Spec.map_id _
 
+/- English proof (translation)
+Simplify using `only [specIso, thick]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
+-/
 theorem specIso_hom_thick :
     (specIso (R := R)).hom ≫ thick R (maximalIdeal R) 0 =
       Spec.map (CommRingCat.ofHom (algebraMap R (ResidueField R))) := by
@@ -43,6 +46,9 @@ theorem specIso_hom_thick :
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   congr 2
 
+/- English proof (translation)
+Use `IsPullback.of_iso (isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R (ResidueField R) P)).flip (Iso.refl _) i.symm specIso (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `[specIso_hom_thick]`.
+-/
 theorem isPullback_fibre {P : Type} [CommRing P] [Algebra R P]
     (X : Over (Spec (CommRingCat.of R))) (i : X.left ≅ Spec (CommRingCat.of P))
     (hi : X.hom = i.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R P))) :
@@ -62,6 +68,11 @@ theorem isPullback_fibre {P : Type} [CommRing P] [Algebra R P]
   · simp [hi]
   · simp [specIso_hom_thick]
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `Spec.map_surjective (X.left.isoSpec.inv ≫ X.hom)`. Set `_ : Algebra R Γ(X.left, ⊤)` to `g.hom.toAlgebra`. Use `⟨Γ(X.left, ⊤), inferInstance, g.hom.toAlgebra, X.left.isoSpec, ?_⟩` and prove the remaining obligations. Establish `: CommRingCat.ofHom (algebraMap R Γ(X.left, ⊤)) = g` using `rfl`. Use `erw [this, hg]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem exists_model (X : Over (Spec (CommRingCat.of R))) [IsAffine X.left] :
     ∃ (P : Type) (_ : CommRing P) (_ : Algebra R P) (i : X.left ≅ Spec (CommRingCat.of P)),
       X.hom = i.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R P)) := by
@@ -72,6 +83,13 @@ theorem exists_model (X : Over (Spec (CommRingCat.of R))) [IsAffine X.left] :
   erw [this, hg]
   simp
 
+/- English proof (translation)
+Establish `e1 : Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id R (ResidueField R)) φ).toRingHom) ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` using `R) (A := ResidueField R) (B := Q)).toRingHom) = Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := R) (A := ResidueField R) (B := P)).toRingHom) ≫ Spec.map (CommRingCat.ofHom φ.toRingHom) := by`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Establish `e2 : Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id R (ResidueField R)) φ).toRingHom) ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R` using `R) (A := ResidueField R) (B := Q))) = Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.includeLeftRingHom (R := R) (A := ResidueField R) (B := P))) := by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+
+Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h0 : ((Over.pullback (thick R (maximalIdeal R) 0)).map f).left ≫ pullback.fst Y.hom (thick R (maximalIdeal R) 0) = pullback.fst X.hom (thick R (maximalIdeal R) 0) ≫ f.left` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[h0, Category.assoc, Category.assoc, IsPullback.isoPullback_hom_fst, reassoc_of% e1, ← (isPullback_fibre X i hi).isoPullback_inv_fst, hf]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Establish `h0 : ((Over.pullback (thick R (maximalIdeal R) 0)).map f).left ≫ pullback.snd Y.hom (thick R (maximalIdeal R) 0) = pullback.snd X.hom (thick R (maximalIdeal R) 0)` using `pullback.lift_snd _ _ _`. Rewrite using `[h0, Category.assoc, Category.assoc, IsPullback.isoPullback_hom_snd, reassoc_of% e2, ← (isPullback_fibre X i hi).isoPullback_inv_snd]`.
+-/
 theorem map_left_eq {P Q : Type} [CommRing P] [CommRing Q] [Algebra R P] [Algebra R Q]
     {X Y : Over (Spec (CommRingCat.of R))} (f : X ⟶ Y) (φ : Q →ₐ[R] P)
     (i : X.left ≅ Spec (CommRingCat.of P)) (j : Y.left ≅ Spec (CommRingCat.of Q))
@@ -115,6 +133,9 @@ theorem map_left_eq {P Q : Type} [CommRing P] [CommRing Q] [Algebra R P] [Algebr
     rw [h0, Category.assoc, Category.assoc, IsPullback.isoPullback_hom_snd,
       reassoc_of% e2, ← (isPullback_fibre X i hi).isoPullback_inv_snd]
 
+/- English proof (translation)
+Establish `h : Spec.map (CommRingCat.ofHom (algebraMap R P)) = i.inv ≫ X.hom` using `by simp [hi]`. Establish `h' : IsFinite (Spec.map (CommRingCat.ofHom (algebraMap R P)))`. Rewrite using `[h]`. Use `infer_instance`. Conclude with `RingHom.finite_algebraMap.mp ((IsFinite.SpecMap_iff _).mp h')`.
+-/
 theorem finite_of_model {P : Type} [CommRing P] [Algebra R P]
     (X : Over (Spec (CommRingCat.of R))) [IsFinite X.hom] (i : X.left ≅ Spec (CommRingCat.of P))
     (hi : X.hom = i.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R P))) :
@@ -125,6 +146,9 @@ theorem finite_of_model {P : Type} [CommRing P] [Algebra R P]
     infer_instance
   exact RingHom.finite_algebraMap.mp ((IsFinite.SpecMap_iff _).mp h')
 
+/- English proof (translation)
+Establish `h : Spec.map (CommRingCat.ofHom (algebraMap R P)) = i.inv ≫ X.hom` using `by simp [hi]`. Establish `h' : Flat (Spec.map (CommRingCat.ofHom (algebraMap R P)))`. Rewrite using `[h]`. Use `infer_instance`. Conclude with `RingHom.flat_algebraMap_iff.mp (Flat.SpecMap_iff.mp h')`.
+-/
 theorem flat_of_model {P : Type} [CommRing P] [Algebra R P]
     (X : Over (Spec (CommRingCat.of R))) (hX : Flat X.hom)
     (i : X.left ≅ Spec (CommRingCat.of P))
@@ -138,6 +162,17 @@ theorem flat_of_model {P : Type} [CommRing P] [Algebra R P]
 
 end Model
 
+/- English proof (translation)
+Introduce `R _ _ X Y _ _ f`. Establish `: IsAffine X.left` using `isAffine_of_isAffineHom X.hom`. Establish `: IsAffine Y.left` using `isAffine_of_isAffineHom Y.hom`. Take `⟨P, _, _, i, hi⟩` from `exists_model X`. Take `⟨Q, _, _, j, hj⟩` from `exists_model Y`.
+
+Take `⟨ψ, hψ⟩` from `Spec.map_surjective (i.inv ≫ f.left ≫ j.hom)`. Establish `hcomm : CommRingCat.ofHom (algebraMap R Q) ≫ ψ = CommRingCat.ofHom (algebraMap R P)`. Apply `Spec.map_injective` to reduce the goal to its premises. Establish `hw : f.left ≫ Y.hom = X.hom` using `Over.w f`. Rewrite using `[Spec.map_comp, hψ]`.
+
+Establish `h1 : Spec.map (CommRingCat.ofHom (algebraMap R P)) = i.inv ≫ X.hom` using `by simp [hi]`. Establish `h2 : j.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R Q)) = Y.hom` using `hj.symm`. Rewrite using `[h1, ← hw]`. Simplify using `only [Category.assoc, h2]`. Set `φ : Q →ₐ[R] P` to `{ ψ.hom with commutes' := fun r => by`.
+
+Use `congrArg (fun g => g.hom r) hcomm` as an intermediate fact. Simplify using `using this }`. Establish `hφ : CommRingCat.ofHom φ.toRingHom = ψ` using `rfl`. Establish `hf : f.left = i.hom ≫ Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ j.inv`. Rewrite using `[hφ, hψ]`.
+
+Simplify using the standard rewrite rules. Use `⟨P, Q, inferInstance, inferInstance, inferInstance, inferInstance, φ, i, j, (isPullback_fibre X i hi).isoPullback.symm, (isPullback_fibre Y j hj).isoPullback.symm, finite_of_model X i hi, finite_of_model Y j hj, fun h => flat_of_model X h i hi, hf, ?_⟩` and prove the remaining obligations. Conclude with `map_left_eq f φ i j hi hj hf`.
+-/
 theorem exists_algHom_model :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (X Y : Over (Spec (CommRingCat.of R))) [IsFinite X.hom] [IsFinite Y.hom] (f : X ⟶ Y), ∃ (P Q : Type) (_ : CommRing P) (_ : CommRing Q) (_ : Algebra R P) (_ : Algebra R Q) (φ : Q →ₐ[R] P) (i : X.left ≅ Spec (CommRingCat.of P)) (j : Y.left ≅ Spec (CommRingCat.of Q)) (i₀ : ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).obj X).left ≅ Spec (CommRingCat.of (IsLocalRing.ResidueField R ⊗[R] P))) (j₀ : ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).obj Y).left ≅ Spec (CommRingCat.of (IsLocalRing.ResidueField R ⊗[R] Q))), Module.Finite R P ∧ Module.Finite R Q ∧ (Flat X.hom → Module.Flat R P) ∧ f.left = i.hom ≫ Spec.map (CommRingCat.ofHom φ.toRingHom) ≫ j.inv ∧ ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).map f).left = i₀.hom ≫ Spec.map (CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id R (IsLocalRing.ResidueField R)) φ).toRingHom) ≫ j₀.inv := by
   intro R _ _ X Y _ _ f

@@ -8,6 +8,13 @@ namespace GlobalTheory.CompanionTheory.Ar.OrthSum
 
 variable {K : Type} [Field K] [NumberField K]
 
+/- English proof (translation)
+Rewrite using `[Submodule.disjoint_def]`. Introduce `x hxF hxG`. Assume the negation of the conclusion as `hx`. Take `⟨σ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `hli : LinearIndependent (𝓞 K) (fun _ : Unit => x)` using `linearIndependent_unique_iff.mpr hx`.
+
+Establish `hpos` using `gramDet_pos E.metric σ hli`. Establish `h0` using `h σ x hxF x hxG`. Rewrite `h0` using `[← FibreSpace.inner_equiv E.metric σ]`. Establish `h0' : inner ℂ (fibreVec E.metric σ x) (fibreVec E.metric σ x) = 0` using `h0`. Establish `hz : GroundTheory.Heights₂.Heights.gramDet E.metric σ (fun _ : Unit => x) = 0`.
+
+Unfold `GroundTheory.Heights₂.Heights.gramDet`. Rewrite using `[Matrix.det_unique, Matrix.gram_apply, h0', Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem disjoint_of_orth (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E.carrier}
     (h : OrthAt E F G) : Disjoint F G := by
   rw [Submodule.disjoint_def]
@@ -24,6 +31,15 @@ theorem disjoint_of_orth (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E
     rw [Matrix.det_unique, Matrix.gram_apply, h0', Complex.zero_re]
   linarith
 
+/- English proof (translation)
+Establish `hconj : ∀ i j, inner ℂ (fibreVec E.metric σ (t j)) (fibreVec E.metric σ (s i)) = 0`. Introduce `i j`. Rewrite using `[← inner_conj_symm, h i j, map_zero]`. Establish `hM : (Matrix.gram ℂ fun k => fibreVec E.metric σ (Sum.elim s t k)) = Matrix.fromBlocks (Matrix.gram ℂ fun i => fibreVec E.metric σ (s i)) 0 0 (Matrix.gram ℂ fun j => fibreVec E.metric σ (t j))`. Apply the tactic sequence `ext (i | i) (j | j) <;>`.
+
+Simplify using `only [Matrix.gram_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Sum.elim_inl, Sum.elim_inr, Matrix.zero_apply, h, hconj]`. Establish `him : ∀ {n : ℕ} (v : Fin n → FibreSpace E.metric σ), (Matrix.gram ℂ v).det.im = 0`. Introduce `n v`. Establish `hA : (Matrix.gram ℂ v).conjTranspose = Matrix.gram ℂ v`. Use extensionality with `i j`.
+
+Simplify using `only [Matrix.conjTranspose_apply, Matrix.gram_apply]`. Conclude with `inner_conj_symm _ _`. Establish `hdet` using `Matrix.det_conjTranspose (Matrix.gram ℂ v)`. Rewrite `hdet` using `[hA]`. Conclude with `Complex.conj_eq_iff_im.mp hdet.symm`.
+
+Unfold `GroundTheory.Heights₂.Heights.gramDet`. Rewrite using `[hM, Matrix.det_fromBlocks_zero₂₁, Complex.mul_re, him, him, mul_zero, sub_zero]`.
+-/
 theorem gramDet_sumElim (E : HermitianBundle.{0} K) (σ : K →+* ℂ) {a b : ℕ}
     {s : Fin a → E.carrier} {t : Fin b → E.carrier} (hs : LinearIndependent (𝓞 K) s)
     (ht : LinearIndependent (𝓞 K) t)
@@ -50,6 +66,21 @@ theorem gramDet_sumElim (E : HermitianBundle.{0} K) (σ : K →+* ℂ) {a b : �
   unfold GroundTheory.Heights₂.Heights.gramDet
   rw [hM, Matrix.det_fromBlocks_zero₂₁, Complex.mul_re, him, him, mul_zero, sub_zero]
 
+/- English proof (translation)
+Establish `hd : Disjoint F G` using `disjoint_of_orth E h`. Take `⟨s, hs, hsF⟩` from `CoverDenseAlt.exists_fam E F`. Take `⟨t, ht, htG⟩` from `CoverDenseAlt.exists_fam E G`. Establish `hNs : Submodule.span (𝓞 K) (Set.range s) ≤ F` using `CoverDenseAlt.span_le_of_mem hsF`. Establish `hNt : Submodule.span (𝓞 K) (Set.range t) ≤ G` using `CoverDenseAlt.span_le_of_mem htG`.
+
+Establish `hst : LinearIndependent (𝓞 K) (Sum.elim s t)` using `hs.sum_type ht (hd.mono hNs hNt)`. Establish `hmem : ∀ i, Sum.elim s t i ∈ F ⊔ G`. Introduce and unpack `(i | i)`. Conclude with `Submodule.mem_sup_left (hsF i)`. Conclude with `Submodule.mem_sup_right (htG i)`.
+
+Establish `hcard : Fintype.card (Fin (E.rank F) ⊕ Fin (E.rank G)) = E.rank (F ⊔ G)`. Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin, CoverDenseAlt.rank_sup E hd]`. Take `⟨hiF, hF⟩` from `CoverDenseAlt.deg_eq E F hs hsF (Fintype.card_fin _)`. Take `⟨hiG, hG⟩` from `CoverDenseAlt.deg_eq E G ht htG (Fintype.card_fin _)`. Take `⟨-, hFG⟩` from `CoverDenseAlt.deg_eq E (F ⊔ G) hst hmem hcard`.
+
+Establish `hidx : CoverDenseAlt.idx (Submodule.span (𝓞 K) (Set.range (Sum.elim s t))) (F ⊔ G) = CoverDenseAlt.idx (Submodule.span (𝓞 K) (Set.range s)) F * CoverDenseAlt.idx (Submodule.span (𝓞 K) (Set.range t)) G`. Rewrite using `[Set.Sum.elim_range, Submodule.span_union, ← CoverDenseAlt.idx_mul (sup_le_sup_right hNs _) (sup_le_sup_left hNt F)]`. Use `congr 1`. Conclude with `CoverDenseAlt.idx_sup hNs (hd.mono_right hNt)`. Rewrite using `[sup_comm F, sup_comm F G]`.
+
+Conclude with `CoverDenseAlt.idx_sup hNt hd.symm`. Establish `hlog : ∀ σ : K →+* ℂ, Real.log (GroundTheory.Heights₂.Heights.gramDet E.metric σ (Sum.elim s t)) = Real.log (GroundTheory.Heights₂.Heights.gramDet E.metric σ s) + Real.log (GroundTheory.Heights₂.Heights.gramDet E.metric σ t)`. Introduce `σ`. Establish `hgram` using `gramDet_sumElim E σ hs ht (fun i j => by`. Establish `h1` using `h σ _ (hsF i) _ (htG j)`.
+
+Rewrite `h1` using `[← FibreSpace.inner_equiv E.metric σ]`. Conclude with `h1)`. Rewrite using `[hgram, Real.log_mul (gramDet_pos E.metric σ hs).ne' (gramDet_pos E.metric σ ht).ne']`. Rewrite using `[hFG, hF, hG, hidx, Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.mpr hiF) (Nat.cast_ne_zero.mpr hiG)]`. Simplify using `only [hlog, Finset.sum_add_distrib]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem degree_sup (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E.carrier}
     (h : OrthAt E F G) : E.degree (F ⊔ G) = E.degree F + E.degree G := by
   have hd : Disjoint F G := disjoint_of_orth E h
@@ -87,6 +118,15 @@ theorem degree_sup (E : HermitianBundle.{0} K) {F G : Submodule (𝓞 K) E.carri
   simp only [hlog, Finset.sum_add_distrib]
   ring
 
+/- English proof (translation)
+Establish `hrk : Fintype.card (Fin 0) = E.rank ⊥`. Unfold `GroundTheory.Heights₂.Heights.HermitianBundle.rank`. Simplify using the standard rewrite rules. Take `⟨-, hdeg⟩` from `CoverDenseAlt.deg_eq E ⊥ (s := (Fin.elim0 : Fin 0 → E.carrier)) linearIndependent_empty_type (fun i => i.elim0) hrk`. Establish `h1 : CoverDenseAlt.idx (Submodule.span (𝓞 K) (Set.range (Fin.elim0 : Fin 0 → E.carrier))) ⊥ = 1`.
+
+Rewrite using `[CoverDenseAlt.idx_eq_card]`. Use `Nat.card_eq_one_iff_unique.mpr ⟨⟨fun a b => ?_⟩, ⟨0⟩⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Rewrite using `[Subsingleton.elim a b]`.
+
+Establish `hg : ∀ σ : K →+* ℂ, GroundTheory.Heights₂.Heights.gramDet E.metric σ (Fin.elim0 : Fin 0 → E.carrier) = 1`. Introduce `σ`. Unfold `GroundTheory.Heights₂.Heights.gramDet`. Rewrite using `[Matrix.det_isEmpty, Complex.one_re]`. Rewrite using `[hdeg, h1]`.
+
+Simplify using `only [hg, Real.log_one, Nat.cast_one, Finset.sum_const_zero, mul_zero, sub_zero]`.
+-/
 theorem degree_bot (E : HermitianBundle.{0} K) : E.degree ⊥ = 0 := by
   have hrk : Fintype.card (Fin 0) = E.rank ⊥ := by
     unfold GroundTheory.Heights₂.Heights.HermitianBundle.rank
@@ -106,6 +146,13 @@ theorem degree_bot (E : HermitianBundle.{0} K) : E.degree ⊥ = 0 := by
   rw [hdeg, h1]
   simp only [hg, Real.log_one, Nat.cast_one, Finset.sum_const_zero, mul_zero, sub_zero]
 
+/- English proof (translation)
+Introduce `σ x hx y hy`. Take `⟨μ, rfl⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum G y).mp hy`. Rewrite using `[← FibreSpace.inner_equiv E.metric σ]`. Establish `hfv : fibreVec E.metric σ (∑ b ∈ S, (μ b : E.carrier)) = ∑ b ∈ S, fibreVec E.metric σ (μ b)`. Simplify using `using fibreVec_sum E.metric σ S (fun _ => 1) (fun b => (μ b : E.carrier))`.
+
+Express the relevant statement in the definitionally equal form `inner ℂ (fibreVec E.metric σ x) (fibreVec E.metric σ (∑ b ∈ S, (μ b : E.carrier))) = 0`. Rewrite using `[hfv, inner_sum]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Establish `h1` using `h b hb σ x hx _ (μ b).2`. Rewrite `h1` using `[← FibreSpace.inner_equiv E.metric σ]`.
+
+Conclude with `h1`.
+-/
 theorem orth_biSup (E : HermitianBundle.{0} K) {F : Submodule (𝓞 K) E.carrier} {I : Type}
     (G : I → Submodule (𝓞 K) E.carrier) (S : Finset I) (h : ∀ b ∈ S, OrthAt E F (G b)) :
     OrthAt E F (⨆ b ∈ S, G b) := by
@@ -122,6 +169,13 @@ theorem orth_biSup (E : HermitianBundle.{0} K) {F : Submodule (𝓞 K) E.carrier
   rw [← FibreSpace.inner_equiv E.metric σ] at h1
   exact h1
 
+/- English proof (translation)
+Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Establish `hb : (⨆ a ∈ (∅ : Finset I), F a) = ⊥` using `by simp`. Rewrite using `[hb, Finset.sum_empty, Finset.sum_empty]`. Use `⟨degree_bot E, ?_⟩` and prove the remaining obligations. Unfold `GroundTheory.Heights₂.Heights.HermitianBundle.rank`.
+
+Simplify using the standard rewrite rules. Introduce `a S ha ih`. Rewrite using `[Finset.iSup_insert, Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `horth : OrthAt E (F a) (⨆ b ∈ S, F b)` using `orth_biSup E F S fun b hb => h a b fun hab => ha (hab ▸ hb)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[degree_sup E horth, ih.1]`. Rewrite using `[CoverDenseAlt.rank_sup E (disjoint_of_orth E horth), ih.2]`.
+-/
 theorem degree_rank_biSup (E : HermitianBundle.{0} K) {I : Type}
     (F : I → Submodule (𝓞 K) E.carrier) (h : ∀ a b, a ≠ b → OrthAt E (F a) (F b)) (S : Finset I) :
     E.degree (⨆ a ∈ S, F a) = ∑ a ∈ S, E.degree (F a) ∧
@@ -141,6 +195,11 @@ theorem degree_rank_biSup (E : HermitianBundle.{0} K) {I : Type}
     · rw [degree_sup E horth, ih.1]
     · rw [CoverDenseAlt.rank_sup E (disjoint_of_orth E horth), ih.2]
 
+/- English proof (translation)
+Introduce `K _ _ E I _ F h`. Establish `hU : (⨆ a, F a) = ⨆ a ∈ (Finset.univ : Finset I), F a` using `by simp`. Take `⟨hd, hr⟩` from `degree_rank_biSup E F h Finset.univ`. Rewrite using `[hU]`. Use `⟨?_, hr⟩` and prove the remaining obligations.
+
+Unfold `GroundTheory.Heights₂.Heights.HermitianBundle.normDegree`. Rewrite using `[hd, Finset.sum_div]`.
+-/
 theorem normDegree_rank_iSup : ∀ (K : Type) [Field K] [NumberField K] (E : HermitianBundle.{0} K) (I : Type) [Fintype I] (F : I → Submodule (𝓞 K) E.carrier), (∀ a b, a ≠ b → OrthAt E (F a) (F b)) → E.normDegree (⨆ a, F a) = ∑ a, E.normDegree (F a) ∧ E.rank (⨆ a, F a) = ∑ a, E.rank (F a) := by
   intro K _ _ E I _ F h
   have hU : (⨆ a, F a) = ⨆ a ∈ (Finset.univ : Finset I), F a := by simp

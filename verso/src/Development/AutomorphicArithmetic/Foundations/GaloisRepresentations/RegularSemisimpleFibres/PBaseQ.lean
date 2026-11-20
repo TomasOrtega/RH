@@ -7,6 +7,9 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal UpperTheory.V.Published U
 open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Introduce `_ E _ _ v g _ i hi`. Establish `e : 𝓀[v.adicCompletion E] ≃+* ZMod g` using `(Ideal.quotEquivOfEq (DiscreteGroups.sglob.DzIso.ker_redO i hi).symm).trans (RingHom.quotientKerEquivOfSurjective (DiscreteGroups.sglob.DzIso.redO_surjective i hi))`. Conclude with `⟨DiscreteGroups.sglob.DzType.g_not_mem_sq v g i hi, by rw [Nat.card_congr e.toEquiv, Nat.card_zmod], ⟨e⟩⟩`.
+-/
 theorem UpperTheory.Gal.InertialTypesAlt.baseQ :
     CardRes → BaseQ := by
   intro _ E _ _ v g _ i hi

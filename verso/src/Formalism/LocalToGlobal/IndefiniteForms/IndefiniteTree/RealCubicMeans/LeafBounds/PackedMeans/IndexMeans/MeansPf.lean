@@ -119,9 +119,21 @@ namespace MeansPack
 
 variable {Tau ι : Type} [Fintype Tau] [Fintype ι] (P : MeansPack Tau ι)
 
+/- English proof (translation)
+The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+-/
 theorem nrm_nonneg (v : Tau → Fin P.N → ℝ) : 0 ≤ P.nrm v :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
+/- English proof (translation)
+Establish `hrd` using `h.hrd`. Establish `hbr : Real.log (P.b * P.rd) = P.L + Real.log P.rd`. Unfold `L; rw [Real.log_mul h.hb.ne' (by linarith)]`. Establish `hlrd : 0 ≤ Real.log P.rd` using `Real.log_nonneg hrd`. Establish `hlx0 : 0 ≤ Real.log P.x` using `Real.log_nonneg h.hx`.
+
+Establish `hlx1 : 1 < Real.log P.x`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: Real.log (Real.log P.x) ≤ 0` using `Real.log_nonpos hlx0 hc`. Combine the linear relations using `[h.hllx]`.
+
+Establish `hL` using `h.hL`. Establish `hbr0 : 0 ≤ Real.log (P.b * P.rd)` using `by rw [hbr]; linarith`. Establish `h1 : Real.log (P.b * P.rd) ≤ Real.log (P.b * P.rd) * Real.log (Real.log P.x)`. Use polynomial arithmetic with `[h.hllx]`. Establish `hab` using `abs_nonneg P.Lp`.
+
+Use `⟨?_, ?_, hlx1, hbr0⟩` and prove the remaining obligations. Unfold `LL0`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `LL0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_scale_lower_bounds (h : Rows P) :
     P.L ≤ P.LL0 ∧ 1 ≤ P.LL0 ∧ 1 < Real.log P.x ∧ 0 ≤ Real.log (P.b * P.rd) := by
   have hrd := h.hrd
@@ -143,6 +155,11 @@ theorem log_scale_lower_bounds (h : Rows P) :
   · unfold LL0; linarith
   · unfold LL0; linarith
 
+/- English proof (translation)
+Establish `hf : (1 : ℝ) ≤ P.f` using `by exact_mod_cast h.hf`. Establish `hN : (1 : ℝ) ≤ P.N` using `by exact_mod_cast h.hN`. Establish `h0 : 0 < P.h0` using `by nlinarith [h.hh0]`. Unfold `H`. Apply `div_nonneg` to reduce the goal to its premises.
+
+Conclude with `Real.iSup_nonneg fun τ => Real.iSup_nonneg fun i => abs_nonneg _`. Conclude with `div_nonneg h0.le (by positivity)`.
+-/
 theorem H_nonneg (h : Rows P) : 0 ≤ P.H := by
   have hf : (1 : ℝ) ≤ P.f := by exact_mod_cast h.hf
   have hN : (1 : ℝ) ≤ P.N := by exact_mod_cast h.hN
@@ -152,6 +169,15 @@ theorem H_nonneg (h : Rows P) : 0 ≤ P.H := by
   · exact Real.iSup_nonneg fun τ => Real.iSup_nonneg fun i => abs_nonneg _
   · exact div_nonneg h0.le (by positivity)
 
+/- English proof (translation)
+Establish `hH` using `P.H_nonneg h`. Establish `hf : (1 : ℝ) ≤ P.f` using `by exact_mod_cast h.hf`. Establish `hN : (1 : ℝ) ≤ P.N` using `by exact_mod_cast h.hN`. Establish `hN2 : (1 : ℝ) ≤ (P.N : ℝ) ^ 2` using `by nlinarith`. Establish `hK : 0 < 4 * (P.f : ℝ) * (P.N : ℝ) ^ 2` using `by nlinarith`.
+
+Establish `h0 : 0 < P.h0` using `by nlinarith [h.hh0]`. Establish `hb` using `h.hb`. Prove the components needed by the constructor for the conclusion. Unfold `B0; exact mul_pos hK (by linarith)`. Establish `k1 : 4 * (P.f : ℝ) * (P.N : ℝ) ^ 2 * P.H ≤ 4 * (P.f : ℝ) * (P.N : ℝ) ^ 2 * (8 * P.b / P.h0)` using `mul_le_mul_of_nonneg_left hd hK.le`.
+
+Establish `k2 : 4 * (P.f : ℝ) * (P.N : ℝ) ^ 2 * (8 * P.b / P.h0) ≤ P.b`. Establish `e : 4 * (P.f : ℝ) * (P.N : ℝ) ^ 2 * (8 * P.b / P.h0) = (32 * (P.f : ℝ) * (P.N : ℝ) ^ 2 * P.b) / P.h0`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, div_le_iff₀ h0]`. Use polynomial arithmetic with `[h.hh0]`.
+
+Establish `hS` using `h.hSZ2`. Unfold `B0`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem B0_pos_and_le_two_mul_b (h : Rows P) (hd : P.HeightGapBound) : 0 < P.B0 ∧ P.B0 ≤ 2 * P.b := by
   have hH := P.H_nonneg h
   have hf : (1 : ℝ) ≤ P.f := by exact_mod_cast h.hf
@@ -173,6 +199,17 @@ theorem B0_pos_and_le_two_mul_b (h : Rows P) (hd : P.HeightGapBound) : 0 < P.B0 
     unfold B0
     nlinarith
 
+/- English proof (translation)
+Establish `h2` using `Real.log_two_gt_d9`. Establish `h128 : Real.log 128 = 7 * Real.log 2`. Rewrite using `[show (128 : ℝ) = 2 ^ 7 by norm_num, Real.log_pow]; norm_num`. Establish `ht : (9 / 2 : ℝ) ≤ Real.log 128` using `by rw [h128]; linarith`. Establish `hpi` using `Real.pi_le_four`.
+
+Establish `hpi3` using `Real.pi_gt_three`. Establish `hl0 : 0 ≤ Real.log (2 * Real.pi)` using `Real.log_nonneg (by linarith)`. Establish `hl1 : Real.log (2 * Real.pi) ≤ 2 * Real.pi - 1` using `Real.log_le_sub_one_of_pos (by linarith)`. Establish `habs : |P.fourthRootConstant + Real.log (2 * Real.pi)| ≤ |P.fourthRootConstant| + 7`. Use `abs_add_le P.fourthRootConstant (Real.log (2 * Real.pi))` as an intermediate fact.
+
+Rewrite `this` using `[abs_of_nonneg hl0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA0 : 0 ≤ |P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2` using `by positivity`. Establish `hq0 : 0 ≤ (|P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2) / Real.log 128` using `div_nonneg hA0 (by linarith)`. Establish `hqm : (|P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2) / Real.log 128 * Real.log 128 = |P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2` using `div_mul_cancel₀ _ (by linarith)`.
+
+Establish `hq1 : 9 / 2 * ((|P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2) / Real.log 128) ≤ |P.fourthRootConstant + Real.log (2 * Real.pi)| + 3 / 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left ht hq0]`. Establish `hr` using `abs_nonneg P.fourthRootConstant`. Unfold `CT2 indexMeanConstant`. Prove the components needed by the constructor for the conclusion.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem second_time_constant_bounds : 0 ≤ P.CT2 ∧ 8 * P.CT2 ≤ P.indexMeanConstant := by
   have h2 := Real.log_two_gt_d9
   have h128 : Real.log 128 = 7 * Real.log 2 := by
@@ -199,11 +236,21 @@ theorem second_time_constant_bounds : 0 ≤ P.CT2 ∧ 8 * P.CT2 ≤ P.indexMeanC
   · linarith
   · linarith
 
+/- English proof (translation)
+Take `⟨_, hLL1, _, _⟩` from `P.log_scale_lower_bounds h`. Unfold `X indexMeanConstant`. Conclude with `mul_nonneg (mul_nonneg (by positivity) (by linarith)) (P.nrm_nonneg _)`.
+-/
 theorem X_nonneg (h : Rows P) : 0 ≤ P.X := by
   obtain ⟨_, hLL1, _, _⟩ := P.log_scale_lower_bounds h
   unfold X indexMeanConstant
   exact mul_nonneg (mul_nonneg (by positivity) (by linarith)) (P.nrm_nonneg _)
 
+/- English proof (translation)
+Take `⟨hB0, hB2⟩` from `P.B0_pos_and_le_two_mul_b h hd`. Take `⟨_, _, hlx, hbr0⟩` from `P.log_scale_lower_bounds h`. Establish `hrd` using `h.hrd`. Establish `hb` using `h.hb`. Establish `h1 : Real.log (P.B0 * P.rd) ≤ Real.log (2 * P.b * P.rd)` using `Real.log_le_log (mul_pos hB0 (by linarith)) (mul_le_mul_of_nonneg_right hB2 (by linarith))`.
+
+Establish `h2 : Real.log (2 * P.b * P.rd) = Real.log 2 + Real.log (P.b * P.rd)`. Rewrite using `[mul_assoc, Real.log_mul (by norm_num) (mul_pos hb (by linarith)).ne']`. Establish `h3` using `Real.log_two_lt_d9`. Establish `h4 : Real.log (P.b * P.rd) ≤ Real.log (P.b * P.rd) * Real.log (Real.log P.x)`. Use polynomial arithmetic with `[h.hllx]`.
+
+Establish `hab` using `abs_nonneg P.Lp`. Unfold `LL0`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem log_height_le_twice_log_scale (h : Rows P) (hd : P.HeightGapBound) : Real.log (P.B0 * P.rd) + |P.Lp| ≤ 2 * P.LL0 := by
   obtain ⟨hB0, hB2⟩ := P.B0_pos_and_le_two_mul_b h hd
   obtain ⟨_, _, hlx, hbr0⟩ := P.log_scale_lower_bounds h
@@ -220,6 +267,13 @@ theorem log_height_le_twice_log_scale (h : Rows P) (hd : P.HeightGapBound) : Rea
   unfold LL0
   linarith
 
+/- English proof (translation)
+Establish `hlog` using `P.log_height_le_twice_log_scale h hd`. Take `⟨_, hLL1, _, _⟩` from `P.log_scale_lower_bounds h`. Take `⟨hC0, hC8⟩` from `P.second_time_constant_bounds`. Establish `hUp : 0 ≤ P.Up` using `P.nrm_nonneg _`. Establish `e1 : (Real.log (P.B0 * P.rd) + |P.Lp|) * P.Up ≤ 2 * P.LL0 * P.Up` using `mul_le_mul_of_nonneg_right hlog hUp`.
+
+Establish `e0 : 1 * P.Up ≤ P.LL0 * P.Up` using `mul_le_mul_of_nonneg_right hLL1 hUp`. Establish `e2 : (P.jp : ℝ) * P.spread ≤ 6 * P.LL0 * P.Up`. Unfold `SpreadBoundVariant at he`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e3 : P.CT2 * ((Real.log (P.B0 * P.rd) + |P.Lp|) * P.Up + P.jp * P.spread) ≤ P.CT2 * (8 * P.LL0 * P.Up)` using `mul_le_mul_of_nonneg_left (by linarith) hC0`.
+
+Establish `hLU : 0 ≤ P.LL0 * P.Up` using `mul_nonneg (by linarith) hUp`. Establish `e4 : 8 * P.CT2 * (P.LL0 * P.Up) ≤ P.indexMeanConstant * (P.LL0 * P.Up)` using `mul_le_mul_of_nonneg_right hC8 hLU`. Unfold `I7 at h7`. Unfold `X`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem means_b (h : Rows P) (hd : P.HeightGapBound) (he : P.SpreadBoundVariant) (h7 : P.I7) : -P.X ≤ P.mean := by
   have hlog := P.log_height_le_twice_log_scale h hd
   obtain ⟨_, hLL1, _, _⟩ := P.log_scale_lower_bounds h
@@ -239,6 +293,11 @@ theorem means_b (h : Rows P) (hd : P.HeightGapBound) (he : P.SpreadBoundVariant)
   unfold X
   linarith
 
+/- English proof (translation)
+Use `symm`. Apply `Finset.sum_subset (fun p hp => Finset.mem_union_left _ hp)` to reduce the goal to its premises. Introduce `p _ hp`. Establish `: P.e p = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hp (Finsupp.mem_support_iff.mpr hne)`. Rewrite using `[this, zero_mul]`.
+-/
 theorem sum_e : ∑ p ∈ P.Sp, P.e p * Real.log p = ∑ p ∈ P.e.support, P.e p * Real.log p := by
   symm
   apply Finset.sum_subset (fun p hp => Finset.mem_union_left _ hp)
@@ -248,6 +307,11 @@ theorem sum_e : ∑ p ∈ P.Sp, P.e p * Real.log p = ∑ p ∈ P.e.support, P.e 
     exact hp (Finsupp.mem_support_iff.mpr hne)
   rw [this, zero_mul]
 
+/- English proof (translation)
+Establish `h1 : ∑ p ∈ P.SB, P.ap p * Real.log p = ∑ p ∈ P.Sp, P.ap p * Real.log p`. Apply `Finset.sum_subset (fun p hp => Finset.mem_union_right _ hp)` to reduce the goal to its premises. Introduce `p _ hp`. Simplify using `only [ap, if_neg hp, zero_mul]`. Rewrite using `[← h1, Finset.mul_sum]`.
+
+Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [ap, if_pos hp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sum_a : ∑ p ∈ P.Sp, P.ap p * Real.log p =
     (P.Up + P.Pa) * ∑ p ∈ P.SB, (P.cpp p + C7 * P.vdd p) * Real.log p := by
   have h1 : ∑ p ∈ P.SB, P.ap p * Real.log p = ∑ p ∈ P.Sp, P.ap p * Real.log p := by
@@ -260,6 +324,11 @@ theorem sum_a : ∑ p ∈ P.Sp, P.ap p * Real.log p =
   simp only [ap, if_pos hp]
   ring
 
+/- English proof (translation)
+Rewrite using `[← P.sum_e, ← P.sum_a, ← Finset.sum_add_distrib]`. Unfold `cc`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p _`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem cc_eq : P.cc = ∑ p ∈ P.e.support, P.e p * Real.log p +
     (P.Up + P.Pa) * ∑ p ∈ P.SB, (P.cpp p + C7 * P.vdd p) * Real.log p + P.cinf := by
   rw [← P.sum_e, ← P.sum_a, ← Finset.sum_add_distrib]
@@ -269,6 +338,17 @@ theorem cc_eq : P.cc = ∑ p ∈ P.e.support, P.e p * Real.log p +
   intro p _
   ring
 
+/- English proof (translation)
+Take `⟨hLL, hLL1, _, _⟩` from `P.log_scale_lower_bounds h`. Establish `hL` using `h.hL`. Establish `hT : (0 : ℝ) ≤ P.T` using `Nat.cast_nonneg _`. Establish `hD : (0 : ℝ) ≤ P.D` using `Nat.cast_nonneg _`. Establish `hU1 : 0 ≤ P.U1` using `P.nrm_nonneg _`.
+
+Establish `hUp : 0 ≤ P.Up` using `P.nrm_nonneg _`. Establish `hPa : 0 ≤ P.Pa` using `by unfold Pa Cn; positivity`. Take `⟨ha1, ha2⟩` from `ha`. Establish `hDU : 0 ≤ ((P.D : ℝ) + 1) * P.U1` using `mul_nonneg (by linarith) hU1`. Establish `tU1 : (P.T : ℝ) * P.U1 ≤ P.U + P.E0` using `by nlinarith`.
+
+Establish `tUp : (P.T : ℝ) * P.Up ≤ P.U + P.E0` using `by nlinarith [mul_le_mul_of_nonneg_left ha2 hT]`. Establish `hA : 0 ≤ P.U + P.E0` using `by nlinarith [mul_nonneg hT hU1]`. Rewrite using `[P.cc_eq]`. Unfold `I6 at h6`. Unfold `PrimeSum at hp`.
+
+Establish `hCe : (0 : ℝ) ≤ Ce * P.LL0` using `by unfold Ce; linarith`. Establish `k1` using `mul_le_mul_of_nonneg_left h6 hT`. Establish `k2` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left hp (by linarith : 0 ≤ P.Up + P.Pa)) hT`. Establish `k3 : Ce * P.LL0 * (P.T * P.U1) ≤ Ce * P.LL0 * (P.U + P.E0)` using `mul_le_mul_of_nonneg_left tU1 hCe`. Establish `k4 : 104 * P.L * (P.T * P.Up) ≤ 104 * P.L * (P.U + P.E0)` using `mul_le_mul_of_nonneg_left tUp (by linarith)`.
+
+Establish `k5 : (104 * P.L + 1 / 2) * (P.U + P.E0) ≤ 105 * P.LL0 * (P.U + P.E0)` using `mul_le_mul_of_nonneg_right (by linarith) hA`. Unfold `cinf Qcc`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem means_a (h : Rows P) (ha : P.IntermediateScaleBounds) (h6 : P.I6) (hp : P.PrimeSum) :
     (P.T : ℝ) * P.cc ≤ (Ce + 105) * P.LL0 * (P.U + P.E0) + P.T * P.Qcc := by
   obtain ⟨hLL, hLL1, _, _⟩ := P.log_scale_lower_bounds h
@@ -296,6 +376,13 @@ theorem means_a (h : Rows P) (ha : P.IntermediateScaleBounds) (h6 : P.I6) (hp : 
   unfold cinf Qcc
   linarith
 
+/- English proof (translation)
+Take `⟨_, hLL1, _, _⟩` from `P.log_scale_lower_bounds h`. Establish `hT : (0 : ℝ) ≤ P.T` using `Nat.cast_nonneg _`. Establish `hD : (0 : ℝ) ≤ P.D` using `Nat.cast_nonneg _`. Establish `hU1 : 0 ≤ P.U1` using `P.nrm_nonneg _`. Take `⟨ha1, ha2⟩` from `ha`.
+
+Establish `hDU : 0 ≤ ((P.D : ℝ) + 1) * P.U1` using `mul_nonneg (by linarith) hU1`. Establish `tUp : (P.T : ℝ) * P.Up ≤ P.U + P.E0` using `by nlinarith [mul_le_mul_of_nonneg_left ha2 hT]`. Establish `hA : 0 ≤ P.U + P.E0` using `by nlinarith [mul_nonneg hT hU1]`. Establish `hCI : 0 ≤ P.indexMeanConstant * P.LL0` using `by unfold indexMeanConstant; exact mul_nonneg (by positivity) (by linarith)`. Establish `k1 : P.indexMeanConstant * P.LL0 * (P.T * P.Up) ≤ P.indexMeanConstant * P.LL0 * (P.U + P.E0)` using `mul_le_mul_of_nonneg_left tUp hCI`.
+
+Establish `k2 : P.indexMeanConstant * (P.LL0 * (P.U + P.E0)) ≤ Ca * (P.LL0 * (P.U + P.E0))` using `mul_le_mul_of_nonneg_right hCa (mul_nonneg (by linarith) hA)`. Unfold `X`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem means_d (h : Rows P) (ha : P.IntermediateScaleBounds) {Ca : ℝ} (hCa : P.indexMeanConstant ≤ Ca) :
     (P.T : ℝ) * P.X ≤ Ca * P.LL0 * (P.U + P.E0) := by
   obtain ⟨_, hLL1, _, _⟩ := P.log_scale_lower_bounds h
@@ -313,6 +400,13 @@ theorem means_d (h : Rows P) (ha : P.IntermediateScaleBounds) {Ca : ℝ} (hCa : 
   unfold X
   linarith
 
+/- English proof (translation)
+Take `⟨_, hLL1, _, _⟩` from `P.log_scale_lower_bounds h`. Establish `hT : (0 : ℝ) ≤ P.T` using `Nat.cast_nonneg _`. Establish `hD : (0 : ℝ) ≤ P.D` using `Nat.cast_nonneg _`. Establish `hU1 : 0 ≤ P.U1` using `P.nrm_nonneg _`. Establish `hA : 0 ≤ P.U + P.E0`.
+
+Take `⟨ha1, _⟩` from `ha`. Use polynomial arithmetic with `[mul_nonneg hT hU1, mul_nonneg (by linarith : (0:ℝ) ≤ P.D + 1) hU1]`. Use `⟨P.X_nonneg h, ?_, P.means_d h ha hCa, ?_⟩` and prove the remaining obligations. Conclude with `P.means_b h hd he h7`. Establish `k` using `P.means_a h ha h6 hp`.
+
+Establish `k2 : (Ce + 105) * (P.LL0 * (P.U + P.E0)) ≤ Cb * (P.LL0 * (P.U + P.E0))` using `mul_le_mul_of_nonneg_right hCb (mul_nonneg (by linarith) hA)`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem means (h : Rows P) (ha : P.IntermediateScaleBounds) (hd : P.HeightGapBound) (he : P.SpreadBoundVariant) (h6 : P.I6) (hp : P.PrimeSum) (h7 : P.I7)
     {Ca Cb : ℝ} (hCa : P.indexMeanConstant ≤ Ca) (hCb : Ce + 105 ≤ Cb) :
     Formalism.L2.Indef.Tree.ArchimedeanLeafBounds.Cuts.SlopeMeansBounds P.X P.sl (P.T : ℝ) P.LL0 P.U P.E0 P.cc P.Qcc Ca Cb := by

@@ -21,6 +21,35 @@ noncomputable section
 namespace GlobalTheory.SharpFiniteTh
 open GlobalTheory.SiegLev GlobalTheory.SiegLevCalc GlobalTheory.SiegelPullComp GlobalTheory.SiegelPull
 
+/- English proof (translation)
+Introduce `g n hn2 F W hW K _ _ Q`. Establish `hn : n ≠ 0` using `by omega`. Establish `hζ : IsUnit (zetaAway n)` using `by rw [← cycBase_ζ hn]; exact Units.isUnit _`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ, hℓ, hodd, hℓK⟩ : ∃ ℓ : ℕ, ℓ.Prime ∧ Odd ℓ ∧ (ℓ : K) ≠ 0 := by`. Distinguish the cases in `h3 : ((3 : ℕ) : K) = 0`.
+
+Use `⟨5, by norm_num, by decide, fun h5 => ?_⟩` and prove the remaining obligations. Establish `h2 : (2 : K) = 0`. Establish `e : ((5 : ℕ) : K) - ((3 : ℕ) : K) = 0` using `by rw [h5, h3, sub_zero]`. Move the coercions through the operations in `at e`. Take the linear combination `e`.
+
+Establish `h1 : (1 : K) = 0`. Establish `e : ((3 : ℕ) : K) - 2 = 0` using `by rw [h3, h2, sub_zero]`. Move the coercions through the operations in `at e`. Take the linear combination `e`. Conclude with `one_ne_zero h1`.
+
+Conclude with `⟨3, Nat.prime_three, by decide, h3⟩`. Take `⟨hL, hL2⟩` from `abelianSchemeLaws_all`. Take `⟨bas, hbas⟩` from `GlobalTheory.SiegEighth.exists_isSharpBasis g W hW`. Set `a : Fin 8 × Fin 8 → Matrix (Fin 8) (Fin 8) ℤ` to `fun uv => Matrix.single uv.1 uv.2 1`. Establish `he : ∀ u v : Fin 8, ∃ j : Fin 8 × Fin 8, a j = Matrix.single u v 1` using `fun u v => ⟨(u, v), rfl⟩`.
+
+Take `⟨Mat, κ, hsh⟩` from `GlobalTheory.ThetaQuasiFinite.exists_shape hL hW a bas`. Take `⟨j₀, hj₀⟩` from `GlobalTheory.ThetaQuasiFinite.tMap_of_hasTh hL hL2 (Fin 8 × Fin 8) Mat κ ℓ hℓ hodd`. Use `set N' := ℓ ^ (j₀ + 1) with hN'`. Establish `hN'odd : Odd N'` using `hodd.pow`. Establish `hN'3 : 3 ≤ N'` using `le_trans (by have := hℓ.two_le; rcases hodd with ⟨r, hr⟩; omega) (Nat.le_self_pow (by omega) ℓ)`.
+
+Use `set N := N' ^ 2 with hN`. Establish `hNodd : Odd N` using `hN'odd.pow`. Establish `hN3 : 3 ≤ N` using `le_trans hN'3 (Nat.le_self_pow (by omega) N')`. Establish `hNK : ((N : ℕ) : K) ≠ 0`. Rewrite using `[hN, hN', Nat.cast_pow, Nat.cast_pow]`.
+
+Conclude with `pow_ne_zero _ (pow_ne_zero _ hℓK)`. Use `haveI : NeZero ((N : ℕ) : K) := ⟨hNK⟩`. Take `⟨z0, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot K N`. Establish `hz0 : z0 ≠ 0` using `hz.ne_zero (by omega)`. Set `b : TBase K N` to `⟨Units.mk0 z0 hz0, hNK.isUnit, fun K' _ β => hz.map_of_injective β.injective⟩`.
+
+Establish `hbζ : b.ζ ^ N = 1` using `Units.ext (by rw [Units.val_pow_eq_pow_val]; exact hz.pow_eq_one)`. Establish `key : ∀ y : Sp K ⟶ F.X, GlobalTheory.Poinc.SharpOver F W Q y → ∃ (C : SiegPre g N (b.ζ : K) (𝟙 (Sp K))) (t : TObj (8 * g) N (Fin 8 × Fin 8) b (𝟙 (Sp K))), C.Principal ∧ SRel C F.univ 0 0 y ∧ IsSharp W a bas t C ∧ ∃ φ : t.A ≅ Q.A, IsMonHom φ.hom ∧ LBIso t.L (Q.L.pull φ.hom.left)`. Introduce `y hy`. Take `⟨c, hc, pr, hpr, huniv, hiso⟩` from `hy`. Establish `hc0` using `GlobalTheory.ThetaQuasiFinite.sRel_zero_of_siegPB hc`.
+
+Establish `hcP : c.Principal` using `sRel_principal hc0 F.princ`. Establish `hd : SmoothOfRelativeDimension g c.A.hom` using `GlobalTheory.SiegSharpCover.smoothDim c hn2 hζ (isUnit_natCast hn)`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_symplecticLevel_principalSiegel_algClosed g n N _ _ K _ c b hNodd hN3 hcP hd`. Establish `hCP : C.Principal` using `sRel_principal hC hcP`. Take `⟨t, ht⟩` from `GlobalTheory.SiegelPower.exists_tObj_isSharp hL hL2 g (8 * g) W _ a bas hW hbas N K b (Sp K) (𝟙 _) C hNodd hN3 hbζ hCP`.
+
+Establish `hCF : SRel C F.univ 0 0 y` using `by simpa using sRel_comp hc0 hC`. Conclude with `⟨C, t, hCP, hCF, ht, GlobalTheory.T.eighthPower_E8Bundle_iso_of_principalSiegelIso g n N _ _ K _ c b C W _ a bas t Q pr hpr huniv hiso hC ht⟩`. Take `⟨V, hVf, hV⟩` from `GlobalTheory.T.thetaConstants_finite_of_polarisedAVIso_algClosed (8 * g) N' (Fin 8 × Fin 8) K b Q hN'odd hN'3`. Use `GlobalTheory.ThetaQuasiFinite.finite_points_cycAway hn K` as an intermediate fact. Set `T : (Ix (8 * g) N → K) → (Sp K ⟶ Sp (cycAway n)) → Set (Sp K ⟶ F.X)` to `fun v x₀ => {y | y ≫ F.s = x₀ ∧ ∃ (C : SiegPre g N (b.ζ : K) (𝟙 (Sp K))) (t : TObj (8 * g) N (Fin 8 × Fin 8) b (𝟙 (Sp K))), C.Principal ∧ SRel C F.univ 0 0 y ∧ IsSharp W a bas t C ∧ t.HasTh (𝟙 _) v}`.
+
+Establish `hT : ∀ v x₀, (T v x₀).Finite`. Introduce `v x₀`. Break down `(T v x₀).eq_empty_or_nonempty with h0 | ⟨y₀, -, C₀, t₀, hC₀, -, H₀, hv₀⟩` into its components or cases. Rewrite using `[h0]`. Conclude with `Set.finite_empty`.
+
+Use `(GlobalTheory.ThetaQuasiFinite.finite_of_fibre (Nat.one_le_iff_ne_zero.2 hn) F K x₀ C₀).subset ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hx, C, t, hC, hCF, H, hv⟩`. Establish `hNz : N ≠ 0` using `by omega`. Establish `m` using `hj₀ (j₀ + 1) (by omega) K b K (𝟙 _) t t₀ v (hsh N hNz K b (Sp K) (𝟙 _) C t hC H) (hsh N hNz K b (Sp K) (𝟙 _) C₀ t₀ hC₀ H₀) hv hv₀`. Establish `p` using `PowerPullback.backward hL.globalFns hW hC hC₀ H H₀ he m`.
+
+Use `sRel_comp hCF (GlobalTheory.ThetaQuasiFinite.sRel_zero_of_siegPB p)` as an intermediate fact. Conclude with `⟨hx, by simpa using this⟩`. Use `(Set.Finite.biUnion hVf fun v _ => Set.finite_iUnion fun x₀ => hT v x₀).subset ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨C, t, hC, hCF, H, φ⟩` from `key y hy`.
+
+Take `⟨v, hvV, hv⟩` from `hV t φ`. Conclude with `Set.mem_biUnion hvV (Set.mem_iUnion.2 ⟨y ≫ F.s, rfl, C, t, hC, hCF, H, hv⟩)`.
+-/
 theorem finite_sharpOver : ∀ (g n : ℕ), 2 ≤ n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (K : Type) [Field K] [IsAlgClosed K] (Q : PolAV (Sp K)), Set.Finite {y : Sp K ⟶ F.X | GlobalTheory.Poinc.SharpOver F W Q y} := by
   intro g n hn2 F W hW K _ _ Q
   have hn : n ≠ 0 := by omega

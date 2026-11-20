@@ -16,5 +16,8 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.SymRes.exists_red_iff | exact GlobalTheory.SymRes.exists_red_iff | (intros; apply GlobalTheory.SymRes.exists_red_iff <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_reduction_iff_pattern : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (g : GL (Fin D.R.r) (Formalism.L2.DIV.kP PP)), (∃ x, G.Red x g) ↔ GlobalTheory.SymRes.IsPat D.R.rS D.R.k g := by
   first | exact @GlobalTheory.SymRes.exists_red_iff | exact GlobalTheory.SymRes.exists_red_iff | (intros; apply GlobalTheory.SymRes.exists_red_iff <;> assumption)

@@ -10,12 +10,20 @@ open GlobalTheory.CompanionTheory.FreeQuotProof GlobalTheory.CompanionTheory.Hyp
 noncomputable section
 namespace GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd
 
+/- English proof (translation)
+Establish `h : (algebraMap A B).toAlgebra = ‹Algebra A B›` using `Algebra.algebra_ext _ _ fun _ => rfl`. Simplify using `only [GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.FiniteFreeHom]`. Rewrite using `[h]`.
+-/
 theorem finiteFreeHom_algebraMap_iff {A B : Type} [CommRing A] [CommRing B] [Algebra A B] :
     FiniteFreeHom (algebraMap A B) ↔ Module.Free A B ∧ Module.Finite A B := by
   have h : (algebraMap A B).toAlgebra = ‹Algebra A B› := Algebra.algebra_ext _ _ fun _ => rfl
   simp only [GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.FiniteFreeHom]
   rw [h]
 
+/- English proof (translation)
+Use `letI := f.toAlgebra`. Use `letI := g.toAlgebra`. Use `letI := (g.comp f).toAlgebra`. Use `haveI : IsScalarTower A B C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨hf₁, hf₂⟩` from `hf`.
+
+Take `⟨hg₁, hg₂⟩` from `hg`. Conclude with `⟨Module.Free.trans (S := B), Module.Finite.trans B C⟩`.
+-/
 theorem finiteFreeHom_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
     (f : A →+* B) (g : B →+* C) (hf : FiniteFreeHom f) (hg : FiniteFreeHom g) :
     FiniteFreeHom (g.comp f) := by
@@ -27,24 +35,36 @@ theorem finiteFreeHom_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C]
   obtain ⟨hg₁, hg₂⟩ := hg
   exact ⟨Module.Free.trans (S := B), Module.Finite.trans B C⟩
 
+/- English proof (translation)
+Use `letI := e.toRingHom.toAlgebra`. Set `l : A ≃ₗ[A] B` to `{ e with map_smul' := fun a x => map_mul e a x }`. Conclude with `⟨Module.Free.of_equiv l, Module.Finite.equiv l⟩`.
+-/
 theorem finiteFreeHom_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) :
     FiniteFreeHom e.toRingHom := by
   letI := e.toRingHom.toAlgebra
   let l : A ≃ₗ[A] B := { e with map_smul' := fun a x => map_mul e a x }
   exact ⟨Module.Free.of_equiv l, Module.Finite.equiv l⟩
 
+/- English proof (translation)
+Introduce `A B C _ _ _ f g hf hg`. Conclude with `GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_comp f g hf hg`.
+-/
 theorem finiteFreeHom_stableUnderComposition :
     RingHom.StableUnderComposition (fun {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) =>
       FiniteFreeHom f) := by
   intro A B C _ _ _ f g hf hg
   exact GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_comp f g hf hg
 
+/- English proof (translation)
+The claim follows from `RingHom.StableUnderComposition.respectsIso GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_stableUnderComposition fun e => GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_ringEquiv e`.
+-/
 theorem finiteFreeHom_respectsIso :
     RingHom.RespectsIso (fun {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) =>
       FiniteFreeHom f) :=
   RingHom.StableUnderComposition.respectsIso GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_stableUnderComposition
     fun e => GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_ringEquiv e
 
+/- English proof (translation)
+Use `RingHom.IsStableUnderBaseChange.mk GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_respectsIso ?_` and prove the remaining obligations. Introduce `R S T _ _ _ _ _ h`. Take `⟨h₁, h₂⟩` from `GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_algebraMap_iff.1 h`. Conclude with `GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_algebraMap_iff.2 ⟨inferInstance, inferInstance⟩`.
+-/
 theorem finiteFreeHom_isStableUnderBaseChange :
     RingHom.IsStableUnderBaseChange (fun {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) =>
       FiniteFreeHom f) := by
@@ -53,6 +73,11 @@ theorem finiteFreeHom_isStableUnderBaseChange :
   obtain ⟨h₁, h₂⟩ := GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_algebraMap_iff.1 h
   exact GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_algebraMap_iff.2 ⟨inferInstance, inferInstance⟩
 
+/- English proof (translation)
+Introduce `P Q D W u v g h _ _ _ _ hpb hg`. Establish `hbc` using `RingHom.IsStableUnderBaseChange.pullback_fst_appTop @GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.FiniteFreeHom GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_isStableUnderBaseChange GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_respectsIso h g h …`. Use `haveI : IsIso hpb.flip.isoPullback.hom.appTop := by`. Rewrite using `[← Scheme.Γ_map_op]`. Conclude with `(Scheme.Γ.mapIso hpb.flip.isoPullback.op).isIso_hom`.
+
+Rewrite using `[← hpb.flip.isoPullback_hom_fst, Scheme.Hom.comp_appTop, CommRingCat.hom_comp]`. Conclude with `(RingHom.RespectsIso.cancel_right_isIso GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.finiteFreeHom_respectsIso _ _).2 hbc`.
+-/
 theorem finiteFreeHom_appTop_of_isPullback :
     ∀ {P Q D W : Scheme.{0}} {u : P ⟶ Q} {v : P ⟶ D} {g : Q ⟶ W} {h : D ⟶ W} [IsAffine P] [IsAffine Q] [IsAffine D] [IsAffine W], IsPullback u v g h → GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.FiniteFreeHom g.appTop.hom → GlobalTheory.CompanionTheory.FreeQuotProof.Nbhd.FiniteFreeHom v.appTop.hom := by
   intro P Q D W u v g h _ _ _ _ hpb hg

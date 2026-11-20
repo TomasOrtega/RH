@@ -21,6 +21,13 @@ open GroundTheory.Automorphic.FourierWhittaker (partialCoeff blockGL uGL)
 
 namespace GlobalTheory.GoodMul
 
+/- English proof (translation)
+Introduce `E _ _ a m ψ f c hf hc hl hu`. Use `⟨hc.mul hf.cont, fun γ hγ g => ?_, fun k hk y g => ?_, fun r hr hrm g => ?_⟩` and prove the remaining obligations. Use `show c _ * f _ = c g * f g`. Rewrite using `[hl γ hγ g, hf.left γ hγ g]`. Use `show c _ * f _ = _ * (c g * f g)`.
+
+Rewrite using `[hu k k y g, hf.law k hk y g]`. Expand and normalize the polynomial expressions, which then agree. Establish `h : (fun x : UnipotentBlockColumnIndex a r m → Ad E => c (blkU x * g) * f (blkU x * g)) = fun x => c g * f (blkU x * g)`. Use function extensionality and compare the values at `x`. Rewrite using `[hu r m x g]`.
+
+Use `show avg _ (fun x : UnipotentBlockColumnIndex a r m → Ad E => c (blkU x * g) * f (blkU x * g)) = 0`. Rewrite using `[h, avg_const_mul, hf.van r hr hrm g, mul_zero]`.
+-/
 theorem good_mul_invariant : ∀ (E : Type) [Field E] [NumberField E] (a m : ℕ) (ψ : AddChar (Ad E) ℂ) (f c : GA E a → ℂ),
     Good ψ m f → Continuous c → (∀ γ : GL (Fin a) E, IsMir m γ → ∀ g, c (ratGL E a γ * g) = c g) →
     (∀ (r l : ℕ) (y : UnipotentBlockColumnIndex a r l → Ad E) (g : GA E a), c (blkU y * g) = c g) → Good ψ m (fun g => c g * f g) := by

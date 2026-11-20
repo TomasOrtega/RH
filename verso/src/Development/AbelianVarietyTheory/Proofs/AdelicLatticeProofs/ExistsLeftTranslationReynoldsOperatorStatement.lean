@@ -4,5 +4,8 @@ import Development.AbelianVarietyTheory.Definitions.AdelicHermitianForms.AdelicP
 open Matrix GlobalTheory.ClassFin
 open scoped Kronecker ComplexOrder TensorProduct
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds | exact GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds | (intros; apply GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_leftTranslation_reynoldsOperator : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (Γ : Set (Matrix ι ι ℂ)), IsPre Γ → SS Γ → ∃ Rey, IsReynolds Γ Rey := by
   first | exact @GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds | exact GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds | (intros; apply GlobalTheory.ClassFin.ReynoldsLtr.exists_isReynolds <;> assumption)

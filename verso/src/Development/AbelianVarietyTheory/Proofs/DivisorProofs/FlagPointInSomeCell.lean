@@ -15,6 +15,11 @@ noncomputable def permRowsGL {K : Type} [CommRing K] {N : ℕ} (w : Equiv.Perm (
     rw [det_permute]
     exact ((Equiv.Perm.sign w).isUnit.map (Int.castRingHom _)).mul ((isUnit_iff_isUnit_det _).1 g.isUnit))
 
+/- English proof (translation)
+Use `choose w hw using fun τ => GlobalTheory.GL_exists_perm_rows_leading_minors_ne_zero K N (g τ)`. Use `choose L b hLb hL hb using fun τ => GlobalTheory.T.block_lu_decomposition_exists K N {s | ∃ k, a k = τ ∧ (l k : ℕ) = s} (permRowsGL (w τ) (g τ)) fun k hk => (hw τ k hk).isUnit`. Establish `hB (τ : ι) (i j : Fin N) : Below a l τ i j ↔ ∃ s ∈ {s | ∃ k, a k = τ ∧ (l k : ℕ) = s}, (j : ℕ) < s ∧ s ≤ (i : ℕ)` using `⟨fun ⟨k, h₁, h₂⟩ => ⟨_, ⟨k, h₁, rfl⟩, h₂⟩, fun ⟨_, ⟨k, h₁, e⟩, h₂⟩ => ⟨k, h₁, e ▸ h₂⟩⟩`. Establish `e : g = (fun τ => permRowsGL (w τ).symm (L τ)) * b`. Use function extensionality and compare the values at `τ`.
+
+Use extensionality with `i j`. Use `congrArg (fun m : GL (Fin N) K => m.1 ((w τ).symm i) j) (hLb τ)` as an intermediate fact. Simplify `this` using `[permRowsGL, Matrix.mul_apply]`. Use `⟨fun τ => (w τ).symm, _, e.symm ▸ flagPt_eq_comp_cell a l (fun τ => (w τ).symm) (fun τ => permRowsGL (w τ).symm (L τ)) b (fun τ i j h => ?_) fun τ i j h => hb τ i j ((hB _ _ _).1 h)⟩` and prove the remaining obligations. Conclude with `hL τ _ j fun h' => h ((hB _ _ _).2 h')`.
+-/
 theorem exists_flagPt_eq_comp_cell {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a : κ → ι)
     (l : κ → Fin (N + 1)) {K : Type} [Field K] (g : ι → GL (Fin N) K) :
     ∃ (w : ι → Equiv.Perm (Fin N)) (ψ : CellRing a l →+* K), flagPt a l g = spMap ψ ≫ cell a l w := by
@@ -33,6 +38,13 @@ theorem exists_flagPt_eq_comp_cell {ι κ : Type} [Fintype ι] [Finite κ] {N : 
     (fun τ => permRowsGL (w τ).symm (L τ)) b (fun τ i j h => ?_) fun τ i j h => hb τ i j ((hB _ _ _).1 h)⟩
   exact hL τ _ j fun h' => h ((hB _ _ _).2 h')
 
+/- English proof (translation)
+Take `⟨p, rfl⟩` from `GlobalTheory.T.flag_orbit_map_surjective ι κ N a l x`. Set `q : PrimeSpectrum (GLRing ι N)` to `p`. Set `ψ : GLRing ι N →+* q.asIdeal.ResidueField` to `algebraMap _ _`. Take `⟨w, φ, h⟩` from `exists_flagPt_eq_comp_cell a l fun τ => GeneralLinearGroup.map ψ (univGL ι N τ)`. Rewrite `h` using `[flagPt, evalGL_map_univGL]`.
+
+Set `o : Sp q.asIdeal.ResidueField` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum _)`. Establish `hp : spMap ψ o = p`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.comap ψ ⊥ = q.asIdeal`. Conclude with `Ideal.ker_algebraMap_residueField _`.
+
+Use `⟨w, spMap φ o, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h]`.
+-/
 theorem exists_mem_range_cell (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1))
     (x : Part a l) : ∃ w : ι → Equiv.Perm (Fin N), x ∈ Set.range (cell a l w) := by
   obtain ⟨p, rfl⟩ := GlobalTheory.T.flag_orbit_map_surjective ι κ N a l x

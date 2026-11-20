@@ -23,6 +23,15 @@ open scoped LaurentSeries
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
+/- English proof (translation)
+Set `A` to `ptRing σ hK hv`. Set `φA : R →ₐ[c.F] A` to `φ.codRestrict A fun f => (hφ f).summable`. Set `GA : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) A` to `fun τ i k => ⟨G τ i k, (hG τ i k).summable⟩`. Set `sA : A` to `⟨s, hs.summable⟩`. Take `⟨hu1, hu2⟩` from `(frChg_exists_unique_units E H Dw l Xo c _ G s y₁).2.2.1 y hy`.
+
+Establish `hdet : ∀ τ, ((GA τ).det : ℂ⸨X⸩) = (G τ).det` using `fun τ => A.val.map_det (GA τ)`. Take `⟨u₁, hu₁⟩` from `hL.bc _ _ φA y₀`. Take `⟨u, hu⟩` from `(frChg_exists_unique_units E H Dw l Xo c A GA sA u₁).1 (fun τ => isUnit_ptRing σ hK hv _ (by rw [hdet]; exact (hu1 τ).ne_zero) (by rw [hdet]; exact hG' τ)) (isUnit_ptRing σ hK hv sA hu2.ne_zero hs')`. Establish `e₁ : FrMap A.val u y` using `frMap_of_frChg_map φA A.val GA sA hu₁ hu h₁ hy`. Establish `eψ : (ptEv σ hK hv).comp φA = ψ` using `AlgHom.ext fun f => ptEv_eq σ hK hv _ (hφ f)`.
+
+Establish `eG : (fun τ => (GA τ).map (ptEv σ hK hv)) = Gw`. Use function extensionality and compare the values at `τ`. Use extensionality with `i k`. Conclude with `ptEv_eq σ hK hv _ (hG τ i k)`. Establish `es : ptEv σ hK hv sA = sw` using `ptEv_eq σ hK hv _ hs`.
+
+Establish `e₂ : FrMap (ptEv σ hK hv) u yw` using `frMap_of_frChg_map φA (ptEv σ hK hv) GA sA hu₁ hu (by rw [eψ]; exact hw₁) (by rw [eG, es]; exact hyw)`. Rewrite using `[GlobalTheory.FlagMod.FlagCover.evR_frMap_of_isReduced hF e₁, GlobalTheory.FlagMod.FlagCover.evR_frMap_of_isReduced hF e₂]`. Conclude with `hasSum_ptEv σ hK hv _`.
+-/
 theorem hasSum_evR_of_chart_natural (hL : GlobalTheory.Reg.EvLaws Xo c) (σ : c.F →+* ℂ) [Algebra c.F ℂ⸨X⸩]
     (hK : ∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x)))
     {v : ℂ} (hv : v ≠ 0) {R : Type} [CommRing R] [Algebra c.F R] (φ : R →ₐ[c.F] ℂ⸨X⸩) (ψ : R →ₐ[c.F] CAt σ)
@@ -60,6 +69,23 @@ theorem hasSum_evR_of_chart_natural (hL : GlobalTheory.Reg.EvLaws Xo c) (σ : c.
   rw [GlobalTheory.FlagMod.FlagCover.evR_frMap_of_isReduced hF e₁, GlobalTheory.FlagMod.FlagCover.evR_frMap_of_isReduced hF e₂]
   exact hasSum_ptEv σ hK hv _
 
+/- English proof (translation)
+Introduce `hL1 hL2 E _ _ _ H Dw l Xo c σ _ _ O _ β Y a χ W g ty Fu Ha _ y e th Θ z hL hK hχ hβ hP hth hy hz`. Take `⟨pt, -, -, -, -, hpt1, hpt2, -⟩` from `id hy`. Establish `hpt3 : pt ≫ pullback.snd _ _ = spMap (algebraMap c.F ℂ⸨X⸩)`. Rewrite using `[← cancel_mono (spMap β), Category.assoc, ← Y.jQ_over, Category.assoc, ← pullback.condition, ← Category.assoc Y.jQ, ← Category.assoc]`. Use `show (pt ≫ Y.j) ≫ Y.s = _`.
+
+Rewrite using `[hpt1, Category.assoc, hχ]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `RingHom.ext fun x => (hK (β x)).symm`. Take `⟨p, j, y₀, hch, hmem⟩` from `GlobalTheory.T.exists_openChart_framedPoint_testRing hL1.secBaseChange E H Dw l Xo c (pt (IsLocalRing.closedPoint ℂ⸨X⸩))`.
+
+Use `haveI := hch.1`. Take `⟨φ, hφ⟩` from `GlobalTheory.ArcQ.exists_algHom_of_mem_range j hch.2.2 pt hpt3 hmem`. Take `⟨y₁, hy₁⟩` from `hL.bc _ _ φ y₀`. Take `⟨G, s, hGs⟩` from `(frChg_exists_unique_units E H Dw l Xo c _ (fun _ => 1) 1 y₁).2.2.2 y (by rw [hy₁.1, ← hch.2.1, ← Category.assoc, hφ, hpt2])`. Take `⟨T₁, h₁⟩` from `GlobalTheory.T.holArc_chart_coordinates_hasSum E H Dw l Xo c σ O β Y a χ W g ty Fu Ha p j φ hK hχ hβ hch.1 hch.2.2 (by rw [← Category.assoc, hφ, hpt1])`.
+
+Take `⟨T₂, h₂⟩` from `GlobalTheory.T.frame_matrix_hasSum_alt hL1 hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha y e th z p j y₀ φ y₁ G s hK hχ hβ hy hz hch hy₁ hGs`. Take `⟨T₃, h₃⟩` from `GlobalTheory.T.hasSum_thetaGenerator_chart_ratio hL1 hL2 E H Dw l Xo c σ O β Y a χ W g ty Fu Ha y e th Θ p j y₀ φ y₁ G s hK hχ hβ hP hth hy hch hy₁ hGs`. Establish `key : ∀ w : ℂ, max T₁ (max T₂ T₃) < w.im → ∀ yw, AnFr Ha Θ z w yw → ∃ (ψ : p.R →ₐ[c.F] CAt σ) (yw₁ : FrPt Xo c (CAt σ)) (Gw : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) (sw : CAt σ), FrMap ψ y₀ yw₁ ∧ FrChg Gw sw yw₁ yw ∧ (∀ f, HasSum (fun n : ℤ => (φ f).co …`. Introduce `w hw yw hyw`. Rewrite `hw` using `[max_lt_iff, max_lt_iff]`.
+
+Take `⟨ψ, hψ1, hψ2⟩` from `h₁ w hw.1`. Take `⟨yw₁, hyw₁⟩` from `hL.bc _ _ ψ y₀`. Take `⟨Gw, sw, hw'⟩` from `(frChg_exists_unique_units E H Dw l Xo c _ (fun _ => 1) 1 yw₁).2.2.2 yw (by rw [hyw₁.1, ← hch.2.1, hψ1]; exact hyw.1.1)`. Conclude with `⟨ψ, yw₁, Gw, sw, hyw₁, hw', hψ2, h₂ w hw.2.1 ψ yw₁ yw Gw sw hψ2 hyw₁ hyw.1 hw', h₃ w hw.2.2 ψ yw₁ yw Gw sw hψ2 hyw₁ hyw.1.1 hyw.2 hw'⟩`. Distinguish the cases in `hex : ∃ w : ℂ, max T₁ (max T₂ T₃) < w.im ∧ ∃ yw, AnFr Ha Θ z w yw`.
+
+Take `⟨w₀, hw₀, yw₀, hyw₀⟩` from `hex`. Take `⟨-, -, Gw₀, sw₀, -, -, -, hG₀, hs₀⟩` from `key w₀ hw₀ yw₀ hyw₀`. Establish `hv₀` using `GlobalTheory.Conv.eTwoPi_ne_zero w₀`. Establish `cs : s⁻¹ ∈ GlobalTheory.Conv.convLaurent` using `inv_mem (GlobalTheory.Conv.mem_convLaurent_of_summable hv₀ hs₀.summable)`. Establish `cG : ∀ τ, (G τ).det⁻¹ ∈ GlobalTheory.Conv.convLaurent` using `fun τ => by`.
+
+Use `inv_mem ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun π _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => GlobalTheory.Conv.mem_convLaurent_of_summable hv₀ (hG₀ τ _ _).summable)`. Take `⟨T₄, h₄⟩` from `GlobalTheory.Conv.exists_forall_mem_halfRing (S := insert s⁻¹ (Set.range fun τ => (G τ).det⁻¹)) ((Set.finite_range _).insert _) (by rintro _ (rfl | ⟨τ, rfl⟩); exacts [cs, cG τ])`. Use `⟨max T₄ (max T₁ (max T₂ T₃)), fun w hw yw hyw F hF => ?_⟩` and prove the remaining obligations.
+
+Rewrite `hw` using `[max_lt_iff]`. Take `⟨ψ, yw₁, Gw, sw, k₁, k₂, k₃, k₄, k₅⟩` from `key w hw.2 yw hyw`. Conclude with `hasSum_evR_of_chart_natural hL σ hK (GlobalTheory.Conv.eTwoPi_ne_zero w) φ ψ G s Gw sw hy₁ hGs k₁ k₂ k₃ k₄ k₅ (fun τ => h₄ _ (Or.inr ⟨τ, rfl⟩) w hw.1) (h₄ _ (Or.inl rfl) w hw.1) F hF`. Conclude with `⟨_, fun w hw yw hyw => absurd ⟨w, hw, yw, hyw⟩ hex⟩`.
+-/
 theorem hasSum_evR_arc_natural : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu) [Algebra c.F ℂ⸨X⸩] (y : FrPt Xo c ℂ⸨X⸩) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR ℂ)) (th : a.D₀.P.L.Sec) (Θ : ThetaDat Ha th) (z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin g → ℂ)), GlobalTheory.Reg.EvLaws Xo c → (∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x))) → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp β) → Mono (spMap β) → PushInvertible Y.t.G Y.t.PP.L → ThNZ th → IsArcFr W e th (HahnSeries.ofPowerSeries ℤ ℂ) y → (∀ τ k, AnVec Ha (e τ k) (z τ k)) → ∃ T : ℝ, ∀ w : ℂ, T < w.im → ∀ yw, AnFr Ha Θ z w yw → ∀ F : Rul Xo c, IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) F → HasSum (fun m : ℤ => (evR Xo c F y).coeff m * eTwoPi w ^ m) (toC (evR Xo c F yw)) := by
   intro hL1 hL2 E _ _ _ H Dw l Xo c σ _ _ O _ β Y a χ W g ty Fu Ha _ y e th Θ z hL hK hχ hβ hP hth hy hz
   obtain ⟨pt, -, -, -, -, hpt1, hpt2, -⟩ := id hy
@@ -132,6 +158,9 @@ open scoped LaurentSeries
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ r}
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `((GlobalTheory.T.frameChange_exists_unique_invertible E H Dw l Xo c S _ s y).2.2.1 y' h).2`. Set `t : Ix Dw → Sˣ` to `fun i => i.elim u fun _ => 1`. Establish `hb : FrBor t y y'` using `((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c S).2.2.2 t y y').2 ⟨fun _ => 1, fun τ i => by simp [t], fun τ i j hij => Matrix.one_apply_ne hij.ne, h⟩`. Rewrite using `[GlobalTheory.FlagTan.evR_frBor hF hb]`. Simplify using `[t, Fintype.prod_option, hex]`.
+-/
 theorem evR_frChg_one_secZ {S : Type} [CommRing S] [Algebra c.F S] [IsLocalRing S] {ex : Ix Dw → ℤ}
     (hex : ex none = 0) {F : Rul Xo c} (hF : F ∈ GlobalTheory.AllWt.secZ Xo c ex) {s : S} {y y' : FrPt Xo c S}
     (h : FrChg (fun _ => 1) s y y') : evR Xo c F y' = evR Xo c F y := by
@@ -143,6 +172,31 @@ theorem evR_frChg_one_secZ {S : Type} [CommRing S] [Algebra c.F S] [IsLocalRing 
   rw [GlobalTheory.FlagTan.evR_frBor hF hb]
   simp [t, Fintype.prod_option, hex]
 
+/- English proof (translation)
+Use `letI := FractionRing.liftAlgebra ℂ ℂ`. Use `haveI := FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Establish `hK` using `GlobalTheory.ArcCM.known_holds`. Establish `h1` using `hK.laws`. Establish `h2` using `hK.laws2`.
+
+Establish `hev` using `hK.ev E H Dw l Xo c`. Take `⟨hp, hq⟩` from `GlobalTheory.ArcCM.Exist.one_le_of_isIso hU hξ`. Take `⟨Uw⟩` from `GlobalTheory.ArcQ.nonempty_unfWit_of_isUnf E H Dw l Xo c σ r U hU`. Take `⟨aC, htie⟩` from `GlobalTheory.CuspFrom.exists_input Uw hσ hU hξ hx`. Take `⟨Wp, Y, h4, hpush⟩` from `GlobalTheory.CuspFrom.exists_model Xo c (by omega)`.
+
+Establish `hmono` using `mono_spMap_subtype (c.V Wp)`. Take `⟨χ, hχ, -⟩` from `h4 ℂ _ 1 (aC.restrict (c.V Wp).subtype) (Or.inl ⟨Field.toIsField ℂ, rfl⟩)`. Take `⟨hover, hab, hj, hW⟩` from `(hχ χ).1 rfl`. Take `⟨W⟩` from `(Y.hasArcData_iff _ _ _ _ _).1 hW`. Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c _ hσ).2.2.2 Dw Uw.g Uw.e`.
+
+Take `⟨Ha⟩` from `hK.n5 E H Dw l Xo c _ _ Y σ _ χ W Uw.g _ Uw.F hσ hty (GlobalTheory.ArcInTest.exists_values c Wp) hover (fun q hq => hj q (by simpa using hq))`. Take `⟨T, s, d, z, hd, hz, hflow⟩` from `htie _ _ Y χ W Ha`. Take `⟨-, v₂, -, -⟩` from `GlobalTheory.ExpTan.anVec_bijective h1.globalFns E H Dw l Xo c _ _ _ Y _ _ W _ _ Uw.F Ha`. Use `choose e he using fun τ i => (v₂ (z τ i)).exists`. Establish `hB` using `GlobalTheory.T.constant_vectors_lieBasis_of_complex_arc E H Dw l Xo c σ r U Uw _ _ Y _ χ W Ha e z hσ hz he`.
+
+Take `⟨-, -, th, hth⟩` from `GlobalTheory.ThetaOverField.nonzero_generates h1 h2 ℂ (aC.restrict (c.V Wp).subtype).D₀ DVR.SecOps.secZero`. Take `⟨Θ⟩` from `GlobalTheory.ArcTheta.nonempty_thetaDat h1 h2 E H Dw l Xo c σ _ _ Y _ χ W _ _ Uw.F Ha hty th hth`. Establish `hc : (spMap (HahnSeries.ofPowerSeries ℤ ℂ) ≫ χ) ≫ Y.s = spMap (algebraMap c.F ℂ⸨X⸩) ≫ spMap (c.V Wp).subtype`. Rewrite using `[Category.assoc, hover, GlobalTheory.ArcId.sp_comp, GlobalTheory.ArcId.sp_comp, GlobalTheory.ArcId.sp_comp]`. Use `congr 1`.
+
+Conclude with `RingHom.ext fun t => (halg _).symm`. Use `haveI := Y.jQ_open`. Establish `hr : Set.range (pullback.lift _ _ hc : Sp ℂ⸨X⸩ ⟶ gen Y) ⊆ Set.range Y.jQ`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Y.ab_gen, Set.mem_preimage, ← Scheme.Hom.comp_apply, pullback.lift_fst, Scheme.Hom.comp_apply, hab]`.
+
+Introduce `hq`. Establish `h0 : HahnSeries.ofPowerSeries ℤ ℂ PowerSeries.X ∈ q.asIdeal` using `hq`. Rewrite `h0` using `[@Ideal.eq_bot_of_prime _ _ q.asIdeal q.isPrime, Ideal.mem_bot]`. Conclude with `PowerSeries.X_ne_zero (HahnSeries.ofPowerSeries_injective (h0.trans (map_zero _).symm))`. Set `z₀` to `IsOpenImmersion.lift Y.jQ _ hr`.
+
+Establish `hz₀ : z₀ ≫ Y.jQ = _` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨y, -, hy⟩` from `GlobalTheory.ArcQ.exists_isArcFr h1 h2 E H Dw l Xo c _ _ Y ℂ _ _ χ W _ e th hB hth (Or.inr hpush) ℂ⸨X⸩ (HahnSeries.ofPowerSeries ℤ ℂ) z₀ (by unfold RingHom.Flat; infer_instance) (by rw [Model.j, ← Category.assoc, hz₀, pullback.lift_fst]) (by`. Rewrite using `[pullback.condition, ← Category.assoc, ← Y.jQ_over, ← Category.assoc, hz₀, pullback.lift_snd, GlobalTheory.ArcId.sp_comp]`. Use the proof step `rfl)`. Use the proof step `(fun τ t => halg _)`.
+
+Establish `hbd` using `GlobalTheory.T.arc_framed_point_extends_to_model_boundary E H Dw l Xo c σ _ _ Y _ χ W e th y halg hover hmono hB hy (fun h => (hab _).1 h (by`. Express the relevant statement in the definitionally equal form `_ ∈ IsLocalRing.maximalIdeal _`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.mem_span_singleton_self _))`. Take `⟨T', hT'⟩` from `GlobalTheory.ArcQZ.hasSum_evR_arc_natural h1 h2 E H Dw l Xo c σ _ _ Y _ χ W _ _ Uw.F Ha y e th Θ z hev halg hover hmono hpush hth hy he`.
+
+Use `⟨y, max T (max T' Ha.T), s, d, GlobalTheory.T.boundaryExtension_independent_of_model E H Dw l Xo c _ _ Z _ _ Y _ _ _ y (RingHom.ext fun t => (halg t).symm) hbd, hd, fun w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hw`. Take `⟨hxw, hlie⟩` from `hflow w hw.1`. Use `⟨hxw, fun ex hex0 F hF => ?_⟩` and prove the remaining obligations. Take `⟨yw, hyw, -⟩` from `GlobalTheory.ArcQ.AnFrEx.existsUnique_anFr h1 h2 E H Dw l Xo c σ r U Uw _ _ Y _ χ W Ha th Θ z hσ hz w hw.2.2`.
+
+Take `⟨t, ht⟩` from `GlobalTheory.ArcCoeff.frChg_of_anLie Uw.F Ha.i _ (Ha.period w hw.2.2) _ _ z hlie hyw.1`. Use `haveI : IsLocalRing (CAt σ) := inferInstanceAs (IsLocalRing ℂ)`. Establish `e1` using `evR_frChg_one_secZ hex0 hF ht`. Use `hT' w hw.2.1 yw hyw F hF.1` as an intermediate fact. Rewrite `this` using `[e1]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `dif_pos hxw`.
+-/
 theorem exists_arc_secZ' [Algebra c.F ℂ⸨X⸩]
     (halg : ∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x)))
     (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) {k : U.Comp} {ξ' : Fin r → E}
@@ -237,6 +291,9 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 open scoped LaurentSeries
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c σ r U _ halg hσ hU k ξ' hξ x hx O _ β Z`. Conclude with `GlobalTheory.CuspFrom.exists_arc_secZ' halg hσ hU hξ hx Z`.
+-/
 theorem GlobalTheory.CuspFrom.exists_arc_secZ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r) [Algebra c.F ℂ⸨X⸩], (∀ x : c.F, algebraMap c.F ℂ⸨X⸩ x = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.C (R := ℂ) (σ x))) → Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (k : U.Comp) (ξ' : Fin r → E), (U.X k).IsIso ξ' → ∀ x : ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k).Ψ r, x ∈ (U.X k).dom → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β), ∃ (y : FrPt Xo c ℂ⸨X⸩) (T : ℝ) (s : (U.X k).Ψ → ℂ) (d : (U.X k).Ψ → ℝ), GlobalTheory.CuspFrom.BdExt Z ((PowerSeries.C (R := ℂ)).comp σ) y ∧ (∀ τ, 0 < d τ) ∧ ∀ w : ℂ, T < w.im → (U.X k).flow ξ' (fun τ => s τ + w * (d τ : ℂ)) x ∈ (U.X k).dom ∧ ∀ ex : Ix Dw → ℤ, ex none = 0 → ∀ F ∈ GlobalTheory.AllWt.secZ Xo c ex, HasSum (fun m : ℤ => (evR Xo c F y).coeff m * eTwoPi w ^ m) (Formalism.L2.PjFree.rdU U F k ((U.X k).flow ξ' (fun τ => s τ + w * (d τ : ℂ)) x)) := by
   intro E _ _ _ H Dw l Xo c σ r U _ halg hσ hU k ξ' hξ x hx O _ β Z
   exact GlobalTheory.CuspFrom.exists_arc_secZ' halg hσ hU hξ hx Z

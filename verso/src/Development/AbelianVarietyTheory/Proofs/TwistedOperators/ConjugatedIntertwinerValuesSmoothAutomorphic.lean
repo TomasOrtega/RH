@@ -20,9 +20,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.ConjAutSmooth
 
+/- English proof (translation)
+Substitute `e` using the available equality. Both sides reduce to the same expression.
+-/
 theorem castGA_mem {I I' : Formalism.MainNotions.S.AutInst} (e : I = I') (x : I.GA) : castGA e x ∈ I'.GFset ↔ x ∈ I.GFset := by
   subst e; rfl
 
+/- English proof (translation)
+Use `show castGA h.symm (Formalism.IndefR.RationalEmbedding.iota D γ) ∈ X.B.I.GFset`. Rewrite using `[castGA_mem]`. Conclude with `(Formalism.IndefR.RationalEmbedding.iota_rat D γ).1 hγ`.
+-/
 theorem iotaX_rat {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D)
     {γ : GA D (D.sp.Y 0)} (hγ : γ ∈ GQ (D.sp.Y 0)) : iotaX X h γ ∈ X.B.I.GFset := by
   show castGA h.symm (Formalism.IndefR.RationalEmbedding.iota D γ) ∈ X.B.I.GFset
@@ -31,6 +37,31 @@ theorem iotaX_rat {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : 
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `hDS D G _ _ Pl0 T A Ks _ _ _ R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep u`. Use `set Ψ := GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t with hΨ`. Establish `hθ : IsInfFam R.θ` using `hMod.inf`. Establish `he : GlobalTheory.RepSmooth.IsEquiv R.θ Ψ` using `fun τ g hg v w hw => GlobalTheory.T.conjugatedIntertwiner_equivariant_realPlace hDS R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep τ g hg v w hw`. Establish `hs : GlobalTheory.RepSmooth.IsSob Ψ` using `fun τ v x => GlobalTheory.T.conjugateIntertwinerValues_sobolevContinuous hDS R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep τ v x`.
+
+Establish `hval : ∀ v (y : GA D (Yc D 0)), Ψ v y = star (GlobalTheory.ConjRowMult.contRepL X (Φ (X.B.tens (GlobalTheory.ConjRowMult.vecC X (MP R) c v))) (iotaX X h (y * t⁻¹)))` using `fun v y => GlobalTheory.ConjRowMult.conjMap_apply X (MP R) c Φ h t v y`. Establish `hcont : ∀ v, Continuous (Ψ v)`. Introduce `v`. Take `⟨ψ, hψ⟩` from `hrep v`. Establish `e : Ψ v = fun y : GA D (Yc D 0) => star (ψ (iotaX X h (y * t⁻¹)))`.
+
+Use function extensionality and compare the values at `y; exact (hval v y).trans (by rw [GlobalTheory.ConjRowMult.contRepL_spec X hψ])`. Rewrite using `[e]`. Conclude with `continuous_star.comp (hψ.1.comp ((iotaX X h).continuous.comp (continuous_mul_const t⁻¹)))`. Use `⟨⟨?_, ?_, hcont u⟩, fun k τs Xs hX g => GlobalTheory.RepSmooth.smooth hθ he hs hcont u k τs Xs hX g, GlobalTheory.RepSmooth.zfin he hs u, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g`.
+
+Take `⟨ψ, hψ⟩` from `hrep u`. Rewrite using `[hval, hval, GlobalTheory.ConjRowMult.contRepL_spec X hψ]`. Use `congr 1`. Establish `e2 : iotaX X h (γ * g * t⁻¹) = iotaX X h γ * iotaX X h (g * t⁻¹)`. Conclude with `(congrArg (iotaX X h) (mul_assoc γ g t⁻¹)).trans (map_mul (iotaX X h) γ (g * t⁻¹))`.
+
+Rewrite using `[e2]`. Conclude with `hψ.2.1 _ (iotaX_rat X h hγ) _`. Take `⟨U, hU, hUk⟩` from `GlobalTheory.GoodFiniteDim.exists_open_subgroup (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))`. Use `⟨U, hU, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hUk k hk hkf`.
+
+Rewrite using `[GlobalTheory.T.conjugatedIntertwiner_hasColumnLevel hDS R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep u k h1 g, h2, one_mul]`. Establish `key : ∃ N : ℕ, ∀ v (x : GA D (Yc D 0)), ∃ C : ℝ, ∀ g ∈ GinfC (Yc D 0), ‖Ψ v (x * g)‖ ≤ C * normInf R.θ (Yc D 0) g ^ N`. Break down `Nat.eq_zero_or_pos (D.sp.Y 0).rank with hn | hn` into its components or cases. Use `⟨0, fun v x => ⟨‖Ψ v x‖, fun a _ => ?_⟩⟩` and prove the remaining obligations. Establish `: a = 1` using `Subtype.ext (Units.ext (Matrix.ext fun i => (Fin.cast hn i).elim0))`.
+
+Simplify using `[this]`. Take `⟨hfin, hnorm⟩` from `GlobalTheory.T.realPointIdentification_leastSize_linear_growth R F X h hRI hGrp hMod hιE`. Take `⟨m, hm⟩` from `GlobalTheory.T.intertwiner_continuous_representative_power_bound hDS R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep hn`. Use `⟨m, fun v x => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hm v`.
+
+Take `⟨C', hC0, hC'⟩` from `hnorm hn (iotaX X h (x * t⁻¹))`. Use `⟨|C| * C' ^ m, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hi2 : (iotaX X h t⁻¹).1 = 1` using `((GlobalTheory.IotaReal.iotaX_real_finite R F X h hRI hGrp hMod hιE).1 t⁻¹).1 (inv_mem ht)`. Establish `hi1 : (iotaX X h a).2 = 1` using `hfin a ha`. Establish `hc : iotaX X h a * iotaX X h t⁻¹ = iotaX X h t⁻¹ * iotaX X h a` using `Prod.ext (by simp [Prod.fst_mul, hi2]) (by simp [Prod.snd_mul, hi1])`.
+
+Establish `hcomm : iotaX X h (x * a * t⁻¹) = iotaX X h (x * t⁻¹) * iotaX X h a`. Establish `e1 : iotaX X h (x * a * t⁻¹) = iotaX X h x * iotaX X h a * iotaX X h t⁻¹`. Conclude with `(map_mul (iotaX X h) (x * a) t⁻¹).trans (congrArg (· * iotaX X h t⁻¹) (map_mul (iotaX X h) x a))`. Establish `e2 : iotaX X h (x * t⁻¹) = iotaX X h x * iotaX X h t⁻¹`. Conclude with `map_mul (iotaX X h) x t⁻¹`.
+
+Rewrite using `[e1, e2, mul_assoc, hc, ← mul_assoc]`. Establish `hp : 0 ≤ (GlobalTheory.Count.tau1 X.B.I (iotaX X h (x * t⁻¹) * iotaX X h a))⁻¹` using `inv_nonneg.2 ((GlobalTheory.TauLipschitz.tauLip X.B.I (by rw [h]; exact hn)).1 _).le`. Establish `h1` using `hC (iotaX X h (x * a * t⁻¹))`. Rewrite `h1` using `[hcomm]`. Rewrite using `[hval, norm_star, hcomm]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨N, hN⟩` from `key`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `GlobalTheory.RepSmooth.foldr_rder he hs u l hl`.
+
+Take `⟨C, hC⟩` from `hN v x`. Conclude with `⟨C, fun g hg => (congrArg norm (congrFun hv (x * g))).le.trans (hC g hg)⟩`.
+-/
 theorem conjMap_isAutFunSm : GlobalTheory.Published.DiscreteSeriesClassification → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → HostHyp D → (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (t : GA D (Yc D 0)) (c : ∀ τ, (MP R).H τ ≃ₗᵢ⋆[ℂ] X.B.H (X.pl.symm τ)), t ∈ GfC (Yc D 0) → ConjLevel (t)⁻¹ (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) ((iotaX X h).toMulEquiv ⁻¹' {x : X.B.I.GA | x.1 = 1 ∧ x.2 ∈ X.K2}) (fun k => star (X.chi2 ((iotaX X h).toMulEquiv k).2)) → (∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D (D.sp.Y 0) τ), ∀ w, c τ ((MP R).rep τ g w) = X.B.σ (X.pl.symm τ) (uMat ((iotaX X h (atTau R.θ (D.sp.Y 0) τ g)).1 (X.pl.symm τ))) (c τ w)) → ∀ Φ : X.B.Hs →L[ℂ] L2X X, Φ ∈ X.B.I.eHom X.B.σs X.B.μf X.B.fund X.B.R X.B.Re → (∀ u : (MP R).Vec, ∃ ψ, Formalism.L2.SG.EvalTOntoRep.IsContRep X (Φ (X.B.tens (GlobalTheory.ConjRowMult.vecC X (MP R) c u))) ψ) → ∀ u : (MP R).Vec, IsAutFunSm R.θ (Yc D 0) (GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t u) := by
   intro hDS D G _ _ Pl0 T A Ks _ _ _ R F X h hRI hGrp hMod hHost hιE t c ht hCL hcq Φ hΦ hrep u
   set Ψ := GlobalTheory.ConjRowMult.conjMap X (MP R) c Φ h t with hΨ

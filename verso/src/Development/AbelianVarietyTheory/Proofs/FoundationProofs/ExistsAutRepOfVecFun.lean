@@ -17,6 +17,9 @@ noncomputable section
 
 namespace GlobalTheory.AutRec
 
+/- English proof (translation)
+Unfold `coord`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `Complex.continuous_conj.comp (continuous_apply _)`.
+-/
 theorem continuous_coord_emb {E : Type} [Field E] [NumberField E] [IsCMField E] (τ : E →+* ℂ) :
     Continuous (coord (E := E) τ) := by
   unfold coord
@@ -24,10 +27,42 @@ theorem continuous_coord_emb {E : Type} [Field E] [NumberField E] [IsCMField E] 
   · exact continuous_apply _
   · exact Complex.continuous_conj.comp (continuous_apply _)
 
+/- English proof (translation)
+The claim follows from `(Continuous.units_map _ (continuous_id.matrix_map (continuous_coord_emb τ))).comp GlobalTheory.DefU.continuous_cInf`.
+-/
 theorem continuous_cEmb_emb {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (τ : E →+* ℂ) :
     Continuous (cEmb (E := E) (n := n) τ) :=
   (Continuous.units_map _ (continuous_id.matrix_map (continuous_coord_emb τ))).comp GlobalTheory.DefU.continuous_cInf
 
+/- English proof (translation)
+Introduce `E _ _ _ n B hB1 hB2 hB3 hB4 ι _ _ σ mu sh hσ hanti F hF hinf hrat hsm`. Set `lam : ι → DomWeight n` to `fun τ => ⟨fun a => (mu τ a : ℤ) + sh τ, fun a b hab => by`. Establish `h` using `hanti τ hab`. Simplify using `only [Formalism.CohomologicalDescent.LD.res] at h`. Simplify using `only`.
+
+Conclude with `Int.add_le_add_right (Int.ofNat_le.2 h) _⟩`. Establish `hlam : ∀ τ a, (lam τ).w a = (mu τ a : ℤ) + sh τ` using `fun _ _ => rfl`. Take `⟨-, hNfin, hcont⟩` from `GlobalTheory.T.weight_module_finite_continuous n ι mu sh`. Use `haveI := hNfin`. Take `⟨P, hPsep, hPinv⟩` from `GlobalTheory.T.weight_module_invariant_pairing n ι mu sh lam hlam`.
+
+Take `⟨hVfin, hspan⟩` from `GlobalTheory.RealSpan.span_rhoK_infU E n ι σ lam hσ`. Use `haveI := hVfin`. Set `c : UA E n →* (ι → GL (Fin n) ℂ)` to `MonoidHom.pi fun τ => cEmb (σ τ)`. Set `R : UA E n →* Module.End ℂ (NablaT ℂ n mu)` to `(wtHom ℂ n mu sh).comp c`. Establish `hRfin : ∀ k ∈ finU E n, R k = 1`.
+
+Introduce `k hk`. Establish `h1 : c k = 1` using `funext fun τ => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map (coord (σ τ)) (cInf k) = 1`. Rewrite using `[MonoidHom.mem_ker.1 hk, map_one]`. Express the relevant statement in the definitionally equal form `wtHom ℂ n mu sh (c k) = 1`.
+
+Rewrite using `[h1, map_one]`. Establish `hc : Continuous c` using `continuous_pi fun τ => continuous_cEmb_emb (σ τ)`. Establish `hRc : ∀ (u : NablaT ℂ n mu) (ℓ : Module.Dual ℂ (NablaT ℂ n mu)), Continuous fun g => ℓ (R g u)` using `fun u ℓ => (hcont u ℓ).comp hc`. Establish `hratR : ∀ γ ∈ ratU E n, ∀ g, F (γ * g) = R γ (F g)` using `hrat`. Establish `hRR : ∀ g (u : NablaT ℂ n mu), R g (R g⁻¹ u) = u` using `fun g u => by`.
+
+Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Set `f : Formalism.L2.DIV.VV ℂ lam →ₗ[ℂ] (UA E n → ℂ)` to `{ toFun := fun v g => P v (R g⁻¹ (F g)) map_add' := fun v w => by funext g; simp map_smul' := fun a v => by funext g; simp }`. Establish `hfv : ∀ v g, f v g = P v (R g⁻¹ (F g))` using `fun _ _ => rfl`. Establish `haut : ∀ v, IsAutFormU (f v)` using `fun v => GlobalTheory.EquivCoef.isAutFormU_coef E n _ R F hRfin hRc hinf hratR hsm (P v)`. Set `ρ : Representation ℂ (infU E n) (Formalism.L2.DIV.VV ℂ lam)` to `(Formalism.L2.DIV.rhoK (K := ℂ) lam).comp (c.comp (infU E n).subtype)`.
+
+Establish `hequiv : ∀ (x : infU E n) v, f (ρ x v) = RU E n x (f v)`. Introduce `x v`. Use function extensionality and compare the values at `g`. Rewrite using `[RU_apply, hfv, hfv, hinf x x.2 g]`. Establish `e : wtOp ℂ n mu sh (c x) (R (g * x)⁻¹ (F g)) = R g⁻¹ (F g)`.
+
+Rewrite using `[mul_inv_rev, map_mul, Module.End.mul_apply]`. Conclude with `hRR (x : UA E n) _`. Rewrite using `[← e]`. Conclude with `hPinv (c x) v _`. Establish `hf0 : f ≠ 0`.
+
+Introduce `h0`. Apply `hF` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hne`. Establish `hne' : R g⁻¹ (F g) ≠ 0`.
+
+Introduce `h`. Establish `h2` using `hRR g (F g)`. Rewrite `h2` using `[h, map_zero]`. Conclude with `hne h2.symm`. Take `⟨v, hv⟩` from `hPsep _ hne'`.
+
+Conclude with `hv (by rw [← hfv, h0]; rfl)`. Take `⟨π, hπ, f', hf'0, hf'π, hf'eq, hf'hk⟩` from `GlobalTheory.T.automorphic_rep_dual_pairing E n B hB1 hB2 hB3 hB4 (Formalism.L2.DIV.VV ℂ lam) ρ hspan f hf0 haut hequiv`. Establish `hwt` using `GlobalTheory.T.automorphic_rep_weight_embedding E n ι σ lam hσ π hπ f' hf'0 hf'π hf'eq`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v, f' v ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+
+Simplify using `only [not_exists, not_not] at h`. Conclude with `hf'0 (LinearMap.ext h)`. Use `⟨π, hπ, fun τ => ⟨lam τ, fun a => rfl, hwt τ⟩, f' v0, hf'π v0, hv0, ?_⟩` and prove the remaining obligations. Introduce `κ Rs s cc hs hsum`. Use `hf'hk κ Rs s cc hs ?_ v0` and prove the remaining obligations.
+
+Introduce `v`. Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `∑ i ∈ Rs, P v (R (g * s i)⁻¹ (F (g * s i))) = cc * P v (R g⁻¹ (F g))`. Establish `e : ∀ i ∈ Rs, R (g * s i)⁻¹ = R g⁻¹` using `fun i hi => by`.
+
+Rewrite using `[mul_inv_rev, map_mul, hRfin _ ((finU E n).inv_mem (hs i hi)), one_mul]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_autRep_of_vecFun : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (B : autU E n →ₗ⋆[ℂ] autU E n →ₗ[ℂ] ℂ), (∀ u v, star (B u v) = B v u) → (∀ v, 0 ≤ (B v v).re) → (∀ v, B v v = 0 → v = 0) → (∀ g u v, B (autRep E n g u) (autRep E n g v) = B u v) → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (σ : ι → (E →+* ℂ)) (mu : ι → ℕ → ℕ) (sh : ι → ℤ), Function.Injective (fun τ => InfinitePlace.mk (σ τ)) → (∀ τ, Antitone (Formalism.CohomologicalDescent.LD.res n (mu τ))) → ∀ F : UA E n → NablaT ℂ n mu, F ≠ 0 → (∀ y ∈ infU E n, ∀ g, F (g * y) = F g) → (∀ γ ∈ ratU E n, ∀ g, F (γ * g) = wtOp ℂ n mu sh (fun τ => cEmb (σ τ) γ) (F g)) → (∀ᶠ y in 𝓝 (1 : UA E n), ∀ g, F (g * y) = F g) → ∃ π, IsAutRepU π ∧ (∀ τ, ∃ lam : DomWeight n, (∀ a, lam.w a = (mu τ a : ℤ) + sh τ) ∧ HasWeightAt π (σ τ) lam ∧ HasWeightAt π (ComplexEmbedding.conjugate (σ τ)) lam.dual) ∧ ∃ φ ∈ π, φ ≠ 0 ∧ ∀ (κ : Type) (R : Finset κ) (s : κ → UA E n) (c : ℂ), (∀ i ∈ R, s i ∈ finU E n) → (∀ g, ∑ i ∈ R, F (g * s i) = c • F g) → ∑ i ∈ R, RU E n (s i) φ = c • φ := by
   intro E _ _ _ n B hB1 hB2 hB3 hB4 ι _ _ σ mu sh hσ hanti F hF hinf hrat hsm
   let lam : ι → DomWeight n := fun τ =>

@@ -17,6 +17,17 @@ namespace GlobalTheory.HeckeLocStep
 open Formalism.L2.Theta
 open scoped TensorProduct
 
+/- English proof (translation)
+Proceed by induction on `ha using AddSubgroup.closure_induction generalizing y with`. Consider the case `mem w hw`. Take `⟨b, hb, x, rfl⟩` from `hw`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+
+Take `⟨c, hc, m, hm, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨b * c, fun v => ?_, x • m, L.smul_mem x hm, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (hb v) (hc v)`. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+
+Both sides reduce to the same expression. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add z z' _ _ h h' => rw [smul_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `neg z _ h => rw [smul_neg]`. Conclude with `neg_mem h`. Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ h h' => rw [add_smul]`.
+
+Conclude with `add_mem (h hy) (h' hy)`. Consider the case `neg a _ h => rw [neg_smul]`. Conclude with `neg_mem (h hy)`.
+-/
 theorem smul_mem_hat (D : D7) {n : ℕ} (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     {a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E} (ha : a ∈ intAE D)
     {y : Fin n → GlobalTheory.AdLat.RA D.host.F D.host.E} (hy : y ∈ GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E))) :
@@ -46,12 +57,20 @@ namespace GlobalTheory.HeckeLocStep
 open Formalism.L2.Theta
 open scoped TensorProduct
 
+/- English proof (translation)
+Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, x, h hx, rfl⟩`.
+-/
 theorem hat_mono {D : D7} {n : ℕ} {L L' : Submodule (𝓞 D.host.E) (Fin n → D.host.E)} (h : L ≤ L') :
     GlobalTheory.AdLat.hat D.host.F (L : Set (Fin n → D.host.E)) ≤ GlobalTheory.AdLat.hat D.host.F (L' : Set (Fin n → D.host.E)) := by
   refine AddSubgroup.closure_mono ?_
   rintro _ ⟨a, ha, x, hx, rfl⟩
   exact ⟨a, ha, x, h hx, rfl⟩
 
+/- English proof (translation)
+Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Establish `hx0' : ((x : D.host.E)) ≠ 0` using `fun h => hx0 (RingOfIntegers.ext h)`. Rewrite using `[eq_top_iff, ← hL, Submodule.span_le]`. Introduce `w hw`. Establish `hm : x • w ∈ (P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))` using `Submodule.smul_mem_smul hx hw`.
+
+Establish `: w = (x : D.host.E)⁻¹ • (x • w)`. Rewrite using `[← algebraMap_smul D.host.E x w]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (by simpa using hx0'), one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+-/
 theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E))
     (hL : Submodule.span D.host.E (L : Set (Fin n → D.host.E)) = ⊤) :
     Submodule.span D.host.E ((P.asIdeal • L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) : Set (Fin n → D.host.E)) = ⊤ := by
@@ -66,6 +85,17 @@ theorem span_smul_top {D : D7} {n : ℕ} (P : Formalism.L2.DIV.Pl D.host.E) (L :
   rw [this]
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
+/- English proof (translation)
+Introduce `D V P e g M he hPM hMΛ v hv`. Take `⟨h1, h2, -, -, -, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V g`. Establish `hMfg : M.FG`. Establish `hN : IsNoetherian (𝓞 D.host.E) (latG V g)` using `isNoetherian_of_fg_of_noetherian _ h1`. Establish `hc` using `(IsNoetherian.noetherian (M.comap (latG V g).subtype)).map (latG V g).subtype`.
+
+Rewrite `hc` using `[Submodule.map_comap_subtype, inf_eq_right.2 hMΛ]`. Then use the resulting hypothesis. Establish `hMsp : Submodule.span D.host.E (M : Set (Fin V.rank → D.host.E)) = ⊤` using `eq_top_iff.2 ((span_smul_top P _ h2).symm.le.trans (Submodule.span_mono hPM))`. Establish `hrat` using `(GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank M hMfg hMsp).1`. Establish `hint : finPart D e ∈ intAE D` using `GlobalTheory.SplitPlace.idem_mem he.1.1`. Establish `hvM : ∀ {w}, w ∈ M → GlobalTheory.AdLat.fv D.host.F w ∈ GlobalTheory.AdLat.hat D.host.F (M : Set (Fin V.rank → D.host.E))` using `fun hw => (hrat _).2 hw`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hm`. Conclude with `smul_mem_hat D M hint (hvM hm)`. Introduce `h`. Use `(hrat v).1 ?_` and prove the remaining obligations.
+
+Establish `hΛ : GlobalTheory.AdLat.fv D.host.F v ∈ GlobalTheory.AdLat.hat D.host.F ((latG V g : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set (Fin V.rank → D.host.E))` using `((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ h1 h2).1 v).2 hv`. Establish `h3` using `hat_mono hPM (GlobalTheory.T.one_sub_idempotent_smul_mem_completion_prime_mul D P e V.rank (latG V g) he _ hΛ)`. Establish `hsplit : GlobalTheory.AdLat.fv D.host.F v = finPart D e • finVec V v + (1 - finPart D e) • finVec V v`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Both sides reduce to the same expression.
+
+Rewrite using `[hsplit]`. Conclude with `add_mem h h3`.
+-/
 theorem mem_iff_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (g : GA D V)
     (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
     Formalism.L2.NTheta.IsIdemAt e P → P.asIdeal • latG V g ≤ M → M ≤ latG V g →
@@ -95,12 +125,24 @@ theorem mem_iff_ePart : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host
     rw [hsplit]
     exact add_mem h h3
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -, h5, -⟩` from `GlobalTheory.Member.latG_lattice_and_completion D V x`. Rewrite using `[h5]`. Conclude with `((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ h1 h2).1 v).symm`.
+-/
 theorem mem_latG_iff (D : D7) (V : HSp D) (x : GA D V) (v : Fin V.rank → D.host.E) :
     v ∈ latG V x ↔ finVec V v ∈ latGHat V x := by
   obtain ⟨h1, h2, -, -, h5, -⟩ := GlobalTheory.Member.latG_lattice_and_completion D V x
   rw [h5]
   exact ((GlobalTheory.AdLat.hat_rational_points_and_approx D.host.F D.host.E V.rank _ h1 h2).1 v).symm
 
+/- English proof (translation)
+Introduce `D V P e ϖ k g M he h1 h2 hPM hMΛ hidx`. Take `⟨a₀, hH, hloc⟩` from `GlobalTheory.T.exists_heckeElement_idempotentPart_splitPlace_lattice D V P e ϖ k g M he h1 h2 hPM hMΛ hidx`. Use `⟨a₀, hH, ?_, GlobalTheory.T.conjPrime_smul_lattice_heckeElement_le D V P e ϖ k g a₀ he h1 h2 hH⟩` and prove the remaining obligations. Establish `hint : finPart D e ∈ intAE D` using `GlobalTheory.SplitPlace.idem_mem he.1.1`. Use extensionality with `v`.
+
+Rewrite using `[Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hg⟩`. Use `(mem_iff_ePart D V P e g M he hPM hMΛ v hg).2 ((hloc v hg).1 ?_)` and prove the remaining obligations. Use `(mem_latG_iff D V (g * a₀) v).1 ha` as an intermediate fact.
+
+Rewrite `this`, the goal using `[(GlobalTheory.Member.latG_lattice_and_completion D V (g * a₀)).2.2.2.2.1]`. Conclude with `smul_mem_hat D _ hint this`. Introduce `hv`. Establish `hg` using `hMΛ hv`. Use `⟨(mem_latG_iff D V (g * a₀) v).2 ?_, hg⟩` and prove the remaining obligations.
+
+Establish `hsplit : finVec V v = finPart D e • finVec V v + (1 - finPart D e) • finVec V v`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Rewrite using `[hsplit]`. Conclude with `add_mem ((hloc v hg).2 ((mem_iff_ePart D V P e g M he hPM hMΛ v hg).1 hv)) (GlobalTheory.T.hecke_element_keeps_one_sub_idempotent_part_lattice D V e ϖ k g a₀ he.1 hH _ ((mem_latG_iff D V g v).1 hg))`.
+-/
 theorem exists_hecke : ∀ (D : D7) (V : HSp D) (P : Formalism.L2.DIV.Pl D.host.E) (e : AE D) (ϖ : 𝓞 D.host.E) (k : ℕ) (g : GA D V)
     (M : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)),
     Formalism.L2.NTheta.IsIdemAt e P → ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 →

@@ -17,6 +17,11 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 variable {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]
   [IsFractionRing W Qq]
 
+/- English proof (translation)
+Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, fun m' _ => ⟨0, by simp [hx]⟩⟩`. Take `⟨n, u, rfl⟩` from `exists_eq_unit_mul_zpow₂ (Qq := Qq) hp hx`. Use `⟨(-n).toNat, fun m' hm' => ?_⟩` and prove the remaining obligations. Establish `hnn : 0 ≤ n + m'` using `by omega`.
+
+Use `⟨(u : W) * (p : W) ^ (n + m').toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_natCast, ← zpow_natCast, Int.toNat_of_nonneg hnn, zpow_add₀ (pQ_ne hp), zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_pow_mul_mem (p : ℕ) (hp : Irreducible (p : W)) (x : Qq) :
     ∃ m : ℕ, ∀ m' ≥ m, (p : Qq) ^ m' * x ∈ (algebraMap W Qq).range := by
   by_cases hx : x = 0
@@ -28,6 +33,9 @@ theorem exists_pow_mul_mem (p : ℕ) (hp : Irreducible (p : W)) (x : Qq) :
   rw [map_mul, map_pow, map_natCast, ← zpow_natCast, Int.toNat_of_nonneg hnn, zpow_add₀ (pQ_ne hp), zpow_natCast]
   ring
 
+/- English proof (translation)
+Use `choose f hf using fun ij : ι × κ => exists_pow_mul_mem p hp (M ij.1 ij.2)`. Conclude with `⟨Finset.univ.sup f, fun m' hm' i j => hf (i, j) m' (le_trans (Finset.le_sup (Finset.mem_univ (i, j))) hm')⟩`.
+-/
 theorem exists_pow_smul_integral (p : ℕ) (hp : Irreducible (p : W)) {ι κ : Type} [Fintype ι] [Fintype κ]
     (M : Matrix ι κ Qq) : ∃ m : ℕ, ∀ m' ≥ m, ∀ i j, (p : Qq) ^ m' * M i j ∈ (algebraMap W Qq).range := by
   choose f hf using fun ij : ι × κ => exists_pow_mul_mem p hp (M ij.1 ij.2)
@@ -36,6 +44,9 @@ theorem exists_pow_smul_integral (p : ℕ) (hp : Irreducible (p : W)) {ι κ : T
 
 omit [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] in
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)`.
+-/
 theorem mul_integral {ι κ μ : Type} [Fintype κ] {A : Matrix ι κ Qq} {B : Matrix κ μ Qq}
     (hA : ∀ i j, A i j ∈ (algebraMap W Qq).range) (hB : ∀ i j, B i j ∈ (algebraMap W Qq).range) :
     ∀ i j, (A * B) i j ∈ (algebraMap W Qq).range := fun i j => by
@@ -44,6 +55,13 @@ theorem mul_integral {ι κ μ : Type} [Fintype κ] {A : Matrix ι κ Qq} {B : M
 
 omit [IsDomain W] [IsDiscreteValuationRing W] [IsFractionRing W Qq] in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, rfl⟩`. Establish `e : ((k'⁻¹ : GL (Fin N') Qq) : Matrix (Fin N') (Fin N') Qq) * UnitaryThetaMoves.movHom Qq k k' X * (k : Matrix (Fin N) (Fin N) Qq) = X`. Simplify using `only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_assoc]`. Rewrite using `[Units.inv_mul, Matrix.mul_one, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+
+Rewrite using `[e]`. Conclude with `hX`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Simplify using `only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_assoc]`.
+
+Rewrite using `[Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+-/
 theorem mem_movLat_iff {N N' : ℕ} (k : GL (Fin N) Qq) (k' : GL (Fin N') Qq) (y : Matrix (Fin N') (Fin N) Qq) :
     y ∈ UnitaryThetaMoves.movLat W Qq k k' ↔
       ∀ i j, (((k'⁻¹ : GL (Fin N') Qq) : Matrix (Fin N') (Fin N') Qq) * y * (k : Matrix (Fin N) (Fin N) Qq)) i j ∈
@@ -61,6 +79,17 @@ theorem mem_movLat_iff {N N' : ℕ} (k : GL (Fin N) Qq) (k' : GL (Fin N') Qq) (y
     simp only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk, Matrix.mul_assoc]
     rw [Units.mul_inv, Matrix.mul_one, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]
 
+/- English proof (translation)
+Use extensionality with `x`. Rewrite using `[Submodule.mem_toAddSubgroup, mem_homLat, mem_movLat_iff]`. Express the relevant statement in the definitionally equal form `(∀ z ∈ colSpan W a, x *ᵥ z ∈ colSpan W b) ↔ ∀ i j, (b⁻¹ * x * a) i j ∈ (algebraMap W Qq).range`. Prove the components needed by the constructor for the conclusion. Introduce `hx i c`.
+
+Take `⟨y, hy⟩` from `(Formalism.MainNotions.Pf14.mem_colSpan b _).1 (hx _ (Submodule.subset_span ⟨c, rfl⟩))`. Use `⟨y i, ?_⟩` and prove the remaining obligations. Establish `h1 : (b⁻¹ * x * a) *ᵥ Pi.single c 1 = b⁻¹ *ᵥ (x *ᵥ fun i => a i c)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Both sides reduce to the same expression.
+
+Rewrite `h1` using `[hy, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hb, Matrix.one_mulVec, Matrix.mulVec_single_one]`. Conclude with `(congrFun h1 i).symm`. Introduce `h z hz`. Take `⟨v, rfl⟩` from `(Formalism.MainNotions.Pf14.mem_colSpan a z).1 hz`. Use `choose X₀ hX₀ using h`.
+
+Use `(Formalism.MainNotions.Pf14.mem_colSpan b _).2 ⟨(Matrix.of X₀) *ᵥ v, ?_⟩` and prove the remaining obligations. Establish `hM : (Matrix.of X₀).map (algebraMap W Qq) = b⁻¹ * x * a`. Use extensionality with `i j`. Conclude with `hX₀ i j`. Establish `e : (fun c => algebraMap W Qq (((Matrix.of X₀) *ᵥ v) c)) = (b⁻¹ * x * a) *ᵥ (fun c => algebraMap W Qq (v c))`.
+
+Use function extensionality and compare the values at `c`. Rewrite using `[RingHom.map_mulVec, hM]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hb, Matrix.one_mul]`.
+-/
 theorem homLat_eq_movLat {k k' : ℕ} (a : Matrix (Fin k) (Fin k) Qq) (b : Matrix (Fin k') (Fin k') Qq)
     (ha : IsUnit a.det) (hb : IsUnit b.det) :
     (homLat W (colSpan W a) (colSpan W b)).toAddSubgroup =
@@ -92,6 +121,11 @@ theorem homLat_eq_movLat {k k' : ℕ} (a : Matrix (Fin k) (Fin k) Qq) (b : Matri
     rw [e, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
       Matrix.mul_nonsing_inv _ hb, Matrix.one_mul]
 
+/- English proof (translation)
+Establish `hne : ∀ k : GL (Fin N) Qq, (k : Matrix (Fin N) (Fin N) Qq).det ≠ 0` using `fun k => ((Matrix.isUnit_iff_isUnit_det _).1 k.isUnit).ne_zero`. Take `⟨n₁, u₁, h₁⟩` from `exists_eq_unit_mul_zpow₂ (Qq := Qq) hp (hne k₁)`. Take `⟨n₂, u₂, h₂⟩` from `exists_eq_unit_mul_zpow₂ (Qq := Qq) hp (hne k₂)`. Establish `hdi : ((k₁⁻¹ : GL (Fin N) Qq) : Matrix (Fin N) (Fin N) Qq).det = ((k₁ : Matrix (Fin N) (Fin N) Qq).det)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises.
+
+Rewrite using `[← Matrix.det_mul, Units.inv_mul, Matrix.det_one]`. Use `⟨u₁⁻¹ * u₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Matrix.det_mul, hdi, h₁, h₂, ordP_eq hp, ordP_eq hp, map_natCast, zpow_sub₀ (pQ_ne hp), Units.val_mul, map_mul, map_units_inv]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem det_inv_mul_eq (p : ℕ) (hp : Irreducible (p : W)) {N : ℕ} (k₁ k₂ : GL (Fin N) Qq) :
     ∃ w : Wˣ, ((k₁⁻¹ * k₂ : GL (Fin N) Qq) : Matrix (Fin N) (Fin N) Qq).det =
       algebraMap W Qq (p : W) ^ (ordP W p (k₂ : Matrix (Fin N) (Fin N) Qq).det -
@@ -109,6 +143,17 @@ theorem det_inv_mul_eq (p : ℕ) (hp : Irreducible (p : W)) {N : ℕ} (k₁ k₂
     Units.val_mul, map_mul, map_units_inv]
   ring
 
+/- English proof (translation)
+Use `set f := UnitaryThetaMoves.movHom Qq k₁⁻¹ k₁'⁻¹ with hf_def`. Establish `hf : Function.Injective f` using `UnitaryThetaMoves.movHom_inv_injective k₁ k₁'`. Establish `h1 : (UnitaryThetaMoves.movLat W Qq k₁ k₁').map f = UnitaryThetaMoves.matLat W Qq N N'`. Rewrite using `[UnitaryThetaMoves.movLat, AddSubgroup.map_map]`. Use `conv_rhs => rw [← AddSubgroup.map_id (UnitaryThetaMoves.matLat W Qq N N')]`.
+
+Use `congr 1`. Conclude with `AddMonoidHom.ext fun x => UnitaryThetaMoves.movHom_inv_apply k₁ k₁' x`. Establish `h2 : (UnitaryThetaMoves.movLat W Qq k₂ k₂').map f = UnitaryThetaMoves.movLat W Qq (k₁⁻¹ * k₂) (k₁'⁻¹ * k₂')`. Rewrite using `[UnitaryThetaMoves.movLat, UnitaryThetaMoves.movLat, AddSubgroup.map_map]`. Use `congr 1`.
+
+Use extensionality with `x : 1`. Simplify using `[hf_def, UnitaryThetaMoves.movHom, Matrix.mul_assoc, _root_.mul_inv_rev]`. Establish `hle' : UnitaryThetaMoves.matLat W Qq N N' ≤ UnitaryThetaMoves.movLat W Qq (k₁⁻¹ * k₂) (k₁'⁻¹ * k₂')`. Rewrite using `[← h1, ← h2]`. Conclude with `AddSubgroup.map_mono hle`.
+
+Establish `hQ : Nat.card (IsLocalRing.ResidueField W) = p ^ n'` using `by show Nat.card (W ⧸ IsLocalRing.maximalIdeal W) = _`. Rewrite using `[hp.maximalIdeal_eq]`. Conclude with `hcard`. Take `⟨w, hw⟩` from `det_inv_mul_eq p hp k₁ k₂`. Take `⟨w', hw'⟩` from `det_inv_mul_eq p hp k₁' k₂'`.
+
+Take `⟨hnn, hidx⟩` from `UnitaryThetaMoves.relIndexFormula W Qq (p : W) hp (p ^ n') hQ N N' (k₁⁻¹ * k₂) (k₁'⁻¹ * k₂') _ _ w w' hw hw' hle'`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hf, h1, h2, hidx]`. Use `set E : ℤ := (N' : ℤ) * (ordP W p (k₂ : Matrix (Fin N) (Fin N) Qq).det - ordP W p (k₁ : Matrix (Fin N) (Fin N) Qq).det) - (N : ℤ) * (ordP W p (k₂' : Matrix (Fin N') (Fin N') Qq).det - ordP W p (k₁' : Matrix (Fin N') (Fin N') Qq).det) with hE`. Rewrite using `[Nat.cast_pow, Nat.cast_pow, ← pow_mul, ← zpow_natCast, Nat.cast_mul, Int.toNat_of_nonneg hnn]`.
+-/
 theorem relIndex_movLat (p n' : ℕ) (hp : Irreducible (p : W))
     (hcard : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n') {N N' : ℕ} (k₁ k₂ : GL (Fin N) Qq)
     (k₁' k₂' : GL (Fin N') Qq) (hle : UnitaryThetaMoves.movLat W Qq k₁ k₁' ≤ UnitaryThetaMoves.movLat W Qq k₂ k₂') :
@@ -145,6 +190,11 @@ theorem relIndex_movLat (p n' : ℕ) (hp : Irreducible (p : W))
           ordP W p (k₁' : Matrix (Fin N') (Fin N') Qq).det) with hE
   rw [Nat.cast_pow, Nat.cast_pow, ← pow_mul, ← zpow_natCast, Nat.cast_mul, Int.toNat_of_nonneg hnn]
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨X, hX, rfl⟩`. Rewrite using `[mem_movLat_iff]`. Establish `e : ((k₂'⁻¹ : GL (Fin N') Qq) : Matrix (Fin N') (Fin N') Qq) * UnitaryThetaMoves.movHom Qq k₁ k₁' X * (k₂ : Matrix (Fin N) (Fin N) Qq) = P * X * R`. Simplify using `only [UnitaryThetaMoves.movHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[h', h]`.
+
+Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (((k₂'⁻¹ : GL (Fin N') Qq) : Matrix (Fin N') (Fin N') Qq)), Units.inv_mul, Matrix.one_mul, ← Matrix.mul_assoc (((k₁⁻¹ : GL (Fin N) Qq) : Matrix (Fin N) (Fin N) Qq)), Units.inv_mul, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `mul_integral (mul_integral hP hX) hR`.
+-/
 theorem movLat_le {N N' : ℕ} (k₁ k₂ : GL (Fin N) Qq) (k₁' k₂' : GL (Fin N') Qq) (P : Matrix (Fin N') (Fin N') Qq)
     (R : Matrix (Fin N) (Fin N) Qq) (hP : ∀ i j, P i j ∈ (algebraMap W Qq).range)
     (hR : ∀ i j, R i j ∈ (algebraMap W Qq).range) (h' : (k₁' : Matrix (Fin N') (Fin N') Qq) = k₂' * P)
@@ -161,6 +211,33 @@ theorem movLat_le {N N' : ℕ} (k₁ k₂ : GL (Fin N) Qq) (k₁' k₂' : GL (Fi
   rw [e]
   exact mul_integral (mul_integral hP hX) hR
 
+/- English proof (translation)
+Introduce `W Qq _ _ _ _ _ _ p n' hp hcard k k' a₀ a₁ b₀ b₁ ha₀ ha₁ hb₀ hb₁`. Establish `hpQ : (p : Qq) ≠ 0` using `pQ_ne hp`. Establish `hp0 : (p : ℝ) ≠ 0`. Introduce and unpack `h`. Apply `hp.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_eq_zero.1 h, Nat.cast_zero]`. Take `⟨m₁, hm₁⟩` from `exists_pow_smul_integral p hp (b₀⁻¹ * b₁)`. Take `⟨m₂, hm₂⟩` from `exists_pow_smul_integral p hp (a₁⁻¹ * a₀)`. Use `set c : Qq := (p : Qq) ^ (m₁ + m₂) with hc_def`. Establish `hc : c ≠ 0` using `pow_ne_zero _ hpQ`.
+
+Establish `hcW : c ∈ (algebraMap W Qq).range` using `⟨(p : W) ^ (m₁ + m₂), by rw [map_pow, map_natCast]⟩`. Establish `hP₀ : ∀ i j, (c • (b₀⁻¹ * b₁)) i j ∈ (algebraMap W Qq).range` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hm₁ _ (Nat.le_add_right _ _) i j`. Establish `hR₀ : ∀ i j, (c • (a₁⁻¹ * a₀)) i j ∈ (algebraMap W Qq).range` using `fun i j => by`.
+
+Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hm₂ _ (Nat.le_add_left _ _) i j`. Establish `hone : ∀ {n : ℕ} (i j : Fin n), (c • (1 : Matrix (Fin n) (Fin n) Qq)) i j ∈ (algebraMap W Qq).range`. Introduce `n i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+
+Use `Subring.mul_mem _ hcW ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+
+Establish `hA' : IsUnit (c⁻¹ • a₁).det`. Rewrite using `[Matrix.det_smul]`. Conclude with `(IsUnit.pow _ (isUnit_iff_ne_zero.2 (inv_ne_zero hc))).mul ha₁`. Establish `hB' : IsUnit (c • b₁).det`. Rewrite using `[Matrix.det_smul]`.
+
+Conclude with `(IsUnit.pow _ (isUnit_iff_ne_zero.2 hc)).mul hb₁`. Rewrite using `[homLat_eq_movLat a₀ b₀ ha₀ hb₀, homLat_eq_movLat a₁ b₁ ha₁ hb₁]`. Use `set T₀ := UnitaryThetaMoves.movLat W Qq (Matrix.nonsingInvUnit a₀ ha₀) (Matrix.nonsingInvUnit b₀ hb₀) with hT₀`. Use `set T₁ := UnitaryThetaMoves.movLat W Qq (Matrix.nonsingInvUnit a₁ ha₁) (Matrix.nonsingInvUnit b₁ hb₁) with hT₁`. Use `set S := UnitaryThetaMoves.movLat W Qq (Matrix.nonsingInvUnit _ hA') (Matrix.nonsingInvUnit _ hB') with hS`.
+
+Establish `hS₀ : S ≤ T₀` using `movLat_le _ _ _ _ _ _ hP₀ hR₀ (show c • b₁ = b₀ * (c • (b₀⁻¹ * b₁)) by`. Rewrite using `[Matrix.mul_smul, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hb₀, Matrix.one_mul])`. Use the proof step `(show a₀ = (c⁻¹ • a₁) * (c • (a₁⁻¹ * a₀)) by`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ ha₁, Matrix.one_mul])`. Establish `hS₁ : S ≤ T₁` using `movLat_le _ _ _ _ _ _ hone hone (show c • b₁ = b₁ * (c • (1 : Matrix (Fin k') (Fin k') Qq)) by rw [Matrix.mul_smul, Matrix.mul_one]) (show a₁ = (c⁻¹ • a₁) * (c • (1 : Matrix (Fin k) (Fin k) Qq)) by`.
+
+Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ hc, one_smul, Matrix.mul_one])`. Establish `i₀ : ((S.relIndex T₀ : ℕ) : ℝ) = (p : ℝ) ^ ((n' : ℤ) * ((k' : ℤ) * (ordP W p a₀.det - ordP W p (c⁻¹ • a₁).det) - (k : ℤ) * (ordP W p b₀.det - ordP W p (c • b₁).det)))` using `relIndex_movLat p n' hp hcard _ _ _ _ hS₀`. Establish `i₁ : ((S.relIndex T₁ : ℕ) : ℝ) = (p : ℝ) ^ ((n' : ℤ) * ((k' : ℤ) * (ordP W p a₁.det - ordP W p (c⁻¹ • a₁).det) - (k : ℤ) * (ordP W p b₁.det - ordP W p (c • b₁).det)))` using `relIndex_movLat p n' hp hcard _ _ _ _ hS₁`. Establish `m₀` using `AddSubgroup.relIndex_mul_relIndex S (T₀ ⊓ T₁) T₀ (le_inf hS₀ hS₁) inf_le_left`. Establish `m₁` using `AddSubgroup.relIndex_mul_relIndex S (T₀ ⊓ T₁) T₁ (le_inf hS₀ hS₁) inf_le_right`.
+
+Rewrite using `[← AddSubgroup.inf_relIndex_right T₀ T₁, ← AddSubgroup.inf_relIndex_left T₀ T₁]`. Establish `m₀' : ((S.relIndex (T₀ ⊓ T₁) : ℕ) : ℝ) * (((T₀ ⊓ T₁).relIndex T₀ : ℕ) : ℝ) = ((S.relIndex T₀ : ℕ) : ℝ)`. Rewrite using `[← Nat.cast_mul, m₀]`. Establish `m₁' : ((S.relIndex (T₀ ⊓ T₁) : ℕ) : ℝ) * (((T₀ ⊓ T₁).relIndex T₁ : ℕ) : ℝ) = ((S.relIndex T₁ : ℕ) : ℝ)`. Rewrite using `[← Nat.cast_mul, m₁]`.
+
+Rewrite `m₀'` using `[i₀]`. Rewrite `m₁'` using `[i₁]`. Establish `hs0 : ((S.relIndex (T₀ ⊓ T₁) : ℕ) : ℝ) ≠ 0`. Introduce `h`. Rewrite `m₀'` using `[h, zero_mul]`.
+
+Conclude with `zpow_ne_zero _ hp0 m₀'.symm`. Establish `hx₀ : (((T₀ ⊓ T₁).relIndex T₀ : ℕ) : ℝ) = (p : ℝ) ^ ((n' : ℤ) * ((k' : ℤ) * (ordP W p a₀.det - ordP W p (c⁻¹ • a₁).det) - (k : ℤ) * (ordP W p b₀.det - ordP W p (c • b₁).det))) / ((S.relIndex (T₀ ⊓ T₁) : ℕ) : ℝ)`. Rewrite using `[← m₀']`. Clear the denominators using the available nonvanishing facts. Establish `hx₁ : (((T₀ ⊓ T₁).relIndex T₁ : ℕ) : ℝ) = (p : ℝ) ^ ((n' : ℤ) * ((k' : ℤ) * (ordP W p a₁.det - ordP W p (c⁻¹ • a₁).det) - (k : ℤ) * (ordP W p b₁.det - ordP W p (c • b₁).det))) / ((S.relIndex (T₀ ⊓ T₁) : ℕ) : ℝ)`.
+
+Rewrite using `[← m₁']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hx₀, hx₁, div_div_div_cancel_right₀ hs0, ← zpow_sub₀ hp0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem relIndex_homLat_ratio : ∀ {W Qq : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq] [IsFractionRing W Qq] (p n' : ℕ) (hp : Irreducible (p : W)) (hcard : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n') {k k' : ℕ} (a₀ a₁ : Matrix (Fin k) (Fin k) Qq) (b₀ b₁ : Matrix (Fin k') (Fin k') Qq) (ha₀ : IsUnit a₀.det) (ha₁ : IsUnit a₁.det) (hb₀ : IsUnit b₀.det) (hb₁ : IsUnit b₁.det), (((homLat W (colSpan W a₀) (colSpan W b₀)).toAddSubgroup.relIndex (homLat W (colSpan W a₁) (colSpan W b₁)).toAddSubgroup : ℕ) : ℝ) / (((homLat W (colSpan W a₁) (colSpan W b₁)).toAddSubgroup.relIndex (homLat W (colSpan W a₀) (colSpan W b₀)).toAddSubgroup : ℕ) : ℝ) = (p : ℝ) ^ ((n' : ℤ) * ((k : ℤ) * (ordP W p b₀.det - ordP W p b₁.det) - (k' : ℤ) * (ordP W p a₀.det - ordP W p a₁.det))) := by
   intro W Qq _ _ _ _ _ _ p n' hp hcard k k' a₀ a₁ b₀ b₁ ha₀ ha₁ hb₀ hb₁
   have hpQ : (p : Qq) ≠ 0 := pQ_ne hp

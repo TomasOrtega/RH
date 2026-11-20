@@ -18,14 +18,27 @@ def dE (R κ : Type) [CommRing R] : (V R κ × V R κ) ≃ₗ[R] V R (κ ⊕ κ)
   left_inv p := by ext k <;> simp [dv]
   right_inv u := by ext (k | k) <;> simp [dv]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, _, ((dE R κ).apply_symm_apply u).symm⟩`.
+-/
 theorem exists_dv (u : V R (κ ⊕ κ)) : ∃ w w', u = dv w w' := ⟨_, _, ((dE R κ).apply_symm_apply u).symm⟩
 
 def dbS (S : V R κ ≃ₗ[R] V R κ) : V R (κ ⊕ κ) ≃ₗ[R] V R (κ ⊕ κ) := (dE R κ).symm ≪≫ₗ S.prodCongr S ≪≫ₗ dE R κ
 
+/- English proof (translation)
+Use `show dE R κ (S.prodCongr S ((dE R κ).symm (dE R κ (w, w')))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem dbS_dv (S : V R κ ≃ₗ[R] V R κ) (w w' : V R κ) : dbS S (dv w w') = dv (S w) (S w') := by
   show dE R κ (S.prodCongr S ((dE R κ).symm (dE R κ (w, w')))) = _
   rw [LinearEquiv.symm_apply_apply]; rfl
 
+/- English proof (translation)
+Establish `e : ∀ a b : κ₁ → R, Function.extend (Sum.map j j) (Sum.elim a b) 0 = Sum.elim (Function.extend j a 0) (Function.extend j b 0)` using `fun a b => by`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : ∃ x, Sum.map j j x = k`. Take `⟨x, rfl⟩` from `h`. Rewrite using `[(hj.sumMap hj).extend_apply]`.
+
+Apply the tactic sequence `rcases x with x | x <;> simp [hj.extend_apply]`. Rewrite using `[Function.extend_apply' _ _ _ h]`. Break down `k with k | k` into its components or cases. Rewrite using `[Sum.elim_inl, Function.extend_apply' _ _ _ fun ⟨x, hx⟩ => h ⟨Sum.inl x, by simp [hx]⟩]; rfl`. Rewrite using `[Sum.elim_inr, Function.extend_apply' _ _ _ fun ⟨x, hx⟩ => h ⟨Sum.inr x, by simp [hx]⟩]; rfl`.
+
+Rewrite using `[Rel, dbS_dv]`. Simplify using `only [Rel, dv, e, funext_iff, Sum.forall, Function.comp_apply, Sum.map_inl, Sum.map_inr, Sum.elim_inl, Sum.elim_inr, Pi.neg_apply, neg_inj]`. The claim follows by propositional logic.
+-/
 theorem rel_dv {S : V R κ ≃ₗ[R] V R κ} {j : κ₁ → κ} (hj : Function.Injective j) {w w' : V R κ} {w₁ w₁' : V R κ₁} :
     Rel (dbS S) (Sum.map j j) (dv w w') (dv w₁ w₁') ↔ Rel S j w w₁ ∧ Rel S j w' w₁' := by
   have e : ∀ a b : κ₁ → R, Function.extend (Sum.map j j) (Sum.elim a b) 0 =
@@ -55,6 +68,9 @@ def kE (R : Type) [CommRing R] (p : κ → Prop) [DecidablePred p] : V R (κ ⊕
   left_inv a := by ext (k | k) <;> by_cases h : p k <;> simp [h]
   right_inv a := by ext (k | k) <;> by_cases h : p k <;> simp [h]
 
+/- English proof (translation)
+Apply the tactic sequence `ext (k | k) <;> by_cases h : p k <;> simp [kE, dv, h, sub_eq_add_neg]`.
+-/
 theorem kE_dv (p : κ → Prop) [DecidablePred p] (w w' : V R κ) : kE R p (dv w w') =
     (Sum.elim (w.1 - w'.1) fun k => if p k then w.2 k - w'.2 k else w'.1 k,
       Sum.elim w.2 fun k => if p k then -w'.1 k else w.2 k - w'.2 k) := by
@@ -70,15 +86,24 @@ def fE (R κ : Type) [CommRing R] : V R κ ≃ₗ[R] V R κ where
 
 variable [Fintype κ] [Fintype κ₁]
 
+/- English proof (translation)
+Introduce `w w'` and use `by show w.2 ⬝ᵥ (-w'.1) - w'.2 ⬝ᵥ (-w.1) = _ rw [dotProduct_neg, dotProduct_neg, dotProduct_comm w.2, dotProduct_comm w'.2]; ring`.
+-/
 theorem isSp_fE : IsSp (fE R κ) := fun w w' => by
   show w.2 ⬝ᵥ (-w'.1) - w'.2 ⬝ᵥ (-w.1) = _
   rw [dotProduct_neg, dotProduct_neg, dotProduct_comm w.2, dotProduct_comm w'.2]; ring
 
+/- English proof (translation)
+Introduce `w w'` and use `by simp only [dotProduct, Fintype.sum_sum_type, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib] refine Finset.sum_congr rfl fun k _ => ?_ by_cases h : p k <;> simp [kE, h] <;> ring`.
+-/
 theorem isSp_kE (p : κ → Prop) [DecidablePred p] : IsSp (kE R p) := fun w w' => by
   simp only [dotProduct, Fintype.sum_sum_type, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]
   refine Finset.sum_congr rfl fun k _ => ?_
   by_cases h : p k <;> simp [kE, h] <;> ring
 
+/- English proof (translation)
+Introduce `u u'` and use `by obtain ⟨a, b, rfl⟩ := exists_dv u obtain ⟨a', b', rfl⟩ := exists_dv u' rw [dbS_dv, dbS_dv] simp only [dv, sumElim_dotProduct_sumElim, dotProduct_neg] linear_combination h a a' - h b b'`.
+-/
 theorem IsSp.dbS {S : V R κ ≃ₗ[R] V R κ} (h : IsSp S) : IsSp (dbS S) := fun u u' => by
   obtain ⟨a, b, rfl⟩ := exists_dv u
   obtain ⟨a', b', rfl⟩ := exists_dv u'
@@ -88,6 +113,11 @@ theorem IsSp.dbS {S : V R κ ≃ₗ[R] V R κ} (h : IsSp S) : IsSp (dbS S) := fu
 
 variable [Invertible (2 : R)] {C : TestClass R} {ψ : AddChar R ℂ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Rewrite using `[← Sum.elim_comp_inl_inr x]`. Simplify using `only [schr, boxFun, sumElim_dotProduct_sumElim, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[mul_mul_mul_comm, ← AddChar.map_add_eq_mul]`. Use `congr 2`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem schr_box {κ' : Type} [Fintype κ'] (w : V R κ) (w' : V R κ') (φ₁ : (κ → R) → ℂ) (φ₂ : (κ' → R) → ℂ) :
     schr ψ (Sum.elim w.1 w'.1, Sum.elim w.2 w'.2) (boxFun φ₁ φ₂) = boxFun (schr ψ w φ₁) (schr ψ w' φ₂) := by
   funext x
@@ -97,16 +127,25 @@ theorem schr_box {κ' : Type} [Fintype κ'] (w : V R κ) (w' : V R κ') (φ₁ :
   congr 2
   ring
 
+/- English proof (translation)
+The claim follows from `schr_box w (w'.1, -w'.2) φ₁ φ₂`.
+-/
 theorem schr_dv (w w' : V R κ) (φ₁ φ₂ : (κ → R) → ℂ) :
     schr ψ (dv w w') (boxFun φ₁ φ₂) = boxFun (schr ψ w φ₁) (schr ψ (w'.1, -w'.2) φ₂) := schr_box w (w'.1, -w'.2) φ₁ φ₂
 
 omit [Invertible (2 : R)] [Fintype κ] [Fintype κ₁] in
+/- English proof (translation)
+Introduce `e` and use `by obtain ⟨x, hx⟩ := Function.ne_iff.1 h₁ obtain ⟨y, hy⟩ := Function.ne_iff.1 h₂ exact mul_ne_zero hx hy (congrFun e (Sum.elim x y))`.
+-/
 theorem box_ne {φ₁ : (κ → R) → ℂ} {φ₂ : (κ₁ → R) → ℂ} (h₁ : φ₁ ≠ 0) (h₂ : φ₂ ≠ 0) : boxFun φ₁ φ₂ ≠ 0 := fun e => by
   obtain ⟨x, hx⟩ := Function.ne_iff.1 h₁
   obtain ⟨y, hy⟩ := Function.ne_iff.1 h₂
   exact mul_ne_zero hx hy (congrFun e (Sum.elim x y))
 
 omit [Invertible (2 : R)] [Fintype κ] [Fintype κ₁] in
+/- English proof (translation)
+Take `⟨y, hy⟩` from `Function.ne_iff.1 h₂`. Conclude with `funext fun x => mul_right_cancel₀ hy (congrFun h (Sum.elim x y))`.
+-/
 theorem box_cancel {φ₁ φ₁' : (κ → R) → ℂ} {φ₂ : (κ₁ → R) → ℂ} (h₂ : φ₂ ≠ 0) (h : boxFun φ₁ φ₂ = boxFun φ₁' φ₂) : φ₁ = φ₁' := by
   obtain ⟨y, hy⟩ := Function.ne_iff.1 h₂
   exact funext fun x => mul_right_cancel₀ hy (congrFun h (Sum.elim x y))
@@ -115,6 +154,9 @@ variable {S : V R κ ≃ₗ[R] V R κ} {j : κ₁ → κ} {e : ((κ → R) → �
   {E : ((κ ⊕ κ → R) → ℂ) →ₗ[ℂ] ((κ₁ ⊕ κ₁ → R) → ℂ)}
 
 omit [Invertible (2 : R)] [Fintype κ] [Fintype κ₁] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Conclude with `Sum.inl_injective.extend_apply _ _ _`. Rewrite using `[Function.extend_apply' _ _ _ (by simp)]; rfl`.
+-/
 theorem ext_inl (x : κ → R) : Function.extend (Sum.inl : κ → κ ⊕ κ₁) x 0 = Sum.elim x 0 := by
   funext k
   rcases k with k | k
@@ -122,12 +164,30 @@ theorem ext_inl (x : κ → R) : Function.extend (Sum.inl : κ → κ ⊕ κ₁)
   · rw [Function.extend_apply' _ _ _ (by simp)]; rfl
 
 omit [Invertible (2 : R)] [Fintype κ] [Fintype κ₁] in
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Rewrite using `[Function.extend_apply' _ _ _ (by simp)]; rfl`. Conclude with `Sum.inr_injective.extend_apply _ _ _`.
+-/
 theorem ext_inr (x : κ₁ → R) : Function.extend (Sum.inr : κ₁ → κ ⊕ κ₁) x 0 = Sum.elim (0 : κ → R) x := by
   funext k
   rcases k with k | k
   · rw [Function.extend_apply' _ _ _ (by simp)]; rfl
   · exact Sum.inr_injective.extend_apply _ _ _
 
+/- English proof (translation)
+Introduce `φ₂ h₂`. Establish `key : ∀ y : κ₁ → R, ∃ c : ℂ, ∀ φ₁ ∈ C.sp κ, ∀ x, E (boxFun φ₁ φ₂) (Sum.elim x y) = c * e φ₁ x` using `fun y => by set w := S.symm (Function.extend j y 0, Function.extend j 0 0) with hw`. Establish `hr : Rel S j w (y, 0)` using `rel_lift hj (y, 0)`. Establish `r0 : Rel S j 0 (0 : V R κ₁)` using `⟨by simp [extend_zero' hj], by simp⟩`. Establish `h₂'` using `h.schr κ (w.1, -w.2) φ₂ h₂`.
+
+Take `⟨c, hc⟩` from `h.uniq hS hj he (e' := Chr.res R Sum.inl ∘ₗ E ∘ₗ boxL κ (schr ψ (w.1, -w.2) φ₂)) (fun u u₁ hu φ hφ => by`. Establish `e1` using `hE.law _ _ ((rel_dv hj).2 ⟨hu, r0⟩) _ (h.box _ _ _ hφ _ h₂')`. Rewrite `e1` using `[schr_dv, show (((0 : V R κ).1, -(0 : V R κ).2) : V R κ) = 0 by simp, schr_zero]`. Use function extensionality and compare the values at `x`. Use `show E (boxFun _ _) _ = schr ψ u₁ (fun x => E (boxFun _ _) (Function.extend Sum.inl x 0)) x`.
+
+Rewrite using `[e1]`. Simplify using `only [schr, dv, ext_inl, sumElim_dotProduct_sumElim, ← Sum.elim_add_add]`. Use the proof step `simp) (h.box_adm _ _ _ h₂' _ (hE.adm _ (h.res_adm _ _ _ Sum.inl_injective _ (h.ev0 _))))`. Use `⟨c, fun φ₁ h₁ x => ?_⟩` and prove the remaining obligations. Establish `e1` using `hE.law _ _ ((rel_dv hj).2 ⟨r0, hr⟩) _ (h.box _ _ _ h₁ _ h₂)`.
+
+Rewrite `e1` using `[schr_dv, schr_zero]`. Establish `e2 : E (boxFun φ₁ _) (Function.extend Sum.inl x 0) = c * e φ₁ x` using `congrFun (hc φ₁ h₁) x`. Rewrite `e2` using `[e1]`. Simplify `e2` using `[schr, dv, ext_inl, sumElim_dotProduct_sumElim, ← Sum.elim_add_add]`. Use `choose A hA using key`.
+
+Take `⟨φ, hφ, h0⟩` from `he.ne`. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Establish `hx : e φ x ≠ 0` using `hx`. Use `⟨A, ?_, fun φ₁ h₁ => funext fun z => ?_⟩` and prove the remaining obligations. Use `(C.sp κ₁).smul_mem (e φ x)⁻¹ (h.res _ _ _ Sum.inr_injective _ (h.schr _ (Sum.elim x 0, 0) _ (hE.maps _ (h.box _ _ _ hφ _ h₂))))` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Rewrite using `[schrodinger_translate_apply]`. Use `show _ = (e φ x)⁻¹ * E (boxFun φ φ₂) (Function.extend Sum.inr y 0 + Sum.elim x 0)`. Apply the tactic sequence `rw [ext_inr, show (Sum.elim (0 : κ₁ → R) y + Sum.elim x (0 : κ₁ → R)) = Sum.elim x y by ext (k | k) <;> simp, hA y φ hφ]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[← Sum.elim_comp_inl_inr z, hA _ φ₁ h₁, mul_comm]`. Both sides reduce to the same expression.
+-/
 theorem Ax.box_E (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (he : IsE C ψ S j e)
     (hE : IsE C ψ (dbS S) (Sum.map j j) E) : ∀ φ₂ ∈ C.sp κ, ∃ A ∈ C.sp κ₁, ∀ φ₁ ∈ C.sp κ, E (boxFun φ₁ φ₂) = boxFun (e φ₁) A := by
   intro φ₂ h₂
@@ -166,6 +226,11 @@ theorem Ax.box_E (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (he : I
   · rw [← Sum.elim_comp_inl_inr z, hA _ φ₁ h₁, mul_comm]
     rfl
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `h.ne κ`. Take `⟨w, w', hw⟩` from `h.comp_cyc hS.dbS (hj.sumMap hj) hE hl _ (h.box _ _ _ hφ _ hφ) (Chr.box_ne h0 h0)`. Take `⟨a, b, rfl⟩` from `exists_dv w`. Take `⟨a', b', rfl⟩` from `exists_dv w'`. Rewrite `hw` using `[schr_dv, schr_dv]`.
+
+Conclude with `⟨_, h.schr _ _ _ (h.schr _ _ _ hφ), _, h.schr _ _ _ (h.schr _ _ _ hφ), hw⟩`.
+-/
 theorem Ax.box_ne (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (hE : IsE C ψ (dbS S) (Sum.map j j) E)
     {l : ((κ₁ ⊕ κ₁ → R) → ℂ) →ₗ[ℂ] ℂ} (hl : Cyc C ψ l) : ∃ φ₁ ∈ C.sp κ, ∃ φ₂ ∈ C.sp κ, l (E (boxFun φ₁ φ₂)) ≠ 0 := by
   obtain ⟨φ, hφ, h0⟩ := h.ne κ
@@ -175,11 +240,43 @@ theorem Ax.box_ne (h : Ax C ψ) (hS : IsSp S) (hj : Function.Injective j) (hE : 
   rw [schr_dv, schr_dv] at hw
   exact ⟨_, h.schr _ _ _ (h.schr _ _ _ hφ), _, h.schr _ _ _ (h.schr _ _ _ hφ), hw⟩
 
+/- English proof (translation)
+Take `⟨l, h1, h2, h3⟩` from `h.exists_form (isSp_kE (R := R) fun _ : κ => True)`. Apply the tactic sequence `exact ⟨l, h1, fun w => h2 _ (by rw [kE_dv]; ext (k | k) <;> simp), h3⟩`.
+-/
 theorem Ax.exists_diag (h : Ax C ψ) (κ : Type) [Fintype κ] : ∃ l ∈ C.adm (κ ⊕ κ),
     (∀ w : V R κ, ∀ φ ∈ C.sp (κ ⊕ κ), l (schr ψ (dv w w) φ) = l φ) ∧ Cyc C ψ l := by
   obtain ⟨l, h1, h2, h3⟩ := h.exists_form (isSp_kE (R := R) fun _ : κ => True)
   exact ⟨l, h1, fun w => h2 _ (by rw [kE_dv]; ext (k | k) <;> simp), h3⟩
 
+/- English proof (translation)
+Use `set K := (dbS S).trans (kE R fun k => ∃ a, j a = k) with hK`. Establish `hKs : IsSp K` using `hS.dbS.trans (isSp_kE _)`. Establish `hKd : ∀ w w', K (dv w w') = kE R (fun k => ∃ a, j a = k) (dv (S w) (S w'))` using `fun w w' => by`. Rewrite using `[hK, LinearEquiv.trans_apply, dbS_dv]`. Take `⟨T, hT⟩` from `h.imp.ex hKs`.
+
+Establish `hi' : Function.Injective (Sum.inr ∘ i : ρ → κ ⊕ κ)` using `Sum.inr_injective.comp hi`. Establish `hE'` using `h.isE_res hT hi'`. Take `⟨I, hIa, hIne, hIt, hIg⟩` from `hI ρ`. Establish `hIc : Cyc C ψ I` using `h.cyc isSp_fE hIa (fun w hw φ hφ => by`. Rewrite using `[show w = (w.1, 0) from Prod.ext rfl hw, schrodinger_translate_apply, hIt _ _ hφ]) hIne`.
+
+Establish `hx : ∀ u : ρ → R, Function.extend (Sum.inr ∘ i : ρ → κ ⊕ κ) u 0 = Sum.elim (0 : κ → R) (Function.extend i u 0)` using `fun u => by`. Use function extensionality and compare the values at `k`. Break down `k with k | k` into its components or cases. Rewrite using `[Function.extend_apply' _ _ _ (by simp)]; rfl`. Distinguish the cases in `hk : ∃ a, i a = k`.
+
+Take `⟨a, rfl⟩` from `hk`. Rewrite using `[Sum.elim_inr, hi.extend_apply]`. Conclude with `hi'.extend_apply _ _ a`. Rewrite using `[Sum.elim_inr, Function.extend_apply' _ _ _ hk, Function.extend_apply' _ _ _ (by simpa using hk)]; rfl`. Establish `hrel : ∀ w : V R κ, Rel K (Sum.inr ∘ i) (dv w w) ((S w).1 ∘ i, 0)` using `fun w => by`.
+
+Rewrite using `[Rel, hKd, kE_dv, hx]`. Use `⟨funext fun k => ?_, funext fun a => ?_⟩` and prove the remaining obligations. Break down `k with k | k` into its components or cases. Simplify using the standard rewrite rules. Distinguish the cases in `hk : ∃ a, i a = k`.
+
+Use `(hij k).1 hk` as an intermediate fact. Take `⟨a, rfl⟩` from `hk`. Simplify using `only [Sum.elim_inr, if_neg this, hi.extend_apply, Function.comp_apply]`. Simplify using `only [Sum.elim_inr, if_pos (not_not.1 (mt (hij k).2 hk)), Function.extend_apply' _ _ _ hk, sub_self, Pi.zero_apply]`. Simplify using `only [Function.comp_apply, Sum.elim_inr, if_neg ((hij _).1 ⟨a, rfl⟩), sub_self, Pi.zero_apply]`.
+
+Take `⟨c, hc'⟩` from `h.line hKs hT (hE.adm l hl) fun w hw φ hφ => by`. Take `⟨a, b, rfl⟩` from `exists_dv w`. Rewrite `hw` using `[hKd, kE_dv]`. Establish `h1 : (S a).1 = (S b).1` using `funext fun k => sub_eq_zero.1 (congrFun hw (.inl k))`. Establish `h2 : (S b).1 = Function.extend j ((S b).1 ∘ j) 0` using `funext fun k => by`.
+
+Distinguish the cases in `hk : ∃ a, j a = k`. Take `⟨a, rfl⟩` from `hk`. Rewrite using `[hj.extend_apply]`. Both sides reduce to the same expression. Rewrite using `[Function.extend_apply' _ _ _ hk]`.
+
+Simplify `congrFun hw (.inr k)` using `[hk]`. Establish `h3 : (S a).2 ∘ j = (S b).2 ∘ j` using `funext fun k => by`. Use `congrFun hw (.inr (j k))` as an intermediate fact. Simplify using `only [Sum.elim_inr, if_pos (⟨k, rfl⟩ : ∃ a, j a = j k), Pi.zero_apply] at this`. Conclude with `sub_eq_zero.1 this`.
+
+Use `show l (E _) = l (E φ)`. Rewrite using `[hE.law _ _ ((rel_dv hj (w₁ := ((S b).1 ∘ j, (S b).2 ∘ j)) (w₁' := ((S b).1 ∘ j, (S b).2 ∘ j))).2 ⟨⟨h1.trans h2, h3⟩, ⟨h2, rfl⟩⟩) φ hφ, hinv _ _ (hE.maps φ hφ)]`. Establish `hc0 : c ≠ 0` using `fun e0 => by`. Take `⟨φ, hφ, hne⟩` from `h.comp_ne hS.dbS (hj.sumMap hj) hE hc`. Conclude with `hne ((hc' φ hφ).trans (by rw [e0, zero_mul]))`.
+
+Establish `hF : ∀ u, ∀ φ ∈ C.sp (κ ⊕ κ), c * (Chr.res R (Sum.inr ∘ i) ∘ₗ T) φ u = l (E (schr ψ (dv (S.symm (Function.extend i u 0, 0)) (S.symm (Function.extend i u 0, 0))) φ))` using `fun u φ hφ => by`. Use `Eq.trans ?_ (hc' _ (h.schr _ _ _ hφ)).symm` and prove the remaining obligations. Establish `e1` using `congrFun (hE'.law _ _ (hrel (S.symm (Function.extend i u 0, 0))) φ hφ) 0`. Rewrite `e1` using `[S.apply_symm_apply, Function.extend_comp hi, schrodinger_translate_apply]`. Simplify using `only [zero_add] at e1`.
+
+Rewrite using `[← e1, LinearMap.comp_apply, Chr.res, LinearMap.funLeft_apply, extend_zero' hi']`. Use `⟨I ∘ₗ Chr.res R (Sum.inr ∘ i) ∘ₗ T, hE'.adm I hIa, h.comp_ne hKs hi' hE' hIc, fun w φ hφ => ?_, fun O a g ha hO hOl hOa φ hφ => ?_⟩` and prove the remaining obligations. Use `show I ((Chr.res R (Sum.inr ∘ i) ∘ₗ T) _) = I ((Chr.res R (Sum.inr ∘ i) ∘ₗ T) φ)`. Rewrite using `[hE'.law _ _ (hrel w) φ hφ, schrodinger_translate_apply, hIt _ _ (hE'.maps φ hφ)]`. Establish `e1 : (Chr.res R (Sum.inr ∘ i) ∘ₗ T) (O φ) = a • fun u => (Chr.res R (Sum.inr ∘ i) ∘ₗ T) φ (g.symm u)`.
+
+Use function extensionality and compare the values at `u`. Use `mul_left_cancel₀ hc0 ?_` and prove the remaining obligations. Rewrite using `[hF _ _ (hO φ hφ), Pi.smul_apply, smul_eq_mul, mul_left_comm, hF _ _ hφ, ← hOa _ (h.schr _ _ _ hφ), hOl _ _ hφ, g.apply_symm_apply]`. Establish `m1 : (fun u => (Chr.res R (Sum.inr ∘ i) ∘ₗ T) φ (g.symm u)) ∈ C.sp ρ`. Use `(C.sp ρ).smul_mem a⁻¹ (hE'.maps _ (hO φ hφ))` as an intermediate fact.
+
+Rewrite `this` using `[e1, smul_smul, inv_mul_cancel₀ ha, one_smul]`. Then use the resulting hypothesis. Use `show I ((Chr.res R (Sum.inr ∘ i) ∘ₗ T) _) = _ * I ((Chr.res R (Sum.inr ∘ i) ∘ₗ T) φ)`. Rewrite using `[e1, map_smul, hIg g _ (hE'.maps φ hφ) m1, smul_eq_mul, mul_assoc]`.
+-/
 theorem Ax.exists_avg (h : Ax C ψ) (hI : AxInt C) (hS : IsSp S) (hj : Function.Injective j)
     (hE : IsE C ψ (dbS S) (Sum.map j j) E) {l : ((κ₁ ⊕ κ₁ → R) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ C.adm (κ₁ ⊕ κ₁))
     (hinv : ∀ w : V R κ₁, ∀ φ ∈ C.sp (κ₁ ⊕ κ₁), l (schr ψ (dv w w) φ) = l φ) (hc : Cyc C ψ l)

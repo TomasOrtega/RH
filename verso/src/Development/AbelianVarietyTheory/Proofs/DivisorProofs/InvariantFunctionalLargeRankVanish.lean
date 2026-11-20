@@ -9,6 +9,11 @@ noncomputable section
 
 namespace GlobalTheory.DetEqv.RowZero
 
+/- English proof (translation)
+Use `⟨hf, ?_⟩` and prove the remaining obligations. Establish `hcl : IsClosed (Function.support f)`. Establish `: Function.support f = (f ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`. Conclude with `(hf.isOpen_fiber 0).isClosed_compl`.
+
+Unfold `HasCompactSupport tsupport`. Rewrite using `[hcl.closure_eq]`. Conclude with `hK.of_isClosed_subset hcl h`.
+-/
 theorem mem_SB_of {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf : IsLocallyConstant f) {K : Set X}
     (hK : IsCompact K) (h : ∀ x, f x ≠ 0 → x ∈ K) : f ∈ SB X := by
   refine ⟨hf, ?_⟩
@@ -19,6 +24,9 @@ theorem mem_SB_of {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf : IsLocall
   rw [hcl.closure_eq]
   exact hK.of_isClosed_subset hcl h
 
+/- English proof (translation)
+Introduce `s` and use `by have h := Set.indicator_const_preimage W s c simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h rcases h with h | h | h | h <;> rw [h] exacts [isOpen_univ, hW.isOpen, hW.isClosed.isOpen_compl, isOpen_empty]`.
+-/
 theorem isLocallyConstant_indicator {X : Type} [TopologicalSpace X] {W : Set X} (hW : IsClopen W) (c : ℂ) :
     IsLocallyConstant (W.indicator fun _ => c) := fun s => by
   have h := Set.indicator_const_preimage W s c
@@ -26,6 +34,9 @@ theorem isLocallyConstant_indicator {X : Type} [TopologicalSpace X] {W : Set X} 
   rcases h with h | h | h | h <;> rw [h]
   exacts [isOpen_univ, hW.isOpen, hW.isClosed.isOpen_compl, isOpen_empty]
 
+/- English proof (translation)
+Use `mem_SB_of (hf.1.comp_continuous (continuous_fst.prodMk (continuous_snd.matrix_mul continuous_const))) ((hf.2.image (continuous_fst.prodMk (continuous_snd.matrix_mul continuous_const) : Continuous fun p : Y × Matrix (Fin a) (Fin m) k => (p.1, p.2 * ((g⁻¹ : GL (Fin m) k) : Matrix ( …` and prove the remaining obligations. Use `⟨(p.1, p.2 * (g : Matrix (Fin m) (Fin m) k)), subset_tsupport _ hp, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[show (g : Matrix (Fin m) (Fin m) k) * ((g⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) = 1 from Units.mul_inv g, Matrix.mul_one]`.
+-/
 theorem mem_SB_mul {Y : Type} [TopologicalSpace Y] {k : Type} [Field k] [TopologicalSpace k]
     [IsTopologicalRing k] {a m : ℕ} (g : GL (Fin m) k) {f : Y × Matrix (Fin a) (Fin m) k → ℂ}
     (hf : f ∈ SB (Y × Matrix (Fin a) (Fin m) k)) :
@@ -46,6 +57,33 @@ namespace GlobalTheory.DetEqv
 
 open RowZero in
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n hV Y _ m hm μ hμ L hL hz`. Use `set S : Set (Fin m → k) := Set.univ.pi fun _ => (𝒪[k] : Set k) with hS`. Establish `hSc : IsClopen S` using `⟨isClosed_set_pi fun _ _ => Valuation.isClosed_integer, isOpen_set_pi Set.finite_univ fun _ _ => Valuation.isOpen_integer⟩`. Establish `hSk : IsCompact S` using `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Use `set ι : (Fin m → k) → ℂ := S.indicator fun _ => 1 with hιdef`.
+
+Establish `hι : IsLocallyConstant ι` using `isLocallyConstant_indicator hSc 1`. Establish `hι0 : ι 0 = 1` using `Set.indicator_of_mem (by simp [hS]) _`. Set `tl : Y × Matrix (Fin (n + 1)) (Fin m) k → Y × Matrix (Fin n) (Fin m) k` to `fun p => (p.1, Matrix.of fun i j => p.2 i.succ j)`. Establish `htl : Continuous tl` using `continuous_fst.prodMk (continuous_matrix fun i j => continuous_snd.matrix_elem i.succ j)`. Set `cs : (Fin m → k) × (Y × Matrix (Fin n) (Fin m) k) → Y × Matrix (Fin (n + 1)) (Fin m) k` to `fun q => (q.2.1, Matrix.of (Fin.cons (α := fun _ => Fin m → k) q.1 q.2.2))`.
+
+Establish `hcs : Continuous cs`. Use `continuous_snd.fst.prodMk (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Consider the cases of `i using Fin.cases with`. Consider the case `zero => exact (continuous_apply j).comp continuous_fst`. Consider the case `succ i => exact continuous_snd.snd.matrix_elem i j`.
+
+Establish `hrow : Continuous fun p : Y × Matrix (Fin (n + 1)) (Fin m) k => p.2 0` using `continuous_pi fun j => continuous_snd.matrix_elem 0 j`. Set `Ef : (Y × Matrix (Fin n) (Fin m) k → ℂ) → Y × Matrix (Fin (n + 1)) (Fin m) k → ℂ` to `fun ψ p => ι (p.2 0) * ψ (tl p)`. Establish `hE : ∀ ψ ∈ SB (Y × Matrix (Fin n) (Fin m) k), Ef ψ ∈ SB (Y × Matrix (Fin (n + 1)) (Fin m) k)`. Introduce `ψ hψ`. Use `mem_SB_of ((hι.comp_continuous hrow).mul (hψ.1.comp_continuous htl)) ((hSk.prod hψ.2).image hcs) fun p hp => ?_` and prove the remaining obligations.
+
+Establish `h1 : ι (p.2 0) ≠ 0` using `left_ne_zero_of_mul hp`. Establish `h2 : ψ (tl p) ≠ 0` using `right_ne_zero_of_mul hp`. Use `⟨(p.2 0, tl p), ⟨Set.mem_of_indicator_ne_zero h1, subset_tsupport _ h2⟩, ?_⟩` and prove the remaining obligations. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use extensionality with `i j`.
+
+Apply the tactic sequence `cases i using Fin.cases <;> rfl`. Set `E : SB (Y × Matrix (Fin n) (Fin m) k) →ₗ[ℂ] SB (Y × Matrix (Fin (n + 1)) (Fin m) k)` to `{ toFun := fun Ψ => ⟨Ef Ψ, hE Ψ Ψ.2⟩ map_add' := fun a b => Subtype.ext (funext fun p => by simp [Ef, mul_add]) map_smul' := fun c a => Subtype.ext (funext fun p => by simp [Ef, mul_left_comm]) }`. Establish `hL' : ∀ (g : GL (Fin m) k) (Ψ Ψ' : SB (Y × Matrix (Fin n) (Fin m) k)), (∀ (y : Y) (X : Matrix (Fin n) (Fin m) k), (Ψ' : Y × Matrix (Fin n) (Fin m) k → ℂ) (y, X) = (Ψ : Y × Matrix (Fin n) (Fin m) k → ℂ) (y, X * (g : Matrix (Fin m) (Fin m) k))) → (L ∘ₗ E) Ψ' = (μ (Matrix.GeneralLin …`. Introduce `g Ψ Ψ' h`. Set `Φ'' : SB (Y × Matrix (Fin (n + 1)) (Fin m) k)` to `⟨_, mem_SB_mul g (hE Ψ Ψ.2)⟩`.
+
+Establish `h1` using `hL g (E Ψ) Φ'' (fun y X => rfl)`. Establish `h2 : L (Φ'' - E Ψ') = 0` using `hz _ fun y X hX => by show ι ((X * (g : Matrix (Fin m) (Fin m) k)) 0) * (Ψ : Y × Matrix (Fin n) (Fin m) k → ℂ) (y, Matrix.of fun (i : Fin n) (j : Fin m) => (X * (g : Matrix (Fin m) (Fin m) k)) i.succ j) - ι (X 0) * (Ψ' : Y × Matrix (Fin n) (Fin m) k → ℂ) (y, Matrix.of fun i j => …`. Rewrite using `[h]`. Establish `e1 : (X * (g : Matrix (Fin m) (Fin m) k)) 0 = X 0`. Use function extensionality and compare the values at `j`.
+
+Simplify using `[Matrix.mul_apply, hX]`. Establish `e2 : (Matrix.of fun (i : Fin n) (j : Fin m) => (X * (g : Matrix (Fin m) (Fin m) k)) i.succ j) = (Matrix.of fun (i : Fin n) (j : Fin m) => X i.succ j) * (g : Matrix (Fin m) (Fin m) k)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e1, e2, sub_self]`.
+
+Rewrite `h2` using `[map_sub, sub_eq_zero]`. Use `show L (E Ψ') = _ * L (E Ψ)`. Rewrite using `[← h2, h1]`. Establish `hL'0 : L ∘ₗ E = 0` using `hV Y m (by omega) μ hμ (L ∘ₗ E) hL'`. Use `LinearMap.ext fun Φ => ?_` and prove the remaining obligations.
+
+Establish `hΦ0 : (fun q => (Φ : Y × Matrix (Fin (n + 1)) (Fin m) k → ℂ) (cs (0, q))) ∈ SB (Y × Matrix (Fin n) (Fin m) k)`. Use `mem_SB_of (Φ.2.1.comp_continuous (hcs.comp (continuous_const.prodMk continuous_id))) (Φ.2.2.image htl) fun q hq => ⟨cs (0, q), subset_tsupport _ hq, ?_⟩` and prove the remaining obligations. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+
+Establish `h3 : L (Φ - E ⟨_, hΦ0⟩) = 0` using `hz _ fun y X hX => by show (Φ : Y × Matrix (Fin (n + 1)) (Fin m) k → ℂ) (y, X) - ι (X 0) * (Φ : Y × Matrix (Fin (n + 1)) (Fin m) k → ℂ) (cs (0, tl (y, X))) = 0`. Establish `e : cs (0, tl (y, X)) = (y, X)`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Use extensionality with `i j`. Consider the cases of `i using Fin.cases with`.
+
+Consider the case `zero => exact (congrFun hX j).symm`. Consider the case `succ i => rfl`. Rewrite using `[e, hX, hι0, one_mul, sub_self]`. Establish `h4 : L (E ⟨_, hΦ0⟩) = 0` using `LinearMap.congr_fun hL'0 _`. Rewrite `h3` using `[map_sub, h4, sub_zero]`.
+
+Conclude with `h3`.
+-/
 theorem vanish_of_vanish_off_rowZero : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), GlobalTheory.DetEqv.VanishAt k n → ∀ (Y : Type) [TopologicalSpace Y] (m : ℕ), n + 1 < m →
     ∀ μ : kˣ →* ℂˣ, (∀ t : ℝ, μ ≠ GlobalTheory.SmGL.absPow k (t : ℂ)) → ∀ L : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin m) k) →ₗ[ℂ] ℂ,
       (∀ (g : GL (Fin m) k) (Φ Φ' : GlobalTheory.SplitWeil.SB (Y × Matrix (Fin (n + 1)) (Fin m) k)),

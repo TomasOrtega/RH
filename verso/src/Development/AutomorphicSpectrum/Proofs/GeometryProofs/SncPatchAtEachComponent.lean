@@ -15,10 +15,16 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 def ev (ξ : Sp Ω ⟶ X) (D : X.Opens) (hη : genPt ξ ∈ D) : Γ(X, D) →+* Ω :=
   (Scheme.stalkClosedPointTo ξ).hom.comp (X.presheaf.germ D (genPt ξ) hη).hom
 
+/- English proof (translation)
+The claim follows from `(genMap_germ_eq_stalk_closed ξ t D ht hη r).symm`.
+-/
 theorem ev_eq_genMap (ξ : Sp Ω ⟶ X) {D : X.Opens} (hη : genPt ξ ∈ D) (t : Cpt ξ) (ht : t.1 ∈ D)
     (r : Γ(X, D)) : ev ξ D hη r = genMap ξ t (X.presheaf.germ D t.1 ht r) :=
   (genMap_germ_eq_stalk_closed ξ t D ht hη r).symm
 
+/- English proof (translation)
+Use `show (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ D' (genPt ξ) hη' ((X.presheaf.map (homOfLE h).op).hom r)) = (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ D (genPt ξ) (h hη') r)`. Use `congr 1`. Conclude with `TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE h) _ hη' r`.
+-/
 theorem ev_res (ξ : Sp Ω ⟶ X) {D D' : X.Opens} (h : D' ≤ D) (hη' : genPt ξ ∈ D') (r : Γ(X, D)) :
     ev ξ D' hη' ((X.presheaf.map (homOfLE h).op).hom r) = ev ξ D (h hη') r := by
   show (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ D' (genPt ξ) hη' ((X.presheaf.map (homOfLE h).op).hom r)) =
@@ -26,6 +32,11 @@ theorem ev_res (ξ : Sp Ω ⟶ X) {D D' : X.Opens} (h : D' ≤ D) (hη' : genPt 
   congr 1
   exact TopCat.Presheaf.germ_res_apply X.presheaf (homOfLE h) _ hη' r
 
+/- English proof (translation)
+Rewrite using `[Scheme.mem_basicOpen _ _ _ hη]`. Take `⟨b, hb⟩` from `hξ.bij.2 (ev ξ D hη x)⁻¹`. Use `IsUnit.of_mul_eq_one b (hξ.bij.1 ?_)` and prove the remaining obligations. Use `((Scheme.stalkClosedPointTo ξ).hom.map_mul _ _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ ((Scheme.stalkClosedPointTo ξ).hom.map_one).symm` and prove the remaining obligations.
+
+Rewrite using `[hb]`. Conclude with `mul_inv_cancel₀ hx`.
+-/
 theorem mem_basicOpen_of_ev_ne_zero {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {D : X.Opens} (hη : genPt ξ ∈ D)
     (x : Γ(X, D)) (hx : ev ξ D hη x ≠ 0) : genPt ξ ∈ X.basicOpen x := by
   rw [Scheme.mem_basicOpen _ _ _ hη]
@@ -36,6 +47,11 @@ theorem mem_basicOpen_of_ev_ne_zero {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {D : 
   rw [hb]
   exact mul_inv_cancel₀ hx
 
+/- English proof (translation)
+Establish `h` using `hD.fromSpec_preimage_basicOpen s`. Establish `h2 : (hD.fromSpec P ∈ X.basicOpen s) ↔ P ∈ PrimeSpectrum.basicOpen s`. Rewrite using `[← h]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem mem_asIdeal_iff {D : X.Opens} (hD : IsAffineOpen D) (P : PrimeSpectrum Γ(X, D)) (s : Γ(X, D)) :
     s ∈ P.asIdeal ↔ hD.fromSpec P ∉ X.basicOpen s := by
   have h := hD.fromSpec_preimage_basicOpen s
@@ -45,6 +61,13 @@ theorem mem_asIdeal_iff {D : X.Opens} (hD : IsAffineOpen D) (P : PrimeSpectrum �
   rw [h2]
   simp
 
+/- English proof (translation)
+Establish `h0 : hD.primeIdealOf ⟨genPt ξ, hη⟩ ⤳ P`. Rewrite using `[← PrimeSpectrum.le_iff_specializes]`. Introduce `s hs`. Establish `h1` using `(mem_asIdeal_iff hD _ s).1 hs`. Rewrite `h1` using `[hD.fromSpec_primeIdealOf]`.
+
+Distinguish the cases in `h : s = 0`. Rewrite using `[h]`. Conclude with `zero_mem _`. Conclude with `absurd (mem_basicOpen_of_ev_ne_zero hξ hη s fun h' => h (hinj (by simpa using h'))) h1`. Use `h0.map hD.fromSpec.continuous` as an intermediate fact.
+
+Rewrite `this` using `[hD.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+-/
 theorem specializes_fromSpec {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {D : X.Opens} (hD : IsAffineOpen D)
     (hη : genPt ξ ∈ D) (hinj : Function.Injective (ev ξ D hη)) (P : PrimeSpectrum Γ(X, D)) :
     genPt ξ ⤳ hD.fromSpec P := by
@@ -59,6 +82,23 @@ theorem specializes_fromSpec {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {D : X.Opens
   have := h0.map hD.fromSpec.continuous
   rwa [hD.fromSpec_primeIdealOf] at this
 
+/- English proof (translation)
+Establish `hl` using `hV.isLocalization_stalk ⟨p.1, hp⟩`. Use `set P := (hV.primeIdealOf ⟨p.1, hp⟩).asIdeal with hP`. Establish `key : ∀ a, ev ξ V hη a = 0 → ∃ m : P.primeCompl, (m : Γ(X, V)) * a = 0`. Introduce `a ha`. Establish `h0 : X.presheaf.germ V p.1 hp a = 0`.
+
+Apply `hξ.inj p` to reduce the goal to its premises. Rewrite using `[← ev_eq_genMap ξ hη p hp, ha, map_zero]`. Conclude with `(IsLocalization.map_eq_zero_iff P.primeCompl (X.presheaf.stalk (⟨p.1, hp⟩ : V).1) a).1 h0`. Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (RingHom.ker (ev ξ V hη)) : (RingHom.ker (ev ξ V hη)).FG)`. Establish `fin : ∀ u : Finset Γ(X, V), (∀ a ∈ u, ev ξ V hη a = 0) → ∃ m : P.primeCompl, ∀ a ∈ u, (m : Γ(X, V)) * a = 0`.
+
+Introduce `u`. Proceed by induction on `u using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨1, by simp⟩`. Consider the case `insert b u _ ih`. Introduce `h`.
+
+Take `⟨m, hm⟩` from `ih fun a ha => h a (Finset.mem_insert_of_mem ha)`. Take `⟨m', hm'⟩` from `key b (h b (Finset.mem_insert_self _ _))`. Use `⟨m * m', fun a ha => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Rewrite using `[Submonoid.coe_mul, _root_.mul_assoc, hm', mul_zero]`.
+
+Rewrite using `[Submonoid.coe_mul, mul_right_comm, hm a ha, zero_mul]`. Take `⟨m, hm⟩` from `fin s fun a ha => by`. Establish `: a ∈ RingHom.ker (ev ξ V hη)` using `hs ▸ Ideal.subset_span ha`. Conclude with `this`. Use `⟨m, ?_, fun a ha => ?_⟩` and prove the remaining obligations.
+
+Establish `h1` using `mem_asIdeal_iff hV (hV.primeIdealOf ⟨p.1, hp⟩) m`. Rewrite `h1` using `[hV.fromSpec_primeIdealOf]`. Assume the negation of the conclusion as `hc`. Conclude with `m.2 (h1.2 hc)`. Establish `all : ∀ b ∈ Submodule.span Γ(X, V) (s : Set Γ(X, V)), (m : Γ(X, V)) * b = 0` using `fun b hb => by`.
+
+Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem x hx => exact hm x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]`.
+
+Conclude with `all a (by rw [hs]; exact ha)`.
+-/
 theorem exists_kill {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {V : X.Opens} (hV : IsAffineOpen V)
     [IsNoetherianRing Γ(X, V)] (p : Cpt ξ) (hp : p.1 ∈ V) (hη : genPt ξ ∈ V) :
     ∃ g : Γ(X, V), p.1 ∈ X.basicOpen g ∧ ∀ a, ev ξ V hη a = 0 → g * a = 0 := by
@@ -102,6 +142,13 @@ theorem exists_kill {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) {V : X.Opens} (hV : I
       | smul c x _ hx => rw [smul_eq_mul, mul_left_comm, hx, mul_zero]
     exact all a (by rw [hs]; exact ha)
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `haveI := hV.isLocalization_basicOpen g`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj g x`. Establish `hres : ∀ w : Γ(X, V), ev ξ (X.basicOpen g) hη (algebraMap Γ(X, V) Γ(X, X.basicOpen g) w) = ev ξ V (X.basicOpen_le g hη) w` using `fun w => ev_res ξ (X.basicOpen_le g) hη w`.
+
+Establish `h1 : ev ξ V (X.basicOpen_le g hη) a = 0`. Rewrite using `[← hres, ← ha, map_mul, hx, zero_mul]`. Establish `h2` using `hk a h1`. Establish `hu : IsUnit (algebraMap Γ(X, V) Γ(X, X.basicOpen g) g)` using `IsLocalization.Away.algebraMap_isUnit g`. Establish `h3 : algebraMap Γ(X, V) Γ(X, X.basicOpen g) a = 0`.
+
+Use `congrArg (algebraMap Γ(X, V) Γ(X, X.basicOpen g)) h2` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `(hu.mul_right_eq_zero).1 this`. Rewrite `ha` using `[h3]`. Conclude with `((hu.pow n).mul_left_eq_zero).1 (by simpa using ha)`.
+-/
 theorem ev_basicOpen_injective (ξ : Sp Ω ⟶ X) {V : X.Opens} (hV : IsAffineOpen V) (g : Γ(X, V))
     (hη : genPt ξ ∈ X.basicOpen g) (hk : ∀ a, ev ξ V (X.basicOpen_le g hη) a = 0 → g * a = 0) :
     Function.Injective (ev ξ (X.basicOpen g) hη) := by
@@ -122,6 +169,17 @@ theorem ev_basicOpen_injective (ξ : Sp Ω ⟶ X) {V : X.Opens} (hV : IsAffineOp
   rw [h3] at ha
   exact ((hu.pow n).mul_left_eq_zero).1 (by simpa using ha)
 
+/- English proof (translation)
+Use `haveI : Subsingleton (Ω[F⁄ℚ]) := inferInstance`. Establish `hinj : Function.Injective (KaehlerDifferential.map ℚ F R R)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(KaehlerDifferential.exact_mapBaseChange_map ℚ F R x).1 hx`.
+
+Establish `hall : ∀ y : TensorProduct F R Ω[F⁄ℚ], y = 0` using `fun y => by`. Proceed by induction on `y with`. Consider the case `zero => rfl`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Consider the case `tmul a b => rw [Subsingleton.elim b 0, TensorProduct.tmul_zero]`.
+
+Rewrite using `[hall y, map_zero]`. Set `E` to `LinearEquiv.ofBijective (KaehlerDifferential.map ℚ F R R) ⟨hinj, KaehlerDifferential.map_surjective ℚ F R⟩`. Set `b` to `Module.Basis.mk h1 h2.ge`. Set `b'` to `b.map E.symm`. Establish `hb : (fun i => KaehlerDifferential.D ℚ R (z i)) = b'`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [b', b, Module.Basis.map_apply, Module.Basis.mk_apply]`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Conclude with `(KaehlerDifferential.map_D ℚ F R R (z i)).trans (by simp)`. Rewrite using `[hb]`.
+
+Conclude with `⟨b'.linearIndependent, b'.span_eq⟩`.
+-/
 theorem coords_rat {F R : Type} [Field F] [Algebra ℚ F] [Algebra.FormallyEtale ℚ F] [CommRing R]
     [Algebra F R] [Algebra ℚ R] [IsScalarTower ℚ F R] {e : ℕ} (z : Fin e → R)
     (h1 : LinearIndependent R fun i => KaehlerDifferential.D F R (z i))
@@ -151,6 +209,9 @@ theorem coords_rat {F R : Type} [Field F] [Algebra ℚ F] [Algebra.FormallyEtale
   rw [hb]
   exact ⟨b'.linearIndependent, b'.span_eq⟩
 
+/- English proof (translation)
+Establish `h0 : Smooth g` using `hsm.smooth`. Establish `h1` using `Smooth.smooth_appLE (f := g) (isAffineOpen_top _) hD (fun _ _ => trivial)`. Conclude with `RingHom.Smooth.propertyIsLocal.respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv h1`.
+-/
 theorem smooth_secAlgebra' {F : Type} [Field F] {Z : Scheme.{0}} (g : Z ⟶ Sp F) (e : ℕ)
     (hsm : SmoothOfRelativeDimension e g) {D : Z.Opens} (hD : IsAffineOpen D) :
     @Algebra.Smooth F _ Γ(Z, D) _ (ReciprocityTheory.ChartRestriction.G.Geo.ResK.secAlgebra g D) := by
@@ -159,6 +220,19 @@ theorem smooth_secAlgebra' {F : Type} [Field F] {Z : Scheme.{0}} (g : Z ⟶ Sp F
   exact RingHom.Smooth.propertyIsLocal.respectsIso.2 _
     (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv h1
 
+/- English proof (translation)
+Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`. Take `⟨r, τ, hrt, hu⟩` from `stalk_eq_germ_div_of_affine hD ⟨t.1, ht⟩ b`. Use `⟨φ τ, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hq, not_not, Scheme.mem_basicOpen _ _ _ ht]`. Conclude with `hu`. Establish `: (φ τ : Ω) * genMap ξ t b = φ r`. Rewrite using `[hφ, hφ, ev_eq_genMap ξ hη t ht, ev_eq_genMap ξ hη t ht, mul_comm, ← map_mul]`. Conclude with `congrArg _ hrt`.
+
+Rewrite using `[this]`. Conclude with `(φ r).2`. Introduce and unpack `⟨s, hs, hsa⟩`. Take `⟨τ, rfl⟩` from `φ.surjective s`. Take `⟨r, hr⟩` from `φ.surjective ⟨_, hsa⟩`.
+
+Establish `hu : IsUnit (X.presheaf.germ D t.1 ht τ)`. Use `(not_congr (hq τ)).1 hs` as an intermediate fact. Rewrite `this` using `[not_not, Scheme.mem_basicOpen _ _ _ ht]`. Conclude with `this`. Take `⟨u, hu⟩` from `hu`.
+
+Establish `hne : genMap ξ t (X.presheaf.germ D t.1 ht τ) ≠ 0`. Rewrite using `[← hu]`. Conclude with `(u.isUnit.map (genMap ξ t)).ne_zero`. Use `⟨X.presheaf.germ D t.1 ht r * ↑u⁻¹, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
+
+Establish `h1 : (φ τ : Ω) * a = φ r` using `by rw [hr]`. Rewrite `h1` using `[hφ, hφ, ev_eq_genMap ξ hη t ht, ev_eq_genMap ξ hη t ht]`. Rewrite using `[h1, ← map_mul, mul_left_comm, ← hu, Units.mul_inv, _root_.mul_one]`.
+-/
 theorem isLocAt_of_point [CharZero Ω] {ξ : Sp Ω ⟶ X} {D : X.Opens} (hD : IsAffineOpen D)
     (hη : genPt ξ ∈ D) (A : Subalgebra ℚ Ω) (φ : Γ(X, D) ≃+* A)
     (hφ : ∀ x, (φ x : Ω) = ev ξ D hη x) (q : Ideal A) (t : Cpt ξ) (ht : t.1 ∈ D)
@@ -192,6 +266,31 @@ theorem isLocAt_of_point [CharZero Ω] {ξ : Sp Ω ⟶ X} {D : X.Opens} (hD : Is
     rw [hφ, hφ, ev_eq_genMap ξ hη t ht, ev_eq_genMap ξ hη t ht] at h1
     rw [h1, ← map_mul, mul_left_comm, ← hu, Units.mul_inv, _root_.mul_one]
 
+/- English proof (translation)
+Establish `hD : IsAffineOpen (W.basicOpen g)` using `hV.basicOpen g`. Establish `hDV : W.basicOpen g ≤ V` using `W.basicOpen_le g`. Use `letI iVF := ReciprocityTheory.ChartRestriction.G.Geo.ResK.secAlgebra sW V`. Use `letI iDF := ReciprocityTheory.ChartRestriction.G.Geo.ResK.secAlgebra sW (W.basicOpen g)`. Use `letI iVQ : Algebra ℚ Γ(W, V) := ((algebraMap F Γ(W, V)).comp (algebraMap ℚ F)).toAlgebra`.
+
+Use `letI iDQ : Algebra ℚ Γ(W, W.basicOpen g) := ((algebraMap F Γ(W, W.basicOpen g)).comp (algebraMap ℚ F)).toAlgebra`. Use `haveI : IsScalarTower ℚ F Γ(W, V) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower ℚ F Γ(W, W.basicOpen g) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI hFe : Algebra.FormallyEtale ℚ F := Algebra.FormallyEtale.of_isSeparable ℚ F`. Use `haveI hFs : Algebra.Smooth ℚ F := ⟨inferInstance, Algebra.FinitePresentation.of_finiteType.1 inferInstance⟩`.
+
+Use `haveI hsF : Algebra.Smooth F Γ(W, W.basicOpen g) := smooth_secAlgebra' sW e hsm hD`. Use `haveI hsQ : Algebra.Smooth ℚ Γ(W, W.basicOpen g) := Algebra.Smooth.comp ℚ F _`. Set `ψ` to `ev ξ (W.basicOpen g) hη`. Set `A : Subalgebra ℚ Ω` to `(RingHom.toRatAlgHom ψ).range`. Establish `hψ : ∀ x, ψ x ∈ A` using `fun x => ⟨x, rfl⟩`.
+
+Set `φ : Γ(W, W.basicOpen g) ≃+* A` to `RingEquiv.ofBijective (ψ.codRestrict A hψ) (by`. Use `⟨fun a b hab => hinj (congrArg Subtype.val hab), fun s => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `s.2`. Conclude with `⟨x, Subtype.ext hx⟩)`. Establish `hφ : ∀ x, (φ x : Ω) = ev ξ (W.basicOpen g) hη x` using `fun _ => rfl`.
+
+Establish `hsmooth : Algebra.Smooth ℚ A` using `Algebra.Smooth.of_equiv φ.toRatAlgEquiv`. Take `⟨c0, c0'⟩` from `coords_rat (F := F) (R := Γ(W, V)) z hz.1 hz.2`. Use `haveI := hV.isLocalization_basicOpen g`. Use `haveI : Algebra.FormallyEtale Γ(W, V) Γ(W, W.basicOpen g) := Algebra.FormallyEtale.of_isLocalization (Submonoid.powers g)`. Use `haveI : IsScalarTower ℚ Γ(W, V) Γ(W, W.basicOpen g) := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`.
+
+Take `⟨c1, c2⟩` from `SncRes.coords_of_formallyEtale (R := Γ(W, V)) (S := Γ(W, W.basicOpen g)) z c0 c0'`. Use `letI iS : Algebra Γ(W, W.basicOpen g) A := φ.toRingHom.toAlgebra`. Use `haveI : Algebra.FormallyEtale Γ(W, W.basicOpen g) A := Algebra.FormallyEtale.of_equiv (AlgEquiv.ofRingEquiv (f := φ) fun _ => rfl)`. Use `haveI : IsScalarTower ℚ Γ(W, W.basicOpen g) A := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Take `⟨d1, d2⟩` from `SncRes.coords_of_formallyEtale (R := Γ(W, W.basicOpen g)) (S := A) _ c1 c2`.
+
+Establish `hPp : hD.fromSpec (hD.primeIdealOf ⟨p'.1, hp⟩) = p'.1` using `hD.fromSpec_primeIdealOf _`. Use `⟨A, _, k, (hD.primeIdealOf ⟨p'.1, hp⟩).asIdeal.comap φ.symm.toRingHom, ⟨(Subalgebra.fg_iff_finiteType A).2 inferInstance, hsmooth, hk, d1, d2, fun q hq => ?_⟩, Ideal.comap_isPrime _ _, ?_⟩` and prove the remaining obligations. Establish `hq' : (q.comap φ.toRingHom).IsPrime` using `Ideal.comap_isPrime _ _`. Set `P : PrimeSpectrum Γ(W, W.basicOpen g)` to `⟨_, hq'⟩`. Set `t : Cpt ξ` to `⟨hD.fromSpec P, specializes_fromSpec hξ hD hη hinj P⟩`.
+
+Establish `htD : t.1 ∈ W.basicOpen g` using `hD.fromSpec_preimage_self.ge (Set.mem_univ P)`. Establish `hmem : ∀ x, φ x ∈ q ↔ t.1 ∉ W.basicOpen x` using `fun x => mem_asIdeal_iff hD P x`. Establish `htV : t.1 ∈ V` using `hDV htD`. Use `⟨regAt ξ t, ⟨t, rfl⟩, isLocAt_of_point hD hη A φ hφ q t htD hmem, ?_⟩` and prove the remaining obligations. Establish `hzt : ∀ i, algebraMap Γ(W, W.basicOpen g) A (algebraMap Γ(W, V) Γ(W, W.basicOpen g) (z i)) ∈ q ↔ t.1 ∉ W.basicOpen (z i)` using `fun i => by`.
+
+Use `(hmem _).trans (not_congr ?_)` and prove the remaining obligations. Use `W.basicOpen_res (z i) (homOfLE hDV).op` as an intermediate fact. Rewrite using `[show algebraMap Γ(W, V) Γ(W, W.basicOpen g) (z i) = (W.presheaf.map (homOfLE hDV).op).hom (z i) from rfl, this]`. Conclude with `⟨fun h => h.2, fun h => ⟨htD, h⟩⟩`. Establish `hTt : t.1 ∈ T ↔ ∃ i : Fin e, (i : ℕ) < k ∧ t.1 ∉ W.basicOpen (z i)`.
+
+Establish `h1 : t.1 ∈ (V : Set W) ∩ T ↔ t.1 ∈ T` using `⟨fun h => h.2, fun h => ⟨htV, h⟩⟩`. Rewrite using `[← h1, hT]`. Conclude with `⟨fun h => h.2, fun h => ⟨htV, h⟩⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hst⟩`.
+
+Establish `: s = t` using `hreg _ _ hst`. Take `⟨i, hi, hit⟩` from `hTt.1 (this ▸ hs)`. Conclude with `⟨i, hi, (hzt i).2 hit⟩`. Introduce and unpack `⟨i, hi, hit⟩`. Conclude with `⟨t, hTt.2 ⟨i, hi, (hzt i).1 hit⟩, rfl⟩`.
+
+Use `isLocAt_of_point hD hη A φ hφ _ p' hp fun x => ?_` and prove the remaining obligations. Establish `h1` using `mem_asIdeal_iff hD (hD.primeIdealOf ⟨p'.1, hp⟩) x`. Rewrite `h1` using `[hPp]`. Use `Iff.trans ?_ h1` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, show φ.symm.toRingHom (φ x) = x from φ.symm_apply_apply x]`.
+-/
 theorem patch_core {F : Type} [Field F] [NumberField F] {W : Scheme.{0}} (sW : W ⟶ Sp F) (e : ℕ) (T : Set W)
     [CharZero Ω] (ξ : Sp Ω ⟶ W) (hξ : IsCptGen ξ) (hsm : SmoothOfRelativeDimension e sW)
     (hreg : ∀ p q : Cpt ξ, regAt ξ p = regAt ξ q → p = q) {V : W.Opens} (hV : IsAffineOpen V)
@@ -273,6 +372,13 @@ theorem patch_core {F : Type} [Field F] [NumberField F] {W : Scheme.{0}} (sW : W
     refine Iff.trans ?_ h1
     rw [Ideal.mem_comap, show φ.symm.toRingHom (φ x) = x from φ.symm_apply_apply x]
 
+/- English proof (translation)
+Introduce `F _ _ W sW e T Ω _ _ _ ξ hξ _ hsm hc hreg p'`. Take `⟨nn, V, hcov, hV⟩` from `hc`. Take `⟨j, hj⟩` from `hcov p'.1`. Take `⟨z, k, hk, hz, hT⟩` from `hV j`. Establish `hVa : IsAffineOpen (V j : W.Opens)` using `(V j).2`.
+
+Use `letI iV := ReciprocityTheory.ChartRestriction.G.Geo.ResK.secAlgebra sW (V j : W.Opens)`. Use `haveI : Algebra.Smooth F Γ(W, (V j : W.Opens)) := smooth_secAlgebra' sW e hsm hVa`. Use `haveI : IsNoetherianRing Γ(W, (V j : W.Opens)) := Algebra.FiniteType.isNoetherianRing F _`. Establish `hη : genPt ξ ∈ (V j : W.Opens)` using `p'.2.mem_open (V j : W.Opens).2 hj`. Take `⟨g, hpg, hkill⟩` from `exists_kill hξ hVa p' hj hη`.
+
+Establish `hηg : genPt ξ ∈ W.basicOpen g` using `p'.2.mem_open (W.basicOpen g).2 hpg`. Conclude with `patch_core sW e T ξ hξ hsm hreg hVa z k hk hz hT g hηg (ev_basicOpen_injective ξ hVa g hηg hkill) p' hpg`.
+-/
 theorem exists_patch : ∀ (F : Type) [Field F] [NumberField F] (W : Scheme.{0}) (sW : W ⟶ Sp F) (e : ℕ) (T : Set W) (Ω : Type) [Field Ω] [CharZero Ω] [Algebra F Ω] (ξ' : Sp Ω ⟶ W), IsCptGen ξ' → ξ' ≫ sW = spMap (algebraMap F Ω) → SmoothOfRelativeDimension e sW → ResK.HasSncCoords sW e T → (∀ p q : Cpt ξ', regAt ξ' p = regAt ξ' q → p = q) → ∀ p' : Cpt ξ', ∃ (A : Subalgebra ℚ Ω) (z : Fin e → A) (n : ℕ) (q : Ideal A), IsSncPatch (Set.range (regAt ξ')) (regAt ξ' '' {p | p.1 ∈ T}) e A z n ∧ q.IsPrime ∧ IsLocAt A q (regAt ξ' p') := by
   intro F _ _ W sW e T Ω _ _ _ ξ hξ _ hsm hc hreg p'
   obtain ⟨nn, V, hcov, hV⟩ := hc

@@ -18,6 +18,11 @@ noncomputable def UpperTheory.Reformulated.B.Qi53.zA :
       (Algebra.algebraMap (UpperTheory.Reformulated.B.Qi53.Ainf l) (UpperTheory.Reformulated.B.Qi53.Acris l)).comp
         (GroundTheory.PAdicHodge.IsPerfectoidField.padicIntToWitt l)
 
+/- English proof (translation)
+Introduce `l _ N _ _ n h z y`. Establish `hz : z - (((PadicInt.toZModPow n z).val : ℕ) : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZModPow n : ℤ_[l] →+* ZMod (l ^ n))` using `by haveI : NeZero (l ^ n) := ⟨pow_ne_zero n (Fact.out : Nat.Prime l).ne_zero⟩`. Rewrite using `[RingHom.mem_ker, map_sub, map_natCast, ZMod.natCast_zmod_val, sub_self]`. Rewrite `hz` using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Take `⟨w, hw⟩` from `hz`.
+
+Establish `hz' : z = (((PadicInt.toZModPow n z).val : ℕ) : ℤ_[l]) + (l : ℤ_[l]) ^ n * w`. Rewrite using `[← hw]`. Expand and normalize the polynomial expressions, which then agree. Generalize the expression as in `(PadicInt.toZModPow n z).val = m at hz' ⊢`. Rewrite using `[hz', map_add, map_mul, map_pow, map_natCast, map_natCast, add_smul, mul_smul, h, add_zero, Nat.cast_smul_eq_nsmul]`.
+-/
 theorem UpperTheory.Reformulated.B.Qi53.zA_smul.{u_1} :
     ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] {N : Type u_1} [inst_1 : AddCommGroup N]
       [inst_2 : _root_.Module (UpperTheory.Reformulated.B.Qi53.Acris l) N] (n : ℕ),

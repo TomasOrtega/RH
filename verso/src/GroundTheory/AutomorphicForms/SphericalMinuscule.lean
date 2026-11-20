@@ -16,6 +16,15 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 
 local notation "π" => (GLnLocal.uniformizer F : F)
 
+/- English proof (translation)
+Rewrite using `[mem_integralGL_iff]`. Use `⟨h₁, fun i j => ?_⟩` and prove the remaining obligations. Establish `hinv : ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = (g : Matrix (Fin n) (Fin n) F)⁻¹` using `Matrix.coe_units_inv g`. Express the relevant statement in the definitionally equal form `((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]`. Rewrite using `[hinv, Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`.
+
+Use `Subring.mul_mem _ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `valuation F _ ≤ 1`. Rewrite using `[map_inv₀, h₂, inv_one]`. Rewrite using `[adjugate_apply]`. Use `det_mem_of_forall_mem fun a b => ?_` and prove the remaining obligations.
+
+Rewrite using `[updateRow_apply]`. Use `split_ifs`. Rewrite using `[Pi.single_apply] split_ifs`. Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`.
+
+Conclude with `h₁ _ _`.
+-/
 theorem mem_integralGL_of_forall_mem {g : GL (Fin n) F} (h₁ : ∀ i j, g i j ∈ 𝒪[F])
     (h₂ : valuation F (g : Matrix (Fin n) (Fin n) F).det = 1) : g ∈ integralGL F n := by
   rw [mem_integralGL_iff]
@@ -41,14 +50,25 @@ variable (F) in
 
 def MBdd (t : ℤ) (A : Matrix (Fin n) (Fin n) F) : Prop := ∀ i j, Bdd F t (A i j)
 
+/- English proof (translation)
+Introduce `i j` and use `by rw [Matrix.mul_apply] exact bdd_sum _ fun l _ => (hA i l).mul (hB l j)`.
+-/
 theorem MBdd.mul {s t : ℤ} {A B : Matrix (Fin n) (Fin n) F} (hA : MBdd F s A) (hB : MBdd F t B) :
     MBdd F (s + t) (A * B) := fun i j => by
   rw [Matrix.mul_apply]
   exact bdd_sum _ fun l _ => (hA i l).mul (hB l j)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun h i j => mem_of_bdd (h i j), fun h i j => bdd_of_mem (h i j)⟩`.
+-/
 theorem mbdd_zero_iff {A : Matrix (Fin n) (Fin n) F} : MBdd F 0 A ↔ ∀ i j, A i j ∈ 𝒪[F] :=
   ⟨fun h i j => mem_of_bdd (h i j), fun h i j => bdd_of_mem (h i j)⟩
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `mem_of_bdd ?_` and prove the remaining obligations. Simplify using `using (bdd_zpow (F := F) 1).mul h`. Introduce `h`.
+
+Use `(bdd_zpow (F := F) (-1)).mul (bdd_of_mem h)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, _root_.zpow_neg_one, inv_mul_cancel₀ (Cartan.uniformizer_ne_zero F), one_mul, add_zero]`. Then use the resulting hypothesis.
+-/
 theorem bdd_neg_one_iff {x : F} : Bdd F (-1) x ↔ π * x ∈ 𝒪[F] := by
   constructor
   · intro h
@@ -65,11 +85,21 @@ def minusculeSet (k : ℕ) : Set (GL (Fin n) F) :=
   {g | (∀ i j, g i j ∈ 𝒪[F]) ∧ (∀ i j, π * (g⁻¹ : GL (Fin n) F) i j ∈ 𝒪[F]) ∧
     valuation F (g : Matrix (Fin n) (Fin n) F).det = valuation F π ^ k}
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)`.
+-/
 theorem mul_mem_of_forall_mem {A B : Matrix (Fin n) (Fin n) F} (hA : ∀ i j, A i j ∈ 𝒪[F])
     (hB : ∀ i j, B i j ∈ 𝒪[F]) (i j : Fin n) : (A * B) i j ∈ 𝒪[F] := by
   rw [Matrix.mul_apply]
   exact Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hA i l) (hB l j)
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `hg`. Establish `ha'` using `(mem_integralGL_iff F n).1 ha`. Establish `hb'` using `(mem_integralGL_iff F n).1 hb`. Use `⟨fun i j => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul]`.
+
+Conclude with `mul_mem_of_forall_mem (mul_mem_of_forall_mem ha'.1 h1) hb'.1 i j`. Rewrite using `[← bdd_neg_one_iff]`. Establish `hmat : (((a * g * b)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = (b⁻¹ : GL (Fin n) F) * ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * ((a⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, ← mul_assoc, Units.val_mul, Units.val_mul]`. Use `((mbdd_zero_iff.2 hb'.2).mul (fun i j => bdd_neg_one_iff.2 (h2 i j))).mul (mbdd_zero_iff.2 ha'.2)` as an intermediate fact.
+
+Rewrite `this` using `[← hmat]`. Simplify using `using this i j`. Rewrite using `[Units.val_mul, Units.val_mul, det_mul, det_mul, map_mul, map_mul, valuation_det_eq_one ha, valuation_det_eq_one hb, h3, one_mul, mul_one]`.
+-/
 theorem mul_mem_minusculeSet {k : ℕ} {g a b : GL (Fin n) F} (hg : g ∈ minusculeSet F n k)
     (ha : a ∈ integralGL F n) (hb : b ∈ integralGL F n) : a * g * b ∈ minusculeSet F n k := by
   obtain ⟨h1, h2, h3⟩ := hg
@@ -107,21 +137,35 @@ variable (F) in
 def residueLift : 𝓀[F] → 𝒪[F] :=
   Function.surjInv (IsLocalRing.residue_surjective (R := 𝒪[F]))
 
+/- English proof (translation)
+The claim follows from `Function.surjInv_eq _ a`.
+-/
 theorem residue_residueLift (a : 𝓀[F]) : IsLocalRing.residue 𝒪[F] (residueLift F a) = a :=
   Function.surjInv_eq _ a
 
 def cMat (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) : Matrix (Fin n) (Fin n) F :=
   fun i j => if h : i ∈ S ∧ j ∉ S ∧ i < j then ((residueLift F (c ⟨(i, j), h⟩) : 𝒪[F]) : F) else 0
 
+/- English proof (translation)
+The claim follows from `dif_neg h`.
+-/
 theorem cMat_apply_of_not {S : Finset (Fin n)} (c : Pairs S → 𝓀[F]) {i j : Fin n}
     (h : ¬(i ∈ S ∧ j ∉ S ∧ i < j)) : cMat S c i j = 0 := dif_neg h
 
+/- English proof (translation)
+Unfold `cMat`. Use `split_ifs`. Conclude with `(residueLift F _).2`. Conclude with `(𝒪[F]).zero_mem`.
+-/
 theorem cMat_mem {S : Finset (Fin n)} (c : Pairs S → 𝓀[F]) (i j : Fin n) : cMat S c i j ∈ 𝒪[F] := by
   unfold cMat
   split_ifs
   · exact (residueLift F _).2
   · exact (𝒪[F]).zero_mem
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l ∈ S`. Rewrite using `[cMat_apply_of_not c (fun h => h.2.1 hl), zero_mul]`.
+
+Rewrite using `[cMat_apply_of_not c' (fun h => hl h.1), mul_zero]`.
+-/
 theorem cMat_mul_cMat {S : Finset (Fin n)} (c c' : Pairs S → 𝓀[F]) : cMat S c * cMat S c' = 0 := by
   ext i j
   rw [Matrix.mul_apply, Matrix.zero_apply]
@@ -136,12 +180,23 @@ def unipC (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) : GL (Fin n) F where
   val_inv := by rw [mul_sub, mul_one, add_mul, one_mul, cMat_mul_cMat, add_zero, add_sub_cancel_right]
   inv_val := by rw [mul_add, mul_one, sub_mul, one_mul, cMat_mul_cMat, sub_zero, sub_add_cancel]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unipC (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     ((unipC S c : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 + cMat S c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_unipC_inv (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     (((unipC S c)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1 - cMat S c := rfl
 
+/- English proof (translation)
+Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hij' : j < i` using `hij`. Express the relevant statement in the definitionally equal form `(1 + cMat S c) i j = 0`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne (ne_of_gt hij'), cMat_apply_of_not c (fun h => absurd h.2.2 (not_lt.2 (le_of_lt hij'))), add_zero]`. Express the relevant statement in the definitionally equal form `(1 + cMat S c) i i = 1`.
+
+Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, cMat_apply_of_not c (fun h => lt_irrefl _ h.2.2), add_zero]`.
+-/
 theorem unipC_mem_unipotent (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     unipC S c ∈ unipotent F n := by
   refine ⟨fun i j hij => ?_, fun i => ?_⟩
@@ -156,11 +211,17 @@ theorem unipC_mem_unipotent (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
 def gMat (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) : GL (Fin n) F :=
   unipC S c * torusPow F n (lamS S)
 
+/- English proof (translation)
+Simplify `iwasawaExponent_eq F n (unipC_mem_unipotent S c) (integralGL F n).one_mem (l := lamS S)` using `[gMat]`.
+-/
 theorem iwasawaExponent_gMat (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     iwasawaExponent F n (gMat S c) = lamS S := by
   simpa [gMat] using iwasawaExponent_eq F n (unipC_mem_unipotent S c) (integralGL F n).one_mem
     (l := lamS S)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((unipC S c : GL (Fin n) F) * (torusPow F n (lamS S) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = _`. Rewrite using `[coe_torusPow, mul_diagonal, coe_unipC, Matrix.add_apply]`.
+-/
 theorem gMat_apply (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) (i j : Fin n) :
     (gMat S c : GL (Fin n) F) i j = ((1 : Matrix (Fin n) (Fin n) F) i j + cMat S c i j) *
       π ^ lamS S j := by
@@ -168,6 +229,9 @@ theorem gMat_apply (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) (i j : Fin n) 
     Matrix (Fin n) (Fin n) F) i j = _
   rw [coe_torusPow, mul_diagonal, coe_unipC, Matrix.add_apply]
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `(((torusPow F n (lamS S))⁻¹ : GL (Fin n) F) * ((unipC S c)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = _`. Rewrite using `[← torusPow_neg, coe_torusPow, diagonal_mul, coe_unipC_inv, Matrix.sub_apply]`. Both sides reduce to the same expression.
+-/
 theorem gMat_inv_apply (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) (i j : Fin n) :
     ((gMat S c)⁻¹ : GL (Fin n) F) i j = π ^ (-lamS S i) *
       ((1 : Matrix (Fin n) (Fin n) F) i j - cMat S c i j) := by
@@ -176,20 +240,43 @@ theorem gMat_inv_apply (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) (i j : Fin
   rw [← torusPow_neg, coe_torusPow, diagonal_mul, coe_unipC_inv, Matrix.sub_apply]
   rfl
 
+/- English proof (translation)
+Apply the tactic sequence `unfold lamS; split_ifs <;> norm_num`.
+-/
 theorem lamS_nonneg (S : Finset (Fin n)) (i : Fin n) : 0 ≤ lamS S i := by
   unfold lamS; split_ifs <;> norm_num
 
+/- English proof (translation)
+Apply the tactic sequence `unfold lamS; split_ifs <;> norm_num`.
+-/
 theorem lamS_le_one (S : Finset (Fin n)) (i : Fin n) : lamS S i ≤ 1 := by
   unfold lamS; split_ifs <;> norm_num
 
+/- English proof (translation)
+Simplify using `[lamS, Finset.sum_ite_mem]`.
+-/
 theorem sum_lamS (S : Finset (Fin n)) : ∑ i, lamS S i = S.card := by
   simp [lamS, Finset.sum_ite_mem]
 
+/- English proof (translation)
+Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le ht`. Rewrite using `[zpow_natCast]`. Conclude with `Subring.pow_mem _ (GLnLocal.uniformizer F).2 m`.
+-/
 theorem zpow_mem_of_nonneg {t : ℤ} (ht : 0 ≤ t) : π ^ t ∈ 𝒪[F] := by
   obtain ⟨m, rfl⟩ := Int.eq_ofNat_of_zero_le ht
   rw [zpow_natCast]
   exact Subring.pow_mem _ (GLnLocal.uniformizer F).2 m
 
+/- English proof (translation)
+Use `⟨fun i j => ?_, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[gMat_apply]`. Use `Subring.mul_mem _ (Subring.add_mem _ ?_ (cMat_mem c i j)) (zpow_mem_of_nonneg (lamS_nonneg S j))` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+
+Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`. Rewrite using `[gMat_inv_apply, ← mul_assoc, ← zpow_one_add₀ (Cartan.uniformizer_ne_zero F)]`. Distinguish the cases in `h : i ∈ S ∧ j ∉ S ∧ i < j`. Establish `hi : lamS S i = 1` using `if_pos h.1`.
+
+Rewrite using `[hi, add_neg_cancel, zpow_zero, one_mul]`. Conclude with `Subring.sub_mem _ (by rw [Matrix.one_apply_ne (ne_of_lt h.2.2)]; exact (𝒪[F]).zero_mem) (cMat_mem c i j)`. Rewrite using `[cMat_apply_of_not c h, sub_zero]`. Use `Subring.mul_mem _ (zpow_mem_of_nonneg (by linarith [lamS_le_one S i])) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`. Express the relevant statement in the definitionally equal form `valuation F (((unipC S c : GL (Fin n) F) * (torusPow F n (lamS S) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)).det = _`. Rewrite using `[det_mul, coe_torusPow, det_diagonal, prod_zpow_uniformizer, sum_lamS, det_of_isUpperTriangular (unipC_mem_unipotent S c).1]`.
+
+Simplify using `only [(unipC_mem_unipotent S c).2, Finset.prod_const_one, one_mul, map_zpow₀, zpow_natCast, map_pow]`.
+-/
 theorem gMat_mem_minusculeSet (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     gMat S c ∈ minusculeSet F n S.card := by
   refine ⟨fun i j => ?_, fun i j => ?_, ?_⟩
@@ -219,6 +306,21 @@ theorem gMat_mem_minusculeSet (S : Finset (Fin n)) (c : Pairs S → 𝓀[F]) :
     simp only [(unipC_mem_unipotent S c).2, Finset.prod_const_one, one_mul, map_zpow₀, zpow_natCast,
       map_pow]
 
+/- English proof (translation)
+Introduce `c c' h`. Establish `hk : (gMat S c)⁻¹ * gMat S c' ∈ integralGL F n` using `QuotientGroup.eq.1 h`. Establish `hint` using `((mem_integralGL_iff F n).1 hk).1`. Use function extensionality and compare the values at `p`. Take `⟨⟨b, a⟩, hb, ha, hba⟩` from `p`.
+
+Establish `hmat : (((gMat S c)⁻¹ * gMat S c' : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = diagonal (fun i => π ^ (-lamS S) i) * (1 + (cMat S c' - cMat S c)) * diagonal (fun i => π ^ lamS S i)`. Rewrite using `[gMat, gMat, _root_.mul_inv_rev, Units.val_mul, Units.val_mul, Units.val_mul, ← torusPow_neg, coe_torusPow, coe_torusPow, coe_unipC_inv, coe_unipC]`. Establish `: (1 - cMat S c) * (1 + cMat S c') = 1 + (cMat S c' - cMat S c)`. Rewrite using `[sub_mul, one_mul, mul_add, mul_one, cMat_mul_cMat, add_zero]`. Normalize the expressions using the abelian group laws.
+
+Rewrite using `[← this]`. Simplify using `only [Matrix.mul_assoc]`. Apply the tactic sequence `have hentry : ((gMat S c)⁻¹ * gMat S c' : GL (Fin n) F) b a = π ^ (-1 : ℤ) * (cMat S c' b a - cMat S c b a) := by`. Establish `h1 : lamS S b = 1` using `if_pos hb`. Establish `h2 : lamS S a = 0` using `if_neg ha`.
+
+Use `congrFun (congrFun hmat b) a` as an intermediate fact. Rewrite `this` using `[mul_diagonal, diagonal_mul]`. Rewrite using `[this]`. Simplify using `only [Pi.neg_apply, h1, h2, zpow_zero, mul_one, Matrix.add_apply, Matrix.sub_apply, Matrix.one_apply_ne (ne_of_lt hba), zero_add]`. Establish `hmem` using `hint b a`.
+
+Rewrite `hmem` using `[hentry]`. Establish `hbdd : Bdd F 1 (cMat S c' b a - cMat S c b a)`. Use `(bdd_of_mem hmem).mul (bdd_zpow (F := F) 1)` as an intermediate fact. Rewrite `this` using `[zero_add, mul_comm, ← mul_assoc, ← zpow_add₀ (Cartan.uniformizer_ne_zero F), add_neg_cancel, zpow_zero, one_mul]`. Then use the resulting hypothesis. Establish `hpair : (b, a).1 ∈ S ∧ (b, a).2 ∉ S ∧ (b, a).1 < (b, a).2` using `⟨hb, ha, hba⟩`.
+
+Simplify using `only [cMat, dif_pos hpair] at hbdd`. Establish `hmax : residueLift F (c' ⟨(b, a), hpair⟩) - residueLift F (c ⟨(b, a), hpair⟩) ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Use `(mem_maximalIdeal_pow_iff F (m := 1) (y := residueLift F (c' ⟨(b, a), hpair⟩) - residueLift F (c ⟨(b, a), hpair⟩))).2 (by` as an intermediate fact. Rewrite using `[pow_one]`. Use `push_cast`.
+
+Simplify `hbdd)` using `[Bdd]`. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Use `(IsLocalRing.residue_eq_zero_iff _).2 hmax` as an intermediate fact. Rewrite `this` using `[map_sub, residue_residueLift, residue_residueLift, sub_eq_zero]`. Conclude with `this.symm`.
+-/
 theorem gMat_injective (S : Finset (Fin n)) :
     Function.Injective fun c : Pairs S → 𝓀[F] =>
       (QuotientGroup.mk (gMat S c) : GL (Fin n) F ⧸ integralGL F n) := by
@@ -266,19 +368,97 @@ theorem gMat_injective (S : Finset (Fin n)) :
   rw [map_sub, residue_residueLift, residue_residueLift, sub_eq_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Use `(mem_maximalIdeal_pow_iff F (m := 1) (y := y)).1 (by rwa [pow_one])` as an intermediate fact. Simplify `this` using `[Bdd]`.
+-/
 theorem bdd_one_of_mem_maximalIdeal {y : 𝒪[F]} (hy : y ∈ IsLocalRing.maximalIdeal 𝒪[F]) :
     Bdd F 1 (y : F) := by
   have := (mem_maximalIdeal_pow_iff F (m := 1) (y := y)).1 (by rwa [pow_one])
   simpa [Bdd] using this
 
+/- English proof (translation)
+Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, residue_residueLift, sub_self]`.
+-/
 theorem residueLift_sub_mem (y : 𝒪[F]) :
     residueLift F (IsLocalRing.residue 𝒪[F] y) - y ∈ IsLocalRing.maximalIdeal 𝒪[F] := by
   rw [← IsLocalRing.residue_eq_zero_iff, map_sub, residue_residueLift, sub_self]
 
+/- English proof (translation)
+Rewrite using `[Units.val_mul, coe_torusPow, mul_diagonal]`.
+-/
 theorem diag_mul_torusPow {u : GL (Fin n) F} (hu : u ∈ unipotent F n) (l : Fin n → ℤ) (i j : Fin n) :
     ((u * torusPow F n l : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = u i j * π ^ l j := by
   rw [Units.val_mul, coe_torusPow, mul_diagonal]
 
+/- English proof (translation)
+Take `⟨u, hu, k₀, hk₀, he⟩` from `exists_eq_mul_torusPow_iwasawaExponent F n g`. Use `set l := iwasawaExponent F n g`. Use `set h := u * torusPow F n l with hh`. Establish `hhg : h = 1 * g * k₀⁻¹` using `by rw [he, one_mul, mul_inv_cancel_right]`. Establish `hM : h ∈ minusculeSet F n k`.
+
+Rewrite using `[hhg]`. Conclude with `mul_mem_minusculeSet hg (integralGL F n).one_mem ((integralGL F n).inv_mem hk₀)`. Establish `hmk : (QuotientGroup.mk h : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk g`. Rewrite using `[hhg, one_mul]`. Conclude with `(QuotientGroup.eq.2 (by simpa using (integralGL F n).inv_mem hk₀)).symm`.
+
+Establish `hdiag : ∀ i, (h : Matrix (Fin n) (Fin n) F) i i = π ^ l i` using `fun i => by`. Rewrite using `[hh, diag_mul_torusPow hu, hu.2 i, one_mul]`. Establish `hdiag_inv : ∀ i, ((h⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = π ^ (-l i)`. Introduce `i`. Establish `hu' : u⁻¹ ∈ unipotent F n` using `(unipotent F n).inv_mem hu`.
+
+Rewrite using `[hh, _root_.mul_inv_rev, ← torusPow_neg, Units.val_mul, coe_torusPow, diagonal_mul, hu'.2 i, mul_one]`. Both sides reduce to the same expression. Establish `hl0 : ∀ i, 0 ≤ l i` using `fun i => by`. Use `bdd_of_mem (hM.1 i i)` as an intermediate fact. Rewrite `this` using `[hdiag]`.
+
+Conclude with `le_of_bdd_zpow this`. Establish `hl1 : ∀ i, l i ≤ 1` using `fun i => by`. Use `bdd_neg_one_iff.2 (hM.2.1 i i)` as an intermediate fact. Rewrite `this` using `[hdiag_inv]`. Use `le_of_bdd_zpow this` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `set S := Finset.univ.filter fun i => l i = 1`. Establish `hlS : l = lamS S`. Use function extensionality and compare the values at `i`. Simplify using `only [lamS, S, Finset.mem_filter, Finset.mem_univ, true_and]`.
+
+Use `split_ifs with h1`. Conclude with `h1`. Use `hl0 i` as an intermediate fact. Use `hl1 i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+Establish `hcard : S.card = k`. Establish `hdet` using `hM.2.2`. Rewrite `hdet` using `[hh, Units.val_mul, det_mul, coe_torusPow, det_diagonal, prod_zpow_uniformizer, det_of_isUpperTriangular hu.1]`. Simplify using `only [hu.2, Finset.prod_const_one, one_mul, map_zpow₀] at hdet`. Rewrite `hdet` using `[← zpow_natCast]`.
+
+Establish `hp` using `valuation_uniformizer_pos (F := F)`. Establish `h1` using `valuation_uniformizer_lt_one F`. Establish `heq : ∑ i, l i = (k : ℤ)` using `le_antisymm ((zpow_le_zpow_iff_right_of_lt_one₀ hp h1).1 hdet.ge) ((zpow_le_zpow_iff_right_of_lt_one₀ hp h1).1 hdet.le)`. Rewrite `heq` using `[hlS, sum_lamS]`. Conclude with `heq` after adjusting the coercions.
+
+Use `⟨S, hcard, ?_⟩` and prove the remaining obligations. Use `set Mt : Matrix (Fin n) (Fin n) F := fun i j => if i ∉ S ∧ j ∉ S then (u : Matrix (Fin n) (Fin n) F) i j else (1 : Matrix (Fin n) (Fin n) F) i j with hMt_def`. Establish `hMt_row : ∀ m ∈ S, ∀ b, Mt m b = (1 : Matrix (Fin n) (Fin n) F) m b`. Introduce `m hm b`. Rewrite using `[hMt_def]`.
+
+Conclude with `if_neg fun h => h.1 hm`. Establish `hMt_up : Mt.IsUpperTriangular`. Introduce `i j hij`. Establish `hij' : j < i` using `hij`. Simplify using `only [Mt]`.
+
+Use `split_ifs`. Conclude with `hu.1 hij'`. Conclude with `Matrix.one_apply_ne (ne_of_gt hij')`. Establish `hMt_diag : ∀ i, Mt i i = 1` using `fun i => by`. Simplify using `only [Mt]`.
+
+Use `split_ifs`. Conclude with `hu.2 i`. Conclude with `Matrix.one_apply_eq i`. Establish `hMt_det : Mt.det = 1`. Rewrite using `[det_of_isUpperTriangular hMt_up]`.
+
+Simplify using `[hMt_diag]`. Use `set Mg : GL (Fin n) F := ((Matrix.isUnit_iff_isUnit_det Mt).2 (by rw [hMt_det]; exact isUnit_one)).unit`. Establish `hMg : (Mg : Matrix (Fin n) (Fin n) F) = Mt` using `IsUnit.unit_spec _`. Establish `hMgK : Mg ∈ integralGL F n`. Use `((mem_unipotent_inf_integralGL_iff F n).2 ⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j => ?_⟩).2` and prove the remaining obligations.
+
+Use `show (Mg : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[hMg]`. Conclude with `hMt_up hij`. Use `show (Mg : Matrix (Fin n) (Fin n) F) i i = 1`. Rewrite using `[hMg]`.
+
+Conclude with `hMt_diag i`. Use `show (Mg : Matrix (Fin n) (Fin n) F) i j ∈ 𝒪[F]`. Rewrite using `[hMg]`. Simplify using `only [Mt]`. Use `split_ifs with hij`.
+
+Use `hM.1 i j` as an intermediate fact. Rewrite `this` using `[hh, diag_mul_torusPow hu, hlS, lamS, if_neg hij.2, zpow_zero, mul_one]`. Conclude with `this`. Rewrite using `[Matrix.one_apply] split_ifs`. Conclude with `(𝒪[F]).one_mem`.
+
+Conclude with `(𝒪[F]).zero_mem`. Use `set Y := h * Mg⁻¹ with hY`. Establish `hYM : Y ∈ minusculeSet F n k`. Use `mul_mem_minusculeSet hM (integralGL F n).one_mem ((integralGL F n).inv_mem hMgK)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+
+Establish `hYmk : (QuotientGroup.mk Y : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk h` using `QuotientGroup.eq.2 (by`. Rewrite using `[hY, _root_.mul_inv_rev, inv_inv, mul_assoc, inv_mul_cancel, mul_one]`. Conclude with `hMgK)`. Establish `hYB : Y ∈ borel F n` using `(borel F n).mul_mem ((borel F n).mul_mem hu.1 (torusPow_mem_borel F n l)) ((borel F n).inv_mem ((mem_unipotent_inf_integralGL_iff F n).2 ⟨⟨fun i j hij => by show (Mg : Matrix (Fin n) (Fin n) F) i j = 0`. Rewrite using `[hMg]`.
+
+Conclude with `hMt_up hij, fun i => by`. Use `show (Mg : Matrix (Fin n) (Fin n) F) i i = 1`. Rewrite using `[hMg]`. Conclude with `hMt_diag i⟩, fun i j => ((mem_integralGL_iff F n).1 hMgK).1 i j⟩).1.1)`. Establish `hMinv : ∀ m j, m ∈ S → j ∉ S → ((Mg⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) m j = 0`.
+
+Introduce `m j hm hj`. Establish `h0 : Mt * ((Mg⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1`. Rewrite using `[← hMg, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1` using `congrFun (congrFun h0 m) j`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_ne (fun h : m = j => hj (h ▸ hm))]`.
+
+Rewrite `h1` using `[Finset.sum_eq_single m (fun b _ hb => by rw [hMt_row m hm b, Matrix.one_apply_ne (Ne.symm hb), zero_mul]) (by simp), hMt_row m hm m, Matrix.one_apply_eq, one_mul]`. Conclude with `h1`. Establish `hY2 : ∀ i j, i ∉ S → j ∉ S → (Y : Matrix (Fin n) (Fin n) F) i j = (1 : Matrix (Fin n) (Fin n) F) i j`. Introduce `i j hi hj`. Establish `h0 : Mt * ((Mg⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = 1`.
+
+Rewrite using `[← hMg, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h1` using `congrFun (congrFun h0 i) j`. Rewrite using `[← h1, hY, Units.val_mul, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ S`.
+
+Rewrite using `[hMinv m j hm hj, mul_zero, mul_zero]`. Use `congr 1`. Rewrite using `[hh, diag_mul_torusPow hu, hlS, lamS, if_neg hm, zpow_zero, mul_one]`. Simplify using `only [Mt, hi, hm, not_false_eq_true, and_self, if_true]`. Use `set c : Pairs S → 𝓀[F] := fun p => IsLocalRing.residue 𝒪[F] ⟨(Y : Matrix (Fin n) (Fin n) F) p.1.1 p.1.2, hYM.1 _ _⟩`.
+
+Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmk, ← hYmk]`. Use `(QuotientGroup.eq.2 ?_).symm` and prove the remaining obligations. Use `set P : Matrix (Fin n) (Fin n) F := diagonal fun j => if j ∉ S then 1 else 0`. Use `set Dm : Matrix (Fin n) (Fin n) F := (gMat S c : Matrix (Fin n) (Fin n) F) - (Y : Matrix _ _ F) * P with hDm_def`.
+
+Establish `hDm : MBdd F 1 Dm`. Introduce `l' j`. Simplify using `only [Dm, Matrix.sub_apply, mul_diagonal, P]`. Rewrite using `[gMat_apply]`. Distinguish the cases in `hj : j ∈ S`.
+
+Establish `hlj : lamS S j = 1` using `if_pos hj`. Simplify using `only [hj, not_true_eq_false, if_false, mul_zero, sub_zero, hlj]`. Establish `hδ : (1 : Matrix (Fin n) (Fin n) F) l' j + cMat S c l' j ∈ 𝒪[F]`. Use `Subring.add_mem _ ?_ (cMat_mem c l' j)` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+
+Use `split_ifs`. Conclude with `(𝒪[F]).one_mem`. Conclude with `(𝒪[F]).zero_mem`. Simplify using `using (bdd_of_mem hδ).mul (bdd_zpow (F := F) 1)`. Establish `hlj : lamS S j = 0` using `if_neg hj`.
+
+Simplify using `only [hj, not_false_eq_true, if_true, mul_one, hlj, zpow_zero]`. Distinguish the cases in `hl : l' ∈ S`. Break down `lt_or_gt_of_ne (show l' ≠ j from fun h => hj (h ▸ hl)) with hlt | hgt` into its components or cases. Establish `hp : l' ∈ S ∧ j ∉ S ∧ l' < j` using `⟨hl, hj, hlt⟩`. Rewrite using `[Matrix.one_apply_ne (ne_of_lt hlt), zero_add]`.
+
+Simplify using `only [cMat, dif_pos hp, c]`. Conclude with `bdd_one_of_mem_maximalIdeal (residueLift_sub_mem _)`. Rewrite using `[Matrix.one_apply_ne (ne_of_gt hgt), zero_add, cMat_apply_of_not c (fun h => absurd h.2.2 (not_lt.2 hgt.le)), hYB hgt, sub_zero]`. Conclude with `bdd_zero 1`. Rewrite using `[cMat_apply_of_not c (fun h => hl h.1), add_zero, hY2 l' j hl hj, sub_self]`.
+
+Conclude with `bdd_zero 1`. Establish `hZ : (((Y⁻¹ : GL (Fin n) F) * gMat S c : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = P + ((Y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * Dm`. Establish `hYY : ((Y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) * (Y : Matrix (Fin n) (Fin n) F) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[Units.val_mul, hDm_def, Matrix.mul_sub, ← Matrix.mul_assoc, hYY, Matrix.one_mul]`.
+
+Normalize the expressions using the abelian group laws. Use `mem_integralGL_of_forall_mem (fun i j => ?_) ?_` and prove the remaining obligations. Rewrite using `[hZ, Matrix.add_apply]`. Use `Subring.add_mem _ ?_ (mem_of_bdd ?_)` and prove the remaining obligations. Apply the tactic sequence `simp only [P, diagonal_apply] split_ifs all_goals first | exact (𝒪[F]).one_mem | exact (𝒪[F]).zero_mem`.
+
+Use `MBdd.mul (A := ((Y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)) (fun a b => bdd_neg_one_iff.2 (hYM.2.1 a b)) hDm i j` as an intermediate fact. Simplify using `using this`. Rewrite using `[Units.val_mul, det_mul, map_mul]`. Establish `h1` using `hYM.2.2`. Establish `h2` using `(gMat_mem_minusculeSet S c).2.2`.
+
+Rewrite `h2` using `[hcard]`. Establish `h3 : valuation F ((Y⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det * valuation F (Y : Matrix (Fin n) (Fin n) F).det = 1`. Rewrite using `[← map_mul, ← det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, det_one, map_one]`. Rewrite using `[h2, ← h1, h3]`.
+-/
 theorem exists_gMat {k : ℕ} {g : GL (Fin n) F} (hg : g ∈ minusculeSet F n k) :
     ∃ S : Finset (Fin n), S.card = k ∧ ∃ c : Pairs S → 𝓀[F],
       (QuotientGroup.mk (gMat S c) : GL (Fin n) F ⧸ integralGL F n) = QuotientGroup.mk g := by

@@ -11,6 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 namespace GlobalTheory.StdUnn
 
+/- English proof (translation)
+Introduce `h h' s₀ c r σ hr hh e`. Establish `ha : AnalyticOnNhd ℂ (fun s => npow r (s₀ - s)) (GlobalTheory.Cont.rightOf (s₀.re - 1))`. Introduce `s _`. Rewrite using `[funext fun s => npow_eq_exp hr (s₀ - s)]`. Use `fun_prop`.
+
+Establish `hg` using `GlobalTheory.Cont.holValueAt_self ha (s₀ := s₀) (by linarith)`. Establish `h1 : npow r (s₀ - s₀) = 1` using `by simp [npow_eq_exp hr]`. Establish `hm` using `hg.mul hh`. Simplify using `only [h1, one_mul] at hm`. Conclude with `hm.congr ⟨σ, fun s hs => (e s hs).symm⟩`.
+-/
 theorem holValueAt_npow_sub_mul : ∀ (h h' : ℂ → ℂ) (s₀ c : ℂ) (r : ℝ≥0) (σ : ℝ), 0 < r → HolValueAt h s₀ c →
     (∀ s : ℂ, σ < s.re → h' s = npow r (s₀ - s) * h s) → HolValueAt h' s₀ c := by
   intro h h' s₀ c r σ hr hh e

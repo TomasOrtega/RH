@@ -9,6 +9,11 @@ open PositivityTheory.RgBcC.Bridge PositivityTheory.Rg.BcB.CG PositivityTheory.R
 
 namespace PositivityTheory.Rg.BcB.F.Rd.B
 
+/- English proof (translation)
+Unfold `GlobalTheory.Dec.gelfVal`. Establish `hA : Continuous fun χ : Fin n → ℂ => Formalism.REAL.Amat (fun c => χ c + ((n : ℂ) - 1) / 2)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [Formalism.REAL.Amat, Matrix.of_apply]`. Use `split_ifs`.
+
+Conclude with `(continuous_apply a).add continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_const`. Conclude with `continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => (hA.pow l).matrix_elem a b`.
+-/
 theorem gelfVal_cont (n l : ℕ) : Continuous fun χ : Fin n → ℂ => GlobalTheory.Dec.gelfVal χ l := by
   unfold GlobalTheory.Dec.gelfVal
   have hA : Continuous fun χ : Fin n → ℂ => Formalism.REAL.Amat (fun c => χ c + ((n : ℂ) - 1) / 2) := by
@@ -20,6 +25,27 @@ theorem gelfVal_cont (n l : ℕ) : Continuous fun χ : Fin n → ℂ => GlobalTh
     · exact continuous_const
   exact continuous_finsetSum _ fun a _ => continuous_finsetSum _ fun b _ => (hA.pow l).matrix_elem a b
 
+/- English proof (translation)
+Establish `hind : ∀ j i, m + 1 - j ≤ i → ∃ c, Tendsto (fun k => (cq m (x k)).coeff i) atTop (𝓝 c)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i hi`.
+
+Break down `eq_or_lt_of_le (show m + 1 ≤ i by omega) with h | h` into its components or cases. Substitute `h` using the available equality. Establish `e : ∀ χ, (cq m χ).coeff (m + 1) = 1` using `fun χ => by`. Use `(cq_monic m χ).coeff_natDegree` as an intermediate fact. Rewrite `this` using `[cq_natDegree]`. Then use the resulting hypothesis.
+
+Simplify using `only [e]`. Conclude with `⟨1, tendsto_const_nhds⟩`. Establish `e : ∀ χ, (cq m χ).coeff i = 0` using `fun χ => coeff_eq_zero_of_natDegree_lt (by rw [cq_natDegree]; exact h)`. Simplify using `only [e]`. Conclude with `⟨0, tendsto_const_nhds⟩`.
+
+Consider the case `succ j ih`. Introduce `i hi`. Distinguish the cases in `hij : m + 1 - j ≤ i`. Conclude with `ih i hij`. Establish `hr : i ≤ m` using `by omega`.
+
+Establish `hij' : i + j = m` using `by omega`. Establish `hne : ((j : ℂ) + 1) ≠ 0` using `by exact_mod_cast Nat.succ_ne_zero j`. Establish `hform : ∀ χ : Fin (m + 1) → ℂ, (cq m χ).coeff i = (defect (GlobalTheory.Dec.gelfVal χ) m (m + 1) (Hi i (m + 1) (cq m χ))).coeff (i + (m + 1)) / ((j : ℂ) + 1)`. Introduce `χ`. Establish `hk` using `key m χ i hr`.
+
+Establish `hc : (i : ℂ) = (m : ℂ) - j` using `by rw [← hij']; push_cast; ring`. Rewrite using `[eq_div_iff hne]`. Take the linear combination `(-1 : ℂ) * hk + (cq m χ).coeff i * hc`. Set `c : ℕ → ℂ` to `fun l => if h : ∃ c, Tendsto (fun k => (cq m (x k)).coeff l) atTop (𝓝 c) then h.choose else 0`. Establish `hc : ∀ l ∈ Ioc i (m + 1), Tendsto (fun k => (cq m (x k)).coeff l) atTop (𝓝 (c l))` using `fun l hl => by`.
+
+Establish `h` using `ih l (by simp only [mem_Ioc] at hl; omega)`. Simplify using `only [c, dif_pos h]`. Conclude with `h.choose_spec`. Set `Q₀ : ℂ[X]` to `∑ l ∈ Ioc i (m + 1), Polynomial.C (c l) * X ^ l`. Establish `h1 : CoefTo (fun k => Hi i (m + 1) (cq m (x k))) Q₀`.
+
+Simplify using `only [Hi, Q₀]`. Conclude with `CoefTo.sum _ fun l hl => CoefTo.mul (CoefTo.C (hc l hl)) (CoefTo.const _)`. Establish `hQc : Q₀.comp (X + 1) = ∑ l ∈ Ioc i (m + 1), Polynomial.C (c l) * (X + 1) ^ l`. Simplify using `only [Q₀]`. Rewrite using `[← coe_compRingHom_apply, map_sum]`.
+
+Simplify using `only [coe_compRingHom_apply, mul_comp, C_comp, X_pow_comp]`. Establish `h2 : CoefTo (fun k => (Hi i (m + 1) (cq m (x k))).comp (X + 1)) (Q₀.comp (X + 1))`. Simplify using `only [Hi_comp, hQc]`. Conclude with `CoefTo.sum _ fun l hl => CoefTo.mul (CoefTo.C (hc l hl)) (CoefTo.const _)`. Establish `h3` using `CoefTo.defect (t := fun k => GlobalTheory.Dec.gelfVal (x k)) ht m (m + 1) h1 h2 (i + (m + 1))`.
+
+Conclude with `⟨_, (h3.div_const ((j : ℂ) + 1)).congr fun k => (hform (x k)).symm⟩`. Conclude with `fun i => hind (m + 1) i (by omega)`.
+-/
 theorem coef_conv (m : ℕ) (x : ℕ → Fin (m + 1) → ℂ) (t : ℕ → ℂ)
     (ht : ∀ l, Tendsto (fun k => GlobalTheory.Dec.gelfVal (x k) l) atTop (𝓝 (t l))) :
     ∀ i, ∃ c, Tendsto (fun k => (cq m (x k)).coeff i) atTop (𝓝 c) := by
@@ -73,6 +99,21 @@ theorem coef_conv (m : ℕ) (x : ℕ → Fin (m + 1) → ℂ) (t : ℕ → ℂ)
         exact ⟨_, (h3.div_const ((j : ℂ) + 1)).congr fun k => (hform (x k)).symm⟩
   exact fun i => hind (m + 1) i (by omega)
 
+/- English proof (translation)
+Introduce `n x t ht`. Break down `n with _ | m` into its components or cases. Establish `h0 : ∀ (χ : Fin 0 → ℂ) (l : ℕ), GlobalTheory.Dec.gelfVal χ l = 0` using `fun χ l => by simp [GlobalTheory.Dec.gelfVal]`. Use `⟨Fin.elim0, fun l => ?_⟩` and prove the remaining obligations. Establish `h` using `ht l`.
+
+Simplify using `only [h0] at h`. Rewrite using `[h0]`. Conclude with `tendsto_nhds_unique tendsto_const_nhds h`. Take `⟨c, hc⟩ : ∃ c : ℕ → ℂ, ∀ i, Tendsto (fun k => (cq m (x k)).coeff i) atTop (𝓝 (c i))` from `by choose c hc using coef_conv m x t ht`. Conclude with `⟨c, hc⟩`.
+
+Establish `hbd : ∀ i, ∃ B, ∀ k, ‖(cq m (x k)).coeff i‖ ≤ B` using `fun i => by`. Take `⟨B, hB⟩` from `(Metric.isBounded_range_of_tendsto _ (hc i)).exists_norm_le`. Conclude with `⟨B, fun k => hB _ ⟨k, rfl⟩⟩`. Use `choose Cb hCb using hbd`. Use `set B := max 1 (∑ i ∈ range (m + 1), Cb i) + ‖(m : ℂ) / 2‖ with hBdef`.
+
+Establish `hB0 : 0 ≤ B`. Use `le_max_left (1 : ℝ) (∑ i ∈ range (m + 1), Cb i)` as an intermediate fact. Use `norm_nonneg ((m : ℂ) / 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxb : ∀ k s, ‖x k s‖ ≤ B`.
+
+Introduce `k s`. Establish `h1` using `norm_root_le _ (cq_monic m (x k)) _ (cq_eval m (x k) s)`. Rewrite `h1` using `[cq_natDegree]`. Establish `h2 : ∑ i ∈ range (m + 1), ‖(cq m (x k)).coeff i‖ ≤ ∑ i ∈ range (m + 1), Cb i` using `sum_le_sum fun i _ => hCb i k`. Establish `h3 : ‖x k s‖ ≤ ‖(m : ℂ) / 2‖ + ‖(m : ℂ) / 2 - x k s‖`.
+
+Use `norm_sub_le ((m : ℂ) / 2) ((m : ℂ) / 2 - x k s)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h4` using `max_le_max (le_refl (1 : ℝ)) h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmem : ∀ k, x k ∈ Metric.closedBall (0 : Fin (m + 1) → ℂ) B` using `fun k => mem_closedBall_zero_iff.2 ((pi_norm_le_iff_of_nonneg hB0).2 fun s => hxb _ s)`.
+
+Take `⟨z, -, ψ, hψm, hψ⟩` from `tendsto_subseq_of_bounded Metric.isBounded_closedBall hmem`. Use `⟨z, fun l => ?_⟩` and prove the remaining obligations. Establish `h1 : Tendsto (fun k => GlobalTheory.Dec.gelfVal (x (ψ k)) l) atTop (𝓝 (GlobalTheory.Dec.gelfVal z l))` using `((gelfVal_cont (m + 1) l).tendsto z).comp hψ`. Establish `h2 : Tendsto (fun k => GlobalTheory.Dec.gelfVal (x (ψ k)) l) atTop (𝓝 (t l))` using `(ht l).comp hψm.tendsto_atTop`. Conclude with `tendsto_nhds_unique h1 h2`.
+-/
 theorem infLim : InfLim := by
   intro n x t ht
   rcases n with _ | m

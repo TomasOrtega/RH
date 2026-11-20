@@ -26,6 +26,9 @@ structure CopyN (D : D7) {D' : D7} (N : TwNew D') (ι : D.what₂.LL →+* D'.wh
   twDel : HEq D.nexp.twDel N.ex.twDel
   eH : HEq D.nexp.eH N.ex.eH
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.TwInputs.Move.CopyTw.refl D ThetaPsi := HEq.rfl topO := HEq.rfl finLam := HEq.rfl jL := HEq.rfl s2 := HEq.rfl lamG := HEq.rfl Xv := HEq.rfl qs := HEq.rfl res := HEq.rfl eLL0 _ _ h := by cases h; rfl twPsi := HEq.rfl twDel := HEq.rfl eH := HEq.rfl`.
+-/
 theorem CopyN.refl (D : D7) : CopyN D (⟨D.ntw, D.nexp, D.nStage_trivialCharacter_coeff_eq, D.nth, D.ntwbr, D.ntwbr_ind⟩ : TwNew D) (RingHom.id _) (RingEquiv.refl _) where
   cp := GlobalTheory.TwInputs.Move.CopyTw.refl D
   ThetaPsi := HEq.rfl
@@ -42,6 +45,9 @@ theorem CopyN.refl (D : D7) : CopyN D (⟨D.ntw, D.nexp, D.nStage_trivialCharact
   twDel := HEq.rfl
   eH := HEq.rfl
 
+/- English proof (translation)
+Use `⟨h.cp.toSameExport, fun i i' hi x x' hx => ?_⟩` and prove the remaining obligations. Establish `hx' : x = e x'` using `Subtype.ext (D.what₂.embLL.injective (hx.trans ((congrArg N.toD7.what₂.embLL (h.cp.LL0 x')).symm.trans (h.cp.embLL _))))`. Substitute `hx'` using the available equality. Conclude with `⟨h.cp.emb0 i i' hi x', h.cp.emb0b i i' hi x'⟩`.
+-/
 theorem CopyN.carried {D D' : D7} {N : TwNew D'} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0} (h : CopyN D N ι e) :
     Carried D N.toD7 := by
   refine ⟨h.cp.toSameExport, fun i i' hi x x' hx => ?_⟩

@@ -18,20 +18,52 @@ attribute [local instance] Over.cartesianMonoidalCategory
 noncomputable section
 namespace GlobalTheory.PolCountableDescent
 
+/- English proof (translation)
+Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Use `(Subfield.cardinalMk_closure_le_max _).trans ?_` and prove the remaining obligations. Conclude with `max_le (Cardinal.mk_le_aleph0_iff.2 s.countable_toSet.to_subtype) le_rfl`.
+-/
 theorem countable_closure {K : Type} [Field K] (s : Finset K) :
     Countable (Subfield.closure (s : Set K)) := by
   rw [← Cardinal.mk_le_aleph0_iff]
   refine (Subfield.cardinalMk_closure_le_max _).trans ?_
   exact max_le (Cardinal.mk_le_aleph0_iff.2 s.countable_toSet.to_subtype) le_rfl
 
+/- English proof (translation)
+Introduce `_ hx` and use `Subfield.subset_closure (h hx)`.
+-/
 theorem subset_closure_of_subset {K : Type} [Field K] {s s' : Finset K} (h : s ⊆ s') :
     (s : Set K) ⊆ Subfield.closure (s' : Set K) :=
   fun _ hx => Subfield.subset_closure (h hx)
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_subtype_comp {K : Type} [Field K] {K₀ K₁ : Subfield K} (h : K₀ ≤ K₁) :
     spMap K₁.subtype ≫ spMap (Subfield.inclusion h) = spMap K₀.subtype := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `K _ P J I _ _ a x`. Take `⟨s₀, H₀⟩` from `GlobalTheory.exists_finset_isProjOver_descends K ⊥ P.A.left P.A.hom (GlobalTheory.ProjSpace.isProjOver_of_relAmple P.ample)`. Set `K₀ : Subfield K` to `Subfield.closure (s₀ : Set K)`. Take `⟨X₀, p₀, φ, hp₀, sq⟩` from `H₀ K₀ bot_le Subfield.subset_closure`. Establish `: IsProper p₀`.
+
+Take `⟨N, i, hi, rfl⟩` from `hp₀`. Use `isProper_str K₀ N` as an intermediate fact. Use `infer_instance`. Establish `: LocallyOfFinitePresentation p₀` using `inferInstance`. Establish `: QuasiCompact (Over.mk p₀).hom` using `inferInstanceAs (QuasiCompact p₀)`.
+
+Establish `: QuasiSeparated (Over.mk p₀).hom` using `inferInstanceAs (QuasiSeparated p₀)`. Establish `: LocallyOfFinitePresentation (Over.mk p₀).hom` using `inferInstanceAs (LocallyOfFinitePresentation p₀)`. Take `⟨s₁, H₁⟩` from `GlobalTheory.grpObj_descends_to_large_subfield K K₀ (Over.mk p₀) P.A φ sq`. Take `⟨s₂, H₂⟩` from `GlobalTheory.LBDescent.exists_lb_subfield K K₀ X₀ P.A.left p₀ P.A.hom φ P.L P.isLB sq`. Take `⟨s₃, H₃⟩` from `GlobalTheory.morphisms_descend_to_large_subfield K K₀ X₀ P.A.left p₀ P.A.hom φ X₀ p₀ J (fun j => (a j).left ≫ φ) sq (fun j => by rw [Category.assoc, sq.w, ← Category.assoc, Over.w])`.
+
+Take `⟨s₄, H₄⟩` from `GlobalTheory.morphisms_descend_to_large_subfield K K₀ (Sp K₀) (Sp K) (𝟙 _) (𝟙 _) (spMap K₀.subtype) X₀ p₀ I (fun i => (x i).left ≫ φ) (IsPullback.of_vert_isIso ⟨by simp⟩) (fun i => by`. Establish `e : (x i).left ≫ P.A.hom = 𝟙 _` using `Over.w (x i)`. Rewrite using `[Category.assoc, sq.w, ← Category.assoc, e]`. Use the proof step `simp)`. Set `s : Finset K` to `s₀ ∪ s₁ ∪ s₂ ∪ s₃ ∪ s₄`.
+
+Set `K₁ : Subfield K` to `Subfield.closure (s : Set K)`. Establish `h : K₀ ≤ K₁` using `Subfield.closure_mono (Finset.coe_subset.2 (fun y hy => by simp [s, hy]))`. Set `inc` to `spMap (Subfield.inclusion h)`. Set `A₁ : Over (Sp K₁)` to `Over.mk (pullback.snd p₀ inc)`. Set `φ₁ : A₁.left ⟶ X₀` to `pullback.fst p₀ inc`.
+
+Establish `sq₁ : IsPullback φ₁ A₁.hom p₀ inc` using `IsPullback.of_hasPullback p₀ inc`. Set `ψ : P.A.left ⟶ A₁.left` to `sq₁.lift φ (P.A.hom ≫ spMap K₁.subtype) (by rw [Category.assoc, spMap_subtype_comp h, sq.w])`. Establish `hψ₁ : ψ ≫ φ₁ = φ` using `sq₁.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ A₁.hom = P.A.hom ≫ spMap K₁.subtype` using `sq₁.lift_snd _ _ _`. Take `⟨gr₁, hG⟩` from `H₁ K₁ h (subset_closure_of_subset (fun y hy => by simp [s, hy])) A₁ φ₁ ψ sq₁ hψ₁ hψ₂`.
+
+Take `⟨L₁, hL₁, hL⟩` from `H₂ K₁ h (subset_closure_of_subset (fun y hy => by simp [s, hy])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨f₁, hf₁⟩` from `H₃ K₁ h (subset_closure_of_subset (fun y hy => by simp [s, hy])) A₁.left A₁.hom φ₁ ψ sq₁ hψ₁ hψ₂`. Take `⟨x₁, hx₁⟩` from `H₄ K₁ h (subset_closure_of_subset (fun y hy => by simp [s, hy])) (Sp K₁) (𝟙 _) inc (spMap K₁.subtype) (IsPullback.of_vert_isIso ⟨by simp [inc]⟩) (spMap_subtype_comp h) (by simp)`. Set `act₁ : J → (A₁ ⟶ A₁)` to `fun j => Over.homMk (sq₁.lift (f₁ j) A₁.hom (by rw [(hf₁ j).2, sq₁.w])) (sq₁.lift_snd _ _ _)`. Set `pt₁ : I → (𝟙_ (Over (Sp K₁)) ⟶ A₁)` to `fun i => Over.homMk (sq₁.lift (x₁ i) (𝟙 _) (by rw [(hx₁ i).2]; simp)) (sq₁.lift_snd _ _ _)`.
+
+Take `⟨hab, hdim⟩` from `GlobalTheory.FieldDescentAb.isAbelianScheme_and_relDim_descend K₁ K K₁.subtype A₁ P.A ψ hG P.isAb`. Take `⟨hrig, hsym, hkt⟩` from `GlobalTheory.PolDescent.rigidified_sym_kTriv_descend K₁ K K₁.subtype A₁ P.A ψ L₁ P.L hab hG hL₁ P.isLB hL`. Establish `hamp` using `GlobalTheory.AmpleDescent.relAmple_of_fieldExtension K₁ K K₁.subtype A₁ P.A ψ L₁ P.L hab hG hL₁ P.isLB hL P.ample`. Set `P₁ : PolAV (Sp K₁)` to `{ A := A₁, grp := gr₁, isAb := hab, g := P.g, smoothDim := hdim P.g P.smoothDim, L := L₁, isLB := hL₁, rigid := hrig P.rigid, sym := hsym P.sym, ample := hamp, ktriv := hkt P.ktriv }`. Use `⟨K₁, P₁, ψ, act₁, pt₁, countable_closure s, hG, hL, fun j => ?_, fun i => ?_⟩` and prove the remaining obligations.
+
+Express the relevant statement in the definitionally equal form `(a j).left ≫ ψ = ψ ≫ (act₁ j).left`. Establish `e₁ : (act₁ j).left ≫ φ₁ = f₁ j` using `sq₁.lift_fst _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hψ₁, Category.assoc, e₁, (hf₁ j).1]`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hψ₂]`.
+
+Express the relevant statement in the definitionally equal form `(x i).left ≫ ψ = spMap K₁.subtype ≫ (pt₁ i).left`. Establish `e : (x i).left ≫ P.A.hom = 𝟙 _` using `Over.w (x i)`. Establish `e₁ : (pt₁ i).left ≫ φ₁ = x₁ i` using `sq₁.lift_fst _ _ _`. Establish `e₂ : (pt₁ i).left ≫ A₁.hom = 𝟙 _` using `sq₁.lift_snd _ _ _`. Apply `sq₁.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, hψ₁]`. Conclude with `((hx₁ i).1.symm.trans (congrArg _ e₁.symm)).trans (Category.assoc _ _ _).symm`. Rewrite using `[Category.assoc, hψ₂, ← Category.assoc, e]`. Use `(Category.id_comp _).trans (Eq.trans ?_ (Category.assoc _ _ _).symm)` and prove the remaining obligations. Conclude with `((congrArg _ e₂).trans (Category.comp_id _)).symm`.
+-/
 theorem polAV_descends_to_countable_subfield :
     ∀ (K : Type) [Field K] (P : PolAV (Sp K)) (J I : Type) [Finite J] [Finite I] (a : J → (P.A ⟶ P.A)) (x : I → (𝟙_ (Over (Sp K)) ⟶ P.A)), ∃ (K₀ : Subfield K) (P₀ : PolAV (Sp K₀)) (Φ : P.A.left ⟶ P₀.A.left) (a₀ : J → (P₀.A ⟶ P₀.A)) (x₀ : I → (𝟙_ (Over (Sp K₀)) ⟶ P₀.A)), Countable K₀ ∧ IsGrpPullback P.A P₀.A (spMap K₀.subtype) Φ ∧ LBIso P.L (P₀.L.pull Φ) ∧ (∀ j, (a j).left ≫ Φ = Φ ≫ (a₀ j).left) ∧ ∀ i, (x i).left ≫ Φ = spMap K₀.subtype ≫ (x₀ i).left := by
   intro K _ P J I _ _ a x

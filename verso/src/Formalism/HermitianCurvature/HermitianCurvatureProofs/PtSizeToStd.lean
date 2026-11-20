@@ -8,6 +8,9 @@ open Formalism.FourierDecayAlt MeasureTheory NumberField
 
 noncomputable section
 
+/- English proof (translation)
+The claim follows from `| _, [] => rfl | b, (s, t) :: rest => by simp only [D.toStd, D.ptSize, List.map_cons, List.sum_cons] at * have := ptSize_toStd r g (b + s) rest simp only [D.ptSize] at this rw [this]`.
+-/
 theorem ptSize_toStd (r : ℕ) (g : ℝ) : ∀ (b : ℕ) (P : C.LPt), D.ptSize (D.toStd r g b P) = D.ptSize P
   | _, [] => rfl
   | b, (s, t) :: rest => by

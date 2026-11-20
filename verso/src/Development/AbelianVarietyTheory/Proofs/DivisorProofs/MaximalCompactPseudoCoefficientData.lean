@@ -29,6 +29,9 @@ open GlobalTheory.PsCo.Pc1
 
 namespace GlobalTheory.PsCo.Pc1
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.PsCo.PcEF.stKData_of GlobalTheory.PsCo.PcEF.maxCompactPolynomial_blockTimesConjDetPower GlobalTheory.PsCo.PcEF.modeMatrixDet_eq_adjointDet GlobalTheory.PsCo.PcEF.coefPoly GlobalTheory.PsCo.PcEF.trPoly GlobalTheory.PsCo.PcEF.adjointDetTrace_classFunction GlobalTheory. …`.
+-/
 theorem maximalCompact_pseudoCoefficientData' : StKData :=
   GlobalTheory.PsCo.PcEF.stKData_of
     GlobalTheory.PsCo.PcEF.maxCompactPolynomial_blockTimesConjDetPower GlobalTheory.PsCo.PcEF.modeMatrixDet_eq_adjointDet GlobalTheory.PsCo.PcEF.coefPoly

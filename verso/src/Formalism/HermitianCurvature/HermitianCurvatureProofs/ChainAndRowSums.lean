@@ -8,13 +8,30 @@ namespace Formalism.FourierDecayAlt.P.ChainAndRowSums
 
 open Formalism.FourierDecayAlt.crystallineComparison
 
+/- English proof (translation)
+Simplify using `[chainMat]`.
+-/
 theorem cm_two {W : Type} (Wd : Finset W) (c : ℕ → W → W → ℝ) (k : ℕ) (w w'' : W) :
     chainMat Wd c (k + 2) w w'' = ∑ w' ∈ Wd, c (k + 2) w w' * chainMat Wd c (k + 1) w' w'' := by
   simp [chainMat]
 
+/- English proof (translation)
+Simplify using `[chainMat]`.
+-/
 theorem cm_one {W : Type} (Wd : Finset W) (c : ℕ → W → W → ℝ) : chainMat Wd c 1 = c 1 := by
   simp [chainMat]
 
+/- English proof (translation)
+Introduce `W X Wd s c caa Nd N0 T hs h1 htr hfin`. Establish `key : ∀ n, 1 ≤ n → n ≤ s - 1 → ∀ w ∈ Wd, ∀ t, Nd n w t ≤ ∑ w'' ∈ Wd, chainMat Wd c n w w'' * N0 w''`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro h`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `_ hns w hw t`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify `h1 w hw t` using `[cm_one]`.
+
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Establish `ih'` using `ih (by omega) (by omega)`. Establish `h` using `htr (k + 1 + 1) (by omega) hns (fun w' => ∑ w'' ∈ Wd, chainMat Wd c (k + 1) w' w'' * N0 w'') (by intro w' hw' t'; simpa using ih' w' hw' t') w hw t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show k + 1 + 1 = k + 2 from rfl]`.
+
+Simplify using `only [cm_two, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))` and prove the remaining obligations. Introduce `w hw`. Establish `h` using `hfin (fun w' => ∑ w'' ∈ Wd, chainMat Wd c (s - 1) w' w'' * N0 w'') (fun w' hw' t => key (s - 1) (by omega) le_rfl w' hw' t) w hw`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [coMat, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))` and prove the remaining obligations.
+-/
 theorem chainSum_ok : ChainSum := by
   intro W X Wd s c caa Nd N0 T hs h1 htr hfin
   have key : ∀ n, 1 ≤ n → n ≤ s - 1 → ∀ w ∈ Wd, ∀ t,
@@ -48,6 +65,13 @@ theorem chainSum_ok : ChainSum := by
       rw [Finset.sum_comm]
       refine Finset.sum_congr rfl (fun _ _ => Finset.sum_congr rfl (fun _ _ => by ring))
 
+/- English proof (translation)
+Establish `: ∀ n, (∀ w w', 0 ≤ chainMat Wd c n w w') ∧ (∀ w w', 0 ≤ chainMat Wd c (n + 1) w w')`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨fun w w' => ?_, fun w w' => ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `simp only [chainMat]; split_ifs <;> norm_num`. Rewrite using `[cm_one]`. Conclude with `hc 1 w w'`. Consider the case `succ m ih`. Use `⟨ih.2, fun w w' => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cm_two]`. Conclude with `Finset.sum_nonneg (fun x _ => mul_nonneg (hc _ _ _) (ih.2 _ _))`. Conclude with `fun n => (this n).1`.
+-/
 theorem cm_nonneg {W : Type} (Wd : Finset W) (c : ℕ → W → W → ℝ) (hc : ∀ n w w', 0 ≤ c n w w') :
     ∀ n w w', 0 ≤ chainMat Wd c n w w' := by
   have : ∀ n, (∀ w w', 0 ≤ chainMat Wd c n w w') ∧ (∀ w w', 0 ≤ chainMat Wd c (n + 1) w w') := by
@@ -63,6 +87,21 @@ theorem cm_nonneg {W : Type} (Wd : Finset W) (c : ℕ → W → W → ℝ) (hc :
       exact Finset.sum_nonneg (fun x _ => mul_nonneg (hc _ _ _) (ih.2 _ _))
   exact fun n => (this n).1
 
+/- English proof (translation)
+Introduce `W Wd s c caa M Maa hs hc hcaa hM hMaa`. Establish `row : ∀ n, 1 ≤ n → n < s → ∀ w ∈ Wd, ∑ w'' ∈ Wd, chainMat Wd c n w w'' = ∏ k ∈ Ico 1 (n + 1), M k`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro h`.
+
+Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `_ hns w hw`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using `[cm_one, hM 1 le_rfl hns w hw]`.
+
+Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Rewrite using `[show k + 1 + 1 = k + 2 from rfl]`. Simplify using `only [cm_two]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun w' hw' => by rw [ih (by omega) (by omega) w' hw'])]`. Rewrite using `[← Finset.sum_mul, hM (k + 2) (by omega) hns w hw, Finset.prod_Ico_succ_top (a := 1) (b := k + 2) (by omega), mul_comm]`. Establish `P` using `fun w hw => row (s - 1) (by omega) (by omega) w hw`. Establish `hs1 : s - 1 + 1 = s` using `by omega`. Rewrite `P` using `[hs1]`.
+
+Establish `rsum : ∀ w ∈ Wd, ∑ w'' ∈ Wd, coMat Wd c caa s w w'' = Maa * ∏ n ∈ Ico 1 s, M n`. Introduce `w hw`. Simplify using `only [coMat]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum]`.
+
+Rewrite using `[Finset.sum_congr rfl (fun w' hw' => by rw [P w' hw']), ← Finset.sum_mul, hMaa w hw]`. Introduce `w hw`. Use `⟨rsum w hw, fun hpos => ⟨fun a => ?_, fun a ha => by simp [ha], ?_⟩⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `div_nonneg (Finset.sum_nonneg (fun x _ => mul_nonneg (hcaa _ _) (cm_nonneg Wd c hc _ _ _))) hpos.le`.
+
+Conclude with `le_rfl`. Rewrite using `[Finset.sum_congr rfl (fun a ha => if_pos ha), ← Finset.sum_div, rsum w hw]`. Conclude with `div_self hpos.ne'`.
+-/
 theorem rowSums_ok : RowSums := by
   intro W Wd s c caa M Maa hs hc hcaa hM hMaa
   have row : ∀ n, 1 ≤ n → n < s → ∀ w ∈ Wd,
@@ -101,6 +140,15 @@ theorem rowSums_ok : RowSums := by
   · rw [Finset.sum_congr rfl (fun a ha => if_pos ha), ← Finset.sum_div, rsum w hw]
     exact div_self hpos.ne'
 
+/- English proof (translation)
+Introduce `f s Maa C₄ A B M vol hs hC hA0 hAC hB0 hBC hvol hMaa0 hMaaA hM`. Establish `hC0 : 0 ≤ C₄` using `by linarith`. Establish `hprodv : 0 ≤ ∏ n ∈ Ico 1 s, vol n` using `Finset.prod_nonneg (fun n _ => hvol n)`. Establish `h1 : ∏ n ∈ Ico 1 s, M n ≤ ∏ n ∈ Ico 1 s, (B ^ f * vol n)` using `Finset.prod_le_prod (fun n hn => (hM n hn).1) (fun n hn => (hM n hn).2)`. Establish `h2 : ∏ n ∈ Ico 1 s, (B ^ f * vol n) ≤ ∏ n ∈ Ico 1 s, (C₄ ^ f * vol n)` using `Finset.prod_le_prod (fun n _ => mul_nonneg (pow_nonneg hB0 _) (hvol n)) (fun n _ => mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hB0 hBC f) (hvol n))`.
+
+Establish `h3 : A ^ f ≤ C₄ ^ f` using `pow_le_pow_left₀ hA0 hAC f`. Establish `hMp : 0 ≤ ∏ n ∈ Ico 1 s, M n` using `Finset.prod_nonneg (fun n hn => (hM n hn).1)`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (hMaaA.trans h3) (h1.trans h2) hMp (pow_nonneg hC0 _)` to reduce the goal to its premises. Use `_ = C₄ ^ (f * s) * ∏ n ∈ Ico 1 s, vol n := by`.
+
+Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Nat.card_Ico, ← mul_assoc, ← pow_mul, ← pow_add]`. Use `congr 2`. Break down `s with _ | s` into its components or cases. Use linear arithmetic over natural numbers and integers. Simplify using `[Nat.mul_succ]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem sizesProduct_ok : SizesProduct := by
   intro f s Maa C₄ A B M vol hs hC hA0 hAC hB0 hBC hvol hMaa0 hMaaA hM
   have hC0 : 0 ≤ C₄ := by linarith
@@ -124,7 +172,16 @@ theorem sizesProduct_ok : SizesProduct := by
 
 end Formalism.FourierDecayAlt.P.ChainAndRowSums
 
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.ChainAndRowSums.chainSum_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.chain_sum_identity : Formalism.FourierDecayAlt.crystallineComparison.ChainSum := Formalism.FourierDecayAlt.P.ChainAndRowSums.chainSum_ok
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.ChainAndRowSums.rowSums_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.row_sums_identity : Formalism.FourierDecayAlt.crystallineComparison.RowSums := Formalism.FourierDecayAlt.P.ChainAndRowSums.rowSums_ok
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P.ChainAndRowSums.sizesProduct_ok`.
+-/
 theorem Formalism.FourierDecayAlt.P.sizes_product_identity : Formalism.FourierDecayAlt.crystallineComparison.SizesProduct :=
   Formalism.FourierDecayAlt.P.ChainAndRowSums.sizesProduct_ok

@@ -16,6 +16,9 @@ namespace PositivityTheory.Rg.Sw.Glob
 
 open GlobalTheory.CompanionTheory.HermPoisson
 
+/- English proof (translation)
+Take `⟨-, K, hK, hKx⟩` from `GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := r)`. Use `⟨K, hK, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hKx x`. Use `⟨-γ, neg_mem hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[sub_neg_eq_add, add_comm]` and apply the resulting hypothesis.
+-/
 theorem hermCocompact (D : D7) (r : ℕ) :
     ∃ K : Set (hermA D r), IsCompact K ∧ ∀ x, ∃ l ∈ ratHerm D r, x - l ∈ K := by
   obtain ⟨-, K, hK, hKx⟩ := GlobalTheory.CompanionTheory.HermVol.isCoLat_herm (D := D) (r := r)
@@ -27,6 +30,23 @@ theorem hermCocompact (D : D7) (r : ℕ) :
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 2000000 in
 
+/- English proof (translation)
+Take `⟨i1, i2, i3, i4, -, -⟩` from `lattice_Mx D r r`. Use `haveI : IsTopologicalAddGroup (Mx D r r) := i1`. Use `haveI : LocallyCompactSpace (Mx D r r) := i2`. Use `haveI : SecondCountableTopology (Mx D r r) := i3`. Use `haveI : T2Space (Mx D r r) := i4`.
+
+Use `haveI : SecondCountableTopology (hermA D r) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI : T2Space (hermA D r) := Topology.IsEmbedding.subtypeVal.t2Space`. Use `haveI : BorelSpace (Mx D r r) := ⟨rfl⟩`. Use `haveI : LocallyCompactSpace (hermA D r) := (GlobalTheory.CompanionTheory.HermVol.isClosed_hermA (D := D) (r := r)).locallyCompactSpace`. Use `haveI : Countable D.host.E := GlobalTheory.CompanionTheory.FourierComplete.countable_numberField D.host.E`.
+
+Use `haveI : Countable (Matrix (Fin r) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin r → Fin r → D.host.E))`. Establish `hmem : ∀ q : ratHerm D r, q.1.1 ∈ ratMx D r r` using `fun q => AddSubgroup.mem_comap.1 q.2`. Use `haveI : Countable (ratHerm D r) := by choose g hg using fun q : ratHerm D r => mem_ratMx.1 (hmem q)`. Conclude with `Function.Injective.countable (f := g) fun a b h => Subtype.ext (Subtype.ext (by rw [← hg a, ← hg b, h]))`. Use `haveI := hH`.
+
+Take `⟨K, hK, hc⟩` from `hermCocompact D r`. Introduce `x`. Use `GlobalTheory.CompanionTheory.FourierComplete.eq_zero_of_coeffs_vanish (ratHerm D r) lam h𝓖 hK hc (T := ratHerm D r) (fun t b => chi ψ t.1.1 b) (fun t => continuous_chi hψ t.1.1) ?_ ?_ ?_ ?_ ?_ φ hφ hper ?_ x` and prove the remaining obligations. Introduce `t y l hl show chi ψ t.1.1 (y + l) = chi ψ t.1.1 y`. Rewrite using `[chi_add_right, chi_rat hψ (hmem t) ⟨l, hl⟩, mul_one]`.
+
+Introduce `y`. Conclude with `chi_zero_left ψ y`. Introduce `s t y`. Conclude with `chi_add_left ψ s.1.1 t.1.1 y`. Introduce `t y show star (chi ψ t.1.1 y) = chi ψ (-t.1.1) y`.
+
+Rewrite using `[chi_neg_left]`. Conclude with `star_psi' hψ _`. Introduce `a b hab`. Use `rat_of_chi hψ (-a + b) fun t => ?_` and prove the remaining obligations. Establish `h1 : chi ψ t.1.1 a * chi ψ t.1.1 (-a) = 1`.
+
+Rewrite using `[← chi_add_right, add_neg_cancel, chi_zero_right]`. Rewrite using `[chi_add_right, ← hab t, mul_comm]`. Conclude with `h1`. Introduce `t`. Take `⟨β, hβ⟩` from `(ofHermE_bijective (D := D) (r := r)).2 t`.
+
+Establish `h1 : ∀ b : hermA D r, chi ψ (-t).1.1 b = ψ (-halfTr (Matrix.trace (HMul.hMul (β.1.map (incA D)) b.1 : Mx D r r)))` using `fun b => by show chi ψ (-t.1.1) b = _`. Rewrite using `[chi_neg_left, ← hβ, ofHermE_val]`. Simplify using `only [h1]`. Conclude with `hco β`.
+-/
 theorem hermFourierZero (D : D7) (r : ℕ) (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ)
     (lam : Measure (hermA D r)) (hH : lam.IsAddHaarMeasure) (𝓖 : Set (hermA D r))
     (h𝓖 : IsAddFundamentalDomain (ratHerm D r) 𝓖 lam) (φ : hermA D r → ℂ) (hφ : Continuous φ)

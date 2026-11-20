@@ -21,6 +21,15 @@ namespace UpperTheory.Gal.Ord.LinPf
 
 variable {k : Type} [Field k]
 
+/- English proof (translation)
+Establish `hW : x ∈ LinearMap.range (ρ a) ⊔ LinearMap.range (ρ (1 - ε))`. Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Establish `h1 : (ρ a).dualMap φ = 0` using `LinearMap.ext fun y ↦ hφ _ (Submodule.mem_sup_left ⟨y, rfl⟩)`.
+
+Establish `h2 : (ρ (1 - ε)).dualMap φ = 0` using `LinearMap.ext fun y ↦ hφ _ (Submodule.mem_sup_right ⟨y, rfl⟩)`. Take `⟨u, hu⟩` from `h φ h1`. Establish `h3 : φ = (ρ ε).dualMap φ + (ρ (1 - ε)).dualMap φ`. Use `LinearMap.ext fun y ↦ ?_` and prove the remaining obligations. Establish `e : ρ ε y + ρ (1 - ε) y = y`.
+
+Rewrite using `[map_sub, map_one]`. Simplify using the standard rewrite rules. Rewrite using `[LinearMap.add_apply, LinearMap.dualMap_apply, LinearMap.dualMap_apply, ← map_add, e]`. Rewrite using `[h3, h2, add_zero, hu, LinearMap.dualMap_apply, hx, map_zero]`. Take `⟨y, ⟨u, rfl⟩, z, ⟨v, rfl⟩, e⟩` from `Submodule.mem_sup.1 hW`.
+
+Conclude with `⟨u, v, e.symm⟩`.
+-/
 private theorem dual_annG {C P : Type*} [CommRing C] [AddCommGroup P] [Module k P]
     (ρ : C →+* Module.End k P) (a ε g : C)
     (h : ∀ x : Module.Dual k P, (ρ a).dualMap x = 0 → ∃ u, (ρ ε).dualMap x = (ρ g).dualMap u)
@@ -43,6 +52,15 @@ private theorem dual_annG {C P : Type*} [CommRing C] [AddCommGroup P] [Module k 
   obtain ⟨y, ⟨u, rfl⟩, z, ⟨v, rfl⟩, e⟩ := Submodule.mem_sup.1 hW
   exact ⟨u, v, e.symm⟩
 
+/- English proof (translation)
+Establish `hW : ρ ε x ∈ LinearMap.range (ρ g)`. Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Rewrite `hφ` using `[Submodule.mem_dualAnnihilator]`. Establish `h1 : (ρ g).dualMap φ = 0` using `LinearMap.ext fun y ↦ hφ _ ⟨y, rfl⟩`.
+
+Take `⟨u, v, rfl⟩` from `h φ h1`. Establish `e1 : ρ a (ρ ε x) = 0`. Establish `: ρ a * ρ ε = ρ ε * ρ a` using `by rw [← map_mul, ← map_mul, mul_comm]`. Use `LinearMap.congr_fun this x` as an intermediate fact. Simplify `this` using `[hx]`.
+
+Establish `e2 : ρ (1 - ε) (ρ ε x) = 0`. Establish `: ρ (1 - ε) * ρ ε = 0` using `by rw [← map_mul, hε]`. Conclude with `LinearMap.congr_fun this x`. Rewrite using `[LinearMap.add_apply, LinearMap.dualMap_apply, LinearMap.dualMap_apply, e1, e2, map_zero, map_zero, add_zero]`. Take `⟨u, hu⟩` from `hW`.
+
+Conclude with `⟨u, hu.symm⟩`.
+-/
 private theorem dual_annA {C P : Type*} [CommRing C] [AddCommGroup P] [Module k P]
     (ρ : C →+* Module.End k P) (a ε g : C) (hε : ρ ((1 - ε) * ε) = 0)
     (h : ∀ x : Module.Dual k P, (ρ g).dualMap x = 0 →
@@ -68,6 +86,11 @@ private theorem dual_annA {C P : Type*} [CommRing C] [AddCommGroup P] [Module k 
 
 variable {p : ℕ} [Fact p.Prime]
 
+/- English proof (translation)
+Use `letI : Algebra k k := (frobR p k hk).toAlgebra`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k A hA`. Establish `hπ` using `isGrpPullback_pullback A (spMap (frobR p k hk))`. Take `⟨F, hFm, hF⟩` from `GlobalTheory.T.exists_relativeFrobenius_grpScheme_charP p k hk A _ _ hπ`. Establish `hker` using `(GlobalTheory.T.range_relativeFrobenius_primitiveDeRham_eq_conjugate GlobalTheory.abelianDeRham.2.2.1 p k hk A _ _ hπ F hF g hA hg).2`.
+
+Set `m` to `GlobalTheory.Published.AbelianDeRham.bcMor hπ`. Establish `e : primPull (dp0 k) (𝟙 _) F (m.pull c) = frobDR p k hk A c` using `GrpMor.pull_pull m (homMor (dp0 k) (𝟙 _) F) (frobMor p k hk A (cast_left p k hk A)) (fun _ ↦ rfl) hF c`. Rewrite using `[← e]`. Conclude with `hker (m.isMor.pullback1_mem_hodgeFiltration hc)`.
+-/
 private theorem frob_of_mem (hk : (p : k) = 0) (A : Over (Sp k)) [GrpObj A] (hA : IsAbelianScheme A)
     (c : primDR A) (hc : c ∈ PrimitiveSubmodule A) : frobDR p k hk A c = 0 := by
   letI : Algebra k k := (frobR p k hk).toAlgebra
@@ -84,9 +107,15 @@ private theorem frob_of_mem (hk : (p : k) = 0) (A : Over (Sp k)) [GrpObj A] (hA 
 
 variable {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ} {t : Sp k ⟶ Sp R}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hom_apply (o : Obj b N t) (c : 𝓞 D.F) (h : HdR o.A) (x : primDR o.A) :
     hom o c h x = h (coh o c x) := rfl
 
+/- English proof (translation)
+Rewrite using `[← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff k]`. Introduce `h`. Use `e h` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+-/
 private theorem sep (o : Obj b N t) {x y : primDR o.A} (e : ∀ h : HdR o.A, h x = h y) : x = y := by
   rw [← sub_eq_zero, ← Module.forall_dual_apply_eq_zero_iff k]
   intro h
@@ -94,12 +123,21 @@ private theorem sep (o : Obj b N t) {x y : primDR o.A} (e : ∀ h : HdR o.A, h x
   rw [map_sub, sub_eq_zero]
   exact this
 
+/- English proof (translation)
+Simplify using `only [hom, map_add]`.
+-/
 private theorem hom_add (o : Obj b N t) (x y : 𝓞 D.F) : hom o (x + y) = hom o x + hom o y := by
   simp only [hom, map_add]
 
+/- English proof (translation)
+Simplify using `only [hom, map_mul]`.
+-/
 private theorem hom_mul (o : Obj b N t) (x y : 𝓞 D.F) : hom o (x * y) = hom o x * hom o y := by
   simp only [hom, map_mul]
 
+/- English proof (translation)
+Simplify using `only [hom, map_one]`.
+-/
 private theorem hom_one (o : Obj b N t) : hom o 1 = 1 := by
   simp only [hom, map_one]
 
@@ -114,16 +152,48 @@ private noncomputable def cohHom (o : Obj b N t) : 𝓞 D.F →+* Module.End k (
   map_add' x y := LinearMap.ext fun v ↦ sep o fun h ↦ by
     rw [← hom_apply, hom_add, LinearMap.add_apply, LinearMap.add_apply, LinearMap.add_apply, map_add]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem cohHom_apply (o : Obj b N t) (c : 𝓞 D.F) : cohHom o c = coh o c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private theorem hom_eq (o : Obj b N t) (c : 𝓞 D.F) : hom o c = (cohHom o c).dualMap := rfl
 
+/- English proof (translation)
+Rewrite using `[map_natCast, ← map_natCast (algebraMap k (Module.End k (primDR o.A))) p, hk, map_zero]`.
+-/
 private theorem cohHom_natCast_zero (hk : (p : k) = 0) (o : Obj b N t) : cohHom o (p : 𝓞 D.F) = 0 := by
   rw [map_natCast, ← map_natCast (algebraMap k (Module.End k (primDR o.A))) p, hk, map_zero]
 
 end UpperTheory.Gal.Ord.LinPf
 
 open UpperTheory.Gal.Ord.LinPf in
+/- English proof (translation)
+Introduce `p _ D R _ b N hN hNp hm k _ _ hk β o i w f hw hn hf π`. Take `⟨h1, ⟨h₀, h2, h3⟩, -⟩` from `UpperTheory.Gal.Ord.lie p D R b N hN hNp hm k hk β o i w f hw hn hf π`. Use `haveI : CharP k p := (CharP.charP_iff_prime_eq_zero Fact.out).2 hk`. Use `letI := tensorModule (dp0 k) (𝟙 _) (o.act.toF D)`. Establish `hP` using `GlobalTheory.CrysProj.hdR_projective D.F k o.A o.ab (o.act.toF D)`.
+
+Take `⟨hG, hA⟩` from `UpperTheory.Gal.Ord.proj p k (𝓞 D.F) w f π (HdR o.A)`. Establish `hs : ∀ (c : 𝓞 D.F) (x : HdR o.A), ((1 : k) ⊗ₜ[ℤ] c) • x = (cohHom o c).dualMap x` using `fun c x ↦ by`. Express the relevant statement in the definitionally equal form `actAlg (dp0 k) (𝟙 _) (o.act.toF D) ((1 : k) ⊗ₜ[ℤ] c) x = _`. Rewrite using `[actAlg_tmul, one_smul]`. Both sides reduce to the same expression.
+
+Establish `hε : cohHom o ((1 - π.ε) * π.ε) = 0`. Take `⟨u, hu⟩` from `π.idem`. Establish `e : (1 - π.ε) * π.ε = (p : 𝓞 D.F) * (-u)`. Take the linear combination `-hu`. Rewrite using `[e, map_mul, cohHom_natCast_zero hk, zero_mul]`.
+
+Use `{ fin := ?_ add := fun x y ↦ (cohHom o).map_add x y mul := fun x y ↦ (cohHom o).map_mul x y one := (cohHom o).map_one ker := hw semi := fun l x ↦ ?_ comm := fun c x ↦ ?_ kerΦ := fun x ↦ ⟨fun h ↦ GlobalTheory.T.frobenius_kernel_primitive_de_rham_hodge p k hk o.A o.ab x h, fun h ↦ …` and prove the remaining obligations. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o.A o.ab`. Establish `H` using `GlobalTheory.abelianDeRham`. Take `⟨hfd, -, -⟩` from `GlobalTheory.finrank_HdR_Fil_of_field H.1 H.2.1 k o.A g o.ab hg`. Conclude with `Module.finite_dual_iff k |>.1 hfd`.
+
+Express the relevant statement in the definitionally equal form `frobDR p k hk o.A (l • x) = l ^ p • frobDR p k hk o.A x`. Rewrite using `[LinearMap.map_smulₛₗ, frobR_apply]`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c)`. Conclude with `GlobalTheory.AbDatum.frobDR_primPull p hk _ x`. Use `haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c)`.
+
+Conclude with `(homMor (dp0 k) (𝟙 _) (o.act.act (algebraMap (𝓞 D.F) D.O c))).isMor.pullback1_mem_hodgeFiltration hx`. Use `sep o fun h ↦ ?_` and prove the remaining obligations. Establish `e` using `(Submodule.mem_dualAnnihilator _).1 (h1 c h) x hx`. Rewrite `e` using `[LinearMap.sub_apply, LinearMap.smul_apply, hom_apply, hom_apply, hom_apply, smul_eq_mul, sub_eq_zero]`. Establish `ec : coh o c (coh o π.ε x) = coh o π.ε (coh o c x)`.
+
+Use `LinearMap.congr_fun ((cohHom o).map_mul c π.ε) x` as an intermediate fact. Rewrite `this` using `[mul_comm, (cohHom o).map_mul]`. Conclude with `this.symm`. Rewrite using `[ec, map_smul, e]`. Both sides reduce to the same expression.
+
+Establish `hx₀ : ∃ x ∈ PrimitiveSubmodule o.A, hom o π.ε h₀ x ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `h2 ((Submodule.mem_dualAnnihilator _).2 hc)`. Take `⟨x, hx, hne⟩` from `hx₀`.
+
+Rewrite `hne` using `[hom_apply]`. Use `⟨x, hx, fun e ↦ hne (by rw [e, map_zero]), fun y hy ↦ ?_⟩` and prove the remaining obligations. Use `⟨h₀ (coh o π.ε y) / h₀ (coh o π.ε x), sep o fun h ↦ ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `h3 h`. Establish `ey` using `(Submodule.mem_dualAnnihilator _).1 hm y hy`.
+
+Establish `ex` using `(Submodule.mem_dualAnnihilator _).1 hm x hx`. Rewrite `ey`, `ex` using `[LinearMap.sub_apply, LinearMap.smul_apply, hom_apply, hom_apply, smul_eq_mul, sub_eq_zero]`. Rewrite using `[map_smul, ey, ex, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `dual_annG (cohHom o) π.a π.ε π.g (fun y hy ↦ ?_) x hx` and prove the remaining obligations.
+
+Take `⟨u, hu⟩` from `hA y (by rw [hs]; exact hy)`. Conclude with `⟨u, by rw [← hs, ← hs]; exact hu⟩`. Use `dual_annA (cohHom o) π.a π.ε π.g hε (fun y hy ↦ ?_) x hx` and prove the remaining obligations. Take `⟨u, v, huv⟩` from `hG y (by rw [hs]; exact hy)`. Conclude with `⟨u, v, by rw [← hs, ← hs]; exact huv⟩`.
+-/
 theorem UpperTheory.Gal.Ord.lin :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → D.m = 1 →
       ∀ (k : Type) [Field k] [IsAlgClosed k] (hk : (p : k) = 0) (β : R →+* k) (o : Obj b N (spMap β)) (i : Fin D.a) (w : Ideal (𝓞 D.F)) (f : ℕ),

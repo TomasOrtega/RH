@@ -9,5 +9,8 @@ open GlobalTheory.FinPl (Lat idAt idOff intAt grpAt grpOff MxAt latV latA InK Mo
 open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.AscFin.primAt_std_bessel | exact GlobalTheory.AscFin.primAt_std_bessel | (intros; apply GlobalTheory.AscFin.primAt_std_bessel <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.psi_primitive_standardFrames_besselLevel : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, PrimAt W.ψ (F.dB ρ h) (G.Λ (.grid (2 * ρ + 2) 0)) v := by
   first | exact @GlobalTheory.AscFin.primAt_std_bessel | exact GlobalTheory.AscFin.primAt_std_bessel | (intros; apply GlobalTheory.AscFin.primAt_std_bessel <;> assumption)

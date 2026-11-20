@@ -14,6 +14,11 @@ open PositivityTheory.PfSWUS.SwFockk
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Take `⟨hc, ho⟩` from `GlobalTheory.ThK.isCompact_isOpen_intLoc (F := F) (E := E) v`. Establish `e : (lstd F E n v : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)) = Set.univ.pi fun _ => (GlobalTheory.AdelicU.intLoc F E v : Set (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E))`. Use extensionality with `y`. Simplify using `only [Set.mem_univ_pi]`. Both sides reduce to the same expression.
+
+Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => hc`.
+-/
 theorem isCO_lstd (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) : PositivityTheory.SiegelWeilFormula.Gen.IsCO (lstd F E n v) := by
   obtain ⟨hc, ho⟩ := GlobalTheory.ThK.isCompact_isOpen_intLoc (F := F) (E := E) v
   have e : (lstd F E n v : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)) =
@@ -25,10 +30,30 @@ theorem isCO_lstd (n : ℕ) (v : HeightOneSpectrum (𝓞 F)) : PositivityTheory.
   · rw [e]; exact isOpen_set_pi Set.finite_univ fun _ _ => ho
   · rw [e]; exact isCompact_univ_pi fun _ => hc
 
+/- English proof (translation)
+The claim follows from `(FiniteAdeleRing.algebraMap (𝓞 F) F c).2`.
+-/
 theorem eventually_algebraMap_mem (c : F) :
     ∀ᶠ v in Filter.cofinite, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) c ∈ v.adicCompletionIntegers F :=
   (FiniteAdeleRing.algebraMap (𝓞 F) F c).2
 
+/- English proof (translation)
+Establish `hint : ∀ y : E, ∃ m : ℤ, m ≠ 0 ∧ IsIntegral ℤ ((m : F) • y)` using `fun y => by`. Take `⟨m, hm, hi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic y)).exists_integral_multiple`. Conclude with `⟨m, hm, by rwa [Int.cast_smul_eq_zsmul]⟩`. Use `choose m hm hmi using hint`. Set `b` to `RingOfIntegers.basis E`.
+
+Establish `h1 : ∀ᶠ v in Filter.cofinite, ∀ i k, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) (bs.repr ((b i : 𝓞 E) : E) k) ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun k => eventually_algebraMap_mem _`. Establish `h2 : ∀ᶠ v in Filter.cofinite, ∀ k, algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) ((m (bs k) : F))⁻¹ ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun k => eventually_algebraMap_mem _`. Use `filter_upwards [h1, h2] with v hv1 hv2 z`. Use `set B := Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hz`. Use `GlobalTheory.AdelicU.intLoc_induction (p := fun y => ∀ k, B.repr y k ∈ v.adicCompletionIntegers F) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce `a ha x k`. Rewrite using `[Algebra.TensorProduct.basis_repr_tmul, Finsupp.smul_apply, Finsupp.mapRange_apply, smul_eq_mul]`. Use `mul_mem ha ?_` and prove the remaining obligations.
+
+Establish `hx : (x : E) = ∑ i, (b.repr x i) • ((b i : 𝓞 E) : E)` using `by conv_lhs => rw [← b.sum_repr x]`. Simplify using `only [map_sum, map_zsmul, RingOfIntegers.coe_eq_algebraMap]`. Rewrite using `[hx, map_sum, Finsupp.coe_finsetSum, Finset.sum_apply, map_sum]`. Use `Subring.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, map_zsmul]`.
+
+Conclude with `zsmul_mem (hv1 i k) _`. Introduce `k`. Simplify using the standard rewrite rules. Introduce `y z hy hz k`. Rewrite using `[map_add, Finsupp.add_apply]`.
+
+Conclude with `add_mem (hy k) (hz k)`. Introduce `y hy k`. Rewrite using `[map_neg, Finsupp.neg_apply]`. Conclude with `neg_mem (hy k)`. Introduce `hz`.
+
+Rewrite using `[← B.sum_repr z]`. Use `Subring.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `hm0 : ((m (bs k) : ℤ) : F) ≠ 0` using `by exact_mod_cast hm (bs k)`. Establish `e : B.repr z k • B k = (algebraMap F (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) ((m (bs k) : F))⁻¹ * B.repr z k) ⊗ₜ[F] ((⟨(m (bs k) : F) • bs k, hmi (bs k)⟩ : 𝓞 E) : E)`. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← Algebra.smul_def, TensorProduct.smul_tmul]`.
+
+Use `congr 1`. Express the relevant statement in the definitionally equal form `bs k = ((m (bs k) : F))⁻¹ • ((m (bs k) : F) • bs k)`. Rewrite using `[smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Rewrite using `[e]`. Conclude with `GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (mul_mem (hv2 k) (hz k)) (⟨(m (bs k) : F) • bs k, hmi (bs k)⟩ : 𝓞 E)`.
+-/
 theorem eventually_mem_intLoc_iff {d : ℕ} (bs : Module.Basis (Fin d) F E) :
     ∀ᶠ v in Filter.cofinite, ∀ z : HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E, z ∈ GlobalTheory.AdelicU.intLoc F E v ↔
       ∀ k, (Algebra.TensorProduct.basis (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v) bs).repr z k ∈ v.adicCompletionIntegers F := by
@@ -78,6 +103,11 @@ theorem eventually_mem_intLoc_iff {d : ℕ} (bs : Module.Basis (Fin d) F E) :
     rw [e]
     exact GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (mul_mem (hv2 k) (hz k)) (⟨(m (bs k) : F) • bs k, hmi (bs k)⟩ : 𝓞 E)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ n`. Use `⟨fun v => isCO_lstd n v, fun d bs => ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_mem_intLoc_iff bs] with v hv`. Use extensionality with `y`. Express the relevant statement in the definitionally equal form `(∀ i, y i ∈ GlobalTheory.AdelicU.intLoc F E v) ↔ _`.
+
+Simplify using `only [PositivityTheory.PfSWUS.Loc.latO, Set.mem_ofPred_eq]`. Conclude with `forall_congr' fun a => hv (y a)`.
+-/
 theorem lstdStd : LstdStd := by
   intro F E _ _ _ _ _ n
   refine ⟨fun v => isCO_lstd n v, fun d bs => ?_⟩

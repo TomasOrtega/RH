@@ -20,6 +20,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
   [MeasurableSpace (G a)] [BorelSpace (G a)] [MeasurableSpace (G b)] [BorelSpace (G b)]
   {Ma : Mods E a} {Mb : Mods E b} {κ : Type} [Fintype κ]
 
+/- English proof (translation)
+Establish `h1 : infP (E` using `E) b 1 = 1 := by simp [infP]`. Establish `key` using `pi_iter μb (fun v => Ix (Mb v)) (fun v t p q => ent (Mb v) (kb' v t.val) p q) (fun v => vb' v (χb v)) (fun J yb => f ((j₁, J), z) (x * (1, infP b yb))) i₂ (fun v p q => mult_ent (hkb' v) p q) (fun J => (hf _).comp (continuous_const.mul (continuous_const.prodMk (continuous_infP b) …`. Simplify using `only [h1, Prod.mk_one_one, mul_one] at key`. Conclude with `key`. Introduce `v J y`.
+
+Use `set m₁ := (x * (1, infP b (Function.update y v 1))).1`. Use `set g₀ := (x * (1, infP b (Function.update y v 1))).2`. Establish `hsplit : ∀ t : G b, x * (1, infP b (Function.update y v t)) = (m₁, g₀ * infP b (Pi.mulSingle v t))`. Introduce `t`. Establish `e : Function.update y v t = Function.update y v 1 * Pi.mulSingle v t`.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, Pi.mulSingle_eq_of_ne h]`.
+
+Rewrite using `[e, infinitePart_mul]`. Conclude with `Prod.ext (by simp [m₁]) (by simp [g₀, mul_assoc])`. Simplify using `only [hsplit, Pi.mulSingle_one, h1, mul_one]`. Use `loc_act hMA μb (Mb v) (kb' v) (vb' v) T' (hkb' v) (χb v) v (fun j g => f ((j₁, Function.update J v j), z) (m₁, g)) ?_ ?_ ?_ g₀ (J v)` as an intermediate fact. Simplify `this` using `only [Function.update_eq_self]`.
+
+Introduce `j`. Take `⟨φ, hφ⟩` from `hsm ((j₁, Function.update J v j), z) m₁`. Rewrite using `[← hφ]`. Conclude with `φ.2`. Introduce `h u l`.
+
+Use `heq v u ((j₁, Function.update J v l), z) (m₁, h)` as an intermediate fact. Simplify `this` using `only [Prod.mk_mul_mk, mul_one, Function.update_self, Function.update_idem]`. Introduce `j g`. Conclude with `heig ((j₁, Function.update J v j), z) v g m₁`.
+-/
 theorem actSide_b (hMA : MultAlg) (μb : Measure (G b)) [μb.IsHaarMeasure] (f : Io Ma Mb κ → H E a b → ℂ)
     (kb' : Kers Mb) vb' (T' : ℝ) (hkb' : IsMults μb kb' vb' T') (χb : InfinitePlace E → Inf b)
     (hf : ∀ i, Continuous (f i)) (hsm : ∀ i m₁, ∃ φ : Sm E b, φ.1 = fun x => f i (m₁, x))
@@ -67,6 +80,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
   [MeasurableSpace (G a)] [BorelSpace (G a)]
   {Ma : Mods E a} {Mb : Mods E b} {κ : Type}
 
+/- English proof (translation)
+Establish `h1 : infP (E` using `E) a 1 = 1 := by simp [infP]`. Establish `key` using `pi_iter μa (fun v => Ix (Ma v)) (fun v t p q => ent (Ma v) (ka' v t.val) p q) (fun v => va' v (χa v)) (fun J ya => f ((J, i₂), z) (x * (infP a ya, 1))) i₁ (fun v p q => mult_ent (hka' v) p q) (fun J => (hf _).comp (continuous_const.mul ((continuous_infP a).prodMk continuous_const …`. Simplify using `only [h1, Prod.mk_one_one, mul_one] at key`. Conclude with `key`. Introduce `v J y`.
+
+Use `set g₀ := (x * (infP a (Function.update y v 1), 1)).1`. Use `set m₂ := (x * (infP a (Function.update y v 1), 1)).2`. Establish `hsplit : ∀ t : G a, x * (infP a (Function.update y v t), 1) = (g₀ * infP a (Pi.mulSingle v t), m₂)`. Introduce `t`. Establish `e : Function.update y v t = Function.update y v 1 * Pi.mulSingle v t`.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h, Pi.mulSingle_eq_of_ne h]`.
+
+Rewrite using `[e, infinitePart_mul]`. Conclude with `Prod.ext (by simp [g₀, mul_assoc]) (by simp [m₂])`. Simplify using `only [hsplit, Pi.mulSingle_one, h1, mul_one]`. Use `loc_act hMA μa (Ma v) (ka' v) (va' v) T' (hka' v) (χa v) v (fun j g => f ((Function.update J v j, i₂), z) (g, m₂)) ?_ ?_ ?_ g₀ (J v)` as an intermediate fact. Simplify `this` using `only [Function.update_eq_self]`.
+
+Introduce `j`. Take `⟨φ, hφ⟩` from `hsm ((Function.update J v j, i₂), z) m₂`. Rewrite using `[← hφ]`. Conclude with `φ.2`. Introduce `h u l`.
+
+Use `heq v u ((Function.update J v l, i₂), z) (h, m₂)` as an intermediate fact. Simplify `this` using `only [Prod.mk_mul_mk, mul_one, Function.update_self, Function.update_idem]`. Introduce `j g`. Conclude with `heig ((Function.update J v j, i₂), z) v g m₂`.
+-/
 theorem actSide_a (hMA : MultAlg) (μa : Measure (G a)) [μa.IsHaarMeasure] (f : Io Ma Mb κ → H E a b → ℂ)
     (ka' : Kers Ma) va' (T' : ℝ) (hka' : IsMults μa ka' va' T') (χa : InfinitePlace E → Inf a)
     (hf : ∀ i, Continuous (f i)) (hsm : ∀ i m₂, ∃ φ : Sm E a, φ.1 = fun x => f i (x, m₂))
@@ -111,6 +137,9 @@ end SideA
 
 section Lin
 
+/- English proof (translation)
+Rewrite using `[integral_finsetSum _ fun z _ => (integrable_finsetSum _ fun j _ => (hg z j).const_mul _).const_mul _]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_finsetSum _ fun j _ => (hg z j).const_mul _]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => integral_const_mul _ _`.
+-/
 theorem actLin2 {Y Z J : Type} [Fintype Z] [Fintype J] [MeasurableSpace Y] (μ : Measure Y) (c : Z → ℂ) (d : J → ℂ)
     (g : Z → J → Y → ℂ) (hg : ∀ z j, Integrable (g z j) μ) :
     ∫ y, ∑ z, c z * ∑ j, d j * g z j y ∂μ = ∑ z, c z * ∑ j, d j * ∫ y, g z j y ∂μ := by
@@ -120,6 +149,9 @@ theorem actLin2 {Y Z J : Type} [Fintype Z] [Fintype J] [MeasurableSpace Y] (μ :
   congr 1
   exact Finset.sum_congr rfl fun j _ => integral_const_mul _ _
 
+/- English proof (translation)
+Use `HasCompactSupport.intro (hF.image continuous_fst) fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hp ⟨(p, q), subset_tsupport _ h, rfl⟩`.
+-/
 theorem actHcsSlice {P Q : Type} [TopologicalSpace P] [T2Space P] [TopologicalSpace Q] {F : P × Q → ℂ}
     (hF : HasCompactSupport F) (q : Q) : HasCompactSupport fun p => F (p, q) := by
   refine HasCompactSupport.intro (hF.image continuous_fst) fun p hp => ?_
@@ -130,6 +162,43 @@ end Lin
 
 section Main
 
+/- English proof (translation)
+Introduce `E _ _ _ a b D _ _ _ _ _ _ μa _ μb _ ν _ Ma Mb κ _ ka ka' kb kb' va va' vb vb' T T' ψ ψ' f χa χb hC hka hkb hψ hR hsm hEig hka' hkb' hψ'`. Use `haveI : BorelSpace (H E a b) := ⟨rfl⟩`. Use `haveI : IsLocallyFiniteMeasure D.μ := D.haar.2.2.2`. Use `haveI : IsFiniteMeasureOnCompacts D.μ := isFiniteMeasureOnCompacts_of_isLocallyFiniteMeasure`. Establish `hf : ∀ i, Continuous (f i)` using `hR.1`.
+
+Establish `hTm` using `(hTT E a b μa μb Ma Mb κ ka' kb' va' vb' T' ψ' hka' hkb' hψ').1`. Establish `heqa` using `fun v u I x => equiv_a D hka hkb hψ hR v u I x`. Establish `heqb` using `fun v u I x => equiv_b D hka hkb hψ hR v u I x`. Use function extensionality and compare the values at `i x`. Simplify using `only [PositivityTheory.Rg.BcB.E.conv, convF, Pi.smul_apply, smul_eq_mul]`.
+
+Use `set F : H E a b → ℂ := fun g => ∑ j, tens ka' kb' ψ' i j g * f j (x * g) with hFdef`. Establish `hterm : ∀ j, Continuous (fun g => tens ka' kb' ψ' i j g * f j (x * g)) ∧ HasCompactSupport (fun g => tens ka' kb' ψ' i j g * f j (x * g))` using `fun j => ⟨(hTm i j).1.mul ((hf j).comp (continuous_const.mul continuous_id)), (hTm i j).2.mul_right⟩`. Establish `hFc : Continuous F` using `continuous_finsetSum _ fun j _ => (hterm j).1`. Establish `hFs : HasCompactSupport F`. Establish `e : F = ∑ j, fun g => tens ka' kb' ψ' i j g * f j (x * g)`.
+
+Use function extensionality and compare the values at `g`. Simplify using `[hFdef, Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `Finset.sum_induction _ HasCompactSupport (fun _ _ h h' => h.add h') HasCompactSupport.zero fun j _ => (hterm j).2`. Rewrite using `[← integral_finsetSum _ fun j _ => (hterm j).1.integrable_of_hasCompactSupport (hterm j).2]`.
+
+Express the relevant statement in the definitionally equal form `∫ g, F g ∂D.μ = _`. Rewrite using `[hCF E a b D μa μb ν hC F hFc hFs]`. Express the relevant statement in the definitionally equal form `∫ ya, ∫ yb, ∫ h, F (splitH a b (ya, yb, h)) ∂ν ∂_ ∂_ = _`. Use `set K : Set (Hf E a b) := ⋃ p, ⋃ q, tsupport (ψ' p q) with hKdef`. Establish `hK : IsCompact K` using `isCompact_iUnion fun p => isCompact_iUnion fun q => (hψ' p q).2`.
+
+Establish `hψK : ∀ p q h, h ∉ K → ψ' p q h = 0` using `fun p q h hh => image_eq_zero_of_notMem_tsupport fun hm => hh (Set.mem_iUnion.2 ⟨p, Set.mem_iUnion.2 ⟨q, hm⟩⟩)`. Establish `hQK : ∀ ya yb h, h ∉ K → F (splitH a b (ya, yb, h)) = 0`. Introduce `ya yb h hh`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [tens, hFin_splitH, hψK _ _ _ hh, mul_zero, zero_mul]`.
+
+Use `set ν' := ν.restrict K`. Use `haveI : IsFiniteMeasure ν' := isFiniteMeasure_restrict.2 hK.measure_lt_top.ne`. Establish `hres : ∀ ya yb, ∫ h, F (splitH a b (ya, yb, h)) ∂ν = ∫ h, F (splitH a b (ya, yb, h)) ∂ν'` using `fun ya yb => (setIntegral_eq_integral_of_forall_compl_eq_zero fun h hh => hQK ya yb h hh).symm`. Repeatedly rewrite using `[hres]`. Set `A` to `Measure.pi fun _ : InfinitePlace E => μa`.
+
+Set `B` to `Measure.pi fun _ : InfinitePlace E => μb`. Use `haveI : SigmaFinite A := inferInstanceAs (SigmaFinite (Measure.pi fun _ : InfinitePlace E => μa))`. Use `haveI : SigmaFinite B := inferInstanceAs (SigmaFinite (Measure.pi fun _ : InfinitePlace E => μb))`. Use `haveI : IsFiniteMeasureOnCompacts A := inferInstanceAs (IsFiniteMeasureOnCompacts (Measure.pi fun _ : InfinitePlace E => μa))`. Use `haveI : IsFiniteMeasureOnCompacts B := inferInstanceAs (IsFiniteMeasureOnCompacts (Measure.pi fun _ : InfinitePlace E => μb))`.
+
+Use `set Q : ((InfinitePlace E → G a) × (InfinitePlace E → G b)) × Hf E a b → ℂ := fun q => F (splitH a b (q.1.1, q.1.2, q.2)) with hQdef`. Establish `hQc : Continuous Q` using `hFc.comp ((splitH a b).continuous.comp (by fun_prop))`. Establish `hQs : HasCompactSupport Q` using `hFs.comp_homeomorph ((Homeomorph.prodAssoc _ _ _).trans (splitH a b).toHomeomorph)`. Establish `hQi : Integrable Q ((A.prod B).prod ν')` using `hQc.integrable_of_hasCompactSupport hQs`. Establish `hQh : ∀ h, Integrable (fun p => Q (p, h)) (A.prod B)` using `fun h => (hQc.comp (continuous_id.prodMk continuous_const)).integrable_of_hasCompactSupport (actHcsSlice hQs h)`.
+
+Establish `step1 : ∫ ya, ∫ yb, ∫ h, F (splitH a b (ya, yb, h)) ∂ν' ∂B ∂A = ∫ h, ∫ ya, ∫ yb, Q ((ya, yb), h) ∂B ∂A ∂ν'`. Rewrite using `[← integral_prod (fun p => ∫ h, Q (p, h) ∂ν') hQi.integral_prod_left, integral_integral_swap (f := fun p h => Q (p, h)) hQi]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun h => integral_prod _ (hQh h))`. Rewrite using `[step1]`. Establish `hpt : ∀ (h : Hf E a b) ya yb, x * splitH a b (ya, yb, h) = x * finH h * (infP a ya, 1) * (1, infP b yb)`.
+
+Introduce `h ya yb`. Establish `hc : ∀ (n : ℕ) (y : InfinitePlace E → G n) (k : GL (Fin n) (Af E)), infP n y * finGL E n k = finGL E n k * infP n y` using `fun n y k => infGL_comm _ _`. Rewrite using `[splitH_apply]`. Conclude with `Prod.ext (by simp [finH, hc, mul_assoc]) (by simp [finH, hc, mul_assoc])`. Establish `hX : ∀ (X₀ : H E a b) z (j₁ : IxA Ma), ∀ J, Continuous fun yb : InfinitePlace E → G b => f ((j₁, J), z) (X₀ * (1, infP b yb))` using `fun X₀ z j₁ J => (hf _).comp (continuous_const.mul (continuous_const.prodMk (continuous_infP b)))`.
+
+Establish `hXa : ∀ (X₀ : H E a b) z (j₂ : IxA Mb), ∀ J, Continuous fun ya : InfinitePlace E → G a => f ((J, j₂), z) (X₀ * (infP a ya, 1))` using `fun X₀ z j₂ J => (hf _).comp (continuous_const.mul ((continuous_infP a).prodMk continuous_const))`. Establish `per_h : ∀ h, ∫ ya, ∫ yb, Q ((ya, yb), h) ∂B ∂A = (valA va' χa * valA vb' χb) * ∑ z, ψ' i.2 z h * f (i.1, z) (x * finH h)`. Introduce `h`. Establish `hQexp : ∀ ya yb, Q ((ya, yb), h) = ∑ z, ψ' i.2 z h * ∑ j₁, (∏ v, ent (Ma v) (ka' v (ya v).val) (i.1.1 v) (j₁ v)) * ∑ j₂, (∏ v, ent (Mb v) (kb' v (yb v).val) (i.1.2 v) (j₂ v)) * f ((j₁, j₂), z) (x * finH h * (infP a ya, 1) * (1, infP b yb))`. Introduce `ya yb`.
+
+Simplify using `only [hQdef, hFdef, tens, entA, gInf_splitH₁, gInf_splitH₂, hFin_splitH, hpt, Fintype.sum_prod_type, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j₁ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun z _ => Finset.sum_congr rfl fun j₂ _ => by ring`.
+
+Establish `inner : ∀ ya, ∫ yb, Q ((ya, yb), h) ∂B = ∑ z, ψ' i.2 z h * (valA vb' χb * ∑ j₁, (∏ v, ent (Ma v) (ka' v (ya v).val) (i.1.1 v) (j₁ v)) * f ((j₁, i.1.2), z) (x * finH h * (infP a ya, 1)))`. Introduce `ya`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall (hQexp ya))]`. Use `(actLin2 B (fun z => ψ' i.2 z h) (fun j₁ => ∏ v, ent (Ma v) (ka' v (ya v).val) (i.1.1 v) (j₁ v)) (fun z j₁ yb => ∑ j₂, (∏ v, ent (Mb v) (kb' v (yb v).val) (i.1.2 v) (j₂ v)) * f ((j₁, j₂), z) (x * finH h * (infP a ya, 1) * (1, infP b yb))) (fun z j₁ => pi_integrable μb (fun v t p …` and prove the remaining obligations. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+
+Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j₁ _ => ?_` and prove the remaining obligations. Rewrite using `[actSide_b hMA μb f kb' vb' T' hkb' χb hf hsm.2 heqb hEig.2 j₁ i.1.2 z (x * finH h * (infP a ya, 1))]`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall inner), integral_finsetSum _ fun z _ => ((pi_integrable μa (fun v t p q => ent (Ma v) (ka' v t.val) p q) (fun J ya => f ((J, i.1.2), z) (x * finH h * (infP a ya, 1))) i.1.1 (fun v p q => mult_ent (hka' v) p q) (hXa _ z i.1.2)).const …`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_const_mul, actSide_a hMA μa f ka' va' T' hka' χa hf hsm.1 heqa hEig.1 i.1.1 i.1.2 z (x * finH h)]`. Simplify using `only [Prod.mk.eta]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall per_h), integral_const_mul]`. Establish `hcf : Continuous fun h : Hf E a b => finH h` using `((continuous_finGL' a).comp continuous_fst).prodMk ((continuous_finGL' b).comp continuous_snd)`. Establish `hzi : ∀ z, Continuous (fun h => ψ' i.2 z h * f (i.1, z) (x * finH h)) ∧ HasCompactSupport (fun h => ψ' i.2 z h * f (i.1, z) (x * finH h))` using `fun z => ⟨(hψ' _ _).1.mul ((hf _).comp (continuous_const.mul hcf)), (hψ' _ _).2.mul_right⟩`. Rewrite using `[integral_finsetSum _ fun z _ => (hzi z).1.integrable_of_hasCompactSupport (hzi z).2]`.
+
+Use `congr 1`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun h hh => by simp [hψK _ _ _ hh]`.
+-/
 theorem actVal (hMA : MultAlg) (hCF : CompatFub) (hTT : TensTest) : ActVal := by
   intro E _ _ _ a b D _ _ _ _ _ _ μa _ μb _ ν _ Ma Mb κ _ ka ka' kb kb' va va' vb vb' T T' ψ ψ' f χa χb hC hka hkb hψ
     hR hsm hEig hka' hkb' hψ'

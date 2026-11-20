@@ -13,9 +13,17 @@ section HostInt
 
 local instance instStarHermitianHost (D : D7) : StarRing D.host.E := D.host.cmStar
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_conj_smul (D : D7) (z : 𝓞 D.host.E) :
     algebraMap (𝓞 D.host.E) D.host.E (D.host.conj • z) = D.host.conj (algebraMap (𝓞 D.host.E) D.host.E z) := rfl
 
+/- English proof (translation)
+Establish `hne : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hspec : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) = D.host.𝔟 * (D.host.conj • D.host.𝔟)` using `D.host.𝔟_spec.1`. Rewrite `hne` using `[hspec]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, coeIdeal_eq_zero]; rintro h; exact hne (by rw [h]; simp)`.
+
+Rewrite using `[Ne, coeIdeal_eq_zero]; rintro h; exact hne (by rw [h]; simp)`.
+-/
 theorem bB_ne (D : D7) :
     ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 ∧
     ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 := by
@@ -26,6 +34,13 @@ theorem bB_ne (D : D7) :
   · rw [Ne, coeIdeal_eq_zero]; rintro h; exact hne (by rw [h]; simp)
   · rw [Ne, coeIdeal_eq_zero]; rintro h; exact hne (by rw [h]; simp)
 
+/- English proof (translation)
+Take `⟨hB, hB'⟩` from `bB_ne D`. Unfold `Host.AA Host.AA0 at ha`. Unfold `Host.AAbar`. Rewrite `ha`, the goal using `[← div_eq_mul_inv]`. Rewrite `ha` using `[mem_div_iff_of_ne_zero hB]`.
+
+Rewrite using `[mem_div_iff_of_ne_zero hB']`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(mem_coeIdeal _).1 hy`. Establish `hz0 : D.host.conj⁻¹ • z ∈ D.host.𝔟` using `Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hz`. Take `⟨w, hw, hw'⟩` from `(mem_coeIdeal _).1 (ha _ ((mem_coeIdeal _).2 ⟨_, hz0, rfl⟩))`.
+
+Use `(mem_coeIdeal _).2 ⟨D.host.conj • w, Ideal.smul_mem_pointwise_smul _ _ _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_conj_smul, hw', map_mul, ← algebraMap_conj_smul, smul_inv_smul]`.
+-/
 theorem conj_mem_AAbar (D : D7) {a : D.host.E} (ha : a ∈ D.host.AA) : D.host.conj a ∈ D.host.AAbar := by
   obtain ⟨hB, hB'⟩ := bB_ne D
   unfold Host.AA Host.AA0 at ha
@@ -40,6 +55,9 @@ theorem conj_mem_AAbar (D : D7) {a : D.host.E} (ha : a ∈ D.host.AA) : D.host.c
   refine (mem_coeIdeal _).2 ⟨D.host.conj • w, Ideal.smul_mem_pointwise_smul _ _ _ hw, ?_⟩
   rw [algebraMap_conj_smul, hw', map_mul, ← algebraMap_conj_smul, smul_inv_smul]
 
+/- English proof (translation)
+Establish `hy' : y ∈ Formalism.HermitianLatticesTheory.dual (D.sp.W j).hT (D.sp.W j).L0`. Rewrite using `[(D.sp.W j).baseLattice_isUnimodular]`. Conclude with `hy`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap] at hy'`. Conclude with `hy' x hx`.
+-/
 theorem hT_int (D : D7) (j : ℕ) {x y : (D.sp.W j).V} (hx : x ∈ (D.sp.W j).L0) (hy : y ∈ (D.sp.W j).L0) :
     (D.sp.W j).hT x y ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
   have hy' : y ∈ Formalism.HermitianLatticesTheory.dual (D.sp.W j).hT (D.sp.W j).L0 := by
@@ -51,6 +69,11 @@ abbrev NAA (D : D7) : Submodule (𝓞 D.host.E) D.host.E :=
   ((D.host.AA * D.host.AAbar : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) :
     Submodule (𝓞 D.host.E) D.host.E)
 
+/- English proof (translation)
+Take `⟨r, hr⟩` from `Submodule.mem_one.1 (hT_int D j hx hy)`. Establish `e : (D.sp.W j).hT (a • x) (b • y) = r • (b * D.host.conj a)`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul]`. Establish `hs : (starRingEnd D.host.E) a = D.host.conj a` using `bridge_star_holds D.R D.host a`. Rewrite using `[Algebra.smul_def, hr, hs]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ r (mul_mem_mul hb (conj_mem_AAbar D ha))`.
+-/
 theorem hT_gen_mem (D : D7) (j : ℕ) {a b : D.host.E} (ha : a ∈ D.host.AA) (hb : b ∈ D.host.AA)
     {x y : (D.sp.W j).V} (hx : x ∈ (D.sp.W j).L0) (hy : y ∈ (D.sp.W j).L0) :
     (D.sp.W j).hT (a • x) (b • y) ∈ NAA D := by
@@ -62,6 +85,17 @@ theorem hT_gen_mem (D : D7) (j : ℕ) {a b : D.host.E} (ha : a ∈ D.host.AA) (h
   rw [e]
   exact Submodule.smul_mem _ r (mul_mem_mul hb (conj_mem_AAbar D ha))
 
+/- English proof (translation)
+Proceed by induction on `hv using Submodule.span_induction generalizing w with`. Consider the case `mem v hv`. Take `⟨a, ha, x, hx, rfl⟩` from `hv`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`.
+
+Take `⟨b, hb, y, hy, rfl⟩` from `hw`. Conclude with `hT_gen_mem D j ha hb hx hy`. Consider the case `zero => simp`. Consider the case `add w w' _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`.
+
+Consider the case `smul c w _ h`. Rewrite using `[← algebraMap_smul D.host.E c w, map_smul, smul_eq_mul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ c h`. Consider the case `zero => simp`. Consider the case `add v v' _ _ h h' => rw [map_add, LinearMap.add_apply]`.
+
+Conclude with `add_mem (h hw) (h' hw)`. Consider the case `smul c v _ h`. Rewrite using `[← algebraMap_smul D.host.E c v, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Establish `hc : (starRingEnd D.host.E) (algebraMap (𝓞 D.host.E) D.host.E c) = algebraMap (𝓞 D.host.E) D.host.E (barE D c)` using `(barE_eq_star D c).symm`. Rewrite using `[hc, ← Algebra.smul_def]`.
+
+Conclude with `Submodule.smul_mem _ _ (h hw)`.
+-/
 theorem hT_lat_mem (D : D7) (j : ℕ) {v w : (D.sp.W j).V} (hv : v ∈ latW D j) (hw : w ∈ latW D j) :
     (D.sp.W j).hT v w ∈ NAA D := by
   induction hv using Submodule.span_induction generalizing w with
@@ -85,6 +119,13 @@ theorem hT_lat_mem (D : D7) (j : ℕ) {v w : (D.sp.W j).V} (hv : v ∈ latW D j)
     rw [hc, ← Algebra.smul_def]
     exact Submodule.smul_mem _ _ (h hw)
 
+/- English proof (translation)
+Establish `h1` using `hP D.R D.host`. Establish `hJ : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AA * D.host.AAbar = FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`. Rewrite using `[eq_inv_of_mul_eq_one_left h1, Host.ddE, coeIdeal_differentIdeal ℤ ℚ D.host.E (𝓞 D.host.E), inv_inv]`. Establish `hm : D.host.xi0 * z ∈ FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AA * D.host.AAbar`. Rewrite using `[mul_assoc]`.
+
+Conclude with `mul_mem_mul (mem_spanSingleton_self _ _) hz`. Rewrite `hm` using `[hJ, mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) _ _ _)]`. Take `⟨n, hn⟩` from `hm 1 (one_mem_one _)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[Algebra.traceForm_apply, mul_one]`.
+
+Rewrite using `[← hn]`. Simplify using the standard rewrite rules.
+-/
 theorem trace_int_of_mem (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) {z : D.host.E} (hz : z ∈ NAA D) :
     ∃ n : ℤ, Algebra.trace ℚ D.host.E (D.host.xi0 * z) = n := by
   have h1 := hP D.R D.host
@@ -100,6 +141,9 @@ theorem trace_int_of_mem (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D
   rw [Algebra.traceForm_apply, mul_one] at hn
   rw [← hn]; simp
 
+/- English proof (translation)
+Introduce `x y`. Conclude with `trace_int_of_mem hP D (hT_lat_mem D j x.2 y.2)`.
+-/
 theorem datInt_of (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) : DatInt D j := by
   intro x y
   exact trace_int_of_mem hP D (hT_lat_mem D j x.2 y.2)
@@ -110,16 +154,32 @@ section Unimod
 
 local instance instStarUnitaryHost (D : D7) : StarRing D.host.E := D.host.cmStar
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem algebraMap_gal_smul (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (z : 𝓞 D.host.E) :
     algebraMap (𝓞 D.host.E) D.host.E (σ • z) = σ (algebraMap (𝓞 D.host.E) D.host.E z) := rfl
 
+/- English proof (translation)
+Rewrite using `[← bridge_star_holds D.R D.host x, ← bridge_star_holds D.R D.host (star x)]`. Conclude with `star_star x`.
+-/
 theorem conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   rw [← bridge_star_holds D.R D.host x, ← bridge_star_holds D.R D.host (star x)]
   exact star_star x
 
+/- English proof (translation)
+Rewrite using `[AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq, conj_conj]`.
+-/
 theorem conj_inv_apply (D : D7) (x : D.host.E) : (D.host.conj⁻¹ : D.host.E ≃ₐ[ℚ] D.host.E) x = D.host.conj x := by
   rw [AlgEquiv.aut_inv, AlgEquiv.symm_apply_eq, conj_conj]
 
+/- English proof (translation)
+Take `⟨hB, hB'⟩` from `bB_ne D`. Unfold `Host.AA Host.AA0`. Unfold `Host.AAbar at ha`. Rewrite `ha`, the goal using `[← div_eq_mul_inv]`. Rewrite `ha` using `[mem_div_iff_of_ne_zero hB']`.
+
+Rewrite using `[mem_div_iff_of_ne_zero hB]`. Introduce `y hy`. Take `⟨z, hz, rfl⟩` from `(mem_coeIdeal _).1 hy`. Establish `hz1 : D.host.conj • z ∈ D.host.conj • D.host.𝔟` using `Ideal.smul_mem_pointwise_smul _ _ _ hz`. Take `⟨w, hw, hw'⟩` from `(mem_coeIdeal _).1 (ha _ ((mem_coeIdeal _).2 ⟨_, hz1, rfl⟩))`.
+
+Establish `hw0 : D.host.conj⁻¹ • w ∈ D.host.ccE` using `Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hw`. Use `(mem_coeIdeal _).2 ⟨D.host.conj⁻¹ • w, hw0, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_gal_smul, conj_inv_apply, hw', algebraMap_gal_smul, map_mul, conj_conj]`.
+-/
 theorem conj_mem_AA (D : D7) {a : D.host.E} (ha : a ∈ D.host.AAbar) : D.host.conj a ∈ D.host.AA := by
   obtain ⟨hB, hB'⟩ := bB_ne D
   unfold Host.AA Host.AA0
@@ -135,23 +195,43 @@ theorem conj_mem_AA (D : D7) {a : D.host.E} (ha : a ∈ D.host.AAbar) : D.host.c
   refine (mem_coeIdeal _).2 ⟨D.host.conj⁻¹ • w, hw0, ?_⟩
   rw [algebraMap_gal_smul, conj_inv_apply, hw', algebraMap_gal_smul, map_mul, conj_conj]
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hP D.R D.host`. Rewrite `h1` using `[h, mul_zero, zero_mul, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem AA_ne_zero (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) : D.host.AA ≠ 0 := by
   intro h
   have h1 := hP D.R D.host
   rw [h, mul_zero, zero_mul, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hP D.R D.host`. Rewrite `h1` using `[h, spanSingleton_zero, zero_mul, zero_mul, zero_mul]`. Conclude with `zero_ne_one h1`.
+-/
 theorem cmHost_imaginaryGenerator_ne_zero (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) : D.host.xi0 ≠ 0 := by
   intro h
   have h1 := hP D.R D.host
   rw [h, spanSingleton_zero, zero_mul, zero_mul, zero_mul] at h1
   exact zero_ne_one h1
 
+/- English proof (translation)
+Rewrite using `[eq_inv_of_mul_eq_one_left (hP D.R D.host), Host.ddE, coeIdeal_differentIdeal ℤ ℚ D.host.E (𝓞 D.host.E), inv_inv]`.
+-/
 theorem dual_eq (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) :
     FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AA * D.host.AAbar =
       FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) := by
   rw [eq_inv_of_mul_eq_one_left (hP D.R D.host), Host.ddE, coeIdeal_differentIdeal ℤ ℚ D.host.E (𝓞 D.host.E), inv_inv]
 
+/- English proof (translation)
+Establish `hv : v ∈ Submodule.span D.host.E ((D.sp.W j).L0 : Set (D.sp.W j).V)`. Rewrite using `[(D.sp.W j).standardTuple_isLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨1, one_mem _, by rw [one_smul]; exact hv⟩`.
+
+Consider the case `zero => exact ⟨1, one_mem _, by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add v w _ _ hv hw`. Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨t, ht, htw⟩` from `hw`. Use `⟨s * t, mul_mem hs ht, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[smul_add, mul_comm s t, mul_smul, mul_comm t s, mul_smul]`. Conclude with `add_mem ((D.sp.W j).L0.smul_mem t hsv) ((D.sp.W j).L0.smul_mem s htw)`. Consider the case `smul e v _ hv`. Take `⟨s, hs, hsv⟩` from `hv`. Take `⟨⟨c, t⟩, hct⟩` from `IsLocalization.surj (nonZeroDivisors (𝓞 D.host.E)) e`.
+
+Use `⟨(t : 𝓞 D.host.E) * s, mul_mem t.2 hs, ?_⟩` and prove the remaining obligations. Establish `: ((t : 𝓞 D.host.E) * s) • (e • v) = c • (s • v)`. Rewrite using `[← algebraMap_smul D.host.E ((t : 𝓞 D.host.E) * s), ← algebraMap_smul D.host.E c, smul_smul, ← algebraMap_smul D.host.E s, smul_smul, map_mul, ← hct]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `(D.sp.W j).L0.smul_mem c hsv`.
+-/
 theorem exists_smul_mem_base_lattice (D : D7) (j : ℕ) (v : (D.sp.W j).V) :
     ∃ t ∈ nonZeroDivisors (𝓞 D.host.E), t • v ∈ (D.sp.W j).L0 := by
   have hv : v ∈ Submodule.span D.host.E ((D.sp.W j).L0 : Set (D.sp.W j).V) := by
@@ -176,6 +256,11 @@ theorem exists_smul_mem_base_lattice (D : D7) (j : ℕ) (v : (D.sp.W j).V) :
     rw [this]
     exact (D.sp.W j).L0.smul_mem c hsv
 
+/- English proof (translation)
+Apply `(traceForm_nondegenerate ℚ D.host.E).1 w` to reduce the goal to its premises. Introduce `e`. Take `⟨n, hn, hint⟩` from `exists_integral_multiples ℤ ℚ ({e} : Finset D.host.E)`. Establish `h1` using `h ⟨n • e, hint e (Finset.mem_singleton_self e)⟩`. Establish `h2 : Algebra.trace ℚ D.host.E (w * (n • e)) = 0` using `h1`.
+
+Rewrite `h2` using `[mul_smul_comm, map_zsmul, smul_eq_zero]`. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `h2.resolve_left hn`.
+-/
 theorem trace_sep (D : D7) {w : D.host.E}
     (h : ∀ c : 𝓞 D.host.E, Algebra.trace ℚ D.host.E (w * algebraMap (𝓞 D.host.E) D.host.E c) = 0) : w = 0 := by
   apply (traceForm_nondegenerate ℚ D.host.E).1 w
@@ -187,6 +272,15 @@ theorem trace_sep (D : D7) {w : D.host.E}
   rw [Algebra.traceForm_apply]
   exact h2.resolve_left hn
 
+/- English proof (translation)
+Establish `hB` using `traceForm_nondegenerate ℚ D.host.E`. Set `db` to `(Algebra.traceForm ℚ D.host.E).dualBasis hB (integralBasis D.host.E)`. Use `⟨∑ i, ((g (RingOfIntegers.basis D.host.E i) : ℤ) : ℚ) • db i, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i k, Algebra.trace ℚ D.host.E (db i * integralBasis D.host.E k) = if k = i then 1 else 0`. Introduce `i k`.
+
+Rewrite using `[← Algebra.traceForm_apply]`. Conclude with `(Algebra.traceForm ℚ D.host.E).apply_dualBasis_left hB _ i k`. Establish `hj : ∀ k, Algebra.trace ℚ D.host.E ((∑ i, ((g (RingOfIntegers.basis D.host.E i) : ℤ) : ℚ) • db i) * algebraMap (𝓞 D.host.E) D.host.E (RingOfIntegers.basis D.host.E k)) = g (RingOfIntegers.basis D.host.E k)`. Introduce `k`. Rewrite using `[← integralBasis_apply, Finset.sum_mul, map_sum]`.
+
+Repeatedly rewrite using `[smul_mul_assoc, map_smul, key]`. Simplify using the standard rewrite rules. Introduce `c`. Use `conv_lhs => rw [← (RingOfIntegers.basis D.host.E).sum_repr c]`. Use `conv_rhs => rw [← (RingOfIntegers.basis D.host.E).sum_repr c]`.
+
+Simplify using `only [map_sum, map_zsmul, Finset.mul_sum, mul_smul_comm, hj, Int.cast_sum, smul_eq_mul, Int.cast_mul]`. Simplify using `only [zsmul_eq_mul]`.
+-/
 theorem trace_rep (D : D7) (g : 𝓞 D.host.E →ₗ[ℤ] ℤ) : ∃ z : D.host.E, ∀ c : 𝓞 D.host.E,
     Algebra.trace ℚ D.host.E (z * algebraMap (𝓞 D.host.E) D.host.E c) = g c := by
   have hB := traceForm_nondegenerate ℚ D.host.E
@@ -208,6 +302,15 @@ theorem trace_rep (D : D7) (g : 𝓞 D.host.E →ₗ[ℤ] ℤ) : ∃ z : D.host.
   simp only [map_sum, map_zsmul, Finset.mul_sum, mul_smul_comm, hj, Int.cast_sum, smul_eq_mul, Int.cast_mul]
   simp only [zsmul_eq_mul]
 
+/- English proof (translation)
+Set `T : S.V →ₗ[E] (Fin S.rank → E)` to `{ toFun := fun x i => star (S.hT x (S.frame i)) map_add' := by intro x y; ext i; simp [map_add, star_add] map_smul' := by`. Introduce `e x`. Use extensionality with `i`. Simplify using `[LinearMap.map_smulₛₗ, star_mul', starRingEnd_apply, star_star] }`. Establish `hT : Function.Injective T`.
+
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h0 : ∀ i, S.hT x (S.frame i) = 0` using `fun i => by`. Use `congrFun hx i` as an intermediate fact. Simplify `this` using `[T]`.
+
+Establish `h1 : S.hT x = 0` using `S.frame.ext (fun i => by rw [h0 i]; rfl)`. Conclude with `S.nondeg.1 x (fun y => by rw [h1]; rfl)`. Establish `hfr : Module.finrank E S.V = Module.finrank E (Fin S.rank → E)`. Rewrite using `[S.rank_eq, Module.finrank_fin_fun]`. Take `⟨x, hx⟩` from `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfr).1 hT (fun i => star (l (S.frame i)))`.
+
+Use `⟨x, fun v => ?_⟩` and prove the remaining obligations. Establish `h2 : S.hT x = l` using `S.frame.ext (fun i => by`. Use `congrFun hx i` as an intermediate fact. Simplify `this)` using `[T]`. Rewrite using `[h2]`.
+-/
 theorem riesz {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) (l : S.V →ₗ[E] E) :
     ∃ x, ∀ v, S.hT x v = l v := by
   let T : S.V →ₗ[E] (Fin S.rank → E) :=
@@ -240,6 +343,11 @@ section Main
 
 local instance instStarModuleHost (D : D7) : StarRing D.host.E := D.host.cmStar
 
+/- English proof (translation)
+Establish `hs : algebraMap (𝓞 E) E s ≠ 0`. Introduce `h0`. Conclude with `nonZeroDivisors.ne_zero s.2 (IsFractionRing.injective _ E (h0.trans (map_zero _).symm))`. Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun x y hxy => ?_, fun y => ⟨(algebraMap (𝓞 E) E s)⁻¹ • y, ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [Module.algebraMap_end_apply] at hxy`. Rewrite `hxy` using `[← algebraMap_smul E (s : 𝓞 E) x, ← algebraMap_smul E (s : 𝓞 E) y]`. Conclude with `smul_right_injective W hs hxy`. Simplify using `only [Module.algebraMap_end_apply]`. Rewrite using `[← algebraMap_smul E (s : 𝓞 E), smul_smul, mul_inv_cancel₀ hs, one_smul]`.
+-/
 theorem isUnit_end {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Module E W] [Module (𝓞 E) W]
     [IsScalarTower (𝓞 E) E W] (s : nonZeroDivisors (𝓞 E)) :
     IsUnit (algebraMap (𝓞 E) (Module.End (𝓞 E) W) s) := by
@@ -254,6 +362,9 @@ theorem isUnit_end {E W : Type} [Field E] [NumberField E] [AddCommGroup W] [Modu
   · simp only [Module.algebraMap_end_apply]
     rw [← algebraMap_smul E (s : 𝓞 E), smul_smul, mul_inv_cancel₀ hs, one_smul]
 
+/- English proof (translation)
+Take `⟨α, hα, hαA⟩` from `exists_ne_zero_mem_isInteger (AA_ne_zero hP D)`. Take `⟨t, ht, htv⟩` from `exists_smul_mem_base_lattice D j v`. Use `⟨α * t, mul_mem (mem_nonZeroDivisors_of_ne_zero hα) ht, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, ← algebraMap_smul D.host.E α]`. Conclude with `Submodule.subset_span ⟨_, hαA, _, htv, rfl⟩`.
+-/
 theorem int_exists_smul_mem_latW (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) (v : (D.sp.W j).V) :
     ∃ s ∈ nonZeroDivisors (𝓞 D.host.E), s • v ∈ latW D j := by
   obtain ⟨α, hα, hαA⟩ := exists_ne_zero_mem_isInteger (AA_ne_zero hP D)
@@ -262,6 +373,9 @@ theorem int_exists_smul_mem_latW (hP : Formalism.BasicNotions.FactPrincipalDatum
   rw [mul_smul, ← algebraMap_smul D.host.E α]
   exact Submodule.subset_span ⟨_, hαA, _, htv, rfl⟩
 
+/- English proof (translation)
+The claim follows from `isUnit_end s surj v := by obtain ⟨s, hs, hsv⟩ := int_exists_smul_mem_latW hP D j v exact ⟨(⟨_, hsv⟩, ⟨s, hs⟩), rfl⟩ exists_of_eq h := ⟨1, by rw [one_smul, one_smul]; exact Subtype.ext h⟩`.
+-/
 theorem isLoc (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) :
     IsLocalizedModule (nonZeroDivisors (𝓞 D.host.E)) (latW D j).subtype where
   map_units s := isUnit_end s
@@ -273,6 +387,9 @@ theorem isLoc (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ
 def zOf (D : D7) (j : ℕ) (f : latW D j →ₗ[ℤ] ℤ) (y : latW D j) : D.host.E :=
   (trace_rep D (f.comp ((LinearMap.toSpanSingleton (𝓞 D.host.E) (latW D j) y).restrictScalars ℤ))).choose
 
+/- English proof (translation)
+The claim follows from `(trace_rep D _).choose_spec c`.
+-/
 theorem zOf_spec (D : D7) (j : ℕ) (f : latW D j →ₗ[ℤ] ℤ) (y : latW D j) (c : 𝓞 D.host.E) :
     Algebra.trace ℚ D.host.E (zOf D j f y * algebraMap (𝓞 D.host.E) D.host.E c) = f (c • y) :=
   (trace_rep D _).choose_spec c
@@ -293,6 +410,37 @@ def phiOf (D : D7) (j : ℕ) (f : latW D j →ₗ[ℤ] ℤ) : latW D j →ₗ[�
     rw [RingHom.id_apply, Algebra.smul_def]
     exact sub_eq_zero.1 this
 
+/- English proof (translation)
+Use `isLoc hP D j` as an intermediate fact. Establish `hξ` using `cmHost_imaginaryGenerator_ne_zero hP D`. Establish `hAA` using `AA_ne_zero hP D`. Set `lam : (D.sp.W j).V →ₗ[𝓞 D.host.E] D.host.E` to `IsLocalizedModule.lift (nonZeroDivisors (𝓞 D.host.E)) (latW D j).subtype (phiOf D j f) (fun s => isUnit_end s)`. Set `lamE : (D.sp.W j).V →ₗ[D.host.E] D.host.E` to `D.host.xi0⁻¹ • lam.extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 D.host.E)) D.host.E`.
+
+Take `⟨x, hx⟩` from `riesz (D.sp.W j) lamE`. Establish `hxy : ∀ y : latW D j, D.host.xi0 * (D.sp.W j).hT x y = zOf D j f y`. Introduce `y`. Rewrite using `[hx]`. Simplify using `only [lamE, LinearMap.smul_apply, LinearMap.extendScalarsOfIsLocalization_apply', smul_eq_mul]`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hξ, one_mul]`. Conclude with `IsLocalizedModule.lift_apply _ _ _ _ y`. Establish `h3 : ∀ y (hy : y ∈ latW D j), (D.sp.W j).hT x y ∈ D.host.AA * D.host.AAbar`. Introduce `y hy`. Establish `hz : zOf D j f ⟨y, hy⟩ ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)`.
+
+Rewrite using `[mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) _ _ _)]`. Introduce `a ha`. Rewrite `ha` using `[mem_one_iff]`. Take `⟨c, rfl⟩` from `ha`. Rewrite using `[Algebra.traceForm_apply, zOf_spec]`.
+
+Conclude with `⟨_, eq_intCast (algebraMap ℤ ℚ) _⟩`. Rewrite `hz` using `[← dual_eq hP D, ← hxy ⟨y, hy⟩]`. Establish `h4` using `mul_mem_mul (mem_spanSingleton_self (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0⁻¹) hz`. Establish `e1 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0⁻¹ * (FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) D.host.xi0 * D.host.AA * D.host.AAbar) = D.host.AA * D.host.AAbar`. Rewrite using `[mul_assoc, ← mul_assoc, spanSingleton_mul_spanSingleton, inv_mul_cancel₀ hξ, spanSingleton_one, one_mul]`.
+
+Rewrite `h4` using `[e1, ← mul_assoc, inv_mul_cancel₀ hξ, one_mul]`. Conclude with `h4`. Establish `h5 : ∀ y0 ∈ (D.sp.W j).L0, (D.sp.W j).hT x y0 ∈ D.host.AAbar`. Introduce `y0 hy0`. Establish `hle : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((D.sp.W j).hT x y0) * D.host.AA ≤ D.host.AA * D.host.AAbar`.
+
+Rewrite using `[spanSingleton_mul_le_iff]`. Introduce `b hb`. Use `h3 (b • y0) (Submodule.subset_span ⟨b, hb, y0, hy0, rfl⟩)` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Establish `e : (D.sp.W j).hT x y0 * b = b * (D.sp.W j).hT x y0` using `mul_comm _ _`.
+
+Rewrite using `[e]`. Conclude with `this`. Establish `hle2 : FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) ((D.sp.W j).hT x y0) ≤ D.host.AAbar`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm _ D.host.AA, ← mul_assoc, inv_mul_cancel₀ hAA, one_mul]`.
+
+Use `_ ≤ D.host.AA⁻¹ * (D.host.AA * D.host.AAbar) := CovariantClass.elim D.host.AA⁻¹ hle`. Use `_ = D.host.AAbar := by rw [← mul_assoc, inv_mul_cancel₀ hAA, one_mul]`. Conclude with `hle2 (mem_spanSingleton_self _ _)`. Establish `h6 : ∀ c ∈ D.host.AA⁻¹, c • x ∈ (D.sp.W j).L0`. Introduce `c hc`.
+
+Rewrite using `[← (D.sp.W j).baseLattice_isUnimodular]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Introduce `y0 hy0`. Use `show (D.sp.W j).hT y0 (c • x) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`. Establish `hs : star ((D.sp.W j).hT x y0) = D.host.conj ((D.sp.W j).hT x y0)` using `bridge_star_holds D.R D.host _`.
+
+Rewrite using `[map_smul, smul_eq_mul, ← LinearMap.isSymm_def.1 (D.sp.W j).herm x y0, starRingEnd_apply, hs]`. Establish `hm` using `mul_mem_mul hc (conj_mem_AA D (h5 y0 hy0))`. Rewrite `hm` using `[inv_mul_cancel₀ hAA, mem_one_iff]`. Conclude with `Submodule.mem_one.2 hm`. Establish `h7 : ∀ e ∈ D.host.AA * D.host.AA⁻¹, e • x ∈ latW D j`.
+
+Introduce `e he`. Use `FractionalIdeal.mul_induction_on (C := fun e => e • x ∈ latW D j) he (fun a ha c hc => ?_) (fun u w hu hw => ?_)` and prove the remaining obligations. Use `show (a * c) • x ∈ latW D j`. Rewrite using `[mul_smul]`. Conclude with `Submodule.subset_span ⟨a, ha, c • x, h6 c hc, rfl⟩`.
+
+Use `show (u + w) • x ∈ latW D j`. Rewrite using `[add_smul]`. Conclude with `add_mem hu hw`. Establish `hxmem : x ∈ latW D j`. Use `h7 1 (by rw [mul_inv_cancel₀ hAA]; exact one_mem_one _)` as an intermediate fact.
+
+Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Use `⟨⟨x, hxmem⟩, LinearMap.ext fun y => Int.cast_injective (α := ℚ) ?_⟩` and prove the remaining obligations. Use `(intForm_cast (efQ D j) hI ⟨x, hxmem⟩ y).trans ?_` and prove the remaining obligations. Use `show Algebra.trace ℚ D.host.E (D.host.xi0 * (D.sp.W j).hT x y) = _`. Use `zOf_spec D j f y 1` as an intermediate fact.
+
+Rewrite `this` using `[map_one, mul_one, one_smul]`. Rewrite using `[hxy y, this]`.
+-/
 theorem efQ_surj (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) (hI : DatInt D j)
     (f : latW D j →ₗ[ℤ] ℤ) : ∃ x : latW D j, intForm (efQ D j) hI x = f := by
   have := isLoc hP D j
@@ -372,6 +520,17 @@ theorem efQ_surj (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : 
   rw [map_one, mul_one, one_smul] at this
   rw [hxy y, this]
 
+/- English proof (translation)
+Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h0 : ∀ y : latW D j, (D.sp.W j).hT x y = 0`. Introduce `y`. Establish `hz : D.host.xi0 * (D.sp.W j).hT x y = 0` using `trace_sep D (fun c => by`.
+
+Establish `h1` using `LinearMap.congr_fun hx (c • y)`. Establish `h2` using `intForm_cast (efQ D j) hI x (c • y)`. Rewrite `h2` using `[h1, LinearMap.zero_apply, Int.cast_zero]`. Simplify using `only [efQ, LinearMap.mk₂_apply, Submodule.coe_smul] at h2`. Rewrite `h2` using `[← algebraMap_smul D.host.E c (y : (D.sp.W j).V), map_smul, smul_eq_mul]`.
+
+Rewrite using `[show D.host.xi0 * (D.sp.W j).hT x y * algebraMap (𝓞 D.host.E) D.host.E c = D.host.xi0 * (algebraMap (𝓞 D.host.E) D.host.E c * (D.sp.W j).hT x y) by ring]`. Conclude with `h2.symm)`. Conclude with `(mul_eq_zero.1 hz).resolve_left (cmHost_imaginaryGenerator_ne_zero hP D)`. Establish `h1 : ∀ v, (D.sp.W j).hT x v = 0`. Introduce `v`.
+
+Take `⟨s, hs, hsv⟩` from `int_exists_smul_mem_latW hP D j v`. Establish `h2` using `h0 ⟨_, hsv⟩`. Express the relevant statement in the definitionally equal form `(D.sp.W j).hT x (s • v) = 0 at h2`. Rewrite `h2` using `[← algebraMap_smul D.host.E s v, map_smul, smul_eq_mul]`. Establish `hs0 : algebraMap (𝓞 D.host.E) D.host.E s ≠ 0`.
+
+Introduce `h0'`. Conclude with `nonZeroDivisors.ne_zero hs (IsFractionRing.injective _ D.host.E (h0'.trans (map_zero _).symm))`. Conclude with `(mul_eq_zero.1 h2).resolve_left hs0`. Conclude with `Subtype.ext ((D.sp.W j).nondeg.1 x h1)`.
+-/
 theorem efQ_inj (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) (hI : DatInt D j) :
     Function.Injective (intForm (efQ D j) hI) := by
   rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
@@ -400,6 +559,13 @@ theorem efQ_inj (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : �
     exact (mul_eq_zero.1 h2).resolve_left hs0
   exact Subtype.ext ((D.sp.W j).nondeg.1 x h1)
 
+/- English proof (translation)
+Establish `hb : Function.Bijective (intForm (efQ D j) hI)` using `⟨efQ_inj hP D j hI, fun f => efQ_surj hP D j hI f⟩`. Unfold `efW`. Distinguish the cases in `h : ∃ hI' : DatInt D j, DomFor D j (intForm (efQ D j) hI')`. Rewrite using `[sgnW, if_pos h, one_smul]`. Conclude with `hb`.
+
+Rewrite using `[sgnW, if_neg h]`. Establish `e : ⇑((-1 : ℤ) • intForm (efQ D j) hI) = Neg.neg ∘ ⇑(intForm (efQ D j) hI)`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+
+Conclude with `neg_involutive.bijective.comp hb`.
+-/
 theorem efW_unimod_of (hP : Formalism.BasicNotions.FactPrincipalDatum) (D : D7) (j : ℕ) (hI : DatInt D j) :
     Function.Bijective (efW D j hI) := by
   have hb : Function.Bijective (intForm (efQ D j) hI) := ⟨efQ_inj hP D j hI, fun f => efQ_surj hP D j hI f⟩

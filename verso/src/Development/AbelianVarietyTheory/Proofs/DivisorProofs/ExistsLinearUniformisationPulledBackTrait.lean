@@ -15,6 +15,15 @@ noncomputable section
 
 namespace GlobalTheory.UPoinc.TraitPull
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c T W _ _ _ hW hWd h hi hl`. Take `⟨tW, ⟨m⟩⟩` from `GlobalTheory.Models.Inhab.exists_pull (spMap h) T.t`. Take `⟨PW, e, he⟩` from `GlobalTheory.UnifDvrBaseChange.exists_pelUnif E H T.V T.cdvr T.t T.P W hW hWd h hi hl tW ⟨m⟩`. Use `⟨tW, m, PW, e, fun y => ?_⟩` and prove the remaining obligations. Take `⟨u, n, hn, hc⟩` from `T.mono (e y)`.
+
+Establish `hn0 : T.be (e y) (e y) = 2 * (n 0 : ℤ)` using `hn 0`. Take `⟨v, hv⟩` from `he y _ hc`. Use `⟨by rw [hn0]; positivity, _, hv, ?_⟩` and prove the remaining obligations. Establish `ht : (T.be (e y) (e y)).toNat = 2 * n 0` using `by rw [hn0]; omega`. Rewrite using `[ht]`.
+
+Establish `hu : IsUnit ((v : W) * h u)` using `v.isUnit.mul (u.isUnit.map h)`. Establish `e1 : ((v : W) * h (u * ∏ i, ![T.ϖ] i ^ n i)) ^ 2 = ((v : W) * h u) ^ 2 * h T.ϖ ^ (2 * n 0)`. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_zero, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+
+Conclude with `associated_unit_mul_left _ _ (hu.pow 2)`.
+-/
 theorem exists_pull_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : UTrait Xo c) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.Mum.Base W → IsDiscreteValuationRing W → ∀ h : T.V →+* W, Function.Injective h → IsLocalHom h → ∃ (tW : SAB H (Sp W)) (_ : SABMap tW T.t (spMap h)) (PW : PELUnif (maximalIdeal W) tW) (e : PW.D.toPre.X ≃ₗ[𝓞 E] T.P.D.toPre.X), ∀ y, 0 ≤ T.be (e y) (e y) ∧ ∃ r, PsiCoord PW.D.toPre y r ∧ Associated (r ^ 2) (h T.ϖ ^ (T.be (e y) (e y)).toNat) := by
   intro E _ _ _ H Dw l Xo c T W _ _ _ hW hWd h hi hl
   obtain ⟨tW, ⟨m⟩⟩ := GlobalTheory.Models.Inhab.exists_pull (spMap h) T.t

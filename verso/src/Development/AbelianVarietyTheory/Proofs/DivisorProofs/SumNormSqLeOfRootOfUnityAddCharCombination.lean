@@ -9,17 +9,63 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 namespace GlobalTheory.ParsevalRootsOfUnity
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Polynomial.X ^ m - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [h]⟩`.
+-/
 theorem isIntegral_of_pow_eq_one {R : Type} [CommRing R] (z : R) (m : ℕ) (hm : 0 < m)
     (h : z ^ m = 1) : IsIntegral ℤ z :=
   ⟨Polynomial.X ^ m - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 hm.ne', by simp [h]⟩
 
+/- English proof (translation)
+Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `((isIntegral_of_pow_eq_one z m hm h).tower_top (A := ℚ)).isAlgebraic`.
+-/
 theorem mem_Qbar_of_pow_eq_one (z : ℂ) (m : ℕ) (hm : 0 < m) (h : z ^ m = 1) : z ∈ Qbar := by
   rw [mem_algebraicClosure_iff]
   exact ((isIntegral_of_pow_eq_one z m hm h).tower_top (A := ℚ)).isAlgebraic
 
+/- English proof (translation)
+The claim follows from `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hm.ne').1 (by rw [← norm_pow, h, norm_one])`.
+-/
 theorem norm_eq_one_of_pow_eq_one' (z : ℂ) (m : ℕ) (hm : 0 < m) (h : z ^ m = 1) : ‖z‖ = 1 :=
   (pow_eq_one_iff_of_nonneg (norm_nonneg z) hm.ne').1 (by rw [← norm_pow, h, norm_one])
 
+/- English proof (translation)
+Introduce `ι Q _ _ _ N k c χ hN hc hχ hQ hι`. Use `choose m hm hcm using hc`. Establish `hQpos : 0 < Fintype.card Q` using `Fintype.card_pos`. Establish `hχq : ∀ i q, χ i q ^ Fintype.card Q = 1` using `fun i q => by`. Rewrite using `[← AddChar.map_nsmul_eq_pow, card_nsmul_eq_zero, AddChar.map_zero_eq_one]`.
+
+Set `cq : ι → Qbar` to `fun i => ⟨c i, mem_Qbar_of_pow_eq_one _ _ (hm i) (hcm i)⟩`. Set `xq : ι → Q → Qbar` to `fun i q => ⟨χ i q, mem_Qbar_of_pow_eq_one _ _ hQpos (hχq i q)⟩`. Establish `hNQ : (N : Qbar) ≠ 0` using `by exact_mod_cast hN.ne'`. Set `r : Q → Qbar` to `fun q => ((N : Qbar) ^ k)⁻¹ * ∑ i, cq i * xq i q`. Use `⟨r, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `q`. Simplify using `[r, cq, xq]`. Introduce `q`. Establish `: (N : Qbar) ^ k * r q = ∑ i, cq i * xq i q`. Simplify using `only [r]`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hNQ), one_mul]`. Rewrite using `[this]`. Use `IsIntegral.sum _ fun i _ => IsIntegral.mul ?_ ?_` and prove the remaining obligations. Conclude with `isIntegral_of_pow_eq_one _ (m i) (hm i) (Subtype.ext (by simpa [cq] using hcm i))`. Conclude with `isIntegral_of_pow_eq_one _ _ hQpos (Subtype.ext (by simpa [xq] using hχq i q))`.
+
+Introduce `ρ`. Set `χ' : ι → AddChar Q Qbar` to `fun i => { toFun := xq i map_zero_eq_one' := Subtype.ext (by simp [xq]) map_add_eq_mul' := fun a b => Subtype.ext (by simp [xq, AddChar.map_add_eq_mul]) }`. Set `ψ : ι → AddChar Q ℂ` to `fun i => (ρ : Qbar →* ℂ).compAddChar (χ' i)`. Establish `hψ : ∀ i q, ψ i q = ρ (xq i q)` using `fun i q => rfl`. Set `a : ι → ℂ` to `fun i => ρ (cq i)`.
+
+Establish `ha : ∀ i, a i * (starRingEnd ℂ) (a i) = 1`. Introduce `i`. Establish `h1 : a i ^ m i = 1`. Simplify using `only [a]`. Rewrite using `[← map_pow]`.
+
+Establish `: cq i ^ m i = 1` using `Subtype.ext (by simpa [cq] using hcm i)`. Rewrite using `[this, map_one]`. Rewrite using `[Complex.mul_conj', norm_eq_one_of_pow_eq_one' _ _ (hm i) h1]`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective ψ`.
+
+Introduce `i j hij`. Apply `hχ` to reduce the goal to its premises. Use extensionality with `q`. Establish `h1 : ρ (xq i q) = ρ (xq j q)` using `by rw [← hψ, ← hψ, hij]`. Establish `h2` using `congrArg Subtype.val (ρ.injective h1)`.
+
+Simplify `h2` using `[xq]`. Establish `horth : ∀ i j, ∑ q, ψ i q * (starRingEnd ℂ) (ψ j q) = if i = j then (Fintype.card Q : ℂ) else 0`. Introduce `i j`. Establish `: ∀ q, ψ i q * (starRingEnd ℂ) (ψ j q) = (ψ i - ψ j) q` using `fun q => by`. Rewrite using `[AddChar.sub_apply, AddChar.map_neg_eq_conj]`.
+
+Repeatedly rewrite using `[this]`. Rewrite using `[AddChar.sum_eq_ite]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Establish `: ψ i - ψ j ≠ 0` using `fun h' => h (hinj (sub_eq_zero.1 h'))`.
+
+Simplify using `[h, this]`. Set `f : Q → ℂ` to `fun q => ∑ i, a i * ψ i q`. Establish `hpars : ∑ q, ‖f q‖ ^ 2 = (Fintype.card Q : ℝ) * Fintype.card ι`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`.
+
+Repeatedly rewrite using `[← Complex.mul_conj']`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [f, map_sum, map_mul, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ i, ∑ j, (a i * (starRingEnd ℂ) (a j)) * ∑ q, (ψ i q * (starRingEnd ℂ) (ψ j q)) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Simplify using `[Finset.mul_sum]`. Use `_ = ∑ i, (Fintype.card Q : ℂ) := by`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[horth, ha]`. Use `_ = (Fintype.card Q : ℂ) * Fintype.card ι := by`.
+
+Simplify using `[mul_comm]`. Establish `hCS : (∑ q, ‖f q‖) ^ 2 ≤ (Fintype.card Q : ℝ) * ∑ q, ‖f q‖ ^ 2`. Use `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset Q)) (f := fun q => ‖f q‖)` as an intermediate fact. Simplify using `using this`. Establish `hρr : ∀ q, ‖ρ (r q)‖ = ((N : ℝ) ^ k)⁻¹ * ‖f q‖`.
+
+Introduce `q`. Simplify using `only [r, map_mul, map_inv₀, map_pow, map_natCast, map_sum, norm_mul, norm_inv, norm_pow, Complex.norm_natCast, f, a, hψ]`. Repeatedly rewrite using `[hρr]`. Rewrite using `[← Finset.mul_sum, mul_pow]`. Establish `hNk : (0 : ℝ) < (N : ℝ) ^ k` using `by positivity`.
+
+Establish `hQr : (Fintype.card Q : ℝ) = (N : ℝ) ^ k` using `by exact_mod_cast hQ`. Establish `hιr : (Fintype.card ι : ℝ) ≤ (N : ℝ) ^ k` using `by exact_mod_cast hι`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hpars]`. Conclude with `hCS`.
+
+Use `_ = (Fintype.card ι : ℝ) := by`. Rewrite using `[hQr]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ (N : ℝ) ^ k := hιr`.
+-/
 theorem exists_integral_coeffs_sum_norm_sq_le_of_rootOfUnity : ∀ {ι Q : Type} [Fintype ι] [Fintype Q] [AddCommGroup Q] (N k : ℕ) (c : ι → ℂ) (χ : ι → AddChar Q ℂ), 0 < N → (∀ i, ∃ m : ℕ, 0 < m ∧ c i ^ m = 1) → Function.Injective χ → Fintype.card Q = N ^ k → Fintype.card ι ≤ N ^ k → ∃ r : Q → Qbar, (∀ q, (r q : ℂ) = ((N : ℂ) ^ k)⁻¹ * ∑ i, c i * χ i q) ∧ (∀ q, IsIntegral ℤ ((N : Qbar) ^ k * r q)) ∧ ∀ ρ : Qbar →+* ℂ, (∑ q, ‖ρ (r q)‖) ^ 2 ≤ (N : ℝ) ^ k := by
   intro ι Q _ _ _ N k c χ hN hc hχ hQ hι
   classical

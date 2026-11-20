@@ -33,20 +33,32 @@ abbrev resK : (mtildeKGSD W Ch sel mu).EqFun ≃ₗ[X.K] (csdK W Ch sel mu hX).F
 abbrev formK (x : Fin (dimP W Ch sel mu P hX) → X.K) : (csdK W Ch sel mu hX).Forms :=
   LiftForms.lvlForm (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr x
 
+/- English proof (translation)
+The claim follows from `LinearEquiv.symm_apply_apply _ _`.
+-/
 theorem resK_symm_act (a : G0 X.E Pr.vGs R.r) (f : (csdK W Ch sel mu hX).Forms) :
     (resK W Ch sel mu hX).symm (actK W Ch sel mu hX a f) = g0HatRepEqFunX W Ch sel mu a ((resK W Ch sel mu hX).symm f) :=
   LinearEquiv.symm_apply_apply _ _
 
+/- English proof (translation)
+Use `show resK W Ch sel mu hX (g0HatRepEqFunX W Ch sel mu a ((resK W Ch sel mu hX).symm (resK W Ch sel mu hX φ))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+-/
 theorem resK_act (a : G0 X.E Pr.vGs R.r) (φ : (mtildeKGSD W Ch sel mu).EqFun) :
     actK W Ch sel mu hX a (resK W Ch sel mu hX φ) = resK W Ch sel mu hX (g0HatRepEqFunX W Ch sel mu a φ) := by
   show resK W Ch sel mu hX (g0HatRepEqFunX W Ch sel mu a ((resK W Ch sel mu hX).symm (resK W Ch sel mu hX φ))) = _
   rw [LinearEquiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[← LiftForms.range_lvlForm]`. Conclude with `⟨x, rfl⟩`.
+-/
 theorem formK_mem (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     formK W Ch sel mu P hX x ∈ lvlForms (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr := by
   rw [← LiftForms.range_lvlForm]
   exact ⟨x, rfl⟩
 
+/- English proof (translation)
+Use `(mem_MtildeV_iff W Ch sel mu P _).2 ⟨Subtype.prop _, fun a => ?_⟩` and prove the remaining obligations. Use `(resK_symm_act W Ch sel mu hX a.1 _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[formK_mem W Ch sel mu P hX x a, map_smul]`.
+-/
 theorem zOf_mem (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x)).1 ∈ (mtildeGSD W Ch sel mu P).EqFun := by
   refine (mem_MtildeV_iff W Ch sel mu P _).2 ⟨Subtype.prop _, fun a => ?_⟩
@@ -58,9 +70,15 @@ def zOf : (Fin (dimP W Ch sel mu P hX) → X.K) →ₗ[X.K] MtildeV W Ch sel mu 
   map_add' x y := Subtype.ext (by simp only [map_add]; rfl)
   map_smul' c x := Subtype.ext (by simp only [map_smul]; rfl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem zOf_val (x : Fin (dimP W Ch sel mu P hX) → X.K) :
     (zOf W Ch sel mu P hX x).1 = ((resK W Ch sel mu hX).symm (formK W Ch sel mu P hX x)).1 := rfl
 
+/- English proof (translation)
+Introduce `x y h`. Apply `LiftForms.lvlForm_injective (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr` to reduce the goal to its premises. Apply `(resK W Ch sel mu hX).symm.injective` to reduce the goal to its premises. Establish `h1 : (zOf W Ch sel mu P hX x).1 = (zOf W Ch sel mu P hX y).1` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h1`.
+-/
 theorem zOf_injective : Function.Injective (zOf W Ch sel mu P hX) := by
   intro x y h
   apply LiftForms.lvlForm_injective (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr
@@ -68,6 +86,13 @@ theorem zOf_injective : Function.Injective (zOf W Ch sel mu P hX) := by
   have h1 : (zOf W Ch sel mu P hX x).1 = (zOf W Ch sel mu P hX y).1 := congrArg Subtype.val h
   exact Subtype.ext h1
 
+/- English proof (translation)
+Introduce `φ`. Take `⟨hφ, hact⟩` from `(mem_MtildeV_iff W Ch sel mu P φ.1).1 φ.2`. Establish `hf : resK W Ch sel mu hX ⟨φ.1, hφ⟩ ∈ lvlForms (csdK W Ch sel mu hX) (actK W Ch sel mu hX) P.grp P.chr`. Introduce `a`. Rewrite using `[resK_act, hact a, map_smul]`.
+
+Rewrite `hf` using `[← LiftForms.range_lvlForm]`. Take `⟨x, hx⟩` from `hf`. Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[zOf_val]`. Use `show ((resK W Ch sel mu hX).symm (LiftForms.lvlForm _ _ P.grp P.chr x)).1 = φ.1`.
+
+Rewrite using `[hx, LinearEquiv.symm_apply_apply]`.
+-/
 theorem zOf_surjective : Function.Surjective (zOf W Ch sel mu P hX) := by
   intro φ
   obtain ⟨hφ, hact⟩ := (mem_MtildeV_iff W Ch sel mu P φ.1).1 φ.2

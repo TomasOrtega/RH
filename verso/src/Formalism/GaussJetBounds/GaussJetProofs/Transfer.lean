@@ -13,43 +13,84 @@ section Maps
 
 variable {F K : Type} [Field F] [Field K] (φ : F →+* K) {d : ℕ}
 
+/- English proof (translation)
+Simplify using `[s0]`.
+-/
 theorem map_substZero (s : ZMod d) : map φ (s0 (K := F) s) = s0 s := by
   simp [s0]
+/- English proof (translation)
+Unfold `s1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_substOne (s : ZMod d) : map φ (s1 (K := F) s) = s1 s := by
   unfold s1
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s2`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_substTwo (s : ZMod d) : map φ (s2 (K := F) s) = s2 s := by
   unfold s2
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s1'`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_substOne' (s : ZMod d) : map φ (s1' (K := F) s) = s1' s := by
   unfold s1'
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s2'`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_substTwo' (s : ZMod d) : map φ (s2' (K := F) s) = s2' s := by
   unfold s2'
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[s0]`.
+-/
 theorem constantCoeff_substZero (s : ZMod d) : constantCoeff (s0 (K := F) s) = 0 := by
   simp [s0]
+/- English proof (translation)
+Unfold `s1`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem constantCoeff_substOne (s : ZMod d) : constantCoeff (s1 (K := F) s) = 0 := by
   unfold s1
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s2`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem constantCoeff_substTwo (s : ZMod d) : constantCoeff (s2 (K := F) s) = 0 := by
   unfold s2
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s1'`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem constantCoeff_substOne' (s : ZMod d) : constantCoeff (s1' (K := F) s) = 0 := by
   unfold s1'
   split_ifs <;> simp
+/- English proof (translation)
+Unfold `s2'`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem constantCoeff_substTwo' (s : ZMod d) : constantCoeff (s2' (K := F) s) = 0 := by
   unfold s2'
   split_ifs <;> simp
 
+/- English proof (translation)
+Simplify using `[torus]`.
+-/
 theorem map_torus (l : ℕ) (ζ : F) (s : ZMod d) :
     map φ (torus l ζ s) = torus l (φ ζ) s := by
   simp [torus]
 
+/- English proof (translation)
+Simplify using `[torus]`.
+-/
 theorem cc_torus (l : ℕ) (ζ : F) (s : ZMod d) : constantCoeff (torus l ζ s) = 0 := by
   simp [torus]
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Express the relevant statement in the definitionally equal form `φ (letterLog (K := F) l x n) = letterLog (K := K) l x n`. Simplify using `only [letterLog]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_letterLog (l : ℕ) (x : V2 d) :
     map φ (letterLog (K := F) l x) = letterLog l x := by
   ext n
@@ -60,6 +101,11 @@ theorem map_letterLog (l : ℕ) (x : V2 d) :
   refine Finset.sum_congr rfl fun e _ => ?_
   split_ifs <;> simp
 
+/- English proof (translation)
+Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Express the relevant statement in the definitionally equal form `letterLog (K := F) l x 0 = 0`. Simplify using `only [letterLog]`. Use `Finset.sum_eq_zero fun e he => ?_` and prove the remaining obligations. Establish `he0 : e = 0` using `by simpa using he`.
+
+Substitute `he0` using the available equality. Rewrite using `[if_neg]`. Introduce `h`. Establish `h1` using `Finsupp.single_eq_zero.mp h.symm`. Simplify using `at h1`.
+-/
 theorem cc_letterLog (l : ℕ) (x : V2 d) : constantCoeff (letterLog (K := F) l x) = 0 := by
   rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]
   change letterLog (K := F) l x 0 = 0
@@ -72,6 +118,11 @@ theorem cc_letterLog (l : ℕ) (x : V2 d) : constantCoeff (letterLog (K := F) l 
   have h1 := Finsupp.single_eq_zero.mp h.symm
   simp at h1
 
+/- English proof (translation)
+Use extensionality with `n`. Rewrite using `[MvPowerSeries.coeff_map]`. Express the relevant statement in the definitionally equal form `φ (entLog (K := F) l x n) = entLog (K := K) l x n`. Simplify using `only [entLog]`. Rewrite using `[map_sum]`.
+
+Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem map_entLog {N0 N1 : ℕ} (l : ℕ) (x : ZV d N0 N1) :
     map φ (entLog (K := F) l x) = entLog l x := by
   ext n
@@ -84,6 +135,9 @@ theorem map_entLog {N0 N1 : ℕ} (l : ℕ) (x : ZV d N0 N1) :
 
 variable [NeZero d]
 
+/- English proof (translation)
+Establish `hs : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) → MvPowerSeries.map φ (MvPowerSeries.subst a be) = MvPowerSeries.subst (fun s => MvPowerSeries.map φ (a s)) (MvPowerSeries.map φ be)` using `fun a ha => MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) be`. Unfold `de1`. Rewrite using `[map_sub, map_sub, hs s1 constantCoeff_substOne, hs s0 constantCoeff_substZero, hs s2 constantCoeff_substTwo]`. Simplify using `only [map_substOne, map_substZero, map_substTwo]`.
+-/
 theorem map_defectOne (be : MvPowerSeries (ZMod d) F) : map φ (de1 be) = de1 (map φ be) := by
   have hs : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) →
       MvPowerSeries.map φ (MvPowerSeries.subst a be) =
@@ -93,6 +147,9 @@ theorem map_defectOne (be : MvPowerSeries (ZMod d) F) : map φ (de1 be) = de1 (m
   rw [map_sub, map_sub, hs s1 constantCoeff_substOne, hs s0 constantCoeff_substZero, hs s2 constantCoeff_substTwo]
   simp only [map_substOne, map_substZero, map_substTwo]
 
+/- English proof (translation)
+Establish `hs : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) → MvPowerSeries.map φ (MvPowerSeries.subst a be) = MvPowerSeries.subst (fun s => MvPowerSeries.map φ (a s)) (MvPowerSeries.map φ be)` using `fun a ha => MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) be`. Unfold `de2`. Rewrite using `[map_sub, map_sub, hs s1' constantCoeff_substOne', hs s0 constantCoeff_substZero, hs s2' constantCoeff_substTwo']`. Simplify using `only [map_substOne', map_substZero, map_substTwo']`.
+-/
 theorem map_defectTwo (be : MvPowerSeries (ZMod d) F) : map φ (de2 be) = de2 (map φ be) := by
   have hs : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) →
       MvPowerSeries.map φ (MvPowerSeries.subst a be) =
@@ -102,6 +159,9 @@ theorem map_defectTwo (be : MvPowerSeries (ZMod d) F) : map φ (de2 be) = de2 (m
   rw [map_sub, map_sub, hs s1' constantCoeff_substOne', hs s0 constantCoeff_substZero, hs s2' constantCoeff_substTwo']
   simp only [map_substOne', map_substZero, map_substTwo']
 
+/- English proof (translation)
+Establish `hz : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) → MvPowerSeries.constantCoeff (MvPowerSeries.subst a be) = 0` using `fun a ha => MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha h`. Unfold `de1`. Rewrite using `[map_sub, map_sub, hz s1 constantCoeff_substOne, hz s0 constantCoeff_substZero, hz s2 constantCoeff_substTwo]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_defectOne {be : MvPowerSeries (ZMod d) F} (h : constantCoeff be = 0) :
     constantCoeff (de1 be) = 0 := by
   have hz : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) →
@@ -112,6 +172,9 @@ theorem constantCoeff_defectOne {be : MvPowerSeries (ZMod d) F} (h : constantCoe
   rw [map_sub, map_sub, hz s1 constantCoeff_substOne, hz s0 constantCoeff_substZero, hz s2 constantCoeff_substTwo]
   simp
 
+/- English proof (translation)
+Establish `hz : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) → MvPowerSeries.constantCoeff (MvPowerSeries.subst a be) = 0` using `fun a ha => MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha h`. Unfold `de2`. Rewrite using `[map_sub, map_sub, hz s1' constantCoeff_substOne', hz s0 constantCoeff_substZero, hz s2' constantCoeff_substTwo']`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_defectTwo {be : MvPowerSeries (ZMod d) F} (h : constantCoeff be = 0) :
     constantCoeff (de2 be) = 0 := by
   have hz : ∀ (a : ZMod d → MvPowerSeries (V2 d) F), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) →
@@ -122,6 +185,9 @@ theorem constantCoeff_defectTwo {be : MvPowerSeries (ZMod d) F} (h : constantCoe
   rw [map_sub, map_sub, hz s1' constantCoeff_substOne', hz s0 constantCoeff_substZero, hz s2' constantCoeff_substTwo']
   simp
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Establish `h0` using `(h 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])).1`. Simplify using `[degE] at h0`.
+-/
 theorem cc_of_noLow {be : MvPowerSeries (ZMod d) F} (h : NoLowBidegree be) :
     constantCoeff be = 0 := by
   by_contra hc
@@ -134,17 +200,26 @@ section Normed
 
 variable {F K : Type} [NormedField F] [CharZero F] [NormedField K] [CharZero K] (φ : F →+* K)
 
+/- English proof (translation)
+Unfold `mvExp`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero h), PowerSeries.map_exp]`.
+-/
 theorem map_mvExp {ι : Type} {f : MvPowerSeries ι F} (h : constantCoeff f = 0) :
     map φ (mvExp f) = mvExp (map φ f) := by
   unfold mvExp
   rw [PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero h), PowerSeries.map_exp]
 
+/- English proof (translation)
+Introduce `n`. Rewrite using `[MvPowerSeries.coeff_map, hφ]`. Conclude with `h n`.
+-/
 theorem integral_map (hφ : ∀ z, ‖φ z‖ = ‖z‖) {ι : Type} {U : MvPowerSeries ι F}
     (h : Integral U) : Integral (map φ U) := by
   intro n
   rw [MvPowerSeries.coeff_map, hφ]
   exact h n
 
+/- English proof (translation)
+Establish `hL : ∀ x : V2 d, MvPowerSeries.constantCoeff (letterLog (K` using `F) l x) = 0 := cc_letterLog l`. Rewrite using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hL), map_mvExp φ h]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `map_letterLog φ l x`.
+-/
 theorem map_logExp {d : ℕ} [NeZero d] (l : ℕ) {f : MvPowerSeries (V2 d) F}
     (h : constantCoeff f = 0) :
     map φ (subst (letterLog (K := F) l) (mvExp f)) =
@@ -160,6 +235,23 @@ end Normed
 end Transfer
 
 open Transfer in
+/- English proof (translation)
+Introduce `F K _ _ _ _ φ hφ l d N0 N1 _ K0 ζ be`. Use `⟨?_, ?_, ?_, fun U hU => integral_map φ hφ hU⟩` and prove the remaining obligations. Introduce `hU a ha ha0`. Take `⟨b, hb, rfl⟩` from `Subfield.mem_map.mp ha`. Establish `hb0 : b ≠ 0`.
+
+Introduce and unpack `rfl`. Simplify using `at ha0`. Take `⟨k, hk⟩` from `hU b hb hb0`. Conclude with `⟨k, by rw [hφ, hk, ← map_natCast φ l, hφ]⟩`. Introduce and unpack `⟨h1, h2, h3, ⟨h4, h5⟩, ⟨h6, h7⟩⟩`.
+
+Establish `hcc : MvPowerSeries.constantCoeff be = 0` using `cc_of_noLow h3`. Establish `E1 : MvPowerSeries.subst (letterLog (K` using `K) l) (mvExp (de1 (MvPowerSeries.map φ be))) = MvPowerSeries.map φ (MvPowerSeries.subst (letterLog (K := F) l) (mvExp (de1 be))) := by`. Rewrite using `[← map_defectOne, map_logExp φ l (constantCoeff_defectOne hcc)]`. Establish `E2 : MvPowerSeries.subst (letterLog (K` using `K) l) (mvExp (de2 (MvPowerSeries.map φ be))) = MvPowerSeries.map φ (MvPowerSeries.subst (letterLog (K := F) l) (mvExp (de2 be))) := by`. Rewrite using `[← map_defectTwo, map_logExp φ l (constantCoeff_defectTwo hcc)]`.
+
+Establish `hcm : ∀ G : MvPowerSeries (V2 d) F, MvPowerSeries.constantCoeff (MvPowerSeries.map φ G) = φ (MvPowerSeries.constantCoeff G)`. Introduce `G`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `⟨fun n => ?_, ?_, ?_, ⟨?_, ?_⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_map]`.
+
+Conclude with `Subfield.mem_map.mpr ⟨_, h1 n, rfl⟩`. Establish `ht : ∀ s : ZMod d, MvPowerSeries.constantCoeff (torus l ζ s) = 0` using `fun s => cc_torus l ζ s`. Use `congrArg (MvPowerSeries.map φ) h2` as an intermediate fact. Rewrite `this` using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ht)]`. Simplify `this` using `only [map_torus]`.
+
+Introduce `n hn`. Rewrite `hn` using `[MvPowerSeries.coeff_map]`. Conclude with `h3 n (fun h0 => hn (by rw [h0, map_zero]))`. Rewrite using `[E1]`. Conclude with `integral_map φ hφ h4`.
+
+Rewrite using `[E1, hcm, h5, map_one]`. Rewrite using `[E2]`. Conclude with `integral_map φ hφ h6`. Rewrite using `[E2, hcm, h7, map_one]`. Introduce `g hg hgs`.
+
+Use `⟨fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hg y, map_zero]`. Use `congrArg (MvPowerSeries.map φ) (hgs y)` as an intermediate fact. Rewrite `this` using `[MvPowerSeries.map_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero hg), map_entLog, MvPowerSeries.map_X]`. Conclude with `this`.
+-/
 theorem admissibleTransfer : TransferB := by
   intro F K _ _ _ _ φ hφ l d N0 N1 _ K0 ζ be
   refine ⟨?_, ?_, ?_, fun U hU => integral_map φ hφ hU⟩

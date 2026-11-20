@@ -4,6 +4,13 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `C _ O _ _ Λ _ hinj S c hsum`. Set `φ : (Λ →+* O) → (Λ →* C)` to `fun σ => ((algebraMap O C).comp σ).toMonoidHom`. Establish `hφ : Function.Injective φ`. Introduce `σ τ h`. Use extensionality with `a`.
+
+Apply `hinj` to reduce the goal to its premises. Use `congrArg (fun f : Λ →* C => f a) h` as an intermediate fact. Simplify `this` using `[φ]`. Establish `hli` using `(linearIndependent_monoidHom Λ C).comp φ hφ`. Rewrite `hli` using `[linearIndependent_iff']`.
+
+Introduce `σ hσ`. Apply `hli S c _ σ hσ` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Simplify `hsum a` using `[φ, Finset.sum_apply]`.
+-/
 theorem ringHom_independent_via_algebraMap :
     ∀ (C : Type) [Field C] (O : Type) [CommRing O] [Algebra O C] (Λ : Type) [CommRing Λ],
       Function.Injective (algebraMap O C) → ∀ (S : Finset (Λ →+* O)) (c : (Λ →+* O) → C),

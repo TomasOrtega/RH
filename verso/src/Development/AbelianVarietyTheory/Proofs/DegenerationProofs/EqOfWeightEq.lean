@@ -8,6 +8,9 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 
 namespace GlobalTheory.ZH
 
+/- English proof (translation)
+Establish `e : (Equiv.ofBijective _ (D.coord j V hV h)).symm ((D.q.left.app V).hom a) = AddMonoidAlgebra.single 0 a`. Rewrite using `[Equiv.symm_apply_eq, Equiv.ofBijective_apply]`. Simplify using `[AddMonoidAlgebra.liftNCRingHom]`. Unfold `SplitExt.GtDatum.weight`. Rewrite using `[e, AddMonoidAlgebra.coeff_single]`.
+-/
 theorem weight_app {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G]
     (D : E.GtDatum G) (j : E.ChartIdx) (V : E.B.left.Opens) (hV : IsAffineOpen V)
     (h : V ≤ E.chart j) (χ : E.X) (a : Γ(E.B.left, V)) :
@@ -19,6 +22,9 @@ theorem weight_app {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G]
   unfold SplitExt.GtDatum.weight
   rw [e, AddMonoidAlgebra.coeff_single]
 
+/- English proof (translation)
+Apply `(Equiv.ofBijective _ (D.coord j V hV h)).symm.injective` to reduce the goal to its premises. Apply `AddMonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `χ`. Conclude with `e χ`.
+-/
 theorem eq_of_weight_eq {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G]
     (D : E.GtDatum G) (j : E.ChartIdx) (V : E.B.left.Opens) (hV : IsAffineOpen V)
     (h : V ≤ E.chart j) {s s' : Γ(G.left, D.q.left ⁻¹ᵁ V)}
@@ -28,6 +34,9 @@ theorem eq_of_weight_eq {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G
   ext χ
   exact e χ
 
+/- English proof (translation)
+Use `q.naturality (homOfLE h).op` as an intermediate fact. Conclude with `congrArg (fun f => f.hom a) this`.
+-/
 theorem app_res {X Y : Scheme.{0}} (q : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (h' : q ⁻¹ᵁ V ≤ q ⁻¹ᵁ U)
     (a : Γ(X, U)) :
     (q.app V).hom ((X.presheaf.map (homOfLE h).op).hom a) =
@@ -35,6 +44,11 @@ theorem app_res {X Y : Scheme.{0}} (q : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (
   have := q.naturality (homOfLE h).op
   exact congrArg (fun f => f.hom a) this
 
+/- English proof (translation)
+Use `Φ.D.q_flat` as an intermediate fact. Use `Φ.D.q_surjective` as an intermediate fact. Rewrite using `[← (GlobalTheory.FunDescent.app_injective Φ.D.q.left (Φ.N₀.U i ⊓ Φ.N₀.U j)).eq_iff, map_mul, app_res _ _ (Φ.D.q.left.preimage_mono inf_le_left), app_res _ _ (Φ.D.q.left.preimage_mono inf_le_right)]`. Establish `hg : ((Φ.H 1).g i j : Γ(Φ.G.left, (Φ.H 1).U i ⊓ (Φ.H 1).U j)) = (Φ.D.q.left.app (Φ.N₀.U i ⊓ Φ.N₀.U j)).hom (Φ.N₀.g i j)` using `congrArg Units.val (pow_one (pullU Φ.D.q.left (Φ.N₀.U i ⊓ Φ.N₀.U j) (Φ.N₀.g i j)))`. Rewrite using `[hg]`.
+
+Conclude with `Iff.rfl`.
+-/
 theorem FibPre.compat_iff {k : Type} [Field k] (Φ : FibPre k) (t : ∀ l, Γ(Φ.E.B.left, Φ.N₀.U l))
     (i j : Φ.N₀.ι) :
     ((Φ.G.left.presheaf.map (homOfLE (inf_le_left : (Φ.H 1).U i ⊓ (Φ.H 1).U j ≤ (Φ.H 1).U i)).op).hom
@@ -55,6 +69,17 @@ theorem FibPre.compat_iff {k : Type} [Field k] (Φ : FibPre k) (t : ∀ l, Γ(Φ
   rw [hg]
   exact Iff.rfl
 
+/- English proof (translation)
+Introduce `k _ Φ`. Use `⟨fun t => ?_, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `⟨⟨fun l => (Φ.D.q.left.app (Φ.N₀.U l)).hom (t.f l), fun i j => (Φ.compat_iff t.f i j).2 (t.compat i j)⟩, ?_, fun l => ?_⟩` and prove the remaining obligations. Introduce and unpack `α ⟨l, hl⟩`. Assume the negation of the conclusion as `hα`.
+
+Conclude with `hl ((weight_app Φ.D _ _ _ _ α (t.f l)).trans (Finsupp.single_eq_of_ne hα))`. Conclude with `(weight_app Φ.D _ _ _ _ 0 (t.f l)).trans Finsupp.single_eq_same`. Establish `hf : ∀ l, φ.f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom (Φ.wt φ 0 l)` using `fun l => by`. Use `eq_of_weight_eq Φ.D (Φ.ch l) _ (Φ.aff l) (Φ.le l) fun χ => ?_` and prove the remaining obligations. Rewrite using `[weight_app]`.
+
+Distinguish the cases in `hχ : χ = 0`. Substitute `hχ` using the available equality. Conclude with `Finsupp.single_eq_same.symm`. Rewrite using `[Finsupp.single_eq_of_ne hχ]`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hχ (hφ ⟨l, hne⟩)`. Use `⟨⟨fun l => Φ.wt φ 0 l, fun i j => (Φ.compat_iff _ i j).1 ?_⟩, fun _ => rfl, hf, ?_⟩` and prove the remaining obligations. Establish `c` using `φ.compat i j`. Rewrite `c` using `[hf i, hf j]`. Conclude with `c`.
+
+Unfold `Out.nonzeroLocus`. Rewrite using `[Scheme.Hom.preimage_iSup]`. Use `iSup_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[Scheme.preimage_basicOpen, hf]`. Both sides reduce to the same expression.
+-/
 theorem FibPre.pure_zero : (∀ (k : Type) [Field k] (Φ : FibPre k), (∀ t : Φ.N₀.Sec, ∃ φ : (Φ.H 1).Sec, Φ.Pure 0 φ ∧ ∀ l, Φ.wt φ 0 l = t.f l) ∧ ∀ φ : (Φ.H 1).Sec, Φ.Pure 0 φ → ∃ t : Φ.N₀.Sec, (∀ l, Φ.wt φ 0 l = t.f l) ∧ (∀ l, φ.f l = (Φ.D.q.left.app (Φ.N₀.U l)).hom (t.f l)) ∧ Out.nonzeroLocus φ = Φ.D.q.left ⁻¹ᵁ Out.nonzeroLocus t) := by
   intro k _ Φ
   refine ⟨fun t => ?_, fun φ hφ => ?_⟩

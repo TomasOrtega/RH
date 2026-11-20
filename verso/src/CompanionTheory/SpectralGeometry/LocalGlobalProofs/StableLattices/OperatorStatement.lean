@@ -17,11 +17,17 @@ def evalHom (δ : G →* (X →L[ℂ] X)) (ρ : G →* (H →L[ℂ] H)) (u : X) 
   map_add' _ _ := rfl
   map_smul' _ _ := rfl
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖T.1 y‖ = ‖y‖ * ‖T.1 u‖`. Rewrite using `[norm_apply_eq hδ hρ T.2 y, norm_apply_eq hδ hρ T.2 u, hu, mul_one, mul_comm]`.
+-/
 theorem norm_evalHom (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) {u : X} (hu : ‖u‖ = 1) (y : X)
     (T : homIn δ ρ ⊤) : ‖evalHom δ ρ y T‖ = ‖y‖ * ‖evalHom δ ρ u T‖ := by
   change ‖T.1 y‖ = ‖y‖ * ‖T.1 u‖
   rw [norm_apply_eq hδ hρ T.2 y, norm_apply_eq hδ hρ T.2 u, hu, mul_one, mul_comm]
 
+/- English proof (translation)
+Use `(injective_iff_map_eq_zero _).2 fun T hT => Subtype.ext (ContinuousLinearMap.ext fun x => ?_)` and prove the remaining obligations. Establish `h` using `norm_evalHom hδ hρ hu x T`. Rewrite `h` using `[hT, norm_zero, mul_zero]`. Conclude with `norm_eq_zero.1 h`.
+-/
 theorem evalHom_injective (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) {u : X} (hu : ‖u‖ = 1) :
     Function.Injective (evalHom δ ρ u) := by
   refine (injective_iff_map_eq_zero _).2 fun T hT => Subtype.ext (ContinuousLinearMap.ext fun x => ?_)
@@ -29,6 +35,21 @@ theorem evalHom_injective (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) {u : X
   rw [hT, norm_zero, mul_zero] at h
   exact norm_eq_zero.1 h
 
+/- English proof (translation)
+Establish `hinj` using `evalHom_injective hδ hρ hu`. Set `S : Submodule ℂ H` to `LinearMap.range (evalHom δ ρ u)`. Set `e` to `LinearEquiv.ofInjective (evalHom δ ρ u) hinj`. Set `L : S →ₗ[ℂ] H` to `evalHom δ ρ y ∘ₗ e.symm.toLinearMap`. Establish `hL : ∀ v : S, ‖L v‖ ≤ ‖y‖ * ‖v‖` using `fun v => by`.
+
+Establish `h` using `norm_evalHom hδ hρ hu y (e.symm v)`. Establish `h2 : evalHom δ ρ u (e.symm v) = v` using `congrArg Subtype.val (e.apply_symm_apply v)`. Rewrite `h` using `[h2]`. Conclude with `h.le`. Establish `hLe : ∀ T : homIn δ ρ ⊤, L ⟨T.1 u, T, rfl⟩ = T.1 y` using `fun T => by`.
+
+Establish `h : e.symm ⟨T.1 u, T, rfl⟩ = T` using `e.symm_apply_apply T`. Express the relevant statement in the definitionally equal form `evalHom δ ρ y (e.symm ⟨T.1 u, T, rfl⟩) = T.1 y`. Rewrite using `[h]`. Both sides reduce to the same expression. Set `K : Submodule ℂ H` to `S.topologicalClosure`.
+
+Use `haveI : IsClosed (K : Set H) := S.isClosed_topologicalClosure`. Use `haveI : CompleteSpace K := IsClosed.completeSpace_coe (s := (K : Set H))`. Set `i : S →ₗᵢ[ℂ] K` to `⟨Submodule.inclusion S.le_topologicalClosure, fun _ => rfl⟩`. Establish `hd : DenseRange i.toContinuousLinearMap`. Use `Topology.IsInducing.subtypeVal.dense_iff.2 fun w => closure_mono (fun z hz => ?_) w.2` and prove the remaining obligations.
+
+Conclude with `⟨⟨z, S.le_topologicalClosure hz⟩, ⟨⟨z, hz⟩, rfl⟩, rfl⟩`. Set `B : K →L[ℂ] H` to `(L.mkContinuous ‖y‖ hL).extend i.toContinuousLinearMap`. Establish `hB : ∀ v : S, B (i v) = L v` using `fun v => ((L.mkContinuous ‖y‖ hL).extend_eq hd i.isometry.isUniformInducing v)`. Use `⟨B ∘L K.orthogonalProjection, fun T hT x => ?_⟩` and prove the remaining obligations. Establish `hmem : ⟪u, x⟫_ℂ • T u ∈ K` using `K.smul_mem _ (S.le_topologicalClosure ⟨⟨T, hT⟩, rfl⟩)`.
+
+Establish `horth : T x - ⟪u, x⟫_ℂ • T u ∈ Kᗮ`. Rewrite using `[Submodule.orthogonal_closure, Submodule.mem_orthogonal]`. Introduce and unpack `_ ⟨T', rfl⟩`. Express the relevant statement in the definitionally equal form `⟪T'.1 u, T x - ⟪u, x⟫_ℂ • T u⟫_ℂ = 0`. Rewrite using `[inner_sub_right, inner_smul_right, inner_eq_be hδ hρ hT T'.2, inner_eq_be hδ hρ hT T'.2, inner_self_eq_norm_sq_to_K, hu]`.
+
+Simplify using `[mul_comm]`. Establish `hproj : K.orthogonalProjection (T x) = ⟪u, x⟫_ℂ • i ⟨T u, ⟨T, hT⟩, rfl⟩` using `Subtype.ext (Submodule.eq_starProjection_of_mem_orthogonal hmem horth)`. Express the relevant statement in the definitionally equal form `B (K.orthogonalProjection (T x)) = _`. Rewrite using `[hproj, map_smul, hB, hLe ⟨T, hT⟩]`.
+-/
 theorem exists_op_unit (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) (y : X) {u : X} (hu : ‖u‖ = 1) :
     ∃ A : H →L[ℂ] H, ∀ T ∈ homIn δ ρ ⊤, ∀ x, A (T x) = ⟪u, x⟫_ℂ • T y := by
   have hinj := evalHom_injective hδ hρ hu
@@ -69,6 +90,11 @@ theorem exists_op_unit (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) (y : X) {
   change B (K.orthogonalProjection (T x)) = _
   rw [hproj, map_smul, hB, hLe ⟨T, hT⟩]
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ξ = 0`. Conclude with `⟨0, fun T _ x => by simp [h0]⟩`. Establish `hn : ‖ξ‖ ≠ 0` using `norm_ne_zero_iff.2 h0`. Establish `hn' : (‖ξ‖ : ℂ) ≠ 0` using `by exact_mod_cast hn`. Take `⟨A, hA⟩` from `exists_op_unit hδ hρ y (u := (‖ξ‖ : ℂ)⁻¹ • ξ) (by`.
+
+Rewrite using `[norm_smul, norm_inv, Complex.norm_real, norm_norm, inv_mul_cancel₀ hn])`. Use `⟨(‖ξ‖ : ℂ) • A, fun T hT x => ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.smul_apply, hA T hT, inner_smul_left, smul_smul, map_inv₀, Complex.conj_ofReal, ← mul_assoc, mul_inv_cancel₀ hn', one_mul]`.
+-/
 theorem exists_op (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) (y ξ : X) :
     ∃ A : H →L[ℂ] H, ∀ T ∈ homIn δ ρ ⊤, ∀ x, A (T x) = ⟪ξ, x⟫_ℂ • T y := by
   by_cases h0 : ξ = 0
@@ -81,6 +107,9 @@ theorem exists_op (hδ : IsIrrUnitary δ) (hρ : IsUnitaryRep ρ) (y ξ : X) :
   rw [ContinuousLinearMap.smul_apply, hA T hT, inner_smul_left, smul_smul, map_inv₀, Complex.conj_ofReal,
     ← mul_assoc, mul_inv_cancel₀ hn', one_mul]
 
+/- English proof (translation)
+Introduce `G X H _ _ _ _ _ _ _ δ ρ hδ hρ _`. Use `choose A hA using fun y ξ : X => exists_op (H := H) hδ hρ y ξ`. Conclude with `⟨A, hA⟩`.
+-/
 theorem stOp : StOp := by
   intro G X H _ _ _ _ _ _ _ δ ρ hδ hρ _
   choose A hA using fun y ξ : X => exists_op (H := H) hδ hρ y ξ

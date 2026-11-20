@@ -42,10 +42,16 @@ def twVia (ρ : Setup D.ntw) (ι : KE c w →+* ℂ) : Twist D Circle :=
 
 def Extends (ρ : Setup D.ntw) (ε : KE c w →+* ℂ) : Prop := viaOk ε = ρ.eOk (c.twI w) (c.sd w) (c.k' w)
 
+/- English proof (translation)
+Rewrite using `[twVia, h]`. Both sides reduce to the same expression.
+-/
 theorem Extends.twVia_eq {ρ : Setup D.ntw} {ε : KE c w →+* ℂ} (h : Extends ρ ε) :
     twVia ρ ε = ρ.tw (c.twI w) (c.sd w) (c.k' w) (c.Q w) (chr c w) := by
   rw [twVia, h]; rfl
 
+/- English proof (translation)
+The claim follows from `RingHom.congr_fun h a`.
+-/
 theorem Extends.apply {ρ : Setup D.ntw} {ε : KE c w →+* ℂ} (h : Extends ρ ε) (a : D.ntw.Ok (c.twI w) (c.k' w)) :
     ε (algebraMap _ _ a) = ρ.eOk (c.twI w) (c.sd w) (c.k' w) a := RingHom.congr_fun h a
 
@@ -71,6 +77,9 @@ def rdE (T : CellTie hρ D.nexp rd) {ε : KE c w →+* ℂ} (hε : Extends ρ ε
         change ε (s • a) • T.rdV _ _ _ f = ε s • ε a • T.rdV _ _ _ f
         rw [smul_eq_mul, map_mul, mul_smul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rdE_tmul (T : CellTie hρ D.nexp rd) {ε : KE c w →+* ℂ} (hε : Extends ρ ε) (a : KE c w) (f) :
     rdE T hε (a ⊗ₜ f) = ε a • T.rdV (c.k' w) (c.Q w) (chr c w) f := rfl
 
@@ -96,6 +105,9 @@ def rdF (hρ : ρ.Good) {ε : KE c w →+* ℂ} (hε : Extends ρ ε) :
         change ε (s • a) • rd f = ε s • ε a • rd f
         rw [smul_eq_mul, map_mul, mul_smul] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rdF_tmul (hρ : ρ.Good) {ε : KE c w →+* ℂ} (hε : Extends ρ ε) (a : KE c w) (f) :
     rdF rd hρ hε (a ⊗ₜ f) = ε a • rd f := rfl
 
@@ -106,6 +118,9 @@ def ConjAt {j : Fin D.R.m} (Φ : VsV D j ℂ →ₗ[ℂ] PolF D (Wc D j).rank (V
 
 def intLL (D : D7) : Subring ℂ := (D.what₂.embLL.comp (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)).range
 
+/- English proof (translation)
+The claim follows from `Or.inr ⟨w, ((D.what₂.muAt_or w).resolve_left h).symm⟩`.
+-/
 theorem used_of_tw {w : D.what₂.places.Pl} (h : D.what₂.muAt w ≠ D.what₂.mu0) : Used0 D (D.what₂.muTw w) :=
   Or.inr ⟨w, ((D.what₂.muAt_or w).resolve_left h).symm⟩
 
@@ -117,6 +132,9 @@ def formOf {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) : D.what₂.M
   (LinearEquiv.ofInjective _ (Y.hinj j (Y.tupT μ))).symm.toLinearMap ∘ₗ Submodule.inclusion inf_le_left ∘ₗ
     (Y.IL.jMt μ hμ j).toLinearMap
 
+/- English proof (translation)
+The claim follows from `congrArg Subtype.val ((LinearEquiv.ofInjective _ (Y.hinj j (Y.tupT μ))).apply_symm_apply _)`.
+-/
 theorem extV_formOf {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (x : D.what₂.Mt μ (j.1 + 1)) :
     X.R.toRealDat.extV j (Y.tupT μ) (formOf Y hμ j x) = (Y.IL.jMt μ hμ j x).1 :=
   congrArg Subtype.val ((LinearEquiv.ofInjective _ (Y.hinj j (Y.tupT μ))).apply_symm_apply _)
@@ -125,6 +143,9 @@ def fockOf {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (u : ∀ τ, 
     D.what₂.Mt μ (j.1 + 1) →ₗ[ℂ] Amb D j :=
   (X.R.ioP j (PiTensorProduct.tprod ℂ u)).compLeft _ ∘ₗ (X.R.HV j (Y.tupT μ)).e ∘ₗ formOf Y hμ j
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem fockOf_apply {μ : D.what₂.Tup} (hμ : Used0 D μ) (j : Fin D.R.m) (u : ∀ τ, lowT (X.R.MW j (sg0 D X.A3.A)) τ) (x h) :
     fockOf Y hμ j u x h = X.R.ioP j (PiTensorProduct.tprod ℂ u) ((X.R.HV j (Y.tupT μ)).e (formOf Y hμ j x) h) := rfl
 

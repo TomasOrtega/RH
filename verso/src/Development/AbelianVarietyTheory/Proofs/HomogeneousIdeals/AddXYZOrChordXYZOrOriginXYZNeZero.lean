@@ -13,13 +13,24 @@ variable {R S : Type*} [CommRing R] [CommRing S]
 def Proportional (T U : Fin 3 → R) : Prop :=
   ∀ i j, T i * U j = T j * U i
 
+/- English proof (translation)
+Introduce `i j` and use `by linear_combination h j i`.
+-/
 lemma Proportional.symm {T U : Fin 3 → R} (h : Proportional T U) : Proportional U T :=
   fun i j => by linear_combination h j i
 
+/- English proof (translation)
+Introduce `i j` and use `by simp only [Pi.smul_apply, smul_eq_mul]; linear_combination u * h i j`.
+-/
 lemma Proportional.smul_left {T U : Fin 3 → R} (h : Proportional T U) (u : R) :
     Proportional (u • T) U :=
   fun i j => by simp only [Pi.smul_apply, smul_eq_mul]; linear_combination u * h i j
 
+/- English proof (translation)
+Establish `hxy : X * W.negY ![X', N', Z'] = W.negY ![X, N, Z] * X'`. Simplify using `only [negY_eq]`. Take the linear combination `-hxn - W.a₃ * hxz`. Establish `hyz : W.negY ![X, N, Z] * Z' = Z * W.negY ![X', N', Z']`. Simplify using `only [negY_eq]`.
+
+Take the linear combination `-hnz - W.a₁ * hxz`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Use `exacts [rfl, hxy, hxz, hxy.symm, rfl, hyz, hxz.symm, hyz.symm, rfl]`.
+-/
 lemma proportional_negY (W : Projective R) {X N Z X' N' Z' : R} (hxz : X * Z' = Z * X')
     (hnz : N * Z' = Z * N') (hxn : X * N' = N * X') :
     Proportional ![X, W.negY ![X, N, Z], Z] ![X', W.negY ![X', N', Z'], Z'] := by
@@ -33,33 +44,60 @@ lemma proportional_negY (W : Projective R) {X N Z X' N' Z' : R} (hxz : X * Z' = 
 
 variable {W : Projective R}
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma diagXYZ_X (P Q : Fin 3 → R) : diagXYZ W P Q 0 = diagX W P Q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma diagXYZ_Y (P Q : Fin 3 → R) : diagXYZ W P Q 1 = diagY W P Q := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 lemma diagXYZ_Z (P Q : Fin 3 → R) : diagXYZ W P Q 2 = diagZ W P Q := rfl
 
+/- English proof (translation)
+Rewrite using `[diagXYZ, diagY, diagX_self hP, negDiagY_self hP, diagZ_self hP, dblXYZ, dblY]`.
+-/
 lemma diagXYZ_self {P : Fin 3 → R} (hP : W.Equation P) : diagXYZ W P P = W.dblXYZ P := by
   rw [diagXYZ, diagY, diagX_self hP, negDiagY_self hP, diagZ_self hP, dblXYZ, dblY]
 
+/- English proof (translation)
+Simplify using `only [diagY, negY_eq, diagX_smul, negDiagY_smul, diagZ_smul]`. Use `ring1`.
+-/
 lemma diagY_smul (P Q : Fin 3 → R) (u v : R) :
     diagY W (u • P) (v • Q) = (u * v) ^ 2 * diagY W P Q := by
   simp only [diagY, negY_eq, diagX_smul, negDiagY_smul, diagZ_smul]
   ring1
 
+/- English proof (translation)
+Rewrite using `[diagXYZ, diagX_smul, diagY_smul, diagZ_smul, smul_fin3, diagXYZ_X, diagXYZ_Y, diagXYZ_Z]`.
+-/
 lemma diagXYZ_smul (P Q : Fin 3 → R) (u v : R) :
     diagXYZ W (u • P) (v • Q) = (u * v) ^ 2 • diagXYZ W P Q := by
   rw [diagXYZ, diagX_smul, diagY_smul, diagZ_smul, smul_fin3, diagXYZ_X, diagXYZ_Y, diagXYZ_Z]
 
+/- English proof (translation)
+Simplify using `only [diagY, negY_eq, map_diagX, map_negDiagY, map_diagZ]`. Simplify using `only [map_neg, map_sub, map_mul, WeierstrassCurve.map]`.
+-/
 lemma map_diagY (f : R →+* S) (P Q : Fin 3 → R) :
     diagY (W.map f) (f ∘ P) (f ∘ Q) = f (diagY W P Q) := by
   simp only [diagY, negY_eq, map_diagX, map_negDiagY, map_diagZ]
   simp only [map_neg, map_sub, map_mul, WeierstrassCurve.map]
 
+/- English proof (translation)
+Simplify using `only [diagXYZ, map_diagX, map_diagY, map_diagZ, comp_fin3]`.
+-/
 lemma map_diagXYZ (f : R →+* S) (P Q : Fin 3 → R) :
     diagXYZ (W.map f) (f ∘ P) (f ∘ Q) = f ∘ diagXYZ W P Q := by
   simp only [diagXYZ, map_diagX, map_diagY, map_diagZ, comp_fin3]
 
+/- English proof (translation)
+The claim follows from `proportional_negY W (diagX_mul_addZ hP hQ) (negDiagY_mul_addZ hP hQ) (diagX_mul_negAddY hP hQ)`.
+-/
 lemma proportional_diagXYZ_addXYZ {P Q : Fin 3 → R} (hP : W.Equation P) (hQ : W.Equation Q) :
     Proportional (diagXYZ W P Q) (W.addXYZ P Q) :=
   proportional_negY W (diagX_mul_addZ hP hQ) (negDiagY_mul_addZ hP hQ) (diagX_mul_negAddY hP hQ)
@@ -103,10 +141,18 @@ section Field
 
 variable {F : Type*} [Field F] {W : Projective F}
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `Y_ne_zero_of_Z_eq_zero hP rfl rfl`.
+-/
 lemma ne_zero_of_nonsingular {P : Fin 3 → F} (hP : W.Nonsingular P) : P ≠ 0 := by
   rintro rfl
   exact Y_ne_zero_of_Z_eq_zero hP rfl rfl
 
+/- English proof (translation)
+Use `⟨fun h => ⟨h.left, ne_zero_of_nonsingular h⟩, fun ⟨h, h0⟩ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : P 2 = 0`. Establish `hx` using `X_eq_zero_of_Z_eq_zero h hz`. Establish `hy : P 1 ≠ 0` using `fun hy => h0 <| by`. Use extensionality with `i`.
+
+Use `fin_cases i`. Use `exacts [hx, hy, hz]`. Use `(nonsingular_of_Z_eq_zero hz).mpr ⟨h, Or.inr ?_⟩` and prove the remaining obligations. Simplify `hy` using `[hx]`. Conclude with `(nonsingular_of_Z_ne_zero hz).mpr <| (Affine.equation_iff_nonsingular_of_Δ_ne_zero hΔ).mp <| (equation_of_Z_ne_zero hz).mp h`.
+-/
 lemma nonsingular_iff_of_Δ_ne_zero (hΔ : W.Δ ≠ 0) (P : Fin 3 → F) :
     W.Nonsingular P ↔ W.Equation P ∧ P ≠ 0 := by
   refine ⟨fun h => ⟨h.left, ne_zero_of_nonsingular h⟩, fun ⟨h, h0⟩ => ?_⟩
@@ -120,6 +166,11 @@ lemma nonsingular_iff_of_Δ_ne_zero (hΔ : W.Δ ≠ 0) (P : Fin 3 → F) :
   · exact (nonsingular_of_Z_ne_zero hz).mpr <|
       (Affine.equation_iff_nonsingular_of_Δ_ne_zero hΔ).mp <| (equation_of_Z_ne_zero hz).mp h
 
+/- English proof (translation)
+Take `⟨j, hj⟩` from `Function.ne_iff.mp hU`. Use `replace hj : U j ≠ 0 := hj`. Establish `e : (T j / U j) • U = T`. Use extensionality with `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, div_mul_eq_mul_div, div_eq_iff hj, h i j]`.
+
+Establish `hu : T j / U j ≠ 0` using `fun h0 => hT <| by rw [← e, h0, zero_smul]`. Conclude with `⟨Units.mk0 _ hu, e⟩`.
+-/
 lemma equiv_of_proportional {T U : Fin 3 → F} (h : Proportional T U) (hT : T ≠ 0) (hU : U ≠ 0) :
     T ≈ U := by
   obtain ⟨j, hj⟩ := Function.ne_iff.mp hU
@@ -135,13 +186,22 @@ variable (W) in
 def Represents (T : Fin 3 → F) (p : W.toAffine.Point) : Prop :=
   W.Nonsingular T ∧ Point.toAffine W T = p
 
+/- English proof (translation)
+The claim follows from `ne_zero_of_nonsingular h.left`.
+-/
 lemma Represents.ne_zero {T : Fin 3 → F} {p : W.toAffine.Point} (h : Represents W T p) : T ≠ 0 :=
   ne_zero_of_nonsingular h.left
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(nonsingular_of_equiv e).mpr h.left, (Point.toAffine_of_equiv e).trans h.right⟩`.
+-/
 lemma Represents.of_equiv {T U : Fin 3 → F} {p : W.toAffine.Point} (h : Represents W U p)
     (e : T ≈ U) : Represents W T p :=
   ⟨(nonsingular_of_equiv e).mpr h.left, (Point.toAffine_of_equiv e).trans h.right⟩
 
+/- English proof (translation)
+Establish `h : (⟨(nonsingularLift_iff T).mpr hT.left⟩ : W.Point) = ⟨(nonsingularLift_iff U).mpr hU.left⟩` using `(Point.toAffineAddEquiv W).injective (hT.right.trans hU.right.symm)`. Conclude with `Quotient.exact (congrArg Point.point h)`.
+-/
 lemma Represents.equiv {T U : Fin 3 → F} {p : W.toAffine.Point} (hT : Represents W T p)
     (hU : Represents W U p) : T ≈ U := by
   classical
@@ -150,6 +210,11 @@ lemma Represents.equiv {T U : Fin 3 → F} {p : W.toAffine.Point} (hT : Represen
     (Point.toAffineAddEquiv W).injective (hT.right.trans hU.right.symm)
   exact Quotient.exact (congrArg Point.point h)
 
+/- English proof (translation)
+Use `⟨fun h ⟨u, e⟩ => h ?_, fun h => ?_⟩` and prove the remaining obligations. Use `addXYZ_smul (W' := W) Q Q u 1` as an intermediate fact. Rewrite `this` using `[one_smul, addXYZ_self]`. Rewrite using `[← show (u : F) • Q = P from e, this]`. Use extensionality with `i`.
+
+Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[← add_of_not_equiv h]`. Conclude with `ne_zero_of_nonsingular <| nonsingular_add hP hQ`.
+-/
 lemma addXYZ_ne_zero_iff {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q) :
     W.addXYZ P Q ≠ 0 ↔ ¬P ≈ Q := by
   refine ⟨fun h ⟨u, e⟩ => h ?_, fun h => ?_⟩
@@ -161,6 +226,11 @@ lemma addXYZ_ne_zero_iff {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nons
   · rw [← add_of_not_equiv h]
     exact ne_zero_of_nonsingular <| nonsingular_add hP hQ
 
+/- English proof (translation)
+Rewrite using `[add_of_equiv h, ← diagXYZ_self hP]`. Take `⟨u, e⟩` from `Setoid.symm h`. Use `diagXYZ_smul (W := W) P P 1 u` as an intermediate fact. Rewrite `this` using `[one_smul, one_mul]`. Rewrite using `[← show (u : F) • P = Q from e, this]`.
+
+Conclude with `smul_equiv _ (u.isUnit.pow 2)`.
+-/
 lemma diagXYZ_equiv_add_of_equiv {P Q : Fin 3 → F} (hP : W.Equation P) (h : P ≈ Q) :
     diagXYZ W P Q ≈ W.add P Q := by
   rw [add_of_equiv h, ← diagXYZ_self hP]
@@ -170,21 +240,33 @@ lemma diagXYZ_equiv_add_of_equiv {P Q : Fin 3 → F} (hP : W.Equation P) (h : P 
   rw [← show (u : F) • P = Q from e, this]
   exact smul_equiv _ (u.isUnit.pow 2)
 
+/- English proof (translation)
+The claim follows from `ne_zero_of_nonsingular <| (nonsingular_of_equiv <| diagXYZ_equiv_add_of_equiv hP.left h).mpr <| nonsingular_add hP hQ`.
+-/
 lemma diagXYZ_ne_zero_of_equiv {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q)
     (h : P ≈ Q) : diagXYZ W P Q ≠ 0 :=
   ne_zero_of_nonsingular <| (nonsingular_of_equiv <| diagXYZ_equiv_add_of_equiv hP.left h).mpr <|
     nonsingular_add hP hQ
 
+/- English proof (translation)
+Distinguish the cases in `h : P ≈ Q`. Conclude with `Or.inr <| diagXYZ_ne_zero_of_equiv hP hQ h`. Conclude with `Or.inl <| (addXYZ_ne_zero_iff hP hQ).mpr h`.
+-/
 theorem addXYZ_ne_zero_or_diagXYZ_ne_zero {P Q : Fin 3 → F} (hP : W.Nonsingular P)
     (hQ : W.Nonsingular Q) : W.addXYZ P Q ≠ 0 ∨ diagXYZ W P Q ≠ 0 := by
   by_cases h : P ≈ Q
   · exact Or.inr <| diagXYZ_ne_zero_of_equiv hP hQ h
   · exact Or.inl <| (addXYZ_ne_zero_iff hP hQ).mpr h
 
+/- English proof (translation)
+Rewrite using `[add_of_not_equiv <| (addXYZ_ne_zero_iff hP hQ).mp h]`.
+-/
 lemma addXYZ_equiv_add {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q)
     (h : W.addXYZ P Q ≠ 0) : W.addXYZ P Q ≈ W.add P Q := by
   rw [add_of_not_equiv <| (addXYZ_ne_zero_iff hP hQ).mp h]
 
+/- English proof (translation)
+Distinguish the cases in `e : P ≈ Q`. Conclude with `diagXYZ_equiv_add_of_equiv hP.left e`. Rewrite using `[add_of_not_equiv e]`. Conclude with `equiv_of_proportional (proportional_diagXYZ_addXYZ hP.left hQ.left) h <| (addXYZ_ne_zero_iff hP hQ).mpr e`.
+-/
 lemma diagXYZ_equiv_add {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q)
     (h : diagXYZ W P Q ≠ 0) : diagXYZ W P Q ≈ W.add P Q := by
   by_cases e : P ≈ Q
@@ -193,6 +275,9 @@ lemma diagXYZ_equiv_add {P Q : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsi
     exact equiv_of_proportional (proportional_diagXYZ_addXYZ hP.left hQ.left) h <|
       (addXYZ_ne_zero_iff hP hQ).mpr e
 
+/- English proof (translation)
+Break down `addXYZ_ne_zero_or_diagXYZ_ne_zero hP hQ with h | h` into its components or cases. Conclude with `Setoid.trans (equiv_of_proportional h₁ hT h) (addXYZ_equiv_add hP hQ h)`. Conclude with `Setoid.trans (equiv_of_proportional h₂ hT h) (diagXYZ_equiv_add hP hQ h)`.
+-/
 lemma equiv_add_of_proportional {P Q T : Fin 3 → F} (hP : W.Nonsingular P) (hQ : W.Nonsingular Q)
     (h₁ : Proportional T (W.addXYZ P Q)) (h₂ : Proportional T (diagXYZ W P Q)) (hT : T ≠ 0) :
     T ≈ W.add P Q := by

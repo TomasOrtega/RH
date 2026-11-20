@@ -13,6 +13,9 @@ namespace CurveAffineCharts
 
 variable {T : Type} [Fintype T] {K' : Type} [Field K'] (y : (Σ _ : Unit, T) → K')
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `hy.2.1.2.2 ()`. Use `⟨t, fun h0 => ht ?_⟩` and prove the remaining obligations. Simplify using `[mCoordIdeal, RingHom.mem_ker, mConeMap, h0]`.
+-/
 theorem exists_chart (hy : IsArithVar (mCoordIdeal y) 1) : ∃ t : T, y ⟨(), t⟩ ≠ 0 := by
   obtain ⟨t, ht⟩ := hy.2.1.2.2 ()
   refine ⟨t, fun h0 => ht ?_⟩
@@ -20,6 +23,13 @@ theorem exists_chart (hy : IsArithVar (mCoordIdeal y) 1) : ∃ t : T, y ⟨(), t
 
 omit [Fintype T] in
 
+/- English proof (translation)
+Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨⟨⟨⟩, u⟩, rfl⟩` from `hx`. Rewrite using `[Valuation.mem_integer_iff, map_div₀]`. Break down `eq_or_ne (v.valuation K' (y ⟨(), t⟩)) 0 with h0 | h0` into its components or cases.
+
+Simplify using `[h0]`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr h0)).mpr (ht u)`. Consider the case `algebraMap r => rw [eq_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`.
+
+Consider the case `mul x z _ _ hx hz => exact mul_mem hx hz`.
+-/
 theorem mem_integer_of_mem_chartRingZ [NumberField K'] (v : HeightOneSpectrum (𝓞 K')) (t : T)
     (ht : ∀ u, v.valuation K' (y ⟨(), u⟩) ≤ v.valuation K' (y ⟨(), t⟩)) {b : K'}
     (hb : b ∈ chartRingZ y (fun _ => t)) : b ∈ (v.valuation K').integer := by
@@ -34,6 +44,13 @@ theorem mem_integer_of_mem_chartRingZ [NumberField K'] (v : HeightOneSpectrum (�
   | add x z _ _ hx hz => exact add_mem hx hz
   | mul x z _ _ hx hz => exact mul_mem hx hz
 
+/- English proof (translation)
+Take `⟨t0, ht0⟩` from `exists_chart y hy`. It suffices to establish `hv : ∀ v : HeightOneSpectrum (𝓞 K'), v.valuation K' b ≤ 1 by`. Take `⟨r, hr⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K') K' b hv`. Rewrite using `[← hr]`. Conclude with `r.2`.
+
+Introduce `v`. Take `⟨t, -, ht⟩` from `Finset.exists_max_image Finset.univ (fun u => v.valuation K' (y ⟨(), u⟩)) ⟨t0, Finset.mem_univ _⟩`. Establish `hyt : y ⟨(), t⟩ ≠ 0`. Introduce `h0`. Establish `h1` using `ht t0 (Finset.mem_univ _)`.
+
+Rewrite `h1` using `[h0, map_zero]`. Conclude with `ht0 ((Valuation.zero_iff _).mp (le_antisymm h1 zero_le))`. Conclude with `mem_integer_of_mem_chartRingZ y v t (fun u => ht u (Finset.mem_univ _)) (mem_curveRing.mp hb (fun _ => t) (fun _ => hyt))`.
+-/
 theorem mem_integralClosure_of_mem_curveRing [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1)
     {b : K'} (hb : b ∈ curveRing y) : b ∈ integralClosure ℤ K' := by
   obtain ⟨t0, ht0⟩ := exists_chart y hy
@@ -52,6 +69,9 @@ theorem mem_integralClosure_of_mem_curveRing [NumberField K'] (hy : IsArithVar (
   exact mem_integer_of_mem_chartRingZ y v t (fun u => ht u (Finset.mem_univ _))
     (mem_curveRing.mp hb (fun _ => t) (fun _ => hyt))
 
+/- English proof (translation)
+Establish `: Module.Finite ℤ (integralClosure ℤ K')` using `inferInstanceAs (Module.Finite ℤ (𝓞 K'))`. Set `f : curveRing y →ₗ[ℤ] integralClosure ℤ K'` to `{ toFun := fun b => ⟨b, mem_integralClosure_of_mem_curveRing y hy b.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Conclude with `Module.Finite.of_injective f fun a b h => Subtype.ext (congrArg (fun z : integralClosure ℤ K' => (z : K')) h)`.
+-/
 theorem finite [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1) : Module.Finite ℤ (curveRing y) := by
   have : Module.Finite ℤ (integralClosure ℤ K') := inferInstanceAs (Module.Finite ℤ (𝓞 K'))
   let f : curveRing y →ₗ[ℤ] integralClosure ℤ K' :=
@@ -60,6 +80,13 @@ theorem finite [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1) : Module.Fin
       map_smul' := fun _ _ => rfl }
   exact Module.Finite.of_injective f fun a b h => Subtype.ext (congrArg (fun z : integralClosure ℤ K' => (z : K')) h)
 
+/- English proof (translation)
+Take `⟨t, ht⟩` from `exists_chart y hy`. Establish `hbt` using `mem_curveRing.mp hb (fun _ => t) (fun _ => ht)`. Use `clear hb`. Proceed by induction on `hbt using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+
+Take `⟨p, rfl⟩` from `hx`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨p, ⟨(), t⟩, rfl, rfl⟩`. Consider the case `algebraMap r => rw [eq_intCast]`. Conclude with `intCast_mem _ r`. Consider the case `add x z _ _ hx hz => exact add_mem hx hz`.
+
+Consider the case `mul x z _ _ hx hz => exact mul_mem hx hz`.
+-/
 theorem mem_blockFnField_of_mem_curveRing [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1)
     {b : K'} (hb : b ∈ curveRing y) : b ∈ blockFnField y := by
   obtain ⟨t, ht⟩ := exists_chart y hy
@@ -73,6 +100,17 @@ theorem mem_blockFnField_of_mem_curveRing [NumberField K'] (hy : IsArithVar (mCo
   | add x z _ _ hx hz => exact add_mem hx hz
   | mul x z _ _ hx hz => exact mul_mem hx hz
 
+/- English proof (translation)
+Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using Algebra.subset_adjoin hx⟩`. Consider the case `algebraMap q`. Use `⟨q.den, q.den_nz, ?_⟩` and prove the remaining obligations. Establish `hq : (q.den : K') * algebraMap ℚ K' q = (q.num : K')`.
+
+Rewrite using `[eq_ratCast, Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hq]`. Conclude with `intCast_mem _ _`. Consider the case `add x z _ _ hx hz`.
+
+Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmz⟩` from `hz`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `e : ((n * m : ℕ) : K') * (x + z) = (m : K') * ((n : K') * x) + (n : K') * ((m : K') * z)` using `by push_cast; ring`. Rewrite using `[e]`.
+
+Conclude with `add_mem (mul_mem (natCast_mem _ m) hnx) (mul_mem (natCast_mem _ n) hmz)`. Consider the case `mul x z _ _ hx hz`. Take `⟨n, hn, hnx⟩` from `hx`. Take `⟨m, hm, hmz⟩` from `hz`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations.
+
+Establish `e : ((n * m : ℕ) : K') * (x * z) = ((n : K') * x) * ((m : K') * z)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `mul_mem hnx hmz`.
+-/
 theorem exists_nat_mul_mem_adjoin [CharZero K'] {S : Set K'} {x : K'} (hx : x ∈ Algebra.adjoin ℚ S) :
     ∃ n : ℕ, n ≠ 0 ∧ (n : K') * x ∈ Algebra.adjoin ℤ S := by
   induction hx using Algebra.adjoin_induction with
@@ -103,6 +141,11 @@ theorem exists_nat_mul_mem_adjoin [CharZero K'] {S : Set K'} {x : K'} (hx : x �
 
 omit [Fintype T] in
 
+/- English proof (translation)
+Rewrite using `[← IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun x _ => Algebra.IsAlgebraic.isAlgebraic x)]`. Establish `hle : blockFnField y ≤ IntermediateField.adjoin ℚ (Set.range fun p : Σ _ : Unit, T => y p / y ⟨p.1, t⟩)`. Use `IntermediateField.adjoin_le_iff.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, q, -, rfl⟩`. Establish `hp : y p / y ⟨(), t⟩ ∈ IntermediateField.adjoin ℚ (Set.range fun p : Σ _ : Unit, T => y p / y ⟨p.1, t⟩)` using `IntermediateField.subset_adjoin _ _ ⟨p, rfl⟩`.
+
+Establish `hq : y q / y ⟨(), t⟩ ∈ IntermediateField.adjoin ℚ (Set.range fun p : Σ _ : Unit, T => y p / y ⟨p.1, t⟩)` using `IntermediateField.subset_adjoin _ _ ⟨q, rfl⟩`. Rewrite using `[← div_div_div_cancel_right₀ ht]`. Conclude with `div_mem hp hq`. Conclude with `hle hx`.
+-/
 theorem mem_adjoin_of_mem_blockFnField [NumberField K'] (t : T) (ht : y ⟨(), t⟩ ≠ 0) {x : K'}
     (hx : x ∈ blockFnField y) :
     x ∈ Algebra.adjoin ℚ (Set.range fun p : Σ _ : Unit, T => y p / y ⟨p.1, t⟩) := by
@@ -122,6 +165,15 @@ theorem mem_adjoin_of_mem_blockFnField [NumberField K'] (t : T) (ht : y ⟨(), t
     exact div_mem hp hq
   exact hle hx
 
+/- English proof (translation)
+Establish `key : ∀ t : T, ∃ n : ℕ, n ≠ 0 ∧ (y ⟨(), t⟩ ≠ 0 → (n : K') * x ∈ chartRingZ y (fun _ => t))`. Introduce `t`. Distinguish the cases in `ht : y ⟨(), t⟩ = 0`. Conclude with `⟨1, one_ne_zero, fun h => (h ht).elim⟩`. Take `⟨n, hn, h⟩` from `exists_nat_mul_mem_adjoin (mem_adjoin_of_mem_blockFnField y t ht hx)`.
+
+Conclude with `⟨n, hn, fun _ => h⟩`. Use `choose N hN0 hN using key`. Use `⟨∏ t, N t, Finset.prod_ne_zero_iff.mpr (fun t _ => hN0 t), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_curveRing]`. Introduce `c hc`.
+
+Establish `hc' : c = fun _ => c ()` using `funext fun u => by cases u; rfl`. Establish `h1` using `hN (c ()) (hc ())`. Rewrite `h1` using `[← hc']`. Establish `e : ((∏ t, N t : ℕ) : K') * x = ((∏ t ∈ Finset.univ.erase (c ()), N t : ℕ) : K') * ((N (c ()) : K') * x)`. Rewrite using `[← Finset.mul_prod_erase Finset.univ N (Finset.mem_univ (c ()))]`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `mul_mem (natCast_mem _ _) h1`.
+-/
 theorem exists_nat_mul_mem_curveRing [NumberField K'] {x : K'} (hx : x ∈ blockFnField y) :
     ∃ n : ℕ, n ≠ 0 ∧ (n : K') * x ∈ curveRing y := by
   classical
@@ -145,6 +197,17 @@ theorem exists_nat_mul_mem_curveRing [NumberField K'] {x : K'} (hx : x ∈ block
   rw [e]
   exact mul_mem (natCast_mem _ _) h1
 
+/- English proof (translation)
+Use `finite y hy` as an intermediate fact. Set `b` to `Module.finBasis ℤ (curveRing y)`. Set `ι : curveRing y →ₗ[ℤ] K'` to `(curveRing y).subtype.toAddMonoidHom.toIntLinearMap`. Establish `hliZ : LinearIndependent ℤ (ι ∘ b)` using `b.linearIndependent.map' ι (LinearMap.ker_eq_bot.mpr Subtype.val_injective)`. Establish `hliQ : LinearIndependent ℚ (ι ∘ b)` using `(LinearIndependent.iff_fractionRing ℤ ℚ).mp hliZ`.
+
+Establish `hspan : Submodule.span ℚ (Set.range (ι ∘ b)) = Subalgebra.toSubmodule (blockFnField y).toSubalgebra`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `mem_blockFnField_of_mem_curveRing y hy (b i).2`.
+
+Introduce `x hx`. Take `⟨n, hn, hnx⟩` from `exists_nat_mul_mem_curveRing y hx`. Establish `h1 : (⟨_, hnx⟩ : curveRing y) ∈ Submodule.span ℤ (Set.range b)`. Rewrite using `[b.span_eq]`. Discharge the goal by the elementary cases of `trivial`.
+
+Establish `h2 : (n : K') * x ∈ Submodule.span ℤ (Set.range (ι ∘ b))`. Rewrite using `[Set.range_comp, ← Submodule.map_span]`. Conclude with `Submodule.mem_map_of_mem h1`. Establish `h3 : (n : K') * x ∈ Submodule.span ℚ (Set.range (ι ∘ b))` using `Submodule.span_le_restrictScalars ℤ ℚ _ h2`. Establish `h4 : x = (n : ℚ)⁻¹ • ((n : K') * x)`.
+
+Rewrite using `[Algebra.smul_def, ← mul_assoc, map_inv₀, map_natCast, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr hn), one_mul]`. Rewrite using `[h4]`. Conclude with `Submodule.smul_mem _ _ h3`. Rewrite using `[← IntermediateField.finrank_eq_finrank_subalgebra, ← Subalgebra.finrank_toSubmodule, ← hspan, finrank_span_eq_card hliQ, Fintype.card_fin]`.
+-/
 theorem finrank_eq [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1) :
     Module.finrank ℤ (curveRing y) = Module.finrank ℚ (blockFnField y) := by
   have := finite y hy
@@ -178,6 +241,9 @@ theorem finrank_eq [NumberField K'] (hy : IsArithVar (mCoordIdeal y) 1) :
 
 end CurveAffineCharts
 
+/- English proof (translation)
+Introduce `T _ K' _ _ y hy` and use `⟨CurveAffineCharts.finite y hy, CurveAffineCharts.finrank_eq y hy, hc T K' y hy⟩`.
+-/
 theorem CurveCharts.proof (hc : ClosedPointChart.Statement) : CurveCharts.Statement :=
   fun T _ K' _ _ y hy =>
     ⟨CurveAffineCharts.finite y hy, CurveAffineCharts.finrank_eq y hy, hc T K' y hy⟩

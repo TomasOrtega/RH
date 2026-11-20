@@ -11,6 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi (IsAbelianScheme LB)
 open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham GlobalTheory.PDiv GlobalTheory.PtExt
 attribute [local instance] Over.cartesianMonoidalCategory
 
+/- English proof (translation)
+Introduce `hHdR R _ _ A B _ _ g hA hB hgA hgB P hP φ hφ x hx`. Establish `hφ'` using `GlobalTheory.T.poincareCrystalPairing_swap_eq_neg_flip R A B P hP.isLB φ hφ`. Use `GlobalTheory.T.mem_hodgeFiltration_of_orthogonal_perfectPairing hHdR R B A g hB hA hgB hgA (AbDual.swap P) hP.swap (-φ.flip) hφ' x ?_` and prove the remaining obligations. Introduce `y hy`. Simplify using `[hx y hy]`.
+-/
 theorem GlobalTheory.PoincareKer.mem_fil_left : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] [Nontrivial R]
     (A B : Over (Sp R)) [GrpObj A] [GrpObj B] (g : ℕ), IsAbelianScheme A → IsAbelianScheme B →
     SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g B.hom → ∀ P : LB (A ⊗ B).left,

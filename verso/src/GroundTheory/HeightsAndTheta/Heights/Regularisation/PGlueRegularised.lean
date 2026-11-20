@@ -21,6 +21,21 @@ variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X} (R : R
 
 open Classical in
 
+/- English proof (translation)
+Use `choose L hLc hLsub hL using hcut.eq_neg_one`. Establish `hev : ∀ᶠ y in 𝓝 x₀, ∀ j, (x₀ ∈ R.mid j → y ∈ R.mid j) ∧ (x₀ ∉ R.mid j → y ∉ L j ∧ y ∉ closure (R.inner j))`. Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : x₀ ∈ R.mid j`. Use `filter_upwards [(R.isOpen_mid j).mem_nhds h] with y hy`.
+
+Conclude with `⟨fun _ => hy, fun h' => absurd h h'⟩`. Establish `hc : IsOpen (L j ∪ closure (R.inner j))ᶜ` using `((hLc j).union isClosed_closure).isOpen_compl`. Establish `hx : x₀ ∈ (L j ∪ closure (R.inner j))ᶜ`. Introduce and unpack `(h1 | h1)`. Conclude with `h (hLsub j h1)`.
+
+Conclude with `h (R.closure_inner j h1)`. Use `filter_upwards [hc.mem_nhds hx] with y hy`. Simplify using `only [mem_compl_iff, mem_union, not_or] at hy`. Conclude with `⟨fun h' => absurd h' h, fun _ => hy⟩`. Use `filter_upwards [hev] with y hy`.
+
+Use `⟨fun j hj => (hy j).1 hj, ?_⟩` and prove the remaining obligations. Simplify using `only [RegChartData.regularised, PotentialCharts.glue]`. Use `congrArg (· + ε / 2) ?_` and prove the remaining obligations. Use `regMax_of_injective (fun j : {j // x₀ ∈ R.mid j} => (⟨j.1, (hy j.1).1 j.2⟩ : {j // y ∈ R.mid j})) (fun a b hab => Subtype.ext (by simpa using congrArg Subtype.val hab)) hε _ ?_` and prove the remaining obligations. Introduce `i hi`.
+
+Take `⟨k, hk⟩` from `R.cover y`. Establish `hk0 : x₀ ∈ R.mid k`. Assume the negation of the conclusion as `h`. Conclude with `((hy k).2 h).2 (subset_closure hk)`. Use `⟨⟨k, hk0⟩, ?_⟩` and prove the remaining obligations.
+
+Establish `hi0 : x₀ ∉ R.mid i` using `fun h => hi ⟨i.1, h⟩ rfl`. Establish `hiL : η i y = -1` using `hL i y ⟨i.2, ((hy i).2 hi0).1⟩`. Establish `hk1 : η k y = 0` using `hcut.eq_zero k y hk`. Establish `hc` using `(abs_le.1 (hcmp i k y ⟨i.2, R.inner_subset_mid k hk⟩)).2`. Simplify using `only [hiL, hk1]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem glue_eventually (ρ : Mollifier D) (η : Fin R.N → X → ℝ) {Cη K t ε : ℝ}
     (hcut : R.IsCutoffFamily η Cη) (hε : 0 ≤ ε)
     (hcmp : ∀ j k, ∀ x ∈ R.mid j ∩ R.mid k, |R.phReg ρ K t j x - R.phReg ρ K t k x| ≤ ε)
@@ -63,6 +78,11 @@ theorem glue_eventually (ρ : Mollifier D) (η : Fin R.N → X → ℝ) {Cη K t
   simp only [hiL, hk1]
   linarith
 
+/- English proof (translation)
+Establish `hxj : x ∈ (R.chart j).source` using `R.mid_subset_source j hj`. Establish `hT : ContDiffAt ℝ ∞ (R.chart j ∘ ψ.symm) (ψ x)` using `((analyticAt_transition hψ (R.compat j) hx hxj).restrictScalars (𝕜 := ℝ)).contDiffAt`. Establish `hTx : (R.chart j ∘ ψ.symm) (ψ x) = R.chart j x` using `by simp [ψ.left_inv hx]`. Establish `hS` using `(R.smoothed_local ρ K ht j (hball j x (subset_closure hj))).1`. Establish `hq : ContDiffAt ℝ ∞ (R.q j) (R.chart j x)` using `(R.q_smooth j).contDiffAt ((R.chart j).open_target.mem_nhds ((R.chart j).map_source hxj))`.
+
+Rewrite `hS`, `hq` using `[← hTx]`. Establish `hη` using `contDiffAt_comp_symm_of_smoothOn hψ (R.isOpen_mid j) (hcut.smooth j) hj hx`. Conclude with `((hS.comp (ψ x) hT).sub (hq.comp (ψ x) hT)).add (contDiffAt_const.mul hη)`.
+-/
 theorem arg_contDiffAt (ρ : Mollifier D) (η : Fin R.N → X → ℝ) {Cη K t ε : ℝ}
     (hcut : R.IsCutoffFamily η Cη) (ht : 0 < t)
     (hball : ∀ j, ∀ x ∈ closure (R.mid j), closedBall (R.chart j x) t ⊆ (R.chart j).target)
@@ -84,6 +104,39 @@ end RegChartData
 
 open Classical in
 
+/- English proof (translation)
+Introduce `X _ _ _ D A R ρ η Cη K t ε hcut ht hε hball hcmp`. Use `⟨fun i y hy => ?_, fun k x hx w => ?_⟩` and prove the remaining obligations. Establish `hyt : y ∈ (A.chart i).target` using `hy.1`. Establish `hx₀ : (A.chart i).symm y ∈ (A.chart i).source` using `(A.chart i).map_target hyt`. Establish `hψ : IsCompatChart A (A.chart i)` using `fun l => ⟨A.holo l i, A.holo i l⟩`.
+
+Establish `hyx : A.chart i ((A.chart i).symm y) = y` using `(A.chart i).right_inv hyt`. Establish `hloc` using `R.glue_eventually ρ η hcut hε.le hcmp ((A.chart i).symm y)`. Establish `hG : ContDiffAt ℝ ∞ (fun y' => regMax ε (fun j : {j // (A.chart i).symm y ∈ R.mid j} => R.phReg ρ K t j ((A.chart i).symm y') + 4 * ε * η j ((A.chart i).symm y')) + ε / 2) y`. Establish `hr` using `((ReciprocityTheory.AnForm.A.regMax_thm {j // (A.chart i).symm y ∈ R.mid j}).1 ε hε).1`. Use `(hr.contDiffAt.comp y (contDiffAt_pi.2 fun j => ?_)).add contDiffAt_const` and prove the remaining obligations.
+
+Use `R.arg_contDiffAt ρ η (K := K) (ε := ε) hcut ht hball hψ hx₀ j.2` as an intermediate fact. Rewrite `this` using `[hyx]`. Then use the resulting hypothesis. Use `(hG.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations. Conclude with `(((A.chart i).continuousAt_symm hyt).tendsto.eventually hloc).mono fun y' hy' => hy'.2`. Establish `hψ` using `R.compat k`.
+
+Establish `hxk : x ∈ (R.chart k).source` using `R.mid_subset_source k hx`. Establish `hzt : R.chart k x ∈ (R.chart k).target` using `(R.chart k).map_source hxk`. Establish `hqk : ContDiffAt ℝ ∞ (R.q k) (R.chart k x)` using `(R.q_smooth k).contDiffAt ((R.chart k).open_target.mem_nhds hzt)`. Use `set b : {j // x ∈ R.mid j} → (Fin D → ℂ) → ℝ := fun j y => R.phReg ρ K t j ((R.chart k).symm y) + 4 * ε * η j ((R.chart k).symm y) + R.q k y with hb_def`. Establish `hb : ∀ j, ContDiffAt ℝ ∞ (b j) (R.chart k x)` using `fun j => (R.arg_contDiffAt ρ η (K := K) (ε := ε) hcut ht hball hψ hxk j.2).add hqk`.
+
+Establish `hadd` using `((ReciprocityTheory.AnForm.A.regMax_thm {j // x ∈ R.mid j}).1 ε hε).2.2.2.2.2.2.1`. Establish `hgerm : R.chartFun (R.regularised ρ K t ε η) k =ᶠ[𝓝 (R.chart k x)] fun y => regMax ε (fun j => b j y) + ε / 2`. Establish `hloc` using `R.glue_eventually ρ η hcut hε.le hcmp x`. Establish `ht' : Tendsto (R.chart k).symm (𝓝 (R.chart k x)) (𝓝 x)`. Use `((R.chart k).continuousAt_symm hzt).tendsto` as an intermediate fact.
+
+Rewrite `this` using `[(R.chart k).left_inv hxk]`. Then use the resulting hypothesis. Use `filter_upwards [ht'.eventually hloc] with y hy`. Simplify using `only [PotentialCharts.chartFun]`. Rewrite using `[hy.2, hb_def, hadd]`. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hconst : levi (fun y => regMax ε (fun j => b j y) + ε / 2) (R.chart k x) w = levi (fun y => regMax ε (fun j => b j y)) (R.chart k x) w`. Unfold `levi`. Establish `: fderiv ℝ (fun y => regMax ε (fun j => b j y) + ε / 2) = fderiv ℝ (fun y => regMax ε (fun j => b j y))` using `funext fun _ => fderiv_add_const _`. Rewrite using `[this]`. Rewrite using `[levi_congr hgerm w, hconst]`.
+
+Establish `hzV : R.chart k x ∈ interior {y | ∀ j, ContDiffAt ℝ 2 (b j) y}` using `mem_interior_iff_mem_nhds.2 (Filter.eventually_all.2 fun j => ((hb j).of_le (WithTop.coe_le_coe.mpr le_top)).eventually (by simp))`. Use `ReciprocityTheory.AnForm.A.regMaxLevi_thm D {j // x ∈ R.mid j} ε _ b isOpen_interior hε (fun j y hy => (interior_subset hy j).contDiffWithinAt) _ hzV w _ fun ⟨j, hj⟩ => ?_` and prove the remaining obligations. Establish `hxj : x ∈ (R.chart j).source` using `R.mid_subset_source j hj`. Use `set T := R.chart j ∘ (R.chart k).symm with hT`. Establish `hTa : AnalyticAt ℂ T (R.chart k x)` using `analyticAt_transition hψ (R.compat j) hxk hxj`.
+
+Establish `hTR : ContDiffAt ℝ ∞ T (R.chart k x)` using `(hTa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Establish `hTz : T (R.chart k x) = R.chart j x` using `by simp [hT, (R.chart k).left_inv hxk]`. Take `⟨hS, hSl⟩` from `R.smoothed_local ρ K ht j (hball j x (subset_closure hj))`. Establish `hq : ContDiffAt ℝ ∞ (R.q j) (R.chart j x)` using `(R.q_smooth j).contDiffAt ((R.chart j).open_target.mem_nhds ((R.chart j).map_source hxj))`. Rewrite `hS`, `hSl`, `hq` using `[← hTz]`.
+
+Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.mpr le_top`. Establish `hS2 : ContDiffAt ℝ 2 (R.smoothed ρ K t j ∘ T) (R.chart k x)` using `(hS.comp _ hTR).of_le h2`. Establish `hQ2 : ContDiffAt ℝ 2 (fun y => R.q k y - R.q j (T y)) (R.chart k x)` using `(hqk.sub (hq.comp _ hTR)).of_le h2`. Establish `hE2 : ContDiffAt ℝ 2 (η j ∘ (R.chart k).symm) (R.chart k x)` using `(contDiffAt_comp_symm_of_smoothOn hψ (R.isOpen_mid j) (hcut.smooth j) hj hxk).of_le h2`. Establish `hF2 : ContDiffAt ℝ 2 (fun y => (R.smoothed ρ K t j ∘ T) y + 1 * (R.q k y - R.q j (T y))) (R.chart k x)` using `hS2.add (contDiffAt_const.mul hQ2)`.
+
+Establish `hbe : b ⟨j, hj⟩ = fun y => ((R.smoothed ρ K t j ∘ T) y + 1 * (R.q k y - R.q j (T y))) + 4 * ε * (η j ∘ (R.chart k).symm) y`. Use function extensionality and compare the values at `y`. Simplify using `only [hb_def, RegChartData.phReg, hT, Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `levi_add_smul (4 * ε) hF2 hE2 w`.
+
+Establish `e2` using `levi_add_smul 1 hS2 hQ2 w`. Establish `e3` using `levi_comp (φ := R.smoothed ρ K t j) w hTa (hS.of_le h2)`. Establish `e4 : levi (fun y => R.q k y - R.q j (T y)) (R.chart k x) w = 0`. Take `⟨W, hWo, hxW, G, hG, hGeq⟩` from `R.q_th k x x ⟨R.th.mem_U x, hxk⟩`. Take `⟨W', hWo', hxW', G', hG', hGeq'⟩` from `R.q_th j x x ⟨R.th.mem_U x, hxj⟩`.
+
+Establish `hO : IsOpen (W ∩ W' ∩ R.th.U x ∩ (R.chart k).source ∩ (R.chart j).source)` using `(((hWo.inter hWo').inter (R.th.isOpen_U x)).inter (R.chart k).open_source).inter (R.chart j).open_source`. Establish `hxO : x ∈ W ∩ W' ∩ R.th.U x ∩ (R.chart k).source ∩ (R.chart j).source` using `⟨⟨⟨⟨hxW, hxW'⟩, R.th.mem_U x⟩, hxk⟩, hxj⟩`. Establish `hev1 : ∀ᶠ y in 𝓝 (R.chart k x), (R.chart k).symm y ∈ W ∩ W' ∩ R.th.U x ∩ (R.chart k).source ∩ (R.chart j).source` using `((R.chart k).continuousAt_symm hzt).preimage_mem_nhds (by rw [(R.chart k).left_inv hxk]; exact hO.mem_nhds hxO)`. Establish `hev` using `hev1.and ((R.chart k).open_target.mem_nhds hzt)`. Establish `hGa` using `analyticAt_comp_symm_of_holoOn hψ hG hxW hxk`.
+
+Establish `hGa'` using `analyticAt_comp_symm_of_holoOn hψ hG' hxW' hxk`. Establish `hgerm : (fun y => R.q k y - R.q j (T y)) =ᶠ[𝓝 (R.chart k x)] fun y => (((G ∘ (R.chart k).symm) - (G' ∘ (R.chart k).symm)) y).re` using `by filter_upwards [hev] with y hy`. Take `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, hyt⟩` from `hy`. Establish `ek` using `hGeq _ ⟨⟨h1, h3⟩, h4⟩`. Establish `ej` using `hGeq' _ ⟨⟨h2, h3⟩, h5⟩`.
+
+Rewrite `ek` using `[(R.chart k).right_inv hyt]`. Simplify using `only [hT, Function.comp_apply, Pi.sub_apply, Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[levi_congr hgerm w]`. Conclude with `levi_re_analytic (hGa.sub hGa') w`.
+
+Establish `hl` using `hcut.levi_ge j k x ⟨hj, hx⟩ w`. Establish `h4` using `mul_le_mul_of_nonneg_left hl (by linarith : (0 : ℝ) ≤ 4 * ε)`. Establish `h0` using `hSl (fderiv ℂ T (R.chart k x) w)`. Rewrite using `[hbe, e1, e2, e3, e4]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem GlueRegularised.proof : GlueRegularised.Statement := by
   intro X _ _ _ D A R ρ η Cη K t ε hcut ht hε hball hcmp
   refine ⟨fun i y hy => ?_, fun k x hx w => ?_⟩

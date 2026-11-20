@@ -24,22 +24,34 @@ def unipMap (h : HermitianForm F E W) (x₀ y : W) (c : E) : W →ₗ[E] W where
     module
 
 omit [NumberField E] in
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unipMap_apply (h : HermitianForm F E W) (x₀ y : W) (c : E) (x : W) :
     unipMap h x₀ y c x = x + (h.toSesq x₀ x * c - h.toSesq y x) • x₀ + h.toSesq x₀ x • y := rfl
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `(h.isSymm.eq v u).symm`.
+-/
 theorem sesq_swap (h : HermitianForm F E W) (u v : W) :
     h.toSesq u v = conj F E (h.toSesq v u) :=
   (h.isSymm.eq v u).symm
 
 omit [NumberField E] in
 
+/- English proof (translation)
+Rewrite using `[LinearMap.map_smulₛₗ₂]`. Both sides reduce to the same expression.
+-/
 theorem sesq_smul_left (h : HermitianForm F E W) (r : E) (u v : W) :
     h.toSesq (r • u) v = conj F E r * h.toSesq u v := by
   rw [LinearMap.map_smulₛₗ₂]
   rfl
 
+/- English proof (translation)
+Establish `hy' : h.toSesq y x₀ = 0` using `by rw [sesq_swap, hy, map_zero]`. Simplify using `only [unipMap_apply, map_add, map_smul, map_neg, LinearMap.neg_apply, hx₀, hy, hy']`. Establish `key : h.toSesq x₀ x * conj F E c - -h.toSesq y x + (h.toSesq x₀ x * c - (h.toSesq y x + -(h.toSesq x₀ x * h.toSesq y y))) = 0`. Take the linear combination `h.toSesq x₀ x * hc`. Take the linear combination `(norm := module) key • x₀`.
+-/
 theorem unipMap_unipMap (h : HermitianForm F E W) {x₀ y : W} {c : E}
     (hx₀ : h.toSesq x₀ x₀ = 0) (hy : h.toSesq x₀ y = 0)
     (hc : c + conj F E c = -h.toSesq y y) (x : W) :
@@ -51,6 +63,9 @@ theorem unipMap_unipMap (h : HermitianForm F E W) {x₀ y : W} {c : E}
     linear_combination h.toSesq x₀ x * hc
   linear_combination (norm := module) key • x₀
 
+/- English proof (translation)
+Establish `hy' : h.toSesq y x₀ = 0` using `by rw [sesq_swap, hy, map_zero]`. Simplify using `only [unipMap_apply, map_add, map_smul, smul_eq_mul, LinearMap.add_apply, sesq_smul_left, hx₀, hy, hy', map_sub, map_mul, mul_zero, add_zero]`. Rewrite using `[sesq_swap h x x₀, sesq_swap h x y]`. Take the linear combination `conj F E (h.toSesq x₀ x) * h.toSesq x₀ x' * hc`.
+-/
 theorem sesq_unipMap (h : HermitianForm F E W) {x₀ y : W} {c : E}
     (hx₀ : h.toSesq x₀ x₀ = 0) (hy : h.toSesq x₀ y = 0)
     (hc : c + conj F E c = -h.toSesq y y) (x x' : W) :
@@ -73,16 +88,25 @@ def unipElem (h : HermitianForm F E W) {x₀ y : W} {c : E}
       rwa [neg_neg, conj_conj] at e),
     fun x x' => sesq_unipMap h hx₀ hy hc x x'⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unipElem_smul (h : HermitianForm F E W) {x₀ y : W} {c : E}
     (hx₀ : h.toSesq x₀ x₀ = 0) (hy : h.toSesq x₀ y = 0)
     (hc : c + conj F E c = -h.toSesq y y) (x : W) :
     unipElem h hx₀ hy hc • x = unipMap h x₀ y c x := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem unipElem_inv_smul (h : HermitianForm F E W) {x₀ y : W} {c : E}
     (hx₀ : h.toSesq x₀ x₀ = 0) (hy : h.toSesq x₀ y = 0)
     (hc : c + conj F E c = -h.toSesq y y) (x : W) :
     (unipElem h hx₀ hy hc)⁻¹ • x = unipMap h x₀ (-y) (conj F E c) x := rfl
 
+/- English proof (translation)
+Establish `smul_mem : ∀ {α : E} {v : W}, α ∈ integralClosure ℤ E → v ∈ La → α • v ∈ La` using `fun {α} {v} hα hv => hsm ⟨α, hα⟩ v hv`. Rewrite using `[unipMap_apply]`. Use `add_mem (add_mem hx (smul_mem ?_ hx₀)) (smul_mem (hint x₀ hx₀ x hx) hy)` and prove the remaining obligations. Conclude with `sub_mem (mul_mem (hint x₀ hx₀ x hx) hc) (hint y hy x hx)`.
+-/
 theorem unipMap_mem (h : HermitianForm F E W) {La : AddSubgroup W}
     (hsm : ∀ (a : 𝓞 E) (x : W), x ∈ La → (a : E) • x ∈ La) (hint : IsIntegralOn h La)
     {x₀ y : W} {c : E} (hx₀ : x₀ ∈ La) (hy : y ∈ La) (hc : c ∈ integralClosure ℤ E)
@@ -95,6 +119,9 @@ theorem unipMap_mem (h : HermitianForm F E W) {La : AddSubgroup W}
 
 omit [NumberField E] in
 
+/- English proof (translation)
+The claim follows from `(mem_integralClosure_iff ℤ E).2 (((mem_integralClosure_iff ℤ E).1 hc).map (conj F E).toAlgHom.toRingHom.toIntAlgHom)`.
+-/
 theorem conj_mem_integralClosure {c : E} (hc : c ∈ integralClosure ℤ E) :
     conj F E c ∈ integralClosure ℤ E :=
   (mem_integralClosure_iff ℤ E).2
@@ -104,6 +131,21 @@ end RationalUnipotent
 
 open RationalUnipotent in
 
+/- English proof (translation)
+Introduce `D La x₀ w₀ hD hx₀ hp`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce and unpack `y c hyW ⟨z₁, hz₁, rfl⟩ ⟨a, rfl⟩ hc`. Simplify using `only [Nat.cast_one, one_mul, one_smul] at hyW hc ⊢`. Take `⟨hxx, hww, hxw⟩` from `hp`.
+
+Establish `hyx : h.toSesq x₀ z₁ = 0` using `(mem_hypComplement.1 hyW).1`. Establish `hyw : h.toSesq w₀ z₁ = 0` using `(mem_hypComplement.1 hyW).2`. Establish `hzx : h.toSesq z₁ x₀ = 0` using `by rw [sesq_swap, hyx, map_zero]`. Establish `hzw : h.toSesq z₁ w₀ = 0` using `by rw [sesq_swap, hyw, map_zero]`. Establish `haI : (a : E) ∈ integralClosure ℤ E` using `(mem_integralClosure_iff ℤ E).2 (RingOfIntegers.isIntegral_coe a)`.
+
+Use `set γ := unipElem h hxx hyx hc with hγ`. Use `⟨γ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[latticeStab, MulAction.mem_stabilizer_iff]`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hv`. Take `⟨u, hu, rfl⟩` from `(AddSubgroup.mem_smul_pointwise_iff_exists v γ La).1 hv`. Rewrite using `[hγ, unipElem_smul]`. Conclude with `unipMap_mem h hD.isLattice.smul_mem hD.integral hx₀ hz₁ haI hu`. Introduce `hv`.
+
+Use `AddSubgroup.mem_pointwise_smul_iff_inv_smul_mem.2 ?_` and prove the remaining obligations. Rewrite using `[hγ, unipElem_inv_smul]`. Conclude with `unipMap_mem h hD.isLattice.smul_mem hD.integral hx₀ (neg_mem hz₁) (conj_mem_integralClosure haI) hv`. Rewrite using `[hγ, unipElem_smul, unipMap_apply, hxx, hzx]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hγ, unipElem_smul, unipMap_apply, hxw, hzw]`. Simplify using `only [one_mul, sub_zero, one_smul]`. Normalize the expressions using the abelian group laws. Introduce `z hz`. Rewrite using `[hγ, unipElem_smul, unipMap_apply, (mem_hypComplement.1 hz).1]`.
+
+Simplify using `only [zero_mul, zero_sub, zero_smul, add_zero, neg_smul]`. Normalize the expressions using the abelian group laws.
+-/
 theorem RationalUnipotent.proof (h : HermitianForm F E W) : RationalUnipotent.Statement h := by
   intro D La x₀ w₀ hD hx₀ hp
   refine ⟨1, one_pos, ?_⟩

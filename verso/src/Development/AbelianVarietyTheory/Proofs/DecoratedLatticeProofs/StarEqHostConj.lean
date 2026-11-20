@@ -14,6 +14,9 @@ noncomputable section
 
 namespace GlobalTheory.RankOneLine
 
+/- English proof (translation)
+Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+-/
 theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
   letI := D.host.isCMField_hostE
@@ -23,8 +26,14 @@ theorem star_eq_hostConj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
 def negLine (D : D7) : HSp D :=
   Formalism.BasicNotions.Examples₂.stdSpace Formalism.BasicNotions.Examples₂.star_isIntegral 1 (fun _ => true) 0 1
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem negLine_rank (D : D7) : (negLine D).rank = 1 := rfl
 
+/- English proof (translation)
+Use `show ∀ i j : Fin 1, (Formalism.BasicNotions.Examples₂.stdSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral 1 (fun _ => true) 0 1).gram i j = -1`. Introduce `i j`. Rewrite using `[Formalism.BasicNotions.Examples₂.stdSpace_gram_apply, Subsingleton.elim i j]`. Simplify using `[Formalism.BasicNotions.Examples₂.sgn]`.
+-/
 theorem negLine_gram (D : D7) : ∀ i j, (negLine D).gram i j = -1 := by
   show ∀ i j : Fin 1, (Formalism.BasicNotions.Examples₂.stdSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral 1
     (fun _ => true) 0 1).gram i j = -1
@@ -32,6 +41,13 @@ theorem negLine_gram (D : D7) : ∀ i j, (negLine D).gram i j = -1 := by
   rw [Formalism.BasicNotions.Examples₂.stdSpace_gram_apply, Subsingleton.elim i j]
   simp [Formalism.BasicNotions.Examples₂.sgn]
 
+/- English proof (translation)
+Take `⟨π, -, hπ, -⟩` from `D.T_norm u`. Establish `hT0 : (((D.mem u).A.T : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`. Establish `hπ0 : ((π : 𝓞 D.host.E) : D.host.E) ≠ 0`. Introduce `h`. Apply `hT0` to reduce the goal to its premises.
+
+Rewrite using `[← hπ, h, zero_mul]`. Establish `hc0 : D.host.conj (π : D.host.E) ≠ 0`. Introduce `h`. Apply `hT0` to reduce the goal to its premises. Rewrite using `[← hπ, h, mul_zero]`.
+
+Use `⟨negLine D, ((π : 𝓞 D.host.E) : D.host.E)⁻¹, inv_ne_zero hπ0, rfl, ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[X.zu_norm]`. Conclude with `neg_ne_zero.2 hT0`. Rewrite using `[negLine_gram, X.zu_norm, star_inv₀, star_eq_hostConj, ← hπ]`. Apply the tactic sequence `field_simp <;> ring`.
+-/
 theorem exists_line (D : D7) (X : HidaSetting D) (u : D.what₂.Word) :
     ∃ (L : HSp D) (s : D.host.E), s ≠ 0 ∧ L.rank = 1 ∧ (VS D).hT (X.zu u) (X.zu u) ≠ 0 ∧
       ∀ i j, L.gram i j = star s * s * (VS D).hT (X.zu u) (X.zu u) := by

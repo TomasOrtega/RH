@@ -11,6 +11,13 @@ open GlobalTheory.SymBridge GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalThe
 noncomputable section
 namespace GlobalTheory.Fam.PenLoc
 
+/- English proof (translation)
+Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat n j hj hj2`. Establish `hstd` using `hat.pinX.std`. Establish `row : ∀ t, RowCh (pk W) (lvP W) u a.g t` using `fun t => ⟨fun _ _ => 0, fun _ _ _ => 0, fun j ρ h => (GlobalTheory.Unf.Inhab.nonempty_stepBF hstd _ _).some, fun j ρ h => (GlobalTheory.Unf.Inhab.nonempty_stepFB hstd _ _).some, fun _ => 0, fun _ _ => 0⟩`. Establish `col : ∀ t : W.P.T, ColCh (D` using `I.rec7 l Z) u ((I.rec7 l Z).chTw u (W.P.I.tup t)) := fun t => { kom := fun _ => 1, Ch := fun _ => Unit, dd := fun _ _ _ => 0, e := fun _ _ => 0, eT := fun _ _ _ => 0, Ram := fun _ => Set.univ, S := fun _ => id, rd := fun _ _ _ _ _ => 0, cV := fun _ => 1, cK := fun _ => 1, cP := 1 …`. Establish `hs : (a.G n).s + 1 + 1 = B.R.m` using `(a.G n).hs`.
+
+Take `rfl : j = (a.G n).s` from `by omega`. Take `⟨c, hc, hmatch⟩` from `GlobalTheory.T.true_geometry_row_family_value W hW u a ha hat row col n hj`. Use `⟨c, hc, fun t J hJ α γ => ⟨penXi a n, penXi_isLocFac W hW u a ha hat row col n, fun P hP z => ?_⟩⟩` and prove the remaining obligations. Establish `hPv : P.1 ∈ (B.primes X).vGs` using `hP ▸ (hW.lev.2.1 _).1 (a.pl n).2`. Establish `hh : ∀ b, (I.idx (W.P.I.tup t)).h (a.G n).s b P = 1`.
+
+Rewrite using `[(hW.tr.tw (W.P.I.tup t)).2]`. Conclude with `fun b => GlobalTheory.SeeSaw.StdMatch.twSt_h _ _ _ _ _ _ b P hPv`. Rewrite using `[← hmatch t J hJ α γ P hP z]`. Unfold `GlobalTheory.QTw.locXi`. Rewrite using `[dif_neg (by omega), dif_pos (by omega), hh]`.
+-/
 theorem pen_locFac : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ (n : Fin a.n) (j : ℕ) (hj : j + 1 ≤ B.R.m), j + 2 = B.R.m → ∃ c : ℂ, c ≠ 0 ∧ ∀ t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) (γ : J.Ch (j + 1)), ∃ Ξ : Matrix (Fin ((I.rec7 l Z).sp.X (j + 1)).rank) (Fin ((I.rec7 l Z).sp.X j).rank) (I.rec7 l Z).host.E → ℂ, GlobalTheory.LocMod.IsLocFac (I.rec7 l Z) (pk W).ψ _ _ (a.pl n).1 ((a.G n).cg j) Ξ ∧ ∀ (P : GlobalTheory.QTw.BadPr I (W.P.I.tup t)), P.1 = (a.pl n).1 → ∀ z, B.embLL (GlobalTheory.QTw.locXi J.A j (J.ι j α) (J.ι (j + 1) γ) P (GlobalTheory.QTw.homOf I l Z j hj z)) = c * Ξ z := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat n j hj hj2
   have hstd := hat.pinX.std

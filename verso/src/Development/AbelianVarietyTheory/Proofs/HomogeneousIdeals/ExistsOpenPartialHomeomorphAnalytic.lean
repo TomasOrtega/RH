@@ -7,6 +7,11 @@ open Topology Filter Set MvPolynomial
 
 variable {𝕜 : Type*} [NontriviallyNormedField 𝕜]
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`. Simplify using `only [aevalTower_C]`. Conclude with `AnalyticAt.aeval_mvPolynomial (A := 𝕜) (f := fun w : (σ → 𝕜) × (ι → 𝕜) => w.1) (fun i => ((ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : σ => 𝕜) i).comp (ContinuousLinearMap.fst 𝕜 (σ → 𝕜) (ι → 𝕜))).analyticAt w) a`. Consider the case `add P Q hP hQ => simp only [map_add]`.
+
+Conclude with `hP.add hQ`. Consider the case `mul_X P i hP`. Simplify using `only [map_mul, aevalTower_X]`. Conclude with `hP.mul (((ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : ι => 𝕜) i).comp (ContinuousLinearMap.snd 𝕜 (σ → 𝕜) (ι → 𝕜))).analyticAt w)`.
+-/
 theorem analyticAt_aevalTower {σ ι : Type*} [Fintype σ] [Fintype ι]
     (q : MvPolynomial ι (MvPolynomial σ 𝕜)) (w : (σ → 𝕜) × (ι → 𝕜)) :
     AnalyticAt 𝕜 (fun w : (σ → 𝕜) × (ι → 𝕜) =>
@@ -23,6 +28,17 @@ theorem analyticAt_aevalTower {σ ι : Type*} [Fintype σ] [Fintype ι]
     exact hP.mul (((ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : ι => 𝕜) i).comp
         (ContinuousLinearMap.snd 𝕜 (σ → 𝕜) (ι → 𝕜))).analyticAt w)
 
+/- English proof (translation)
+Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using hasDerivAt_const (0 : 𝕜) (φ a)`. Consider the case `add P Q hP hQ`. Simplify using `only [map_add, add_mul, Finset.sum_add_distrib]`. Conclude with `hP.add hQ`.
+
+Consider the case `mul_X P i hP`. Establish `hX : HasDerivAt (fun t : 𝕜 => y i + t * v i) (v i) 0`. Simplify using `using ((hasDerivAt_id (0 : 𝕜)).mul_const (v i)).const_add (y i)`. Establish `h` using `hP.mul hX`. Simplify using `only [map_mul, aevalTower_X, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+
+Use `HasDerivAt.congr_deriv h ?_` and prove the remaining obligations. Establish `h1 : ∀ j, (aevalTower φ y : MvPolynomial ι R →ₐ[𝕜] 𝕜) (pderiv j (P * X i)) * v j = (aevalTower φ y : MvPolynomial ι R →ₐ[𝕜] 𝕜) (pderiv j P) * v j * y i + if i = j then (aevalTower φ y : MvPolynomial ι R →ₐ[𝕜] 𝕜) P * v j else 0`. Introduce `j`. Rewrite using `[pderiv_mul, pderiv_X]`. Distinguish the cases in `hij : i = j`.
+
+Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hij, Pi.single_eq_of_ne hij]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `only [h1, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, ← Finset.sum_mul]`. Simplify using the standard rewrite rules.
+-/
 theorem hasDerivAt_aevalTower_line {R ι : Type*} [CommRing R] [Algebra 𝕜 R] [Fintype ι]
     (φ : R →ₐ[𝕜] 𝕜) (q : MvPolynomial ι R) (y v : ι → 𝕜) :
     HasDerivAt (fun t : 𝕜 => (aevalTower φ (y + t • v) : MvPolynomial ι R →ₐ[𝕜] 𝕜) q)
@@ -53,6 +69,13 @@ theorem hasDerivAt_aevalTower_line {R ι : Type*} [CommRing R] [Algebra 𝕜 R] 
 
 variable [CompleteSpace 𝕜] {A : Type*} [CommRing A] [Algebra 𝕜 A] {d : ℕ}
 
+/- English proof (translation)
+Use `haveI : CompleteSpace E := FiniteDimensional.complete 𝕜 E`. Use `haveI : CompleteSpace F := FiniteDimensional.complete 𝕜 F`. Establish `hsurj : Function.Surjective (fderiv 𝕜 Ψ x)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim (f := (fderiv 𝕜 Ψ x : E →ₗ[𝕜] F))).mp hinj`. Set `Le` to `ContinuousLinearEquiv.ofBijective (fderiv 𝕜 Ψ x) (LinearMap.ker_eq_bot.mpr hinj) (LinearMap.range_eq_top.mpr hsurj)`. Establish `hLe : (Le : E →L[𝕜] F) = fderiv 𝕜 Ψ x` using `ContinuousLinearEquiv.coe_ofBijective _ _ _`.
+
+Establish `hφ : HasStrictFDerivAt Ψ (Le : E →L[𝕜] F) x` using `by rw [hLe]; exact hΨ.hasStrictFDerivAt`. Set `Φ` to `hφ.toOpenPartialHomeomorph Ψ`. Establish `hpS : x ∈ Φ.source` using `hφ.mem_toOpenPartialHomeomorph_source`. Establish `hsymm : AnalyticAt 𝕜 Φ.symm (Φ x)` using `Φ.analyticAt_symm' (i := Le) hpS hΨ hLe.symm`. Take `⟨s, hs, hsan⟩` from `hsymm.exists_mem_nhds_analyticOnNhd`.
+
+Take `⟨T, hTs, hTo, hTp⟩` from `mem_nhds_iff.mp hs`. Use `⟨(Φ.symm.restrOpen T hTo).symm, rfl, ⟨hpS, hTp⟩, fun z hz => hsan z (hTs hz.2)⟩` and prove the remaining obligations.
+-/
 theorem exists_openPartialHomeomorph_analytic {E F : Type*} [NormedAddCommGroup E]
     [NormedSpace 𝕜 E] [NormedAddCommGroup F] [NormedSpace 𝕜 F] [FiniteDimensional 𝕜 E]
     [FiniteDimensional 𝕜 F] (hdim : Module.finrank 𝕜 E = Module.finrank 𝕜 F) {Ψ : E → F} {x : E}
@@ -76,6 +99,57 @@ theorem exists_openPartialHomeomorph_analytic {E F : Type*} [NormedAddCommGroup 
   obtain ⟨T, hTs, hTo, hTp⟩ := mem_nhds_iff.mp hs
   refine ⟨(Φ.symm.restrOpen T hTo).symm, rfl, ⟨hpS, hTp⟩, fun z hz => hsan z (hTs hz.2)⟩
 
+/- English proof (translation)
+Use `letI : Algebra (MvPolynomial (Fin d) 𝕜) A := g.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) 𝕜) A := hg`. Use `haveI : IsScalarTower 𝕜 (MvPolynomial (Fin d) 𝕜) A := IsScalarTower.of_algebraMap_eq fun x => (g.commutes x).symm`. Take `⟨ι, σ, _, _, P, hP⟩` from `(Algebra.Etale.iff_isStandardSmoothOfRelativeDimension_zero.1 ‹Algebra.Etale (MvPolynomial (Fin d) 𝕜) A›).out`. Use `letI := Fintype.ofFinite ι`.
+
+Use `letI := Fintype.ofFinite σ`. Establish `hcard : Fintype.card σ = Fintype.card ι`. Use `P.card_relations_le_card_vars_of_isFinite` as an intermediate fact. Simplify using `only [Algebra.Presentation.dimension, Nat.card_eq_fintype_card] at this hP`. Use linear arithmetic over natural numbers and integers.
+
+Establish `hbij : Function.Bijective P.map` using `(Fintype.bijective_iff_injective_and_card _).2 ⟨P.map_inj, hcard⟩`. Set `π : MvPolynomial ι (MvPolynomial (Fin d) 𝕜) →ₐ[𝕜] A` to `(aeval P.val).restrictScalars 𝕜`. Establish `hπ : Function.Surjective π` using `P.aeval_val_surjective`. Set `ev : (Fin d → 𝕜) × (ι → 𝕜) → (MvPolynomial ι (MvPolynomial (Fin d) 𝕜) →ₐ[𝕜] 𝕜)` to `fun w => aevalTower (aeval w.1) w.2`. Set `j : (A →ₐ[𝕜] 𝕜) → (Fin d → 𝕜) × (ι → 𝕜)` to `fun q => (coords g q, fun i => q (P.val i))`.
+
+Establish `hjc : Continuous j` using `(continuous_coords g).prodMk (continuous_pi fun _ => continuous_eval _)`. Establish `hevj : ∀ q, ev (j q) = comap π q`. Introduce `q`. Use `MvPolynomial.algHom_ext' ?_ ?_` and prove the remaining obligations. Use extensionality with `i`.
+
+Simplify using `[ev, j, π, RingHom.algebraMap_toAlgebra]`. Introduce `i`. Simplify using `[ev, j, π]`. Establish `hker : ∀ a, π a = 0 ↔ a ∈ Ideal.span (range P.relation)`. Introduce `a`.
+
+Rewrite using `[P.span_range_relation_eq_ker]`. Rewrite using `[P.ker_eq_ker_aeval_val]`. Both sides reduce to the same expression. Establish `hex : ∀ w, (∀ r, ev w (P.relation r) = 0) → ∃ q, j q = w ∧ comap π q = ev w`. Introduce `w hw`.
+
+Take `⟨q, hq⟩` from `exists_comap_eq_of_surjective π hπ (ev w) fun a ha => by`. Establish `: Ideal.span (range P.relation) ≤ RingHom.ker (ev w)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨r, rfl⟩`. Conclude with `hw r`.
+
+Conclude with `this ((hker a).1 ha)`. Use `⟨q, ?_, hq⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify `DFunLike.congr_fun hq (C (X i))` using `[ev, π, j, RingHom.algebraMap_toAlgebra]`. Simplify `DFunLike.congr_fun hq (X i)` using `[ev, π, j]`.
+
+Establish `hjinj : Function.Injective j`. Introduce `q q' h`. Use extensionality with `a`. Take `⟨b, rfl⟩` from `hπ a`. Use `hevj q` as an intermediate fact.
+
+Rewrite `this` using `[h, hevj]`. Conclude with `(DFunLike.congr_fun this b).symm`. Set `Ψ : (Fin d → 𝕜) × (ι → 𝕜) → (Fin d → 𝕜) × (σ → 𝕜)` to `fun w => (w.1, fun r => ev w (P.relation r))`. Establish `hΨj : ∀ q, Ψ (j q) = (coords g q, 0)`. Introduce `q`.
+
+Use extensionality with `r`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `ev (j q) (P.relation r) = 0`. Rewrite using `[hevj, comap_apply, (hker _).2 (Ideal.subset_span ⟨r, rfl⟩), map_zero]`. Establish `hΨan : AnalyticAt 𝕜 Ψ (j p)` using `analyticAt_fst.prod (analyticAt_pi_iff.2 fun r => analyticAt_aevalTower _ _)`.
+
+Establish `hinj : Function.Injective (fderiv 𝕜 Ψ (j p))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨u, v⟩ huv`. Establish `hline : HasDerivAt (fun t : 𝕜 => Ψ (j p + t • (u, v))) 0 0`. Establish `h1 : HasDerivAt (fun t : 𝕜 => j p + t • (u, v)) (u, v) 0`.
+
+Simplify using `using ((hasDerivAt_id (0 : 𝕜)).smul_const (u, v)).const_add (j p)`. Establish `h2 : HasFDerivAt Ψ (fderiv 𝕜 Ψ (j p)) (j p + (0 : 𝕜) • (u, v))`. Simplify using `using hΨan.differentiableAt.hasFDerivAt`. Use `h2.comp_hasDerivAt (0 : 𝕜) h1` as an intermediate fact. Rewrite `this` using `[huv]`. Then use the resulting hypothesis.
+
+Establish `hu : u = 0`. Establish `h1 : HasDerivAt (fun t : 𝕜 => (j p).1 + t • u) u 0`. Simplify using `using ((hasDerivAt_id (0 : 𝕜)).smul_const u).const_add (j p).1`. Establish `h2` using `(ContinuousLinearMap.fst 𝕜 (Fin d → 𝕜) (σ → 𝕜)).hasFDerivAt.comp_hasDerivAt (0 : 𝕜) hline`. Conclude with `h1.unique h2`.
+
+Substitute `hu` using the available equality. Establish `hv : ∀ r, ∑ i, ev (j p) (pderiv i (P.relation r)) * v i = 0`. Introduce `r`. Establish `h1` using `hasDerivAt_aevalTower_line (aeval (j p).1) (P.relation r) (j p).2 v`. Establish `h2` using `(((ContinuousLinearMap.proj (R := 𝕜) (φ := fun _ : σ => 𝕜) r).comp (ContinuousLinearMap.snd 𝕜 (Fin d → 𝕜) (σ → 𝕜))).hasFDerivAt.comp_hasDerivAt (0 : 𝕜) hline)`.
+
+Use `h1.unique ?_` and prove the remaining obligations. Simplify `h2` using `[Function.comp_def, Ψ, ev]`. Establish `hdet : ((ev (j p)).toRingHom.mapMatrix P.jacobiMatrix).det ≠ 0`. Rewrite using `[← RingHom.map_det, hevj]`. Use `(P.jacobian_isUnit.map p).ne_zero` as an intermediate fact.
+
+Rewrite `this` using `[P.jacobian_eq_jacobiMatrix_det, P.algebraMap_apply]`. Conclude with `this`. Establish `hw : (fun s => v (P.map s)) = 0`. Use `Matrix.eq_zero_of_vecMul_eq_zero hdet ?_` and prove the remaining obligations. Use extensionality with `r`.
+
+Rewrite using `[Pi.zero_apply, ← hv r, ← hbij.sum_comp]`. Simplify using `[Matrix.vecMul, dotProduct, P.jacobiMatrix_apply, mul_comm]`. Establish `: v = 0`. Use extensionality with `i`. Take `⟨s, rfl⟩` from `hbij.2 i`.
+
+Conclude with `congrFun hw s`. Rewrite using `[this]`. Both sides reduce to the same expression. Take `⟨Φ, hΦ, hpS, hsymm⟩` from `exists_openPartialHomeomorph_analytic (by simp [Module.finrank_prod, hcard]) hΨan hinj`. Establish `hex' : ∀ z : Fin d → 𝕜, ∃ q : A →ₐ[𝕜] 𝕜, (z, 0) ∈ Φ.target → j q = Φ.symm (z, 0) ∧ comap π q = ev (Φ.symm (z, 0))`.
+
+Introduce `z`. Distinguish the cases in `hz : (z, 0) ∈ Φ.target`. Take `⟨q, hq⟩` from `hex (Φ.symm (z, 0)) fun r => by`. Use `congrFun (congrArg Prod.snd (Φ.right_inv hz)) r` as an intermediate fact. Rewrite `this` using `[hΦ]`. Then use the resulting hypothesis.
+
+Conclude with `⟨q, fun _ => hq⟩`. Conclude with `⟨p, fun h => absurd h hz⟩`. Use `choose s hs using hex'`. Establish `han : ∀ a, AnalyticOnNhd 𝕜 (fun z => s z a) {z | (z, 0) ∈ Φ.target}`. Introduce `a`.
+
+Take `⟨b, rfl⟩` from `hπ a`. Establish `hop : IsOpen {z : Fin d → 𝕜 | (z, 0) ∈ Φ.target}` using `Φ.open_target.preimage (continuous_id.prodMk continuous_const)`. Use `AnalyticOnNhd.congr hop (f := fun z => ev (Φ.symm (z, 0)) b) ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h1 : AnalyticAt 𝕜 (fun z : Fin d → 𝕜 => Φ.symm (z, 0)) z` using `AnalyticAt.comp (f := fun z : Fin d → 𝕜 => (z, (0 : σ → 𝕜))) (hsymm _ hz) (analyticAt_id.prod analyticAt_const)`.
+
+Conclude with `AnalyticAt.comp (f := fun z : Fin d → 𝕜 => Φ.symm (z, 0)) (analyticAt_aevalTower b _) h1`. Introduce `z hz`. Conclude with `(DFunLike.congr_fun (hs z hz).2 b).symm`. Establish `hmap : ∀ q, j q ∈ Φ.source → (coords g q, 0) ∈ Φ.target`. Introduce `q hq`.
+
+Use `Φ.map_source hq` as an intermediate fact. Rewrite `this` using `[hΦ, hΨj]`. Then use the resulting hypothesis. Use `⟨{ toFun := coords g invFun := s source := j ⁻¹' Φ.source target := {z | (z, 0) ∈ Φ.target} map_source' := hmap map_target' := fun z hz => ?_ left_inv' := fun q hq => ?_ right_inv' := fun z hz => ?_ open_source := Φ.open_source.preimage hjc open_target := Φ.open_target.preimage ( …` and prove the remaining obligations. Rewrite using `[mem_preimage, (hs z hz).1]`. Conclude with `Φ.map_target hz`.
+
+Apply `hjinj` to reduce the goal to its premises. Rewrite using `[(hs _ (hmap q hq)).1, ← hΨj, ← hΦ, Φ.left_inv hq]`. Use `Φ.right_inv hz` as an intermediate fact. Rewrite `this` using `[← (hs z hz).1, hΦ, hΨj]`. Conclude with `congrArg Prod.fst this`.
+-/
 theorem exists_chart_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg : g.Etale)
     (p : A →ₐ[𝕜] 𝕜) :
     ∃ e : OpenPartialHomeomorph (A →ₐ[𝕜] 𝕜) (Fin d → 𝕜), p ∈ e.source ∧
@@ -230,6 +304,9 @@ theorem exists_chart_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg
     rw [← (hs z hz).1, hΦ, hΨj] at this
     exact congrArg Prod.fst this
 
+/- English proof (translation)
+Introduce `p` and use `by obtain ⟨e, h1, h2, -⟩ := exists_chart_of_etale g hg p exact ⟨e, h1, h2.symm⟩`.
+-/
 theorem isLocalHomeomorph_coords_of_etale (g : MvPolynomial (Fin d) 𝕜 →ₐ[𝕜] A) (hg : g.Etale) :
     IsLocalHomeomorph (coords g : (A →ₐ[𝕜] 𝕜) → Fin d → 𝕜) := fun p => by
   obtain ⟨e, h1, h2, -⟩ := exists_chart_of_etale g hg p

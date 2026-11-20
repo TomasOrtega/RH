@@ -12,6 +12,9 @@ def sumSat {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {ι : Type}
     (w : HeightOneSpectrum (𝓞 E)) (B : Multiset ℂˣ) : Prop :=
   ∃ B' : ι → Multiset ℂˣ, (∀ i, (P i).HasSat w (B' i)) ∧ B = ∑ i, B' i
 
+/- English proof (translation)
+Use function extensionality and compare the values at `w B`. Conclude with `propext ⟨fun ⟨B', h, e⟩ => by simpa [e] using h (), fun h => ⟨fun _ => B, fun _ => h, by simp⟩⟩`.
+-/
 theorem sumSat_unit {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (P : CG E n) :
     sumSat (m := fun _ : Unit => n) (fun _ => P) = P.HasSat := by
   funext w B

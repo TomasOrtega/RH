@@ -7,6 +7,9 @@ open scoped CategoryTheory.Obj TensorProduct
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Establish `hu : u.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ u.isPrime`. Rewrite using `[RingHom.ker_eq_comap_bot, ← hu]`. Rewrite using `[spMap, Spec.map_base]`. Both sides reduce to the same expression.
+-/
 theorem asIdeal_spMap_field {B k : Type} [CommRing B] [Field k] (φ : B →+* k) (u : Sp k) :
     ((spMap φ).base u).asIdeal = RingHom.ker φ := by
   have hu : u.asIdeal = ⊥ := @Ideal.eq_bot_of_prime _ _ _ u.isPrime
@@ -14,6 +17,19 @@ theorem asIdeal_spMap_field {B k : Type} [CommRing B] [Field k] (φ : B →+* k)
   rw [spMap, Spec.map_base]
   rfl
 
+/- English proof (translation)
+Take `⟨V, hV, hxV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show x.base u ∈ (⊤ : X.Opens) from trivial)`. Establish `hV' : IsAffineOpen V` using `hV`. Establish `hx'V : x'.base u' ∈ V` using `h.mem_open V.isOpen hxV`. Establish `hsub : Set.range x.base ⊆ Set.range hV'.fromSpec`. Rewrite using `[hV'.range_fromSpec]`.
+
+Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Subsingleton.elim v u]` and apply the resulting hypothesis. Establish `hsub' : Set.range x'.base ⊆ Set.range hV'.fromSpec`. Rewrite using `[hV'.range_fromSpec]`. Introduce and unpack `_ ⟨v, rfl⟩`.
+
+Rewrite using `[Subsingleton.elim v u']` and apply the resulting hypothesis. Set `xV` to `IsOpenImmersion.lift hV'.fromSpec x hsub`. Set `x'V` to `IsOpenImmersion.lift hV'.fromSpec x' hsub'`. Establish `hfx : xV ≫ hV'.fromSpec = x` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hfx' : x'V ≫ hV'.fromSpec = x'` using `IsOpenImmersion.lift_fac _ _ _`.
+
+Establish `e1 : spMap (Spec.preimage xV).hom = xV` using `Spec.map_preimage xV`. Establish `e2 : spMap (Spec.preimage x'V).hom = x'V` using `Spec.map_preimage x'V`. Use `⟨Γ(X, V), inferInstance, (Spec.preimage xV).hom, (Spec.preimage x'V).hom, hV'.fromSpec, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← asIdeal_spMap_field _ u, ← asIdeal_spMap_field _ u']`. Use `(PrimeSpectrum.le_iff_specializes ((spMap (Spec.preimage x'V).hom).base u') ((spMap (Spec.preimage xV).hom).base u)).mpr ?_` and prove the remaining obligations.
+
+Rewrite using `[e1, e2]`. Establish `h2 : hV'.fromSpec (x'V u') ⤳ hV'.fromSpec (xV u)`. Rewrite `h` using `[← hfx, ← hfx']`. Simplify `h` using `only [Scheme.Hom.comp_apply]`. Conclude with `(hV'.fromSpec.isOpenEmbedding.isInducing.specializes_iff).mp h2`.
+
+Rewrite using `[e1]`. Conclude with `hfx`. Rewrite using `[e2]`. Conclude with `hfx'`.
+-/
 theorem exists_ringHom_pair_of_specializes {X : Scheme.{0}} {k k' : Type} [Field k] [Field k'] (x : Sp k ⟶ X)
     (x' : Sp k' ⟶ X) (u : Sp k) (u' : Sp k') (h : x'.base u' ⤳ x.base u) :
     ∃ (B : Type) (_ : CommRing B) (g : B →+* k) (g' : B →+* k') (ρ : Sp B ⟶ X),

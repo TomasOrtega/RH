@@ -21,10 +21,30 @@ section Lift
 
 variable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.CommonQuot.map_hw L h hv`.
+-/
 theorem hw_of_comm {a : Mat p q →ₗ[ℂ] Module.End ℂ V} {L : Module.End ℂ V} (h : ∀ Z v, L (a Z v) = a Z (L v))
     {μ : Ix p q → ℚ} {v : V} (hv : v ∈ hwSub a μ) : L v ∈ hwSub a μ :=
   GlobalTheory.CommonQuot.map_hw L h hv
 
+/- English proof (translation)
+Establish `key : ∀ s : Finset ι, ∃ T' ∈ W, T - T' ∈ N ∧ ∀ w ∈ s, T' ∈ hwSub (a w) (μ w)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨T, hT, by simp, by simp⟩`. Consider the case `insert w s hws ih`.
+
+Take `⟨T', hT'W, hTN, hT's⟩` from `ih`. Set `Ws : Submodule ℂ V` to `W ⊓ ⨅ w' ∈ s, hwSub (a w') (μ w')`. Establish `mem : ∀ v, v ∈ Ws ↔ v ∈ W ∧ ∀ w' ∈ s, v ∈ hwSub (a w') (μ w')` using `fun v => by`. Simplify using `only [Ws, Submodule.mem_inf, Submodule.mem_iInf]`. Use `haveI : FiniteDimensional ℂ Ws := Submodule.finiteDimensional_of_le (inf_le_left : Ws ≤ W)`.
+
+Establish `sWs : KStable (a w) Ws` using `fun Z hZ v hv => by`. Rewrite `hv`, the goal using `[mem]`. Use `⟨sW w Z hZ v hv.1, fun w' hw' => hw_of_comm (fun Z' v => ?_) (hv.2 w' hw')⟩` and prove the remaining obligations. Conclude with `hc w w' (fun e => hws (e ▸ hw')) Z Z' v`. Take `⟨C, sC, hNC, hNCW⟩` from `GlobalTheory.BlockReps.exists_compl (hL w) sWs (fun v _ => hw w v) (Ws ⊓ N) inf_le_left (GlobalTheory.BlockReps.stable_inf sWs (sN w))`.
+
+Establish `hCW : C ≤ Ws` using `by rw [← hNCW]; exact le_sup_right`. Establish `hT'' : T' ∈ (Ws ⊓ N) ⊔ C` using `by rw [hNCW, mem]; exact ⟨hT'W, hT's⟩`. Take `⟨n, hn, c, hcC, rfl⟩` from `Submodule.mem_sup.1 hT''`. Establish `hTc : T - c ∈ N`. Use `N.add_mem hTN hn.2` as an intermediate fact.
+
+Rewrite `this` using `[show T - (n + c) + n = T - c by abel]`. Then use the resulting hypothesis. Establish `hz : ∀ v ∈ C, v ∈ N → v = 0` using `fun v h h' => by`. Establish `: v ∈ (Ws ⊓ N) ⊓ C` using `⟨⟨hCW h, h'⟩, h⟩`. Rewrite `this` using `[hNC, Submodule.mem_bot]`. Then use the resulting hypothesis. Use `⟨c, ((mem c).1 (hCW hcC)).1, hTc, fun w' hw' => ?_⟩` and prove the remaining obligations.
+
+Break down `Finset.mem_insert.1 hw' with rfl | hw'` into its components or cases. Rewrite using `[GlobalTheory.CommonQuot.mem_hwSub']`. Use `⟨fun d => hz _ (C.sub_mem (sC _ (GlobalTheory.CommonQuot.isKC_diag' d) c hcC) (C.smul_mem _ hcC)) ?_, fun d e hde => hz _ (sC _ (GlobalTheory.CommonQuot.isKC_pos' hde) c hcC) ?_⟩` and prove the remaining obligations. Use `N.sub_mem (h1 w' d) (N.sub_mem (sN w' _ (GlobalTheory.CommonQuot.isKC_diag' d) _ hTc) (N.smul_mem ((μ w' d : ℚ) : ℂ) hTc))` as an intermediate fact. Rewrite `this` using `[map_sub, smul_sub]`.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Use `N.sub_mem (h2 w' d e hde) (sN w' _ (GlobalTheory.CommonQuot.isKC_pos' hde) _ hTc)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+
+Normalize the expressions using the abelian group laws. Conclude with `((mem c).1 (hCW hcC)).2 w' hw'`. Take `⟨T', h, h', h''⟩` from `key Finset.univ`. Conclude with `⟨T', h, h', fun w => h'' w (Finset.mem_univ w)⟩`.
+-/
 theorem joint_lift {ι : Type} [Fintype ι] [DecidableEq ι] (a : ι → Mat p q →ₗ[ℂ] Module.End ℂ V)
     (hL : ∀ w, IsKLieAct (a w)) (hw : ∀ w v, v ∈ ⨆ μ : Ix p q → ℚ, wtSub (a w) μ)
     (hc : ∀ w w', w ≠ w' → ∀ Z Z' v, a w Z (a w' Z' v) = a w' Z' (a w Z v))
@@ -79,6 +99,11 @@ section Tensor
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
 
+/- English proof (translation)
+Rewrite using `[atPl, PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality.
+
+Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+-/
 theorem atPl_tprod (w : ι) (L : Module.End ℂ V) (f : ι → V) :
     atPl (V := fun _ : ι => V) w L (PiTensorProduct.tprod ℂ f) = PiTensorProduct.tprod ℂ (Function.update f w (L (f w))) := by
   rw [atPl, PiTensorProduct.map_tprod]
@@ -88,11 +113,17 @@ theorem atPl_tprod (w : ι) (L : Module.End ℂ V) (f : ι → V) :
   · subst h; simp
   · simp [Function.update_of_ne h]
 
+/- English proof (translation)
+Use `PiTensorProduct.ext (MultilinearMap.ext fun f => ?_)` and prove the remaining obligations. Simplify using `[atPl_tprod]`.
+-/
 theorem atPl_mul (w : ι) (L L' : Module.End ℂ V) :
     atPl (V := fun _ : ι => V) w (L * L') = atPl (V := fun _ : ι => V) w L * atPl (V := fun _ : ι => V) w L' := by
   refine PiTensorProduct.ext (MultilinearMap.ext fun f => ?_)
   simp [atPl_tprod]
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Simplify using `only [map_smul, atPl_tprod, Function.update_of_ne h, Function.update_of_ne h.symm]`. Rewrite using `[Function.update_comm h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 theorem atPl_comm {w w' : ι} (h : w ≠ w') (L L' : Module.End ℂ V) (T : ⨂[ℂ] _ : ι, V) :
     atPl (V := fun _ : ι => V) w L (atPl (V := fun _ : ι => V) w' L' T) =
       atPl (V := fun _ : ι => V) w' L' (atPl (V := fun _ : ι => V) w L T) := by
@@ -107,9 +138,15 @@ def actAt {p q : ℕ} (a : Mat p q →ₗ[ℂ] Module.End ℂ V) (w : ι) : Mat 
   map_add' Z Z' := by rw [map_add, GlobalTheory.RealLift.Main.atPl_add]
   map_smul' c Z := by rw [map_smul, GlobalTheory.RealLift.Main.atPl_smul]; rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem actAt_apply {p q : ℕ} (a : Mat p q →ₗ[ℂ] Module.End ℂ V) (w : ι) (Z : Mat p q) :
     actAt a w Z = atPl (V := fun _ : ι => V) w (a Z) := rfl
 
+/- English proof (translation)
+Introduce `Y Z hY hZ`. Rewrite using `[actAt_apply, h Y Z hY hZ, actAt_apply, actAt_apply, ← atPl_mul, ← atPl_mul, sub_eq_add_neg, sub_eq_add_neg, GlobalTheory.RealLift.Main.atPl_add, ← neg_one_smul ℂ (a Z * a Y), GlobalTheory.RealLift.Main.atPl_smul, neg_one_smul]`.
+-/
 theorem actAt_lie {p q : ℕ} {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsKLieAct a) (w : ι) : IsKLieAct (actAt a w) := by
   intro Y Z hY hZ
   rw [actAt_apply, h Y Z hY hZ, actAt_apply, actAt_apply, ← atPl_mul, ← atPl_mul, sub_eq_add_neg, sub_eq_add_neg,
@@ -117,15 +154,29 @@ theorem actAt_lie {p q : ℕ} {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : Is
 
 def intersection_update_fsHerm_neg_one (f : ι → V) (w : ι) : V →ₗ[ℂ] ⨂[ℂ] _ : ι, V := (PiTensorProduct.tprod ℂ (s := fun _ : ι => V)).toLinearMap f w
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem position_apply (f : ι → V) (w : ι) (v : V) : intersection_update_fsHerm_neg_one f w v = PiTensorProduct.tprod ℂ (Function.update f w v) := rfl
 
+/- English proof (translation)
+Rewrite using `[position_apply, Function.update_eq_self]`.
+-/
 theorem position_self (f : ι → V) (w : ι) : intersection_update_fsHerm_neg_one f w (f w) = PiTensorProduct.tprod ℂ f := by
   rw [position_apply, Function.update_eq_self]
 
+/- English proof (translation)
+Simplify using `[position_apply, atPl_tprod]`.
+-/
 theorem atPl_tprod_update (f : ι → V) (w : ι) (L : Module.End ℂ V) (v : V) :
     atPl (V := fun _ : ι => V) w L (intersection_update_fsHerm_neg_one f w v) = intersection_update_fsHerm_neg_one f w (L v) := by
   simp [position_apply, atPl_tprod]
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[← position_self f w]`. Conclude with `GlobalTheory.CommonQuot.map_wts (intersection_update_fsHerm_neg_one f w) (fun Z v => (atPl_tprod_update f w (a Z) v).symm) (h _)`.
+
+Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+-/
 theorem actAt_wts {p q : ℕ} {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : ∀ v, v ∈ ⨆ μ : Ix p q → ℚ, wtSub a μ) (w : ι)
     (T : ⨂[ℂ] _ : ι, V) : T ∈ ⨆ μ : Ix p q → ℚ, wtSub (actAt a w) μ := by
   induction T using PiTensorProduct.induction_on with
@@ -135,9 +186,15 @@ theorem actAt_wts {p q : ℕ} {a : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : �
     exact GlobalTheory.CommonQuot.map_wts (intersection_update_fsHerm_neg_one f w) (fun Z v => (atPl_tprod_update f w (a Z) v).symm) (h _)
   | add x y hx hy => exact Submodule.add_mem _ hx hy
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono fun _ ⟨f, hf, e⟩ => ⟨f, fun w => h w (hf w), e⟩`.
+-/
 theorem tensSpan_mono {H H' : ι → Submodule ℂ V} (h : ∀ w, H w ≤ H' w) : tensSpan H ≤ tensSpan H' :=
   Submodule.span_mono fun _ ⟨f, hf, e⟩ => ⟨f, fun w => h w (hf w), e⟩
 
+/- English proof (translation)
+Establish `: tensSpan H ≤ LinearMap.range (PiTensorProduct.map fun w => (H w).subtype)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨PiTensorProduct.tprod ℂ fun w => (⟨f w, hf w⟩ : H w), by rw [PiTensorProduct.map_tprod]; rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le this`.
+-/
 theorem tensSpan_fin (H : ι → Submodule ℂ V) [∀ w, FiniteDimensional ℂ (H w)] : FiniteDimensional ℂ (tensSpan H) := by
   have : tensSpan H ≤ LinearMap.range (PiTensorProduct.map fun w => (H w).subtype) := by
     refine Submodule.span_le.2 ?_
@@ -145,6 +202,11 @@ theorem tensSpan_fin (H : ι → Submodule ℂ V) [∀ w, FiniteDimensional ℂ 
     exact ⟨PiTensorProduct.tprod ℂ fun w => (⟨f w, hf w⟩ : H w), by rw [PiTensorProduct.map_tprod]; rfl⟩
   exact Submodule.finiteDimensional_of_le this
 
+/- English proof (translation)
+Use `(Submodule.span_le.2 ?_ : tensSpan H ≤ (tensSpan H).comap (atPl (V := fun _ : ι => V) w L)) hT` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, atPl_tprod]`. Use `tprod_mem_tensSpan _ _ fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = w`.
+
+Substitute `h` using the available equality. Simplify using `using hL _ (hf i)`. Simplify `hf i` using `[Function.update_of_ne h]`.
+-/
 theorem atPl_tensSpan {H : ι → Submodule ℂ V} (w : ι) {L : Module.End ℂ V} (hL : ∀ v ∈ H w, L v ∈ H w)
     {T : ⨂[ℂ] _ : ι, V} (hT : T ∈ tensSpan H) : atPl (V := fun _ : ι => V) w L T ∈ tensSpan H := by
   refine (Submodule.span_le.2 ?_ : tensSpan H ≤ (tensSpan H).comap (atPl (V := fun _ : ι => V) w L)) hT
@@ -155,6 +217,9 @@ theorem atPl_tensSpan {H : ι → Submodule ℂ V} (w : ι) {L : Module.End ℂ 
   · subst h; simpa using hL _ (hf i)
   · simpa [Function.update_of_ne h] using hf i
 
+/- English proof (translation)
+Use `(Submodule.span_le.2 ?_ : tensSpan H ≤ LinearMap.ker (atPl (V := fun _ : ι => V) w L)) hT` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, atPl_tprod, hL _ (hf w)]`. Conclude with `MultilinearMap.map_update_zero _ _ _`.
+-/
 theorem atPl_tensSpan_zero {H : ι → Submodule ℂ V} (w : ι) {L : Module.End ℂ V} (hL : ∀ v ∈ H w, L v = 0)
     {T : ⨂[ℂ] _ : ι, V} (hT : T ∈ tensSpan H) : atPl (V := fun _ : ι => V) w L T = 0 := by
   refine (Submodule.span_le.2 ?_ : tensSpan H ≤ LinearMap.ker (atPl (V := fun _ : ι => V) w L)) hT
@@ -162,12 +227,30 @@ theorem atPl_tensSpan_zero {H : ι → Submodule ℂ V} (w : ι) {L : Module.End
   simp only [SetLike.mem_coe, LinearMap.mem_ker, atPl_tprod, hL _ (hf w)]
   exact MultilinearMap.map_update_zero _ _ _
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective A.subtype (Submodule.ker_subtype _)`. Use `⟨A.subtype ∘ₗ g, fun v => (g v).2, fun v hv => ?_⟩` and prove the remaining obligations. Use `congrArg (fun h => ((h ⟨v, hv⟩ : A) : V)) hg` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_proj (A : Submodule ℂ V) : ∃ π : Module.End ℂ V, (∀ v, π v ∈ A) ∧ ∀ v ∈ A, π v = v := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective A.subtype (Submodule.ker_subtype _)
   refine ⟨A.subtype ∘ₗ g, fun v => (g v).2, fun v hv => ?_⟩
   have := congrArg (fun h => ((h ⟨v, hv⟩ : A) : V)) hg
   simpa using this
 
+/- English proof (translation)
+Use `choose p hpK hpid using fun w => exists_proj (A w)`. Establish `hfix : ∀ w, atPl (V` using `fun _ : ι => V) w (p w) T = T := by`. Introduce `w`. Establish `h0` using `TensProj.atPl_eq_zero_of_common w (F w) (p w - 1) (fun v hv => by`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, hpid w v (hA w v hv), sub_self]) T (hT w)`.
+
+Establish `h1` using `TensProj.atPl_sub_smul_one w (p w) 1 T`. Simplify using `only [one_smul] at h1`. Rewrite `h1` using `[h0]`. Conclude with `(sub_eq_zero.1 h1.symm)`. Establish `hmap : ∀ s : Finset ι, PiTensorProduct.map (fun w => if w ∈ s then p w else (LinearMap.id : V →ₗ[ℂ] V)) T = T`.
+
+Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [PiTensorProduct.map_id]`. Consider the case `insert a s ha ih`. Establish `e : (fun w => if w ∈ insert a s then p w else (LinearMap.id : V →ₗ[ℂ] V)) = fun w => (Function.update (fun _ => (LinearMap.id : V →ₗ[ℂ] V)) a (p a) w) ∘ₗ (if w ∈ s then p w else LinearMap.id)`.
+
+Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = a`. Substitute `hw` using the available equality. Simplify using `[ha]`. Simplify using `[hw, Function.update_of_ne hw]`.
+
+Rewrite using `[e, PiTensorProduct.map_comp, LinearMap.comp_apply, ih]`. Conclude with `hfix a`. Establish `hT' : PiTensorProduct.map p T = T`. Use `hmap Finset.univ` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[← hT']`. Use `clear hT' hmap hfix hT`. Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Rewrite using `[map_smul, PiTensorProduct.map_tprod]`.
+
+Conclude with `Submodule.smul_mem _ _ (tprod_mem_tensSpan _ _ fun w => hpK w _)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+-/
 theorem mem_tensSpan_of_killed (F : ι → Set (Module.End ℂ V)) (A : ι → Submodule ℂ V)
     (hA : ∀ w v, (∀ L ∈ F w, L v = 0) → v ∈ A w) (T : ⨂[ℂ] _ : ι, V)
     (hT : ∀ w, ∀ L ∈ F w, atPl (V := fun _ : ι => V) w L T = 0) : T ∈ tensSpan A := by
@@ -215,6 +298,11 @@ open MvPolynomial
 
 variable {P Q R S : ℕ}
 
+/- English proof (translation)
+Distinguish the cases in `hne : f = 0`. Simplify using `[hne]`. Take `⟨W, fW, hP, sW⟩` from `((GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 f).1`. Establish `hOT` using `GlobalTheory.BlockReps.ofType_hw GlobalTheory.FockAlg.MinFirst.kLie2 sW hP ⟨hne, hf⟩`. Take `⟨d, hd, hhom⟩` from `(harmonic_homog_of_type P Q R S).2 μ f hne hOT hh`.
+
+Rewrite `hhom` using `[mem_homogeneousSubmodule]`. Rewrite using `[← hd, Nat.floor_natCast, hhom.totalDegree hne]`.
+-/
 theorem deg_le_of_harm {μ : Ix R S → ℚ} {f : Formalism.BasicNotions.TH.Pol P Q R S} (hh : f ∈ harm2 P Q R S)
     (hf : f ∈ hwSub (fockAct2 P Q R S) μ) : f.totalDegree ≤ ⌊degW (cPair P Q) μ⌋₊ := by
   by_cases hne : f = 0
@@ -225,6 +313,25 @@ theorem deg_le_of_harm {μ : Ix R S → ℚ} {f : Formalism.BasicNotions.TH.Pol 
   rw [mem_homogeneousSubmodule] at hhom
   rw [← hd, Nat.floor_natCast, hhom.totalDegree hne]
 
+/- English proof (translation)
+Take `⟨α, hα⟩` from `(MvPolynomial.ne_zero_iff).1 hf.1`. Establish `hmem` using `(GlobalTheory.CommonQuot.mem_hwSub' _ _ _).1 hf.2`. Establish `e2 : ∀ c : Ix R S, (∑ a, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) = (μ c : ℂ)`. Introduce `c`. Establish `h` using `hmem.1 c`.
+
+Rewrite `h` using `[sub_eq_zero]`. Establish `hd : ∀ g : Formalism.BasicNotions.TH.Pol P Q R S, coeff α (fockAct2 P Q R S (Eab c c) g) = (∑ a, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) * coeff α g`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial β z`.
+
+Establish `: monomial β z = z • (monomial β (1 : ℂ))` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_smul, cartan2, coeff_smul, coeff_smul, coeff_smul, coeff_monomial]`. Distinguish the cases in `h : β = α`. Substitute `h` using the available equality. Simplify using `only [if_true, smul_eq_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Consider the case `add p q hp hq => rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]`. Establish `h'` using `hd f`. Rewrite `h'` using `[h, coeff_smul, smul_eq_mul]`.
+
+Conclude with `(mul_right_cancel₀ hα h').symm`. Establish `col : ∀ c : Ix R S, |shiftNu (cPair P Q) μ c| ≤ ∑ a, (α (a, c) : ℚ)`. Introduce `c`. Establish `h` using `e2 c`. Establish `n1 : (0 : ℚ) ≤ ∑ i : Fin P, (α (.inl i, c) : ℚ)` using `Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`.
+
+Establish `n2 : (0 : ℚ) ≤ ∑ j : Fin Q, (α (.inr j, c) : ℚ)` using `Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`. Rewrite using `[Fintype.sum_sum_type]`. Break down `c with k | l` into its components or cases. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `h' : ((∑ i' : Fin P, (α (.inl i', .inl k) : ℚ) - ∑ j' : Fin Q, (α (.inr j', .inl k) : ℚ) + P / 2 - Q / 2 : ℚ) : ℂ) = (μ (.inl k) : ℂ)` using `by push_cast; rw [← h]; ring`.
+
+Establish `h''` using `Rat.cast_injective h'`. Simplify using `only [shiftNu, cPair]`. Conclude with `abs_le.2 ⟨by linarith, by linarith⟩`. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Establish `h' : ((∑ j' : Fin Q, (α (.inr j', .inr l) : ℚ) - ∑ i' : Fin P, (α (.inl i', .inr l) : ℚ) - P / 2 + Q / 2 : ℚ) : ℂ) = (μ (.inr l) : ℂ)` using `by push_cast; rw [← h]; ring`.
+
+Establish `h''` using `Rat.cast_injective h'`. Simplify using `only [shiftNu, cPair]`. Conclude with `abs_le.2 ⟨by linarith, by linarith⟩`. Establish `tot : degW (cPair P Q) μ ≤ (f.totalDegree : ℚ)`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_prod_type_right]`. Use `push_cast`. Both sides reduce to the same expression. Use `_ ≤ _ := by exact_mod_cast le_totalDegree (mem_support_iff.2 hα)`. Conclude with `Nat.floor_le_of_le tot`.
+-/
 theorem le_deg_of_hw {μ : Ix R S → ℚ} {f : Formalism.BasicNotions.TH.Pol P Q R S} (hf : IsHW (fockAct2 P Q R S) μ f) :
     ⌊degW (cPair P Q) μ⌋₊ ≤ f.totalDegree := by
   classical
@@ -278,12 +385,18 @@ theorem le_deg_of_hw {μ : Ix R S → ℚ} {f : Formalism.BasicNotions.TH.Pol P 
       _ ≤ _ := by exact_mod_cast le_totalDegree (mem_support_iff.2 hα)
   exact Nat.floor_le_of_le tot
 
+/- English proof (translation)
+Introduce `Z hZ f hf` and use `by rw [mem_restrictTotalDegree] at hf ⊢ exact (LowStable.mem_nonRaising.1 (LowStable.fockAct2_mem Z hZ) f).trans hf`.
+-/
 theorem stable_restrict (d : ℕ) : KStable (fockAct2 P Q R S) (restrictTotalDegree (Ln P Q R S) ℂ d) := fun Z hZ f hf => by
   rw [mem_restrictTotalDegree] at hf ⊢
   exact (LowStable.mem_nonRaising.1 (LowStable.fockAct2_mem Z hZ) f).trans hf
 
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Introduce `Z hZ T hT` and use `by refine (Submodule.span_le.2 ?_ : degLE ι P Q R S m ≤ (degLE ι P Q R S m).comap (actAt (fockAct2 P Q R S) w Z)) hT rintro _ ⟨f, hf, rfl⟩ simp only [SetLike.mem_coe, Submodule.mem_comap, actAt_apply, atPl_tprod] refine tprod_mem_degLE _ ((Finset.sum_le_sum fun i _ => ?_).trans h …`.
+-/
 theorem stable_degLE (m : ℕ) (w : ι) : KStable (actAt (fockAct2 P Q R S) w) (degLE ι P Q R S m) := fun Z hZ T hT => by
   refine (Submodule.span_le.2 ?_ : degLE ι P Q R S m ≤ (degLE ι P Q R S m).comap (actAt (fockAct2 P Q R S) w Z)) hT
   rintro _ ⟨f, hf, rfl⟩
@@ -295,6 +408,19 @@ theorem stable_degLE (m : ℕ) (w : ι) : KStable (actAt (fockAct2 P Q R S) w) (
 
 variable {Z : Type} [AddCommGroup Z] [Module ℂ Z]
 
+/- English proof (translation)
+Proceed by induction on `T using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Establish `key : ∀ s : Finset ι, ∃ g : ι → Formalism.BasicNotions.TH.Pol P Q R S, (∀ w ∈ s, g w ∈ harm2 P Q R S) ∧ q (PiTensorProduct.tprod ℂ g) = q (PiTensorProduct.tprod ℂ f)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => exact ⟨f, by simp, rfl⟩`. Consider the case `insert w s hws ih`. Take `⟨g, hg, e⟩` from `ih`. Take `⟨h, hh, e'⟩` from `GlobalTheory.HarmLift.lemA P Q R S Z (q ∘ₗ intersection_update_fsHerm_neg_one g w) (fun X hX v => by`. Rewrite using `[LinearMap.comp_apply, ← atPl_tprod_update]`.
+
+Conclude with `h1 w X hX _) (g w)`. Use `⟨Function.update g w h, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hiw : i = w`. Substitute `hiw` using the available equality. Simplify using `using hh`.
+
+Rewrite using `[Function.update_of_ne hiw]`. Conclude with `hg i ((Finset.mem_insert.1 hi).resolve_left hiw)`. Rewrite using `[← e, ← position_self g w, ← position_apply]`. Conclude with `e'`. Take `⟨g, hg, e⟩` from `key Finset.univ`.
+
+Use `choose H fH hH hHh _ sH using fun w => GlobalTheory.HarmLift.lemB P Q R S (g w) (hg w (Finset.mem_univ w))`. Use `⟨tensSpan H, tensSpan_fin H, fun w Y hY T hT => atPl_tensSpan w (sH w Y hY) hT, tensSpan_mono fun w v hv => Submodule.subset_span (hHh w v hv), r • PiTensorProduct.tprod ℂ g, Submodule.smul_mem _ _ (tprod_mem_tensSpan _ _ hH), by rw [map_smul, map_smul, e]⟩` and prove the remaining obligations. Consider the case `add x y hx hy`. Take `⟨W, fW, sW, hW, T, hT, e⟩` from `hx`. Take `⟨W', fW', sW', hW', T', hT', e'⟩` from `hy`.
+
+Conclude with `⟨W ⊔ W', inferInstance, fun w => GlobalTheory.BlockReps.stable_sup (sW w) (sW' w), sup_le hW hW', T + T', Submodule.add_mem_sup hT hT', by rw [map_add, map_add, e, e']⟩`.
+-/
 theorem exists_harm (q : (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) →ₗ[ℂ] Z)
     (h1 : ∀ w (X : Mat P Q), IsPC X → ∀ T, q (actAt (fockAct1 P Q R S) w X T) = 0) (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) :
     ∃ W : Submodule ℂ (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S), FiniteDimensional ℂ W ∧
@@ -327,6 +453,15 @@ theorem exists_harm (q : (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S
     exact ⟨W ⊔ W', inferInstance, fun w => GlobalTheory.BlockReps.stable_sup (sW w) (sW' w), sup_le hW hW', T + T',
       Submodule.add_mem_sup hT hT', by rw [map_add, map_add, e, e']⟩
 
+/- English proof (translation)
+Take `⟨π, hπ, hπ'⟩` from `exists_proj (Submodule.span ℂ (harm2 P Q R S))`. Establish `hs : (Submodule.span ℂ (harm2 P Q R S) : Set _) = harm2 P Q R S` using `(GlobalTheory.FockAlg.harm_graded_stable P Q R S _ (Or.inr (Or.inl rfl))).1`. Establish `h` using `mem_tensSpan_of_killed (fun w => {L | L = π - 1 ∨ (∃ c, L = fockAct2 P Q R S (Eab c c) - ((μ w c : ℚ) : ℂ) • 1) ∨ ∃ c d, posC c d ∧ L = fockAct2 P Q R S (Eab c d)}) (fun w => restrictTotalDegree (Ln P Q R S) ℂ ⌊degW (cPair P Q) (μ w)⌋₊) (fun w v hv => by`. Rewrite using `[mem_restrictTotalDegree]`. Use `deg_le_of_harm ?_ ((GlobalTheory.CommonQuot.mem_hwSub' _ _ _).2 ⟨fun c => ?_, fun c d hcd => ?_⟩)` and prove the remaining obligations.
+
+Use `hv _ (Or.inl rfl)` as an intermediate fact. Rewrite `this` using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Rewrite using `[← hs, ← this]`. Conclude with `hπ v`. Conclude with `hv _ (Or.inr (Or.inl ⟨c, rfl⟩))`.
+
+Conclude with `hv _ (Or.inr (Or.inr ⟨c, d, hcd, rfl⟩))) T (by`. Introduce and unpack `w L (rfl | ⟨c, rfl⟩ | ⟨c, d, hcd, rfl⟩)`. Conclude with `atPl_tensSpan_zero w (fun v hv => by`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, hπ' v hv, sub_self]) hT`. Rewrite using `[TensProj.atPl_sub_smul_one]`.
+
+Conclude with `((GlobalTheory.CommonQuot.mem_hwSub' _ _ _).1 (hw w)).1 c`. Conclude with `((GlobalTheory.CommonQuot.mem_hwSub' _ _ _).1 (hw w)).2 c d hcd)`. Use `(Submodule.span_le.2 ?_ : tensSpan _ ≤ degLE ι P Q R S _) h` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `tprod_mem_degLE f (Finset.sum_le_sum fun w _ => (mem_restrictTotalDegree _ _ _).1 (hf w))`.
+-/
 theorem mem_degLE_of_hw (μ : ι → Ix R S → ℚ) (T : ⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S)
     (hT : T ∈ tensSpan (fun _ : ι => Submodule.span ℂ (harm2 P Q R S)))
     (hw : ∀ w, T ∈ hwSub (actAt (fockAct2 P Q R S) w) (μ w)) :
@@ -355,6 +490,27 @@ theorem mem_degLE_of_hw (μ : ι → Ix R S → ℚ) (T : ⨂[ℂ] _ : ι, Forma
   rintro _ ⟨f, hf, rfl⟩
   exact tprod_mem_degLE f (Finset.sum_le_sum fun w _ => (mem_restrictTotalDegree _ _ _).1 (hf w))
 
+/- English proof (translation)
+Set `G : Submodule ℂ (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S)` to `degLE ι P Q R S m ⊓ ((degLE ι P Q R S m).map q).comap (A ∘ₗ q)`. Establish `sG : ∀ w, KStable (actAt (fockAct2 P Q R S) w) G`. Introduce and unpack `w Y hY T ⟨hT, T', hT', e⟩`. Conclude with `⟨stable_degLE m w Y hY T hT, _, stable_degLE m w Y hY T' hT', (hA w Y hY T hT T' e.symm).symm⟩`. Establish `base : ∀ f : ι → Formalism.BasicNotions.TH.Pol P Q R S, ∑ w, (f w).totalDegree ≤ m → (∀ w, ∃ μ, IsHW (fockAct2 P Q R S) μ (f w)) → PiTensorProduct.tprod ℂ f ∈ G`.
+
+Introduce `f hf hhw`. Use `choose μ hμ using hhw`. Establish `hT` using `tprod_mem_degLE f hf`. Use `⟨hT, ?_⟩` and prove the remaining obligations. Establish `hj : ∀ w, PiTensorProduct.tprod ℂ f ∈ hwSub (actAt (fockAct2 P Q R S) w) (μ w)` using `fun w => by`.
+
+Rewrite using `[← position_self f w]`. Conclude with `GlobalTheory.CommonQuot.map_hw (intersection_update_fsHerm_neg_one f w) (fun Y v => (atPl_tprod_update f w _ v).symm) (hμ w).2`. Take `⟨T0, e0⟩` from `hq (A (q (PiTensorProduct.tprod ℂ f)))`. Take `⟨W, fW, sW, hW, T1, hT1, e1⟩` from `exists_harm q h1 T0`. Establish `e : A (q (PiTensorProduct.tprod ℂ f)) = q T1` using `by rw [e1, e0]`.
+
+Take `⟨T2, hT2, hd, hhw⟩` from `joint_lift (actAt (fockAct2 P Q R S)) (actAt_lie GlobalTheory.FockAlg.MinFirst.kLie2) (actAt_wts GlobalTheory.FockAlg.MinFirst.wts2) (fun w w' h Y Y' v => atPl_comm h _ _ v) W (LinearMap.ker q) sW h2 μ T1 hT1 (fun w c => by`. Rewrite using `[LinearMap.mem_ker, map_sub, map_smul, ← hA w _ (GlobalTheory.CommonQuot.isKC_diag' c) _ hT T1 e, ← e, ← map_smul, ← map_sub, ← map_smul, ← map_sub, ((GlobalTheory.CommonQuot.mem_hwSub' _ _ _).1 (hj w)).1 c, map_zero, map_zero])`. Use the proof step `(fun w c d hcd => by`. Rewrite using `[LinearMap.mem_ker, ← hA w _ (GlobalTheory.CommonQuot.isKC_pos' hcd) _ hT T1 e, ((GlobalTheory.CommonQuot.mem_hwSub' _ _ _).1 (hj w)).2 c d hcd, map_zero, map_zero])`. Use `⟨T2, degLE_mono ((Finset.sum_le_sum fun w _ => le_deg_of_hw (hμ w)).trans hf) (mem_degLE_of_hw μ T2 (hW hT2) hhw), ?_⟩` and prove the remaining obligations.
+
+Rewrite `hd` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[LinearMap.comp_apply, e, hd]`. Establish `key : ∀ s : Finset ι, ∀ f : ι → Formalism.BasicNotions.TH.Pol P Q R S, ∑ w, (f w).totalDegree ≤ m → (∀ w ∉ s, ∃ μ, IsHW (fockAct2 P Q R S) μ (f w)) → PiTensorProduct.tprod ℂ f ∈ G`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+
+Consider the case `empty => exact fun f hf h => base f hf fun w => h w (by simp)`. Consider the case `insert w s hws ih`. Introduce `f hf h`. Establish `hle` using `GlobalTheory.BlockReps.le_of_hw (act := fockAct2 P Q R S) GlobalTheory.FockAlg.MinFirst.kLie2 (stable_restrict (f w).totalDegree) (fun v _ => GlobalTheory.FockAlg.MinFirst.wts2 v) (S := G.comap (intersection_update_fsHerm_neg_one f w)) (fun Y hY v hv => by`. Rewrite using `[Submodule.mem_comap, ← atPl_tprod_update]`.
+
+Conclude with `sG w Y hY _ hv)`. Use the proof step `(fun μ v hv hhw => by`. Rewrite using `[Submodule.mem_comap, position_apply]`. Use `ih _ ((Finset.sum_le_sum fun i _ => ?_).trans hf) fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hiw : i = w`.
+
+Substitute `hiw` using the available equality. Simplify using `using (mem_restrictTotalDegree _ _ _).1 hv`. Simplify using `[Function.update_of_ne hiw]`. Distinguish the cases in `hiw : i = w`. Substitute `hiw; exact ⟨μ, by simpa using hhw⟩` using the available equality.
+
+Rewrite using `[Function.update_of_ne hiw]; exact h i (by simp [hiw, hi]))`. Rewrite using `[← position_self f w]`. Conclude with `hle ((mem_restrictTotalDegree _ _ _).2 le_rfl)`. Introduce `T hT`. Use `((Submodule.span_le.2 ?_ : degLE ι P Q R S m ≤ G) hT).2` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `key Finset.univ f hf fun w hw => absurd (Finset.mem_univ w) hw`.
+-/
 theorem map_mem_degLE (q : (⨂[ℂ] _ : ι, Formalism.BasicNotions.TH.Pol P Q R S) →ₗ[ℂ] Z) (hq : Function.Surjective q)
     (h1 : ∀ w (X : Mat P Q), IsPC X → ∀ T, q (actAt (fockAct1 P Q R S) w X T) = 0)
     (h2 : ∀ w, KStable (actAt (fockAct2 P Q R S) w) (LinearMap.ker q)) (m : ℕ) (A : Z →ₗ[ℂ] Z)

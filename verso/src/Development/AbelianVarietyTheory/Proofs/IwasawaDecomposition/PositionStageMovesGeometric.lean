@@ -25,6 +25,11 @@ namespace GlobalTheory.HeightCounting.Up
 
 set_option maxHeartbeats 4000000
 
+/- English proof (translation)
+Take `⟨g1, s1, f1, b1, t1, d1, q1, k1, p1⟩` from `h`. Take `⟨g2, s2, f2, b2, t2, d2, q2, k2, p2⟩` from `h'`. Use `⟨?_, ?_, ?_, b1.trans b2, t1.trans t2, d1.trans d2, q1.trans q2, k1.trans k2, p1.trans p2⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4, a5, a6, a7, a8⟩` from `g1`. Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `g2`.
+
+Conclude with `⟨a1.trans e1, a2.trans e2, a3.trans e3, a4.trans e4, a5.trans e5, a6.trans e6, a7.trans e7, a8.trans e8⟩`. Apply the tactic sequence `cases s1; cases s2; constructor <;> (apply HEq.trans <;> assumption)`. Apply the tactic sequence `cases f1; cases f2; constructor <;> (apply HEq.trans <;> assumption)`.
+-/
 theorem kept_trans {D D' D'' : D7} {c : NChoice D} {c' : NChoice D'} {c'' : NChoice D''}
     (h : Kept c c') (h' : Kept c' c'') : Kept c c'' := by
   obtain ⟨g1, s1, f1, b1, t1, d1, q1, k1, p1⟩ := h
@@ -36,6 +41,13 @@ theorem kept_trans {D D' D'' : D7} {c : NChoice D} {c' : NChoice D'} {c'' : NCho
   · cases s1; cases s2; constructor <;> (apply HEq.trans <;> assumption)
   · cases f1; cases f2; constructor <;> (apply HEq.trans <;> assumption)
 
+/- English proof (translation)
+Introduce `hL cDep Γ`. Introduce `K B f T w Z O x N h O' hO' col n`. Take `⟨t', hs, hgeo, hpk, hobj, hrx⟩` from `GlobalTheory.T.rows_pass_to_moved_divisionLatticesHeights K B f T w Z x.Wt O x.what₂ N h O' hO'`. Take `⟨nch', xd', hkept, hnx, -, -, hmv⟩` from `GlobalTheory.T.exists_kept_choice_upper_lattice hL K B f T w Z x.Wt Z.S N h O.nch O.xd`. Take `⟨hn1, hn2⟩` from `hnx rfl`.
+
+Substitute `hO'` using the available equality. Establish `e1 : nch' = (O.tr N h).nch` using `eq_of_heq hn1`. Establish `e2 : xd' = (O.tr N h).xd` using `eq_of_heq hn2`. Substitute `e1 e2` using the available equality. Establish `hlp` using `GlobalTheory.Mem.GridMove.listPin_rowsSame cDep K.s.b K B f T w Z x.Wt Z.S N h O.p0 x.what₂ (O.tr N h).p0 t' hs x.nx.2.1.2.down`.
+
+Take `⟨P, y, l, hls, hW, hk⟩` from `x.nx.2.2.down`. Take `⟨c⟩` from `hmv O.p0 x.what₂ x.n (O.tr N h).p0 t' n hs hgeo ⟨x.nx.1, x.nx.2.1.1⟩`. Take `⟨s⟩` from `GlobalTheory.T.spectralStageData_transfer_lattices_heights K B f T w Z x.Wt O.p0 x.what₂ x.col.toColT N h (O.tr N h).p0 t' col.toColT hpk ⟨x.sx.1⟩`. Take `⟨o⟩` from `GlobalTheory.T.divisionGeometryScalars_transfer_setDivision Γ K B f T w Z x.Wt N h O (O.tr N h) rfl x.what₂ t' hs x.ox`. Conclude with `⟨t', hobj x.obj, hrx ⟨x.rx⟩, ⟨⟨c.1, ⟨c.2, ⟨hlp⟩⟩, ⟨⟨P, y, l, hls, hW, kept_trans hk hkept⟩⟩⟩⟩, ⟨⟨s, PUnit.unit⟩⟩, ⟨o⟩⟩`.
+-/
 theorem movable_prmR_nel : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (cDep : ℝ) (Γ : GeoP), PositionMv (prmR (NEo hL cDep) SExt.none (geoCl Γ)).s := by
   intro hL cDep Γ
   intro K B f T w Z O x N h O' hO' col n

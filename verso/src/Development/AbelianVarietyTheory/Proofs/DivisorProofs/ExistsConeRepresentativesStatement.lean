@@ -11,6 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.ConeSmallCT.exists_isReps | exact GlobalTheory.ConeSmallCT.exists_isReps | (intros; apply GlobalTheory.ConeSmallCT.exists_isReps <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.exists_cone_representatives : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E), ∃ T : Set (UA σ J), GlobalTheory.ConeSmallCT.IsReps T x := by
   first | exact @GlobalTheory.ConeSmallCT.exists_isReps | exact GlobalTheory.ConeSmallCT.exists_isReps | (intros; apply GlobalTheory.ConeSmallCT.exists_isReps <;> assumption)

@@ -28,6 +28,19 @@ namespace GlobalTheory.HeightCounting.SerCarry
 
 variable {D D' : D7} {ι : D.what₂.LL →+* D'.what₂.LL} {e : ↥D'.LL0 ≃+* ↥D.LL0}
 
+/- English proof (translation)
+Take `⟨ρ', hs, hg, hp⟩` from `setup_move h m Z.ρ Z.good Z.pin`. Establish `hrd` using `Forms.rdRel_move h m YS hsup Z.ρ ρ' hs Z.good hg`. Establish `hm : D'.R.m = D.R.m` using `(congrArg Ranks.m h.gal.R).symm`. Set `ν' : D'.ntw.Tw → Fin D'.R.m → Bool → ℂ` to `fun i' j' b => Z.ν (cast h.Tw_eq.symm i') (Fin.cast hm j') b`. Establish `hν : ∀ (i : D.ntw.Tw) (i' : D'.ntw.Tw), HEq i i' → ∀ (j : Fin D.R.m) b, ν' i' (h.cm j) b = Z.ν i j b`.
+
+Introduce `i i' hi j b`. Establish `e1 : cast h.Tw_eq.symm i' = i` using `eq_of_heq ((cast_heq _ _).trans hi.symm)`. Establish `e2 : Fin.cast hm (h.cm j) = j` using `Fin.ext rfl`. Express the relevant statement in the definitionally equal form `Z.ν (cast h.Tw_eq.symm i') (Fin.cast hm (h.cm j)) b = _`. Rewrite using `[e1, e2]`.
+
+Establish `back : ∀ (i' : D'.ntw.Tw) (j' : Fin D'.R.m), ∃ i : D.ntw.Tw, ∃ j : Fin D.R.m, HEq i i' ∧ h.cm j = j'` using `fun i' j' => ⟨cast h.Tw_eq.symm i', Fin.cast hm j', cast_heq _ _, Fin.ext rfl⟩`. Establish `hrdZ : RdRel h (fun i j b => realRd YS X.geo.v₀ Z.good i j b (Z.ν i j b)) (fun i j b => realRd (Forms.tie h m YS hsup) X'.geo.v₀ hg i j b (ν' i j b))`. Introduce `i i' hi j b f`. Use `hrd (Z.ν i j b) i i' hi j b f` as an intermediate fact. Express the relevant statement in the definitionally equal form `HEq (realRd (Forms.tie h m YS hsup) X'.geo.v₀ hg i' (h.cm j) b (ν' i' (h.cm j) b) _) _`.
+
+Rewrite using `[hν i i' hi j b]`. Conclude with `this`. Take `⟨T', hT'⟩` from `TieUp.tie_move h hs Z.good hg _ _ hrdZ Z.tie`. Establish `hv` using `isExtremalVector_of_realSideBaseChange h m Z.vec`. Establish `hsc : ∀ i' j' b, IsScalar (Forms.tie h m YS hsup) X'.geo.v₀ hg i' j' b (ν' i' j' b)`.
+
+Introduce `i' j' b`. Take `⟨i, j, hi, rfl⟩` from `back i' j'`. Rewrite using `[hν i i' hi j b]`. Conclude with `scalar_move h m hs Z.good hg Z.pin hp Z.vec hv hrd i i' hi j b _ (Z.scalar i j b)`. Establish `hhk : ∀ i' j' b, HeckeTie (realRd (Forms.tie h m YS hsup) X'.geo.v₀ hg i' j' b (ν' i' j' b))`.
+
+Introduce `i' j' b`. Take `⟨i, j, hi, rfl⟩` from `back i' j'`. Conclude with `heckeTie_move h hs _ _ hrdZ i i' hi j b (Z.hecke i j b)`. Conclude with `⟨ExportTie.mk ρ' hg hp hv ν' hsc T' hhk (GlobalTheory.UnivCharCopy.isUnivChar_copy h Z.univ), hs, fun i i' hi j b => ⟨hν i i' hi j b, hT' i i' hi j b⟩⟩`.
+-/
 theorem exportTie_move (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {S : NX.RatDat D.ntw}
     (YS : NX.NExpRealS X.R X.cG S)
     (hsup : ∀ i j b (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : D.nexp.Fm i j b), x ∈ D.nexp.Bsup i j b ↔ YS.eF i j b h1 h2 x ∈ NX.Bsup S i j b)
@@ -68,6 +81,11 @@ theorem exportTie_move (h : CopyTw D D' ι e) {X : RealSide D} {X' : RealSide D'
   exact ⟨ExportTie.mk ρ' hg hp hv ν' hsc T' hhk (GlobalTheory.UnivCharCopy.isUnivChar_copy h Z.univ), hs,
     fun i i' hi j b => ⟨hν i i' hi j b, hT' i i' hi j b⟩⟩
 
+/- English proof (translation)
+Take `⟨Z', hs, hr⟩` from `exportTie_move h.cp m YS Z.sup Z.ex`. Take `⟨lam, l1, l2, l3, l4, l5⟩` from `LamCopy.lam_copy h hcf ⟨Z.lam, Z.lam_ok, Z.lam_teich, Z.lam_C, Z.lam_q, Z.lam_tie⟩`. Use `⟨{ ex := Z' bad := (low_copy h.cp).2.1 _ _ hs.bad Z.bad ch := (pq_copy h.cp Pq Pq' hPq).1 _ _ hs.ch Z.ch join := fun i' j' b k Q' ψ' hA' hT' => ?_ sup := sup_move h.cp m YS Z.sup off := (low_copy h.cp).2.2 Z.off lam := lam lam_ok := l1 lam_teich := l2 lam_C := l3 lam_q := l4 lam_ …` and prove the remaining obligations. Take `⟨j, rfl⟩ : ∃ j, h.cp.cm j = j'` from `⟨⟨j', lt_m h.cp j'.2⟩, rfl⟩`. Take `⟨i, Q, ψ, hi, hQ, hψ, hT, e1, e2, e3, e4⟩` from `join_copy h.cp i' j (h.cp.cm j) rfl b k Q' ψ' hT'`.
+
+Take `⟨e5, e6⟩` from `e4 _ _ hs.ek`. Take `⟨hA, -, -, hR⟩` from `hX i i' hi ((j : ℕ) + 1) b k Q Q' hQ ψ ψ' hψ (Nat.le_add_left _ _) j.2 (h.cp.cm j).2 hA'`. Conclude with `hR _ _ e5 _ _ e1 e2 e3 _ _ (e6 _ _ (hr i i' hi j b).2 _ _ (keepsMat_heq h.cp _ _ hp hp' j (h.cp.cm j) rfl)) (Z.join i j b k Q ψ hA hT)`.
+-/
 theorem serAt_move (h : CopyAll D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι) {S : NX.RatDat D.ntw}
     (YS : NX.NExpRealS X.R X.cG S) {Xe : NExpTied D} {Xe' : NExpTied D'} (hX : ExpMove Xe Xe')
     {PV : ∀ i : Fin D.R.m, principalLevelFrame.RowPsi (Vc D i) D.R.nV} {PV' : ∀ i : Fin D'.R.m, principalLevelFrame.RowPsi (Vc D' i) D'.R.nV}
@@ -95,6 +113,9 @@ theorem serAt_move (h : CopyAll D D' ι e) {X : RealSide D} {X' : RealSide D'} (
   exact hR _ _ e5 _ _ e1 e2 e3 _ _ (e6 _ _ (hr i i' hi j b).2 _ _ (keepsMat_heq h.cp _ _ hp hp' j (h.cp.cm j) rfl))
     (Z.join i j b k Q ψ hA hT)
 
+/- English proof (translation)
+Take `rfl : kKs' = m.kKsOf (e` from `e) YS (NX.idxOf D 0) := RingHom.ext fun x => Subtype.ext ((hk' x).trans (m.kKsOf_spec h.cp YS _ x).symm)`. Take `⟨Xe', ht, hX⟩` from `GlobalTheory.HeightCounting.ExpCopy.expTied_copy h hcf s s' Xe`. Take `⟨Z₁⟩` from `GlobalTheory.SerVec.serAt_vec X g₀ X.geo YS _ _ _ _ Z`. Take `⟨Z₂⟩` from `serAt_move h m YS hX hp hp' hcf hPq Z₁`. Conclude with `⟨Forms.tie h.cp m YS Z₁.sup, Xe', pqLaw_move h.cp hX hPq hq, hkLaw_move h.cp m YS hfi hl ((low_copy h.cp).1 hl) hSb hSb' H H' Z₁.sup hs' hc L, fun i x => fiOfEq_heq X' _ x, GlobalTheory.SerVec.serAt_vec X' X'.geo g₁ _ _ _ _ _ Z₂, ht hτ⟩`.
+-/
 theorem series_move (h : CopyAll D D' ι e) {X : RealSide D} {X' : RealSide D'} (m : RealMove X X' ι)
     (g₀ : GlobalTheory.RealGeo.GeoHalf X.core X.R.toRealDat fun _ => 1) (g₁ : GlobalTheory.RealGeo.GeoHalf X'.core X'.R.toRealDat fun _ => 1)
     {kKs hk} (kKs' hk') (YS : NX.NExpRealS X.R X.cG (NX.ratDatR X.R X.cG kKs hk)) (hfi : ∀ i x, HEq ((YS.fi i).e x) x)

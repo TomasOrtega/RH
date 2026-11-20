@@ -26,6 +26,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) {l : ℕ} in
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.WachTie.MatF.φD_smulA (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) (a : _root_.Formalism.BasicNotions.LetA O n)
     (x : W.DD T) : W.φD T (a • x) = W.φA a • W.φD T x := by
   rw [← algebraMap_smul W.EE a x, W.φD_smul, W.φE_ext, algebraMap_smul]
@@ -40,6 +43,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) {l : ℕ} in
+/- English proof (translation)
+Rewrite using `[← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+-/
 theorem _root_.GlobalTheory.WachTie.MatF.γD_smulA (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) (g : W.Gam) (a : _root_.Formalism.BasicNotions.LetA O n) (x : W.DD T) :
     W.γD T g (a • x) = W.γA g a • W.γD T g x := by
   rw [← algebraMap_smul W.EE a x, W.γD_smul, W.γE_ext, algebraMap_smul]
@@ -55,6 +61,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) {l : ℕ} in
 
+/- English proof (translation)
+Establish `h' : ∑ m, c m • b m = ∑ m, d m • b m` using `Subtype.ext (by simpa [Submodule.coe_sum] using h)`. Conclude with `b.equivFun.symm.injective (by rw [b.equivFun_symm_apply, b.equivFun_symm_apply]; exact h')`.
+-/
 theorem _root_.GlobalTheory.WachTie.MatF.coord_unique (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) {r : ℕ}
     (b : Module.Basis (Fin r) (_root_.Formalism.BasicNotions.LetA O n) ↥(W.N T)) (c d : Fin r → _root_.Formalism.BasicNotions.LetA O n)
     (h : ∑ m, c m • (b m : W.DD T) = ∑ m, d m • (b m : W.DD T)) : c = d := by
@@ -70,6 +79,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) {l : ℕ} in
+/- English proof (translation)
+Use `⟨b.equivFun ⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (b.sum_equivFun ⟨x, hx⟩)`. Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h.symm` using `only [Submodule.coe_smul]`.
+-/
 theorem _root_.GlobalTheory.WachTie.MatF.exists_coord (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) {r : ℕ}
     (b : Module.Basis (Fin r) (_root_.Formalism.BasicNotions.LetA O n) ↥(W.N T)) (x : W.DD T) (hx : x ∈ W.N T) :
     ∃ c : Fin r → _root_.Formalism.BasicNotions.LetA O n, x = ∑ m, c m • (b m : W.DD T) := by
@@ -87,6 +99,53 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR} {LL O : Type} [Field LL] [Algebra Qp LL]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
     (W : _root_.Formalism.BasicNotions.LocWach PD LL O v n) {l : ℕ} in
+/- English proof (translation)
+Take `⟨hj, hrange, -, -, -, -, -, u, hu'⟩` from `hF`. Use `set q : _root_.Formalism.BasicNotions.LetA O n := fun _ => W.q₀ with hq`. Use `set e : _root_.Formalism.BasicNotions.LetA O n := fun _ => j R.E with he`. Use `set w : _root_.Formalism.BasicNotions.LetA O n := fun _ => ((u⁻¹ : O⟦X⟧ˣ) : O⟦X⟧) with hw`. Establish `hqe : e = w * q`.
+
+Use function extensionality and compare the values at `i`. Simplify using `only [he, hw, hq, Pi.mul_apply]`. Rewrite using `[← hu', mul_left_comm, Units.inv_mul, mul_one]`. Establish `hpow : ∀ k (x : W.DD T), ((_root_.Formalism.BasicNotions.letφ (n` using `n) W.φ₀ ^ (W.s - 1)) fun _ => W.q₀) ^ k • x = q ^ k • x := by`. Introduce `k x`.
+
+Rewrite using `[hs, Nat.sub_self, pow_zero]`. Both sides reduce to the same expression. Establish `hinv : ∀ y : O⟦X⟧, (∀ δ ∈ W.DelF, W.γ₀ δ y = y) → j (Function.invFun j y) = y` using `fun y hy => Function.invFun_eq ((hrange y).2 hy)`. Establish `hγe : ∀ δ ∈ W.DelF, W.γA δ e = e`. Introduce `δ hδ`.
+
+Use function extensionality and compare the values at `i`. Conclude with `(hrange _).1 ⟨_, rfl⟩ δ hδ`. Establish `hbN : ∀ k, (b k : W.DD T) ∈ W.N T` using `fun k => (b k).2`. Establish `hbΔ : ∀ k, ∀ δ ∈ W.DelF, W.γD T δ (b k) = b k` using `fun k => (hb k).2`. Establish `hlift : ∀ (f : Fin r → ℕ) (k : Fin r) (x : W.DD T), q ^ f k • x ∈ W.N T → e ^ (∑ m, f m) • x ∈ W.N T`.
+
+Introduce `f k x hx`. Establish `h1` using `(W.N T).smul_mem (w ^ (∑ m, f m) * q ^ (∑ m, f m - f k)) hx`. Rewrite `h1` using `[smul_smul, mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)), ← mul_pow, ← hqe]`. Then use the resulting hypothesis. Use `choose nφ hnφ using fun k => W.N_φ T _ (hbN k)`. Establish `hyN : ∀ k, e ^ (∑ m, nφ m) • W.φD T (b k) ∈ W.N T` using `fun k => hlift nφ k _ (by rw [← hpow]; exact hnφ k)`.
+
+Use `set M := ∑ m, nφ m with hM`. Use `choose C hC using fun k => _root_.GlobalTheory.WachTie.MatF.exists_coord W T b _ (hyN k)`. Establish `hCinv : ∀ k m, ∀ δ ∈ W.DelF, W.γA δ (C k m) = C k m`. Introduce `k m δ hδ`. Establish `h` using `congrArg (W.γD T δ) (hC k)`.
+
+Rewrite `h` using `[_root_.GlobalTheory.WachTie.MatF.γD_smulA, map_pow, hγe δ hδ, ← W.φγ_comm, hbΔ k δ hδ, hC k, map_sum]`. Simplify using `only [_root_.GlobalTheory.WachTie.MatF.γD_smulA, hbΔ _ δ hδ] at h`. Conclude with `congrFun (_root_.GlobalTheory.WachTie.MatF.coord_unique W T b _ _ h.symm) m`. Use `choose kk hkk using fun m => W.N_φinv T _ (hbN m)`. Establish `hspan : Submodule.span (_root_.Formalism.BasicNotions.LetA O n) (W.φD T '' W.N T) ≤ Submodule.span (_root_.Formalism.BasicNotions.LetA O n) (Set.range fun t => W.φD T (b t))`.
+
+Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨c, rfl⟩` from `_root_.GlobalTheory.WachTie.MatF.exists_coord W T b y hy`. Rewrite using `[map_sum]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[_root_.GlobalTheory.WachTie.MatF.φD_smulA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)`. Establish `hA : ∀ m, ∃ a : Fin r → _root_.Formalism.BasicNotions.LetA O n, ∑ t, a t • W.φD T (b t) = e ^ (∑ m', kk m') • (b m : W.DD T)`. Introduce `m`. Rewrite using `[← Submodule.mem_span_range_iff_exists_fun]`.
+
+Apply `hspan` to reduce the goal to its premises. Establish `h1` using `(Submodule.span (_root_.Formalism.BasicNotions.LetA O n) (W.φD T '' W.N T)).smul_mem (w ^ (∑ m', kk m') * q ^ (∑ m', kk m' - kk m)) (hkk m)`. Rewrite `h1` using `[hpow]`. Rewrite `h1` using `[smul_smul, mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ m)), ← mul_pow, ← hqe]`. Then use the resulting hypothesis. Use `choose a ha using hA`.
+
+Use `set K := ∑ m', kk m' with hK`. Use `set c := e ^ (M + K) with hc`. Use `set P : Matrix (Fin r) (Fin r) (_root_.Formalism.BasicNotions.LetA O n) := Matrix.of fun m k => C k m with hP`. Use `set A : Matrix (Fin r) (Fin r) (_root_.Formalism.BasicNotions.LetA O n) := Matrix.of fun t m => a m t with hAdef`. Establish `hPA : P * A = c • 1`.
+
+Use `Matrix.ext fun m' m => ?_` and prove the remaining obligations. Establish `h : ∑ m'', (∑ t, a m t * C t m'') • (b m'' : W.DD T) = ∑ m'', (Pi.single m c : Fin r → _root_.Formalism.BasicNotions.LetA O n) m'' • (b m'' : W.DD T)`. Simplify using `only [Pi.single_apply, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hc, pow_add, mul_smul, ← ha m, Finset.smul_sum]`. Repeatedly rewrite using `[smul_comm (e ^ M) (a m _), hC, Finset.smul_sum, smul_smul, Finset.sum_smul]`.
+
+Conclude with `Finset.sum_comm`. Establish `h2` using `congrFun (_root_.GlobalTheory.WachTie.MatF.coord_unique W T b _ _ h) m'`. Simplify using `only [Matrix.mul_apply, hP, hAdef, Matrix.of_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl fun t _ => mul_comm _ _, h2, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+
+Establish `hγP : ∀ δ ∈ W.DelF, P.map (W.γA δ) = P`. Introduce `δ hδ`. Use `Matrix.ext fun m k => ?_` and prove the remaining obligations. Conclude with `hCinv k m δ hδ`. Establish `hγc : ∀ δ ∈ W.DelF, W.γA δ c = c`.
+
+Introduce `δ hδ`. Rewrite using `[hc, map_pow, hγe δ hδ]`. Establish `hdet : P.det * A.det = c ^ r`. Rewrite using `[← Matrix.det_mul, hPA, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Establish `hγdetP : ∀ δ ∈ W.DelF, W.γA δ P.det = P.det`.
+
+Introduce `δ hδ`. Establish `h` using `RingHom.map_det (W.γA δ : _root_.Formalism.BasicNotions.LetA O n →+* _root_.Formalism.BasicNotions.LetA O n) P`. Rewrite `h` using `[show (W.γA δ : _root_.Formalism.BasicNotions.LetA O n →+* _root_.Formalism.BasicNotions.LetA O n).mapMatrix P = P from hγP δ hδ]`. Conclude with `h`. Establish `hγadj : ∀ δ ∈ W.DelF, ∀ x y, W.γA δ (P.adjugate x y) = P.adjugate x y`.
+
+Introduce `δ hδ x y`. Establish `h` using `RingHom.map_adjugate (W.γA δ : _root_.Formalism.BasicNotions.LetA O n →+* _root_.Formalism.BasicNotions.LetA O n) P`. Rewrite `h` using `[show (W.γA δ : _root_.Formalism.BasicNotions.LetA O n →+* _root_.Formalism.BasicNotions.LetA O n).mapMatrix P = P from hγP δ hδ]`. Conclude with `congrFun (congrFun h x) y`. Use `set v := c ^ r * A.det with hv`.
+
+Establish `hγv : ∀ δ ∈ W.DelF, W.γA δ v = v`. Introduce `δ hδ`. Establish `h1 : P.det * W.γA δ A.det = P.det * A.det`. Rewrite using `[hdet, ← hγdetP δ hδ, ← map_mul, hdet, map_pow, hγc δ hδ]`. Rewrite using `[hv, map_mul, map_pow, hγc δ hδ]`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `set Ψf := v • P.adjugate with hΨf`. Establish `hPΨ : P * Ψf = c ^ (r + r) • 1`. Rewrite using `[hΨf, Matrix.mul_smul, Matrix.mul_adjugate, smul_smul, pow_add, hv, ← hdet]`. Use `congr 1`.
+
+Expand and normalize the polynomial expressions, which then agree. Establish `hγΨ : ∀ δ ∈ W.DelF, ∀ x y, W.γA δ (Ψf x y) = Ψf x y`. Introduce `δ hδ x y`. Rewrite using `[hΨf, Matrix.smul_apply, smul_eq_mul, map_mul, hγv δ hδ, hγadj δ hδ]`. Establish `hjP : ∀ i m k, j (Function.invFun j (P m k i)) = P m k i` using `fun i m k => hinv _ fun δ hδ => congrFun (hCinv k m δ hδ) i`.
+
+Establish `hjΨ : ∀ i x y, j (Function.invFun j (Ψf x y i)) = Ψf x y i` using `fun i x y => hinv _ fun δ hδ => congrFun (hγΨ δ hδ x y) i`. Use `⟨M, fun i => Matrix.of fun m k => Function.invFun j (P m k i), fun i => ⟨(M + K) * (r + r), Matrix.of fun x y => Function.invFun j (Ψf x y i), ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Apply `hj` to reduce the goal to its premises. Establish `h` using `congrFun (congrFun (congrFun hPΨ x) y) i`.
+
+Simplify using `only [Matrix.mul_apply, Finset.sum_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, Pi.mul_apply] at h`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, map_sum, map_mul, hjP, hjΨ, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp [hc, he, pow_mul]`. Rewrite using `[hC k]`.
+
+Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hjP i m k).symm`.
+-/
 theorem _root_.GlobalTheory.WachTie.MatF.exists_matrix_frobenius (R : _root_.GlobalTheory.NB.Fr l O) (j : O⟦X⟧ →ₐ[O] O⟦X⟧)
     (jE : (ZMod n → R.EE) →ₐ[O] W.EE) (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) {r : ℕ}
     (b : Module.Basis (Fin r) (_root_.Formalism.BasicNotions.LetA O n) ↥(W.N T)) (hF : _root_.GlobalTheory.WachTie.FrTie W R j)

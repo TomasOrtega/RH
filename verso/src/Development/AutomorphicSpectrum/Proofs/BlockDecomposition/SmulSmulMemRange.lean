@@ -6,6 +6,21 @@ open scoped LaurentPolynomial
 
 namespace GlobalTheory.CompanionTheory.SnakeCov
 
+/- English proof (translation)
+Establish `comm₁ : ∀ t : B ⊗[A] K₁, d.lTensor D (ρ.rTensor K₁ t) = ρ.rTensor K₀ (d.lTensor B t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul b k => simp`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `comm₂ : ∀ t : B ⊗[A] LinearMap.ker d, (LinearMap.ker d).subtype.lTensor D (ρ.rTensor _ t) = ρ.rTensor K₁ ((LinearMap.ker d).subtype.lTensor B t)`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simp`.
+
+Consider the case `tmul b k => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `dker : ∀ t : B ⊗[A] LinearMap.ker d, d.lTensor B ((LinearMap.ker d).subtype.lTensor B t) = 0`. Introduce `t`. Proceed by induction on `t with`.
+
+Consider the case `zero => simp`. Consider the case `tmul b k => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`. Establish `hw' : d.lTensor D (ρ.rTensor K₁ w) = 0`. Rewrite using `[comm₁, ← hw]`.
+
+Simplify using `[h1]`. Take `⟨v', hv'⟩` from `hGood _ hw'`. Take `⟨v, rfl⟩` from `LinearMap.rTensor_surjective (LinearMap.ker d) hρ v'`. Take `⟨u, hu⟩` from `hK₁ (s • w - (LinearMap.ker d).subtype.lTensor B v) (by`. Rewrite using `[map_sub, map_smul, ← comm₂, hv', sub_self])`.
+
+Establish `key : (1 : B) ⊗ₜ[A] (d u - s • z) = 0`. Use `congrArg (d.lTensor B) hu` as an intermediate fact. Rewrite `this` using `[map_sub, map_smul, dker, sub_zero, ← hw, LinearMap.lTensor_tmul]`. Rewrite using `[TensorProduct.tmul_sub, ← this, TensorProduct.tmul_smul, sub_self]`. Establish `h` using `hK₀ _ key`.
+
+Use `⟨s • u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul]`. Rewrite `h` using `[smul_sub, sub_eq_zero]`. Conclude with `h`.
+-/
 theorem smul_smul_mem_range {A B D K₁ K₀ : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [AddCommGroup D] [Module A D] [AddCommGroup K₁] [Module A K₁] [AddCommGroup K₀] [Module A K₀]
     (ρ : B →ₗ[A] D) (hρ : Function.Surjective ρ) (h1 : ρ 1 = 0) (d : K₁ →ₗ[A] K₀) (s : A)
@@ -52,6 +67,11 @@ theorem smul_smul_mem_range {A B D K₁ K₀ : Type*} [CommRing A] [CommRing B] 
   rw [smul_sub, sub_eq_zero] at h
   exact h
 
+/- English proof (translation)
+Take `⟨q, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Establish `: s ^ (2 + q) • z = s ^ q • s • s • z`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[this]`. Conclude with `N.smul_mem _ h`.
+-/
 theorem pow_smul_mem {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M] (N : Submodule A M)
     {p : ℕ} (hp : 2 ≤ p) (s : A) (z : M) (h : s • s • z ∈ N) : s ^ p • z ∈ N := by
   obtain ⟨q, rfl⟩ := Nat.exists_eq_add_of_le hp
@@ -60,6 +80,11 @@ theorem pow_smul_mem {A M : Type*} [CommRing A] [AddCommGroup M] [Module A M] (N
   rw [this]
   exact N.smul_mem _ h
 
+/- English proof (translation)
+Introduce `p _ A _ B _ _ D _ _ r ρ hr hD hρ h1 hK K₁ K₀ _ _ _ _ hp₁ hp₀ d hG z hz k`. Take `⟨w, hw⟩` from `hz`. Establish `hmem : r (k + 1) • r (k + 1) • z ∈ LinearMap.range d` using `smul_smul_mem_range ρ hρ h1 d (r (k + 1)) (fun x hx => by`. Take `⟨v, hv⟩` from `hG D hD x hx (k + 1)`. Conclude with `⟨v, hv⟩)`.
+
+Use the proof step `(hK K₁ hp₁).2`. Use the proof step `(fun a ha => (hK K₀ hp₀).1 a ha (k + 1))`. Use `z w hw.symm`. Rewrite using `[← hr k]`. Conclude with `pow_smul_mem _ (Fact.out : p.Prime).two_le _ _ hmem`.
+-/
 theorem mv_cov : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (D : Type) [CommRing D] [Algebra A D] (r : ℕ → A) (ρ : B →ₗ[A] D), IsRt p r → Pf p D → Function.Surjective ρ → ρ 1 = 0 → (∀ (K : Type) [CommRing K] [Algebra A K], Pf p K → (∀ a : K, ((1 : B) ⊗ₜ[A] a) = 0 → ∀ k, r k • a = 0) ∧ ∀ w : B ⊗[A] K, ρ.rTensor K w = 0 → ∃ a : K, w = (1 : B) ⊗ₜ[A] a) → Cov p r B := by
   intro p _ A _ B _ _ D _ _ r ρ hr hD hρ h1 hK K₁ K₀ _ _ _ _ hp₁ hp₀ d hG z hz k
   obtain ⟨w, hw⟩ := hz

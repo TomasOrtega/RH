@@ -15,6 +15,23 @@ noncomputable section
 
 namespace GlobalTheory.UMin.FinAct
 
+/- English proof (translation)
+Introduce `E _ _ _ H K _ _ _ P`. Use `letI := H.starRing`. Establish `h₂` using `GlobalTheory.thetaPtDetermines_and_endDeterminedOnTorsion.2`. Use `choose cn hcn using GlobalTheory.exists_starNormLE_of_isCMField E (fun a => H.bar_eq a)`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ (𝓞 E)).FG)`.
+
+Use `set g := P.g`. Use `set M := 4 ^ g * g.factorial * (2 * s.sup cn) + 1 with hM`. Establish `hM1 : 1 ≤ M` using `Nat.le_add_left _ _`. Establish `key : ∀ c, c ≤ s.sup cn → 4 ^ g * g.factorial * (2 * c) < M ^ 2` using `fun c hc =>`. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hK : (M : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Set `T` to `{x : baseOver (Sp K) ⟶ P.A // x ^ M = 1}`. Use `haveI : Finite T := GlobalTheory.AbTorsionFinite.finite_torsion K P.A P.isAb M hM1`. Set `F : (𝓞 E → (P.A ⟶ P.A)) → (s → T → Option T)` to `fun act a x => if h : (x.1 ≫ act a) ^ M = 1 then some ⟨_, h⟩ else none`. Use `Set.Finite.of_finite_image (f := F) (Set.toFinite _) ?_` and prove the remaining obligations.
+
+Introduce and unpack `act₁ ⟨ρ₁, h₁⟩ act₂ ⟨ρ₂, h₂'⟩ hF`. Establish `tor : ∀ (ρ : P.OAct (𝓞 E)) (a : 𝓞 E) (x : T), (x.1 ≫ ρ.act a) ^ M = 1` using `fun ρ a x => by`. Use `ρ.hom a` as an intermediate fact. Establish `e` using `map_pow (IsMonHom.monoidHom (ρ.act a) (baseOver (Sp K))) x.1 M`. Rewrite `e` using `[x.2, map_one]`.
+
+Conclude with `e.symm`. Establish `onS : ∀ a ∈ s, ρ₁.act a = ρ₂.act a` using `fun a ha => by`. Use `h₂ g (cn a) M (key _ (Finset.le_sup ha)) K hK P P rfl rfl (Iso.refl _) (ThetaPtDet.isPolIso_refl P) (𝓞 E) ρ₁ ρ₂ a (hcn a) fun y hy => by` as an intermediate fact. Establish `e` using `congrFun (congrFun hF ⟨a, ha⟩) ⟨y, hy⟩`. Simplify using `only [F, h₁, h₂'] at e`.
+
+Rewrite `e` using `[dif_pos (h₁ a ▸ tor ρ₁ a ⟨y, hy⟩), dif_pos (h₂' a ▸ tor ρ₂ a ⟨y, hy⟩)]`. Establish `e'` using `congrArg Subtype.val (Option.some_injective _ e)`. Simplify using `only [Iso.refl_hom, Category.comp_id, Category.id_comp, h₁, h₂']`. Conclude with `e'`. Simplify `this` using `only [Iso.refl_hom, Category.comp_id, Category.id_comp]`.
+
+Establish `add₁ : ∀ a b, ρ₁.act (a + b) = ρ₁.act a * ρ₁.act b` using `ρ₁.map_add`. Establish `add₂ : ∀ a b, ρ₂.act (a + b) = ρ₂.act a * ρ₂.act b` using `ρ₂.map_add`. Set `f₁ : 𝓞 E →+ Additive (P.A ⟶ P.A)` to `AddMonoidHom.mk' (fun a => Additive.ofMul (ρ₁.act a)) fun a b => by rw [add₁]; rfl`. Set `f₂ : 𝓞 E →+ Additive (P.A ⟶ P.A)` to `AddMonoidHom.mk' (fun a => Additive.ofMul (ρ₂.act a)) fun a b => by rw [add₂]; rfl`. Establish `hf : f₁ = f₂` using `AddMonoidHom.eq_of_eqOn_dense (s := (s : Set (𝓞 E))) (by rw [← Submodule.span_int_eq_addSubgroupClosure, hs]; rfl) fun a ha => congrArg Additive.ofMul (onS a ha)`.
+
+Use function extensionality and compare the values at `a`. Rewrite using `[← h₁, ← h₂']`. Conclude with `Additive.ofMul.injective (DFunLike.congr_fun hf a)`.
+-/
 theorem finite_oActs : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     [IsAlgClosed K] [CharZero K] (P : PolAV (Sp K)), letI := H.starRing;
     Set.Finite {act : 𝓞 E → (P.A ⟶ P.A) | ∃ ρ : P.OAct (𝓞 E), ∀ a, ρ.act a = act a} := by

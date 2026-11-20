@@ -14,6 +14,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.Obs
 
+/- English proof (translation)
+Introduce `hF hP hA R _ I hI R₀ _ π hπ hk A₀ _ g hab hsm`. Take `⟨X, i, hpb, hsmX⟩` from `GlobalTheory.T.exists_smooth_lift_abelian_scheme_square_zero hF hP R R₀ I hI π hπ hk A₀ g hab hsm`. Establish `hnil : IsNilpotent (RingHom.ker π)` using `⟨2, by rw [hk]; exact hI⟩`. Establish `h1 : (1 : Over.mk (𝟙 (Sp R₀)) ⟶ A₀).left ≫ A₀.hom = 𝟙 _`. Simplify using `using Over.w (1 : Over.mk (𝟙 (Sp R₀)) ⟶ A₀)`.
+
+Take `⟨e, he, he'⟩` from `GlobalTheory.SecLift.exists_section_lift R R₀ π hπ hnil X A₀ i hpb hsmX _ h1`. Establish `P` using `IsPullback.of_hasPullback X.hom X.hom`. Establish `w : ((fst A₀ A₀).left ≫ i) ≫ X.hom = ((snd A₀ A₀).left ≫ i) ≫ X.hom`. Simplify using `only [Category.assoc, hpb.w]`. Rewrite using `[← Category.assoc, ← Category.assoc, Over.w (fst A₀ A₀), Over.w (snd A₀ A₀)]`.
+
+Set `l : (A₀ ⊗ A₀).left ⟶ (X ⊗ X).left` to `P.lift _ _ w`. Establish `l1 : l ≫ (fst X X).left = (fst A₀ A₀).left ≫ i` using `P.lift_fst _ _ w`. Establish `l2 : l ≫ (snd X X).left = (snd A₀ A₀).left ≫ i` using `P.lift_snd _ _ w`. Take `⟨m, hm⟩` from `GlobalTheory.T.multiplication_lifts_square_zero_smooth_lift hF hA R R₀ I hI π hπ hk A₀ g hab hsm X i hpb hsmX e he he' l l1 l2`. Take `⟨G, hG, hab'⟩` from `GlobalTheory.LiftGroupLaw.exists_grpObj_isAbelianScheme R R₀ π hπ hnil A₀ hab X i hpb hsmX e he he' l l1 l2 m hm`.
+
+Conclude with `⟨X, G, i, hG, hab'⟩`.
+-/
 theorem unobDim_of_formSt : FormSt → PrimitiveExtendedDegTwoVanish → AxesVanishingExtendedDegOne → UnobDim := by
   intro hF hP hA R _ I hI R₀ _ π hπ hk A₀ _ g hab hsm
   obtain ⟨X, i, hpb, hsmX⟩ := GlobalTheory.T.exists_smooth_lift_abelian_scheme_square_zero hF hP R R₀ I hI π hπ hk A₀ g hab hsm

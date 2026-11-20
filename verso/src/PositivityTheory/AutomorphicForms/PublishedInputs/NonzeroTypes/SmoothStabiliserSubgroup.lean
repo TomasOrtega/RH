@@ -12,6 +12,9 @@ namespace UpperTheory.NonzeroTypeTheory
 
 namespace SmoothStabiliserSubgroup
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem rightReg_apply' {K : Type} [Group K] (k' : K) (φ : K → ℂ) (g : K) :
     rightReg ℂ K ℂ k' φ g = φ (g * k') := rfl
 
@@ -43,6 +46,13 @@ def stab {K : Type} [Group K] (φ : K → ℂ) : Subgroup K where
 
 end SmoothStabiliserSubgroup
 
+/- English proof (translation)
+Introduce `k _ _ _ _ n G hKC h1 φ hφ`. Establish `hU : IsOpen ((Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev)` using `hKC.preimage continuous_subtype_val`. Establish `hsub : (Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev ⊆ (SmoothStabiliserSubgroup.stab φ : Set ↥(KO k (Fin n)))`. Introduce `u hu`. Use `show rightReg ℂ ↥(KO k (Fin n)) ℂ u φ = φ`.
+
+Use function extensionality and compare the values at `g`. Rewrite using `[SmoothStabiliserSubgroup.rightReg_apply']`. Conclude with `hφ.2 g u hu`. Establish `h1mem : (1 : ↥(KO k (Fin n))) ∈ (Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev` using `h1`. Establish `hn : (SmoothStabiliserSubgroup.stab φ : Set ↥(KO k (Fin n))) ∈ nhds (1 : ↥(KO k (Fin n)))` using `Filter.mem_of_superset (hU.mem_nhds h1mem) hsub`.
+
+Conclude with `(SmoothStabiliserSubgroup.stab φ).isOpen_of_mem_nhds hn`.
+-/
 theorem smoothVectorsFixed_holds : SmoothVectorsFixedByCongruence := by
   intro k _ _ _ _ n G hKC h1 φ hφ
   have hU : IsOpen ((Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev) :=

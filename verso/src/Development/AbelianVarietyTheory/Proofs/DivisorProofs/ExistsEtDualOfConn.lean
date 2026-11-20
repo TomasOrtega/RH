@@ -22,6 +22,9 @@ variable {p : ℕ} [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn))
 
 section Main
 
+/- English proof (translation)
+Use `letI : Algebra k k' := σ.toAlgebra`. Establish `hb` using `(GlobalTheory.T.pDivGroupBaseChange_isConn_isEt_perfect p k k' G.dual).1 (dual_conn hG)`. Take `⟨l', h1, h2⟩` from `GlobalTheory.T.etaleDieudonneTranspose_semilinearHom_dualGroups p B k k' G G' (dual_conn hG) (dual_conn hG') hb s l`. Conclude with `⟨l', ⟨hb, h1⟩, fun l'' ⟨_, h⟩ => h2 l'' h⟩`.
+-/
 theorem exists_unique_isTr {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
     [CharP k' p] [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k}
     (hG' : G'.IsEt) (hG : G.IsEt) (s : SemiHom σ G' G) (l : Mod B G hG) :
@@ -31,18 +34,29 @@ theorem exists_unique_isTr {k k' : Type} [Field k] [CharP k p] [PerfectRing k p]
   obtain ⟨l', h1, h2⟩ := GlobalTheory.T.etaleDieudonneTranspose_semilinearHom_dualGroups p B k k' G G' (dual_conn hG) (dual_conn hG') hb s l
   exact ⟨l', ⟨hb, h1⟩, fun l'' ⟨_, h⟩ => h2 l'' h⟩
 
+/- English proof (translation)
+The claim follows from `tr_spec B hG' hG s l (exists_unique_isTr B hG' hG s l).exists`.
+-/
 theorem isTr_tr {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
     [CharP k' p] [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k}
     (hG' : G'.IsEt) (hG : G.IsEt) (s : SemiHom σ G' G) (l : Mod B G hG) :
     IsTr B σ hG' hG s l (tr B hG' hG s l) :=
   tr_spec B hG' hG s l (exists_unique_isTr B hG' hG s l).exists
 
+/- English proof (translation)
+The claim follows from `(exists_unique_isTr B hG' hG s l).unique (isTr_tr B hG' hG s l) h`.
+-/
 theorem tr_eq {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
     [CharP k' p] [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k}
     (hG' : G'.IsEt) (hG : G.IsEt) (s : SemiHom σ G' G) (l : Mod B G hG) (l' : Mod B G' hG')
     (h : IsTr B σ hG' hG s l l') : tr B hG' hG s l = l' :=
   (exists_unique_isTr B hG' hG s l).unique (isTr_tr B hG' hG s l) h
 
+/- English proof (translation)
+Apply `tr_eq` to reduce the goal to its premises. Establish `h1` using `isTr_tr B hG' hG s l`. Establish `h2` using `isTr_tr B hG' hG s m`. Use `letI : Algebra k k' := σ.toAlgebra`. Take `⟨hb, lb, a1, b1⟩` from `h1`.
+
+Take `⟨_, mb, a2, b2⟩` from `h2`. Use `⟨hb, lb + mb, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, a1, a2, LinearMap.add_apply, map_add]`. Rewrite using `[LinearMap.add_apply, b1, b2, LinearMap.add_apply]`.
+-/
 theorem tr_add {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
     [CharP k' p] [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k}
     (hG' : G'.IsEt) (hG : G.IsEt) (s : SemiHom σ G' G) (l m : Mod B G hG) :
@@ -57,6 +71,11 @@ theorem tr_add {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
   · rw [LinearMap.add_apply, a1, a2, LinearMap.add_apply, map_add]
   · rw [LinearMap.add_apply, b1, b2, LinearMap.add_apply]
 
+/- English proof (translation)
+Apply `tr_eq` to reduce the goal to its premises. Establish `h1` using `isTr_tr B hG' hG s l`. Use `letI : Algebra k k' := σ.toAlgebra`. Take `⟨hb, lb, a1, b1⟩` from `h1`. Use `⟨hb, WittVector.map σ a • lb, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[LinearMap.smul_apply, a1, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Rewrite using `[LinearMap.smul_apply, b1, LinearMap.smul_apply]`.
+-/
 theorem tr_smul {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
     [CharP k' p] [PerfectRing k' p] {σ : k →+* k'} {G' : PDivGroup p k'} {G : PDivGroup p k}
     (hG' : G'.IsEt) (hG : G.IsEt) (s : SemiHom σ G' G) (a : WittVector p k) (l : Mod B G hG) :
@@ -69,6 +88,9 @@ theorem tr_smul {k k' : Type} [Field k] [CharP k p] [PerfectRing k p] [Field k']
   · rw [LinearMap.smul_apply, a1, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul, map_mul]
   · rw [LinearMap.smul_apply, b1, LinearMap.smul_apply]
 
+/- English proof (translation)
+The claim follows from `tr_eq B hG hH _ l _ (GlobalTheory.T.etaleDieudonneTranspose_ofHom_eq_comp_dualHom p B k G H hG hH f l)`.
+-/
 theorem tr_ofHom {k : Type} [Field k] [CharP k p] [PerfectRing k p] {G H : PDivGroup p k}
     (hG : G.IsEt) (hH : H.IsEt) (f : G ⟶ H) (l : Mod B H hH) :
     tr B hG hH (SemiHom.ofHom f) l = l ∘ₗ B.map (dual_conn hH) (dual_conn hG) (dualHom G H f) :=
@@ -126,6 +148,11 @@ end GlobalTheory.Dieu.EtFromConn
 
 namespace GlobalTheory.Dieu
 
+/- English proof (translation)
+Introduce `p _ B`. Use `⟨EtFromConn.etBase B, fun G h hd hG => LinearEquiv.refl _ _, fun G h hd hG => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y`. Conclude with `GlobalTheory.T.etaleDieudonneTranspose_absFrobenius_apply_F p B _ G h x _ (EtFromConn.isTr_tr B h h _ x) y`. Introduce `H h' hd' hH f x y`.
+
+Conclude with `LinearMap.congr_fun (EtFromConn.tr_ofHom B h h' f x) y`.
+-/
 theorem exists_etDual_of_conn : ∀ (p : ℕ) [Fact p.Prime] (B : Base p (fun _ _ G => G.IsConn)),
     ∃ C : Base p (fun _ _ G => G.IsEt), C.EtDual B := by
   intro p _ B

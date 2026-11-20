@@ -13,6 +13,11 @@ namespace VerticalPartMultiplicity
 open MvPolynomial NumberField
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk Xc)
 
+/- English proof (translation)
+Set `g` to `Submodule.toLocalizedQuotient' (Localization.AtPrime W) W.primeCompl (Algebra.linearMap A (Localization.AtPrime W)) K`. Set `e` to `(IsLocalizedModule.linearEquiv W.primeCompl g (LocalizedModule.mkLinearMap W.primeCompl (A ⧸ K))).restrictScalars (Localization.AtPrime W)`. Establish `hK : Submodule.localized' (Localization.AtPrime W) W.primeCompl (Algebra.linearMap A (Localization.AtPrime W)) K = K.map (algebraMap A (Localization.AtPrime W))`. Rewrite using `[Submodule.localized'_eq_span]`. Both sides reduce to the same expression.
+
+Rewrite using `[← e.length_eq]`. Conclude with `(Submodule.quotEquivOfEq _ _ hK).length_eq`.
+-/
 theorem length_localizedModule_quotient {A : Type*} [CommRing A] (K W : Ideal A) [W.IsPrime] :
     Module.length (Localization.AtPrime W) (LocalizedModule W.primeCompl (A ⧸ K)) =
       Module.length (Localization.AtPrime W)
@@ -28,6 +33,9 @@ theorem length_localizedModule_quotient {A : Type*} [CommRing A] (K W : Ideal A)
   rw [← e.length_eq]
   exact (Submodule.quotEquivOfEq _ _ hK).length_eq
 
+/- English proof (translation)
+Use `letI := RingHomInvPair.of_ringEquiv τ`. Use `letI := RingHomInvPair.symm (↑τ : Q →+* Q') (τ.symm : Q' →+* Q)`. Apply `WithBot.coe_injective` to reduce the goal to its premises. Rewrite using `[Module.coe_length, Module.coe_length, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap τ.toSemilinearEquiv)]`.
+-/
 theorem length_self_eq_of_ringEquiv {Q Q' : Type*} [CommRing Q] [CommRing Q'] (τ : Q ≃+* Q') :
     Module.length Q Q = Module.length Q' Q' := by
   letI := RingHomInvPair.of_ringEquiv τ
@@ -36,6 +44,19 @@ theorem length_self_eq_of_ringEquiv {Q Q' : Type*} [CommRing Q] [CommRing Q'] (�
   rw [Module.coe_length, Module.coe_length,
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComap τ.toSemilinearEquiv)]
 
+/- English proof (translation)
+Establish `hWc : (W.map (Ψ : A →+* B)).comap (Ψ : A →+* B) = W`. Rewrite using `[Ideal.map_comap_of_equiv]`. Use extensionality with `x`. Simplify using `[Ideal.mem_comap]`. Distinguish the cases in `hW : W.IsPrime`.
+
+Use `haveI := hW haveI hW' : (W.map (Ψ : A →+* B)).IsPrime := Ideal.map_isPrime_of_equiv _`. Establish `H : W.primeCompl.map Ψ.toMonoidHom = (W.map (Ψ : A →+* B)).primeCompl`. Use extensionality with `x`. Rewrite using `[Submonoid.mem_map, Ideal.mem_primeCompl_iff, Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite `hy` using `[Ideal.mem_primeCompl_iff]`. Simplify using `using hy`. Introduce `hx`. Conclude with `⟨Ψ.symm x, (Ideal.mem_primeCompl_iff).mpr hx, by simp⟩`.
+
+Set `σ : Localization.AtPrime W ≃+* Localization.AtPrime (W.map (Ψ : A →+* B))` to `IsLocalization.ringEquivOfRingEquiv (Localization.AtPrime W) (Localization.AtPrime (W.map (Ψ : A →+* B))) Ψ H`. Establish `hIJ : (K.map (Ψ : A →+* B)).map (algebraMap B (Localization.AtPrime (W.map (Ψ : A →+* B)))) = (K.map (algebraMap A (Localization.AtPrime W))).map (σ : _ →+* _)`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use extensionality with `x`.
+
+Conclude with `(IsLocalization.ringEquivOfRingEquiv_eq H x).symm`. Set `τ` to `Ideal.quotientEquiv _ _ σ hIJ`. Establish `e1 : Module.length (Localization.AtPrime W) (Localization.AtPrime W ⧸ K.map (algebraMap A (Localization.AtPrime W))) = Module.length (Localization.AtPrime W ⧸ K.map (algebraMap A (Localization.AtPrime W))) (Localization.AtPrime W ⧸ K.map (algebraMap A (Localization.AtPrime W)))` using `Module.length_eq_of_surjective (by exact Ideal.Quotient.mk_surjective)`. Establish `e2 : Module.length (Localization.AtPrime (W.map (Ψ : A →+* B))) (Localization.AtPrime (W.map (Ψ : A →+* B)) ⧸ (K.map (Ψ : A →+* B)).map (algebraMap B (Localization.AtPrime (W.map (Ψ : A →+* B))))) = Module.length (Localization.AtPrime (W.map (Ψ : A →+* B)) ⧸ (K.map (Ψ : A →+* B)) …` using `Module.length_eq_of_surjective (by exact Ideal.Quotient.mk_surjective)`. Unfold `localMult`.
+
+Rewrite using `[dif_pos hW', dif_pos hW, e1, e2, length_self_eq_of_ringEquiv τ]`. Establish `hW' : ¬ (W.map (Ψ : A →+* B)).IsPrime` using `fun h => hW (hWc ▸ Ideal.comap_isPrime _ _)`. Unfold `localMult`. Rewrite using `[dif_neg hW', dif_neg hW]`.
+-/
 theorem localMult_map_equiv {A B : Type*} [CommRing A] [CommRing B] (Ψ : A ≃+* B) (K W : Ideal A) :
     localMult (K.map (Ψ : A →+* B)) (W.map (Ψ : A →+* B)) = localMult K W := by
   classical
@@ -99,40 +120,70 @@ abbrev ι : ℤ ≃+* 𝓞 ℚ := Rat.ringOfIntegersEquiv.symm
 def Ψ (n : ℕ) : MRing (PBlk n) ≃+* MvPolynomial (Fin n) (𝓞 ℚ) :=
   (renameEquiv ℤ (eb n)).symm.toRingEquiv.trans (mapEquiv (Fin n) ι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem Ψ_apply (f : MRing (PBlk n)) :
     Ψ n f = MvPolynomial.map (ι : ℤ →+* 𝓞 ℚ) (rename (eb n).symm f) := rfl
 
+/- English proof (translation)
+Rewrite using `[Ψ_apply, rename_C, map_C]`. Both sides reduce to the same expression.
+-/
 theorem Ψ_C (a : ℤ) : Ψ n (C a) = C (ι a) := by
   rw [Ψ_apply, rename_C, map_C]
   rfl
 
+/- English proof (translation)
+Rewrite using `[Ψ_apply, rename_X, map_X]`. Both sides reduce to the same expression.
+-/
 theorem Ψ_X (i : Fin n) : Ψ n (X ⟨(), i⟩) = X i := by
   rw [Ψ_apply, rename_X, map_X]
   rfl
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, Ψ_C, RingEquiv.apply_symm_apply]`.
+-/
 theorem Ψ_symm_C (a : 𝓞 ℚ) : (Ψ n).symm (C a) = C (ι.symm a) := by
   rw [RingEquiv.symm_apply_eq, Ψ_C, RingEquiv.apply_symm_apply]
 
+/- English proof (translation)
+Rewrite using `[RingEquiv.symm_apply_eq, Ψ_X]`.
+-/
 theorem Ψ_symm_X (i : Fin n) : (Ψ n).symm (X i) = X ⟨(), i⟩ := by
   rw [RingEquiv.symm_apply_eq, Ψ_X]
 
+/- English proof (translation)
+The claim follows from `map_intCast ι a`.
+-/
 theorem ι_apply (a : ℤ) : ι a = (a : 𝓞 ℚ) := map_intCast ι a
 
+/- English proof (translation)
+Simplify using `[IndefiniteRowSideFullHecke.ArithBezout.linForm, linForm, map_sum, Ψ_C, Ψ_X, ι_apply, Xc]`.
+-/
 theorem Ψ_linForm (u : Fin n → ℤ) :
     Ψ n (IndefiniteRowSideFullHecke.ArithBezout.linForm u) = linForm (fun j => ((u j : ℤ) : 𝓞 ℚ)) := by
   simp [IndefiniteRowSideFullHecke.ArithBezout.linForm, linForm, map_sum, Ψ_C, Ψ_X, ι_apply, Xc]
 
+/- English proof (translation)
+Rewrite using `[Ideal.map_comap_of_equiv]`. Both sides reduce to the same expression.
+-/
 theorem finIdeal_eq_map (W : Ideal (MRing (PBlk n))) :
     IndefiniteRowSideFullHecke.ArithBezout.finIdeal W =
       W.map ((renameEquiv ℤ (eb n)).symm.toRingEquiv : MRing (PBlk n) →+* MvPolynomial (Fin n) ℤ) := by
   rw [Ideal.map_comap_of_equiv]
   rfl
 
+/- English proof (translation)
+Establish `hk : RingHom.ker (Φ : A →+* B) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).mp Φ.injective`. Rewrite using `[Ideal.minimalPrimes_map_of_surjective Φ.surjective, hk, sup_bot_eq]`.
+-/
 theorem minimalPrimes_map_equiv {A B : Type*} [CommRing A] [CommRing B] (Φ : A ≃+* B) (K : Ideal A) :
     (K.map (Φ : A →+* B)).minimalPrimes = Ideal.map (Φ : A →+* B) '' K.minimalPrimes := by
   have hk : RingHom.ker (Φ : A →+* B) = ⊥ := (RingHom.injective_iff_ker_eq_bot _).mp Φ.injective
   rw [Ideal.minimalPrimes_map_of_surjective Φ.surjective, hk, sup_bot_eq]
 
+/- English proof (translation)
+Use extensionality with `a`. Rewrite using `[Ideal.mem_comap, Ideal.map_comap_of_equiv, Ideal.mem_comap, Ideal.map_comap_of_equiv, Ideal.mem_comap, Ideal.mem_comap]`. Conclude with `Iff.of_eq (congrArg (· ∈ W) (Ψ_symm_C a))`.
+-/
 theorem comap_C_map (W : Ideal (MRing (PBlk n))) :
     (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap
         (C : 𝓞 ℚ →+* MvPolynomial (Fin n) (𝓞 ℚ)) =
@@ -142,6 +193,11 @@ theorem comap_C_map (W : Ideal (MRing (PBlk n))) :
     Ideal.mem_comap, Ideal.mem_comap]
   exact Iff.of_eq (congrArg (· ∈ W) (Ψ_symm_C a))
 
+/- English proof (translation)
+Rewrite using `[comap_C_map, ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Ideal.map_bot]`. Introduce `h`.
+
+Conclude with `(Ideal.map_eq_bot_iff_of_injective ι.injective).mp h`.
+-/
 theorem isHorizontal_iff (W : Ideal (MRing (PBlk n))) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal W ↔
       (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))).comap
@@ -153,6 +209,9 @@ theorem isHorizontal_iff (W : Ideal (MRing (PBlk n))) :
   · intro h
     exact (Ideal.map_eq_bot_iff_of_injective ι.injective).mp h
 
+/- English proof (translation)
+Simplify using `only [IsRelevant, ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant, Ideal.map_comap_of_equiv, Ideal.mem_comap, RingEquiv.coe_toRingHom, Ψ_symm_X]`. Conclude with `⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩`.
+-/
 theorem isRelevant_map_iff (W : Ideal (MRing (PBlk n))) :
     IsRelevant (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))) ↔
       ReciprocityTheory.ChartRestriction.G.Geo.IsRelevant W := by
@@ -160,6 +219,11 @@ theorem isRelevant_map_iff (W : Ideal (MRing (PBlk n))) :
     RingEquiv.coe_toRingHom, Ψ_symm_X]
   exact ⟨fun ⟨j, hj⟩ k => ⟨j, by cases k; exact hj⟩, fun h => h ()⟩
 
+/- English proof (translation)
+Rewrite using `[localMult_map_equiv]`. Unfold `localMult ReciprocityTheory.ChartRestriction.G.Geo.multAt`. Distinguish the cases in `hW : W.IsPrime`. Rewrite using `[dif_pos hW, dif_pos hW] haveI := hW`. Rewrite using `[length_localizedModule_quotient]`.
+
+Rewrite using `[dif_neg hW, dif_neg hW]`.
+-/
 theorem localMult_map_eq_multAt (K W : Ideal (MRing (PBlk n))) :
     localMult (K.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ)))
         (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))) =
@@ -172,12 +236,26 @@ theorem localMult_map_eq_multAt (K W : Ideal (MRing (PBlk n))) :
     rw [length_localizedModule_quotient]
   · rw [dif_neg hW, dif_neg hW]
 
+/- English proof (translation)
+Use extensionality with `a`. Simplify using `[IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, rename_C]`.
+-/
 theorem finIdeal_comap_C (P : Ideal (MRing (PBlk n))) :
     (IndefiniteRowSideFullHecke.ArithBezout.finIdeal P).comap (C : ℤ →+* MvPolynomial (Fin n) ℤ) =
       P.comap (C : ℤ →+* MRing (PBlk n)) := by
   ext a
   simp [IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, rename_C]
 
+/- English proof (translation)
+Use `set J := IndefiniteRowSideFullHecke.ArithBezout.finIdeal P with hJdef`. Use `haveI hJ : J.IsPrime := Ideal.comap_isPrime _ _`. Establish `hJC : J.comap (C : ℤ →+* MvPolynomial (Fin n) ℤ) = ⊥`. Rewrite using `[hJdef, finIdeal_comap_C]`. Conclude with `hh`.
+
+Establish `key : (J.map (MvPolynomial.map (Int.castRingHom ℚ))).comap (MvPolynomial.map (Int.castRingHom ℚ)) = J`. Use `letI : Algebra (MvPolynomial (Fin n) ℤ) (MvPolynomial (Fin n) ℚ) := MvPolynomial.algebraMvPolynomial`. Use `haveI : IsLocalization ((nonZeroDivisors ℤ).map (C : ℤ →+* MvPolynomial (Fin n) ℤ)) (MvPolynomial (Fin n) ℚ) := MvPolynomial.isLocalization (σ := Fin n) (nonZeroDivisors ℤ) ℚ`. Establish `hdisj : Disjoint (((nonZeroDivisors ℤ).map (C : ℤ →+* MvPolynomial (Fin n) ℤ) : Submonoid (MvPolynomial (Fin n) ℤ)) : Set (MvPolynomial (Fin n) ℤ)) J`. Use `Set.disjoint_left.mpr fun x hx hxJ => ?_` and prove the remaining obligations.
+
+Take `⟨a, ha, rfl⟩` from `hx`. Establish `: a ∈ J.comap (C : ℤ →+* MvPolynomial (Fin n) ℤ)` using `hxJ`. Rewrite `this` using `[hJC, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero ha this`. Use `IsLocalization.under_map_of_isPrime_disjoint ((nonZeroDivisors ℤ).map (C : ℤ →+* MvPolynomial (Fin n) ℤ)) (MvPolynomial (Fin n) ℚ) hJ hdisj` as an intermediate fact.
+
+Conclude with `this`. Establish `hm : ∀ f : MvPolynomial (Fin n) (𝓞 ℚ), MvPolynomial.map (algebraMap (𝓞 ℚ) ℚ) f = MvPolynomial.map (Int.castRingHom ℚ) (MvPolynomial.map (ι.symm : 𝓞 ℚ →+* ℤ) f)`. Introduce `f`. Establish `e : algebraMap (𝓞 ℚ) ℚ = (Int.castRingHom ℚ).comp (ι.symm : 𝓞 ℚ →+* ℤ)`. Use extensionality with `z`.
+
+Simplify using `[Rat.ringOfIntegersEquiv_apply_coe]`. Rewrite using `[MvPolynomial.map_map, ← e]`. Use extensionality with `f`. Rewrite using `[integralModel, Ideal.mem_comap, hm, ← Ideal.mem_comap, genericIdeal, ← hJdef, key, hJdef, IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, Ideal.map_comap_of_equiv, Ideal.mem_comap]`. Both sides reduce to the same expression.
+-/
 theorem integralModel_genericIdeal (P : Ideal (MRing (PBlk n))) [hP : P.IsPrime]
     (hh : ReciprocityTheory.ChartRestriction.G.Geo.IsHorizontal P) :
     integralModel (genericIdeal P) = P.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ)) := by
@@ -215,6 +293,11 @@ theorem integralModel_genericIdeal (P : Ideal (MRing (PBlk n))) [hP : P.IsPrime]
     IndefiniteRowSideFullHecke.ArithBezout.finIdeal, Ideal.mem_comap, Ideal.map_comap_of_equiv, Ideal.mem_comap]
   rfl
 
+/- English proof (translation)
+Rewrite using `[reduceMod, finIdeal_eq_map, Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun p => ?_)` and prove the remaining obligations. Simplify using `[Ψ_C, ι_apply]`. Take `⟨⟨⟩, i⟩` from `p`.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, RingEquiv.coe_toRingHom]`. Rewrite using `[Ψ_X]`. Simplify using `[eb]`.
+-/
 theorem reduceMod_map (v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)) (W : Ideal (MRing (PBlk n))) :
     reduceMod v (W.map (Ψ n : MRing (PBlk n) →+* MvPolynomial (Fin n) (𝓞 ℚ))) =
       (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map
@@ -228,6 +311,11 @@ theorem reduceMod_map (v : IsDedekindDomain.HeightOneSpectrum (𝓞 ℚ)) (W : I
     rw [Ψ_X]
     simp [eb]
 
+/- English proof (translation)
+Use `set g := Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing (PBlk n))) with hg`. Establish `hspan : W.comap (C : ℤ →+* MRing (PBlk n)) = Ideal.span {g}` using `(Ideal.span_singleton_generator _).symm`. Rewrite using `[hspan, Ideal.map_span, Set.image_singleton, Ideal.absNorm_span_singleton]`. Establish `h1 : (ι : ℤ →+* 𝓞 ℚ) g = algebraMap ℤ (𝓞 ℚ) g` using `(eq_intCast _ g).trans (eq_intCast _ g).symm`. Rewrite using `[h1, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Module.finrank_self, pow_one]`.
+
+Both sides reduce to the same expression.
+-/
 theorem absNorm_map_comap_C (W : Ideal (MRing (PBlk n))) :
     Ideal.absNorm ((W.comap (C : ℤ →+* MRing (PBlk n))).map (ι : ℤ →+* 𝓞 ℚ)) =
       ReciprocityTheory.ChartRestriction.G.Geo.charOf W := by

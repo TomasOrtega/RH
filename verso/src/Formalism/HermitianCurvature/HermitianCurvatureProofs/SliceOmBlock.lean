@@ -8,6 +8,9 @@ noncomputable section
 
 def kapB (n : ℕ) : ℝ := Real.pi ^ ((n + 1) * (n + 4) / 2)
 
+/- English proof (translation)
+Simplify using `[D.ptSize, List.map_append, List.sum_append]`.
+-/
 theorem ptSize_two (h : C.LPt) (n : ℕ) (t c : ℂ) :
     D.ptSize (h ++ [(n + 1, t), (1, c)]) = D.ptSize h + (n + 1 + 1) := by
   simp [D.ptSize, List.map_append, List.sum_append]

@@ -28,6 +28,17 @@ namespace GlobalTheory.UInj
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
+/- English proof (translation)
+Establish `hδ'` using `hδ.pull_equiv ga`. Use `set δ' := fun k => pull ga.toLinearMap (δ k) with hd`. Establish `h1 : ∀ k, ∃ j, δ k = δ' j` using `cone_gen_mem_of_common hδ hδ' c c' hc he`. Establish `h2 : ∀ j, ∃ k, δ' j = δ k` using `cone_gen_mem_of_common hδ' hδ c' c hc' he.symm`. Establish `himg : Finset.univ.image δ = Finset.univ.image δ'`.
+
+Use extensionality with `x`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Conclude with `⟨by rintro ⟨k, rfl⟩; exact (h1 k).imp fun _ => Eq.symm, by rintro ⟨j, rfl⟩; exact (h2 j).imp fun _ => Eq.symm⟩`. Establish `e1 : ∑ x ∈ Finset.univ.image δ, x = ∑ k, δ k` using `Finset.sum_image fun a _ b _ h => hδ.injective h`. Establish `e2 : ∑ x ∈ Finset.univ.image δ', x = ∑ k, δ' k` using `Finset.sum_image fun a _ b _ h => hδ'.injective h`.
+
+Establish `hS : ∑ k, δ k = ∑ k, δ' k` using `by rw [← e1, ← e2, himg]`. Establish `hk : ∀ x y, (∑ k, δ k) (ga x) (ga y) = (∑ k, δ k) x y`. Introduce `x y`. Establish `h` using `LinearMap.congr_fun₂ hS x y`. Simplify using `only [LinearMap.sum_apply, hd, pull_apply, LinearEquiv.coe_coe] at h ⊢`.
+
+Conclude with `h.symm`. Establish `hpos : ∀ x, x ≠ 0 → 0 < (∑ k, δ k) x x`. Introduce `x hx`. Take `⟨k, hk⟩` from `hdef x hx`. Simplify using `only [LinearMap.sum_apply]`.
+
+Conclude with `Finset.sum_pos' (fun i _ => hδ.nonneg i x) ⟨k, Finset.mem_univ _, hk⟩`. Conclude with `DFunLike.congr_fun (GlobalTheory.Poinc.eq_refl_of_isometry_congMod X _ hpos ga.toAddEquiv.toIntLinearEquiv hk n hn hcong) x`.
+-/
 theorem lattice_id {O : Type} [CommRing O] {bar : O → O} {ψ : InvFun O} {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Free ℤ X] [Module.Finite ℤ X] {m : ℕ} {δ : Fin m → LinearMap.BilinForm ℤ X} (hδ : IsCone bar ψ δ)
     (hdef : ∀ x, x ≠ 0 → ∃ k, 0 < δ k x x) (ga : X ≃ₗ[O] X) (c c' : Fin m → ℕ) (hc : ∀ k, 0 < c k) (hc' : ∀ k, 0 < c' k)
@@ -57,6 +68,13 @@ theorem lattice_id {O : Type} [CommRing O] {bar : O → O} {ψ : InvFun O} {X : 
     exact Finset.sum_pos' (fun i _ => hδ.nonneg i x) ⟨k, Finset.mem_univ _, hk⟩
   exact DFunLike.congr_fun (GlobalTheory.Poinc.eq_refl_of_isometry_congMod X _ hpos ga.toAddEquiv.toIntLinearEquiv hk n hn hcong) x
 
+/- English proof (translation)
+Establish `: IsMonHom (Iso.refl G).hom` using `by show IsMonHom (𝟙 _); infer_instance`. Take `⟨e, he, -⟩` from `grpPullback_iso h (isGrpPullback_of_iso (Iso.refl G))`. Take `⟨-, I, -, hI, -⟩` from `o.geom K x (Spec.preimage (x ≫ s)).hom (Spec.map_preimage _).symm`. Take `⟨a, ha⟩` from `(I.onto l.A l.A_pos (p ≫ e.inv)).1 (by rw [← MonObj.pow_comp, hp, MonObj.one_comp])`. Establish `h0 : o.etaA 0 = 1` using `by simpa using o.etaA_ker 0`.
+
+Establish `hpow : ∀ n : ℕ, o.etaA (n • a) = o.etaA a ^ n` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => simpa using h0`. Consider the case `succ n ih => rw [succ_nsmul, o.etaA_add, ih, pow_succ]`. Use `⟨o.etaA a ≫ e.hom, by rw [← MonObj.pow_comp, ← hpow, o.etaA_ker, MonObj.one_comp], ?_⟩` and prove the remaining obligations.
+
+Establish `: p = toUnit _ ≫ o.etaA a ≫ e.hom`. Rewrite using `[← Category.assoc, hI, ha, Category.assoc, e.inv_hom_id, Category.comp_id]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem tors_sec {D' : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {bs : Geo.Tor.Base l B} {S : Scheme.{0}}
     {s : S ⟶ Sp B} (o : Obj D' l bs s) {G : Over S} [GrpObj G] {φ : o.t.G.left ⟶ G.left}
     (h : IsGrpPullback o.t.G G (𝟙 S) φ) (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ S) (p : Over.mk x ⟶ G)
@@ -76,6 +94,13 @@ theorem tors_sec {D' : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b
   rw [this]
   rfl
 
+/- English proof (translation)
+Establish `hw : H.w0 + H.bar H.w0 = 1` using `GlobalTheory.PelPrim.cmHostUnit_add_conj_eq_one H`. Establish `hg' : ∀ y, (g y : K) = (∏ k, s k ^ (n * ε k (e y) (H.w0 • e y)))⁻¹` using `fun y => by`. Rewrite using `[← hg, Units.val_inv_eq_inv_val, inv_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, hg, hg', hg', ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[← zpow_neg, ← zpow_neg, ← zpow_add₀ (hs k), ← zpow_add₀ (hs k)]`. Use `congr 1`. Establish `h1 : ε k (e a') (H.w0 • e a) = ε k (e a) (H.bar H.w0 • e a')` using `by rw [(hε k).1, (hε k).2]`. Establish `h2 : ε k (e a) (H.w0 • e a') + ε k (e a) (H.bar H.w0 • e a') = ε k (e a) (e a')`. Rewrite using `[← map_add, ← add_smul, hw, one_smul]`.
+
+Simplify using `only [map_add, smul_add, LinearMap.add_apply, h1]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem second_diff {X Y K I : Type} [AddCommGroup X] [Module (𝓞 E) X] [AddCommGroup Y] [Module (𝓞 E) Y] [Field K]
     [Fintype I] (e : X ≃ₗ[𝓞 E] Y) (s : I → K) (hs : ∀ k, s k ≠ 0) (ε : I → LinearMap.BilinForm ℤ Y)
     (hε : ∀ k, ε k ∈ balForms H.bar Y) (n : ℤ) (g : X → Kˣ)
@@ -96,6 +121,19 @@ theorem second_diff {X Y K I : Type} [AddCommGroup X] [Module (𝓞 E) X] [AddCo
   rw [← h2]
   ring
 
+/- English proof (translation)
+Introduce `hn hD₁ hD₂ hF₁ hF₂ hM he hb H c a`. Take `⟨hbm, -, -, hu, -⟩` from `hM`. Take `⟨p₁, p₂, hy₁, ht₁, hy₂, ht₂, p', hy', hA, hE⟩` from `H a`. Establish `hg : p'.g = p₂.g` using `GlobalTheory.T.torsionPoint_torusPart_eq_of_equiv_same_lattice V D₂ hD₂ F n hn p' p₂ (by`. Rewrite using `[hy', hy₁, hy₂]`.
+
+Apply `e₂.injective` to reduce the goal to its premises. Rewrite using `[he, e₁.apply_symm_apply, e₂.apply_symm_apply]) hE`. Rewrite `hA` using `[hg]`. Establish `hχ : e₁ (φ.symm (e₂.symm c)) = e₂ (e₂.symm c)` using `by rw [← he, φ.apply_symm_apply]`. Take `⟨u, hun⟩` from `hu (e₂.symm c)`.
+
+Take `⟨k₁, hk₁, hv₁⟩` from `ht₁.2 (φ.symm (e₂.symm c))`. Take `⟨k₂, hk₂, hv₂⟩` from `ht₂.2 (e₂.symm c)`. Set `z : (TF (R` to `V) F).left := (⊥ : PrimeSpectrum F)`. Take `⟨J, hJ, -⟩` from `exists_good (JN D₁ D₂) (jn_isLB D₁ D₂) z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun k => k.elim)`. Take `⟨J₀, hJ₀, -⟩` from `exists_good T.M.L T.M.isLB z (K := Empty) Empty.elim Empty.elim (fun a => a.elim) (fun k => k.elim)`.
+
+Establish `a₁` using `hv₁ z J₀ (rl J) hJ₀ ((isPart_inl D₁.P.L D₂.P.L).good hJ)`. Establish `a₂` using `hv₂ z J₀ (rr J) hJ₀ ((isPart_inr D₁.P.L D₂.P.L).good hJ)`. Establish `a₃` using `hA.2 (e₂.symm c) u hun z J hJ`. Establish `a₄` using `GlobalTheory.T.mumfordBundleIso_comparison_normalisedGenerator T ε n V ω D₁ D₂ s₁ e₁ β₁ ββ₁ w₁ s₂ e₂ β₂ ββ₂ w₂ b hD₁ hD₂ hF₁ hF₂ hbm hb (φ.symm (e₂.symm c)) (e₂.symm c) hχ u hun (TF (R := V) F) p₁.g.b z J J₀ hJ hJ₀`. Rewrite `a₄` using `[← hA.1]`.
+
+Rewrite `a₁` using `[hχ]`. Establish `hk : k₁ = k₂`. Apply `gm_unitOn_inj z` to reduce the goal to its premises. Conclude with `cancel_four a₁ a₂ a₃ a₄`. Use `congrArg Units.val hk` as an intermediate fact.
+
+Rewrite `this` using `[hk₁, hk₂, hχ, e₂.apply_symm_apply]`. Conclude with `this`.
+-/
 theorem monomials_eq {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) {I : Type} [Fintype I] (ε : I → LinearMap.BilinForm ℤ (Fin T.r → ℤ)) (n : ℕ) (V : Type) [CommRing V] [IsDomain V] (ω : W →+* V) (D₁ D₂ : DegPre V) (s₁ : I → V) (e₁ : D₁.X ≃+ (Fin T.r → ℤ)) (β₁ : D₁.P.A.left ⟶ T.B.left) (ββ₁ : (G2 D₁.P.A).left ⟶ (G2 T.B).left) (w₁ : LB.Iso (abelian₂ D₁.P.A D₁.P.L) ((abelian₂ T.B T.M.L).pull ββ₁)) (s₂ : I → V) (e₂ : D₂.X ≃+ (Fin T.r → ℤ)) (β₂ : D₂.P.A.left ⟶ T.B.left) (ββ₂ : (G2 D₂.P.A).left ⟶ (G2 T.B).left) (w₂ : LB.Iso (abelian₂ D₂.P.A D₂.P.L) ((abelian₂ T.B T.M.L).pull ββ₂)) (b : D₁.P.A ⟶ D₂.P.A) (φ : D₁.X ≃+ D₂.X) (F : Type) [Field F] [Algebra (FractionRing V) F] : 1 ≤ n → D₁.TauBimult → D₂.TauBimult → From T ω s₁ ε n D₁ e₁ β₁ ββ₁ w₁ → From T ω s₂ ε n D₂ e₂ β₂ ββ₂ w₂ → Match D₁ D₂ b φ F → (∀ y, e₂ (φ y) = e₁ y) → b.left ≫ β₂ = β₁ → (∀ a : Fin T.r → ℤ, ∃ (p₁ : QkPt D₁ F n) (p₂ : QkPt D₂ F n), p₁.y = e₁.symm a ∧ TautPt T ω s₁ ε n D₁ e₁ β₁ ββ₁ w₁ F a p₁.g ∧ p₂.y = e₂.symm a ∧ TautPt T ω s₂ ε n D₂ e₂ β₂ ββ₂ w₂ F a p₂.g ∧ QImg b φ p₁ p₂) → ∀ c a : Fin T.r → ℤ, ∏ i, algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (s₁ i)) ^ ε i c a = ∏ i, algebraMap (FractionRing V) F (algebraMap V (FractionRing V) (s₂ i)) ^ ε i c a := by
   intro hn hD₁ hD₂ hF₁ hF₂ hM he hb H c a
   obtain ⟨hbm, -, -, hu, -⟩ := hM
@@ -126,6 +164,19 @@ theorem monomials_eq {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T :
   rw [hk₁, hk₂, hχ, e₂.apply_symm_apply] at this
   exact this
 
+/- English proof (translation)
+Take `⟨σ, hσ, hxσ⟩` from `hB F ((TF (R := V) F).hom ≫ spMap (f₁.comp ω)) (pushHom hβ₁ _ x) (by rw [← map_pow, hx, map_one])`. Establish `hxσ' : x.left ≫ (hD₁.e.hom.left ≫ pullback.fst D₀.P.A.hom (specOf f₁)) ≫ β = ((TF (R` using `V) F).hom ≫ spMap (f₁.comp ω)) ≫ σ.left := hxσ`. Take `⟨b₀, hb₀⟩` from `GlobalTheory.SiegelPull.push_surjective hβ (TF (R := R) F₀) (toUnit _ ≫ σ)`. Establish `hb₀' : b₀.left ≫ β = (TF (R` using `R) F₀).hom ≫ spMap ω ≫ σ.left := by`. Establish `e` using `congrArg (fun z => z.left) hb₀`.
+
+Simplify using `only [pushHom, pushPt, MonoidHom.mk'_apply, Over.homMk_left, Over.comp_left] at e`. Rewrite using `[e]`. Simplify using the standard rewrite rules. Establish `hpow : b₀ ^ n = 1`. Apply `GlobalTheory.SiegelPull.push_injective hβ` to reduce the goal to its premises.
+
+Rewrite using `[map_pow, hb₀, ← MonObj.comp_pow, hσ, MonObj.comp_one, map_one]`. Take `⟨p₀, hp₀y, hp₀b⟩` from `GlobalTheory.TInj.exists_qk_zero_over R D₀ h₀ F₀ n hn b₀ hpow`. Take `⟨p₁, p₂, h1y, htr1, h2y, htr2, p', hp'y, hact, heqv⟩` from `HP p₀`. Establish `hg₀ : p₀.g.b.left ≫ β = (TF (R` using `R) F₀).hom ≫ (spMap ω ≫ σ.left) := by rw [hp₀b, hb₀']`. Establish `hsp : ∀ f : R →+* V, spMap (f.comp ω) = spMap f ≫ spMap ω` using `fun f => by`.
+
+Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e₁` using `tr_base hj₁ htr1 _ _ hg₀`. Establish `e₂` using `tr_base hj₂ htr2 _ _ hg₀`. Rewrite `e₁`, `e₂` using `[← Category.assoc (spMap _), ← hsp]`.
+
+Establish `hg : p'.g = p₂.g` using `GlobalTheory.T.torsionPoint_torusPart_eq_of_equiv_same_lattice V D₂ h₂ F n hn p' p₂ (by rw [hp'y, h1y, h2y, hp₀y, map_zero, map_zero, map_zero]) heqv`. Establish `hx₁ : x.left = p₁.g.b.left`. Apply `hβ₁.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hxσ', e₁, Category.assoc]`. Rewrite using `[Over.w, Over.w]`.
+
+Rewrite using `[hx₁, e₁, hf, ← e₂, ← hg, hact.1, Over.comp_left, Category.assoc]`.
+-/
 theorem torsion_fixed {W R V : Type} [CommRing W] [CommRing R] [IsDomain R] [CommRing V] [IsDomain V] {B : Over (Sp W)} [GrpObj B]
     {n : ℕ} (hn : 1 ≤ n) (hB : ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Sp W) (p : Over.mk x ⟶ B), p ^ n = 1 →
       ∃ σ : 𝟙_ (Over (Sp W)) ⟶ B, σ ^ n = 1 ∧ p.left = x ≫ σ.left)
@@ -169,6 +220,43 @@ theorem torsion_fixed {W R V : Type} [CommRing W] [CommRing R] [IsDomain R] [Com
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c φ hpq hφ hns R _ _ _ hR C Cn R' _ _ _ hR' θ₁ θ₂ i₁ i₂ l₁ l₂ κ₁ κ₂ hκ₁ hκ₂ hy`. Establish `hW` using `GlobalTheory.T.canonicalFamily_base_injections_agree Xo c φ hpq hφ hns R hR C Cn R' hR' θ₁ θ₂ i₁ i₂ l₁ l₂ κ₁ κ₂ hκ₁ hκ₂ hy`. Use `letI := H.starRing`. Establish `hn : 3 ≤ l.M'` using `l.three_le.trans (Nat.le_of_dvd (level_pos l) (Nat.dvd_lcm_left _ _))`. Establish `hn1 : 1 ≤ l.M'` using `by omega`.
+
+Use `set iw := Cn.ψ.comp MvPolynomial.C with hiwd`. Establish `hiw : Function.Injective iw`. Establish `hfl : iw.Flat` using `RingHom.Flat.comp (RingHom.flat_algebraMap_iff.2 inferInstance) Cn.compl.2.2.1`. Use `letI := iw.toAlgebra`. Establish `: Module.Flat Cn.L.W R` using `hfl`.
+
+Establish `: IsLocalHom (algebraMap Cn.L.W R)` using `Cn.ψ_loc`. Establish `: Module.FaithfullyFlat Cn.L.W R` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Conclude with `FaithfulSMul.algebraMap_injective Cn.L.W R`. Set `s : Fin C.m ⊕ Fin Cn.N → R` to `fun k => Cn.ψ (MvPolynomial.X k)`. Establish `hs0 : ∀ k, s k ≠ 0`.
+
+Introduce and unpack `(k | k)`. Conclude with `(Cn.bd k).trans_ne (C.s_ne_zero k)`. Conclude with `(Cn.tor k).ne_zero`. Take `⟨hev, hbi, hgen, -⟩` from `GlobalTheory.T.degenerationDataNsmulRescale_keeps_laws Cn.L.W Cn.L.D (𝓞 E) Cn.L.oa H.w0 l.M' Cn.L.even Cn.L.bimult Cn.L.w0 Cn.L.gen`. Take `⟨T, ib, β₀, ββ₀, w₀, hF₀⟩` from `GlobalTheory.T.exists_tautologicalBase_nsmul_degenerationData Cn.L.b Cn.L.D Cn.L.bimult Cn.L.gen l.M'`.
+
+Take `⟨g, hD, hg, hxe, -⟩` from `Cn.data`. Set `ε : Fin C.m ⊕ Fin Cn.N → LinearMap.BilinForm ℤ (Fin T.r → ℤ)` to `fun k => (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X).compl₁₂ ib.symm.toIntLinearEquiv.toLinearMap ib.symm.toIntLinearEquiv.toLinearMap`. Establish `hε : ∀ k a b, ε k (ib a) (ib b) = (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) a b` using `fun k a b => congrArg₂ (fun x y => (Cn.ε k : LinearMap.BilinForm ℤ Cn.L.D.X) x y) (ib.symm_apply_apply a) (ib.symm_apply_apply b)`. Set `e : C.P.D.toPre.X ≃+ (Fin T.r → ℤ)` to `Cn.e.toAddEquiv.trans ib`. Establish `he : ∀ y, e y = ib (Cn.e y)` using `fun _ => rfl`.
+
+Take `⟨β, ββ, w, hF⟩` from `GlobalTheory.T.comesFromTautBase_of_rescaled_pullback_monomial T l.M' (mulDeg Cn.L.D l.M') hev hbi hgen ib β₀ ββ₀ w₀ hF₀ R iw hiw C.P.D.toPre g hD s ε e (fun y => congrArg ib (hxe y).symm) (fun a a' => by`. Simplify using `only [he, hε]`. Conclude with `second_diff Cn.e _ (fun k => (map_ne_zero_iff _ (IsFractionRing.injective R _)).2 (hs0 k)) _ (fun k => (Cn.ε k).2) _ g hg a a')`. Establish `hT : IsGrpPullback Cn.L.o.t.G T.B (𝟙 _) (Cn.L.φB ≫ β₀)` using `(Cn.L.ab.1.comp hF₀.1).congr ((Category.id_comp _).trans (Spec.map_id _)) rfl`. Take `⟨V, _, _, _, _, η', f₁, f₂, hV, hη, hf₁, hf₂, lf₁, lf₂, c₁, c₂⟩` from `exists_cDvr_two_embeddings R R R' (RingHom.id R) Function.injective_id (RingHom.Finite.id R) ⟨hR'.1.1, hR'.1.2.2.1, hR'.1.2.2.2, hR'.2⟩ θ₁ θ₂ i₁ i₂ l₁ l₂`.
+
+Rewrite `c₁`, `c₂` using `[RingHom.comp_id]`. Take `⟨k₀, hk₀⟩` from `exists_genericMap hη`. Establish `hk : ∀ (θ : R →+* R') (κ : Sp (FractionRing R') ⟶ Sp (FractionRing R)), κ ≫ jK R = jK R' ≫ spMap θ → (k₀ ≫ κ) ≫ jK R = jK V ≫ spMap (η'.comp θ)` using `fun θ κ hκ => by`. Rewrite using `[Category.assoc, hκ, ← Category.assoc, hk₀, Category.assoc, GlobalTheory.GenericBundleDescent.sp_comp]`. Take `⟨D₁, D₂, hD₁, hD₂, j₁, j₂, b, ph, hE₁, hE₂, hM, hlin, hpairs, -⟩` from `pair_match Xo c φ R hR C.toFam V hV f₁ f₂ hf₁ hf₂ lf₁ lf₂ (k₀ ≫ κ₁) (k₀ ≫ κ₂) (c₁ ▸ hk θ₁ κ₁ hκ₁) (c₂ ▸ hk θ₂ κ₂ hκ₂) (by rw [Category.assoc, hy, Category.assoc])`.
+
+Take `⟨ββ₁, w₁, hF₁⟩` from `from_pull T ε l.M' R V _ C.P.D iw s e β ββ w f₁ D₁.toPre hD₁ hf₁ hF`. Take `⟨ββ₂, w₂, hF₂⟩` from `from_pull T ε l.M' R V _ C.P.D iw s e β ββ w f₂ D₂.toPre hD₂ hf₂ hF`. Establish `htaut : ∀ a : Fin T.r → ℤ, ∃ (p₁ : QkPt D₁.toPre (AlgebraicClosure (FractionRing V)) l.M') (p₂ : QkPt D₂.toPre (AlgebraicClosure (FractionRing V)) l.M'), p₁.y = (hD₁.xe.trans e).symm a ∧ TautPt T (f₁.comp iw) (fun k => f₁ (s k)) ε l.M' D₁.toPre (hD₁.xe.trans e) ((hD₁.e.hom.left ≫ …`. Introduce `a`. Take `⟨p₀, hp₀y, hp₀⟩` from `GlobalTheory.T.periodPart_mem_tautologicalPoint_torsion T ε l.M' R C.P.D.toPre iw s e β ββ w C.P.D.tau_bimult hF hs0 (AlgebraicClosure (FractionRing R)) a`.
+
+Take `⟨p₁, p₂, hp₁y, hTr₁, hp₂y, hTr₂, hQ⟩` from `hpairs p₀`. Conclude with `⟨p₁, p₂, by rw [hp₁y, hp₀y]; rfl, GlobalTheory.T.tautologicalPoint_transport_fieldMap T ε l.M' R V _ C.P.D iw s e β ββ w f₁ D₁.toPre hD₁ ββ₁ w₁ hf₁ D₁.tau_bimult hF hF₁ _ _ j₁ hE₁ a _ _ hp₀ hTr₁, by rw [hp₂y, hp₀y]; rfl, GlobalTheory.T.tautologicalPoint_transport_fieldMap T ε l.M …`. Set `ga : C.P.D.toPre.X ≃ₗ[𝓞 E] C.P.D.toPre.X` to `{ (hD₁.xe.symm.trans ph).trans hD₂.xe with map_smul' := hlin }`. Establish `hga : ∀ y, ga y = hD₂.xe (ph (hD₁.xe.symm y))` using `fun _ => rfl`. Establish `hbd : ∀ f : R →+* V, Function.Injective f → IsLocalHom f → ∀ k, f (s (.inl k)) ∈ maximalIdeal V ∧ f (s (.inl k)) ≠ 0` using `fun f hf hl k => ⟨map_nonunit f _ (show Cn.ψ _ ∈ maximalIdeal R from (Cn.bd k).symm ▸ C.s_mem k), (map_ne_zero_iff f hf).2 (hs0 _)⟩`.
+
+Establish `hpu` using `GlobalTheory.T.tautologicalBase_matching_monomials_ratio_unit T ε l.M' V D₁.toPre D₂.toPre _ _ _ _ ββ₁ w₁ _ _ _ _ ββ₂ w₂ b ph _ D₁.tau_bimult D₂.tau_bimult hF₁ hF₂ hM`. Take `⟨d₁, d₂, hd₁, hd₂, hsum⟩` from `GlobalTheory.T.monomials_differ_by_units_positive_boundaryCombination V T.r C.m Cn.N l.M' hn1 ε (fun k => f₁ (s k)) (fun k => f₂ (s k)) ((e.symm.trans ga.toAddEquiv).trans e).toIntLinearEquiv (hbd f₁ hf₁ lf₁) (fun k => (Cn.tor k).map f₁) (hbd f₂ hf₂ lf₂) (fun k => (Cn.tor k).map …`. Take `⟨u, hu⟩` from `hpu (hD₁.xe.symm (e.symm a)) (hD₁.xe.symm (e.symm a'))`. Simplify using `only [AddEquiv.trans_apply, AddEquiv.apply_symm_apply] at hu`. Conclude with `⟨u, hu⟩)`.
+
+Establish `hδ : ∀ k a a', C.δ k a a' = ε (.inl k) (e a) (e a')` using `fun k a a' => by rw [he, he, hε, Cn.cone]; rfl`. Establish `hid` using `lattice_id C.cone (fun x hx => by`. Take `⟨i, hi⟩` from `C.mono.exists_pos (maximalIdeal.isMaximal _).ne_top hx`. Conclude with `⟨i, (mul_pos_iff_of_pos_left (show (0 : ℤ) < l.M' by exact_mod_cast level_pos l)).1 hi⟩) ga d₁ d₂ hd₁ hd₂`. Use the proof step `(LinearMap.ext₂ fun a a' => by`.
+
+Establish `h` using `LinearMap.congr_fun₂ hsum (e a) (e a')`. Simplify `h) hn (fun x => by` using `[LinearMap.sum_apply, hδ]`. Take `⟨p₁, p₂, hy₁, -, hy₂, -, p', hp', -, z, hz, -⟩` from `htaut (e x)`. Establish `h : hD₂.xe p₂.y = hD₂.xe (ph p₁.y) + l.M' • hD₂.xe z` using `by rw [hz, map_add, hp', map_nsmul]`. Rewrite `h` using `[hy₂, hy₁]`.
+
+Use `⟨-(hD₂.xe z), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg, eq_add_neg_iff_add_eq, hga]`. Simplify using `using h.symm)`. Establish `hlat : ∀ y, (hD₂.xe.trans e) (ph y) = (hD₁.xe.trans e) y` using `fun y => by`. Use `hid (hD₁.xe y)` as an intermediate fact.
+
+Rewrite `this` using `[hga, AddEquiv.symm_apply_apply]`. Conclude with `congrArg e this`. Establish `hω : f₁.comp iw = f₂.comp iw` using `by rw [c₁, c₂, RingHom.comp_assoc, RingHom.comp_assoc, hW]`. Rewrite `hF₂`, `htaut` using `[← hω]`. Use `haveI := hM.2.1`.
+
+Use `haveI : IsMonHom (asIso b).hom := hM.1`. Establish `hbsq : IsSquare b.left (lift (fst D₁.toPre.P.A D₁.toPre.P.A ≫ b) (snd D₁.toPre.P.A D₁.toPre.P.A ≫ b) : G2 D₁.toPre.P.A ⟶ G2 D₂.toPre.P.A).left` using `⟨by rw [← Over.comp_left, lift_fst, Over.comp_left], by rw [← Over.comp_left, lift_snd, Over.comp_left]⟩`. Establish `hLam : ∀ D : DegPre V, (abelian₂ D.P.A D.P.L).IsLB` using `fun D => LB.isLB_linComb D.P.isLB _ _`. Establish `hLamT : (abelian₂ T.B T.M.L).IsLB` using `LB.isLB_linComb T.M.isLB _ _`. Establish `hb` using `GlobalTheory.T.eq_of_mumfordBundle_torsion_presentations V D₁.toPre T.B _ hLamT _ _ _ _ _ hF₁.1 (((isGrpPullback_of_iso (asIso b)).comp hF₂.1).congr (Category.id_comp _) rfl) hF₁.2.1 (isSquare_comp hbsq hF₂.2.1) ⟨w₁, hF₁.2.2.1⟩ (LBIso.trans (hLam _) (pull_isLB (hLam _) _) (pull_i …`.
+
+Establish `key` using `monomials_eq T ε l.M' V _ D₁.toPre D₂.toPre _ _ _ ββ₁ w₁ _ _ _ ββ₂ w₂ b ph _ hn1 D₁.tau_bimult D₂.tau_bimult hF₁ hF₂ hM hlat hb.symm htaut`. Set `f : V →+* AlgebraicClosure (FractionRing V)` to `(algebraMap (FractionRing V) _).comp (algebraMap V (FractionRing V))`. Establish `hf : Function.Injective f` using `(algebraMap (FractionRing V) _).injective.comp (IsFractionRing.injective V (FractionRing V))`. Establish `hx` using `GlobalTheory.T.eq_of_prod_zpow_eq_balancedForms_basis H Cn.L.D.X _ _ Cn.ε (fun k => f (f₁ (s k))) (fun k => f (f₂ (s k))) (fun k => (map_ne_zero_iff _ hf).2 ((map_ne_zero_iff _ hf₁).2 (hs0 k))) (fun k => (map_ne_zero_iff _ hf).2 ((map_ne_zero_iff _ hf₂).2 (hs0 k))) (fun a a' => b …`. Use `key (ib a) (ib a')` as an intermediate fact.
+
+Simplify using `only [hε] at this`. Conclude with `this)`. Introduce `k`. Establish `h1` using `hf (congrFun hx k)`. Rewrite `h1` using `[c₁, c₂]`.
+
+Conclude with `hη h1`.
+-/
 theorem coords_eq : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (φ : InvFun (𝓞 E)), 1 ≤ Dw.p + Dw.q → IsPolFan H.bar (min Dw.p Dw.q) φ → NoSelfInt H.bar (min Dw.p Dw.q) φ → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : MonoFam Xo c φ R) (Cn : Canon C), ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'], GlobalTheory.Mum.Base R' → ∀ θ₁ θ₂ : R →+* R', Function.Injective θ₁ → Function.Injective θ₂ → IsLocalHom θ₁ → IsLocalHom θ₂ → ∀ κ₁ κ₂ : Sp (FractionRing R') ⟶ Sp (FractionRing R), κ₁ ≫ jK R = jK R' ≫ spMap θ₁ → κ₂ ≫ jK R = jK R' ≫ spMap θ₂ → κ₁ ≫ C.y = κ₂ ≫ C.y → ∀ k, θ₁ (Cn.ψ (MvPolynomial.X k)) = θ₂ (Cn.ψ (MvPolynomial.X k)) := by
   intro E _ _ _ H Dw l Xo c φ hpq hφ hns R _ _ _ hR C Cn R' _ _ _ hR' θ₁ θ₂ i₁ i₂ l₁ l₂ κ₁ κ₂ hκ₁ hκ₂ hy
   have hW := GlobalTheory.T.canonicalFamily_base_injections_agree Xo c φ hpq hφ hns R hR C Cn R' hR' θ₁ θ₂ i₁ i₂ l₁ l₂ κ₁ κ₂ hκ₁ hκ₂ hy

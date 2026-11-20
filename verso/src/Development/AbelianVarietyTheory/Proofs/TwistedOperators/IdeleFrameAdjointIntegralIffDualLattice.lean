@@ -20,6 +20,11 @@ open GlobalTheory.LiftLevel
 
 namespace GlobalTheory.DualRed
 
+/- English proof (translation)
+Introduce `D S T hS βS βT x k j`. Establish `hE : toEAf D = GlobalTheory.LevSplit.finSw D` using `rfl`. Unfold `adjA frMapAdj`. Rewrite using `[hS, inv_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, map_one, one_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, Matrix.map_mul]`. Unfold `Formalism.UG.hform`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, hE, GlobalTheory.LevSplit.finSw_cA, GlobalTheory.LevSplit.finSw_incA, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+-/
 theorem adjA_entry : ∀ (D : D7) (S T : HSp D), S.gram = 1 → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (x : WO S T) (k : Fin S.rank) (j : Fin T.rank), adjA S T βS βT 1 x k j = Formalism.UG.hform (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (T.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))) (fun c => toEAf D (x c k)) (fun c => βT.1 c j) := by
   intro D S T hS βS βT x k j
   have hE : toEAf D = GlobalTheory.LevSplit.finSw D := rfl
@@ -31,6 +36,17 @@ theorem adjA_entry : ∀ (D : D7) (S T : HSp D), S.gram = 1 → ∀ (βS : GL (F
     GlobalTheory.LevSplit.finSw_incA, Finset.sum_mul]
   rw [Finset.sum_comm]
 
+/- English proof (translation)
+Introduce `D S T hS ΛT hsd βS βT hfr J hJ x hx`. Establish `hJ0 : J ≠ ⊥`. Rewrite using `[← Submodule.zero_eq_bot]`. Conclude with `hJ.ne_zero`. Rewrite using `[GlobalTheory.TensColRead.mem_hatA_stdL_iff D S T _ x hx]`.
+
+Apply the tactic sequence `simp only [GlobalTheory.FrameIdeal.mem_hatL_conjI_iff_hform D T ΛT hsd βT hfr J hJ0, ← adjA_entry D S T hS βS βT x]`. Unfold `IsIntM redM`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hint, hred⟩ k j`. Use `⟨⟨_, hint k j⟩, GlobalTheory.LiftLevel.mem_idS hJ fun PP hPP => ?_, rfl⟩` and prove the remaining obligations.
+
+Establish `h0` using `congrFun (congrFun (hred PP hPP) k) j`. Simplify `h0` using `only [Matrix.zero_apply, Pi.zero_apply, dif_pos (hint k j)]`. Introduce `h`. Establish `hint : ∀ k j, adjA S T βS βT 1 x k j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Introduce `k j`.
+
+Take `⟨s, -, hs⟩` from `h k j`. Rewrite using `[← hs]`. Conclude with `s.2`. Use `⟨hint, fun PP hPP => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k j`.
+
+Take `⟨s, hsI, hs⟩` from `h k j`. Establish `hse : (⟨adjA S T βS βT 1 x k j, hint k j⟩ : Formalism.L2.Herm.intAf D.host.F D.host.E) = s` using `Subtype.ext hs.symm`. Simplify using `only [Matrix.zero_apply, Pi.zero_apply, dif_pos (hint k j), hse]`. Conclude with `GlobalTheory.LiftLevel.resS_eq_zero hPP hsI`.
+-/
 theorem adj_int_iff : ∀ (D : D7) (S T : HSp D), S.gram = 1 → ∀ (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βT ΛT → ∀ (J : Ideal (𝓞 D.host.E)), Squarefree J → ∀ x : WO S T, IsFinPt x → ((IsIntM (adjA S T βS βT 1 x) ∧ ∀ PP : Formalism.L2.DIV.Pl D.host.E, J ≤ PP.asIdeal → redM PP (adjA S T βS βT 1 x) = 0) ↔ x ∈ hatA S T (tens (stdL D.host.E S.rank) (conjI J • ΛT))) := by
   intro D S T hS ΛT hsd βS βT hfr J hJ x hx
   have hJ0 : J ≠ ⊥ := by

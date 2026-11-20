@@ -47,10 +47,19 @@ def IsMumfordFam [IsLocalRing R] (Q : Data R) : Prop :=
 
 variable {F y α₁}
 
+/- English proof (translation)
+The claim follows from `h.1`.
+-/
 theorem IsMumfordFam.isCN [IsLocalRing R] {Q : Data R} (h : IsMumfordFam F y α₁ Q) : IsCN R := h.1
 
+/- English proof (translation)
+The claim follows from `h.2.1`.
+-/
 theorem IsMumfordFam.isPos [IsLocalRing R] {Q : Data R} (h : IsMumfordFam F y α₁ Q) : Q.IsPos (maximalIdeal R) := h.2.1
 
+/- English proof (translation)
+The claim follows from `h.2.2`.
+-/
 theorem IsMumfordFam.unif [IsLocalRing R] {Q : Data R} (h : IsMumfordFam F y α₁ Q) :
     ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), IsCN R' → Function.Injective ρ → ρ.Finite →
     ∀ (D : DegData R' (maximalIdeal R')) (ε : D.toPre.X ≃+ Q.X), Refines Q ρ D.toPre ε →
@@ -59,6 +68,9 @@ theorem IsMumfordFam.unif [IsLocalRing R] {Q : Data R} (h : IsMumfordFam F y α�
 
 end Family
 
+/- English proof (translation)
+Introduce `h` and use `Wit.not_isPos_tate_zero h.isPos`.
+-/
 example {o : Type} [CommRing o] {ζ : o} {g n : ℕ} (F : SFam g n ζ) (y : Sp (FractionRing (PowerSeries ℚ)) ⟶ F.X)
     (G₁ : Over (Sp (PowerSeries ℚ))) [GrpObj G₁] (α₁ : pullback G₁.hom (jK (PowerSeries ℚ)) ⟶ F.univ.A.left) :
     ¬ IsMumfordFam F y α₁ (Wit.tate 0) := fun h => Wit.not_isPos_tate_zero h.isPos
@@ -87,6 +99,11 @@ section Generic
 
 variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']
 
+/- English proof (translation)
+Establish `h : Function.Injective ((algebraMap R' (FractionRing R')).comp ρ)` using `(IsFractionRing.injective R' _).comp hρ`. Use `⟨spMap (IsFractionRing.lift (K := FractionRing R) h), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap (algebraMap R (FractionRing R)) = spMap (algebraMap R' (FractionRing R')) ≫ spMap ρ`. Rewrite using `[← spMap_comp, ← spMap_comp]`. Use `congr 1`.
+
+Use extensionality with `r`. Simplify using the standard rewrite rules.
+-/
 theorem exists_genericMap {ρ : R →+* R'} (hρ : Function.Injective ρ) :
     ∃ κ : Sp (FractionRing R') ⟶ Sp (FractionRing R), κ ≫ jK R = jK R' ≫ spMap ρ := by
   have h : Function.Injective ((algebraMap R' (FractionRing R')).comp ρ) := (IsFractionRing.injective R' _).comp hρ
@@ -99,6 +116,9 @@ theorem exists_genericMap {ρ : R →+* R'} (hρ : Function.Injective ρ) :
 
 omit [IsDomain R] in
 
+/- English proof (translation)
+Introduce `h0` and use `by have h₁ := h.mem_of_mem_sq (Pi.single i 1) (by rw [Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_eq_of_ne hk]) (by simp), h0, mul_zero] exact zero_mem _) i exact (maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using h₁))`.
+-/
 theorem ne_zero_of_isRelParam {o : Type} [CommRing o] [IsLocalRing R] {b : o →+* R} {m : ℕ} {t : Fin m → R}
     (h : IsRelParam b t) (i : Fin m) : t i ≠ 0 := fun h0 => by
   have h₁ := h.mem_of_mem_sq (Pi.single i 1) (by
@@ -112,10 +132,16 @@ section Good
 
 variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n ζ} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
+/- English proof (translation)
+The claim follows from `LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h`.
+-/
 theorem lbIso_pull_comp {X Y Z : Scheme.{0}} {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : Z ⟶ Y)
     {a' : Z ⟶ X} (e : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
   LBIso.chartPull (Geo.Tor.chartPullPull M j j rfl) (Geo.Tor.chartPullSame L _ (fun _ => a) _ j fun _ => e) h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc], by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩`.
+-/
 theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {ψ : G''.left ⟶ G'.left} {ψ₂ : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
     (h' : IsSquare ψ ψ₂) (h : IsSquare φ φ₂) : IsSquare (ψ ≫ φ) (ψ₂ ≫ φ₂) :=
@@ -131,6 +157,9 @@ variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n ζ} {S : Sch
   {y : Sp (FractionRing R) ⟶ F.X} {G₁ : Over (Sp R)} [GrpObj G₁] {α₁ : pullback G₁.hom (jK R) ⟶ F.univ.A.left}
   {ξ : Sp R ⟶ S} {π₁ : G₁.left ⟶ G.left}
 
+/- English proof (translation)
+Take `⟨hπ, κ, πK, α, α₂, hκ, hK, hA, hsq, hL, hU⟩` from `h`. Use `⟨hπ.comp h₁, κ ≫ y, α, α₂, ?_, hA, hsq, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, ← Category.assoc, hκ, Category.assoc]`. Rewrite using `[← Category.assoc, hU, Category.assoc, hα, ← Category.assoc, hK, Category.assoc]`.
+-/
 theorem IsUnifAlong.isUnifOf (h₁ : IsGrpPullback G₁ G ξ π₁) (hy : y ≫ j = jK R ≫ ξ)
     (hα : α₁ ≫ e = pullback.fst G₁.hom (jK R) ≫ π₁) {R' : Type} [CommRing R'] [IsDomain R'] {I : Ideal R'} {ρ : R →+* R'}
     {G' : Over (Sp R')} [GrpObj G'] [IsCommMonObj G'] {π : G'.left ⟶ G₁.left} {D : DegData R' I}
@@ -141,12 +170,20 @@ theorem IsUnifAlong.isUnifOf (h₁ : IsGrpPullback G₁ G ξ π₁) (hy : y ≫ 
   · rw [Category.assoc, hy, ← Category.assoc, hκ, Category.assoc]
   · rw [← Category.assoc, hU, Category.assoc, hα, ← Category.assoc, hK, Category.assoc]
 
+/- English proof (translation)
+Use `⟨h.isCN, h.isPos, fun R' _ _ _ ρ hR hρ hf D ε hD => ?_⟩` and prove the remaining obligations. Take `⟨G', _, _, π, A, U, hU⟩` from `h.unif R' ρ hR hρ hf D ε hD`. Conclude with `⟨G', inferInstance, inferInstance, π ≫ π₁, A, U, hU.isUnifOf h₁ hy hα⟩`.
+-/
 theorem IsMumfordFam.isMumfordOf [IsLocalRing R] (h₁ : IsGrpPullback G₁ G ξ π₁) (hy : y ≫ j = jK R ≫ ξ)
     (hα : α₁ ≫ e = pullback.fst G₁.hom (jK R) ≫ π₁) {Q : Data R} (h : IsMumfordFam F y α₁ Q) : IsMumfordOf F j e ξ Q := by
   refine ⟨h.isCN, h.isPos, fun R' _ _ _ ρ hR hρ hf D ε hD => ?_⟩
   obtain ⟨G', _, _, π, A, U, hU⟩ := h.unif R' ρ hR hρ hf D ε hD
   exact ⟨G', inferInstance, inferInstance, π ≫ π₁, A, U, hU.isUnifOf h₁ hy hα⟩
 
+/- English proof (translation)
+Establish `h₀` using `isGrpPullback_pullback G ξ`. Establish `h₂` using `(isGrpPullback_pullback ((Over.pullback ξ).obj G) (jK R)).comp h₀`. Take `⟨E, hE, hE'⟩` from `grpPullback_iso ((IsGrpPullback.comp h he).congr hy rfl) h₂`. Take `⟨E₁, ⟨hE₁, hE₂⟩, -⟩` from `GlobalTheory.SemiAbExtDomain.existsUnique_iso_extension_generic (FractionRing R) G₁ ((Over.pullback ξ).obj G) hG₁ (IsSemiAbelian.pullback ξ G hG) E`. Use `⟨E₁.hom.left ≫ pullback.fst G.hom ξ, ((isGrpPullback_of_iso E₁).comp h₀).congr (Category.id_comp _) rfl, ?_⟩` and prove the remaining obligations.
+
+Establish `h₃ : ((Over.pullback (jK R)).map E₁.hom).left ≫ pullback.fst ((Over.pullback ξ).obj G).hom (jK R) = pullback.fst G₁.hom (jK R) ≫ E₁.hom.left` using `pullback.lift_fst _ _ _`. Establish `h₄ : E.hom = (Over.pullback (jK R)).map E₁.hom` using `hE₂.symm`. Use `hE'.symm.trans ?_` and prove the remaining obligations. Rewrite using `[h₄]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ pullback.fst G.hom ξ) h₃).trans (Category.assoc _ _ _))`.
+-/
 theorem IsGenFibre.exists_isGrpPullback [IsNoetherianRing R] [IsIntegrallyClosed R] (hG : IsSemiAbelian G)
     (he : IsGrpPullback F.univ.A G j e) (hG₁ : IsSemiAbelian G₁) (hy : y ≫ j = jK R ≫ ξ) (h : IsGenFibre F y α₁) :
     ∃ π₁ : G₁.left ⟶ G.left, IsGrpPullback G₁ G ξ π₁ ∧ α₁ ≫ e = pullback.fst G₁.hom (jK R) ≫ π₁ := by
@@ -165,6 +202,9 @@ theorem IsGenFibre.exists_isGrpPullback [IsNoetherianRing R] [IsIntegrallyClosed
 
 variable [IsOpenImmersion j] {φ : InvFun ℤ} {BD : EffCartierData S} {d : ℕ} {x : S}
 
+/- English proof (translation)
+Take `⟨R, _, _, _, b, ξ, m, t, Q, δ, a, G₁, _, y, α₁, c₁, c₂, ⟨hG₁, -, hy, hα⟩, ⟨hM, c₃⟩, c₄⟩` from `h`. Use `(GlobalTheory.isDomain_and_isIntegrallyClosed_of_isRegularLocalRing R).2` as an intermediate fact. Take `⟨π₁, h₁, h₂⟩` from `hα.exists_isGrpPullback hG he hG₁ hy`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, b, ξ, m, t, Q, δ, a, c₁, c₂, ⟨hM.isMumfordOf h₁ hy h₂, c₃⟩, c₄⟩`.
+-/
 theorem PreChart.hasPolChart (hG : IsSemiAbelian G) (he : IsGrpPullback F.univ.A G j e) (h : PreChart F s j φ BD d x) :
     HasPolChart F s j e φ BD d x := by
   obtain ⟨R, _, _, _, b, ξ, m, t, Q, δ, a, G₁, _, y, α₁, c₁, c₂, ⟨hG₁, -, hy, hα⟩, ⟨hM, c₃⟩, c₄⟩ := h

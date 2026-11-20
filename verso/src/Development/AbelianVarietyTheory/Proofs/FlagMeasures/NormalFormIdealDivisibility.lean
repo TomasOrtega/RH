@@ -17,6 +17,19 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [StarRing K] in
 
+/- English proof (translation)
+Set `J : Submodule (𝓞 K) K` to `M.map (φ.restrictScalars (𝓞 K))`. Establish `hJ : J.FG` using `hM.map _`. Set `I : FractionalIdeal (𝓞 K)⁰ K` to `⟨J, FractionalIdeal.isFractional_of_fg hJ⟩`. Establish `hI : I ≠ 0`. Take `⟨y, hy, hy0⟩` from `h0`.
+
+Introduce `h`. Establish `: φ y ∈ I` using `⟨y, hy, rfl⟩`. Rewrite `this` using `[h]`. Conclude with `hy0 (by simpa using this)`. Establish `h1 : (1 : K) ∈ ((I * I⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K)`.
+
+Rewrite using `[mul_inv_cancel₀ hI]`. Conclude with `FractionalIdeal.one_mem_one _`. Rewrite `h1` using `[FractionalIdeal.coe_mul]`. Establish `key : ∀ w ∈ (I : Submodule (𝓞 K) K) * ((I⁻¹ : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K), ∃ v ∈ Submodule.span K (M : Set V), φ v = w ∧ ∀ y ∈ M, φ y • v ∈ M`. Introduce `w hw`.
+
+Use `Submodule.mul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y0, hy0, rfl⟩ β hβ`. Use `⟨β • y0, Submodule.smul_mem _ _ (Submodule.subset_span hy0), by simp [mul_comm], fun y hy => ?_⟩` and prove the remaining obligations. Establish `hm : φ y * β ∈ (I * I⁻¹ : FractionalIdeal (𝓞 K)⁰ K)` using `FractionalIdeal.mul_mem_mul (show φ y ∈ I from ⟨y, hy, rfl⟩) hβ`. Rewrite `hm` using `[mul_inv_cancel₀ hI, FractionalIdeal.mem_one_iff]`.
+
+Take `⟨o, ho⟩` from `hm`. Rewrite using `[smul_smul, ← ho, algebraMap_smul]`. Conclude with `M.smul_mem _ hy0`. Introduce and unpack `_ _ ⟨v, hv, rfl, h⟩ ⟨v', hv', rfl, h'⟩`. Conclude with `⟨v + v', add_mem hv hv', by simp, fun y hy => by rw [smul_add]; exact add_mem (h y hy) (h' y hy)⟩`.
+
+Conclude with `key 1 h1`.
+-/
 theorem exists_section (M : Submodule (𝓞 K) V) (hM : M.FG) (φ : V →ₗ[K] K) (h0 : ∃ y ∈ M, φ y ≠ 0) :
     ∃ v ∈ Submodule.span K (M : Set V), φ v = 1 ∧ ∀ y ∈ M, φ y • v ∈ M := by
   let J : Submodule (𝓞 K) K := M.map (φ.restrictScalars (𝓞 K))
@@ -49,6 +62,17 @@ theorem exists_section (M : Submodule (𝓞 K) V) (hM : M.FG) (φ : V →ₗ[K] 
 
 omit [NumberField K] in
 
+/- English proof (translation)
+Use `choose G0 hG0 using fun a b => Submodule.mem_one.1 (hG a b)`. Use `choose η hη using fun b => Submodule.mem_one.1 (hp b)`. Use `set G : Matrix (Fin j) (Fin j) K := Matrix.of fun a b => H.B (x a) (x' b) with hGdef`. Establish `hGm : G = (algebraMap (𝓞 K) K).mapMatrix (Matrix.of G0)`. Use extensionality with `a b`.
+
+Simplify using `[hGdef, ← hG0]`. Establish `h1 : Matrix.vecMul p G = fun b => algebraMap (𝓞 K) K (η b)`. Use function extensionality and compare the values at `b`. Rewrite using `[hη]`. Simplify using `[Matrix.vecMul, dotProduct, hGdef, map_sum]`.
+
+Establish `h2 : G.det • p = Matrix.vecMul (Matrix.vecMul p G) G.adjugate`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_adjugate, Matrix.vecMul_smul, Matrix.vecMul_one]`. Rewrite using `[Finset.smul_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Establish `h3 : G.det * p a = algebraMap (𝓞 K) K (∑ b, η b * (Matrix.of G0).adjugate b a)`.
+
+Use `congrFun h2 a` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this, h1, hGm, ← RingHom.map_adjugate]`. Simplify using `[Matrix.vecMul, dotProduct, map_sum]`. Rewrite using `[smul_smul, h3, algebraMap_smul]`.
+
+Conclude with `Λ.smul_mem _ (hx a)`.
+-/
 theorem det_smul_mem (H : HermSpace K V) (Λ : Submodule (𝓞 K) V) {j : ℕ} (x x' : Fin j → V)
     (hx : ∀ a, x a ∈ Λ) (hG : ∀ a b, H.B (x a) (x' b) ∈ (1 : Submodule (𝓞 K) K)) (p : Fin j → K)
     (hp : ∀ b, H.B (∑ a, p a • x a) (x' b) ∈ (1 : Submodule (𝓞 K) K)) :
@@ -75,27 +99,48 @@ theorem det_smul_mem (H : HermSpace K V) (Λ : Submodule (𝓞 K) V) {j : ℕ} (
   exact Λ.smul_mem _ (hx a)
 
 omit [StarRing K] in
+/- English proof (translation)
+Unfold `ipow`. Rewrite using `[zpow_add₀ (by simpa using h), FractionalIdeal.coe_mul]`.
+-/
 theorem ipow_add (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) (m n : ℤ) : ipow 𝔡 (m + n) = ipow 𝔡 m * ipow 𝔡 n := by
   unfold ipow
   rw [zpow_add₀ (by simpa using h), FractionalIdeal.coe_mul]
 
 omit [StarRing K] in
+/- English proof (translation)
+Unfold `ipow`. Simplify using the standard rewrite rules.
+-/
 theorem ipow_zero (𝔡 : Ideal (𝓞 K)) : ipow 𝔡 0 = 1 := by
   unfold ipow; simp
 
 omit [StarRing K] in
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [ipow_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, ipow_add _ h, ih]`.
+-/
 theorem ipow_sum (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) {ι : Type} (s : Finset ι) (f : ι → ℤ) :
     ipow 𝔡 (∑ i ∈ s, f i) = ∏ i ∈ s, ipow 𝔡 (f i) := by
   induction s using Finset.induction_on with
   | empty => simp [ipow_zero]
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, ipow_add _ h, ih]
 
+/- English proof (translation)
+Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hx`. Establish `: IsIntegral ℤ (star (algebraMap (𝓞 K) K o))` using `(RingOfIntegers.isIntegral_coe o).map (starRingEnd K).toIntAlgHom`. Conclude with `Submodule.mem_one.2 ⟨⟨_, this⟩, rfl⟩`.
+-/
 theorem star_mem_one {x : K} (hx : x ∈ (1 : Submodule (𝓞 K) K)) : star x ∈ (1 : Submodule (𝓞 K) K) := by
   obtain ⟨o, rfl⟩ := Submodule.mem_one.1 hx
   have : IsIntegral ℤ (star (algebraMap (𝓞 K) K o)) :=
     (RingOfIntegers.isIntegral_coe o).map (starRingEnd K).toIntAlgHom
   exact Submodule.mem_one.2 ⟨⟨_, this⟩, rfl⟩
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro x hx`. Simplify using `only [Nat.cast_zero, ipow_zero] at hx ⊢`. Conclude with `star_mem_one hx`. Consider the case `succ n ih`.
+
+Introduce `x hx`. Rewrite `hx`, the goal using `[Nat.cast_succ, ipow_add _ h]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Rewrite using `[star_mul']`.
+
+Use `Submodule.mul_mem_mul (ih a ha) ?_` and prove the remaining obligations. Simplify using `only [ipow, zpow_one] at hb ⊢`. Take `⟨o, ho, rfl⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hb`. Take `⟨y, hy, hy'⟩` from `hs o ho`. Conclude with `(FractionalIdeal.mem_coeIdeal _).2 ⟨y, hy, hy'⟩`.
+
+Introduce `a b ha hb`. Rewrite using `[star_add]`. Conclude with `add_mem ha hb`.
+-/
 theorem star_mem_ipow_nat (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℕ) :
     ∀ x ∈ ipow 𝔡 n, star x ∈ ipow 𝔡 n := by
   induction n with
@@ -113,6 +158,13 @@ theorem star_mem_ipow_nat (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) (hs : ∀ x
       exact (FractionalIdeal.mem_coeIdeal _).2 ⟨y, hy, hy'⟩
     · intro a b ha hb; rw [star_add]; exact add_mem ha hb
 
+/- English proof (translation)
+Establish `hne : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ (n : ℤ)) ≠ 0` using `zpow_ne_zero _ (by simpa using h)`. Establish `key : ∀ x : K, x ∈ ipow 𝔡 (-(n : ℤ)) ↔ ∀ y ∈ ipow 𝔡 n, x * y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `x`. Unfold `ipow`. Rewrite using `[zpow_neg, FractionalIdeal.mem_coe, FractionalIdeal.mem_inv_iff hne]`.
+
+Simplify using `only [FractionalIdeal.mem_coe, ← FractionalIdeal.coe_one (S := (𝓞 K)⁰)]`. Introduce `x hx`. Rewrite `hx`, the goal using `[key]`. Introduce `y hy`. Use `star_mem_one (hx _ (star_mem_ipow_nat 𝔡 h hs n y hy))` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 theorem star_mem_ipow_neg (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) (hs : ∀ x ∈ 𝔡, ∃ y ∈ 𝔡, (y : K) = star (x : K)) (n : ℕ) :
     ∀ x ∈ ipow 𝔡 (-(n : ℤ)), star x ∈ ipow 𝔡 (-(n : ℤ)) := by
   have hne : ((𝔡 : FractionalIdeal (𝓞 K)⁰ K) ^ (n : ℤ)) ≠ 0 := zpow_ne_zero _ (by simpa using h)
@@ -128,6 +180,9 @@ theorem star_mem_ipow_neg (𝔡 : Ideal (𝓞 K)) (h : 𝔡 ≠ ⊥) (hs : ∀ x
   simpa using this
 
 omit [StarRing K] in
+/- English proof (translation)
+Establish `: ∏ i, A i = ∏ i, Submodule.span (𝓞 K) (A i : Set K)` using `by simp`. Rewrite using `[this, Submodule.prod_span, Submodule.span_le]`. Introduce `y hy`. Take `⟨f, hf, rfl⟩` from `(Set.mem_fintype_prod _ _).1 hy`. Conclude with `h f hf`.
+-/
 theorem prod_le_of_forall {ι : Type} [Fintype ι] (A : ι → Submodule (𝓞 K) K) (J : Submodule (𝓞 K) K)
     (h : ∀ f : ι → K, (∀ i, f i ∈ A i) → ∏ i, f i ∈ J) : ∏ i, A i ≤ J := by
   have : ∏ i, A i = ∏ i, Submodule.span (𝓞 K) (A i : Set K) := by simp
@@ -139,6 +194,17 @@ theorem prod_le_of_forall {ι : Type} [Fintype ι] (A : ι → Submodule (𝓞 K
 variable {H : HermSpace K V} {r : ℕ}
 
 omit [NumberField K] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, rfl⟩` from `hy`. Establish `hb' : b.val < n` using `hb`. Use `⟨Pi.single ⟨b.val, by omega⟩ 1, fun c hc => Pi.single_eq_of_ne ?_ _, ?_⟩` and prove the remaining obligations.
+
+Introduce `h`. Rewrite `hc` using `[h]`. Simplify using `at hc`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_eq_single ⟨b.val, by omega⟩]`.
+
+Simplify using `only [Pi.single_eq_same, one_smul]`. Both sides reduce to the same expression. Introduce `c _ hc`. Rewrite using `[Pi.single_eq_of_ne hc, zero_smul]`. Simplify using the standard rewrite rules.
+
+Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add y y' _ _ h h'`. Take `⟨p, hp, rfl⟩` from `h`. Take `⟨p', hp', rfl⟩` from `h'`. Conclude with `⟨p + p', fun b hb => by simp [hp b hb, hp' b hb], by simp [add_smul, Finset.sum_add_distrib]⟩`.
+
+Consider the case `smul a y _ h`. Take `⟨p, hp, rfl⟩` from `h`. Conclude with `⟨a • p, fun b hb => by simp [hp b hb], by simp [Finset.smul_sum, smul_smul]⟩`.
+-/
 theorem Xa_coords (F : FlagD H r) {j : ℕ} (hj : j ≤ r + 1) {n : ℕ} (hn : n ≤ j) {y : V} (hy : y ∈ F.Xa n) :
     ∃ p : Fin j → K, (∀ b : Fin j, n ≤ b.val → p b = 0) ∧ y = ∑ b, p b • F.e (Fin.castLE hj b) := by
   induction hy using Submodule.span_induction with
@@ -161,6 +227,15 @@ theorem Xa_coords (F : FlagD H r) {j : ℕ} (hj : j ≤ r + 1) {n : ℕ} (hn : n
     exact ⟨a • p, fun b hb => by simp [hp b hb], by simp [Finset.smul_sum, smul_smul]⟩
 
 omit [NumberField K] in
+/- English proof (translation)
+Establish `h : ∀ a : Fin j, ∃ p : Fin j → K, (∀ b : Fin j, a.val ≤ b.val → p b = 0) ∧ s a • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a) - ∑ b, p b • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) b) ∈ Λ`. Introduce `a`. Establish `h1` using `hs a`. Rewrite `h1` using `[← hF.1]`. Take `⟨l, hl, ξ, hξ, he⟩` from `Submodule.mem_sup.1 h1`.
+
+Take `⟨p, hp, rfl⟩` from `Xa_coords F (hj.trans (Nat.le_succ r)) (n := a.val) a.isLt.le hξ`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `he' : l + ∑ b, p b • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) b) = s a • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) a)` using `he`. Rewrite using `[← he']`. Simplify using `using hl`.
+
+Use `choose p hp hΛ using h`. Use `⟨Matrix.diagonal s - Matrix.of p, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[hp a a le_rfl]`.
+
+Introduce `a b hab`. Establish `hab' : a < b` using `hab`. Simplify using `[Matrix.diagonal_apply_ne _ hab'.ne, hp a b hab'.le]`. Use `hΛ a using 1` and compare the differences between its conclusion and the goal. Simplify using `[sub_smul, Finset.sum_sub_distrib, Matrix.diagonal_apply, ite_smul]`.
+-/
 theorem exists_tri (F : FlagD H r) (Λ : Submodule (𝓞 K) V) (aa : Fin r → Submodule (𝓞 K) K) (hF : IsFrame F Λ aa)
     {j : ℕ} (hj : j ≤ r) (s : Fin j → K) (hs : ∀ a, s a ∈ aa (Fin.castLE hj a)) :
     ∃ A : Matrix (Fin j) (Fin j) K, A.det = ∏ a, s a ∧
@@ -189,6 +264,17 @@ theorem exists_tri (F : FlagD H r) (Λ : Submodule (𝓞 K) V) (aa : Fin r → S
     simp [sub_smul, Finset.sum_sub_distrib, Matrix.diagonal_apply, ite_smul]
 
 omit [NumberField K] in
+/- English proof (translation)
+Take `⟨A, hA, hAΛ⟩` from `exists_tri F Λ aa hF hj s hs`. Take `⟨A', hA', hAΛ'⟩` from `exists_tri F' Λ aa hF' hj t ht`. Distinguish the cases in `h0 : A.det = 0`. Rewrite using `[← hA, h0]`. Simplify using the standard rewrite rules.
+
+Take `⟨q, -, rfl⟩` from `Xa_coords F (hj.trans (Nat.le_succ r)) le_rfl hξ`. Establish `hq : ∑ a, (Matrix.vecMul q A⁻¹) a • ∑ c, A a c • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) c) = ∑ c, q c • F.e (Fin.castLE (hj.trans (Nat.le_succ r)) c)`. Establish `: Matrix.vecMul (Matrix.vecMul q A⁻¹) A = q`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (Ne.isUnit h0), Matrix.vecMul_one]`. Use `conv_rhs => rw [← this]`.
+
+Generalize the expression as in `Matrix.vecMul q A⁻¹ = p`. Simplify using `only [Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hX : ∀ b, ∑ c, A' b c • F'.e (Fin.castLE (hj.trans (Nat.le_succ r)) c) ∈ F'.X` using `fun b => Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (e_mem_X F' (Fin.castLE hj c))`. Establish `key` using `det_smul_mem H Λ _ _ hAΛ (fun a b => hint _ (hAΛ a) _ (hAΛ' b)) (Matrix.vecMul q A⁻¹) (fun b => by rw [hq]; exact hp _ (hAΛ' b) (hX b))`.
+
+Rewrite `key` using `[hq]`. Use `key using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← hA, ← hA', ← Matrix.det_conjTranspose, Dl, ← Matrix.det_mul, ← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `a b`.
+
+Simplify using `only [Matrix.mul_apply, Matrix.of_apply, map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.map_smulₛₗ, Matrix.submatrix_apply, Zhat, Matrix.conjTranspose_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, starRingEnd_apply]`. Use `first`. Consider the case `(refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring)`. Consider the case `(rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring)`.
+-/
 theorem prod_smul_mem (F F' : FlagD H r) (Λ : Submodule (𝓞 K) V) (aa : Fin r → Submodule (𝓞 K) K)
     (hF : IsFrame F Λ aa) (hF' : IsFrame F' Λ aa)
     (hint : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K))
@@ -226,6 +312,11 @@ theorem prod_smul_mem (F F' : FlagD H r) (Λ : Submodule (𝓞 K) V) (aa : Fin r
     | (rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring)
 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
+/- English proof (translation)
+Establish `: (Zhat N.F N.F').submatrix (Fin.castLE (N.j_le.trans (Nat.le_succ r))) (Fin.castLE (N.j_le.trans (Nat.le_succ r))) = N.w.mat * Matrix.diagonal fun b => ((N.sgn b : ℤ) : K)`. Use extensionality with `a b`. Simplify using `[Zhat, N.pair, Matrix.mul_diagonal]`. Rewrite using `[Dl, this, Matrix.det_mul, Matrix.det_diagonal]`. Use `mul_ne_zero (GlobalTheory.SgLoc.PtAlg.isUnit_det N.w).ne_zero (Finset.prod_ne_zero_iff.2 fun b _ => ?_)` and prove the remaining obligations.
+
+Conclude with `(N.sgn b).ne_zero` after adjusting the coercions.
+-/
 theorem Dl_ne (N : NF H r) : Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) ≠ 0 := by
   have : (Zhat N.F N.F').submatrix (Fin.castLE (N.j_le.trans (Nat.le_succ r)))
       (Fin.castLE (N.j_le.trans (Nat.le_succ r))) = N.w.mat * Matrix.diagonal fun b => ((N.sgn b : ℤ) : K) := by
@@ -235,6 +326,25 @@ theorem Dl_ne (N : NF H r) : Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) ≠ 
   refine mul_ne_zero (GlobalTheory.SgLoc.PtAlg.isUnit_det N.w).ne_zero (Finset.prod_ne_zero_iff.2 fun b _ => ?_)
   exact_mod_cast (N.sgn b).ne_zero
 
+/- English proof (translation)
+Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `x hx`. Rewrite `hx` using `[← hΛ.1.2, mem_dual_iff]`. Conclude with `hx.2`. Establish `hD` using `Dl_ne N`.
+
+Use `set D := Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) with hDdef`. Use `set m : ℤ := 2 * ∑ a ∈ Finset.range N.j, ((r : ℤ) - a) with hm`. Set `J : Submodule (𝓞 K) K` to `Λ.comap ((LinearMap.toSpanSingleton K V (D • ξ)).restrictScalars (𝓞 K))`. Establish `h1 : ipow N.𝔡 (-m) ≤ J`. Establish `e : -m = ∑ i : Fin N.j ⊕ Fin N.j, Sum.elim (fun a : Fin N.j => -((r : ℤ) - a.val)) (fun a : Fin N.j => -((r : ℤ) - a.val)) i`.
+
+Rewrite using `[Fintype.sum_sum_type, hm, ← Fin.sum_univ_eq_sum_range (fun a : ℕ => (r : ℤ) - a)]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ipow_sum _ N.𝔡_ne]`. Use `prod_le_of_forall _ _ fun f hf => ?_` and prove the remaining obligations.
+
+Use `prod_smul_mem N.F N.F' Λ N.aa hΛ.2.1 hΛ.2.2 hint N.j_le (fun a => f (Sum.inl a)) (fun a => star (f (Sum.inr a))) (fun a => hf (Sum.inl a)) (fun a => ?_) hξ hp` as an intermediate fact. Use `show (∏ i, f i) • (D • ξ) ∈ Λ`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[smul_smul, Fintype.prod_sum_type, star_prod]`. Simplify using `only [star_star]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hf (Sum.inr a)`. Establish `ha : a.val ≤ r` using `a.isLt.le.trans N.j_le`. Establish `e2 : (r : ℤ) - a.val = ((r - a.val : ℕ) : ℤ)` using `by push_cast [ha]; ring`.
+
+Use `show _ ∈ ipow N.𝔡 (-((r : ℤ) - a.val))`. Simplify using `only [Sum.elim_inr] at h2`. Rewrite `h2`, the goal using `[e2]`. Conclude with `star_mem_ipow_neg _ N.𝔡_ne N.𝔡_star _ _ h2`. Establish `h2 : ∀ w ∈ ipow N.𝔡 m * ipow N.𝔡 (-m), γ / D * w ∈ ipow N.𝔡 (-m)`.
+
+Introduce `w hw`. Use `Submodule.mul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `y hy y' hy'`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (hγ y hy)`. Establish `: γ / D * (y * y') = o • y'` using `by rw [Algebra.smul_def, ho]; ring`.
+
+Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hy'`. Introduce `a b ha hb`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`.
+
+Establish `h3` using `h1 (h2 1 (by rw [← ipow_add _ N.𝔡_ne, add_neg_cancel, ipow_zero]; exact Submodule.mem_one.2 ⟨1, map_one _⟩))`. Establish `h4 : (γ / D * 1) • (D • ξ) ∈ Λ` using `h3`. Rewrite `h4` using `[smul_smul, mul_one, div_mul_cancel₀ _ hD]`. Then use the resulting hypothesis.
+-/
 theorem smul_mem_of_pairing (N : NF H r) (Λ : Submodule (𝓞 K) V) (hΛ : IsFramed N.F N.F' Λ N.aa) (γ : K)
     (hγ : ∀ y ∈ ipow N.𝔡 (2 * ∑ a ∈ Finset.range N.j, ((r : ℤ) - a)),
       γ * y / Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) ∈ (1 : Submodule (𝓞 K) K))
@@ -288,17 +398,32 @@ omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 def Ia (N : NF H r) (n : ℕ) : Submodule K V :=
   Submodule.span K ((fun b : Fin r => N.F.e b.castSucc) '' {b | N.j ≤ b.val ∧ b.val < n})
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨b, ⟨h, h'⟩, rfl⟩`.
+-/
 theorem e_mem_Ia (N : NF H r) (b : Fin r) {n : ℕ} (h : N.j ≤ b.val) (h' : b.val < n) :
     N.F.e b.castSucc ∈ Ia N n := Submodule.subset_span ⟨b, ⟨h, h'⟩, rfl⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ hb => ⟨hb.1, lt_of_lt_of_le hb.2 h⟩)`.
+-/
 theorem Ia_mono (N : NF H r) {m n : ℕ} (h : m ≤ n) : Ia N m ≤ Ia N n :=
   Submodule.span_mono (Set.image_mono fun _ hb => ⟨hb.1, lt_of_lt_of_le hb.2 h⟩)
 
+/- English proof (translation)
+The claim follows from `Submodule.span_mono (Set.image_mono fun _ hb => hb.2)`.
+-/
 theorem Ia_le (N : NF H r) (n : ℕ) : Ia N n ≤ N.F.Xa n :=
   Submodule.span_mono (Set.image_mono fun _ hb => hb.2)
 
+/- English proof (translation)
+Introduce `h` and use `by simpa [h] using N.c_norm`.
+-/
 theorem c_ne (N : NF H r) : N.c ≠ 0 := fun h => by simpa [h] using N.c_norm
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `h` using `Submodule.smul_mem _ N.c⁻¹ (e_mem_Xa N.F' b hb.2)`. Rewrite `h` using `[N.same _ hb.1, smul_smul, inv_mul_cancel₀ (c_ne N), one_smul]`. Conclude with `h`.
+-/
 theorem Ia_le' (N : NF H r) (n : ℕ) : Ia N n ≤ N.F'.Xa n := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨b, hb, rfl⟩
@@ -306,9 +431,18 @@ theorem Ia_le' (N : NF H r) (n : ℕ) : Ia N n ≤ N.F'.Xa n := by
   rw [N.same _ hb.1, smul_smul, inv_mul_cancel₀ (c_ne N), one_smul] at h
   exact h
 
+/- English proof (translation)
+The claim follows from `Xa_le_X _ _ (Ia_le N n h)`.
+-/
 theorem Ia_X (N : NF H r) {n : ℕ} {y : V} (h : y ∈ Ia N n) : y ∈ N.F.X := Xa_le_X _ _ (Ia_le N n h)
+/- English proof (translation)
+The claim follows from `Xa_le_X _ _ (Ia_le' N n h)`.
+-/
 theorem Ia_X' (N : NF H r) {n : ℕ} {y : V} (h : y ∈ Ia N n) : y ∈ N.F'.X := Xa_le_X _ _ (Ia_le' N n h)
 
+/- English proof (translation)
+Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Distinguish the cases in `h : b.val < N.j`. Conclude with `Submodule.mem_sup_left (e_mem_Xa N.F b h)`. Conclude with `Submodule.mem_sup_right (e_mem_Ia N b (not_lt.1 h) hb)`.
+-/
 theorem Xa_le_sup (N : NF H r) (n : ℕ) : N.F.Xa n ≤ N.F.Xa N.j ⊔ Ia N n := by
   refine Submodule.span_le.2 ?_
   rintro _ ⟨b, hb, rfl⟩
@@ -316,9 +450,21 @@ theorem Xa_le_sup (N : NF H r) (n : ℕ) : N.F.Xa n ≤ N.F.Xa N.j ⊔ Ia N n :=
   · exact Submodule.mem_sup_left (e_mem_Xa N.F b h)
   · exact Submodule.mem_sup_right (e_mem_Ia N b (not_lt.1 h) hb)
 
+/- English proof (translation)
+The claim follows from `perp_Xa N.F fun a ha => by rw [N.ist_e a b hb, if_neg (by rintro rfl; omega)]`.
+-/
 theorem Xa_ist (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) : ∀ y ∈ N.F.Xa b.val, H.B y (N.ist b) = 0 :=
   perp_Xa N.F fun a ha => by rw [N.ist_e a b hb, if_neg (by rintro rfl; omega)]
 
+/- English proof (translation)
+Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Simplify using `only [N.ist_e a b hb]`. Use `split_ifs with h`.
+
+Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `: a.val ≠ b.val` using `fun h' => h (Fin.ext h')`. Establish `h2` using `ha.2`. Simplify using `using e_mem_Ia N a ha.1 (show a.val < b.val by omega)`.
+
+Consider the case `zero => simp`. Consider the case `add y y' _ _ h h'`. Use `add_mem h h' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_add, LinearMap.add_apply]`. Use `module`.
+
+Consider the case `smul a y _ h`. Use `Submodule.smul_mem _ a h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_smul, LinearMap.smul_apply, smul_eq_mul]`. Use `module`.
+-/
 theorem Ia_step (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) {y : V} (hy : y ∈ Ia N (b.val + 1)) :
     y - H.B y (N.ist b) • N.F.e b.castSucc ∈ Ia N b.val := by
   induction hy using Submodule.span_induction with
@@ -338,6 +484,11 @@ theorem Ia_step (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) {y : V} (hy : y �
     convert Submodule.smul_mem _ a h using 1
     simp only [map_smul, LinearMap.smul_apply, smul_eq_mul]; module
 
+/- English proof (translation)
+Establish `: Ia N n ≤ ⊥`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Use `hb.1` as an intermediate fact. Use `hb.2` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Conclude with `this hy`.
+-/
 theorem Ia_bot (N : NF H r) {n : ℕ} (h : n ≤ N.j) {y : V} (hy : y ∈ Ia N n) : y = 0 := by
   have : Ia N n ≤ ⊥ := by
     refine Submodule.span_le.2 ?_
@@ -345,6 +496,11 @@ theorem Ia_bot (N : NF H r) {n : ℕ} (h : n ≤ N.j) {y : V} (hy : y ∈ Ia N n
     have := hb.1; have := hb.2; omega
   exact this hy
 
+/- English proof (translation)
+Introduce `x hx`. Take `⟨ξ, hξ, i, hi, rfl⟩` from `Submodule.mem_sup.1 (Xa_le_sup N r hx.1)`. Establish `hξ' : ξ ∈ N.F'.X` using `by simpa using sub_mem hx.2 (Ia_X' N hi)`. Take `⟨p, -, rfl⟩` from `Xa_coords N.F (N.j_le.trans (Nat.le_succ r)) le_rfl hξ`. Establish `: p = 0`.
+
+Use `Matrix.eq_zero_of_vecMul_eq_zero (Dl_ne N) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `b`. Use `X_iso N.F' hξ' (e_mem_X N.F' (Fin.castLE N.j_le b))` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, Zhat, map_sum]`. Simplify `hi` using `[this]`.
+-/
 theorem II_le (N : NF H r) : II N.F N.F' ≤ Ia N r := by
   intro x hx
   obtain ⟨ξ, hξ, i, hi, rfl⟩ := Submodule.mem_sup.1 (Xa_le_sup N r hx.1)
@@ -357,18 +513,27 @@ theorem II_le (N : NF H r) : II N.F N.F' ≤ Ia N r := by
     simpa [Matrix.vecMul, dotProduct, Zhat, map_sum] using this
   simpa [this] using hi
 
+/- English proof (translation)
+Establish `h` using `pairing_isotropicSpan_lastVector N.F' hy`. Establish `e : N.F'.z = N.c • N.F.z` using `N.same (Fin.last r) N.j_le`. Rewrite `h` using `[e, LinearMap.map_smulₛₗ, smul_eq_mul, mul_eq_zero]`. Conclude with `h.resolve_left (by simpa using c_ne N)`.
+-/
 theorem hermForm_second_flag_X_z_eq_zero (N : NF H r) {y : V} (hy : y ∈ N.F'.X) : H.B y N.F.z = 0 := by
   have h := pairing_isotropicSpan_lastVector N.F' hy
   have e : N.F'.z = N.c • N.F.z := N.same (Fin.last r) N.j_le
   rw [e, LinearMap.map_smulₛₗ, smul_eq_mul, mul_eq_zero] at h
   exact h.resolve_left (by simpa using c_ne N)
 
+/- English proof (translation)
+Simplify using `only [eich, xv, LinearMap.add_apply, LinearMap.id_apply, LinearMap.sub_apply, LinearMap.smulRight_apply, LinearMap.flip_apply, LinearMap.smul_apply]`. Use `module`.
+-/
 theorem eich_apply (x v : V) (c : K) (y : V) :
     eich H x v c y = y + H.B y v • x - H.B y x • v + (c * H.B y x) • x := by
   simp only [eich, xv, LinearMap.add_apply, LinearMap.id_apply, LinearMap.sub_apply, LinearMap.smulRight_apply,
     LinearMap.flip_apply, LinearMap.smul_apply]
   module
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨h1, h2, h3⟩ := eichlerMapIsometry K V H x v c (X_iso F hx hx) hxv hc`. Use `⟨h1, ⟨Function.LeftInverse.injective h2, Function.RightInverse.surjective h3⟩, fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify `hlev a` using `[eich_apply, e_X F _ hx]`. Establish `: H.B y x = 0` using `B_swap0 H (perp_X F hy x hx)`. Simplify `Submodule.smul_mem _ _ hx` using `[eich_apply, this]`.
+-/
 theorem eich_inN (F : FlagD H r) (x v : V) (c : K) (hx : x ∈ F.X) (hxv : H.B x v = 0)
     (hc : c + star c = -H.B v v) (hlev : ∀ a : Fin r, H.B (F.e a.castSucc) v • x ∈ F.Xa a.val) :
     F.InN (eich H x v c) := by
@@ -380,6 +545,17 @@ theorem eich_inN (F : FlagD H r) (x v : V) (c : K) (hx : x ∈ F.X) (hxv : H.B x
 
 def Gs (N : NF H r) : Subgroup (V ≃ₗ[K] V) := N.Rs ⊓ N.fixing (N.F.Xa N.j ⊔ N.F'.Xa N.j)
 
+/- English proof (translation)
+Apply the tactic sequence `obtain ⟨-, e2, e3⟩ := eichlerMapIsometry K V H x v c (X_iso N.F (Ia_X N hx) (Ia_X N hx)) hxv hc`. Set `s : V ≃ₗ[K] V` to `LinearEquiv.ofLinear (eich H x v c) (eich H x (-v) (star c)) (LinearMap.ext e3) (LinearMap.ext e2)`. Establish `hs : ∀ y, H.B y x = 0 → s y = y + H.B y v • x`. Introduce `y hy`. Use `show eich H x v c y = _`.
+
+Simplify using `[eich_apply, hy]`. Use `⟨s, ⟨⟨Subgroup.subset_closure ⟨?_, ?_⟩, ?_⟩, ?_⟩, hs⟩` and prove the remaining obligations. Use `eich_inN N.F x v c (Ia_X N hx) hxv hc fun a => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val < N.j`. Simplify using `[h1 a h]`.
+
+Conclude with `Ia_le N _ (hlev a (not_lt.1 h))`. Use `eich_inN N.F' x v c (Ia_X' N hx) hxv hc fun a => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val < N.j`. Simplify using `[h2 a h]`. Rewrite using `[N.same _ (not_lt.1 h), map_smul, LinearMap.smul_apply, smul_eq_mul, mul_smul]`.
+
+Conclude with `Submodule.smul_mem _ _ (Ia_le' N _ (hlev a (not_lt.1 h)))`. Use `(mem_fixingSubgroup_iff _).2 fun y hy => ?_` and prove the remaining obligations. Establish `hy'` using `(mem_perp_iff H _ y).1 hy`. Use `show s y = y`. Rewrite using `[hs y (hy' x (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Ia_X N hx))))), hy' v hW]`.
+
+Simplify using the standard rewrite rules. Use `(mem_fixingSubgroup_iff _).2 fun y hy => ?_ show s y = y` and prove the remaining obligations. Rewrite using `[hs y (perp_sup H (fun u hu => X_iso N.F (Xa_le_X _ _ hu) (Ia_X N hx)) (fun u hu => X_iso N.F' (Xa_le_X _ _ hu) (Ia_X' N hx)) y hy), perp_sup H (perp_Xa N.F h1) (perp_Xa N.F' h2) y hy]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_eich (N : NF H r) (x v : V) (c : K) (hx : x ∈ Ia N r) (hxv : H.B x v = 0)
     (hc : c + star c = -H.B v v)
     (hlev : ∀ a : Fin r, N.j ≤ a.val → H.B (N.F.e a.castSucc) v • x ∈ Ia N a.val)
@@ -417,6 +593,13 @@ theorem exists_eich (N : NF H r) (x v : V) (c : K) (hx : x ∈ Ia N r) (hxv : H.
       perp_sup H (perp_Xa N.F h1) (perp_Xa N.F' h2) y hy]
     simp
 
+/- English proof (translation)
+Take `⟨s, hs, h⟩` from `exists_eich N x (N.ist b) 0 (Ia_mono N b.isLt.le hx) (Xa_ist N b hb x (Ia_le N _ hx)) (by simp [N.ist_iso b b hb hb]) (fun a _ => by`. Rewrite using `[N.ist_e a b hb]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `using hx`.
+
+Use the proof step `simp)`. Use the proof step `(fun a ha => by rw [N.ist_e a b hb, if_neg (by rintro rfl; omega)])`. Use the proof step `(fun a ha => N.ist_e' a b ha hb)`. Use the proof step `(Submodule.mem_sup_right (Submodule.subset_span ⟨b, hb, rfl⟩))`. Use `⟨s, hs, ?_, fun y hy => h y (X_iso N.F hy (Ia_X N hx))⟩` and prove the remaining obligations.
+
+Rewrite using `[h _ (z_X N.F (Ia_X N hx)), N.normalForm_dual_orthogonal_last b hb]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_shear (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) {x : V} (hx : x ∈ Ia N b.val) :
     ∃ s ∈ Gs N, s N.F.z = N.F.z ∧ ∀ y ∈ N.F.X, s y = y + H.B y (N.ist b) • x := by
   obtain ⟨s, hs, h⟩ := exists_eich N x (N.ist b) 0 (Ia_mono N b.isLt.le hx) (Xa_ist N b hb x (Ia_le N _ hx))
@@ -432,6 +615,11 @@ theorem exists_shear (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) {x : V} (hx :
   refine ⟨s, hs, ?_, fun y hy => h y (X_iso N.F hy (Ia_X N hx))⟩
   rw [h _ (z_X N.F (Ia_X N hx)), N.normalForm_dual_orthogonal_last b hb]; simp
 
+/- English proof (translation)
+Establish `hz : ∀ y, H.B y (star N.F.T⁻¹ • N.F.z) = N.F.T⁻¹ * H.B y N.F.z`. Introduce `y`. Rewrite using `[LinearMap.map_smulₛₗ, starRingEnd_apply, star_star, smul_eq_mul]`. Take `⟨s, hs, h⟩` from `exists_eich N x (star N.F.T⁻¹ • N.F.z) (-H.B (star N.F.T⁻¹ • N.F.z) (star N.F.T⁻¹ • N.F.z) / 2) hx (by rw [hz, pairing_isotropicSpan_lastVector N.F (Ia_X N hx), mul_zero]) (by rw [star_div₀, star_neg, H.herm, star_ofNat]; ring) (fun a _ => by rw [hz, pairing_isotropicSpan_lastVec …`. Use `⟨s, hs, ?_, fun y hy => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[h _ (z_X N.F (Ia_X N hx)), hz, pairing_lastVector_lastVector, mul_neg, inv_mul_cancel₀ N.F.hT]`. Use `module`. Rewrite using `[h _ (X_iso N.F hy (Ia_X N hx)), hz, pairing_isotropicSpan_lastVector N.F hy]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_move_alt (N : NF H r) {x : V} (hx : x ∈ Ia N r) :
     ∃ s ∈ Gs N, s N.F.z = N.F.z - x ∧ ∀ y ∈ N.F.X, s y = y := by
   have hz : ∀ y, H.B y (star N.F.T⁻¹ • N.F.z) = N.F.T⁻¹ * H.B y N.F.z := by
@@ -449,6 +637,21 @@ theorem exists_move_alt (N : NF H r) {x : V} (hx : x ∈ Ia N r) :
   · rw [h _ (z_X N.F (Ia_X N hx)), hz, pairing_lastVector_lastVector, mul_neg, inv_mul_cancel₀ N.F.hT]; module
   · rw [h _ (X_iso N.F hy (Ia_X N hx)), hz, pairing_isotropicSpan_lastVector N.F hy]; simp
 
+/- English proof (translation)
+Establish `key : ∀ m : ℕ, ∃ u ∈ Gs N, u N.F.z = N.F.z ∧ ∀ b : Fin r, N.j ≤ b.val → u (v b) = if r ≤ b.val + m then N.F.e b.castSucc else v b`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨1, one_mem _, rfl, fun b _ => by rw [if_neg (by have := b.isLt; omega)]; rfl⟩`. Consider the case `succ m ih`.
+
+Take `⟨u, hu, huz, h⟩` from `ih`. Distinguish the cases in `hm : N.j + m + 1 ≤ r`. Set `b0 : Fin r` to `⟨r - m - 1, by omega⟩`. Establish `hb0 : N.j ≤ b0.val` using `by show N.j ≤ r - m - 1; omega`. Establish `hb1 : b0.val = r - m - 1` using `rfl`.
+
+Take `⟨s, hs, hsz, hs'⟩` from `exists_shear N b0 hb0 (neg_mem (hv b0 hb0))`. Use `⟨s * u, mul_mem hs hu, by simp [huz, hsz], fun b hb => ?_⟩` and prove the remaining obligations. Establish `hvX : v b ∈ N.F.Xa (b.val + 1)`. Use `add_mem (Xa_mono N.F (Nat.le_succ _) (Ia_le N _ (hv b hb))) (e_mem_Xa N.F b (Nat.lt_succ_self _))` as an intermediate fact. Simplify using `using this`.
+
+Rewrite using `[LinearEquiv.mul_apply, h b hb]`. Distinguish the cases in `h1 : r ≤ b.val + m`. Rewrite using `[if_pos h1, if_pos (by omega), hs' _ (e_mem_X _ _), N.ist_e b b0 hb0, if_neg (by rintro rfl; omega)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h1, hs' _ (Xa_le_X _ _ hvX)]`.
+
+Distinguish the cases in `h2 : b = b0`. Substitute `h2` using the available equality. Establish `h3` using `Xa_ist N b0 hb0 _ (Ia_le N _ (hv b0 hb0))`. Rewrite `h3` using `[map_sub, LinearMap.sub_apply, N.ist_e b0 b0 hb0, if_pos rfl, sub_eq_zero]`. Rewrite using `[if_pos (by omega), h3]; simp`.
+
+Establish `h3 : b.val ≠ b0.val` using `fun h' => h2 (Fin.ext h')`. Rewrite using `[if_neg (by omega), Xa_ist N b0 hb0 _ (Xa_mono N.F (by omega) hvX)]`. Simplify using the standard rewrite rules. Use `⟨u, hu, huz, fun b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[h b hb, if_pos (by omega), if_pos (by omega)]`.
+
+Take `⟨u, hu, huz, h⟩` from `key r`. Conclude with `⟨u, hu, huz, fun b hb => by rw [h b hb, if_pos (by omega)]⟩`.
+-/
 theorem exists_unitri (N : NF H r) (v : Fin r → V)
     (hv : ∀ b : Fin r, N.j ≤ b.val → v b - N.F.e b.castSucc ∈ Ia N b.val) :
     ∃ u ∈ Gs N, u N.F.z = N.F.z ∧ ∀ b : Fin r, N.j ≤ b.val → u (v b) = N.F.e b.castSucc := by
@@ -489,6 +692,13 @@ theorem exists_unitri (N : NF H r) (v : Fin r → V)
 
 end Geometry
 
+/- English proof (translation)
+Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _ y _ hy`. Rewrite using `[Ia_bot N (Nat.zero_le _) hy]`. Conclude with `zero_mem _`.
+
+Consider the case `succ n ih`. Introduce `hn y hyM hy`. Distinguish the cases in `hj : N.j ≤ n`. Set `b : Fin r` to `⟨n, hn⟩`. Take `⟨h1, h2⟩` from `h b hj y hyM hy`.
+
+Establish `h3 : y - H.B y (N.ist b) • w b ∈ Ia N n`. Use `sub_mem (Ia_step N b hj hy) (Submodule.smul_mem _ (H.B y (N.ist b)) (hw b hj)) using 1` and compare the differences between its conclusion and the goal. Use `module`. Simplify using `using add_mem (ih (by omega) _ (sub_mem hyM h1) h3) h2`. Rewrite using `[Ia_bot N (by omega) hy]; exact zero_mem _`.
+-/
 theorem level_ind (N : NF H r) (M Q : Submodule (𝓞 K) V) (w : Fin r → V)
     (hw : ∀ b : Fin r, N.j ≤ b.val → w b - N.F.e b.castSucc ∈ Ia N b.val)
     (h : ∀ b : Fin r, N.j ≤ b.val → ∀ y ∈ M, y ∈ Ia N (b.val + 1) →
@@ -508,10 +718,20 @@ theorem level_ind (N : NF H r) (M Q : Submodule (𝓞 K) V) (w : Fin r → V)
       simpa using add_mem (ih (by omega) _ (sub_mem hyM h1) h3) h2
     · rw [Ia_bot N (by omega) hy]; exact zero_mem _
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_iSup_of_mem b ⟨t, ht, rfl⟩)))`.
+-/
 theorem smul_flag_vector_mem_reference_lattice (N : NF H r) (b : Fin r) {t : K} (ht : t ∈ N.aa b) : t • N.F.e b.castSucc ∈ N.P0 :=
   Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.mem_sup_left
     (Submodule.mem_iSup_of_mem b ⟨t, ht, rfl⟩)))
 
+/- English proof (translation)
+Establish `: N.P0 ≤ (N.aa b).comap ((H.B.flip (N.ist b)).restrictScalars (𝓞 K))`. Use `sup_le (sup_le (sup_le (iSup_le fun a => ?_) (iSup₂_le fun a ha => ?_)) ?_) (iSup₂_le fun a ha => ?_)` and prove the remaining obligations. Use `all_goals`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Use `show H.B (t • _) (N.ist b) ∈ N.aa b`.
+
+Rewrite using `[map_smul, LinearMap.smul_apply]`. Rewrite using `[N.ist_e a b hb] split_ifs with h`. Substitute `h` using the available equality. Simplify using `using ht`. Simplify using the standard rewrite rules.
+
+Simplify using `[N.ist_e' a b ha hb]`. Simplify using `[N.normalForm_dual_orthogonal_last b hb]`. Simplify using `[N.ist_iso a b ha hb]`. Conclude with `this hy`.
+-/
 theorem hermForm_ist_mem_coeffIdeal_of_mem_reference (N : NF H r) (b : Fin r) (hb : N.j ≤ b.val) {y : V} (hy : y ∈ N.P0) :
     H.B y (N.ist b) ∈ N.aa b := by
   have : N.P0 ≤ (N.aa b).comap ((H.B.flip (N.ist b)).restrictScalars (𝓞 K)) := by
@@ -529,6 +749,11 @@ theorem hermForm_ist_mem_coeffIdeal_of_mem_reference (N : NF H r) (b : Fin r) (h
     · simp [N.ist_iso a b ha hb]
   exact this hy
 
+/- English proof (translation)
+Distinguish the cases in `h0 : ∃ y ∈ Λ ⊓ rs (𝓞 K) (Ia N (b.val + 1)), H.B.flip (N.ist b) y ≠ 0`. Take `⟨v, hv, h1, h⟩` from `exists_section _ (hΛ.of_le inf_le_left) _ h0`. Establish `hv' : v ∈ Ia N (b.val + 1)` using `(Submodule.span_le.2 fun y hy => hy.2) hv`. Use `⟨v, ?_, fun y hy hy' => (h y ⟨hy, hy'⟩).1⟩` and prove the remaining obligations. Use `Ia_step N b hb hv'` as an intermediate fact.
+
+Rewrite `this` using `[show H.B v (N.ist b) = 1 from h1, one_smul]`. Then use the resulting hypothesis. Use `push_neg at h0`. Use `⟨N.F.e b.castSucc, by simp, fun y hy hy' => ?_⟩` and prove the remaining obligations. Rewrite using `[show H.B y (N.ist b) = 0 from h0 y ⟨hy, hy'⟩]`. Simplify using the standard rewrite rules.
+-/
 theorem exists_adapted (N : NF H r) (Λ : Submodule (𝓞 K) V) (hΛ : Λ.FG) (b : Fin r) (hb : N.j ≤ b.val) :
     ∃ v, v - N.F.e b.castSucc ∈ Ia N b.val ∧
       ∀ y ∈ Λ, y ∈ Ia N (b.val + 1) → H.B y (N.ist b) • v ∈ Λ := by
@@ -542,6 +767,11 @@ theorem exists_adapted (N : NF H r) (Λ : Submodule (𝓞 K) V) (hΛ : Λ.FG) (b
     refine ⟨N.F.e b.castSucc, by simp, fun y hy hy' => ?_⟩
     rw [show H.B y (N.ist b) = 0 from h0 y ⟨hy, hy'⟩]; simp
 
+/- English proof (translation)
+Establish `hint : ∀ x ∈ Λ, ∀ y ∈ Λ, H.B x y ∈ (1 : Submodule (𝓞 K) K)`. Introduce `x hx`. Rewrite `hx` using `[← hΛ.1.2, mem_dual_iff]`. Conclude with `hx.2`. Establish `h1` using `smul_mem_of_pairing N Λ hΛ γ hγ hξ fun u hu hu' => by`.
+
+Use `neg_mem (hint _ h u hu)` as an intermediate fact. Simplify `this` using `[hy u hu']`. Establish `h2 : γ • ξ ∈ Λ` using `by rw [← algebraMap_smul K γ ξ]; exact h1`. Simplify `add_mem (Λ.smul_mem γ h) h2` using `[smul_sub]`.
+-/
 theorem smul_add_mem (N : NF H r) (Λ : Submodule (𝓞 K) V) (hΛ : IsFramed N.F N.F' Λ N.aa) (γ : 𝓞 K)
     (hγ : ∀ y ∈ ipow N.𝔡 (2 * ∑ a ∈ Finset.range N.j, ((r : ℤ) - a)),
       (γ : K) * y / Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) ∈ (1 : Submodule (𝓞 K) K))
@@ -556,6 +786,33 @@ theorem smul_add_mem (N : NF H r) (Λ : Submodule (𝓞 K) V) (hΛ : IsFramed N.
   have h2 : γ • ξ ∈ Λ := by rw [← algebraMap_smul K γ ξ]; exact h1
   simpa [smul_sub] using add_mem (Λ.smul_mem γ h) h2
 
+/- English proof (translation)
+Introduce `K V _ _ _ _ _ _ _ _ H _ r N g Λ _ hT 𝔠 _ _ _ h𝔠`. Establish `hΛ` using `hT.1`. Establish `hγ : ∀ γ ∈ 𝔠, ∀ y ∈ ipow N.𝔡 (2 * ∑ a ∈ Finset.range N.j, ((r : ℤ) - a)), (γ : K) * y / Dl N.F N.F' N.j (N.j_le.trans (Nat.le_succ r)) ∈ (1 : Submodule (𝓞 K) K)` using `fun γ h y hy => (h𝔠 N.j _ le_rfl (Dl_ne N) γ h y hy).1`. Establish `hfg : Λ.FG` using `((isUnimod_iff H Λ).1 hΛ.1).1.fg`. Use `choose! v hv hvΛ using exists_adapted N Λ hfg`.
+
+Take `⟨u, hu, huz, huv⟩` from `exists_unitri N v hv`. Establish `hz : (1 : K) ∈ lead N.F Λ (Fin.last r)` using `by rw [hΛ.2.1.2]; exact Submodule.mem_one.2 ⟨1, map_one _⟩`. Take `⟨l, hl, ξ, hξ, he⟩` from `Submodule.mem_sup.1 hz`. Establish `he' : l + ξ = (1 : K) • N.F.z` using `he`. Take `⟨ξ₁, hξ₁, ξ₂, hξ₂, rfl⟩` from `Submodule.mem_sup.1 (Xa_le_sup N r hξ)`.
+
+Take `⟨E, hE, hEz, hEX⟩` from `exists_move_alt N (neg_mem hξ₂)`. Establish `hvX : ∀ b : Fin r, N.j ≤ b.val → v b ∈ Ia N r` using `fun b hb => by`. Simplify using `using add_mem (Ia_mono N b.isLt.le (hv b hb)) (e_mem_Ia N b hb b.isLt)`. Establish `hsv : ∀ b : Fin r, N.j ≤ b.val → ∀ t : K, (u * E) (t • v b) = t • N.F.e b.castSucc` using `fun b hb t => by`. Rewrite using `[map_smul, LinearEquiv.mul_apply, hEX _ (Ia_X N (hvX b hb)), huv b hb]`.
+
+Establish `hmem : ∀ y, y ∈ (u * E) • Λ ↔ ∃ x ∈ Λ, (u * E) x = y` using `fun y => Submodule.mem_smul_pointwise_iff_exists _ _ _`. Establish `hG` using `mul_mem hu hE`. Use `⟨u * E, hG.1, fun y hy => (mem_fixingSubgroup_iff _).1 hG.2 y hy, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Use `Submodule.smul_le.2 fun γ hγ2 y hy => ?_` and prove the remaining obligations. Establish `hγ1 : γ ∈ 𝔠` using `Ideal.pow_le_self two_ne_zero hγ2`. Use `level_ind N N.P0 (((u * E) • Λ).comap (γ • LinearMap.id)) (fun b => N.F.e b.castSucc) (fun b _ => by simp) (fun b hb y hy _ => ?_) r le_rfl y hy.1 (II_le N hy.2)` and prove the remaining obligations. Establish `ht` using `hermForm_ist_mem_coeffIdeal_of_mem_reference N b hb hy`. Use `⟨smul_flag_vector_mem_reference_lattice N b ht, ?_⟩` and prove the remaining obligations.
+
+Generalize the expression as in `H.B y (N.ist b) = t at ht`. Rewrite `ht` using `[← hΛ.2.1.1]`. Take `⟨l, hl, ξ, hξ, he⟩` from `Submodule.mem_sup.1 ht`. Establish `he' : l + ξ = t • N.F.e b.castSucc` using `he`. Take `⟨η₁, hη₁, η₂, hη₂, rfl⟩` from `Submodule.mem_sup.1 (Xa_le_sup N b.val hξ)`.
+
+Establish `hI : t • N.F.e b.castSucc - η₂ ∈ Ia N (b.val + 1)` using `sub_mem (Submodule.smul_mem _ _ (e_mem_Ia N b hb (Nat.lt_succ_self _))) (Ia_mono N (Nat.le_succ _) hη₂)`. Establish `h1` using `smul_add_mem N Λ hΛ γ (hγ γ hγ1) (fun w hw => X_iso N.F' (Ia_X' N hI) hw) hη₁ (by convert hl using 1; rw [← he']; abel)`. Rewrite `h1` using `[← algebraMap_smul K γ]`. Establish `h2` using `hvΛ b hb _ h1 (Submodule.smul_mem _ _ hI)`. Use `show γ • (t • N.F.e b.castSucc) ∈ (u * E) • Λ`.
+
+Use `(hmem _).2 ⟨_, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hsv b hb, ← algebraMap_smul K γ (t • _), smul_smul, map_smul, map_sub, map_smul, LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.smul_apply, N.ist_e b b hb, Xa_ist N b hb _ (Ia_le N _ hη₂), if_pos rfl, smul_eq_mul, smul_eq_mul, mul_one, sub_zero]`. Introduce and unpack `y ⟨hy, hyI⟩`. Take `⟨x, hx, rfl⟩` from `(hmem y).1 hy`. Establish `hxI : x ∈ Ia N r`.
+
+Establish `: Ia N r ≤ (Ia N r).map ((u * E : V ≃ₗ[K] V) : V →ₗ[K] V)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `⟨v b, hvX b hb.1, by simpa using hsv b hb.1 1⟩`. Take `⟨x', hx', e⟩` from `this (II_le N hyI)`.
+
+Rewrite using `[← (u * E).injective e]` and apply the resulting hypothesis. Use `level_ind N Λ (N.P0.comap (((u * E : V ≃ₗ[K] V) : V →ₗ[K] V).restrictScalars (𝓞 K))) v hv (fun b hb y hy hy' => ⟨hvΛ b hb y hy hy', ?_⟩) r le_rfl x hx hxI` and prove the remaining obligations. Use `show (u * E) (_ • v b) ∈ N.P0`. Rewrite using `[hsv b hb]`. Use `smul_flag_vector_mem_reference_lattice N b ?_` and prove the remaining obligations.
+
+Rewrite using `[← hΛ.2.1.1]`. Use `show H.B y (N.ist b) • N.F.e b.castSucc ∈ Λ ⊔ rs (𝓞 K) (N.F.Xa b.val)`. Use `sub_mem (Submodule.mem_sup_left hy) (Submodule.mem_sup_right (S := Λ) (show _ ∈ rs (𝓞 K) (N.F.Xa b.val) from Ia_le N _ (Ia_step N b hb hy')))` as an intermediate fact. Simplify using `using this`. Use `Submodule.smul_le.2 ?_` and prove the remaining obligations.
+
+Introduce and unpack `γ hγ1 _ ⟨t, ht, rfl⟩`. Take `⟨o, rfl⟩` from `Submodule.mem_one.1 ht`. Establish `h1` using `smul_add_mem N Λ hΛ γ (hγ γ hγ1) (y := N.F.z - ξ₂) (fun w hw => by`. Rewrite using `[map_sub, LinearMap.sub_apply, B_swap0 H (hermForm_second_flag_X_z_eq_zero N hw), X_iso N.F' (Ia_X' N hξ₂) hw, sub_zero]) hξ₁`. Use the proof step `(by convert hl using 1; rw [one_smul] at he'; rw [← he']; abel)`.
+
+Use `show γ • (algebraMap (𝓞 K) K o • N.F.z) ∈ (u * E) • Λ`. Rewrite using `[algebraMap_smul, smul_comm]`. Use `Submodule.smul_mem _ _ ((hmem _).2 ⟨_, h1, ?_⟩)` and prove the remaining obligations. Rewrite using `[← algebraMap_smul K γ, ← algebraMap_smul K γ N.F.z, map_smul, LinearEquiv.mul_apply, map_sub, hEz, hEX _ (Ia_X N hξ₂)]`. Simplify using `[huz]`.
+-/
 theorem normal_position : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → ∀ 𝔠 : Ideal (𝓞 K), 𝔠 ≠ ⊥ → (∀ x ∈ 𝔠, ∃ y ∈ 𝔠, (y : K) = star (x : K)) → (∀ x ∈ 𝔠, (N.T : 𝓞 K) ∣ x) → (∀ (l : ℕ) (hl : l ≤ r + 1), l ≤ N.j → Dl N.F N.F' l hl ≠ 0 → ∀ x ∈ 𝔠, ∀ y ∈ ipow N.𝔡 (2 * ∑ a ∈ Finset.range l, ((r : ℤ) - a)), (x : K) * y / Dl N.F N.F' l hl ∈ (1 : Submodule (𝓞 K) K) ∧ (x : K) * y / star (Dl N.F N.F' l hl) ∈ (1 : Submodule (𝓞 K) K)) → ∃ s ∈ N.Rs, (∀ y ∈ N.F.Xa N.j ⊔ N.F'.Xa N.j, s y = y) ∧ ∀ Λ' : Submodule (𝓞 K) V, Λ' = s • Λ → 𝔠 ^ 2 • (N.P0 ⊓ rs (𝓞 K) (II N.F N.F')) ≤ Λ' ∧ Λ' ⊓ rs (𝓞 K) (II N.F N.F') ≤ N.P0 ∧ 𝔠 • line 1 N.F.z ≤ Λ' := by
   intro K V _ _ _ _ _ _ _ _ H _ r N g Λ _ hT 𝔠 _ _ _ h𝔠
   have hΛ := hT.1

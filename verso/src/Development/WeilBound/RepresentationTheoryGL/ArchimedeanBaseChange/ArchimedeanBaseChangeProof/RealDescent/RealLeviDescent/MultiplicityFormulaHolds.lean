@@ -3,6 +3,9 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.CapelliClassifi
 
 namespace PositivityTheory.RgBcC.RealD
 
+/- English proof (translation)
+The claim follows from `multFor_of_capCls (GlobalTheory.T.capelli_classification_of_action injective_decomposition_action_holds.2.2)`.
+-/
 theorem multiplicity_formula_holds : MultFor :=
   multFor_of_capCls (GlobalTheory.T.capelli_classification_of_action injective_decomposition_action_holds.2.2)
 

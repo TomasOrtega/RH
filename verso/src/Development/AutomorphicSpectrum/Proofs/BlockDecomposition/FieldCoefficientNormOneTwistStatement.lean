@@ -13,6 +13,9 @@ open GroundTheory.Global.AdicLiesOver
 open GlobalTheory.CompanionTheory.FexTheta
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.FexTheta.FieldNormOne.fL_field | exact GlobalTheory.CompanionTheory.FexTheta.FieldNormOne.fL_field | (intros; apply GlobalTheory.CompanionTheory.FexTheta.FieldNormOne.fL_field <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.field_coefficient_norm_one_twist : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (v : Pl) (L : LM c v),
   L.ok → ¬ L.IsSp → ∀ (g : GL (Fin 2) (Qv v)) (ξ : K) (κ : Kˣ), κ ∈ K1 K → ∀ x : (Qv v)ˣ,
     fL L g (ξ * κ) x * cW L κ = fL L g ξ (x * k1 L κ) := by

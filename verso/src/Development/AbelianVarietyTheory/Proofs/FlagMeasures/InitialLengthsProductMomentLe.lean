@@ -8,6 +8,15 @@ open scoped ENNReal
 
 namespace GlobalTheory.MomentHolder
 
+/- English proof (translation)
+Introduce `Ω _ ν r l hl len Ph A Rr hlen hpos hPh h0 hmass hA hR hm0 hrat`. Break down `Nat.eq_zero_or_pos l with rfl | hl0` into its components or cases. Simplify using `[hmass]`. Take `⟨s, rfl⟩ : ∃ s, l = s + 1` from `⟨l - 1, by omega⟩`. Establish `hs : s ≤ r` using `by omega`.
+
+Establish `hq' : ∀ q, q ≤ (s + 1) ^ 2 → q ≤ (r + 1) ^ 2` using `fun q hq => hq.trans (Nat.pow_le_pow_left (by omega) 2)`. Establish `h1 : ∀ q ≤ (s + 1) ^ 2, ∫⁻ x, ENNReal.ofReal ((fun a : Fin (s + 1) => len (Fin.castLE hl a)) 0 x ^ (2 * q) * Ph x) ∂ν ≤ ENNReal.ofReal (A ^ q)`. Introduce `q hq`. Establish `e : Fin.castLE hl (0 : Fin (s + 1)) = 0` using `Fin.ext (by simp)`. Simplify using `only [e]`.
+
+Conclude with `hm0 q (hq' q hq)`. Establish `h2 : ∀ a : Fin s, ∀ q ≤ (s + 1) ^ 2, ∫⁻ x, ENNReal.ofReal (((fun a : Fin (s + 1) => len (Fin.castLE hl a)) a.succ x / (fun a : Fin (s + 1) => len (Fin.castLE hl a)) a.castSucc x) ^ (2 * q) * Ph x) ∂ν ≤ ENNReal.ofReal (Rr ^ (2 * q))`. Introduce `a q hq`. Establish `e1 : Fin.castLE hl a.succ = (⟨a, by omega⟩ : Fin r).succ` using `Fin.ext (by simp)`. Establish `e2 : Fin.castLE hl a.castSucc = (⟨a, by omega⟩ : Fin r).castSucc` using `Fin.ext (by simp)`.
+
+Simplify using `only [e1, e2]`. Conclude with `hrat _ q (hq' q hq)`. Establish `key` using `product_moment_le Ω ν s (fun a => len (Fin.castLE hl a)) Ph A Rr (fun _ => hlen _) (fun _ => hpos _) hPh h0 hmass hA hR h1 h2`. Use `key.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Conclude with `pow_le_pow_left₀ (mul_nonneg hA (pow_nonneg (zero_le_one.trans hR) _)) (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hR (by omega)) hA) _`.
+-/
 theorem initial_product_moment_le :
     ∀ (Ω : Type) [MeasurableSpace Ω] (ν : Measure Ω) (r l : ℕ) (hl : l ≤ r + 1)
       (len : Fin (r + 1) → Ω → ℝ) (Ph : Ω → ℝ) (A Rr : ℝ), (∀ a, AEMeasurable (len a) ν) →

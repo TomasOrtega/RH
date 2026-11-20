@@ -20,6 +20,9 @@ def tvE (u : TanM (𝟙 (Sp R)) G) : epsR R ⟶ G := Over.homMk (tv u).left (by
   have := Over.w (tv u)
   simpa using this)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tvE_left (u : TanM (𝟙 (Sp R)) G) : (tvE u).left = (tv u).left := rfl
 
 end GlobalTheory.VertCoeffRing

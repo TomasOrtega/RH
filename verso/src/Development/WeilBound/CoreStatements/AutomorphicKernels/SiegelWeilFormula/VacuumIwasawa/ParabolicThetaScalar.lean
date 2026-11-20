@@ -12,6 +12,25 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 open GlobalTheory.Doubling (absE)
 
+/- English proof (translation)
+Use `set g := inFrame d.b p with hg`. Use `set A := g.toBlocks₁₁`. Use `set B := g.toBlocks₁₂`. Use `set D := g.toBlocks₂₂`. Establish `hgb : g = Matrix.fromBlocks A B 0 D` using `by rw [← h21, Matrix.fromBlocks_toBlocks]`.
+
+Establish `hBm : IsUnit (incM F d.b.1)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, KWhit.incM_mul_inv d, Matrix.det_one]⟩)`. Establish `hBi : IsUnit (incM F (d.b⁻¹).1)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_exists_inv.2 ⟨_, by rw [← Matrix.det_mul, KWhit.incM_inv_mul d, Matrix.det_one]⟩)`. Establish `hug : IsUnit g` using `(hBi.mul (Units.isUnit p.1)).mul hBm`. Establish `hdet : IsUnit (A.det * D.det)`. Rewrite using `[← Matrix.det_fromBlocks_zero₂₁ A B D, ← hgb]`.
+
+Conclude with `(Matrix.isUnit_iff_isUnit_det g).1 hug`. Establish `hA : IsUnit A.det` using `isUnit_of_mul_isUnit_left hdet`. Establish `hD : IsUnit D.det` using `isUnit_of_mul_isUnit_right hdet`. Use `set Md : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E) := Matrix.fromBlocks A 0 0 D with hMd_def`. Establish `hMd : IsUnit Md` using `(Matrix.isUnit_iff_isUnit_det _).2 (by rw [hMd_def, Matrix.det_fromBlocks_zero₂₁]; exact hA.mul hD)`.
+
+Take `⟨C', hC'⟩` from `KWhit.frame_form d`. Establish `hP : (mat2 p)ᵀ * dbl (incM F d.Y.J) * (mat2 p).map (cA σ).toRingHom = dbl (incM F d.Y.J)` using `p.2`. Establish `hgf` using `KWhit.form_conj_in (cA σ).toRingHom (KWhit.incM_mul_inv d) hP`. Establish `hC'' : (incM F d.b.1)ᵀ * dbl (incM F d.Y.J) * (incM F d.b.1).map (cA σ).toRingHom = Matrix.fromBlocks 0 1 C' 0` using `hC'`. Rewrite `hgf` using `[hC'']`.
+
+Establish `hgf' : gᵀ * Matrix.fromBlocks 0 1 C' 0 * g.map (cA σ).toRingHom = Matrix.fromBlocks 0 1 C' 0` using `hgf`. Rewrite `hgf'` using `[hgb]`. Establish `hMdf` using `KWhit.block_diag_form (cA σ).toRingHom A B D C' hgf'`. Rewrite `hMdf` using `[← hC'']`. Establish `hM0mem` using `KWhit.form_conj_out (cA σ).toRingHom (KWhit.incM_mul_inv d) hMdf`.
+
+Establish `hM0u : IsUnit (incM F d.b.1 * Md * incM F (d.b⁻¹).1)` using `(hBm.mul hMd).mul hBi`. Set `u : GL (Fin d.n ⊕ Fin d.n) (AE F E)` to `hM0u.unit`. Establish `hu : (u : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) = incM F d.b.1 * Md * incM F (d.b⁻¹).1` using `IsUnit.unit_spec hM0u`. Establish `hmem : u ∈ UG (cA σ) (dbl (incM F d.Y.J))` using `by show (u : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))ᵀ * dbl (incM F d.Y.J) * (u : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)).map (cA σ) = dbl (incM F d.Y.J)`. Rewrite using `[hu]`.
+
+Conclude with `hM0mem`. Set `m0 : d.G` to `⟨u, hmem⟩`. Establish `hm0 : inFrame d.b m0 = Md` using `by show incM F (d.b⁻¹).1 * (u : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) * incM F d.b.1 = Md`. Rewrite using `[hu]`. Simplify using `only [← Matrix.mul_assoc, KWhit.incM_inv_mul d, Matrix.one_mul]`.
+
+Rewrite using `[Matrix.mul_assoc, KWhit.incM_inv_mul d, Matrix.mul_one]`. Establish `hAu` using `(Matrix.isUnit_iff_isUnit_det A).2 hA`. Establish `hDu` using `(Matrix.isUnit_iff_isUnit_det D).2 hD`. Use `⟨p * m0⁻¹, m0, hAu.unit, hDu.unit, ?_, ?_, IsUnit.unit_spec hAu, IsUnit.unit_spec hDu, (inv_mul_cancel_right p m0).symm⟩` and prove the remaining obligations. Establish `e` using `KWhit.inFrame_mul d (p * m0⁻¹) m0`.
+
+Rewrite `e` using `[inv_mul_cancel_right, hm0]`. Apply `(hMd.mul_left_inj).1` to reduce the goal to its premises. Rewrite using `[← e, ← hg, hgb, hMd_def, Matrix.fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hD]`. Rewrite using `[hm0, IsUnit.unit_spec, IsUnit.unit_spec]`.
+-/
 theorem par_frame (d : SD σ) (p : d.G) (h21 : (inFrame d.b p).toBlocks₂₁ = 0) :
     ∃ (n0 m0 : d.G) (A D : GL (Fin d.n) (AE F E)),
       inFrame d.b n0 = Matrix.fromBlocks 1 ((inFrame d.b p).toBlocks₁₂ * (inFrame d.b p).toBlocks₂₂⁻¹) 0 1 ∧
@@ -71,6 +90,11 @@ theorem par_frame (d : SD σ) (p : d.G) (h21 : (inFrame d.b p).toBlocks₂₁ = 
     simp [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hD]
   · rw [hm0, IsUnit.unit_spec, IsUnit.unit_spec]
 
+/- English proof (translation)
+Use extensionality with `k l`. Simplify using `only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply]`. Distinguish the cases in `hk : k = i₀`. Substitute `hk; exact hq.row _ (by simp)` using the available equality. Distinguish the cases in `hl : l = i₀`.
+
+Substitute `hl` using the available equality. Rewrite using `[hq.col]`. Simplify using the standard rewrite rules. Rewrite using `[hq.off _ _ (by simp [I0, hk]) (by simp [I0, hl])]; simp`.
+-/
 theorem isQ_21 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} {lam : (AE F E)ˣ}
     (hq : IsQ F E i₀ M lam) : M.toBlocks₂₁ = 0 := by
   ext k l
@@ -81,6 +105,9 @@ theorem isQ_21 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕
     · subst hl; rw [hq.col]; simp
     · rw [hq.off _ _ (by simp [I0, hk]) (by simp [I0, hl])]; simp
 
+/- English proof (translation)
+Introduce `j k hk`. Simplify using `only [Matrix.toBlocks₂₂, Matrix.of_apply]`. Distinguish the cases in `hj : j = i₀`. Substitute `hj; rw [hq.row _ (by simpa using hk), Matrix.one_apply_ne (Ne.symm hk)]` using the available equality. Rewrite using `[hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp [Matrix.one_apply]`.
+-/
 theorem isQ_22 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} {lam : (AE F E)ˣ}
     (hq : IsQ F E i₀ M lam) : ∀ j k, k ≠ i₀ → M.toBlocks₂₂ j k = (1 : Matrix (Fin n) (Fin n) (AE F E)) j k := by
   intro j k hk
@@ -89,12 +116,20 @@ theorem isQ_22 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕
   · subst hj; rw [hq.row _ (by simpa using hk), Matrix.one_apply_ne (Ne.symm hk)]
   · rw [hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp [Matrix.one_apply]
 
+/- English proof (translation)
+Introduce `j k hj hk`. Simplify using `only [Matrix.toBlocks₁₂, Matrix.of_apply]`. Rewrite using `[hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp`.
+-/
 theorem isQ_12 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} {lam : (AE F E)ˣ}
     (hq : IsQ F E i₀ M lam) : ∀ j k, j ≠ i₀ → k ≠ i₀ → M.toBlocks₁₂ j k = 0 := by
   intro j k hj hk
   simp only [Matrix.toBlocks₁₂, Matrix.of_apply]
   rw [hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp
 
+/- English proof (translation)
+Use `⟨fun j k hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply]`. Distinguish the cases in `hk : k = i₀`. Substitute `hk` using the available equality. Rewrite using `[hq.col]`.
+
+Simplify using `[hj, Matrix.one_apply_ne hj]`. Rewrite using `[hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp [Matrix.one_apply]`. Simplify using `only [Matrix.toBlocks₁₁, Matrix.of_apply]`. Rewrite using `[hq.col]`. Simplify using the standard rewrite rules.
+-/
 theorem isQ_11 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)} {lam : (AE F E)ˣ}
     (hq : IsQ F E i₀ M lam) : (∀ j k, j ≠ i₀ → M.toBlocks₁₁ j k = (1 : Matrix (Fin n) (Fin n) (AE F E)) j k) ∧
       M.toBlocks₁₁ i₀ i₀ = lam := by
@@ -105,6 +140,31 @@ theorem isQ_11 {n : ℕ} {i₀ : Fin n} {M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕
     · rw [hq.off _ _ (by simp [I0, hj]) (by simp [I0, hk])]; simp [Matrix.one_apply]
   · simp only [Matrix.toBlocks₁₁, Matrix.of_apply]; rw [hq.col]; simp
 
+/- English proof (translation)
+Use `set M := inFrame d.b q with hM`. Take `⟨n0, m0, A, D, hn, hm, hA, hD, hp⟩` from `par_frame d q (isQ_21 hq)`. Use `⟨(d.χ (Matrix.GeneralLinearGroup.det A) : ℂ) * (((absE F E (Matrix.GeneralLinearGroup.det A) : ℝ) ^ ((d.m : ℝ) / 2) : ℝ) : ℂ), fun Φ hΦ X hX => ?_⟩` and prove the remaining obligations. Establish `hD1 : ∀ j k, k ≠ i₀ → D.1 j k = (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) j k`. Rewrite using `[hD]`.
+
+Conclude with `isQ_22 hq`. Establish `hDu : IsUnit M.toBlocks₂₂.det`. Rewrite using `[← hD]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 D.isUnit`. Establish `hDi : ∀ j k, k ≠ i₀ → M.toBlocks₂₂⁻¹ j k = (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) j k` using `inv_col (isQ_22 hq) (Matrix.nonsing_inv_mul _ hDu)`.
+
+Establish `hβ : ∀ i j, i ≠ i₀ → j ≠ i₀ → (M.toBlocks₁₂ * M.toBlocks₂₂⁻¹) i j = 0`. Introduce `i j hi hj`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k = i₀`.
+
+Substitute `hk` using the available equality. Rewrite using `[hDi _ _ hj, Matrix.one_apply_ne (Ne.symm hj), mul_zero]`. Rewrite using `[isQ_12 hq i k hi hk, zero_mul]`. Establish `hG : ∀ i j, (i = i₀ ∨ j = i₀) → d.gram X X i j = 0`. Introduce `i j hij`.
+
+Simplify using `only [SD.gram, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Break down `hij with rfl | rfl` into its components or cases. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hX a, zero_mul, zero_mul]`. Rewrite using `[hX b, map_zero, mul_zero]`. Establish `htt : d.tt ((M.toBlocks₁₂ * M.toBlocks₂₂⁻¹) * d.gram X X) = 0`. Establish `: Matrix.trace ((M.toBlocks₁₂ * M.toBlocks₂₂⁻¹) * d.gram X X) = 0`. Simplify using `only [Matrix.trace, Matrix.diag]`.
+
+Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = i₀ ∨ j = i₀`. Rewrite using `[hG j i (h.symm), mul_zero]`.
+
+Use `push_neg at h`. Rewrite using `[hβ i j h.1 h.2, zero_mul]`. Simplify using `only [SD.tt, this, map_zero]`. Establish `hXD : X * (D⁻¹).1ᵀ = X`. Establish `h1 : X * D.1ᵀ = X`.
+
+Use extensionality with `a j`. Rewrite using `[Matrix.mul_apply]`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[Matrix.transpose_apply]`. Distinguish the cases in `hj : j = i₀`.
+
+Substitute `hj` using the available equality. Rewrite using `[hX a, zero_mul]`. Rewrite using `[hD1 j j hj, Matrix.one_apply_eq, mul_one]`. Introduce `k _ hk`. Rewrite using `[Matrix.transpose_apply]`.
+
+Distinguish the cases in `hk0 : k = i₀`. Substitute `hk0` using the available equality. Rewrite using `[hX a, zero_mul]`. Rewrite using `[hD1 j k hk0, Matrix.one_apply_ne (Ne.symm hk), mul_zero]`. Simplify using the standard rewrite rules.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `hm0s : d.om m0 Φ ∈ d.sch` using `KWhit.om_mem_sch d m0 hΦ`. Rewrite using `[hp, map_mul, Module.End.mul_apply, (hT.2.1 F E σ d _ hm0s).1 n0 _ hn X, htt, mul_zero, neg_zero, AddChar.map_zero_eq_one, one_mul, (hT.2.1 F E σ d Φ hΦ).2.1 m0 A D hm X, hXD]`.
+-/
 theorem parabolic_theta_scalar (hT : TAll) {d : SD σ} (i₀ : Fin d.n) {q : d.G} {lam : (AE F E)ˣ} (hq : IsQ F E i₀ (inFrame d.b q) lam) :
     ∃ c : ℂ, ∀ Φ ∈ d.sch, ∀ X : Mx F E d.m d.n, (∀ a, X a i₀ = 0) → d.T (d.om q Φ) X = c * d.T Φ X := by
   set M := inFrame d.b q with hM

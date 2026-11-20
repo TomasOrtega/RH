@@ -1,5 +1,12 @@
 import Formalism.JumpKernelCokernel.Statement
 
+/- English proof (translation)
+Introduce `R _ u π₀ q ℓ hℓ Mi h hMi`. Use `set m := h / (ℓ - 1) with hm`. Establish `hpos : 0 < ℓ - 1` using `by omega`. Establish `hk : Mi + 1 ≤ (ℓ - 1) * (m + 1)`. Use `Nat.lt_mul_div_succ h hpos` as an intermediate fact.
+
+Conclude with `Nat.succ_le_of_lt (lt_of_le_of_lt hMi this)`. Take `⟨d, hd⟩ : ∃ d, (ℓ - 1) * (m + 1) = Mi + 1 + d` from `⟨_, (Nat.add_sub_cancel' hk).symm⟩`. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨u ^ (m + 1) * q ^ d, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, mul_pow, ← pow_mul, hd, pow_add]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem Formalism.KernelCokernelLengths.filtration_exponent_holds : Formalism.KernelCokernelLengths.FExp := by
   intro R _ u π₀ q ℓ hℓ Mi h hMi
   set m := h / (ℓ - 1) with hm

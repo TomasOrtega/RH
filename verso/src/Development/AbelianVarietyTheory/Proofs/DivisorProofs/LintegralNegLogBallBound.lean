@@ -7,6 +7,27 @@ open MeasureTheory
 
 namespace GlobalTheory.LogBox
 
+/- English proof (translation)
+Introduce `d a r i hr hr1`. Take `⟨k, rfl⟩ : ∃ k, d = k + 1` from `⟨d - 1, by have := i.pos; omega⟩`. Use `set φ : ℂ → ENNReal := fun x => ENNReal.ofReal (max 0 (-Real.log (‖x‖ ^ 2))) with hφ`. Establish `hφm : Measurable φ`. Use `ENNReal.measurable_ofReal.comp ?_` and prove the remaining obligations.
+
+Conclude with `measurable_const.max (Real.measurable_log.comp (by fun_prop)).neg`. Use `set T : Set (Fin (k + 1) → ℂ) := Set.univ.pi fun j => Metric.ball (a j) r with hTdef`. Establish `hT : MeasurableSet T` using `MeasurableSet.univ_pi fun j => measurableSet_ball`. Establish `hsub : Metric.ball a r ⊆ WithLp.ofLp ⁻¹' T`. Introduce `w hw j _`.
+
+Simplify using `only [Metric.mem_ball] at hw ⊢`. Conclude with `lt_of_le_of_lt (PiLp.dist_apply_le w a j) hw`. Establish `step1 : ∫⁻ w in Metric.ball a r, φ (w i) ≤ ∫⁻ w in WithLp.ofLp ⁻¹' T, (fun x : Fin (k + 1) → ℂ => φ (x i)) (WithLp.ofLp w)` using `lintegral_mono_set hsub`. Establish `step2 : ∫⁻ w in WithLp.ofLp ⁻¹' T, (fun x : Fin (k + 1) → ℂ => φ (x i)) (WithLp.ofLp w) = ∫⁻ x in T, φ (x i)` using `(GlobalTheory.volume_preserving_ofLp_complex (Fin (k + 1))).setLIntegral_comp_preimage hT (hφm.comp (measurable_pi_apply i))`. Establish `step3 : ∫⁻ x in T, φ (x i) = ∏ j, ∫⁻ y in Metric.ball (a j) r, (fun (j : Fin (k + 1)) (y : ℂ) => if j = i then φ y else 1) j y`.
+
+Rewrite using `[hTdef, volume_pi, Measure.restrict_pi_pi, ← GlobalTheory.RestrMeas.lintegral_fintype_prod_eq_prod (μ := fun j => (volume : Measure ℂ).restrict (Metric.ball (a j) r)) (f := fun (j : Fin (k + 1)) (y : ℂ) => if j = i then φ y else 1)]`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `j`.
+
+Distinguish the cases in `h : j = i`. Simplify using `only [h, if_true]`. Conclude with `hφm.aemeasurable`. Simplify using `only [h, if_false]`. Conclude with `aemeasurable_const`.
+
+Establish `hvol : ∀ j, volume (Metric.ball (a j) r) = ENNReal.ofReal (Real.pi * r ^ 2)`. Introduce `j`. Rewrite using `[Complex.volume_ball, ENNReal.ofReal_mul Real.pi_pos.le, ENNReal.ofReal_pow hr.le, mul_comm, ← ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi]`. Establish `step4 : (∏ j, ∫⁻ y in Metric.ball (a j) r, (fun (j : Fin (k + 1)) (y : ℂ) => if j = i then φ y else 1) j y) = (∫⁻ y in Metric.ball (a i) r, φ y) * ENNReal.ofReal (Real.pi * r ^ 2) ^ k`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`.
+
+Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[Finset.prod_congr rfl (g := fun _ => ENNReal.ofReal (Real.pi * r ^ 2)), Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ, Fintype.card_fin]`. Simplify using the standard rewrite rules. Introduce `j hj`.
+
+Establish `hji : j ≠ i` using `Finset.ne_of_mem_erase hj`. Simplify using `only [hji, if_false, lintegral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter, one_mul, hvol]`. Take `⟨hint, hbd⟩` from `GlobalTheory.LogDisc.integrableOn_and_setIntegral_posNegLogNormSq_ball_le (a i) r hr hr1`. Establish `step5 : ∫⁻ y in Metric.ball (a i) r, φ y = ENNReal.ofReal (∫ x in Metric.ball (a i) r, max 0 (-Real.log (‖x‖ ^ 2)))` using `(ofReal_integral_eq_lintegral_ofReal hint (Filter.Eventually.of_forall fun _ => le_max_left _ _)).symm`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[step5]`. Use `gcongr`. Use `_ = ENNReal.ofReal ((Real.pi * r ^ 2) ^ (k + 1) * (1 - 2 * Real.log (r ^ 2))) := by`. Establish `hlog : 0 ≤ 1 - 2 * Real.log (r ^ 2)`. Establish `: Real.log (r ^ 2) ≤ 0` using `Real.log_nonpos (by positivity) (by nlinarith)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem lintegral_posNegLogNormSq_coord_ball_le :
     ∀ {d : ℕ} (a : ReciprocityTheory.L2DbarEstimates.V d) (r : ℝ) (i : Fin d), 0 < r → r ≤ 1 →
       ∫⁻ w in Metric.ball a r, ENNReal.ofReal (max 0 (-Real.log (‖w i‖ ^ 2))) ≤

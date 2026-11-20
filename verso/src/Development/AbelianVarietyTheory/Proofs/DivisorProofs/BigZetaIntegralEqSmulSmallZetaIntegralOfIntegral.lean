@@ -21,6 +21,13 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL Formalism.DoubleC
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [MeasurableSpace k] [BorelSpace k]
 
+/- English proof (translation)
+Unfold `smallF`. Rewrite using `[← Fintype.card_congr eC, ← integral_mul_left_eq_self (fun g : GL A k => Ψ (g.val * reindex (Equiv.refl _) eC (Y * c)) * (ν (gdet g) : ℂ) * apow (gdet g) ((Fintype.card C : ℂ) / 2)) g₀, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Establish `h2 : (g₀ * g).val * reindex (Equiv.refl _) eC (Y * c) = reindex (Equiv.refl _) eC (g₀.val * (g.val * Y) * c)`.
+
+Establish `h5 : ∀ (M : Matrix A A k) (N : Matrix A C k), M * reindex (Equiv.refl _) eC N = reindex (Equiv.refl _) eC (M * N)` using `fun M N => by`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h5]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`.
+
+Rewrite using `[h2, gdet_mul, map_mul, Units.val_mul, apow_mul, apow_of_valuation_eq_one (valuation_gdet_of_mem_KO hg)]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem smallF_rows {A C C₁ : Type} [Fintype A] [DecidableEq A]
     [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁] (eC : C ≃ C₁)
     (μ : Measure (GL A k)) [μ.IsHaarMeasure] (ν : kˣ →* ℂˣ)
@@ -46,6 +53,11 @@ theorem smallF_rows {A C C₁ : Type} [Fintype A] [DecidableEq A]
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] in
 
+/- English proof (translation)
+Use `⟨Units.map (Int.castRingHom k).toMonoidHom (Equiv.Perm.sign (eC.trans τ.symm)), ?_, fun u => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (eC.trans τ.symm)) with h | h <;> rw [h] <;> simp`. Use `⟨⟨reindex τ eC u.val, reindex eC τ (u⁻¹).val, ?_, ?_⟩, rfl, rfl, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[submatrix_mul_equiv]`. Simplify using `[submatrix_mul_equiv]`.
+
+Conclude with `det_reindex τ eC u.val`.
+-/
 theorem exists_reindex_unit_val {C C₁ : Type} [Fintype C] [DecidableEq C] [Fintype C₁] [DecidableEq C₁]
     (τ eC : C ≃ C₁) :
     ∃ s : kˣ, ValuativeRel.valuation k (s : k) = 1 ∧ ∀ u : GL C k, ∃ u₁ : GL C₁ k, u₁.val = reindex τ eC u.val ∧
@@ -59,6 +71,27 @@ theorem exists_reindex_unit_val {C C₁ : Type} [Fintype C] [DecidableEq C] [Fin
 
 end
 
+/- English proof (translation)
+Introduce `k _ _ _ _ _ _ a A' _ _ C _ _ C₁ _ _ eC σ σ₁ gA gB c hA hB hC`. Set `τ : C ≃ C₁` to `σ.symm.trans σ₁`. Take `⟨s, hs1, hs⟩` from `exists_reindex_unit_val (k := k) τ eC`. Establish `vA` using `valuation_gdet_of_mem_KO hA`. Establish `vB` using `valuation_gdet_of_mem_KO hB`.
+
+Establish `vC` using `valuation_gdet_of_mem_KO hC`. Establish `vs : ValuativeRel.valuation k ((s * gdet c : kˣ) : k) = 1`. Rewrite using `[Units.val_mul, map_mul, hs1, vC, mul_one]`. Use `⟨(gdet gA)⁻¹ * (s * gdet c) * gdet gB, ?_, fun ϖ ν β Ξ Ψ H => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul, vs, vB, Units.val_inv_eq_inv_val, map_inv₀, vA]`.
+
+Simplify using the standard rewrite rules. Establish `n1 : (ν (gdet gA) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `n2 : (ν (s * gdet c) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `n3 : (β (s * gdet c) : ℂ) ≠ 0` using `Units.ne_zero _`. Use function extensionality and compare the values at `h`.
+
+Take `⟨u, hu1, hu2, hu3⟩` from `hs (h * c)`. Establish `hd : gdet u = (s * gdet c) * gdet h` using `by rw [hu3, gdet_mul, mul_comm (gdet h), mul_assoc]`. Establish `hX : reindex (Equiv.refl _) eC (X0 k σ * (invT (h * c)).val) = X0 k σ₁ * (invT u).val`. Use extensionality with `i j`. Rewrite using `[frameMatrixFirstColumnBlock_mul_apply, hu2]`.
+
+Simplify using `[frameMatrixFirstColumnBlock_mul_apply, τ]`. Establish `hY : reindex (Equiv.refl _) eC (Y0 k σ * h.val * c.val) = Y0 k σ₁ * u.val`. Use extensionality with `i j`. Rewrite using `[frameMatrixSecondColumnBlock_mul_apply, hu1, Matrix.mul_assoc, ← Units.val_mul]`. Simplify using `only [reindex_apply, submatrix_apply, frameMatrixSecondColumnBlock_mul_apply]`.
+
+Simplify using `[τ]`. Establish `H1` using `congrFun H u`. Establish `hF : (ν (gdet gA) : ℂ) * bigF (haarVol (KO k (Fin a))) ϖ ν (fun X => Ξ (reindex (Equiv.refl _) eC (gA.val * X * (invT c).val))) (X0 k σ * (invT h).val) = bigF (haarVol (KO k (Fin a))) ϖ ν Ξ (X0 k σ₁ * (invT u).val)`. Unfold `bigF`. Rewrite using `[← shellSum_mul_left _ ϖ ν _ (fun g => Ξ (g * (X0 k σ₁ * (invT u).val))) hA, Fintype.card_congr eC, ← hX]`.
+
+Use `congr 2`. Use function extensionality and compare the values at `g`. Use `congrArg Ξ ?_` and prove the remaining obligations. Establish `h5 : ∀ (M : Matrix (Fin a) (Fin a) k) (N : Matrix (Fin a) C k), M * reindex (Equiv.refl _) eC N = reindex (Equiv.refl _) eC (M * N)` using `fun M N => by`. Use extensionality with `i j`.
+
+Simplify using `[Matrix.mul_apply]`. Simplify using `only [h5, ← Matrix.mul_assoc gA.val g, map_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hG` using `smallF_rows eC (haarVol (KO k A')) ν hB c.val Ψ (Y0 k σ * h.val)`. Rewrite `H1` using `[bigZetaIntegral_eq, smallP, ← hF, ← hY, hd, ← hG]`.
+
+Rewrite using `[Pi.smul_apply, smul_eq_mul, bigZetaIntegral_eq, smallP]`. Simplify using `only [map_mul _ (s * gdet c), apow_mul (s * gdet c), Units.val_mul, MonoidHom.mul_apply, apow_of_valuation_eq_one vs, map_mul ν _ (gdet gB), map_mul ν (gdet gA)⁻¹, map_inv, Units.val_inv_eq_inv_val] at H1 ⊢`. Generalize the expression as in `(ν (s * gdet c) : ℂ) = x2 at *`. Generalize the expression as in `(β (s * gdet c) : ℂ) = x3 at *`. Use `mul_left_cancel₀ (mul_ne_zero n1 n3) ?_` and prove the remaining obligations.
+
+Use `Eq.trans (by ring) (H1.trans ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+-/
 theorem bigZeta_eq_smul_smallZeta_change : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (a : ℕ) (A' : Type) [Fintype A'] [DecidableEq A'] (C : Type) [Fintype C] [DecidableEq C]
       (C₁ : Type) [Fintype C₁] [DecidableEq C₁] (eC : C ≃ C₁) (σ : Fin a ⊕ A' ≃ C) (σ₁ : Fin a ⊕ A' ≃ C₁)
       (gA : GL (Fin a) k) (gB : GL A' k) (c : GL C k), gA ∈ KO k (Fin a) → gB ∈ KO k A' → c ∈ KO k C →

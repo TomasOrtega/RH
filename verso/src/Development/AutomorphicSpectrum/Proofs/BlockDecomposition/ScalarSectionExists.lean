@@ -8,6 +8,9 @@ namespace GlobalTheory.CompanionTheory.ScalWall
 
 open PositivityTheory.RgEis ResidueKilled.Tr GlobalTheory.CompanionTheory.SiegelFrame
 
+/- English proof (translation)
+Establish `hs : HasSum (fun q : PositivityTheory.RgEis.Cos P' Γ' => Real.exp (l (PositivityTheory.RgEis.rep q * Φ g))) (PositivityTheory.RgEis.pos Γ' P' l (Φ g))` using `(hc (Φ g)).hasSum`. Establish `h2` using `GlobalTheory.CompanionTheory.SiegelFrame.hasSum_cos Φ Γ P Γ' P' hΓ hP (fun y => Real.exp (l y)) (fun γ hγ hγP y => by simp only [hl γ hγ hγP y]) (Φ g) _ hs`. Establish `h3 : HasSum (fun q : PositivityTheory.RgEis.Cos P Γ => ((Real.exp (l (Φ (PositivityTheory.RgEis.rep q * g))) : ℝ) : ℂ)) ((PositivityTheory.RgEis.pos Γ' P' l (Φ g) : ℝ) : ℂ)` using `Complex.hasSum_ofReal.mpr (by simpa only [map_mul] using h2)`. Establish `h4 : GlobalTheory.Eis.cosetSum P Γ (fun x => ((Real.exp (l (Φ x)) : ℝ) : ℂ)) g = ((PositivityTheory.RgEis.pos Γ' P' l (Φ g) : ℝ) : ℂ)` using `h3.tsum_eq`. Rewrite using `[h4, Complex.norm_real, Real.norm_of_nonneg (hs.nonneg fun _ => (Real.exp_pos _).le)]`.
+-/
 theorem pos_eq_norm_cosetSum {G G' : Type} [Group G] [Group G'] (Φ : G ≃* G') (Γ P : Subgroup G) (Γ' P' : Subgroup G')
     (hΓ : ∀ g, g ∈ Γ ↔ Φ g ∈ Γ') (hP : ∀ g, g ∈ P ↔ Φ g ∈ P') (l : G' → ℝ) (hc : Conv Γ' P' l)
     (hl : ∀ γ ∈ Γ', γ ∈ P' → ∀ y, l (γ * y) = l y) (g : G) :
@@ -23,6 +26,11 @@ theorem pos_eq_norm_cosetSum {G G' : Type} [Group G] [Group G'] (Φ : G ≃* G')
       = ((PositivityTheory.RgEis.pos Γ' P' l (Φ g) : ℝ) : ℂ) := h3.tsum_eq
   rw [h4, Complex.norm_real, Real.norm_of_nonneg (hs.nonneg fun _ => (Real.exp_pos _).le)]
 
+/- English proof (translation)
+Establish `e : (Set.range fun k : K' => fun y => f (Φ.symm (y * (k : G')))) = (LinearMap.funLeft ℂ ℂ (⇑Φ.symm)) '' (Set.range fun k : K' => fun x => f (x * Φ.symm k))`. Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use function extensionality and compare the values at `k y`. Simplify using `[LinearMap.funLeft_apply, map_mul]`.
+
+Rewrite using `[e, ← Submodule.map_span]`. Conclude with `Module.Finite.map _ _`.
+-/
 theorem fin_along {G G' : Type} [Group G] [Group G'] (Φ : G ≃* G') (K' : Subgroup G') (f : G → ℂ)
     (hfin : FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K' => fun x => f (x * Φ.symm k)))) :
     FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k : K' => fun y => f (Φ.symm (y * (k : G'))))) := by
@@ -35,6 +43,33 @@ theorem fin_along {G G' : Type} [Group G] [Group G'] (Φ : G ≃* G') (K' : Subg
   rw [e, ← Submodule.map_span]
   exact Module.Finite.map _ _
 
+/- English proof (translation)
+Unfold `ResidueKilled.Tr.TScal ResidueKilled.Tr.Scal`. Introduce `hSec hWL G G' _ _ _ _ _ _ _ _ Φ Γ P Γ' K' P' c η N hK hPar hHt hΓ hP hW f hf hlaw hfin`. Establish `hcrat : ∀ γ ∈ Γ', γ ∈ P' → c γ = 1`. Take `⟨_, _, ⟨_, _, h, _⟩⟩` from `hPar`. Conclude with `h`.
+
+Establish `hηl : ∀ p ∈ P', ∀ g, η (p * g) = η p + η g`. Take `⟨h, _, _, _⟩` from `hHt`. Conclude with `h`. Establish `hηr : ∀ γ ∈ Γ', γ ∈ P' → η γ = 0`. Take `⟨_, _, h, _⟩` from `hHt`.
+
+Conclude with `h`. Establish `hβ : PositivityTheory.RgEis.IsHt Γ' K' P' (fun g => N * η g)`. Take `⟨h1, h2, h3, h4⟩` from `hHt`. Conclude with `⟨fun p hp g => by simp only [h1 p hp g, mul_add], fun g k hk => by simp only [h2 g k hk], fun γ hγ hγP => by simp only [h3 γ hγ hγP, mul_zero], continuous_const.mul h4⟩`. Establish `hlaw' : ∀ p ∈ P', ∀ x : G', (fun y => f (Φ.symm y)) (p * x) = c p * Complex.exp (0 * ↑(η p)) * (fun y => f (Φ.symm y)) x`.
+
+Introduce `p hp x`. Establish `hp' : Φ.symm p ∈ P` using `(hP (Φ.symm p)).mpr (by simpa using hp)`. Simplify using `only [map_mul, zero_mul, Complex.exp_zero, mul_one]`. Rewrite using `[hlaw _ hp']`. Simplify using the standard rewrite rules.
+
+Establish `hfin'` using `fin_along Φ.toMulEquiv K' f hfin`. Take `⟨R, D, H, hD, hDz, hHd, hHc, hconv1, hconv2, hbd, hsum⟩` from `GlobalTheory.CompanionTheory.SiegelFrame.scalar_wall hSec hWL Γ' K' P' c η (fun g => N * η g) hK hPar hHt hβ hW (fun y => f (Φ.symm y)) 0 (hf.comp (map_continuous Φ.symm)) hlaw' hfin'`. Use `⟨D, fun z g => H z (Φ g), R, hD, hDz, fun g => hHd (Φ g), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hHc.comp (continuous_fst.prodMk ((map_continuous Φ).comp continuous_snd))`. Introduce `z hz g show H z (Φ g) = _`.
+
+Establish `h2` using `GlobalTheory.CompanionTheory.SiegelFrame.hasSum_cos Φ.toMulEquiv Γ P Γ' P' hΓ hP (fun y => D z * (Complex.exp ((z - 0) * ↑(η y)) * f (Φ.symm y))) (fun γ hγ hγP y => by`. Establish `hγ' : Φ.symm γ ∈ P` using `(hP (Φ.symm γ)).mpr (by simpa using hγP)`. Simplify using `only [hηl γ hγP y, hηr γ hγ hγP, zero_add, map_mul]`. Rewrite using `[hlaw _ hγ']`. Simplify using `[hcrat γ hγ hγP])`.
+
+Use the proof step `(Φ g) _ (hsum z hz (Φ g))`. Establish `h3 : HasSum (fun q : PositivityTheory.RgEis.Cos P Γ => D z * (Complex.exp (z * ↑(η (Φ (PositivityTheory.RgEis.rep q * g)))) * f (PositivityTheory.RgEis.rep q * g))) (H z (Φ g))`. Establish `e : (fun q : PositivityTheory.RgEis.Cos P Γ => D z * (Complex.exp (z * ↑(η (Φ (PositivityTheory.RgEis.rep q * g)))) * f (PositivityTheory.RgEis.rep q * g))) = fun q => (fun y => D z * (Complex.exp ((z - 0) * ↑(η y)) * f (Φ.symm y))) (Φ.toMulEquiv (PositivityTheory.RgEis.rep q) * …`. Use function extensionality and compare the values at `q`. Establish `hm : Φ.toMulEquiv (PositivityTheory.RgEis.rep q) * Φ g = Φ (PositivityTheory.RgEis.rep q * g)` using `(map_mul Φ _ _).symm`.
+
+Use `show _ = D z * (Complex.exp ((z - 0) * ↑(η (Φ.toMulEquiv (PositivityTheory.RgEis.rep q) * Φ g))) * f (Φ.symm (Φ.toMulEquiv (PositivityTheory.RgEis.rep q) * Φ g)))`. Rewrite using `[hm, sub_zero, ContinuousMulEquiv.symm_apply_apply]`. Rewrite using `[e]`. Conclude with `h2`. Rewrite using `[← h3.tsum_eq, tsum_mul_left]`.
+
+Both sides reduce to the same expression. Introduce `a b ha hb`. Take `⟨M, hM⟩` from `hbd a b ha hb`. Use `⟨M, fun z hz1 hz2 g => ?_⟩` and prove the remaining obligations. Establish `hl2 : (fun x : G' => N * η x - b * η x) = fun x => (N - b) * η x`.
+
+Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Establish `hinv : ∀ (t : ℝ), ∀ γ ∈ Γ', γ ∈ P' → ∀ y, t * η (γ * y) = t * η y`. Introduce `t γ hγ hγP y`. Rewrite using `[hηl γ hγP y, hηr γ hγ hγP, zero_add]`.
+
+Establish `e1 : PositivityTheory.RgEis.pos Γ' P' (fun x => a * η x) (Φ g) = ‖GlobalTheory.Eis.cosetSum P Γ (fun x => ((Real.exp (a * η (Φ x)) : ℝ) : ℂ)) g‖` using `pos_eq_norm_cosetSum Φ.toMulEquiv Γ P Γ' P' hΓ hP (fun x => a * η x) (hconv1 a ha) (fun γ hγ hγP y => hinv a γ hγ hγP y) g`. Establish `hc2 : PositivityTheory.RgEis.Conv Γ' P' (fun x => (N - b) * η x)`. Rewrite using `[← hl2]`. Conclude with `hconv2 b hb`. Establish `e2 : PositivityTheory.RgEis.pos Γ' P' (fun x => (N - b) * η x) (Φ g) = ‖GlobalTheory.Eis.cosetSum P Γ (fun x => ((Real.exp ((N - b) * η (Φ x)) : ℝ) : ℂ)) g‖` using `pos_eq_norm_cosetSum Φ.toMulEquiv Γ P Γ' P' hΓ hP (fun x => (N - b) * η x) hc2 (fun γ hγ hγP y => hinv (N - b) γ hγ hγP y) g`.
+
+Establish `key` using `hM z hz1 hz2 (Φ g)`. Establish `e3 : PositivityTheory.RgEis.pos Γ' P' (fun x => N * η x - b * η x) (Φ g) = PositivityTheory.RgEis.pos Γ' P' (fun x => (N - b) * η x) (Φ g)`. Rewrite using `[hl2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e3, e1, e2]`.
+
+Apply the tactic sequence `try rfl`.
+-/
 theorem tScal : TScal := by
   unfold ResidueKilled.Tr.TScal ResidueKilled.Tr.Scal
   intro hSec hWL G G' _ _ _ _ _ _ _ _ Φ Γ P Γ' K' P' c η N hK hPar hHt hΓ hP hW f hf hlaw hfin

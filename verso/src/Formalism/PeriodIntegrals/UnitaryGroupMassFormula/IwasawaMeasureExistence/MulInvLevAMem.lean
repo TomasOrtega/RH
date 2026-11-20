@@ -10,21 +10,40 @@ open scoped TensorProduct
 
 variable {I : AutInst} {J : ℕ} (Fr : WittFrame I J) (c : Composition J)
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r i`. Both sides reduce to the same expression.
+-/
 theorem colF_cols : Fr.colF = cols (eW Fr) (frF Fr) := by
   funext r i; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `r i`. Both sides reduce to the same expression.
+-/
 theorem colV_cols (v : InfinitePlace I.F) : Fr.colV v = cols (eW Fr) (Fr.frV v) := by
   funext r i; rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Both sides reduce to the same expression.
+-/
 theorem cT_star {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j; rfl
 
+/- English proof (translation)
+Rewrite using `[frF, cT_map, ← Matrix.map_mul, ← Matrix.map_mul, submatrix_map]`. Use `congr 1`. Conclude with `Gm_sub Fr`.
+-/
 theorem gramF : (Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (frF Fr) * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *
     frF Fr).submatrix (eW Fr) (eW Fr) = (wittJ (J := J) Fr.J0).map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by
   rw [frF, cT_map, ← Matrix.map_mul, ← Matrix.map_mul, submatrix_map]
   congr 1
   exact Gm_sub Fr
 
+/- English proof (translation)
+Establish `hc : ∀ M : Matrix (Fin I.n) (Fin I.n) I.E, (M.map (I.φ v))ᴴ = Mᴴ.map (I.φ v)` using `fun M => (conjTranspose_map _ (semiconj_phi v)).symm`. Establish `e1 : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1`. Rewrite using `[← conjTranspose_mul, rrg_P_mul_inv, conjTranspose_one]`. Establish `hJm : Formalism.REAL.Jm (I.ε v) = (I.P v)ᴴ * I.J.map (I.φ v) * I.P v` using `(I.P_spec v).symm`. Establish `key : (Fr.frV v)ᴴ * Formalism.REAL.Jm (I.ε v) * Fr.frV v = (Gm Fr).map (I.φ v)`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJm]`. Simplify using `only [WittFrame.frV, conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (Gm Fr).map (I.φ v) := by`. Rewrite using `[e1, rrg_P_mul_inv, hc]`.
+
+Simplify using `only [Gm, Matrix.map_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Rewrite using `[cT_star, key, submatrix_map]`. Use `congr 1`. Conclude with `Gm_sub Fr`.
+-/
 theorem gramV (v : InfinitePlace I.F) : (Formalism.UG.cT (starRingEnd ℂ) (Fr.frV v) * Formalism.REAL.Jm (I.ε v) *
     Fr.frV v).submatrix (eW Fr) (eW Fr) = (wittJ (J := J) Fr.J0).map (I.φ v) := by
   have hc : ∀ M : Matrix (Fin I.n) (Fin I.n) I.E, (M.map (I.φ v))ᴴ = Mᴴ.map (I.φ v) := fun M =>
@@ -43,17 +62,29 @@ theorem gramV (v : InfinitePlace I.F) : (Formalism.UG.cT (starRingEnd ℂ) (Fr.f
   congr 1
   exact Gm_sub Fr
 
+/- English proof (translation)
+Introduce `q r h` and use `antiLev_wittJ c Fr.J0 q r (fun h' => h (by rw [Matrix.map_apply, h', map_zero]))`.
+-/
 theorem alevF : ALev (levW (n₀ := nz I J) c) c.length ((wittJ (J := J) Fr.J0).map (Formalism.UG.inclE (F := I.F) (Af I.F))) :=
   fun q r h => antiLev_wittJ c Fr.J0 q r (fun h' => h (by rw [Matrix.map_apply, h', map_zero]))
 
+/- English proof (translation)
+Introduce `q r h` and use `antiLev_wittJ c Fr.J0 q r (fun h' => h (by rw [Matrix.map_apply, h', map_zero]))`.
+-/
 theorem alevV (v : InfinitePlace I.F) : ALev (levW (n₀ := nz I J) c) c.length ((wittJ (J := J) Fr.J0).map (I.φ v)) :=
   fun q r h => antiLev_wittJ c Fr.J0 q r (fun h' => h (by rw [Matrix.map_apply, h', map_zero]))
 
 variable {Fr c}
 
+/- English proof (translation)
+Rewrite using `[← colF_cols]`. Conclude with `(Subgroup.mem_inf.1 hx).1`.
+-/
 theorem parF {x : I.GA} (hx : x ∈ parA Fr c) : projF I x ∈ parGL (cols (eW Fr) (frF Fr)) (levW c) := by
   rw [← colF_cols]; exact (Subgroup.mem_inf.1 hx).1
 
+/- English proof (translation)
+Rewrite using `[← colV_cols]`. Conclude with `Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 v`.
+-/
 theorem parV {x : I.GA} (hx : x ∈ parA Fr c) (v : InfinitePlace I.F) :
     projV I v x ∈ parGL (cols (eW Fr) (Fr.frV v)) (levW c) := by
   rw [← colV_cols]; exact Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 v

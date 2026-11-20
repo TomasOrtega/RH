@@ -22,6 +22,15 @@ namespace TopForm
 
 namespace FrameBasis
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `haveI : Algebra.IsStandardSmoothOfRelativeDimension m k A := hA`. Consider the cases of `subsingleton_or_nontrivial A with`. Consider the case `inl _ => haveI := Module.subsingleton A (Omega α)`. Conclude with `⟨fun _ _ _ => Subsingleton.elim _ _, fun _ => ⟨0, Subsingleton.elim _ _⟩⟩`.
+
+Consider the case `inr _ => haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth m (R := k) (S := A) haveI : Module.Free A (Omega α) := inferInstanceAs (Module.Free A Ω[A⁄k]) haveI : Module.Finite A (Omega α) := inferInstanceAs (Module.Finite A Ω[A⁄k])`. Establish `hr : Module.finrank A (Omega α) = m` using `Module.finrank_eq_of_rank_eq (Algebra.IsStandardSmoothOfRelativeDimension.rank_kaehlerDifferential (R := k) (S := A) m)`. Set `b` to `Module.finBasisOfFinrankEq A (Omega α) hr`. Set `v : Fin m → Omega α` to `fun i => dFun α (x i)`. Take `⟨a, ha⟩` from `hx.2 (exteriorPower.ιMulti A m b)`.
+
+Establish `e` using `congrArg (exteriorPower.alternatingMapLinearEquiv b.det) ha`. Simplify using `only [map_smul, dForm_eq, exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, Module.Basis.det_self, smul_eq_mul] at e`. Establish `hu : IsUnit (b.det v)` using `IsUnit.of_mul_eq_one a (by rw [mul_comm]; exact e)`. Take `⟨hli, hsp⟩` from `(b.is_basis_iff_det).2 hu`. Set `b'` to `Module.Basis.mk hli hsp.ge`.
+
+Establish `: (Fintype.linearCombination A fun i => dFun α (x i)) = b'.equivFun.symm.toLinearMap`. Use extensionality with `c`. Simplify using `[Fintype.linearCombination_apply, Module.Basis.equivFun_symm_apply, b', v]`. Rewrite using `[this]`. Conclude with `b'.equivFun.symm.bijective`.
+-/
 theorem bijective_of_isFreeGen {k A : Type*} [CommRing k] [CommRing A] (α : k →+* A) {m : ℕ}
     (hA : α.IsStandardSmoothOfRelativeDimension m) (x : Fin m → A)
     (hx : IsFreeGen A (dForm α x)) :
@@ -61,6 +70,17 @@ end GlobalTheory
 
 namespace GlobalTheory.TopForm.FrameBasis
 
+/- English proof (translation)
+Use `letI := α.toAlgebra`. Use `letI (t : s) : Algebra k (B t) := ((algebraMap A (B t)).comp α).toAlgebra`. Use `haveI (t : s) : IsScalarTower k A (B t) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI (t : s) : Algebra.FormallyEtale A (B t) := Algebra.FormallyEtale.of_isLocalization (Submonoid.powers t.1)`. Set `g : ∀ t : s, Ω[A⁄k] →ₗ[A] Ω[B t⁄k]` to `fun t => KaehlerDifferential.map k k A (B t)`.
+
+Use `haveI H₁ (t : s) : IsLocalizedModule.Away t.1 (g t) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers t.1) (B t) (g t)).2 (KaehlerDifferential.isBaseChange_of_formallyEtale k A (B t))`. Set `π : ∀ t : s, (Fin m → A) →ₗ[A] (Fin m → B t)` to `fun t => (Algebra.linearMap A (B t)).compLeft (Fin m)`. Use `haveI H₂ (t : s) : IsLocalizedModule.Away t.1 (π t) := (isLocalizedModule_iff_isBaseChange (Submonoid.powers t.1) (B t) (π t)).2 (IsBaseChange.finitePow (Fin m) (IsBaseChange.linearMap A (B t)))`. Set `e : ∀ t : s, (Fin m → B t) ≃ₗ[A] Ω[B t⁄k]` to `fun t => (LinearEquiv.ofBijective _ (H t)).restrictScalars A`. Use `haveI H₃ (t : s) : IsLocalizedModule.Away t.1 ((e t).toLinearMap ∘ₗ π t) := IsLocalizedModule.of_linearEquiv _ _ _`.
+
+Establish `hcomp (t : s) : g t ∘ₗ (Fintype.linearCombination A fun i => dFun α (x i)) = (e t).toLinearMap ∘ₗ π t`. Use extensionality with `c`. Simplify using `[g, e, π, Fintype.linearCombination_apply, algebraMap_smul]`. Use `haveI H₄ (t : s) : IsLocalizedModule.Away t.1 (g t ∘ₗ (Fintype.linearCombination A fun i => dFun α (x i))) := by`. Rewrite using `[hcomp t]`.
+
+Conclude with `H₃ t`. Use `bijective_of_isLocalized_span s hs (fun t => Ω[B t⁄k]) (fun t => g t ∘ₗ (Fintype.linearCombination A fun i => dFun α (x i))) (fun t => Ω[B t⁄k]) g (Fintype.linearCombination A fun i => dFun α (x i)) fun t => ?_` and prove the remaining obligations. Establish `: IsLocalizedModule.map (.powers t.1) (g t ∘ₗ (Fintype.linearCombination A fun i => dFun α (x i))) (g t) (Fintype.linearCombination A fun i => dFun α (x i)) = LinearMap.id`. Use `IsLocalizedModule.linearMap_ext (.powers t.1) (g t ∘ₗ (Fintype.linearCombination A fun i => dFun α (x i))) (g t) ?_` and prove the remaining obligations. Rewrite using `[IsLocalizedModule.map_comp]`.
+
+Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+-/
 theorem bijective_of_isLocalization_span {k A : Type*} [CommRing k] [CommRing A] (α : k →+* A)
     {m : ℕ} (x : Fin m → A) (s : Set A) (hs : Ideal.span s = ⊤) (B : s → Type*)
     [∀ t, CommRing (B t)] [∀ t, Algebra A (B t)] [∀ t : s, IsLocalization.Away t.1 (B t)]
@@ -108,6 +128,15 @@ end GlobalTheory.TopForm.FrameBasis
 
 namespace GlobalTheory.TopForm.FrameBasis
 
+/- English proof (translation)
+Introduce `k _ X p m hp U x hx`. Establish `hU` using `hx.affine`. Establish `h` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension m) p hp ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top`. Take `⟨s, hs, h⟩` from `(RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso _).1 h`. Use `haveI (t : (s : Set Γ(X, U))) := hU.isLocalization_basicOpen t.1`.
+
+Establish `hbij : Function.Bijective (Fintype.linearCombination Γ(X, U) fun i => dFun (algX p U) (x i))`. Use `bijective_of_isLocalization_span (algX p U) x (s : Set Γ(X, U)) hs (fun t => Γ(X, X.basicOpen t.1)) fun t => ?_` and prove the remaining obligations. Establish `h₁` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.2 _ (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv (h t t.2 Γ(X, X.basicOpen t.1))`. Establish `e : (algebraMap Γ(X, U) Γ(X, X.basicOpen t.1)).comp (algX p U) = algX p (X.basicOpen t.1)` using `resG_comp_algX p (X.basicOpen_le t.1)`. Establish `h₂ : (algX p (X.basicOpen t.1)).IsStandardSmoothOfRelativeDimension m`.
+
+Rewrite using `[← resG_comp_algX p (X.basicOpen_le t.1)]`. Conclude with `h₁`. Establish `hfr` using `(hx.res (hU.basicOpen t.1) (X.basicOpen_le t.1)).gen`. Rewrite `hfr` using `[resForm_dOn]`. Use `bijective_of_isFreeGen _ h₂ _ hfr` as an intermediate fact.
+
+Rewrite using `[e]`. Conclude with `this`. Set `eq` to `LinearEquiv.ofBijective _ hbij`. Use `⟨Module.Basis.ofEquivFun eq.symm, fun i => ?_⟩` and prove the remaining obligations. Simplify using `[eq, Module.Basis.coe_ofEquivFun, Fintype.linearCombination_apply, Pi.single_apply]`.
+-/
 theorem exists_basis_of_isFrame : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (m : ℕ),
     SmoothOfRelativeDimension m p → ∀ (U : X.Opens) (x : Fin m → Γ(X, U)),
     GlobalTheory.TopForm.IsFrame (GlobalTheory.TopForm.dOn p x) →

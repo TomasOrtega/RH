@@ -13,6 +13,15 @@ open scoped Matrix
 
 namespace GlobalTheory.CompanionTheory.Ar.GR
 
+/- English proof (translation)
+Establish `hch : ringChar C ≠ ringChar F`. Rewrite using `[ringChar.eq_zero]`. Conclude with `(CharP.char_ne_zero_of_finite F (ringChar F)).symm`. Set `P` to `AddChar.FiniteField.primitiveChar F C hch`. Use `haveI : NeZero (P.n : ℕ) := ⟨P.n.ne_zero⟩`.
+
+Use `haveI : Algebra.IsIntegral C (CyclotomicField P.n C) := IsCyclotomicExtension.integral {(P.n : ℕ)} C _`. Set `j : CyclotomicField P.n C →ₐ[C] C` to `IsAlgClosed.lift`. Set `ψ : AddChar F C` to `{ toFun := fun a => j (P.char a) map_zero_eq_one' := by simp map_add_eq_mul' := fun a b => by simp [AddChar.map_add_eq_mul] }`. Use `⟨ψ, fun h => ?_⟩` and prove the remaining obligations. Use `P.prim one_ne_zero ?_` and prove the remaining obligations.
+
+Use extensionality with `a`. Establish `h1 : j (P.char a) = 1`. Use `congrArg (fun χ : AddChar F C => χ a) h` as an intermediate fact. Simplify `this` using `[ψ]`. Establish `h2 : P.char a = 1` using `j.toRingHom.injective (by simpa using h1)`.
+
+Simplify `h2` using `[AddChar.mulShift_apply]`.
+-/
 theorem exists_addChar_ne_one (C F : Type) [Field C] [IsAlgClosed C] [CharZero C] [Field F]
     [Finite F] : ∃ ψ : AddChar F C, ψ ≠ 1 := by
   have hch : ringChar C ≠ ringChar F := by
@@ -36,11 +45,29 @@ theorem exists_addChar_ne_one (C F : Type) [Field C] [IsAlgClosed C] [CharZero C
   have h2 : P.char a = 1 := j.toRingHom.injective (by simpa using h1)
   simpa [AddChar.mulShift_apply] using h2
 
+/- English proof (translation)
+The claim follows from `_root_.UpperTheory.Reformulated.B.AddCharacterCount.main ψ hψ`.
+-/
 theorem exists_shift_equiv {C F : Type} [Field C] [Field F] [Fintype F] [DecidableEq F]
     (ψ : AddChar F C) (hψ : ψ ≠ 1) :
     ∃ e : F ≃ AddChar F C, (∀ h h', e (h + h') = e h * e h') ∧ ∀ h a, e h a = ψ (h * a) :=
   _root_.UpperTheory.Reformulated.B.AddCharacterCount.main ψ hψ
 
+/- English proof (translation)
+Introduce `p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f hcard AA hFS`. Take `⟨ψ, hψ⟩` from `exists_addChar_ne_one C F`. Take `⟨e, he, heψ⟩` from `exists_shift_equiv ψ hψ`. Take `⟨AD, hAD, -, hcol⟩` from `h1 C R v hv F F e he rfl AA`. Establish `hfun : (fun (h a : F) => e h a) = fun (h a : F) => ψ (h * a)`.
+
+Use function extensionality and compare the values at `h a`. Conclude with `heψ h a`. Rewrite `hAD` using `[hfun]`. Take `⟨hFD, hdual⟩` from `GlobalTheory.T.dual_hopf_order_gauss_sum p C v R hv hvp F f hcard AA hFS ψ hψ AD hAD`. Use `⟨AD, hFD, ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `cN cD hN hD`. Rewrite using `[hcol cN cD hN hD, hcard, Nat.cast_pow, map_pow, ← pow_mul]`. Introduce `τ hτ c cD hc hcD`. Establish `hord` using `(GlobalTheory.T.teichmuller_character_order_generates p C v R hv hvp F f hcard τ hτ).1`. Distinguish the cases in `h2 : Fintype.card F = 2`.
+
+Establish `hpf : p ^ f = 2` using `hcard.symm.trans h2`. Take `⟨rfl, rfl⟩` from `(Nat.Prime.pow_eq_iff Nat.prime_two).1 hpf`. Establish `ht : τ = 1` using `orderOf_eq_one_iff.1 (by rw [hord]; norm_num)`. Establish `hN` using `(GlobalTheory.T.fundamental_character_ideal_powers 2 C v R hv hvp F 1 hcard AA hFS τ hτ (fun _ => c) (fun m => by rw [ht, one_pow, ← ht]; exact hc)).2.2`. Establish `hD` using `(GlobalTheory.T.fundamental_character_ideal_powers 2 C v R hv hvp F 1 hcard AD hFD τ hτ (fun _ => cD) (fun m => by rw [ht, one_pow, ← ht]; exact hcD)).2.2`.
+
+Establish `hI : Finset.Icc 1 (2 ^ 1 - 1) = ({1} : Finset ℕ)` using `by decide`. Rewrite `hN`, `hD` using `[hI, Finset.prod_singleton]`. Establish `key` using `hcol _ _ hN hD`. Rewrite `key` using `[h2]`. Use `(pow_left_inj₀ zero_le zero_le two_ne_zero).1 key` as an intermediate fact.
+
+Simplify using `using this`. Establish `hne : τ ≠ 1`. Introduce and unpack `rfl`. Rewrite `hord` using `[orderOf_one]`. Apply `h2` to reduce the goal to its premises.
+
+Rewrite using `[hcard]`. Establish `: 1 ≤ p ^ f` using `Nat.one_le_pow _ _ (Fact.out : p.Prime).pos`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hdual τ hne c cD hc hcD]`. Conclude with `GlobalTheory.T.gauss_sum_valuation_teichmuller p C v R hv hvp F f hcard h2 τ hτ ψ hψ`.
+-/
 theorem rank_one_sum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∃ AD : HopfOrder (C := C) R F, FStable F AD.carrier ∧ (∀ cN cD, HasColen R v AA.carrier cN → HasColen R v AD.carrier cD → (cN * cD) ^ 2 = v (p : C) ^ (f * p ^ f)) ∧ ∀ τ : MulChar F R, IsFund p τ → ∀ c cD : R, xIdeal AA.carrier τ = Ideal.span {c} → xIdeal AD.carrier τ = Ideal.span {cD} → (v (algebraMap R C c) * v (algebraMap R C cD)) ^ (p - 1) = v (p : C) := by
   intro p _ C _ _ _ v R _ _ hv hvp F _ _ _ _ f hcard AA hFS
   obtain ⟨ψ, hψ⟩ := exists_addChar_ne_one C F

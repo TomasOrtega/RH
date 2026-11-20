@@ -90,10 +90,16 @@ def isoMat (h : F.Ok) (U : Submodule K F.Forms) (v : InfinitePlace K) :
     Matrix (Fin (F.hDim h)) (Fin (F.subD h U)) ℂ :=
   (stdFrame (F.hGram h) v)⁻¹ * (F.subMat h U).map v.embedding * restrFrame (F.subMat h U) (F.hGram h) v
 
+/- English proof (translation)
+The claim follows from `(F.mem c.1).wt_eq (h c.1) (F.mem c.1).outSec c.2`.
+-/
 theorem wt_eq_card (h : F.Ok) (c : F.Cl) :
     (F.toCSD h).wt c = Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) :=
   (F.mem c.1).wt_eq (h c.1) (F.mem c.1).outSec c.2
 
+/- English proof (translation)
+Set `_ : ∀ b, Fintype (F.mem b).Cl` to `fun b => (h b).fintypeCl`. Unfold `ipAt GSD.ipAt`. Rewrite using `[Fintype.sum_sigma]`. Both sides reduce to the same expression.
+-/
 theorem ipAt_eq_sum (h : F.Ok) (v : InfinitePlace K) (φ ψ : F.Forms) :
     F.ipAt h v φ ψ = ∑ b, (F.mem b).ipAt (h b) v (φ b) (ψ b) := by
   let _ : ∀ b, Fintype (F.mem b).Cl := fun b => (h b).fintypeCl
@@ -102,24 +108,44 @@ theorem ipAt_eq_sum (h : F.Ok) (v : InfinitePlace K) (φ ψ : F.Forms) :
   rfl
 
 variable {F} in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.pair_rat, R.act_rat b, R.pos⟩`.
+-/
 theorem Rat.mem (R : F.Rat) (b : F.β) : (F.mem b).Rat := ⟨R.pair_rat, R.act_rat b, R.pos⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(R (Classical.arbitrary F.β)).pair_rat, fun b => (R b).act_rat, (R (Classical.arbitrary F.β)).pos⟩`.
+-/
 theorem Rat.of_mem [Nonempty F.β] (R : ∀ b, (F.mem b).Rat) : F.Rat :=
   ⟨(R (Classical.arbitrary F.β)).pair_rat, fun b => (R b).act_rat, (R (Classical.arbitrary F.β)).pos⟩
 
 variable {F} in
+/- English proof (translation)
+The claim follows from `R.pair_rat act_rat := fun c γ i j => R.act_rat c.1 (γ : F.G c.1) i j pos := R.pos`.
+-/
 theorem Rat.toCSDOf (R : F.Rat) (h : F.Ok) (s : ∀ b, (F.mem b).Sec) : (F.toCSDOf h s).Rat where
   pair_rat := R.pair_rat
   act_rat := fun c γ i j => R.act_rat c.1 (γ : F.G c.1) i j
   pos := R.pos
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[hB, coordOf, res]`.
+-/
 theorem hB_equivFun (h : F.Ok) (φ : F.Forms) : (F.hB h).equivFun φ = F.hCoord h φ := by
   funext i
   simp [hB, coordOf, res]
 
+/- English proof (translation)
+Simplify using `[hB]`.
+-/
 theorem hB_apply (h : F.Ok) (i : Fin (F.hDim h)) : F.res h (F.hB h i) = (F.toCSD h).basis i := by
   simp [hB]
 
+/- English proof (translation)
+Unfold `subMat`. Rewrite using `[subE_mulVec]`. Establish `: (F.subB h U).equivFun x = (subBasis (F.subZ h U)).equivFun (F.subEq h U x)`. Use function extensionality and compare the values at `i`. Simplify using `[subB]`.
+
+Rewrite using `[this, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+-/
 theorem subB_equivFun (h : F.Ok) (U : Submodule K F.Forms) (x : U) :
     (F.subMat h U).mulVec ((F.subB h U).equivFun x) = F.hCoord h (x : F.Forms) := by
   unfold subMat
@@ -130,17 +156,29 @@ theorem subB_equivFun (h : F.Ok) (U : Submodule K F.Forms) (x : U) :
   rw [this, LinearEquiv.symm_apply_apply]
   rfl
 
+/- English proof (translation)
+The claim follows from `(subspace_image_spec K _ (F.subZ h U)).1`.
+-/
 theorem subMat_injective (h : F.Ok) (U : Submodule K F.Forms) : Function.Injective (F.subMat h U).mulVec :=
   (subspace_image_spec K _ (F.subZ h U)).1
 
 variable {F}
 
+/- English proof (translation)
+Introduce `v` and use `(frameOfSpec _ _ (hp v)).1`.
+-/
 theorem PosH.frameOK {h : F.Ok} (hp : F.PosH h) (L : Submodule (𝓞 K) F.Forms) : FrameOK (F.toH h L) :=
   fun v => (frameOfSpec _ _ (hp v)).1
 
+/- English proof (translation)
+The claim follows from `(frameOfSpec _ _ (hp v)).2`.
+-/
 theorem PosH.met {h : F.Ok} (hp : F.PosH h) (v : InfinitePlace K) :
     metOf (stdFrame (F.hGram h) v) = (F.hGram h).map v.embedding := (frameOfSpec _ _ (hp v)).2
 
+/- English proof (translation)
+Rewrite using `[thl_majAt_coord (F.subB h U), thl_majAt_coord (F.hB h), (restrFrameSpec K _ _ (F.hGram h) hp (F.subMat h U) (F.subMat_injective h U) v).2.2, subB_equivFun, subB_equivFun, hB_equivFun, hB_equivFun]`.
+-/
 theorem PosH.sub_maj {h : F.Ok} (hp : F.PosH h) (U : Submodule K F.Forms) (v : InfinitePlace K) (x y : U) :
     majAt (F.subB h U) (restrFrame (F.subMat h U) (F.hGram h)) v x y =
       majAt (F.hB h) (stdFrame (F.hGram h)) v (x : F.Forms) (y : F.Forms) := by
@@ -148,6 +186,9 @@ theorem PosH.sub_maj {h : F.Ok} (hp : F.PosH h) (U : Submodule K F.Forms) (v : I
     (restrFrameSpec K _ _ (F.hGram h) hp (F.subMat h U) (F.subMat_injective h U) v).2.2,
     subB_equivFun, subB_equivFun, hB_equivFun, hB_equivFun]
 
+/- English proof (translation)
+Rewrite using `[normAt_eq_sqrt, normAt_eq_sqrt, hp.sub_maj]`.
+-/
 theorem PosH.sub_norm {h : F.Ok} (hp : F.PosH h) (U : Submodule K F.Forms) (v : InfinitePlace K) (x : U) :
     normAt (F.subB h U) (restrFrame (F.subMat h U) (F.hGram h)) v x =
       normAt (F.hB h) (stdFrame (F.hGram h)) v (x : F.Forms) := by
@@ -165,9 +206,15 @@ def isoHc (h : F.Ok) (L : Submodule (𝓞 K) F.Forms) : Formalism.L2.GlobalTheor
 
 variable {F}
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨hp.frameOK L, hL.fg, hL.span_eq_top⟩`.
+-/
 theorem PosH.good {h : F.Ok} (hp : F.PosH h) {L : Submodule (𝓞 K) F.Forms} (hL : Submodule.IsLattice K L) :
     (F.toH h L).Good := ⟨hp.frameOK L, hL.fg, hL.span_eq_top⟩
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `embIso' (F.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))) (F.toH h L) U.subtype U (hp.frameOK L) (Submodule.injective_subtype U) (Submodule.range_subtype U) (fun v x => hp.sub_norm U v x) rfl`. Conclude with `⟨I, fun x => Subtype.ext (hI x)⟩`.
+-/
 theorem PosH.iso_sub {h : F.Ok} (hp : F.PosH h) (L : Submodule (𝓞 K) F.Forms) (U : Submodule K F.Forms) :
     ∃ I : Formalism.L2.GlobalTheoryTheory.HLatOps.Iso (F.subH h U (L.comap (U.subtype.restrictScalars (𝓞 K)))) (sub (F.toH h L) U),
       ∀ x : U, (I.e x : U) = x := by
@@ -177,28 +224,51 @@ theorem PosH.iso_sub {h : F.Ok} (hp : F.PosH h) (L : Submodule (𝓞 K) F.Forms)
 
 variable (F)
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_add, Finsupp.add_apply, add_mul, Finset.sum_add_distrib]`.
+-/
 theorem pairAt_add_left (v : InfinitePlace K) (x x' y : F.V) :
     F.pairAt v (x + x') y = F.pairAt v x y + F.pairAt v x' y := by
   simp only [pairAt, map_add, Finsupp.add_apply, add_mul, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_add, Finsupp.add_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem pairAt_add_right (v : InfinitePlace K) (x y y' : F.V) :
     F.pairAt v x (y + y') = F.pairAt v x y + F.pairAt v x y' := by
   simp only [pairAt, map_add, Finsupp.add_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+-/
 theorem pairAt_smul_left (v : InfinitePlace K) (a : K) (x y : F.V) :
     F.pairAt v (a • x) y = starRingEnd ℂ (v.embedding a) * F.pairAt v x y := by
   simp only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
+/- English proof (translation)
+Simplify using `only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairAt_smul_right (v : InfinitePlace K) (a : K) (x y : F.V) :
     F.pairAt v x (a • y) = v.embedding a * F.pairAt v x y := by
   simp only [pairAt, map_smul, Finsupp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAt_add (φ ψ : F.Forms) (c : F.Cl) : F.valAt (φ + ψ) c = F.valAt φ c + F.valAt ψ c := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem valAt_smul (a : K) (φ : F.Forms) (c : F.Cl) : F.valAt (a • φ) c = a • F.valAt φ c := rfl
 
+/- English proof (translation)
+Introduce `v`. Use `⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩` and prove the remaining obligations. Simplify using `only [ipAt, valAt_add, pairAt_add_left, mul_add, Finset.sum_add_distrib]`. Simplify using `only [ipAt, valAt_add, pairAt_add_right, mul_add, Finset.sum_add_distrib]`. Simplify using `only [ipAt, valAt_smul, pairAt_smul_left, Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [ipAt, valAt_smul, pairAt_smul_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isSesq_ipAt (h : F.Ok) : IsSesq (fun v (φ ψ : F.Forms) => F.ipAt h v φ ψ) := by
   intro v
   refine ⟨fun x x' y => ?_, fun x y y' => ?_, fun a x y => ?_, fun a x y => ?_⟩
@@ -213,11 +283,30 @@ theorem isSesq_ipAt (h : F.Ok) : IsSesq (fun v (φ ψ : F.Forms) => F.ipAt h v �
 
 def evRep (h : F.Ok) : F.Forms →ₗ[K] (F.Cl → F.V) := (F.toCSD h).Forms.subtype ∘ₗ (F.res h).toLinearMap
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evRep_apply (h : F.Ok) (φ : F.Forms) (c : F.Cl) : F.evRep h φ c = F.valAt φ c := rfl
 
+/- English proof (translation)
+The claim follows from `(Submodule.injective_subtype _).comp (F.res h).injective`.
+-/
 theorem evRep_injective (h : F.Ok) : Function.Injective (F.evRep h) :=
   (Submodule.injective_subtype _).comp (F.res h).injective
 
+/- English proof (translation)
+Introduce `v`. Set `_ : Fintype F.Cl` to `h.fintypeCl`. Set `P : F.Cl → Matrix F.ιV ι ℂ` to `fun c => Matrix.of fun i a => v.embedding (F.bV.repr (F.evRep h (b a) c) i)`. Establish `hgram : gramOf b (fun (φ ψ : F.Forms) => F.ipAt h v φ ψ) = ∑ c, (((F.toCSD h).wt c : ℕ) : ℂ)⁻¹ • ((P c)ᴴ * F.gramV.map v.embedding * P c)`. Use extensionality with `a a'`.
+
+Simplify using `only [gramOf, Matrix.of_apply, ipAt, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [pairAt, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, P, Matrix.of_apply, Matrix.map_apply, evRep_apply]`. Rewrite using `[Finset.sum_comm]`.
+
+Both sides reduce to the same expression. Rewrite using `[hgram]`. Use `thl_posDef_sum _ (fun c => ?_) _ (hpos v) P fun x hx => ?_` and prove the remaining obligations. Establish `: (0 : ℝ) < (((F.toCSD h).wt c : ℕ) : ℝ)⁻¹` using `inv_pos.2 (by exact_mod_cast (F.toCSD h).wt_pos c)`. Establish `h2 : ((((F.toCSD h).wt c : ℕ) : ℝ)⁻¹ : ℂ) = (((F.toCSD h).wt c : ℕ) : ℂ)⁻¹` using `by push_cast; rfl`.
+
+Rewrite using `[← h2]`. Conclude with `this` after adjusting the coercions. Set `Bb : Basis (Σ _ : F.Cl, F.ιV) K (F.Cl → F.V)` to `Pi.basis fun _ => F.bV`. Take `⟨g, hg⟩` from `(F.evRep h).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (F.evRep_injective h))`. Establish `h1 : (LinearMap.toMatrix Bb b g).map v.embedding * (LinearMap.toMatrix b Bb (F.evRep h)).map v.embedding = 1`.
+
+Rewrite using `[← Matrix.map_mul, ← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]`. Simplify using the standard rewrite rules. Establish `h2 : (LinearMap.toMatrix b Bb (F.evRep h)).map v.embedding *ᵥ x = 0`. Use function extensionality and compare the values at `⟨c, i⟩`. Use `congrFun (hx c) i` as an intermediate fact.
+
+Simplify `this` using `[Matrix.mulVec, dotProduct, P, LinearMap.toMatrix_apply, Bb, Pi.basis_repr]`. Establish `h3` using `congrArg ((LinearMap.toMatrix Bb b g).map v.embedding).mulVec h2`. Simplify `h3` using `[Matrix.mulVec_mulVec, h1]`.
+-/
 theorem posAt_ipAt (h : F.Ok) (hpos : ∀ v : InfinitePlace K, (F.gramV.map v.embedding).PosDef)
     {ι : Type} [Fintype ι] [DecidableEq ι] (b : Basis ι K F.Forms) :
     PosAt b (fun v (φ ψ : F.Forms) => F.ipAt h v φ ψ) := by
@@ -253,6 +342,11 @@ theorem posAt_ipAt (h : F.Ok) (hpos : ∀ v : InfinitePlace K, (F.gramV.map v.em
     have h3 := congrArg ((LinearMap.toMatrix Bb b g).map v.embedding).mulVec h2
     simpa [Matrix.mulVec_mulVec, h1] using h3
 
+/- English proof (translation)
+Use `conv_lhs => rw [← F.bV.sum_repr x, ← F.bV.sum_repr y]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, pairAt, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : v.embedding ((starRingEnd K) (F.bV.repr x i)) = starRingEnd ℂ (v.embedding (F.bV.repr x i))` using `hx i v.embedding`.
+
+Rewrite using `[h1, RingHom.id_apply]`. Simplify using `only [gramV, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairAt_of_rat (v : InfinitePlace K) (x y : F.V) (hx : ∀ i, F.bV.repr x i ∈ cmMax K) :
     v.embedding (F.pair x y) = F.pairAt v x y := by
   conv_lhs => rw [← F.bV.sum_repr x, ← F.bV.sum_repr y]
@@ -266,6 +360,11 @@ theorem pairAt_of_rat (v : InfinitePlace K) (x y : F.V) (hx : ∀ i, F.bV.repr x
   simp only [gramV, Matrix.of_apply]
   ring
 
+/- English proof (translation)
+Use extensionality with `a a'`. Simplify using `only [gramOf, Matrix.of_apply, ipAt, Matrix.map_apply, CSD.H, CSD.csum, map_sum, map_mul, map_inv₀, map_natCast]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `e : ∀ a, F.valAt (F.hB h a) c = ((F.toCSD h).basis a : F.Cl → F.V) c`.
+
+Introduce `a`. Rewrite using `[← F.hB_apply h a]`. Both sides reduce to the same expression. Rewrite using `[e, e]`. Conclude with `(F.pairAt_of_rat v _ _ fun i => (F.toCSD h).basis_rat hr a c i).symm`.
+-/
 theorem gram_ipAt (h : F.Ok) (hr : (F.toCSD h).HasRatBasis) (v : InfinitePlace K) :
     gramOf (F.hB h) (fun (φ ψ : F.Forms) => F.ipAt h v φ ψ) = (F.hGram h).map v.embedding := by
   ext a a'
@@ -281,11 +380,17 @@ theorem gram_ipAt (h : F.Ok) (hr : (F.toCSD h).HasRatBasis) (v : InfinitePlace K
 
 variable {F}
 
+/- English proof (translation)
+Introduce `v`. Rewrite using `[← F.gram_ipAt h (csd_hasRatBasis _ (R.toCSDOf h F.outSec)) v]`. Conclude with `F.posAt_ipAt h R.pos (F.hB h) v`.
+-/
 theorem Rat.posH (R : F.Rat) (h : F.Ok) : F.PosH h := by
   intro v
   rw [← F.gram_ipAt h (csd_hasRatBasis _ (R.toCSDOf h F.outSec)) v]
   exact F.posAt_ipAt h R.pos (F.hB h) v
 
+/- English proof (translation)
+Rewrite using `[sesq_eq_sum (isSesq_maj (F.hB h) (stdFrame (F.hGram h))) (F.hB h) v φ ψ, sesq_eq_sum (F.isSesq_ipAt h) (F.hB h) v φ ψ, gramOf_maj, F.gram_ipAt h (csd_hasRatBasis _ (R.toCSDOf h F.outSec)) v]`. Use `(R.posH h).met v` as an intermediate fact. Unfold `metOf at this`. Rewrite using `[this]`.
+-/
 theorem Rat.maj_eq (R : F.Rat) (h : F.Ok) (v : InfinitePlace K) (φ ψ : F.Forms) :
     majAt (F.hB h) (stdFrame (F.hGram h)) v φ ψ = F.ipAt h v φ ψ := by
   rw [sesq_eq_sum (isSesq_maj (F.hB h) (stdFrame (F.hGram h))) (F.hB h) v φ ψ,
@@ -295,6 +400,9 @@ theorem Rat.maj_eq (R : F.Rat) (h : F.Ok) (v : InfinitePlace K) (φ ψ : F.Forms
   unfold metOf at this
   rw [this]
 
+/- English proof (translation)
+Rewrite using `[R.maj_eq h, F.ipAt_eq_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => ((R.mem b).maj_eq (h b) v (φ b) (ψ b)).symm`.
+-/
 theorem Rat.maj_eq_sum (R : F.Rat) (h : F.Ok) (v : InfinitePlace K) (φ ψ : F.Forms) :
     majAt (F.hB h) (stdFrame (F.hGram h)) v φ ψ =
       ∑ b, majAt ((F.mem b).hB (h b)) (stdFrame ((F.mem b).hGram (h b))) v (φ b) (ψ b) := by
@@ -310,6 +418,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (F : GFam K)
 def intOf (N : ∀ b, F.D b → Submodule (𝓞 K) F.V) : Submodule (𝓞 K) F.Forms :=
   Submodule.pi Set.univ fun b => (F.mem b).intOf (N b)
 
+/- English proof (translation)
+Unfold `intOf`. Rewrite using `[Submodule.mem_pi]`. Conclude with `⟨fun H b => H b (Set.mem_univ b), fun H b _ => H b⟩`.
+-/
 theorem mem_intOf (N : ∀ b, F.D b → Submodule (𝓞 K) F.V) (φ : F.Forms) :
     φ ∈ F.intOf N ↔ ∀ b d, ((φ b : (F.mem b).EqFun) : F.D b → F.V) d ∈ N b d := by
   unfold intOf
@@ -324,19 +435,33 @@ namespace GSD
 
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (S : GSD K)
 
+/- English proof (translation)
+Introduce `_` and use `h`.
+-/
 theorem toFam_ok (h : S.Ok) : S.toFam.Ok := fun _ => h
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨R.pair_rat, fun _ => R.act_rat, R.pos⟩`.
+-/
 theorem toFam_rat (R : S.Rat) : S.toFam.Rat := ⟨R.pair_rat, fun _ => R.act_rat, R.pos⟩
 
 def famEq : S.toFam.Forms ≃ₗ[K] S.EqFun := LinearEquiv.funUnique Unit K S.EqFun
 
 def famCl : S.toFam.Cl ≃ S.Cl := Equiv.uniqueSigma fun _ : Unit => S.Cl
 
+/- English proof (translation)
+Rewrite using `[GFam.ipAt_eq_sum, Fintype.sum_unique]`. Both sides reduce to the same expression.
+-/
 theorem toFam_ipAt (h : S.Ok) (v : InfinitePlace K) (φ ψ : S.toFam.Forms) :
     S.toFam.ipAt (S.toFam_ok h) v φ ψ = S.ipAt h v (S.famEq φ) (S.famEq ψ) := by
   rw [GFam.ipAt_eq_sum, Fintype.sum_unique]
   rfl
 
+/- English proof (translation)
+Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψ, hψ, rfl⟩`. Conclude with `(S.toFam.mem_intOf (fun _ => N) ψ).mp hψ ()`. Introduce `hφ`.
+
+Conclude with `⟨S.famEq.symm φ, (S.toFam.mem_intOf (fun _ => N) _).mpr fun _ => hφ, rfl⟩`.
+-/
 theorem toFam_map_intOf (N : S.D → Submodule (𝓞 K) S.V) :
     (S.toFam.intOf fun _ => N).map (S.famEq.toLinearMap.restrictScalars (𝓞 K)) = S.intOf N := by
   ext φ
@@ -346,9 +471,15 @@ theorem toFam_map_intOf (N : S.D → Submodule (𝓞 K) S.V) :
   · intro hφ
     exact ⟨S.famEq.symm φ, (S.toFam.mem_intOf (fun _ => N) _).mpr fun _ => hφ, rfl⟩
 
+/- English proof (translation)
+The claim follows from `S.toFam_map_intOf S.Del`.
+-/
 theorem toFam_map_intDel : S.toFam.intDel.map (S.famEq.toLinearMap.restrictScalars (𝓞 K)) = S.intDel :=
   S.toFam_map_intOf S.Del
 
+/- English proof (translation)
+The claim follows from `S.toFam_map_intOf S.Nab`.
+-/
 theorem toFam_map_intNab : S.toFam.intNab.map (S.famEq.toLinearMap.restrictScalars (𝓞 K)) = S.intNab :=
   S.toFam_map_intOf S.Nab
 

@@ -366,6 +366,9 @@ def Stmt : Prop :=
   ∀ (D : D7) (c₀ c₁ c₂ : ℝ), 0 < c₀ → max (2 ^ 14 / c₀) c₂ ≤ c₁ → Admitted D c₀ c₂ →
     AdmissiblePrimesWithConstant D c₁ ∧ IrreducibleGoodBaseChange D ∧ ProjectorProperties D ∧ LengthDroppingInequality D ∧ PsdProjectorDiscarding
 
+/- English proof (translation)
+The claim follows from `h.1.two_le`.
+-/
 example (g : ℕ) (h : Admissible D g) : 2 ≤ g := h.1.two_le
 
 end GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting

@@ -13,12 +13,22 @@ namespace GlobalTheory.LieHt.SemiFib
 
 variable {K : Type} [Field K] [NumberField K] (F : SemiFib K)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Q, e, ψ, v', u, χ, hP, rfl, hA, hw⟩`.
+-/
 theorem isUnif_of_fibre {s : K →+* ℂ} {Q : Out.PolAV (Sp ℂ)} {ψ : Q.A.left ⟶ F.P₀.A.left}
     {v' : Fin F.P₀.g → (epsR ℂ ⟶ Q.A)} {g : ℕ} (e : Q.g = g) (u : HolUnif Q.A Q.L g) {Hm : Matrix (Fin g) (Fin g) ℂ}
     {χ : u.Λ → ℂ} {W : Fin F.P₀.g → Fin g → ℂ} (hP : IsPolFibre s F.P₀ Q ψ) (hA : u.IsAH Hm χ)
     (hw : ∀ i, IsVecOver s ψ (F.v i) (v' i) ∧ u.IsDiff (W i) (v' i)) : F.IsUnif s u.Λ Hm W :=
   ⟨Q, e, ψ, v', u, χ, hP, rfl, hA, hw⟩
 
+/- English proof (translation)
+Take `⟨Q, ψ, h⟩` from `exists_isPolFibre abelianSchemeLaws_all.1.polBaseChange s F.P₀`. Use `haveI := F.P₀.isAb.comm`. Use `haveI := Q.isAb.comm`. Use `haveI := F.P₀.smoothDim`. Take `⟨v', hb, hv'⟩` from `exists_isLieBasis_baseChange K ℂ s F.P₀.A Q.A ψ h.2.1 (SmoothOfRelativeDimension.smooth F.P₀.g _) _ F.v F.basis`.
+
+Take `⟨rig, hrig⟩` from `Q.rigid`. Take `⟨u, Hm, χ, -, hA, -, hd, hd', -⟩` from `thetaUnifAV_all Q rig hrig`. Use `choose W hW using fun i => (hd _ (hb.1 i)).exists`. Establish `hpd` using `CM.LieMetric.posDef_gram hA.1 hA.2.1 (CM.LieMetric.linearIndependent_of_isLieBasis u hd' hb hW)`. Use `clear hd hd'`.
+
+Use `revert u Hm χ W`. Rewrite using `[h.1]`. Introduce `u Hm χ hA W hW hpd`. Conclude with `⟨_, Hm, W, isUnif_of_fibre F h.1 u h hA fun i => ⟨hv' i, hW i⟩, hpd⟩`.
+-/
 theorem exists_isUnif_posDef (s : K →+* ℂ) :
     ∃ (Λ : Submodule ℤ (Fin F.P₀.g → ℂ)) (Hm : Matrix (Fin F.P₀.g) (Fin F.P₀.g) ℂ) (W : Fin F.P₀.g → Fin F.P₀.g → ℂ),
       F.IsUnif s Λ Hm W ∧ (Matrix.of fun i j => (Real.pi : ℂ) * hermForm Hm (W j) (W i)).PosDef := by
@@ -38,11 +48,35 @@ theorem exists_isUnif_posDef (s : K →+* ℂ) :
   intro u Hm χ hA W hW hpd
   exact ⟨_, Hm, W, isUnif_of_fibre F h.1 u h hA fun i => ⟨hv' i, hW i⟩, hpd⟩
 
+/- English proof (translation)
+Use `choose Λ Hm W hU hG using F.exists_isUnif_posDef`. Conclude with `⟨CM.LieMetric.ofGram _ hG, fun s => ⟨Λ s, Hm s, W s, hU s, fun i j => by`. Rewrite using `[CM.LieMetric.ofGram_single, Matrix.of_apply]⟩⟩`.
+-/
 theorem exists_isHerm : ∃ h, F.IsHerm h := by
   choose Λ Hm W hU hG using F.exists_isUnif_posDef
   exact ⟨CM.LieMetric.ofGram _ hG, fun s => ⟨Λ s, Hm s, W s, hU s, fun i j => by
     rw [CM.LieMetric.ofGram_single, Matrix.of_apply]⟩⟩
 
+/- English proof (translation)
+Use `set q : (Fin g → ℂ) → ℝ := fun z => (hermForm Hm z z).re with hq`. Establish `hqc : Continuous q`. Simplify using `only [hq, hermForm, dotProduct, Matrix.mulVec]`. Use `fun_prop`. Establish `hsm : ∀ (c : ℝ) (z : Fin g → ℂ), q (c • z) = c ^ 2 * q z` using `fun c z => by`.
+
+Simplify using `only [hq, hermForm, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, star_smul, star_trivial]`. Simplify using `[Complex.smul_re]`. Expand and normalize the polynomial expressions, which then agree. Use `haveI : Nonempty (Fin g) := ⟨⟨0, hg⟩⟩`. Take `⟨z₁, hz₁, hmin⟩` from `(isCompact_sphere (0 : Fin g → ℂ) 1).exists_isMinOn (NormedSpace.sphere_nonempty.2 zero_le_one) hqc.continuousOn`.
+
+Establish `hz₁0 : z₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hz₁`. Establish `hm : 0 < q z₁` using `hp z₁ hz₁0`. Establish `hlow : ∀ z : Fin g → ℂ, ‖z‖ ^ 2 * q z₁ ≤ q z` using `fun z => by`.
+
+Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[hq, hermForm]`. Establish `hn : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Establish `h1 : ‖z‖⁻¹ • z ∈ Metric.sphere (0 : Fin g → ℂ) 1`. Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos hn, inv_mul_cancel₀ hn.ne']`.
+
+Establish `h2 : q z₁ ≤ q (‖z‖⁻¹ • z)` using `hmin h1`. Rewrite `h2` using `[hsm]`. Establish `h3 : q z = ‖z‖ ^ 2 * ((‖z‖⁻¹) ^ 2 * q z)`. Rewrite using `[← _root_.mul_assoc, ← mul_pow, mul_inv_cancel₀ hn.ne', one_pow, _root_.one_mul]`. Rewrite using `[h3]`.
+
+Conclude with `mul_le_mul_of_nonneg_left h2 (by positivity)`. Take `⟨z₀, hz₀, hz₀0⟩ : ∃ z ∈ Λ, z ≠ 0` from `by by_contra! h`. Establish `h2 : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) ≤ ⊥`. Rewrite using `[Submodule.span_le]`. Introduce `z hz`.
+
+Simplify using `[h z hz]`. Rewrite `h2` using `[hfull, top_le_iff]`. Conclude with `bot_ne_top h2`. Use `set T : Set (Fin g → ℂ) := {z | z ∈ Λ ∧ z ≠ 0 ∧ q z ≤ q z₀} with hT`. Establish `hclosed : IsClosed (Λ : Set (Fin g → ℂ))` using `by haveI : DiscreteTopology Λ.toAddSubgroup := hd`.
+
+Conclude with `AddSubgroup.isClosed_of_discrete (H := Λ.toAddSubgroup)`. Establish `hdisc : _root_.IsDiscrete (Λ : Set (Fin g → ℂ))` using `isDiscrete_iff_discreteTopology.2 hd`. Establish `hfin : T.Finite`. Use `(Metric.finite_isBounded_inter_isClosed hdisc (Metric.isBounded_closedBall (x := (0 : Fin g → ℂ)) (r := √(q z₀ / q z₁))) hclosed).subset fun z hz => ⟨?_, hz.1⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff]`.
+
+Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hm]`. Conclude with `(hlow z).trans hz.2.2`. Take `⟨a, ha, hamin⟩` from `Set.exists_min_image T q hfin ⟨z₀, hz₀, hz₀0, le_rfl⟩`. Use `⟨√(q a), ⟨⟨a, ha.1, ha.2.1, rfl⟩, ?_⟩, Real.sqrt_pos.2 (hp a ha.2.1)⟩` and prove the remaining obligations.
+
+Introduce and unpack `t ⟨z, hz, hz0, rfl⟩`. Use `Real.sqrt_le_sqrt ?_` and prove the remaining obligations. Distinguish the cases in `hle : q z ≤ q z₀`. Conclude with `hamin z ⟨hz, hz0, hle⟩`. Conclude with `(ha.2.2.trans (not_le.1 hle).le)`.
+-/
 theorem exists_isLeast_hermLength {g : ℕ} (hg : 0 < g) (Λ : Submodule ℤ (Fin g → ℂ)) [hd : DiscreteTopology Λ]
     (hfull : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) {Hm : Matrix (Fin g) (Fin g) ℂ}
     (hp : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (z ⬝ᵥ Hm.mulVec (star z)).re) :
@@ -102,6 +136,11 @@ theorem exists_isLeast_hermLength {g : ℕ} (hg : 0 < g) (Λ : Submodule ℤ (Fi
   · exact hamin z ⟨hz, hz0, hle⟩
   · exact (ha.2.2.trans (not_le.1 hle).le)
 
+/- English proof (translation)
+Establish `key : ∀ s : K →+* ℂ, ∃ t : ℝ, 0 < t ∧ ∃ (Λ : Submodule ℤ (Fin F.P₀.g → ℂ)) (Hm : Matrix (Fin F.P₀.g) (Fin F.P₀.g) ℂ) (W : Fin F.P₀.g → Fin F.P₀.g → ℂ), F.IsUnif s Λ Hm W ∧ IsLeast {t | ∃ z ∈ Λ, z ≠ 0 ∧ t = √(hermForm Hm z z).re} t` using `fun s => by`. Take `⟨Λ, Hm, W, hU, -⟩` from `F.exists_isUnif_posDef s`. Take `⟨Q, e, ψ, v', u, χ, hP, hΛ, hA, -⟩` from `id hU`. Substitute `hΛ` using the available equality. Use `haveI := u.discrete`.
+
+Take `⟨t, ht, hpos⟩` from `exists_isLeast_hermLength hg u.Λ u.full hA.2.1`. Conclude with `⟨t, hpos, u.Λ, Hm, W, hU, ht⟩`. Use `choose ρ hρ H using key`. Conclude with `⟨ρ, fun s => H s, hρ⟩`.
+-/
 theorem exists_isRho (hg : 0 < F.P₀.g) : ∃ ρ : (K →+* ℂ) → ℝ, F.IsRho ρ ∧ ∀ σ, 0 < ρ σ := by
   have key : ∀ s : K →+* ℂ, ∃ t : ℝ, 0 < t ∧ ∃ (Λ : Submodule ℤ (Fin F.P₀.g → ℂ)) (Hm : Matrix (Fin F.P₀.g) (Fin F.P₀.g) ℂ)
       (W : Fin F.P₀.g → Fin F.P₀.g → ℂ), F.IsUnif s Λ Hm W ∧

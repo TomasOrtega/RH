@@ -32,6 +32,9 @@ variable {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam
 def shA {l : Λ} {k k' : K.K} (h : K.le l k' k) : Hol (K.W k) →ₐ[ℂ] Hol (K.W k') :=
   Hol.comap (F.shift l) (F.shift_analytic l (K.base k')) (K.maps h)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem shA_apply {l : Λ} {k k' : K.K} (h : K.le l k' k) (x : Hol (K.W k)) : shA h x = sh h x := rfl
 
 variable (K) in
@@ -82,6 +85,9 @@ def forgetD : CoefMap η K.Oc (K.OD η M) where
     change r • (b : S.T.C) = η r • (b : S.T.C)
     rw [Algebra.smul_def, Algebra.smul_def, S.compat]
 
+/- English proof (translation)
+The claim follows from `congrArg (H1.mk _) (Subtype.ext (funext fun _ ↦ funext fun S' ↦ funext fun f ↦ S'.compat (per f.1.deg)))`.
+-/
 theorem forgetD_perCl (per : Λ →+ Hol F.V) :
     (K.forgetD η M).pull1 (K.perCl per) = K.perClD η M (η.toAddMonoidHom.comp per) :=
   congrArg (H1.mk _) (Subtype.ext (funext fun _ ↦ funext fun S' ↦ funext fun f ↦ S'.compat (per f.1.deg)))
@@ -177,12 +183,18 @@ def Charts.dualD (K : Charts F) (k : K.K) (v : I → ℂ) (p : Tot I g) (hp : p 
   compat _ := rfl
   mem _ h := h
 
+/- English proof (translation)
+Introduce `h`. Establish `h' : (DualNumber.eps : DualNumber ℂ) = 0` using `Ideal.span_singleton_eq_bot.1 h`. Simplify using `using congrArg TrivSqZeroExt.snd h'`.
+-/
 theorem Charts.dualD_J_ne_bot (K : Charts F) (k : K.K) (v : I → ℂ) (p : Tot I g) (hp : p ∈ K.W k) :
     (K.dualD k v p hp).T.J ≠ ⊥ := by
   intro h
   have h' : (DualNumber.eps : DualNumber ℂ) = 0 := Ideal.span_singleton_eq_bot.1 h
   simpa using congrArg TrivSqZeroExt.snd h'
 
+/- English proof (translation)
+The claim follows from `rfl mem _ h := h red d := by refine Ideal.mem_span_singleton'.2 ⟨TrivSqZeroExt.inl d.snd, ?_⟩ refine TrivSqZeroExt.ext ?_ ?_ <;> simp [jetAt]`.
+-/
 theorem isOver_dual (v z : I → ℂ) (hz : z ∈ F.V) {X : Scheme.{0}} (s : X ⟶ Sp ℂ) :
     IsOver (F := F) (jetAt v z hz) (Ideal.span {DualNumber.eps}) s (algebraMap ℂ (Hol F.V))
       (Ideal.span {DualNumber.eps}) (s ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom)
@@ -199,12 +211,18 @@ def Charts.Obj.toD {K : Charts F} (T : K.Obj) : K.DObj (RingHom.id _) ⊥ where
   compat _ := rfl
   mem d h := by rw [Ideal.mem_bot.1 h, map_zero]; exact T.J.zero_mem
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨Charts.Obj.toD _, Charts.Obj.toD _, ⟨ellFam.transl (0, 1) ≫ ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1, fun d ↦ AlgHom.commutes _ d⟩, Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩`.
+-/
 example : ∃ (S S' : ellFam.allCharts.DObj (RingHom.id _) ⊥) (f : S ⟶ S'), S'.T.J ≠ ⊥ ∧ f.1.deg = (0, 1) :=
   ⟨Charts.Obj.toD _, Charts.Obj.toD _, ⟨ellFam.transl (0, 1) ≫
       ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1,
         fun d ↦ AlgHom.commutes _ d⟩,
     Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨_, ellFam.allCharts.dualD ellFam.totChart (fun _ ↦ 1) (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1, Charts.dualD_J_ne_bot _ _ _ _ _⟩`.
+-/
 example : ∃ (η : Hol ellFam.V →+* DualNumber ℂ) (S : ellFam.allCharts.DObj η (Ideal.span {DualNumber.eps})),
     S.T.J ≠ ⊥ :=
   ⟨_, ellFam.allCharts.dualD ellFam.totChart (fun _ ↦ 1) (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1,
@@ -225,6 +243,15 @@ def tay1 {W : Opens (Tot I g)} {W₀ : Opens (Tot Empty g)} (hW : ∀ p ∈ W₀
   map_zero' := by simp
   map_add' x y := by simp only [map_add, tmul_add]; abel
 
+/- English proof (translation)
+Introduce `h p hp`. Establish `hd : HasFDerivAt (fun z : I → ℂ ↦ h.fn (z, p.2)) ((fderiv ℂ h.fn (0, p.2)).comp (ContinuousLinearMap.inl ℂ _ _)) 0` using `HasFDerivAt.comp (𝕜 := ℂ) (g := h.fn) (f := fun z : I → ℂ ↦ ((z, p.2) : Tot I g)) (0 : I → ℂ) (h.analytic _ (hW p hp)).differentiableAt.hasFDerivAt (hasFDerivAt_prodMk_left (𝕜 := ℂ) (0 : I → ℂ) p.2)`. Establish `e1 : Hol.ev p hp (resFib hW h) = h.fn (0, p.2)` using `by rw [Hol.ev_apply]; exact Hol.fn_comap _ _ _ _ hp`. Establish `e2 : Hol.ev p hp (resFib hW (Hol.der (v, 0) h)) = ∑ i, v i * fderiv ℂ h.fn (0, p.2) (Pi.single i 1, 0)`. Rewrite using `[Hol.ev_apply]`.
+
+Use `(Hol.fn_comap _ _ _ _ hp).trans ((Hol.fn_der _ _ (hW p hp)).trans ?_)` and prove the remaining obligations. Establish `: ((v, 0) : Tot I g) = ∑ i, v i • ((Pi.single i 1, 0) : Tot I g)`. Apply the tactic sequence `ext j <;> simp [Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[this, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+
+Express the relevant statement in the definitionally equal form `evT _ p hp (_ + _) = _`. Rewrite using `[map_add, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.lift_tmul, AlgHom.comp_apply, AlgHom.comp_apply, e1, e2]`. Unfold `GlobalTheory.PeriodFamily.taylor`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_one]`. Use `congr 1`.
+
+Simplify using `[Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one]`. Rewrite using `[← (Equiv.funUnique (Fin 1) I).symm.sum_comp]`. Simplify using `[iteratedFDeriv_one_apply, hd.fderiv, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one, Finset.sum_smul, smul_smul, mul_comm, Finset.mul_sum]`.
+-/
 theorem isTaylorExpansion_orderOne [DecidableEq I] {W : Opens (Tot I g)} {W₀ : Opens (Tot Empty g)}
     (hW : ∀ p ∈ W₀, ((0 : I → ℂ), p.2) ∈ W) (v : I → ℂ) :
     IsTay 1 (fun i ↦ v i • (DualNumber.eps : DualNumber ℂ)) (tay1 hW v) := by

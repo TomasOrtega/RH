@@ -21,6 +21,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.ChF
 
+/- English proof (translation)
+Introduce `R O C _ _ _ _ _ _ _ _ G _ _ P ψ h n hn`. Set `t : Geo.Tor.Sp C ⟶ Geo.Tor.Sp O` to `Spec.map (CommRingCat.ofHom (algebraMap O C))`. Rewrite using `[← GlobalTheory.ArcExt.card_torsion GlobalTheory.firstFiveLaws.1 P t hn]`. Establish `hc : t ≫ Spec.map (CommRingCat.ofHom (algebraMap R O)) = (sp (R₀` using `R) C).hom := by show _ = Spec.map (CommRingCat.ofHom (algebraMap R C))`. Rewrite using `[IsScalarTower.algebraMap_eq R O C, CommRingCat.ofHom_comp, Spec.map_comp]`.
+
+Set `ρ : sp (R₀` to `R) C ⟶ Over.mk ((Over.mk t).hom ≫ Spec.map (CommRingCat.ofHom (algebraMap R O))) := Over.homMk (𝟙 _) ((Category.id_comp _).trans hc)`. Set `Φ : (Over.mk t ⟶ P.A) →* (sp (R₀` to `R) C ⟶ G) := (Geo.Tor.preHom ρ).comp (Geo.Tor.pushHom h (Over.mk t))`. Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ ψ` using `fun x => Category.id_comp _`. Establish `hb : Function.Bijective Φ`. Use `⟨fun x y e => Over.OverMorphism.ext (h.1.hom_ext ?_ ((Over.w x).trans (Over.w y).symm)), fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hΦ, ← hΦ, e]`. Conclude with `⟨Over.homMk (h.1.lift a.left t ((Over.w a).trans hc.symm)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext ((hΦ _).trans (h.1.lift_fst _ _ _))⟩`. Set `e` to `MulEquiv.ofBijective Φ hb`. Conclude with `(Nat.card_congr (e.toEquiv.subtypeEquiv fun x => by show _ ↔ e x ^ n = 1`. Rewrite using `[← map_pow, EmbeddingLike.map_eq_one_iff])).symm`.
+-/
 theorem card_torsion_of_isGrpPullback : ∀ (R O C : Type) [CommRing R] [CommRing O] [Field C] [IsAlgClosed C] [Algebra R O] [Algebra O C] [Algebra R C] [IsScalarTower R O C] (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (P : Out.PolAV (Geo.Tor.Sp O)) (ψ : P.A.left ⟶ G.left), Geo.Tor.IsGrpPullback P.A G (Spec.map (CommRingCat.ofHom (algebraMap R O))) ψ → ∀ n : ℕ, (n : C) ≠ 0 → Nat.card {z : sp (R₀ := R) C ⟶ G // z ^ n = 1} = n ^ (2 * P.g) := by
   intro R O C _ _ _ _ _ _ _ _ G _ _ P ψ h n hn
   let t : Geo.Tor.Sp C ⟶ Geo.Tor.Sp O := Spec.map (CommRingCat.ofHom (algebraMap O C))

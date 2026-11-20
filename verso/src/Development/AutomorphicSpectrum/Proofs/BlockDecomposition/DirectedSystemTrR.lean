@@ -14,13 +14,24 @@ variable {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀
 def trA (i j : ℕ) (h : i ≤ j) : G i →ₐ[A] G j :=
   Nat.leRecOn (C := fun k => G i →ₐ[A] G k) h (fun {k} g => (f k).comp g) (AlgHom.id A (G i))
 
+/- English proof (translation)
+The claim follows from `Nat.leRecOn_self (C := fun k => G i →ₐ[A] G k) _`.
+-/
 theorem trA_self (i : ℕ) (h : i ≤ i) : trA f i i h = AlgHom.id A (G i) :=
   Nat.leRecOn_self (C := fun k => G i →ₐ[A] G k) _
 
+/- English proof (translation)
+The claim follows from `Nat.leRecOn_succ (C := fun k => G i →ₐ[A] G k) h _`.
+-/
 theorem trA_succ (i k : ℕ) (h : i ≤ k) (h2 : i ≤ k + 1) :
     trA f i (k + 1) h2 = (f k).comp (trA f i k h) :=
   Nat.leRecOn_succ (C := fun k => G i →ₐ[A] G k) h _
 
+/- English proof (translation)
+Proceed by induction on `k, hjk using Nat.le_induction with`. Consider the case `base => rw [trA_self]`. Both sides reduce to the same expression. Consider the case `succ k hjk ih`. Rewrite using `[trA_succ f j k hjk, trA_succ f i k (hij.trans hjk)]`.
+
+Simplify using `only [AlgHom.comp_apply, ih]`.
+-/
 theorem trA_trans (i j k : ℕ) (hij : i ≤ j) (hjk : j ≤ k) (x : G i) :
     trA f j k hjk (trA f i j hij x) = trA f i k (hij.trans hjk) x := by
   induction k, hjk using Nat.le_induction with
@@ -29,6 +40,11 @@ theorem trA_trans (i j k : ℕ) (hij : i ≤ j) (hjk : j ≤ k) (x : G i) :
     rw [trA_succ f j k hjk, trA_succ f i k (hij.trans hjk)]
     simp only [AlgHom.comp_apply, ih]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero => show tr f n 0 x = trA f n n (Nat.le_refl n) x`. Rewrite using `[trA_self]`. Both sides reduce to the same expression. Consider the case `succ k ih`.
+
+Establish `h` using `trA_succ f n (n + k) (Nat.le_add_right n k) (Nat.le_add_right n (k + 1))`. Use `show f (n + k) (tr f n k x) = trA f n (n + k + 1) (Nat.le_add_right n (k + 1)) x`. Rewrite using `[h, AlgHom.comp_apply, ih]`.
+-/
 theorem tr_eq_trA (n k : ℕ) (x : G n) : tr f n k x = trA f n (n + k) (Nat.le_add_right n k) x := by
   induction k with
   | zero =>
@@ -59,16 +75,32 @@ def ι (n : ℕ) : G n →ₐ[A] Lim f :=
         (algebraMap A (G 0) a)]
       simp [trR] }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ι_apply (n : ℕ) (x : G n) :
     ι f n x = Ring.DirectLimit.of G (fun i j h => trR f i j h) n x := rfl
 
+/- English proof (translation)
+Rewrite using `[ι_apply, ι_apply]`. Conclude with `Ring.DirectLimit.of_f (G := G) (f := fun i j h => trR f i j h) h x`.
+-/
 theorem ι_trA (i j : ℕ) (h : i ≤ j) (x : G i) : ι f j (trA f i j h x) = ι f i x := by
   rw [ι_apply, ι_apply]
   exact Ring.DirectLimit.of_f (G := G) (f := fun i j h => trR f i j h) h x
 
+/- English proof (translation)
+Rewrite using `[tr_eq_trA, ι_trA]`.
+-/
 theorem ι_tr (n k : ℕ) (x : G n) : ι f (n + k) (tr f n k x) = ι f n x := by
   rw [tr_eq_trA, ι_trA]
 
+/- English proof (translation)
+Use `ι_tr f n 1 x` as an intermediate fact. Simplify `this` using `[tr]`. Use `surj m x := by choose n y hy using fun i => Ring.DirectLimit.exists_of (x i)`. Use `⟨Finset.univ.sup n, fun i => trA f (n i) _ (Finset.le_sup (Finset.mem_univ i)) (y i), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[ι_trA, ι_apply, hy]`.
+
+Use `ker n m y hy := by`. Establish `h0 : ∀ i, ∃ j, ∃ hij : n ≤ j, trR f n j hij (y i) = 0` using `fun i => Ring.DirectLimit.of.zero_exact (f' := fun i j h => trR f i j h) (hy i)`. Use `choose j hj hz using h0`. Use `⟨Finset.univ.sup fun i => j i - n, fun i => ?_⟩` and prove the remaining obligations. Establish `hle : j i ≤ n + Finset.univ.sup fun i => j i - n`.
+
+Use `Finset.le_sup (f := fun i => j i - n) (Finset.mem_univ i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[tr_eq_trA, ← trA_trans f n (j i) _ (hj i) hle]`. Establish `: trA f n (j i) (hj i) (y i) = 0` using `hz i`. Rewrite using `[this, map_zero]`.
+-/
 theorem isColim : IsColim f (ι f) where
   comm n x := by
     have := ι_tr f n 1 x
@@ -92,6 +124,9 @@ theorem isColim : IsColim f (ι f) where
 
 end GlobalTheory.CompanionTheory.ColimEx
 
+/- English proof (translation)
+Introduce `A _ G _ _ f` and use `⟨GlobalTheory.CompanionTheory.ColimEx.Lim f, inferInstance, inferInstance, GlobalTheory.CompanionTheory.ColimEx.ι f, GlobalTheory.CompanionTheory.ColimEx.isColim f⟩`.
+-/
 theorem GlobalTheory.CompanionTheory.ColimEx.exists_isColim : ∀ (A : Type) [CommRing A](G : ℕ → Type) [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)] (f : ∀ n, G n →ₐ[A] G (n + 1)), ∃ (L : Type) (_ : CommRing L) (_ : Algebra A L), ∃ ι : ∀ n, G n →ₐ[A] L, IsColim f ι :=
   fun A _ G _ _ f => ⟨GlobalTheory.CompanionTheory.ColimEx.Lim f, inferInstance, inferInstance, GlobalTheory.CompanionTheory.ColimEx.ι f,
     GlobalTheory.CompanionTheory.ColimEx.isColim f⟩

@@ -17,10 +17,16 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.LieMetConj
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Conclude with `congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))`.
+-/
 theorem spMap_conj_conj : spMap (starRingEnd ℂ) ≫ spMap (starRingEnd ℂ) = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
   exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by simp))
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Apply the tactic sequence `exact congrArg Spec.map (CommRingCat.hom_ext (RingHom.ext fun a => by ext <;> simp [dualMap]))`.
+-/
 theorem spMap_dual_conj_conj :
     spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (starRingEnd ℂ)) = 𝟙 _ := by
   rw [← Spec.map_comp, ← Spec.map_id]
@@ -41,20 +47,32 @@ def cjForm (h : TanM x' t.G →ₗ[ℂ] TanM x' t.G →ₗ⋆[ℂ] ℂ) : TanM x
     (fun _ _ _ => by simp only [map_add])
     (fun _ _ _ => by simp [map_smulₛₗ])
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cjForm_apply (h : TanM x' t.G →ₗ[ℂ] TanM x' t.G →ₗ⋆[ℂ] ℂ) (v w : TanM x t.G) :
     cjForm e h v w = starRingEnd ℂ (h (tanPull (starRingEnd ℂ) e v) (tanPull (starRingEnd ℂ) e w)) := rfl
 
+/- English proof (translation)
+Introduce `v w h` and use `by have h1 := congrArg (fun z => spMap (dualMap (starRingEnd ℂ)) ≫ (tv z).left) h simp only [tanPull_left] at h1 rw [← Category.assoc, ← Category.assoc, spMap_dual_conj_conj, Category.id_comp, Category.id_comp] at h1 exact tan_ext h1`.
+-/
 theorem tanPull_conj_injective : Function.Injective (tanPull (G := t.G) (starRingEnd ℂ) e) := fun v w h => by
   have h1 := congrArg (fun z => spMap (dualMap (starRingEnd ℂ)) ≫ (tv z).left) h
   simp only [tanPull_left] at h1
   rw [← Category.assoc, ← Category.assoc, spMap_dual_conj_conj, Category.id_comp, Category.id_comp] at h1
   exact tan_ext h1
 
+/- English proof (translation)
+Introduce `a` and use `by rw [← tanPull_actR, hv a, map_smulₛₗ] rfl`.
+-/
 theorem isEig_tanPull {ρ : E →+* ℂ} {v : TanM x t.G} (hv : IsEig ρ v) :
     IsEig ((starRingEnd ℂ).comp ρ) (tanPull (starRingEnd ℂ) e v) := fun a => by
   rw [← tanPull_actR, hv a, map_smulₛₗ]
   rfl
 
+/- English proof (translation)
+Use `⟨fun v w => ?_, fun v hv => ?_, fun ρ ρ' v w hρ hv hw => ?_⟩` and prove the remaining obligations. Rewrite using `[cjForm_apply, cjForm_apply, hh.1]`. Rewrite using `[cjForm_apply, Complex.conj_re]`. Conclude with `hh.2.1 _ fun h0 => hv (tanPull_conj_injective e (h0.trans (map_zero _).symm))`. Rewrite using `[cjForm_apply, hh.2.2 _ _ _ _ (fun h0 => hρ (RingHom.ext fun a => (starRingEnd ℂ).injective (RingHom.congr_fun h0 a))) (isEig_tanPull e hv) (isEig_tanPull e hw), map_zero]`.
+-/
 theorem isBlockMetric_cjForm {h : TanM x' t.G →ₗ[ℂ] TanM x' t.G →ₗ⋆[ℂ] ℂ} (hh : IsBlockMetric h) :
     IsBlockMetric (cjForm e h) := by
   refine ⟨fun v w => ?_, fun v hv => ?_, fun ρ ρ' v w hρ hv hw => ?_⟩
@@ -64,6 +82,11 @@ theorem isBlockMetric_cjForm {h : TanM x' t.G →ₗ[ℂ] TanM x' t.G →ₗ⋆[
   · rw [cjForm_apply, hh.2.2 _ _ _ _ (fun h0 => hρ (RingHom.ext fun a =>
       (starRingEnd ℂ).injective (RingHom.congr_fun h0 a))) (isEig_tanPull e hv) (isEig_tanPull e hw), map_zero]
 
+/- English proof (translation)
+Use `⟨fun v w => ?_, fun v hv => ?_, fun ρ ρ' v w hρ hv hw => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, map_add]`. Rewrite using `[hh.1, hh'.1]`. Simplify using `only [LinearMap.add_apply, Complex.add_re]`. Conclude with `add_pos (hh.2.1 v hv) (hh'.2.1 v hv)`.
+
+Simplify using `only [LinearMap.add_apply]`. Rewrite using `[hh.2.2 _ _ _ _ hρ hv hw, hh'.2.2 _ _ _ _ hρ hv hw, add_zero]`.
+-/
 theorem isBlockMetric_add {h h' : TanM x t.G →ₗ[ℂ] TanM x t.G →ₗ⋆[ℂ] ℂ} (hh : IsBlockMetric h)
     (hh' : IsBlockMetric h') : IsBlockMetric (h + h') := by
   refine ⟨fun v w => ?_, fun v hv => ?_, fun ρ ρ' v w hρ hv hw => ?_⟩
@@ -80,6 +103,9 @@ section Points
 
 variable {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {σ σ' : k →+* ℂ} {d : ℕ} {f : Y ⟶ X}
 
+/- English proof (translation)
+Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_conj_comp (σ : k →+* ℂ) : spMap ((starRingEnd ℂ).comp σ) = spMap (starRingEnd ℂ) ≫ spMap σ := by
   rw [spMap, spMap, spMap, ← Spec.map_comp]
   rfl
@@ -90,9 +116,15 @@ def cjPt (y : CxPts p σ) : CxPts p ((starRingEnd ℂ).comp σ) :=
     show (spMap (starRingEnd ℂ) ≫ y.1) ≫ p = _
     rw [Category.assoc, this, spMap_conj_comp]⟩
 
+/- English proof (translation)
+The claim follows from `(Category.assoc _ _ _).symm`.
+-/
 theorem cjPt_comp (f : Y ⟶ X) (y : CxPts p σ) : spMap (starRingEnd ℂ) ≫ y.1 ≫ f = (cjPt y).1 ≫ f :=
   (Category.assoc _ _ _).symm
 
+/- English proof (translation)
+Establish `h1 : y.1 ≫ p = spMap σ` using `y.2`. Establish `h2 : y'.1 ≫ p = spMap σ'` using `y'.2`. Rewrite `h2` using `[h, Category.assoc, h1, ← spMap_conj_comp]`. Conclude with `(congrArg CommRingCat.Hom.hom (Spec.map_injective h2)).symm`.
+-/
 theorem eq_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingEnd ℂ) ≫ y.1) :
     σ' = (starRingEnd ℂ).comp σ := by
   have h1 : y.1 ≫ p = spMap σ := y.2
@@ -100,6 +132,9 @@ theorem eq_conj {y : CxPts p σ} {y' : CxPts p σ'} (h : y'.1 = spMap (starRingE
   rw [h, Category.assoc, h1, ← spMap_conj_comp] at h2
   exact (congrArg CommRingCat.Hom.hom (Spec.map_injective h2)).symm
 
+/- English proof (translation)
+Use `⟨fun y => isBlockMetric_add (hh.1 y) (hh'.1 y), fun V v w => ?_⟩` and prove the remaining obligations. Take `⟨g, h1, h2, h3⟩` from `hh.2 V v w`. Take `⟨g', h1', h2', h3'⟩` from `hh'.2 V v w`. Conclude with `⟨fun y => g y + g' y, fun i => (h1 i).add (h1' i), fun i => (h2 i).add (h2' i), fun y hy => congrArg₂ (· + ·) (h3 y hy) (h3' y hy)⟩`.
+-/
 theorem isLieMetric_add {R : AnRead p σ d}
     {h h' : ∀ y : CxPts p σ, TanM (y.1 ≫ f) t.G →ₗ[ℂ] TanM (y.1 ≫ f) t.G →ₗ⋆[ℂ] ℂ}
     (hh : IsLieMetric t f R h) (hh' : IsLieMetric t f R h') : IsLieMetric t f R fun y => h y + h' y := by
@@ -109,6 +144,11 @@ theorem isLieMetric_add {R : AnRead p σ d}
   exact ⟨fun y => g y + g' y, fun i => (h1 i).add (h1' i), fun i => (h2 i).add (h2' i),
     fun y hy => congrArg₂ (· + ·) (h3 y hy) (h3' y hy)⟩
 
+/- English proof (translation)
+Establish `e : evHom hy' = (starRingEnd ℂ).comp (evHom hy)` using `RingHom.ext fun a => by`. Rewrite using `[← ev_eq, CxPts.ev_conj (y := y) rfl hy, ev_eq hy]`. Both sides reduce to the same expression. Use `tan_ext ?_` and prove the remaining obligations. Use `show spMap (dualMap (evHom hy')) ≫ (tv v).left = spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (evHom hy)) ≫ (tv v).left`.
+
+Rewrite using `[e, ← Category.assoc, ← Spec.map_comp]`. Use `congr 2`. Conclude with `FlagMod.dualMap_comp _ _`.
+-/
 theorem valAt_cjPt {V : Y.affineOpens} (v : TanM (LogKS.chart V ≫ f) t.G) {y : CxPts p σ}
     (hy : y ∈ ptsIn p σ V.1) (hy' : cjPt y ∈ ptsIn p _ V.1) :
     valAt f v hy' = tanPull (starRingEnd ℂ) (cjPt_comp f y) (valAt f v hy) := by
@@ -122,6 +162,9 @@ theorem valAt_cjPt {V : Y.affineOpens} (v : TanM (LogKS.chart V ≫ f) t.G) {y :
   congr 2
   exact FlagMod.dualMap_comp _ _
 
+/- English proof (translation)
+Substitute `es` using the available equality. Take `rfl` from `Subtype.ext ey`. Rewrite using `[tan_ext ev, tan_ext ew]`.
+-/
 theorem family_congr
     (h : ∀ (σ : k →+* ℂ) (y : CxPts p σ), TanM (y.1 ≫ f) t.G →ₗ[ℂ] TanM (y.1 ≫ f) t.G →ₗ⋆[ℂ] ℂ)
     (es : σ = σ') {y : CxPts p σ} {y' : CxPts p σ'} (ey : y.1 = y'.1) {v w : TanM (y.1 ≫ f) t.G}
@@ -133,6 +176,11 @@ theorem family_congr
 
 end Points
 
+/- English proof (translation)
+Use `⟨fun y => isBlockMetric_cjForm _ (hh.1 _), fun V v w => ?_⟩` and prove the remaining obligations. Take `⟨g, h1, h2, h3⟩` from `hh.2 V v w`. Establish `hs : ptsIn p σ V.1 ⊆ cjPt ⁻¹' ptsIn p _ V.1` using `fun y hy => CxPts.mem_ptsIn_conj (y := y) rfl hy`. Establish `k1` using `(T.conj_smoothOn_preimage_charts k Y p d _ σ cjPt (fun _ => rfl) _ _ (isOpen_ptsIn _) h1).2.1.mono hs`. Establish `k2` using `(T.conj_smoothOn_preimage_charts k Y p d _ σ cjPt (fun _ => rfl) _ _ (isOpen_ptsIn _) h2).2.1.mono hs`.
+
+Use `⟨fun y => starRingEnd ℂ (g (cjPt y)), k1, fun i => (k2 i).neg, fun y hy => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[cjForm_apply, h3 _ (hs hy), valAt_cjPt v hy, valAt_cjPt w hy]`.
+-/
 theorem isLieMetric_cj {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {d : ℕ} [SmoothOfRelativeDimension d p]
     {σ : k →+* ℂ} {f : Y ⟶ X}
     {h : ∀ y : CxPts p ((starRingEnd ℂ).comp σ), TanM (y.1 ≫ f) t.G →ₗ[ℂ] TanM (y.1 ≫ f) t.G →ₗ⋆[ℂ] ℂ}
@@ -147,6 +195,15 @@ theorem isLieMetric_cj {k : Type} [Field k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {d
   beta_reduce
   rw [cjForm_apply, h3 _ (hs hy), valAt_cjPt v hy, valAt_cjPt w hy]
 
+/- English proof (translation)
+Introduce `k _ Y p d _ E _ _ _ H X t f hp _`. Use `choose h hh using fun σ => LieMetExist.exists_isLieMetric k Y p d σ E H X t f hp`. Use `⟨fun σ y => h σ y + cjForm (cjPt_comp f y) (h _ (cjPt y)), fun σ => isLieMetric_add (hh σ) (isLieMetric_cj (hh _)), fun σ σ' y y' v w v' w' ey ev ew => ?_⟩` and prove the remaining obligations. Establish `es` using `eq_conj ey`. Establish `key : ∀ {a : Sp (DualNumber ℂ) ⟶ t.G.left}, spMap (dualMap (starRingEnd ℂ)) ≫ spMap (dualMap (starRingEnd ℂ)) ≫ a = a` using `fun {a} => by`.
+
+Rewrite using `[← Category.assoc, spMap_dual_conj_conj, Category.id_comp]`. Use `beta_reduce`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, LinearMap.add_apply, LinearMap.add_apply, cjForm_apply, cjForm_apply, map_add, Complex.conj_conj, add_comm]`. Use `congrArg₂ (· + ·) ?_ ?_` and prove the remaining obligations. Use `congrArg _ (family_congr h ?_ ?_ ?_ ?_)` and prove the remaining obligations.
+
+Rewrite using `[es]`. Conclude with `RingHom.ext fun a => Complex.conj_conj _`. Use `show spMap (starRingEnd ℂ) ≫ y'.1 = y.1`. Rewrite using `[ey, ← Category.assoc, spMap_conj_conj, Category.id_comp]`. Rewrite using `[tanPull_left, ev, key]`.
+
+Rewrite using `[tanPull_left, ew, key]`. Conclude with `family_congr h es ey ev ew`.
+-/
 theorem exists_conj_family : ∀ (k : Type) [Field k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (d : ℕ) [SmoothOfRelativeDimension d p] (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (f : Y ⟶ X), IsProjOver p → (∀ σ : k →+* ℂ, (starRingEnd ℂ).comp σ ≠ σ) → ∃ h : ∀ (σ : k →+* ℂ) (y : CxPts p σ), TanM (y.1 ≫ f) t.G →ₗ[ℂ] TanM (y.1 ≫ f) t.G →ₗ⋆[ℂ] ℂ, (∀ σ, IsLieMetric t f (AnRead.all p σ d) (h σ)) ∧ ∀ σ σ' (y : CxPts p σ) (y' : CxPts p σ') (v w : TanM (y.1 ≫ f) t.G) (v' w' : TanM (y'.1 ≫ f) t.G), y'.1 = spMap (starRingEnd ℂ) ≫ y.1 → (tv v').left = spMap (dualMap (starRingEnd ℂ)) ≫ (tv v).left → (tv w').left = spMap (dualMap (starRingEnd ℂ)) ≫ (tv w).left → h σ' y' v' w' = starRingEnd ℂ (h σ y v w) := by
   intro k _ Y p d _ E _ _ _ H X t f hp _
   choose h hh using fun σ => LieMetExist.exists_isLieMetric k Y p d σ E H X t f hp

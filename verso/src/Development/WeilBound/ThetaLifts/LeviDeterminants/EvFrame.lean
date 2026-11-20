@@ -18,6 +18,9 @@ def DR (J : Matrix α α S) (z : Matrix α (β ⊕ Fin 2) S) : α → S := fun i
 
 def DL (J : Matrix β β S) (z : Matrix (α ⊕ Fin 2) β S) : β → S := fun j => ∑ l, J j l * c (z (.inr 0) l)
 
+/- English proof (translation)
+Establish `e : ∀ z z' : Matrix α (β ⊕ Fin 2) S, (fun i => z i (.inr 1)) ⬝ᵥ DR c J z' = -∑ i, ∑ k, z i (.inr 1) * J i k * c (z' k (.inr 0))` using `fun z z' => by`. Simplify using `only [dotProduct, DR, mul_neg, Finset.mul_sum, mul_assoc, Finset.sum_neg_distrib]`. Rewrite using `[hTens_plane_right, e, e, map_neg, conj_pair c hc hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitR (hc : ∀ z, c (c z) = z) {J : Matrix α α S} (hJ : ∀ i j, c (J j i) = 1 * J i j) (J' : Matrix β β S)
     (z z' : Matrix α (β ⊕ Fin 2) S) : hTens c J (Matrix.fromBlocks J' 0 0 !![0, 1; -1, 0]) z z' =
       (fun i => z i (.inr 1)) ⬝ᵥ DR c J z' - c ((fun i => z' i (.inr 1)) ⬝ᵥ DR c J z) +
@@ -28,6 +31,9 @@ theorem splitR (hc : ∀ z, c (c z) = z) {J : Matrix α α S} (hJ : ∀ i j, c (
   rw [hTens_plane_right, e, e, map_neg, conj_pair c hc hJ]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ z z' : Matrix (α ⊕ Fin 2) β S, z (.inr 1) ⬝ᵥ DL c J' z' = ∑ i, ∑ k, z (.inr 1) i * J' i k * c (z' (.inr 0) k)` using `fun z z' => by`. Simplify using `only [dotProduct, DL, Finset.mul_sum, mul_assoc]`. Rewrite using `[hTens_plane_left, e, e, conj_pair c hc hJ]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem splitL (hc : ∀ z, c (c z) = z) (J : Matrix α α S) {J' : Matrix β β S} (hJ : ∀ i j, c (J' j i) = -1 * J' i j)
     (z z' : Matrix (α ⊕ Fin 2) β S) : hTens c (Matrix.fromBlocks J 0 0 !![0, 1; 1, 0]) J' z z' =
       z (.inr 1) ⬝ᵥ DL c J' z' - c (z' (.inr 1) ⬝ᵥ DL c J' z) + hTens c J J' (z.submatrix .inl id) (z'.submatrix .inl id) := by
@@ -37,6 +43,9 @@ theorem splitL (hc : ∀ z, c (c z) = z) (J : Matrix α α S) {J' : Matrix β β
   rw [hTens_plane_left, e, e, conj_pair c hc hJ]
   ring
 
+/- English proof (translation)
+Establish `e : ∀ i j, (Aᵀ * J * A.map c) i j = ∑ a, ∑ b, A a i * J a b * c (A b j)` using `fun i j => by`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[e, e, conj_pair c hc hJ]`.
+-/
 theorem gram_herm (hc : ∀ z, c (c z) = z) {J : Matrix α α S} {η : S} (hJ : ∀ i j, c (J j i) = η * J i j) (A : Matrix α β S)
     (i j : β) : c ((Aᵀ * J * A.map c) j i) = η * (Aᵀ * J * A.map c) i j := by
   have e : ∀ i j, (Aᵀ * J * A.map c) i j = ∑ a, ∑ b, A a i * J a b * c (A b j) := fun i j => by
@@ -48,8 +57,14 @@ end Alg
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+-/
 theorem incM_one' {α : Type} [DecidableEq α] : incM F (1 : Matrix α α E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
+/- English proof (translation)
+Use `show cA σ (inclR (F := F) (AF F) _) = _ * inclR (F := F) (AF F) _`. Rewrite using `[GlobalTheory.VacIndic.cA_inclR, hJ, map_mul, map_intCast]`.
+-/
 theorem inc_herm {α : Type} {J : Matrix α α E} {η : ℤ} (hJ : ∀ i j, σ (J j i) = η * J i j) (i j : α) :
     cA σ (incM F J j i) = η * incM F J i j := by
   show cA σ (inclR (F := F) (AF F) _) = _ * inclR (F := F) (AF F) _
@@ -69,6 +84,19 @@ structure FrOK (σ : E →ₐ[F] E) {m m₁ : ℕ} (Y : Spc F E m) (Y₁ : Spc F
   msk : ∀ c s t : ℤ, ∃ A : Matrix (Fin m) (Fin m) E, (∀ u ∈ Y.L, A *ᵥ u ∈ Y.L) ∧
     incM F Q * incM F A = mask (AE F E) m₁ c s t * incM F Q
 
+/- English proof (translation)
+Take `⟨Q, hPQ, hQP, hQ⟩` from `exists_frame_inv hH hL`. Establish `hA : incM F Q * incM F (frame H) = 1` using `by rw [← incM_mul, hQP, incM_one']`. Use `⟨Q, by rw [← incM_mul, hPQ, incM_one'], ?_, inc_herm hJ, inc_herm fun i j => ?_, ?_, ?_, ?_, fun u hu => (hQ u hu).1, fun c s t => ⟨_, mask_mem hH hQ c s t, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `congrArg (incM F) (frame_gram hB hH (η := η) (by exact_mod_cast congrArg (Int.cast : ℤ → E) hη) hJ)`. Rewrite `h` using `[incM_mul, incM_mul]`.
+
+Use `Eq.trans ?_ (h.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use extensionality with `(i | i) (j | j)`. Both sides reduce to the same expression. Simplify using `[incM]`.
+
+Simplify using `[incM]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [incM]`. Rewrite using `[← hH.gram]`. Conclude with `gram_herm σ (conj_conj hB) hJ _ _ _`. Use function extensionality and compare the values at `i`.
+
+Use `congrFun (congrFun hA i) (.inr 0)` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply, ← Pi.single_apply (Sum.inr 0) (1 : AE F E) i]`. Conclude with `this`. Use function extensionality and compare the values at `i`. Use `congrFun (congrFun hA i) (.inr 1)` as an intermediate fact.
+
+Rewrite `this` using `[Matrix.one_apply, ← Pi.single_apply (Sum.inr 1) (1 : AE F E) i]`. Conclude with `this`. Use extensionality with `i j`. Use `(congrFun (congrFun hA i) (.inl j)).trans ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> simp [Matrix.one_apply]`.
+
+Rewrite using `[incM_mul, incM_mul, incM_mask, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, Matrix.one_mul]`.
+-/
 theorem exists_frOK (hB : B.IsGood σ) {m m₁ i₀ i₁ : ℕ} {Y : Spc F E m} {Y₁ : Spc F E m₁} {H : Plane E m m₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hL : Y.L.IsLattice E) {η : ℤ} (hη : η * η = 1)
     (hJ : ∀ i j, σ (Y.J j i) = η * Y.J i j) : ∃ Q, FrOK σ Y Y₁ H η Q := by
@@ -100,14 +128,23 @@ theorem exists_frOK (hB : B.IsGood σ) {m m₁ i₀ i₁ : ℕ} {Y : Spc F E m} 
     rcases i with i | i <;> simp [Matrix.one_apply]
   · rw [incM_mul, incM_mul, incM_mask, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, Matrix.one_mul]
 
+/- English proof (translation)
+The claim follows from `exists_frOK hB hH hY.lat rfl fun i j => by simp [hY.herm]`.
+-/
 theorem frOK_herm (hB : B.IsGood σ) {m m₁ i₀ i₁ r s : ℕ} {Y : Spc F E m} {Y₁ : Spc F E m₁} {H : Plane E m m₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hY : Y.IsHerm σ B r s) : ∃ Q, FrOK σ Y Y₁ H 1 Q :=
   exists_frOK hB hH hY.lat rfl fun i j => by simp [hY.herm]
 
+/- English proof (translation)
+The claim follows from `exists_frOK hB hH hY.lat rfl fun i j => by simp [hY.skew]`.
+-/
 theorem frOK_skew (hB : B.IsGood σ) {m m₁ i₀ i₁ r s : ℕ} {Y : Spc F E m} {Y₁ : Spc F E m₁} {H : Plane E m m₁}
     (hH : H.IsAdapted σ B Y Y₁ i₀ i₁) (hY : Y.IsSkew σ B r s) : ∃ Q, FrOK σ Y Y₁ H (-1) Q :=
   exists_frOK hB hH hY.lat rfl fun i j => by simp [hY.skew]
 
+/- English proof (translation)
+Establish `e : ∀ z : Matrix α β (AE F E), P * (Q * z * Q'ᵀ) * P'ᵀ = z` using `fun z => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.transpose_mul, h', Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[← hTens_mul, e, e]`.
+-/
 theorem hTens_fr {α β α' β' : Type} [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq β]
     (J : Matrix α α (AE F E)) (J' : Matrix β β (AE F E)) {P : Matrix α α' (AE F E)} {Q : Matrix α' α (AE F E)} (h : P * Q = 1)
     {P' : Matrix β β' (AE F E)} {Q' : Matrix β' β (AE F E)} (h' : P' * Q' = 1) (z z' : Matrix α β (AE F E)) :
@@ -117,15 +154,24 @@ theorem hTens_fr {α β α' β' : Type} [Fintype α] [Fintype β] [Fintype α'] 
       Matrix.transpose_one, Matrix.mul_one]
   rw [← hTens_mul, e, e]
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]`.
+-/
 theorem w_vec {α β α' β' S : Type} [CommRing S] [Fintype α] [Fintype β] (Q : Matrix α' α S) (Q' : Matrix β' β S) (x : α → S)
     (y : β → S) : Q * Matrix.vecMulVec x y * Q'ᵀ = Matrix.vecMulVec (Q *ᵥ x) (Q' *ᵥ y) := by
   rw [Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose]
 
+/- English proof (translation)
+Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem w_mul {α β α' β' a b S : Type} [CommRing S] [Fintype α] [Fintype β] [Fintype a] [Fintype b] (Q : Matrix α' α S)
     (Q' : Matrix β' β S) (A : Matrix α a S) (A' : Matrix β b S) (z : Matrix a b S) :
     Q * (A * z * A'ᵀ) * Q'ᵀ = Q * A * z * (Q' * A')ᵀ := by
   simp only [Matrix.transpose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[w_mul, h, h']`. Simplify using `only [Matrix.transpose_mul, Matrix.mul_assoc]`.
+-/
 theorem w_msk {α β α' β' S : Type} [CommRing S] [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] {Q : Matrix α' α S}
     {Q' : Matrix β' β S} {A : Matrix α α S} {A' : Matrix β β S} {m : Matrix α' α' S} {m' : Matrix β' β' S}
     (h : Q * A = m * Q) (h' : Q' * A' = m' * Q')
@@ -133,17 +179,26 @@ theorem w_msk {α β α' β' S : Type} [CommRing S] [Fintype α] [Fintype β] [F
   rw [w_mul, h, h']
   simp only [Matrix.transpose_mul, Matrix.mul_assoc]
 
+/- English proof (translation)
+Rewrite using `[incM_mul, incM_mul]`. Both sides reduce to the same expression.
+-/
 theorem w_inc {α β α' β' : Type} [Fintype α] [Fintype β] (Q : Matrix α' α E) (Q' : Matrix β' β E) (x : Matrix α β E) :
     incM F Q * incM F x * (incM F Q')ᵀ = incM F (Q * x * Q'ᵀ) := by
   rw [incM_mul, incM_mul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [DR, map_neg, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem DR_inc {α β : Type} [Fintype α] (J : Matrix α α E) (x : Matrix α (β ⊕ Fin 2) E) :
     DR (cA σ) (incM F J) (incM F x) = fun k => inclR (F := F) (AF F) (DR σ J x k) := by
   funext k
   simp only [DR, map_neg, map_sum, map_mul]
   rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `k`. Simplify using `only [DL, map_sum, map_mul]`. Both sides reduce to the same expression.
+-/
 theorem DL_inc {α β : Type} [Fintype β] (J : Matrix β β E) (x : Matrix (α ⊕ Fin 2) β E) :
     DL (cA σ) (incM F J) (incM F x) = fun k => inclR (F := F) (AF F) (DL σ J x k) := by
   funext k

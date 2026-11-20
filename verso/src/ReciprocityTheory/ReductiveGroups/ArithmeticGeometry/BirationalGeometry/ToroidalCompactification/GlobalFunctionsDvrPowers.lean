@@ -22,6 +22,11 @@ def pullPowIso {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) :
   | n + 1 => (Functor.Monoidal.μIso (Over.pullback f) G (powObj G n)).symm ≪≫
       whiskerLeftIso ((Over.pullback f).obj G) (pullPowIso f G n)
 
+/- English proof (translation)
+Establish `hw : A.hom = e.hom.left ≫ B.hom` using `(Over.w e.hom).symm`. Rewrite using `[hw, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]`. Use `Function.Bijective.comp ?_ h` and prove the remaining obligations. Use `Function.bijective_iff_has_inverse.2 ⟨(e.inv.left.appTop).hom, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `show (e.hom.left.appTop ≫ e.inv.left.appTop).hom x = x`.
+
+Rewrite using `[← Scheme.Hom.comp_appTop, ← Over.comp_left, e.inv_hom_id]`. Simplify using the standard rewrite rules. Use `show (e.inv.left.appTop ≫ e.hom.left.appTop).hom x = x`. Rewrite using `[← Scheme.Hom.comp_appTop, ← Over.comp_left, e.hom_inv_id]`. Simplify using the standard rewrite rules.
+-/
 theorem bijective_of_iso {S' : Scheme.{0}} {A B : Over S'} (e : A ≅ B)
     (h : Function.Bijective B.hom.appTop.hom) : Function.Bijective A.hom.appTop.hom := by
   have hw : A.hom = e.hom.left ≫ B.hom := (Over.w e.hom).symm
@@ -35,6 +40,9 @@ theorem bijective_of_iso {S' : Scheme.{0}} {A B : Over S'} (e : A ≅ B)
     rw [← Scheme.Hom.comp_appTop, ← Over.comp_left, e.hom_inv_id]
     simp
 
+/- English proof (translation)
+Conclude with `bijective_of_iso (pullPowIso f G n) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.globalFns_powObj hGF ((Over.pullback f).obj G) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsSemiAbelian.pullback (f := f) (G := G) hG) n)`.
+-/
 theorem pull_powObj_globalFns (hGF : ReciprocityTheory.ChartRestriction.G.Out.GlobalFnsSt) {S S' : Scheme.{0}} (f : S' ⟶ S)
     (G : Over S) [GrpObj G] (hG : ReciprocityTheory.ChartRestriction.G.Semi.IsSemiAbelian G)
     [IsProper ((Over.pullback f).obj G).hom] (n : ℕ) :

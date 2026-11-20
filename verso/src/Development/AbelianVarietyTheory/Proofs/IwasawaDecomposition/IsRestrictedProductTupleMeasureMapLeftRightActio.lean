@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.GaugeEx.ProdTransport
 
+/- English proof (translation)
+Establish `hm : Multipliable fun v : {v // v ∉ S'} => f v.1`. Establish `h1 : Summable fun v : {v // v ∉ S'} => ‖f v.1 - 1‖` using `hf.subtype _`. Simplify using `using multipliable_one_add_of_summable h1`. Establish `e1 : ∀ T : Finset ι, ∀ a, HasProd (fun v : {v // v ∉ T} => f v.1) a ↔ HasProd (Set.mulIndicator {v | v ∉ T} f) a` using `fun T a => hasProd_subtype_iff_mulIndicator (s := {v | v ∉ T})`. Establish `h2` using `(e1 S' _).1 hm.hasProd`.
+
+Establish `h3 : HasProd (Set.mulIndicator (↑(S' \ S) : Set ι) f) (∏ v ∈ S' \ S, f v)` using `hasProd_subtype_iff_mulIndicator.1 ((S' \ S).hasProd f)`. Establish `h4` using `h3.mul h2`. Use `((e1 S _).2 ?_).tprod_eq` and prove the remaining obligations. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`.
+
+Distinguish the cases in `h5 : v ∈ S`. Simplify using `[Set.mulIndicator, h5, h h5]`. Apply the tactic sequence `by_cases h6 : v ∈ S' <;> simp [Set.mulIndicator, h5, h6]`.
+-/
 theorem tprod_tail_split {ι : Type*} [DecidableEq ι] (f : ι → ℝ) (hf : Summable fun v => |f v - 1|)
     (S S' : Finset ι) (h : S ⊆ S') :
     ∏' v : {v // v ∉ S}, f v.1 = (∏ v ∈ S' \ S, f v) * ∏' v : {v // v ∉ S'}, f v.1 := by
@@ -30,6 +37,31 @@ theorem tprod_tail_split {ι : Type*} [DecidableEq ι] (f : ι → ℝ) (hf : Su
   · simp [Set.mulIndicator, h5, h h5]
   · by_cases h6 : v ∈ S' <;> simp [Set.mulIndicator, h5, h6]
 
+/- English proof (translation)
+Establish `hsub : S ⊆ S ∪ S₀` using `Finset.subset_union_left`. Establish `hTL : ∀ v, MeasurableSet (Tv v ⁻¹' L v)` using `fun v => hTv v (hL v)`. Set `gv : ∀ v, Xv v → ℝ≥0∞` to `fun v => if v ∈ S then fv v ∘ Tv v else (Tv v ⁻¹' L v).indicator 1`. Establish `hgv : ∀ v, Measurable (gv v)`. Introduce `v`.
+
+Distinguish the cases in `h : v ∈ S`. Simplify `(hfv v).comp (hTv v)` using `[gv, h]`. Simplify `(measurable_one.indicator (hTL v))` using `[gv, h]`. Establish `key` using `H (S ∪ S₀) (fi ∘ Ti) gv (hfi.comp hTi) hgv`. Set `B : Set X` to `{x | ∀ v ∈ (S ∪ S₀) \ S, pv v x ∈ Tv v ⁻¹' L v}`.
+
+Establish `hB : MeasurableSet B`. Establish `: B = ⋂ v ∈ (S ∪ S₀) \ S, pv v ⁻¹' (Tv v ⁻¹' L v)`. Use extensionality with `x`. Simplify using `only [B, Set.mem_setOf_eq, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[this]`.
+
+Conclude with `Finset.measurableSet_biInter _ fun v _ => hpv v (hTL v)`. Establish `hset : T ⁻¹' {x | ∀ v ∉ S, pv v x ∈ L v} = B ∩ {x | ∀ v ∉ S ∪ S₀, pv v x ∈ L v}`. Use extensionality with `x`. Simplify using `only [B, Set.mem_preimage, Set.mem_setOf_eq, Set.mem_inter_iff, hcv]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `h`. Use `⟨fun v hv => h v (Finset.mem_sdiff.1 hv).2, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← hS₀ v fun h' => hv (Finset.mem_union_right _ h')]`. Conclude with `h v fun h' => hv (hsub h')`. Introduce and unpack `⟨h1, h2⟩ v hv`.
+
+Distinguish the cases in `h : v ∈ S ∪ S₀`. Conclude with `h1 v (Finset.mem_sdiff.2 ⟨h, hv⟩)`. Use `h2 v h` as an intermediate fact. Rewrite `this` using `[← hS₀ v fun h' => h (Finset.mem_union_right _ h')]`. Then use the resulting hypothesis. Establish `hl : ∫⁻ x in {x | ∀ v ∉ S, pv v x ∈ L v}, fi (pI x) * ∏ v ∈ S, fv v (pv v x) ∂(ν.map T) = ∫⁻ x in {x | ∀ v ∉ S ∪ S₀, pv v x ∈ L v}, (fi ∘ Ti) (pI x) * ∏ v ∈ S ∪ S₀, gv v (pv v x) ∂ν`.
+
+Rewrite using `[T.restrict_map, lintegral_map_equiv, hset, ← Measure.restrict_restrict hB, ← lintegral_indicator hB]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_sdiff hsub]`. Establish `e1 : ∏ v ∈ S, gv v (pv v x) = ∏ v ∈ S, fv v (pv v (T x))` using `Finset.prod_congr rfl fun v hv => by simp [gv, hv, hcv]`. Rewrite using `[e1]`.
+
+Distinguish the cases in `hx : x ∈ B`. Establish `e2 : ∏ v ∈ (S ∪ S₀) \ S, gv v (pv v x) = 1` using `Finset.prod_eq_one fun v hv => by`. Simplify using `only [gv, if_neg (Finset.mem_sdiff.1 hv).2]`. Conclude with `Set.indicator_of_mem (hx v hv) _`. Rewrite using `[Set.indicator_of_mem hx, e2, one_mul, hci]`.
+
+Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx]`. Simplify using `only [B, Set.mem_setOf_eq, not_forall] at hx`. Take `⟨v, hv, hv'⟩` from `hx`. Establish `e2 : ∏ v ∈ (S ∪ S₀) \ S, gv v (pv v x) = 0` using `Finset.prod_eq_zero hv (by`.
+
+Simplify using `only [gv, if_neg (Finset.mem_sdiff.1 hv).2]`. Conclude with `Set.indicator_of_notMem hv' _)`. Rewrite using `[e2, zero_mul, mul_zero]`. Rewrite using `[hl, key, tprod_tail_split _ hsum S (S ∪ S₀) hsub, ← Finset.prod_sdiff hsub, ENNReal.ofReal_mul (Finset.prod_nonneg fun _ _ => ENNReal.toReal_nonneg), ENNReal.ofReal_prod_of_nonneg (fun _ _ => ENNReal.toReal_nonneg), lintegral_map hfi hTi]`. Establish `e1 : ∏ v ∈ S, ∫⁻ y, gv v y ∂(mv v) = ∏ v ∈ S, ∫⁻ y, fv v y ∂((mv v).map (Tv v))` using `Finset.prod_congr rfl fun v hv => by`.
+
+Rewrite using `[lintegral_map (hfv v) (hTv v)]`. Simplify using `[gv, hv]`. Establish `e2 : ∏ v ∈ (S ∪ S₀) \ S, ∫⁻ y, gv v y ∂(mv v) = ∏ v ∈ (S ∪ S₀) \ S, ENNReal.ofReal ((mv v).map (Tv v) (L v)).toReal` using `Finset.prod_congr rfl fun v hv => by`. Simplify using `only [gv, if_neg (Finset.mem_sdiff.1 hv).2]`. Rewrite using `[lintegral_indicator_one (hTL v), Measure.map_apply (hTv v) (hL v), ENNReal.ofReal_toReal (hfin v)]`.
+
+Establish `e3 : ∏' v : {v // v ∉ S ∪ S₀}, (mv v.1 (L v.1)).toReal = ∏' v : {v // v ∉ S ∪ S₀}, ((mv v.1).map (Tv v.1) (L v.1)).toReal` using `tprod_congr fun v => by`. Rewrite using `[Measure.map_apply (hTv v) (hL v), hS₀ v.1 fun h' => v.2 (Finset.mem_union_right _ h')]`. Rewrite using `[e1, e2, e3]`. Simplify using `only [Function.comp]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem abstract_transport {ι X Xi : Type*} {Xv : ι → Type*} [MeasurableSpace X] [MeasurableSpace Xi]
     [∀ v, MeasurableSpace (Xv v)] (pI : X → Xi) (pv : ∀ v, X → Xv v) (hpv : ∀ v, Measurable (pv v))
     (L : ∀ v, Set (Xv v)) (hL : ∀ v, MeasurableSet (L v))
@@ -126,6 +158,9 @@ theorem abstract_transport {ι X Xi : Type*} {Xv : ι → Type*} [MeasurableSpac
 section Lr
 variable {S : Type} [CommRing S] {n M : ℕ}
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Rewrite using `[Matrix.mul_assoc]`. Simplify using `[lrAct, Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+-/
 theorem lrAct_eq (g : Matrix (Fin M) (Fin M) S) (γ : Matrix (Fin n) (Fin n) S)
     (X : Fin n → Fin M → S) :
     lrAct g γ X = fun a i => (g * (Matrix.of X).transpose * γ) i a := by
@@ -133,6 +168,11 @@ theorem lrAct_eq (g : Matrix (Fin M) (Fin M) S) (γ : Matrix (Fin n) (Fin n) S)
   rw [Matrix.mul_assoc]
   simp [lrAct, Matrix.mulVec, dotProduct, Matrix.mul_apply]
 
+/- English proof (translation)
+Rewrite using `[lrAct_eq, lrAct_eq]`. Establish `: (Matrix.of fun a i => (g * (Matrix.of X).transpose * γ) i a).transpose = g * (Matrix.of X).transpose * γ` using `by ext; rfl`. Rewrite using `[this]`. Establish `: g' * (g * (Matrix.of X).transpose * γ) * γ' = (Matrix.of X).transpose`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hg, Matrix.one_mul, Matrix.mul_assoc, hγ, Matrix.mul_one]`.
+
+Rewrite using `[this]`. Both sides reduce to the same expression.
+-/
 theorem lrAct_lrAct (g g' : Matrix (Fin M) (Fin M) S) (γ γ' : Matrix (Fin n) (Fin n) S)
     (hg : g' * g = 1) (hγ : γ * γ' = 1) (X : Fin n → Fin M → S) :
     lrAct g' γ' (lrAct g γ X) = X := by
@@ -145,12 +185,18 @@ theorem lrAct_lrAct (g g' : Matrix (Fin M) (Fin M) S) (γ γ' : Matrix (Fin n) (
       Matrix.mul_one]
   rw [this]; rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `a i`. Simplify using `[lrAct, Matrix.mulVec, dotProduct]`.
+-/
 theorem map_lrAct {S' : Type} [CommRing S'] (φ : S →+* S') (g : Matrix (Fin M) (Fin M) S)
     (γ : Matrix (Fin n) (Fin n) S) (X : Fin n → Fin M → S) :
     (fun a i => φ (lrAct g γ X a i)) = lrAct (g.map φ) (γ.map φ) fun a i => φ (X a i) := by
   funext a i
   simp [lrAct, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Unfold `lrAct Matrix.mulVec dotProduct`. Use `fun_prop`.
+-/
 theorem continuous_lrAct [TopologicalSpace S] [IsTopologicalRing S] (g : Matrix (Fin M) (Fin M) S)
     (γ : Matrix (Fin n) (Fin n) S) : Continuous (lrAct g γ) := by
   unfold lrAct Matrix.mulVec dotProduct
@@ -165,6 +211,9 @@ def lrHomeo [TopologicalSpace S] [IsTopologicalRing S] (g : GL (Fin M) S) (γ : 
   continuous_toFun := continuous_lrAct _ _
   continuous_invFun := continuous_lrAct _ _
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `∑ j, g i j * ∑ c, X c j * γ c a ∈ A`. Conclude with `A.sum_mem fun _ _ => hA _ (hg _ _) _ (A.sum_mem fun _ _ => hA _ (hX _ _) _ (hγ _ _))`.
+-/
 theorem lrAct_mem (A : AddSubmonoid S) (hA : ∀ y ∈ A, ∀ z ∈ A, y * z ∈ A)
     (g : Matrix (Fin M) (Fin M) S) (γ : Matrix (Fin n) (Fin n) S) (hg : ∀ i j, g i j ∈ A)
     (hγ : ∀ i j, γ i j ∈ A) (X : Fin n → Fin M → S) (hX : ∀ a i, X a i ∈ A) (a : Fin n) (i : Fin M) :
@@ -172,6 +221,9 @@ theorem lrAct_mem (A : AddSubmonoid S) (hA : ∀ y ∈ A, ∀ z ∈ A, y * z ∈
   change ∑ j, g i j * ∑ c, X c j * γ c a ∈ A
   exact A.sum_mem fun _ _ => hA _ (hg _ _) _ (A.sum_mem fun _ _ => hA _ (hX _ _) _ (hγ _ _))
 
+/- English proof (translation)
+Use `e.toMeasurableEquiv.map_apply (μ := m) K` as an intermediate fact. Rewrite using `[show m.map e K = m (e ⁻¹' K) from this]`. Conclude with `(e.isCompact_preimage.2 hK).measure_lt_top`.
+-/
 theorem finiteOnCompacts_map {Y : Type*} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
     (e : Y ≃ₜ Y) (m : Measure Y) (hm : IsFiniteMeasureOnCompacts m) :
     IsFiniteMeasureOnCompacts (m.map e) where
@@ -190,6 +242,23 @@ def intVAdd {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {d : 
     rw [map_add, Finsupp.add_apply]
     exact add_mem (hx k) (hy k)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ d b n M ν mi mv g γ ⟨⟨hmi, hmv, hsum⟩, H⟩`. Take `⟨-, -, -, hcv⟩` from `GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M`. Take `⟨hco, hsr, hz, -⟩` from `GlobalTheory.T.integralPointsFinitePlaceTensor_properties F E (AlgHom.id F E) d b`. Set `eI` to `lrHomeo (Matrix.GeneralLinearGroup.map (prInf (F := F) (E := E)) g) (Matrix.GeneralLinearGroup.map (prInf (F := F) (E := E)) γ)`. Set `eV` to `fun v : HeightOneSpectrum (𝓞 F) => lrHomeo (Matrix.GeneralLinearGroup.map (prV (F := F) (E := E) v) g) (Matrix.GeneralLinearGroup.map (prV (F := F) (E := E) v) γ)`.
+
+Establish `hlat : ∀ v : HeightOneSpectrum (𝓞 F), (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E)) = Set.univ.pi fun _ => Set.univ.pi fun _ => intV b v` using `fun v => by`. Use extensionality with `Y`. Simplify using `only [mem_latV_iff, Set.mem_univ_pi]`. Establish `hlc : ∀ v : HeightOneSpectrum (𝓞 F), IsCompact (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `fun v => by`. Rewrite using `[hlat]`.
+
+Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => (hco v).1`. Establish `hL : ∀ v : HeightOneSpectrum (𝓞 F), MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `fun v => (hlc v).isClosed.measurableSet`. Establish `hmat : ∀ {k : ℕ} (A : Matrix (Fin k) (Fin k) (AF F ⊗[F] E)), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j, prV v (A i j) ∈ intV b v` using `fun A => Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hz _`. Establish `hev : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, eV v ⁻¹' latV b v = latV b v` using `by filter_upwards [hsr, hmat g.val, hmat γ.val, hmat g⁻¹.val, hmat γ⁻¹.val] with v h0 h1 h2 h3 h4`. Use extensionality with `Y`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hY`. Use `lrAct_mem (intVAdd b v) h0.2.1 (g⁻¹.val.map (prV v)) (γ⁻¹.val.map (prV v)) h3 h4 _ hY` as an intermediate fact. Establish `e : lrAct (g⁻¹.val.map (prV v)) (γ⁻¹.val.map (prV v)) (eV v Y) = Y`. Use `lrAct_lrAct (g.val.map (prV v)) _ (γ.val.map (prV v)) _ ?_ ?_ Y` and prove the remaining obligations.
+
+Rewrite using `[← Matrix.map_mul, g.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[← Matrix.map_mul, γ.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `this` using `[e]`. Conclude with `this`. Introduce `hY`.
+
+Conclude with `lrAct_mem (intVAdd b v) h0.2.1 (g.val.map (prV v)) (γ.val.map (prV v)) h1 h2 _ hY`. Establish `hfinS` using `Filter.eventually_cofinite.1 hev`. Establish `hS₀ : ∀ v ∉ hfinS.toFinset, eV v ⁻¹' latV b v = latV b v` using `fun v hv => by`. Simplify using `using hv`. Establish `hsum' : Summable fun v => |((mv v).map (eV v) (latV b v)).toReal - 1|`.
+
+Use `(summable_congr_cofinite ?_).1 hsum` and prove the remaining obligations. Use `filter_upwards [hev] with v hv`. Rewrite using `[Measure.map_apply (eV v).continuous.measurable (hL v), hv]`. Use `⟨⟨finiteOnCompacts_map eI mi hmi, fun v => finiteOnCompacts_map (eV v) (mv v) (hmv v), hsum'⟩, fun S fi fv hfi hfv => ?_⟩` and prove the remaining obligations. Conclude with `abstract_transport projInf (fun v X => projV v (projFin X)) (fun v => (hcv v).measurable) (fun v => latV b v) hL (lrHomeo g γ).toMeasurableEquiv eI (fun v => eV v) eI.continuous.measurable (fun v => (eV v).continuous.measurable) (fun X => map_lrAct prInf g.val γ.val X) (fun v X = …`.
+
+Use `hmv v` as an intermediate fact. Conclude with `((eV v).isCompact_preimage.2 (hlc v)).measure_lt_top.ne) hsum' H S fi fv hfi hfv`.
+-/
 theorem isProd_map_lrAct : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (ν : Measure (Fin n → Fin M → AF F ⊗[F] E)) (mi : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (mv : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (g : GL (Fin M) (AF F ⊗[F] E)) (γ : GL (Fin n) (AF F ⊗[F] E)), IsProd b ν mi mv → IsProd b (ν.map (lrAct g.val γ.val)) (mi.map (lrAct (g.val.map prInf) (γ.val.map prInf))) (fun v => (mv v).map (lrAct (g.val.map (prV v)) (γ.val.map (prV v)))) := by
   intro F E _ _ _ _ _ d b n M ν mi mv g γ ⟨⟨hmi, hmv, hsum⟩, H⟩
   classical

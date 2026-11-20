@@ -11,8 +11,32 @@ open GlobalTheory.ZM
 noncomputable section
 namespace GlobalTheory.ZM.CycBase
 
+/- English proof (translation)
+The claim follows from `Complex.isPrimitiveRoot_exp k hk`.
+-/
 lemma zeta_prim {k : ℕ} (hk : k ≠ 0) : IsPrimitiveRoot (zeta k) k := Complex.isPrimitiveRoot_exp k hk
 
+/- English proof (translation)
+Establish `hinv : ∀ m : ℕ, m.Coprime p → ∀ h : (m : ℂ)⁻¹ ∈ ZP p k, (f ⟨_, h⟩).snd = 0 ∧ (m : K) ≠ 0`. Introduce `m hm h`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Conclude with `hp.ne_one (by simpa using hm)`.
+
+Establish `h1 : (m : ZP p k) * ⟨_, h⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hm0]`. Establish `h2` using `congrArg f h1`. Rewrite `h2` using `[map_mul, map_natCast, map_one]`.
+
+Establish `h3` using `congrArg TrivSqZeroExt.fst h2`. Establish `h4` using `congrArg TrivSqZeroExt.snd h2`. Simplify using `only [TrivSqZeroExt.fst_mul, TrivSqZeroExt.fst_natCast, TrivSqZeroExt.fst_one] at h3`. Establish `hmK : (m : K) ≠ 0` using `left_ne_zero_of_mul_eq_one h3`. Simplify using `only [DualNumber.snd_mul, TrivSqZeroExt.fst_natCast, TrivSqZeroExt.snd_natCast, zero_mul, add_zero, TrivSqZeroExt.snd_one] at h4`.
+
+Conclude with `⟨(mul_eq_zero.mp h4).resolve_left hmK, hmK⟩`. Establish `hkK : (k : K) ≠ 0` using `(hinv k hkp (Subring.subset_closure (Or.inr ⟨k, hkp, rfl⟩))).2`. Take `⟨x, hx⟩` from `x`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with rfl | ⟨m, hm, rfl⟩` into its components or cases. Establish `h1 : zetaZP p k ^ k = 1` using `Subtype.ext (zeta_prim hk).pow_eq_one`. Establish `h2` using `congrArg f h1`. Rewrite `h2` using `[map_pow, map_one]`. Establish `h3` using `congrArg TrivSqZeroExt.fst h2`.
+
+Establish `h4` using `congrArg TrivSqZeroExt.snd h2`. Rewrite `h3` using `[TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_one]`. Rewrite `h4` using `[TrivSqZeroExt.snd_pow, TrivSqZeroExt.snd_one]`. Establish `h5 : (f (zetaZP p k)).fst ≠ 0`. Introduce `h0`.
+
+Rewrite `h3` using `[h0, zero_pow hk]`. Conclude with `zero_ne_one h3`. Express the relevant statement in the definitionally equal form `(f (zetaZP p k)).snd = 0`. Simplify `h4` using `[hkK, h5]`. Conclude with `(hinv m hm _).1`.
+
+Consider the case `zero => change (f 0).snd = 0`. Simplify using the standard rewrite rules. Consider the case `one => change (f 1).snd = 0`. Simplify using the standard rewrite rules. Consider the case `add x y hx hy ihx ihy`.
+
+Express the relevant statement in the definitionally equal form `(f (⟨x, hx⟩ + ⟨y, hy⟩)).snd = 0`. Simplify using `only [map_add, TrivSqZeroExt.snd_add, ihx, ihy, add_zero]`. Consider the case `neg x hx ihx`. Express the relevant statement in the definitionally equal form `(f (-⟨x, hx⟩)).snd = 0`. Simplify using `only [map_neg, TrivSqZeroExt.snd_neg, ihx, neg_zero]`.
+
+Consider the case `mul x y hx hy ihx ihy`. Express the relevant statement in the definitionally equal form `(f (⟨x, hx⟩ * ⟨y, hy⟩)).snd = 0`. Simplify using `only [map_mul, DualNumber.snd_mul, ihx, ihy, mul_zero, zero_mul, add_zero]`.
+-/
 lemma snd_eq_zero {p k : ℕ} (hk : k ≠ 0) (hkp : k.Coprime p) (hp : p.Prime) {K : Type} [Field K]
     (f : ZP p k →+* DualNumber K) (x : ZP p k) : (f x).snd = 0 := by
   have hinv : ∀ m : ℕ, m.Coprime p → ∀ h : (m : ℂ)⁻¹ ∈ ZP p k,
@@ -64,6 +88,11 @@ lemma snd_eq_zero {p k : ℕ} (hk : k ≠ 0) (hkp : k.Coprime p) (hp : p.Prime) 
     change (f (⟨x, hx⟩ * ⟨y, hy⟩)).snd = 0
     simp only [map_mul, DualNumber.snd_mul, ihx, ihy, mul_zero, zero_mul, add_zero]
 
+/- English proof (translation)
+Take `⟨f, rfl⟩` from `Spec.map_surjective y`. Simplify using `only [constPt, spMap, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+
+Simplify using `[snd_eq_zero hk hkp hp f.hom x, TrivSqZeroExt.algebraMap_eq_inl]`.
+-/
 lemma eq_constPt {p k : ℕ} (hk : k ≠ 0) (hkp : k.Coprime p) (hp : p.Prime) {K : Type} [Field K]
     (y : Sp (DualNumber K) ⟶ Sp (ZP p k)) : y = constPt y := by
   obtain ⟨f, rfl⟩ := Spec.map_surjective y
@@ -79,11 +108,17 @@ def zF (k : ℕ) : CF k := ⟨zeta k, IntermediateField.subset_adjoin _ _ rfl⟩
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta`. Conclude with `Complex.isPrimitiveRoot_exp k hk`.
+-/
 private lemma zeta_isPrimitiveRoot' {k : ℕ} (hk : k ≠ 0) : IsPrimitiveRoot (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta k) k := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta; exact Complex.isPrimitiveRoot_exp k hk
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+The claim follows from `IsPrimitiveRoot.of_map_of_injective (f := (_root_.GlobalTheory.ZM.CycBase.CF k).val) (zeta_isPrimitiveRoot' hk) (_root_.GlobalTheory.ZM.CycBase.CF k).val.injective`.
+-/
 lemma _root_.GlobalTheory.ZM.CycBase.zF_prim {k : ℕ} (hk : k ≠ 0) :
     IsPrimitiveRoot (_root_.GlobalTheory.ZM.CycBase.zF k) k :=
   IsPrimitiveRoot.of_map_of_injective (f := (_root_.GlobalTheory.ZM.CycBase.CF k).val)
@@ -91,6 +126,9 @@ lemma _root_.GlobalTheory.ZM.CycBase.zF_prim {k : ℕ} (hk : k ≠ 0) :
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Establish `hζ` using `zeta_isPrimitiveRoot' (NeZero.ne k)`. Use `haveI := hζ.adjoin_isCyclotomicExtension ℚ`. Establish `h2 : (_root_.GlobalTheory.ZM.CycBase.CF k).toSubalgebra = Algebra.adjoin ℚ {_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta k}` using `IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic ((hζ.isIntegral (NeZero.pos k)).tower_top.isAlgebraic)`. Conclude with `IsCyclotomicExtension.equiv _ _ _ (Subalgebra.equivOfEq _ _ h2).symm`.
+-/
 lemma _root_.GlobalTheory.ZM.CycBase.cyc {k : ℕ} [NeZero k] :
     IsCyclotomicExtension {k} ℚ (_root_.GlobalTheory.ZM.CycBase.CF k) := by
   have hζ := zeta_isPrimitiveRoot' (NeZero.ne k)
@@ -102,6 +140,15 @@ lemma _root_.GlobalTheory.ZM.CycBase.cyc {k : ℕ} [NeZero k] :
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Use `haveI : Fact n.Prime := ⟨hn⟩`. Use `haveI : NeZero (n ^ e) := ⟨pow_ne_zero _ hn.ne_zero⟩`. Use `haveI := _root_.GlobalTheory.ZM.CycBase.cyc (k := n ^ e)`. Establish `hζ` using `_root_.GlobalTheory.ZM.CycBase.zF_prim (NeZero.ne (n ^ e))`. Establish `hcl` using `IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton_of_prime_pow hζ`.
+
+Take `⟨x, hx⟩` from `hcl.isIntegral_iff.mp (RingOfIntegers.isIntegral_coe a)`. Establish `hax : (a : _root_.GlobalTheory.ZM.CycBase.CF (n ^ e)) = x` using `hx.symm`. Rewrite using `[hax]`. Take `⟨y, hmem⟩` from `x`. Express the relevant statement in the definitionally equal form `((y : _root_.GlobalTheory.ZM.CycBase.CF (n ^ e)) : ℂ) ∈ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)`.
+
+Use `clear hx hax`. Proceed by induction on `hmem using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP`.
+
+Conclude with `Subring.subset_closure (Or.inl rfl)`. Consider the case `algebraMap r`. Simplify using `using intCast_mem (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) r`. Consider the case `add y z _ _ hy hz => simpa using add_mem hy hz`. Consider the case `mul y z _ _ hy hz => simpa using mul_mem hy hz`.
+-/
 lemma _root_.GlobalTheory.ZM.CycBase.mem_ZP (p n e : ℕ) (hn : n.Prime) (a : 𝓞 (_root_.GlobalTheory.ZM.CycBase.CF (n ^ e))) :
     ((a : _root_.GlobalTheory.ZM.CycBase.CF (n ^ e)) : ℂ) ∈ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e) := by
   haveI : Fact n.Prime := ⟨hn⟩
@@ -127,6 +174,9 @@ lemma _root_.GlobalTheory.ZM.CycBase.mem_ZP (p n e : ℕ) (hn : n.Prime) (a : �
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP`. Conclude with `Subring.subset_closure (Or.inr ⟨m, hm, rfl⟩)`.
+-/
 private lemma inv_natCast_mem_ZP_of_coprime {p M m : ℕ} (hm : m.Coprime p) :
     ((m : ℂ)⁻¹) ∈ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p M := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP
@@ -134,6 +184,9 @@ private lemma inv_natCast_mem_ZP_of_coprime {p M m : ℕ} (hm : m.Coprime p) :
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Establish `h1` using `congrArg TrivSqZeroExt.fst h`. Establish `h2` using `congrArg TrivSqZeroExt.snd h`. Simplify using `at h1 h2`. Establish `hm : (m : K) ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Conclude with `⟨by simpa [hm] using h2, hm⟩`.
+-/
 private lemma snd_eq_zero_of_natCast_mul_eq_one {K : Type} [Field K] {m : ℕ} {v : DualNumber K}
     (h : (m : DualNumber K) * v = 1) : v.snd = 0 ∧ (m : K) ≠ 0 := by
   have h1 := congrArg TrivSqZeroExt.fst h
@@ -144,12 +197,38 @@ private lemma snd_eq_zero_of_natCast_mul_eq_one {K : Type} [Field K] {m : ℕ} {
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP`. Conclude with `Subring.subset_closure (Or.inl rfl)`.
+-/
 private lemma zeta_mem_ZP (p M : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta M ∈ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p M := by
   unfold _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP
   exact Subring.subset_closure (Or.inl rfl)
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Establish `hnK : (n : K) ≠ 0`. Establish `hmul : ((n : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) * ⟨(n : ℂ)⁻¹, inv_natCast_mem_ZP_of_coprime hn⟩ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hn0]`. Use `congrArg f hmul` as an intermediate fact.
+
+Rewrite `this` using `[map_mul, map_natCast, map_one]`. Conclude with `(snd_eq_zero_of_natCast_mul_eq_one this).2`. Take `⟨x, hx⟩` from `x`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem y hy`.
+
+Break down `hy with hy | ⟨m, hm, rfl⟩` into its components or cases. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Use `set z := f ⟨_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta (n ^ e), zeta_mem_ZP p _⟩ with hz`. Establish `hN : n ^ e ≠ 0` using `pow_ne_zero _ hn0`.
+
+Establish `hpow : z ^ (n ^ e) = 1`. Rewrite using `[hz, ← map_pow]`. Establish `: (⟨_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta (n ^ e), zeta_mem_ZP p _⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) ^ (n ^ e) = 1` using `Subtype.ext (by simpa using (zeta_isPrimitiveRoot' hN).pow_eq_one)`. Rewrite using `[this, map_one]`. Establish `h1` using `congrArg TrivSqZeroExt.fst hpow`.
+
+Establish `h2` using `congrArg TrivSqZeroExt.snd hpow`. Simplify using `only [TrivSqZeroExt.fst_pow, TrivSqZeroExt.fst_one] at h1`. Rewrite `h2` using `[TrivSqZeroExt.snd_pow, TrivSqZeroExt.snd_one]`. Establish `hz0 : z.fst ≠ 0`. Introduce `h0`.
+
+Rewrite `h1` using `[h0, zero_pow hN]`. Conclude with `zero_ne_one h1`. Simplify using `only [nsmul_eq_mul, smul_eq_mul] at h2`. Establish `hNK : ((n ^ e : ℕ) : K) ≠ 0` using `by push_cast; exact pow_ne_zero _ hnK`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases.
+
+Conclude with `absurd h hNK`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `absurd (pow_eq_zero_iff'.mp h).1 hz0`. Conclude with `h`. Distinguish the cases in `hm0 : m = 0`.
+
+Substitute `hm0` using the available equality. Establish `: (⟨((0 : ℕ) : ℂ)⁻¹, Subring.subset_closure (Or.inr ⟨0, hm, rfl⟩)⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = 0` using `Subtype.ext (by simp)`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression. Establish `hmul : ((m : ℕ) : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) * ⟨(m : ℂ)⁻¹, Subring.subset_closure (Or.inr ⟨m, hm, rfl⟩)⟩ = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hm0]`. Use `congrArg f hmul` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Conclude with `(snd_eq_zero_of_natCast_mul_eq_one this).1`.
+
+Consider the case `zero => rw [show (⟨0, _⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = 0 from rfl, map_zero]`. Both sides reduce to the same expression. Consider the case `one => rw [show (⟨1, _⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = 1 from rfl, map_one]`. Both sides reduce to the same expression. Consider the case `add y z hy hz ihy ihz`.
+
+Rewrite using `[show (⟨y + z, add_mem hy hz⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = ⟨y, hy⟩ + ⟨z, hz⟩ from rfl, map_add, TrivSqZeroExt.snd_add, ihy, ihz, add_zero]`. Consider the case `neg y hy ihy`. Rewrite using `[show (⟨-y, neg_mem hy⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = -⟨y, hy⟩ from rfl, map_neg, TrivSqZeroExt.snd_neg, ihy, neg_zero]`. Consider the case `mul y z hy hz ihy ihz`. Rewrite using `[show (⟨y * z, mul_mem hy hz⟩ : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) = ⟨y, hy⟩ * ⟨z, hz⟩ from rfl, map_mul, TrivSqZeroExt.snd_mul, ihy, ihz, smul_zero, smul_zero, add_zero]`.
+-/
 private lemma ringHom_ZP_pow_dualNumber_snd_eq_zero {K : Type} [Field K] {p n e : ℕ}
     (hn : n.Coprime p) (hn0 : n ≠ 0) (f : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e) →+* DualNumber K)
     (x : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)) : (f x).snd = 0 := by
@@ -210,6 +289,11 @@ private lemma ringHom_ZP_pow_dualNumber_snd_eq_zero {K : Type} [Field K] {p n e 
 
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
+/- English proof (translation)
+Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.constPt _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap`. Use `conv_lhs => rw [← Spec.map_preimage y]`. Use `conv_rhs => rw [← Spec.map_preimage y]`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+
+Use extensionality with `x`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl, ringHom_ZP_pow_dualNumber_snd_eq_zero hn hn0]`.
+-/
 private lemma spec_dualNumber_hom_ZP_eq_constPt {K : Type} [Field K] {p n e : ℕ}
     (hn : n.Coprime p) (hn0 : n ≠ 0)
     (y : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber K) ⟶ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e))) : y = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.constPt y := by
@@ -225,6 +309,25 @@ private lemma spec_dualNumber_hom_ZP_eq_constPt {K : Type} [Field K] {p n e : �
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField in
 open scoped CategoryTheory.Obj TensorProduct in
 
+/- English proof (translation)
+Introduce `n e p k hn hp hnp _ hk`. Substitute `hk` using the available equality. Establish `hN : n ^ e ≠ 0` using `pow_ne_zero _ hn.ne_zero`. Use `haveI : NeZero (n ^ e) := ⟨hN⟩`. Use `haveI := _root_.GlobalTheory.ZM.CycBase.cyc (k := n ^ e)`.
+
+Use `haveI : NumberField (_root_.GlobalTheory.ZM.CycBase.CF (n ^ e)) := IsCyclotomicExtension.numberField {n ^ e} ℚ _`. Establish `hcop : n.Coprime p` using `(Nat.coprime_primes hn hp).mpr hnp`. Use `set F := _root_.GlobalTheory.ZM.CycBase.CF (n ^ e) with hF`. Take `⟨em, har, hcomp⟩` from `_root_.GlobalTheory.ZM.exists_arBase_away (F := F) F.val.toRingHom hn.ne_zero`. Establish `hζ` using `_root_.GlobalTheory.ZM.CycBase.zF_prim hN`.
+
+Establish `hζi` using `hζ.toInteger_isPrimitiveRoot`. Establish `hpos : 0 < n ^ e` using `Nat.pos_of_ne_zero hN`. Set `u : (𝓞 F)ˣ` to `(hζi.isUnit hN).unit`. Set `ζo : (Localization.Away (n : 𝓞 F))ˣ` to `Units.map (algebraMap (𝓞 F) _).toMonoidHom u`. Establish `hkunit : IsUnit ((n ^ e : ℕ) : Localization.Away (n : 𝓞 F))`.
+
+Use `(IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (n : 𝓞 F)) (n : 𝓞 F)).pow e` as an intermediate fact. Simplify using `using this`. Establish `hprim : ∀ (K : Type) [Field K] (β : Localization.Away (n : 𝓞 F) →+* K), IsPrimitiveRoot (β ζo) (n ^ e)`. Introduce `K _ β`. Establish `hroot` using `(hζi.isRoot_cyclotomic hpos).map (f := β.comp (algebraMap (𝓞 F) _))`.
+
+Rewrite `hroot` using `[Polynomial.map_cyclotomic]`. Use `haveI : NeZero ((n ^ e : ℕ) : K) := ⟨by simpa using (hkunit.map β).ne_zero⟩`. Conclude with `Polynomial.isRoot_cyclotomic_iff.mp hroot`. Set `b : _root_.GlobalTheory.ZM.TBase (Localization.Away (n : 𝓞 F)) (n ^ e)` to `⟨ζo, hkunit, hprim⟩`. Establish `hcompx : ∀ a : 𝓞 F, em (algebraMap _ _ a) = ((a : F) : ℂ)` using `fun a => RingHom.congr_fun hcomp a`.
+
+Establish `hmemZ : ∀ x, em x ∈ _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p (n ^ e)`. Introduce `x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (n : 𝓞 F)) x`. Take `⟨m, hm⟩` from `(Submonoid.mem_powers_iff _ _).mp s.2`. Establish `hspec` using `congrArg em (IsLocalization.mk'_spec (Localization.Away (n : 𝓞 F)) a s)`.
+
+Rewrite `hspec` using `[map_mul, hcompx, hcompx, ← hm]`. Establish `hnm : (((((n : 𝓞 F) ^ m : 𝓞 F)) : F) : ℂ) = (n : ℂ) ^ m` using `by simp`. Rewrite `hspec` using `[hnm]`. Establish `hn0 : (n : ℂ) ^ m ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hn.ne_zero)`. Rewrite using `[eq_div_of_mul_eq hn0 hspec, div_eq_mul_inv, ← inv_pow]`.
+
+Conclude with `mul_mem (_root_.GlobalTheory.ZM.CycBase.mem_ZP p n e hn a) (pow_mem (inv_natCast_mem_ZP_of_coprime hcop) m)`. Use `⟨Localization.Away (n : 𝓞 F), inferInstance, b, em, em.codRestrict _ hmemZ, har, ?_, fun x => rfl, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zetaZP`. Express the relevant statement in the definitionally equal form `em (algebraMap (𝓞 F) _ hζ.toInteger) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta (n ^ e)`.
+
+Rewrite using `[hcompx]`. Conclude with `congrArg Subtype.val hζ.coe_toInteger`. Introduce `K _ y`. Conclude with `spec_dualNumber_hom_ZP_eq_constPt hcop hn.ne_zero y`.
+-/
 theorem _root_.GlobalTheory.ZM.CycBase.exists_base : ∀ (n e p k : ℕ), n.Prime → p.Prime → n ≠ p → 1 ≤ e →
     k = n ^ e → ∃ (o : Type) (_ : CommRing o) (b : _root_.GlobalTheory.ZM.TBase o k) (em : o →+* ℂ)
       (j : o →+* _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ZP p k), _root_.GlobalTheory.ZM.ArBase em ∧ j (b.ζ : o) = _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zetaZP p k ∧

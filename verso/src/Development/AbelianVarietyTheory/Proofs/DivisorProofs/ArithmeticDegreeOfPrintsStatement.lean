@@ -7,5 +7,8 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 open scoped ENNReal Classical
 open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions.DV Formalism.MainNotions.WeightThresholdDefs Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.FlagPoly GlobalTheory.FlagAr
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.Mean4O.TieArObj.tieAr_onObj | exact GlobalTheory.Mean4O.TieArObj.tieAr_onObj | (intros; apply GlobalTheory.Mean4O.TieArObj.tieAr_onObj <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.arithmetic_degree_of_known_theorems : Hypotheses2 → HypothesesH → OnObj fun _ _ A _ _ _ => TieAr A := by
   first | exact @GlobalTheory.Mean4O.TieArObj.tieAr_onObj | exact GlobalTheory.Mean4O.TieArObj.tieAr_onObj | (intros; apply GlobalTheory.Mean4O.TieArObj.tieAr_onObj <;> assumption)

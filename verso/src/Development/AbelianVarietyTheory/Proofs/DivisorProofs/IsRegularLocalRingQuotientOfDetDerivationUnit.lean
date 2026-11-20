@@ -6,6 +6,37 @@ open IsLocalRing TensorProduct
 
 namespace GlobalTheory.JacobianDerivation
 
+/- English proof (translation)
+Introduce `T _ _ h f D n _ hf hdet`. Set `A` to `Localization.AtPrime n`. Use `haveI : IsRegularLocalRing A := IsRegularRing.isRegularLocalRing_localization n`. Set `x : Fin h → A` to `fun j => algebraMap T A (f j)`. Establish `hx : ∀ j, x j ∈ maximalIdeal A` using `fun j => (IsLocalization.AtPrime.to_map_mem_maximal_iff A n (f j)).mpr (hf j)`.
+
+Establish `hrow0 : ∀ a : Fin h → A, ∑ j, a j * x j ∈ maximalIdeal A ^ 2 → ∀ i, ∑ j, a j * algebraMap T A (D i (f j)) ∈ maximalIdeal A`. Introduce `a ha i`. Take `⟨D', hD'⟩` from `@GlobalTheory.derivation_extend_localization_atPrime ℤ T A _ _ _ (Ring.toIntAlgebra T) _ (Ring.toIntAlgebra A) (@IsScalarTower.of_algebraMap_eq' ℤ T A _ _ _ (Ring.toIntAlgebra T) _ (Ring.toIntAlgebra A) (Subsingleton.elim _ _)) n _ _ { toFun := fun t => algebraMap T A (D i t) map …`. Use `letI : Algebra ℤ A := Ring.toIntAlgebra A`. Establish `hsq : ∀ y ∈ maximalIdeal A ^ 2, D' y ∈ maximalIdeal A`.
+
+Introduce `y hy`. Rewrite `hy` using `[pow_two]`. Use `Submodule.mul_induction_on hy (fun a ha b hb => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ ha) (Ideal.mul_mem_right _ _ hb)`.
+
+Rewrite using `[map_add]`. Conclude with `Ideal.add_mem _ hy hz`. Establish `h1` using `hsq _ ha`. Rewrite `h1` using `[map_sum]`. Establish `h2 : ∀ j, D' (a j * x j) = a j * algebraMap T A (D i (f j)) + x j * D' (a j)`.
+
+Introduce `j`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul, hD']`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, Finset.sum_add_distrib]`. Establish `h3 : ∑ j, x j * D' (a j) ∈ maximalIdeal A` using `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (hx j)`.
+
+Simplify using `using Ideal.sub_mem _ h1 h3`. Establish `hind : ∀ a : Fin h → A, ∑ j, a j * x j ∈ maximalIdeal A ^ 2 → ∀ j, a j ∈ maximalIdeal A`. Introduce `a ha`. Establish `hrow` using `hrow0 a ha`. Set `φ : T →+* ResidueField A` to `(residue A).comp (algebraMap T A)`.
+
+Set `M : Matrix (Fin h) (Fin h) (ResidueField A)` to `φ.mapMatrix (Matrix.of fun i j => D i (f j))`. Establish `hM : M.det ≠ 0`. Rewrite using `[← RingHom.map_det]`. Introduce `h0`. Establish `hu : IsUnit (algebraMap T A (Matrix.of fun i j => D i (f j)).det)` using `(IsLocalization.AtPrime.isUnit_to_map_iff A n _).mpr hdet`.
+
+Conclude with `(residue_ne_zero_iff_isUnit _).mpr hu h0`. Establish `hv : M.mulVec (fun j => residue A (a j)) = 0`. Use function extensionality and compare the values at `i`. Use `(residue_eq_zero_iff _).mpr (hrow i)` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+
+Simplify using `only [Matrix.mulVec, dotProduct, M, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Pi.zero_apply, φ, RingHom.comp_apply]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`. Introduce `j`.
+
+Use `congrFun (Matrix.eq_zero_of_mulVec_eq_zero hM hv) j` as an intermediate fact. Conclude with `(residue_eq_zero_iff _).mp this`. Set `τ : Fin h → maximalIdeal A` to `fun i => ⟨x i, hx i⟩`. Establish `hτ : LinearIndependent (ResidueField A) (fun i => (maximalIdeal A).toCotangent (τ i))`. Rewrite using `[Fintype.linearIndependent_iff]`.
+
+Introduce `g hg i`. Use `choose a ha using fun j => residue_surjective (g j)`. Establish `h1 : (maximalIdeal A).toCotangent (∑ j, a j • τ j) = 0`. Rewrite using `[map_sum, ← hg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[map_smul, ← ha j]`. Both sides reduce to the same expression. Rewrite `h1` using `[Ideal.toCotangent_eq_zero]`. Establish `h2 : ∑ j, a j * x j ∈ maximalIdeal A ^ 2`. Simplify `h1` using `[τ]`.
+
+Rewrite using `[← ha i]`. Conclude with `(residue_eq_zero_iff _).mpr (hind a h2 i)`. Take `⟨J, _, t, hs, hd⟩` from `GlobalTheory.RegularQuotient.exists_extend A τ hτ`. Establish `hrange : (Set.range fun i => ((τ i : maximalIdeal A) : A)) = Set.range x` using `rfl`. Rewrite `hs` using `[hrange]`.
+
+Take `⟨hreg, -⟩` from `GlobalTheory.RegularQuotient.quot_regular A t x hs hd`. Establish `hmap : (Ideal.span (Set.range f)).map (algebraMap T A) = Ideal.span (Set.range x)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Use `show IsRegularLocalRing (A ⧸ (Ideal.span (Set.range f)).map (algebraMap T A))`.
+
+Rewrite using `[hmap]`. Conclude with `hreg`.
+-/
 theorem isRegularLocalRing_quotient : ∀ (T : Type) [CommRing T] [IsRegularRing T] (h : ℕ) (f : Fin h → T)
     (D : Fin h → Derivation ℤ T T) (n : Ideal T) [n.IsPrime], (∀ j, f j ∈ n) →
     (Matrix.of fun i j => D i (f j)).det ∉ n →

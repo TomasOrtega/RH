@@ -9,6 +9,11 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.IsIntegralOfLocaliza
 noncomputable section
 open CategoryTheory Limits AlgebraicGeometry IsLocalRing GlobalTheory.EtC UpperTheory.Et LateralTheory.E.t_E2Cut LateralTheory.E.LineOneCut LateralTheory.E.StandardEtaleChartsMultivariableHensel
 
+/- English proof (translation)
+Introduce `p hp hd`. Take `⟨a, ha⟩` from `h (p.map (e.symm : S →+* R)) (hp.map _) (by rwa [Polynomial.natDegree_map_eq_of_injective e.symm.injective])`. Use `⟨e a, ?_⟩` and prove the remaining obligations. Establish `hp' : p = (p.map (e.symm : S →+* R)).map (e : R →+* S)`. Rewrite using `[Polynomial.map_map]`.
+
+Use extensionality with `n`. Simplify using the standard rewrite rules. Rewrite using `[hp', Polynomial.eval_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (e : R →+* S) ((e : R →+* S) a) _ = 0`. Rewrite using `[Polynomial.eval₂_at_apply, ha, map_zero]`.
+-/
 private lemma aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S) (h : AIC R) : AIC S := by
   intro p hp hd
   obtain ⟨a, ha⟩ := h (p.map (e.symm : S →+* R)) (hp.map _)
@@ -22,6 +27,9 @@ private lemma aic_of_equiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S
   change Polynomial.eval₂ (e : R →+* S) ((e : R →+* S) a) _ = 0
   rw [Polynomial.eval₂_at_apply, ha, map_zero]
 
+/- English proof (translation)
+Establish `hA : IsAffineOpen (ι ''ᵁ ⊤)` using `(isAffineOpen_top U).image_of_isOpenImmersion ι`. Establish `hN : ((ι ''ᵁ ⊤ : Z.Opens) : Set Z).Nonempty`. Take `⟨x⟩` from `‹Nonempty U›`. Conclude with `⟨ι x, x, trivial, rfl⟩`. Conclude with `aic_of_equiv (ι.appIso ⊤).commRingCatIsoToRingEquiv (hZ.2 _ hA hN)`.
+-/
 private lemma aic_chart {Z U : Scheme.{0}} (hZ : AICSch Z) (ι : U ⟶ Z) [IsOpenImmersion ι] [IsAffine U] [Nonempty U] :
     AIC Γ(U, ⊤) := by
   have hA : IsAffineOpen (ι ''ᵁ ⊤) := (isAffineOpen_top U).image_of_isOpenImmersion ι
@@ -30,6 +38,11 @@ private lemma aic_chart {Z U : Scheme.{0}} (hZ : AICSch Z) (ι : U ⟶ Z) [IsOpe
     exact ⟨ι x, x, trivial, rfl⟩
   exact aic_of_equiv (ι.appIso ⊤).commRingCatIsoToRingEquiv (hZ.2 _ hA hN)
 
+/- English proof (translation)
+Establish `h1 : Set.range a = Set.range (pullback.fst ι₁ ι₂)`. Rewrite using `[← sq.isoPullback_hom_fst, Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Set.range_eq_univ.mpr sq.isoPullback.hom.surjective, Set.image_univ]`. Rewrite using `[h1, Scheme.Pullback.range_fst, r2, Scheme.basicOpen_appLE, hb]`. Use extensionality with `x`. Establish `hx : x ∈ (ι₁ ≫ g) ⁻¹ᵁ O` using `h trivial`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `hx'`. Conclude with `⟨trivial, hx, hx'⟩`. Introduce and unpack `⟨-, -, hx'⟩`. Conclude with `hx'`.
+-/
 private lemma range_fst_eq {P Z U V : Scheme.{0}} (g : Z ⟶ P) (O O' : P.Opens) (τ : Γ(P, O))
     (hb : P.basicOpen τ = O ⊓ O') (ι₁ : U ⟶ Z) (ι₂ : V ⟶ Z)
     (r2 : Set.range ι₂ = (g ⁻¹ᵁ O' : Set Z)) (h : (⊤ : U.Opens) ≤ (ι₁ ≫ g) ⁻¹ᵁ O) {W : Scheme.{0}} (a : W ⟶ U) (b : W ⟶ V)
@@ -47,6 +60,9 @@ private lemma range_fst_eq {P Z U V : Scheme.{0}} (g : Z ⟶ P) (O O' : P.Opens)
   · rintro ⟨-, -, hx'⟩
     exact hx'
 
+/- English proof (translation)
+Substitute `e` using the available equality. Rewrite using `[← Scheme.Hom.appLE_comp_appLE f g O ⊤ ⊤ h le_top]`. Use `congr 1`. Simplify using `[Scheme.Hom.appLE, Scheme.Hom.appTop]`. Conclude with `(Category.comp_id _).symm`.
+-/
 private lemma top_appLE {X Y P : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ P) (w : X ⟶ P) (e : f ≫ g = w) (O : P.Opens)
     (h : (⊤ : Y.Opens) ≤ g ⁻¹ᵁ O) (k : (⊤ : X.Opens) ≤ w ⁻¹ᵁ O) : g.appLE O ⊤ h ≫ f.appTop = w.appLE O ⊤ k := by
   subst e
@@ -55,6 +71,13 @@ private lemma top_appLE {X Y P : Scheme.{0}} (f : X ⟶ Y) (g : Y ⟶ P) (w : X 
   simp [Scheme.Hom.appLE, Scheme.Hom.appTop]
   exact (Category.comp_id _).symm
 
+/- English proof (translation)
+Establish `k₁ : (⊤ : W.Opens) ≤ (a ≫ g₁) ⁻¹ᵁ O` using `fun x _ => h₁ (show a x ∈ (⊤ : U.Opens) from trivial)`. Establish `k₂ : (⊤ : W.Opens) ≤ (a ≫ g₁) ⁻¹ᵁ O'`. Rewrite using `[e]`. Conclude with `fun x _ => h₂ (show b x ∈ (⊤ : V.Opens) from trivial)`. Establish `k₃ : (⊤ : W.Opens) ≤ (a ≫ g₁) ⁻¹ᵁ (O ⊓ O')` using `fun x hx => ⟨k₁ hx, k₂ hx⟩`.
+
+Establish `e₁` using `top_appLE a g₁ (a ≫ g₁) rfl O h₁ k₁`. Establish `e₂` using `top_appLE b g₂ (a ≫ g₁) e.symm O' h₂ k₂`. Establish `l₁ : P.presheaf.map (homOfLE (inf_le_left : O ⊓ O' ≤ O)).op ≫ (a ≫ g₁).appLE (O ⊓ O') ⊤ k₃ = (a ≫ g₁).appLE O ⊤ k₁` using `Scheme.Hom.map_appLE _ _ _`. Establish `l₂ : P.presheaf.map (homOfLE (inf_le_right : O ⊓ O' ≤ O')).op ≫ (a ≫ g₁).appLE (O ⊓ O') ⊤ k₃ = (a ≫ g₁).appLE O' ⊤ k₂` using `Scheme.Hom.map_appLE _ _ _`. Express the relevant statement in the definitionally equal form `(g₁.appLE O ⊤ h₁ ≫ a.appTop).hom τ * (g₂.appLE O' ⊤ h₂ ≫ b.appTop).hom σ = 1`.
+
+Rewrite using `[e₁, e₂, ← l₁, ← l₂]`. Express the relevant statement in the definitionally equal form `((a ≫ g₁).appLE (O ⊓ O') ⊤ k₃).hom (P.presheaf.map (homOfLE (inf_le_left : O ⊓ O' ≤ O)).op |>.hom τ) * ((a ≫ g₁).appLE (O ⊓ O') ⊤ k₃).hom (P.presheaf.map (homOfLE (inf_le_right : O ⊓ O' ≤ O')).op |>.hom σ) = 1`. Rewrite using `[← map_mul, hts, map_one]`.
+-/
 private lemma ts_eq {P W U V : Scheme.{0}} (O O' : P.Opens) (τ : Γ(P, O)) (σ : Γ(P, O'))
     (hts : P.presheaf.map (homOfLE (inf_le_left : O ⊓ O' ≤ O)).op τ * P.presheaf.map (homOfLE (inf_le_right : O ⊓ O' ≤ O')).op σ = 1)
     (g₁ : U ⟶ P) (g₂ : V ⟶ P) (h₁ : (⊤ : U.Opens) ≤ g₁ ⁻¹ᵁ O) (h₂ : (⊤ : V.Opens) ≤ g₂ ⁻¹ᵁ O')
@@ -77,6 +100,11 @@ private lemma ts_eq {P W U V : Scheme.{0}} (O O' : P.Opens) (τ : Γ(P, O)) (σ 
     ((a ≫ g₁).appLE (O ⊓ O') ⊤ k₃).hom (P.presheaf.map (homOfLE (inf_le_right : O ⊓ O' ≤ O')).op |>.hom σ) = 1
   rw [← map_mul, hts, map_one]
 
+/- English proof (translation)
+Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨k, hk⟩` from `ker y hy`. Establish `ht0 : t ≠ 0`. Introduce and unpack `rfl`.
+
+Simplify using `at ht`. Conclude with `(mul_eq_zero.mp hk).resolve_left (pow_ne_zero _ ht0)`.
+-/
 private lemma inj_of {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [Nontrivial S] (φ : R →+* S) (t : R)
     (ht : IsUnit (φ t)) (ker : ∀ y, φ y = 0 → ∃ k : ℕ, t ^ k * y = 0) : Function.Injective φ := by
   rw [injective_iff_map_eq_zero]
@@ -87,6 +115,23 @@ private lemma inj_of {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [Nontri
     simp at ht
   exact (mul_eq_zero.mp hk).resolve_left (pow_ne_zero _ ht0)
 
+/- English proof (translation)
+Introduce `A _ Z U V p hZ ι₁ ι₂ _ _ _ _ hstd`. Take `⟨L, u, l, f, hu, -, hf, rfl, r1, r2⟩` from `hstd`. Take `⟨τ, σ, a0, a1, gτ, gσ, bτ, bσ, hts⟩` from `UpperTheory.projectiveLine_std_opens_basicOpen_generators`. Establish `h1 : (⊤ : U.Opens) ≤ (ι₁ ≫ u ≫ f) ⁻¹ᵁ stdOpen 0`. Introduce `x _`.
+
+Establish `m : ι₁ x ∈ ((u ≫ f) ⁻¹ᵁ stdOpen 0 : Set Z)` using `r1 ▸ ⟨x, rfl⟩`. Conclude with `m`. Establish `h2 : (⊤ : V.Opens) ≤ (ι₂ ≫ u ≫ f) ⁻¹ᵁ stdOpen 1`. Introduce `x _`. Establish `m : ι₂ x ∈ ((u ≫ f) ⁻¹ᵁ stdOpen 1 : Set Z)` using `r2 ▸ ⟨x, rfl⟩`.
+
+Conclude with `m`. Establish `sq : IsPullback (pullback.fst ι₁ ι₂) (pullback.snd ι₁ ι₂) ι₁ ι₂` using `IsPullback.of_hasPullback ι₁ ι₂`. Establish `ra` using `range_fst_eq (u ≫ f) _ _ τ bτ ι₁ ι₂ r2 h1 _ _ sq`. Establish `rb` using `range_fst_eq (u ≫ f) (stdOpen 1) (stdOpen 0) σ (bσ.trans (inf_comm _ _)) ι₂ ι₁ r1 h2 _ _ sq.flip`. Take `⟨aff, locA, kerA⟩` from `UpperTheory.isAffine_isLocalizationAway_of_range_eq_basicOpen (pullback.fst ι₁ ι₂) _ ra`.
+
+Take `⟨-, locB, kerB⟩` from `UpperTheory.isAffine_isLocalizationAway_of_range_eq_basicOpen (pullback.snd ι₁ ι₂) _ rb`. Use `⟨aff, fun hne => ?_⟩` and prove the remaining obligations. Use `letI : Algebra A Γ(pullback ι₁ ι₂, ⊤) := (((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (pullback.fst ι₁ ι₂ ≫ ι₁ ≫ u ≫ l).appTop).hom).toAlgebra`. Use `haveI : IsIntegral Z := hZ.1`. Use `haveI : Nonempty U := ⟨pullback.fst ι₁ ι₂ hne.some⟩`.
+
+Use `haveI : Nonempty V := ⟨pullback.snd ι₁ ι₂ hne.some⟩`. Use `haveI : IsIntegral U := isIntegral_of_isOpenImmersion ι₁`. Use `haveI : IsIntegral V := isIntegral_of_isOpenImmersion ι₂`. Use `haveI : IsIntegral (pullback ι₁ ι₂) := isIntegral_of_isOpenImmersion (pullback.fst ι₁ ι₂ ≫ ι₁)`. Establish `ts` using `ts_eq (stdOpen 0) (stdOpen 1) τ σ hts _ _ h1 h2 (pullback.fst ι₁ ι₂) (pullback.snd ι₁ ι₂) (by rw [pullback.condition_assoc])`.
+
+Establish `injA` using `inj_of _ _ (IsUnit.of_mul_eq_one _ ts) kerA`. Establish `injB` using `inj_of _ _ (IsUnit.of_mul_eq_one _ ((mul_comm _ _).trans ts)) kerB`. Use `⟨inferInstance, injA, injB, ?_⟩` and prove the remaining obligations. Conclude with `UpperTheory.isIntegral_of_localization_cover_unit_product _ _ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (ι₁ ≫ u ≫ l).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (ι₂ ≫ u ≫ l).appTop).hom (by show _ = ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (pullback.fst ι₁ ι₂ ≫ ι …`. Rewrite using `[Scheme.Hom.comp_appTop (pullback.fst ι₁ ι₂)]`.
+
+Use the proof step `rfl)`. Use the proof step `(by show _ = ((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (pullback.fst ι₁ ι₂ ≫ ι₁ ≫ u ≫ l).appTop).hom`. Rewrite using `[pullback.condition_assoc, Scheme.Hom.comp_appTop (pullback.snd ι₁ ι₂)]`. Use the proof step `rfl)`. Use `injA injB _ _ ts locA locB (UpperTheory.isIntegral_sections_of_integralHom_over_affine_chart A u l f hu hf _ a0 τ gτ ι₁ r1 h1) (UpperTheory.isIntegral_sections_of_integralHom_over_affine_chart A u l f hu hf _ a1 σ gσ ι₂ r2 h2)`.
+
+Use the proof step `(aic_chart hZ ι₁) (aic_chart hZ ι₂)`.
+-/
 theorem UpperTheory.isAffine_isDomain_pullback_standard_opens :
     ∀ (A : Type) [CommRing A] {Z U V : Scheme.{0}} (p : Z ⟶ Spec (CommRingCat.of A)), AICSch Z → ∀ (ι₁ : U ⟶ Z) (ι₂ : V ⟶ Z) [IsOpenImmersion ι₁] [IsOpenImmersion ι₂] [IsAffine U] [IsAffine V],
       StdPair p ι₁ ι₂ → IsAffine (pullback ι₁ ι₂) ∧ (Nonempty ↥(pullback ι₁ ι₂) →

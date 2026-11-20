@@ -30,6 +30,9 @@ structure TiedDataSK (ex : Extra D L hT Gi Gl K Y cX) extends toTiedDataS : Link
 
 def LinkedFamilyKernelCondition (ex : Extra D L hT Gi Gl K Y cX) : Prop := Nonempty (TiedDataSK ex)
 
+/- English proof (translation)
+Rewrite using `[T.ker_frm]`. Use `congr 2`. Simplify using `only [Forms.twYS, Equiv.trans_apply]`. Rewrite using `[T.tw.chM.eY u i hi, Equiv.symm_apply_apply]`.
+-/
 theorem TiedDataSK.kernel_frame_at_infinity {ex : Extra D L hT Gi Gl K Y cX} (T : TiedDataSK ex) (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m)
     (y : (D.mem u).C.Y i) (τ : D.what₂.Tau) :
     (T.ker.O u D.what₂.mu0).frm i (Herm.yCast D u i y) τ =
@@ -39,6 +42,9 @@ theorem TiedDataSK.kernel_frame_at_infinity {ex : Extra D L hT Gi Gl K Y cX} (T 
   simp only [Forms.twYS, Equiv.trans_apply]
   rw [T.tw.chM.eY u i hi, Equiv.symm_apply_apply]
 
+/- English proof (translation)
+Rewrite using `[(T.ker.O u μ).frm_de i hi y τ, T.ker_frm u μ i hi y τ, Matrix.det_mul]`. Use `congr 1`. Simplify using `only [Forms.atInf]`. Conclude with `(RingHom.map_det _ _).symm`.
+-/
 theorem TiedDataSK.ker_de {ex : Extra D L hT Gi Gl K Y cX} (T : TiedDataSK ex) (u : D.what₂.Word) (μ : D.what₂.Tup) (i : ℕ)
     (hi : i ≤ D.R.m) (y : (D.chTw u μ).Y i) (τ : D.what₂.Tau) :
     (D.chTw u μ).de i y τ = Forms.embT D τ (T.crd u i hi).1.det * ((Forms.twYS T.tw.ch T.cols.forms u μ i hi y).1 τ).det := by
@@ -52,6 +58,9 @@ end
 def LinkedFamiliesKernelFrame : FamClass := fun {_} Fm =>
   ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x), x0 ≤ x → ∀ i : Fm.Ix x, LinkedFamilyKernelCondition (Fm.ex x hx i)
 
+/- English proof (translation)
+Take `⟨x0, h⟩` from `h`. Conclude with `⟨x0, fun x hx hx0 i => let ⟨T⟩ := h x hx hx0 i; ⟨T.toTiedDataS⟩⟩`.
+-/
 theorem LinkedFamiliesKernelFrame.c2s {eps : ℝ} {Fm : FamP eps} (h : LinkedFamiliesKernelFrame Fm) : LinkedFamiliesLevelClass Fm := by
   obtain ⟨x0, h⟩ := h
   exact ⟨x0, fun x hx hx0 i => let ⟨T⟩ := h x hx hx0 i; ⟨T.toTiedDataS⟩⟩

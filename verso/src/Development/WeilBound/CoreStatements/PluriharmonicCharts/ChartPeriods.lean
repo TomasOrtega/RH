@@ -19,6 +19,13 @@ namespace PositivityTheory.Xgp.c_bm_exists_period
 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
+/- English proof (translation)
+Take `⟨v₁, hv₁, -⟩` from `(FU.ex_diff i P hP).1 (PullbackSections.ExpRows.tyD ty a w)`. Establish `h1` using `PullbackSections.ExpRows.isDerivAt0_comp_lin (PullbackSections.anHol FU i P hP) (PullbackSections.ExpRows.tyD ty a) hv₁`. Establish `h2` using `PullbackSections.ExpRows.isDerivAt0_comp_hom hv (Xo.univ.t.act.act a).left`. Establish `hfun : (fun z => (FU.ex i P z).left ≫ (Xo.univ.t.act.act a).left) = fun z => (FU.ex i P (PullbackSections.ExpRows.tyD ty a z)).left` using `funext fun z => by`. Rewrite using `[PullbackSections.ExpRows.tyD_apply, FU.ex_lin i P hP a z]`.
+
+Both sides reduce to the same expression. Rewrite `h2` using `[hfun]`. Establish `h3` using `PullbackSections.ExpRows.isDerivAt0_unique h1 h2`. Establish `h4` using `PullbackSections.ExpRows.isDerivAt0_smul hv cc`. Rewrite `h4` using `[← h, ← h3]`.
+
+Conclude with `congrFun (((FU.ex_diff i P hP).2 v₁ hv₁.1).unique hv₁ h4) j`.
+-/
 theorem eig_coords {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty)
     (i : Fin FU.n) {P : (FU.Di i).La →+ (Fin g → ℂ)} (hP : IsPeriod (FU.Di i) ty P) {w : Fin g → ℂ}
     {v : Sp (DualNumber ℂ) ⟶ Xo.univ.t.G.left} (hv : IsDerivAt0 (fun z => (FU.ex i P z).left) w v) (a : 𝓞 E) (cc : ℂ)
@@ -36,6 +43,31 @@ theorem eig_coords {Xo : Moduli D l} {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g
   rw [← h, ← h3] at h4
   exact congrFun (((FU.ex_diff i P hP).2 v₁ hv₁.1).unique hv₁ h4) j
 
+/- English proof (translation)
+Establish `hpu : ∀ ρ : ℝ, punct n 0 ρ = Metric.ball 0 ρ` using `fun ρ => by ext z; simp [punct]`. Take `⟨ρ, hρ0, hρB, ⟨e⟩⟩` from `GlobalTheory.T.exists_family_exponential_locally C.R C.t.G C.g n C.M (Metric.ball 0 1) C.ψ C.t.semi.smooth C.hol 0 (Metric.mem_ball_self one_pos)`. Establish `hy : IsHolTo (Metric.ball 0 ρ) fun u => C.pt u ≫ C.k` using `GlobalTheory.LocLift.isHolTo_comp_hom (Marking.isHolTo_mono' (Marking.isHolTo_pt C) (by rw [hpu]; exact hρB) Metric.isOpen_ball) C.k`. Take `⟨B', i, P₀, hB, h0, hsubB, hP, hu⟩` from `FU.lift n (Metric.ball 0 ρ) _ Metric.isOpen_ball (fun b hb => by rw [Category.assoc]; exact (C.pt_eq b (by rw [hpu]; exact hρB hb)).2) hy 0 (Metric.mem_ball_self hρ0)`. Establish `hsub1 : B' ⊆ punct n 0 1` using `by rw [hpu]; exact hsubB.trans hρB`.
+
+Take `⟨r, Wt, hr⟩` from `Marking.exists_family C FU i P₀ hsub1 hP hu ((1 : Over.mk (C.pt 0) ⟶ C.tV.G).left)`. Establish `hol` using `Marking.family_hol C FU i P₀ hB hsub1 hP Wt (fun b hb x => ⟨((hr b hb).2.2.2.1 x).1, ((hr b hb).2.2.2.1 x).2.1⟩)`. Establish `holr : IsHolTo (B' ×ˢ Set.univ) (fun bz : (Fin n → ℂ) × (Fin g → ℂ) => (r bz.1 bz.2).left)` using `GlobalTheory.FiniteOrderConst.isHolTo_of_eqOn (GlobalTheory.HolFibre.isHolTo_comp hol C.m₁.φ) fun bz hb => (((hr _ hb.1).2.2.2.1 _).2.2).symm`. Take `⟨hl, hlhol, hl2⟩` from `exists_linear_lift_of_additive_family C.R C.t.G C.g n C.M (Metric.ball 0 ρ) C.ψ e g B' r hB hsubB (fun b hb => (hr b hb).1) holr`. Establish `hbij : ∀ z ∈ B', Function.Bijective (hl z)`.
+
+Introduce `z hz`. Take `⟨hadd, hons, hker, -, -⟩` from `hr z hz`. Take `⟨δ, hδ, hiso⟩` from `Marking.isolated_of_isPeriod _ (hP.1 z hz)`. Use `Marking.bijective_of_exp (e.ex z) (r z) (hl z) (e.add z (hsubB hz)) (hl2 z hz).1 hons ⟨δ, hδ, fun x hx h1 => hiso x hx ((hker x).1 h1)⟩ ?_` and prove the remaining obligations. Take `⟨W, hW, hzW, ρ', hρ', hinj⟩` from `ExpLift.ex_inj_near e (hsubB hz)`.
+
+Use `⟨ρ', hρ', fun y hy h1 => hinj z hzW y (mem_ball_zero_iff.2 hy) 0 (Metric.mem_ball_self hρ') ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ExpLift.ex_zero e (hsubB hz)]`. Establish `hg : g = C.g` using `by simpa using (LinearEquiv.ofBijective (hl 0) (hbij 0 h0)).finrank_eq`. Substitute `hg` using the available equality. Set `hm : (Fin n → ℂ) → Matrix (Fin C.g) (Fin C.g) ℂ` to `fun z => LinearMap.toMatrix' (hl z)`.
+
+Establish `hmh : HolM B' hm` using `fun a b => differentiableOn_pi.1 (hlhol (Pi.single b 1)) a`. Establish `hmv : ∀ z y, hm z *ᵥ y = hl z y` using `fun z y => LinearMap.toMatrix'_mulVec _ _`. Establish `hmd : ∀ z ∈ B', (hm z).det ≠ 0` using `fun z hz h => by`. Take `⟨y, hy0, hy⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Conclude with `hy0 ((hbij z hz).1 (by rw [← hmv, hy, map_zero]))`.
+
+Set `W : A → (Fin n → ℂ) → Fin C.g → ℂ` to `fun a z => (hm z)⁻¹ *ᵥ fun e => C.ψ z (x a e)`. Establish `hW : ∀ z ∈ B', ∀ a, hl z (W a z) = fun e => C.ψ z (x a e)` using `fun z hz a => by`. Rewrite using `[← hmv, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (IsUnit.mk0 _ (hmd z hz)), Matrix.one_mulVec]`. Use `choose! G hG using fun z (hz : z ∈ B') => (hP.1 z hz).2.2.2.2`. Use `⟨i, B', P₀, W, G, hB, h0, hsubB.trans hρB, hP, fun a => differentiableOn_pi.2 fun j => ?_, fun z hz => ⟨hu z hz, hG z hz, ?_, fun a t cc hc => ?_⟩⟩` and prove the remaining obligations.
+
+Simplify using `only [W, Matrix.mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun k _ => (hmh.inv hmd j k).mul ((C.hol.2 _).mono (hsubB.trans hρB))`. Take `⟨-, -, -, hWz, -⟩` from `hr z hz`. Set `hh : (Fin C.g → ℂ) ≃ₗ[ℂ] (Fin C.g → ℂ)` to `LinearEquiv.ofBijective (hl z) (hbij z hz)`. Take `⟨Hm, -, hf⟩` from `Marking.herm_transport (G z) hh (hG z hz).1`.
+
+Use `⟨Hm, Marking.isRiem_of_period C FU e i (hsubB hz) (hsub1 hz) (P₀ z) (hP.1 z hz) (hu z hz) (r z) (Wt z) (fun x => ⟨(hWz x).2.1, (hWz x).2.2⟩) hh (hl2 z hz).2.2 (G z) Hm (hG z hz).1 (hG z hz).2.2 hf, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, ← hW z hz, ← hW z hz]`. Both sides reduce to the same expression. Take `⟨-, -, -, hWz, -⟩` from `hr z hz`. Establish `hD : IsDerivAt0 (fun x => (r z x).left) (W a z) (spMap (dualMap (C.ψ z)) ≫ (C.M.pt (x a)).left)`.
+
+Rewrite using `[(hl2 z hz).2.2, hW z hz]`. Conclude with `Marking.isDerivAt0_frame e (hsubB hz) (x a)`. Use `haveI := C.j_open`. Use `haveI : IsOpenImmersion C.m₁.φ := MorphismProperty.of_isPullback C.m₁.cart.1.flip ‹IsOpenImmersion C.j›`. Take `⟨v', hv1, hv2⟩` from `Marking.deriv_of_open C.m₁.φ (Wt z) (W a z) _ (by`.
+
+Establish `: (fun x => Wt z x ≫ C.m₁.φ) = fun x => (r z x).left` using `funext fun x => (hWz x).2.2`. Rewrite using `[this]`. Conclude with `hD)`. Establish `h1` using `PullbackSections.ExpRows.isDerivAt0_comp_hom hv2 C.m₂.φ`. Establish `h2 : (fun x => Wt z x ≫ C.m₂.φ) = fun x => (FU.ex i (P₀ z) x).left` using `funext fun x => (hWz x).2.1`.
+
+Rewrite `h1` using `[h2]`. Establish `h3 : v' ≫ (C.tV.act.act t).left = spMap (Tor.epsMul cc) ≫ v'`. Rewrite using `[← cancel_mono C.m₁.φ, Category.assoc, Category.assoc, hv1, ← hc, ← hv1, Category.assoc]`. Conclude with `congrArg (v' ≫ ·) (C.m₁.act t)`. Use `eig_coords FU i (hP.1 z hz) h1 t cc ?_` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← h3, Category.assoc, Category.assoc]`. Conclude with `congrArg (v' ≫ ·) (C.m₂.act t).symm`.
+-/
 theorem chart_periods {Xo : Moduli D l} {σ : KA l →+* ℂ} {n : ℕ} (C : BdryChart Xo σ n 0) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo σ ty) {A : Type} (x : A → Fin C.g → C.R) :
     ∃ (i : Fin FU.n) (B : Set (Fin n → ℂ)) (P : (Fin n → ℂ) → ((FU.Di i).La →+ (Fin g → ℂ)))
@@ -119,6 +151,33 @@ theorem chart_periods {Xo : Moduli D l} {σ : KA l →+* ℂ} {n : ℕ} (C : Bdr
     rw [← Category.assoc, ← h3, Category.assoc, Category.assoc]
     exact congrArg (v' ≫ ·) (C.m₂.act t).symm
 
+/- English proof (translation)
+Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Set `fP` to `pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))`. Set `sZ` to `pullback.snd jx fP`. Set `fZ` to `pullback.fst jx fP`. Set `j` to `pullback.fst sZ Y.jQ`.
+
+Set `g` to `pullback.snd sZ Y.jQ`. Use `Y.jQ_open` as an intermediate fact. Establish `hj : IsOpenImmersion j` using `inferInstance`. Set `k : pullback sZ Y.jQ ⟶ Xo.X` to `g ≫ pullback.fst _ _`. Take `⟨tZ, ⟨mZ⟩⟩` from `exists_sab fZ t`.
+
+Take `⟨tU, ⟨mU⟩⟩` from `exists_sab g Y.oF.t`. Take `⟨q₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m mZ`. Take `⟨q₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp Y.m mU`. Establish `e₁ : g ≫ Y.jQ ≫ fP = j ≫ fZ ≫ jx`. Establish `a₁ : j ≫ sZ = g ≫ Y.jQ` using `pullback.condition`.
+
+Establish `a₂ : fZ ≫ jx = sZ ≫ fP` using `pullback.condition`. Rewrite using `[a₂, ← Category.assoc g, ← a₁, Category.assoc]`. Rewrite `q₂` using `[e₁]`. Establish `q₁' : SABMap tZ Y.t (fZ ≫ jx)` using `q₁`. Take `⟨mj, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel q₁' q₂`.
+
+Take `⟨mk, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp Y.m0.toSABMap mU`. Set `p' : (Fin n → ℂ) → (Sp ℂ ⟶ X')` to `fun u => if u ∈ Metric.ball (0 : Fin n → ℂ) 1 then p u else p 0`. Establish `hp'e : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, p' u = p u` using `fun u hu => if_pos hu`. Establish `hp' : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) p'` using `GlobalTheory.LocLift.isHolTo_congr hp hp'e`. Establish `hs' : ∀ u, (p' u ≫ jx) ≫ Y.s = spMap τ ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `fun u => by`.
+
+Establish `: p' u ≫ jx ≫ Y.s = spMap (τ.comp (algebraMap (𝓞 c.F) c.F))`. Distinguish the cases in `hu : u ∈ Metric.ball (0 : Fin n → ℂ) 1`. Rewrite using `[hp'e u hu]`. Conclude with `hs u hu`. Simplify using `only [p', if_neg hu]`.
+
+Simplify `hs 0 h0` using `[h0]`. Rewrite using `[Category.assoc, this]`. Simplify using `[spMap]`. Set `q : (Fin n → ℂ) → (Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F)))` to `fun u => pullback.lift (p' u ≫ jx) (spMap τ) (hs' u)`. Establish `hq : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) q` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.holPair _ _ _ Y.s (spMap (algebraMap (𝓞 c.F) c.F)) n _ _ _ hs' Metric.isOpen_ball (GlobalTheory.LocLift.isHolTo_comp_hom hp' jx) (GlobalTheory.PeriodTests.isHolTo_const Metric.isOpen_ball _)`.
+
+Establish `hc : ∀ u, p' u ≫ jx = q u ≫ fP` using `fun u => (pullback.lift_fst _ _ _).symm`. Set `y : (Fin n → ℂ) → (Sp ℂ ⟶ pullback jx fP)` to `fun u => pullback.lift (p' u) (q u) (hc u)`. Establish `hy : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) y` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.holPair _ _ _ jx fP n _ _ _ hc Metric.isOpen_ball hp' hq`. Establish `hpu : ∀ z ∈ Flat.punct n 0 1, ∃ w : Sp ℂ ⟶ pullback sZ Y.jQ, w ≫ j = y z ∧ w ≫ k ≫ Xo.s = spMap (τ.comp (IntermediateField.inclusion c.le).toRingHom)` using `fun z hz => by`. Establish `hr : Set.range (q z) ⊆ Set.range Y.jQ` using `hpt z hz (q z) ((pullback.lift_fst _ _ _).trans (by rw [hp'e z hz.1]))`.
+
+Set `w₀` to `IsOpenImmersion.lift Y.jQ (q z) hr`. Establish `hw₀ : w₀ ≫ Y.jQ = q z` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hys : y z ≫ sZ = w₀ ≫ Y.jQ` using `(pullback.lift_snd _ _ _).trans hw₀.symm`. Use `⟨pullback.lift (y z) w₀ hys, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations. Establish `h₁ : pullback.lift (y z) w₀ hys ≫ k = w₀ ≫ pullback.fst _ _`.
+
+Simplify using `only [k, g]`. Rewrite using `[pullback.lift_snd_assoc]`. Rewrite using `[← Category.assoc, h₁, Category.assoc, pullback.condition, ← Category.assoc]`. Establish `h₂ : w₀ ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) = spMap τ`. Rewrite using `[← Y.jQ_over, ← Category.assoc, hw₀]`.
+
+Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[h₂]`. Simplify using `[spMap]`. Take `⟨ρ, C, i, e, hρ, hρ1, -, ⟨mi⟩, hej, hek, hψ⟩` from `Flat.exists_bdryChart_of_hol E H D l Xo (τ.comp (IntermediateField.inclusion c.le).toRingHom) _ tZ _ j k tU n 0 y (Nat.zero_le _) hj ⟨mj⟩ ⟨mk⟩ hy hpu`. Take `⟨mh, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mZ mi`.
+
+Use `⟨ρ, C, i ≫ fZ, e ≫ g, hρ, hρ1, ⟨mh⟩, ?_, (Category.assoc _ _ _).trans hek, fun z hz => ?_⟩` and prove the remaining obligations. Establish `e₂ : g ≫ Y.j = j ≫ fZ ≫ jx` using `e₁`. Rewrite using `[Category.assoc, e₂, ← Category.assoc, hej, Category.assoc, Category.assoc]`. Establish `hin : (ρ : ℂ) • z ∈ Metric.ball (0 : Fin n → ℂ) 1`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`.
+
+Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Use polynomial arithmetic with `[norm_nonneg z]`. Rewrite using `[← Category.assoc, hψ z hz, ← hp'e _ hin]`. Conclude with `pullback.lift_fst _ _ _`.
+-/
 theorem exists_chart {Xo : Moduli D l} {c : Coeff l} (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (X' : Scheme.{0})
     (jx : X' ⟶ Y.X) (t : SAB H X') (m : SABMap t Y.t jx) (τ : c.F →+* ℂ) (n : ℕ) (p : (Fin n → ℂ) → (Sp ℂ ⟶ X'))
     (hp : IsHolTo (Metric.ball 0 1) p)

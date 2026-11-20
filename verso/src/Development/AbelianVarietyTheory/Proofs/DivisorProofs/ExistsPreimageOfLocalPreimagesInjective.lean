@@ -7,6 +7,11 @@ open GlobalTheory.Mum
 
 namespace GlobalTheory.Mum
 
+/- English proof (translation)
+Establish `hj : j = (TopologicalSpace.Opens.map a.base).map i` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Establish `e` using `a.naturality i.op`. Use `congrArg (fun f => f.hom y) e` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`.
+
+Conclude with `this.symm`.
+-/
 theorem imgLoc_app_res {X Y : Scheme.{0}} (a : Y ⟶ X) {U U' : X.Opens} (i : U' ⟶ U)
     (j : a ⁻¹ᵁ U' ⟶ a ⁻¹ᵁ U) (y : Γ(X, U)) :
     (Y.presheaf.map j.op).hom ((a.app U).hom y) = (a.app U').hom ((X.presheaf.map i.op).hom y) := by
@@ -17,6 +22,17 @@ theorem imgLoc_app_res {X Y : Scheme.{0}} (a : Y ⟶ X) {U U' : X.Opens} (i : U'
   simp only [CommRingCat.hom_comp, RingHom.comp_apply] at this
   exact this.symm
 
+/- English proof (translation)
+Use `choose y hy using hx`. Establish `hcov : V ≤ ⨆ b, V ⊓ W b`. Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ b (U' : X.Opens) (i : U' ⟶ V ⊓ W b), (a.app U').hom ((X.presheaf.map i.op).hom (y b)) = (Y.presheaf.map (homOfLE (extLI_preimage_mono a (i.le.trans inf_le_left))).op).hom x`. Introduce `b U' i`.
+
+Rewrite using `[← imgLoc_app_res a i (homOfLE (extLI_preimage_mono a i.le)), hy b, extLI_res_res]`. Establish `compat : TopCat.Presheaf.IsCompatible X.sheaf.1 (fun b => V ⊓ W b) y`. Introduce `b c`. Apply `hinj` to reduce the goal to its premises. Conclude with `(key b _ _).trans (key c _ _).symm`.
+
+Take `⟨s, hs, -⟩` from `X.sheaf.existsUnique_gluing' (fun b => V ⊓ W b) V (fun b => homOfLE inf_le_left) hcov y compat`. Establish `hcovY : a ⁻¹ᵁ V ≤ ⨆ b, a ⁻¹ᵁ (V ⊓ W b)`. Introduce `z hz`. Take `⟨b, hb⟩` from `(TopologicalSpace.Opens.mem_iSup).1 (hcov hz)`. Conclude with `(TopologicalSpace.Opens.mem_iSup).2 ⟨b, hb⟩`.
+
+Establish `hs' : ∀ b, (X.presheaf.map (homOfLE inf_le_left : V ⊓ W b ⟶ V).op).hom s = y b` using `hs`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `Y.sheaf.eq_of_locally_eq' (fun b => a ⁻¹ᵁ (V ⊓ W b)) (a ⁻¹ᵁ V) (fun b => homOfLE (extLI_preimage_mono a inf_le_left)) hcovY _ _ (fun b => ?_)` and prove the remaining obligations. Establish `h2` using `imgLoc_app_res a (homOfLE inf_le_left : V ⊓ W b ⟶ V) (homOfLE (extLI_preimage_mono a inf_le_left)) s`. Rewrite `h2` using `[hs' b, hy b]`.
+
+Conclude with `h2`.
+-/
 theorem imgLoc_exists {X Y : Scheme.{0}} (a : Y ⟶ X) (hinj : ∀ U : X.Opens, Function.Injective (a.app U).hom)
     (V : X.Opens) {B : Type} (W : B → X.Opens) (hV : V ≤ ⨆ b, W b) (x : Γ(Y, a ⁻¹ᵁ V))
     (hx : ∀ b, ∃ y : Γ(X, V ⊓ W b), (a.app (V ⊓ W b)).hom y =

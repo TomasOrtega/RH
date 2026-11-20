@@ -58,6 +58,11 @@ section Const
 
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
+/- English proof (translation)
+Establish `ho` using `stdLat_isOrtho K 1`. Establish `hs` using `stdForm_isSymm K 1`. Establish `e` using `hc _ (stdForm K 1) (stdLat K 1) hs (isTotPosDef_of_ortho hK hs ho) (finrank_of_ortho ho) (isLattice_of_ortho ho) (isIntegralLat_of_ortho ho)`. Establish `e'` using `hc' _ (stdForm K 1) (stdLat K 1) hs (isTotPosDef_of_ortho hK hs ho) (finrank_of_ortho ho) (isLattice_of_ortho ho) (isIntegralLat_of_ortho ho)`. Rewrite `e`, `e'` using `[lamG_eq_one_of_ortho hK hF hs ho, mul_one]`.
+
+Rewrite using `[← e, ← e']`.
+-/
 theorem massConst_unique_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {c c' : ℝ}
     (hc : MassConst K F 1 c) (hc' : MassConst K F 1 c') : c = c' := by
   have ho := stdLat_isOrtho K 1
@@ -70,6 +75,13 @@ theorem massConst_unique_one (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   rw [← e, ← e']
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Take `⟨c₁, hc₁, hall⟩` from `massConst_all hermRepUnram liStat hK hF`. Establish `h1 : MassConst K F 1 c₁`. Use `hall 1 le_rfl` as an intermediate fact. Rewrite `this` using `[Finset.Icc_eq_empty (by norm_num), Finset.prod_empty, mul_one]`. Then use the resulting hypothesis. Establish `hex : ∃ c : ℝ, 0 < c ∧ MassConst K F 1 c` using `⟨c₁, hc₁, h1⟩`.
+
+Establish `hone : cOne K F = c₁`. Unfold `cOne`. Rewrite using `[dif_pos hex]`. Conclude with `massConst_unique_one hK hF hex.choose_spec.2 h1`. Unfold `cMass`.
+
+Rewrite using `[hone]`. Conclude with `hall m hm`.
+-/
 theorem massConst_cMass (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (m : ℕ) (hm : 1 ≤ m) :
     MassConst K F m (cMass K F m) := by
   obtain ⟨c₁, hc₁, hall⟩ := massConst_all hermRepUnram liStat hK hF
@@ -88,6 +100,11 @@ theorem massConst_cMass (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF
 end Const
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
+/- English proof (translation)
+Introduce `D u u' hcong F0 what₂ hrows`. Establish `hk : 1 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Establish `hT : 0 < (D.mem u).A.T` using `(D.mem u).A.T_prime.pos`. Take `⟨V0, _, _, _, _, _, h0, L0, hs, hpd, hr, hlat, hint, hmr, hlam⟩` from `hG D u u' hcong F0 what₂ hrows`. Take `⟨hK, hF, -⟩` from `hH D`.
+
+Establish `e` using `massConst_cMass hK hF D.R.k hk V0 h0 L0 hs hpd hr hlat hint`. Rewrite using `[hmr, e, mul_assoc, hlam, hA _ _ _ _ hk hT]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem rowsMass_of_lamGlue (hH : HostDict) (hG : RowsGenus) (hA : LamGlue) : RowsMass := by
   intro D u u' hcong F0 what₂ hrows
   have hk : 1 ≤ D.R.k := by have := D.R.m_add_three_le_k; omega

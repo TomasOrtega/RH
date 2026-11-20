@@ -90,6 +90,9 @@ abbrev IsChartOf (t : SAB H X₀) (x : Sp S ⟶ X₀) {d : ℕ} {κ : Type} (j :
     (u : κ → (Sp (DualNumber S) ⟶ t.G.left)) (c : κ → Fin d → S) : Prop :=
   IsChart t x j GG.F A.act u c
 
+/- English proof (translation)
+Establish `h : jetVec c (Ideal.Quotient.mk _ (MvPolynomial.X i)) = MvPolynomial.aeval (R` using `S) (fun i => c i • (DualNumber.eps : DualNumber S)) (MvPolynomial.X i) := rfl`. Rewrite using `[h, MvPolynomial.aeval_X]`.
+-/
 theorem jetVec_X {σ : Type} (c : σ → S) (i : σ) :
     jetVec c (Ideal.Quotient.mk _ (MvPolynomial.X i)) = c i • (DualNumber.eps : DualNumber S) := by
   have h : jetVec c (Ideal.Quotient.mk _ (MvPolynomial.X i)) =

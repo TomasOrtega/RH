@@ -20,6 +20,11 @@ noncomputable def Bl.ProductIntegralBounds.Bd :
 
 namespace Bl.ProductIntegralBounds
 
+/- English proof (translation)
+Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) ?_` and prove the remaining obligations. Introduce `p _`. Rewrite using `[norm_mul]`.
+
+Conclude with `mul_le_mul (hF _) (hG _) (norm_nonneg _) ha`.
+-/
 private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w}
     {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) (F G : MvPowerSeries τ K)
     (hF : ∀ d, ‖MvPowerSeries.coeff d F‖ ≤ a) (hG : ∀ d, ‖MvPowerSeries.coeff d G‖ ≤ b) :
@@ -32,6 +37,13 @@ private theorem mulBd {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : T
   rw [norm_mul]
   exact mul_le_mul (hF _) (hG _) (norm_nonneg _) ha
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `d`. Rewrite using `[Finset.prod_empty, MvPowerSeries.coeff_one]`. Use `split_ifs`.
+
+Rewrite using `[norm_one]`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`. Consider the case `insert a t hat ih`. Rewrite using `[Finset.prod_insert hat]`.
+
+Establish `h` using `mulBd zero_le_one zero_le_one (X a) (∏ i ∈ t, X i) (hX a (Finset.mem_insert_self a t)) (ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)))`. Introduce `d`. Use `h d` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+-/
 private theorem prodInt {K : Type u} [NormedField K] [IsUltrametricDist K] {τ : Type w} {ι : Type v}
     (X : ι → MvPowerSeries τ K) (s : Finset ι)
     (hX : ∀ i ∈ s, ∀ d, ‖MvPowerSeries.coeff d (X i)‖ ≤ 1) :
@@ -53,6 +65,15 @@ private theorem prodInt {K : Type u} [NormedField K] [IsUltrametricDist K] {τ :
     have := h d
     rwa [one_mul] at this
 
+/- English proof (translation)
+Introduce `K _ _ τ ι C hC X Y s hX hY hXY`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `d`. Rewrite using `[Finset.prod_empty, Finset.prod_empty, sub_self, map_zero, norm_zero]`.
+
+Conclude with `hC`. Consider the case `insert a t hat ih`. Establish `ih'` using `ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)) (fun i hi => hY i (Finset.mem_insert_of_mem hi)) (fun i hi => hXY i (Finset.mem_insert_of_mem hi))`. Rewrite using `[Finset.prod_insert hat, Finset.prod_insert hat]`. Establish `e : X a * ∏ i ∈ t, X i - Y a * ∏ i ∈ t, Y i = X a * (∏ i ∈ t, X i - ∏ i ∈ t, Y i) + (X a - Y a) * ∏ i ∈ t, Y i` using `by ring`.
+
+Rewrite using `[e]`. Establish `h1` using `mulBd zero_le_one hC (X a) _ (hX a (Finset.mem_insert_self a t)) ih'`. Establish `h2` using `mulBd hC zero_le_one (X a - Y a) _ (hXY a (Finset.mem_insert_self a t)) (prodInt Y t (fun i hi => hY i (Finset.mem_insert_of_mem hi)))`. Introduce `d`. Rewrite using `[map_add]`.
+
+Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `h1 d` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `h2 d` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+-/
 theorem goal1 :
   ∀ {K : Type u} [inst : NormedField.{u} K] [IsUltrametricDist.{u} K] {τ : Type w} {ι : Type v} {C : Real},
   LE.le.{0} 0 C →

@@ -13,11 +13,17 @@ variable {K R M : Type} [Group K] [CommRing R] [Ring M] [Module R M] (ρ z : K �
   (hz : ∀ g h, z (g * h) = z g + χ g • (ρ g * z h * ρ g⁻¹))
 
 include h1 c1 hz in
+/- English proof (translation)
+Use `hz 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, inv_one, h1, c1, one_mul, mul_one, one_smul]`. Conclude with `left_eq_add.1 this`.
+-/
 private theorem twisted_cocycle_apply_one : z 1 = 0 := by
   have := hz 1 1
   rw [mul_one, inv_one, h1, c1, one_mul, mul_one, one_smul] at this
   exact left_eq_add.1 this
 
+/- English proof (translation)
+Use `hm g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, hg, one_mul]`. Conclude with `this.symm`.
+-/
 private theorem tw_inv {N : Type} [Monoid N] (ρ : K → N) (h1 : ρ 1 = 1) (hm : ∀ g h, ρ (g * h) = ρ g * ρ h)
     {g : K} (hg : ρ g = 1) : ρ g⁻¹ = 1 := by
   have := hm g g⁻¹
@@ -25,10 +31,18 @@ private theorem tw_inv {N : Type} [Monoid N] (ρ : K → N) (h1 : ρ 1 = 1) (hm 
   exact this.symm
 
 include h1 hm hz in
+/- English proof (translation)
+Rewrite using `[hz, tw_inv ρ h1 hm hg, hg, hc, one_mul, mul_one, one_smul]`.
+-/
 private theorem tw_add {g : K} (hg : ρ g = 1) (hc : χ g = 1) (h : K) : z (g * h) = z g + z h := by
   rw [hz, tw_inv ρ h1 hm hg, hg, hc, one_mul, mul_one, one_smul]
 
 include h1 hm c1 cm hz in
+/- English proof (translation)
+Set `S : Subgroup K` to `{ carrier := {g | ρ g = 1 ∧ χ g = 1 ∧ z g = 0} one_mem' := ⟨h1, c1, twisted_cocycle_apply_one ρ z χ h1 c1 hz⟩ mul_mem' := fun {a b} ha hb => ⟨by rw [hm, ha.1, hb.1, one_mul], by rw [cm, ha.2.1, hb.2.1, one_mul], by rw [tw_add ρ z χ h1 hm hz ha.1 ha.2.1, ha.2.2, hb.2.2, add_zero]⟩ …`. Use `tw_add ρ z χ h1 hm hz ha.1 ha.2.1 a⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, twisted_cocycle_apply_one ρ z χ h1 c1 hz, ha.2.2, zero_add]`. Conclude with `this.symm⟩ }`. Establish `hN : S.Normal` using `⟨fun u hu g => ⟨by`.
+
+Rewrite using `[hm, hm, hu.1, mul_one, ← hm, mul_inv_cancel, h1], by`. Rewrite using `[cm, cm, hu.2.1, mul_one, ← cm, mul_inv_cancel, c1], by`. Rewrite using `[mul_assoc, hz, tw_add ρ z χ h1 hm hz hu.1 hu.2.1, hu.2.2, zero_add, ← hz, mul_inv_cancel, twisted_cocycle_apply_one ρ z χ h1 c1 hz]⟩⟩`. Establish `hO : IsOpen (S : Set K)` using `(cρ {1}).inter ((cχ {1}).inter (cz {0}))`. Conclude with `⟨⟨⟨S, hO⟩, hN⟩, fun g => Iff.rfl⟩`.
+-/
 private theorem tw_U [TopologicalSpace K] (cρ : IsLocallyConstant ρ) (cχ : IsLocallyConstant χ)
     (cz : IsLocallyConstant z) :
     ∃ U : OpenNormalSubgroup K, ∀ g, g ∈ U ↔ ρ g = 1 ∧ χ g = 1 ∧ z g = 0 := by
@@ -51,6 +65,9 @@ private theorem tw_U [TopologicalSpace K] (cρ : IsLocallyConstant ρ) (cχ : Is
 
 end Abs
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`. Establish `: ∀ᶠ g in nhds g0, ∀ i j, f g i j = f g0 i j` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => (h i j).eventually_eq g0`. Use `filter_upwards [this] with g hg`. Conclude with `Matrix.ext hg`.
+-/
 private theorem tw_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → Matrix (Fin n) (Fin n) R)
     (h : ∀ i j, IsLocallyConstant fun g => f g i j) : IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
@@ -60,6 +77,9 @@ private theorem tw_lc {Γ R : Type} [TopologicalSpace Γ] {n : ℕ} (f : Γ → 
   filter_upwards [this] with g hg
   exact Matrix.ext hg
 
+/- English proof (translation)
+Use `haveI : Finite (Γ ⧸ K) := Subgroup.quotient_finite_of_isOpen K hK`. Use `haveI : K.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hc : IsClosed (K.normalCore : Set Γ)` using `Subgroup.normalCore_isClosed K (K.isClosed_of_isOpen hK)`. Establish `ho : IsOpen (K.normalCore : Set Γ)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ hc`. Conclude with `⟨{ toSubgroup := K.normalCore, isOpen' := ho, isNormal' := inferInstance }, Subgroup.normal_le_normalCore.2 hP, K.normalCore_le⟩`.
+-/
 private theorem tw_core {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [CompactSpace Γ]
     (K P : Subgroup Γ) [P.Normal] (hK : IsOpen (K : Set Γ)) (hP : P ≤ K) :
     ∃ U : OpenNormalSubgroup Γ, P ≤ U.toSubgroup ∧ U.toSubgroup ≤ K := by
@@ -70,6 +90,27 @@ private theorem tw_core {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologi
   exact ⟨{ toSubgroup := K.normalCore, isOpen' := ho, isNormal' := inferInstance },
     Subgroup.normal_le_normalCore.2 hP, K.normalCore_le⟩
 
+/- English proof (translation)
+Take `⟨-, -, -, f4, f5⟩` from `(omFacts l O).2 m`. Establish `r1 : y.ρ0 m 1 = 1` using `by show (Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix (mat y.ρ 1) = 1`. Rewrite using `[map_one, map_one]`. Establish `r2 : ∀ g h, y.ρ0 m (g * h) = y.ρ0 m g * y.ρ0 m h` using `fun g h => by show (Ideal.Quotient.mk (maximalIdeal O ^ m)).mapMatrix (mat y.ρ (g * h)) = _`. Rewrite using `[map_mul, map_mul]`.
+
+Both sides reduce to the same expression. Establish `c1 : IsLocallyConstant fun g : G0.G₀ => y.ρ0 m g` using `tw_lc _ fun a b => y.cont a b m`. Establish `e1 : epsm O G0 m ((1 : G0.G₀) : G0.Γ) = 1` using `by simp [epsm]`. Establish `em : ∀ g h : G0.G₀, epsm O G0 m ((g * h : G0.G₀) : G0.Γ) = epsm O G0 m g * epsm O G0 m h`. Introduce `g h`.
+
+Simplify using `[epsm]`. Establish `c2 : IsLocallyConstant fun g : G0.G₀ => epsm O G0 m g`. Establish `hc : Continuous fun g : G0.G₀ => ((G0.ε g : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (G0.ε_cont.comp continuous_subtype_val)`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g0`.
+
+Establish `ho : IsOpen {a : ℤ_[l] | PadicInt.toZModPow m a = 1}`. Establish `: {a : ℤ_[l] | PadicInt.toZModPow m a = 1} = Metric.closedBall 1 ((l : ℝ) ^ (-(m : ℤ)))`. Use extensionality with `a`. Rewrite using `[Set.mem_setOf_eq, Metric.mem_closedBall, dist_eq_norm, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`. Rewrite using `[this]`.
+
+Conclude with `IsUltrametricDist.isOpen_closedBall _ (zpow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Establish `h1` using `(ho.preimage (hc.comp (continuous_mul_right g0⁻¹))).mem_nhds (x := g0) (by show PadicInt.toZModPow m ((G0.ε ((g0 * g0⁻¹ : G0.G₀) : G0.Γ) : ℤ_[l]ˣ) : ℤ_[l]) = 1`. Rewrite using `[mul_inv_cancel, OneMemClass.coe_one, map_one, Units.val_one, map_one])`. Use `filter_upwards [h1] with g hg`. Establish `h2 : epsm O G0 m ((g * g0⁻¹ : G0.G₀) : G0.Γ) = 1` using `f4 _ hg`.
+
+Establish `h3` using `em (g * g0⁻¹) g0`. Rewrite `h3` using `[inv_mul_cancel_right, h2, one_mul]`. Conclude with `h3`. Take `⟨U, hU⟩` from `tw_U (K := G0.G₀) (fun g => y.ρ0 m g) z (fun g => epsm O G0 m g) r1 r2 e1 em hz c1 c2 cz`. Use `haveI := T.H.isNormal'`.
+
+Take `⟨hn, -, hle, -⟩` from `pl_props l G0.Γ T.H.toSubgroup T.H.toOpenSubgroup.isOpen`. Establish `hsub : ∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → g ∈ U` using `fun g hg => by`. Take `⟨a1, a2, a3⟩` from `plKill l L G0 T O n y m G0 (Glob.Hom.refl G0) hPL z cz hz g hg`. Conclude with `(hU g).2 ⟨a2, a3, a1⟩`. Take `⟨V, v1, v2⟩` from `tw_core (U.toSubgroup.map G0.η.ker.subtype) (PL l T.H.toSubgroup) (G0.η_open.isOpenMap_subtype_val _ U.toOpenSubgroup.isOpen) fun a ha => ⟨⟨a, T.H_η a (hle ha)⟩, hsub _ ha, rfl⟩`.
+
+Use `filter_upwards [T.ph_lim V j v1] with N hN`. Take `⟨u, hu, e⟩` from `v2 hN`. Take `⟨u1, u2, u3⟩` from `(hU u).1 hu`. Establish `e' : (T.h N).p₀ (T.ph N j) = u * T.sg j` using `Subtype.ext (eq_mul_inv_iff_mul_eq.1 e).symm`. Establish `hs : epsm O G0 m (T.sg j : G0.Γ) = 1`.
+
+Establish `: G0.ε (T.sg j) = 1` using `T.sg_mem j`. Simplify using `[epsm, this]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e']`. Conclude with `(r2 _ _).trans (by rw [u1, one_mul])`.
+
+Use `show epsm O G0 m (((T.h N).p₀ (T.ph N j) : G0.G₀) : G0.Γ) = 1`. Rewrite using `[e', em, u2, hs, one_mul]`. Rewrite using `[e', tw_add (K := G0.G₀) (fun g => y.ρ0 m g) z (fun g => epsm O G0 m g) r1 r2 hz u1 u2, u3, zero_add]`.
+-/
 private theorem phEq_one (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n)
     (m : ℕ) (hPL : ∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → y.ρ g = 1)
@@ -133,6 +174,11 @@ private theorem phEq_one (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T :
     rw [e', em, u2, hs, one_mul]
   · rw [e', tw_add (K := G0.G₀) (fun g => y.ρ0 m g) z (fun g => epsm O G0 m g) r1 r2 hz u1 u2, u3, zero_add]
 
+/- English proof (translation)
+Introduce `l _ L G0 T O _ _ _ _ _ n y m hΦ hPL`. Use `Filter.eventually_all.2 fun j => ?_` and prove the remaining obligations. Establish `h0` using `phEq_one l L G0 T O n y m hPL 0 (IsLocallyConstant.const 0) (fun g h => by simp) j`. Establish `h1 : ∀ᶠ N in atTop, ∀ z ∈ Tw y m, z ((T.h N).p₀ (T.ph N j)) = z (T.sg j)`. Use `(Filter.eventually_all_finite (finTwO l L G0 O n y m hΦ)).2 fun z hz => ?_` and prove the remaining obligations.
+
+Conclude with `(phEq_one l L G0 T O n y m hPL z hz.1 hz.2.1 j).mono fun N h => h.2.2`. Use `filter_upwards [h0, h1] with N a b`. Conclude with `⟨a.1, a.2.1, b⟩`.
+-/
 theorem UpperTheory.V.Th.phEqO :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ), PhiCond G0.Γ l → (∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → y.ρ g = 1) → ∀ᶠ N in atTop, ∀ j, y.ρ0 m ((T.h N).p₀ (T.ph N j)) = y.ρ0 m (T.sg j) ∧ epsm O G0 m ((T.h N).p (T.ph N j)) = 1 ∧ ∀ z ∈ Tw y m, z ((T.h N).p₀ (T.ph N j)) = z (T.sg j) := by
   intro l _ L G0 T O _ _ _ _ _ n y m hΦ hPL

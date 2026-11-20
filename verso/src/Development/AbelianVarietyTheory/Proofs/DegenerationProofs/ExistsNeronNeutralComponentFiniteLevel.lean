@@ -22,12 +22,20 @@ open GlobalTheory.SS
 
 namespace GlobalTheory.NeutralLevel
 
+/- English proof (translation)
+The claim follows from `have : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv) ((isGrpPullback_of_iso e.symm).comp (isGrpPullback_pullback G f)).congr (Category.id_comp _) rfl`.
+-/
 theorem isGrpPullback_of_iso_inv {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] {G' : Over S'} [GrpObj G']
     (e : (Over.pullback f).obj G ≅ G') (he : IsMonHom e.hom) :
     IsGrpPullback G' G f (e.inv.left ≫ pullback.fst G.hom f) :=
   have : IsMonHom e.symm.hom := inferInstanceAs (IsMonHom e.inv)
   ((isGrpPullback_of_iso e.symm).comp (isGrpPullback_pullback G f)).congr (Category.id_comp _) rfl
 
+/- English proof (translation)
+Establish `H` using `hA.comp h`. Take `rfl : t = (𝟙_ (Over T)).hom ≫ j ≫ f` from `ht.trans (Category.id_comp _).symm`. Set `a : 𝟙_ (Over T) ⟶ A` to `Over.homMk (H.1.lift y.left (𝟙_ (Over T)).hom (Over.w y)) (H.1.lift_snd _ _ _)`. Establish `ha : pushHom H _ a = y` using `Over.OverMorphism.ext (H.1.lift_fst _ _ _)`. Take `⟨s, hs⟩` from `hc a`.
+
+Use `⟨s.left ≫ φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w s]`. Conclude with `Category.id_comp _`. Rewrite using `[← ha, ← map_pow, ← Category.assoc]`. Conclude with `(congrArg (· ≫ φ) hs).trans (Category.assoc _ _ _)`.
+-/
 theorem exists_extension {S S' T : Scheme.{0}} {f : S' ⟶ S} {j : T ⟶ S'} {G : Over S} {G' : Over S'} {A : Over T}
     [GrpObj G] [GrpObj G'] [GrpObj A] {φ : G'.left ⟶ G.left} {ψ : A.left ⟶ G'.left}
     (h : IsGrpPullback G' G f φ) (hA : IsGrpPullback A G' j ψ) (c : ℕ)
@@ -45,6 +53,9 @@ theorem exists_extension {S S' T : Scheme.{0}} {f : S' ⟶ S} {j : T ⟶ S'} {G 
   · rw [← ha, ← map_pow, ← Category.assoc]
     exact (congrArg (· ≫ φ) hs).trans (Category.assoc _ _ _)
 
+/- English proof (translation)
+Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback G t) (((isGrpPullback_pullback G' j).comp h).congr ht rfl)`. Conclude with `GlobalTheory.T.exists_ampleCubical_of_groupScheme_iso _ _ _ e he L hL`.
+-/
 theorem exists_ampleCub_fibre {S S' T : Scheme.{0}} {f : S' ⟶ S} (j : T ⟶ S') {G : Over S} {G' : Over S'}
     [GrpObj G] [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ)
     (L : LB ((Over.pullback j).obj G').left) (hL : AmpleCub ((Over.pullback j).obj G') L)
@@ -54,6 +65,11 @@ theorem exists_ampleCub_fibre {S S' T : Scheme.{0}} {f : S' ⟶ S} (j : T ⟶ S'
     (((isGrpPullback_pullback G' j).comp h).congr ht rfl)
   exact GlobalTheory.T.exists_ampleCubical_of_groupScheme_iso _ _ _ e he L hL
 
+/- English proof (translation)
+Take `⟨e, -⟩` from `hm`. Take `⟨-, _, -, -, _⟩` from `hG`. Use `GlobalTheory.GenericDim.smoothOfRelativeDimension_of_generic W G P.g ?_` and prove the remaining obligations. Establish `w : e.hom.left ≫ _ = pullback.snd G.hom (Out.jK W)` using `Over.w e.hom`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`.
+
+Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_horiz_isIso (g := 𝟙 _) ⟨w.trans (Category.comp_id _).symm⟩) (GlobalTheory.TorusModel.polPull (spMap (algebraMap K (FractionRing W))) P).smoothDim`.
+-/
 theorem smoothOfRelativeDimension_model {K W : Type} [Field K] [CommRing W] [IsDomain W]
     [Algebra K (FractionRing W)] (P : Out.PolAV (Sp K)) (G : Over (Sp W)) [GrpObj G] (hG : SmConn G)
     (hm : IsModel (L := FractionRing W) P.A G) : SmoothOfRelativeDimension P.g G.hom := by
@@ -66,10 +82,20 @@ theorem smoothOfRelativeDimension_model {K W : Type} [Field K] [CommRing W] [IsD
     (IsPullback.of_horiz_isIso (g := 𝟙 _) ⟨w.trans (Category.comp_id _).symm⟩)
     (GlobalTheory.TorusModel.polPull (spMap (algebraMap K (FractionRing W))) P).smoothDim
 
+/- English proof (translation)
+Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+-/
 theorem spMap_comp_spMap {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
+/- English proof (translation)
+Introduce `V K _ _ _ _ _ _ R K' _ _ _ _ _ _ _ hR hc P`. Establish `: IsFractionRing R K'` using `hR.2.2.2`. Set `P'` to `GlobalTheory.TorusModel.polPull (spMap (algebraMap K K')) P`. Take `⟨G', _, hG', he, c, hc1, hext⟩` from `GlobalTheory.T.exists_neutral_group_model' R K' hR P'.A P'.isAb (GlobalTheory.AbProj.isProjBy_of_isPullback P' (IsPullback.id_horiz _))`. Take `⟨L', hL'⟩` from `GlobalTheory.SS.exists_ampleCub_spFibre R K' hR P' G'.Y hG' G'.e he`.
+
+Take `⟨s, hs⟩` from `GlobalTheory.smConn_model_descends V K R K' hc P.A P.isAb G'.Y hG' ⟨G'.e, he⟩`. Use `⟨s, c, hc1, fun W hW hsW hl => ?_⟩` and prove the remaining obligations. Take `⟨G, _, _, ε, hG, hε, hcomm, hm⟩` from `hs W hW hsW hl`. Establish `h` using `isGrpPullback_of_iso_inv _ G ε hε`. Establish `hA` using `isGrpPullback_of_iso_inv _ G'.Y G'.e he`.
+
+Conclude with `⟨G, inferInstance, FractionRing W, inferInstance, inferInstance, inferInstance, inferInstance, hG, hcomm, hm, smoothOfRelativeDimension_model P G hG hm, exists_ampleCub_fibre _ h L' hL' _ (spMap_comp_spMap _ _), fun y => exists_extension h hA c hext _ (spMap_comp_spMap _ _).symm …`.
+-/
 theorem exists_level_model : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (R K' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Algebra V R] [Field K'] [Algebra R K'] [Algebra K K'], SH R K' → (algebraMap R K').comp (algebraMap V R) = (algebraMap K K').comp (algebraMap V K) → ∀ P : Out.PolAV (Sp K), ∃ (s : Finset R) (c : ℕ), 1 ≤ c ∧ ∀ (W : Subalgebra V R) (_ : IsDiscreteValuationRing W), (↑s : Set R) ⊆ W → IsLocalHom W.val.toRingHom → ∃ (G : Over (Sp W)) (_ : GrpObj G) (L : Type) (_ : Field L) (_ : Algebra W L) (_ : IsFractionRing W L) (_ : Algebra K L), SmConn G ∧ (algebraMap W L).comp (algebraMap V W) = (algebraMap K L).comp (algebraMap V K) ∧ IsModel (L := L) P.A G ∧ SmoothOfRelativeDimension P.g G.hom ∧ (∃ N : LB ((Over.pullback (spMap ((IsLocalRing.residue R).comp (algebraMap W R)))).obj G).left, AmpleCub ((Over.pullback (spMap ((IsLocalRing.residue R).comp (algebraMap W R)))).obj G) N) ∧ ∀ y : Over.mk (spMap ((algebraMap R K').comp (algebraMap W R))) ⟶ G, ∃ s : Sp R ⟶ G.left, s ≫ G.hom = spMap (algebraMap W R) ∧ spMap (algebraMap R K') ≫ s = (y ^ c).left := by
   intro V K _ _ _ _ _ _ R K' _ _ _ _ _ _ _ hR hc P
   have : IsFractionRing R K' := hR.2.2.2

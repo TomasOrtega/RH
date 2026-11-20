@@ -127,6 +127,9 @@ instance (N : ℕ) : AddCommGroup (MN m N) := inferInstanceAs (AddCommGroup (A.A
 instance (N : ℕ) : Module (A.A N).R (MN m N) := inferInstanceAs (Module (A.A N).R (A.A N).M)
 instance (N : ℕ) : Module W.R (MN m N) := Module.compHom (MN m N) (m.ρ N).toRingHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem MN.smul_def (N : ℕ) (a : W.R) (x : MN m N) : a • x = m.ρ N a • x := rfl
 
 def X0 (_m : RMaps W) : Type := Spo A ⊗[B] A.b.M
@@ -136,7 +139,13 @@ instance : Module (Spo A) (X0 m) := inferInstanceAs (Module (Spo A) (Spo A ⊗[B
 instance : Module W.R (X0 m) := Module.compHom (X0 m) m.π.toRingHom
 instance : Module (abelian₂ O Unit D) (X0 m) := Module.compHom (X0 m) ((algebraMap B (Spo A)).comp A.b.lam.toRingHom)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem X0.smul_def (a : W.R) (x : X0 m) : a • x = m.π a • x := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem X0.lam_smul_def (a : abelian₂ O Unit D) (x : X0 m) : a • x = algebraMap B (Spo A) (A.b.lam a) • x := rfl
 
 def IsApproximateAnnihilatorAtLevels (a : W.R) : Prop :=

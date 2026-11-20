@@ -14,6 +14,11 @@ namespace GlobalTheory.LocalComponentChar
 
 open Classical in
 
+/- English proof (translation)
+Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `f : v.adicCompletion F → Πʳ w : HeightOneSpectrum (𝓞 F), [w.adicCompletion F, w.adicCompletionIntegers F]_[Filter.principal ({v}ᶜ : Set _)]` to `fun x => ⟨Pi.single (M := fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) v x, by`. Introduce `w hw`. Establish `hw' : w ≠ v` using `hw`. Simplify using `only [Set.mem_ofPred_eq, Pi.single_eq_of_ne hw', SetLike.mem_coe]`.
+
+Conclude with `zero_mem _⟩`. Establish `hf : Continuous f` using `RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hf`.
+-/
 theorem continuous_singleV (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (singleV F v) := by
   have hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))) :=
@@ -28,6 +33,11 @@ theorem continuous_singleV (F : Type) [Field F] [NumberField F] (v : HeightOneSp
   have hf : Continuous f := RestrictedProduct.continuous_rng_of_principal.2 (continuous_single v)
   exact (RestrictedProduct.continuous_inclusion hS).comp hf
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap (algebraMap F (Fv F v)).injective`. Take `⟨t, ht⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective F v (WithZero.exp (1 : ℤ))`. Establish `hn' : (((LocalAdditiveCharacterDual.intV F v).index : ℕ) : Fv F v) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `h` using `(LocalAdditiveCharacterDual.intV F v).nsmul_index_mem (t / (((LocalAdditiveCharacterDual.intV F v).index : ℕ) : Fv F v))`.
+
+Rewrite `h` using `[nsmul_eq_mul, mul_div_cancel₀ _ hn']`. Establish `h1 : Valued.v t ≤ 1` using `h`. Rewrite `h1` using `[ht, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem index_intV (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     (LocalAdditiveCharacterDual.intV F v).index = 0 := by
   by_contra hn
@@ -40,6 +50,13 @@ theorem index_intV (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (
   rw [ht, ← WithZero.exp_zero, WithZero.exp_le_exp] at h1
   omega
 
+/- English proof (translation)
+Introduce `F _ _ ψ hψ v hfin`. Use `⟨⟨psiV F ψ v, LocalAdditiveCharacterDual.psiV_zero F ψ v, LocalAdditiveCharacterDual.psiV_add F ψ v⟩, ⟨?_, fun t => hψ.2.1 _, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h2 : Continuous fun x : Fv F v => pairA F 0 (singleV F v x)` using `Continuous.prodMk continuous_const (continuous_singleV F v)`. Conclude with `hψ.1.comp h2`. Assume the negation of the conclusion as `h push Not at h`.
+
+Establish `htop : LocalAdditiveCharacterDual.psiDual F ψ v = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `t _ s _`. Conclude with `h _`. Apply `hfin.1` to reduce the goal to its premises.
+
+Rewrite using `[htop, AddSubgroup.relIndex_top_right]`. Conclude with `index_intV F v`.
+-/
 theorem exists_localChar : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsCharAF F ψ → ∀ v : HeightOneSpectrum (𝓞 F), LocalAdditiveCharacterDual.IndexFinite F ψ v → ∃ χ : AddChar (Fv F v) ℂ, PlaceSplittingTypes.IsLocalChar F v χ ∧ ∀ t, χ t = psiV F ψ v t := by
   intro F _ _ ψ hψ v hfin
   refine ⟨⟨psiV F ψ v, LocalAdditiveCharacterDual.psiV_zero F ψ v, LocalAdditiveCharacterDual.psiV_add F ψ v⟩, ⟨?_, fun t => hψ.2.1 _, ?_⟩,

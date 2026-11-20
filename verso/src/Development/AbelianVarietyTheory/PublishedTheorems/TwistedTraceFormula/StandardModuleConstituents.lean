@@ -26,6 +26,9 @@ def StandardModuleConstituents : Prop :=
       ∀ Z', IsFactor ε I'.ρ Z' (kFinVec ε I'.ρ) π → ∀ Z Y, Y ≠ kFinVec ε I.ρ → IsFactor ε I.ρ Z Y π →
         (∀ d, paramSum I'.toDatum d ≤ paramSum I.toDatum d) ∧ ∃ d, paramSum I'.toDatum d < paramSum I.toDatum d
 
+/- English proof (translation)
+Establish `h : ∑ i : Fin 1, ((![s] : Fin 1 → ℂ) i).re * (((min 1 (∑ l ∈ Finset.Iic i, (![1] : Fin 1 → ℕ) l) : ℕ) : ℝ) - ((min 1 (∑ l ∈ Finset.Iio i, (![1] : Fin 1 → ℕ) l) : ℕ) : ℝ)) = s.re`. Simplify using the standard rewrite rules. Conclude with `h`.
+-/
 example (s : ℂ) : paramSum (sphericalDatum s) 1 = s.re := by
   have h : ∑ i : Fin 1, ((![s] : Fin 1 → ℂ) i).re * (((min 1 (∑ l ∈ Finset.Iic i, (![1] : Fin 1 → ℕ) l) : ℕ) : ℝ) -
       ((min 1 (∑ l ∈ Finset.Iio i, (![1] : Fin 1 → ℕ) l) : ℕ) : ℝ)) = s.re := by

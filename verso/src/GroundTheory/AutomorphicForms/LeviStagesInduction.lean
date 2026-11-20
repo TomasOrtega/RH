@@ -38,9 +38,17 @@ def leviParabolicIncl : leviParabolic F n β γ →* blockUpper F n γ where
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_leviParabolicIncl (q : leviParabolic F n β γ) :
     ((leviParabolicIncl F n β γ q : blockUpper F n γ) : GL (Fin n) F) = q := rfl
 
+/- English proof (translation)
+Introduce `i j hij`. Use `show ((leviProj F n β p : levi F n β) : GL (Fin n) F) i j = 0`. Rewrite using `[leviProj_apply]`. Use `split_ifs`. Conclude with `hp hij`.
+
+Both sides reduce to the same expression.
+-/
 theorem leviProj_mem_blockUpper (p : blockUpper F n β)
     (hp : (p : GL (Fin n) F) ∈ blockUpper F n γ) :
     ((leviProj F n β p : levi F n β) : GL (Fin n) F) ∈ blockUpper F n γ := by
@@ -51,6 +59,11 @@ theorem leviProj_mem_blockUpper (p : blockUpper F n β)
   · exact hp hij
   · rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [leviProj_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression.
+
+Conclude with `absurd (h.eq_of_eq h1) h2`. Both sides reduce to the same expression.
+-/
 theorem leviProj_leviProj (h : Refines β γ) (p : blockUpper F n γ) :
     leviProj F n γ ⟨((leviProj F n β ⟨p, h.blockUpper_le F p.2⟩ : levi F n β) : GL (Fin n) F),
       leviProj_mem_blockUpper _ p.2⟩ = leviProj F n γ p := by
@@ -62,6 +75,15 @@ theorem leviProj_leviProj (h : Refines β γ) (p : blockUpper F n γ) :
   · exact absurd (h.eq_of_eq h1) h2
   · rfl
 
+/- English proof (translation)
+Use `set p' : blockUpper F n β := ⟨p, h.blockUpper_le F p.2⟩`. Use `set m := leviProj F n β p'`. Establish `hmγ : ((m : levi F n β) : GL (Fin n) F) ∈ blockUpper F n γ` using `leviProj_mem_blockUpper _ p.2`. Use `set u : blockUpper F n β := (leviIncl m)⁻¹ * p'`. Establish `hu : (u : GL (Fin n) F) ∈ unipotentRadical F n β` using `leviProj_inv_mul_mem p'`.
+
+Establish `huγ : (u : GL (Fin n) F) ∈ unipotentRadical F n γ` using `h.unipotentRadical_le F hu`. Establish `hp : p = (⟨m, hmγ⟩ : blockUpper F n γ) * ⟨u, (mem_unipotentRadical.1 huγ).1⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul]`. Use `show (p : GL (Fin n) F) = (m : GL (Fin n) F) * (((leviIncl m)⁻¹ * p' : blockUpper F n β) : GL (Fin n) F)`.
+
+Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, leviIncl_coe, mul_inv_cancel_left]`. Establish `key` using `sqrtModular_refine h ⟨(m : GL (Fin n) F), m.2, hmγ⟩`. Establish `hu1 : sqrtModular F n γ ⟨u, (mem_unipotentRadical.1 huγ).1⟩ = 1` using `sqrtModular_of_mem _ huγ`. Use `conv_lhs => rw [hp, map_mul, hu1, mul_one]`. Rewrite using `[key, ← sqrtModular_leviProj p']`.
+
+Both sides reduce to the same expression.
+-/
 theorem sqrtModular_blockUpper_refine (h : Refines β γ) (p : blockUpper F n γ) :
     sqrtModular F n γ p = sqrtModular F n β ⟨p, h.blockUpper_le F p.2⟩ *
       sqrtModularLeviPar F n β γ
@@ -99,6 +121,9 @@ def leviInflateTwist (τ : Representation ℂ (levi F n γ) W) :
     (τ.comp ((leviProj F n γ).comp (leviParabolicIncl F n β γ)))
 
 @[simp]
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem leviInflateTwist_apply (τ : Representation ℂ (levi F n γ) W)
     (q : leviParabolic F n β γ) (w : W) :
     leviInflateTwist F n β γ τ q w = sqrtModularLeviPar F n β γ (leviParabolicToLeviPar F n β γ q) •
@@ -123,6 +148,9 @@ section Stages
 variable {β γ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   (τ : Representation ℂ (levi F n γ) W)
 
+/- English proof (translation)
+Establish `hf` using `(mem_indSpace.1 f.2).1 (leviIncl x) g`. Rewrite `hf` using `[leviIncl_coe]`. Rewrite using `[hf, inflateTwist_apply, leviProj_leviIncl]`. Both sides reduce to the same expression.
+-/
 theorem parabolicInd_levi_apply (f : parabolicIndSpace F n β (leviParabolicInd F n β γ τ))
     (x : levi F n β) (g : GL (Fin n) F) (y : levi F n β) :
     (((f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) ((x : GL (Fin n) F) * g) :
@@ -139,6 +167,17 @@ def stagesFun (f : parabolicIndSpace F n β (leviParabolicInd F n β γ τ)) : G
   fun g => (((f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) g :
     leviParabolicIndSpace F n β γ τ) : levi F n β → W) 1
 
+/- English proof (translation)
+Take `⟨hfP, K, hKo, hfK⟩` from `mem_indSpace.1 f.2`. Use `⟨fun p g => ?_, K, hKo, fun k hk g => ?_⟩` and prove the remaining obligations. Use `set p' : blockUpper F n β := ⟨p, h.blockUpper_le F p.2⟩ set m := leviProj F n β p'`. Establish `hmγ : ((m : levi F n β) : GL (Fin n) F) ∈ blockUpper F n γ` using `leviProj_mem_blockUpper _ p.2`. Use `set φ : leviParabolicIndSpace F n β γ τ := (f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) g`.
+
+Establish `h1 : (((f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) ((p : GL (Fin n) F) * g) : leviParabolicIndSpace F n β γ τ) : levi F n β → W) 1 = sqrtModular F n β p' • (φ : levi F n β → W) m`. Use `hfP p' g` as an intermediate fact. Express the relevant statement in the definitionally equal form `(f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) ((p' : GL (Fin n) F) * g) = _ at this`. Rewrite using `[this, inflateTwist_apply]`. Use `show sqrtModular F n β p' • (φ : levi F n β → W) (1 * m) = _`.
+
+Rewrite using `[one_mul]`. Establish `h2 : (φ : levi F n β → W) m = sqrtModularLeviPar F n β γ ⟨(m : GL (Fin n) F), m.2, hmγ⟩ • τ (leviProj F n γ p) ((φ : levi F n β → W) 1)`. Use `(mem_indSpace.1 φ.2).1 ⟨m, Subgroup.mem_subgroupOf.2 hmγ⟩ 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Establish `e : leviProj F n γ (leviParabolicIncl F n β γ ⟨m, Subgroup.mem_subgroupOf.2 hmγ⟩) = leviProj F n γ p` using `leviProj_leviProj h p`.
+
+Rewrite using `[this, leviInflateTwist_apply, e]`. Both sides reduce to the same expression. Use `show stagesFun τ f ((p : GL (Fin n) F) * g) = sqrtModular F n γ p • τ (leviProj F n γ p) (stagesFun τ f g)`. Rewrite using `[stagesFun, h1, h2, smul_smul, sqrtModular_blockUpper_refine h p]`. Both sides reduce to the same expression.
+
+Use `show (((f : GL (Fin n) F → leviParabolicIndSpace F n β γ τ) (g * k) : leviParabolicIndSpace F n β γ τ) : levi F n β → W) 1 = _`. Rewrite using `[hfK k hk g]`. Both sides reduce to the same expression.
+-/
 theorem stagesFun_mem (h : Refines β γ) (f : parabolicIndSpace F n β (leviParabolicInd F n β γ τ)) :
     stagesFun τ f ∈ parabolicIndSpace F n γ τ := by
   obtain ⟨hfP, K, hKo, hfK⟩ := mem_indSpace.1 f.2
@@ -179,6 +218,19 @@ theorem stagesFun_mem (h : Refines β γ) (f : parabolicIndSpace F n β (leviPar
 def stagesInnerFun (φ : parabolicIndSpace F n γ τ) (g : GL (Fin n) F) : levi F n β → W :=
   fun x => invSqrtModular F n β (leviIncl x) • (φ : GL (Fin n) F → W) ((x : GL (Fin n) F) * g)
 
+/- English proof (translation)
+Take `⟨hφP, K, hKo, hφK⟩` from `mem_indSpace.1 φ.2`. Use `⟨fun q x => ?_, ?_⟩` and prove the remaining obligations. Establish `key` using `sqrtModular_refine h (leviParabolicToLeviPar F n β γ q)`. Establish `key' : sqrtModular F n γ (leviParabolicIncl F n β γ q) = sqrtModular F n β (leviIncl (q : levi F n β)) * sqrtModularLeviPar F n β γ (leviParabolicToLeviPar F n β γ q)` using `key`. Establish `hinv : invSqrtModular F n β (leviIncl (q : levi F n β)) * sqrtModular F n β (leviIncl (q : levi F n β)) = 1`.
+
+Rewrite using `[mul_comm]`. Conclude with `sqrtModular_mul_invSqrtModular _`. Establish `hφq` using `hφP (leviParabolicIncl F n β γ q) ((x : GL (Fin n) F) * g)`. Rewrite `hφq` using `[inflateTwist_apply, coe_leviParabolicIncl]`. Simplify using `only [stagesInnerFun, leviInflateTwist_apply, map_smul, smul_smul]`.
+
+Rewrite using `[map_mul, Subgroup.coe_mul, mul_assoc, hφq, smul_smul, key']`. Use `congr 1`. Rewrite using `[map_mul]`. Take the linear combination `(sqrtModularLeviPar F n β γ (leviParabolicToLeviPar F n β γ q) * invSqrtModular F n β (leviIncl x)) * hinv`. Set `K' : Subgroup (GL (Fin n) F)` to `K.comap (MulAut.conj g⁻¹).toMonoidHom ⊓ integralGL F n`.
+
+Establish `hc : Continuous fun k : GL (Fin n) F => (MulAut.conj g⁻¹).toMonoidHom k`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `fun_prop`. Use `⟨K'.subgroupOf (levi F n β), ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_subgroupOf, Subgroup.coe_inf, Subgroup.coe_comap]`.
+
+Conclude with `((hKo.preimage hc).inter (isOpen_integralGL F n)).preimage continuous_subtype_val`. Take `⟨hk1, hk2⟩` from `Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 hk)`. Establish `hk1' : g⁻¹ * (k : GL (Fin n) F) * g ∈ K`. Use `Subgroup.mem_comap.1 hk1` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`.
+
+Simplify using `only [stagesInnerFun]`. Rewrite using `[map_mul, map_mul, invSqrtModular_leviIncl_of_mem k hk2, mul_one, Subgroup.coe_mul]`. Use `congr 1`. Establish `e : (x : GL (Fin n) F) * (k : GL (Fin n) F) * g = (x : GL (Fin n) F) * g * (g⁻¹ * (k : GL (Fin n) F) * g)` using `by group`. Rewrite using `[e, hφK _ hk1']`.
+-/
 theorem stagesInnerFun_mem (h : Refines β γ) (φ : parabolicIndSpace F n γ τ) (g : GL (Fin n) F) :
     stagesInnerFun τ φ g ∈ leviParabolicIndSpace F n β γ τ := by
   obtain ⟨hφP, K, hKo, hφK⟩ := mem_indSpace.1 φ.2
@@ -222,6 +274,21 @@ def stagesInvFun (h : Refines β γ) (φ : parabolicIndSpace F n γ τ) :
     GL (Fin n) F → leviParabolicIndSpace F n β γ τ :=
   fun g => ⟨stagesInnerFun τ φ g, stagesInnerFun_mem τ h φ g⟩
 
+/- English proof (translation)
+Take `⟨hφP, K, hKo, hφK⟩` from `mem_indSpace.1 φ.2`. Use `⟨fun p g => ?_, K, hKo, fun k hk g => ?_⟩` and prove the remaining obligations. Rewrite using `[inflateTwist_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+
+Use `set m := leviProj F n β p`. Use `set u : blockUpper F n β := (leviIncl m)⁻¹ * p`. Establish `hu : (u : GL (Fin n) F) ∈ unipotentRadical F n β` using `leviProj_inv_mul_mem p`. Establish `hxm : ((x : GL (Fin n) F) * (m : GL (Fin n) F)) ∈ blockUpper F n β` using `mul_mem (levi_le_blockUpper x.2) (levi_le_blockUpper m.2)`. Use `set n'' : GL (Fin n) F := (x : GL (Fin n) F) * (m : GL (Fin n) F) * (u : GL (Fin n) F) * ((x : GL (Fin n) F) * (m : GL (Fin n) F))⁻¹`.
+
+Establish `hn'' : n'' ∈ unipotentRadical F n γ` using `h.unipotentRadical_le F (conj_mem_unipotentRadical hxm hu)`. Establish `hφn : ∀ y, (φ : GL (Fin n) F → W) (n'' * y) = (φ : GL (Fin n) F → W) y`. Introduce `y`. Use `hφP ⟨n'', (mem_unipotentRadical.1 hn'').1⟩ y` as an intermediate fact. Rewrite `this` using `[inflateTwist_apply, sqrtModular_of_mem _ hn'', (mem_unipotentRadical_iff_leviProj (p := ⟨n'', (mem_unipotentRadical.1 hn'').1⟩)).1 hn'', map_one, one_smul, Module.End.one_apply]`.
+
+Conclude with `this`. Establish `hp : (p : GL (Fin n) F) = (m : GL (Fin n) F) * (u : GL (Fin n) F)` using `by show (p : GL (Fin n) F) = (m : GL (Fin n) F) * (((leviIncl m)⁻¹ * p : blockUpper F n β) : GL (Fin n) F)`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, leviIncl_coe, mul_inv_cancel_left]`. Establish `e : (x : GL (Fin n) F) * ((p : GL (Fin n) F) * g) = n'' * ((x : GL (Fin n) F) * (m : GL (Fin n) F) * g)`. Rewrite using `[hp]`.
+
+Simplify using `only [n'']`. Use `group`. Establish `hs : sqrtModular F n β p = sqrtModular F n β (leviIncl m)` using `(sqrtModular_leviProj p).symm`. Use `show invSqrtModular F n β (leviIncl x) • (φ : GL (Fin n) F → W) ((x : GL (Fin n) F) * ((p : GL (Fin n) F) * g)) = sqrtModular F n β p • (invSqrtModular F n β (leviIncl (x * m)) • (φ : GL (Fin n) F → W) (((x * m : levi F n β) : GL (Fin n) F) * g))`. Rewrite using `[e, hφn, smul_smul, hs, map_mul, map_mul, Subgroup.coe_mul]`.
+
+Use `congr 1`. Establish `h1` using `sqrtModular_mul_invSqrtModular (leviIncl m)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, mul_one]`. Use `_ = _ := by ring`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show invSqrtModular F n β (leviIncl x) • (φ : GL (Fin n) F → W) ((x : GL (Fin n) F) * (g * k)) = invSqrtModular F n β (leviIncl x) • (φ : GL (Fin n) F → W) ((x : GL (Fin n) F) * g)`. Rewrite using `[← mul_assoc, hφK k hk]`.
+-/
 theorem stagesInvFun_mem (h : Refines β γ) (φ : parabolicIndSpace F n γ τ) :
     stagesInvFun τ h φ ∈ parabolicIndSpace F n β (leviParabolicInd F n β γ τ) := by
   obtain ⟨hφP, K, hKo, hφK⟩ := mem_indSpace.1 φ.2
@@ -306,13 +373,22 @@ variable {β γ : Fin n → ℕ} {W : Type*} [AddCommGroup W] [Module ℂ W]
   {U : Type*} [AddCommGroup U] [Module ℂ U] (σ : Representation ℂ (levi F n β) U)
   (τ : Representation ℂ (levi F n γ) W)
 
+/- English proof (translation)
+Introduce `_ hu` and use `Subgroup.mem_subgroupOf.2 (mem_unipotentRadical.1 (Subgroup.mem_subgroupOf.1 hu)).1`.
+-/
 theorem leviUnipotent_le_leviParabolic : leviUnipotent F n β γ ≤ leviParabolic F n β γ :=
   fun _ hu => Subgroup.mem_subgroupOf.2 (mem_unipotentRadical.1 (Subgroup.mem_subgroupOf.1 hu)).1
 
+/- English proof (translation)
+The claim follows from `Subgroup.mem_subgroupOf.2 (levi_le_blockUpper m.2)`.
+-/
 theorem Refines.leviIncl_mem_leviParabolic (h : Refines β γ) (m : levi F n γ) :
     h.leviIncl F m ∈ leviParabolic F n β γ :=
   Subgroup.mem_subgroupOf.2 (levi_le_blockUpper m.2)
 
+/- English proof (translation)
+Rewrite using `[leviInflateTwist_apply, sqrtModularLeviPar_of_mem h _ hu, (mem_unipotentRadical_iff_leviProj (p := leviParabolicIncl F n β γ u)).1 hu, map_one, one_smul, Module.End.one_apply]`.
+-/
 theorem leviInflateTwist_of_mem (h : Refines β γ) (u : leviParabolic F n β γ)
     (hu : ((u : levi F n β) : GL (Fin n) F) ∈ unipotentRadical F n γ) (w : W) :
     leviInflateTwist F n β γ τ u w = w := by
@@ -320,6 +396,9 @@ theorem leviInflateTwist_of_mem (h : Refines β γ) (u : leviParabolic F n β γ
     (mem_unipotentRadical_iff_leviProj (p := leviParabolicIncl F n β γ u)).1 hu, map_one, one_smul,
     Module.End.one_apply]
 
+/- English proof (translation)
+Establish `e : leviProj F n γ (leviParabolicIncl F n β γ ⟨h.leviIncl F m, h.leviIncl_mem_leviParabolic m⟩) = m` using `leviProj_of_mem_levi m.2`. Rewrite using `[leviInflateTwist_apply, e]`. Both sides reduce to the same expression.
+-/
 theorem leviInflateTwist_leviIncl (h : Refines β γ) (m : levi F n γ) (w : W) :
     leviInflateTwist F n β γ τ ⟨h.leviIncl F m, h.leviIncl_mem_leviParabolic m⟩ w =
       sqrtModularLeviPar F n β γ (h.leviToLeviPar F m) • τ m w := by
@@ -328,6 +407,9 @@ theorem leviInflateTwist_leviIncl (h : Refines β γ) (m : levi F n γ) (w : W) 
   rw [leviInflateTwist_apply, e]
   rfl
 
+/- English proof (translation)
+Rewrite using `[leviJacquetRep_mk, smul_smul, sqrtModularLeviPar_mul_inv, one_smul]`.
+-/
 theorem mk_leviIncl_apply (h : Refines β γ) (m : levi F n γ) (w : U) :
     Representation.Coinvariants.mk (σ.comp (leviUnipotent F n β γ).subtype) (σ (h.leviIncl F m) w) =
       sqrtModularLeviPar F n β γ (h.leviToLeviPar F m) •

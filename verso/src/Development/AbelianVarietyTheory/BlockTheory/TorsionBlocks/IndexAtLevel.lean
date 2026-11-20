@@ -63,6 +63,13 @@ def IndexAtLevelKnown : Prop :=
 def IndexAtLevelFam {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, (Fm.L x i).TuGe → ∀ u, IndexAtLevel (Fm.D x i) u
 
+/- English proof (translation)
+Establish `hk : (1 : ℝ) ≤ (D.R.k : ℝ)`. Establish `h3` using `D.R.m_add_three_le_k`. Conclude with `(show 1 ≤ D.R.k by omega)` after adjusting the coercions. Establish `hr : (rankRam D u : ℝ) ≤ (rankAll D u : ℝ)` using `by haveI : Module.Finite D.what₂.LL (LT.Vl D u 0) := Module.Finite.of_basis ((D.fm u).lat 0).b`. Unfold `rankRam rankAll`.
+
+Conclude with `Submodule.finrank_le _` after adjusting the coercions. Unfold `boundFine_vp boundCoarse_vp`. Rewrite using `[mul_assoc]`. Apply `mul_le_mul_of_nonneg_left _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Rewrite using `[Finset.mul_sum]`.
+
+Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `v _`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem boundFine_le_boundCoarse (w : D.what₂.places.Pl) : boundFine_vp D u w ≤ boundCoarse_vp D u w := by
   have hk : (1 : ℝ) ≤ (D.R.k : ℝ) := by
     have h3 := D.R.m_add_three_le_k

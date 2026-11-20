@@ -19,6 +19,9 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 open GlobalTheory.FlatModel
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.FlatModel.chartAt_opens_restrict | exact GlobalTheory.FlatModel.chartAt_opens_restrict | (intros; apply GlobalTheory.FlatModel.chartAt_opens_restrict <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.chart_restrict_open : ∀ (p n : ℕ) [Fact p.Prime] (X : Scheme.{0}) (U Xw : X.Opens) (K : (Sp 𝓞_ℂ_[p] ⟶ X) → Set ℂ_[p])
     (x : U.toScheme), ChartAt p n Xw K (U.ι x) → ChartAt p n (U.ι ⁻¹ᵁ Xw) (fun yb => K (yb ≫ U.ι)) x := by
   first | exact @GlobalTheory.FlatModel.chartAt_opens_restrict | exact GlobalTheory.FlatModel.chartAt_opens_restrict | (intros; apply GlobalTheory.FlatModel.chartAt_opens_restrict <;> assumption)

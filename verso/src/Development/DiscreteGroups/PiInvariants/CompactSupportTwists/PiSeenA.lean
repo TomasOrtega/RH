@@ -16,36 +16,63 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 def chi (N : ℕ) (s : ℝ) : ℝ := max 0 (min 1 ((N : ℝ) + 1 - |s|))
 
+/- English proof (translation)
+The claim follows from `continuous_const.max (continuous_const.min (continuous_const.sub continuous_abs))`.
+-/
 theorem continuous_chi (N : ℕ) : Continuous (chi N) :=
   continuous_const.max (continuous_const.min (continuous_const.sub continuous_abs))
 
+/- English proof (translation)
+The claim follows from `le_max_left _ _`.
+-/
 theorem chi_nonneg (N : ℕ) (s : ℝ) : 0 ≤ chi N s := le_max_left _ _
 
+/- English proof (translation)
+The claim follows from `max_le zero_le_one (min_le_left _ _)`.
+-/
 theorem chi_le_one (N : ℕ) (s : ℝ) : chi N s ≤ 1 := max_le zero_le_one (min_le_left _ _)
 
+/- English proof (translation)
+The claim follows from `max_eq_left (min_le_of_right_le (by linarith))`.
+-/
 theorem chi_eq_zero {N : ℕ} {s : ℝ} (h : (N : ℝ) + 1 ≤ |s|) : chi N s = 0 :=
   max_eq_left (min_le_of_right_le (by linarith))
 
+/- English proof (translation)
+Unfold `chi`. Rewrite using `[min_eq_left (by linarith), max_eq_right zero_le_one]`.
+-/
 theorem chi_eq_one {N : ℕ} {s : ℝ} (h : |s| ≤ N) : chi N s = 1 := by
   unfold chi
   rw [min_eq_left (by linarith), max_eq_right zero_le_one]
 
+/- English proof (translation)
+The claim follows from `HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) ((N : ℝ) + 1)) fun s hs => by rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, not_le] at hs rw [chi_eq_zero hs.le, zero_mul]`.
+-/
 theorem hasCompactSupport_chi_pow (N k : ℕ) : HasCompactSupport fun s : ℝ => chi N s * s ^ k :=
   HasCompactSupport.intro (isCompact_closedBall (0 : ℝ) ((N : ℝ) + 1)) fun s hs => by
     rw [Metric.mem_closedBall, Real.dist_eq, sub_zero, not_le] at hs
     rw [chi_eq_zero hs.le, zero_mul]
 
+/- English proof (translation)
+Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `: Countable (Matrix (Fin m) (Fin m) E)` using `inferInstanceAs (Countable (Fin m → Fin m → E))`. Conclude with `Function.Injective.countable (f := (Units.val : GL (Fin m) E → Matrix (Fin m) (Fin m) E)) fun a b hab => Units.ext hab`.
+-/
 theorem countable_GL' (m : ℕ) : Countable (GL (Fin m) E) := by
   have : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
   have : Countable (Matrix (Fin m) (Fin m) E) := inferInstanceAs (Countable (Fin m → Fin m → E))
   exact Function.Injective.countable (f := (Units.val : GL (Fin m) E → Matrix (Fin m) (Fin m) E)) fun a b hab => Units.ext hab
 
+/- English proof (translation)
+Use `countable_GL' (E := E) n` as an intermediate fact. Use `countable_GL' (E := E) 0` as an intermediate fact. Use `show Countable ((ratGL E n).prodMap (ratGL E 0)).range`. Conclude with `(MonoidHom.rangeRestrict_surjective ((ratGL E n).prodMap (ratGL E 0))).countable`.
+-/
 theorem countable_ratH' : Countable (ratH E n 0) := by
   have := countable_GL' (E := E) n
   have := countable_GL' (E := E) 0
   show Countable ((ratGL E n).prodMap (ratGL E 0)).range
   exact (MonoidHom.rangeRestrict_surjective ((ratGL E n).prodMap (ratGL E 0))).countable
 
+/- English proof (translation)
+Take `⟨C, hC⟩` from `cp_decay_wt ψ (π.cusp ψ hψ) (hθ.1 ψ hψ) R 0`. Use `⟨max C 0, le_max_right _ _, fun x hx => ?_⟩` and prove the remaining obligations. Use `hC x hx` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Conclude with `this.trans (le_max_left _ _)`.
+-/
 theorem bdd_of_mem {π : CuspSub E n} (hθ : ThetaFix π) {ψ : Sm E n} (hψ : ψ ∈ π.V) (R : ℝ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x : H E n 0, |ldet x| ≤ R → ‖ψ.1 x.1‖ ≤ C := by
   obtain ⟨C, hC⟩ := cp_decay_wt ψ (π.cusp ψ hψ) (hθ.1 ψ hψ) R 0
@@ -54,6 +81,13 @@ theorem bdd_of_mem {π : CuspSub E n} (hθ : ThetaFix π) {ψ : Sm E n} (hψ : �
   rw [pow_zero, mul_one] at this
   exact this.trans (le_max_left _ _)
 
+/- English proof (translation)
+Use `haveI : BorelSpace (H E n 0) := ⟨rfl⟩`. Use `set S : Set (H E n 0) := {x | |ldet x| ≤ R} with hSdef`. Establish `hSm : MeasurableSet S` using `(isClosed_le (continuous_abs.comp (continuous_ldet (E := E) (n := n))) continuous_const).measurableSet`. Establish `hS : D.ν S < ⊤` using `CP.cp_vol hn D R`. Establish `hind : S.indicator F = F`.
+
+Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ S`. Rewrite using `[Set.indicator_of_mem hx]`. Rewrite using `[Set.indicator_of_notMem hx, h0 x (lt_of_not_ge hx)]`. Rewrite using `[← hind, integrable_indicator_iff hSm]`.
+
+Conclude with `Measure.integrableOn_of_bounded (M := K) hS.ne hF.aestronglyMeasurable ((ae_restrict_iff' hSm).2 (Eventually.of_forall fun x hx => hK x hx))`.
+-/
 theorem integrable_of_ldet (hn : 1 ≤ n) (D : Dom E n 0) (F : H E n 0 → ℂ) (hF : Continuous F) (R K : ℝ)
     (h0 : ∀ x, R < |ldet x| → F x = 0) (hK : ∀ x, |ldet x| ≤ R → ‖F x‖ ≤ K) : Integrable F D.ν := by
   haveI : BorelSpace (H E n 0) := ⟨rfl⟩
@@ -70,6 +104,13 @@ theorem integrable_of_ldet (hn : 1 ≤ n) (D : Dom E n 0) (F : H E n 0 → ℂ) 
   exact Measure.integrableOn_of_bounded (M := K) hS.ne hF.aestronglyMeasurable
     ((ae_restrict_iff' hSm).2 (Eventually.of_forall fun x hx => hK x hx))
 
+/- English proof (translation)
+Take `⟨Cψ, hCψ0, hCψ⟩` from `bdd_of_mem hθ hψ R`. Take `⟨Cφ, hCφ0, hCφ⟩` from `bdd_of_mem hθ hφ R`. Take `⟨KU, hKU⟩` from `(isCompact_Icc : IsCompact (Icc (-R) R)).exists_bound_of_continuousOn hU.continuousOn`. Take `⟨KV, hKV⟩` from `(isCompact_Icc : IsCompact (Icc (-R) R)).exists_bound_of_continuousOn hV.continuousOn`. Establish `hc : Continuous fun x : H E n 0 => starRingEnd ℂ (ψ.1 x.1 * U (ldet x)) * (φ.1 x.1 * V (ldet x))`.
+
+Establish `h1` using `(continuous_of_mem π hψ).comp (continuous_fst (X := GA E n) (Y := GA E 0))`. Establish `h2` using `(continuous_of_mem π hφ).comp (continuous_fst (X := GA E n) (Y := GA E 0))`. Establish `hl` using `continuous_ldet (E := E) (n := n)`. Conclude with `(continuous_star.comp (h1.mul (hU.comp hl))).mul (h2.mul (hV.comp hl))`. Use `integrable_of_ldet hn D _ hc R (Cψ * KU * (Cφ * KV)) (fun x hx => by simp [hUs _ hx]) fun x hx => ?_` and prove the remaining obligations.
+
+Establish `hI : ldet x ∈ Icc (-R) R` using `abs_le.1 hx`. Establish `hKU0 : 0 ≤ KU` using `(norm_nonneg _).trans (hKU _ hI)`. Rewrite using `[norm_mul, RCLike.norm_conj, norm_mul, norm_mul]`. Conclude with `mul_le_mul (mul_le_mul (hCψ x hx) (hKU _ hI) (norm_nonneg _) hCψ0) (mul_le_mul (hCφ x hx) (hKV _ hI) (norm_nonneg _) hCφ0) (by positivity) (by positivity)`.
+-/
 theorem integrable_pair (hn : 1 ≤ n) (D : Dom E n 0) {π : CuspSub E n} (hθ : ThetaFix π) {ψ φ : Sm E n}
     (hψ : ψ ∈ π.V) (hφ : φ ∈ π.V) (U V : ℝ → ℂ) (hU : Continuous U) (hV : Continuous V) (R : ℝ)
     (hUs : ∀ s, R < |s| → U s = 0) :

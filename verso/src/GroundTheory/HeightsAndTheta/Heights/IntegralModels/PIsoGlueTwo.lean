@@ -11,6 +11,17 @@ noncomputable section
 
 namespace IsoGlueTwo
 
+/- English proof (translation)
+Establish `lF` using `TopCat.Sheaf.isLimitPullbackCone ⟨F, hF⟩ U V`. Establish `lG` using `TopCat.Sheaf.isLimitPullbackCone ⟨G, hG⟩ U V`. Establish `n : ∀ {W W' : Opens T} (i : W ⟶ W') [IsIso (η.app (op W'))] [IsIso (η.app (op W))], inv (η.app (op W')) ≫ F.map i.op = G.map i.op ≫ inv (η.app (op W))`. Introduce `W W' i _ _`. Rewrite using `[IsIso.inv_comp_eq, ← Category.assoc, ← η.naturality, Category.assoc, IsIso.hom_inv_id, Category.comp_id]`.
+
+Establish `hw : (G.map (homOfLE le_sup_left : U ⟶ U ⊔ V).op ≫ inv (η.app (op U))) ≫ F.map (homOfLE inf_le_left : U ⊓ V ⟶ U).op = (G.map (homOfLE le_sup_right : V ⟶ U ⊔ V).op ≫ inv (η.app (op V))) ≫ F.map (homOfLE inf_le_right : U ⊓ V ⟶ V).op`. Rewrite using `[Category.assoc, Category.assoc, n, n, ← G.map_comp_assoc, ← G.map_comp_assoc]`. Both sides reduce to the same expression. Establish `l₁` using `PullbackCone.IsLimit.lift_fst lF _ _ hw`. Establish `l₂` using `PullbackCone.IsLimit.lift_snd lF _ _ hw`.
+
+Express the relevant statement in the definitionally equal form `PullbackCone.IsLimit.lift lF _ _ hw ≫ F.map (homOfLE le_sup_left : U ⟶ U ⊔ V).op = _ at l₁`. Express the relevant statement in the definitionally equal form `PullbackCone.IsLimit.lift lF _ _ hw ≫ F.map (homOfLE le_sup_right : V ⟶ U ⊔ V).op = _ at l₂`. Establish `key : ∀ {W : Opens T} (r : W ⟶ U ⊔ V) (_ : IsIso (η.app (op W))) (L : G.obj (op (U ⊔ V)) ⟶ F.obj (op (U ⊔ V))) (_ : L ≫ F.map r.op = G.map r.op ≫ inv (η.app (op W))), (η.app _ ≫ L) ≫ F.map r.op = 𝟙 _ ≫ F.map r.op ∧ (L ≫ η.app _) ≫ G.map r.op = 𝟙 _ ≫ G.map r.op`. Introduce `W r _ L hL`. Prove the components needed by the constructor for the conclusion.
+
+Rewrite using `[Category.assoc, hL, ← Category.assoc, ← η.naturality, Category.assoc, IsIso.hom_inv_id, Category.comp_id, Category.id_comp]`. Rewrite using `[Category.assoc, ← η.naturality, ← Category.assoc, hL, Category.assoc, IsIso.inv_hom_id, Category.comp_id, Category.id_comp]`. Use `⟨⟨PullbackCone.IsLimit.lift lF _ _ hw, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `PullbackCone.IsLimit.hom_ext lF` to reduce the goal to its premises. Conclude with `(key _ hU _ l₁).1`.
+
+Conclude with `(key _ hV _ l₂).1`. Apply `PullbackCone.IsLimit.hom_ext lG` to reduce the goal to its premises. Conclude with `(key _ hU _ l₁).2`. Conclude with `(key _ hV _ l₂).2`.
+-/
 lemma isIso_app_sup {T : TopCat.{0}} {F G : TopCat.Presheaf AddCommGrpCat.{0} T} (hF : F.IsSheaf)
     (hG : G.IsSheaf) (η : F ⟶ G) (U V : Opens T) (hU : IsIso (η.app (op U)))
     (hV : IsIso (η.app (op V))) (hUV : IsIso (η.app (op (U ⊓ V)))) :
@@ -62,6 +73,9 @@ def restrictOverlap (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : g ≫ f
       (pushforward k).obj ((Scheme.Modules.pullback k).obj M) :=
   transMap g f e (pullbackCompIso e (Iso.refl _)).inv
 
+/- English proof (translation)
+Establish `h` using `homEquiv_pullbackCompIso e (Iso.refl ((Scheme.Modules.pullback f).obj M)) (pullbackCompIso e (Iso.refl _)).inv`. Rewrite `h` using `[Iso.hom_inv_id, Iso.refl_hom, Adjunction.homEquiv_id, Adjunction.homEquiv_id]`. Conclude with `h.symm`.
+-/
 lemma unit_restrictOverlap (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : g ≫ f = k) (M : X.Modules) :
     (pullbackPushforwardAdjunction f).unit.app M ≫ restrictOverlap g f e M =
       (pullbackPushforwardAdjunction k).unit.app M := by
@@ -70,11 +84,19 @@ lemma unit_restrictOverlap (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : 
   rw [Iso.hom_inv_id, Iso.refl_hom, Adjunction.homEquiv_id, Adjunction.homEquiv_id] at h
   exact h.symm
 
+/- English proof (translation)
+Simplify using `only [transMap, Adjunction.homEquiv_naturality_left, Functor.map_comp, Category.assoc]`.
+-/
 lemma transMap_pullback_map (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : g ≫ f = k)
     {M M' : Z₁.Modules} {N : T.Modules} (a : M ⟶ M') (χ : (Scheme.Modules.pullback g).obj M' ⟶ N) :
     transMap g f e ((Scheme.Modules.pullback g).map a ≫ χ) = (pushforward f).map a ≫ transMap g f e χ := by
   simp only [transMap, Adjunction.homEquiv_naturality_left, Functor.map_comp, Category.assoc]
 
+/- English proof (translation)
+Establish `h` using `homEquiv_pullbackCompIso e (Iso.refl ((Scheme.Modules.pullback f).obj A)) ((Scheme.Modules.pullback g).map φ.hom ≫ (pullbackCompIso e (Iso.refl _)).inv)`. Establish `h2 : (pullbackPushforwardAdjunction f).homEquiv _ _ (𝟙 _) ≫ (pushforward f).map φ.hom = (pullbackPushforwardAdjunction f).homEquiv _ _ φ.hom`. Rewrite using `[← Adjunction.homEquiv_naturality_right, Category.id_comp]`. Rewrite `h` using `[transMap_pullback_map, Iso.refl_hom]`. Rewrite using `[restrictOverlap, ← h2, Category.assoc, ← h]`.
+
+Simplify using `only [pullbackIsoAlong, Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom]`.
+-/
 lemma homEquiv_pullbackIsoAlong (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : g ≫ f = k)
     {A B : X.Modules}
     (φ : (Scheme.Modules.pullback f).obj A ≅ (Scheme.Modules.pullback f).obj B) :
@@ -89,6 +111,9 @@ lemma homEquiv_pullbackIsoAlong (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} 
   rw [restrictOverlap, ← h2, Category.assoc, ← h]
   simp only [pullbackIsoAlong, Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom]
 
+/- English proof (translation)
+Use `ext1`. Simplify using `only [pullbackIsoAlong, Iso.trans_hom, Iso.symm_hom, Iso.trans_inv, Iso.symm_inv, Functor.mapIso_hom, Functor.mapIso_inv, Category.assoc]`.
+-/
 lemma pullbackIsoAlong_symm (g : T ⟶ Z₁) (f : Z₁ ⟶ X) {k : T ⟶ X} (e : g ≫ f = k)
     {A B : X.Modules}
     (φ : (Scheme.Modules.pullback f).obj A ≅ (Scheme.Modules.pullback f).obj B) :
@@ -103,6 +128,9 @@ variable (f₁ : Z₁ ⟶ X) (f₂ : Z₂ ⟶ X) [IsOpenImmersion f₁] [IsOpenI
 
 omit [IsOpenImmersion f₁] [IsOpenImmersion f₂] [IsOpenImmersion g₁] [IsOpenImmersion g₂] in
 
+/- English proof (translation)
+Rewrite using `[unit_restrictOverlap, unit_restrictOverlap]`.
+-/
 lemma unit_condition (M : X.Modules) :
     (pullbackPushforwardAdjunction f₁).unit.app M ≫ restrictOverlap g₁ f₁ e₁ M =
       (pullbackPushforwardAdjunction f₂).unit.app M ≫ restrictOverlap g₂ f₂ e₂ M := by
@@ -162,6 +190,9 @@ def isLimit (hcov : ⊤ ≤ f₁.opensRange ⊔ f₂.opensRange)
     (loc _ true inf_le_right) (loc _ false inf_le_right)
     (loc _ true (inf_le_left.trans inf_le_right))
 
+/- English proof (translation)
+Rewrite using `[Adjunction.homEquiv_unit, Adjunction.unit_naturality]`.
+-/
 lemma comp_unit {Z : Scheme.{0}} (f : Z ⟶ X) {A B : X.Modules} (α : A ⟶ B) :
     α ≫ (pullbackPushforwardAdjunction f).unit.app B =
       (pullbackPushforwardAdjunction f).homEquiv _ _ ((Scheme.Modules.pullback f).map α) := by
@@ -169,6 +200,9 @@ lemma comp_unit {Z : Scheme.{0}} (f : Z ⟶ X) {A B : X.Modules} (α : A ⟶ B) 
 
 include e₁ e₂ in
 
+/- English proof (translation)
+Apply `PullbackCone.IsLimit.hom_ext (isLimit f₁ f₂ g₁ g₂ e₁ e₂ hcov h₁₂ h₂₁ B)` to reduce the goal to its premises. Conclude with `(comp_unit f₁ α).trans ((congrArg _ h₁).trans (comp_unit f₁ β).symm)`. Conclude with `(comp_unit f₂ α).trans ((congrArg _ h₂).trans (comp_unit f₂ β).symm)`.
+-/
 lemma hom_ext (hcov : ⊤ ≤ f₁.opensRange ⊔ f₂.opensRange)
     (h₁₂ : ∀ O : X.Opens, O ≤ f₁.opensRange → f₂ ⁻¹ᵁ O ≤ g₂.opensRange)
     (h₂₁ : ∀ O : X.Opens, O ≤ f₂.opensRange → f₁ ⁻¹ᵁ O ≤ g₁.opensRange) {A B : X.Modules} (α β : A ⟶ B)
@@ -178,6 +212,11 @@ lemma hom_ext (hcov : ⊤ ≤ f₁.opensRange ⊔ f₂.opensRange)
   · exact (comp_unit f₁ α).trans ((congrArg _ h₁).trans (comp_unit f₁ β).symm)
   · exact (comp_unit f₂ α).trans ((congrArg _ h₂).trans (comp_unit f₂ β).symm)
 
+/- English proof (translation)
+Establish `l` using `isLimit f₁ f₂ g₁ g₂ e₁ e₂ hcov h₁₂ h₂₁ B`. Use `⟨PullbackCone.IsLimit.lift l _ _ h, ?_, ?_⟩` and prove the remaining obligations. Apply `((pullbackPushforwardAdjunction f₁).homEquiv _ _).injective` to reduce the goal to its premises. Conclude with `(comp_unit f₁ _).symm.trans (PullbackCone.IsLimit.lift_fst l _ _ h)`. Apply `((pullbackPushforwardAdjunction f₂).homEquiv _ _).injective` to reduce the goal to its premises.
+
+Conclude with `(comp_unit f₂ _).symm.trans (PullbackCone.IsLimit.lift_snd l _ _ h)`.
+-/
 lemma exists_hom (hcov : ⊤ ≤ f₁.opensRange ⊔ f₂.opensRange)
     (h₁₂ : ∀ O : X.Opens, O ≤ f₁.opensRange → f₂ ⁻¹ᵁ O ≤ g₂.opensRange)
     (h₂₁ : ∀ O : X.Opens, O ≤ f₂.opensRange → f₁ ⁻¹ᵁ O ≤ g₁.opensRange) {A B : X.Modules}
@@ -198,6 +237,23 @@ end Glue
 
 end IsoGlueTwo
 
+/- English proof (translation)
+Introduce `Y P₁ P₂ P P₁₂ h₁ h₂ hP k₁ k₂ hk A B φ₁ φ₂ hφ`. Establish `e₁ : Y.homOfLE k₁ ≫ Y.homOfLE h₁ = Y.homOfLE (k₁.trans h₁)` using `Y.homOfLE_homOfLE k₁ h₁`. Establish `e₂ : Y.homOfLE k₂ ≫ Y.homOfLE h₂ = Y.homOfLE (k₁.trans h₁)` using `Y.homOfLE_homOfLE k₂ h₂`. Establish `hφ' : pullbackIsoAlong e₁ φ₁ = pullbackIsoAlong e₂ φ₂` using `hφ`. Establish `hcov : ⊤ ≤ (Y.homOfLE h₁).opensRange ⊔ (Y.homOfLE h₂).opensRange`.
+
+Rewrite using `[Scheme.opensRange_homOfLE, Scheme.opensRange_homOfLE, ← Scheme.Hom.preimage_sup, ← P.ι_preimage_self]`. Conclude with `Scheme.Hom.preimage_mono _ hP`. Establish `h₁₂ : ∀ O : (P : Scheme.{0}).Opens, O ≤ (Y.homOfLE h₁).opensRange → (Y.homOfLE h₂) ⁻¹ᵁ O ≤ (Y.homOfLE k₂).opensRange`. Introduce `O hO`. Rewrite `hO`, the goal using `[Scheme.opensRange_homOfLE]`.
+
+Use `(Scheme.Hom.preimage_mono _ hO).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.homOfLE_ι]`. Introduce `x hx`. Establish `hx2 : P₂.ι x ∈ P₂` using `x.2`. Conclude with `hk ⟨hx, hx2⟩`.
+
+Establish `h₂₁ : ∀ O : (P : Scheme.{0}).Opens, O ≤ (Y.homOfLE h₂).opensRange → (Y.homOfLE h₁) ⁻¹ᵁ O ≤ (Y.homOfLE k₁).opensRange`. Introduce `O hO`. Rewrite `hO`, the goal using `[Scheme.opensRange_homOfLE]`. Use `(Scheme.Hom.preimage_mono _ hO).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_preimage, Scheme.homOfLE_ι]`.
+
+Introduce `x hx`. Establish `hx1 : P₁.ι x ∈ P₁` using `x.2`. Conclude with `hk ⟨hx1, hx⟩`. Establish `hhom` using `congrArg (fun ψ => (Scheme.Modules.pullbackPushforwardAdjunction (Y.homOfLE (k₁.trans h₁))).homEquiv _ _ ψ.hom) hφ'`. Establish `hinv` using `congrArg (fun ψ => (Scheme.Modules.pullbackPushforwardAdjunction (Y.homOfLE (k₁.trans h₁))).homEquiv _ _ ψ.symm.hom) hφ'`.
+
+Simplify using `only [← IsoGlueTwo.pullbackIsoAlong_symm] at hinv`. Simplify using `only [IsoGlueTwo.homEquiv_pullbackIsoAlong] at hhom hinv`. Take `⟨α, hα₁, hα₂⟩` from `IsoGlueTwo.exists_hom _ _ _ _ e₁ e₂ hcov h₁₂ h₂₁ φ₁.hom φ₂.hom hhom`. Take `⟨β, hβ₁, hβ₂⟩` from `IsoGlueTwo.exists_hom _ _ _ _ e₁ e₂ hcov h₁₂ h₂₁ φ₁.inv φ₂.inv hinv`. Use `⟨⟨α, β, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Apply the tactic sequence `apply IsoGlueTwo.hom_ext _ _ _ _ e₁ e₂ hcov h₁₂ h₂₁ <;> simp [hα₁, hα₂, hβ₁, hβ₂]`. Apply the tactic sequence `apply IsoGlueTwo.hom_ext _ _ _ _ e₁ e₂ hcov h₁₂ h₂₁ <;> simp [hα₁, hα₂, hβ₁, hβ₂]`. Use `ext1`. Conclude with `hα₁`. Use `ext1`.
+
+Conclude with `hα₂`.
+-/
 theorem IsoGlueTwo.proof : IsoGlueTwo.Statement := by
   intro Y P₁ P₂ P P₁₂ h₁ h₂ hP k₁ k₂ hk A B φ₁ φ₂ hφ
   have e₁ : Y.homOfLE k₁ ≫ Y.homOfLE h₁ = Y.homOfLE (k₁.trans h₁) := Y.homOfLE_homOfLE k₁ h₁

@@ -18,6 +18,15 @@ noncomputable section
 
 namespace GlobalTheory.LFun
 
+/- English proof (translation)
+Use `eq_locIdele ?_ ?_` and prove the remaining obligations. Conclude with `map_extUnit_zero (fstA F) (inFin v) (inFin_mul v) (fun _ => rfl) x`. Use `FiniteAdeleRing.ext _ fun u => ?_` and prove the remaining obligations. Rewrite using `[finAdEquiv_apply rfl]`. Establish `e : Algebra.TensorProduct.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F (u.under (𝓞 F))) (AlgHom.id F E) (finTens F E (ideleAt F E v x : AF F ⊗[F] E)) = (unitFin F E (u.under (𝓞 F)) (ideleAt F E v x) : Fv _ _ ⊗[F] E)`.
+
+Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.map _ (AlgHom.id F E) (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) _) = _`. Rewrite using `[← AlgHom.comp_apply, ← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`. Both sides reduce to the same expression. Rewrite using `[e]`. Distinguish the cases in `hu : u.under (𝓞 F) = v`.
+
+Take `rfl : u = w` from `(InertChart.under_eq_iff hw u).1 hu`. Substitute `h` using the available equality. Rewrite using `[unitFin_ideleAt_self]`. Conclude with `(finSingle_self u _).symm`. Rewrite using `[unitFin_ideleAt_ne hu, Units.val_one, map_one]`.
+
+Conclude with `(finSingle_ne (fun e : u = w => hu (e ▸ h)) _).symm`.
+-/
 theorem ideleAt_eq_locIdele_of_isInertAt {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : HeightOneSpectrum (𝓞 F)} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (hw : IsInertAt F E v w)
     (x : (Fv F v ⊗[F] E)ˣ) :
@@ -40,6 +49,9 @@ theorem ideleAt_eq_locIdele_of_isInertAt {F E : Type} [Field F] [NumberField F] 
     · rw [unitFin_ideleAt_ne hu, Units.val_one, map_one]
       exact (finSingle_ne (fun e : u = w => hu (e ▸ h)) _).symm
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ χ v w h hw x`. Use `show ((χ (ideleAt F E v x) : Circle) : ℂ) = ((Circle.toUnits (χ (locIdele F w _)) : ℂˣ) : ℂ)`. Rewrite using `[GlobalTheory.LFun.ideleAt_eq_locIdele_of_isInertAt h hw x]`. Both sides reduce to the same expression.
+-/
 theorem charAt_eq_locChar_of_isInertAt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (χ : (AF F ⊗[F] E)ˣ →* Circle), ∀ (v : HeightOneSpectrum (𝓞 F)) (w : HeightOneSpectrum (𝓞 E)) (h : w.under (𝓞 F) = v), IsInertAt F E v w → ∀ x : (Fv F v ⊗[F] E)ˣ, ((charAt χ v x : Circle) : ℂ) = (locChar χ w (Units.map (toCompl h).toMonoidHom x) : ℂˣ) := by
   intro F E _ _ _ _ _ χ v w h hw x
   show ((χ (ideleAt F E v x) : Circle) : ℂ) = ((Circle.toUnits (χ (locIdele F w _)) : ℂˣ) : ℂ)

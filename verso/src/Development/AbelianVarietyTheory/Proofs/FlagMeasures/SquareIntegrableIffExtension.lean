@@ -12,14 +12,23 @@ def circleBorelMS : MeasurableSpace Circle := borel Circle
 
 attribute [local instance] circleBorelMS
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨rfl⟩`.
+-/
 theorem circleBorelSpace : BorelSpace Circle := ⟨rfl⟩
 
 attribute [local instance] circleBorelSpace
 
+/- English proof (translation)
+Rewrite using `[Complex.star_def, Complex.conj_mul', Circle.norm_coe]`. Evaluate the numerical expressions.
+-/
 theorem circle_star_mul (z : Circle) : star (z : ℂ) * z = 1 := by
   rw [Complex.star_def, Complex.conj_mul', Circle.norm_coe]
   norm_num
 
+/- English proof (translation)
+Rewrite using `[mul_comm]`. Conclude with `circle_star_mul z`.
+-/
 theorem circle_mul_star (z : Circle) : (z : ℂ) * star (z : ℂ) = 1 := by
   rw [mul_comm]
   exact circle_star_mul z
@@ -36,14 +45,23 @@ def unitScalar (z : Circle) : UJ ε :=
     simp only [Matrix.conjTranspose_smul, Matrix.conjTranspose_one, Matrix.smul_mul, Matrix.mul_smul,
       Matrix.one_mul, Matrix.mul_one, smul_smul, circle_star_mul, circle_mul_star, one_smul]⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem umat_unitScalar (z : Circle) : umat (unitScalar ε z) = (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) := rfl
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show umat (unitScalar ε z) * umat g = umat g * umat (unitScalar ε z)`. Rewrite using `[umat_unitScalar, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]`.
+-/
 theorem unitScalar_comm (z : Circle) (g : UJ ε) : unitScalar ε z * g = g * unitScalar ε z := by
   apply Subtype.ext
   apply Units.ext
   show umat (unitScalar ε z) * umat g = umat g * umat (unitScalar ε z)
   rw [umat_unitScalar, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show ((a * b : Circle) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) = ((a : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) * ((b : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[Circle.coe_mul, smul_mul_smul_comm, Matrix.one_mul]`.
+-/
 theorem unitScalar_mul (a b : Circle) : unitScalar ε (a * b) = unitScalar ε a * unitScalar ε b := by
   apply Subtype.ext
   apply Units.ext
@@ -51,12 +69,18 @@ theorem unitScalar_mul (a b : Circle) : unitScalar ε (a * b) = unitScalar ε a 
     ((a : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)) * ((b : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ))
   rw [Circle.coe_mul, smul_mul_smul_comm, Matrix.one_mul]
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show ((1 : Circle) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) = 1`. Rewrite using `[Circle.coe_one, one_smul]`.
+-/
 theorem unitScalar_one : unitScalar ε 1 = 1 := by
   apply Subtype.ext
   apply Units.ext
   show ((1 : Circle) : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) = 1
   rw [Circle.coe_one, one_smul]
 
+/- English proof (translation)
+Apply `Continuous.subtype_mk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `show Continuous fun z : Circle => (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) fun_prop`. Use `show Continuous fun z : Circle => star (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) fun_prop`.
+-/
 theorem continuous_unitScalar : Continuous (unitScalar ε) := by
   apply Continuous.subtype_mk
   rw [Units.continuous_iff]
@@ -66,19 +90,31 @@ theorem continuous_unitScalar : Continuous (unitScalar ε) := by
   · show Continuous fun z : Circle => star (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ)
     fun_prop
 
+/- English proof (translation)
+The claim follows from `isClosed_eq (Units.continuous_val.comp continuous_subtype_val).matrix_det continuous_const`.
+-/
 theorem isClosed_special : IsClosed (SUJ ε : Set (UJ ε)) :=
   isClosed_eq (Units.continuous_val.comp continuous_subtype_val).matrix_det continuous_const
 
+/- English proof (translation)
+The claim follows from `(isClosed_special ε).isClosedEmbedding_subtypeVal.locallyCompactSpace`.
+-/
 theorem locallyCompact_special : LocallyCompactSpace (SUJ ε) :=
   (isClosed_special ε).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 attribute [local instance] locallyCompact_special
 
+/- English proof (translation)
+The claim follows from `Topology.IsInducing.subtypeVal.secondCountableTopology`.
+-/
 theorem secondCountable_special : SecondCountableTopology (SUJ ε) :=
   Topology.IsInducing.subtypeVal.secondCountableTopology
 
 attribute [local instance] secondCountable_special
 
+/- English proof (translation)
+The claim follows from `sigmaCompactSpace_of_locallyCompact_secondCountable`.
+-/
 theorem sigmaCompact_special : SigmaCompactSpace (SUJ ε) :=
   sigmaCompactSpace_of_locallyCompact_secondCountable
 
@@ -98,11 +134,24 @@ def scalarMul : Circle × SUJ ε →* UJ ε where
       _ = unitScalar ε a * ((g : UJ ε) * unitScalar ε b) * (h : UJ ε) := by rw [unitScalar_comm ε b (g : UJ ε)]
       _ = unitScalar ε a * (g : UJ ε) * (unitScalar ε b * (h : UJ ε)) := by simp only [mul_assoc]
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem scalarMul_apply (z : Circle) (g : SUJ ε) : scalarMul ε (z, g) = unitScalar ε z * (g : UJ ε) := rfl
 
+/- English proof (translation)
+The claim follows from `((continuous_unitScalar ε).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)`.
+-/
 theorem continuous_scalarMul : Continuous (scalarMul ε) :=
   ((continuous_unitScalar ε).comp continuous_fst).mul (continuous_subtype_val.comp continuous_snd)
 
+/- English proof (translation)
+Establish `hg : (umat g)ᴴ * Jm ε * umat g = Jm ε` using `g.2`. Establish `h` using `congrArg Matrix.det hg`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hJ : (Jm ε).det ≠ 0`. Establish `h1` using `congrArg Matrix.det (Jm_mul_self ε)`.
+
+Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `left_ne_zero_of_mul_eq_one h1`. Establish `h2 : star (umat g).det * (umat g).det = 1`. Establish `h3 : (star (umat g).det * (umat g).det) * (Jm ε).det = 1 * (Jm ε).det`. Rewrite using `[one_mul]`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_right_cancel₀ hJ h3`. Rewrite `h2` using `[Complex.star_def, Complex.conj_mul']`. Establish `h4 : ‖(umat g).det‖ ^ 2 = 1` using `by exact_mod_cast h2`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`.
+-/
 theorem norm_det_umat (g : UJ ε) : ‖(umat g).det‖ = 1 := by
   have hg : (umat g)ᴴ * Jm ε * umat g = Jm ε := g.2
   have h := congrArg Matrix.det hg
@@ -121,6 +170,13 @@ theorem norm_det_umat (g : UJ ε) : ‖(umat g).det‖ = 1 := by
   have h4 : ‖(umat g).det‖ ^ 2 = 1 := by exact_mod_cast h2
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4
 
+/- English proof (translation)
+Introduce `u`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_pow_nat_eq (umat u).det hn`. Establish `hnorm : ‖ζ‖ = 1`. Establish `h1 : ‖ζ‖ ^ n = 1` using `by rw [← norm_pow, hζ, norm_det_umat]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h1`.
+
+Set `z : Circle` to `⟨ζ, by simpa [Submonoid.unitSphere] using hnorm⟩`. Establish `hz : (z : ℂ) = ζ` using `rfl`. Use `⟨(z, ⟨(unitScalar ε z)⁻¹ * u, ?_⟩), ?_⟩` and prove the remaining obligations. Use `show (star (z : ℂ) • (1 : Matrix (Fin n) (Fin n) ℂ) * umat u).det = 1`. Rewrite using `[Matrix.smul_mul, Matrix.one_mul, Matrix.det_smul, Fintype.card_fin, ← hζ, ← hz, ← mul_pow, circle_star_mul, one_pow]`.
+
+Rewrite using `[scalarMul_apply]`. Conclude with `mul_inv_cancel_left _ _`.
+-/
 theorem scalarMul_surjective (hn : 0 < n) : Function.Surjective (scalarMul ε) := by
   intro u
   obtain ⟨ζ, hζ⟩ := IsAlgClosed.exists_pow_nat_eq (umat u).det hn
@@ -136,6 +192,11 @@ theorem scalarMul_surjective (hn : 0 < n) : Function.Surjective (scalarMul ε) :
   · rw [scalarMul_apply]
     exact mul_inv_cancel_left _ _
 
+/- English proof (translation)
+Use `(Filter.hasBasis_cocompact.tendsto_iff Filter.hasBasis_cocompact).2 fun C hC => ?_` and prove the remaining obligations. Use `⟨scalarMul ε ⁻¹' C, ?_, fun x hx => hx⟩` and prove the remaining obligations. Set `W : Set (UJ ε)` to `(fun p : Circle × UJ ε => (unitScalar ε p.1)⁻¹ * p.2) '' (Set.univ ×ˢ C)`. Establish `hW : IsCompact W` using `(isCompact_univ.prod hC).image (((continuous_unitScalar ε).comp continuous_fst).inv.mul continuous_snd)`. Establish `hT : IsCompact ((Subtype.val : SUJ ε → UJ ε) ⁻¹' W)` using `(isClosed_special ε).isClosedEmbedding_subtypeVal.isCompact_preimage hW`.
+
+Use `(isCompact_univ.prod hT).of_isClosed_subset (hC.isClosed.preimage (continuous_scalarMul ε)) ?_` and prove the remaining obligations. Introduce and unpack `⟨z, g⟩ hzg`. Use `⟨trivial, ⟨(z, scalarMul ε (z, g)), ⟨trivial, hzg⟩, ?_⟩⟩` and prove the remaining obligations. Use `show (unitScalar ε z)⁻¹ * (unitScalar ε z * (g : UJ ε)) = g`. Conclude with `inv_mul_cancel_left _ _`.
+-/
 theorem scalarMul_proper : Filter.Tendsto (scalarMul ε) (Filter.cocompact _) (Filter.cocompact _) := by
   refine (Filter.hasBasis_cocompact.tendsto_iff Filter.hasBasis_cocompact).2 fun C hC => ?_
   refine ⟨scalarMul ε ⁻¹' C, ?_, fun x hx => hx⟩
@@ -152,20 +213,36 @@ theorem scalarMul_proper : Filter.Tendsto (scalarMul ε) (Filter.cocompact _) (F
 
 def circleHaar : Measure Circle := Measure.haarMeasure ⊤
 
+/- English proof (translation)
+Unfold `circleHaar`. Use `infer_instance`.
+-/
 theorem circleHaar_isHaar : circleHaar.IsHaarMeasure := by
   unfold circleHaar
   infer_instance
 
 attribute [local instance] circleHaar_isHaar
 
+/- English proof (translation)
+Establish `h` using `Measure.haarMeasure_self (G := Circle) (K₀ := ⊤)`. Rewrite `h` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Then use the resulting hypothesis.
+-/
 theorem circleHaar_univ : circleHaar Set.univ = 1 := by
   have h := Measure.haarMeasure_self (G := Circle) (K₀ := ⊤)
   rwa [TopologicalSpace.PositiveCompacts.coe_top] at h
 
+/- English proof (translation)
+The claim follows from `CompactSpace.isFiniteMeasure`.
+-/
 theorem circleHaar_finite : IsFiniteMeasure circleHaar := CompactSpace.isFiniteMeasure
 
 attribute [local instance] circleHaar_finite
 
+/- English proof (translation)
+Use `haveI : SFinite μ := inferInstance`. Use `haveI : (circleHaar.prod μ).IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _`. Use `haveI hν : (Measure.map (scalarMul ε) (circleHaar.prod μ)).IsHaarMeasure := Measure.isHaarMeasure_map _ (scalarMul ε) (continuous_scalarMul ε) (scalarMul_surjective ε hn) (scalarMul_proper ε)`. Use `set ν := Measure.map (scalarMul ε) (circleHaar.prod μ) with hνdef`. Establish `hmu : muG ε = (muG ε).haarScalarFactor ν • ν` using `Measure.isMulLeftInvariant_eq_smul (muG ε) ν`.
+
+Use `⟨((muG ε).haarScalarFactor ν : ℝ≥0∞), ?_, ENNReal.coe_ne_top, fun F hF hinv => ?_⟩` and prove the remaining obligations. Conclude with `ENNReal.coe_ne_zero.2 (Measure.haarScalarFactor_pos_of_isHaarMeasure (muG ε) ν).ne'`. Establish `hint : ∫⁻ g, F g ∂ν = ∫⁻ g, F (g : UJ ε) ∂μ`. Rewrite using `[hνdef, lintegral_map hF (continuous_scalarMul ε).measurable, lintegral_prod (fun p => F (scalarMul ε p)) (hF.comp (continuous_scalarMul ε).measurable).aemeasurable]`. Simplify using `only [scalarMul_apply, hinv]`.
+
+Rewrite using `[lintegral_const, circleHaar_univ, mul_one]`. Use `conv_lhs => rw [hmu]`. Rewrite using `[lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, hint]`.
+-/
 theorem lintegral_eq (hn : 0 < n) (μ : Measure (SUJ ε)) (hμ : μ.IsHaarMeasure) :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ ∀ F : UJ ε → ℝ≥0∞, Measurable F →
       (∀ (z : Circle) (g : UJ ε), F (unitScalar ε z * g) = F g) →
@@ -196,6 +273,9 @@ namespace GlobalTheory.SqIntSU
 
 attribute [local instance] circleBorelMS circleBorelSpace locallyCompact_special secondCountable_special sigmaCompact_special
 
+/- English proof (translation)
+Establish `h` using `eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (μ := μ) (f := f) (p := 2) two_ne_zero ENNReal.ofNat_ne_top`. Simplify using `only [ENNReal.toReal_ofNat] at h`. Conclude with `⟨fun hm => h.1 hm.2, fun hl => ⟨hf.aestronglyMeasurable, h.2 hl⟩⟩`.
+-/
 theorem memLp_two_iff_lintegral {X : Type} [MeasurableSpace X] [TopologicalSpace X] [OpensMeasurableSpace X]
     [SecondCountableTopologyEither X ℂ] (μ : Measure X) (f : X → ℂ) (hf : Continuous f) :
     MemLp f 2 μ ↔ ∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂μ < ∞ := by
@@ -204,6 +284,29 @@ theorem memLp_two_iff_lintegral {X : Type} [MeasurableSpace X] [TopologicalSpace
   simp only [ENNReal.toReal_ofNat] at h
   exact ⟨fun hm => h.1 hm.2, fun hl => ⟨hf.aestronglyMeasurable, h.2 hl⟩⟩
 
+/- English proof (translation)
+Introduce `n hn ε H _ _ m π' π hE hU`. Establish `hn0 : 0 < n` using `hn`. Establish `hcont : ∀ v w : H, Continuous (fun g : UJ ε => ⟪w, π (umat g) v⟫_ℂ)`. Introduce `v w`. Establish `h1 : Continuous (fun g : UJ ε => π (umat g) v)` using `(hU.2.2 v).comp_continuous (Units.continuous_val.comp continuous_subtype_val) (fun g => g.2)`.
+
+Conclude with `continuous_const.inner h1`. Establish `hone : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ SUset ε` using `⟨show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε by simp, Matrix.det_one⟩`. Establish `hsu : ∀ g : SUJ ε, π' (umat g.1) = π (umat g.1)`. Introduce `g`. Establish `h` using `hE 1 (by simp) (umat g.1) ⟨g.1.2, g.2⟩`.
+
+Simplify using `using h.symm`. Establish `hπ1 : π' 1 = 1`. Establish `h` using `hE 1 (by simp) 1 hone`. Simplify using `only [one_smul, _root_.one_zpow] at h`. Rewrite using `[← h, hU.1.1]`.
+
+Establish `hscal : ∀ (z : Circle) (g : UJ ε) (v w : H), ‖⟪w, π (umat (unitScalar ε z * g)) v⟫_ℂ‖ₑ ^ (2 : ℝ) = ‖⟪w, π (umat g) v⟫_ℂ‖ₑ ^ (2 : ℝ)`. Introduce `z g v w`. Establish `h1 : umat (unitScalar ε z * g) = umat (unitScalar ε z) * umat g` using `rfl`. Establish `hz : π (umat (unitScalar ε z)) = ((z : ℂ) ^ m) • (1 : H →L[ℂ] H)`. Establish `h` using `hE z (Circle.norm_coe z) 1 hone`.
+
+Rewrite using `[umat_unitScalar, h, hπ1]`. Rewrite using `[h1, hU.1.2 _ (unitScalar ε z).2 _ g.2, hz]`. Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm]`. Use `congr 1`.
+
+Simplify using `[inner_smul_right, norm_zpow, Circle.norm_coe]`. Establish `hmeas : ∀ v w : H, Measurable (fun g : UJ ε => ‖⟪w, π (umat g) v⟫_ℂ‖ₑ ^ (2 : ℝ))` using `fun v w => ((hcont v w).measurable.enorm).pow_const _`. Establish `key : ∀ (μ : Measure (SUJ ε)), μ.IsHaarMeasure → ∀ v w : H, ((∫⁻ g, ‖⟪w, π (umat g) v⟫_ℂ‖ₑ ^ (2 : ℝ) ∂(muG ε)) < ∞ ↔ (∫⁻ g, ‖⟪w, π (umat (g : UJ ε)) v⟫_ℂ‖ₑ ^ (2 : ℝ) ∂μ) < ∞)`. Introduce `μ hμ v w`. Take `⟨c, hc0, hct, hc⟩` from `lintegral_eq ε hn0 μ hμ`.
+
+Rewrite using `[hc _ (hmeas v w) (fun z g => hscal z g v w)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `ENNReal.lt_top_of_mul_ne_top_right h.ne hc0`. Introduce `h`.
+
+Conclude with `ENNReal.mul_lt_top hct.lt_top h`. Establish `hS : ∀ v w : H, (fun g : SUJ ε => ⟪w, π' (umat g.1) v⟫_ℂ) = fun g : SUJ ε => ⟪w, π (umat (g : UJ ε)) v⟫_ℂ`. Introduce `v w`. Use function extensionality and compare the values at `g`. Rewrite using `[hsu g]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h μ hμ v w`. Rewrite using `[hS v w, memLp_two_iff_lintegral _ (fun g : SUJ ε => ⟪w, π (umat (g : UJ ε)) v⟫_ℂ) ((hcont v w).comp continuous_subtype_val)]`. Establish `h'` using `(memLp_two_iff_lintegral _ _ (hcont v w)).1 (h v w)`. Conclude with `(key μ hμ v w).1 h'`.
+
+Introduce `h v w`. Establish `hμ : (Measure.haar : Measure (SUJ ε)).IsHaarMeasure` using `inferInstance`. Establish `h'` using `h Measure.haar hμ v w`. Rewrite `h'` using `[hS v w, memLp_two_iff_lintegral _ (fun g : SUJ ε => ⟪w, π (umat (g : UJ ε)) v⟫_ℂ) ((hcont v w).comp continuous_subtype_val)]`. Use `show MemLp (fun g : UJ ε => ⟪w, π (umat g) v⟫_ℂ) 2 (muG ε)`.
+
+Rewrite using `[memLp_two_iff_lintegral _ _ (hcont v w)]`. Conclude with `(key _ hμ v w).2 h'`.
+-/
 theorem sqInt_iff : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),
     Ext ε m π' π → IsURepOn (UJset ε) π → (IsSqIntOn ε π ↔ IsSqIntS ε π') := by

@@ -28,6 +28,11 @@ noncomputable section
 
 namespace GlobalTheory.TInj
 
+/- English proof (translation)
+Establish `hΛ' : (abelian₂ G' L').IsLB` using `LB.isLB_linComb hL' _ _`. Establish `e₁ : cubeCls G (x2 G) (cls L hL) = CechPic.pull (lift (fst G G ≫ f) (snd G G ≫ f) : G2 G ⟶ G2 G').left (cubeCls G' (x2 G') (cls L' hL'))` using `(cls_cubeLB G _ hL).symm.trans (((cls_eq_iff _ (pull_isLB hΛ' _)).2 H).trans ((cls_pull hΛ' _ _).trans (congrArg _ (cls_cubeLB G' _ hL'))))`. Apply the tactic sequence `rw [pull_cubeCls G' _ ![fst G G ≫ f, snd G G ≫ f] _ (fun i => by fin_cases i <;> simp [x2])] at e₁`. Use `(cls_eq_iff (LB.isLB_linComb hL' _ _) (LB.isLB_linComb hL _ _)).1 ((cls_cubeLB G' _ hL').trans (Eq.trans ?_ (cls_cubeLB G _ hL).symm))` and prove the remaining obligations. Rewrite using `[← e₁]`.
+
+Simplify using `only [Category.comp_id]`. Both sides reduce to the same expression.
+-/
 theorem lbIso_cube_of_lam {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj G'] [IsCommMonObj G']
     {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB) (f : G ⟶ G')
     (H : LBIso (abelian₂ G L) ((abelian₂ G' L').pull (lift (fst G G ≫ f) (snd G G ≫ f) : G2 G ⟶ G2 G').left)) :
@@ -46,6 +51,23 @@ theorem lbIso_cube_of_lam {S : Scheme.{0}} {G G' : Over S} [GrpObj G] [IsCommMon
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Introduce `X g n B _ ζ sX c V _ _ _ _ hc D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ hG₁ hG₂ y α₁ α₂ hO₁ hO₂`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Take `⟨a, cA, ha, hcA, gen, hα, hlbA⟩` from `GlobalTheory.T.exists_iso_uniformisedGroups_same_siegelFibre c V (maximalIdeal V) hA D₁ A₁ G₁ U₁.toUnifPre D₂ A₂ G₂ U₂.toUnifPre hG₁ hG₂ y α₁ α₂ hO₁ hO₂`. Take `⟨b, h, hbi, lin, coord⟩` from `GlobalTheory.T.uniformisedGroupIso_abelianPart_character_isos V (maximalIdeal V) hA D₁ A₁ G₁ U₁.toUnifPre D₂ A₂ G₂ U₂.toUnifPre a ha`. Establish `hb : IsMonHom b` using `lin.2.1`.
+
+Establish `hov : Over₀ U₁.toUnifPre U₂.toUnifPre a.hom b` using `lin.2.2.1`. Establish `hlbG` using `GlobalTheory.T.mumfordBundleIso_genericFibre_extends_uniformisedGroups V (maximalIdeal V) hA D₁ A₁ G₁ U₁.toUnifPre D₂ A₂ G₂ U₂.toUnifPre hG₁ a.hom cA.hom ha hcA gen hlbA`. Establish `hlbB` using `GlobalTheory.T.mumfordBundle_iso_along_homs_descends_abelianPart V hA D₁ D₂ A₁ A₂ G₁ G₂ hG₁ hG₂ U₁ U₂ a.hom a.hom b b ha ha hb hb hov hov hlbG`. Establish `hnrm : ∀ χ, ∃ u : LB.Gen (CmpLB D₁.toPre D₂.toPre b (h.toAddMonoidHom χ) χ), Nrm u` using `fun χ => (coord χ).imp fun _ => And.left`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+
+Take `⟨v, hv⟩` from `GlobalTheory.adic_base_embeds_valuation_algebraic_closure.2 V ϖ hϖ`. Establish `key` using `GlobalTheory.Mum.Two.KeyDvr.main V hc ϖ hϖ (AlgebraicClosure (FractionRing V)) v hv D₁ D₂ A₁ A₂ G₁ G₂ hG₁ hG₂ U₁ U₂ a.hom cA.hom b h.toAddMonoidHom hcA gen lin coord h.injective`. Take `⟨E, eG, eA, -, eh, -⟩` from `(GlobalTheory.IntEnd.exists_nsmul_and_neg GlobalTheory.firstFiveLaws V (maximalIdeal V) hA D₁ A₁ G₁ hG₁ U₁).1 1`. Establish `H₁ : LBIso (cubeLB G₁ ![fst G₁ G₁ ≫ E.aG, snd G₁ G₁] U₁.LG.L) (cubeLB G₁ ![fst G₁ G₁, snd G₁ G₁ ≫ E.aG] U₁.LG.L)`. Rewrite using `[eG, pow_one, Category.comp_id, Category.comp_id]`.
+
+Conclude with `GlobalTheory.PolBaseChange.lbIso_refl (LB.isLB_linComb U₁.LG.isLB _ _)`. Establish `H₂ : LBIso (cubeLB A₂.A ![fst A₁.A A₁.A ≫ cA.hom, snd A₁.A A₁.A ≫ cA.hom] A₂.L) (cubeLB A₁.A ![fst A₁.A A₁.A ≫ E.aA, snd A₁.A A₁.A ≫ 𝟙 A₁.A] A₁.L)`. Rewrite using `[eA, pow_one]`. Conclude with `lbIso_cube_of_lam A₁.isLB A₂.isLB cA.hom hlbA`. Take `⟨φ', hφ', hhφ'⟩` from `GlobalTheory.Mum.Two.periods_of_key V (maximalIdeal V) hA D₁ D₂ A₁ A₂ G₁ G₂ hG₁ hG₂ U₁ U₂ a.hom cA.hom b h.toAddMonoidHom hcA gen lin coord E E H₁ H₂ _ key`.
+
+Establish `hφe : ∀ y₀, φ' y₀ = h.symm y₀` using `fun y₀ => h.injective (by show h (φ' y₀) = h (h.symm y₀)`. Rewrite using `[h.apply_symm_apply]`. Conclude with `(hhφ' y₀).trans (by rw [eh, one_smul]))`. Establish `hM : Match D₁.toPre D₂.toPre b h.symm (AlgebraicClosure (FractionRing V))`. Use `⟨hb, hbi, hlbB, hnrm, fun y₀ g₀ hy => ?_⟩` and prove the remaining obligations.
+
+Take `⟨g', h1, h2⟩` from `hφ' y₀ g₀ hy`. Conclude with `⟨g', h1, hφe y₀ ▸ h2⟩`. Use `⟨b, h.symm, hM, fun k hk p₁ p₂ x₁ x₂ hq₁ hq₂ hx => ?_⟩` and prove the remaining obligations. Take `⟨g', hg', -⟩` from `(GlobalTheory.Mum.Two.act_two_hom V D₁.toPre D₂.toPre b h.toAddMonoidHom hb hnrm (AlgebraicClosure (FractionRing V))).1 p₁.g`. Take `⟨p', rfl, hp'⟩` from `key k hk p₁ x₁ hq₁ g' hg'`.
+
+Establish `hxx : x₁ ≫ cA.hom = x₂`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hO₂.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hα, hx]`. Rewrite using `[Over.comp_left, Category.assoc, Over.w, Over.w, Over.w]`.
+
+Use `⟨p', GlobalTheory.T.torsionPairImage_latticePart_eq_of_match V (maximalIdeal V) hA D₁ D₂ b h.symm _ hM k p₁ p' hg', hg', (GlobalTheory.T.torsionPointOfPair_exists_torsion_injective_upToEquiv V (maximalIdeal V) hA D₂ A₂ G₂ U₂ hG₂ _ k hk).2 p' p₂ x₂ (hxx ▸ hp') hq₂⟩` and prove the remaining obligations.
+-/
 theorem two_unif_match : ∀ {X : Scheme.{0}} {g n : ℕ} {B : Type} [CommRing B] {ζ : B} {sX : X ⟶ Sp B} (c : SiegPre g n ζ sX) (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V → ∀ (D₁ : DegData V (maximalIdeal V)) (A₁ : PolAV (Sp (FractionRing V))) (G₁ : Over (Sp V)) [GrpObj G₁] [IsCommMonObj G₁] (U₁ : Unif (maximalIdeal V) D₁ A₁ G₁) (D₂ : DegData V (maximalIdeal V)) (A₂ : PolAV (Sp (FractionRing V))) (G₂ : Over (Sp V)) [GrpObj G₂] [IsCommMonObj G₂] (U₂ : Unif (maximalIdeal V) D₂ A₂ G₂), IsSemiAbelian G₁ → IsSemiAbelian G₂ → ∀ (y : Sp (FractionRing V) ⟶ X) (α₁ : A₁.A.left ⟶ c.A.left) (α₂ : A₂.A.left ⟶ c.A.left), OverPt c A₁ y α₁ → OverPt c A₂ y α₂ → ∃ (b : D₁.toPre.P.A ⟶ D₂.toPre.P.A) (φ : D₁.toPre.X ≃+ D₂.toPre.X), Match D₁.toPre D₂.toPre b φ (AlgebraicClosure (FractionRing V)) ∧ ∀ k : ℕ, 1 ≤ k → ∀ (p₁ : QkPt D₁.toPre (AlgebraicClosure (FractionRing V)) k) (p₂ : QkPt D₂.toPre (AlgebraicClosure (FractionRing V)) k) (x₁ : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A₁.A) (x₂ : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ A₂.A), QkToAkU U₁.toUnifPre (AlgebraicClosure (FractionRing V)) k p₁ x₁ → QkToAkU U₂.toUnifPre (AlgebraicClosure (FractionRing V)) k p₂ x₂ → x₁.left ≫ α₁ = x₂.left ≫ α₂ → QImg b φ p₁ p₂ := by
   intro X g n B _ ζ sX c V _ _ _ _ hc D₁ A₁ G₁ _ _ U₁ D₂ A₂ G₂ _ _ U₂ hG₁ hG₂ y α₁ α₂ hO₁ hO₂
   have hA : AdmBase V (maximalIdeal V) := ⟨inferInstance, inferInstance, inferInstance, hc⟩

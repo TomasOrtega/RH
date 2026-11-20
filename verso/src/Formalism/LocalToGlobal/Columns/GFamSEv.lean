@@ -21,6 +21,9 @@ def cls (F : GFamS K) (p : F.Pt) : F.Cl := ⟨p.1, (F.mem p.1).cls p.2⟩
 
 def repPt (F : GFamS K) (c : F.Cl) : F.Pt := ⟨c.1, F.rep c⟩
 
+/- English proof (translation)
+Take `⟨b, c⟩` from `c`. Conclude with `congrArg (Sigma.mk b) ((F.sec b).spec c)`.
+-/
 theorem cls_repPt (F : GFamS K) (c : F.Cl) : F.cls (F.repPt c) = c := by
   obtain ⟨b, c⟩ := c
   exact congrArg (Sigma.mk b) ((F.sec b).spec c)
@@ -51,9 +54,21 @@ variable {F : GFamS K} {σ : K →+* ℂ} (E : F.Ev σ)
   tr := E.tr b
   tr_ev := E.tr_ev b
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mem_Y (b : F.β) : (E.mem b).Y = E.Y := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mem_ev (b : F.β) : (E.mem b).ev = E.ev := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mem_ip (b : F.β) : (E.mem b).ip = E.ip := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem mem_tr (b : F.β) : (E.mem b).tr = E.tr b := rfl
 
 @[reducible] def ofMem {b₀ : F.β} (E₀ : (F.mem b₀).Ev σ) (tr : ∀ b, F.G b →* ((E₀.Y → ℂ) ≃ₗ[ℂ] (E₀.Y → ℂ)))
@@ -76,20 +91,32 @@ def emb : F.Forms →ₛₗ[σ] (F.Cl → E.Y → ℂ) where
   map_add' φ ψ := by funext c; exact map_add E.ev _ _
   map_smul' a φ := by funext c; exact LinearMap.map_smulₛₗ E.ev _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_apply (φ : F.Forms) (c : F.Cl) :
     E.emb φ c = E.ev (((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) ((F.sec c.1).rep c.2)) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem emb_valAt (φ : F.Forms) (c : F.Cl) : E.emb φ c = E.ev (F.valAt φ c) := rfl
 
 def part (b : F.β) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] ((F.mem b).Cl → E.Y → ℂ) :=
   LinearMap.pi fun c => LinearMap.proj (⟨b, c⟩ : F.Cl)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem part_apply (b : F.β) (Φ : F.Cl → E.Y → ℂ) (c : (F.mem b).Cl) : E.part b Φ c = Φ ⟨b, c⟩ := rfl
 
 def trPt (p : F.Pt) : (E.Y → ℂ) ≃ₗ[ℂ] (E.Y → ℂ) := E.tr p.1 ((F.sec p.1).mv p.2)
 
 def atPt (p : F.Pt) (Φ : F.Cl → E.Y → ℂ) : E.Y → ℂ := E.trPt p (Φ (F.cls p))
 
+/- English proof (translation)
+Unfold `atPt trPt`. Rewrite using `[emb_apply, E.tr_ev]`. Use `show E.ev (F.ρ p.1 ((F.sec p.1).mv p.2) (((φ p.1 : (F.mem p.1).EqFun) : F.D p.1 → F.V) ((F.sec p.1).rep ((F.mem p.1).cls p.2)))) = _`. Rewrite using `[← (φ p.1).2, (F.sec p.1).mv_smul]`.
+-/
 theorem atPt_emb (φ : F.Forms) (p : F.Pt) :
     E.atPt p (E.emb φ) = E.ev (((φ p.1 : (F.mem p.1).EqFun) : F.D p.1 → F.V) p.2) := by
   unfold atPt trPt
@@ -97,6 +124,13 @@ theorem atPt_emb (φ : F.Forms) (p : F.Pt) :
   show E.ev (F.ρ p.1 ((F.sec p.1).mv p.2) (((φ p.1 : (F.mem p.1).EqFun) : F.D p.1 → F.V) ((F.sec p.1).rep ((F.mem p.1).cls p.2)))) = _
   rw [← (φ p.1).2, (F.sec p.1).mv_smul]
 
+/- English proof (translation)
+Establish `hc : (F.mem b).cls d = c` using `by rw [← h, (F.mem b).cls_smul, (F.sec b).spec]`. Substitute `hc` using the available equality. Establish `h1 : (F.sec b).mv d = g`. Establish `h2 : (g⁻¹ * (F.sec b).mv d) • (F.sec b).rep ((F.mem b).cls d) = (F.sec b).rep ((F.mem b).cls d)`. Rewrite using `[mul_smul, (F.sec b).mv_smul]`.
+
+Use `conv_lhs => rw [← h]`. Rewrite using `[inv_smul_smul]`. Establish `h3` using `hf b _ _ h2`. Rewrite `h3` using `[inv_mul_eq_one]`. Conclude with `h3.symm`.
+
+Use `show E.tr b ((F.sec b).mv d) (Φ ⟨b, (F.mem b).cls d⟩) = _`. Rewrite using `[h1]`.
+-/
 theorem atPt_eq (hf : F.Free) (Φ : F.Cl → E.Y → ℂ) (b : F.β) (d : F.D b) (c : (F.mem b).Cl) (g : F.G b)
     (h : g • (F.sec b).rep c = d) : E.atPt ⟨b, d⟩ Φ = E.tr b g (Φ ⟨b, c⟩) := by
   have hc : (F.mem b).cls d = c := by rw [← h, (F.mem b).cls_smul, (F.sec b).spec]
@@ -117,14 +151,23 @@ def opOn (δ : F.Pt → F.Pt) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] (F.Cl → E.Y
   map_add' Φ Ψ := by funext c; exact map_add (E.trPt _) _ _
   map_smul' a Φ := by funext c; exact map_smul (E.trPt _) _ _
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opOn_apply (δ : F.Pt → F.Pt) (Φ : F.Cl → E.Y → ℂ) (c : F.Cl) :
     E.opOn δ Φ c = E.trPt (δ (F.repPt c)) (Φ (F.cls (δ (F.repPt c)))) := rfl
 
+/- English proof (translation)
+The claim follows from `E.atPt_emb φ _`.
+-/
 theorem opOn_emb (δ : F.Pt → F.Pt) (φ : F.Forms) (c : F.Cl) :
     E.opOn δ (E.emb φ) c =
       E.ev (((φ (δ (F.repPt c)).1 : (F.mem (δ (F.repPt c)).1).EqFun) : F.D (δ (F.repPt c)).1 → F.V) (δ (F.repPt c)).2) :=
   E.atPt_emb φ _
 
+/- English proof (translation)
+Use extensionality with `Φ c : 2`. Take `⟨b, c⟩` from `c`. Use `show E.atPt ⟨b, (F.sec b).rep c⟩ Φ = Φ ⟨b, c⟩`. Rewrite using `[E.atPt_eq hf Φ b _ c 1 (one_smul _ _), map_one]`. Both sides reduce to the same expression.
+-/
 theorem opOn_id (hf : F.Free) : E.opOn (fun p => p) = LinearMap.id := by
   ext Φ c : 2
   obtain ⟨b, c⟩ := c
@@ -132,6 +175,13 @@ theorem opOn_id (hf : F.Free) : E.opOn (fun p => p) = LinearMap.id := by
   rw [E.atPt_eq hf Φ b _ c 1 (one_smul _ _), map_one]
   rfl
 
+/- English proof (translation)
+Use extensionality with `Φ c : 2`. Use `show E.trPt (δ (F.repPt c)) (E.atPt (δ' (F.repPt (F.cls (δ (F.repPt c))))) Φ) = E.atPt (δ' (δ (F.repPt c))) Φ`. Generalize the expression as in `δ (F.repPt c) = p`. Take `⟨b, d⟩` from `p`. Take `⟨g', h1, h2⟩` from `hδ' b ((F.sec b).mv d) ((F.sec b).rep ((F.mem b).cls d))`.
+
+Rewrite `h1` using `[(F.sec b).mv_smul d]`. Rewrite using `[h1]`. Use `show E.tr b ((F.sec b).mv d) (E.atPt (δ' ⟨b, (F.sec b).rep ((F.mem b).cls d)⟩) Φ) = _`. Generalize the expression as in `δ' ⟨b, (F.sec b).rep ((F.mem b).cls d)⟩ = q at g' h2`. Take `⟨b', d'⟩` from `q`.
+
+Rewrite using `[E.atPt_eq hf Φ b' (g' • d') ((F.mem b').cls d') (g' * (F.sec b').mv d') (by rw [mul_smul, (F.sec b').mv_smul]), map_mul, h2]`. Both sides reduce to the same expression.
+-/
 theorem opOn_comp (hf : F.Free) (δ δ' : F.Pt → F.Pt)
     (hδ' : ∀ (b : F.β) (g : F.G b) (d : F.D b), ∃ g' : F.G (δ' ⟨b, d⟩).1,
       δ' ⟨b, g • d⟩ = ⟨(δ' ⟨b, d⟩).1, g' • (δ' ⟨b, d⟩).2⟩ ∧ E.tr _ g' = E.tr b g) :
@@ -152,15 +202,27 @@ theorem opOn_comp (hf : F.Free) (δ δ' : F.Pt → F.Pt)
 
 def opOnC (δ : ∀ b, F.D b → F.D b) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] (F.Cl → E.Y → ℂ) := E.opOn fun p => ⟨p.1, δ p.1 p.2⟩
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem opOnC_apply (δ : ∀ b, F.D b → F.D b) (Φ : F.Cl → E.Y → ℂ) (c : F.Cl) :
     E.opOnC δ Φ c = E.trPt ⟨c.1, δ c.1 (F.rep c)⟩ (Φ ⟨c.1, (F.mem c.1).cls (δ c.1 (F.rep c))⟩) := rfl
 
+/- English proof (translation)
+The claim follows from `E.atPt_emb φ ⟨c.1, δ c.1 (F.rep c)⟩`.
+-/
 theorem opOnC_emb (δ : ∀ b, F.D b → F.D b) (φ : F.Forms) (c : F.Cl) :
     E.opOnC δ (E.emb φ) c = E.ev (((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) (δ c.1 (F.rep c))) :=
   E.atPt_emb φ ⟨c.1, δ c.1 (F.rep c)⟩
 
+/- English proof (translation)
+The claim follows from `E.opOn_id hf`.
+-/
 theorem opOnC_id (hf : F.Free) : E.opOnC (fun _ d => d) = LinearMap.id := E.opOn_id hf
 
+/- English proof (translation)
+The claim follows from `E.opOn_comp hf _ _ fun b g d => ⟨g, by rw [hδ'], rfl⟩`.
+-/
 theorem opOnC_comp (hf : F.Free) (δ δ' : ∀ b, F.D b → F.D b)
     (hδ' : ∀ (b : F.β) (g : F.G b) (d : F.D b), δ' b (g • d) = g • δ' b d) :
     E.opOnC δ ∘ₗ E.opOnC δ' = E.opOnC fun b d => δ' b (δ b d) :=
@@ -168,11 +230,17 @@ theorem opOnC_comp (hf : F.Free) (δ δ' : ∀ b, F.D b → F.D b)
 
 def lin : (F.ιV → ℂ) →ₗ[ℂ] (E.Y → ℂ) := Fintype.linearCombination ℂ fun i => E.ev (F.bV i)
 
+/- English proof (translation)
+Use `conv_lhs => rw [← F.bV.sum_repr x]`. Rewrite using `[map_sum, lin, Fintype.linearCombination_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ E.ev _ _`.
+-/
 theorem ev_eq_lin (x : F.V) : E.ev x = E.lin fun i => σ (F.bV.repr x i) := by
   conv_lhs => rw [← F.bV.sum_repr x]
   rw [map_sum, lin, Fintype.linearCombination_apply]
   exact Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ E.ev _ _
 
+/- English proof (translation)
+Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `E.li.fintypeLinearCombination_injective`.
+-/
 theorem lin_ker : LinearMap.ker E.lin = ⊥ := by
   rw [LinearMap.ker_eq_bot]
   exact E.li.fintypeLinearCombination_injective
@@ -193,20 +261,44 @@ def extend {M : Type} [AddCommGroup M] [Module ℂ M] (ℓ : F.V →ₛₗ[σ] M
 def sharp (ℓ : F.V →ₛₗ[σ] ℂ) : E.Y → ℂ :=
   ∑ j, starRingEnd ℂ (∑ i, ℓ (F.bV i) * E.gram⁻¹ i j) • E.ev (F.bV j)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem lin_mem (b : F.β) : (E.mem b).lin = E.lin := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem gram_mem (b : F.β) : (E.mem b).gram = E.gram := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem ipB_mem (b : F.β) : (E.mem b).ipB = E.ipB := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem co_mem (b : F.β) : (E.mem b).co = E.co := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem extend_mem (b : F.β) {M : Type} [AddCommGroup M] [Module ℂ M] (ℓ : F.V →ₛₗ[σ] M) :
     (E.mem b).extend ℓ = E.extend ℓ := rfl
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sharp_mem (b : F.β) (ℓ : F.V →ₛₗ[σ] ℂ) : (E.mem b).sharp ℓ = E.sharp ℓ := rfl
 
+/- English proof (translation)
+Use function extensionality and compare the values at `j`. Simplify using `only [ipB, LinearMap.pi_apply, lin, Fintype.linearCombination_apply, map_sum, LinearMap.map_smul, smul_eq_mul, Matrix.mulVec, dotProduct, gram, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+-/
 theorem ipB_lin (z : F.ιV → ℂ) : E.ipB (E.lin z) = E.gram *ᵥ z := by
   funext j
   simp only [ipB, LinearMap.pi_apply, lin, Fintype.linearCombination_apply, map_sum, LinearMap.map_smul, smul_eq_mul,
     Matrix.mulVec, dotProduct, gram, Matrix.of_apply]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+/- English proof (translation)
+Unfold `co`. Use `split_ifs with hG`. Rewrite using `[LinearMap.comp_apply, ipB_lin, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hG, Matrix.one_mulVec]`. Conclude with `LinearMap.congr_fun (E.lin.exists_leftInverse_of_injective E.lin_ker).choose_spec z`.
+-/
 theorem co_lin (z : F.ιV → ℂ) : E.co (E.lin z) = z := by
   unfold co
   split_ifs with hG
@@ -214,6 +306,11 @@ theorem co_lin (z : F.ιV → ℂ) : E.co (E.lin z) = z := by
       Matrix.one_mulVec]
   · exact LinearMap.congr_fun (E.lin.exists_leftInverse_of_injective E.lin_ker).choose_spec z
 
+/- English proof (translation)
+Unfold `extend co sharp`. Rewrite using `[if_pos hG]`. Simplify using `only [LinearMap.comp_apply, Fintype.linearCombination_apply, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, ipB, LinearMap.pi_apply, smul_eq_mul, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, RingHomCompTriple.comp_apply, RingHom.id_apply]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem extend_eq_ip (hG : IsUnit E.gram.det) (ℓ : F.V →ₛₗ[σ] ℂ) (f : E.Y → ℂ) : E.extend ℓ f = E.ip (E.sharp ℓ) f := by
   unfold extend co sharp
   rw [if_pos hG]
@@ -225,6 +322,9 @@ theorem extend_eq_ip (hG : IsUnit E.gram.det) (ℓ : F.V →ₛₗ[σ] ℂ) (f :
   refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[extend, LinearMap.comp_apply, ev_eq_lin, co_lin, Fintype.linearCombination_apply]`. Use `conv_rhs => rw [← F.bV.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (LinearMap.map_smulₛₗ ℓ _ _).symm`.
+-/
 theorem extend_ev {M : Type} [AddCommGroup M] [Module ℂ M] (ℓ : F.V →ₛₗ[σ] M) (x : F.V) : E.extend ℓ (E.ev x) = ℓ x := by
   rw [extend, LinearMap.comp_apply, ev_eq_lin, co_lin, Fintype.linearCombination_apply]
   conv_rhs => rw [← F.bV.sum_repr x]
@@ -236,6 +336,9 @@ def ipCl (h : F.Ok) : (F.Cl → E.Y → ℂ) →ₗ⋆[ℂ] (F.Cl → E.Y → �
   ∑ c : F.Cl, ((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ •
     ((E.ip.comp (LinearMap.proj c)).compl₂ (LinearMap.proj c))
 
+/- English proof (translation)
+Unfold `ipCl`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.compl₂_apply, LinearMap.comp_apply, LinearMap.proj_apply, smul_eq_mul]`.
+-/
 theorem ipCl_apply (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
     E.ipCl h Φ Ψ = (letI := h.fintypeCl
       ∑ c : F.Cl, ((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ * E.ip (Φ c) (Ψ c)) := by
@@ -245,6 +348,13 @@ theorem ipCl_apply (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
 
 def Fi : Submodule ℂ (F.Cl → E.Y → ℂ) := Submodule.span ℂ (Set.range E.emb)
 
+/- English proof (translation)
+Set `_ : Fintype F.Cl` to `h.fintypeCl`. Set `Bb : Basis (Σ _ : F.Cl, F.ιV) K (F.Cl → F.V)` to `Pi.basis fun _ => F.bV`. Establish `h1 : LinearIndependent ℂ fun i => E.evCl (Bb i)`. Establish `e : (fun i => E.evCl (Bb i)) = fun ji : (Σ _ : F.Cl, F.ιV) => Pi.single ji.1 (E.ev (F.bV ji.2))`. Use function extensionality and compare the values at `⟨c, i⟩`.
+
+Use function extensionality and compare the values at `c'`. Simplify using `only [Bb, Pi.basis_apply, evCl, LinearMap.coe_mk, AddHom.coe_mk]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules.
+
+Simplify using `[Pi.single_eq_of_ne hc]`. Rewrite using `[e]`. Conclude with `Pi.linearIndependent_single (fun _ i => E.ev (F.bV i)) fun _ => E.li`. Conclude with `rec_li_semilin σ E.evCl Bb h1 (fun a => F.evRep h (v a)) (hv.map' (F.evRep h) (LinearMap.ker_eq_bot.2 (F.evRep_injective h)))`.
+-/
 theorem emb_li (h : F.Ok) {κ : Type} (v : κ → F.Forms) (hv : LinearIndependent K v) :
     LinearIndependent ℂ fun a => E.emb (v a) := by
   classical
@@ -263,6 +373,11 @@ theorem emb_li (h : F.Ok) {κ : Type} (v : κ → F.Forms) (hv : LinearIndepende
   exact rec_li_semilin σ E.evCl Bb h1 (fun a => F.evRep h (v a))
     (hv.map' (F.evRep h) (LinearMap.ker_eq_bot.2 (F.evRep_injective h)))
 
+/- English proof (translation)
+Use `le_antisymm (Submodule.span_mono ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨b a, rfl⟩`. Unfold `Fi`. Rewrite using `[Submodule.span_le]`.
+
+Introduce and unpack `_ ⟨φ, rfl⟩`. Rewrite using `[← b.sum_repr φ, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+-/
 theorem span_basis {ι : Type} [Fintype ι] (b : Basis ι K F.Forms) :
     Submodule.span ℂ (Set.range fun a => E.emb (b a)) = E.Fi := by
   refine le_antisymm (Submodule.span_mono ?_) ?_
@@ -276,12 +391,18 @@ theorem span_basis {ι : Type} [Fintype ι] (b : Basis ι K F.Forms) :
     rw [LinearMap.map_smulₛₗ]
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
+/- English proof (translation)
+Rewrite using `[← E.span_basis (F.hB h), finrank_span_eq_card (E.emb_li h _ (F.hB h).linearIndependent), Fintype.card_fin]`.
+-/
 theorem finrank_Fi (h : F.Ok) : finrank ℂ E.Fi = F.hDim h := by
   rw [← E.span_basis (F.hB h), finrank_span_eq_card (E.emb_li h _ (F.hB h).linearIndependent), Fintype.card_fin]
 
 def evAt {ι : Type} (pts : ι → F.Pt) : (F.Cl → E.Y → ℂ) →ₗ[ℂ] (ι → E.Y → ℂ) :=
   LinearMap.pi fun i => (E.trPt (pts i)).toLinearMap ∘ₗ LinearMap.proj (F.cls (pts i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem evAt_apply {ι : Type} (pts : ι → F.Pt) (Φ : F.Cl → E.Y → ℂ) (i : ι) : E.evAt pts Φ i = E.atPt (pts i) Φ := rfl
 
 def perCl (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) :
@@ -300,11 +421,17 @@ def perCl (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛ
       refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_
       ring)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem perCl_apply (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) (Φ : F.Cl → E.Y → ℂ) (z : ι → ℂ) :
     E.perCl h ℓ Φ z = (letI := h.fintypeCl
       ∑ c : F.Cl, ((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ *
         ∑ a, z a * E.extend (ℓ c a) (Φ c)) := rfl
 
+/- English proof (translation)
+Unfold `perCl`. Simplify using `only [LinearMap.mk₂_apply, emb_valAt, extend_ev]`.
+-/
 theorem perCl_emb (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) (φ : F.Forms) (z : ι → ℂ) :
     E.perCl h ℓ (E.emb φ) z = (letI := h.fintypeCl
       ∑ c : F.Cl, ((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ *
@@ -312,6 +439,13 @@ theorem perCl_emb (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.
   unfold perCl
   simp only [LinearMap.mk₂_apply, emb_valAt, extend_ev]
 
+/- English proof (translation)
+Set `_` to `h.fintypeCl`. Rewrite using `[R.maj_eq h]`. Unfold `ipAt`. Rewrite using `[Complex.re_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[F.wt_eq_card h c, emb_valAt, E.ip_ev]`. Break down `(F.mem c.1).pairAt_mk σ hσ with hp | hp` into its components or cases. Conclude with `congrArg (fun z : ℂ => (((Nat.card (MulAction.stabilizer (F.G c.1) (F.rep c)) : ℕ) : ℂ)⁻¹ * z).re) (hp _ _)`. Establish `e : F.pairAt (InfinitePlace.mk σ) (F.valAt φ c) (F.valAt φ c) = starRingEnd ℂ (σ (F.pair (F.valAt φ c) (F.valAt φ c)))` using `hp _ _`. Rewrite using `[e, ← Complex.conj_re]`.
+
+Use `congr 1`. Simplify using `only [map_mul, map_inv₀, map_natCast, Complex.conj_conj]`.
+-/
 theorem norm_eq (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) (φ : F.Forms) :
     (majAt (F.hB h) (stdFrame (F.hGram h)) (InfinitePlace.mk σ) φ φ).re =
       (letI := h.fintypeCl
@@ -330,6 +464,9 @@ theorem norm_eq (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingE
     congr 1
     simp only [map_mul, map_inv₀, map_natCast, Complex.conj_conj]
 
+/- English proof (translation)
+Rewrite using `[ipCl_apply]`. Conclude with `E.norm_eq h R hσ φ`.
+-/
 theorem norm_ipCl (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) (φ : F.Forms) :
     (majAt (F.hB h) (stdFrame (F.hGram h)) (InfinitePlace.mk σ) φ φ).re = (E.ipCl h (E.emb φ) (E.emb φ)).re := by
   rw [ipCl_apply]

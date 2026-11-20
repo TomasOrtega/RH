@@ -3,6 +3,17 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Use `set g := Function.surjInv hf with hgdef`. Establish `hg : ∀ y, f (g y) = y` using `Function.surjInv_eq hf`. Establish `key1 : ∀ a b, f a = f b → ∀ y, β a y = β b y`. Introduce `a b h y`. Establish `hk : f (a - b) = 0` using `by rw [map_sub, h, sub_self]`.
+
+Use `h1 (a - b) hk y` as an intermediate fact. Rewrite `this` using `[map_sub, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`. Establish `key2 : ∀ a b, f a = f b → ∀ y, β y a = β y b`. Introduce `a b h y`.
+
+Establish `hk : f (a - b) = 0` using `by rw [map_sub, h, sub_self]`. Use `h2 (a - b) hk y` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`. Use `⟨LinearMap.mk₂ ℤ (fun y y' => β (g y) (g y')) ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations.
+
+Introduce `y1 y2 y'`. Rewrite using `[key1 (g (y1 + y2)) (g y1 + g y2) (by rw [map_add, hg, hg, hg]), map_add, LinearMap.add_apply]`. Introduce `c y y'`. Rewrite using `[key1 (g (c • y)) (c • g y) (by rw [map_zsmul, hg, hg]), map_smul, LinearMap.smul_apply]`. Introduce `y y1 y2`.
+
+Rewrite using `[key2 (g (y1 + y2)) (g y1 + g y2) (by rw [map_add, hg, hg, hg]), map_add]`. Introduce `c y y'`. Rewrite using `[key2 (g (c • y')) (c • g y') (by rw [map_zsmul, hg, hg]), map_smul]`. Introduce `x y`. Rewrite using `[LinearMap.mk₂_apply, key1 (g (f x)) x (hg _), key2 (g (f y)) y (hg _)]`.
+-/
 theorem exists_bilinForm_descend_of_surjective {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     (f : X →+ Y) (hf : Function.Surjective f) (β : LinearMap.BilinForm ℤ X)
     (h1 : ∀ x, f x = 0 → ∀ y, β x y = 0) (h2 : ∀ x, f x = 0 → ∀ y, β y x = 0) :

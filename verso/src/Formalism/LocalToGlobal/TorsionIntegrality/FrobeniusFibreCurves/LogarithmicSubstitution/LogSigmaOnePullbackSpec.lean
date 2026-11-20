@@ -12,18 +12,30 @@ section Alg
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Conclude with `HasSubst.of_constantCoeff_zero' hl`.
+-/
 theorem hs {l : PowerSeries K} (hl : constantCoeff l = 0) : HasSubst l := by
   exact HasSubst.of_constantCoeff_zero' hl
 
+/- English proof (translation)
+Rewrite using `[← coe_substAlgHom (hs hl), map_neg]`.
+-/
 theorem psubst_neg {l : PowerSeries K} (hl : constantCoeff l = 0) (f : PowerSeries K) :
     subst l (-f) = -subst l f := by
   rw [← coe_substAlgHom (hs hl), map_neg]
 
+/- English proof (translation)
+Rewrite using `[subst_mul (hs hl), subst_C]`. Both sides reduce to the same expression.
+-/
 theorem psubst_C_mul {l : PowerSeries K} (hl : constantCoeff l = 0) (c : K) (f : PowerSeries K) :
     subst l (C c * f) = C c * subst l f := by
   rw [subst_mul (hs hl), subst_C]
   rfl
 
+/- English proof (translation)
+Establish `h0 : constantCoeff (subst l (g - C (constantCoeff g))) = 0` using `constantCoeff_subst_eq_zero hl _ (by simp)`. Establish `hg : g = C (constantCoeff g) + (g - C (constantCoeff g))` using `by ring`. Use `conv_lhs => rw [hg]`. Rewrite using `[subst_add (hs hl), map_add, h0, subst_C, add_zero]`. Both sides reduce to the same expression.
+-/
 theorem constantCoeff_psubst {l : PowerSeries K} (hl : constantCoeff l = 0) (g : PowerSeries K) :
     constantCoeff (subst l g) = constantCoeff g := by
   have h0 : constantCoeff (subst l (g - C (constantCoeff g))) = 0 :=
@@ -33,17 +45,28 @@ theorem constantCoeff_psubst {l : PowerSeries K} (hl : constantCoeff l = 0) (g :
   rw [subst_add (hs hl), map_add, h0, subst_C, add_zero]
   rfl
 
+/- English proof (translation)
+Unfold `fExp`. Conclude with `subst_comp_subst_apply (hs hf) (hs hl) _`.
+-/
 theorem psubst_fExp {l f : PowerSeries K} (hl : constantCoeff l = 0) (hf : constantCoeff f = 0) :
     subst l (fExp f) = fExp (subst l f) := by
   unfold fExp
   exact subst_comp_subst_apply (hs hf) (hs hl) _
 
+/- English proof (translation)
+Establish `h1 : constantCoeff (g - 1) = 0` using `by rw [map_sub, hg, map_one, sub_self]`. Unfold `fLog`. Rewrite using `[subst_comp_subst_apply (hs h1) (hs hl), subst_sub (hs hl), psubst_one (hs hl)]`.
+-/
 theorem psubst_fLog {l g : PowerSeries K} (hl : constantCoeff l = 0) (hg : constantCoeff g = 1) :
     subst l (fLog g) = fLog (subst l g) := by
   have h1 : constantCoeff (g - 1) = 0 := by rw [map_sub, hg, map_one, sub_self]
   unfold fLog
   rw [subst_comp_subst_apply (hs h1) (hs hl), subst_sub (hs hl), psubst_one (hs hl)]
 
+/- English proof (translation)
+Establish `hX : HasSubst ((-1 : K) • (X : PowerSeries K))` using `HasSubst.smul_X' _`. Establish `e1 : subst l ((-1 : K) • (X : PowerSeries K)) = -l`. Rewrite using `[subst_smul (hs hl), subst_X (hs hl), neg_one_smul]`. Establish `e2 : rescale (-1 : K) f = f`. Use extensionality with `n`.
+
+Rewrite using `[coeff_rescale]`. Break down `Nat.even_or_odd n with he | ho` into its components or cases. Rewrite using `[he.neg_one_pow, one_mul]`. Rewrite using `[h n ho, mul_zero]`. Rewrite using `[← e1, ← subst_comp_subst_apply hX (hs hl), ← rescale_eq_subst, e2]`.
+-/
 theorem psubst_neg_of_even {f l : PowerSeries K} (h : ∀ n, Odd n → coeff n f = 0)
     (hl : constantCoeff l = 0) : subst (-l) f = subst l f := by
   have hX : HasSubst ((-1 : K) • (X : PowerSeries K)) := HasSubst.smul_X' _
@@ -57,13 +80,24 @@ theorem psubst_neg_of_even {f l : PowerSeries K} (h : ∀ n, Odd n → coeff n f
     · rw [h n ho, mul_zero]
   rw [← e1, ← subst_comp_subst_apply hX (hs hl), ← rescale_eq_subst, e2]
 
+/- English proof (translation)
+Simplify using `[prim]`.
+-/
 theorem coeff_prim_succ (f : PowerSeries K) (n : ℕ) :
     coeff (n + 1) (prim f) = coeff n f / ((n + 1 : ℕ) : K) := by
   simp [prim]
 
+/- English proof (translation)
+Simplify using `[prim]`.
+-/
 theorem coeff_zero_prim (f : PowerSeries K) : coeff 0 (prim f) = 0 := by
   simp [prim]
 
+/- English proof (translation)
+Introduce `n hn`. Take `⟨k, rfl⟩` from `hn`. Rewrite using `[coeff_prim_succ]`. Break down `k with _ | k` into its components or cases. Simplify using `[coeff_zero_prim]`.
+
+Establish `e : 2 * (k + 1) = (2 * k + 1) + 1` using `by ring`. Rewrite using `[e, coeff_prim_succ, h (2 * k + 1) (odd_two_mul_add_one k)]`. Simplify using the standard rewrite rules.
+-/
 theorem prim_prim_even {f : PowerSeries K} (h : ∀ n, Odd n → coeff n f = 0) :
     ∀ n, Odd n → coeff n (prim (prim f)) = 0 := by
   intro n hn
@@ -75,18 +109,30 @@ theorem prim_prim_even {f : PowerSeries K} (h : ∀ n, Odd n → coeff n f = 0) 
     rw [e, coeff_prim_succ, h (2 * k + 1) (odd_two_mul_add_one k)]
     simp
 
+/- English proof (translation)
+Rewrite using `[sigS, map_neg, ← coeff_zero_eq_constantCoeff_apply, coeff_zero_prim, neg_zero]`.
+-/
 theorem constantCoeff_sigS (P : PowerSeries K) : constantCoeff (sigS P) = 0 := by
   rw [sigS, map_neg, ← coeff_zero_eq_constantCoeff_apply, coeff_zero_prim, neg_zero]
 
+/- English proof (translation)
+Rewrite using `[sigmaOneSeries, map_neg, ← coeff_zero_eq_constantCoeff_apply, coeff_zero_prim, neg_zero]`.
+-/
 theorem constantCoeff_sig1S (e1 kap : K) (w : PowerSeries K) :
     constantCoeff (sigmaOneSeries e1 kap w) = 0 := by
   rw [sigmaOneSeries, map_neg, ← coeff_zero_eq_constantCoeff_apply, coeff_zero_prim, neg_zero]
 
+/- English proof (translation)
+Introduce `n hn`. Rewrite using `[sigS, map_neg, prim_prim_even hP n hn, neg_zero]`.
+-/
 theorem sigS_even {P : PowerSeries K} (hP : ∀ n, Odd n → coeff n P = 0) :
     ∀ n, Odd n → coeff n (sigS P) = 0 := by
   intro n hn
   rw [sigS, map_neg, prim_prim_even hP n hn, neg_zero]
 
+/- English proof (translation)
+Introduce `n hn`. Establish `hev : ∀ m, Odd m → coeff m (C e1 + C kap * w) = 0`. Introduce `m hm`. Simplify using `[coeff_C, coeff_C_mul, hw m hm, hm.pos.ne']`. Rewrite using `[sigmaOneSeries, map_neg, prim_prim_even hev n hn, neg_zero]`.
+-/
 theorem sigmaOneLogPart_even (e1 kap : K) {w : PowerSeries K} (hw : ∀ n, Odd n → coeff n w = 0) :
     ∀ n, Odd n → coeff n (sigmaOneSeries e1 kap w) = 0 := by
   intro n hn
@@ -95,23 +141,40 @@ theorem sigmaOneLogPart_even (e1 kap : K) {w : PowerSeries K} (hw : ∀ n, Odd n
     simp [coeff_C, coeff_C_mul, hw m hm, hm.pos.ne']
   rw [sigmaOneSeries, map_neg, prim_prim_even hev n hn, neg_zero]
 
+/- English proof (translation)
+Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Rewrite using `[coeff_zero_X_mul, coeff_zero_eq_constantCoeff_apply, hl]`. Rewrite using `[coeff_succ_X_mul, lU, coeff_mk]`.
+-/
 theorem X_mul_lU {l : PowerSeries K} (hl : constantCoeff l = 0) : X * lU l = l := by
   ext n
   rcases n with _ | n
   · rw [coeff_zero_X_mul, coeff_zero_eq_constantCoeff_apply, hl]
   · rw [coeff_succ_X_mul, lU, coeff_mk]
 
+/- English proof (translation)
+Rewrite using `[← coeff_zero_eq_constantCoeff_apply, lU, coeff_mk]`.
+-/
 theorem constantCoeff_lU (l : PowerSeries K) : constantCoeff (lU l) = coeff 1 l := by
   rw [← coeff_zero_eq_constantCoeff_apply, lU, coeff_mk]
 
+/- English proof (translation)
+Simplify using `[hl]`.
+-/
 theorem constantCoeff_gauss (c : K) {l : PowerSeries K} (hl : constantCoeff l = 0) :
     constantCoeff (-(C c * l ^ 2)) = 0 := by
   simp [hl]
 
+/- English proof (translation)
+Rewrite using `[psubst_fExp hl (by simp), psubst_neg hl, psubst_C_mul hl, subst_pow (hs hl), subst_X (hs hl)]`.
+-/
 theorem psubst_gauss (c : K) {l : PowerSeries K} (hl : constantCoeff l = 0) :
     subst l (fExp (-(C c * X ^ 2))) = fExp (-(C c * l ^ 2)) := by
   rw [psubst_fExp hl (by simp), psubst_neg hl, psubst_C_mul hl, subst_pow (hs hl), subst_X (hs hl)]
 
+/- English proof (translation)
+Establish `hlu : MvPowerSeries.constantCoeff (lU l) = 1`. Use `constantCoeff_lU l` as an intermediate fact. Rewrite `this` using `[hl1]`. Conclude with `this`. Establish `hF : constantCoeff (fLog (lU l)) = 0` using `constantCoeff_fLog hlu`.
+
+Rewrite using `[phO, map_sub, map_add, map_neg, constantCoeff_psubst hl, constantCoeff_sigS, map_mul, map_pow, hl, hF]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_phO (s2 : K) (P : PowerSeries K) {l : PowerSeries K}
     (hl : constantCoeff l = 0) (hl1 : coeff 1 l = 1) : constantCoeff (phO s2 P l) = 0 := by
   have hlu : MvPowerSeries.constantCoeff (lU l) = 1 := by
@@ -122,6 +185,9 @@ theorem constantCoeff_phO (s2 : K) (P : PowerSeries K) {l : PowerSeries K}
   rw [phO, map_sub, map_add, map_neg, constantCoeff_psubst hl, constantCoeff_sigS, map_mul, map_pow, hl, hF]
   simp
 
+/- English proof (translation)
+Rewrite using `[phE, map_add, map_neg, constantCoeff_psubst hl, constantCoeff_sig1S, map_mul, map_pow, hl]`. Simplify using the standard rewrite rules.
+-/
 theorem constantCoeff_phE (s2 e1 kap : K) (w : PowerSeries K) {l : PowerSeries K}
     (hl : constantCoeff l = 0) : constantCoeff (phE s2 e1 kap w l) = 0 := by
   rw [phE, map_add, map_neg, constantCoeff_psubst hl, constantCoeff_sig1S, map_mul, map_pow, hl]
@@ -129,6 +195,15 @@ theorem constantCoeff_phE (s2 e1 kap : K) (w : PowerSeries K) {l : PowerSeries K
 
 end Alg
 
+/- English proof (translation)
+Introduce `K _ _ s2 P l hl hl1`. Use `⟨constantCoeff_phO s2 P hl hl1, ?_⟩` and prove the remaining obligations. Establish `hlu : MvPowerSeries.constantCoeff (lU l) = 1`. Use `constantCoeff_lU l` as an intermediate fact. Rewrite `this` using `[hl1]`.
+
+Conclude with `this`. Establish `hA : constantCoeff (fLog (lU l)) = 0` using `constantCoeff_fLog hlu`. Establish `hB : constantCoeff (subst l (sigS P)) = 0` using `by rw [constantCoeff_psubst hl, constantCoeff_sigS]`. Establish `hC : constantCoeff (-(C (s2 / 2) * l ^ 2)) = 0` using `constantCoeff_gauss _ hl`. Establish `hAB : constantCoeff (fLog (lU l) + subst l (sigS P)) = 0` using `by rw [map_add, hA, hB, add_zero]`.
+
+Establish `e : -phO s2 P l = fLog (lU l) + subst l (sigS P) + -(C (s2 / 2) * l ^ 2)`. Rewrite using `[phO]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sgStar, sigma, subst_mul (hs hl), subst_mul (hs hl), subst_X (hs hl), psubst_fExp hl (constantCoeff_sigS P), psubst_gauss _ hl]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[fExp_fLog hlu, X_mul_lU hl]`. Use `_ = X * fExp (-phO s2 P l) := by`. Rewrite using `[e, fExp_add hAB hC, fExp_add hA hB]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logSigmaPullbackSpec : PhODef := by
   intro K _ _ s2 P l hl hl1
   refine ⟨constantCoeff_phO s2 P hl hl1, ?_⟩
@@ -152,6 +227,13 @@ theorem logSigmaPullbackSpec : PhODef := by
         rw [e, fExp_add hAB hC, fExp_add hA hB]
         ring
 
+/- English proof (translation)
+Introduce `K _ _ s2 e1 kap w l hl`. Use `⟨constantCoeff_phE s2 e1 kap w hl, ?_⟩` and prove the remaining obligations. Establish `hB : constantCoeff (-subst l (sigmaOneSeries e1 kap w)) = 0`. Rewrite using `[map_neg, constantCoeff_psubst hl, constantCoeff_sig1S, neg_zero]`. Establish `hC : constantCoeff (C (s2 / 2) * l ^ 2) = 0` using `by simp [hl]`.
+
+Establish `hB' : constantCoeff (subst l (sigmaOneSeries e1 kap w)) = 0`. Rewrite using `[constantCoeff_psubst hl, constantCoeff_sig1S]`. Establish `hC' : constantCoeff (-(C (s2 / 2) * l ^ 2)) = 0` using `constantCoeff_gauss _ hl`. Rewrite using `[subst_mul (hs hl), sigma1, psubst_fExp hl (constantCoeff_sig1S _ _ _), psubst_gauss _ hl, ← fExp_add hB' hC']`. Use `congr 1`.
+
+Rewrite using `[phE]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem logSigmaOnePullbackSpec : PhEDef := by
   intro K _ _ s2 e1 kap w l hl
   refine ⟨constantCoeff_phE s2 e1 kap w hl, ?_⟩
@@ -171,6 +253,11 @@ section Parity
 
 variable {K : Type} [Field K] [CharZero K]
 
+/- English proof (translation)
+Establish `hlu : MvPowerSeries.constantCoeff (lU l) = 1`. Use `constantCoeff_lU l` as an intermediate fact. Rewrite `this` using `[hl1]`. Conclude with `this`. Rewrite using `[phO, subst_sub (hs hi), subst_add (hs hi), psubst_neg hi, psubst_C_mul hi, subst_pow (hs hi), hli, subst_comp_subst_apply (hs hl) (hs hi), hli, psubst_neg_of_even (sigS_even hP) hl, psubst_fLog hi hlu, neg_sq]`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem phO_inv_sub (s2 : K) {P l i : PowerSeries K} (hP : ∀ n, Odd n → coeff n P = 0)
     (hl : constantCoeff l = 0) (hl1 : coeff 1 l = 1) (hi : constantCoeff i = 0)
     (hli : subst i l = -l) :
@@ -184,6 +271,19 @@ theorem phO_inv_sub (s2 : K) {P l i : PowerSeries K} (hP : ∀ n, Odd n → coef
     psubst_fLog hi hlu, neg_sq]
   ring
 
+/- English proof (translation)
+Establish `hlu : MvPowerSeries.constantCoeff (lU l) = 1`. Use `constantCoeff_lU l` as an intermediate fact. Rewrite `this` using `[hl1]`. Conclude with `this`. Establish `hblu : MvPowerSeries.constantCoeff (subst i (lU l)) = 1`.
+
+Use `constantCoeff_psubst hi (lU l)` as an intermediate fact. Conclude with `this.trans hlu`. Establish `hA : MvPowerSeries.constantCoeff (fLog (lU l)) = 0` using `constantCoeff_fLog hlu`. Establish `hB : MvPowerSeries.constantCoeff (fLog (subst i (lU l))) = 0` using `constantCoeff_fLog hblu`. Establish `hAB : MvPowerSeries.constantCoeff (fLog (lU l) - fLog (subst i (lU l))) = 0`.
+
+Rewrite using `[map_sub, hA, hB, sub_zero]`. Rewrite using `[phO_inv_sub s2 hP hl hl1 hi hli]`. Establish `hb0 : subst i (lU l) ≠ 0`. Introduce `h`. Rewrite `hblu` using `[h, map_zero]`.
+
+Conclude with `zero_ne_one hblu`. Establish `key1 : fExp (fLog (lU l) - fLog (subst i (lU l))) * subst i (lU l) = lU l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[fExp_fLog hblu]`. Use `_ = fExp (fLog (lU l) - fLog (subst i (lU l)) + fLog (subst i (lU l))) := (fExp_add hAB hB).symm`.
+
+Use `_ = lU l := by rw [sub_add_cancel, fExp_fLog hlu]`. Establish `h1 : subst i (X * lU l) = subst i l` using `by rw [X_mul_lU hl]`. Rewrite `h1` using `[subst_mul (hs hi), subst_X (hs hi), hli]`. Establish `key2 : -lU i * subst i (lU l) = lU l`. Establish `h2 : X * (-lU i * subst i (lU l)) = X * lU l`.
+
+Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_left_cancel₀ X_ne_zero h2`. Apply `mul_right_cancel₀ hb0` to reduce the goal to its premises. Rewrite using `[key1, key2]`.
+-/
 theorem fExp_phO_inv_sub (s2 : K) {P l i : PowerSeries K} (hP : ∀ n, Odd n → coeff n P = 0)
     (hl : constantCoeff l = 0) (hl1 : coeff 1 l = 1) (hi : constantCoeff i = 0)
     (hli : subst i l = -l) :
@@ -221,6 +321,9 @@ theorem fExp_phO_inv_sub (s2 : K) {P l i : PowerSeries K} (hP : ∀ n, Odd n →
   apply mul_right_cancel₀ hb0
   rw [key1, key2]
 
+/- English proof (translation)
+Rewrite using `[phE, subst_add (hs hi), psubst_neg hi, psubst_C_mul hi, subst_pow (hs hi), hli, subst_comp_subst_apply (hs hl) (hs hi), hli, psubst_neg_of_even (sigmaOneLogPart_even e1 kap hw) hl, neg_sq]`.
+-/
 theorem phE_inv (s2 e1 kap : K) {w l i : PowerSeries K} (hw : ∀ n, Odd n → coeff n w = 0)
     (hl : constantCoeff l = 0) (hi : constantCoeff i = 0) (hli : subst i l = -l) :
     subst i (phE s2 e1 kap w l) = phE s2 e1 kap w l := by
@@ -230,12 +333,20 @@ theorem phE_inv (s2 e1 kap : K) {w l i : PowerSeries K} (hw : ∀ n, Odd n → c
 end Parity
 
 open Formalism.DworkPowerSeriesWeights (Integral) in
+/- English proof (translation)
+Introduce `n`. Rewrite using `[map_neg, norm_neg]`. Conclude with `hi (Finsupp.single () (n () + 1))`.
+-/
 theorem integral_neg_lU {K : Type} [NormedField K] {i : PowerSeries K}
     (hi : Integral (ι := Unit) i) : Integral (ι := Unit) (-lU i) := by
   intro n
   rw [map_neg, norm_neg]
   exact hi (Finsupp.single () (n () + 1))
 
+/- English proof (translation)
+Introduce `K _ _ _ s2 P l i hP hl hl1 hinv`. Take `⟨hi, hiI, hli⟩` from `hinv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show constantCoeff (subst i (phO s2 P l) - phO s2 P l) = 0`. Rewrite using `[map_sub, constantCoeff_psubst hi, sub_self]`.
+
+Use `show Formalism.DworkPowerSeriesWeights.Integral (fExp (subst i (phO s2 P l) - phO s2 P l))`. Rewrite using `[fExp_phO_inv_sub s2 hP hl hl1 hi hli]`. Conclude with `integral_neg_lU hiI`.
+-/
 theorem logSigmaPullbackEven : PhOEven := by
   intro K _ _ _ s2 P l i hP hl hl1 hinv
   obtain ⟨hi, hiI, hli⟩ := hinv
@@ -246,6 +357,9 @@ theorem logSigmaPullbackEven : PhOEven := by
     rw [fExp_phO_inv_sub s2 hP hl hl1 hi hli]
     exact integral_neg_lU hiI
 
+/- English proof (translation)
+Introduce `K _ _ _ s2 e1 kap w l i hw hl hinv`. Take `⟨hi, _, hli⟩` from `hinv`. Conclude with `phE_inv s2 e1 kap hw hl hi hli`.
+-/
 theorem logSigmaOnePullbackEven : PhEEven := by
   intro K _ _ _ s2 e1 kap w l i hw hl hinv
   obtain ⟨hi, _, hli⟩ := hinv

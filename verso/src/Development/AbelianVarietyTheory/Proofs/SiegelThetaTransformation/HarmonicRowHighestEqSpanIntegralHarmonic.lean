@@ -14,6 +14,17 @@ open GlobalTheory.Dict
 
 namespace GlobalTheory.Dict
 
+/- English proof (translation)
+Take `⟨τ, i, j⟩` from `ℓ`. Use `Subring.subset_closure (Or.inr ⟨τ, i, Pi.single j (N : E), hΛ ?_, ?_⟩)` and prove the remaining obligations. Establish `h1 : (Pi.single j (1 : E) : Fin n → E) ∈ Formalism.L2.Pj.stdLat E n`. Introduce `k _`. Distinguish the cases in `hk : k = j`.
+
+Substitute `hk` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne hk]`. Conclude with `Submodule.zero_mem _`.
+
+Establish `h2` using `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self (N : 𝓞 E)) h1`. Establish `h3 : (N : 𝓞 E) • (Pi.single j (1 : E) : Fin n → E) = Pi.single j (N : E)`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← Pi.single_nsmul]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+
+Unfold `letB`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Simplify using `[Pi.single_eq_of_ne hk]`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem natCast_mul_X_mem_symO {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Geo.Tor.Level H} (c : Coeff l) {n : ℕ} (Λ : Lt E n) (N : ℕ)
     (hΛ : Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n ≤ Λ) (ℓ : LtN Dw n) :
@@ -40,6 +51,19 @@ theorem natCast_mul_X_mem_symO {E : Type} [Field E] [NumberField E] [IsCMField E
       simp [Pi.single_eq_of_ne hk]
     · simp
 
+/- English proof (translation)
+Use `haveI := c.fin`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C x`. Take `⟨y, hy, h⟩` from `exists_integral_multiples ℤ ℚ (L := c.F) {x}`. Establish `h1` using `h x (Finset.mem_singleton_self x)`.
+
+Establish `h2 : MvPolynomial.C (y • x) ∈ Formalism.L2.Pj.symO (Dw` using `Dw) c (⟨Λ⟩ : GenLat E n) := Subring.subset_closure (Or.inl ⟨⟨y • x, h1⟩, rfl⟩)`. Use `⟨(y * y).natAbs, Int.natAbs_pos.2 (mul_ne_zero hy hy), ?_⟩` and prove the remaining obligations. Establish `h3 : (((y * y).natAbs : ℕ) : MvPolynomial (LtN Dw n) c.F) = ((y * y : ℤ) : MvPolynomial (LtN Dw n) c.F)`. Rewrite using `[← Int.cast_natCast, Int.natAbs_of_nonneg (mul_self_nonneg y)]`. Establish `h4` using `Subring.mul_mem _ (intCast_mem (Formalism.L2.Pj.symO (Dw := Dw) c (⟨Λ⟩ : GenLat E n)) y) h2`.
+
+Rewrite using `[h3]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Consider the case `add p q hp hq`. Take `⟨M, hM, h⟩` from `hp`. Take `⟨M', hM', h'⟩` from `hq`. Use `⟨M * M', Nat.mul_pos hM hM', ?_⟩` and prove the remaining obligations. Use `Subring.add_mem _ (Subring.mul_mem _ (natCast_mem _ M') h) (Subring.mul_mem _ (natCast_mem _ M) h')` as an intermediate fact.
+
+Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p ℓ hp`. Take `⟨M, hM, h⟩` from `hp`.
+
+Use `⟨M * N, Nat.mul_pos hM hN, ?_⟩` and prove the remaining obligations. Use `Subring.mul_mem _ h (natCast_mul_X_mem_symO c Λ N hΛ ℓ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_natCast_mul_mem_symO {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {Dw : Datum H} {l : Geo.Tor.Level H} (c : Coeff l) {n : ℕ} (Λ : Lt E n) (N : ℕ) (hN : 0 < N)
     (hΛ : Ideal.span {(N : 𝓞 E)} • Formalism.L2.Pj.stdLat E n ≤ Λ) (P : MvPolynomial (LtN Dw n) c.F) :
@@ -76,6 +100,13 @@ theorem exists_natCast_mul_mem_symO {E : Type} [Field E] [NumberField E] [IsCMFi
     push_cast
     ring
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l c σ r g q0 n X a Dc Λ N hN hΛ Q hQ`. Take `⟨m, t, v, hv⟩` from `Submodule.mem_span_set'.1 (Dc.span hQ)`. Establish `hP : ∀ i, ∃ P : MvPolynomial (LtN Dw n) c.F, P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) ∧ MvPolynomial.rename Dc.eL (MvPolynomial.map σ P) = (v i).1` using `fun i => (v i).2`. Use `choose P hP hPv using hP`. Use `choose M hM hMP using fun i => exists_natCast_mul_mem_symO c Λ N hN hΛ (P i)`.
+
+Use `⟨m, fun i => t i / (M i : ℂ), fun i => (M i : MvPolynomial (LtN Dw n) c.F) * P i, fun i => ⟨?_, hMP i⟩, ?_⟩` and prove the remaining obligations. Establish `e : (M i : MvPolynomial (LtN Dw n) c.F) * P i = (M i : c.F) • P i`. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `(M i : MvPolynomial (LtN Dw n) c.F) * P i ∈ _`. Rewrite using `[e]`.
+
+Conclude with `⟨Submodule.smul_mem _ _ (hP i).1, fun s k k' h u => by rw [map_smul, (hP i).2.1 s k k' h u], fun mm hm => (hP i).2.2 mm (MvPolynomial.support_smul hm)⟩`. Rewrite using `[← hv]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : (M i : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (hM i).ne'`. Rewrite using `[map_mul, map_mul, map_natCast, map_natCast, hPv, ← nsmul_eq_mul, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, div_mul_cancel₀ _ h0]`.
+-/
 theorem rowHighest_eq_sum_harmL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (c : Coeff l) (σ : c.F →+* ℂ) (r g q0 n : ℕ) (X : Data E r) (a : (E →+* ℂ) × ℕ → ℕ) (Dc : Dic Dw c σ X g q0 n a) (Λ : Lt E n) (N : ℕ), 0 < N → Ideal.span {(N : 𝓞 E)} • stdLat E n ≤ Λ → ∀ Q ∈ Harm.rowHighest ℂ Dc.k Dc.k', ∃ (m : ℕ) (t : Fin m → ℂ) (P : Fin m → MvPolynomial (LtN Dw n) c.F), (∀ i, P i ∈ harmL c (⟨Λ⟩ : GenLat E n) a) ∧ Q = ∑ i, t i • MvPolynomial.rename Dc.eL (MvPolynomial.map σ (P i)) := by
   intro E _ _ _ H Dw l c σ r g q0 n X a Dc Λ N hN hΛ Q hQ
   obtain ⟨m, t, v, hv⟩ := Submodule.mem_span_set'.1 (Dc.span hQ)

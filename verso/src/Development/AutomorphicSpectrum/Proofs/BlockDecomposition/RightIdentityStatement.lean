@@ -5,6 +5,25 @@ open PositivityTheory.Rg.Rsw GlobalTheory.Cont
 
 namespace GlobalTheory.CompanionTheory.Dblock
 
+/- English proof (translation)
+Introduce `U h g c σ hUo hU hh hg hhg z hzU hzc`. Take `⟨⟨σ₀, hσ₀⟩, htr⟩` from `hU`. Use `set M : ℝ := max (max σ₀ σ) c`. Use `set V : Set ℂ := U ∩ {w : ℂ | c < w.re}`. Establish `hVo : IsOpen V` using `hUo.inter (isOpen_lt continuous_const Complex.continuous_re)`.
+
+Establish `hHV : {w : ℂ | M < w.re} ⊆ V`. Introduce `w hw`. Establish `hw' : M < w.re` using `hw`. Use `⟨hσ₀ ?_, ?_⟩` and prove the remaining obligations. Use `show σ₀ < w.re`.
+
+Conclude with `lt_of_le_of_lt (le_trans (le_max_left _ _) (le_max_left _ _)) hw'`. Use `show c < w.re`. Conclude with `lt_of_le_of_lt (le_max_right _ _) hw'`. Use `set x₀ : ℂ := ((M + 1 : ℝ) : ℂ)`. Establish `hx₀ : M < x₀.re` using `by show M < ((M + 1 : ℝ) : ℂ).re`.
+
+Rewrite using `[Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hVconn : IsPreconnected V`. Use `isPreconnected_of_forall x₀ fun y hy => ?_` and prove the remaining obligations. Establish `hyc : c < y.re` using `hy.2`.
+
+Use `set T : ℝ := |M - y.re| + 1`. Establish `hT : 0 ≤ T` using `by positivity`. Use `⟨(fun s : ℝ => y + (s : ℂ)) '' Set.Icc 0 T ∪ {w : ℂ | M < w.re}, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `w (⟨s, ⟨hs0, _⟩, rfl⟩ | hw)`. Use `⟨htr y hy.1 s hs0, ?_⟩ show c < (y + (s : ℂ)).re` and prove the remaining obligations.
+
+Rewrite using `[Complex.add_re, Complex.ofReal_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hHV hw`. Conclude with `Or.inr hx₀`. Conclude with `Or.inl ⟨0, ⟨le_refl 0, hT⟩, by simp⟩`.
+
+Use `IsPreconnected.union (y + (T : ℂ)) ⟨T, ⟨hT, le_refl T⟩, rfl⟩ ?_ ?_ ?_` and prove the remaining obligations. Use `show M < (y + (T : ℂ)).re`. Rewrite using `[Complex.add_re, Complex.ofReal_re]`. Use `le_abs_self (M - y.re)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Conclude with `isPreconnected_Icc.image _ (continuous_const.add Complex.continuous_ofReal).continuousOn`. Conclude with `(convex_halfSpace_re_gt M).isPreconnected`. Establish `hhA : AnalyticOnNhd ℂ h V` using `(hh.mono Set.inter_subset_left).analyticOnNhd hVo`. Establish `hgA : AnalyticOnNhd ℂ g V` using `(hg.mono Set.inter_subset_right).analyticOnNhd hVo`. Establish `hσx : σ < x₀.re` using `lt_of_le_of_lt (le_trans (le_max_right _ _) (le_max_left _ _)) hx₀`.
+
+Establish `hev : h =ᶠ[nhds x₀] g` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hσx] with w hw`. Conclude with `hhg w hw`. Conclude with `hhA.eqOn_of_preconnected_of_eventuallyEq hgA hVconn (hHV hx₀) hev ⟨hzU, hzc⟩`.
+-/
 theorem rightId : RightId := by
   intro U h g c σ hUo hU hh hg hhg z hzU hzc
   obtain ⟨⟨σ₀, hσ₀⟩, htr⟩ := hU

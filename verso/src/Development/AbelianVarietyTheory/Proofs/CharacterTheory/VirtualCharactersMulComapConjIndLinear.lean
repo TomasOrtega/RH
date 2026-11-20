@@ -8,11 +8,19 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.BI
 
 open Polynomial in
+/- English proof (translation)
+The claim follows from `AddSubgroup.subset_closure h`.
+-/
 theorem _root_.GlobalTheory.BI.isChar_mem_virt_complex {G : Type} [Group G] {χ : G → ℂ}
     (h : _root_.GlobalTheory.BI.IsChar ℂ ℂ χ) : χ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G :=
   AddSubgroup.subset_closure h
 
 open Polynomial in
+/- English proof (translation)
+Take `⟨n, ρ, hρ⟩` from `ha`. Take `⟨m, σ, hσ⟩` from `hb`. Establish `key` using `(_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ G _ (Representation.tprod ρ σ)).1`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+
+Simplify using `[Representation.char_tensor, hρ, hσ]`.
+-/
 theorem _root_.GlobalTheory.BI.isChar_mul_complex {G : Type} [Group G] {a b : G → ℂ}
     (ha : _root_.GlobalTheory.BI.IsChar ℂ ℂ a) (hb : _root_.GlobalTheory.BI.IsChar ℂ ℂ b) :
     _root_.GlobalTheory.BI.IsChar ℂ ℂ (a * b) := by
@@ -24,6 +32,9 @@ theorem _root_.GlobalTheory.BI.isChar_mul_complex {G : Type} [Group G] {a b : G 
   simp [Representation.char_tensor, hρ, hσ]
 
 open Polynomial in
+/- English proof (translation)
+Establish `hz : (Algebra.lmul ℂ ℂ z : ℂ →ₗ[ℂ] ℂ) = z • LinearMap.id`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hz, map_smul, LinearMap.trace_id]`. Simplify using the standard rewrite rules.
+-/
 private lemma trace_mulLeft_complex_lemma (z : ℂ) :
     LinearMap.trace ℂ ℂ (Algebra.lmul ℂ ℂ z) = z := by
   have hz : (Algebra.lmul ℂ ℂ z : ℂ →ₗ[ℂ] ℂ) = z • LinearMap.id := by
@@ -33,6 +44,11 @@ private lemma trace_mulLeft_complex_lemma (z : ℂ) :
   simp
 
 open Polynomial in
+/- English proof (translation)
+Set `ρ : Representation ℂ G ℂ` to `(Algebra.lmul ℂ ℂ).toMonoidHom.comp ((Units.coeHom ℂ).comp lam)`. Establish `key` using `(_root_.GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ G ℂ ρ).1`. Use `key using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, Representation.character]`.
+
+Conclude with `(trace_mulLeft_complex_lemma _).symm`.
+-/
 theorem _root_.GlobalTheory.BI.isChar_monoidHom_complex {G : Type} [Group G] (lam : G →* ℂˣ) :
     _root_.GlobalTheory.BI.IsChar ℂ ℂ (fun g => (lam g : ℂ)) := by
   let ρ : Representation ℂ G ℂ :=
@@ -44,6 +60,9 @@ theorem _root_.GlobalTheory.BI.isChar_monoidHom_complex {G : Type} [Group G] (la
   exact (trace_mulLeft_complex_lemma _).symm
 
 open Polynomial in
+/- English proof (translation)
+Unfold `_root_.GlobalTheory.BI.ext0`. Apply the tactic sequence `split_ifs <;> simp`.
+-/
 theorem _root_.GlobalTheory.BI.subgroupFunctionExtendByZero_add {G : Type} [Group G] (H : Subgroup G) (a b : H → ℂ)
     (g : G) :
     _root_.GlobalTheory.BI.ext0 H (a + b) g =
@@ -59,6 +78,23 @@ noncomputable def indAddHomComplex {G : Type} [Group G] [Finite G] (H : Subgroup
 
 open Polynomial in
 
+/- English proof (translation)
+Introduce `G _ _`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha b hb`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a ha'`.
+
+Proceed by induction on `hb using AddSubgroup.closure_induction with`. Consider the case `mem b hb' => exact AddSubgroup.subset_closure (_root_.GlobalTheory.BI.isChar_mul_complex ha' hb')`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add b c _ _ hb hc => simpa [mul_add] using add_mem hb hc`. Consider the case `neg b _ hb => simpa [mul_neg] using neg_mem hb`.
+
+Consider the case `zero => simpa using zero_mem _`. Consider the case `add a c _ _ ha hc => simpa [add_mul] using add_mem ha hc`. Consider the case `neg a _ ha => simpa [neg_mul] using neg_mem ha`. Introduce `a ha H _ f`. Proceed by induction on `ha using AddSubgroup.closure_induction with`.
+
+Consider the case `mem a ha'`. Conclude with `AddSubgroup.subset_closure ((_root_.GlobalTheory.isChar_restrict_conj_one ℂ ℂ G a ha').1 H f)`. Consider the case `zero => exact zero_mem _`. Consider the case `add a c _ _ ha hc => exact add_mem ha hc`. Consider the case `neg a _ ha => exact neg_mem ha`.
+
+Introduce `a ha g x`. Proceed by induction on `ha using AddSubgroup.closure_induction with`. Consider the case `mem a ha' => exact (_root_.GlobalTheory.isChar_restrict_conj_one ℂ ℂ G a ha').2.1 g x`. Consider the case `zero => rfl`. Consider the case `add a c _ _ ha hc => simp [ha, hc]`.
+
+Consider the case `neg a _ ha => simp [ha]`. Introduce `H ψ hψ`. Express the relevant statement in the definitionally equal form `_root_.GlobalTheory.BI.indAddHomComplex H ψ ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G`. Proceed by induction on `hψ using AddSubgroup.closure_induction with`. Consider the case `mem ψ hψ'`.
+
+Conclude with `AddSubgroup.subset_closure (_root_.GlobalTheory.BI.isChar_ind ℂ ℂ G H ψ hψ')`. Consider the case `zero => simpa using zero_mem _`. Consider the case `add ψ φ _ _ hψ hφ => simpa [map_add] using add_mem hψ hφ`. Consider the case `neg ψ _ hψ => simpa [map_neg] using neg_mem hψ`. Introduce `lam`.
+
+Conclude with `_root_.GlobalTheory.BI.isChar_mem_virt_complex (_root_.GlobalTheory.BI.isChar_monoidHom_complex lam)`.
+-/
 theorem _root_.GlobalTheory.BI.virt_mul_comap_conj_ind_linear : ∀ (G : Type) [Group G] [Finite G],
     (∀ a ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G, ∀ b ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G,
       a * b ∈ _root_.GlobalTheory.BI.Virt ℂ ℂ G) ∧

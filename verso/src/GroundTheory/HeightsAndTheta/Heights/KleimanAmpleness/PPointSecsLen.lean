@@ -20,12 +20,22 @@ variable (S y) in
 def dehomAt (j : Fin (N + 1)) : Poly S N →ₐ[S] K :=
   ((Polynomial.aeval (y j)⁻¹ : Polynomial K →ₐ[K] K).restrictScalars S).comp (cone (S := S) y)
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((Polynomial.aeval (y j)⁻¹ : Polynomial K →ₐ[K] K).restrictScalars S) (cone (S := S) y f) = _`. Rewrite using `[cone_of_isHomogeneous y hf, AlgHom.restrictScalars_apply, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X, Algebra.algebraMap_self, RingHom.id_apply, inv_pow, div_eq_mul_inv]`.
+-/
 theorem dehomAt_of_isHomogeneous (j : Fin (N + 1)) {f : Poly S N} {e : ℕ} (hf : f.IsHomogeneous e) :
     dehomAt S y j f = aeval y f / y j ^ e := by
   change ((Polynomial.aeval (y j)⁻¹ : Polynomial K →ₐ[K] K).restrictScalars S) (cone (S := S) y f) = _
   rw [cone_of_isHomogeneous y hf, AlgHom.restrictScalars_apply, map_mul, map_pow, Polynomial.aeval_C,
     Polynomial.aeval_X, Algebra.algebraMap_self, RingHom.id_apply, inv_pow, div_eq_mul_inv]
 
+/- English proof (translation)
+Establish `h1 : ringKrullDim (cone (S` using `S) y).range ≤ 1 := by`. Rewrite `hdim` using `[primeOf_eq]`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (Ideal.quotientKerEquivRange (cone (S := S) y)).toRingEquiv]` and apply the resulting hypothesis. Establish `hne : cone (S` using `S) y (X j - 1) ≠ 0 := by`. Introduce `h`.
+
+Use `congrArg (fun p => Polynomial.coeff p 0) h` as an intermediate fact. Simplify using `[cone_eq, coneGen] at this`. Establish `hkill : ((Polynomial.aeval (y j)⁻¹ : Polynomial K →ₐ[K] K).restrictScalars S) (cone (S` using `S) y (X j - 1)) = 0 := by`. Simplify using `[cone_eq, coneGen, hj]`. Establish `key` using `SectionsOverLocalization.ringKrullDim_range_comp_add_one_le (cone (S := S) y) ((Polynomial.aeval (y j)⁻¹ : Polynomial K →ₐ[K] K).restrictScalars S) (X j - 1) hne hkill`.
+
+Establish `key2 : ringKrullDim (dehomAt S y j).range + 1 ≤ 1` using `key.trans h1`. Establish `hle : ringKrullDim (dehomAt S y j).range ≤ 0` using `SectionsOverLocalization.le_zero_of_add_natCast_le (n := 1) (by simpa using key2)`. Establish `: Ring.KrullDimLE 0 (dehomAt S y j).range` using `Ring.krullDimLE_iff.mpr (by simpa using hle)`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`.
+-/
 theorem isField_dehomAt_range (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) : IsField (dehomAt S y j).range := by
   have h1 : ringKrullDim (cone (S := S) y).range ≤ 1 := by
@@ -46,6 +56,11 @@ theorem isField_dehomAt_range (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S
   have : Ring.KrullDimLE 0 (dehomAt S y j).range := Ring.krullDimLE_iff.mpr (by simpa using hle)
   exact Ring.KrullDimLE.isField_of_isDomain
 
+/- English proof (translation)
+Establish `: dehomAt S y j = (chartRing S y (singleChart hj)).val.comp (aeval (ratio (S` using `S) hj)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[dehomAt, cone_eq, coneGen, ratio, div_eq_mul_inv]`. Rewrite using `[this]`.
+
+Conclude with `(AlgHom.range_comp_le_range _ _).trans (Subalgebra.range_val _).le`.
+-/
 theorem dehomAt_range_le (j : Fin (N + 1)) (hj : y j ≠ 0) :
     (dehomAt S y j).range ≤ chartRing S y (singleChart hj) := by
   have : dehomAt S y j = (chartRing S y (singleChart hj)).val.comp (aeval (ratio (S := S) hj)) := by
@@ -55,6 +70,17 @@ theorem dehomAt_range_le (j : Fin (N + 1)) (hj : y j ≠ 0) :
   rw [this]
   exact (AlgHom.range_comp_le_range _ _).trans (Subalgebra.range_val _).le
 
+/- English proof (translation)
+Establish `hF` using `isField_dehomAt_range hdim hj`. Introduce and unpack `_ ⟨f, s, e, hs, hf, hse, rfl⟩`. Establish `hs0` using `eval_ne_zero_of_mem_monos I hs`. Establish `hje : y j ^ e ≠ 0` using `pow_ne_zero _ hj`. Establish `hb : (⟨dehomAt S y j s, AlgHom.mem_range_self _ _⟩ : (dehomAt S y j).range) ≠ 0`.
+
+Introduce `h`. Use `congrArg Subtype.val h` as an intermediate fact. Simplify using `only [dehomAt_of_isHomogeneous j hse, ZeroMemClass.coe_zero] at this`. Conclude with `div_ne_zero hs0 hje this`. Take `⟨c, hc⟩` from `hF.mul_inv_cancel hb`.
+
+Establish `hc' : (c : K) = aeval y (X j ^ e : Poly S N) / aeval y s`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one, dehomAt_of_isHomogeneous j hse] at this`. Simplify using `only [map_pow, aeval_X]`. Clear denominators, using `at this ⊢` for the nonvanishing conditions.
+
+Take the linear combination `this`. Establish `: aeval y f / aeval y s = dehomAt S y j f * c`. Rewrite using `[hc', dehomAt_of_isHomogeneous j hf]`. Simplify using `only [map_pow, aeval_X]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[this]`. Conclude with `mul_mem (AlgHom.mem_range_self _ _) c.2`.
+-/
 theorem chartRing_le_dehomAt_range (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1)
     {j : Fin (N + 1)} (hj : y j ≠ 0) (I : Chart y) : chartRing S y I ≤ (dehomAt S y j).range := by
   have hF := isField_dehomAt_range hdim hj
@@ -80,6 +106,9 @@ theorem chartRing_le_dehomAt_range (hdim : ringKrullDim (Poly S N ⧸ primeOf (S
   rw [this]
   exact mul_mem (AlgHom.mem_range_self _ _) c.2
 
+/- English proof (translation)
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hyi : y i ≠ 0` using `(mem_support y).mp (I.2.2 hi)`. Use `⟨fun hz => dehomAt_range_le j hj (chartRing_le_dehomAt_range hdim hj I hz), fun hz => ?_⟩` and prove the remaining obligations. Conclude with `chartRing_mono (x := y) (I := singleChart hyi) (J := I) (Finset.singleton_subset_iff.mpr hi) (dehomAt_range_le i hyi (chartRing_le_dehomAt_range hdim hyi _ hz))`.
+-/
 theorem mem_chartRing_iff (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) (I : Chart y) (z : K) : z ∈ chartRing S y I ↔ z ∈ chartRing S y (singleChart hj) := by
   obtain ⟨i, hi⟩ := I.2.1
@@ -88,6 +117,13 @@ theorem mem_chartRing_iff (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y)
   exact chartRing_mono (x := y) (I := singleChart hyi) (J := I) (Finset.singleton_subset_iff.mpr hi)
     (dehomAt_range_le i hyi (chartRing_le_dehomAt_range hdim hyi _ hz))
 
+/- English proof (translation)
+Break down `eq_or_ne z 0 with rfl | hz0` into its components or cases. Rewrite using `[inv_zero]`. Conclude with `zero_mem _`. Establish `hF` using `isField_dehomAt_range hdim hj`. Establish `hb : (⟨z, chartRing_le_dehomAt_range hdim hj _ hz⟩ : (dehomAt S y j).range) ≠ 0` using `fun h => hz0 (congrArg Subtype.val h)`.
+
+Take `⟨c, hc⟩` from `hF.mul_inv_cancel hb`. Establish `: (c : K) = z⁻¹`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [MulMemClass.coe_mul, OneMemClass.coe_one] at this`. Conclude with `(eq_inv_of_mul_eq_one_right this)`.
+
+Rewrite using `[← this]`. Conclude with `dehomAt_range_le j hj c.2`.
+-/
 theorem chart_inv_mem (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) {z : K} (hz : z ∈ chartRing S y (singleChart hj)) : z⁻¹ ∈ chartRing S y (singleChart hj) := by
   rcases eq_or_ne z 0 with rfl | hz0
@@ -104,6 +140,27 @@ theorem chart_inv_mem (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤
   rw [← this]
   exact dehomAt_range_le j hj c.2
 
+/- English proof (translation)
+Establish `hI` using `mem_chartRing_iff hdim hj I`. Take `⟨Q', hQ'⟩` from `Q.invertible I`. Establish `h1 : (1 : K) ∈ Q.sub I * Q'`. Rewrite using `[hQ', Submodule.mem_one]`. Conclude with `⟨1, map_one _⟩`.
+
+Establish `hex : ∃ m ∈ Q.sub I, ∃ n ∈ Q', m * n ≠ 0`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_and, not_not] at hcon`. Establish `hle : Q.sub I * Q' ≤ ⊥` using `Submodule.mul_le.mpr fun m hm n hn => by`. Rewrite using `[Submodule.mem_bot]`.
+
+Conclude with `hcon m hm n hn`. Conclude with `one_ne_zero ((Submodule.mem_bot _).mp (hle h1))`. Take `⟨m0, hm0, n, hn, hmn⟩` from `hex`. Establish `hqn : ∀ q ∈ Q.sub I, q * n ∈ chartRing S y (singleChart hj)`. Introduce `q hq`.
+
+Use `Submodule.mul_mem_mul hq hn` as an intermediate fact. Rewrite `this` using `[hQ', Submodule.mem_one]`. Take `⟨a, ha⟩` from `this`. Rewrite using `[← ha]`. Conclude with `(hI _).mp a.2`.
+
+Take `⟨i, hi⟩` from `I.2.1`. Establish `hyi : y i ≠ 0` using `(mem_support y).mp (I.2.2 hi)`. Establish `hm0' : m0 ≠ 0` using `left_ne_zero_of_mul hmn`. Establish `hn0 : n ≠ 0` using `right_ne_zero_of_mul hmn`. Establish `hinv` using `chart_inv_mem hdim hj (hqn m0 hm0)`.
+
+Establish `hyic : y i ^ c ≠ 0` using `zpow_ne_zero _ hyi`. Use `⟨y i ^ c * m0, mul_ne_zero hyic hm0', fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Use `Submodule.span_induction (p := fun z _ => ∃ a ∈ chartRing S y (singleChart hj), z = a * (y i ^ c * m0)) ?_ ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨q, hq, x, hx, rfl⟩`. Express the relevant statement in the definitionally equal form `q ∈ twistMod S y c I at hq`.
+
+Rewrite `hq` using `[twistMod_eq_span c I hi, Submodule.mem_span_singleton]`. Take `⟨b, rfl⟩` from `hq`. Use `⟨b * (x * n) * (m0 * n)⁻¹, mul_mem (mul_mem ((hI _).mp b.2) (hqn x hx)) hinv, ?_⟩` and prove the remaining obligations. Rewrite using `[chartRing_smul_def, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+
+Conclude with `⟨0, zero_mem _, by simp⟩`. Introduce and unpack `_ _ _ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, add_mem ha hb, by ring⟩`. Introduce and unpack `b _ _ ⟨a, ha, rfl⟩`. Conclude with `⟨b * a, mul_mem ((hI _).mp b.2) ha, by rw [chartRing_smul_def]; ring⟩`.
+
+Introduce and unpack `⟨a, ha, rfl⟩`. Establish `hyc : y i ^ c ∈ (twistSys S y c).sub I`. Express the relevant statement in the definitionally equal form `y i ^ c ∈ twistMod S y c I`. Rewrite using `[twistMod_eq_span c I hi]`. Conclude with `Submodule.mem_span_singleton_self _`.
+
+Establish `hgen : y i ^ c * m0 ∈ (Q.twist (twistSys S y c)).sub I` using `Submodule.subset_span ⟨y i ^ c, hyc, m0, hm0, rfl⟩`. Use `Submodule.smul_mem _ (⟨a, (hI a).mpr ha⟩ : chartRing S y I) hgen` as an intermediate fact. Rewrite `this` using `[chartRing_smul_def]`. Then use the resulting hypothesis.
+-/
 theorem twist_sub_line (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) (Q : LineBundle S y) (c : ℤ) (I : Chart y) :
     ∃ f : K, f ≠ 0 ∧ ∀ z, z ∈ (Q.twist (twistSys S y c)).sub I ↔
@@ -158,6 +215,15 @@ theorem twist_sub_line (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) �
     have := Submodule.smul_mem _ (⟨a, (hI a).mpr ha⟩ : chartRing S y I) hgen
     rwa [chartRing_smul_def] at this
 
+/- English proof (translation)
+Take `⟨f, hf, hL⟩` from `twist_sub_line hdim hj Q c (singleChart hj)`. Use `⟨f, hf, fun z => ⟨fun hz => (hL z).mp ?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Rewrite `hz` using `[SubSystem.secs, Submodule.mem_iInf]`. Conclude with `hz (singleChart hj)`. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`.
+
+Introduce `I`. Express the relevant statement in the definitionally equal form `z ∈ (Q.twist (twistSys S y c)).sub I`. Set `U : Chart y` to `⟨(singleChart hj).1 ∪ I.1, I.2.1.mono Finset.subset_union_right, Finset.union_subset (singleChart hj).2.2 I.2.2⟩`. Take `⟨g, hg, hLU⟩` from `twist_sub_line hdim hj Q c U`. Take `⟨h, hh, hLI⟩` from `twist_sub_line hdim hj Q c I`.
+
+Take `⟨b, hb, hfb⟩` from `(hLU f).mp ((Q.twist (twistSys S y c)).mono _ U Finset.subset_union_left f ((hL f).mpr ⟨1, one_mem _, (one_mul f).symm⟩))`. Take `⟨d, hd, hhd⟩` from `(hLU h).mp ((Q.twist (twistSys S y c)).mono I U Finset.subset_union_right h ((hLI h).mpr ⟨1, one_mem _, (one_mul h).symm⟩))`. Take `⟨a, ha, rfl⟩` from `hz`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`.
+
+Rewrite `hhd` using `[zero_mul]`. Conclude with `hh hhd`. Use `(hLI _).mpr ⟨a * b * d⁻¹, mul_mem (mul_mem ha hb) (chart_inv_mem hdim hj hd), ?_⟩` and prove the remaining obligations. Rewrite using `[hfb, hhd]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem secs_line (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) (Q : LineBundle S y) (c : ℤ) :
     ∃ f : K, f ≠ 0 ∧ ∀ z, z ∈ (Q.twist (twistSys S y c)).secs ↔
@@ -186,6 +252,11 @@ theorem secs_line (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) 
     rw [hfb, hhd]
     field_simp
 
+/- English proof (translation)
+Take `⟨f, hf, hline⟩` from `secs_line hdim hj Q c`. Set `φ : chartRing S y (singleChart hj) →ₗ[S] (Q.twist (twistSys S y c)).secs` to `{ toFun := fun a => ⟨(a : K) * f, (hline _).mpr ⟨a, a.2, rfl⟩⟩ map_add' := fun a b => Subtype.ext (by simp [add_mul]) map_smul' := fun s a => Subtype.ext (by simp) }`. Establish `hbij : Function.Bijective φ`. Use `⟨fun a b hab => Subtype.ext (mul_right_cancel₀ hf (congrArg Subtype.val hab)), fun z => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hz⟩` from `(hline z).mp z.2`.
+
+Conclude with `⟨⟨a, ha⟩, Subtype.ext hz.symm⟩`. Conclude with `((LinearEquiv.ofBijective φ hbij).length_eq).symm`.
+-/
 theorem length_secs (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1) {j : Fin (N + 1)}
     (hj : y j ≠ 0) (Q : LineBundle S y) (c : ℤ) :
     Module.length S (Q.twist (twistSys S y c)).secs = Module.length S (chartRing S y (singleChart hj)) := by
@@ -202,6 +273,9 @@ theorem length_secs (hdim : ringKrullDim (Poly S N ⧸ primeOf (S := S) y) ≤ 1
 
 end CycleSplit.PointSecs
 
+/- English proof (translation)
+Introduce `S _ K _ _ N y ⟨j, hj⟩ hdim Q₁ Q₂ c₁ c₂`. Establish `hyj : y j ≠ 0` using `fun h => hj ((mem_primeOf_of_isHomogeneous y (isHomogeneous_X S j)).mpr (by rw [aeval_X, h]))`. Rewrite using `[CycleSplit.PointSecs.length_secs hdim hyj, CycleSplit.PointSecs.length_secs hdim hyj]`.
+-/
 theorem CycleSplit.PointSecs.proof : CycleSplit.PointSecs.Statement.{u, w} := by
   intro S _ K _ _ N y ⟨j, hj⟩ hdim Q₁ Q₂ c₁ c₂
   have hyj : y j ≠ 0 := fun h =>

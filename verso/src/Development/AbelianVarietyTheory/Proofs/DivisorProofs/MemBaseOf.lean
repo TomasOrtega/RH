@@ -11,40 +11,95 @@ namespace GlobalTheory.RingChain.MapDown
 section
 variable {A B C : Type} [CommRing A] [CommRing B] [CommRing C] {h : ℕ}
 
+/- English proof (translation)
+Simplify using `[mv, Matrix.mulVec, dotProduct]`.
+-/
 theorem mv_apply (φ : A →+* B) (M : Matrix (Fin h) (Fin h) ℤ) (x : Fin h → A) (i : Fin h) :
     mv φ M x i = ∑ k, (M i k : B) * φ (x k) := by
   simp [mv, Matrix.mulVec, dotProduct]
 
+/- English proof (translation)
+Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`.
+-/
 theorem mv_one (φ : A →+* B) (x : Fin h → A) : mv φ 1 x = fun i => φ (x i) := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mv_apply]`.
+-/
 theorem mv_zero (φ : A →+* B) (M : Matrix (Fin h) (Fin h) ℤ) : mv φ M 0 = 0 := by
   funext i; simp [mv_apply]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mv_apply, mul_add, Finset.sum_add_distrib]`.
+-/
 theorem mv_add (φ : A →+* B) (M : Matrix (Fin h) (Fin h) ℤ) (x y : Fin h → A) :
     mv φ M (x + y) = mv φ M x + mv φ M y := by
   funext i; simp [mv_apply, mul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mv_apply, mul_sub, Finset.sum_sub_distrib]`.
+-/
 theorem mv_sub (φ : A →+* B) (M : Matrix (Fin h) (Fin h) ℤ) (x y : Fin h → A) :
     mv φ M (x - y) = mv φ M x - mv φ M y := by
   funext i; simp [mv_apply, mul_sub, Finset.sum_sub_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `i`. Simplify using `[mv_apply, Finset.mul_sum, mul_left_comm]`.
+-/
 theorem mv_smul (φ : A →+* B) (M : Matrix (Fin h) (Fin h) ℤ) (a : A) (x : Fin h → A) :
     mv φ M (a • x) = φ a • mv φ M x := by
   funext i; simp [mv_apply, Finset.mul_sum, mul_left_comm]
 
+/- English proof (translation)
+Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Use `⟨fun ⟨y, _, e⟩ i => ⟨y i, (congrFun e i).symm⟩, fun k => ?_⟩` and prove the remaining obligations. Use `choose y hy using k`. Conclude with `⟨y, trivial, funext fun i => (hy i).symm⟩`.
+-/
 theorem mem_baseOf (π : A) (x : Fin h → A) : x ∈ baseOf π h ↔ ∀ i, π ∣ x i := by
   rw [Submodule.mem_smul_pointwise_iff_exists]
   refine ⟨fun ⟨y, _, e⟩ i => ⟨y i, (congrFun e i).symm⟩, fun k => ?_⟩
   choose y hy using k
   exact ⟨y, trivial, funext fun i => (hy i).symm⟩
 
+/- English proof (translation)
+Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, mem_baseOf]`. Both sides reduce to the same expression.
+-/
 theorem mk_eq_iff {P : Submodule A (Fin h → A)} (π : A) (x y : P) :
     (Submodule.Quotient.mk x : Qt P (baseOf π h)) = Submodule.Quotient.mk y ↔ ∀ i, π ∣ x.1 i - y.1 i := by
   rw [Submodule.Quotient.eq, Submodule.mem_comap, mem_baseOf]; rfl
 
 end
 
+/- English proof (translation)
+Introduce `p h o A₁ A₂ B₁ B₂ _ _ _ _ g₁ g₂ φ' φ π₁ π₂ ϖ₁ ϖ₂ γ₁ γ₂ δ₁ δ₂ Lie₁ Om₁ Lie₂ Om₂ LB₁ OB₁ LB₂ OB₂ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ C₁ C₂ D₁ D₂ M l₁ m₁ l₂ m₂ l m l' m' G hc hπ hϖ hd hl hm hb H₁ H₂ H hll hG hρ`. Establish `sq : ∀ x : Fin h → A₁, mv g₂ 1 (mv φ' M x) = mv φ M (mv g₁ 1 x)` using `fun x => by`. Establish `e : ∀ a, φ (g₁ a) = g₂ (φ' a)` using `fun a => RingHom.congr_fun hc a`. Use function extensionality and compare the values at `i`. Rewrite using `[mv_one, mv_one]`.
+
+Simplify using `[mv_apply, e]`. Establish `mem : ∀ n, ∀ x ∈ C₁.L n, mv φ' M x ∈ C₂.L n` using `fun n x hx => by`. Distinguish the cases in `hn : n ≤ o`. Use `hm n hn _ ?_` and prove the remaining obligations. Use `H.mem n _ (H₁.mem n x hx)` as an intermediate fact.
+
+Rewrite `this` using `[← sq, mv_one]`. Conclude with `this`. Rewrite `hx` using `[hb n (by omega), Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨y, -, rfl⟩` from `hx`. Rewrite using `[mv_smul, hπ]`.
+
+Conclude with `C₂.base_le n (Submodule.smul_mem_pointwise_smul _ _ _ trivial)`. Set `u₁ : ∀ {n}, C₁.L n → D₁.L n` to `fun {n} x => ⟨mv g₁ 1 x.1, H₁.mem n _ x.2⟩`. Set `u₂ : ∀ {n}, C₂.L n → D₂.L n` to `fun {n} x => ⟨mv g₂ 1 x.1, H₂.mem n _ x.2⟩`. Establish `hu : ∀ {n} (x : C₁.L n) (x' : C₂.L n), x'.1 = mv φ' M x.1 → (u₂ x').1 = mv φ M (u₁ x).1` using `fun x x' e => by`. Express the relevant statement in the definitionally equal form `mv g₂ 1 x'.1 = _`.
+
+Rewrite using `[e, sq]`. Establish `inj : ∀ {n} (z x : C₂.L n), (Submodule.Quotient.mk (u₂ z) : Qt (D₂.L n) (baseOf ϖ₂ h)) = Submodule.Quotient.mk (u₂ x) → (Submodule.Quotient.mk z : Qt (C₂.L n) (baseOf π₂ h)) = Submodule.Quotient.mk x` using `fun z x e => by`. Rewrite `e`, the goal using `[mk_eq_iff]`. Introduce `i`. Use `hd _ ?_` and prove the remaining obligations.
+
+Use `e i` as an intermediate fact. Simplify using `only [u₂, mv_one] at this`. Rewrite using `[map_sub]` and apply the resulting hypothesis. Establish `hj : ∀ (y : Lie₁) (x : C₁.L 0) (x' : C₂.L 0), x'.1 = mv φ' M x.1 → C₁.j y = Submodule.Quotient.mk x → C₂.j (l' y) = Submodule.Quotient.mk x'` using `fun y x x' e k => by`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (C₂.j (l' y))`.
+
+Establish `a` using `H.j _ _ _ (hu x x' e) (H₁.j y x (u₁ x) rfl k)`. Establish `b` using `H₂.j _ z (u₂ z) rfl hz.symm`. Rewrite using `[← hz]`. Conclude with `inj _ _ (by rw [← b, ← hll, a])`. Use `⟨mem, hj, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `ex : ∀ w : Om₁, ∃ (x : C₁.L 0) (x' : C₂.L 0), x'.1 = mv φ' M x.1 ∧ C₁.ρ w = Submodule.Quotient.mk (Submodule.Quotient.mk x) ∧ C₂.ρ (m' w) = Submodule.Quotient.mk (Submodule.Quotient.mk x')` using `fun w => by`. Establish `hw : w ∈ Submodule.span A₁ G` using `hG ▸ trivial`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact hρ w hw`. Consider the case `zero => exact ⟨0, 0, (mv_zero _ _).symm, by simp, by simp⟩`.
+
+Consider the case `add a b _ _ ha hb`. Take `⟨x, x', e, k, k'⟩` from `ha`. Take `⟨y, y', f, n, n'⟩` from `hb`. Use `⟨x + y, x' + y', ?_, by simp [k, n], by simp [k', n']⟩` and prove the remaining obligations. Simplify using `[mv_add, e, f]`.
+
+Consider the case `smul a b _ hb`. Take `⟨x, x', e, k, k'⟩` from `hb`. Use `⟨a • x, φ' a • x', ?_, by simp [k], by simp [k', map_smulₛₗ]⟩` and prove the remaining obligations. Simplify using `[mv_smul, e]`. Introduce `w x x' e k`.
+
+Take `⟨y, y', f, n, n'⟩` from `ex w`. Rewrite using `[n']`. Take `⟨t, ht⟩` from `(Submodule.Quotient.eq _).1 (n.symm.trans k)`. Rewrite `ht` using `[← Submodule.Quotient.mk_sub]`. Use `(Submodule.Quotient.eq _).2 ⟨l' t, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Submodule.Quotient.mk_sub]`. Conclude with `hj t _ _ (by simp [mv_sub, e, f]) ht`. Introduce `n hn x x' y y' e f k`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (C₂.ψ n (Submodule.Quotient.mk x'))`. Establish `a` using `H.ψ n hn _ _ _ _ (hu x x' e) (hu y y' f) (H₁.ψ n hn x (u₁ x) y (u₁ y) rfl rfl k)`.
+
+Establish `b` using `H₂.ψ n hn x' (u₂ x') z (u₂ z) rfl rfl hz.symm`. Rewrite using `[← hz]`. Conclude with `inj _ _ (by rw [← b, a])`. Introduce `n hn x x' y e k`. Take `⟨z, hz⟩` from `Submodule.Quotient.mk_surjective _ (C₂.κ n (Submodule.Quotient.mk x'))`.
+
+Establish `a` using `H.κ n hn _ _ _ (hu x x' e) (H₁.κ n hn x (u₁ x) y rfl k)`. Establish `b` using `H₂.κ n hn x' (u₂ x') z rfl hz.symm`. Rewrite using `[← hz]`. Use `(Submodule.Quotient.eq _).2 (hl _ ?_)` and prove the remaining obligations. Rewrite using `[map_sub, ← hll]`.
+
+Conclude with `(Submodule.Quotient.eq _).1 (b.symm.trans a)`.
+-/
 theorem map_down : ∀ (p h o : ℕ) (A₁ A₂ B₁ B₂ : Type) [CommRing A₁] [CommRing A₂] [CommRing B₁] [CommRing B₂] (g₁ : A₁ →+* B₁) (g₂ : A₂ →+* B₂) (φ' : A₁ →+* A₂) (φ : B₁ →+* B₂) (π₁ : A₁) (π₂ : A₂) (ϖ₁ : B₁) (ϖ₂ : B₂) (γ₁ : ℕ → A₁) (γ₂ : ℕ → A₂) (δ₁ : ℕ → B₁) (δ₂ : ℕ → B₂) (Lie₁ Om₁ Lie₂ Om₂ LB₁ OB₁ LB₂ OB₂ : Type) [AddCommGroup Lie₁] [Module A₁ Lie₁] [AddCommGroup Om₁] [Module A₁ Om₁] [AddCommGroup Lie₂] [Module A₂ Lie₂] [AddCommGroup Om₂] [Module A₂ Om₂] [AddCommGroup LB₁] [Module B₁ LB₁] [AddCommGroup OB₁] [Module B₁ OB₁] [AddCommGroup LB₂] [Module B₂ LB₂] [AddCommGroup OB₂] [Module B₂ OB₂] (C₁ : RChain p A₁ h o π₁ γ₁ Lie₁ Om₁) (C₂ : RChain p A₂ h o π₂ γ₂ Lie₂ Om₂) (D₁ : RChain p B₁ h o ϖ₁ δ₁ LB₁ OB₁) (D₂ : RChain p B₂ h o ϖ₂ δ₂ LB₂ OB₂) (M : Matrix (Fin h) (Fin h) ℤ) (l₁ : Lie₁ → LB₁) (m₁ : Om₁ → OB₁) (l₂ : Lie₂ →+ LB₂) (m₂ : Om₂ → OB₂) (l : LB₁ → LB₂) (m : OB₁ → OB₂) (l' : Lie₁ → Lie₂) (m' : Om₁ →ₛₗ[φ'] Om₂) (G : Set Om₁), φ.comp g₁ = g₂.comp φ' → φ' π₁ = π₂ → g₂ π₂ = ϖ₂ → (∀ x : A₂, ϖ₂ ∣ g₂ x → π₂ ∣ x) → (∀ y : Lie₂, l₂ y ∈ (p : B₂) • (⊤ : Submodule B₂ LB₂) → y ∈ (p : A₂) • (⊤ : Submodule A₂ Lie₂)) → (∀ n ≤ o, ∀ x, piMap g₂ (Fin h) x ∈ D₂.L n → x ∈ C₂.L n) → (∀ n, o < n → C₁.L n = baseOf π₁ h) → C₁.Map D₁ g₁ 1 l₁ m₁ → C₂.Map D₂ g₂ 1 l₂ m₂ → D₁.Map D₂ φ M l m → (∀ y, l (l₁ y) = l₂ (l' y)) → Submodule.span A₁ G = ⊤ → (∀ w ∈ G, ∃ (x : C₁.L 0) (x' : C₂.L 0), x'.1 = mv φ' M x.1 ∧ C₁.ρ w = Submodule.Quotient.mk (Submodule.Quotient.mk x) ∧ C₂.ρ (m' w) = Submodule.Quotient.mk (Submodule.Quotient.mk x')) → C₁.Map C₂ φ' M l' m' := by
   intro p h o A₁ A₂ B₁ B₂ _ _ _ _ g₁ g₂ φ' φ π₁ π₂ ϖ₁ ϖ₂ γ₁ γ₂ δ₁ δ₂ Lie₁ Om₁ Lie₂ Om₂ LB₁ OB₁ LB₂ OB₂
     _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ C₁ C₂ D₁ D₂ M l₁ m₁ l₂ m₂ l m l' m' G hc hπ hϖ hd hl hm hb H₁ H₂ H hll hG hρ

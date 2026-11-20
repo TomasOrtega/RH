@@ -8,6 +8,9 @@ open GlobalTheory.FlagZ GlobalTheory.ArInt Formalism.DegreeFormula GlobalTheory.
 
 namespace GlobalTheory.FlagZ
 
+/- English proof (translation)
+Introduce `ι _ N τ l`. Conclude with `GlobalTheory.TrueGeo.OfLattice.nefFib_of_isGenerated (isArithVar_hasHh_unique ι N).1 _ (GlobalTheory.isGenerated_of_finite _ (iSup_nonzeroLocus_plSec Prod.fst Prod.snd (τ, l)))`.
+-/
 theorem nefFib_flDet : ∀ (ι : Type) [Fintype ι] (N : ℕ) (τ : ι) (l : Fin (N + 1)),
     GlobalTheory.ArInt.NefFib (flDet τ l : GlobalTheory.HermLB (flStr ι N)) := by
   intro ι _ N τ l

@@ -12,9 +12,25 @@ section Alg
 variable {L : Type} [Field L] {c : L →+* L} {β : Type} [Fintype β] [DecidableEq β]
 
 omit [Fintype β] in
+/- English proof (translation)
+Simplify using `[Wm, fromBlocks_transpose]`.
+-/
 theorem Wm_transpose : (Wm L β)ᵀ = Wm L β := by
   simp [Wm, fromBlocks_transpose]
 
+/- English proof (translation)
+Establish `hcc : ∀ {ι κ : Type} (N : Matrix ι κ L), (N.map c).map c = N` using `fun N => Matrix.ext fun i j => hc _`. Establish `sym : ∀ A B : Matrix (β ⊕ β) β L, ((Aᵀ * Wm L β * B.map c).map c)ᵀ = Bᵀ * Wm L β * A.map c` using `fun A B => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcc, Wm_map, transpose_mul, transpose_mul, Wm_transpose, Matrix.mul_assoc]`. Both sides reduce to the same expression. Take `⟨X₀, h1⟩ : ∃ X₀ : Matrix (β ⊕ β) β L, Yᵀ * Wm L β * X₀.map c = 1` from `⟨(Wm L β * Rᵀ).map c, by`.
+
+Rewrite using `[hcc, Matrix.mul_assoc, ← Matrix.mul_assoc (Wm L β), Wm_mul_self, Matrix.one_mul, ← transpose_mul, hR, transpose_one]⟩`. Establish `h2 : X₀ᵀ * Wm L β * Y.map c = 1`. Rewrite using `[← sym, h1, map_one', transpose_one]`. Take `⟨H, hH⟩ : ∃ H, X₀ᵀ * Wm L β * X₀.map c = H` from `⟨_, rfl⟩`. Establish `h3 : (H.map c)ᵀ = H` using `by rw [← hH, sym]`.
+
+Establish `h4 : ((w • H)ᵀ).map c = c w • H`. Use extensionality with `i j`. Establish `: c (H j i) = H i j` using `congrFun (congrFun h3 i) j`. Simplify using `[this]`. Establish `e1 : (X₀ - Y * (w • H)ᵀ).map c = X₀.map c - Y.map c * (c w • H)`.
+
+Rewrite using `[Matrix.map_sub _ (map_sub c), Matrix.map_mul, h4]`. Establish `e2 : (X₀ - Y * (w • H)ᵀ)ᵀ * Wm L β = X₀ᵀ * Wm L β - (w • H) * (Yᵀ * Wm L β)`. Rewrite using `[transpose_sub, transpose_mul, transpose_transpose, Matrix.sub_mul, Matrix.mul_assoc]`. Establish `a1 : Yᵀ * Wm L β * (X₀ - Y * (w • H)ᵀ).map c = 1`. Rewrite using `[e1, Matrix.mul_sub, h1, ← Matrix.mul_assoc, hY, Matrix.zero_mul, sub_zero]`.
+
+Establish `a2 : (X₀ - Y * (w • H)ᵀ)ᵀ * Wm L β * Y.map c = 1`. Rewrite using `[← sym, a1, map_one', transpose_one]`. Establish `a3 : (X₀ - Y * (w • H)ᵀ)ᵀ * Wm L β * (X₀ - Y * (w • H)ᵀ).map c = 0`. Rewrite using `[e2, Matrix.sub_mul, Matrix.mul_assoc (w • H), a1, e1, Matrix.mul_sub, hH, ← Matrix.mul_assoc, h2, Matrix.one_mul, Matrix.mul_one, sub_sub, ← add_smul, add_comm, hw, one_smul, sub_self]`. Use `⟨X₀ - Y * (w • H)ᵀ, ?_⟩` and prove the remaining obligations.
+
+Unfold `Iso`. Rewrite using `[transpose_fromCols, fromCols_map, fromRows_mul, fromRows_mul_fromCols, hY, a1, a2, a3]`. Both sides reduce to the same expression.
+-/
 theorem exists_compl (hc : ∀ x, c (c x) = x) {w : L} (hw : w + c w = 1) {Y : Matrix (β ⊕ β) β L} {R : Matrix β (β ⊕ β) L}
     (hR : R * Y = 1) (hY : Yᵀ * Wm L β * Y.map c = 0) : ∃ X : Matrix (β ⊕ β) β L, Iso c (Wm L β) (Wm L β) (fromCols Y X) := by
   have hcc : ∀ {ι κ : Type} (N : Matrix ι κ L), (N.map c).map c = N := fun N => Matrix.ext fun i j => hc _
@@ -49,6 +65,9 @@ theorem exists_compl (hc : ∀ x, c (c x) = x) {w : L} (hw : w + c w = 1) {Y : M
   rw [transpose_fromCols, fromCols_map, fromRows_mul, fromRows_mul_fromCols, hY, a1, a2, a3]
   rfl
 
+/- English proof (translation)
+Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' Y) (LinearMap.ker_eq_bot'.2 hY)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id]`. Then use the resulting hypothesis.
+-/
 theorem exists_leftInv {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι] [DecidableEq κ] {Y : Matrix ι κ L}
     (hY : ∀ z, Y *ᵥ z = 0 → z = 0) : ∃ R : Matrix κ ι L, R * Y = 1 := by
   obtain ⟨g, hg⟩ := LinearMap.exists_leftInverse_of_injective (Matrix.toLin' Y) (LinearMap.ker_eq_bot'.2 hY)
@@ -56,6 +75,11 @@ theorem exists_leftInv {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq ι]
   have := congrArg LinearMap.toMatrix' hg
   rwa [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_toLin', LinearMap.toMatrix'_id] at this
 
+/- English proof (translation)
+Rewrite using `[← fromBlocks_toBlocks M, fromBlocks_mul_fromRows, toBlocks_fromBlocks₂₁]`. Simplify using `only [Matrix.mul_zero, add_zero, fromRows_mul, Matrix.zero_mul, fromRows_ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, -, h⟩`. Rewrite using `[← Matrix.mul_nonsing_inv_cancel_right T M.toBlocks₂₁ hT, h, Matrix.zero_mul]`.
+
+Introduce `h`. Conclude with `⟨T⁻¹ * (M.toBlocks₁₁ * T), (Matrix.mul_nonsing_inv_cancel_left _ _ hT).symm, by rw [h, Matrix.zero_mul]⟩`.
+-/
 theorem block_iff {M : Matrix (β ⊕ β) (β ⊕ β) L} {T : Matrix β β L} (hT : IsUnit T.det) :
     (∃ t : Matrix β β L, M * fromRows T (0 : Matrix β β L) = fromRows T (0 : Matrix β β L) * t) ↔ M.toBlocks₂₁ = 0 := by
   rw [← fromBlocks_toBlocks M, fromBlocks_mul_fromRows, toBlocks_fromBlocks₂₁]
@@ -66,6 +90,9 @@ theorem block_iff {M : Matrix (β ⊕ β) (β ⊕ β) L} {T : Matrix β β L} (h
   · intro h
     exact ⟨T⁻¹ * (M.toBlocks₁₁ * T), (Matrix.mul_nonsing_inv_cancel_left _ _ hT).symm, by rw [h, Matrix.zero_mul]⟩
 
+/- English proof (translation)
+Rewrite `h` using `[← fromBlocks_toBlocks M, fromBlocks_mul_fromRows]`. Simplify using `only [Matrix.mul_zero, add_zero, fromRows_mul, Matrix.zero_mul, fromRows_ext_iff] at h`. Use `congrArg det h.1` as an intermediate fact. Rewrite `this` using `[det_mul, det_mul, mul_comm]`. Conclude with `mul_left_cancel₀ hT.ne_zero this`.
+-/
 theorem block_det {M : Matrix (β ⊕ β) (β ⊕ β) L} {T t : Matrix β β L} (hT : IsUnit T.det)
     (h : M * fromRows T (0 : Matrix β β L) = fromRows T (0 : Matrix β β L) * t) : M.toBlocks₁₁.det = t.det := by
   rw [← fromBlocks_toBlocks M, fromBlocks_mul_fromRows] at h
@@ -78,6 +105,17 @@ end Alg
 
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {c : L →+* L} {m : ℕ}
 
+/- English proof (translation)
+Take `⟨hc, hv, -, -, ⟨x, hx, hx1⟩, -, -⟩` from `hU`. Establish `hx0 : c x - x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`. Conclude with `zero_ne_one hx1`.
+
+Establish `hw : c x * (c x - x)⁻¹ + c (c x * (c x - x)⁻¹) = 1`. Rewrite using `[map_mul, map_inv₀, map_sub, hc, ← neg_sub (c x) x, inv_neg]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨R, hR⟩` from `exists_leftInv hf`.
+
+Take `⟨X, hX⟩` from `exists_compl hc hw hR hY`. Take `⟨k, hk, hki, h0⟩` from `exists_reduce hc hv _ hX`. Establish `hku` using `Matrix.mul_nonsing_inv _ (hk.isUnit_det Wm_det)`. Establish `h21 : (k * fromCols Y X).toBlocks₂₁ = 0` using `Matrix.ext h0`. Use `⟨k, k⁻¹, hku, hk, hki, fun i j => ?_, (k * fromCols Y X).toBlocks₁₁, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[inv_apply_of_iso hc hk hku, hv]`. Conclude with `hki _ _`. Use `(hk.mul hX).isUnit_det Wm_det` as an intermediate fact. Rewrite `this` using `[← fromBlocks_toBlocks (k * fromCols Y X), h21, det_fromBlocks_zero₂₁]`. Conclude with `isUnit_of_mul_isUnit_left this`.
+
+Use extensionality with `(i | i) j`. Both sides reduce to the same expression. Conclude with `h0 i j`.
+-/
 theorem exists_move {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ c q) {Y : Matrix (Fin m ⊕ Fin m) (Fin m) L}
     (hf : ∀ z, Y *ᵥ z = 0 → z = 0) (hY : Yᵀ * Wm L (Fin m) * Y.map c = 0) :
     ∃ k k' : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) L, k * k' = 1 ∧ Iso c (Wm L (Fin m)) (Wm L (Fin m)) k ∧
@@ -104,6 +142,13 @@ theorem exists_move {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ c q) {Y : Matrix (Fin
     · rfl
     · exact h0 i j
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨fun i j => (k.val i j).2, fun i j => ((k⁻¹).val i j).2⟩`. Introduce and unpack `⟨h1, h2⟩`. Establish `inj : Function.Injective ((intL L).subtype.mapMatrix : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) (intL L) →+* _)` using `fun a b e => by`.
+
+Use extensionality with `i j`. Conclude with `congrFun (congrFun e i) j`. Use `⟨⟨Matrix.of fun i j => ⟨_, h1 i j⟩, Matrix.of fun i j => ⟨_, h2 i j⟩, inj ?_, inj ?_⟩, Units.ext rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Conclude with `Units.mul_inv g`.
+
+Rewrite using `[map_mul, map_one]`. Conclude with `Units.inv_mul g`.
+-/
 theorem mem_IntGL_iff {g : GL (Fin m ⊕ Fin m) L} :
     g ∈ IntGL L m ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ ∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1 := by
   constructor

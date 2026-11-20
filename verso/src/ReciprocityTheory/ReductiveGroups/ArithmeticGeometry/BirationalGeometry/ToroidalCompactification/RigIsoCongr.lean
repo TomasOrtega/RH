@@ -8,6 +8,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Semi
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Substitute `hL hF he` using the available equality. Take `⟨w, h₁, h₂, -⟩` from `h`. Conclude with `⟨w, m.e_comm, h₁, h₂⟩`.
+-/
 theorem rigIso_congr {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {LG PP : RigLB G} (hL : LG = PP) {PP' : RigLB G'} (m : CubeMap G' G) {c : CubicalStr G PP}
     {c' : CubicalStr G' PP'} (h : m.IsPullCubical c' c) {F : G'.left ⟶ G.left} (hF : F = m.F) {e : S' ⟶ S}
@@ -18,6 +21,21 @@ theorem rigIso_congr {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] 
   exact ⟨w, m.e_comm, h₁, h₂⟩
 
 set_option maxHeartbeats 1600000 in
+/- English proof (translation)
+Introduce `Z r z p q hp hq`. Take `⟨b, hb, hcorr⟩` from `hD.psi_pr x`. Use `set Φ := hD.e.hom.left ≫ pullback.fst D.P.A.hom (Out.specOf g) with hΦ`. Establish `hx : D'.xK x ≫ Φ = Out.jK R' ≫ Out.specOf g ≫ (D.c (hD.xe x)).left`. Rewrite using `[← hD.c_pr x, ← Category.assoc]`.
+
+Both sides reduce to the same expression. Establish `hpt : Out.jFK (R` using `R') F ≫ D'.xK x ≫ Φ = Out.jFK (R := R) F ≫ D.xK (hD.xe x) := by`. Rewrite using `[hx, ← Category.assoc (Out.jK R'), ← Category.assoc, ← Category.assoc (Out.jFK F)]`. Conclude with `(congrArg (· ≫ (D.c (hD.xe x)).left) ((Category.assoc _ _ _).trans hj)).trans (Category.assoc _ _ _)`. Establish `hW : Out.jFK (R` using `R) F ≫ Out.jK R = (Out.jFK (R := R') F ≫ hD.g) ≫ hD.W.ι := by`.
+
+Rewrite using `[Category.assoc, hD.g_comm]`. Conclude with `hj.symm`. Take `⟨lam, l₁, l₂⟩ : ∃ lam : Sp F ⟶ (Out.jK R ⁻¹ᵁ hD.W).toScheme, lam ≫ (Out.jK R ⁻¹ᵁ hD.W).ι = Out.jFK (R` from `R) F ∧ lam ≫ (Out.jK R ∣_ hD.W) = Out.jFK (R := R') F ≫ hD.g := ⟨(isPullback_morphismRestrict (Out.jK R) hD.W).lift _ _ hW.symm, (isPullback_morphismRestrict (Out.jK R) hD.W).lift_snd _ _ _, (isPullback_morphismRestrict (Out.jK R) hD.W).lift_fst _ _ _⟩`. Establish `mp : Φ (D'.xK x (Out.jFK (R` using `R') F (r z))) ∈ D.P.L.U (p PUnit.unit) := hp PUnit.unit`. Establish `mq : D'.xK x (Out.jFK (R` using `R') F (r z)) ∈ D'.P.L.U (q PUnit.unit) := hq PUnit.unit`.
+
+Establish `mp' : D.xK (hD.xe x) (Out.jFK (R` using `R) F (r z)) ∈ D.P.L.U (p PUnit.unit) := (congrArg (fun h => h (r z) ∈ D.P.L.U (p PUnit.unit)) hpt).mp mp`. Establish `cW : hD.g ≫ (toUnit (Out.TW hD.W) ≫ D.c (hD.xe x)).left = D'.xK x ≫ Φ`. Rewrite using `[hx, ← Category.assoc (Out.jK R'), ← hD.g_comm, Category.assoc]`. Both sides reduce to the same expression. Establish `mW : (toUnit (Out.TW hD.W) ≫ D.c (hD.xe x)).left (hD.g (Out.jFK (R` using `R') F (r z))) ∈ D.P.L.U (p PUnit.unit) := (congrArg (fun h => h (Out.jFK (R := R') F (r z)) ∈ D.P.L.U (p PUnit.unit)) cW).mpr mp`.
+
+Establish `one : ∀ {Y : Scheme.{0}} {B : Scheme.{0}} (M : LB B) (φ : Y ⟶ B) (y : Y) (j : M.ι), φ y ∈ M.U j → y ∈ LB.wchart M (fun _ : PUnit => φ) (fun _ => j)` using `fun M φ y j h => Set.mem_iInter.2 fun _ => h`. Establish `m₁ : (r ≫ Out.jFK (R` using `R') F) z ∈ D'.xK x ⁻¹ᵁ ((D.P.L.pull Φ).U (fun _ => p PUnit.unit) ⊓ D'.P.L.U (q PUnit.unit)) := ⟨mem_pull.2 mp, mq⟩`. Establish `e₁` using `congrArg (gm (r ≫ Out.jFK (R := R') F) z (D'.xK x ⁻¹ᵁ ((D.P.L.pull Φ).U (fun _ => p PUnit.unit) ⊓ D'.P.L.U (q PUnit.unit)))) (hb (fun _ => p PUnit.unit) (q PUnit.unit))`. Establish `e₁'` using `(gm_res _ z _ m₁ _).symm.trans (e₁.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_zpow _ _ _).trans (congrArg (· ^ (-1 : ℤ)) (gm_pull _ (D'.xK x) z ((D.P.L.pull Φ).U (fun _ => p PUnit.unit) ⊓ D'.P.L.U (q PUnit.unit)) m₁ _))) (gm_res _ z _ m₁ _))))`. Establish `e₂` using `(gm_corr D.P.L hcorr (r ≫ Out.jFK (R := R') F) z (p PUnit.unit) (one _ _ _ _ mp) (one _ _ _ _ mW)).trans (gm_pullGen D.P.L _ _ _ hD.g (r ≫ Out.jFK (R := R') F) z _ (one _ _ _ _ mW))`.
+
+Establish `n₁ : (toUnit (Out.TW hD.W) ≫ D.c (hD.xe x)).left ((Out.jK R ∣_ hD.W) (lam (r z))) ∈ D.P.L.U (p PUnit.unit)` using `(congrArg (fun h => (toUnit (Out.TW hD.W) ≫ D.c (hD.xe x)).left (h (r z)) ∈ D.P.L.U (p PUnit.unit)) l₂).mpr mW`. Establish `n₂ : D.xK (hD.xe x) ((Out.jK R ⁻¹ᵁ hD.W).ι (lam (r z))) ∈ D.P.L.U (p PUnit.unit)` using `(congrArg (fun h => D.xK (hD.xe x) (h (r z)) ∈ D.P.L.U (p PUnit.unit)) l₁).mpr mp'`. Establish `e₃` using `(gm_pullGen D.P.L _ _ _ (Out.jK R ∣_ hD.W) (r ≫ lam) z _ (one _ _ _ _ n₁)).symm.trans ((gm_corr D.P.L (hD.psiW.psi_eq (hD.xe x)) (r ≫ lam) z (p PUnit.unit) (one _ _ _ _ n₁) (one _ _ _ _ n₂)).trans (gm_pullGen D.P.L _ _ _ (Out.jK R ⁻¹ᵁ hD.W).ι (r ≫ lam) z _ (one _ _ _ _ n₂)))`. Rewrite `e₃` using `[Category.assoc, l₂, Category.assoc, l₁, ← Category.assoc]`. Rewrite using `[Category.comp_id, Fintype.prod_unique]`.
+
+Use `(gm_pullGen D.P.L (fun _ : PUnit => D.xK (hD.xe x)) _ (D.psi (hD.xe x)) (Out.jFK (R := R) F) r z p (Set.mem_iInter.2 fun _ => mp')).trans ?_` and prove the remaining obligations. Use `e₃.symm.trans (e₂.symm.trans (e₁'.trans (congrArg₂ (· * ·) ?_ ?_)))` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Both sides reduce to the same expression. Conclude with `(gm_pullGen D'.P.L _ _ _ (Out.jFK (R := R') F) r z _ (one _ _ _ _ mq)).symm`.
+-/
 theorem pmaps_psi {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {g : R →+* R'} {D : Out.DegPre R}
     {D' : Out.DegPre R'} (hD : Out.IsPullDeg g D D') (F : Type) [Field F] [Algebra (FractionRing R) F]
     [Algebra (FractionRing R') F]
@@ -84,6 +102,61 @@ variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} 
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Take `⟨PP', cub, sym, adj, prim, m₁, hm₁⟩` from `sabPull hC (spMap g) W.t`. Set `t' : SAB H (Sp R')` to `⟨(Over.pullback (spMap g)).obj W.t.G, IsSemiAbelian.pullback _ W.t.G W.t.semi, OAct.pullback _ W.t.G W.t.act, PP', cub, sym, adj, prim⟩`. Set `m₀ : SABMap t' W.t (spMap g)` to `m₁`. Establish `hm₀ : m₀.φ = pullback.fst W.t.G.hom (spMap g)` using `hm₁`.
+
+Take `⟨m', hm'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ W.m m₀`. Set `gam : FractionRing R →+* FractionRing R'` to `IsFractionRing.lift (g := (algebraMap R' (FractionRing R')).comp g) ((IsFractionRing.injective R' _).comp hg)`. Establish `hgam : ∀ r, gam (algebraMap R _ r) = algebraMap R' _ (g r)` using `fun r => IsFractionRing.lift_algebraMap _ r`. Establish `sq : spMap gam ≫ Out.jK R = Out.jK R' ≫ spMap g` using `(spMap_comp _ gam).symm.trans ((congrArg spMap (RingHom.ext hgam)).trans (spMap_comp g _))`. Take `⟨A', gA, pA, dA, mA, tA⟩` from `hP _ _ (spMap gam) W.P.A`.
+
+Establish `gpA : IsGrpPullback A'.A W.P.A.A (spMap gam) gA` using `⟨pA, fun T x y x₀ y₀ hx hy => by`. Establish `e₁ : x₀ = Out.toBase pA.w x` using `Over.OverMorphism.ext hx`. Establish `e₂ : y₀ = Out.toBase pA.w y` using `Over.OverMorphism.ext hy`. Rewrite using `[e₁, e₂, ← mA]`. Use the proof step `rfl⟩`.
+
+Use `W.P.U.gen_hom` as an intermediate fact. Establish `gpG : IsGrpPullback W.P.A.A W.t.G (Out.jK R) (W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (Out.jK R))`. Establish `: IsMonHom W.P.U.gen.symm.hom` using `by show IsMonHom W.P.U.gen.inv; infer_instance`. Conclude with `((isGrpPullback_of_iso W.P.U.gen.symm).comp (isGrpPullback_pullback W.t.G (Out.jK R))).congr (Category.id_comp _) rfl`. Establish `gp' : IsGrpPullback ((Over.pullback (Out.jK R')).obj t'.G) W.t.G (spMap gam ≫ Out.jK R) (pullback.fst t'.G.hom (Out.jK R') ≫ pullback.fst W.t.G.hom (spMap g))` using `((isGrpPullback_pullback t'.G (Out.jK R')).comp (isGrpPullback_pullback W.t.G (spMap g))).congr sq.symm rfl`.
+
+Take `⟨eA, mE, heA⟩` from `grpPullback_iso gp' (gpA.comp gpG)`. Establish `hgi : W.P.U.gen.inv.left ≫ W.P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hbc : (Iso.refl t'.G).hom.left ≫ pullback.fst W.t.G.hom (Out.specOf g) = pullback.fst W.t.G.hom (spMap g)` using `Category.id_comp _`. Establish `wA : LBIso (A'.L.pull eA.hom.left) (W.P.U.LG.L.pull (pullback.fst t'.G.hom (Out.jK R') ≫ (Iso.refl t'.G).hom.left ≫ pullback.fst W.t.G.hom (Out.specOf g)))`.
+
+Use `LBIso.trans (pull_isLB A'.isLB _) (pull_isLB (pull_isLB W.P.A.isLB gA) eA.hom.left) (pull_isLB W.P.U.LG.isLB _) ((LBIso.symm tA).chartPull (chartPullPull A'.L _ _ rfl) (chartPullPull (W.P.A.L.pull gA) _ _ rfl)) ?_` and prove the remaining obligations. Use `LBIso.chartPull (h := eA.hom.left ≫ gA ≫ W.P.U.gen.inv.left) (chartPullLinComb W.P.A.L gA (fun _ => eA.hom.left) (fun _ => W.P.U.gen.hom.left) _ _ fun _ => ?_) (chartPullSame W.P.U.LG.L _ (fun _ => pullback.fst W.t.G.hom (Out.jK R)) _ _ fun _ => ?_) W.P.U.ext` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hgi, Category.comp_id]`. Rewrite using `[hbc, ← heA]`. Simplify using `only [Category.assoc]`.
+
+Take `⟨wL, heL, gL, rL⟩` from `rigIso_congr W.P.bundle m₀.cm m₀.lin (hbc.trans hm₀.symm) (e := Out.specOf g) m₀.base.symm`. Take `⟨Wo, hWo, hψ⟩` from `h5.psiOnExists R I hR W.P.D`. Establish `hgen : (Out.specOf g).base (genericPoint (Spec (CommRingCat.of R'))) ∈ Wo`. Establish `: (Out.specOf g).base (genericPoint (Spec (CommRingCat.of R'))) = genericPoint (Spec (CommRingCat.of R))`. Rewrite using `[genericPoint_eq_bot_of_affine, genericPoint_eq_bot_of_affine]`.
+
+Conclude with `PrimeSpectrum.ext (Ideal.comap_bot_of_injective g hg)`. Rewrite using `[this]`. Conclude with `hWo`. Establish `mR : IsMonHom (Iso.refl t'.G).hom` using `by show IsMonHom (𝟙 _); infer_instance`. Take `⟨D', hD, U', hLG, hgenU, hPU⟩` from `hU R R' I I' hR hR' g hI W.P.D W.P.A W.t.G W.t.semi W.P.U Wo hψ hgen t'.G (Iso.refl _) mR A' dA eA mE wA PP' wL heL gL rL`.
+
+Take `⟨oA', hoA'⟩` from `hO _ _ (spMap gam) W.P.A A' gA gpA tA (𝓞 E) W.P.oA`. Establish `actA : ∀ x, (W.P.oA.act x).left ≫ W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (Out.jK R) = W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (Out.jK R) ≫ (W.t.act.act x).left`. Introduce `x`. Establish `e : W.P.oA.act x ≫ W.P.U.gen.inv = W.P.U.gen.inv ≫ (Over.pullback (Out.jK R)).map (W.t.act.act x)`. Rewrite using `[Iso.comp_inv_eq, Category.assoc]`.
+
+Conclude with `((Iso.inv_comp_eq _).2 (W.P.lin.ext x)).symm`. Rewrite using `[← Category.assoc, ← Over.comp_left, e, Over.comp_left, Category.assoc]`. Conclude with `congrArg _ (pullback.lift_fst _ _ _)`. Establish `extA : ∀ x, (Over.pullback (Out.jK R')).map (t'.act.toRingAct.act x) ≫ U'.gen.hom = U'.gen.hom ≫ oA'.act x`. Introduce `x`.
+
+Rewrite using `[hgenU]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(gpA.comp gpG).1.hom_ext` to reduce the goal to its premises. Establish `a₁ : ((Over.pullback (Out.jK R')).map (t'.act.toRingAct.act x)).left ≫ pullback.fst t'.G.hom (Out.jK R') = pullback.fst t'.G.hom (Out.jK R') ≫ (t'.act.act x).left` using `pullback.lift_fst _ _ _`. Establish `a₂ : (t'.act.act x).left ≫ pullback.fst W.t.G.hom (spMap g) = pullback.fst W.t.G.hom (spMap g) ≫ (W.t.act.act x).left` using `pullback.lift_fst _ _ _`.
+
+Rewrite using `[Over.comp_left, Category.assoc, heA, ← Category.assoc, a₁, Category.assoc, a₂, Over.comp_left, Category.assoc, ← Category.assoc (oA'.act x).left, hoA', Category.assoc, actA, ← Category.assoc, ← heA]`. Simplify using `only [Category.assoc]`. Rewrite using `[Over.w, Over.w]`. Take `⟨mod', oD', xl, el, lin', w0'⟩` from `h5.oLinBaseChange R R' I I' hR hR' g W.P.D W.P.A W.t.G W.P.U t'.G (Iso.refl _) mR A' D' hD U' hPU (𝓞 E) W.P.oD W.P.oA W.t.act.toRingAct W.P.lin t'.act.toRingAct (fun x => (Category.comp_id _).trans (Category.id_comp _).symm) oA' extA`. Set `P' : PELUnif I' t'` to `{ D := D', mod := mod', oD := oD', A := A', oA := oA', U := U', bundle := hLG, lin := lin' w0 := w0' H.w0 W.P.w0 }`.
+
+Take `⟨s1, s2, s3, s4, s5, s6⟩` from `W.spec`. Use `set Φ := hD.e.hom.left ≫ pullback.fst W.P.D.toPre.P.A.hom (Out.specOf g) with hΦ`. Establish `gD` using `(isGen_iff hD.w).1 hD.w_gen`. Establish `g0` using `(isGen_iff W.w).1 s2`. Take `⟨w', T⟩` from `exists_comp W.P.D.toPre.P.isLB W.w hD.w g0 gD a.D₀.P.isLB D'.toPre.P.isLB`.
+
+Establish `he' : eSec D'.toPre.P.A ≫ Φ ≫ W.φ = spMap (g.comp f) ≫ eSec a.D₀.P.A`. Rewrite using `[← Category.assoc, hD.he, Category.assoc, W.he, spMap_comp, Category.assoc]`. Set `xe' : D'.toPre.X ≃ₗ[𝓞 E] W.P.D.toPre.X` to `{ hD.xe with map_smul' := xl }`. Use `hD.e_hom` as an intermediate fact. Establish `gpB : IsGrpPullback D'.toPre.P.A W.P.D.toPre.P.A (spMap g) Φ` using `((isGrpPullback_of_iso hD.e).comp (isGrpPullback_pullback W.P.D.toPre.P.A (Out.specOf g))).congr (Category.id_comp _) rfl`.
+
+Establish `hxe : ∀ y, hD.xe (xe'.symm (W.e y)) = W.e y` using `fun y => xe'.apply_symm_apply _`. Use `⟨⟨t', m', P', Φ ≫ W.φ, he', w', W.e.trans xe'.symm, (gpB.comp s1).congr (spMap_comp f g).symm rfl, (isGen_iff w').2 (T.pgen_comp W.P.D.toPre.P.isLB g0 gD), ?_, fun x => ?_, fun y => ?_, fun F _ _ _ _ uF ha hu => ?_⟩, hD, Iso.refl _, mR, hPU, ?_, hxe, w', rfl, HEq.rfl, T⟩` and prove the remaining obligations. Establish `r₀` using `(maps_iff W.w _ (fun _ => eSec a.D₀.P.A) _ W.P.D.toPre.rig a.D₀.rig (spMap f) _ (rigPull_le W.φ (spMap f) W.he a.D₀.P.L) (fun _ => rfl)).1 s3`. Establish `r₁` using `(maps_iff hD.w _ (fun _ => eSec W.P.D.toPre.P.A) _ D'.toPre.rig W.P.D.toPre.rig (Out.specOf g) _ (rigPull_le Φ (Out.specOf g) hD.he W.P.D.toPre.P.L) (fun _ => rfl)).1 hD.w_rig`. Establish `r₂` using `T.pmaps_comp W.P.D.toPre.P.isLB (fun _ => hD.he) r₀ r₁`.
+
+Rewrite `r₂` using `[← spMap_comp]`. Conclude with `(maps_iff w' _ (fun _ => eSec a.D₀.P.A) _ D'.toPre.rig a.D₀.rig (spMap (g.comp f)) _ (rigPull_le (Φ ≫ W.φ) (spMap (g.comp f)) he' a.D₀.P.L) (fun _ => rfl)).2 r₂`. Establish `e₁ : (oD'.onB.act x).left ≫ Φ = Φ ≫ (W.P.oD.onB.act x).left`. Establish `e₀` using `congrArg (fun z => z.left ≫ pullback.fst W.P.D.toPre.P.A.hom (Out.specOf g)) (el x)`. Establish `e₂ : ((Over.pullback (Out.specOf g)).map (W.P.oD.onB.act x)).left ≫ pullback.fst W.P.D.toPre.P.A.hom (Out.specOf g) = pullback.fst _ _ ≫ (W.P.oD.onB.act x).left` using `pullback.lift_fst _ _ _`.
+
+Simplify using `only [Over.comp_left, Category.assoc, e₂] at e₀`. Simplify `e₀` using `only [hΦ, Category.assoc]`. Use `show (oD'.onB.act x).left ≫ Φ ≫ W.φ = (Φ ≫ W.φ) ≫ (a.oa.onB.act x).left`. Rewrite using `[← Category.assoc, e₁, Category.assoc, s4 x, Category.assoc]`. Both sides reduce to the same expression.
+
+Use `show (D'.toPre.c (xe'.symm (W.e y))).left ≫ Φ ≫ W.φ = spMap (g.comp f) ≫ (a.D₀.c y).left`. Rewrite using `[← Category.assoc, hD.c_pr, hxe, Category.assoc, s5 y, spMap_comp, Category.assoc]`. Use `letI : Algebra (FractionRing R) F := ((algebraMap (FractionRing R') F).comp gam).toAlgebra`. Establish `hF : ∀ r : R, algebraMap (FractionRing R) F (algebraMap R (FractionRing R) r) = algebraMap (FractionRing R') F (algebraMap R' (FractionRing R') (g r))` using `fun r => congrArg (algebraMap (FractionRing R') F) (hgam r)`. Establish `hjg : Out.jFK (R` using `R) F = Out.jFK (R := R') F ≫ spMap gam := spMap_comp gam _`.
+
+Establish `hj : Out.jFK (R` using `R') F ≫ Out.jK R' ≫ spMap g = Out.jFK (R := R) F ≫ Out.jK R := by`. Rewrite using `[hjg, Category.assoc, sq]`. Take `⟨k₁, k₂⟩` from `s6 F uF (fun x => (ha x).trans (hF (f x)).symm) (hu.trans (hF u).symm)`. Use `⟨fun y => ?_, fun yF hyF k p₀ σ hσ q₀ q' x' e1 e2 e3 e4 => ?_⟩` and prove the remaining obligations. Establish `pm` using `pmaps_psi hD F hj (xe'.symm (W.e y))`.
+
+Establish `k` using `k₁ y`. Rewrite `k` using `[← hxe y]`. Use `(genRel_transfer T W.P.D.toPre.P.isLB D'.toPre.P.isLB (fun _ => ?_) pm _ _).1 k` and prove the remaining obligations. Establish `hx : D'.toPre.xK (xe'.symm (W.e y)) ≫ Φ = Out.jK R' ≫ Out.specOf g ≫ (W.P.D.toPre.c (hD.xe (xe'.symm (W.e y)))).left`. Rewrite using `[← hD.c_pr, ← Category.assoc]`.
+
+Both sides reduce to the same expression. Rewrite using `[Category.id_comp, Category.assoc, hx, ← Category.assoc (Out.jK R'), ← Category.assoc]`. Conclude with `(congrArg (· ≫ _) hj).trans (Category.assoc _ _ _)`. Take `⟨q, hq₁, hq₂⟩` from `hQ R R' g W.P.D.toPre D'.toPre hD F hF k q'`. Set `x : Out.TFK (R` to `R) F ⟶ W.P.A.A := Over.homMk (x'.left ≫ gA) (by`.
+
+Establish `a₂ : x'.left ≫ A'.A.hom = Out.jFK (R` using `R') F := Over.w x'`. Use `show (x'.left ≫ gA) ≫ W.P.A.A.hom = Out.jFK (R := R) F`. Rewrite using `[Category.assoc, pA.w, ← Category.assoc, a₂, hjg])`. Establish `hx : x'.left ≫ U'.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK R') ≫ (Iso.refl t'.G).hom.left ≫ pullback.fst W.t.G.hom (Out.specOf g) = x.left ≫ W.P.U.gen.inv.left ≫ pullback.fst W.t.G.hom (Out.jK R)`. Establish `hi : eA.inv.left ≫ eA.hom.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.inv_hom_id, Over.id_left]`.
+
+Rewrite using `[hbc, hgenU, ← heA, ← Category.assoc eA.inv.left, hi, Category.id_comp]`. Conclude with `(Category.assoc _ _ _).symm`. Establish `hk : 1 ≤ k`. Break down `hσ with ⟨rfl, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `l.A_pos`.
+
+Conclude with `le_trans (by norm_num) l.three_le`. Use `h5.qkBaseChange R R' I I' hR hR' g W.P.D W.P.A W.t.G W.P.U t'.G (Iso.refl _) mR A' D' hD U' hPU F hF k hk q x q' x' hq₁ hq₂ hx (k₂ yF ?_ k p₀ σ hσ q₀ q x e1 ?_ (fun z => ?_) ?_)` and prove the remaining obligations. Rewrite using `[hyF, ← Category.assoc (Out.jK R'), ← Category.assoc, hj, Category.assoc]`. Establish `: hD.xe q'.y = q.y` using `by rw [hq₁, AddEquiv.apply_symm_apply]`. Rewrite using `[← this, e2]`.
+
+Conclude with `hxe _`. Take `⟨hψ', hm⟩` from `hq₂.2 (xe'.symm (W.e z))`. Establish `pm` using `(maps_iff hD.w _ _ _ (q'.g.s (xe'.symm (W.e z))) (q.g.s (hD.xe (xe'.symm (W.e z)))) (𝟙 _) _ (Out.GeneratorPullback.pullAlong_le _ _ _ _ _ hψ') (fun _ => rfl)).1 hm`. Establish `k'` using `(genRel_transfer T W.P.D.toPre.P.isLB D'.toPre.P.isLB hψ' pm _ _).2 (e3 z)`. Rewrite `k'` using `[hxe z]`.
+
+Conclude with `k'`. Establish `e5 : x'.left ≫ U'.gen.inv.left ≫ pullback.fst t'.G.hom (Out.jK R') ≫ m'.φ = yF ≫ σ.left ≫ Y.m.φ` using `e4`. Rewrite `e5` using `[hm', hm₀, ← hbc]`. Rewrite using `[← e5]`. Simplify `congrArg (· ≫ W.m.φ) hx.symm` using `only [Category.assoc]`.
+
+Use `show m'.φ = ((Iso.refl t'.G).hom.left ≫ pullback.fst W.t.G.hom (Out.specOf g)) ≫ W.m.φ`. Rewrite using `[hm', hm₀, hbc]`.
+-/
 theorem ArcWit.baseChange (hC : Out.CubePullSt) (hP : Out.PolBaseChangeSt) (hU : Out.UnifBaseChangeSt) (h5 : Out.Laws5)
     (hQ : QkPullExistsSt) (hO : PolOActPullSt) {Y : Model Xo c β} {O' : Type} [CommRing O'] [IsDomain O']
     {b : O →+* O'} {a : ArcIn D l β O' b} {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R']

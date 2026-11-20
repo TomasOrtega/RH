@@ -20,6 +20,29 @@ noncomputable section
 
 namespace GlobalTheory.ThK.DescB.LevAutSup
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso S hS hσ c hc hσc j`. Establish `hB` using `hM.triple.base`. Establish `hlt` using `hM.triple.geo.lt`. Establish `hW` using `hM.triple.geo.hW`. Establish `e` using `hM.triple.geo.eBig`.
+
+Establish `hsk` using `GlobalTheory.ThK.DescB.PrimeSplit.skew_sp hσ B hW.skew hH hiso`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ f hf K hK`. Take `⟨π, hπ, -⟩` from `GlobalTheory.PlaneFrame.frame_dual_gram F E σ B _ G.W _ _ d₁ (sp 0) H' i₀ i₁ hB.cm hW hH`.
+
+Establish `hI : IsIsoPlane σ B H' G.W (sp 0)` using `IsIsoPlane.of_adapted hH hW.cartan (GlobalTheory.T.adapted_plane_complement_cartan F E σ B hB _ d₁ G.W (sp 0) H' i₀ i₁ _ _ hW hH π hπ)`. Establish `hz : (a' : ℝ) / 2 < (a : ℝ) / 2`. Establish `: (a' : ℝ) < a` using `by exact_mod_cast hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hf` using `[lev_zero]`.
+
+Unfold `alphaSpan at hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f₀, hf₀, fa, fb, hs, h, hh, hex, hx'⟩` from `hx`. Conclude with `GlobalTheory.T.iso_plane_eisenstein_strip hKP F E σ hσ B hB _ _ G.W (sp 0) H' hW.skew hI X.α X.β _ _ hz c hc hσc f₀ (fun K₀ hK₀ => GlobalTheory.T.theta_span_conjugate_invariant hKP F E σ B a a' G X om om' R Rf hM hσ c hc hσc f₀ (hS hf₀) K₀ hK₀) fa fb hs h hh hex x hx' K hK`.
+
+Consider the case `zero => exact isAut_const σ _ K 0`. Consider the case `add x y _ _ hx hy`. Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx hy 1 1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+
+Consider the case `smul r x _ hx`. Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx (isAut_const σ _ K 0) r 0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Consider the case `succ j ih`.
+
+Introduce `hj f hf K hK`. Establish `hI` using `hiso j (by omega)`. Establish `hz : (a' : ℝ) / 2 < zb a j`. Establish `hn : a' + 2 * (j + 1) < a` using `by omega`. Establish `hr : ((a' + 2 * (j + 1) : ℕ) : ℝ) < a` using `by exact_mod_cast hn`.
+
+Unfold `zb`. Move the coercions through the operations in `at hr ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hf` using `[lev_succ]`. Unfold `alphaSpan at hf`.
+
+Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f₀, hf₀, fa, fb, hs, h, hh, hex, hx'⟩` from `hx`. Conclude with `GlobalTheory.T.iso_plane_eisenstein_strip hKP F E σ hσ B hB _ _ (sp j) (sp (j + 1)) (pl j) (hsk j (by omega)) hI X.α X.β _ _ hz c hc hσc f₀ (ih (by omega) f₀ hf₀) fa fb hs h hh hex x hx' K hK`. Consider the case `zero => exact isAut_const σ _ K 0`.
+
+Consider the case `add x y _ _ hx hy`. Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx hy 1 1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Consider the case `smul r x _ hx`.
+
+Use `GlobalTheory.UAut.AutClosed.isAut_add_smul hx (isAut_const σ _ K 0) r 0 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules.
+-/
 theorem lev_isAut_all : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →
@@ -90,6 +113,13 @@ theorem lev_isAut_all : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [Numb
       funext g
       simp
 
+/- English proof (translation)
+Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso S hS hσ c hc hσc j hj`. Establish `hB` using `hM.triple.base`. Establish `hW` using `hM.triple.geo.hW`. Establish `hsk` using `GlobalTheory.ThK.DescB.PrimeSplit.skew_sp hσ B hW.skew hH hiso`. Establish `hcart : ∀ w, IsCartan (Complex.I • (sp j).J.map (B.emb w).1) ((sp j).θ w)`.
+
+Break down `j with _ | i` into its components or cases. Take `⟨π, hπ, -⟩` from `GlobalTheory.PlaneFrame.frame_dual_gram F E σ B _ G.W _ _ d₁ (sp 0) H' i₀ i₁ hB.cm hW hH`. Conclude with `GlobalTheory.T.adapted_plane_complement_cartan F E σ B hB _ d₁ G.W (sp 0) H' i₀ i₁ _ _ hW hH π hπ`. Conclude with `(hiso i (by omega)).2.2.2.2.2.2.2.cartan`. Take `⟨K, hK, hKle⟩` from `GlobalTheory.T.cartan_max_compact_contained F E σ hσ B hB _ (sp j) (hsk j hj) hcart c hc hσc`.
+
+Conclude with `⟨K, hK, hKle, fun f hf => lev_isAut_all hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH hiso S hS hσ c hc hσc j hj f hf K hKle⟩`.
+-/
 theorem lev_isAut_maxCpt : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),
     IsMatched B G X om om' R Rf → 1 ≤ G.q →

@@ -19,6 +19,13 @@ open GlobalTheory.Member
 
 namespace GlobalTheory.Member
 
+/- English proof (translation)
+Introduce `D H Dw l Xo c σ V r C hC dict hd Kf hK`. Take `⟨h1, h2, h3, -, -⟩` from `GlobalTheory.T.memberDictionary_invariant_rational_level D H Dw l Xo c σ V r C hC dict hd Kf hK`. Take `⟨h4, h5⟩` from `GlobalTheory.T.memberDictionary_real_equivariant_onto_triangular D H Dw l Xo c σ V r C hC dict hd`. Use `⟨h1, h2, ⟨fun k => C.fr 1 k, fun k => ⟨(GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC 1 k).2.1, hd.2 k⟩, h4⟩, h3, h5, ?_⟩` and prove the remaining obligations. Introduce and unpack `g g' ⟨δ, hδ, he⟩`.
+
+Take `⟨γ, hγ, hf⟩` from `hd.1 g`. Take `⟨γ', hγ', hf'⟩` from `hd.1 g'`. Rewrite `hγ'`, `hf'` using `[he]`. Simplify using `only at hγ' hf'`. Take `⟨γ₁, hγ₁, hm, hfr⟩` from `(GlobalTheory.T.markingRule_translate_stable D H Dw l Xo c σ V r C hC g _ γ hγ).2.2.2 δ hδ`.
+
+Establish `hk` using `GlobalTheory.T.mem_levelK_of_same_mark_and_frame D H Dw l Xo c σ V r C hC Kf hK g g' _ _ _ hm hγ' (by rw [hfr, ← hf, hf'])`. Use `⟨γ'⁻¹ * (γ₁ * γ), mul_mem (inv_mem hγ'.1) hm.1, _, hk, ?_⟩` and prove the remaining obligations. Use `group`.
+-/
 theorem dictIsUnif_of_isDict : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → DictIsUnif V dict Kf C.th C.hr := by
   intro D H Dw l Xo c σ V r C hC dict hd Kf hK
   obtain ⟨h1, h2, h3, -, -⟩ := GlobalTheory.T.memberDictionary_invariant_rational_level D H Dw l Xo c σ V r C hC dict hd Kf hK

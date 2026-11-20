@@ -17,6 +17,13 @@ open GlobalTheory.RecDict
 
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
+/- English proof (translation)
+Establish `h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)` after adjusting the coercions. Establish `h2 : D.host.sqrtMinusD ≠ 0`. Introduce `h`. Use `D.host.sqrtMinusD_sq` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : D.host.d ≠ 0)` after adjusting the coercions. Apply `hd` to reduce the goal to its premises.
+
+Take the linear combination `this`. Unfold `Formalism.BasicNotions.Host.xi0`. Conclude with `div_ne_zero (by norm_num) (mul_ne_zero h1 h2)`.
+-/
 theorem embedding_xi_zero_ne_zero (D : D7) : D.host.xi0 ≠ 0 := by
   have h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 := by
     exact_mod_cast (Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)

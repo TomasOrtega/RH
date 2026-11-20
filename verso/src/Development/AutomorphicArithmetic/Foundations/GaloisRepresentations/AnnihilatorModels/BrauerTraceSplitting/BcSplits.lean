@@ -7,9 +7,15 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.PAdic
 
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC GlobalTheory.GalV UpperTheory.Gal.G3
 
+/- English proof (translation)
+The claim follows from `pBcSplits (pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits)`.
+-/
 private theorem bcSplits : BcSplits :=
   pBcSplits (pSplitsBasic (pSplitsPts pIsoPts) pPtsOfSplits)
 
+/- English proof (translation)
+Introduce `B B' R _ T g Z Y p q s _ _ hs tr htr W r c hc J _ σ hσ hsp x`. Conclude with `htr _ (pullback.snd r g) (UpperTheory.Gal.G3.bcMap g c hc) (bcMap_snd g c hc) J (fun j ↦ UpperTheory.Gal.G3.bcMap g (σ j) ((hσ j).trans rfl)) (fun j ↦ bcMap_snd g (σ j) _) ((bcSplits g p q r s hs c hc J σ hσ).2.2 hsp) x`.
+-/
 theorem UpperTheory.Gal.crystallineComparison.Br.trBc :
     UpperTheory.Gal.crystallineComparison.Br.TrBc := by
   intro B B' R _ T g Z Y p q s _ _ hs tr htr W r c hc J _ σ hσ hsp x

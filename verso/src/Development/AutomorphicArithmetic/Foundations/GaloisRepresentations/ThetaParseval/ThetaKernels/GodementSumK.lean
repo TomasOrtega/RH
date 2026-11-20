@@ -39,6 +39,35 @@ end GlobalTheory.CompanionTheory.GodementH
 end
 noncomputable section
 namespace GlobalTheory.CompanionTheory.GodementH
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Take `⟨C, hC⟩` from `key_bound hcm hb.2 hK ha`. Establish `hrat : ∀ q : Cos σ Y, ∃ g : GL (Ix n) E, Matrix.GeneralLinearGroup.map (n` using `Ix n) (inclR (F := F) (E := E) (AF F)) g = (Quotient.out q).1.1 := fun q => by`. Take `⟨g, hg⟩` from `Subgroup.mem_subgroupOf.1 (Quotient.out q).2`.
+
+Conclude with `⟨g, hg⟩`. Use `choose g hg using hrat`. Establish `hnz : ∀ q, ∃ f, mnr (pl b (g q)) f ≠ 0` using `fun q => by`. Establish `hP : ∃ P : Matrix (Fin n) (Ix n) E, P * (diagCols (Fin n) : Matrix (Ix n) (Fin n) E) = 1` using `⟨Matrix.fromCols 1 0, by rw [diagCols, Matrix.fromCols_mul_fromRows]; simp⟩`. Take `⟨P, hP⟩` from `hP`.
+
+Establish `hg1 : ((g q).1 : Matrix (Ix n) (Ix n) E) * ((g q)⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hb1 : (b.1 : Matrix (Ix n) (Ix n) E) * (b⁻¹).1 = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Use `GlobalTheory.T.left_invertible_exists_nonzero_minor E (Ix n) n (pl b (g q)) ((P * ((g q).1 : Matrix (Ix n) (Ix n) E)) * (b.1 : Matrix (Ix n) (Ix n) E)) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg1, Matrix.mul_one, hP]`.
+
+Use `choose f₀ hf₀ using hnz`. Set `u : Cos σ Y → (Fin n → Ix n) → E` to `fun q f => mnr (pl b (g q)) f / mnr (pl b (g q)) (f₀ q)`. Establish `hu1 : ∀ q, u q (f₀ q) = 1` using `fun q => div_self (hf₀ q)`. Establish `hinj : Function.Injective u`. Introduce `q q' e`.
+
+Take `⟨c, hc⟩` from `GlobalTheory.T.plucker_minors_determine_column_space E (Ix n) n _ _ _ _ (hf₀ q) (hf₀ q') (fun f => congrFun e f)`. Establish `hp` using `isPar_of_pl (hg q) (hg q') hc`. Establish `: (Quotient.mk _ (Quotient.out q') : Cos σ Y) = Quotient.mk _ (Quotient.out q)` using `cos_eq.2 (Subgroup.subset_closure ⟨_, hp⟩)`. Rewrite `this` using `[Quotient.out_eq, Quotient.out_eq]`. Conclude with `this.symm`.
+
+Take `⟨C₁, c, hC₁, hcount⟩` from `count hcm (Fin n → Ix n) (σ := σ)`. Set `h : Cos σ Y → ℝ` to `fun q => vecHt σ (u q)`. Establish `h1 : ∀ q, 1 ≤ h q` using `fun q => by`. Use `one_le_vecHt (σ := σ) (hu1 q)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+
+Establish `hcnt : ∀ T : ℝ, 1 ≤ T → {q | h q ≤ T}.Finite ∧ (Set.ncard {q | h q ≤ T} : ℝ) ≤ C₁ * T ^ c`. Introduce `T hT`. Take `⟨hfin, hle⟩` from `hcount T hT`. Establish `hmaps : Set.MapsTo u {q | h q ≤ T} {u : (Fin n → Ix n) → E | (∃ f₀, u f₀ = 1) ∧ (vecHt σ u : ℝ) ≤ T}` using `fun q hq => ⟨⟨f₀ q, hu1 q⟩, hq⟩`. Use `⟨Set.Finite.of_injOn hmaps hinj.injOn hfin, le_trans ?_ hle⟩` and prove the remaining obligations.
+
+Conclude with `Set.ncard_le_ncard_of_injOn u hmaps hinj.injOn hfin` after adjusting the coercions. Establish `a_nonneg : ∀ y, 0 ≤ a y` using `fun y => by`. Take `⟨p, t, hp, k, hk, rfl⟩` from `ha.iwa y`. Rewrite using `[ha.val p t hp k hk]`. Conclude with `NNReal.coe_nonneg _`.
+
+Use `⟨c, fun s' hs' => ?_⟩` and prove the remaining obligations. Establish `hs0 : 0 < s'` using `lt_of_le_of_lt (Nat.cast_nonneg c) hs'`. Establish `hsum : Summable fun q => h q ^ (-s')` using `GlobalTheory.T.summable_height_pow_of_polynomial_count _ h h1 C₁ c hcnt s' hs'`. Establish `hterm : ∀ (x : G2 σ Y) (q : Cos σ Y), a ((Quotient.out q).1 * x) ^ s' ≤ ((C : ℝ) * (ht2 x : ℝ) ^ (2 * n)) ^ s' * h q ^ (-s')`. Introduce `x q`.
+
+Establish `hb1` using `hC (Quotient.out q).1 (g q) (hg q) (f₀ q) (hf₀ q) x`. Establish `hpos : 0 < h q` using `lt_of_lt_of_le one_pos (h1 q)`. Establish `hb2 : a ((Quotient.out q).1 * x) ≤ ((C : ℝ) * (ht2 x : ℝ) ^ (2 * n)) * (h q)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos]`. Conclude with `hb1`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) (by positivity), Real.inv_rpow hpos.le, Real.rpow_neg hpos.le]`. Use `⟨(C : ℝ) ^ s' * ∑' q, h q ^ (-s'), ⌈2 * n * s'⌉₊, fun x => ?_⟩` and prove the remaining obligations. Establish `hS : Summable fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ s'` using `Summable.of_nonneg_of_le (fun q => Real.rpow_nonneg (a_nonneg _) _) (hterm x) (hsum.mul_left _)`. Use `⟨hS, ?_⟩` and prove the remaining obligations.
+
+Establish `hx1 : (1 : ℝ) ≤ ht2 x` using `by exact_mod_cast one_le_heightGL F x.1`. Establish `hx0 : (0 : ℝ) ≤ ht2 x` using `by positivity`. Establish `hpow : ((ht2 x : ℝ) ^ (2 * n)) ^ s' ≤ (ht2 x : ℝ) ^ ⌈2 * n * s'⌉₊`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hx0, ← Real.rpow_natCast]`. Use `Real.rpow_le_rpow_of_exponent_le hx1 ?_` and prove the remaining obligations.
+
+Use `push_cast`. Conclude with `Nat.le_ceil _`. Establish `hT : 0 ≤ ∑' q, h q ^ (-s')` using `tsum_nonneg fun q => Real.rpow_nonneg (lt_of_lt_of_le one_pos (h1 q)).le _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[tsum_mul_left, Real.mul_rpow (by positivity) (by positivity)]`.
+
+Use `_ ≤ (C : ℝ) ^ s' * (ht2 x : ℝ) ^ ⌈2 * n * s'⌉₊ * ∑' q, h q ^ (-s') := by gcongr`. Use `_ = _ := by ring`.
+-/
 theorem godement_sum_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → 1 ≤ n → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → ∀ (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ), IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → ∃ σ₀ : ℝ, ∀ σ' : ℝ, σ₀ < σ' → ∃ (C : ℝ) (N : ℕ), ∀ x : G2 σ Y, Summable (fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ') ∧ ∑' q : Cos σ Y, a ((Quotient.out q).1 * x) ^ σ' ≤ C * (ht2 x : ℝ) ^ N := by
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK ha
   have hcm : IsCMExt F E σ := hB.cm

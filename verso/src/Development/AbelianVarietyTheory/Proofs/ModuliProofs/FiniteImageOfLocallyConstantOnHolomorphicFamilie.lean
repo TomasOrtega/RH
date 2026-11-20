@@ -24,6 +24,11 @@ namespace GlobalTheory.FiniteClasses
 
 open GlobalTheory.Points
 
+/- English proof (translation)
+Establish `hc` using `isConnected_basicOpen_complexPoints_of_dense (exists_isConnected_principalOpen noetherNormalization_primitive (isConnected_unramified_cover_of_irreducible isConnected_and_dense_compl_hypersurface exists_mvPolynomial_of_poly_bound_off_hypersurface)) (principalOpen_dense_complexPoi …`. Establish `he` using `isEmbedding_ptsOverEquivAlgHom (C := ℂ) A (id_eq_spMap_algebraMap ℂ)`. Use `⟨he.isInducing.isPreconnected_image.1 ?_⟩` and prove the remaining obligations. Use `hc.isPreconnected using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨_, rfl, by simp⟩`. Introduce and unpack `⟨φ, rfl, -⟩`. Conclude with `⟨(ptsOverEquivAlgHom A (id_eq_spMap_algebraMap ℂ)).symm φ, trivial, by simp⟩`.
+-/
 theorem preconnectedSpace_pts (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ A]
     [Algebra.FiniteType ℂ A] : PreconnectedSpace (Pts (spMap (algebraMap ℂ A))) := by
   have hc := isConnected_basicOpen_complexPoints_of_dense
@@ -42,6 +47,15 @@ theorem preconnectedSpace_pts (A : Type) [CommRing A] [IsDomain A] [Algebra ℂ 
   · rintro ⟨φ, rfl, -⟩
     exact ⟨(ptsOverEquivAlgHom A (id_eq_spMap_algebraMap ℂ)).symm φ, trivial, by simp⟩
 
+/- English proof (translation)
+Establish `: IsNoetherianRing A` using `Algebra.FiniteType.isNoetherianRing ℂ A`. Establish `hcomp : ∀ P : Ideal A, spMap (Ideal.Quotient.mk P) ≫ spMap (algebraMap ℂ A) = spMap (algebraMap ℂ (A ⧸ P))` using `fun P => by`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hfin : (⋃ P ∈ minimalPrimes A, Set.range (c ∘ PtsOver.map (spMap (Ideal.Quotient.mk P)) (hcomp P) (𝟙 _))).Finite`. Use `(minimalPrimes.finite_of_isNoetherianRing A).biUnion fun P hP => ?_` and prove the remaining obligations.
+
+Establish `: P.IsPrime` using `hP.1.1`. Use `preconnectedSpace_pts (A ⧸ P)` as an intermediate fact. Conclude with `Set.Subsingleton.finite (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`. Conclude with `(hc.comp_continuous (PtsOver.continuous_map _ _ _)).apply_eq_of_preconnectedSpace a b)`.
+
+Use `hfin.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨φ, rfl⟩` from `(ptsEquivAlgHom A).symm.surjective x`. Establish `: (RingHom.ker φ.toRingHom).IsPrime` using `RingHom.ker_isPrime _`. Take `⟨P, hP, hle⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal A)) (J := RingHom.ker φ.toRingHom) bot_le`.
+
+Use `Set.mem_biUnion (x := P) hP ⟨(ptsEquivAlgHom (A ⧸ P)).symm (Ideal.Quotient.liftₐ P φ fun a ha => hle ha), congrArg c (Subtype.ext ?_)⟩` and prove the remaining obligations. Simplify using `only [PtsOver.map_val, ptsOverEquivAlgHom_symm_val]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+-/
 theorem finite_range_affine (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.FiniteType ℂ A] {I : Type*}
     (c : Pts (spMap (algebraMap ℂ A)) → I) (hc : IsLocallyConstant c) : (Set.range c).Finite := by
   have : IsNoetherianRing A := Algebra.FiniteType.isNoetherianRing ℂ A
@@ -68,6 +82,17 @@ theorem finite_range_affine (A : Type) [CommRing A] [Algebra ℂ A] [Algebra.Fin
   rw [← Spec.map_comp, ← CommRingCat.ofHom_comp]
   rfl
 
+/- English proof (translation)
+Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace p`. Set `𝒰` to `Y.affineOpenCover`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (X := Y) (fun i => ((𝒰.f i).opensRange : Set Y)) (fun i => (𝒰.f i).opensRange.isOpen) (fun y _ => Set.mem_iUnion.2 ⟨𝒰.idx y, 𝒰.covers y⟩)`. Establish `key : ∀ {R : CommRingCat.{0}} (j : Spec R ⟶ Y) [IsOpenImmersion j], (Set.range (c ∘ PtsOver.map j rfl (𝟙 _))).Finite`. Introduce `R j _`.
+
+Establish `hl : IsLocallyConstant (c ∘ PtsOver.map j rfl (𝟙 _))` using `hc.comp_continuous (PtsOver.continuous_map _ _ _)`. Establish `hft : LocallyOfFiniteType (j ≫ p)` using `inferInstance`. Generalize the expression as in `c ∘ PtsOver.map j rfl (𝟙 _) = c' at hl`. Generalize the expression as in `j ≫ p = q at c' hl hft`. Take `⟨φ, rfl⟩` from `Spec.map_surjective q`.
+
+Set `_` to `φ.hom.toAlgebra`. Establish `: Algebra.FiniteType ℂ R` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 hft`. Conclude with `finite_range_affine R c' hl`. Use `(t.finite_toSet.biUnion fun i _ => key (𝒰.f i)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+
+Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (x.1 (IsLocalRing.closedPoint ℂ))))`. Establish `hx' : x ∈ Set.range (PtsOver.map (𝒰.f i) rfl (𝟙 _))`. Rewrite using `[PtsOver.range_map, range_comp_of_isOpenImmersion]`. Conclude with `(le_preimage_iff x.1 _).2 hx`. Take `⟨z, rfl⟩` from `hx'`.
+
+Conclude with `Set.mem_biUnion hi ⟨z, rfl⟩`.
+-/
 theorem finite_range {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) [LocallyOfFiniteType p] [QuasiCompact p] {I : Type*}
     (c : Pts p → I) (hc : IsLocallyConstant c) : (Set.range c).Finite := by
   have : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace p
@@ -96,6 +121,17 @@ theorem finite_range {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) [LocallyOfFiniteType p]
   obtain ⟨z, rfl⟩ := hx'
   exact Set.mem_biUnion hi ⟨z, rfl⟩
 
+/- English proof (translation)
+Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Set `h` to `overHomeomorph (C := ℂ) (Over.mk p)`. Take `⟨W, σ, U, t, hW, h0, hσ, -, hhol, hco, hop, -⟩` from `HolChart.exists_holomorphic_chart valAt'_rules existsUnique_point_of_ringHom exists_holomorphic_section_of_etale (Over.mk p) d hp (h.symm x)`. Establish `hop' : IsOpen (σ '' W)`.
+
+Use `TopologicalSpace.le_def.1 (le_generateFrom ?_) _ hop` and prove the remaining obligations. Introduce and unpack `_ ⟨V, f, O, hO, rfl⟩`. Conclude with `(isOpen_basicSet (C := ℂ) V f hO).preimage (isEmbedding_left (Over.mk p)).continuous`. Establish `hx : h (σ 0) = x` using `by rw [hσ, Homeomorph.apply_symm_apply]`. Establish `hev` using `H W (fun b => h (σ b)) hW hhol 0 h0`.
+
+Establish `hxU : ⊤ ≤ x.1 ⁻¹ᵁ U` using `by rw [← hx]; exact (hco 0 h0).1`. Establish `hT : Tendsto (fun (z : Pts p) (i : Fin d) => valR z.1 U (t i)) (𝓝 x) (𝓝 0)`. Use `tendsto_pi_nhds.2 fun i => ?_` and prove the remaining obligations. Establish `h1` using `((continuousAt_valR (t i) hxU).comp continuous_subtype_val.continuousAt).tendsto`. Establish `h2 : valR x.1 U (t i) = (0 : Fin d → ℂ) i` using `by rw [← hx]; exact (hco 0 h0).2 i`.
+
+Rewrite using `[← h2]`. Conclude with `h1`. Establish `hN : h '' (σ '' W) ∈ 𝓝 x` using `(h.isOpenMap _ hop').mem_nhds ⟨_, ⟨0, h0, rfl⟩, hx⟩`. Use `filter_upwards [hN, hT.eventually hev] with z hz hz'`. Take `⟨_, ⟨w, hw, rfl⟩, rfl⟩` from `hz`.
+
+Establish `: (fun i => valR (h (σ w)).1 U (t i)) = w` using `funext (hco w hw).2`. Rewrite `hz'` using `[this, hx]`. Conclude with `hz'`.
+-/
 theorem isLocallyConstant_of_hol {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) (d : ℕ)
     (hp : SmoothOfRelativeDimension d p) {I : Type*} (c : Pts p → I)
     (H : ∀ (B : Set (Fin d → ℂ)) (y : (Fin d → ℂ) → Pts p), IsOpen B → IsHolTo B (fun b => (y b).1) →
@@ -125,6 +161,15 @@ theorem isLocallyConstant_of_hol {Y : Scheme.{0}} (p : Y ⟶ Sp ℂ) (d : ℕ)
   rw [this, hx] at hz'
   exact hz'
 
+/- English proof (translation)
+Introduce `_ k _ σ X s d I cls hs hq H`. Set `p` to `pullback.snd s (spMap σ)`. Set `q` to `pullback.fst s (spMap σ)`. Establish `hp : SmoothOfRelativeDimension d p` using `(smoothOfRelativeDimension_isStableUnderBaseChange d).of_isPullback (IsPullback.of_hasPullback s (spMap σ)) hs`. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth d p`.
+
+Establish `hover : ∀ z : Pts p, (z.1 ≫ q) ≫ s = spMap σ` using `fun z => by`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, z.2, Category.id_comp]`. Establish `hl : IsLocallyConstant fun z : Pts p => cls (z.1 ≫ q)`. Use `isLocallyConstant_of_hol p d hp _ fun B y hB hy => ?_` and prove the remaining obligations. Use `H B (fun b => (y b).1 ≫ q) hB (fun b _ => hover _) fun U f => ?_` and prove the remaining obligations.
+
+Simplify using `only [valAt'_eq_valR, valR_comp]`. Conclude with `hy (q ⁻¹ᵁ U) ((q.app U).hom f)`. Use `(finite_range p _ hl).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨⟨pullback.lift x (𝟙 _) (by rw [Category.id_comp]; exact hx), pullback.lift_snd _ _ _⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `congrArg cls (pullback.lift_fst _ _ _)`.
+-/
 theorem finite_image_of_locally_constant_on_holomorphic_families :
     (∀ (k : Type) [Field k] (σ : k →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp k) (d : ℕ) (y₀ : Sp ℂ ⟶ X), SmoothOfRelativeDimension d s → y₀ ≫ s = spMap σ → ∃ (B : Set (Fin d → ℂ)) (y : (Fin d → ℂ) → (Sp ℂ ⟶ X)) (U : X.Opens) (f : Fin d → Γ(X, U)) (n : ℕ) (r : Fin n → Γ(X, U)), IsOpen B ∧ (0 : Fin d → ℂ) ∈ B ∧ y 0 = y₀ ∧ (∀ b ∈ B, y b ≫ s = spMap σ) ∧ IsHolTo B y ∧ Set.InjOn y B ∧ ⊤ ≤ y₀ ⁻¹ᵁ U ∧ ∃ ε : ℝ, 0 < ε ∧ ∀ x : Sp ℂ ⟶ X, x ≫ s = spMap σ → ⊤ ≤ x ⁻¹ᵁ U → (∀ i, ‖valAt' x U (r i) - valAt' y₀ U (r i)‖ < ε) → x ∈ y '' B) → ∀ (k : Type) [Field k] (σ : k →+* ℂ) (X : Scheme.{0}) (s : X ⟶ Sp k) (d : ℕ) (I : Type 1) (cls : (Sp ℂ ⟶ X) → I), SmoothOfRelativeDimension d s → QuasiCompact s → (∀ (B : Set (Fin d → ℂ)) (y : (Fin d → ℂ) → (Sp ℂ ⟶ X)), IsOpen B → (∀ b ∈ B, y b ≫ s = spMap σ) → IsHolTo B y → ∀ b₀ ∈ B, ∀ᶠ b in nhds b₀, cls (y b) = cls (y b₀)) → (cls '' {x | x ≫ s = spMap σ}).Finite := by
   intro _ k _ σ X s d I cls hs hq H

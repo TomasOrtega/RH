@@ -8,30 +8,66 @@ open LateralTheory.KummerTheory LateralTheory.KummerTheory.ContCut
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun h => h.hom x) (φ.hom.naturality a.op)).symm`.
+-/
 theorem sec_res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (a : V ⟶ U) (x : Sec F U) :
     Sec.res a (Sec.map φ x) = Sec.map φ (Sec.res a x) :=
   (congrArg (fun h => h.hom x) (φ.hom.naturality a.op)).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_map_comp {F G K : Shv R} (φ : F ⟶ G) (ψ : G ⟶ K) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem sec_map_zero {F G : Shv R} {U : Scheme.{0}} (x : Sec F U) : Sec.map (0 : F ⟶ G) x = 0 := rfl
 
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem res_add {F : Shv R} {V U : Scheme.{0}} (a : V ⟶ U) (x y : Sec F U) :
     Sec.res a (x + y) = Sec.res a x + Sec.res a y := map_add _ _ _
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem res_sub {F : Shv R} {V U : Scheme.{0}} (a : V ⟶ U) (x y : Sec F U) :
     Sec.res a (x - y) = Sec.res a x - Sec.res a y := map_sub _ _ _
+/- English proof (translation)
+The claim follows from `map_neg _ _`.
+-/
 theorem res_neg {F : Shv R} {V U : Scheme.{0}} (a : V ⟶ U) (x : Sec F U) :
     Sec.res a (-x) = -Sec.res a x := map_neg _ _
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem res_zero {F : Shv R} {V U : Scheme.{0}} (a : V ⟶ U) : Sec.res a (0 : Sec F U) = 0 := map_zero _
+/- English proof (translation)
+The claim follows from `map_add _ _ _`.
+-/
 theorem smap_add {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map φ (x + y) = Sec.map φ x + Sec.map φ y := map_add _ _ _
+/- English proof (translation)
+The claim follows from `map_sub _ _ _`.
+-/
 theorem smap_sub {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x y : Sec F U) :
     Sec.map φ (x - y) = Sec.map φ x - Sec.map φ y := map_sub _ _ _
+/- English proof (translation)
+The claim follows from `map_neg _ _`.
+-/
 theorem smap_neg {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map φ (-x) = -Sec.map φ x := map_neg _ _
+/- English proof (translation)
+The claim follows from `map_zero _`.
+-/
 theorem smap_zero {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} : Sec.map φ (0 : Sec F U) = 0 := map_zero _
 
+/- English proof (translation)
+Rewrite using `[← sec_map_comp, I.d_comp_d, sec_map_zero]`.
+-/
 theorem dd (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (x : Sec (I.X i) U) :
     Sec.map (I.d j k) (Sec.map (I.d i j) x) = 0 := by
   rw [← sec_map_comp, I.d_comp_d, sec_map_zero]
@@ -39,6 +75,9 @@ theorem dd (I : Cx R) (i j k : ℤ) {U : Scheme.{0}} (x : Sec (I.X i) U) :
 instance injRes (F : Shv R) (n : ℤ) : Injective ((res R F).X n) :=
   inferInstanceAs (Injective ((injectiveResolution F).cochainComplex.X n))
 
+/- English proof (translation)
+Take `⟨_, hg, hp, _⟩` from `h`. Use `haveI := hg`. Use `⟨fun x y e => hp.hom_ext e ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono g, Category.assoc, Category.assoc, ← hp.w, reassoc_of% e]`.
+-/
 theorem mono_a {W U V X : Scheme.{0}} {a : W ⟶ U} {b : W ⟶ V} {f : U ⟶ X} {g : V ⟶ X}
     (h : IsMV a b f g) : Mono a := by
   obtain ⟨_, hg, hp, _⟩ := h
@@ -48,6 +87,13 @@ theorem mono_a {W U V X : Scheme.{0}} {a : W ⟶ U} {b : W ⟶ V} {f : U ⟶ X} 
 
 variable {F : Shv R} {W U V X : Scheme.{0}} {a : W ⟶ U} {b : W ⟶ V} {f : U ⟶ X} {g : V ⟶ X} {n : ℤ}
 
+/- English proof (translation)
+Use `haveI := mono_a h`. Take `⟨c, hc⟩` from `(hD R (res R F) W n).2.1 w`. Take `⟨s, rfl⟩` from `hF R ((res R F).X n) a c`. Establish `hcl` using `((hD R (res R F) W n).2.2.1 w _ hc).1`. Take `⟨-, hglue⟩` from `hG R ((res R F).X (n + 1)) a b f g h`.
+
+Take `⟨z, hz1, hz2⟩` from `hglue (Sec.map ((res R F).d n (n + 1)) s) 0 (by rw [sec_res_map, hcl, res_zero])`. Establish `hzc : Sec.map ((res R F).d (n + 1) (n + 1 + 1)) z = 0`. Apply `(hG R ((res R F).X (n + 1 + 1)) a b f g h).1` to reduce the goal to its premises. Rewrite using `[sec_res_map, hz1, dd]`. Rewrite using `[sec_res_map, hz2, smap_zero]`.
+
+Take `⟨x, hx⟩` from `(hD R (res R F) X (n + 1)).1 z hzc`. Conclude with `⟨x, s, z, hc, hx, hz1, hz2⟩`.
+-/
 theorem conn_total (hD : Dict) (hG : Glue) (hF : Flasque) (h : IsMV a b f g)
     (w : H R (sch.obj W) F n) : ∃ x, Conn F a f g n w x := by
   haveI := mono_a h
@@ -64,6 +110,11 @@ theorem conn_total (hD : Dict) (hG : Glue) (hF : Flasque) (h : IsMV a b f g)
   obtain ⟨x, hx⟩ := (hD R (res R F) X (n + 1)).1 z hzc
   exact ⟨x, s, z, hc, hx, hz1, hz2⟩
 
+/- English proof (translation)
+Take `⟨s, z, hs, hz, e1, e2⟩` from `h1`. Take `⟨s', z', hs', hz', e1', e2'⟩` from `h2`. Use `⟨s + s', z + z', ?_, ((hD R _ X (n + 1)).2.2.2.1 _ _ _ _ hz hz').1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[res_add]`. Conclude with `((hD R _ W n).2.2.2.1 _ _ _ _ hs hs').1`.
+
+Rewrite using `[res_add, smap_add, e1, e1']`. Rewrite using `[res_add, e2, e2', add_zero]`.
+-/
 theorem conn_add (hD : Dict) {w w' x x'} (h1 : Conn F a f g n w x) (h2 : Conn F a f g n w' x') :
     Conn F a f g n (w + w') (x + x') := by
   obtain ⟨s, z, hs, hz, e1, e2⟩ := h1
@@ -73,6 +124,11 @@ theorem conn_add (hD : Dict) {w w' x x'} (h1 : Conn F a f g n w x) (h2 : Conn F 
   · rw [res_add, smap_add, e1, e1']
   · rw [res_add, e2, e2', add_zero]
 
+/- English proof (translation)
+Take `⟨s, z, hs, hz, e1, e2⟩` from `h1`. Use `⟨-s, -z, ?_, ((hD R _ X (n + 1)).2.2.2.1 _ _ _ _ hz hz).2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[res_neg]`. Conclude with `((hD R _ W n).2.2.2.1 _ _ _ _ hs hs).2`. Rewrite using `[res_neg, smap_neg, e1]`.
+
+Rewrite using `[res_neg, e2, neg_zero]`.
+-/
 theorem conn_neg (hD : Dict) {w x} (h1 : Conn F a f g n w x) : Conn F a f g n (-w) (-x) := by
   obtain ⟨s, z, hs, hz, e1, e2⟩ := h1
   refine ⟨-s, -z, ?_, ((hD R _ X (n + 1)).2.2.2.1 _ _ _ _ hz hz).2, ?_, ?_⟩
@@ -80,6 +136,13 @@ theorem conn_neg (hD : Dict) {w x} (h1 : Conn F a f g n w x) : Conn F a f g n (-
   · rw [res_neg, smap_neg, e1]
   · rw [res_neg, e2, neg_zero]
 
+/- English proof (translation)
+Use `haveI := mono_a h`. Take `⟨s, z, hs, hz, e1, e2⟩` from `hx`. Take `⟨c, hc⟩` from `((hD R (res R F) W n).2.2.1 0 _ hs).2.mp rfl`. Take `⟨s', rfl⟩` from `hF R ((res R F).X (n - 1)) a c`. Use `beta_reduce at hc`.
+
+Take `⟨-, hglue⟩` from `hG R ((res R F).X n) a b f g h`. Take `⟨t, ht1, ht2⟩` from `hglue (s - Sec.map ((res R F).d (n - 1) n) s') 0 (by rw [res_sub, sec_res_map, hc, sub_self, res_zero])`. Establish `hzt : Sec.map ((res R F).d n (n + 1)) t = z`. Use `sub_eq_zero.1 ((hG R ((res R F).X (n + 1)) a b f g h).1 _ ?_ ?_)` and prove the remaining obligations. Rewrite using `[res_sub, sec_res_map, ht1, e1, smap_sub, dd, sub_zero, sub_self]`.
+
+Rewrite using `[res_sub, sec_res_map, ht2, e2, smap_zero, sub_self]`. Use `((hD R (res R F) X (n + 1)).2.2.1 x z hz).2.mpr ⟨Sec.map ((res R F).XIsoOfEq (by ring : n = n + 1 - 1)).hom t, ?_⟩` and prove the remaining obligations. Rewrite using `[← sec_map_comp, HomologicalComplex.XIsoOfEq_hom_comp_d, hzt]`.
+-/
 theorem conn_zero (hD : Dict) (hG : Glue) (hF : Flasque) (h : IsMV a b f g) {x}
     (hx : Conn F a f g n 0 x) : x = 0 := by
   haveI := mono_a h
@@ -98,6 +161,9 @@ theorem conn_zero (hD : Dict) (hG : Glue) (hF : Flasque) (h : IsMV a b f g) {x}
     ⟨Sec.map ((res R F).XIsoOfEq (by ring : n = n + 1 - 1)).hom t, ?_⟩
   rw [← sec_map_comp, HomologicalComplex.XIsoOfEq_hom_comp_d, hzt]
 
+/- English proof (translation)
+Establish `h3` using `conn_add hD h1 (conn_neg hD h2)`. Rewrite `h3` using `[add_neg_cancel]`. Use `conn_zero hD hG hF h h3` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis.
+-/
 theorem conn_unique (hD : Dict) (hG : Glue) (hF : Flasque) (h : IsMV a b f g) {w x x'}
     (h1 : Conn F a f g n w x) (h2 : Conn F a f g n w x') : x = x' := by
   have h3 := conn_add hD h1 (conn_neg hD h2)
@@ -110,6 +176,9 @@ end LateralTheory.KummerTheory.DeltaPf
 namespace LateralTheory.KummerTheory.ContCut
 open LateralTheory.KummerTheory.DeltaPf
 
+/- English proof (translation)
+Introduce `R _ F W U V X a b f g h n`. Establish `tot` using `fun w => conn_total (F := F) (n := n) hD hG hF h w`. Use `⟨AddMonoidHom.mk' (fun w => Classical.choose (tot w)) (fun w w' => conn_unique hD hG hF h (Classical.choose_spec (tot (w + w'))) (conn_add hD (Classical.choose_spec (tot w)) (Classical.choose_spec (tot w')))), fun w x => ⟨fun hx => conn_unique hD hG hF h (Classical.choose_spec (t …` and prove the remaining obligations.
+-/
 theorem Delta_of (hD : Dict) (hG : Glue) (hF : Flasque) : Delta := by
   intro R _ F W U V X a b f g h n
   have tot := fun w => conn_total (F := F) (n := n) hD hG hF h w

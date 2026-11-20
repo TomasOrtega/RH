@@ -12,10 +12,20 @@ open GlobalTheory.CompanionTheory.Ar.RootHt.PullVal
 
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω]
 
+/- English proof (translation)
+Apply the tactic sequence `refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap]`.
+-/
 theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : B →+* C) (f : A →+* B) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
   refine RingHom.ext fun a => TrivSqZeroExt.ext ?_ ?_ <;> simp [dualMap]
 
+/- English proof (translation)
+Establish `hl : IsLocalHom (Scheme.stalkClosedPointTo w ≫ CommRingCat.ofHom f).hom`. Use `⟨fun b hb => ?_⟩` and prove the remaining obligations. Establish `h1 : IsUnit (f ((Scheme.stalkClosedPointTo w).hom b))` using `hb`. Establish `h2 : IsUnit ((Scheme.stalkClosedPointTo w).hom b : K)` using `isUnit_iff_ne_zero.2 fun h0 => by simp [h0] at h1`. Conclude with `isUnit_of_map_unit (Scheme.stalkClosedPointTo w).hom b h2`.
+
+Establish `e2 : w' = Spec.map (Scheme.stalkClosedPointTo w ≫ CommRingCat.ofHom f) ≫ X.fromSpecStalk (w (IsLocalRing.closedPoint (CommRingCat.of K)))`. Rewrite using `[← e, Spec.map_comp, Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Establish `hc0 : (Spec.map (Scheme.stalkClosedPointTo w ≫ CommRingCat.ofHom f) ≫ X.fromSpecStalk (w (IsLocalRing.closedPoint (CommRingCat.of K)))) (IsLocalRing.closedPoint (CommRingCat.of K')) = w (IsLocalRing.closedPoint (CommRingCat.of K))` using `closedPoint_specMap_fromSpecStalk (R := CommRingCat.of K') _ _`. Establish `key0` using `stalkSpecializes_stalkClosedPointTo _ _ hc0`. Use `clear e`.
+
+Substitute `e2` using the available equality. Conclude with `⟨hc0, key0⟩`.
+-/
 theorem stalk_key {K K' : Type} [Field K] [Field K'] (w : Spec (CommRingCat.of K) ⟶ X)
     (w' : Spec (CommRingCat.of K') ⟶ X) (f : K →+* K') (e : Spec.map (CommRingCat.ofHom f) ≫ w = w') :
     ∃ hc : centre w' = centre w, X.presheaf.stalkSpecializes (specializes_of_eq hc) ≫
@@ -41,6 +51,9 @@ theorem stalk_key {K K' : Type} [Field K] [Field K'] (w : Spec (CommRingCat.of K
 
 variable {G : Over X} [GrpObj G] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type} [AddCommGroup E] [Module Ω E]
 
+/- English proof (translation)
+Substitute `hc` using the available equality. Use `⟨h, v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]`.
+-/
 theorem extends_of_eq (M : LieModel G ξ E) {c c' : X} (hc : c' = c) (h : genPt ξ ⤳ c) (a : E)
     (v : epsAt (R := X.presheaf.stalk c) (X.fromSpecStalk c) ⟶ G) (hv : M.Extends ⟨c, h⟩ a v)
     {K : Type} [CommRing K] (φ : X.presheaf.stalk c' ⟶ CommRingCat.of K) :
@@ -53,6 +66,13 @@ theorem extends_of_eq (M : LieModel G ξ E) {c c' : X} (hc : c' = c) (h : genPt 
   refine ⟨h, v, hv, ?_⟩
   rw [TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp]
 
+/- English proof (translation)
+Introduce `X Ω _ ξ G _ Li _ _ M K K' _ _ w f a v hv`. Take `⟨h, v₀, hE, hl⟩` from `hv`. Take `⟨hc, key⟩` from `stalk_key w (spMap f ≫ w) f rfl`. Take `⟨h', v', hE', hl'⟩` from `extends_of_eq M hc h a v₀ hE (Scheme.stalkClosedPointTo (spMap f ≫ w))`. Use `⟨h', v', hE', ?_⟩` and prove the remaining obligations.
+
+Use `Eq.trans ?_ hl'.symm` and prove the remaining obligations. Rewrite using `[key, Over.comp_left, hl]`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.LieSigma.pullEps, Over.homMk_left]`. Establish `e1 : spMap (dualMap f) ≫ Spec.map (CommRingCat.ofHom (dualMap (Scheme.stalkClosedPointTo w).hom)) = Spec.map (CommRingCat.ofHom (dualMap (Scheme.stalkClosedPointTo w ≫ CommRingCat.ofHom f).hom))`. Unfold `spMap`.
+
+Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← dualMap_comp']`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (fun t => t ≫ v₀.left) e1)`.
+-/
 theorem valAt_field_map : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (K K' : Type) [Field K] [Field K'] (w : Sp K ⟶ X) (f : K →+* K') (a : Li) (v : epsAt w ⟶ G), M.ValAt w a v → M.ValAt (spMap f ≫ w) a (GlobalTheory.CompanionTheory.Ar.LieSigma.pullEps f w ≫ v) := by
   intro X Ω _ ξ G _ Li _ _ M K K' _ _ w f a v hv
   obtain ⟨h, v₀, hE, hl⟩ := hv

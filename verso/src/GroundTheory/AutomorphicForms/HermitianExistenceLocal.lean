@@ -12,9 +12,17 @@ section Transport
 
 variable {A B : Type*} [CommRing A] [CommRing B] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+The claim follows from `((e : A →+* B).map_det H).symm`.
+-/
 theorem det_map_ringEquiv (e : A ≃+* B) (H : Matrix ι ι A) : (H.map e).det = e H.det :=
   ((e : A →+* B).map_det H).symm
 
+/- English proof (translation)
+Use `⟨fun h => ?_, fun h => h.map (e : A →+* B) he⟩` and prove the remaining obligations. Establish `he' : ∀ y, e.symm (t y) = s (e.symm y)` using `fun y => by`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[e.apply_symm_apply, he, e.apply_symm_apply]`. Establish `hid : ∀ M : Matrix ι ι A, (M.map e).map (e.symm : B →+* A) = M` using `fun M => by`.
+
+Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `h.map (e.symm : B →+* A) he'` as an intermediate fact. Rewrite `this` using `[hid, hid]`. Then use the resulting hypothesis.
+-/
 theorem isCongr_map_iff (e : A ≃+* B) {s : A →+* A} {t : B →+* B} (he : ∀ x, e (s x) = t (e x))
     {H H' : Matrix ι ι A} : IsCongr t (H.map e) (H'.map e) ↔ IsCongr s H H' := by
   refine ⟨fun h => ?_, fun h => h.map (e : A →+* B) he⟩
@@ -29,6 +37,9 @@ theorem isCongr_map_iff (e : A ≃+* B) {s : A →+* A} {t : B →+* B} (he : �
 
 omit [Fintype ι] [DecidableEq ι] in
 
+/- English proof (translation)
+Unfold `IsHermitianFor at *`. Use `conv_rhs => rw [← hH]`. Use extensionality with `i j`. Simplify using `[hφ]`.
+-/
 theorem IsHermitianFor.map {s : A →+* A} {t : B →+* B} (φ : A →+* B) (hφ : ∀ x, φ (s x) = t (φ x))
     {H : Matrix ι ι A} (hH : IsHermitianFor s H) : IsHermitianFor t (H.map φ) := by
   unfold IsHermitianFor at *
@@ -42,6 +53,17 @@ section Split
 
 variable {F : Type*} [Field F] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `set A := H.map (RingHom.fst F F) with hA_def`. Establish `hA : IsUnit A.det`. Rewrite using `[hA_def, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hu.map _`. Establish `hHsnd : H.map (RingHom.snd F F) = Aᵀ` using `by conv_lhs => rw [← hH]`.
+
+Rewrite using `[transpose_map, map_snd_map_conjHom_prod]`. Use `set P : Matrix ι ι (F × F) := fun i j => (A⁻¹ i j, (1 : Matrix ι ι F) i j) with hP_def`. Establish `hPfst : P.map (RingHom.fst F F) = A⁻¹` using `by ext i j; rfl`. Establish `hPsnd : P.map (RingHom.snd F F) = 1` using `by ext i j; rfl`. Establish `hP : IsUnit P.det`.
+
+Rewrite using `[Prod.isUnit_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `IsUnit ((RingHom.fst F F) P.det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hPfst]`. Conclude with `(Matrix.isUnit_nonsing_inv_det_iff.2 hA)`.
+
+Express the relevant statement in the definitionally equal form `IsUnit ((RingHom.snd F F) P.det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hPsnd, det_one]`. Conclude with `isUnit_one`. Use `⟨P, hP, ?_⟩` and prove the remaining obligations. Establish `h1 : ((P.map (conjHom F (F × F)))ᵀ * H * P).map (RingHom.fst F F) = (1 : Matrix ι ι (F × F)).map (RingHom.fst F F)`.
+
+Rewrite using `[Matrix.map_mul, Matrix.map_mul, transpose_map, map_fst_map_conjHom_prod, hPsnd, hPfst, Matrix.map_one _ (map_zero _) (map_one _), transpose_one, Matrix.one_mul, Matrix.mul_nonsing_inv _ hA]`. Establish `h2 : ((P.map (conjHom F (F × F)))ᵀ * H * P).map (RingHom.snd F F) = (1 : Matrix ι ι (F × F)).map (RingHom.snd F F)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, transpose_map, map_snd_map_conjHom_prod, hPsnd, hPfst, hHsnd, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, ← transpose_mul, Matrix.mul_nonsing_inv _ hA, transpose_one]`. Use function extensionality and compare the values at `i j`. Conclude with `Prod.ext (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+-/
 theorem isCongr_one_of_split (H : Matrix ι ι (F × F)) (hH : IsHermitianFor (conjHom F (F × F)) H)
     (hu : IsUnit H.det) : IsCongr (conjHom F (F × F)) H 1 := by
   set A := H.map (RingHom.fst F F) with hA_def
@@ -91,6 +113,11 @@ def sqSplitEquiv (h2 : (2 : F) ≠ 0) {d r : F} (hr : r ≠ 0) (hd : r ^ 2 = d) 
   map_add' z w := by
     ext <;> simp <;> ring
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `sqSplitEquiv h2 hr hd (conj F (QuadraticAlgebra F d 0) z) = conj F (F × F) (sqSplitEquiv h2 hr hd z)`. Rewrite using `[conj_quadraticAlgebra, conj_prod]`. Use `ext`. Simplify using `[sqSplitEquiv, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]`. Expand and normalize the polynomial expressions, which then agree.
+
+Simplify using `[sqSplitEquiv, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]`.
+-/
 theorem sqSplitEquiv_star (h2 : (2 : F) ≠ 0) {d r : F} (hr : r ≠ 0) (hd : r ^ 2 = d)
     (z : QuadraticAlgebra F d 0) :
     sqSplitEquiv h2 hr hd (conjHom F (QuadraticAlgebra F d 0) z) =
@@ -103,6 +130,11 @@ theorem sqSplitEquiv_star (h2 : (2 : F) ≠ 0) {d r : F} (hr : r ≠ 0) (hd : r 
     ring
   · simp [sqSplitEquiv, QuadraticAlgebra.re_star, QuadraticAlgebra.im_star]
 
+/- English proof (translation)
+Use `set e := sqSplitEquiv h2 hr hd`. Establish `he` using `sqSplitEquiv_star h2 hr hd`. Rewrite using `[← isCongr_map_iff e he]`. Establish `k1` using `isCongr_one_of_split (H.map e) (hH.map (e : _ →+* F × F) he) (by rw [det_map_ringEquiv]; exact hu.map e)`. Establish `k2` using `isCongr_one_of_split (H'.map e) (hH'.map (e : _ →+* F × F) he) (by rw [det_map_ringEquiv]; exact hu'.map e)`.
+
+Conclude with `k1.trans k2.symm`.
+-/
 theorem isCongr_of_eq_sq (h2 : (2 : F) ≠ 0) {d r : F} (hr : r ≠ 0) (hd : r ^ 2 = d)
     {H H' : Matrix ι ι (QuadraticAlgebra F d 0)}
     (hH : IsHermitianFor (conjHom F (QuadraticAlgebra F d 0)) H)
@@ -162,11 +194,17 @@ def HermitianForm.ofGram (H : Matrix ι ι A) (hH : IsHermitianFor (conjHom F A)
     rw [← conj_conj (F := F) (x i), this]
     simp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem HermitianForm.ofGram_apply (H : Matrix ι ι A) (hH : IsHermitianFor (conjHom F A) H)
     (hu : IsUnit H.det) (x y : ι → A) :
     (HermitianForm.ofGram H hH hu).toSesq x y = ∑ i, ∑ j, conj F A (x i) * H i j * y j :=
   rfl
 
+/- English proof (translation)
+Use extensionality with `i j`. Rewrite using `[gram_apply, HermitianForm.ofGram_apply]`. Simplify using `[Pi.single_apply]`.
+-/
 theorem gram_ofGram (H : Matrix ι ι A) (hH : IsHermitianFor (conjHom F A) H)
     (hu : IsUnit H.det) :
     gram (HermitianForm.ofGram H hH hu).toSesq (Pi.basisFun A ι) = H := by
@@ -174,6 +212,9 @@ theorem gram_ofGram (H : Matrix ι ι A) (hH : IsHermitianFor (conjHom F A) H)
   rw [gram_apply, HermitianForm.ofGram_apply]
   simp [Pi.single_apply]
 
+/- English proof (translation)
+Rewrite using `[isometric_iff_isCongr, gram_ofGram, gram_ofGram]`. Conclude with `⟨fun h => h.symm, fun h => h.symm⟩`.
+-/
 theorem isCongr_ofGram_iff (H H' : Matrix ι ι A) (hH : IsHermitianFor (conjHom F A) H)
     (hu : IsUnit H.det) (hH' : IsHermitianFor (conjHom F A) H') (hu' : IsUnit H'.det) :
     HermitianForm.Isometric (HermitianForm.ofGram H hH hu) (HermitianForm.ofGram H' hH' hu') ↔
@@ -189,6 +230,13 @@ variable {F A : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
   [Field A] [Algebra F A] [Algebra.IsQuadraticExtension F A] [Algebra.IsSeparable F A]
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
+/- English proof (translation)
+Use `set h := HermitianForm.ofGram H hH hu`. Use `set h' := HermitianForm.ofGram H' hH' hu'`. Establish `hd : h.disc = h'.disc`. Rewrite using `[h.disc_eq (Pi.basisFun A ι), h'.disc_eq (Pi.basisFun A ι), QuotientGroup.eq, mem_range_normUnits_iff]`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+
+Apply `(algebraMap F A).injective` to reduce the goal to its premises. Rewrite using `[← mul_conj, Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, HermitianForm.algebraMap_detUnit, HermitianForm.algebraMap_detUnit, gram_ofGram, gram_ofGram, hz]`. Use `hu.ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `hI` using `(HermitianForm.isometric_iff h h').2 ⟨rfl, hd⟩`.
+
+Conclude with `(isCongr_ofGram_iff H H' hH hu hH' hu').1 hI`.
+-/
 theorem isCongr_of_det_eq_mul_norm {H H' : Matrix ι ι A} (hH : IsHermitianFor (conjHom F A) H)
     (hu : IsUnit H.det) (hH' : IsHermitianFor (conjHom F A) H') (hu' : IsUnit H'.det) {z : A}
     (hz : H'.det = H.det * (conj F A z * z)) : IsCongr (conjHom F A) H H' := by
@@ -213,6 +261,9 @@ section Diagonal
 
 variable {F A : Type*} [Field F] [Field A] [Algebra F A] [Algebra.IsQuadraticExtension F A]
 
+/- English proof (translation)
+Take `⟨c, hc⟩` from `exists_isometric_diagForm n (HermitianForm.ofGram H hH hu) (by simp)`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `(isometric_iff_isCongr _ _).1 hc` as an intermediate fact. Rewrite `this` using `[gram_diagForm, gram_ofGram]`. Then use the resulting hypothesis.
+-/
 theorem exists_isCongr_diagonal [Algebra.IsSeparable F A] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) A) (hH : IsHermitianFor (conjHom F A) H) (hu : IsUnit H.det) :
     ∃ c : Fin n → Fˣ, IsCongr (conjHom F A) (diagonal fun i => algebraMap F A (c i)) H := by
@@ -221,6 +272,11 @@ theorem exists_isCongr_diagonal [Algebra.IsSeparable F A] {n : ℕ}
   have := (isometric_iff_isCongr _ _).1 hc
   rwa [gram_diagForm, gram_ofGram] at this
 
+/- English proof (translation)
+Use `⟨diagonal fun i => algebraMap F A (s i), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_diagonal]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => (map_ne_zero _).2 (hs0 i))`. Rewrite using `[diagonal_map (map_zero _), diagonal_transpose, diagonal_mul_diagonal, diagonal_mul_diagonal]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[conjHom_apply, conj_algebraMap, ← hs i]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem isCongr_diagonal_of_sq {ι : Type*} [Fintype ι] [DecidableEq ι] (a c s : ι → F)
     (hs0 : ∀ i, s i ≠ 0) (hs : ∀ i, s i ^ 2 * a i = c i) :
     IsCongr (conjHom F A) (diagonal fun i => algebraMap F A (a i))

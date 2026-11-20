@@ -60,6 +60,21 @@ end Charts
 
 section Cubical
 
+/- English proof (translation)
+Take `⟨w, hw⟩` from `h`. Establish `hw'` using `(isGen_iff w).1 hw`. Take `⟨a, ha, hm⟩` from `DegPull.exists_pmaps (K := PUnit) hw' L.isLB L'.isLB (φ' := fun _ => eSec G') (φ := fun _ => eSec G) (ε := fun _ => 1) (cubeMapOf gp).e (fun _ => (cubeMapOf gp).e_comm) L.rig L.rigGen`. Take `⟨u, hu⟩` from `HeckePoint.exists_unit_ratio L'.isLB a L'.rig ha L'.rigGen`. Set `w₁ : LB.Iso L'.L (L.L.pull α)` to `⟨fun p => w.s p * res (U := G'.hom ⁻¹ᵁ ⊤) (fun _ _ => trivial) (pullU G'.hom ⊤ u)⟩`.
+
+Establish `g₁ : ∀ (Y : Scheme.{0}) (f : Y ⟶ G'.left) (y : Y) j k, α (f y) ∈ L.L.U j → f y ∈ L'.L.U k → gw w₁ f y j k = gw w f y j k * gm (f ≫ G'.hom) y ⊤ u` using `fun Y f y j k hj hk => (map_mul _ _ _).trans (congrArg _ ((gm_res f y _ (show f y ∈ (L.L.pull α).U (fun _ => j) ⊓ L'.L.U k from ⟨mem_pull.2 hj, hk⟩) _).trans (gm_pull f G'.hom y ⊤ trivial u)))`. Establish `hw₁ : PGen w₁` using `fun Y f y j j' k k' hj hj' hk hk' => by`. Rewrite using `[g₁ Y f y j k hj hk, g₁ Y f y j' k' hj' hk', hw' Y f y j j' k k' hj hj' hk hk', _root_.mul_assoc]`. Use `(isPullCubical_iff _ c c').2 ⟨w₁, hw₁, fun Z r z p q hp hq => ?_, ?_⟩` and prove the remaining obligations. Use `(hm Z r z p q hp hq).trans ?_` and prove the remaining obligations.
+
+Establish `e : (r ≫ eSec G') ≫ G'.hom = r`. Rewrite using `[Category.assoc, show eSec G' ≫ G'.hom = 𝟙 _ from Over.w η[G'], Category.comp_id]`. Establish `e₂` using `g₁ Z (r ≫ eSec G') z _ _ (hp default) (hq default)`. Rewrite `e₂` using `[e]`. Rewrite using `[hu Z r z q (Set.mem_iInter.2 hq), Fintype.prod_unique, Fintype.prod_unique, zpow_one, zpow_one]`.
+
+Conclude with `(_root_.mul_assoc _ _ _).symm.trans (congrArg (· * _) e₂.symm)`. Set `e : 𝟙_ (Over S') ⟶ G3 G'` to `lift 1 (lift 1 1)`. Establish `s₁` using `(hG _ _ hA).2`. Establish `hψ : ∀ I : thK, thφ G' (x3 G') I ≫ α = (cubeMapOf gp).F3 ≫ thφ G (x3 G) I` using `fun I => (cubeMapOf gp).psum_comm I.down`. Use `EvenPull.pmaps_of_section (φ' := thφ G' (x3 G')) (φ := thφ G (x3 G)) (ε := thε) hw₁ L.isLB L'.isLB (cubeMapOf gp).F3 hψ c'.t c'.isGen c.t c.isGen (G3 G').hom e.left (Over.w e) (AbLaw.Cube.surj_tensor hG hA (AbLaw.Cube.surj_tensor hG hA s₁)) (fun y J J' hJ hJ' => ?_)` and prove the remaining obligations.
+
+Establish `a₁ : e.left ≫ (cubeMapOf gp).F3 = (lift (1 : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G) (lift 1 1)).left` using `hom_ext_triple _ fun i => by`. Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Establish `o` using `congrArg (fun q => q.left) (map_one (pushHom gp (𝟙_ (Over S'))))`. Apply the tactic sequence `have e₁ : e ≫ x3 G' i = 1 := by fin_cases i <;> simp [e, x3]`. Apply the tactic sequence `have e₂ : lift (1 : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G) (lift 1 1) ≫ x3 G i = 1 := by fin_cases i <;> simp [x3]`.
+
+Rewrite using `[e₁, e₂]`. Conclude with `o`. Establish `b₁` using `(isCub_cubV c (T := Over.mk ((𝟙_ (Over S')).hom ≫ f)) hJ).face 1 1`. Establish `b₂` using `(isCub_cubV c' (T := 𝟙_ (Over S')) hJ').face 1 1`. Establish `b₃` using `prod_cub (1 : 𝟙_ (Over S') ⟶ G') 1 1 (fun ψ => gw w₁ ψ y (J (ψ ≫ α)) (J' ψ))`.
+
+Use `Eq.trans ((congrArg (fun q => val (L := L.L) (φ := thφ G (x3 G)) (ε := thε) c.t q y J) a₁).trans b₁) (Eq.symm ?_)` and prove the remaining obligations. Use `(congrArg₂ (· * ·) b₃ b₂).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+-/
 theorem isPullCubical_of_lbIso (hG : Out.GlobalFnsSt) {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G']
     [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (hA : IsAbelianScheme G') {f : S' ⟶ S} {α : G'.left ⟶ G.left}
     (gp : IsGrpPullback G' G f α) {L' : RigLB G'} {L : RigLB G}

@@ -13,6 +13,17 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.ConjLine
 
+/- English proof (translation)
+Introduce `D ψ L L' S τ hrk hg χz χ χ' om om' hom hom' f hf`. Establish `hstd : IsStdChar D ψ (-1)` using `hom.std`. Establish `CA` using `GlobalTheory.T.weilConjugationAdjointRule_standard_char D ψ hstd S L'`. Establish `h1` using `(CA.conj_target χ' χz⁻¹ om' hom').1`. Rewrite `h1` using `[inv_inv]`.
+
+Establish `hg' : τᴴ ⬝ (L.gram ⬝ τ) = (((1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • (GlobalTheory.ChiGrid.negSp L').gram`. Rewrite using `[hg, GlobalTheory.ChiGrid.negSp_gram]`. Simplify using the standard rewrite rules. Establish `H` using `GlobalTheory.T.weilRep_conj_sourceLine_eq_targetLine D ψ L (GlobalTheory.ChiGrid.negSp L') S τ hrk hg' χz χ χ'⁻¹ om (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget om') hom h1 f hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Use `H.1` as an intermediate fact. Conclude with `(CA.theta_neg _).1.mp this`. Introduce `h`. Establish `key : ∀ F : WO S L' → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget om' (h, 1) (GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id F) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj id (om' (h, 1) F)`. Introduce `F`.
+
+Establish `e` using `GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cjEnd_cj (Equiv.refl (WO S L')) (om' (h, (GlobalTheory.ChiGrid.negGA L').symm 1)) F`. Simplify `e` using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget]`. Establish `H2` using `H.2 h`. Establish `K : GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.conjTarget om' (h, 1) (fun w => star (f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w)))) = GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger …` using `key (fun w => f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w)))`. Rewrite `H2` using `[K]`.
+
+Use function extensionality and compare the values at `w`. Use `congrArg star (congrFun H2 w)` as an intermediate fact. Simplify `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.cj]`.
+-/
 theorem weil_source_line_opposite : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (L L' S : HSp D) (τ : Matrix (Fin L.rank) (Fin L'.rank) D.host.E), L.rank = L'.rank → τᴴ ⬝ (L.gram ⬝ τ) = (((-1 : ℤ) : D.host.E) * (D.host.xi0 * star D.host.xi0)) • L'.gram → ∀ (χz χ χ' : ((AE D)ˣ →* Circle)) (om : Om L S) (om' : Om S L'), IsWeilDatumO ψ L S χz χ om → IsWeilDatumO ψ S L' χ' χz⁻¹ om' → ∀ f, IsThetaFunO ψ L S f → IsThetaFunO ψ S L' (fun w => f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w))) ∧ ∀ h, om' (h, 1) (fun w => f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w))) = fun w => om (1, h) f (GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L S ((rat τ : Mx D L.rank L'.rank) ⬝ w)) := by
   intro D ψ L L' S τ hrk hg χz χ χ' om om' hom hom' f hf
   have hstd : IsStdChar D ψ (-1) := hom.std

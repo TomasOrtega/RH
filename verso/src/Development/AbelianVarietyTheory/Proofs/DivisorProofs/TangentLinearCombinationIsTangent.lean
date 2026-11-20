@@ -9,6 +9,9 @@ namespace GlobalTheory.SecJet.TanComb
 
 variable {R : Type} [CommRing R]
 
+/- English proof (translation)
+Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+-/
 theorem zeroPt_w : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (epsR R).hom = (𝟙_ (Over (Sp R))).hom := by
   show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
@@ -20,6 +23,11 @@ def zeroPt : 𝟙_ (Over (Sp R)) ⟶ epsR R :=
 
 variable {G : Over (Sp R)} [GrpObj G]
 
+/- English proof (translation)
+Establish `h1 : (1 : 𝟙_ (Over (Sp R)) ⟶ G) = η[G]`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Rewrite using `[h1, IsTangent]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify `h` using `[zeroPt]`. Introduce `h`. Simplify `congrArg (fun q => q.left) h` using `[zeroPt]`.
+-/
 theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ zeroPt ≫ v = 1 := by
   have h1 : (1 : 𝟙_ (Over (Sp R)) ⟶ G) = η[G] := by
     rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]
@@ -31,6 +39,11 @@ theorem isTangent_iff (v : epsR R ⟶ G) : IsTangent v ↔ zeroPt ≫ v = 1 := b
   · intro h
     simpa [zeroPt] using congrArg (fun q => q.left) h
 
+/- English proof (translation)
+Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (epsScaleR c) = spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply `RingHom.ext` to reduce the goal to its premises.
+
+Introduce `r`. Simplify using `[epsScaleR]`.
+-/
 theorem zeroPt_epsScale (c : R) : zeroPt ≫ epsScale R c = zeroPt := by
   apply Over.OverMorphism.ext
   show spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (epsScaleR c) = spMap (TrivSqZeroExt.fstHom R R R).toRingHom
@@ -40,6 +53,9 @@ theorem zeroPt_epsScale (c : R) : zeroPt ≫ epsScale R c = zeroPt := by
   intro r
   simp [epsScaleR]
 
+/- English proof (translation)
+Proceed by induction on `l with`. Consider the case `nil`. Rewrite using `[List.prod_nil, Hom.one_def, Hom.one_def, ← Category.assoc, toUnit_unique (zeroPt ≫ toUnit _) (toUnit _)]`. Consider the case `cons a l ih`. Rewrite using `[List.prod_cons, MonObj.comp_mul, hl a (List.mem_cons_self ..), ih (fun x hx => hl x (List.mem_cons_of_mem _ hx)), _root_.mul_one]`.
+-/
 theorem zeroPt_prod (l : List (epsR R ⟶ G)) (hl : ∀ x ∈ l, zeroPt ≫ x = 1) : zeroPt ≫ l.prod = 1 := by
   induction l with
   | nil =>
@@ -51,6 +67,11 @@ end GlobalTheory.SecJet.TanComb
 
 namespace GlobalTheory.SecJet
 
+/- English proof (translation)
+Introduce `hv`. Rewrite using `[TanComb.isTangent_iff, tanComb]`. Use `TanComb.zeroPt_prod _ fun x hx => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hx`. Rewrite using `[← Category.assoc, TanComb.zeroPt_epsScale, ← TanComb.isTangent_iff]`.
+
+Conclude with `hv i`.
+-/
 theorem isTangent_tanComb (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] (m : ℕ) (v : Fin m → (epsR R ⟶ G))
     (c : Fin m → R) : (∀ i, IsTangent (v i)) → IsTangent (tanComb c v) := by
   intro hv

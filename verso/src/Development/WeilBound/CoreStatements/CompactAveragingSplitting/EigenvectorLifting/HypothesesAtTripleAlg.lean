@@ -11,11 +11,20 @@ section Forms
 
 variable {k : Type} [Field k] {K : Type} [CommRing K] [Algebra k K] {c : K →ₐ[k] K}
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := c.toRingHom)`.
+-/
 theorem map_mul_c {a b d : Type} [Fintype b] (A : Matrix a b K) (B : Matrix b d K) : (A * B).map c = A.map c * B.map c :=
   Matrix.map_mul (f := c.toRingHom)
 
+/- English proof (translation)
+The claim follows from `Matrix.map_one _ (map_zero c) (map_one c)`.
+-/
 theorem map_one_c {a : Type} [DecidableEq a] : (1 : Matrix a a K).map c = 1 := Matrix.map_one _ (map_zero c) (map_one c)
 
+/- English proof (translation)
+Use `letI := hK.toField`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.toLin' C) (LinearMap.ker_eq_bot'.2 fun t ht => h t ht)`. Use `⟨LinearMap.toMatrix' g, Matrix.toLin'.injective ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix', hg, Matrix.toLin'_one]`.
+-/
 theorem exists_left_inv (hK : IsField K) {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b] (C : Matrix a b K)
     (h : ∀ t, C *ᵥ t = 0 → t = 0) : ∃ L : Matrix b a K, L * C = 1 := by
   letI := hK.toField
@@ -24,6 +33,21 @@ theorem exists_left_inv (hK : IsField K) {a b : Type} [Fintype a] [Fintype b] [D
   refine ⟨LinearMap.toMatrix' g, Matrix.toLin'.injective ?_⟩
   rw [Matrix.toLin'_mul, Matrix.toLin'_toMatrix', hg, Matrix.toLin'_one]
 
+/- English proof (translation)
+Take `⟨L, hL⟩` from `exists_left_inv hK Y hf`. Establish `cc : ∀ {a b : Type} (A : Matrix a b K), (A.map c).map c = A` using `fun A => Matrix.ext fun i j => hc _`. Establish `hJ' : (J.map c)ᵀ = -J` using `Matrix.ext fun i j => hJ.1 i j`. Establish `sk : ∀ {a b : Type} (A : Matrix (Fin N) a K) (B : Matrix (Fin N) b K), Bᵀ * J * A.map c = -((Aᵀ * J * B.map c).map c)ᵀ` using `fun A B => by`. Rewrite using `[map_mul_c, map_mul_c, cc, Matrix.transpose_mul, Matrix.transpose_mul, hJ', Matrix.transpose_map, Matrix.transpose_transpose, Matrix.neg_mul, Matrix.mul_neg, neg_neg, Matrix.mul_assoc]`.
+
+Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin N) (Fin m) K, Yᵀ * J * Z.map c = 1` from `⟨(J⁻¹ * Lᵀ).map c, by`. Rewrite using `[cc, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hJ.2, ← Matrix.transpose_mul, hL, Matrix.transpose_one]⟩`. Establish `hZ' : Zᵀ * J * Y.map c = -1` using `by rw [sk, hZ, map_one_c, Matrix.transpose_one]`. Use `set S := Zᵀ * J * Z.map c with hS`. Establish `hS' : (S.map c)ᵀ = -S` using `by rw [hS, neg_eq_iff_eq_neg.2 (sk Z Z)]`.
+
+Set `t : Matrix (Fin m) (Fin m) K` to `-(⅟(2 : k) • Sᵀ)`. Establish `ht : t.map c = ⅟(2 : k) • S`. Use extensionality with `i j`. Establish `: c (S j i) = -S i j` using `congrFun (congrFun hS' i) j`. Simplify using `[t, this]`.
+
+Establish `a1 : ∀ A B : Matrix (Fin N) (Fin m) K, (A + B).map c = A.map c + B.map c` using `fun A B => Matrix.map_add _ (map_add c) _ _`. Establish `e1 : Yᵀ * J * (Z + Y * t).map c = 1`. Rewrite using `[a1, map_mul_c, Matrix.mul_add, hZ, ← Matrix.mul_assoc, hY, Matrix.zero_mul, add_zero]`. Establish `e2 : (Z + Y * t)ᵀ * J * Y.map c = -1` using `by rw [sk, e1, map_one_c, Matrix.transpose_one]`. Establish `e3 : (Z + Y * t)ᵀ * J * (Z + Y * t).map c = 0`.
+
+Rewrite using `[a1, map_mul_c, Matrix.mul_add, ← Matrix.mul_assoc, e2, ht, Matrix.transpose_add, Matrix.add_mul, Matrix.add_mul, Matrix.transpose_mul, Matrix.mul_assoc tᵀ, Matrix.mul_assoc tᵀ, hZ, ← hS]`. Simplify using `only [t, Matrix.transpose_neg, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.mul_one, Matrix.neg_mul, Matrix.one_mul]`. Rewrite using `[add_assoc, ← neg_add, ← add_smul, invOf_two_add_invOf_two, one_smul, add_neg_cancel]`. Use `set X := Z + Y * t`. Establish `g : (Matrix.fromCols Y X)ᵀ * J * (Matrix.fromCols Y X).map c = Matrix.fromBlocks 0 1 (-1) 0`.
+
+Rewrite using `[Matrix.transpose_fromCols, Matrix.fromCols_map, Matrix.fromRows_mul, Matrix.fromRows_mul_fromCols, hY, e1, e2, e3]`. Establish `g' : ((Matrix.fromBlocks 0 (-1) 1 0 : Matrix (Fin m ⊕ Fin m) (Fin m ⊕ Fin m) K) * (((Matrix.fromCols Y X)ᵀ).map c * J.map c)) * Matrix.fromCols Y X = 1`. Use `congrArg (fun M => M.map c) g` as an intermediate fact. Simplify using `only [map_mul_c, cc] at this`. Rewrite using `[Matrix.mul_assoc, this, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero c), map_one_c, Matrix.map_neg _ (map_neg c), map_one_c, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`.
+
+Simplify using the standard rewrite rules. Conclude with `⟨hY, X, _, e3, (Matrix.mul_eq_one_comm_of_equiv (Fintype.equivOfCardEq (by simp; omega))).1 g', g'⟩`.
+-/
 theorem isLagr_of_free [Invertible (2 : k)] (hK : IsField K) (hc : ∀ x, c (c x) = x) {N m : ℕ} (hN : N = 2 * m)
     {J : Matrix (Fin N) (Fin N) K} (hJ : IsSkewM c J) {Y : Matrix (Fin N) (Fin m) K} (hY : Yᵀ * J * Y.map c = 0)
     (hf : ∀ t, Y *ᵥ t = 0 → t = 0) : IsLagr c J Y := by
@@ -74,6 +98,11 @@ variable (c) in
 def HasAnti {n : ℕ} (J : Matrix (Fin n) (Fin n) K) : Prop :=
   ∃ P Q : Matrix (Fin n) (Fin n) K, P * Q = 1 ∧ Q * P = 1 ∧ Pᵀ * J * P.map c = anti K n
 
+/- English proof (translation)
+Set `f : Fin a' ⊕ (Fin r ⊕ Fin r) → Fin (a' + 2 * r)` to `Sum.elim (fun i => ⟨r + i, by omega⟩) (Sum.elim (fun j => ⟨j, by omega⟩) fun j => ⟨a' + 2 * r - 1 - j, by omega⟩)`. Establish `hf : Function.Injective f`. Apply the tactic sequence `rintro (i | i | i) (j | j | j) h <;> simp only [f, Sum.elim_inl, Sum.elim_inr, Fin.mk.injEq] at h <;> first | (simp only [Sum.inl.injEq, Sum.inr.injEq]; exact Fin.ext (by omega)) | (exfalso; omega)`. Use `⟨Equiv.ofBijective f ((Fintype.bijective_iff_injective_and_card f).2 ⟨hf, by simp; omega⟩), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext (i | i | i) (j | j | j) <;>`.
+
+Apply the tactic sequence `simp only [f, anti, Matrix.submatrix_apply, Equiv.ofBijective_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.one_apply, Fin.ext_iff] <;>`. Apply the tactic sequence `first | exact if_congr (by omega) rfl rfl | exact if_neg (by omega)`.
+-/
 theorem exists_anti_equiv (a' r : ℕ) : ∃ e : Fin a' ⊕ (Fin r ⊕ Fin r) ≃ Fin (a' + 2 * r),
     (anti K (a' + 2 * r)).submatrix e e = Matrix.fromBlocks (anti K a') 0 0 (Matrix.fromBlocks 0 1 1 0) := by
   let f : Fin a' ⊕ (Fin r ⊕ Fin r) → Fin (a' + 2 * r) :=
@@ -88,6 +117,15 @@ theorem exists_anti_equiv (a' r : ℕ) : ∃ e : Fin a' ⊕ (Fin r ⊕ Fin r) �
       Fin.ext_iff] <;>
     first | exact if_congr (by omega) rfl rfl | exact if_neg (by omega)
 
+/- English proof (translation)
+Choose the witnesses or unpack the hypotheses as in `⟨r, rfl⟩ : ∃ r, a = a' + 2 * r := by`. Take `⟨s, hs⟩` from `he`. Conclude with `⟨s - a', by omega⟩`. Take `⟨P, Q, p1, p2, p3⟩` from `h1`. Take `⟨P', Q', q1, q2, q3⟩` from `h2`.
+
+Take `⟨e, he⟩` from `exists_anti_equiv (K := K) a' r`. Establish `b1 : (Matrix.fromBlocks Q' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) * Matrix.fromBlocks P' 0 0 1 = 1` using `by simp [Matrix.fromBlocks_multiply, q2]`. Establish `b2 : (Matrix.fromBlocks P' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) * Matrix.fromBlocks Q' 0 0 1 = 1` using `by simp [Matrix.fromBlocks_multiply, q1]`. Establish `c1 : P.submatrix id e * Q.submatrix e id = 1` using `by rw [Matrix.submatrix_mul_equiv, p1]; rfl`. Establish `c2 : Q.submatrix e id * P.submatrix id e = 1`.
+
+Rewrite using `[show Q.submatrix e id * P.submatrix id e = (Q * P).submatrix e e from rfl, p2, Matrix.submatrix_one_equiv]`. Establish `c3 : (P.submatrix id e)ᵀ * J * (P.submatrix id e).map c = (anti K _).submatrix e e` using `by rw [← p3]; rfl`. Establish `d : Q'ᵀ * anti K a' * Q'.map c = J'`. Rewrite using `[← q3, Matrix.mul_assoc, Matrix.mul_assoc, ← map_mul_c, q1, map_one_c, Matrix.mul_one, ← Matrix.mul_assoc, ← Matrix.transpose_mul, q1, Matrix.transpose_one, Matrix.one_mul]`. Use `⟨r, P.submatrix id e * (Matrix.fromBlocks Q' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K), (Matrix.fromBlocks P' 0 0 1 : Matrix (Fin a' ⊕ (Fin r ⊕ Fin r)) (Fin a' ⊕ (Fin r ⊕ Fin r)) K) * Q.submatrix e id, ?_, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Matrix.fromBlocks Q' 0 0 1), b1, Matrix.one_mul, c1]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Q.submatrix e id), c2, Matrix.one_mul, b2]`. Rewrite using `[map_mul_c, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc J, ← Matrix.mul_assoc (P.submatrix id e)ᵀ, ← Matrix.mul_assoc (P.submatrix id e)ᵀ, c3, he, Matrix.fromBlocks_map, Matrix.fromBlocks_transpose, Matrix.map_zero _ (map_zero c), Matrix.map_zero …`. Simplify using `[← Matrix.mul_assoc, d]`.
+-/
 theorem isAbove_of_hasAnti {a a' : ℕ} (h : a' ≤ a) (he : Even (a + a')) {J : Matrix (Fin a) (Fin a) K}
     {J' : Matrix (Fin a') (Fin a') K} (h1 : HasAnti c J) (h2 : HasAnti c J') : IsAbove c J J' := by
   obtain ⟨r, rfl⟩ : ∃ r, a = a' + 2 * r := by
@@ -119,6 +157,9 @@ theorem isAbove_of_hasAnti {a a' : ℕ} (h : a' ≤ a) (he : Even (a + a')) {J :
 
 end Forms
 
+/- English proof (translation)
+Establish `hk : LinearMap.ker (s ∘ₗ B.subtype) ≤ LinearMap.ker (A.mkQ ∘ₗ B.subtype)` using `fun φ hφ => (Submodule.Quotient.mk_eq_zero A).2 (h φ φ.2 hφ)`. Take `⟨j, hj⟩` from `LinearMap.exists_extend (((LinearMap.ker (s ∘ₗ B.subtype)).liftQ _ hk) ∘ₗ (s ∘ₗ B.subtype).quotKerEquivRange.symm.toLinearMap)`. Use `⟨j, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hj ((s ∘ₗ B.subtype).quotKerEquivRange (Submodule.Quotient.mk ⟨φ, hφ⟩))` as an intermediate fact. Simplify using `using this`.
+-/
 theorem exists_to_quot {S T : Type} [AddCommGroup S] [Module ℂ S] [AddCommGroup T] [Module ℂ T] (s : S →ₗ[ℂ] T)
     (A B : Submodule ℂ S) (h : ∀ φ ∈ B, s φ = 0 → φ ∈ A) : ∃ j : T →ₗ[ℂ] S ⧸ A, ∀ φ ∈ B, j (s φ) = A.mkQ φ := by
   have hk : LinearMap.ker (s ∘ₗ B.subtype) ≤ LinearMap.ker (A.mkQ ∘ₗ B.subtype) := fun φ hφ =>

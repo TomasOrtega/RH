@@ -2,6 +2,15 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 
 namespace GlobalTheory.LowerIntegralMul
 
+/- English proof (translation)
+Unfold `Formalism.MainNotions.S.TieN.IntLow at *`. Take `⟨h1, h2, h3⟩` from `hl`. Take `⟨h1', h2', h3'⟩` from `hl'`. Use `⟨fun a => ?_, fun a b hab => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+
+Rewrite using `[h1, h1', mul_one]`. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases. Rewrite using `[h2' c a h, mul_zero]`. Rewrite using `[h2 a c h, zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+
+Break down `lt_or_ge a c with h | h` into its components or cases. Rewrite using `[h2 a c h, zero_mul]`. Rewrite using `[h2' c b (lt_of_le_of_lt h hab), mul_zero]`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun c _ => Subring.mul_mem _ (h3 a c) (h3' c b)`.
+-/
 theorem intLow_mul {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E] [Algebra F E]
     [TopologicalSpace E] [MeasurableSpace E] (Mp : Formalism.MainNotions.S.Loc.Model F E) {n : ℕ}
     {l l' : Matrix (Fin n) (Fin n) E} (hl : Formalism.MainNotions.S.TieN.IntLow Mp l) (hl' : Formalism.MainNotions.S.TieN.IntLow Mp l') :
@@ -27,6 +36,9 @@ theorem intLow_mul {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] 
   · rw [Matrix.mul_apply]
     exact Subring.sum_mem _ fun c _ => Subring.mul_mem _ (h3 a c) (h3' c b)
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ Mp n l l' hl hl'`. Conclude with `intLow_mul Mp hl hl'`.
+-/
 theorem main : ∀ {F E : Type} [inst : Field F] [inst_1 : ValuativeRel F] [inst_2 : TopologicalSpace F] [inst_3 : CommRing E]
     [inst_4 : Algebra F E] [inst_5 : TopologicalSpace E] [inst_6 : MeasurableSpace E] (Mp : Formalism.MainNotions.S.Loc.Model F E)
     {n : ℕ} {l l' : Matrix (Fin n) (Fin n) E},

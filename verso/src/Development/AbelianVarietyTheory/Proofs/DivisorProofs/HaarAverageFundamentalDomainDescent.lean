@@ -13,6 +13,13 @@ open GlobalTheory.SWLink
 
 namespace GlobalTheory.SWLink
 
+/- English proof (translation)
+Establish `h₀` using `isFundamentalDomain_stdDom Δ ν`. Set `e : G ≃ᵐ H` to `ι.toHomeomorph.toMeasurableEquiv`. Establish `hp : MeasurePreserving e (ν.map e.symm) ν` using `⟨e.measurable, e.map_map_symm⟩`. Use `⟨ν.map e.symm, e ⁻¹' stdDom Δ, ι.symm.isHaarMeasure_map ν, ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `h₀.preimage_of_equiv hp.quasiMeasurePreserving (e := fun δ : Δ => (⟨ι.symm δ, (hι _).2 (by rw [ι.apply_symm_apply]; exact δ.2)⟩ : Γ)) ⟨fun a b hab => ?_, fun γ => ?_⟩ fun δ x => ?_` and prove the remaining obligations.
+
+Conclude with `Subtype.ext (ι.symm.injective (congrArg Subtype.val hab))`. Conclude with `⟨⟨ι γ, (hι _).1 γ.2⟩, Subtype.ext (ι.symm_apply_apply _)⟩`. Conclude with `(map_mul ι (ι.symm δ) x).trans (congrArg (· * ι x) (ι.apply_symm_apply _))`. Rewrite using `[setAverage_eq, average_eq, GlobalTheory.AutomorphicL2Unitary.integral_quotMeasure h₀, measureReal_def, measureReal_def, GlobalTheory.AutomorphicL2Unitary.quotMeasure_univ h₀, hp.measure_preimage_equiv]`. Simplify using `only [hf.descend_mk]`.
+
+Conclude with `congrArg _ (hp.setIntegral_preimage_emb e.measurableEmbedding f _)`.
+-/
 theorem exists_transport_mean {G H : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     [IsTopologicalGroup G] [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H]
     [MeasurableSpace H] [BorelSpace H] (Γ : Subgroup G) (Δ : Subgroup H) [DiscreteTopology Δ] (ι : G ≃ₜ* H)
@@ -35,6 +42,9 @@ theorem exists_transport_mean {G H : Type*} [Group G] [TopologicalSpace G] [Meas
     simp only [hf.descend_mk]
     exact congrArg _ (hp.setIntegral_preimage_emb e.measurableEmbedding f _)
 
+/- English proof (translation)
+Introduce `D V ι hι ν hν`. Establish `: BorelSpace (UD D (-V.gram))` using `⟨rfl⟩`. Conclude with `exists_transport_mean _ _ ι hι ν`.
+-/
 theorem exists_fundDom_mean : ∀ (D : D7) (V : HSp D) (ι : UD D (-V.gram) ≃ₜ* GA D V), (∀ h, h ∈ ratU D.sp.cm.sig (-V.gram) ↔ ι h ∈ GQ V) → ∀ ν : Measure (GA D V), ν.IsHaarMeasure → ∃ (ν' : Measure (UD D (-V.gram))) (𝓕 : Set (UD D (-V.gram))), ν'.IsHaarMeasure ∧ IsFundamentalDomain (ratU D.sp.cm.sig (-V.gram)) 𝓕 ν' ∧ ∀ f : GA D V → ℂ, LeftInv (GQ V) f → ⨍ h in 𝓕, f (ι h) ∂ν' = ⨍ q, descend (GQ V) f q ∂autMeasure V ν := by
   intro D V ι hι ν hν
   have : BorelSpace (UD D (-V.gram)) := ⟨rfl⟩

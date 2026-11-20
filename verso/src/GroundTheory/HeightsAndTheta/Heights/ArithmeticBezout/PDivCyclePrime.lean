@@ -10,6 +10,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 
 variable {n : ℕ}
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h i r hr`. Use `decomposition.decompose'_apply (σ := Fin n) (R := ℂ) r i` as an intermediate fact. Express the relevant statement in the definitionally equal form `(decomposition.decompose' r i : MvPolynomial (Fin n) ℂ) ∈ I`. Rewrite using `[this]`.
+
+Conclude with `h r hr i`. Introduce `h f hf d`. Conclude with `homogeneousComponent_mem_of_mem h hf d`.
+-/
 theorem isHomogIdeal_iff_isHomogeneous (I : Ideal (MvPolynomial (Fin n) ℂ)) :
     IsHomogIdeal I ↔ I.IsHomogeneous (homogeneousSubmodule (Fin n) ℂ) := by
   constructor
@@ -21,6 +26,9 @@ theorem isHomogIdeal_iff_isHomogeneous (I : Ideal (MvPolynomial (Fin n) ℂ)) :
   · intro h f hf d
     exact homogeneousComponent_mem_of_mem h hf d
 
+/- English proof (translation)
+Establish `hcore : (P.homogeneousCore (homogeneousSubmodule (Fin n) ℂ)).toIdeal.IsPrime` using `hP.1.1.homogeneousCore`. Establish `hle : I ≤ (P.homogeneousCore (homogeneousSubmodule (Fin n) ℂ)).toIdeal` using `hI.toIdeal_homogeneousCore_eq_self.symm.trans_le (Ideal.homogeneousCore_mono _ hP.1.2)`. Establish `hcoreP` using `Ideal.toIdeal_homogeneousCore_le (homogeneousSubmodule (Fin n) ℂ) P`. Rewrite using `[Ideal.IsHomogeneous.iff_eq]`. Conclude with `le_antisymm hcoreP (hP.2 ⟨hcore, hle⟩ hcoreP)`.
+-/
 theorem isHomogeneous_of_mem_minimalPrimes {I P : Ideal (MvPolynomial (Fin n) ℂ)}
     (hI : I.IsHomogeneous (homogeneousSubmodule (Fin n) ℂ)) (hP : P ∈ I.minimalPrimes) :
     P.IsHomogeneous (homogeneousSubmodule (Fin n) ℂ) := by
@@ -32,6 +40,13 @@ theorem isHomogeneous_of_mem_minimalPrimes {I P : Ideal (MvPolynomial (Fin n) �
   rw [Ideal.IsHomogeneous.iff_eq]
   exact le_antisymm hcoreP (hP.2 ⟨hcore, hle⟩ hcoreP)
 
+/- English proof (translation)
+Introduce `n W u hW W' hW'`. Establish `hmem : W' ∈ relComps (W ⊔ Ideal.span {linForm u})`. Assume the negation of the conclusion as `hc`. Apply `Finsupp.mem_support_iff.mp hW'` to reduce the goal to its premises. Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply]`.
+
+Conclude with `if_neg hc`. Take `⟨hmin, hrel⟩` from `hmem`. Establish `hlin : (linForm u : MvPolynomial (Fin n) ℂ) ∈ homogeneousSubmodule (Fin n) ℂ 1`. Rewrite using `[mem_homogeneousSubmodule]`. Conclude with `IsHomogeneous.sum _ _ _ fun j _ => isHomogeneous_C_mul_X (u j) j`.
+
+Establish `hJ : (W ⊔ Ideal.span {linForm u}).IsHomogeneous (homogeneousSubmodule (Fin n) ℂ)` using `((isHomogIdeal_iff_isHomogeneous W).mp hW.isHomog).sup (Ideal.homogeneous_span _ _ fun x hx => by`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Conclude with `hx ▸ ⟨1, hlin⟩)`. Conclude with `⟨hmin.1.1, (isHomogIdeal_iff_isHomogeneous W').mpr (isHomogeneous_of_mem_minimalPrimes hJ hmin), hrel⟩`.
+-/
 theorem DivCyclePrime.proof : DivCyclePrime.Statement := by
   intro n W u hW W' hW'
   have hmem : W' ∈ relComps (W ⊔ Ideal.span {linForm u}) := by

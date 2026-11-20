@@ -10,6 +10,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.AbelianHodgeDeRhamO
 
 namespace GlobalTheory.Published
 
+/- English proof (translation)
+Introduce `hL hH` and use `⟨⟨GlobalTheory.Proof.abelianDeRhamFree_of_hodge hL hH, GlobalTheory.T.abelian_hodge_de_rham_of_crystalline_lift hL hH, GlobalTheory.AbelianBaseChange.abelianDeRham_baseChange_of_smoothLift hL hH⟩, GlobalTheory.CrysLift.crystallineDeRham_of_smoothLift hL⟩`.
+-/
 theorem abelianDeRhamStructure_crystallineDeRham_of_hypotheses :
     CrystallineSmoothLift → AbelianHodgeDeRham → AbelianDeRhamStructure ∧ CrystallineDeRham :=
   fun hL hH =>

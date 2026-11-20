@@ -16,6 +16,11 @@ open Classical
 variable {D : D7} {n : ℕ}
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Establish `h1 : (adj x).map (psiT D τ) = (x.map (psiT D τ))ᴴ`. Use extensionality with `i j`. Simplify using `only [adj, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Conclude with `psiT_sigR D τ (x j i)`. Establish `h2 : (gA V).map (psiT D τ) = gramAt D V τ`.
+
+Use extensionality with `i j`. Simplify using `only [gA, rat, Matrix.map_apply, gramAt]`. Conclude with `psiT_inclR D τ _`. Use `show (adj x * (gA V * y)).map (psiT D τ) = _`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h1, h2]`.
+-/
 theorem map_inner (V : HSp D) (τ : D.what₂.Tau) (x y : Mx D V.rank n) :
     (inner V x y).map (psiT D τ) = (x.map (psiT D τ))ᴴ * (gramAt D V τ * y.map (psiT D τ)) := by
   have h1 : (adj x).map (psiT D τ) = (x.map (psiT D τ))ᴴ := by
@@ -30,16 +35,25 @@ theorem map_inner (V : HSp D) (τ : D.what₂.Tau) (x y : Mx D V.rank n) :
   rw [Matrix.map_mul, Matrix.map_mul, h1, h2]
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+-/
 theorem psiT_trace {a : ℕ} (τ : D.what₂.Tau) (M : Matrix (Fin a) (Fin a) (AE D)) :
     psiT D τ (Matrix.trace M) = Matrix.trace (M.map (psiT D τ)) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]`.
+-/
 theorem finPart_trace {a : ℕ} (M : Matrix (Fin a) (Fin a) (AE D)) :
     finPart D (Matrix.trace M) = Matrix.trace (M.map (finPart D)) := by
   simp only [Matrix.trace, Matrix.diag, Matrix.map_apply, map_sum]
 
 set_option synthInstance.maxHeartbeats 400000 in
+/- English proof (translation)
+Use `show (adj x * (gA V * y)).map (finPart D) = 0`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hy, Matrix.mul_zero, Matrix.mul_zero]`.
+-/
 theorem finMap_inner (V : HSp D) (x y : Mx D V.rank n) (hy : y.map (finPart D) = 0) :
     (inner V x y).map (finPart D) = 0 := by
   show (adj x * (gA V * y)).map (finPart D) = 0
@@ -47,6 +61,17 @@ theorem finMap_inner (V : HSp D) (x y : Mx D V.rank n) (hy : y.map (finPart D) =
 
 set_option synthInstance.maxHeartbeats 400000 in
 
+/- English proof (translation)
+Establish `hins : ∀ τ', (sIns (D` using `D) τ fr u).map (psiT D τ') = if τ' = τ then fr * Matrix.of u else 0 := by`. Introduce `τ'`. Use `compAt_insT (D := D) hθ τ τ' (fr * Matrix.of u)` as an intermediate fact. Rewrite `this` using `[eq_thetaC D hθ]`. Conclude with `this`.
+
+Rewrite using `[psi_trA_tau hθ hl τ]`. Use `congr 2`. Simplify using `only [tLoc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[psiT_trace, map_inner, hins, if_pos rfl]`. Use `congr 2`. Take `⟨hdet, hg, -⟩` from `hfr`. Establish `hx : Matrix.of (piF θ τ fr x) = fr⁻¹ * x.map (psiT D τ)`. Rewrite using `[eq_thetaC D hθ]`.
+
+Both sides reduce to the same expression. Rewrite using `[hx, ← hg, Matrix.conjTranspose_mul]`. Establish `hinv : (fr⁻¹)ᴴ * frᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one]`. Simplify using `only [Matrix.mul_assoc]`.
+
+Rewrite using `[← Matrix.mul_assoc (fr⁻¹)ᴴ frᴴ, hinv, Matrix.one_mul]`. Introduce `τ' hne`. Rewrite using `[psiT_trace, map_inner, hins, if_neg hne, Matrix.mul_zero, Matrix.mul_zero, Matrix.trace_zero]`. Rewrite using `[finPart_trace, finMap_inner V x (sIns τ fr u) (finMap_insT τ (fr * Matrix.of u)), Matrix.trace_zero]`.
+-/
 theorem psi_inner_sIns {θ : InfFam D} (hθ : IsInfFam θ) {ψ : AddChar (AF D.host.F) ℂ} {l : D.what₂.Tau → ℝ}
     (hl : HasRealPar ψ θ l) {V : HSp D} {τ : D.what₂.Tau} {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hfr : IsTauFrame V τ s ε fr)

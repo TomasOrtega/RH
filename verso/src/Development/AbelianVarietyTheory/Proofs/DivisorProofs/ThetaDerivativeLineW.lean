@@ -14,11 +14,31 @@ namespace GlobalTheory.ThetaDerivTriple
 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `x`. Simplify using `[pureA, mul_assoc]`.
+-/
 theorem pureA_smul {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ) (g : (κ → Af F) → ℂ) :
     pureA F ⇑(c • f) g = c • pureA F ⇑f g := by
   funext x
   simp [pureA, mul_assoc]
 
+/- English proof (translation)
+Establish `hs` using `hT.weil'.1.1.toIsSplitting`. Use `set d := G.M'.co`. Use `set w := d.e.symm ((fun i => GlobalTheory.FinHeis.finA F (x i)), fun i => GlobalTheory.FinHeis.finA F (y i)) with hw`. Establish `hew : d.e w = ((fun i => GlobalTheory.FinHeis.finA F (x i)), fun i => GlobalTheory.FinHeis.finA F (y i))` using `d.e.apply_symm_apply _`. Establish `hef : GlobalTheory.FinHeis.finA F 1 • w = w`.
+
+Apply `d.e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, hew]`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) * 0 = 0`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af F) * x i = x i`. Simplify using the standard rewrite rules. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf F) * 0 = 0`.
+
+Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Af F) * y i = y i`. Simplify using the standard rewrite rules. Establish `hev : evI F (GlobalTheory.FinHeis.finA F 1) = 0`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F (0 : Ainf F) = 0`.
+
+Conclude with `map_zero _`. Establish `hfix : actB (cA σ) h w = w`. Establish `h0 : GlobalTheory.FinHeis.finA F 1 • (mat h - 1) = 0` using `hh _ hev`. Use `show w * (mat h)ᵀ = w`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[Matrix.transpose_add, Matrix.mul_add, Matrix.transpose_one, Matrix.mul_one, Matrix.smul_mul, Matrix.transpose_smul, Matrix.mul_smul]`. Use `_ = w := by rw [h0, Matrix.transpose_zero, Matrix.mul_zero, zero_add, hef]`. Establish `himpl` using `hs.impl h w Φ hΦ`. Rewrite `himpl` using `[hfix]`. Establish `hrho : ∀ Ψ, d.rho B.ψ w Ψ = B.ψ (⅟(2 : AF F) * ((fun i => GlobalTheory.FinHeis.finA F (x i)) ⬝ᵥ fun i => GlobalTheory.FinHeis.finA F (y i))) • GlobalTheory.FinHeis.heisA F B.ψ x y Ψ`.
+
+Introduce `Ψ`. Use function extensionality and compare the values at `z`. Simplify using `only [Darboux.rho, hew, schr, GlobalTheory.FinHeis.heisA, AddChar.map_add_eq_mul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `himpl` using `[hrho, hrho]`.
+
+Simplify using `only [MonoidHom.comp_apply, MonoidHom.inr_apply, map_smul] at himpl`. Conclude with `smul_right_injective _ (GlobalTheory.ArchFactorFin.addChar_ne_zero _ _) himpl`.
+-/
 theorem comm_heisA {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om')
     {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evI F)) (x y : Fin a' × Fin (a + a') → Af F)
@@ -60,6 +80,9 @@ theorem comm_heisA {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ 
   simp only [MonoidHom.comp_apply, MonoidHom.inr_apply, map_smul] at himpl
   exact smul_right_injective _ (GlobalTheory.ArchFactorFin.addChar_ne_zero _ _) himpl
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.ArchFactorFin.exists_arch_factor_of_comm B.ψ hT.base.std (om' (1, h)) (fun Φ hΦ => hT.weil'.1.1.toIsSplitting.pres h Φ hΦ) (fun x y Φ hΦ => comm_heisA hT hh x y hΦ) f`.
+-/
 theorem arch_factor {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {h : UA σ G.W.J} (hh : h ∈ UAt σ G.W (evI F))
     (f : SInf F (Fin a' × Fin (a + a'))) : ∃ u : SInf F (Fin a' × Fin (a + a')),
@@ -67,6 +90,23 @@ theorem arch_factor {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ
   GlobalTheory.ArchFactorFin.exists_arch_factor_of_comm B.ψ hT.base.std (om' (1, h))
     (fun Φ hΦ => hT.weil'.1.1.toIsSplitting.pres h Φ hΦ) (fun x y Φ hΦ => comm_heisA hT hh x y hΦ) f
 
+/- English proof (translation)
+Take `⟨c, c', hc0, hlim, hacts⟩` from `GlobalTheory.WeilArchSmooth.exists_orbit hK.base G.M' B.ψ X.α (X.α / X.β) om' hT.base.cm hT.base.std hT.weil' γ hγ f`. Take `⟨g, hg, y, hy⟩` from `GlobalTheory.OrbitArchSlope.exists_sb_ne_zero F (Fin a' × Fin (a + a'))`. Set `r : (Fin a' × Fin (a + a') → AF F) → ℂ` to `fun x => g (fun i => (x i).2)`. Establish `hpure : ∀ h : SInf F (Fin a' × Fin (a + a')), pureA F (⇑h) g = tens (evI F) (⇑h) r` using `fun h => rfl`. Establish `hRest : Rest (evI F) (⇑f) r`.
+
+Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Set `e : AF F` to `(show InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F from (0, 1))`. Establish `he : evI F e = 0` using `by show (InfiniteAdeleRing.ringEquiv_mixedSpace F) (0 : InfiniteAdeleRing F) = 0`. Conclude with `map_zero _`. Establish `hz2 : ∀ i, (z i).2 = 0`.
+
+Introduce `i`. Establish `h1` using `congrFun (hz e he) i`. Establish `h2 : (1 : FiniteAdeleRing (𝓞 F) F) * (z i).2 = 0` using `congrArg Prod.snd h1`. Simplify using `using h2`. Use `show g (fun i => (x i + z i).2) = g (fun i => (x i).2)`.
+
+Use `congr 1`. Use function extensionality and compare the values at `i`. Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[hz2 i, add_zero]`. Rewrite using `[← hpure]`.
+
+Conclude with `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Establish `heq : ∀ t, u t = c t`. Introduce `t`. Establish `h1 : pureA F (⇑(u t)) g = pureA F (⇑(c t)) g`. Rewrite using `[← hu t g hg, hpure, hpure]`.
+
+Conclude with `hacts t r hRest`. Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Establish `e` using `congrFun h1 (fun i => (show InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F from ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i), y i)))`. Simplify using `only [pureA] at e`. Establish `hx : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i))) = x`.
+
+Use function extensionality and compare the values at `fun i => RingEquiv.apply_symm_apply _ _`. Rewrite `e` using `[hx]`. Conclude with `mul_right_cancel₀ hy e`. Establish `hc : u = c` using `funext heq`. Substitute `hc` using the available equality.
+
+Use `⟨c', ?_⟩` and prove the remaining obligations. Rewrite using `[hc0]`. Conclude with `hlim`.
+-/
 theorem orbit_slope {hK : KP} {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W)
     (f : SInf F (Fin a' × Fin (a + a'))) (u : ℝ → SInf F (Fin a' × Fin (a + a')))
@@ -114,6 +154,23 @@ theorem orbit_slope {hK : KP} {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {
   rw [hc0]
   exact hlim
 
+/- English proof (translation)
+Establish `hsch` using `GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΦ).2`. Take `⟨n, c, g, hg⟩` from `Submodule.mem_span_set'.1 hsch`. Use `choose f0 φ hφ hfe using fun i => (g i).2`. Use `choose u hu using fun (t : ℝ) (i : Fin n) => arch_factor hT (hγ.2 (Multiplicative.ofAdd t)) (c i • f0 i)`. Establish `hu' : ∀ i, ∀ t : ℝ, ∀ g' ∈ SB (Fin a' × Fin (a + a') → Af F), om' (1, γ (Multiplicative.ofAdd t)) (pureA F (c i • f0 i) g') = pureA F (u t i) g'` using `fun i t => hu t i`.
+
+Use `choose u₁ hu₁ using fun i => orbit_slope (hK := hK) hT hγ (c i • f0 i) (fun t => u t i) (hu' i)`. Establish `hΦe : Φ = ∑ i, pureA F (c i • f0 i) (φ i)`. Rewrite using `[← hg]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hfe i, pureA_smul]`.
+
+Establish `horb : ∀ t : ℝ, om' (1, γ (Multiplicative.ofAdd t)) Φ = ∑ i, pureA F (u t i) (φ i)`. Introduce `t`. Rewrite using `[hΦe, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hu t i (φ i) (hφ i)`. Use `⟨n, φ, u, u₁, hφ, horb, ?_, hu₁⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `x`. Use `set y : Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F := fun j => InfiniteAdeleRing.ringEquiv_mixedSpace F (x j).1`. Use `set z : Fin a' × Fin (a + a') → Af F := fun j => (x j).2`. Establish `hder : ∀ i, HasDerivAt (fun t : ℝ => u t i y) (u₁ i y) 0`. Introduce `i`.
+
+Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Set `ev : SInf F (Fin a' × Fin (a + a')) →L[ℂ] ℂ` to `(BoundedContinuousFunction.evalCLM ℂ y).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin a' × Fin (a + a') → mixedEmbedding.mixedSpace F) ℂ)`. Establish `h1` using `(ev.continuous.tendsto (u₁ i)).comp (hu₁ i)`. Establish `e2 : ev (u₁ i) = u₁ i y` using `rfl`. Rewrite `h1` using `[e2]`.
+
+Use `h1.congr' (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[ev, slope_def_module]`. Establish `hsum : HasDerivAt (fun t : ℝ => ∑ i, u t i y * φ i z) (∑ i, u₁ i y * φ i z) 0` using `HasDerivAt.fun_sum fun i _ => (hder i).mul_const _`. Establish `e1 : (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) = fun t => ∑ i, u t i y * φ i z`. Use function extensionality and compare the values at `t`.
+
+Rewrite using `[horb, Finset.sum_apply]`. Both sides reduce to the same expression. Use `hd x` as an intermediate fact. Rewrite `this` using `[e1]`. Rewrite using `[this.unique hsum, Finset.sum_apply]`.
+
+Both sides reduce to the same expression.
+-/
 theorem orbit {hK : KP} {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W)
     {Φ} (hΦ : Φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) (Φ₁ : (Fin a' × Fin (a + a') → AF F) → ℂ)
@@ -163,6 +220,9 @@ theorem orbit {hK : KP} {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Ge
   rw [this.unique hsum, Finset.sum_apply]
   rfl
 
+/- English proof (translation)
+Take `⟨m, φ, f, f₁, hφ, hf, hf₁, hlim⟩` from `orbit (hK := hP) hT hγ hΦ Φ₁ hd`. Use `GlobalTheory.T.pair_theta_uniform_bound_family hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.KDecayProof.isPair_small hT) m φ f f₁ hφ hlim g h` as an intermediate fact. Rewrite `this` using `[← hf₁]`. Simplify `this` using `only [hf]`.
+-/
 theorem kernel_deriv (hP : KP) {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G X om om') {γ} (hγ : γ ∈ Lines σ G.W)
     {Φ} (hΦ : Φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) (Φ₁ : (Fin a' × Fin (a + a') → AF F) → ℂ)
@@ -173,6 +233,31 @@ theorem kernel_deriv (hP : KP) {σ : E →ₐ[F] E} {B : Base F E} {a a' : ℕ} 
   rw [← hf₁] at this
   simpa only [hf] using this
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ B a a' G X om om' hP hT γ hγ Φ hΦ Φ₁ hΦ₁ hd h`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hPair` using `GlobalTheory.KDecayProof.isPair_small hT`. Establish `key : ∀ (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ) k g h', theta om' (om' (1, k) Ψ) g h' = theta om' Ψ g (h' * k)`. Introduce `Ψ k g h'`.
+
+Unfold `theta`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Use `set γt : ℝ → UA σ G.W.J := fun t => γ (Multiplicative.ofAdd t) with hγt`. Establish `hγ0 : γt 0 = 1` using `by simp [hγt]`. Establish `hγadd : ∀ s t, γt (s + t) = γt s * γt t`.
+
+Introduce `s t`. Simplify using `[hγt, ofAdd_add, map_mul]`. Use `set K : ℝ → UA σ G.V'.J → ℂ := fun t g => theta om' Φ g (h * γt t) with hK`. Use `set K' : ℝ → UA σ G.V'.J → ℂ := fun t g => theta om' Φ₁ g (h * γt t) with hK'`. Establish `hdiff : ∀ g t, HasDerivAt (fun s => K s g) (K' t g) t`.
+
+Introduce `g t`. Establish `h0` using `kernel_deriv hP hT hγ hΦ Φ₁ hd g (h * γt t)`. Establish `e : (fun u : ℝ => theta om' (om' (1, γ (Multiplicative.ofAdd u)) Φ) g (h * γt t)) = fun u => K (t + u) g`. Use function extensionality and compare the values at `u`. Rewrite using `[key]`.
+
+Use `show theta om' Φ g (h * γt t * γt u) = theta om' Φ g (h * γt (t + u))`. Rewrite using `[hγadd, mul_assoc]`. Rewrite `h0` using `[e]`. Establish `h1` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h0)`. Rewrite using `[show (fun s => K s g) = fun s => K (t + (s - t)) g from funext fun s => by rw [add_sub_cancel]]`.
+
+Conclude with `h1`. Establish `hB` using `GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hPair`. Establish `hsch : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `fun Ψ hΨ => GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΨ).2`. Establish `hcont : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ h', Continuous fun g => theta om' Ψ g h'`. Introduce `Ψ hΨ h'`.
+
+Conclude with `((hB.1 Ψ (hsch Ψ hΨ)).1).comp (continuous_id.prodMk continuous_const)`. Establish `hD` using `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hPair`. Take `⟨C, k, hC⟩` from `hD Φ (Submodule.mem_inf.1 hΦ).2 0`. Take `⟨C₁, k₁, hC₁⟩` from `hD Φ₁ (Submodule.mem_inf.1 hΦ₁).2 0`. Establish `hγc : Continuous γt` using `hγ.1.comp (by exact continuous_ofAdd)`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨Cγ, hCγ⟩ : ∃ Cγ : ℝ, ∀ t ∈ Set.Icc (-1 : ℝ) 1, (ht (γt t) : ℝ) ≤ Cγ := by`. Establish `hc : Continuous fun t => (ht (γt t) : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp hγc))`. Take `⟨Cγ, hCγ⟩` from `(isCompact_Icc.image hc).isBounded.bddAbove`. Conclude with `⟨Cγ, fun t ht => hCγ ⟨t, ht, rfl⟩⟩`. Establish `hbd : ∀ (C : ℝ) (k : ℕ) (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ), (∀ g h', ‖theta om' Ψ g h'‖ * (qht g : ℝ) ^ 0 ≤ C * (ht h' : ℝ) ^ k) → ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∀ g, ‖theta om' Ψ g (h * γt t)‖ ≤ |C| * ((ht h : ℝ) * max Cγ 1) ^ k`.
+
+Introduce `C k Ψ hCk t htt g`. Establish `e1` using `hCk g (h * γt t)`. Rewrite `e1` using `[pow_zero, mul_one]`. Use `e1.trans ?_` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (NNReal.coe_nonneg _) k)).trans ?_` and prove the remaining obligations.
+
+Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ k) (abs_nonneg C)` and prove the remaining obligations. Establish `h2 : (ht (h * γt t) : ℝ) ≤ (ht h : ℝ) * ht (γt t)`. Conclude with `heightGL_mul_le F h.1 (γt t).1` after adjusting the coercions. Use `h2.trans (mul_le_mul_of_nonneg_left ((hCγ t htt).trans (le_max_left _ _)) (NNReal.coe_nonneg _))` and prove the remaining obligations. Establish `hfin : G.M'.μ G.M'.dom ≠ ⊤` using `(GlobalTheory.KDecayProof.measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM').ne`.
+
+Establish `hmain` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := G.M'.μ.restrict G.M'.dom) (F := K) (F' := K') (x₀ := 0) (bound := fun _ => |C₁| * ((ht h : ℝ) * max Cγ 1) ^ k₁) (Icc_mem_nhds (by norm_num : (-1 : ℝ) < 0) (by norm_num : (0 : ℝ) < 1)) (Eventually.of_forall fun t => (hcont Φ h …`. Establish `e1 : (fun t : ℝ => G.M'.I om' Φ (h * γ (Multiplicative.ofAdd t))) = fun t => ∫ g, K t g ∂(G.M'.μ.restrict G.M'.dom)`. Use function extensionality and compare the values at `t`. Both sides reduce to the same expression. Establish `e2 : G.M'.I om' Φ₁ h = ∫ g, K' 0 g ∂(G.M'.μ.restrict G.M'.dom)` using `by show ∫ g in G.M'.dom, theta om' Φ₁ g h ∂G.M'.μ = ∫ g, K' 0 g ∂(G.M'.μ.restrict G.M'.dom)`.
+
+Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show theta om' Φ₁ g h = theta om' Φ₁ g (h * γt 0)`. Rewrite using `[hγ0, mul_one]`. Rewrite using `[e1, e2]`. Conclude with `hmain.2`.
+-/
 theorem hasDerivAt_thetaIntegral_triple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), GlobalTheory.ThK.KP → IsTriple B G X om om' →

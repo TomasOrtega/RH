@@ -16,6 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 def finSU (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : Subgroup (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J) :=
   (Matrix.GeneralLinearGroup.det.comp (HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J).subtype).ker
 
+/- English proof (translation)
+Use `show Matrix.GeneralLinearGroup.det ((HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J).subtype k) = 1 ↔ _`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+-/
 theorem mem_finSU {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
     {k : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J} :
     k ∈ finSU σ J ↔ ((HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) σ J k : GL (Fin M) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)) :
@@ -26,6 +29,15 @@ theorem mem_finSU {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 end Fin
 
+/- English proof (translation)
+Use `haveI : IsTopologicalGroup G := e.toHomeomorph.isInducing.topologicalGroup (e : G →* A × H)`. Set `K0 : TopologicalSpace.PositiveCompacts H` to `⟨⟨K, hKc⟩, by show (interior K).Nonempty`. Rewrite using `[hKo.interior_eq]`. Conclude with `⟨1, hK1⟩⟩`. Use `haveI : (c • Measure.haarMeasure K0).IsHaarMeasure := Measure.IsHaarMeasure.smul _ hc0 hct`.
+
+Set `m : Measure (A × H)` to `μ₀.prod (c • Measure.haarMeasure K0)`. Use `haveI : m.IsHaarMeasure := inferInstanceAs ((μ₀.prod (c • Measure.haarMeasure K0)).IsHaarMeasure)`. Use `⟨m.map e.symm, e.symm.isHaarMeasure_map m, fun B hB t => ?_⟩` and prove the remaining obligations. Establish `hme : MeasurableEmbedding e.symm` using `e.symm.toHomeomorph.measurableEmbedding`. Rewrite using `[hme.map_apply]`.
+
+Establish `: e.symm ⁻¹' (e ⁻¹' (B ×ˢ (t • K))) = B ×ˢ (t • K)`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Measure.prod_prod, Measure.smul_apply, measure_smul, smul_eq_mul]`. Establish `h1 : Measure.haarMeasure K0 K = 1` using `Measure.haarMeasure_self`.
+
+Rewrite using `[h1, mul_one]`.
+-/
 theorem exists_haar_prod {G A H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelSpace G]
     [Group A] [TopologicalSpace A] [IsTopologicalGroup A] [LocallyCompactSpace A] [SecondCountableTopology A]
     [MeasurableSpace A] [BorelSpace A]

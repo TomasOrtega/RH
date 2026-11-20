@@ -164,6 +164,13 @@ def PhQ (k : ℕ) (p : QkPt D F k) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ 
     (s s' : RawFam D F k) : Prop :=
   Ph D F k p.y p.g w s s'
 
+/- English proof (translation)
+Take `⟨h, ⟨gs, h0, hs, hl⟩, hi⟩` from `p.eq`. Establish `key : ∀ i : Fin (k + 1), (gs i).b = p.g.b ^ (i : ℕ)`. Introduce `i`. Proceed by induction on `i using Fin.induction with`. Consider the case `zero => exact h0.1`.
+
+Consider the case `succ i ih`. Establish `e : (gs i.succ).b = (gs i.castSucc).b * p.g.b` using `(hs i).1`. Rewrite using `[e, ih, Fin.val_succ, pow_succ]`. Both sides reduce to the same expression. Use `key (Fin.last k)` as an intermediate fact.
+
+Rewrite `this` using `[hl, Fin.val_last]`. Conclude with `this.symm.trans hi.1`.
+-/
 theorem pow_base_eq {k : ℕ} (p : QkPt D F k) : p.g.b ^ k = toUnit _ ≫ D.c p.y := by
   obtain ⟨h, ⟨gs, h0, hs, hl⟩, hi⟩ := p.eq
   have key : ∀ i : Fin (k + 1), (gs i).b = p.g.b ^ (i : ℕ) := by
@@ -177,6 +184,11 @@ theorem pow_base_eq {k : ℕ} (p : QkPt D F k) : p.g.b ^ k = toUnit _ ≫ D.c p.
   rw [hl, Fin.val_last] at this
   exact this.symm.trans hi.1
 
+/- English proof (translation)
+Use function extensionality and compare the values at `β`. Take `⟨α, rfl⟩ : ∃ α, β = α + y` from `⟨β - y, (sub_add_cancel _ _).symm⟩`. Establish `e : (s₁ (α + y)).f = (s₂ (α + y)).f` using `funext fun j => sec_ext_val D.P.isLB (fun z J hJ => by`. Establish `a` using `(h₁.2.2 α _ (fst _ _) (snd _ _) z J hJ).trans (h₂.2.2 α _ (fst _ _) (snd _ _) z J hJ).symm`. Rewrite using `[lift_fst_snd] at a) j` and apply the resulting hypothesis.
+
+Consider the cases of `hs₁ : s₁ (α + y)`. Consider the cases of `hs₂ : s₂ (α + y)`. Rewrite `e` using `[hs₁, hs₂]`. Reduce the equality to equality of the corresponding arguments.
+-/
 theorem Ph.unique {k : ℕ} {y : D.X} {g : GtPtF D F} {w} {s s₁ s₂ : RawFam D F k} (h₁ : Ph D F k y g w s s₁)
     (h₂ : Ph D F k y g w s s₂) : s₁ = s₂ := by
   funext β
@@ -192,16 +204,25 @@ end Ph
 
 section OfUnifPre
 
+/- English proof (translation)
+The claim follows from `(gm_res r z h hz _).trans (gm_pull r f z U (h hz) a)`.
+-/
 theorem gm_res_pull {X Y Z : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (a : Γ(X, U)ˣ) {V : Y.Opens} (h : V ≤ f ⁻¹ᵁ U)
     (r : Z ⟶ Y) (z : Z) (hz : r z ∈ V) : gm r z V (res h (pullU f U a)) = gm (r ≫ f) z U a :=
   (gm_res r z h hz _).trans (gm_pull r f z U (h hz) a)
 
+/- English proof (translation)
+The claim follows from `(gm_res r z inf_le_left ⟨m₁, m₂⟩ _).symm.trans ((congrArg (gm r z _) (H _ _ _)).trans (gm_res r z inf_le_right ⟨m₁, m₂⟩ _))`.
+-/
 theorem gm_of_res₂ {Y Z : Scheme.{0}} {U₁ U₂ : Y.Opens} {a₁ : Γ(Y, U₁)ˣ} {a₂ : Γ(Y, U₂)ˣ}
     (H : ∀ (V : Y.Opens) (h₁ : V ≤ U₁) (h₂ : V ≤ U₂), res h₁ a₁ = res h₂ a₂) (r : Z ⟶ Y) (z : Z)
     (m₁ : r z ∈ U₁) (m₂ : r z ∈ U₂) : gm r z U₁ a₁ = gm r z U₂ a₂ :=
   (gm_res r z inf_le_left ⟨m₁, m₂⟩ _).symm.trans ((congrArg (gm r z _) (H _ _ _)).trans
     (gm_res r z inf_le_right ⟨m₁, m₂⟩ _))
 
+/- English proof (translation)
+Establish `m : r z ∈ U₁ ⊓ U₂ ⊓ U₃` using `⟨⟨m₁, m₂⟩, m₃⟩`. Use `congrArg (gm r z _) (H (U₁ ⊓ U₂ ⊓ U₃) (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) inf_le_right)` as an intermediate fact. Rewrite `this` using `[map_mul, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m]`. Then use the resulting hypothesis.
+-/
 theorem gm_of_res₃ {Y Z : Scheme.{0}} {U₁ U₂ U₃ : Y.Opens} {a₁ : Γ(Y, U₁)ˣ} {a₂ : Γ(Y, U₂)ˣ} {a₃ : Γ(Y, U₃)ˣ}
     (H : ∀ (V : Y.Opens) (h₁ : V ≤ U₁) (h₂ : V ≤ U₂) (h₃ : V ≤ U₃), res h₁ a₁ * res h₂ a₂ = res h₃ a₃) (r : Z ⟶ Y)
     (z : Z) (m₁ : r z ∈ U₁) (m₂ : r z ∈ U₂) (m₃ : r z ∈ U₃) : gm r z U₁ a₁ * gm r z U₂ a₂ = gm r z U₃ a₃ := by
@@ -210,6 +231,9 @@ theorem gm_of_res₃ {Y Z : Scheme.{0}} {U₁ U₂ U₃ : Y.Opens} {a₁ : Γ(Y,
     inf_le_right)
   rwa [map_mul, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m] at this
 
+/- English proof (translation)
+Establish `m : r z ∈ U₁ ⊓ U₂ ⊓ U₃ ⊓ U₄` using `⟨⟨⟨m₁, m₂⟩, m₃⟩, m₄⟩`. Use `congrArg (gm r z _) (H (U₁ ⊓ U₂ ⊓ U₃ ⊓ U₄) (inf_le_left.trans (inf_le_left.trans inf_le_left)) (inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans inf_le_right) inf_le_right)` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m]`. Then use the resulting hypothesis.
+-/
 theorem gm_of_res₄ {Y Z : Scheme.{0}} {U₁ U₂ U₃ U₄ : Y.Opens} {a₁ : Γ(Y, U₁)ˣ} {a₂ : Γ(Y, U₂)ˣ} {a₃ : Γ(Y, U₃)ˣ}
     {a₄ : Γ(Y, U₄)ˣ} (H : ∀ (V : Y.Opens) (h₁ : V ≤ U₁) (h₂ : V ≤ U₂) (h₃ : V ≤ U₃) (h₄ : V ≤ U₄),
       res h₁ a₁ * res h₂ a₂ = res h₃ a₃ * res h₄ a₄) (r : Z ⟶ Y)
@@ -220,6 +244,9 @@ theorem gm_of_res₄ {Y Z : Scheme.{0}} {U₁ U₂ U₃ U₄ : Y.Opens} {a₁ : 
     (inf_le_left.trans (inf_le_left.trans inf_le_right)) (inf_le_left.trans inf_le_right) inf_le_right)
   rwa [map_mul, map_mul, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m, gm_res r z _ m] at this
 
+/- English proof (translation)
+Substitute `h₁ h₂` using the available equality. Both sides reduce to the same expression.
+-/
 theorem isoV_of {X₁ X₂ Y Z : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
     (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (r : Z ⟶ Y) (z : Z) (J₁ : (Z ⟶ X₁) → L₁.ι) (J₂ : (Z ⟶ X₂) → L₂.ι)
     {a₁ a₂} (h₁ : r ≫ f₁ = a₁) (h₂ : r ≫ f₂ = a₂) :
@@ -227,6 +254,9 @@ theorem isoV_of {X₁ X₂ Y Z : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {
       (w.s (fun _ => J₂ a₂, fun _ => J₁ a₁)) := by
   subst h₁ h₂; rfl
 
+/- English proof (translation)
+Substitute `h₁ h₂` using the available equality. Conclude with `⟨mem_pull.2 (g₂ (r ≫ f₂)), mem_pull.2 (g₁ (r ≫ f₁))⟩`.
+-/
 theorem mem_iso {X₁ X₂ Y Z : Scheme.{0}} {L₁ : LB X₁} {L₂ : LB X₂} {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
     (r : Z ⟶ Y) {z : Z} {J₁ : (Z ⟶ X₁) → L₁.ι} {J₂ : (Z ⟶ X₂) → L₂.ι} (g₁ : Good L₁ z J₁) (g₂ : Good L₂ z J₂)
     {a₁ a₂} (h₁ : r ≫ f₁ = a₁) (h₂ : r ≫ f₂ = a₂) :
@@ -245,21 +275,33 @@ def baseHom {D : DegPre R} {e : ℕ} (g : GtCoord I D e G) (T : Over (Spec (Comm
   (redHom I e D.P.A T).comp (MonoidHom.mk' (fun x => x ≫ g.q) fun x y => by
     have := g.q_hom; exact MonObj.mul_comp _ _ _)
 
+/- English proof (translation)
+The claim follows from `Category.assoc _ _ _`.
+-/
 theorem baseHom_left {D : DegPre R} {e : ℕ} (g : GtCoord I D e G)
     {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))} (x : T ⟶ thickObj R I e G) :
     (baseHom g T x).left = x.left ≫ g.pG.left := Category.assoc _ _ _
 
+/- English proof (translation)
+Use `GlobalTheory.UU.one_left_comp (GlobalTheory.UU.toBase_mul_pullback G (thick R I e)) (𝟙_ _)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UU.one_left]`. Conclude with `((congrArg (· ≫ (fstG I e G).left) (Category.id_comp _)).symm.trans this).trans (congrArg (· ≫ eSec G) (Category.id_comp _))`.
+-/
 theorem red_one (e : ℕ) : eSec (thickObj R I e G) ≫ (fstG I e G).left = thick R I e ≫ eSec G := by
   have := GlobalTheory.UU.one_left_comp (GlobalTheory.UU.toBase_mul_pullback G (thick R I e)) (𝟙_ _)
   rw [GlobalTheory.UU.one_left] at this
   exact ((congrArg (· ≫ (fstG I e G).left) (Category.id_comp _)).symm.trans this).trans
     (congrArg (· ≫ eSec G) (Category.id_comp _))
 
+/- English proof (translation)
+Use `GlobalTheory.UU.inv_left_comp (GlobalTheory.UU.toBase_mul_pullback G (thick R I e)) (𝟙 _)` as an intermediate fact. Rewrite `this` using `[Hom.inv_def, Category.id_comp]`. Conclude with `this.trans (congrArg (· ≫ (ι[G]).left) (Category.id_comp _))`.
+-/
 theorem red_inv (e : ℕ) : (ι[thickObj R I e G]).left ≫ (fstG I e G).left = (fstG I e G).left ≫ (ι[G]).left := by
   have := GlobalTheory.UU.inv_left_comp (GlobalTheory.UU.toBase_mul_pullback G (thick R I e)) (𝟙 _)
   rw [Hom.inv_def, Category.id_comp] at this
   exact this.trans (congrArg (· ≫ (ι[G]).left) (Category.id_comp _))
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Establish `a : eSec (thickObj R I e G) ≫ g.q.left = eSec (thickObj R I e D.P.A)` using `congrArg (fun q => q.left) (IsMonHom.one_hom g.q)`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (fstG I e D.P.A).left) a).trans (red_one e))`.
+-/
 theorem base_one {D : DegPre R} {e : ℕ} (g : GtCoord I D e G) :
     eSec (thickObj R I e G) ≫ g.pG.left = thick R I e ≫ eSec D.P.A := by
   have := g.q_hom
@@ -267,6 +309,9 @@ theorem base_one {D : DegPre R} {e : ℕ} (g : GtCoord I D e G) :
     congrArg (fun q => q.left) (IsMonHom.one_hom g.q)
   exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (fstG I e D.P.A).left) a).trans (red_one e))
 
+/- English proof (translation)
+Use `g.q_hom` as an intermediate fact. Establish `a : (ι[thickObj R I e G]).left ≫ g.q.left = g.q.left ≫ (ι[thickObj R I e D.P.A]).left` using `congrArg (fun q => q.left) (GrpObj.inv_hom g.q)`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (fstG I e D.P.A).left) a).trans ((Category.assoc _ _ _).trans ((congrArg (g.q.left ≫ ·) (red_inv e)).trans (Category.assoc _ _ _).symm)))`.
+-/
 theorem base_inv {D : DegPre R} {e : ℕ} (g : GtCoord I D e G) :
     (ι[thickObj R I e G]).left ≫ g.pG.left = g.pG.left ≫ (ι[D.P.A]).left := by
   have := g.q_hom
@@ -277,6 +322,11 @@ theorem base_inv {D : DegPre R} {e : ℕ} (g : GtCoord I D e G) :
 
 variable {D : DegData R I} {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} (U : UnifPre I D A G)
 
+/- English proof (translation)
+Establish `h₁ : (r ≫ eSec (thickObj R I e G)) ≫ (fstG I e G).left = (r ≫ thick R I e) ≫ eSec G` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (red_one e)).trans (Category.assoc _ _ _).symm)`. Establish `h₂ : (r ≫ eSec (thickObj R I e G)) ≫ (U.gt e).pG.left = (r ≫ thick R I e) ≫ eSec D.toPre.P.A` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (base_one _)).trans (Category.assoc _ _ _).symm)`. Rewrite using `[isoV_of _ _ _ _ _ h₁ h₂]`. Establish `m₁` using `mem_iso (r ≫ eSec (thickObj R I e G)) hL hM h₁ h₂`. Establish `m₂` using `hL.mem (fun _ : PUnit => eSec G) (r ≫ thick R I e)`.
+
+Establish `m₃` using `hM.mem (fun _ : PUnit => eSec D.toPre.P.A) (r ≫ thick R I e)`. Establish `H` using `gm_of_res₃ (U.w_rig e (fun _ => JM ((r ≫ thick R I e) ≫ eSec D.toPre.P.A), fun _ => JL ((r ≫ thick R I e) ≫ eSec G))) r z m₁ m₂ m₃`. Conclude with `(gm_pull r _ z _ m₃ _).symm.trans (H.symm.trans (congrArg₂ (· * ·) (gm_pull r _ z _ m₁ _) (gm_pull r _ z _ m₂ _)))`.
+-/
 theorem unifPre_rig (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of (R ⧸ I ^ (e + 1)))) (z : Z) (JL) (JM)
     (hL : Good U.LG.L z JL) (hM : Good D.toPre.P.L z JM) :
     val (φ := fun _ : PUnit => eSec D.toPre.P.A) (ε := fun _ => 1) D.toPre.rig (r ≫ thick R I e) z JM =
@@ -294,6 +344,13 @@ theorem unifPre_rig (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ Spec (CommRingCat.of (
     fun _ => JL ((r ≫ thick R I e) ≫ eSec G))) r z m₁ m₂ m₃
   exact (gm_pull r _ z _ m₃ _).symm.trans (H.symm.trans (congrArg₂ (· * ·) (gm_pull r _ z _ m₁ _) (gm_pull r _ z _ m₂ _)))
 
+/- English proof (translation)
+Establish `h₁ : (r ≫ (ι[thickObj R I e G]).left) ≫ (fstG I e G).left = (r ≫ (fstG I e G).left) ≫ (ι[G]).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (red_inv e)).trans (Category.assoc _ _ _).symm)`. Establish `h₂ : (r ≫ (ι[thickObj R I e G]).left) ≫ (U.gt e).pG.left = (r ≫ (U.gt e).pG.left) ≫ (ι[D.toPre.P.A]).left` using `(Category.assoc _ _ _).trans ((congrArg (r ≫ ·) (base_inv _)).trans (Category.assoc _ _ _).symm)`. Establish `h₃ : r ≫ (fstG I e G).left = (r ≫ (fstG I e G).left) ≫ 𝟙 _` using `(Category.comp_id _).symm`. Establish `h₄ : r ≫ (U.gt e).pG.left = (r ≫ (U.gt e).pG.left) ≫ 𝟙 _` using `(Category.comp_id _).symm`. Rewrite using `[isoV_of _ _ _ _ _ h₁ h₂, isoV_of _ _ _ _ _ h₃ h₄]`.
+
+Establish `H₀` using `U.w_even e (fun k => JL ((r ≫ (fstG I e G).left) ≫ (![(ι[G]).left, 𝟙 G.left] : Fin 2 → _) k)) (fun k => JM ((r ≫ (U.gt e).pG.left) ≫ (![(ι[D.toPre.P.A]).left, 𝟙 D.toPre.P.A.left] : Fin 2 → _) k)) (fun a b h => congrArg JL ((Category.assoc _ _ _).trans ((congrArg (r ≫ ·) h).trans …`. Establish `m₁` using `hM.mem ![(ι[D.toPre.P.A]).left, 𝟙 D.toPre.P.A.left] (r ≫ (U.gt e).pG.left)`. Establish `m₂` using `mem_iso r hL hM h₃ h₄`. Establish `m₃` using `mem_iso (r ≫ (ι[thickObj R I e G]).left) hL hM h₁ h₂`. Establish `m₄` using `hL.mem ![(ι[G]).left, 𝟙 G.left] (r ≫ (fstG I e G).left)`.
+
+Establish `H` using `gm_of_res₄ H₀ r z m₁ m₂ m₃ m₄`. Conclude with `(congrArg₂ (· * ·) (gm_pull r _ z _ m₁ _) rfl).symm.trans (H.trans (congrArg₂ (· * ·) (gm_pull r _ z _ m₃ _) (gm_pull r _ z _ m₄ _)))`.
+-/
 theorem unifPre_even (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (JL) (JM)
     (hL : Good U.LG.L z JL) (hM : Good D.toPre.P.L z JM) :
     val D.toPre.sym (r ≫ (U.gt e).pG.left) z JM * isoV (U.w e) r z JL JM =
@@ -317,6 +374,11 @@ theorem unifPre_even (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).le
   exact (congrArg₂ (· * ·) (gm_pull r _ z _ m₁ _) rfl).symm.trans
     (H.trans (congrArg₂ (· * ·) (gm_pull r _ z _ m₃ _) (gm_pull r _ z _ m₄ _)))
 
+/- English proof (translation)
+Establish `h₁ : (r ≫ thickMap R I e G) ≫ (fstG I (e + 1) G).left = r ≫ (fstG I e G).left` using `(Category.assoc _ _ _).trans (congrArg (r ≫ ·) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)))`. Establish `h₂ : (r ≫ thickMap R I e G) ≫ (U.gt (e + 1)).pG.left = r ≫ (U.gt e).pG.left` using `(Category.assoc _ _ _).trans (congrArg (r ≫ ·) (U.gt_q e))`. Rewrite using `[isoV_of _ _ _ _ _ h₁ h₂, isoV_of _ r _ _ _ rfl rfl]`. Establish `m₁` using `mem_iso (r ≫ thickMap R I e G) hL hM h₁ h₂`. Establish `H` using `gm_of_res₂ (U.w_compat e (fun _ => JM (r ≫ (U.gt e).pG.left), fun _ => JL (r ≫ (fstG I e G).left))) r z m₁ (mem_iso r hL hM rfl rfl)`.
+
+Conclude with `(gm_pull r _ z _ m₁ _).symm.trans H`.
+-/
 theorem unifPre_compat (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).left) (z : Z) (JL) (JM)
     (hL : Good U.LG.L z JL) (hM : Good D.toPre.P.L z JM) :
     isoV (U.w (e + 1)) (r ≫ thickMap R I e G) z JL JM = isoV (U.w e) r z JL JM := by
@@ -330,6 +392,9 @@ theorem unifPre_compat (e : ℕ) (Z : Scheme.{0}) (r : Z ⟶ (thickObj R I e G).
     (mem_iso r hL hM rfl rfl)
   exact (gm_pull r _ z _ m₁ _).symm.trans H
 
+/- English proof (translation)
+Establish `b : ∀ a, β a = (Over.map (thick R I e)).map a ≫ p` using `fun a => Over.OverMorphism.ext (hβ a)`. Use `(hβ _).symm.trans (congrArg (fun q => q.left) ((psum_hom β _ k.down).trans (Eq.trans (congrArg (fun q => psum H q k.down) (funext fun i => ?_)) (psum_hom (preHom (lift ((Over.map (thick R I e)).map x ≫ p) (lift ((Over.map (thick R I e)).map y ≫ p) ((Over.map (thick R I e)).map u …` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [x3, preHom, b] <;> rfl`.
+-/
 theorem psum_three_comp (e : ℕ) {H : Over (Spec (CommRingCat.of R))} [GrpObj H] [IsCommMonObj H] (p : Red I e G ⟶ H)
     {T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))}
     (β : (T ⟶ thickObj R I e G) →* (Over.mk (T.hom ≫ thick R I e) ⟶ H)) (hβ : ∀ x, (β x).left = x.left ≫ p.left)
@@ -342,6 +407,15 @@ theorem psum_three_comp (e : ℕ) {H : Over (Spec (CommRingCat.of R))} [GrpObj H
       (lift ((Over.map (thick R I e)).map y ≫ p) ((Over.map (thick R I e)).map u ≫ p)))) (x3 H) k.down).symm)))
   fin_cases i <;> simp [x3, preHom, b] <;> rfl
 
+/- English proof (translation)
+Establish `h₁` using `psum_three_comp e (fstG I e G) (redHom I e G T) (fun _ => rfl) x y u`. Establish `h₂` using `psum_three_comp e (U.gt e).pG (baseHom (U.gt e) T) (baseHom_left _) x y u`. Establish `m` using `fun k : thK => mem_iso (psum (thickObj R I e G) ![x, y, u] k.down).left hL hM (h₁ k) (h₂ k)`. Set `jL : thK → U.LG.L.ι` to `fun k => JL (pt3 I e (fstG I e G) x y u ≫ thφ G (x3 G) k)`. Set `jM : thK → D.toPre.P.L.ι` to `fun k => JM (pt3 I e (U.gt e).pG x y u ≫ thφ _ (x3 _) k)`.
+
+Set `W : thK → T.left.Opens` to `fun k => (psum (thickObj R I e G) ![x, y, u] k.down).left ⁻¹ᵁ ((D.toPre.P.L.pull (U.gt e).pG.left).U (fun _ => jM k) ⊓ (U.LG.L.pull (fstG I e G).left).U (fun _ => jL k))`. Establish `H` using `U.w_cub e T ![x, y, u] jL jM (fun a b h => congrArg JL h) (fun a b h => congrArg JM h) (_ ⊓ _ ⊓ Finset.univ.inf W) (inf_le_left.trans inf_le_left) (inf_le_left.trans inf_le_right) (fun k => inf_le_right.trans (Finset.inf_le (f := W) (Finset.mem_univ k)))`. Establish `hW : z ∈ Finset.univ.inf W`. Use `Finset.inf_induction (p := fun V : T.left.Opens => z ∈ V) trivial (fun _ a _ b => ⟨a, b⟩) fun k _ => m k` and prove the remaining obligations. Establish `hz : (𝟙 T.left : T.left ⟶ T.left) z ∈ pt3 I e (U.gt e).pG x y u ⁻¹ᵁ (Theta D.toPre.P.A D.toPre.P.L).U jM ⊓ pt3 I e (fstG I e G) x y u ⁻¹ᵁ (Theta G U.LG.L).U jL ⊓ Finset.univ.inf W` using `⟨⟨hM.mem (thφ _ (x3 _)) _, hL.mem (thφ G (x3 G)) _⟩, hW⟩`.
+
+Establish `H'` using `(gm_res_pull _ _ _ _ (𝟙 _) z hz).symm.trans ((congrArg (gm (𝟙 T.left) z _) H).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ thε k) (gm_res_pull _ _ _ _ (𝟙 _) z hz)))) (gm_res_pull _ …`. Simplify using `only [Category.id_comp] at H'`. Use `GlobalTheory.UU.cub_alg (H'.trans (congrArg₂ (· * ·) ?_ rfl))` and prove the remaining obligations. Use `Eq.trans (Finset.prod_congr rfl fun k _ => ?_) (prod_cub x y u (fun q => isoV (U.w e) q z JL JM))` and prove the remaining obligations. Apply the tactic sequence `have a : (lift x (lift y u)).left ≫ thφ _ (x3 _) k = (psum (thickObj R I e G) ![x, y, u] k.down).left := congrArg (fun q => q.left) ((psum_hom (preHom (lift x (lift y u))) (x3 _) k.down).trans (congrArg (fun q => psum _ q k.down) (funext fun i => by fin_cases i <;> simp [preHom, …`.
+
+Rewrite using `[a, isoV_of _ _ _ _ _ (h₁ k) (h₂ k)]`.
+-/
 theorem unifPre_cub (e : ℕ) (T : Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (x y u : T ⟶ thickObj R I e G)
     (z : T.left) (JL) (JM) (hL : Good U.LG.L z JL) (hM : Good D.toPre.P.L z JM) :
     val (L := D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t

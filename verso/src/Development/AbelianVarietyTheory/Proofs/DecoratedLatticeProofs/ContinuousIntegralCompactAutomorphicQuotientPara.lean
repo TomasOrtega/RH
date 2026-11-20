@@ -13,6 +13,9 @@ open GlobalTheory.Unf
 
 namespace GlobalTheory.CocompactParam
 
+/- English proof (translation)
+Use `hC.eventually_forall_of_forall_eventually (P := fun p g => ‖K g p - K g p₀‖ < ε) fun g _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun z : P × G => K z.2 z.1` using `hK.comp (continuous_snd.prodMk continuous_fst)`. Establish `h2 : Continuous fun z : P × G => K z.2 p₀` using `hK.comp (continuous_snd.prodMk continuous_const)`. Establish `hc : Continuous fun z : P × G => ‖K z.2 z.1 - K z.2 p₀‖` using `(h1.sub h2).norm`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by simpa using hε)`.
+-/
 theorem eventually_close {G P : Type*} [TopologicalSpace G] [TopologicalSpace P] (K : G → P → ℂ)
     (hK : Continuous (Function.uncurry K)) {C : Set G} (hC : IsCompact C) (p₀ : P) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ p in nhds p₀, ∀ g ∈ C, ‖K g p - K g p₀‖ < ε := by
@@ -22,6 +25,11 @@ theorem eventually_close {G P : Type*} [TopologicalSpace G] [TopologicalSpace P]
   have hc : Continuous fun z : P × G => ‖K z.2 z.1 - K z.2 p₀‖ := (h1.sub h2).norm
   exact hc.continuousAt.eventually_lt continuousAt_const (by simpa using hε)
 
+/- English proof (translation)
+Use `continuous_iff_continuousAt.2 fun p₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hm : 0 ≤ μ.real 𝓕` using `measureReal_nonneg`. Establish `hδ : 0 < ε / (μ.real 𝓕 + 1)` using `by positivity`. Use `filter_upwards [hcl p₀ _ hδ] with p hp`. Rewrite using `[dist_eq_norm, ← integral_sub (hint p) (hint p₀)]`.
+
+Use `lt_of_le_of_lt (norm_setIntegral_le_of_norm_le_const hfin fun g _ => (hp g).le) ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+-/
 theorem continuous_setIntegral_of_unif {G P : Type*} [MeasurableSpace G] [TopologicalSpace P] (μ : Measure G)
     (𝓕 : Set G) (hfin : μ 𝓕 < ⊤) (K : G → P → ℂ) (hint : ∀ p, IntegrableOn (fun g => K g p) 𝓕 μ)
     (hcl : ∀ p₀, ∀ ε : ℝ, 0 < ε → ∀ᶠ p in nhds p₀, ∀ g, ‖K g p - K g p₀‖ < ε) :
@@ -35,6 +43,17 @@ theorem continuous_setIntegral_of_unif {G P : Type*} [MeasurableSpace G] [Topolo
   rw [div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]
   nlinarith
 
+/- English proof (translation)
+Introduce `D V hV v P _ K hK hinv`. Take `⟨C, hC, hcov⟩` from `hV`. Establish `hcov' : ∀ h : GA D V, ∃ γ ∈ GQ V, ∃ c ∈ C, h = γ * c` using `fun h => by`. Take `⟨γ, hγ, hc⟩` from `hcov h`. Conclude with `⟨γ⁻¹, inv_mem hγ, γ * h, hc, by rw [inv_mul_cancel_left]⟩`.
+
+Establish `hcont : ∀ p, Continuous fun g => K g p` using `fun p => hK.comp (continuous_id.prodMk continuous_const)`. Establish `hint : ∀ p, IntegrableOn (fun g => K g p) v.𝓕 v.μ` using `fun p => GlobalTheory.CocompactIntegrable.integrableOn_fundamentalDomain V v.μ v.𝓕 C v.haar v.fund hC hcov' _ (hcont p) fun γ hγ h => hinv γ hγ h p`. Establish `hfin : v.μ v.𝓕 < ⊤`. Establish `h1` using `GlobalTheory.CocompactIntegrable.integrableOn_fundamentalDomain V v.μ v.𝓕 C v.haar v.fund hC hcov' (fun _ => (1 : ℂ)) continuous_const fun _ _ _ => rfl`. Simplify using `using (integrableOn_const_iff (C := (1 : ℂ))).1 h1`.
+
+Establish `hcl : ∀ p₀, ∀ ε : ℝ, 0 < ε → ∀ᶠ p in nhds p₀, ∀ g, ‖K g p - K g p₀‖ < ε` using `fun p₀ ε hε => by filter_upwards [eventually_close K hK hC p₀ hε] with p hp g`. Take `⟨γ, hγ, hc⟩` from `hcov g`. Use `hp _ hc` as an intermediate fact. Rewrite `this` using `[hinv γ hγ, hinv γ hγ]`. Then use the resulting hypothesis. Use `⟨hint, continuous_setIntegral_of_unif v.μ v.𝓕 hfin K hint hcl, fun p₀ => ?_⟩` and prove the remaining obligations.
+
+Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn (hcont p₀).continuousOn`. Use `⟨M + 1, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hcl p₀ 1 one_pos] with p hp g`. Take `⟨γ, hγ, hc⟩` from `hcov g`. Establish `h0` using `hM _ hc`.
+
+Simplify using `only [hinv γ hγ] at h0`. Use `norm_sub_norm_le (K g p) (K g p₀)` as an intermediate fact. Combine the linear relations using `[hp g]`.
+-/
 theorem continuous_integral_param : ∀ (D : D7) (V : HSp D), CoCpt V → ∀ (v : Vol V) (P : Type) [TopologicalSpace P] (K : GA D V → P → ℂ), Continuous (Function.uncurry K) → (∀ γ ∈ GQ V, ∀ g p, K (γ * g) p = K g p) → (∀ p, IntegrableOn (fun g => K g p) v.𝓕 v.μ) ∧ (Continuous fun p => ∫ g in v.𝓕, K g p ∂v.μ) ∧ ∀ p₀, ∃ C : ℝ, ∀ᶠ p in nhds p₀, ∀ g, ‖K g p‖ ≤ C := by
   intro D V hV v P _ K hK hinv
   obtain ⟨C, hC, hcov⟩ := hV

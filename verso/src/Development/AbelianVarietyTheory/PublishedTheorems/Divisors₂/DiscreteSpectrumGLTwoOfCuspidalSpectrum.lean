@@ -29,16 +29,25 @@ variable (a) in
 
 def detLine (χ : HChar E) : Submodule ℂ (Sm E a) := Submodule.span ℂ {mulChi a χ (oneFn E a)}
 
+/- English proof (translation)
+The claim follows from `Submodule.mem_span_singleton.trans <| exists_congr fun c => ⟨fun e g => e ▸ congrArg (c * ·) (one_mul _), fun e => Subtype.ext (funext fun g => ((e g).trans (congrArg (c * ·) (one_mul _).symm)).symm)⟩`.
+-/
 theorem mem_detLine {φ : Sm E a} :
     φ ∈ detLine a χ ↔ ∃ c : ℂ, ∀ g, φ.1 g = c * (χ.1 (GeneralLinearGroup.det g) : ℂˣ) :=
   Submodule.mem_span_singleton.trans <| exists_congr fun c =>
     ⟨fun e g => e ▸ congrArg (c * ·) (one_mul _),
       fun e => Subtype.ext (funext fun g => ((e g).trans (congrArg (c * ·) (one_mul _).symm)).symm)⟩
 
+/- English proof (translation)
+Rewrite using `[detLine, Submodule.map_span, Set.image_singleton, detLine, mulChi_mul]`. Both sides reduce to the same expression.
+-/
 theorem map_detLine (χ χ' : HChar E) : (detLine a χ).map (mulChi a χ').toLinearMap = detLine a (χ * χ') := by
   rw [detLine, Submodule.map_span, Set.image_singleton, detLine, mulChi_mul]
   rfl
 
+/- English proof (translation)
+Establish `: GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin a) z) = z ^ a` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(Matrix.scalar (Fin a) (z : Ad E)).det = _`. Use the proof step `simp)`. Conclude with `(congrArg χ.1 this).trans ((map_pow _ _ _).trans (MonoidHom.pow_apply χ.1 a z).symm)`.
+-/
 theorem chiDet_scalar (χ : HChar E) (z : Neutral.B1.Ideles E) :
     chiDet a χ (GeneralLinearGroup.scalar (Fin a) z) = (χ ^ a).1 z := by
   have : GeneralLinearGroup.det (GeneralLinearGroup.scalar (Fin a) z) = z ^ a := Units.ext (by
@@ -49,6 +58,11 @@ theorem chiDet_scalar (χ : HChar E) (z : Neutral.B1.Ideles E) :
 abbrev expId (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (t : ℝ) : Neutral.B1.Ideles E :=
   infId E (expU fun _ : InfinitePlace E => (t : ℂ))
 
+/- English proof (translation)
+Use `(CG.isUnitary_ofChar_iff ω).1 ((CG.isUnitary_mk _).2 (Model.isUnitary_of_isNormalised ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ t g`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Express the relevant statement in the definitionally equal form `_ * (chiDet 1 ω _ : ℂ) = _ * (chiDet 1 ω _ : ℂ)`. Rewrite using `[map_mul, splitCentre_eq_scalar, chiDet_scalar, pow_one, h, one_mul]`.
+
+Both sides reduce to the same expression.
+-/
 theorem isUnitary_of_expId (h : ∀ t, ω.1 (expId E t) = 1) : ω.IsUnitary := by
   refine (CG.isUnitary_ofChar_iff ω).1 ((CG.isUnitary_mk _).2 (Model.isUnitary_of_isNormalised ?_))
   rintro _ ⟨φ, hφ, rfl⟩ t g
@@ -57,27 +71,47 @@ theorem isUnitary_of_expId (h : ∀ t, ω.1 (expId E t) = 1) : ω.IsUnitary := b
   rw [map_mul, splitCentre_eq_scalar, chiDet_scalar, pow_one, h, one_mul]
   rfl
 
+/- English proof (translation)
+Rewrite using `[CuspRep.scalar_comm]`. Conclude with `congrFun (congrArg Subtype.val (h.central z φ hφ)) g`.
+-/
 theorem IsDiscreteWith.apply (h : IsDiscreteWith ω V) {φ : Sm E a} (hφ : φ ∈ V) (z : Neutral.B1.Ideles E) (g : GA E a) :
     φ.1 (GeneralLinearGroup.scalar (Fin a) z * g) = ((ω.1 z : ℂˣ) : ℂ) * φ.1 g := by
   rw [CuspRep.scalar_comm]
   exact congrFun (congrArg Subtype.val (h.central z φ hφ)) g
 
+/- English proof (translation)
+Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 h.ne_bot`. Conclude with `Subtype.ext (MonoidHom.ext fun z => Units.ext (smul_left_injective ℂ h0 ((h.central z φ hφ).symm.trans (h'.central z φ hφ))))`.
+-/
 theorem IsDiscreteWith.unique {ω' : HChar E} (h : IsDiscreteWith ω V) (h' : IsDiscreteWith ω' V) : ω = ω' := by
   obtain ⟨φ, hφ, h0⟩ := (Submodule.ne_bot_iff _).1 h.ne_bot
   exact Subtype.ext (MonoidHom.ext fun z =>
     Units.ext (smul_left_injective ℂ h0 ((h.central z φ hφ).symm.trans (h'.central z φ hφ))))
 
+/- English proof (translation)
+Simplify using `[enorm]`.
+-/
 theorem enorm_ofReal_norm (z : ℂ) : ‖((‖z‖ : ℝ) : ℂ)‖ₑ = ‖z‖ₑ := by simp [enorm]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.aut, fun φ hφ => ⟨fun t g => by rw [splitCentre_eq_scalar, h.apply hφ, hω, Units.val_one, one_mul], by simpa only [enorm_ofReal_norm] using (h.sqInt φ hφ).2⟩, h.stable, h.ne_bot, h.irred⟩`.
+-/
 theorem IsDiscreteWith.isDiscrete (h : IsDiscreteWith ω V) (hω : ∀ t, ω.1 (expId E t) = 1) : IsDiscrete V :=
   ⟨h.aut, fun φ hφ => ⟨fun t g => by rw [splitCentre_eq_scalar, h.apply hφ, hω, Units.val_one, one_mul], by
     simpa only [enorm_ofReal_norm] using (h.sqInt φ hφ).2⟩, h.stable, h.ne_bot, h.irred⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h.aut, hc, fun φ hφ => ⟨fun t g => by simp only [(h.sqInt φ hφ).1 t g], by simpa only [enorm_ofReal_norm] using (h.sqInt φ hφ).2⟩, h.stable, h.ne_bot, h.irred⟩`.
+-/
 theorem isDiscreteWith_of_isDiscrete (h : IsDiscrete V) (hc : ∀ z : Neutral.B1.Ideles E, ∀ φ ∈ V,
     rt E a (GeneralLinearGroup.scalar (Fin a) z) φ = ((ω.1 z : ℂˣ) : ℂ) • φ) : IsDiscreteWith ω V :=
   ⟨h.aut, hc, fun φ hφ => ⟨fun t g => by simp only [(h.sqInt φ hφ).1 t g], by
     simpa only [enorm_ofReal_norm] using (h.sqInt φ hφ).2⟩, h.stable, h.ne_bot, h.irred⟩
 
+/- English proof (translation)
+Establish `hd` using `isFundamentalDomain_stdDom (latticeGL E a) (Measure.haar : Measure (GA E a))`. Establish `hf` using `GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a Measure.haar`. Use `⟨h, Measure.haar, _, inferInstance, hd, ?_⟩` and prove the remaining obligations. Use `(lintegral_mono (g := fun _ => ENNReal.ofReal C ^ 2) fun g => ?_).trans_lt ?_` and prove the remaining obligations. Conclude with `pow_le_pow_left' ((ofReal_norm_eq_enorm _).symm.trans_le (ENNReal.ofReal_le_ofReal (hC g))) 2`.
+
+Rewrite using `[setLIntegral_const, ← quotMeasure_univ hd]`. Conclude with `ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top) (measure_lt_top _ _)`.
+-/
 theorem isSqInt_of_bounded {f : GA E a → ℂ} (h : ∀ t g, f (splitCentre E a t * g) = f g) {C : ℝ}
     (hC : ∀ g, ‖f g‖ ≤ C) : IsSqInt f := by
   have hd := isFundamentalDomain_stdDom (latticeGL E a) (Measure.haar : Measure (GA E a))
@@ -88,6 +122,17 @@ theorem isSqInt_of_bounded {f : GA E a → ℂ} (h : ∀ t g, f (splitCentre E a
   · rw [setLIntegral_const, ← quotMeasure_univ hd]
     exact ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top) (measure_lt_top _ _)
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨φ, hφ, rfl⟩; exact (h.aut φ hφ).mulChi ν central := by`. Introduce and unpack `z _ ⟨φ, hφ, rfl⟩`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * _) * (chiDet a ν (g * _) : ℂ) = ((ω.1 z * (ν ^ a).1 z : ℂˣ) : ℂ) * (φ.1 g * (chiDet a ν g : ℂ))`. Rewrite using `[← CuspRep.scalar_comm, h.apply hφ, map_mul, chiDet_scalar, Units.val_mul, Units.val_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `sqInt := by`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Use `h.sqInt φ hφ using 3 with g` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `‖φ.1 g * (ν.1 _ : ℂ)‖ = _`.
+
+Rewrite using `[norm_mul, hν, mul_one]`. Use `stable := by`. Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, add_mem (V.smul_mem _ (h.stable o φ hφ)) (V.smul_mem _ hφ), (act_mulChi ν o φ).symm⟩`. Use `ne_bot e := h.ne_bot ((Submodule.map_eq_bot_iff (e := mulChi a ν)).1 e)`.
+
+Use `irred W hW hs := by`. Establish `h` using `h.irred (W.comap (mulChi a ν).toLinearMap) (fun φ hφ => by`. Take `⟨ψ, h1, h2⟩` from `hW hφ`. Rewrite using `[← (mulChi a ν).injective h2]) fun o φ hφ => by` and apply the resulting hypothesis. Establish `h1 : _ ∈ W.comap (mulChi a ν).toLinearMap` using `(act_mulChi ν o φ) ▸ hs o _ hφ`.
+
+Conclude with `(Submodule.smul_mem_iff _ (Units.ne_zero (opMul ν o))).1 ((Submodule.add_mem_iff_left _ (Submodule.smul_mem _ _ hφ)).1 h1)`. Establish `e` using `Submodule.map_comap_eq_of_surjective (f := (mulChi a ν).toLinearMap) (mulChi a ν).surjective W`. Conclude with `h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]`.
+-/
 theorem IsDiscreteWith.twist (h : IsDiscreteWith ω V) {ν : HChar E} (hν : ν.IsUnitary) :
     IsDiscreteWith (ω * ν ^ a) (V.map (mulChi a ν).toLinearMap) where
   aut := by rintro _ ⟨φ, hφ, rfl⟩; exact (h.aut φ hφ).mulChi ν
@@ -116,6 +161,11 @@ theorem IsDiscreteWith.twist (h : IsDiscreteWith ω V) {ν : HChar E} (hν : ν.
     have e := Submodule.map_comap_eq_of_surjective (f := (mulChi a ν).toLinearMap) (mulChi a ν).surjective W
     exact h.imp (fun h => by rw [← e, h, Submodule.map_bot]) fun h => by rw [← e, h]
 
+/- English proof (translation)
+Establish `h1 : IsDiscreteWith 1 (Submodule.span ℂ {oneFn E a})` using `isDiscreteWith_of_isDiscrete ⟨fun _ => isAutForm_const, fun φ hφ => by`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `isSqInt_of_bounded (f := fun _ => c * 1) (fun _ _ => rfl) fun _ => le_rfl,`. Use the proof step `isStable_const, fun e => oneFn_ne_zero (Submodule.span_singleton_eq_bot.1 e),`. Use `fun W hW _ => (nonzero_span_atom _ oneFn_ne_zero).le_iff.1 hW⟩ fun z φ hφ => by`.
+
+Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hφ`. Conclude with `(one_smul ℂ _).symm`. Establish `h2` using `h1.twist hχ`. Rewrite `h2` using `[one_mul, Submodule.map_span, Set.image_singleton]`. Then use the resulting hypothesis.
+-/
 theorem isDiscreteWith_detLine (hχ : χ.IsUnitary) : IsDiscreteWith (χ ^ a) (detLine a χ) := by
   have h1 : IsDiscreteWith 1 (Submodule.span ℂ {oneFn E a}) :=
     isDiscreteWith_of_isDiscrete ⟨fun _ => isAutForm_const, fun φ hφ => by
@@ -128,6 +178,9 @@ theorem isDiscreteWith_detLine (hχ : χ.IsUnitary) : IsDiscreteWith (χ ^ a) (d
   have h2 := h1.twist hχ
   rwa [one_mul, Submodule.map_span, Set.image_singleton] at h2
 
+/- English proof (translation)
+The claim follows from `have hu : π.IsUnitary := ⟨ω, hω, h⟩ ⟨fun φ hφ => (π.cusp φ hφ).1, h, fun φ hφ => by obtain ⟨C, hC⟩ := hB.of_isUnitary hu hφ exact isSqInt_of_bounded (fun t g => by rw [splitCentre_eq_scalar, hu.norm_eq hφ]) (C := C) fun g => by simpa using hC g, π.stable, π.ne_bot, π.irred⟩`.
+-/
 theorem isDiscreteWith_cusp (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π : CuspSub E a} (hω : ω.IsUnitary)
     (h : π.HasCentral ω) : IsDiscreteWith ω π.V :=
   have hu : π.IsUnitary := ⟨ω, hω, h⟩
@@ -136,6 +189,9 @@ theorem isDiscreteWith_cusp (hB : GlobalTheory.Published.CuspFormsBoundedGL) {π
     exact isSqInt_of_bounded (fun t g => by rw [splitCentre_eq_scalar, hu.norm_eq hφ]) (C := C)
       fun g => by simpa using hC g, π.stable, π.ne_bot, π.irred⟩
 
+/- English proof (translation)
+Introduce `e` and use `by have h := (π.cusp _ (e.le (Submodule.mem_span_singleton_self _))).mulChi χ⁻¹ rw [← mulChi_mul, mul_inv_cancel, mulChi_one] at h exact GlobalTheory.ConstNotCusp.not_isCuspidal_oneFn E a ha h.2`.
+-/
 theorem detLine_ne_cusp (ha : 1 < a) (χ : HChar E) (π : CuspSub E a) : detLine a χ ≠ π.V := fun e => by
   have h := (π.cusp _ (e.le (Submodule.mem_span_singleton_self _))).mulChi χ⁻¹
   rw [← mulChi_mul, mul_inv_cancel, mulChi_one] at h
@@ -147,6 +203,9 @@ open GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.LocGL.ProjLine
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
+/- English proof (translation)
+Take `⟨hd, ⟨ψ⟩⟩` from `exists_equiv_prodIrr (θ := fun i : Fin 2 => η * absPow k ((((2 : ℕ) : ℂ) - 1) / 2 - (i : ℕ))) (fun _ => hη.mul (isSmoothChar_absPow _)) (x := spehFactor (IrrGL.ofChar η hη) 2) (fun _ => IrrGL.tw_ofChar _ _ hη (isSmoothChar_absPow _)) (Θ := (detLevi pts η⁻¹)⁻¹) fun g => by`. Rewrite using `[MonoidHom.inv_apply, detLevi_pts, Fin.prod_univ_two, show (((2 : ℕ) : ℂ) - 1) / 2 - ((0 : Fin 2) : ℕ) = 1 / 2 by norm_num, show (((2 : ℕ) : ℂ) - 1) / 2 - ((1 : Fin 2) : ℕ) = -(1 / 2) by norm_num, absPow_neg]`. Simplify using `[mul_comm]`. Conclude with `⟨hd, (isCosocle_detRep_two hη).of_equiv (.refl _) ψ⟩`.
+-/
 theorem isSpeh_detRep_two {η : kˣ →* ℂˣ} (hη : IsSmoothChar η) :
     IsSpeh (IrrGL.ofChar η hη) 2 (detRep (Fin 2) η) := by
   obtain ⟨hd, ⟨ψ⟩⟩ := exists_equiv_prodIrr (θ := fun i : Fin 2 => η * absPow k ((((2 : ℕ) : ℂ) - 1) / 2 - (i : ℕ)))
@@ -162,6 +221,19 @@ end Local
 
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `key : ∀ w, χ.loc w = χ'.loc w` using `fun w => by`. Set `σ'` to `(SmIrr.triv _).twist (CuspSub.locDet 2 χ w) (CuspSub.isOpen_ker_locDet χ w)`. Establish `h1 : IsLocCompGL (detLine 2 χ) w σ'`. Use `⟨LinearMap.toSpanSingleton ℂ _ (mulChi 2 χ (oneFn E 2)), fun e => ?_, fun v => Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), fun g v => Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Conclude with `oneFn_ne_zero ((mulChi 2 χ).map_eq_zero_iff.1 ((one_smul ℂ _).symm.trans (LinearMap.congr_fun e (1 : ℂ))))`.
+
+Express the relevant statement in the definitionally equal form `((CuspSub.locDet 2 χ w g : ℂ) * (show ℂ from v)) * (1 * (chiDet 2 χ x : ℂ)) = (show ℂ from v) * (1 * (chiDet 2 χ (x * _) : ℂ))`. Rewrite using `[map_mul, CuspSub.chiDet_locGL, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `h.loc w _ _ (CG.isLoc_ofChar χ' w) h1`. Establish `hs : GlobalTheory.SmGL.IsSmoothChar (χ'.loc w)`.
+
+Establish `hc : Continuous (CG.oneByOne : (w.adicCompletion E)ˣ → GL (Fin 1) (w.adicCompletion E))` using `Continuous.units_map _ (continuous_pi fun _ => continuous_id).matrix_diagonal`. Establish `h` using `(CuspSub.isOpen_ker_locDet (a := 1) χ' w).preimage hc`. Simplify using `only [Set.preimage_ofPred_eq, CuspSub.locDet, MonoidHom.comp_apply, CG.det_oneByOne] at h`. Conclude with `h`. Take `⟨_, h3⟩` from `h2`.
+
+Take `⟨_, h4⟩` from `isSpeh_detRep_two hs`. Take `⟨e⟩ : Nonempty ((GlobalTheory.SmGL.detRep (Fin 2) (χ.loc w)).Equiv (GlobalTheory.SmGL.detRep (Fin 2) (χ'.loc w)))` from `h4.unique h3`. Use extensionality with `x`. Set `g : GL (Fin 2) (w.adicCompletion E)` to `GeneralLinearGroup.mkOfDetNeZero !![x.1, 0; 0, 1] (by simp)`. Establish `hg : GeneralLinearGroup.det g = x` using `Units.ext (by simp [g])`.
+
+Establish `h5 : e (((χ.loc w (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • (1 : ℂ)) = ((χ'.loc w (GeneralLinearGroup.det g) : ℂˣ) : ℂ) • e (1 : ℂ)` using `LinearMap.congr_fun (e.isIntertwining' g) (1 : ℂ)`. Rewrite `h5` using `[map_smul, hg]`. Conclude with `smul_left_injective ℂ ((map_ne_zero_iff e e.injective).2 (one_ne_zero (α := ℂ))) h5`. Establish `: χ * χ'⁻¹ = 1` using `GlobalTheory.HeckeUnrTrivial.eq_one_of_val_eq_one _ fun v _ => by`. Rewrite using `[HChar.val_mul, HChar.val_inv, mul_inv_eq_one]`.
+
+Conclude with `congrArg (fun f => f (atFin v (unif v))) (key v)`. Conclude with `mul_inv_eq_one.1 this`.
+-/
 theorem eq_of_hasSpehComp {χ' : HChar E} (h : HasSpehComp (detLine 2 χ) ((CuspSub.triv E le_rfl).twist χ') 2) :
     χ = χ' := by
   have key : ∀ w, χ.loc w = χ'.loc w := fun w => by
@@ -211,6 +283,17 @@ def DiscreteSpectrumGLTwo : Prop :=
 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
+/- English proof (translation)
+Take `⟨h1, h2, -, -, h5⟩` from `H E 2 one_le_two`. Establish `key : ∀ V : Submodule ℂ (Sm E 2), IsDiscrete V → (∃ π : CuspSub E 2, V = π.V) ∨ ∃ χ : HChar E, IsNormalised ((CuspSub.triv E le_rfl).twist χ) ∧ IsSpehOf V ((CuspSub.triv E le_rfl).twist χ) 2`. Introduce `V hV`. Take `⟨a, d, π, hu, hn, hs⟩` from `h1 V hV`. Establish `hm` using `hs.mul_eq`.
+
+Establish `hd : d ≤ 2` using `Nat.le_of_dvd two_pos ⟨a, hm.symm⟩`. Apply the tactic sequence `rcases (by interval_cases d <;> omega : d = 2 ∧ a = 1 ∨ d = 1 ∧ a = 2) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩`. Take `⟨χ, rfl⟩` from `RankOne.exists_eq_twist π`. Conclude with `.inr ⟨χ, hn, hs⟩`. Take `⟨ω, hω, hc⟩` from `hu`.
+
+Establish `h3` using `isDiscreteWith_cusp hB hω hc`. Conclude with `.inl ⟨π, (h2 2 1 π rfl hn).unique ⟨hV, hs⟩ ⟨⟨h3.aut, fun φ hφ => ⟨hn φ hφ, by`. Simplify `(h3.sqInt φ hφ).2⟩, h3.stable, h3.ne_bot, h3.irred⟩, isSpehOf_one π⟩⟩` using `only [enorm_ofReal_norm]`. Use `(key V hV).imp_right fun ⟨χ, hn, hs⟩ => ⟨χ, ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ t, χ.1 (expId E t) = 1` using `fun t => by`.
+
+Establish `h` using `hn _ ⟨_, Submodule.mem_span_singleton_self _, rfl⟩ t 1`. Express the relevant statement in the definitionally equal form `1 * (chiDet 1 χ _ : ℂ) = 1 * (chiDet 1 χ _ : ℂ) at h`. Rewrite `h` using `[mul_one, splitCentre_eq_scalar, chiDet_scalar, pow_one, map_one, one_mul, one_mul]`. Conclude with `Units.ext h`. Establish `hL : IsDiscrete (detLine 2 χ)` using `(isDiscreteWith_detLine (isUnitary_of_expId h0)).isDiscrete fun t => (MonoidHom.pow_apply χ.1 2 _).trans (by rw [h0, one_pow])`.
+
+Take `⟨π, e⟩ | ⟨χ', hn', hs'⟩` from `key _ hL`. Conclude with `absurd e (detLine_ne_cusp one_lt_two χ π)`. Take `rfl` from `eq_of_hasSpehComp (h5 _ hL 1 2 _ hn' hs')`. Conclude with `(h2 1 2 _ rfl hn).unique ⟨hV, hs⟩ ⟨hL, hs'⟩`.
+-/
 theorem DiscreteSpectrumGL.cusp_or_detLine (H : DiscreteSpectrumGL) (hB : CuspFormsBoundedGL) {V : Submodule ℂ (Sm E 2)}
     (hV : IsDiscrete V) : (∃ π : CuspSub E 2, V = π.V) ∨ ∃ χ : HChar E, V = detLine 2 χ := by
   obtain ⟨h1, h2, -, -, h5⟩ := H E 2 one_le_two
@@ -240,6 +323,19 @@ theorem DiscreteSpectrumGL.cusp_or_detLine (H : DiscreteSpectrumGL) (hB : CuspFo
   · obtain rfl := eq_of_hasSpehComp (h5 _ hL 1 2 _ hn' hs')
     exact (h2 1 2 _ rfl hn).unique ⟨hV, hs⟩ ⟨hL, hs'⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ ω hω V`. Use `⟨fun hV => ?_, ?_⟩` and prove the remaining obligations. Take `⟨ν, hν⟩` from `GlobalTheory.SplitCentreChar.exists_hChar_splitCentre E 2 two_pos (dchi ω 1)`. Establish `h0 : ∀ t, (ω * ν ^ 2).1 (expId E t) = 1` using `fun t => Units.ext <| by`. Establish `h1` using `hν t`.
+
+Rewrite `h1` using `[splitCentre_eq_scalar, chiDet_scalar]`. Establish `h2 : ((ω.1 (expId E t) : ℂˣ) : ℂ) = Complex.exp (t * dchi ω 1)`. Use `(chiInf_expU ω _).trans (congrArg _ ?_)` and prove the remaining obligations. Rewrite using `[show (fun _ : InfinitePlace E => (t : ℂ)) = t • (1 : Cinf E) from funext fun _ => by simp, map_smul]`. Simplify using the standard rewrite rules.
+
+Express the relevant statement in the definitionally equal form `((ω.1 _ * (ν ^ 2).1 _ : ℂˣ) : ℂ) = 1`. Rewrite using `[Units.val_mul, h1, h2, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hu : ν.IsUnitary` using `isUnitary_of_pow two_ne_zero (by`. Simplify `hω.inv.mul (isUnitary_of_expId h0))` using `only [inv_mul_cancel_left]`. Establish `back : (V.map (mulChi 2 ν).toLinearMap).map (mulChi 2 ν⁻¹).toLinearMap = V`.
+
+Rewrite using `[← Submodule.map_comp]`. Use `(congrArg (fun f => V.map f) (LinearMap.ext fun φ => ?_)).trans (Submodule.map_id V)` and prove the remaining obligations. Conclude with `(mulChi_mul ν ν⁻¹ φ).symm.trans (by rw [mul_inv_cancel, mulChi_one]; rfl)`. Take `⟨π, e⟩ | ⟨χ, e⟩` from `H.cusp_or_detLine hB ((hV.twist hu).isDiscrete h0)`. Establish `e' : V = (π.twist ν⁻¹).V` using `back.symm.trans (by rw [e]; rfl)`.
+
+Conclude with `.inl ⟨_, fun z φ hφ => hV.central z φ (e'.ge hφ), e'⟩`. Establish `e' : V = detLine 2 (χ * ν⁻¹)` using `back.symm.trans (by rw [e, map_detLine])`. Use `.inr ⟨_, Subtype.ext (MonoidHom.ext fun z => Units.ext ?_), e'⟩` and prove the remaining obligations. Establish `h1` using `hV.apply (e'.ge (Submodule.mem_span_singleton_self _)) z 1`. Express the relevant statement in the definitionally equal form `1 * (chiDet 2 _ _ : ℂ) = _ * (1 * (chiDet 2 _ _ : ℂ)) at h1`.
+
+Simplify `h1` using `only [mul_one, one_mul, map_one, Units.val_one, chiDet_scalar]`. Introduce and unpack `(⟨π, hc, rfl⟩ | ⟨χ, rfl, rfl⟩)`. Conclude with `isDiscreteWith_cusp hB hω hc`. Conclude with `isDiscreteWith_detLine (isUnitary_of_pow two_ne_zero hω)`.
+-/
 theorem discreteSpectrumGLTwo_of (H : DiscreteSpectrumGL) (hB : CuspFormsBoundedGL) : DiscreteSpectrumGLTwo := by
   intro E _ _ _ ω hω V
   refine ⟨fun hV => ?_, ?_⟩
@@ -271,9 +367,15 @@ theorem discreteSpectrumGLTwo_of (H : DiscreteSpectrumGL) (hB : CuspFormsBounded
     · exact isDiscreteWith_cusp hB hω hc
     · exact isDiscreteWith_detLine (isUnitary_of_pow two_ne_zero hω)
 
+/- English proof (translation)
+The claim follows from `discreteSpectrumGLTwo_of H hC.2.2`.
+-/
 theorem discreteSpectrumGLTwo_of_cuspidalSpectrum (H : DiscreteSpectrumGL) (hC : CuspidalSpectrumGL) :
     DiscreteSpectrumGLTwo := discreteSpectrumGLTwo_of H hC.2.2
 
+/- English proof (translation)
+Take `⟨π, -, rfl⟩ | ⟨χ, rfl, rfl⟩` from `(H E ω hω V).1 hV`. Conclude with `absurd (π.cusp φ hφ).2 hc`. Conclude with `⟨χ, rfl, isUnitary_of_pow two_ne_zero hω, fun _ => mem_detLine.1⟩`.
+-/
 theorem DiscreteSpectrumGLTwo.exists_char (H : DiscreteSpectrumGLTwo) {ω : HChar E} (hω : ω.IsUnitary)
     {V : Submodule ℂ (Sm E 2)} (hV : IsDiscreteWith ω V) {φ : Sm E 2} (hφ : φ ∈ V) (hc : ¬ IsCuspidal φ.1) :
     ∃ χ : HChar E, χ ^ 2 = ω ∧ χ.IsUnitary ∧ ∀ ψ ∈ V, ∃ c : ℂ, ∀ g, ψ.1 g = c * (χ.1 (GeneralLinearGroup.det g) : ℂˣ) := by
@@ -281,6 +383,9 @@ theorem DiscreteSpectrumGLTwo.exists_char (H : DiscreteSpectrumGLTwo) {ω : HCha
   · exact absurd (π.cusp φ hφ).2 hc
   · exact ⟨χ, rfl, isUnitary_of_pow two_ne_zero hω, fun _ => mem_detLine.1⟩
 
+/- English proof (translation)
+Use `le_antisymm (sSup_le fun V hV => ?_) (sup_le (iSup₂_le fun π h => le_sSup ((H E ω hω _).2 (.inl ⟨π, h, rfl⟩))) (iSup₂_le fun χ h => le_sSup ((H E ω hω _).2 (.inr ⟨χ, h, rfl⟩))))` and prove the remaining obligations. Take `⟨π, h, rfl⟩ | ⟨χ, h, rfl⟩` from `(H E ω hω V).1 hV`. Conclude with `le_sup_of_le_left (le_iSup₂_of_le π h le_rfl)`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le χ h le_rfl)`.
+-/
 theorem DiscreteSpectrumGLTwo.sSup_eq (H : DiscreteSpectrumGLTwo) {ω : HChar E} (hω : ω.IsUnitary) :
     sSup {V : Submodule ℂ (Sm E 2) | IsDiscreteWith ω V} =
       (⨆ (π : CuspSub E 2) (_ : π.HasCentral ω), π.V) ⊔ ⨆ (χ : HChar E) (_ : χ ^ 2 = ω), detLine 2 χ := by
@@ -290,6 +395,9 @@ theorem DiscreteSpectrumGLTwo.sSup_eq (H : DiscreteSpectrumGLTwo) {ω : HChar E}
   · exact le_sup_of_le_left (le_iSup₂_of_le π h le_rfl)
   · exact le_sup_of_le_right (le_iSup₂_of_le χ h le_rfl)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨isDiscreteWith_detLine isUnitary_one, detLine_ne_cusp one_lt_two 1⟩`.
+-/
 example : IsDiscreteWith (1 ^ 2) (detLine 2 (1 : HChar E)) ∧ ∀ π : CuspSub E 2, detLine 2 (1 : HChar E) ≠ π.V :=
   ⟨isDiscreteWith_detLine isUnitary_one, detLine_ne_cusp one_lt_two 1⟩
 

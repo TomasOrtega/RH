@@ -8,6 +8,17 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ`. Establish `key` using `smCrit E (Submodule.span ℂ {Φ : GL (Fin 2) (A E) → ℂ | ∃ f ∈ π.V, ∃ φ ∈ Fock D.δ, Φ = lift W M f.1 φ}) (fun Φ hΦ => by`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h => obtain ⟨f, hf, φ, hφ, rfl⟩ := h`. Conclude with `liftCont F E D W M π f hf φ hφ`.
+
+Consider the case `zero => exact fun _ => continuous_const`. Consider the case `add _ _ _ _ h1 h2 => exact fun g => (h1 g).add (h2 g)`. Consider the case `smul c _ _ h1 => exact fun g => (h1 g).const_smul c)`. Use the proof step `(fun Φ hΦ => by`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+
+Consider the case `mem Φ h => obtain ⟨f, hf, φ, hφ, rfl⟩ := h`. Conclude with `derT F E D W M π f hf φ hφ`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, fun _ _ => hasDerivAt_const _ _⟩`. Consider the case `add _ _ _ _ h1 h2`. Take `⟨T1, a1, b1⟩` from `h1`.
+
+Take `⟨T2, a2, b2⟩` from `h2`. Conclude with `⟨T1 + T2, fun X => add_mem (a1 X) (a2 X), fun X g => (b1 X g).add (b2 X g)⟩`. Consider the case `smul c _ _ h1`. Take `⟨T1, a1, b1⟩` from `h1`. Conclude with `⟨c • T1, fun X => Submodule.smul_mem _ c (a1 X), fun X g => (b1 X g).const_smul c⟩)`.
+
+Conclude with `⟨⟨_, key (Submodule.subset_span ⟨f, hf, φ, hφ, rfl⟩)⟩, rfl⟩`.
+-/
 theorem UpperTheory.ConvolutionTheory.R2.smooth :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Smooth W M π := by
   intro F E _ _ _ _ _ _ _ D W M π f hf φ hφ

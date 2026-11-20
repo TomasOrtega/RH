@@ -21,6 +21,9 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
   [NeZero n] (hnS : ∀ v ∉ S, ((n : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
 
 omit [NeZero n] in
+/- English proof (translation)
+Rewrite using `[map_add, LinearMap.add_apply]`.
+-/
 theorem linearMap_apply_add_apply {R M N P : Type*} [CommRing R] [AddCommGroup M] [AddCommGroup N] [AddCommGroup P]
     [Module R M] [Module R N] [Module R P] (f : M →ₗ[R] N →ₗ[R] P) (a b : M) (c : N) :
     f (a + b) c = f a c + f b c := by
@@ -28,6 +31,9 @@ theorem linearMap_apply_add_apply {R M N P : Type*} [CommRing R] [AddCommGroup M
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `ea` using `gsRootsComparison_compactCupRes S ιs n ((gsRootsComparisonIso S ιs n hnS 2).inv.hom ((gsKummerCompactδ S ιs n hnS 1).hom h)) x`. Establish `ea' : (gsRootsComparison S ιs n 2).hom ((gsRootsComparisonIso S ιs n hnS 2).inv.hom ((gsKummerCompactδ S ιs n hnS 1).hom h)) = (gsKummerCompactδ S ιs n hnS 1).hom h` using `hom_apply_hom_apply_of_comp_eq (gsRootsComparisonIso S ιs n hnS 2).inv_hom_id _`. Establish `eb` using `compactCohomologyMap_compactCup (gsFinFamily S ιs) (A := gsRoots S n) (B := zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) (C := gsRoots S n) (C' := galSUnitsMax K.1 ℚ̄ S) (Aᵥ := fun v => galRootsOfUnity.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosur …`. Conclude with `(congrArg (gsRootsToUnitsCompact S ιs n 3).hom (ea.trans (congrArg (fun w => compactCup (gsFinFamily S ιs) (gsZmodPairing S n) (gsZmodPairingᵥ S ιs n) (gsZmodPairing_hμ S ιs n) (show 2 + 1 = 3 from rfl) w x) ea'))).trans eb`.
+-/
 theorem gsRootsToUnitsCompact_comparison_cup (h : gsUnitsCompact S ιs 1)
     (x : cohomology (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) :
     (gsRootsToUnitsCompact S ιs n 3).hom ((gsRootsComparison S ιs n 3).hom
@@ -57,6 +63,11 @@ theorem gsRootsToUnitsCompact_comparison_cup (h : gsUnitsCompact S ιs 1)
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `ex` using `exists_gsUnitsData_cup_bock S ιs n ℓ k hℓ hnk hS (Additive.toMul d.1) z`. Use `⟨ex.choose, ex.choose_spec.1, ?_⟩` and prove the remaining obligations. Establish `hd : gsUnitsData S ιs d = gsUnitsData S ιs (Additive.ofMul (Additive.toMul d.1), 0) + gsUnitsData S ιs (0, d.2)` using `(congrArg (gsUnitsData S ιs) (Prod.ext (add_zero _).symm (zero_add _).symm)).trans (map_add _ _ _)`. Establish `eloc` using `compactCup_localToCompact (gsFinFamily S ιs) (gsPairingU S) (fun v => mulIntRight (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)))) (gsPairingU_hμ S ιs) …`. Use `(gsRootsToUnitsCompact_comparison_cup S ιs n hnS (gsUnitsData S ιs d) (cohomologyπ _ 1 z)).trans ((gsKummerCompactδ_cup S ιs n hnS (gsUnitsData S ιs d) (cohomologyπ _ 1 z)).trans ?_)` and prove the remaining obligations.
+
+Use `(congrArg (fun w => compactCup (gsFinFamily S ιs) (gsPairingU S) (fun v => mulIntRight (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)))) (gsPairingU_hμ S …` and prove the remaining obligations. Use `(congrArg₂ (· + ·) ex.choose_spec.2 ((congrArg (fun w => compactCup (gsFinFamily S ιs) (gsPairingU S) (fun v => mulIntRight (gsFinFamily S ιs v).toMonoidHom (galUnits.{0, 0} ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).ad …` and prove the remaining obligations. Conclude with `(map_add _ _ _).symm`.
+-/
 theorem gsRootsToUnitsCompact_cup_eq (ℓ k : ℕ) (hℓ : ℓ.Prime) (hnk : n = ℓ ^ k)
     (hS : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
     (d : GsUnitsDatum S) (z : cocycles (zmodRep.{0} (galUnramifiedOutside K.1 ℚ̄ S) n) 1) :
@@ -106,6 +117,9 @@ section Idele
 variable [Fintype S] (hodd : Odd n ∨ IsTotallyComplex K.1)
 
 omit [NeZero n] in
+/- English proof (translation)
+Reduce the equality to equality of the corresponding arguments. Conclude with `Subsingleton.elim _ _`.
+-/
 theorem prod_ofFinite_eq {M : Type*} [CommMonoid M] (f : S → M) :
     (letI := Fintype.ofFinite S; ∏ w : S, f w) = ∏ w : S, f w := by
   congr
@@ -113,6 +127,9 @@ theorem prod_ofFinite_eq {M : Type*} [CommMonoid M] (f : S → M) :
 
 omit [NeZero n] in
 
+/- English proof (translation)
+Rewrite using `[sPresentation_apply, toAdd_one, map_zero, toMul_zero, mul_one, placesIdele_apply, map_prod]`. Conclude with `prod_ofFinite_eq S _`.
+-/
 theorem sPresentation_fst (a : ∀ w : S, ((w : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1)ˣ) :
     sPresentation S (a, 1) = ∏ w : S, SIdeleClassGroup.mk S (finiteEmbedding (w : HeightOneSpectrum (𝓞 K.1)) (a w)) := by
   rw [sPresentation_apply, toAdd_one, map_zero, toMul_zero, mul_one, placesIdele_apply, map_prod]
@@ -120,6 +137,11 @@ theorem sPresentation_fst (a : ∀ w : S, ((w : HeightOneSpectrum (𝓞 K.1)).ad
 
 set_option maxHeartbeats 1600000 in
 
+/- English proof (translation)
+Establish `e1 : Additive.toMul (gsUnitsClass S d) = sPresentation S (fun w => Additive.toMul (d.2 w), 1) * sPresentation S (1, Multiplicative.ofAdd (-divAbove S d.1))` using `(congrArg Additive.toMul (gsUnitsClass_apply S d)).trans ((congrArg (sPresentation S) (Prod.ext (mul_one _).symm (one_mul _).symm)).trans (map_mul _ _ _))`. Use `set ψ := charEquiv ℚ̄ (Set.toFinite S) hodd χ with hψ`. Establish `e2 : ψ (Additive.toMul (gsUnitsClass S d)) = (∏ w : S, ψ (SIdeleClassGroup.mk S (finiteEmbedding (w : HeightOneSpectrum (𝓞 K.1)) (Additive.toMul (d.2 w))))) * ψ (sPresentation S (1, Multiplicative.ofAdd (-divAbove S d.1)))` using `(congrArg ψ e1).trans ((map_mul ψ _ _).trans (congrArg (· * _) ((congrArg ψ (sPresentation_fst S _)).trans (map_prod ψ _ _))))`. Establish `e3 : zmodToQZ n (Multiplicative.toAdd (ψ (sPresentation S (1, Multiplicative.ofAdd (-divAbove S d.1))))) = -divChar S hodd χ (divAbove S d.1)` using `(divChar_apply S hodd χ (-divAbove S d.1)).symm.trans (map_neg _ _)`. Establish `e4 : zmodToQZ n (Multiplicative.toAdd (∏ w : S, ψ (SIdeleClassGroup.mk S (finiteEmbedding (w : HeightOneSpectrum (𝓞 K.1)) (Additive.toMul (d.2 w)))))) = ∑ w : S, zmodToQZ n (Multiplicative.toAdd (ψ (SIdeleClassGroup.mk S (finiteEmbedding (w : HeightOneSpectrum (𝓞 K.1)) (Additive. …` using `(congrArg (zmodToQZ n) (toAdd_prod _ _)).trans (map_sum (zmodToQZ n) _ _)`.
+
+Conclude with `(congrArg (fun u => zmodToQZ n (Multiplicative.toAdd u)) e2).trans ((congrArg (zmodToQZ n) (toAdd_mul _ _)).trans ((map_add (zmodToQZ n) _ _).trans ((congrArg₂ (· + ·) e4 e3).trans (sub_eq_add_neg _ _).symm)))`.
+-/
 theorem zmodToQZ_charEquiv_gsUnitsClass
     (χ : ContinuousMonoidHom (galUnramifiedOutside K.1 ℚ̄ S) (Multiplicative (ZMod n))) (d : GsUnitsDatum S) :
     zmodToQZ n (Multiplicative.toAdd (charEquiv ℚ̄ (Set.toFinite S) hodd χ (Additive.toMul (gsUnitsClass S d)))) =

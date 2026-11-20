@@ -54,6 +54,9 @@ structure PenFrame (y : (Σ k, ι k) → Φ) (k₀ : K) (B : ι k₀ → Φ) (cf
   hs : HasVal y z (cf * ε * γ / chartMono y c e) sv
   sv_ne : sv ≠ 0
 
+/- English proof (translation)
+Establish `h0 : mConeMap y f = 0` using `hf`. Establish `e : (eval fun _ : K => (1 : Φ)).comp (mConeMap y).toRingHom = (aeval y : MRing ι →ₐ[ℤ] Φ).toRingHom` using `MvPolynomial.ringHom_ext (fun r => by simp) fun p => by simp [mConeMap]`. Use `RingHom.congr_fun e f` as an intermediate fact. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h0, map_zero] at this`. Conclude with `this.symm`.
+-/
 theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Φ} {f : MRing ι} (hf : f ∈ mCoordIdeal y) : aeval y f = 0 := by
   have h0 : mConeMap y f = 0 := hf
   have e : (eval fun _ : K => (1 : Φ)).comp (mConeMap y).toRingHom = (aeval y : MRing ι →ₐ[ℤ] Φ).toRingHom :=
@@ -62,10 +65,18 @@ theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Φ} {f : MRing ι} (hf : f �
   simp only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h0, map_zero] at this
   exact this.symm
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨aeval_eq_zero_of_mem, mem_mCoordIdeal_of_aeval_eq_zero y hf⟩`.
+-/
 theorem mem_iff_of_homog {y : (Σ k, ι k) → Φ} {f : MRing ι} {d : K → ℕ} (hf : IsMultiHomog f d) :
     f ∈ mCoordIdeal y ↔ aeval y f = 0 :=
   ⟨aeval_eq_zero_of_mem, mem_mCoordIdeal_of_aeval_eq_zero y hf⟩
 
+/- English proof (translation)
+Take `⟨S, hS, e⟩` from `CoordinateConeArithVar.isMultiHomogIdeal y`. Establish `hS' : ∀ f ∈ S, f ∈ mCoordIdeal y` using `fun f hf => by rw [e]; exact Ideal.subset_span hf`. Rewrite using `[e, Ideal.span_le]`. Introduce `f hf`. Take `⟨a, ha⟩` from `hS f hf`.
+
+Conclude with `h f a ha (aeval_eq_zero_of_mem (hS' f hf))`.
+-/
 theorem mCoordIdeal_le_of_homog {y : (Σ k, ι k) → Φ} {J : Ideal (MRing ι)}
     (h : ∀ f d, IsMultiHomog f d → aeval y f = 0 → f ∈ J) : mCoordIdeal y ≤ J := by
   obtain ⟨S, hS, e⟩ := CoordinateConeArithVar.isMultiHomogIdeal y
@@ -75,23 +86,41 @@ theorem mCoordIdeal_le_of_homog {y : (Σ k, ι k) → Φ} {J : Ideal (MRing ι)}
   obtain ⟨a, ha⟩ := hS f hf
   exact h f a ha (aeval_eq_zero_of_mem (hS' f hf))
 
+/- English proof (translation)
+The claim follows from `mCoordIdeal_le_of_homog fun f _ hf h0 => (mem_iff_of_homog hf).2 (hz.2 f ((mem_iff_of_homog hf).2 h0))`.
+-/
 theorem IsPt.le {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : IsPt y z) : mCoordIdeal y ≤ mCoordIdeal z :=
   mCoordIdeal_le_of_homog fun f _ hf h0 => (mem_iff_of_homog hf).2 (hz.2 f ((mem_iff_of_homog hf).2 h0))
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h0, fun _ hf => (RingHom.mem_ker).1 (mCoordIdeal_le_of_homog (J := RingHom.ker (aeval z : MRing ι →ₐ[ℤ] L)) (fun f d hd h1 => (RingHom.mem_ker).2 (h f d hd h1)) hf)⟩`.
+-/
 theorem isPt_of_homog {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (h0 : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (h : ∀ (f : MRing ι) d, IsMultiHomog f d → aeval y f = 0 → aeval z f = 0) : IsPt y z :=
   ⟨h0, fun _ hf => (RingHom.mem_ker).1 (mCoordIdeal_le_of_homog
     (J := RingHom.ker (aeval z : MRing ι →ₐ[ℤ] L)) (fun f d hd h1 => (RingHom.mem_ker).2 (h f d hd h1)) hf)⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨h0, fun _ hf => aeval_eq_zero_of_mem hf⟩`.
+-/
 theorem isPt_self {y : (Σ k, ι k) → Φ} (h0 : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) : IsPt y y :=
   ⟨h0, fun _ hf => aeval_eq_zero_of_mem hf⟩
 
+/- English proof (translation)
+Introduce `e` and use `h0 (hz.2 h ((mem_iff_of_homog hh).2 e))`.
+-/
 theorem IsPt.aeval_ne {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : IsPt y z) {h : MRing ι} {d : K → ℕ}
     (hh : IsMultiHomog h d) (h0 : aeval z h ≠ 0) : aeval y h ≠ 0 := fun e => h0 (hz.2 h ((mem_iff_of_homog hh).2 e))
 
+/- English proof (translation)
+The claim follows from `isMultiHomog_X_single p`.
+-/
 theorem isMultiHomog_X (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι) (fun k => if k = p.1 then 1 else 0) :=
   isMultiHomog_X_single p
 
+/- English proof (translation)
+Use `hz.aeval_ne (isMultiHomog_X q) (by rwa [aeval_X])` as an intermediate fact. Rewrite `this` using `[aeval_X]`. Then use the resulting hypothesis.
+-/
 theorem IsPt.coord_ne {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : IsPt y z) {q : Σ k, ι k} (h : z q ≠ 0) :
     y q ≠ 0 := by
   have := hz.aeval_ne (isMultiHomog_X q) (by rwa [aeval_X])
@@ -99,6 +128,11 @@ theorem IsPt.coord_ne {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L} (hz : I
 
 variable {y : (Σ k, ι k) → Φ} {z : (Σ k, ι k) → L}
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e, ev⟩` from `hv`. Take `⟨d', g', h', hg', hh', h0', e', ev'⟩` from `hw`. Establish `hsub : IsMultiHomog (g * h' - g' * h) (d + d')`. Use `isMultiHomog_sub (isMultiHomog_mul hg hh') ?_` and prove the remaining obligations. Rewrite using `[add_comm]`.
+
+Conclude with `isMultiHomog_mul hg' hh`. Establish `h1` using `hz.2 _ ((mem_iff_of_homog hsub).2 (by rw [map_sub, map_mul, map_mul, e, e']; ring))`. Rewrite `h1` using `[map_sub, map_mul, map_mul, ev, ev']`. Establish `h2 : (v - w) * (aeval z h * aeval z h') = 0` using `by linear_combination h1`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right (mul_ne_zero h0 h0'))`.
+-/
 theorem HasVal.unique (hz : IsPt y z) {s : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z s w) : v = w := by
   obtain ⟨d, g, h, hg, hh, h0, e, ev⟩ := hv
   obtain ⟨d', g', h', hg', hh', h0', e', ev'⟩ := hw
@@ -111,6 +145,11 @@ theorem HasVal.unique (hz : IsPt y z) {s : Φ} {v w : L} (hv : HasVal y z s v) (
   have h2 : (v - w) * (aeval z h * aeval z h') = 0 := by linear_combination h1
   exact sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right (mul_ne_zero h0 h0'))
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e, ev⟩` from `hv`. Take `⟨d', g', h', hg', hh', h0', e', ev'⟩` from `hw`. Use `⟨d + d', g * g', h * h', isMultiHomog_mul hg hg', isMultiHomog_mul hh hh', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero h0 h0'`.
+
+Rewrite using `[map_mul, map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul, ev, ev']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasVal.mul {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t w) : HasVal y z (s * t) (v * w) := by
   obtain ⟨d, g, h, hg, hh, h0, e, ev⟩ := hv
   obtain ⟨d', g', h', hg', hh', h0', e', ev'⟩ := hw
@@ -119,6 +158,13 @@ theorem HasVal.mul {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t
   · rw [map_mul, map_mul, e, e']; ring
   · rw [map_mul, map_mul, ev, ev']; ring
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e, ev⟩` from `hv`. Take `⟨d', g', h', hg', hh', h0', e', ev'⟩` from `hw`. Use `⟨d + d', g * h' + g' * h, h * h', isMultiHomog_add (isMultiHomog_mul hg hh') ?_, isMultiHomog_mul hh hh', ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `isMultiHomog_mul hg' hh`.
+
+Rewrite using `[map_mul]`. Conclude with `mul_ne_zero h0 h0'`. Rewrite using `[map_add, map_mul, map_mul, map_mul, e, e']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, map_mul, map_mul, map_mul, ev, ev']`.
+
+Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem HasVal.add {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t w) : HasVal y z (s + t) (v + w) := by
   obtain ⟨d, g, h, hg, hh, h0, e, ev⟩ := hv
   obtain ⟨d', g', h', hg', hh', h0', e', ev'⟩ := hw
@@ -129,23 +175,44 @@ theorem HasVal.add {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t
   · rw [map_add, map_mul, map_mul, map_mul, e, e']; ring
   · rw [map_add, map_mul, map_mul, map_mul, ev, ev']; ring
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp⟩`.
+-/
 theorem hasVal_intCast (n : ℤ) : HasVal y z (n : Φ) (n : L) :=
   ⟨0, C n, 1, isMultiHomog_C_zero n, isMultiHomog_one, by simp, by simp, by simp⟩
 
+/- English proof (translation)
+Simplify using `using hasVal_intCast (y := y) (z := z) 0`.
+-/
 theorem hasVal_zero : HasVal y z 0 0 := by simpa using hasVal_intCast (y := y) (z := z) 0
 
+/- English proof (translation)
+Simplify using `using hasVal_intCast (y := y) (z := z) 1`.
+-/
 theorem hasVal_one : HasVal y z 1 1 := by simpa using hasVal_intCast (y := y) (z := z) 1
 
+/- English proof (translation)
+Simplify using `using (hasVal_intCast (y := y) (z := z) (-1)).mul hv`.
+-/
 theorem HasVal.neg {s : Φ} {v : L} (hv : HasVal y z s v) : HasVal y z (-s) (-v) := by
   simpa using (hasVal_intCast (y := y) (z := z) (-1)).mul hv
 
+/- English proof (translation)
+Simplify `hv.add hw.neg` using `[sub_eq_add_neg]`.
+-/
 theorem HasVal.sub {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t w) : HasVal y z (s - t) (v - w) := by
   simpa [sub_eq_add_neg] using hv.add hw.neg
 
+/- English proof (translation)
+Introduce and unpack `rfl`. Conclude with `h0 (hv.unique hz hasVal_zero)`.
+-/
 theorem HasVal.ne_zero (hz : IsPt y z) {s : Φ} {v : L} (hv : HasVal y z s v) (h0 : v ≠ 0) : s ≠ 0 := by
   rintro rfl
   exact h0 (hv.unique hz hasVal_zero)
 
+/- English proof (translation)
+Establish `hs` using `hv.ne_zero hz hv0`. Take `⟨d, g, h, hg, hh, h0, e, ev⟩` from `hv`. Use `⟨d, h, g, hh, hg, by rw [ev]; exact mul_ne_zero hv0 h0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, inv_mul_cancel_left₀ hs]`. Rewrite using `[ev, inv_mul_cancel_left₀ hv0]`.
+-/
 theorem HasVal.inv (hz : IsPt y z) {s : Φ} {v : L} (hv : HasVal y z s v) (hv0 : v ≠ 0) : HasVal y z s⁻¹ v⁻¹ := by
   have hs := hv.ne_zero hz hv0
   obtain ⟨d, g, h, hg, hh, h0, e, ev⟩ := hv
@@ -153,10 +220,16 @@ theorem HasVal.inv (hz : IsPt y z) {s : Φ} {v : L} (hv : HasVal y z s v) (hv0 :
   · rw [e, inv_mul_cancel_left₀ hs]
   · rw [ev, inv_mul_cancel_left₀ hv0]
 
+/- English proof (translation)
+Simplify `hv.mul (hw.inv hz hw0)` using `[div_eq_mul_inv]`.
+-/
 theorem HasVal.div (hz : IsPt y z) {s t : Φ} {v w : L} (hv : HasVal y z s v) (hw : HasVal y z t w) (hw0 : w ≠ 0) :
     HasVal y z (s / t) (v / w) := by
   simpa [div_eq_mul_inv] using hv.mul (hw.inv hz hw0)
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hasVal_zero`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem HasVal.sum {σ : Type} (S : Finset σ) {s : σ → Φ} {v : σ → L} (h : ∀ a ∈ S, HasVal y z (s a) (v a)) :
     HasVal y z (∑ a ∈ S, s a) (∑ a ∈ S, v a) := by
   induction S using Finset.induction_on with
@@ -165,6 +238,9 @@ theorem HasVal.sum {σ : Type} (S : Finset σ) {s : σ → Φ} {v : σ → L} (h
     rw [Finset.sum_insert ha, Finset.sum_insert ha]
     exact (h a (Finset.mem_insert_self _ _)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hasVal_one`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self _ _)).mul (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+-/
 theorem HasVal.prod {σ : Type} (S : Finset σ) {s : σ → Φ} {v : σ → L} (h : ∀ a ∈ S, HasVal y z (s a) (v a)) :
     HasVal y z (∏ a ∈ S, s a) (∏ a ∈ S, v a) := by
   induction S using Finset.induction_on with
@@ -173,27 +249,45 @@ theorem HasVal.prod {σ : Type} (S : Finset σ) {s : σ → Φ} {v : σ → L} (
     rw [Finset.prod_insert ha, Finset.prod_insert ha]
     exact (h a (Finset.mem_insert_self _ _)).mul (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
+/- English proof (translation)
+Simplify using `using HasVal.prod (Finset.range n) (s := fun _ => s) (v := fun _ => v) fun _ _ => hv`.
+-/
 theorem HasVal.pow {s : Φ} {v : L} (hv : HasVal y z s v) (n : ℕ) : HasVal y z (s ^ n) (v ^ n) := by
   simpa using HasVal.prod (Finset.range n) (s := fun _ => s) (v := fun _ => v) fun _ _ => hv
 
+/- English proof (translation)
+Consider the cases of `n with`. Consider the case `ofNat n => simpa using hv.pow n`. Consider the case `negSucc n => simpa using (hv.pow (n + 1)).inv hz (pow_ne_zero _ h0)`.
+-/
 theorem HasVal.zpow (hz : IsPt y z) {s : Φ} {v : L} (hv : HasVal y z s v) (h0 : v ≠ 0) (n : ℤ) :
     HasVal y z (s ^ n) (v ^ n) := by
   cases n with
   | ofNat n => simpa using hv.pow n
   | negSucc n => simpa using (hv.pow (n + 1)).inv hz (pow_ne_zero _ h0)
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨d, g, h, hg, hh, h0, (div_mul_cancel₀ _ (hz.aeval_ne hh h0)).symm, (div_mul_cancel₀ _ h0).symm⟩`.
+-/
 theorem hasVal_form (hz : IsPt y z) {g h : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (hh : IsMultiHomog h d)
     (h0 : aeval z h ≠ 0) : HasVal y z (aeval y g / aeval y h) (aeval z g / aeval z h) :=
   ⟨d, g, h, hg, hh, h0, (div_mul_cancel₀ _ (hz.aeval_ne hh h0)).symm, (div_mul_cancel₀ _ h0).symm⟩
 
+/- English proof (translation)
+Simplify using `using hasVal_form hz (isMultiHomog_X ⟨k, m⟩) (isMultiHomog_X ⟨k, c⟩) (by rwa [aeval_X])`.
+-/
 theorem hasVal_ratio (hz : IsPt y z) {k : K} (m c : ι k) (hc : z ⟨k, c⟩ ≠ 0) :
     HasVal y z (y ⟨k, m⟩ / y ⟨k, c⟩) (z ⟨k, m⟩ / z ⟨k, c⟩) := by
   simpa using hasVal_form hz (isMultiHomog_X ⟨k, m⟩) (isMultiHomog_X ⟨k, c⟩) (by rwa [aeval_X])
 
+/- English proof (translation)
+Take `⟨d, g, h, -, -, h1, e, ev⟩` from `h`. Conclude with `mul_right_cancel₀ h1 (ev.symm.trans e)`.
+-/
 theorem hasVal_self_eq {s v : Φ} (h : HasVal y y s v) : v = s := by
   obtain ⟨d, g, h, -, -, h1, e, ev⟩ := h
   exact mul_right_cancel₀ h1 (ev.symm.trans e)
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hn, e⟩` from `hs`. Establish `h0 : aeval z h ≠ 0` using `fun e => hn ((mem_iff_of_homog hh).2 e)`. Conclude with `⟨aeval z g / aeval z h, d, g, h, hg, hh, h0, e, (div_mul_cancel₀ _ h0).symm⟩`.
+-/
 theorem exists_hasVal_of_regAt {s : Φ} (hs : RegAt y (mCoordIdeal z) s) : ∃ v, HasVal y z s v := by
   obtain ⟨d, g, h, hg, hh, hn, e⟩ := hs
   have h0 : aeval z h ≠ 0 := fun e => hn ((mem_iff_of_homog hh).2 e)
@@ -207,6 +301,9 @@ def regO (y : (Σ k, ι k) → Φ) (z : (Σ k, ι k) → L) : Subring Φ where
   zero_mem' := ⟨_, hasVal_zero⟩
   neg_mem' := fun ⟨_, h⟩ => ⟨_, h.neg⟩
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_regO {s : Φ} : s ∈ regO y z ↔ ∃ v, HasVal y z s v := Iff.rfl
 
 def valO (hz : IsPt y z) : regO y z →+* L where
@@ -216,21 +313,36 @@ def valO (hz : IsPt y z) : regO y z →+* L where
   map_zero' := (Exists.choose_spec (0 : regO y z).2).unique hz hasVal_zero
   map_add' s t := (Exists.choose_spec (s + t).2).unique hz (s.2.choose_spec.add t.2.choose_spec)
 
+/- English proof (translation)
+The claim follows from `s.2.choose_spec`.
+-/
 theorem hasVal_valO (hz : IsPt y z) (s : regO y z) : HasVal y z s (valO hz s) := s.2.choose_spec
 
+/- English proof (translation)
+The claim follows from `(hasVal_valO hz s).unique hz h`.
+-/
 theorem valO_eq (hz : IsPt y z) (s : regO y z) {v : L} (h : HasVal y z s v) : valO hz s = v :=
   (hasVal_valO hz s).unique hz h
 
+/- English proof (translation)
+The claim follows from `IsUnit.of_mul_eq_one ⟨(s : Φ)⁻¹, _, (hasVal_valO hz s).inv hz h⟩ (Subtype.ext (mul_inv_cancel₀ ((hasVal_valO hz s).ne_zero hz h)))`.
+-/
 theorem isUnit_of_valO (hz : IsPt y z) (s : regO y z) (h : valO hz s ≠ 0) : IsUnit s :=
   IsUnit.of_mul_eq_one ⟨(s : Φ)⁻¹, _, (hasVal_valO hz s).inv hz h⟩
     (Subtype.ext (mul_inv_cancel₀ ((hasVal_valO hz s).ne_zero hz h)))
 
+/- English proof (translation)
+Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun s => ?_` and prove the remaining obligations. Distinguish the cases in `h : valO hz s = 0`. Conclude with `Or.inr (isUnit_of_valO hz _ (by rw [map_sub, map_one, h, sub_zero]; exact one_ne_zero))`. Conclude with `Or.inl (isUnit_of_valO hz _ h)`.
+-/
 theorem isLocalRing_regO (hz : IsPt y z) : IsLocalRing (regO y z) := by
   refine IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun s => ?_
   by_cases h : valO hz s = 0
   · exact Or.inr (isUnit_of_valO hz _ (by rw [map_sub, map_one, h, sub_zero]; exact one_ne_zero))
   · exact Or.inl (isUnit_of_valO hz _ h)
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, h0, e, ev⟩` from `h`. Use `⟨_, rename v g, rename v h, CPts.isMultiHomog_rename_block hb hg, CPts.isMultiHomog_rename_block hb hh, by rwa [aeval_rename], ?_, by rwa [aeval_rename, aeval_rename]⟩` and prove the remaining obligations. Rewrite using `[aeval_rename, aeval_rename, hy, CPts.aeval_comp_ringHom, CPts.aeval_comp_ringHom, e, map_mul]`.
+-/
 theorem HasVal.pull {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Φ' : Type} [Field Φ']
     {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hb : IsBlockMap κ v) (φ : Φ →+* Φ') {y' : (Σ k, ι' k) → Φ'}
     (hy : y' ∘ v = φ ∘ y) {z' : (Σ k, ι' k) → L} {s : Φ} {w : L} (h : HasVal y (z' ∘ v) s w) :
@@ -240,6 +352,11 @@ theorem HasVal.pull {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype
     by rwa [aeval_rename], ?_, by rwa [aeval_rename, aeval_rename]⟩
   rw [aeval_rename, aeval_rename, hy, CPts.aeval_comp_ringHom, CPts.aeval_comp_ringHom, e, map_mul]
 
+/- English proof (translation)
+Use `isPt_of_homog (fun k => ?_) fun f d hf h0 => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 (κ k)`. Take `⟨⟨k', i'⟩, e⟩` from `hb.2.2.2 ⟨κ k, i⟩ ⟨k, rfl⟩`. Establish `: k' = k` using `hb.1 (by have := hb.2.2.1 ⟨k', i'⟩; rw [e] at this; exact this.symm)`. Substitute `this` using the available equality.
+
+Conclude with `⟨i', by show z' (v _) ≠ 0; rwa [e]⟩`. Rewrite using `[← aeval_rename]`. Use `hz.2 _ ((mem_iff_of_homog (CPts.isMultiHomog_rename_block hb hf)).2 ?_)` and prove the remaining obligations. Rewrite using `[aeval_rename, hy, CPts.aeval_comp_ringHom, h0, map_zero]`.
+-/
 theorem IsPt.comp {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Φ' : Type} [Field Φ']
     {κ : K → K'} {v : (Σ k, ι k) → Σ k, ι' k} (hb : IsBlockMap κ v) (φ : Φ →+* Φ') {y' : (Σ k, ι' k) → Φ'}
     (hy : y' ∘ v = φ ∘ y) {z' : (Σ k, ι' k) → L} (hz : IsPt y' z') : IsPt y (z' ∘ v) := by
@@ -253,12 +370,21 @@ theorem IsPt.comp {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (
     refine hz.2 _ ((mem_iff_of_homog (CPts.isMultiHomog_rename_block hb hf)).2 ?_)
     rw [aeval_rename, hy, CPts.aeval_comp_ringHom, h0, map_zero]
 
+/- English proof (translation)
+Rewrite using `[eval_map, aeval_def]`. Both sides reduce to the same expression.
+-/
 theorem eval_map_eq_aeval (z : (Σ k, ι k) → ℂ) (f : MRing ι) : eval z (map (Int.castRingHom ℂ) f) = aeval z f := by
   rw [eval_map, aeval_def]; rfl
 
+/- English proof (translation)
+Simplify using `only [IsPt, mcPts, Set.mem_setOf_eq, eval_map_eq_aeval]`.
+-/
 theorem isPt_iff_mem_mcPts {z : (Σ k, ι k) → ℂ} : IsPt y z ↔ z ∈ mcPts (mCoordIdeal y) := by
   simp only [IsPt, mcPts, Set.mem_setOf_eq, eval_map_eq_aeval]
 
+/- English proof (translation)
+Take `⟨v, d, g, h, hg, hh, h0, e, ev⟩` from `exists_hasVal_of_regAt hs`. Establish `: IsValueAt y s z v` using `⟨d, g, h, hg, hh, hz.aeval_ne hh h0, e, by rwa [eval_map_eq_aeval], by`. Rewrite using `[eval_map_eq_aeval, eval_map_eq_aeval, ev, mul_div_cancel_right₀ _ h0]⟩`. Rewrite using `[valAt_eq (isPt_iff_mem_mcPts.1 hz) this]`. Conclude with `⟨d, g, h, hg, hh, h0, e, ev⟩`.
+-/
 theorem hasVal_valAt {z : (Σ k, ι k) → ℂ} (hz : IsPt y z) {s : Φ} (hs : RegAt y (mCoordIdeal z) s) :
     HasVal y z s (valAt y s z) := by
   obtain ⟨v, d, g, h, hg, hh, h0, e, ev⟩ := exists_hasVal_of_regAt hs

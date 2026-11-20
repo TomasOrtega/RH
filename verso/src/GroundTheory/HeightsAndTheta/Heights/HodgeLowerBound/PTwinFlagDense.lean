@@ -21,6 +21,9 @@ section Generic
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
   {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
+/- English proof (translation)
+Establish `h0 : mConeMap y g = 0` using `hm`. Rewrite `h0` using `[mConeMap_of_isMultiHomog y hg]`. Establish `hX : (∏ k, (MvPolynomial.X k : MvPolynomial K Ω) ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)`. Conclude with `C_eq_zero.1 ((mul_eq_zero.1 h0).resolve_right hX)`.
+-/
 theorem aeval_eq_zero_of_mem {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (hm : g ∈ mCoordIdeal y) :
     aeval y g = 0 := by
   have h0 : mConeMap y g = 0 := hm
@@ -29,6 +32,11 @@ theorem aeval_eq_zero_of_mem {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g
     Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (X_ne_zero k)
   exact C_eq_zero.1 ((mul_eq_zero.1 h0).resolve_right hX)
 
+/- English proof (translation)
+Take `⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩` from `hv`. Introduce `h0`. Establish `hgz : eval z (map (Int.castRingHom ℂ) g) = 0` using `(div_eq_zero_iff.1 h0).resolve_right hz0`. Establish `hgy` using `aeval_eq_zero_of_mem hg (hgen g hgz)`. Rewrite `hgy` using `[heq]`.
+
+Conclude with `mul_ne_zero hs hy hgy`.
+-/
 theorem isValueAt_ne_zero (hgen : ∀ f : MRing ι, eval z (map (Int.castRingHom ℂ) f) = 0 → f ∈ mCoordIdeal y)
     {s : Ω} {v : ℂ} (hv : IsValueAt y s z v) (hs : s ≠ 0) : v ≠ 0 := by
   obtain ⟨d, g, h, hg, hh, hy, heq, hz0, rfl⟩ := hv
@@ -38,12 +46,20 @@ theorem isValueAt_ne_zero (hgen : ∀ f : MRing ι, eval z (map (Int.castRingHom
   rw [heq] at hgy
   exact mul_ne_zero hs hy hgy
 
+/- English proof (translation)
+Take `⟨v, hv⟩` from `exists_isValueAt_of_mem_chartRing hyc hz hr`. Conclude with `⟨v, hv, isValueAt_ne_zero hgen hv hr0⟩`.
+-/
 theorem isUnitAt_of_mem_chartRing (hgen : ∀ f : MRing ι, eval z (map (Int.castRingHom ℂ) f) = 0 → f ∈ mCoordIdeal y)
     {c : (k : K) → ι k} (hyc : segreCoord y c ≠ 0) (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) {r : Ω}
     (hr : r ∈ chartRing ℤ (segreCoord y) c) (hr0 : r ≠ 0) : IsUnitAt y r z := by
   obtain ⟨v, hv⟩ := exists_isValueAt_of_mem_chartRing hyc hz hr
   exact ⟨v, hv, isValueAt_ne_zero hgen hv hr0⟩
 
+/- English proof (translation)
+Use `choose c hc using hz.1`. Use `⟨c, Finset.prod_ne_zero_iff.2 fun k _ => ?_, hc⟩` and prove the remaining obligations. Introduce `h0`. Establish `hm` using `mem_mCoordIdeal_of_aeval_eq_zero y (isMultiHomog_X_single (ι := ι) ⟨k, c k⟩) (by simpa using h0)`. Use `hz.2 _ hm` as an intermediate fact.
+
+Simplify using `only [map_X, eval_X] at this`. Conclude with `hc k this`.
+-/
 theorem exists_chart (hz : z ∈ mcPts (mCoordIdeal y)) :
     ∃ c : (k : K) → ι k, segreCoord y c ≠ 0 ∧ ∀ k, z ⟨k, c k⟩ ≠ 0 := by
   classical
@@ -55,6 +71,9 @@ theorem exists_chart (hz : z ∈ mcPts (mCoordIdeal y)) :
   simp only [map_X, eval_X] at this
   exact hc k this
 
+/- English proof (translation)
+Use `⟨_, X p, X ⟨p.1, c p.1⟩, isMultiHomog_X_single p, isMultiHomog_X_single (ι := ι) ⟨p.1, c p.1⟩, by simpa using hy, ?_, by simpa using hz, by simp⟩` and prove the remaining obligations. Simplify using `only [aeval_X]`. Clear the denominators using the available nonvanishing facts.
+-/
 theorem isValueAt_coord {p : Σ k, ι k} {c : (k : K) → ι k} (hy : y ⟨p.1, c p.1⟩ ≠ 0)
     (hz : z ⟨p.1, c p.1⟩ ≠ 0) : IsValueAt y ((y ⟨p.1, c p.1⟩)⁻¹ * y p) z (z p / z ⟨p.1, c p.1⟩) := by
   classical
@@ -72,6 +91,11 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Take `⟨m, f, cc, hf, -, hsum, hb⟩` from `W.frame c hyc`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, f l ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Simplify using `[hne] at hsum`.
+
+Take `⟨b, hli, -, hiff⟩` from `hb l`. Conclude with `⟨f l, b, hyc, hf l, hl, hli, hiff⟩`.
+-/
 theorem exists_isFrameOver (W : ChartBundle ℤ (segreCoord y) N E) (c : (k : K) → ι k)
     (hyc : segreCoord y c ≠ 0) : ∃ (f : Ω) (b : Fin N → E), IsFrameOver y W c f b := by
   obtain ⟨m, f, cc, hf, -, hsum, hb⟩ := W.frame c hyc
@@ -84,6 +108,11 @@ theorem exists_isFrameOver (W : ChartBundle ℤ (segreCoord y) N E) (c : (k : K)
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Use `(hfr.2.2.2.2 (b p)).2 ⟨Pi.single p 1, fun q => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`. Break down `eq_or_ne q p with rfl | hq` into its components or cases. Rewrite using `[Pi.single_eq_same]`. Conclude with `Subalgebra.one_mem _`.
+
+Rewrite using `[Pi.single_eq_of_ne hq]`. Conclude with `Subalgebra.zero_mem _`. Simplify using `[Pi.single_apply, ite_smul]`.
+-/
 theorem exists_pow_smul_mem {c : (k : K) → ι k} {W : ChartBundle ℤ (segreCoord y) N E} {f : Ω}
     {b : Fin N → E} (hfr : IsFrameOver y W c f b) (p : Fin N) : ∃ n : ℕ, f ^ n • b p ∈ W.lat c := by
   classical
@@ -94,6 +123,11 @@ theorem exists_pow_smul_mem {c : (k : K) → ι k} {W : ChartBundle ℤ (segreCo
     · rw [Pi.single_eq_of_ne hq]; exact Subalgebra.zero_mem _
   · simp [Pi.single_apply, ite_smul]
 
+/- English proof (translation)
+Use `choose n hn using exists_pow_smul_mem hfr`. Establish `hmem` using `hφ (fun a => f ^ n (q a) • b (q a)) (fun a => hn (q a))`. Establish `e : φ (fun a => f ^ n (q a) • b (q a)) = f ^ (∑ a, n (q a)) * φ (b ∘ q)`. Rewrite using `[show (fun a => f ^ n (q a) • b (q a)) = fun a => f ^ n (q a) • (b ∘ q) a from rfl, AlternatingMap.map_smul_univ, smul_eq_mul, Finset.prod_pow_eq_pow_sum]`. Rewrite `hmem` using `[e, mul_assoc]`.
+
+Conclude with `exists_isValueAt_of_pow_mul_mem hzP hfr.1 hz hf hmem`.
+-/
 theorem exists_isValueAt_dualSec {c : (k : K) → ι k} {W : ChartBundle ℤ (segreCoord y) N E} {bt : K → ℤ}
     {r : ℕ} {φ : E [⋀^Fin r]→ₗ[Ω] Ω} (hφ : IndefiniteRowSideFullHecke.LowerBoundFree.IsDualSectionOver y W c bt φ) {f : Ω}
     {b : Fin N → E} (hfr : IsFrameOver y W c f b) (hzP : z ∈ mcPts (mCoordIdeal y))
@@ -109,6 +143,11 @@ theorem exists_isValueAt_dualSec {c : (k : K) → ι k} {W : ChartBundle ℤ (se
 
 end Frames
 
+/- English proof (translation)
+Set `g : Fin D.N × Fin D.N → GV D` to `fun ap => Sum.inr (τ, ap.1, ap.2)`. Establish `hg : Function.Injective g`. Introduce and unpack `⟨a, p⟩ ⟨a', p'⟩ he`. Simplify using `only [g, Sum.inr.injEq, Prod.mk.injEq] at he`. Rewrite using `[he.2.1, he.2.2]`.
+
+Establish `e : (Matrix.of fun a p => (X (Sum.inr (τ, a, p)) : MvPolynomial (GV D) ℂ)) = (rename g).toRingHom.mapMatrix (Matrix.mvPolynomialX (Fin D.N) (Fin D.N) ℂ)`. Use extensionality with `a p`. Simplify using `[g, Matrix.mvPolynomialX]`. Rewrite using `[e, ← RingHom.map_det]`. Conclude with `(map_ne_zero_iff _ (rename_injective g hg)).2 (Matrix.det_mvPolynomialX_ne_zero _ _)`.
+-/
 theorem det_gvar_ne_zero {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)]
     [∀ τ, Module Ω (E τ)] (D : ComponentData II Ψ K ι Ω E) (τ : Ψ) :
@@ -126,6 +165,43 @@ theorem det_gvar_ne_zero {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {K :
   rw [e, ← RingHom.map_det]
   exact (map_ne_zero_iff _ (rename_injective g hg)).2 (Matrix.det_mvPolynomialX_ne_zero _ _)
 
+/- English proof (translation)
+Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl P h`. Take `⟨z0, hz0, hgen⟩` from `h₄ (mCoordIdeal D.y) _ D.arith`. Take `⟨c, hyc, hzc⟩` from `exists_chart hz0`. Establish `hyk : ∀ k, D.y ⟨k, c k⟩ ≠ 0` using `fun k => by`. Use `hyc` as an intermediate fact.
+
+Simplify using `only [segreCoord] at this`. Conclude with `Finset.prod_ne_zero_iff.1 this k (Finset.mem_univ _)`. Use `choose f b hfr using fun τ => exists_isFrameOver (D.W τ) c hyc`. Establish `hfu : ∀ τ, IsUnitAt D.y (f τ) z0` using `fun τ => isUnitAt_of_mem_chartRing hgen hyc hzc (hfr τ).2.1 (hfr τ).2.2.1`. Establish `hV : ∀ τ (i : Fin D.N) (m : Fin (P.M τ i)) (q : Fin ((i : ℕ) + 1) → Fin D.N), ∃ v, IsValueAt D.y (P.gen τ i m (b τ ∘ q) * IndefiniteRowSideFullHecke.LowerBoundFree.twistFactor D.y c P.b) z0 v` using `fun τ i m q => exists_isValueAt_dualSec (P.global τ i m c hyc) (hfr τ) hz0 hzc (hfu τ) q`.
+
+Use `choose VT hVT using hV`. Use `⟨b, fun τ => (hfr τ).2.2.2.1, fun F hF => ?_⟩` and prove the remaining obligations. Establish `htw0 : IndefiniteRowSideFullHecke.LowerBoundFree.twistFactor D.y c P.b ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hyk k)`. Set `α : K ⊕ (Ψ × Fin (D.N - 1)) → Ω` to `Sum.elim (fun k => (D.y ⟨k, c k⟩)⁻¹) (fun _ => IndefiniteRowSideFullHecke.LowerBoundFree.twistFactor D.y c P.b)`. Establish `hα : ∀ β, IsUnit (α β)`.
+
+Introduce and unpack `(k | q)`. Conclude with `isUnit_iff_ne_zero.2 (inv_ne_zero (hyk k))`. Conclude with `isUnit_iff_ne_zero.2 htw0`. Establish `hF'` using `(h₃ Pl D.y (wedgeVals Pl b) α hα F).not.2 hF`. Set `x' : (Σ k, ι k) → ℂ` to `fun p => z0 p / z0 ⟨p.1, c p.1⟩`.
+
+Set `V' : WedgeVals Pl ℂ` to `fun q m cc => VT q.1 (stepTw q.2) (Fin.cast (h.M_eq q.1 q.2) m) cc`. Establish `hx : ∀ p, IsValueAt D.y (α (Sum.inl p.1) * D.y p) z0 (x' p)` using `fun p => isValueAt_coord (hyk p.1) (hzc p.1)`. Establish `hVv : ∀ q m cc, IsValueAt D.y (α (Sum.inr q) * wedgeVals Pl b q m cc) z0 (V' q m cc)`. Introduce `q m cc`. Use `show IsValueAt D.y (IndefiniteRowSideFullHecke.LowerBoundFree.twistFactor D.y c P.b * Pl.gen q.1 q.2 m (exteriorPower.ιMulti Ω _ (b q.1 ∘ cc))) z0 _`.
+
+Rewrite using `[h.gen_eq, mul_comm]`. Conclude with `hVT _ _ _ _`. Establish `hval` using `h₁ D.y z0 _ _ (h₂ Pl z0 _ x' _ V' hx hVv) F`. Establish `hQ0 : aeval (genPtR Pl x' V') F ≠ 0`. Take `⟨μ, hμ⟩` from `MvPolynomial.ne_zero_iff.1 hF'`.
+
+Introduce `h0`. Conclude with `isValueAt_ne_zero hgen (hval μ) hμ (by rw [h0, coeff_zero])`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : GV D.toComponentData → ℂ, eval w (aeval (genPtR Pl x' V') F * (∏ β, X (Sum.inl β)) * ∏ τ, (Matrix.of fun a p => (X (Sum.inr (τ, a, p)) : MvPolynomial (GV D.toComponentData) ℂ)).det) ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+
+Use `mul_ne_zero (mul_ne_zero hQ0 (Finset.prod_ne_zero_iff.2 fun β _ => X_ne_zero _)) (Finset.prod_ne_zero_iff.2 fun τ _ => det_gvar_ne_zero D.toComponentData τ) (MvPolynomial.funext fun x => by rw [hne x, map_zero])` and prove the remaining obligations. Rewrite `hw` using `[map_mul, map_mul, map_prod, map_prod]`. Establish `hwQ` using `(mul_ne_zero_iff.1 (mul_ne_zero_iff.1 hw).1).1`. Establish `hwT` using `(mul_ne_zero_iff.1 (mul_ne_zero_iff.1 hw).1).2`. Establish `hwg` using `(mul_ne_zero_iff.1 hw).2`.
+
+Establish `hwT' : ∀ β, w (Sum.inl β) ≠ 0` using `fun β => by`. Use `Finset.prod_ne_zero_iff.1 hwT β (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[eval_X]`. Then use the resulting hypothesis. Establish `hwg' : ∀ τ, (Matrix.of fun a p => w (Sum.inr (τ, a, p))).det ≠ 0` using `fun τ => by`. Use `Finset.prod_ne_zero_iff.1 hwg τ (Finset.mem_univ _)` as an intermediate fact.
+
+Rewrite `this` using `[RingHom.map_det]`. Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `a p`. Simplify using the standard rewrite rules. Set `t : K → ℂ` to `fun k => w (Sum.inl (Sum.inl k)) / z0 ⟨k, c k⟩`.
+
+Establish `ht : ∀ k, t k ≠ 0` using `fun k => div_ne_zero (hwT' _) (hzc k)`. Set `z` to `torusSmul t z0`. Establish `hzP : z ∈ mcPts (mCoordIdeal D.y)` using `ComponentDataEquivalence.mcPts_torus D.arith.2.1.2.1 hz0 ht`. Establish `hzck : ∀ k, z ⟨k, c k⟩ ≠ 0` using `fun k => mul_ne_zero (ht k) (hzc k)`. Set `Z : ℂ` to `∏ k, z ⟨k, c k⟩ ^ P.b k`.
+
+Establish `hZ : Z ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hzck k)`. Set `G : Ψ → Matrix (Fin D.N) (Fin D.N) ℂ` to `fun τ => Matrix.of fun p a => w (Sum.inr (τ, a, p))`. Set `lam : Ψ → Fin D.N → ℂ` to `fun τ i => if hi : (i : ℕ) < D.N - 1 then w (Sum.inl (Sum.inr (τ, ⟨i, hi⟩))) / Z else 1`. Set `wv : ∀ q : Ψ × Fin D.N, Fin (P.M q.1 q.2) → ℂ` to `fun q m => lam q.1 q.2 * ∑ qq : Fin ((q.2 : ℕ) + 1) → Fin D.N, (∏ a, IndefiniteRowSideFullHecke.LowerBoundFree.firstCols (G q.1) ((q.2 : ℕ) + 1) q.2.isLt (qq a) a) * (VT q.1 q.2 m qq * Z)`. Use `⟨IndefiniteRowSideFullHecke.LowerBoundFree.yJoin P z wv, ⟨hzP, fun τ => ⟨c, f τ, b τ, G τ, lam τ, hfr τ, HermMetricEq.inFrameDomain_smul t ht ⟨hzc, hfu τ⟩, ?_, ?_, fun i m => ⟨_, ⟨fun qq => VT τ i m qq * Z, fun qq => ⟨hzck, VT τ i m qq, HermMetricEq.isValueAt_iff.2 ((HermMetricEq …` and prove the remaining obligations.
+
+Use `show (Matrix.transpose (Matrix.of fun a p => w (Sum.inr (τ, a, p)))).det ≠ 0`. Rewrite using `[Matrix.det_transpose]`. Conclude with `hwg' τ`. Introduce `i`. Simplify using `only [lam]`.
+
+Use `split_ifs`. Conclude with `div_ne_zero (hwT' _) hZ`. Conclude with `one_ne_zero`. It suffices to establish `key : ((eval (IndefiniteRowSideFullHecke.LowerBoundFree.yJoin P z wv)).comp (map (Int.castRingHom ℂ))).comp (forget h).toRingHom = (eval w).comp (aeval (genPtR Pl x' V')).toRingHom by`. Use `congrArg (fun φ => φ F) key` as an intermediate fact.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Rewrite using `[this]`. Conclude with `hwQ`. Use `MvPolynomial.ringHom_ext (fun n => by simp) fun j => ?_` and prove the remaining obligations. Break down `j with ⟨k | ⟨τ, i⟩, t'⟩` into its components or cases.
+
+Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, forget, rename_X, map_X, eval_X, aeval_X]`. Express the relevant statement in the definitionally equal form `z ⟨k, t'⟩ = eval w (X (Sum.inl (Sum.inl k)) * C (x' ⟨k, t'⟩))`. Simplify using `only [eval_mul, eval_X, eval_C, z, torusSmul, t, x']`. Clear the denominators using the available nonvanishing facts. Simplify using `only [RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, forget, rename_X, map_X, eval_X, aeval_X]`.
+
+Express the relevant statement in the definitionally equal form `lam τ (stepTw i) * _ = eval w (X (Sum.inl (Sum.inr (τ, i))) * ∑ cc : Fin ((i : ℕ) + 1) → Fin D.N, (∏ a, X (Sum.inr (τ, headIdx (step_le i) a, cc a))) * C (V' (τ, i) t' cc))`. Establish `hl : lam τ (stepTw i) = w (Sum.inl (Sum.inr (τ, i))) / Z`. Simplify using `only [lam]`. Rewrite using `[dif_pos (show ((stepTw i : Fin D.N) : ℕ) < D.N - 1 from i.isLt)]`. Both sides reduce to the same expression.
+
+Establish `e : ∀ a v : ℂ, w (Sum.inl (Sum.inr (τ, i))) / Z * (a * (v * Z)) = w (Sum.inl (Sum.inr (τ, i))) * (a * v)` using `fun a v => by field_simp`. Simplify using `only [eval_mul, eval_X, eval_C, eval_sum, eval_prod]`. Rewrite using `[hl, Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun qq _ => e _ _`.
+-/
 theorem proof (h₁ : FlagPolynomialValue.Statement) (h₂ : FlagGenericPointValue.Statement)
     (h₃ : FlagGenericPointScale.Statement) (h₄ : FlagGenericPoint.Statement) : FlagDense.Statement := by
   intro II Ψ _ _ K _ ι _ Ω _ _ E _ _ D Pl P h

@@ -14,9 +14,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 namespace GlobalTheory.AutomorphismSplitting
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun w w' hw k => congrArg (·⁻¹) (h.1 w w' hw k), fun k => congrArg (·⁻¹) (h.2 k)⟩`.
+-/
 theorem isCSD_inv' {R : Ranks} {H : Host R} {χ : HChar H.E} (h : IsCSD H χ) : IsCSD H χ⁻¹ :=
   ⟨fun w w' hw k => congrArg (·⁻¹) (h.1 w w' hw k), fun k => congrArg (·⁻¹) (h.2 k)⟩
 
+/- English proof (translation)
+Introduce `k`. Establish `hk` using `h k`. Use `show (((χ.inf k)⁻¹ : ℂˣ) : ℂ) = _`. Rewrite using `[Units.val_inv_eq_inv_val, hk, ← Finset.prod_inv_distrib]`. Simplify using the standard rewrite rules.
+-/
 theorem hasInf_inv {L : Type} [Field L] [NumberField L] {I : Type} [Fintype I] {φ : I → L →+* ℂ} {χ : HChar L}
     (h : χ.HasInf φ (fun _ => 1)) : (χ⁻¹).HasInf φ (fun _ => -1) := by
   intro k
@@ -25,6 +31,23 @@ theorem hasInf_inv {L : Type} [Field L] [NumberField L] {I : Type} [Fintype I] {
   rw [Units.val_inv_eq_inv_val, hk, ← Finset.prod_inv_distrib]
   simp
 
+/- English proof (translation)
+Introduce `hAF hL D P`. Establish `hcsd : IsCSD D.host P.cf.eta` using `GlobalTheory.EtaSelfDual.isCSD_of_isEtaT _ _ _ P.cf.isEta`. Establish `hE : (P.chr.e1 D.naut.etaT).1.HasInfQ (embPsi D.host) (fun _ => (1 / 2 : ℚ))` using `⟨fun _ => 1, fun _ => by norm_num, by rw [P.chr.etaT]; exact P.cf.isEta.inf⟩`. Establish `hE' : (P.chr.e1 D.naut.etaTinv).1.HasInfQ (embPsi D.host) (fun _ => (-(1 / 2) : ℚ))` using `⟨fun _ => -1, fun _ => by norm_num, by rw [P.chr.etaTinv]; exact hasInf_inv P.cf.isEta.inf⟩`. Use `⟨⟨⟨?_, ?_⟩, fun τ => ?_, fun w => ?_, fun i w => ?_⟩, fun k v => GlobalTheory.FixedPlaceSplit.isSplitPl_plGw D k v⟩` and prove the remaining obligations.
+
+Rewrite using `[P.chr.csd, P.chr.etaT]`. Conclude with `hcsd`. Rewrite using `[P.chr.csd, P.chr.etaTinv]`. Conclude with `isCSD_inv' hcsd`. Take `⟨ρ, hρ⟩` from `(GlobalTheory.VolRatioCheck.place_bijective D).2 (InfinitePlace.mk τ)`.
+
+Break down `InfinitePlace.mk_eq_iff.1 hρ with h | h` into its components or cases. Establish `ht : τ = embPsi D.host (D.eTau ρ)` using `h.symm`. Rewrite using `[ht, (P.chr.infG _ _ hE (D.eTau ρ)).1, (P.chr.infG _ _ hE' (D.eTau ρ)).1]`. Use `⟨Or.inl (by push_cast; rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Establish `ht : τ = (starRingEnd ℂ).comp (embPsi D.host (D.eTau ρ))`. Rewrite using `[← h]`. Use extensionality with `x`.
+
+Both sides reduce to the same expression. Rewrite using `[ht, (P.chr.infG _ _ hE (D.eTau ρ)).2, (P.chr.infG _ _ hE' (D.eTau ρ)).2]`. Use `⟨Or.inr (by push_cast; rfl), ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_singleton]`. Use `push_cast`.
+
+Put the polynomial expressions in normal form. Establish `hu : D.naut.unr (D.naut.locG D.naut.etaT w)` using `D.naut.etaT_unr w`. Rewrite using `[D.naut.tempered_unr _ hu, P.chr.frob _ w ((P.chr.unr_iff _ w).1 hu)]`. Introduce `α hα`. Rewrite `hα` using `[Multiset.mem_singleton]`.
+
+Substitute `hα` using the available equality. Establish `h1 : ‖(((P.chr.e1 D.naut.etaT).1.val w : ℂˣ) : ℂ)‖ = 1` using `(P.chr.e1 D.naut.etaT).2 _`. Rewrite using `[Units.val_inv_eq_inv_val, norm_inv, h1, inv_one]`. Take `⟨ξ, hξ, -, hξu⟩` from `GlobalTheory.T.heckeChar_localComponent_exists_unique_unitary D.host.E (P.chr.e1 (D.naut.muC i)).1 w`. Establish `he` using `GlobalTheory.T.rank_one_local_component_det hAF hL D P (D.naut.muC i) w ξ hξ`.
+
+Rewrite using `[P.T.tempered, he]`. Use `GlobalTheory.WeilDeligne.WD.tempered_of_lpDim_le_one_of_norm_eig _ _ _ _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← he, P.T.dim, D.naut.locG_dim]`. Introduce `φ _ α hα`. Conclude with `GlobalTheory.LocLanglands.IsRec.recUnit (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)) ξ (Irr.ofDet 1 ξ hξ.1) (hξu (P.chr.e1 _).2) ⟨Representation.Equiv.refl _⟩ φ α hα`.
+-/
 theorem tieAut_and_split : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D),
     Formalism.MainNotions.SumRepresentations.At.TieAut D.nd D.naut ∧ ∀ (k : Fin 2) (v : D.nd.PlG k), IsSplitPl D.host (D.naut.plGw k v) := by
   intro hAF hL D P

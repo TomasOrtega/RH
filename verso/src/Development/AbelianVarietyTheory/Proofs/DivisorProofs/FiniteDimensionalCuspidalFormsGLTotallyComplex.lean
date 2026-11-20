@@ -13,6 +13,27 @@ open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.HCF Topology
 
 namespace GlobalTheory.HCF
 
+/- English proof (translation)
+Introduce `E _ _ _ a L hL W hW X hX N V hV hc`. Establish `hleft : ∀ φ ∈ Submodule.span ℂ (formsGL E a L W X N), ∀ (γ : GL (Fin a) E) (g : GA E a), φ.1 (ratGL E a γ * g) = φ.1 g`. Introduce `φ hφ γ g`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1.left γ g`.
+
+Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy`. Express the relevant statement in the definitionally equal form `x.1 (ratGL E a γ * g) + y.1 (ratGL E a γ * g) = x.1 g + y.1 g`. Rewrite using `[hx, hy]`. Consider the case `smul c x _ hx`.
+
+Express the relevant statement in the definitionally equal form `c * x.1 (ratGL E a γ * g) = c * x.1 g`. Rewrite using `[hx]`. Set `V' : Submodule ℂ (GA E a → ℂ)` to `V.map (Sm E a).subtype`. Establish `hfin : FiniteDimensional ℂ V'`. Use `GlobalTheory.T.finiteDimensional_of_totallyBounded_supNormBall (GA E a) V' (band E a) ?_ ?_ ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨φ, hφ, rfl⟩ h0`. Use function extensionality and compare the values at `g`. Take `⟨C, hC⟩` from `GlobalTheory.T.norm_le_sup_wider_band_genCentralEigenforms E a L hL W hW X hX N (max 1 (max (absDetA g) (absDetA g)⁻¹)) (le_max_left _ _)`. Establish `hp` using `absDetA_pos g`. Establish `h1 : (max 1 (max (absDetA g) (absDetA g)⁻¹))⁻¹ ≤ absDetA g`.
+
+Rewrite using `[inv_le_comm₀ (by positivity) hp]`. Conclude with `(le_max_right _ _).trans (le_max_right _ _)`. Establish `h2 : absDetA g ≤ 2 * max 1 (max (absDetA g) (absDetA g)⁻¹)`. Use `(le_max_left (absDetA g) (absDetA g)⁻¹).trans (le_max_right 1 _)` as an intermediate fact. Use `le_max_left 1 (max (absDetA g) (absDetA g)⁻¹)` as an intermediate fact.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Use `hC φ (hV hφ) 0 (fun h hh => by rw [show φ.1 h = 0 from h0 h hh, norm_zero]) g h1 h2` as an intermediate fact. Simplify using `using this`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `GlobalTheory.T.cuspidal_harishChandraFiniteForm_bounded_detNormBand E a L hL W hW X hX N φ (hV hφ) (hc φ hφ)`.
+
+Introduce `ε hε`. Take `⟨F, hF⟩` from `GlobalTheory.T.totallyBounded_sup_of_equicontinuous_invariant_tails (GA E a) (Set.range (ratGL E a)) (band E a) {f | ∃ φ ∈ V, φ.1 = f ∧ ∀ x ∈ band E a, ‖f x‖ ≤ 1} (by rintro f ⟨φ, hφ, rfl, -⟩ s ⟨γ, rfl⟩ g; exact hleft φ (hV hφ) γ g) (by rintro f ⟨φ, -, rfl, hb⟩; exact hb) (by`. Introduce `ε hε`. Take `⟨U, hU, h⟩` from `GlobalTheory.T.harishChandraForms_equicontinuous_on_band E a L hL W hW X hX N ε hε`. Use `⟨U, hU, ?_⟩` and prove the remaining obligations.
+
+Introduce and unpack `f ⟨φ, hφ, rfl, hb⟩ g hg u hu hgu`. Simplify using `using h φ (hV hφ) 1 hb g hg u hu hgu)`. Use the proof step `(by`. Introduce `ε hε`. Take `⟨C, hC, hCB, h⟩` from `GlobalTheory.T.cuspForms_uniformly_small_outside_compact_band E a L hL W hW X hX N ε hε`.
+
+Use `⟨C, hC, hCB, fun g hg => ?_⟩` and prove the remaining obligations. Break down `h g hg with ⟨γ, hγ⟩ | h'` into its components or cases. Conclude with `Or.inl ⟨_, ⟨γ, rfl⟩, hγ⟩`. Use `Or.inr ?_` and prove the remaining obligations. Introduce and unpack `f ⟨φ, hφ, rfl, hb⟩`.
+
+Simplify using `using h' φ (hV hφ) (hc φ hφ) 1 hb) ε hε`. Use `⟨F, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ hb`. Conclude with `hF _ ⟨φ, hφ, rfl, hb⟩`. Conclude with `(Submodule.equivMapOfInjective (Sm E a).subtype Subtype.val_injective V).symm.finiteDimensional`.
+-/
 theorem finiteDimensional_cuspGL : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∀ (L : Subgroup (GL (Fin a) (Af E))), IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ W : Submodule ℂ (Kinf E a → ℂ), FiniteDimensional ℂ W → ∀ X : Set (Module.End ℂ (Sm E a) → ℂ), X.Finite → ∀ N : ℕ, ∀ V : Submodule ℂ (Sm E a), V ≤ Submodule.span ℂ (GlobalTheory.HCF.formsGL E a L W X N) → (∀ φ ∈ V, IsCuspidal φ.1) → FiniteDimensional ℂ V := by
   intro E _ _ _ a L hL W hW X hX N V hV hc
   have hleft : ∀ φ ∈ Submodule.span ℂ (formsGL E a L W X N), ∀ (γ : GL (Fin a) E) (g : GA E a),

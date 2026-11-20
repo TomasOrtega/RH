@@ -19,15 +19,30 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
   {F : Type} [Field F]
 
+/- English proof (translation)
+Establish `h1 : CommRingCat.ofHom f = CommRingCat.ofHom g` using `Spec.map_injective h`. Conclude with `congrArg CommRingCat.Hom.hom h1`.
+-/
 theorem spMap_inj' {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g := by
   have h1 : CommRingCat.ofHom f = CommRingCat.ofHom g := Spec.map_injective h
   exact congrArg CommRingCat.Hom.hom h1
 
+/- English proof (translation)
+Use `show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp]`.
+-/
 private theorem spMap_comp_moduli_spaces {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   show Spec.map (CommRingCat.ofHom (g.comp f)) = Spec.map (CommRingCat.ofHom g) ≫ Spec.map (CommRingCat.ofHom f)
   rw [CommRingCat.ofHom_comp, Spec.map_comp]
 
+/- English proof (translation)
+Take `⟨ψ, hψ⟩` from `Spec.map_surjective (stalkPt B z ≫ j ≫ genStr Z)`. Establish `hgen : spMap (algebraMap (B.X.presheaf.stalk z) B.X.functionField) ≫ stalkPt B z = genericPt B` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec B.X).specializes trivial)`. Establish `hpt : genericPt B ≫ B.str = spMap (algebraMap F B.Fn)` using `(ratOf B).pt_s`. Establish `key : ((algebraMap (B.X.presheaf.stalk z) B.X.functionField).comp ψ.hom).comp e.toRingHom = algebraMap F B.Fn`. Apply `spMap_inj'` to reduce the goal to its premises.
+
+Rewrite using `[spMap_comp_moduli_spaces, spMap_comp_moduli_spaces, ← hpt, ← hj, ← hgen, show spMap ψ.hom = stalkPt B z ≫ j ≫ genStr Z from hψ]`. Simplify using `only [Category.assoc]`. Establish `hψeq : ψ.hom = φA`. Use extensionality with `a`. Apply `IsFractionRing.injective (B.X.presheaf.stalk z) B.X.functionField` to reduce the goal to its premises.
+
+Establish `e1` using `RingHom.congr_fun key (e.symm a)`. Establish `e2` using `RingHom.congr_fun hφ a`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply] at e1`. Simplify using `only [constF, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom] at e2`. Conclude with `e1.trans e2`.
+
+Rewrite using `[← hψ, ← hψeq]`. Apply the tactic sequence `try rfl`.
+-/
 theorem stalkPt_genStr (B : GlobalTheory.ProjVar.Var F) (e : F ≃+* c.F) (j : B.X ⟶ gen Z)
     (hj : j ≫ genStr Z ≫ spMap e.toRingHom = B.str) (z : B.X) (φA : c.F →+* B.X.presheaf.stalk z)
     (hφ : constF e B = (algebraMap (B.X.presheaf.stalk z) B.X.functionField).comp φA) :
@@ -54,6 +69,9 @@ theorem stalkPt_genStr (B : GlobalTheory.ProjVar.Var F) (e : F ≃+* c.F) (j : B
   rw [← hψ, ← hψeq]
   try rfl
 
+/- English proof (translation)
+Substitute `hψ` using the available equality. Take `⟨hx, hφ, -⟩` from `id h₁`. Conclude with `((GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible _ _ _ _ _ _ _ _ _ _ _ _ f _ _ _ ψ₁ inferInstance (GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing _ _ _ _ _ _ _ _ _ _ _ _ f inferInstance) hx hφ).1 g).1.unique h₁ h₂`.
+-/
 private theorem coord_unique' {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     {φ : c.F →+* R} {φ' : c.F →+* R'} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} {f : EigFrame Z φ x}
     {ψ₁ ψ₂ : R →+* R'} {g : EigFrame Z φ' x'} {M₁ M₂ : Mat Dw.mult R'} (hψ : ψ₁ = ψ₂)
@@ -63,6 +81,9 @@ private theorem coord_unique' {R R' : Type} [CommRing R] [IsLocalRing R] [CommRi
   exact ((GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible _ _ _ _ _ _ _ _ _ _ _ _ f _ _ _ ψ₁ inferInstance
     (GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing _ _ _ _ _ _ _ _ _ _ _ _ f inferInstance) hx hφ).1 g).1.unique h₁ h₂
 
+/- English proof (translation)
+The claim follows from `GlobalTheory.T.lie_eigenspace_frame_coordinates_comp _ _ _ _ _ _ _ _ _ _ _ _ f _ _ _ g _ _ _ k ψ ψ' M M' inferInstance h₁ h₂`.
+-/
 private theorem coord_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] [IsLocalRing R'']
     {φ : c.F →+* R} {φ' : c.F →+* R'} {φ'' : c.F →+* R''} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X}
     {x'' : Sp R'' ⟶ Z.X} {f : EigFrame Z φ x} {g : EigFrame Z φ' x'} {k : EigFrame Z φ'' x''}
@@ -70,6 +91,9 @@ private theorem coord_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRi
     (h₁ : f.Coord ψ g M) (h₂ : g.Coord ψ' k M') : f.Coord (ψ'.comp ψ) k (M' * M.map ψ') :=
   GlobalTheory.T.lie_eigenspace_frame_coordinates_comp _ _ _ _ _ _ _ _ _ _ _ _ f _ _ _ g _ _ _ k ψ ψ' M M' inferInstance h₁ h₂
 
+/- English proof (translation)
+Establish `H` using `(GlobalTheory.T.lie_eigenspace_frame_coordinates_unique_invertible _ _ _ _ _ _ _ _ _ _ _ _ f _ _ _ ψ inferInstance (GlobalTheory.T.lie_eigenspace_frame_stable_of_isLocalRing _ _ _ _ _ _ _ _ _ _ _ _ f inferInstance) hx hφ).1 g`. Take `⟨M, hM, -⟩` from `H.1`. Conclude with `⟨M, hM, H.2 M hM⟩`.
+-/
 private theorem exists_coord_unit_det_of_baseChange {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R']
     {φ : c.F →+* R} {φ' : c.F →+* R'} {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} (f : EigFrame Z φ x)
     (ψ : R →+* R') (hx : x' = spMap ψ ≫ x) (hφ : φ' = ψ.comp φ) (g : EigFrame Z φ' x') :
@@ -85,6 +109,39 @@ variable (e : F ≃+* c.F) (C : FlagCpt Z e) (B : GlobalTheory.ProjVar.Var F) (j
   (f₀ : EigFrame Z (constF e B) (genericPt B ≫ j ≫ genι Z)) (S : Fr (ratOf B) Dw.mult 0) (A₀ : Mat Dw.mult B.Fn)
   (S' : Fr (ratOf C.Y) Dw.mult Dw.mult) (A₁ : Mat Dw.mult C.Y.Fn) (φ : B.Fn →ₐ[F] C.Y.Fn) (f : C.Y.X ⟶ B.X)
 
+/- English proof (translation)
+Take `⟨hA₀g, -⟩` from `id hT`. Take `⟨hA₁g, -⟩` from `id hT'`. Establish `hA₁d : ∀ τ, (A₁ τ).det ≠ 0` using `Fr.det_ne hA₁g`. Establish `hA'd : ∀ τ, (A' τ).det ≠ 0` using `Fr.det_ne hA'`. Establish `hA₀φ : ∀ τ, ((A₀.map φ) τ).det ≠ 0`.
+
+Introduce `τ`. Establish `e0 : ((A₀.map φ) τ).det = (φ : B.Fn →+* C.Y.Fn) (A₀ τ).det` using `(RingHom.map_det (φ : B.Fn →+* C.Y.Fn) (A₀ τ)).symm`. Rewrite using `[e0]`. Conclude with `(map_ne_zero _).2 (Fr.det_ne hA₀g τ)`. Establish `hσ : (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField).comp (f.stalkMap (p (IsLocalRing.closedPoint K))).hom = (φ : B.Fn →+* C.Y.Fn).comp (algebraMap (B.X.presheaf.stalk (f (p (IsLocalRing.closedPoint K)))) B.X.functionField)`.
+
+Use extensionality with `a`. Conclude with `(map_algebraMap_stalk hR.hom _ a).symm`. Establish `hxC : stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z = spMap (f.stalkMap (p (IsLocalRing.closedPoint K))).hom ≫ (stalkPt B (f (p (IsLocalRing.closedPoint K))) ≫ j ≫ genι Z)`. Rewrite using `[hπ]`. Use `show C.Y.X.fromSpecStalk _ ≫ (f ≫ j) ≫ genι Z = Spec.map (f.stalkMap _) ≫ B.X.fromSpecStalk _ ≫ j ≫ genι Z`.
+
+Simplify using `only [Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk_assoc]`. Take `⟨-, hφf₁, -⟩` from `id hf₁`. Take `⟨-, hφfA, -⟩` from `id hfA`. Establish `hφ₁ : φ₁ = (f.stalkMap (p (IsLocalRing.closedPoint K))).hom.comp φA`. Use extensionality with `a`.
+
+Apply `IsFractionRing.injective (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField` to reduce the goal to its premises. Establish `e1` using `RingHom.congr_fun hφf₁ a`. Establish `e2` using `RingHom.congr_fun hφfA a`. Establish `e3` using `RingHom.congr_fun hσ (φA a)`. Simplify using `only [RingHom.comp_apply] at e1 e2 e3 ⊢`.
+
+Rewrite using `[← e1, e3, ← e2]`. Simplify using `[constF]`. Take `⟨N, hN, hNu⟩` from `exists_coord_unit_det_of_baseChange fA (f.stalkMap (p (IsLocalRing.closedPoint K))).hom hxC hφ₁ f₁`. Establish `h2` using `coord_comp' hfA hC`. Establish `h4` using `coord_comp' hN hf₁`.
+
+Establish `h5` using `coord_unique' hσ h4 h2`. Rewrite `h5` using `[Mat.map_mul, Mat.map_inv]`. Apply the tactic sequence `try simp only [AlgHom.coe_toRingHom] at h5`. Establish `hNeq : N.map (algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) = A' * (A.map φ)⁻¹`. Combine the equalities or inequalities in the displayed calculation.
+
+Simplify using `only [← mul_assoc]`. Rewrite using `[mul_assoc A' A₁⁻¹ A₁, Mat.inv_mul hA₁d, mul_one, Mat.mul_inv hA'd, one_mul]`. Use `_ = (A' * A₁⁻¹) * (A₁ * (A₀.map φ)⁻¹ * (A₀.map φ * (A.map φ)⁻¹)) := by rw [h5]`. Use `_ = A' * (A.map φ)⁻¹ := by`. Simplify using `only [← mul_assoc]`.
+
+Rewrite using `[mul_assoc A' A₁⁻¹ A₁, Mat.inv_mul hA₁d, mul_one, mul_assoc A' (A₀.map φ)⁻¹ (A₀.map φ), Mat.inv_mul hA₀φ, mul_one]`. Establish `hval : ∀ n : C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K)), (ratOf C.Y).val p ((algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) n) = (Scheme.stalkClosedPointTo (R` using `.of K) p).hom n := by`. Introduce `n`. Combine the equalities or inequalities in the displayed calculation. Conclude with `congrArg (fun q : Sp K ⟶ C.Y.X => (ratOf C.Y).val q ((algebraMap (C.Y.X.presheaf.stalk (p (IsLocalRing.closedPoint K))) C.Y.X.functionField) n)) (spMap_stalkClosedPointTo p).symm`.
+
+Use `_ = (Scheme.stalkClosedPointTo (R := .of K) p).hom n := val_ratOf _ _`. Establish `hM : (A' * (A.map φ)⁻¹).map ((ratOf C.Y).val p) = N.map (Scheme.stalkClosedPointTo (R` using `.of K) p).hom := by`. Rewrite using `[← hNeq]`. Use function extensionality and compare the values at `τ`. Use extensionality with `a b`.
+
+Conclude with `hval (N τ a b)`. Establish `hdetN : ∀ τ, ((N.map (Scheme.stalkClosedPointTo (R` using `.of K) p).hom) τ).det ≠ 0 := by`. Introduce `τ`. Establish `e0 : ((N.map (Scheme.stalkClosedPointTo (R` using `.of K) p).hom) τ).det = (Scheme.stalkClosedPointTo (R := .of K) p).hom (N τ).det := (RingHom.map_det (Scheme.stalkClosedPointTo (R := .of K) p).hom (N τ)).symm`. Rewrite using `[e0]`.
+
+Conclude with `((hNu τ).map _).ne_zero`. Establish `hdetM : ∀ τ, (((A' * (A.map φ)⁻¹).map ((ratOf C.Y).val p)) τ).det ≠ 0`. Rewrite using `[hM]`. Conclude with `hdetN`. Establish `hev : (Scheme.stalkClosedPointTo (R` using `.of K) (p ≫ f)).hom = (Scheme.stalkClosedPointTo (R := .of K) p).hom.comp (f.stalkMap (p (IsLocalRing.closedPoint K))).hom := by`.
+
+Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Apply the tactic sequence `try rfl`. Establish `fwd : ∀ h' : Mat Dw.mult K, f₁.Coord (Scheme.stalkClosedPointTo (R` using `.of K) p).hom g h' → h = h' * N.map (Scheme.stalkClosedPointTo (R := .of K) p).hom := by`. Introduce `h' hh'`. Conclude with `coord_unique' hev hh (coord_comp' hN hh')`.
+
+Take `⟨hxg, hχ, -⟩` from `id hh`. Establish `hxg' : x ≫ genι Z = spMap (Scheme.stalkClosedPointTo (R` using `.of K) p).hom ≫ (stalkPt C.Y (p (IsLocalRing.closedPoint K)) ≫ C.π ≫ genι Z) := by`. Rewrite using `[hxC, hxg, hev, spMap_comp_moduli_spaces, Category.assoc]`. Establish `hχ' : χ = (Scheme.stalkClosedPointTo (R` using `.of K) p).hom.comp φ₁ := by`. Rewrite using `[hχ, hev, hφ₁, RingHom.comp_assoc]`.
+
+Take `⟨h'', hh'', -⟩` from `exists_coord_unit_det_of_baseChange f₁ (Scheme.stalkClosedPointTo (R := .of K) p).hom hxg' hχ' g`. Use `⟨hdetM, fun h' => ⟨fun hh' => ?_, fun heq => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[fwd h' hh', hM]`. Establish `e1` using `fwd h'' hh''`. Rewrite `e1` using `[← hM]`.
+
+Establish `e2 : h'' * (A' * (A.map φ)⁻¹).map ((ratOf C.Y).val p) = h' * (A' * (A.map φ)⁻¹).map ((ratOf C.Y).val p)` using `e1.symm.trans heq`. Establish `e3 : h'' = h'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e3]`. Conclude with `hh''`.
+-/
 theorem coord_iff (hπ : C.π = f ≫ j) (hT : Tied e B j f₀ S A₀) (hT' : Tied e C.Y C.π C.f0 S' A₁)
     (hC : f₀.Coord (φ : B.Fn →+* C.Y.Fn) C.f0 (A₁ * (A₀.map φ)⁻¹)) (hR : Refines S S' φ f)
     {K : Type} [Field K] {χ : c.F →+* K} {x : Sp K ⟶ gen Z} (p : Sp K ⟶ C.Y.X) (hx : (p ≫ f) ≫ j = x)
@@ -195,6 +252,21 @@ theorem coord_iff (hπ : C.π = f ≫ j) (hT : Tied e B j f₀ S A₀) (hT' : Ti
 
 end Lifts
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C B j f₀ S A₀ S' A₁ φ f hj hπ hT hT' hC hR K _ χ x x' hx' hxs g`. Take `⟨A, hA⟩` from `S.nonempty (x' (IsLocalRing.closedPoint K))`. Take `⟨-, hTie⟩` from `id hT`. Take `⟨φA, fA, hfA⟩` from `hTie _ A hA`. Establish `hx'f : spMap (Scheme.stalkClosedPointTo (R` using `.of K) x').hom ≫ stalkPt B (x' (IsLocalRing.closedPoint K)) = x' := spMap_stalkClosedPointTo x'`.
+
+Take `⟨-, hφA, -⟩` from `id hfA`. Establish `hsg` using `stalkPt_genStr B e j hj (x' (IsLocalRing.closedPoint K)) φA hφA`. Establish `hχ : χ = (Scheme.stalkClosedPointTo (R` using `.of K) x').hom.comp φA := by`. Apply `spMap_inj'` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+
+Establish `hxg : x ≫ genι Z = spMap (Scheme.stalkClosedPointTo (R` using `.of K) x').hom ≫ (stalkPt B (x' (IsLocalRing.closedPoint K)) ≫ j ≫ genι Z) := by`. Combine the equalities or inequalities in the displayed calculation. Take `⟨h, hh, hu⟩` from `exists_coord_unit_det_of_baseChange fA (Scheme.stalkClosedPointTo (R := .of K) x').hom hxg hχ g`. Establish `hPar : Par (0 : (E →+* ℂ) → ℕ) ⊤ h` using `fun τ => ⟨fun _ _ => Subring.mem_top _, (hu τ).ne_zero, Subring.mem_top _, fun i _ hi => by simp at hi⟩`. Take `⟨p, ⟨hp1, hp2⟩, huniq⟩` from `hR.lifts K x' A hA h hPar`.
+
+Take `⟨-, hTie'⟩` from `id hT'`. Establish `key : ∀ q : Sp K ⟶ C.Y.X, q ≫ f = x' → (Bears S' φ A h q ↔ C.Carries q g)`. Introduce `q hq`. Substitute `hq` using the available equality. Rewrite using `[GlobalTheory.T.carriesFlags_iff_adaptedFrame_at_image _ _ _ _ _ _ _ _ _ _ e C S' A₁ K χ (x ≫ genι Z) g q hT']`.
+
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A', hA', hPar'⟩`. Take `⟨φ₁, f₁, hf₁⟩` from `hTie' _ A' hA'`. Establish `hci` using `coord_iff e C B j f₀ S A₀ S' A₁ φ f hπ hT hT' hC hR q hx' g hA hfA hh hA' hf₁`. Use `⟨A', hA', φ₁, f₁, h * ((A' * (A.map φ)⁻¹).map ((ratOf C.Y).val q))⁻¹, hf₁, ?_, hPar'⟩` and prove the remaining obligations.
+
+Rewrite using `[hci.2, mul_assoc, Mat.inv_mul hci.1, mul_one]`. Introduce and unpack `⟨A', hA', φ₁, f₁, h', hf₁, hh', hPar'⟩`. Establish `hci` using `coord_iff e C B j f₀ S A₀ S' A₁ φ f hπ hT hT' hC hR q hx' g hA hfA hh hA' hf₁`. Use `⟨A', hA', ?_⟩` and prove the remaining obligations. Rewrite using `[(hci.2 h').1 hh', mul_assoc, Mat.mul_inv hci.1, mul_one]`.
+
+Conclude with `hPar'`. Conclude with `⟨p, ⟨hp1, (key p hp1).1 hp2⟩, fun q hq => huniq q ⟨hq.1, (key q hq.1).2 hq.2⟩⟩`.
+-/
 theorem flagex_lifts : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (B : GlobalTheory.ProjVar.Var F) (j : B.X ⟶ gen Z) (f₀ : EigFrame Z (constF e B) (genericPt B ≫ j ≫ genι Z)) (S : Fr (ratOf B) Dw.mult 0) (A₀ : Mat Dw.mult B.Fn) (S' : Fr (ratOf C.Y) Dw.mult Dw.mult) (A₁ : Mat Dw.mult C.Y.Fn) (φ : B.Fn →ₐ[F] C.Y.Fn) (f : C.Y.X ⟶ B.X), j ≫ genStr Z ≫ spMap e.toRingHom = B.str → C.π = f ≫ j → Tied e B j f₀ S A₀ → Tied e C.Y C.π C.f0 S' A₁ → f₀.Coord (φ : B.Fn →+* C.Y.Fn) C.f0 (A₁ * (A₀.map φ)⁻¹) → Refines S S' φ f → ∀ (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z) (x' : Sp K ⟶ B.X), x' ≫ j = x → x ≫ genStr Z = spMap χ → ∀ g : EigFrame Z χ (x ≫ genι Z), ∃! p : Sp K ⟶ C.Y.X, p ≫ f = x' ∧ C.Carries p g := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C B j f₀ S A₀ S' A₁ φ f hj hπ hT hT' hC hR K _ χ x x' hx' hxs g
   obtain ⟨A, hA⟩ := S.nonempty (x' (IsLocalRing.closedPoint K))

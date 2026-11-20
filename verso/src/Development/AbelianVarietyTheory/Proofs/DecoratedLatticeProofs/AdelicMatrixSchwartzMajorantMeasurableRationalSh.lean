@@ -24,6 +24,9 @@ namespace GlobalTheory.Unf.MajMeas
 
 variable {D : D7}
 
+/- English proof (translation)
+Unfold `realSize`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem norm_compAt_le_realSize (θ : InfFam D) {m n : ℕ} (x : Mx D m n) (τ : D.what₂.Tau) (i : Fin m)
     (j : Fin n) : ‖compAt θ τ x i j‖ ≤ realSize θ x := by
   unfold realSize
@@ -36,12 +39,20 @@ theorem norm_compAt_le_realSize (θ : InfFam D) {m n : ℕ} (x : Mx D m n) (τ :
         Finset.single_le_sum (f := fun τ' => ∑ i', ∑ j', ‖compAt θ τ' x i' j'‖)
           (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ τ)
 
+/- English proof (translation)
+Unfold `realSize`. Use `continuous_finsetSum _ fun τ _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `continuous_norm.comp ((GlobalTheory.FockCompare.continuous_comp hθ τ).comp (continuous_id.matrix_elem i j))`.
+-/
 theorem continuous_realSize {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} :
     Continuous (realSize θ : Mx D m n → ℝ) := by
   unfold realSize
   refine continuous_finsetSum _ fun τ _ => continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_
   exact continuous_norm.comp ((GlobalTheory.FockCompare.continuous_comp hθ τ).comp (continuous_id.matrix_elem i j))
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `ha`. Use `sub_eq_zero.1 (h.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[(finPart D).map_sub, ha, h.fin, sub_zero]`. Rewrite using `[(infPart D).map_sub, (θ τ).map_sub, h.comp, sub_self]`.
+
+Introduce `ha`. Rewrite using `[ha]`. Conclude with `h.fin _`.
+-/
 theorem finPart_eq_zero_iff {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (a : AE D) : finPart D a = 0 ↔ a = σ (fun τ => θ τ (infPart D a)) := by
   constructor
@@ -53,6 +64,15 @@ theorem finPart_eq_zero_iff {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ A
     rw [ha]
     exact h.fin _
 
+/- English proof (translation)
+Take `⟨-, h2, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Establish `e : {z : Mx D m n | z.map (finPart D) = 0} = ⋂ i, ⋂ j, {z : Mx D m n | z i j = σ (fun τ => θ τ (infPart D (z i j)))}`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter]`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `hz i j`. Establish `hz'` using `congrFun (congrFun hz i) j`. Rewrite `hz'` using `[Matrix.map_apply, Matrix.zero_apply]`. Conclude with `(finPart_eq_zero_iff h _).1 hz'`. Introduce `hz`.
+
+Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Conclude with `(finPart_eq_zero_iff h _).2 (hz i j)`. Rewrite using `[e]`. Use `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq (continuous_id.matrix_elem i j) ?_` and prove the remaining obligations.
+
+Conclude with `h.cont.comp (continuous_pi fun τ => (GlobalTheory.FockCompare.continuous_comp h.inf τ).comp (continuous_id.matrix_elem i j))`.
+-/
 theorem isClosed_finZero {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     (m n : ℕ) : IsClosed {z : Mx D m n | z.map (finPart D) = 0} := by
   obtain ⟨-, h2, -⟩ := Formalism.IndefR.Eqv.ae_facts D
@@ -74,6 +94,11 @@ theorem isClosed_finZero {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D
   exact h.cont.comp (continuous_pi fun τ =>
     (GlobalTheory.FockCompare.continuous_comp h.inf τ).comp (continuous_id.matrix_elem i j))
 
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, hx⟩`. Conclude with `⟨k, hk, x - k, hx, add_sub_cancel k x⟩`. Introduce and unpack `⟨k, hk, z, hz, rfl⟩`.
+
+Conclude with `⟨k, hk, by rwa [add_sub_cancel_left]⟩`.
+-/
 theorem setOf_inBox {m n : ℕ} (K : Set (Mx D m n)) :
     {x | InBox K x} = K + {z : Mx D m n | z.map (finPart D) = 0} := by
   ext x
@@ -83,12 +108,26 @@ theorem setOf_inBox {m n : ℕ} (K : Set (Mx D m n)) :
   · rintro ⟨k, hk, z, hz, rfl⟩
     exact ⟨k, hk, by rwa [add_sub_cancel_left]⟩
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Rewrite using `[setOf_inBox]`. Conclude with `(isClosed_finZero h m n).add_left_of_isCompact hK`.
+-/
 theorem isClosed_inBox {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) : IsClosed {x | InBox K x} := by
   obtain ⟨h1, -⟩ := Formalism.IndefR.Eqv.ae_facts D
   rw [setOf_inBox]
   exact (isClosed_finZero h m n).add_left_of_isCompact hK
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Set `B : Set (D.what₂.Tau → Fin m → Fin n → ℂ)` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Metric.closedBall (0 : ℂ) R`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Set `g : Mx D m n × (D.what₂.Tau → Fin m → Fin n → ℂ) → Mx D m n` to `fun p => p.1 + Matrix.of fun i j => σ (fun τ => p.2 τ i j - θ τ (infPart D (p.1 i j)))`. Establish `hg : Continuous g`.
+
+Use `continuous_fst.add (continuous_matrix fun i j => h.cont.comp (continuous_pi fun τ => ?_))` and prove the remaining obligations. Establish `c1 : Continuous fun p : Mx D m n × (D.what₂.Tau → Fin m → Fin n → ℂ) => p.2 τ i j` using `by fun_prop`. Establish `c2 : Continuous fun p : Mx D m n × (D.what₂.Tau → Fin m → Fin n → ℂ) => θ τ (infPart D (p.1 i j))` using `(GlobalTheory.FockCompare.continuous_comp h.inf τ).comp (continuous_fst.matrix_elem i j)`. Conclude with `c1.sub c2`. Use `((hK.prod hB).image hg).of_isClosed_subset ((isClosed_inBox h K hK).inter (isClosed_le (continuous_realSize h.inf) continuous_const)) ?_` and prove the remaining obligations.
+
+Introduce and unpack `x ⟨⟨k, hk, hx⟩, hR⟩`. Use `⟨(k, fun τ i j => θ τ (infPart D (x i j))), ⟨hk, fun τ _ i _ j _ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Conclude with `(norm_compAt_le_realSize θ x τ i j).trans hR`. Use extensionality with `i j`.
+
+Establish `h0` using `congrFun (congrFun hx i) j`. Rewrite `h0` using `[Matrix.map_apply, Matrix.zero_apply, Matrix.sub_apply]`. Establish `e` using `(finPart_eq_zero_iff h _).1 h0`. Simplify using `only [(infPart D).map_sub, (θ _).map_sub] at e`. Use `show k i j + σ (fun τ => θ τ (infPart D (x i j)) - θ τ (infPart D (k i j))) = x i j`.
+
+Rewrite using `[← e, add_sub_cancel]`.
+-/
 theorem isCompact_box {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) (R : ℝ) :
     IsCompact {x | InBox K x ∧ realSize θ x ≤ R} := by
@@ -119,6 +158,9 @@ theorem isCompact_box {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (
     show k i j + σ (fun τ => θ τ (infPart D (x i j)) - θ τ (infPart D (k i j))) = x i j
     rw [← e, add_sub_cancel]
 
+/- English proof (translation)
+Establish `: BorelSpace (Mx D m n)` using `⟨rfl⟩`. Unfold `maj`. Conclude with `Measurable.ite (isClosed_inBox h K hK).measurableSet ((continuous_const.add (continuous_realSize h.inf)).pow N).measurable.inv measurable_const`.
+-/
 theorem measurable_maj {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} (h : GlobalTheory.FockCompare.Chart θ σ)
     {m n : ℕ} (K : Set (Mx D m n)) (hK : IsCompact K) (N : ℕ) : Measurable (maj θ K N) := by
   have : BorelSpace (Mx D m n) := ⟨rfl⟩
@@ -126,6 +168,11 @@ theorem measurable_maj {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D} 
   exact Measurable.ite (isClosed_inBox h K hK).measurableSet
     ((continuous_const.add (continuous_realSize h.inf)).pow N).measurable.inv measurable_const
 
+/- English proof (translation)
+Establish `hinj : Function.Injective x.mulVecLin` using `Matrix.mulVec_injective_iff.2 hx`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective x.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`.
+
+Rewrite `this` using `[← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+-/
 theorem exists_leftInv {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E)
     (hx : LinearIndependent D.host.E x.transpose) : ∃ y : Matrix (Fin n) (Fin m) D.host.E, y * x = 1 := by
   have hinj : Function.Injective x.mulVecLin := Matrix.mulVec_injective_iff.2 hx
@@ -135,10 +182,18 @@ theorem exists_leftInv {m n : ℕ} (x : Matrix (Fin m) (Fin n) D.host.E)
   rw [LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id] at this
   rwa [← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin'] at this
 
+/- English proof (translation)
+The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+-/
 theorem compAt_mul (θ : InfFam D) (τ : D.what₂.Tau) {m n k : ℕ} (A : Mx D m n) (B : Mx D n k) :
     compAt θ τ (A * B) = compAt θ τ A * compAt θ τ B :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
+/- English proof (translation)
+Use `⟨∑ τ, ∑ i, ∑ _j : Fin k, ∑ l, ‖compAt θ τ Y i l‖, by positivity, fun a => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [realSize, compAt_mul, Matrix.mul_apply]`. Use `_ ≤ ∑ τ, ∑ i, ∑ _j : Fin k, ∑ l, ‖compAt θ τ Y i l‖ * realSize θ a := by gcongr with τ _ i _ j _`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (norm_compAt_le_realSize θ a τ l j) (norm_nonneg _)`. Use `_ = _ := by simp only [Finset.sum_mul]`.
+-/
 theorem realSize_mul_le (θ : InfFam D) {m n k : ℕ} (Y : Mx D m n) :
     ∃ c : ℝ, 0 ≤ c ∧ ∀ a : Mx D n k, realSize θ (Y * a) ≤ c * realSize θ a := by
   refine ⟨∑ τ, ∑ i, ∑ _j : Fin k, ∑ l, ‖compAt θ τ Y i l‖, by positivity, fun a => ?_⟩
@@ -151,6 +206,19 @@ theorem realSize_mul_le (θ : InfFam D) {m n k : ℕ} (Y : Mx D m n) :
         exact mul_le_mul_of_nonneg_left (norm_compAt_le_realSize θ a τ l j) (norm_nonneg _)
     _ = _ := by simp only [Finset.sum_mul]
 
+/- English proof (translation)
+Take `⟨h1, -⟩` from `Formalism.IndefR.Eqv.ae_facts D`. Take `⟨y, hy⟩` from `exists_leftInv x hx`. Establish `hyx : (rat y : Mx D n m) * rat x = 1`. Unfold `rat`. Rewrite using `[← Matrix.map_mul, hy, Matrix.map_one _ (map_zero _) (map_one _)]`.
+
+Take `⟨c, hc0, hc⟩` from `realSize_mul_le θ (k := k) (rat y : Mx D n m)`. Use `⟨(fun a => (rat y : Mx D n m) * a) '' K, hK.image (continuous_const.matrix_mul continuous_id), fun N => ⟨(1 + c) ^ N, fun u => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hb : InBox K ((rat x : Mx D m n) * u)`. Take `⟨k0, hk0, hkx⟩` from `hb`. Establish `hb' : InBox ((fun a => (rat y : Mx D n m) * a) '' K) u`.
+
+Use `⟨rat y * k0, ⟨k0, hk0, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : u - rat y * k0 = rat y * (rat x * u - k0)`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Rewrite using `[e, Matrix.map_mul, hkx, Matrix.mul_zero]`. Simplify using `only [maj, if_pos (show InBox K ((rat x : Mx D m n) * u) from ⟨k0, hk0, hkx⟩), if_pos hb']`.
+
+Establish `hs` using `hc ((rat x : Mx D m n) * u)`. Rewrite `hs` using `[← Matrix.mul_assoc, hyx, Matrix.one_mul]`. Establish `h0` using `realSize_nonneg θ ((rat x : Mx D m n) * u)`. Establish `h0'` using `realSize_nonneg θ u`. Establish `hle : 1 + realSize θ u ≤ (1 + c) * (1 + realSize θ ((rat x : Mx D m n) * u))` using `by nlinarith`.
+
+Establish `hA : 0 < (1 + realSize θ ((rat x : Mx D m n) * u)) ^ N` using `by positivity`. Establish `hB : 0 < (1 + realSize θ u) ^ N` using `by positivity`. Rewrite using `[inv_eq_one_div, ← div_eq_mul_inv, div_le_div_iff₀ hA hB, one_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) hle N`. Establish `e : maj θ K N ((rat x : Mx D m n) * u) = 0` using `by simp only [maj, if_neg hb]`.
+
+Rewrite using `[e]`. Conclude with `mul_nonneg (by positivity) (maj_nonneg θ _ N u)`.
+-/
 theorem maj_rat_le (θ : InfFam D) (m n k : ℕ) (x : Matrix (Fin m) (Fin n) D.host.E)
     (hx : LinearIndependent D.host.E x.transpose) (K : Set (Mx D m k)) (hK : IsCompact K) :
     ∃ K' : Set (Mx D n k), IsCompact K' ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ u : Mx D n k,
@@ -188,6 +256,9 @@ end GlobalTheory.Unf.MajMeas
 
 open GlobalTheory.Unf.MajMeas in
 
+/- English proof (translation)
+Introduce `D θ hθ`. Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Conclude with `⟨fun m n K hK => ⟨isClosed_inBox hσ K hK, continuous_realSize hθ, fun N => measurable_maj hσ K hK N, fun R => isCompact_box hσ K hK R⟩, fun m n k x hx K hK => maj_rat_le θ m n k x hx K hK⟩`.
+-/
 theorem GlobalTheory.Unf.maj_measurable_rat : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → (∀ (m n : ℕ) (K : Set (Mx D m n)), IsCompact K → IsClosed {x | InBox K x} ∧ Continuous (realSize θ : Mx D m n → ℝ) ∧ (∀ N, Measurable (maj θ K N)) ∧ ∀ R : ℝ, IsCompact {x | InBox K x ∧ realSize θ x ≤ R}) ∧ ∀ (m n k : ℕ) (x : Matrix (Fin m) (Fin n) D.host.E), LinearIndependent D.host.E x.transpose → ∀ K : Set (Mx D m k), IsCompact K → ∃ K' : Set (Mx D n k), IsCompact K' ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ u : Mx D n k, maj θ K N ((rat x : Mx D m n) ⬝ u) ≤ C * maj θ K' N u := by
   intro D θ hθ
   obtain ⟨σ, hσ⟩ := GlobalTheory.RealLineAt.exists_inverse_chart hθ

@@ -18,6 +18,11 @@ def LocalAt (O : FunData K Df) (t : Bs.Tup) (w : HeightOneSpectrum (𝓞 K)) (δ
     Formalism.HermitianLatticesTheory.localization₂ w.asIdeal (Formalism.HermitianLatticesTheory.idealSmul
       (((w.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ (-δ) : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) O.M)
 
+/- English proof (translation)
+Establish `e : b * O.nr * O.g1 * O.g2 * O.pd * O.pd' * |(O.dE : ℝ)| = b * ((O.nr * O.g1 * O.g2 * O.pd * O.pd' * O.dE.natAbs : ℕ) : ℝ)`. Move the coercions through the operations in `[Nat.cast_natAbs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Break down `Nat.eq_zero_or_pos (O.nr * O.g1 * O.g2 * O.pd * O.pd' * O.dE.natAbs) with h | h` into its components or cases.
+
+Rewrite using `[h]`. Simplify using the standard rewrite rules. Conclude with `Real.log_nonneg (one_le_mul_of_one_le_of_one_le hb (by exact_mod_cast h))`.
+-/
 theorem logArg_nonneg (O : FunData K Df) {b : ℝ} (hb : 1 ≤ b) :
     0 ≤ Real.log (b * O.nr * O.g1 * O.g2 * O.pd * O.pd' * |(O.dE : ℝ)|) := by
   have e : b * O.nr * O.g1 * O.g2 * O.pd * O.pd' * |(O.dE : ℝ)| =
@@ -28,6 +33,11 @@ theorem logArg_nonneg (O : FunData K Df) {b : ℝ} (hb : 1 ≤ b) :
   · rw [h]; simp
   · exact Real.log_nonneg (one_le_mul_of_one_le_of_one_le hb (by exact_mod_cast h))
 
+/- English proof (translation)
+Use `Finset.sum_le_sum fun q _ => mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg _)` and prove the remaining obligations. Establish `: O.ee C b q ≤ O.ee C' b q`. Unfold `FunData.ee`. Use `split_ifs`. Use `Nat.succ_le_succ (Nat.floor_le_floor (div_le_div_of_nonneg_right ?_ (Real.log_natCast_nonneg _)))` and prove the remaining obligations.
+
+Unfold `FunData.PPF`. Use `logArg_nonneg O hb` as an intermediate fact. Use `gcongr`. Conclude with `le_rfl`. Conclude with `this` after adjusting the coercions.
+-/
 theorem sigma_mono_in_constant (O : FunData K Df) {C C' b : ℝ} (h : C ≤ C') (hb : 1 ≤ b) : O.Sig0 C b ≤ O.Sig0 C' b := by
   refine Finset.sum_le_sum fun q _ => mul_le_mul_of_nonneg_right ?_ (Real.log_natCast_nonneg _)
   have : O.ee C b q ≤ O.ee C' b q := by
@@ -40,6 +50,11 @@ theorem sigma_mono_in_constant (O : FunData K Df) {C C' b : ℝ} (h : C ≤ C') 
     · exact le_rfl
   exact_mod_cast this
 
+/- English proof (translation)
+Establish `h1` using `sigma_mono_in_constant O h hb`. Establish `h2` using `Sig0_nonneg O C b`. Establish `h3` using `Real.log_nonneg hb`. Establish `h4 : 0 ≤ C'` using `h0.trans h`. Establish `h5 : 0 ≤ b` using `by linarith`.
+
+Unfold `FunData.bFP`. Use `gcongr`.
+-/
 theorem monotonicity₂ (O : FunData K Df) {C C' b : ℝ} (h0 : 0 ≤ C) (h : C ≤ C') (hb : 1 ≤ b) : O.bFP C b ≤ O.bFP C' b := by
   have h1 := sigma_mono_in_constant O h hb
   have h2 := Sig0_nonneg O C b

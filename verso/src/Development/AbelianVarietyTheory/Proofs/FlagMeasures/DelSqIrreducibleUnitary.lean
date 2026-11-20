@@ -10,6 +10,11 @@ open scoped InnerProductSpace TensorProduct
 
 namespace GlobalTheory.WeylUnitary
 
+/- English proof (translation)
+Introduce `n lam`. Rewrite using `[← Formalism.L2.Col.nablaSq_eq_delSq ℂ lam]`. Establish `ha : Antitone lam.natW` using `fun i j hij => by`. Use `lam.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`.
+
+Use linear arithmetic over natural numbers and integers. Use `⟨GlobalTheory.Branching.finite_nablaSq ℂ n lam, rfl, fun g p hp => Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ n n _ g p hp, fun U hle hU => ?_⟩` and prove the remaining obligations. Rewrite using `[or_iff_not_imp_left]`. Introduce `hne`. Conclude with `le_antisymm hle (GlobalTheory.Branching.dualWeyl_le_of_rowDivClosed le_rfl _ ha U hle (GlobalTheory.Branching.rowDivClosed_of_rowAct_stable U (GlobalTheory.Branching.rowAct_mem_of_unitary_stable U hU)) hne)`.
+-/
 theorem delSq_irreducible_unitary :
     ∀ (n : ℕ) (lam : DomWeight n), FiniteDimensional ℂ (delSq ℂ n lam) ∧ delSq ℂ n lam = nablaSq ℂ n lam ∧ (∀ (g : Matrix (Fin n) (Fin n) ℂ), ∀ p ∈ delSq ℂ n lam, Formalism.GradedWeylDivisibility.rowAct ℂ g p ∈ delSq ℂ n lam) ∧ ∀ U : Submodule ℂ (MvPolynomial (Fin n × Fin n) ℂ), U ≤ delSq ℂ n lam → (∀ g ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ p ∈ U, Formalism.GradedWeylDivisibility.rowAct ℂ g p ∈ U) → U = ⊥ ∨ U = delSq ℂ n lam := by
   intro n lam

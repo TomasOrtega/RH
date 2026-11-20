@@ -13,6 +13,11 @@ namespace PositivityTheory.Rg.BcB.F.FG
 
 attribute [local instance] borelG borelF borelA GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
+/- English proof (translation)
+Establish `h0 : Valued.v (u : w.adicCompletion E) ≠ 0` using `(Valuation.ne_zero_iff _).2 u.ne_zero`. Unfold `ordL at h`. Rewrite `h` using `[dif_neg h0, neg_eq_zero]`. Establish `h1 : WithZero.unzero h0 = 1` using `by simpa using congrArg Multiplicative.ofAdd h`. Rewrite using `[← WithZero.coe_unzero h0, h1]`.
+
+Both sides reduce to the same expression.
+-/
 theorem v_one_of_ordL {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl E} (u : (w.adicCompletion E)ˣ)
     (h : ordL (u : w.adicCompletion E) = 0) : Valued.v (u : w.adicCompletion E) = 1 := by
   have h0 : Valued.v (u : w.adicCompletion E) ≠ 0 := (Valuation.ne_zero_iff _).2 u.ne_zero
@@ -22,6 +27,35 @@ theorem v_one_of_ordL {E : Type} [Field E] [NumberField E] [IsCMField E] {w : Pl
   rw [← WithZero.coe_unzero h0, h1]
   rfl
 
+/- English proof (translation)
+Introduce `hRS hFm hAct hLoc hCF hUS hCt E _ _ _ hE n a ha π hπ μ e hμ Sec hSec d hd hPS hdμ hϖ hunr σ hσ l₁ l₂ μ₁ μ₂ μa μb A s₁ s₂ Pa Pb D hC hL1 hL2 I G hG0 hGs hGl hact`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, G j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hG0 (funext h)`.
+
+Establish `hab : a + (n - a) = n` using `Nat.add_sub_of_le ha`. Establish `core : ∀ w ∈ Sec, IsSplitAt w → w ∉ d.T → w ∉ d.S₀ → w ∉ d.Bad → D.SplitAt π w ∧ ∀ u, ConjPl w u → D.SplitAt π u`. Introduce `w hwS hw hT hS0 hBad`. Establish `hun : μ.UnrAt w` using `hunr w hwS hS0 hBad`. Establish `hgood : d.Good w` using `⟨hw, hT, hS0, hBad, fun u hu => by rw [hdμ w]; exact hun u (v_one_of_ordL u hu)⟩`.
+
+Establish `hlev : d.lev a w = K2 a (n - a) w` using `by simp [LocData.lev, hT, hS0, hBad]`. Establish `hlev2 : d.lev₂ a w = K2 a (n - a) w` using `by simp [LocData.lev₂, hS0, hBad]`. Establish `hKU : d.KU w = KL n w` using `by simp [LocData.KU, hT, hS0, hBad]`. Take `⟨hfix1, hfix2⟩` from `(hGl j).2 w hwS`. Rewrite `hfix1` using `[hlev]`.
+
+Establish `hfix2'` using `hfix2 hw`. Rewrite `hfix2'` using `[hlev2]`. Establish `hCtk` using `fun k => hCt E n a (n - a) hab w (d.μ w) (d.ϖ w) k hw (hϖ w) hgood.2.2.2.2`. Establish `hsgn : d.sgn a w = 1`. Simplify using `only [LocData.sgn]`.
+
+Rewrite using `[(hCtk 0).2.2]`. Simplify using the standard rewrite rules. Establish `hhc : ∀ k, d.hc a ha w k = ctT hab w (d.μ w) (d.ϖ w) k`. Introduce `k`. Simplify using `[LocData.hc, hsgn]`.
+
+Establish `hOk : ∀ k intersection_update_fsHerm_neg_one, (d.hL a ha w k intersection_update_fsHerm_neg_one).Ok d.P` using `fun k intersection_update_fsHerm_neg_one => (hLoc E n d hd a ha).2.2.2 _ (Or.inr ⟨w, k, intersection_update_fsHerm_neg_one, hgood, rfl⟩)`. Establish `hDI : ∀ k intersection_update_fsHerm_neg_one, DiagIdem d.P (d.lev a) (d.hL a ha w k intersection_update_fsHerm_neg_one)`. Introduce `k intersection_update_fsHerm_neg_one w' _ x y`. Simplify using `only [LocData.hL, LocData.eL, LocData.diag]`. Apply the tactic sequence `split_ifs <;> rfl`.
+
+Establish `hwP : w ∉ d.P` using `by simp [LocData.P, hT, hS0]`. Establish `hP : ∀ k, actP w (ctT hab w (d.μ w) (d.ϖ w) k) (G j) = twTr (σ w).ρ (KL n w) (KL n w) (d.hU w k) LinearMap.id • G j`. Introduce `k`. Establish `h1` using `(hFm E d.kap Sec d.P (A.blk _) (Equiv.refl _) hSec hPS (d.lev a) (d.lev₂ a) (d.hL a ha w k false) I G w hL1 hL2 (hOk k false) (hDI k false) hGl hwS).1 hwP (fun w' hw' => by simp only [LocData.hL, LocData.eL, Bool.false_eq_true, ite_false]; rw [Function.update_of_ne hw']; rfl) (fu …`. Establish `h2` using `congrFun (hact w hwS hgood k false) j`.
+
+Establish `h3 : (d.hL a ha w k false).s w = ctT hab w (d.μ w) (d.ϖ w) k`. Simplify using `[LocData.hL, hhc]`. Rewrite `h1` using `[h3]`. Rewrite using `[← h1]`. Conclude with `h2`.
+
+Establish `hT' : ∀ k, actT w (ctT hab w (d.μ w) (d.ϖ w) k) (G j) = twTr (σ w).ρ (KL n w) (KL n w) (d.hU w k) LinearMap.id • G j`. Introduce `k`. Establish `h1` using `(hFm E d.kap Sec d.P (A.blk _) (Equiv.refl _) hSec hPS (d.lev a) (d.lev₂ a) (d.hL a ha w k true) I G w hL1 hL2 (hOk k true) (hDI k true) hGl hwS).2 hw (fun w' => by simp only [LocData.hL, LocData.eL, ite_true]; rfl) (fun w' hw' => by simp only [LocData.hL, LocData.eL, ite_true]; …`. Establish `h2` using `congrFun (hact w hwS hgood k true) j`. Establish `h3 : (d.hL a ha w k true).t w = ctT hab w (d.μ w) (d.ϖ w) k`.
+
+Simplify using `[LocData.hL, hhc]`. Rewrite `h1` using `[h3]`. Rewrite using `[← h1]`. Conclude with `h2`. Take `⟨B, hB, hBe⟩` from `hUS E n π w (σ w) hw (hσ w hwS).1 (by rw [← hKU]; exact (hσ w hwS).2)`.
+
+Establish `hev : ∀ k ≤ n, twTr (σ w).ρ (KL n w) (KL n w) (d.hU w k) LinearMap.id = satEig (qV E w) n B k` using `fun k hk => hBe _ (hϖ w) k hk`. Establish `hR` using `hRS E hE n a (n - a) hab μ e π s₁ s₂ Pa Pb D (G j) w B (d.ϖ w) hμ hπ hC.g₁ hC.g₂ hC.u₁ hC.u₂ hC.t₁ hC.t₂ hC.join (hGs j) hj hw hun hB (hϖ w)`. Use `⟨(hR.1 hfix1 fun k hk => ?_).2, fun u hu => (hR.2 u hu ((hCF E a (n - a)).1 w u (G j) hw hu hfix2') fun k hk => ?_).2⟩` and prove the remaining obligations. Rewrite using `[← hdμ w, ← (hAct E a (n - a) w _ (G j) (hCtk k).1 (hCtk k).2.1).1 hfix1, hP k, hev k hk]`. Rewrite using `[← hdμ w, ← (hAct E a (n - a) w _ (G j) (hCtk k).1 (hCtk k).2.1).2 hfix2', hT' k, hev k hk]`.
+
+Establish `hfin` using `((hCF E a (n - a)).2 Sec hSec).2 (d.T ∪ d.S₀ ∪ d.Bad)`. Rewrite using `[Filter.eventually_cofinite]`. Use `((d.T ∪ d.S₀ ∪ d.Bad).finite_toSet.union hfin).subset ?_` and prove the remaining obligations. Introduce `u hu`. Simplify using `only [Set.mem_ofPred_eq, Classical.not_imp] at hu`.
+
+Take `⟨hsu, hnot⟩` from `hu`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Finset.mem_coe, Finset.mem_union, Set.mem_ofPred_eq, not_or, not_exists, not_and] at hcon`. Take `⟨⟨⟨hT, hS0⟩, hBad⟩, hCX⟩` from `hcon`. Break down `((hCF E a (n - a)).2 Sec hSec).1 u hsu with huS | ⟨w, hwS, hw, hwu⟩` into its components or cases.
+
+Conclude with `hnot (core u huS hsu hT hS0 hBad).1`. Establish `hwX : w ∉ d.T ∪ d.S₀ ∪ d.Bad` using `fun h => hCX w (Finset.mem_union.1 h |>.imp_left Finset.mem_union.1) hwu`. Simplify using `only [Finset.mem_union, not_or] at hwX`. Conclude with `hnot ((core w hwS hw hwX.1.1 hwX.1.2 hwX.2).2 u hwu)`.
+-/
 theorem goodLOf_holds : GoodLOf := by
   intro hRS hFm hAct hLoc hCF hUS hCt E _ _ _ hE n a ha π hπ μ e hμ Sec hSec d hd hPS hdμ hϖ hunr σ hσ l₁ l₂ μ₁ μ₂ μa μb A s₁ s₂ Pa Pb D hC hL1 hL2
     I G hG0 hGs hGl hact

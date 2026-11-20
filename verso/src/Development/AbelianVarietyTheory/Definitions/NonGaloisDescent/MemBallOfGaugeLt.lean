@@ -26,6 +26,9 @@ def ball (r : ℝ) : Submodule A (PreDisc l u ρ) := Submodule.span A (monos l u
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨a, b, c, hle, rfl⟩`. Conclude with `⟨a, b, c, hle.trans (mul_le_mul_of_nonneg_right h (by positivity)), rfl⟩`.
+-/
 theorem _root_.GlobalTheory.BSP.ball_mono {r s : ℝ} (h : r ≤ s) :
     _root_.GlobalTheory.BSP.ball l u ρ r ≤ _root_.GlobalTheory.BSP.ball l u ρ s := by
   refine Submodule.span_mono ?_
@@ -35,6 +38,11 @@ theorem _root_.GlobalTheory.BSP.ball_mono {r s : ℝ} (h : r ≤ s) :
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Establish `hxy` using `Submodule.mul_mem_mul hx hy`. Rewrite `hxy` using `[_root_.GlobalTheory.BSP.ball, _root_.GlobalTheory.BSP.ball, Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ hxy` and prove the remaining obligations. Introduce and unpack `_ ⟨y₁, ⟨a, b, c, h₁, rfl⟩, y₂, ⟨a', b', c', h₂, rfl⟩, rfl⟩`. Use `⟨a + a', b + b', c + c', ?_, ?_⟩` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem _root_.GlobalTheory.BSP.mul_mem_ball {r s : ℝ} (hr : 0 ≤ r) {x y : _root_.GlobalTheory.BSP.PreDisc l u ρ}
     (hx : x ∈ _root_.GlobalTheory.BSP.ball l u ρ r) (hy : y ∈ _root_.GlobalTheory.BSP.ball l u ρ s) :
     x * y ∈ _root_.GlobalTheory.BSP.ball l u ρ (r * s) := by
@@ -51,6 +59,11 @@ theorem _root_.GlobalTheory.BSP.mul_mem_ball {r s : ℝ} (hr : 0 ≤ r) {x y : _
   · simp only [map_mul, map_pow]
     ring
 
+/- English proof (translation)
+Take `⟨n, a, h⟩` from `IsLocalization.Away.surj (l : A) y`. Use `⟨(l : ℝ) ^ n + 1, by positivity, ?_⟩` and prove the remaining obligations. Establish `e : y = a • (algebraMap A (PreDisc l u ρ) ((l : A) ^ 0 * u ^ 0) * IsLocalization.Away.invSelf (l : A) ^ n)`. Rewrite using `[Algebra.smul_def, ← h, pow_zero, pow_zero, mul_one, map_one, one_mul, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`. Rewrite using `[e]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 0, n, by simp, rfl⟩)`.
+-/
 theorem exists_mem_ball (y : PreDisc l u ρ) : ∃ r : ℝ, 0 < r ∧ y ∈ ball l u ρ r := by
   obtain ⟨n, a, h⟩ := IsLocalization.Away.surj (l : A) y
   refine ⟨(l : ℝ) ^ n + 1, by positivity, ?_⟩
@@ -65,6 +78,9 @@ def gauge (y : PreDisc l u ρ) : ℝ := sInf {r : ℝ | 0 < r ∧ y ∈ ball l u
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+The claim follows from `Real.sInf_nonneg fun _ h => h.1.le`.
+-/
 theorem _root_.GlobalTheory.BSP.gauge_nonneg (y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     0 ≤ _root_.GlobalTheory.BSP.gauge l u ρ y :=
   Real.sInf_nonneg fun _ h => h.1.le
@@ -72,12 +88,18 @@ theorem _root_.GlobalTheory.BSP.gauge_nonneg (y : _root_.GlobalTheory.BSP.PreDis
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+The claim follows from `csInf_le ⟨0, fun _ h => h.1.le⟩ ⟨hr, h⟩`.
+-/
 theorem _root_.GlobalTheory.BSP.gauge_le {y : _root_.GlobalTheory.BSP.PreDisc l u ρ} {r : ℝ} (hr : 0 < r)
     (h : y ∈ _root_.GlobalTheory.BSP.ball l u ρ r) : _root_.GlobalTheory.BSP.gauge l u ρ y ≤ r :=
   csInf_le ⟨0, fun _ h => h.1.le⟩ ⟨hr, h⟩
 
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
+/- English proof (translation)
+Take `⟨n, a, h⟩` from `IsLocalization.Away.surj (l : A) y`. Use `⟨a, n, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, mul_assoc, ← mul_pow, IsLocalization.Away.mul_invSelf, one_pow, mul_one]`.
+-/
 private lemma preDisc_exists_eq_algebraMap_mul_invSelf_pow (y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     ∃ (a : A) (n : ℕ), y = algebraMap A _ a * IsLocalization.Away.invSelf (l : A) ^ n := by
   obtain ⟨n, a, h⟩ := IsLocalization.Away.surj (l : A) y
@@ -86,6 +108,11 @@ private lemma preDisc_exists_eq_algebraMap_mul_invSelf_pow (y : _root_.GlobalThe
 
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
+/- English proof (translation)
+Take `⟨a, n, rfl⟩` from `preDisc_exists_eq_algebraMap_mul_invSelf_pow l u ρ y`. Use `⟨(l : ℝ) ^ n + 1, by positivity, ?_⟩` and prove the remaining obligations. Establish `hy : algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ) a * IsLocalization.Away.invSelf (l : A) ^ n = a • (algebraMap A _ ((l : A) ^ 0 * u ^ 0) * IsLocalization.Away.invSelf (l : A) ^ n)`. Rewrite using `[Algebra.smul_def, pow_zero, pow_zero, mul_one, map_one, one_mul]`. Rewrite using `[hy]`.
+
+Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 0, n, ?_, rfl⟩)` and prove the remaining obligations. Rewrite using `[pow_zero, pow_zero, mul_one, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 private lemma preDisc_exists_pos_mem_ball (y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     ∃ r : ℝ, 0 < r ∧ y ∈ _root_.GlobalTheory.BSP.ball l u ρ r := by
   obtain ⟨a, n, rfl⟩ := preDisc_exists_eq_algebraMap_mul_invSelf_pow l u ρ y
@@ -101,6 +128,9 @@ private lemma preDisc_exists_pos_mem_ball (y : _root_.GlobalTheory.BSP.PreDisc l
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Take `⟨r₀, hr₀, hy⟩` from `preDisc_exists_pos_mem_ball l u ρ y`. Take `⟨t, ⟨_, hyt⟩, htr⟩` from `exists_lt_of_csInf_lt (s := {r : ℝ | 0 < r ∧ y ∈ _root_.GlobalTheory.BSP.ball l u ρ r}) ⟨r₀, hr₀, hy⟩ h`. Conclude with `_root_.GlobalTheory.BSP.ball_mono l u ρ htr.le hyt`.
+-/
 theorem _root_.GlobalTheory.BSP.mem_ball_of_gauge_lt {y : _root_.GlobalTheory.BSP.PreDisc l u ρ} {r : ℝ}
     (h : _root_.GlobalTheory.BSP.gauge l u ρ y < r) : y ∈ _root_.GlobalTheory.BSP.ball l u ρ r := by
   obtain ⟨r₀, hr₀, hy⟩ := preDisc_exists_pos_mem_ball l u ρ y
@@ -111,6 +141,9 @@ theorem _root_.GlobalTheory.BSP.mem_ball_of_gauge_lt {y : _root_.GlobalTheory.BS
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Use `le_of_forall_gt_imp_ge_of_dense fun t ht => ?_` and prove the remaining obligations. Establish `ht₀ : 0 < t` using `((_root_.GlobalTheory.BSP.gauge_nonneg l u ρ x).trans (le_max_left _ _)).trans_lt ht`. Conclude with `_root_.GlobalTheory.BSP.gauge_le l u ρ ht₀ (add_mem (_root_.GlobalTheory.BSP.mem_ball_of_gauge_lt l u ρ ((le_max_left _ _).trans_lt ht)) (_root_.GlobalTheory.BSP.mem_ball_of_gauge_lt l u ρ ((le_max_right _ _).trans_lt ht)))`.
+-/
 theorem _root_.GlobalTheory.BSP.gauge_add_le_max (x y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     _root_.GlobalTheory.BSP.gauge l u ρ (x + y) ≤
       max (_root_.GlobalTheory.BSP.gauge l u ρ x) (_root_.GlobalTheory.BSP.gauge l u ρ y) := by
@@ -140,6 +173,9 @@ instance : SeminormedCommRing (PreDisc l u ρ) :=
     (inferInstance : CommRing (PreDisc l u ρ)) with
     norm_mul_le := (gaugeSeminorm l u ρ).mul_le' }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem norm_preDisc (y : PreDisc l u ρ) : ‖y‖ = gauge l u ρ y := rfl
 
 def Disc : Type := UniformSpace.Completion (PreDisc l u ρ)
@@ -160,6 +196,9 @@ def toDisc : A →+* Disc l u ρ := (ofPre l u ρ).comp (algebraMap A (PreDisc l
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+The claim follows from `UniformSpace.Completion.norm_coe y`.
+-/
 theorem _root_.GlobalTheory.BSP.norm_ofPre (y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     ‖_root_.GlobalTheory.BSP.ofPre l u ρ y‖ = _root_.GlobalTheory.BSP.gauge l u ρ y :=
   UniformSpace.Completion.norm_coe y
@@ -167,6 +206,9 @@ theorem _root_.GlobalTheory.BSP.norm_ofPre (y : _root_.GlobalTheory.BSP.PreDisc 
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+The claim follows from `UniformSpace.Completion.denseRange_coe`.
+-/
 theorem _root_.GlobalTheory.BSP.denseRange_ofPre :
     DenseRange (_root_.GlobalTheory.BSP.ofPre l u ρ) :=
   UniformSpace.Completion.denseRange_coe
@@ -174,6 +216,9 @@ theorem _root_.GlobalTheory.BSP.denseRange_ofPre :
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Establish `hl : IsUnit ((l : ℕ) : _root_.GlobalTheory.BSP.PreDisc l u ρ)`. Rewrite using `[← map_natCast (algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ))]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Simplify using `using hl.map (_root_.GlobalTheory.BSP.ofPre l u ρ)`.
+-/
 theorem _root_.GlobalTheory.BSP.isUnit_l_disc : IsUnit ((l : ℕ) : _root_.GlobalTheory.BSP.Disc l u ρ) := by
   have hl : IsUnit ((l : ℕ) : _root_.GlobalTheory.BSP.PreDisc l u ρ) := by
     rw [← map_natCast (algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ))]
@@ -190,6 +235,9 @@ structure IsDiscMap {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} (f : A �
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ => le_rfl⟩`.
+-/
 theorem _root_.GlobalTheory.BSP.isDiscMap_id :
     _root_.GlobalTheory.BSP.IsDiscMap (RingHom.id A) (RingHom.id (_root_.GlobalTheory.BSP.Disc l u ρ)) :=
   ⟨fun _ => rfl, fun _ => le_rfl⟩
@@ -202,6 +250,11 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Rewrite using `[_root_.GlobalTheory.BSP.norm_preDisc]`. Use `_root_.GlobalTheory.BSP.gauge_le l u ρ one_pos ?_` and prove the remaining obligations. Establish `ha : algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ) a = a • (algebraMap A _ ((l : A) ^ 0 * u ^ 0) * IsLocalization.Away.invSelf (l : A) ^ 0)`. Simplify using `[Algebra.smul_def]`. Rewrite using `[ha]`.
+
+Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, 0, 0, by simp, rfl⟩)`.
+-/
 theorem _root_.GlobalTheory.BSP.norm_algebraMap_le (a : A) :
     ‖algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ) a‖ ≤ 1 := by
   rw [_root_.GlobalTheory.BSP.norm_preDisc]
@@ -216,6 +269,9 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖_root_.GlobalTheory.BSP.ofPre l u ρ (algebraMap A _ a)‖ ≤ 1`. Rewrite using `[_root_.GlobalTheory.BSP.norm_ofPre, ← _root_.GlobalTheory.BSP.norm_preDisc]`. Conclude with `_root_.GlobalTheory.BSP.norm_algebraMap_le a`.
+-/
 theorem _root_.GlobalTheory.BSP.norm_toDisc_le (a : A) :
     ‖_root_.GlobalTheory.BSP.toDisc l u ρ a‖ ≤ 1 := by
   change ‖_root_.GlobalTheory.BSP.ofPre l u ρ (algebraMap A _ a)‖ ≤ 1
@@ -233,6 +289,9 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+-/
 theorem _root_.GlobalTheory.BSP.preMap_alg (f : A →+* A') (a : A) :
     _root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f (algebraMap A _ a) = algebraMap A' _ (f a) :=
   IsLocalization.Away.lift_eq _ _ a
@@ -241,6 +300,9 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Establish `h` using `congrArg (_root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f) (IsLocalization.Away.mul_invSelf (S := _root_.GlobalTheory.BSP.PreDisc l u ρ) (l : A))`. Rewrite `h` using `[map_mul, map_one, _root_.GlobalTheory.BSP.preMap_alg, map_natCast]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := _root_.GlobalTheory.BSP.PreDisc l u' ρ') (l : A')).mul_left_cancel (h.trans (IsLocalization.Away.mul_invSelf _).symm)`.
+-/
 theorem _root_.GlobalTheory.BSP.preMap_inv (f : A →+* A') :
     _root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f (IsLocalization.Away.invSelf (l : A)) =
       IsLocalization.Away.invSelf (l : A') := by
@@ -253,6 +315,11 @@ theorem _root_.GlobalTheory.BSP.preMap_inv (f : A →+* A') :
 open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Simplify using `using _root_.GlobalTheory.BSP.norm_algebraMap_le (l := l) (u := u) (ρ := ρ) (1 : A)`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`.
+
+Conclude with `(norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right ih (norm_nonneg _))`.
+-/
 private lemma preDisc_norm_pow_le_norm_pow (x : _root_.GlobalTheory.BSP.PreDisc l u ρ) (k : ℕ) : ‖x ^ k‖ ≤ ‖x‖ ^ k := by
   induction k with
   | zero =>
@@ -265,6 +332,21 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Establish `hl0 : (0 : ℝ) < l` using `Nat.cast_pos.mpr hl.out.pos`. Establish `hfu : ‖algebraMap A' (_root_.GlobalTheory.BSP.PreDisc l u' ρ') (f u)‖ ≤ ρ`. Establish `h'` using `h`. Express the relevant statement in the definitionally equal form `‖_root_.GlobalTheory.BSP.ofPre l u' ρ' (algebraMap A' _ (f u))‖ ≤ _ at h'`. Rewrite `h'` using `[_root_.GlobalTheory.BSP.norm_ofPre]`. Then use the resulting hypothesis.
+
+Establish `key : ∀ r : ℝ, 0 ≤ r → ∀ z ∈ _root_.GlobalTheory.BSP.ball l u ρ r, ‖_root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f z‖ ≤ r`. Introduce `r hr z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, b, c, hle, rfl⟩` from `hz`.
+
+Establish `hmono : ‖algebraMap A' (_root_.GlobalTheory.BSP.PreDisc l u' ρ') ((l : A') ^ a) * IsLocalization.Away.invSelf (l : A') ^ c‖ ≤ (l : ℝ) ^ c / (l : ℝ) ^ a`. Use `_root_.GlobalTheory.BSP.gauge_le l u' ρ' (by positivity) ?_` and prove the remaining obligations. Use `Submodule.subset_span ⟨a, 0, c, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[pow_zero, mul_one, div_mul_cancel₀ _ (by positivity)]`. Establish `hpow : ‖algebraMap A' (_root_.GlobalTheory.BSP.PreDisc l u' ρ') (f u) ^ b‖ ≤ (ρ : ℝ) ^ b` using `(preDisc_norm_pow_le_norm_pow _ b).trans (pow_le_pow_left₀ (norm_nonneg _) hfu b)`.
+
+Establish `himg : _root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f (algebraMap A _ ((l : A) ^ a * u ^ b) * IsLocalization.Away.invSelf (l : A) ^ c) = (algebraMap A' (_root_.GlobalTheory.BSP.PreDisc l u' ρ') ((l : A') ^ a) * IsLocalization.Away.invSelf (l : A') ^ c) * algebraMap A' (_root_.Globa …`. Simplify using `only [map_mul, map_pow, map_natCast, _root_.GlobalTheory.BSP.preMap_alg, _root_.GlobalTheory.BSP.preMap_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[himg]`. Use `(norm_mul_le _ _).trans ((mul_le_mul hmono hpow (norm_nonneg _) (by positivity)).trans ?_)` and prove the remaining obligations.
+
+Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`. Conclude with `hle`. Consider the case `zero => simpa using hr`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`.
+
+Conclude with `(_root_.GlobalTheory.BSP.gauge_add_le_max l u' ρ' _ _).trans (max_le hx hy)`. Consider the case `smul a x _ hx`. Rewrite using `[Algebra.smul_def, map_mul, _root_.GlobalTheory.BSP.preMap_alg]`. Use `(norm_mul_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+
+Use `le_of_forall_gt_imp_ge_of_dense fun t ht => ?_` and prove the remaining obligations. Conclude with `key t ((norm_nonneg y).trans ht.le) y (_root_.GlobalTheory.BSP.mem_ball_of_gauge_lt l u ρ ht)`.
+-/
 theorem _root_.GlobalTheory.BSP.norm_preMap_le [hl : Fact l.Prime] (f : A →+* A')
     (h : ‖_root_.GlobalTheory.BSP.toDisc l u' ρ' (f u)‖ ≤ ρ) (y : _root_.GlobalTheory.BSP.PreDisc l u ρ) :
     ‖_root_.GlobalTheory.BSP.preMap l u ρ u' ρ' f y‖ ≤ ‖y‖ := by
@@ -319,6 +401,13 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Use `⟨fun a => ?_, fun x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UniformSpace.Completion.mapRingHom _ _ ((algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ) a : UniformSpace.Completion (_root_.GlobalTheory.BSP.PreDisc l u ρ))) = ((algebraMap A' (_root_.GlobalTheory.BSP.PreDisc l u' ρ') (f a) : UniformSpace.Completion (_root_.GlobalTheory.BSP …`. Rewrite using `[UniformSpace.Completion.mapRingHom_coe, _root_.GlobalTheory.BSP.preMap_alg]`. Use `UniformSpace.Completion.induction_on (p := fun x : UniformSpace.Completion (_root_.GlobalTheory.BSP.PreDisc l u ρ) => ‖_root_.GlobalTheory.BSP.Disc.map f h x‖ ≤ ‖x‖) x ?_ ?_` and prove the remaining obligations. Use `isClosed_le (continuous_norm.comp ?_) continuous_norm` and prove the remaining obligations.
+
+Simplify using `only [_root_.GlobalTheory.BSP.Disc.map, UniformSpace.Completion.mapRingHom_apply]`. Conclude with `UniformSpace.Completion.continuous_map`. Introduce `y`. Express the relevant statement in the definitionally equal form `‖UniformSpace.Completion.mapRingHom _ _ (y : UniformSpace.Completion (_root_.GlobalTheory.BSP.PreDisc l u ρ))‖ ≤ ‖(y : UniformSpace.Completion (_root_.GlobalTheory.BSP.PreDisc l u ρ))‖`. Rewrite using `[UniformSpace.Completion.mapRingHom_coe]`.
+
+Conclude with `(_root_.GlobalTheory.BSP.norm_ofPre l u' ρ' _).trans_le ((_root_.GlobalTheory.BSP.norm_preMap_le f h y).trans (_root_.GlobalTheory.BSP.norm_ofPre l u ρ y).ge)`.
+-/
 theorem _root_.GlobalTheory.BSP.isDiscMap_map [Fact l.Prime] (f : A →+* A')
     (h : ‖_root_.GlobalTheory.BSP.toDisc l u' ρ' (f u)‖ ≤ ρ) :
     _root_.GlobalTheory.BSP.IsDiscMap f (_root_.GlobalTheory.BSP.Disc.map f h) := by
@@ -349,6 +438,17 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Establish `hFc : Continuous F` using `AddMonoidHomClass.continuous_of_bound F 1 fun x => by`. Simplify using `using hF.norm_le x`. Establish `hGc : Continuous G` using `AddMonoidHomClass.continuous_of_bound G 1 fun x => by`. Simplify using `using hG.norm_le x`. Establish `hinv : ∀ H : _root_.GlobalTheory.BSP.Disc l u ρ →+* _root_.GlobalTheory.BSP.Disc l u' ρ', _root_.GlobalTheory.BSP.IsDiscMap f H → H (_root_.GlobalTheory.BSP.ofPre l u ρ (IsLocalization.Away.invSelf (l : A))) * _root_.GlobalTheory.BSP.toDisc l u' ρ' (l : A') = 1`.
+
+Introduce `H hH`. Rewrite using `[← map_natCast f, ← hH.ext, ← map_mul]`. Express the relevant statement in the definitionally equal form `H (_root_.GlobalTheory.BSP.ofPre l u ρ _ * _root_.GlobalTheory.BSP.ofPre l u ρ (algebraMap A _ (l : A))) = 1`. Rewrite using `[← map_mul, mul_comm, IsLocalization.Away.mul_invSelf, map_one, map_one]`. Establish `hinvEq : F (_root_.GlobalTheory.BSP.ofPre l u ρ (IsLocalization.Away.invSelf (l : A))) = G (_root_.GlobalTheory.BSP.ofPre l u ρ (IsLocalization.Away.invSelf (l : A)))`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (_root_.GlobalTheory.BSP.toDisc l u' ρ' (l : A')), hinv G hG, mul_one]`. Use `_ = (F (_root_.GlobalTheory.BSP.ofPre l u ρ (IsLocalization.Away.invSelf (l : A))) * _root_.GlobalTheory.BSP.toDisc l u' ρ' (l : A')) * G (_root_.GlobalTheory.BSP.ofPre l u ρ (IsLocalization.Away.invSelf (l : A))) := by`. Rewrite using `[mul_assoc]`. Use `_ = _ := by rw [hinv F hF, one_mul]`.
+
+Establish `hpre : ∀ y, F (_root_.GlobalTheory.BSP.ofPre l u ρ y) = G (_root_.GlobalTheory.BSP.ofPre l u ρ y)`. Introduce `y`. Take `⟨a, n, rfl⟩` from `preDisc_exists_eq_algebraMap_mul_invSelf_pow l u ρ y`. Rewrite using `[map_mul, map_pow, map_mul, map_mul, map_pow, map_pow, hinvEq]`. Use `congr 1`.
+
+Conclude with `(hF.ext a).trans (hG.ext a).symm`. Conclude with `RingHom.ext (congrFun ((_root_.GlobalTheory.BSP.denseRange_ofPre l u ρ).equalizer hFc hGc (funext hpre)))`.
+-/
 theorem _root_.GlobalTheory.BSP.IsDiscMap.unique {f : A →+* A'}
     {F G : _root_.GlobalTheory.BSP.Disc l u ρ →+* _root_.GlobalTheory.BSP.Disc l u' ρ'}
     (hF : _root_.GlobalTheory.BSP.IsDiscMap f F)
@@ -391,6 +491,11 @@ open scoped NNReal in
 variable (l : ℕ) {A : Type} [CommRing A] (u : A) (ρ : ℝ≥0) in
 variable {l u ρ} {A' : Type} [CommRing A'] {u' : A'} {ρ' : ℝ≥0} in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `‖_root_.GlobalTheory.BSP.ofPre l u ρ (algebraMap A _ (u ^ k))‖ ≤ _`. Rewrite using `[_root_.GlobalTheory.BSP.norm_ofPre]`. Use `_root_.GlobalTheory.BSP.gauge_le l u ρ (pow_pos (NNReal.coe_pos.mpr hρ) k) ?_` and prove the remaining obligations. Establish `hu : algebraMap A (_root_.GlobalTheory.BSP.PreDisc l u ρ) (u ^ k) = algebraMap A _ ((l : A) ^ 0 * u ^ k) * IsLocalization.Away.invSelf (l : A) ^ 0`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hu]`. Conclude with `Submodule.subset_span ⟨0, k, 0, by simp, rfl⟩`.
+-/
 theorem _root_.GlobalTheory.BSP.norm_toDisc_pow_le (k : ℕ) (hρ : 0 < ρ) :
     ‖_root_.GlobalTheory.BSP.toDisc l u ρ (u ^ k)‖ ≤ (ρ : ℝ) ^ k := by
   change ‖_root_.GlobalTheory.BSP.ofPre l u ρ (algebraMap A _ (u ^ k))‖ ≤ _

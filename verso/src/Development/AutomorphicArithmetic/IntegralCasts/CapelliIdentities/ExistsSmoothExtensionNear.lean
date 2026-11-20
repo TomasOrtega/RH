@@ -1,5 +1,14 @@
 import Mathlib
 
+/- English proof (translation)
+Introduce `E _ _ _ V _ _ m U hU F hF x hx`. Take `⟨ε, hε, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (hU.mem_nhds hx)`. Set `b : ContDiffBump x` to `⟨ε / 2, ε, half_pos hε, half_lt_self hε⟩`. Establish `hsub : tsupport (b : E → ℝ) ⊆ U`. Rewrite using `[b.tsupport_eq]`.
+
+Conclude with `hball`. Use `⟨fun y => b y • F y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`. Distinguish the cases in `hy : y ∈ U`.
+
+Conclude with `(b.contDiff (n := m)).contDiffAt.smul (hF.contDiffAt (hU.mem_nhds hy))`. Establish `h0 : (b : E → ℝ) =ᶠ[nhds y] 0` using `notMem_tsupport_iff_eventuallyEq.1 fun h => hy (hsub h)`. Establish `h1 : (fun z => b z • F z) =ᶠ[nhds y] fun _ => (0 : V)` using `by filter_upwards [h0] with z hz`. Simplify using `[hz]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq h1`.
+
+Use `filter_upwards [b.eventuallyEq_one] with z hz`. Simplify using `[hz]`.
+-/
 theorem UpperTheory.exists_smooth_extension_near :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
       {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {m : ℕ∞} {U : Set E},

@@ -29,6 +29,9 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Cris.evalAt, RingHom.comp_apply]`. Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+-/
 theorem _root_.GlobalTheory.LogCris.evalAt_res {B : Type} [CommRing B] {X : Scheme.{0}}
     (y : Spec (CommRingCat.of B) ⟶ X) {U V : X.Opens}
     (hV : V ≤ U) (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ V) (a : Γ(X, U)) :
@@ -40,6 +43,9 @@ theorem _root_.GlobalTheory.LogCris.evalAt_res {B : Type} [CommRing B] {X : Sche
 set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry in
 variable {O : Type} [CommRing O] in
+/- English proof (translation)
+Establish `h1 : (Spec.map χ).appLE ⊤ ⊤ e = (Spec.map χ).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[h1, ← CommRingCat.comp_apply, Scheme.ΓSpecIso_naturality, CommRingCat.comp_apply]`.
+-/
 private theorem gammaSpecIso_hom_appLE_spec_map {A C : CommRingCat.{0}} (χ : A ⟶ C)
     (e : (⊤ : (Spec C).Opens) ≤ Spec.map χ ⁻¹ᵁ ⊤) (b : Γ(Spec A, ⊤)) :
     (Scheme.ΓSpecIso C).hom ((Spec.map χ).appLE ⊤ ⊤ e b) = χ ((Scheme.ΓSpecIso A).hom b) := by
@@ -52,6 +58,9 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Cris.evalAt, RingHom.comp_apply]`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE (Spec.map φ) y U ⊤ ⊤ h le_top, CommRingCat.comp_apply]`. Conclude with `gammaSpecIso_hom_appLE_spec_map φ _ _`.
+-/
 theorem _root_.GlobalTheory.LogCris.evalAt_map {B B' : CommRingCat.{0}} {X : Scheme.{0}} (φ : B ⟶ B')
     (y : Spec B ⟶ X) {U : X.Opens}
     (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ (Spec.map φ ≫ y) ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -65,6 +74,11 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+Simplify using `only [_root_.GlobalTheory.Cris.evalAt, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply (q.appLE ⊤ U le_top) (y.appLE U ⊤ h), Scheme.Hom.appLE_comp_appLE y q ⊤ U ⊤ le_top h]`. Establish `key : ∀ (f : Spec (CommRingCat.of B) ⟶ Spec (CommRingCat.of O)), f = Spec.map (CommRingCat.ofHom (ψ.comp κ)) → ∀ e, (Scheme.ΓSpecIso (CommRingCat.of B)).hom (f.appLE ⊤ ⊤ e ((Scheme.ΓSpecIso (CommRingCat.of O)).inv a)) = ψ (κ a)`. Introduce and unpack `f rfl e`. Rewrite using `[gammaSpecIso_hom_appLE_spec_map]`.
+
+Simplify using the standard rewrite rules. Conclude with `key _ hy _`.
+-/
 theorem _root_.GlobalTheory.LogCris.evalAt_base {B : Type} [CommRing B] {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) {k : Type} [CommRing k]
     (κ : O →+* k) (ψ : k →+* B) (y : Spec (CommRingCat.of B) ⟶ X)
@@ -87,11 +101,17 @@ set_option autoImplicit false in
 open CategoryTheory AlgebraicGeometry in
 variable {O : Type} [CommRing O] in
 
+/- English proof (translation)
+The claim follows from `le_inf h h'`.
+-/
 theorem _root_.GlobalTheory.LogCris.le_preimage_inf {B : Type} [CommRing B] {X : Scheme.{0}}
     (y : Spec (CommRingCat.of B) ⟶ X) {U V : X.Opens}
     (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ y ⁻¹ᵁ V) : ⊤ ≤ y ⁻¹ᵁ (U ⊓ V) :=
   le_inf h h'
 
+/- English proof (translation)
+Introduce `p _` and use `h (Set.mem_univ ((Spec.map φ) p))`.
+-/
 theorem le_preimage_map {B B' : CommRingCat.{0}} {X : Scheme.{0}} (φ : B ⟶ B') (y : Spec B ⟶ X) {U : X.Opens}
     (h : ⊤ ≤ y ⁻¹ᵁ U) : ⊤ ≤ (Spec.map φ ≫ y) ⁻¹ᵁ U :=
   fun p _ => h (Set.mem_univ ((Spec.map φ) p))
@@ -184,6 +204,9 @@ namespace SSAtlas
 variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : Type} [Fintype ι]
   {k : Type} [CommRing k] (κ : O →+* k)
 
+/- English proof (translation)
+Introduce `x`. Establish `hx : x ∈ (⨆ α, C.U α)` using `C.cover ▸ trivial`. Take `⟨α, hα⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨V, hVa, hxV, -, m, r, h1, h2, -, ψ, het, hcomp, -, -⟩` from `C.chart α x hα`. Conclude with `⟨V, hVa, hxV, m, r, h1, h2, ψ, het, hcomp⟩`.
+-/
 theorem isStrictlySemistable (C : SSAtlas ϖ X q ι A) : GlobalTheory.Et.IsStrictlySemistable ϖ q := by
   intro x
   have hx : x ∈ (⨆ α, C.U α) := C.cover ▸ trivial
@@ -193,6 +216,9 @@ theorem isStrictlySemistable (C : SSAtlas ϖ X q ι A) : GlobalTheory.Et.IsStric
 
 open Classical in
 
+/- English proof (translation)
+Use `⟨C.isStrictlySemistable, fun B => Equiv.refl _, C.U, C.F, C.G, C.affine, C.cover, C.prod_F, C.F_eq, C.nzd, C.chart, fun φ y => rfl, fun {B} y => ⟨rfl, fun α => ⟨Iff.rfl, fun h => ⟨fun i => dif_pos h, fun β h' i => ?_⟩⟩⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((if h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) then Units.map (GlobalTheory.Cris.evalAt (B := B) y.1.2 (C.U α ⊓ C.U β) h : Γ(X, C.U α ⊓ C.U β) →* B) (C.G α β i) else 1 : Bˣ) : B) = _`. Rewrite using `[dif_pos (show ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) from h')]`. Both sides reduce to the same expression.
+-/
 theorem isSSFun_logFun (C : SSAtlas ϖ X q ι A) : IsSSFun ϖ X q κ (C.logFun κ) := by
   refine ⟨C.isStrictlySemistable, fun B => Equiv.refl _, C.U, C.F, C.G, C.affine, C.cover, C.prod_F, C.F_eq, C.nzd,
     C.chart, fun φ y => rfl, fun {B} y => ⟨rfl, fun α => ⟨Iff.rfl, fun h => ⟨fun i => dif_pos h, fun β h' i => ?_⟩⟩⟩⟩
@@ -209,13 +235,22 @@ namespace SSAtlas
 variable {ϖ : O} {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {ι A : Type} [Fintype ι]
   {k : Type} [CommRing k] (κ : O →+* k)
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem logFun_In (C : SSAtlas ϖ X q ι A) (α : A) {B : CommRingCat.{0}} (y : (C.logFun κ).Pt.obj B) :
     (C.logFun κ).In α y ↔ ⊤ ≤ (show PtOver X q κ B from y).1.2 ⁻¹ᵁ C.U α := Iff.rfl
 
+/- English proof (translation)
+The claim follows from `dif_pos h`.
+-/
 theorem logFun_f (C : SSAtlas ϖ X q ι A) (α : A) (i : ι) {B : CommRingCat.{0}} (y : PtOver X q κ B)
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ C.U α) : (C.logFun κ).f α i (B := B) y = GlobalTheory.Cris.evalAt y.1.2 (C.U α) h (C.F α i) :=
   dif_pos h
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `((if h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β) then Units.map (GlobalTheory.Cris.evalAt (B := B) y.1.2 (C.U α ⊓ C.U β) h : Γ(X, C.U α ⊓ C.U β) →* B) (C.G α β i) else 1 : Bˣ) : B) = _`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem logFun_g (C : SSAtlas ϖ X q ι A) (α β : A) (i : ι) {B : CommRingCat.{0}} (y : PtOver X q κ B)
     (h : ⊤ ≤ y.1.2 ⁻¹ᵁ (C.U α ⊓ C.U β)) :
     ((C.logFun κ).g α β i (B := B) y : B) = GlobalTheory.Cris.evalAt y.1.2 (C.U α ⊓ C.U β) h (C.G α β i) := by
@@ -235,6 +270,19 @@ variable (ϖ : O)
 set_option autoImplicit false in
 variable {O : Type} [CommRing O] (ϖ : O) in
 
+/- English proof (translation)
+Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective g`. Use `set S := Finset.univ.filter (fun i : Fin m => (i : ℕ) < r)`. Use `set d : Fin m →₀ ℕ := ∑ i ∈ S, Finsupp.single i 1`. Establish `hX : (∏ i ∈ S, MvPolynomial.X i : MvPolynomial (Fin m) O) = MvPolynomial.monomial d 1`. Simplify using `only [d, MvPolynomial.X, MvPolynomial.monomial_sum_one]`.
+
+Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Establish `h2 : MvPolynomial.C ϖ * g ∈ Ideal.span {(∏ i ∈ S, MvPolynomial.X i : MvPolynomial (Fin m) O) - MvPolynomial.C ϖ}`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Conclude with `h`. Take `⟨p, hp⟩` from `Ideal.mem_span_singleton'.mp h2`.
+
+Rewrite `hp` using `[hX]`. Establish `hc : ∀ s, ϖ ∣ MvPolynomial.coeff s p`. Introduce `s`. Use `congrArg (MvPolynomial.coeff (d + s)) hp` as an intermediate fact. Rewrite `this` using `[mul_sub, MvPolynomial.coeff_sub, mul_comm p (MvPolynomial.monomial d 1), mul_comm p (MvPolynomial.C ϖ), MvPolynomial.coeff_monomial_mul, one_mul, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_C_mul]`.
+
+Conclude with `⟨MvPolynomial.coeff (d + s) g + MvPolynomial.coeff (d + s) p, by rw [mul_add, ← this]; ring⟩`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : MvPolynomial.C ϖ ∣ p := by`. Rewrite using `[← Ideal.mem_span_singleton, ← Set.image_singleton, ← Ideal.map_span, MvPolynomial.mem_map_C_iff]`. Introduce `s`. Conclude with `Ideal.mem_span_singleton.mpr (hc s)`.
+
+Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[hX]`. Use extensionality with `s`. Establish `e` using `congrArg (MvPolynomial.coeff s) (show MvPolynomial.C ϖ * (q * (MvPolynomial.monomial d 1 - MvPolynomial.C ϖ)) = MvPolynomial.C ϖ * g by`. Rewrite using `[← hp, hq]`.
+
+Use the proof step `ring)`. Rewrite `e` using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_C_mul]`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hϖ).mp e`.
+-/
 theorem _root_.GlobalTheory.LogCris.model_mul_eq_zero {m r : ℕ} (hϖ : ϖ ∈ nonZeroDivisors O)
     (g : _root_.GlobalTheory.Et.ssModel O ϖ m r)
     (h : algebraMap O _ ϖ * g = 0) : g = 0 := by
@@ -269,6 +317,13 @@ theorem _root_.GlobalTheory.LogCris.model_mul_eq_zero {m r : ℕ} (hϖ : ϖ ∈ 
   rw [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_C_mul] at e
   exact (mul_cancel_left_mem_nonZeroDivisors hϖ).mp e
 
+/- English proof (translation)
+Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `g hg`. Apply `model_mul_eq_zero ϖ hϖ g` to reduce the goal to its premises. Establish `hmem : j ∈ Finset.univ.filter (fun j : Fin m => (j : ℕ) < r)` using `Finset.mem_filter.2 ⟨Finset.mem_univ _, hj⟩`. Establish `hP : algebraMap O (GlobalTheory.Et.ssModel O ϖ m r) ϖ = Ideal.Quotient.mk _ (MvPolynomial.X j) * Ideal.Quotient.mk _ (∏ l ∈ (Finset.univ.filter (fun j : Fin m => (j : ℕ) < r)).erase j, MvPolynomial.X l)`.
+
+Rewrite using `[← map_mul, Finset.mul_prod_erase _ _ hmem]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (MvPolynomial.C ϖ) = _`. Use `symm`. Rewrite using `[Ideal.Quotient.mk_eq_mk_iff_sub_mem]`. Conclude with `Ideal.mem_span_singleton_self _`.
+
+Rewrite using `[hP, mul_comm (Ideal.Quotient.mk _ _), mul_assoc, hg, mul_zero]`.
+-/
 theorem model_X_mem {m r : ℕ} (hϖ : ϖ ∈ nonZeroDivisors O) (j : Fin m) (hj : (j : ℕ) < r) :
     Ideal.Quotient.mk _ (MvPolynomial.X j) ∈ nonZeroDivisors (GlobalTheory.Et.ssModel O ϖ m r) := by
   classical
@@ -295,6 +350,9 @@ variable (ϖ : O) (r : ℕ)
 abbrev modelStr : Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r)) ⟶ Spec (CommRingCat.of O) :=
   Spec.map (CommRingCat.ofHom (algebraMap O (GlobalTheory.Et.ssModel O ϖ r r)))
 
+/- English proof (translation)
+Establish `h : (modelStr ϖ r).appTop = (modelStr ϖ r).appLE ⊤ ⊤ le_top` using `Scheme.Hom.app_eq_appLE _`. Rewrite using `[← h]`. Establish `e` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap O (GlobalTheory.Et.ssModel O ϖ r r)))`. Conclude with `(congrArg (fun t => t.hom a) e).symm`.
+-/
 theorem model_appLE (a : O) :
     ((modelStr ϖ r).appLE ⊤ ⊤ le_top).hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom a) =
       (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))).inv.hom (algebraMap O _ a) := by
@@ -343,20 +401,32 @@ def modelAtlas (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) :
 abbrev modelFun (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) {k : Type} [CommRing k] (κ : O →+* k) : LogFun k (κ ϖ) :=
   (modelAtlas ϖ r hr hϖ).logFun κ
 
+/- English proof (translation)
+The claim follows from `(modelAtlas ϖ r hr hϖ).isSSFun_logFun κ`.
+-/
 theorem isSSFun_model (hr : 1 ≤ r) (hϖ : ϖ ∈ nonZeroDivisors O) {k : Type} [CommRing k] (κ : O →+* k) :
     IsSSFun ϖ (Spec (CommRingCat.of (GlobalTheory.Et.ssModel O ϖ r r))) (modelStr ϖ r) κ (modelFun ϖ r hr hϖ κ) :=
   (modelAtlas ϖ r hr hϖ).isSSFun_logFun κ
 
 end ModelAtlas
 
+/- English proof (translation)
+The claim follows from `isSSFun_model 2 2 (by norm_num) _ _`.
+-/
 example : IsSSFun (2 : ℤ) (Spec (CommRingCat.of (GlobalTheory.Et.ssModel ℤ 2 2 2))) (modelStr 2 2) (Int.castRingHom (ZMod 2))
     (modelFun 2 2 (by norm_num) (mem_nonZeroDivisors_of_ne_zero (by norm_num)) (Int.castRingHom (ZMod 2))) :=
   isSSFun_model 2 2 (by norm_num) _ _
 
+/- English proof (translation)
+The claim follows from `isSSFun_model 2 1 le_rfl _ _`.
+-/
 example : IsSSFun (2 : ℤ) (Spec (CommRingCat.of (GlobalTheory.Et.ssModel ℤ 2 1 1))) (modelStr 2 1) (RingHom.id ℤ)
     (modelFun 2 1 le_rfl (mem_nonZeroDivisors_of_ne_zero (by norm_num)) (RingHom.id ℤ)) :=
   isSSFun_model 2 1 le_rfl _ _
 
+/- English proof (translation)
+Simplify using `[modelFun, SSAtlas.logFun]`.
+-/
 example : Fintype.card (modelFun (2 : ℤ) 2 (by norm_num) (mem_nonZeroDivisors_of_ne_zero (by norm_num))
     (RingHom.id ℤ)).ι = 2 := by
   simp [modelFun, SSAtlas.logFun]

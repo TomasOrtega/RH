@@ -35,6 +35,11 @@ section Rep
 variable {k k' : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k']
 
+/- English proof (translation)
+Take `⟨n, π, π', e, rfl, rfl, he⟩` from `H`. Use `⟨n, π', π, e.symm, rfl, rfl, fun g v => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `e.surjective v`. Establish `hg : GeneralLinearGroup.map i.toRingHom (GeneralLinearGroup.map i.symm.toRingHom g) = g`. Use extensionality with `a b`.
+
+Simplify using `[GeneralLinearGroup.map]`. Rewrite using `[LinearEquiv.symm_apply_eq, e.symm_apply_apply, he, hg]`.
+-/
 theorem repRel_symm {i : k ≃+* k'} {x : IrrGL k} {x' : IrrGL k'} (H : RepRel i x x') : RepRel i.symm x' x := by
   obtain ⟨n, π, π', e, rfl, rfl, he⟩ := H
   refine ⟨n, π', π, e.symm, rfl, rfl, fun g v => ?_⟩
@@ -44,15 +49,27 @@ theorem repRel_symm {i : k ≃+* k'} {x : IrrGL k} {x' : IrrGL k'} (H : RepRel i
     simp [GeneralLinearGroup.map]
   rw [LinearEquiv.symm_apply_eq, e.symm_apply_apply, he, hg]
 
+/- English proof (translation)
+The claim follows from `congrArg (Sigma.mk x.1) x.2.cl_rep`.
+-/
 theorem cls_rep (x : IrrGL k) : cls x.2.rep = x := congrArg (Sigma.mk x.1) x.2.cl_rep
 
+/- English proof (translation)
+Substitute `hn` using the available equality. Conclude with `⟨x.2.rep, cls_rep x⟩`.
+-/
 theorem exists_cls {x : IrrGL k} {n : ℕ} (hn : x.1 = n) : ∃ π : IrrRep (GL (Fin n) k), cls π = x := by
   subst hn
   exact ⟨x.2.rep, cls_rep x⟩
 
+/- English proof (translation)
+The claim follows from `IrrGL.isCusp_of (π := π.ρ) (hs := π.smooth) (hi := π.irr)`.
+-/
 theorem isCusp_cls {n : ℕ} (π : IrrRep (GL (Fin n) k)) : (cls π).IsCusp ↔ 0 < n ∧ IsCuspidal π.ρ :=
   IrrGL.isCusp_of (π := π.ρ) (hs := π.smooth) (hi := π.irr)
 
+/- English proof (translation)
+Establish `hc : Continuous (Units.map i.toRingHom.toMonoidHom : k'ˣ → kˣ)` using `Continuous.units_map _ hi`. Conclude with `IsOpen.preimage hc hχ`.
+-/
 theorem isSmoothChar_comp (i : k' ≃+* k) (hi : Continuous i) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsSmoothChar (χ.comp (Units.map i.toRingHom.toMonoidHom)) := by
   have hc : Continuous (Units.map i.toRingHom.toMonoidHom : k'ˣ → kˣ) := Continuous.units_map _ hi
@@ -65,15 +82,24 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {E' Ω' : Type} [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω']
   {A' : ValuationSubring Ω'} {w' : HeightOneSpectrum (𝓞 E')} {h' : IsPlaceOver A' w'}
 
+/- English proof (translation)
+The claim follows from `charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`.
+-/
 theorem charZero_compl (w : HeightOneSpectrum (𝓞 E)) : CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective
 
 def psiMap (i : w.adicCompletion E ≃+* w'.adicCompletion E') (ψ : AddChar (w.adicCompletion E) Circle) :
     AddChar (w'.adicCompletion E') Circle := ψ.compAddMonoidHom i.symm.toAddMonoidHom
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem psiMap_apply (i : w.adicCompletion E ≃+* w'.adicCompletion E') (ψ : AddChar (w.adicCompletion E) Circle)
     (y : w'.adicCompletion E') : psiMap i ψ y = ψ (i.symm y) := rfl
 
+/- English proof (translation)
+Take `⟨m, b, b', rfl, hb', h1, h2⟩` from `H`. Take `rfl : m = n` from `by simpa using hn`. Conclude with `⟨b, b', rfl, hb', h1, h2⟩`.
+-/
 theorem exists_of_wdRel {φ : Ω ≃+* Ω'} {y : WD h} {y' : WD h'} (H : WDRel φ y y') {n : ℕ} (hn : y.lpDim = n) :
     ∃ (b : WDRep h (Fin n → ℂ)) (b' : WDRep h' (Fin n → ℂ)), WD.mk b = y ∧ WD.mk b' = y' ∧
       b.N = b'.N ∧ ∀ (σ : Weil h) (σ' : Weil h'), (∀ z, φ ((σ : G E Ω) z) = (σ' : G E' Ω') (φ z)) → b.ρ σ = b'.ρ σ' := by
@@ -81,6 +107,27 @@ theorem exists_of_wdRel {φ : Ω ≃+* Ω'} {y : WD h} {y' : WD h'} (H : WDRel �
   obtain rfl : m = n := by simpa using hn
   exact ⟨b, b', rfl, hb', h1, h2⟩
 
+/- English proof (translation)
+Introduce `hG hC hB hL hLC hLE hBZ E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' rc rc' ⟨a, ha, ε, hε, H⟩ ⟨a', ha', ε', hε', H'⟩ φ j i h1 h2 h3 h4 n π π' e he`. Establish `P : PlaceIso A w A' w' φ j i` using `⟨h1, h2, h3, h4⟩`. Use `charZero_compl w` as an intermediate fact. Use `charZero_compl w'` as an intermediate fact. Establish `hs : Continuous i.symm` using `(GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation _ _ i h3).1`.
+
+Take `⟨T, hT, hTd⟩` from `GlobalTheory.T.transportIrrGL_bijective_degree_charZero _ _ i h3`. Take `⟨hcu, hch⟩` from `GlobalTheory.T.transport_keeps_cuspidal_twists_characters _ _ i h3`. Take `⟨S, hS, hSd, hS0, hSs, hSc, hSt, hSp, hSi, hSo⟩` from `GlobalTheory.T.place_over_transport_ring_iso_symm E Ω A w h E' Ω' A' w' h' φ j i P`. Establish `hart` using `GlobalTheory.T.localArtinMap_unique_transport_placeIso hG hC E Ω A w h E' Ω' A' w' h' φ j i P a a' ha ha'`. Establish `hrel : ∀ x, RepRel i x (T x)` using `fun x => (hT _ _).2 rfl`.
+
+Establish `hcusp : ∀ x, x.IsCusp ↔ (T x).IsCusp` using `fun x => (hcu _ _ (hrel x)).1`. Establish `hpsi : ∀ ψ : AddChar (w.adicCompletion E) Circle, ∀ x, psiMap i ψ (i x) = ψ x` using `fun ψ x => by`. Rewrite using `[psiMap_apply, RingEquiv.symm_apply_apply]`. Establish `M : LawsMin a ha (fun ψ y => ε' E' w' h' (psiMap i ψ) (S y)) (fun x => S.symm (rc' (T x)))`. Use `⟨S.symm.bijective.comp (H'.bij.comp T.bijective), fun x => ?_, fun χ hχ => ?_, fun ψ hψ hψ1 m ρ τ hρ => ?_, fun x => ?_, fun l x hx => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hSd, S.apply_symm_apply, H'.dim, hTd]`. Establish `hχ'` using `isSmoothChar_comp i.symm hs hχ`. Establish `hv : ∀ x, (χ.comp (Units.map i.symm.toRingHom.toMonoidHom)) (Units.map i.toRingHom.toMonoidHom x) = χ x` using `fun x => congrArg χ (Units.ext (by simp))`. Rewrite using `[(hT _ _).1 (hch χ hχ _ hχ' hv), H'.one, Equiv.symm_apply_eq]`. Use `(hSo _ _ _ _ fun σ σ' hσ => ?_).symm` and prove the remaining obligations.
+
+Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply _ a', hart σ σ' hσ, hv]`. Take `⟨ρ', hρ'⟩` from `exists_cls (hTd (cls ρ))`. Take `⟨τ', hτ'⟩` from `exists_cls (hTd (cls τ))`. Establish `hc : IsCuspidal ρ'.ρ` using `((isCusp_cls ρ').1 (hρ' ▸ (hcusp _).1 ((isCusp_cls ρ).2 ⟨Nat.succ_pos m, hρ⟩))).2`. Establish `hne : psiMap i ψ ≠ 1` using `fun h0 => hψ1 (AddChar.ext _ _ fun x => by rw [← hpsi, h0]; rfl)`.
+
+Establish `key` using `H'.eps (psiMap i ψ) (hψ.comp hs) hne m ρ' τ' hc`. Rewrite `key` using `[hρ', hτ']`. Simplify using `only [hSc, S.apply_symm_apply]`. Conclude with `GlobalTheory.T.rankin_selberg_epsilon_transport _ _ i.symm hs (psiMap i ψ) ψ (fun _ => rfl) m ρ' ρ τ' τ _ (repRel_symm (hρ' ▸ hrel _)) (repRel_symm (hτ' ▸ hrel _)) key`. Rewrite using `[hcusp, H'.cusp, ← hSi, S.apply_symm_apply]`.
+
+Set `f : Segment (w.adicCompletion E) → Segment (w'.adicCompletion E')` to `fun Δ => Segment.ofFirst (T Δ.first) ((hcusp _).1 Δ.isCusp_first) Δ.len Δ.len_pos`. Establish `hl` using `GlobalTheory.T.isLanglandsData_transport_localFieldIso _ _ i h3 l (l.map f) x (T x) (by rw [List.forall₂_map_right_iff, List.forall₂_same]; exact fun Δ _ => ⟨hrel _, rfl⟩) (hrel x) hx`. Rewrite using `[H'.langlands _ _ hl, Equiv.symm_apply_eq]`. Use `clear hl hx`. Proceed by induction on `l with`.
+
+Consider the case `nil => exact hS0.symm`. Consider the case `cons Δ l ih`. Simplify using `only [segSum, sumList, List.map_cons, List.foldr_cons] at ih ⊢`. Rewrite using `[hSs, ← ih, hSc, hSt, hSp, S.apply_symm_apply]`. Both sides reduce to the same expression.
+
+Take `⟨ψ, hψ, hψ1⟩` from `exists_continuous_addChar_ne_one (w.adicCompletion E)`. Establish `hE : ε E w h ψ = fun y => ε' E' w' h' (psiMap i ψ) (S y)` using `funext fun y => GlobalTheory.T.rec_transport_field_iso hG hC hB hL E Ω A w h E' Ω' A' w' h' φ j i P ε ε' hε hε' ψ _ hψ hψ1 (hpsi ψ) y _ ((hS _ _).2 rfl)`. Establish `hrc` using `GlobalTheory.T.rec_unique_of_laws hLC hLE hBZ E Ω A w h a ha _ rc _ ψ _ hψ hψ1 hE H.toLawsMin M`. Establish `hπ : T (cls π) = cls π'` using `(hT _ _).1 ⟨n, π, π', e, rfl, rfl, he⟩`. Use `exists_of_wdRel ((hS _ _).2 ?_) (H.dim _)` and prove the remaining obligations.
+
+Rewrite using `[congrFun hrc (cls π), S.apply_symm_apply, hπ]`.
+-/
 theorem fieldCompatible : GlobalArtinReciprocity → ChevalleyUnits → BrauerDegreeZero → LocalLanglandsExists → LocalConverseGL → LanglandsExhaustionGL → BernsteinZelevinskyFiniteness → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (E' Ω' : Type) [Field E'] [NumberField E'] [Field Ω'] [Algebra E' Ω'] [IsAlgClosure E' Ω'] (A' : ValuationSubring Ω') (w' : HeightOneSpectrum (𝓞 E')) (h' : IsPlaceOver A' w') (rc : IrrGL (w.adicCompletion E) → WD h) (rc' : IrrGL (w'.adicCompletion E') → WD h'), IsRecLit h rc → IsRecLit h' rc' → FieldCompatible rc rc' := by
   intro hG hC hB hL hLC hLE hBZ E Ω _ _ _ _ _ A w h E' Ω' _ _ _ _ _ A' w' h' rc rc'
     ⟨a, ha, ε, hε, H⟩ ⟨a', ha', ε', hε', H'⟩ φ j i h1 h2 h3 h4 n π π' e he

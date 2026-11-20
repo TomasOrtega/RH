@@ -21,6 +21,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory.TChartPre
 
+/- English proof (translation)
+Establish `h1 : (s.stalkMap x).hom.EssFiniteType` using `LocallyOfFiniteType.stalkMap s x`. Set `p : PrimeSpectrum (cycAway n)` to `s x`. Establish `h2 : (algebraMap (cycAway n) ((Spec.structureSheaf (cycAway n)).presheaf.stalk p)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 (Algebra.EssFiniteType.of_isLocalization _ p.asIdeal.primeCompl)`. Use `haveI := finiteType_cycAway n`. Establish `h3 : (algebraMap ℤ (cycAway n)).EssFiniteType` using `RingHom.essFiniteType_algebraMap.2 inferInstance`.
+
+Establish `h4` using `(h3.comp h2).comp h1`. Rewrite using `[← RingHom.essFiniteType_algebraMap]`. Use `h4` and compare the differences between its conclusion and the goal. Conclude with `RingHom.ext_int _ _`.
+-/
 theorem essFiniteType_int_stalk (n : ℕ) (X : Scheme.{0}) (s : X ⟶ Sp (cycAway n)) [LocallyOfFiniteType s] (x : X) :
     Algebra.EssFiniteType ℤ (X.presheaf.stalk x) := by
   have h1 : (s.stalkMap x).hom.EssFiniteType := LocallyOfFiniteType.stalkMap s x
@@ -34,6 +39,11 @@ theorem essFiniteType_int_stalk (n : ℕ) (X : Scheme.{0}) (s : X ⟶ Sp (cycAwa
   convert h4
   exact RingHom.ext_int _ _
 
+/- English proof (translation)
+Take `⟨u, rfl⟩` from `Spec.map_surjective u`. Take `⟨v, rfl⟩` from `Spec.map_surjective v`. Establish `h' : u ≫ CommRingCat.ofHom (algebraMap R (FractionRing R)) = v ≫ CommRingCat.ofHom (algebraMap R (FractionRing R))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp]`.
+
+Conclude with `h`. Use `congr 1`. Use extensionality with `a`. Conclude with `IsFractionRing.injective R (FractionRing R) (congrArg (fun f => f.hom a) h')`.
+-/
 theorem eq_of_jK_comp_eq {R o : Type} [CommRing R] [IsDomain R] [CommRing o] {u v : Sp R ⟶ Sp o}
     (h : jK R ≫ u = jK R ≫ v) : u = v := by
   obtain ⟨u, rfl⟩ := Spec.map_surjective u
@@ -46,6 +56,19 @@ theorem eq_of_jK_comp_eq {R o : Type} [CommRing R] [IsDomain R] [CommRing o] {u 
   ext a
   exact IsFractionRing.injective R (FractionRing R) (congrArg (fun f => f.hom a) h')
 
+/- English proof (translation)
+Introduce `g hg φ hφ _ n hn _ F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy het hfu`. Take `⟨J, -, -, -, -, hP, -, hji, -, -, hval⟩` from `hB`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, _, _, ⟨-, -, -, hiz, -⟩, -⟩` from `hM`. Take `⟨hsa, hab, hgen, hmum, hbase⟩` from `hF`. Take `⟨hreg, hch, -, -, hrel, -⟩` from `GlobalTheory.TChart.Taut.isRegularLocalRing_and_isRelParam g n φ hn C`.
+
+Take `⟨hmono, hrk, hcone, hdef, -⟩` from `GlobalTheory.TChart.Taut.monomial_chart g n φ (by omega) C`. Use `haveI : IsProper (π ≫ z) := by`. Take `⟨N, ιP, hιP, e⟩` from `hP`. Rewrite using `[← e]`. Use `haveI := ReciprocityTheory.ChartRestriction.G.Geo.Tor.isProper_str (cycAway n) N`.
+
+Use `infer_instance`. Use `haveI : S.IsSeparated := ⟨by`. Rewrite using `[← terminal.comp_from (π ≫ z)]`. Use the proof step `infer_instance⟩`. Use `haveI : Algebra.EssFiniteType ℤ (S.presheaf.stalk (ξ (closedPoint C.R))) := essFiniteType_int_stalk n S (π ≫ z) _`.
+
+Use `haveI : IsNoetherianRing C.R := C.compl.1`. Establish `hc : IsAdicComplete (maximalIdeal C.R) C.R` using `C.compl.2.1`. Establish `hξ : ξ ≫ π ≫ z = spMap C.b` using `eq_of_jK_comp_eq (by`. Rewrite using `[← hbase, ← Category.assoc, ← hy, Category.assoc, ← Category.assoc j, hji, hiz])`. Establish `hrad` using `GlobalTheory.EtaleCompletionRadical.isRadical_map_of_isEtaleCompletion _ _ (Scheme.stalkClosedPointTo ξ).hom hc het hfu`.
+
+Take `⟨hb₁, hb₂⟩` from `GlobalTheory.BdEqChart.boundary_eq g n F S j C.R C.b ξ G₁ y ((Over.pullback (jK C.R)).obj G₁) (pullback.fst G₁.hom (jK C.R)) α₁ hsa (isGrpPullback_pullback G₁ (jK C.R)) hgen hy hrad C.m C.t hrel hab`. Use `haveI : Module.Free ℤ C.Q.X := Module.Free.of_equiv C.e.toIntLinearEquiv.symm`. Establish `hnat : ∀ k, ∃ c : ℕ, φ.evalZ ((n : ℤ) • C.δ k) = c` using `fun k => (hφ C.Q.X hrk).exists_nat (Submodule.smul_mem _ _ (hcone.mem k)) fun w => mul_nonneg (Int.natCast_nonneg n) (hcone.nonneg k w)`. Use `choose c hcn using hnat`. Establish `ha : ∀ k, ((d * c k : ℕ) : ℝ) = d * φ.evalZ ((n : ℤ) • C.δ k)` using `fun k => by rw [hcn, Nat.cast_mul]`.
+
+Establish `hBD` using `GlobalTheory.ChartIdeal.idlAlong_eq_span_monomial g n F S j φ hφ d BD.idealSheaf hval C.R hc C.b ξ C.Q G₁ y α₁ hsa hgen hy.symm hmum C.m C.t C.δ (fun k => d * c k) hrel hab hcone hdef hmono ha`. Conclude with `⟨C.R, inferInstance, hreg, inferInstance, C.b, ξ, C.m, C.t, C.Q, C.δ, fun k => d * c k, G₁, inferInstance, y, α₁, ⟨hc, hch, hξ, rfl, het, hfu⟩, ⟨hrel, hb₂, hb₁⟩, ⟨hsa, hab, hy, hgen⟩, ⟨hmum, hrk, hcone, hdef, hmono⟩, ha, hBD⟩`.
+-/
 theorem preChart_of_isEtaleCompletion : ∀ g : ℕ, 1 ≤ g → ∀ φ : InvFun ℤ, IsPolFan id g φ → NoSelfInt id g φ → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) (OZ : LB Z) (d : ℕ) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S) [IsOpenImmersion j] (BD : GlobalTheory.EffCartierData S), MinAt5 F z i OZ → BlowAt F z i φ d π j BD → ∀ (C : Taut (zetaAway n) g n φ) (G₁ : Over (Sp C.R)) [GrpObj G₁] [IsCommMonObj G₁] (y : Sp (FractionRing C.R) ⟶ F.X) (α₁ : pullback G₁.hom (jK C.R) ⟶ F.univ.A.left) (ξ : Sp C.R ⟶ S), C.IsFam F G₁ y α₁ → y ≫ j = jK C.R ≫ ξ → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue C.R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → PreChart F (π ≫ z) j φ BD d (ξ (closedPoint C.R)) := by
   intro g hg φ hφ _ n hn _ F Z z i OZ d S π j _ BD hM hB C G₁ _ _ y α₁ ξ hF hy het hfu
   obtain ⟨J, -, -, -, -, hP, -, hji, -, -, hval⟩ := hB

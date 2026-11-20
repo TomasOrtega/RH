@@ -11,6 +11,9 @@ open scoped InnerProductSpace ENNReal
 
 namespace GlobalTheory.MomMass
 
+/- English proof (translation)
+Rewrite using `[← ENNReal.coe_pow, ← ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Use `push_cast`. Rewrite using `[norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hd, one_mul]`.
+-/
 theorem integrand_eq {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] {d : ℝ} (hd : 0 ≤ d) (v : Wp) :
     ENNReal.ofReal (1 * (d * ‖v‖ ^ 2)) = ((‖((Real.sqrt d : ℝ) : ℂ) • v‖₊ : ENNReal)) ^ 2 := by
   rw [← ENNReal.coe_pow, ← ENNReal.ofReal_coe_nnreal]
@@ -18,6 +21,21 @@ theorem integrand_eq {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ 
   push_cast
   rw [norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt hd, one_mul]
 
+/- English proof (translation)
+Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν`. Take `⟨hNum, hFam, hSide, hSF⟩` from `hS`. Take `⟨⟨-, -, -, -, hOK⟩, hfam⟩` from `GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hNum`. Take `⟨-, -, hgap, -⟩` from `hfam ν hν`. Establish `hDS` using `hFam ν hν`.
+
+Take `⟨hBe, hpos, hdeg⟩` from `hSF ν hν`. Establish `key : NzOn (R ν) (l ν) → IsIsoB (R ν) z π νq (fun w => ((Real.sqrt (dg ν) : ℝ) : ℂ) • l ν w) ∧ ∀ w ∈ (R ν).sm, ∫⁻ x, ENNReal.ofReal (1 * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq = ENNReal.ofReal (‖w‖ ^ 2)`. Introduce `hnz`. Establish `hiso` using `GlobalTheory.T.isIsoB_sqrt_fdeg_smul_of_gap hH k r _ _ (h / 2) (R ν) Wp z π u μW μN μG νq (l ν) (dg ν) hDS hgap hOK hSide hBe hdeg hnz`. Use `⟨hiso, fun w hw => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← hiso.2 w hw]`. Unfold `PI.BesselPeriodGGP.l2SG`. Conclude with `lintegral_congr fun x => integrand_eq hpos.le _`. Use `⟨fun w hw => ?_, key⟩` and prove the remaining obligations. Distinguish the cases in `hnz : NzOn (R ν) (l ν)`.
+
+Conclude with `((key hnz).2 w hw).le`. Establish `hz : ∀ v ∈ (R ν).sm, l ν v = 0`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Conclude with `hnz ⟨v, hv, hne⟩`.
+
+Take `⟨-, -, -, hsm, -⟩` from `GlobalTheory.rep_basic_of_isDS hH.1.2.2.1 k r _ _ (R ν) hDS`. Take `⟨-, -, -, -, hW, hN, hG, hq⟩` from `hSide`. Take `⟨h0, h1⟩` from `Formalism.FourierDecayAlt.P.DDSmoothness.muSof_facts hW hN`. Establish `hae` using `Formalism.FourierDecayAlt.P.DDSmoothness.ae_UH_of_quot hG.2.2.1 h0 h1 hq`. Establish `: ∫⁻ x, ENNReal.ofReal (1 * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq = 0`.
+
+Rewrite using `[← lintegral_zero (μ := νq)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Rewrite using `[hz _ (hsm _ hx w hw)]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[this]`. Conclude with `bot_le`.
+-/
 theorem mom_mass : Hyps → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (l : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R l dg → ∀ ν, n1 ν ≤ q0 → (∀ w ∈ (R ν).sm, ∫⁻ x, ENNReal.ofReal (1 * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq ≤ ENNReal.ofReal (‖w‖ ^ 2)) ∧ (NzOn (R ν) (l ν) → IsIsoB (R ν) z π νq (fun w => ((Real.sqrt (dg ν) : ℝ) : ℂ) • l ν w) ∧ ∀ w ∈ (R ν).sm, ∫⁻ x, ENNReal.ofReal (1 * (dg ν * ‖l ν ((R ν).σ (Matrix.of x) w)‖ ^ 2)) ∂νq = ENNReal.ofReal (‖w‖ ^ 2)) := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν
   obtain ⟨hNum, hFam, hSide, hSF⟩ := hS

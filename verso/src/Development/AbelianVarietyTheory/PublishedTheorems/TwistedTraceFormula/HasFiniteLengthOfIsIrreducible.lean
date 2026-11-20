@@ -59,6 +59,11 @@ section Transport
 
 variable {F G H V : Type} [Field F] [Group G] [Group H] [AddCommGroup V] [Module F V]
 
+/- English proof (translation)
+Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Rewrite using `[HasFiniteLength, isFiniteLength_iff_isNoetherian_isArtinian, isNoetherian_iff', isArtinian_iff]`. Use `and_congr ⟨fun _ => φ.toOrderEmbedding.wellFoundedGT, fun _ => φ.symm.toOrderEmbedding.wellFoundedGT⟩ ⟨fun h => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `haveI : WellFoundedLT (Submodule (MonoidAlgebra F G) ρ.asModule) := ⟨h⟩`. Conclude with `φ.toOrderEmbedding.wellFoundedLT`.
+
+Conclude with `φ.symm.toOrderEmbedding.wellFoundedLT.wf`.
+-/
 theorem hasFiniteLength_iff_wellFounded (ρ : Representation F G V) :
     HasFiniteLength ρ ↔
       WellFoundedGT (Subrepresentation ρ) ∧ WellFoundedLT (Subrepresentation ρ) := by
@@ -70,6 +75,11 @@ theorem hasFiniteLength_iff_wellFounded (ρ : Representation F G V) :
     exact φ.toOrderEmbedding.wellFoundedLT
   · exact φ.symm.toOrderEmbedding.wellFoundedLT.wf
 
+/- English proof (translation)
+Set `φ : Subrepresentation (ρ.comp s : Representation F H V) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Take `⟨h, rfl⟩` from `hs g`. Conclude with `S.apply_mem_toSubmodule h hv⟩`. Use `invFun := fun S => ⟨S.toSubmodule, fun h v hv => S.apply_mem_toSubmodule (s h) hv⟩`. Use `left_inv := fun _ => rfl`.
+
+Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Rewrite using `[hasFiniteLength_iff_wellFounded, hasFiniteLength_iff_wellFounded]`. Conclude with `and_congr ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedGT, fun _ => φ.toOrderEmbedding.wellFoundedGT⟩ ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedLT, fun _ => φ.toOrderEmbedding.wellFoundedLT⟩`.
+-/
 theorem hasFiniteLength_comp_iff (ρ : Representation F G V) (s : H →* G) (hs : Function.Surjective s) :
     HasFiniteLength (ρ.comp s : Representation F H V) ↔ HasFiniteLength ρ := by
   let φ : Subrepresentation (ρ.comp s : Representation F H V) ≃o Subrepresentation ρ :=
@@ -85,6 +95,9 @@ theorem hasFiniteLength_comp_iff (ρ : Representation F G V) (s : H →* G) (hs 
     fun _ => φ.toOrderEmbedding.wellFoundedGT⟩ ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedLT,
     fun _ => φ.toOrderEmbedding.wellFoundedLT⟩
 
+/- English proof (translation)
+Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Use `haveI : Finite (Subrepresentation ρ) := IsSimpleOrder.instFinite`. Conclude with `(hasFiniteLength_iff_wellFounded ρ).2 ⟨Finite.to_wellFoundedGT, Finite.to_wellFoundedLT⟩`.
+-/
 theorem hasFiniteLength_of_isIrreducible {ρ : Representation F G V} (h : ρ.IsIrreducible) :
     HasFiniteLength ρ := by
   haveI : IsSimpleOrder (Subrepresentation ρ) := h
@@ -98,6 +111,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
+/- English proof (translation)
+Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `h : {g : G | ind P σ g f.1 = f.1} ∈ nhds ((fun y => x⁻¹ * y) x)` using `IsOpen.mem_nhds f.2 (by simp)`. Use `filter_upwards [(continuous_const_mul x⁻¹).continuousAt.preimage_mem_nhds h] with y hy`. Establish `hy' : f.1.1 (x * (x⁻¹ * y)) = f.1.1 x` using `congrFun (congrArg Subtype.val hy) x`. Rewrite `hy'` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+-/
 theorem isLocallyConstant_smInd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {P : Subgroup G} {σ : Representation ℂ P W} (f : smoothPart (ind P σ)) :
     IsLocallyConstant (f.1.1 : G → W) := by
@@ -108,6 +124,9 @@ theorem isLocallyConstant_smInd {G : Type} [Group G] [TopologicalSpace G] [IsTop
   have hy' : f.1.1 (x * (x⁻¹ * y)) = f.1.1 x := congrFun (congrArg Subtype.val hy) x
   rwa [mul_inv_cancel_left] at hy'
 
+/- English proof (translation)
+Use `haveI : LocallyCompactSpace (GL n k) := SplitFlip.locallyCompact_GL`. Use `borelize (GL n k)`. Take `⟨Φ, -⟩` from `h _ _ _ e Measure.haar W ρ hρ`. Conclude with `⟨Φ⟩`.
+-/
 theorem InductionContragredient.nonempty_equiv (h : InductionContragredient k) (e : (Σ a, m a) ≃ n)
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) :
     Nonempty ((parInd e (contra ρ)).Equiv (contra (parInd e ρ))) := by
@@ -116,6 +135,9 @@ theorem InductionContragredient.nonempty_equiv (h : InductionContragredient k) (
   obtain ⟨Φ, -⟩ := h _ _ _ e Measure.haar W ρ hρ
   exact ⟨Φ⟩
 
+/- English proof (translation)
+Establish `: jacLower e π = jac (opp e) π` using `MonoidHom.ext (jacLower_eq e π)`. Rewrite using `[this]`. Conclude with `h _ _ _ (opp e) V π hπ hl`.
+-/
 theorem JacquetFiniteLength.lower (h : JacquetFiniteLength k) (e : (Σ a, m a) ≃ n)
     {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
     HasFiniteLength (jacLower e π) := by
@@ -123,6 +145,9 @@ theorem JacquetFiniteLength.lower (h : JacquetFiniteLength k) (e : (Σ a, m a) �
   rw [this]
   exact h _ _ _ (opp e) V π hπ hl
 
+/- English proof (translation)
+Establish `key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ → HasFiniteLength (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e)))`. Introduce and unpack `_ rfl`. Conclude with `h _ _ _ (opp e) W ρ hρ hl`. Conclude with `key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)`.
+-/
 theorem InductionFiniteLength.lower (h : InductionFiniteLength k) (e : (Σ a, m a) ≃ n)
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ) :
     HasFiniteLength (parIndLower e ρ) := by
@@ -132,6 +157,9 @@ theorem InductionFiniteLength.lower (h : InductionFiniteLength k) (e : (Σ a, m 
     exact h _ _ _ (opp e) W ρ hρ hl
   exact key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)
 
+/- English proof (translation)
+Establish `key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ → ∃ Φ : (smInd (parabLower k e) ((twist (contra ρ) χ).comp (leviProjLower k e))).Equiv (contra (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e)))), ∀ f' f, (Φ f').1 f = ∫ x in (KO k n …`. Introduce and unpack `_ rfl`. Conclude with `h _ _ _ (opp e) μ W ρ hρ`. Conclude with `key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)`.
+-/
 theorem InductionContragredient.lower (h : InductionContragredient k) (e : (Σ a, m a) ≃ n)
     [MeasurableSpace (GL n k)] [BorelSpace (GL n k)] (μ : Measure (GL n k)) [μ.IsHaarMeasure]
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) :
@@ -152,6 +180,9 @@ section Two
 
 variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
+/- English proof (translation)
+The claim follows from `(hasFiniteLength_comp_iff _ _ (leviTwo k a b).surjective).2 (h _ _ _ (SmGL.two e) V π hπ hl)`.
+-/
 theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
     {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
     HasFiniteLength (jac₂ e π) :=
@@ -159,6 +190,9 @@ theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
 
 end Two
 
+/- English proof (translation)
+The claim follows from `have h := (isSmooth_ofChar_iff _).2 (hχ.detChar (n := n)) ⟨h, isIrreducible_ofChar _, hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _), h, fun _ _ _ => inferInstance⟩`.
+-/
 example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsSmooth (detRep n χ) ∧ (detRep n χ).IsIrreducible ∧ HasFiniteLength (detRep n χ) ∧
       IsAdmissible (detRep n χ) :=
@@ -166,6 +200,9 @@ example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
   ⟨h, isIrreducible_ofChar _, hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _), h,
     fun _ _ _ => inferInstance⟩
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k), hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)⟩`.
+-/
 example : IsSmooth (ofChar (deltaHalf k m)) ∧ HasFiniteLength (ofChar (deltaHalf k m)) :=
   ⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k),
     hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)⟩

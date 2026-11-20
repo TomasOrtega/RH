@@ -23,6 +23,11 @@ def isoComp (M : Loc.Model F E) {m : ℕ} {X Y W : M.Mat (m + 1)} (φ : M.Iso X 
   left_inv ψ := Subtype.ext (LinearEquiv.ext fun v => by simp)
   right_inv χ := Subtype.ext (LinearEquiv.ext fun v => by simp)
 
+/- English proof (translation)
+Distinguish the cases in `h : Quotient.mk (M.isoSetoid m) X = c`. Rewrite using `[if_pos h]`. Establish `hn : Nonempty (M.Iso X (Quotient.out c))` using `Quotient.exact (s := M.isoSetoid m) (h.trans (Quotient.out_eq (s := M.isoSetoid m) c).symm)`. Take `⟨φ⟩` from `hn`. Conclude with `Nat.card_congr (isoComp M φ)`.
+
+Rewrite using `[if_neg h]`. Use `Nat.card_eq_zero.2 (Or.inl ⟨fun φ => h ?_⟩)` and prove the remaining obligations. Conclude with `(Quotient.sound (s := M.isoSetoid m) (show Nonempty (M.Iso X (Quotient.out c)) from ⟨φ⟩)).trans (Quotient.out_eq (s := M.isoSetoid m) c)`.
+-/
 theorem nIso_out (M : Loc.Model F E) {m : ℕ} (X : M.Mat (m + 1)) (c : M.Cls m) :
     M.nIso X (Quotient.out c) = if Quotient.mk (M.isoSetoid m) X = c then M.nAut c else 0 := by
   by_cases h : Quotient.mk (M.isoSetoid m) X = c
@@ -42,6 +47,13 @@ section Glue
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Consider the cases of `o with`. Consider the case `none => simp [nIsoO]`. Consider the case `some d => show (M p).nIso (Quotient.out c) (Quotient.out d) = _`. Establish `hc : Quotient.mk ((M p).isoSetoid D.R.rS) (Quotient.out c) = c` using `Quotient.out_eq (s := (M p).isoSetoid D.R.rS) c`. Rewrite using `[nIso_out, hc]`.
+
+Use `split_ifs with h1 h2 h2`. Substitute `h1` using the available equality. Both sides reduce to the same expression. Conclude with `absurd (by rw [h1]) h2`. Conclude with `absurd (Option.some.inj h2).symm h1`.
+
+Both sides reduce to the same expression.
+-/
 theorem nIsoO_some (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D)
     (c : (M p).Cls D.R.rS) (o : Option ((M p).Cls D.R.rS)) :
     nIsoO M p (some c) o = if o = some c then (M p).nAut c else 0 := by
@@ -57,6 +69,15 @@ theorem nIsoO_some (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) 
     · exact absurd (Option.some.inj h2).symm h1
     · rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ i k, (l * (Matrix.of fun a b => if a = Fin.last n ∧ b = Fin.last n then s else 0)) i k = if i = Fin.last n ∧ k = Fin.last n then s else 0`. Introduce `i k`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[hl i, Matrix.of_apply]`. Apply the tactic sequence `by_cases hi : i = Fin.last n <;> by_cases hk : k = Fin.last n <;> simp [hi, hk]`.
+
+Introduce `b _ hb`. Rewrite using `[Matrix.of_apply, if_neg (fun h => hb h.1), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use extensionality with `i j`.
+
+Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[h1, hρ j, Matrix.of_apply]`. Apply the tactic sequence `by_cases hi : i = Fin.last n <;> by_cases hj : j = Fin.last n <;> simp [hi, hj]`. Introduce `b _ hb`. Rewrite using `[h1, if_neg (fun h => hb h.2), zero_mul]`.
+
+Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+-/
 theorem mul_of_mul {R : Type} [CommRing R] {n : ℕ} (l ρ : Matrix (Fin (n + 1)) (Fin (n + 1)) R) (s : R)
     (hl : ∀ i, l i (Fin.last n) = if i = Fin.last n then 1 else 0)
     (hρ : ∀ j, ρ (Fin.last n) j = if j = Fin.last n then 1 else 0) :
@@ -79,6 +100,9 @@ theorem mul_of_mul {R : Type} [CommRing R] {n : ℕ} (l ρ : Matrix (Fin (n + 1)
     rw [h1, if_neg (fun h => hb h.2), zero_mul]
   · intro h; exact absurd (Finset.mem_univ _) h
 
+/- English proof (translation)
+Distinguish the cases in `hi : i = Fin.last n`. Rewrite using `[if_pos hi, hi, h1]`. Rewrite using `[if_neg hi]`. Conclude with `h2 _ _ (lt_of_le_of_ne (Fin.le_last i) hi)`.
+-/
 theorem last_of_low {R : Type} [CommRing R] {n : ℕ} (l : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (h1 : ∀ a, l a a = 1) (h2 : ∀ a b, a < b → l a b = 0) (i : Fin (n + 1)) :
     l i (Fin.last n) = if i = Fin.last n then 1 else 0 := by
@@ -86,6 +110,9 @@ theorem last_of_low {R : Type} [CommRing R] {n : ℕ} (l : Matrix (Fin (n + 1)) 
   · rw [if_pos hi, hi, h1]
   · rw [if_neg hi]; exact h2 _ _ (lt_of_le_of_ne (Fin.le_last i) hi)
 
+/- English proof (translation)
+Distinguish the cases in `hj : j = Fin.last n`. Rewrite using `[if_pos hj, hj, h1]`. Rewrite using `[if_neg hj]`. Conclude with `h2 _ _ (lt_of_le_of_ne (Fin.le_last j) hj)`.
+-/
 theorem last_of_up {R : Type} [CommRing R] {n : ℕ} (ρ : Matrix (Fin (n + 1)) (Fin (n + 1)) R)
     (h1 : ∀ a, ρ a a = 1) (h2 : ∀ a b, b < a → ρ a b = 0) (j : Fin (n + 1)) :
     ρ (Fin.last n) j = if j = Fin.last n then 1 else 0 := by
@@ -93,12 +120,18 @@ theorem last_of_up {R : Type} [CommRing R] {n : ℕ} (ρ : Matrix (Fin (n + 1)) 
   · rw [if_pos hj, hj, h1]
   · rw [if_neg hj]; exact h2 _ _ (lt_of_le_of_ne (Fin.le_last j) hj)
 
+/- English proof (translation)
+Use `last_of_low _ (fun a => by simp [Loc.uLow]) (fun a b hab => ?_) i` and prove the remaining obligations. Simplify using `only [Loc.uLow]`. Rewrite using `[if_neg (ne_of_lt hab), dif_neg (not_lt.2 hab.le)]`.
+-/
 theorem uLow_last {R : Type} [CommRing R] {n : ℕ} (x : Loc.IL (n + 1) → R) (i : Fin (n + 1)) :
     Loc.uLow x i (Fin.last n) = if i = Fin.last n then 1 else 0 := by
   refine last_of_low _ (fun a => by simp [Loc.uLow]) (fun a b hab => ?_) i
   simp only [Loc.uLow]
   rw [if_neg (ne_of_lt hab), dif_neg (not_lt.2 hab.le)]
 
+/- English proof (translation)
+Use `last_of_up _ (fun a => by simp [Loc.uUp]) (fun a b hab => ?_) j` and prove the remaining obligations. Simplify using `only [Loc.uUp]`. Rewrite using `[if_neg (ne_of_gt hab), dif_neg (fun h => (not_lt.2 hab.le) h.1)]`.
+-/
 theorem uUp_last {R : Type} [CommRing R] {n : ℕ} (w : Loc.Pt R (n + 1)) (y : Loc.IN w → R) (j : Fin (n + 1)) :
     Loc.uUp w y (Fin.last n) j = if j = Fin.last n then 1 else 0 := by
   refine last_of_up _ (fun a => by simp [Loc.uUp]) (fun a b hab => ?_) j
@@ -111,12 +144,20 @@ section Main
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+The claim follows from `mul_of_mul l ρ _ hl hρ`.
+-/
 theorem mul_shM {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)}
     (l ρ : MatP D p) (hl : ∀ i, l i (Fin.last D.R.rS) = if i = Fin.last D.R.rS then 1 else 0)
     (hρ : ∀ j, ρ (Fin.last D.R.rS) j = if j = Fin.last D.R.rS then 1 else 0) :
     l * shM δ T T' p w * ρ = shM δ T T' p w :=
   mul_of_mul l ρ _ hl hρ
 
+/- English proof (translation)
+Simplify using `only [shM, Matrix.of_apply]`. Use `split_ifs`. Unfold `cornerSh split_ifs`. Conclude with `(M p).R.zero_mem`. Conclude with `natCast_mem _ _`.
+
+Conclude with `(M p).R.zero_mem`.
+-/
 theorem shM_mem (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (i j : Fin (D.R.rS + 1)) :
     shM δ T T' p w i j ∈ (M p).R := by
@@ -128,6 +169,11 @@ theorem shM_mem (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ
     · exact natCast_mem _ _
   · exact (M p).R.zero_mem
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, ρ, hl, hρ, rfl⟩`. Use `⟨l, ρ, hl, hρ, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, add_mul, mul_shM l ρ (last_of_low l hl.1 hl.2.1) (last_of_up ρ hρ.1 hρ.2.1), add_sub_cancel_right]`. Introduce and unpack `⟨l, ρ, hl, hρ, h⟩`.
+
+Use `⟨l, ρ, hl, hρ, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add, add_mul, mul_shM l ρ (last_of_low l hl.1 hl.2.1) (last_of_up ρ hρ.1 hρ.2.1), ← h, sub_add_cancel]`.
+-/
 theorem mem_orbR_iff (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (Y Z : MatP D p) :
     Z ∈ orbR (M p) (Y + shM δ T T' p w) ↔ Z - shM δ T T' p w ∈ kkOrb M p Y := by
@@ -139,6 +185,9 @@ theorem mem_orbR_iff (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep
     refine ⟨l, ρ, hl, hρ, ?_⟩
     rw [mul_add, add_mul, mul_shM l ρ (last_of_low l hl.1 hl.2.1) (last_of_up ρ hρ.1 hρ.2.1), ← h, sub_add_cancel]
 
+/- English proof (translation)
+Unfold `zAt`. Rewrite using `[hmat, mul_add, add_mul, mul_shM _ _ (uLow_last xy.1) (uUp_last a xy.2)]`.
+-/
 theorem zAt_eq {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {w : Point D.host.E (D.R.rS + 1)}
     {a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)} (hmat : a.mat = modMat δ T T' p w + shM δ T T' p w)
     (xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN a → (D.s.atP p).Ep)) :
@@ -146,6 +195,11 @@ theorem zAt_eq {δ : ∀ p : PlF D, (D.s.atP p).Fp} {T T' : ℕ} {p : PlF D} {w 
   unfold zAt
   rw [hmat, mul_add, add_mul, mul_shM _ _ (uLow_last xy.1) (uUp_last a xy.2)]
 
+/- English proof (translation)
+Use `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Rewrite using `[h, Matrix.one_apply_eq]`. Conclude with `(M p).R.one_mem`. Rewrite using `[Matrix.one_apply_ne h]`.
+
+Conclude with `(M p).R.zero_mem`.
+-/
 theorem intLow_one (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D) :
     Formalism.MainNotions.S.TieN.IntLow (M p) (1 : MatP D p) := by
   refine ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h), fun a b => ?_⟩
@@ -153,6 +207,11 @@ theorem intLow_one (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) 
   · rw [h, Matrix.one_apply_eq]; exact (M p).R.one_mem
   · rw [Matrix.one_apply_ne h]; exact (M p).R.zero_mem
 
+/- English proof (translation)
+Use `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a b => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = b`. Rewrite using `[h, Matrix.one_apply_eq]`. Conclude with `(M p).R.one_mem`. Rewrite using `[Matrix.one_apply_ne h]`.
+
+Conclude with `(M p).R.zero_mem`.
+-/
 theorem intUp_one (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D) :
     Formalism.MainNotions.S.TieN.IntUp (M p) (1 : MatP D p) := by
   refine ⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h), fun a b => ?_⟩
@@ -167,6 +226,53 @@ def shE (δ : ∀ p : PlF D, (D.s.atP p).Fp) (T T' : ℕ) (p : PlF D) (w : Point
   left_inv O := by ext Y; simp
   right_inv O := by ext Z; simp
 
+/- English proof (translation)
+Consider the cases of `ha : modPt δ T T' p w with`. Consider the case `none`. Establish `h0 : fL M δ T T' p w τ = fun _ => 0`. Use function extensionality and compare the values at `O`. Unfold `fL`.
+
+Rewrite using `[if_neg]`. Introduce and unpack `⟨Y, -, ⟨w₀, hw₀, -⟩, -⟩`. Rewrite `hw₀` using `[ha]`. Consider the cases of `hw₀`. Establish `hB : BBtop M δ T T' p w τ = 0` using `by simp only [BBtop, ha]`.
+
+Rewrite using `[h0, hB]`. Conclude with `⟨hasSum_zero, by simpa using (summable_zero : Summable (fun _ : Set (MatP D p) => (0 : ℝ)))⟩`. Consider the case `some a`. Consider the cases of `τ with`. Consider the case `none`.
+
+Establish `h0 : fL M δ T T' p w none = fun _ => 0`. Use function extensionality and compare the values at `O`. Unfold `fL`. Apply the tactic sequence `split_ifs <;> simp [nIsoO]`. Establish `hB : BBtop M δ T T' p w none = 0` using `by simp only [BBtop, ha]`.
+
+Rewrite using `[h0, hB]`. Conclude with `⟨hasSum_zero, by simpa using (summable_zero : Summable (fun _ : Set (MatP D p) => (0 : ℝ)))⟩`. Consider the case `some c`. Establish `hmat` using `hS a ha`. Set `V : Set (MatP D p) → ℂ` to `fun O => fL M δ T T' p w (some c) ((shE δ T T' p w).symm O)`.
+
+Establish `hfV : fL M δ T T' p w (some c) = V ∘ shE δ T T' p w`. Use function extensionality and compare the values at `O`. Simplify using `only [V, Function.comp_apply, Equiv.symm_apply_apply]`. Establish `hB : BBtop M δ T T' p w (some c) = dfac M δ T T' p w * (M p).BB a c` using `by simp only [BBtop, ha]`. Establish `key` using `hO a c (dfac M δ T T' p w) V ?h0 ?h1`.
+
+Rewrite using `[hfV, hB]`. Use `⟨(Equiv.hasSum_iff (shE δ T T' p w)).2 key.1, ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.summable_iff (shE δ T T' p w) (f := fun O => ‖V O‖)).2 key.2`. Use `case h0 =>`. Introduce `O hO'`.
+
+Use `show fL M δ T T' p w (some c) {Y | Y + shM δ T T' p w ∈ O} = 0`. Unfold `fL`. Rewrite using `[if_neg]`. Introduce and unpack `⟨Y, hY, ⟨w₀, hw₀, xy, hxy⟩, hOY⟩`. Rewrite `hw₀` using `[ha]`.
+
+Consider the cases of `hw₀`. Apply `hO'` to reduce the goal to its premises. Use `⟨xy, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[zAt_eq hmat, ← hxy]`. Conclude with `add_mem (hY i j) (shM_mem M δ T T' p w i j)`.
+
+Establish `h1 : ∀ Z, Z ∈ O ↔ Z - shM δ T T' p w ∈ kkOrb M p Y` using `fun Z => by`. Rewrite using `[← hOY]`. Simplify using the standard rewrite rules. Use extensionality with `Z`. Rewrite using `[h1, zAt_eq hmat, ← hxy, mem_orbR_iff]`.
+
+Use `case h1 =>`. Introduce and unpack `O ⟨xy0, hint0, rfl⟩`. Establish `hL : IsLCls M δ T T' p w {Y | Y + shM δ T T' p w ∈ orbR (M p) (zAt a xy0)}`. Use `⟨zAt a xy0 - shM δ T T' p w, fun i j => sub_mem (hint0 i j) (shM_mem M δ T T' p w i j), ⟨a, ha, xy0, by rw [zAt_eq hmat, add_sub_cancel_right]⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `Y`.
+
+Establish `h` using `mem_orbR_iff M δ T T' p w (zAt a xy0 - shM δ T T' p w) (Y + shM δ T T' p w)`. Rewrite `h` using `[sub_add_cancel, add_sub_cancel_right]`. Conclude with `h`. Use `set rep := hL.choose with hrepdef`. Establish `hspec : IntP M p rep ∧ InOrbP δ T T' p w rep ∧ {Y | Y + shM δ T T' p w ∈ orbR (M p) (zAt a xy0)} = kkOrb M p rep` using `hL.choose_spec`.
+
+Take `⟨hrepI, ⟨w₀, hw₀, xy1, hrep⟩, hrepO⟩` from `hspec`. Rewrite `hw₀` using `[ha]`. Consider the cases of `hw₀`. Establish `hX : ∃ xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN a → (D.s.atP p).Ep), rep = Loc.uLow xy.1 * modMat δ T T' p w * Loc.uUp a xy.2` using `⟨xy1, hrep⟩`. Establish `hZ : rep + shM δ T T' p w = Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2`.
+
+Establish `h` using `zAt_eq hmat hX.choose`. Unfold `zAt at h`. Rewrite using `[h, ← hX.choose_spec]`. Use `⟨hX.choose, ?_, ?_⟩` and prove the remaining obligations. Establish `hmem : rep ∈ kkOrb M p rep` using `⟨1, 1, intLow_one M p, intUp_one M p, by simp⟩`.
+
+Rewrite `hmem` using `[← hrepO]`. Rewrite using `[zAt_eq hmat hX.choose, ← hX.choose_spec]`. Conclude with `hmem`. Use `show fL M δ T T' p w (some c) {Y | Y + shM δ T T' p w ∈ orbR (M p) (zAt a xy0)} = _`. Establish `hr : repL M δ T T' p w {Y | Y + shM δ T T' p w ∈ orbR (M p) (zAt a xy0)} = rep`.
+
+Unfold `repL`. Conclude with `dif_pos hL`. Establish `hph : phL M δ T T' p w rep = dfac M δ T T' p w * (M p).psiR (Loc.simpleLow (Loc.uLow hX.choose.1) + Loc.simpleUp (Loc.uUp a hX.choose.2))`. Unfold `phL`. Simplify using `only [ha]`.
+
+Rewrite using `[dif_pos hX]`. Establish `hset : {xy : (Loc.IL (D.R.rS + 1) → (D.s.atP p).Ep) × (Loc.IN a → (D.s.atP p).Ep) | Loc.uLow xy.1 * modMat δ T T' p w * Loc.uUp a xy.2 ∈ kkOrb M p rep} = {xy | zAt a xy ∈ orbR (M p) (zAt a xy0)}`. Use extensionality with `xy`. Simplify using `only [← hrepO, zAt_eq hmat xy, Set.mem_ofPred_eq]`. Establish `hwt : wtL M δ T T' p w rep = wtZ (M p) a (orbR (M p) (zAt a xy0))`.
+
+Unfold `wtL wtZ muA`. Simplify using `only [ha]`. Rewrite using `[hset]`. Establish `hZi : ∀ i j, (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2) i j ∈ (M p).R`. Introduce `i j`.
+
+Rewrite using `[← hZ]`. Conclude with `add_mem (hrepI i j) (shM_mem M δ T T' p w i j)`. Establish `hZd : IsUnit (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2).det`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Formalism.L2.SG.Pf.LocModel.uLow_det, Formalism.L2.SG.Pf.LocModel.uUp_det, one_mul, mul_one, Formalism.MainNotions.LocalModelPeriodLattices.det_eq]`. Conclude with `Formalism.FourierDecayAlt.P.A5x6.pt_det_isUnit _`.
+
+Establish `hth : thL M δ T T' p w rep = clsOf (M p) (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2)` using `by show clsOf (M p) (rep + shM δ T T' p w) = _`. Rewrite using `[hZ]`. Establish `hbb : (M p).bbIntegrand a c hX.choose = ((M p).nIso (Formalism.MainNotions.LocalOrbitGerms.Cls.toMat (M p) _ hZi hZd) (Quotient.out c) : ℂ) * (M p).psiR (Loc.simpleLow (Loc.uLow hX.choose.1) + Loc.simpleUp (Loc.uUp a hX.choose.2))`. Rewrite using `[Formalism.MainNotions.LocalOrbitGerms.Cls.bbIntegrand_eq, Formalism.MainNotions.LocalOrbitGerms.Cls.GG, dif_pos ⟨hZi, hZd⟩]`. Establish `hcl : clsOf (M p) (Loc.uLow hX.choose.1 * a.mat * Loc.uUp a hX.choose.2) = some (Quotient.mk _ (Formalism.MainNotions.LocalOrbitGerms.Cls.toMat (M p) _ hZi hZd) : (M p).Cls D.R.rS)`.
+
+Unfold `clsOf`. Rewrite using `[dif_pos ⟨hZi, hZd⟩]`. Both sides reduce to the same expression. Unfold `fL`. Rewrite using `[if_pos hL, hr, hph, hwt, hth, hcl, hbb, nIso_out]`.
+
+Use `erw [nIsoO_some]`. Use `split_ifs with h1 h2 h2`. Expand and normalize the polynomial expressions, which then agree. Conclude with `absurd (Option.some.inj h1) h2`. Conclude with `absurd (congrArg some h2) h1`.
+
+Simplify using the standard rewrite rules.
+-/
 theorem fL_hasSum (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (hS : ModShift δ T T' p w)
     (hO : ∀ (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (c : (M p).Cls D.R.rS), OrbCut (M p) a c)
@@ -291,6 +397,11 @@ section Assembly
 
 variable {D : Formalism.BasicNotions.D7}
 
+/- English proof (translation)
+Unfold `gL fL`. Distinguish the cases in `hL : IsLCls M δ T T' p w O`. Distinguish the cases in `ht : thL M δ T T' p w (repL M δ T T' p w O) = some c`. Rewrite using `[if_pos ⟨hL, ht⟩, if_pos hL, ht] erw [nIsoO_some]`. Rewrite using `[if_pos rfl]`.
+
+Rewrite using `[if_neg (fun h => ht h.2), if_pos hL] erw [nIsoO_some]`. Rewrite using `[if_neg ht]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h => hL h.1), if_neg hL, zero_mul]`.
+-/
 theorem gL_mul (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (c : (M p).Cls D.R.rS) (O : Set (MatP D p)) :
     gL M δ T T' p w (some c) O * ((M p).nAut c : ℂ) = fL M δ T T' p w (some c) O := by
@@ -306,6 +417,11 @@ theorem gL_mul (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ 
       simp
   · rw [if_neg (fun h => hL h.1), if_neg hL, zero_mul]
 
+/- English proof (translation)
+Establish `hn : ((M p).nAut c : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `hg : gL M δ T T' p w (some c) = fun O => fL M δ T T' p w (some c) O / ((M p).nAut c : ℂ)`. Use function extensionality and compare the values at `O`. Rewrite using `[← gL_mul, mul_div_cancel_right₀ _ hn]`. Establish `ha : Pf.autP M p (some c) = ((M p).nAut c : ℂ)` using `rfl`.
+
+Rewrite using `[hg, ha]`. Use `⟨hf.1.div_const _, ?_⟩` and prove the remaining obligations. Simplify using `only [norm_div]`. Conclude with `hf.2.div_const _`.
+-/
 theorem gL_hasSum (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (c : (M p).Cls D.R.rS) (hN : (M p).nAut c ≠ 0)
     (hf : HasSum (fL M δ T T' p w (some c)) (BBtop M δ T T' p w (some c)) ∧
@@ -322,6 +438,11 @@ theorem gL_hasSum (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (
   simp only [norm_div]
   exact hf.2.div_const _
 
+/- English proof (translation)
+Introduce `w _ p τ`. Take `⟨h1, h2⟩` from `fL_hasSum M δ _ _ p w (hS p w) (hO p) τ`. Use `⟨h1, h2, fun hτ => ?_⟩` and prove the remaining obligations. Consider the cases of `τ with`. Consider the case `none => exact absurd rfl hτ`.
+
+Consider the case `some c => exact gL_hasSum M δ _ _ p w c (hN p c) ⟨h1, h2⟩`.
+-/
 theorem locOrbSum_of (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (u u' : D.what₂.Word) (hS : ∀ p w, ModShift δ (D.mem u).A.T (D.mem u').A.T p w)
     (hO : ∀ (p : PlF D) (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (c : (M p).Cls D.R.rS), OrbCut (M p) a c)
@@ -333,6 +454,11 @@ theorem locOrbSum_of (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep
   | none => exact absurd rfl hτ
   | some c => exact gL_hasSum M δ _ _ p w c (hN p c) ⟨h1, h2⟩
 
+/- English proof (translation)
+Introduce `c`. Use `haveI := Formalism.MainNotions.LocalModelPeriodLattices.top_of_OK (M p) hOK`. Establish `hD` using `Formalism.MainNotions.LocalModelPeriodLattices.datum_of_OK (M p) hOK`. Establish `hI : Formalism.DoubleCosetMeasures.IsInt (M p).R ((Quotient.out c).Z.map (M p).R.subtype)` using `fun i j => ((Quotient.out c).Z i j).2`. Establish `hfin` using `(Formalism.DoubleCosetMeasures.Final.isoFinite _ (M p).R (Formalism.FourierDecayAlt.P.A5x3.finite_quot hD) _ _ hI (Quotient.out c).unit).2 ((M p).Cok (Quotient.out c)) ((M p).eCls (Quotient.out c)) (Formalism.MainNotions.LocalOrbitGerms.Cls.lamK (M p) (Quotient.out c))`.
+
+Use `haveI : Finite ((M p).Iso (Quotient.out c) (Quotient.out c)) := (Equiv.finite_iff (Formalism.MainNotions.LocalOrbitGerms.Cls.isoEquiv (M p) (Quotient.out c) (Quotient.out c))).2 hfin.to_subtype`. Use `haveI : Nonempty ((M p).Iso (Quotient.out c) (Quotient.out c)) := ⟨⟨LinearEquiv.refl _ _, rfl, fun _ => rfl⟩⟩`. Conclude with `Nat.card_pos.ne'`.
+-/
 theorem nAutNe_of (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D) (hOK : (M p).OK) :
     NAutNe M p := by
   intro c

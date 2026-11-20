@@ -28,6 +28,9 @@ def decRes (A : ValuationSubring Ω) : ↥(Dec (F := L) A) →* ↥(Dec (F := K)
   map_one' := rfl
   map_mul' _ _ := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem decRes_apply (A : ValuationSubring Ω) (g : ↥(Dec (F := L) A)) (z : Ω) :
     ((decRes (K := K) A g : ↥(Dec (F := K) A)) : G K Ω) z = (g : G L Ω) z := rfl
 
@@ -45,6 +48,11 @@ variable {l : ℕ} [Fact l.Prime] {K L Ω : Type} [Field Ω] [Field K] [NumberFi
   [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω]
   {A : ValuationSubring Ω} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
 
+/- English proof (translation)
+Set `K' : FinExt l` to `⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : L => Bw.j (algebraMap L Ω x)), GlobalTheory.PlaceBridge.finiteDimensional_adjoin_range (Bw.j.comp (algebraMap L Ω))⟩`. Use `K'.2` as an intermediate fact. Take `⟨e, he, he', hec⟩` from `GlobalTheory.PlaceBridge.exists_mulEquiv (E := L) hj K' rfl`. Use `⟨_, { Kw := K' j := Bw.j j_E := fun x => IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩ j_dense := GlobalTheory.PlaceBridge.adjoin_range_subset_closure (Bw.j.comp (algebraMap L Ω)) e := e e_cont := he e_symm_cont := he' e_comm := hec LL := supExt S ⟨IntermediateField.normalClosure …` and prove the remaining obligations. Use `show Bw.Kw.1 ≤ K'.1`.
+
+Rewrite using `[BridgeInd.kw_eq_adjoin Bw, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `IntermediateField.subset_adjoin _ _ ⟨algebraMap K L x, ?_⟩` and prove the remaining obligations. Use `show Bw.j (algebraMap L Ω (algebraMap K L x)) = Bw.j (algebraMap K Ω x)`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+-/
 theorem exists_bridge (Bw : LocBridge l K Ω (Dec (F := K) A) O) (hj : Induces Bw) (S : FinExt l) :
     ∃ (LL' : FinExt l) (Bw' : LocBridge l L Ω (Dec (F := L) A) ↥(OL LL')), Bw'.j = Bw.j ∧ S.1 ≤ Bw'.LL.1 ∧ Bw.Kw.1 ≤ Bw'.Kw.1 := by
   let K' : FinExt l := ⟨IntermediateField.adjoin ℚ_[l] (Set.range fun x : L => Bw.j (algebraMap L Ω x)),
@@ -79,6 +87,11 @@ variable {O' : Type} [CommRing O'] [Algebra ℤ_[l] O'] [TopologicalSpace O']
   (hjj : Bw'.j = Bw.j) (hle : Bw.Kw.1 ≤ Bw'.Kw.1)
 include hjj hle
 
+/- English proof (translation)
+Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `x`. Apply `Bw.j.injective` to reduce the goal to its premises. Establish `h1` using `Bw'.e_comm (Bw'.e.symm g') x`.
+
+Establish `h2` using `Bw.e_comm (Bw.e.symm ⟨g', GK_le hle g'.2⟩) x`. Rewrite `h1`, `h2` using `[MulEquiv.apply_symm_apply]`. Rewrite `h1` using `[hjj]`. Conclude with `h1.symm.trans h2`.
+-/
 theorem decRes_e_symm (g' : ↥(GK Bw'.Kw)) :
     decRes (K := K) A (Bw'.e.symm g') = Bw.e.symm ⟨g', GK_le hle g'.2⟩ := by
   apply Subtype.ext
@@ -91,6 +104,9 @@ theorem decRes_e_symm (g' : ↥(GK Bw'.Kw)) :
   rw [hjj] at h1
   exact h1.symm.trans h2
 
+/- English proof (translation)
+Use extensionality with `g' v i`. Simplify using `only [LocBridge.repE, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, GlobalTheory.Pst.resTo]`. Rewrite using `[decRes_e_symm Bw Bw' hjj hle]`. Both sides reduce to the same expression.
+-/
 theorem repE_decRes (T : FinExt l) {m : ℕ} (t : ↥(Dec (F := K) A) →* GL (Fin m) ↥T.1) :
     Bw'.repE T (t.comp (decRes A)) = GlobalTheory.Pst.resTo (Bw.repE T t) hle := by
   ext g' v i
@@ -100,6 +116,11 @@ theorem repE_decRes (T : FinExt l) {m : ℕ} (t : ↥(Dec (F := K) A) →* GL (F
 
 variable {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)} (h : IsPlaceOver A v) (h' : IsPlaceOver A v')
 
+/- English proof (translation)
+Establish `e1` using `decRes_e_symm Bw Bw' hjj hle (weilToGK Bw' h' σ')`. Establish `e2 : decRes (K` using `K) A (Bw'.e.symm (weilToGK Bw' h' σ')) = Subgroup.inclusion (Weil_le_Dec h) σ := by`. Rewrite using `[weilToGK, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Conclude with `Subtype.ext (AlgEquiv.ext fun z => (hσ z).symm)`. Rewrite `e1` using `[e2, MulEquiv.eq_symm_apply]`.
+
+Conclude with `(congrArg Subtype.val e1).symm`.
+-/
 theorem weilToGK_eq (σ : Weil h) (σ' : Weil h') (hσ : ∀ z : Ω, (σ : G K Ω) z = (σ' : G L Ω) z) :
     (weilToGK Bw' h' σ' : GQ l) = (weilToGK Bw h σ : GQ l) := by
   have e1 := decRes_e_symm Bw Bw' hjj hle (weilToGK Bw' h' σ')

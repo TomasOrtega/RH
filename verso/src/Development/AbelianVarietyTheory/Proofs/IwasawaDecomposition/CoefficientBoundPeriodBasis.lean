@@ -2,6 +2,25 @@ import Mathlib
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `g r lam ρ E F τ P Q hlam hF hρ u`. Use `set K : ℝ := ‖P‖ + (g : ℝ) * ‖Q‖ * ‖τ‖ with hK`. Set `B : Fin r → Fin g → ℂ` to `fun m l => (P m l : ℂ) + ∑ k, (Q m k : ℂ) * τ l k`. Set `c : Fin g → Fin g → ℂ` to `fun i l => ∑ m, ρ i m * B m l`. Establish `hB : ∀ m, lam m = ∑ l, B m l • E l`.
+
+Introduce `m`. Rewrite using `[hlam m]`. Simplify using `only [hF, B, add_smul, Finset.sum_add_distrib, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`.
+
+Establish `hc : ∀ i, ∑ l, c i l • E l = Pi.single i 1`. Introduce `i`. Rewrite using `[← hρ i]`. Simplify using `only [c, hB, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+
+Use `⟨fun l => ∑ i, u i * c i l, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ∑ k, (∑ i, u i * c i k) • E k = ∑ i, u i • ∑ k, c i k • E k`. Simplify using `only [Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[h1]`.
+
+Simplify using `only [hc]`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `n2 : ∀ {a b : ℕ} (X : Fin a → Fin b → ℂ) (m : Fin a) (l : Fin b), ‖X m l‖ ≤ ‖X‖` using `fun X m l => (norm_le_pi_norm (X m) l).trans (norm_le_pi_norm X m)`. Establish `n2r : ∀ {a b : ℕ} (X : Fin a → Fin b → ℝ) (m : Fin a) (l : Fin b), ‖(X m l : ℂ)‖ ≤ ‖X‖` using `fun X m l => by rw [Complex.norm_real]; exact (norm_le_pi_norm (X m) l).trans (norm_le_pi_norm X m)`.
+
+Establish `hBn : ∀ m l, ‖B m l‖ ≤ K`. Introduce `m l`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (n2r Q m k) (n2 τ l k) (norm_nonneg _) (norm_nonneg _)`.
+
+Use `_ = K := by simp [hK, Finset.sum_const, mul_assoc]`. Establish `hK0 : 0 ≤ K` using `by rw [hK]; positivity`. Establish `hcn : ∀ i l, ‖c i l‖ ≤ (r : ℝ) * ‖ρ‖ * K`. Introduce `i l`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (n2 ρ i m) (hBn m l) (norm_nonneg _) (norm_nonneg _)`. Use `_ = (r : ℝ) * ‖ρ‖ * K := by simp [Finset.sum_const, mul_assoc]`. Establish `hC0 : 0 ≤ (r : ℝ) * ‖ρ‖ * K` using `by positivity`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun l => ?_` and prove the remaining obligations.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (norm_le_pi_norm u i) (hcn i l) (norm_nonneg _) (norm_nonneg _)`. Use `_ = _ := by simp [Finset.sum_const]; ring`.
+-/
 theorem coords_bounded_by_period_matrix : ∀ (g r : ℕ) (lam : Fin r → Fin g → ℂ) (ρ : Fin g → Fin r → ℂ) (E F : Fin g → Fin g → ℂ) (τ : Fin g → Fin g → ℂ) (P Q : Fin r → Fin g → ℝ), (∀ m, lam m = ∑ k, (P m k : ℂ) • E k + ∑ k, (Q m k : ℂ) • F k) → (∀ j, F j = ∑ i, τ i j • E i) → (∀ i, ∑ m, ρ i m • lam m = Pi.single i 1) → ∀ u : Fin g → ℂ, ∃ a : Fin g → ℂ, u = ∑ k, a k • E k ∧ ‖a‖ ≤ (g : ℝ) * ((r : ℝ) * ‖ρ‖ * (‖P‖ + (g : ℝ) * ‖Q‖ * ‖τ‖)) * ‖u‖ := by
   intro g r lam ρ E F τ P Q hlam hF hρ u
   set K : ℝ := ‖P‖ + (g : ℝ) * ‖Q‖ * ‖τ‖ with hK

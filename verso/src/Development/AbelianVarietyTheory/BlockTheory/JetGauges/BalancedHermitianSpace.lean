@@ -63,6 +63,9 @@ def balancedSpace (Y : Type) [AddCommGroup Y] [Module (𝓞 E) Y] : Submodule �
   zero_mem' := ⟨fun _ _ => rfl, fun _ _ _ => rfl⟩
   smul_mem' r β hβ := ⟨fun x y => by simp [hβ.1 x y], fun a x y => by simp [hβ.2 a x y]⟩
 
+/- English proof (translation)
+The claim follows from `Submodule.ext h`.
+-/
 theorem IsBalancedSpace.eq {S : Submodule ℝ (Bil Y)} (h : IsBalancedSpace E S) : S = balancedSpace E Y :=
   Submodule.ext h
 
@@ -127,6 +130,11 @@ variable (E : Type) [Field E] [NumberField E] [IsCMField E] in
 variable {Y : Type} [AddCommGroup Y] [Module (𝓞 E) Y] in
 omit [NumberField E] [IsCMField E] [Module (𝓞 E) Y] in
 
+/- English proof (translation)
+Introduce `β hβ`. Use `choose f hf using hβ`. Use `⟨∑ i, f (x i) (x' i), ?_⟩` and prove the remaining obligations. Use `show ∑ i, (β : _root_.GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.Bil Y) (x i) (x' i) = _`. Use `push_cast`.
+
+Conclude with `Finset.sum_congr rfl fun i _ => hf _ _`.
+-/
 theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.isIntegralFn_evalSum (S : Submodule ℝ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.Bil Y))
     {k : ℕ} (x x' : Fin k → Y) :
     _root_.GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.IsIntegralFn S (_root_.GlobalTheory.IndefiniteRowSideFullHecke.BalancedHermitianSpace.evalSum S x x') := by

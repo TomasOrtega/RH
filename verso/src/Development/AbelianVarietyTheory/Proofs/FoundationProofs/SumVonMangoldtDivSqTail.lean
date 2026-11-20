@@ -7,6 +7,17 @@ open Finset ArithmeticFunction
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Proceed by induction on `N, hN using Nat.le_induction with`. Consider the case `base`. Establish `: 0 ≤ (∑ n ∈ Icc 1 M, Λ n) / (M : ℝ) ^ 2` using `div_nonneg (sum_nonneg fun _ _ => vonMangoldt_nonneg) (by positivity)`. Simplify using `using this`. Consider the case `succ N hN ih`.
+
+Rewrite using `[sum_Ioc_succ_top hN, sum_Icc_succ_top (by omega)]`. Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Establish `hA` using `hψ N`. Use `set A := ∑ n ∈ Icc 1 N, Λ n`. Use `push_cast`.
+
+Establish `h1 : 0 ≤ 1 / (N : ℝ) ^ 2 - 1 / ((N : ℝ) + 1) ^ 2`. Rewrite using `[sub_nonneg]`. Conclude with `one_div_le_one_div_of_le (by positivity) (by nlinarith)`. Establish `h2` using `mul_le_mul_of_nonneg_right hA h1`. Establish `h3 : 2 * (N : ℝ) * (1 / (N : ℝ) ^ 2 - 1 / ((N : ℝ) + 1) ^ 2) ≤ 4 / N - 4 / ((N : ℝ) + 1)`.
+
+Establish `e : 4 / N - 4 / ((N : ℝ) + 1) - 2 * (N : ℝ) * (1 / (N : ℝ) ^ 2 - 1 / ((N : ℝ) + 1) ^ 2) = 2 / (N * ((N : ℝ) + 1) ^ 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `: 0 ≤ 2 / (N * ((N : ℝ) + 1) ^ 2)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `e1 : A * (1 / (N : ℝ) ^ 2 - 1 / ((N : ℝ) + 1) ^ 2) = A / (N : ℝ) ^ 2 - A / ((N : ℝ) + 1) ^ 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[add_div]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sum_von_mangoldt_div_sq_tail
     (hψ : ∀ N : ℕ, ∑ n ∈ Icc 1 N, Λ n ≤ 2 * (N : ℝ)) (M : ℕ) (hM : 1 ≤ M) (N : ℕ) (hN : M ≤ N) :
     ∑ n ∈ Ioc M N, Λ n / (n : ℝ) ^ 2 ≤ (∑ n ∈ Icc 1 N, Λ n) / (N : ℝ) ^ 2 + 4 / M - 4 / N := by
@@ -37,6 +48,11 @@ theorem sum_von_mangoldt_div_sq_tail
     rw [add_div]
     linarith
 
+/- English proof (translation)
+Break down `le_or_gt M N with hN | hN` into its components or cases. Establish `h` using `sum_von_mangoldt_div_sq_tail hψ M hM N hN`. Establish `hN0 : (0 : ℝ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Establish `h2 : (∑ n ∈ Icc 1 N, Λ n) / (N : ℝ) ^ 2 ≤ 4 / N`. Rewrite using `[div_le_div_iff₀ (by positivity) hN0]`.
+
+Use polynomial arithmetic with `[hψ N, mul_le_mul_of_nonneg_right (hψ N) hN0.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Ioc_eq_empty (by omega)]`. Simplify using `only [sum_empty]`. Check the signs of the components of the expression.
+-/
 theorem sum_vonMangoldt_div_sq_tail
     (hψ : ∀ N : ℕ, ∑ n ∈ Icc 1 N, Λ n ≤ 2 * (N : ℝ)) (M : ℕ) (hM : 1 ≤ M) (N : ℕ) :
     ∑ n ∈ Ioc M N, Λ n / (n : ℝ) ^ 2 ≤ 4 / M := by
@@ -51,6 +67,49 @@ theorem sum_vonMangoldt_div_sq_tail
     simp only [sum_empty]
     positivity
 
+/- English proof (translation)
+Introduce `hψ`. Take `⟨C, hC⟩` from `prime_power_von_mangoldt_sum_bound`. Establish `hL : Formalism.HermitianLattices.GL2a2.SizeSpLarge` using `GlobalTheory.large_prime_sum_bound`. Establish `hψ' : ∀ N : ℕ, ∑ n ∈ Icc 1 N, Λ n ≤ 2 * (N : ℝ)` using `fun N => by`. Simplify using `using hψ N (Nat.cast_nonneg N)`.
+
+Use `⟨6 * C ^ 2 + 12800, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : (0 : ℝ) < x` using `by linarith`. Establish `hlx : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`. Use `set N : ℕ := ⌊x ^ (400 : ℝ)⌋₊ with hN`. Establish `hNz : (N : ℝ) ≤ x ^ (400 : ℝ)` using `Nat.floor_le (by positivity)`.
+
+Use `set M : ℕ := ⌊x⌋₊ with hM`. Establish `hM1 : 1 ≤ M` using `Nat.le_floor (by simpa using (by linarith : (1 : ℝ) ≤ x))`. Establish `hMx : (M : ℝ) ≤ x` using `Nat.floor_le hx0.le`. Establish `hxM : x < M + 1` using `Nat.lt_floor_add_one x`. Establish `hM1' : (1 : ℝ) ≤ M` using `by exact_mod_cast hM1`.
+
+Use `set K : ℕ := ⌊√x⌋₊ with hK`. Establish `hKx : (K : ℝ) ≤ √x` using `Nat.floor_le (Real.sqrt_nonneg x)`. Establish `hxK : √x < K + 1` using `Nat.lt_floor_add_one _`. Establish `hs0 : 0 < √x` using `Real.sqrt_pos.2 hx0`. Establish `hlogs : Real.log √x = Real.log x / 2` using `Real.log_sqrt hx0.le`.
+
+Establish `hsP : ∀ p : ℕ, 0 ≤ Formalism.HermitianLattices.GL2a2.sP x p` using `fun p => by`. Unfold `Formalism.HermitianLattices.GL2a2.sP Formalism.HermitianLattices.GL2PrimeSums.cn`. Conclude with `sum_nonneg fun i _ => mul_nonneg vonMangoldt_nonneg (le_min zero_le_one (by positivity))`. Set `f₁ : ℕ → ℝ` to `fun n => if n ∈ Icc 1 K then C ^ 2 * Real.log x ^ 2 else 0`. Set `f₂ : ℕ → ℝ` to `fun n => if n ∈ Icc 1 M then 2 * C ^ 2 * Real.log x * Λ n else 0`.
+
+Set `f₃ : ℕ → ℝ` to `fun n => if n ∈ Ioc M N then 1600 * x ^ 2 * Real.log x * (Λ n / (n : ℝ) ^ 2) else 0`. Apply the tactic sequence `have hf₁ : ∀ n, 0 ≤ f₁ n := fun n => by simp only [f₁]; split_ifs <;> positivity`. Establish `hf₂ : ∀ n, 0 ≤ f₂ n` using `fun n => by`. Establish `: 0 ≤ Λ n` using `vonMangoldt_nonneg`. Apply the tactic sequence `simp only [f₂]; split_ifs <;> positivity`.
+
+Establish `hf₃ : ∀ n, 0 ≤ f₃ n` using `fun n => by`. Establish `: 0 ≤ Λ n` using `vonMangoldt_nonneg`. Apply the tactic sequence `simp only [f₃]; split_ifs <;> positivity`. Establish `hterm : ∀ p ∈ (Icc 1 N).filter (fun p => p.Prime), Formalism.HermitianLattices.GL2a2.sP x p ^ 2 ≤ f₁ p + f₂ p + f₃ p`. Introduce `p hp`.
+
+Simplify using `only [mem_filter, mem_Icc] at hp`. Take `⟨⟨hp1, hpN⟩, hp⟩` from `hp`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos`. Establish `hlp : 0 ≤ Real.log p` using `Real.log_natCast_nonneg p`. Establish `hall : Formalism.HermitianLattices.GL2a2.sP x p ^ 2 ≤ C ^ 2 * Real.log x ^ 2`.
+
+Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (hsP p) (hC x hx p hp) 2`. Distinguish the cases in `h1 : p ≤ K`. Establish `: f₁ p = C ^ 2 * Real.log x ^ 2` using `if_pos (mem_Icc.2 ⟨hp1, h1⟩)`. Combine the linear relations using `[hf₂ p, hf₃ p]`.
+
+Distinguish the cases in `h2 : p ≤ M`. Establish `e : f₂ p = 2 * C ^ 2 * Real.log x * Λ p` using `if_pos (mem_Icc.2 ⟨hp1, h2⟩)`. Rewrite `e` using `[vonMangoldt_apply_prime hp]`. Establish `hKp : (K : ℝ) + 1 ≤ p` using `by exact_mod_cast (by omega : K + 1 ≤ p)`. Establish `: Real.log √x ≤ Real.log p` using `Real.log_le_log hs0 (by linarith)`.
+
+Establish `h3 : Real.log x ≤ 2 * Real.log p` using `by linarith`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 (by positivity : 0 ≤ C ^ 2 * Real.log x)`. Use polynomial arithmetic with `[hf₁ p, hf₃ p]`. Establish `e : f₃ p = 1600 * x ^ 2 * Real.log x * (Λ p / (p : ℝ) ^ 2)` using `if_pos (mem_Ioc.2 ⟨by omega, hpN⟩)`. Rewrite `e` using `[vonMangoldt_apply_prime hp]`.
+
+Establish `hMp : (M : ℝ) + 1 ≤ p` using `by exact_mod_cast (by omega : M + 1 ≤ p)`. Establish `h3 : Formalism.HermitianLattices.GL2a2.sP x p ^ 2 ≤ (2 * x * Real.log p / p) ^ 2` using `pow_le_pow_left₀ (hsP p) (hL x hx0 p hp (by linarith)) 2`. Establish `hpN' : (p : ℝ) ≤ N` using `by exact_mod_cast hpN`. Establish `h4 : Real.log p ≤ 400 * Real.log x`. Rewrite using `[← Real.log_rpow hx0]`.
+
+Conclude with `Real.log_le_log hp0 (hpN'.trans hNz)`. Establish `h5` using `mul_le_mul_of_nonneg_left h4 (by positivity : 0 ≤ 4 * x ^ 2 * (Real.log p / (p : ℝ) ^ 2))`. Establish `e2 : (2 * x * Real.log p / p) ^ 2 = 4 * x ^ 2 * (Real.log p / (p : ℝ) ^ 2) * Real.log p`. Expand and normalize the polynomial expressions, which then agree. Use polynomial arithmetic with `[hf₁ p, hf₂ p]`.
+
+Establish `hsum : ∀ (S T : Finset ℕ) (g : ℕ → ℝ), (∀ n, 0 ≤ g n) → ∑ n ∈ S, (if n ∈ T then g n else 0) ≤ ∑ n ∈ T, g n`. Introduce `S T g hg`. Rewrite using `[sum_ite_mem]`. Conclude with `sum_le_sum_of_subset_of_nonneg inter_subset_right fun n _ _ => hg n`. Establish `s₁ : ∑ p ∈ (Icc 1 N).filter (fun p => p.Prime), f₁ p ≤ 2 * C ^ 2 * x * Real.log x`.
+
+Use `(hsum _ _ _ fun n => by positivity).trans ?_` and prove the remaining obligations. Simplify using `only [sum_const, Nat.card_Icc, Nat.add_sub_cancel, nsmul_eq_mul]`. Establish `h1 : Real.log √x ≤ √x - 1` using `Real.log_le_sub_one_of_pos hs0`. Establish `h2 : √x * √x = x` using `Real.mul_self_sqrt hx0.le`. Establish `h3 : (K : ℝ) * Real.log x ≤ 2 * x`.
+
+Establish `: (K : ℝ) * Real.log x ≤ √x * (2 * √x)` using `mul_le_mul hKx (by linarith) hlx hs0.le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `mul_le_mul_of_nonneg_left h3 (by positivity : 0 ≤ C ^ 2 * Real.log x)`. Use the polynomial consequences of the given equalities and inequalities. Establish `s₂ : ∑ p ∈ (Icc 1 N).filter (fun p => p.Prime), f₂ p ≤ 4 * C ^ 2 * x * Real.log x`.
+
+Use `(hsum _ _ _ fun n => by` and prove the remaining obligations. Establish `: 0 ≤ Λ n` using `vonMangoldt_nonneg`. Use the proof step `positivity).trans ?_`. Rewrite using `[← mul_sum]`. Establish `h4` using `mul_le_mul_of_nonneg_left ((hψ' M).trans (by linarith : 2 * (M : ℝ) ≤ 2 * x)) (by positivity : 0 ≤ 2 * C ^ 2 * Real.log x)`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `s₃ : ∑ p ∈ (Icc 1 N).filter (fun p => p.Prime), f₃ p ≤ 12800 * x * Real.log x`. Use `(hsum _ _ _ fun n => by` and prove the remaining obligations. Establish `: 0 ≤ Λ n` using `vonMangoldt_nonneg`. Use the proof step `positivity).trans ?_`.
+
+Rewrite using `[← mul_sum]`. Establish `h1 : 4 / (M : ℝ) ≤ 8 / x`. Rewrite using `[div_le_div_iff₀ (by linarith) hx0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `mul_le_mul_of_nonneg_left ((sum_vonMangoldt_div_sq_tail hψ' M hM1 N).trans h1) (by positivity : 0 ≤ 1600 * x ^ 2 * Real.log x)`.
+
+Establish `e : 1600 * x ^ 2 * Real.log x * (8 / x) = 12800 * x * Real.log x`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Use `sum_le_sum hterm` as an intermediate fact.
+
+Rewrite `this` using `[sum_add_distrib, sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem prime_sum_square_bound : Formalism.HermitianLattices.GL2a2.SizeSpSq := by
   intro hψ
   obtain ⟨C, hC⟩ := prime_power_von_mangoldt_sum_bound

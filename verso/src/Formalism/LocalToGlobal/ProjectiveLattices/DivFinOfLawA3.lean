@@ -18,6 +18,17 @@ def DivFin : Prop := ∀ (Z : Comp Xo c) (r : Om Z), r ≠ 0 → {v | d.admitted
 def FrShFin (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ) : Prop :=
   ∀ Z : Comp Xo c, {v | d.admitted Z v ∧ δ Z v ≠ 0}.Finite
 
+/- English proof (translation)
+Introduce `Z G f hf hf0`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hf`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hf0 (zero_smul _ _)`.
+
+Establish `hcoeff : (a • (AddMonoidAlgebra.single G (1 : Om Z))).coeff G = a` using `by first`. Consider the case `simp`. Consider the case `simp [AddMonoidAlgebra.smul_single']`. Consider the case `(rw [AddMonoidAlgebra.smul_single', mul_one]; rfl)`. Use `((hD Z a ha).union (hF Z)).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨hadm, hne⟩`. Rewrite `hne` using `[hord]`. Unfold `ordC at hne`. Rewrite `hne` using `[hcoeff]`. Distinguish the cases in `hv : v a = 0`.
+
+Use `Or.inr ⟨hadm, fun hδ => hne ?_⟩` and prove the remaining obligations. Rewrite using `[hv, hδ]`. Establish `hz : frW (0 : Ix Dw → ℤ) G = 0`. Unfold `frW`. Simplify using the standard rewrite rules.
+
+Rewrite using `[hz]`. Both sides reduce to the same expression. Conclude with `Or.inl ⟨hadm, hv⟩`.
+-/
 theorem lawA3'_of (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (hord : ∀ Z v, d.ord Z v = ordC (δ Z v) v) (hD : DivFin d) (hF : FrShFin d δ) : LawA3' d := by
   intro Z G f hf hf0
@@ -45,6 +56,19 @@ theorem lawA3'_of (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) →
     rfl
   · exact Or.inl ⟨hadm, hv⟩
 
+/- English proof (translation)
+Introduce `Z r hr`. Establish `hmem : AddMonoidAlgebra.single (0 : WTZ E) r ∈ AG Z 0`. Use `Submodule.mem_span_singleton.mpr ⟨r, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `simp [AddMonoidAlgebra.smul_single']`.
+
+Consider the case `(rw [AddMonoidAlgebra.smul_single', mul_one])`. Establish `hne0 : AddMonoidAlgebra.single (0 : WTZ E) r ≠ 0` using `by first`. Consider the case `simpa using hr`. Consider the case `exact Finsupp.single_ne_zero.mpr hr`. Use `(h Z hmem hne0).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `v ⟨hadm, hv⟩`. Use `⟨hadm, ?_⟩` and prove the remaining obligations. Rewrite using `[hord]`. Unfold `ordC`. Establish `hc : (AddMonoidAlgebra.single (0 : WTZ E) r).coeff 0 = r` using `by first`.
+
+Consider the case `simp`. Consider the case `rfl`. Establish `hf0 : frW (δ Z v) (0 : WTZ E) = 0`. Unfold `frW`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations.
+
+Apply the tactic sequence `cases i <;> simp [exZ]`. Rewrite using `[hc, hf0, add_zero]`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.mp ((AddValuation.top_iff v).not.mpr hr)`. Rewrite using `[← hn, WithTop.untopD_coe]`. Introduce and unpack `rfl`.
+
+Conclude with `hv (by rw [← hn]; rfl)`.
+-/
 theorem divFin_of_lawA3' (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ)
     (hord : ∀ Z v, d.ord Z v = ordC (δ Z v) v) (h : LawA3' d) : DivFin d := by
   intro Z r hr
@@ -92,6 +116,9 @@ variable (h : GenFrEx Xo c)
     (ip : (c.F →+* ℂ) → (∀ Z : Comp Xo c, AC Z) → (∀ Z : Comp Xo c, AC Z) → ℂ)
     (wsize : WTZ E → ℝ) (DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r : ℝ)
 
+/- English proof (translation)
+The claim follows from `lawA3'_of _ δ (fun _ _ => rfl) hD hF`.
+-/
 theorem lawA3'_dataOf
     (hD : DivFin (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR
       etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r))

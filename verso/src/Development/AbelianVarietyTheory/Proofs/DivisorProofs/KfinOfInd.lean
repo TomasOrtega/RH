@@ -14,6 +14,25 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 
 namespace GlobalTheory.ThK.CuspTransfer
 
+/- English proof (translation)
+Introduce `F E _ _ _ _ _ σ _ hσ n n₁ W W₁ H _ _ _ _ _ _ _ c₀ hc₀ _ _ M _ _ _ r Xf Yf _ X' Y' _ _ _ _ S' χ _ _ K₁ _ K' _ Kc d ψs a Ψ hInd _ hKc hb`. Take `⟨_, _, hKK⟩` from `hKc`. Take `⟨e, b, -, ha, hbt⟩` from `hb`. Use `choose ca hca using ha`. Set `S : Submodule ℂ ((GAd σ (c₀ • W.J.map σ) → ℂ) × (Fin d → Fin e → ℂ))` to `{ carrier := {p | ∀ u ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' {0}, ∀ t m y, ∀ k ∈ Kc, IsLevi (W₁ := W₁) H t 1 m → p.1 (u * GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ m * emb hσ W W₁ hc₀ M y * k) = (χ t : ℂ) * ∑ i, ∑ l, p.2 i l * ψs i y * b l k} add_mem' := by`.
+
+Introduce `p q hp hq u hu t m y k hk hL`. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply, hp u hu t m y k hk hL, hq u hu t m y k hk hL]`. Simplify using `only [add_mul, Finset.sum_add_distrib, mul_add]`. Use the proof step `zero_mem' := by`. Introduce `u hu t m y k hk hL`.
+
+Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `z p hp u hu t m y k hk hL`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, hp u hu t m y k hk hL]`. Simplify using `only [Finset.mul_sum]`.
+
+Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `ring }`. Establish `hinj : Function.Injective ((LinearMap.snd ℂ _ _).comp S.subtype)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨⟨f, C⟩, hp⟩ h0`.
+
+Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.snd_apply] at h0`. Substitute `h0` using the available equality. Use extensionality with `g`. Take `⟨u, hu, t, m, y, k, hk, hL, rfl⟩` from `hInd.1 g`. Use `hp u hu t m y k hk hL` as an intermediate fact.
+
+Simplify using `using this`. Both sides reduce to the same expression. Use `haveI : FiniteDimensional ℂ S := Module.Finite.of_injective _ hinj`. Set `V` to `S.map (LinearMap.fst ℂ _ _)`. Use `haveI : FiniteDimensional ℂ V := inferInstance`.
+
+Use `Submodule.finiteDimensional_of_le (Submodule.span_le.mpr ?_ : _ ≤ V)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k', hk'⟩, rfl⟩`. Use `choose D hD using hbt`. Use `⟨(fun g => Ψ (g * k'), fun i l => ∑ j, ca i j * D j k' hk' l), ?_, rfl⟩` and prove the remaining obligations. Introduce `u hu t m y k hk hL`.
+
+Use `show Ψ (_ * k') = _`. Establish `hkk` using `hKK k hk k' hk'`. Rewrite using `[mul_assoc _ k k', hInd.2 u hu t m y (k * k') hkk hL]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[hca i (k * k') hkk]`. Simplify using `only [fun j => hD j k' hk' k hk, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem kfin_of_ind : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →
       form σ W.J H.x H.x = 0 → form σ W.J H.y H.y = 0 → form σ W.J H.x H.y = 1 →

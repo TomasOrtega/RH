@@ -8,6 +8,11 @@ noncomputable section
 
 namespace UpperTheory.GalS
 
+/- English proof (translation)
+Take `⟨ρ, hc, hs, hwd, hl⟩` from `isoRep D h0 h2 i P Pa hB`. Take `⟨Pm, hPm⟩` from `rep_conj D h5 i r hr x P Pa hP hB ρ hc hs hwd`. Take `⟨-, hconj, -, -⟩` from `h0.2.2.2.2.2 i`. Take `⟨hdR, hWD, hJ⟩` from `hconj _ ρ _ hc Pm hPm`. Use `⟨(hdR w hw).2 (hl w hw hn).1, ?_, fun τ hτ => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[hWD w (Or.inr (hl w hw hn).1)]`. Conclude with `(hl w hw hn).2.1`. Rewrite using `[hJ τ (fun w' h' => by rw [place_unique hτ h']; exact (hl w hw hn).1)]`. Conclude with `(hl w hw hn).2.2 τ hτ`.
+-/
 theorem compatR (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : AutomorphicGaloisAdmissible D.nd D.naut) (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r) (x : D.nd.X i)
     (P : D.naut.AV i) (Pa : List (Formalism.BasicNotions.Part D.naut.CG)) (hP : D.naut.ptV i P = some x)

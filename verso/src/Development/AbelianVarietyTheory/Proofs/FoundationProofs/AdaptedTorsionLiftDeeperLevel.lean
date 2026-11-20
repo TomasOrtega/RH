@@ -7,6 +7,21 @@ open scoped BigOperators
 
 namespace GlobalTheory.GalTheta
 
+/- English proof (translation)
+Introduce `D hS cc δ hC σ hσ c c' n₀ n h₀ hn hc hA`. Take `⟨-, -, -, h4, h5, h6, h7⟩` from `hS cc δ hC ⊤ σ hσ IntermediateField.mem_top IntermediateField.mem_top`. Take `⟨k, hk, hkc⟩` from `hc`. Establish `e₀ : (n₀ : ℂ) ≠ 0` using `by exact_mod_cast h₀.ne'`. Establish `e₁ : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`.
+
+Unfold `Adp1 at hA ⊢`. Establish `a1 : ((k * n₀ : ℕ) : ℂ) * (c / (n₀ : ℂ)) ∈ lamOf D cc δ`. Establish `: ((k * n₀ : ℕ) : ℂ) * (c / (n₀ : ℂ)) = (k : ℂ) * c` using `by push_cast; field_simp`. Rewrite using `[this]`. Conclude with `hkc`.
+
+Establish `a2` using `(h6 _ _ _ hA).1 a1`. Establish `a3 : ((k * n₀ * n : ℕ) : ℂ) * (c' / ((n₀ * n : ℕ) : ℂ)) ∈ lamConj ⊤ σ (lamOf D cc δ)`. Establish `: ((k * n₀ * n : ℕ) : ℂ) * (c' / ((n₀ * n : ℕ) : ℂ)) = ((k * n₀ : ℕ) : ℂ) * (c' / (n₀ : ℂ))` using `by push_cast; field_simp`. Rewrite using `[this]`. Conclude with `a2`.
+
+Take `⟨u, -, hu⟩` from `h7 (k * n₀ * n) (by positivity) (fun _ _ _ => ⟨IntermediateField.mem_top, IntermediateField.mem_top⟩) _ a3`. Establish `b1` using `h5 (n : 𝓞 D.host.K) _ _ hu`. Establish `b2` using `h5 (-1 : 𝓞 D.host.K) _ _ hA`. Establish `c1 : D.host.φ₀ ((((n : 𝓞 D.host.K) : D.host.K) : D.host.E)) = (n : ℂ)` using `by simp`. Establish `c2 : D.host.φ₀ ((((-1 : 𝓞 D.host.K) : D.host.K) : D.host.E)) = (-1 : ℂ)` using `by simp`.
+
+Rewrite `b1` using `[c1]`. Rewrite `b2` using `[c2]`. Establish `b3` using `h4 _ _ _ _ b1 b2`. Establish `z : (n : ℂ) * (c' / ((n₀ * n : ℕ) : ℂ)) + -1 * (c' / (n₀ : ℂ)) = 0` using `by push_cast; field_simp; ring`. Rewrite `b3` using `[z]`.
+
+Establish `b4` using `(h6 1 _ _ b3).2 (by simp)`. Rewrite `b4` using `[Nat.cast_one, one_mul]`. Use `⟨_, b4, ?_⟩` and prove the remaining obligations. Establish `: (c + (n₀ : ℂ) * ((n : ℂ) * u + -1 * (c / (n₀ : ℂ)))) / ((n₀ * n : ℕ) : ℂ) = u` using `by push_cast; field_simp; ring`. Rewrite using `[this]`.
+
+Conclude with `hu`.
+-/
 theorem adapted_lift_deeper : ∀ (D : D7), galStar D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ σ : (⊤ : IntermediateField ℚ ℂ) →ₐ[ℚ] ℂ, FixK D ⊤ σ → ∀ (c c' : ℂ) (n₀ n : ℕ), 0 < n₀ → 0 < n → InRationalLattice (lamOf D cc δ) c → Adp1 ⊤ σ (lamOf D cc δ) n₀ c c' → ∃ ω ∈ lamOf D cc δ, Adp1 ⊤ σ (lamOf D cc δ) (n₀ * n) (c + (n₀ : ℂ) * ω) c' := by
   intro D hS cc δ hC σ hσ c c' n₀ n h₀ hn hc hA
   obtain ⟨-, -, -, h4, h5, h6, h7⟩ := hS cc δ hC ⊤ σ hσ IntermediateField.mem_top IntermediateField.mem_top

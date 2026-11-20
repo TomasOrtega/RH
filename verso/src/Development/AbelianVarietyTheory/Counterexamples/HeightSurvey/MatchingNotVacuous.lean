@@ -12,8 +12,16 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
+/- English proof (translation)
+The claim follows from `genFibre Xo c ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull`.
+-/
 theorem genFibre_holds : GenFibreSt Xo c := genFibre Xo c ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull
 
+/- English proof (translation)
+Take `⟨PP', cub, sym, adj, prim, m2, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap (algebraMap T.V T.Fr)) G`. Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ Y.t G _ yt (spMap (algebraMap T.V T.Fr)) m m2`. Establish `cancel : ∀ (t' : SAB H (Sp T.Fr)) (p : Sp T.Fr ⟶ Y.X) (_ : p = z ≫ Y.j) (n : SABMap t' Y.t p), ∃ m' : SABMap t' Y.oF.t z, n.φ = m'.φ ≫ Y.m.φ`. Introduce `t' p hp n`. Substitute `hp` using the available equality.
+
+Conclude with `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ Y.m n`. Take `⟨m', hm'⟩` from `cancel _ _ hz.symm n`. Take `⟨m1, h1⟩` from `sabComp pullCubComp E H _ _ _ Xo.univ.t Y.oF.t _ (pullback.fst _ _) z Y.m0.toSABMap m'`. Conclude with `⟨_, m1, m2, m', h1, hn.symm.trans hm'⟩`.
+-/
 theorem genFibre_tied (T : CDVR) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)
     (yt : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c) (hz : z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ yt)
     (G : SAB H (Sp T.V)) (m : SABMap G Y.t yt) :
@@ -33,6 +41,13 @@ theorem genFibre_tied (T : CDVR) (O : Type) [CommRing O] (β : O →+* c.F) (Y :
 
 variable {Xo}
 
+/- English proof (translation)
+Use `⟨?_, fun g hg j y hy => ?_⟩` and prove the remaining obligations. Set `a0 : Over.mk (t'.G.hom ≫ x) ⟶ Over.mk x` to `Over.homMk t'.G.hom rfl`. Set `b0 : Over.mk (t'.G.hom ≫ x) ⟶ Xo.univ.t.G` to `Over.homMk m1.φ m1.cart.1.w`. Establish `f0 : (lift a0 b0).left ≫ (fst (Over.mk x) Xo.univ.t.G).left = t'.G.hom` using `congrArg (fun q => q.left) (lift_fst a0 b0)`. Establish `s0 : (lift a0 b0).left ≫ (snd (Over.mk x) Xo.univ.t.G).left = m1.φ` using `congrArg (fun q => q.left) (lift_snd a0 b0)`.
+
+Use `⟨(lift a0 b0).left, ⟨s0, f0⟩, fun g hg => ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `hg.2.trans f0.symm`. Conclude with `hg.1.trans s0.symm`. Establish `h1 : m1.φ y ∈ Xo.univ.t.PP.L.U (j PUnit.unit)` using `mem_pull.1 hy`.
+
+Rewrite `h1` using `[← hg]`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+-/
 theorem matching_not_vacuous {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (t' : SAB H (Sp S))
     (m1 : SABMap t' Xo.univ.t x) :
     (∃! g : t'.G.left ⟶ Gx x, g ≫ (snd (Over.mk x) Xo.univ.t.G).left = m1.φ ∧

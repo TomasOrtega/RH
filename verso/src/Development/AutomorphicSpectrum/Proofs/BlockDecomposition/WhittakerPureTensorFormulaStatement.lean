@@ -4,5 +4,8 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.CuspidalContinuity.Arch
 open MeasureTheory Matrix GroundTheory.LocalField GroundTheory.Automorphic Ad3 Ad3.SchwartzSpaceL2
 open scoped ValuativeRel
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt | exact GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt | (intros; apply GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.whittaker_pure_tensor_formula : Ad3.SchwartzSpaceL2.SPure := by
   first | exact @GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt | exact GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt | (intros; apply GlobalTheory.CompanionTheory.PlanePure.schwartzBruhat2_eq_sum_pt <;> assumption)

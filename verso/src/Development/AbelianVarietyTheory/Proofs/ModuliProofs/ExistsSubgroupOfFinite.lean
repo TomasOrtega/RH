@@ -7,6 +7,11 @@ namespace GlobalTheory.LevQuot
 
 variable {X Y : Scheme.{0}}
 
+/- English proof (translation)
+Establish `hpost : (@IsOpenImmersion : MorphismProperty Scheme.{0}).HasOfPostcompProperty (@Etale : MorphismProperty Scheme.{0})`. Use `MorphismProperty.hasOfPostcompProperty_iff_le_diagonal.mpr ?_` and prove the remaining obligations. Introduce `A B u hu`. Establish `: Etale u` using `hu`. Conclude with `inferInstanceAs (IsOpenImmersion (pullback.diagonal u))`.
+
+Establish `hsec : IsOpenImmersion (pullback.lift (𝟙 X) f h ≫ pullback.fst r r)`. Rewrite using `[pullback.lift_fst]`. Use `infer_instance`. Conclude with `MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := @Etale) _ (pullback.fst r r) (inferInstance : Etale (pullback.fst r r)) hsec`.
+-/
 theorem isOpenImmersion_graph (r : X ⟶ Y) [Etale r] (f : X ⟶ X) (h : 𝟙 X ≫ r = f ≫ r) :
     IsOpenImmersion (pullback.lift (𝟙 X) f h) := by
   have hpost : (@IsOpenImmersion : MorphismProperty Scheme.{0}).HasOfPostcompProperty
@@ -21,10 +26,16 @@ theorem isOpenImmersion_graph (r : X ⟶ Y) [Etale r] (f : X ⟶ X) (h : 𝟙 X 
   exact MorphismProperty.of_postcomp (W := @IsOpenImmersion) (W' := @Etale) _ (pullback.fst r r)
     (inferInstance : Etale (pullback.fst r r)) hsec
 
+/- English proof (translation)
+Simplify using `only [e]`.
+-/
 theorem appLE_congr_hom {Z : Scheme.{0}} {f g : Z ⟶ X} (e : f = g) (U : X.Opens) (V : Z.Opens) (h : V ≤ f ⁻¹ᵁ U)
     (h' : V ≤ g ⁻¹ᵁ U) : f.appLE U V h = g.appLE U V h' := by
   simp only [e]
 
+/- English proof (translation)
+Set `K` to `AlgebraicClosure (Z.residueField z)`. Take `⟨p⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Use `⟨K, inferInstance, inferInstance, Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z) K)) ≫ Z.fromSpecResidueField z, p, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`.
+-/
 theorem exists_geomPoint (Z : Scheme.{0}) (z : Z) : ∃ (k : Type) (_ : Field k) (_ : IsAlgClosed k)
     (w : Spec (CommRingCat.of k) ⟶ Z) (p : Spec (CommRingCat.of k)), w p = z := by
   let K := AlgebraicClosure (Z.residueField z)
@@ -33,6 +44,29 @@ theorem exists_geomPoint (Z : Scheme.{0}) (z : Z) : ∃ (k : Type) (_ : Field k)
     Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z) K)) ≫ Z.fromSpecResidueField z, p, ?_⟩
   rw [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]
 
+/- English proof (translation)
+Establish `hcond : ∀ g, 𝟙 X ≫ r = ρ g ≫ r` using `fun g => by rw [Category.id_comp, hρ g]`. Establish `hpb` using `IsPullback.of_hasPullback r r`. Establish `hsame : ∀ x : ↥(pullback r r), r (pullback.snd r r x) = r (pullback.fst r r x)` using `fun x => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.condition]`. Establish `hgW : pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V ≤ pullback.snd r r ⁻¹ᵁ r ⁻¹ᵁ V` using `fun x hx => by`.
+
+Express the relevant statement in the definitionally equal form `r (pullback.snd r r x) ∈ V`. Rewrite using `[hsame]`. Conclude with `hx`. Establish `hinvle : ∀ g, r ⁻¹ᵁ V ≤ (ρ g) ⁻¹ᵁ (r ⁻¹ᵁ V)` using `fun g y hy => by`. Express the relevant statement in the definitionally equal form `r (ρ g y) ∈ V`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, hρ g]`. Conclude with `hy`. Establish `key` using `fun s => GlobalTheory.FlatDescent.existsUnique_app_eq_iff r hpb V (pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V) rfl le_rfl hgW s`. Establish `hcompat : r.app V ≫ (pullback.fst r r).appLE _ _ le_rfl = r.app V ≫ (pullback.snd r r).appLE _ _ hgW` using `(Scheme.Hom.comp_appLE _ _ _ _ _).symm.trans ((appLE_congr_hom pullback.condition _ _ _ _).trans (Scheme.Hom.comp_appLE _ _ _ _ _))`. Prove the components needed by the constructor for the conclusion.
+
+Introduce `a b hab`. Take `⟨c, -, huniq⟩` from `(key ((r.app V).hom a)).mpr (congrArg (fun φ => φ.hom a) hcompat)`. Conclude with `(huniq a rfl).trans (huniq b hab.symm).symm`. Introduce `f hinv`. Use `ExistsUnique.exists ((key f).mpr ?_)` and prove the remaining obligations.
+
+Apply `TopCat.Presheaf.section_ext (pullback r r).sheaf` to reduce the goal to its premises. Introduce `x hx`. Take `⟨k, _, _, w, pt, hw⟩` from `exists_geomPoint (pullback r r) x`. Take `⟨g, hg⟩` from `htr k (w ≫ pullback.fst r r) (w ≫ pullback.snd r r) (by simp only [Category.assoc, pullback.condition])`. Take `⟨ι, hιfst, hιsnd, hιop⟩ : ∃ ι : X ⟶ pullback r r, ι ≫ pullback.fst r r = 𝟙 X ∧ ι ≫ pullback.snd r r = ρ g ∧ IsOpenImmersion ι` from `⟨_, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _, isOpenImmersion_graph r (ρ g) (hcond g)⟩`.
+
+Establish `hwι : w = (w ≫ pullback.fst r r) ≫ ι`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hιfst, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, hιsnd, hg, Category.assoc]`. Establish `hxι : x = ι ((w ≫ pullback.fst r r) pt)`.
+
+Rewrite using `[← Scheme.Hom.comp_apply, ← hwι, hw]`. Substitute `hxι` using the available equality. Establish `hfi : ∀ y, pullback.fst r r (ι y) = y` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, hιfst]`. Both sides reduce to the same expression.
+
+Establish `hle : ι ⁻¹ᵁ (pullback.fst r r ⁻¹ᵁ r ⁻¹ᵁ V) ≤ r ⁻¹ᵁ V` using `fun y hy => by`. Express the relevant statement in the definitionally equal form `r (pullback.fst r r (ι y)) ∈ V at hy`. Rewrite `hy` using `[hfi]`. Conclude with `hy`. Establish `e1 : (pullback.fst r r).appLE (r ⁻¹ᵁ V) _ le_rfl ≫ ι.app _ = X.presheaf.map (homOfLE hle).op`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hιfst _ _ _ hle]`. Simplify using `only [Scheme.Hom.appLE]`. Rewrite using `[Scheme.Hom.id_app]`. Conclude with `Category.id_comp _`. Establish `e2 : (pullback.snd r r).appLE (r ⁻¹ᵁ V) _ hgW ≫ ι.app _ = (ρ g).appLE (r ⁻¹ᵁ V) (r ⁻¹ᵁ V) (hinvle g) ≫ X.presheaf.map (homOfLE hle).op`.
+
+Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, appLE_congr_hom hιsnd _ _ _ (hle.trans (hinvle g)), Scheme.Hom.appLE_map]`. Apply `(ConcreteCategory.bijective_of_isIso (ι.stalkMap _)).1` to reduce the goal to its premises. Use `erw [Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.germ_stalkMap_apply]`. Use `congr 1`. Establish `h1` using `congrArg (fun φ => φ.hom f) e1`.
+
+Establish `h2` using `congrArg (fun φ => φ.hom f) e2`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h1 h2`. Rewrite `h2` using `[hinv g (hinvle g)]`. Conclude with `h1.trans h2.symm`.
+-/
 theorem invariant_descends (r : X ⟶ Y) [Etale r] [QuasiCompact r] [Surjective r] {Γ : Type} (ρ : Γ → (X ⟶ X))
     (hρ : ∀ g, ρ g ≫ r = r)
     (htr : ∀ (k : Type) [Field k] [IsAlgClosed k] (y y' : Spec (CommRingCat.of k) ⟶ X), y ≫ r = y' ≫ r →
@@ -114,6 +148,17 @@ def autOver (r : X ⟶ Y) : Subgroup (Aut X) where
     show a.inv ≫ r = r
     exact (Iso.inv_comp_eq a).2 (Eq.symm ha)
 
+/- English proof (translation)
+Establish `hom_r : ∀ ω : autOver r, ω.1.hom ≫ r = r` using `fun ω => ω.2`. Establish `inv_r : ∀ ω : autOver r, ω.1.inv ≫ r = r` using `fun ω => (Iso.inv_comp_eq ω.1).2 (hom_r ω).symm`. Establish `sq : ∀ u : X ⟶ X, u ≫ r = r → φ ≫ q = (p ≫ u) ≫ r` using `fun u hu => by`. Rewrite using `[Category.assoc, hu, h.w]`. Establish `back : ∀ (u v : X ⟶ X) (hu : u ≫ r = r) (hv : v ≫ r = r), u ≫ v = 𝟙 X → h.lift φ (p ≫ u) (sq u hu) ≫ h.lift φ (p ≫ v) (sq v hv) = 𝟙 P` using `fun u v hu hv huv => by`.
+
+Apply `h.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `only [Category.assoc, IsPullback.lift_snd, IsPullback.lift_snd_assoc, huv, Category.comp_id, Category.id_comp]`. Set `lift1 : autOver r → Aut P` to `fun ω => { hom := h.lift φ (p ≫ ω.1.hom) (sq _ (hom_r ω)) inv := h.lift φ (p ≫ ω.1.inv) (sq _ (inv_r ω)) hom_inv_id := back _ _ (hom_r ω) (inv_r ω) ω.1.hom_inv_id inv_hom_id := back _ _ (inv_r ω) (hom_r ω) ω.1.inv_hom_id }`. Use `⟨{ toFun := lift1, map_one' := ?_, map_mul' := ?_ }, fun ω => ⟨h.lift_fst _ _ _, h.lift_snd _ _ _⟩⟩` and prove the remaining obligations.
+
+Use `ext1`. Apply `h.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `h.lift _ _ _ ≫ φ = 𝟙 P ≫ φ`. Rewrite using `[IsPullback.lift_fst, Category.id_comp]`. Express the relevant statement in the definitionally equal form `h.lift _ _ _ ≫ p = 𝟙 P ≫ p`.
+
+Rewrite using `[IsPullback.lift_snd, Category.id_comp]`. Conclude with `Category.comp_id p`. Introduce `a b ext1`. Apply `h.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `h.lift _ _ _ ≫ φ = (h.lift φ (p ≫ b.1.hom) (sq _ (hom_r b)) ≫ h.lift φ (p ≫ a.1.hom) (sq _ (hom_r a))) ≫ φ`.
+
+Simplify using `only [IsPullback.lift_fst, Category.assoc]`. Express the relevant statement in the definitionally equal form `h.lift _ _ _ ≫ p = (h.lift φ (p ≫ b.1.hom) (sq _ (hom_r b)) ≫ h.lift φ (p ≫ a.1.hom) (sq _ (hom_r a))) ≫ p`. Simplify using `only [IsPullback.lift_snd, Category.assoc, IsPullback.lift_snd_assoc]`. Both sides reduce to the same expression.
+-/
 theorem exists_liftAut {P Q : Scheme.{0}} {φ : P ⟶ Q} {p : P ⟶ X} {q : Q ⟶ Y} {r : X ⟶ Y} (h : IsPullback φ p q r) :
     ∃ τ : autOver r →* Aut P, ∀ ω, (τ ω).hom ≫ φ = φ ∧ (τ ω).hom ≫ p = p ≫ ω.1.hom := by
   have hom_r : ∀ ω : autOver r, ω.1.hom ≫ r = r := fun ω => ω.2
@@ -150,6 +195,11 @@ theorem exists_liftAut {P Q : Scheme.{0}} {φ : P ⟶ Q} {p : P ⟶ X} {q : Q �
       simp only [IsPullback.lift_snd, Category.assoc, IsPullback.lift_snd_assoc]
       rfl
 
+/- English proof (translation)
+Use `⟨{ S with inv_mem' := fun {x} hx => ?_ }, fun _ => Iff.rfl⟩` and prove the remaining obligations. Establish `hx' : IsOfFinOrder x`. Assume the negation of the conclusion as `hne`. Establish `hinj` using `injective_pow_iff_not_isOfFinOrder.mpr hne`. Conclude with `not_injective_infinite_finite (fun n : ℕ => (⟨x ^ n, S.pow_mem hx n⟩ : S)) (fun a b hab => hinj (congrArg Subtype.val hab))`.
+
+Take `⟨n, hn⟩` from `hx'.mem_powers_iff_mem_zpowers.mpr (Subgroup.inv_mem _ (Subgroup.mem_zpowers x))`. Rewrite using `[← hn]`. Conclude with `S.pow_mem hx n`.
+-/
 theorem exists_subgroup_of_finite {G : Type} [Group G] (S : Submonoid G) [Finite S] :
     ∃ T : Subgroup G, ∀ g, g ∈ T ↔ g ∈ S := by
   refine ⟨{ S with inv_mem' := fun {x} hx => ?_ }, fun _ => Iff.rfl⟩

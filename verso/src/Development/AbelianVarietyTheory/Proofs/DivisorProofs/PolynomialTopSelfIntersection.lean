@@ -10,6 +10,19 @@ set_option autoImplicit false
 
 namespace GlobalTheory.FibreProj
 
+/- English proof (translation)
+Introduce `k _ X p κ _ Z _ hp ι _ D hcard hdim i N`. Establish `HD` using `diffVanish_chiPic_of_isProjOver (algebraMap_eq_strHom κ Z) (structureModule Z) hp (d := D) (by rw [QCoh.suppDim_structureModule]; exact hdim)`. Establish `hL : ∀ a, ((N a).B.pull i).IsLB` using `fun a => LB.isLB_pull (N a).isLB i`. Set `c : ι → CechPic.Pic Z` to `fun a => CechPic.cls ((N a).B.pull i) (hL a)`. Set `g : (ι → ℤ) →+ CechPic.Pic Z` to `AddMonoidHom.mk' (fun n => ∑ a, n a • c a) fun u v => by`.
+
+Simplify using `[add_smul, Finset.sum_add_distrib]`. Establish `hg (a : ι) : g (Pi.single a 1) = c a`. Simplify using `[g, Pi.single_apply, Finset.sum_ite_eq']`. Establish `key : (fun n : ι → ℤ => (topSelfIntersection κ ((comb N n).B.pull i) D : ℝ)) = (Int.castAddHom ℝ) ∘ ((fun y => HD.form fun _ => y) ∘ g)`. Use function extensionality and compare the values at `n`.
+
+Rewrite using `[topSelf_def, ← HD.form_cls (P := fun _ => (comb N n).B.pull i) (fun _ => LB.isLB_pull (comb N n).isLB i)]`. Simplify using `only [Function.comp_apply, Int.coe_castAddHom]`. Use `congr 2`. Use function extensionality and compare the values at `j`. Rewrite using `[CechPic.cls_pull (comb N n).isLB, GenFibreSecs.cls_comb, map_sum]`.
+
+Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Simplify using `only [c]`. Rewrite using `[CechPic.cls_pull (N a).isLB]`. Set `e : Fin D ≃ ι` to `(Fintype.equivFinOfCardEq hcard).symm`.
+
+Establish `h₁` using `congrFun (multiDiff_comap g (fun a => (Pi.single a 1 : ι → ℤ)) (fun y => HD.form fun _ => y)) 0`. Establish `h₂` using `congrFun (multiDiff_map (Int.castAddHom ℝ) (fun a => (Pi.single a 1 : ι → ℤ)) ((fun y => HD.form fun _ => y) ∘ g)) 0`. Rewrite using `[key, pol_eq_multiDiff]`. Use `h₂.trans ?_` and prove the remaining obligations. Establish `hc : (g ∘ fun a => (Pi.single a 1 : ι → ℤ)) = c` using `funext hg`.
+
+Rewrite using `[Function.comp_apply, h₁, Function.comp_apply, hc, ← multiDiff_comp_equiv e, HD.multiDiff_form_diag, show c ∘ e = fun j => CechPic.cls ((N (e j)).B.pull i) (hL (e j)) from rfl, HD.form_cls (P := fun j => (N (e j)).B.pull i) (fun j => hL (e j)), ← interNum_comp_equiv κ (structureM …`. Simplify using `[Function.comp_def]`.
+-/
 theorem pol_topSelf_comb_pull : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (κ : Type) [Field κ] (Z : Scheme.{0}) [Algebra κ Γ(Z, ⊤)], IsProjOver (strHom κ Z) → ∀ (ι : Type) [Fintype ι] (D : ℕ), Fintype.card ι = D → topologicalKrullDim Z ≤ D → ∀ (i : Z ⟶ X) (N : ι → HermLB p), pol (fun n : ι → ℤ => (topSelfIntersection κ ((comb N n).B.pull i) D : ℝ)) = D.factorial * (interNum κ (structureModule Z) (fun a => (N a).B.pull i) : ℝ) := by
   intro k _ X p κ _ Z _ hp ι _ D hcard hdim i N
   classical

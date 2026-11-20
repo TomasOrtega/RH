@@ -10,6 +10,11 @@ open GlobalTheory.CompanionTheory.Ar
 variable {Ω Ω₀ : Type} [Field Ω] [Field Ω₀] {i : Ω₀ →+* Ω} {Li Li₀ : Type} [AddCommGroup Li] [Module Ω Li]
   [AddCommGroup Li₀] [Module Ω₀ Li₀] {ι : Li₀ →+ Li}
 
+/- English proof (translation)
+Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`. Establish `e : s ≃ Fin s.card` using `s.equivFin`. Establish `hb : LinearIndependent Ω₀ (fun k : Fin s.card => B (e.symm k : K))` using `B.linearIndependent.comp (fun k => (e.symm k : K)) (Subtype.val_injective.comp e.symm.injective)`. Establish `h3` using `(h.2 s.card _ hb).comp e e.injective`.
+
+Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+-/
 theorem linearIndependent_comp_basis (h : IsExtOver i ι) {K : Type} (B : Module.Basis K Ω₀ Li₀) :
     LinearIndependent Ω fun k => ι (B k) := by
   classical
@@ -23,6 +28,21 @@ theorem linearIndependent_comp_basis (h : IsExtOver i ι) {K : Type} (B : Module
   funext x
   simp
 
+/- English proof (translation)
+Set `B` to `Module.Basis.ofVectorSpace Ω₀ Li₀`. Establish `hli : LinearIndependent Ω fun k => ι (B k)` using `linearIndependent_comp_basis h B`. Establish `hmem : ∀ e : Li₀, ι e ∈ Submodule.span Ω (Set.range fun k => ι (B k))`. Introduce `e`. Establish `he : e ∈ Submodule.span Ω₀ (Set.range B)` using `by rw [B.span_eq]; exact Submodule.mem_top`.
+
+Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Consider the case `zero => simp`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [h.1]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `hsp : ⊤ ≤ Submodule.span Ω (Set.range fun k => ι (B k))`.
+
+Rewrite using `[← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨e, rfl⟩`. Conclude with `hmem e`. Set `B'` to `Module.Basis.mk hli hsp`. Use `⟨B'.constr Ω (fun k => i (φ (B k))), fun e => ?_⟩` and prove the remaining obligations.
+
+Establish `he : e ∈ Submodule.span Ω₀ (Set.range B)` using `by rw [B.span_eq]; exact Submodule.mem_top`. Proceed by induction on `he using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Establish `hk : ι (B k) = B' k` using `(Module.Basis.mk_apply hli hsp k).symm`.
+
+Rewrite using `[hk, Module.Basis.constr_basis]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp only [map_add, hx, hy]`. Consider the case `smul a x _ hx`. Rewrite using `[h.1]`.
+
+Simplify using `only [map_smul, hx, smul_eq_mul, map_mul]`.
+-/
 theorem exists_dual_ext (h : IsExtOver i ι) (hs : Submodule.span Ω (Set.range ι) = ⊤)
     (φ : Module.Dual Ω₀ Li₀) : ∃ φ' : Module.Dual Ω Li, ∀ e, φ' (ι e) = i (φ e) := by
   classical
@@ -56,6 +76,29 @@ theorem exists_dual_ext (h : IsExtOver i ι) (hs : Submodule.span Ω (Set.range 
     rw [h.1]
     simp only [map_smul, hx, smul_eq_mul, map_mul]
 
+/- English proof (translation)
+Use `⟨fun j => ?_, fun j => ?_⟩` and prove the remaining obligations. Establish `hin : ι (m • b₀ j) ∈ Submodule.span W L`. Rewrite using `[hL]`. Conclude with `Submodule.subset_span ⟨_, hm j, rfl⟩`. Establish `key : ∀ x ∈ Submodule.span W L, T x ∈ Submodule.span W (Set.range b)`.
+
+Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact hT y hy`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+
+Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul w y _ hy`. Rewrite using `[Subring.smul_def, map_smul]`. Establish `hw` using `Submodule.smul_mem _ w hy`. Rewrite `hw` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+
+Establish `hj` using `key _ hin`. Rewrite `hj` using `[hext.1, map_smul, hTb, smul_smul, mul_comm]`. Then use the resulting hypothesis. Establish `hv : κ • b j ∈ Submodule.span Ω (Set.range fun a => ι (b₀ a))` using `Submodule.smul_mem _ κ (hb j)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun Ω).1 hv`. Establish `hcW : ∀ a, i m * c a ∈ W`.
+
+Introduce `a`. Take `⟨ψ, hψ⟩` from `exists_dual_ext hext hs (π₀ a)`. Establish `hψv : ψ (κ • b j) = c a`. Rewrite using `[← hc, map_sum, Finset.sum_eq_single a]`. Rewrite using `[map_smul, hψ, hπ, if_pos rfl, map_one, smul_eq_mul, mul_one]`.
+
+Introduce `x _ hx`. Rewrite using `[map_smul, hψ, hπ, if_neg (Ne.symm hx), map_zero, smul_zero]`. Introduce `ha`. Conclude with `absurd (Finset.mem_univ a) ha`. Establish `hspan : κ • b j ∈ Submodule.span W (ι '' L₀)`.
+
+Rewrite using `[← hL]`. Conclude with `Submodule.subset_span (hκ j)`. Establish `key : ∀ x ∈ Submodule.span W (ι '' L₀), i m * ψ x ∈ W`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+
+Consider the case `mem y hy`. Take `⟨e, he, rfl⟩` from `hy`. Rewrite using `[hψ, ← map_mul]`. Conclude with `hint a e he`. Consider the case `zero => simp`.
+
+Consider the case `add y z _ _ hy hz => rw [map_add, mul_add]`. Conclude with `W.add_mem hy hz`. Consider the case `smul w y _ hy`. Rewrite using `[Subring.smul_def, map_smul, smul_eq_mul, mul_left_comm]`. Conclude with `W.mul_mem w.2 hy`.
+
+Rewrite using `[← hψv]`. Conclude with `key _ hspan`. Rewrite using `[mul_smul, ← hc, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+
+Establish `ha` using `Submodule.smul_mem (Submodule.span W (Set.range fun a => ι (b₀ a))) (⟨_, hcW a⟩ : W) (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite `ha` using `[Subring.smul_def]`. Then use the resulting hypothesis.
+-/
 theorem two_frames (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (i : Ω₀ →+* Ω) (Li Li₀ : Type) [AddCommGroup Li] [Module Ω Li]
     [AddCommGroup Li₀] [Module Ω₀ Li₀] (ι : Li₀ →+ Li) (hext : IsExtOver i ι)
     (hs : Submodule.span Ω (Set.range ι) = ⊤) (W : Subring Ω) (L₀ : Set Li₀) (L : Set Li) (r : ℕ)

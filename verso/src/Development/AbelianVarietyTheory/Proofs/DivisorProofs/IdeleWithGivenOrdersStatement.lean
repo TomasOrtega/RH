@@ -13,6 +13,9 @@ open Formalism.L2.Host (aboveF)
 open GlobalTheory.TateUnr
 
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.TateUnr.ordV_surjective | exact GlobalTheory.TateUnr.ordV_surjective | (intros; apply GlobalTheory.TateUnr.ordV_surjective <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.idele_with_given_orders : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (k : aboveF (L := E) F v → ℤ), ∃ l : idelesAt E (evFin F v), ordV v l = k := by
   first | exact @GlobalTheory.TateUnr.ordV_surjective | exact GlobalTheory.TateUnr.ordV_surjective | (intros; apply GlobalTheory.TateUnr.ordV_surjective <;> assumption)

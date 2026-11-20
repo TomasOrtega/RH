@@ -10,6 +10,13 @@ noncomputable section
 
 namespace GlobalTheory.CuspRep
 
+/- English proof (translation)
+Introduce `E _ _ _ a ψ hψ s hs0 hsa g e he`. Use `letI : MeasurableSpace (BlockIx a s → Ad E) := borel _`. Use `haveI : BorelSpace (BlockIx a s → Ad E) := ⟨rfl⟩`. Use `set μ : Measure (BlockIx a s → Ad E) := Measure.addHaar with hμ`. Take `⟨𝓕, h𝓕, h0, htop⟩` from `GlobalTheory.T.exists_fundamentalDomain_rationalBlockUnipotentGL E a s μ`.
+
+Establish `hc` using `ContAut.continuous_of_isOpen_stab E a ψ hψ.1.level`. Establish `hI` using `CuspidalL2GL.integrableOn_unip hc hψ.1.left μ h𝓕 g`. Establish `hz : ∫ x in 𝓕, ψ.1 (unip x * g) ∂μ = 0` using `hψ.2 s hs0 hsa μ 𝓕 inferInstance h𝓕 g`. Establish `key : ∫ x in 𝓕, (ψ.1 g - ψ.1 (unip x * g)) ∂μ = μ.real 𝓕 • ψ.1 g`. Establish `h1 : IntegrableOn (fun _ => ψ.1 g) 𝓕 μ` using `integrableOn_const htop.ne`.
+
+Rewrite using `[integral_sub h1 hI, hz, setIntegral_const, sub_zero]`. Establish `hb : ‖∫ x in 𝓕, (ψ.1 g - ψ.1 (unip x * g)) ∂μ‖ ≤ e * μ.real 𝓕` using `norm_setIntegral_le_of_norm_le_const htop fun x _ => by rw [norm_sub_rev]; exact he x`. Rewrite `hb` using `[key, norm_smul, Real.norm_eq_abs, abs_of_nonneg measureReal_nonneg, mul_comm]`. Establish `hpos : 0 < μ.real 𝓕` using `ENNReal.toReal_pos h0 htop.ne`. Conclude with `le_of_mul_le_mul_right hb hpos`.
+-/
 theorem norm_le_of_unip_variation : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ψ : Sm E a),
     IsCuspForm ψ → ∀ s : ℕ, 0 < s → s < a → ∀ (g : GA E a) (e : ℝ),
       (∀ x : BlockIx a s → Ad E, ‖ψ.1 (unip x * g) - ψ.1 g‖ ≤ e) → ‖ψ.1 g‖ ≤ e := by

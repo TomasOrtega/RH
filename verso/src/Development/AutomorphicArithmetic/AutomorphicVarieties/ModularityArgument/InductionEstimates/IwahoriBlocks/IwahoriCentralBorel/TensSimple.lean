@@ -9,6 +9,13 @@ open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C PositivityThe
 open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.CuspRep
 open scoped TensorProduct Classical
 
+/- English proof (translation)
+Set `b` to `Module.Basis.ofVectorSpace ℂ V`. Set `F` to `TensorProduct.equivFinsuppOfBasisLeft (N := B) b`. Establish `key : ∀ (j : _) (y : V ⊗[ℂ] B), F y j = TensorProduct.lid ℂ B (LinearMap.rTensor B (b.coord j) y)`. Introduce `j y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul v w => simp [F, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`. Apply `F.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+
+Use extensionality with `j`. Rewrite using `[key, h]`. Simplify using the standard rewrite rules.
+-/
 private theorem tens_sep {V B : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup B] [Module ℂ B]
     (z : V ⊗[ℂ] B)
     (h : ∀ φ : Module.Dual ℂ V, TensorProduct.lid ℂ B (LinearMap.rTensor B φ z) = 0) : z = 0 := by
@@ -27,6 +34,9 @@ private theorem tens_sep {V B : Type} [AddCommGroup V] [Module ℂ V] [AddCommGr
   rw [key, h]
   simp
 
+/- English proof (translation)
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v w => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+-/
 private theorem comm_ext {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (X : Representation ℂ G V) (T : Representation ℂ H W)
     (g : H × G) (z : V ⊗[ℂ] W) :
@@ -45,6 +55,11 @@ private noncomputable def swapSub {G H V W : Type} [Group G] [Group H] [AddCommG
     rintro _ ⟨z, hz, rfl⟩
     exact ⟨extTensor X T (g.2, g.1) z, S.apply_mem_toSubmodule _ hz, comm_ext X T g z⟩
 
+/- English proof (translation)
+Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Simplify using `using hy`.
+
+Introduce `hz`. Conclude with `⟨TensorProduct.comm ℂ V W z, ⟨z, hz, rfl⟩, by simp⟩`.
+-/
 private theorem swapSub_swapSub {G H V W : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] (X : Representation ℂ G V) (T : Representation ℂ H W)
     (S : Subrepresentation (extTensor X T)) : swapSub T X (swapSub X T S) = S := by
@@ -74,6 +89,29 @@ private noncomputable def swapIso {G H V W : Type} [Group G] [Group H] [AddCommG
     · rintro h _ ⟨z, hz, rfl⟩
       exact ⟨z, h hz, rfl⟩
 
+/- English proof (translation)
+Introduce `T hT`. Take `⟨b₀, hb₀⟩` from `exists_ne (0 : B)`. Choose the witnesses or unpack the hypotheses as in `⟨β, hβ⟩ : ∃ β : Module.Dual ℂ B, β b₀ = 1 := by`. Take `⟨φ, hφ⟩ : ∃ φ : Module.Dual ℂ B, φ b₀ ≠ 0` from `by by_contra! h`. Conclude with `hb₀ ((Module.forall_dual_apply_eq_zero_iff ℂ b₀).1 h)`.
+
+Conclude with `⟨(φ b₀)⁻¹ • φ, by simp [hφ]⟩`. Set `L : Module.Dual ℂ V → (V ⊗[ℂ] B →ₗ[ℂ] B)` to `fun φ => (TensorProduct.lid ℂ B).toLinearMap ∘ₗ LinearMap.rTensor B φ`. Set `R : V ⊗[ℂ] B →ₗ[ℂ] V` to `(TensorProduct.rid ℂ V).toLinearMap ∘ₗ LinearMap.lTensor V β`. Establish `hLt : ∀ φ x y, L φ (x ⊗ₜ y) = φ x • y` using `fun φ x y => by simp [L]`. Establish `hRt : ∀ x y, R (x ⊗ₜ y) = β y • x` using `fun x y => by simp [R]`.
+
+Establish `hL : ∀ φ c z, L φ (extTensor σ m (1, c) z) = m c (L φ z)`. Introduce `φ c z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [hLt]`.
+
+Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hR : ∀ g z, R (extTensor σ m (g, 1) z) = σ g (R z)`. Introduce `g z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+
+Consider the case `tmul x y => simp [hRt]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hLR : ∀ (φ : Module.Dual ℂ V) z, φ (R z) = β (L φ z)`. Introduce `φ z`. Proceed by induction on `z using TensorProduct.induction_on with`.
+
+Consider the case `zero => simp`. Consider the case `tmul x y => simp [hLt, hRt, mul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Set `S : V →ₗ[ℂ] V` to `R ∘ₗ T ∘ₗ (TensorProduct.mk ℂ V B).flip b₀`. Establish `hS : ∀ v, S v = R (T (v ⊗ₜ b₀))` using `fun v => rfl`.
+
+Establish `hpure : ∀ v b, T (v ⊗ₜ b) = S v ⊗ₜ b`. Introduce `v b`. Rewrite using `[← sub_eq_zero]`. Apply `tens_sep` to reduce the goal to its premises. Introduce `φ`.
+
+Take `⟨c, hc⟩` from `hm (L φ ∘ₗ T ∘ₗ TensorProduct.mk ℂ V B v) (by`. Introduce `c y`. Establish `h1 : v ⊗ₜ[ℂ] m c y = extTensor σ m (1, c) (v ⊗ₜ y)` using `by simp`. Simplify using `only [LinearMap.comp_apply, TensorProduct.mk_apply]`. Rewrite using `[h1, hT, hL])`.
+
+Establish `hc' : ∀ y, L φ (T (v ⊗ₜ y)) = c • y` using `hc`. Establish `hφS : φ (S v) = c`. Rewrite using `[hS, hLR, hc', map_smul, hβ, smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `L φ (T (v ⊗ₜ b) - S v ⊗ₜ b) = 0`. Rewrite using `[map_sub, hc', hLt, hφS, sub_self]`.
+
+Take `⟨c, hc⟩` from `hσ S (by`. Introduce `g v`. Establish `h1 : σ g v ⊗ₜ[ℂ] b₀ = extTensor σ m (g, 1) (v ⊗ₜ b₀)` using `by simp`. Rewrite using `[hS, h1, hT, hR, ← hS])`. Use `⟨c, fun z => ?_⟩` and prove the remaining obligations.
+
+Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rw [hpure, hc, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+-/
 private theorem schur_ext {G Γ V B : Type} [Group G] [Group Γ] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup B] [Module ℂ B] [Nontrivial B] (σ : Representation ℂ G V)
     (m : Representation ℂ Γ B) (hσ : Schur σ) (hm : Schur m) : Schur (extTensor σ m) := by
@@ -134,6 +172,11 @@ private theorem schur_ext {G Γ V B : Type} [Group G] [Group Γ] [AddCommGroup V
   | tmul x y => rw [hpure, hc, TensorProduct.smul_tmul']
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
+/- English proof (translation)
+Introduce `G _ Γ _ V _ _ B _ _ σ m hσ hs hm`. Use `haveI : Nontrivial B := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hm`. Establish `hsc : ∀ A : Module.End ℂ V, (∀ g, A * σ g = σ g * A) → ∃ c : ℂ, A = c • 1`. Introduce `A hA`. Take `⟨c, hc⟩` from `hs A fun g v => congrArg (fun F : Module.End ℂ V => F v) (hA g)`.
+
+Conclude with `⟨c, LinearMap.ext fun v => by simpa using hc v⟩`. Use `⟨?_, schur_ext σ m hs⟩` and prove the remaining obligations. Establish `h1 : IsSimpleOrder (Subrepresentation (extTensor m σ))` using `(GlobalTheory.ExtTensorSub.orderIso m σ hσ hsc).isSimpleOrder_iff.1 hm`. Conclude with `(swapIso σ m).isSimpleOrder_iff.2 h1`.
+-/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.tensSimple :
     ∀ {G : Type} [Group G] {Γ : Type} [Group Γ] {V : Type} [AddCommGroup V] [Module ℂ V] {B : Type} [AddCommGroup B] [Module ℂ B] (σ : Representation ℂ G V) (m : Representation ℂ Γ B), σ.IsIrreducible → Schur σ → m.IsIrreducible →
       (extTensor σ m).IsIrreducible ∧ (Schur m → Schur (extTensor σ m)) := by

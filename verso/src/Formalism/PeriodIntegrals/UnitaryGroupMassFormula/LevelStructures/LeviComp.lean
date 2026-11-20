@@ -14,12 +14,20 @@ section Proj
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
+/- English proof (translation)
+Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+-/
 theorem conjTensor_involutive (hσ : ∀ x, σ (σ x) = x) (a : R ⊗[F] E) : sigR R σ (sigR R σ a) = a := by
   induction a using TensorProduct.induction_on with
   | zero => simp
   | tmul x y => simp [sigR, hσ]
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
+/- English proof (translation)
+Unfold `hR Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, conjTensor_involutive hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hJ' : sigR R σ (JR R J j i) = JR R J i j`.
+
+Simplify using `only [JR, Matrix.map_apply, conjTensor_incl, hJ]`. Rewrite using `[hJ']`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem hermForm_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → R ⊗[F] E) :
     sigR R σ (hR R σ J x y) = hR R σ J y x := by
   unfold hR Formalism.UG.hform
@@ -31,6 +39,9 @@ theorem hermForm_conj_symm (hσ : ∀ x, σ (σ x) = x) (hJ : ∀ i j, σ (J j i
   rw [hJ']
   ring
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp [hR_zero_left]`. Consider the case `cons a s ha ih => rw [Finset.sum_cons, Finset.sum_cons, hR_add_left, hR_smul_left, ih]`.
+-/
 theorem hR_sum_smul_left' {ι : Type} (s : Finset ι) (d : ι → R ⊗[F] E) (v : ι → Fin n → R ⊗[F] E)
     (y : Fin n → R ⊗[F] E) : hR R σ J (∑ i ∈ s, d i • v i) y = ∑ i ∈ s, sigR R σ (d i) * hR R σ J (v i) y := by
   induction s using Finset.cons_induction with
@@ -51,12 +62,18 @@ def piRest : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R ⊗[F] E) :=
 
 def piW : (Fin n → R ⊗[F] E) →ₗ[R ⊗[F] E] (Fin n → R ⊗[F] E) := LinearMap.id - piRest (σ := σ) (J := J) P c
 
+/- English proof (translation)
+Simplify using `[piRest, hl, smul_smul]`.
+-/
 theorem piRest_apply (v : Fin n → R ⊗[F] E) : piRest (σ := σ) (J := J) P c v =
     (∑ a, hR R σ J (ratV (F := F) R (P.f a)) v • ratV (F := F) R (P.e a)) +
     (∑ a, hR R σ J (ratV (F := F) R (P.e a)) v • ratV (F := F) R (P.f a)) +
     (c * hR R σ J (ratV (F := F) R P.z) v) • ratV (F := F) R P.z := by
   simp [piRest, hl, smul_smul]
 
+/- English proof (translation)
+Simplify using `[piW]`.
+-/
 theorem piW_add_rest (v : Fin n → R ⊗[F] E) :
     piW (σ := σ) (J := J) P c v + piRest (σ := σ) (J := J) P c v = v := by
   simp [piW]
@@ -80,6 +97,11 @@ def InW (v : Fin n → R ⊗[F] E) : Prop :=
 
 variable {P c} {T : F}
 
+/- English proof (translation)
+Establish `key : (∀ b, hR R σ J (ratV (F` using `F) R (P.e b)) (piRest (σ := σ) (J := J) P c v) = hR R σ J (ratV (F := F) R (P.e b)) v) ∧ (∀ b, hR R σ J (ratV (F := F) R (P.f b)) (piRest (σ := σ) (J := J) P c v) = hR R σ J (ratV (F := F) R (P.f b)) v) ∧ hR R σ J (ratV (F := F) R P.z) (piRest (σ := σ) (J := J) P c v) = hR R σ J …`. Apply the tactic sequence `refine ⟨fun b => ?_, fun b => ?_, ?_⟩ <;>`. Rewrite using `[piRest_apply, hermForm_add_right_bis, hermForm_add_right_bis, hermForm_sum_right_alt, hermForm_sum_right_alt, hermForm_smul_right_alt]`. Simplify using `[ht.ee, ht.ef, ht.ez]`. Simplify using `[ht.fe, ht.ff, ht.fz]`.
+
+Simplify using `only [ht.ze, ht.zf, mul_zero, Finset.sum_const_zero, zero_add]`. Take the linear combination `(hR R σ J (ratV (F := F) R P.z) v) * ht.zz`. Take `⟨h1, h2, h3⟩` from `key`. Apply the tactic sequence `refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>`. Simplify using `only [piW, LinearMap.sub_apply, LinearMap.id_apply, hermForm_sub_right, h1, h2, h3, sub_self]`.
+-/
 theorem piW_inW (ht : FrameTab (σ := σ) (J := J) P c T) (v : Fin n → R ⊗[F] E) :
     InW (σ := σ) (J := J) P (piW (σ := σ) (J := J) P c v) := by
   have key : (∀ b, hR R σ J (ratV (F := F) R (P.e b)) (piRest (σ := σ) (J := J) P c v) =
@@ -99,30 +121,48 @@ theorem piW_inW (ht : FrameTab (σ := σ) (J := J) P c T) (v : Fin n → R ⊗[F
   refine ⟨fun a => ?_, fun a => ?_, ?_⟩ <;>
     simp only [piW, LinearMap.sub_apply, LinearMap.id_apply, hermForm_sub_right, h1, h2, h3, sub_self]
 
+/- English proof (translation)
+Rewrite using `[piRest_apply]`. Simplify using `[hv.1, hv.2.1, hv.2.2]`.
+-/
 theorem piRest_inW (ht : FrameTab (σ := σ) (J := J) P c T) {v : Fin n → R ⊗[F] E}
     (hv : InW (σ := σ) (J := J) P v) : piRest (σ := σ) (J := J) P c v = 0 := by
   rw [piRest_apply]
   simp [hv.1, hv.2.1, hv.2.2]
 
+/- English proof (translation)
+Simplify using `[piW, piRest_inW ht hv]`.
+-/
 theorem piW_inW_eq (ht : FrameTab (σ := σ) (J := J) P c T) {v : Fin n → R ⊗[F] E}
     (hv : InW (σ := σ) (J := J) P v) : piW (σ := σ) (J := J) P c v = v := by
   simp [piW, piRest_inW ht hv]
 
+/- English proof (translation)
+Rewrite using `[piRest_apply]`. Simplify using `[ht.fe, ht.ee, ht.ze]`.
+-/
 theorem piRest_e (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R (P.e b)) = ratV (F := F) R (P.e b) := by
   rw [piRest_apply]
   simp [ht.fe, ht.ee, ht.ze]
 
+/- English proof (translation)
+Rewrite using `[piRest_apply]`. Simplify using `[ht.ff, ht.ef, ht.zf]`.
+-/
 theorem piRest_f (ht : FrameTab (σ := σ) (J := J) P c T) (b : Fin r) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R (P.f b)) = ratV (F := F) R (P.f b) := by
   rw [piRest_apply]
   simp [ht.ff, ht.ef, ht.zf]
 
+/- English proof (translation)
+Rewrite using `[piRest_apply]`. Simplify using `[ht.fz, ht.ez, ht.zz]`.
+-/
 theorem piRest_of_frameTab (ht : FrameTab (σ := σ) (J := J) P c T) :
     piRest (σ := σ) (J := J) P c (ratV (F := F) R P.z) = ratV (F := F) R P.z := by
   rw [piRest_apply]
   simp [ht.fz, ht.ez, ht.zz]
 
+/- English proof (translation)
+Establish `h : spanR (F` using `F) R P.e Set.univ ≤ LinearMap.ker (piW (σ := σ) (J := J) P c) := by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Simplify using `[piW, piRest_e ht b]`. Conclude with `h hx`.
+-/
 theorem piW_X (ht : FrameTab (σ := σ) (J := J) P c T) {x : Fin n → R ⊗[F] E}
     (hx : x ∈ spanR (F := F) R P.e Set.univ) : piW (σ := σ) (J := J) P c x = 0 := by
   have h : spanR (F := F) R P.e Set.univ ≤ LinearMap.ker (piW (σ := σ) (J := J) P c) := by
@@ -131,6 +171,11 @@ theorem piW_X (ht : FrameTab (σ := σ) (J := J) P c T) {x : Fin n → R ⊗[F] 
     simp [piW, piRest_e ht b]
   exact h hx
 
+/- English proof (translation)
+Establish `h1 : ∀ i, hR R σ J a (ratV (F` using `F) R (P.e i)) = 0 := fun i => by`. Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.1 i, map_zero]`. Establish `h2 : ∀ i, hR R σ J a (ratV (F` using `F) R (P.f i)) = 0 := fun i => by`. Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.2.1 i, map_zero]`. Establish `h3 : hR R σ J a (ratV (F` using `F) R P.z) = 0 := by`.
+
+Rewrite using `[← hermForm_conj_symm ht.hσ ht.hJ, ha.2.2, map_zero]`. Rewrite using `[piRest_apply, hermForm_add_right_bis, hermForm_add_right_bis, hermForm_sum_right_alt, hermForm_sum_right_alt, hermForm_smul_right_alt]`. Simplify using `[h1, h2, h3]`.
+-/
 theorem inW_left (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[F] E}
     (ha : InW (σ := σ) (J := J) P a) (y : Fin n → R ⊗[F] E) :
     hR R σ J a (piRest (σ := σ) (J := J) P c y) = 0 := by
@@ -144,12 +189,18 @@ theorem inW_left (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[
     hermForm_smul_right_alt]
   simp [h1, h2, h3]
 
+/- English proof (translation)
+Rewrite using `[piRest_apply, hR_add_left, hR_add_left, hR_sum_smul_left', hR_sum_smul_left', hR_smul_left]`. Simplify using `[ha.1, ha.2.1, ha.2.2]`.
+-/
 theorem inW_right (ht : FrameTab (σ := σ) (J := J) P c T) {a : Fin n → R ⊗[F] E}
     (ha : InW (σ := σ) (J := J) P a) (y : Fin n → R ⊗[F] E) :
     hR R σ J (piRest (σ := σ) (J := J) P c y) a = 0 := by
   rw [piRest_apply, hR_add_left, hR_add_left, hR_sum_smul_left', hR_sum_smul_left', hR_smul_left]
   simp [ha.1, ha.2.1, ha.2.2]
 
+/- English proof (translation)
+Conclude with `hR_span_perp (R := R) (σ := σ) (J := J) P a ha x hx`.
+-/
 theorem X_left {x : Fin n → R ⊗[F] E} (hx : x ∈ spanR (F := F) R P.e Set.univ) {a : Fin n → R ⊗[F] E}
     (ha : ∀ b, hR R σ J (ratV (F := F) R (P.e b)) a = 0) : hR R σ J x a = 0 := by
   exact hR_span_perp (R := R) (σ := σ) (J := J) P a ha x hx

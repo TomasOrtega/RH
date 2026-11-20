@@ -18,6 +18,9 @@ open GlobalTheory GlobalTheory.Ex
 noncomputable section
 namespace GlobalTheory.Ex.ThetaDescent
 
+/- English proof (translation)
+Take `⟨M, hM⟩` from `Ideal.exists_maximal A`. Use `letI := Ideal.Quotient.field M`. Use `haveI : Module.Finite K (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)`. Conclude with `⟨(IsAlgClosed.lift : (A ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)⟩`.
+-/
 theorem nonempty_algHom (K A : Type) [Field K] [IsAlgClosed K] [CommRing A] [Nontrivial A] [Algebra K A]
     [Algebra.FiniteType K A] : Nonempty (A →ₐ[K] K) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal A
@@ -25,6 +28,15 @@ theorem nonempty_algHom (K A : Type) [Field K] [IsAlgClosed K] [CommRing A] [Non
   haveI : Module.Finite K (A ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (A ⧸ M)
   exact ⟨(IsAlgClosed.lift : (A ⧸ M) →ₐ[K] K).comp (Ideal.Quotient.mkₐ K M)⟩
 
+/- English proof (translation)
+Use `letI := g.toAlgebra`. Use `letI := i.toAlgebra`. Take `⟨t, ht⟩` from `hg.out`. Set `A : Subalgebra K κ` to `Algebra.adjoin K ((insert (u : κ) (insert ((u⁻¹ : κˣ) : κ) (t.image φ)) : Finset κ) : Set κ)`. Use `haveI : Algebra.FiniteType K A := (Subalgebra.fg_iff_finiteType _).1 ⟨_, rfl⟩`.
+
+Establish `hA : ∀ r, φ r ∈ A` using `fun r => by`. Establish `hr : r ∈ Algebra.adjoin F (t : Set R)` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hr using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact Algebra.subset_adjoin (by simp only [Finset.coe_insert, Finset.coe_image]; exact Or.inr (Or.inr ⟨x, hx, rfl⟩))`. Consider the case `algebraMap x => exact (RingHom.congr_fun hφ x).symm ▸ A.algebraMap_mem (b x)`.
+
+Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Take `⟨s⟩` from `nonempty_algHom K A`.
+
+Establish `h₁ : (u : κ) ∈ A` using `Algebra.subset_adjoin (by simp)`. Establish `h₂ : ((u⁻¹ : κˣ) : κ) ∈ A` using `Algebra.subset_adjoin (by simp)`. Use `⟨A, inferInstance, inferInstance, A.val.toRingHom, s.toRingHom, algebraMap K A, φ.codRestrict A hA, ⟨⟨_, h₁⟩, ⟨_, h₂⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩, Subtype.val_injective, rfl, rfl, s.commutes, rfl⟩` and prove the remaining obligations.
+-/
 theorem exists_retract {F R K κ : Type} [CommRing F] [CommRing R] [Field K] [IsAlgClosed K] [Field κ] (g : F →+* R)
     (hg : g.FiniteType) (b : F →+* K) (i : K →+* κ) (φ : R →+* κ) (hφ : φ.comp g = i.comp b) (u : κˣ) :
     ∃ (A : Type) (_ : CommRing A) (_ : IsDomain A) (j : A →+* κ) (s : A →+* K) (k : K →+* A) (ψ : R →+* A) (u' : Aˣ),
@@ -49,6 +61,11 @@ theorem exists_retract {F R K κ : Type} [CommRing F] [CommRing R] [Field K] [Is
     φ.codRestrict A hA, ⟨⟨_, h₁⟩, ⟨_, h₂⟩, Subtype.ext u.mul_inv, Subtype.ext u.inv_mul⟩, Subtype.val_injective, rfl, rfl,
     s.commutes, rfl⟩
 
+/- English proof (translation)
+Establish `hi : Irreducible (Polynomial.X ^ 2 - Polynomial.C (-(H.d : ℚ)))` using `X_pow_sub_C_irreducible_of_prime Nat.prime_two fun b hb => by`. Establish `: (0 : ℚ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg b]`. Establish `hm : Polynomial.X ^ 2 - Polynomial.C (-(H.d : ℚ)) = minpoly ℚ (⟨_, h⟩ : F)` using `minpoly.eq_of_irreducible_of_monic hi (by`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Simplify using `[H.sqrt_neg_disc_sq]) (Polynomial.monic_X_pow_sub_C _ two_ne_zero)`. Take `⟨b, hb⟩` from `IntermediateField.exists_algHom_of_splits_of_aeval (F := ℚ) (E := F) (K := K) (fun s => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) (x := ⟨_, h⟩) (y := ρ) (by rw [← hm]; simp [hρ])`. Conclude with `⟨b.toRingHom, hb⟩`.
+-/
 theorem exists_embedding {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (F : IntermediateField ℚ ℂ)
     [FiniteDimensional ℚ F] (h : H.rt0 ∈ F) {K : Type} [Field K] [IsAlgClosed K] [CharZero K] (ρ : K)
     (hρ : ρ ^ 2 = -(H.d : K)) : ∃ b : F →+* K, b ⟨_, h⟩ = ρ := by
@@ -64,6 +81,17 @@ theorem exists_embedding {E : Type} [Field E] [NumberField E] [IsCMField E] (H :
     (fun s => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) (x := ⟨_, h⟩) (y := ρ) (by rw [← hm]; simp [hρ])
   exact ⟨b.toRingHom, hb⟩
 
+/- English proof (translation)
+Take `⟨I, hI⟩` from `GlobalTheory.TateRoot.exists_tateIso_zeta_eq E H D l k Q act e I N z hN (IsPrimitiveRoot.coe_units_iff.2 hz)`. Use `replace hI : I.ζ N = z := Units.ext hI`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Use `choose f₀ hf₀ using fun a => (I.onto N hN (x a)).1 (hpow a)`.
+
+Set `M : Submodule (𝓞 E) D.La` to `LinearMap.range ((N : 𝓞 E) • LinearMap.id)`. Establish `hM : ∀ a b, M.mkQ a = M.mkQ b ↔ I.ev N a = I.ev N b` using `fun a b => by`. Establish `e₁ : I.ev N a = I.ev N (a - b) * I.ev N b` using `by rw [← I.add, sub_add_cancel]`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, e₁, mul_eq_right, I.ker N hN]`. Conclude with `exists_congr fun c => by simp [Nat.cast_smul_eq_nsmul, eq_comm]`.
+
+Set `g₀ : D.La →ₗ[𝓞 E] D.La ⧸ M` to `{ toFun := fun a => M.mkQ (f₀ a) map_add' := fun a b => by rw [← map_add, hM, I.add, hf₀, hf₀, hf₀, hadd] map_smul' := fun c a => by rw [← map_smul, RingHom.id_apply, hM, I.lin, hf₀, hf₀, hlin] }`. Take `⟨f, hf⟩` from `Module.projective_lifting_property M.mkQ g₀ M.mkQ_surjective`. Establish `hf' : ∀ a, I.ev N (f a) = x a` using `fun a => ((hM _ _).1 (LinearMap.congr_fun hf a)).trans (hf₀ a)`. Distinguish the cases in `hpq : 1 ≤ D.p + D.q`. Take `⟨g, hg, hν⟩` from `GlobalTheory.exists_sim_lift E H D N f 1 hN isCoprime_one_left fun a b => by`.
+
+Establish `h₁` using `I.isom N hN (f a) (f b)`. Rewrite `h₁` using `[hf', hf', hI]`. Establish `h₂` using `he _ _ _ _ (hpow a) (hpow b) h₁ (hiso a b)`. Rewrite using `[_root_.one_mul, ← hz.zpow_eq_one_iff_dvd, zpow_sub, h₂, mul_inv_cancel]`. Use `⟨GlobalTheory.LevelTwist.twist I g ((GlobalTheory.SimAlg.sim_group E H D hpq).1 g), ?_, fun a => ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[GlobalTheory.LevelTwist.twist_ζ, GlobalTheory.LevelTwist.zeta_zpow_congr I hN hν, zpow_one, hI]`. Rewrite using `[GlobalTheory.LevelTwist.twist_ev, GlobalTheory.LevelTwist.ev_congr I hN (hg a), hf']`. Establish `: Subsingleton D.La` using `Module.finrank_zero_iff.1 (D.rank.trans (by omega))`. Conclude with `⟨I, hI, fun a => by rw [← hf', Subsingleton.elim (f a) a]⟩`.
+-/
 theorem exists_tateIso_of_level {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     (l : Geo.Tor.Level H) {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
     (I : TateIso D k Q act e) {N : ℕ} (hN : 0 < N)
@@ -99,6 +127,13 @@ theorem exists_tateIso_of_level {E : Type} [Field E] [NumberField E] [IsCMField 
   · have : Subsingleton D.La := Module.finrank_zero_iff.1 (D.rank.trans (by omega))
     exact ⟨I, hI, fun a => by rw [← hf', Subsingleton.elim (f a) a]⟩
 
+/- English proof (translation)
+Take `⟨h1, h2, h3⟩` from `h`. Use `⟨h1, h2, fun p => ?_⟩` and prove the remaining obligations. Take `⟨V, hp, th, s1, α, τ, U, s2, w, u, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h3 p`. Establish `hc1 : IsUnit (show Γ((overRes V).left, ⊤) from V.ι.appTop.hom c)` using `hc.map V.ι.appTop.hom`. Take `⟨c', hc'⟩` from `hc1`.
+
+Use `⟨V, hp, th, s1, α, τ, U, s2, w, c' * u, a1, a2, a3, a4, a5, a6, a7, fun i => ?_⟩` and prove the remaining obligations. Establish `e1 : (show Γ((overRes V).left, ⊤) from V.ι.appTop.hom (v' i)) = (show Γ((overRes V).left, ⊤) from V.ι.appTop.hom c) * (show Γ((overRes V).left, ⊤) from V.ι.appTop.hom (v i))`. Rewrite using `[hv i]`. Conclude with `map_mul V.ι.appTop.hom c (v i)`. Establish `e2 : (show Γ((overRes V).left, ⊤) from V.ι.appTop.hom (v i)) = u * w i` using `a8 i`.
+
+Rewrite `e1` using `[← hc', e2, ← _root_.mul_assoc]`. Conclude with `e1`.
+-/
 theorem isThetaPt_unit_mul {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} {I : Type} (x : I → (T ⟶ P.A))
     (v v' : I → Γ(T.left, ⊤)) (c : Γ(T.left, ⊤)) (hc : IsUnit c) (hv : ∀ i, v' i = c * v i)
     (h : IsThetaPt P k x v) : IsThetaPt P k x v' := by
@@ -116,6 +151,21 @@ theorem isThetaPt_unit_mul {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S}
   rw [← hc', e2, ← _root_.mul_assoc] at e1
   exact e1
 
+/- English proof (translation)
+Establish `cg` using `GlobalTheory.AbLaw.CubeAssembly.cube_gen`. Establish `neg` using `GlobalTheory.exists_gen_negLB hG`. Take `⟨α₀, hα₀⟩` from `(GlobalTheory.MulPull.mulPull_of_cube_of_symm cg neg).1 S P k`. Establish `sym` using `(GlobalTheory.symLift_odd hG (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube cg).1).2.2 neg).1`. Take `⟨V₀, hV₀, b, hb⟩` from `hB S P 1 le_rfl (T.hom p)`.
+
+Use `haveI := hf.to_subtype`. Use `choose V hV θ hθ using fun i : Set.range y => (sym S P (k ^ 2) hk.pow T i.1 (by obtain ⟨_, j, rfl⟩ := i; exact hy j)).1 p`. Set `O : T.left.Opens` to `T.hom ⁻¹ᵁ V₀ ⊓ ⟨⋂ i, (V i).carrier, isOpen_iInter_of_finite fun i => (V i).2⟩`. Establish `hO : p ∈ O` using `⟨hV₀, Set.mem_iInter.2 hV⟩`. Take `⟨_, ⟨W, hW, rfl⟩, hpW, hWO⟩` from `T.left.isBasis_affineOpens.exists_subset_of_mem_open hO O.2`.
+
+Establish `hW' : IsAffineOpen W` using `hW`. Set `x₀ : Sp Γ(T.left, W) ⟶ T.left` to `hW'.fromSpec`. Establish `hx₀ : Set.range x₀ = W` using `hW'.range_fromSpec`. Take `⟨t, ht⟩ : ∃ t : Sp Γ(T.left, W) ⟶ V₀.toScheme, t ≫ V₀.ι = x₀ ≫ T.hom` from `⟨IsOpenImmersion.lift V₀.ι (x₀ ≫ T.hom) (by`. Rewrite using `[Scheme.Opens.range_ι]`.
+
+Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `(hWO (hx₀.le ⟨q, rfl⟩)).1), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `ex : t ≫ (overRes (T` using `baseOver S) V₀).hom = x₀ ≫ T.hom := (congrArg (t ≫ ·) (Category.comp_id _)).trans ht`. Set `r : baseAt t ⟶ T` to `Over.homMk x₀ ex.symm`. Use `⟨W, hW', t ≫ (overRes (T := baseOver S) V₀).hom, r, hpW, rfl, ?_⟩` and prove the remaining obligations.
+
+Take `⟨-, hsp⟩` from `hb _ t (fun i => VVRank.pullS P.A _ (homAt t) (b i)) fun i => VVRank.isPullSec_pullS _ _ _ _`. Use `haveI : Subsingleton (Fin (1 ^ P.g)) := by rw [one_pow]; infer_instance`. Take `⟨th, hth⟩` from `ThetaLocal.exists_generator _ hsp`. Use `ThetaLocal.exists_isThetaPt P k hk α₀ hα₀ (T := baseAt t) ?_ _ th hth fun i => ?_` and prove the remaining obligations. Simplify using `using hu.map (baseAt t).hom.appTop.hom`.
+
+Set `i' : Set.range y` to `⟨_, i, rfl⟩`. Take `⟨u, hu'⟩ : ∃ u : Sp Γ(T.left, W) ⟶ (V i').toScheme, u ≫ (V i').ι = x₀` from `⟨IsOpenImmersion.lift (V i').ι x₀ (by`. Rewrite using `[hx₀, Scheme.Opens.range_ι]`. Conclude with `fun q hq => Set.mem_iInter.1 (hWO hq).2 i'), IsOpenImmersion.lift_fac _ _ _⟩`. Set `r' : baseAt t ⟶ overRes (V i')` to `Over.homMk u ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ T.hom) hu').trans ex.symm))`.
+
+Take `⟨θ', hθ'⟩` from `GlobalLift.exists_symLift_pull P.isLB r' (hθ i')`. Establish `e : r' ≫ overResι (V i') = r` using `Over.OverMorphism.ext hu'`. Rewrite `hθ'` using `[← Category.assoc, e]`. Rewrite using `[← Nat.cast_pow]`. Conclude with `⟨θ', hθ'⟩`.
+-/
 theorem exists_affine (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S : Scheme.{0}} (P : PolAV S) (k : ℕ)
     (hk : Odd k) (hu : IsUnit (k : Γ(S, ⊤))) {T : Over S} {I : Type} (y : I → (T ⟶ P.A)) (hf : (Set.range y).Finite)
     (hy : ∀ i, y i ^ (k ^ 2) = 1) (p : T.left) :
@@ -160,6 +210,15 @@ theorem exists_affine (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {S : Scheme.{
     rw [← Nat.cast_pow]
     exact ⟨θ', hθ'⟩
 
+/- English proof (translation)
+Set `φ : La →+ Additive Q` to `AddMonoidHom.mk' (fun a => Additive.ofMul (x a)) hadd`. Set `M : Submodule ℤ La` to `φ.ker.toIntSubmodule`. Establish `hM : ∀ a, a ∈ M ↔ φ a = 0` using `fun _ => Iff.rfl`. Use `haveI : Finite (La ⧸ M) := Module.finite_of_fg_torsion _ fun q => by`. Take `⟨a, rfl⟩` from `M.mkQ_surjective q`.
+
+Use `⟨⟨(N : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hN)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.mkQ ((N : ℤ) • a) = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hM, natCast_zsmul, map_nsmul]`. Conclude with `hpow a`. Use `(Set.finite_range fun q : La ⧸ M => x q.out).subset ?_` and prove the remaining obligations.
+
+Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨M.mkQ a, ?_⟩` and prove the remaining obligations. Establish `h : (M.mkQ a).out - a ∈ M` using `(Submodule.Quotient.eq M).1 (Quotient.out_eq _)`. Establish `e : (M.mkQ a).out = ((M.mkQ a).out - a) + a` using `(sub_add_cancel _ _).symm`. Establish `h' : x ((M.mkQ a).out - a) = 1` using `h`.
+
+Use `show x _ = _`. Rewrite using `[e, hadd, h', _root_.one_mul]`.
+-/
 theorem finite_range {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [Group Q] {N : ℕ} (hN : N ≠ 0) (x : La → Q)
     (hadd : ∀ a b, x (a + b) = x a * x b) (hpow : ∀ a, x a ^ N = 1) : (Set.range x).Finite := by
   let φ : La →+ Additive Q := AddMonoidHom.mk' (fun a => Additive.ofMul (x a)) hadd
@@ -182,13 +241,22 @@ theorem finite_range {La Q : Type} [AddCommGroup La] [Module.Finite ℤ La] [Gro
 
 abbrev fnA {A : Type} [CommRing A] (x : A) : Γ(Sp A, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom x
 
+/- English proof (translation)
+The claim follows from `(congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm`.
+-/
 theorem appTop_fnA {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : A) :
     (spMap f).appTop.hom (fnA x) = fnA (f x) :=
   (congrArg (fun q => q.hom x) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))).symm
 
+/- English proof (translation)
+The claim follows from `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv`.
+-/
 theorem fnA_bijective (A : Type) [CommRing A] : Function.Bijective (fnA (A := A)) :=
   ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).inv
 
+/- English proof (translation)
+Introduce `a b h` and use `by obtain ⟨a, rfl⟩ := (fnA_bijective A).2 a obtain ⟨b, rfl⟩ := (fnA_bijective A).2 b rw [appTop_fnA, appTop_fnA] at h rw [hf ((fnA_bijective B).1 h)]`.
+-/
 theorem appTop_injective {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} (hf : Function.Injective f) :
     Function.Injective (spMap f).appTop.hom := fun a b h => by
   obtain ⟨a, rfl⟩ := (fnA_bijective A).2 a
@@ -196,6 +264,27 @@ theorem appTop_injective {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} 
   rw [appTop_fnA, appTop_fnA] at h
   rw [hf ((fnA_bijective B).1 h)]
 
+/- English proof (translation)
+Use `haveI := P.isAb.comm`. Take `⟨Z, et, hfin, -, eadd, epow, huniv⟩` from `GlobalTheory.exists_finiteEtale_latticeTorsionHom S P.A (m ^ 2) La P.isAb (by rw [Nat.cast_pow]; exact hu.pow 2)`. Take `⟨h, hh, -⟩` from `huniv _ x hadd hpow`. Take `⟨W, hW, x₀, r, hp, hr, w, hw⟩` from `exists_affine hG hB P m hm hu et (finite_range (pow_ne_zero 2 hm.pos.ne') et eadd epow) epow (h.left (IsLocalRing.closedPoint κ))`. Take `⟨y', hy'⟩ : ∃ y' : Sp κ ⟶ Sp Γ(Z.left, W), y' ≫ hW.fromSpec = h.left` from `⟨IsOpenImmersion.lift hW.fromSpec h.left (by`.
+
+Rewrite using `[hW.range_fromSpec]`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum κ) q (IsLocalRing.closedPoint κ)]), IsOpenImmersion.lift_fac _ _ _⟩` and apply the resulting hypothesis. Take `⟨φ, rfl⟩ : ∃ φ : Γ(Z.left, W) →+* κ, spMap φ = y'` from `⟨(Spec.preimage y').hom, Spec.map_preimage y'⟩`. Take `⟨g, hg⟩ : ∃ g : F →+* Γ(Z.left, W), spMap g = x₀ ≫ sF` from `⟨(Spec.preimage (x₀ ≫ sF)).hom, Spec.map_preimage _⟩`.
+
+Establish `hx₀ : hW.fromSpec ≫ Z.hom = x₀` using `hr ▸ Over.w r`. Establish `hφ : spMap φ ≫ x₀ = y` using `by rw [← hx₀, ← Category.assoc, hy']; exact Over.w h`. Establish `hgf : g.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType) (φ := CommRingCat.ofHom g)).1 (by`. Express the relevant statement in the definitionally equal form `LocallyOfFiniteType (spMap g)`. Rewrite using `[hg, ← hx₀]`.
+
+Use the proof step `infer_instance)`. Establish `hφg : φ.comp g = i.comp b`. Establish `: spMap (φ.comp g) = spMap (i.comp b)` using `by rw [spMap_comp, hg, ← Category.assoc, hφ, hy]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`. Establish `aff : ∀ {A : Type} [CommRing A] (t : Sp A ⟶ S), IsAffine (Over.mk t).left` using `fun t => inferInstanceAs (IsAffine (Spec _))`.
+
+Set `hκ : Over.mk y ⟶ Over.mk x₀` to `Over.homMk (spMap φ) hφ`. Establish `eκ : hκ ≫ r = h` using `Over.OverMorphism.ext ((congrArg (spMap φ ≫ ·) hr).trans hy')`. Use `haveI := aff x₀`. Use `haveI := aff y`. Establish `w₁` using `ThetaBaseChange.isThetaPt_pull P hB hκ hw`.
+
+Simplify using `only [← Category.assoc, eκ, hh] at w₁`. Use `haveI : IsLocalRing Γ((Over.mk y).left, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of κ)).commRingCatIsoToRingEquiv.symm.isLocalRing`. Take `⟨u, hu₁⟩` from `ThetaUniq.exists_unit_over hG P hm (ThetaUniq.isThetaPtOver_of_local P y w₁) (ThetaUniq.isThetaPtOver_of_local P y hv)`. Take `⟨u₀, hu₀⟩` from `(fnA_bijective κ).2 u.val`. Establish `hne : u₀ ≠ 0` using `fun h0 => u.ne_zero (hu₀.symm.trans (h0 ▸ map_zero _))`.
+
+Take `⟨A, _, _, j, s, k, ψ, u', hj, h₁, h₂, h₃, h₄⟩` from `exists_retract g hgf b i φ hφg (Units.mk0 u₀ hne)`. Set `hA : Over.mk (spMap ψ ≫ x₀) ⟶ Over.mk x₀` to `Over.homMk (spMap ψ) rfl`. Establish `e₁ : spMap j ≫ spMap ψ = spMap φ` using `by rw [← spMap_comp, h₁]`. Set `J : Over.mk y ⟶ Over.mk (spMap ψ ≫ x₀)` to `Over.homMk (spMap j) (by`. Express the relevant statement in the definitionally equal form `spMap j ≫ spMap ψ ≫ x₀ = y`.
+
+Rewrite using `[← Category.assoc, e₁, hφ])`. Establish `eJ : J ≫ hA = hκ` using `Over.OverMorphism.ext e₁`. Use `haveI := aff (spMap ψ ≫ x₀)`. Use `⟨A, inferInstance, inferInstance, j, s, k, _, J, fun a => hA ≫ r ≫ et a, hj, h₂, h₃, rfl, ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hg, ← spMap_comp]`.
+
+Use `congr 1`. Use extensionality with `c`. Apply `hj` to reduce the goal to its premises. Conclude with `(RingHom.congr_fun h₁ _).trans ((RingHom.congr_fun hφg c).trans (RingHom.congr_fun h₂ _).symm)`. Rewrite using `[← Category.assoc, eJ, ← Category.assoc, eκ, hh]`.
+
+Use `isThetaPt_unit_mul P m _ _ _ (fnA u'.val) (u'.isUnit.map _) (fun a => appTop_injective hj ?_) (ThetaBaseChange.isThetaPt_pull P hB hA hw)` and prove the remaining obligations. Use `(appTop_fnA j _).trans (Eq.trans ?_ (map_mul _ _ _).symm)` and prove the remaining obligations. Use `(congrArg fnA (RingHom.congr_fun h₂ _)).trans ((hu₁ a).trans (congrArg₂ (· * ·) ?_ ?_))` and prove the remaining obligations. Conclude with `hu₀.symm.trans ((congrArg fnA h₄.symm).trans (appTop_fnA j _).symm)`. Conclude with `(congrArg (fun q => q.left.appTop.hom (w a)) eJ).symm`.
+-/
 theorem exists_spread (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {F K κ : Type} [Field F] [Field K] [IsAlgClosed K]
     [Field κ] {S : Scheme.{0}} (sF : S ⟶ Sp F) [LocallyOfFiniteType sF] (P : PolAV S) (b : F →+* K) (i : K →+* κ)
     (y : Sp κ ⟶ S) (hy : y ≫ sF = spMap (i.comp b)) {La : Type} [AddCommGroup La] [Module.Free ℤ La]
@@ -267,6 +356,43 @@ theorem exists_spread (hG : GlobalFnsSt) (hB : SecBaseChangeAnySt) {F K κ : Typ
 
 set_option maxHeartbeats 800000 in
 
+/- English proof (translation)
+Use `letI := H.starRing`. Establish `hG` using `hL.globalFns`. Establish `hN : 0 < m ^ 2` using `pow_pos hm.pos 2`. Set `P` to `objPolAV oF`. Use `haveI := D.fin`.
+
+Use `haveI := D.proj`. Use `haveI : Module.Finite ℤ D.La := Module.Finite.trans (𝓞 E) D.La`. Use `haveI : Module.Flat ℤ D.La := Module.Flat.trans ℤ (𝓞 E) D.La`. Use `haveI : Module.Free ℤ D.La := inferInstance`. Use `haveI : IsLocallyNoetherian S := LocallyOfFiniteType.isLocallyNoetherian sF`.
+
+Use `haveI : IsLocallyNoetherian (Sp K) := inferInstanceAs (IsLocallyNoetherian (Spec _))`. Establish `hu : IsUnit (m : Γ(S, ⊤))`. Use `((bs.unit m hm.pos).map (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom).map sB.appTop.hom` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis. Set `Φ` to `ObjPull.pushEquiv cart (baseOver (Sp κ))`.
+
+Establish `p' : ∀ a, o'.I.ev (m ^ 2) a ^ m ^ 2 = 1` using `fun a => (o'.I.onto _ hN _).2 ⟨a, rfl⟩`. Establish `p'' : ∀ a, Φ (o'.I.ev (m ^ 2) a) ^ m ^ 2 = 1` using `fun a => by rw [← map_pow, p', map_one]`. Take `⟨A, _, _, j, s, k, t, J, xA, hj, hjk, hsk, hJ, ht, hx, hth⟩` from `exists_spread hG hB sF P b i (𝟙 _ ≫ y) ((Category.assoc _ _ _).trans ((Category.id_comp _).trans hy)) m hm hu (fun a => Φ (o'.I.ev (m ^ 2) a)) (fun a c => by rw [o'.I.add]; exact map_mul Φ _ _) p'' v ((ThetaPtUp.isThetaPt_iff (P₀ := P) cart lb (fun _ => rfl) p' _).1 hv)`. Use `haveI : IsDominant (spMap j) := ⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical j).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot j).1 hj]`.
+
+Conclude with `bot_le)⟩`. Use `haveI := oF.proper`. Establish `inj : ∀ p q : Over.mk t ⟶ oF.t.G, J ≫ p = J ≫ q → p = q` using `fun p q h => Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp A) oF.t.G.hom ((Over.w p).trans (Over.w q).symm) (spMap j) (hJ ▸ congrArg CommaMorphism.left h))`. Establish `aadd : ∀ a c, xA (a + c) = xA a * xA c` using `fun a c => inj _ _ (by erw [MonObj.comp_mul, hx, hx, hx, o'.I.add]; exact map_mul Φ _ _)`. Establish `apow : ∀ a, xA a ^ m ^ 2 = 1` using `fun a => inj _ _ (by erw [MonObj.comp_pow, hx, MonObj.comp_one]; exact p'' a)`.
+
+Establish `alin : ∀ (c : 𝓞 E) a, xA (c • a) = xA a ≫ oF.t.act.act c` using `fun c a => inj _ _ (by erw [← Category.assoc, hx, hx, o'.I.lin]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show (_ ≫ (o'.oa.act c).left) ≫ φ = (_ ≫ φ) ≫ _`. Rewrite using `[Category.assoc, hact, Category.assoc])`. Establish `hzp : IsPrimitiveRoot z (m ^ 2)` using `IsPrimitiveRoot.of_map_of_injective (f := i) (hz ▸ IsPrimitiveRoot.coe_units_iff.2 (o'.I.ζ_prim _ hN)) i.injective`.
+
+Take `⟨zu, rfl⟩` from `hzp.isUnit hN.ne'`. Establish `aweil : ∀ a c, WeilIs oF.t.G oF.t.PP.L (m ^ 2 : ℕ) (xA a) (xA c) (unitOn (Units.map k.toMonoidHom zu ^ D.EF a c))` using `fun a c => by`. Take `⟨w, hw, -⟩` from `(hL.weil S P (m ^ 2) (Over.mk t)).1 _ _ (apow a) (apow c)`. Establish `w₁` using `CommPairing.weilIs_pull hG P.isAb P.isLB J hw`. Rewrite `w₁` using `[hx, hx]`.
+
+Establish `w₂` using `(weilIs_grpPullback_of_comm _ _ oF.t.G o'.P.A y φ _ _ oF.t.PP.isLB o'.P.isLB cart lb (baseOver _) _ _ _ (Φ (o'.I.ev (m ^ 2) a)) (Φ (o'.I.ev (m ^ 2) c)) _ rfl rfl).1 (o'.I.isom _ hN a c)`. Establish `w₃` using `((hL.weil S P (m ^ 2) _).1 _ _ (p'' a) (p'' c)).unique w₁ w₂`. Establish `e₁ : o'.I.ζ (m ^ 2) = Units.map j.toMonoidHom (Units.map k.toMonoidHom zu)` using `Units.ext (hz.trans (RingHom.congr_fun hjk _).symm)`. Rewrite `w₃` using `[e₁, ← map_zpow, hJ]`. Establish `e₂ : w = unitOn (Units.map k.toMonoidHom zu ^ D.EF a c)` using `Units.ext (appTop_injective hj ((congrArg Units.val w₃).trans (appTop_fnA j _).symm))`.
+
+Conclude with `e₂ ▸ hw`. Establish `hsb : s.comp (k.comp b) = b` using `RingHom.ext fun c => hsk _`. Take `⟨o, ⟨mp⟩⟩` from `obj_pull E H D l B B bs bs (RingHom.id B) S _ sB (spMap (b.comp e)) (spMap s ≫ t) rfl rfl (by`. Rewrite using `[hs, Category.assoc, ← Category.assoc t, ht, ← Category.assoc, ← spMap_comp, hsb, ← spMap_comp, ← spMap_comp, RingHom.comp_id]) oF`. Establish `lb₁ : LBIso o.t.PP.L (oF.t.PP.L.pull mp.cm.F)`.
+
+Take `⟨w, hw, -⟩` from `mp.lin`. Conclude with `⟨w, hw⟩`. Take `⟨hdet, I, -⟩` from `o.geom K (𝟙 _) (b.comp e) (Category.id_comp _)`. Set `Ψ` to `ObjPull.pushEquiv mp.cart (baseOver (Sp K))`. Set `J₀ : Over.mk (𝟙 _ ≫ spMap s ≫ t) ⟶ Over.mk t` to `Over.homMk (spMap s) (Category.id_comp _).symm`.
+
+Set `x₁ : D.La → (baseOver (Sp K) ⟶ o.t.G)` to `fun a => Ψ.symm (J₀ ≫ xA a)`. Establish `hx₁ : ∀ a, (J₀ ≫ xA a).left = (x₁ a).left ≫ mp.cm.F` using `fun a => (ObjPull.pushEquiv_symm_left mp.cart (baseOver (Sp K)) _).symm`. Establish `p₁ : ∀ a, x₁ a ^ m ^ 2 = 1` using `fun a => by`. Use `(map_pow Ψ.symm _ _).symm.trans ?_` and prove the remaining obligations. Use `erw [← MonObj.comp_pow, apow, MonObj.comp_one]`.
+
+Conclude with `map_one _`. Take `⟨I₁, hI₁, hI₂⟩` from `exists_tateIso_of_level l I hN (fun p q c c' hp hq h h' => by`. Use `((hL.weil _ (objPolAV o) (m ^ 2) _).1 _ _ hp hq).unique h h'` as an intermediate fact. Conclude with `Units.ext ((fnA_bijective K).1 (congrArg Units.val this)))`. Use `zu (IsPrimitiveRoot.coe_units_iff.1 hzp) x₁`.
+
+Use the proof step `(fun a c => by`. Use `Eq.trans ?_ (map_mul Ψ.symm _ _)` and prove the remaining obligations. Conclude with `congrArg Ψ.symm ((congrArg (J₀ ≫ ·) (aadd a c)).trans (MonObj.comp_mul _ _ _)))`. Use the proof step `(fun c a => Ψ.injective (Over.OverMorphism.ext (by`. Express the relevant statement in the definitionally equal form `(x₁ _).left ≫ mp.cm.F = ((x₁ a).left ≫ (o.t.act.act c).left) ≫ mp.cm.F`.
+
+Rewrite using `[Category.assoc, mp.act, ← Category.assoc, ← hx₁, ← hx₁, alin]`. Use the proof step `rfl)))`. Use `p₁`. Use the proof step `(fun a c => by`. Use `(weilIs_grpPullback_of_comm _ _ oF.t.G o.t.G _ mp.cm.F _ _ oF.t.PP.isLB o.t.PP.isLB mp.cart lb₁ (baseOver _) _ _ _ _ _ _ (hx₁ a) (hx₁ c)).2 ?_` and prove the remaining obligations.
+
+Establish `w₁` using `CommPairing.weilIs_pull hG P.isAb P.isLB J₀ (aweil a c)`. Establish `e₁ : Units.map s.toMonoidHom (Units.map k.toMonoidHom zu ^ D.EF a c) = zu ^ D.EF a c`. Rewrite using `[map_zpow]`. Conclude with `congrArg (· ^ _) (Units.ext (hsk _))`. Conclude with `(congrArg (WeilIs oF.t.G oF.t.PP.L _ _ _) (Units.ext ((appTop_fnA s _).trans (congrArg (fun q : Kˣ => fnA q.val) e₁)))).mp w₁)`.
+
+Set `oa : (objPolAV o).OAct (𝓞 E)` to `{ o.t.act.toRingAct with rosati := fun a _ => ⟨⊤, trivial, by`. Take `⟨u, hu⟩` from `GlobalTheory.NormRos.exists_gen_rosati o.t.PP.isLB _ _ (o.t.adj a)`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ _ hu _⟩⟩ }`. Use `⟨⟨objPolAV o, oa, o.t.prim, b (e bs.ρ), by` and prove the remaining obligations. Rewrite using `[← map_pow, ← map_pow, bs.ρ_sq, map_neg, map_neg, map_natCast, map_natCast], hdet, I₁, ‹_›⟩, rfl,`.
+
+Use `congrArg Units.val hI₁, ?_⟩`. Use `haveI : IsAffine (Over.mk t).left := inferInstanceAs (IsAffine (Spec _))`. Use `haveI : IsAffine (Over.mk (𝟙 _ ≫ spMap s ≫ t)).left := inferInstanceAs (IsAffine (Spec _))`. Establish `w₁` using `ThetaBaseChange.isThetaPt_pull P hB J₀ hth`. Establish `e₁ : I₁.ev (m ^ 2) = x₁` using `funext hI₂`.
+
+Establish `e₂ : (fun a => J₀.left.appTop.hom (fnA (k (v a)))) = fun a => fnOf (v a)` using `funext fun a => (appTop_fnA s _).trans (congrArg fnA (hsk _))`. Rewrite `w₁` using `[e₂]`. Express the relevant statement in the definitionally equal form `IsThetaPt (objPolAV o) m (I₁.ev (m ^ 2)) _`. Rewrite using `[e₁]`. Conclude with `(ThetaPtUp.isThetaPt_iff (P₀ := P) (P := objPolAV o) mp.cart lb₁ hx₁ p₁ _).2 w₁`.
+-/
 theorem exists_full (hL : Laws) (hB : SecBaseChangeAnySt) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
     {D : Datum H} {l : Geo.Tor.Level H} {B F K κ : Type} [CommRing B] {bs : Base l B} [Field F] [Field K] [IsAlgClosed K]
     [CharZero K] [Field κ] {S : Scheme.{0}} (sF : S ⟶ Sp F) [LocallyOfFiniteType sF] (e : B →+* F) {sB : S ⟶ Sp B}

@@ -9,6 +9,9 @@ namespace PI.PoleLengthCount
 
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
 
+/- English proof (translation)
+Unfold `colIdx`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Simplify using `[Fintype.sum_prod_type, Fin.sum_univ_succ]`.
+-/
 theorem colIdx_sum {N : ℕ} (col : Fin N) (α : Fin (WeightFamilies.dimY D j) → ℕ) :
     ((colIdx D j col α).sum fun _ n => n) = ∑ i, α i := by
   classical
@@ -16,12 +19,27 @@ theorem colIdx_sum {N : ℕ} (col : Fin N) (α : Fin (WeightFamilies.dimY D j) �
   rw [Finsupp.sum_fintype _ _ (fun _ => rfl)]
   simp [Fintype.sum_prod_type, Fin.sum_univ_succ]
 
+/- English proof (translation)
+The claim follows from `Finset.Nat.mem_antidiagonalTuple.1 α.2`.
+-/
 theorem mon_sum {d k : ℕ} (α : Mon d k) : ∑ i, α.1 i = k := Finset.Nat.mem_antidiagonalTuple.1 α.2
 
+/- English proof (translation)
+Rewrite using `[colIdx_sum, mon_sum]`.
+-/
 theorem colIdx_mon {N : ℕ} (col : Fin N) {k : ℕ} (α : Mon (WeightFamilies.dimY D j) k) :
     ((colIdx D j col α.1).sum fun _ n => n) = k := by
   rw [colIdx_sum, mon_sum]
 
+/- English proof (translation)
+Establish `: ∀ ζ : PtsG G la, IsDVRAt ζ` using `isDVRAt_of_curve Q hC`. Establish `hU` using `isUnif_of_curve Q hC`. Establish `hu : ∀ col, u col ∈ As (Op X la G.N) (OsK X la G.w)` using `fun col => (mem_As_iff hU _).2 fun ζ => ho ζ col`. Set `u' : Fin G.N → ↥(As (Op X la G.N) (OsK X la G.w))` to `fun col => ⟨u col, hu col⟩`. Establish `h1 : Ideal.span (Set.range u') = ⊤`.
+
+Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e : (1 : ↥(As (Op X la G.N) (OsK X la G.w))) = ∑ col, algebraMap (Op X la G.N) ↥(As (Op X la G.N) (OsK X la G.w)) (Tv X la G.N ((0 : Fin (WeightFamilies.dimY D j + 1)), col)) * u' col`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [u', OneMemClass.coe_one, AddSubmonoidClass.coe_finsetSum, MulMemClass.coe_mul, Subalgebra.coe_algebraMap]`. Conclude with `hs.symm`.
+
+Rewrite using `[e]`. Conclude with `Ideal.sum_mem _ fun col _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨col, rfl⟩)`. Establish `h2` using `Ideal.span_pow_eq_top _ h1 k`. Rewrite `h2` using `[← Set.range_comp]`. Establish `h3 : (1 : ↥(As (Op X la G.N) (OsK X la G.w))) ∈ Ideal.span (Set.range ((fun x => x ^ k) ∘ u'))` using `by rw [h2]; trivial`.
+
+Take `⟨c, hc⟩` from `Ideal.mem_span_range_iff_exists_fun.1 h3`. Use `⟨fun col => (c col : OsK X la G.w), fun col ζ => ord_nonneg ζ hU (c col).2, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify `this` using `[u']`.
+-/
 theorem exists_coef {G : GlobalFamilyData X ka wL wF} {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (hC : Q.InCurve)
     (u : Fin G.N → OsK X la G.w)
     (hs : ∑ col, algebraMap (Op X la G.N) (OsK X la G.w) (Tv X la G.N ((0 : Fin (WeightFamilies.dimY D j + 1)), col)) * u col = 1)
@@ -59,11 +77,17 @@ variable (G : GlobalFamilyData X ka wL wF) (la : HeightOneSpectrum (𝓞 B.KO))
 def psiRaw (a : Fin G.N → OsK X la G.w) (k : ℕ) (x : ↥(HK X la G.w wF)) : Vk G la k :=
   fun α => ∑ col, a col • rD G la (colIdx D j col α.1) x
 
+/- English proof (translation)
+Use function extensionality and compare the values at `α`. Simplify using `only [psiRaw, Pi.add_apply, rD_add, smul_add, Finset.sum_add_distrib]`.
+-/
 theorem psiRaw_add (a : Fin G.N → OsK X la G.w) (k : ℕ) (x y : ↥(HK X la G.w wF)) :
     psiRaw G la a k (x + y) = psiRaw G la a k x + psiRaw G la a k y := by
   funext α
   simp only [psiRaw, Pi.add_apply, rD_add, smul_add, Finset.sum_add_distrib]
 
+/- English proof (translation)
+Use function extensionality and compare the values at `α`. Simplify using `only [psiRaw, Pi.smul_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Rewrite using `[restricted_derivative_linear G la k _ r x hx (le_of_eq (colIdx_mon col α))]`. Conclude with `smul_comm _ _ _`.
+-/
 theorem psiRaw_smul (a : Fin G.N → OsK X la G.w) (k : ℕ) (r : Op X la G.N) (x : ↥(HK X la G.w wF))
     (hx : x ∈ Jid X la G.w ^ k • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))) :
     psiRaw G la a k (algebraMap (Op X la G.N) (Kp X la G.N) r • x) = r • psiRaw G la a k x := by
@@ -73,6 +97,11 @@ theorem psiRaw_smul (a : Fin G.N → OsK X la G.w) (k : ℕ) (r : Op X la G.N) (
   rw [restricted_derivative_linear G la k _ r x hx (le_of_eq (colIdx_mon col α))]
   exact smul_comm _ _ _
 
+/- English proof (translation)
+Establish `hd : x - x' ∈ Jid X la G.w ^ a0 D j T • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))`. Rewrite using `[← toWK_eq_zero_iff, map_sub, h, sub_self]`. Establish `hd' : x - x' ∈ Jid X la G.w ^ (k + 1) • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right hk) hd`. Use function extensionality and compare the values at `α`. Unfold `psiRaw`.
+
+Use `Finset.sum_congr rfl fun col _ => ?_` and prove the remaining obligations. Establish `e : x = x' + (x - x')` using `by abel`. Rewrite using `[e, rD_add, vanishingOnQuadric G la (k + 1) _ _ hd' (by rw [colIdx_mon col α]; omega), add_zero]`.
+-/
 theorem psiRaw_congr (a : Fin G.N → OsK X la G.w) {k T : ℕ} (hk : k < a0 D j T) {x x' : ↥(HK X la G.w wF)}
     (h : toWK X la G.w wF (a0 D j T) x = toWK X la G.w wF (a0 D j T) x') : psiRaw G la a k x = psiRaw G la a k x' := by
   have hd : x - x' ∈ Jid X la G.w ^ a0 D j T • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF)) := by
@@ -85,6 +114,13 @@ theorem psiRaw_congr (a : Fin G.N → OsK X la G.w) {k T : ℕ} (hk : k < a0 D j
   have e : x = x' + (x - x') := by abel
   rw [e, rD_add, vanishingOnQuadric G la (k + 1) _ _ hd' (by rw [colIdx_mon col α]; omega), add_zero]
 
+/- English proof (translation)
+Unfold `Fk at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, hx, rfl⟩` from `hz`. Conclude with `⟨x, hx, rfl⟩`.
+
+Consider the case `zero => exact ⟨0, Submodule.zero_mem _, map_zero _⟩`. Consider the case `add z1 z2 _ _ h1 h2`. Take `⟨x1, hx1, rfl⟩` from `h1`. Take `⟨x2, hx2, rfl⟩` from `h2`. Conclude with `⟨x1 + x2, Submodule.add_mem _ hx1 hx2, map_add _ _ _⟩`.
+
+Consider the case `smul r z _ h`. Take `⟨x, hx, rfl⟩` from `h`. Use `⟨algebraMap (Op X la G.N) (Kp X la G.N) r • x, Submodule.smul_of_tower_mem _ _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul_of_tower]`. Both sides reduce to the same expression.
+-/
 theorem exists_of_mem_Fk {T k : ℕ} {z : WK X la G.w wF (a0 D j T)} (hz : z ∈ Fk G la T k) :
     ∃ x : ↥(HK X la G.w wF), x ∈ Jid X la G.w ^ k • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF)) ∧
       toWK X la G.w wF (a0 D j T) x = z := by
@@ -107,10 +143,16 @@ theorem exists_of_mem_Fk {T k : ℕ} {z : WK X la G.w wF (a0 D j T)} (hz : z ∈
 def pre {T k : ℕ} {z : WK X la G.w wF (a0 D j T)} (hz : z ∈ Fk G la T k) : ↥(HK X la G.w wF) :=
   Classical.choose (exists_of_mem_Fk G la hz)
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_of_mem_Fk G la hz)).1`.
+-/
 theorem pre_mem {T k : ℕ} {z : WK X la G.w wF (a0 D j T)} (hz : z ∈ Fk G la T k) :
     pre G la hz ∈ Jid X la G.w ^ k • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF)) :=
   (Classical.choose_spec (exists_of_mem_Fk G la hz)).1
 
+/- English proof (translation)
+The claim follows from `(Classical.choose_spec (exists_of_mem_Fk G la hz)).2`.
+-/
 theorem pre_eq {T k : ℕ} {z : WK X la G.w wF (a0 D j T)} (hz : z ∈ Fk G la T k) :
     toWK X la G.w wF (a0 D j T) (pre G la hz) = z :=
   (Classical.choose_spec (exists_of_mem_Fk G la hz)).2
@@ -132,6 +174,9 @@ def psiL (a : Fin G.N → OsK X la G.w) (T k : ℕ) (hk : k < a0 D j T) :
 def psiF (a : ℕ → Fin G.N → OsK X la G.w) (T : ℕ) : ∀ k, ↥(Fk G la T k) →ₗ[Op X la G.N] Vk G la k :=
   fun k => if hk : k < a0 D j T then psiL G la (a k) T k hk else 0
 
+/- English proof (translation)
+Unfold `psiF`. Rewrite using `[dif_pos hk]`. Conclude with `psiRaw_congr G la (a k) hk ((pre_eq G la z.2).trans hx.symm)`.
+-/
 theorem psiF_lt (a : ℕ → Fin G.N → OsK X la G.w) {T k : ℕ} (hk : k < a0 D j T) (z : ↥(Fk G la T k))
     (x : ↥(HK X la G.w wF)) (hx : toWK X la G.w wF (a0 D j T) x = z) :
     psiF G la a T k z = psiRaw G la (a k) k x := by
@@ -139,12 +184,20 @@ theorem psiF_lt (a : ℕ → Fin G.N → OsK X la G.w) {T k : ℕ} (hk : k < a0 
   rw [dif_pos hk]
   exact psiRaw_congr G la (a k) hk ((pre_eq G la z.2).trans hx.symm)
 
+/- English proof (translation)
+Unfold `psiF`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression.
+-/
 theorem psiF_ge (a : ℕ → Fin G.N → OsK X la G.w) {T k : ℕ} (hk : ¬ k < a0 D j T) (z : ↥(Fk G la T k)) :
     psiF G la a T k z = 0 := by
   unfold psiF
   rw [dif_neg hk]
   rfl
 
+/- English proof (translation)
+Establish `h1 : ∀ col, rD G la (colIdx D j col α'.1) (∑ α, yPow X la G.w α.1 • cf α + r) = u col ^ k • toA0K X la G.w wF (cf α')`. Introduce `col`. Rewrite using `[rD_add, rD_sum, vanishingOnQuadric G la (k + 1) _ r hr (by rw [colIdx_mon col α']; omega), add_zero]`. Simplify using `only [hE5 u hu k _ α' col]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_univ _)]`.
+
+Unfold `psiRaw`. Simplify using `only [h1, smul_smul]`. Rewrite using `[← Finset.sum_smul, ha, one_smul]`.
+-/
 theorem taylorRead (hE5 : ColDeriv G la) (u : Fin G.N → OsK X la G.w) (hu : uSpec G la u) (k : ℕ)
     (a : Fin G.N → OsK X la G.w) (ha : ∑ col, a col * u col ^ k = 1) (cf : Mon (WeightFamilies.dimY D j) k → ↥(HK X la G.w wF))
     (r : ↥(HK X la G.w wF))
@@ -163,6 +216,11 @@ theorem taylorRead (hE5 : ColDeriv G la) (u : Fin G.N → OsK X la G.w) (hu : uS
 
 end
 
+/- English proof (translation)
+Proceed by induction on `t using WithTop.recTopCoe with`. Consider the case `top => simp`. Consider the case `coe n`. Rewrite `h`, the goal using `[← WithTop.coe_add]`. Use `WithTop.coe_le_coe.1 h` as an intermediate fact.
+
+Conclude with `(show (0 : ℤ) ≤ n + (c + m) by omega)` after adjusting the coercions.
+-/
 theorem ordV_shift (t : WithTop ℤ) (c m : ℤ) (h : ((-m : ℤ) : WithTop ℤ) ≤ t + (c : WithTop ℤ)) :
     0 ≤ t + ((c + m : ℤ) : WithTop ℤ) := by
   induction t using WithTop.recTopCoe with
@@ -172,6 +230,31 @@ theorem ordV_shift (t : WithTop ℤ) (c m : ℤ) (h : ((-m : ℤ) : WithTop ℤ)
     have := WithTop.coe_le_coe.1 h
     exact_mod_cast (show (0 : ℤ) ≤ n + (c + m) by omega)
 
+/- English proof (translation)
+Introduce `D B P j X ka wL wF G la Q S CRm T e c hOk hw hL _ _ hE3 hE4 hE5 _ hE7`. Establish `hC` using `hOk.2.1`. Establish `: ∀ ζ : PtsG G la, IsDVRAt ζ` using `isDVRAt_of_curve Q hC`. Establish `hU` using `isUnif_of_curve Q hC`. Take `⟨u, hu, hs, ho⟩` from `hE3`.
+
+Use `choose a ha1 ha2 using exists_coef Q hC u hs ho`. Use `⟨psiF G la a T, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k z hz0`. Distinguish the cases in `hk : k < a0 D j T`. Take `⟨x, hx, hxz⟩` from `exists_of_mem_Fk G la z.2`.
+
+Rewrite `hz0` using `[psiF_lt G la a hk z x hxz]`. Take `⟨cf, r, hr, hxe⟩` from `hE4 k x hx`. Establish `hc : ∀ α, toA0K X la G.w wF (cf α) = 0` using `fun α => by`. Rewrite using `[← taylorRead G la hE5 u hu k (a k) (ha2 k) cf r hr α, ← hxe, hz0]`. Both sides reduce to the same expression.
+
+Establish `hx' : x ∈ Jid X la G.w ^ (k + 1) • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))`. Rewrite using `[hxe]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun α _ => ?_) hr` and prove the remaining obligations. Establish `h1 : yPow X la G.w α.1 ∈ Jid X la G.w ^ k`. Use `prod_sfr_mem X la G.w α.1` as an intermediate fact.
+
+Rewrite `this` using `[mon_sum]`. Then use the resulting hypothesis. Establish `h2 : cf α ∈ Jid X la G.w • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))` using `(reduction_eq_zero_iff_mem_ideal_smul X la G.w wF _).1 (hc α)`. Rewrite using `[pow_succ, Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul h1 h2`. Rewrite using `[← hxz]`.
+
+Conclude with `Submodule.subset_span ⟨x, hx', rfl⟩`. Establish `h0 : (z : WK X la G.w wF (a0 D j T)) ∈ Fk G la T (a0 D j T)` using `(image_filtration_decreasing G la T).1 (by omega) z.2`. Rewrite `h0` using `[(image_filtration_decreasing G la T).2.2, Submodule.mem_bot]`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+
+Introduce `k hk`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨x, -, hxz⟩` from `exists_of_mem_Fk G la z.2`. Establish `hg` using `good_of_mem_AAp hC (m := Q.mm S T e) (by omega) hz x hxz`. Rewrite using `[psiF_lt G la a hk z x hxz]`.
+
+Unfold `Pk`. Rewrite using `[Submodule.mem_pi]`. Introduce `α _`. Rewrite using `[mem_ballO_iff _ hU hC.2.2]`. Introduce `ζ`.
+
+Establish `key : ((-(Q.mm S T e ζ : ℤ) : ℤ) : WithTop ℤ) ≤ Q.ordA ζ (psiRaw G la (a k) k x α)` using `le_ordA_sum Q hC ζ _ _ _ fun col _ => le_ordA_smul_OsK Q hC ζ _ (ha1 k col ζ) _ _ (hg _ (by rw [colIdx_mon col α]; omega) ζ)`. Conclude with `ordV_shift _ _ _ key`. Introduce `k hk b hb`. Unfold `Qk at hb`. Rewrite `hb` using `[Submodule.mem_pi]`.
+
+Use `choose x hx1 hx2 using fun α => hL (b α) (hb α (Set.mem_univ _))`. Use `set Xs : ↥(HK X la G.w wF) := ∑ α, yPow X la G.w α.1 • x α with hXs`. Establish `hX : Xs ∈ Jid X la G.w ^ k • (⊤ : Submodule ↥(Frac0 X la G.w) ↥(HK X la G.w wF))`. Use `Submodule.sum_mem _ fun α _ => Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Use `prod_sfr_mem X la G.w α.1` as an intermediate fact.
+
+Rewrite `this` using `[mon_sum]`. Then use the resulting hypothesis. Establish `hXA : toWK X la G.w wF (a0 D j T) Xs ∈ Q.AA T`. Rewrite using `[hXs, map_sum]`. Conclude with `Submodule.sum_mem _ fun α _ => hE7 (x α) α.1 (hx2 α)`. Use `⟨⟨_, Submodule.subset_span ⟨Xs, hX, rfl⟩⟩, hXA, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[psiF_lt G la a hk _ Xs rfl]`. Use function extensionality and compare the values at `α'`. Use `taylorRead G la hE5 u hu k (a k) (ha2 k) x 0 (Submodule.zero_mem _) α'` as an intermediate fact. Rewrite `this` using `[add_zero]`. Rewrite using `[this, hx1]`.
+-/
 theorem pole_length_assemble : Assemble := by
   intro D B P j X ka wL wF G la Q S CRm T e c hOk hw hL _ _ hE3 hE4 hE5 _ hE7
   have hC := hOk.2.1

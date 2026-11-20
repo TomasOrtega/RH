@@ -10,10 +10,18 @@ section ContMAux
 
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Rewrite using `[IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`.
+-/
 theorem ContM_dvd_iff_residue {ϖ : O} (hϖ : Irreducible ϖ) (a : O) :
     ϖ ∣ a ↔ IsLocalRing.residue O a = 0 := by
   rw [IsLocalRing.residue_eq_zero_iff, hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]
 
+/- English proof (translation)
+Establish `hc : ∀ n, ϖ ∣ coeff n a` using `fun n => by`. Rewrite using `[ContM_dvd_iff_residue hϖ]`. Establish `h` using `congrArg (coeff n) ha`. Rewrite `h` using `[coeff_map, map_zero]`. Then use the resulting hypothesis. Use `choose b hb using hc`.
+
+Use `⟨PowerSeries.mk b, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[coeff_C_mul, coeff_mk, hb n]`.
+-/
 theorem ContM_dvd_of_map_eq_zero {ϖ : O} (hϖ : Irreducible ϖ) {a : O⟦X⟧}
     (ha : a.map (IsLocalRing.residue O) = 0) : C ϖ ∣ a := by
   have hc : ∀ n, ϖ ∣ coeff n a := fun n => by
@@ -25,10 +33,24 @@ theorem ContM_dvd_of_map_eq_zero {ϖ : O} (hϖ : Irreducible ϖ) {a : O⟦X⟧}
   ext n
   rw [coeff_C_mul, coeff_mk, hb n]
 
+/- English proof (translation)
+Rewrite using `[map_C, (ContM_dvd_iff_residue hϖ ϖ).1 dvd_rfl, map_zero]`.
+-/
 theorem ContM_map_C_unif {ϖ : O} (hϖ : Irreducible ϖ) :
     (C ϖ : O⟦X⟧).map (IsLocalRing.residue O) = 0 := by
   rw [map_C, (ContM_dvd_iff_residue hϖ ϖ).1 dvd_rfl, map_zero]
 
+/- English proof (translation)
+Proceed by induction on `k with`. Consider the case `zero`. Introduce `x a h`. Rewrite `h` using `[pow_zero, one_mul]`. Conclude with `⟨a, by rw [h, mul_comm]⟩`.
+
+Consider the case `succ k ih`. Introduce `x a h`. Establish `hmapC` using `ContM_map_C_unif hϖ`. Establish `hdvd : C ϖ ∣ a * G` using `⟨C ϖ ^ k * x, by rw [← h]; ring⟩`. Establish `hmap0 : (a * G).map (IsLocalRing.residue O) = 0`.
+
+Take `⟨q, hq⟩` from `hdvd`. Rewrite using `[hq, map_mul, hmapC, zero_mul]`. Rewrite `hmap0` using `[map_mul]`. Break down `mul_eq_zero.1 hmap0 with ha0 | hG0` into its components or cases. Take `⟨a', rfl⟩` from `ContM_dvd_of_map_eq_zero hϖ ha0`.
+
+Apply `ih (a := a')` to reduce the goal to its premises. Establish `hne : (C ϖ : O⟦X⟧) ≠ 0`. Introduce `h0`. Apply `hϖ.ne_zero` to reduce the goal to its premises. Establish `h1` using `congrArg (coeff 0) h0`.
+
+Simplify using `using h1`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Take the linear combination `h`. Conclude with `absurd hG0 hG`.
+-/
 theorem ContM_cancel_unif {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X⟧} (hG : IsDist G) (k : ℕ) :
     ∀ {x a : O⟦X⟧}, C ϖ ^ k * x = a * G → G ∣ x := by
   induction k with
@@ -56,6 +78,11 @@ theorem ContM_cancel_unif {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X⟧} (hG : I
       linear_combination h
     · exact absurd hG0 hG
 
+/- English proof (translation)
+Rewrite `h` using `[Ideal.mem_span_pair]`. Take `⟨a, b, hab⟩` from `h`. Establish `h2 : C ϖ ^ k * (H - b * C ϖ) = a * G` using `by linear_combination -hab`. Take `⟨t, ht⟩` from `ContM_cancel_unif hϖ hG k h2`. Rewrite using `[Ideal.mem_span_pair]`.
+
+Conclude with `⟨t, b, by linear_combination -ht⟩`.
+-/
 theorem ContM_mem_of_unif_mul {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X⟧} (hG : IsDist G) (k : ℕ)
     {H : O⟦X⟧} (h : C ϖ ^ k * H ∈ Ideal.span {G, C ϖ ^ (k + 1)}) :
     H ∈ Ideal.span {G, C ϖ} := by
@@ -66,6 +93,9 @@ theorem ContM_mem_of_unif_mul {ϖ : O} (hϖ : Irreducible ϖ) {G : O⟦X⟧} (hG
   rw [Ideal.mem_span_pair]
   exact ⟨t, b, by linear_combination -ht⟩
 
+/- English proof (translation)
+Take `⟨v, rfl⟩` from `hw`. Establish `h` using `order_mul (v : K⟦X⟧) (↑v⁻¹ : K⟦X⟧)`. Rewrite `h` using `[Units.mul_inv, order_one]`. Conclude with `(add_eq_zero.1 h.symm).1`.
+-/
 theorem ContM_order_unit {K : Type*} [Field K] {w : K⟦X⟧} (hw : IsUnit w) : w.order = 0 := by
   obtain ⟨v, rfl⟩ := hw
   have h := order_mul (v : K⟦X⟧) (↑v⁻¹ : K⟦X⟧)
@@ -74,6 +104,29 @@ theorem ContM_order_unit {K : Type*} [Field K] {w : K⟦X⟧} (hw : IsUnit w) : 
 
 variable [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
 
+/- English proof (translation)
+Use `set f := IsLocalRing.residue O with hfdef`. Use `set g := Xg.map f with hgdef`. Establish `hg0 : g ≠ 0` using `hX`. Establish `hord : g.order = (wdeg Xg : ℕ∞)`. Unfold `wdeg`.
+
+Rewrite using `[ENat.natCast_toNat]`. Conclude with `order_eq_top.not.2 hg0`. Establish `hfϖ : f ϖ = 0` using `(ContM_dvd_iff_residue hϖ ϖ).1 dvd_rfl`. Rewrite `h` using `[Ideal.mem_span_pair]`. Take `⟨a, b, hab⟩` from `h`.
+
+Establish `himg : (∑ i ∈ S, (u i).map f * C (f (c i)) * g ^ i) = a.map f * g ^ y`. Establish `h1` using `congrArg (PowerSeries.map f) hab`. Simplify using `only [map_add, map_mul, map_pow, map_sum, map_C, hfϖ, map_zero, mul_zero, add_zero] at h1`. Conclude with `h1.symm`. Introduce `i hi`.
+
+Assume the negation of the conclusion as `hnd`. Establish `hT : (S.filter fun i => f (c i) ≠ 0).Nonempty` using `⟨i, Finset.mem_filter.2 ⟨hi, fun h0 => hnd ((ContM_dvd_iff_residue hϖ _).2 h0)⟩⟩`. Take `⟨i₀, hi₀T, hmin⟩` from `Finset.exists_min_image _ id hT`. Rewrite `hi₀T` using `[Finset.mem_filter]`. Establish `hlt : i₀ * wdeg Xg < y * wdeg Xg` using `by nlinarith [hS i₀ hi₀T.1]`.
+
+Establish `hL : coeff (i₀ * wdeg Xg) (a.map f * g ^ y) = 0`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Rewrite using `[order_mul, order_pow, hord]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[nsmul_eq_mul]`.
+
+Use `push_cast`. Both sides reduce to the same expression. Use `_ ≤ (a.map f).order + y • (wdeg Xg : ℕ∞) := le_add_self`. Establish `hterm : ∀ i ∈ S, f (c i) ≠ 0 → ((u i).map f * C (f (c i)) * g ^ i).order = ((i * wdeg Xg : ℕ) : ℕ∞)`. Introduce `i hi hci`.
+
+Rewrite using `[order_mul, order_mul, order_pow, hord, ContM_order_unit ((hu i hi).map (PowerSeries.map f)), ContM_order_unit ((isUnit_iff_ne_zero.2 hci).map C), zero_add, zero_add, nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hR : coeff (i₀ * wdeg Xg) (∑ i ∈ S, (u i).map f * C (f (c i)) * g ^ i) ≠ 0`. Rewrite using `[map_sum, Finset.sum_eq_single i₀]`.
+
+Establish `ho` using `hterm i₀ hi₀T.1 hi₀T.2`. Establish `hne : ((u i₀).map f * C (f (c i₀)) * g ^ i₀) ≠ 0`. Introduce `h0`. Rewrite `ho` using `[h0, order_zero]`. Conclude with `ENat.top_ne_natCast _ ho`.
+
+Establish `h1` using `coeff_order hne`. Rewrite `h1` using `[ho, ENat.toNat_natCast]`. Then use the resulting hypothesis. Introduce `j hj hne`. Distinguish the cases in `hcj : f (c j) = 0`. Rewrite using `[hcj, map_zero, mul_zero, zero_mul, map_zero]`.
+
+Apply `coeff_of_lt_order` to reduce the goal to its premises. Rewrite using `[hterm j hj hcj]`. Establish `hle : i₀ ≤ j` using `hmin j (Finset.mem_filter.2 ⟨hj, hcj⟩)`. Establish `hlt' : i₀ < j` using `lt_of_le_of_ne hle (Ne.symm hne)`. Establish `hD' : 1 ≤ wdeg Xg` using `hD`.
+
+Conclude with `(by nlinarith : i₀ * wdeg Xg < j * wdeg Xg)` after adjusting the coercions. Introduce `h0`. Conclude with `absurd hi₀T.1 h0`. Conclude with `hR (by rw [himg]; exact hL)`.
+-/
 theorem dvd_coeffs_of_mem_span_distinguished {ϖ : O} (hϖ : Irreducible ϖ) {Xg : O⟦X⟧} (hX : IsDist Xg) (hD : 1 ≤ wdeg Xg)
     (S : Finset ℕ) (y : ℕ) (hS : ∀ i ∈ S, i < y) (u : ℕ → O⟦X⟧) (hu : ∀ i ∈ S, IsUnit (u i))
     (c : ℕ → O) (h : (∑ i ∈ S, u i * C (c i) * Xg ^ i) ∈ Ideal.span {Xg ^ y, C ϖ}) :
@@ -138,6 +191,19 @@ theorem dvd_coeffs_of_mem_span_distinguished {ϖ : O} (hϖ : Irreducible ϖ) {Xg
       exact absurd hi₀T.1 h0
   exact hR (by rw [himg]; exact hL)
 
+/- English proof (translation)
+Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `c _ i _`. Simplify using the standard rewrite rules.
+
+Consider the case `succ k ih`. Introduce `c h i hi`. Establish `hle : Ideal.span {Xg ^ y, C ϖ ^ (k + 1)} ≤ Ideal.span {Xg ^ y, (C ϖ : O⟦X⟧) ^ k}`. Rewrite using `[Ideal.span_le]`. Introduce `z hz`.
+
+Break down `hz with rfl | rfl` into its components or cases. Conclude with `Ideal.subset_span (Set.mem_insert _ _)`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_insert_of_mem _ rfl))`. Establish `hdk` using `ih c (hle h)`.
+
+Use `choose! c' hc' using hdk`. Establish `hF : (∑ i ∈ S, u i * C (c i) * Xg ^ i) = C ϖ ^ k * ∑ i ∈ S, u i * C (c' i) * Xg ^ i`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j hj`.
+
+Rewrite using `[hc' j hj, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[hF]`. Establish `hXy : IsDist (Xg ^ y)` using `by show (Xg ^ y).map _ ≠ 0`. Rewrite using `[map_pow]`.
+
+Conclude with `pow_ne_zero _ hX`. Establish `h1` using `ContM_mem_of_unif_mul hϖ hXy k h`. Take `⟨e, he⟩` from `dvd_coeffs_of_mem_span_distinguished hϖ hX hD S y hS u hu c' h1 i hi`. Rewrite using `[hc' i hi, he]`. Conclude with `⟨e, by ring⟩`.
+-/
 theorem ContM_Kk {ϖ : O} (hϖ : Irreducible ϖ) {Xg : O⟦X⟧} (hX : IsDist Xg) (hD : 1 ≤ wdeg Xg)
     (S : Finset ℕ) (y : ℕ) (hS : ∀ i ∈ S, i < y) (u : ℕ → O⟦X⟧) (hu : ∀ i ∈ S, IsUnit (u i)) :
     ∀ (k : ℕ) (c : ℕ → O), (∑ i ∈ S, u i * C (c i) * Xg ^ i) ∈ Ideal.span {Xg ^ y, C ϖ ^ k} →
@@ -174,6 +240,9 @@ theorem ContM_Kk {ϖ : O} (hϖ : Irreducible ϖ) {Xg : O⟦X⟧} (hX : IsDist Xg
     rw [hc' i hi, he]
     exact ⟨e, by ring⟩
 
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup₂_le fun k hk => hk`. Conclude with `Cont.enat_le_of_forall fun k hk => le_iSup₂_of_le k hk le_rfl`.
+-/
 theorem ContM_iSup_le (m : ℕ∞) : ⨆ (k : ℕ) (_ : (k : ℕ∞) ≤ m), (k : ℕ∞) = m := by
   apply le_antisymm
   · exact iSup₂_le fun k hk => hk
@@ -186,6 +255,23 @@ variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {ϖ : O} (hϖ : Irreducible ϖ)
 include hϖ
 
+/- English proof (translation)
+Establish `hdv : ∀ i, ((k : ℕ∞) ≤ IsDiscreteValuationRing.addVal O (c i) ↔ ϖ ^ k ∣ c i)`. Introduce `i`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ, nsmul_one]`. Establish `hbig : ∀ i, y ≤ i → u i * C (c i) * Xg ^ i ∈ Ideal.span {Xg ^ y, (C ϖ : O⟦X⟧) ^ k}`. Introduce `i hi`.
+
+Establish `hpow : Xg ^ i = Xg ^ y * Xg ^ (i - y)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hpow]`.
+
+Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ (Ideal.subset_span (Set.mem_insert _ _)))`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi hiy`. Rewrite using `[hdv]`. Establish `hsplit : (∑ j ∈ I.filter (· < y), u j * C (c j) * Xg ^ j) ∈ Ideal.span {Xg ^ y, (C ϖ : O⟦X⟧) ^ k}`.
+
+Establish `heq` using `Finset.sum_filter_add_sum_filter_not I (· < y) (fun j => u j * C (c j) * Xg ^ j)`. Establish `hnot : (∑ j ∈ I.filter (fun j => ¬ j < y), u j * C (c j) * Xg ^ j) ∈ Ideal.span {Xg ^ y, (C ϖ : O⟦X⟧) ^ k}`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_filter]`.
+
+Conclude with `hbig j (by omega)`. Establish `h3 : (∑ j ∈ I.filter (· < y), u j * C (c j) * Xg ^ j) = (∑ j ∈ I, u j * C (c j) * Xg ^ j) - ∑ j ∈ I.filter (fun j => ¬ j < y), u j * C (c j) * Xg ^ j`. Rewrite using `[← heq, add_sub_cancel_right]`. Rewrite using `[h3]`. Conclude with `Ideal.sub_mem _ h hnot`.
+
+Conclude with `ContM_Kk hϖ hX hD (I.filter (· < y)) y (fun j hj => (Finset.mem_filter.1 hj).2) u (fun j hj => hu j (Finset.mem_filter.1 hj).1) k c hsplit i (Finset.mem_filter.2 ⟨hi, hiy⟩)`. Introduce `h`. Apply `Ideal.sum_mem` to reduce the goal to its premises. Introduce `i hi`. Distinguish the cases in `hiy : i < y`.
+
+Take `⟨e, he⟩` from `(hdv i).1 (h i hi hiy)`. Rewrite using `[he, map_mul, map_pow]`. Establish `hmem : (C ϖ : O⟦X⟧) ^ k ∈ Ideal.span {Xg ^ y, (C ϖ : O⟦X⟧) ^ k}` using `Ideal.subset_span (Set.mem_insert_of_mem _ rfl)`. Establish `h4 : u i * (C ϖ ^ k * C e) * Xg ^ i = C ϖ ^ k * (u i * C e * Xg ^ i)` using `by ring`. Rewrite using `[h4]`.
+
+Conclude with `Ideal.mul_mem_right _ _ hmem`. Conclude with `hbig i (by omega)`.
+-/
 theorem Mprime {Xg : O⟦X⟧} (hX : IsDist Xg) (hD : 1 ≤ wdeg Xg) (I : Finset ℕ)
     (u : ℕ → O⟦X⟧) (hu : ∀ i ∈ I, IsUnit (u i)) (c : ℕ → O) (hc : ∀ i ∈ I, c i ≠ 0) (y k : ℕ) :
     (∑ i ∈ I, u i * C (c i) * Xg ^ i) ∈ Ideal.span {Xg ^ y, C ϖ ^ k} ↔
@@ -235,6 +321,13 @@ theorem Mprime {Xg : O⟦X⟧} (hX : IsDist Xg) (hD : 1 ≤ wdeg Xg) (I : Finset
       exact Ideal.mul_mem_right _ _ hmem
     · exact hbig i (by omega)
 
+/- English proof (translation)
+Unfold `cont`. Establish `hm : ∀ k : ℕ, (∑ i ∈ I, u i * C (c i) * Xg ^ i) ∈ Ideal.span {C ϖ ^ k, Xg ^ y} ↔ (k : ℕ∞) ≤ ⨅ i ∈ I.filter (· < y), IsDiscreteValuationRing.addVal O (c i)`. Introduce `k`. Rewrite using `[Set.pair_comm, Mprime hϖ hX hD I u hu c hc y k, le_iInf₂_iff]`. Simplify using `only [Finset.mem_filter]`.
+
+Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Conclude with `h i hi.1 hi.2`. Introduce `h i hi hiy`. Conclude with `h i ⟨hi, hiy⟩`.
+
+Repeatedly rewrite using `[hm]`. Conclude with `ContM_iSup_le _`.
+-/
 theorem Mprime_cont {Xg : O⟦X⟧} (hX : IsDist Xg) (hD : 1 ≤ wdeg Xg) (I : Finset ℕ)
     (u : ℕ → O⟦X⟧) (hu : ∀ i ∈ I, IsUnit (u i)) (c : ℕ → O) (hc : ∀ i ∈ I, c i ≠ 0) (y : ℕ) :
     cont ϖ (Xg ^ y) (∑ i ∈ I, u i * C (c i) * Xg ^ i) =

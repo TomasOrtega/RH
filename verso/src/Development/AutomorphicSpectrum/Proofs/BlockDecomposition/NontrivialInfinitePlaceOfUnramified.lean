@@ -5,6 +5,11 @@ open NumberField IsDedekindDomain
 
 namespace GlobalTheory.CompanionTheory.UnrCM
 
+/- English proof (translation)
+Introduce `x`. Take `⟨q, hq⟩` from `(Algebra.finrank_eq_one_iff_bijective_algebraMap.mp h).2 (x : F)`. Establish `hint : IsIntegral ℤ q` using `(isIntegral_algebraMap_iff (algebraMap ℚ F).injective).1 (hq ▸ x.isIntegral_coe)`. Take `⟨n, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨n, RingOfIntegers.ext ?_⟩` and prove the remaining obligations.
+
+Simplify using `using hq`.
+-/
 theorem algebraMap_int_ringOfIntegers_surjective (F : Type) [Field F] [NumberField F]
     (h : Module.finrank ℚ F = 1) : Function.Surjective (algebraMap ℤ (𝓞 F)) := by
   intro x
@@ -15,6 +20,11 @@ theorem algebraMap_int_ringOfIntegers_surjective (F : Type) [Field F] [NumberFie
   refine ⟨n, RingOfIntegers.ext ?_⟩
   simpa using hq
 
+/- English proof (translation)
+Establish `h1 : Fintype.card (InfinitePlace E) = 1` using `le_antisymm (Fintype.card_le_one_iff_subsingleton.2 inferInstance) Fintype.card_pos`. Establish `h2 : Module.finrank ℚ E = 2 * InfinitePlace.nrComplexPlaces E` using `IsTotallyComplex.finrank E`. Establish `h3` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := E)`. Establish `h4 : InfinitePlace.nrRealPlaces E = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero E`. Establish `h5` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`.
+
+Rewrite `h5` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem finrank_maximalRealSubfield_of_subsingleton (E : Type) [Field E] [NumberField E] [IsCMField E]
     [Subsingleton (InfinitePlace E)] : Module.finrank ℚ (maximalRealSubfield E) = 1 := by
   have h1 : Fintype.card (InfinitePlace E) = 1 :=
@@ -26,6 +36,13 @@ theorem finrank_maximalRealSubfield_of_subsingleton (E : Type) [Field E] [Number
   rw [Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E] at h5
   omega
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hn`. Use `haveI : Subsingleton (InfinitePlace E) := not_nontrivial_iff_subsingleton.1 hn`. Establish `hF` using `finrank_maximalRealSubfield_of_subsingleton E`. Establish `hE : Module.finrank ℚ E ≠ 1`. Establish `h5` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`.
+
+Rewrite `h5` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, hF]`. Use linear arithmetic over natural numbers and integers. Take `⟨P, hP, hram⟩` from `NumberField.exists_not_isUnramifiedAt_int (K := E) (𝒪 := 𝓞 E) hE`. Establish `hbot : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField E)`. Establish `hw` using `hU ⟨P, hP.isPrime, hbot⟩`.
+
+Apply `hram` to reduce the goal to its premises. Use `haveI : Algebra.FormallyUnramified (𝓞 (maximalRealSubfield E)) (Localization.AtPrime P) := hw`. Use `haveI : Algebra.FormallyUnramified ℤ (𝓞 (maximalRealSubfield E)) := Algebra.FormallyUnramified.of_surjective (Algebra.ofId ℤ _) (algebraMap_int_ringOfIntegers_surjective _ hF)`. Conclude with `Algebra.FormallyUnramified.comp ℤ (𝓞 (maximalRealSubfield E)) (Localization.AtPrime P)`.
+-/
 theorem nontrivial_infinitePlace_of_forall_isUnramifiedAt (E : Type) [Field E] [NumberField E] [IsCMField E]
     (hU : ∀ w : HeightOneSpectrum (𝓞 E), Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield E)) w.asIdeal) :
     Nontrivial (InfinitePlace E) := by
@@ -46,6 +63,9 @@ theorem nontrivial_infinitePlace_of_forall_isUnramifiedAt (E : Type) [Field E] [
       (algebraMap_int_ringOfIntegers_surjective _ hF)
   exact Algebra.FormallyUnramified.comp ℤ (𝓞 (maximalRealSubfield E)) (Localization.AtPrime P)
 
+/- English proof (translation)
+Introduce `E _ _ _ hU` and use `nontrivial_infinitePlace_of_forall_isUnramifiedAt E hU`.
+-/
 theorem nontrivial_infinitePlace :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], GlobalTheory.BCT.Unr E → Nontrivial (InfinitePlace E) :=
   fun E _ _ _ hU => nontrivial_infinitePlace_of_forall_isUnramifiedAt E hU

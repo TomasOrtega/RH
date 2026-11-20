@@ -7,6 +7,73 @@ namespace ReciprocityTheory.MultiplicativeHeights
 
 open MeasureTheory Metric Real
 
+/- English proof (translation)
+Introduce `n a f u hf hu hfu`. Establish `hu0 : u ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hu`. Use `haveI : Nontrivial (EuclideanSpace ℂ (Fin n)) := nontrivial_of_ne u 0 hu0`.
+
+Use `haveI hprob : IsProbabilityMeasure (sphereProb n) := by`. Unfold `sphereProb`. Apply `ProbabilityTheory.cond_isProbabilityMeasure_of_finite` to reduce the goal to its premises. Rewrite using `[Measure.toSphere_apply_univ]`. Use `mul_ne_zero ?_ (Metric.measure_ball_pos _ _ one_pos).ne'` and prove the remaining obligations.
+
+Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Rewrite using `[Measure.toSphere_apply_univ]`. Conclude with `ENNReal.mul_ne_top (ENNReal.natCast_ne_top _) measure_ball_lt_top.ne`. Establish `hT : (0:ℝ) < 2 * π` using `by positivity`. Establish `hsp : Continuous (fun z : UnitSphereC n => spherePoint z)`.
+
+Unfold `spherePoint`. Use `fun_prop`. Establish `hcont : Continuous (fun z : UnitSphereC n => MvPolynomial.eval (spherePoint z) f)` using `(MvPolynomial.continuous_eval f).comp hsp`. Take `⟨M, hM⟩` from `isCompact_univ.exists_bound_of_continuousOn hcont.continuousOn`. Take `⟨L, hL⟩ : ∃ L : UnitSphereC n → ℝ, L = fun z => Real.log ‖MvPolynomial.eval (spherePoint z) f‖` from `⟨_, rfl⟩`.
+
+Establish `hLM : ∀ z, L z ≤ M` using `fun z => by`. Rewrite using `[hL]`. Conclude with `(Real.log_le_self (norm_nonneg _)).trans (hM z (Set.mem_univ _))`. Establish `hLmeas : Measurable L`. Rewrite using `[hL]`.
+
+Conclude with `hcont.norm.measurable.log`. Take `⟨c, hc⟩ : ∃ c : EuclideanSpace ℂ (Fin n), c = WithLp.toLp 2 (fun i => starRingEnd ℂ (WithLp.ofLp u i))` from `⟨_, rfl⟩`. Establish `hcn : ‖c‖ = 1`. Rewrite using `[← hu, hc, EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]`. Simplify using the standard rewrite rules.
+
+Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hcn` using `[h, norm_zero]`. Conclude with `zero_ne_one hcn`. Take `⟨hGint, hGeq⟩` from `hLin n c hc0`.
+
+Take `⟨G, hG⟩ : ∃ G : UnitSphereC n → ℝ, G = fun z => Real.log ‖∑ i, WithLp.ofLp c i * spherePoint z i‖` from `⟨_, rfl⟩`. Establish `hGint' : Integrable G (sphereProb n)` using `by rw [hG]; exact hGint`. Establish `hGeq' : ∫ z, G z ∂(sphereProb n) = Real.log ‖c‖ - (harmonic (n - 1) : ℝ) / 2`. Rewrite using `[hG]`. Conclude with `hGeq`.
+
+Establish `hip : ∀ z : UnitSphereC n, ‖inner ℂ u (z : EuclideanSpace ℂ (Fin n))‖ = ‖∑ i, WithLp.ofLp c i * spherePoint z i‖`. Introduce `z`. Rewrite using `[hc]`. Simplify using `[PiLp.inner_apply, spherePoint, mul_comm]`. Establish `hpoly : ∀ (w v : Fin n → ℂ) (ζ : ℂ) (p : MvPolynomial (Fin n) ℂ), (MvPolynomial.aeval (fun i => Polynomial.C (w i) + Polynomial.C (v i) * Polynomial.X) p).eval ζ = MvPolynomial.eval (fun i => w i + ζ * v i) p`.
+
+Introduce `w v ζ p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`.
+
+Simplify using `[hp]`. Conclude with `Or.inl (mul_comm _ _)`. Establish `hcirc : ∀ z : UnitSphereC n, inner ℂ u (z : EuclideanSpace ℂ (Fin n)) ≠ 0 → IntegrableOn (fun θ => L (rotS hu θ z)) (Set.Ioc 0 (2 * π)) ∧ 2 * π * (Real.log ‖MvPolynomial.eval (WithLp.ofLp u) f‖ + (a : ℝ) * Real.log ‖inner ℂ u (z : EuclideanSpace ℂ (Fin n))‖) ≤ ∫ θ in Set.Ioc 0 (2 …`. Introduce `z hz`. Use `set s := inner ℂ u (z : EuclideanSpace ℂ (Fin n)) with hs`.
+
+Use `set q : Polynomial ℂ := MvPolynomial.aeval (fun i => Polynomial.C (s * WithLp.ofLp u i) + Polynomial.C (WithLp.ofLp (z : EuclideanSpace ℂ (Fin n)) i - s * WithLp.ofLp u i) * Polynomial.X) f with hqdef`. Establish `hq : ∀ ζ, q.eval ζ = MvPolynomial.eval (fun i => s * WithLp.ofLp u i + ζ * (WithLp.ofLp (z : EuclideanSpace ℂ (Fin n)) i - s * WithLp.ofLp u i)) f` using `fun ζ => by`. Rewrite using `[hqdef]`. Conclude with `hpoly _ _ _ _`. Establish `hq0 : q.eval 0 = s ^ a * MvPolynomial.eval (WithLp.ofLp u) f`.
+
+Rewrite using `[hq]`. Simplify using `only [zero_mul, add_zero]`. Conclude with `eval_smul_of_isHomogeneous hf s _`. Establish `hrot : ∀ θ : ℝ, spherePoint (rotS hu θ z) = fun i => s * WithLp.ofLp u i + circleMap 0 1 θ * (WithLp.ofLp (z : EuclideanSpace ℂ (Fin n)) i - s * WithLp.ofLp u i)`. Introduce `θ`.
+
+Use function extensionality and compare the values at `i`. Simplify using `[spherePoint, coe_rotS, hs]`. Establish `hqc : ∀ θ : ℝ, Real.log ‖q.eval (circleMap 0 1 θ)‖ = L (rotS hu θ z)`. Introduce `θ`. Simplify using `only [hL]`.
+
+Rewrite using `[hq, hrot]`. Establish `hne : q.eval 0 ≠ 0`. Rewrite using `[hq0]`. Conclude with `mul_ne_zero (pow_ne_zero _ hz) hfu`. Establish `hJ` using `log_norm_eval_zero_le_circleAverage q hne`.
+
+Establish `hci : CircleIntegrable (fun ζ => Real.log ‖q.eval ζ‖) 0 1` using `circleIntegrable_log_norm_meromorphicOn (fun x _ => (q.differentiable.analyticAt x).meromorphicAt)`. Establish `hii : IntervalIntegrable (fun θ => L (rotS hu θ z)) MeasureTheory.volume 0 (2 * π)`. Use `hci` as an intermediate fact. Unfold `CircleIntegrable at this`. Simplify `this` using `only [hqc]`.
+
+Use `⟨(intervalIntegrable_iff_integrableOn_Ioc_of_le hT.le).1 hii, ?_⟩` and prove the remaining obligations. Rewrite `hJ` using `[hq0, norm_mul, norm_pow, Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.2 hz)) (norm_ne_zero_iff.2 hfu), Real.log_pow]`. Unfold `Real.circleAverage at hJ`. Simplify using `only [hqc, smul_eq_mul] at hJ`. Rewrite `hJ` using `[intervalIntegral.integral_of_le hT.le]`.
+
+Establish `h2` using `mul_le_mul_of_nonneg_left hJ hT.le`. Rewrite `h2` using `[← mul_assoc, mul_inv_cancel₀ hT.ne', one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨h, hh⟩ : ∃ h : UnitSphereC n → ℝ, h = fun z => M - Real.log ‖MvPolynomial.eval (WithLp.ofLp u) f‖ - (a : ℝ) * G z` from `⟨_, rfl⟩`. Establish `hae : ∀ᵐ (z : UnitSphereC n) ∂(sphereProb n), inner ℂ u (z : EuclideanSpace ℂ (Fin n)) ≠ 0`.
+
+Use `sphereProb_inner_eq_zero hu0` as an intermediate fact. Conclude with `ae_iff.2 (by simpa using this)`. Establish `hC : ∀ᵐ (z : UnitSphereC n) ∂(sphereProb n), 0 ≤ h z ∧ ∫⁻ θ in Set.Ioc 0 (2 * π), ENNReal.ofReal (M - L (rotS hu θ z)) ≤ ENNReal.ofReal (2 * π) * ENNReal.ofReal (h z)` using `by filter_upwards [hae] with z hz`. Take `⟨hint, hJ⟩` from `hcirc z hz`. Establish `hGz : Real.log ‖inner ℂ u (z : EuclideanSpace ℂ (Fin n))‖ = G z` using `by rw [hG, hip]`.
+
+Rewrite `hJ` using `[hGz]`. Establish `hint2 : IntegrableOn (fun θ => M - L (rotS hu θ z)) (Set.Ioc 0 (2 * π))` using `(integrable_const M).sub hint`. Establish `hI : ∫ θ in Set.Ioc 0 (2 * π), (M - L (rotS hu θ z)) = 2 * π * M - ∫ θ in Set.Ioc 0 (2 * π), L (rotS hu θ z)`. Rewrite using `[integral_sub (integrable_const M) hint, integral_const]`. Simplify using `[Measure.real, Real.volume_Ioc, ENNReal.toReal_ofReal hT.le, smul_eq_mul, Real.pi_pos.le]`.
+
+Establish `hnn : 0 ≤ ∫ θ in Set.Ioc 0 (2 * π), (M - L (rotS hu θ z))` using `setIntegral_nonneg measurableSet_Ioc (fun θ _ => sub_nonneg.2 (hLM _))`. Establish `hhz : 2 * π * h z = 2 * π * M - 2 * π * (Real.log ‖MvPolynomial.eval (WithLp.ofLp u) f‖ + (a : ℝ) * G z)`. Rewrite using `[hh]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+
+Establish `: 0 ≤ 2 * π * h z` using `by linarith`. Conclude with `(mul_nonneg_iff_of_pos_left hT).1 this`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hint2 (ae_of_all _ fun θ => sub_nonneg.2 (hLM _)), ← ENNReal.ofReal_mul hT.le]`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith)`. Take `⟨g, hg⟩ : ∃ g : UnitSphereC n → ENNReal, g = fun z => ENNReal.ofReal (M - L z)` from `⟨_, rfl⟩`.
+
+Establish `hgmeas : Measurable g`. Rewrite using `[hg]`. Conclude with `(measurable_const.sub hLmeas).ennreal_ofReal`. Establish `hrotInv : ∀ θ, ∫⁻ z, g (rotS hu θ z) ∂(sphereProb n) = ∫⁻ z, g z ∂(sphereProb n)` using `fun θ => (measurePreserving_rotS hu θ).lintegral_comp hgmeas`. Establish `hmeas2 : Measurable (fun p : ℝ × UnitSphereC n => g (rotS hu p.1 p.2))` using `hgmeas.comp (continuous_rotS hu).measurable`.
+
+Establish `hswap : ∫⁻ θ in Set.Ioc 0 (2 * π), ∫⁻ z, g (rotS hu θ z) ∂(sphereProb n) = ∫⁻ z, (∫⁻ θ in Set.Ioc 0 (2 * π), g (rotS hu θ z)) ∂(sphereProb n)` using `lintegral_lintegral_swap hmeas2.aemeasurable`. Establish `hleft : ∫⁻ θ in Set.Ioc 0 (2 * π), ∫⁻ z, g (rotS hu θ z) ∂(sphereProb n) = ENNReal.ofReal (2 * π) * ∫⁻ z, g z ∂(sphereProb n)`. Repeatedly rewrite using `[hrotInv]`. Rewrite using `[setLIntegral_const, Real.volume_Ioc, sub_zero, mul_comm]`. Establish `hmain : ENNReal.ofReal (2 * π) * ∫⁻ z, g z ∂(sphereProb n) ≤ ENNReal.ofReal (2 * π) * ∫⁻ z, ENNReal.ofReal (h z) ∂(sphereProb n)`.
+
+Rewrite using `[← hleft, hswap, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [hC] with z hz`. Simplify using `only [hg]`. Conclude with `hz.2`.
+
+Establish `hglint : ∫⁻ z, g z ∂(sphereProb n) ≤ ∫⁻ z, ENNReal.ofReal (h z) ∂(sphereProb n)`. Establish `h0 : ENNReal.ofReal (2 * π) ≠ 0` using `(ENNReal.ofReal_pos.2 hT).ne'`. Establish `h1 : ENNReal.ofReal (2 * π) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Use `first`. Consider the case `exact (ENNReal.mul_le_mul_iff_right h0 h1).1 hmain`.
+
+Consider the case `exact (ENNReal.mul_le_mul_iff_left h0 h1).1 hmain`. Consider the case `exact (ENNReal.mul_le_mul_left h0 h1).1 hmain`. Consider the case `exact ENNReal.le_of_mul_le_mul_left hmain h0 h1`. Establish `hhint : Integrable h (sphereProb n)`. Rewrite using `[hh]`.
+
+Conclude with `((integrable_const _).sub (integrable_const _)).sub (hGint'.const_mul _)`. Establish `hfin : ∫⁻ z, g z ∂(sphereProb n) ≠ ⊤` using `(hglint.trans_lt hhint.lintegral_lt_top).ne`. Establish `hg0 : ∀ z, 0 ≤ M - L z` using `fun z => sub_nonneg.2 (hLM z)`. Establish `hgint : Integrable (fun z => M - L z) (sphereProb n)`. Use `integrable_toReal_of_lintegral_ne_top hgmeas.aemeasurable hfin` as an intermediate fact.
+
+Use `this.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only [hg]`. Conclude with `ENNReal.toReal_ofReal (hg0 z)`. Establish `hLint : Integrable L (sphereProb n)`. Use `(integrable_const M).sub hgint` as an intermediate fact.
+
+Use `this.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hh0 : 0 ≤ᵐ[sphereProb n] h` using `by filter_upwards [hC] with z hz`. Conclude with `hz.1`. Establish `hint_g : ∫ z, (M - L z) ∂(sphereProb n) ≤ ∫ z, h z ∂(sphereProb n)`.
+
+Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ hg0) hgint.aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae hh0 hhint.aestronglyMeasurable]`. Apply `ENNReal.toReal_mono hhint.lintegral_lt_top.ne` to reduce the goal to its premises. Simplify `hglint` using `only [hg]`. Establish `hIh : ∫ z, h z ∂(sphereProb n) = M - Real.log ‖MvPolynomial.eval (WithLp.ofLp u) f‖ - (a : ℝ) * ∫ z, G z ∂(sphereProb n)`. Simplify using `only [hh]`.
+
+Rewrite using `[integral_sub (integrable_const _) (hGint'.const_mul _), integral_const, integral_const_mul]`. Simplify using the standard rewrite rules. Rewrite `hIh` using `[hGeq', hcn, Real.log_one]`. Establish `hIg : ∫ z, (M - L z) ∂(sphereProb n) = M - ∫ z, L z ∂(sphereProb n)`. Rewrite using `[integral_sub (integrable_const _) hLint, integral_const]`.
+
+Simplify using the standard rewrite rules. Use `⟨by rw [hL] at hLint; exact hLint, ?_⟩` and prove the remaining obligations. Establish `hfin2 : ∫ z, L z ∂(sphereProb n) = ∫ z, Real.log ‖MvPolynomial.eval (spherePoint z) f‖ ∂(sphereProb n)` using `by rw [hL]`. Rewrite using `[← hfin2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem sj_holds (hLin : SphereLinLogStatement) : SJStatement := by
   intro n a f u hf hu hfu
   have hu0 : u ≠ 0 := by

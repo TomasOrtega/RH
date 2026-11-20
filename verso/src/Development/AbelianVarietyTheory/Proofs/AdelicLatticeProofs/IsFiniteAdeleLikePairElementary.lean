@@ -5,6 +5,11 @@ open scoped Kronecker ComplexOrder TensorProduct
 
 namespace GlobalTheory.ClassFin
 
+/- English proof (translation)
+Take `⟨q, a, ha, e⟩` from `h.approx 1 one_pos r`. Use `⟨q.den, q.den_pos, ?_⟩` and prove the remaining obligations. Establish `h1 : (q.den : R) * algebraMap ℚ R q = (q.num : R)`. Rewrite using `[← map_natCast (algebraMap ℚ R), ← map_mul, ← map_intCast (algebraMap ℚ R)]`. Use `congr 1`.
+
+Conclude with `Rat.den_mul_eq_num q`. Rewrite using `[e, mul_add, h1]`. Conclude with `R₀.add_mem (intCast_mem R₀ _) (R₀.mul_mem (natCast_mem R₀ _) (R₀.mul_mem (natCast_mem R₀ _) ha))`.
+-/
 theorem AdelicPair.exists_mul_mem {R : Type} [CommRing R] [Algebra ℚ R] {R₀ : Subring R}
     (h : AdelicPair R R₀) (r : R) : ∃ M : ℕ, 0 < M ∧ (M : R) * r ∈ R₀ := by
   obtain ⟨q, a, ha, e⟩ := h.approx 1 one_pos r
@@ -17,6 +22,9 @@ theorem AdelicPair.exists_mul_mem {R : Type} [CommRing R] [Algebra ℚ R] {R₀ 
   exact R₀.add_mem (intCast_mem R₀ _)
     (R₀.mul_mem (natCast_mem R₀ _) (R₀.mul_mem (natCast_mem R₀ _) ha))
 
+/- English proof (translation)
+Use `choose m hm hmem using fun k => h.exists_mul_mem (r k)`. Use `⟨∏ k, m k, Finset.prod_pos fun k _ => hm k, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul Finset.univ m (Finset.mem_univ k), Nat.cast_mul, mul_assoc]`. Conclude with `R₀.mul_mem (natCast_mem R₀ _) (hmem k)`.
+-/
 theorem AdelicPair.exists_mul_mem_family {R : Type} [CommRing R] [Algebra ℚ R] {R₀ : Subring R}
     (h : AdelicPair R R₀) (κ : Type) [Fintype κ] (r : κ → R) :
     ∃ M : ℕ, 0 < M ∧ ∀ k, (M : R) * r k ∈ R₀ := by
@@ -28,6 +36,11 @@ theorem AdelicPair.exists_mul_mem_family {R : Type} [CommRing R] [Algebra ℚ R]
 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
+/- English proof (translation)
+Use `⟨∏ k, (q k).den, Finset.prod_pos fun k _ => (q k).pos, fun k => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Finset.dvd_prod_of_mem (fun k => (q k).den) (Finset.mem_univ k)`. Use `⟨m * (q k).num, ?_⟩` and prove the remaining obligations. Rewrite using `[hm]`. Use `push_cast`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 private lemma exists_pos_nat_clearing_rat_denominators {κ : Type} [Fintype κ] (q : κ → ℚ) :
     ∃ M : ℕ, 0 < M ∧ ∀ k, ∃ z : ℤ, (M : ℚ) * q k = z := by
   refine ⟨∏ k, (q k).den, Finset.prod_pos fun k _ => (q k).pos, fun k => ?_⟩
@@ -41,6 +54,17 @@ private lemma exists_pos_nat_clearing_rat_denominators {κ : Type} [Fintype κ] 
 open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
+/- English proof (translation)
+Introduce `R _ _ R₀ hR`. Use `⟨fun M hM r hr => ?_, fun κ _ r => ?_, ?_⟩` and prove the remaining obligations. Take `⟨q, a, ha, hra⟩` from `hR.approx M hM r`. Establish `hq : algebraMap ℚ R q ∈ R₀`. Establish `h : algebraMap ℚ R q = r - (M : R) * a` using `by rw [hra]; ring`.
+
+Rewrite using `[h]`. Conclude with `R₀.sub_mem hr (R₀.mul_mem (natCast_mem R₀ M) ha)`. Take `⟨z, rfl⟩` from `hR.int_of_mem q hq`. Conclude with `⟨z, a, ha, by rw [hra, map_intCast]⟩`. Use `choose q a ha hra using fun k => hR.approx 1 one_pos (r k)`.
+
+Take `⟨M, hM, hMq⟩` from `exists_pos_nat_clearing_rat_denominators q`. Use `⟨M, hM, fun k => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hMq k`. Establish `h : (M : R) * r k = (z : R) + (M : R) * a k`. Rewrite using `[hra k, Nat.cast_one, one_mul, mul_add, ← map_natCast (algebraMap ℚ R) M, ← map_mul, hz, map_intCast]`.
+
+Rewrite using `[h]`. Conclude with `R₀.add_mem (intCast_mem R₀ z) (R₀.mul_mem (natCast_mem R₀ M) (ha k))`. Establish `: Nontrivial R`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`.
+
+Take `⟨z, hz⟩` from `hR.int_of_mem (1 / 2) (by rw [Subsingleton.elim (algebraMap ℚ R (1 / 2)) 0]; exact R₀.zero_mem)`. Establish `h2 : (1 : ℚ) = 2 * z` using `by rw [← hz]; norm_num`. Establish `h3 : (1 : ℤ) = 2 * z` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Conclude with `(algebraMap ℚ R).injective`.
+-/
 theorem _root_.GlobalTheory.ClassFin.adelicPair_elementary : ∀ (R : Type) [CommRing R] [Algebra ℚ R] (R₀ : Subring R), _root_.GlobalTheory.ClassFin.AdelicPair R R₀ → (∀ M : ℕ, 0 < M → ∀ r ∈ R₀, ∃ z : ℤ, ∃ a ∈ R₀, r = (z : R) + (M : R) * a) ∧ (∀ (κ : Type) [Fintype κ] (r : κ → R), ∃ M : ℕ, 0 < M ∧ ∀ k, (M : R) * r k ∈ R₀) ∧ Function.Injective (algebraMap ℚ R) := by
   intro R _ _ R₀ hR
   refine ⟨fun M hM r hr => ?_, fun κ _ r => ?_, ?_⟩

@@ -94,14 +94,36 @@ def LocalSquareIntegrableTransfer : Prop :=
         ∀ π, MeasureTheory.IntegrableOn (fun q => ‖MA.evQ (D.parOf S v) (trJ S T v e J π) q‖ ^ 2)
           {q | ε ≤ MA.Gq (D.parOf S v) q} (MA.mu0 (D.parOf S v).r (D.parOf S v).TT)
 
+/- English proof (translation)
+Unfold `nDim`. Check the signs of the components of the expression.
+-/
 theorem nDim_nonneg (k r : ℕ) : 0 ≤ nDim k r := by unfold nDim; positivity
 
+/- English proof (translation)
+The claim follows from `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h hx) hy`.
+-/
 theorem mul_mul_le_mul_mul_of_nonneg {a b x y : ℝ} (h : a ≤ b) (hx : 0 ≤ x) (hy : 0 ≤ y) : a * x * y ≤ b * x * y :=
   mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h hx) hy
 
+/- English proof (translation)
+The claim follows from `(mul_le_mul_of_nonneg_right h hx).trans hB`.
+-/
 theorem mul_le_of_le_of_mul_le {a b x B : ℝ} (h : a ≤ b) (hx : 0 ≤ x) (hB : b * x ≤ B) : a * x ≤ B :=
   (mul_le_mul_of_nonneg_right h hx).trans hB
 
+/- English proof (translation)
+Take `⟨C2, G2, -, H2⟩` from `h2`. Take `⟨C3, G3, -, H3⟩` from `h3`. Take `⟨G4, -, H4⟩` from `h4`. Take `⟨C5, H5⟩` from `h5`. Take `⟨C8, H8⟩` from `h8`.
+
+Use `⟨max (max C2 C3) (max C5 C8), max (max G2 G3) (max G4 0), le_max_of_le_right (le_max_right _ _), ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v`. Establish `hr : (0 : ℝ) ≤ (S.G.r : ℝ) + 1` using `by positivity`. Establish `hn` using `nDim_nonneg S.G.k S.G.r`. Establish `hn2 : 0 ≤ nDim S.G.k S.G.r ^ 2` using `by positivity`.
+
+Establish `hr2 : (0 : ℝ) ≤ ((S.G.r : ℝ) + 1) ^ 2` using `by positivity`. Establish `c2 : C2 ≤ max (max C2 C3) (max C5 C8)` using `le_max_of_le_left (le_max_left _ _)`. Establish `c3 : C3 ≤ max (max C2 C3) (max C5 C8)` using `le_max_of_le_left (le_max_right _ _)`. Establish `c5 : C5 ≤ max (max C2 C3) (max C5 C8)` using `le_max_of_le_right (le_max_left _ _)`. Establish `c8 : C8 ≤ max (max C2 C3) (max C5 C8)` using `le_max_of_le_right (le_max_right _ _)`.
+
+Establish `g2 : G2 ≤ max (max G2 G3) (max G4 0)` using `le_max_of_le_left (le_max_left _ _)`. Establish `g3 : G3 ≤ max (max G2 G3) (max G4 0)` using `le_max_of_le_left (le_max_right _ _)`. Establish `g4 : G4 ≤ max (max G2 G3) (max G4 0)` using `le_max_of_le_right (le_max_left _ _)`. Use `⟨fun F A Bg h1 h2 h3 h4 => locCC_JF h1 h2 h3 h4, ?_, ?_, ?_, ?_, fun Bg A c J hJ => locCC_smul c hJ, fun Bg A A' J h hJ => locCC_antiA h hJ, ?_⟩` and prove the remaining obligations. Introduce `Θ d Bg A J hd hG hAA hCut hA hJ hFF`.
+
+Conclude with `H2 E Wp Wq S T f χ ν' m₀ top _ A₀ hB v Θ d Bg A J hd (mul_le_of_le_of_mul_le g2 hr hG) hAA hCut (le_trans (by linarith [mul_mul_le_mul_mul_of_nonneg c2 hr hn2]) hA) hJ hFF`. Introduce `Θ d Bg A J hd hG hAA hCut hA hJ hFF`. Conclude with `H3 E Wp Wq S T f χ ν' m₀ top _ A₀ hB v Θ d Bg A J hd (mul_le_of_le_of_mul_le g3 hr hG) hAA hCut (le_trans (by linarith [mul_mul_le_mul_mul_of_nonneg c3 hr hn2]) hA) hJ hFF`. Introduce `φ Bg A J hφ hld hG hJ hFF`. Conclude with `H4 E Wp Wq S T f χ ν' m₀ top _ A₀ hB v φ Bg A J hφ hld (mul_le_of_le_of_mul_le g4 hr hG) hJ hFF`.
+
+Introduce `Bg A J J' hBg hA hJ hJ'`. Conclude with `H5 E Wp Wq S T f χ ν' m₀ top _ A₀ hB v Bg A J J' hBg (le_trans (mul_mul_le_mul_mul_of_nonneg c5 hr hn2) hA) hJ hJ'`. Introduce `Bg A ε J e hFr hBg hε hA hJ π`. Conclude with `H8 E Wp Wq S T f χ ν' m₀ top _ A₀ hB v Bg A ε J e hFr hBg hε (le_trans (by linarith [mul_mul_le_mul_mul_of_nonneg c8 hr2 hn]) hA) hJ π`.
+-/
 theorem jALocCC_of_leaves (h2 : JALocOp) (h3 : JALocAdj) (h4 : JALocPhi) (h5 : JALocAdd) (h8 : LocalSquareIntegrableTransfer) :
     JALocCC := by
   obtain ⟨C2, G2, -, H2⟩ := h2

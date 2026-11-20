@@ -19,10 +19,22 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
+/- English proof (translation)
+The claim follows from `Formalism.FourierDecayAlt.P5.qminorOp_smulC (Formalism.FourierDecayAlt.P5.eH_smulC (k := k) (r := r)) _ _ _ α f`.
+-/
 theorem cv_smul' {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (Y α : ℂ) (f : B.Mat k r → E) :
     Q.CV k r Y (α • f) = α • Q.CV k r Y f :=
   Formalism.FourierDecayAlt.P5.qminorOp_smulC (Formalism.FourierDecayAlt.P5.eH_smulC (k := k) (r := r)) _ _ _ α f
 
+/- English proof (translation)
+Introduce `g hg`. Take `⟨-, -, -, -, hApp⟩` from `CutMP.ER.capacity_theta_facts k r Wp Wq D 1 Y 1 0`. Establish `hn : ∀ {H : B.Mat k r → (Wq →L[ℂ] Wp)}, B.CkOn ⊤ (B.GV k r) H → B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (B.GV k r) H` using `fun h => Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top h`. Establish `h₂' : B.CkOn ⊤ (B.GV k r) ((-1 : ℂ) • H₂)` using `JCx2.ckOn_smul' (-1 : ℂ) h₂`. Establish `e : (fun x => H₁ x + H₂ x) = fun x => H₁ x - ((-1 : ℂ) • H₂) x`.
+
+Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Establish `hs : B.CkOn ⊤ (B.GV k r) (fun x => H₁ x - ((-1 : ℂ) • H₂) x)`. Rewrite using `[← e]`. Conclude with `JCx2.ckOn_add' h₁ h₂`.
+
+Establish `a1` using `hApp _ (hn hs) g hg`. Establish `a2` using `hApp _ (hn h₁) g hg`. Establish `a3` using `hApp _ (hn h₂') g hg`. Establish `hsub` using `PBE.opApply_sub (CutMP.ER.capTh k r Wp Wq 1 Y) h₁ h₂' g hg`. Rewrite `a1`, `a2`, `a3` using `[one_smul]`.
+
+Rewrite using `[e, ← a1, hsub, a2, a3, cv_smul']`. Simplify using `[sub_eq_add_neg]`.
+-/
 theorem cv_add_GV (D : B.RealPlaceData k r Wp Wq) (Y : ℂ) {H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (h₁ : B.CkOn ⊤ (B.GV k r) H₁) (h₂ : B.CkOn ⊤ (B.GV k r) H₂) :
     ∀ g ∈ B.GV k r, Q.CV k r Y (fun x => H₁ x + H₂ x) g = Q.CV k r Y H₁ g + Q.CV k r Y H₂ g := by
@@ -43,6 +55,9 @@ theorem cv_add_GV (D : B.RealPlaceData k r Wp Wq) (Y : ℂ) {H₁ H₂ : B.Mat k
   rw [e, ← a1, hsub, a2, a3, cv_smul']
   simp [sub_eq_add_neg]
 
+/- English proof (translation)
+Introduce `g hg`. Establish `h` using `cv_add_GV D Y (JCx2.ckOn_smul' a h₁) (JCx2.ckOn_smul' b h₂) g hg`. Establish `e : (fun x => a • H₁ x + b • H₂ x) = fun x => (a • H₁) x + (b • H₂) x` using `rfl`. Rewrite using `[e, h, cv_smul', cv_smul']`. Both sides reduce to the same expression.
+-/
 theorem cv_lin_GV (D : B.RealPlaceData k r Wp Wq) (Y a b : ℂ) {H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)}
     (h₁ : B.CkOn ⊤ (B.GV k r) H₁) (h₂ : B.CkOn ⊤ (B.GV k r) H₂) :
     ∀ g ∈ B.GV k r, Q.CV k r Y (fun x => a • H₁ x + b • H₂ x) g = a • Q.CV k r Y H₁ g + b • Q.CV k r Y H₂ g := by
@@ -52,6 +67,9 @@ theorem cv_lin_GV (D : B.RealPlaceData k r Wp Wq) (Y a b : ℂ) {H₁ H₂ : B.M
   rw [e, h, cv_smul', cv_smul']
   rfl
 
+/- English proof (translation)
+The claim follows from `| [], _, _, _, _ => fun _ _ => rfl | x :: w, H₁, H₂, h₁, h₂ => by intro g hg have ih := fold_lin D s a b w H₁ H₂ h₁ h₂ have s1 := CutMP.ER.fold_smooth CutMP.ER.coefficient_vector_smoothness s w H₁ h₁ have s2 := CutMP.ER.fold_smooth CutMP.ER.coefficient_vector_smoothness s w H₂ h₂ …`.
+-/
 theorem fold_lin (D : B.RealPlaceData k r Wp Wq) (s a b : ℂ) : ∀ (w : List (Bool × ℝ))
     (H₁ H₂ : B.Mat k r → (Wq →L[ℂ] Wp)), B.CkOn ⊤ (B.GV k r) H₁ → B.CkOn ⊤ (B.GV k r) H₂ →
     ∀ g ∈ B.GV k r, w.foldr (CutMP.ER.opL k r s) (fun x => a • H₁ x + b • H₂ x) g =
@@ -73,6 +91,9 @@ theorem fold_lin (D : B.RealPlaceData k r Wp Wq) (s a b : ℂ) : ∀ (w : List (
     simp only [Pi.smul_apply]
     rw [cv_lin_GV D _ a b s1 s2 g hg, smul_add, smul_comm s a, smul_comm s b]
 
+/- English proof (translation)
+Apply the tactic sequence `have h := beta_sum_left D hA ![a, b] ![X, Y] (fun i => by fin_cases i <;> assumption) hZ Finset.univ`. Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at h`. Conclude with `h`.
+-/
 theorem beta_form_linear_left (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A) (a b : ℂ)
     {X Y Z : B.Mat k r → (Wq →L[ℂ] Wp)} (hX : B.InCC A 5 X) (hY : B.InCC A 5 Y) (hZ : B.InCC A 5 Z) :
     B.beta D (fun g => a • X g + b • Y g) Z = a * B.beta D X Z + b * B.beta D Y Z := by
@@ -80,6 +101,9 @@ theorem beta_form_linear_left (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.
   simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at h
   exact h
 
+/- English proof (translation)
+Rewrite using `[CutMP.ER.beta_conj D Z, beta_form_linear_left D hA a b hX hY hZ, map_add, map_mul, map_mul, ← CutMP.ER.beta_conj D Z X, ← CutMP.ER.beta_conj D Z Y]`.
+-/
 theorem beta_form_conj_linear_right (D : B.RealPlaceData k r Wp Wq) {A : ℝ} (hA : B.AB k r ≤ A) (a b : ℂ)
     {X Y Z : B.Mat k r → (Wq →L[ℂ] Wp)} (hX : B.InCC A 5 X) (hY : B.InCC A 5 Y) (hZ : B.InCC A 5 Z) :
     B.beta D Z (fun g => a • X g + b • Y g) = conj a * B.beta D Z X + conj b * B.beta D Z Y := by
@@ -92,6 +116,37 @@ section main
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `Cb`. Use `⟨100, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH χ' hχ' w hw hN ε hε`. Take `⟨hχ, -, hf, hfA, hA5, -⟩` from `hH`. Establish `hχc` using `hχ`.
+
+Establish `hχ'c` using `hχ'`. Use `set Bs := p.T.base with hBs`. Use `set s : ℂ := M.sgn P p.l0 with hsdef`. Establish `hs : conj s = s` using `by rw [hsdef]; unfold M.sgn; simp`. Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+
+Use `set F' := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hF'`. Establish `hF's : B.CkOn ⊤ (B.GV P.k P.r) F'` using `ckOn_fpm p p₀ hf hid`. Establish `hF'A` using `inCC_fpm_id p p₀ hfA`. Use `set nn : ℕ := w.length * (2 * P.r + P.k + 1) + (2 * P.r + P.k + 1 + 5) with hnn`. Establish `hbound` using `CutMP.ER.bound_aux P.r P.k w.length N (A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)) hN hA5`.
+
+Take `⟨-, ⟨δ₁, hδ₁, hz₁⟩, -⟩` from `hχ'`. Take `⟨-, ⟨δ₂, hδ₂, hz₂⟩, -⟩` from `hχ`. Use `set c₀ : ℝ := min δ₁ δ₂ * ε with hc₀`. Establish `hc₀p : 0 < c₀` using `mul_pos (lt_min hδ₁ hδ₂) hε`. Establish `hgood : ∀ ψ : ℝ → ℝ, C6.IsCut0 ψ → (∀ x, x < min δ₁ δ₂ → ψ x = 0) → CutMP.ER.Good Bs (B.AB P.k P.r) nn c₀ (D.cutF Bs ψ F' ε)`.
+
+Introduce `ψ hψ hz`. Use `⟨Formalism.FourierDecayAlt.P.JCTx6.Link2.ckOn_cutF Bs hψ hF's ε, Formalism.FourierDecayAlt.P.PBE.cutF_inCC Bs hψ hF'A hε _ _ hbound, fun g _ hg => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Apply `hg` to reduce the goal to its premises.
+
+Establish `h0 : ψ (Gf P.k P.r Bs.z Bs.z' g / ε) = 0` using `hz _ (by rw [div_lt_iff₀ hε]; exact hlt)`. Simplify using `only [D.cutF, h0, Complex.ofReal_zero, zero_smul]`. Establish `gu` using `hgood χ' hχ'c (fun x hx => hz₁ x (lt_of_lt_of_le hx (min_le_left _ _)))`. Establish `gv` using `hgood χ hχc (fun x hx => hz₂ x (lt_of_lt_of_le hx (min_le_right _ _)))`. Establish `gm` using `hgood (midCut χ' χ) (isCut0_midCut hχ'c hχc) (fun x hx => by`.
+
+Simplify using `only [midCut, hz₁ x (lt_of_lt_of_le hx (min_le_left _ _)), hz₂ x (lt_of_lt_of_le hx (min_le_right _ _))]`. Use the proof step `norm_num)`. Use `set u := D.cutF Bs χ' F' ε with hu`. Use `set v := D.cutF Bs χ F' ε with hv`. Use `set m := D.cutF Bs (midCut χ' χ) F' ε with hm`.
+
+Establish `hm_eq : m = fun g => (1 / 2 : ℂ) • u g + (1 / 2 : ℂ) • v g`. Use function extensionality and compare the values at `g`. Simplify using `only [hm, hu, hv, D.cutF, midCut]`. Rewrite using `[smul_smul, smul_smul, ← add_smul]`. Use `congr 1`.
+
+Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `pe : ∀ X Z : B.Mat P.k P.r → (Wq →L[ℂ] Wp), pair0 p X Z w = B.beta Bs (w.foldr (CutMP.ER.opL P.k P.r s) X) Z` using `fun _ _ => rfl`. Use `set fu := w.foldr (CutMP.ER.opL P.k P.r s) u with hfu`. Use `set fv := w.foldr (CutMP.ER.opL P.k P.r s) v with hfv`.
+
+Establish `n5 : 5 ≤ nn` using `le_trans (by omega : 5 ≤ 2 * P.r + P.k + 1 + 5) (Nat.le_add_left _ _)`. Establish `gfold : ∀ H, CutMP.ER.Good Bs (B.AB P.k P.r) nn c₀ H → B.InCC (B.AB P.k P.r) 5 (w.foldr (CutMP.ER.opL P.k P.r s) H)`. Introduce `H hG`. Establish `h` using `CutMP.ER.fold_good CutMP.ER.coefficient_vector_smoothness CutMP.ER.coefficient_vector_in_class CutMP.ER.coefficient_vector_support s w (2 * P.r + P.k + 1 + 5) H (CutMP.ER.good_mono (le_of_eq (Nat.add_comm _ _)) hG)`. Conclude with `CutMP.ER.inCC_mono (by omega) h.2.1`.
+
+Establish `iu` using `CutMP.ER.inCC_mono n5 gu.2.1`. Establish `iv` using `CutMP.ER.inCC_mono n5 gv.2.1`. Establish `im` using `CutMP.ER.inCC_mono n5 gm.2.1`. Establish `ifu` using `gfold u gu`. Establish `ifv` using `gfold v gv`.
+
+Establish `hAB : B.AB P.k P.r ≤ B.AB P.k P.r` using `le_rfl`. Establish `hfm : ∀ g ∈ B.GV P.k P.r, w.foldr (CutMP.ER.opL P.k P.r s) m g = (1 / 2 : ℂ) • fu g + (1 / 2 : ℂ) • fv g`. Rewrite using `[hm_eq]`. Conclude with `fold_lin Bs s _ _ w u v gu.1 gv.1`. Establish `Pmm : pair0 p m m w = (1 / 2 : ℂ) * ((1 / 2 : ℂ) * B.beta Bs fu u + (1 / 2 : ℂ) * B.beta Bs fu v) + (1 / 2 : ℂ) * ((1 / 2 : ℂ) * B.beta Bs fv u + (1 / 2 : ℂ) * B.beta Bs fv v)`.
+
+Establish `hc : (starRingEnd ℂ) (1 / 2 : ℂ) = 1 / 2`. Rewrite using `[show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; ring, Complex.conj_ofReal]`. Rewrite using `[pe, CutMP.ER.beta_form_congr_holds P.k P.r Wp Wq Bs _ (fun g => (1 / 2 : ℂ) • fu g + (1 / 2 : ℂ) • fv g) m m hfm (fun _ _ => rfl), beta_form_linear_left Bs hAB _ _ ifu ifv im, hm_eq, beta_form_conj_linear_right Bs hAB _ _ iu iv ifu, beta_form_conj_linear_right Bs hAB _ _ iu iv i …`. Establish `capA : CutMP.ER.CapAdj` using `CutMP.ER.capAdj_of_int (CutMP.ER.capAdjInt_of_scalar CutMP.ER.capacity_adjoint_scalar)`. Establish `hvu : B.beta Bs fv u = (starRingEnd ℂ) (B.beta Bs fu v)`.
+
+Establish `h1` using `CutMP.ER.fold_adj capA CutMP.ER.capacity_theta_facts CutMP.ER.beta_form_congr_holds CutMP.ER.coefficient_vector_smoothness CutMP.ER.coefficient_vector_in_class CutMP.ER.coefficient_vector_support Bs hAB hc₀p hs w v u gv gu`. Establish `h2` using `CutMP.ER.beta_form_congr_holds P.k P.r Wp Wq Bs v v (w.reverse.foldr (CutMP.ER.opL P.k P.r s) u) fu (fun _ _ => rfl) (CutMP.ER.fold_rev CutMP.ER.coefficient_vector_smoothness CutMP.ER.coefficient_vector_congr CutMP.ER.coefficient_vector_commutation s w u gu.1)`. Rewrite using `[h1, h2, CutMP.ER.beta_conj Bs v fu]`. Rewrite using `[Pmm, pe u u, pe v v, pe u v, hvu]`. Rewrite using `[show (1 / 2 : ℂ) = ((1 / 2 : ℝ) : ℂ) by push_cast; ring]`.
+
+Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pairing_middle_all_levels_holds : NFPairMidAll := by
   intro Cb
   refine ⟨100, ?_⟩

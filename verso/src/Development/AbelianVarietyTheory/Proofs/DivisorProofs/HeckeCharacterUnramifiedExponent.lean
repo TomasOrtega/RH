@@ -17,6 +17,9 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 
 variable {E : Type} [Field E] [NumberField E] {I : Type} [Fintype I]
 
+/- English proof (translation)
+The claim follows from `Complex.Gamma_ne_zero_of_re_pos (by have e : (s + ((|n| : ℤ) : ℂ) / 2).re = s.re + ((|n| : ℤ) : ℝ) / 2 := by rw [Complex.add_re, ← Complex.ofReal_intCast, ← Complex.ofReal_ofNat, ← Complex.ofReal_div, Complex.ofReal_re] rw [e] linarith)`.
+-/
 theorem gamma_ne_zero {s : ℂ} {n : ℤ} (h : 0 < 2 * s.re + ((|n| : ℤ) : ℝ)) :
     Complex.Gamma (s + ((|n| : ℤ) : ℂ) / 2) ≠ 0 :=
   Complex.Gamma_ne_zero_of_re_pos (by
@@ -25,6 +28,15 @@ theorem gamma_ne_zero {s : ℂ} {n : ℤ} (h : 0 < 2 * s.re + ((|n| : ℤ) : ℝ
     rw [e]
     linarith)
 
+/- English proof (translation)
+Establish `hpi : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)`. Establish `hA : ∀ (z : ℂ) i, (2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2))) ≠ 0` using `fun z i => mul_ne_zero two_ne_zero (by rw [Ne, Complex.cpow_eq_zero_iff]; tauto)`. Use `⟨fun z => Λ z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ * (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹), ?_, fun z hz => ?_⟩` and prove the remaining obligations. Use `h.1.mul (Differentiable.fun_finsetProd fun i _ => ?_)` and prove the remaining obligations. Use `Differentiable.mul (fun z => ?_) ?_` and prove the remaining obligations.
+
+Use `DifferentiableAt.inv ?_ (hA z i)` and prove the remaining obligations. Conclude with `(((differentiableAt_id.add_const _).neg).const_cpow (Or.inl hpi)).const_mul 2`. Conclude with `Complex.differentiable_one_div_Gamma.comp (differentiable_id.add_const _)`. Take `⟨L, h1, h2⟩` from `h.2 z hz`. Establish `key : archFactor n z * ∏ i, ((2 * (2 * (Real.pi : ℂ)) ^ (-(z + ((|n i| : ℤ) : ℂ) / 2)))⁻¹ * (Complex.Gamma (z + ((|n i| : ℤ) : ℂ) / 2))⁻¹) = 1`.
+
+Unfold `archFactor`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) ≤ ((|n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (n i)`. Rewrite using `[mul_mul_mul_comm, mul_inv_cancel₀ (hA z i), mul_inv_cancel₀ (gamma_ne_zero (by linarith)), one_mul]`.
+
+Use `show HasProd _ (Λ z * _)`. Rewrite using `[h2, mul_comm (archFactor n z), mul_assoc, key, mul_one]` and apply the resulting hypothesis.
+-/
 theorem exists_isHeckeL_of_completed {χ : HChar E} {n : I → ℤ} {Λ : ℂ → ℂ} (h : IsCompletedL χ n Λ) :
     ∃ L, IsHeckeL χ L := by
   have hpi : (2 * (Real.pi : ℂ)) ≠ 0 := mul_ne_zero two_ne_zero (by exact_mod_cast Real.pi_ne_zero)
@@ -48,6 +60,21 @@ theorem exists_isHeckeL_of_completed {χ : HChar E} {n : I → ℤ} {Λ : ℂ �
     show HasProd _ (Λ z * _)
     rwa [h2, mul_comm (archFactor n z), mul_assoc, key, mul_one]
 
+/- English proof (translation)
+Establish `hB` using `GlobalTheory.HeckeStrip.completedLBoundedInStrips`. Establish `hn' : ∃ i, -n i ≠ 0` using `hn.imp fun i h => neg_ne_zero.2 h`. Establish `hi'` using `GlobalTheory.Published.HeckeFEModel.hasInf_inv hi`. Establish `hu'` using `GlobalTheory.Published.HeckeFEModel.isUnitary_inv hu`. Take `⟨Λ, hΛ, -⟩` from `hB E I φ hφ χ n hu hi hn`.
+
+Take `⟨Λ', hΛ', -⟩` from `hB E I φ hφ χ⁻¹ (fun i => -n i) hu' hi' hn'`. Take `⟨L, hL⟩` from `exists_isHeckeL_of_completed hΛ`. Take `⟨L', hL'⟩` from `exists_isHeckeL_of_completed hΛ'`. Use `⟨L, hL, fun s hs => ?_⟩` and prove the remaining obligations. Break down `le_or_gt 1 s with h1 | h1` into its components or cases.
+
+Establish `e : ((s.toNat : ℕ) : ℂ) = (s : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]`. Rewrite using `[← e]`. Conclude with `hL.ne_zero_nat hu (by omega)`. Establish `g1 : ∀ i, Complex.Gamma ((1 - (s : ℂ)) + ((|-n i| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => gamma_ne_zero (by`.
+
+Establish `h0 : (0 : ℝ) ≤ ((|-n i| : ℤ) : ℝ)` using `by exact_mod_cast abs_nonneg (-n i)`. Establish `h2 : (s : ℝ) < 1` using `by exact_mod_cast h1`. Rewrite using `[Complex.sub_re, Complex.one_re, Complex.intCast_re]`. Use the proof step `linarith)`. Establish `hL1 : L' (1 - (s : ℂ)) ≠ 0`.
+
+Establish `e : (((1 - s).toNat : ℕ) : ℂ) = 1 - (s : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]; push_cast; ring`. Rewrite using `[← e]`. Conclude with `hL'.ne_zero_nat hu' (by omega)`. Establish `hΛ'1 : Λ' (1 - (s : ℂ)) ≠ 0`.
+
+Rewrite using `[GlobalTheory.LValNe.completed_eq hΛ' hL' g1]`. Conclude with `mul_ne_zero (GlobalTheory.LValNe.archFactor_ne_zero g1) hL1`. Establish `hΛs : Λ s ≠ 0` using `fun h0 => hΛ'1 ((GlobalTheory.Published.HeckeFEModel.zero_iff hFE hφ hu hi hn hΛ hΛ' s).1 h0)`. Establish `g0 : ∀ i, Complex.Gamma ((s : ℂ) + ((|n i| : ℤ) : ℂ) / 2) ≠ 0` using `fun i => gamma_ne_zero (by`. Rewrite using `[Complex.intCast_re]`.
+
+Conclude with `hs i)` after adjusting the coercions. Rewrite `hΛs` using `[GlobalTheory.LValNe.completed_eq hΛ hL g0]`. Conclude with `right_ne_zero_of_mul hΛs`.
+-/
 theorem exists_heckeL_ne_zero (hFE : GlobalTheory.Published.HeckeFunctionalEquationAbs) [IsTotallyComplex E]
     {φ : I → E →+* ℂ} (hφ : IsCMType φ) {χ : HChar E} {n : I → ℤ} (hu : IsUnitary χ)
     (hi : Formalism.L2.Host.HChar.HasInf χ φ n) (hn : ∃ i, n i ≠ 0) :
@@ -94,6 +121,13 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open Formalism.L2.Host (aboveF)
 
 open NumberField IsDedekindDomain in
+/- English proof (translation)
+Use `letI : Algebra F ℂ := ψ.toAlgebra`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Set `mk : ∀ γ : E →+* ℂ, γ.comp (algebraMap F E) = ψ → E →ₐ[F] ℂ` to `fun γ hγ => { toRingHom := γ commutes' := fun a => (congrArg (fun f : F →+* ℂ => f a) hγ : _) }`. Establish `hcoe : ∀ (γ : E →+* ℂ) (hγ : γ.comp (algebraMap F E) = ψ), ((mk γ hγ : E →ₐ[F] ℂ) : E →+* ℂ) = γ` using `fun γ hγ => rfl`. Assume the negation of the conclusion as `hne`.
+
+Use `push_neg at hne`. Establish `hcard` using `AlgHom.card F E ℂ`. Rewrite `hcard` using `[h2]`. Establish `hfa : mk ρ hρ ≠ mk α hα` using `fun e => hne.1 (by rw [← hcoe ρ hρ, ← hcoe α hα, e])`. Establish `hfb : mk ρ hρ ≠ mk β hβ` using `fun e => hne.2 (by rw [← hcoe ρ hρ, ← hcoe β hβ, e])`.
+
+Establish `hab : mk α hα ≠ mk β hβ` using `fun e => hαβ (by rw [← hcoe α hα, ← hcoe β hβ, e])`. Establish `h3 : ({mk ρ hρ, mk α hα, mk β hβ} : Finset (E →ₐ[F] ℂ)).card = 3`. Rewrite using `[Finset.card_insert_of_notMem (by simp [hfa, hfb]), Finset.card_pair hab]`. Use `Finset.card_le_univ ({mk ρ hρ, mk α hα, mk β hβ} : Finset (E →ₐ[F] ℂ))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+-/
 private theorem eq_or_eq_of_comp_eq_of_finrank_two {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (h2 : Module.finrank F E = 2) (ψ : F →+* ℂ)
     (ρ α β : E →+* ℂ) (hρ : ρ.comp (algebraMap F E) = ψ) (hα : α.comp (algebraMap F E) = ψ)
@@ -120,6 +154,19 @@ private theorem eq_or_eq_of_comp_eq_of_finrank_two {F E : Type} [Field F] [Numbe
 
 open NumberField IsDedekindDomain in
 
+/- English proof (translation)
+Unfold `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt at h`. Take `⟨hF, hE, h2, hσ⟩` from `h`. Unfold `_root_.GlobalTheory.CMVal.IsCMType`. Establish `hreal : ∀ v : InfinitePlace F, ComplexEmbedding.conjugate v.embedding = v.embedding` using `fun v => ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp (hF.isReal v))`. Establish `hconj : ∀ (v : InfinitePlace F) (γ : E →+* ℂ), γ.comp (algebraMap F E) = v.embedding → (ComplexEmbedding.conjugate γ).comp (algebraMap F E) = v.embedding`.
+
+Introduce `v γ hγ`. Rewrite using `[← hreal v, ← hγ]`. Both sides reduce to the same expression. Establish `hτ : ∀ v : InfinitePlace F, ((τ v).1).comp (algebraMap F E) = v.embedding` using `fun v => (τ v).2`. Establish `hne : ∀ v : InfinitePlace F, (τ v).1 ≠ ComplexEmbedding.conjugate (τ v).1`.
+
+Introduce `v e`. Establish `hc` using `hE.isComplex (InfinitePlace.mk (τ v).1)`. Rewrite `hc` using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_mk_iff, ComplexEmbedding.isReal_iff]`. Conclude with `hc e.symm`. Introduce `ρ`.
+
+Use `set v := InfinitePlace.mk (ρ.comp (algebraMap F E)) with hvdef`. Establish `hv : ρ.comp (algebraMap F E) = v.embedding`. Break down `InfinitePlace.embedding_mk_eq (ρ.comp (algebraMap F E)) with e | e` into its components or cases. Conclude with `e.symm`. Rewrite using `[← hreal v, e]`.
+
+Conclude with `(star_star _).symm`. Use `⟨v, eq_or_eq_of_comp_eq_of_finrank_two h2 v.embedding ρ _ _ hv (hτ v) (hconj v _ (hτ v)) (hne v), ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hw' : ρ.comp (algebraMap F E) = w.embedding`. Break down `hw with e | e` into its components or cases.
+
+Rewrite using `[e]`. Conclude with `hτ w`. Rewrite using `[e]`. Conclude with `hconj w _ (hτ w)`. Rewrite using `[hvdef, hw', InfinitePlace.mk_embedding]`.
+-/
 theorem _root_.GlobalTheory.BotLValue.isCMType_embOver {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, _root_.GlobalTheory.AdelicU.EmbOver E w) :
@@ -156,6 +203,15 @@ theorem _root_.GlobalTheory.BotLValue.isCMType_embOver {F E : Type} [Field F] [N
     · rw [e]; exact hconj w _ (hτ w)
   rw [hvdef, hw', InfinitePlace.mk_embedding]
 
+/- English proof (translation)
+Introduce `hK F E _ _ _ _ _ σ B hB χ hχ _ k d hk hd T _ hram z hz`. Use `hB.cm.2.1` as an intermediate fact. Take `⟨H, hloc, hinf⟩` from `GlobalTheory.HeckeBridge.exists_hchar F E σ hB.cm χ hχ`. Establish `hi` using `hinf _ _ hk`. Establish `hu` using `GlobalTheory.HeckeUnitaryInf.isUnitary_of_hasInf E H _ _ hi`.
+
+Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨L, hL, hne⟩` from `exists_heckeL_ne_zero hK.heckeTateFunctionalEquation.abs (isCMType_embOver hB.cm B.emb) hu hi ⟨w₀, fun h => by have := hd w₀; rw [h, abs_zero] at this; omega⟩`. Establish `hun : ∀ w, UnrAt χ w ↔ H.UnrAt w` using `fun w => forall₂_congr fun x _ => by rw [hloc]`. Establish `hfam : charFam χ = heckeFam H` using `funext fun w => by`. Distinguish the cases in `h : H.UnrAt w`.
+
+Rewrite using `[heckeFam_of_unrAt h, charFam_of_unrAt ((hun w).2 h)]`. Conclude with `congrArg _ (hloc _ _).symm`. Rewrite using `[heckeFam_of_not_unrAt h]`. Conclude with `if_neg (mt (hun w).1 h)`. Use `⟨L z, hne z fun w => by have := hd w; omega, ?_⟩` and prove the remaining obligations.
+
+Use `(GlobalTheory.Cont.holValueAt_self (σ := (z : ℂ).re - 1) (fun s _ => hL.1.analyticAt s) (by linarith)).congr ⟨1, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[charL, hfam]`. Conclude with `(GlobalTheory.SqStep.heckeL_eq_of_ram (S := above E (T : Set (Pl F))) (fun w hw => mt (hun w).2 (hram w hw)) hL hs).symm`.
+-/
 theorem charL_holValueAt_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ → ∀ (χ : Chr F E), IsHecke F E χ → ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ 0 →
     ∀ (k : InfinitePlace F → ℤ) (d : ℕ), HasExp B.emb χ k → (∀ w, (d : ℤ) < |k w|) → ∀ T : Finset (Pl F), UnrOff χ (T : Set (Pl F)) →
     (∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) ∈ T → ¬ UnrAt χ w) → ∀ z : ℤ, -(d : ℤ) ≤ 2 * z →

@@ -13,6 +13,11 @@ variable {n : ℕ}
 
 def rowC {m : ℕ} (u : Fin m → Fin n → ℂ) (a : Fin m) : Fin n → ℂ := fun j => star (u a j)
 
+/- English proof (translation)
+Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, gramB, evX, Qb, map_sum, map_mul, MvPolynomial.eval_X, dotProduct, Matrix.mulVec, rowC, Pi.star_apply, star_star, Finset.mul_sum, Finset.sum_mul]`. Simplify using `only [Bool.true_eq_false, if_true, if_false]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+
+Use `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun a _ => ?_))` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem trace_gramB {m : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (ε : Fin m → Bool) (b : Bool) (u : Fin m → Fin n → ℂ) :
     (Z * gramB ε b u).trace = ∑ a ∈ Finset.univ.filter (fun a => ε a = b),
       star (rowC u a) ⬝ᵥ (Z *ᵥ rowC u a) := by
@@ -26,6 +31,9 @@ theorem trace_gramB {m : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (ε : Fin m → B
   simp only [Bool.false_eq_true, if_false]
   ring
 
+/- English proof (translation)
+Simplify using `only [dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem star_dot_conjTranspose (Z : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     star w ⬝ᵥ (Zᴴ *ᵥ w) = star (star w ⬝ᵥ (Z *ᵥ w)) := by
   simp only [dotProduct, mulVec, conjTranspose_apply, Pi.star_apply, star_sum, star_mul', star_star, Finset.mul_sum]
@@ -33,6 +41,9 @@ theorem star_dot_conjTranspose (Z : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → �
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_
   ring
 
+/- English proof (translation)
+Rewrite using `[Matrix.smul_mulVec, Matrix.sub_mulVec, dotProduct_smul, dotProduct_sub, star_dot_conjTranspose]`. Simplify using `only [smul_eq_mul, Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.div_ofNat_re, Complex.div_ofNat_im, Complex.I_re, Complex.I_im, Complex.sub_re, Complex.sub_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem im_eq_re (Z : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     (star w ⬝ᵥ (Z *ᵥ w)).im = (star w ⬝ᵥ (((-(Complex.I / 2)) • (Z - Zᴴ)) *ᵥ w)).re := by
   rw [Matrix.smul_mulVec, Matrix.sub_mulVec, dotProduct_smul, dotProduct_sub, star_dot_conjTranspose]
@@ -41,6 +52,13 @@ theorem im_eq_re (Z : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     Complex.conj_re, Complex.conj_im]
   ring
 
+/- English proof (translation)
+Establish `hS : ∀ i j, ‖w i‖ * ‖w j‖ ≤ ∑ k, ‖w k‖ ^ 2`. Introduce `i j`. Establish `hi : ‖w i‖ ^ 2 ≤ ∑ k, ‖w k‖ ^ 2` using `Finset.single_le_sum (f := fun k => ‖w k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ i)`. Establish `hj : ‖w j‖ ^ 2 ≤ ∑ k, ‖w k‖ ^ 2` using `Finset.single_le_sum (f := fun k => ‖w k‖ ^ 2) (fun k _ => by positivity) (Finset.mem_univ j)`. Use polynomial arithmetic with `[sq_nonneg (‖w i‖ - ‖w j‖), norm_nonneg (w i), norm_nonneg (w j)]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `[dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `_ ≤ ∑ i, ∑ j, ‖star (w i) * (M i j * w j)‖ := (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => norm_sum_le _ _)`. Use `_ = ∑ i, ∑ j, ‖M i j‖ * (‖w i‖ * ‖w j‖) := Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by`. Rewrite using `[norm_mul, norm_mul, norm_star]`.
+
+Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ∑ i, ∑ j, ‖M i j‖ * ∑ k, ‖w k‖ ^ 2 := Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => mul_le_mul_of_nonneg_left (hS i j) (norm_nonneg _)`. Use `_ = (∑ i, ∑ j, ‖M i j‖) * ∑ k, ‖w k‖ ^ 2 := by simp [Finset.sum_mul]`.
+-/
 private theorem norm_star_dotProduct_mulVec_le_sum_norm_mul (M : Matrix (Fin n) (Fin n) ℂ) (w : Fin n → ℂ) :
     ‖star w ⬝ᵥ (M *ᵥ w)‖ ≤ (∑ i, ∑ j, ‖M i j‖) * ∑ j, ‖w j‖ ^ 2 := by
   have hS : ∀ i j, ‖w i‖ * ‖w j‖ ≤ ∑ k, ‖w k‖ ^ 2 := by
@@ -63,6 +81,21 @@ private theorem norm_star_dotProduct_mulVec_le_sum_norm_mul (M : Matrix (Fin n) 
           mul_le_mul_of_nonneg_left (hS i j) (norm_nonneg _)
     _ = (∑ i, ∑ j, ‖M i j‖) * ∑ k, ‖w k‖ ^ 2 := by simp [Finset.sum_mul]
 
+/- English proof (translation)
+Establish `hA` using `h0.1`. Establish `hspec : H0 = (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * Matrix.diagonal (fun i => ((hA.eigenvalues i : ℝ) : ℂ)) * star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ)`. Use `hA.spectral_theorem` as an intermediate fact. Rewrite `this` using `[Unitary.conjStarAlgAut_apply]`. Conclude with `this`.
+
+Choose the witnesses or unpack the hypotheses as in `⟨c, hc, hcle⟩ : ∃ c > 0, ∀ i, c ≤ hA.eigenvalues i := by`. Break down `isEmpty_or_nonempty (Fin n) with hn | hn` into its components or cases. Conclude with `⟨1, one_pos, fun i => (IsEmpty.false i).elim⟩`. Take `⟨i0, _, hi0⟩` from `Finset.exists_min_image Finset.univ hA.eigenvalues Finset.univ_nonempty`. Conclude with `⟨hA.eigenvalues i0, h0.eigenvalues_pos i0, fun i => hi0 i (Finset.mem_univ i)⟩`.
+
+Use `⟨c, hc, fun w => ?_⟩` and prove the remaining obligations. Establish `hsv : star w ᵥ* (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = star (star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w)`. Rewrite using `[Matrix.star_mulVec, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]`. Establish `h1 : star w ⬝ᵥ (H0 *ᵥ w) = ∑ i, ((hA.eigenvalues i : ℝ) : ℂ) * (star ((star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w) i) * ((star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w) i))` using `by conv_lhs => rw [hspec]`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, hsv]`.
+
+Simplify using `only [dotProduct, Matrix.mulVec_diagonal, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : star (star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w) ⬝ᵥ (star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w) = star w ⬝ᵥ w`. Rewrite using `[← hsv, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Unitary.mul_star_self_of_mem (hA.eigenvectorUnitary).2, Matrix.one_mulVec]`.
+
+Establish `hre : ∀ z : ℂ, (star z * z).re = ‖z‖ ^ 2`. Introduce `z`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `norm_cast`. Establish `h2' : ∑ i, ‖(star (hA.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) *ᵥ w) i‖ ^ 2 = ∑ j, ‖w j‖ ^ 2`.
+
+Use `congrArg Complex.re h2` as an intermediate fact. Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum, hre] at this`. Conclude with `this`. Rewrite using `[h1, Complex.re_sum, ← h2', Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+
+Rewrite using `[Complex.re_ofReal_mul, hre]`. Conclude with `mul_le_mul_of_nonneg_right (hcle i) (by positivity)`.
+-/
 private theorem exists_pos_mul_sum_sq_le_re_of_posDef (H0 : Matrix (Fin n) (Fin n) ℂ) (h0 : H0.PosDef) :
     ∃ c > 0, ∀ w : Fin n → ℂ, c * ∑ j, ‖w j‖ ^ 2 ≤ (star w ⬝ᵥ (H0 *ᵥ w)).re := by
   classical
@@ -105,6 +138,15 @@ private theorem exists_pos_mul_sum_sq_le_re_of_posDef (H0 : Matrix (Fin n) (Fin 
   rw [Complex.re_ofReal_mul, hre]
   exact mul_le_mul_of_nonneg_right (hcle i) (by positivity)
 
+/- English proof (translation)
+Take `⟨c, hc, hcoer⟩` from `exists_pos_mul_sum_sq_le_re_of_posDef (H p₀) h0`. Establish `hf : Tendsto (fun p => ∑ i, ∑ j, ‖H p i j - H p₀ i j‖) (𝓝 p₀) (𝓝 0)`. Establish `h00 : (0 : ℝ) = ∑ i : Fin n, ∑ j : Fin n, ‖H p₀ i j - H p₀ i j‖` using `by simp`. Rewrite using `[h00]`. Conclude with `tendsto_finset_sum _ fun i _ => tendsto_finset_sum _ fun j _ => ((hH i j).tendsto.sub tendsto_const_nhds).norm`.
+
+Establish `hev` using `(tendsto_order.1 hf).2 (c / 2) (by positivity)`. Use `⟨c / 2, by positivity, hev.mono fun p hp w => ?_⟩` and prove the remaining obligations. Establish `hb` using `norm_star_dotProduct_mulVec_le_sum_norm_mul (H p - H p₀) w`. Establish `hsplit : (star w ⬝ᵥ (H p *ᵥ w)).re = (star w ⬝ᵥ (H p₀ *ᵥ w)).re + (star w ⬝ᵥ ((H p - H p₀) *ᵥ w)).re`. Rewrite using `[Matrix.sub_mulVec, dotProduct_sub]`.
+
+Simplify using the standard rewrite rules. Establish `hlow : -‖star w ⬝ᵥ ((H p - H p₀) *ᵥ w)‖ ≤ (star w ⬝ᵥ ((H p - H p₀) *ᵥ w)).re` using `(abs_le.mp (Complex.abs_re_le_norm _)).1`. Establish `hS : 0 ≤ ∑ j, ‖w j‖ ^ 2` using `Finset.sum_nonneg fun j _ => by positivity`. Establish `hcw` using `hcoer w`. Establish `hp' : ∑ i, ∑ j, ‖(H p - H p₀) i j‖ < c / 2` using `by simpa [Matrix.sub_apply] using hp`.
+
+Establish `hK` using `mul_le_mul_of_nonneg_right hp'.le hS`. Combine the linear equalities and inequalities to obtain the conclusion.
+-/
 theorem posDef_unif {P : Type} [TopologicalSpace P] {p₀ : P} (H : P → Matrix (Fin n) (Fin n) ℂ)
     (hH : ∀ i j, ContinuousAt (fun p => H p i j) p₀) (h0 : (H p₀).PosDef) :
     ∃ δ > 0, ∀ᶠ p in 𝓝 p₀, ∀ w : Fin n → ℂ, δ * ∑ j, ‖w j‖ ^ 2 ≤ (star w ⬝ᵥ (H p *ᵥ w)).re := by

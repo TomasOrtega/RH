@@ -3,6 +3,17 @@ open MeasureTheory
 
 namespace GlobalTheory.CompanionTheory.BigCell
 
+/- English proof (translation)
+Introduce `G A ι _ _ _ _ _ e U hU hlim`. Use `⟨fun k => ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `e.toHomeomorph.isCompact_preimage.2 (isCompact_univ_pi fun _ => (hU k).1)`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => (hU k).2.1).preimage e.continuous`. Use `show e 0 ∈ Set.pi Set.univ (fun _ => U k)`.
+
+Rewrite using `[map_zero]`. Conclude with `Set.mem_univ_pi.2 fun _ => (hU k).2.2`. Rewrite `hlim`, the goal using `[Filter.tendsto_smallSets_iff]`. Introduce `t ht`. Establish `hc : Filter.Tendsto e.symm (nhds 0) (nhds 0)`.
+
+Establish `h0 : Filter.Tendsto e.symm (nhds 0) (nhds (e.symm 0))` using `e.symm.continuous.tendsto 0`. Rewrite `h0` using `[map_zero]`. Conclude with `h0`. Establish `h1 : e.symm ⁻¹' t ∈ nhds (0 : ι → A)` using `hc ht`. Rewrite `h1` using `[nhds_pi, Filter.mem_pi']`.
+
+Take `⟨I, s, hs, hsub⟩` from `h1`. Establish `hW : (⋂ i, s i) ∈ nhds (0 : A)` using `Filter.iInter_mem.2 hs`. Use `filter_upwards [hlim _ hW] with k hk`. Introduce `x hx`. Establish `h2 : e x ∈ Set.pi (I : Set ι) s` using `fun i _ => Set.mem_iInter.1 (hk (hx i (Set.mem_univ i))) i`.
+
+Simplify using `using hsub h2`.
+-/
 theorem preimage_box_shrinking : ∀ (G A ι : Type) [AddCommGroup G] [TopologicalSpace G] [AddCommGroup A] [TopologicalSpace A] [Finite ι] (e : G ≃ₜ+ (ι → A)) (U : ℕ → Set A), (∀ k, IsCompact (U k) ∧ IsOpen (U k) ∧ (0 : A) ∈ U k) → Filter.Tendsto U Filter.atTop (nhds (0 : A)).smallSets → (∀ k, IsCompact (e ⁻¹' Set.pi Set.univ (fun _ => U k)) ∧ IsOpen (e ⁻¹' Set.pi Set.univ (fun _ => U k)) ∧ (0 : G) ∈ e ⁻¹' Set.pi Set.univ (fun _ => U k)) ∧ Filter.Tendsto (fun k => e ⁻¹' Set.pi Set.univ (fun _ => U k)) Filter.atTop (nhds (0 : G)).smallSets := by
   intro G A ι _ _ _ _ _ e U hU hlim
   refine ⟨fun k => ⟨?_, ?_, ?_⟩, ?_⟩

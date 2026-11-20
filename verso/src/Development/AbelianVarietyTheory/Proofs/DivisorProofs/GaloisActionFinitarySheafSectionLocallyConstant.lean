@@ -13,22 +13,37 @@ abbrev sr (Ω : Type) [Field Ω] (s : Finset Ω) : Subring Ω := Subring.closure
 
 variable (Ω : Type) [Field Ω]
 
+/- English proof (translation)
+The claim follows from `Subring.closure_mono (Finset.coe_subset.2 h)`.
+-/
 theorem sr_mono {s t : Finset Ω} (h : s ≤ t) : sr Ω s ≤ sr Ω t :=
   Subring.closure_mono (Finset.coe_subset.2 h)
 
 def incl {s t : Finset Ω} (h : s ≤ t) : CommRingCat.of (sr Ω s) ⟶ CommRingCat.of (sr Ω t) :=
   CommRingCat.ofHom (Subring.inclusion (sr_mono Ω h))
 
+/- English proof (translation)
+Rewrite using `[incl, CommRingCat.hom_ofHom, Subring.coe_inclusion]`.
+-/
 theorem incl_apply {s t : Finset Ω} (h : s ≤ t) (y : sr Ω s) : ((incl Ω h).hom y : Ω) = (y : Ω) := by
   rw [incl, CommRingCat.hom_ofHom, Subring.coe_inclusion]
 
+/- English proof (translation)
+Use extensionality with `x`. Both sides reduce to the same expression.
+-/
 theorem incl_id (s : Finset Ω) : incl Ω (le_refl s) = 𝟙 _ := by
   ext x; rfl
 
+/- English proof (translation)
+Use extensionality with `x`. Simplify using `only [incl, CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply, Subring.coe_inclusion]`.
+-/
 theorem incl_comp {s t u : Finset Ω} (h : s ≤ t) (h' : t ≤ u) : incl Ω (h.trans h') = incl Ω h ≫ incl Ω h' := by
   ext x
   simp only [incl, CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply, Subring.coe_inclusion]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom, CommRingCat.hom_ofHom, Subring.coe_subtype, Subring.coe_subtype, incl_apply]`.
+-/
 theorem incl_comp_subtype {s t : Finset Ω} (h : s ≤ t) :
     incl Ω h ≫ CommRingCat.ofHom (sr Ω t).subtype = CommRingCat.ofHom (sr Ω s).subtype := by
   ext y
@@ -48,13 +63,25 @@ def cocone : Cocone (diag Ω) where
            simp only [Functor.const_obj_map, Category.comp_id]
            exact incl_comp_subtype Ω h.le }
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cocone_ι (s : Finset Ω) : (cocone Ω).ι.app s = CommRingCat.ofHom (sr Ω s).subtype := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cocone_ι_apply (s : Finset Ω) (y : sr Ω s) : ((cocone Ω).ι.app s).hom y = (y : Ω) := rfl
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨{x}, ⟨x, Subring.subset_closure (Finset.mem_coe.2 (Finset.mem_singleton_self x))⟩, (cocone_ι_apply Ω {x} ⟨x, Subring.subset_closure (Finset.mem_coe.2 (Finset.mem_singleton_self x))⟩).symm⟩`.
+-/
 theorem surj (x : Ω) : ∃ (s : Finset Ω) (y : sr Ω s), x = ((cocone Ω).ι.app s).hom y :=
   ⟨{x}, ⟨x, Subring.subset_closure (Finset.mem_coe.2 (Finset.mem_singleton_self x))⟩, (cocone_ι_apply Ω {x} ⟨x, Subring.subset_closure (Finset.mem_coe.2 (Finset.mem_singleton_self x))⟩).symm⟩
 
+/- English proof (translation)
+Use `⟨i ⊔ j, homOfLE le_sup_left, homOfLE le_sup_right, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite `h` using `[cocone_ι_apply, cocone_ι_apply]`. Express the relevant statement in the definitionally equal form `((incl Ω (le_sup_left : i ≤ i ⊔ j)).hom xi : Ω) = ((incl Ω (le_sup_right : j ≤ i ⊔ j)).hom xj : Ω)`. Rewrite using `[incl_apply, incl_apply, h]`.
+-/
 theorem inj [DecidableEq Ω] (i j : Finset Ω) (xi : sr Ω i) (xj : sr Ω j)
     (h : ((cocone Ω).ι.app i).hom xi = ((cocone Ω).ι.app j).hom xj) :
     ∃ (k : Finset Ω) (f : i ⟶ k) (g : j ⟶ k), ((diag Ω).map f).hom xi = ((diag Ω).map g).hom xj := by
@@ -79,6 +106,17 @@ namespace GlobalTheory.EtC
 
 open GalSmooth in
 
+/- English proof (translation)
+Introduce `R _ F hF K Ω _ _ _ _ x`. Take `⟨s, y, hy⟩` from `(((GlobalTheory.T.preservesFilteredColimits_moduleCat_iff_forget_iff_elements (ULift.{1} R) (onRings F)).2.1 hF) (Finset Ω) (diag Ω) (cocone Ω) (coconeIsColimit Ω)).1 x`. Establish `key : ∀ τ : Ω ≃ₐ[K] Ω, Sec.res (Spec.map (CommRingCat.ofHom (τ : Ω →+* Ω))) x = ((onRings F).map (CommRingCat.ofHom ((τ : Ω →+* Ω).comp (sr Ω s).subtype))).hom y`. Introduce `τ`. Rewrite using `[← hy, cocone_ι]`.
+
+Use `show _ = ((onRings F).map (CommRingCat.ofHom (sr Ω s).subtype ≫ CommRingCat.ofHom (τ : Ω →+* Ω))).hom y`. Rewrite using `[Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `τ₀`.
+
+Use `haveI : FiniteDimensional K (IntermediateField.adjoin K (s : Set Ω)) := IntermediateField.finiteDimensional_adjoin (fun a _ => Algebra.IsIntegral.isIntegral a)`. Establish `hopen : IsOpen {σ : Ω ≃ₐ[K] Ω | τ₀⁻¹ * σ ∈ (IntermediateField.adjoin K (s : Set Ω)).fixingSubgroup}` using `(IntermediateField.fixingSubgroup_isOpen _).preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [hopen.mem_nhds (by simp [one_mem])] with τ hτ`. Establish `hs : Set.EqOn (τ : Ω →+* Ω) (τ₀ : Ω →+* Ω) (s : Set Ω)` using `fun b hb => by`. Establish `h1` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hτ b (IntermediateField.subset_adjoin K _ hb)`.
+
+Establish `h2` using `congrArg τ₀ h1`. Simplify `h2` using `[AlgEquiv.mul_apply]`. Establish `hc : (τ : Ω →+* Ω).comp (sr Ω s).subtype = (τ₀ : Ω →+* Ω).comp (sr Ω s).subtype`. Use extensionality with `a`. Conclude with `RingHom.eqOn_set_closure hs a.2`.
+
+Rewrite using `[key τ, key τ₀, hc]`.
+-/
 theorem galois_sec_isLocallyConstant : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F →
     ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω]
       (x : Sec F (Spec (CommRingCat.of Ω))),
@@ -110,6 +148,9 @@ theorem galois_sec_isLocallyConstant : ∀ (R : Type) [CommRing R] (F : Shv R), 
     exact RingHom.eqOn_set_closure hs a.2
   rw [key τ, key τ₀, hc]
 
+/- English proof (translation)
+The claim follows from `galois_sec_isLocallyConstant`.
+-/
 example : ∀ (R : Type) [CommRing R] (F : Shv R), Finitary F → ∀ (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] [Algebra.IsAlgebraic K Ω] (x : Sec F (Spec (CommRingCat.of Ω))), IsLocallyConstant (fun τ : Ω ≃ₐ[K] Ω => Sec.res (Spec.map (CommRingCat.ofHom (τ : Ω →+* Ω))) x) :=
   galois_sec_isLocallyConstant
 

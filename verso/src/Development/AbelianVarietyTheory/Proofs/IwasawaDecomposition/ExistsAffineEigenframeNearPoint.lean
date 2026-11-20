@@ -21,6 +21,19 @@ noncomputable section
 
 namespace GlobalTheory.ShFam.Hor
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c O _ β Z σ n g e ex hex y₀ hy₀`. Take `⟨U, hU, φ, F, hzU, hφ, -⟩` from `EigSpread.exists_stable_eigFrame E H Dw l Xo c O β Z (y₀.1 (IsLocalRing.closedPoint ℂ))`. Set `V : (gen Z).affineOpens` to `⟨U, hU⟩`. Establish `hφ' : LogKS.chart V ≫ genStr Z = spMap φ` using `hφ`. Establish `hy₀V : y₀ ∈ ptsIn (genStr Z) σ V.1` using `CxPts.mem_ptsIn.2 hzU`.
+
+Establish `hov : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), σ = (evHom hy).comp φ` using `fun y hy => EigLoc.spMap_inj (y.2.symm.trans (by`. Rewrite using `[← ReciprocityTheory.ChartRestriction.G.PullbackSections.spMap_comp_spMap, ← hφ', ← Category.assoc, spMap_evHom hy]))`. Establish `hx : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), y.1 ≫ genι Z = spMap (evHom hy) ≫ LogKS.chart V ≫ genι Z` using `fun y hy => by`. Rewrite using `[← Category.assoc, spMap_evHom hy]`. Establish `hfr : ∀ (y : CxPts (genStr Z) σ) (hy : y ∈ ptsIn (genStr Z) σ V.1), ∃ f : EigFrame Z σ (y.1 ≫ genι Z), EigFrame.IsMap (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (evHom hy) f` using `fun y hy => EigFrame.exists_isMap F (evHom hy) (hov y hy) (hx y hy)`.
+
+Use `choose fr hfr using hfr`. Establish `h0 : e.symm (e y₀) ∈ ptsIn (genStr Z) σ V.1` using `by rw [e.left_inv hy₀]; exact hy₀V`. Set `a : (Fin n → ℂ) → CxFr Z σ` to `fun b => if h : e.symm b ∈ ptsIn (genStr Z) σ V.1 then ⟨e.symm b, fr _ h⟩ else ⟨e.symm (e y₀), fr _ h0⟩`. Establish `ha : ∀ b (h : e.symm b ∈ ptsIn (genStr Z) σ V.1), a b = ⟨e.symm b, fr _ h⟩` using `fun b h => dif_pos h`. Set `B : Set (Fin n → ℂ)` to `e.target ∩ e.symm ⁻¹' ptsIn (genStr Z) σ V.1`.
+
+Establish `hB : IsOpen B` using `e.continuousOn_symm.isOpen_inter_preimage e.open_target (isOpen_ptsIn _)`. Establish `hBt : B ⊆ e.target` using `Set.inter_subset_left`. Establish `hyB : IsHolTo B (fun b => (e.symm b).1)` using `LocLift.isHolTo_mono hex.2.2.1 hB hBt`. Set `ev : (Fin n → ℂ) → (Γ(gen Z, V.1) →+* ℂ)` to `fun b => if h : e.symm b ∈ ptsIn (genStr Z) σ V.1 then evHom h else evHom h0`. Establish `hev : ∀ b (h : e.symm b ∈ ptsIn (genStr Z) σ V.1), ev b = evHom h` using `fun b h => dif_pos h`.
+
+Establish `: IsOpenImmersion (LogKS.chart V)` using `IsAffineOpen.isOpenImmersion_fromSpec V.2`. Establish `hd : ∀ r : Γ(gen Z, V.1), DifferentiableOn ℂ (fun b => ev b r) B` using `fun r b hb => (HolLieFrame.differentiableAt_ev hyB (LogKS.chart V) ev (fun b' hb' => by rw [hev b' hb'.2]; exact (spMap_evHom hb'.2).symm) hb r).differentiableWithinAt`. Use `⟨V, φ, F, B, a, hB, ⟨e.map_source hy₀, h0⟩, hBt, ⟨?_, fun ρ i => ?_⟩, fun b hb => ?_⟩` and prove the remaining obligations. Conclude with `LocLift.isHolTo_congr hyB fun b hb => by rw [ha b hb.2]`. Conclude with `HolFrames.holTan_dualMap hB (F.v ρ i) (fun b hb => evHom hb.2) (fun r => ⟨fun b => ev b r, hd r, fun b hb => (RingHom.congr_fun (hev b hb.2) r).symm⟩) (fun b hb => by rw [ha b hb.2]; exact hfr _ hb.2 ρ i)`.
+
+Rewrite using `[ha b hb.2]`. Conclude with `⟨rfl, hb.2, hfr _ hb.2⟩`.
+-/
 theorem exists_frameFam_of_isExpChart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (n g : ℕ) (e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex : ExpMaps Z σ g), IsExpChart e ex → ∀ y₀ ∈ e.source, ∃ (V : (gen Z).affineOpens) (φ : c.F →+* Γ(gen Z, V.1)) (F : EigFrame Z φ (LogKS.chart V ≫ genι Z)) (B : Set (Fin n → ℂ)) (a : (Fin n → ℂ) → CxFr Z σ), IsOpen B ∧ e y₀ ∈ B ∧ B ⊆ e.target ∧ HolFam B a ∧ ∀ b ∈ B, (a b).1 = e.symm b ∧ ∃ hy : (a b).1 ∈ ptsIn (genStr Z) σ V.1, F.IsMap (evHom hy) (a b).2 := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ n g e ex hex y₀ hy₀
   classical

@@ -17,10 +17,18 @@ section
 
 variable {O : Type u} [CommRing O]
 
+/- English proof (translation)
+Simplify using `only [mulSub, LinearMap.mem_range, LinearMap.lsmul_apply]`.
+-/
 theorem mem_mulSub {a : O} {M : Type u} [AddCommGroup M] [Module O M] (x : M) :
     x ∈ mulSub a M ↔ ∃ m, a • m = x := by
   simp only [mulSub, LinearMap.mem_range, LinearMap.lsmul_apply]
 
+/- English proof (translation)
+Establish `hle : mulSub a M ≤ (mulSub a M').comap f`. Introduce `x hx`. Take `⟨m, rfl⟩` from `(mem_mulSub x).1 hx`. Conclude with `(mem_mulSub _).2 ⟨f m, by rw [map_smul]⟩`. Use `Module.length_le_of_surjective (Submodule.mapQ _ _ f hle) ?_` and prove the remaining obligations.
+
+Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective _ y`. Take `⟨x, rfl⟩` from `hf y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+-/
 theorem length_quot_le_of_surj {a : O} {M M' : Type u} [AddCommGroup M] [Module O M]
     [AddCommGroup M'] [Module O M'] (f : M →ₗ[O] M') (hf : Function.Surjective f) :
     Module.length O (M' ⧸ mulSub a M') ≤ Module.length O (M ⧸ mulSub a M) := by
@@ -34,6 +42,19 @@ theorem length_quot_le_of_surj {a : O} {M M' : Type u} [AddCommGroup M] [Module 
   obtain ⟨x, rfl⟩ := hf y
   exact ⟨Submodule.Quotient.mk x, rfl⟩
 
+/- English proof (translation)
+Establish `hle : mulSub a M ≤ (mulSub a (M ⧸ Q)).comap Q.mkQ`. Introduce `x hx`. Take `⟨m, rfl⟩` from `(mem_mulSub x).1 hx`. Conclude with `(mem_mulSub _).2 ⟨Q.mkQ m, by rw [map_smul]⟩`. Establish `hle' : mulSub a Q ≤ (mulSub a M).comap Q.subtype`.
+
+Introduce `x hx`. Take `⟨m, rfl⟩` from `(mem_mulSub x).1 hx`. Conclude with `(mem_mulSub _).2 ⟨Q.subtype m, by rw [map_smul]⟩`. Set `f` to `Submodule.mapQ (mulSub a M) (mulSub a (M ⧸ Q)) Q.mkQ hle`. Set `g` to `Submodule.mapQ (mulSub a Q) (mulSub a M) Q.subtype hle'`.
+
+Establish `hker : LinearMap.ker f ≤ LinearMap.range g`. Introduce `x hx`. Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `h1 : (Submodule.Quotient.mk (Q.mkQ m) : (M ⧸ Q) ⧸ mulSub a (M ⧸ Q)) = 0` using `hx`. Take `⟨w, hw⟩` from `(mem_mulSub _).1 ((Submodule.Quotient.mk_eq_zero _).1 h1)`.
+
+Take `⟨m', rfl⟩` from `Submodule.mkQ_surjective _ w`. Establish `h2 : m - a • m' ∈ Q`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, Submodule.Quotient.mk_smul]`. Rewrite using `[sub_eq_zero]`. Conclude with `hw.symm`.
+
+Use `⟨Submodule.Quotient.mk ⟨m - a • m', h2⟩, ?_⟩` and prove the remaining obligations. Use `show (Submodule.Quotient.mk (m - a • m') : M ⧸ mulSub a M) = Submodule.Quotient.mk m`. Rewrite using `[Submodule.Quotient.eq]`. Use `(mem_mulSub _).2 ⟨-m', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_neg]`.
+
+Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add ?_ ?_` and prove the remaining obligations. Conclude with `(Formalism.NG.IdempotentNormalFormsRhoFacts.length_mono hker).trans (Module.length_le_of_surjective g.rangeRestrict g.surjective_rangeRestrict)`. Conclude with `Module.length_le_of_injective (LinearMap.range f).subtype (Submodule.injective_subtype _)`.
+-/
 theorem length_quot_le_add (a : O) {M : Type u} [AddCommGroup M] [Module O M]
     (Q : Submodule O M) :
     Module.length O (M ⧸ mulSub a M) ≤
@@ -73,6 +94,11 @@ theorem length_quot_le_add (a : O) {M : Type u} [AddCommGroup M] [Module O M]
         · exact Module.length_le_of_injective (LinearMap.range f).subtype
             (Submodule.injective_subtype _)
 
+/- English proof (translation)
+Establish `h1` using `Formalism.NG.IdempotentNormalFormsRhoFacts.length_eq_ker_add_range (LinearMap.lsmul O M a)`. Establish `h2 : Module.length O M = Module.length O (mulSub a M) + Module.length O (M ⧸ mulSub a M)` using `Module.length_eq_add_of_exact (mulSub a M).subtype (mulSub a M).mkQ (mulSub a M).injective_subtype (mulSub a M).mkQ_surjective (LinearMap.exact_subtype_mkQ _)`. Establish `hr : Module.length O (mulSub a M) ≠ ⊤`. Introduce `h`. Rewrite `h2` using `[h, top_add]`.
+
+Conclude with `hM h2`. Establish `h3 : Module.length O (M ⧸ mulSub a M) + Module.length O (mulSub a M) = Module.length O (LinearMap.ker (LinearMap.lsmul O M a)) + Module.length O (mulSub a M)`. Rewrite using `[add_comm, ← h2, h1]`. Both sides reduce to the same expression. Conclude with `ENat.add_left_injective_of_ne_top hr h3`.
+-/
 theorem length_coker_eq_ker (a : O) {M : Type u} [AddCommGroup M] [Module O M]
     (hM : Module.length O M ≠ ⊤) :
     Module.length O (M ⧸ mulSub a M) = Module.length O (LinearMap.ker (LinearMap.lsmul O M a)) := by
@@ -96,6 +122,11 @@ section DVR
 
 variable {O : Type u} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
+/- English proof (translation)
+Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective _ z`. Take `⟨⟨r, s⟩, hrs⟩` from `IsLocalization.surj (nonZeroDivisors O) x`. Use `⟨s, nonZeroDivisors.coe_ne_zero s, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[Algebra.smul_def, mul_comm]`. Conclude with `hrs.symm`.
+-/
 theorem KO_torsion (z : KO O) : ∃ c : O, c ≠ 0 ∧ c • z = 0 := by
   obtain ⟨x, rfl⟩ := Submodule.mkQ_surjective _ z
   obtain ⟨⟨r, s⟩, hrs⟩ := IsLocalization.surj (nonZeroDivisors O) x
@@ -105,6 +136,9 @@ theorem KO_torsion (z : KO O) : ∃ c : O, c ≠ 0 ∧ c • z = 0 := by
   rw [Algebra.smul_def, mul_comm]
   exact hrs.symm
 
+/- English proof (translation)
+Use `choose c hc hc' using fun z : KO O => KO_torsion z`. Use `⟨∏ i, c (w i), Finset.prod_ne_zero_iff.2 fun i _ => hc _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Take `⟨r, hr⟩` from `Finset.dvd_prod_of_mem (fun i => c (w i)) (Finset.mem_univ i)`. Rewrite using `[Pi.smul_apply, Pi.zero_apply, hr, mul_comm, mul_smul, hc', smul_zero]`.
+-/
 theorem pi_torsion {d : ℕ} (w : Fin d → KO O) : ∃ c : O, c ≠ 0 ∧ c • w = 0 := by
   choose c hc hc' using fun z : KO O => KO_torsion z
   refine ⟨∏ i, c (w i), Finset.prod_ne_zero_iff.2 fun i _ => hc _, ?_⟩
@@ -112,6 +146,11 @@ theorem pi_torsion {d : ℕ} (w : Fin d → KO O) : ∃ c : O, c ≠ 0 ∧ c •
   obtain ⟨r, hr⟩ := Finset.dvd_prod_of_mem (fun i => c (w i)) (Finset.mem_univ i)
   rw [Pi.smul_apply, Pi.zero_apply, hr, mul_comm, mul_smul, hc', smul_zero]
 
+/- English proof (translation)
+Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert x t _ ih`. Take `⟨c, hc, h⟩` from `ih`. Take `⟨c', hc', h'⟩` from `ht x`.
+
+Use `⟨c * c', mul_ne_zero hc hc', ?_⟩` and prove the remaining obligations. Introduce `n hn`. Rewrite `hn` using `[Finset.coe_insert, Submodule.mem_span_insert]`. Take `⟨r, z, hz, rfl⟩` from `hn`. Rewrite using `[smul_add, mul_smul, smul_comm c' r x, h', smul_zero, smul_zero, zero_add, mul_comm, mul_smul, h z hz, smul_zero]`.
+-/
 theorem span_killed {N : Type u} [AddCommGroup N] [Module O N]
     (ht : ∀ x : N, ∃ c : O, c ≠ 0 ∧ c • x = 0) (t : Finset N) :
     ∃ c : O, c ≠ 0 ∧ ∀ n ∈ Submodule.span O (t : Set N), c • n = 0 := by
@@ -128,6 +167,25 @@ theorem span_killed {N : Type u} [AddCommGroup N] [Module O N]
     rw [smul_add, mul_smul, smul_comm c' r x, h', smul_zero, smul_zero, zero_add, mul_comm,
       mul_smul, h z hz, smul_zero]
 
+/- English proof (translation)
+Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule O Q).FG)`. Set `f : Q → N` to `Function.surjInv hδ`. Establish `hf : ∀ x, δ (f x) = x` using `Function.surjInv_eq hδ`. Set `t : Finset N` to `s.image f`. Set `N₂ : Submodule O N` to `Submodule.span O (t : Set N)`.
+
+Establish `ht : ∀ x : N, ∃ c : O, c ≠ 0 ∧ c • x = 0`. Introduce `x`. Take `⟨c, hc, h⟩` from `pi_torsion (ι x)`. Use `⟨c, hc, hι ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, h, map_zero]`.
+
+Take `⟨c, hc, hkill⟩` from `span_killed ht t`. Establish `hfg : N₂.FG` using `⟨t, rfl⟩`. Establish `: Module.Finite O N₂` using `Module.Finite.iff_fg.2 hfg`. Establish `hfin : Module.length O N₂ ≠ ⊤`. Take `⟨k, g, hg⟩` from `Module.Finite.exists_fin' O N₂`.
+
+Establish `h1` using `Formalism.RepresentationBoundsCohomology.RowCol.length_le_of_killed c g hg (by`. Introduce `x`. Conclude with `Subtype.ext (hkill x x.2))`. Rewrite `h1` using `[Formalism.NG.IdempotentNormalFormsLenFacts.length_quot_span, Fintype.card_fin]`. Establish `h2 : IsDiscreteValuationRing.addVal O c ≠ ⊤` using `fun h' => hc (IsDiscreteValuationRing.addVal_eq_top_iff.1 h')`.
+
+Introduce `h`. Rewrite `h1` using `[h, top_le_iff]`. Use `lift IsDiscreteValuationRing.addVal O c to ℕ using h2 with v`. Conclude with `ENat.natCast_ne_top (k * v) (by exact_mod_cast h1)`. Set `δ₂ : N₂ →ₗ[O] Q` to `δ ∘ₗ N₂.subtype`.
+
+Establish `hδ₂ : Function.Surjective δ₂`. Rewrite using `[← LinearMap.range_eq_top, LinearMap.range_comp, Submodule.range_subtype, eq_top_iff, ← hs, Submodule.span_le]`. Introduce `x hx`. Conclude with `⟨f x, Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem f hx)), hf x⟩`. Use `(length_quot_le_of_surj δ₂ hδ₂).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[length_coker_eq_ker _ hfin]`. Set `κ` to `LinearMap.ker (LinearMap.lsmul O N₂ ((ℓ : O) ^ e))`. Set `j : κ →ₗ[O] (Fin d → KO O)` to `ι ∘ₗ N₂.subtype ∘ₗ κ.subtype`. Establish `hj : Function.Injective j` using `hι.comp (N₂.injective_subtype.comp κ.injective_subtype)`. Establish `h0` using `Formalism.RepresentationBoundsCohomology.submoduleLengthBound_statement O (Fin d) (LinearMap.range j) ℓ e (by`.
+
+Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[← map_smul]`. Establish `: ((ℓ : O) ^ e) • x = 0` using `Subtype.ext x.2`. Rewrite using `[this, map_zero])`. Rewrite `h0` using `[Fintype.card_fin]`.
+
+Conclude with `(Module.length_le_of_injective j.rangeRestrict (by`. Introduce `x y hxy`. Conclude with `hj (congrArg Subtype.val hxy))).trans h0`.
+-/
 theorem length_quot_of_KO {Q N : Type u} [AddCommGroup Q] [Module O Q] [Module.Finite O Q]
     [AddCommGroup N] [Module O N] {d : ℕ} (ι : N →ₗ[O] (Fin d → KO O)) (hι : Function.Injective ι)
     (δ : N →ₗ[O] Q) (hδ : Function.Surjective δ) (ℓ e : ℕ) :
@@ -185,6 +243,19 @@ theorem length_quot_of_KO {Q N : Type u} [AddCommGroup Q] [Module O Q] [Module.F
 
 end DVR
 
+/- English proof (translation)
+Introduce `O M _ _ _ _ _ _ d N δ hδ ℓ e`. Set `Q` to `Submodule.torsion O M`. Establish `hA` using `length_quot_le_add ((ℓ : O) ^ e) Q`. Establish `hT0 : finrank O Q = 0`. Rewrite using `[Module.finrank_eq_zero_iff]`.
+
+Introduce `x`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff (x : M)).mp x.2`. Use `⟨a, nonZeroDivisors.coe_ne_zero a, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_smul, Submodule.coe_zero]`.
+
+Conclude with `ha`. Establish `hrank : finrank O (M ⧸ Q) = finrank O M`. Establish `h` using `Submodule.finrank_quotient_add_finrank Q`. Rewrite `h` using `[hT0, add_zero]`. Conclude with `h`.
+
+Establish `hB` using `Formalism.RepresentationBoundsCohomology.rowColength O (M ⧸ Q) (mulSub ((ℓ : O) ^ e) (M ⧸ Q)) ℓ e (fun m => (mem_mulSub _).2 ⟨m, rfl⟩)`. Establish `htors : Module.length O (Submodule.torsion O (M ⧸ Q)) = 0`. Rewrite using `[Submodule.QuotientTorsion.torsion_eq_bot]`. Conclude with `Module.length_eq_zero`. Rewrite `hB` using `[htors, add_zero, hrank]`.
+
+Set `N' : Submodule O N` to `Q.comap δ`. Set `δ' : N' →ₗ[O] Q` to `δ.restrict (fun x hx => hx)`. Establish `hδ' : Function.Surjective δ'`. Introduce `x`. Take `⟨n, hn⟩` from `hδ x.2`.
+
+Conclude with `⟨⟨n, by show δ n ∈ Q; rw [hn]; exact x.2⟩, Subtype.ext hn⟩`. Establish `hC` using `length_quot_of_KO (N.subtype ∘ₗ N'.subtype) (N.injective_subtype.comp N'.injective_subtype) δ' hδ' ℓ e`. Use `hA.trans ((add_le_add hC hB).trans (le_of_eq ?_))` and prove the remaining obligations. Rewrite using `[eO, Nat.cast_add, add_mul, add_comm]`.
+-/
 theorem locQuotLen : StatLocQuotLen.{u} := by
   intro O M _ _ _ _ _ _ d N δ hδ ℓ e
   let Q := Submodule.torsion O M

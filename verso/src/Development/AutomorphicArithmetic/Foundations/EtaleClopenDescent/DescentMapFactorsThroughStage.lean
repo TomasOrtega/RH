@@ -19,12 +19,24 @@ private def tR : LateralTheory.E.LeafDescendMapPf.D R p ⟶ (Functor.const _).ob
     rw [Category.assoc, LateralTheory.E.LeafDescendMapPf.incl_incl]
     exact (Category.comp_id _).symm
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 private lemma tR_app (S : (LateralTheory.E.LeafDescendMapPf.J R)ᵒᵖ) : (tR R p).app S =
     pullback.snd p (incl S.unop.2.1) ≫ incl S.unop.2.1 := rfl
 
 end UpperTheory.Cb.DescentMapFactorization
 
 open UpperTheory.Cb.DescentMapFactorization in
+/- English proof (translation)
+Introduce `k _ Ω _ _ R hR C E Y c p w hp hs f hf a ha`. Take `⟨h1, h2, h3⟩` from `hp`. Use `haveI : Nonempty (LateralTheory.E.LeafDescendMapPf.J R) := ⟨⟨R, le_rfl, hR⟩⟩`. Use `haveI : ∀ S : (LateralTheory.E.LeafDescendMapPf.J R)ᵒᵖ, CompactSpace ((LateralTheory.E.LeafDescendMapPf.D R p).obj S) := by`. Introduce `S`.
+
+Simplify using `only [LateralTheory.E.LeafDescendMapPf.D]`. Conclude with `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p _)`. Use `haveI : ∀ S : (LateralTheory.E.LeafDescendMapPf.J R)ᵒᵖ, QuasiSeparatedSpace ((LateralTheory.E.LeafDescendMapPf.D R p).obj S) := by`. Introduce `S`. Simplify using `only [LateralTheory.E.LeafDescendMapPf.D]`.
+
+Conclude with `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p _)`. Establish `hcomm : (LateralTheory.E.LeafDescendMapPf.cone R p c w hs).π ≫ tR R p = (Functor.const _).map (a ≫ f)`. Use extensionality with `S`. Simplify using `only [NatTrans.comp_app, Functor.const_map_app]`. Rewrite using `[tR_app]`.
+
+Simplify using `only [pullback.lift_snd_assoc, Category.assoc, LateralTheory.E.LeafDescendMapPf.toR_incl]`. Conclude with `ha.symm`. Take `⟨S, g, hg1, hg2⟩` from `Scheme.exists_π_app_comp_eq_of_locallyOfFinitePresentation (LateralTheory.E.LeafDescendMapPf.D R p) (tR R p) f (LateralTheory.E.LeafDescendMapPf.cone R p c w hs) (LateralTheory.E.LeafDescendMapPf.coneIsLimit R p c w hs hR) a hcomm`. Conclude with `⟨S.unop.1, S.unop.2.1, S.unop.2.2, g, hg2, hg1⟩`.
+-/
 theorem UpperTheory.Cb.descent_map_factors_through_stage :
     LateralTheory.E.LeafPairRelPf.LeafFactorStage := by
   intro k _ Ω _ _ R hR C E Y c p w hp hs f hf a ha

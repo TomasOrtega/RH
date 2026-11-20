@@ -5,6 +5,39 @@ open Matrix Filter Topology
 open scoped ComplexOrder
 
 open Complex Metric GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram GlobalTheory.PoincareBounds GlobalTheory.CurvInterp in
+/- English proof (translation)
+Introduce `e n k hk φ z δ₀ hδ₀pos hφd hφP w`. Use `set M := ‖w‖ with hMdef`. Establish `hM0 : 0 ≤ M` using `norm_nonneg _`. Break down `hM0.eq_or_lt with hM | hMpos` into its components or cases. Establish `hw : w = 0` using `norm_eq_zero.1 hM.symm`.
+
+Substitute `hw` using the available equality. Simplify using `only [map_zero, gnorm_zero]`. Check the signs of the components of the expression. Use `set δ := δ₀ / M with hδdef`. Establish `hδ : 0 < δ` using `div_pos hδ₀pos hMpos`.
+
+Establish `hδM : δ * M = δ₀` using `div_mul_cancel₀ _ hMpos.ne'`. Set `γ : ℂ → Fin e → ℂ` to `fun ζ => z + ζ • w`. Establish `hγ0 : γ 0 = z` using `by simp [γ]`. Establish `hγd : HasDerivAt γ w 0`. Establish `h` using `((hasDerivAt_id (0 : ℂ)).smul_const w).const_add z`.
+
+Simplify `h` using `[γ]`. Establish `hγdiff : Differentiable ℂ γ`. Simplify using `only [γ]`. Use `fun_prop`. Establish `hmaps : Set.MapsTo γ (ball 0 δ) (ball z δ₀)`.
+
+Introduce `ζ hζ`. Establish `hζ' : ‖ζ‖ < δ` using `mem_ball_zero_iff.1 hζ`. Rewrite using `[mem_ball, dist_eq_norm]`. Establish `e1 : γ ζ - z = ζ • w` using `by simp [γ]`. Rewrite using `[e1, norm_smul, ← hδM]`.
+
+Conclude with `mul_lt_mul_of_pos_right hζ' hMpos`. Establish `hzB : z ∈ ball z δ₀` using `mem_ball_self hδ₀pos`. Establish `hzP : φ z ∈ punctured hk 1` using `hφP z hzB`. Establish `hφz : DifferentiableAt ℂ φ z` using `(hφd z hzB).differentiableAt (isOpen_ball.mem_nhds hzB)`. Establish `hcomp : HasDerivAt (fun ζ => φ (γ ζ)) (fderiv ℂ φ z w) 0`.
+
+Establish `h : HasFDerivAt φ (fderiv ℂ φ z) (γ 0)` using `by rw [hγ0]; exact hφz.hasFDerivAt`. Conclude with `h.comp_hasDerivAt 0 hγd`. Establish `hFd : ∀ i, DifferentiableOn ℂ (fun ζ => φ (γ ζ) i) (ball 0 δ)` using `fun i => differentiableOn_pi.1 (hφd.comp hγdiff.differentiableOn hmaps) i`. Establish `hF1 : ∀ i, ∀ ζ ∈ ball (0 : ℂ) δ, ‖φ (γ ζ) i‖ < 1` using `fun i ζ hζ => (hφP _ (hmaps hζ)).1 i`. Establish `hder : ∀ i, deriv (fun ζ => φ (γ ζ) i) 0 = fderiv ℂ φ z w i` using `fun i => (hasDerivAt_pi.1 hcomp i).deriv`.
+
+Establish `hF0 : ∀ i, φ (γ 0) i = φ z i` using `fun i => by rw [hγ0]`. Use `set v := fderiv ℂ φ z w with hv`. Establish `hδinv : 1 / δ = M / δ₀` using `by rw [hδdef]; field_simp`. Use `set K := 8 * Real.pi / δ₀ * M with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`.
+
+Establish `hvall : ∀ i, ‖v i‖ ≤ K`. Introduce `i`. Establish `h` using `norm_deriv_le_of_norm_lt_one hδ (hFd i) (hF1 i)`. Rewrite `h` using `[hder i]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[hK, mul_div_assoc', div_mul_eq_mul_div]`. Use `gcongr`. Combine the linear relations using `[Real.pi_gt_three]`. Establish `hvbr : ∀ i : Fin n, i.val < k → ‖v i‖ ≤ K * (‖φ z i‖ * tlog (φ z i))`. Introduce `i hi`.
+
+Establish `hne : ∀ ζ ∈ ball (0 : ℂ) δ, φ (γ ζ) i ≠ 0` using `fun ζ hζ => (hφP _ (hmaps hζ)).2 ⟨i.val, hi⟩`. Establish `h` using `norm_deriv_le_of_punctured hδ (hFd i) hne (hF1 i)`. Rewrite `h` using `[hder i, hF0 i]`. Establish `hl : -Real.log ‖φ z i‖ = 2 * Real.pi * tlog (φ z i)`. Simplify using `only [tlog]`.
+
+Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hl, div_eq_mul_one_div, hδinv, hK]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `hterm : ∀ i, pdiag k (φ z) i * ‖v i‖ ^ 2 ≤ K ^ 2`. Introduce `i`. Unfold `pdiag`. Use `split_ifs with hi`. Establish `hp0 : φ z i ≠ 0` using `hzP.2 ⟨i.val, hi⟩`.
+
+Take `⟨hp, -⟩` from `norm_mul_tlog_lt hp0 (hzP.1 i)`. Establish `h` using `hvbr i hi`. Establish `h2 : ‖v i‖ ^ 2 ≤ (K * (‖φ z i‖ * tlog (φ z i))) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Establish `e1 : ‖φ z i‖ ^ 2 * tlog (φ z i) ^ 2 = (‖φ z i‖ * tlog (φ z i)) ^ 2` using `by ring`. Rewrite using `[e1, one_div_mul_eq_div, div_le_iff₀ (by positivity)]`.
+
+Use polynomial arithmetic with `[sq_nonneg K, sq_nonneg (‖φ z i‖ * tlog (φ z i))]`. Establish `h2 : ‖v i‖ ^ 2 ≤ K ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) (hvall i) 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hsum : gnorm (poincareGram k (φ z)) v ^ 2 ≤ ((n + 1) * K) ^ 2`. Rewrite using `[poincareGram_eq, gnorm_diag_sq _ (pdiag_nonneg k (φ z))]`.
+
+Combine the equalities or inequalities in the displayed calculation. Establish `: (n : ℝ) ≤ (n + 1) ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[sq_nonneg K]`. Establish `hfin` using `(pow_le_pow_iff_left₀ (gnorm_nonneg _ _) (by positivity) two_ne_zero).1 hsum`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem UpperTheory.poincare_derivative_bound :
     ∀ (e n k : ℕ) (hk : k ≤ n) (φ : (Fin e → ℂ) → Fin n → ℂ) (z : Fin e → ℂ) (δ : ℝ), 0 < δ → DifferentiableOn ℂ φ (Metric.ball z δ) → (∀ w ∈ Metric.ball z δ, φ w ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.punctured hk 1) → ∀ w : Fin e → ℂ, GlobalTheory.HermFrame.gnorm (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.poincareGram k (φ z)) (fderiv ℂ φ z w) ≤ ((n : ℝ) + 1) * (8 * Real.pi) * (‖w‖ / δ) := by
   intro e n k hk φ z δ₀ hδ₀pos hφd hφP w

@@ -65,9 +65,15 @@ def strictTransformIdeal (i : ℕ) : (S.ambientLevel i).IdealSheafData :=
     (Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv))
     (fun j ih => Blowup.strictTransform (S.ambientBlowupMorphism j) (S.ambientCenter j) ih) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem strictTransformIdeal_zero :
     S.strictTransformIdeal 0 = Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv) := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem strictTransformIdeal_succ (i : ℕ) :
     S.strictTransformIdeal (i + 1) =
       Blowup.strictTransform (S.ambientBlowupMorphism i) (S.ambientCenter i) (S.strictTransformIdeal i) := rfl
@@ -76,11 +82,17 @@ abbrev strictTransform (i : ℕ) : Scheme.{u} := (S.strictTransformIdeal i).subs
 
 abbrev strictTransformι (i : ℕ) : S.strictTransform i ⟶ S.ambientLevel i := (S.strictTransformIdeal i).subschemeι
 
+/- English proof (translation)
+The claim follows from `Blowup.noetherianSpace_subscheme (S.strictTransformIdeal i)`.
+-/
 theorem noetherianSpace_strictTransform (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.ambientLevel i)] :
     TopologicalSpace.NoetherianSpace ↥(S.strictTransform i) :=
   Blowup.noetherianSpace_subscheme (S.strictTransformIdeal i)
 
+/- English proof (translation)
+Establish `hle : S.strictTransformIdeal i ≤ (S.strictTransformIdeal (i + 1)).map (S.ambientBlowupMorphism i)`. Use `le_trans (Scheme.IdealSheafData.le_map_comap (S.strictTransformIdeal i) (S.ambientBlowupMorphism i)) ?_` and prove the remaining obligations. Conclude with `Scheme.IdealSheafData.map_mono (S.ambientBlowupMorphism i) (Blowup.comap_le_strictTransform (S.ambientBlowupMorphism i) (S.ambientCenter i) (S.strictTransformIdeal i))`. Conclude with `⟨(S.strictTransformIdeal (i + 1)).subschemeMap (S.strictTransformIdeal i) (S.ambientBlowupMorphism i) hle, Scheme.IdealSheafData.subschemeMap_subschemeι _ _ _ hle⟩`.
+-/
 theorem exists_strictTransformMap (i : ℕ) :
     ∃ f : S.strictTransform (i + 1) ⟶ S.strictTransform i,
       f ≫ S.strictTransformι i = S.strictTransformι (i + 1) ≫ S.ambientBlowupMorphism i := by
@@ -93,6 +105,9 @@ theorem exists_strictTransformMap (i : ℕ) :
 
 def strictTransformMap (i : ℕ) : S.strictTransform (i + 1) ⟶ S.strictTransform i := (S.exists_strictTransformMap i).choose
 
+/- English proof (translation)
+The claim follows from `(S.exists_strictTransformMap i).choose_spec`.
+-/
 theorem strictTransformMap_comp_strictTransformι (i : ℕ) :
     S.strictTransformMap i ≫ S.strictTransformι i = S.strictTransformι (i + 1) ≫ S.ambientBlowupMorphism i :=
   (S.exists_strictTransformMap i).choose_spec
@@ -101,6 +116,9 @@ def discardedComponents (i : ℕ) : Set (Set ↥(S.strictTransform i)) :=
   {C | C ∈ irreducibleComponents ↥(S.strictTransform i) ∧
     (S.strictTransformι i).base '' C ⊆ ((S.ambientCenter i).support : Set ↥(S.ambientLevel i))}
 
+/- English proof (translation)
+Unfold both sides. The equivalence is reflexive.
+-/
 theorem mem_discardedComponents_iff (i : ℕ) (C : Set ↥(S.strictTransform i)) :
     C ∈ S.discardedComponents i ↔
       C ∈ irreducibleComponents ↥(S.strictTransform i) ∧
@@ -108,8 +126,16 @@ theorem mem_discardedComponents_iff (i : ℕ) (C : Set ↥(S.strictTransform i))
 
 def discardedLocus (i : ℕ) : Set ↥(S.strictTransform i) := ⋃₀ (S.discardedComponents i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem discardedLocus_eq_sUnion_discardedComponents (i : ℕ) : S.discardedLocus i = ⋃₀ (S.discardedComponents i) := rfl
 
+/- English proof (translation)
+Establish `hfin : (irreducibleComponents ↥(S.strictTransform i)).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `hsub : S.discardedComponents i ⊆ irreducibleComponents ↥(S.strictTransform i)` using `fun C hC => ((S.mem_discardedComponents_iff i C).mp hC).1`. Establish `hfin' : (S.discardedComponents i).Finite` using `Set.Finite.subset hfin hsub`. Use `show IsClosed (⋃₀ (S.discardedComponents i))`. Rewrite using `[Set.sUnion_eq_biUnion]`.
+
+Conclude with `Set.Finite.isClosed_biUnion hfin' (fun C hC => isClosed_of_mem_irreducibleComponents C (hsub hC))`.
+-/
 theorem isClosed_discardedLocus (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
     IsClosed (S.discardedLocus i) := by
@@ -126,6 +152,9 @@ theorem isClosed_discardedLocus (i : ℕ)
 def discardedLocusClosure (i : ℕ) : TopologicalSpace.Closeds ↥(S.strictTransform i) :=
   ⟨closure (S.discardedLocus i), isClosed_closure⟩
 
+/- English proof (translation)
+Use `show closure (S.discardedLocus i) = S.discardedLocus i`. Conclude with `(S.isClosed_discardedLocus i).closure_eq`.
+-/
 theorem coe_discardedLocusClosure (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(S.strictTransform i)] :
     (S.discardedLocusClosure i : Set ↥(S.strictTransform i)) = S.discardedLocus i := by
@@ -135,6 +164,9 @@ theorem coe_discardedLocusClosure (i : ℕ)
 def discardedIdeal (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   Scheme.IdealSheafData.vanishingIdeal (S.discardedLocusClosure i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem discardedIdeal_eq_vanishingIdeal (i : ℕ) :
     S.discardedIdeal i = Scheme.IdealSheafData.vanishingIdeal (S.discardedLocusClosure i) := rfl
 
@@ -144,6 +176,9 @@ abbrev discardedι (i : ℕ) : S.discardedSubscheme i ⟶ S.strictTransform i :=
 
 def discardedLocusClosureCompl (i : ℕ) : (S.strictTransform i).Opens := (S.discardedLocusClosure i).compl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem coe_discardedLocusClosureCompl (i : ℕ) :
     ((S.discardedLocusClosureCompl i : (S.strictTransform i).Opens) : Set ↥(S.strictTransform i)) =
       (S.discardedLocusClosure i : Set ↥(S.strictTransform i))ᶜ := rfl
@@ -151,6 +186,9 @@ theorem coe_discardedLocusClosureCompl (i : ℕ) :
 def comapAmbientCenter (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   (S.ambientCenter i).comap (S.strictTransformι i)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem comapAmbientCenter_eq (i : ℕ) :
     S.comapAmbientCenter i = (S.ambientCenter i).comap (S.strictTransformι i) := rfl
 
@@ -158,6 +196,9 @@ def centerOffDetached (i : ℕ) : (S.strictTransform i).IdealSheafData :=
   Scheme.Hom.ker
     (((S.comapAmbientCenter i).comap (S.discardedLocusClosureCompl i).ι).subschemeι ≫ (S.discardedLocusClosureCompl i).ι)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem centerOffDetached_eq (i : ℕ) :
     S.centerOffDetached i =
       Scheme.Hom.ker
@@ -168,8 +209,14 @@ def discardedUnion (i : ℕ) : Scheme.{u} :=
   Nat.rec (motive := fun _ => Scheme.{u}) (⊥_ Scheme.{u})
     (fun j ih => ih ⨿ S.discardedSubscheme j) i
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem discardedUnion_zero : S.discardedUnion 0 = ⊥_ Scheme.{u} := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem discardedUnion_succ (i : ℕ) :
     S.discardedUnion (i + 1) = (S.discardedUnion i ⨿ S.discardedSubscheme i) := rfl
 
@@ -181,6 +228,9 @@ def transitionMap (i : ℕ) : S.totalSpace (i + 1) ⟶ S.totalSpace i :=
         (S.discardedι i ≫ coprod.inl) :
       S.discardedUnion i ⨿ S.discardedSubscheme i ⟶ S.totalSpace i)
 
+/- English proof (translation)
+Conclude with `coprod.inl_desc _ _`.
+-/
 theorem inl_comp_transitionMap (i : ℕ) :
     (coprod.inl : S.strictTransform (i + 1) ⟶ S.totalSpace (i + 1)) ≫ S.transitionMap i =
       S.strictTransformMap i ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i) := by
@@ -190,12 +240,18 @@ def centerOnTotalSpace (i : ℕ) : (S.totalSpace i).IdealSheafData :=
   Scheme.Hom.ker
     ((S.centerOffDetached i).subschemeι ≫ (coprod.inl : S.strictTransform i ⟶ S.totalSpace i))
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem centerOnTotalSpace_eq_ker (i : ℕ) :
     S.centerOnTotalSpace i =
       Scheme.Hom.ker
         ((S.centerOffDetached i).subschemeι ≫
           (coprod.inl : S.strictTransform i ⟶ S.totalSpace i)) := rfl
 
+/- English proof (translation)
+Use `⟨(coprod.rightUnitor I.subscheme).trans e0.symm, ?_⟩` and prove the remaining obligations. Establish `hunit : (coprod.inl : I.subscheme ⟶ I.subscheme ⨿ (⊥_ Scheme.{u})) ≫ (coprod.rightUnitor I.subscheme).hom = 𝟙 I.subscheme` using `coprod.inl_desc _ _`. Establish `h1 : (coprod.inl : I.subscheme ⟶ I.subscheme ⨿ (⊥_ Scheme.{u})) ≫ ((coprod.rightUnitor I.subscheme).trans e0.symm).hom = e0.inv`. Rewrite using `[Iso.trans_hom, ← Category.assoc, hunit, Category.id_comp, Iso.symm_hom]`. Rewrite using `[← Category.assoc, h1, ← he0, ← Category.assoc, e0.inv_hom_id, Category.id_comp]`.
+-/
 private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u}} (I : Z.IdealSheafData)
     (g : W ⟶ Z) (e0 : W ≅ I.subscheme) (he0 : e0.hom ≫ I.subschemeι = g) :
     ∃ e : (I.subscheme ⨿ (⊥_ Scheme.{u})) ≅ W,
@@ -209,6 +265,11 @@ private theorem exists_coprodInitialIso_inl_comp_eq_subschemeι {Z W : Scheme.{u
     rw [Iso.trans_hom, ← Category.assoc, hunit, Category.id_comp, Iso.symm_hom]
   rw [← Category.assoc, h1, ← he0, ← Category.assoc, e0.inv_hom_id, Category.id_comp]
 
+/- English proof (translation)
+Establish `hci2 : AlgebraicGeometry.IsClosedImmersion (Scheme.Hom.ker f).subschemeι` using `inferInstance`. Establish `hk : Scheme.Hom.ker (Scheme.Hom.ker f).subschemeι = Scheme.Hom.ker f` using `Scheme.IdealSheafData.ker_subschemeι _`. Establish `hα : AlgebraicGeometry.IsClosedImmersion.lift (Scheme.Hom.ker f).subschemeι f (le_of_eq hk) ≫ (Scheme.Hom.ker f).subschemeι = f` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`. Establish `hβ : AlgebraicGeometry.IsClosedImmersion.lift f (Scheme.Hom.ker f).subschemeι (le_of_eq hk.symm) ≫ f = (Scheme.Hom.ker f).subschemeι` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`. Establish `hm1 : CategoryTheory.Mono f` using `inferInstance`.
+
+Establish `hm2 : CategoryTheory.Mono (Scheme.Hom.ker f).subschemeι` using `inferInstance`. Use `⟨⟨AlgebraicGeometry.IsClosedImmersion.lift (Scheme.Hom.ker f).subschemeι f (le_of_eq hk), AlgebraicGeometry.IsClosedImmersion.lift f (Scheme.Hom.ker f).subschemeι (le_of_eq hk.symm), ?_, ?_⟩, hα⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono f, Category.assoc, hβ, hα, Category.id_comp]`. Rewrite using `[← cancel_mono (Scheme.Hom.ker f).subschemeι, Category.assoc, hα, hβ, Category.id_comp]`.
+-/
 private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
     [AlgebraicGeometry.IsClosedImmersion f] :
     ∃ e : W ≅ (Scheme.Hom.ker f).subscheme,
@@ -230,6 +291,9 @@ private theorem exists_iso_ker_subscheme {W V : Scheme.{u}} (f : W ⟶ V)
   · rw [← cancel_mono f, Category.assoc, hβ, hα, Category.id_comp]
   · rw [← cancel_mono (Scheme.Hom.ker f).subschemeι, Category.assoc, hα, hβ, Category.id_comp]
 
+/- English proof (translation)
+Use `S.emb_closedImmersion` as an intermediate fact. Establish `hci : AlgebraicGeometry.IsClosedImmersion (S.emb ≫ S.ambientBlowups.isoZero.inv)` using `inferInstance`. Take `⟨e0, he0⟩` from `exists_iso_ker_subscheme (S.emb ≫ S.ambientBlowups.isoZero.inv)`. Conclude with `exists_coprodInitialIso_inl_comp_eq_subschemeι (Scheme.Hom.ker (S.emb ≫ S.ambientBlowups.isoZero.inv)) (S.emb ≫ S.ambientBlowups.isoZero.inv) e0 he0`.
+-/
 theorem exists_totalSpaceZeroIso :
     ∃ e : S.totalSpace 0 ≅ Y,
       (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ e.hom ≫
@@ -243,6 +307,9 @@ theorem exists_totalSpaceZeroIso :
 
 def totalSpaceZeroIso : S.totalSpace 0 ≅ Y := S.exists_totalSpaceZeroIso.choose
 
+/- English proof (translation)
+The claim follows from `S.exists_totalSpaceZeroIso.choose_spec`.
+-/
 theorem totalSpaceZeroIso_spec :
     (coprod.inl : S.strictTransform 0 ⟶ S.totalSpace 0) ≫ S.totalSpaceZeroIso.hom ≫
         (S.emb ≫ S.ambientBlowups.isoZero.inv) = S.strictTransformι 0 :=
@@ -251,8 +318,14 @@ theorem totalSpaceZeroIso_spec :
 def tower : ℕᵒᵖ ⥤ Scheme.{u} :=
   (Functor.ofSequence (fun i => (S.transitionMap i).op)).leftOp
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem tower_obj (i : ℕ) : S.tower.obj (Opposite.op i) = S.totalSpace i := rfl
 
+/- English proof (translation)
+Use `show ((Functor.ofSequence fun j => (S.transitionMap j).op).map (homOfLE (Nat.le_succ i))).unop = S.transitionMap i`. Rewrite using `[Functor.ofSequence_map_homOfLE_succ]`. Both sides reduce to the same expression.
+-/
 theorem tower_map_succ (i : ℕ) :
     S.tower.map (homOfLE (Nat.le_succ i)).op = S.transitionMap i := by
   show ((Functor.ofSequence fun j => (S.transitionMap j).op).map (homOfLE (Nat.le_succ i))).unop
@@ -270,12 +343,24 @@ def blowupSequence (h : S.TransitionsAreBlowups) : SequenceOfBlowups Y where
   center := S.centerOnTotalSpace
   isBlowup := h
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupSequence_length (h : S.TransitionsAreBlowups) : (S.blowupSequence h).length = S.ambientLength := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupSequence_tower (h : S.TransitionsAreBlowups) : (S.blowupSequence h).tower = S.tower := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem blowupSequence_isoObjZero (h : S.TransitionsAreBlowups) : (S.blowupSequence h).isoZero = S.totalSpaceZeroIso := rfl
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 @[simp] theorem blowupSequence_center (h : S.TransitionsAreBlowups) (i : ℕ) :
     (S.blowupSequence h).center i = S.centerOnTotalSpace i := rfl
 

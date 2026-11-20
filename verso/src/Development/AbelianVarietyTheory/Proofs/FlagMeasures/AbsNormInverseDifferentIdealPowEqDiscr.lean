@@ -6,6 +6,9 @@ open scoped TensorProduct ENNReal nonZeroDivisors Classical
 
 namespace GlobalTheory.SnMass.VolN
 
+/- English proof (translation)
+Introduce `K _ _ j`. Rewrite using `[dInv, map_pow, map_inv₀, FractionalIdeal.coeIdeal_absNorm (K := K), NumberField.absNorm_differentIdeal K (𝓞 K), Nat.cast_natAbs]`. Use `push_cast`. Rewrite using `[inv_pow]`.
+-/
 theorem absNorm_dInv_eq_abs_discr_pow_inv :
     ∀ (K : Type) [Field K] [NumberField K] (j : ℕ),
       (FractionalIdeal.absNorm (dInv K j) : ℝ) = (|(discr K : ℝ)| ^ j)⁻¹ := by

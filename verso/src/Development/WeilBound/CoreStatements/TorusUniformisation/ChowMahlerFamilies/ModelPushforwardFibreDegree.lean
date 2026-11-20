@@ -41,10 +41,18 @@ def loc (φ : MRing ι R →+* L) (𝒲 : Set (Ideal (MRing ι R))) : Subring L 
 variable {φ : MRing ι R →+* L} {𝒲 : Set (Ideal (MRing ι R))}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `Subring.subset_closure ⟨F, G, h⟩`.
+-/
 theorem Rep.mem {z : L} {F G : MRing ι R} (h : Rep φ 𝒲 z F G) : z ∈ loc φ 𝒲 :=
   Subring.subset_closure ⟨F, G, h⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨b, hF, hG⟩` from `h.hom`. Take `⟨b', hF', hG'⟩` from `h'.hom`. Use `⟨⟨b + b', IsWeightedHomogeneous.mul hF hF', IsWeightedHomogeneous.mul hG hG'⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero h.ne h'.ne`.
+
+Introduce `W hW hm`. Conclude with `((hp W hW).mem_or_mem hm).elim (h.avoid W hW) (h'.avoid W hW)`. Rewrite using `[h.eq, h'.eq, map_mul, map_mul, div_mul_div_comm]`.
+-/
 theorem Rep.mul (hp : ∀ W ∈ 𝒲, W.IsPrime) {z z' : L} {F G F' G' : MRing ι R} (h : Rep φ 𝒲 z F G)
     (h' : Rep φ 𝒲 z' F' G') : Rep φ 𝒲 (z * z') (F * F') (G * G') := by
   obtain ⟨b, hF, hG⟩ := h.hom
@@ -56,6 +64,9 @@ theorem Rep.mul (hp : ∀ W ∈ 𝒲, W.IsPrime) {z z' : L} {F G F' G' : MRing �
   · rw [h.eq, h'.eq, map_mul, map_mul, div_mul_div_comm]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨b, hF, hG⟩` from `h.hom`. Take `⟨b', hF', hG'⟩` from `h'.hom`. Use `⟨⟨b + b', IsWeightedHomogeneous.add (IsWeightedHomogeneous.mul hF hG') (IsWeightedHomogeneous.mul hG hF'), IsWeightedHomogeneous.mul hG hG'⟩, (h.mul hp h').ne, (h.mul hp h').avoid, ?_⟩` and prove the remaining obligations. Rewrite using `[h.eq, h'.eq, map_add, map_mul, map_mul, map_mul, div_add_div _ _ h.ne h'.ne]`.
+-/
 theorem Rep.add (hp : ∀ W ∈ 𝒲, W.IsPrime) {z z' : L} {F G F' G' : MRing ι R} (h : Rep φ 𝒲 z F G)
     (h' : Rep φ 𝒲 z' F' G') : Rep φ 𝒲 (z + z') (F * G' + G * F') (G * G') := by
   obtain ⟨b, hF, hG⟩ := h.hom
@@ -66,11 +77,23 @@ theorem Rep.add (hp : ∀ W ∈ 𝒲, W.IsPrime) {z z' : L} {F G F' G' : MRing �
   rw [h.eq, h'.eq, map_add, map_mul, map_mul, map_mul, div_add_div _ _ h.ne h'.ne]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨⟨0, isWeightedHomogeneous_C _ _, isWeightedHomogeneous_one _ _⟩, by simp, fun W hW => (Ideal.ne_top_iff_one W).mp (hp W hW).ne_top, by simp⟩`.
+-/
 theorem rep_C (hp : ∀ W ∈ 𝒲, W.IsPrime) (r : R) : Rep φ 𝒲 (φ (C r)) (C r) 1 :=
   ⟨⟨0, isWeightedHomogeneous_C _ _, isWeightedHomogeneous_one _ _⟩, by simp,
     fun W hW => (Ideal.ne_top_iff_one W).mp (hp W hW).ne_top, by simp⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use `⟨fun h => ?_, fun ⟨F, G, h⟩ => h.mem⟩` and prove the remaining obligations. Proceed by induction on `h using Subring.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨C 0, 1, by simpa using rep_C (φ := φ) hp 0⟩`. Consider the case `one => exact ⟨C 1, 1, by simpa using rep_C (φ := φ) hp 1⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨F, G, h⟩` from `hx`. Take `⟨F', G', h'⟩` from `hy`. Conclude with `⟨_, _, h.add hp h'⟩`. Consider the case `neg x _ hx`.
+
+Take `⟨F, G, h⟩` from `hx`. Conclude with `⟨_, _, by simpa using (rep_C (φ := φ) hp (-1)).mul hp h⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨F, G, h⟩` from `hx`. Take `⟨F', G', h'⟩` from `hy`.
+
+Conclude with `⟨_, _, h.mul hp h'⟩`.
+-/
 theorem mem_loc (hp : ∀ W ∈ 𝒲, W.IsPrime) {z : L} : z ∈ loc φ 𝒲 ↔ ∃ F G, Rep φ 𝒲 z F G := by
   refine ⟨fun h => ?_, fun ⟨F, G, h⟩ => h.mem⟩
   induction h using Subring.closure_induction with
@@ -90,10 +113,24 @@ theorem mem_loc (hp : ∀ W ∈ 𝒲, W.IsPrime) {z : L} : z ∈ loc φ 𝒲 ↔
     exact ⟨_, _, h.mul hp h'⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `Subring.closure_mono fun _ ⟨F, G, hr⟩ => ⟨F, G, hr.hom, hr.ne, fun W hW => hr.avoid W (h hW), hr.eq⟩`.
+-/
 theorem loc_anti {𝒲' : Set (Ideal (MRing ι R))} (h : 𝒲 ⊆ 𝒲') : loc φ 𝒲' ≤ loc φ 𝒲 :=
   Subring.closure_mono fun _ ⟨F, G, hr⟩ => ⟨F, G, hr.hom, hr.ne, fun W hW => hr.avoid W (h hW), hr.eq⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `hne : ∀ {z F G}, Rep φ 𝒲 z F G → ψ G ≠ 0` using `fun h => by`. Take `⟨b, -, hG⟩` from `h.hom`. Conclude with `h1 _ b hG h.ne h.avoid`. Establish `wd : ∀ {z F G F' G'}, Rep φ 𝒲 z F G → Rep φ 𝒲 z F' G' → ψ F / ψ G = ψ F' / ψ G'`. Introduce `z F G F' G' h h'`.
+
+Take `⟨b, hF, hG⟩` from `h.hom`. Take `⟨b', hF', hG'⟩` from `h'.hom`. Establish `e` using `h.eq.symm.trans h'.eq`. Rewrite `e` using `[div_eq_div_iff h.ne h'.ne]`. Rewrite using `[div_eq_div_iff (hne h) (hne h'), ← sub_eq_zero, ← map_mul, ← map_mul, ← map_sub]`.
+
+Use `h0 _ (b + b') ?_ (by rw [map_sub, map_mul, map_mul, e, sub_self])` and prove the remaining obligations. Use `(weightedHomogeneousSubmodule R (blockWeight ι) (b + b')).sub_mem (IsWeightedHomogeneous.mul hF hG') ?_` and prove the remaining obligations. Rewrite using `[add_comm]`. Conclude with `IsWeightedHomogeneous.mul hF' hG`. Use `choose Fz Gz hz using fun z : loc φ 𝒲 => (mem_loc hp).mp z.2`.
+
+Use `⟨{ toFun := fun z => ψ (Fz z) / ψ (Gz z), map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, fun z F G h => wd (hz z) h⟩` and prove the remaining obligations. Rewrite using `[wd (hz 1) (show Rep φ 𝒲 _ (C 1) 1 by simpa using rep_C (φ := φ) hp 1)]; simp`. Introduce `a b`. Rewrite using `[wd (hz (a * b)) ((hz a).mul hp (hz b)), map_mul, map_mul, div_mul_div_comm]`. Rewrite using `[wd (hz 0) (show Rep φ 𝒲 _ (C 0) 1 by simpa using rep_C (φ := φ) hp 0)]; simp`.
+
+Introduce `a b`. Rewrite using `[wd (hz (a + b)) ((hz a).add hp (hz b)), map_add, map_mul, map_mul, map_mul, div_add_div _ _ (hne (hz a)) (hne (hz b))]`.
+-/
 theorem exists_ev (hp : ∀ W ∈ 𝒲, W.IsPrime) {E : Type} [Field E] (ψ : MRing ι R →+* E)
     (h0 : ∀ F b, IsMultiHomog F b → φ F = 0 → ψ F = 0)
     (h1 : ∀ G b, IsMultiHomog G b → φ G ≠ 0 → (∀ W ∈ 𝒲, G ∉ W) → ψ G ≠ 0) :
@@ -137,10 +174,16 @@ def ffield (φ : MRing ι R →+* L) : Subfield L where
       exact Rep.mem (F := G) (G := F) ⟨⟨b, hb', hb⟩, hF, by simp, by rw [h.eq, inv_div]⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `mem_loc (by simp)`.
+-/
 theorem mem_ffield {z : L} : z ∈ ffield φ ↔ ∃ F G, Rep φ ∅ z F G :=
   mem_loc (by simp)
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Distinguish the cases in `h : φ G = 0`. Rewrite using `[h, div_zero]`. Conclude with `(ffield φ).zero_mem`. Conclude with `mem_ffield.mpr ⟨F, G, ⟨b, hF, hG⟩, h, by simp, rfl⟩`.
+-/
 theorem div_mem_ffield {F G : MRing ι R} {b : K → ℕ} (hF : IsMultiHomog F b)
     (hG : IsMultiHomog G b) : φ F / φ G ∈ ffield φ := by
   by_cases h : φ G = 0
@@ -150,6 +193,13 @@ theorem div_mem_ffield {F G : MRing ι R} {b : K → ℕ} (hF : IsMultiHomog F b
 def dehom (φ : MRing ι R →+* L) (c : ∀ k, ι k) : MRing ι R →+* L :=
   eval₂Hom (φ.comp C) fun v => φ (X v) / φ (X ⟨v.1, c v.1⟩)
 
+/- English proof (translation)
+Set `_ : Algebra R L` to `(φ.comp C).toAlgebra`. Establish `h` using `GenericProjClosureDivisor.pointConeMap_of_homog (fun v : Σ k, ι k => φ (X v) / φ (X ⟨v.1, c v.1⟩)) hF`. Establish `key : (eval fun k => φ (X ⟨k, c k⟩)).comp (pointConeMap R (fun v : Σ k, ι k => φ (X v) / φ (X ⟨v.1, c v.1⟩))).toRingHom = φ`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[pointConeMap, MvPolynomial.algebraMap_apply]`.
+
+Both sides reduce to the same expression. Simplify using `[pointConeMap, hc]`. Establish `h2` using `congrArg (eval fun k => φ (X ⟨k, c k⟩)) h`. Establish `h3 : (eval fun k => φ (X ⟨k, c k⟩)) (pointConeMap R (fun v : Σ k, ι k => φ (X v) / φ (X ⟨v.1, c v.1⟩)) F) = φ F` using `RingHom.congr_fun key F`. Establish `hm : φ (powMonomial b c) ≠ 0`.
+
+Simplify using `only [powMonomial, map_prod, map_pow]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Rewrite using `[eq_div_iff hm, ← h3, h2]`. Simplify using `only [powMonomial, map_prod, map_pow, map_mul, eval_C, eval_X]`. Both sides reduce to the same expression.
+-/
 theorem dehom_eq {c : ∀ k, ι k} (hc : ∀ k, φ (X ⟨k, c k⟩) ≠ 0) {F : MRing ι R} {b : K → ℕ}
     (hF : IsMultiHomog F b) : dehom φ c F = φ F / φ (powMonomial b c) := by
   let _ : Algebra R L := (φ.comp C).toAlgebra
@@ -173,6 +223,9 @@ theorem dehom_eq {c : ∀ k, ι k} (hc : ∀ k, φ (X ⟨k, c k⟩) ≠ 0) {F : 
   rfl
 
 omit [DecidableEq K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `W.primeCompl.prod_mem fun k _ => W.primeCompl.pow_mem (hc k) _`.
+-/
 theorem powMonomial_notMem {W : Ideal (MRing ι R)} (hW : W.IsPrime) {c : ∀ k, ι k}
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι R) ∉ W) (e : K → ℕ) : (powMonomial e c : MRing ι R) ∉ W :=
   W.primeCompl.prod_mem fun k _ => W.primeCompl.pow_mem (hc k) _
@@ -188,18 +241,32 @@ structure Setup (φ : MRing ι R →+* L) (P : Ideal (MRing ι R)) (𝒲 : Set (
 variable {P : Ideal (MRing ι R)}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `W hW` and use `(S.mpW W hW).isPrime`.
+-/
 theorem Setup.prime (S : Setup φ P 𝒲) : ∀ W ∈ 𝒲, W.IsPrime := fun W hW => (S.mpW W hW).isPrime
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨S.mp, S.ker, Set.finite_singleton W, fun _ h => h ▸ S.mpW W hW, fun _ h => h ▸ S.le W hW⟩`.
+-/
 theorem Setup.single (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) : Setup φ P {W} :=
   ⟨S.mp, S.ker, Set.finite_singleton W, fun _ h => h ▸ S.mpW W hW, fun _ h => h ▸ S.le W hW⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `h` and use `hGW (S.le W hW ((S.ker G b hG).mp h))`.
+-/
 theorem Setup.ne (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) {G : MRing ι R}
     {b : K → ℕ} (hG : IsMultiHomog G b) (hGW : G ∉ W) : φ G ≠ 0 :=
   fun h => hGW (S.le W hW ((S.ker G b hG).mp h))
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨e, H, hH, hle, hav⟩` from `exists_form_avoid_primes (insert P S.fin.toFinset) (by`. Introduce `W hW`. Break down `Finset.mem_insert.mp hW with rfl | hW` into its components or cases. Conclude with `⟨S.mp.isPrime, S.mp.multiHomog, S.mp.relevant⟩`. Use `S.mpW W (S.fin.mem_toFinset.mp hW)` as an intermediate fact.
+
+Conclude with `⟨this.isPrime, this.multiHomog, this.relevant⟩) b`. Take `⟨e', rfl⟩` from `exists_add_of_le hle`. Conclude with `⟨e', H, hH, fun h => hav P (Finset.mem_insert_self _ _) ((S.ker H _ hH).mp h), fun W hW => hav W (Finset.mem_insert_of_mem (S.fin.mem_toFinset.mpr hW))⟩`.
+-/
 theorem Setup.avoid (S : Setup φ P 𝒲) (b : K → ℕ) :
     ∃ (e : K → ℕ) (H : MRing ι R), IsMultiHomog H (b + e) ∧ φ H ≠ 0 ∧ ∀ W ∈ 𝒲, H ∉ W := by
   classical
@@ -215,6 +282,9 @@ theorem Setup.avoid (S : Setup φ P 𝒲) (b : K → ℕ) :
 
 omit [∀ k, Fintype (ι k)] in
 
+/- English proof (translation)
+Take `⟨e, H, hH, h0, hav⟩` from `S.avoid b`. Take `⟨i, hi⟩` from `powMonomial_not_mem hQ.isPrime hQ.relevant e`. Conclude with `⟨_, H, hi, ⟨e, isMultiHomog_powMonomial e i⟩, fun F hF => ⟨⟨b + e, IsWeightedHomogeneous.mul hF (isMultiHomog_powMonomial e i), hH⟩, h0, hav, rfl⟩⟩`.
+-/
 theorem Setup.clear (S : Setup φ P 𝒲) (b : K → ℕ) {Q : Ideal (MRing ι R)}
     (hQ : IsMultiProjPrime Q) :
     ∃ u H : MRing ι R, u ∉ Q ∧ (∃ e, IsMultiHomog u e) ∧
@@ -228,11 +298,17 @@ def qm (W : Ideal (MRing ι R)) [W.IsPrime] : MRing ι R →+* FractionRing (MRi
   (algebraMap (MRing ι R ⧸ W) _).comp (Ideal.Quotient.mk W)
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Simplify using `only [qm, RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+-/
 theorem qm_eq_zero (W : Ideal (MRing ι R)) [W.IsPrime] (F : MRing ι R) : qm W F = 0 ↔ F ∈ W := by
   simp only [qm, RingHom.comp_apply, IsFractionRing.to_map_eq_zero_iff,
     Ideal.Quotient.eq_zero_iff_mem]
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `exists_ev S.prime ψ (fun F b hF h => (hψ F).mpr (S.le W hW ((S.ker F b hF).mp h))) (fun G _ _ _ h h' => h W hW ((hψ G).mp h'))`.
+-/
 theorem Setup.exists_res (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) {E : Type}
     [Field E] (ψ : MRing ι R →+* E) (hψ : ∀ F, ψ F = 0 ↔ F ∈ W) :
     ∃ e : loc φ 𝒲 →+* E, ∀ (z : loc φ 𝒲) F G, Rep φ 𝒲 z F G → e z = ψ F / ψ G :=
@@ -244,6 +320,9 @@ def IsVan (φ : MRing ι R →+* L) (𝒲 : Set (Ideal (MRing ι R))) (W : Ideal
   ∀ (z : loc φ 𝒲) F G, Rep φ 𝒲 z F G → (z ∈ 𝔪 ↔ F ∈ W)
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `z F G h`. Rewrite using `[RingHom.mem_ker, he z F G h, div_eq_zero_iff, hψ, hψ]`. Conclude with `⟨fun h' => h'.resolve_right (h.avoid W hW), Or.inl⟩`.
+-/
 theorem isVan_ker {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) {E : Type}
     [Field E] {ψ : MRing ι R →+* E} (hψ : ∀ F, ψ F = 0 ↔ F ∈ W) {e : loc φ 𝒲 →+* E}
     (he : ∀ (z : loc φ 𝒲) F G, Rep φ 𝒲 z F G → e z = ψ F / ψ G) :
@@ -253,6 +332,9 @@ theorem isVan_ker {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) {E : Type}
   exact ⟨fun h' => h'.resolve_right (h.avoid W hW), Or.inl⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use `S.prime W hW` as an intermediate fact. Take `⟨e, he⟩` from `S.exists_res hW (qm W) (qm_eq_zero W)`. Conclude with `⟨_, RingHom.ker_isPrime e, isVan_ker hW (qm_eq_zero W) he⟩`.
+-/
 theorem Setup.exists_van (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲) :
     ∃ 𝔪 : Ideal (loc φ 𝒲), 𝔪.IsPrime ∧ IsVan φ 𝒲 W 𝔪 := by
   have := S.prime W hW
@@ -260,6 +342,11 @@ theorem Setup.exists_van (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W 
   exact ⟨_, RingHom.ker_isPrime e, isVan_ker hW (qm_eq_zero W) he⟩
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `a ha`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight _) a]`. Use `finsum_induction (· ∈ W') W'.zero_mem (fun _ _ => W'.add_mem) (fun c => ?_)` and prove the remaining obligations. Establish `hac` using `(S.mpW W hW).multiHomog a ha c`. Take `⟨u, H, hu, -, hr⟩` from `S.clear c (S.mpW W' hW')`.
+
+Establish `hr'` using `hr _ (weightedHomogeneousComponent_isWeightedHomogeneous (w := blockWeight ι) c a)`. Establish `h1` using `(h ⟨_, hr'.mem⟩ _ _ hr').mpr (W.mul_mem_right _ hac)`. Conclude with `((S.prime W' hW').mem_or_mem ((h' ⟨_, hr'.mem⟩ _ _ hr').mp (hle h1))).resolve_right hu`.
+-/
 theorem IsVan.le_of_le (S : Setup φ P 𝒲) {W W' : Ideal (MRing ι R)} (hW : W ∈ 𝒲) (hW' : W' ∈ 𝒲)
     {𝔪 𝔪' : Ideal (loc φ 𝒲)} (h : IsVan φ 𝒲 W 𝔪) (h' : IsVan φ 𝒲 W' 𝔪') (hle : 𝔪 ≤ 𝔪') :
     W ≤ W' := by
@@ -273,6 +360,15 @@ theorem IsVan.le_of_le (S : Setup φ P 𝒲) {W W' : Ideal (MRing ι R)} (hW : W
   exact ((S.prime W' hW').mem_or_mem ((h' ⟨_, hr'.mem⟩ _ _ hr').mp (hle h1))).resolve_right hu
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Set `_ : Fintype 𝒲` to `S.fin.fintype`. Establish `hsub : (M : Set (loc φ 𝒲)) ⊆ ⋃ W ∈ ((Finset.univ : Finset 𝒲) : Set 𝒲), (𝔪 W : Set _)`. Introduce `z hz`. Assume the negation of the conclusion as `hc`. Simplify using `only [Finset.coe_univ, Set.mem_univ, Set.iUnion_true, Set.mem_iUnion, not_exists, SetLike.mem_coe] at hc`.
+
+Take `⟨F, G, hr⟩` from `(mem_loc S.prime).mp z.2`. Take `⟨b, hF, hG⟩` from `hr.hom`. Establish `hFW : ∀ W ∈ 𝒲, F ∉ W` using `fun W hW h => hc ⟨W, hW⟩ ((hv ⟨W, hW⟩ z F G hr).mpr h)`. Establish `hF0` using `S.ne hne.some_mem hF (hFW _ hne.some_mem)`. Establish `hinv : Rep φ 𝒲 _ G F` using `⟨⟨b, hG, hF⟩, hF0, hFW, rfl⟩`.
+
+Use `hM.ne_top (M.eq_top_of_isUnit_mem hz (IsUnit.of_mul_eq_one ⟨_, hinv.mem⟩ ?_))` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(z : L) * (φ G / φ F) = 1`. Rewrite using `[hr.eq, div_mul_div_cancel₀ hr.ne, div_self hF0]`. Take `⟨W, -, hle⟩` from `(Ideal.subset_union_prime (f := 𝔪) ⟨hne.some, hne.some_mem⟩ ⟨hne.some, hne.some_mem⟩ (fun W _ _ _ => hp W)).mp hsub`.
+
+Conclude with `⟨W, hM.eq_of_le (hp W).ne_top hle⟩`.
+-/
 theorem Setup.max_eq (S : Setup φ P 𝒲) (hne : 𝒲.Nonempty) (𝔪 : 𝒲 → Ideal (loc φ 𝒲))
     (hp : ∀ W, (𝔪 W).IsPrime) (hv : ∀ W, IsVan φ 𝒲 W.1 (𝔪 W)) (M : Ideal (loc φ 𝒲))
     (hM : M.IsMaximal) : ∃ W, M = 𝔪 W := by
@@ -295,6 +391,11 @@ theorem Setup.max_eq (S : Setup φ P 𝒲) (hne : 𝒲.Nonempty) (𝔪 : 𝒲 �
     ⟨hne.some, hne.some_mem⟩ (fun W _ _ _ => hp W)).mp hsub
   exact ⟨W, hM.eq_of_le (hp W).ne_top hle⟩
 
+/- English proof (translation)
+Set `_` to `(Subring.inclusion h).toAlgebra`. Use `(isLocalization_iff _ _).mpr ⟨fun s => ?_, fun z => ?_, fun {x y} hxy => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `h1 s.1 s.2`. Conclude with `IsUnit.of_mul_eq_one ⟨t, ht⟩ (Subtype.ext e)`. Take `⟨a, s, hs, e⟩` from `h2 z z.2`.
+
+Conclude with `⟨(a, ⟨s, hs⟩), Subtype.ext e⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Subtype.val hxy`. Establish `hxy' : x = y` using `Subtype.ext h'`. Rewrite using `[hxy']`.
+-/
 theorem isLocalization_subring {B D : Subring L} (h : B ≤ D) (𝔪 : Ideal B) [𝔪.IsPrime]
     (h1 : ∀ s : B, s ∉ 𝔪 → ∃ t ∈ D, (s : L) * t = 1)
     (h2 : ∀ z ∈ D, ∃ a s : B, s ∉ 𝔪 ∧ z * (s : L) = a) :
@@ -312,6 +413,13 @@ theorem isLocalization_subring {B D : Subring L} (h : B ≤ D) (𝔪 : Ideal B) 
     rw [hxy']
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use `isLocalization_subring _ 𝔪 (fun s hs => ?_) (fun z hz => ?_)` and prove the remaining obligations. Take `⟨F, G, hr⟩` from `(mem_loc S.prime).mp s.2`. Take `⟨b, hF, hG⟩` from `hr.hom`. Establish `hFW : F ∉ W` using `fun h => hs ((hv _ F G hr).mpr h)`. Establish `hF0` using `S.ne hW hF hFW`.
+
+Establish `hinv : Rep φ {W} _ G F` using `⟨⟨b, hG, hF⟩, hF0, fun _ h => h ▸ hFW, rfl⟩`. Use `⟨_, hinv.mem, ?_⟩` and prove the remaining obligations. Rewrite using `[hr.eq, div_mul_div_cancel₀ hr.ne, div_self hF0]`. Take `⟨F, G, hr⟩` from `(mem_loc (S.single hW).prime).mp hz`. Take `⟨b, hF, hG⟩` from `hr.hom`.
+
+Take `⟨u, H, hu, -, hc⟩` from `S.clear b (S.mpW W hW)`. Use `⟨⟨_, (hc F hF).mem⟩, ⟨_, (hc G hG).mem⟩, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `((S.prime W hW).mem_or_mem ((hv ⟨_, (hc G hG).mem⟩ _ _ (hc G hG)).mp h)).elim (hr.avoid W rfl) hu`. Express the relevant statement in the definitionally equal form `z * (φ (G * u) / φ H) = φ (F * u) / φ H`. Rewrite using `[hr.eq, map_mul, map_mul, ← mul_div_assoc, ← mul_assoc, div_mul_cancel₀ _ hr.ne]`.
+-/
 theorem Setup.isLocalization (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲)
     {𝔪 : Ideal (loc φ 𝒲)} [𝔪.IsPrime] (hv : IsVan φ 𝒲 W 𝔪) :
     letI := (Subring.inclusion (loc_anti (φ := φ) (Set.singleton_subset_iff.mpr hW))).toAlgebra
@@ -337,6 +445,21 @@ end Loc
 
 section Abstract
 
+/- English proof (translation)
+Establish `htop : Algebra.adjoin A T = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `b _`. Use `set D := Algebra.adjoin A T`. Set `I : Ideal D` to `{ carrier := {c | (c : B) * b ∈ D} add_mem' := fun {x y} hx hy => by`.
+
+Express the relevant statement in the definitionally equal form `((x : B) + y) * b ∈ D`. Rewrite using `[add_mul]`. Conclude with `D.add_mem hx hy`. Use the proof step `zero_mem' := by`. Express the relevant statement in the definitionally equal form `(0 : B) * b ∈ D`.
+
+Rewrite using `[zero_mul]`. Conclude with `D.zero_mem`. Use the proof step `smul_mem' := fun c x hx => by`. Express the relevant statement in the definitionally equal form `((c : B) * x) * b ∈ D`. Rewrite using `[mul_assoc]`.
+
+Conclude with `D.mul_mem c.2 hx }`. Assume the negation of the conclusion as `hb`. Establish `hI : I ≠ ⊤` using `fun h => hb (by`. Establish `h1 : (1 : D) ∈ I` using `h ▸ Submodule.mem_top`. Establish `h2 : (1 : B) * b ∈ D` using `h1`.
+
+Rewrite using `[one_mul] at h2)` and apply the resulting hypothesis. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal I hI`. Establish `: Algebra.IsIntegral D B` using `Algebra.IsIntegral.tower_top A`. Take `⟨M, hM, hc⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := B) m (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot (algebraMap D B)).mp Subtype.val_injective]`.
+
+Conclude with `bot_le)`. Take `⟨c, hc1, hc2, hc3⟩` from `h M hM b`. Establish `h4 : (⟨c, hc1⟩ : D) ∈ m` using `hle hc3`. Rewrite `h4` using `[← hc]`. Conclude with `hc2 h4`.
+
+Establish `: Algebra.FiniteType A B` using `⟨⟨hT.toFinset, by simpa using htop⟩⟩`. Conclude with `Algebra.IsIntegral.finite`.
+-/
 theorem finite_of_local {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     [Algebra.IsIntegral A B] (T : Set B) (hT : T.Finite)
     (h : ∀ M : Ideal B, M.IsMaximal → ∀ b : B,
@@ -374,6 +497,15 @@ theorem finite_of_local {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
   have : Algebra.FiniteType A B := ⟨⟨hT.toFinset, by simpa using htop⟩⟩
   exact Algebra.IsIntegral.finite
 
+/- English proof (translation)
+Rewrite using `[Subfield.relfinrank_eq_finrank_of_le hKE]`. Use `set Lf := Subfield.extendScalars hKE`. Set `_ : Algebra A K₀` to `((ρ.comp (algebraMap A B)).codRestrict K₀ hA).toAlgebra`. Set `_ : Algebra B Lf` to `(ρ.codRestrict Lf (fun b => hB b)).toAlgebra`. Set `_ : Algebra A Lf` to `((algebraMap B Lf).comp (algebraMap A B)).toAlgebra`.
+
+Establish `_ : IsScalarTower A B Lf` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `_ : IsScalarTower A K₀ Lf` using `IsScalarTower.of_algebraMap_eq (fun a => Subtype.ext rfl)`. Establish `_ : IsFractionRing A K₀`. Use `GroundTheory.Heights₂.Heights.FieldNumbers.isFractionRing_of_div (fun a b h => hinj (hρ (congrArg Subtype.val h :))) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+
+Take `⟨a, a', rfl⟩` from `fracA x hx`. Conclude with `⟨a, a', Subtype.ext rfl⟩`. Establish `_ : IsFractionRing B Lf`. Use `GroundTheory.Heights₂.Heights.FieldNumbers.isFractionRing_of_div (fun a b h => hρ (congrArg Subtype.val h :)) ?_` and prove the remaining obligations. Introduce and unpack `⟨x, hx⟩`.
+
+Take `⟨a, a', rfl⟩` from `fracB x hx`. Conclude with `⟨a, a', Subtype.ext rfl⟩`. Conclude with `(IsFractionRing.finrank_eq A K₀ B Lf).symm`.
+-/
 theorem finrank_eq_relfinrank {A B L : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B]
     [Algebra A B] [Field L] (ρ : B →+* L) (hρ : Function.Injective ρ)
     (hinj : Function.Injective (algebraMap A B)) {K₀ E : Subfield L} (hKE : K₀ ≤ E)
@@ -402,6 +534,11 @@ theorem finrank_eq_relfinrank {A B L : Type} [CommRing A] [IsDomain A] [CommRing
     exact ⟨a, a', Subtype.ext rfl⟩
   exact (IsFractionRing.finrank_eq A K₀ B Lf).symm
 
+/- English proof (translation)
+Set `_ : Algebra A B` to `e.toRingHom.toAlgebra`. Set `f : A ≃ₐ[A] B` to `AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl)`. Unfold `Ring.ord`. Rewrite using `[← Module.length_eq_of_surjective (R := B) (S := A) (M := B ⧸ Ideal.span {e a}) e.surjective]`. Conclude with `(Ideal.quotientEquivAlg (Ideal.span {a}) (Ideal.span {e a}) f (by`.
+
+Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use the proof step `rfl)).toLinearEquiv.length_eq.symm`.
+-/
 theorem ord_ringEquiv {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) (a : A) :
     Ring.ord B (e a) = Ring.ord A a := by
   let _ : Algebra A B := e.toRingHom.toAlgebra
@@ -415,6 +552,11 @@ variable {L : Type} [Field L]
 
 abbrev inclAlg {A B : Subring L} (h : A ≤ B) : Algebra A B := (Subring.inclusion h).toAlgebra
 
+/- English proof (translation)
+Set `_` to `inclAlg h`. Establish `: IsScalarTower A B L` using `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `⟨fun b => ?_⟩` and prove the remaining obligations. Establish `hmem : (b : L) ∈ ⨅ V : {V : ValuationSubring L // (A : Set L) ⊆ V.toSubring}, V.1.toSubring`. Rewrite using `[Subring.mem_iInf]`.
+
+Introduce and unpack `⟨V, hV'⟩`. Conclude with `hV V hV' b.2`. Rewrite `hmem` using `[iInf_valuationSubring_superset, Subring.closure_eq]`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A B L) Subtype.val_injective).mp hmem`.
+-/
 theorem isIntegral_of_valuation {A B : Subring L} (h : A ≤ B)
     (hV : ∀ V : ValuationSubring L, A ≤ V.toSubring → B ≤ V.toSubring) :
     letI := inclAlg h
@@ -430,6 +572,11 @@ theorem isIntegral_of_valuation {A B : Subring L} (h : A ≤ B)
   rw [iInf_valuationSubring_superset, Subring.closure_eq] at hmem
   exact (isIntegral_algHom_iff (IsScalarTower.toAlgHom A B L) Subtype.val_injective).mp hmem
 
+/- English proof (translation)
+Introduce `hB`. Set `_` to `inclAlg h`. Establish `hf : IsField B` using `⟨⟨0, 1, zero_ne_one⟩, mul_comm, fun {a} ha => ⟨⟨_, hB a a.2⟩, Subtype.ext (mul_inv_cancel₀ fun h0 => ha (Subtype.ext h0))⟩⟩`. Establish `hA : IsField A` using `isField_of_isIntegral_of_isField (Subring.inclusion_injective h) hf`. Rewrite `hdim` using `[ringKrullDim_eq_zero_of_isField hA]`.
+
+Conclude with `absurd hdim (by decide)`.
+-/
 theorem not_isField_of_integral {A B : Subring L} (h : A ≤ B) (hdim : ringKrullDim A = 1)
     (hint : letI := inclAlg h; Algebra.IsIntegral A B) : ¬ ∀ b ∈ B, b⁻¹ ∈ B := by
   intro hB
@@ -440,6 +587,19 @@ theorem not_isField_of_integral {A B : Subring L} (h : A ≤ B) (hdim : ringKrul
   rw [ringKrullDim_eq_zero_of_isField hA] at hdim
   exact absurd hdim (by decide)
 
+/- English proof (translation)
+Set `_` to `inclAlg h`. Establish `key : ∀ x ∈ Subring.closure ((A : Set L) ∪ T), ∃ c : B, (c : L) = x ∧ c ∈ Algebra.adjoin A ((↑) ⁻¹' T : Set B)`. Introduce `x hx`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`.
+
+Break down `hx with hx | hx` into its components or cases. Conclude with `⟨algebraMap A B ⟨x, hx⟩, rfl, Subalgebra.algebraMap_mem _ _⟩`. Conclude with `⟨⟨x, hTB hx⟩, rfl, Algebra.subset_adjoin hx⟩`. Consider the case `zero => exact ⟨0, rfl, zero_mem _⟩`. Consider the case `one => exact ⟨1, rfl, one_mem _⟩`.
+
+Consider the case `add x y _ _ hx hy`. Take `⟨c, rfl, hc⟩` from `hx`. Take `⟨d, rfl, hd⟩` from `hy`. Conclude with `⟨c + d, rfl, add_mem hc hd⟩`. Consider the case `neg x _ hx`.
+
+Take `⟨c, rfl, hc⟩` from `hx`. Conclude with `⟨-c, rfl, neg_mem hc⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨c, rfl, hc⟩` from `hx`. Take `⟨d, rfl, hd⟩` from `hy`.
+
+Conclude with `⟨c * d, rfl, mul_mem hc hd⟩`. Use `finite_of_local ((↑) ⁻¹' T : Set B) (hT.preimage Subtype.val_injective.injOn) ?_` and prove the remaining obligations. Introduce `M hM b`. Take `⟨c, h1, h2, h3⟩` from `hl M hM b`. Take `⟨c', e', hc'⟩` from `key _ h1`.
+
+Take `⟨d', f', hd'⟩` from `key _ h3`. Take `rfl : c' = c` from `Subtype.ext e'`. Take `rfl : d' = c' * b` from `Subtype.ext f'`. Conclude with `⟨c', hc', h2, hd'⟩`.
+-/
 theorem finite_subring {A B : Subring L} (h : A ≤ B)
     (hint : letI := inclAlg h; Algebra.IsIntegral A B) (T : Set L) (hT : T.Finite) (hTB : T ⊆ B)
     (hl : ∀ M : Ideal B, M.IsMaximal → ∀ b : B, ∃ c : B, (c : L) ∈ Subring.closure ((A : Set L) ∪ T) ∧
@@ -477,6 +637,11 @@ theorem finite_subring {A B : Subring L} (h : A ≤ B)
   obtain rfl : d' = c' * b := Subtype.ext f'
   exact ⟨c', hc', h2, hd'⟩
 
+/- English proof (translation)
+Set `_` to `inclAlg h`. Use `finrank_eq_relfinrank B.subtype Subtype.val_injective (Subring.inclusion_injective h) hKE (fun a => hA a a.2) (fun b => hB b b.2) (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨a, ha, a', ha', e⟩` from `fracA x hx`. Conclude with `⟨⟨a, ha⟩, ⟨a', ha'⟩, e⟩`. Take `⟨a, ha, a', ha', e⟩` from `fracB x hx`.
+
+Conclude with `⟨⟨a, ha⟩, ⟨a', ha'⟩, e⟩`.
+-/
 theorem rank_subring {A B : Subring L} (h : A ≤ B) {K₀ E : Subfield L} (hKE : K₀ ≤ E)
     (hA : ∀ a ∈ A, a ∈ K₀) (hB : ∀ b ∈ B, b ∈ E)
     (fracA : ∀ x ∈ K₀, ∃ a ∈ A, ∃ a' ∈ A, x = a / a')
@@ -491,6 +656,15 @@ theorem rank_subring {A B : Subring L} (h : A ≤ B) {K₀ E : Subfield L} (hKE 
   · obtain ⟨a, ha, a', ha', e⟩ := fracB x hx
     exact ⟨⟨a, ha⟩, ⟨a', ha'⟩, e⟩
 
+/- English proof (translation)
+Set `_` to `inclAlg h`. Rewrite using `[FiniteBirationalLength.length_quot_maximal_eq_inertiaDeg]`. Establish `hm : (RingHom.ker e).under A = IsLocalRing.maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _)`. Establish `: (RingHom.ker e).LiesOver (IsLocalRing.maximalIdeal A)` using `⟨hm.symm⟩`. Rewrite using `[Ideal.inertiaDeg_eq_of_isMaximal (IsLocalRing.maximalIdeal A)]`.
+
+Use `congr 1`. Use `finrank_eq_relfinrank (RingHom.kerLift e) (RingHom.kerLift_injective e) (FaithfulSMul.algebraMap_injective _ _) hKE (fun a => ?_) (fun b => ?_) (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Conclude with `hA a a.2`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+
+Conclude with `hB b`. Take `⟨a, ha, rfl⟩` from `fracA x hx`. Use `⟨Ideal.Quotient.mk _ ⟨a, ha⟩, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, map_one, div_one]`. Both sides reduce to the same expression.
+
+Take `⟨b, b', rfl⟩` from `fracB x hx`. Conclude with `⟨Ideal.Quotient.mk _ b, Ideal.Quotient.mk _ b', rfl⟩`.
+-/
 theorem res_subring {A B : Subring L} (h : A ≤ B) [IsLocalRing A]
     (hfin : letI := inclAlg h; Module.Finite A B) {E : Type} [Field E] (e : B →+* E)
     (hmax : (RingHom.ker e).IsMaximal) {K₀ E₀ : Subfield E} (hKE : K₀ ≤ E₀)
@@ -520,6 +694,11 @@ theorem res_subring {A B : Subring L} (h : A ≤ B) [IsLocalRing A]
   · obtain ⟨b, b', rfl⟩ := fracB x hx
     exact ⟨Ideal.Quotient.mk _ b, Ideal.Quotient.mk _ b', rfl⟩
 
+/- English proof (translation)
+Set `_` to `inclAlg h`. Set `_` to `fun i => inclAlg (hBD i)`. Establish `: Module.IsTorsionFree A B` using `Module.isTorsionFree_iff_algebraMap_injective.mpr (Subring.inclusion_injective h)`. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.AI.dimOneTorsionFreeFormula A B ⟨α, hα⟩ hdim (fun h' => h0 (congrArg Subtype.val h'))`. Establish `h2` using `GroundTheory.Heights₂.Heights.FieldNumbers.FiniteAlgebraLengthSum.proof A B I 𝔪 hmax hinj hsurj (fun i => D i) hloc ⟨α, hα⟩`.
+
+Rewrite using `[← hδ, ← h1, h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hn i]`. Both sides reduce to the same expression.
+-/
 theorem sum_subring {A B : Subring L} (h : A ≤ B) [IsLocalRing A] [IsNoetherianRing A]
     (hdim : ringKrullDim A = 1) (hfin : letI := inclAlg h; Module.Finite A B) {I : Type} [Fintype I]
     (𝔪 : I → Ideal B) (hmax : ∀ i, (𝔪 i).IsMaximal) (hinj : Function.Injective 𝔪)
@@ -550,6 +729,9 @@ variable {R : Type} [CommRing R] {K : Type} [Fintype K] [DecidableEq K] {ι : K 
   {φ : MRing ι R →+* L} {𝒲 : Set (Ideal (MRing ι R))} {P : Ideal (MRing ι R)}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Introduce `a ha`. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight _) a]`. Conclude with `finsum_induction (· ∈ J) J.zero_mem (fun _ _ => J.add_mem) (fun c => h _ c (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (hI a ha c))`.
+-/
 theorem le_of_forms {I J : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I)
     (h : ∀ F b, IsMultiHomog F b → F ∈ I → F ∈ J) : I ≤ J := by
   intro a ha
@@ -558,9 +740,39 @@ theorem le_of_forms {I J : Ideal (MRing ι R)} (hI : IsMultiHomogIdeal I)
     h _ c (weightedHomogeneousComponent_isWeightedHomogeneous _ _) (hI a ha c))
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+The claim follows from `isWeightedHomogeneous_X R (blockWeight ι) v`.
+-/
 theorem homX (v : Σ k, ι k) : IsMultiHomog (X v : MRing ι R) (Pi.single v.1 1) :=
   isWeightedHomogeneous_X R (blockWeight ι) v
 
+/- English proof (translation)
+Establish `hmax : ∀ k, ∃ i, φ (X ⟨k, i⟩) ≠ 0 ∧ ∀ j, V.valuation (φ (X ⟨k, j⟩)) ≤ V.valuation (φ (X ⟨k, i⟩))`. Introduce `k`. Take `⟨i₀, hi₀⟩` from `S.mp.relevant k`. Take `⟨i, -, hmx⟩` from `Finset.exists_max_image Finset.univ (fun j => V.valuation (φ (X ⟨k, j⟩))) ⟨i₀, Finset.mem_univ _⟩`. Use `⟨i, fun h0 => hi₀ ((S.ker _ _ (homX _)).mp ?_), fun j => hmx j (Finset.mem_univ _)⟩` and prove the remaining obligations.
+
+Use `hmx i₀ (Finset.mem_univ _)` as an intermediate fact. Rewrite `this` using `[h0, map_zero, le_zero_iff]`. Conclude with `(Valuation.zero_iff _).mp this`. Use `choose c hc hcmax using hmax`. Establish `hchart : ∀ p, dehom φ c p ∈ V`.
+
+Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => rw [dehom, eval₂Hom_C]`. Conclude with `hV a`. Consider the case `add p q hp hq => rw [map_add]`.
+
+Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul]`. Use `mul_mem hp ?_` and prove the remaining obligations. Rewrite using `[dehom, eval₂Hom_X', ← V.valuation_le_one_iff, map_div₀]`.
+
+Establish `h0 : V.valuation (φ (X ⟨v.1, c v.1⟩)) ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`. Conclude with `hc v.1`. Conclude with `(div_le_one₀ (zero_lt_iff.mpr h0)).mpr (hcmax v.1 v.2)`. Set `χ : MRing ι R →+* V` to `(dehom φ c).codRestrict V hchart`.
+
+Establish `hχ : ∀ p, (χ p : L) = dehom φ c p` using `fun p => rfl`. Set `ρ : MRing ι R →+* IsLocalRing.ResidueField V` to `(IsLocalRing.residue V).comp χ`. Set `_ : Algebra R (IsLocalRing.ResidueField V)` to `(ρ.comp C).toAlgebra`. Establish `hρ : ∀ F, aeval (fun v => ρ (X v)) F = ρ F` using `fun F => RingHom.congr_fun (show (aeval (fun v => ρ (X v))).toRingHom = ρ from MvPolynomial.ringHom_ext (fun r => aeval_C _ r) (fun v => aeval_X _ v)) F`. Establish `hyform : ∀ F b, IsMultiHomog F b → (F ∈ pointIdeal R (fun v => ρ (X v)) ↔ ρ F = 0)` using `fun F b hF => ⟨fun h => hρ F ▸ GenericProjClosureDivisor.aeval_eq_zero_of_mem h, fun h => GenericProjClosureDivisor.mem_of_homog hF ((hρ F).trans h)⟩`.
+
+Establish `hmon : ∀ b, φ (powMonomial b c) ≠ 0` using `fun b => by`. Simplify using `only [powMonomial, map_prod, map_pow]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Use `⟨pointIdeal R (fun v => ρ (X v)), GenericProjClosureDim.isMultiProjPrime_pointIdeal _ (fun k => ⟨c k, ?_⟩), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : χ (X ⟨k, c k⟩) = 1`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hχ, dehom, eval₂Hom_X']`. Conclude with `div_self (hc k)`. Simplify using `only [ρ, RingHom.comp_apply, h1, map_one]`. Conclude with `one_ne_zero`.
+
+Use `le_of_forms S.mp.multiHomog fun F b hF h => (hyform F b hF).mpr ?_` and prove the remaining obligations. Establish `h0 : χ F = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hχ, dehom_eq hc hF, (S.ker F b hF).mpr h, zero_div]`. Both sides reduce to the same expression.
+
+Simplify using `only [ρ, RingHom.comp_apply, h0, map_zero]`. Introduce `f g b hf hg hgy`. Establish `hgu : IsUnit (χ g)`. Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `fun h => hgy ((hyform g b hg).mpr h)`.
+
+Establish `hg0 : (χ g : L) ≠ 0` using `fun h => hgu.ne_zero (Subtype.ext h)`. Establish `hquot : φ f / φ g = ((χ f * ↑hgu.unit⁻¹ : V) : L)`. Establish `e1 : φ f / φ g = (χ f : L) / (χ g : L)`. Rewrite using `[hχ, hχ, dehom_eq hc hf, dehom_eq hc hg, div_div_div_cancel_right₀ (hmon b)]`. Establish `e2 : (χ g : L) * ((↑hgu.unit⁻¹ : V) : L) = 1`.
+
+Rewrite using `[← Subring.coe_mul, IsUnit.mul_val_inv]`. Both sides reduce to the same expression. Rewrite using `[e1, div_eq_iff hg0, Subring.coe_mul, mul_assoc, mul_comm _ (χ g : L), e2, mul_one]`. Rewrite using `[hquot, ValuationSubring.coe_mem_nonunits_iff, ← IsLocalRing.residue_eq_zero_iff, map_mul, hyform f b hf]`. Use `⟨Subtype.mem _, ?_⟩` and prove the remaining obligations.
+
+Establish `hu : IsLocalRing.residue V (↑hgu.unit⁻¹ : V) ≠ 0` using `(IsLocalRing.residue_ne_zero_iff_isUnit _).mpr (Units.isUnit _)`. Simplify using `only [ρ, RingHom.comp_apply, mul_eq_zero]`. Conclude with `⟨Or.inl, fun h => h.resolve_right hu⟩`.
+-/
 theorem Setup.exists_centre (S : Setup φ P 𝒲) (V : ValuationSubring L) (hV : ∀ r, φ (C r) ∈ V) :
     ∃ y, IsMultiProjPrime y ∧ P ≤ y ∧ ∀ F G b, IsMultiHomog F b → IsMultiHomog G b → G ∉ y →
       φ F / φ G ∈ V ∧ (F ∈ y ↔ φ F / φ G ∈ V.nonunits) := by
@@ -634,6 +846,11 @@ theorem Setup.exists_centre (S : Setup φ P 𝒲) (V : ValuationSubring L) (hV :
     exact ⟨Or.inl, fun h => h.resolve_right hu⟩
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨F, G, hr⟩` from `(mem_loc (S.single hW).prime).mp hz`. Take `⟨b, hF, hG⟩` from `hr.hom`. Take `⟨u, H, hu, -, hc⟩` from `S.clear b (S.mpW W hW)`. Use `⟨⟨_, (hc F hF).mem⟩, ⟨_, (hc G hG).mem⟩, fun h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `((S.prime W hW).mem_or_mem ((hv ⟨_, (hc G hG).mem⟩ _ _ (hc G hG)).mp h)).elim (hr.avoid W rfl) hu`.
+
+Express the relevant statement in the definitionally equal form `z * (φ (G * u) / φ H) = φ (F * u) / φ H`. Rewrite using `[hr.eq, map_mul, map_mul, ← mul_div_assoc, ← mul_assoc, div_mul_cancel₀ _ hr.ne]`.
+-/
 theorem Setup.frac (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ 𝒲)
     {𝔪 : Ideal (loc φ 𝒲)} (hv : IsVan φ 𝒲 W 𝔪) (z : L) (hz : z ∈ loc φ {W}) :
     ∃ a s : loc φ 𝒲, s ∉ 𝔪 ∧ z * (s : L) = a := by
@@ -646,6 +863,33 @@ theorem Setup.frac (S : Setup φ P 𝒲) {W : Ideal (MRing ι R)} (hW : W ∈ �
   · change z * (φ (G * u) / φ H) = φ (F * u) / φ H
     rw [hr.eq, map_mul, map_mul, ← mul_div_assoc, ← mul_assoc, div_mul_cancel₀ _ hr.ne]
 
+/- English proof (translation)
+Establish `: Finite 𝒲` using `S.fin.to_subtype`. Use `choose 𝔪 hp hv using fun W : 𝒲 => S.exists_van W.2`. Use `choose c hc using fun W : 𝒲 => (S.mpW W.1 W.2).relevant`. Establish `hc0 : ∀ W k, φ (X ⟨k, c W k⟩) ≠ 0` using `fun W k => S.ne W.2 (homX _) (hc W k)`. Establish `hrat : ∀ (W : 𝒲) (v : Σ k, ι k), φ (X v) / φ (X ⟨v.1, c W v.1⟩) ∈ loc φ {W.1}` using `fun W v => Rep.mem (F := X v) (G := X ⟨v.1, c W v.1⟩) ⟨⟨_, homX v, homX ⟨v.1, c W v.1⟩⟩, hc0 W v.1, fun _ h => h ▸ hc W v.1, rfl⟩`.
+
+Use `choose a s hs has using fun (W : 𝒲) v => S.frac W.2 (hv W) _ (hrat W v)`. Use `set T : Set L := Set.range (fun p : 𝒲 × (Σ k, ι k) => (a p.1 p.2 : L)) ∪ Set.range (fun p : 𝒲 × (Σ k, ι k) => (s p.1 p.2 : L)) with hT`. Establish `hTB : T ⊆ loc φ 𝒲`. Introduce and unpack `_ (⟨p, rfl⟩ | ⟨p, rfl⟩)`. Conclude with `(a p.1 p.2).2`.
+
+Conclude with `(s p.1 p.2).2`. Use `finite_subring h hint T ((Set.finite_range _).union (Set.finite_range _)) hTB ?_` and prove the remaining obligations. Introduce `M hM b`. Use `set D := Subring.closure ((A : Set L) ∪ T)`. Establish `hDB : D ≤ loc φ 𝒲` using `Subring.closure_le.mpr (Set.union_subset h hTB)`.
+
+Take `⟨W, rfl⟩` from `S.max_eq hne 𝔪 hp hv M hM`. Establish `hnm : ∀ {x y : loc φ 𝒲}, x ∉ 𝔪 W → y ∉ 𝔪 W → x * y ∉ 𝔪 W` using `fun hx hy hxy => ((hp W).mem_or_mem hxy).elim hx hy`. Establish `claim : ∀ p, ∃ d : loc φ 𝒲, d ∉ 𝔪 W ∧ (d : L) ∈ D ∧ (d : L) * dehom φ (c W) p ∈ D`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`.
+
+Consider the case `C r`. Use `⟨1, (Ideal.ne_top_iff_one _).mp (hp W).ne_top, D.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[OneMemClass.coe_one, one_mul, dehom, eval₂Hom_C]`. Conclude with `Subring.subset_closure (Or.inl (hC r))`. Consider the case `add p q hp hq`.
+
+Take `⟨d, h1, h2, h3⟩` from `hp`. Take `⟨d', h1', h2', h3'⟩` from `hq`. Use `⟨d * d', hnm h1 h1', D.mul_mem h2 h2', ?_⟩` and prove the remaining obligations. Establish `e : ((d * d' : loc φ 𝒲) : L) * dehom φ (c W) (p + q) = (d : L) * dehom φ (c W) p * d' + d * (d' * dehom φ (c W) q)`. Rewrite using `[map_add, Subring.coe_mul]`.
+
+Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `D.add_mem (D.mul_mem h3 h2') (D.mul_mem h2 h3')`. Consider the case `mul_X p v hp`. Take `⟨d, h1, h2, h3⟩` from `hp`.
+
+Use `⟨d * s W v, hnm h1 (hs W v), D.mul_mem h2 (Subring.subset_closure (Or.inr (Or.inr ⟨(W, v), rfl⟩))), ?_⟩` and prove the remaining obligations. Establish `e : ((d * s W v : loc φ 𝒲) : L) * dehom φ (c W) (p * X v) = (d : L) * dehom φ (c W) p * a W v`. Rewrite using `[map_mul, Subring.coe_mul, ← has W v]`. Simplify using `only [dehom, eval₂Hom_X']`. Expand and normalize the polynomial expressions, which then agree.
+
+Rewrite using `[e]`. Conclude with `D.mul_mem h3 (Subring.subset_closure (Or.inr (Or.inl ⟨(W, v), rfl⟩)))`. Take `⟨F, G, hr⟩` from `(mem_loc S.prime).mp b.2`. Take `⟨e, hF, hG⟩` from `hr.hom`. Take `⟨d, h1, h2, h3⟩` from `claim F`.
+
+Take `⟨d', h1', h2', h3'⟩` from `claim G`. Establish `hm0 : φ (powMonomial e (c W)) ≠ 0` using `S.ne W.2 (isMultiHomog_powMonomial e _) (powMonomial_notMem (S.prime _ W.2) (hc W) e)`. Establish `hy : Rep φ 𝒲 _ (powMonomial e (c W)) G` using `⟨⟨e, isMultiHomog_powMonomial e _, hG⟩, hr.ne, hr.avoid, rfl⟩`. Establish `hG0` using `hr.ne`. Use `⟨d * ⟨_, hDB h3'⟩, D.mul_mem h2 h3', hnm h1 fun hx => h1' ?_, ?_⟩` and prove the remaining obligations.
+
+Establish `e1 : d' = ⟨_, hDB h3'⟩ * ⟨_, hy.mem⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(d' : L) = (d' : L) * dehom φ (c W) G * (φ (powMonomial e (c W)) / φ G)`. Rewrite using `[dehom_eq (hc0 W) hG]`. Clear the denominators using the available nonvanishing facts.
+
+Rewrite using `[e1]`. Conclude with `Ideal.mul_mem_right _ _ hx`. Establish `e2 : ((d * ⟨_, hDB h3'⟩ : loc φ 𝒲) : L) * b = d' * (d * dehom φ (c W) F)`. Express the relevant statement in the definitionally equal form `(d : L) * ((d' : L) * dehom φ (c W) G) * b = _`. Rewrite using `[hr.eq, dehom_eq (hc0 W) hG, dehom_eq (hc0 W) hF]`.
+
+Clear the denominators using the available nonvanishing facts. Rewrite using `[e2]`. Conclude with `D.mul_mem h2' h3`.
+-/
 theorem Setup.finite (S : Setup φ P 𝒲) (hne : 𝒲.Nonempty) {A : Subring L} (h : A ≤ loc φ 𝒲)
     (hC : ∀ r, φ (C r) ∈ A) (hint : letI := inclAlg h; Algebra.IsIntegral A (loc φ 𝒲)) :
     letI := inclAlg h
@@ -723,6 +967,11 @@ theorem Setup.finite (S : Setup φ P 𝒲) (hne : 𝒲.Nonempty) {A : Subring L}
     exact D.mul_mem h2' h3
 
 omit [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Take `⟨F, G, hr⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `hr.hom`. Take `⟨u, H, hu, ⟨e, hue⟩, hc⟩` from `S.clear b S.mp`. Use `⟨_, (hc F hF).mem, _, (hc G hG).mem, ?_⟩` and prove the remaining obligations. Establish `hu0 : φ u ≠ 0` using `fun h => hu ((S.ker u e hue).mp h)`.
+
+Rewrite using `[hr.eq, div_div_div_cancel_right₀ (hc F hF).ne, map_mul, map_mul, mul_div_mul_right _ _ hu0]`.
+-/
 theorem Setup.ffield_frac (S : Setup φ P 𝒲) (x : L) (hx : x ∈ ffield φ) :
     ∃ a ∈ loc φ 𝒲, ∃ a' ∈ loc φ 𝒲, x = a / a' := by
   obtain ⟨F, G, hr⟩ := mem_ffield.mp hx
@@ -742,6 +991,9 @@ structure Proj (r : MRing ι₀ R →+* MRing ι R) : Prop where
 variable {r : MRing ι₀ R →+* MRing ι R}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K₀] [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `hr.hom`. Take `⟨b, hF, hG⟩` from `h.hom`. Conclude with `⟨⟨τ b, hτ F b hF, hτ G b hG⟩, h.ne, fun W hW => h.avoid _ (h𝒲 W hW), h.eq⟩`.
+-/
 theorem Rep.proj (hr : Proj r) {𝒲₀ : Set (Ideal (MRing ι₀ R))} (h𝒲 : ∀ W ∈ 𝒲, W.comap r ∈ 𝒲₀)
     {z : L} {F G : MRing ι₀ R} (h : Rep (φ.comp r) 𝒲₀ z F G) : Rep φ 𝒲 z (r F) (r G) := by
   obtain ⟨τ, hτ⟩ := hr.hom
@@ -749,17 +1001,26 @@ theorem Rep.proj (hr : Proj r) {𝒲₀ : Set (Ideal (MRing ι₀ R))} (h𝒲 : 
   exact ⟨⟨τ b, hτ F b hF, hτ G b hG⟩, h.ne, fun W hW => h.avoid _ (h𝒲 W hW), h.eq⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K₀] [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+The claim follows from `Subring.closure_mono fun _ ⟨_, _, h⟩ => ⟨_, _, h.proj hr h𝒲⟩`.
+-/
 theorem Proj.loc_le (hr : Proj r) {𝒲₀ : Set (Ideal (MRing ι₀ R))}
     (h𝒲 : ∀ W ∈ 𝒲, W.comap r ∈ 𝒲₀) : loc (φ.comp r) 𝒲₀ ≤ loc φ 𝒲 :=
   Subring.closure_mono fun _ ⟨_, _, h⟩ => ⟨_, _, h.proj hr h𝒲⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K₀] [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+Introduce `x hx`. Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Conclude with `mem_ffield.mpr ⟨_, _, h.proj hr (by simp)⟩`.
+-/
 theorem Proj.ffield_le (hr : Proj r) : ffield (φ.comp r) ≤ ffield φ := by
   intro x hx
   obtain ⟨F, G, h⟩ := mem_ffield.mp hx
   exact mem_ffield.mpr ⟨_, _, h.proj hr (by simp)⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] [Fintype K₀] [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+Take `⟨τ, hτ⟩` from `hr.hom`. Conclude with `⟨hr.comap P S.mp, fun F b hF => S.ker _ _ (hτ F b hF), Set.finite_singleton W, fun _ h => h ▸ hW, fun _ h => h ▸ hPW⟩`.
+-/
 theorem Setup.proj (S : Setup φ P 𝒲) (hr : Proj r) {W : Ideal (MRing ι₀ R)}
     (hW : IsMultiProjPrime W) (hPW : P.comap r ≤ W) : Setup (φ.comp r) (P.comap r) {W} := by
   obtain ⟨τ, hτ⟩ := hr.hom
@@ -767,6 +1028,19 @@ theorem Setup.proj (S : Setup φ P 𝒲) (hr : Proj r) {W : Ideal (MRing ι₀ R
     fun _ h => h ▸ hW, fun _ h => h ▸ hPW⟩
 
 omit [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+Use `isIntegral_of_valuation _ fun V hV => ?_` and prove the remaining obligations. Establish `S₀` using `S.proj hr hW hPW`. Take `⟨τ, hτ⟩` from `hr.hom`. Take `⟨y, hmp, hPy, hcen⟩` from `S.exists_centre V fun a => by`. Rewrite using `[← hr.map_C]`.
+
+Conclude with `hV (rep_C (φ := φ.comp r) S₀.prime a).mem`. Establish `hy₀` using `hr.comap y hmp`. Establish `hle : y.comap r ≤ W`. Use `le_of_forms hy₀.multiHomog fun F b hF hFy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hFW`.
+
+Take `⟨i, hi⟩` from `powMonomial_not_mem hy₀.isPrime hy₀.relevant b`. Establish `hm` using `isMultiHomog_powMonomial (R := R) b i`. Establish `hF0 : φ (r F) ≠ 0` using `S₀.ne (Set.mem_singleton W) hF hFW`. Establish `hm0 : φ (r (powMonomial b i)) ≠ 0` using `fun h => hi (hPy ((S.ker _ _ (hτ _ _ hm)).mp h))`. Establish `h1 : φ (r (powMonomial b i)) / φ (r F) ∈ V` using `hV (Rep.mem (φ := φ.comp r) (F := powMonomial b i) (G := F) ⟨⟨b, hm, hF⟩, hF0, fun _ h => h ▸ hFW, rfl⟩)`.
+
+Establish `h2` using `(hcen _ _ _ (hτ _ _ hF) (hτ _ _ hm) hi).2.mp hFy`. Rewrite `h2` using `[ValuationSubring.mem_nonunits_iff]`. Establish `h3` using `(V.valuation_le_one_iff _).mpr h1`. Establish `h4` using `mul_lt_one_of_lt_of_le h2 h3`. Rewrite `h4` using `[← map_mul, div_mul_div_cancel₀ hm0, div_self hF0, map_one]`.
+
+Conclude with `lt_irrefl _ h4`. Introduce `z hz`. Take `⟨F, G, h⟩` from `(mem_loc S.prime).mp hz`. Take `⟨b, hF, hG⟩` from `h.hom`. Rewrite using `[h.eq]`.
+
+Use `(hcen F G b hF hG ?_).1` and prove the remaining obligations. Break down `hy y hmp hPy hle with rfl | h'` into its components or cases. Conclude with `fun hm => h.ne ((S.ker G b hG).mpr hm)`. Conclude with `h.avoid y h'`.
+-/
 theorem Setup.integral (S : Setup φ P 𝒲) (hr : Proj r) {W : Ideal (MRing ι₀ R)}
     (hW : IsMultiProjPrime W) (hPW : P.comap r ≤ W) (hfib : ∀ W' ∈ 𝒲, W'.comap r ∈ ({W} : Set _))
     (hy : ∀ y, IsMultiProjPrime y → P ≤ y → y.comap r ≤ W → y = P ∨ y ∈ 𝒲) :
@@ -805,6 +1079,27 @@ theorem Setup.integral (S : Setup φ P 𝒲) (hr : Proj r) {W : Ideal (MRing ι�
   · exact h.avoid y h'
 
 omit [∀ k, Fintype (ι₀ k)] in
+/- English proof (translation)
+Establish `S₀` using `S.proj hr hW hPW`. Establish `hAB` using `hr.loc_le (φ := φ) hfib`. Establish `hint` using `S.integral hr hW hPW hfib hy`. Establish `hne : 𝒲.Nonempty`. Assume the negation of the conclusion as `hc`.
+
+Rewrite `hc` using `[Set.not_nonempty_iff_eq_empty]`. Use `not_isField_of_integral hAB hdim hint ?_` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `fun b hb => (ffield φ).inv_mem hb`. Establish `hfin` using `S.finite hne hAB (fun a => by`.
+
+Rewrite using `[← hr.map_C]`. Conclude with `(rep_C (φ := φ.comp r) S₀.prime a).mem) hint`. Use `choose e he using fun W' : 𝒲 => S.exists_res W'.2 (ψ W') (hψ W')`. Establish `hv : ∀ W' : 𝒲, IsVan φ 𝒲 W'.1 (RingHom.ker (e W'))` using `fun W' => isVan_ker W'.2 (hψ W') (he W')`. Establish `hp : ∀ W' : 𝒲, (RingHom.ker (e W')).IsPrime` using `fun W' => RingHom.ker_isPrime _`.
+
+Establish `hcov` using `S.max_eq hne _ hp hv`. Establish `hsep : ∀ W₁ W₂ : 𝒲, RingHom.ker (e W₁) ≤ RingHom.ker (e W₂) → W₁ = W₂` using `fun W₁ W₂ h => Subtype.ext (hanti _ W₁.2 _ W₂.2 (IsVan.le_of_le S W₁.2 W₂.2 (hv W₁) (hv W₂) h))`. Establish `hmax : ∀ W' : 𝒲, (RingHom.ker (e W')).IsMaximal`. Introduce `W'`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (hp W').ne_top`.
+
+Take `⟨W'', rfl⟩` from `hcov M hM`. Take `rfl` from `hsep W' W'' hle`. Conclude with `hM`. Use `sum_subring hAB hdim hfin (fun W' => RingHom.ker (e W')) hmax (fun W₁ W₂ h => hsep W₁ W₂ (le_of_eq h)) hcov (fun W' => loc φ {W'.1}) (fun W' => loc_anti (Set.singleton_subset_iff.mpr W'.2)) (fun W' => haveI := hp W'; S.isLocalization W'.2 (hv W')) _ (fun W' => ?_) _ ?_ α hα h0` and prove the remaining obligations. Use `res_subring hAB hfin (e W') (hmax W') hr.ffield_le (fun a ha => ?_) (fun b => ?_) (fun x hx => ?_) (fun x hx => ?_)` and prove the remaining obligations.
+
+Take `⟨F, G, h⟩` from `(mem_loc S₀.prime).mp ha`. Take `⟨b, hF, hG⟩` from `h.hom`. Rewrite using `[he W' ⟨a, hAB ha⟩ _ _ (h.proj hr hfib)]`. Conclude with `div_mem_ffield (φ := (ψ W').comp r) hF hG`. Take `⟨F, G, h⟩` from `(mem_loc S.prime).mp b.2`.
+
+Take `⟨b', hF, hG⟩` from `h.hom`. Rewrite using `[he W' b _ _ h]`. Conclude with `div_mem_ffield hF hG`. Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`.
+
+Establish `hGW : G ∉ W`. Rewrite using `[← Set.mem_singleton_iff.mp (hfib _ W'.2)]`. Conclude with `fun hm => h.ne ((hψ W' _).mpr hm)`. Establish `h' : Rep (φ.comp r) {W} _ F G` using `⟨⟨b, hF, hG⟩, S₀.ne (Set.mem_singleton W) hG hGW, fun _ h => h ▸ hGW, rfl⟩`. Use `⟨_, h'.mem, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[he W' ⟨_, hAB h'.mem⟩ _ _ (h'.proj hr hfib), h.eq]`. Both sides reduce to the same expression. Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`. Take `⟨u, H, hu, -, hc⟩` from `S.clear b (S.mpW _ W'.2)`.
+
+Use `⟨⟨_, (hc F hF).mem⟩, ⟨_, (hc G hG).mem⟩, ?_⟩` and prove the remaining obligations. Establish `hu0 : ψ W' u ≠ 0` using `fun h => hu ((hψ W' u).mp h)`. Establish `hH0 : ψ W' H ≠ 0` using `fun h => (hc F hF).avoid _ W'.2 ((hψ W' H).mp h)`. Rewrite using `[he W' ⟨_, (hc F hF).mem⟩ _ _ (hc F hF), he W' ⟨_, (hc G hG).mem⟩ _ _ (hc G hG), h.eq, div_div_div_cancel_right₀ hH0, map_mul, map_mul, mul_div_mul_right _ _ hu0]`. Conclude with `rank_subring hAB hr.ffield_le (fun a ha => loc_anti (Set.empty_subset _) ha) (fun a ha => loc_anti (Set.empty_subset _) ha) S₀.ffield_frac S.ffield_frac`.
+-/
 theorem Setup.local_sum (S : Setup φ P 𝒲) [Fintype 𝒲] (hr : Proj r) {W : Ideal (MRing ι₀ R)}
     (hW : IsMultiProjPrime W) (hPW : P.comap r ≤ W) (hfib : ∀ W' ∈ 𝒲, W'.comap r ∈ ({W} : Set _))
     (hy : ∀ y, IsMultiProjPrime y → P ≤ y → y.comap r ≤ W → y = P ∨ y ∈ 𝒲)
@@ -887,6 +1182,17 @@ variable {R : Type} [CommRing R] {K : Type} [Fintype K] [DecidableEq K] {ι : K 
   {φ : MRing ι R →+* L} {𝒲 : Set (Ideal (MRing ι R))} {P : Ideal (MRing ι R)}
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `hW` using `Set.mem_singleton W`. Take `⟨e, he⟩` from `exists_ev (φ := φ₀) S.prime φ (fun F b hF h => (S.ker F b hF).mpr ((S₀.ker F b hF).mp h)) (fun G b hG _ h => S.ne hW hG (h W hW))`. Establish `hmem : ∀ z, e z ∈ loc φ {W}`. Introduce `z`. Take `⟨F, G, h⟩` from `(mem_loc S.prime).mp z.2`.
+
+Take `⟨b, hF, hG⟩` from `h.hom`. Conclude with `Rep.mem (F := F) (G := G) ⟨⟨b, hF, hG⟩, S.ne hW hG (h.avoid W hW), h.avoid, he z F G h⟩`. Establish `hinj : Function.Injective e`. Use `(injective_iff_map_eq_zero e).mpr fun z hz => ?_` and prove the remaining obligations. Take `⟨F, G, h⟩` from `(mem_loc S.prime).mp z.2`.
+
+Take `⟨b, hF, hG⟩` from `h.hom`. Rewrite `hz` using `[he z F G h, div_eq_zero_iff]`. Establish `hF0` using `(S.ker F b hF).mp (hz.resolve_right (S.ne hW hG (h.avoid W hW)))`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h.eq, (S₀.ker F b hF).mpr hF0, zero_div]`.
+
+Both sides reduce to the same expression. Establish `hbij : Function.Bijective (e.codRestrict (loc φ {W}) hmem)`. Use `⟨fun a b h => hinj (congrArg Subtype.val h), fun z => ?_⟩` and prove the remaining obligations. Take `⟨F, G, h⟩` from `(mem_loc S.prime).mp z.2`. Take `⟨b, hF, hG⟩` from `h.hom`.
+
+Establish `h' : Rep φ₀ {W} _ F G` using `⟨h.hom, S₀.ne hW hG (h.avoid W hW), h.avoid, rfl⟩`. Conclude with `⟨⟨_, h'.mem⟩, Subtype.ext ((he ⟨_, h'.mem⟩ F G h').trans h.eq.symm)⟩`. Conclude with `⟨RingEquiv.ofBijective _ hbij, he⟩`.
+-/
 theorem Setup.exists_equiv' {W : Ideal (MRing ι R)} (S : Setup φ P {W}) {L₀ : Type} [Field L₀]
     {φ₀ : MRing ι R →+* L₀} (S₀ : Setup φ₀ P {W}) :
     ∃ e : loc φ₀ {W} ≃+* loc φ {W}, ∀ (z : loc φ₀ {W}) F G, Rep φ₀ {W} z F G →
@@ -918,6 +1224,13 @@ theorem Setup.exists_equiv' {W : Ideal (MRing ι R)} (S : Setup φ P {W}) {L₀ 
   exact ⟨RingEquiv.ofBijective _ hbij, he⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `hW` using `Set.mem_singleton W`. Establish `hne : ∀ G, G ∉ W → qm P G ≠ 0` using `fun G hG h => hG (S.le W hW ((qm_eq_zero P G).mp h))`. Establish `heq : homLocRing P W = loc (qm P) {W}`. Unfold `homLocRing loc`. Use `congr 1`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, F, G, hF, hG, hGW, rfl⟩`. Conclude with `⟨F, G, ⟨b, hF, hG⟩, hne G hGW, fun _ h => h ▸ hGW, rfl⟩`. Introduce and unpack `⟨F, G, h⟩`.
+
+Take `⟨b, hF, hG⟩` from `h.hom`. Conclude with `⟨b, F, G, hF, hG, h.avoid W hW, h.eq⟩`. Rewrite using `[heq]`. Take `⟨e, he⟩` from `S.exists_equiv' (φ₀ := qm P) ⟨S.mp, fun F _ _ => qm_eq_zero P F, S.fin, S.mpW, S.le⟩`. Conclude with `⟨e, fun z F G b hF hG hGW hz => he z F G ⟨⟨b, hF, hG⟩, hne G hGW, fun _ h => h ▸ hGW, hz⟩⟩`.
+-/
 theorem Setup.exists_equiv {W : Ideal (MRing ι R)} (S : Setup φ P {W}) [P.IsPrime] :
     ∃ e : homLocRing P W ≃+* loc φ {W}, ∀ (z : homLocRing P W) F G b, IsMultiHomog F b →
       IsMultiHomog G b → G ∉ W → (z : FractionRing (MRing ι R ⧸ P)) = qm P F / qm P G →
@@ -941,6 +1254,13 @@ theorem Setup.exists_equiv {W : Ideal (MRing ι R)} (S : Setup φ P {W}) [P.IsPr
     he z F G ⟨⟨b, hF, hG⟩, hne G hGW, fun _ h => h ▸ hGW, hz⟩⟩
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`.
+
+Conclude with `⟨_, div_mem_ffield hF hG, by rw [map_div₀, h.eq]; rfl⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨F, G, h⟩` from `mem_ffield.mp hz`. Take `⟨b, hF, hG⟩` from `h.hom`. Rewrite using `[h.eq, map_div₀]`.
+
+Conclude with `div_mem_ffield (φ := θ.comp φ) hF hG`.
+-/
 theorem ffield_comp {E : Type} [Field E] (θ : L →+* E) : ffield (θ.comp φ) = (ffield φ).map θ := by
   ext x
   constructor
@@ -955,6 +1275,19 @@ theorem ffield_comp {E : Type} [Field E] (θ : L →+* E) : ffield (θ.comp φ) 
     exact div_mem_ffield (φ := θ.comp φ) hF hG
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Establish `lift : ∀ (F : MRing ι R) b, IsMultiHomog F b → ∃ F₀ : MRing ι R₀, IsMultiHomog F₀ b ∧ MvPolynomial.map π F₀ = F`. Introduce `F b hF`. Take `⟨F₁, rfl⟩` from `MvPolynomial.map_surjective π hπ F`. Use `⟨_, weightedHomogeneousComponent_isWeightedHomogeneous (w := blockWeight ι) b F₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← weightedHomogeneousComponent_map]`.
+
+Conclude with `IsWeightedHomogeneous.weightedHomogeneousComponent_same hF`. Establish `push : ∀ (F : MRing ι R₀) b, IsMultiHomog F b → IsMultiHomog (MvPolynomial.map π F) b`. Introduce `F b hF d hd`. Apply `hF` to reduce the goal to its premises. Introduce `h0`.
+
+Rewrite `hd` using `[coeff_map, h0, map_zero]`. Conclude with `hd rfl`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+
+Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`. Rewrite using `[h.eq]`. Conclude with `div_mem_ffield (push F b hF) (push G b hG)`. Introduce `hx`.
+
+Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`. Take `⟨F₀, hF₀, rfl⟩` from `lift F b hF`. Take `⟨G₀, hG₀, rfl⟩` from `lift G b hG`. Rewrite using `[h.eq]`.
+
+Conclude with `div_mem_ffield (φ := φ.comp (MvPolynomial.map π)) hF₀ hG₀`.
+-/
 theorem ffield_map {R₀ : Type} [CommRing R₀] (π : R₀ →+* R) (hπ : Function.Surjective π) :
     ffield (φ.comp (MvPolynomial.map π)) = ffield φ := by
   have lift : ∀ (F : MRing ι R) b, IsMultiHomog F b →
@@ -986,6 +1319,13 @@ theorem ffield_map {R₀ : Type} [CommRing R₀] (π : R₀ →+* R) (hπ : Func
     exact div_mem_ffield (φ := φ.comp (MvPolynomial.map π)) hF₀ hG₀
 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Apply `le_antisymm` to reduce the goal to its premises. Unfold `GroundTheory.Heights₂.Heights.FieldNumbers.homFracDegZero`. Rewrite using `[IntermediateField.adjoin_toSubfield, Subfield.closure_le]`. Introduce and unpack `x (⟨c, rfl⟩ | ⟨b, f, g, hf, hg, -, rfl⟩)`. Rewrite using `[IsScalarTower.algebraMap_apply F (MRing ι F ⧸ Q)]`.
+
+Conclude with `(rep_C (φ := qm Q) (𝒲 := ∅) (by simp) c).mem`. Conclude with `div_mem_ffield (φ := qm Q) hf hg`. Introduce `x hx`. Take `⟨f, g, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hf, hg⟩` from `h.hom`.
+
+Conclude with `IntermediateField.subset_adjoin _ _ ⟨b, f, g, hf, hg, fun hm => h.ne ((qm_eq_zero Q g).mpr hm), h.eq⟩`.
+-/
 theorem homFrac_eq {F : Type} [Field F] (Q : Ideal (MRing ι F)) [Q.IsPrime] :
     (GroundTheory.Heights₂.Heights.FieldNumbers.homFracDegZero Q).toSubfield = ffield (qm Q) := by
   apply le_antisymm
@@ -1001,6 +1341,21 @@ theorem homFrac_eq {F : Type} [Field F] (Q : Ideal (MRing ι F)) [Q.IsPrime] :
     exact IntermediateField.subset_adjoin _ _
       ⟨b, f, g, hf, hg, fun hm => h.ne ((qm_eq_zero Q g).mpr hm), h.eq⟩
 
+/- English proof (translation)
+Use `set φ := (aeval y : MRing ι O →ₐ[O] L).toRingHom`. Establish `hX : ∀ v, φ (X v) = y v` using `fun v => aeval_X y v`. Establish `hC : ∀ a, φ (C a) = algebraMap O L a` using `fun a => aeval_C y a`. Apply `le_antisymm` to reduce the goal to its premises. Use `choose c hc using hy`.
+
+Establish `hc' : ∀ k, φ (X ⟨k, c k⟩) ≠ 0` using `fun k => by rw [hX]; exact hc k`. Establish `hd : ∀ p, dehom φ c p ∈ fnField O y`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`.
+
+Rewrite using `[dehom, eval₂Hom_C, RingHom.comp_apply, hC]`. Conclude with `Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`.
+
+Rewrite using `[map_mul]`. Use `mul_mem hp ?_` and prove the remaining obligations. Rewrite using `[dehom, eval₂Hom_X', hX, hX]`. Conclude with `Subfield.subset_closure (Or.inr ⟨⟨v.1, v.2, c v.1⟩, rfl⟩)`. Introduce `x hx`.
+
+Take `⟨F, G, h⟩` from `mem_ffield.mp hx`. Take `⟨b, hF, hG⟩` from `h.hom`. Establish `hmon : φ (powMonomial b c) ≠ 0`. Simplify using `only [powMonomial, map_prod, map_pow]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc' k)`.
+
+Rewrite using `[h.eq, ← div_div_div_cancel_right₀ hmon, ← dehom_eq hc' hF, ← dehom_eq hc' hG]`. Conclude with `div_mem (hd F) (hd G)`. Unfold `fnField`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `x (⟨a, rfl⟩ | ⟨q, rfl⟩)`.
+
+Rewrite using `[← hC]`. Conclude with `(rep_C (φ := φ) (𝒲 := ∅) (by simp) a).mem`. Simplify using `only`. Rewrite using `[← hX, ← hX]`. Conclude with `div_mem_ffield (homX ⟨q.1, q.2.1⟩) (homX ⟨q.1, q.2.2⟩)`.
+-/
 theorem ffield_aeval {O : Type} [CommRing O] [Algebra O L] (y : (Σ k, ι k) → L)
     (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) :
     ffield (aeval y : MRing ι O →ₐ[O] L).toRingHom = fnField O y := by
@@ -1039,6 +1394,13 @@ theorem ffield_aeval {O : Type} [CommRing O] [Algebra O L] (y : (Σ k, ι k) →
       rw [← hX, ← hX]
       exact div_mem_ffield (homX ⟨q.1, q.2.1⟩) (homX ⟨q.1, q.2.2⟩)
 
+/- English proof (translation)
+Use `S.mp.isPrime` as an intermediate fact. Establish `hrel` using `(S.mpW W rfl).relevant`. Take `⟨e, he⟩` from `S.exists_equiv`. Take `⟨h1, h2, h3⟩` from `A_s_divcyclehomloc.homLocRingLocal O K ι P S.mp c f hf hfP W hW hrel`. Establish `hz : qm P f / qm P g ∈ homLocRing P W` using `Subring.subset_closure ⟨c, f, g, hf, hg, hgW, rfl⟩`.
+
+Establish `h4` using `t_s_divcyclehomloc O K ι P S.mp c f hf hfP W hW hrel g hg hgW hz`. Use `⟨e.isLocalRing, isNoetherianRing_of_ringEquiv _ e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h3, ?_⟩` and prove the remaining obligations. Establish `e1 : (⟨_, hα⟩ : loc φ {W}) = e ⟨_, hz⟩` using `Subtype.ext (he ⟨_, hz⟩ f g c hf hg hgW rfl).symm`. Rewrite using `[e1, ord_ringEquiv]`. Establish `: W.IsPrime` using `hW.1.1`.
+
+Establish `htop : multAt (P ⊔ Ideal.span {f}) W ≠ ⊤` using `length_localizedQuot_ne_top _ W hW`. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hW, hrel⟩, Int.toNat_natCast, ENat.coe_toNat htop]`. Conclude with `h4.symm`.
+-/
 theorem loc_facts {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {φ : MRing ι O →+* L} {P W : Ideal (MRing ι O)} (S : Setup φ P {W}) {c : K → ℕ}
     {f g : MRing ι O} (hf : IsMultiHomog f c) (hfP : f ∉ P)
@@ -1063,6 +1425,11 @@ theorem loc_facts {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   exact h4.symm
 
 omit [DecidableEq K] in
+/- English proof (translation)
+Establish `: W.IsPrime` using `hW.1.1`. Unfold `divCycle`. Rewrite using `[dif_pos ⟨hW, hrel⟩]`. Use `localizedQuot_nontrivial_of_le (P ⊔ Ideal.span {f}) W hW.1.2` as an intermediate fact. Establish `h0 : multAt (P ⊔ Ideal.span {f}) W ≠ 0` using `(Module.length_pos (R := Localization.AtPrime W) (M := LocalizedModule W.primeCompl (MRing ι O ⧸ (P ⊔ Ideal.span {f})))).ne'`.
+
+Establish `htop` using `length_localizedQuot_ne_top _ W hW`. Conclude with `(ENat.toNat_pos h0 htop).ne'` after adjusting the coercions.
+-/
 theorem divCycle_ne_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {P W : Ideal (MRing ι O)} {f : MRing ι O}
     (hW : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes) (hrel : IsRelevant W) : divCycle P f W ≠ 0 := by
@@ -1077,12 +1444,18 @@ theorem divCycle_ne_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   exact_mod_cast (ENat.toNat_pos h0 htop).ne'
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Assume the negation of the conclusion as `hc`. Conclude with `h (by unfold divCycle; rw [dif_neg hc])`.
+-/
 theorem divCycle_supp {P W : Ideal (MRing ι R)} {f : MRing ι R} (h : divCycle P f W ≠ 0) :
     W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W := by
   by_contra hc
   exact h (by unfold divCycle; rw [dif_neg hc])
 
 omit [Fintype K] [DecidableEq K] [∀ k, Fintype (ι k)] in
+/- English proof (translation)
+Unfold `divCycle`. Apply the tactic sequence `split_ifs <;> positivity`.
+-/
 theorem divCycle_nonneg (P W : Ideal (MRing ι R)) (f : MRing ι R) : 0 ≤ divCycle P f W := by
   unfold divCycle
   split_ifs <;> positivity
@@ -1100,6 +1473,9 @@ def rr (R : Type) [CommRing R] : MRing (fun k => ι' (j k)) R →+* MRing ι' R 
   (rename (blockIncl j ι') : MRing (fun k => ι' (j k)) R →ₐ[R] MRing ι' R).toRingHom
 
 omit [Fintype K] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨fun b => Function.extend j b 0, fun F b hF => by have h := GroundTheory.Heights₂.Heights.FieldNumbers.ContractRelevant.rename_weightedHomogeneousComponent (g := blockIncl j ι') (j := j) (fun _ => rfl) j.injective (blockIncl_injective j ι') b F rw [IsWeightedHomogeneous.weightedH …`.
+-/
 theorem proj_rr (R : Type) [CommRing R] : Proj (rr j ι' R) where
   hom := ⟨fun b => Function.extend j b 0, fun F b hF => by
     have h := GroundTheory.Heights₂.Heights.FieldNumbers.ContractRelevant.rename_weightedHomogeneousComponent (g := blockIncl j ι') (j := j) (fun _ => rfl)
@@ -1116,6 +1492,9 @@ theorem proj_rr (R : Type) [CommRing R] : Proj (rr j ι' R) where
 
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
 
+/- English proof (translation)
+Use `mem_map_iff_of_ker_le (MvPolynomial.map_surjective _ IsLocalRing.residue_surjective) ?_ F` and prove the remaining obligations. Rewrite using `[ker_map_residue_eq_span hϖ, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hW`.
+-/
 theorem mem_special (hϖ : Irreducible ϖ) {K₁ : Type} [Fintype K₁] [DecidableEq K₁] {ι : K₁ → Type}
     {W : Ideal (MRing ι O)} (hW : (C ϖ : MRing ι O) ∈ W) (F : MRing ι O) :
     MvPolynomial.map (IsLocalRing.residue O) F ∈ specialIdeal W ↔ F ∈ W := by
@@ -1124,11 +1503,17 @@ theorem mem_special (hϖ : Irreducible ϖ) {K₁ : Type} [Fintype K₁] [Decidab
   exact hW
 
 omit [Fintype K] [Fintype K'] [∀ k, Fintype (ι' k)] [IsDomain O] [IsDiscreteValuationRing O] in
+/- English proof (translation)
+Rewrite using `[Ideal.mem_comap, (proj_rr j ι' O).map_C]`.
+-/
 theorem C_mem_comap (W : Ideal (MRing ι' O)) :
     (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W.comap (rr j ι' O) ↔ (C ϖ : MRing ι' O) ∈ W := by
   rw [Ideal.mem_comap, (proj_rr j ι' O).map_C]
 
 omit [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Use extensionality with `y`. Take `⟨z, rfl⟩` from `MvPolynomial.map_surjective _ (IsLocalRing.residue_surjective (R := O)) y`. Rewrite using `[mem_special hϖ ((C_mem_comap j ι' W).mpr hW), Ideal.mem_comap, ← mem_special hϖ hW, contractPrime, Ideal.mem_comap, ← map_rename]`. Both sides reduce to the same expression.
+-/
 theorem contract_special (hϖ : Irreducible ϖ) {W : Ideal (MRing ι' O)}
     (hW : (C ϖ : MRing ι' O) ∈ W) :
     contractPrime j (specialIdeal W) = specialIdeal (W.comap (rr j ι' O)) := by
@@ -1139,6 +1524,11 @@ theorem contract_special (hϖ : Irreducible ϖ) {W : Ideal (MRing ι' O)}
   rfl
 
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C (σ := Σ k, ι k))`. Establish `: IsLocalization M (MRing ι (FractionRing O))` using `MvPolynomial.isLocalization (nonZeroDivisors O) (FractionRing O)`. Establish `hdisj : Disjoint (M : Set (MRing ι O)) P`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨m, hm, rfl⟩ hmP`.
+
+Establish `: m ∈ P.comap (C : O →+* MRing ι O)` using `hmP`. Rewrite `this` using `[hT, Ideal.mem_bot]`. Conclude with `nonZeroDivisors.ne_zero hm this`. Establish `hunder : (genFib P).comap (MvPolynomial.map (algebraMap O (FractionRing O))) = P` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) hP hdisj`. Rewrite using `[← Ideal.mem_comap, hunder]`.
+-/
 theorem mem_genFib {K₁ : Type} {ι : K₁ → Type} {P : Ideal (MRing ι O)} (hP : P.IsPrime)
     (hT : P.comap (C : O →+* MRing ι O) = ⊥) (F : MRing ι O) :
     MvPolynomial.map (algebraMap O (FractionRing O)) F ∈ genFib P ↔ F ∈ P := by
@@ -1157,6 +1547,9 @@ theorem mem_genFib {K₁ : Type} {ι : K₁ → Type} {P : Ideal (MRing ι O)} (
 
 omit [IsDomain O] [IsDiscreteValuationRing O] in
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
+/- English proof (translation)
+Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C (σ := Σ k, ι k))`. Establish `: IsLocalization M (MRing ι (FractionRing O))` using `MvPolynomial.isLocalization (nonZeroDivisors O) (FractionRing O)`. Take `⟨⟨a₀, s⟩, h⟩` from `IsLocalization.surj M a`. Conclude with `⟨a₀, _, IsLocalization.map_units _ s, h⟩`.
+-/
 theorem exists_denom {K₁ : Type} {ι : K₁ → Type} (a : MRing ι (FractionRing O)) :
     ∃ (a₀ : MRing ι O) (u : MRing ι (FractionRing O)), IsUnit u ∧
       a * u = MvPolynomial.map (algebraMap O (FractionRing O)) a₀ := by
@@ -1167,6 +1560,11 @@ theorem exists_denom {K₁ : Type} {ι : K₁ → Type} (a : MRing ι (FractionR
   exact ⟨a₀, _, IsLocalization.map_units _ s, h⟩
 
 omit [Fintype K] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Establish `hT' : (y.comap (rr j ι' O)).comap (C : O →+* _) = ⊥`. Rewrite using `[← hT]`. Use extensionality with `a`. Conclude with `C_mem_comap j ι' y`. Use extensionality with `a`.
+
+Take `⟨a₀, u, hu, h⟩` from `exists_denom a`. Rewrite using `[← Ideal.mul_unit_mem_iff_mem _ hu, ← Ideal.mul_unit_mem_iff_mem (genFib _) hu, h, mem_genFib (Ideal.comap_isPrime _ _) hT', Ideal.mem_comap, ← mem_genFib hy hT, contractPrime, Ideal.mem_comap, ← map_rename]`. Both sides reduce to the same expression.
+-/
 theorem contract_generic {y : Ideal (MRing ι' O)} (hy : y.IsPrime)
     (hT : y.comap (C : O →+* MRing ι' O) = ⊥) :
     contractPrime j (genFib y) = genFib (y.comap (rr j ι' O)) := by
@@ -1181,12 +1579,22 @@ theorem contract_generic {y : Ideal (MRing ι' O)} (hy : y.IsPrime)
     contractPrime, Ideal.mem_comap, ← map_rename]
   rfl
 
+/- English proof (translation)
+Take `⟨hsp, -, hrel, -⟩` from `SpecialIdealCorresp.proof O ϖ hϖ K₁ ι W W hmp.isPrime hW`. Conclude with `⟨hsp, SpecialIdealMultiHomog.proof O K₁ ι W hmp.multiHomog, hrel.mp hmp.relevant⟩`.
+-/
 theorem special_mp (hϖ : Irreducible ϖ) {K₁ : Type} [Fintype K₁] [DecidableEq K₁] {ι : K₁ → Type}
     [∀ k, Fintype (ι k)] {W : Ideal (MRing ι O)} (hmp : IsMultiProjPrime W)
     (hW : (C ϖ : MRing ι O) ∈ W) : IsMultiProjPrime (specialIdeal W) := by
   obtain ⟨hsp, -, hrel, -⟩ := SpecialIdealCorresp.proof O ϖ hϖ K₁ ι W W hmp.isPrime hW
   exact ⟨hsp, SpecialIdealMultiHomog.proof O K₁ ι W hmp.multiHomog, hrel.mp hmp.relevant⟩
 
+/- English proof (translation)
+Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h2 (by simp)`. Consider the case `coe a`. Proceed by induction on `a using ENat.recTopCoe with`. Consider the case `top`.
+
+It suffices to derive a contradiction. Establish `h3 : ((⊤ : ℕ∞) + 1 : ℕ∞) ≤ ((N + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h1`. Simplify using `at h3`. Consider the case `coe a`. Establish `h3 : a + 1 ≤ N + 1` using `by exact_mod_cast h1`.
+
+Establish `h4 : N + 1 ≤ a + 1` using `by exact_mod_cast h2`. Conclude with `(by omega : a = N)` after adjusting the coercions.
+-/
 theorem eq_of_le_le {x : WithBot ℕ∞} {N : ℕ} (h1 : x + 1 ≤ ((N + 1 : ℕ) : WithBot ℕ∞))
     (h2 : ((N + 1 : ℕ) : WithBot ℕ∞) ≤ x + 1) : x = N := by
   induction x using WithBot.recBotCoe with
@@ -1204,6 +1612,17 @@ theorem eq_of_le_le {x : WithBot ℕ∞} {N : ℕ} (h1 : x + 1 ≤ ((N + 1 : ℕ
 
 variable {j ι'} {P' : Ideal (MRing ι' O)} {d : ℕ}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `hT : y.comap (C : O →+* MRing ι' O) = ⊥`. Rewrite using `[← hP.noTorsion, ← hc]`. Use extensionality with `a`. Conclude with `(C_mem_comap j ι' y).symm`.
+
+Take `⟨g1, g2, -⟩` from `GenericFibProps.proof O K' ι' y hy hT`. Establish `hgy : IsMultiProjPrime (genFib y)` using `⟨g1, g2, fun k => by`. Take `⟨i, hi⟩` from `hy.relevant k`. Use `⟨i, fun h => hi ((mem_genFib hy.isPrime hT _).mp ?_)⟩` and prove the remaining obligations. Rewrite using `[map_X]⟩` and apply the resulting hypothesis.
+
+Establish `h1` using `ContractRelDimLe.proof (FractionRing O) K K' j ι' _ hgy`. Rewrite `h1` using `[contract_generic j ι' hy.isPrime hT, hc]`. Use `hy.isPrime` as an intermediate fact. Use `hP'.multiProj.isPrime` as an intermediate fact. Establish `d1` using `GenericDimBound.full O K' ι' y hy hT`.
+
+Establish `d2` using `DimStrictDrop.proof _ P' y (lt_of_le_of_ne hle (Ne.symm hne))`. Rewrite `d2` using `[hP'.dim, show d + 1 + Fintype.card K' = (d + Fintype.card K') + 1 by omega]`. Establish `h2` using `relDim_lt_of_dim_lt _ _ (lt_of_two_drops d1 d2)`. Establish `d3` using `GenericDimBound.full O K _ _ hP.multiProj hP.noTorsion`. Establish `d4` using `GenericDimGe.proof O K _ _ hP.multiProj.isPrime hP.noTorsion`.
+
+Rewrite `d3`, `d4` using `[hP.dim, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega]`. Rewrite `h1` using `[relDim_eq_of_dim _ _ (eq_of_le_le d3 d4)]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt h1 h2)`.
+-/
 theorem eq_of_comap_eq (hP' : IsModelOver P' d) (hP : IsModelOver (P'.comap (rr j ι' O)) d)
     {y : Ideal (MRing ι' O)} (hy : IsMultiProjPrime y) (hle : P' ≤ y)
     (hc : y.comap (rr j ι' O) = P'.comap (rr j ι' O)) : y = P' := by
@@ -1237,6 +1656,11 @@ def srd (j : K ↪ K') (W' : Ideal (MRing ι' O)) : ℕ :=
   if h : (specialIdeal W').IsPrime then haveI := h; relDeg j (specialIdeal W') else 0
 
 omit [Fintype K] [Fintype K'] [∀ k, Fintype (ι' k)] in
+/- English proof (translation)
+Establish `hres` using `IsLocalRing.residue_surjective (R := O)`. Establish `e1 : ((qm (specialIdeal W')).comp (MvPolynomial.map (IsLocalRing.residue O))).comp (rr j ι' O) = ((contractFracMap j (specialIdeal W')).toRingHom.comp (qm (contractPrime j (specialIdeal W')))).comp (MvPolynomial.map (IsLocalRing.residue O))`. Use `RingHom.ext fun F => ?_` and prove the remaining obligations. Use `Eq.trans ?_ (contractFracMap_algebraMap j ι' (specialIdeal W') _).symm` and prove the remaining obligations. Rewrite using `[← map_rename]`.
+
+Both sides reduce to the same expression. Rewrite using `[e1, ffield_map _ hres, ffield_map _ hres, ffield_comp, ← homFrac_eq, ← homFrac_eq, srd, dif_pos h]`. Both sides reduce to the same expression.
+-/
 theorem relDeg_eq (W' : Ideal (MRing ι' O)) [h : (specialIdeal W').IsPrime] :
     (ffield (((qm (specialIdeal W')).comp (MvPolynomial.map (IsLocalRing.residue O))).comp
       (rr j ι' O))).relfinrank
@@ -1266,6 +1690,9 @@ variable {K K' : Type} [Fintype K] [DecidableEq K] [Fintype K'] [DecidableEq K']
   {P' : Ideal (MRing ι' O)} {d : ℕ} {c : K → ℕ} {f : MRing (fun k => ι' (j k)) O}
   {W : Ideal (MRing (fun k => ι' (j k)) O)}
 
+/- English proof (translation)
+Apply `relDim_eq_of_dim` to reduce the goal to its premises. Rewrite using `[SpecialQuotDim.proof O ϖ hϖ K₁ ι W hϖW, ComponentDim.proof O ϖ hϖ K₁ ι P d hP c f hf hfP W hW hϖW]`.
+-/
 theorem relDim_special (hϖ : Irreducible ϖ) {K₁ : Type} [Fintype K₁] [DecidableEq K₁]
     {ι : K₁ → Type} [∀ k, Fintype (ι k)] {P W : Ideal (MRing ι O)} (hP : IsModelOver P d)
     {c : K₁ → ℕ} {f : MRing ι O} (hf : IsMultiHomog f c) (hfP : f ∉ P)
@@ -1273,6 +1700,17 @@ theorem relDim_special (hϖ : Irreducible ϖ) {K₁ : Type} [Fintype K₁] [Deci
   apply relDim_eq_of_dim
   rw [SpecialQuotDim.proof O ϖ hϖ K₁ ι W hϖW, ComponentDim.proof O ϖ hϖ K₁ ι P d hP c f hf hfP W hW hϖW]
 
+/- English proof (translation)
+Take `⟨hmin, hrel⟩` from `divCycle_supp hW`. Take `⟨τ, hτ⟩` from `(proj_rr j ι' O).hom`. Use `hmp.isPrime` as an intermediate fact. Establish `hfW : f ∈ W` using `hmin.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hJ : P' ⊔ Ideal.span {rr j ι' O f} ≤ W'` using `sup_le hle ((Ideal.span_singleton_le_iff_mem _).mpr (by rw [← hc] at hfW; exact hfW))`.
+
+Take `⟨Q, hQ, hQW⟩` from `Ideal.exists_minimalPrimes_le hJ`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Distinguish the cases in `hne : Q = W'`. Conclude with `hne ▸ hQ`. It suffices to derive a contradiction.
+
+Establish `hQrel : IsRelevant Q` using `fun k => (hmp.relevant k).imp fun i hi h => hi (hQW h)`. Establish `h1 : W ≤ Q.comap (rr j ι' O)`. Use `hmin.2 ⟨Ideal.comap_isPrime _ _, sup_le (Ideal.comap_mono (le_sup_left.trans hQ.1.2)) ((Ideal.span_singleton_le_iff_mem _).mpr ?_)⟩ (hc ▸ Ideal.comap_mono hQW)` and prove the remaining obligations. Conclude with `hQ.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Establish `hϖQ : (C ϖ : MRing ι' O) ∈ Q` using `(C_mem_comap j ι' Q).mp (h1 hϖW)`.
+
+Establish `d1` using `ComponentDim.proof O ϖ hϖ K' ι' P' d hP' _ _ (hτ f c hf) hfP Q (divCycle_ne_zero hQ hQrel) hϖQ`. Establish `d2` using `DimStrictDrop.proof _ Q W' (lt_of_le_of_ne hQW hne)`. Rewrite `d2` using `[d1]`. Establish `d3` using `withBot_lt_natCast_of_add_one_le _ _ d2`. Rewrite `d3` using `[← SpecialQuotDim.proof O ϖ hϖ K' ι' W' (hQW hϖQ)]`.
+
+Establish `d4` using `ContractRelDimLe.proof _ K K' j ι' _ (special_mp hϖ hmp (hQW hϖQ))`. Rewrite `d4` using `[contract_special j ι' hϖ (hQW hϖQ), hc, relDim_special hϖ hP hf hfP hW hϖW]`. Conclude with `lt_irrefl _ (lt_of_le_of_lt d4 (relDim_lt_of_dim_lt _ _ d3))`.
+-/
 theorem fibre_minimal (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     (hP : IsModelOver (P'.comap (rr j ι' O)) d) (hf : IsMultiHomog f c)
     (hfP : f ∉ P'.comap (rr j ι' O)) (hϖW : (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W)
@@ -1307,6 +1745,31 @@ theorem fibre_minimal (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
   exact lt_irrefl _ (lt_of_le_of_lt d4 (relDim_lt_of_dim_lt _ _ d3))
 
 open Classical in
+/- English proof (translation)
+Take `⟨hmin, hrel⟩` from `divCycle_supp hW`. Establish `hr` using `proj_rr j ι' O`. Take `⟨τ, hτ⟩` from `hr.hom`. Take `⟨hWp, -, hPW, hWh⟩` from `divCycle_ne_zero_facts hP.multiProj.multiHomog hf hW`. Establish `hWmp : IsMultiProjPrime W` using `⟨hWp, hWh, hrel⟩`.
+
+Set `𝒲 : Set (Ideal (MRing ι' O))` to `{W' | IsMultiProjPrime W' ∧ P' ≤ W' ∧ W'.comap (rr j ι' O) = W}`. Establish `hm : ∀ W' ∈ 𝒲, W' ∈ (P' ⊔ Ideal.span {rr j ι' O f}).minimalPrimes` using `fun W' h => fibre_minimal hϖ hP' hP hf hfP hϖW hW h.1 h.2.1 h.2.2`. Establish `S : Setup φ P' 𝒲` using `⟨hP'.multiProj, hφ, (Ideal.finite_minimalPrimes_of_isNoetherianRing _ _).subset hm, fun _ h => h.1, fun _ h => h.2.1⟩`. Set `_ : Fintype 𝒲` to `S.fin.fintype`. Establish `hfib : ∀ W' ∈ 𝒲, W'.comap (rr j ι' O) ∈ ({W} : Set _)` using `fun _ h => h.2.2`.
+
+Establish `hy : ∀ y, IsMultiProjPrime y → P' ≤ y → y.comap (rr j ι' O) ≤ W → y = P' ∨ y ∈ 𝒲`. Introduce `y hy hPy hyW`. Distinguish the cases in `h1 : y.comap (rr j ι' O) = W`. Conclude with `Or.inr ⟨hy, hPy, h1⟩`. Use `Or.inl (eq_of_comap_eq hP' hP hy hPy ?_)` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `h2`. Use `hy.isPrime` as an intermediate fact. Use `hP.multiProj.isPrime` as an intermediate fact. Establish `d1` using `DimStrictDrop.proof _ _ W (lt_of_le_of_ne hyW h1)`. Establish `d2` using `DimStrictDrop.proof _ (P'.comap (rr j ι' O)) (y.comap (rr j ι' O)) (lt_of_le_of_ne (Ideal.comap_mono hPy) (Ne.symm h2))`.
+
+Rewrite `d2` using `[hP.dim, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega]`. Establish `d3` using `lt_of_two_drops d1 d2`. Rewrite `d3` using `[ComponentDim.proof O ϖ hϖ K _ _ d hP c f hf hfP W hW hϖW]`. Conclude with `lt_irrefl _ d3`. Establish `hanti : ∀ W₁ ∈ 𝒲, ∀ W₂ ∈ 𝒲, W₁ ≤ W₂ → W₁ = W₂` using `fun W₁ h₁ W₂ h₂ h => le_antisymm h ((hm W₂ h₂).2 (hm W₁ h₁).1 h)`.
+
+Take `⟨i, hi⟩` from `powMonomial_not_mem hWp hrel c`. Establish `hg` using `isMultiHomog_powMonomial (R := O) c i`. Use `set g : MRing (fun k => ι' (j k)) O := powMonomial c i`. Establish `S₀` using `S.proj hr hWmp hPW`. Establish `hg0 : φ (rr j ι' O g) ≠ 0` using `S₀.ne (Set.mem_singleton W) hg hi`.
+
+Establish `hf0 : φ (rr j ι' O f) ≠ 0` using `fun h => hfP ((S₀.ker f c hf).mp h)`. Establish `hrep : Rep (φ.comp (rr j ι' O)) {W} _ f g` using `⟨⟨c, hf, hg⟩, hg0, fun _ h => h ▸ hi, rfl⟩`. Take `⟨l1, l2, l3, l4⟩` from `loc_facts S₀ hf hfP hmin hg hi hrep.mem`. Establish `hϖ' : ∀ W' : 𝒲, (C ϖ : MRing ι' O) ∈ W'.1` using `fun W' => (C_mem_comap j ι' W'.1).mp (by rw [W'.2.2.2]; exact hϖW)`. Establish `hsp : ∀ W' : 𝒲, (specialIdeal W'.1).IsPrime` using `fun W' => (special_mp hϖ W'.2.1 (hϖ' W')).isPrime`.
+
+Establish `hα' : ∀ W' : 𝒲, φ (rr j ι' O f) / φ (rr j ι' O g) ∈ loc φ {W'.1}` using `fun W' => loc_anti (Set.singleton_subset_iff.mpr W'.2) (hrep.proj hr hfib).mem`. Establish `key` using `S.local_sum hr hWmp hPW hfib hy hanti l3 (fun W' => FractionRing (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W'.1)) (fun W' => (qm (specialIdeal W'.1)).comp (MvPolynomial.map (IsLocalRing.residue O))) (fun W' F => (qm_eq_zero _ _).trans (mem_special hϖ (hϖ' W') F)) _ hr …`. Establish `hterm : ∀ W' : 𝒲, Ring.ord (loc φ {W'.1}) ⟨_, hα' W'⟩ = ((divCycle P' (rr j ι' O f) W'.1).toNat : ℕ∞)` using `fun W' => (loc_facts (S.single W'.2) (hτ f c hf) hfP (hm _ W'.2) (hτ g c hg) (fun h => hi (by rw [← W'.2.2.2]; exact h)) (hα' W')).2.2.2`. Establish `key2 : ∑ W' : 𝒲, ((divCycle P' (rr j ι' O f) W'.1).toNat : ℕ∞) * (srd j W'.1 : ℕ∞) = (((ffield (φ.comp (rr j ι' O))).relfinrank (ffield φ) : ℕ) : ℕ∞) * ((divCycle (P'.comap (rr j ι' O)) f W).toNat : ℕ∞)`. Rewrite using `[← l4, ← key]`.
+
+Use `Finset.sum_congr rfl fun W' _ => ?_` and prove the remaining obligations. Rewrite using `[← hterm W', ← relDeg_eq W'.1]`. Both sides reduce to the same expression. Establish `key3 : ∑ W' : 𝒲, (divCycle P' (rr j ι' O f) W'.1).toNat * srd j W'.1 = (ffield (φ.comp (rr j ι' O))).relfinrank (ffield φ) * (divCycle (P'.comap (rr j ι' O)) f W).toNat`. Apply `Nat.cast_injective (R := ℕ∞)` to reduce the goal to its premises.
+
+Rewrite using `[Nat.cast_sum, Nat.cast_mul, ← key2]`. Conclude with `Finset.sum_congr rfl fun _ _ => Nat.cast_mul _ _`. Establish `key4` using `congrArg (Nat.cast : ℕ → ℤ) key3`. Simplify using `only [Nat.cast_sum, Nat.cast_mul, Int.toNat_of_nonneg (divCycle_nonneg _ _ _)] at key4`. Rewrite using `[← key4, finsum_eq_sum_of_support_subset _ (s := 𝒲.toFinset), Finset.sum_set_coe 𝒲 (f := fun W' => divCycle P' (rr j ι' O f) W' * (srd j W' : ℤ))]`.
+
+Use `Finset.sum_congr rfl fun W' h => ?_` and prove the remaining obligations. Rewrite using `[if_pos (Set.mem_toFinset.mp h).2.2]`. Introduce `W' h`. Rewrite `h` using `[Function.mem_support]`. Rewrite using `[Set.coe_toFinset]`.
+
+Use `split_ifs at h with h1`. Take `⟨a1, a2, a3, a4⟩` from `divCycle_ne_zero_facts hP'.multiProj.multiHomog (hτ f c hf) (left_ne_zero_of_mul h)`. Conclude with `⟨⟨a1, a4, a2⟩, a3, h1⟩`. Conclude with `absurd rfl h`.
+-/
 theorem fibre_degree (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     (hP : IsModelOver (P'.comap (rr j ι' O)) d) (hf : IsMultiHomog f c)
     (hfP : f ∉ P'.comap (rr j ι' O)) (hϖW : (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W)
@@ -1398,6 +1861,29 @@ theorem fibre_degree (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     · exact absurd rfl h
 
 open Classical in
+/- English proof (translation)
+Establish `hr` using `proj_rr j ι' O`. Take `⟨τ, hτ⟩` from `hr.hom`. Establish `key : ∀ W' : Ideal (MRing ι' O), divCycle P' (rr j ι' O f) W' ≠ 0 → W'.comap (rr j ι' O) = W → IsMultiProjPrime W' ∧ P' ≤ W' ∧ IsMultiProjPrime (specialIdeal W') ∧ relDim (specialIdeal W') = (d : ℕ) ∧ contractPrime j (specialIdeal W') = specialIdeal W`. Introduce `W' hW' hcomap`. Take `⟨hWp, hWrel, hle, hWh⟩` from `divCycle_ne_zero_facts hP'.multiProj.multiHomog (hτ f c hf) hW'`.
+
+Establish `hϖ' : (C ϖ : MRing ι' O) ∈ W'` using `(C_mem_comap j ι' W').mp (by rw [hcomap]; exact hϖW)`. Conclude with `⟨⟨hWp, hWh, hWrel⟩, hle, special_mp hϖ ⟨hWp, hWh, hWrel⟩ hϖ', relDim_special hϖ hP' (hτ f c hf) hfP hW' hϖ', by rw [contract_special j ι' hϖ hϖ', hcomap]⟩`. Distinguish the cases in `hW : divCycle (P'.comap (rr j ι' O)) f W ≠ 0`. Establish `hdimW` using `relDim_special hϖ hP hf hfP hW hϖW`. Establish `hterm : ∀ W' : Ideal (MRing ι' O), (if W'.comap (rr j ι' O) = W then divCycle P' (rr j ι' O f) W' * vNum W' (fun i => GroundTheory.Heights₂.Heights.FieldNumbers.pullDeg j (a i)) else 0) = (if W'.comap (rr j ι' O) = W then divCycle P' (rr j ι' O f) W' * (srd j W' : ℤ) else 0) * vN …`.
+
+Introduce `W'`. Use `split_ifs with h1`. Distinguish the cases in `h0 : divCycle P' (rr j ι' O f) W' = 0`. Simplify using `[h0]`. Take `⟨-, -, hmp, hrd, hcon⟩` from `key W' h0 h1`.
+
+Establish `hpf'` using `(GlobalTheory.CompanionTheory.FieldNumbers.projectionFormulaDegree (IsLocalRing.ResidueField O) K K' j ι' (specialIdeal W') hmp d hrd (by rw [hcon]; exact hdimW) a).2`. Rewrite using `[mul_assoc]`. Use `congr 1`. Unfold `vNum srd`. Rewrite using `[dif_pos hmp.isPrime, hpf', hcon]`.
+
+Simplify using the standard rewrite rules. Rewrite using `[finsum_congr hterm, ← finsum_mul, fibre_degree hϖ hP' hP hf hfP hϖW hW φ hφ, mul_assoc]`. Rewrite `hW` using `[not_not]`. Rewrite using `[hW, zero_mul, mul_zero]`. Use `finsum_eq_zero_of_forall_eq_zero fun W' => ?_` and prove the remaining obligations.
+
+Use `split_ifs with h1`. Distinguish the cases in `h0 : divCycle P' (rr j ι' O f) W' = 0`. Rewrite using `[h0, zero_mul]`. Take `⟨hmp', hle, hmp, hrd, hcon⟩` from `key W' h0 h1`. Take `⟨hWmin', -⟩` from `divCycle_supp h0`.
+
+Establish `hWmp` using `hr.comap W' hmp'`. Establish `hPW : P'.comap (rr j ι' O) ≤ W'.comap (rr j ι' O)` using `Ideal.comap_mono hle`. Establish `hxW : f ∈ W'.comap (rr j ι' O)` using `hWmin'.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))`. Rewrite `hWmp`, `hPW`, `hxW` using `[h1]`. Use `hWmp.isPrime` as an intermediate fact.
+
+Establish `hJW : P'.comap (rr j ι' O) ⊔ Ideal.span {f} ≤ W` using `sup_le hPW ((Ideal.span_singleton_le_iff_mem _).mpr hxW)`. Establish `hnmin : W ∉ (P'.comap (rr j ι' O) ⊔ Ideal.span {f}).minimalPrimes` using `fun hWmin => divCycle_ne_zero hWmin hWmp.relevant hW`. Take `⟨Q, hQ, hQW⟩` from `Ideal.exists_minimalPrimes_le hJW`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hQW' : Q < W` using `lt_of_le_of_ne hQW (fun h => hnmin (h ▸ hQ))`.
+
+Establish `hPQ : P'.comap (rr j ι' O) < Q` using `lt_of_le_of_ne (le_sup_left.trans hQ.1.2) (fun h => hfP (h ▸ hQ.1.2 (Ideal.mem_sup_right (Ideal.subset_span rfl))))`. Use `hP.multiProj.isPrime` as an intermediate fact. Establish `hd1` using `DimStrictDrop.proof _ Q W hQW'`. Establish `hd2` using `DimStrictDrop.proof _ _ Q hPQ`. Rewrite `hd2` using `[hP.dim, show d + 1 + Fintype.card K = (d + Fintype.card K) + 1 by omega]`.
+
+Establish `hlt` using `lt_of_two_drops hd1 hd2`. Establish `hltW : relDim (specialIdeal W) < ((d : ℕ) : WithBot (WithTop ℤ))` using `relDim_lt_of_dim_lt _ _ (by rw [SpecialQuotDim.proof O ϖ hϖ K _ W hϖW]; exact hlt)`. Establish `hz` using `ProjectionFormulaContracted.full (IsLocalRing.ResidueField O) K K' j ι' (specialIdeal W') hmp d hrd (by rw [hcon]; exact hltW) a`. Unfold `vNum`. Rewrite using `[hz, mul_zero]`.
+
+Both sides reduce to the same expression.
+-/
 theorem fibre_num (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     (hP : IsModelOver (P'.comap (rr j ι' O)) d) (hf : IsMultiHomog f c)
     (hfP : f ∉ P'.comap (rr j ι' O)) (hϖW : (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W)
@@ -1476,6 +1962,19 @@ theorem fibre_num (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     · rfl
 
 open Classical in
+/- English proof (translation)
+Establish `hZ : (Function.support (divCycle P' (rr j ι' O f))).Finite` using `DivCycleFiniteSupport.proof O K' ι' _ _`. Use `set δ : ℤ := (((ffield (φ.comp (rr j ι' O))).relfinrank (ffield φ) : ℕ) : ℤ) with hδ`. Use `set g : Ideal (MRing ι' O) → ℤ := fun W' => divCycle P' (rr j ι' O f) W' * (if (C ϖ : MRing ι' O) ∈ W' then vNum W' (fun i => GroundTheory.Heights₂.Heights.FieldNumbers.pullDeg j (a i)) else 0) with hg_def`. Establish `hg : Function.support g ⊆ hZ.toFinset` using `fun W' hW' => hZ.mem_toFinset.mpr (Function.support_mul_subset_left _ _ hW')`. Establish `key : ∀ W : Ideal (MRing (fun k => ι' (j k)) O), (∑ W' ∈ hZ.toFinset with W'.comap (rr j ι' O) = W, g W') = δ * (divCycle (P'.comap (rr j ι' O)) f W * (if (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W then vNum W a else 0))`.
+
+Introduce `W`. Distinguish the cases in `hW : (C ϖ : MRing (fun k => ι' (j k)) O) ∈ W`. Rewrite using `[if_pos hW, hδ, ← fibre_num hϖ hP' hP hf hfP hW φ hφ a, finsum_eq_sum_of_support_subset _ (s := hZ.toFinset), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun W' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : W'.comap (rr j ι' O) = W`.
+
+Rewrite using `[if_pos h1, if_pos h1, hg_def] dsimp only`. Rewrite using `[if_pos ((C_mem_comap j ι' W').mp (by rw [h1]; exact hW))]`. Rewrite using `[if_neg h1, if_neg h1]`. Introduce `W' hW'`. Use `hZ.mem_toFinset.mpr ?_` and prove the remaining obligations.
+
+Rewrite `hW'`, the goal using `[Function.mem_support]`. Introduce `h0`. Apply `hW'` to reduce the goal to its premises. Simplify using `[h0]`. Rewrite using `[if_neg hW, mul_zero, mul_zero]`.
+
+Use `Finset.sum_eq_zero fun W' hW' => ?_` and prove the remaining obligations. Establish `h1` using `(Finset.mem_filter.mp hW').2`. Rewrite using `[hg_def]`. Simplify using `only`. Rewrite using `[if_neg (fun h => hW (h1 ▸ (C_mem_comap j ι' W').mpr h)), mul_zero]`.
+
+Unfold `cycEval`. Rewrite using `[mul_finsum]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem push (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
     (hP : IsModelOver (P'.comap (rr j ι' O)) d) (hf : IsMultiHomog f c)
     (hfP : f ∉ P'.comap (rr j ι' O)) {L : Type} [Field L] (φ : MRing ι' O →+* L)
@@ -1529,6 +2028,11 @@ theorem push (hϖ : Irreducible ϖ) (hP' : IsModelOver P' d)
 
 end Main
 
+/- English proof (translation)
+Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `inl k => exact ((Function.Embedding.inl : K ↪ K ⊕ K').injective.extend_apply a 0 k).symm`. Consider the case `inr k`. Rewrite using `[GroundTheory.Heights₂.Heights.FieldNumbers.pullDeg, Function.extend_apply' _ _ _ (by simp)]`.
+
+Both sides reduce to the same expression.
+-/
 theorem pullDeg_eq {K K' : Type} (a : K → ℤ) :
     pullDeg (K' := K') a =
       GroundTheory.Heights₂.Heights.FieldNumbers.pullDeg (Function.Embedding.inl : K ↪ K ⊕ K') a := by
@@ -1539,6 +2043,9 @@ theorem pullDeg_eq {K K' : Type} (a : K → ℤ) :
     rw [GroundTheory.Heights₂.Heights.FieldNumbers.pullDeg, Function.extend_apply' _ _ _ (by simp)]
     rfl
 
+/- English proof (translation)
+Unfold `vNumL vNum intNum mixedDiff`. Rewrite using `[List.ofFn_get, show (fun i => t (l.get i)) = t ∘ l.get from rfl, ← List.map_ofFn, List.ofFn_get]`.
+-/
 theorem vNumL_map {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {K K₁ : Type}
     [DecidableEq K₁] {ι : K₁ → Type} (W : Ideal (MRing ι O)) (l : List (K → ℤ))
     (t : (K → ℤ) → K₁ → ℤ) : vNumL W (l.map t) = vNum W (fun i => t (l.get i)) := by
@@ -1546,11 +2053,17 @@ theorem vNumL_map {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   rw [List.ofFn_get, show (fun i => t (l.get i)) = t ∘ l.get from rfl, ← List.map_ofFn,
     List.ofFn_get]
 
+/- English proof (translation)
+Assemble the required witnesses or components as `⟨GenericProjClosureDivisor.mem_of_homog hF, GenericProjClosureDivisor.aeval_eq_zero_of_mem⟩`.
+-/
 theorem form_mem_point {O : Type} [CommRing O] {L : Type} [Field L] [Algebra O L] {K : Type}
     [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] (y : (Σ k, ι k) → L)
     (F : MRing ι O) (b : K → ℕ) (hF : IsMultiHomog F b) : aeval y F = 0 ↔ F ∈ pointIdeal O y :=
   ⟨GenericProjClosureDivisor.mem_of_homog hF, GenericProjClosureDivisor.aeval_eq_zero_of_mem⟩
 
+/- English proof (translation)
+Rewrite using `[Subfield.relfinrank_eq_finrank_of_le h]`. Establish `e : IntermediateField.adjoin A (B : Set L) = Subfield.extendScalars h` using `le_antisymm (IntermediateField.adjoin_le_iff.mpr fun _ hx => hx) (fun _ hx => IntermediateField.subset_adjoin _ _ hx)`. Rewrite using `[e]`.
+-/
 theorem adjoin_rank {L : Type} [Field L] {A B : Subfield L} (h : A ≤ B) :
     A.relfinrank B = Module.finrank A (IntermediateField.adjoin A (B : Set L)) := by
   rw [Subfield.relfinrank_eq_finrank_of_le h]
@@ -1563,6 +2076,19 @@ end
 
 end PositivityTheory.Xgn.ModelPushforward
 
+/- English proof (translation)
+Introduce `O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hP Ω₁ _ _ _ _ K' _ _ ι' _ z hP' c f hf hfP l hl`. Substitute `hl` using the available equality. Set `j : K ↪ K ⊕ K'` to `Function.Embedding.inl`. Set `r : MRing ι O →+* MRing (Sum.elim ι ι') O` to `PositivityTheory.Xgn.ModelPushforward.rr j (Sum.elim ι ι') O`. Establish `hr : PositivityTheory.Xgn.ModelPushforward.Proj r` using `PositivityTheory.Xgn.ModelPushforward.proj_rr j (Sum.elim ι ι') O`.
+
+Set `φ : MRing (Sum.elim ι ι') O →+* Ω₁` to `(aeval (bcCoord x z) : _ →ₐ[O] Ω₁).toRingHom`. Establish `hφ : ∀ F b, IsMultiHomog F b → (φ F = 0 ↔ F ∈ pointIdeal O (bcCoord x z))` using `PositivityTheory.Xgn.ModelPushforward.form_mem_point _`. Establish `hcomp : φ.comp r = (aeval (fun p => algebraMap Ω Ω₁ (x p)) : MRing ι O →ₐ[O] Ω₁).toRingHom` using `RingHom.ext fun F => aeval_rename (k := liftVar ι') (g := bcCoord x z) (p := F)`. Establish `hval : ∀ F, φ (r F) = algebraMap Ω Ω₁ (aeval x F)` using `fun F => (RingHom.congr_fun hcomp F).trans (MvPolynomial.aeval_algebraMap_apply Ω₁ x F)`. Establish `hcm : (pointIdeal O (bcCoord x z)).comap r = pointIdeal O x`.
+
+Take `⟨τ, hτ⟩` from `hr.hom`. Establish `key : ∀ F b, IsMultiHomog F b → (F ∈ (pointIdeal O (bcCoord x z)).comap r ↔ F ∈ pointIdeal O x)` using `fun F b hF => by`. Rewrite using `[Ideal.mem_comap, ← hφ _ _ (hτ F b hF), hval, map_eq_zero, PositivityTheory.Xgn.ModelPushforward.form_mem_point x F b hF]`. Conclude with `le_antisymm (PositivityTheory.Xgn.ModelPushforward.le_of_forms (hr.comap _ hP'.multiProj).multiHomog fun F b hF h => (key F b hF).mp h) (PositivityTheory.Xgn.ModelPushforward.le_of_forms hP.multiProj.multiHomog fun F b hF h => (key F b hF).mpr h)`. Establish `hnz' : ∀ k, ∃ i, bcCoord x z ⟨k, i⟩ ≠ 0` using `fun k => (hP'.multiProj.relevant k).imp fun i hi h => hi ((PositivityTheory.Xgn.ModelPushforward.form_mem_point _ _ _ (PositivityTheory.Xgn.ModelPushforward.homX _)).mp ((aeval_X _ _).trans h))`.
+
+Establish `hdeg : (PositivityTheory.Xgn.ModelPushforward.ffield (φ.comp r)).relfinrank (PositivityTheory.Xgn.ModelPushforward.ffield φ) = modelDeg O x z`. Establish `hle` using `hr.ffield_le (φ := φ)`. Establish `e1 : PositivityTheory.Xgn.ModelPushforward.ffield (φ.comp r) = fnField O (fun p => algebraMap Ω Ω₁ (x p))`. Rewrite using `[hcomp]`. Conclude with `PositivityTheory.Xgn.ModelPushforward.ffield_aeval _ (fun k => hnz' (Sum.inl k))`.
+
+Establish `e2 : PositivityTheory.Xgn.ModelPushforward.ffield φ = fnField O (bcCoord x z)` using `PositivityTheory.Xgn.ModelPushforward.ffield_aeval _ hnz'`. Rewrite `hle`, the goal using `[e1, e2]`. Conclude with `PositivityTheory.Xgn.ModelPushforward.adjoin_rank hle`. Establish `hP₀ : IsModelOver ((pointIdeal O (bcCoord x z)).comap r) l.length` using `hcm ▸ hP`. Establish `hf₀ : f ∉ (pointIdeal O (bcCoord x z)).comap r` using `hcm ▸ hfP`.
+
+Establish `main` using `PositivityTheory.Xgn.ModelPushforward.push (j := j) (ι' := Sum.elim ι ι') (f := f) (c := c) hϖ hP' hP₀ hf hf₀ φ hφ l.get`. Rewrite using `[← hdeg, ← hcm]`. Simplify using `only [PositivityTheory.Xgn.ModelPushforward.vNumL_map, PositivityTheory.Xgn.ModelPushforward.pullDeg_eq]`. Conclude with `main`.
+-/
 theorem PositivityTheory.Xgn.model_pushforward_fibre_degree : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (ϖ : O), Irreducible ϖ → ∀ d : ℕ, IsModelOver (pointIdeal O x) d → ∀ (Ω₁ : Type) [Field Ω₁] [Algebra O Ω₁] [Algebra Ω Ω₁] [IsScalarTower O Ω Ω₁] (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω₁), IsModelOver (pointIdeal O (bcCoord x z)) d → ∀ (c : K → ℕ) (f : MRing ι O), IsMultiHomog f c → f ∉ (pointIdeal O x) → ∀ l : List (K → ℤ), l.length = d → (open Classical in cycEval (fun W => if (C ϖ : MRing (Sum.elim ι ι') O) ∈ W then vNumL W (l.map (pullDeg (K' := K'))) else 0) (divCycle (pointIdeal O (bcCoord x z)) (rename (liftVar ι') f))) = (modelDeg O x z : ℤ) * (open Classical in cycEval (fun W => if (C ϖ : MRing ι O) ∈ W then vNumL W l else 0) (divCycle (pointIdeal O x) f)) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x ϖ hϖ d hP Ω₁ _ _ _ _ K' _ _ ι' _ z hP' c f hf hfP l hl
   subst hl

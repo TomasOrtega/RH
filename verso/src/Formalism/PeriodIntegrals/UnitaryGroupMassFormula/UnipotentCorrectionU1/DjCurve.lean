@@ -12,6 +12,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Form
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
+/- English proof (translation)
+Introduce `_ _ _ Y hY` and use `DjC.djCurve_general Y hY`.
+-/
 theorem determinant_curve_derivative : DjCurve := fun _ _ _ Y hY => DjC.djCurve_general Y hY
 
 end PI.UnitaryCorollaryDerivatives

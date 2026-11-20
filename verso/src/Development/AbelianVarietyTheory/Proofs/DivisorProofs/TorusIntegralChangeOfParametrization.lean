@@ -4,6 +4,45 @@ open scoped ContDiff
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `ι X _ _ _ e e' hec he'c he he' hr hadd F hF`. Use `letI : MeasureSpace UnitAddCircle := ⟨AddCircle.haarAddCircle⟩`. Use `haveI : Measure.IsAddHaarMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (Measure.IsAddHaarMeasure AddCircle.haarAddCircle)`. Use `haveI : IsProbabilityMeasure (volume : Measure UnitAddCircle) := inferInstanceAs (IsProbabilityMeasure AddCircle.haarAddCircle)`. Set `p : (ι → ℝ) → UnitAddTorus ι` to `fun x i => (x i : UnitAddCircle)`.
+
+Establish `hq : IsOpenQuotientMap p` using `IsOpenQuotientMap.piMap fun _ => QuotientAddGroup.isOpenQuotientMap_mk`. Establish `hpadd : ∀ x y, p (x + y) = p x + p y` using `fun x y => by`. Use function extensionality and compare the values at `i`. Conclude with `AddCircle.coe_add (1 : ℝ) (x i) (y i)`. Establish `hpeq : ∀ x y, p x = p y ↔ ∀ i, ∃ n : ℤ, x i - y i = n`.
+
+Introduce `x y`. Simplify using `only [p, funext_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← AddCircle.coe_sub, AddCircle.coe_eq_zero_iff]`. Simplify using `[eq_comm]`.
+
+Set `σ` to `Function.surjInv hq.surjective`. Establish `hσ : ∀ t, p (σ t) = t` using `Function.surjInv_eq hq.surjective`. Set `E : UnitAddTorus ι → X` to `fun t => e (σ t)`. Set `E' : UnitAddTorus ι → X` to `fun t => e' (σ t)`. Establish `hEp : ∀ x, E (p x) = e x` using `fun x => (he _ _).2 ((hpeq _ _).1 (hσ (p x)))`.
+
+Establish `hE'p : ∀ x, E' (p x) = e' x` using `fun x => (he' _ _).2 ((hpeq _ _).1 (hσ (p x)))`. Establish `hEc : Continuous E` using `hq.isQuotientMap.continuous_iff.2 (by`. Establish `: E ∘ p = e` using `funext hEp`. Rewrite using `[this]`. Conclude with `hec)`.
+
+Establish `hE'c : Continuous E'` using `hq.isQuotientMap.continuous_iff.2 (by`. Establish `: E' ∘ p = e'` using `funext hE'p`. Rewrite using `[this]`. Conclude with `he'c)`. Establish `hE'i : Function.Injective E'` using `fun s t h => by`.
+
+Rewrite using `[← hσ s, ← hσ t]`. Conclude with `(hpeq _ _).2 ((he' _ _).1 h)`. Establish `hrE : range E = range e`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion.
+
+Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨p x, hEp x⟩`. Establish `hrE' : range E' = range e'`.
+
+Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, rfl⟩`. Conclude with `⟨_, rfl⟩`. Introduce and unpack `⟨x, rfl⟩`.
+
+Conclude with `⟨p x, hE'p x⟩`. Establish `hα : ∀ t, ∃ u, E' u = E t` using `fun t => by`. Establish `: E t ∈ range E'` using `by rw [hrE', ← hr, ← hrE]; exact ⟨t, rfl⟩`. Conclude with `this`. Use `choose α hαE using hα`.
+
+Establish `hemb : Topology.IsClosedEmbedding E'` using `hE'c.isClosedEmbedding hE'i`. Establish `hαc : Continuous α` using `hemb.isInducing.continuous_iff.2 (by`. Establish `: E' ∘ α = E` using `funext hαE`. Rewrite using `[this]`. Conclude with `hEc)`.
+
+Establish `hαadd : ∀ s t, α (s + t) = α s + α t`. Introduce `s t`. Apply `hE'i` to reduce the goal to its premises. Rewrite using `[hαE]`. Take `⟨x, rfl⟩` from `hq.surjective s`.
+
+Take `⟨y, rfl⟩` from `hq.surjective t`. Take `⟨x', hx'⟩` from `hq.surjective (α (p x))`. Take `⟨y', hy'⟩` from `hq.surjective (α (p y))`. Establish `h1 : e x = e' x'` using `by rw [← hEp x, ← hE'p x', hx', hαE]`. Establish `h2 : e y = e' y'` using `by rw [← hEp y, ← hE'p y', hy', hαE]`.
+
+Rewrite using `[← hx', ← hy', ← hpadd, ← hpadd, hEp, hE'p]`. Conclude with `hadd x x' y y' h1 h2`. Establish `hαs : Function.Surjective α` using `fun u => by`. Take `⟨t, ht⟩ : E' u ∈ range E` from `by rw [hrE, hr, ← hrE']; exact ⟨u, rfl⟩`. Conclude with `⟨t, hE'i (by rw [hαE]; exact ht)⟩`.
+
+Set `A : UnitAddTorus ι →+ UnitAddTorus ι` to `AddMonoidHom.mk' α hαadd`. Establish `hmp : MeasurePreserving A volume volume` using `AddMonoidHom.measurePreserving (f := A) hαc hαs rfl`. Set `G' : UnitAddTorus ι → ℂ` to `fun t => F (E' t)`. Establish `hG'c : Continuous G'` using `hF.comp_continuous hE'c (fun t => by`. Rewrite using `[hr, ← hrE']`.
+
+Conclude with `⟨t, rfl⟩)`. Establish `hint : ∫ t, F (E t) = ∫ t, F (E' t)`. Establish `: (fun t => F (E t)) = fun t => G' (A t)` using `funext fun t => by`. Simplify using `only [G', A, AddMonoidHom.mk'_apply, hαE]`. Rewrite using `[this, ← integral_map hmp.measurable.aemeasurable hG'c.aestronglyMeasurable, hmp.map_eq]`.
+
+Establish `hae : Set.Icc (0 : ι → ℝ) 1 =ᵐ[volume] {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)}`. Establish `h` using `Measure.univ_pi_Ioc_ae_eq_Icc (μ := fun _ : ι => (volume : Measure ℝ)) (f := (0 : ι → ℝ)) (g := 1)`. Establish `e0 : {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc ((0 : ι → ℝ) i) ((0 : ι → ℝ) i + 1)} = Set.univ.pi fun i => Set.Ioc ((0 : ι → ℝ) i) ((1 : ι → ℝ) i)`. Use extensionality with `x`. Simplify using `[Set.mem_pi]`.
+
+Rewrite using `[e0]`. Conclude with `h.symm`. Establish `hEp' : ∀ x : ι → ℝ, E (fun i => (x i : UnitAddCircle)) = e x` using `hEp`. Establish `hE'p' : ∀ x : ι → ℝ, E' (fun i => (x i : UnitAddCircle)) = e' x` using `hE'p`. Establish `h1` using `UnitAddTorus.integral_preimage (fun t => F (E t)) 0`.
+
+Establish `h2` using `UnitAddTorus.integral_preimage (fun t => F (E' t)) 0`. Simplify using `only [hEp'] at h1`. Simplify using `only [hE'p'] at h2`. Rewrite using `[setIntegral_congr_set hae, setIntegral_congr_set hae, ← h1, ← h2]`. Conclude with `hint`.
+-/
 theorem setIntegral_unitCube_eq_of_torus_parametrisations :
     ∀ (ι X : Type) [Fintype ι] [TopologicalSpace X] [T2Space X] (e e' : (ι → ℝ) → X), Continuous e → Continuous e' → (∀ x y, e x = e y ↔ ∀ i, ∃ n : ℤ, x i - y i = n) → (∀ x y, e' x = e' y ↔ ∀ i, ∃ n : ℤ, x i - y i = n) → Set.range e = Set.range e' → (∀ x x' y y', e x = e' x' → e y = e' y' → e (x + y) = e' (x' + y')) → ∀ F : X → ℂ, ContinuousOn F (Set.range e) → ∫ x in Icc (0 : ι → ℝ) 1, F (e x) = ∫ x in Icc (0 : ι → ℝ) 1, F (e' x) := by
   intro ι X _ _ _ e e' hec he'c he he' hr hadd F hF

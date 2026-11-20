@@ -5,6 +5,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Establish `h` using `geom_sum₂_mul a b (l - 1)`. Rewrite `h` using `[hab, sub_self]`. Establish `hs` using `(mul_eq_zero.1 h).resolve_right (sub_ne_zero.2 hne)`. Establish `ha' : Ideal.Quotient.mk I a = 1`.
+
+Rewrite using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Conclude with `ha`. Establish `hb' : Ideal.Quotient.mk I b = 1`. Rewrite using `[← map_one (Ideal.Quotient.mk I), Ideal.Quotient.eq]`. Conclude with `hb`.
+
+Establish `hl' : (l : R ⧸ I) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk I), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hlI`. Establish `h2` using `congrArg (Ideal.Quotient.mk I) hs`. Simplify using `only [map_sum, map_mul, map_pow, ha', hb', one_pow, mul_one, Finset.sum_const, Finset.card_range, nsmul_eq_mul, map_zero] at h2`.
+
+Rewrite `h2` using `[Nat.cast_sub hl, hl', Nat.cast_one, zero_sub, neg_eq_zero]`. Apply `hI` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one, ← Ideal.Quotient.eq_zero_iff_mem, map_one]`. Conclude with `h2`.
+-/
 theorem eq_of_pow_pred_eq_of_sub_one_mem {R : Type*} [CommRing R] [IsDomain R] (I : Ideal R)
     (hI : I ≠ ⊤) (l : ℕ) (hl : 0 < l) (hlI : (l : R) ∈ I) (a b : R)
     (hab : a ^ (l - 1) = b ^ (l - 1)) (ha : a - 1 ∈ I) (hb : b - 1 ∈ I) : a = b := by
@@ -39,6 +48,13 @@ def posValIdeal {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l) : Idea
     have hc : 0 ≤ P.v LL (algebraMap ↥(OL LL) ↥LL.1 c) := (P.v_O LL _).2 c.2
     exact lt_of_lt_of_le hx (le_add_of_nonneg_left hc)
 
+/- English proof (translation)
+Use `eq_of_pow_pred_eq_of_sub_one_mem (posValIdeal P LL) ?_ l (Fact.out : l.Prime).pos ?_ a b hab ?_ ?_` and prove the remaining obligations. Rewrite using `[Ne, Ideal.eq_top_iff_one]`. Express the relevant statement in the definitionally equal form `¬ 0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 1)`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 (l : ↥(OL LL)))`.
+
+Rewrite using `[map_natCast, P.v_l]`. Conclude with `zero_lt_one`. Express the relevant statement in the definitionally equal form `0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 (a - 1))`. Rewrite using `[map_sub, map_one]` and apply the resulting hypothesis. Express the relevant statement in the definitionally equal form `0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 (b - 1))`.
+
+Rewrite using `[map_sub, map_one]` and apply the resulting hypothesis.
+-/
 theorem oneUnit_eq_of_pow_pred_eq_of_pos {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l)
     (a b : ↥(OL LL)) (hab : a ^ (l - 1) = b ^ (l - 1))
     (ha : 0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 a - 1))
@@ -56,6 +72,9 @@ theorem oneUnit_eq_of_pow_pred_eq_of_pos {l : ℕ} [Fact l.Prime] (P : LocPrime 
   · change 0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 (b - 1))
     rwa [map_sub, map_one]
 
+/- English proof (translation)
+Apply `Units.ext` to reduce the goal to its premises. Use `oneUnit_eq_of_pow_pred_eq_of_pos P LL _ _ ?_ hu hw` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, h]`.
+-/
 theorem units_eq_of_pow_pred_eq_of_pos {l : ℕ} [Fact l.Prime] (P : LocPrime l) (LL : FinExt l)
     (u w : (↥(OL LL))ˣ) (h : u ^ (l - 1) = w ^ (l - 1))
     (hu : 0 < P.v LL (algebraMap ↥(OL LL) ↥LL.1 (u : ↥(OL LL)) - 1))
@@ -64,6 +83,11 @@ theorem units_eq_of_pow_pred_eq_of_pos {l : ℕ} [Fact l.Prime] (P : LocPrime l)
   refine oneUnit_eq_of_pow_pred_eq_of_pos P LL _ _ ?_ hu hw
   rw [← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val, h]
 
+/- English proof (translation)
+Introduce `l _ P LL u w h hu hw`. Rewrite `hu` using `[map_sub, map_one]`. Use `units_eq_of_pow_pred_eq_of_pos P LL u w h ?_ ?_` and prove the remaining obligations. Rewrite using `[hu]`. Conclude with `zero_lt_one`.
+
+Rewrite using `[hw]`. Conclude with `zero_lt_one`.
+-/
 theorem units_eq_of_pow_pred_eq_of_val_one : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (LL : FinExt l) (u w : (↥(OL LL))ˣ), u ^ (l - 1) = w ^ (l - 1) →
     P.v LL (algebraMap ↥(OL LL) ↥LL.1 ((u : ↥(OL LL)) - 1)) = 1 →

@@ -13,25 +13,40 @@ def exponent {R : Type} [CommRing R] [IsDedekindDomain R] (w : HeightOneSpectrum
 section
 variable {R : Type} [CommRing R] [IsDedekindDomain R] (w : HeightOneSpectrum R)
 
+/- English proof (translation)
+Unfold `exponent`. Rewrite using `[← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.2 hI) (Associates.mk_ne_zero.2 hJ) w.associates_irreducible]`.
+-/
 theorem exponent_mul {I J : Ideal R} (hI : I ≠ ⊥) (hJ : J ≠ ⊥) :
     exponent w (I * J) = exponent w I + exponent w J := by
   unfold exponent
   rw [← Associates.mk_mul_mk, Associates.count_mul (Associates.mk_ne_zero.2 hI)
     (Associates.mk_ne_zero.2 hJ) w.associates_irreducible]
 
+/- English proof (translation)
+Unfold `exponent`. Rewrite using `[Associates.mk_pow, Associates.count_pow (Associates.mk_ne_zero.2 hI) w.associates_irreducible]`.
+-/
 theorem exponent_pow {I : Ideal R} (hI : I ≠ ⊥) (n : ℕ) :
     exponent w (I ^ n) = n * exponent w I := by
   unfold exponent
   rw [Associates.mk_pow, Associates.count_pow (Associates.mk_ne_zero.2 hI) w.associates_irreducible]
 
+/- English proof (translation)
+The claim follows from `Associates.count_self w.associates_irreducible`.
+-/
 theorem exponent_self : exponent w w.asIdeal = 1 :=
   Associates.count_self w.associates_irreducible
 
+/- English proof (translation)
+Unfold `exponent`. Rewrite using `[← Ideal.one_eq_top, Associates.mk_one, Associates.factors_one, Associates.count_zero w.associates_irreducible]`.
+-/
 theorem exponent_top : exponent w ⊤ = 0 := by
   unfold exponent
   rw [← Ideal.one_eq_top, Associates.mk_one, Associates.factors_one,
     Associates.count_zero w.associates_irreducible]
 
+/- English proof (translation)
+Unfold `exponent`. Use `Associates.count_eq_zero_of_ne w.associates_irreducible (HeightOneSpectrum.associates_irreducible ⟨p, inferInstance, hp⟩) ?_` and prove the remaining obligations. Introduce `h1`. Conclude with `h (associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 h1)).symm`.
+-/
 theorem exponent_prime_of_ne (p : Ideal R) [p.IsPrime] (hp : p ≠ ⊥) (h : p ≠ w.asIdeal) :
     exponent w p = 0 := by
   unfold exponent
@@ -40,6 +55,9 @@ theorem exponent_prime_of_ne (p : Ideal R) [p.IsPrime] (hp : p ≠ ⊥) (h : p �
   intro h1
   exact h (associated_iff_eq.1 (Associates.mk_eq_mk_iff_associated.1 h1)).symm
 
+/- English proof (translation)
+Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, w.intValuation_if_neg hx, WithZero.log_exp, exponent]`.
+-/
 theorem log_valuation_of_integer (F : Type) [Field F] [Algebra R F] [IsFractionRing R F] (x : R) (hx : x ≠ 0) :
     WithZero.log (w.valuation F (algebraMap R F x)) = -(exponent w (Ideal.span {x}) : ℤ) := by
   rw [HeightOneSpectrum.valuation_of_algebraMap, w.intValuation_if_neg hx, WithZero.log_exp, exponent]
@@ -48,6 +66,17 @@ end
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
 
+/- English proof (translation)
+Establish `: p.IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hp inferInstance`. Establish `hq : p.under (𝓞 E) ≠ ⊥` using `Ideal.under_ne_bot (𝓞 E) hp`. Establish `: (p.under (𝓞 E)).IsMaximal` using `Ring.DimensionLEOne.maximalOfPrime hq inferInstance`. Rewrite using `[Ideal.relNorm_eq_pow_of_isMaximal p (p.under (𝓞 E)), exponent_pow v hq]`. Distinguish the cases in `h : p.under (𝓞 E) = v.asIdeal`.
+
+Set `w0 : HeightOneSpectrum (𝓞 K)` to `⟨p, inferInstance, hp⟩`. Establish `hw0 : w0 ∈ s` using `(hs w0).2 h`. Rewrite using `[Finset.sum_eq_single w0]`. Rewrite using `[h, exponent_self, exponent_self]`. Simplify using `[w0]`.
+
+Introduce `w _ hw`. Rewrite using `[exponent_prime_of_ne w p hp, Nat.cast_zero, mul_zero]`. Introduce `he`. Conclude with `hw (HeightOneSpectrum.ext he.symm)`. Introduce `h'`.
+
+Conclude with `absurd hw0 h'`. Rewrite using `[exponent_prime_of_ne v _ hq h, mul_zero, Nat.cast_zero]`. Use `(Finset.sum_eq_zero fun w hw => ?_).symm` and prove the remaining obligations. Rewrite using `[exponent_prime_of_ne w p hp, Nat.cast_zero, mul_zero]`. Introduce `he`.
+
+Apply `h` to reduce the goal to its premises. Rewrite using `[← (hs w).1 hw, he]`.
+-/
 theorem exponent_relNorm_prime (v : HeightOneSpectrum (𝓞 E)) (s : Finset (HeightOneSpectrum (𝓞 K)))
     (hs : ∀ w, w ∈ s ↔ w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal)
     (p : Ideal (𝓞 K)) [p.IsPrime] (hp : p ≠ ⊥) :
@@ -75,6 +104,13 @@ theorem exponent_relNorm_prime (v : HeightOneSpectrum (𝓞 E)) (s : Finset (Hei
     apply h
     rw [← (hs w).1 hw, he]
 
+/- English proof (translation)
+Proceed by induction on `I using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => exact fun h => absurd rfl h`. Consider the case `h₂ x hx`. Introduce `_`. Rewrite using `[Ideal.isUnit_iff.1 hx, Ideal.relNorm_top, exponent_top]`.
+
+Simplify using `[exponent_top]`. Consider the case `h₃ a p ha hp ih`. Introduce `_`. Establish `: p.IsPrime` using `Ideal.isPrime_of_prime hp`. Establish `hp0 : p ≠ ⊥` using `hp.ne_zero`.
+
+Rewrite using `[map_mul, exponent_mul v (Ideal.relNorm_eq_bot_iff.not.2 hp0) (Ideal.relNorm_eq_bot_iff.not.2 ha), Nat.cast_add, exponent_relNorm_prime v s hs p hp0, ih ha, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[exponent_mul w hp0 ha, Nat.cast_add, mul_add]`.
+-/
 theorem exponent_relNorm (v : HeightOneSpectrum (𝓞 E)) (s : Finset (HeightOneSpectrum (𝓞 K)))
     (hs : ∀ w, w ∈ s ↔ w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal)
     (I : Ideal (𝓞 K)) : I ≠ ⊥ →
@@ -102,6 +138,11 @@ namespace GlobalTheory.NormValuation
 
 variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K]
 
+/- English proof (translation)
+Establish `h1 : algebraMap (𝓞 E) E (Algebra.intNorm (𝓞 E) (𝓞 K) x) = Algebra.norm E (algebraMap (𝓞 K) K x)` using `Algebra.algebraMap_intNorm (A := 𝓞 E) (K := E) (L := K) (B := 𝓞 K) x`. Establish `h2 : Algebra.intNorm (𝓞 E) (𝓞 K) x ≠ 0`. Introduce `h0`. Establish `: Algebra.norm E (algebraMap (𝓞 K) K x) = 0` using `by rw [← h1, h0, map_zero]`. Rewrite `this` using `[Algebra.norm_eq_zero_iff]`.
+
+Conclude with `hx ((FaithfulSMul.algebraMap_eq_zero_iff (𝓞 K) K).1 this)`. Establish `hI : Ideal.span {x} ≠ ⊥` using `by rwa [Ne, Ideal.span_singleton_eq_bot]`. Rewrite using `[← h1, log_valuation_of_integer v E _ h2, ← Ideal.relNorm_singleton, exponent_relNorm v s hs _ hI, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[log_valuation_of_integer w K x hx, mul_neg]`.
+-/
 theorem log_valuation_norm_integer (v : HeightOneSpectrum (𝓞 E)) (s : Finset (HeightOneSpectrum (𝓞 K)))
     (hs : ∀ w, w ∈ s ↔ w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal)
     (x : 𝓞 K) (hx : x ≠ 0) :
@@ -120,6 +161,13 @@ theorem log_valuation_norm_integer (v : HeightOneSpectrum (𝓞 E)) (s : Finset 
   refine Finset.sum_congr rfl fun w _ => ?_
   rw [log_valuation_of_integer w K x hx, mul_neg]
 
+/- English proof (translation)
+Take `⟨b, c, hc, h⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) (a : K)`. Establish `hc0 : c ≠ 0` using `nonZeroDivisors.ne_zero hc`. Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Apply `a.ne_zero` to reduce the goal to its premises.
+
+Rewrite using `[← h, map_zero, zero_div]`. Establish `hK : ∀ y : 𝓞 K, y ≠ 0 → algebraMap (𝓞 K) K y ≠ 0` using `fun y hy => (FaithfulSMul.algebraMap_eq_zero_iff (𝓞 K) K).not.2 hy`. Establish `hN : ∀ y : 𝓞 K, y ≠ 0 → Algebra.norm E (algebraMap (𝓞 K) K y) ≠ 0` using `fun y hy => Algebra.norm_ne_zero_iff.2 (hK y hy)`. Establish `hdiv : Algebra.norm E (algebraMap (𝓞 K) K b / algebraMap (𝓞 K) K c) = Algebra.norm E (algebraMap (𝓞 K) K b) / Algebra.norm E (algebraMap (𝓞 K) K c)`. Rewrite using `[eq_div_iff (hN c hc0), ← map_mul, div_mul_cancel₀ _ (hK c hc0)]`.
+
+Rewrite using `[← h, hdiv, map_div₀, WithZero.log_div ((Valuation.ne_zero_iff _).2 (hN b hb0)) ((Valuation.ne_zero_iff _).2 (hN c hc0)), log_valuation_norm_integer v s hs b hb0, log_valuation_norm_integer v s hs c hc0, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_div₀, WithZero.log_div ((Valuation.ne_zero_iff _).2 (hK b hb0)) ((Valuation.ne_zero_iff _).2 (hK c hc0)), mul_sub]`.
+-/
 theorem log_valuation_norm (v : HeightOneSpectrum (𝓞 E)) (a : Kˣ) (s : Finset (HeightOneSpectrum (𝓞 K)))
     (hs : ∀ w, w ∈ s ↔ w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal) :
     WithZero.log (v.valuation E (Algebra.norm E (a : K))) =
@@ -146,5 +194,8 @@ theorem log_valuation_norm (v : HeightOneSpectrum (𝓞 E)) (a : Kˣ) (s : Finse
 
 end GlobalTheory.NormValuation
 
+/- English proof (translation)
+Introduce `_ _ _ _ _ _ _ v a s hs` and use `GlobalTheory.NormValuation.log_valuation_norm v a s hs`.
+-/
 theorem GlobalTheory.NormValuation.log_valuation_norm_eq_sum : ∀ (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] [Algebra E K] (v : HeightOneSpectrum (𝓞 E)) (a : Kˣ) (s : Finset (HeightOneSpectrum (𝓞 K))), (∀ w, w ∈ s ↔ w.asIdeal.comap (algebraMap (𝓞 E) (𝓞 K)) = v.asIdeal) → WithZero.log (v.valuation E (Algebra.norm E (a : K))) = ∑ w ∈ s, (w.asIdeal.inertiaDeg (𝓞 E) : ℤ) * WithZero.log (w.valuation K (a : K)) :=
   fun _ _ _ _ _ _ _ v a s hs => GlobalTheory.NormValuation.log_valuation_norm v a s hs

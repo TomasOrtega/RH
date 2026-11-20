@@ -6,6 +6,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 namespace GlobalTheory
 
+/- English proof (translation)
+Introduce `N M s hs W hW`. Establish `htop : IsAffineOpen (⊤ : (Sp (Localization.Away (N : ℤ))).Opens)` using `isAffineOpen_top _`. Establish `hfl : RingHom.Flat (s.appLE ⊤ W le_top).hom` using `HasRingHomProperty.appLE (P := @Flat) (Q := RingHom.Flat) s hs ⟨⊤, htop⟩ ⟨W, hW⟩ le_top`. Set `φ : Localization.Away (N : ℤ) →+* Γ(M, W)` to `(s.appLE ⊤ W le_top).hom.comp (Scheme.ΓSpecIso (CommRingCat.of (Localization.Away (N : ℤ)))).inv.hom`. Establish `hφ : RingHom.Flat φ`.
+
+Use `RingHom.Flat.comp ?_ hfl` and prove the remaining obligations. Conclude with `RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Establish `hloc : RingHom.Flat (algebraMap ℤ (Localization.Away (N : ℤ)))`. Rewrite using `[RingHom.flat_algebraMap_iff]`. Conclude with `IsLocalization.flat _ (Submonoid.powers (N : ℤ))`.
+
+Establish `hcomp : RingHom.Flat (φ.comp (algebraMap ℤ (Localization.Away (N : ℤ))))` using `hloc.comp hφ`. Establish `heq : φ.comp (algebraMap ℤ (Localization.Away (N : ℤ))) = algebraMap ℤ Γ(M, W)` using `Subsingleton.elim _ _`. Rewrite `hcomp` using `[heq, RingHom.flat_algebraMap_iff]`. Use `⟨hcomp, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (algebraMap ℤ (Localization.Away (N : ℤ)) (N : ℤ))` using `IsLocalization.Away.algebraMap_isUnit _`.
+
+Use `hu.map φ` as an intermediate fact. Simplify `this` using `[map_intCast]`.
+-/
 theorem flat_and_isUnit_sections_of_flat_over_away :
     ∀ (N : ℕ) (M : Scheme.{0}) (s : M ⟶ Sp (Localization.Away (N : ℤ))), Flat s →
     ∀ (W : M.Opens), IsAffineOpen W → Module.Flat ℤ Γ(M, W) ∧ IsUnit ((N : ℤ) : Γ(M, W)) := by

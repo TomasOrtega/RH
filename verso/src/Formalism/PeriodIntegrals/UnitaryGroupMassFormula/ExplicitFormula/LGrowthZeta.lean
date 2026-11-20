@@ -9,12 +9,26 @@ namespace PI.EF
 
 open Complex DirichletCharacter
 
+/- English proof (translation)
+Establish `hp : (1 : DirichletCharacter ℂ 1).IsPrimitive` using `DirichletCharacter.isPrimitive_one_level_one`. Establish `h0` using `norm_L_one_sub_le (N := 1) hp h1 h2 (Or.inr h)`. Simplify `h0` using `[DirichletCharacter.LFunction_modOne_eq]`.
+-/
 theorem zeta_one_sub_le {w : ℂ} (h1 : 1 / 2 ≤ w.re) (h2 : w.re ≤ 5) (h : w ≠ 1) :
     ‖riemannZeta (1 - w)‖ ≤ 6 * ‖w + 1‖ ^ 5 * ‖riemannZeta w‖ := by
   have hp : (1 : DirichletCharacter ℂ 1).IsPrimitive := DirichletCharacter.isPrimitive_one_level_one
   have h0 := norm_L_one_sub_le (N := 1) hp h1 h2 (Or.inr h)
   simpa [DirichletCharacter.LFunction_modOne_eq] using h0
 
+/- English proof (translation)
+Distinguish the cases in `hs : s = 1`. Substitute `hs` using the available equality. Simplify using `only [sub_self, zero_mul, norm_zero]`. Check the signs of the components of the expression. Establish `hre : 0 < s.re` using `by linarith`.
+
+Establish `hb` using `hZ s hre hs`. Establish `hn1 : 0 < ‖s - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hs)`. Establish `ht` using `abs_nonneg s.im`. Establish `hs_le : ‖s‖ ≤ 8 + |s.im|`. Use `(Complex.norm_le_abs_re_add_abs_im s).trans ?_` and prove the remaining obligations.
+
+Rewrite using `[abs_of_pos hre]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs1_le : ‖s - 1‖ ≤ 7 + |s.im|`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Simplify using `only [Complex.sub_re, Complex.one_re, Complex.sub_im, Complex.one_im, sub_zero]`.
+
+Apply the tactic sequence `have : |s.re - 1| ≤ 7 := by rw [abs_le]; constructor <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : 1 / s.re ≤ 2` using `by rw [div_le_iff₀ hre]; linarith`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+
+Rewrite using `[mul_add, mul_add, mul_one_div_cancel hn1.ne']`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (7 + |s.im|) + 1 + (7 + |s.im|) * (8 + |s.im|) * (1 + 2) := by gcongr`. Use `_ ≤ 51 * (|s.im| + 2) ^ 2 := by nlinarith`.
+-/
 theorem zeta_right (hZ : PI.ZetaBoundRight) {s : ℂ} (h1 : 1 / 2 ≤ s.re) (h2 : s.re ≤ 8) :
     ‖(s - 1) * riemannZeta s‖ ≤ 51 * (|s.im| + 2) ^ 2 := by
   by_cases hs : s = 1
@@ -44,6 +58,23 @@ theorem zeta_right (hZ : PI.ZetaBoundRight) {s : ℂ} (h1 : 1 / 2 ≤ s.re) (h2 
     _ ≤ (7 + |s.im|) + 1 + (7 + |s.im|) * (8 + |s.im|) * (1 + 2) := by gcongr
     _ ≤ 51 * (|s.im| + 2) ^ 2 := by nlinarith
 
+/- English proof (translation)
+Establish `hs0 : s ≠ 0`. Introduce `h0`. Rewrite `h3` using `[h0, norm_zero]`. Evaluate the numerical expressions using `at h3`. Establish `hw1 : 1 / 2 ≤ (1 - s).re` using `by simp only [Complex.sub_re, Complex.one_re]; linarith`.
+
+Establish `hw2 : (1 - s).re ≤ 5` using `by simp only [Complex.sub_re, Complex.one_re]; linarith`. Establish `hw : (1 - s) ≠ 1`. Introduce `h0`. Apply `hs0` to reduce the goal to its premises. Take the linear combination `-h0`.
+
+Establish `hz1` using `zeta_one_sub_le hw1 hw2 hw`. Rewrite `hz1` using `[sub_sub_cancel]`. Establish `hwre : 0 < (1 - s).re` using `by linarith`. Establish `hz2` using `hZ (1 - s) hwre hw`. Establish `ht` using `abs_nonneg s.im`.
+
+Establish `hwim : |(1 - s).im| = |s.im|` using `by simp`. Establish `hn : ‖1 - s - 1‖ = ‖s‖` using `by rw [show 1 - s - 1 = -s by ring, norm_neg]`. Establish `hinv1 : 1 / ‖1 - s - 1‖ ≤ 2`. Rewrite using `[hn, div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hinv2 : 1 / (1 - s).re ≤ 2` using `by rw [div_le_iff₀ hwre]; linarith`. Establish `hw_le : ‖1 - s‖ ≤ 5 + |s.im|`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Rewrite using `[hwim, abs_of_pos hwre]`. Combine the linear equalities and inequalities to obtain the conclusion.
+
+Establish `hw1_le : ‖1 - s + 1‖ ≤ 6 + |s.im|`. Use `(Complex.norm_le_abs_re_add_abs_im _).trans ?_` and prove the remaining obligations. Establish `e : |(1 - s + 1).im| = |s.im|` using `by simp`. Establish `e2 : (1 - s + 1).re = (1 - s).re + 1` using `by simp`. Rewrite using `[e, e2, abs_of_pos (by linarith)]`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzw : ‖riemannZeta (1 - s)‖ ≤ 18 + 3 * |s.im|`. Combine the equalities or inequalities in the displayed calculation. Establish `hsn : ‖s - 1‖ = ‖1 - s‖` using `norm_sub_rev _ _`. Rewrite using `[norm_mul, hsn]`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zeta_left (hZ : PI.ZetaBoundRight) {s : ℂ} (h1 : -4 ≤ s.re) (h2 : s.re < 1 / 2)
     (h3 : 1 / 2 ≤ ‖s‖) : ‖(s - 1) * riemannZeta s‖ ≤ 48114 * (|s.im| + 2) ^ 7 := by
   have hs0 : s ≠ 0 := by
@@ -90,6 +121,21 @@ theorem zeta_left (hZ : PI.ZetaBoundRight) {s : ℂ} (h1 : -4 ≤ s.re) (h2 : s.
     _ = 39366 * (|s.im| + 2) ^ 7 := by ring
     _ ≤ 48114 * (|s.im| + 2) ^ 7 := by gcongr; norm_num
 
+/- English proof (translation)
+Introduce `s hs1 hs2`. Establish `ht` using `abs_nonneg s.im`. Establish `h2 : (2 : ℝ) ≤ |s.im| + 2` using `by linarith`. Distinguish the cases in `hr : 1 / 2 ≤ s.re`. Establish `hp7 : (|s.im| + 2) ^ 2 ≤ (|s.im| + 2) ^ 7` using `pow_le_pow_right₀ (by linarith) (by norm_num)`.
+
+Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hr`. Distinguish the cases in `hn : 1 / 2 ≤ ‖s‖`. Combine the equalities or inequalities in the displayed calculation. Use `push_neg at hn`.
+
+Establish `hK : ∀ z ∈ frontier (Metric.ball (0 : ℂ) (1 / 2)), ‖(z - 1) * riemannZeta z‖ ≤ 48114 * (5 / 2 : ℝ) ^ 7`. Introduce `z hz`. Rewrite `hz` using `[frontier_ball (0 : ℂ) (by norm_num : (1 / 2 : ℝ) ≠ 0), mem_sphere_zero_iff_norm]`. Establish `hre : |z.re| ≤ 1 / 2` using `(Complex.abs_re_le_norm z).trans hz.le`. Establish `him : |z.im| ≤ 1 / 2` using `(Complex.abs_im_le_norm z).trans hz.le`.
+
+Establish `hzi` using `abs_nonneg z.im`. Break down `lt_or_ge z.re (1 / 2) with hlt | hge` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hd : DiffContOnCl ℂ (fun z => (z - 1) * riemannZeta z) (Metric.ball (0 : ℂ) (1 / 2))`.
+
+Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball (0 : ℂ) (by norm_num : (1 / 2 : ℝ) ≠ 0)]`. Introduce `z hz`. Establish `hz1 : z ≠ 1`. Introduce `h`.
+
+Rewrite `hz` using `[h, Metric.mem_closedBall, dist_zero_right, norm_one]`. Evaluate the numerical expressions using `at hz`. Conclude with `((differentiableAt_id.sub_const 1).mul (differentiableAt_riemannZeta hz1)).differentiableWithinAt`. Establish `hmem : s ∈ closure (Metric.ball (0 : ℂ) (1 / 2))` using `subset_closure (mem_ball_zero_iff.2 hn)`. Establish `hb` using `Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball hd hK hmem`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem zetaGrowth_of (hZ : PI.ZetaBoundRight) : ZetaGrowth 300000 := by
   intro s hs1 hs2
   have ht := abs_nonneg s.im

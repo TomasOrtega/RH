@@ -25,6 +25,17 @@ variable {D : D7}
 
 set_option maxHeartbeats 1000000 in
 
+/- English proof (translation)
+Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `P.W.nz` to reduce the goal to its premises. Establish `h0 : P.W.Om 1 g' P.e0 = 0` using `by rw [hc', zero_smul]`. Establish `e` using `P.W.mul 1 1 g'⁻¹ g' P.e0 hT`.
+
+Establish `e1 : (1 : Formalism.MainNotions.StandardLatticesGL3.GA D P.a) * 1 = 1` using `mul_one 1`. Establish `e2 : g'⁻¹ * g' = 1` using `inv_mul_cancel g'`. Rewrite `e` using `[e1, e2, P.W.one _ hT, h0]`. Establish `z` using `P.W.smul 1 g'⁻¹ (0 : ℂ) (0 : VC D P.a P.d → ℂ) (NormUniq.tt_zero _)`. Establish `z0 : (0 : ℂ) • (0 : VC D P.a P.d → ℂ) = 0` using `zero_smul ℂ _`.
+
+Rewrite `z` using `[z0]`. Rewrite using `[e, z]`. Conclude with `zero_smul ℂ _`. Establish `e1` using `P.W.mul k 1 1 g' P.e0 hT`. Establish `e2` using `P.W.mul 1 k g' 1 P.e0 hT`.
+
+Establish `f1 : k * (1 : Formalism.MainNotions.StandardLatticesGL3.GA D P.a) = k` using `mul_one k`. Establish `f2 : (1 : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) * g' = g'` using `one_mul g'`. Establish `f3 : (1 : Formalism.MainNotions.StandardLatticesGL3.GA D P.a) * k = k` using `one_mul k`. Establish `f4 : g' * (1 : Formalism.MainNotions.StandardLatticesGL3.GA D P.d) = g'` using `mul_one g'`. Rewrite `e1` using `[f1, f2]`.
+
+Rewrite `e2` using `[f3, f4]`. Establish `e3 : P.W.Om k 1 (P.W.Om 1 g' P.e0) = s • P.W.Om 1 g' P.e0`. Rewrite using `[← e1, e2, he, P.W.smul _ _ _ _ hT]`. Rewrite `e3` using `[hc', P.W.smul _ _ _ _ hH, smul_comm s c H]`. Conclude with `smul_right_injective _ hc0 e3`.
+-/
 theorem eig_of_prop {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (hT : P.e0 ∈ TT D (tor0 D ⊤ δ) P.a P.d)
     {g' : Formalism.MainNotions.StandardLatticesGL3.GA D P.d}
     {H : VC D P.a P.d → ℂ} {c : ℂ} (hc' : P.W.Om 1 g' P.e0 = c • H) (hH : H ∈ TT D (tor0 D ⊤ δ) P.a P.d)
@@ -55,6 +66,9 @@ theorem eig_of_prop {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (hT : P.e0 
   rw [hc', P.W.smul _ _ _ _ hH, smul_comm s c H] at e3
   exact smul_right_injective _ hc0 e3
 
+/- English proof (translation)
+Take `⟨g', hg'⟩` from `GlobalTheory.TrueTheta.exists_moves_of_selfDual D P.d _ (GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 P.d)`. Take `⟨c, hc⟩` from `VacMove.exists_scalar hI P.crv P.vac.1 P.W 1 g' (VacMove.moves_one D P.a) hg'`. Conclude with `eig_of_prop P (VacMove.vac_TT hI.g1 P.crv P.vac.1) (c := c) (by rw [hc]; funext z; rfl) (GlobalTheory.FunObj.CosetFix.iop_facts hI P h𝔪).1 k s he`.
+-/
 theorem iop_eig (hI : Inp D) {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥)
     (k : Formalism.MainNotions.StandardLatticesGL3.GA D P.a) (s : ℂ) (he : P.W.Om k 1 P.e0 = s • P.e0) :
     P.W.Om k 1 (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d)
@@ -65,6 +79,11 @@ theorem iop_eig (hI : Inp D) {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {�
   exact eig_of_prop P (VacMove.vac_TT hI.g1 P.crv P.vac.1) (c := c) (by rw [hc]; funext z; rfl)
     (GlobalTheory.FunObj.CosetFix.iop_facts hI P h𝔪).1 k s he
 
+/- English proof (translation)
+Use `choose b hb y hy hby using fun i j => GlobalTheory.CongApprox.exists_mem_approx D 𝔪 m hm _ (neg_mem (hz i j))`. Use `⟨Matrix.of fun i j => (b i j : D.host.E), fun i j => ⟨b i j, hb i j, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e1 : (((1 : Formalism.MainNotions.StandardLatticesGL3.GA D d) : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) : Matrix (Fin d) (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) = 1`. Simplify using the standard rewrite rules. Unfold `CloseTo`.
+
+Use `fun i j => ⟨y i j, hy i j, Eq.trans ?_ (hby i j)⟩` and prove the remaining obligations. Rewrite using `[e1, Matrix.one_mul, Matrix.map_add _ (map_add (inc D))]`. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.map_apply, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem exists_close {𝔪 : Ideal (𝓞 D.host.E)} (o : ℕ) {a d : ℕ} (k : Formalism.MainNotions.StandardLatticesGL3.GA D a)
     (z : Matrix (Fin d) (Fin a) D.host.E) (hz : Approx 𝔪 o k z) (m : ℕ) (hm : 0 < m) :
     ∃ w : Matrix (Fin d) (Fin a) D.host.E, (∀ i j, ∃ b ∈ 𝔪, w i j = (b : D.host.E)) ∧
@@ -80,12 +99,28 @@ theorem exists_close {𝔪 : Ideal (𝓞 D.host.E)} (o : ℕ) {a d : ℕ} (k : F
   simp only [Matrix.sub_apply, Matrix.add_apply, Matrix.map_apply, Matrix.of_apply]
   ring
 
+/- English proof (translation)
+Use function extensionality and compare the values at `y`. Simplify using `only [Wd, Formalism.MainNotions.TaylorLogMetric.U, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem wd_smul (δ : ℂ) {a d : ℕ} (x : VC D a d) (c : ℂ) (F : VC D a d → ℂ) :
     Wd D (tor0 D ⊤ δ) x (c • F) = c • Wd D (tor0 D ⊤ δ) x F := by
   funext y
   simp only [Wd, Formalism.MainNotions.TaylorLogMetric.U, Pi.smul_apply, smul_eq_mul]
   ring
 
+/- English proof (translation)
+Introduce `D hD δ t0 Q P 𝔪 h𝔪 o k hk c hc z hzi hz`. Establish `h1` using `hD.g1`. Establish `he` using `P.vac.1`. Establish `hIT` using `(GlobalTheory.FunObj.CosetFix.iop_facts hD P h𝔪).1`. Establish `hfix` using `iop_eig hD P h𝔪 k c hc`.
+
+Establish `k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d)` using `VacMove.klat _ (VacMove.moves_one D P.a) (VacMove.moves_one D P.d)`. Establish `kB : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d))` using `Or.inr ⟨_, _, VacMove.sd_of_moves (VacMove.moves_one D P.a), GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 P.d, rfl⟩`. Establish `hHB` using `(hD.uni ⊤ δ P.crv P.a P.d _ _ k0 kB P.e0 he).2.1`. Take `⟨m, hm, hl⟩` from `P.W.lift k 1 (unitBlock D o P.a P.d) _ hIT`. Take `⟨w, hw, hclose⟩` from `exists_close o k z hz m hm`.
+
+Establish `hmain` using `hl _ hclose`. Rewrite `hmain` using `[hfix, wd_smul]`. Take `⟨hw0, hwB⟩` from `GlobalTheory.FunObj.SqNum.pt_mem_of_entries_mem D δ 𝔪 w hw`. Establish `hx0` using `(GlobalTheory.FunObj.SqNum.pt_mem_of_entries_mem D δ ⊤ z (fun i j => (hzi i j).imp fun b hb => ⟨Submodule.mem_top, hb⟩)).1`. Take `⟨φ, hφ⟩` from `VacMove.wd_wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ z) (pt D (tor0 D ⊤ δ) δ w)`.
+
+Establish `hφ1 : φ = 1`. Establish `h2` using `hφ P.e0`. Rewrite `h2` using `[VacMove.wd_fix h1 P.crv k0 he hw0, VacMove.wd_fix h1 P.crv k0 he hx0, VacMove.wd_fix h1 P.crv k0 he (add_mem hx0 hw0)]`. Assume the negation of the conclusion as `hne`. Apply `P.W.nz` to reduce the goal to its premises.
+
+Establish `: (φ - 1) • P.e0 = 0` using `by rw [sub_smul, one_smul, ← h2, sub_self]`. Conclude with `(smul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`. Establish `h3` using `hφ (Iop D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) P.a P.d) (La D (tor0 D ⊤ δ) (stdL D P.a) (skewLat D 𝔪 P.d)) P.e0)`. Rewrite `h3` using `[VacMove.wd_fix h1 P.crv kB hHB hwB, hφ1, one_smul, ← VacMove.pt_add]`. Establish `hWT` using `GlobalTheory.FunObj.NormUniq.wd_rat_mem_TT P.crv one_pos (by rw [one_smul]; exact pt_unitBlock_mem δ o P.a P.d) hIT`.
+
+Unfold `cosetVec cosV`. Rewrite using `[P.W.smul _ _ _ _ hWT, hmain, ← h3, smul_comm]`.
+-/
 theorem om_cosetVec : ∀ {D : D7}, GlobalTheory.NormSum.Inp D → ∀ {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) {𝔪 : Ideal (𝓞 D.host.E)}, 𝔪 ≠ ⊥ →
   ∀ (o : ℕ) (k : Formalism.MainNotions.StandardLatticesGL3.GA D P.a), k ∈ intG D P.a → ∀ c : ℂ, P.W.Om k 1 P.e0 = c • P.e0 →
   ∀ z : Matrix (Fin P.d) (Fin P.a) D.host.E, IsIntE z → Approx 𝔪 o k z →

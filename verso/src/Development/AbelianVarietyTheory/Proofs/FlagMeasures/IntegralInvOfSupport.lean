@@ -18,6 +18,29 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Spa
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
   (μ : Measure G) [μ.IsHaarMeasure] [SigmaFinite μ]
 
+/- English proof (translation)
+Establish `hKcl : IsClosed (K : Set G)` using `K.isClosed_of_isOpen ho`. Establish `hu : Continuous ((K : Set G).indicator fun _ => (1 : ℂ))` using `(IsClopen.continuous_indicator ⟨hKcl, ho⟩ continuous_const)`. Use `set u : G → ℂ := (K : Set G).indicator fun _ => (1 : ℂ) with hu_def`. Use `set Φ : G × G → ℂ := fun z => f z.2⁻¹ * u (z.1 * z.2) with hΦ_def`. Establish `hΦc : Continuous Φ` using `(hf.comp continuous_snd.inv).mul (hu.comp continuous_mul)`.
+
+Establish `hΦs : HasCompactSupport Φ`. Use `HasCompactSupport.intro (hc.prod hc) fun z hz => ?_` and prove the remaining obligations. Distinguish the cases in `h2 : f z.2⁻¹ = 0`. Simplify using `[hΦ_def, h2]`. Establish `hb : z.2 ∈ K` using `by simpa using K.inv_mem (hs _ h2)`.
+
+Establish `ha : z.1 ∉ K` using `fun ha => hz ⟨ha, hb⟩`. Establish `: z.1 * z.2 ∉ K` using `fun h => ha ((K.mul_mem_cancel_right hb).1 h)`. Simplify using `[hΦ_def, hu_def, this]`. Establish `hΦi : Integrable Φ (μ.prod μ)` using `hΦc.integrable_of_hasCompactSupport hΦs`. Establish `hT` using `measurePreserving_prod_inv_mul_swap μ μ`.
+
+Establish `hΦTi : Integrable (fun z : G × G => Φ (z.2, z.2⁻¹ * z.1)) (μ.prod μ)` using `(hT.integrable_comp hΦc.aestronglyMeasurable).2 hΦi`. Establish `hswap : ∫ z, Φ (z.2, z.2⁻¹ * z.1) ∂(μ.prod μ) = ∫ z, Φ z ∂(μ.prod μ)` using `by conv_rhs => rw [← hT.map_eq]`. Rewrite using `[integral_map hT.measurable.aemeasurable]`. Rewrite using `[hT.map_eq]`. Conclude with `hΦc.aestronglyMeasurable`.
+
+Use `set c : ℂ := ∫ a, u a ∂μ with hc_def`. Establish `hcne : c ≠ 0`. Rewrite using `[hc_def, hu_def, integral_indicator_const _ hKcl.measurableSet]`. Establish `hpos : 0 < μ (K : Set G)` using `ho.measure_pos μ ⟨1, K.one_mem⟩`. Establish `hfin : μ (K : Set G) ≠ ⊤` using `hc.measure_lt_top.ne`.
+
+Establish `: μ.real (K : Set G) ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨hpos.ne', hfin⟩`. Simplify `this` using `[Complex.real_smul]`. Establish `hleft : ∫ z, Φ z ∂(μ.prod μ) = (∫ b, f b⁻¹ ∂μ) * c`. Rewrite using `[integral_prod_symm Φ hΦi, ← integral_mul_const]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `b`. Simplify using `only [hΦ_def]`. Rewrite using `[integral_const_mul]`. Distinguish the cases in `h2 : f b⁻¹ = 0`. Simplify using `[h2]`.
+
+Establish `hb : b ∈ K` using `by simpa using K.inv_mem (hs _ h2)`. Use `congr 1`. Rewrite using `[hc_def]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+
+Simplify using `only [hu_def, Set.indicator_apply, SetLike.mem_coe, K.mul_mem_cancel_right hb]`. Establish `hright : ∫ z, Φ (z.2, z.2⁻¹ * z.1) ∂(μ.prod μ) = (∫ x, f x ∂μ) * c`. Rewrite using `[integral_prod _ hΦTi]`. Simplify using `only [hΦ_def, _root_.mul_inv_rev, inv_inv, mul_inv_cancel_left]`. Rewrite using `[hc_def, ← integral_const_mul]`.
+
+Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[integral_mul_const, integral_mul_left_eq_self (fun y => f y) x⁻¹]`. Use `hswap` as an intermediate fact. Rewrite `this` using `[hleft, hright]`.
+
+Conclude with `(mul_right_cancel₀ hcne this).symm`.
+-/
 theorem integral_inv_of_support (K : Subgroup G) (hc : IsCompact (K : Set G)) (ho : IsOpen (K : Set G))
     (f : G → ℂ) (hf : Continuous f) (hs : ∀ x, f x ≠ 0 → x ∈ K) :
     ∫ x, f x⁻¹ ∂μ = ∫ x, f x ∂μ := by
@@ -79,6 +102,11 @@ variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 omit [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] [SecondCountableTopology G] [MeasurableSpace G]
   [BorelSpace G] in
 
+/- English proof (translation)
+Establish `hback : π g (π g⁻¹ x) = x`. Use `congrArg (fun S : H →L[ℂ] H => S x) (hm g g⁻¹)` as an intermediate fact. Simplify using `only [mul_inv_cancel, h1, ContinuousLinearMap.one_apply, ContinuousLinearMap.mul_apply] at this`. Conclude with `this.symm`. Set `U : H →ₗᵢ[ℂ] H` to `⟨(π g).toLinearMap, hn g⟩`.
+
+Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hback]`. Use `_ = ⟪π g⁻¹ x, y⟫_ℂ := U.inner_map_map _ _`.
+-/
 theorem inner_rep (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π (a * b) = π a * π b)
     (hn : ∀ g v, ‖π g v‖ = ‖v‖) (g : G) (x y : H) : ⟪x, π g y⟫_ℂ = ⟪π g⁻¹ x, y⟫_ℂ := by
   have hback : π g (π g⁻¹ x) = x := by
@@ -91,6 +119,23 @@ theorem inner_rep (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π
         rw [hback]
     _ = ⟪π g⁻¹ x, y⟫_ℂ := U.inner_map_map _ _
 
+/- English proof (translation)
+Use extensionality with `y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, hT x (T y)]`. Establish `step : ∀ g, ⟪x, π g (T y)⟫_ℂ = ∫ h, e (g⁻¹ * h) * ⟪x, π h y⟫_ℂ ∂μ`. Introduce `g`.
+
+Establish `shift` using `integral_mul_left_eq_self (μ := μ) (fun h => e (g⁻¹ * h) * ⟪x, π h y⟫_ℂ) g`. Simplify using `only [inv_mul_cancel_left] at shift`. Rewrite using `[inner_rep π h1 hm hn g, hT, ← shift]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Rewrite using `[hm, ContinuousLinearMap.mul_apply, inner_rep π h1 hm hn g]`. Establish `hint : Integrable (Function.uncurry fun g h => e g * (e (g⁻¹ * h) * ⟪x, π h y⟫_ℂ)) (μ.prod μ)`. Apply `Continuous.integrable_of_hasCompactSupport` to reduce the goal to its premises. Conclude with `(he.comp continuous_fst).mul ((he.comp (continuous_fst.inv.mul continuous_snd)).mul (continuous_const.inner ((hπ y).comp continuous_snd)))`. Use `HasCompactSupport.intro (hc.prod hc) ?_` and prove the remaining obligations.
+
+Introduce and unpack `⟨g, h⟩ hgh`. Simplify using `only [Function.uncurry_apply_pair]`. Distinguish the cases in `hg : g ∈ K`. Establish `hh : h ∉ K` using `fun hh => hgh ⟨hg, hh⟩`. Establish `h0 : e (g⁻¹ * h) = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hh (by simpa using K.mul_mem hg (hs _ hne))`. Simplify using `[h0]`. Establish `h0 : e g = 0`. Assume the negation of the conclusion as `hne`.
+
+Conclude with `hg (hs _ hne)`. Simplify using `[h0]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `g`.
+
+Rewrite using `[step g, integral_const_mul]`. Use `_ = ∫ h, ∫ g, e g * (e (g⁻¹ * h) * ⟪x, π h y⟫_ℂ) ∂μ ∂μ := integral_integral_swap hint`. Use `_ = ∫ h, e h * ⟪x, π h y⟫_ℂ ∂μ := by`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+
+Repeatedly rewrite using `[← mul_assoc]`. Rewrite using `[integral_mul_const, hee]`. Use `_ = ⟪x, T y⟫_ℂ := (hT x y).symm`.
+-/
 theorem op_idem (K : Subgroup G) (hc : IsCompact (K : Set G))
     (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π (a * b) = π a * π b)
     (hn : ∀ g v, ‖π g v‖ = ‖v‖) (hπ : ∀ v, Continuous fun g => π g v)
@@ -136,6 +181,11 @@ theorem op_idem (K : Subgroup G) (hc : IsCompact (K : Set G))
         rw [integral_mul_const, hee]
     _ = ⟪x, T y⟫_ℂ := (hT x y).symm
 
+/- English proof (translation)
+Establish `hF : Continuous fun g => e g * ⟪x, π g y⟫_ℂ` using `he.mul (continuous_const.inner (hπ y))`. Establish `hFs : ∀ g, e g * ⟪x, π g y⟫_ℂ ≠ 0 → g ∈ K` using `fun g hg => hs g (left_ne_zero_of_mul hg)`. Use `conv_lhs => rw [← inner_conj_symm]`. Rewrite using `[hT y x, ← integral_conj, hT x y, ← integral_inv_of_support μ K hc ho _ hF hFs]`. Use `congr 1`.
+
+Use function extensionality and compare the values at `g`. Use `show (starRingEnd ℂ) (e g * ⟪y, π g x⟫_ℂ) = e g⁻¹ * ⟪x, π g⁻¹ y⟫_ℂ`. Rewrite using `[map_mul, inner_conj_symm, starRingEnd_apply, ← hst g, inner_rep π h1 hm hn g⁻¹, inv_inv]`.
+-/
 theorem op_symm (K : Subgroup G) (hc : IsCompact (K : Set G)) (ho : IsOpen (K : Set G))
     (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π (a * b) = π a * π b)
     (hn : ∀ g v, ‖π g v‖ = ‖v‖) (hπ : ∀ v, Continuous fun g => π g v)
@@ -153,6 +203,11 @@ theorem op_symm (K : Subgroup G) (hc : IsCompact (K : Set G)) (ho : IsOpen (K : 
 
 omit [T2Space G] in
 
+/- English proof (translation)
+Use extensionality with `y`. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, inner_rep π h1 hm hn k, hT, hT]`. Establish `key : ∀ g, e g * ⟪π k⁻¹ x, π g y⟫_ℂ = e (k * g) * ⟪x, π (k * g) y⟫_ℂ`. Introduce `g`.
+
+Rewrite using `[hk g, hm, ContinuousLinearMap.mul_apply, inner_rep π h1 hm hn k]`. Repeatedly rewrite using `[key]`. Conclude with `integral_mul_left_eq_self (fun h => e h * ⟪x, π h y⟫_ℂ) k`.
+-/
 theorem op_fixed (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π (a * b) = π a * π b)
     (hn : ∀ g v, ‖π g v‖ = ‖v‖) (e : G → ℂ) (T : H →L[ℂ] H)
     (hT : ∀ x y : H, ⟪x, T y⟫_ℂ = ∫ g, e g * ⟪x, π g y⟫_ℂ ∂μ) (k : G) (hk : ∀ h, e (k * h) = e h) :
@@ -168,6 +223,17 @@ theorem op_fixed (π : G → (H →L[ℂ] H)) (h1 : π 1 = 1) (hm : ∀ a b, π 
 
 omit [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 
+/- English proof (translation)
+Establish `hloc : ∀ h ∈ (K : Set G), ∀ᶠ z : G × G in nhds ((1 : G), h), e (z.1 * z.2) = e z.2`. Introduce `h _`. Establish `hfib : ∀ᶠ y in nhds h, e y = e h` using `he.eventually_eq h`. Establish `ht : Filter.Tendsto (fun z : G × G => z.1 * z.2) (nhds ((1 : G), h)) (nhds h)`. Simplify using `using (continuous_mul (M := G)).tendsto ((1 : G), h)`.
+
+Establish `ha` using `ht.eventually hfib`. Establish `hb : ∀ᶠ z : G × G in nhds ((1 : G), h), e z.2 = e h` using `(continuous_snd.tendsto ((1 : G), h)).eventually hfib`. Use `filter_upwards [ha, hb] with z hz1 hz2`. Rewrite using `[hz1, hz2]`. Establish `hK : ∀ᶠ k in nhds (1 : G), ∀ h ∈ (K : Set G), e (k * h) = e h` using `hc.eventually_forall_of_forall_eventually hloc`.
+
+Establish `hmem : ∀ᶠ k in nhds (1 : G), k ∈ (K : Set G)` using `ho.mem_nhds K.one_mem`. Use `filter_upwards [hK, hmem] with k hk hkK h`. Distinguish the cases in `hh : h ∈ (K : Set G)`. Conclude with `hk h hh`. Establish `e1 : e h = 0`.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hh (hs h hne)`. Establish `e2 : e (k * h) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hh (by simpa using K.mul_mem (K.inv_mem hkK) (hs _ hne))`.
+
+Rewrite using `[e1, e2]`.
+-/
 theorem eventually_left_inv (K : Subgroup G) (hc : IsCompact (K : Set G)) (ho : IsOpen (K : Set G))
     (e : G → ℂ) (he : IsLocallyConstant e) (hs : ∀ x, e x ≠ 0 → x ∈ K) :
     ∀ᶠ k in nhds (1 : G), ∀ h, e (k * h) = e h := by
@@ -197,6 +263,21 @@ theorem eventually_left_inv (K : Subgroup G) (hc : IsCompact (K : Set G)) (ho : 
 
 end General
 
+/- English proof (translation)
+Introduce `B`. Take `⟨hT2, -, hSC, hKc, hKo, ⟨K, hK⟩, -⟩` from `GlobalTheory.CongTop.adelic_topology B.I`. Take `⟨hR1, hRm, hRn, hRc, -⟩` from `GlobalTheory.T.rightRegularRep_unitary_stronglyContinuous B`. Take `⟨hlc, hconv, hst, -, hsupp, -, -⟩` from `B.e_adm`. Take `⟨-, hRe⟩` from `B.Re_spec`.
+
+Establish `hKc' : IsCompact (K : Set B.I.Gf)` using `by rw [hK]; exact hKc`. Establish `hKo' : IsOpen (K : Set B.I.Gf)` using `by rw [hK]; exact hKo`. Establish `hs : ∀ x, B.e x ≠ 0 → x ∈ K`. Introduce `x hx`. Rewrite using `[← SetLike.mem_coe, hK]`.
+
+Conclude with `hsupp x hx`. Establish `h1 : B.R (1, 1) = 1` using `hR1`. Establish `hm : ∀ a b : B.I.Gf, B.R (1, a * b) = B.R (1, a) * B.R (1, b)`. Introduce `a b`. Rewrite using `[← hRm, Prod.mk_mul_mk, one_mul]`.
+
+Establish `hn : ∀ (g : B.I.Gf) v, ‖B.R (1, g) v‖ = ‖v‖` using `fun g v => hRn _ v`. Establish `hπ : ∀ v, Continuous fun g : B.I.Gf => B.R (1, g) v` using `fun v => (hRc v).comp (continuous_const.prodMk continuous_id)`. Establish `he : Continuous B.e` using `hlc.continuous`. Establish `hee : ∀ x, ∫ y, B.e y * B.e (y⁻¹ * x) ∂B.μf = B.e x` using `fun x => congrFun hconv x`. Establish `hT : ∀ x y : B.I.L2 B.μf B.fund, ⟪x, B.Re y⟫_ℂ = ∫ g, B.e g * ⟪x, B.R (1, g) y⟫_ℂ ∂B.μf` using `hRe`.
+
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show B.Re.comp B.Re = B.Re ∧ (∀ x y, ⟪B.Re x, y⟫_ℂ = ⟪x, B.Re y⟫_ℂ) ∧ _`. Conclude with `⟨op_idem B.μf K hKc' (fun g => B.R (1, g)) h1 hm hn hπ B.e he hs hee B.Re hT, fun x y => op_symm B.μf K hKc' hKo' (fun g => B.R (1, g)) h1 hm hn hπ B.e he hs hst B.Re hT x y, rfl⟩`. Introduce `g`. Use `ContinuousLinearMap.ext fun y => ?_` and prove the remaining obligations.
+
+Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hT x, inner_rep B.R hR1 hRm hRn (g, 1) x, hT]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `hcomm : ((1 : B.I.Ginf), k) * (g, 1) = (g, 1) * ((1 : B.I.Ginf), k)`.
+
+Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one]`. Rewrite using `[← inner_rep B.R hR1 hRm hRn (g, 1), ← ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply, ← hRm, ← hRm, hcomm]`. Take `⟨g, hg1, hgsub⟩` from `B.I.topf_basis _ (eventually_left_inv K hKc' hKo' B.e hlc hs)`. Conclude with `⟨g, hg1, fun k hk => op_fixed B.μf (fun g => B.R (1, g)) h1 hm hn B.e B.Re hT k (hgsub hk)⟩`.
+-/
 theorem re_orth_proj : ∀ B : RowsAut, IsOrthProjOnto B.Re (LinearMap.range (B.Re : B.I.L2 B.μf B.fund →ₗ[ℂ] B.I.L2 B.μf B.fund)) ∧ (∀ g : B.I.Ginf, B.Re.comp (B.R (g, 1)) = (B.R (g, 1)).comp B.Re) ∧ ∃ g : ℕ, 1 ≤ g ∧ ∀ k ∈ B.I.Kg g, (B.R (1, k)).comp B.Re = B.Re := by
   intro B
   obtain ⟨hT2, -, hSC, hKc, hKo, ⟨K, hK⟩, -⟩ := GlobalTheory.CongTop.adelic_topology B.I

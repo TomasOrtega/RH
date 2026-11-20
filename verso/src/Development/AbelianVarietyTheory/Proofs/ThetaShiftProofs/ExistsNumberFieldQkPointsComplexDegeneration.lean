@@ -15,6 +15,21 @@ open GlobalTheory.ArcPull GlobalTheory.TorusExt GlobalTheory.ArcExt
 open GlobalTheory.PsiEvenPull (proj)
 open scoped CategoryTheory.Obj
 
+/- English proof (translation)
+Take `⟨A, u, _, hu, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := X) (x := x (IsLocalRing.closedPoint L)) (U := ⊤) trivial`. Establish `hr : Set.range x ⊆ Set.range u`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum L) y (IsLocalRing.closedPoint L)]`. Conclude with `hu`.
+
+Set `ψ : A ⟶ CommRingCat.of L` to `Spec.preimage (IsOpenImmersion.lift u x hr)`. Establish `hψ : Spec.map ψ ≫ u = x` using `by rw [Spec.map_preimage, IsOpenImmersion.lift_fac]`. Set `φ : CommRingCat.of R ⟶ A` to `Spec.preimage (u ≫ s)`. Establish `hφ : Spec.map φ = u ≫ s` using `Spec.map_preimage _`. Establish `h₁ : φ.hom.FiniteType`.
+
+Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), hφ]`. Use `infer_instance`. Establish `hc : φ ≫ ψ = CommRingCat.ofHom ((algebraMap K L).comp j)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, ← Category.assoc, hψ, hx]`.
+
+Establish `hc' : ∀ c : R, ψ.hom (φ.hom c) = algebraMap K L (j c)` using `fun c => congrArg (fun f => f.hom c) hc`. Use `letI := φ.hom.toAlgebra`. Take `⟨t, ht⟩ : (⊤ : Subalgebra R A).FG` from `h₁.out`. Establish `: Finite (ψ.hom '' t)` using `(t.finite_toSet.image _)`. Set `M` to `IntermediateField.adjoin K (ψ.hom '' t)`.
+
+Establish `hM : ∀ a, ψ.hom a ∈ M` using `fun a => by`. Establish `ha : a ∈ Algebra.adjoin R (t : Set A)` using `ht ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact IntermediateField.subset_adjoin _ _ ⟨a, ha, rfl⟩`. Consider the case `algebraMap r => exact (hc' r) ▸ M.algebraMap_mem _`.
+
+Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `mul a b _ _ ha hb => rw [map_mul]`. Conclude with `mul_mem ha hb`. Use `⟨M, IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y, spMap (ψ.hom.codRestrict M hM) ≫ u, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← Category.assoc, ← spMap_comp, ← hψ]`. Both sides reduce to the same expression.
+-/
 theorem exists_finite_pt {R K L : Type} [CommRing R] [Field K] [Field L] [Algebra K L] [Algebra.IsAlgebraic K L]
     (j : R →+* K) {X : Scheme.{0}} (s : X ⟶ Sp R) [LocallyOfFiniteType s] (x : Sp L ⟶ X)
     (hx : x ≫ s = spMap ((algebraMap K L).comp j)) :
@@ -58,6 +73,11 @@ section Ext
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' F'' : Type} [Field F] [Algebra (FractionRing R) F]
   [Field F'] [Algebra (FractionRing R) F'] [Field F''] [Algebra (FractionRing R) F'']
 
+/- English proof (translation)
+Establish `hs : spMap f'' = spMap f' ≫ spMap f` using `by rw [← e, spMap_comp]`. Take `⟨b, v⟩` from `(eq_gtExt_iff f hf g _).1 rfl`. Take `⟨b', v'⟩` from `(eq_gtExt_iff f' hf' (gtExt D f hf g) _).1 rfl`. Use `(eq_gtExt_iff f'' hf'' g _).2 ⟨?_, fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[b', b, hs, Category.assoc]`.
+
+Use `((val_corr hJ (v' χ) _).trans ((val_pull hJ _ _ _).trans ((val_corr hJ (v χ) _).trans (val_pull hJ _ _ _)))).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Conclude with `congrArg (fun r => val (g.s χ) r y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) hs.symm))`.
+-/
 theorem gtExt_gtExt (f : F →+* F') (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
     (f' : F' →+* F'') (hf' : f'.comp (algebraMap (FractionRing R) F') = algebraMap (FractionRing R) F'')
     (f'' : F →+* F'') (hf'' : f''.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F'')
@@ -71,6 +91,11 @@ theorem gtExt_gtExt (f : F →+* F') (hf : f.comp (algebraMap (FractionRing R) F
       (val_pull hJ _ _ _)))).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)
     exact congrArg (fun r => val (g.s χ) r y J) ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) hs.symm))
 
+/- English proof (translation)
+Take `⟨y, J, hJ⟩` from `exists_good_chart D F`. Establish `hJ₁ : ∀ ψ : Sp F ⟶ D.P.A.left, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U (J ψ)` using `fun ψ z _ => pt_eq (R := R) y z ▸ hJ ψ`. Take `⟨J', hg, hJ'⟩` from `exists_gauge f D.P.isLB hJ₁`. Set `y' : Sp F'` to `IsLocalRing.closedPoint F'`. Establish `hJ₂ : Good D.P.L (Z` using `(TF (R := R) F').left) y' J' := fun ψ => hg ψ trivial`.
+
+Use `gt_ext_val_at (by rw [gtExt_b, torusPt_b, torusPt_b, MonObj.comp_one]) hJ₂ fun χ => Units.ext ?_` and prove the remaining obligations. Use `(val_eq_vF hg _ _ y').trans (Eq.trans ?_ (congrArg Units.val (torusPt_val _ χ hJ₂)).symm)` and prove the remaining obligations. Use `congrArg (stalkConst y') ((vF_gtExt f hf hJ₁ hg hJ' _ χ).trans (congrArg f ?_))` and prove the remaining obligations. Conclude with `(stalkConst y).injective ((val_eq_vF hJ₁ _ _ y).symm.trans (congrArg Units.val (torusPt_val t χ hJ)))`.
+-/
 theorem gtExt_torusPt (f : F →+* F') (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
     (t : Multiplicative D.X →* Fˣ) : gtExt D f hf (torusPt D F (Additive.ofMul t)) =
       torusPt D F' (Additive.ofMul ((Units.map f.toMonoidHom).comp t)) := by
@@ -90,6 +115,9 @@ section Finite
 
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {L : Type} [Field L] [Algebra (FractionRing R) L]
 
+/- English proof (translation)
+The claim follows from `RingHom.ext fun _ => rfl`.
+-/
 theorem val_comp (M : IntermediateField (FractionRing R) L) :
     M.val.toRingHom.comp (algebraMap (FractionRing R) M) = algebraMap (FractionRing R) L := RingHom.ext fun _ => rfl
 
@@ -98,6 +126,9 @@ variable (D) in
 def definedOver (M : IntermediateField (FractionRing R) L) : AddSubgroup (GtPtF D L) :=
   (gtExt D M.val.toRingHom (val_comp M)).range
 
+/- English proof (translation)
+Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨gtExt D (IntermediateField.inclusion h).toRingHom (RingHom.ext fun _ => rfl) g, gtExt_gtExt _ _ _ _ _ _ (RingHom.ext fun _ => rfl) g⟩`.
+-/
 theorem definedOver_mono {M M' : IntermediateField (FractionRing R) L} (h : M ≤ M') :
     definedOver D M ≤ definedOver D M' := by
   rintro _ ⟨g, rfl⟩
@@ -106,6 +137,19 @@ theorem definedOver_mono {M M' : IntermediateField (FractionRing R) L} (h : M �
 
 variable [Algebra.IsAlgebraic (FractionRing R) L]
 
+/- English proof (translation)
+Use `D.P.isAb.proper` as an intermediate fact. Take `⟨M₀, h₀, x, hx⟩` from `exists_finite_pt (K := FractionRing R) (L := L) (algebraMap R (FractionRing R)) D.P.A.hom g.b.left ((Over.w g.b).trans (spMap_comp _ _).symm)`. Use `epi_spMap M₀.val.toRingHom` as an intermediate fact. Set `b : TF (R` to `R) M₀ ⟶ D.P.A := Over.homMk x ((cancel_epi (spMap M₀.val.toRingHom)).1 ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) hx).trans ((Over.w g.b).trans (Over.w (extMap _ (val_comp M₀))).symm))))`. Take `⟨g₀, hg₀⟩` from `exists_lift b`.
+
+Take `⟨t, ht⟩` from `exists_torusPt_eq (g := g + -gtExt D _ (val_comp M₀) g₀) (by`. Rewrite using `[add_b, neg_b, gtExt_b, hg₀, show extMap _ (val_comp M₀) ≫ b = g.b from Over.OverMorphism.ext hx, mul_inv_cancel])`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := D.X)`. Set `S : Set L` to `(fun χ => (t (Multiplicative.ofAdd χ) : L)) '' s`. Establish `: Finite S` using `s.finite_toSet.image _`.
+
+Set `M₁` to `IntermediateField.adjoin (FractionRing R) S`. Establish `h₁ : FiniteDimensional (FractionRing R) M₁` using `IntermediateField.finiteDimensional_adjoin fun y _ => Algebra.IsIntegral.isIntegral y`. Establish `hM : ∀ χ, (t (Multiplicative.ofAdd χ) : L) ∈ M₁` using `fun χ => by`. Establish `ha : χ ∈ Submodule.span ℤ (s : Set D.X)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+
+Consider the case `mem a ha => exact IntermediateField.subset_adjoin _ _ ⟨a, ha, rfl⟩`. Consider the case `zero => rw [ofAdd_zero, map_one]`. Conclude with `one_mem _`. Consider the case `add a b _ _ ha hb => rw [ofAdd_add, map_mul]`. Conclude with `mul_mem ha hb`.
+
+Consider the case `smul c a _ ha => rw [ofAdd_zsmul, map_zpow, Units.val_zpow_eq_zpow_val]`. Conclude with `zpow_mem ha c`. Set `t₁ : Multiplicative D.X →* M₁ˣ` to `(((Units.coeHom L).comp t).codRestrict M₁ fun χ => hM χ.toAdd).toHomUnits`. Establish `e : (Units.map M₁.val.toRingHom.toMonoidHom).comp t₁ = t` using `MonoidHom.ext fun χ => Units.ext rfl`. Use `⟨M₀ ⊔ M₁, inferInstance, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[← neg_add_cancel_right g (gtExt D _ (val_comp M₀) g₀), ht, ← e, ← gtExt_torusPt _ (val_comp M₁)]`. Conclude with `add_mem (definedOver_mono le_sup_right ⟨_, rfl⟩) (definedOver_mono le_sup_left ⟨_, rfl⟩)`.
+-/
 theorem exists_definedOver (g : GtPtF D L) :
     ∃ M : IntermediateField (FractionRing R) L, FiniteDimensional (FractionRing R) M ∧ g ∈ definedOver D M := by
   have := D.P.isAb.proper
@@ -137,6 +181,9 @@ theorem exists_definedOver (g : GtPtF D L) :
   rw [← neg_add_cancel_right g (gtExt D _ (val_comp M₀) g₀), ht, ← e, ← gtExt_torusPt _ (val_comp M₁)]
   exact add_mem (definedOver_mono le_sup_right ⟨_, rfl⟩) (definedOver_mono le_sup_left ⟨_, rfl⟩)
 
+/- English proof (translation)
+Use `choose M h₁ h₂ using exists_definedOver (D := D) (L := L)`. Establish `: Finite T` using `hT`. Conclude with `⟨⨆ g : T, M g, IntermediateField.finiteDimensional_iSup_of_finite, fun g hg => definedOver_mono (le_iSup (fun g : T => M g) ⟨g, hg⟩) (h₂ g)⟩`.
+-/
 theorem exists_definedOver_finite {T : Set (GtPtF D L)} (hT : T.Finite) :
     ∃ M : IntermediateField (FractionRing R) L, FiniteDimensional (FractionRing R) M ∧ ∀ g ∈ T, g ∈ definedOver D M := by
   choose M h₁ h₂ using exists_definedOver (D := D) (L := L)
@@ -144,6 +191,17 @@ theorem exists_definedOver_finite {T : Set (GtPtF D L)} (hT : T.Finite) :
   exact ⟨⨆ g : T, M g, IntermediateField.finiteDimensional_iSup_of_finite, fun g hg =>
     definedOver_mono (le_iSup (fun g : T => M g) ⟨g, hg⟩) (h₂ g)⟩
 
+/- English proof (translation)
+Establish `hN0 : N ≠ 0` using `by rintro rfl; exact hN Nat.cast_zero`. Establish `fin : Finite {g : GtPtF D L // N • g = 0}` using `Nat.finite_of_card_ne_zero (by rw [card_gt_torsion hL D L hN]; positivity)`. Establish `fin' : {g : GtPtF D L | N • g = 0}.Finite` using `fin`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := ℤ) (M := D.X)`. Use `choose r hr using fun y => exists_nsmul_eq hL.mulN (Or.inr hL.polBaseChange) hN0 (iota hB L y)`.
+
+Take `⟨M, hM, H⟩` from `exists_definedOver_finite (fin'.union (s.finite_toSet.image r))`. Establish `hy : ∀ y, ∃ g ∈ definedOver D M, N • g = iota hB L y` using `fun y => by`. Establish `ha : y ∈ Submodule.span ℤ (s : Set D.X)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha => exact ⟨r a, H _ (Or.inr ⟨a, ha, rfl⟩), hr a⟩`.
+
+Consider the case `zero => exact ⟨0, zero_mem _, by rw [nsmul_zero, map_zero]⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨g, m, e⟩` from `ha`. Take `⟨g', m', e'⟩` from `hb`. Conclude with `⟨g + g', add_mem m m', by rw [nsmul_add, e, e', map_add]⟩`.
+
+Consider the case `smul c a _ ha`. Take `⟨g, m, e⟩` from `ha`. Conclude with `⟨c • g, zsmul_mem m c, by rw [smul_comm, e, map_zsmul]⟩`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨m, hm⟩ q`.
+
+Take `⟨g, h, e⟩` from `hy (m • q.y)`. Establish `ht : q.g - g ∈ definedOver D M` using `H _ (Or.inl (by show N • (q.g - g) = 0`. Rewrite using `[nsmul_sub, e, map_nsmul, ← qk_nsmul hB, hm, mul_nsmul, sub_self]))`. Take `⟨z, hz⟩ : q.g ∈ definedOver D M` from `by simpa using add_mem ht h`. Conclude with `⟨qkMk hB q.y z (gtExt_injective _ (val_comp M) (by rw [map_nsmul, hz, gtExt_iota, qk_nsmul hB])), qk_ext rfl hz⟩`.
+-/
 theorem exists_finite_qk (hL : Laws) (hB : D.TauBimult) [IsAlgClosed L] {N : ℕ} (hN : (N : L) ≠ 0) :
     ∃ M : IntermediateField (FractionRing R) L, FiniteDimensional (FractionRing R) M ∧
       ∀ k : ℕ, k ∣ N → ∀ q : QkPt D L k, ∃ z : QkPt D M k, qkExt hB M.val.toRingHom (val_comp M) z = q := by
@@ -179,6 +237,9 @@ end Finite
 
 section Cancel
 
+/- English proof (translation)
+Substitute `e` using the available equality. Consider the cases of `hw`. Both sides reduce to the same expression.
+-/
 theorem om_congr {X X' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {Φ Φ' : X' ⟶ X} (e : Φ' = Φ) {w' : LB.Iso L' (L.pull Φ')}
     {w : LB.Iso L' (L.pull Φ)} (hw : HEq w' w) (z : Z) (J : (Z ⟶ X) → L.ι) (J' : (Z ⟶ X') → L'.ι) (x : Z ⟶ X') :
     om w' z J J' x = om w z J J' x := by
@@ -195,6 +256,19 @@ structure IsTower (h₁ : IsPullDeg α D₀ D₁) (h₂ : IsPullDeg β D₁ D) (
 
 open GlobalTheory.FieldPull in
 
+/- English proof (translation)
+Establish `p₁ : IsGrpPullback D₁.P.A D₀.P.A (spMap α) (proj h₁)` using `pull_grp h₁`. Establish `sc : spMap β ≫ spMap α = spMap (β.comp α)` using `(spMap_comp α β).symm`. Establish `p : IsGrpPullback D.P.A D₀.P.A (spMap β ≫ spMap α) (proj h)` using `(pull_grp h).congr sc.symm rfl`. Take `⟨Φ, e₁, e₂⟩ : ∃ Φ : D.P.A.left ⟶ D₁.P.A.left, Φ ≫ proj h₁ = proj h ∧ Φ ≫ D₁.P.A.hom = D.P.A.hom ≫ spMap β` from `⟨p₁.1.lift (proj h) (D.P.A.hom ≫ spMap β) (p.1.w.trans (Category.assoc _ _ _).symm), p₁.1.lift_fst _ _ _, p₁.1.lift_snd _ _ _⟩`. Establish `gp : IsGrpPullback D.P.A D₁.P.A (spMap β) Φ` using `IsGrpPullback.cancel p₁ (p.congr rfl e₁.symm) e₂`.
+
+Take `⟨w, hw, hr, T⟩` from `exists_cancel_of_eq e₁ D₀.P.isLB D₁.P.isLB D.P.isLB h₁.w h.w ((isGen_iff _).1 h₁.w_gen) ((isGen_iff _).1 h.w_gen) sc (cubeMapOf gp).e_comm (pmaps_rig h₁) (pmaps_rig h)`. Set `xe : D.X ≃+ D₁.X` to `h.xe.trans h₁.xe.symm`. Establish `hxe : ∀ x, h₁.xe (xe x) = h.xe x` using `fun x => h₁.xe.apply_symm_apply _`. Establish `hc : ∀ x, (D.c x).left ≫ Φ = spMap β ≫ (D₁.c (xe x)).left` using `fun x => by`. Apply `p₁.1.hom_ext` to reduce the goal to its premises.
+
+Rewrite using `[Category.assoc, e₁, Category.assoc, h₁.c_pr, hxe]`. Conclude with `(h.c_pr x).trans ((congrArg (· ≫ _) sc.symm).trans (Category.assoc _ _ _))`. Rewrite using `[Category.assoc, e₂, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Take `⟨hD, hΦ, hx, hw'⟩` from `exists_isPullDeg_of_val β D₁ D gp w hw hr xe hc (fun x z J₁ J hJ₁ hJ => by`.
+
+Take `⟨J₀, hJ₀⟩` from `DegPull.exists_good' D₀.P.isLB z`. Establish `sβ : jK K ≫ spMap β = genMap β.injective ≫ jK K₁` using `(Category.id_comp _).symm.trans (fracMap_sq β.injective)`. Establish `sα : jK K₁ ≫ spMap α = genMap α.injective ≫ jK K₀` using `(Category.id_comp _).symm.trans (fracMap_sq α.injective)`. Establish `q₁ : genMap β.injective ≫ jK K₁ ≫ spMap α = (genMap β.injective ≫ genMap α.injective) ≫ jK K₀` using `(congrArg (_ ≫ ·) sα).trans (Category.assoc _ _ _).symm`. Establish `q : 𝟙 (TK K).left ≫ jK K ≫ spMap (β.comp α) = (genMap β.injective ≫ genMap α.injective) ≫ jK K₀` using `(Category.id_comp _).trans ((congrArg (_ ≫ ·) sc.symm).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ _) sβ).trans ((Category.assoc _ _ _).trans q₁))))`.
+
+Establish `v` using `psi_val h _ _ q hJ₀ hJ x`. Establish `v₁` using `psi_val h₁ _ _ q₁ hJ₀ hJ₁ (xe x)`. Establish `hx : D.xK x ≫ Φ = genMap β.injective ≫ D₁.xK (xe x)` using `by show (jK K ≫ (D.c x).left) ≫ Φ = genMap β.injective ≫ jK K₁ ≫ (D₁.c (xe x)).left`. Rewrite using `[Category.assoc, hc, ← Category.assoc, sβ, Category.assoc]`. Rewrite `v₁` using `[hxe, v, Category.id_comp, T _ z J₀ J₁ J hJ₀ hJ₁ hJ, hx, mul_inv, _root_.mul_assoc]`.
+
+Conclude with `(mul_left_cancel v₁).symm)`. Use `⟨hD, hΦ ▸ e₁, fun x => by rw [hx]; exact hxe x, fun Z z J J' J'' hJ hJ' hJ'' x => ?_⟩` and prove the remaining obligations. Rewrite using `[om_congr hΦ hw', hΦ]`. Conclude with `T Z z J J' J'' hJ hJ' hJ'' x`.
+-/
 theorem exists_isTower (h₁ : IsPullDeg α D₀ D₁) (h : IsPullDeg (β.comp α) D₀ D) :
     ∃ h₂ : IsPullDeg β D₁ D, IsTower h₁ h₂ h := by
   have p₁ : IsGrpPullback D₁.P.A D₀.P.A (spMap α) (proj h₁) := pull_grp h₁
@@ -238,6 +312,15 @@ theorem exists_isTower (h₁ : IsPullDeg α D₀ D₁) (h : IsPullDeg (β.comp �
 
 variable {h₁ : IsPullDeg α D₀ D₁} {h₂ : IsPullDeg β D₁ D} {h : IsPullDeg (β.comp α) D₀ D}
 
+/- English proof (translation)
+Use `isPullGtF_of_val h hF ?_ fun χ y J J'' hJ hJ'' => ?_` and prove the remaining obligations. Rewrite using `[← C.proj_eq, ← Category.assoc]`. Conclude with `(congrArg (· ≫ proj h₁) H'.1).trans H.1`. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D₁.P.isLB (Z := Sp F) y`. Establish `v` using `pullGt_val h₁ H (h₂.xe χ) (𝟙 _) hJ hJ'`.
+
+Establish `v'` using `pullGt_val h₂ H' χ (𝟙 _) hJ' hJ''`. Take `⟨hψ, -⟩` from `H'.2 χ`. Establish `a₀ : (cP D _ χ * g''.b).left ≫ proj h₂ = 𝟙 _ ≫ (cP D₁ _ (h₂.xe χ) * g'.b).left` using `hψ 0`. Establish `a₁ : (cP D (TF (R` using `K) F) χ).left ≫ proj h₂ = 𝟙 _ ≫ (cP D₁ (TF (R := K₁) F) (h₂.xe χ)).left := hψ 1`. Establish `a₂ : g''.b.left ≫ proj h₂ = 𝟙 _ ≫ g'.b.left` using `hψ 2`.
+
+Establish `a₃ : (1 : TF (R` using `K) F ⟶ D.P.A).left ≫ proj h₂ = 𝟙 _ ≫ (1 : TF (R := K₁) F ⟶ D₁.P.A).left := hψ 3`. Simplify using `only [Category.id_comp] at v'`. Establish `o` using `C.om_eq _ _ _ _ _ hJ hJ' hJ''`. Rewrite using `[← C.xe_eq, o, o, o, o, a₀, a₁, a₂, a₃]`. Establish `alg : ∀ (U : Type) [CommGroup U] (a b c d a' b' c' d' v : U), a⁻¹ * b * c * d⁻¹ * (a'⁻¹ * b' * c' * d'⁻¹ * v) = (a * a')⁻¹ * (b * b') * (c * c') * (d * d')⁻¹ * v` using `fun U _ a b c d a' b' c' d' v => by`.
+
+Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Conclude with `(v.trans (congrArg₂ (· * ·) rfl v')).trans (alg _ _ _ _ _ _ _ _ _ _)`.
+-/
 theorem IsTower.isPullGtF (C : IsTower h₁ h₂ h) {F : Type} [Field F] [Algebra (FractionRing K₀) F]
     [Algebra (FractionRing K₁) F] [Algebra (FractionRing K) F] (hF : Compat (β.comp α) F) {g : GtPtF D₀ F}
     {g' : GtPtF D₁ F} {g'' : GtPtF D F} (H : IsPullGtF α h₁ F g g') (H' : IsPullGtF β h₂ F g' g'') :
@@ -263,6 +346,17 @@ theorem IsTower.isPullGtF (C : IsTower h₁ h₂ h) {F : Type} [Field F] [Algebr
       abel
     exact (v.trans (congrArg₂ (· * ·) rfl v')).trans (alg _ _ _ _ _ _ _ _ _ _)
 
+/- English proof (translation)
+Use `letI : Algebra (FractionRing K₀) (FractionRing K₁) := ((algebraMap K₁ (FractionRing K₁)).comp (algebraMap (FractionRing K₀) K₁)).toAlgebra`. Use `letI : Algebra (FractionRing K₁) (FractionRing K) := (fracMap β.injective).toAlgebra`. Establish `c₁ : Compat α (FractionRing K₁)` using `fun r => congrArg (algebraMap K₁ (FractionRing K₁)) (hα r)`. Establish `c₂ : Compat β (FractionRing K)` using `fracMap_algebraMap β.injective`. Establish `c₃ : Compat α (FractionRing K)` using `fun r => (hF r).trans (c₂ (α r)).symm`.
+
+Establish `e' : (algebraMap (FractionRing K₁) (FractionRing K)).comp (algebraMap K₁ (FractionRing K₁)) = f` using `(RingHom.ext fun r => c₂ r).trans e`. Establish `hf' : (algebraMap (FractionRing K₁) (FractionRing K)).comp (algebraMap (FractionRing K₀) (FractionRing K₁)) = algebraMap (FractionRing K₀) (FractionRing K)`. Rewrite using `[← hf, ← e']`. Both sides reduce to the same expression. Establish `hB₁` using `TauPull.tauBimult_pull hG h₁ hB`.
+
+Set `z' : QkPt D₀ (FractionRing K₁) k` to `qkExt hB (algebraMap K₁ (FractionRing K₁)) rfl z`. Set `x₂` to `pullQk h₁ hG c₁ hB hB₁ z'`. Set `q` to `qkExt hB₁ (algebraMap (FractionRing K₁) (FractionRing K)) (RingHom.comp_id _) x₂`. Establish `hq : QkExt (algebraMap (FractionRing K₁) (FractionRing K)) x₂ q` using `(qkExt_iff _ _ _ _ _).2 rfl`. Establish `H : IsPullGtF α h₁ (FractionRing K) (qkExt hB _ hf' z').g q.g` using `isPullGtF_ext h₁ c₃ _ (RingHom.comp_id _) (isPullGtF_pullGt h₁ hG c₁ z'.g) ((qkExt_iff _ _ _ _ _).2 rfl) hq`.
+
+Establish `E : (qkExt hB _ hf' z').g = gtExt D₀ f hf z.g` using `gtExt_gtExt _ _ _ _ _ _ e' _`. Rewrite `H` using `[E]`. Use `⟨x₂, _, c₂, q, hq, h.xe.injective ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy, AddEquiv.apply_symm_apply, ← C.xe_eq, AddEquiv.apply_symm_apply]`. Conclude with `(h₁.xe.apply_symm_apply _).symm`.
+
+Rewrite using `[pullGt_unique h hF hx (C.isPullGtF hF H (isPullGtF_pullGt h₂ hG c₂ _))]`. Conclude with `isPullGtF_pullGt h₂ hG c₂ _`.
+-/
 theorem IsTower.exists_isPullQk (C : IsTower h₁ h₂ h) (hG : GlobalFnsSt) (hB : D₀.TauBimult)
     [Algebra (FractionRing K₀) K₁] [Algebra (FractionRing K₀) (FractionRing K)]
     (hα : ∀ r, algebraMap (FractionRing K₀) K₁ (algebraMap K₀ _ r) = α r) (hF : Compat (β.comp α) (FractionRing K))
@@ -307,6 +401,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM GlobalTheory GlobalTheory.ArcQ GlobalTheory.LamF GlobalTheory.ArcCM
 open scoped LaurentSeries
 
+/- English proof (translation)
+Introduce `hK K _ _ σ₁ D₁ DC p n N _ hN hBC _`. Establish `hG` using `hK.laws.globalFns`. Establish `hB` using `PullDescent.tauBimult_desc hG σ₁.injective p hBC`. Use `letI : Algebra (FractionRing K) (FractionRing ℂ) := (ArcPull.fracMap σ₁.injective).toAlgebra`. Establish `hF : ArcPull.Compat σ₁ (FractionRing ℂ)` using `ArcPull.fracMap_algebraMap σ₁.injective`.
+
+Set `ε : FractionRing ℂ ≃ₐ[ℂ] ℂ` to `FractionRing.algEquiv ℂ ℂ`. Establish `: IsAlgClosed (FractionRing ℂ)` using `IsAlgClosed.of_ringEquiv ℂ _ ε.symm.toRingEquiv`. Set `L` to `algebraicClosure (FractionRing K) (FractionRing ℂ)`. Establish `: IsAlgClosed L` using `IsAlgClosure.isAlgClosed (FractionRing K)`. Establish `: CharZero L` using `algebraRat.charZero _`.
+
+Take `⟨M, hM, H⟩` from `exists_finite_qk (D := D₁) (L := L) hK.laws hB (Nat.cast_ne_zero.2 hN.ne')`. Set `i : K →+* M` to `(algebraMap (FractionRing K) M).comp (algebraMap K (FractionRing K))`. Set `f : M →+* FractionRing ℂ` to `L.val.toRingHom.comp M.val.toRingHom`. Set `σ₂ : M →+* ℂ` to `ε.toRingEquiv.toRingHom.comp f`. Establish `e : (algebraMap ℂ (FractionRing ℂ)).comp σ₂ = f` using `RingHom.ext fun x => ε.injective (ε.commutes _)`.
+
+Establish `hσ : σ₂.comp i = σ₁` using `RingHom.ext fun r => (congrArg ε (hF r)).trans (ε.commutes _)`. Establish `nf : NumberField M`. Establish `: CharZero M` using `(RingHom.charZero_iff i.injective).1 inferInstance`. Establish `: NumberField (FractionRing K)` using `NumberField.of_ringEquiv K _ (FractionRing.algEquiv K K).symm.toRingEquiv`. Conclude with `NumberField.of_module_finite (FractionRing K) M`.
+
+Take `⟨D₂, q, -⟩` from `DegPull.exists_isPullDeg hK.laws.polBaseChange K M i D₁ ⊤ (FieldPull.nonempty_psiOn_field D₁)`. Discharge the goal by the elementary cases of `trivial`. Establish `key : ∀ (σ : K →+* ℂ) (hσ : σ₂.comp i = σ) (p : Out.IsPullDeg σ D₁ DC) (hF : ArcPull.Compat σ (FractionRing ℂ)), ∃ p₂ : Out.IsPullDeg σ₂ D₂ DC, prj p₂ ≫ prj q = prj p ∧ ∀ k : ℕ, k ∣ N → ∀ x : Out.QkPt DC (FractionRing ℂ) k, ∃ x₂, GlobalTheory.ArcPull.IsPullQk p₂ x₂ x`. Introduce and unpack `_ rfl p hF`. Take `⟨p₂, C⟩` from `exists_isTower q p`.
+
+Use `⟨p₂, C.proj_eq, fun k hk x => ?_⟩` and prove the remaining obligations. Establish `hk0 : k ≠ 0` using `by rintro rfl; exact hN.ne' (Nat.eq_zero_of_zero_dvd hk)`. Take `⟨x₁, rfl⟩` from `ArcPull.pullQk_surjective p hG hF hB hBC x`. Take `⟨x₀, rfl⟩` from `ArcExt.exists_qkExt L.val.toRingHom (val_comp L) hB hK.laws (Nat.cast_ne_zero.2 hk0) x₁`. Take `⟨z, rfl⟩` from `H k hk x₀`.
+
+Use `C.exists_isPullQk hG hB (fun _ => rfl) hF f (RingHom.ext fun _ => rfl) e z _ rfl ?_` and prove the remaining obligations. Rewrite using `[← gtExt_gtExt _ (val_comp M) _ (val_comp L) f _ rfl]`. Conclude with `ArcPull.isPullGtF_pullGt p hG hF _`. Take `⟨p₂, h₁, h₂⟩` from `key σ₁ hσ p hF`. Conclude with `⟨M, inferInstance, nf, i, σ₂, D₂, q, p₂, hσ, h₁, h₂⟩`.
+-/
 theorem exists_numberField_qk : Known → ∀ (K : Type) [Field K] [NumberField K] (σ₁ : K →+* ℂ) (D₁ : Out.DegPre K) (DC : Out.DegPre ℂ) (p : Out.IsPullDeg σ₁ D₁ DC) (n N : ℕ), 0 < n → 0 < N → DC.TauBimult → (∀ y, DC.c y ^ n = 1) → ∃ (K₂ : Type) (_ : Field K₂) (_ : NumberField K₂) (i : K →+* K₂) (σ₂ : K₂ →+* ℂ) (D₂ : Out.DegPre K₂) (q : Out.IsPullDeg i D₁ D₂) (p₂ : Out.IsPullDeg σ₂ D₂ DC), σ₂.comp i = σ₁ ∧ prj p₂ ≫ prj q = prj p ∧ ∀ k : ℕ, k ∣ N → ∀ x : Out.QkPt DC (FractionRing ℂ) k, ∃ x₂, GlobalTheory.ArcPull.IsPullQk p₂ x₂ x := by
   intro hK K _ _ σ₁ D₁ DC p n N _ hN hBC _
   have hG := hK.laws.globalFns

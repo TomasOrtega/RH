@@ -14,11 +14,21 @@ namespace GlobalTheory.LevFinCong
 
 variable {D : D7}
 
+/- English proof (translation)
+Take `⟨π, hπ, -⟩` from `GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram`. Use `(GlobalTheory.Mass.swapPts (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram (π κ)).2` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mass.coe_swapPts, hπ κ]`. Then use the resulting hypothesis.
+-/
 theorem finE_mem_UA (V : HSp D) (κ : GA D V) : finE V κ ∈ UA D.sp.cm V.gram := by
   obtain ⟨π, hπ, -⟩ := GlobalTheory.Mass.existsUnique_isFinProj D.sp.cm.sig V.gram
   have := (GlobalTheory.Mass.swapPts (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram (π κ)).2
   rwa [GlobalTheory.Mass.coe_swapPts, hπ κ] at this
 
+/- English proof (translation)
+Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsModuleTopology (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) _`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `hc : Continuous ((Bridge.Gf V).subtype)` using `continuous_subtype_val`.
+
+Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ_mat β T hc (map_one _)] with x hh`. Take `⟨h2, h3⟩` from `hh`. Take `⟨g, hg⟩` from `x.2`. Establish `h1 : Formalism.UG.bc (swapAE D) x.1 ∈ UA D.sp.cm V.gram`. Rewrite using `[← hg]`.
+
+Conclude with `finE_mem_UA V g`. Conclude with `⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨h2, h3 PP hP⟩⟩`.
+-/
 theorem isOpen_comap_Kg (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Finset (Pl D.host.E)) :
     IsOpen ((((Kg D.sp.cm V.gram β T).comap
       ((Formalism.UG.bc (swapAE D)).comp (Bridge.Gf V).subtype)) : Subgroup (Bridge.Gf V)) : Set (Bridge.Gf V)) := by
@@ -35,6 +45,11 @@ theorem isOpen_comap_Kg (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Fins
     rw [← hg]; exact finE_mem_UA V g
   exact ⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨h2, h3 PP hP⟩⟩
 
+/- English proof (translation)
+Introduce `D V β L`. Take `⟨N, hN, hK⟩` from `GlobalTheory.SplitRepsOpen.exists_finCong_le D V _ (isOpen_comap_Kg V β (L.Pg ∪ L.Q))`. Use `⟨N, hN, fun k hf hk => ?_⟩` and prove the remaining obligations. Establish `hk' : finE V k ∈ Kg D.sp.cm V.gram β (L.Pg ∪ L.Q)` using `hK k hk`. Use `⟨⟨hf, ?_⟩, ?_⟩` and prove the remaining obligations.
+
+Conclude with `Kg_le_lev (D := L) (T := L.Pg ∪ L.Q) Finset.subset_union_left Finset.subset_union_right hk'`. Unfold `levChi`. Rewrite using `[GlobalTheory.GoodFiniteDim.levFn_eq_one Finset.subset_union_left Finset.subset_union_right hk', Units.val_one]`.
+-/
 theorem exists_finCong_lev : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank), ∃ N : ℕ, 0 < N ∧ ∀ k ∈ GfC V, GlobalTheory.Member.FinCong V N k → k ∈ levS V β L ∧ levChi V β L k = 1 := by
   classical
   intro D V β L

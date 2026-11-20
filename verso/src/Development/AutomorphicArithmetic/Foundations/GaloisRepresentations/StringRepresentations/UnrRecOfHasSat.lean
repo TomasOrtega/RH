@@ -19,10 +19,16 @@ variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algeb
   {HT : (E →+* Qbar l) → Multiset ℤ} {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
 omit [IsCMField E] in
+/- English proof (translation)
+The claim follows from `k.n0 (WD.unr_mono0 _ hy)`.
+-/
 theorem Aw.eq_unr {h : IsPlaceOver A w} {x y : WD h} (k : Aw x y) (hy : y.unr) : x = y := k.n0 (WD.unr_mono0 _ hy)
 
 omit [IsCMField E] in
 
+/- English proof (translation)
+Take `⟨α, rfl, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ S).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hS⟩)`. Establish `e` using `ParLaws.rec_eq_diag hrc (σ := ParLaws.toRep σ) hα`. Establish `e' : rc (IrrGL.of σ.ρ σ.smooth σ.irred) = WD.mk (WDRep.diag h fun i => (α i)⁻¹)` using `e`. Rewrite using `[e', WD.unr_mk]`. Conclude with `WDRep.unr_diag _`.
+-/
 theorem unr_rec_of_hasSat {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h} (hrc : IsRec h rc)
     (σ : SmIrr (GL (Fin a) (w.adicCompletion E))) (S : Multiset ℂˣ) (hS : GlobalTheory.LFun.HasSatGL w σ.ρ S) :
     (rc (IrrGL.of σ.ρ σ.smooth σ.irred)).unr := by

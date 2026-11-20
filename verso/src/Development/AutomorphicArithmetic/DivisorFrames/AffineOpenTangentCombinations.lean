@@ -8,6 +8,11 @@ open MonObj
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
+/- English proof (translation)
+Take `⟨hη, e⟩` from `V.φ_eq_fnMap`. Rewrite using `[e]`. Take `⟨U, hx, s, rfl⟩` from `h.exists_fnOf`. Establish `hy : x ∈ V.π ⁻¹ᵁ U` using `hx`. Rewrite using `[SmallSec.fnMap_fnOf V.π hη _ (gen_mem hy)]`.
+
+Conclude with `regAt_fnOf hy _ _`.
+-/
 private theorem regAt_pull {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) {x : V.G} {f : Y.Fn}
     (h : RegAt (V.π x) f) : RegAt x (V.φ f) := by
   obtain ⟨hη, e⟩ := V.φ_eq_fnMap
@@ -17,6 +22,11 @@ private theorem regAt_pull {F : Type} [Field F] [NumberField F] {Y : Var F} (V :
   rw [SmallSec.fnMap_fnOf V.π hη _ (gen_mem hy)]
   exact regAt_fnOf hy _ _
 
+/- English proof (translation)
+Introduce `E _ _ _ H X t F _ _ Y V ρ' U hU g e M m h f T P hC N S z hz k i`. Take `⟨α, a, -, -, hP⟩` from `hC z hz`. Establish `e1 : locM V (constM V S * P) T (V.π z) = constM V S * locM V P T (V.π z)` using `Matrix.mul_assoc _ _ _`. Rewrite using `[e1, Matrix.mul_apply]`. Use `Finset.sum_induction _ (RegAt z) (fun _ _ ha hb => ha.add hb) (regAt_zero z) fun j _ => ?_` and prove the remaining obligations.
+
+Conclude with `(regAt_pull V (Y.regAt_algebraMap _ (S k j))).mul ⟨_, (hP j i).symm⟩`.
+-/
 theorem UpperTheory.affine_open_tangent_combinations :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (U : V.X.Opens) (hU : IsAffineOpen U) (g : ℕ) (e : Fin g → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)) (M m : ℕ) (h : Fin M → Fin g → Γ(V.X, U)) (f : ∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left)) (T : Y.X → Matrix (Fin m) (Fin m) Y.Fn) (P : Matrix (Fin M) (Fin m) V.G.functionField), ChartCo t V ρ' hU e h f T P → ∀ (N : ℕ) (S : Fin N → Fin M → F) (z : V.G), V.j z ∈ U → ∀ k i, RegAt z (locM V (constM V S * P) T (V.π z) k i) := by
   intro E _ _ _ H X t F _ _ Y V ρ' U hU g e M m h f T P hC N S z hz k i

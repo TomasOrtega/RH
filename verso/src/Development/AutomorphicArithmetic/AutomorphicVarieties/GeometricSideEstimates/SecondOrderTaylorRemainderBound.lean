@@ -4,6 +4,9 @@ open UpperTheory.V.Lit.Geo
 
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Lit.Bor
 
+/- English proof (translation)
+The claim follows from `|f (x + y) - f x - fderiv ℝ f x y| ≤ C * ‖y‖ ^ 2 := by have h1 : ContDiffAt ℝ 1 (fderiv ℝ f) x := hf.fderiv_right (by norm_num) obtain ⟨K, t, ht, hK⟩ := h1.exists_lipschitzOnWith have h2 : ∀ᶠ z in nhds x, DifferentiableAt ℝ f z := (hf.eventually (by simp)).mono fun z hz => hz.dif …`.
+-/
 private theorem taylor_two {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {f : V → ℝ} {x : V}
     (hf : ContDiffAt ℝ 2 f x) : ∃ C ε : ℝ, 0 ≤ C ∧ 0 < ε ∧ ∀ y : V, ‖y‖ ≤ ε →
       |f (x + y) - f x - fderiv ℝ f x y| ≤ C * ‖y‖ ^ 2 := by
@@ -27,6 +30,11 @@ private theorem taylor_two {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
   calc _ ≤ _ := key
     _ = _ := by ring
 
+/- English proof (translation)
+Introduce `E _ _ a`. Take `⟨hs, h1, hd, -⟩` from `UpperTheory.deriv_similitudeChar_at_one_eq_trace E a`. Establish `hat : ContDiffAt ℝ 2 (fun y : Lie E a => sc (Matrix.of y)) (oneL E a)` using `(hs.contDiffAt (isOpen_invSet.mem_nhds (val_mem_invSet 1))).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`. Take `⟨C, ε, hC, hε, h⟩` from `taylor_two hat`. Use `⟨C, ε, hC, hε, fun Y hY => ?_⟩` and prove the remaining obligations.
+
+Use `h (toL Y) hY` as an intermediate fact. Rewrite `this` using `[hd, sub_neg_eq_add]`. Establish `e : sc (Matrix.of (oneL E a)) = 1` using `h1`. Rewrite `this` using `[e]`. Conclude with `this`.
+-/
 theorem UpperTheory.second_order_taylor_remainder_bound :
     ScTaylor := by
   intro E _ _ a

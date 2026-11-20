@@ -18,6 +18,9 @@ noncomputable section
 
 namespace GlobalTheory.CuspPureApprox
 
+/- English proof (translation)
+Introduce `hP D G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i j hi hj φ hφ a δ hδ`. Take `⟨ψ, hψ, hK, hle⟩` from `GlobalTheory.T.cusp_form_approx_K_finite_type hP D G₀ Pl0 T A Ks R G hR hG i j hi hj φ hφ a δ hδ`. Take `⟨n, Tm, v, hT, heq⟩` from `GlobalTheory.T.cusp_form_finite_dim_invariant hP D G₀ Pl0 T A Ks R G hR hG i j hi hj ψ hψ hK`. Conclude with `⟨n, Tm, v, hT, fun g => by rw [← heq g]; exact hle g⟩`.
+-/
 theorem exists_sum_approx : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ i j, i ≤ D.R.m → j ≤ D.R.m → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.V i j) φ → ∀ (a : ℕ) (δ : ℝ), 0 < δ → ∃ (n : ℕ) (T : Fin n → Formalism.IndefR.Mult.MMap (G.V i j).M) (v : Fin n → (G.V i j).M.Vec), (∀ l, Formalism.IndefR.Mult.IsMultMap R.θ (G.V i j).M ∅ 1 (T l)) ∧ ∀ g, ‖φ g - ∑ l, T l (v l) g‖ * GlobalTheory.Grow.quotHeight (G.V i j).V g ^ a ≤ δ := by
   intro hP D G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG i j hi hj φ hφ a δ hδ
   obtain ⟨ψ, hψ, hK, hle⟩ := GlobalTheory.T.cusp_form_approx_K_finite_type hP D G₀ Pl0 T A Ks R G hR hG i j hi hj φ hφ a δ hδ

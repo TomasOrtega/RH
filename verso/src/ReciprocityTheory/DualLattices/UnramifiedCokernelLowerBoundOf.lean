@@ -31,6 +31,9 @@ def IdemGenStatement : Prop :=
     Nonempty (LinearMap.range (Matrix.mulVecLin P) ≃ₗ[R] (Fin d → R)) →
     ∃ y : Fin d → LinearMap.range (Matrix.mulVecLin Pᵀ), Submodule.span R (Set.range y) = ⊤
 
+/- English proof (translation)
+Rewrite using `[Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, stdJ, Fintype.sum_sum_type, Matrix.one_apply, Finset.sum_sub_distrib]`. Apply the tactic sequence `try ring`.
+-/
 private lemma stdJ_form'' {D : Type} [CommRing D] {g : ℕ}
     (M : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) D) (i j : Fin g ⊕ Fin g) :
     (Mᵀ * stdJ D g * M) i j =
@@ -39,6 +42,15 @@ private lemma stdJ_form'' {D : Type} [CommRing D] {g : ℕ}
   simp [Matrix.mul_apply, stdJ, Fintype.sum_sum_type, Matrix.one_apply, Finset.sum_sub_distrib]
   try ring
 
+/- English proof (translation)
+Establish `hdet : A.det * B.det = c ^ Fintype.card n`. Rewrite using `[← Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one, mul_one]`. Establish `hA : A.det ≠ 0`. Introduce `h0`. Rewrite `hdet` using `[h0, zero_mul]`.
+
+Conclude with `pow_ne_zero _ hc hdet.symm`. Establish `h1 : A * (B * A - c • 1) = 0`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, h, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.one_mul, sub_self]`. Establish `h2 : A.det • (B * A - c • 1) = 0`. Rewrite using `[← Matrix.one_mul (B * A - c • 1), ← Matrix.smul_mul, ← Matrix.adjugate_mul A, Matrix.mul_assoc, h1, Matrix.mul_zero]`.
+
+Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h3`. Establish `h4` using `(mul_eq_zero.1 h3).resolve_left hA`. Rewrite `h4` using `[Matrix.sub_apply, sub_eq_zero]`.
+
+Conclude with `h4`.
+-/
 private lemma mul_eq_smul_one_comm_of_ne_zero {n : Type*} [Fintype n] [DecidableEq n] {R : Type*} [CommRing R]
     [IsDomain R] {A B : Matrix n n R} {c : R} (hc : c ≠ 0) (h : A * B = c • 1) :
     B * A = c • 1 := by
@@ -61,6 +73,13 @@ private lemma mul_eq_smul_one_comm_of_ne_zero {n : Type*} [Fintype n] [Decidable
   rw [Matrix.sub_apply, sub_eq_zero] at h4
   exact h4
 
+/- English proof (translation)
+Introduce `f`. Establish `hΨΦ : E⁻¹ * Matrix.fromCols Btᵀ (-Htᵀ) * Matrix.fromRows Ht Bt = cp • (1 : Matrix (Ix g) (Ix g) R)`. Rewrite using `[Matrix.mul_assoc, Matrix.fromCols_mul_fromRows, Matrix.neg_mul, ← sub_eq_add_neg, hform, Matrix.mul_smul, Matrix.nonsing_inv_mul E hdet]`. Establish `hsq` using `mul_eq_smul_one_comm_of_ne_zero (n := Ix g) hc hΨΦ`. Use `⟨(E⁻¹ * Matrix.fromCols Btᵀ (-Htᵀ)) *ᵥ (Sum.elim f 0 : Fin g ⊕ Fin g → R), ?_⟩` and prove the remaining obligations.
+
+Use function extensionality and compare the values at `k`. Establish `h5 : (cp • (1 : Matrix (Ix g) (Ix g) R)) *ᵥ (Sum.elim f 0 : Fin g ⊕ Fin g → R) = cp • (Sum.elim f 0 : Fin g ⊕ Fin g → R)`. Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`. Establish `h1` using `congrFun (congrArg (fun M => M *ᵥ (Sum.elim f 0 : Fin g ⊕ Fin g → R)) hsq) (Sum.inl k)`.
+
+Rewrite `h1` using `[← Matrix.mulVec_mulVec, h5]`. Conclude with `h1`.
+-/
 lemma ht_cp_surj {R : Type} [CommRing R] [IsDomain R] {g : ℕ} (Ht Bt : Matrix (Fin g) (Ix g) R)
     (E : Matrix (Ix g) (Ix g) R) (cp : R) (hEt : Eᵀ = -E) (hdiag : ∀ i, E i i = 0)
     (hdet : IsUnit E.det) (hc : cp ≠ 0) (hform : Btᵀ * Ht - Htᵀ * Bt = cp • E) :
@@ -82,6 +101,9 @@ lemma ht_cp_surj {R : Type} [CommRing R] [IsDomain R] {g : ℕ} (Ht Bt : Matrix 
   rw [← Matrix.mulVec_mulVec, h5] at h1
   exact h1
 
+/- English proof (translation)
+Rewrite using `[show (fun k => (Submodule.Quotient.mk (y k) : M ⧸ N)) = N.mkQ ∘ y from rfl, Set.range_comp, ← Submodule.map_span, hy, Submodule.map_top, Submodule.range_mkQ]`.
+-/
 lemma span_mk_top {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (N : Submodule R M)
     {d : ℕ} (y : Fin d → M) (hy : Submodule.span R (Set.range y) = ⊤) :
     Submodule.span R (Set.range fun k => (Submodule.Quotient.mk (y k) : M ⧸ N)) = ⊤ := by
@@ -94,9 +116,17 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {C : Type} [Field C] {v : Valuation 
   [CommRing R] [Algebra R C] [Algebra ℤ_[p] R] {O : Type} [CommRing O] [Algebra ℤ_[p] O]
   {σ : O ≃ₐ[ℤ_[p]] O} {cp : R}
 
+/- English proof (translation)
+Conclude with `Function.Injective.isDomain (algebraMap R C) hS.integers.hom_inj`.
+-/
 lemma htd_domain (hS : HodgeTateSetting p v R O σ cp) : IsDomain R := by
   exact Function.Injective.isDomain (algebraMap R C) hS.integers.hom_inj
 
+/- English proof (translation)
+Introduce `h`. Establish `h1` using `hS.cp_val`. Rewrite `h1` using `[h, map_zero, map_zero, zero_pow]`. Conclude with `hS.p_ne h1.symm`. Use `(Fact.out : p.Prime).two_le` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 lemma htd_cp_ne (hS : HodgeTateSetting p v R O σ cp) : cp ≠ 0 := by
   intro h
   have h1 := hS.cp_val
@@ -105,6 +135,11 @@ lemma htd_cp_ne (hS : HodgeTateSetting p v R O σ cp) : cp ≠ 0 := by
   · have := (Fact.out : p.Prime).two_le
     omega
 
+/- English proof (translation)
+Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h` using `congrFun (congrFun H.E_alternating.1 j) i`. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at h`. Simplify using `[Matrix.transpose_apply, Matrix.map_apply, h]`.
+
+Introduce `i`. Simplify using `[Matrix.map_apply, H.E_alternating.2 i]`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `H.isUnit_det_E.map _`.
+-/
 lemma htd_E (H : HodgeTateDatum p g v R O σ cp) :
     (H.E.map (algebraMap ℤ_[p] R))ᵀ = -H.E.map (algebraMap ℤ_[p] R) ∧
     (∀ i, H.E.map (algebraMap ℤ_[p] R) i i = 0) ∧ IsUnit (H.E.map (algebraMap ℤ_[p] R)).det := by
@@ -118,6 +153,13 @@ lemma htd_E (H : HodgeTateDatum p g v R O σ cp) :
   · rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]
     exact H.isUnit_det_E.map _
 
+/- English proof (translation)
+Use `haveI := htd_domain hS`. Take `⟨hEt, hdiag, hdet⟩` from `htd_E H`. Introduce `m`. Use `Submodule.Quotient.induction_on _ m fun x => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+
+Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hx`. Take `⟨t, ht⟩` from `ht_cp_surj H.Ht H.Bt _ cp hEt hdiag hdet (htd_cp_ne hS) H.form_eq_alt y`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, Submodule.mem_map, tPart, LinearMap.mem_range]`. Use `⟨(H.ρ b).map (algebraMap ℤ_[p] R) *ᵥ t, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations.
+
+Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, H.Ht_equivariant.1 b, hab]`. Rewrite using `[← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul]`.
+-/
 lemma av_kill (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R O σ cp) (a b : O) (hab : σ b = a) :
     ∀ m : htCoker H a b, cp • m = 0 := by
   haveI := htd_domain hS
@@ -134,6 +176,15 @@ lemma av_kill (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R 
   simp only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, H.Ht_equivariant.1 b, hab]
   rw [← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul]
 
+/- English proof (translation)
+Establish `hp` using `(Fact.out : p.Prime).two_le`. Establish `h1 : ((v (algebraMap R C (p : R)) : NNReal) : ℝ) = ((v (algebraMap R C cp) : ℝ)) ^ ((p : ℝ) - 1)`. Rewrite using `[← hS.cp_val]`. Use `push_cast`. Rewrite using `[← Real.rpow_natCast]`.
+
+Use `congr 1`. Rewrite using `[Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules. Establish `hne : ((p : ℝ) - 1) ≠ 0`. Establish `: (2 : ℝ) ≤ p` using `by exact_mod_cast hp`.
+
+Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((p : ℝ) - 1) * ((d : ℝ) / ((p : ℝ) - 1)) = d`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h1, ← Real.rpow_mul (by positivity), h2]`. Use `push_cast`.
+
+Rewrite using `[Real.rpow_natCast]`.
+-/
 lemma vp_rpow (hS : HodgeTateSetting p v R O σ cp) (d : ℕ) :
     (v (algebraMap R C (p : R)) : ℝ) ^ ((d : ℝ) / (p - 1)) =
       ((v (algebraMap R C cp) ^ d : NNReal) : ℝ) := by
@@ -157,6 +208,13 @@ lemma vp_rpow (hS : HodgeTateSetting p v R O σ cp) (d : ℕ) :
 
 end HTDfacts
 
+/- English proof (translation)
+Unfold `PermutedCokernelLowerBoundStatement`. Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hS H m e π he hσ hP1 hP2 hL1 hL2 w hw d hd cw hcw`. Establish `hidem : H.ρL (e (π w)) * H.ρL (e (π w)) = H.ρL (e (π w))`. Rewrite using `[← map_mul, he, if_pos rfl]`. Take `⟨y, hy⟩` from `hIG R g d (H.ρL (e (π w))) hidem hd`.
+
+Take `⟨cwb, hcwb⟩` from `hEx C v R hS.integers g H.Ht (H.ρL (e (π w))) ((H.ρ (e w)).map (algebraMap ℤ_[p] R))`. Establish `hkill` using `av_kill hS H (e (π w)) (e w) (hσ w)`. Establish `hgen : ∃ y' : Fin d → htCoker H (e (π w)) (e w), Submodule.span R (Set.range y') = ⊤` using `⟨fun k => Submodule.Quotient.mk (y k), span_mk_top _ y hy⟩`. Establish `h1` using `hKG C v R hS.integers (htCoker H (e (π w)) (e w)) cwb d cp hcwb hgen hkill`. Establish `h2` using `hU6 p g C v R O σ cp hS H m e π he hσ hP1 hP2 hL1 hL2 w hw cw cwb hcw hcwb`.
+
+Rewrite using `[vp_rpow hS d]`. Conclude with `h1.trans h2` after adjusting the coercions.
+-/
 theorem permutedCokernelLowerBound_of (hU6 : CokernelLengthComparisonStatement) (hEx : LenExStatement) (hKG : KilledGenStatement)
     (hIG : IdemGenStatement) : PermutedCokernelLowerBoundStatement := by
   unfold PermutedCokernelLowerBoundStatement
@@ -180,6 +238,9 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {C : Type} [Field C] {v : Valuation 
   [CommRing R] [Algebra R C] [Algebra ℤ_[p] R] {O : Type} [CommRing O] [Algebra ℤ_[p] O]
   {σ : O ≃ₐ[ℤ_[p]] O} {cp : R}
 
+/- English proof (translation)
+Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩` from `U.distinct _ _ hne`. Rewrite `ha` using `[U.conj, U.conj, hS.invol, sub_self, map_zero, map_zero]`. Conclude with `zero_ne_one ha`.
+-/
 lemma cj_cj (hS : HodgeTateSetting p v R O σ cp) {H : HodgeTateDatum p g v R O σ cp}
     (U : UnramData p g v R O σ cp H) (k : Fin U.m) : U.cj (U.cj k) = k := by
   by_contra hne
@@ -187,6 +248,17 @@ lemma cj_cj (hS : HodgeTateSetting p v R O σ cp) {H : HodgeTateDatum p g v R O 
   rw [U.conj, U.conj, hS.invol, sub_self, map_zero, map_zero] at ha
   exact zero_ne_one ha
 
+/- English proof (translation)
+Use `haveI := htd_domain hS`. Take `⟨a, ha⟩` from `U.distinct (U.cj k) j hkj`. Use `set X := (U.εL k)ᵀ * H.Ht * U.εT j with hX`. Establish `h1 : (U.εL k)ᵀ * (H.ρL (σ a))ᵀ = U.sg (U.cj k) a • (U.εL k)ᵀ`. Rewrite using `[← Matrix.transpose_mul, U.εL_eig, Matrix.transpose_smul, U.conj]`.
+
+Establish `h2 : H.Ht * (H.ρ a).map (algebraMap ℤ_[p] R) * U.εT j = U.sg j a • (H.Ht * U.εT j)`. Rewrite using `[Matrix.mul_assoc, U.εT_eig, Matrix.mul_smul]`. Establish `h3 : U.sg j a • X = U.sg (U.cj k) a • X`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.mul_smul, hX, Matrix.mul_assoc]`.
+
+Use `_ = (U.εL k)ᵀ * ((H.ρL (σ a))ᵀ * H.Ht * U.εT j) := by rw [H.Ht_equivariant.1 a]`. Use `_ = U.sg (U.cj k) a • X := by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.smul_mul, Matrix.smul_mul, hX]`. Establish `h4 : (U.sg (U.cj k) a - U.sg j a) • X = 0` using `by rw [sub_smul, ← h3, sub_self]`. Establish `hc : U.sg (U.cj k) a - U.sg j a ≠ 0`.
+
+Introduce `h0`. Rewrite `ha` using `[h0, map_zero, map_zero]`. Conclude with `zero_ne_one ha`. Use extensionality with `i1 i2`. Establish `h5` using `congrFun (congrFun h4 i1) i2`.
+
+Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h5`. Conclude with `(mul_eq_zero.1 h5).resolve_left hc`.
+-/
 lemma ht_block_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R O σ cp)
     (U : UnramData p g v R O σ cp H) (k j : Fin U.m) (hkj : U.cj k ≠ j) :
     (U.εL k)ᵀ * H.Ht * U.εT j = 0 := by
@@ -213,6 +285,21 @@ lemma ht_block_zero (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p 
   simp only [Matrix.smul_apply, smul_eq_mul, Matrix.zero_apply] at h5
   exact (mul_eq_zero.1 h5).resolve_left hc
 
+/- English proof (translation)
+Use `haveI := htd_domain hS`. Take `⟨hEt, hdiag, hdet⟩` from `htd_E H`. Establish `hsumL : ∑ k, (U.εL k)ᵀ = 1`. Rewrite using `[← Matrix.transpose_sum, U.εL_sum, Matrix.transpose_one]`. Establish `key1 : H.Ht * U.εT i = (U.εL (U.cj i))ᵀ * H.Ht * U.εT i` using `by conv_lhs => rw [← Matrix.one_mul H.Ht, ← hsumL, Matrix.sum_mul, Matrix.sum_mul]`.
+
+Rewrite using `[Finset.sum_eq_single (U.cj i)]`. Introduce `k _ hk`. Apply `ht_block_zero hS H U` to reduce the goal to its premises. Introduce `h`. Apply `hk` to reduce the goal to its premises.
+
+Rewrite using `[← h, cj_cj hS U]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `key2 : (U.εL (U.cj i))ᵀ * H.Ht * U.εT i = (U.εL (U.cj i))ᵀ * H.Ht` using `by conv_rhs => rw [← Matrix.mul_one ((U.εL (U.cj i))ᵀ * H.Ht), ← U.εT_sum, Matrix.mul_sum]`. Rewrite using `[Finset.sum_eq_single i]`.
+
+Introduce `j _ hj`. Apply `ht_block_zero hS H U` to reduce the goal to its premises. Rewrite using `[cj_cj hS U]`. Conclude with `fun h => hj h.symm`. Introduce `h`.
+
+Conclude with `absurd (Finset.mem_univ _) h`. Introduce `m`. Use `Submodule.Quotient.induction_on _ m fun x => ?_` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Take `⟨x, hx⟩` from `x`.
+
+Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hx`. Take `⟨t, ht⟩` from `ht_cp_surj H.Ht H.Bt _ cp hEt hdiag hdet (htd_cp_ne hS) H.form_eq_alt y`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, Submodule.mem_map, LinearMap.mem_range]`. Use `⟨U.εT i *ᵥ t, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec]`.
+
+Rewrite using `[key1, key2, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul]`.
+-/
 lemma up_kill (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R O σ cp)
     (U : UnramData p g v R O σ cp H) (i : Fin U.m) :
     ∀ m : cokE H.Ht U.εT U.εL (U.cj i) i, cp • m = 0 := by
@@ -253,6 +340,15 @@ lemma up_kill (hS : HodgeTateSetting p v R O σ cp) (H : HodgeTateDatum p g v R 
 
 end Unram
 
+/- English proof (translation)
+Unfold `UnramifiedCokernelLowerBoundStatement`. Introduce `p _ g C _ _ _ v R _ _ _ O _ _ σ cp hp2 hS H U i V1 hV1`. Establish `hidem : U.εL (U.cj i) * U.εL (U.cj i) = U.εL (U.cj i)`. Rewrite using `[U.εL_orth, if_pos rfl]`. Take `⟨y, hy⟩` from `hIG R g (U.r (U.cj i)) (U.εL (U.cj i)) hidem (U.rank (U.cj i))`.
+
+Take `⟨V2, hV2⟩` from `hEx C v R hS.integers g H.Ht (U.εL (U.cj i)) (U.εT i)`. Establish `hkill` using `up_kill hS H U i`. Establish `hgen : ∃ y' : Fin (U.r (U.cj i)) → cokE H.Ht U.εT U.εL (U.cj i) i, Submodule.span R (Set.range y') = ⊤` using `⟨fun k => Submodule.Quotient.mk (y k), span_mk_top _ y hy⟩`. Establish `h1` using `hKG C v R hS.integers (cokE H.Ht U.εT U.εL (U.cj i) i) V2 (U.r (U.cj i)) cp hV2 hgen hkill`. Establish `h2` using `hU7 p g C v R O σ cp hp2 hS H U i V1 V2 hV1 hV2`.
+
+Establish `h3` using `vp_rpow hS (U.r (U.cj i))`. Establish `hx : (0 : ℝ) < (v (algebraMap R C (p : R)) : ℝ)` using `NNReal.coe_pos.2 (pos_iff_ne_zero.2 hS.p_ne)`. Establish `hsplit : ((U.r i : ℝ) + U.r (U.cj i)) / (p - 1) - frobSum U i = (U.r (U.cj i) : ℝ) / (p - 1) + ((U.r i : ℝ) / (p - 1) - frobSum U i)` using `by ring`. Rewrite using `[hsplit, Real.rpow_add hx, h2, h3]`. Apply `mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hx.le _)` to reduce the goal to its premises.
+
+Conclude with `h1` after adjusting the coercions.
+-/
 theorem unramifiedCokernelLowerBound_of (hU7 : UnramifiedCokernelLengthStatement) (hEx : LenExStatement) (hKG : KilledGenStatement)
     (hIG : IdemGenStatement) : UnramifiedCokernelLowerBoundStatement := by
   unfold UnramifiedCokernelLowerBoundStatement
@@ -277,6 +373,9 @@ theorem unramifiedCokernelLowerBound_of (hU7 : UnramifiedCokernelLengthStatement
   apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg hx.le _)
   exact_mod_cast h1
 
+/- English proof (translation)
+Conclude with `And.intro (permutedCokernelLowerBound_of hU6 hEx hKG hIG) (unramifiedCokernelLowerBound_of hU7 hEx hKG hIG)`.
+-/
 theorem cokernelLowerBound_of (hU6 : CokernelLengthComparisonStatement) (hU7 : UnramifiedCokernelLengthStatement) (hEx : LenExStatement)
     (hKG : KilledGenStatement) (hIG : IdemGenStatement) : CokernelLowerBoundStatement := by
   exact And.intro (permutedCokernelLowerBound_of hU6 hEx hKG hIG) (unramifiedCokernelLowerBound_of hU7 hEx hKG hIG)

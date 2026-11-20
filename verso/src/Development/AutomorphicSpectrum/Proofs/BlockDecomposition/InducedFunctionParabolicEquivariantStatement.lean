@@ -9,5 +9,8 @@ open PositivityTheory.RgTw (Mat)
 open GlobalTheory.CompanionTheory.GLK (e1 e2 f1)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
+/- English proof (translation)
+Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul | exact GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul | (intros; apply GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul <;> assumption)`.
+-/
 theorem _root_.GlobalTheory.T.inducedFunction_parabolic_equivariant : ∀ (n : ℕ) (lam : Fin n → ℤ), Antitone lam → ∀ lev : Fin n → ℕ, IsLev lam lev → ∀ p ∈ GlobalTheory.CompanionTheory.ModelS.Pb lev, ∀ g ∈ GLs n, GlobalTheory.CompanionTheory.ModelS.fRaw lam lev (p * g) = GlobalTheory.CompanionTheory.ModelS.fRaw lam lev p * GlobalTheory.CompanionTheory.ModelS.fRaw lam lev g := by
   first | exact @GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul | exact GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul | (intros; apply GlobalTheory.CompanionTheory.ModelS.FMul.fRaw_mul <;> assumption)

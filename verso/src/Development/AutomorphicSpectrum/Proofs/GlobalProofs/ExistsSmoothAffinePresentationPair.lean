@@ -7,6 +7,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm.R Glo
 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Charts
 
+/- English proof (translation)
+Set `φ₀ : CommRingCat.of k ⟶ Γ(X, U.1)` to `Spec.preimage (U.2.fromSpec ≫ g)`. Establish `h1 : Spec.map φ₀ = U.2.fromSpec ≫ g` using `Spec.map_preimage _`. Use `⟨φ₀.hom, ?_, ?_⟩` and prove the remaining obligations. Establish `: Smooth (Spec.map φ₀)`. Rewrite using `[h1]`.
+
+Conclude with `@HasRingHomProperty.comp_of_isOpenImmersion @Smooth _ _ _ _ _ _ _ (IsAffineOpen.isOpenImmersion_fromSpec (hU := U.2)) hg`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Smooth)).mp this`. Establish `hc : Z.subschemeCover.f U ≫ (Z.subschemeι ≫ g) = Spec.map (φ₀ ≫ CommRingCat.ofHom (Ideal.Quotient.mk (Z.ideal U)))`. Rewrite using `[Spec.map_comp, h1, ← Category.assoc, Z.subschemeCover_map_subschemeι, Z.glueDataObjι_ι]`. Conclude with `Category.assoc _ _ _`.
+
+Establish `: Smooth (Spec.map (φ₀ ≫ CommRingCat.ofHom (Ideal.Quotient.mk (Z.ideal U))))`. Rewrite using `[← hc]`. Conclude with `@HasRingHomProperty.comp_of_isOpenImmersion @Smooth _ _ _ _ _ _ _ (Z.subschemeCover.map_prop U) hZ`. Conclude with `(HasRingHomProperty.Spec_iff (P := @Smooth)).mp this`.
+-/
 theorem smooth_affine_chart {k : Type} [Field k] {X : Scheme.{0}} (g : X ⟶ Sp k)
     (Z : X.IdealSheafData) (U : X.affineOpens) (hg : Smooth g) (hZ : Smooth (Z.subschemeι ≫ g)) :
     ∃ φ : k →+* Γ(X, U.1), φ.Smooth ∧ ((Ideal.Quotient.mk (Z.ideal U)).comp φ).Smooth := by

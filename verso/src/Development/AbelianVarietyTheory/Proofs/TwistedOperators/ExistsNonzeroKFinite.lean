@@ -14,6 +14,15 @@ open scoped InnerProductSpace
 
 namespace GlobalTheory.KFinExists
 
+/- English proof (translation)
+Take `⟨⟨h1, hmul⟩, hnorm, hcont⟩` from `hπ`. Establish `hmem : ∀ k : Formalism.REAL.KG ε, Formalism.REAL.toMK k ∈ UJset ε` using `fun k => (k : Formalism.REAL.UJ ε).2`. Establish `hone : Formalism.REAL.toMK (1 : Formalism.REAL.KG ε) = 1` using `rfl`. Establish `hmk : ∀ a b : Formalism.REAL.KG ε, Formalism.REAL.toMK (a * b) = Formalism.REAL.toMK a * Formalism.REAL.toMK b` using `fun _ _ => rfl`. Set `ρ : Formalism.REAL.KG ε →* (V →L[ℂ] V)` to `{ toFun := fun k => π (Formalism.REAL.toMK k) map_one' := by simp only [hone, h1] map_mul' := fun a b => by`.
+
+Simplify using `only [hmk]`. Conclude with `hmul _ (hmem a) _ (hmem b) }`. Establish `hcK : Continuous fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)`. Take `⟨S, hS0, hSfd, hSinv⟩` from `GlobalTheory.T.compact_unitary_finite_invariant_subspace (Formalism.REAL.KG ε) V ρ (fun k x => hnorm _ (hmem k) x) (fun x => (hcont x).comp_continuous hcK hmem)`. Take `⟨v, hvS, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`.
+
+Use `⟨v, ⟨S, hSfd, hvS, ?_⟩, hv0⟩` and prove the remaining obligations. Introduce `g hg x hx`. Establish `hr : g ∈ Set.range (fun k : Formalism.REAL.KG ε => Formalism.REAL.toMK k)`. Rewrite using `[Formalism.REAL.range_toMK]`. Conclude with `hg`.
+
+Take `⟨k, rfl⟩` from `hr`. Conclude with `hSinv k x hx`.
+-/
 theorem exists_kfin (n : ℕ) (ε : Fin n → Bool) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [CompleteSpace V] [Nontrivial V] (π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V))
     (hπ : IsURepOn (UJset ε) π) : ∃ v, IsKFin ε π v ∧ v ≠ 0 := by

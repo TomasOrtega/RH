@@ -12,6 +12,11 @@ def LeafProjModel : Prop := ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Is
 def LeafDimOpen : Prop := ∀ (k : Type) [Field k] {X : Scheme.{0}} (b : X ⟶ Sp k) [LocallyOfFiniteType b],
     IsIntegral X → ∀ U : Set X, IsOpen U → U.Nonempty → topologicalKrullDim X ≤ topologicalKrullDim U
 
+/- English proof (translation)
+Introduce `k _ A _ _ _ _`. Take `⟨B, b, ι, hB, hb, hι, hc⟩` from `h1 k A`. Use `⟨B, b, ι, hB, hb, hι, hc, ?_⟩` and prove the remaining obligations. Take `⟨x⟩ : Nonempty (PrimeSpectrum A)` from `inferInstance`. Establish `hemb` using `ι.isOpenEmbedding`.
+
+Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem goal_of (h1 : LeafProjModel) (h2 : LeafDimOpen) : LateralTheory.E.LeafSpreadVCut.LeafCloseB := by
   intro k _ A _ _ _ _
   obtain ⟨B, b, ι, hB, hb, hι, hc⟩ := h1 k A

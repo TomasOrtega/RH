@@ -13,6 +13,11 @@ noncomputable section
 
 namespace GlobalTheory.GoodTop
 
+/- English proof (translation)
+Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨⟨fun _ _ _ _ _ _ => by simp, fun _ => aemeasurable_const⟩, GlobalTheory.T.hasTopFormChartIntegral_zero e S⟩`. Consider the case `insert a s ha ih`.
+
+Simplify using `only [Finset.sum_insert ha]`. Take `⟨hF, hI⟩` from `ih`. Use `⟨⟨fun i j y hy hi hj => ?_, fun i => ((hd a).meas i).add (hF.meas i)⟩, GlobalTheory.T.topFormIntegral_add e he hc hS (hd a) hF (ht a) hI⟩` and prove the remaining obligations. Rewrite using `[(hd a).trans i j y hy hi hj, hF.trans i j y hy hi hj]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 private theorem isTopForm_hasInt_finset_sum {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y]
     [BorelSpace Y] [SecondCountableTopology Y] (e : κ → OpenPartialHomeomorph Y (V n))
     (he : ∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source))
@@ -33,6 +38,9 @@ private theorem isTopForm_hasInt_finset_sum {n : ℕ} {Y κ : Type} [Topological
     rw [(hd a).trans i j y hy hi hj, hF.trans i j y hy hi hj]
     ring
 
+/- English proof (translation)
+Introduce `n Y κ _ _ _ _ e he hc S hS ι _ d t hd ht`. Conclude with `(isTopForm_hasInt_finset_sum e he hc hS hd ht Finset.univ).2`.
+-/
 theorem hasInt_sum : ∀ {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
     [SecondCountableTopology Y] (e : κ → OpenPartialHomeomorph Y (V n)),
     (∀ i j, DifferentiableOn ℂ (e j ∘ (e i).symm) ((e i).target ∩ (e i).symm ⁻¹' (e j).source)) →

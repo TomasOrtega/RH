@@ -16,9 +16,15 @@ open UpperTheory.GalN.V GroundTheory.Global.SemiLocal UpperTheory.V.Published Up
 open private across_cc across_pair across_up across_irr from Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument.BaseChangeUnits.CentralResidueGroups.Across
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.V.Z.Win
+/- English proof (translation)
+Introduce `A hA` and use `(h A hA).imp fun _ k => ⟨k.1, fun i j e => k.2 i j 1 le_rfl (by simpa only [pow_one] using e)⟩`.
+-/
 private theorem unlocked_of_potentially {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {r : G F Ω →* GL (Fin n) (Qbar l)} {v : HeightOneSpectrum (𝓞 F)} (h : PotUnl r v) : Unl1 r v := fun A hA =>
   (h A hA).imp fun _ k => ⟨k.1, fun i j e => k.2 i j 1 le_rfl (by simpa only [pow_one] using e)⟩
+/- English proof (translation)
+Introduce `w hw _`. Establish `hv : ((l : ℕ) : 𝓞 ℚ) ∈ (w.under (𝓞 ℚ)).asIdeal`. Simplify `hw` using `[HeightOneSpectrum.under, Ideal.mem_comap]`. Establish `h` using `(((hFL ℚ Ω l n r).2.2.2 M).2.2 w hw).1 (hp _ hv)`. Conclude with `unlocked_of_potentially h`.
+-/
 private theorem keeps_of_pot (hFL : FlagLaws) {K M Ω : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Field Ω] [CharZero Ω]
     [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K M] [Algebra M Ω] [IsScalarTower K M Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     (r : G ℚ Ω →* GL (Fin n) (Qbar l))
@@ -29,6 +35,17 @@ private theorem keeps_of_pot (hFL : FlagLaws) {K M Ω : Type} [Field K] [NumberF
     simpa [HeightOneSpectrum.under, Ideal.mem_comap] using hw
   have h := (((hFL ℚ Ω l n r).2.2.2 M).2.2 w hw).1 (hp _ hv)
   exact unlocked_of_potentially h
+/- English proof (translation)
+Take `⟨M, _, _, _, iK, iK', iM, tK, tK', gK, gK', hs, hs', hM, hM'⟩` from `UpperTheory.V.Z.Bc.biQuad K K' Ω hK hK'`. Use `haveI := across_up K Ω`. Use `haveI := across_up K' Ω`. Use `haveI := across_up M Ω`. Take `⟨c, hcc⟩` from `across_cc Ω`.
+
+Establish `he : (r.comp (resG ℚ K Ω)).comp (resG K M Ω) = (r.comp (resG ℚ K' Ω)).comp (resG K' M Ω)` using `MonoidHom.ext fun s => rfl`. Establish `hiM : IsIrr ((r.comp (resG ℚ K Ω)).comp (resG K M Ω))`. Use `across_irr r _ ((resG ℚ K Ω).comp (resG K M Ω)) ?_ hi` and prove the remaining obligations. Introduce and unpack `⟨s, ⟨t, rfl⟩, h2⟩`. Take `⟨u, rfl⟩` from `(hM t).2 h2`.
+
+Conclude with `⟨u, rfl⟩`. Establish `hiM' : IsIrr ((r.comp (resG ℚ K' Ω)).comp (resG K' M Ω))` using `he ▸ hiM`. Establish `hiK : IsIrr (r.comp (resG ℚ K Ω))` using `across_irr r ((resG ℚ K Ω).comp (resG K M Ω)) (resG ℚ K Ω) (fun s => ⟨resG K M Ω s, rfl⟩) hiM`. Establish `hiK' : IsIrr (r.comp (resG ℚ K' Ω))` using `across_irr r ((resG ℚ K' Ω).comp (resG K' M Ω)) (resG ℚ K' Ω) (fun s => ⟨resG K' M Ω s, rfl⟩) hiM'`. Take `⟨P, hPa⟩` from `across_pair (F := K) r θ hd c`.
+
+Take `⟨P', hPa'⟩` from `across_pair (F := K') r θ hd c`. Establish `pol : Sol.Pol ι (r.comp (resG ℚ K Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P, hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa⟩`. Establish `pol' : Sol.Pol ι (r.comp (resG ℚ K' Ω))` using `⟨ℚ, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, θ, c, P', hθ, UpperTheory.V.Ws.auSign θ, hcc, hPa'⟩`. Establish `up` using `(hUD hP hR K M Ω hs l ι n hn (r.comp (resG ℚ K Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K Ω)) hiM pol (hA hc K hK hiK) (((hFL ℚ Ω l n r).2.2.2 K).2.1 hF)).1 hW`. Rewrite `up` using `[he]`.
+
+Conclude with `(hUD hP hR K' M Ω hs' l ι n hn (r.comp (resG ℚ K' Ω)) (hc.comp (continuous_restrictScalarsHom ℚ K' Ω)) hiM' pol' (hA hc K' hK' hiK') (((hFL ℚ Ω l n r).2.2.2 K').2.1 hF)).2 (((hFL ℚ Ω l n r).2.2.2 K').1 hI) (keeps_of_pot hFL r hp) up`.
+-/
 private theorem step (hFL : FlagLaws) (hUD : _root_.UpperTheory.V.Z.Win.AUpDownAlt) (hP : _root_.UpperTheory.V.Af.HypothesesH') (hR : RowT) (K K' Ω : Type) [Field K] [NumberField K] [IsCMField K]
     [Field K'] [NumberField K'] [IsCMField K'] [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [Algebra K' Ω]
     (hK : Module.finrank ℚ K = 2) (hK' : Module.finrank ℚ K' = 2) (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (hn : 1 ≤ n)
@@ -70,6 +87,11 @@ private theorem step (hFL : FlagLaws) (hUD : _root_.UpperTheory.V.Z.Win.AUpDownA
     (hA hc K' hK' hiK') (((hFL ℚ Ω l n r).2.2.2 K').2.1 hF)).2 (((hFL ℚ Ω l n r).2.2.2 K').1 hI)
     (keeps_of_pot hFL r hp) up
 end UpperTheory.V.Z.Win
+/- English proof (translation)
+Introduce `hP hR K Ω _ _ _ _ _ _ _ hK l _ ι n hn r hp hc hA ⟨θ, hθ, hd⟩ hI hF hirr hW K' _ _ _ inst _ _ hK' hirr'`. Take `rfl : inst = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Establish `hFL` using `UpperTheory.V.Z.Win.flagLaws`. Establish `hUD` using `_root_.UpperTheory.V.Z.Win.aUpDown_alt`. Take `⟨K'', _, _, _, _, _, hK'', -, h1, h2⟩` from `UpperTheory.V.Z.Win.thirdSplit K K' Ω hK hK' l n r hirr hirr'`.
+
+Establish `h3` using `UpperTheory.V.Z.Win.step hFL hUD hP hR K K'' Ω hK hK'' l ι n hn r hp hc hA θ hθ hd hI hF h1 hW`. Rewrite `h2` using `[inf_comm]`. Conclude with `UpperTheory.V.Z.Win.step hFL hUD hP hR K'' K' Ω hK'' hK' l ι n hn r hp hc hA θ hθ hd hI hF h2 h3`.
+-/
 theorem UpperTheory.V.Z.Win.aAcross2' :
     _root_.UpperTheory.V.Z.Win.AAcross2Alt := by
   intro hP hR K Ω _ _ _ _ _ _ _ hK l _ ι n hn r hp hc hA ⟨θ, hθ, hd⟩ hI hF hirr hW K' _ _ _ inst _ _ hK' hirr'

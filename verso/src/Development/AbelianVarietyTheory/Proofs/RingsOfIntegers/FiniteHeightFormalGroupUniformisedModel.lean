@@ -16,6 +16,11 @@ open GlobalTheory.PlaceInt
 
 namespace GlobalTheory.PlaceFinHt
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero`. Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[Nat.cast_zero, pow_zero]`.
+
+Conclude with `mul_left_cancel (a := act.act 0) (by rw [← h, _root_.mul_one])`. Consider the case `succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, pow_succ]`.
+-/
 theorem oact_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRing O]
     (act : ReciprocityTheory.ChartRestriction.G.Geo.Tor.OAct O G) (n : ℕ) : act.act (n : O) = 𝟙 G ^ n := by
   induction n with
@@ -26,6 +31,15 @@ theorem oact_natCast {S : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRi
     exact mul_left_cancel (a := act.act 0) (by rw [← h, _root_.mul_one])
   | succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, pow_succ]
 
+/- English proof (translation)
+Establish `hp` using `isGrpPullback_pullback G (Spec.map (CommRingCat.ofHom (residue T)))`. Take `⟨x', hu', -, hm, -⟩` from `GlobalTheory.ChartBaseChange.chartBaseChange GlobalTheory.JetSer.jetAlg (GlobalTheory.JetSer.serSt_of_jetAlgSt GlobalTheory.JetSer.jetAlg) T (ResidueField T) (residue T) G _ _ hp d x0 hu`. Establish `hm'` using `hm _ _ _ (GlobalTheory.FiniteHeight.id_pow_left_proj hp N) hmap`. Establish `hsm` using `U.smooth`. Establish `: LocallyOfFiniteType ((Over.pullback (Spec.map (CommRingCat.ofHom (residue T)))).obj G).hom` using `MorphismProperty.of_isPullback (P := @LocallyOfFiniteType) hp.1 inferInstance`.
+
+Take `⟨M, hM⟩` from `GlobalTheory.JetSer.exists_pow_le_span_sup_pow_succ (ResidueField T) _ _ (by`. Rewrite using `[MonObj.comp_pow, Category.comp_id]`. Establish `: η[(Over.pullback (Spec.map (CommRingCat.ofHom (residue T)))).obj G] = 1`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[this, one_pow]) (fun Ω _ _ t => by`.
+
+Take `⟨b, rfl⟩` from `Spec.map_surjective t`. Use `GlobalTheory.FiniteHeight.finite_torsion_pull hp _ (Geo.Tor.spMap (b.hom.comp (residue T))) ?_ N (GlobalTheory.finite_torsion_special_fibre_of_unif T G D A U Ω _ (fun a ha => ?_) N hN)` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, (residue_eq_zero_iff a).2 ha, map_zero]) d x' hu' _ hm'`.
+
+Conclude with `⟨M, (GlobalTheory.pow_span_X_le_and_finite_quotient_of_le_sup_pow_succ _ _ _ M hM).1⟩`.
+-/
 theorem exists_pow_le_of_isMapOf (T : Type) [CommRing T] [IsDomain T] [IsLocalRing T] (G : Over (Sp T)) [GrpObj G]
     [IsCommMonObj G] (D : Out.DegData T (maximalIdeal T)) (A : Out.PolAV (Spec (CommRingCat.of (FractionRing T))))
     (U : Out.UnifPre (maximalIdeal T) D A G) (d : ℕ) (x0 : GlobalTheory.JetSer.Fam G (Fin d)) (hu : Chart.IsUnivChart G d x0)
@@ -52,6 +66,13 @@ theorem exists_pow_le_of_isMapOf (T : Type) [CommRing T] [IsDomain T] [IsLocalRi
       · rw [RingHom.comp_apply, (residue_eq_zero_iff a).2 ha, map_zero]) d x' hu' _ hm'
   exact ⟨M, (GlobalTheory.pow_span_X_le_and_finite_quotient_of_le_sup_pow_succ _ _ _ M hM).1⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c inst hstar`. Take `rfl` from `GlobalTheory.PowGerm.starSt E H inst hstar`. Use `letI := H.starRing`. Introduce `T io y C hC B hB N hN`. Take `⟨-, P, -⟩` from `hC`.
+
+Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hB`. Take `⟨x, hx, hm⟩` from `GlobalTheory.PowGerm.univConv T.V C.I.G.G _ C.xT (GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y C) _ (GlobalTheory.PowGerm.oneCol _)`. Establish `hc` using `C.chartT`. Establish `hf` using `C.frameT`. Rewrite `hc` using `[← h1, ← h2]`.
+
+Rewrite `hf` using `[← h1, ← h2, ← h3, ← h4, ← h5, ← h6]`. Establish `hl` using `(GlobalTheory.LinkLaw.linkLaw E H T.V C.I.G _ B C.tgT C.xT C.eT C.wPT hc hf C.primT x hx hm).2 (N : 𝓞 E)`. Rewrite `hl` using `[oact_natCast]`. Conclude with `exists_pow_le_of_isMapOf T.V C.I.G.G P.D P.A P.U.toUnifPre _ x hx N hN _ hl`.
+-/
 theorem finHt_of_good : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ B : FB T.V (chD C.ch) (𝓞 E), IsBT C B → FinHt B := by
   intro E _ _ _ H Dw l Xo c inst hstar
   obtain rfl := GlobalTheory.PowGerm.starSt E H inst hstar

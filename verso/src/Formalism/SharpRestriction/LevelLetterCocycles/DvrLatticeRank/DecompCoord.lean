@@ -6,6 +6,27 @@ namespace Formalism.MainNotions.N.Ln34.UniversalLiftFrames
 
 open Module
 
+/- English proof (translation)
+Take `⟨L₁, L₂, hc, hrk, hCL, hFL⟩` from `DualFramesAlt.SatDVR.decomp (O := O) (K := LL) C hC Fs hF`. Take `⟨k, bu⟩` from `Submodule.basisOfPid (Pi.basisFun O (Fin r)) L₁`. Use `set pr := L₁.projectionOnto L₂ hc with hpr`. Use `set P : Fin k → Fin r → O := fun j i => bu.coord j (pr (fun i' => if i = i' then 1 else 0)) with hP`. Establish `hrepr : ∀ (u : Fin r → O) (i : Fin r), bL.repr (bL.equivFun.symm u) i = u i`.
+
+Introduce `u i`. Rewrite using `[← Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `hsum : ∀ (i : Fin r), ∑ j, P j i • ((bu j : L₁) : Fin r → O) = ((pr (fun i' => if i = i' then 1 else 0) : L₁) : Fin r → O)`. Introduce `i`. Establish `h` using `congrArg Subtype.val (bu.sum_repr (pr (fun i' => if i = i' then 1 else 0)))`.
+
+Rewrite `h` using `[Submodule.coe_sum]`. Simplify `h` using `[hP, Basis.coord_apply]`. Establish `hrow : ∀ (j : Fin k) (y : Fin r → O), ∑ i, P j i * y i = bu.coord j (pr y)`. Introduce `j y`. Rewrite using `[← LinearMap.comp_apply, LinearMap.pi_apply_eq_sum_univ ((bu.coord j).comp pr) y]`.
+
+Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[hP, smul_eq_mul, mul_comm]`. Use `⟨k, fun j => bL.equivFun.symm (bu j), L₂.map (bL.equivFun.symm : (Fin r → O) →ₗ[O] L), P, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.finrank_map_eq]`. Conclude with `hrk`.
+
+Introduce `j τ`. Use `hCL τ (bu j) (bu j).2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Rewrite using `[DualFramesAlt.SatDVR.toK_apply, hrepr]`. Introduce `i`.
+
+Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_symm, map_sub, map_sum]`. Simplify using `only [map_smul, LinearEquiv.apply_symm_apply]`. Rewrite using `[hsum i, ← Submodule.ker_projectionOnto hc, LinearMap.mem_ker, map_sub, ← hpr, Submodule.projectionOnto_apply_left, sub_eq_zero]`. Use `congr 1`. Use function extensionality and compare the values at `i'`.
+
+Simplify using the standard rewrite rules. Introduce `τ d hd j`. Set `ψ : (Fin r → LL) →ₗ[LL] LL` to `∑ i, algebraMap O LL (P j i) • LinearMap.proj i`. Establish `hψ : ∀ x : Fin r → LL, ψ x = ∑ i, algebraMap O LL (P j i) * x i`. Introduce `x`.
+
+Simplify using `[ψ, LinearMap.sum_apply, Algebra.smul_def]`. Establish `hker : Submodule.span LL (DualFramesAlt.SatDVR.toK O LL r '' (L₂ : Set (Fin r → O))) ≤ LinearMap.ker ψ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hψ]`.
+
+Simplify using `only [DualFramesAlt.SatDVR.toK_apply, ← map_mul, ← map_sum]`. Rewrite using `[hrow j y]`. Establish `h0 : pr y = 0` using `Submodule.projectionOnto_apply_right hc ⟨y, hy⟩`. Rewrite using `[h0, map_zero, map_zero]`. Use `hker (hFL τ hd)` as an intermediate fact.
+
+Rewrite `this` using `[LinearMap.mem_ker, hψ]`. Then use the resulting hypothesis.
+-/
 theorem decomp_coord {O LL : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field LL]
     [Algebra O LL] [IsFractionRing O LL] {L : Type*} [AddCommGroup L] [Module O L] {r m : ℕ}
     (bL : Basis (Fin r) O L) {ι₁ ι₂ : Type*} [Fintype ι₁] [Fintype ι₂]

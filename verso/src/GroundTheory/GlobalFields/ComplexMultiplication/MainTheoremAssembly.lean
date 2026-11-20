@@ -18,6 +18,9 @@ section Points
 variable {F F' : Type*} [Field F] [Field F'] [DecidableEq F] [DecidableEq F']
 
 omit [DecidableEq F] [DecidableEq F'] in
+/- English proof (translation)
+Substitute `hx` using the available equality. Substitute `hy` using the available equality. Both sides reduce to the same expression.
+-/
 theorem point_some_eq_some {W : WeierstrassCurve F'} {x y x' y' : F'} (h : W.toAffine.Nonsingular x y)
     (h' : W.toAffine.Nonsingular x' y') (hx : x = x') (hy : y = y') :
     (Point.some x y h : W.toAffine.Point) = Point.some x' y' h' := by
@@ -25,6 +28,9 @@ theorem point_some_eq_some {W : WeierstrassCurve F'} {x y x' y' : F'} (h : W.toA
   subst hy
   rfl
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, hP⟩` into its components or cases. Both sides reduce to the same expression. Conclude with `point_some_eq_some _ _ (map_vcX C f x) (map_vcY C f x y)`.
+-/
 theorem pointMapRing_vcPoint (f : F →+* F') {W₁ W₂ : WeierstrassCurve F} (C : VariableChange F)
     (h : C • W₁ = W₂) (P : W₁.toAffine.Point) :
     pointMapRing f W₂ (vcPoint C h P) =
@@ -33,8 +39,14 @@ theorem pointMapRing_vcPoint (f : F →+* F') {W₁ W₂ : WeierstrassCurve F} (
   · rfl
   · exact point_some_eq_some _ _ (map_vcX C f x) (map_vcY C f x y)
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem toPointHom_apply' (L : PeriodPair) (z : ℂ) : toPointHom L z = toPoint L z := rfl
 
+/- English proof (translation)
+Substitute `e` using the available equality. Conclude with `hf`.
+-/
 theorem IsAnalyticUniformization.pointCongr {Λ : Submodule ℤ ℂ} {E E' : WeierstrassCurve ℂ}
     {f : ℂ →+ E.toAffine.Point} (hf : IsAnalyticUniformization Λ f) (e : E = E') :
     IsAnalyticUniformization Λ ((pointCongr e).toAddMonoidHom.comp f) := by
@@ -47,6 +59,9 @@ section BaseChange
 
 variable {L : Type} [Field L] [Algebra L ℂ] [DecidableEq L]
 
+/- English proof (translation)
+Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Conclude with `⟨0, rfl⟩`. Take `⟨⟨a, rfl⟩, ⟨b, rfl⟩⟩` from `hP _ _ h rfl`. Establish `h' : A.toAffine.Nonsingular a b` using `(A.toAffine.baseChange_nonsingular (f := Algebra.ofId L ℂ) (algebraMap L ℂ).injective a b).1 h`. Conclude with `⟨.some a b h', rfl⟩`.
+-/
 theorem exists_constMap_eq (A : WeierstrassCurve L) (P : (A.baseChange ℂ).toAffine.Point)
     (hP : ∀ (x y : ℂ) (h : (A.baseChange ℂ).toAffine.Nonsingular x y), P = .some x y h →
       x ∈ (algebraMap L ℂ).range ∧ y ∈ (algebraMap L ℂ).range) :
@@ -60,6 +75,9 @@ theorem exists_constMap_eq (A : WeierstrassCurve L) (P : (A.baseChange ℂ).toAf
 
 omit [DecidableEq L] in
 
+/- English proof (translation)
+Rewrite using `[WeierstrassCurve.baseChange, WeierstrassCurve.baseChange, WeierstrassCurve.map_map, WeierstrassCurve.map_map]`. Use `congr 1`. Use extensionality with `a`. Conclude with `hτσ a`.
+-/
 theorem baseChange_map_eq (A : WeierstrassCurve L) (τ : L →+* L) (σ : ℂ →+* ℂ)
     (hτσ : ∀ a : L, σ (algebraMap L ℂ a) = algebraMap L ℂ (τ a)) :
     (A.baseChange ℂ).map σ = (A.map τ).baseChange ℂ := by
@@ -71,6 +89,9 @@ theorem baseChange_map_eq (A : WeierstrassCurve L) (τ : L →+* L) (σ : ℂ �
 
 omit [Algebra L ℂ] in
 
+/- English proof (translation)
+Break down `t with _ | ⟨x, y, h⟩` into its components or cases. Both sides reduce to the same expression. Both sides reduce to the same expression.
+-/
 theorem constMap_eq_pointMapRing {M : Type} [Field M] [Algebra L M] [DecidableEq M]
     (A : WeierstrassCurve L) (t : A.toAffine.Point) :
     constMap A M t = pointMapRing (algebraMap L M) A t := by
@@ -78,6 +99,11 @@ theorem constMap_eq_pointMapRing {M : Type} [Field M] [Algebra L M] [DecidableEq
   · rfl
   · rfl
 
+/- English proof (translation)
+Establish `e : σ.comp (algebraMap L ℂ) = (algebraMap L ℂ).comp τ` using `RingHom.ext hτσ`. Rewrite using `[constMap_eq_pointMapRing, constMap_eq_pointMapRing]`. Establish `h1` using `pointMapRing_pointMapRing (algebraMap L ℂ) σ A t`. Establish `h2` using `pointMapRing_pointMapRing τ (algebraMap L ℂ) A t`. Rewrite `h1` using `[pointMapRing_congr e]`.
+
+Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Both sides reduce to the same expression.
+-/
 theorem pointMapRing_constMap (A : WeierstrassCurve L) (τ : L →+* L) (σ : ℂ →+* ℂ)
     (hτσ : ∀ a : L, σ (algebraMap L ℂ a) = algebraMap L ℂ (τ a)) (t : A.toAffine.Point) :
     pointMapRing σ (A.baseChange ℂ) (constMap A ℂ t) =
@@ -97,6 +123,11 @@ section Ideals
 
 variable {K : Type} [Field K] [NumberField K] (σ₀ : K →+* ℂ)
 
+/- English proof (translation)
+Establish `key : ∀ (v : (𝓞 K)ˣ) (w : ℂ), w ∈ idealLattice σ₀ J → σ₀ (algebraMap (𝓞 K) K v) * w ∈ idealLattice σ₀ J`. Introduce `v w hw`. Take `⟨k, hk, rfl⟩` from `(mem_idealLattice σ₀).1 hw`. Use `(mem_idealLattice σ₀).2 ⟨algebraMap (𝓞 K) K v * k, ?_, by rw [map_mul]⟩` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def]`.
+
+Conclude with `(J : Submodule (𝓞 K) K).smul_mem (v : 𝓞 K) hk`. Use `⟨fun h ↦ ?_, key v w⟩` and prove the remaining obligations. Use `key v⁻¹ _ h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, ← map_mul, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one, map_one, one_mul]`. Then use the resulting hypothesis.
+-/
 theorem mem_idealLattice_unit_mul_iff (J : FractionalIdeal (𝓞 K)⁰ K) (v : (𝓞 K)ˣ) (w : ℂ) :
     σ₀ (algebraMap (𝓞 K) K v) * w ∈ idealLattice σ₀ J ↔ w ∈ idealLattice σ₀ J := by
   have key : ∀ (v : (𝓞 K)ˣ) (w : ℂ), w ∈ idealLattice σ₀ J →
@@ -111,6 +142,11 @@ theorem mem_idealLattice_unit_mul_iff (J : FractionalIdeal (𝓞 K)⁰ K) (v : (
   rwa [← mul_assoc, ← map_mul, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one,
     map_one, one_mul] at this
 
+/- English proof (translation)
+Rewrite using `[mem_idealLattice, mem_idealLattice]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Rewrite `hk` using `[mem_diagonal_smul_iff, Units.val_inv_eq_inv_val, inv_inv]`. Conclude with `⟨x * k, hk, by rw [map_mul]⟩`.
+
+Introduce and unpack `⟨k, hk, hkz⟩`. Use `⟨(x⁻¹ : K) * k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_diagonal_smul_iff, Units.val_inv_eq_inv_val, inv_inv, ← mul_assoc, mul_inv_cancel₀ x.ne_zero, one_mul]`. Conclude with `hk`. Rewrite using `[map_mul, hkz, ← mul_assoc, ← map_mul, inv_mul_cancel₀ x.ne_zero, map_one, one_mul]`.
+-/
 theorem mem_idealLattice_diagonal_smul_iff (x : Kˣ) (J : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (z : ℂ) :
     z ∈ idealLattice σ₀ ↑(IdeleGroup.diagonal K x⁻¹ • J) ↔ σ₀ x * z ∈ idealLattice σ₀ J := by
   rw [mem_idealLattice, mem_idealLattice]
@@ -134,6 +170,37 @@ variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (hK : finrank ℚ 
 
 include hK in
 
+/- English proof (translation)
+Establish `hL₁` using `lattice_idealPeriodPair (algebraMap K ℂ) hK 𝔞`. Establish `hL₂` using `lattice_idealPeriodPair (algebraMap K ℂ) hK ((primeIdealUnit 𝔭)⁻¹ * 𝔞)`. Generalize the expression as in `idealPeriodPair (algebraMap K ℂ) hK 𝔞 = L₁ at hL₁`. Generalize the expression as in `idealPeriodPair (algebraMap K ℂ) hK ((primeIdealUnit 𝔭)⁻¹ * 𝔞) = L₂ at hL₂ hV'`. Establish `hfA` using `hf.vcPoint V₀ hV₀`.
+
+Rewrite `hfA` using `[← hL₁]`. Take `⟨V, hV, hfV⟩` from `exists_vcPoint_of_isAnalyticUniformization hfA`. Establish `hφℂ : (homConstSet (A.baseChange ℂ) ((A.map (τ : L →+* L)).baseChange ℂ) : Set ℂ) = (invConst (isogBaseChange (F'` using `ℂ) φ) * ·) '' idealLattice (algebraMap K ℂ) ↑((primeIdealUnit 𝔭)⁻¹) := by`. Rewrite using `[invConst_isogBaseChange, hφ, Units.val_inv_eq_inv_val, coe_primeIdealUnit]`. Take `⟨u, hu⟩` from `exists_unit_pointMap_vcPoint (algebraMap K ℂ) hK 𝔞 (primeIdealUnit 𝔭)⁻¹ L₁ L₂ hL₁ hL₂ V hV V' hV' (isogBaseChange (F' := ℂ) φ) hφℂ`.
+
+Establish `hDℂ` using `Elliptic.baseChange_smul_eq D ℂ hD`. Establish `hg₁` using `(isAnalyticUniformization_toPointHom L₂).vcPoint V' hV'`. Establish `hg₂` using `hg₁.vcPoint (D.baseChange ℂ) hDℂ`. Take `⟨c, hc0, hcl, hcg⟩` from `exists_mul_eq_of_isAnalyticUniformization hg₁ hg₂`. Rewrite `hcl` using `[hL₂]`.
+
+Take `⟨ε, hε⟩` from `exists_unit_of_forall_mem_iff (algebraMap K ℂ) hK _ hcl`. Establish `hεinv : algebraMap K ℂ (algebraMap (𝓞 K) K ((ε⁻¹ : (𝓞 K)ˣ) : 𝓞 K)) * c = 1`. Rewrite using `[hε, ← map_mul, ← map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, map_one, map_one]`. Establish `hcinv : c⁻¹ * algebraMap K ℂ (algebraMap (𝓞 K) K u) = algebraMap K ℂ (algebraMap (𝓞 K) K ((ε⁻¹ * u : (𝓞 K)ˣ) : 𝓞 K))`. Rewrite using `[Units.val_mul, map_mul, map_mul, inv_eq_of_mul_eq_one_left hεinv]`.
+
+Take `⟨κ, hκ⟩ : ∃ κ : ℂ, κ = c⁻¹ * algebraMap K ℂ (algebraMap (𝓞 K) K u) * algebraMap K ℂ x` from `⟨_, rfl⟩`. Establish `hκ0 : κ ≠ 0`. Rewrite using `[hκ, hcinv]`. Use `mul_ne_zero ((map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 (Units.ne_zero _))) ((map_ne_zero _).2 x.ne_zero)` and prove the remaining obligations. Establish `hΛ : ∀ z, z ∈ idealLattice (algebraMap K ℂ) ↑(s⁻¹ • 𝔞) ↔ κ * z ∈ L₂.lattice`.
+
+Introduce `z`. Rewrite using `[hs𝔞, mem_idealLattice_diagonal_smul_iff, hL₂, hκ, hcinv, mul_assoc, mem_idealLattice_unit_mul_iff]`. Establish `h₄ : (V₀.map (σ : ℂ →+* ℂ)) • E.map (σ : ℂ →+* ℂ) = (A.baseChange ℂ).map (σ : ℂ →+* ℂ)`. Rewrite using `[map_variableChange, hV₀]`. Establish `h₃` using `inv_smul_eq_of_smul_eq _ h₄`.
+
+Establish `e₂ : (A.map (τ : L →+* L)).baseChange ℂ = (A.baseChange ℂ).map (σ : ℂ →+* ℂ)` using `(baseChange_map_eq A (τ : L →+* L) σ hτσ).symm`. Establish `hf'` using `((hg₁.comp_mul hκ0 hΛ).pointCongr e₂).vcPoint _ h₃`. Use `⟨_, hf', fun t y hmt hq ↦ ?_⟩` and prove the remaining obligations. Establish `hdiff : algebraMap K ℂ y - algebraMap K ℂ ((x⁻¹ : K) * t) ∈ idealLattice (algebraMap K ℂ) ↑(s⁻¹ • 𝔞)`. Rewrite `hq` using `[hsq t hmt]`.
+
+Establish `h1` using `(Submodule.Quotient.eq _).1 hq`. Rewrite using `[← map_sub]`. Use `map_mem_idealLattice _ ?_` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `Submodule.neg_mem _ h1`.
+
+Rewrite using `[← sub_add_cancel (algebraMap K ℂ y) (algebraMap K ℂ ((x⁻¹ : K) * t)), map_add, (hf'.map_eq_zero_iff _).2 hdiff, zero_add]`. Use `set z := algebraMap K ℂ t with hz`. Establish `hmz : (m : ℂ) * z ∈ L₁.lattice`. Rewrite using `[hL₁, hz, ← map_natCast (algebraMap K ℂ), ← map_mul]`. Conclude with `map_mem_idealLattice _ hmt`.
+
+Establish `hPA : vcPoint V₀ hV₀ (f z) = vcPoint V hV (toPoint L₁ z)` using `hfV z`. Establish `hPAm : m • vcPoint V₀ hV₀ (f z) = 0`. Rewrite using `[hPA, ← toPointHom_apply', ← vcPointEquiv_apply, ← map_nsmul, ← map_nsmul, nsmul_eq_mul, toPointHom_apply', toPoint_of_mem hmz, map_zero]`. Take `⟨tL, htL⟩` from `exists_constMap_eq A (vcPoint V₀ hV₀ (f z)) (fun a b h hP ↦ htors a b h (by rw [← hP]; exact hPAm))`. Establish `htLm : m • tL = 0`.
+
+Apply `constMap_injective A ℂ` to reduce the goal to its premises. Rewrite using `[map_nsmul, htL, hPAm, map_zero]`. Establish `key` using `congrArg (constMap (A.map (τ : L →+* L)) ℂ) (hDφ tL htLm)`. Rewrite `key` using `[constMap_pointHomOver, htL, hPA, hu z, constMap_eq_pointMapRing, pointMapRing_vcPoint, ← constMap_eq_pointMapRing]`. Establish `hw : c * (c⁻¹ * (algebraMap K ℂ (algebraMap (𝓞 K) K u) * z)) = algebraMap K ℂ (algebraMap (𝓞 K) K u) * z`.
+
+Rewrite using `[← mul_assoc, mul_inv_cancel₀ hc0, one_mul]`. Establish `hcg'` using `hcg (c⁻¹ * (algebraMap K ℂ (algebraMap (𝓞 K) K u) * z))`. Rewrite `hcg'` using `[hw]`. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply, toPointHom_apply'] at hcg'`. Establish `h5 : vcPoint (D.baseChange ℂ) hDℂ (constMap (A.map (τ : L →+* L)) ℂ (pointMapRing (τ : L →+* L) A tL)) = vcPoint (D.baseChange ℂ) hDℂ (vcPoint V' hV' (toPoint L₂ (c⁻¹ * (algebraMap K ℂ (algebraMap (𝓞 K) K u) * z))))` using `key.symm.trans hcg'.symm`.
+
+Establish `h6` using `vcPoint_injective _ _ h5`. Establish `h7` using `pointMapRing_constMap A (τ : L →+* L) σ hτσ tL`. Rewrite `h7` using `[htL, pointMapRing_vcPoint]`. Express the relevant statement in the definitionally equal form `vcPoint _ h₃ (pointCongr e₂ (vcPoint V' hV' (toPoint L₂ (κ * algebraMap K ℂ ((x⁻¹ : K) * t))))) = pointMapRing (σ : ℂ →+* ℂ) E (f z)`. Establish `e3 : κ * algebraMap K ℂ ((x⁻¹ : K) * t) = c⁻¹ * (algebraMap K ℂ (algebraMap (𝓞 K) K u) * z)`.
+
+Rewrite using `[hκ, hz, map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e3, ← h6]`. Establish `h8 : pointCongr e₂ (constMap (A.map (τ : L →+* L)) ℂ (pointMapRing (τ : L →+* L) A tL)) = vcPoint (V₀.map (σ : ℂ →+* ℂ)) h₄ (pointMapRing (σ : ℂ →+* ℂ) E (f z))` using `h7.symm`. Rewrite using `[h8]`.
+
+Conclude with `vcPoint_vcPoint_of_eq_inv _ _ rfl _ _ _`.
+-/
 theorem exists_uniformization_of_data (σ : ℂ ≃ₐ[K] ℂ) (s : IdeleGroup K)
     (𝔞 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) {E : WeierstrassCurve ℂ} [E.IsElliptic]
     {f : ℂ →+ E.toAffine.Point} (hf : IsAnalyticUniformization (idealLattice (algebraMap K ℂ) 𝔞) f)

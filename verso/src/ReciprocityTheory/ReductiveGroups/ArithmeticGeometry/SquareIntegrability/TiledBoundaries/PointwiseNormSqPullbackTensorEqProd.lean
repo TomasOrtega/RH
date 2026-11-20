@@ -50,17 +50,26 @@ section Elem
 
 variable {E : Type} [Field E] [NumberField E]
 
+/- English proof (translation)
+Unfold `HC Hf`. Use `fun_prop`.
+-/
 theorem cont_HC {ι : Type} [Fintype ι] {n : ℕ} :
     Continuous (fun v : Fin n → EuclideanSpace ℂ ι => HC v v) := by
   unfold HC Hf
   fun_prop
 
+/- English proof (translation)
+Unfold `PT.ptN2`. Conclude with `(hF.norm.pow 2).mul (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp cont_HC)))`.
+-/
 theorem continuous_pointNormSq_quotient (X : PT E) (q : ℕ) {n : ℕ} {F : (Fin n → Vsp X.dim) → ℂ} (hF : Continuous F) :
     Continuous (X.ptN2 q F) := by
   unfold PT.ptN2
   exact (hF.norm.pow 2).mul (Real.continuous_exp.comp
     (continuous_const.mul (Complex.continuous_re.comp cont_HC)))
 
+/- English proof (translation)
+Conclude with `(hF.mul (Complex.continuous_conj.comp hG)).mul (Complex.continuous_ofReal.comp (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp cont_HC))))`.
+-/
 theorem cont_ip (q : ℕ) {n : ℕ} {ι : Type} [Fintype ι] {F G : (Fin n → EuclideanSpace ℂ ι) → ℂ}
     (hF : Continuous F) (hG : Continuous G) :
     Continuous (fun v => F v * (starRingEnd ℂ) (G v) *
@@ -68,6 +77,11 @@ theorem cont_ip (q : ℕ) {n : ℕ} {ι : Type} [Fintype ι] {F G : (Fin n → E
   exact (hF.mul (Complex.continuous_conj.comp hG)).mul (Complex.continuous_ofReal.comp
     (Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp cont_HC))))
 
+/- English proof (translation)
+Unfold `PT.ptN2 s0`. Rewrite using `[Finset.prod_mul_distrib, norm_prod, ← Finset.prod_pow, ← Real.exp_sum]`. Use `congr 2`. Simplify using `only [HC, Fin.sum_univ_one, hπ.2.2.1, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+
+Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem pointwiseNormSq_pullback_tensor_eq_prod (X : PT E) {q n : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (hπ : IsPi X q π)
     (s : (Fin 1 → Vsp X.dim) → ℂ) (v : Fin n → Vsp X.dim) :
     X.ptN2 q (s0 X π s) v = ∏ k, X.ptN2 1 s (fun _ => π (v k)) := by
@@ -79,6 +93,13 @@ theorem pointwiseNormSq_pullback_tensor_eq_prod (X : PT E) {q n : ℕ} {π : Vsp
   simp [Complex.mul_re]
   ring
 
+/- English proof (translation)
+Establish `hinj : Function.Injective π`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Establish `hq : (q : ℂ) ≠ 0` using `by exact_mod_cast (show q ≠ 0 by omega)`. Establish `h0 : (q : ℂ) * Hf v v = 0`.
+
+Rewrite using `[← hπ.2.2.1 v v, hv]`. Simplify using `[Hf]`. Establish `h1 : Hf v v = 0` using `(mul_eq_zero.1 h0).resolve_left hq`. Establish `h2 : ∑ i, Complex.normSq (v i) = 0`. Use `congrArg Complex.re h1` as an intermediate fact.
+
+Simplify `this` using `[Hf, Complex.mul_conj, Complex.re_sum]`. Use extensionality with `i`. Establish `h3` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => Complex.normSq_nonneg (v i))).1 h2 i (Finset.mem_univ _)`. Simplify using `using h3`. Conclude with `⟨hinj, LinearMap.surjective_of_injective hinj⟩`.
+-/
 theorem pi_bij (X : PT E) {q : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (hq : 1 ≤ q)
     (hπ : IsPi X q π) : Function.Bijective π := by
   have hinj : Function.Injective π := by
@@ -98,6 +119,11 @@ theorem pi_bij (X : PT E) {q : ℕ} {π : Vsp X.dim →ₗ[ℂ] Vsp X.dim} (hq :
     simpa using h3
   exact ⟨hinj, LinearMap.surjective_of_injective hinj⟩
 
+/- English proof (translation)
+Unfold `PT.l2ip`. Simplify using `only [MeasureTheory.setAverage_eq]`. Rewrite using `[mul_smul_comm, ← MeasureTheory.integral_const_mul]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+
+Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem l2Inner_smul (X : PT E) (q : ℕ) {n : ℕ} (c c' : ℂ) (F G : (Fin n → Vsp X.dim) → ℂ) :
     X.l2ip q (fun v => c * F v) (fun v => c' * G v) = c * (starRingEnd ℂ) c' * X.l2ip q F G := by
   unfold PT.l2ip
@@ -108,6 +134,11 @@ theorem l2Inner_smul (X : PT E) (q : ℕ) {n : ℕ} (c c' : ℂ) (F G : (Fin n �
   simp only [map_mul]
   ring
 
+/- English proof (translation)
+Unfold `PT.l2ip PT.l2 PT.ptN2`. Simplify using `only [MeasureTheory.setAverage_eq]`. Rewrite using `[Complex.real_smul, smul_eq_mul, Complex.ofReal_mul, ← integral_complex_ofReal]`. Use `congr 1`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations.
+
+Simplify using `only`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem l2Inner_self (X : PT E) (q : ℕ) {n : ℕ} (F : (Fin n → Vsp X.dim) → ℂ) :
     X.l2ip q F F = (X.l2 q F : ℂ) := by
   unfold PT.l2ip PT.l2 PT.ptN2
@@ -120,11 +151,19 @@ theorem l2Inner_self (X : PT E) (q : ℕ) {n : ℕ} (F : (Fin n → Vsp X.dim) �
   push_cast
   ring
 
+/- English proof (translation)
+Unfold `PT.l2ip`. Simplify using the standard rewrite rules.
+-/
 theorem l2Inner_zero_left (X : PT E) (q : ℕ) {n : ℕ} (G : (Fin n → Vsp X.dim) → ℂ) :
     X.l2ip q 0 G = 0 := by
   unfold PT.l2ip
   simp
 
+/- English proof (translation)
+Unfold `PT.l2ip`. Simplify using `only [MeasureTheory.setAverage_eq]`. Establish `hi : ∀ j, IntegrableOn (fun v => F j v * (starRingEnd ℂ) (G v) * ((Real.exp (-(q * Real.pi) * (HC v v).re) : ℝ) : ℂ)) (X.fd n)` using `fun j => hI E X n _ (cont_ip q (hF j) hG)`. Establish `hsum : (fun v => (∑ j ∈ t, g j * F j v) * (starRingEnd ℂ) (G v) * ((Real.exp (-(q * Real.pi) * (HC v v).re) : ℝ) : ℂ)) = fun v => ∑ j ∈ t, g j * (F j v * (starRingEnd ℂ) (G v) * ((Real.exp (-(q * Real.pi) * (HC v v).re) : ℝ) : ℂ))`. Use function extensionality and compare the values at `v`.
+
+Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hsum, MeasureTheory.integral_finset_sum _ (fun j _ => (hi j).const_mul (g j)), Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.integral_const_mul, mul_smul_comm]`.
+-/
 theorem l2Inner_sum_left (hI : StepI) (X : PT E) (q : ℕ) {n : ℕ} {ι : Type} (t : Finset ι) (g : ι → ℂ)
     (F : ι → (Fin n → Vsp X.dim) → ℂ) (G : (Fin n → Vsp X.dim) → ℂ) (hF : ∀ j, Continuous (F j))
     (hG : Continuous G) :

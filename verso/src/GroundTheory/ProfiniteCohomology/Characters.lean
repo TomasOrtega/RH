@@ -17,6 +17,11 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
 
+/- English proof (translation)
+Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, zero_smul, cochainsMap_zero]`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul, succ_nsmul, ← ih]`. Use extensionality with `n c : 3`.
+
+Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+-/
 theorem cochainsMap_nsmul (f : A ⟶ B) (m : ℕ) : cochainsMap (m • f) = m • cochainsMap f := by
   induction m with
   | zero => rw [zero_smul, zero_smul, cochainsMap_zero]
@@ -29,6 +34,9 @@ theorem cochainsMap_nsmul (f : A ⟶ B) (m : ℕ) : cochainsMap (m • f) = m �
 
 variable (A) in
 
+/- English proof (translation)
+Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (cochainsMap (m • 𝟙 A)) n = m • 𝟙 ((cochainsComplex A).homology n)`. Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`. Use `(HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.up ℕ) n).map_nsmul (f := 𝟙 (cochainsComplex A)) (n := m)` as an intermediate fact. Simplify using `only [HomologicalComplex.homologyFunctor_map, HomologicalComplex.homologyMap_id] at this`. Conclude with `this`.
+-/
 theorem cohomologyMap_nsmul_id (m n : ℕ) : cohomologyMap (m • 𝟙 A) n = m • 𝟙 (cohomology A n) := by
   change HomologicalComplex.homologyMap (cochainsMap (m • 𝟙 A)) n =
     m • 𝟙 ((cochainsComplex A).homology n)
@@ -45,6 +53,13 @@ section Divisible
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [CompactSpace G] [TotallyDisconnectedSpace G]
 
+/- English proof (translation)
+Use `@ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun x y => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : cohomology A n, x = 0 by rw [h x, h y]`. Introduce `x`. Take `⟨m, hm, hx⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 (isTorsion_cohomology A hn x)`. Establish `hiso : IsIso (m • 𝟙 A)`.
+
+Set `: Module ℤ A` to `A.hV2`. Establish `hb : Function.Bijective (m • 𝟙 A).hom` using `hA m hm.ne'`. Establish `he : (Rep.mkIso ((m • 𝟙 A).hom.ofBijective hb)).hom = m • 𝟙 A` using `Rep.hom_ext rfl`. Rewrite using `[← he]`. Use `infer_instance`.
+
+Establish `hH : IsIso (cohomologyMap (m • 𝟙 A) n)` using `⟨cohomologyMap (inv (m • 𝟙 A)) n, by rw [← cohomologyMap_comp, IsIso.hom_inv_id, cohomologyMap_id], by rw [← cohomologyMap_comp, IsIso.inv_hom_id, cohomologyMap_id]⟩`. Establish `hinj : Function.Injective (cohomologyMap (m • 𝟙 A) n).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, cohomologyMap_nsmul_id]`. Conclude with `hx`.
+-/
 theorem isZero_cohomology_of_bijective_nsmul (A : Rep.{0} ℤ G) [IsDiscreteRep A]
     (hA : ∀ m : ℕ, m ≠ 0 → Function.Bijective fun a : A => m • a) {n : ℕ} (hn : 1 ≤ n) :
     IsZero (cohomology A n) := by
@@ -67,6 +82,9 @@ theorem isZero_cohomology_of_bijective_nsmul (A : Rep.{0} ℤ G) [IsDiscreteRep 
   rw [map_zero, cohomologyMap_nsmul_id]
   exact hx
 
+/- English proof (translation)
+The claim follows from `isZero_cohomology_of_bijective_nsmul _ (fun _ hm => GroundTheory.GroupCoh.bijective_nsmul_of_module_rat (V := ℚ) hm) hn`.
+-/
 theorem isZero_cohomology_trivial_rat {n : ℕ} (hn : 1 ≤ n) :
     IsZero (cohomology (Rep.trivial ℤ G ℚ) n) :=
   isZero_cohomology_of_bijective_nsmul _
@@ -79,6 +97,11 @@ section H1Trivial
 variable (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 variable (M : Type) [AddCommGroup M]
 
+/- English proof (translation)
+Rewrite using `[cochainsComplex_d]`. Use extensionality with `f : 2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Rewrite using `[dLocallyConstant_hom_apply]`.
+
+Establish `h : ∀ x : Fin 0 → G, (f : (Fin 0 → G) → M) x = (f : (Fin 0 → G) → M) Fin.elim0` using `fun x => by rw [Subsingleton.elim x Fin.elim0]`. Simplify using `[inhomogeneousCochains.d_hom_apply, h]`. Both sides reduce to the same expression.
+-/
 theorem cochainsComplex_d_zero_one_trivial :
     (cochainsComplex (Rep.trivial ℤ G M)).d 0 1 = 0 := by
   rw [cochainsComplex_d]
@@ -94,6 +117,15 @@ theorem cochainsComplex_d_zero_one_trivial :
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 variable {G M} in
 
+/- English proof (translation)
+Establish `e1 : (fun i : Fin 1 => g i.succ) = fun _ => g 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Both sides reduce to the same expression. Establish `e2 : Fin.contractNth 0 (· * ·) g = fun _ => g 0 * g 1`.
+
+Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[Fin.contractNth]`. Establish `e3 : Fin.contractNth 1 (· * ·) g = fun _ => g 0`. Use function extensionality and compare the values at `i`.
+
+Rewrite using `[Fin.fin_one_eq_zero i]`. Simplify using `[Fin.contractNth]`. Simplify using `only [inhomogeneousCochains.d_hom_apply]`. Simplify using `only [e1]`. Simplify using the standard rewrite rules.
+
+Rewrite using `[e2, e3]`. Normalize the expressions using the abelian group laws.
+-/
 theorem d_one_trivial_apply (f : (Fin 1 → G) → M) (g : Fin 2 → G) :
     (inhomogeneousCochains.d (Rep.trivial ℤ G M) 1).hom f g =
       f (fun _ => g 1) - f (fun _ => g 0 * g 1) + f (fun _ => g 0) := by
@@ -111,6 +143,13 @@ theorem d_one_trivial_apply (f : (Fin 1 → G) → M) (g : Fin 2 → G) :
 
 variable {G M} in
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h x y`. Establish `h'` using `congrFun (congrArg Subtype.val h) ![x, y]`. Express the relevant statement in the definitionally equal form `(inhomogeneousCochains.d (Rep.trivial ℤ G M) 1).hom f.1 ![x, y] = 0 at h'`. Rewrite `h'` using `[d_one_trivial_apply]`.
+
+Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at h'`. Rewrite using `[← sub_eq_zero, ← neg_eq_zero, ← h']`. Normalize the expressions using the abelian group laws. Introduce `h`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `(inhomogeneousCochains.d (Rep.trivial ℤ G M) 1).hom f.1 g = 0`. Rewrite using `[d_one_trivial_apply, h (g 0) (g 1)]`. Normalize the expressions using the abelian group laws.
+-/
 theorem dLocallyConstant_one_trivial_eq_zero_iff
     (f : locallyConstantCochains (Rep.trivial ℤ G M) 1) :
     (dLocallyConstant (Rep.trivial ℤ G M) 1).hom f = 0 ↔
@@ -130,6 +169,11 @@ theorem dLocallyConstant_one_trivial_eq_zero_iff
     rw [d_one_trivial_apply, h (g 0) (g 1)]
     abel
 
+/- English proof (translation)
+Establish `hn : (ComplexShape.up ℕ).next 1 = 1 + 1` using `by simp`. Establish `e` using `(cochainsComplex (Rep.trivial ℤ G M)).d_comp_XIsoOfEq_hom hn 1`. Rewrite `e` using `[cochainsComplex_d]`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker]`.
+
+Rewrite using `[← e]`. Establish `hinj` using `(ModuleCat.mono_iff_injective ((cochainsComplex (Rep.trivial ℤ G M)).XIsoOfEq hn).hom).1 inferInstance`. Express the relevant statement in the definitionally equal form `_ ↔ ((cochainsComplex (Rep.trivial ℤ G M)).XIsoOfEq hn).hom.hom (((cochainsComplex (Rep.trivial ℤ G M)).d 1 _).hom x) = 0`. Rewrite using `[map_eq_zero_iff _ hinj]`. Both sides reduce to the same expression.
+-/
 theorem ker_sc_one_g_trivial :
     LinearMap.ker ((cochainsComplex (Rep.trivial ℤ G M)).sc 1).g.hom =
       LinearMap.ker (dLocallyConstant (Rep.trivial ℤ G M) 1).hom := by
@@ -148,6 +192,9 @@ theorem ker_sc_one_g_trivial :
 
 variable {G M} in
 
+/- English proof (translation)
+The claim follows from `(SetLike.ext_iff.1 (ker_sc_one_g_trivial G M) f).trans (dLocallyConstant_one_trivial_eq_zero_iff f)`.
+-/
 theorem mem_ker_sc_one_trivial_iff (f : ((cochainsComplex (Rep.trivial ℤ G M)).sc 1).X₂) :
     f ∈ LinearMap.ker ((cochainsComplex (Rep.trivial ℤ G M)).sc 1).g.hom ↔
       ∀ x y : G, f.1 (fun _ => x * y) = f.1 (fun _ => x) + f.1 (fun _ => y) :=
@@ -194,6 +241,13 @@ noncomputable def cohomologyOneIsoOfIsTrivial :
     ((cochainsComplex (Rep.trivial ℤ G M)).sc 1).moduleCatCyclesIso ≪≫
     (cocyclesOneTrivialEquiv G M).toModuleIso
 
+/- English proof (translation)
+Set `K` to `cochainsComplex (Rep.trivial ℤ G M)`. Set `e` to `K.isoHomologyπ 0 1 (by simp) (cochainsComplex_d_zero_one_trivial G M)`. Establish `h1 : e.inv.hom ((K.homologyπ 1).hom z) = z`. Use `ConcreteCategory.congr_hom e.hom_inv_id z` as an intermediate fact. Rewrite `this` using `[HomologicalComplex.isoHomologyπ_hom]`. Then use the resulting hypothesis.
+
+Establish `h2` using `(K.sc 1).moduleCatCyclesIso_hom_i_apply z`. Use `show ((cocyclesOneTrivialEquiv G M) ((K.sc 1).moduleCatCyclesIso.hom.hom (e.inv.hom ((K.homologyπ 1).hom z)))).1 (Additive.ofMul g) = _`. Rewrite using `[h1]`. Use `show (((K.sc 1).moduleCatLeftHomologyData.i).hom ((K.sc 1).moduleCatCyclesIso.hom.hom z)).1 (fun _ => g) = _`. Rewrite using `[h2]`.
+
+Both sides reduce to the same expression.
+-/
 theorem cohomologyOneIsoOfIsTrivial_hom_cohomologyπ (z : cocycles (Rep.trivial ℤ G M) 1) (g : G) :
     ((cohomologyOneIsoOfIsTrivial G M).hom.hom ((cohomologyπ _ 1).hom z)).1 (Additive.ofMul g) =
       (((cochainsComplex (Rep.trivial ℤ G M)).iCycles 1).hom z).1 (fun _ => g) := by
@@ -233,6 +287,9 @@ instance : IsDiscreteRep (GroundTheory.GroupCoh.ratSES G).X₂ :=
 instance : IsDiscreteRep (GroundTheory.GroupCoh.ratSES G).X₃ :=
   inferInstanceAs (IsDiscreteRep (Rep.trivial ℤ G (AddCircle (1 : ℚ))))
 
+/- English proof (translation)
+Establish `h1 : IsZero (cohomology (GroundTheory.GroupCoh.ratSES G).X₂ 1)` using `isZero_cohomology_trivial_rat (G := G) le_rfl`. Establish `h2 : IsZero (cohomology (GroundTheory.GroupCoh.ratSES G).X₂ 2)` using `isZero_cohomology_trivial_rat (G := G) (by norm_num)`. Use `(cohomology_exact₃ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).mono_g (h1.eq_of_src _ _)` as an intermediate fact. Use `(cohomology_exact₁ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).epi_f (h2.eq_of_tgt _ _)` as an intermediate fact. Conclude with `isIso_of_mono_of_epi _`.
+-/
 theorem isIso_δ_ratSES : IsIso (δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl) := by
   have h1 : IsZero (cohomology (GroundTheory.GroupCoh.ratSES G).X₂ 1) :=
     isZero_cohomology_trivial_rat (G := G) le_rfl
@@ -256,6 +313,9 @@ noncomputable def cohomologyTwoIntAddEquiv :
     cohomology (Rep.trivial ℤ G ℤ) 2 ≃+ (Additive G →ₜ+ QZ) :=
   (cohomologyTwoIntIso G).toLinearEquiv.toAddEquiv
 
+/- English proof (translation)
+Both sides reduce to the same expression.
+-/
 theorem cohomologyTwoIntAddEquiv_symm_apply (χ : Additive G →ₜ+ QZ) :
     (cohomologyTwoIntAddEquiv G).symm χ =
       (δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).hom

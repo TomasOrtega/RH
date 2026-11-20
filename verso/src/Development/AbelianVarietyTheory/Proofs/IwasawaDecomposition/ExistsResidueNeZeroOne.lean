@@ -19,6 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev
 namespace GlobalTheory.ResThree
 
+/- English proof (translation)
+Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : ((2 : ℕ) : ZMod g) = 0` using `by exact_mod_cast h`. Rewrite `h'` using `[ZMod.natCast_eq_zero_iff]`. Use `Nat.le_of_dvd (by norm_num) h'` as an intermediate fact.
+
+Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h' : ((2 : ℕ) : ZMod g) = ((1 : ℕ) : ZMod g)` using `by exact_mod_cast h`. Rewrite `h'` using `[ZMod.natCast_eq_natCast_iff']`. Rewrite `h'` using `[Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)]`.
+
+Use linear arithmetic over natural numbers and integers.
+-/
 theorem two_ne_zero_one (g : ℕ) (hg : 3 ≤ g) : (2 : ZMod g) ≠ 0 ∧ (2 : ZMod g) ≠ 1 := by
   constructor
   · intro h
@@ -32,6 +39,11 @@ theorem two_ne_zero_one (g : ℕ) (hg : 3 ≤ g) : (2 : ZMod g) ≠ 0 ∧ (2 : Z
     rw [Nat.mod_eq_of_lt (by omega), Nat.mod_eq_of_lt (by omega)] at h'
     omega
 
+/- English proof (translation)
+Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨plg, iso, -, -, -, -⟩` from `t.r.z.pins.keep.grp`. Take `⟨h0, h1⟩` from `two_ne_zero_one _ (GlobalTheory.IndefiniteRowSideFullHecke.HalfLevelCoefficients.three_le_g (w.st Z).toD7 (plg.symm ⟨PP, hPP⟩).1)`.
+
+Establish `e` using `iso (plg.symm ⟨PP, hPP⟩)`. Rewrite `e` using `[Equiv.apply_symm_apply]`. Conclude with `⟨e 2, fun h => h0 (e.injective (by rw [h, map_zero])), fun h => h1 (e.injective (by rw [h, map_one]))⟩`.
+-/
 theorem main : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∀ PP ∈ t.r.z.R.Pg, ∃ x : Formalism.L2.DIV.kP PP, x ≠ 0 ∧ x ≠ 1 := by
   intro hL

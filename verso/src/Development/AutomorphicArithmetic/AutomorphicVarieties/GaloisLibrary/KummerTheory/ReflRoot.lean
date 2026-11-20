@@ -2,6 +2,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
+/- English proof (translation)
+Use `⟨Units.torsionOrder K, Units.torsionOrder_ne_zero K, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hak⟩` from `isOfFinOrder_iff_pow_eq_one.1 ha`. Establish `hi : IsIntegral ℤ a` using `IsIntegral.of_pow hk (by rw [hak]; exact isIntegral_one)`. Set `x : 𝓞 K` to `⟨a, hi⟩`. Establish `hx : x ^ k = 1`.
+
+Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_pow, map_one]`. Conclude with `hak`. Set `y : (𝓞 K)ˣ` to `Units.ofPowEqOne x k hx hk.ne'`. Establish `hy : y ∈ Units.torsion K` using `(CommGroup.mem_torsion _).2 (isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, Units.ext (by simpa [y] using hx)⟩)`.
+
+Rewrite `hy` using `[← Units.rootsOfUnity_eq_torsion, mem_rootsOfUnity]`. Establish `h2` using `congrArg (fun z : (𝓞 K)ˣ => algebraMap (𝓞 K) K z) hy`. Simplify using `only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at h2`. Conclude with `h2`.
+-/
 private theorem exp_tors (K : Type) [Field K] [NumberField K] :
     ∃ m : ℕ, m ≠ 0 ∧ ∀ a : K, IsOfFinOrder a → a ^ m = 1 := by
   refine ⟨Units.torsionOrder K, Units.torsionOrder_ne_zero K, fun a ha => ?_⟩
@@ -20,6 +27,11 @@ private theorem exp_tors (K : Type) [Field K] [NumberField K] :
   simp only [Units.val_pow_eq_pow_val, map_pow, Units.val_one, map_one] at h2
   exact h2
 
+/- English proof (translation)
+Establish `hp` using `IsPrimitiveRoot.orderOf β`. Use `haveI : NeZero (orderOf β) := ⟨hβ.orderOf_pos.ne'⟩`. Establish `key : ∀ s : Ω ≃ₐ[F] Ω, ∃ i : ℕ, β ^ i = s β` using `fun s => by`. Take `⟨i, -, hi⟩` from `hp.eq_pow_of_pow_eq_one (ξ := s β) (by rw [← map_pow, pow_orderOf_eq_one, map_one])`. Conclude with `⟨i, hi⟩`.
+
+Take `⟨i, hi⟩` from `key g.symm`. Take `⟨j, hj⟩` from `key u`. Rewrite using `[← hi, map_pow, ← hj, ← pow_mul, mul_comm, pow_mul, hi, map_pow, g.apply_symm_apply]`.
+-/
 private theorem conj_root {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (g u : Ω ≃ₐ[F] Ω) (β : Ω)
     (hβ : IsOfFinOrder β) : g (u (g.symm β)) = u β := by
   have hp := IsPrimitiveRoot.orderOf β
@@ -31,6 +43,19 @@ private theorem conj_root {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (g u
   obtain ⟨j, hj⟩ := key u
   rw [← hi, map_pow, ← hj, ← pow_mul, mul_comm, pow_mul, hi, map_pow, g.apply_symm_apply]
 
+/- English proof (translation)
+Take `⟨m, hm, hK⟩` from `exp_tors K`. Use `haveI : NeZero (n * m) := ⟨mul_ne_zero (NeZero.ne n) hm⟩`. Set `T : Subgroup Ωˣ` to `rootsOfUnity (n * m) Ω ⊓ ((Units.map (algebraMap K Ω).toMonoidHom).range).comap (powMonoidHom n)`. Use `haveI : Finite T := Finite.of_injective _ (Subgroup.inclusion_injective (inf_le_left : T ≤ _))`. Take `⟨⟨ξ, hξ⟩, hg⟩` from `(isCyclic_subgroup_units T).exists_generator`.
+
+Take `⟨b, hb⟩` from `hξ.2`. Use `⟨ξ, b, ?_, fun β a h hβ => ?_⟩` and prove the remaining obligations. Use `congrArg Units.val hb` as an intermediate fact. Simplify using `using this.symm`. Establish `h0 : β ≠ 0`.
+
+Introduce and unpack `rfl`. Rewrite `h` using `[zero_pow (NeZero.ne n)]`. Conclude with `a.ne_zero ((map_eq_zero _).1 h.symm)`. Establish `ha : IsOfFinOrder (a : K)`. Use `hβ.pow (n := n)` as an intermediate fact.
+
+Rewrite `this` using `[h]`. Take `⟨k, hk, hak⟩` from `isOfFinOrder_iff_pow_eq_one.1 this`. Conclude with `isOfFinOrder_iff_pow_eq_one.2 ⟨k, hk, (algebraMap K Ω).injective (by rw [map_pow, hak, map_one])⟩`. Establish `hT : Units.mk0 β h0 ∈ T`. Use `⟨(mem_rootsOfUnity _ _).2 (Units.ext ?_), a, Units.ext (by simpa using h.symm)⟩` and prove the remaining obligations.
+
+Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mk0, Units.val_one]`. Rewrite using `[pow_mul, h, ← map_pow, hK a ha, map_one]`. Take `⟨j, hj⟩` from `hg ⟨_, hT⟩`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : T => ((z : Ωˣ) : Ω)) hj` as an intermediate fact.
+
+Simplify using `using this`.
+-/
 private theorem exists_gen (K Ω : Type) [Field K] [NumberField K] [Field Ω] [Algebra K Ω] (n : ℕ) [NeZero n] :
     ∃ (ξ : Ωˣ) (b : K), (ξ : Ω) ^ n = algebraMap K Ω b ∧
       ∀ (β : Ω) (a : Kˣ), β ^ n = algebraMap K Ω a → IsOfFinOrder β → ∃ j : ℤ, (ξ : Ω) ^ j = β := by
@@ -62,6 +87,17 @@ private theorem exists_gen (K Ω : Type) [Field K] [NumberField K] [Field Ω] [A
     have := congrArg (fun z : T => ((z : Ωˣ) : Ω)) hj
     simpa using this
 
+/- English proof (translation)
+Establish `h1 : ∀ u : U, (u.1 ξ / ξ) ^ n = 1` using `fun u => by`. Rewrite using `[div_pow, ← map_pow, hξ, div_self (pow_ne_zero _ ξ.ne_zero)]`. Establish `h2 : ∀ u v : U, u.1 (v.1 ξ / ξ) = v.1 ξ / ξ` using `fun u v => by`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one (h1 v)`. Rewrite using `[← hi, map_pow, hU]`.
+
+Establish `h3 : ∀ u : U, u.1 ξ ≠ 0` using `fun u => (map_ne_zero _).2 ξ.ne_zero`. Set `f : U →* Ωˣ` to `MonoidHom.mk' (fun u => Units.mk0 (u.1 ξ / ξ) (div_ne_zero (h3 u) ξ.ne_zero)) fun u v => by`. Apply `Units.ext` to reduce the goal to its premises. Use `h2 u v` as an intermediate fact. Rewrite `this` using `[map_div₀, div_eq_iff (h3 u)]`.
+
+Simplify using `only [Units.val_mk0, Units.val_mul, Subgroup.coe_mul, AlgEquiv.mul_apply, this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hle : f.range ≤ rootsOfUnity n Ω`. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `(mem_rootsOfUnity _ _).2 (Units.ext (by simpa [f] using h1 u))`.
+
+Use `haveI : Finite f.range := Finite.of_injective _ (Subgroup.inclusion_injective hle)`. Take `⟨⟨_, u0, rfl⟩, hg⟩` from `(isCyclic_subgroup_units f.range).exists_generator`. Use `⟨u0, fun u => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hg ⟨f u, u, rfl⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+
+Use `congrArg (fun z : f.range => ((z : Ωˣ) : Ω)) hk` as an intermediate fact. Simplify `this.symm` using `[f]`.
+-/
 private theorem exists_generator_kummer_cocycle {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] (U : Subgroup (Ω ≃ₐ[F] Ω)) (n : ℕ) [NeZero n]
     (ζ : Ω) (hζ : IsPrimitiveRoot ζ n) (hU : ∀ u : U, u.1 ζ = ζ) (ξ : Ωˣ) (hξ : ∀ u : U, u.1 (ξ ^ n) = ξ ^ n) :
     ∃ u0 : U, ∀ u : U, ∃ k : ℤ, u.1 ξ / ξ = (u0.1 ξ / ξ) ^ k := by
@@ -88,6 +124,21 @@ private theorem exists_generator_kummer_cocycle {F Ω : Type} [Field F] [Field �
   have := congrArg (fun z : f.range => ((z : Ωˣ) : Ω)) hk
   simpa [f] using this.symm
 
+/- English proof (translation)
+Introduce `F Ω _ _ _ _ _ K _ _ _ _ _ _ U n _ N ζ _ ψ hU hζ`. Substitute `hU` using the available equality. Establish `hζ' : IsPrimitiveRoot (algebraMap K Ω ζ) n` using `hζ.map_of_injective (algebraMap K Ω).injective`. Establish `hinj : ∀ x y : ZMod n, algebraMap K Ω ζ ^ x.val = algebraMap K Ω ζ ^ y.val → x = y` using `fun x y h => ZMod.val_injective n (hζ'.pow_inj (ZMod.val_lt x) (ZMod.val_lt y) h)`. Take `⟨ξ, b, hb, hξ⟩` from `exists_gen K Ω n`.
+
+Take `⟨u0, hu0⟩` from `exists_generator_kummer_cocycle (galOf F K Ω) n _ hζ' (fun u => u.2 ζ) ξ (fun u => by rw [hb]; exact u.2 b)`. Establish `hinv : ∀ φ : galOf F K Ω → ZMod n, φ ∈ EqHom N (galOf F K Ω) (scalRep (ZMod n) ψ) → ∀ β : Ω, IsRad (algebraMap K Ω ζ) _ φ β → IsOfFinOrder β → φ u0 ∈ (scalRep (ZMod n) ψ).invariants`. Introduce `φ hφ β hr hβ g`. Set `u' : galOf F K Ω` to `⟨g * u0.1 * g⁻¹, (galOf_normal F K Ω).conj_mem _ u0.2 g⟩`. Establish `h1 : φ u' = scalRep (ZMod n) ψ g (φ u0)` using `(Submodule.mem_iInf _).1 hφ.2 g u0 u' fun x => by show g (u0.1 (g.symm (g x))) = g (u0.1 x)`.
+
+Rewrite using `[g.symm_apply_apply]`. Rewrite using `[← h1]`. Apply `hinj` to reduce the goal to its premises. Establish `h2 : u'.1 β = u0.1 β` using `conj_root g u0.1 β hβ`. Rewrite `h2` using `[hr.2, hr.2]`.
+
+Conclude with `mul_right_cancel₀ hr.1 h2`. Establish `hval : ∀ (φ : galOf F K Ω → ZMod n) (j : ℤ), IsRad (algebraMap K Ω ζ) _ φ ((ξ : Ω) ^ j) → ∀ u, algebraMap K Ω ζ ^ (φ u).val = (u.1 ξ / ξ) ^ j` using `fun φ j hr u => by`. Rewrite using `[div_zpow, ← map_zpow₀, hr.2, mul_div_cancel_right₀ _ hr.1]`. Set `e : {φ : galOf F K Ω → ZMod n // φ ∈ EqHom N _ (scalRep (ZMod n) ψ) ∧ ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) _ φ β ∧ β ^ n = algebraMap K Ω a ∧ IsOfFinOrder β} → (scalRep (ZMod n) ψ).invariants` to `fun φ => ⟨φ.1 u0, by`. Take `⟨h, β, a, hr, -, hβ⟩` from `φ.2`.
+
+Conclude with `hinv _ h β hr hβ⟩`. Establish `he : Function.Injective e`. Introduce and unpack `⟨φ, hφ, β, a, hr, ha, hβ⟩ ⟨φ', hφ', β', a', hr', ha', hβ'⟩ h`. Establish `h0 : φ u0 = φ' u0` using `congrArg Subtype.val h`. Take `⟨j, rfl⟩` from `hξ β a ha hβ`.
+
+Take `⟨j', rfl⟩` from `hξ β' a' ha' hβ'`. Use `Subtype.ext (funext fun u => hinj _ _ ?_)` and prove the remaining obligations. Take `⟨k, hk⟩` from `hu0 u`. Use `show algebraMap K Ω ζ ^ (φ u).val = algebraMap K Ω ζ ^ (φ' u).val`. Rewrite using `[hval φ j hr, hval φ' j' hr', hk, ← zpow_mul, ← zpow_mul, mul_comm k, mul_comm k, zpow_mul, zpow_mul, ← hval φ j hr, ← hval φ' j' hr', h0]`.
+
+Conclude with `⟨Nat.card_le_card_of_injective e he, Finite.of_injective e he⟩`.
+-/
 theorem UpperTheory.V.Kum.reflRoot :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (U : Subgroup (G F Ω)) (n : ℕ) [NeZero n] (N : ℕ) (ζ : K) [Normal F K] (ψ : G F Ω →* (ZMod n)ˣ), U = galOf F K Ω → IsPrimitiveRoot ζ n →
     Nat.card {φ : U → ZMod n // φ ∈ EqHom N U (scalRep (ZMod n) ψ) ∧ ∃ (β : Ω) (a : Kˣ), IsRad (algebraMap K Ω ζ) U φ β ∧ β ^ n = algebraMap K Ω a ∧ IsOfFinOrder β} ≤ Nat.card (scalRep (ZMod n) ψ).invariants ∧

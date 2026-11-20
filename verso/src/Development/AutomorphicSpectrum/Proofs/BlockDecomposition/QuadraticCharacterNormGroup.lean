@@ -11,6 +11,11 @@ open Topology
 
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
+/- English proof (translation)
+Establish `h : modulus (-1 : F) = 1`. Establish `h1 : modulus (-1 : F) * modulus (-1 : F) = 1`. Rewrite using `[← modulus_mul]`. Simplify using the standard rewrite rules. Establish `h2 : modulus (-1 : F) ^ 2 = 1` using `by rw [sq]; exact h1`.
+
+Conclude with `(pow_eq_one_iff.1 h2).resolve_right (by norm_num)`. Rewrite using `[show -x = -1 * x by ring, modulus_mul, h, one_mul]`.
+-/
 theorem modulus_neg_eq (x : F) : modulus (-x) = modulus x := by
   have h : modulus (-1 : F) = 1 := by
     have h1 : modulus (-1 : F) * modulus (-1 : F) = 1 := by
@@ -19,6 +24,9 @@ theorem modulus_neg_eq (x : F) : modulus (-x) = modulus x := by
     exact (pow_eq_one_iff.1 h2).resolve_right (by norm_num)
   rw [show -x = -1 * x by ring, modulus_mul, h, one_mul]
 
+/- English proof (translation)
+Establish `hO : {z : F | z - x ∈ valBall F (ord x + 1)} ∈ 𝓝 x` using `((isOpen_valBall _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)`. Use `filter_upwards [hO] with y hy`. Use `ord_add_eq hx hy` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[modulus_of_ne_zero this.1, modulus_of_ne_zero hx, this.2]`.
+-/
 theorem eventually_modulus_eq {x : F} (hx : x ≠ 0) : ∀ᶠ y in 𝓝 x, modulus y = modulus x := by
   have hO : {z : F | z - x ∈ valBall F (ord x + 1)} ∈ 𝓝 x :=
     ((isOpen_valBall _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp)
@@ -27,6 +35,11 @@ theorem eventually_modulus_eq {x : F} (hx : x ≠ 0) : ∀ᶠ y in 𝓝 x, modul
   rw [add_sub_cancel] at this
   rw [modulus_of_ne_zero this.1, modulus_of_ne_zero hx, this.2]
 
+/- English proof (translation)
+Establish `hf : Continuous fun v : Fˣ => ((η v : ℂˣ) : ℂ)` using `Units.continuous_val.comp hc`. Use `filter_upwards [(hf.tendsto u).eventually (Metric.ball_mem_nhds _ one_pos)] with v hv`. Apply `Units.ext` to reduce the goal to its premises. Establish `hv' : ‖((η v : ℂˣ) : ℂ) - ((η u : ℂˣ) : ℂ)‖ < 1` using `by simpa [dist_eq_norm] using hv`. Apply the tactic sequence `rcases hs v with h1 | h1 <;> rcases hs u with h2 | h2 <;> rw [h1, h2] at hv' <;> rw [h1, h2]`.
+
+Evaluate the numerical expressions using `at hv'`. Evaluate the numerical expressions using `at hv'`.
+-/
 theorem eventually_eq_of_sign {η : Fˣ →* ℂˣ} (hc : Continuous η)
     (hs : ∀ a, ((η a : ℂˣ) : ℂ) = 1 ∨ ((η a : ℂˣ) : ℂ) = -1) (u : Fˣ) :
     ∀ᶠ v in 𝓝 u, η v = η u := by
@@ -40,9 +53,19 @@ theorem eventually_eq_of_sign {η : Fˣ →* ℂˣ} (hc : Continuous η)
 
 variable (E : Type) [CommRing E] [Algebra F E]
 
+/- English proof (translation)
+Simplify using `[gTil]`.
+-/
 theorem gTil_zero (g : F → ℂ) : gTil E g (0 : F) = 0 := by
   simp [gTil]
 
+/- English proof (translation)
+Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy (gTil_zero E g)`. Establish `hg : g (-y⁻¹) ≠ 0`. Introduce `h`.
+
+Conclude with `hy (by simp [gTil, h])`. Establish `hi : y⁻¹ ≠ 0` using `inv_ne_zero hy0`. Establish `h1 : y⁻¹ ∉ valBall F N` using `fun h => hg (hN _ (neg_mem h))`. Establish `h2 : y⁻¹ ∈ valBall F M`. Use `neg_mem (hM _ hg)` as an intermediate fact.
+
+Simplify using `using this`. Rewrite `h1`, `h2` using `[mem_valBall_iff_le_ord hi, ord_inv hy0]`. Rewrite using `[mem_valBall_iff_le_ord hy0, mem_valBall_iff_le_ord hy0]`. Use linear arithmetic over natural numbers and integers.
+-/
 theorem mem_of_gTil_ne_zero {g : F → ℂ} {N M : ℤ} (hN : ∀ h ∈ valBall F N, g h = 0)
     (hM : ∀ x, g x ≠ 0 → x ∈ valBall F M) {y : F} (hy : gTil E g y ≠ 0) :
     y ∈ valBall F (-N) ∧ y ∉ valBall F (1 - M) := by
@@ -61,6 +84,21 @@ theorem mem_of_gTil_ne_zero {g : F → ℂ} {N M : ℤ} (hN : ∀ h ∈ valBall 
   rw [mem_valBall_iff_le_ord hy0, mem_valBall_iff_le_ord hy0]
   omega
 
+/- English proof (translation)
+Take `⟨N, M, hN, hM⟩` from `exists_invariant_of_mem_schwartzBruhat hg`. Establish `hN' : ∀ h ∈ valBall F N, g h = 0` using `fun h hh => by`. Use `hN 0 h hh` as an intermediate fact. Rewrite `this` using `[zero_add, h0]`. Then use the resulting hypothesis. Establish `hs : ∀ a, ((η a : ℂˣ) : ℂ) = 1 ∨ ((η a : ℂˣ) : ℂ) = -1` using `fun a => by`.
+
+Rewrite using `[hη, nsg]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨IsLocallyConstant.iff_eventually_eq _ |>.2 fun x => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality.
+
+Establish `hO : (valBall F (1 - M) : Set F) ∈ 𝓝 (0 : F)` using `(isOpen_valBall _).mem_nhds (zero_mem _)`. Use `filter_upwards [hO] with y hy`. Rewrite using `[gTil_zero]`. Assume the negation of the conclusion as `hne`. Conclude with `(mem_of_gTil_ne_zero E hN' hM hne).2 hy`.
+
+Establish `e1 : ∀ᶠ y in 𝓝 x, g (-y⁻¹) = g (-x⁻¹)`. Establish `ht : Filter.Tendsto (fun y : F => -y⁻¹) (𝓝 x) (𝓝 (-x⁻¹))` using `(continuousAt_inv₀ hx).tendsto.neg`. Conclude with `ht.eventually ((IsLocallyConstant.iff_eventually_eq _).1 hg.1 _)`. Establish `e2 : ∀ᶠ y in 𝓝 x, nsg E (-y) = nsg E (-x)`. Set `u : Fˣ` to `Units.mk0 x hx`.
+
+Establish `hm : Filter.map (Units.val : Fˣ → F) (𝓝 u) = 𝓝 x` using `(isOpenEmbedding_units_val (K := F)).map_nhds_eq u`. Rewrite using `[← hm, Filter.eventually_map]`. Use `filter_upwards [eventually_eq_of_sign hc hs u] with v hv`. Establish `hneg : ∀ w : Fˣ, nsg E (-(w : F)) = ((η (-1) : ℂˣ) : ℂ) * ((η w : ℂˣ) : ℂ)` using `fun w => by`. Rewrite using `[show -(w : F) = (((-1 : Fˣ) * w : Fˣ) : F) by simp, ← hη, map_mul, Units.val_mul]`.
+
+Establish `hx' : x = (u : F)` using `rfl`. Rewrite using `[hneg v, hx', hneg u, hv]`. Use `filter_upwards [e1, e2, eventually_modulus_eq hx] with y h1 h2 h3`. Simplify using `only [gTil, h1, h2, h3]`. Use `HasCompactSupport.intro (isCompact_valBall (-N)) fun x hx => ?_` and prove the remaining obligations.
+
+Assume the negation of the conclusion as `hne`. Conclude with `hx (mem_of_gTil_ne_zero E hN' hM hne).1`.
+-/
 theorem gTil_mem {η : Fˣ →* ℂˣ} (hc : Continuous η)
     (hη : ∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) {g : F → ℂ} (hg : g ∈ schwartzBruhat F)
     (h0 : g 0 = 0) : gTil E g ∈ schwartzBruhat F := by
@@ -100,6 +138,11 @@ theorem gTil_mem {η : Fˣ →* ℂˣ} (hc : Continuous η)
     by_contra hne
     exact hx (mem_of_gTil_ne_zero E hN' hM hne).1
 
+/- English proof (translation)
+Establish `hne : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Use `⟨(m : ℂ) ^ (1 / 2 : ℂ), ?_, rfl, ?_, ?_⟩` and prove the remaining obligations. Simplify `hne` using `[Complex.cpow_eq_zero_iff]`. Rewrite using `[Complex.ofReal_inv, Complex.inv_cpow _ _ (by`. Rewrite using `[Complex.arg_ofReal_of_nonneg hm.le]`.
+
+Conclude with `Real.pi_ne_zero.symm)]`. Rewrite using `[← Complex.cpow_add _ _ hne]`. Evaluate the numerical expressions.
+-/
 theorem half_cpow {m : ℝ} (hm : 0 < m) :
     ∃ w : ℂ, w ≠ 0 ∧ ((m : ℂ)) ^ (1 / 2 : ℂ) = w ∧ ((m⁻¹ : ℝ) : ℂ) ^ (1 / 2 : ℂ) = w⁻¹ ∧
       (m : ℂ) = w * w := by
@@ -113,6 +156,19 @@ theorem half_cpow {m : ℝ} (hm : 0 < m) :
 
 variable [MeasurableSpace F] [BorelSpace F]
 
+/- English proof (translation)
+Use `haveI hlU : LocallyCompactSpace Fˣ := (isOpenEmbedding_units_val (K := F)).locallyCompactSpace`. Use `haveI hsU : SecondCountableTopology Fˣ := (isOpenEmbedding_units_val (K := F)).isEmbedding.secondCountableTopology`. Use `haveI hI : (multHaar F).IsInvInvariant := Measure.IsHaarMeasure.isInvInvariant_of_regular _`. Establish `hs : ∀ a, ((η a : ℂˣ) : ℂ) = 1 ∨ ((η a : ℂˣ) : ℂ) = -1` using `fun a => by`. Rewrite using `[hη, nsg]`.
+
+Apply the tactic sequence `split_ifs <;> simp`. Unfold `localZeta`. Rewrite using `[← integral_const_mul]`. Use `set f : Fˣ → ℂ := fun u => gTil E g u * ((c u : ℂˣ) : ℂ) * ((modulus (u : F) : ℝ) : ℂ) ^ (1 / 2 : ℂ) with hf`. Combine the equalities or inequalities in the displayed calculation.
+
+Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Establish `hu : (((-1 : Fˣ) * v⁻¹ : Fˣ) : F) = -(v : F)⁻¹` using `by simp`. Establish `hm0 : 0 < ((modulus (v : F) : ℝ≥0) : ℝ)` using `by exact_mod_cast modulus_pos v.ne_zero`. Take `⟨w, hw0, hw1, hw2, hw3⟩` from `half_cpow hm0`. Establish `hmod : ((modulus (-(v : F)⁻¹) : ℝ≥0) : ℝ) = ((modulus (v : F) : ℝ≥0) : ℝ)⁻¹`.
+
+Rewrite using `[modulus_neg_eq, modulus_inv, NNReal.coe_inv]`. Establish `hn : nsg E (- -(v : F)⁻¹) = ((η v : ℂˣ) : ℂ)`. Rewrite using `[neg_neg, ← Units.val_inv_eq_inv_val, ← hη, map_inv, Units.val_inv_eq_inv_val]`. Apply the tactic sequence `rcases hs v with h | h <;> simp [h]`. Establish `hg' : g (-(-(v : F)⁻¹)⁻¹) = g v` using `by simp`.
+
+Establish `hcv : ((c v : ℂˣ) : ℂ) ≠ 0` using `(c v).ne_zero`. Simplify using `only [hf, gTil, hu, hg', hn, hmod]`. Rewrite using `[map_mul, map_inv, Units.val_mul, Units.val_inv_eq_inv_val, hw2, MonoidHom.mul_apply, MonoidHom.inv_apply, Units.val_mul, Units.val_inv_eq_inv_val, hw1]`. Use `push_cast`. Rewrite using `[inv_inv, hw3]`.
+
+Clear the denominators using the available nonvanishing facts.
+-/
 theorem zeta_gTil {η : Fˣ →* ℂˣ} (hη : ∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) (g : F → ℂ)
     (c : Fˣ →* ℂˣ) :
     localZeta (gTil E g) c (1 / 2) = ((c (-1) : ℂˣ) : ℂ) * localZeta g (η * c⁻¹) (1 / 2) := by
@@ -154,6 +210,9 @@ end GlobalTheory.CompanionTheory.GaussLam.Til
 
 namespace GlobalTheory.CompanionTheory.GaussLam
 
+/- English proof (translation)
+Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ η hc hη g hg h0`. Conclude with `⟨Til.gTil_mem E hc hη hg h0, fun c => Til.zeta_gTil E hη g c⟩`.
+-/
 theorem gTil_schwartzBruhat_zeta : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (η : Fˣ →* ℂˣ), Continuous η → (∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) → ∀ g : F → ℂ, g ∈ schwartzBruhat F → g 0 = 0 → GlobalTheory.CompanionTheory.GaussLam.gTil E g ∈ schwartzBruhat F ∧ ∀ c : Fˣ →* ℂˣ, localZeta (GlobalTheory.CompanionTheory.GaussLam.gTil E g) c (1 / 2) = ((c (-1) : ℂˣ) : ℂ) * localZeta g (η * c⁻¹) (1 / 2) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ η hc hη g hg h0
   exact ⟨Til.gTil_mem E hc hη hg h0, fun c => Til.zeta_gTil E hη g c⟩

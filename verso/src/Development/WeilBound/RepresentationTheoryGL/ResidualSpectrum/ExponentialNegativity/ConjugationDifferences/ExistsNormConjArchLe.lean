@@ -13,6 +13,9 @@ namespace PositivityTheory.Rg.Rs.diffstep
 
 variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 
+/- English proof (translation)
+Apply the tactic sequence `have h : (((y * q)⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * blockEntry P * ((y * q : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) = ((q⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * (((y⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fi …`. Rewrite using `[_root_.mul_inv_rev]`. Simplify using `only [Units.val_mul, Matrix.mul_assoc]`. Express the relevant statement in the definitionally equal form `archMat K n _ = archMat K n _ * archMat K n _ * archMat K n _`. Rewrite using `[h, map_mul, map_mul]`.
+-/
 theorem conjArch_mul_right {r : ℕ} (y q : AdelicGLn.AdelicGL K n) (P : UPos n r → 𝔸[K]) :
     conjArch K n (y * q) P =
       archMat K n ((q⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K]) * conjArch K n y P *
@@ -27,6 +30,15 @@ theorem conjArch_mul_right {r : ℕ} (y q : AdelicGLn.AdelicGL K n) (P : UPos n 
   change archMat K n _ = archMat K n _ * archMat K n _ * archMat K n _
   rw [h, map_mul, map_mul]
 
+/- English proof (translation)
+Take `⟨C₁, hC₁⟩` from `exists_norm_archMat_conj_le hω hωB ht hr hrn h𝒮`. Take `⟨c1, hc1⟩` from `hQ.exists_bound_of_continuousOn (f := fun k : AdelicGLn.AdelicGL K n => archMat K n (k : Matrix (Fin n) (Fin n) 𝔸[K])) (continuous_archMat.comp Units.continuous_val).continuousOn`. Take `⟨c2, hc2⟩` from `hQ.exists_bound_of_continuousOn (f := fun k : AdelicGLn.AdelicGL K n => archMat K n ((k⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])) (continuous_archMat.comp Units.continuous_coe_inv).continuousOn`. Use `set c := max (max c1 c2) 0`. Establish `hc0 : 0 ≤ c` using `le_max_right _ _`.
+
+Use `set C₁' := max C₁ 0`. Establish `hC₁'0 : 0 ≤ C₁'` using `le_max_right _ _`. Use `⟨c * C₁' * c, by positivity, ?_⟩` and prove the remaining obligations. Introduce `b hb ρ hρ hsieg q hq P hP2 hP1`. Use `set a := diagUnits n (fun i => posIdele (K := K) (ρ i) (hρ i))`.
+
+Use `set s := ρ ⟨r, hrn⟩ / ρ ⟨r - 1, by omega⟩`. Establish `hs : 0 ≤ s` using `div_nonneg (hρ _).le (hρ _).le`. Establish `h1` using `hC₁ b hb ρ hρ hsieg 1 (maxCompact (K := K) (n := n)).one_mem P hP2 hP1`. Rewrite `h1` using `[mul_one]`. Establish `hY : ‖conjArch K n (b * a) P‖ ≤ C₁' * s` using `h1.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hs)`.
+
+Establish `hq1 : ‖archMat K n (q : Matrix (Fin n) (Fin n) 𝔸[K])‖ ≤ c` using `(hc1 q hq).trans ((le_max_left _ _).trans (le_max_left _ _))`. Establish `hq2 : ‖archMat K n ((q⁻¹ : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) 𝔸[K])‖ ≤ c` using `(hc2 q hq).trans ((le_max_right _ _).trans (le_max_left _ _))`. Rewrite using `[conjArch_mul_right]`. Combine the equalities or inequalities in the displayed calculation.
+-/
 theorem exists_norm_conjArch_le {ω Q : Set (AdelicGLn.AdelicGL K n)} (hω : IsCompact ω)
     (hωB : ω ⊆ ((adelicBorel : Subgroup (AdelicGLn.AdelicGL K n)) : Set (AdelicGLn.AdelicGL K n)))
     (hQ : IsCompact Q) {t : ℝ} (ht : 0 < t) {r : ℕ} (hr : 0 < r) (hrn : r < n)

@@ -14,6 +14,11 @@ variable (E a) in
 
 def spanK (φ : Sm E a) : Submodule ℂ (Sm E a) := Submodule.span ℂ (Set.range fun k => cptRep E a k φ)
 
+/- English proof (translation)
+Introduce `k w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k', rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k * k', by simp only [map_mul, Module.End.mul_apply]⟩`.
+
+Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+-/
 theorem spanK_stable (φ : Sm E a) : ∀ k, ∀ w ∈ spanK E a φ, cptRep E a k w ∈ spanK E a φ := by
   intro k w hw
   induction hw using Submodule.span_induction with
@@ -24,6 +29,9 @@ theorem spanK_stable (φ : Sm E a) : ∀ k, ∀ w ∈ spanK E a φ, cptRep E a k
   | add x y _ _ hx hy => rw [map_add]; exact add_mem hx hy
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
+/- English proof (translation)
+The claim follows from `Submodule.subset_span ⟨1, by simp only [map_one, Module.End.one_apply]⟩`.
+-/
 theorem self_mem_spanK (φ : Sm E a) : φ ∈ spanK E a φ :=
   Submodule.subset_span ⟨1, by simp only [map_one, Module.End.one_apply]⟩
 

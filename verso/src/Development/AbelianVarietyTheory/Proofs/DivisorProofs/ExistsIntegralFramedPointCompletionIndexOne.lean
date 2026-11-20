@@ -14,6 +14,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 
 namespace GlobalTheory.CompletionPoint
 
+/- English proof (translation)
+Introduce `E _ _ _ H Dw l Xo c hpq hg Z K _ _ _ y hy w 𝔭 hv`. Take `⟨hP, hN⟩` from `GlobalTheory.Moduli.jointExistence_and_moduliScheme`. Take `⟨O, _, β, Y, -, hPI, hbase⟩` from `GlobalTheory.Frames.modelAtSt_of_good hP hN E H Dw l Xo c hpq hg w`. Take `⟨T, k, hk, hfin, -⟩` from `GlobalTheory.PlaceCompletion.exists_initial_completion K 𝔭`. Establish `ho : OverLa w T.V (k.comp (algebraMap c.F K)) 1` using `⟨Nat.one_pos, fun a => by rw [← hv a]; exact hk.2 _⟩`.
+
+Take `⟨b, hb⟩` from `hbase T _ 1 ho`. Establish `hT` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hIF : IntFramesSt Xo c` using `GlobalTheory.intFrames_of_laws GlobalTheory.abelianSchemeLaws_all.1.secBaseChange hT E H Dw l Xo c`. Set `_` to `(k.comp (algebraMap c.F K)).toAlgebra`. Establish `hz : ptF y ≫ Limits.pullback.snd _ _ = spMap (algebraMap c.F K)` using `Limits.pullback.lift_snd _ _ _`.
+
+Establish `hs : (spMap k ≫ ptF y) ≫ Limits.pullback.snd _ _ = spMap (k.comp (algebraMap c.F K))`. Rewrite using `[Category.assoc, ← GlobalTheory.EtaVal.spMap_comp_spMap]`. Conclude with `congrArg _ hz`. Establish `hx : ((spMap k ≫ ptF y) ≫ Limits.pullback.fst _ _) ≫ Xo.s = sOf c T.Fr`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hs, GlobalTheory.EtaVal.spMap_comp_spMap]`.
+
+Both sides reduce to the same expression. Take `⟨y₀, -, h0, -, -⟩` from `gfp_frPt_gen (Xo := Xo) (c := c) (L := T.Fr) (L' := T.Fr) hT (fun _ => rfl) _ hx (fun _ i j => if i = j then 1 else 0) (fun _ _ => if_pos rfl) (fun _ _ _ h => if_neg h.ne')`. Take `⟨y', t, hbor⟩` from `intFr_of_model hIF T (k.comp (algebraMap c.F K)) Y hPI b hb y₀`. Use `⟨T, k.comp (algebraMap c.F K), y', ho, hfin, fun q => ?_⟩` and prove the remaining obligations. Establish `h1 : y'.1.x = y₀.x` using `hbor.1`.
+
+Establish `h2 : ptF y'.1 = spMap k ≫ ptF y`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Limits.pullback.lift_fst _ _ _).trans (h1.trans h0)`. Conclude with `(Limits.pullback.lift_snd _ _ _).trans hs.symm`. Rewrite using `[h2]`.
+
+Conclude with `hy (spMap k q)`.
+-/
 theorem exists_intFr_index_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → (∀ p : ℕ, p.Prime → l.GoodAt p) → ∀ (Z : Comp Xo c) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K), LiesOn Z y → ∀ (w : HeightOneSpectrum (𝓞 c.F)) (𝔭 : HeightOneSpectrum (𝓞 K)), (∀ a : c.F, vLa 𝔭 (algebraMap c.F K a) = vLa w a) → ∃ (T : CDVR) (ι : c.F →+* T.Fr) (y' : IntFr Xo c T ι), OverLa w T.V ι 1 ∧ algOn Z T ι y' := by
   intro E _ _ _ H Dw l Xo c hpq hg Z K _ _ _ y hy w 𝔭 hv
   classical

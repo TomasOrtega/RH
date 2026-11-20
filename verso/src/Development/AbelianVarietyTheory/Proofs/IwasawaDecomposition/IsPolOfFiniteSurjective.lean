@@ -13,6 +13,9 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 namespace GlobalTheory.AmpleDown
 
+/- English proof (translation)
+Establish `: IsFinite (spMap b)` using `(IsFinite.SpecMap_iff _).2 hb`. Rewrite using `[← pullback.lift_fst π s' hπ]`. Use `infer_instance`.
+-/
 theorem isFinite_of_lift {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (b : R →+* R')
     (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (π : X' ⟶ X) (hπ : π ≫ s = s' ≫ spMap b) (hb : b.Finite)
     [IsFinite (pullback.lift π s' hπ)] : IsFinite π := by
@@ -20,6 +23,11 @@ theorem isFinite_of_lift {X X' : Scheme.{0}} {R R' : Type} [CommRing R] [CommRin
   rw [← pullback.lift_fst π s' hπ]
   infer_instance
 
+/- English proof (translation)
+Take `⟨-, hft, -⟩` from `GlobalTheory.CoeffRings.coeff_isDedFrac E H l c`. Establish `: IsNoetherianRing (𝓞 c.F)` using `Algebra.FiniteType.isNoetherianRing ℤ (𝓞 c.F)`. Use `GlobalTheory.ThetaDescent.isProper_of_isProjOver Z.proj` as an intermediate fact. Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Establish `: CompactSpace Z.X` using `QuasiCompact.compactSpace_of_compactSpace Z.s`.
+
+Conclude with `⟨⟩`.
+-/
 theorem isNoetherian_gmod {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (Z : GMod Xo c) : AlgebraicGeometry.IsNoetherian Z.X := by
   obtain ⟨-, hft, -⟩ := GlobalTheory.CoeffRings.coeff_isDedFrac E H l c
@@ -29,6 +37,15 @@ theorem isNoetherian_gmod {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   have : CompactSpace Z.X := QuasiCompact.compactSpace_of_compactSpace Z.s
   exact ⟨⟩
 
+/- English proof (translation)
+Introduce `E _ _ _ H D l l' Xo Xo' c c' Z Z' BD BD' f m b σ r ν π hπ mu htw hσ hb hlift hj hsurj hLB hP' hD`. Use `⟨hD, ?_⟩` and prove the remaining obligations. Take `⟨hβ, -, -⟩` from `GlobalTheory.CoeffRings.coeff_isDedFrac E H l c`. Take `⟨hβ', hft', -⟩` from `GlobalTheory.CoeffRings.coeff_isDedFrac E H l' c'`. Establish `hI : BD'.idealSheaf = BD.idealSheaf.comap π` using `GlobalTheory.PolDiv.idealSheaf_eq_comap E H D l l' Xo Xo' c c' _ _ _ _ Z Z' BD BD' f σ r ν hβ hβ' hft' htw hσ hD hP'.1 π hj`.
+
+Establish `hA'` using `hP'.2`. Establish `hL` using `GlobalTheory.PolFin.isLB_detLie_of_polOf hLB`. Establish `hL'` using `GlobalTheory.PolFin.isLB_detLie_of_polOf hA'.isLB`. Establish `e₁ : CechPic.pull π (CechPic.cls _ hL) = CechPic.cls _ hL'` using `(CechPic.cls_eq_iff (pull_isLB hL π) hL').2 (GlobalTheory.PolFin.lbIso_detLie mu.cart)`. Establish `hk : BD.KeepsRegular π` using `(BD.keepsRegular_iff_effCartier π).2 (hI ▸ BD'.effCartier_idealSheaf)`.
+
+Establish `e₂ : CechPic.pull π (CechPic.cls _ BD.isLB_lb) = CechPic.cls _ BD'.isLB_lb` using `((CechPic.cls_eq_iff (BD.pull π hk).isLB_lb (pull_isLB BD.isLB_lb π)).2 (BD.lbIso_pull π hk)).symm.trans ((CechPic.cls_eq_iff _ _).2 (EffCartierData.lbIso_of_idealSheaf_eq _ _ ((BD.idealSheaf_pull π hk).trans hI.symm)))`. Establish `cl : ∀ {X : Scheme.{0}} {L B : LB X} (hL : L.IsLB) (hB : B.IsLB) (h : (CechPic.tens (lbPow (CechPic.dual L) m) (CechPic.dual B)).IsLB), CechPic.cls _ h = m • -CechPic.cls L hL + -CechPic.cls B hB` using `fun hL hB h => by`. Rewrite using `[CechPic.cls_tens (isLB_lbPow (CechPic.isLB_dual hL) m) (CechPic.isLB_dual hB), CechPic.cls_lbPow (CechPic.isLB_dual hL), CechPic.cls_dual hL, CechPic.cls_dual hB]`. Establish `e : CechPic.pull π (CechPic.cls _ hLB) = CechPic.cls _ hA'.isLB` using `(congrArg _ (cl hL BD.isLB_lb hLB)).trans (Eq.trans (by rw [map_add, map_nsmul, map_neg, map_neg, e₁, e₂]) (cl hL' BD'.isLB_lb hA'.isLB).symm)`. Establish `hiso : LBIso ((polOf Z m BD).pull π) (polOf Z' m BD')`.
+
+Rewrite `e` using `[← CechPic.cls_pull hLB π (pull_isLB hLB π)]`. Conclude with `(CechPic.cls_eq_iff (pull_isLB hLB π) hA'.isLB).1 e`. Establish `hpull : GlobalTheory.IsAmpleLB ((polOf Z m BD).pull π)` using `hA'.of_lbIso (pull_isLB hLB π) hiso`. Conclude with `GlobalTheory.T.ample_of_finite_surjective_pullback Z.X Z'.X π (isNoetherian_gmod Z) Z.normal (isFinite_of_lift b Z.s Z'.s π hπ hb) hsurj _ hLB hpull`.
+-/
 theorem isPol_of_finite_surjective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l l' : Level H) (Xo : Moduli D l)
     (Xo' : Moduli D l') (c : Coeff l) (c' : Coeff l') (Z : GMod Xo c) (Z' : GMod Xo' c') (BD : EffCartierData Z.X)
     (BD' : EffCartierData Z'.X) (f : InvFun (𝓞 E)) (m : ℕ) (b : 𝓞 c.F →+* 𝓞 c'.F) (σ : 𝓞 E ≃+* 𝓞 E)

@@ -6,6 +6,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.SettingExistence
 
 namespace GlobalTheory.HCXi
 
+/- English proof (translation)
+Introduce `h` and use `h`.
+-/
 theorem xiExists_of_besselXiIntegrable : BesselXiIntegrable → Formalism.FourierDecayAlt.B.XiExists := fun h => h
 
 end GlobalTheory.HCXi

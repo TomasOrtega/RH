@@ -9,15 +9,32 @@ namespace GlobalTheory.CompanionTheory.UnrDens.Emb
 
 variable {E : Type} [CommRing E] {τ : E →+* E}
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+-/
 theorem cT_mul_rect {a b c : ℕ} (x : Matrix (Fin a) (Fin b) E) (y : Matrix (Fin b) (Fin c) E) :
     cT τ (x * y) = cT τ y * cT τ x := by
   unfold cT
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
+/- English proof (translation)
+Unfold `cT`. Rewrite using `[Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.transpose_one]`.
+-/
 theorem cT_one_sq {a : ℕ} : cT τ (1 : Matrix (Fin a) (Fin a) E) = 1 := by
   unfold cT
   rw [Matrix.map_one _ (map_zero τ) (map_one τ), Matrix.transpose_one]
 
+/- English proof (translation)
+Establish `hgh : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hg`. Establish `hhg : cT τ g⁻¹ * cT τ g = 1` using `by rw [← cT_mul_rect, hgh, cT_one_sq]`. Establish `hT : T = cT τ g⁻¹ * g⁻¹`. Combine the equalities or inequalities in the displayed calculation. Use `Nat.card_congr ⟨fun x => ⟨x.1 * g, ?_⟩, fun y => ⟨y.1 * g⁻¹, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+
+Rewrite using `[cT_mul_rect]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [x.2, hgT]`. Rewrite using `[cT_mul_rect]`.
+
+Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = T := by rw [y.2, Matrix.mul_one, ← hT]`. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises.
+
+Use `show x.1 * g * g⁻¹ = x.1`. Rewrite using `[Matrix.mul_assoc, hgh, Matrix.mul_one]`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show y.1 * g⁻¹ * g = y.1`.
+
+Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul g hg, Matrix.mul_one]`.
+-/
 theorem card_eq_card_one {m n : ℕ} (S : Matrix (Fin m) (Fin m) E) (T g : Matrix (Fin n) (Fin n) E)
     (hg : IsUnit g.det) (hgT : cT τ g * T * g = 1) :
     Nat.card {x : Matrix (Fin m) (Fin n) E // cT τ x * S * x = T} =
@@ -46,6 +63,15 @@ theorem card_eq_card_one {m n : ℕ} (S : Matrix (Fin m) (Fin m) E) (T g : Matri
     show y.1 * g⁻¹ * g = y.1
     rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul g hg, Matrix.mul_one]
 
+/- English proof (translation)
+Use `Nat.card_congr ⟨fun y => ⟨fun j a => y.1 a j, ?_⟩, fun x => ⟨Matrix.of (fun a j => x.1 j a), ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Establish `h` using `gram_apply hτ S hS hd y.1 j i`. Rewrite `h` using `[y.2, Matrix.one_apply]`. Rewrite using `[← h]`.
+
+Simplify using `only [eq_comm]`. Use extensionality with `i j`. Rewrite using `[gram_apply hτ S hS hd, Matrix.one_apply]`. Establish `h` using `x.2 j i`. Simplify using `only [eq_comm (a := i)]`.
+
+Conclude with `h`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a j`. Both sides reduce to the same expression.
+
+Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `j a`. Both sides reduce to the same expression.
+-/
 theorem card_one_eq_orthonormal (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} (S : Matrix (Fin m) (Fin m) E)
     (hS : cT τ S = S) (hd : IsUnit S.det) :
     Nat.card {y : Matrix (Fin m) (Fin n) E // cT τ y * S * y = 1} =
@@ -72,6 +98,17 @@ theorem card_one_eq_orthonormal (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} (S : Ma
     funext j a
     rfl
 
+/- English proof (translation)
+Proceed by induction on `n with`. Consider the case `zero => intro m _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `m hnm`.
+
+Take `⟨k, rfl⟩ : ∃ k, m = n + 1 + k` from `⟨m - (n + 1), by omega⟩`. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.val_castSucc, Fin.val_last]`. Rewrite using `[ih _ (by omega)]`. Establish `a : 2 * (n + 1 + k) * n - n ^ 2 = n ^ 2 + 2 * n + 2 * k * n`.
+
+Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Establish `b : 2 * (n + 1 + k) * (n + 1) - (n + 1) ^ 2 = (n + 1) ^ 2 + 2 * k * (n + 1)`. Apply `Nat.sub_eq_of_eq_add` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+
+Establish `c : n + 1 + k - n = k + 1` using `by omega`. Establish `d : x ^ (2 * (k + 1)) / x = x ^ (2 * k + 1)`. Establish `: x ^ (2 * (k + 1)) = x ^ (2 * k + 1) * x` using `by ring`. Rewrite using `[this, mul_div_cancel_right₀ _ hx]`. Rewrite using `[a, b, c, d, ← pow_add]`.
+
+Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem prod_pow_div (x : ℝ) (hx : x ≠ 0) (n : ℕ) : ∀ m : ℕ, n ≤ m →
     ∏ i : Fin n, (x ^ (2 * (m - (i : ℕ))) / x) = x ^ (2 * m * n - n ^ 2) := by
   induction n with
@@ -94,6 +131,11 @@ theorem prod_pow_div (x : ℝ) (hx : x ≠ 0) (n : ℕ) : ∀ m : ℕ, n ≤ m �
     congr 1
     ring
 
+/- English proof (translation)
+Introduce `E _ τ q ε hR m n hnm S T hS hSd hT hTd`. Take `⟨g, hg, hgT⟩` from `GlobalTheory.T.exists_hermitian_congr_to_one E τ q ε hR n T hT hTd`. Establish `hcard : Nat.card (Fin m → E) = q ^ (2 * m)`. Rewrite using `[Nat.card_fun, hR.card, Nat.card_eq_fintype_card, Fintype.card_fin, pow_mul]`. Establish `hq : (q : ℝ) ≠ 0`.
+
+Use `hR.one_lt` as an intermediate fact. Conclude with `(by omega : q ≠ 0)` after adjusting the coercions. Rewrite using `[card_eq_card_one S T g hg hgT, card_one_eq_orthonormal hR.inv S hS hSd, GlobalTheory.T.card_orthonormal_frames_hermitian_space E τ q ε hR n m hnm (Fin m → E) (HermSp.ofMatrix hR.inv S hS hSd) hcard, Finset.prod_mul_distrib, prod_pow_div _ hq n m hnm]`.
+-/
 theorem card_isometric_embeddings : ∀ (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ),
     ResAlg E τ q ε → ∀ (m n : ℕ), n ≤ m → ∀ (S : Matrix (Fin m) (Fin m) E)
     (T : Matrix (Fin n) (Fin n) E), cT τ S = S → IsUnit S.det → cT τ T = T → IsUnit T.det →

@@ -27,6 +27,11 @@ noncomputable section
 
 namespace GlobalTheory.BottomFieldDict
 
+/- English proof (translation)
+Rewrite using `[Matrix.det_apply']`. Use `MvPolynomial.IsHomogeneous.sum _ _ _ (fun e _ => ?_)` and prove the remaining obligations. Establish `h1 : (∏ i, (Matrix.of fun i i' => (MvPolynomial.X (f i i') : MvPolynomial σ ℂ)) (e i) i).IsHomogeneous (∑ _i : Fin a, 1)` using `MvPolynomial.IsHomogeneous.prod _ _ _ (fun i _ => MvPolynomial.isHomogeneous_X ℂ _)`. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one] at h1`. Establish `h0 : (((Equiv.Perm.sign e : ℤ) : MvPolynomial σ ℂ)).IsHomogeneous 0`.
+
+Establish `: (((Equiv.Perm.sign e : ℤ) : MvPolynomial σ ℂ)) = MvPolynomial.C ((Equiv.Perm.sign e : ℤ) : ℂ)` using `by simp`. Rewrite using `[this]`. Conclude with `MvPolynomial.isHomogeneous_C _ _`. Simplify using `using h0.mul h1`.
+-/
 theorem det_X_isHomogeneous {σ : Type*} {a : ℕ} (f : Fin a → Fin a → σ) :
     (Matrix.of fun i i' => (MvPolynomial.X (f i i') : MvPolynomial σ ℂ)).det.IsHomogeneous a := by
   rw [Matrix.det_apply']
@@ -40,6 +45,9 @@ theorem det_X_isHomogeneous {σ : Type*} {a : ℕ} (f : Fin a → Fin a → σ) 
     rw [this]; exact MvPolynomial.isHomogeneous_C _ _
   simpa using h0.mul h1
 
+/- English proof (translation)
+Unfold `GlobalTheory.NormSum.minorPol`. Establish `h` using `MvPolynomial.IsHomogeneous.prod (Finset.univ : Finset D.what₂.Tau) (fun τ => ∏ j, (Matrix.of fun i i' => (MvPolynomial.X (τ, ((T τ j) : Fin a → Fin d) i, i') : MvPolynomial (GL3Theta.Idx D a d) ℂ)).det) (fun τ => ∑ _j : Fin (n τ), a) (fun τ _ => MvPolynomial.IsHomogeneous.prod _ …`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `[Finset.mul_sum, mul_comm]`.
+-/
 theorem minorPol_isHomogeneous {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : GlobalTheory.NormSum.Tup D a d n) :
     (GlobalTheory.NormSum.minorPol D T).IsHomogeneous (a * ∑ τ, n τ) := by
   unfold GlobalTheory.NormSum.minorPol
@@ -50,6 +58,9 @@ theorem minorPol_isHomogeneous {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} 
   convert h using 1
   simp [Finset.mul_sum, mul_comm]
 
+/- English proof (translation)
+Establish `h` using `minorPol_isHomogeneous T (MvPolynomial.mem_support_iff.mp hα)`. Rewrite using `[Finsupp.card_toMultiset]`. Rewrite using `[← h]`. Simplify using `[Finsupp.weight_apply, Finsupp.sum]`.
+-/
 theorem card_of_mem_support {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T : GlobalTheory.NormSum.Tup D a d n)
     {α : TaylorLogMetric.Mono D a d} (hα : α ∈ (GlobalTheory.NormSum.minorPol D T).support) :
     Multiset.card (Finsupp.toMultiset α) = a * ∑ τ, n τ := by
@@ -58,6 +69,11 @@ theorem card_of_mem_support {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (T 
   rw [← h]
   simp [Finsupp.weight_apply, Finsupp.sum]
 
+/- English proof (translation)
+Establish `e : GlobalTheory.NormSum.minorPol D U = MvPolynomial.map (algebraMap ℚ ℂ) (∏ τ, ∏ j, (Matrix.of fun i i' : Fin a => (MvPolynomial.X (τ, (U τ j).1 i, i') : MvPolynomial (GL3Theta.Idx D a d) ℚ)).det)`. Unfold `GlobalTheory.NormSum.minorPol`. Simplify using `only [map_prod, RingHom.map_det]`. Use `Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+
+Use `ext1 i i'`. Simplify using the standard rewrite rules. Rewrite using `[e, MvPolynomial.coeff_map]`. Conclude with `isAlgebraic_algebraMap _`.
+-/
 theorem minorPol_coeff_isAlgebraic {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : GlobalTheory.NormSum.Tup D a d n)
     (α : GL3Theta.Idx D a d →₀ ℕ) : IsAlgebraic ℚ ((GlobalTheory.NormSum.minorPol D U).coeff α) := by
   have e : GlobalTheory.NormSum.minorPol D U = MvPolynomial.map (algebraMap ℚ ℂ) (∏ τ, ∏ j, (Matrix.of fun i i' : Fin a =>
@@ -71,6 +87,11 @@ theorem minorPol_coeff_isAlgebraic {D : D7} {a d : ℕ} {n : D.what₂.Tau → �
   rw [e, MvPolynomial.coeff_map]
   exact isAlgebraic_algebraMap _
 
+/- English proof (translation)
+Use `conv_lhs => rw [(GlobalTheory.NormSum.minorPol D U).as_sum]`. Rewrite using `[map_sum l, GL3Theta.applyAt0, Finset.mul_sum _ _ ζ, Finset.mul_sum _ _ (c * p ^ (a * ∑ τ, n τ))]`. Use `Finset.sum_congr rfl fun α hα => ?_` and prove the remaining obligations. Establish `hk` using `card_of_mem_support U hα`. Rewrite `hk` using `[Finsupp.card_toMultiset]`.
+
+Establish `e : (MvPolynomial.monomial α ((GlobalTheory.NormSum.minorPol D U).coeff α) : MvPolynomial (GL3Theta.Idx D a d) ℂ) = (GlobalTheory.NormSum.minorPol D U).coeff α • MvPolynomial.monomial α 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Establish `hk' : (α.sum fun _ e => e) = a * ∑ τ, n τ` using `hk`. Rewrite using `[e, map_smul, h, GlobalTheory.FockPos.applyAt0_monomial', hk', smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem apply_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : GlobalTheory.NormSum.Tup D a d n)
     (l : MvPolynomial (GL3Theta.Idx D a d) ℂ →ₗ[ℂ] ℂ) (c p ζ : ℂ) (G : TaylorLogMetric.VC D a d → ℂ)
     (h : ∀ k : GL3Theta.Idx D a d →₀ ℕ, l (MvPolynomial.monomial k 1) =
@@ -88,18 +109,53 @@ theorem apply_minorPol {D : D7} {a d : ℕ} {n : D.what₂.Tau → ℕ} (U : Glo
   rw [e, map_smul, h, GlobalTheory.FockPos.applyAt0_monomial', hk', smul_eq_mul]
   ring
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, SetLike.mem_coe, h.2.1, lc_mem_colLat_one]`. Simplify using `only [Submodule.mem_one]`.
+-/
 theorem lat_eq_colLat {D : D7} {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) :
     (r.Λ : Set (Fin V.rank → D.host.E)) = (colLat (1 : GL (Fin V.rank) D.host.E) : Set (Fin V.rank → D.host.E)) := by
   ext y
   rw [SetLike.mem_coe, SetLike.mem_coe, h.2.1, lc_mem_colLat_one]
   simp only [Submodule.mem_one]
 
+/- English proof (translation)
+Use extensionality with `y`. Rewrite using `[SetLike.mem_coe, h.2.1]`. Simplify using `[GlobalTheory.MovedDict.inV, StandardLatticesGL3.stdL, Submodule.mem_pi, Submodule.mem_one]`.
+-/
 theorem lat_eq_inV {D : D7} {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V} (h : r.IsStd) :
     (r.Λ : Set (Fin V.rank → D.host.E)) = GlobalTheory.MovedDict.inV 1 (StandardLatticesGL3.stdL D V.rank) := by
   ext y
   rw [SetLike.mem_coe, h.2.1]
   simp [GlobalTheory.MovedDict.inV, StandardLatticesGL3.stdL, Submodule.mem_pi, Submodule.mem_one]
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X _ _ _ hX n`. Take `⟨δ, hc, hδ⟩` from `GlobalTheory.FunObj.exists_delta D`. Take `⟨t0, ht0⟩` from `(GlobalTheory.TwoTorsionPt.exists_point D D.host.ccK δ hc).1`. Establish `hd : Even WW.rank`. Rewrite using `[← hX.is.rank, hX.rank, hX.rank']`.
+
+Take `⟨h1, h2, h3⟩` from `SqNum.ranks_exact D i j`. Conclude with `⟨SqNum.halfRank D i j - (D.R.m - (j + 1)) / 2 - (D.R.m - j) / 2, by omega⟩`. Take `⟨e0, he0, he0ne⟩` from `GlobalTheory.Vacuum.exists_vacuum D D.host.ccK δ hc t0 ht0 A'.rank WW.rank (hd.mul_left _)`. Establish `hon : ∀ {V : HSp D}, V.gram = 1 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin V.rank) D.host.E).1 * V.gram * (1 : GL (Fin V.rank) D.host.E).1 = 1`. Introduce `V hV`.
+
+Rewrite using `[hV]`. Simplify using `[Formalism.UG.cT]`. Establish `hfr : ∀ {V : HSp D} {r : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.Rig V}, r.IsStd → r.B = GlobalTheory.FockPos.frAt (1 : GL (Fin V.rank) D.host.E)`. Introduce `V r hr`. Use function extensionality and compare the values at `τ`.
+
+Rewrite using `[(hr.2.2 τ).2]`. Simplify using `[GlobalTheory.FockPos.frAt]`. Establish `hS` using `hon hX.std'.1`. Establish `hT` using `hon hX.stdW.1`. Establish `hcS` using `fun τ => (hX.is.rigA'.2.2 τ).1`.
+
+Establish `hcT` using `fun τ => (hX.is.rigW.2.2 τ).1`. Establish `hv` using `hX.is.isVac'`. Establish `hv1` using `hv`. Rewrite `hv1` using `[lat_eq_colLat hX.std', lat_eq_colLat hX.stdW]`. Take `⟨Θ, hΘ, hΘ0, hj⟩` from `GlobalTheory.FockPos.fock_jets_eq_theta W.ψ W.θ A' WW _ _ 1 1 hS hT hcS hcT δ hc hδ _ hv1`.
+
+Establish `hG1` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨c, hce⟩` from `(GlobalTheory.ThetaLine.theta_line D hG1 _ δ hc _ _ _ (Or.inr ⟨_, _, GlobalTheory.FinWeil.Vacuum.sd_std D _, GlobalTheory.FinWeil.Vacuum.sd_std D _, rfl⟩)).1 Θ hΘ e0 he0.1 he0ne`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hΘ0 (by rw [hce, zero_smul])`.
+
+Use `set p : ℂ := δ * (((Real.sqrt (2 * Real.pi * Formalism.L2.Pj.xiR D) : ℝ) : ℂ)⁻¹) with hp`. Establish `hper : ∀ τ : D.what₂.Tau, GlobalTheory.FunObj.period δ τ = p` using `fun τ => by`. Rewrite using `[GlobalTheory.FunObj.period, GlobalTheory.AdTh.Fock.norm_embedding_hostFormConstant_eq, div_eq_mul_inv]`. Establish `hp0 : p ≠ 0`. Use `mul_ne_zero hδ (inv_ne_zero ?_)` and prove the remaining obligations.
+
+Establish `hx : 0 < Formalism.L2.Pj.xiR D` using `GlobalTheory.SupDict.xiR_pos D`. Conclude with `(Real.sqrt_pos.2 (by positivity)).ne'` after adjusting the coercions. Establish `hprod : ∀ k : GL3Theta.Idx D A'.rank WW.rank →₀ ℕ, (k.prod fun v e => GlobalTheory.FunObj.period δ v.1 ^ e) = p ^ (k.sum fun _ e => e)` using `fun k => by`. Simplify using `only [hper, Finsupp.prod, Finsupp.sum]`. Conclude with `Finset.prod_pow_eq_pow_sum _ _ _`.
+
+Use `⟨c * p ^ (A'.rank * ∑ τ, n τ), mul_ne_zero hc0 (pow_ne_zero _ hp0), D.host.ccK, δ, t0, e0, hc, ht0, he0, fun U => GlobalTheory.NormSum.minorPol D U, fun U α => minorPol_coeff_isAlgebraic U α, ?_⟩` and prove the remaining obligations. Introduce and unpack `w - ⟨m, hm, hw⟩`. Rewrite `hv`, `hw` using `[lat_eq_inV hX.std', lat_eq_inV hX.stdW]`. Take `⟨ζ, s, hζ, hs, hk⟩` from `GlobalTheory.HeisTrans.core W.ψ W.θ A' WW _ _ 1 1 hS hT hcS hcT _ _ (GlobalTheory.FinWeil.Vacuum.sd_std D _) (GlobalTheory.FinWeil.Vacuum.sd_std D _) δ hδ e0 he0.1.1 c X.vac' hv (fun k => by`. Establish `h` using `hj k`.
+
+Rewrite `h` using `[hce, GlobalTheory.FunObj.TopJet.applyAt0_monomial, GlobalTheory.FunObj.TopJet.taylor_const_smul D e0 he0.1.1]`. Rewrite using `[GlobalTheory.FunObj.TopJet.applyAt0_monomial]`. Use `h.trans ?_` and prove the remaining obligations. Use the proof step `ring) m hm w hw`. Take `⟨ζ', hζ', -⟩` from `GlobalTheory.HeisTrans.qbar_of_root hζ`.
+
+Use `⟨ζ, s, hζ' ▸ mem_algebraicClosure_iff.1 ζ'.2, ⟨m, hm, hs⟩, fun U => ?_⟩` and prove the remaining obligations. Establish `hUd : Differentiable ℂ (TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0)`. Establish `h : Differentiable ℂ (fun z : TaylorLogMetric.VC D A'.rank WW.rank => TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D D.host.ccK δ) z s)`. Unfold `TaylorLogMetric.Hf`. Use `fun_prop`.
+
+Establish `h0 : Differentiable ℂ e0` using `he0.1.1`. Unfold `TaylorLogMetric.U`. Use `fun_prop`. Rewrite using `[hfr hX.std', hfr hX.stdW]`. Use `apply_minorPol U ((LinearMap.proj (0 : WO A' WW)).comp (pureTensorO W.ψ W.θ A' WW X.rA'.s X.rW.s (GlobalTheory.FockPos.frAt 1) (GlobalTheory.FockPos.frAt 1) (heisO W.ψ A' WW w X.vac'))) c p ζ _ fun k => ?_` and prove the remaining obligations.
+
+Establish `h` using `hk k`. Rewrite `h` using `[hprod k, GlobalTheory.FunObj.TopJet.applyAt0_monomial]`. Establish `e : (fun z => ζ * TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0 z) = ζ • TaylorLogMetric.U D (TaylorLogMetric.tor0 D D.host.ccK δ) s e0` using `rfl`. Rewrite `h` using `[e, GlobalTheory.FunObj.TopJet.taylor_const_smul D _ hUd]`. Rewrite using `[GlobalTheory.FunObj.TopJet.applyAt0_monomial]`.
+
+Use `h.trans ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem vacuum_translate_minor_jet : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ → IsBottomTri W i j X →
     ∀ n : D.what₂.Tau → ℕ, ∃ Ω : ℂ, Ω ≠ 0 ∧ ∃ (cc : Ideal (𝓞 D.host.K)) (δ t0 : ℂ) (e0 : TaylorLogMetric.VC D A'.rank WW.rank → ℂ),
@@ -186,6 +242,15 @@ theorem vacuum_translate_minor_jet : ∀ {D : D7} {T : Type} [Finite T] {L : Lev
   refine h.trans ?_
   ring
 
+/- English proof (translation)
+Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX n`. Take `⟨Ω, hΩ, cc, δ, t0, e0, hc, ht0, he0, Qf, hQf, H⟩` from `vacuum_translate_minor_jet hP hI hL hX n`. Use `⟨Ω, hΩ, fun t x hx h hh => ?_⟩` and prove the remaining obligations. Take `⟨k, c, w, hca, hwf, hwl, hexp⟩` from `GlobalTheory.BotExpand.ker'_eq_sum_jets hP hI hL hX t x hx h hh`. Use `choose ζ s hζ hs hζeq using fun l => H (w l) (hwf l) (hwl l)`.
+
+Establish `hd : Differentiable ℂ e0` using `he0.1.1`. Establish `hU : ∀ l, Differentiable ℂ (TaylorLogMetric.U D (TaylorLogMetric.tor0 D cc δ) (s l) e0)` using `fun l => by`. Establish `h1 : Differentiable ℂ (fun z : TaylorLogMetric.VC D A'.rank WW.rank => TaylorLogMetric.Hf D (TaylorLogMetric.tor0 D cc δ) z (s l))`. Unfold `TaylorLogMetric.Hf`. Use `fun_prop`.
+
+Unfold `TaylorLogMetric.U`. Use `fun_prop`. Use `⟨cc, δ, t0, e0, k, fun l => c l * ζ l, s, hc, ht0, he0, fun l => (hca l).mul (hζ l), hs, fun U => ⟨Qf U, hQf U, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hexp]`. Unfold `StandardLatticesGL3.comb`.
+
+Rewrite using `[GlobalTheory.LiftTypePrime.Jets.applyAt0_comb Finset.univ _ _ hU, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hζeq l U]`. Expand and normalize the polynomial expressions, which then agree.
+-/
 theorem ker'_minorPol_eq_jet : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
